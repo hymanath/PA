@@ -53,7 +53,7 @@
 			<h5 class="text-align">SELECT CONSTITUENCY</h5>
 
 			<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="userConstituencyId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" style="width:460px;" onChange="getConstituencyWiseDetails();"/>
-			<select style="width:150px;" id="panchayatList" onchange="getLocationWiseDetails();"><option value="0"> Select Panchayat </option></select>		
+			<select style="width:150px;" id="panchayatList" onchange="getLocationWiseDetails();"><option value="0"> Select Location </option></select>		
 			<select style="width:250px;" id="boothsList"> <option value="0"> Select Booth </option> </select> 	
 			<!-- <select style="width:150px;" id="vilagecovrdList"> <option value="0"> Select Covered Village </option> </select>  -->
 			<img src='images/icons/search.gif' id="loadingImg" style="display:none;"/>
@@ -62,32 +62,34 @@
 					<div class="span6">
 					
 						<div class="row form-inline text-center">
-									<label class="radio"><input type="radio" value="voter"  name="searchTypeRadio" checked="true"> VOTER</label>
+									<label class="radio"><input type="radio" value="voter"  name="searchTypeRadio" checked="true" class="icheckBtns"> VOTER</label>
 										&nbsp;&nbsp;&nbsp;&nbsp;
-									<label class="radio"><input type="radio" value="cadre"  name="searchTypeRadio"> CADRE</label>
+									<label class="radio"><input type="radio" value="cadre"  name="searchTypeRadio"  class="icheckBtns"> CADRE</label>
 								
+									&nbsp;&nbsp;&nbsp;&nbsp;
+									<label class="checkbox"><input type="checkbox" value="2014Cadre" id="isNewCadre"  name="searchTypecheckbox"  class="icheckBtns"> 2014 CADRE </label>
 						</div>
 					</div>
 					
 					<div class="pad-10b">
 					<h5 class="text-align1">CANDIDATE NAME</h5>
-							<input type="text" class="form-control border-radius-0" placeholder="Enter Name" id="searchNameId" name="searchName" style="width:425px;" onkeyUp="searchCandidatesDetailsBySearchCriteria(1);">
+							<input type="text" class="form-control border-radius-0" placeholder="Enter Name" id="searchNameId" name="searchName" style="width:425px;" onkeyUp="searchCandidatesDetailsBySearchCriteria();">
 					</div>
 					<div class=" m_top10 pad-10b">
 						<div class="row-fluid">
 						
 							<div class="span6">
 							<h5 class="text-align1">VOTER ID</h5>
-								<input type="text" class="form-control border-radius-0" placeholder="Enter Voter ID"  id="searchVoterCardId"  name="searchVoterCard" onkeyUp="searchCandidatesDetailsBySearchCriteria(1);">
+								<input type="text" class="form-control border-radius-0" placeholder="Enter Voter ID"  id="searchVoterCardId"  name="searchVoterCard" onkeyUp="searchCandidatesDetailsBySearchCriteria();">
 							</div>
 							
 							<div class="span6">
 							<h5 class="text-align1">H NO</h5>
-								<input type="text" class="form-control border-radius-0" placeholder="House Number"  id="searchHNoId"   name="searchHNo" onkeyUp="searchCandidatesDetailsBySearchCriteria(1);">
+								<input type="text" class="form-control border-radius-0" placeholder="House Number"  id="searchHNoId"   name="searchHNo" onkeyUp="searchCandidatesDetailsBySearchCriteria();">
 							</div>
 						</div>
 					</div>
-					<a href="javascript:{searchCandidatesDetailsBySearchCriteria(2);}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
+					<a href="javascript:{searchCandidatesDetailsBySearchCriteria();}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
 		</div>
 		
 	</div>
@@ -119,6 +121,13 @@
 			increaseArea: '20%' // optional
 		  });
 		 
+/*
+			
+			 $('input[name="searchTypeRadio"]').on('ifClicked', function (event) {
+				searchCandidatesDetailsBySearchCriteria();
+				
+			});
+			*/
 		});
 		
 	function isValid(str)
@@ -136,7 +145,7 @@
 	}
 	
 	var request;	
-	function searchCandidatesDetailsBySearchCriteria(type)
+	function searchCandidatesDetailsBySearchCriteria()
 	{
 	
 		var cosntiteucnyId = $('#userConstituencyId').val();
@@ -147,6 +156,14 @@
 		var panchayatId = $('#panchayatList').val();
 		var boothId = $('#boothsList').val();
 		//var villageCoveredId = $('#vilagecovrdList').val(); 
+		var ischecked = "0";
+	
+
+		if($("#isNewCadre").is(':checked'))
+			ischecked = "true";  // checked
+		else
+			ischecked = 0  // unchecked
+			
 		var villageCovered = '';
 		$('#errorDiv').html('');
 		if(cosntiteucnyId == 0 )
@@ -154,15 +171,15 @@
 			$('#errorDiv').html('Please Select Constituency.');
 			return;
 		}
-		if(panchayatId == 0)
+	/*	if(panchayatId == 0)
 		{
 			$('#errorDiv').html('Please Select Panchayat.');
 			return;
 		}
-
+*/
 		var isError = false ;
 		
-		if(!(/^[a-zA-Z]+$/.test(candidateName)))
+		if(candidateName != null && candidateName.trim().length>0 && !(/^[a-zA-Z]+$/.test(candidateName)))
 		{
 				$('#errorDiv').html('Candidate Name allows only alphabets.');
 			return;
@@ -237,13 +254,7 @@
 			{
 				request.abort();
 			}
-		/*
-			if(villageCoveredId != 0)
-			{
-				villageCovered = $("#vilagecovrdList option:selected").text();
-			}
-		*/	
-			
+					
 			$('#searchDataImg').show();
 
 			var jsObj = 
@@ -255,7 +266,7 @@
 					  voterCardNo : voterCardNo,
 					  panchayatId : panchayatId,
 					  boothId : boothId ,
-					  locationId : 0,
+					  isPresentCadre : ischecked,
 					  task:"searchCandidatesDtailsBySearchCriteria"             
 				   }
 
@@ -294,13 +305,48 @@
 			str +='<th class="text-align1">RELATION</th>';
 			str +='<th class="text-align1">AGE</th>';
 			str +='<th class="text-align1">GENDER</th>';
-			str +='<th class="text-align1">H.NUMBER</th>';
-			str +='<th class="text-align1"></th>';
+			str +='<th class="text-align1">H.NO</th>';
+			//str +='<th class="text-align1"></th>';
 			str +='</tr>';
 			str +='</thead>';
 			str +='<tbody>';
 			
 			for(var i in result)
+			{
+			if(result[i].isRegistered == 'Y')
+			{
+				str +='<tr>';
+				if(result[i].name != null)
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
+				else
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					
+				if(result[i].relativeName != null)
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relativeName+'</span></td>';
+				else
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+				if(result[i].relationType != null)
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relationType+'</span></td>';
+				else
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';					
+				if(result[i].age != null)
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].age+'</span></td>';
+				else
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+				if(result[i].gender != null)
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].gender+'</span></td>';
+				else
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+				
+				if(result[i].houseNo != null)
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].houseNo+'</span></td>';
+				else
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+				
+				//str +='<td style="background-color:#52A552;"><input type="radio" value="'+result[i].id+'" name="optionsRadios" onClick="getDetailsForUser();"></label></td>';
+				str +='</tr>';
+			}
+			else
 			{
 				str +='<tr>';
 				if(result[i].name != null)
@@ -330,8 +376,9 @@
 				else
 					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 				
-				str +='<td><input type="radio" value="'+result[i].id+'" name="optionsRadios" onClick="getDetailsForUser();"></label></td>';
+			//	str +='<td><input type="radio" value="'+result[i].id+'" name="optionsRadios" onClick="getDetailsForUser();"></label></td>';
 				str +='</tr>';
+			}
 			}
 			
 			str +='</tbody>';
@@ -343,7 +390,7 @@
 			"iDisplayLength": 100,
 			"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
 			});
-			
+		/*	
 			$('input').iCheck({
 			checkboxClass: 'icheckbox_square-blue',
 			radioClass: 'iradio_square-blue',
@@ -355,6 +402,7 @@
 				getDetailsForUser(this.value);
 				
 			});
+			*/
 			 $(".detailsCls").click(function(){
 			var id = $(this).attr('id');
 			getDetailsForUser(id);
@@ -369,7 +417,14 @@
 		var cosntiteucnyId = $('#userConstituencyId').val();	
 		var boothId = $('#boothsList').val();	
 		var houseNo = $('#panchayatList').val();	
-		window.open('tdpCadreRegistrationAction.action?candidateId='+candidateId+'&searchType='+searchType+'&constiteucnyId='+cosntiteucnyId+'&houseNo='+houseNo+'&panchayatId=0&boothId='+boothId);
+		
+		var panchayatId = 0;
+		if($("#isNewCadre").is(':checked'))
+			panchayatId = "true";  // checked
+		else
+			panchayatId = 0  // unchecked
+			
+		window.open('tdpCadreRegistrationAction.action?candidateId='+candidateId+'&searchType='+searchType+'&constiteucnyId='+cosntiteucnyId+'&houseNo='+houseNo+'&boothId='+boothId+'&panchayatId='+panchayatId+'');
 		
 	}
 	
@@ -378,6 +433,12 @@
 		var cosntiteucnyId = $('#userConstituencyId').val();
 		
 		$('#errorDiv').html('');
+		$('#panchayatList').find('option').remove();
+		$('#panchayatList').append('<option value="0"> Select Location </option>');
+		
+		$('#boothsList').find('option').remove();
+		$('#boothsList').append('<option value="0"> Select Booth </option>');
+						
 		if(cosntiteucnyId == 0 )
 		{
 			$('#errorDiv').html('Please Select Constituency.');
@@ -395,8 +456,7 @@
 					url : "getConstituncyWiseDetailsAction.action",
 					data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
-						$('#panchayatList').find('option').remove();
-						$('#panchayatList').append('<option value="0"> Select Panchayat </option>');
+						
 							$('#loadingImg').hide();
 					if(result != null )
 					{
