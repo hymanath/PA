@@ -58,17 +58,20 @@ public class CadreCommitteeRole implements Serializable{
 	public Long getCadreRolesId() {
 		return cadreRolesId;
 	}
+	
+	public void setCadreRolesId(Long cadreRolesId) {
+		this.cadreRolesId = cadreRolesId;
+	}
+	
+	@Column(name="cadre_committee_id")
 	public Long getCadreCommiteeId() {
 		return cadreCommiteeId;
 	}
 	
-	@Column(name="cadre_committee_id")
 	public void setCadreCommiteeId(Long cadreCommiteeId) {
 		this.cadreCommiteeId = cadreCommiteeId;
 	}
-	public void setCadreRolesId(Long cadreRolesId) {
-		this.cadreRolesId = cadreRolesId;
-	}
+
 	
 	
 	
