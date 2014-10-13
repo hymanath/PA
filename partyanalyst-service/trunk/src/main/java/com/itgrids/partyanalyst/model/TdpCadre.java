@@ -92,7 +92,7 @@ public class TdpCadre {
 	private String						cadreType;
 	private String                     isRelative;
 	private VoterRelation				relationType;
-	private Long				relationTypeId;
+	private Long						relationTypeId;
 	
 	private String 						photoType;
 	private String						nameType;

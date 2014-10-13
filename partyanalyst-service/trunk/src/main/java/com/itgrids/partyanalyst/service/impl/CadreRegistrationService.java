@@ -770,18 +770,26 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						{
 							if(tdpCadre != null)
 							{
-								if(electionVO.getConstituencyId() != null && electionVO.getConstituencyId().longValue() > 0)
+								if(electionVO.getConstituencyId() != null && electionVO.getConstituencyId().trim().length()  > 0)
 								{
 									CadreParticipatedElection cadreParticipatedElection = new CadreParticipatedElection();
 									
 									cadreParticipatedElection.setTdpCadreId(tdpCadre.getTdpCadreId());
-									if(electionVO.getElectionTypeId() != null && electionVO.getElectionTypeId() > 0)
+									if(electionVO.getElectionTypeId() != null && electionVO.getElectionTypeId().trim().length() > 0)
 									{
-										cadreParticipatedElection.setElectionId(electionVO.getElectionTypeId());
+										cadreParticipatedElection.setElectionId(Long.valueOf(electionVO.getElectionTypeId()));
 									}
-									if(electionVO.getConstituencyId() != null && electionVO.getConstituencyId().longValue() > 0)
+									if(electionVO.getConstituencyId() != null && electionVO.getConstituencyId().trim().length()> 0)
 									{
-										cadreParticipatedElection.setConstituencyId(electionVO.getConstituencyId());
+										cadreParticipatedElection.setConstituencyId(Long.valueOf(electionVO.getConstituencyId()));
+									}
+									if(electionVO.getCandidateId() != null && electionVO.getCandidateId().trim().length()> 0)
+									{
+										if(previousElectionPartList.get(0).getCandidateId() != null)
+										{
+											cadreParticipatedElection.setCandidateId((Long.valueOf(previousElectionPartList.get(0).getCandidateId())));
+										}
+										
 									}
 									cadreParticipatedElection.setIsDeleted("N");
 									cadreParticipatedElectionDAO.save(cadreParticipatedElection);
@@ -1236,7 +1244,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								vo.setActiveDate(tdpCadre.getPartyMemberSince() != null ? new SimpleDateFormat("dd-MM-yyyy").format(new SimpleDateFormat("yy-MM-dd").parse(tdpCadre.getPartyMemberSince().toString())):"");
 								if(tdpCadre.getIsRelative() != null && tdpCadre.getIsRelative().equalsIgnoreCase("Y")){
 								  vo.setRelative("true");
-								  vo.setRelationTypeId(tdpCadre.getRelationType().getVoterRelationId());
+								  vo.setRelationTypeId(tdpCadre.getRelationType() != null ? tdpCadre.getRelationType().getVoterRelationId() : 0l);
 								}
 								existingFamilyInfo =  getExistingCadreFamilyInfo(tdpCadreId);
 								existingParticipationDetails = getExistingCadreParticipationInfo(tdpCadreId);
@@ -1656,7 +1664,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	{
 		List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
 		try {
-			List<Object[]> candidateList  = nominationDAO.getCandidateResultsByCandidateInfo(3424L,258L);
+			List<Object[]> candidateList  = nominationDAO.getCandidateResultsByCandidateInfo(nominationId,electionId);
 			System.out.println(candidateList.size());
 			
 			if(candidateList != null && candidateList.size() > 0)

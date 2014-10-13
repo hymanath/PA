@@ -37,6 +37,8 @@ public class CadreParticipatedElection {
 	private TdpCadre 			tdpCadre;
 	private Election 			election;
 	private Constituency 		constituency;
+	private Long 				candidateId;
+	private Candidate           candidate;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -111,6 +113,25 @@ public class CadreParticipatedElection {
 	}
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+	
+	@Column(name="candidate_id")
+	public Long getCandidateId() {
+		return candidateId;
+	}
+	public void setCandidateId(Long candidateId) {
+		this.candidateId = candidateId;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "candidate_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Candidate getCandidate() {
+		return candidate;
+	}
+	public void setCandidate(Candidate candidate) {
+		this.candidate = candidate;
 	}
 	
 	
