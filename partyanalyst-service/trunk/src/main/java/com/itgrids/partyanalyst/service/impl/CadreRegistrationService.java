@@ -1714,7 +1714,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					vo.setId(participation[0] != null ? Long.valueOf(participation[0].toString().trim()):0L);		//electionScopeId
 					vo.setCount(participation[1] != null ? Long.valueOf(participation[1].toString().trim()):0L);	// election Id
 					vo.setRank(participation[2] != null ? Long.valueOf(participation[2].toString().trim()):0L);		// constituencyId
-					
+					vo.setNomineeAge(participation[3] != null ? Long.valueOf(participation[3].toString().trim()):0L); // candidate Id
 					
 					List<BasicVO> constituencyList = constituencyListForElection(vo.getCount(),vo.getRank());
 					
