@@ -886,6 +886,27 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 		return query.list();
 	}
 	
+	public List<Object[]> getConstituenciesByElectionIdForMuncipal(Long electionId,Long constituencyId)
+	{
+		Query query = getSession().createQuery("SELECT C.constituencyId,C.name FROM ConstituencyElection CE,Constituency C,DelimitationConstituencyMandal DCMD," +
+				" 	DelimitationConstituency DC WHERE CE.constituency.constituencyId = C.constituencyId AND C.tehsil.tehsiId = DCMD.tehsil.tehsilId AND " +
+				"	DC.delimitationConstituencyID = DCMD.delimitationConstituency.delimitationConstituencyID AND DC.year = 2009 AND " +
+				" CE.election.electionId = :electionId AND  DC.constituency.constituencyId = :constituencyId ORDER BY C.name");
+		
+		query.setParameter("electionId", electionId);
+		
+		return query.list();
+	}
+	public List<Object[]> getConstituenciesByElectionIdForPanchayat(Long electionId,Long constituencyId)
+	{		
+		Query query = getSession().createQuery("SELECT distinct C.constituencyId , C.name FROM Constituency C,ConstituencyElection CE,AssemblyLocalElectionBody ALEB WHERE" +
+				" C.constituencyId = CE.constituency.constituencyId AND C.localElectionBody.localElectionBodyId = ALEB.localElectionBody.localElectionBodyId" +
+				"  AND  ALEB.constituency.constituencyId = :constituencyId AND  CE.election.electionId = :electionId  ORDER BY C.name");
+		
+		query.setParameter("electionId", electionId);
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
 	
 	public List<Object[]> getConstituenciyListByElectionId(Long electionId)
 	{

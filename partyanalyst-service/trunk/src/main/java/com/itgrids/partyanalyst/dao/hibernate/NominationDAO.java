@@ -5330,7 +5330,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			return query.list();
 		}
 		
-		public List<Object[]> getNominatedCandidateInfoForAConstituency(Long constituencyId,Long electionId)
+		/*public List<Object[]> getNominatedCandidateInfoForAConstituency(Long constituencyId,Long electionId)
 		{
 			Query query = getSession().createQuery(" select N.candidate.candidateId, N.candidate.lastname  " +
 					" from Nomination N where  N.constituencyElection.election.electionId = :electionId and  " +
@@ -5341,16 +5341,37 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			
 			return query.list();
 			
-		}
+		}*/
 		
+		
+		public List<Object[]> getNominatedCandidateInfoForAConstituency(Long constituencyId,Long electionId)
+		{
+			
+			Query query = getSession().createQuery("SELECT C.candidateId,C.lastname,P.shortName FROM Candidate C,Nomination N,Party P," +
+					" ConstituencyElection CE WHERE CE.constiElecId = N.constituencyElection.constiElecId AND  N.party.partyId = P.partyId " +
+					" AND N.candidate.candidateId = C.candidate.candidateId AND CE.election.electionId = 38 AND CE.constituency.constituencyId = 282  ORDER BY C.lastname");
+			
+			return query.list();
+		}
 		public List<Object[]> getCandidateResultsByCandidateInfo(Long candidateId,Long electionId)
 		{
-			Object[] data = {candidateId,electionId};
-			return getHibernateTemplate().find("select model.constituencyElection.election.electionScope.electionType.electionTypeId, " +
+			
+			Query query = getSession().createQuery(" select" +
+					"  model.constituencyElection.election.electionScope.electionType.electionTypeId, " +
+					"  model.constituencyElection.election.electionScope.electionType.electionType, " +
 					"  model.constituencyElection.election.electionId, " +
+					"  model.constituencyElection.election.electionYear, " +					
+					"  model.constituencyElection.election.elecSubtype, " +
 					"  model.constituencyElection.constituency.constituencyId ," +
+					"  model.constituencyElection.constituency.name ," +
 					"  model.party.shortName, model.party.partyId from Nomination model  " +
-					"  where model.candidate.candidateId = ? and model.constituencyElection.election.electionId not in ( ? )",data);
+					"  where model.candidate.candidateId = :candidateId and model.constituencyElection.election.electionId not in ( :electionId ) ");
+			
+			query.setParameter("candidateId", candidateId);
+			query.setParameter("electionId", electionId);
+			
+			return query.list();
+			
 		}
 		
 }
