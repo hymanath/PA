@@ -7257,7 +7257,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		
 		StringBuilder queryStr1 = new StringBuilder();
 		
-		queryStr1.append(" select BPV.voter.voterId,BPV.voter.name, BPV.voter.relativeName, BPV.voter.age, BPV.voter.houseNo, BPV.voter.relationshipType, BPV.voter.gender ");
+		queryStr1.append(" select BPV.voter.voterId,BPV.voter.name, BPV.voter.relativeName, BPV.voter.age, BPV.voter.houseNo, BPV.voter.relationshipType, BPV.voter.gender, BPV.voter.voterIDCardNo ");
 		queryStr1.append("   from BoothPublicationVoter BPV where "+queryStr+"   ");
 		queryStr1.append(" BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.publicationDate.publicationDateId = :publicationDate ");
 		
