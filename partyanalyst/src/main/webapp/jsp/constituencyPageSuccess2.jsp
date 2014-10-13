@@ -62,10 +62,12 @@
 		if(host != "tdpserver"){
 			$("#inline").fancybox();
 			$("#inline").trigger("click");
-			$("#cadre2014RegInfoDiv").show();
+			
 		}
-		else
+		else{
+			$("#cadre2014RegInfoDiv").show();
 			$("#connect-people-sec-id").hide();
+	    }
 		if(host == "tdpserver"){
 			$("#headingWidget").hide();
             $("#serviceDiv").hide();
