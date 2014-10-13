@@ -52,7 +52,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	
 	private List<VoterInfoVO> 					voterInfoVOList;
 	private List<GenericVO> 					genericVOList;
-	private List<SelectOptionVO> 				selectOptionVOList,constituencyesList,eletionTypesList;
+	private List<SelectOptionVO> 				selectOptionVOList,constituencyesList,eletionTypesList, cadreRolesVOList;
 	private ICandidateUpdationDetailsService	candidateUpdationDetailsService;
 	private IStaticDataService					staticDataService;
 	private ISurveyDataDetailsService			surveyDataDetailsService;
@@ -74,6 +74,15 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private Boolean                             relativeTypeChecked;
 	private Long                                relativeTypeId;
 	
+	
+	public List<SelectOptionVO> getCadreRolesVOList() {
+		return cadreRolesVOList;
+	}
+
+	public void setCadreRolesVOList(List<SelectOptionVO> cadreRolesVOList) {
+		this.cadreRolesVOList = cadreRolesVOList;
+	}
+
 	public void setConstituencyList(List<BasicVO> constituencyList) {
 		this.constituencyList = constituencyList;
 	}
@@ -518,8 +527,9 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				genericVOList = candidateUpdationDetailsService.gettingEducationDetails();
 				selectOptionVOList = staticDataService.getAllOccupations();
 				eletionTypesList = cadreRegistrationService.getElectionOptionDetailsForCadre();
+				cadreRolesVOList = cadreRegistrationService.getCadreLevelsForCadreSearch();
 				voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria(searchType,Long.valueOf(candidateId));
-				
+							
 				return Action.SUCCESS;
 			}
 			
