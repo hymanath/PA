@@ -8593,6 +8593,17 @@
 			</result>
 		</action>
 		
+		<action name="getSurveyStatusDetailsAction" class="ctpCasteReportAction" method="getLocationWiseRegistrationInfo">
+			<result type="json" name="success">
+				<param name="root">surveyCompletionDetailsVO</param>
+			</result>
+		</action>
+		<action name="getCasteVotersCountInRegionAction" class="ctpCasteReportAction" method="getCatseVotersCountInRegion">
+			<result type="json" name="success">
+				<param name="root">voterHouseInfoVO</param>
+			</result>
+		</action>
+		
 		
 </package>
 

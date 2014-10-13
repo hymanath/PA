@@ -16,6 +16,7 @@ import org.springframework.web.context.ServletContextAware;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
@@ -41,6 +42,15 @@ public class CtpCasteReportAction extends ActionSupport implements ServletReques
 	private VoterHouseInfoVO voterHouseInfoVO;
 	@Autowired
     private EntitlementsHelper entitlementsHelper;
+	private SurveyCompletionDetailsVO surveyCompletionDetailsVO;
+	
+	public SurveyCompletionDetailsVO getSurveyCompletionDetailsVO() {
+		return surveyCompletionDetailsVO;
+	}
+	public void setSurveyCompletionDetailsVO(
+			SurveyCompletionDetailsVO surveyCompletionDetailsVO) {
+		this.surveyCompletionDetailsVO = surveyCompletionDetailsVO;
+	}
 	public VoterHouseInfoVO getVoterHouseInfoVO() {
 		return voterHouseInfoVO;
 	}
@@ -206,6 +216,38 @@ public class CtpCasteReportAction extends ActionSupport implements ServletReques
 		}
 		catch (Exception e) {
 			LOG.error("Exception Occured in getVotersCountInRegion() method", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getCatseVotersCountInRegion()
+	{
+		try{
+		jObj = new JSONObject(getTask());	
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute(IConstants.USER);
+		Long userId = null;
+		if(user != null && user.getRegistrationID() != null)
+			userId = user.getRegistrationID();
+		else
+			return Action.ERROR;
+		voterHouseInfoVO = ctpCasteReportService.getCatseVotersCountInRegion(jObj.getLong("constituencyId"),jObj.getString("locationType"),userId);
+		
+		}
+		catch (Exception e) {
+			LOG.error("Exception Occured in getVotersCountInRegion() method", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getSurveyStatusDetails()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			
+			surveyCompletionDetailsVO = ctpCasteReportService.getSurveyStatusDetailsInfo();
+		}
+		catch (Exception e) {
+			LOG.error("Exception Occured in getSurveyStatusDetails() method", e);
 		}
 		return Action.SUCCESS;
 	}
