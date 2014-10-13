@@ -652,6 +652,51 @@
 			return false;
 		  }		 
 	}
+	
+	function getConstiteuncyListForElection(eletionId,constiListId)
+	{
+			var jsObj = 
+			   {			
+				  electionId : eletionId,
+				  task       : "getConstiteuncyListForElection"             
+			   }				   
+			   $.ajax({
+					type : "POST",
+					url : "getConstiteuncyListForElectionAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+
+					$('#'+constiListId+'').find('option').remove();
+					$('#'+constiListId+'').append('<option value="0"> Select Constituency </option>');
+					if(result != null)
+					{
+						for(var i in result)
+						{
+							$('#'+constiListId+'').append('<option value="'+result[i].id+'"> '+result[i].name+' </option>');
+						}
+					}					
+				});
+	}
+	
+	function getCandidateDetailsForElection(candidateId,electionId)
+	{
+		var electionValue = $('#'+electionId+'').val();
+			var jsObj = 
+			   {			
+				  electionId : electionValue,
+				  candidateId : candidateId,
+				  task          : "getCandidateDetailsForElection"             
+			   }				   
+			   $.ajax({
+					type : "POST",
+					url : "getCandidateDetailsForElectionAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					console.log(result);
+					
+				});
+	}
+	
 	</script>
 
 </head>
@@ -1152,7 +1197,7 @@
 						<c:if test="${indexValue.index == 0}">	
 							<h5 class="text-align1">Year</h5>
 						</c:if>							  		
-							 <select class="" name="cadreRegistrationVO.previousParicaptedElectionsList[${indexValue.index}].electionTypeId" id="electionYearId${indexValue.index}">
+							 <select class="" name="cadreRegistrationVO.previousParicaptedElectionsList[${indexValue.index}].electionTypeId" id="electionYearId${indexValue.index}" >
 								<option value="0"> Select Election </option>
 								<c:forEach var="educationList" items="${role.genericVOList}" >															
 									<c:if test="${educationList.id == role.count }">																
@@ -1171,8 +1216,8 @@
 							<h5 class="text-align1">Constituency</h5>
 						</c:if>
 
-							<select   name="cadreRegistrationVO.previousParicaptedElectionsList[${indexValue.index}].constituencyId" style="margin-left: 12px">
-								<option value="0"> Select Election Type</option>
+							<select   id="constituencyList${indexValue.index}" name="cadreRegistrationVO.previousParicaptedElectionsList[${indexValue.index}].constituencyId" style="margin-left: 12px">
+								<option value="0"> Select Constituency</option>
 								<c:forEach var="educationList" items="${constituencyesList}" >															
 									<c:if test="${educationList.id == role.rank }">																
 										<option value="${educationList.id}" selected="selected">${educationList.name}</option>
@@ -1208,8 +1253,9 @@
 					<div class="span3">
 						<div class=" " >
 							<h5 class="text-align1">Constituency</h5>
-							
-							<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level"  list="constituencyesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" style="width:220px;margin-left: 12px" name="cadreRegistrationVO.previousParicaptedElectionsList[0].constituencyId"  value="%{role.rank}"/>
+
+							 <s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level"  list="constituencyesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" style="width:220px;" name="cadreRegistrationVO.previousParicaptedElectionsList[0].constituencyId"/>
+
 						</div>
 					</div>
 					<div class="span2">
@@ -1282,13 +1328,13 @@ function getExistingCadreInfo()
 							id : result[i].id,
 							name : 	result[i].name,
 							relativeName : result[i].desc,
-							enrollNo : result[i].rank,
-							check : result[i].name+" - "+result[i].desc+" - "+result[i].rank
+							enrollNo : result[i].caste,
+							check : result[i].name+" - "+result[i].desc+" - "+result[i].caste
 							}
 							
 							existingCadreArr.push(cadreObj);
 							
-							existingCadreInfoArr.push(result[i].name+" - "+result[i].desc+" - "+result[i].rank);
+							existingCadreInfoArr.push(result[i].name+" - "+result[i].desc+" - "+result[i].caste);
 						}
 						
 						$( "#preEnrollNoValue" ).autocomplete({ 
