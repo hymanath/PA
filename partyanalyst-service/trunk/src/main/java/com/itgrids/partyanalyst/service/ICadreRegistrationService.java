@@ -54,4 +54,10 @@ public interface ICadreRegistrationService {
 	public List<SelectOptionVO> getSubRegionsInConstituency(Long constituencyId, String scope) ;
 	
 	public String isTabAssignedAlready(String TabNo);
+	
+	public List<BasicVO> constituencyListForElection(Long electionId);
+	
+	public List<BasicVO> participatedCandList(Long electionId,Long constituencyId);
+	
+	public List<GenericVO> getCandidateDetailsForElection(Long candidateId, Long electionId);
 }
