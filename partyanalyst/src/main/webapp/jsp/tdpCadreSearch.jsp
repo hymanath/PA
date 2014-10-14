@@ -98,7 +98,7 @@
 		</div>
 		
 	</div>
-	<img src='images/Loading-data.gif' class="offset7"  id="searchDataImg" style="width:70px;height:60px;display:none;"/>
+	<img src='images/Loading-data.gif' class="offset7"  id="searchDataImg" style=" margin-left: 660px;margin-top: 20px;width:70px;height:60px;display:none;"/>
 	<div class="container" id="tableElement" style="margin-top:25px;display:none;">
 		<div class="span10 offset1 show-grid pad-5 m-bottom-10">
 		<a class="btn btn-default active col-xs-1 m_top20 pull-right border-radius-0 " href="javascript:{getDetailsForUser(0)}">Skip 	
