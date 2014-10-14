@@ -202,7 +202,7 @@
 		});
 		
 		
-		//prepopulateOptions();
+		prepopulateOptions();
 		//prepopulateElctionOptions();
 		/*$('input').iCheck({
 			checkboxClass: 'icheckbox_square-blue',
@@ -211,6 +211,7 @@
 		  });*/
 		 
 		 $('#voterRelationId').val(parseInt(${voterInfoVOList[0].voterRelationId}));
+		 $('#nomineeGenderId').val(parseInt(${voterInfoVOList[0].nomineeGender}));
 	
 	});
 
@@ -336,6 +337,9 @@
 	
 		if(!isNumber()){
 		
+			$('html,body').animate({
+			scrollTop:  $("#casteIdValue").offset().top 
+			});
 			return false;
 		}
 		var uploadHandler = {
@@ -602,7 +606,7 @@
 		str += '<div class="span3">';
 		str += '<div class=" " >';
 		//str += '<h5 class="text-align1">Election Type</h5>';
-		str += '<select id="electionTypeId'+eletionCont+'" style="margin-left: 12px;" onChange="getElectionYears(this.value,\'electionYears'+eletionCont+'\')">';
+		str += '<select id="electionTypeId'+eletionCont+'" style="margin-left: 12px;" onChange="getElectionYears(this.value,\'electionYears'+eletionCont+'\')" >';
 		if(electionArray != null && electionArray.length>0)
 		{
 			str += '<option value = "0">Select Election Year</option>';
@@ -614,17 +618,17 @@
 		str += '</select>';
 		str += '</div>';
 		str += '</div>';
-		str += '<div class="span3">';
+		str += '<div class="span2">';
 		str += '<div class=" " >';
 		//str += '<h5 class="text-align1">Year</h5>';
-		str += '<select  id="electionYears'+eletionCont+'" name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].electionTypeId" >	';	
+		str += '<select  id="electionYears'+eletionCont+'" name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].electionTypeId" style="width:150px;" >';	
 		str += '</select>';
 		str += '</div>';
 		str += '</div>';
 		str += '<div class="span3">';
 		str += '<div class=" " >';
 		//str += '<h5 class="text-align1">Constituency</h5>';
-		str += '<select class="" name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].constituencyId" style="margin-left: 12px;">';
+		str += '<select class="" name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].constituencyId" style="margin-left: 12px;" onchange="getCandidateDetailsForElection(this.value,\'candidatesList'+eletionCont+'\',\'electionYears'+eletionCont+'\',\'electionTypeId'+eletionCont+'\');">';
 		str += '<option value = "0"> Select Constituency </option>';
 			if(constituencyArray != null && constituencyArray.length>0)
 			{
@@ -636,12 +640,17 @@
 		str += '</select>';
 		str += '</div>';
 		str += '</div>';
-		str += '<div class="span2">';
-		str += '<div class=" " >';
+		str += '<div class="span3">';
+				str += '<div class=" " >';
+				str += '<select   id="candidatesList'+eletionCont+'"  style="margin-left: 12px" onchange="getCandidateDetailsById(\'constituencyList'+eletionCont+'\',\'electionYearId'+eletionCont+'\',this.value); " name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].candidateId">';
+				str += '<option value="0"> Select Candidate</option>	';							
+				str += '</select>';							
+				str += '</div>';
+			str += '</div>';
+
 		//str += '<h5 class="text-align1">Add More</h5>';
-		str += '<a class="icon-minus-sign" style="float:left;" onClick="deleteRollesForm(\'electionsList'+eletionCont+'\')" title="Remove Details"></a>';
-		str += '</div>';
-		str += '</div>';
+		str += '<a class="icon-minus-sign" style="float:right;margin-top:10px;margin-right:35px;" onClick="deleteRollesForm(\'electionsList'+eletionCont+'\')" title="Remove Details"></a>';
+
 		str += '</div>';
 		
 		$('#electionsDiv').append(str);
@@ -772,6 +781,8 @@
 	
 	function getConstiteuncyListForElection(eletionId,constiListId)
 	{
+			$('#loadingImg').show();
+			
 			$('#'+constiListId+'').find('option').remove();
 			$('#'+constiListId+'').append('<option value="0"> Select Constituency </option>');
 			
@@ -787,7 +798,7 @@
 					data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
 
-					
+					$('#loadingImg').hide();
 					if(result != null)
 					{
 						for(var i in result)
@@ -1169,7 +1180,7 @@
 				
 				<div class="span2">
 					<h5 class="text-align1"> Gender </h5>
-					<select name="cadreRegistrationVO.nomineeGender" style="width: 138px;">
+					<select name="cadreRegistrationVO.nomineeGender" style="width: 138px;" id="nomineeGenderId">
 							<option value="0">Select Gender</option>	
 							<option value="1">Male</option>
 							<option value="2">Female</option>
@@ -1178,13 +1189,13 @@
 				
 				<div class="span2">
 					<h5 class="text-align1"> Age </h5>
-					<input type="text" class=""  style="width: 100px;" placeholder="Nominee Name"  name="cadreRegistrationVO.nomineeAge" value="${voterInfoVOList[0].nomineAge}"></input>
+					<input type="text" class=""  style="width: 100px;" placeholder=" Age "  name="cadreRegistrationVO.nomineeAge" value="${voterInfoVOList[0].nomineAge}"></input>
 				</div>
 				
 				<div class="span2">
 					<h5 class="text-align1"> Relation Type </h5>
 					<select name="cadreRegistrationVO.voterRelationId" style="width:160px;" id="voterRelationId">
-							<option value="0">Select Relation</option>	
+							<option value="0" selected="selected">Select Relation</option>	
 							<option value="1">Father</option>
 							<option value="2">Mother</option>
 							<option value="3">Wife</option>
@@ -1294,7 +1305,7 @@
 		
 			</c:forEach>
 			<div>
-				<a class="icon-plus-sign" style="float:left;margin-top:30px;" onClick="createNewForm();" title="Add More Details"></a>
+				
 			</div>
 				
 			</s:if>
@@ -1356,6 +1367,9 @@
 					</div>					
 
 			</s:else>
+			
+			<a class="icon-plus-sign" style="float:left;margin-top:30px;" onClick="createNewForm();" title="Add More Details"></a>
+			
 			</div>
 	</div>
 	</div>
@@ -1407,7 +1421,8 @@
 										<option value="${educationList.id}">${educationList.name}</option>
 									</c:if>	
 								</c:forEach>
-							</select>							
+							</select>	
+							<img src='images/icons/search.gif' id="loadingImg" style="display:none;"/>							
 						</div>
 					</div>
 					<div class="span3">
@@ -1449,7 +1464,7 @@
 					
 				</div>				
 					</c:forEach>
-					<a class="icon-plus-sign" style="float:right;margin-right:206px;;margin-top:-30px;" onClick="createNewFormForElections();" title="Add More Details"></a>
+						<a title="Add More Details" onclick="createNewFormForElections();" style="float:right;margin-right:35px;margin-top:-30px;" class="icon-plus-sign"></a>
 					
 					<div id="candidateDivTab" style="float:left;"></div>
 					
@@ -1468,6 +1483,7 @@
 							<h5 class="text-align1">Year</h5>
 							<select class="" style="width: 150px;" name="cadreRegistrationVO.previousParicaptedElectionsList[0].electionTypeId" id="electionYearId0" onchange="getConstiteuncyListForElection(this.value,'constituencyList0')">							
 							  </select>
+							  <img src='images/icons/search.gif' id="loadingImg" style="display:none;"/>
 						</div>
 					</div>
 					<div class="span3">
@@ -1492,17 +1508,13 @@
 							</select>
 							
 						</div>
-					</div>	
-					
-					<div class="span2">
-						<div class="" >
-									<a class="icon-plus-sign" style="float:left;margin-top:30px;" onClick="createNewFormForElections();" title="Add More Details"></a>
-						</div>
 					</div>
-					
-					<div id="candidateDivTab" style="float:left;"></div>
 				</div>				
 			</s:else>
+				<a title="Add More Details" onclick="createNewFormForElections();" style="float:right;margin-right:35px;margin-top:-30px" class="icon-plus-sign"></a>
+				
+				<div id="candidateDivTab" style="float:left;"></div>
+				
 			</div>
 		</div>
 		<div class="container m_top10">
