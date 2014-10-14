@@ -30,7 +30,12 @@
 
 	.header-bg{background:#3598DB url('./images/cadre_images/2014-Header-BG.png') repeat-x; height:179px;}
 	.color-white{color:#f9f9f9;}
-
+	.offset1 {
+	    margin-left: 85px;
+	}
+	.span10 {
+	    width: 810px;
+	}
 	</style>
    
 	
@@ -300,6 +305,7 @@
 			str +='<table class="table table-bordered m_top20 table-hover table-striped"  id="seachDetalsTab">';
 			str +='<thead>';
 			str +='<tr>';
+			str +='<th class="text-align1">PHOTO</th>';
 			str +='<th class="text-align1">NAME</th>';
 			str +='<th class="text-align1">GUARDIAN NAME</th>';
 			str +='<th class="text-align1">RELATION</th>';
@@ -316,6 +322,7 @@
 			if(result[i].isRegistered == 'Y')
 			{
 				str +='<tr>';
+				str +='<td  style="background-color: #f9f9f9;"><img style="width:80px;height:80px;" src="'+result[i].image+'" id="candimgShowIdReg'+i+'" onerror="setDefaultImage(this);" /></td>';
 				if(result[i].name != null)
 					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
 				else
@@ -349,6 +356,7 @@
 			else
 			{
 				str +='<tr>';
+				str +='<td style="background-color: #f9f9f9;"><img style="width:80px;height:80px;" src="'+result[i].image+'" id="candimgShowId'+i+'" onerror="setDefaultImage(this);" /></td>';
 				if(result[i].name != null)
 					str +='<td style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
 				else
@@ -658,7 +666,11 @@
 						$('#tableDivForCadre').html(str);
 				});
 	}
-	
+	function setDefaultImage(img)
+	{
+		img.src = "images/mahaNadu/user image.jpg";
+	}
+
 	function tagVoterNFCNumber(cardNumber,voterId)
 	{
 			var jsObj = 
