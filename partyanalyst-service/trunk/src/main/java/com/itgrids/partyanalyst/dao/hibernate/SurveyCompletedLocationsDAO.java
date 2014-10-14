@@ -276,8 +276,8 @@ public class SurveyCompletedLocationsDAO extends GenericDaoHibernate<SurveyCompl
 	
 	public List<Object[]> getSurveyConstituenciesStatus()
 	{
-		Query query = getSession().createQuery("select B.constituency.district.districtId,B.constituency.district.districtName,B.constituency.constituencyId,B.constituency.name,SCL.surveyCompletedStatus.statusCode from SurveyCompletedLocations SCL,Booth B " +
-				" where B.boothId = SCL.locationValue  group by B.constituency.constituencyId and SCL.locationScopeId = :scopeId");
+		Query query = getSession().createQuery("select B.constituency.constituencyId,B.constituency.name,SCL.surveyCompletedStatus.surveyCompletedStatusId,count(B.boothId) from SurveyCompletedLocations SCL,Booth B " +
+				" where B.boothId = SCL.locationValue and SCL.locationScopeId = :scopeId group by B.constituency.constituencyId,SCL.surveyCompletedStatus.surveyCompletedStatusId");
 		
 		query.setParameter("scopeId", IConstants.BOOTH_SCOPE_ID);
 		return query.list();

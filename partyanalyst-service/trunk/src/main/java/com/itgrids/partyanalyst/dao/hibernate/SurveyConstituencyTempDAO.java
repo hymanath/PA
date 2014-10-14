@@ -56,7 +56,7 @@ public class SurveyConstituencyTempDAO extends GenericDaoHibernate<SurveyConstit
 	
 	public List<Object[]> getTotalVotersAndBoothsByConstituencyes(List<Long> constituencyIds)
 	{
-		Query query = getSession().createQuery("select model.constituency.constituencyId,model.constituency.name ,model.totalVoters,model.totalBooths from SurveyConstituencyTemp model where model.constituency.constituencyId in(:constituencyIds)" +
+		Query query = getSession().createQuery("select model.constituency.constituencyId,model.constituency.name ,model.totalVoters,model.totalBooths,model.boothsTodo from SurveyConstituencyTemp model where model.constituency.constituencyId in(:constituencyIds)" +
 				" group by model.constituency.constituencyId");
 		query.setParameterList("constituencyIds", constituencyIds);
 		return query.list();
