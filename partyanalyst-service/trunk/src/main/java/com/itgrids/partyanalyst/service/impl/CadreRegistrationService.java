@@ -1002,7 +1002,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 
 	public List<VoterInfoVO> getSearchDetailsCadreRegistration(Long constituencyId, String seachType, String candidateName, String voterCardId, String houseNo,Long panchayatId,Long boothId,String isPresentCadre)
 	{
-		
+		String cadrePath="images/cadre_images/";
+		String voterPath="voter_images/";
 		StringBuilder searchQuery = new StringBuilder();
 		List<VoterInfoVO> returnList = null;
 		List searchList = null;
@@ -1049,6 +1050,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						vo.setRelationType(voter[5] != null ? voter[5].toString().trim():"");
 						vo.setGender(voter[6] != null ? voter[6].toString().trim():"");
 						vo.setVoterCardNo(voter[7]!=null ?voter[7].toString().trim():"");
+						vo.setImage(voter[7]!=null ?voterPath+voter[7].toString().trim()+".jpg":"");
 						vo.setIsRegistered("N");						
 						returnList.add(vo);
 					}
@@ -1111,6 +1113,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						vo.setGender(voter[5] != null ? voter[5].toString().trim():" -- ");
 						vo.setRelationType(voter[9] != null ? voter[9].toString().trim():"");
 						
+						vo.setImage(voter[10]!=null ?cadrePath+voter[10].toString().trim():null);
 						String dateOfBirth = 	voter[3] != null ? voter[3].toString().substring(0,10):" "	;
 						
 						if(dateOfBirth != null && dateOfBirth.trim().length()>0)
