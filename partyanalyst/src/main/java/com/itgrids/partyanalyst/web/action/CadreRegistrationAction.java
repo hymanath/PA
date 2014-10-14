@@ -948,4 +948,31 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		return Action.SUCCESS;
 		
 	}
+	
+	public String getCadreCommitteDetails()
+	{
+		LOG.info("Entered into getCadreCommitteDetails method in CadreRegistrationAction Action");
+		try {		
+			jobj = new JSONObject(getTask());
+			selectOptionVOList = cadreRegistrationService.getCadreCommitteDetails(jobj.getLong("levelId"));
+		}
+		catch(Exception e){
+			LOG.error("Exception raised in getCadreCommitteDetails method in CadreRegistrationAction action", e);
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getCadreCommitteRoles()
+	{
+		LOG.info("Entered into getCadreCommitteRoles method in CadreRegistrationAction Action");
+		try {		
+			jobj = new JSONObject(getTask());
+			selectOptionVOList = cadreRegistrationService.getCadreCommitteRoles(jobj.getLong("levelId"),jobj.getLong("committeeId"));
+		}
+		catch(Exception e){
+			LOG.error("Exception raised in getCadreCommitteRoles method in CadreRegistrationAction action", e);
+		}
+		return Action.SUCCESS;		
+	}
 }
