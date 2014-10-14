@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -700,6 +702,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					  synchronized (CadreRegistrationService.class) {
 					     tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
 					        String membershipNo = getMemberShipNo(userAddress.getDistrict().getDistrictId());
+					        tdpCadre.setMemberShipNo(membershipNo);
 							surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getMemberShipNo());
 							uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
 					     tdpCadre = tdpCadreDAO.save(tdpCadre);	
@@ -1167,12 +1170,12 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return returnList;
 	}
 	
-	public List<VoterInfoVO> getCandidateInfoBySearchCriteria(String searchType, Long candidateId)
+	public List<VoterInfoVO> getCandidateInfoBySearchCriteria(String searchType, Long candidateId,String staticContentLoc)
 	{
 		List<VoterInfoVO> returnList = null;
 		VoterInfoVO vo = null;
 		try {
-			
+			String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
 			Long voterId = 0L;
 			String houseNo = null;
 			List<VoterInfoVO> familyList = null;
@@ -1200,7 +1203,14 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						vo.setDateOfBirth(voter.getDateOfBirth() != null ? voter.getDateOfBirth().toString():"");
 						vo.setGender(voter.getGender());
 						vo.setVoterCardNo(voter.getVoterIDCardNo() != null ? voter.getVoterIDCardNo() :"");
-						
+						 
+						if(voter.getVoterIDCardNo() != null){
+							String filePath = staticContentLoc + "voter_images" + pathSeperator+voter.getVoterIDCardNo()+".jpg";
+							if(checkFileExistingOrNot(filePath)){
+								vo.setVoterImagePresent(true);
+								vo.setVoterImage("voter_images/"+voter.getVoterIDCardNo()+".jpg");
+							}
+						}
 						
 						
 						List<UserVoterDetails> voterList = userVoterDetailsDAO.getVoterDetailsByUserIdAndVoterId(voter.getVoterId(),1L);
@@ -1256,6 +1266,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								vo.setNomineeName(tdpCadre.getNomineeName() != null ? tdpCadre.getNomineeName() : "");
 								vo.setNomineAge(tdpCadre.getNomineeAge() != null ? tdpCadre.getNomineeAge().toString() : "");
 								vo.setVoterRelationId(tdpCadre.getVoterRelationId() != null ? tdpCadre.getVoterRelationId() : 0l);
+								if(tdpCadre.getImage() != null && tdpCadre.getImage().trim().length() > 0){
+								   vo.setImage("images/"+ IConstants.CADRE_IMAGES + "/" + tdpCadre.getImage());
+								}
 								if(tdpCadre.getNomineeGender() != null && tdpCadre.getNomineeGender().trim().equalsIgnoreCase("MALE"))
 								{
 									vo.setNomineeGender(1l);
@@ -1300,7 +1313,13 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									vo.setVoterCardNo(tdpCadre.getVoter() != null ? tdpCadre.getVoter().getVoterIDCardNo():"");
 									
 									voterId = tdpCadre.getVoter() != null ? tdpCadre.getVoter().getVoterId(): 0L;
-									houseNo = tdpCadre.getVoter().getHouseNo() != null ? tdpCadre.getVoter().getHouseNo().toString():"";								
+									houseNo = tdpCadre.getVoter().getHouseNo() != null ? tdpCadre.getVoter().getHouseNo().toString():"";	
+									
+									String filePath = staticContentLoc + "voter_images" + pathSeperator+tdpCadre.getVoter().getVoterIDCardNo()+".jpg";
+									if(checkFileExistingOrNot(filePath)){
+										vo.setVoterImagePresent(true);
+										vo.setVoterImage("voter_images/" +tdpCadre.getVoter().getVoterIDCardNo()+".jpg");
+									}
 								}
 								else
 								{
@@ -1364,7 +1383,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								{
 									vo.setNomineeGender(0l);
 								}
-								
+								String filePath = staticContentLoc + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + tdpCadre.getPreviousEnrollmentNo()+".jpg";
+								if(checkFileExistingOrNot(filePath)){
+									vo.setCadreImagePresent(true);
+									vo.setCadreImage("images/"  + IConstants.CADRE_IMAGES + "/" + tdpCadre.getPreviousEnrollmentNo()+".jpg");
+								}
 							} catch (Exception e) {
 								LOG.error("Exception raised in getCandidateInfoBySearchCriteria in CadreRegistrationService service", e);
 							}
@@ -2761,25 +2784,50 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	}
 	
 	public void uploadProfileImage(CadreRegistrationVO cadreRegistrationVO,String registrationType,TdpCadre tdpCadre){
-		if(cadreRegistrationVO.getUploadImage() != null && !cadreRegistrationVO.getUploadImage().toString().equalsIgnoreCase("null"))
-		{
-			String result = uploadCadreImage(tdpCadre.getMemberShipNo() , cadreRegistrationVO.getPath() , cadreRegistrationVO.getUploadImageContentType() , cadreRegistrationVO.getUploadImage());
-			if(result != null)
-			{
-				tdpCadre.setImage(tdpCadre.getMemberShipNo()+"."+cadreRegistrationVO.getUploadImageContentType().split("/")[1]);
+		if(cadreRegistrationVO.getPhotoType() != null && cadreRegistrationVO.getPhotoType().trim().equalsIgnoreCase("cadre")){
+		  if(cadreRegistrationVO.getPreviousEnrollmentNumber() != null && cadreRegistrationVO.getPreviousEnrollmentNumber().trim().length() > 0){
+			  String reqImage = getCadreImage(cadreRegistrationVO.getPreviousEnrollmentNumber().trim());
+			  if(reqImage != null){
+				  String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+				  String destinationPath = cadreRegistrationVO.getPath() + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
+				  String sourcePath =   cadreRegistrationVO.getPath() + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + reqImage;
+				  String status = copyFile(sourcePath,destinationPath);
+				   if(status.equalsIgnoreCase("success")){
+					   tdpCadre.setImage(tdpCadre.getMemberShipNo()+".jpg");
+				   }
+			  }
+		  }
+		}else if(cadreRegistrationVO.getPhotoType() != null && cadreRegistrationVO.getPhotoType().trim().equalsIgnoreCase("voter") ){
+		  if(cadreRegistrationVO.getVoterId() != null && Long.valueOf(cadreRegistrationVO.getVoterId()) > 0){
+			    String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+				String destinationPath = cadreRegistrationVO.getPath() + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
+				Voter voter = voterDAO.get(Long.valueOf(cadreRegistrationVO.getVoterId()));
+				if(voter != null){
+				   String sourcePath = cadreRegistrationVO.getPath() + "voter_images" + pathSeperator+voter.getVoterIDCardNo()+".jpg";
+				   String status = copyFile(sourcePath,destinationPath);
+				   if(status.equalsIgnoreCase("success")){
+					   tdpCadre.setImage(tdpCadre.getMemberShipNo()+".jpg");
+				   }
+			   }
+		  }
+		}else{		
+			if(cadreRegistrationVO.getUploadImage() != null && !cadreRegistrationVO.getUploadImage().toString().equalsIgnoreCase("null")){
+				String result = uploadCadreImage(tdpCadre.getMemberShipNo() , cadreRegistrationVO.getPath() , cadreRegistrationVO.getUploadImageContentType() , cadreRegistrationVO.getUploadImage());
+				if(result != null){
+					tdpCadre.setImage(tdpCadre.getMemberShipNo()+"."+cadreRegistrationVO.getUploadImageContentType().split("/")[1]);
+				}
+			}
+			if(registrationType.equalsIgnoreCase("TAB") && cadreRegistrationVO.getImageBase64String() != null && 
+					cadreRegistrationVO.getImageBase64String().trim().length() > 0){
+					String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+					String filePath = cadreRegistrationVO.getPath() + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
+					boolean status = imageAndStringConverter.convertBase64StringToImage(cadreRegistrationVO.getImageBase64String(),filePath);
+					
+					if(status)
+						tdpCadre.setImage(tdpCadre.getMemberShipNo()+".jpg");
 			}
 		}
 		
-		if(registrationType.equalsIgnoreCase("TAB") && cadreRegistrationVO.getImageBase64String() != null && 
-				cadreRegistrationVO.getImageBase64String().trim().length() > 0)
-		{
-				String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
-				String filePath = cadreRegistrationVO.getPath() + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
-				boolean status = imageAndStringConverter.convertBase64StringToImage(cadreRegistrationVO.getImageBase64String(),filePath);
-				
-				if(status)
-					tdpCadre.setImage(tdpCadre.getMemberShipNo()+".jpg");
-		}
 	}
 	
 	
@@ -2981,7 +3029,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}
 		return returnList;
 	}
-	
+
 	public List<SelectOptionVO> getCadreCommitteDetails(Long levelId){
 		List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
 		try{
@@ -3014,5 +3062,59 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}
 		return returnList;
 	}
+		
+	public String copyFile(String sourcePath,String destinationPath){
+	 try{
+		File file = new File(sourcePath);
+		if(file.exists()){
+			FileInputStream fis = new FileInputStream(file);
+			FileOutputStream fos = new FileOutputStream(destinationPath);
+			byte[] buff = new byte[fis.available()];
+			fis.read(buff);
+			fos.write(buff); 
+			return "success";
+		}
+	  }catch(Exception e){
+		  LOG.error("Exception raised in copyFile ", e);
+		  return "error";
+	  }
+	 return "failure";
+	}
 	
+	public boolean checkFileExistingOrNot(String path){
+		File f = new File(path);
+		if(f.exists()) { 
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public String getCadreImage(String enrolmentId){
+	  List<String> cadreImages = tdpCadreDAO.getCadreImageByPreviousEnrolId(enrolmentId);
+	  String reqImage = null;
+	  for(String img:cadreImages){
+		  if(reqImage != null){
+			  break;
+		  }else if(img != null && img.trim().length() > 0){
+			  reqImage = img.trim();
+		  }
+	  }
+	  return reqImage;
+	}
+	
+	public String getCadreImageByPreviousEnrolId(String enrolmentId,String staticContentLoc){
+		try{
+			 String reqImage = getCadreImage(enrolmentId);
+			 String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+			 if(checkFileExistingOrNot(staticContentLoc + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + reqImage)){
+				 return "images/" + IConstants.CADRE_IMAGES + "/" + reqImage;
+			 }else{
+			    return null;
+			 }
+		}catch(Exception e){
+			 LOG.error("Exception raised in getCadreImageByPreviousEnrolId ", e);
+		}
+		return null;
+	}
 }

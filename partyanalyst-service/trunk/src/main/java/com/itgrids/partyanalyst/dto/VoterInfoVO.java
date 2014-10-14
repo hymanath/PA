@@ -43,6 +43,10 @@ public class VoterInfoVO implements java.io.Serializable
 	private List<GenericVO> cadreRolesList = new ArrayList<GenericVO>();
 	private List<GenericVO> previousParticipationInfoList = new ArrayList<GenericVO>();
 	private String image;
+	private boolean voterImagePresent;
+	private String voterImage;
+	private boolean cadreImagePresent;
+	private String cadreImage;
 	
 	
 	public String getNomineAge() {
@@ -262,6 +266,30 @@ public class VoterInfoVO implements java.io.Serializable
 	}
 	public void setImage(String image) {
 		this.image = image;
+	}
+	public boolean isVoterImagePresent() {
+		return voterImagePresent;
+	}
+	public void setVoterImagePresent(boolean voterImagePresent) {
+		this.voterImagePresent = voterImagePresent;
+	}
+	public String getVoterImage() {
+		return voterImage;
+	}
+	public void setVoterImage(String voterImage) {
+		this.voterImage = voterImage;
+	}
+	public boolean isCadreImagePresent() {
+		return cadreImagePresent;
+	}
+	public void setCadreImagePresent(boolean cadreImagePresent) {
+		this.cadreImagePresent = cadreImagePresent;
+	}
+	public String getCadreImage() {
+		return cadreImage;
+	}
+	public void setCadreImage(String cadreImage) {
+		this.cadreImage = cadreImage;
 	}
 	
 	

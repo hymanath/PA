@@ -550,4 +550,12 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		return query.list();
 	}
 	
+	public List<String> getCadreImageByPreviousEnrolId(String previousEnrollmentNo)
+	{
+		Query query = getSession().createQuery("select distinct model.image  from TdpCadre model where model.memberShipNo =:previousEnrollmentNo and model.isDeleted = 'N' ");
+		
+		query.setParameter("previousEnrollmentNo",previousEnrollmentNo);
+		
+		return query.list();
+	}
 }
