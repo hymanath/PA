@@ -65,4 +65,10 @@ public interface ICadreRegistrationService {
 	
 	public List<SelectOptionVO> getCandidateInfoByNomination(Long electionId,Long nominationId);	
 	public List<SelectOptionVO> getAllRelationDetails();
+	
+	public List<SelectOptionVO> getCadreCommitteRoles(Long levelId,Long committeeId);
+	
+	public List<SelectOptionVO> getCadreCommitteDetails(Long levelId);
+	
+	
 }
