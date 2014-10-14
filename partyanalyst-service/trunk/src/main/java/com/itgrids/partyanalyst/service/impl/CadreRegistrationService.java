@@ -1131,11 +1131,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							vo.setAge(voter[4].toString());
 						}
 						
-						if(voter[7] != null)
+						if(voter[8] != null)
 						{
 							try {
 								
-								Voter voterEntity = voterDAO.getVoterByVoterID(voter[7]!= null? Long.valueOf(voter[7].toString()):0L);
+								Voter voterEntity = voterDAO.getVoterByVoterID(voter[8]!= null? Long.valueOf(voter[8].toString()):0L);
 								
 								if(voterEntity != null)
 								{
@@ -1167,7 +1167,6 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	public List<VoterInfoVO> getCandidateInfoBySearchCriteria(String searchType, Long candidateId)
 	{
 		List<VoterInfoVO> returnList = null;
-		SimpleDateFormat format  = new SimpleDateFormat("yy/MM/dd");
 		VoterInfoVO vo = null;
 		try {
 			
