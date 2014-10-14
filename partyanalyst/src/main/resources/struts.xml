@@ -8620,7 +8620,17 @@
 				<param name="root">selectOptionVOList</param>
 			</result>
 		</action>
-		
+		<action name="getCadreCommitteDetailsAction" class="cadreRegistrationAction" method="getCadreCommitteDetails">
+			<result type="json" name="success">
+				<param name="root">selectOptionVOList</param>
+			</result>
+		</action>		
+		<action name="getCadreCommitteRolesAction" class="cadreRegistrationAction" method="getCadreCommitteRoles">
+			<result type="json" name="success">
+				<param name="root">selectOptionVOList</param>
+			</result>
+		</action>
+				
 </package>
 
 </struts>      
