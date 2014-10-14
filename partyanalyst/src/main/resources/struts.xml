@@ -8631,6 +8631,11 @@
 			</result>
 		</action>
 				
+		<action name="getCadreImageByPreviousEnrolId" class="cadreRegistrationAction" method="getCadreImageByPreviousEnrolId">
+			<result type="json" name="success">
+				<param name="root">task</param>
+			</result>
+		</action>
 </package>
 
 </struts>      

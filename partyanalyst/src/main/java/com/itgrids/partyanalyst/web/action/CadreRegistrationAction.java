@@ -73,7 +73,8 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private String								boothId;
 	private Boolean                             relativeTypeChecked;
 	private Long                                relativeTypeId;
-	
+	private Boolean                              cadreUploadImgCadreType;
+	private Boolean                              cadreUploadImgVoterType;
 	
 	public List<SelectOptionVO> getCadreRolesVOList() {
 		return cadreRolesVOList;
@@ -355,6 +356,22 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		this.relativeTypeId = relativeTypeId;
 	}
 
+	public Boolean getCadreUploadImgCadreType() {
+		return cadreUploadImgCadreType;
+	}
+
+	public void setCadreUploadImgCadreType(Boolean cadreUploadImgCadreType) {
+		this.cadreUploadImgCadreType = cadreUploadImgCadreType;
+	}
+
+	public Boolean getCadreUploadImgVoterType() {
+		return cadreUploadImgVoterType;
+	}
+
+	public void setCadreUploadImgVoterType(Boolean cadreUploadImgVoterType) {
+		this.cadreUploadImgVoterType = cadreUploadImgVoterType;
+	}
+
 	public String execute()
 	{
 		try {
@@ -365,7 +382,8 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			if(user == null)
 				return Action.INPUT;
 			
-			if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014")){
+			if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014"))
+			{
 				return Action.SUCCESS;
 			}
 			
@@ -398,6 +416,13 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				if(relativeTypeChecked != null){
 					cadreRegistrationVO.setRelative(true);
 					cadreRegistrationVO.setRelationTypeId(relativeTypeId);
+				}
+				if(cadreUploadImgCadreType != null){
+					cadreRegistrationVO.setPhotoType("cadre");
+				}else if(cadreUploadImgVoterType != null){
+					cadreRegistrationVO.setPhotoType("voter");
+				}else{
+					cadreRegistrationVO.setPhotoType("new");
 				}
 				List<CadrePreviousRollesVO> rolesVOList = cadreRegistrationVO.getPreviousRollesList();
 				if(rolesVOList != null && rolesVOList.size() > 0)
@@ -528,7 +553,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				selectOptionVOList = staticDataService.getAllOccupations();
 				eletionTypesList = cadreRegistrationService.getElectionOptionDetailsForCadre();
 				cadreRolesVOList = cadreRegistrationService.getCadreLevelsForCadreSearch();
-				voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria(searchType,Long.valueOf(candidateId));
+				voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria(searchType,Long.valueOf(candidateId),IWebConstants.STATIC_CONTENT_FOLDER_URL);
 							
 				return Action.SUCCESS;
 			}
@@ -974,5 +999,15 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			LOG.error("Exception raised in getCadreCommitteRoles method in CadreRegistrationAction action", e);
 		}
 		return Action.SUCCESS;		
+	}	
+	public String getCadreImageByPreviousEnrolId(){
+		try {		
+			
+			task = cadreRegistrationService.getCadreImageByPreviousEnrolId(request.getParameter("enrolmentId"),IWebConstants.STATIC_CONTENT_FOLDER_URL);
+		}
+		catch(Exception e){
+			LOG.error("Exception raised in getCadreImageByPreviousEnrolId method in CadreRegistrationAction action", e);
+		}
+		return Action.SUCCESS;
 	}
 }
