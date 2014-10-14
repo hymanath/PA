@@ -42,7 +42,7 @@ public class VoterInfoVO implements java.io.Serializable
 	
 	private List<GenericVO> cadreRolesList = new ArrayList<GenericVO>();
 	private List<GenericVO> previousParticipationInfoList = new ArrayList<GenericVO>();
-	
+	private String image;
 	
 	
 	public String getNomineAge() {
@@ -256,6 +256,12 @@ public class VoterInfoVO implements java.io.Serializable
 	}
 	public void setRelationTypeId(Long relationTypeId) {
 		this.relationTypeId = relationTypeId;
+	}
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
 	}
 	
 	
