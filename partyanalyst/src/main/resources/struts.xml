@@ -8604,9 +8604,9 @@
 			</result>
 		</action>
 		
-		<action name="getSurveyStatusDetailsAction" class="ctpCasteReportAction" method="getLocationWiseRegistrationInfo">
+		<action name="getSurveyStatusDetailsAction" class="ctpCasteReportAction" method="getSurveyStatusDetails">
 			<result type="json" name="success">
-				<param name="root">surveyCompletionDetailsVO</param>
+				<param name="root">surveyStatusVO</param>
 			</result>
 		</action>
 		<action name="getCasteVotersCountInRegionAction" class="ctpCasteReportAction" method="getCatseVotersCountInRegion">

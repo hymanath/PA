@@ -392,6 +392,7 @@ function clearFieldsData(){
 	    <div class="titleHeading" >CONSTITUENCY WISE OVERVIEW
 	 </div>
    <div id="statusContentDiv"></div>
+    <div id="surveyStatusDetailsDiv"></div>
 	</div>
 	<div id="voterSearchDiv"  class="tab-pane ">
       <div class="titleHeading" >VOTER SEARCH
@@ -1305,7 +1306,7 @@ if(!flag){
 		{
 		$("#ajaxLoad1").hide();
 		
-		buildSurveyStatusDetails(result);
+		buildSurveyStatusDetails(result.subList);
 				  },
 	          error:function() { 
 	           console.log('error', arguments);
@@ -1313,10 +1314,55 @@ if(!flag){
 	});
 	
 	}
-	
+	function buildSurveyStatusDetails(result)
+	{
+		var str ='';
+		str+='<table  id="surveyStatusDatatable" class="table table-bordered">';	
+		str+='<thead>';
+		str+='<tr>';
+		str+='<th rowspan ="2">SNO</th>';
+		str+='<th rowspan ="2">Constituency</th>';
+		str+='<th rowspan ="2">Total Booths</th>';
+		str+='<th colspan ="2">Survey On Going Booths</th>';
+		str+='<th colspan ="2">Redo Booths</th>';
+		str+='<th rowspan ="2">Survey Completed Booths</th>';
+		str+='</tr>';
+		str+='<tr>';
+		str+='<th>Total Booths</th>';
+		str+='<th>Completed </th>';
+		str+='<th>Total Booths</th>';
+		str+='<th>Completed </th>';
+
+		str+='</tr>';
+		str+='</thead>';
+		var cnt = 1;
+		str+='<tbody>';
+		for(var i in result)
+		{
+			
+			str+='<tr>';
+			str+='<td>'+cnt+'</td>';
+			str+='<td>'+result[i].name+'</td>';
+			str+='<td>'+result[i].totalBooths+'</td>';
+			str+='<td>'+result[i].surveyprocessTotal+'</td>';
+			str+='<td>'+result[i].surveyprocessCompleted+'</td>';
+			str+='<td>'+result[i].redoBoothsTotal+'</td>';
+			str+='<td>'+result[i].redoBoothsCompleted+'</td>';
+			str+='<td>'+result[i].surveyCompletedBooths+'</td>';
+			
+			str+='</tr>';
+			cnt ++;
+		}
+		str+='</tbody>';
+		str+='</table>';	
+		$("#surveyStatusDetailsDiv").html(str);
+		if(result.length > 10)
+		$("#surveyStatusDatatable").dataTable();
+	}
 </script>
 <script>
 getVotersCountDetails();
+getSurveyStatusDetails();
 </script>
 </body>
 </html>

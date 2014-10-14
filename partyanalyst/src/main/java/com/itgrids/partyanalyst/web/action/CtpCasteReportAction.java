@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.util.List;
 
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -17,6 +18,7 @@ import org.springframework.web.context.ServletContextAware;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
+import com.itgrids.partyanalyst.dto.SurveyStatusVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
@@ -42,14 +44,14 @@ public class CtpCasteReportAction extends ActionSupport implements ServletReques
 	private VoterHouseInfoVO voterHouseInfoVO;
 	@Autowired
     private EntitlementsHelper entitlementsHelper;
-	private SurveyCompletionDetailsVO surveyCompletionDetailsVO;
+	private SurveyStatusVO surveyStatusVO;
 	
-	public SurveyCompletionDetailsVO getSurveyCompletionDetailsVO() {
-		return surveyCompletionDetailsVO;
+	
+	public SurveyStatusVO getSurveyStatusVO() {
+		return surveyStatusVO;
 	}
-	public void setSurveyCompletionDetailsVO(
-			SurveyCompletionDetailsVO surveyCompletionDetailsVO) {
-		this.surveyCompletionDetailsVO = surveyCompletionDetailsVO;
+	public void setSurveyStatusVO(SurveyStatusVO surveyStatusVO) {
+		this.surveyStatusVO = surveyStatusVO;
 	}
 	public VoterHouseInfoVO getVoterHouseInfoVO() {
 		return voterHouseInfoVO;
@@ -244,7 +246,7 @@ public class CtpCasteReportAction extends ActionSupport implements ServletReques
 		try{
 			jObj = new JSONObject(getTask());
 			
-			surveyCompletionDetailsVO = ctpCasteReportService.getSurveyStatusDetailsInfo();
+			surveyStatusVO = ctpCasteReportService.getSurveyStatusDetailsInfo();
 		}
 		catch (Exception e) {
 			LOG.error("Exception Occured in getSurveyStatusDetails() method", e);
