@@ -17,7 +17,7 @@ public interface ICadreRegistrationService {
 	
 	public List<VoterInfoVO> getSearchDetailsCadreRegistration(Long constituencyId, String seachType, String candidateName, String voterCardId, String houseNo,Long panchayatId,Long boothId,String villagesCovered);
 	
-	public List<VoterInfoVO> getCandidateInfoBySearchCriteria(String searchType, Long candidateId);
+	public List<VoterInfoVO> getCandidateInfoBySearchCriteria(String searchType, Long candidateId,String staticContentLoc);
 	
 	public List<GenericVO> getBoothCoverdVillagesDetails(List<Long> boothIds);
 	
@@ -69,6 +69,6 @@ public interface ICadreRegistrationService {
 	public List<SelectOptionVO> getCadreCommitteRoles(Long levelId,Long committeeId);
 	
 	public List<SelectOptionVO> getCadreCommitteDetails(Long levelId);
-	
-	
+		
+	public String getCadreImageByPreviousEnrolId(String enrolmentId,String staticContentLoc);
 }

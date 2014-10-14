@@ -81,4 +81,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public List<Long> getVoterDetailsByVoterIds(List<Long> voterIdList);
 	
+	public List<String> getCadreImageByPreviousEnrolId(String previousEnrollmentNo);
+	
 }
