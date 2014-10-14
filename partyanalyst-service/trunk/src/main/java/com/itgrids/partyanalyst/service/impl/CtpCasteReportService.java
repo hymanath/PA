@@ -467,7 +467,7 @@ public class CtpCasteReportService implements ICtpCasteReportService{
 					
 					for(Object[] params : list)
 					{
-					  	if(!constituencyIds.contains((Long)params[0]));
+					  	if(!constituencyIds.contains((Long)params[0]))
 					  	{
 					  		SurveyStatusVO vo = new SurveyStatusVO();
 					  		vo.setId((Long)params[0]);
