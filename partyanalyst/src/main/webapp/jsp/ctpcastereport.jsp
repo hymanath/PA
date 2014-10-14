@@ -376,8 +376,8 @@ function clearFieldsData(){
     <ul class="nav nav-tabs" id="myTab">
 	<!--<li class="active"><a href="#SurveystatusDiv" >Survey STATUS REPORT </a></li>-->
 	<li class="active"> <a href="#statusDiv">STATUS REPORT </a></li>
-<li ><a href="#voterSearchDiv">VOTER SEARCH </a></li>
-<li><a href="#voterCountDetailsDiv">VOTER COUNT </a></li>
+<li ><a href="#voterSearchDiv">VOTER CASTE SEARCH </a></li>
+<li><a href="#voterCountDetailsDiv">VOTER CASTE REPORT </a></li>
 </ul>
 <div class="tab-content widget" style="margin-top:-20px;">
 	 	<!-- <div id="SurveystatusDiv"  class="tab-pane active">
@@ -396,7 +396,7 @@ function clearFieldsData(){
     <div id="surveyStatusDetailsDiv"></div>
 	</div>
 	<div id="voterSearchDiv"  class="tab-pane ">
-      <div class="titleHeading" >VOTER SEARCH
+      <div class="titleHeading" >VOTER CASTE SEARCH
 	 </div>
 	 
       <div id="AlertMsg" style="font-family: verdana;font-size: 13px;color:red;"></div>
@@ -493,6 +493,7 @@ function clearFieldsData(){
 	  </div>
   
 	  <input style="margin-left:240px;margin-bottom:10px;" onclick="getVotersInfoForCTP();" class="btn btn-success" type="button" id="searchbtnId" value="Search"/>
+	    <span style='display:none;' id='ajaxLoad4'><img src='./images/icons/search.gif' /></span>
 
 <div id="errorMessageDiv" style="display:none;font-weight:bold;color:red" align="center"></div>
 	<div id="voterDetailsDiv"></div>
@@ -500,7 +501,7 @@ function clearFieldsData(){
 	</div>
 	<div id="voterCountDetailsDiv" class="tab-pane" >
 
-	 <div class="titleHeading" >VOTER COUNT
+	 <div class="titleHeading" >VOTER CASTE REPORT
 	 </div>
 	
 	 
@@ -784,7 +785,7 @@ function getPanchayatList1(checkedele,selectedEle)
 	var type;
 	function getVotersInfoForCTP()
 	{
-
+	
 	$("#voterDetailsDiv").html('');
 	$('#errorMessageDiv').hide();
 	$("#errorMsgAlert").html("");
@@ -941,6 +942,7 @@ if(!flag){
 	}
 	else
 	{
+		$("#ajaxLoad4").show();
  var arr = [];
  var obj = {
 	 voterCardId: voterCardId,
@@ -968,6 +970,7 @@ if(!flag){
 	          dataType: 'json',
 	          data: {task:JSON.stringify(jObj)},
 			  success: function(result){ 
+				  $("#ajaxLoad4").hide();
 			  if(result.votersList== null || result.votersList.length == 0)
 			  $('#errorMessageDiv').show().html('No Data Avalible For Given Search Details');
 			  else
@@ -1031,7 +1034,8 @@ if(!flag){
 	function buildVoterDetails(result)
 	{
 		var str = '';
-		str+='<table class="table table-bordered" id="voterDataTable">';
+		
+		str+='<table class="table table-bordered" id="voterDataTablesearch">';
 		str+='<thead>';
 		str+='<th>Name</th>';
 		str+='<th>VoterId</th>';
@@ -1060,9 +1064,16 @@ if(!flag){
 		str+='</tbody>';
 		str+='</table>';
 		$("#voterDetailsDiv").html(str);
-		if(result.length > 10)
+		if(result.length > 20)
 		{
-		$("#voterDataTable").dataTable();
+		$("#voterDataTablesearch").dataTable({
+		"aaSorting": [[ 1, "desc" ]],
+		"iDisplayLength": 20,
+		"aLengthMenu": [[20, 30, 90, -1], [20, 30, 90, "All"]],
+		//"bFilter": false,"bInfo": false
+		  "aoColumns": [null,null,null,null,null,null,null,null
+		] 
+		});
 		}
 	}
 
@@ -1140,7 +1151,9 @@ if(!flag){
 		}
 
 		var str = '';
-		str+='<table class="table table-bordered">';
+		str+='<div class="titleHeading">Voter Caste Mapped Report</div>';
+		str+='<table id="VoterdataTable" class="table table-bordered">';
+		str+='<thead>';
 		if(type == "Constituency")
 		str+='<th>Constituency</th>';
 		if(type == "Mandal")
@@ -1151,10 +1164,12 @@ if(!flag){
 		str+='<th>Booth</th>';
 
 		str+='<th>Total Voters</th>';
-		str+='<th>male Caste Voters</th>';
-		str+='<th>female Caste Voters</th>';
+		str+='<th>Caste Voters - Male</th>';
+		str+='<th>Caste Voters - Female</th>';
 		str+='<th>Caste Voters</th>';
 		str+='<th>Caste Percentage</th>';
+		str+='</thead>';
+		str+='<tbody>';
 		for(var i in result)
 		{
 		str+='<tr>';
@@ -1182,10 +1197,21 @@ if(!flag){
 					str+='</tr>';
 				}
 			}
-		
+		str+='</tbody>';
 		str+='</table>';
 		$("#voterCountData").html(str);
 		
+		if(result.length > 20)
+		{
+		$("#VoterdataTable").dataTable({
+		"aaSorting": [[ 1, "desc" ]],
+		"iDisplayLength": 20,
+		"aLengthMenu": [[20, 30, 90, -1], [20, 30, 90, "All"]],
+		//"bFilter": false,"bInfo": false
+		  "aoColumns": [null,null,null,null,null,null
+		] 
+		});
+		}
 		
 	}
 	function buildCasteVoterCountData(resultList,type)
@@ -1198,6 +1224,7 @@ if(!flag){
 			return;
 		}
 		var str = '';
+			str+='<div class="titleHeading">Voter Caste Report</div>';
 		str+='<table class="table table-bordered" id="casteDataTable">';
 		str+='<thead>';
 		if(type == "Constituency")
@@ -1209,15 +1236,18 @@ if(!flag){
 		if(type == "BOOTH")
 		str+='<th>Booth</th>';
 		str+='<th>Caste </th>';
-		str+='<th>Total Caste Voters</th>';
+		str+='<th>Total Caste Assigned Voters</th>';
 		str+='<th>Caste Voters</th>';
-		str+='<th>male Caste Voters</th>';
-		str+='<th>female Caste Voters</th>';
+		str+='<th>Caste Voters - Male</th>';
+		str+='<th>Caste Voters - Female</th>';
 		str+='<th>Caste Percentage</th>';
 		str+='</thead>';
 		str+='<tbody>';
+		var dataLenth = 0;
 		for(var i in result)
 		{
+			dataLenth = dataLenth + result[i].casteList.length ;
+			
 			for(var j in result[i].casteList)
 			{
 			str+='<tr>';
@@ -1231,10 +1261,12 @@ if(!flag){
 			str+='</tr>';
 			}
 		}
+		
 			if(type == "Mandal" &&  result1 != null)
 			{
 				for(var k in result1)
 				{
+					 dataLenth + result1[k].casteList.length;
 					for(var l in result1[k].casteList)
 						{
 						str+='<tr>';
@@ -1253,9 +1285,16 @@ if(!flag){
 		str+='</table>';
 		$("#CastevoterData").html(str);
 		
-		if(result.length > 10)
+		if(dataLenth > 20)
 		{
-			$("#casteDataTable").dataTable();
+			$("#casteDataTable").dataTable({
+		"aaSorting": [[ 1, "desc" ]],
+		"iDisplayLength": 20,
+		"aLengthMenu": [[20, 30, 90, -1], [20, 30, 90, "All"]],
+		//"bFilter": false,"bInfo": false
+		  "aoColumns": [null,null,null,null,null,null,null
+		] 
+		});
 		}
 	}
 	
@@ -1319,6 +1358,7 @@ if(!flag){
 	function buildSurveyStatusDetails(result)
 	{
 		var str ='';
+		str+='<div class="titleHeading"> Survey Booths Status Report</div>';
 		str+='<table  id="surveyStatusDatatable" class="table table-bordered">';	
 		str+='<thead>';
 		str+='<tr>';
@@ -1358,8 +1398,17 @@ if(!flag){
 		str+='</tbody>';
 		str+='</table>';	
 		$("#surveyStatusDetailsDiv").html(str);
-		if(result.length > 10)
-		$("#surveyStatusDatatable").dataTable();
+		if(result.length > 20)
+		{
+		$("#surveyStatusDatatable").dataTable({
+		"aaSorting": [[ 1, "desc" ]],
+		"iDisplayLength": 20,
+		"aLengthMenu": [[20, 30, 90, -1], [20, 30, 90, "All"]],
+		//"bFilter": false,"bInfo": false
+		  "aoColumns": [null,null,null,null,null,null,null,null
+		] 
+		});
+		}
 	}
 </script>
 <script>
