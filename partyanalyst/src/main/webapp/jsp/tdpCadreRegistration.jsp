@@ -946,7 +946,7 @@
 												<input type="text" class="form-control border-radius-0 " placeholder="House Number" name="cadreRegistrationVO.houseNo" style="width: 120px; float: left; margin-left: 0px;"  value="${voterInfoVOList[0].houseNo}"></input>
 											</div>
 											<div class="span6"> <input type="checkbox" id="relativeTypeChecked" name="relativeTypeChecked" onclick="showHideFamRelatinoSts();"/> Is Family Member</div>
-											<div  class="span6" id="showHideFammemberType" style="display:none; margin-left: 232px;margin-top: -33px;"><select name="relativeTypeChecked" id="relativeTypeId"> </select></div>
+											<div  class="span6" id="showHideFammemberType" style="display:none; margin-left: 232px;margin-top: -33px;"><select name="relativeTypeId" id="relativeTypeId"> </select></div>
 										</div>
 								</div>	
 								
@@ -1735,7 +1735,7 @@ function getAllRelationDetails(){
 	  }
 	 
 	  <s:if test="voterInfoVOList[0].relative != null">
-	    $('#relativeTypeId').val('${voterInfoVOList[0].relationTypeId >0}');
+	    $('#relativeTypeId').val('${voterInfoVOList[0].relationTypeId}');
 		$('#relativeTypeChecked').attr("checked","checked");
 		showHideFamRelatinoSts();
 	  </s:if>
