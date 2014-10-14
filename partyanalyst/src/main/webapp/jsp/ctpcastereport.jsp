@@ -1057,7 +1057,10 @@ if(!flag){
 		str+='</tbody>';
 		str+='</table>';
 		$("#voterDetailsDiv").html(str);
+		if(result.length > 10)
+		{
 		$("#voterDataTable").dataTable();
+		}
 	}
 
 	
@@ -1246,7 +1249,11 @@ if(!flag){
 		str+='</tbody>';
 		str+='</table>';
 		$("#CastevoterData").html(str);
-		$("#casteDataTable").dataTable();
+		
+		if(result.length > 10)
+		{
+			$("#casteDataTable").dataTable();
+		}
 	}
 	
 	function getCasteVotersCountInRegion()
