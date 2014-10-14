@@ -2982,4 +2982,37 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return returnList;
 	}
 	
+	public List<SelectOptionVO> getCadreCommitteDetails(Long levelId){
+		List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+		try{
+		List<Object[]> results = cadreCommitteeRoleDAO.getCommitteeRolesByLevelId(levelId);
+		for(Object[] result:results){
+			SelectOptionVO vo = new SelectOptionVO();
+			vo.setId((Long)result[0]);
+			vo.setName(result[1].toString());
+			returnList.add(vo);
+		}
+		}catch(Exception e){
+			LOG.error("Exception raised in getAllRelationDetails in CadreRegistrationService service", e);
+		}
+		return returnList;
+	}
+	
+	public List<SelectOptionVO> getCadreCommitteRoles(Long levelId,Long committeeId)
+	{
+		List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+		try{
+		List<Object[]> results = cadreCommitteeRoleDAO.getCommitteeRolesByLevelIdAndCommitteeId(levelId,committeeId);
+		for(Object[] result:results){
+			SelectOptionVO vo = new SelectOptionVO();
+			vo.setId((Long)result[0]);
+			vo.setName(result[1].toString());
+			returnList.add(vo);
+		}
+		}catch(Exception e){
+			LOG.error("Exception raised in getAllRelationDetails in CadreRegistrationService service", e);
+		}
+		return returnList;
+	}
+	
 }
