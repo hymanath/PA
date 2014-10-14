@@ -120,11 +120,11 @@
 				occupationDetailsArr.push( '${occupation.name}');
 				occupationArr.push(obj);
 		</c:forEach>
-	var participationCount = 0;
+		var participationCount = 0;
 		<s:if test="%{voterInfoVOList[0].previousParticipationInfoList != null && voterInfoVOList[0].previousParticipationInfoList.size() > 0}">
-					<c:forEach var="role" items="${voterInfoVOList[0].previousParticipationInfoList}" varStatus="indexValue">
-						participationCount = participationCount + 1;
-					</c:forEach>
+			<c:forEach var="role" items="${voterInfoVOList[0].previousParticipationInfoList}" varStatus="indexValue">
+				participationCount = participationCount + 1;
+			</c:forEach>
 		</s:if>
 
 	var isRolesCount = 0 ;
@@ -141,6 +141,7 @@
 	var constituencyId = '${constiteucnyId}';
 	var panchayatId    = '${constiteucnyId}';
 	var boothId 	   = '${boothId}';
+	
 	$(document).ready(function(){
 	    $('.datePickerCls').datepicker({
 		dateFormat: 'dd-mm-yy',
@@ -227,19 +228,18 @@
 	
 	function createNewForm(){
 	
-		if(participationCount >= 1 &&  isRolesSet)
+		if(isRolesCount >= 1 &&  isRolesSet)
 		{
-			rolesSize = participationCount;
+			rolesSize = isRolesCount;
 			isRolesSet = false;
 		}
-		console.log(cadreCmmittLvlArr);
+
 		var str = '';
 		str += '<div class="rolesList'+rolesSize+'" style="margin-top:0px;float:left;margin-left:-5px;">';
 		str += '<div class="levelCls">';
 		str += '<div class=" text-align1 " >';
 		//str += '<h5 class="text-align1">Select Level </h5>';
-		str += '<select class="form-control border-radius-0 levelCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].cadreCommitteeLevelId">';
-		str += '<option value = "0"> Select </option>';
+		str += '<select class="form-control border-radius-0 levelCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].cadreCommitteeLevelId" id="CadreCommitteeLevelsId'+rolesSize+'" onchange="getCadreCommitteDetails(this.value,\'CadreRolesId'+rolesSize+'\')">';
 			if(cadreCmmittLvlArr != null && cadreCmmittLvlArr.length>0)
 			{
 				for(var i in cadreCmmittLvlArr)
@@ -253,30 +253,16 @@
 		str += '<div class="levelCls">';
 		str += '<div class=" text-align1" >';
 		//str += '<h5 class="text-align1">Party Designation </h5>';
-		str += '<select class="form-control border-radius-0 levelCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].cadreCommitteeId">';
-		str += '<option value = "0"> Select </option>';
-			if(cadreCmmittArr != null && cadreCmmittArr.length>0)
-			{
-				for(var i in cadreCmmittArr)
-				{
-					str += '<option value = "'+cadreCmmittArr[i].id+'">'+cadreCmmittArr[i].name+'</option>';
-				}
-			}
+		str += '<select class="form-control border-radius-0 levelCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].cadreCommitteeId" id="CadreRolesId'+rolesSize+'" onchange="getCadreCommitteRoles(this.value,\'CadreCommitteeId'+rolesSize+'\',\'CadreCommitteeLevelsId'+rolesSize+'\');">';
+		str += '<option value = "0"> Select Committee </option>';
 		str += '</select>';
 		str += '</div>';
 		str += '</div>';
 		str += '<div class="levelCls">';
 		str += '<div class=" text-align1" >';
 		//str += '<h5 class="text-align1">Party Designation </h5>';
-		str += '<select class="form-control border-radius-0 levelCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].cadreRoleId">';
-		str += '<option value = "0"> Select </option>';
-			if(cadreRolesArr != null && cadreRolesArr.length>0)
-			{
-				for(var i in cadreRolesArr)
-				{
-					str += '<option value = "'+cadreRolesArr[i].id+'">'+cadreRolesArr[i].name+'</option>';
-				}
-			}
+		str += '<select class="form-control border-radius-0 levelCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].cadreRoleId" id="CadreCommitteeId'+rolesSize+'">';
+		str += '<option value = "0"> Select Role </option>';
 		str += '</select>';
 		str += '</div>';
 		str += '</div>';
@@ -284,7 +270,7 @@
 		str += '<div class=" " >';
 		//str += '<h5 class="text-align1">From Date</h5>';
 		str += '<div class="input-prepend text-align2 ">';
-		str += '<input type="text" style="width:120px;float:left;margin-left:6px;margin-top:5px;" class="form-control span2 border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].fromDateStr"  readOnly="true"></input></span>';
+		str += '<input type="text" style="width:120px;float:left;margin-left:6px;margin-top:5px;" class="form-control span2 border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].fromDateStr"  readOnly="true" id="'+rolesSize+'"></input></span>';
 		str += '</div>';
 		str += '</div>';
 		str += '</div>';
@@ -292,7 +278,7 @@
 		str += '<div class=" " >';
 		//str += '<h5 class="text-align1">To Date</h5>';
 		str += '<div class="input-prepend  ">';
-		str += '<input type="text" style="width:120px;float:left;margin-left:6px;margin-top:5px;" class="form-control span2  border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].toDateStr"  readOnly="true"></input></span>';
+		str += '<input type="text" style="width:120px;float:left;margin-left:6px;margin-top:5px;" class="form-control span2  border-radius-0 border-right-0 datePickerCls" name="cadreRegistrationVO.previousRollesList['+rolesSize+'].toDateStr"  readOnly="true" id="'+rolesSize+'"></input></span>';
 		str += '</div>';
 		str += '</div>';
 		str += '</div>';
@@ -490,27 +476,18 @@
 		for(var i in results){
 		
 			if(results[i].name=="CadreCommitteeList"){
-				var str = "";
-					str+="<option value = '0'> Select </option>";
-					for(var j in results[i].selectOptionsList){
-						str+="<option value="+results[i].selectOptionsList[j].id+">"+results[i].selectOptionsList[j].name+"</option>";
-						
+				var str = "";					
+					for(var j in results[i].selectOptionsList){						
 						var cadreCmmtObj = {
 								id		:	results[i].selectOptionsList[j].id,
 								name	:	results[i].selectOptionsList[j].name								
-							}
-							
+							}							
 						cadreCmmittArr.push(cadreCmmtObj);
 					}
-					
-				$("#CadreCommitteeId").html(str);
 			}
 			if(results[i].name=="CadreCommitteeLevelsList"){
 				var str = "";
-					str+="<option value = '0'> Select </option>";
-					for(var j in results[i].selectOptionsList){
-						str+="<option value="+results[i].selectOptionsList[j].id+">"+results[i].selectOptionsList[j].name+"</option>";
-						
+					for(var j in results[i].selectOptionsList){						
 						var cadreCmmtObj = {
 								id		:	results[i].selectOptionsList[j].id,
 								name	:	results[i].selectOptionsList[j].name								
@@ -518,15 +495,11 @@
 							
 						cadreCmmittLvlArr.push(cadreCmmtObj);
 					}
-					
-				$("#CadreCommitteeLevelsId").html(str);
 			}
 			if(results[i].name=="CadreRolesList"){
 				var str = "";
-					str+="<option value = '0'> Select </option>";
-					for(var j in results[i].selectOptionsList){
-						str+="<option value="+results[i].selectOptionsList[j].id+">"+results[i].selectOptionsList[j].name+"</option>";
-						
+					for(var j in results[i].selectOptionsList)
+					{						
 						var cadreCmmtObj = {
 								id		:	results[i].selectOptionsList[j].id,
 								name	:	results[i].selectOptionsList[j].name								
@@ -534,8 +507,6 @@
 							
 						cadreRolesArr.push(cadreCmmtObj);
 					}
-					
-				$("#CadreRolesId").html(str);
 			}
 			
 		}
@@ -1228,7 +1199,7 @@
 						<c:if test="${indexValue.index == 0}">	
 							<h5 class="text-align1"> Committee Level </h5>
 						</c:if>
-							<select class="levelCls" id="CadreCommitteeLevelsId" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeLevelId"  style="margin-left: 12px">			
+							<select class="levelCls" id="CadreCommitteeLevelsId${indexValue.index}" name="cadreRegistrationVO.previousRollesList[${indexValue.index}].cadreCommitteeLevelId"  style="margin-left: 12px" onchange="getCadreCommitteDetails(this.value,'CadreCommitteeId${indexValue.index}')">			
 							<c:forEach var="educationList" items="${cadreRolesVOList[1].selectOptionsList}" >		
 									<c:if test="${educationList.id == role.id }">																
 										<option value="${educationList.id}" selected="selected">${educationList.name}</option>
@@ -1248,7 +1219,7 @@
 						<c:if test="${indexValue.index == 0}">	
 							<h5 class="text-align1"> Cadre Committee </h5>
 						</c:if>
-							<select class="levelCls" id="CadreRolesId" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeId" style="margin-left: 12px">
+							<select class="levelCls" id="CadreCommitteeId${indexValue.index}" name="cadreRegistrationVO.previousRollesList[${indexValue.index}].cadreCommitteeId" style="margin-left: 12px" onchange="getCadreCommitteRoles(this.value,'CadreRolesId${indexValue.index}','CadreCommitteeLevelsId${indexValue.index}')">
 							<c:forEach var="educationList" items="${cadreRolesVOList[0].selectOptionsList}" >		
 										<c:if test="${educationList.id == role.count }">																
 										<option value="${educationList.id}" selected="selected">${educationList.name}</option>
@@ -1267,7 +1238,7 @@
 						<c:if test="${indexValue.index == 0}">	
 							<h5 class="text-align1">Cadre Role </h5>
 						</c:if>
-								<select class="levelCls" id="CadreCommitteeId" name="cadreRegistrationVO.previousRollesList[0].cadreRoleId" style="margin-left: 12px">
+								<select class="levelCls" id="CadreRolesId${indexValue.index}" name="cadreRegistrationVO.previousRollesList[${indexValue.index}].cadreRoleId" style="margin-left: 12px">
 								<c:forEach var="educationList" items="${cadreRolesVOList[2].selectOptionsList}" >		
 										<c:if test="${educationList.id == role.rank }">																
 										<option value="${educationList.id}" selected="selected">${educationList.name}</option>
@@ -1287,7 +1258,7 @@
 							<h5 class="text-align1">From Date</h5>
 						</c:if>
 								<div class="input-prepend text-align2 ">				
-									<input type="text" class="levelDtCls form-control span2 border-radius-0 border-right-0 datePickerCls" style="margin-top:5px;" name="cadreRegistrationVO.previousRollesList[0].fromDateStr" placeholder="From Date"  readOnly="true" value="${role.startTime}"></input></span>
+									<input type="text" class="levelDtCls form-control span2 border-radius-0 border-right-0 datePickerCls" style="margin-top:5px;" name="cadreRegistrationVO.previousRollesList[${indexValue.index}].fromDateStr" placeholder="From Date"  readOnly="true" value="${role.startTime}"></input></span>
 								</div>
 						</div>
 					</div>
@@ -1297,7 +1268,7 @@
 							<h5 class="text-align1">To Date</h5>
 						</c:if>
 								<div class="input-prepend  ">	
-									<input type="text" class="levelDtCls form-control span2  border-radius-0 border-right-0 datePickerCls" style="margin-top:5px;" name="cadreRegistrationVO.previousRollesList[0].toDateStr" placeholder="To Date"  readOnly="true" value="${role.endTime}"></input></span>
+									<input type="text" class="levelDtCls form-control span2  border-radius-0 border-right-0 datePickerCls" style="margin-top:5px;" name="cadreRegistrationVO.previousRollesList[${indexValue.index}].toDateStr" placeholder="To Date"  readOnly="true" value="${role.endTime}"></input></span>
 								</div>
 						</div>
 					</div>
@@ -1313,10 +1284,10 @@
 					<div class="levelCls">
 						<div>
 							<h5 class="text-align1"> Committee Level </h5>
-							<select class="levelCls" id="CadreCommitteeLevelsId" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeLevelId"  style="margin-left: 12px">			
+							<select class="levelCls" id="CadreCommitteeLevelsId0" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeLevelId"  style="margin-left: 12px"  onchange="getCadreCommitteDetails(this.value,'CadreCommitteeId0')">			
 							<c:forEach var="educationList" items="${cadreRolesVOList[1].selectOptionsList}" >																	
 										<option value="${educationList.id}">${educationList.name}</option>
-							</c:forEach>															
+							</c:forEach>															  
 									
 							</select>
 						</div>
@@ -1326,11 +1297,8 @@
 					<div class="levelCls">
 						<div class=" " >	
 							<h5 class="text-align1"> Cadre Committee </h5>
-							<select class="levelCls" id="CadreRolesId" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeId" style="margin-left: 12px">
-				
-							<c:forEach var="educationList" items="${cadreRolesVOList[0].selectOptionsList}" >
-										<option value="${educationList.id}">${educationList.name}</option>
-							</c:forEach>
+							<select class="levelCls" id="CadreCommitteeId0" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeId" style="margin-left: 12px" onchange="getCadreCommitteRoles(this.value,'CadreRolesId0','CadreCommitteeLevelsId0')">
+								<option value="0">Select Committee </option>
 							</select>
 									
 						</div>
@@ -1339,11 +1307,8 @@
 					<div class="levelCls">
 						<div class=" " >
 							<h5 class="text-align1">Cadre Role </h5>
-								<select class="levelCls" id="CadreCommitteeId" name="cadreRegistrationVO.previousRollesList[0].cadreRoleId" style="margin-left: 12px">
-						
-								<c:forEach var="educationList" items="${cadreRolesVOList[2].selectOptionsList}" >	
-									<option value="${educationList.id}">${educationList.name}</option>
-								</c:forEach>
+								<select class="levelCls" id="CadreRolesId0" name="cadreRegistrationVO.previousRollesList[0].cadreRoleId" style="margin-left: 12px">
+									<option value="0">Select Role </option>
 								</select>
 						</div>
 		
@@ -1760,6 +1725,54 @@ function deleteDetails(id)
 		{
 			$('.'+id).remove();
 		}		
+	}
+	
+	function getCadreCommitteDetails( levelId,divId)
+	{
+		$('#'+divId+'').find('option').remove();
+		$('#'+divId+'').append('<option value="0"> Select Committee </option>');
+		
+		var jsObj = 
+		   {
+				levelId : levelId,
+				task:"getCadreCommitteDetails"             
+		   }				   
+		   $.ajax({
+				type : "POST",
+				url : "getCadreCommitteDetailsAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				for(var i in result)
+				{
+					$('#'+divId+'').append('<option value="'+result[i].id+'"> '+result[i].name+' </option>');
+				}
+			});
+	}
+	
+	function getCadreCommitteRoles(committeeId,buildDivId,divId)
+	{
+		var levelId = $('#'+divId+'').val();
+		
+		$('#'+buildDivId+'').find('option').remove();
+		$('#'+buildDivId+'').append('<option value="0"> Select Role </option>');
+		
+		
+		var jsObj = 
+		   {
+				levelId : levelId,
+				committeeId : committeeId,
+				task:"getCadreCommitteRoles"             
+		   }				   
+		   $.ajax({
+				type : "POST",
+				url : "getCadreCommitteRolesAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				for(var i in result)
+				{
+					$('#'+buildDivId+'').append('<option value="'+result[i].id+'"> '+result[i].name+' </option>');
+				}
+			});
 	}
 	
 </script>
