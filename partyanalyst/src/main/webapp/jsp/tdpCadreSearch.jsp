@@ -31,10 +31,10 @@
 	.header-bg{background:#3598DB url('./images/cadre_images/2014-Header-BG.png') repeat-x; height:179px;}
 	.color-white{color:#f9f9f9;}
 	.offset1 {
-	    margin-left: 85px;
+	    margin-left: 70px;
 	}
 	.span10 {
-	    width: 810px;
+	    width: 840px;
 	}
 	</style>
    
