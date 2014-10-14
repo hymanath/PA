@@ -1252,7 +1252,21 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								
 								vo.setAadharNo(tdpCadre.getAadheerNo() != null ? tdpCadre.getAadheerNo():"");								
 								vo.setNomineeName(tdpCadre.getNomineeName() != null ? tdpCadre.getNomineeName():"");
-								vo.setNomineeGender(tdpCadre.getNomineeGender() != null ? Long.valueOf(tdpCadre.getNomineeGender()):0L);
+								
+								if(tdpCadre.getNomineeGender() != null )
+								{
+									if(tdpCadre.getNomineeGender().equalsIgnoreCase("male"))
+									{
+										vo.setNomineeGender(1L);
+									}
+									if(tdpCadre.getNomineeGender().equalsIgnoreCase("female"))
+									{
+										vo.setNomineeGender(2L);
+									}
+									else
+										vo.setNomineeGender(0L);
+								}
+								
 								vo.setNomineAge(tdpCadre.getNomineeAge() != null ? tdpCadre.getNomineeAge().toString():"");
 								vo.setVoterRelationId(tdpCadre.getVoterRelationId() != null ? tdpCadre.getVoterRelationId():0L);
 								
@@ -1349,7 +1363,21 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								
 								vo.setAadharNo(tdpCadre.getAadheerNo() != null ? tdpCadre.getAadheerNo():"");								
 								vo.setNomineeName(tdpCadre.getNomineeName() != null ? tdpCadre.getNomineeName():"");
-								vo.setNomineeGender(tdpCadre.getNomineeGender() != null ? Long.valueOf(tdpCadre.getNomineeGender()):0L);
+								
+								if(tdpCadre.getNomineeGender() != null )
+								{
+									if(tdpCadre.getNomineeGender().equalsIgnoreCase("male"))
+									{
+										vo.setNomineeGender(1L);
+									}
+									if(tdpCadre.getNomineeGender().equalsIgnoreCase("female"))
+									{
+										vo.setNomineeGender(2L);
+									}
+									else
+										vo.setNomineeGender(0L);
+								}
+								
 								vo.setNomineAge(tdpCadre.getNomineeAge() != null ? tdpCadre.getNomineeAge().toString():"");
 								vo.setVoterRelationId(tdpCadre.getVoterRelationId() != null ? tdpCadre.getVoterRelationId():0L);
 								
