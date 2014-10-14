@@ -10,4 +10,9 @@ public interface ICadreCommitteeRoleDAO extends GenericDao<CadreCommitteeRole, L
 
 	
 	public List<Long> getCadreCommitteRoleIdBySelection(Long cadreCommitteLevelId,Long cadreRoleId,Long cadreCommitteId);
+	
+	public List<Object[]> getCommitteeRolesByLevelId(Long cadreCommitteeLevelId);
+	
+	public List<Object[]> getCommitteeRolesByLevelIdAndCommitteeId(Long cadreCommitteeLevelId,Long cadreCommiteeId);
+	
 }
