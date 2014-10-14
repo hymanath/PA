@@ -331,7 +331,7 @@
 		var uploadHandler = {
 				upload: function(o) {
 					uploadResult = o.responseText;
-					console.log(uploadResult);
+					//console.log(uploadResult);
 					showUploadStatus(uploadResult);	
 				}
 			};
@@ -850,17 +850,49 @@
 											<input style="width:180px;" type="text" class="form-control border-radius-0 text-align2"  placeholder="Age" name="cadreRegistrationVO.age"   value="${voterInfoVOList[0].age}"></input>
 										</div>
 										</div>
-									<div class="row-fluid">
-										<div class="span7">
+									<div class="span12"> 
+                                       <ul class="unstyled inline text-center">
+                                          <li id="voterActualImgLiId">
+										    <s:if test="voterInfoVOList[0].voterImagePresent == true">
+                                             <div style="width: 125px; padding-bottom: 15px;padding-top: 13px;" class="well  pad-5 m_top10">
+												<span><img style="width: 140px; height: 120px;" src="${voterInfoVOList[0].voterImage}"></span>
+												<input type="checkbox" style="margin-top:-1px;" id="voterActualImgId" name="cadreUploadImgVoterType" onclick="hideCadreImg();" class="m_top10"/><span style="color: #9a9a9a;font-weight: bold;">&nbsp;Use This Photo</span>
+                                             </div>
+										   </s:if>
+										  </li>
+                                          <li  id="cadreActualImgLiId">
+										    <s:if test="voterInfoVOList[0].cadreImagePresent == true">
+                                             <div style="width: 125px; padding-bottom: 15px;padding-top: 13px;" class="well  pad-5 m_top10">
+												<span><img style="width: 140px; height: 120px;" src="${voterInfoVOList[0].cadreImage}"></span>
+												<input type="checkbox" style="margin-top:-1px;" id="cadreActualImgId" name="cadreUploadImgCadreType" onclick="hideVoterImg();" class="m_top10"/><span style="color: #9a9a9a;font-weight: bold;">&nbsp;Use This Photo</span>
+                                             </div>
+										    </s:if>
+										   </li>
+										   <li>
+                                             <div style="width: 125px;" class="well  pad-5 m_top10">
+                                                <s:if test="voterInfoVOList[0].image != null">
+												  <span id="uploadImg"><img style="width: 140px; height: 120px;" id="actuploadImg" src="${voterInfoVOList[0].image}"></span>
+												</s:if>
+												<s:else>
+												  <span id="uploadImg"><img style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg"></span>
+												</s:else>
+												<input type="file" style="width: 79px;margin-left: 10px;" id="uploadFileId" onchange="changeImg();" name="cadreRegistrationVO.uploadImage" class="m_top10">
+                                             </div>
+										   </li>
+                                       </ul>
+	                                </div>
+									<div class="span12">
+										<div class="span6">
 											<h5 class="text-align1">DATE OF BIRTH</h5>
 												
 												<div class="input-prepend text-align2 ">
 													
 													<input type="text" class="datePickerCls" name="cadreRegistrationVO.dobStr" value="${voterInfoVOList[0].dateOfBirth}" placeholder="Date of Birth" readOnly="true"></input>
-													</div>
-													
-													<h5 class="text-align1">GENDER</h5>	 
-												<div class="row-fluid form-inline" style="margin-left:5px;">
+												</div>
+										</div>	
+										<div class="span6">	
+											<h5 class="text-align1">GENDER</h5>	 
+											<div class="row-fluid form-inline" style="margin-left:5px;">
 												<s:if test="%{voterInfoVOList[0].gender != null}">
 												
 													<c:if test="${voterInfoVOList[0].gender == 'M' || voterInfoVOList[0].gender == 'Male'}">
@@ -881,22 +913,9 @@
 													<label class="radio"><input type="radio" value="FEMALE"  name="cadreRegistrationVO.gender" > FEMALE</input></label>
 												</s:else>
 														
-												</div>			
+											</div>		
 										</div>
-								
-								
-										<div class="span4  m_top10">
-											<div class="well  pad-5">
-												<!--<img src="user.jpg" class="img-responsive" />-->
-												<span id="uploadImg"><img  style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg"></span>
-												<input type="file" style="width: 79px;margin-left: 10px;" id="uploadFileId" onchange="changeImg();" name="cadreRegistrationVO.uploadImage" class="m_top10">
-												<!--<button class="btn btn-primary btn-xs btn-block border-radius-0 m_top10 " type="button" >Upload Photo </button>-->
-											</div>
-										</div>
-								
-									</div>
-										
-										
+									</div>	
 								<div class="m_top10">
 									<div class="row-fluid">
 										
@@ -955,7 +974,7 @@
 								</div>-->
 						
 					</div>
-					<div class="span6 show-grid pad-10b" id="fadeInRight"  >
+					<div class="span6 show-grid pad-10b" id="fadeInRight" style="min-height: 674px;" >
 					
 								<div class=" m_top20" >
 										<h5 class="text-align1">STREET/HAMLET</h5>
@@ -1565,9 +1584,11 @@ function getExistingCadreInfo()
 									
 									if(existingCadreArr[k].check == ui.item.value)
 									{
-										console.log(existingCadreArr[k]);
+										//console.log(existingCadreArr[k]);
 										$('#preEnrollNo').val(existingCadreArr[k].enrollNo);
-										$('#preEnrollNoValue').val(existingCadreArr[k].enrollNo);	
+										$('#preEnrollNoValue').val(existingCadreArr[k].enrollNo);
+										if(existingCadreArr[k].enrollNo != null && $.trim(existingCadreArr[k].enrollNo).length > 0)
+                                           getCadreImage(existingCadreArr[k].enrollNo);										
 										break;
 									}
 								}
@@ -1627,7 +1648,7 @@ $("#cardNumber").keyup(function(){
 							select: function (event, ui) {
 								$('#cardNumber').val(ui.item.value);	
 								for(var k in searchedVoters){
-									console.log(searchedVoters);
+									//console.log(searchedVoters);
 									if(searchedVoters[k].check == ui.item.value){
 										//$('#cardNo').val(searchedVoters[k].voterCardNo);
 										$('#cardNumber').val(searchedVoters[k].voterCardNo);	
@@ -1726,7 +1747,23 @@ function deleteDetails(id)
 			$('.'+id).remove();
 		}		
 	}
-	
+function getCadreImage(id){
+         $.ajax({
+			type : "POST",
+			url : "getCadreImageByPreviousEnrolId.action",
+			data : {enrolmentId:id}
+		}).done(function(result){
+				if(result != null && result.length > 0){
+				  $("#cadreActualImgLiId").html('<div style="width: 125px; padding-bottom: 15px;padding-top: 13px;" class="well  pad-5 m_top10"><span><img style="width: 140px; height: 120px;" src="'+result+'"></span><input type="checkbox" style="margin-top:-1px;" id="cadreActualImgId" onclick="hideVoterImg();" name="cadreUploadImgCadreType" class="m_top10"/><span style="color: #9a9a9a;font-weight: bold;">&nbsp;Use This Photo</span></div>');
+				}
+		});
+}	
+function hideVoterImg(){
+  $("#voterActualImgId").removeAttr('checked');
+}
+function hideCadreImg(){
+  $("#cadreActualImgId").removeAttr('checked');
+}
 	function getCadreCommitteDetails( levelId,divId)
 	{
 		$('#'+divId+'').find('option').remove();
