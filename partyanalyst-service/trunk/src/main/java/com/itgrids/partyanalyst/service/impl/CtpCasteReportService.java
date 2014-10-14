@@ -15,9 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.ISurveyCompletedLocationsDAO;
+import com.itgrids.partyanalyst.dao.ISurveyConstituencyTempDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
+import com.itgrids.partyanalyst.dto.SurveyStatusVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.ICtpCasteReportService;
@@ -36,6 +39,10 @@ public class CtpCasteReportService implements ICtpCasteReportService{
 	private IVoterInfoDAO voterInfoDAO;
 	@Autowired
 	private IConstituencyDAO constituencyDAO;
+	@Autowired
+	private ISurveyCompletedLocationsDAO surveyCompletedLocationsDAO ;
+	@Autowired
+	private ISurveyConstituencyTempDAO surveyConstituencyTempDAO;
 	
 	public VoterHouseInfoVO getVoterDetailsForSearch(VoterHouseInfoVO inputVo ,String locationType,Long id)
 	{
@@ -222,7 +229,7 @@ public class CtpCasteReportService implements ICtpCasteReportService{
 		}
 		return null;
 	 }
-	 
+	
 	 
 	 public VoterHouseInfoVO getVotersCountInRegion(Long constituencyId,String locationType,Long userId)
 	 {
@@ -420,7 +427,6 @@ public class CtpCasteReportService implements ICtpCasteReportService{
 						else if(params[3] != null && params[3].toString().equalsIgnoreCase("F"))
 							casteVo.setFemaleCnt((Long)params[2]);
 							casteVo.setCasteCount(casteVo.getMaleCnt() + casteVo.getFemaleCnt());
-							
 						}
 						vo.setTotalCasteVoters(vo.getTotalCasteVoters() + (Long)params[2]);
 					}	
@@ -444,11 +450,64 @@ public class CtpCasteReportService implements ICtpCasteReportService{
 		}
 		return null;
 	 }
-	 public SurveyCompletionDetailsVO getSurveyStatusDetailsInfo()
+	 public SurveyStatusVO getSurveyStatusDetailsInfo()
 	 {
-		 SurveyCompletionDetailsVO resultVo = new SurveyCompletionDetailsVO();
+		 SurveyStatusVO resultVo = new SurveyStatusVO();
+		 List<Long> constituencyIds = new ArrayList<Long>();
+		 List<Long> surveyCompletedStatusList = new ArrayList<Long>();
+		 surveyCompletedStatusList.add(6l); surveyCompletedStatusList.add(7l);
+		 surveyCompletedStatusList.add(8l); surveyCompletedStatusList.add(9l);
+		 surveyCompletedStatusList.add(10l); surveyCompletedStatusList.add(11l);
+		 List<SurveyStatusVO> resultList = new ArrayList<SurveyStatusVO>();
+		 resultVo.setSubList(resultList);
 		 try{
-			
+				List<Object[]>  list = surveyCompletedLocationsDAO.getSurveyConstituenciesStatus();
+				if(list != null && list.size() > 0)
+				{
+					
+					for(Object[] params : list)
+					{
+					  	if(!constituencyIds.contains((Long)params[0]));
+					  	{
+					  		SurveyStatusVO vo = new SurveyStatusVO();
+					  		vo.setId((Long)params[0]);
+					  		vo.setName(params[1] != null ? params[1].toString() : "");
+					  		resultList.add(vo);
+					  		constituencyIds.add((Long)params[0]);
+					  	}
+					}
+					
+					for(Object[] params : list)
+					{
+						SurveyStatusVO constituencyVo = getMatchedStatusVO (resultList, (Long)params[0]);
+						if(constituencyVo != null)
+						{
+							if((Long)params[2] == 1 || (Long)params[2] == 2 || (Long)params[2] == 3)
+								constituencyVo.setSurveyprocessTotal(constituencyVo.getSurveyprocessTotal() + (Long)params[3]);
+							if( (Long)params[2] == 3)
+								constituencyVo.setSurveyprocessCompleted(constituencyVo.getSurveyprocessCompleted() + (Long)params[3]);
+							if((Long)params[2] == 4 || (Long)params[2] == 5)
+								constituencyVo.setRedoBoothsTotal(constituencyVo.getRedoBoothsTotal() + ((Long)params[3]));
+							if((Long)params[2] == 5)
+								constituencyVo.setRedoBoothsCompleted(constituencyVo.getRedoBoothsCompleted() + ((Long)params[3]));
+							if(surveyCompletedStatusList.contains((Long)params[2]))
+								constituencyVo.setSurveyCompletedBooths(constituencyVo.getSurveyCompletedBooths() + (Long)params[3]);
+							}
+					}
+					List<Object[]> totalVotersAndBooths = surveyConstituencyTempDAO.getTotalVotersAndBoothsByConstituencyes(constituencyIds);
+					if(totalVotersAndBooths != null && totalVotersAndBooths.size() > 0)
+					{
+						for(Object[] params : totalVotersAndBooths)
+						{
+							SurveyStatusVO vo1 = getMatchedStatusVO (resultList, (Long)params[0]);
+							if(vo1 != null)
+							{
+								vo1.setTotalBooths((Long)params[4]);
+								
+							}
+						}
+					}
+				}
 			 
 		 }
 		 catch (Exception e) {
@@ -456,4 +515,21 @@ public class CtpCasteReportService implements ICtpCasteReportService{
 		}
 		return resultVo;
 	 }
+	 public SurveyStatusVO getMatchedStatusVO(List<SurveyStatusVO> list ,Long id)
+	 {
+		 try{
+			 if(list == null || list.size() == 0)
+				 return null;
+			 for(SurveyStatusVO vo : list)
+			 {
+				 if(vo.getId().longValue() == id.longValue())
+					 return vo;
+			 }
+		 }
+		 catch (Exception e) {
+			 LOG.error("Exception Occured in getMatchedVo()", e);
+		}
+		return null;
+	 }
+	 
 }
