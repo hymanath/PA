@@ -894,6 +894,8 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 				"  AND  ALEB.constituency.constituencyId = :constituencyId AND  CE.election.electionId = :electionId  ORDER BY ALEB.localElectionBody.localElectionBodyId,CE.constituency.name");
 		
 		query.setParameter("electionId", electionId);
+		query.setParameter("constituencyId", constituencyId);
+		
 		return query.list();
 	}
 	
