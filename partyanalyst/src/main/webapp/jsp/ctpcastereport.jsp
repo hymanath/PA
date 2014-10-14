@@ -520,6 +520,7 @@ function clearFieldsData(){
 	  </div>
 	 	</div>
 		<div id="voterCountData" style="margin-top:10px;"></div>
+		 <span style='display:none;' id='ajaxLoad2'><img src='./images/icons/goldAjaxLoad.gif' /></span>
 		<div id="CastevoterData" style="margin-top:10px;"></div>
 		
 		<div id="errorMessageDiv1" style="display:none;font-weight:bold;color:red" align="center"></div>
@@ -1261,7 +1262,7 @@ if(!flag){
 	
 		
 	$("#CastevoterData").html('');
-	
+	$("#ajaxLoad2").show();
 	var constituencyId = $("#constituencyList1").val();
 	var regionVal = $("#reportLevel1").val();
 	var regionType = $("#reportLevel1 option:selected").text();
@@ -1280,7 +1281,7 @@ if(!flag){
 	data:{task:JSON.stringify(jObj)},
 	success:function(result)
 		{
-		
+		$("#ajaxLoad2").hide();
 		buildCasteVoterCountData(result,jObj.locationType);
 				  },
 	          error:function() { 
