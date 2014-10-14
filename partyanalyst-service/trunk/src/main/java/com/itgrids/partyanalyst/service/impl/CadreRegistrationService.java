@@ -1250,26 +1250,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								existingParticipationDetails = getExistingCadreParticipationInfo(tdpCadreId);
 								existingrollsDetails = getExistingRollsInfo(tdpCadreId);
 								
-								vo.setAadharNo(tdpCadre.getAadheerNo() != null ? tdpCadre.getAadheerNo():"");								
-								vo.setNomineeName(tdpCadre.getNomineeName() != null ? tdpCadre.getNomineeName():"");
-								
-								if(tdpCadre.getNomineeGender() != null )
-								{
-									if(tdpCadre.getNomineeGender().equalsIgnoreCase("male"))
-									{
-										vo.setNomineeGender(1L);
-									}
-									if(tdpCadre.getNomineeGender().equalsIgnoreCase("female"))
-									{
-										vo.setNomineeGender(2L);
-									}
-									else
-										vo.setNomineeGender(0L);
-								}
-								
-								vo.setNomineAge(tdpCadre.getNomineeAge() != null ? tdpCadre.getNomineeAge().toString():"");
-								vo.setVoterRelationId(tdpCadre.getVoterRelationId() != null ? tdpCadre.getVoterRelationId():0L);
-								
+								vo.setAadharNo(tdpCadre.getAadheerNo() != null ? tdpCadre.getAadheerNo() : "");
+								vo.setNomineeName(tdpCadre.getNomineeName() != null ? tdpCadre.getNomineeName() : "");
+								vo.setNomineAge(tdpCadre.getNomineeAge() != null ? tdpCadre.getNomineeAge().toString() : "");
+								vo.setVoterRelationId(tdpCadre.getVoterRelationId() != null ? tdpCadre.getVoterRelationId() : 0l);
 								if(tdpCadre.getNomineeGender() != null && tdpCadre.getNomineeGender().trim().equalsIgnoreCase("MALE"))
 								{
 									vo.setNomineeGender(1l);
@@ -1360,27 +1344,24 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								vo.setMobileNo(tdpCadre.getMobileNo() != null ? tdpCadre.getMobileNo():"");
 								vo.setMemberShipId(tdpCadre.getMemberShipNo() != null ? tdpCadre.getMemberShipNo().toString():"");
 								vo.setActiveDate(tdpCadre.getPartyMemberSince() != null ? new SimpleDateFormat("dd-MM-yyyy").format(new SimpleDateFormat("yy-MM-dd").parse(tdpCadre.getPartyMemberSince().toString())):"");
-								
-								vo.setAadharNo(tdpCadre.getAadheerNo() != null ? tdpCadre.getAadheerNo():"");								
+								vo.setAadharNo(tdpCadre.getAadheerNo() != null ? tdpCadre.getAadheerNo():"");
 								vo.setNomineeName(tdpCadre.getNomineeName() != null ? tdpCadre.getNomineeName():"");
-								
-								if(tdpCadre.getNomineeGender() != null )
-								{
-									if(tdpCadre.getNomineeGender().equalsIgnoreCase("male"))
-									{
-										vo.setNomineeGender(1L);
-									}
-									if(tdpCadre.getNomineeGender().equalsIgnoreCase("female"))
-									{
-										vo.setNomineeGender(2L);
-									}
-									else
-										vo.setNomineeGender(0L);
-								}
-								
-								vo.setNomineAge(tdpCadre.getNomineeAge() != null ? tdpCadre.getNomineeAge().toString():"");
 								vo.setVoterRelationId(tdpCadre.getVoterRelationId() != null ? tdpCadre.getVoterRelationId():0L);
+								vo.setNomineAge(tdpCadre.getNomineeAge() != null ? tdpCadre.getNomineeAge().toString():"");
+								//vo.setNomineeGender(tdpCadre.getNomineeGender() != null ? Long.valueOf(tdpCadre.getNomineeGender()):0L);
 								
+								if(tdpCadre.getNomineeGender() != null && tdpCadre.getNomineeGender().trim().equalsIgnoreCase("MALE"))
+								{
+									vo.setNomineeGender(1l);
+								}
+								else if(tdpCadre.getNomineeGender() != null && tdpCadre.getNomineeGender().trim().equalsIgnoreCase("FEMALE"))
+								{
+									vo.setNomineeGender(2l);
+								}
+								else
+								{
+									vo.setNomineeGender(0l);
+								}
 								
 							} catch (Exception e) {
 								LOG.error("Exception raised in getCandidateInfoBySearchCriteria in CadreRegistrationService service", e);
