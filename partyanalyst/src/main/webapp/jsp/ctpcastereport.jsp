@@ -392,6 +392,7 @@ function clearFieldsData(){
 	    <div class="titleHeading" >CONSTITUENCY WISE OVERVIEW
 	 </div>
    <div id="statusContentDiv"></div>
+   <span style='display:none;' class="offset4" id='ajaxLoad3'><img src='./images/icons/goldAjaxLoad.gif' /></span>
     <div id="surveyStatusDetailsDiv"></div>
 	</div>
 	<div id="voterSearchDiv"  class="tab-pane ">
@@ -1294,6 +1295,7 @@ if(!flag){
 	}
 	function getSurveyStatusDetails()
 	{
+		$("#ajaxLoad3").show();
 	var jObj = {
 	task : "surveyStatusDetails"
 	}
@@ -1304,7 +1306,7 @@ if(!flag){
 	data:{task:JSON.stringify(jObj)},
 	success:function(result)
 		{
-		$("#ajaxLoad1").hide();
+		$("#ajaxLoad3").hide();
 		
 		buildSurveyStatusDetails(result.subList);
 				  },
