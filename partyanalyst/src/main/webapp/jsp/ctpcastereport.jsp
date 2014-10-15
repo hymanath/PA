@@ -1142,7 +1142,7 @@ if(!flag){
 	{
 		var result = resultList.votersList;
 		var result1 =  resultList.localbodyList;
-		if(result.length == 0)
+		if(result.length == 0 && result1.length == 0)
 		{
 			
 			 $('#errorMessageDiv1').show().html('No Data Avalible ');
@@ -1243,8 +1243,9 @@ if(!flag){
 		str+='</tbody>';
 		str+='</table>';
 		$("#voterCountData").html(str);
-		
-		if(result.length > 20)
+		var dataLength = result.length + result1.length ;
+		alert(dataLength);
+		if(dataLength > 20 )
 		{
 		$("#VoterdataTable").dataTable({
 		"aaSorting": [[ 1, "desc" ]],
@@ -1262,7 +1263,7 @@ if(!flag){
 	
 		var result = resultList.votersList;
 		var result1 =  resultList.localbodyList;
-		if(result.length == 0)
+		if(result.length == 0 && result1.length == 0)
 		{
 			$('#errorMessageDiv1').show().html('No Data Avalible ');
 			return;
@@ -1339,7 +1340,7 @@ if(!flag){
 			{
 				for(var k in result1)
 				{
-					
+					dataLenth = dataLenth + result1[k].casteList.length ;
 						for(var l in result1[k].casteList)
 						{
 						str+='<tr>';
