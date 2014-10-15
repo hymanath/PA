@@ -350,7 +350,14 @@
 		<!-- Header Row -->
 		<div class="row-fluid">
 			<div class="span12 header-bg text-center">
-				<img src="images/cadre_images/2014-cadre-Registration-Logo.png" />
+				<div class="row-fluid">
+				  <div class="span4 offset4 ">
+						<img src="images/cadre_images/2014-cadre-Registration-Logo.png">
+				  </div>
+				  <div class="span4">
+					 <a href="newlogoutAction.action" class="btn btn-mini pull-left m_top20">Logout</a>
+				  </div>
+				</div>
 			</div>
 		</div><!-- Header Row End-->
 	
