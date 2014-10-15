@@ -313,7 +313,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	{
 		Date date = null;
 		try {
-			SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-mm-dd");
+			SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
 			date = originalFormat.parse(dateStr);
 		} catch (Exception e) {
 			LOG.error("Exception raised in convertToDateFormet method in CadreRegistrationAction Action",e);
@@ -375,7 +375,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									}*/
 									if(flag)
 									{
-										if(cadreRegistrationVO.getVoterCardNumber() != null && cadreRegistrationVO.getVoterCardNumber().equalsIgnoreCase("null") && cadreRegistrationVO.getVoterCardNumber().trim().length() > 0)
+										if(cadreRegistrationVO.getVoterCardNumber() != null && !cadreRegistrationVO.getVoterCardNumber().equalsIgnoreCase("null") && cadreRegistrationVO.getVoterCardNumber().trim().length() > 0)
 										{
 											List<Long> voterCardNumbersList = voterDAO.getVoterId(cadreRegistrationVO.getVoterCardNumber());
 											if(voterCardNumbersList != null && voterCardNumbersList.size() > 0)
@@ -461,10 +461,6 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				{
 					tdpCadre.setVoterId(Long.valueOf(cadreRegistrationVO.getVoterId()));
 				}
-				if(cadreRegistrationVO.getAge() != null && Long.valueOf(cadreRegistrationVO.getAge()) > 0)
-				{
-					tdpCadre.setAge(Long.valueOf(cadreRegistrationVO.getAge()));
-				}
 				else if(cadreRegistrationVO.getVoterCardNumber() != null && !cadreRegistrationVO.getVoterCardNumber().equalsIgnoreCase("null") && cadreRegistrationVO.getVoterCardNumber().trim().length() > 0)
 				{
 					List<Long> voterCardNumbersList = voterDAO.getVoterId(cadreRegistrationVO.getVoterCardNumber());
@@ -480,6 +476,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					}*/
 					
 				}
+				if(cadreRegistrationVO.getAge() != null && Long.valueOf(cadreRegistrationVO.getAge()) > 0)
+				{
+					tdpCadre.setAge(Long.valueOf(cadreRegistrationVO.getAge()));
+				}
+				
 				if(cadreRegistrationVO.getPreviousEnrollmentNumber() != null && !cadreRegistrationVO.getPreviousEnrollmentNumber().equalsIgnoreCase("null") && cadreRegistrationVO.getPreviousEnrollmentNumber().trim().length() > 0)
 				{
 					tdpCadre.setPreviousEnrollmentNo(cadreRegistrationVO.getPreviousEnrollmentNumber());
@@ -626,7 +627,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				tdpCadre.setIsDeleted("N");
 				if(cadreRegistrationVO.getSurveyTimeStr() != null && cadreRegistrationVO.getSurveyTimeStr().trim().length() > 0 && !cadreRegistrationVO.getSurveyTimeStr().trim().equalsIgnoreCase("null"))
 				{
-					tdpCadre.setSurveyTime(convertToDateFormet(cadreRegistrationVO.getSurveyTimeStr()));
+					//tdpCadre.setSurveyTime(convertToDateFormet(cadreRegistrationVO.getSurveyTimeStr()));
+					SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT);
+					tdpCadre.setSurveyTime(sdf.parse(cadreRegistrationVO.getSurveyTimeStr()));
 				}else if( insertType.equalsIgnoreCase("new") && registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE"))){
 					tdpCadre.setSurveyTime(tdpCadre.getInsertedTime());
 				}
@@ -727,8 +730,12 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						ref = getUniueRefNo(ref,registrationType);
 						tdpCadre.setRefNo(ref);
 						cadreRegistrationVO.setRefNo(ref);
-						String membershipNo = getMemberShipNo(userAddress.getDistrict().getDistrictId());
-						tdpCadre.setMemberShipNo(membershipNo);
+						if(userAddress.getDistrict() != null)
+						{
+							String membershipNo = getMemberShipNo(userAddress.getDistrict().getDistrictId());
+							tdpCadre.setMemberShipNo(membershipNo);
+						}
+						
 						surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
 						uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
 						tdpCadre = tdpCadreDAO.save(tdpCadre);	
@@ -737,9 +744,13 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				  if(insertType.equalsIgnoreCase("new")){
 					  synchronized (CadreRegistrationService.class) {
 					     tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
-					        String membershipNo = getMemberShipNo(userAddress.getDistrict().getDistrictId());
-					        tdpCadre.setMemberShipNo(membershipNo);
-					        tdpCadre.setMemberShipNo(membershipNo);
+					     if(userAddress.getDistrict() != null)
+					     {
+					    	 	String membershipNo = getMemberShipNo(userAddress.getDistrict().getDistrictId());
+						        tdpCadre.setMemberShipNo(membershipNo);
+						        tdpCadre.setMemberShipNo(membershipNo);
+					     }
+					       
 							surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
 							uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
 					     tdpCadre = tdpCadreDAO.save(tdpCadre);	
@@ -966,6 +977,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			tdpCadre.setSurveyTime(null);
 			tdpCadre.setUniqueKey(null);
 			tdpCadre.setImage(null);
+			tdpCadre.setRefNo(null);
 		} catch (Exception e) {
 			LOG.error("Exception raised in emptyTdpCadreData in CadreRegistrationService service", e);
 		}
@@ -2858,9 +2870,12 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			if(registrationType.equalsIgnoreCase("TAB") && cadreRegistrationVO.getImageBase64String() != null && 
 					cadreRegistrationVO.getImageBase64String().trim().length() > 0){
 					String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
-					String filePath = cadreRegistrationVO.getPath() + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
+					String filePath = IConstants.STATIC_CONTENT_FOLDER_URL + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
+					//String filePath = "D:/" + tdpCadre.getMemberShipNo()+".jpg";
+					cadreRegistrationVO.setImageBase64String(cadreRegistrationVO.getImageBase64String().replace("_", "/"));
+					cadreRegistrationVO.setImageBase64String(cadreRegistrationVO.getImageBase64String().replace("-", "+"));
 					boolean status = imageAndStringConverter.convertBase64StringToImage(cadreRegistrationVO.getImageBase64String(),filePath);
-					
+					//System.out.println(cadreRegistrationVO.getImageBase64String());
 					if(status)
 						tdpCadre.setImage(tdpCadre.getMemberShipNo()+".jpg");
 			}
