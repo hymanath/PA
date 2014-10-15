@@ -37,7 +37,16 @@ public class GenericVO implements Serializable, Comparable<GenericVO>{
    private Long nomineeGenderId;
    private Long voterRelationType;
    private Long aadhireNo;
+   private String referenceNo;
    
+   
+   
+	public String getReferenceNo() {
+		return referenceNo;
+	}
+	public void setReferenceNo(String referenceNo) {
+		this.referenceNo = referenceNo;
+	}
 	public BasicVO getBasicVO() {
 	return basicVO;
 	}

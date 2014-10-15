@@ -2387,12 +2387,12 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return returnList;
 	}
 	
-	public List<GenericVO> getExistingCadreInfo(String candidateName,Long constituencyId,Long panchayatId,Long boothId,String isPresentCadre){
+	public List<GenericVO> getExistingCadreInfo(String candidateName,Long constituencyId,Long panchayatId,Long boothId,String isPresentCadre,String enrollmentNo){
  		LOG.info("Entered into getExistingCadreInfo method in CadreRegistrationService class");
  		List<GenericVO>  returnList = null;
  		try {
 			
- 			List<Object[]> cadreInfo = tdpCadreDAO.getexistringCadreInfoByLocation(candidateName,constituencyId,panchayatId,boothId,isPresentCadre);
+ 			List<Object[]> cadreInfo = tdpCadreDAO.getexistringCadreInfoByLocation(candidateName,constituencyId,panchayatId,boothId,isPresentCadre,enrollmentNo);
 				if(cadreInfo != null && cadreInfo.size()>0)
 				{
 					returnList = new ArrayList<GenericVO>();
