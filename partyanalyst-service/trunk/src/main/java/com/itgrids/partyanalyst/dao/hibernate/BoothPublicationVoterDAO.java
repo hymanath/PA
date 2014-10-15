@@ -7257,8 +7257,8 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		
 		StringBuilder queryStr1 = new StringBuilder();
 		
-		queryStr1.append(" select BPV.voter.voterId,BPV.voter.name, BPV.voter.relativeName, BPV.voter.age, BPV.voter.houseNo, BPV.voter.relationshipType, BPV.voter.gender, BPV.voter.voterIDCardNo ");
-		queryStr1.append("   from BoothPublicationVoter BPV where "+queryStr+"   ");
+		queryStr1.append(" select BPV.voter.voterId,BPV.voter.name, BPV.voter.relativeName, BPV.voter.age, BPV.voter.houseNo, BPV.voter.relationshipType, BPV.voter.gender, BPV.voter.voterIDCardNo, ");
+		queryStr1.append("   BPV.booth.partNo from BoothPublicationVoter BPV where "+queryStr+"   ");
 		queryStr1.append(" BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.publicationDate.publicationDateId = :publicationDate ");
 		
 		if(panchayatId.longValue() != 0L)
@@ -7339,6 +7339,12 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 	   		query.setParameter("casteInsertTypeId", IConstants.CTP_CASTE_INSERT_TYPE);
 	   		return query.list();
    }
-   
+   public List<String> getPartNo(Long constituencyId,Long voterId){
+	   Query query = getSession().createQuery("select model.booth.partNo from BoothPublicationVoter model where model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId = 11 " +
+	   		" and model.voter.voterId =:voterId ");
+	   query.setParameter("constituencyId", constituencyId);
+  		query.setParameter("voterId", voterId);
+	   return query.list();
+   }
   
 }
