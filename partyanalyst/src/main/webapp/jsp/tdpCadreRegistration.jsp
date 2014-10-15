@@ -238,16 +238,14 @@
 		$('#searchNameId,#searchVoterCardId,#searchHNoId').val("")
 		$('#searchDetailsDiv').html("");
 		$('#tableElement').hide();
-		$( "#myModal1" ).dialog({width: "auto",
-            height: "auto",
-			my: 'center',
-			at: 'left'});
+		$( "#myModal1" ).dialog({title: "Search For Enroll Number", width: "auto",
+            height: "auto"});
 	}
 	function enableSearchByfName(){
 		$('#searchNameIdFmly,#searchVoterCardIdFmly,#searchHNoIdFmly').val("")
 		$('#searchDetailsDivFmly').html("");
 		$('#tableElementFmly').hide();
-		$( "#myModal2" ).dialog({width: "auto",
+		$( "#myModal2" ).dialog({title: "Search For Family Member Voter Card No", width: "auto",
             height: "auto",
 			my: 'center',
 			at: 'left'});
@@ -257,10 +255,8 @@
 		$('#searchNameId,#searchVoterCardId,#searchHNoId').val("")
 		$('#searchDetailsDiv').html("");
 		$('#tableElement').hide();
-		$( "#myModal" ).dialog({width: "auto",
-            height: "auto",
-			my: 'center',
-			at: 'left'});
+		$( "#myModal" ).dialog({title: "Search For Voter Card No", width: "auto",
+            height: "auto"});
 	}
 	
 	function createNewForm(){
