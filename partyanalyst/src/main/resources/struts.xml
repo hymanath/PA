@@ -8636,6 +8636,14 @@
 				<param name="root">task</param>
 			</result>
 		</action>
+		<action name="votersInCasteAction" class="ctpCasteReportAction">
+		<result name="success">/jsp/ctpvoters.jsp</result>
+		</action>
+			<action name="ctpvotersInCasteAjaxAction" class="ctpCasteReportAction" method="getVotersInCaste">
+		<result type="json" name="success">
+				<param name="root">voterHouseInfoVO</param>
+			</result>
+		</action>
 </package>
 
 </struts>      
