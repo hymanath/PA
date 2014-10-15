@@ -1499,16 +1499,18 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 										fmilyVO.setAge(family[5] != null ? family[5].toString():"");								
 										fmilyVO.setVoterCardNo(family[6] != null ? family[6].toString():"");
 										
-										VoterInfoVO existingFamilyMember = getmatchedVOByVoterId(existingFamilyInfo,family[0] != null ? Long.valueOf(family[0].toString().trim()):0L);
-										
-										if(existingFamilyMember != null)
+										if(existingFamilyInfo != null && existingFamilyInfo.size()>0)
 										{
-											fmilyVO.setEducation(existingFamilyMember.getEducation());
-											fmilyVO.setOccupation(existingFamilyMember.getOccupation());
-											fmilyVO.setOccupationId(existingFamilyMember.getOccupationId());
-											existingFamilyInfo.remove(existingFamilyMember);
+											VoterInfoVO existingFamilyMember = getmatchedVOByVoterId(existingFamilyInfo,family[0] != null ? Long.valueOf(family[0].toString().trim()):0L);
+											
+											if(existingFamilyMember != null)
+											{
+												fmilyVO.setEducation(existingFamilyMember.getEducation());
+												fmilyVO.setOccupation(existingFamilyMember.getOccupation());
+												fmilyVO.setOccupationId(existingFamilyMember.getOccupationId());
+												existingFamilyInfo.remove(existingFamilyMember);
+											}										
 										}
-										
 										
 										familyList.add(fmilyVO);
 									}
@@ -1929,6 +1931,39 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					GenericVO vo = new GenericVO();
 					vo.setId(participation[0] != null ? Long.valueOf(participation[0].toString().trim()):0L);		//Committe Level Id
 					vo.setCount(participation[1] != null ? Long.valueOf(participation[1].toString().trim()):0L);	// Committe Id
+					
+					List<BasicVO> committeeList = new ArrayList<BasicVO>();
+					List<BasicVO> rolesList =  new ArrayList<BasicVO>();
+					
+					List<Object[]> results = cadreCommitteeRoleDAO.getCommitteeRolesByLevelId(vo.getId());
+					
+					if(results != null &&results.size()>0)
+					{
+						for(Object[] result:results)
+						{
+							BasicVO vo1 = new BasicVO();
+							vo1.setId((Long)result[0]);
+							vo1.setName(result[1].toString());
+							committeeList.add(vo1);
+						}
+						
+						vo.getBasicVO().setHamletCasteInfo(committeeList);
+					}
+					
+					List<Object[]> results1 = cadreCommitteeRoleDAO.getCommitteeRolesByLevelIdAndCommitteeId(vo.getId(),vo.getCount());
+					
+					if(results1 != null && results1.size()>0)
+					{
+						for(Object[] result:results1)
+						{
+							BasicVO vo2 = new BasicVO();
+							vo2.setId((Long)result[0]);
+							vo2.setName(result[1].toString());
+							rolesList.add(vo2);
+						}
+						vo.getBasicVO().setPanchayatVoterInfo(rolesList);
+					}
+					
 					vo.setRank(participation[2] != null ? Long.valueOf(participation[2].toString().trim()):0L);	// Committe role id
 					vo.setStartTime(participation[3] != null ?format.format(format1.parse(participation[3].toString())):"");		// from date
 					vo.setEndTime(participation[4] != null ? format.format(format1.parse(participation[4].toString())):"");		// to date 
