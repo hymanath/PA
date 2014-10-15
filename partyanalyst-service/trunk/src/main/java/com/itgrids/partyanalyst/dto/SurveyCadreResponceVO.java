@@ -6,6 +6,7 @@ public class SurveyCadreResponceVO implements Serializable{
 
 	
 	private static final long serialVersionUID = -7707083889324683619L;
+	
 	private String 			status;
 	private String 			enrollmentNumber;
 	private String 			voterName;

@@ -97,6 +97,10 @@ public class TdpCadre {
 	private String 						photoType;
 	private String						nameType;
 	
+	private String						cadreAadherNo;
+	private Long						familyVoterId;
+	private String						previousMembershipYear;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "tdp_cadre_id", unique = true, nullable = false)
@@ -601,6 +605,31 @@ public class TdpCadre {
 	public void setRelationTypeId(Long relationTypeId) {
 		this.relationTypeId = relationTypeId;
 	}
+	
+	@Column(name="cadre_aadher_no")
+	public String getCadreAadherNo() {
+		return cadreAadherNo;
+	}
+	public void setCadreAadherNo(String cadreAadherNo) {
+		this.cadreAadherNo = cadreAadherNo;
+	}
+	
+	@Column(name="family_voterId")
+	public Long getFamilyVoterId() {
+		return familyVoterId;
+	}
+	public void setFamilyVoterId(Long familyVoterId) {
+		this.familyVoterId = familyVoterId;
+	}
+	
+	@Column(name="previous_membership_year")
+	public String getPreviousMembershipYear() {
+		return previousMembershipYear;
+	}
+	public void setPreviousMembershipYear(String previousMembershipYear) {
+		this.previousMembershipYear = previousMembershipYear;
+	}
+	
 	
 	
 	

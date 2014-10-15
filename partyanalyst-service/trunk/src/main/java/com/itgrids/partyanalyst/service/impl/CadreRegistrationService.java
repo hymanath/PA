@@ -307,6 +307,20 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	public void setVoterRelationDAO(IVoterRelationDAO voterRelationDAO) {
 		this.voterRelationDAO = voterRelationDAO;
 	}
+	
+	
+	public Date convertToDateFormet(String dateStr)
+	{
+		Date date = null;
+		try {
+			SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-mm-dd");
+			date = originalFormat.parse(dateStr);
+		} catch (Exception e) {
+			LOG.error("Exception raised in convertToDateFormet method in CadreRegistrationAction Action",e);
+		}
+		return date;
+		
+	}
 
 	/**
 	 * This service is used for saving cadre data from tab as well web also
@@ -431,9 +445,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				{
 					tdpCadre.setFirstname(cadreRegistrationVO.getVoterName());
 				}
-				if(cadreRegistrationVO.getDob() != null )
+				if(cadreRegistrationVO.getDobStr() != null && cadreRegistrationVO.getDobStr().trim().length() > 0 && !cadreRegistrationVO.getDobStr().trim().equalsIgnoreCase("null"))
 				{
-					tdpCadre.setDateOfBirth(cadreRegistrationVO.getDob());
+					tdpCadre.setDateOfBirth(convertToDateFormet(cadreRegistrationVO.getDobStr().toString()));
 				}
 				if(cadreRegistrationVO.getGender() != null && !cadreRegistrationVO.getGender().equalsIgnoreCase("null") && cadreRegistrationVO.getGender().trim().length() > 0)
 				{
@@ -470,9 +484,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				{
 					tdpCadre.setPreviousEnrollmentNo(cadreRegistrationVO.getPreviousEnrollmentNumber());
 				}
-				if(cadreRegistrationVO.getPartyMemberSince() != null)
+				if(cadreRegistrationVO.getPartyMemberSinceStr() != null && cadreRegistrationVO.getPartyMemberSinceStr().trim().length() > 0 && !cadreRegistrationVO.getPartyMemberSinceStr().trim().equalsIgnoreCase("null"))
 				{
-					tdpCadre.setPartyMemberSince(cadreRegistrationVO.getPartyMemberSince());
+					tdpCadre.setPartyMemberSince(convertToDateFormet(cadreRegistrationVO.getPartyMemberSinceStr()));
 				}
 				if(cadreRegistrationVO.getBloodGroupId() != null && cadreRegistrationVO.getBloodGroupId().longValue() > 0)
 				{
@@ -527,6 +541,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				if(tdpCadre.getVoterId() != null && tdpCadre.getVoterId().longValue() > 0)
 				{
 					getVoterAddressDetails(tdpCadre.getVoterId(),userAddress,cadreRegistrationVO.getStreet());
+				}
+				else if(cadreRegistrationVO.getFamilyVoterId() != null && cadreRegistrationVO.getFamilyVoterId().longValue() > 0)
+				{
+					getVoterAddressDetails(cadreRegistrationVO.getFamilyVoterId(),userAddress,cadreRegistrationVO.getStreet());
 				}
 				else
 				{
@@ -606,9 +624,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					tdpCadre.setLatitude(cadreRegistrationVO.getLatitude());
 				}
 				tdpCadre.setIsDeleted("N");
-				if(cadreRegistrationVO.getSurveyTime() != null)
+				if(cadreRegistrationVO.getSurveyTimeStr() != null && cadreRegistrationVO.getSurveyTimeStr().trim().length() > 0 && !cadreRegistrationVO.getSurveyTimeStr().trim().equalsIgnoreCase("null"))
 				{
-					tdpCadre.setSurveyTime(cadreRegistrationVO.getSurveyTime());
+					tdpCadre.setSurveyTime(convertToDateFormet(cadreRegistrationVO.getSurveyTimeStr()));
 				}else if( insertType.equalsIgnoreCase("new") && registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE"))){
 					tdpCadre.setSurveyTime(tdpCadre.getInsertedTime());
 				}
@@ -653,7 +671,14 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						surveyCadreResponceVO.setRelativeName(cadreRegistrationVO.getRelativeName());
 					}
 				}
-				
+				if(cadreRegistrationVO.getCandidateAadherNo() != null && cadreRegistrationVO.getCandidateAadherNo().trim().length() > 0 && !cadreRegistrationVO.getCandidateAadherNo().trim().equalsIgnoreCase("null"))
+				{
+					tdpCadre.setCadreAadherNo(cadreRegistrationVO.getCandidateAadherNo());
+				}
+				if(cadreRegistrationVO.getCadrePrevYear() != null && cadreRegistrationVO.getCadrePrevYear().trim().length() > 0 && !cadreRegistrationVO.getCadrePrevYear().trim().equalsIgnoreCase("null"))
+				{
+					tdpCadre.setPreviousMembershipYear(cadreRegistrationVO.getCadrePrevYear());
+				}
 				if(cadreRegistrationVO.getPhotoType() != null && cadreRegistrationVO.getPhotoType().trim().length() > 0 && !cadreRegistrationVO.getPhotoType().trim().equalsIgnoreCase("null"))
 				{
 					tdpCadre.setPhotoType(cadreRegistrationVO.getPhotoType() );
@@ -681,6 +706,17 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				   tdpCadre.setIsRelative("N");
 				   tdpCadre.setRelationTypeId(null);
 				}
+				
+				if(cadreRegistrationVO.getFamilyVoterId() != null && cadreRegistrationVO.getFamilyVoterId().longValue() > 0)
+				{
+					tdpCadre.setFamilyVoterId(cadreRegistrationVO.getFamilyVoterId());
+					tdpCadre.setIsRelative("Y");
+					if(cadreRegistrationVO.getRelationType() != null && cadreRegistrationVO.getRelationType().trim().length() >0 && !cadreRegistrationVO.getRelationType().trim().equalsIgnoreCase("null"))
+					{
+						tdpCadre.setRelationType(voterRelationDAO.get(Long.valueOf(cadreRegistrationVO.getRelationType())));
+					}
+					
+				}
 				if(registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE")) && insertType.equalsIgnoreCase("new")){
 					String userId = "0000";
 					if(cadreRegistrationVO.getCreatedUserId() != null){
@@ -703,16 +739,18 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					     tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
 					        String membershipNo = getMemberShipNo(userAddress.getDistrict().getDistrictId());
 					        tdpCadre.setMemberShipNo(membershipNo);
-							surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getMemberShipNo());
+					        tdpCadre.setMemberShipNo(membershipNo);
+							surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
 							uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
 					     tdpCadre = tdpCadreDAO.save(tdpCadre);	
 					  }
 				  }else{
 					  uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
-					  surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getMemberShipNo());
+					  surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
 					tdpCadre = tdpCadreDAO.save(tdpCadre);	
 				  }
 				}
+				surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
 				List<CadrePreviousRollesVO> previousRollesPartList = cadreRegistrationVO.getPreviousRollesList();
 				if(previousRollesPartList != null && previousRollesPartList.size() > 0)
 				{
@@ -744,13 +782,13 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 										}
 										
 									}
-									if(rolesVO.getFromDate() != null)
+									if(rolesVO.getFromDateStr() != null && rolesVO.getFromDateStr().trim().length() > 0 && !rolesVO.getFromDateStr().trim().equalsIgnoreCase("null"))
 									{
-										cadrePreviousRoles.setFromDate(rolesVO.getFromDate());
+										cadrePreviousRoles.setFromDate(convertToDateFormet(rolesVO.getFromDateStr()));
 									}
-									if(rolesVO.getToDate() != null)
+									if(rolesVO.getToDateStr() != null && rolesVO.getToDateStr().trim().length() > 0 && !rolesVO.getToDateStr().trim().equalsIgnoreCase("null"))
 									{
-										cadrePreviousRoles.setToDate(rolesVO.getToDate());
+										cadrePreviousRoles.setToDate(convertToDateFormet(rolesVO.getToDateStr()));
 									}
 									cadrePreviousRoles.setInsertedDate(dateUtilService.getCurrentDateAndTime());
 									cadrePreviousRoles.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
@@ -788,7 +826,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									}
 									if(electionVO.getCandidateId() != null && electionVO.getCandidateId().trim().length()> 0)
 									{
-										if(previousElectionPartList.get(0).getCandidateId() != null)
+										if(previousElectionPartList.get(0).getCandidateId() != null && Long.valueOf(previousElectionPartList.get(0).getCandidateId())  > 0)
 										{
 											cadreParticipatedElection.setCandidateId((Long.valueOf(previousElectionPartList.get(0).getCandidateId())));
 										}
