@@ -1220,7 +1220,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return returnList;
 	}
 	
-	public List<VoterInfoVO> getCandidateInfoBySearchCriteria(String searchType, Long candidateId,String staticContentLoc,Long constituencyId)
+	public List<VoterInfoVO> getCandidateInfoBySearchCriteria(String searchType, Long candidateId,String staticContentLoc,String constituencyId)
 	{
 		List<VoterInfoVO> returnList = null;
 		VoterInfoVO vo = null;
@@ -1254,7 +1254,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						vo.setGender(voter.getGender());
 						vo.setVoterCardNo(voter.getVoterIDCardNo() != null ? voter.getVoterIDCardNo() :"");
 						if(constituencyId != null){
-							List<String> partNos = boothPublicationVoterDAO.getPartNo(constituencyId, voter.getVoterId());
+							List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(constituencyId), voter.getVoterId());
 							if(voter.getVoterIDCardNo() != null && partNos.size() > 0 && partNos.get(0) != null){
 								String filePath = staticContentLoc +"voter_images"+pathSeperator+constituencyId+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo()+".jpg";
 								if(checkFileExistingOrNot(filePath)){
@@ -1373,7 +1373,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 										vo.setVoterImage("voter_images/" +tdpCadre.getVoter().getVoterIDCardNo()+".jpg");
 									}*/
 									if(constituencyId != null){
-										List<String> partNos = boothPublicationVoterDAO.getPartNo(constituencyId, tdpCadre.getVoter().getVoterId());
+										List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(constituencyId), tdpCadre.getVoter().getVoterId());
 										if(partNos.size() > 0 && partNos.get(0) != null){
 											String filePath = staticContentLoc +"voter_images"+pathSeperator+constituencyId+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+tdpCadre.getVoter().getVoterIDCardNo()+".jpg";
 											if(checkFileExistingOrNot(filePath)){
