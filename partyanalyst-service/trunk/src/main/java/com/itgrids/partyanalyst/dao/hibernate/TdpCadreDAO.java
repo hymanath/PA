@@ -258,12 +258,24 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		return (Long)query.uniqueResult();
 	}
 
-	public List<Object[]> getexistringCadreInfoByLocation(String candidateName, Long constid, Long panchayatId,Long boothId,String isPresentCadre)
+	public List<Object[]> getexistringCadreInfoByLocation(String candidateName, Long constid, Long panchayatId,Long boothId,String isPresentCadre, String enrollmentNo)
 	{
 		
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select model.firstname, model.relativename, model.previousEnrollmentNo, model.tdpCadreId ");
-		queryStr.append(" from TdpCadre model where model.firstname like '%"+candidateName+"%'  ");
+		queryStr.append(" select model.firstname, model.relativename, model.previousEnrollmentNo, model.tdpCadreId from TdpCadre model where ");
+		boolean candiNameExist = false;
+		if(candidateName.length()>2){
+			candiNameExist = true;
+			queryStr.append(" model.firstname like '%"+candidateName+"%' ");
+		}
+		
+		if(enrollmentNo.length()>2){
+			if(candiNameExist){
+				queryStr.append(" and ");
+			}
+			queryStr.append(" model.previousEnrollmentNo like '%"+enrollmentNo+"%' ");
+		}
+		
 		
 		if(constid != null && constid.longValue() != 0L)
 		{

@@ -31,7 +31,7 @@ public interface ICadreRegistrationService {
 	
 	public List<SelectOptionVO> getElectionYearsByElectionType(Long electionTypeId);
 
-	public List<GenericVO> getExistingCadreInfo(String candidateName,Long constituencyId,Long panchayatId,Long boothId,String isPresentCadre);
+	public List<GenericVO> getExistingCadreInfo(String candidateName,Long constituencyId,Long panchayatId,Long boothId,String isPresentCadre, String enrollmentNo);
 	
 	public CadrePrintVO getCadreDetailsForPrinting(String memberCardNo);
 	
@@ -71,4 +71,6 @@ public interface ICadreRegistrationService {
 	public List<SelectOptionVO> getCadreCommitteDetails(Long levelId);
 		
 	public String getCadreImageByPreviousEnrolId(String enrolmentId,String staticContentLoc);
+	
+	
 }

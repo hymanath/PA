@@ -41,7 +41,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public Long checkRandomNoExistsOrNot(String dataSource,String randomNo);
 	
-	public List<Object[]> getexistringCadreInfoByLocation(String candidateName, Long constid, Long panchayatId,Long boothId,String isPresentCadre);
+	public List<Object[]> getexistringCadreInfoByLocation(String candidateName, Long constid, Long panchayatId,Long boothId,String isPresentCadre, String enrollmentNo);
 	
 	public List<Object[]> getCandidateDataCollectionInfo(Date fromDate,Date toDate);
 
