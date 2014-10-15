@@ -781,28 +781,29 @@
 		str += '<div class="span2">';
 		str += '<div class=" " >';
 		//str += '<h5 class="text-align1">Year</h5>';
-		str += '<select  id="electionYears'+eletionCont+'" name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].electionTypeId" style="width:150px;" >';	
+		str += '<select  id="electionYears'+eletionCont+'" name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].electionTypeId"  onchange="getConstiteuncyListForElection(this.value,\'constituencyList'+eletionCont+'\')" >';	
 		str += '</select>';
 		str += '</div>';
 		str += '</div>';
 		str += '<div class="span3">';
 		str += '<div class=" " >';
 		//str += '<h5 class="text-align1">Constituency</h5>';
-		str += '<select class="" name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].constituencyId" style="margin-left: 12px;" onchange="getCandidateDetailsForElection(this.value,\'candidatesList'+eletionCont+'\',\'electionYears'+eletionCont+'\',\'electionTypeId'+eletionCont+'\');">';
+		str += '<select class="" id="constituencyList'+eletionCont+'" name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].constituencyId" style="margin-left: 93px;width:220px" onchange="getCandidateDetailsForElection(this.value,\'candidatesList'+eletionCont+'\',\'electionYears'+eletionCont+'\',\'electionTypeId'+eletionCont+'\');">';
 		str += '<option value = "0"> Select Constituency </option>';
-			if(constituencyArray != null && constituencyArray.length>0)
+		/*	if(constituencyArray != null && constituencyArray.length>0)
 			{
 				for(var i in constituencyArray)
 				{
 					str += '<option value = "'+constituencyArray[i].id+'">'+constituencyArray[i].name+'</option>';
 				}
 			}
+		*/
 		str += '</select>';
 		str += '</div>';
 		str += '</div>';
 		str += '<div class="span3">';
 				str += '<div class=" " >';
-				str += '<select   id="candidatesList'+eletionCont+'"  style="margin-left: 12px;;width:160px;" onchange="getCandidateDetailsById(\'constituencyList'+eletionCont+'\',\'electionYearId'+eletionCont+'\',this.value); " name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].candidateId">';
+				str += '<select   id="candidatesList'+eletionCont+'"  style="margin-left: 91px;width:160px;" onchange="getCandidateDetailsById(\'constituencyList'+eletionCont+'\',\'electionYearId'+eletionCont+'\',this.value); " name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].candidateId">';
 				str += '<option value="0"> Select Candidate</option>	';							
 				str += '</select>';							
 				str += '</div>';
@@ -1736,7 +1737,7 @@
 							<h5 class="text-align1">Candidate </h5>
 						</c:if>
 
-							<select   id="candidatesList${indexValue.index}"  style="margin-left: 12px" onchange="getCandidateDetailsById('constituencyList${indexValue.index}','electionYearId${indexValue.index}',this.value);">
+							<select   id="candidatesList${indexValue.index}"  style="margin-left: 12px;width:150px" onchange="getCandidateDetailsById('constituencyList${indexValue.index}','electionYearId${indexValue.index}',this.value);">
 								<option value="0"> Select Candidate</option>
 								<c:forEach var="educationList" items="${voterInfoVOList[0].previousParticipationInfoList[indexValue.index].basicVO.hamletVoterInfo}" ><option value="${educationList.id}">${educationList.name}</option>
 								</c:forEach>
@@ -1784,7 +1785,7 @@
 					<div class="span3">
 						<div class=" " >
 							<h5 class="text-align1">Candidate </h5>
-							<select   id="candidatesList0"  style="margin-left: 12px;width:160px;" onchange="getCandidateDetailsById('constituencyList0','electionYearId0',this.value); " name="cadreRegistrationVO.previousParicaptedElectionsList[0].candidateId">
+							<select   id="candidatesList0"  style="margin-left: 12px;width:150px" onchange="getCandidateDetailsById('constituencyList0','electionYearId0',this.value); " name="cadreRegistrationVO.previousParicaptedElectionsList[0].candidateId" >
 								<option value="0"> Select Candidate</option>
 								<c:forEach var="educationList" items="${voterInfoVOList[0].previousParticipationInfoList[indexValue.index].basicVO.hamletVoterInfo}" ><option value="${educationList.id}">${educationList.name}</option>
 								</c:forEach>
