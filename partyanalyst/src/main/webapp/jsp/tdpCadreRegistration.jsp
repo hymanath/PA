@@ -2376,7 +2376,6 @@ function getExistingCadreInfo1(){
 	$('#tableElement1').hide();
 			
 	var candidateName = $('#candiNameId').val();
-	$('#preEnrollNo').val('');
 	var enrollmentNo = $('#enrollmentNoId').val();
 	var constituencyId = '${constiteucnyId}';
 	var panchayatId = '${houseNo}';  // panchayat Id 
@@ -2431,9 +2430,9 @@ function getExistingCadreInfo1(){
 				for(var i in results){
 					str +='<tr>';
 						str +='<td class="text-align1"><input type="checkbox" name="voters" onclick="updateEnrollmentNo(\''+results[i].caste+'\')"></th>';
-						str +='<td class="text-align1">'+results[i].name+'</td>';
-						str +='<td class="text-align1">'+results[i].desc+'</td>';
-						str +='<td class="text-align1">'+results[i].caste+'</td>';
+						str +='<td>'+results[i].name+'</td>';
+						str +='<td>'+results[i].desc+'</td>';
+						str +='<td>'+results[i].caste+'</td>';
 					str +='</tr>';
 				}
 				str +='</tbody>';
