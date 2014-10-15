@@ -3328,6 +3328,37 @@ IUserVoterDetailsDAO{
 		   query.setParameter("constituencyId", constituencyId);
 		   return query.list();	 
 	 }
-	
+	 public List<Object[]> getCasteVotersDetailsBylocationTypeInConstituency(Long publicationDateId,Long userId,Long constituencyId,String locationType,Long casteId,String gender,Long locationId)
+	 {
+		 StringBuilder str = new StringBuilder();
+		 str.append("select distinct uvd.voter,model.booth.boothId,model.booth.partNo,model.serialNo,uvd.casteState.caste.casteName");	 
+		 str.append("  from BoothPublicationVoter model,UserVoterDetails uvd " +
+		   		" where model.voter.voterId = uvd.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId ");
+		   str.append(" and uvd.user.userId = :userId and uvd.casteInsertType.casteInsertTypeId = :casteInsertTypeId and model.booth.constituency.constituencyId = :constituencyId");
+		  if(locationType.equalsIgnoreCase(IConstants.MANDAL))
+			   str.append(" and model.booth.tehsil.tehsilId = :locationId");
+		   else if(locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+			   str.append(" and model.booth.localBody.localElectionBodyId = :locationId");
+		   else if(locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+			   str.append(" and model.booth.panchayat.panchayatId = :locationId");
+			   else if(locationType.equalsIgnoreCase(IConstants.BOOTH))  
+				   str.append(" and model.booth.boothId = :locationId");
+		  if(casteId > 0)
+			  str.append(" and uvd.casteState.caste.casteId = :casteId");
+		  if(!gender.trim().equalsIgnoreCase(IConstants.ALL))
+			  str.append(" and uvd.voter.gender = :gender");  
+		   Query query = getSession().createQuery(str.toString());
+		   query.setParameter("userId", userId);
+		   query.setParameter("publicationDateId", publicationDateId);
+		   query.setParameter("casteInsertTypeId", IConstants.CTP_CASTE_INSERT_TYPE);
+		   query.setParameter("constituencyId", constituencyId);
+		   if(!locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+		   query.setParameter("locationId", locationId);
+		   if(!gender.trim().equalsIgnoreCase(IConstants.ALL))
+			query.setParameter("gender", gender.trim());
+		   if(casteId > 0)  
+			   query.setParameter("casteId", casteId);
+		   return query.list();	 
+	 }
 }
 
