@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
 import com.itgrids.partyanalyst.dto.SurveyStatusVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.ICtpCasteReportService;
@@ -45,8 +46,45 @@ public class CtpCasteReportAction extends ActionSupport implements ServletReques
 	@Autowired
     private EntitlementsHelper entitlementsHelper;
 	private SurveyStatusVO surveyStatusVO;
+	private Long id;
+	private String type;
+	private String casteId;
+	
+	private Long constituencyId;
+	private String gender;
 	
 	
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	
+	public String getCasteId() {
+		return casteId;
+	}
+	public void setCasteId(String casteId) {
+		this.casteId = casteId;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	public SurveyStatusVO getSurveyStatusVO() {
 		return surveyStatusVO;
 	}
@@ -250,6 +288,21 @@ public class CtpCasteReportAction extends ActionSupport implements ServletReques
 		}
 		catch (Exception e) {
 			LOG.error("Exception Occured in getSurveyStatusDetails() method", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getVotersInCaste()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO) session.getAttribute(IConstants.USER);
+			Long userId = regVo.getRegistrationID();
+			voterHouseInfoVO =  ctpCasteReportService.getVotersDetailsInCaste(jObj.getLong("id"),jObj.getString("type"),jObj.getLong("casteId"),userId,jObj.getLong("constituencyId"),jObj.getString("gender") );
+		}
+		catch (Exception e) {
+			LOG.error("Exception Occured in getVotersInCaste() method", e);
 		}
 		return Action.SUCCESS;
 	}
