@@ -182,7 +182,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
 		try{
 		   CadreRegisterInfo info = null;
-		 //0 first name ,1 lastname,2 constituency ,3 localArea
+		 //0 first name ,1 lastname,2 constituency ,3 localArea, 4 image
 		   List<Object[]> cadreDetails = tdpCadreDAO.getRecentlyRegisteredCadres();
 		   for(Object[] cadre:cadreDetails){
 			   StringBuilder name = new StringBuilder("");
@@ -200,6 +200,9 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					info.setArea("");
 				}
 				info.setLocation(cadre[2].toString());
+				if(cadre[4] != null){
+				info.setDate("images/cadre_images/"+cadre[4].toString());
+				}
 				returnList.add(info);
 			}
 		}catch(Exception e){
