@@ -234,6 +234,22 @@
 	
 	function enableSearchByName(){
 		$('#preEnrollNoValue').removeAttr('readOnly');
+		$('#searchNameId,#searchVoterCardId,#searchHNoId').val("")
+		$('#searchDetailsDiv').html("");
+		$('#tableElement').hide();
+		$( "#myModal1" ).dialog({width: "auto",
+            height: "auto",
+			my: 'center',
+			at: 'left'});
+	}
+	function enableSearchByfName(){
+		$('#searchNameIdFmly,#searchVoterCardIdFmly,#searchHNoIdFmly').val("")
+		$('#searchDetailsDivFmly').html("");
+		$('#tableElementFmly').hide();
+		$( "#myModal2" ).dialog({width: "auto",
+            height: "auto",
+			my: 'center',
+			at: 'left'});
 	}
 	function enableLookupName(){
 		$('#cardNumber').removeAttr('readOnly');
@@ -241,8 +257,9 @@
 		$('#searchDetailsDiv').html("");
 		$('#tableElement').hide();
 		$( "#myModal" ).dialog({width: "auto",
-            height: "auto",my: 'center',
-       at: 'left'});
+            height: "auto",
+			my: 'center',
+			at: 'left'});
 	}
 	
 	function createNewForm(){
@@ -1009,7 +1026,11 @@
 												<input type="text" class="form-control border-radius-0 " placeholder="House Number" name="cadreRegistrationVO.houseNo" style="width: 120px; float: left; margin-left: 0px;"  value="${voterInfoVOList[0].houseNo}"></input>
 											</div>
 											<div class="span4"> <input type="checkbox" title="Please Check If Cadre Didn't Have Voter Card And Using His Family Members Voter Card" id="relativeTypeChecked" name="relativeTypeChecked" onclick="showHideFamRelatinoSts();"/> Is Family Member</div>
-											<div  class="span8" id="showHideFammemberType" style="display:none; margin-left: 165px;margin-top: -33px;"><span style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</span><select name="relativeTypeId" id="relativeTypeId"> </select></div>
+											<div  class="span6" id="showHideFammemberType" style="display:none; margin-left: 165px;margin-top: -33px;">
+												<span style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</span><select name="relativeTypeId" id="relativeTypeId"> </select>
+												<span style="color: #9a9a9a;font-weight: bold;">Voter Card &nbsp;</span><input type="text" id="familyVtrCrdId">
+												<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByfName();}" style="margin-top:10px;"> LookUp </a>
+											</div>
 										</div>
 								</div>	
 								
@@ -1076,8 +1097,8 @@
 							</div>
 							<div class=" m_top20" > 
 									<h5 class="text-align1">PREVIOUS ENROLLMENT NUMBER</h5>
-									<input type="text" id="preEnrollNoValue" class="form-control border-radius-0 input-block-level" placeholder="Previous Enrollment No."  value="${voterInfoVOList[0].memberShipId}" style="width:260px;"  onkeyup="getExistingCadreInfo();" name="cadreRegistrationVO.previousEnrollmentNumber" readonly></input>
-									<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByName();}" style="margin-top: -10px;"> Search By Name </a>
+									<input type="text" id="preEnrollNoValue" class="form-control border-radius-0 input-block-level" placeholder="Previous Enrollment No."  value="${voterInfoVOList[0].memberShipId}" style="width:260px;"  onkeyup="getExistingCadreInfo2();" name="cadreRegistrationVO.previousEnrollmentNumber" readonly></input>
+									<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByName();}" style="margin-top: -10px;"> LookUp </a>
 									<input type="hidden" id="preEnrollNo" class="form-control border-radius-0 input-block-level" placeholder="Text input"  value="${voterInfoVOList[0].memberShipId}" style="width:260px;" ></input>
 									
 							</div>
@@ -1614,32 +1635,87 @@
 </div>
 				
 				<div id="myModal" style="display:none;">
-					<div class="pad-10b">
-					<h5 class="text-align1">CANDIDATE NAME</h5>
-							<input type="text" class="form-control border-radius-0" placeholder="Enter Name" id="searchNameId" name="searchName" style="width:425px;" onkeyUp="searchCandidatesDetailsBySearchCriteria();">
-					</div>
-					<div class=" m_top10 pad-10b">
-						<div class="row-fluid">
+						<div style="border:1px solid lightgray;">
+							<div class="pad-10b">
+								<h5 class="text-align1">CANDIDATE NAME</h5>
+								<input type="text" class="form-control border-radius-0" placeholder="Enter Name" id="searchNameId" name="searchName" style="width:425px;" onkeyUp="searchCandidatesDetailsBySearchCriteria('voter');">
+							</div>
+							<div class=" m_top10 pad-10b">
+								<div class="row-fluid">
+									<div class="span6">
+										<h5 class="text-align1">VOTER ID</h5>
+										<input type="text" class="form-control border-radius-0" placeholder="Enter Voter ID"  id="searchVoterCardId"  name="searchVoterCard" onkeyUp="searchCandidatesDetailsBySearchCriteria('voter');">
+									</div>
+									
+									<div class="span6">
+										<h5 class="text-align1">H NO</h5>
+										<input type="text" class="form-control border-radius-0" placeholder="House Number"  id="searchHNoId"   name="searchHNo" onkeyUp="searchCandidatesDetailsBySearchCriteria('voter');">
+									</div>
+								</div>
+							</div>
+							<a href="javascript:{searchCandidatesDetailsBySearchCriteria('voter');}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
+							<div id="errorDiv"></div>
+							<div class="show-grid pad-5 m-bottom-10">
+								<div class="container" id="tableElement" style="margin-top:25px;display:none;">
+									<h3 class="text-align" style="color:red;">SEARCH DETAILS</h3>
+									<div class="table-responsive" id="searchDetailsDiv" ></div>
+								</div>
+							</div>
+						</div>
+				</div>
+				
+				<div id="myModal2" style="display:none;">
+						<div style="border:1px solid lightgray;">
+							<div class="pad-10b">
+								<h5 class="text-align1">CANDIDATE NAME</h5>
+								<input type="text" class="form-control border-radius-0" placeholder="Enter Name" id="searchNameIdFmly" name="searchName" style="width:425px;" onkeyUp="searchCandidatesDetailsBySearchCriteria('family');">
+							</div>
+							<div class=" m_top10 pad-10b">
+								<div class="row-fluid">
+									<div class="span6">
+										<h5 class="text-align1">VOTER ID</h5>
+										<input type="text" class="form-control border-radius-0" placeholder="Enter Voter ID"  id="searchVoterCardIdFmly"  name="searchVoterCard" onkeyUp="searchCandidatesDetailsBySearchCriteria('family');">
+									</div>
+									
+									<div class="span6">
+										<h5 class="text-align1">H NO</h5>
+										<input type="text" class="form-control border-radius-0" placeholder="House Number"  id="searchHNoIdFmly"   name="searchHNo" onkeyUp="searchCandidatesDetailsBySearchCriteria('family');">
+									</div>
+								</div>
+							</div>
+							<a href="javascript:{searchCandidatesDetailsBySearchCriteria('family');}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
+							<div id="errorDivFmly"></div>
+							<div class="show-grid pad-5 m-bottom-10">
+								<div class="container" id="tableElementFmly" style="margin-top:25px;display:none;">
+									<h3 class="text-align" style="color:red;">SEARCH DETAILS</h3>
+									<div class="table-responsive" id="searchDetailsDivFmly" ></div>
+								</div>
+							</div>
+						</div>
+				</div>
+				
+				<div id="myModal1" style="display:none;">
+					<div style="border:1px solid lightgray;">
+						<div class="pad-10b">
+								<h5 class="text-align1">CANDIDATE NAME</h5>
+								<input type="text" class="form-control border-radius-0" placeholder="Enter Name" id="candiNameId" name="searchName1" style="width:425px;" onkeyUp="getExistingCadreInfo1();">
+						</div>
+						<div class=" m_top10 pad-10b">
+							<div class="row-fluid">
+								<h5 class="text-align1">ENROLLMENT NO</h5>
+								<input type="text" class="form-control border-radius-0" placeholder="Enter Voter ID"  id="enrollmentNoId"  name="searchVoterCard" onkeyUp="getExistingCadreInfo1();">
+							</div>
+						</div>
 						
-							<div class="span6">
-							<h5 class="text-align1">VOTER ID</h5>
-								<input type="text" class="form-control border-radius-0" placeholder="Enter Voter ID"  id="searchVoterCardId"  name="searchVoterCard" onkeyUp="searchCandidatesDetailsBySearchCriteria();">
-							</div>
-							
-							<div class="span6">
-							<h5 class="text-align1">H NO</h5>
-								<input type="text" class="form-control border-radius-0" placeholder="House Number"  id="searchHNoId"   name="searchHNo" onkeyUp="searchCandidatesDetailsBySearchCriteria();">
-							</div>
+						<a href="javascript:{getExistingCadreInfo1();}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
+					</div>
+					<div id="errorDiv1"></div>
+					<div class="show-grid pad-5 m-bottom-10">
+						<div class="container" id="tableElement1" style="margin-top:25px;display:none;">
+							<h3 class="text-align" style="color:red;">SEARCH DETAILS</h3>
+							<div class="table-responsive" id="searchDetailsDiv1" ></div>
 						</div>
 					</div>
-					<a href="javascript:{searchCandidatesDetailsBySearchCriteria();}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
-					
-						<div class="show-grid pad-5 m-bottom-10">
-							<div class="container" id="tableElement" style="margin-top:25px;display:none;">
-								<h3 class="text-align" style="color:red;">SEARCH DETAILS</h3>
-								<div class="table-responsive" id="searchDetailsDiv" ></div>
-							</div>
-						</div>
 				</div>
 	
 <div id="statusDiv">
@@ -1657,9 +1733,7 @@
 <script type="text/javascript">
 var existingCadreArr = [];
 var existingCadreInfoArr = [];
-function getExistingCadreInfo()
-{
-
+function getExistingCadreInfo(){
 	var value = $('#preEnrollNoValue').val();
 	$('#preEnrollNo').val('');
 	var constituencyId = '${constiteucnyId}';
@@ -1961,13 +2035,27 @@ function hideCadreImg(){
 	return flag;
 	}
 	var request;	
-	function searchCandidatesDetailsBySearchCriteria()
-	{
+	function searchCandidatesDetailsBySearchCriteria(fromDiv){
 		
+		var srchNameId = '#searchNameId';
+		var srchNameCardId = '#searchVoterCardId';
+		var hNoId = '#searchHNoId';
+		var errDivId = '#errorDiv';
+		var srchDtlsDivId = '#searchDetailsDiv';
+		var tbleElmntId = '#tableElement';
+		if(fromDiv == "family"){
+			srchNameId = '#searchNameIdFmly';
+			srchNameCardId = '#searchVoterCardIdFmly';
+			hNoId = '#searchHNoIdFmly';
+			errDivId = '#errorDivFmly';
+			srchDtlsDivId = '#searchDetailsDivFmly';
+			tbleElmntId = '#tableElementFmly';
+		}
+	
 		var cosntiteucnyId = '${constiteucnyId}';
-		var candidateName = $('#searchNameId').val();
-		var voterCardNo = $('#searchVoterCardId').val();
-		var houseNo = $('#searchHNoId').val();
+		var candidateName = $(srchNameId).val();
+		var voterCardNo = $(srchNameCardId).val();
+		var houseNo = $(hNoId).val();
 		var searchType = "voter";
 		var panchayatId = '${houseNo}';
 		var boothId = '${boothId}';
@@ -1977,13 +2065,13 @@ function hideCadreImg(){
 		
 		if(candidateName != null && candidateName.trim().length>0 && !(/^[a-zA-Z]+$/.test(candidateName)))
 		{
-				$('#errorDiv').html('Candidate Name allows only alphabets.');
+				$(errDivId).html('Candidate Name allows only alphabets.');
 			return;
 		}
 		  
 		if(!isValid(candidateName))
 		{
-			$('#errorDiv').html('Special Characters not allowed for Candidate Name.');
+			$(errDivId).html('Special Characters not allowed for Candidate Name.');
 			return ;
 		}
 		if(!isValid(voterCardNo))
@@ -1993,7 +2081,7 @@ function hideCadreImg(){
 			{
 				if (iChars.indexOf(voterCardNo.charAt(i)) != -1) 
 				{			
-					$('#errorDiv').html('Special Characters not allowed for Voter Card No.');
+					$(errDivId).html('Special Characters not allowed for Voter Card No.');
 				return ;
 				}
 			}
@@ -2006,7 +2094,7 @@ function hideCadreImg(){
 			{
 				if (iChars.indexOf(houseNo.charAt(i)) != -1) 
 				{			
-					$('#errorDiv').html('Special Characters not allowed for House No.');
+					$(errDivId).html('Special Characters not allowed for House No.');
 					return ;
 				}
 			}
@@ -2014,7 +2102,7 @@ function hideCadreImg(){
 		
 		if((voterCardNo == null || voterCardNo.length == 0) && (houseNo == null || houseNo.length == 0) && (candidateName == null || candidateName.length ==0))
 		{
-			$('#errorDiv').html('Enter any search criteria for details.');
+			$(errDivId).html('Enter any search criteria for details.');
 			 isError = true ;
 		}
 		
@@ -2030,7 +2118,7 @@ function hideCadreImg(){
 			} 
 			else 
 			{
-				$('#errorDiv').html('Atleast 3 Characters required for Candidate Name.');
+				$(errDivId).html('Atleast 3 Characters required for Candidate Name.');
 				isError = true ;	
 			}		
 		}
@@ -2041,10 +2129,10 @@ function hideCadreImg(){
 
 		if(!isError)
 		{			
-			$('#errorDiv').html('');
+			$(errDivId).html('');
 			
-			$('#searchDetailsDiv').html('');
-			$('#tableElement').hide();
+			$(srchDtlsDivId).html('');
+			$(tbleElmntId).hide();
 			
 			if(typeof(request) != "undefined")
 			{
@@ -2077,23 +2165,28 @@ function hideCadreImg(){
 						$('#searchDataImg').hide();
 						if(result != null && result.length >0)
 						{
-							buildSearchDetails(result);
+							buildSearchDetails(result,fromDiv);
 						}
 						else
 						{
-							$('#searchDetailsDiv').html('No Data Available...');
-							$('#tableElement').show();
+							$(srchDtlsDivId).html('No Data Available...');
+							$(tbleElmntId).show();
 						}
 					});
 		}
 			
 	}
 	
-	function buildSearchDetails(result)
+	function buildSearchDetails(result,fromDiv)
 	{
 
+		var tableName = "seachDetalsTab";
+		if(fromDiv == "family"){
+			tableName = "searchDetailsTab1";
+		}
+	
 	var str = '';
-			str +='<table class="table table-bordered m_top20 table-hover table-striped"  id="seachDetalsTab">';
+			str +='<table class="table table-bordered m_top20 table-hover table-striped"  id=tableName>';
 			str +='<thead>';
 			str +='<tr>';
 			str +='<th class="text-align1"></th>';
@@ -2114,7 +2207,13 @@ function hideCadreImg(){
 			if(result[i].isRegistered == 'Y')
 			{
 				str +='<tr>';
-				str +='<td  style="background-color: #f9f9f9;"><input type="checkbox" class="votersCB" name="voters" onclick="updateText(\''+result[i].voterCardNo+'\')"></span>';
+				if(fromDiv == "family"){
+					str +='<td  style="background-color: #f9f9f9;"><input type="checkbox" class="votersCB" name="voters" onclick="updateFamilyVtrId(\''+result[i].voterCardNo+'\')"></span>';
+				}else{
+					str +='<td  style="background-color: #f9f9f9;"><input type="checkbox" class="votersCB" name="voters" onclick="updateText(\''+result[i].voterId+'\')"></span>';
+				}
+				
+				
 				str +='<td  style="background-color: #f9f9f9;"><img style="width:80px;height:80px;" src="'+result[i].image+'" id="candimgShowIdReg'+i+'" onerror="setDefaultImage(this);" /></td>';
 				if(result[i].name != null)
 					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
@@ -2149,7 +2248,11 @@ function hideCadreImg(){
 			else
 			{
 				str +='<tr>';
-				str +='<td  style="background-color: #f9f9f9;"><input class="votersCB" type="checkbox" name="voters" onclick="updateText(\''+result[i].voterCardNo+'\')"></td>';
+				if(fromDiv == "family"){
+					str +='<td  style="background-color: #f9f9f9;"><input type="checkbox" class="votersCB" name="voters" onclick="updateFamilyVtrId(\''+result[i].voterCardNo+'\')"></span>';
+				}else{
+					str +='<td  style="background-color: #f9f9f9;"><input type="checkbox" class="votersCB" name="voters" onclick="updateText(\''+result[i].voterId+'\')"></span>';
+				}
 				str +='<td style="background-color: #f9f9f9;"><img style="width:80px;height:80px;" src="'+result[i].image+'" id="candimgShowId'+i+'" onerror="setDefaultImage(this);" /></td>';
 				if(result[i].name != null)
 					str +='<td style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
@@ -2185,13 +2288,19 @@ function hideCadreImg(){
 			
 			str +='</tbody>';
 			str +='</table>';
-		$('#searchDetailsDiv').html(str);
-		$('#tableElement').show();
-		 
-		 $('#seachDetalsTab').dataTable({
+			if(fromDiv =="family"){
+				$('#searchDetailsDivFmly').html(str);
+				$('#tableElementFmly').show();
+			}else{
+				$('#searchDetailsDiv').html(str);
+				$('#tableElement').show();
+			}
+			
+		 $(tableName).dataTable({
 			"iDisplayLength": 100,
 			"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
 			});
+			
 		/*	
 			$('input').iCheck({
 			checkboxClass: 'icheckbox_square-blue',
@@ -2235,9 +2344,110 @@ function hideCadreImg(){
 	}
 	
 	function updateText(vCardNo){
-		$('#myModal').dialog('close');
-		$("#cardNumber").val(vCardNo);
+		var cosntiteucnyId = '${constiteucnyId}';
+		var candidateName = $('#searchNameId').val();
+		var voterCardNo = $('#searchVoterCardId').val();
+		var houseNo = $('#searchHNoId').val();
+		var searchType = "voter";
+		var panchayatId = '${houseNo}';
+		var boothId = '${boothId}';
+		var isPresentCadre = '${panchayatId}';
+		var url = "tdpCadreRegistrationAction.action?candidateId="+vCardNo+"&searchType=voter&constiteucnyId="+cosntiteucnyId+"&houseNo="+panchayatId+"&boothId="+boothId+"&panchayatId="+isPresentCadre+"";
+		window.location.href = url;
+		
+		//$('#myModal').dialog('close');
+		//$("#familyVtrCrdId").val(vCardNo);
 	}
 	
+	function updateFamilyVtrId(vCardNo){
+		$('#myModal2').dialog('close');
+		$("#familyVtrCrdId").val(vCardNo);
+	}
+	
+	function updateEnrollmentNo(enrollmentNo){
+		$('#myModal1').dialog('close');
+		$("#preEnrollNoValue").val(enrollmentNo);
+	}
+	
+</script>
+<script>
+function getExistingCadreInfo1(){
+	$('#searchDetailsDiv1').html('');
+	$('#tableElement1').hide();
+			
+	var candidateName = $('#candiNameId').val();
+	$('#preEnrollNo').val('');
+	var enrollmentNo = $('#enrollmentNoId').val();
+	var constituencyId = '${constiteucnyId}';
+	var panchayatId = '${houseNo}';  // panchayat Id 
+	var boothId = '${boothId}';  // boothId Id 
+	var isPresentCadre = '${panchayatId}';  // ispresentCader checked ot not 
+	var canCallAjax = false;
+	if(candidateName.trim().length >2){
+		canCallAjax = true;
+	}
+	if(enrollmentNo.trim().length >2){
+		canCallAjax = true;
+	}
+	
+	if(canCallAjax){
+		var jsObj = {	
+			name : candidateName,
+			constituencyId : constituencyId,
+			panchayatId : panchayatId,
+			boothId : boothId,
+			isPresentCadre:isPresentCadre,
+			enrollmentNumber : enrollmentNo,
+			task:"getExistingCadreInfo"             
+		}
+			   
+		$.ajax({
+			type : "POST",
+			url : "getExistingCadreInfoAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			buildExistingCadres(result);
+		});
+	}
+}
+	
+	function buildExistingCadres(results){
+		if(results==null){
+			$('#searchDetailsDiv1').html("<h4 style='color:red;text-align:center;'> No Data Available </h4>");	
+			return;
+		}
+		$('#searchDetailsDiv1').html("");
+		var str = '';
+			str +='<table class="table table-bordered m_top20 table-hover table-striped"  id="seachDetalsTab1">';
+				str +='<thead>';
+					str +='<tr>';
+						str +='<th class="text-align1"></th>';
+						str +='<th class="text-align1">NAME</th>';
+						str +='<th class="text-align1">GUARDIAN NAME</th>';
+						str +='<th class="text-align1">ENROLLMENT NO</th>';
+					str +='</tr>';
+				str +='</thead>';
+				str +='<tbody>';
+				for(var i in results){
+					str +='<tr>';
+						str +='<td class="text-align1"><input type="checkbox" name="voters" onclick="updateEnrollmentNo(\''+results[i].caste+'\')"></th>';
+						str +='<td class="text-align1">'+results[i].name+'</td>';
+						str +='<td class="text-align1">'+results[i].desc+'</td>';
+						str +='<td class="text-align1">'+results[i].caste+'</td>';
+					str +='</tr>';
+				}
+				str +='</tbody>';
+			str +='</table>';
+			
+			$('#searchDetailsDiv1').html(str);
+			$('#tableElement1').show();
+		 
+			$('#seachDetalsTab').dataTable({
+				"iDisplayLength": 100,
+				"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
+			});
+	
+	
+}
 </script>
 </html>
