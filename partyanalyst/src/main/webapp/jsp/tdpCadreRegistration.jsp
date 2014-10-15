@@ -51,6 +51,9 @@
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css">      
 
+	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
+	
 	<!-- YUI Dependency files (End) -->
 	
 	
@@ -224,6 +227,12 @@
 	}
 	function enableLookupName(){
 		$('#cardNumber').removeAttr('readOnly');
+		$('#searchNameId,#searchVoterCardId,#searchHNoId').val("")
+		$('#searchDetailsDiv').html("");
+		$('#tableElement').hide();
+		$( "#myModal" ).dialog({width: "auto",
+            height: "auto",my: 'center',
+       at: 'left'});
 	}
 	
 	function createNewForm(){
@@ -940,7 +949,7 @@
 												<!--<input type="hidden" id="cardNo" class="form-control border-radius-0 input-block-level" placeholder="Text input" value="${voterInfoVOList[0].voterCardNo}" style="width:260px;" ></input>-->
 											</div>
 											<div style="width: 120px; float: left; margin-top: 20px;">
-												<a id="searchByNameId" class="btn btn-success" href="javascript:{enableLookupName();}" style="margin-top: 20px; width: 120px; margin-left: 16px;">LookUp By Name</a>
+												<a id="searchByNameId" class="btn btn-success" href="javascript:{enableLookupName();}" style="margin-top: 20px; width: 120px; margin-left: 16px;">LookUp</a>
 											</div>
 											<div style="width: 120px; float: left; margin-left: 49px;">
 											<h5 class="text-align1">H NO</h5>
@@ -1512,7 +1521,36 @@
 </form>
 </div>
 </div>
-
+				
+				<div id="myModal" style="display:none;">
+					<div class="pad-10b">
+					<h5 class="text-align1">CANDIDATE NAME</h5>
+							<input type="text" class="form-control border-radius-0" placeholder="Enter Name" id="searchNameId" name="searchName" style="width:425px;" onkeyUp="searchCandidatesDetailsBySearchCriteria();">
+					</div>
+					<div class=" m_top10 pad-10b">
+						<div class="row-fluid">
+						
+							<div class="span6">
+							<h5 class="text-align1">VOTER ID</h5>
+								<input type="text" class="form-control border-radius-0" placeholder="Enter Voter ID"  id="searchVoterCardId"  name="searchVoterCard" onkeyUp="searchCandidatesDetailsBySearchCriteria();">
+							</div>
+							
+							<div class="span6">
+							<h5 class="text-align1">H NO</h5>
+								<input type="text" class="form-control border-radius-0" placeholder="House Number"  id="searchHNoId"   name="searchHNo" onkeyUp="searchCandidatesDetailsBySearchCriteria();">
+							</div>
+						</div>
+					</div>
+					<a href="javascript:{searchCandidatesDetailsBySearchCriteria();}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
+					
+						<div class="show-grid pad-5 m-bottom-10">
+							<div class="container" id="tableElement" style="margin-top:25px;display:none;">
+								<h3 class="text-align" style="color:red;">SEARCH DETAILS</h3>
+								<div class="table-responsive" id="searchDetailsDiv" ></div>
+							</div>
+						</div>
+				</div>
+	
 <div id="statusDiv">
 </div>
 	<!-- Footer Row -->
@@ -1602,7 +1640,7 @@ function getExistingCadreInfo()
 	}
 }
 
-$("#cardNumber").keyup(function(){
+$("#cardNumber1").keyup(function(){
 	var cardNumberVal = $("#cardNumber").val();
 	if(cardNumberVal.trim().length>2){
 		var constituencyId = '${constiteucnyId}';
@@ -1810,6 +1848,298 @@ function hideCadreImg(){
 					$('#'+buildDivId+'').append('<option value="'+result[i].id+'"> '+result[i].name+' </option>');
 				}
 			});
+	}
+	
+	function isValid(str)
+	{
+		var flag = true;
+		var iChars = "`~!@#$%^&*()_-+=}]{[\"':;|\?/><,";		 
+		for (var i = 0; i < str.length; i++) 
+		{
+			if (iChars.indexOf(str.charAt(i)) != -1) 
+			{			
+				flag = false;
+			}
+		}
+	return flag;
+	}
+	var request;	
+	function searchCandidatesDetailsBySearchCriteria()
+	{
+		
+		var cosntiteucnyId = '${constiteucnyId}';
+		var candidateName = $('#searchNameId').val();
+		var voterCardNo = $('#searchVoterCardId').val();
+		var houseNo = $('#searchHNoId').val();
+		var searchType = "voter";
+		var panchayatId = '${houseNo}';
+		var boothId = '${boothId}';
+		var isPresentCadre = '${panchayatId}';
+				
+		var isError = false ;
+		
+		if(candidateName != null && candidateName.trim().length>0 && !(/^[a-zA-Z]+$/.test(candidateName)))
+		{
+				$('#errorDiv').html('Candidate Name allows only alphabets.');
+			return;
+		}
+		  
+		if(!isValid(candidateName))
+		{
+			$('#errorDiv').html('Special Characters not allowed for Candidate Name.');
+			return ;
+		}
+		if(!isValid(voterCardNo))
+		{
+			var iChars = "`~!@#$%^&*()._-+=}]{[\"':;|\?/><,";		 
+			for (var i = 0; i < voterCardNo.length; i++) 
+			{
+				if (iChars.indexOf(voterCardNo.charAt(i)) != -1) 
+				{			
+					$('#errorDiv').html('Special Characters not allowed for Voter Card No.');
+				return ;
+				}
+			}
+		}
+	
+		if(!isValid(houseNo))
+		{
+			var iChars = "`~!@#$%^&*()_+=}]{[\"':;|\?><,.";		 
+			for (var i = 0; i < houseNo.length; i++) 
+			{
+				if (iChars.indexOf(houseNo.charAt(i)) != -1) 
+				{			
+					$('#errorDiv').html('Special Characters not allowed for House No.');
+					return ;
+				}
+			}
+		}
+		
+		if((voterCardNo == null || voterCardNo.length == 0) && (houseNo == null || houseNo.length == 0) && (candidateName == null || candidateName.length ==0))
+		{
+			$('#errorDiv').html('Enter any search criteria for details.');
+			 isError = true ;
+		}
+		
+		if(candidateName == null || candidateName.length <=2)
+		{	
+			if(voterCardNo != null && voterCardNo.length  >=3 )
+			{
+				 isError = false ;
+			}
+			else if(houseNo != null && houseNo.length >=3 )
+			{						
+				  isError = false ;
+			} 
+			else 
+			{
+				$('#errorDiv').html('Atleast 3 Characters required for Candidate Name.');
+				isError = true ;	
+			}		
+		}
+		else
+		{
+			 isError = false ;
+		}
+
+		if(!isError)
+		{			
+			$('#errorDiv').html('');
+			
+			$('#searchDetailsDiv').html('');
+			$('#tableElement').hide();
+			
+			if(typeof(request) != "undefined")
+			{
+				request.abort();
+			}
+					
+			$('#searchDataImg').show();
+
+			var jsObj = 
+				   {
+					  constituencyId:cosntiteucnyId,
+					  searchType :searchType, 
+					  candidateName:candidateName,
+					  houseNo : houseNo,
+					  voterCardNo : voterCardNo,
+					  panchayatId : panchayatId,
+					  boothId : boothId ,
+					  isPresentCadre : isPresentCadre,
+					  task:"searchCandidatesDtailsBySearchCriteria"             
+				   }
+
+				   
+				   
+				request =   $.ajax({
+						type : "POST",
+						url : "searchVoterAndCadreInfoBySearchCriteriaAction.action",
+						data : {task:JSON.stringify(jsObj)} ,
+					}).done(function(result){
+						isSubmit = true;
+						$('#searchDataImg').hide();
+						if(result != null && result.length >0)
+						{
+							buildSearchDetails(result);
+						}
+						else
+						{
+							$('#searchDetailsDiv').html('No Data Available...');
+							$('#tableElement').show();
+						}
+					});
+		}
+			
+	}
+	
+	function buildSearchDetails(result)
+	{
+
+	var str = '';
+			str +='<table class="table table-bordered m_top20 table-hover table-striped"  id="seachDetalsTab">';
+			str +='<thead>';
+			str +='<tr>';
+			str +='<th class="text-align1"></th>';
+			str +='<th class="text-align1">PHOTO</th>';
+			str +='<th class="text-align1">NAME</th>';
+			str +='<th class="text-align1">GUARDIAN NAME</th>';
+			str +='<th class="text-align1">RELATION</th>';
+			str +='<th class="text-align1">AGE</th>';
+			str +='<th class="text-align1">GENDER</th>';
+			str +='<th class="text-align1">H.NO</th>';
+			//str +='<th class="text-align1"></th>';
+			str +='</tr>';
+			str +='</thead>';
+			str +='<tbody>';
+			
+			for(var i in result)
+			{
+			if(result[i].isRegistered == 'Y')
+			{
+				str +='<tr>';
+				str +='<td  style="background-color: #f9f9f9;"><input type="checkbox" class="votersCB" name="voters" onclick="updateText(\''+result[i].voterCardNo+'\')"></span>';
+				str +='<td  style="background-color: #f9f9f9;"><img style="width:80px;height:80px;" src="'+result[i].image+'" id="candimgShowIdReg'+i+'" onerror="setDefaultImage(this);" /></td>';
+				if(result[i].name != null)
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
+				else
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					
+				if(result[i].relativeName != null)
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relativeName+'</span></td>';
+				else
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+				if(result[i].relationType != null)
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relationType+'</span></td>';
+				else
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';					
+				if(result[i].age != null)
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].age+'</span></td>';
+				else
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+				if(result[i].gender != null)
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].gender+'</span></td>';
+				else
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+				
+				if(result[i].houseNo != null)
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].houseNo+'</span></td>';
+				else
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+				
+				//str +='<td style="background-color:#52A552;"><input type="radio" value="'+result[i].id+'" name="optionsRadios" onClick="getDetailsForUser();"></label></td>';
+				str +='</tr>';
+			}
+			else
+			{
+				str +='<tr>';
+				str +='<td  style="background-color: #f9f9f9;"><input class="votersCB" type="checkbox" name="voters" onclick="updateText(\''+result[i].voterCardNo+'\')"></td>';
+				str +='<td style="background-color: #f9f9f9;"><img style="width:80px;height:80px;" src="'+result[i].image+'" id="candimgShowId'+i+'" onerror="setDefaultImage(this);" /></td>';
+				if(result[i].name != null)
+					str +='<td style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
+				else
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					
+				if(result[i].relativeName != null)
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relativeName+'</span></td>';
+				else
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+				if(result[i].relationType != null)
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relationType+'</span></td>';
+				else
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';					
+				if(result[i].age != null)
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].age+'</span></td>';
+				else
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+				if(result[i].gender != null)
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].gender+'</span></td>';
+				else
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+				
+				if(result[i].houseNo != null)
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].houseNo+'</span></td>';
+				else
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+				
+			//	str +='<td><input type="radio" value="'+result[i].id+'" name="optionsRadios" onClick="getDetailsForUser();"></label></td>';
+				str +='</tr>';
+			}
+			}
+			
+			str +='</tbody>';
+			str +='</table>';
+		$('#searchDetailsDiv').html(str);
+		$('#tableElement').show();
+		 
+		 $('#seachDetalsTab').dataTable({
+			"iDisplayLength": 100,
+			"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
+			});
+		/*	
+			$('input').iCheck({
+			checkboxClass: 'icheckbox_square-blue',
+			radioClass: 'iradio_square-blue',
+			increaseArea: '20%' // optional
+		  });
+		  
+		   $('input[name="optionsRadios"]').on('ifClicked', function (event) {
+				//alert("You clicked " + this.value);
+				getDetailsForUser(this.value);
+				
+			});
+			*/
+			 $(".detailsCls").click(function(){
+			var id = $(this).attr('id');
+			getDetailsForUser(id);
+		  
+		  });
+	}
+	
+	function getDetailsForUser(candidateId)
+	{
+		//var candidateId = $('input[name="optionsRadios"]:checked').val();
+		var searchType = $('input[name="searchTypeRadio"]:checked').val();
+		var cosntiteucnyId = $('#userConstituencyId').val();	
+		var boothId = $('#boothsList').val();	
+		var houseNo = $('#panchayatList').val();	
+		
+		var panchayatId = 0;
+		if($("#isNewCadre").is(':checked'))
+			panchayatId = "true";  // checked
+		else
+			panchayatId = 0  // unchecked
+			
+		window.open('tdpCadreRegistrationAction.action?candidateId='+candidateId+'&searchType='+searchType+'&constiteucnyId='+cosntiteucnyId+'&houseNo='+houseNo+'&boothId='+boothId+'&panchayatId='+panchayatId+'');
+		
+	}
+	function setDefaultImage(img)
+	{
+		img.src = "images/mahaNadu/user image.jpg";
+	}
+	
+	function updateText(vCardNo){
+		$('#myModal').dialog('close');
+		$("#cardNumber").val(vCardNo);
 	}
 	
 </script>
