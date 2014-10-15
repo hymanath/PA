@@ -45,7 +45,14 @@
   	<!-- Header Row -->
 		<div class="row-fluid">
 			<div class="span12 header-bg text-center">
-				<img src="images/cadre_images/2014-cadre-Registration-Logo.png" />
+				<div class="row-fluid">
+				  <div class="span4 offset4 ">
+						<img src="images/cadre_images/2014-cadre-Registration-Logo.png">
+				  </div>
+				  <div class="span4">
+					 <a href="newlogoutAction.action" class="btn btn-mini pull-left m_top20">Logout</a>
+				  </div>
+				</div>
 			</div>
 		</div><!-- Header Row End-->
 		
@@ -184,7 +191,7 @@
 */
 		var isError = false ;
 		
-		if(candidateName != null && candidateName.trim().length>0 && !(/^[a-zA-Z]+$/.test(candidateName)))
+		if(candidateName != null && candidateName.trim().length>0 && !(/^[a-zA-Z ]+$/.test(candidateName)))
 		{
 				$('#errorDiv').html('Candidate Name allows only alphabets.');
 			return;
@@ -322,33 +329,33 @@
 			if(result[i].isRegistered == 'Y')
 			{
 				str +='<tr>';
-				str +='<td  style="background-color: #f9f9f9;"><img style="width:80px;height:80px;" src="'+result[i].image+'" id="candimgShowIdReg'+i+'" onerror="setDefaultImage(this);" /></td>';
+				str +='<td  style="background-color: #f9f9f9;"><img style="width:80px;height:80px;" class="detailsCls"  src="'+result[i].image+'" id="'+result[i].id+'" onerror="setDefaultImage(this);" /></td>';
 				if(result[i].name != null)
 					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
 				else
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 					
 				if(result[i].relativeName != null)
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relativeName+'</span></td>';
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relativeName+'</span></td>';
 				else
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 				if(result[i].relationType != null)
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relationType+'</span></td>';
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relationType+'</span></td>';
 				else
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';					
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';					
 				if(result[i].age != null)
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].age+'</span></td>';
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].age+'</span></td>';
 				else
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 				if(result[i].gender != null)
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].gender+'</span></td>';
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].gender+'</span></td>';
 				else
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 				
 				if(result[i].houseNo != null)
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].houseNo+'</span></td>';
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].houseNo+'</span></td>';
 				else
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 				
 				//str +='<td style="background-color:#52A552;"><input type="radio" value="'+result[i].id+'" name="optionsRadios" onClick="getDetailsForUser();"></label></td>';
 				str +='</tr>';
@@ -356,31 +363,31 @@
 			else
 			{
 				str +='<tr>';
-				str +='<td style="background-color: #f9f9f9;"><img style="width:80px;height:80px;" src="'+result[i].image+'" id="candimgShowId'+i+'" onerror="setDefaultImage(this);" /></td>';
+				str +='<td style="background-color: #f9f9f9;cursor:pointer;"><img style="width:80px;height:80px;" class="detailsCls" src="'+result[i].image+'" id="'+result[i].id+'" onerror="setDefaultImage(this);" /></td>';
 				if(result[i].name != null)
 					str +='<td style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
 				else
 					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 					
 				if(result[i].relativeName != null)
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relativeName+'</span></td>';
+					str +='<td style="cursor:pointer;" style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relativeName+'</span></td>';
 				else
 					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 				if(result[i].relationType != null)
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relationType+'</span></td>';
+					str +='<td style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relationType+'</span></td>';
 				else
 					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';					
 				if(result[i].age != null)
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].age+'</span></td>';
+					str +='<td style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].age+'</span></td>';
 				else
 					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 				if(result[i].gender != null)
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].gender+'</span></td>';
+					str +='<td style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].gender+'</span></td>';
 				else
 					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 				
 				if(result[i].houseNo != null)
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].houseNo+'</span></td>';
+					str +='<td style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].houseNo+'</span></td>';
 				else
 					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 				
@@ -441,6 +448,7 @@
 		var cosntiteucnyId = $('#userConstituencyId').val();
 		
 		$('#errorDiv').html('');
+		$('#searchNameId').val('');
 		$('#panchayatList').find('option').remove();
 		$('#panchayatList').append('<option value="0"> Select Location </option>');
 		
