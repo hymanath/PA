@@ -33,7 +33,14 @@ public class BasicVO implements Serializable{
 	private Long totalVoters;
 	private String aliancedWith;
 	
+	public BasicVO(){}
+	
+	public BasicVO(Long id,String name)
+	{
+		id= this.id;
+		name = this.name;
 		
+	}
 	public String getAliancedWith() {
 		return aliancedWith;
 	}
