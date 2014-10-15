@@ -252,7 +252,7 @@ $('#membersCount').addClass('animated fadeInX');
 			if(result != null && result.length > 0){
 			 var str ='<table class="table table-bordered border-radius-0"><tbody>';
 			   for(var i in result){
-			      str+='<tr><td><div class="media"><a href="#" class="pull-left"><img src="images/User.png" class="img-circle" /></a>'
+			      str+='<tr><td><div class="media"><a href="javascript:{}" class="pull-left"><img style="width:64px;height:64px;" id="cadreRegId'+i+'" onerror="setDefaultImage(this);" src="'+result[i].date+'"  /></a>'
 			      str+='<div class="media-body">';
 				  str+='<h4 class="media-heading">'+result[i].name+'</h4>';
 				  str+='<i class="icon-map-marker"></i>'+result[i].location;
@@ -414,6 +414,10 @@ $('#membersCount').addClass('animated fadeInX');
 	      $("#totalMembersWorkingTodayId").html('<h2>'+result.totalCount+'</h2><p>Members <br/>In Field Today</p>');
 	   });
    }
+   function setDefaultImage(img)
+	{
+		img.src = "images/User.png";
+	}
        getWorkStartedConstituencyCount();
 	   getDistrictWiseCompletedPercentage(0,1);
 	   getAssemblyWiseCompletedPercentage(0,1);
