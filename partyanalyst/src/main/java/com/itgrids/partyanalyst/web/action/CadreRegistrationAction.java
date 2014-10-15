@@ -665,7 +665,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		try {		
 			jobj = new JSONObject(getTask());
 			
-			genericVOList = cadreRegistrationService.getExistingCadreInfo(jobj.getString("name"),jobj.getLong("constituencyId"),jobj.getLong("panchayatId"),jobj.getLong("boothId"),jobj.getString("isPresentCadre"));	
+			genericVOList = cadreRegistrationService.getExistingCadreInfo(jobj.getString("name"),jobj.getLong("constituencyId"),jobj.getLong("panchayatId"),jobj.getLong("boothId"),jobj.getString("isPresentCadre"), jobj.getString("enrollmentNumber"));	
 		}
 		catch(Exception e){
 			LOG.error("Exception raised in getExistingCadreInfo method in CadreRegistrationAction action", e);
