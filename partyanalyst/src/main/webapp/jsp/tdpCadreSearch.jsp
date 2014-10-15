@@ -36,6 +36,15 @@
 	.span10 {
 	    width: 840px;
 	}
+	.textWidth{
+	    width: 156px;
+	}
+	.marginWidth{
+	  margin-left: 6px;
+	  }
+	  .detailsCls{
+	    cursor:pointer;
+	  }
 	</style>
    
 	
@@ -65,8 +74,8 @@
 			<h5 class="text-align">SELECT CONSTITUENCY</h5>
 
 			<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="userConstituencyId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" style="width:460px;" onChange="getConstituencyWiseDetails();"/>
-			<select style="width:150px;" id="panchayatList" onchange="getLocationWiseDetails();"><option value="0"> Select Location </option></select>		
-			<select style="width:250px;" id="boothsList"> <option value="0"> Select Booth </option> </select> 	
+			<select class="textWidth" id="panchayatList" onchange="getLocationWiseDetails();"><option value="0"> Select Location </option></select>		
+			<select class="span4 marginWidth" id="boothsList"> <option value="0"> Select Booth </option> </select> 	
 			<!-- <select style="width:150px;" id="vilagecovrdList"> <option value="0"> Select Covered Village </option> </select>  -->
 			<img src='images/icons/search.gif' id="loadingImg" style="display:none;"/>
 				
@@ -329,33 +338,33 @@
 			if(result[i].isRegistered == 'Y')
 			{
 				str +='<tr>';
-				str +='<td  style="background-color: #f9f9f9;"><img style="width:80px;height:80px;" class="detailsCls"  src="'+result[i].image+'" id="'+result[i].id+'" onerror="setDefaultImage(this);" /></td>';
+				str +='<td  style="background-color: #f9f9f9;"><img style="width:80px;height:80px;cursor:pointer;" src="'+result[i].image+'" id="candimgShowIdReg'+i+'" onclick="getDetailsForUser('+result[i].id+');" onerror="setDefaultImage(this);" /></td>';
 				if(result[i].name != null)
-					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" >'+result[i].name+'</span></td>';
 				else
-					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" > -- </span></td>';
 					
 				if(result[i].relativeName != null)
-					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relativeName+'</span></td>';
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" >'+result[i].relativeName+'</span></td>';
 				else
-					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" > -- </span></td>';
 				if(result[i].relationType != null)
-					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relationType+'</span></td>';
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" >'+result[i].relationType+'</span></td>';
 				else
-					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';					
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" > -- </span></td>';					
 				if(result[i].age != null)
-					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].age+'</span></td>';
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" >'+result[i].age+'</span></td>';
 				else
-					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" > -- </span></td>';
 				if(result[i].gender != null)
-					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].gender+'</span></td>';
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" >'+result[i].gender+'</span></td>';
 				else
-					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" > -- </span></td>';
 				
 				if(result[i].houseNo != null)
-					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].houseNo+'</span></td>';
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" >'+result[i].houseNo+'</span></td>';
 				else
-					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" > -- </span></td>';
 				
 				//str +='<td style="background-color:#52A552;"><input type="radio" value="'+result[i].id+'" name="optionsRadios" onClick="getDetailsForUser();"></label></td>';
 				str +='</tr>';
@@ -363,33 +372,33 @@
 			else
 			{
 				str +='<tr>';
-				str +='<td style="background-color: #f9f9f9;cursor:pointer;"><img style="width:80px;height:80px;" class="detailsCls" src="'+result[i].image+'" id="'+result[i].id+'" onerror="setDefaultImage(this);" /></td>';
+				str +='<td style="background-color: #f9f9f9;"><img style="width:80px;height:80px;cursor:pointer;" src="'+result[i].image+'" id="candimgShowId'+i+'"  onclick="getDetailsForUser('+result[i].id+');"  onerror="setDefaultImage(this);" /></td>';
 				if(result[i].name != null)
-					str +='<td style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
+					str +='<td><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" >'+result[i].name+'</span></td>';
 				else
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					str +='<td><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" > -- </span></td>';
 					
 				if(result[i].relativeName != null)
-					str +='<td style="cursor:pointer;" style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relativeName+'</span></td>';
+					str +='<td><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" >'+result[i].relativeName+'</span></td>';
 				else
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					str +='<td><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" > -- </span></td>';
 				if(result[i].relationType != null)
-					str +='<td style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relationType+'</span></td>';
+					str +='<td><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" >'+result[i].relationType+'</span></td>';
 				else
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';					
+					str +='<td><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" > -- </span></td>';					
 				if(result[i].age != null)
-					str +='<td style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].age+'</span></td>';
+					str +='<td><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" >'+result[i].age+'</span></td>';
 				else
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					str +='<td><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" > -- </span></td>';
 				if(result[i].gender != null)
-					str +='<td style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].gender+'</span></td>';
+					str +='<td><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" >'+result[i].gender+'</span></td>';
 				else
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					str +='<td><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" > -- </span></td>';
 				
 				if(result[i].houseNo != null)
-					str +='<td style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].houseNo+'</span></td>';
+					str +='<td><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" >'+result[i].houseNo+'</span></td>';
 				else
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					str +='<td><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" > -- </span></td>';
 				
 			//	str +='<td><input type="radio" value="'+result[i].id+'" name="optionsRadios" onClick="getDetailsForUser();"></label></td>';
 				str +='</tr>';
@@ -418,11 +427,7 @@
 				
 			});
 			*/
-			 $(".detailsCls").click(function(){
-			var id = $(this).attr('id');
-			getDetailsForUser(id);
-		  
-		  });
+			
 	}
 	
 	function getDetailsForUser(candidateId)
