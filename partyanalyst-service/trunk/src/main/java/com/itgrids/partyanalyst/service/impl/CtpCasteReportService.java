@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
 import com.itgrids.partyanalyst.dto.SurveyStatusVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.ICtpCasteReportService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -288,7 +289,7 @@ public class CtpCasteReportService implements ICtpCasteReportService{
 					vo.setName(params[1] != null ? params[1].toString() + " Muncipality" : "");
 					else
 						vo.setName(params[1] != null ? params[1].toString() : "");	
-					
+					vo.setSelType(locationType);
 					vo.setCasteCount(0l);
 					resultList.add(vo);
 					locationIds.add((Long)params[0]);
@@ -408,6 +409,7 @@ public class CtpCasteReportService implements ICtpCasteReportService{
 		 			VoterHouseInfoVO vo = new VoterHouseInfoVO();
 		 			vo.setId(location);
 		 			vo.setName(locationName.get(location));
+		 			vo.setSelType(locationType);
 		 			Map<Long,VoterHouseInfoVO> casteMap = resultMap.get(location);
 		 			if(casteMap != null)
 		 			vo.setCasteList(new ArrayList<VoterHouseInfoVO>(casteMap.values()));
@@ -530,6 +532,27 @@ public class CtpCasteReportService implements ICtpCasteReportService{
 			 LOG.error("Exception Occured in getMatchedVo()", e);
 		}
 		return null;
+	 }
+	 
+	 public VoterHouseInfoVO getVotersDetailsInCaste(Long id,String type,Long casteId,Long userId,Long constituencyId,String gender)
+	 {
+		 VoterHouseInfoVO resultVo = new VoterHouseInfoVO();
+		
+		 try{
+			  List<Object[]> votersData = userVoterDetailsDAO.getCasteVotersDetailsBylocationTypeInConstituency(IConstants.VOTER_DATA_PUBLICATION_ID,userId,constituencyId,type,casteId,gender,id);
+	    	  List<VoterHouseInfoVO> votersList = new ArrayList<VoterHouseInfoVO>();
+	    	 
+	    	  if(votersData != null && votersData.size() > 0)
+	    	  {
+	    		  populateVotersDataToVo(votersData,votersList,userId);  
+	    	  }
+
+	 		 resultVo.setVotersList(votersList);
+		 }
+		 catch (Exception e) {
+			 LOG.error("Exception Occured in getVotersDetailsInCaste()", e);
+		}
+		return resultVo;
 	 }
 	 
 }
