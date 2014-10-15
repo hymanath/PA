@@ -69,10 +69,15 @@ public class CadreRegistrationVO implements Serializable{
 	
 	private String			photoType;
 	private String			nameType;
-	private String			 relationType;
-	private boolean          relative;
+	private String			relationType;
+	private boolean         relative;
 	private Long            relationTypeId;
+	private Long			familyVoterId;
 
+	private String          candidateAadherNo;
+	private String		    cadrePrevYear;
+	
+	private String		   surveyTimeStr;
 	
 	private List<CadrePreviousRollesVO> previousRollesList;
 	
@@ -403,6 +408,30 @@ public class CadreRegistrationVO implements Serializable{
 	}
 	public void setRelationTypeId(Long relationTypeId) {
 		this.relationTypeId = relationTypeId;
+	}
+	public String getCandidateAadherNo() {
+		return candidateAadherNo;
+	}
+	public void setCandidateAadherNo(String candidateAadherNo) {
+		this.candidateAadherNo = candidateAadherNo;
+	}
+	public String getSurveyTimeStr() {
+		return surveyTimeStr;
+	}
+	public void setSurveyTimeStr(String surveyTimeStr) {
+		this.surveyTimeStr = surveyTimeStr;
+	}
+	public Long getFamilyVoterId() {
+		return familyVoterId;
+	}
+	public void setFamilyVoterId(Long familyVoterId) {
+		this.familyVoterId = familyVoterId;
+	}
+	public String getCadrePrevYear() {
+		return cadrePrevYear;
+	}
+	public void setCadrePrevYear(String cadrePrevYear) {
+		this.cadrePrevYear = cadrePrevYear;
 	}
 	
 	
