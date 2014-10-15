@@ -239,16 +239,14 @@
 		$('#searchDetailsDiv').html("");
 		$('#tableElement').hide();
 		$( "#myModal1" ).dialog({title: "Search For Enroll Number", width: "auto",
-            height: "auto"});
+            height: "auto", position: { my: 'right', at: 'top+10' }});
 	}
 	function enableSearchByfName(){
 		$('#searchNameIdFmly,#searchVoterCardIdFmly,#searchHNoIdFmly').val("")
 		$('#searchDetailsDivFmly').html("");
 		$('#tableElementFmly').hide();
 		$( "#myModal2" ).dialog({title: "Search For Family Member Voter Card No", width: "auto",
-            height: "auto",
-			my: 'center',
-			at: 'left'});
+            height: "auto", position: { my: 'right', at: 'top+10' }});
 	}
 	function enableLookupName(){
 		$('#cardNumber').removeAttr('readOnly');
@@ -256,7 +254,7 @@
 		$('#searchDetailsDiv').html("");
 		$('#tableElement').hide();
 		$( "#myModal" ).dialog({title: "Search For Voter Card No", width: "auto",
-            height: "auto"});
+            height: "auto",  position: { my: 'right', at: 'top+10' }});
 	}
 	
 	function createNewForm(){
@@ -1184,7 +1182,7 @@
 											<div class="span4"> <input type="checkbox" title="Please Check If Cadre Didn't Have Voter Card And Using His Family Members Voter Card" id="relativeTypeChecked" name="relativeTypeChecked" onclick="showHideFamRelatinoSts();"/> Is Family Member</div>
 											<div  class="span6" id="showHideFammemberType" style="display:none; margin-left: 165px;margin-top: -33px;">
 												<span style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</span><select name="relativeTypeId" id="relativeTypeId"> </select>
-												<span style="color: #9a9a9a;font-weight: bold;">Voter Card &nbsp;</span><input type="text" id="familyVtrCrdId">
+												<span style="color: #9a9a9a;font-weight: bold;">Voter Card &nbsp;</span><input type="text" id="familyVtrCrdId" name="relativeVoterCardNo">
 												<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByfName();}" style="margin-top:10px;"> LookUp </a>
 											</div>
 										</div>
@@ -1214,13 +1212,13 @@
 						
 					</div>
 					<div class="span6 show-grid pad-10b" id="fadeInRight" style="min-height: 674px;" >
-							<!-- 
-							<div class=" m_top20" >
-								<h5 class="text-align1">Aadhar Card No .</h5>
-								<input type="text" class=""  style="width:260px;" placeholder="Aadhar Number"  name="cadreRegistrationVO.aadheerNo" value="${voterInfoVOList[0].aadharNo}"></input>
 							
-							</div>
-							-->
+								<div class=" m_top20" >
+									<h5 class="text-align1">Aadhar Card No .</h5>
+									<input type="text" class=""  style="width:260px;" placeholder="Aadhar Number"  name="cadreRegistrationVO.aadheerNo" value="${voterInfoVOList[0].aadharNo}"></input>
+								
+								</div>
+							
 							
 								<div class=" m_top20" >
 										<h5 class="text-align1">STREET/HAMLET</h5>
