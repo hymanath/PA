@@ -79,7 +79,10 @@
 	.levelCls{width:160px;float:left;margin:5px;}
 	.levelClsDt{width:140px;float:left;}
 	select.levelCls{border-radius:4px;}
-	
+	.mandatory
+	{
+	color:#FF0000;
+	}
 	</style>
 	
 		
@@ -239,14 +242,16 @@
 		$('#searchDetailsDiv').html("");
 		$('#tableElement').hide();
 		$( "#myModal1" ).dialog({title: "Search For Enroll Number", width: "auto",
-            height: "auto", position: { my: 'right', at: 'top+10' }});
+            height: "auto"});
 	}
 	function enableSearchByfName(){
 		$('#searchNameIdFmly,#searchVoterCardIdFmly,#searchHNoIdFmly').val("")
 		$('#searchDetailsDivFmly').html("");
 		$('#tableElementFmly').hide();
 		$( "#myModal2" ).dialog({title: "Search For Family Member Voter Card No", width: "auto",
-            height: "auto", position: { my: 'right', at: 'top+10' }});
+            height: "auto",
+			my: 'center',
+			at: 'left'});
 	}
 	function enableLookupName(){
 		$('#cardNumber').removeAttr('readOnly');
@@ -254,7 +259,7 @@
 		$('#searchDetailsDiv').html("");
 		$('#tableElement').hide();
 		$( "#myModal" ).dialog({title: "Search For Voter Card No", width: "auto",
-            height: "auto",  position: { my: 'right', at: 'top+10' }});
+            height: "auto"});
 	}
 	
 	function createNewForm(){
@@ -749,7 +754,7 @@
 	} 
 	var eletionCont = 1;
 	var isRolesCountSet = true;
-	function createNewFormForElections()
+	function createNewFormsForElections()
 	{
 		if(isRolesCount >=1 && isRolesCountSet)
 		{
@@ -797,7 +802,7 @@
 		str += '</div>';
 		str += '<div class="span3">';
 				str += '<div class=" " >';
-				str += '<select   id="candidatesList'+eletionCont+'"  style="margin-left: 12px" onchange="getCandidateDetailsById(\'constituencyList'+eletionCont+'\',\'electionYearId'+eletionCont+'\',this.value); " name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].candidateId">';
+				str += '<select   id="candidatesList'+eletionCont+'"  style="margin-left: 12px;;width:160px;" onchange="getCandidateDetailsById(\'constituencyList'+eletionCont+'\',\'electionYearId'+eletionCont+'\',this.value); " name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].candidateId">';
 				str += '<option value="0"> Select Candidate</option>	';							
 				str += '</select>';							
 				str += '</div>';
@@ -853,19 +858,21 @@
 		
 	var str ='';
 
-	str +=' <tr class="voterDev'+voterCount+'">';
+	str +=' <tr class="voterDev'+voterCount+'">';  
+	str +='<td style="width:25px;text-align:center;">  ';
+	str +='<input type="checkbox" id="checkBox'+voterCount+'"  name="" class="nomineeCls" onclick="nomineeUpdate(\'checkBox'+voterCount+'\','+voterCount+')" style="margin-top: -10px;" title="Click here to add make this member as nominee."></td>';
 	str +=' <td style="width:100px;">  <input id="countVar" type="hidden" value="'+voterCount+'">';
-	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder=" Enter Voter Name " name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].voterName" ></input> ';
-	str +=' <input type="hidden" class="form-control border-radius-0 text-align2"  name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].voterId"></input> ';
+	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder=" Enter Voter Name " name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].voterName" id="voterName'+voterCount+'" ></input> ';
+	str +=' <input type="hidden" class="form-control border-radius-0 text-align2"  name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].voterId" id="voterId'+voterCount+'"></input> ';
 	str +=' </td>';
 	str +=' <td style="width:100px;"> ';
-	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder=" Enter Voter Id " name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].voterCadreNO" style="width:121px;"></input>';
+	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder=" Enter Voter Id " name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].voterCadreNO" style="width:121px;"  id="voterCard'+voterCount+'"></input>';
 	str +=' </td>';
 	str +=' <td style="width:80px;"> ';
-	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder=" Age " style="width:55px;"></input> ';
+	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder=" Age " style="width:55px;"  id="voterAge'+voterCount+'"></input> ';
 	str +=' </td>';
 	str +=' <td style="width:82px;">';
-	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder="Gender"  style="width:53px;"> </input>';
+	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder="Gender"  style="width:53px;"  id="voterGender'+voterCount+'"> </input>';
 	str +=' </td>';
 	str +=' <td style="width:100px;"> ';
 
@@ -1070,12 +1077,12 @@
 					<input type="hidden" class="form-control border-radius-0 text-align2" value = "${boothId}" name="cadreRegistrationVO.boothId" > 
 										<div class="span12">
 										<div class="span6">
-											<h5 style="color: #9a9a9a;">  CANDIDATE NAME  </h5>
+											<h5 style="color: #9a9a9a;">  CANDIDATE NAME <span class="mandatory">*</span> </h5>
 											<input type="text" class="form-control border-radius-0" placeholder="Candidate Name" name="cadreRegistrationVO.voterName"  value="${voterInfoVOList[0].name}" id="cadreNameId"></input>
 											<span id="nameErr" style="color:red;font-size:12px;"></span>
 										</div>	
 										<div class="span4">	
-											<h5 class="text-align1">Age  </h5>
+											<h5 class="text-align1">Age <span class="mandatory">*</span> </h5>
 											<input style="width:180px;" id="cadreAgeId" type="text" class="form-control border-radius-0 text-align2"  placeholder="Age" name="cadreRegistrationVO.age"   value="${voterInfoVOList[0].age}"></input>
 											<span id="ageErr" style="color:red;font-size:12px;"></span>
 										</div>
@@ -1115,7 +1122,7 @@
 	                                </div>
 									<div class="span12">
 										<div class="span6">
-											<h5 class="text-align1">DATE OF BIRTH  </h5>
+											<h5 class="text-align1">DATE OF BIRTH  <span class="mandatory">*</span></h5>
 												
 												<div class="input-prepend text-align2 ">
 													
@@ -1153,7 +1160,7 @@
 									<div class="row-fluid">
 										
 										<div class="span6">
-										<h5 class="text-align1">GUARDIAN NAME</h5>
+										<h5 class="text-align1">GUARDIAN NAME </h5>
 										<input type="text" class="form-control border-radius-0 text-align2" placeholder="Guardian Name" name="cadreRegistrationVO.relativeName"   value="${voterInfoVOList[0].relativeName}"></input>
 										</div>
 										<input type="hidden" value="${voterInfoVOList[0].voterId}" name="cadreRegistrationVO.voterId"></input>
@@ -1167,7 +1174,7 @@
 										<div class="row-fluid">
 										
 											<div style="width:150px;float:left;">
-											<h5 class="text-align1">VOTER ID</h5>
+											<h5 class="text-align1">VOTER ID <span class="mandatory">*</span></h5>
 												<input type="text" class="form-control border-radius-0 text-align2 " placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"   id="cardNumber" value="${voterInfoVOList[0].voterCardNo}" readonly style="width:135px;"></input>
 												 <span id="cardErr" style="color:red;font-size:12px;"></span>
 												<!--<input type="hidden" id="cardNo" class="form-control border-radius-0 input-block-level" placeholder="Text input" value="${voterInfoVOList[0].voterCardNo}" style="width:260px;" ></input>-->
@@ -1182,7 +1189,7 @@
 											<div class="span4"> <input type="checkbox" title="Please Check If Cadre Didn't Have Voter Card And Using His Family Members Voter Card" id="relativeTypeChecked" name="relativeTypeChecked" onclick="showHideFamRelatinoSts();"/> Is Family Member</div>
 											<div  class="span6" id="showHideFammemberType" style="display:none; margin-left: 165px;margin-top: -33px;">
 												<span style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</span><select name="relativeTypeId" id="relativeTypeId"> </select>
-												<span style="color: #9a9a9a;font-weight: bold;">Voter Card &nbsp;</span><input type="text" id="familyVtrCrdId" name="relativeVoterCardNo">
+												<span style="color: #9a9a9a;font-weight: bold;">Voter Card &nbsp;</span><input type="text" id="familyVtrCrdId">
 												<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByfName();}" style="margin-top:10px;"> LookUp </a>
 											</div>
 										</div>
@@ -1212,20 +1219,20 @@
 						
 					</div>
 					<div class="span6 show-grid pad-10b" id="fadeInRight" style="min-height: 674px;" >
+							<!-- 
+							<div class=" m_top20" >
+								<h5 class="text-align1">Aadhar Card No .</h5>
+								<input type="text" class=""  style="width:260px;" placeholder="Aadhar Number"  name="cadreRegistrationVO.aadheerNo" value="${voterInfoVOList[0].aadharNo}"></input>
 							
-								<div class=" m_top20" >
-									<h5 class="text-align1">Aadhar Card No .</h5>
-									<input type="text" class=""  style="width:260px;" placeholder="Aadhar Number"  name="cadreRegistrationVO.aadheerNo" value="${voterInfoVOList[0].aadharNo}"></input>
-								
-								</div>
-							
+							</div>
+							-->
 							
 								<div class=" m_top20" >
 										<h5 class="text-align1">STREET/HAMLET</h5>
 										<input type="text" class="form-control border-radius-0  input-block-level" placeholder=" Street / Hamlet " name="cadreRegistrationVO.street"  value="${voterInfoVOList[0].location}" style="width:260px;"></input>
 								</div>	
 							<div class=" m_top20" >
-										<h5 class="text-align1">CASTE NAME <span id="casteErr" style="color:red;font-size:12px;"></span>  </h5>
+										<h5 class="text-align1">CASTE NAME <span class="mandatory">*</span><span id="casteErr" style="color:red;font-size:12px;"></span>  </h5>
 									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="casteId" list="voterInfoVOList[0].genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Caste " style="width:260px;" name="cadreRegistrationVO.casteId"   value="%{voterInfoVOList[0].casteId}"/>	
 								
 									
@@ -1235,7 +1242,7 @@
 										-->
 							</div>
 							<div class=" m_top20" >
-										<h5 class="text-align1">MOBILE NUMBER  <span id="mobileErr" style="color:red;font-size:12px;"></span> </h5>
+										<h5 class="text-align1">MOBILE NUMBER <span class="mandatory">*</span> <span id="mobileErr" style="color:red;font-size:12px;"></span> </h5>
 										<input type="text" id="mobileNumberId" class="form-control border-radius-0 input-block-level" placeholder=" Mobile Number "  name="cadreRegistrationVO.mobileNumber"  value="${voterInfoVOList[0].mobileNo}" style="width:260px;" maxlength="10" onKeyup="isNumber()"></input>
 							</div>
 							<div class=" m_top20" >
@@ -1435,7 +1442,7 @@
 		<div class="container m_top10">
 			<div class="span12 show-grid" style="position: relative;" id="accDiv">
 				<div class="span2">
-					<h5 class="text-align1"> Aadhar Card  </h5>
+					<h5 class="text-align1"> Aadhar Card  <span class="mandatory">*</span></h5>
 					<input type="text" class="" style="width: 138px;" placeholder="Aadheer Number"  name="cadreRegistrationVO.aadheerNo" value="${voterInfoVOList[0].aadharNo}" id="nomineAadharId" onkeyup="isAadharNumber('nomineAadharId','Aadhar No ')" maxlength="12"></input> 
 					 <span id="NaadharErr" style="color:red;font-size:11px;"></span>
 				</div>
@@ -1443,7 +1450,7 @@
 				<div class="span2">
 					<input type="hidden" class="" style="width: 138px;" placeholder="Nominee VoterId"    id="nomineeVoterId"></input>
 					<input type="hidden" class="" style="width: 138px;" placeholder="Nominee VoterId"    id="nomineeVoterCardId"></input>
-					<h5 class="text-align1"> Nominee Name  </h5>
+					<h5 class="text-align1"> Nominee Name  <span class="mandatory">*</span></h5>
 					<input type="text" class="" style="width: 138px;"placeholder="Nominee Name"  name="cadreRegistrationVO.nomineeName" value="${voterInfoVOList[0].nomineeName}" id="nomineNameId" onkeyup="isValidName('name')"></input>
 					<span id="NnameErr" style="color:red;font-size:11px;"></span>
 				</div>
@@ -1451,7 +1458,7 @@
 				
 				
 				<div class="span2">
-					<h5 class="text-align1"> Gender </h5>
+					<h5 class="text-align1"> Gender <span class="mandatory">*</span></h5>
 					<select name="cadreRegistrationVO.nomineeGender" style="width: 138px;" id="nomineeGenderId" >
 							<option value="0">Select Gender</option>	
 							<option value="1">Male</option>
@@ -1461,13 +1468,13 @@
 				</div>
 				
 				<div class="span2">
-					<h5 class="text-align1"> Age  </h5>
+					<h5 class="text-align1"> Age  <span class="mandatory">*</span></h5>
 					<input type="text" class=""  style="width: 100px;" placeholder=" Age "  name="cadreRegistrationVO.nomineeAge" value="${voterInfoVOList[0].nomineAge}" id="nomineeAgeId"  onkeyup="isValidName('number')"></input>
 					<span id="NageErr" style="color:red;font-size:11px;"></span>
 				</div>
 				
 				<div class="span2">
-					<h5 class="text-align1"> Relation Type </h5>
+					<h5 class="text-align1"> Relation Type <span class="mandatory">*</span></h5>
 					<select name="cadreRegistrationVO.voterRelationId" style="width:160px;" id="voterRelationId">
 							<option value="0">Select Relation</option>	
 							<option value="1">Father</option>
@@ -1524,7 +1531,7 @@
 							<h5 class="text-align1"> Cadre Committee </h5>
 						</c:if>
 							<select class="levelCls" id="CadreCommitteeId${indexValue.index}" name="cadreRegistrationVO.previousRollesList[${indexValue.index}].cadreCommitteeId" style="margin-left: 12px" onchange="getCadreCommitteRoles(this.value,'CadreRolesId${indexValue.index}','CadreCommitteeLevelsId${indexValue.index}')">
-							<c:forEach var="educationList" items="${cadreRolesVOList[0].selectOptionsList}" >		
+							<c:forEach var="educationList" items="${voterInfoVOList[0].cadreRolesList[indexValue.index].basicVO.hamletCasteInfo}" >		
 										<c:if test="${educationList.id == role.count }">																
 										<option value="${educationList.id}" selected="selected">${educationList.name}</option>
 									</c:if>	
@@ -1543,7 +1550,7 @@
 							<h5 class="text-align1">Cadre Role </h5>
 						</c:if>
 								<select class="levelCls" id="CadreRolesId${indexValue.index}" name="cadreRegistrationVO.previousRollesList[${indexValue.index}].cadreRoleId" style="margin-left: 12px">
-								<c:forEach var="educationList" items="${cadreRolesVOList[2].selectOptionsList}" >		
+								<c:forEach var="educationList" items="${voterInfoVOList[0].cadreRolesList[indexValue.index].basicVO.panchayatVoterInfo}" >		
 										<c:if test="${educationList.id == role.rank }">																
 										<option value="${educationList.id}" selected="selected">${educationList.name}</option>
 									</c:if>	
@@ -1740,7 +1747,7 @@
 					
 				</div>				
 					</c:forEach>
-						<a title="Add More Details" onclick="createNewFormForElections();" style="float:right;margin-right:35px;margin-top:-30px;" class="icon-plus-sign"></a>
+						<a title="Add More Details" onclick="createNewFormsForElections();" style="float:right;margin-right:35px;margin-top:-30px;" class="icon-plus-sign"></a>
 					
 					<div id="candidateDivTab" style="float:left;"></div>
 					
@@ -1777,7 +1784,7 @@
 					<div class="span3">
 						<div class=" " >
 							<h5 class="text-align1">Candidate </h5>
-							<select   id="candidatesList0"  style="margin-left: 12px" onchange="getCandidateDetailsById('constituencyList0','electionYearId0',this.value); " name="cadreRegistrationVO.previousParicaptedElectionsList[0].candidateId">
+							<select   id="candidatesList0"  style="margin-left: 12px;width:160px;" onchange="getCandidateDetailsById('constituencyList0','electionYearId0',this.value); " name="cadreRegistrationVO.previousParicaptedElectionsList[0].candidateId">
 								<option value="0"> Select Candidate</option>
 								<c:forEach var="educationList" items="${voterInfoVOList[0].previousParticipationInfoList[indexValue.index].basicVO.hamletVoterInfo}" ><option value="${educationList.id}">${educationList.name}</option>
 								</c:forEach>
@@ -1787,7 +1794,7 @@
 					</div>
 				</div>				
 			</s:else>
-				<a title="Add More Details" onclick="createNewFormForElections();" style="float:right;margin-right:35px;margin-top:-30px" class="icon-plus-sign"></a>
+				<a title="Add More Details" onclick="createNewFormsForElections();" style="float:right;margin-right:35px;margin-top:-30px" class="icon-plus-sign"></a>
 				
 				<div id="candidateDivTab" style="float:left;"></div>
 				
@@ -2517,11 +2524,11 @@ function hideCadreImg(){
 			var genderName = $('#voterGender'+keyId+'').val();
 			var age = $('#voterAge'+keyId+'').val();
 			var gender = 0;
-			if(genderName == 'M')
+			if(genderName == 'M' || genderName == 'm')
 			{
 				gender = 1;
 			}
-			else if(genderName == 'F')
+			else if(genderName == 'F' || genderName == 'f')
 			{
 				gender = 2;
 			}
