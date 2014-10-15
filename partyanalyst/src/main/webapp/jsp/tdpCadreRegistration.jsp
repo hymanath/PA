@@ -1431,7 +1431,7 @@
 	<div id="fadeInUp">
 		<div class="container m_top10">
 			<div class="span12 show-grid" style="position: relative;">
-				<h3 class="text-align ">ACCIDENTAL INSURANCE DETAILS</h3>
+				<h3 class="text-align ">NOMINEE DETAILS</h3>
 			</div>
 		</div>
 		<div class="container m_top10">
