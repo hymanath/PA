@@ -316,7 +316,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			}
 			for(Long locationId:locationMap.keySet()){
 				yearMap = locationMap.get(locationId);
-				if(yearMap.size() == 2){
+				if(yearMap.size() >= 2){
 					Long previousCount = yearMap.get(2012l);
 					Long currentCount = yearMap.get(2014l);
 					if(previousCount != null && previousCount.longValue() > 0 && currentCount != null && currentCount.longValue() > 0){
@@ -366,7 +366,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			}
 			for(Long locationId:locationMap.keySet()){
 				yearMap = locationMap.get(locationId);
-				if(yearMap.size() == 2){
+				if(yearMap.size() >= 2){
 					Long previousCount = yearMap.get(2012l);
 					Long currentCount = yearMap.get(2014l);
 					if(previousCount != null && previousCount.longValue() > 0 && currentCount != null && currentCount.longValue() > 0){
