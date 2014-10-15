@@ -1056,7 +1056,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	public List<VoterInfoVO> getSearchDetailsCadreRegistration(Long constituencyId, String seachType, String candidateName, String voterCardId, String houseNo,Long panchayatId,Long boothId,String isPresentCadre)
 	{
 		String cadrePath="images/cadre_images/";
-		String voterPath="voter_images/";
+		String voterPath="voter_images/"+constituencyId+"/Part";
 		StringBuilder searchQuery = new StringBuilder();
 		List<VoterInfoVO> returnList = null;
 		List searchList = null;
@@ -1103,7 +1103,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						vo.setRelationType(voter[5] != null ? voter[5].toString().trim():"");
 						vo.setGender(voter[6] != null ? voter[6].toString().trim():"");
 						vo.setVoterCardNo(voter[7]!=null ?voter[7].toString().trim():"");
-						vo.setImage(voter[7]!=null ?voterPath+voter[7].toString().trim()+".jpg":"");
+						vo.setImage(voter[7]!=null ?voterPath+voter[8].toString().trim()+"/"+voter[7].toString().trim()+".jpg":"");
 						vo.setIsRegistered("N");						
 						returnList.add(vo);
 					}
@@ -1220,7 +1220,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return returnList;
 	}
 	
-	public List<VoterInfoVO> getCandidateInfoBySearchCriteria(String searchType, Long candidateId,String staticContentLoc)
+	public List<VoterInfoVO> getCandidateInfoBySearchCriteria(String searchType, Long candidateId,String staticContentLoc,Long constituencyId)
 	{
 		List<VoterInfoVO> returnList = null;
 		VoterInfoVO vo = null;
@@ -1253,14 +1253,16 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						vo.setDateOfBirth(voter.getDateOfBirth() != null ? voter.getDateOfBirth().toString():"");
 						vo.setGender(voter.getGender());
 						vo.setVoterCardNo(voter.getVoterIDCardNo() != null ? voter.getVoterIDCardNo() :"");
-						 
-						if(voter.getVoterIDCardNo() != null){
-							String filePath = staticContentLoc + "voter_images" + pathSeperator+voter.getVoterIDCardNo()+".jpg";
-							if(checkFileExistingOrNot(filePath)){
-								vo.setVoterImagePresent(true);
-								vo.setVoterImage("voter_images/"+voter.getVoterIDCardNo()+".jpg");
+						if(constituencyId != null){
+							List<String> partNos = boothPublicationVoterDAO.getPartNo(constituencyId, voter.getVoterId());
+							if(voter.getVoterIDCardNo() != null && partNos.size() > 0 && partNos.get(0) != null){
+								String filePath = staticContentLoc +"voter_images"+pathSeperator+constituencyId+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo()+".jpg";
+								if(checkFileExistingOrNot(filePath)){
+									vo.setVoterImagePresent(true);
+									vo.setVoterImage("voter_images"+pathSeperator+constituencyId+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo()+".jpg");
+								}
 							}
-						}
+					   }
 						
 						
 						List<UserVoterDetails> voterList = userVoterDetailsDAO.getVoterDetailsByUserIdAndVoterId(voter.getVoterId(),1L);
@@ -1365,10 +1367,20 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									voterId = tdpCadre.getVoter() != null ? tdpCadre.getVoter().getVoterId(): 0L;
 									houseNo = tdpCadre.getVoter().getHouseNo() != null ? tdpCadre.getVoter().getHouseNo().toString():"";	
 									
-									String filePath = staticContentLoc + "voter_images" + pathSeperator+tdpCadre.getVoter().getVoterIDCardNo()+".jpg";
+									/*String filePath = staticContentLoc + "voter_images" + pathSeperator+tdpCadre.getVoter().getVoterIDCardNo()+".jpg";
 									if(checkFileExistingOrNot(filePath)){
 										vo.setVoterImagePresent(true);
 										vo.setVoterImage("voter_images/" +tdpCadre.getVoter().getVoterIDCardNo()+".jpg");
+									}*/
+									if(constituencyId != null){
+										List<String> partNos = boothPublicationVoterDAO.getPartNo(constituencyId, tdpCadre.getVoter().getVoterId());
+										if(partNos.size() > 0 && partNos.get(0) != null){
+											String filePath = staticContentLoc +"voter_images"+pathSeperator+constituencyId+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+tdpCadre.getVoter().getVoterIDCardNo()+".jpg";
+											if(checkFileExistingOrNot(filePath)){
+												vo.setVoterImagePresent(true);
+												vo.setVoterImage("voter_images"+pathSeperator+constituencyId+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+tdpCadre.getVoter().getVoterIDCardNo()+".jpg");
+											}
+										}
 									}
 								}
 								else
@@ -2852,12 +2864,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			    String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
 				String destinationPath = cadreRegistrationVO.getPath() + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
 				Voter voter = voterDAO.get(Long.valueOf(cadreRegistrationVO.getVoterId()));
-				if(voter != null){
-				   String sourcePath = cadreRegistrationVO.getPath() + "voter_images" + pathSeperator+voter.getVoterIDCardNo()+".jpg";
-				   String status = copyFile(sourcePath,destinationPath);
-				   if(status.equalsIgnoreCase("success")){
-					   tdpCadre.setImage(tdpCadre.getMemberShipNo()+".jpg");
-				   }
+				if(voter != null && cadreRegistrationVO.getConstituencyId() != null && Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()).longValue() > 0){
+					List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()), voter.getVoterId());
+					if(partNos.size() > 0 && partNos.get(0) != null){
+					   String sourcePath = cadreRegistrationVO.getPath() + "voter_images"+pathSeperator+cadreRegistrationVO.getConstituencyId().trim()+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo()+".jpg";
+					   String status = copyFile(sourcePath,destinationPath);
+					   if(status.equalsIgnoreCase("success")){
+						   tdpCadre.setImage(tdpCadre.getMemberShipNo()+".jpg");
+					   }
+					}
 			   }
 		  }
 		}else{		
