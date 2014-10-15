@@ -1932,8 +1932,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					vo.setId(participation[0] != null ? Long.valueOf(participation[0].toString().trim()):0L);		//Committe Level Id
 					vo.setCount(participation[1] != null ? Long.valueOf(participation[1].toString().trim()):0L);	// Committe Id
 					
-					List<BasicVO> committeeList = new ArrayList<BasicVO>();
+					List<BasicVO> committeeList = new ArrayList<BasicVO>();					
+					committeeList.add(new BasicVO(0L," Select Committee "));
+					
 					List<BasicVO> rolesList =  new ArrayList<BasicVO>();
+					rolesList.add(new BasicVO(0L," Select Role "));
 					
 					List<Object[]> results = cadreCommitteeRoleDAO.getCommitteeRolesByLevelId(vo.getId());
 					
