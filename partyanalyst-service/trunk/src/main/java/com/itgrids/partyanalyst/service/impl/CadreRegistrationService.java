@@ -756,8 +756,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					     tdpCadre = tdpCadreDAO.save(tdpCadre);	
 					  }
 				  }else{
+					  tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
 					  uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
 					  surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
+					  
 					tdpCadre = tdpCadreDAO.save(tdpCadre);	
 				  }
 				}
