@@ -73,9 +73,22 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private String								boothId;
 	private Boolean                             relativeTypeChecked;
 	private Long                                relativeTypeId;
-	private Boolean                              cadreUploadImgCadreType;
-	private Boolean                              cadreUploadImgVoterType;
+	private Boolean                             cadreUploadImgCadreType;
+	private Boolean                             cadreUploadImgVoterType;
+	private String								relativeVoterCardNo;
 	
+	
+	
+	
+	
+	public String getRelativeVoterCardNo() {
+		return relativeVoterCardNo;
+	}
+
+	public void setRelativeVoterCardNo(String relativeVoterCardNo) {
+		this.relativeVoterCardNo = relativeVoterCardNo;
+	}
+
 	public List<SelectOptionVO> getCadreRolesVOList() {
 		return cadreRolesVOList;
 	}
@@ -416,6 +429,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				if(relativeTypeChecked != null){
 					cadreRegistrationVO.setRelative(true);
 					cadreRegistrationVO.setRelationTypeId(relativeTypeId);
+					cadreRegistrationVO.setRelativeVoterId(relativeVoterCardNo);
 				}
 				if(cadreUploadImgCadreType != null){
 					cadreRegistrationVO.setPhotoType("cadre");
@@ -466,7 +480,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	{
 		Date date = null;
 		try {
-			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+			SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
 			date = originalFormat.parse(dateStr);
 		} catch (Exception e) {
 			LOG.error("Exception raised in convertToDateFormet method in CadreRegistrationAction Action",e);
