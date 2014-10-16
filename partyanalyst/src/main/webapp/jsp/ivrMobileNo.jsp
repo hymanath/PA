@@ -562,6 +562,8 @@ if(scopeId == 1)
 	$("#mandalCheck").show();
 	$("#panchayatCheck").show();
 	$("#districtCheckId").attr('checked', 'checked');
+	$("#constituencyCheckId").attr('checked', false);
+	$("#mandalCheckId").attr('checked', false);
 	}
 else if(scopeId == 2)
 	{
@@ -574,6 +576,7 @@ else if(scopeId == 2)
 	$("#mandalCheck").show();
 	$("#panchayatCheck").show();
 	$("#constituencyCheckId").attr('checked', 'checked');
+	$("#mandalCheckId").attr('checked', false);
 	}
 	else if(scopeId == 3)
 	{
@@ -586,6 +589,7 @@ else if(scopeId == 2)
 	$("#panchayatCheck").show();
 	$("#districtCheck").hide();
 	$("#constituencyCheckId").attr('checked', 'checked');
+	$("#mandalCheckId").attr('checked', false);
 	}
 	else if(scopeId == 4)
 	{
