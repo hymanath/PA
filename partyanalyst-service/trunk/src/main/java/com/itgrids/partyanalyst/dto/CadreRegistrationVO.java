@@ -84,7 +84,17 @@ public class CadreRegistrationVO implements Serializable{
 	private List<CadrePreviousRollesVO> previousParicaptedElectionsList;
 	
 	private List<CadreFamilyVO> cadreFamilyDetails;
+	private String			relativeVoterId;
 	
+	
+	
+	
+	public String getRelativeVoterId() {
+		return relativeVoterId;
+	}
+	public void setRelativeVoterId(String relativeVoterId) {
+		this.relativeVoterId = relativeVoterId;
+	}
 	
 	public String getVoterName() {
 		return voterName;

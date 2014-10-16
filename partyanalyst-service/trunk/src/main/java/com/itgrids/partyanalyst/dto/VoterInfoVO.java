@@ -47,8 +47,25 @@ public class VoterInfoVO implements java.io.Serializable
 	private String voterImage;
 	private boolean cadreImagePresent;
 	private String cadreImage;
+	private String fmlyVCardNo;
+	private Long fmlyVtrId;
 	
 	
+	
+	
+	
+	public String getFmlyVCardNo() {
+		return fmlyVCardNo;
+	}
+	public void setFmlyVCardNo(String fmlyVCardNo) {
+		this.fmlyVCardNo = fmlyVCardNo;
+	}
+	public Long getFmlyVtrId() {
+		return fmlyVtrId;
+	}
+	public void setFmlyVtrId(Long fmlyVtrId) {
+		this.fmlyVtrId = fmlyVtrId;
+	}
 	public String getNomineAge() {
 		return nomineAge;
 	}
