@@ -47,13 +47,18 @@ public class VoterInfoVO implements java.io.Serializable
 	private String voterImage;
 	private boolean cadreImagePresent;
 	private String cadreImage;
+	
 	private String fmlyVCardNo;
 	private Long fmlyVtrId;
+	private String candidateAadharNo;
 	
 	
-	
-	
-	
+	public String getCandidateAadharNo() {
+		return candidateAadharNo;
+	}
+	public void setCandidateAadharNo(String candidateAadharNo) {
+		this.candidateAadharNo = candidateAadharNo;
+	}
 	public String getFmlyVCardNo() {
 		return fmlyVCardNo;
 	}

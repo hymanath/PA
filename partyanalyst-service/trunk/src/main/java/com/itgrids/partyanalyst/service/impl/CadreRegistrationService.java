@@ -313,7 +313,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	{
 		Date date = null;
 		try {
-			SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
 			date = originalFormat.parse(dateStr);
 		} catch (Exception e) {
 			LOG.error("Exception raised in convertToDateFormet method in CadreRegistrationAction Action",e);
@@ -1299,6 +1299,19 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							{
 								Long tdpCadreId = tdpCadre.getTdpCadreId();
 								
+								vo.setCandidateAadharNo(tdpCadre.getCadreAadherNo() != null ? tdpCadre.getCadreAadherNo() :"");
+								vo.setFmlyVtrId(tdpCadre.getFamilyVoterId() != null ? tdpCadre.getFamilyVoterId():0L);
+								
+								List<Object[]> familyVoterInfo = voterDAO.getVoterInfoByVoterId(tdpCadre.getFamilyVoterId());
+								
+								if(familyVoterInfo != null && familyVoterInfo.size()>0)
+								{
+									for (Object[] param : familyVoterInfo) 
+									{
+										vo.setFmlyVCardNo(param[0] != null ? param[0].toString():"");
+									}
+								}
+								
 								vo.setBlodGroupId(tdpCadre.getBloodGroup() != null ? tdpCadre.getBloodGroupId():0L);
 								
 								vo.setCasteId(tdpCadre.getCasteState() != null ? tdpCadre.getCasteState().getCasteStateId():0L);							
@@ -1417,6 +1430,20 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									else if(tdpCadre.getAge() != null && tdpCadre.getAge().toString().trim().length()>0 )
 									{
 										vo.setAge(tdpCadre.getAge().toString());
+									}
+								}
+								
+
+								vo.setCandidateAadharNo(tdpCadre.getCadreAadherNo() != null ? tdpCadre.getCadreAadherNo() :"");
+								vo.setFmlyVtrId(tdpCadre.getFamilyVoterId() != null ? tdpCadre.getFamilyVoterId():0L);
+								
+								List<Object[]> familyVoterInfo = voterDAO.getVoterInfoByVoterId(tdpCadre.getFamilyVoterId());
+								
+								if(familyVoterInfo != null && familyVoterInfo.size()>0)
+								{
+									for (Object[] param : familyVoterInfo) 
+									{
+										vo.setFmlyVCardNo(param[0] != null ? param[0].toString():"");
 									}
 								}
 								
@@ -1556,7 +1583,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				returnList = new ArrayList<VoterInfoVO>();
 				vo = new VoterInfoVO();
 				vo.setCadreId(0L);
-				vo.setDateOfBirth("01-01-1980");	
+				vo.setDateOfBirth("1980-01-01");	
 				vo.setHouseNo("");
 				vo.setName("");
 				vo.setRelativeName("");
@@ -1564,7 +1591,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				vo.setAge("");
 				vo.setGender(null);						
 				vo.setVoterId(0L);
-				vo.setVoterCardNo("");						
+				vo.setVoterCardNo("");
+				vo.setCandidateAadharNo("");
+				vo.setFmlyVtrId(0L);
+				vo.setFmlyVCardNo("");
 				vo.setBlodGroupId(0L);						
 				vo.setCasteId(0L);							
 				vo.setCasteName("");						
@@ -1579,7 +1609,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				vo.setNomineeName("");
 				vo.setVoterRelationId(0L);
 				vo.setNomineAge("");
-				vo.setNomineeGender(0L);		 
+				vo.setNomineeGender(0L);
+
+
+
 			}
 			
 			List<Object[]> castesList = casteStateDAO.getAllCasteDetailsForVoters(1L); // for AP state
