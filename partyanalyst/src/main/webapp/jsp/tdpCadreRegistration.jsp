@@ -160,6 +160,14 @@
 		changeYear: true,
 		yearRange: "-100:+0"
 	  });
+	  
+	  $('.dateOfBirthDtCls').datepicker({
+		dateFormat: 'yy-mm-dd',
+		maxDate: new Date(),
+		changeMonth: true,
+		changeYear: true,
+		yearRange: "-100:+0"
+	  });
 		
 		/*
 		$( "#casteIdValue" ).autocomplete({ 
@@ -1126,7 +1134,7 @@
 												
 												<div class="input-prepend text-align2 ">
 													
-													<input type="text" class="datePickerCls" name="cadreRegistrationVO.dobStr" value="${voterInfoVOList[0].dateOfBirth}" placeholder="Date of Birth" readOnly="true" id="dateOfbirthId"></input>
+													<input type="text" class="dateOfBirthDtCls" name="cadreRegistrationVO.dobStr" value="${voterInfoVOList[0].dateOfBirth}" placeholder="Date of Birth" readOnly="true" id="dateOfbirthId"></input>
 													<br><span id="dobErr" style="color:red;font-size:12px;"></span>
 												</div>
 										</div>	
@@ -1448,7 +1456,7 @@
 			<div class="span12 show-grid" style="position: relative;" id="accDiv">
 				<div class="span2">
 					<h5 class="text-align1"> Aadhar Card  <span class="mandatory">*</span></h5>
-					<input type="text" class="" style="width: 138px;" placeholder="Aadheer Number"  name="cadreRegistrationVO.aadheerNo" value="${voterInfoVOList[0].aadharNo}" id="nomineAadharId" onkeyup="isAadharNumber('nomineAadharId','Aadhar No ')" maxlength="12"></input> 
+					<input type="text" class="" style="width: 138px;" placeholder="Aadhaar Number"  name="cadreRegistrationVO.aadheerNo" value="${voterInfoVOList[0].aadharNo}" id="nomineAadharId" onkeyup="isAadharNumber('nomineAadharId','Aadhar No ')" maxlength="12"></input> 
 					 <span id="NaadharErr" style="color:red;font-size:11px;"></span>
 				</div>
 				
@@ -2118,7 +2126,7 @@ function getAllRelationDetails(){
 		url : "getAllRelationDetails.action"
 	}).done(function(result){
 	  if(result != null && result.length > 0){
-	   $('#relativeTypeId').append('<option value="0">Select Relation</option>');
+	   //$('#relativeTypeId').append('<option value="0">Select Relation</option>');
 	   for(var i in result){
 		 $('#relativeTypeId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 	    }
