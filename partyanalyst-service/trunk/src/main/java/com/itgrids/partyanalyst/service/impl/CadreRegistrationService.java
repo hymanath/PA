@@ -710,7 +710,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				   tdpCadre.setRelationTypeId(null);
 				}
 				
-				if(cadreRegistrationVO.getFamilyVoterId() != null && cadreRegistrationVO.getFamilyVoterId().longValue() > 0)
+				if(cadreRegistrationVO.getFamilyVoterId() != null && cadreRegistrationVO.getFamilyVoterId().longValue() > 0 && registrationType.equalsIgnoreCase("TAB"))
 				{
 					tdpCadre.setFamilyVoterId(cadreRegistrationVO.getFamilyVoterId());
 					tdpCadre.setIsRelative("Y");
@@ -720,6 +720,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					}
 					
 				}
+				
+				if(cadreRegistrationVO.getFamilyVoterId()!=null && registrationType.equalsIgnoreCase("WEB")){
+					tdpCadre.setFamilyVoterId(cadreRegistrationVO.getFamilyVoterId());
+				}
+				
 				if(registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE")) && insertType.equalsIgnoreCase("new")){
 					String userId = "0000";
 					if(cadreRegistrationVO.getCreatedUserId() != null){
