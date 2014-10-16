@@ -628,7 +628,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				if(cadreRegistrationVO.getSurveyTimeStr() != null && cadreRegistrationVO.getSurveyTimeStr().trim().length() > 0 && !cadreRegistrationVO.getSurveyTimeStr().trim().equalsIgnoreCase("null"))
 				{
 					//tdpCadre.setSurveyTime(convertToDateFormet(cadreRegistrationVO.getSurveyTimeStr()));
-					SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT);
+					SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT_24HRS);
 					tdpCadre.setSurveyTime(sdf.parse(cadreRegistrationVO.getSurveyTimeStr()));
 				}else if( insertType.equalsIgnoreCase("new") && registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE"))){
 					tdpCadre.setSurveyTime(tdpCadre.getInsertedTime());
@@ -1316,7 +1316,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								
 								vo.setCasteId(tdpCadre.getCasteState() != null ? tdpCadre.getCasteState().getCasteStateId():0L);							
 								vo.setCasteName(tdpCadre.getCasteState() != null ? tdpCadre.getCasteState().getCaste().getCasteName().toString():"");	
-								vo.setDateOfBirth(tdpCadre.getDateOfBirth() != null ? new SimpleDateFormat("dd-MM-yyyy").format(new SimpleDateFormat("yy-MM-dd").parse(tdpCadre.getDateOfBirth().toString())):"");
+								vo.setDateOfBirth(tdpCadre.getDateOfBirth() != null ? new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("yy-MM-dd").parse(tdpCadre.getDateOfBirth().toString())):"");
 								vo.setOccupationId(tdpCadre.getOccupation() != null ? tdpCadre.getOccupation().getOccupationId():0L);
 								vo.setOccupation(tdpCadre.getOccupation() != null ? tdpCadre.getOccupation().getOccupation():"");
 								
@@ -1370,7 +1370,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						try {
 								vo.setCadreId(tdpCadre.getTdpCadreId());
 								Date dateOfBirth = tdpCadre.getDateOfBirth() != null ? tdpCadre.getDateOfBirth():null;
-								vo.setDateOfBirth(dateOfBirth != null ? new SimpleDateFormat("dd-MM-yyyy").format(dateOfBirth):"");
+								vo.setDateOfBirth(dateOfBirth != null ? new SimpleDateFormat("yyyy-MM-dd").format(dateOfBirth):"");
 								
 								if(tdpCadre.getVoter() != null)
 									
