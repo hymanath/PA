@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -29,6 +30,16 @@ public class CadreSurveyUserDAO extends GenericDaoHibernate<CadreSurveyUser, Lon
 				" model.isDeleted = 'N' and model.cadreSurveyUserId not in (:assignedCadreSurveyUsers) order by model.userName ");
 		
 		query.setParameterList("assignedCadreSurveyUsers", assignedCadreSurveyUsers);
+		
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getUserMobileNos(Set<Long> ids){
+		Query query = getSession().createQuery("select model.cadreSurveyUserId, model.mobileNo from CadreSurveyUser model where " +
+				"  model.cadreSurveyUserId  in (:ids) ");
+		
+		query.setParameterList("ids", ids);
 		
 		return query.list();
 		

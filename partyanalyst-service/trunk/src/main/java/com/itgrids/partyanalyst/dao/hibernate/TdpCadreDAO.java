@@ -226,7 +226,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		return query.list();
 	}
 	
-	public List<Object[]> getCadreInfoConstituencytWise(List<Long> constituencyIds,Date fromDate, Date toDate){
+	public List<Object[]> getCadreInfoConstituencytWise(List<Long> constituencyIds,Date fromDate, Date toDate,Long year){
 		StringBuilder queryStr = new StringBuilder();
 		//0 count,1 id,2 name ,3 year
 		queryStr.append("select count(model.tdpCadreId),model.userAddress.constituency.constituencyId,model.userAddress.constituency.name,model.enrollmentYear from TdpCadre model where model.isDeleted = 'N'   and model.userAddress.constituency.constituencyId in(:constituencyIds) ");
@@ -234,10 +234,11 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		{
 			queryStr.append(" and date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate  " );
 		}	
-		queryStr.append(" group by model.userAddress.constituency.constituencyId,model.enrollmentYear");
+		queryStr.append(" and model.enrollmentYear =:year group by model.userAddress.constituency.constituencyId,model.enrollmentYear");
 
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("constituencyIds", constituencyIds);
+		query.setParameter("year", year);
 		if(fromDate != null && toDate != null)
 		{
 			query.setParameter("fromDate", fromDate);
@@ -246,7 +247,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		return query.list();
 	}
 	
-	public List<Object[]> getCadreInfoDistrictWise(List<Long> districtIds,Date fromDate, Date toDate){
+	public List<Object[]> getCadreInfoDistrictWise(List<Long> districtIds,Date fromDate, Date toDate,Long year){
 		StringBuilder queryStr = new StringBuilder();
 		//0 count,1 id,2 name ,3 year
 		queryStr.append("select count(model.tdpCadreId),model.userAddress.district.districtId,model.userAddress.district.districtName,model.enrollmentYear from TdpCadre model where model.isDeleted = 'N'   and model.userAddress.district.districtId in(:districtIds) ");
@@ -254,10 +255,11 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		{
 			queryStr.append(" and date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate  " );
 		}	
-		queryStr.append(" group by model.userAddress.district.districtId,model.enrollmentYear");
+		queryStr.append(" and model.enrollmentYear =:year  group by model.userAddress.district.districtId,model.enrollmentYear");
 
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("districtIds", districtIds);
+		query.setParameter("year", year);
 		if(fromDate != null && toDate != null)
 		{
 			query.setParameter("fromDate", fromDate);
@@ -531,7 +533,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		return query.list();
     }
 		
-	public List<Object[]> getCadreInfoPanchayatWise(List<Long> panchayatIds,Date fromDate, Date toDate){
+	public List<Object[]> getCadreInfoPanchayatWise(List<Long> panchayatIds,Date fromDate, Date toDate,Long year){
 		StringBuilder queryStr = new StringBuilder();
 		//0 count,1 id,2 name ,3 year
 		queryStr.append("select count(model.tdpCadreId),model.userAddress.panchayat.panchayatId,model.userAddress.panchayat.panchayatName,model.enrollmentYear from TdpCadre model where model.isDeleted = 'N' and model.userAddress.panchayat.panchayatId in(:panchayatIds) ");
@@ -539,10 +541,11 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		{
 			queryStr.append(" and date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate  " );
 		}	
-		queryStr.append(" group by model.userAddress.panchayat.panchayatId,model.enrollmentYear");
+		queryStr.append("  and model.enrollmentYear =:year group by model.userAddress.panchayat.panchayatId,model.enrollmentYear");
 
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("panchayatIds", panchayatIds);
+		query.setParameter("year", year);
 		if(fromDate != null && toDate != null)
 		{
 			query.setParameter("fromDate", fromDate);
@@ -552,7 +555,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		return query.list();
 	}
 	
-	public List<Object[]> getCadreInfoBoothWise(List<Long> boothIds,Date fromDate, Date toDate){
+	public List<Object[]> getCadreInfoBoothWise(List<Long> boothIds,Date fromDate, Date toDate,Long year){
 		StringBuilder queryStr = new StringBuilder();
 		//0 count,1 id,2 name ,3 year
 		queryStr.append("select count(model.tdpCadreId),model.userAddress.booth.boothId,model.userAddress.booth.partNo,model.enrollmentYear from TdpCadre model where model.isDeleted = 'N' and model.userAddress.booth.boothId in(:boothIds) " );
@@ -560,10 +563,11 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		{
 			queryStr.append(" and date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate  " );
 		}	
-		queryStr.append(" group by model.userAddress.booth.boothId,model.enrollmentYear");
+		queryStr.append("  and model.enrollmentYear =:year group by model.userAddress.booth.boothId,model.enrollmentYear");
 
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("boothIds", boothIds);
+		query.setParameter("year", year);
 		if(fromDate != null && toDate != null)
 		{
 			query.setParameter("fromDate", fromDate);
@@ -573,7 +577,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		return query.list();
 	}
 	
-	public List<Object[]> getCadreInfoMandalWise(List<Long> tehsilIds,Date fromDate, Date toDate){
+	public List<Object[]> getCadreInfoMandalWise(List<Long> tehsilIds,Date fromDate, Date toDate,Long year){
 		StringBuilder queryStr = new StringBuilder();
 		//0 count,1 id,2 name ,3 year
 		queryStr.append("select count(model.tdpCadreId),model.userAddress.tehsil.tehsilId,model.userAddress.tehsil.tehsilName,model.enrollmentYear from TdpCadre model where model.isDeleted = 'N' and model.userAddress.tehsil.tehsilId in(:tehsilIds) " );		
@@ -581,10 +585,11 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		{
 			queryStr.append(" and date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate  " );
 		}				
-		queryStr.append(" group by model.userAddress.tehsil.tehsilId,model.enrollmentYear");
+		queryStr.append("  and model.enrollmentYear =:year group by model.userAddress.tehsil.tehsilId,model.enrollmentYear");
 
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("tehsilIds", tehsilIds);
+		query.setParameter("year", year);
 		if(fromDate != null && toDate != null)
 		{
 			query.setParameter("fromDate", fromDate);
@@ -592,7 +597,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		}
 		return query.list();
 	}
-	public List<Object[]> getCadreInfoLocalBodyWise(List<Long> localBdyIds,Date fromDate, Date toDate){
+	public List<Object[]> getCadreInfoLocalBodyWise(List<Long> localBdyIds,Date fromDate, Date toDate,Long year){
 		StringBuilder queryStr = new StringBuilder();
 		//0 count,1 id,2 name ,3 year
 		queryStr.append("select count(model.tdpCadreId),model.userAddress.localElectionBody.localElectionBodyId,model.userAddress.localElectionBody.name,model.enrollmentYear from TdpCadre model where model.isDeleted = 'N' and model.userAddress.localElectionBody.localElectionBodyId in(:localBdyIds) " );
@@ -600,10 +605,11 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		{
 			queryStr.append(" and date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate  " );
 		}	
-		queryStr.append(" group by model.userAddress.localElectionBody.localElectionBodyId,model.enrollmentYear ");
+		queryStr.append("  and model.enrollmentYear =:year group by model.userAddress.localElectionBody.localElectionBodyId,model.enrollmentYear ");
 
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("localBdyIds", localBdyIds);
+		query.setParameter("year", year);
 		if(fromDate != null && toDate != null)
 		{
 			query.setParameter("fromDate", fromDate);

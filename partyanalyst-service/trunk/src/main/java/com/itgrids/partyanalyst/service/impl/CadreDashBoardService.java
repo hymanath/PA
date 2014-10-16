@@ -14,6 +14,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
@@ -35,6 +36,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	private IPanchayatDAO panchayatDAO;
 	private ITehsilDAO tehsilDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
+	private ICadreSurveyUserDAO cadreSurveyUserDAO;
 	private DateUtilService dateService = new DateUtilService();
 
 	public ITdpCadreDAO getTdpCadreDAO() {
@@ -91,6 +93,14 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 
 	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
 		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+
+	public ICadreSurveyUserDAO getCadreSurveyUserDAO() {
+		return cadreSurveyUserDAO;
+	}
+
+	public void setCadreSurveyUserDAO(ICadreSurveyUserDAO cadreSurveyUserDAO) {
+		this.cadreSurveyUserDAO = cadreSurveyUserDAO;
 	}
 
 	public List<CadreRegisterInfo> getDashBoardBasicInfo(){
@@ -305,8 +315,8 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			Map<Long,Long> yearMap = null;
 			if(assemblyIds.size() > 0){
 				//0 count,1 id,2 name ,3 year
-				List<Object[]>  constituencyInfoList = tdpCadreDAO.getCadreInfoConstituencytWise(assemblyIds,null,null);
-				
+				List<Object[]>  constituencyInfoList = tdpCadreDAO.getCadreInfoConstituencytWise(assemblyIds,null,null,2014l);
+				constituencyInfoList.addAll( tdpCadreDAO.getCadreInfoConstituencytWise(assemblyIds,null,null,2012l));
 				for(Object[] info:constituencyInfoList){
 					 yearMap = locationMap.get((Long)info[1]);
 					 if(yearMap == null){
@@ -327,6 +337,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 						infoVo.setLocation(locationNames.get(locationId));
 						infoVo.setTotalCount(currentCount);
 						infoVo.setApCount((currentCount*100)/previousCount);
+						infoVo.setDate(new BigDecimal(currentCount*(100.0)/previousCount).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 						infoVo.setTgCount(locationId);
 						returnList.add(infoVo);
 					}
@@ -355,8 +366,8 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			Map<Long,Long> yearMap = null;
 			if(districtIds.size() > 0){
 				//0 count,1 id,2 name ,3 year
-				List<Object[]>  constituencyInfoList = tdpCadreDAO.getCadreInfoDistrictWise(districtIds,null,null);
-				
+				List<Object[]>  constituencyInfoList = tdpCadreDAO.getCadreInfoDistrictWise(districtIds,null,null,2014l);
+				constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoDistrictWise(districtIds,null,null,2012l));
 				for(Object[] info:constituencyInfoList){
 					 yearMap = locationMap.get((Long)info[1]);
 					 if(yearMap == null){
@@ -377,6 +388,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 						infoVo.setLocation(locationNames.get(locationId));
 						infoVo.setTotalCount(currentCount);
 						infoVo.setApCount((currentCount*100)/previousCount);
+						infoVo.setDate(new BigDecimal(currentCount*(100.0)/previousCount).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 						infoVo.setTgCount(locationId);
 						returnList.add(infoVo);
 					}
@@ -412,6 +424,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			Map<Long,Map<Date,CadreRegisterInfo>> userMap = new HashMap<Long,Map<Date,CadreRegisterInfo>>();//Map<userId,Map<Date,info>>
 			Map<Date,CadreRegisterInfo> dateMap = new HashMap<Date,CadreRegisterInfo>();//Map<Date,info>
 			Map<Long,String> userNames = new HashMap<Long,String>();
+			Map<Long,String> mobileNos = new HashMap<Long,String>();
 			//0 count,1 name,2 min,3 max,4 date,5 id
 			List<Object[]> dataCollectedInfo = tdpCadreDAO.getCandidateDataCollectionInfo(fromDate, toDate);
 			
@@ -432,10 +445,21 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				dateMap.put((Date)data[4], vo);
 			}
 			int count = 0;
+			if(userNames.size() > 0){
+				List<Object[]> mobileNosList = cadreSurveyUserDAO.getUserMobileNos(userNames.keySet());
+				for(Object[] mobileNo:mobileNosList){
+				 if(mobileNo[1] != null){
+					mobileNos.put((Long)mobileNo[0], mobileNo[1].toString());
+				 }else{
+					 mobileNos.put((Long)mobileNo[0], null);
+				 }
+				}
+			}
 			for(Long key:userMap.keySet()){
 				dateMap = userMap.get(key);
 				vo = new CadreRegisterInfo();
 				vo.setName(userNames.get(key));
+				vo.setArea(mobileNos.get(key));
 				List<CadreRegisterInfo> daysList = new ArrayList<CadreRegisterInfo>();
 				for(Date date:datesList){
 					if(dateMap.get(date) != null){
@@ -898,7 +922,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			
 			
 			if(stateIds.contains(1l)){
-				 Long count_2012AP = tdpCadreDAO.getWorkStartedConstituencyYearCount(2012L,"AP",fromDate,toDate);
+				 Long count_2012AP = tdpCadreDAO.getWorkStartedConstituencyYearCount(2012L,"AP",null,null);
 				 Long count_2014AP = tdpCadreDAO.getWorkStartedConstituencyYearCount(2014L,"AP",fromDate,toDate);
 				 CadreRegisterInfo apVo = new CadreRegisterInfo();
 				 apVo.setLocation("Andhra Pradesh");
@@ -907,7 +931,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				 returnList.add(apVo);
 			}
 			if(stateIds.contains(36l)){
-			    Long count_2012TS = tdpCadreDAO.getWorkStartedConstituencyYearCount(2012L,"TS",fromDate,toDate);
+			    Long count_2012TS = tdpCadreDAO.getWorkStartedConstituencyYearCount(2012L,"TS",null,null);
 			    Long count_2014TS = tdpCadreDAO.getWorkStartedConstituencyYearCount(2014L,"TS",fromDate,toDate);
 			    CadreRegisterInfo tgVo = new CadreRegisterInfo();
 			    tgVo.setLocation("Telangana");
@@ -947,16 +971,20 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			
 			if(ids.size() > 0){
 				if(type.equals("assembly")){
-					constituencyInfoList = tdpCadreDAO.getCadreInfoConstituencytWise(ids,fromDate,toDate);
+					constituencyInfoList = tdpCadreDAO.getCadreInfoConstituencytWise(ids,fromDate,toDate,2014l);
+					constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoConstituencytWise(ids,null,null,2012l));
 					 namesList = constituencyDAO.getConstituencyNameByConstituencyIdsList(ids);
 				}else if(type.equals("district")){
-				    constituencyInfoList = tdpCadreDAO.getCadreInfoDistrictWise(ids,fromDate,toDate);
+				    constituencyInfoList = tdpCadreDAO.getCadreInfoDistrictWise(ids,fromDate,toDate,2014l);
+				    constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoDistrictWise(ids,null,null,2012l));
 				    namesList = districtDAO.getDistrictDetailsByDistrictIds(ids);
 				}else if(type.equals("panchayat")){
-				    constituencyInfoList = tdpCadreDAO.getCadreInfoPanchayatWise(ids,fromDate,toDate);
+				    constituencyInfoList = tdpCadreDAO.getCadreInfoPanchayatWise(ids,fromDate,toDate,2014l);
+				    constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoPanchayatWise(ids,null,null,2012l));
 				    namesList = panchayatDAO.getPanchayatNamesByIds(ids);
 				}else if(type.equals("booth")){
-				    constituencyInfoList = tdpCadreDAO.getCadreInfoBoothWise(ids,fromDate,toDate);
+				    constituencyInfoList = tdpCadreDAO.getCadreInfoBoothWise(ids,fromDate,toDate,2014l);
+				    constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoBoothWise(ids,null,null,2012l));
 				    namesList = boothDAO.getBoothNamesByIds(ids);
 				}else if(type.equals("mandal")){
 					List<Long> mandalIds = new ArrayList<Long>();
@@ -969,11 +997,13 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 						}
 					}
 					if(mandalIds.size() > 0){
-						constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoMandalWise(mandalIds,fromDate,toDate));
+						constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoMandalWise(mandalIds,fromDate,toDate,2014l));
+						 constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoMandalWise(ids,null,null,2012l));
 						namesList.addAll(tehsilDAO.getTehsilNameByTehsilIdsList(mandalIds));
 					}
 					if(localBodyIds.size() > 0){
-						constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoLocalBodyWise(localBodyIds,fromDate,toDate));
+						constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoLocalBodyWise(localBodyIds,fromDate,toDate,2014l));
+						 constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoLocalBodyWise(ids,null,null,2012l));
 						namesList.addAll(localElectionBodyDAO.getLocalElectionBodyNames(localBodyIds));
 					}
 				     

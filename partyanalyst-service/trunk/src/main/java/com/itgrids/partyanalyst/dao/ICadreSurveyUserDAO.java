@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -12,4 +13,5 @@ public interface ICadreSurveyUserDAO extends GenericDao<CadreSurveyUser, Long>{
 
 	public List<Object[]> getCadreSurveyUsersList(List<Long> getCadreSurveyUsersList);
 	
+	public List<Object[]> getUserMobileNos(Set<Long> ids);
 }
