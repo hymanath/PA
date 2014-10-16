@@ -7,6 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Voters Search</title>
+
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
@@ -74,6 +75,40 @@ input[type="text"]{
 .nav-tabs > .active > a, .nav-tabs > .active > a:hover {
     background-color: #81BEF7 !important;
 }	
+#voterDataTable,#voterDataTablesearch,#casteDataTable,#surveyStatusDatatable{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
+
+#voterDataTable tr:nth-child(even),#voterDataTablesearch tr:nth-child(even),#casteDataTable tr:nth-child(even),#surveyStatusDatatable
+tr:nth-child(even){background:#EdF5FF;}
+
+#voterDataTable td,#voterDataTablesearch td,#casteDataTable td,#surveyStatusDatatable td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
+
+#voterDataTable th,#voterDataTablesearch th,#casteDataTable th,#surveyStatusDatatable th{
+	background-color: #CDE6FC;
+    font-size: 13px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    text-align: left;
+	color:#333333;
+	}
+
+
+
+table.dataTable tr.odd {
+    background-color: #ffffff;
+}
+table.dataTable tr.even {
+    background-color:#EdF5FF;
+}
+table.dataTable tr.odd td.sorting_1 {
+    background-color: #ffffff;
+}
+table.dataTable tr.even td.sorting_1 {
+    background-color: #EdF5FF;
+}
+
 </style>
 
 <script type="text/javascript">
