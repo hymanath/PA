@@ -19,13 +19,24 @@ public class SurveyFinalDataDAOHibernateTest extends BaseDaoTestCase {
 		this.surveyFinalDataDAO = surveyFinalDataDAO;
 	}
 
-	public void test(){
+	/*public void test(){
 		List<Long> boothIds = new ArrayList<Long>();
 		boothIds.add(439809l);
 		boothIds.add(439819l);
 		
 		List<Object[]> slist = surveyFinalDataDAO.getThirdPartyStatusWithBooths(boothIds);
 		System.out.println(slist.size());
-	}
+	}*/
 	
+	/*public void testGetVoterFinalCasteDataFromSurveyFinalData()
+	{
+		List<Object[]> list = surveyFinalDataDAO.getVoterFinalCasteDataFromSurveyFinalData(217l);
+		System.out.println(list.size());
+	}*/
+	
+	public void testGetVoterFinalCasteDataFromSurveyFinalData()
+	{
+		List<Object[]> list = surveyFinalDataDAO.getVoterFinalCasteDataFromSurveyDetailsInfo(217l);
+		System.out.println(list.size());
+	}
 }
