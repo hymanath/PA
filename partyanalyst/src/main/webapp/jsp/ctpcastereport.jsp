@@ -1176,7 +1176,7 @@ if(!flag){
 		
 		str+='<td>'+result[i].name+'</td>';
 		str+='<td>'+result[i].count+'</td>';
-		if(result[i].casteCount > 0)
+		if(result[i].casteCount > 0 && (type == "Panchayat" || type == "BOOTH"))
 			{
 		str+='<td><a onclick="openWindow(\''+result[i].id+'\',\''+result[i].selType+'\',0,\''+constituencyId+'\',\'all\');">'+result[i].casteCount+'</a></td>';
 			}
@@ -1184,7 +1184,7 @@ if(!flag){
 			{
 		str+='<td>'+result[i].casteCount+'</td>';
 			}
-		if(result[i].maleCnt > 0)
+		if(result[i].maleCnt > 0 && (type == "Panchayat" || type == "BOOTH"))
 			{
 			str+='<td><a onclick="openWindow(\''+result[i].id+'\',\''+result[i].selType+'\',0,\''+constituencyId+'\',\'M\');">'+result[i].maleCnt+'</a></td>';
 			}
@@ -1192,7 +1192,7 @@ if(!flag){
 			{
 		str+='<td>'+result[i].maleCnt+'</td>';
 			}
-			if(result[i].femaleCnt > 0)
+			if(result[i].femaleCnt > 0 && (type == "Panchayat" || type == "BOOTH"))
 			{
 		str+='<td><a onclick="openWindow(\''+result[i].id+'\',\''+result[i].selType+'\',0,\''+constituencyId+'\',\'F\');">'+result[i].femaleCnt+'</a></td>';
 			}
@@ -1211,31 +1211,14 @@ if(!flag){
 					
 					str+='<td>'+result1[j].name+'</td>';
 					str+='<td>'+result1[j].count+'</td>';
-					if(result1[j].casteCount > 0)
-					{
-						str+='<td><a onclick="openWindow(\''+result1[j].id+'\',\''+result1[j].selType+'\',0,\''+constituencyId+'\',\'all\');">'+result1[j].casteCount+'</a></td>';
-					}
-						else
-						{
+					
 					str+='<td>'+result1[j].casteCount+'</td>';
-						}
-						if(result1[j].maleCnt > 0)
-					{
-							str+='<td><a onclick="openWindow(\''+result1[j].id+'\',\''+result1[j].selType+'\',0,\''+constituencyId+'\',\'M\');">'+result1[j].maleCnt+'</a></td>';
-					}
-						else
-					{
-
+					
+					
 					str+='<td>'+result1[j].maleCnt+'</td>';
-					}
-					if(result1[j].femaleCnt > 0)
-					{
-					str+='<td><a onclick="openWindow(\''+result1[j].id+'\',\''+result1[j].selType+'\',0,\''+constituencyId+'\',\'F\');">'+result1[j].femaleCnt+'</a></td>';
-					}
-						else
-					{
+					
 					str+='<td>'+result1[j].femaleCnt+'</td>';
-					}
+					
 					str+='<td>'+result1[i].percentage+'</td>';
 					str+='</tr>';
 				}
@@ -1298,7 +1281,7 @@ if(!flag){
 			{
 			str+='<tr>';
 			str+='<td>'+result[i].name+'</td>';
-			if(result[i].totalCasteVoters > 0)
+			if(result[i].totalCasteVoters > 0 && (type == "Panchayat" || type == "BOOTH"))
 				{
 			str+='<td><a onclick="openWindow(\''+result[i].id+'\',\''+result[i].selType+'\',0,\''+constituencyId+'\',\'all\');">'+result[i].totalCasteVoters+'</a></td>';
 				}
@@ -1307,7 +1290,7 @@ if(!flag){
 			str+='<td>'+result[i].totalCasteVoters+'</td>';
 				}
 			str+='<td>'+result[i].casteList[j].cast+'</td>';
-		    if(result[i].casteList[j].casteCount > 0)
+		    if(result[i].casteList[j].casteCount > 0 && (type == "Panchayat" || type == "BOOTH"))
 				{
 			str+='<td><a onclick="openWindow(\''+result[i].id+'\',\''+result[i].selType+'\',\''+result[i].casteList[j].casteStateId+'\',\''+constituencyId+'\',\'all\');">'+result[i].casteList[j].casteCount+'</a></td>';
 				}
@@ -1315,7 +1298,7 @@ if(!flag){
 				{
 			str+='<td>'+result[i].casteList[j].casteCount+'</td>';
 				}
-			if(result[i].casteList[j].maleCnt > 0)
+			if(result[i].casteList[j].maleCnt > 0 && (type == "Panchayat" || type == "BOOTH"))
 				{
 			str+='<td><a onclick="openWindow(\''+result[i].id+'\',\''+result[i].selType+'\',\''+result[i].casteList[j].casteStateId+'\',\''+constituencyId+'\',\'M\');">'+result[i].casteList[j].maleCnt+'</a></td>';
 				}
@@ -1323,7 +1306,7 @@ if(!flag){
 				{
 			str+='<td>'+result[i].casteList[j].maleCnt+'</td>';
 				}
-			if(result[i].casteList[j].femaleCnt > 0)
+			if(result[i].casteList[j].femaleCnt > 0 && (type == "Panchayat" || type == "BOOTH"))
 				{
 			str+='<td><a onclick="openWindow(\''+result[i].id+'\',\''+result[i].selType+'\',\''+result[i].casteList[j].casteStateId+'\',\''+constituencyId+'\',\'F\');">'+result[i].casteList[j].femaleCnt+'</a></td>';
 				}
@@ -1345,39 +1328,18 @@ if(!flag){
 						{
 						str+='<tr>';
 						str+='<td>'+result1[k].name+'</td>';
-						if(result1[k].totalCasteVoters > 0)
-							{
-					    str+='<td><a onclick="openWindow(\''+result1[k].id+'\',\''+result1[k].selType+'\',0,\''+constituencyId+'\',\'all\');">'+result1[k].totalCasteVoters+'</a></td>';
-							}
-						else
-							{
+						
 						str+='<td>'+result1[k].totalCasteVoters+'</td>';
-							}
+						
 						str+='<td>'+result1[k].casteList[l].cast+'</td>';
-						if(result1[k].casteList[l].casteCount > 0)
-							{
-						str+='<td><a onclick="openWindow(\''+result1[k].id+'\',\''+result1[k].selType+'\',\''+result1[k].casteList[l].casteStateId+'\',\''+constituencyId+'\',\'all\');">'+result1[k].casteList[l].casteCount+'</a></td>';
-							}
-						else
-							{
+						
 						str+='<td>'+result1[k].casteList[l].casteCount+'</td>';
-							}
-						if(result1[k].casteList[l].maleCnt > 0)
-							{
-						str+='<td><a onclick="openWindow(\''+result1[k].id+'\',\''+result1[k].selType+'\',\''+result1[k].casteList[l].casteStateId+'\',\''+constituencyId+'\',\'M\');">'+result1[k].casteList[l].maleCnt+'</a></td>';
-							}
-					    else
-							{
+						
 						str+='<td>'+result1[k].casteList[l].maleCnt+'</td>';
-							}
-						if(result1[k].casteList[l].femaleCnt > 0)
-							{
-						str+='<td><a onclick="openWindow(\''+result1[k].id+'\',\''+result1[k].selType+'\',\''+result1[k].casteList[l].casteStateId+'\',\''+constituencyId+'\',\'F\');">'+result1[k].casteList[l].femaleCnt+'</a></td>';
-							}
-						else
-							{
+						
+						
 						str+='<td>'+result1[k].casteList[l].femaleCnt+'</td>';
-							}
+						
 						str+='<td>'+result1[k].casteList[l].percentage+'</td>';
 						str+='</tr>';
 						}
