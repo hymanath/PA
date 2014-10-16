@@ -1051,7 +1051,7 @@
 						<img src="images/cadre_images/2014-cadre-Registration-Logo.png">
 				  </div>
 				  <div class="span4">
-					 <a href="newlogoutAction.action" class="btn btn-mini pull-left m_top20">Logout</a>
+					 <a href="newlogoutAction.action" style="font-weight: bold;" class="btn btn-mini pull-left m_top20">Logout</a>
 				  </div>
 				</div>
 			</div>
