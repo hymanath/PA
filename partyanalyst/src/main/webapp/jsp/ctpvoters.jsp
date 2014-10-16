@@ -7,10 +7,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Voters Search</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
- <script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
+ 
  <script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
  <script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/tab.js"></script>
  <style>
@@ -27,7 +28,7 @@
  </style>
  </head>
  <body>
- <div class="container">
+ <div class="container" style="margin-top:10px;">
    <span style='display:none;' class="offset4" id='ajaxLoad'><img src='./images/icons/goldAjaxLoad.gif' /></span>
  <div id="voterDetailsDiv"></div>
  </div>
