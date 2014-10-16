@@ -21,7 +21,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public Long getWorkStartedConstituencyCount(String state);
 	
-	public Long getWorkStartedConstituencyYearCount(Long year,String state);
+	public Long getWorkStartedConstituencyYearCount(Long year,String state,Date fromDate, Date toDate);
 		
 	public List<Object[]> getNewlyRegisterCadreInfo();
 	
@@ -29,9 +29,9 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public List<Long> getCadreAvailableConstituencies(Long stateId);
 	
-	public List<Object[]> getCadreInfoConstituencytWise(List<Long> constituencyIds);
+	public List<Object[]> getCadreInfoConstituencytWise(List<Long> constituencyIds,Date fromDate, Date toDate);
 	
-	public List<Object[]> getCadreInfoDistrictWise(List<Long> districtIds);
+	public List<Object[]> getCadreInfoDistrictWise(List<Long> districtIds,Date fromDate, Date toDate);
 	
 	public List<Long> getCadreAvailableDistricts(Long stateId);
 	
@@ -69,13 +69,13 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public List<Object[]> getDistrictWiseCastCadreCount(Long districtId);
 	
-	public List<Object[]> getCadreInfoPanchayatWise(List<Long> panchayatIds);
+	public List<Object[]> getCadreInfoPanchayatWise(List<Long> panchayatIds,Date fromDate, Date toDate); 
 	
-	public List<Object[]> getCadreInfoBoothWise(List<Long> boothIds);
+	public List<Object[]> getCadreInfoBoothWise(List<Long> boothIds,Date fromDate, Date toDate);
 	
-	public List<Object[]> getCadreInfoMandalWise(List<Long> tehsilIds);
+	public List<Object[]> getCadreInfoMandalWise(List<Long> tehsilIds,Date fromDate, Date toDate);
 	
-	public List<Object[]> getCadreInfoLocalBodyWise(List<Long> localBdyIds);
+	public List<Object[]> getCadreInfoLocalBodyWise(List<Long> localBdyIds,Date fromDate, Date toDate);
 	
 	public List<String> chechForCardNumber(String cardNo);
 	

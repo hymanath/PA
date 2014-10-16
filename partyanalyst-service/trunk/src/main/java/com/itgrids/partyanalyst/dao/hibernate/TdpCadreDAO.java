@@ -154,7 +154,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 	}
 	
 	
-	public Long getWorkStartedConstituencyYearCount(Long year,String state){
+	public Long getWorkStartedConstituencyYearCount(Long year,String state,Date fromDate, Date toDate){
 		StringBuilder str = new StringBuilder();
 		str.append("select count(*)  " +
 				"from TdpCadre model " +
@@ -169,11 +169,23 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		{
 			str.append(" and model.userAddress.district.districtId >= 11 ");
 		}
-				
+		
+		if(fromDate != null && toDate != null)
+		{
+			str.append(" and date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate  " );
+		}	
+			
 		str.append(" and model.userAddress.state.stateId = 1 ");
+		
+		
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("year", year);
 		
+		if(fromDate != null && toDate != null)
+		{
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
 		return (Long) query.uniqueResult();
 	}
 			
@@ -214,25 +226,43 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		return query.list();
 	}
 	
-	public List<Object[]> getCadreInfoConstituencytWise(List<Long> constituencyIds){
+	public List<Object[]> getCadreInfoConstituencytWise(List<Long> constituencyIds,Date fromDate, Date toDate){
 		StringBuilder queryStr = new StringBuilder();
 		//0 count,1 id,2 name ,3 year
-		queryStr.append("select count(model.tdpCadreId),model.userAddress.constituency.constituencyId,model.userAddress.constituency.name,model.enrollmentYear from TdpCadre model where model.isDeleted = 'N'   and model.userAddress.constituency.constituencyId in(:constituencyIds) " +
-				" group by model.userAddress.constituency.constituencyId,model.enrollmentYear");
+		queryStr.append("select count(model.tdpCadreId),model.userAddress.constituency.constituencyId,model.userAddress.constituency.name,model.enrollmentYear from TdpCadre model where model.isDeleted = 'N'   and model.userAddress.constituency.constituencyId in(:constituencyIds) ");
+		if(fromDate != null && toDate != null)
+		{
+			queryStr.append(" and date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate  " );
+		}	
+		queryStr.append(" group by model.userAddress.constituency.constituencyId,model.enrollmentYear");
 
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("constituencyIds", constituencyIds);
+		if(fromDate != null && toDate != null)
+		{
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
 		return query.list();
 	}
 	
-	public List<Object[]> getCadreInfoDistrictWise(List<Long> districtIds){
+	public List<Object[]> getCadreInfoDistrictWise(List<Long> districtIds,Date fromDate, Date toDate){
 		StringBuilder queryStr = new StringBuilder();
 		//0 count,1 id,2 name ,3 year
-		queryStr.append("select count(model.tdpCadreId),model.userAddress.district.districtId,model.userAddress.district.districtName,model.enrollmentYear from TdpCadre model where model.isDeleted = 'N'   and model.userAddress.district.districtId in(:districtIds) " +
-				" group by model.userAddress.district.districtId,model.enrollmentYear");
+		queryStr.append("select count(model.tdpCadreId),model.userAddress.district.districtId,model.userAddress.district.districtName,model.enrollmentYear from TdpCadre model where model.isDeleted = 'N'   and model.userAddress.district.districtId in(:districtIds) ");
+		if(fromDate != null && toDate != null)
+		{
+			queryStr.append(" and date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate  " );
+		}	
+		queryStr.append(" group by model.userAddress.district.districtId,model.enrollmentYear");
 
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("districtIds", districtIds);
+		if(fromDate != null && toDate != null)
+		{
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
 		return query.list();
 	}
 	
@@ -501,46 +531,84 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		return query.list();
     }
 		
-	public List<Object[]> getCadreInfoPanchayatWise(List<Long> panchayatIds){
+	public List<Object[]> getCadreInfoPanchayatWise(List<Long> panchayatIds,Date fromDate, Date toDate){
 		StringBuilder queryStr = new StringBuilder();
 		//0 count,1 id,2 name ,3 year
-		queryStr.append("select count(model.tdpCadreId),model.userAddress.panchayat.panchayatId,model.userAddress.panchayat.panchayatName,model.enrollmentYear from TdpCadre model where model.isDeleted = 'N' and model.userAddress.panchayat.panchayatId in(:panchayatIds) " +
-				" group by model.userAddress.panchayat.panchayatId,model.enrollmentYear");
+		queryStr.append("select count(model.tdpCadreId),model.userAddress.panchayat.panchayatId,model.userAddress.panchayat.panchayatName,model.enrollmentYear from TdpCadre model where model.isDeleted = 'N' and model.userAddress.panchayat.panchayatId in(:panchayatIds) ");
+		if(fromDate != null && toDate != null)
+		{
+			queryStr.append(" and date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate  " );
+		}	
+		queryStr.append(" group by model.userAddress.panchayat.panchayatId,model.enrollmentYear");
 
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("panchayatIds", panchayatIds);
+		if(fromDate != null && toDate != null)
+		{
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		
 		return query.list();
 	}
 	
-	public List<Object[]> getCadreInfoBoothWise(List<Long> boothIds){
+	public List<Object[]> getCadreInfoBoothWise(List<Long> boothIds,Date fromDate, Date toDate){
 		StringBuilder queryStr = new StringBuilder();
 		//0 count,1 id,2 name ,3 year
-		queryStr.append("select count(model.tdpCadreId),model.userAddress.booth.boothId,model.userAddress.booth.partNo,model.enrollmentYear from TdpCadre model where model.isDeleted = 'N' and model.userAddress.booth.boothId in(:boothIds) " +
-				" group by model.userAddress.booth.boothId,model.enrollmentYear");
+		queryStr.append("select count(model.tdpCadreId),model.userAddress.booth.boothId,model.userAddress.booth.partNo,model.enrollmentYear from TdpCadre model where model.isDeleted = 'N' and model.userAddress.booth.boothId in(:boothIds) " );
+		if(fromDate != null && toDate != null)
+		{
+			queryStr.append(" and date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate  " );
+		}	
+		queryStr.append(" group by model.userAddress.booth.boothId,model.enrollmentYear");
 
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("boothIds", boothIds);
+		if(fromDate != null && toDate != null)
+		{
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		
 		return query.list();
 	}
 	
-	public List<Object[]> getCadreInfoMandalWise(List<Long> tehsilIds){
+	public List<Object[]> getCadreInfoMandalWise(List<Long> tehsilIds,Date fromDate, Date toDate){
 		StringBuilder queryStr = new StringBuilder();
 		//0 count,1 id,2 name ,3 year
-		queryStr.append("select count(model.tdpCadreId),model.userAddress.tehsil.tehsilId,model.userAddress.tehsil.tehsilName,model.enrollmentYear from TdpCadre model where model.isDeleted = 'N' and model.userAddress.tehsil.tehsilId in(:tehsilIds) " +
-				" group by model.userAddress.tehsil.tehsilId,model.enrollmentYear");
+		queryStr.append("select count(model.tdpCadreId),model.userAddress.tehsil.tehsilId,model.userAddress.tehsil.tehsilName,model.enrollmentYear from TdpCadre model where model.isDeleted = 'N' and model.userAddress.tehsil.tehsilId in(:tehsilIds) " );		
+		if(fromDate != null && toDate != null)
+		{
+			queryStr.append(" and date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate  " );
+		}				
+		queryStr.append(" group by model.userAddress.tehsil.tehsilId,model.enrollmentYear");
 
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("tehsilIds", tehsilIds);
+		if(fromDate != null && toDate != null)
+		{
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
 		return query.list();
 	}
-	public List<Object[]> getCadreInfoLocalBodyWise(List<Long> localBdyIds){
+	public List<Object[]> getCadreInfoLocalBodyWise(List<Long> localBdyIds,Date fromDate, Date toDate){
 		StringBuilder queryStr = new StringBuilder();
 		//0 count,1 id,2 name ,3 year
-		queryStr.append("select count(model.tdpCadreId),model.userAddress.localElectionBody.localElectionBodyId,model.userAddress.localElectionBody.name,model.enrollmentYear from TdpCadre model where model.isDeleted = 'N' and model.userAddress.localElectionBody.localElectionBodyId in(:localBdyIds) " +
-				" group by model.userAddress.localElectionBody.localElectionBodyId,model.enrollmentYear");
+		queryStr.append("select count(model.tdpCadreId),model.userAddress.localElectionBody.localElectionBodyId,model.userAddress.localElectionBody.name,model.enrollmentYear from TdpCadre model where model.isDeleted = 'N' and model.userAddress.localElectionBody.localElectionBodyId in(:localBdyIds) " );
+		if(fromDate != null && toDate != null)
+		{
+			queryStr.append(" and date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate  " );
+		}	
+		queryStr.append(" group by model.userAddress.localElectionBody.localElectionBodyId,model.enrollmentYear ");
 
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("localBdyIds", localBdyIds);
+		if(fromDate != null && toDate != null)
+		{
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
 		return query.list();
 	}
 	
