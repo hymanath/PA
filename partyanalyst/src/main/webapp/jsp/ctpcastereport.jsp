@@ -75,14 +75,14 @@ input[type="text"]{
 .nav-tabs > .active > a, .nav-tabs > .active > a:hover {
     background-color: #81BEF7 !important;
 }	
-#voterDataTable,#voterDataTablesearch,#casteDataTable,#surveyStatusDatatable{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
+#voterDataTable,#voterDataTablesearch,#casteDataTable,#surveyStatusDatatable,#basicTable{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
 
 #voterDataTable tr:nth-child(even),#voterDataTablesearch tr:nth-child(even),#casteDataTable tr:nth-child(even),#surveyStatusDatatable
-tr:nth-child(even){background:#EdF5FF;}
+tr:nth-child(even),#basicTable tr:nth-child(even){background:#EdF5FF;}
 
-#voterDataTable td,#voterDataTablesearch td,#casteDataTable td,#surveyStatusDatatable td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
+#voterDataTable td,#voterDataTablesearch td,#casteDataTable td,#surveyStatusDatatable td,#basicTable td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
 
-#voterDataTable th,#voterDataTablesearch th,#casteDataTable th,#surveyStatusDatatable th{
+#voterDataTable th,#voterDataTablesearch th,#casteDataTable th,#surveyStatusDatatable th,#basicTable th{
 	background-color: #CDE6FC;
     font-size: 13px;
     font-weight: bold;
@@ -1044,7 +1044,7 @@ if(!flag){
 	function buildVoterCount(result)
 	{
 		var str = '';
-		str+='<table class="table table-bordered">';
+		str+='<table class="table table-bordered" id="basicTable">';
 		str+='<th>District</th>';
 		str+='<th>Constituency</th>';
 		str+='<th>Total Voters</th>';
