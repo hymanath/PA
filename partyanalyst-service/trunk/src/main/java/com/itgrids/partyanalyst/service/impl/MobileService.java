@@ -3893,16 +3893,16 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 							}
 							else
 								mobileNumbersDAO.updateUsedMobileNos(nos);
-							
+							if(checkedTypeVal == 2) //each file for location
+							 {
+							    BufferedWriter outPut1 = new BufferedWriter(new FileWriter(f1));
+							    outPut1.write(str.toString());
+								outPut1.close();
+							 }
 						}
 						
 						resultList.add(vo);
-						if(checkedTypeVal == 2) //each file for location
-						 {
-						    BufferedWriter outPut1 = new BufferedWriter(new FileWriter(f1));
-						    outPut1.write(str.toString());
-							outPut1.close();
-						 }
+						
 						  // update is_used status 'Y'
 				   }
 				  
