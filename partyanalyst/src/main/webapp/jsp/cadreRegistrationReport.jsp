@@ -252,6 +252,7 @@
 		        str+='<div id="resultTableDiv" style="overflow-x:scroll;"><table class="table table-bordered table-striped table-hover"><thead>';
 				str+='<tr>';
 				str+='<th rowspan="2">User</th>';
+				str+='<th rowspan="2">MobileNo</th>';
 				for(var i in result[0].infoList){
 				  str+='<th colspan="3">'+result[0].infoList[i].date+'</th>';
 				}
@@ -267,6 +268,10 @@
 				for(var i in result){
 				  str+='<tr>';
 				  str+='  <td>'+result[i].name+'</td>';
+				  if(result[i].date != null){
+				     str+='  <td>'+result[i].area+'</td>';
+				   }
+				  str+='  <td>-</td>';
 				  for(var j in result[i].infoList){
 				    if(result[i].infoList[j].area != null){
 				      str+='  <td>'+result[i].infoList[j].area+'</td>';
