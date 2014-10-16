@@ -1215,30 +1215,13 @@ if(!flag){
 		
 		str+='<td>'+result[i].name+'</td>';
 		str+='<td>'+result[i].count+'</td>';
-		if(result[i].casteCount > 0 && (type == "Panchayat" || type == "BOOTH"))
-			{
-		str+='<td><a onclick="openWindow(\''+result[i].id+'\',\''+result[i].selType+'\',0,\''+constituencyId+'\',\'all\');">'+result[i].casteCount+'</a></td>';
-			}
-		else
-			{
+		
 		str+='<td>'+result[i].casteCount+'</td>';
-			}
-		if(result[i].maleCnt > 0 && (type == "Panchayat" || type == "BOOTH"))
-			{
-			str+='<td><a onclick="openWindow(\''+result[i].id+'\',\''+result[i].selType+'\',0,\''+constituencyId+'\',\'M\');">'+result[i].maleCnt+'</a></td>';
-			}
-			else
-			{
+		
 		str+='<td>'+result[i].maleCnt+'</td>';
-			}
-			if(result[i].femaleCnt > 0 && (type == "Panchayat" || type == "BOOTH"))
-			{
-		str+='<td><a onclick="openWindow(\''+result[i].id+'\',\''+result[i].selType+'\',0,\''+constituencyId+'\',\'F\');">'+result[i].femaleCnt+'</a></td>';
-			}
-			else
-			{
+		
 		str+='<td>'+result[i].femaleCnt+'</td>';
-			}
+		
 		str+='<td>'+result[i].percentage+'</td>';
 		str+='</tr>';
 		}
@@ -1340,22 +1323,11 @@ if(!flag){
 				{
 			str+='<td>'+result[i].casteList[j].casteCount+'</td>';
 				}
-			if(result[i].casteList[j].maleCnt > 0 && (type == "Panchayat" || type == "BOOTH"))
-				{
-			str+='<td><a onclick="openWindow(\''+result[i].id+'\',\''+result[i].selType+'\',\''+result[i].casteList[j].casteStateId+'\',\''+constituencyId+'\',\'M\');">'+result[i].casteList[j].maleCnt+'</a></td>';
-				}
-			else
-				{
+			
 			str+='<td>'+result[i].casteList[j].maleCnt+'</td>';
-				}
-			if(result[i].casteList[j].femaleCnt > 0 && (type == "Panchayat" || type == "BOOTH"))
-				{
-			str+='<td><a onclick="openWindow(\''+result[i].id+'\',\''+result[i].selType+'\',\''+result[i].casteList[j].casteStateId+'\',\''+constituencyId+'\',\'F\');">'+result[i].casteList[j].femaleCnt+'</a></td>';
-				}
-			else
-				{
+			
 			str+='<td>'+result[i].casteList[j].femaleCnt+'</td>';
-				}
+			
 			str+='<td>'+result[i].casteList[j].percentage+'</td>';
 			str+='</tr>';
 			}
