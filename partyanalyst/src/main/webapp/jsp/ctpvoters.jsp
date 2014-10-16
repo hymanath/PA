@@ -25,6 +25,40 @@
 	text-align:center;
 	margin-top: 20px;
  }
+ #voterDataTable{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
+
+#voterDataTable tr:nth-child(even){background:#EdF5FF;}
+
+#voterDataTable td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
+
+#voterDataTable th{
+	background-color: #CDE6FC;
+    font-size: 13px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    text-align: left;
+	color:#333333;
+	}
+
+
+
+table.dataTable tr.odd {
+    background-color: #ffffff;
+}
+table.dataTable tr.even {
+    background-color:#EdF5FF;
+}
+table.dataTable tr.odd td.sorting_1 {
+    background-color: #ffffff;
+}
+table.dataTable tr.even td.sorting_1 {
+    background-color: #EdF5FF;
+}
+
+
  </style>
  </head>
  <body>
