@@ -150,6 +150,7 @@
 	var constituencyId = '${constiteucnyId}';
 	var panchayatId    = '${constiteucnyId}';
 	var boothId 	   = '${boothId}';
+	var boothId 	   = '${boothId}';
 	
 	$(document).ready(function(){
 	    $('.datePickerCls').datepicker({
@@ -242,16 +243,14 @@
 		$('#searchDetailsDiv').html("");
 		$('#tableElement').hide();
 		$( "#myModal1" ).dialog({title: "Search For Enroll Number", width: "auto",
-            height: "auto"});
+            height: "auto", position: { my: 'right', at: 'top+10' }});
 	}
 	function enableSearchByfName(){
 		$('#searchNameIdFmly,#searchVoterCardIdFmly,#searchHNoIdFmly').val("")
 		$('#searchDetailsDivFmly').html("");
 		$('#tableElementFmly').hide();
 		$( "#myModal2" ).dialog({title: "Search For Family Member Voter Card No", width: "auto",
-            height: "auto",
-			my: 'center',
-			at: 'left'});
+            height: "auto", position: { my: 'right', at: 'top+10' }});
 	}
 	function enableLookupName(){
 		$('#cardNumber').removeAttr('readOnly');
@@ -259,7 +258,7 @@
 		$('#searchDetailsDiv').html("");
 		$('#tableElement').hide();
 		$( "#myModal" ).dialog({title: "Search For Voter Card No", width: "auto",
-            height: "auto"});
+            height: "auto", position: { my: 'right', at: 'top+10' }});
 	}
 	
 	function createNewForm(){
@@ -1128,7 +1127,7 @@
 												<div class="input-prepend text-align2 ">
 													
 													<input type="text" class="datePickerCls" name="cadreRegistrationVO.dobStr" value="${voterInfoVOList[0].dateOfBirth}" placeholder="Date of Birth" readOnly="true" id="dateOfbirthId"></input>
-													<span id="dobErr" style="color:red;font-size:12px;"></span>
+													<br><span id="dobErr" style="color:red;font-size:12px;"></span>
 												</div>
 										</div>	
 										<div class="span6">	
@@ -1190,7 +1189,7 @@
 											<div class="span4"> <input type="checkbox" title="Please Check If Cadre Didn't Have Voter Card And Using His Family Members Voter Card" id="relativeTypeChecked" name="relativeTypeChecked" onclick="showHideFamRelatinoSts();"/> Is Family Member</div>
 											<div  class="span6" id="showHideFammemberType" style="display:none; margin-left: 165px;margin-top: -33px;">
 												<span style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</span><select name="relativeTypeId" id="relativeTypeId"> </select>
-												<span style="color: #9a9a9a;font-weight: bold;">Voter Card &nbsp;</span><input type="text" id="familyVtrCrdId">
+												<span style="color: #9a9a9a;font-weight: bold;">Voter Card &nbsp;</span><input type="text" id="familyVtrCrdId" value="${voterInfoVOList[0].fmlyVCardNo}">
 												<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByfName();}" style="margin-top:10px;"> LookUp </a>
 											</div>
 										</div>
@@ -1225,10 +1224,10 @@
 							<div class=" m_top20" >
 								<h5 class="text-align1">Aadhar Card No .</h5>
 								<input type="text" class=""  style="width:260px;" placeholder="Aadhar Number"  name="cadreRegistrationVO.aadheerNo" value="${voterInfoVOList[0].aadharNo}"></input>
-							
+							-->
 								<div class=" m_top20" >
 									<h5 class="text-align1">Aadhar Card No .</h5>
-									<input type="text" class=""  style="width:260px;" placeholder="Aadhar Number"  name="cadreRegistrationVO.candidateAadherNo" value="${voterInfoVOList[0].aadharNo}"></input>
+									<input type="text" class=""  style="width:260px;" placeholder="Aadhar Number"  name="cadreRegistrationVO.candidateAadherNo" value="${voterInfoVOList[0].candidateAadharNo}"></input>
 								
 								</div>
 							
@@ -1268,7 +1267,7 @@
 							<div class=" m_top20" > 
 									<h5 class="text-align1">PREVIOUS ENROLLMENT NUMBER</h5>
 									<input type="text" id="preEnrollNoValue" class="form-control border-radius-0 input-block-level" placeholder="Previous Enrollment No."  value="${voterInfoVOList[0].memberShipId}" style="width:260px;"  onkeyup="getExistingCadreInfo2();" name="cadreRegistrationVO.previousEnrollmentNumber" readonly></input>
-									<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByName();}" style="margin-top: -10px;"> LookUp </a>
+									<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByName();}" style="margin-top: -10px;"> LookUp For EnrollmentNo</a>
 									<input type="hidden" id="preEnrollNo" class="form-control border-radius-0 input-block-level" placeholder="Text input"  value="${voterInfoVOList[0].memberShipId}" style="width:260px;" ></input>
 									
 							</div>
@@ -2119,6 +2118,7 @@ function getAllRelationDetails(){
 		url : "getAllRelationDetails.action"
 	}).done(function(result){
 	  if(result != null && result.length > 0){
+	   $('#relativeTypeId').append('<option value="0">Select Relation</option>');
 	   for(var i in result){
 		 $('#relativeTypeId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 	    }
