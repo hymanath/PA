@@ -24,6 +24,7 @@
 	font-size: 16px;
 	text-align:center;
 	margin-top: 20px;
+	text-transform: uppercase;
  }
  #voterDataTable{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
 
@@ -57,14 +58,96 @@ table.dataTable tr.odd td.sorting_1 {
 table.dataTable tr.even td.sorting_1 {
     background-color: #EdF5FF;
 }
-
-
+ .selectDiv{
+	 width:80%;
+	 padding-top:5px;
+	 padding-bottom:0px;
+	 font-family: verdana;
+	 font-size: 12px;
+	 margin-left:auto;
+	 margin-right:auto;
+	 font-weight:bold;
+	 color:#333333;
+ }
+ 
+  fieldset{
+    border: 3px solid #CFD6DF;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+.widget {
+    background: none repeat scroll 0 0 #fafafa;
+    border-top: 2px solid #ffdc2d;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
+    margin: 5px 0 20px;
+    padding: 0 20px 20px;
+    position: relative;
+}
  </style>
  </head>
  <body>
  <div class="container" style="margin-top:10px;">
+
+ <div class="widget">
+  <div class="titleHeading"> SELECTION CRITERIA</div>
+  <div id="errorMsgAlert" style="font-family: verdana;font-size:14px;color:red;margin-left:100px;"></div>
+  
+ <div class="selectDiv">
+ 
+	   VoterId<input style="margin-left: 24px; width: 141px;" type="text" id="voterId" /> &nbsp&nbsp;
+	   
+	    House No<input style="margin-left: 14px; width: 105px;" type="text" id="reqHouseNo" />
+	 
+	  </div>
+	  
+	 
+	  
+	  <div class="selectDiv">
+	   Name<input style="margin-left: 40px; width: 141px;" type="text" id="voterName" />
+	   <div class="row pull-right">
+	   <div class="span2">
+	   <label class="radio"  style="margin-left: -89px;">
+	   <input type="radio"name="voterNameChkBox" checked="true" id="startWith"  value="start" /><b style="font-size: 12px; font-family: verdana;"> Start With</b>
+         </label>
+		 </div>
+		 <div class="span3">
+		<label class="radio"style="margin-left: -140px;">
+	   <input type="radio"  id="anyWhere" name="voterNameChkBox" value="any"/><b style="font-size: 12px; font-family: verdana;"> Any Where</b>
+	 </label>
+	 </div>
+	 </div>
+	  </div>
+	  
+	 
+	  <div class="selectDiv">
+	   Gender 
+	    <div class="row "style="padding: 0px 0px 0px 83px; margin-top: -22px; ">
+		   <div class="span">
+		   <label class="radio">
+	   <input type="radio" checked="true"  value="all" name="genderChkBox" id="allGenderId"/><b style="font-size: 12px; font-family: verdana;"> All </b>
+	    </label>
+		 </div>
+		 	   <div class="span">
+		 <label class="radio">
+	   <input type="radio" id="maleSelect" name="genderChkBox"  value="male"  /><b style="font-size: 12px; font-family: verdana;"> Male </b>
+	    </label>
+			 </div>
+			 	   <div class="span">
+			 <label class="radio">
+	   <input type="radio" id="femaleSelect" name="genderChkBox"  value="female" /><b style="font-size: 12px; font-family: verdana;"> Female</b>
+	       </label>
+		    </div>
+	  </div>
+	    </div>
+	  <div class="selectDiv">
+	   Age Between <input style="width:67px;margin-left:4px;" type="text" id="fromAge" /> <input style="width:67px;" type="text" id="toAge" />
+	  </div>
+	  <input onclick="getVoterDetails()" class="btn btn-success offset5" type="button"  value="submit"/>
+	 </div> 
+	  
    <span style='display:none;' class="offset4" id='ajaxLoad'><img src='./images/icons/goldAjaxLoad.gif' /></span>
  <div id="voterDetailsDiv"></div>
+ <div id="errorMessageDiv" style="display:none;font-weight:bold;color:red" align="center"></div>
  </div>
  <script type="text/javascript">
  var id = '${id}';
@@ -75,14 +158,91 @@ table.dataTable tr.even td.sorting_1 {
  
  function getVoterDetails()
  {
-	 $("#voterDetailsDiv").html('');
-	 $("#ajaxLoad").show();
+	
+	  $('#errorMessageDiv').html('');
+	  $("#errorMsgAlert").html('');
+	 var searchEles = new Array();
+	  var flag =true;
+	 var voterCardId = '';
+	var voterName = '';
+	var voterNameType = '';
+	var searchGender = '';
+	var startAge = 0;
+	var endAge = 0;
+	var houseNo ='';
+	voterCardId = $.trim($("#voterId").val());
+	voterName = $.trim($("#voterName").val());
+	houseNo = $.trim($("#reqHouseNo").val());
+	var str ='';
+	if($("#startWith").is(':checked')){
+	   voterNameType = 'start';
+	}else{
+	  voterNameType = 'anywhere';
+	}
+	if($("#maleSelect").is(':checked')){
+	   searchGender = 'M';
+	}else if($("#femaleSelect").is(':checked')){
+	  searchGender = 'F';
+	}
+	var ageStart = $.trim($("#fromAge").val());
+	var ageEnd = $.trim($("#toAge").val());
+	if(ageStart.length > 0){
+	   if(isNaN(ageStart)){
+	        str +='<div>Please Enter Valid Start Age</div>';
+			flag =false;
+	   }else{
+	     startAge = ageStart;
+	   }
+	}
+	if(ageEnd.length > 0){
+	   if(isNaN(ageEnd)){
+	        str +='<div>Please Enter Valid End Age</div>';
+			flag =false;
+	   }else{
+	     endAge = ageEnd;
+	   }
+	}
+	
+	if(ageStart.length > 0 && ageEnd.length > 0){
+		if(ageStart > ageEnd || (ageStart == 0 && ageEnd == 0)){
+			str +='<div>Please Enter Valid Ege Range</div>';
+			flag =false;
+		}
+	}
+	if(ageStart.length == 0)
+		startAge == 18;
+	if(ageEnd.length == 0)
+	endAge = 153;
+	
+	
+	if(!flag){
+	  $("#errorMsgAlert").html(str);
+	 
+	}
+	else
+	 {
+	$("#ajaxLoad").show();
+	$("#voterDetailsDiv").html('');
+	 
+ var obj = {
+	 voterCardId: voterCardId,
+	  voterName:voterName,
+	  voterNameType:voterNameType,
+	  searchGender:searchGender,
+	  startAge:startAge,
+	  endAge:endAge,
+	  houseNo:houseNo,
+	 
+ }
+	 
+ searchEles.push(obj);
 	 var jObj = {
 			 id : id,
 			 type : type,
 			 casteId:casteId,
 			 constituencyId:constituencyId,
 			 gender:gender,
+			 searchEles:searchEles,
 			 task : "voterDetails"
 				}
 				$.ajax({
@@ -93,18 +253,39 @@ table.dataTable tr.even td.sorting_1 {
 				success:function(result)
 					{
 					$("#ajaxLoad").hide();
+					  if(result.votersList== null || result.votersList.length == 0)
+					 $('#errorMessageDiv').show().html('No Data Avalible For Given Search Details');
+					  else
 					 buildVoterDetails(result.votersList);
 							  },
 				          error:function() { 
 				           console.log('error', arguments);
 				         }
 				});
-				
+	 }		
  }
  function buildVoterDetails(result)
 	{
 		var str = '';
-		str+='<div class="titleHeading"> VOTER DETAILS</div>';
+		var caste ="";
+		if(casteId == 0)
+		caste = result[0].casteName;
+		var type1 =  "";
+		if(type == "Panchayat")
+		{
+			if(caste != "")
+		str+='<h4 class="titleHeading"> '+caste+' CASTE VOTER DETAILS IN '+'${locationName}'+' '+type1+' </h4>';
+			else
+			str+='<h4 class="titleHeading"> '+caste+' VOTER DETAILS IN '+'${locationName}'+' '+type1+' </h4>';
+		}
+		else
+		{
+			if(caste != "")
+			str+='<h4 class="titleHeading"> '+caste+' CASTE VOTER DETAILS IN BOOTH - '+'${locationName}'+' '+type1+' </h4>';
+			else
+			str+='<h4 class="titleHeading"> '+caste+' VOTER DETAILS IN BOOTH - '+'${locationName}'+' '+type1+' </h4>';
+		}
+		
 		str+='<table class="table table-bordered" id="voterDataTable">';
 		str+='<thead>';
 		str+='<th>Name</th>';
