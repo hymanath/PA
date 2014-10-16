@@ -23,6 +23,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.ICasteInsertTypeDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
@@ -32,8 +33,12 @@ import com.itgrids.partyanalyst.dao.ISurveyConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ISurveyFinalDataDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserRelationDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
+import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IWebMonitorCompletedLocationsDetailsDAO;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
 import com.itgrids.partyanalyst.dto.SurveyDashBoardVO;
@@ -42,6 +47,7 @@ import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.ThirdPartyCompressionVO;
 import com.itgrids.partyanalyst.model.SurveyCompletedLocationsDetails;
 import com.itgrids.partyanalyst.model.SurveyFinalData;
+import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.WebMonitorCompletedLocationsDetails;
 import com.itgrids.partyanalyst.service.ISurveyDashBoardService;
 import com.itgrids.partyanalyst.service.ISurveyDetailsService;
@@ -91,6 +97,23 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 	private IHamletDAO hamletDAO;
 	@Autowired
 	private ISurveyDetailsService surveyDetaisService;
+	
+	private IUserVoterDetailsDAO userVoterDetailsDAO;
+	private IUserDAO userDAO;
+	private IVoterDAO voterDAO;
+	private ICasteInsertTypeDAO casteInsertTypeDAO;
+	
+	public void setCasteInsertTypeDAO(ICasteInsertTypeDAO casteInsertTypeDAO) {
+		this.casteInsertTypeDAO = casteInsertTypeDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
+	public void setUserVoterDetailsDAO(IUserVoterDetailsDAO userVoterDetailsDAO) {
+		this.userVoterDetailsDAO = userVoterDetailsDAO;
+	}
 
 	public SurveyDashBoardVO getCompletdConstituenciesDetails()
 	{
@@ -2053,5 +2076,94 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 	  }
 		return statusVO;
 	}
+
 	
+	public ResultStatus saveVoterFinalCasteOfAConstituency(Long constituencyId)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			List<GenericVO> list = getThirdPartyAvaliableBooths(constituencyId);
+			
+			if(list != null && list.size() > 0)
+			{
+				for(GenericVO genericVO : list)
+				{
+					try{
+						ResultStatus rs = saveThirdPartyDetails(genericVO.getId());
+						if(rs.getResultCode() == ResultCodeMapper.FAILURE)
+							LOG.error(rs.getMessage());
+					}catch(Exception e)
+					{
+						LOG.error(e);
+					}
+				}
+			}
+			
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		}catch(Exception e)
+		{
+			LOG.error("Exception raised in saveVoterFinalCasteOfAConstituency() Method",e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+	}
+	
+	public ResultStatus saveVoterFinalCasteToMainTableOfAConstituency(Long constituencyId)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			Map<Long,Long> casteMap = new HashMap<Long, Long>(0);
+			List<Object[]> list1 = surveyFinalDataDAO.getVoterFinalCasteDataFromSurveyFinalData(constituencyId);
+			List<Object[]> list2 = surveyFinalDataDAO.getVoterFinalCasteDataFromSurveyDetailsInfo(constituencyId);
+			
+			if(list1!= null && list1.size() > 0)
+			{
+				for(Object[] params : list1)
+					casteMap.put((Long)params[0],(Long)params[1]);
+			}
+			if(list2!= null && list2.size() > 0)
+			{
+				for(Object[] params : list2)
+					if(casteMap.get((Long)params[0]) == null)
+					{
+						casteMap.put((Long)params[0],(Long)params[1]);
+					}
+			}
+			
+			int index = 0;
+			for(Map.Entry<Long,Long> entry : casteMap.entrySet())
+			{
+				try{
+					if(index % 1000 == 0)
+						LOG.error("Index at -->"+index+" At Time --> "+new Date());
+					Long voterId = entry.getKey();
+					Long casteStateId = entry.getValue();
+					
+					UserVoterDetails userVoterDetails = userVoterDetailsDAO.getUserVoterDetailsByUserIdAndVoterId(IConstants.ADMIN_USER_ID,voterId);
+					
+					if(userVoterDetails == null)
+						userVoterDetails = new UserVoterDetails();
+					
+					userVoterDetails.setUser(userDAO.get(IConstants.ADMIN_USER_ID));
+					userVoterDetails.setVoter(voterDAO.get(voterId));
+					userVoterDetails.setCasteState(casteStateDAO.get(casteStateId));
+					userVoterDetails.setCasteInsertType(casteInsertTypeDAO.get(5L));
+					userVoterDetailsDAO.save(userVoterDetails);
+					
+				}catch(Exception e)
+				{
+					LOG.error(e);
+				}
+			}
+			
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		}catch(Exception e)
+		{
+			LOG.error("Exception raised in saveVoterFinalCasteOfAConstituency() Method",e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+	}
 }
