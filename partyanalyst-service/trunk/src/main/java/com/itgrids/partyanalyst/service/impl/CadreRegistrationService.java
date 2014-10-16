@@ -313,7 +313,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	{
 		Date date = null;
 		try {
-			SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+			SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
 			date = originalFormat.parse(dateStr);
 		} catch (Exception e) {
 			LOG.error("Exception raised in convertToDateFormet method in CadreRegistrationAction Action",e);
