@@ -1142,7 +1142,7 @@ if(!flag){
 	{
 		var result = resultList.votersList;
 		var result1 =  resultList.localbodyList;
-		if(result.length == 0 && result1.length == 0)
+		if(result.length == 0 && (result1 == null && result1.length == 0))
 		{
 			
 			 $('#errorMessageDiv1').show().html('No Data Avalible ');
@@ -1226,8 +1226,11 @@ if(!flag){
 		str+='</tbody>';
 		str+='</table>';
 		$("#voterCountData").html(str);
-		var dataLength = result.length + result1.length ;
-	
+		var dataLength;
+		if(result1 != null)
+		 dataLength = result.length + result1.length ;
+		else
+		dataLength = result.length;
 		if(dataLength > 20 )
 		{
 		$("#VoterdataTable").dataTable({
