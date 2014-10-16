@@ -33,4 +33,8 @@ public interface ISurveyFinalDataDAO extends GenericDao<SurveyFinalData, Long>{
 	public List<Object[]> getQcDataForSelection(Long stateId , List<Long> statusIds,Date fromDate , Date toDate);
 	
 	public List<Object[]> getBoothWiseQcData(Long stateId , Long constituencyId , List<Long> statusIds,Date fromDate , Date toDate);
+	
+	public List<Object[]> getVoterFinalCasteDataFromSurveyFinalData(Long constituencyId);
+	
+	public List<Object[]> getVoterFinalCasteDataFromSurveyDetailsInfo(Long constituencyId);
 }
