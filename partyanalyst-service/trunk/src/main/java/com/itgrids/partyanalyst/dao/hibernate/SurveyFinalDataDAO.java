@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ISurveyFinalDataDAO;
 import com.itgrids.partyanalyst.model.SurveyFinalData;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class SurveyFinalDataDAO extends GenericDaoHibernate<SurveyFinalData, Long>  implements ISurveyFinalDataDAO
 {
@@ -224,5 +225,32 @@ public class SurveyFinalDataDAO extends GenericDaoHibernate<SurveyFinalData, Lon
 		query.setParameterList("statusIds", statusIds);
 		query.setParameter("constituencyId", constituencyId);
 		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVoterFinalCasteDataFromSurveyFinalData(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select model.voter.voterId,model.casteState.casteStateId from SurveyFinalData model where " +
+				" model.booth.constituency.constituencyId = :constituencyId and model.booth.publicationDate.publicationDateId = :publicationDateId and " +
+				" model.casteState is not null and (model.surveyWmThirdPartyStatus is null or model.surveyWmThirdPartyStatus.surveyWmThirdPartyStatusId in (1,3,4))");
+		
+		query.setParameter("constituencyId",constituencyId);
+		query.setParameter("publicationDateId",IConstants.VOTER_DATA_PUBLICATION_ID);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVoterFinalCasteDataFromSurveyDetailsInfo(Long constituencyId)
+	{
+		Query query = getSession().createQuery("Select SDI.voter.voterId,SDI.caste.casteStateId from SurveyFinalData SFD,SurveyDetailsInfo SDI where " +
+				" SDI.voter.voterId = SFD.voter.voterId and SFD.booth.constituency.constituencyId = :constituencyId and SFD.booth.publicationDate.publicationDateId = :publicationDateId and " +
+				" SDI.surveyUser.surveyUserType.surveyUsertypeId = :thirdPartyUser and SDI.caste is not null and " +
+				" SFD.surveyWmThirdPartyStatus.surveyWmThirdPartyStatusId in (2,7)");
+		
+		query.setParameter("constituencyId",constituencyId);
+		query.setParameter("publicationDateId",IConstants.VOTER_DATA_PUBLICATION_ID);
+		query.setParameter("thirdPartyUser",10l);
+		return query.list();
+		
 	}
 }
