@@ -1483,12 +1483,17 @@
 					<h5 class="text-align1"> Relation Type <span class="mandatory">*</span></h5>
 					<select name="cadreRegistrationVO.voterRelationId" style="width:160px;" id="voterRelationId">
 							<option value="0">Select Relation</option>	
-							<option value="1">Father</option>
-							<option value="2">Mother</option>
-							<option value="3">Wife</option>
-							<option value="4">Brother</option>
-							<option value="5">Sister</option>
-							<option value="6">Friend</option>
+							<option value="1">Father</option>	
+							<option value="2">Mother</option>	
+							<option value="3">Wife</option>	
+							<option value="4">Brother</option>	
+							<option value="5">Sister</option>	
+							<option value="7">Husband</option>	
+							<option value="8">Son</option>	
+							<option value="9">Daughter</option>	
+							<option value="10">Grand Son</option>	
+							<option value="11">Grand Daughter</option>	
+							<option value="12">Others</option>	
 					</select>
 					<span id="NrelationErr" style="color:red;font-size:11px;"></span> 
 				</div>
