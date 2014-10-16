@@ -122,17 +122,17 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		try{
 			String task = request.getParameter("task");
 			if(task.equalsIgnoreCase("assemblyInfo")){
-				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"assembly");
+				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"assembly",request.getParameter("fromDate"),request.getParameter("toDate"));
 			}else if(task.equalsIgnoreCase("districtInfo")){
-				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"district");
+				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"district",request.getParameter("fromDate"),request.getParameter("toDate"));
 			}else if(task.equalsIgnoreCase("panchayatInfo")){
-				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"panchayat");
+				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"panchayat",request.getParameter("fromDate"),request.getParameter("toDate"));
 			}else if(task.equalsIgnoreCase("boothInfo")){
-				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"booth");
+				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"booth",request.getParameter("fromDate"),request.getParameter("toDate"));
 			}else if(task.equalsIgnoreCase("mandalInfo")){
-				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"mandal");
+				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"mandal",request.getParameter("fromDate"),request.getParameter("toDate"));
 			}else if(task.equalsIgnoreCase("stateInfo")){
-				result = cadreDashBoardService.getStateWiseRegistrationInfo(getIds(request.getParameter("ids")));
+				result = cadreDashBoardService.getStateWiseRegistrationInfo(getIds(request.getParameter("ids")),request.getParameter("fromDate"),request.getParameter("toDate"));
 			}else if(task.equalsIgnoreCase("boothNames")){
 				result = cadreDashBoardService.getBoothsInConstituencies(Long.parseLong(request.getParameter("constituencyId")));
 			}else if(task.equalsIgnoreCase("panchayatNames")){
