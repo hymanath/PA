@@ -40,7 +40,7 @@ public interface ICadreDashBoardService {
 	
 	public List<CadreRegisterInfo> getBoothsInConstituencies(Long constituencyId);
 	
-	public List<CadreRegisterInfo> getStateWiseRegistrationInfo(List<Long> stateIds);
+	public List<CadreRegisterInfo> getStateWiseRegistrationInfo(List<Long> stateIds,String fromDate,String toDate);
 	
-	public List<CadreRegisterInfo> getLocationWiseRegistrationInfo(List<Long> ids,String type);
+	public List<CadreRegisterInfo> getLocationWiseRegistrationInfo(List<Long> ids,String type,String fromDate,String toDate);
 }
