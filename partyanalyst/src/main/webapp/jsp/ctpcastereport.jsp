@@ -1045,11 +1045,14 @@ if(!flag){
 	{
 		var str = '';
 		str+='<table class="table table-bordered" id="basicTable">';
+		str+='<thead>';
 		str+='<th>District</th>';
 		str+='<th>Constituency</th>';
 		str+='<th>Total Voters</th>';
 		str+='<th>Caste</th>';
 		str+='<th>Caste Percentage</th>';
+		str+='</thead>';
+		str+='<tbody>';
 		for(var i in result)
 		{
 		str+='<tr>';
@@ -1060,6 +1063,7 @@ if(!flag){
 		str+='<td>'+result[i].percentage+'</td>';
 		str+='</tr>';
 		}
+		str+='</tbody>';
 		str+='</table>';
 		$("#statusContentDiv").html(str);
 		
