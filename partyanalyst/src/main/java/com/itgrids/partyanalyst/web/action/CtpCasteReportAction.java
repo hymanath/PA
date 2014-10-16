@@ -52,8 +52,15 @@ public class CtpCasteReportAction extends ActionSupport implements ServletReques
 	
 	private Long constituencyId;
 	private String gender;
+	private String locationName;
 	
 	
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
 	public String getGender() {
 		return gender;
 	}
@@ -299,7 +306,28 @@ public class CtpCasteReportAction extends ActionSupport implements ServletReques
 			session = request.getSession();
 			RegistrationVO regVo = (RegistrationVO) session.getAttribute(IConstants.USER);
 			Long userId = regVo.getRegistrationID();
-			voterHouseInfoVO =  ctpCasteReportService.getVotersDetailsInCaste(jObj.getLong("id"),jObj.getString("type"),jObj.getLong("casteId"),userId,jObj.getLong("constituencyId"),jObj.getString("gender") );
+			VoterHouseInfoVO searchVo = null;
+			org.json.JSONArray arr = jObj.getJSONArray("searchEles");
+			if(arr.length() > 0)
+			{
+				for(int i=0;i<arr.length();i++)
+				{
+					JSONObject obj= arr.getJSONObject(i);
+					searchVo = new VoterHouseInfoVO();
+					searchVo.setVoterIdCardNo(obj.getString("voterCardId"));
+					searchVo.setName(obj.getString("voterName"));
+					searchVo.setSetValue(obj.getString("voterNameType"));
+					
+					searchVo.setGender(obj.getString("searchGender"));
+					searchVo.setAge(obj.getLong("startAge"));
+					searchVo.setToAge(obj.getLong("endAge"));
+					
+					searchVo.setHouseNo(obj.getString("houseNo"));
+					
+				}
+			}
+			
+			voterHouseInfoVO =  ctpCasteReportService.getVotersDetailsInCaste(jObj.getLong("id"),jObj.getString("type"),jObj.getLong("casteId"),userId,jObj.getLong("constituencyId"),jObj.getString("gender"),searchVo);
 		}
 		catch (Exception e) {
 			LOG.error("Exception Occured in getVotersInCaste() method", e);
