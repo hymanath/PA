@@ -534,12 +534,40 @@ public class CtpCasteReportService implements ICtpCasteReportService{
 		return null;
 	 }
 	 
-	 public VoterHouseInfoVO getVotersDetailsInCaste(Long id,String type,Long casteId,Long userId,Long constituencyId,String gender)
+	 public VoterHouseInfoVO getVotersDetailsInCaste(Long id,String type,Long casteId,Long userId,Long constituencyId,String gender,VoterHouseInfoVO searchEleVo)
 	 {
 		 VoterHouseInfoVO resultVo = new VoterHouseInfoVO();
 		
 		 try{
-			  List<Object[]> votersData = userVoterDetailsDAO.getCasteVotersDetailsBylocationTypeInConstituency(IConstants.VOTER_DATA_PUBLICATION_ID,userId,constituencyId,type,casteId,gender,id);
+			 StringBuilder query = new StringBuilder();
+			 if(searchEleVo != null)
+			 {
+				
+				 if(!searchEleVo.getName().isEmpty())
+				 {
+				 if(searchEleVo.getSetValue().equalsIgnoreCase("start"))
+					 
+					   query.append(" and model.voter.name like '"+searchEleVo.getName()+"%'");
+				   else
+			    		query.append(" and model.voter.name like '%"+searchEleVo.getName()+"%'");
+				 }
+				 if(!searchEleVo.getVoterIdCardNo().isEmpty())
+					 query.append(" and model.voter.voterIDCardNo = '"+searchEleVo.getVoterIdCardNo()+"'");
+				 if(searchEleVo.getHouseNo() != null && !searchEleVo.getHouseNo().isEmpty()){
+		    		 query.append(" and model.voter.houseNo = '"+searchEleVo.getHouseNo()+"'");
+		    	}
+				 if(!searchEleVo.getGender().isEmpty()){
+		    		 query.append(" and model.voter.gender = '"+searchEleVo.getGender()+"'");
+		    	}
+		    	if(searchEleVo.getAge() != null && searchEleVo.getAge() > 0){
+		    		 query.append(" and model.voter.age >= "+searchEleVo.getAge());
+		    	}
+		    	if(searchEleVo.getToAge() != null && searchEleVo.getToAge() > 0){
+		    		 query.append(" and model.voter.age <= "+searchEleVo.getToAge());
+		    	}
+					 		
+			 }
+			  List<Object[]> votersData = userVoterDetailsDAO.getCasteVotersDetailsBylocationTypeInConstituency(IConstants.VOTER_DATA_PUBLICATION_ID,userId,constituencyId,type,casteId,gender,id,query.toString().trim());
 	    	  List<VoterHouseInfoVO> votersList = new ArrayList<VoterHouseInfoVO>();
 	    	 
 	    	  if(votersData != null && votersData.size() > 0)

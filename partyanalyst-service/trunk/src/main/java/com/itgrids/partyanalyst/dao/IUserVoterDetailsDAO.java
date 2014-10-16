@@ -352,6 +352,6 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	 public List<Object[]> getCasteCountByConstituencyIds(Long publicationDateId,Long userId);
 	 public List<Object[]> getCasteCountBylocationType(Long publicationDateId,Long userId,Long constituencyId,String locationType);;
 	 public List<Object[]> getCasteVotersCountBylocationTypeInConstituency(Long publicationDateId,Long userId,Long constituencyId,String locationType);
-	 public List<Object[]> getCasteVotersDetailsBylocationTypeInConstituency(Long publicationDateId,Long userId,Long constituencyId,String locationType,Long casteId,String gender,Long locationId);
+	 public List<Object[]> getCasteVotersDetailsBylocationTypeInConstituency(Long publicationDateId,Long userId,Long constituencyId,String locationType,Long casteId,String gender,Long locationId,String queryStr);
 	
 }
