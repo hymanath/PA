@@ -14,6 +14,6 @@ public interface ICtpCasteReportService {
    
     public VoterHouseInfoVO getCatseVotersCountInRegion(Long constituencyId,String locationType,Long userId);
     public SurveyStatusVO getSurveyStatusDetailsInfo();
-	 public VoterHouseInfoVO getVotersDetailsInCaste(Long id,String type,Long casteId,Long userId,Long constituencyId,String gender);
+    public VoterHouseInfoVO getVotersDetailsInCaste(Long id,String type,Long casteId,Long userId,Long constituencyId,String gender,VoterHouseInfoVO searchEleVo);
     
 }

@@ -3328,13 +3328,13 @@ IUserVoterDetailsDAO{
 		   query.setParameter("constituencyId", constituencyId);
 		   return query.list();	 
 	 }
-	 public List<Object[]> getCasteVotersDetailsBylocationTypeInConstituency(Long publicationDateId,Long userId,Long constituencyId,String locationType,Long casteId,String gender,Long locationId)
+	 public List<Object[]> getCasteVotersDetailsBylocationTypeInConstituency(Long publicationDateId,Long userId,Long constituencyId,String locationType,Long casteId,String gender,Long locationId,String queryStr)
 	 {
 		 StringBuilder str = new StringBuilder();
 		 str.append("select distinct uvd.voter,model.booth.boothId,model.booth.partNo,model.serialNo,uvd.casteState.caste.casteName");	 
 		 str.append("  from BoothPublicationVoter model,UserVoterDetails uvd " +
 		   		" where model.voter.voterId = uvd.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId ");
-		   str.append(" and uvd.user.userId = :userId and uvd.casteInsertType.casteInsertTypeId = :casteInsertTypeId and model.booth.constituency.constituencyId = :constituencyId");
+		   str.append(" and uvd.user.userId = :userId and uvd.casteInsertType.casteInsertTypeId = :casteInsertTypeId and model.booth.constituency.constituencyId = :constituencyId "+queryStr);
 		  if(locationType.equalsIgnoreCase(IConstants.MANDAL))
 			   str.append(" and model.booth.tehsil.tehsilId = :locationId");
 		   else if(locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
@@ -3347,6 +3347,8 @@ IUserVoterDetailsDAO{
 			  str.append(" and uvd.casteState.caste.casteId = :casteId");
 		  if(!gender.trim().equalsIgnoreCase(IConstants.ALL))
 			  str.append(" and uvd.voter.gender = :gender");  
+		 
+			 
 		   Query query = getSession().createQuery(str.toString());
 		   query.setParameter("userId", userId);
 		   query.setParameter("publicationDateId", publicationDateId);
