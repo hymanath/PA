@@ -1227,7 +1227,7 @@ if(!flag){
 		str+='</table>';
 		$("#voterCountData").html(str);
 		var dataLength = result.length + result1.length ;
-		alert(dataLength);
+	
 		if(dataLength > 20 )
 		{
 		$("#VoterdataTable").dataTable({
