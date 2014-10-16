@@ -34,4 +34,6 @@ public interface ISurveyDashBoardService
 	public List<GenericVO> getThirdRaprtyBooths(Long constituencyId);
 	public String deleteThirdPartyData(Long boothId);
 	public SurveyResponceVO thirdPartyCollectedBasicData(Long boothId,Long userId,boolean onlyStatus);
+	public ResultStatus saveVoterFinalCasteOfAConstituency(Long constituencyId);
+	public ResultStatus saveVoterFinalCasteToMainTableOfAConstituency(Long constituencyId);
 }
