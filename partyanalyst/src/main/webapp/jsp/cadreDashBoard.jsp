@@ -229,10 +229,10 @@ $('#membersCount').addClass('animated fadeInX');
           url: 'getCadreDashBoardBasicInfo.action',
           data: {task:"basicInfo"}
        }).done(function(result){
-			$("#todayRegisCount").html('<h2>'+result[0].totalCount+'</h2><p>Members <br/> Registered <span class="text-red">Today</span></p></div></td>');
-			$("#thisWeekRegisCount").html('<h2>'+result[1].totalCount+'</h2><p>Members <br/>Registered <span class="text-orange">This week</span></p></div></td>');
-			$("#monthRegisCount").html('<h2>'+result[2].totalCount+'</h2><p>Members <br/>Registered <span class="text-skyblue">This Month</span></p></div></td>');
-			$("#totalRegisCount").html('<h2>'+result[3].totalCount+'</h2><p>Members <br/>In <span class="text-green">Total Party</span></p></div></td>');	
+			$("#todayRegisCount").html('<h2>'+result[0].totalCount+'</h2><p>Members <br/> Registered <span  style="font-weight:bold;"  class="text-red">Today</span></p></div></td>');
+			$("#thisWeekRegisCount").html('<h2>'+result[1].totalCount+'</h2><p>Members <br/>Registered <span style="font-weight:bold;"  class="text-orange">This week</span></p></div></td>');
+			$("#monthRegisCount").html('<h2>'+result[2].totalCount+'</h2><p>Members <br/>Registered <span style="font-weight:bold;" class="text-skyblue">This Month</span></p></div></td>');
+			$("#totalRegisCount").html('<h2>'+result[3].totalCount+'</h2><p>Members <br/>In <span style="font-weight:bold;"  class="text-green">Total</span></p></div></td>');	
 			
 			$("#todayApTgRegisCount").html('<div class="span6"><strong>AP </strong> <br/>'+result[0].apCount+'</div><div class="span6 text-right"><strong>TS </strong><br/> '+result[0].tgCount+'</div>');				
 			$("#thisWeekApTgRegisCount").html('<div class="span6"><strong>AP </strong> <br/>'+result[1].apCount+'</div><div class="span6 text-right"><strong>TS </strong><br/> '+result[1].tgCount+'</div>');					
@@ -378,12 +378,12 @@ $('#membersCount').addClass('animated fadeInX');
           data: {task:"workStartedConstituency"}
        }).done(function(result){
 			
-			$("#tsConstiCountId").html('<h2>'+result[1].totalCount+'</h2><p>Constituency Data Collecting and Processing</p></div></td>');
+			$("#tsConstiCountId").html('<h2>'+result[1].totalCount+'</h2><p>Registration Started Constituencies</p></div></td>');
 			$("#ts2012CountId").html('<h2>'+result[1].apCount+'</h2><p>Members <br/>Registered in&nbsp;<span class="text-red">2012</span></p></div></td>');
 			$("#ts2014CountId").html('<h2>'+result[1].tgCount+'</h2><p>Members <br/>Registered in&nbsp;<span class="text-green">2014</span></p></div></td>');
 			$("#tsPercCountId").html('<h2>'+result[1].percentage+'%</h2><p>Members <br/>In <span class="text-orange">Total Party</span></p></div></td>');
 							
-			$("#apConstiCountId").html('<h2>'+result[0].totalCount+'</h2><p>Constituency Data Collecting and Processing</p></div></td>');
+			$("#apConstiCountId").html('<h2>'+result[0].totalCount+'</h2><p>Registration Started Constituencies</p></div></td>');
 			$("#ap2012CountId").html('<h2>'+result[0].apCount+'</h2><p>Members <br/>Registered in&nbsp;<span class="text-red">2012</span></p></div></td>');
 			$("#ap2014CountId").html('<h2>'+result[0].tgCount+'</h2><p>Members <br/>Registered in&nbsp;<span class="text-green">2014</span></p></div></td>');
 			$("#apPercCountId").html('<h2>'+result[0].percentage+'%</h2><p>Members <br/>In <span class="text-orange">Total Party</span></p></div></td>');	
