@@ -90,6 +90,7 @@
 			</div>
 			<div class="row-fluid ">
 			   <div style="min-height: 300px;background:#ffffff;" class="span12 show-grid well well-small border-radius-0 mb-10 form-inline">
+			   <div id="errStatusDiv" align="center" ></div>
 				<label style="margin-left:100px;"><b>From Date :</b>&nbsp;<input type="text" readonly="readonly" id="fromDate"/></label>
 					 <label><b>To Date   :</b>&nbsp;<input type="text" readonly="readonly" id="toDate" /> </label>
 					<input type="button" class="btn btn-success" id="getCandidateDataCollectionInfoId" onclick="getCandidateDataCollectionInfo();" value="Submit"/>
@@ -165,6 +166,19 @@
 						   </select> 
 						 </td>
 					 </tr>
+					  <tr id="formDateDiv" >
+						 <td><b>From Date :</b></td>
+						 <td>  
+						   <input type="text" id="fromDate1" class="levelDtCls form-control border-radius-0 border-right-0 datePickerCls fromDateCls" placeholder="From Date"  readOnly="true" style="cursor:text;"></input>
+						 </td>
+					 </tr>
+					  <tr id="toDateDiv">
+						 <td><b>To Date :</b></td>
+						 <td>  
+						    <input type="text" id="toDate1" class="levelDtCls form-control border-radius-0 border-right-0 datePickerCls fromDateCls"  placeholder="From Date"  readOnly="true" style="cursor:text;"></input>
+						 </td>
+					 </tr>
+					 
 					 <tr><td></td><td> <input style="margin-top:10px;" type="button" id="locationSubmitBtn" class="btn btn-success" onclick="getLocationWiseCadreInfo();" value="Submit"/><img id="ajaxImgStyleNew" style="display:none;margin-left:10px; margin-top:10px;" src="images/icons/search.gif"/></td></tr>
 				  </table>
 				  <div id="locationStatusDialogDIV"></div>
@@ -173,24 +187,58 @@
 		</div>
 	</div>
 <script type="text/javascript">
-    $("#fromDate").datepicker({
+    $("#fromDate,#fromDate1").datepicker({
 		dateFormat: "dd-mm-yy",
 		changeMonth: true,
         changeYear: true,
 		maxDate: new Date()
 	})
-	$("#fromDate").datepicker("setDate", new Date());
-	$("#toDate").datepicker({
+	$("#fromDate,#fromDate1").datepicker("setDate", new Date());
+	$("#toDate,#toDate1").datepicker({
 		dateFormat: "dd-mm-yy",
 		changeMonth: true,
         changeYear: true,
 		maxDate: new Date()
 	})
-	$("#toDate").datepicker("setDate", new Date());
+	$("#toDate,#toDate1").datepicker("setDate", new Date());
    function getCandidateDataCollectionInfo(){
     var allConstituencies = "";
 	var ruralConstis = "";
     $("#userStatusDialogDIV").html("");
+    $("#errStatusDiv").html("");
+
+	var startDate = $("#fromDate").val();
+	var endDate = $("#toDate").val();
+	
+	if(startDate.trim().length >0 && endDate.trim().length >0)
+		{
+			var dt1  = parseInt(startDate.substring(0,2),10);
+			var mon1 = parseInt(startDate.substring(3,5),10);
+			var yr1  = parseInt(startDate.substring(6,10),10);
+			var dt2  = parseInt(endDate.substring(0,2),10);
+			var mon2 = parseInt(endDate.substring(3,5),10);
+			var yr2  = parseInt(endDate.substring(6,10),10);
+			
+			var date1 = new Date(yr1, mon1, dt1);
+			var date2 = new Date(yr2, mon2, dt2);
+
+			if(startDate != "" || endDate != ""){
+
+				if(startDate == ""){
+					$('#errStatusDiv').html('<font style="color:red;">From Date should not Empty </font>');
+					return;
+				}
+				else if(endDate == ""){
+					$('#errStatusDiv').html('<font style="color:red;">To Date should not Empty </font>');
+					return;
+				}					
+				if(date2 < date1){ 
+					$('#errStatusDiv').html('<font style="color:red;">From Date should not greater than To Date </font>');
+					return;
+				}
+			}	
+		}
+		
 	$("#getCandidateDataCollectionInfoId").attr("disabled","disabled");
 	$("#ajaxImgStyle").show();
     $.ajax({
@@ -468,6 +516,10 @@
 	var reqTask="";
 	var reqIds ="";
 	var errMsg="";
+	
+	var startDate = $('#fromDate1').val();
+	var endDate	= $('#toDate1').val();
+		
 	if(locationId == 2){
 	  reqTask="stateInfo";
 	  reqIds = getReqIds("statesDispalyId");
@@ -505,6 +557,32 @@
 	    errMsg ="Please Select Booth";
 	  }
 	}
+	if(startDate.trim().length >0 && endDate.trim().length >0)
+		{
+			var dt1  = parseInt(startDate.substring(0,2),10);
+			var mon1 = parseInt(startDate.substring(3,5),10);
+			var yr1  = parseInt(startDate.substring(6,10),10);
+			var dt2  = parseInt(endDate.substring(0,2),10);
+			var mon2 = parseInt(endDate.substring(3,5),10);
+			var yr2  = parseInt(endDate.substring(6,10),10);
+			
+			var date1 = new Date(yr1, mon1, dt1);
+			var date2 = new Date(yr2, mon2, dt2);
+
+			if(startDate != "" || endDate != ""){
+
+				if(startDate == ""){
+					 errMsg ="From Date should not Empty";
+				}
+				else if(endDate == ""){
+					 errMsg ="To Date should not Empty";
+				}					
+				if(date2 < date1){ 
+					  errMsg ="From Date should not greater than To Date";					
+				}
+			}	
+		}
+		
 	if(errMsg.length > 0){
 	  $("#errMsgDiv").html('<div style="font-weight:bold;color:red;margin-bottom:8px;margin-left:400px;margin-top:5px;">'+errMsg+'</div>');
 	  return;
@@ -514,7 +592,7 @@
          $.ajax({
           type:'GET',
           url: 'getLocationWiseRegistrationInfo.action',
-		  data: {task:reqTask,ids:reqIds}
+		  data: {task:reqTask,ids:reqIds,fromDate:startDate,toDate:endDate}
 	   }).done(function(result){
 	       var str='';
 	       if(result.length > 0){
