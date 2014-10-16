@@ -1195,6 +1195,7 @@
 											</div>
 										</div>
 								</div>	
+								<input type="hidden" id="fmlyVtrId" class="form-control border-radius-0 input-block-level" placeholder="Text input"  style="width:260px;"  name="cadreRegistrationVO.familyVoterId"></input>
 								
 								<div class="m_top10">
 										<div class="row-fluid">
@@ -1225,8 +1226,12 @@
 								<h5 class="text-align1">Aadhar Card No .</h5>
 								<input type="text" class=""  style="width:260px;" placeholder="Aadhar Number"  name="cadreRegistrationVO.aadheerNo" value="${voterInfoVOList[0].aadharNo}"></input>
 							
-							</div>
-							-->
+								<div class=" m_top20" >
+									<h5 class="text-align1">Aadhar Card No .</h5>
+									<input type="text" class=""  style="width:260px;" placeholder="Aadhar Number"  name="cadreRegistrationVO.candidateAadherNo" value="${voterInfoVOList[0].aadharNo}"></input>
+								
+								</div>
+							
 							
 								<div class=" m_top20" >
 										<h5 class="text-align1">STREET/HAMLET</h5>
@@ -2387,7 +2392,7 @@ function hideCadreImg(){
 			{
 				str +='<tr>';
 				if(fromDiv == "family"){
-					str +='<td  style="background-color: #f9f9f9;"><input type="checkbox" class="votersCB" name="voters" onclick="updateFamilyVtrId(\''+result[i].voterCardNo+'\')"></span>';
+					str +='<td  style="background-color: #f9f9f9;"><input type="checkbox" class="votersCB" name="voters" onclick="updateFamilyVtrId(\''+result[i].voterCardNo+'\',\''+result[i].voterId+'\')"></span>';
 				}else{
 					str +='<td  style="background-color: #f9f9f9;"><input type="checkbox" class="votersCB" name="voters" onclick="updateText(\''+result[i].voterId+'\')"></span>';
 				}
@@ -2428,7 +2433,7 @@ function hideCadreImg(){
 			{
 				str +='<tr>';
 				if(fromDiv == "family"){
-					str +='<td  style="background-color: #f9f9f9;"><input type="checkbox" class="votersCB" name="voters" onclick="updateFamilyVtrId(\''+result[i].voterCardNo+'\')"></span>';
+					str +='<td  style="background-color: #f9f9f9;"><input type="checkbox" class="votersCB" name="voters" onclick="updateFamilyVtrId(\''+result[i].voterCardNo+'\',\''+result[i].voterId+'\')"></span>';
 				}else{
 					str +='<td  style="background-color: #f9f9f9;"><input type="checkbox" class="votersCB" name="voters" onclick="updateText(\''+result[i].voterId+'\')"></span>';
 				}
@@ -2596,14 +2601,16 @@ function hideCadreImg(){
 		//$("#familyVtrCrdId").val(vCardNo);
 	}
 	
-	function updateFamilyVtrId(vCardNo){
+	function updateFamilyVtrId(vCardNo,vCardId){
 		$('#myModal2').dialog('close');
 		$("#familyVtrCrdId").val(vCardNo);
+		$("#fmlyVtrId").val(vCardId);
 	}
 	
 	function updateEnrollmentNo(enrollmentNo){
 		$('#myModal1').dialog('close');
 		$("#preEnrollNoValue").val(enrollmentNo);
+		$('#preEnrollNo').val(enrollmentNo);
 	}
 	
 </script>
@@ -2611,7 +2618,8 @@ function hideCadreImg(){
 function getExistingCadreInfo1(){
 	$('#searchDetailsDiv1').html('');
 	$('#tableElement1').hide();
-			
+	$('#preEnrollNo').val('');
+	
 	var candidateName = $('#candiNameId').val();
 	var enrollmentNo = $('#enrollmentNoId').val();
 	var constituencyId = '${constiteucnyId}';
