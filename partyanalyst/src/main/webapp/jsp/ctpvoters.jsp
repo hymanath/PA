@@ -252,6 +252,7 @@ table.dataTable tr.even td.sorting_1 {
 				data:{task:JSON.stringify(jObj)},
 				success:function(result)
 					{
+					clearFields();
 					$("#ajaxLoad").hide();
 					  if(result.votersList== null || result.votersList.length == 0)
 					 $('#errorMessageDiv').show().html('No Data Avalible For Given Search Details');
@@ -325,6 +326,16 @@ table.dataTable tr.even td.sorting_1 {
 		] 
 		});
 		}
+	}
+	function clearFields()
+	{
+		$("#voterId").val('');
+		$("#reqHouseNo").val('');
+		$("#voterName").val('');
+		$("#fromAge").val('');
+		$("#toAge").val('');
+		$("#startWith").attr('checked', 'checked'); 
+		$("#allGenderId").attr('checked', 'checked'); 
 	}
  </script>
  <script>
