@@ -3,6 +3,7 @@
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -108,7 +109,15 @@ table.dataTable tr.odd td.sorting_1 {
 table.dataTable tr.even td.sorting_1 {
     background-color: #EdF5FF;
 }
-
+.titleHeading1{
+    color: steelblue;
+    font-family: verdana;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-top: 20px;
+   
+}
 </style>
 
 <script type="text/javascript">
@@ -408,18 +417,16 @@ function clearFieldsData(){
 
  <div style="width:960px;margin-left:auto;margin-right:auto;margin-top:20px;">
     <ul class="nav nav-tabs" id="myTab">
-	<!--<li class="active"><a href="#SurveystatusDiv" >Survey STATUS REPORT </a></li>-->
+	
 	<li class="active"> <a href="#statusDiv">STATUS REPORT </a></li>
 <li ><a href="#voterSearchDiv">VOTER CASTE SEARCH </a></li>
 <li><a href="#voterCountDetailsDiv">VOTER CASTE REPORT </a></li>
+		<c:if test="${!fn:contains(sessionScope.USER.entitlements,'CTP_CASTE_ADMIN_ENTITLEMENT')}">
+<li><a href="#adminTabDiv" >ADMIN </a></li>
+</c:if>
 </ul>
 <div class="tab-content widget" style="margin-top:-20px;">
-	 	<!-- <div id="SurveystatusDiv"  class="tab-pane active">
-		 <div class="titleHeading" >SURVEY OVERVIEW
-	 </div>
-	 <div id="surveyStatusDetailsDiv"></div>
-	 
-		 </div>-->
+	 	
 	 
 	 <div id="statusDiv"  class="tab-pane active">
 	 <img src="./images/Loading-data.gif" alt="Processing Image" id="voterDetailsImg" style="width: 65px;" class="offset4"/>
@@ -565,7 +572,22 @@ function clearFieldsData(){
 	  <span style='display:none;' id='ajaxLoad1'><img src='./images/icons/search.gif' /></span>
 
 	</div>
-	   
+	   	<c:if test="${!fn:contains(sessionScope.USER.entitlements,'CTP_CASTE_ADMIN_ENTITLEMENT')}">
+	   <div id="adminTabDiv"  class="tab-pane active">
+		
+		<div class="titleHeading1 offset3"> MOVE VOTER_CASTE DATA TO FINAL</div>
+		<div  class="offset3 form-inline">
+		<label id="ConstituencyDiv1"> Select Constituency <font class="requiredFont">*</font><s:select theme="simple"  label="Select Your State" name="constituencyList" id="adminconstituencyList" list="constituencyList" listKey="id" listValue="name"/></label>&nbsp;&nbsp;
+		 <input class="btn btn-success" type="button"  value="submit" onclick="saveVoterFinalCasteOfAConstituency();"/>  <span style='display:none;' id='adminajaxLoad'><img src='./images/icons/search.gif' /></span>		
+		 </div>
+	
+		<div class="titleHeading1 offset3"> MOVE VOTER_CASTE FINAL DATA TO A  TABLE</div>
+			 <div  class="offset3 form-inline">
+		<label id="ConstituencyDiv1" > Select Constituency <font class="requiredFont">*</font><s:select theme="simple"  label="Select Your State" name="constituencyList" id="adminconstituencyList1" list="constituencyList" listKey="id" listValue="name"/></label>&nbsp;&nbsp;
+		 <input  class="btn btn-success" type="button"  value="submit" onclick="saveVoterFinalCasteToMainTableOfAConstituency();"/>  <span style='display:none;' id='adminajaxLoad1'><img src='./images/icons/search.gif' /></span>		
+		 </div>
+		</div>
+		</c:if>
 </div>
 <script>
 
@@ -1497,6 +1519,49 @@ if(!flag){
 		updateBrowser.focus();
 
 	}
+	function saveVoterFinalCasteOfAConstituency()
+	{
+	var constituencyId = $("#adminconstituencyList").val();
+	$("#adminajaxLoad").show();
+	var jObj ={
+	constituencyId:constituencyId,
+			task : "saveVoterFinalCasteOfAConstituency"
+		}
+	$.ajax({
+	          type:'POST',
+	          url: 'saveVoterFinalCasteOfAConstituency.action',
+	          dataType: 'json',
+	          data: {task:JSON.stringify(jObj)},
+			  success: function(result){ 
+				$("#adminajaxLoad").hide();
+				  },
+	          error:function() { 
+	           console.log('error', arguments);
+	         }
+	    });
+	}
+	function saveVoterFinalCasteToMainTableOfAConstituency()
+	{
+	var constituencyId = $("#adminconstituencyList1").val();
+	$("#adminajaxLoad1").show();
+	var jObj ={
+	constituencyId:constituencyId,
+			task : "saveVoterFinalCasteToMainTableOfAConstituency"
+		}
+	$.ajax({
+	          type:'POST',
+	          url: 'saveVoterFinalCasteToMainTableOfAConstituency.action',
+	          dataType: 'json',
+	          data: {task:JSON.stringify(jObj)},
+			  success: function(result){ 
+			$("#adminajaxLoad").hide();
+				  },
+	          error:function() { 
+	           console.log('error', arguments);
+	         }
+	    });
+	}
+	
 </script>
 <script>
 getVotersCountDetails();
