@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.ServletContextAware;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyCompletionDetailsVO;
 import com.itgrids.partyanalyst.dto.SurveyStatusVO;
@@ -25,6 +26,7 @@ import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.ICtpCasteReportService;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
+import com.itgrids.partyanalyst.service.ISurveyDashBoardService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -57,6 +59,21 @@ public class CtpCasteReportAction extends ActionSupport implements ServletReques
 	@Autowired
 	private ISurveyDataDetailsService surveyDataDetailsService;
 	
+	private ResultStatus resultStatus;
+	private ISurveyDashBoardService surveyDashBoardService;
+	public ISurveyDashBoardService getSurveyDashBoardService() {
+		return surveyDashBoardService;
+	}
+	public void setSurveyDashBoardService(
+			ISurveyDashBoardService surveyDashBoardService) {
+		this.surveyDashBoardService = surveyDashBoardService;
+	}
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
 	public String getLocationName() {
 		return locationName;
 	}
@@ -323,6 +340,32 @@ public class CtpCasteReportAction extends ActionSupport implements ServletReques
 		}
 		catch (Exception e) {
 			LOG.error("Exception Occured in getVotersInCaste() method", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String saveVoterFinalCasteOfAConstituency()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			
+			resultStatus = surveyDashBoardService.saveVoterFinalCasteOfAConstituency(jObj.getLong("constituencyId"));
+		}
+		catch (Exception e) {
+			LOG.error("Exception Occured in getSurveyStatusDetails() method", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String saveVoterFinalCasteToMainTableOfAConstituency()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			
+			resultStatus = surveyDashBoardService.saveVoterFinalCasteToMainTableOfAConstituency(jObj.getLong("constituencyId"));
+		}
+		catch (Exception e) {
+			LOG.error("Exception Occured in getSurveyStatusDetails() method", e);
 		}
 		return Action.SUCCESS;
 	}
