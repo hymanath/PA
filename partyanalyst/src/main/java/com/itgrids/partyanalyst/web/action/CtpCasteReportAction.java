@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.ICtpCasteReportService;
+import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -53,7 +54,8 @@ public class CtpCasteReportAction extends ActionSupport implements ServletReques
 	private Long constituencyId;
 	private String gender;
 	private String locationName;
-	
+	@Autowired
+	private ISurveyDataDetailsService surveyDataDetailsService;
 	
 	public String getLocationName() {
 		return locationName;
@@ -171,17 +173,7 @@ public class CtpCasteReportAction extends ActionSupport implements ServletReques
 		return INPUT;
 	if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.CTP_CASTE_REPORT_ENTITLEMENT))
 		return ERROR;
-			
-		constituencyList = user.getUserAccessVoterConstituencies();
-		if(constituencyList == null || constituencyList.isEmpty()){
-			Long userID = user.getRegistrationID();
-			Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
-			Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
-			userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
-			constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
-			constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
-			user.setUserAccessVoterConstituencies(constituencyList);
-		}
+		constituencyList = surveyDataDetailsService.getSurveyStartedConstituencyList();
 		return Action.SUCCESS;
 	}
 	
