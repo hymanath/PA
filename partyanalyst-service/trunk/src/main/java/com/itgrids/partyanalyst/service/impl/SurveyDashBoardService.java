@@ -103,6 +103,10 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 	private IVoterDAO voterDAO;
 	private ICasteInsertTypeDAO casteInsertTypeDAO;
 	
+	public void setVoterDAO(IVoterDAO voterDAO) {
+		this.voterDAO = voterDAO;
+	}
+	
 	public void setCasteInsertTypeDAO(ICasteInsertTypeDAO casteInsertTypeDAO) {
 		this.casteInsertTypeDAO = casteInsertTypeDAO;
 	}
