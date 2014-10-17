@@ -769,7 +769,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				  }
 				}
 				surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
-				List<CadrePreviousRollesVO> previousRollesPartList = cadreRegistrationVO.getPreviousRollesList();
+				/*List<CadrePreviousRollesVO> previousRollesPartList = cadreRegistrationVO.getPreviousRollesList();
 				if(previousRollesPartList != null && previousRollesPartList.size() > 0)
 				{
 					for (CadrePreviousRollesVO rolesVO : previousRollesPartList)
@@ -781,16 +781,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								CadrePreviousRoles cadrePreviousRoles = new CadrePreviousRoles();
 								cadrePreviousRoles.setTdpCadreId(tdpCadre.getTdpCadreId());
 								
-								//if(rolesVO.getFromDate() != null && rolesVO.getToDate() != null)
-								//{
-									/*if(rolesVO.getDesignationLevelId() != null && rolesVO.getDesignationLevelId().longValue() > 0)
-									{
-										cadrePreviousRoles.setCadreLevelId(rolesVO.getDesignationLevelId());
-									}
-									if(rolesVO.getDesignationLevelValue() != null && rolesVO.getDesignationLevelValue().longValue() > 0)
-									{
-										cadrePreviousRoles.setPartyDesignationId(rolesVO.getDesignationLevelValue());
-									}*/
+							
 									if(rolesVO.getCadreCommitteeId() != null && rolesVO.getCadreCommitteeId().longValue() > 0 && rolesVO.getCadreCommitteeLevelId() != null && rolesVO.getCadreCommitteeLevelId().longValue() > 0 && rolesVO.getCadreRoleId() != null && rolesVO.getCadreRoleId().longValue() > 0 )
 									{
 										List<Long> cadreCommotteRoleIds = cadreCommitteeRoleDAO.getCadreCommitteRoleIdBySelection(rolesVO.getCadreCommitteeLevelId(), rolesVO.getCadreRoleId(), rolesVO.getCadreCommitteeId());
@@ -818,7 +809,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						}
 						
 					}
-				}
+				}*/
 				
 				List<CadrePreviousRollesVO> previousElectionPartList = cadreRegistrationVO.getPreviousParicaptedElectionsList();
 				if(previousElectionPartList != null && previousElectionPartList.size() > 0)
