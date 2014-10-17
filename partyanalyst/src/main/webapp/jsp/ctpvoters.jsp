@@ -268,7 +268,7 @@ table.dataTable tr.even td.sorting_1 {
 	{
 		var str = '';
 		var caste ="";
-		if(casteId == 0)
+		if(casteId > 0)
 		caste = result[0].casteName;
 		var type1 =  "";
 		if(type == "Panchayat")
@@ -285,7 +285,6 @@ table.dataTable tr.even td.sorting_1 {
 			else
 			str+='<h4 class="titleHeading"> '+caste+' VOTER DETAILS IN BOOTH - '+'${locationName}'+' '+type1+' </h4>';
 		}
-		
 		str+='<table class="table table-bordered" id="voterDataTable">';
 		str+='<thead>';
 		str+='<th>Name</th>';
