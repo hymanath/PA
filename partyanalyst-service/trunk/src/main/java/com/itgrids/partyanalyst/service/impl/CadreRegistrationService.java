@@ -336,8 +336,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		try {
 			LOG.info("Entered into saveCadreRegistration in CadreRegistrationService service");
 			
-				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-					public void doInTransactionWithoutResult(TransactionStatus status) {
+				
 						if(cadreRegistrationVOList != null && cadreRegistrationVOList.size() >0)
 						{
 							for (CadreRegistrationVO cadreRegistrationVO : cadreRegistrationVOList)
@@ -414,7 +413,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						
 							
 						}
-				}});
+				
 
 		} catch (Exception e) {
 			surveyCadreResponceVO.setResultCode(ResultCodeMapper.FAILURE);
@@ -434,483 +433,494 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	 * @param cadreRegistrationVO
 	 * @param surveyCadreResponceVO
 	 */
-	public void tdpCadreSavingLogic(String registrationType,List<CadreRegistrationVO> cadreRegistrationVOList , CadreRegistrationVO cadreRegistrationVO,SurveyCadreResponceVO surveyCadreResponceVO,TdpCadre tdpCadre,String insertType)
+	public void tdpCadreSavingLogic(final String registrationType,final List<CadreRegistrationVO> cadreRegistrationVOList ,final CadreRegistrationVO cadreRegistrationVO, final SurveyCadreResponceVO surveyCadreResponceVO,final TdpCadre tdpCadre,final String insertType)
 	{
 		try {	
-				if(registrationType != null && !registrationType.equalsIgnoreCase("null") && registrationType.trim().length() > 0)
-				{
-					tdpCadre.setDataSourceType(registrationType.trim().toUpperCase());
-				}
-				if(cadreRegistrationVO.getVoterName() != null && !cadreRegistrationVO.getVoterName().equalsIgnoreCase("null") && cadreRegistrationVO.getVoterName().trim().length() > 0)
-				{
-					tdpCadre.setFirstname(cadreRegistrationVO.getVoterName());
-				}
-				if(cadreRegistrationVO.getDobStr() != null && cadreRegistrationVO.getDobStr().trim().length() > 0 && !cadreRegistrationVO.getDobStr().trim().equalsIgnoreCase("null"))
-				{
-					tdpCadre.setDateOfBirth(convertToDateFormet(cadreRegistrationVO.getDobStr().toString()));
-				}
-				if(cadreRegistrationVO.getGender() != null && !cadreRegistrationVO.getGender().equalsIgnoreCase("null") && cadreRegistrationVO.getGender().trim().length() > 0)
-				{
-					tdpCadre.setGender(cadreRegistrationVO.getGender());
-				}
-				if(cadreRegistrationVO.getRelativeName() != null && !cadreRegistrationVO.getRelativeName().equalsIgnoreCase("null") && cadreRegistrationVO.getRelativeName().trim().length() > 0)
-				{
-					tdpCadre.setRelativename(cadreRegistrationVO.getRelativeName());
-				}
-				if(cadreRegistrationVO.getVoterId() != null && Long.valueOf(cadreRegistrationVO.getVoterId()) > 0)
-				{
-					tdpCadre.setVoterId(Long.valueOf(cadreRegistrationVO.getVoterId()));
-				}
-				else if(cadreRegistrationVO.getVoterCardNumber() != null && !cadreRegistrationVO.getVoterCardNumber().equalsIgnoreCase("null") && cadreRegistrationVO.getVoterCardNumber().trim().length() > 0)
-				{
-					List<Long> voterCardNumbersList = voterDAO.getVoterId(cadreRegistrationVO.getVoterCardNumber());
-					if(voterCardNumbersList != null && voterCardNumbersList.size() > 0)
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+					TdpCadre  tdpCadre1 = null;
+					if(registrationType != null && !registrationType.equalsIgnoreCase("null") && registrationType.trim().length() > 0)
 					{
-						tdpCadre.setVoterId(voterCardNumbersList.get(0));
+						tdpCadre.setDataSourceType(registrationType.trim().toUpperCase());
 					}
-					/*else
+					if(cadreRegistrationVO.getVoterName() != null && !cadreRegistrationVO.getVoterName().equalsIgnoreCase("null") && cadreRegistrationVO.getVoterName().trim().length() > 0)
 					{
-						surveyCadreResponceVO.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
-						surveyCadreResponceVO.setStatus("DATA NOT FOUND");
-						return;
+						tdpCadre.setFirstname(cadreRegistrationVO.getVoterName());
+					}
+					if(cadreRegistrationVO.getDobStr() != null && cadreRegistrationVO.getDobStr().trim().length() > 0 && !cadreRegistrationVO.getDobStr().trim().equalsIgnoreCase("null"))
+					{
+						tdpCadre.setDateOfBirth(convertToDateFormet(cadreRegistrationVO.getDobStr().toString()));
+					}
+					if(cadreRegistrationVO.getGender() != null && !cadreRegistrationVO.getGender().equalsIgnoreCase("null") && cadreRegistrationVO.getGender().trim().length() > 0)
+					{
+						tdpCadre.setGender(cadreRegistrationVO.getGender());
+					}
+					if(cadreRegistrationVO.getRelativeName() != null && !cadreRegistrationVO.getRelativeName().equalsIgnoreCase("null") && cadreRegistrationVO.getRelativeName().trim().length() > 0)
+					{
+						tdpCadre.setRelativename(cadreRegistrationVO.getRelativeName());
+					}
+					if(cadreRegistrationVO.getVoterId() != null && Long.valueOf(cadreRegistrationVO.getVoterId()) > 0)
+					{
+						tdpCadre.setVoterId(Long.valueOf(cadreRegistrationVO.getVoterId()));
+					}
+					else if(cadreRegistrationVO.getVoterCardNumber() != null && !cadreRegistrationVO.getVoterCardNumber().equalsIgnoreCase("null") && cadreRegistrationVO.getVoterCardNumber().trim().length() > 0)
+					{
+						List<Long> voterCardNumbersList = voterDAO.getVoterId(cadreRegistrationVO.getVoterCardNumber());
+						if(voterCardNumbersList != null && voterCardNumbersList.size() > 0)
+						{
+							tdpCadre.setVoterId(voterCardNumbersList.get(0));
+						}
+						/*else
+						{
+							surveyCadreResponceVO.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+							surveyCadreResponceVO.setStatus("DATA NOT FOUND");
+							return;
+						}*/
+						
+					}
+					if(cadreRegistrationVO.getAge() != null && Long.valueOf(cadreRegistrationVO.getAge()) > 0)
+					{
+						tdpCadre.setAge(Long.valueOf(cadreRegistrationVO.getAge()));
+					}
+					
+					if(cadreRegistrationVO.getPreviousEnrollmentNumber() != null && !cadreRegistrationVO.getPreviousEnrollmentNumber().equalsIgnoreCase("null") && cadreRegistrationVO.getPreviousEnrollmentNumber().trim().length() > 0)
+					{
+						tdpCadre.setPreviousEnrollmentNo(cadreRegistrationVO.getPreviousEnrollmentNumber());
+					}
+					if(cadreRegistrationVO.getPartyMemberSinceStr() != null && cadreRegistrationVO.getPartyMemberSinceStr().trim().length() > 0 && !cadreRegistrationVO.getPartyMemberSinceStr().trim().equalsIgnoreCase("null"))
+					{
+						tdpCadre.setPartyMemberSince(convertToDateFormet(cadreRegistrationVO.getPartyMemberSinceStr()));
+					}
+					if(cadreRegistrationVO.getBloodGroupId() != null && cadreRegistrationVO.getBloodGroupId().longValue() > 0)
+					{
+						tdpCadre.setBloodGroupId(cadreRegistrationVO.getBloodGroupId());
+					}
+					
+					if(cadreRegistrationVO.getCasteId() != null && cadreRegistrationVO.getCasteId() > 0)
+					{
+						tdpCadre.setCasteStateId(cadreRegistrationVO.getCasteId());
+					}
+					
+					if(cadreRegistrationVO.getMobileNumber() != null && !cadreRegistrationVO.getMobileNumber().equalsIgnoreCase("null") && cadreRegistrationVO.getMobileNumber().trim().length() > 0)
+					{
+						tdpCadre.setMobileNo(cadreRegistrationVO.getMobileNumber());
+					}
+					
+					if(cadreRegistrationVO.getEducationId() != null && cadreRegistrationVO.getEducationId().longValue() > 0)
+					{
+						tdpCadre.setEducationId(cadreRegistrationVO.getEducationId());
+					}
+					
+					if(cadreRegistrationVO.getOccupationId() != null && cadreRegistrationVO.getOccupationId().longValue() > 0)
+					{
+						tdpCadre.setOccupationId(cadreRegistrationVO.getOccupationId());
+					}
+					if(cadreRegistrationVO.getHouseNo() != null && !cadreRegistrationVO.getHouseNo().equalsIgnoreCase("null") && cadreRegistrationVO.getHouseNo().trim().length() > 0)
+					{
+						tdpCadre.setHouseNo(cadreRegistrationVO.getHouseNo());
+					}
+					if(cadreRegistrationVO.getPreviousEnrollmentNumber() != null && !cadreRegistrationVO.getPreviousEnrollmentNumber().equalsIgnoreCase("null") && cadreRegistrationVO.getPreviousEnrollmentNumber().trim().length() > 0)
+					{
+						tdpCadre.setPreviousEnrollmentNo(cadreRegistrationVO.getPreviousEnrollmentNumber());
+					}
+					if(cadreRegistrationVO.getCreatedUserId() != null && cadreRegistrationVO.getCreatedUserId().longValue() > 0  )
+					{
+						if(registrationType.equalsIgnoreCase("TAB")){
+						    tdpCadre.setInsertedUserId(cadreRegistrationVO.getCreatedUserId().longValue());
+						}else{
+							tdpCadre.setInsertedWebUserId(cadreRegistrationVO.getCreatedUserId().longValue());
+						}
+					}
+					if(cadreRegistrationVO.getUpdatedUserId() != null && cadreRegistrationVO.getUpdatedUserId().longValue() > 0)
+					{
+						if(registrationType.equalsIgnoreCase("TAB")){
+						     tdpCadre.setUpdatedUserId(cadreRegistrationVO.getUpdatedUserId().longValue());
+						}else{
+							 tdpCadre.setUpdatedWebUserId(cadreRegistrationVO.getUpdatedUserId().longValue());
+						}
+					}
+					
+					UserAddress userAddress = new UserAddress();
+					if(tdpCadre.getVoterId() != null && tdpCadre.getVoterId().longValue() > 0)
+					{
+						getVoterAddressDetails(tdpCadre.getVoterId(),userAddress,cadreRegistrationVO.getStreet());
+					}
+					else if(cadreRegistrationVO.getFamilyVoterId() != null && cadreRegistrationVO.getFamilyVoterId().longValue() > 0)
+					{
+						getVoterAddressDetails(cadreRegistrationVO.getFamilyVoterId(),userAddress,cadreRegistrationVO.getStreet());
+					}
+					else
+					{
+						if(cadreRegistrationVO.getConstituencyId() != null && cadreRegistrationVO.getConstituencyId().trim().length() > 0 && !cadreRegistrationVO.getConstituencyId().trim().equalsIgnoreCase("null"))
+						{
+							if(Long.valueOf(cadreRegistrationVO.getConstituencyId()) > 0)
+							{
+								userAddress.setConstituency(constituencyDAO.get(Long.valueOf(cadreRegistrationVO.getConstituencyId())));
+								userAddress.setCountry(countryDAO.get(1l));
+								userAddress.setState(stateDAO.get(1l));
+								userAddress.setConstituency(constituencyDAO.get(Long.valueOf(cadreRegistrationVO.getConstituencyId())));
+								userAddress.setDistrict(constituencyDAO.get(Long.valueOf(cadreRegistrationVO.getConstituencyId())).getDistrict());
+								if(cadreRegistrationVO.getStreet() != null && cadreRegistrationVO.getStreet().trim().length() > 0 && cadreRegistrationVO.getStreet().trim().equalsIgnoreCase("null"))
+								{
+									userAddress.setStreet(cadreRegistrationVO.getStreet());
+								}
+								if(cadreRegistrationVO.getPanchayatId() != null && cadreRegistrationVO.getPanchayatId().trim().length() > 0 && !cadreRegistrationVO.getPanchayatId().trim().equalsIgnoreCase("null"))
+								{
+									if(Long.valueOf(cadreRegistrationVO.getPanchayatId()) > 0)
+									{
+										userAddress.setPanchayat(panchayatDAO.get(Long.valueOf(cadreRegistrationVO.getPanchayatId())));
+										userAddress.setTehsil(panchayatDAO.get(Long.valueOf(cadreRegistrationVO.getPanchayatId())).getTehsil());
+									}
+									
+								}
+								if(cadreRegistrationVO.getBoothId() != null && cadreRegistrationVO.getBoothId().trim().length() > 0 && !cadreRegistrationVO.getBoothId().trim().equalsIgnoreCase("null"))
+								{
+									if(Long.valueOf(cadreRegistrationVO.getBoothId()) > 0)
+									{
+										userAddress.setBooth(boothDAO.get(Long.valueOf(cadreRegistrationVO.getBoothId())));
+									}
+									
+									
+								}
+								if(cadreRegistrationVO.getMuncipalityId() !=null && cadreRegistrationVO.getMuncipalityId().trim().length() > 0 && !cadreRegistrationVO.getMuncipalityId().trim().equalsIgnoreCase("null"))
+								{
+									if(Long.valueOf(cadreRegistrationVO.getMuncipalityId()) > 0)
+									{
+										userAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.valueOf(cadreRegistrationVO.getMuncipalityId())));
+									}
+									
+								}
+							}
+							
+						}
+						
+					}
+					
+					userAddress = userAddressDAO.save(userAddress);
+					tdpCadre.setUserAddress(userAddress);	
+					if(cadreRegistrationVO.getNomineeName() != null && cadreRegistrationVO.getNomineeName().trim().length() > 0 && !cadreRegistrationVO.getNomineeName().trim().equalsIgnoreCase("null"))
+					{
+						tdpCadre.setNomineeName(cadreRegistrationVO.getNomineeName());
+					}
+					if(cadreRegistrationVO.getAadheerNo() != null && cadreRegistrationVO.getAadheerNo().trim().length() > 0 && !cadreRegistrationVO.getAadheerNo().trim().equalsIgnoreCase("null"))
+					{
+						tdpCadre.setAadheerNo(cadreRegistrationVO.getAadheerNo());
+					}
+					if(cadreRegistrationVO.getVoterRelationId() != null && cadreRegistrationVO.getVoterRelationId().longValue() > 0)
+					{
+						tdpCadre.setVoterRelationId(cadreRegistrationVO.getVoterRelationId());
+					}
+					if(cadreRegistrationVO.getCadreType() != null && cadreRegistrationVO.getCadreType().trim().length() > 0 && cadreRegistrationVO.getCadreType().trim().equalsIgnoreCase("null"))
+					{
+						tdpCadre.setCadreType(cadreRegistrationVO.getCadreType());
+					}
+					tdpCadre.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					tdpCadre.setUpdatedTime(dateUtilService.getCurrentDateAndTime());		
+					tdpCadre.setEnrollmentYear(IConstants.CADRE_ENROLLMENT_NUMBER);
+					if(cadreRegistrationVO.getLongititude() != null && !cadreRegistrationVO.getLongititude().equalsIgnoreCase("null") && cadreRegistrationVO.getLongititude().trim().length() > 0)
+					{
+						tdpCadre.setLongititude(cadreRegistrationVO.getLongititude());
+					}
+					
+					if(cadreRegistrationVO.getLatitude() != null && !cadreRegistrationVO.getLatitude().equalsIgnoreCase("null") && cadreRegistrationVO.getLatitude().trim().length() > 0)
+					{
+						tdpCadre.setLatitude(cadreRegistrationVO.getLatitude());
+					}
+					tdpCadre.setIsDeleted("N");
+					if(cadreRegistrationVO.getSurveyTimeStr() != null && cadreRegistrationVO.getSurveyTimeStr().trim().length() > 0 && !cadreRegistrationVO.getSurveyTimeStr().trim().equalsIgnoreCase("null"))
+					{
+						//tdpCadre.setSurveyTime(convertToDateFormet(cadreRegistrationVO.getSurveyTimeStr()));
+						try {
+							SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT_24HRS);
+							tdpCadre.setSurveyTime(sdf.parse(cadreRegistrationVO.getSurveyTimeStr()));
+						} catch (Exception e) {
+							// TODO: handle exception
+						}
+						
+					}else if( insertType.equalsIgnoreCase("new") && registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE"))){
+						tdpCadre.setSurveyTime(tdpCadre.getInsertedTime());
+					}
+					
+					if(cadreRegistrationVO.getNomineeAge() != null && cadreRegistrationVO.getNomineeAge().longValue() > 0)
+					{
+						tdpCadre.setNomineeAge(cadreRegistrationVO.getNomineeAge());
+					}
+					if(cadreRegistrationVO.getNomineeGender() != null && cadreRegistrationVO.getNomineeGender().trim().length() > 0 &&  !cadreRegistrationVO.getNomineeGender().trim().equalsIgnoreCase("null"))
+					{
+						if(cadreRegistrationVO.getNomineeGender().trim().equalsIgnoreCase("1"))
+						{
+							tdpCadre.setNomineeGender("Male");
+						}
+						else
+						{
+							tdpCadre.setNomineeGender("Female");
+						}
+						
+					}
+					/*synchronized (surveyCadreResponceVO) {
+						String memberNumber = tdpCadreDAO.getLatestMemberNumber();
+						if(memberNumber == null)
+						{
+							tdpCadre.setMemberShipNo("10000001");
+							surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getMemberShipNo());
+						}
+						else
+						{
+							tdpCadre.setMemberShipNo(String.valueOf((Long.valueOf(memberNumber) + 1l)));
+							surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getMemberShipNo());
+						}
 					}*/
-					
-				}
-				if(cadreRegistrationVO.getAge() != null && Long.valueOf(cadreRegistrationVO.getAge()) > 0)
-				{
-					tdpCadre.setAge(Long.valueOf(cadreRegistrationVO.getAge()));
-				}
-				
-				if(cadreRegistrationVO.getPreviousEnrollmentNumber() != null && !cadreRegistrationVO.getPreviousEnrollmentNumber().equalsIgnoreCase("null") && cadreRegistrationVO.getPreviousEnrollmentNumber().trim().length() > 0)
-				{
-					tdpCadre.setPreviousEnrollmentNo(cadreRegistrationVO.getPreviousEnrollmentNumber());
-				}
-				if(cadreRegistrationVO.getPartyMemberSinceStr() != null && cadreRegistrationVO.getPartyMemberSinceStr().trim().length() > 0 && !cadreRegistrationVO.getPartyMemberSinceStr().trim().equalsIgnoreCase("null"))
-				{
-					tdpCadre.setPartyMemberSince(convertToDateFormet(cadreRegistrationVO.getPartyMemberSinceStr()));
-				}
-				if(cadreRegistrationVO.getBloodGroupId() != null && cadreRegistrationVO.getBloodGroupId().longValue() > 0)
-				{
-					tdpCadre.setBloodGroupId(cadreRegistrationVO.getBloodGroupId());
-				}
-				
-				if(cadreRegistrationVO.getCasteId() != null && cadreRegistrationVO.getCasteId() > 0)
-				{
-					tdpCadre.setCasteStateId(cadreRegistrationVO.getCasteId());
-				}
-				
-				if(cadreRegistrationVO.getMobileNumber() != null && !cadreRegistrationVO.getMobileNumber().equalsIgnoreCase("null") && cadreRegistrationVO.getMobileNumber().trim().length() > 0)
-				{
-					tdpCadre.setMobileNo(cadreRegistrationVO.getMobileNumber());
-				}
-				
-				if(cadreRegistrationVO.getEducationId() != null && cadreRegistrationVO.getEducationId().longValue() > 0)
-				{
-					tdpCadre.setEducationId(cadreRegistrationVO.getEducationId());
-				}
-				
-				if(cadreRegistrationVO.getOccupationId() != null && cadreRegistrationVO.getOccupationId().longValue() > 0)
-				{
-					tdpCadre.setOccupationId(cadreRegistrationVO.getOccupationId());
-				}
-				if(cadreRegistrationVO.getHouseNo() != null && !cadreRegistrationVO.getHouseNo().equalsIgnoreCase("null") && cadreRegistrationVO.getHouseNo().trim().length() > 0)
-				{
-					tdpCadre.setHouseNo(cadreRegistrationVO.getHouseNo());
-				}
-				if(cadreRegistrationVO.getPreviousEnrollmentNumber() != null && !cadreRegistrationVO.getPreviousEnrollmentNumber().equalsIgnoreCase("null") && cadreRegistrationVO.getPreviousEnrollmentNumber().trim().length() > 0)
-				{
-					tdpCadre.setPreviousEnrollmentNo(cadreRegistrationVO.getPreviousEnrollmentNumber());
-				}
-				if(cadreRegistrationVO.getCreatedUserId() != null && cadreRegistrationVO.getCreatedUserId().longValue() > 0  )
-				{
-					if(registrationType.equalsIgnoreCase("TAB")){
-					    tdpCadre.setInsertedUserId(cadreRegistrationVO.getCreatedUserId().longValue());
-					}else{
-						tdpCadre.setInsertedWebUserId(cadreRegistrationVO.getCreatedUserId().longValue());
-					}
-				}
-				if(cadreRegistrationVO.getUpdatedUserId() != null && cadreRegistrationVO.getUpdatedUserId().longValue() > 0)
-				{
-					if(registrationType.equalsIgnoreCase("TAB")){
-					     tdpCadre.setUpdatedUserId(cadreRegistrationVO.getUpdatedUserId().longValue());
-					}else{
-						 tdpCadre.setUpdatedWebUserId(cadreRegistrationVO.getUpdatedUserId().longValue());
-					}
-				}
-				
-				UserAddress userAddress = new UserAddress();
-				if(tdpCadre.getVoterId() != null && tdpCadre.getVoterId().longValue() > 0)
-				{
-					getVoterAddressDetails(tdpCadre.getVoterId(),userAddress,cadreRegistrationVO.getStreet());
-				}
-				else if(cadreRegistrationVO.getFamilyVoterId() != null && cadreRegistrationVO.getFamilyVoterId().longValue() > 0)
-				{
-					getVoterAddressDetails(cadreRegistrationVO.getFamilyVoterId(),userAddress,cadreRegistrationVO.getStreet());
-				}
-				else
-				{
-					if(cadreRegistrationVO.getConstituencyId() != null && cadreRegistrationVO.getConstituencyId().trim().length() > 0 && !cadreRegistrationVO.getConstituencyId().trim().equalsIgnoreCase("null"))
+					if(cadreRegistrationVO.getUniqueKey() != null && !cadreRegistrationVO.getUniqueKey().equalsIgnoreCase("null") && cadreRegistrationVO.getUniqueKey().trim().length() > 0)
 					{
-						if(Long.valueOf(cadreRegistrationVO.getConstituencyId()) > 0)
+						tdpCadre.setUniqueKey(cadreRegistrationVO.getUniqueKey());
+						if(cadreRegistrationVOList.size() == 1)
 						{
-							userAddress.setConstituency(constituencyDAO.get(Long.valueOf(cadreRegistrationVO.getConstituencyId())));
-							userAddress.setCountry(countryDAO.get(1l));
-							userAddress.setState(stateDAO.get(1l));
-							userAddress.setConstituency(constituencyDAO.get(Long.valueOf(cadreRegistrationVO.getConstituencyId())));
-							userAddress.setDistrict(constituencyDAO.get(Long.valueOf(cadreRegistrationVO.getConstituencyId())).getDistrict());
-							if(cadreRegistrationVO.getStreet() != null && cadreRegistrationVO.getStreet().trim().length() > 0 && cadreRegistrationVO.getStreet().trim().equalsIgnoreCase("null"))
-							{
-								userAddress.setStreet(cadreRegistrationVO.getStreet());
-							}
-							if(cadreRegistrationVO.getPanchayatId() != null && cadreRegistrationVO.getPanchayatId().trim().length() > 0 && !cadreRegistrationVO.getPanchayatId().trim().equalsIgnoreCase("null"))
-							{
-								if(Long.valueOf(cadreRegistrationVO.getPanchayatId()) > 0)
-								{
-									userAddress.setPanchayat(panchayatDAO.get(Long.valueOf(cadreRegistrationVO.getPanchayatId())));
-									userAddress.setTehsil(panchayatDAO.get(Long.valueOf(cadreRegistrationVO.getPanchayatId())).getTehsil());
-								}
-								
-							}
-							if(cadreRegistrationVO.getBoothId() != null && cadreRegistrationVO.getBoothId().trim().length() > 0 && !cadreRegistrationVO.getBoothId().trim().equalsIgnoreCase("null"))
-							{
-								if(Long.valueOf(cadreRegistrationVO.getBoothId()) > 0)
-								{
-									userAddress.setBooth(boothDAO.get(Long.valueOf(cadreRegistrationVO.getBoothId())));
-								}
-								
-								
-							}
-							if(cadreRegistrationVO.getMuncipalityId() !=null && cadreRegistrationVO.getMuncipalityId().trim().length() > 0 && !cadreRegistrationVO.getMuncipalityId().trim().equalsIgnoreCase("null"))
-							{
-								if(Long.valueOf(cadreRegistrationVO.getMuncipalityId()) > 0)
-								{
-									userAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.valueOf(cadreRegistrationVO.getMuncipalityId())));
-								}
-								
-							}
+							surveyCadreResponceVO.setUniqueKey(cadreRegistrationVO.getUniqueKey());
+							surveyCadreResponceVO.setVoterName(cadreRegistrationVO.getVoterName());
+							surveyCadreResponceVO.setVoterId(Long.valueOf(cadreRegistrationVO.getVoterId()));
+							surveyCadreResponceVO.setRelativeName(cadreRegistrationVO.getRelativeName());
+						}
+					}
+					if(cadreRegistrationVO.getCandidateAadherNo() != null && cadreRegistrationVO.getCandidateAadherNo().trim().length() > 0 && !cadreRegistrationVO.getCandidateAadherNo().trim().equalsIgnoreCase("null"))
+					{
+						tdpCadre.setCadreAadherNo(cadreRegistrationVO.getCandidateAadherNo());
+					}
+					if(cadreRegistrationVO.getCadrePrevYear() != null && cadreRegistrationVO.getCadrePrevYear().trim().length() > 0 && !cadreRegistrationVO.getCadrePrevYear().trim().equalsIgnoreCase("null"))
+					{
+						tdpCadre.setPreviousMembershipYear(cadreRegistrationVO.getCadrePrevYear());
+					}
+					if(cadreRegistrationVO.getPhotoType() != null && cadreRegistrationVO.getPhotoType().trim().length() > 0 && !cadreRegistrationVO.getPhotoType().trim().equalsIgnoreCase("null"))
+					{
+						tdpCadre.setPhotoType(cadreRegistrationVO.getPhotoType() );
+					}
+					else
+					{
+						tdpCadre.setPhotoType("VOTER");
+					}
+					if(cadreRegistrationVO.getNameType() != null && cadreRegistrationVO.getNameType().trim().length() > 0 && !cadreRegistrationVO.getNameType().trim().equalsIgnoreCase("null"))
+					{
+						tdpCadre.setNameType(cadreRegistrationVO.getNameType() );
+					}
+					else
+					{
+						tdpCadre.setNameType("VOTER");
+					}
+					if(cadreRegistrationVO.getRelationType() != null && cadreRegistrationVO.getRelationType().trim().length() > 0 && !cadreRegistrationVO.getRelationType().trim().equalsIgnoreCase("null"))
+					{
+						tdpCadre.setRelativeType(cadreRegistrationVO.getRelationType());
+					}				
+					if(cadreRegistrationVO.isRelative()){
+					   tdpCadre.setIsRelative("Y");
+					   tdpCadre.setRelationTypeId(cadreRegistrationVO.getRelationTypeId());
+					}else{
+					   tdpCadre.setIsRelative("N");
+					   tdpCadre.setRelationTypeId(null);
+					}
+					
+					if(cadreRegistrationVO.getFamilyVoterId() != null && cadreRegistrationVO.getFamilyVoterId().longValue() > 0 && registrationType.equalsIgnoreCase("TAB"))
+					{
+						tdpCadre.setFamilyVoterId(cadreRegistrationVO.getFamilyVoterId());
+						tdpCadre.setIsRelative("Y");
+						if(cadreRegistrationVO.getRelationType() != null && cadreRegistrationVO.getRelationType().trim().length() >0 && !cadreRegistrationVO.getRelationType().trim().equalsIgnoreCase("null"))
+						{
+							tdpCadre.setRelationType(voterRelationDAO.get(Long.valueOf(cadreRegistrationVO.getRelationType())));
 						}
 						
 					}
 					
-				}
-				
-				userAddress = userAddressDAO.save(userAddress);
-				tdpCadre.setUserAddress(userAddress);	
-				if(cadreRegistrationVO.getNomineeName() != null && cadreRegistrationVO.getNomineeName().trim().length() > 0 && !cadreRegistrationVO.getNomineeName().trim().equalsIgnoreCase("null"))
-				{
-					tdpCadre.setNomineeName(cadreRegistrationVO.getNomineeName());
-				}
-				if(cadreRegistrationVO.getAadheerNo() != null && cadreRegistrationVO.getAadheerNo().trim().length() > 0 && !cadreRegistrationVO.getAadheerNo().trim().equalsIgnoreCase("null"))
-				{
-					tdpCadre.setAadheerNo(cadreRegistrationVO.getAadheerNo());
-				}
-				if(cadreRegistrationVO.getVoterRelationId() != null && cadreRegistrationVO.getVoterRelationId().longValue() > 0)
-				{
-					tdpCadre.setVoterRelationId(cadreRegistrationVO.getVoterRelationId());
-				}
-				if(cadreRegistrationVO.getCadreType() != null && cadreRegistrationVO.getCadreType().trim().length() > 0 && cadreRegistrationVO.getCadreType().trim().equalsIgnoreCase("null"))
-				{
-					tdpCadre.setCadreType(cadreRegistrationVO.getCadreType());
-				}
-				tdpCadre.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-				tdpCadre.setUpdatedTime(dateUtilService.getCurrentDateAndTime());		
-				tdpCadre.setEnrollmentYear(IConstants.CADRE_ENROLLMENT_NUMBER);
-				if(cadreRegistrationVO.getLongititude() != null && !cadreRegistrationVO.getLongititude().equalsIgnoreCase("null") && cadreRegistrationVO.getLongititude().trim().length() > 0)
-				{
-					tdpCadre.setLongititude(cadreRegistrationVO.getLongititude());
-				}
-				
-				if(cadreRegistrationVO.getLatitude() != null && !cadreRegistrationVO.getLatitude().equalsIgnoreCase("null") && cadreRegistrationVO.getLatitude().trim().length() > 0)
-				{
-					tdpCadre.setLatitude(cadreRegistrationVO.getLatitude());
-				}
-				tdpCadre.setIsDeleted("N");
-				if(cadreRegistrationVO.getSurveyTimeStr() != null && cadreRegistrationVO.getSurveyTimeStr().trim().length() > 0 && !cadreRegistrationVO.getSurveyTimeStr().trim().equalsIgnoreCase("null"))
-				{
-					//tdpCadre.setSurveyTime(convertToDateFormet(cadreRegistrationVO.getSurveyTimeStr()));
-					SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT_24HRS);
-					tdpCadre.setSurveyTime(sdf.parse(cadreRegistrationVO.getSurveyTimeStr()));
-				}else if( insertType.equalsIgnoreCase("new") && registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE"))){
-					tdpCadre.setSurveyTime(tdpCadre.getInsertedTime());
-				}
-				
-				if(cadreRegistrationVO.getNomineeAge() != null && cadreRegistrationVO.getNomineeAge().longValue() > 0)
-				{
-					tdpCadre.setNomineeAge(cadreRegistrationVO.getNomineeAge());
-				}
-				if(cadreRegistrationVO.getNomineeGender() != null && cadreRegistrationVO.getNomineeGender().trim().length() > 0 &&  !cadreRegistrationVO.getNomineeGender().trim().equalsIgnoreCase("null"))
-				{
-					if(cadreRegistrationVO.getNomineeGender().trim().equalsIgnoreCase("1"))
-					{
-						tdpCadre.setNomineeGender("Male");
-					}
-					else
-					{
-						tdpCadre.setNomineeGender("Female");
+					if(cadreRegistrationVO.getFamilyVoterId()!=null && registrationType.equalsIgnoreCase("WEB")){
+						tdpCadre.setFamilyVoterId(cadreRegistrationVO.getFamilyVoterId());
 					}
 					
-				}
-				/*synchronized (surveyCadreResponceVO) {
-					String memberNumber = tdpCadreDAO.getLatestMemberNumber();
-					if(memberNumber == null)
-					{
-						tdpCadre.setMemberShipNo("10000001");
-						surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getMemberShipNo());
-					}
-					else
-					{
-						tdpCadre.setMemberShipNo(String.valueOf((Long.valueOf(memberNumber) + 1l)));
-						surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getMemberShipNo());
-					}
-				}*/
-				if(cadreRegistrationVO.getUniqueKey() != null && !cadreRegistrationVO.getUniqueKey().equalsIgnoreCase("null") && cadreRegistrationVO.getUniqueKey().trim().length() > 0)
-				{
-					tdpCadre.setUniqueKey(cadreRegistrationVO.getUniqueKey());
-					if(cadreRegistrationVOList.size() == 1)
-					{
-						surveyCadreResponceVO.setUniqueKey(cadreRegistrationVO.getUniqueKey());
-						surveyCadreResponceVO.setVoterName(cadreRegistrationVO.getVoterName());
-						surveyCadreResponceVO.setVoterId(Long.valueOf(cadreRegistrationVO.getVoterId()));
-						surveyCadreResponceVO.setRelativeName(cadreRegistrationVO.getRelativeName());
-					}
-				}
-				if(cadreRegistrationVO.getCandidateAadherNo() != null && cadreRegistrationVO.getCandidateAadherNo().trim().length() > 0 && !cadreRegistrationVO.getCandidateAadherNo().trim().equalsIgnoreCase("null"))
-				{
-					tdpCadre.setCadreAadherNo(cadreRegistrationVO.getCandidateAadherNo());
-				}
-				if(cadreRegistrationVO.getCadrePrevYear() != null && cadreRegistrationVO.getCadrePrevYear().trim().length() > 0 && !cadreRegistrationVO.getCadrePrevYear().trim().equalsIgnoreCase("null"))
-				{
-					tdpCadre.setPreviousMembershipYear(cadreRegistrationVO.getCadrePrevYear());
-				}
-				if(cadreRegistrationVO.getPhotoType() != null && cadreRegistrationVO.getPhotoType().trim().length() > 0 && !cadreRegistrationVO.getPhotoType().trim().equalsIgnoreCase("null"))
-				{
-					tdpCadre.setPhotoType(cadreRegistrationVO.getPhotoType() );
-				}
-				else
-				{
-					tdpCadre.setPhotoType("VOTER");
-				}
-				if(cadreRegistrationVO.getNameType() != null && cadreRegistrationVO.getNameType().trim().length() > 0 && !cadreRegistrationVO.getNameType().trim().equalsIgnoreCase("null"))
-				{
-					tdpCadre.setNameType(cadreRegistrationVO.getNameType() );
-				}
-				else
-				{
-					tdpCadre.setNameType("VOTER");
-				}
-				if(cadreRegistrationVO.getRelationType() != null && cadreRegistrationVO.getRelationType().trim().length() > 0 && !cadreRegistrationVO.getRelationType().trim().equalsIgnoreCase("null"))
-				{
-					tdpCadre.setRelativeType(cadreRegistrationVO.getRelationType());
-				}				
-				if(cadreRegistrationVO.isRelative()){
-				   tdpCadre.setIsRelative("Y");
-				   tdpCadre.setRelationTypeId(cadreRegistrationVO.getRelationTypeId());
-				}else{
-				   tdpCadre.setIsRelative("N");
-				   tdpCadre.setRelationTypeId(null);
-				}
-				
-				if(cadreRegistrationVO.getFamilyVoterId() != null && cadreRegistrationVO.getFamilyVoterId().longValue() > 0 && registrationType.equalsIgnoreCase("TAB"))
-				{
-					tdpCadre.setFamilyVoterId(cadreRegistrationVO.getFamilyVoterId());
-					tdpCadre.setIsRelative("Y");
-					if(cadreRegistrationVO.getRelationType() != null && cadreRegistrationVO.getRelationType().trim().length() >0 && !cadreRegistrationVO.getRelationType().trim().equalsIgnoreCase("null"))
-					{
-						tdpCadre.setRelationType(voterRelationDAO.get(Long.valueOf(cadreRegistrationVO.getRelationType())));
-					}
-					
-				}
-				
-				if(cadreRegistrationVO.getFamilyVoterId()!=null && registrationType.equalsIgnoreCase("WEB")){
-					tdpCadre.setFamilyVoterId(cadreRegistrationVO.getFamilyVoterId());
-				}
-				
-				if(registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE")) && insertType.equalsIgnoreCase("new")){
-					String userId = "0000";
-					if(cadreRegistrationVO.getCreatedUserId() != null){
-					   userId = cadreRegistrationVO.getCreatedUserId().toString();
-					}
-					String ref = getReferenceNo(userId,registrationType);
-					//synchronized (CadreRegistrationService.class) {
-						ref = getUniueRefNo(ref,registrationType);
-						tdpCadre.setRefNo(ref);
-						cadreRegistrationVO.setRefNo(ref);
-						if(userAddress.getDistrict() != null)
-						{
-							String membershipNo = getMemberShipNo(userAddress.getDistrict().getDistrictId());
-							tdpCadre.setMemberShipNo(membershipNo);
+					if(registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE")) && insertType.equalsIgnoreCase("new")){
+						String userId = "0000";
+						if(cadreRegistrationVO.getCreatedUserId() != null){
+						   userId = cadreRegistrationVO.getCreatedUserId().toString();
 						}
-						
-						surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
-						uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
-						tdpCadre = tdpCadreDAO.save(tdpCadre);	
-					//}
-				}else{
-				  if(insertType.equalsIgnoreCase("new")){
-					  //synchronized (CadreRegistrationService.class) {
-					     tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
-					     if(userAddress.getDistrict() != null)
-					     {
-					    	 	String membershipNo = getMemberShipNo(userAddress.getDistrict().getDistrictId());
-						        tdpCadre.setMemberShipNo(membershipNo);
-						        tdpCadre.setMemberShipNo(membershipNo);
-					     }
-					       
+						String ref = getReferenceNo(userId,registrationType);
+						synchronized (CadreRegistrationService.class) {
+							ref = getUniueRefNo(ref,registrationType);
+							tdpCadre.setRefNo(ref);
+							cadreRegistrationVO.setRefNo(ref);
+							if(userAddress.getDistrict() != null)
+							{
+								String membershipNo = getMemberShipNo(userAddress.getDistrict().getDistrictId());
+								tdpCadre.setMemberShipNo(membershipNo);
+							}
+							
 							surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
 							uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
-					     tdpCadre = tdpCadreDAO.save(tdpCadre);	
-					  //}
-				  }else{
-					  tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
-					  uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
-					  surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
-					  
-					tdpCadre = tdpCadreDAO.save(tdpCadre);	
-				  }
-				}
-				surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
-				/*List<CadrePreviousRollesVO> previousRollesPartList = cadreRegistrationVO.getPreviousRollesList();
-				if(previousRollesPartList != null && previousRollesPartList.size() > 0)
-				{
-					for (CadrePreviousRollesVO rolesVO : previousRollesPartList)
-					{
-						if(rolesVO != null)
-						{
-							if(tdpCadre != null)
-							{
-								CadrePreviousRoles cadrePreviousRoles = new CadrePreviousRoles();
-								cadrePreviousRoles.setTdpCadreId(tdpCadre.getTdpCadreId());
-								
-							
-									if(rolesVO.getCadreCommitteeId() != null && rolesVO.getCadreCommitteeId().longValue() > 0 && rolesVO.getCadreCommitteeLevelId() != null && rolesVO.getCadreCommitteeLevelId().longValue() > 0 && rolesVO.getCadreRoleId() != null && rolesVO.getCadreRoleId().longValue() > 0 )
-									{
-										List<Long> cadreCommotteRoleIds = cadreCommitteeRoleDAO.getCadreCommitteRoleIdBySelection(rolesVO.getCadreCommitteeLevelId(), rolesVO.getCadreRoleId(), rolesVO.getCadreCommitteeId());
-										if(cadreCommotteRoleIds != null && cadreCommotteRoleIds.size() > 0)
-										{
-											cadrePreviousRoles.setCadreCommitteeRoleId(cadreCommotteRoleIds.get(0));
-										}
-										
-									}
-									if(rolesVO.getFromDateStr() != null && rolesVO.getFromDateStr().trim().length() > 0 && !rolesVO.getFromDateStr().trim().equalsIgnoreCase("null"))
-									{
-										cadrePreviousRoles.setFromDate(convertToDateFormet(rolesVO.getFromDateStr()));
-									}
-									if(rolesVO.getToDateStr() != null && rolesVO.getToDateStr().trim().length() > 0 && !rolesVO.getToDateStr().trim().equalsIgnoreCase("null"))
-									{
-										cadrePreviousRoles.setToDate(convertToDateFormet(rolesVO.getToDateStr()));
-									}
-									cadrePreviousRoles.setInsertedDate(dateUtilService.getCurrentDateAndTime());
-									cadrePreviousRoles.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
-									cadrePreviousRoles.setIsDeleted("N");
-									cadrePreviousRolesDAO.save(cadrePreviousRoles);
-								//}
-								
-							}
+							  tdpCadre1 = tdpCadreDAO.save(tdpCadre);	
 						}
-						
+					}else{
+					  if(insertType.equalsIgnoreCase("new")){
+						  synchronized (CadreRegistrationService.class) {
+						     tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
+						     if(userAddress.getDistrict() != null)
+						     {
+						    	 	String membershipNo = getMemberShipNo(userAddress.getDistrict().getDistrictId());
+							        tdpCadre.setMemberShipNo(membershipNo);
+							        tdpCadre.setMemberShipNo(membershipNo);
+						     }
+						       
+								surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
+								uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
+								  tdpCadre1 = tdpCadreDAO.save(tdpCadre);	
+						  }
+					  }else{
+						  tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
+						  uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
+						  surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
+						  
+						    tdpCadre1= tdpCadreDAO.save(tdpCadre);	
+					  }
 					}
-				}*/
-				
-				List<CadrePreviousRollesVO> previousElectionPartList = cadreRegistrationVO.getPreviousParicaptedElectionsList();
-				if(previousElectionPartList != null && previousElectionPartList.size() > 0)
-				{
-					for (CadrePreviousRollesVO electionVO : previousElectionPartList)
+					surveyCadreResponceVO.setEnrollmentNumber(tdpCadre1.getRefNo());
+					List<CadrePreviousRollesVO> previousRollesPartList = cadreRegistrationVO.getPreviousRollesList();
+					if(previousRollesPartList != null && previousRollesPartList.size() > 0)
 					{
-						if(electionVO != null)
+						for (CadrePreviousRollesVO rolesVO : previousRollesPartList)
 						{
-							if(tdpCadre != null)
+							if(rolesVO != null)
 							{
-								if(electionVO.getConstituencyId() != null && electionVO.getConstituencyId().trim().length()  > 0)
+								if(tdpCadre1 != null)
 								{
-									CadreParticipatedElection cadreParticipatedElection = new CadreParticipatedElection();
+									CadrePreviousRoles cadrePreviousRoles = new CadrePreviousRoles();
+									cadrePreviousRoles.setTdpCadreId(tdpCadre1.getTdpCadreId());
 									
-									cadreParticipatedElection.setTdpCadreId(tdpCadre.getTdpCadreId());
-									if(electionVO.getElectionTypeId() != null && electionVO.getElectionTypeId().trim().length() > 0)
-									{
-										cadreParticipatedElection.setElectionId(Long.valueOf(electionVO.getElectionTypeId()));
-									}
-									if(electionVO.getConstituencyId() != null && electionVO.getConstituencyId().trim().length()> 0)
-									{
-										cadreParticipatedElection.setConstituencyId(Long.valueOf(electionVO.getConstituencyId()));
-									}
-									if(electionVO.getCandidateId() != null && electionVO.getCandidateId().trim().length()> 0)
-									{
-										if(previousElectionPartList.get(0).getCandidateId() != null && Long.valueOf(previousElectionPartList.get(0).getCandidateId())  > 0)
-										{
-											cadreParticipatedElection.setCandidateId((Long.valueOf(previousElectionPartList.get(0).getCandidateId())));
-										}
-										
-									}
-									cadreParticipatedElection.setIsDeleted("N");
-									cadreParticipatedElectionDAO.save(cadreParticipatedElection);
-								}
 								
-							}
-						}
-						
-						
-					}
-				}
-				
-				List<CadreFamilyVO> cadreFamilyDetailsList = cadreRegistrationVO.getCadreFamilyDetails();
-				if(cadreFamilyDetailsList != null && cadreFamilyDetailsList.size() > 0)
-				{
-					for (CadreFamilyVO cadreFamilyVO : cadreFamilyDetailsList) 
-					{
-						if(tdpCadre != null)
-						{
-							if(cadreFamilyVO != null)
-							{
-								if((cadreFamilyVO.getOccupationId() != null && cadreFamilyVO.getOccupationId().longValue() > 0) || cadreFamilyVO.getEducationId() != null && cadreFamilyVO.getEducationId().longValue() > 0)
-								{
-									TdpCadreFamilyDetails tdpCadreFamilyDetails = new TdpCadreFamilyDetails();
-									tdpCadreFamilyDetails.setTdpCadreId(tdpCadre.getTdpCadreId());
-									if(cadreFamilyVO.getVoterName() != null && cadreFamilyVO.getVoterName().equalsIgnoreCase("null") && cadreFamilyVO.getVoterName().trim().length() > 0)
-									{
-										tdpCadreFamilyDetails.setVoterName(cadreFamilyVO.getVoterName());
-									}
-									if(cadreFamilyVO.getOccupationId() != null && cadreFamilyVO.getOccupationId().longValue() > 0l)
-									{
-										tdpCadreFamilyDetails.setOccupationId(cadreFamilyVO.getOccupationId());
-									}
-									if(cadreFamilyVO.getEducationId() != null && cadreFamilyVO.getEducationId().longValue() > 0l)
-									{
-										tdpCadreFamilyDetails.setEducationId(cadreFamilyVO.getEducationId());
-									}
-									
-									if(cadreFamilyVO.getVoterId() != null && cadreFamilyVO.getVoterId().longValue() > 0l)
-									{
-										tdpCadreFamilyDetails.setVoterId(cadreFamilyVO.getVoterId());
-									}
-									else
-									{
-										if(cadreFamilyVO.getVoterCadreNO() != null && !cadreFamilyVO.getVoterCadreNO().equalsIgnoreCase("null") && cadreFamilyVO.getVoterCadreNO().trim().length() > 0)
+										if(rolesVO.getCadreCommitteeId() != null && rolesVO.getCadreCommitteeId().longValue() > 0 && rolesVO.getCadreCommitteeLevelId() != null && rolesVO.getCadreCommitteeLevelId().longValue() > 0 && rolesVO.getCadreRoleId() != null && rolesVO.getCadreRoleId().longValue() > 0 )
 										{
-											List<Long> voterCardNumbersList = voterDAO.getVoterId(cadreRegistrationVO.getVoterCardNumber());
-											if(voterCardNumbersList != null && voterCardNumbersList.size() > 0)
+											List<Long> cadreCommotteRoleIds = cadreCommitteeRoleDAO.getCadreCommitteRoleIdBySelection(rolesVO.getCadreCommitteeLevelId(), rolesVO.getCadreRoleId(), rolesVO.getCadreCommitteeId());
+											if(cadreCommotteRoleIds != null && cadreCommotteRoleIds.size() > 0)
 											{
-												tdpCadreFamilyDetails.setVoterId(voterCardNumbersList.get(0));
+												cadrePreviousRoles.setCadreCommitteeRoleId(cadreCommotteRoleIds.get(0));
+											}
+											
+										}
+										if(rolesVO.getFromDateStr() != null && rolesVO.getFromDateStr().trim().length() > 0 && !rolesVO.getFromDateStr().trim().equalsIgnoreCase("null"))
+										{
+											cadrePreviousRoles.setFromDate(convertToDateFormet(rolesVO.getFromDateStr()));
+										}
+										if(rolesVO.getToDateStr() != null && rolesVO.getToDateStr().trim().length() > 0 && !rolesVO.getToDateStr().trim().equalsIgnoreCase("null"))
+										{
+											cadrePreviousRoles.setToDate(convertToDateFormet(rolesVO.getToDateStr()));
+										}
+										cadrePreviousRoles.setInsertedDate(dateUtilService.getCurrentDateAndTime());
+										cadrePreviousRoles.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
+										cadrePreviousRoles.setIsDeleted("N");
+										cadrePreviousRolesDAO.save(cadrePreviousRoles);
+									//}
+									
+								}
+							}
+							
+						}
+					}
+					
+					List<CadrePreviousRollesVO> previousElectionPartList = cadreRegistrationVO.getPreviousParicaptedElectionsList();
+					if(previousElectionPartList != null && previousElectionPartList.size() > 0)
+					{
+						for (CadrePreviousRollesVO electionVO : previousElectionPartList)
+						{
+							if(electionVO != null)
+							{
+								if(tdpCadre1 != null)
+								{
+									if(electionVO.getConstituencyId() != null && electionVO.getConstituencyId().trim().length()  > 0)
+									{
+										CadreParticipatedElection cadreParticipatedElection = new CadreParticipatedElection();
+										
+										cadreParticipatedElection.setTdpCadreId(tdpCadre1.getTdpCadreId());
+										if(electionVO.getElectionTypeId() != null && electionVO.getElectionTypeId().trim().length() > 0)
+										{
+											cadreParticipatedElection.setElectionId(Long.valueOf(electionVO.getElectionTypeId()));
+										}
+										if(electionVO.getConstituencyId() != null && electionVO.getConstituencyId().trim().length()> 0)
+										{
+											cadreParticipatedElection.setConstituencyId(Long.valueOf(electionVO.getConstituencyId()));
+										}
+										if(electionVO.getCandidateId() != null && electionVO.getCandidateId().trim().length()> 0)
+										{
+											if(previousElectionPartList.get(0).getCandidateId() != null && Long.valueOf(previousElectionPartList.get(0).getCandidateId())  > 0)
+											{
+												cadreParticipatedElection.setCandidateId((Long.valueOf(previousElectionPartList.get(0).getCandidateId())));
+											}
+											
+										}
+										cadreParticipatedElection.setIsDeleted("N");
+										cadreParticipatedElectionDAO.save(cadreParticipatedElection);
+									}
+									
+								}
+							}
+							
+							
+						}
+					}
+					
+					List<CadreFamilyVO> cadreFamilyDetailsList = cadreRegistrationVO.getCadreFamilyDetails();
+					if(cadreFamilyDetailsList != null && cadreFamilyDetailsList.size() > 0)
+					{
+						for (CadreFamilyVO cadreFamilyVO : cadreFamilyDetailsList) 
+						{
+							if(tdpCadre1 != null)
+							{
+								if(cadreFamilyVO != null)
+								{
+									if((cadreFamilyVO.getOccupationId() != null && cadreFamilyVO.getOccupationId().longValue() > 0) || cadreFamilyVO.getEducationId() != null && cadreFamilyVO.getEducationId().longValue() > 0)
+									{
+										TdpCadreFamilyDetails tdpCadreFamilyDetails = new TdpCadreFamilyDetails();
+										tdpCadreFamilyDetails.setTdpCadreId(tdpCadre1.getTdpCadreId());
+										if(cadreFamilyVO.getVoterName() != null && cadreFamilyVO.getVoterName().equalsIgnoreCase("null") && cadreFamilyVO.getVoterName().trim().length() > 0)
+										{
+											tdpCadreFamilyDetails.setVoterName(cadreFamilyVO.getVoterName());
+										}
+										if(cadreFamilyVO.getOccupationId() != null && cadreFamilyVO.getOccupationId().longValue() > 0l)
+										{
+											tdpCadreFamilyDetails.setOccupationId(cadreFamilyVO.getOccupationId());
+										}
+										if(cadreFamilyVO.getEducationId() != null && cadreFamilyVO.getEducationId().longValue() > 0l)
+										{
+											tdpCadreFamilyDetails.setEducationId(cadreFamilyVO.getEducationId());
+										}
+										
+										if(cadreFamilyVO.getVoterId() != null && cadreFamilyVO.getVoterId().longValue() > 0l)
+										{
+											tdpCadreFamilyDetails.setVoterId(cadreFamilyVO.getVoterId());
+										}
+										else
+										{
+											if(cadreFamilyVO.getVoterCadreNO() != null && !cadreFamilyVO.getVoterCadreNO().equalsIgnoreCase("null") && cadreFamilyVO.getVoterCadreNO().trim().length() > 0)
+											{
+												List<Long> voterCardNumbersList = voterDAO.getVoterId(cadreRegistrationVO.getVoterCardNumber());
+												if(voterCardNumbersList != null && voterCardNumbersList.size() > 0)
+												{
+													tdpCadreFamilyDetails.setVoterId(voterCardNumbersList.get(0));
+												}
 											}
 										}
+										tdpCadreFamilyDetails.setIsDeleted("N");
+										tdpCadreFamilyDetails.setInsertedDate(dateUtilService.getCurrentDateAndTime());
+										tdpCadreFamilyDetails.setUpdatedDate(dateUtilService.getCurrentDateAndTime());	
+										tdpCadreFamilyDetailsDAO.save(tdpCadreFamilyDetails);
 									}
-									tdpCadreFamilyDetails.setIsDeleted("N");
-									tdpCadreFamilyDetails.setInsertedDate(dateUtilService.getCurrentDateAndTime());
-									tdpCadreFamilyDetails.setUpdatedDate(dateUtilService.getCurrentDateAndTime());	
-									tdpCadreFamilyDetailsDAO.save(tdpCadreFamilyDetails);
+									
 								}
 								
 							}
 							
 						}
-						
+					}
+					surveyCadreResponceVO.setStatus("SUCCESS");
+					surveyCadreResponceVO.setResultCode(ResultCodeMapper.SUCCESS);
+					if(insertType.equalsIgnoreCase("new") && cadreRegistrationVO.getMobileNumber() != null && cadreRegistrationVO.getMobileNumber().trim().length() > 0 && cadreRegistrationVO.getRefNo() != null){
+					   //sendSMS(cadreRegistrationVO.getMobileNumber().trim(), "Thank You for registering as TDP cadre.For further queries use Ref No "+cadreRegistrationVO.getRefNo());
+					   sendSMSInTelugu(cadreRegistrationVO.getMobileNumber().trim(), getUniCodeMessage(StringEscapeUtils.unescapeJava("\u0C24\u0C46\u0C32\u0C41\u0C17\u0C41 \u0C26\u0C47\u0C36\u0C02 \u0C2A\u0C3E\u0C30\u0C4D\u0C1F\u0C40 \u0C15\u0C3E\u0C30\u0C4D\u0C2F\u0C15\u0C30\u0C4D\u0C24\u0C17\u0C3E \u0C28\u0C2E\u0C4B\u0C26\u0C41 \u0C1A\u0C47\u0C38\u0C41\u0C15\u0C41\u0C28\u0C4D\u0C28\u0C02\u0C26\u0C41\u0C15\u0C41 \u0C27\u0C28\u0C4D\u0C2F\u0C35\u0C3E\u0C26\u0C3E\u0C32\u0C41. \u0C2E\u0C40 \u0C2F\u0C4A\u0C15\u0C4D\u0C15 \u0C30\u0C3F\u0C2B\u0C30\u0C46\u0C28\u0C4D\u0C38\u0C4D \u0C28\u0C46\u0C02\u0C2C\u0C30\u0C4D : ")+cadreRegistrationVO.getRefNo()));
 					}
 				}
-				surveyCadreResponceVO.setStatus("SUCCESS");
-				surveyCadreResponceVO.setResultCode(ResultCodeMapper.SUCCESS);
-				if(insertType.equalsIgnoreCase("new") && cadreRegistrationVO.getMobileNumber() != null && cadreRegistrationVO.getMobileNumber().trim().length() > 0 && cadreRegistrationVO.getRefNo() != null){
-				   //sendSMS(cadreRegistrationVO.getMobileNumber().trim(), "Thank You for registering as TDP cadre.For further queries use Ref No "+cadreRegistrationVO.getRefNo());
-				   sendSMSInTelugu(cadreRegistrationVO.getMobileNumber().trim(), getUniCodeMessage(StringEscapeUtils.unescapeJava("\u0C24\u0C46\u0C32\u0C41\u0C17\u0C41 \u0C26\u0C47\u0C36\u0C02 \u0C2A\u0C3E\u0C30\u0C4D\u0C1F\u0C40 \u0C15\u0C3E\u0C30\u0C4D\u0C2F\u0C15\u0C30\u0C4D\u0C24\u0C17\u0C3E \u0C28\u0C2E\u0C4B\u0C26\u0C41 \u0C1A\u0C47\u0C38\u0C41\u0C15\u0C41\u0C28\u0C4D\u0C28\u0C02\u0C26\u0C41\u0C15\u0C41 \u0C27\u0C28\u0C4D\u0C2F\u0C35\u0C3E\u0C26\u0C3E\u0C32\u0C41. \u0C2E\u0C40 \u0C2F\u0C4A\u0C15\u0C4D\u0C15 \u0C30\u0C3F\u0C2B\u0C30\u0C46\u0C28\u0C4D\u0C38\u0C4D \u0C28\u0C46\u0C02\u0C2C\u0C30\u0C4D : ")+cadreRegistrationVO.getRefNo()));
-				}
+				});
+				
 		} catch (Exception e) {
 			LOG.error("Exception raised in tdpCadreSavingLogic in CadreRegistrationService service", e);
 		}
