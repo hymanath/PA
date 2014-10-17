@@ -1181,14 +1181,13 @@ if(!flag){
 	{
 		var result = resultList.votersList;
 		var result1 =  resultList.localbodyList;
-		if(result.length == 0 && result1 == null)
+		
+		if(result.length == 0 && (result1 == null || result1.length == 0))
 		{
-			
-			 $('#errorMessageDiv1').show().html('No Data Avalible ');
-			return;
+		 $('#errorMessageDiv1').show().html('No Data Avalible ');
+				return;
 		}
-
-		var str = '';
+			var str = '';
 		str+='<div class="titleHeading">Voter Caste Mapped Report</div>';
 		str+='<table id="VoterdataTable" class="table table-bordered">';
 		str+='<thead>';
@@ -1271,7 +1270,7 @@ if(!flag){
 	
 		var result = resultList.votersList;
 		var result1 =  resultList.localbodyList;
-		if(result.length == 0 && result1.length == 0)
+		if(result.length == 0 && (result1 == null || result1.length == 0))
 		{
 			$('#errorMessageDiv1').show().html('No Data Avalible ');
 			return;
