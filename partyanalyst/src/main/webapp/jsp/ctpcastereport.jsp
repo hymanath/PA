@@ -1181,7 +1181,7 @@ if(!flag){
 	{
 		var result = resultList.votersList;
 		var result1 =  resultList.localbodyList;
-		if(result.length == 0 && (result1 == null && result1.length == 0))
+		if(result.length == 0 && result1 == null)
 		{
 			
 			 $('#errorMessageDiv1').show().html('No Data Avalible ');
