@@ -1470,10 +1470,12 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								{
 									vo.setNomineeGender(0l);
 								}
-								String filePath = staticContentLoc + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + tdpCadre.getPreviousEnrollmentNo()+".jpg";
-								if(checkFileExistingOrNot(filePath)){
-									vo.setCadreImagePresent(true);
-									vo.setCadreImage("images/"  + IConstants.CADRE_IMAGES + "/" + tdpCadre.getPreviousEnrollmentNo()+".jpg");
+								if(tdpCadre.getPreviousEnrollmentNo() != null){
+									String filePath = staticContentLoc + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + tdpCadre.getPreviousEnrollmentNo()+".jpg";
+									if(checkFileExistingOrNot(filePath)){
+										vo.setCadreImagePresent(true);
+										vo.setCadreImage("images/"  + IConstants.CADRE_IMAGES + "/" + tdpCadre.getPreviousEnrollmentNo()+".jpg");
+									}
 								}
 							} catch (Exception e) {
 								LOG.error("Exception raised in getCandidateInfoBySearchCriteria in CadreRegistrationService service", e);
