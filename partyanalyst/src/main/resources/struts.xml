@@ -8644,6 +8644,19 @@
 				<param name="root">voterHouseInfoVO</param>
 			</result>
 		</action>
+		
+		<action name="saveVoterFinalCasteOfAConstituency" class="ctpCasteReportAction" method="saveVoterFinalCasteOfAConstituency">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>
+			</result>
+		</action>
+		
+		<action name="saveVoterFinalCasteToMainTableOfAConstituency" class="ctpCasteReportAction" method="saveVoterFinalCasteToMainTableOfAConstituency">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>
+			</result>
+		</action>
+		
 </package>
 
 </struts>      
