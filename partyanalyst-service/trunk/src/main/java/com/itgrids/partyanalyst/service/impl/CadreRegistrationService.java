@@ -731,7 +731,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					   userId = cadreRegistrationVO.getCreatedUserId().toString();
 					}
 					String ref = getReferenceNo(userId,registrationType);
-					synchronized (CadreRegistrationService.class) {
+					//synchronized (CadreRegistrationService.class) {
 						ref = getUniueRefNo(ref,registrationType);
 						tdpCadre.setRefNo(ref);
 						cadreRegistrationVO.setRefNo(ref);
@@ -744,10 +744,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
 						uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
 						tdpCadre = tdpCadreDAO.save(tdpCadre);	
-					}
+					//}
 				}else{
 				  if(insertType.equalsIgnoreCase("new")){
-					  synchronized (CadreRegistrationService.class) {
+					  //synchronized (CadreRegistrationService.class) {
 					     tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
 					     if(userAddress.getDistrict() != null)
 					     {
@@ -759,7 +759,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
 							uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
 					     tdpCadre = tdpCadreDAO.save(tdpCadre);	
-					  }
+					  //}
 				  }else{
 					  tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
 					  uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
