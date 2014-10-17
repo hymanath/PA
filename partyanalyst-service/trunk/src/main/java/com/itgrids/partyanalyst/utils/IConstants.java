@@ -318,6 +318,7 @@ public interface IConstants {
     public final static String IVR_MOBILE_NUMBERS_RETRIVAL_REDIRECT = "IVR_MOBILE_NUMBERS_RETRIVAL_REDIRECT"; 
     public static final String SURVEY_USER_CREATION = "SURVEY_USER_CREATION";
     public static final String CTP_CASTE_REPORT_ENTITLEMENT = "CTP_CASTE_REPORT_ENTITLEMENT";
+    public static final String CTP_CASTE_ADMIN_ENTITLEMENT = "CTP_CASTE_ADMIN_ENTITLEMENT";
     //Problem Management
     public static final String MLA = "MLA";
     public static final String MP = "MP";
