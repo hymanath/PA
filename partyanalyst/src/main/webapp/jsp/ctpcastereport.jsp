@@ -1307,7 +1307,7 @@ if(!flag){
 			str+='<td>'+result[i].name+'</td>';
 			if(result[i].totalCasteVoters > 0 && (type == "Panchayat" || type == "BOOTH"))
 				{
-			str+='<td><a onclick="openWindow(\''+result[i].id+'\',\''+result[i].selType+'\',0,\''+constituencyId+'\',\'all\');">'+result[i].totalCasteVoters+'</a></td>';
+			str+='<td><a onclick="openWindow(\''+result[i].id+'\',\''+result[i].selType+'\',0,\''+constituencyId+'\',\'all\',\''+result[i].name+'\');">'+result[i].totalCasteVoters+'</a></td>';
 				}
 				else
 				{
@@ -1316,7 +1316,7 @@ if(!flag){
 			str+='<td>'+result[i].casteList[j].cast+'</td>';
 		    if(result[i].casteList[j].casteCount > 0 && (type == "Panchayat" || type == "BOOTH"))
 				{
-			str+='<td><a onclick="openWindow(\''+result[i].id+'\',\''+result[i].selType+'\',\''+result[i].casteList[j].casteStateId+'\',\''+constituencyId+'\',\'all\');">'+result[i].casteList[j].casteCount+'</a></td>';
+			str+='<td><a onclick="openWindow(\''+result[i].id+'\',\''+result[i].selType+'\',\''+result[i].casteList[j].casteStateId+'\',\''+constituencyId+'\',\'all\',\''+result[i].name+'\');">'+result[i].casteList[j].casteCount+'</a></td>';
 				}
 			else
 				{
@@ -1490,9 +1490,9 @@ if(!flag){
 		});
 		}
 	}
-	function openWindow(id,type,casteId,constituencyId,gender)
+	function openWindow(id,type,casteId,constituencyId,gender,locationName)
 	{
-		var url = "votersInCasteAction.action?id="+id+"&type="+type+"&casteId="+casteId+"&constituencyId="+constituencyId+"&gender = "+gender+"&";
+		var url = "votersInCasteAction.action?id="+id+"&type="+type+"&casteId="+casteId+"&constituencyId="+constituencyId+"&gender = "+gender+"&locationName="+locationName+"&";
 		var updateBrowser = window.open(url,"VoterDetailsInAcaste","scrollbars=yes,height=600,width=1000,left=200,top=200");	
 		updateBrowser.focus();
 
