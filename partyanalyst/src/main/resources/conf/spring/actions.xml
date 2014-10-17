@@ -1481,8 +1481,10 @@
 	 	<property name="cadreDashBoardService" ref="cadreDashBoardService" />
 	 	<property name="entitlementsHelper" ref="entitlementsHelper" />
 	  </bean>
+	  
 	   <bean id="ctpCasteReportAction" class="com.itgrids.partyanalyst.web.action.CtpCasteReportAction" singleton="false">
-	   <property name="ctpCasteReportService" ref="ctpCasteReportService" />
+	   		<property name="ctpCasteReportService" ref="ctpCasteReportService" />
+	   		<property name="surveyDashBoardService" ref="surveyDashBoardService" />
 	    </bean>
 	
 </beans>	
