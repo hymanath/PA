@@ -1462,6 +1462,9 @@ if(!flag){
 			
 			str+='<tr>';
 			str+='<td>'+cnt+'</td>';
+			if(result[i].totalBooths == result[i].redoBoothsCompleted)
+			str+='<td style="background:green;color:#fff;">'+result[i].name+'</td>';
+			else
 			str+='<td>'+result[i].name+'</td>';
 			str+='<td>'+result[i].totalBooths+'</td>';
 			str+='<td>'+result[i].surveyprocessTotal+'</td>';
