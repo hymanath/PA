@@ -2159,7 +2159,13 @@
    <property name="casteDAO" ref="casteDAO"/>
    </bean>
    
-     <bean name="surveyDashBoardService"  class="com.itgrids.partyanalyst.service.impl.SurveyDashBoardService"> </bean>
+      <bean name="surveyDashBoardService"  class="com.itgrids.partyanalyst.service.impl.SurveyDashBoardService">
+     	<property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" />
+     	<property name="userDAO" ref="userDAO" />
+     	<property name="voterDAO" ref="voterDAO" />
+     	<property name="casteInsertTypeDAO" ref="casteInsertTypeDAO" />
+     </bean>
+     
      <bean name="surveyCompletedDetailsService"  class="com.itgrids.partyanalyst.service.impl.SurveyCompletedDetailsService"></bean>
      <bean name="ctpDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CtpDashBoardService"></bean>
        
