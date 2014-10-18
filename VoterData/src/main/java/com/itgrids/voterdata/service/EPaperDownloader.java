@@ -33,7 +33,6 @@ public class EPaperDownloader {
         
         WebElement div = driver.findElement(By.id("Panel1"));
         System.out.println(div.getAttribute("innerHTML"));
-        System.out.println(div.getText());
        
         driver.quit();
     }
