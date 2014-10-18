@@ -2949,14 +2949,14 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			  }
 		  }
 		}else if(cadreRegistrationVO.getPhotoType() != null && cadreRegistrationVO.getPhotoType().trim().equalsIgnoreCase("voter") ){
-		  if(cadreRegistrationVO.getVoterId() != null && Long.valueOf(cadreRegistrationVO.getVoterId()) > 0){
+		  if(tdpCadre.getVoterId() != null){
 			    String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
 				String destinationPath = cadreRegistrationVO.getPath() + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
-				Voter voter = voterDAO.get(Long.valueOf(cadreRegistrationVO.getVoterId()));
+				Voter voter = voterDAO.get(tdpCadre.getVoterId());
 				if(voter != null && cadreRegistrationVO.getConstituencyId() != null && Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()).longValue() > 0){
 					List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()), voter.getVoterId());
-					if(partNos.size() > 0 && partNos.get(0) != null){
-					   String sourcePath = cadreRegistrationVO.getPath() + "voter_images"+pathSeperator+cadreRegistrationVO.getConstituencyId().trim()+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo()+".jpg";
+					if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
+					   String sourcePath = cadreRegistrationVO.getPath() + "voter_images"+pathSeperator+cadreRegistrationVO.getConstituencyId().trim()+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo().trim()+".jpg";
 					   String status = copyFile(sourcePath,destinationPath);
 					   if(status.equalsIgnoreCase("success")){
 						   tdpCadre.setImage(tdpCadre.getMemberShipNo()+".jpg");
