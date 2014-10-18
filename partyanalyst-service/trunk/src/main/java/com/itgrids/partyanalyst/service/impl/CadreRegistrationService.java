@@ -2957,9 +2957,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()), voter.getVoterId());
 					if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
 					   String sourcePath = cadreRegistrationVO.getPath() + "voter_images"+pathSeperator+cadreRegistrationVO.getConstituencyId().trim()+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo().trim()+".jpg";
+					   LOG.error("SP:"+sourcePath+" DP:"+destinationPath);
 					   String status = copyFile(sourcePath,destinationPath);
 					   if(status.equalsIgnoreCase("success")){
 						   tdpCadre.setImage(tdpCadre.getMemberShipNo()+".jpg");
+						   LOG.error("Success:"+tdpCadre.getMemberShipNo()+".jpg");
 					   }
 					}
 			   }
@@ -3221,6 +3223,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	}
 		
 	public String copyFile(String sourcePath,String destinationPath){
+		synchronized ("copyFile"){
 	 try{
 		File file = new File(sourcePath);
 		if(file.exists()){
@@ -3229,12 +3232,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			byte[] buff = new byte[fis.available()];
 			fis.read(buff);
 			fos.write(buff); 
+			fis.close();
+			fos.close();
 			return "success";
 		}
 	  }catch(Exception e){
 		  LOG.error("Exception raised in copyFile ", e);
 		  return "error";
 	  }
+	 }
 	 return "failure";
 	}
 	
