@@ -2940,8 +2940,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			  String reqImage = getCadreImage(cadreRegistrationVO.getPreviousEnrollmentNumber().trim());
 			  if(reqImage != null){
 				  String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
-				  String destinationPath = cadreRegistrationVO.getPath() + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
-				  String sourcePath =   cadreRegistrationVO.getPath() + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + reqImage;
+				  String destinationPath = IConstants.STATIC_CONTENT_FOLDER_URL+"images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
+				  String sourcePath =   IConstants.STATIC_CONTENT_FOLDER_URL+"images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + reqImage;
 				  String status = copyFile(sourcePath,destinationPath);
 				   if(status.equalsIgnoreCase("success")){
 					   tdpCadre.setImage(tdpCadre.getMemberShipNo()+".jpg");
@@ -2951,12 +2951,12 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}else if(cadreRegistrationVO.getPhotoType() != null && cadreRegistrationVO.getPhotoType().trim().equalsIgnoreCase("voter") ){
 		  if(tdpCadre.getVoterId() != null){
 			    String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
-				String destinationPath = cadreRegistrationVO.getPath() + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
+				String destinationPath = IConstants.STATIC_CONTENT_FOLDER_URL+ "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
 				Voter voter = voterDAO.get(tdpCadre.getVoterId());
 				if(voter != null && cadreRegistrationVO.getConstituencyId() != null && Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()).longValue() > 0){
 					List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()), voter.getVoterId());
 					if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
-					   String sourcePath = cadreRegistrationVO.getPath() + "voter_images"+pathSeperator+cadreRegistrationVO.getConstituencyId().trim()+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo().trim()+".jpg";
+					   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +"voter_images"+pathSeperator+cadreRegistrationVO.getConstituencyId().trim()+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo().trim()+".jpg";
 					   LOG.error("SP:"+sourcePath+" DP:"+destinationPath);
 					   String status = copyFile(sourcePath,destinationPath);
 					   if(status.equalsIgnoreCase("success")){
