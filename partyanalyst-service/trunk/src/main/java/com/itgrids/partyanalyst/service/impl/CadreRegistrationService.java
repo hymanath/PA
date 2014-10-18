@@ -834,11 +834,19 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 										cadreParticipatedElection.setTdpCadreId(tdpCadre1.getTdpCadreId());
 										if(electionVO.getElectionTypeId() != null && electionVO.getElectionTypeId().trim().length() > 0)
 										{
-											cadreParticipatedElection.setElectionId(Long.valueOf(electionVO.getElectionTypeId()));
+											if(Long.valueOf(electionVO.getElectionTypeId()) > 0)
+											{
+												cadreParticipatedElection.setElectionId(Long.valueOf(electionVO.getElectionTypeId()));
+											}
+											
 										}
 										if(electionVO.getConstituencyId() != null && electionVO.getConstituencyId().trim().length()> 0)
 										{
-											cadreParticipatedElection.setConstituencyId(Long.valueOf(electionVO.getConstituencyId()));
+											if(Long.valueOf(electionVO.getConstituencyId()) > 0)
+											{
+												cadreParticipatedElection.setConstituencyId(Long.valueOf(electionVO.getConstituencyId()));
+											}
+											
 										}
 										if(electionVO.getCandidateId() != null && electionVO.getCandidateId().trim().length()> 0)
 										{
