@@ -13,6 +13,8 @@
     <link rel="stylesheet" type="text/css" href="js/scrollator/fm.scrollator.jquery.css">	
 	<script type="text/javascript" src="js/scrollator/fm.scrollator.jquery.js"></script>
 	<script type="text/javascript" src="js/icheck/icheck.min.js"></script>
+	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 <style>
 	.show-grid:hover .block-hover-addBtn{display:table-cell; margin-right:-22px; top:-10px;}/*visibility: visible;*/
 	.block-hover-addBtn{display:none; position: relative;}/*visibility: hidden;*/
@@ -60,6 +62,19 @@
     margin-left: 94px;
     margin-top: 30px;
   }
+  .dataTables_length, .dataTables_filter , .dataTables_info {
+		color : #666666 !important;
+	}
+	
+table.dataTable tr.odd td.sorting_1 {
+    background-color: #d3d3d3;
+}
+table.dataTable tr.even td.sorting_1 {
+    background-color: #fafafa;
+}
+table.dataTable tr.odd {
+    background-color: #f3f3f3;
+}
 	</style>
 </head>
 <body>
@@ -191,6 +206,17 @@
 			</div><!-- ReCently Registered Block END -->
 		</div>
 	</div>
+	<div id="dialogueDiv" style="display: none;">
+		<center><div id="agewiseDivForDistrict"></div>
+		<div id="genderWiseDivForDistrict"></div>
+		<div id="casteWiseDivForDistrict"></div></center>
+	</div>
+
+	<div id="dialogueConstituencyDiv" style="display: none;">
+		<center><div id="agewiseDivForConstituency"></div>
+		<div id="genderWiseDivForConstituency"></div>
+		<div id="casteWiseDivForConstituency"></div></center>
+	</div>
 <script type="text/javascript">
 function openDialogToTrack(){
     window.open('cadreRegistrationReportAction.action','_blank');
@@ -293,6 +319,7 @@ $('#membersCount').addClass('animated fadeInX');
 				  $("#constituencyWiseSelDivId").append('<option value='+result[i].tgCount+'>'+result[i].location+'</option>');
 				}
 				str+='<p>'+result[i].location+' ('+result[i].date+'%  - '+result[i].totalCount+' Members)</p>';
+				str += '<p><a href="javascript:{}" onclick="getConstituencyWiseAgeGenderCasteCount('+ result[i].tgCount+ ')">'+ result[i].location+ ' ('+ result[i].apCount+ '%  - '+ result[i].totalCount+ ' Members)</a></p>';
 				if(result[i].apCount <= 20){
 				   str+='<div class="progress progress-danger">';
 				}else if(result[i].apCount > 20 && result[i].apCount <= 40){
@@ -341,6 +368,7 @@ $('#membersCount').addClass('animated fadeInX');
 				  $("#districtWiseSelDivId").append('<option value='+result[i].tgCount+'>'+result[i].location+'</option>');
 				}
 				str+='<p>'+result[i].location+' ('+result[i].date+'%  - '+result[i].totalCount+' Members)</p>';
+				str += '<p><a href="javascript:{}" onclick="getDistrictWiseAgeGenderCasteCount('+ result[i].tgCount+ ')">'+ result[i].location+ ' ('+ result[i].apCount+ '%  - '+ result[i].totalCount+ ' Members)</a></p>';
 				if(result[i].apCount <= 20){
 				   str+='<div class="progress progress-danger">';
 				}else if(result[i].apCount > 20 && result[i].apCount <= 40){
@@ -418,6 +446,180 @@ $('#membersCount').addClass('animated fadeInX');
 	{
 		img.src = "images/User.png";
 	}
+	function getConstituencyWiseAgeGenderCasteCount(constId) {
+	        $('#agewiseDivForConstituency').html('<img src="images/Loading-data.gif" style="margin-top: 78px;width:70px;height:60px;">');
+			$('#genderWiseDivForConstituency').html("");
+			$('#casteWiseDivForConstituency').html("");
+	        $('#dialogueConstituencyDiv')
+						.dialog(
+								{
+									width : 850,
+									height:550,
+									title : "Constituency Wise Cadre Age, Gender and Caste Information "
+								});
+			var jsObj = {
+				constituencyId : constId,
+				task : "constituencyWiseAgeGenderCasteCount"
+			}
+
+			$.ajax({
+				type : 'GET',
+				url : 'getConstituencyWiseAgeGenderCasteCount.action',
+				data : {
+					task : JSON.stringify(jsObj)
+				}
+			}).done(function(result) {
+				if (result != null && result.length > 0) {
+					buildDetailsForConstituency(result,"constituency");
+				}
+			});
+		}
+		function buildDetailsForConstituency(result,type) {
+
+			var str = '';
+			str += '<h5> AGE WISE DETAILS </h5>';
+			str += '<table class="table table-bordered m_top20 " id="ageWiseTab" style="width:600px;">';
+			str += '<thead>';
+			str += '<tr>';
+			str += '<th ROWSPAN=2> Age  </th>';
+			str += '<th  COLSPAN=2> 2014  </th>';
+			
+			str += '</tr>';
+			str += '<tr>';
+			str += '<th> Total  </th>';
+			str += '<th> %  </th>';
+			str += '</tr>';
+			str += '</thead>';
+
+			str += '<tbody>';
+             var reqRes =result[0].allDetailsList;
+					for ( var i in reqRes) {
+							str += '<tr>';
+							str += '  <td>' +reqRes[i].name+ '</td>';
+							str += '  <td>'+ reqRes[i].apCount+ '</td>';
+							str += '  <td>'+ reqRes[i].percentStr+ '</td>';
+							str += '</tr>';
+					}
+			str += '</tbody>';
+			str += '</table>';
+			if(type == "constituency"){
+			   $('#agewiseDivForConstituency').html(str);
+			}else{
+			   $('#agewiseDivForDistrict').html(str);
+			}
+
+			var str2 = '';
+			str2 += '<h5> GENDER WISE DETAILS </h5>';
+			str2 += '<table class="table table-bordered m_top20 " id="ageWiseTab" style="width:600px;">';
+			str2 += '<thead>';
+			str2 += '<tr>';
+			str2 += '<th ROWSPAN=2> Gender </th>';
+			str2 += '<th  COLSPAN=2> 2014  </th>';
+			str2 += '<th  COLSPAN=2> 2012  </th>';
+			str2 += '</tr>';
+			str2 += '<tr>';
+			str2 += '<th> Total  </th>';
+			str2 += '<th> %  </th>';
+			str2 += '<th> Total  </th>';
+			str2 += '<th> %  </th>';
+			str2 += '</tr>';
+			str2 += '</thead>';
+			str2 += '<tbody>';
+
+			 var reqRes =result[1].infoList;
+					for ( var i in reqRes) {
+							str2 += '<tr>';
+							str2 += '  <td>' +reqRes[i].name+ '</td>';
+							str2 += '  <td>'+ reqRes[i].apCount+ '</td>';
+							str2 += '  <td>'+ reqRes[i].percentStr+ '</td>';
+							str2 += '  <td>'+ reqRes[i].tgCount+ '</td>';
+							str2 += '  <td>'+ reqRes[i].area+ '</td>';
+							str2 += '</tr>';
+					}
+			str2 += '</tbody>';
+			str2 += '</table>';
+			if(type == "constituency"){
+			   $('#genderWiseDivForConstituency').html(str2);
+            }else{
+			   $('#genderWiseDivForDistrict').html(str2);
+			}
+			var str3 = '';
+			str3 += '<h5> CASTE WISE DETAILS </h5><br/>';
+			if(type == "constituency"){
+			  str3 += '<table class="table table-bordered m_top20 " id="casteWiseConTab" style="width:600px;">';
+			}else{
+			  str3 += '<table class="table table-bordered m_top20 " id="casteWiseDistTab" style="width:600px;">';
+			}
+			str3 += '<thead>';
+			str3 += '<tr>';
+			str3 += '<th ROWSPAN=2> Caste  </th>';
+			str3 += '<th  COLSPAN=2> 2014  </th>';
+			str3 += '<th  COLSPAN=2> 2012  </th>';
+			str3 += '</tr>';
+			str3 += '<tr>';
+			str3 += '<th> Total  </th>';
+			str3 += '<th> %  </th>';
+			str3 += '<th> Total  </th>';
+			str3 += '<th> %  </th>';
+			str3 += '</tr>';
+			str3 += '</thead>';
+			str3 += '<tbody>';
+
+			var reqRes =result[2].cadreRegisterInfoList;
+					for ( var i in reqRes) {
+							str3 += '<tr>';
+							str3 += '  <td>' +reqRes[i].name+ '</td>';
+							str3 += '  <td>'+reqRes[i].apCount+ '</td>';
+							str3 += '  <td>'+parseFloat(reqRes[i].percentStr)+ '</td>';
+							str3 += '  <td>'+ reqRes[i].tgCount+ '</td>';
+							str3 += '  <td>'+parseFloat(reqRes[i].area)+ '</td>';
+							str3 += '</tr>';
+					}
+
+			str3 += '</tbody>';
+			str3 += '</table>';
+			if(type == "constituency"){
+			   $('#casteWiseDivForConstituency').html(str3);
+			    $('#casteWiseConTab').dataTable({
+			         "iDisplayLength": 20,
+			          "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+			     });
+			}else{
+			   $('#casteWiseDivForDistrict').html(str3);
+			   $('#casteWiseDistTab').dataTable({
+			         "iDisplayLength": 20,
+			          "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+			     });
+			}
+		}
+		function getDistrictWiseAgeGenderCasteCount(distId) {
+			$('#agewiseDivForDistrict').html('<img src="images/Loading-data.gif" style="margin-top: 78px;width:70px;height:60px;">');
+			$('#genderWiseDivForDistrict').html("");
+			$('#casteWiseDivForDistrict').html("");
+			$('#dialogueDiv')
+					.dialog(
+							{
+								width : 850,
+								height:550,
+								title : "District Wise Cadre Age, Gender and Caste Information "
+							});
+			var jsObj = {
+				districtId : distId,
+				task : "districtWiseAgeGenderCasteCount"
+			}
+
+			$.ajax({
+				type : 'GET',
+				url : 'getDistrictWiseAgeGenderCasteCount.action',
+				data : {
+					task : JSON.stringify(jsObj)
+				}
+			}).done(function(result) {
+				if (result != null && result.length > 0) {
+					buildDetailsForConstituency(result,"district")
+				}
+			});
+		}
        getWorkStartedConstituencyCount();
 	   getDistrictWiseCompletedPercentage(0,1);
 	   getAssemblyWiseCompletedPercentage(0,1);

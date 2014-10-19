@@ -8657,6 +8657,18 @@
 			</result>
 		</action>
 		
+		<action name="getConstituencyWiseAgeGenderCasteCount" class="cadreDashBoardAction" method="getConstituencyWiseAgeGenderCasteCount">
+			<result type="json" name="success">
+				<param name="root">resultList</param>
+			</result>
+		</action>
+		
+		<action name="getDistrictWiseAgeGenderCasteCount" class="cadreDashBoardAction" method="getDistrictWiseAgeGenderCasteCount">
+			<result type="json" name="success">
+				<param name="root">resultList</param>
+			</result>
+		</action>		
+		
 </package>
 
 </struts>      
