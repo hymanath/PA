@@ -341,8 +341,8 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 	public void testgetDistrictWiseCastCadreCount(){
 		Map<Long,List<CadreRegisterInfo>> casteMap = new HashMap<Long,List<CadreRegisterInfo>>();
 
-			List<Object[]> casteInfoList = tdpCadreDAO.getDistrictWiseCastCadreCount(4L);
-			setCasteWiseCount(casteInfoList, casteMap);
+			//List<Object[]> casteInfoList = tdpCadreDAO.getDistrictWiseCastCadreCount(4L);
+			//setCasteWiseCount(casteInfoList, casteMap);
 	
 		
 	}
