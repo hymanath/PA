@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -26,7 +27,27 @@ public class CadreDashBoardAction implements ServletRequestAware {
 	private List<CadreRegisterInfo> result;
 	private CadreRegisterInfo info;
 	private EntitlementsHelper entitlementsHelper;
+	private List<CadreRegisterInfo> resultList;
+	private JSONObject jObj;
+	private String task;
 	
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+
+	
+	public List<CadreRegisterInfo> getResultList() {
+		return resultList;
+	}
+
+	public void setResultList(List<CadreRegisterInfo> resultList) {
+		this.resultList = resultList;
+	}
+
 	public ICadreDashBoardService getCadreDashBoardService() {
 		return cadreDashBoardService;
 	}
@@ -66,7 +87,7 @@ public class CadreDashBoardAction implements ServletRequestAware {
 
 	public String execute(){
 		
-		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		/*RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 		boolean noaccess = false;
 		if(regVO==null){
 			return "input";
@@ -79,10 +100,35 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		}
 		if(noaccess){
 			return "error";
-		}
+		}*/
 		return Action.SUCCESS;
 	}
 	
+	public String getConstituencyWiseAgeGenderCasteCount(){
+		  try{
+			  jObj = new JSONObject(getTask());				
+			  Long constituencyId = jObj.getLong("constituencyId");	
+						  
+			  resultList = cadreDashBoardService.getDetailsForConstituency(constituencyId);
+			  
+		  }catch(Exception e){
+			  LOG.error("Exception rised in getConstituencyWiseAgeGenderCasteCount ",e);
+		  }
+			return Action.SUCCESS;
+	}
+	
+	public String getDistrictWiseAgeGenderCasteCount(){
+		  try{
+			  jObj = new JSONObject(getTask());				
+			  Long districtId = jObj.getLong("districtId");	
+			 
+			  resultList = cadreDashBoardService.getDetailsForDistricts(districtId);
+		  }catch(Exception e){
+			  LOG.error("Exception rised in getDistrictWiseAgeGenderCasteCount ",e);
+		  }
+			return Action.SUCCESS;
+	}
+  
 	public String getCadreDashBoardBasicInfo(){
 		try{
 			String task = request.getParameter("task");
