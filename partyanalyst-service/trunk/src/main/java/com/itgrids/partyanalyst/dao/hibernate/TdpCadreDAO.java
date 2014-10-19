@@ -404,135 +404,153 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		return c;
 	}
 	
-	public List<Object[]> getConstituencyWiseAgeRangeCadreCount(Long constituencyId,String ageRange){
+	
+	public List<Object[]> getAgeRangeCadreCount(Long Id, String ageRange,
+			String type) {
 		StringBuilder queryStr = new StringBuilder();
-		
-		queryStr.append("select count(model.tdpCadreId),model.enrollmentYear " +
-				" from TdpCadre model where model.isDeleted = 'N' " +
-				" and model.userAddress.constituency.constituencyId = :constituencyId ");
-		if(ageRange.equals("18-25")){
-		queryStr.append(" and model.age >=18 and model.age<=25 ");
-		}else if(ageRange.equals("26-35")){
-		queryStr.append(" and model.age >=26 and model.age<=35 ");
-		}else if(ageRange.equals("36-45")){
-		queryStr.append(" and model.age >=36 and model.age<=45 ");
-		}else if(ageRange.equals("46-60")){
-		queryStr.append(" and model.age >=46 and model.age<=60 ");
-		}else if(ageRange.equals("above 60")){
-		queryStr.append(" and model.age >60 ");
+
+		queryStr.append("select count(model.tdpCadreId),model.enrollmentYear "
+				+ " from TdpCadre model where model.isDeleted = 'N' ");
+		if (type.equalsIgnoreCase("constituency")) {
+			queryStr.append(" and model.userAddress.constituency.constituencyId = :Id ");
+		} else if (type.equalsIgnoreCase("district")) {
+			queryStr.append(" and model.userAddress.district.districtId = :Id ");
 		}
-		queryStr.append(" group by model.enrollmentYear");
+
+		if (ageRange.equals("18-25")) {
+			queryStr.append(" and model.age >=18 and model.age<=25 ");
+		} else if (ageRange.equals("26-35")) {
+			queryStr.append(" and model.age >=26 and model.age<=35 ");
+		} else if (ageRange.equals("36-45")) {
+			queryStr.append(" and model.age >=36 and model.age<=45 ");
+		} else if (ageRange.equals("46-60")) {
+			queryStr.append(" and model.age >=46 and model.age<=60 ");
+		} else if (ageRange.equals("above 60")) {
+			queryStr.append(" and model.age >60 ");
+		}
+
+		queryStr.append(" group by model.enrollmentYear order by model.enrollmentYear desc ");
 
 		Query query = getSession().createQuery(queryStr.toString());
-		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("Id", Id);
 		return query.list();
-    }
-	
-	public List<Object[]> getDistrictWiseAgeRangeCadreCount(Long districtId,String ageRange){
+	}
+
+	public Long getAgeRangeTotalCount(Long Id, Long enrollmentYear, String type) {
+
 		StringBuilder queryStr = new StringBuilder();
-		
-		queryStr.append("select count(model.tdpCadreId),model.enrollmentYear " +
-				" from TdpCadre model where model.isDeleted = 'N' " +
-				" and model.userAddress.constituency.district.districtId = :districtId ");
-		if(ageRange.equals("18-25")){
-		queryStr.append(" and model.age >=18 and model.age<=25 ");
-		}else if(ageRange.equals("26-35")){
-		queryStr.append(" and model.age >=26 and model.age<=35 ");
-		}else if(ageRange.equals("36-45")){
-		queryStr.append(" and model.age >=36 and model.age<=45 ");
-		}else if(ageRange.equals("46-60")){
-		queryStr.append(" and model.age >=46 and model.age<=60 ");
-		}else if(ageRange.equals("above 60")){
-		queryStr.append(" and model.age >60 ");
+
+		queryStr.append("select count(model.tdpCadreId) "
+				+ " from TdpCadre model where model.isDeleted = 'N' ");
+		if (type.equalsIgnoreCase("constituency")) {
+			queryStr.append(" and model.userAddress.constituency.constituencyId = :Id ");
+		} else if (type.equalsIgnoreCase("district")) {
+			queryStr.append(" and model.userAddress.district.districtId = :Id ");
 		}
-		queryStr.append(" group by model.enrollmentYear");
+		queryStr.append(" and model.enrollmentYear = :enrollmentYear ");
 
 		Query query = getSession().createQuery(queryStr.toString());
-		query.setParameter("districtId", districtId);
+		query.setParameter("Id", Id);
+		query.setParameter("enrollmentYear", enrollmentYear);
+		return (Long) query.uniqueResult();
+	}
+	
+	public List<Object[]> getGender(){
+		String queryStr="select distinct(model.gender) " +
+				" from TdpCadre model where model.isDeleted = 'N' ";
+		Query query = getSession().createQuery(queryStr);		
+		return query.list();
+	}
+
+	public Long getGenderTotalCount(Long Id, Long enrollmentYear, String type) {
+
+		StringBuilder queryStr = new StringBuilder();
+
+		queryStr.append("select count(model.gender) "
+				+ " from TdpCadre model where model.isDeleted = 'N' ");
+		if (type.equalsIgnoreCase("constituency")) {
+			queryStr.append(" and model.userAddress.constituency.constituencyId = :Id ");
+		} else if (type.equalsIgnoreCase("district")) {
+			queryStr.append(" and model.userAddress.district.districtId = :Id ");
+		}
+		queryStr.append(" and model.enrollmentYear = :enrollmentYear ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("Id", Id);
+		query.setParameter("enrollmentYear", enrollmentYear);
+		return (Long) query.uniqueResult();
+	}
+
+	public List<Object[]> getGenderWiseCadreCount(Long Id,String type){		
+		
+		StringBuilder queryStr=new StringBuilder();
+		queryStr.append("select count(model.gender),model.enrollmentYear,model.gender " +
+				"from TdpCadre model where model.isDeleted = 'N' ");
+		if(type.equalsIgnoreCase("constituency")){
+		    	queryStr.append(" and model.userAddress.constituency.constituencyId = :Id ");
+		}else if(type.equalsIgnoreCase("district")){
+				queryStr.append(" and model.userAddress.district.districtId = :Id  " );
+		}		
+		queryStr.append(" group by  model.enrollmentYear,model.gender  order by model.enrollmentYear desc," +
+				" model.gender desc ");
+		Query query = getSession().createQuery(queryStr.toString());		
+		query.setParameter("Id", Id);
+		
+		
 		return query.list();
     }
 
-	public Long getConstituencyWiseYearCount(Long constituencyId,Long enrollmentYear){
+  
+  public Long getDistrictWiseCasteCount(Long districtId,Long enrollmentYear){
 		
-		String queryStr="select count(model.tdpCadreId) " +
+		String queryStr="select count(model.casteStateId) " +
 				" from TdpCadre model where model.isDeleted = 'N' " +
-				" and model.userAddress.constituency.constituencyId = :constituencyId " +
-				" and model.enrollmentYear = :enrollmentYear" +
-				" group by model.enrollmentYear ";
+				" and model.userAddress.constituency.districtId = :districtId " +
+				" and model.enrollmentYear = :enrollmentYear ";
 		Query query = getSession().createQuery(queryStr);
-		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("districtId", districtId);
 		query.setParameter("enrollmentYear", enrollmentYear);
 		return (Long)query.uniqueResult();
-    }
+  }
+  
+
 	
-	public Long getDistrictWiseYearCount(Long districtId,Long enrollmentYear){
-				
-		String queryStr="select count(model.tdpCadreId) " +
-				" from TdpCadre model where model.isDeleted = 'N' " +
-				" and model.userAddress.constituency.district.districtId = :districtId " +
-				" and model.enrollmentYear = :enrollmentYear " +
-				" group by model.enrollmentYear ";
-		Query query = getSession().createQuery(queryStr);
-		query.setParameter("districtId", districtId);
+  
+  public Long getCasteTotalCount(Long Id,Long enrollmentYear,String type) {
+
+		StringBuilder queryStr = new StringBuilder();
+
+		queryStr.append("select count(model.casteStateId) "
+				+ " from TdpCadre model where model.isDeleted = 'N' ");
+		if (type.equalsIgnoreCase("constituency")) {
+			queryStr.append(" and model.userAddress.constituency.constituencyId = :Id ");
+		} else if (type.equalsIgnoreCase("district")) {
+			queryStr.append(" and model.userAddress.district.districtId = :Id ");
+		}
+		queryStr.append(" and model.enrollmentYear = :enrollmentYear ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("Id", Id);
 		query.setParameter("enrollmentYear", enrollmentYear);
-		return (Long)query.uniqueResult();
-    }
-	
-	public List<Object[]> getConstituencyWiseGenderCadreCount(Long constituencyId){
-		
-		
-		String queryStr="select count(model.tdpCadreId),model.enrollmentYear,model.gender " +
-				" from TdpCadre model where model.isDeleted = 'N' " +
-				" and model.userAddress.constituency.constituencyId = :constituencyId " +
-				" group by  model.gender,model.enrollmentYear ";
+		return (Long) query.uniqueResult();
+	}
+  
+   public List<Object[]> getCastWiseCadreCount(Long Id,String type) {
+		StringBuilder queryStr=new StringBuilder(); 
+		queryStr.append("select count(model.casteStateId),model.enrollmentYear,model.casteState.casteStateId,model.casteState.caste.casteName "+
+				" from TdpCadre model where model.isDeleted = 'N' ");
+		if (type.equalsIgnoreCase("constituency")) {
+			queryStr.append(" and model.userAddress.constituency.constituencyId = :Id ");
+		} else if (type.equalsIgnoreCase("district")) {
+			queryStr.append(" and model.userAddress.district.districtId = :Id ");
+		}
+			queryStr.append(" group by  model.casteState.casteStateId,model.enrollmentYear order by model.casteState.caste.casteName ");
 
-		Query query = getSession().createQuery(queryStr);
-		query.setParameter("constituencyId", constituencyId);
-		
-		return query.list();
-    }
-	
-	public List<Object[]> getDistrictWiseGenderCadreCount(Long districtId){
-		
-		String queryStr="select count(model.tdpCadreId),model.enrollmentYear,model.gender " +
-				" from TdpCadre model where model.isDeleted = 'N' " +
-				" and model.userAddress.constituency.district.districtId = :districtId  " +
-				" group by  model.gender,model.enrollmentYear ";
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("Id", Id);
 
-		Query query = getSession().createQuery(queryStr);
-		query.setParameter("districtId", districtId);
-		
 		return query.list();
-    }
+	}
 
 	
-	public List<Object[]> getConstituencyWiseCastCadreCount(Long constituencyId){
-		
-		
-		String queryStr= "select count(model.tdpCadreId),model.enrollmentYear,model.casteState.casteStateId,model.casteState.caste.casteName " +
-				" from TdpCadre model where model.isDeleted = 'N' " +
-				" and model.userAddress.constituency.constituencyId = :constituencyId " +
-				" group by  model.casteState.casteStateId,model.enrollmentYear ";
-
-		Query query = getSession().createQuery(queryStr);
-		query.setParameter("constituencyId", constituencyId);
-		
-		return query.list();
-    }
-	
-	public List<Object[]> getDistrictWiseCastCadreCount(Long districtId){
-		
-		String queryStr= "select count(model.tdpCadreId),model.enrollmentYear,model.casteState.casteStateId,model.casteState.caste.casteName " +
-				" from TdpCadre model where model.isDeleted = 'N' " +
-				" and model.userAddress.constituency.district.districtId = :districtId " +
-				" group by  model.casteState.casteStateId,model.enrollmentYear ";
-
-		Query query = getSession().createQuery(queryStr);
-		query.setParameter("districtId", districtId);
-		
-		return query.list();
-    }
-		
 	public List<Object[]> getCadreInfoPanchayatWise(List<Long> panchayatIds,Date fromDate, Date toDate,Long year){
 		StringBuilder queryStr = new StringBuilder();
 		//0 count,1 id,2 name ,3 year

@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -112,16 +113,20 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		
 		Calendar fromCalendar = Calendar.getInstance();
 		fromCalendar.setTime(currentDate);
-		fromCalendar.add(Calendar.DAY_OF_WEEK, fromCalendar.getFirstDayOfWeek() - fromCalendar.get(Calendar.DAY_OF_WEEK));
+		fromCalendar.set(Calendar.DAY_OF_MONTH,  fromCalendar.get(Calendar.DAY_OF_MONTH)-6);
+		//fromCalendar.add(Calendar.DAY_OF_WEEK, fromCalendar.getFirstDayOfWeek() - fromCalendar.get(Calendar.DAY_OF_WEEK));
 	   
 		Calendar toCalendar = Calendar.getInstance();
-		toCalendar.setTime(fromCalendar.getTime());
-		toCalendar.add(Calendar.DAY_OF_YEAR, 6);
+		toCalendar.setTime(currentDate);
+		//toCalendar.setTime(fromCalendar.getTime());
+		//toCalendar.add(Calendar.DAY_OF_YEAR, 6);
 		
 		CadreRegisterInfo thisWeekInfo = getRegisterCount(fromCalendar.getTime(),toCalendar.getTime());
 		
-		fromCalendar.set(Calendar.DAY_OF_MONTH, 1);
-	    toCalendar.set(Calendar.DAY_OF_MONTH,toCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+		fromCalendar.setTime(currentDate);
+		fromCalendar.set(Calendar.DAY_OF_MONTH,  fromCalendar.get(Calendar.DAY_OF_MONTH)-29);
+		//fromCalendar.set(Calendar.DAY_OF_MONTH, 1);
+	    //toCalendar.set(Calendar.DAY_OF_MONTH,toCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 
 	     
 	     CadreRegisterInfo thisMonthInfo = getRegisterCount(fromCalendar.getTime(),toCalendar.getTime());
@@ -502,354 +507,305 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		return time+" AM";
 	}
 	
-	public Map<Long,List<CadreRegisterInfo>> getConstituencyWiseAgeRangeCount(Long constituencyId) {
-		Map<Long,List<CadreRegisterInfo>> returnMap=new HashMap<Long,List<CadreRegisterInfo>>();
-		
-		List<CadreRegisterInfo> cadreInfo2012 = new ArrayList<CadreRegisterInfo>();
-		List<CadreRegisterInfo> cadreInfo2014 = new ArrayList<CadreRegisterInfo>();
+	public List<CadreRegisterInfo> getDetailsForConstituency(Long constituencyId)
+	{
+		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
 		try {
-			List<Object[]> cadre18to25info = tdpCadreDAO.getConstituencyWiseAgeRangeCadreCount(constituencyId,"18-25");
-			List<Object[]> cadre26to35info = tdpCadreDAO.getConstituencyWiseAgeRangeCadreCount(constituencyId,("26-35"));
-			List<Object[]> cadre36to45info = tdpCadreDAO.getConstituencyWiseAgeRangeCadreCount(constituencyId,("36-45"));
-			List<Object[]> cadre46to60info = tdpCadreDAO.getConstituencyWiseAgeRangeCadreCount(constituencyId,("46-60"));
-			List<Object[]> cadreabove60info = tdpCadreDAO.getConstituencyWiseAgeRangeCadreCount(constituencyId,("above 60"));
-			Long totalConstituencyCount2012 = tdpCadreDAO.getConstituencyWiseYearCount(constituencyId, 2012L);
-			Long totalConstituencyCount2014 = tdpCadreDAO.getConstituencyWiseYearCount(constituencyId, 2014L);
-
-			setAgeWiseRangeCount(cadre18to25info, cadre26to35info,cadre36to45info, cadre46to60info, cadreabove60info,totalConstituencyCount2012, totalConstituencyCount2014,cadreInfo2012, cadreInfo2014);
-            
-			returnMap.put(2012L, cadreInfo2012);
-            returnMap.put(2014L, cadreInfo2014);
+			Long totalConstituencyCount2012 = tdpCadreDAO.getGenderTotalCount(constituencyId, 2012L,"constituency");
+			Long totalConstituencyCount2014 = tdpCadreDAO.getGenderTotalCount(constituencyId, 2014L,"constituency");
+			List<CadreRegisterInfo> ageWiseInfo = getConstituencyWiseAgeRangeCount(constituencyId,totalConstituencyCount2012,totalConstituencyCount2014);
+			
+			if(ageWiseInfo != null && ageWiseInfo.size()>0)
+			{
+				CadreRegisterInfo mainVO = new CadreRegisterInfo();
+				mainVO.setName("agewise");
+				mainVO.setAllDetailsList(ageWiseInfo);
+				returnList.add(mainVO);
+			}
+			
+			List<CadreRegisterInfo> genderWiseInfo = getConstituencyWiseGenderCadreCount(constituencyId,totalConstituencyCount2012,totalConstituencyCount2014);
+			if(genderWiseInfo != null && genderWiseInfo.size()>0)
+			{
+				CadreRegisterInfo mainVO = new CadreRegisterInfo();
+				mainVO.setName("genderwise");
+				mainVO.setInfoList(genderWiseInfo);
+				returnList.add(mainVO);
+			}
+			
+			List<CadreRegisterInfo> casteWiseInfo = getConstituencyWiseCastCadreCount(constituencyId,totalConstituencyCount2012,totalConstituencyCount2014);
+			
+			if(casteWiseInfo != null && casteWiseInfo.size()>0)
+			{
+				CadreRegisterInfo mainVO = new CadreRegisterInfo();
+				mainVO.setName("castewise");
+				mainVO.setCadreRegisterInfoList(casteWiseInfo);
+				returnList.add(mainVO);
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception rised in getDetailsForState",e);
+		}
+		return returnList;
+	}
+	
+	public List<CadreRegisterInfo> getDetailsForDistricts(Long districtId)
+	{
+		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
+		try {
+			Long totalDistrictCount2012 = tdpCadreDAO.getAgeRangeTotalCount(districtId, 2012L,"district");
+			Long totalDistrictCount2014 = tdpCadreDAO.getAgeRangeTotalCount(districtId, 2014L,"district");
+			List<CadreRegisterInfo> ageWiseInfo = getDistrictWiseAgeRangeCount(districtId,totalDistrictCount2012,totalDistrictCount2014);
+			
+			if(ageWiseInfo != null && ageWiseInfo.size()>0)
+			{
+				CadreRegisterInfo mainVO = new CadreRegisterInfo();
+				mainVO.setName("agewise");
+				mainVO.setAllDetailsList(ageWiseInfo);
+				returnList.add(mainVO);
+			}
+			
+			List<CadreRegisterInfo> genderWiseInfo = getDistrictWiseGenderCadreCount(districtId,totalDistrictCount2012,totalDistrictCount2014);
+			
+			if(genderWiseInfo != null && genderWiseInfo.size()>0)
+			{
+				CadreRegisterInfo mainVO = new CadreRegisterInfo();
+				mainVO.setName("genderwise");
+				mainVO.setInfoList(genderWiseInfo);
+				returnList.add(mainVO);
+			}
+			
+			List<CadreRegisterInfo> casteWiseInfo = getDistrictWiseCastCadreCount(districtId,totalDistrictCount2012,totalDistrictCount2014);
+			
+			if(casteWiseInfo != null && casteWiseInfo.size()>0)
+			{
+				CadreRegisterInfo mainVO = new CadreRegisterInfo();
+				mainVO.setName("castewise");
+				mainVO.setCadreRegisterInfoList(casteWiseInfo);
+				returnList.add(mainVO);
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception rised in getDetailsForDistricts",e);
+		}
+		return returnList;
+	}
+	
+	public List<CadreRegisterInfo> getConstituencyWiseAgeRangeCount(Long constituencyId,Long totalConstituencyCount2012,Long totalConstituencyCount2014) {
+		List<CadreRegisterInfo> ageWiseTotalList=new ArrayList<CadreRegisterInfo>();
+		try {
+			
+			List<Object[]> cadre18to25info = tdpCadreDAO.getAgeRangeCadreCount(constituencyId,"18-25","constituency");
+			setAgeWiseRangeCount(cadre18to25info,"18-25", totalConstituencyCount2012, totalConstituencyCount2014, ageWiseTotalList);
+			
+			List<Object[]> cadre26to35info = tdpCadreDAO.getAgeRangeCadreCount(constituencyId,"26-35","constituency");
+			setAgeWiseRangeCount(cadre26to35info,"26-35", totalConstituencyCount2012, totalConstituencyCount2014, ageWiseTotalList);
+			
+			List<Object[]> cadre36to45info = tdpCadreDAO.getAgeRangeCadreCount(constituencyId,"36-45","constituency");
+			setAgeWiseRangeCount(cadre36to45info,"36-45", totalConstituencyCount2012, totalConstituencyCount2014, ageWiseTotalList);
+			
+			List<Object[]> cadre46to60info = tdpCadreDAO.getAgeRangeCadreCount(constituencyId,"46-60","constituency");
+			setAgeWiseRangeCount(cadre46to60info,"46-60", totalConstituencyCount2012, totalConstituencyCount2014, ageWiseTotalList);
+			
+			List<Object[]> cadreabove60info = tdpCadreDAO.getAgeRangeCadreCount(constituencyId,"above 60","constituency");
+			setAgeWiseRangeCount(cadreabove60info,"above 60", totalConstituencyCount2012, totalConstituencyCount2014, ageWiseTotalList);
+			
             
 		} catch (Exception e) {
 			LOG.error("Exception rised in getConstituencyWiseAgeRangeCount", e);
 		}
-		return returnMap;
+		return ageWiseTotalList;
 	}
 
-	public Map<Long,List<CadreRegisterInfo>> getDistrictWiseAgeRangeCount(Long districtId) {
+	public List<CadreRegisterInfo> getDistrictWiseAgeRangeCount(Long districtId,Long totalDistrictCount2012,Long totalDistrictCount2014) {
+		List<CadreRegisterInfo> ageWiseTotalList=new ArrayList<CadreRegisterInfo>();
 		
-		Map<Long,List<CadreRegisterInfo>> returnMap=new HashMap<Long,List<CadreRegisterInfo>>();
-		List<CadreRegisterInfo> cadreInfo2012 = new ArrayList<CadreRegisterInfo>();
-		List<CadreRegisterInfo> cadreInfo2014 = new ArrayList<CadreRegisterInfo>();
-		try {
-			List<Object[]> cadre18to25info = tdpCadreDAO.getDistrictWiseAgeRangeCadreCount(districtId, "18-25");
-			List<Object[]> cadre26to35info = tdpCadreDAO.getDistrictWiseAgeRangeCadreCount(districtId, ("26-35"));
-			List<Object[]> cadre36to45info = tdpCadreDAO.getDistrictWiseAgeRangeCadreCount(districtId, ("36-45"));
-			List<Object[]> cadre46to60info = tdpCadreDAO.getDistrictWiseAgeRangeCadreCount(districtId, ("46-60"));
-			List<Object[]> cadreabove60info = tdpCadreDAO.getDistrictWiseAgeRangeCadreCount(districtId, ("above 60"));
-			Long totalDistrictCount2012 = tdpCadreDAO.getDistrictWiseYearCount(districtId, 2012L);
-			Long totalDistrictCount2014 = tdpCadreDAO.getDistrictWiseYearCount(districtId, 2014L);
-
-			setAgeWiseRangeCount(cadre18to25info, cadre26to35info,cadre36to45info, cadre46to60info, cadreabove60info,totalDistrictCount2012, totalDistrictCount2014,cadreInfo2012, cadreInfo2014);
-            returnMap.put(2012L, cadreInfo2012);
-            returnMap.put(2014L, cadreInfo2014);
+		try {	
+			List<Object[]> cadre18to25info = tdpCadreDAO.getAgeRangeCadreCount(districtId, "18-25","district");			
+			setAgeWiseRangeCount(cadre18to25info,"18-25", totalDistrictCount2012, totalDistrictCount2014, ageWiseTotalList);
 			
+			List<Object[]> cadre26to35info = tdpCadreDAO.getAgeRangeCadreCount(districtId, "26-35","district");
+			setAgeWiseRangeCount(cadre26to35info,"26-35", totalDistrictCount2012, totalDistrictCount2014, ageWiseTotalList);
+			
+			List<Object[]> cadre36to45info = tdpCadreDAO.getAgeRangeCadreCount(districtId,"36-45","district");
+			setAgeWiseRangeCount(cadre36to45info,"36-45", totalDistrictCount2012, totalDistrictCount2014, ageWiseTotalList);
+			
+			List<Object[]> cadre46to60info = tdpCadreDAO.getAgeRangeCadreCount(districtId,"46-60","district");
+			setAgeWiseRangeCount(cadre46to60info,"46-60", totalDistrictCount2012, totalDistrictCount2014, ageWiseTotalList);
+			
+			List<Object[]> cadreabove60info = tdpCadreDAO.getAgeRangeCadreCount(districtId,"above 60","district");
+			setAgeWiseRangeCount(cadreabove60info,"above 60", totalDistrictCount2012, totalDistrictCount2014, ageWiseTotalList);
+			
+            
 		} catch (Exception e) {
 			LOG.error("Exception rised in getDistrictWiseAgeRangeCount", e);
 		}
-		return returnMap;
-
-	}
-
-	public void setAgeWiseRangeCount(List<Object[]> cadre18to25info,
-			List<Object[]> cadre26to35info, List<Object[]> cadre36to45info,
-			List<Object[]> cadre46to60info, List<Object[]> cadreabove60info,
-			Long totalCount2012, Long totalCount2014,
-			List<CadreRegisterInfo> cadreInfo2012,
-			List<CadreRegisterInfo> cadreInfo2014) {
-		CadreRegisterInfo vo1 = null;
-
-		if (cadre18to25info.size() > 0) {
-			for (Object[] cadre18to25info1 : cadre18to25info) {
-				if ((Long) cadre18to25info1[1] == 2012) {
-					vo1 = new CadreRegisterInfo();
-					Long total = (Long) cadre18to25info1[0];
-					vo1.setTotalCount(total);
-					String b = new BigDecimal(
-							(total.doubleValue() / totalCount2012.doubleValue()) * 100)
-							.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-					Double per = new Double(b);
-					Long percentage = per.longValue();
-					vo1.setPercentage(percentage);
-					cadreInfo2012.add(vo1);
-				}
-				if ((Long) cadre18to25info1[1] == 2014) {
-					vo1 = new CadreRegisterInfo();
-					Long total = (Long) cadre18to25info1[0];
-					vo1.setTotalCount(total);
-					String b = new BigDecimal(
-							(total.doubleValue() / totalCount2014.doubleValue()) * 100)
-							.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-					Double per = new Double(b);
-					Long percentage = per.longValue();
-					vo1.setPercentage(percentage);
-					cadreInfo2014.add(vo1);
-				}
-			}
-		}
-
-		if (cadre26to35info.size() > 0) {
-			for (Object[] cadre26to35info1 : cadre26to35info) {
-				if ((Long) cadre26to35info1[1] == 2012) {
-					vo1 = new CadreRegisterInfo();
-					Long total = (Long) cadre26to35info1[0];
-					vo1.setTotalCount(total);
-					String b = new BigDecimal(
-							(total.doubleValue() / totalCount2012.doubleValue()) * 100)
-							.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-					Double per = new Double(b);
-					Long percentage = per.longValue();
-					vo1.setPercentage(percentage);
-					cadreInfo2012.add(vo1);
-				}
-				if ((Long) cadre26to35info1[1] == 2014) {
-					vo1 = new CadreRegisterInfo();
-					Long total = (Long) cadre26to35info1[0];
-					vo1.setTotalCount(total);
-					String b = new BigDecimal(
-							(total.doubleValue() / totalCount2014.doubleValue()) * 100)
-							.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-					Double per = new Double(b);
-					Long percentage = per.longValue();
-					vo1.setPercentage(percentage);
-					cadreInfo2014.add(vo1);
-				}
-			}
-		}
-
-		if (cadre36to45info.size() > 0) {
-			for (Object[] cadre36to45info1 : cadre36to45info) {
-				if ((Long) cadre36to45info1[1] == 2012) {
-					vo1 = new CadreRegisterInfo();
-					Long total = (Long) cadre36to45info1[0];
-					vo1.setTotalCount(total);
-					String b = new BigDecimal(
-							(total.doubleValue() / totalCount2012.doubleValue()) * 100)
-							.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-					Double per = new Double(b);
-					Long percentage = per.longValue();
-					vo1.setPercentage(percentage);
-					cadreInfo2012.add(vo1);
-				}
-				if ((Long) cadre36to45info1[1] == 2014) {
-					vo1 = new CadreRegisterInfo();
-					Long total = (Long) cadre36to45info1[0];
-					vo1.setTotalCount(total);
-					String b = new BigDecimal(
-							(total.doubleValue() / totalCount2014.doubleValue()) * 100)
-							.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-					Double per = new Double(b);
-					Long percentage = per.longValue();
-					vo1.setPercentage(percentage);
-					cadreInfo2014.add(vo1);
-				}
-			}
-		}
-
-		if (cadre46to60info.size() > 0) {
-			for (Object[] cadre46to60info1 : cadre46to60info) {
-				if ((Long) cadre46to60info1[1] == 2012) {
-					vo1 = new CadreRegisterInfo();
-					Long total = (Long) cadre46to60info1[0];
-					vo1.setTotalCount(total);
-					String b = new BigDecimal(
-							(total.doubleValue() / totalCount2012.doubleValue()) * 100)
-							.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-					Double per = new Double(b);
-					Long percentage = per.longValue();
-					vo1.setPercentage(percentage);
-					cadreInfo2012.add(vo1);
-				}
-				if ((Long) cadre46to60info1[1] == 2014) {
-					vo1 = new CadreRegisterInfo();
-					Long total = (Long) cadre46to60info1[0];
-					vo1.setTotalCount(total);
-					String b = new BigDecimal(
-							(total.doubleValue() / totalCount2014.doubleValue()) * 100)
-							.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-					Double per = new Double(b);
-					Long percentage = per.longValue();
-					vo1.setPercentage(percentage);
-					cadreInfo2014.add(vo1);
-				}
-			}
-		}
-
-		if (cadreabove60info.size() > 0) {
-			for (Object[] cadreabove60info1 : cadreabove60info) {
-				if ((Long) cadreabove60info1[1] == 2012) {
-					vo1 = new CadreRegisterInfo();
-					Long total = (Long) cadreabove60info1[0];
-					vo1.setTotalCount(total);
-					String b = new BigDecimal(
-							(total.doubleValue() / totalCount2012.doubleValue()) * 100)
-							.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-					Double per = new Double(b);
-					Long percentage = per.longValue();
-					vo1.setPercentage(percentage);
-					cadreInfo2012.add(vo1);
-				}
-				if ((Long) cadreabove60info1[1] == 2014) {
-					vo1 = new CadreRegisterInfo();
-					Long total = (Long) cadreabove60info1[0];
-					vo1.setTotalCount(total);
-					String b = new BigDecimal(
-							(total.doubleValue() / totalCount2014.doubleValue()) * 100)
-							.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-					Double per = new Double(b);
-					Long percentage = per.longValue();
-					vo1.setPercentage(percentage);
-					cadreInfo2014.add(vo1);
-				}
-			}
-		}
-
-	}
+		return ageWiseTotalList;
+	}	
 	
-	public Map<Long,List<CadreRegisterInfo>> getConstituencyWiseGenderCadreCount(Long constituencyId){
-		Map<Long,List<CadreRegisterInfo>> genderMap = new HashMap<Long,List<CadreRegisterInfo>>();
+	public void setAgeWiseRangeCount(List<Object[]> cadreinfo,String ageRange,Long totalCount2012, Long totalCount2014,List<CadreRegisterInfo> ageWiseTotalList) {
+
+		CadreRegisterInfo ageVo = new CadreRegisterInfo();
+		ageVo.setName(ageRange);
+		ageVo.setApCount(0l);//2014 total count
+		ageVo.setTgCount(0l);//2012 total count
+		ageVo.setPercentStr("0");//2014 perc
+		ageVo.setArea("0");//2012 perc
+		if (cadreinfo!=null && cadreinfo.size() > 0)
+		{						
+			for (Object[] cadreinfo1 : cadreinfo) 
+			{
+				if (((Long)cadreinfo1[1]).longValue() == 2014l){
+					 ageVo.setApCount((Long) cadreinfo1[0]);
+						if(totalCount2012 != null && totalCount2012.longValue() > 0 ){
+							ageVo.setPercentStr(new BigDecimal((ageVo.getApCount().doubleValue() / totalCount2012.doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+						} 
+			   }				
+			   if (((Long)cadreinfo1[1]).longValue() == 2012l){ 
+				   
+					ageVo.setTgCount((Long)cadreinfo1[0]);
+					if(totalCount2014 != null && totalCount2014.longValue() > 0 ){
+						ageVo.setArea(new BigDecimal((ageVo.getTgCount().doubleValue() / totalCount2014.doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					} 
+			   }   
+			}
+		}  
+		ageWiseTotalList.add(ageVo);
+	} 
+	
+	public List<CadreRegisterInfo> getConstituencyWiseGenderCadreCount(Long constituencyId,Long totalConstituencyCount2012,Long totalConstituencyCount2014){
+		List<CadreRegisterInfo> genderList = new ArrayList<CadreRegisterInfo>();
 		try{
-			List<Object[]> genderInfoList=tdpCadreDAO.getConstituencyWiseGenderCadreCount(constituencyId);
-			Long totalConstituencyCount2012 = tdpCadreDAO.getDistrictWiseYearCount(constituencyId, 2012L);
-			Long totalConstituencyCount2014 = tdpCadreDAO.getDistrictWiseYearCount(constituencyId, 2014L);
-			setGenderWiseCount(genderInfoList,genderMap,totalConstituencyCount2012,totalConstituencyCount2014);
-		
-			
+
+			List<Object[]> genderInfoList=tdpCadreDAO.getGenderWiseCadreCount(constituencyId,"constituency");
+			setGenderWiseCount(genderInfoList,genderList,totalConstituencyCount2012,totalConstituencyCount2014);							
+						
 		} catch (Exception e) {
-		LOG.error("Exception rised in getConstituencyWiseGenderCadreCount", e);
+			LOG.error("Exception rised in getConstituencyWiseGenderCadreCount", e);
 		}
-		return genderMap;
+		return genderList;
 	}
 	
-	public Map<Long,List<CadreRegisterInfo>> getDistrictWiseGenderCadreCount(Long districtId){
-		Map<Long,List<CadreRegisterInfo>> genderMap = new HashMap<Long,List<CadreRegisterInfo>>();
+	public List<CadreRegisterInfo> getDistrictWiseGenderCadreCount(Long districtId,Long totalDistrictCount2012,Long totalDistrictCount2014){
+		List<CadreRegisterInfo> genderList = new ArrayList<CadreRegisterInfo>();
 		try{
-			List<Object[]> genderInfoList=tdpCadreDAO.getDistrictWiseGenderCadreCount(districtId);
-			Long totalDistrictCount2012 = tdpCadreDAO.getDistrictWiseYearCount(districtId, 2012L);
-			Long totalDistrictCount2014 = tdpCadreDAO.getDistrictWiseYearCount(districtId, 2014L);
-			setGenderWiseCount(genderInfoList,genderMap,totalDistrictCount2012,totalDistrictCount2014);
+			List<Object[]> genderInfoList=tdpCadreDAO.getGenderWiseCadreCount(districtId,"district");
+			setGenderWiseCount(genderInfoList,genderList,totalDistrictCount2012,totalDistrictCount2014);
+			
 			} catch (Exception e) {
-			LOG.error("Exception rised in getDistrictWiseGenderCadreCount", e);
+				LOG.error("Exception rised in getDistrictWiseGenderCadreCount", e);
 			}
-		return genderMap;
+		return genderList;
 		
 	}
 	
-	public void setGenderWiseCount(List<Object[]> genderInfoList,Map<Long,List<CadreRegisterInfo>> genderMap,Long totalCount2012,Long totalCount2014){
-		List<CadreRegisterInfo> genderInfo2012 = new ArrayList<CadreRegisterInfo>();
-		List<CadreRegisterInfo> genderInfo2014 = new ArrayList<CadreRegisterInfo>();
-		CadreRegisterInfo genderVO=null;
-		//totalCount for count
-		//apCount for year
-		//name for Gender
-		//percentage for percentage
-		for(Object[] gender:genderInfoList){
-			if((Long)gender[1]==2012){
-				genderVO=new CadreRegisterInfo();
-				Long total=(Long)gender[0];
-				genderVO.setTotalCount(total);
-				genderVO.setApCount((Long)gender[1]);
-				genderVO.setName((String)gender[2]);
-				String b = new BigDecimal(
-						(total.doubleValue() / totalCount2012.doubleValue()) * 100)
-						.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-				Double per = new Double(b);
-				Long percentage = per.longValue();
-				genderVO.setPercentage(percentage);
-				genderInfo2012.add(genderVO);
+	public void setGenderWiseCount(List<Object[]> genderInfoList,List<CadreRegisterInfo> genderList,Long totalCount2012,Long totalCount2014){
+		CadreRegisterInfo maleVo = new CadreRegisterInfo();
+			maleVo.setName("Male");
+			maleVo.setApCount(0l);//2014 total count
+			maleVo.setTgCount(0l);//2012 total count
+			maleVo.setPercentStr("0");//2014 perc
+			maleVo.setArea("0");//2012 perc
+			
+		CadreRegisterInfo femaleVo = new CadreRegisterInfo();
+		   femaleVo.setName("Female");
+		   femaleVo.setApCount(0l);//2014 total count
+		   femaleVo.setTgCount(0l);//2012 total count
+		   femaleVo.setPercentStr("0");//2014 perc
+		   femaleVo.setArea("0");//2012 perc
+		   
+		genderList.add(maleVo);
+		genderList.add(femaleVo);
+		
+		for(Object[] gender:genderInfoList)
+		{	
+			if(((Long)gender[1]).longValue() == 2014l){
+				if( gender[2] != null && (gender[2].toString().equals("Male") || gender[2].toString().equals("M"))){
+					maleVo.setApCount(maleVo.getApCount()+(Long)gender[0]);
+				}else if( gender[2] != null && (gender[2].toString().equals("Female") || gender[2].toString().equals("F"))){
+					femaleVo.setApCount(femaleVo.getApCount()+(Long)gender[0]);
+				}	
+			}else if(((Long)gender[1]).longValue() == 2012l){
+				if( gender[2] != null && (gender[2].toString().equals("Male") || gender[2].toString().equals("M"))){
+					maleVo.setTgCount(maleVo.getTgCount()+(Long)gender[0]);
+				}else if( gender[2] != null && (gender[2].toString().equals("Female") || gender[2].toString().equals("F"))){
+					femaleVo.setTgCount(femaleVo.getTgCount()+(Long)gender[0]);
+				}	
 			}
-			if((Long)gender[1]==2014){
-				genderVO=new CadreRegisterInfo();
-				Long total=(Long)gender[0];
-				genderVO.setTotalCount(total);
-				genderVO.setApCount((Long)gender[1]);
-				genderVO.setName((String)gender[2]);
-				String b = new BigDecimal(
-						(total.doubleValue() / totalCount2014.doubleValue()) * 100)
-						.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-				Double per = new Double(b);
-				Long percentage = per.longValue();
-				genderVO.setPercentage(percentage);
-				genderInfo2014.add(genderVO);				
-			}
+			
 		}
-		genderMap.put(2012L, genderInfo2012);	
-		genderMap.put(2014L, genderInfo2014);
+	
+		if(totalCount2012 != null && totalCount2012.longValue() > 0l){
+			maleVo.setArea(new BigDecimal((maleVo.getTgCount().doubleValue() / totalCount2012.doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			femaleVo.setArea(new BigDecimal((femaleVo.getTgCount().doubleValue() / totalCount2012.doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		}
+		if(totalCount2014 != null && totalCount2014.longValue() > 0l){
+			maleVo.setPercentStr(new BigDecimal((maleVo.getApCount().doubleValue() / totalCount2014.doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			femaleVo.setPercentStr(new BigDecimal((femaleVo.getApCount().doubleValue() / totalCount2014.doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		}
+			
 	}
 
-	public Map<Long,List<CadreRegisterInfo>> getConstituencyWiseCastCadreCount(Long constituencyId){
-		Map<Long,List<CadreRegisterInfo>> casteMap = new HashMap<Long,List<CadreRegisterInfo>>();
+	public List<CadreRegisterInfo> getConstituencyWiseCastCadreCount(Long constituencyId,Long totalConstituencyCount2012,Long totalConstituencyCount2014){
+		List<CadreRegisterInfo> casteList = new ArrayList<CadreRegisterInfo>();
 		try{
-			List<Object[]> casteInfoList = tdpCadreDAO.getConstituencyWiseCastCadreCount(constituencyId);
-			Long totalConstituencyCount2012 = tdpCadreDAO.getDistrictWiseYearCount(constituencyId, 2012L);
-			Long totalConstituencyCount2014 = tdpCadreDAO.getDistrictWiseYearCount(constituencyId, 2014L);
-			setCasteWiseCount(casteInfoList, casteMap,totalConstituencyCount2012,totalConstituencyCount2014);
+			//0 count,1 year,2 casteState ,3 casteName
+			List<Object[]> casteInfoList = tdpCadreDAO.getCastWiseCadreCount(constituencyId,"constituency");
+			setCasteWiseCount(casteInfoList, casteList,totalConstituencyCount2012,totalConstituencyCount2014);				
 		}catch (Exception e) {
-			LOG.error("Exception rised in getConstituencyWiseCastCadreCount", e);
+			//LOG.error("Exception rised in getConstituencyWiseCastCadreCount", e);
 		}			
-		return casteMap;
+		return casteList;
 		
 	}
 	
-	public Map<Long,List<CadreRegisterInfo>> getDistrictWiseCastCadreCount(Long districtId){
-		Map<Long,List<CadreRegisterInfo>> casteMap = new HashMap<Long,List<CadreRegisterInfo>>();
+	public List<CadreRegisterInfo> getDistrictWiseCastCadreCount(Long districtId,Long totalDistrictCount2012,Long totalDistrictCount2014){
+		List<CadreRegisterInfo> casteList = new ArrayList<CadreRegisterInfo>();
 		try{
-			List<Object[]> casteInfoList = tdpCadreDAO.getDistrictWiseCastCadreCount(districtId);
-			Long totalDistrictCount2012 = tdpCadreDAO.getDistrictWiseYearCount(districtId, 2012L);
-			Long totalDistrictCount2014 = tdpCadreDAO.getDistrictWiseYearCount(districtId, 2014L);
-			setCasteWiseCount(casteInfoList, casteMap,totalDistrictCount2012,totalDistrictCount2014);
+			List<Object[]> casteInfoList = tdpCadreDAO.getCastWiseCadreCount(districtId,"district");
+			setCasteWiseCount(casteInfoList, casteList,totalDistrictCount2012,totalDistrictCount2014);
 		}catch (Exception e) {
-			LOG.error("Exception rised in getDistrictWiseCastCadreCount", e);
+			//LOG.error("Exception rised in getDistrictWiseCastCadreCount", e);
 		}		
-		return casteMap;		
+		return casteList;		
 	}
 	
-	public static void setCasteWiseCount(List<Object[]> casteInfoList,Map<Long,List<CadreRegisterInfo>> casteMap,Long totalCount2012,Long totalCount2014){
-		List<CadreRegisterInfo> genderInfo2012 = new ArrayList<CadreRegisterInfo>();
-		List<CadreRegisterInfo> genderInfo2014 = new ArrayList<CadreRegisterInfo>();
-		CadreRegisterInfo casteVO=null;
+	public void setCasteWiseCount(List<Object[]> casteInfoList,List<CadreRegisterInfo> casteList,Long totalCount2012,Long totalCount2014){
+		
+		List<CadreRegisterInfo> detailsList = null;
 		//totalCount for count
 		//apCount for entrolmentyear
 		//tgCount for casteStateId
 		//name for casteName
 		//percentage for percentage
+		detailsList = new ArrayList<CadreRegisterInfo>();
+		LinkedHashMap<Long,CadreRegisterInfo> casteMap = new LinkedHashMap<Long,CadreRegisterInfo>();
+		//0 count,1 year,2 casteStateId ,3 casteName
 		for(Object[] caste:casteInfoList){
-			if((Long)caste[1]==2012){
-				casteVO=new CadreRegisterInfo();
-				Long total=(Long)caste[0];
-				casteVO.setTotalCount(total);
-				casteVO.setApCount((Long)caste[1]);
-				casteVO.setTgCount((Long)caste[2]);
-				casteVO.setName((String)caste[3]);
-				String b = new BigDecimal(
-						(total.doubleValue() / totalCount2012.doubleValue()) * 100)
-						.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-				Double per = new Double(b);
-				Long percentage = per.longValue();
-				casteVO.setPercentage(percentage);
-				
-				genderInfo2012.add(casteVO);
+			
+			CadreRegisterInfo casteVo = casteMap.get((Long)caste[2]);
+			if(casteVo == null){
+				casteVo = new CadreRegisterInfo();
+				casteVo.setName(caste[3].toString());
+				casteVo.setApCount(0l);//2014 total count
+				casteVo.setTgCount(0l);//2012 total count
+				casteVo.setPercentStr("0");//2014 perc
+				casteVo.setArea("0");//2012 perc
+				casteMap.put((Long)caste[2],casteVo);
 			}
-			if((Long)caste[1]==2014){
-				casteVO=new CadreRegisterInfo();
-				Long total=(Long)caste[0];
-				casteVO.setTotalCount(total);
-				casteVO.setApCount((Long)caste[1]);
-				casteVO.setTgCount((Long)caste[2]);
-				casteVO.setName((String)caste[3]);
-				String b = new BigDecimal(
-						(total.doubleValue() / totalCount2014.doubleValue()) * 100)
-						.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-				Double per = new Double(b);
-				Long percentage = per.longValue();
-				casteVO.setPercentage(percentage);
-				
-				genderInfo2014.add(casteVO);				
+			if(((Long)caste[1]).longValue() == 2014l){
+				casteVo.setApCount((Long)caste[0]);
+				if(totalCount2014 != null && totalCount2014.longValue() > 0){
+					casteVo.setPercentStr(new BigDecimal((casteVo.getApCount().doubleValue() / totalCount2014.doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				}
+			}else if(((Long)caste[1]).longValue() == 2012l){
+				casteVo.setTgCount((Long)caste[0]);
+				if(totalCount2012 != null && totalCount2012.longValue() > 0){
+					casteVo.setArea(new BigDecimal((casteVo.getTgCount().doubleValue() / totalCount2012.doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				}
 			}
+			
 		}
-		casteMap.put(2012L, genderInfo2012);	
-		casteMap.put(2014L, genderInfo2014);
+		casteList.addAll(new ArrayList<CadreRegisterInfo>(casteMap.values()));
 	}
 	
 	public List<CadreRegisterInfo> getAssemblyConstituencies(String type){

@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CadreRegisterInfo implements Serializable{
@@ -20,7 +21,27 @@ public class CadreRegisterInfo implements Serializable{
 	private String date;
 	private Long id;
 	private List<CadreRegisterInfo> infoList;
+	private List<CadreRegisterInfo> allDetailsList;
+	private List<CadreRegisterInfo> cadreRegisterInfoList;
+	private String percentStr;
 	
+	public List<CadreRegisterInfo> getCadreRegisterInfoList() {
+		return cadreRegisterInfoList;
+	}
+
+	public void setCadreRegisterInfoList(
+			List<CadreRegisterInfo> cadreRegisterInfoList) {
+		this.cadreRegisterInfoList = cadreRegisterInfoList;
+	}
+
+	public List<CadreRegisterInfo> getAllDetailsList() {
+		return allDetailsList;
+	}
+
+	public void setAllDetailsList(List<CadreRegisterInfo> allDetailsList) {
+		this.allDetailsList = allDetailsList;
+	}
+
 	public Long getTotalCount() {
 		return totalCount;
 	}
@@ -99,6 +120,14 @@ public class CadreRegisterInfo implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getPercentStr() {
+		return percentStr;
+	}
+
+	public void setPercentStr(String percentStr) {
+		this.percentStr = percentStr;
 	}	
 
 }

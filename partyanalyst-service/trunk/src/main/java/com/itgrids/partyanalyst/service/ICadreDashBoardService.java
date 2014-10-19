@@ -21,18 +21,10 @@ public interface ICadreDashBoardService {
 	public CadreRegisterInfo getWorkingMembersInfo();
 	
 	public List<CadreRegisterInfo> getCandidateDataCollectionInfo(Date fromDate,Date toDate);
+		
+	public List<CadreRegisterInfo> getDetailsForConstituency(Long constituencyId);
 	
-	public Map<Long,List<CadreRegisterInfo>> getConstituencyWiseAgeRangeCount(Long constituencyId);
-	
-	public Map<Long,List<CadreRegisterInfo>> getDistrictWiseAgeRangeCount(Long districtId);
-	
-	public Map<Long,List<CadreRegisterInfo>> getConstituencyWiseGenderCadreCount(Long constituencyId);
-	
-	public Map<Long,List<CadreRegisterInfo>> getDistrictWiseGenderCadreCount(Long districtId);
-	
-	public Map<Long,List<CadreRegisterInfo>> getConstituencyWiseCastCadreCount(Long constituencyId);
-	
-	public Map<Long,List<CadreRegisterInfo>> getDistrictWiseCastCadreCount(Long districtId);
+	public List<CadreRegisterInfo> getDetailsForDistricts(Long districtId);
 		
 	public List<CadreRegisterInfo> getAssemblyConstituencies(String type);
 	
