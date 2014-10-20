@@ -2581,9 +2581,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				userId ="0"+userId;
 			}
 		}
-		String ref="TRW"+userId;
+		String ref="TR-W-"+userId+"-";
 		if(registrationType.equalsIgnoreCase("ONLINE")){
-			ref="TRO"+userId;
+			ref="TR-O-"+userId+"-";
 		}
 		
 		return ref;
