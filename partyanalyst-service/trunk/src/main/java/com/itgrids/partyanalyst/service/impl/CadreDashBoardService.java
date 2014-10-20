@@ -656,15 +656,15 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			{
 				if (((Long)cadreinfo1[1]).longValue() == 2014l){
 					 ageVo.setApCount((Long) cadreinfo1[0]);
-						if(totalCount2012 != null && totalCount2012.longValue() > 0 ){
-							ageVo.setPercentStr(new BigDecimal((ageVo.getApCount().doubleValue() / totalCount2012.doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+						if(totalCount2014 != null && totalCount2014.longValue() > 0 ){
+							ageVo.setPercentStr(new BigDecimal((ageVo.getApCount().doubleValue() / totalCount2014.doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 						} 
 			   }				
 			   if (((Long)cadreinfo1[1]).longValue() == 2012l){ 
 				   
 					ageVo.setTgCount((Long)cadreinfo1[0]);
-					if(totalCount2014 != null && totalCount2014.longValue() > 0 ){
-						ageVo.setArea(new BigDecimal((ageVo.getTgCount().doubleValue() / totalCount2014.doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					if(totalCount2012 != null && totalCount2012.longValue() > 0 ){
+						ageVo.setArea(new BigDecimal((ageVo.getTgCount().doubleValue() / totalCount2012.doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 					} 
 			   }   
 			}
