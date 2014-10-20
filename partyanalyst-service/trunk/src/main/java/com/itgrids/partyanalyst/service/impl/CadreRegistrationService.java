@@ -2948,6 +2948,22 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				   if(status.equalsIgnoreCase("success")){
 					   tdpCadre.setImage(tdpCadre.getMemberShipNo()+".jpg");
 					   LOG.error("Success:"+tdpCadre.getMemberShipNo()+".jpg");
+				   }else{
+					   if(tdpCadre.getVoterId() != null){
+							Voter voter = voterDAO.get(tdpCadre.getVoterId());
+							if(voter != null && cadreRegistrationVO.getConstituencyId() != null && Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()).longValue() > 0){
+								List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()), voter.getVoterId());
+								if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
+								   sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +"voter_images"+pathSeperator+cadreRegistrationVO.getConstituencyId().trim()+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo().trim()+".jpg";
+								   LOG.error("CADRENOTVOTER: SP:"+sourcePath+" DP:"+destinationPath+" VOTERID: "+voter.getVoterId());
+								    status = copyFile(sourcePath,destinationPath);
+								   if(status.equalsIgnoreCase("success")){
+									   tdpCadre.setImage(tdpCadre.getMemberShipNo()+".jpg");
+									   LOG.error("Success:"+tdpCadre.getMemberShipNo()+".jpg");
+								   }
+								}
+						   }
+					  }
 				   }
 			  }
 		  }
