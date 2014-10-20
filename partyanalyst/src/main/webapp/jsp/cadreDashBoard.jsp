@@ -318,7 +318,6 @@ $('#membersCount').addClass('animated fadeInX');
 				if(assId == 0){
 				  $("#constituencyWiseSelDivId").append('<option value='+result[i].tgCount+'>'+result[i].location+'</option>');
 				}
-				str+='<p>'+result[i].location+' ('+result[i].date+'%  - '+result[i].totalCount+' Members)</p>';
 				str += '<p><a href="javascript:{}" onclick="getConstituencyWiseAgeGenderCasteCount('+ result[i].tgCount+ ')">'+ result[i].location+ ' ('+ result[i].apCount+ '%  - '+ result[i].totalCount+ ' Members)</a></p>';
 				if(result[i].apCount <= 20){
 				   str+='<div class="progress progress-danger">';
@@ -367,7 +366,6 @@ $('#membersCount').addClass('animated fadeInX');
 			    if(distId == 0){
 				  $("#districtWiseSelDivId").append('<option value='+result[i].tgCount+'>'+result[i].location+'</option>');
 				}
-				str+='<p>'+result[i].location+' ('+result[i].date+'%  - '+result[i].totalCount+' Members)</p>';
 				str += '<p><a href="javascript:{}" onclick="getDistrictWiseAgeGenderCasteCount('+ result[i].tgCount+ ')">'+ result[i].location+ ' ('+ result[i].apCount+ '%  - '+ result[i].totalCount+ ' Members)</a></p>';
 				if(result[i].apCount <= 20){
 				   str+='<div class="progress progress-danger">';
