@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 
 import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -204,6 +205,9 @@ public class CtpCasteReportService implements ICtpCasteReportService{
 			if(resultList != null && resultList.size() > 0)
 			for(VoterHouseInfoVO vo1 : resultList)
 			{
+				if(vo1.getCount() == 0)
+					vo1.setPercentage("-");
+				else
 				vo1.setPercentage(new BigDecimal(vo1.getCasteCount()*(100.0)/vo1.getCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 			}
 			 
