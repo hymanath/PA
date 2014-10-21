@@ -728,4 +728,27 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		query.setParameter("Id", Id);
 		return query.list();
 	}
+	
+	public Long getLastHoursWorkingMemberCount(Date presentDate, Date lastHours)
+	{
+		Query query = getSession().createQuery("select " +
+				" count(distinct model.insertedBy.cadreSurveyUserId) from TdpCadre model where model.enrollmentYear = 2014 and model.isDeleted = 'N' " +
+				" and model.dataSourceType='TAB' and ( model.surveyTime >= :lastHours and model.surveyTime <= :presentDate) and model.insertedBy.cadreSurveyUserId is not null");
+		
+		query.setParameter("presentDate", presentDate);
+		query.setParameter("lastHours", lastHours);
+		
+		return (Long)query.uniqueResult();
+	}
+	
+	
+	public Integer inActiveTdpCadreByCadreIds(List<Long> tdpCadreIdList)
+	{
+		Query query = getSession().createQuery("update TdpCadre model set model.isDeleted = 'H' where model.tdpCadreId in (:tdpCadreIdList)  and model.isDeleted = 'N' ");
+		query.setParameterList("tdpCadreIdList", tdpCadreIdList);
+		Integer count = query.executeUpdate();
+		
+		return count;
+	}
+	
 }
