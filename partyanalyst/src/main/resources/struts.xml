@@ -8462,6 +8462,9 @@
 			<result type="json" name="success">
 				<param name="root">result</param>
 			</result>
+			<result type="json" name="input">
+				<param name="root">"noAccess"</param>
+			</result>
 		</action>
 		
 		<action name="getElectionYearsByElectionType" class="cadreRegistrationAction" method="getElectionYearsByElectionType">
@@ -8473,6 +8476,9 @@
 		<action name="getWorkingMembersInfo" class="cadreDashBoardAction" method="getWorkingMembersInfo">
 			<result type="json" name="success">
 				<param name="root">info</param>
+			</result>
+			<result type="json" name="input">
+				<param name="root">"noAccess"</param>
 			</result>
 		</action>
 		<action name="getExistingCadreInfoAction" class="cadreRegistrationAction" method="getExistingCadreInfo">
@@ -8579,6 +8585,9 @@
 			<result type="json" name="success">
 				<param name="root">result</param>
 			</result>
+			<result type="json" name="input">
+				<param name="root">"noAccess"</param>
+			</result>
 		</action>
 		<action name="getConstiteuncyListForElectionAction" class="cadreRegistrationAction" method="getConstiteuncyListForElection">
 			<result type="json" name="success">
@@ -8661,11 +8670,17 @@
 			<result type="json" name="success">
 				<param name="root">resultList</param>
 			</result>
+			<result type="json" name="input">
+				<param name="root">"noAccess"</param>
+			</result>
 		</action>
 		
-		<action name="getDistrictWiseAgeGenderCasteCount" class="cadreDashBoardAction" method="getDistrictWiseAgeGenderCasteCount">
+		<action name="getRepInfo" class="cadreDashBoardAction" method="getRepInfo">
 			<result type="json" name="success">
 				<param name="root">resultList</param>
+			</result>
+			<result type="json" name="input">
+				<param name="root">"noAccess"</param>
 			</result>
 		</action>		
 		

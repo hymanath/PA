@@ -246,6 +246,9 @@
           url: 'getCadreDashBoardBasicInfo.action',
           data: {task:"candidateDataCollectionInfo",fromDate:$("#fromDate").val(),toDate:$("#toDate").val()}
        }).done(function(result){
+	   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		   location.reload(); 
+	   }
 	       var str='';
 	       if(result.length > 0){
 		        str+='<input type="button"  style="margin-bottom:15px;margin-left: 375px;"  class="btn" onclick="generateExcel();" value="Click Here To Generate Excel"/>';
@@ -382,6 +385,9 @@
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
+   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		   location.reload(); 
+	   }
      for(var i in result){
 	   if(result[i].id == 0){
           $("#districtsDispalyId").append('<option value='+result[i].id+'>ALL</option>');
@@ -397,6 +403,9 @@
           url: 'getLocationWiseRegistrationInfo.action',
 		  data: {task:"assemblyNames",type:repType}
    }).done(function(result){
+	   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		   location.reload(); 
+	   }
 	   if(repType == 'ALL'){
           allConstituencies = result;
 	   }else{
@@ -450,6 +459,9 @@
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
+   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		   location.reload(); 
+	   }
      for(var i in result){
 	   if(result[i].id == 0){
           $("#mandalDispalyId").append('<option value='+result[i].id+'>ALL</option>');
@@ -469,6 +481,9 @@
           url: 'getLocationWiseRegistrationInfo.action',
 		  data: {task:"panchayatNames",constituencyId:constiId}
    }).done(function(result){
+	   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		   location.reload(); 
+	   }
      $("#panchayatDispalyId").append('<option value="0">ALL</option>');
      for(var i in result){
 	   $("#panchayatDispalyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
@@ -485,6 +500,9 @@
           url: 'getLocationWiseRegistrationInfo.action',
 		  data: {task:"boothNames",constituencyId:constiId}
    }).done(function(result){
+	   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		   location.reload(); 
+	   }
      $("#boothDispalyId").append('<option value="0">ALL</option>');
      for(var i in result){
 	   $("#boothDispalyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
@@ -599,6 +617,9 @@
           url: 'getLocationWiseRegistrationInfo.action',
 		  data: {task:reqTask,ids:reqIds,fromDate:startDate,toDate:endDate}
 	   }).done(function(result){
+		   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+    		   location.reload(); 
+    	   }
 	       var str='';
 	       if(result.length > 0){
 		        str+='<input type="button"  style="margin-bottom:15px;margin-left: 375px;"  class="btn" onclick="generateExcel();" value="Click Here To Generate Excel"/>';
