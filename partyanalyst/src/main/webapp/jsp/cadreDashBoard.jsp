@@ -453,10 +453,25 @@ $('#membersCount').addClass('animated fadeInX');
           url: 'getWorkingMembersInfo.action',
           data: {task:"workingCount"}
        }).done(function(result){
-    	   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
-    		   location.reload(); 
-    	   }
-	      $("#totalMembersWorkingTodayId").html('<h2>'+result.apCount+'</h2><p>Members <br/>In Field 2 Hours Before</p><h2>'+result.tgCount+'</h2><p>Members <br/>In Field  1 Hours Before</p><h2>'+result.totalCount+'</h2><p>Members <br/>In Field Today</p>');
+
+	    //  $("#totalMembersWorkingTodayId").html('<h2>'+result.apCount+'<p>Members <br/>In Field 2 Hours Before</p>'+result.tgCount+'<p>Members <br/>In Field  1 Hours Before</p>'+result.totalCount+'</h2><p>Members <br/>In Field Today</p>');
+		
+		var str = '';
+		str+=' <span class="span4 btn "  style="height: 110px;cursor:auto;">';
+		str+=' <h4> '+result.apCount+' </h4> Members In Field, in last 2 Hours';		
+		str+=' </span>';
+		
+		str+=' <span class="span4 btn "  style="height: 110px;cursor:auto;">';
+		str+=' <h4> '+result.tgCount+' </h4> Members In Field, in last 1 Hour';		
+		str+=' </span>';
+		
+		str+=' <span class="span4 btn "  style="height: 110px;cursor:auto;">';
+		str+=' <h4> '+result.totalCount+'  </h4> Members In Field Today';		
+		str+=' </span>';
+		
+		
+		 $("#totalMembersWorkingTodayId").html(str);
+		 
 	   });
    }
    function setDefaultImage(img)
