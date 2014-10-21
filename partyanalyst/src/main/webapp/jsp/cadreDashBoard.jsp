@@ -456,7 +456,7 @@ $('#membersCount').addClass('animated fadeInX');
     	   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
     		   location.reload(); 
     	   }
-	      $("#totalMembersWorkingTodayId").html('<h2>'+result.totalCount+'</h2><p>Members <br/>In Field Today</p>');
+	      $("#totalMembersWorkingTodayId").html('<h2>'+result.apCount+'</h2><p>Members <br/>In Field 2 Hours Before</p><h2>'+result.tgCount+'</h2><p>Members <br/>In Field  1 Hours Before</p><h2>'+result.totalCount+'</h2><p>Members <br/>In Field Today</p>');
 	   });
    }
    function setDefaultImage(img)
