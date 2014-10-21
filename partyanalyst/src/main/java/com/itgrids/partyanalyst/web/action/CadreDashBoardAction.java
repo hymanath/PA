@@ -87,7 +87,7 @@ public class CadreDashBoardAction implements ServletRequestAware {
 
 	public String execute(){
 		
-		/*RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 		boolean noaccess = false;
 		if(regVO==null){
 			return "input";
@@ -100,12 +100,26 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		}
 		if(noaccess){
 			return "error";
-		}*/
+		}
 		return Action.SUCCESS;
 	}
 	
 	public String getConstituencyWiseAgeGenderCasteCount(){
 		  try{
+			  RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+				boolean noaccess = false;
+				if(regVO==null){
+					return "input";
+				}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
+					noaccess = true ;
+					
+				}
+				if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+					noaccess = false;
+				}
+				if(noaccess){
+					return "input";
+				}
 			  jObj = new JSONObject(getTask());				
 			  Long constituencyId = jObj.getLong("constituencyId");	
 						  
@@ -131,6 +145,20 @@ public class CadreDashBoardAction implements ServletRequestAware {
   
 	public String getCadreDashBoardBasicInfo(){
 		try{
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			boolean noaccess = false;
+			if(regVO==null){
+				return "input";
+			}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
+				noaccess = true ;
+				
+			}
+			if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+				noaccess = false;
+			}
+			if(noaccess){
+				return "input";
+			}
 			String task = request.getParameter("task");
 			if(task.equalsIgnoreCase("basicInfo")){
 		       result = cadreDashBoardService.getDashBoardBasicInfo();
@@ -154,6 +182,20 @@ public class CadreDashBoardAction implements ServletRequestAware {
 	
 	public String getWorkingMembersInfo(){
 	  try{
+		  RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			boolean noaccess = false;
+			if(regVO==null){
+				return "input";
+			}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
+				noaccess = true ;
+				
+			}
+			if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+				noaccess = false;
+			}
+			if(noaccess){
+				return "input";
+			}
 		String task = request.getParameter("task");
 		if(task.equalsIgnoreCase("workingCount")){
 			info = cadreDashBoardService.getWorkingMembersInfo();
@@ -166,6 +208,20 @@ public class CadreDashBoardAction implements ServletRequestAware {
     
 	public String getLocationWiseRegistrationInfo(){
 		try{
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			boolean noaccess = false;
+			if(regVO==null){
+				return "input";
+			}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
+				noaccess = true ;
+				
+			}
+			if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+				noaccess = false;
+			}
+			if(noaccess){
+				return "input";
+			}
 			String task = request.getParameter("task");
 			if(task.equalsIgnoreCase("assemblyInfo")){
 				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"assembly",request.getParameter("fromDate"),request.getParameter("toDate"));
@@ -201,5 +257,45 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		}
 		
 		return ids;
+	}
+	
+	public String getRepInfo(){
+		try{
+			 RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+				boolean noaccess = false;
+				if(regVO==null){
+					return "input";
+				}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
+					noaccess = true ;
+					
+				}
+				if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+					noaccess = false;
+				}
+				if(noaccess){
+					return "input";
+				}
+			String task = request.getParameter("task");
+			if(task.equalsIgnoreCase("castGroupConsti")){
+			    resultList =  cadreDashBoardService.getCastGroupWiseCadreCount(Long.parseLong(request.getParameter("id")),"constituency");
+			}else if(task.equalsIgnoreCase("castGroupDist")){
+			    resultList =  cadreDashBoardService.getCastGroupWiseCadreCount(Long.parseLong(request.getParameter("id")),"district");
+			}else if(task.equalsIgnoreCase("ageConsti")){
+				resultList =  cadreDashBoardService.getConstituencyWiseAgeRangeCount(Long.parseLong(request.getParameter("id")));
+			}else if(task.equalsIgnoreCase("genderConsti")){
+				resultList =  cadreDashBoardService.getConstituencyWiseGenderCadreCount(Long.parseLong(request.getParameter("id")));
+			}else if(task.equalsIgnoreCase("casteConsti")){
+				resultList =  cadreDashBoardService.getConstituencyWiseCastCadreCount(Long.parseLong(request.getParameter("id")));
+			}else if(task.equalsIgnoreCase("ageDistrict")){
+				resultList =  cadreDashBoardService.getDistrictWiseAgeRangeCount(Long.parseLong(request.getParameter("id")));
+			}else if(task.equalsIgnoreCase("gendDistrict")){
+				resultList =  cadreDashBoardService.getDistrictWiseGenderCadreCount(Long.parseLong(request.getParameter("id")));
+			}else if(task.equalsIgnoreCase("castDistrict")){
+				resultList =  cadreDashBoardService.getDistrictWiseCastCadreCount(Long.parseLong(request.getParameter("id")));
+			}
+		 }catch(Exception e){
+			  LOG.error("Exception rised in getRepInfo ",e);
+		  }
+		return Action.SUCCESS;
 	}
 }

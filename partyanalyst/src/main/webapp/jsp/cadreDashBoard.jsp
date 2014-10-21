@@ -209,12 +209,14 @@ table.dataTable tr.odd {
 	<div id="dialogueDiv" style="display: none;">
 		<center><div id="agewiseDivForDistrict"></div>
 		<div id="genderWiseDivForDistrict"></div>
+		<div id="casteGroupDivForDistrict"></div>
 		<div id="casteWiseDivForDistrict"></div></center>
 	</div>
 
 	<div id="dialogueConstituencyDiv" style="display: none;">
 		<center><div id="agewiseDivForConstituency"></div>
 		<div id="genderWiseDivForConstituency"></div>
+		<div id="casteGroupDivForConstituency"></div>
 		<div id="casteWiseDivForConstituency"></div></center>
 	</div>
 <script type="text/javascript">
@@ -255,6 +257,9 @@ $('#membersCount').addClass('animated fadeInX');
           url: 'getCadreDashBoardBasicInfo.action',
           data: {task:"basicInfo"}
        }).done(function(result){
+    	   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+    		   location.reload(); 
+    	   }
 			$("#todayRegisCount").html('<h2>'+result[0].totalCount+'</h2><p>Members <br/> Registered <span  style="font-weight:bold;"  class="text-red">Today</span></p></div></td>');
 			$("#thisWeekRegisCount").html('<h2>'+result[1].totalCount+'</h2><p>Members <br/>Registered <span style="font-weight:bold;"  class="text-orange">This week</span></p></div></td>');
 			$("#monthRegisCount").html('<h2>'+result[2].totalCount+'</h2><p>Members <br/>Registered <span style="font-weight:bold;" class="text-skyblue">This Month</span></p></div></td>');
@@ -275,6 +280,9 @@ $('#membersCount').addClass('animated fadeInX');
           url: 'getCadreDashBoardBasicInfo.action',
           data: {task:"recentlyRegistered"}
        }).done(function(result){
+    	   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+    		   location.reload(); 
+    	   }
 			if(result != null && result.length > 0){
 			 var str ='<table class="table table-bordered border-radius-0"><tbody>';
 			   for(var i in result){
@@ -312,6 +320,9 @@ $('#membersCount').addClass('animated fadeInX');
           url: 'getCadreDashBoardBasicInfo.action',
           data: {task:"assemblyWise",assemblyId:assId,stateId:statId}
        }).done(function(result){
+    	   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+    		   location.reload(); 
+    	   }
 	      if(result.length > 0){
 		    var str='';
 		    for(var i in result){
@@ -360,6 +371,9 @@ $('#membersCount').addClass('animated fadeInX');
           url: 'getCadreDashBoardBasicInfo.action',
           data: {task:"districtWise",districtId:distId,stateId:statId}
        }).done(function(result){
+    	   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+    		   location.reload(); 
+    	   }
 	       if(result.length > 0){
 		     var str='';
 		    for(var i in result){
@@ -403,7 +417,9 @@ $('#membersCount').addClass('animated fadeInX');
           url: 'getCadreDashBoardBasicInfo.action',
           data: {task:"workStartedConstituency"}
        }).done(function(result){
-			
+    	   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+    		   location.reload(); 
+    	   }
 			$("#tsConstiCountId").html('<h2>'+result[1].totalCount+'</h2><p>Registration Started Constituencies</p></div></td>');
 			$("#ts2012CountId").html('<h2>'+result[1].apCount+'</h2><p>Members <br/>Registered in&nbsp;<span class="text-red">2012</span></p></div></td>');
 			$("#ts2014CountId").html('<h2>'+result[1].tgCount+'</h2><p>Members <br/>Registered in&nbsp;<span class="text-green">2014</span></p></div></td>');
@@ -437,6 +453,9 @@ $('#membersCount').addClass('animated fadeInX');
           url: 'getWorkingMembersInfo.action',
           data: {task:"workingCount"}
        }).done(function(result){
+    	   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+    		   location.reload(); 
+    	   }
 	      $("#totalMembersWorkingTodayId").html('<h2>'+result.totalCount+'</h2><p>Members <br/>In Field Today</p>');
 	   });
    }
@@ -448,6 +467,7 @@ $('#membersCount').addClass('animated fadeInX');
 	        $('#agewiseDivForConstituency').html('<img src="images/Loading-data.gif" style="margin-top: 78px;width:70px;height:60px;">');
 			$('#genderWiseDivForConstituency').html("");
 			$('#casteWiseDivForConstituency').html("");
+			$('#casteGroupDivForConstituency').html("");
 	        $('#dialogueConstituencyDiv')
 						.dialog(
 								{
@@ -455,24 +475,200 @@ $('#membersCount').addClass('animated fadeInX');
 									height:550,
 									title : "Constituency Wise Cadre Age, Gender and Caste Information "
 								});
-			var jsObj = {
-				constituencyId : constId,
-				task : "constituencyWiseAgeGenderCasteCount"
-			}
 
 			$.ajax({
 				type : 'GET',
-				url : 'getConstituencyWiseAgeGenderCasteCount.action',
+				url : 'getRepInfo.action',
 				data : {
-					task : JSON.stringify(jsObj)
+					task :'castGroupConsti',
+					id:constId
 				}
 			}).done(function(result) {
+				if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		    		   location.reload(); 
+		    	   }
 				if (result != null && result.length > 0) {
-					buildDetailsForConstituency(result,"constituency");
+					var str3 = '';
+					str3 += '<h5> CASTE GROUP WISE DETAILS </h5><br/>';
+					
+					str3 += '<table class="table table-bordered m_top20 "  style="width:600px;">';
+					
+					str3 += '<thead>';
+					str3 += '<tr>';
+					str3 += '<th ROWSPAN=2> Caste  </th>';
+					str3 += '<th  COLSPAN=2> 2014  </th>';
+					str3 += '<th  COLSPAN=2> 2012  </th>';
+					str3 += '</tr>';
+					str3 += '<tr>';
+					str3 += '<th> Total  </th>';
+					str3 += '<th> %  </th>';
+					str3 += '<th> Total  </th>';
+					str3 += '<th> %  </th>';
+					str3 += '</tr>';
+					str3 += '</thead>';
+					str3 += '<tbody>';
+
+					var reqRes =result;
+							for ( var i in reqRes) {
+									str3 += '<tr>';
+									str3 += '  <td>' +reqRes[i].name+ '</td>';
+									str3 += '  <td>'+reqRes[i].apCount+ '</td>';
+									str3 += '  <td>'+parseFloat(reqRes[i].percentStr)+ '</td>';
+									str3 += '  <td>'+ reqRes[i].tgCount+ '</td>';
+									str3 += '  <td>'+parseFloat(reqRes[i].area)+ '</td>';
+									str3 += '</tr>';
+							}
+
+					str3 += '</tbody>';
+					str3 += '</table>';
+					$('#casteGroupDivForConstituency').html(str3);
+				}
+			});
+			
+			$.ajax({
+				type : 'GET',
+				url : 'getRepInfo.action',
+				data : {
+					task :"ageConsti",
+					id:constId
+				}
+			}).done(function(result) {
+				if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		    		   location.reload(); 
+		    	   }
+				if (result != null && result.length > 0) {
+					var str = '';
+					str += '<h5> AGE WISE DETAILS </h5>';
+					str += '<table class="table table-bordered m_top20 " id="ageWiseTab" style="width:600px;">';
+					str += '<thead>';
+					str += '<tr>';
+					str += '<th ROWSPAN=2> Age  </th>';
+					str += '<th  COLSPAN=2> 2014  </th>';
+					
+					str += '</tr>';
+					str += '<tr>';
+					str += '<th> Total  </th>';
+					str += '<th> %  </th>';
+					str += '</tr>';
+					str += '</thead>';
+
+					str += '<tbody>';
+		             var reqRes =result;
+							for ( var i in reqRes) {
+									str += '<tr>';
+									str += '  <td>' +reqRes[i].name+ '</td>';
+									str += '  <td>'+ reqRes[i].apCount+ '</td>';
+									str += '  <td>'+ reqRes[i].percentStr+ '</td>';
+									str += '</tr>';
+							}
+					str += '</tbody>';
+					str += '</table>';
+					   $('#agewiseDivForConstituency').html(str);
+				}
+			});
+			
+			$.ajax({
+				type : 'GET',
+				url : 'getRepInfo.action',
+				data : {
+					task :"genderConsti",
+					id:constId
+				}
+			}).done(function(result) {
+				if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		    		   location.reload(); 
+		    	   }
+				if (result != null && result.length > 0) {
+					var str2 = '';
+					str2 += '<h5> GENDER WISE DETAILS </h5>';
+					str2 += '<table class="table table-bordered m_top20 " id="ageWiseTab" style="width:600px;">';
+					str2 += '<thead>';
+					str2 += '<tr>';
+					str2 += '<th ROWSPAN=2> Gender </th>';
+					str2 += '<th  COLSPAN=2> 2014  </th>';
+					str2 += '<th  COLSPAN=2> 2012  </th>';
+					str2 += '</tr>';
+					str2 += '<tr>';
+					str2 += '<th> Total  </th>';
+					str2 += '<th> %  </th>';
+					str2 += '<th> Total  </th>';
+					str2 += '<th> %  </th>';
+					str2 += '</tr>';
+					str2 += '</thead>';
+					str2 += '<tbody>';
+
+					 var reqRes =result;
+							for ( var i in reqRes) {
+									str2 += '<tr>';
+									str2 += '  <td>' +reqRes[i].name+ '</td>';
+									str2 += '  <td>'+ reqRes[i].apCount+ '</td>';
+									str2 += '  <td>'+ reqRes[i].percentStr+ '</td>';
+									str2 += '  <td>'+ reqRes[i].tgCount+ '</td>';
+									str2 += '  <td>'+ reqRes[i].area+ '</td>';
+									str2 += '</tr>';
+							}
+					str2 += '</tbody>';
+					str2 += '</table>';
+					   $('#genderWiseDivForConstituency').html(str2);
+				}
+			});
+			
+			$.ajax({
+				type : 'GET',
+				url : 'getRepInfo.action',
+				data : {
+					task :"casteConsti",
+					id:constId
+				}
+			}).done(function(result) {
+				if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		    		   location.reload(); 
+		    	   }
+				if (result != null && result.length > 0) {
+					var str3 = '';
+					str3 += '<h5> CASTE WISE DETAILS </h5><br/>';
+					str3 += '<table class="table table-bordered m_top20 " id="casteWiseConTab" style="width:600px;">';
+					str3 += '<thead>';
+					str3 += '<tr>';
+					str3 += '<th ROWSPAN=2> Caste  </th>';
+					str3 += '<th ROWSPAN=2> Caste Group </th>';
+					str3 += '<th  COLSPAN=2> 2014  </th>';
+					str3 += '<th  COLSPAN=2> 2012  </th>';
+					str3 += '</tr>';
+					str3 += '<tr>';
+					str3 += '<th> Total  </th>';
+					str3 += '<th> %  </th>';
+					str3 += '<th> Total  </th>';
+					str3 += '<th> %  </th>';
+					str3 += '</tr>';
+					str3 += '</thead>';
+					str3 += '<tbody>';
+
+					var reqRes =result;
+							for ( var i in reqRes) {
+									str3 += '<tr>';
+									str3 += '  <td>' +reqRes[i].name+ '</td>';
+									str3 += '  <td>' +reqRes[i].date+ '</td>';
+									str3 += '  <td>'+reqRes[i].apCount+ '</td>';
+									str3 += '  <td>'+parseFloat(reqRes[i].percentStr)+ '</td>';
+									str3 += '  <td>'+ reqRes[i].tgCount+ '</td>';
+									str3 += '  <td>'+parseFloat(reqRes[i].area)+ '</td>';
+									str3 += '</tr>';
+							}
+
+					str3 += '</tbody>';
+					str3 += '</table>';
+
+					   $('#casteWiseDivForConstituency').html(str3);
+					    $('#casteWiseConTab').dataTable({
+					         "iDisplayLength": 20,
+					          "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+					     });
+					
 				}
 			});
 		}
-		function buildDetailsForConstituency(result,type) {
+	/*function buildDetailsForConstituency(result,type) {
 
 			var str = '';
 			str += '<h5> AGE WISE DETAILS </h5>';
@@ -615,6 +811,211 @@ $('#membersCount').addClass('animated fadeInX');
 			}).done(function(result) {
 				if (result != null && result.length > 0) {
 					buildDetailsForConstituency(result,"district")
+				}
+			});
+		}*/
+		function getDistrictWiseAgeGenderCasteCount(distId) {
+	        $('#agewiseDivForDistrict').html('<img src="images/Loading-data.gif" style="margin-top: 78px;width:70px;height:60px;">');
+			$('#genderWiseDivForDistrict').html("");
+			$('#casteWiseDivForDistrict').html("");
+			$('#casteGroupDivForDistrict').html("");
+			$('#dialogueDiv')
+			.dialog(
+					{
+						width : 850,
+						height:550,
+						title : "District Wise Cadre Age, Gender and Caste Information "
+					});
+
+			$.ajax({
+				type : 'GET',
+				url : 'getRepInfo.action',
+				data : {
+					task :'castGroupDist',
+					id: distId
+				}
+			}).done(function(result) {
+				if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		    		   location.reload(); 
+		    	   }
+				if (result != null && result.length > 0) {
+					var str3 = '';
+					str3 += '<h5> CASTE GROUP WISE DETAILS </h5><br/>';
+					
+					str3 += '<table class="table table-bordered m_top20 "  style="width:600px;">';
+					
+					str3 += '<thead>';
+					str3 += '<tr>';
+					str3 += '<th ROWSPAN=2> Caste  </th>';
+					str3 += '<th  COLSPAN=2> 2014  </th>';
+					str3 += '<th  COLSPAN=2> 2012  </th>';
+					str3 += '</tr>';
+					str3 += '<tr>';
+					str3 += '<th> Total  </th>';
+					str3 += '<th> %  </th>';
+					str3 += '<th> Total  </th>';
+					str3 += '<th> %  </th>';
+					str3 += '</tr>';
+					str3 += '</thead>';
+					str3 += '<tbody>';
+
+					var reqRes =result;
+							for ( var i in reqRes) {
+									str3 += '<tr>';
+									str3 += '  <td>' +reqRes[i].name+ '</td>';
+									str3 += '  <td>'+reqRes[i].apCount+ '</td>';
+									str3 += '  <td>'+parseFloat(reqRes[i].percentStr)+ '</td>';
+									str3 += '  <td>'+ reqRes[i].tgCount+ '</td>';
+									str3 += '  <td>'+parseFloat(reqRes[i].area)+ '</td>';
+									str3 += '</tr>';
+							}
+
+					str3 += '</tbody>';
+					str3 += '</table>';
+					$('#casteGroupDivForDistrict').html(str3);
+				}
+			});
+			
+			$.ajax({
+				type : 'GET',
+				url : 'getRepInfo.action',
+				data : {
+					task :"ageDistrict",
+					id:distId
+				}
+			}).done(function(result) {
+				if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		    		   location.reload(); 
+		    	   }
+				if (result != null && result.length > 0) {
+					var str = '';
+					str += '<h5> AGE WISE DETAILS </h5>';
+					str += '<table class="table table-bordered m_top20 " id="ageWiseTab" style="width:600px;">';
+					str += '<thead>';
+					str += '<tr>';
+					str += '<th ROWSPAN=2> Age  </th>';
+					str += '<th  COLSPAN=2> 2014  </th>';
+					
+					str += '</tr>';
+					str += '<tr>';
+					str += '<th> Total  </th>';
+					str += '<th> %  </th>';
+					str += '</tr>';
+					str += '</thead>';
+
+					str += '<tbody>';
+		             var reqRes =result;
+							for ( var i in reqRes) {
+									str += '<tr>';
+									str += '  <td>' +reqRes[i].name+ '</td>';
+									str += '  <td>'+ reqRes[i].apCount+ '</td>';
+									str += '  <td>'+ reqRes[i].percentStr+ '</td>';
+									str += '</tr>';
+							}
+					str += '</tbody>';
+					str += '</table>';
+					   $('#agewiseDivForDistrict').html(str);
+				}
+			});
+			
+			$.ajax({
+				type : 'GET',
+				url : 'getRepInfo.action',
+				data : {
+					task :"gendDistrict",
+					id:distId
+				}
+			}).done(function(result) {
+				if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		    		   location.reload(); 
+		    	   }
+				if (result != null && result.length > 0) {
+					var str2 = '';
+					str2 += '<h5> GENDER WISE DETAILS </h5>';
+					str2 += '<table class="table table-bordered m_top20 " id="ageWiseTab" style="width:600px;">';
+					str2 += '<thead>';
+					str2 += '<tr>';
+					str2 += '<th ROWSPAN=2> Gender </th>';
+					str2 += '<th  COLSPAN=2> 2014  </th>';
+					str2 += '<th  COLSPAN=2> 2012  </th>';
+					str2 += '</tr>';
+					str2 += '<tr>';
+					str2 += '<th> Total  </th>';
+					str2 += '<th> %  </th>';
+					str2 += '<th> Total  </th>';
+					str2 += '<th> %  </th>';
+					str2 += '</tr>';
+					str2 += '</thead>';
+					str2 += '<tbody>';
+
+					 var reqRes =result;
+							for ( var i in reqRes) {
+									str2 += '<tr>';
+									str2 += '  <td>' +reqRes[i].name+ '</td>';
+									str2 += '  <td>'+ reqRes[i].apCount+ '</td>';
+									str2 += '  <td>'+ reqRes[i].percentStr+ '</td>';
+									str2 += '  <td>'+ reqRes[i].tgCount+ '</td>';
+									str2 += '  <td>'+ reqRes[i].area+ '</td>';
+									str2 += '</tr>';
+							}
+					str2 += '</tbody>';
+					str2 += '</table>';
+					   $('#genderWiseDivForDistrict').html(str2);
+				}
+			});
+			
+			$.ajax({
+				type : 'GET',
+				url : 'getRepInfo.action',
+				data : {
+					task :"castDistrict",
+					id:distId
+				}
+			}).done(function(result) {
+				if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		    		   location.reload(); 
+		    	   }
+				if (result != null && result.length > 0) {
+					var str3 = '';
+					str3 += '<h5> CASTE WISE DETAILS </h5><br/>';
+					str3 += '<table class="table table-bordered m_top20 " id="casteWiseConTab" style="width:600px;">';
+					str3 += '<thead>';
+					str3 += '<tr>';
+					str3 += '<th ROWSPAN=2> Caste  </th>';
+					str3 += '<th ROWSPAN=2> Caste Group </th>';
+					str3 += '<th  COLSPAN=2> 2014  </th>';
+					str3 += '<th  COLSPAN=2> 2012  </th>';
+					str3 += '</tr>';
+					str3 += '<tr>';
+					str3 += '<th> Total  </th>';
+					str3 += '<th> %  </th>';
+					str3 += '<th> Total  </th>';
+					str3 += '<th> %  </th>';
+					str3 += '</tr>';
+					str3 += '</thead>';
+					str3 += '<tbody>';
+
+					var reqRes =result;
+							for ( var i in reqRes) {
+									str3 += '<tr>';
+									str3 += '  <td>' +reqRes[i].name+ '</td>';
+									str3 += '  <td>' +reqRes[i].date+ '</td>';
+									str3 += '  <td>'+reqRes[i].apCount+ '</td>';
+									str3 += '  <td>'+parseFloat(reqRes[i].percentStr)+ '</td>';
+									str3 += '  <td>'+ reqRes[i].tgCount+ '</td>';
+									str3 += '  <td>'+parseFloat(reqRes[i].area)+ '</td>';
+									str3 += '</tr>';
+							}
+
+					str3 += '</tbody>';
+					str3 += '</table>';
+
+					   $('#casteWiseDivForDistrict').html(str3);
+					    $('#casteWiseDistTab').dataTable({
+					         "iDisplayLength": 20,
+					          "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+					     });
+					
 				}
 			});
 		}
