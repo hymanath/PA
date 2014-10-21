@@ -410,8 +410,25 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		CadreRegisterInfo info = new CadreRegisterInfo();
 		try{
 			Date date = dateService.getCurrentDateAndTime();
+			
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(date);
+			
+			cal.add(Calendar.HOUR, -1);
+			Date oneHourBack = cal.getTime();
+			
+			cal.add(Calendar.HOUR, -2);
+			Date towHourBack = cal.getTime();
+			
 			Long count = tdpCadreDAO.getWorkingMembersCount(date);
 			info.setTotalCount(count);
+			
+			Long count1 = tdpCadreDAO.getLastHoursWorkingMemberCount(date, oneHourBack); // field members in the last 1 hr			
+			info.setApCount(count1);
+			
+			Long count2 = tdpCadreDAO.getLastHoursWorkingMemberCount(date, towHourBack); // field members in the last 2 hrs
+			info.setTgCount(count2);
+			
 		}catch(Exception e){
 			LOG.error("Exception rised in getWorkingMembersInfo",e);
 		}
