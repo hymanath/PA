@@ -79,4 +79,12 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public List<String> getCadreImageByPreviousEnrolId(String previousEnrollmentNo);
 	
+	public List<Object[]> getCastGroupWiseCadreCount(Long Id,String type);
+	
+	public List<Object[]> getCasteGroupTotalCount(Long Id, String type);
+	
+	public List<Object[]> getAgeTotalCount(Long Id, String type);
+	
+	public List<Object[]> getGenderTotalCount(Long Id, String type);
+	
 }
