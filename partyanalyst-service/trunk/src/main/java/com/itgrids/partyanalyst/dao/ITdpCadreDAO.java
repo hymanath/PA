@@ -75,6 +75,10 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public List<String> chechForCardNumber(String cardNo);
 	
+	public Long getLastHoursWorkingMemberCount(Date presentDate, Date lastHours);
+	
+	public Integer inActiveTdpCadreByCadreIds(List<Long> tdpCadreIdList);
+	
 	public List<Long> getVoterDetailsByVoterIds(List<Long> voterIdList);
 	
 	public List<String> getCadreImageByPreviousEnrolId(String previousEnrollmentNo);
