@@ -511,9 +511,9 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	{
 		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
 		try {
-			Long totalConstituencyCount2012 = tdpCadreDAO.getGenderTotalCount(constituencyId, 2012L,"constituency");
-			Long totalConstituencyCount2014 = tdpCadreDAO.getGenderTotalCount(constituencyId, 2014L,"constituency");
-			List<CadreRegisterInfo> ageWiseInfo = getConstituencyWiseAgeRangeCount(constituencyId,totalConstituencyCount2012,totalConstituencyCount2014);
+			//Long totalConstituencyCount2012 = tdpCadreDAO.getGenderTotalCount(constituencyId, 2012L,"constituency");
+			//Long totalConstituencyCount2014 = tdpCadreDAO.getGenderTotalCount(constituencyId, 2014L,"constituency");
+			List<CadreRegisterInfo> ageWiseInfo = getConstituencyWiseAgeRangeCount(constituencyId);
 			
 			if(ageWiseInfo != null && ageWiseInfo.size()>0)
 			{
@@ -523,7 +523,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				returnList.add(mainVO);
 			}
 			
-			List<CadreRegisterInfo> genderWiseInfo = getConstituencyWiseGenderCadreCount(constituencyId,totalConstituencyCount2012,totalConstituencyCount2014);
+			List<CadreRegisterInfo> genderWiseInfo = getConstituencyWiseGenderCadreCount(constituencyId);
 			if(genderWiseInfo != null && genderWiseInfo.size()>0)
 			{
 				CadreRegisterInfo mainVO = new CadreRegisterInfo();
@@ -532,7 +532,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				returnList.add(mainVO);
 			}
 			
-			List<CadreRegisterInfo> casteWiseInfo = getConstituencyWiseCastCadreCount(constituencyId,totalConstituencyCount2012,totalConstituencyCount2014);
+			List<CadreRegisterInfo> casteWiseInfo = getConstituencyWiseCastCadreCount(constituencyId);
 			
 			if(casteWiseInfo != null && casteWiseInfo.size()>0)
 			{
@@ -552,9 +552,9 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	{
 		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
 		try {
-			Long totalDistrictCount2012 = tdpCadreDAO.getAgeRangeTotalCount(districtId, 2012L,"district");
-			Long totalDistrictCount2014 = tdpCadreDAO.getAgeRangeTotalCount(districtId, 2014L,"district");
-			List<CadreRegisterInfo> ageWiseInfo = getDistrictWiseAgeRangeCount(districtId,totalDistrictCount2012,totalDistrictCount2014);
+			//Long totalDistrictCount2012 = tdpCadreDAO.getAgeRangeTotalCount(districtId, 2012L,"district");
+			//Long totalDistrictCount2014 = tdpCadreDAO.getAgeRangeTotalCount(districtId, 2014L,"district");
+			List<CadreRegisterInfo> ageWiseInfo = getDistrictWiseAgeRangeCount(districtId);
 			
 			if(ageWiseInfo != null && ageWiseInfo.size()>0)
 			{
@@ -564,7 +564,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				returnList.add(mainVO);
 			}
 			
-			List<CadreRegisterInfo> genderWiseInfo = getDistrictWiseGenderCadreCount(districtId,totalDistrictCount2012,totalDistrictCount2014);
+			List<CadreRegisterInfo> genderWiseInfo = getDistrictWiseGenderCadreCount(districtId);
 			
 			if(genderWiseInfo != null && genderWiseInfo.size()>0)
 			{
@@ -574,7 +574,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				returnList.add(mainVO);
 			}
 			
-			List<CadreRegisterInfo> casteWiseInfo = getDistrictWiseCastCadreCount(districtId,totalDistrictCount2012,totalDistrictCount2014);
+			List<CadreRegisterInfo> casteWiseInfo = getDistrictWiseCastCadreCount(districtId);
 			
 			if(casteWiseInfo != null && casteWiseInfo.size()>0)
 			{
@@ -590,10 +590,21 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		return returnList;
 	}
 	
-	public List<CadreRegisterInfo> getConstituencyWiseAgeRangeCount(Long constituencyId,Long totalConstituencyCount2012,Long totalConstituencyCount2014) {
+	public List<CadreRegisterInfo> getConstituencyWiseAgeRangeCount(Long constituencyId) {
 		List<CadreRegisterInfo> ageWiseTotalList=new ArrayList<CadreRegisterInfo>();
 		try {
-			
+			List<Object[]> countsList = tdpCadreDAO.getAgeTotalCount(constituencyId, "constituency");
+			Long totalConstituencyCount2014 = null;
+			Long totalConstituencyCount2012 = null;
+			for(Object[] counts:countsList){
+				if(counts[1] != null){
+					if(((Long)counts[1]).longValue() == 2012l){
+						totalConstituencyCount2012 = (Long)counts[0];
+					}else if(((Long)counts[1]).longValue() == 2014l){
+						totalConstituencyCount2014 = (Long)counts[0];
+					}
+				}
+			}
 			List<Object[]> cadre18to25info = tdpCadreDAO.getAgeRangeCadreCount(constituencyId,"18-25","constituency");
 			setAgeWiseRangeCount(cadre18to25info,"18-25", totalConstituencyCount2012, totalConstituencyCount2014, ageWiseTotalList);
 			
@@ -616,10 +627,23 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		return ageWiseTotalList;
 	}
 
-	public List<CadreRegisterInfo> getDistrictWiseAgeRangeCount(Long districtId,Long totalDistrictCount2012,Long totalDistrictCount2014) {
+	public List<CadreRegisterInfo> getDistrictWiseAgeRangeCount(Long districtId) {
 		List<CadreRegisterInfo> ageWiseTotalList=new ArrayList<CadreRegisterInfo>();
 		
 		try {	
+			
+			 List<Object[]> countsList = tdpCadreDAO.getAgeTotalCount(districtId, "district");
+				Long totalDistrictCount2014 = null;
+				Long totalDistrictCount2012 = null;
+				for(Object[] counts:countsList){
+					if(counts[1] != null){
+						if(((Long)counts[1]).longValue() == 2012l){
+							totalDistrictCount2012 = (Long)counts[0];
+						}else if(((Long)counts[1]).longValue() == 2014l){
+							totalDistrictCount2014 = (Long)counts[0];
+						}
+					}
+				}
 			List<Object[]> cadre18to25info = tdpCadreDAO.getAgeRangeCadreCount(districtId, "18-25","district");			
 			setAgeWiseRangeCount(cadre18to25info,"18-25", totalDistrictCount2012, totalDistrictCount2014, ageWiseTotalList);
 			
@@ -672,10 +696,21 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		ageWiseTotalList.add(ageVo);
 	} 
 	
-	public List<CadreRegisterInfo> getConstituencyWiseGenderCadreCount(Long constituencyId,Long totalConstituencyCount2012,Long totalConstituencyCount2014){
+	public List<CadreRegisterInfo> getConstituencyWiseGenderCadreCount(Long constituencyId){
 		List<CadreRegisterInfo> genderList = new ArrayList<CadreRegisterInfo>();
 		try{
-
+			 List<Object[]> countsList = tdpCadreDAO.getGenderTotalCount(constituencyId, "constituency");
+				Long totalConstituencyCount2014 = null;
+				Long totalConstituencyCount2012 = null;
+				for(Object[] counts:countsList){
+					if(counts[1] != null){
+						if(((Long)counts[1]).longValue() == 2012l){
+							totalConstituencyCount2012 = (Long)counts[0];
+						}else if(((Long)counts[1]).longValue() == 2014l){
+							totalConstituencyCount2014 = (Long)counts[0];
+						}
+					}
+				}
 			List<Object[]> genderInfoList=tdpCadreDAO.getGenderWiseCadreCount(constituencyId,"constituency");
 			setGenderWiseCount(genderInfoList,genderList,totalConstituencyCount2012,totalConstituencyCount2014);							
 						
@@ -685,11 +720,23 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		return genderList;
 	}
 	
-	public List<CadreRegisterInfo> getDistrictWiseGenderCadreCount(Long districtId,Long totalDistrictCount2012,Long totalDistrictCount2014){
+	public List<CadreRegisterInfo> getDistrictWiseGenderCadreCount(Long districtId){
 		List<CadreRegisterInfo> genderList = new ArrayList<CadreRegisterInfo>();
 		try{
+			 List<Object[]> countsList = tdpCadreDAO.getGenderTotalCount(districtId, "district");
+				Long totalCount2014 = null;
+				Long totalCount2012 = null;
+				for(Object[] counts:countsList){
+					if(counts[1] != null){
+						if(((Long)counts[1]).longValue() == 2012l){
+							totalCount2012 = (Long)counts[0];
+						}else if(((Long)counts[1]).longValue() == 2014l){
+							totalCount2014 = (Long)counts[0];
+						}
+					}
+				}
 			List<Object[]> genderInfoList=tdpCadreDAO.getGenderWiseCadreCount(districtId,"district");
-			setGenderWiseCount(genderInfoList,genderList,totalDistrictCount2012,totalDistrictCount2014);
+			setGenderWiseCount(genderInfoList,genderList,totalCount2012,totalCount2014);
 			
 			} catch (Exception e) {
 				LOG.error("Exception rised in getDistrictWiseGenderCadreCount", e);
@@ -745,12 +792,24 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			
 	}
 
-	public List<CadreRegisterInfo> getConstituencyWiseCastCadreCount(Long constituencyId,Long totalConstituencyCount2012,Long totalConstituencyCount2014){
+	public List<CadreRegisterInfo> getConstituencyWiseCastCadreCount(Long constituencyId){
 		List<CadreRegisterInfo> casteList = new ArrayList<CadreRegisterInfo>();
 		try{
+			List<Object[]> countsList = tdpCadreDAO.getCasteGroupTotalCount(constituencyId, "constituency");
+			Long totalCount2014 = null;
+			Long totalCount2012 = null;
+			for(Object[] counts:countsList){
+				if(counts[1] != null){
+					if(((Long)counts[1]).longValue() == 2012l){
+						totalCount2012 = (Long)counts[0];
+					}else if(((Long)counts[1]).longValue() == 2014l){
+						totalCount2014 = (Long)counts[0];
+					}
+				}
+			}
 			//0 count,1 year,2 casteState ,3 casteName
 			List<Object[]> casteInfoList = tdpCadreDAO.getCastWiseCadreCount(constituencyId,"constituency");
-			setCasteWiseCount(casteInfoList, casteList,totalConstituencyCount2012,totalConstituencyCount2014);				
+			setCasteWiseCount(casteInfoList, casteList,totalCount2012,totalCount2014);				
 		}catch (Exception e) {
 			//LOG.error("Exception rised in getConstituencyWiseCastCadreCount", e);
 		}			
@@ -758,11 +817,23 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		
 	}
 	
-	public List<CadreRegisterInfo> getDistrictWiseCastCadreCount(Long districtId,Long totalDistrictCount2012,Long totalDistrictCount2014){
+	public List<CadreRegisterInfo> getDistrictWiseCastCadreCount(Long districtId){
 		List<CadreRegisterInfo> casteList = new ArrayList<CadreRegisterInfo>();
 		try{
+			List<Object[]> countsList = tdpCadreDAO.getCasteGroupTotalCount(districtId, "district");
+			Long totalCount2014 = null;
+			Long totalCount2012 = null;
+			for(Object[] counts:countsList){
+				if(counts[1] != null){
+					if(((Long)counts[1]).longValue() == 2012l){
+						totalCount2012 = (Long)counts[0];
+					}else if(((Long)counts[1]).longValue() == 2014l){
+						totalCount2014 = (Long)counts[0];
+					}
+				}
+			}
 			List<Object[]> casteInfoList = tdpCadreDAO.getCastWiseCadreCount(districtId,"district");
-			setCasteWiseCount(casteInfoList, casteList,totalDistrictCount2012,totalDistrictCount2014);
+			setCasteWiseCount(casteInfoList, casteList,totalCount2012,totalCount2014);
 		}catch (Exception e) {
 			//LOG.error("Exception rised in getDistrictWiseCastCadreCount", e);
 		}		
@@ -771,15 +842,8 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	
 	public void setCasteWiseCount(List<Object[]> casteInfoList,List<CadreRegisterInfo> casteList,Long totalCount2012,Long totalCount2014){
 		
-		List<CadreRegisterInfo> detailsList = null;
-		//totalCount for count
-		//apCount for entrolmentyear
-		//tgCount for casteStateId
-		//name for casteName
-		//percentage for percentage
-		detailsList = new ArrayList<CadreRegisterInfo>();
 		LinkedHashMap<Long,CadreRegisterInfo> casteMap = new LinkedHashMap<Long,CadreRegisterInfo>();
-		//0 count,1 year,2 casteStateId ,3 casteName
+		//0 count,1 year,2 casteStateId ,3 casteName,4casteGroup
 		for(Object[] caste:casteInfoList){
 			
 			CadreRegisterInfo casteVo = casteMap.get((Long)caste[2]);
@@ -790,6 +854,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				casteVo.setTgCount(0l);//2012 total count
 				casteVo.setPercentStr("0");//2014 perc
 				casteVo.setArea("0");//2012 perc
+				casteVo.setDate(caste[4].toString());//casteGroup
 				casteMap.put((Long)caste[2],casteVo);
 			}
 			if(((Long)caste[1]).longValue() == 2014l){
@@ -1001,4 +1066,52 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		}
 	};
 	
+	public List<CadreRegisterInfo> getCastGroupWiseCadreCount(Long constituencyId,String type){
+		LinkedHashMap<Long,CadreRegisterInfo> casteMap = new LinkedHashMap<Long,CadreRegisterInfo>();
+	 try{
+		List<Object[]> countsList = tdpCadreDAO.getCasteGroupTotalCount(constituencyId, type);
+		Long totalCount2014 = null;
+		Long totalCount2012 = null;
+		for(Object[] counts:countsList){
+			if(counts[1] != null){
+				if(((Long)counts[1]).longValue() == 2012l){
+					totalCount2012 = (Long)counts[0];
+				}else if(((Long)counts[1]).longValue() == 2014l){
+					totalCount2014 = (Long)counts[0];
+				}
+			}
+		}
+		List<Object[]> casteInfoList = tdpCadreDAO.getCastGroupWiseCadreCount(constituencyId,type);
+		//0 count,1 year,2 4casteGroupId ,3 casteGroup
+		for(Object[] caste:casteInfoList){
+			
+			CadreRegisterInfo casteVo = casteMap.get((Long)caste[2]);
+			if(casteVo == null){
+				casteVo = new CadreRegisterInfo();
+				casteVo.setName(caste[3].toString());
+				casteVo.setApCount(0l);//2014 total count
+				casteVo.setTgCount(0l);//2012 total count
+				casteVo.setPercentStr("0");//2014 perc
+				casteVo.setArea("0");//2012 perc
+				//casteVo.setDate(caste[4].toString());//casteGroup
+				casteMap.put((Long)caste[2],casteVo);
+			}
+			if(((Long)caste[1]).longValue() == 2014l){
+				casteVo.setApCount((Long)caste[0]);
+				if(totalCount2014 != null && totalCount2014.longValue() > 0){
+					casteVo.setPercentStr(new BigDecimal((casteVo.getApCount().doubleValue() / totalCount2014.doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				}
+			}else if(((Long)caste[1]).longValue() == 2012l){
+				casteVo.setTgCount((Long)caste[0]);
+				if(totalCount2012 != null && totalCount2012.longValue() > 0){
+					casteVo.setArea(new BigDecimal((casteVo.getTgCount().doubleValue() / totalCount2012.doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				}
+			}
+			
+		}
+	 }catch(Exception e){
+		 LOG.error("Exception rised in getCastGroupWiseCadreCount",e);
+	 }
+		return new ArrayList<CadreRegisterInfo>(casteMap.values());
+	}
 }

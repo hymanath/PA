@@ -535,7 +535,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
   
    public List<Object[]> getCastWiseCadreCount(Long Id,String type) {
 		StringBuilder queryStr=new StringBuilder(); 
-		queryStr.append("select count(model.casteStateId),model.enrollmentYear,model.casteState.casteStateId,model.casteState.caste.casteName "+
+		queryStr.append("select count(model.casteStateId),model.enrollmentYear,model.casteState.casteStateId,model.casteState.caste.casteName,model.casteState.casteCategoryGroup.casteCategory.categoryName "+
 				" from TdpCadre model where model.isDeleted = 'N' ");
 		if (type.equalsIgnoreCase("constituency")) {
 			queryStr.append(" and model.userAddress.constituency.constituencyId = :Id ");
@@ -543,6 +543,23 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 			queryStr.append(" and model.userAddress.district.districtId = :Id ");
 		}
 			queryStr.append(" group by  model.casteState.casteStateId,model.enrollmentYear order by model.casteState.caste.casteName ");
+
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("Id", Id);
+
+		return query.list();
+	}
+
+   public List<Object[]> getCastGroupWiseCadreCount(Long Id,String type) {
+		StringBuilder queryStr=new StringBuilder(); 
+		queryStr.append("select count(model.casteStateId),model.enrollmentYear,model.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.casteState.casteCategoryGroup.casteCategory.categoryName "+
+				" from TdpCadre model where model.isDeleted = 'N' ");
+		if (type.equalsIgnoreCase("constituency")) {
+			queryStr.append(" and model.userAddress.constituency.constituencyId = :Id ");
+		} else if (type.equalsIgnoreCase("district")) {
+			queryStr.append(" and model.userAddress.district.districtId = :Id ");
+		}
+			queryStr.append(" group by  model.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.enrollmentYear  ");
 
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("Id", Id);
@@ -660,6 +677,55 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		
 		query.setParameter("previousEnrollmentNo",previousEnrollmentNo);
 		
+		return query.list();
+	}
+	
+	public List<Object[]> getCasteGroupTotalCount(Long Id, String type){
+
+		StringBuilder queryStr = new StringBuilder();
+
+		queryStr.append("select count(model.tdpCadreId),model.enrollmentYear "
+				+ " from TdpCadre model where model.isDeleted = 'N' ");
+		if (type.equalsIgnoreCase("constituency")) {
+			queryStr.append(" and model.userAddress.constituency.constituencyId = :Id ");
+		} else if (type.equalsIgnoreCase("district")) {
+			queryStr.append(" and model.userAddress.district.districtId = :Id ");
+		}
+		queryStr.append(" and model.casteState.casteStateId is not null group by model.enrollmentYear");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("Id", Id);
+		return query.list();
+	}
+	public List<Object[]> getAgeTotalCount(Long Id, String type){
+
+		StringBuilder queryStr = new StringBuilder();
+
+		queryStr.append("select count(model.tdpCadreId),model.enrollmentYear "
+				+ " from TdpCadre model where model.isDeleted = 'N' ");
+		if (type.equalsIgnoreCase("constituency")) {
+			queryStr.append(" and model.userAddress.constituency.constituencyId = :Id ");
+		} else if (type.equalsIgnoreCase("district")) {
+			queryStr.append(" and model.userAddress.district.districtId = :Id ");
+		}
+		queryStr.append(" and model.age is not null group by model.enrollmentYear");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("Id", Id);
+		return query.list();
+	}
+	
+	public List<Object[]> getGenderTotalCount(Long Id, String type){
+		StringBuilder queryStr = new StringBuilder();
+
+		queryStr.append("select count(model.tdpCadreId),model.enrollmentYear "
+				+ " from TdpCadre model where model.isDeleted = 'N' ");
+		if (type.equalsIgnoreCase("constituency")) {
+			queryStr.append(" and model.userAddress.constituency.constituencyId = :Id ");
+		} else if (type.equalsIgnoreCase("district")) {
+			queryStr.append(" and model.userAddress.district.districtId = :Id ");
+		}
+		queryStr.append(" and model.gender is not null group by model.enrollmentYear");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("Id", Id);
 		return query.list();
 	}
 }
