@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Voters Search</title>
+<title>Voter Caste Search</title>
 
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
@@ -1466,7 +1466,7 @@ if(!flag){
 		str+='<th rowspan ="2">Total Booths</th>';
 		str+='<th colspan ="2">Survey On Going Booths</th>';
 		str+='<th colspan ="2">Redo Booths</th>';
-		str+='<th rowspan ="2">Survey Completed Booths</th>';
+		str+='<th rowspan ="2">Third Party verification Booths</th>';
 		str+='</tr>';
 		str+='<tr>';
 		str+='<th>Total Booths</th>';
@@ -1492,7 +1492,10 @@ if(!flag){
 			str+='<td>'+result[i].surveyprocessCompleted+'</td>';
 			str+='<td>'+result[i].redoBoothsTotal+'</td>';
 			str+='<td>'+result[i].redoBoothsCompleted+'</td>';
-			str+='<td>'+result[i].surveyCompletedBooths+'</td>';
+			if(result[i].surveyCompletedBooths > 0)
+			str+='<td> Y </td>';
+			else
+		    str+='<td> N </td>';
 			
 			str+='</tr>';
 			cnt ++;
