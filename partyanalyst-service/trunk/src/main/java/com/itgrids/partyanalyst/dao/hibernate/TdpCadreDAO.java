@@ -739,7 +739,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
         }else if(orderBy.equalsIgnoreCase("booth")){
         	queryStr.append(" order by cast(model.userAddress.booth.boothId , int) ");
         }else if(orderBy.equalsIgnoreCase("name")){
-        	queryStr.append(" order by model.firstName ");
+        	queryStr.append(" order by model.firstname ");
         }else if(orderBy.equalsIgnoreCase("relativeName")){
         	queryStr.append(" order by model.relativename ");
         }
@@ -764,7 +764,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
         }else if(orderBy.equalsIgnoreCase("booth")){
         	queryStr.append(" order by cast(model.userAddress.booth.boothId , int) ");
         }else if(orderBy.equalsIgnoreCase("name")){
-        	queryStr.append(" order by model.firstName ");
+        	queryStr.append(" order by model.firstname ");
         }else if(orderBy.equalsIgnoreCase("relativeName")){
         	queryStr.append(" order by model.relativename ");
         }
