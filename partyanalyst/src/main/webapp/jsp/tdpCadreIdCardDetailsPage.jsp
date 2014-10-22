@@ -8,7 +8,7 @@
 	<meta http-equiv="Content-Type" content="text/html" charset="utf-8">
     <title>TDP Cadre Search </title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet"/>	
+    
     <link href="css/style.css" rel="stylesheet"/>
     <link href="css/animate.css" rel="stylesheet"/>	
 	<link href="styles/icheck_skins/all.css?v=1.0.2" rel="stylesheet"/>
@@ -48,6 +48,8 @@
 
 	<!-- YUI Dependency files (End) -->
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
+	
+	<link href="css/bootstrap.min.css" rel="stylesheet"/>	
 	
 	<style>
 	.show-grid:hover .block-hover-addBtn{display:table-cell; margin-right:-22px; top:-10px;}/*visibility: visible;*/
@@ -119,7 +121,7 @@
 		</div>
 		<div class="span8 offset2 show-grid pad-10b" style="">
 			<h5 style="text-align:center;"> CADRE DETAILS </h5>
-			<div id="dataTableDIV"></div>
+			<div id="dataTableDIV" class="yui-skin-sam"></div>
 		</div>
 		
 			    	
@@ -291,9 +293,23 @@
 			
 			elLiner.innerHTML=str;
 		};
+		
+		YAHOO.widget.DataTable.image = function(elLiner, oRecord, oColumn, oData){
+			var str='';
+			var name = oData;
+			var image = oRecord.getData("date");
+			
+			
+			str +='<img style="width:80px;height:80px;cursor:pointer;" src="'+image+'" onerror="setDefaultImage(this);" />';
+			
+			elLiner.innerHTML=str;
+		};
+		
+		
 	
 	   var newsColumns = [
 				   {key:"SELECT",label:"SELECT",formatter:YAHOO.widget.DataTable.checkBox},
+				   {key:"PHOTO",label:"PHOTO",formatter:YAHOO.widget.DataTable.image},
 				   {key:"name", label:"NAME"},
 				   {key:"percentStr", label:"RELATIVE NAME"},
 				   {key:"number", label:"MOBILE NO"}
@@ -305,7 +321,7 @@
 		newsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 		newsDataSource.responseSchema = {
 		resultsList: "cadreRegisterInfoList",
-		fields: ["id","name","percentStr","number"],
+		fields: ["id","name","percentStr","number","date"],
 		metaFields: {
 		totalRecords: "totalCount"// Access to value in the server response
 		 },
@@ -332,6 +348,10 @@
 	$(".searchBtn").click(function(){
 		getTotalNewsToChangeKeywords();
 	});
+	
+	function setDefaultImage(img){
+		img.src = "images/mahaNadu/user image.jpg";
+	}
 	
 	</script>
   </body>
