@@ -380,7 +380,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 	
 	public List<Object[]> getPanchayatWiseCadreDetails(Long panchayatId )
 	{
-		Query query = getSession().createQuery("select model.memberShipNo , model.voterId,model.firstname,model.relativename,model.voter.voterId,model.voter.voterIDCardNo from TdpCadre model where model.userAddress.panchayat.panchayatId = :panchayatId");
+		Query query = getSession().createQuery("select model.memberShipNo , model.voterId,model.firstname,model.relativename,model.voter.voterId,model.voter.voterIDCardNo,model.refNo,model.cardNumber,model.image from TdpCadre model where model.userAddress.panchayat.panchayatId = :panchayatId");
 		query.setParameter("panchayatId", panchayatId);
 		return query.list();
 	}
@@ -749,6 +749,14 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		Integer count = query.executeUpdate();
 		
 		return count;
+	}
+	
+
+	public String checkNFCnumberForVoter(Long voterId)
+	{
+		Query query = getSession().createQuery("select model.cardNumber from TdpCadre model where model.voterId = :voterId");
+		query.setParameter("voterId", voterId);
+		return (String) query.uniqueResult();
 	}
 	
 }

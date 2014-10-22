@@ -72,5 +72,5 @@ public interface ICadreRegistrationService {
 		
 	public String getCadreImageByPreviousEnrolId(String enrolmentId,String staticContentLoc);
 	
-	
+	public String checkNFCNumberForVoterId(Long voterId);
 }

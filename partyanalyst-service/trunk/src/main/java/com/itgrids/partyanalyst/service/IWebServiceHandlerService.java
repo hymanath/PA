@@ -59,5 +59,5 @@ public interface IWebServiceHandlerService {
 	public Object getVCadreDataByPanchayatId(Long panchayatId);
 	public Object tagCardIdForNFCReader(String cardNo , Long voetrId);
 	public Object getCadreDetailsForPrinting(String memberNo);
-
+	public Object checkNFCNumberForVoterId(Long voterId);
 }
