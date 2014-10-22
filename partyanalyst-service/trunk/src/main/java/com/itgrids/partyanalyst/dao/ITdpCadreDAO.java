@@ -97,4 +97,8 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public String checkNFCnumberForVoter(Long voterId);
 	
+	public Long getBoothWiseCadreInfoCount(List<Long> boothIds);
+	
+	public Long getPanchayatWiseCadreInfoCount(List<Long> panchayatIds);
+	
 }

@@ -1131,16 +1131,21 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	 }
 		return new ArrayList<CadreRegisterInfo>(casteMap.values());
 	}
-	public List<CadreRegisterInfo> getRegisteredDetailsByLocation(String locationType,List<Long> locationIds,int startIndex,int maxIndex,String orderBy,String orderType){
+	public CadreRegisterInfo getRegisteredDetailsByLocation(String locationType,List<Long> locationIds,int startIndex,int maxIndex,String orderBy,String orderType){
 		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
+		CadreRegisterInfo returnVO = new CadreRegisterInfo();
+		
 	  try{
 		//0 id,1 image,2name,3relative,4mobile,5partNo,6panchayat
 		List<Object[]> cadres = null;
 		CadreRegisterInfo cadreVo = null;
+		Long totalCount = null;
 		if(locationType != null && locationType.equalsIgnoreCase("booth")){
 			cadres = tdpCadreDAO.getBoothWiseCadreInfo(locationIds,startIndex,maxIndex,orderBy,orderType);
+			totalCount = tdpCadreDAO.getBoothWiseCadreInfoCount(locationIds);
 		}else if(locationType != null && locationType.equalsIgnoreCase("panchayat")){
 			cadres = tdpCadreDAO.getPanchayatWiseCadreInfo(locationIds,startIndex,maxIndex,orderBy,orderType);
+			totalCount = tdpCadreDAO.getPanchayatWiseCadreInfoCount(locationIds);
 		}
 		if(cadres != null && cadres.size() > 0){
 			for(Object[] cadre:cadres){
@@ -1178,9 +1183,12 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				returnList.add(cadreVo);
 			}
 		}
+		
+		returnVO.setCadreRegisterInfoList(returnList);
+		returnVO.setTotalCount(totalCount);
 	  }catch(Exception e){
 		  LOG.error("Exception rised in getRegisteredDetailsByLocation",e);
 	  }
-		return returnList;
+		return returnVO;
 	}
 }

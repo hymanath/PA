@@ -100,6 +100,7 @@ public class TdpCadre {
 	private String						cadreAadherNo;
 	private Long						familyVoterId;
 	private String						previousMembershipYear;
+	private String						dispatchStatus;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -629,6 +630,15 @@ public class TdpCadre {
 	public void setPreviousMembershipYear(String previousMembershipYear) {
 		this.previousMembershipYear = previousMembershipYear;
 	}
+	
+	@Column(name="dispatch_status")
+	public String getDispatchStatus() {
+		return dispatchStatus;
+	}
+	public void setDispatchStatus(String dispatchStatus) {
+		this.dispatchStatus = dispatchStatus;
+	}
+	
 	
 	
 	
