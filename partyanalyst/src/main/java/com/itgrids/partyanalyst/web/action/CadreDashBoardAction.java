@@ -298,4 +298,17 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		  }
 		return Action.SUCCESS;
 	}
+	public String getRegisteredDetailsByLocation(){
+		try{
+			int startIndex = Integer.parseInt(request.getParameter("startIndex").trim());
+			int maxIndex = Integer.parseInt(request.getParameter("maxIndex").trim());
+			String orderBy = request.getParameter("orderBy").trim();
+			String orderType = request.getParameter("orderType").trim();
+			List<Long> locationIds = getIds(request.getParameter("locationIds").trim());
+			resultList = cadreDashBoardService.getRegisteredDetailsByLocation(request.getParameter("locationType"),locationIds,startIndex,maxIndex,orderBy,orderType);
+		}catch(Exception e){
+			LOG.error("Exception rised in getRegisteredDetailsByLocation ",e);
+		}
+		return Action.SUCCESS;
+	}
 }
