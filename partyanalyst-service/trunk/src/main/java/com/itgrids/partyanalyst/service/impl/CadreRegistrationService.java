@@ -38,6 +38,8 @@ import com.itgrids.partyanalyst.dao.ICadrePreviousRolesDAO;
 import com.itgrids.partyanalyst.dao.ICadreRolesDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
+import com.itgrids.partyanalyst.dao.ICardReceiverDAO;
+import com.itgrids.partyanalyst.dao.ICardSenderDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
@@ -62,6 +64,7 @@ import com.itgrids.partyanalyst.dto.CadreFamilyVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -74,6 +77,8 @@ import com.itgrids.partyanalyst.model.CadreParticipatedElection;
 import com.itgrids.partyanalyst.model.CadrePreviousRoles;
 import com.itgrids.partyanalyst.model.CadreSurveyUser;
 import com.itgrids.partyanalyst.model.CadreSurveyUserAssignDetails;
+import com.itgrids.partyanalyst.model.CardReceiver;
+import com.itgrids.partyanalyst.model.CardSender;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
@@ -135,8 +140,18 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ICadreRolesDAO						cadreRolesDAO;
 	private ICadreCommitteeRoleDAO				cadreCommitteeRoleDAO;
 	
+	private ICardSenderDAO						cardSenderDAO;
+	private ICardReceiverDAO					cardReceiverDAO;
 	
-	
+
+	public void setCardSenderDAO(ICardSenderDAO cardSenderDAO) {
+		this.cardSenderDAO = cardSenderDAO;
+	}
+
+	public void setCardReceiverDAO(ICardReceiverDAO cardReceiverDAO) {
+		this.cardReceiverDAO = cardReceiverDAO;
+	}
+
 	public void setCadreCommitteeRoleDAO(
 			ICadreCommitteeRoleDAO cadreCommitteeRoleDAO) {
 		this.cadreCommitteeRoleDAO = cadreCommitteeRoleDAO;
@@ -2581,9 +2596,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				userId ="0"+userId;
 			}
 		}
-		String ref="TR-W-"+userId+"-";
+		String ref="TRW"+userId;
 		if(registrationType.equalsIgnoreCase("ONLINE")){
-			ref="TR-O-"+userId+"-";
+			ref="TRO"+userId;
 		}
 		
 		return ref;
@@ -2948,42 +2963,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				   if(status.equalsIgnoreCase("success")){
 					   tdpCadre.setImage(tdpCadre.getMemberShipNo()+".jpg");
 					   LOG.error("Success:"+tdpCadre.getMemberShipNo()+".jpg");
-				   }else{
-					   if(tdpCadre.getVoterId() != null){
-							Voter voter = voterDAO.get(tdpCadre.getVoterId());
-							if(voter != null && cadreRegistrationVO.getConstituencyId() != null && Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()).longValue() > 0){
-								List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()), voter.getVoterId());
-								if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
-								   sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +"voter_images"+pathSeperator+cadreRegistrationVO.getConstituencyId().trim()+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo().trim()+".jpg";
-								   LOG.error("CADRENOTVOTER: SP:"+sourcePath+" DP:"+destinationPath+" VOTERID: "+voter.getVoterId());
-								    status = copyFile(sourcePath,destinationPath);
-								   if(status.equalsIgnoreCase("success")){
-									   tdpCadre.setImage(tdpCadre.getMemberShipNo()+".jpg");
-									   LOG.error("Success:"+tdpCadre.getMemberShipNo()+".jpg");
-								   }
-								}
-						   }
-					  }
 				   }
-			  }else{
-				   if(tdpCadre.getVoterId() != null){
-						Voter voter = voterDAO.get(tdpCadre.getVoterId());
-						 String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
-						if(voter != null && cadreRegistrationVO.getConstituencyId() != null && Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()).longValue() > 0){
-							List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(cadreRegistrationVO.getConstituencyId().trim()), voter.getVoterId());
-							if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
-								 String destinationPath = IConstants.STATIC_CONTENT_FOLDER_URL+"images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
-							   String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +"voter_images"+pathSeperator+cadreRegistrationVO.getConstituencyId().trim()+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo().trim()+".jpg";
-							   LOG.error("CADRENOTVOTER: SP:"+sourcePath+" DP:"+destinationPath+" VOTERID: "+voter.getVoterId());
-							    String status = copyFile(sourcePath,destinationPath);
-							   if(status.equalsIgnoreCase("success")){
-								   tdpCadre.setImage(tdpCadre.getMemberShipNo()+".jpg");
-								   LOG.error("Success:"+tdpCadre.getMemberShipNo()+".jpg");
-							   }
-							}
-					   }
-				  }
-			   }
+			  }
 		  }
 		}else if(cadreRegistrationVO.getPhotoType() != null && cadreRegistrationVO.getPhotoType().trim().equalsIgnoreCase("voter") ){
 		  if(tdpCadre.getVoterId() != null){
@@ -3138,10 +3119,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					cadrePrintVO.setMandalEng(userAddress.getTehsil() != null ?  userAddress.getTehsil().getTehsilName() :"");
 					cadrePrintVO.setConstiEng(userAddress.getConstituency() != null ?  userAddress.getConstituency().getName()  : "");
 					cadrePrintVO.setDistrictEng(userAddress.getDistrict() != null ?  userAddress.getDistrict().getDistrictName() :"");
-					cadrePrintVO.setRefNumber(objects[6] != null ? objects[6].toString() : "");
-					cadrePrintVO.setCardNumber(objects[7] != null ? objects[7].toString() : "");
-					cadrePrintVO.setImage(objects[8]!= null ? objects[8].toString() :  "");
-					returnList.add(cadrePrintVO);
+				 returnList.add(cadrePrintVO);
 			 }
 		 }
 		} catch (Exception e) {
@@ -3351,7 +3329,6 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}
 		return null;
 	}
-	
 	public List<GenericVO> getBoothsForMultipleLocations(Long constituencyId, List<Long> locationIds){
 		LOG.info("Exception raised in getBoothdForMultipleLocations in CadreRegistrationService service");
 		List<GenericVO> returnList = null;
@@ -3472,4 +3449,105 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}
 		return status;
 	}
+	
+	
+	/**
+	 * This service is used for saving CardSender data and CardReceiver Data.
+	 * @author Sreenivas
+	 * @date 21-10-2014
+	 * @param CardSenderVO
+	 * @return surveyCadreResponceVO
+	 */
+		
+	public SurveyCadreResponceVO saveCardSenderAndReceiverRegistration(final CardSenderVO cardSenderVO)
+	{
+		final SurveyCadreResponceVO surveyCadreResponceVO = new SurveyCadreResponceVO();
+		
+		try {
+			LOG.info("Entered into saveCardSenderAndReceiverRegistration in CadreRegistrationService service");
+			
+			if(cardSenderVO != null)
+			{
+				CardSender cardSender=new CardSender();
+				List<CardReceiver> cardReceiverList=new ArrayList<CardReceiver>();
+				tdpCardSenderSavingLogic(cardSenderVO,cardSender,cardReceiverList,surveyCadreResponceVO);						
+							
+			}				
+
+		} catch (Exception e) {
+			surveyCadreResponceVO.setResultCode(ResultCodeMapper.FAILURE);
+			surveyCadreResponceVO.setStatus("EXCEPTION");
+			LOG.error("Exception raised in saveCardSenderAndReceiverRegistration in CadreRegistrationService service", e);
+		}
+		
+		return surveyCadreResponceVO;
+	}
+	
+	
+	/**
+	 * @author Sreenivas
+	 * @date 21-10-2014
+	 * @param CardSenderVO
+	 * @param surveyCadreResponceVO
+	 */
+	public void tdpCardSenderSavingLogic(final CardSenderVO cardSenderVO,final CardSender cardSender, final List<CardReceiver> cardReceiverList,final SurveyCadreResponceVO surveyCadreResponceVO)
+	{
+		try {	
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+					
+					if(cardSenderVO.getName() != null && !cardSenderVO.getName().equalsIgnoreCase("null") && cardSenderVO.getName().trim().length() > 0)
+					{
+						cardSender.setName(cardSenderVO.getName());
+					}
+					if(cardSenderVO.getMobileNumber() != null && !cardSenderVO.getMobileNumber().equalsIgnoreCase("null") && cardSenderVO.getMobileNumber().trim().length() > 0)
+					{
+						cardSender.setMobileNo(cardSenderVO.getMobileNumber());
+					}
+					if(cardSenderVO.getMessage() != null && !cardSenderVO.getMessage().equalsIgnoreCase("null") && cardSenderVO.getMessage().trim().length() > 0)
+					{
+						cardSender.setMessage(cardSenderVO.getMessage());
+					}
+					if(cardSenderVO.getUserId() != null && Long.valueOf(cardSenderVO.getUserId()) > 0)
+					{
+						cardSender.setUserId(cardSenderVO.getUserId());
+					}
+					cardSender.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					cardSender.setIsDeleted("N");
+					
+					if(cardSenderVO.getTdpCadreIds() != null && !cardSenderVO.getTdpCadreIds().equalsIgnoreCase("null") && cardSenderVO.getTdpCadreIds().trim().length() > 0)
+					{   List<Long> tdpCadreIds=new ArrayList<Long>();
+						String[] tdpIds=cardSenderVO.getTdpCadreIds().split(",");
+						if(tdpIds != null && tdpIds.length > 0){
+							for(String Id:tdpIds){
+								tdpCadreIds.add(Long.valueOf(Id));
+							}
+							
+						}
+						cardSender.setTdpCadreIds(tdpCadreIds);
+					}
+					
+					CardSender cardSender1=cardSenderDAO.save(cardSender);
+					if(cardSender1!=null){
+						List<Long> tdpCardreIdsList=cardSender1.getTdpCadreIds();
+						for(Long tdpCadreId:tdpCardreIdsList){
+							CardReceiver cardReceiver=new CardReceiver();
+							cardReceiver.setCardSenderId(cardSender1.getCardSenderId());
+							cardReceiver.setTdpCadreId(tdpCadreId);
+							cardReceiver.setIsDeleted("N");
+							cardReceiverDAO.save(cardReceiver);
+						}
+					}
+			
+					surveyCadreResponceVO.setStatus("SUCCESS");
+					surveyCadreResponceVO.setResultCode(ResultCodeMapper.SUCCESS);
+				
+				}
+			});
+		} catch (Exception e) {
+			LOG.error("Exception raised in tdpCardSenderSavingLogic in CadreRegistrationService service", e);
+		}
+	}
+	
+	 
 }
