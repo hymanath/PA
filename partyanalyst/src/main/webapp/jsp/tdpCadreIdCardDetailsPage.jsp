@@ -122,8 +122,26 @@
 			<div id="dataTableDIV"></div>
 		</div>
 		
-	</div>
-	
+			    	
+		<div class="span6 offset3 show-grid pad-10b" style="">
+		
+			<h5 class="text-align">CardSender Details</h5>
+
+			<div id="cardSenderDiv" style="color:#ff0020;" >
+			Name:<input type="text" name="name"></br>
+			Mobile Number:<input type="text" name="mobileNumber"></br>
+			Message:<input type="text" name="message"></br>
+		    </div>
+			
+		    <div id="tdpCadreIdsDiv" style="color:#ff0020;">
+		   
+		    </div>
+			
+			<img src='images/icons/search.gif' id="loadingImg" style="display:none;"/>
+				
+			<a href="javascript:{cardSenderAndReceiver();}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Submit <span class="glyphicon glyphicon-chevron-right"></span></a>
+			
+		</div>
 
 		<!-- Footer Row -->
 		<div class="row-fluid">
@@ -204,6 +222,30 @@
 					}
 				});
 	}
+
+	function cardSenderAndReceiver(){			
+		var jsObj = 
+			   {
+					name:"sreenivas",
+					mobileno:"9985360898",
+					message:"Welcome",
+					tdpcadreids:[1,2,3,4,5,6],
+					task:"setCardSenderReceiverDetails"             
+			   }				   
+			   $.ajax({
+					type : "POST",
+					url : "setCardSenderAndReceiverDetailsAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					$('#loadingImg').hide();
+					if(result != null )
+					{
+						alert("Success");
+					}
+					
+				});
+	}	
+	
 	
 	function getRegCadreOfLocation(num){
 		var cosntiteucnyId = $('#userConstituencyId').val();
