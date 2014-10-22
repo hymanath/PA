@@ -25,6 +25,15 @@ public class CadrePrintVO implements Serializable{
 	private Long voterId;
 	private String voterCardNo;
 	private String image;
+	private String voterImgPath;
+	
+
+	
+	private String village;
+	private String mandal;
+	private String constituency;
+	private String district;
+	private String name;
 	
 	public Long getCadrePrintVOId() {
 		return cadrePrintVOId;
@@ -116,11 +125,12 @@ public class CadrePrintVO implements Serializable{
 	public void setVoterCardNo(String voterCardNo) {
 		this.voterCardNo = voterCardNo;
 	}
-	public String getRefNumber() {
-		return refNumber;
+	
+	public String getImage() {
+		return image;
 	}
-	public void setRefNumber(String refNumber) {
-		this.refNumber = refNumber;
+	public void setImage(String image) {
+		this.image = image;
 	}
 	public String getCardNumber() {
 		return cardNumber;
@@ -128,11 +138,47 @@ public class CadrePrintVO implements Serializable{
 	public void setCardNumber(String cardNumber) {
 		this.cardNumber = cardNumber;
 	}
-	public String getImage() {
-		return image;
+	public String getRefNumber() {
+		return refNumber;
 	}
-	public void setImage(String image) {
-		this.image = image;
+	public void setRefNumber(String refNumber) {
+		this.refNumber = refNumber;
+	}
+	public String getVillage() {
+		return village;
+	}
+	public void setVillage(String village) {
+		this.village = village;
+	}
+	public String getMandal() {
+		return mandal;
+	}
+	public void setMandal(String mandal) {
+		this.mandal = mandal;
+	}
+	public String getConstituency() {
+		return constituency;
+	}
+	public void setConstituency(String constituency) {
+		this.constituency = constituency;
+	}
+	public String getDistrict() {
+		return district;
+	}
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getVoterImgPath() {
+		return voterImgPath;
+	}
+	public void setVoterImgPath(String voterImgPath) {
+		this.voterImgPath = voterImgPath;
 	}
 	
 	
