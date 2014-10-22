@@ -1391,6 +1391,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					{
 						returnList = new ArrayList<VoterInfoVO>();
 						vo = new VoterInfoVO();
+						if(tdpCadre.getImage() != null && tdpCadre.getImage().trim().length() > 0){
+							   vo.setImage("images/"+ IConstants.CADRE_IMAGES + "/" + tdpCadre.getImage());
+							}
 						try {
 								vo.setCadreId(tdpCadre.getTdpCadreId());
 								Date dateOfBirth = tdpCadre.getDateOfBirth() != null ? tdpCadre.getDateOfBirth():null;
