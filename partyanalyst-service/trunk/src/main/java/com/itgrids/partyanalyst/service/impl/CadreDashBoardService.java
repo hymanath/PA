@@ -1131,4 +1131,56 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	 }
 		return new ArrayList<CadreRegisterInfo>(casteMap.values());
 	}
+	public List<CadreRegisterInfo> getRegisteredDetailsByLocation(String locationType,List<Long> locationIds,int startIndex,int maxIndex,String orderBy,String orderType){
+		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
+	  try{
+		//0 id,1 image,2name,3relative,4mobile,5partNo,6panchayat
+		List<Object[]> cadres = null;
+		CadreRegisterInfo cadreVo = null;
+		if(locationType != null && locationType.equalsIgnoreCase("booth")){
+			cadres = tdpCadreDAO.getBoothWiseCadreInfo(locationIds,startIndex,maxIndex,orderBy,orderType);
+		}else if(locationType != null && locationType.equalsIgnoreCase("panchayat")){
+			cadres = tdpCadreDAO.getPanchayatWiseCadreInfo(locationIds,startIndex,maxIndex,orderBy,orderType);
+		}
+		if(cadres != null && cadres.size() > 0){
+			for(Object[] cadre:cadres){
+				cadreVo = new CadreRegisterInfo();
+				cadreVo.setId((Long)cadre[0]);//id
+				if(cadre[1] != null){
+				   cadreVo.setDate(cadre[1].toString());//image
+				}
+				if(cadre[2] != null){
+				  cadreVo.setName(cadre[2].toString());//name
+				}else{
+					cadreVo.setName("");
+				}
+				if(cadre[3] != null){
+					   cadreVo.setPercentStr(cadre[3].toString());//relative
+				}else{
+				   cadreVo.setPercentStr("");
+				}
+				if(cadre[4] != null){
+				   cadreVo.setNumber(cadre[4].toString());//mobile
+				}else{
+				   cadreVo.setNumber("");
+				}
+				if(cadre[5] != null){
+				   cadreVo.setLocation(cadre[5].toString());//booth
+				}else{
+				   cadreVo.setLocation("");
+				}
+				if(cadre[6] != null){
+				   cadreVo.setArea(cadre[6].toString());//panchayat
+				}else{
+				   cadreVo.setArea("");
+				}
+				
+				returnList.add(cadreVo);
+			}
+		}
+	  }catch(Exception e){
+		  LOG.error("Exception rised in getRegisteredDetailsByLocation",e);
+	  }
+		return returnList;
+	}
 }

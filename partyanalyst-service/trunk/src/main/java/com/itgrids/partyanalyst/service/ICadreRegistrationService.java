@@ -72,5 +72,7 @@ public interface ICadreRegistrationService {
 		
 	public String getCadreImageByPreviousEnrolId(String enrolmentId,String staticContentLoc);
 	
+	public List<GenericVO> getBoothsForMultipleLocations(Long constituencyId, List<Long> locationIds);
+	
 	public String checkNFCNumberForVoterId(Long voterId);
 }

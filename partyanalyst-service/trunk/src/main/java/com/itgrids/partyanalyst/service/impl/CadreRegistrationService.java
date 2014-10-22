@@ -3352,6 +3352,101 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return null;
 	}
 	
+	public List<GenericVO> getBoothsForMultipleLocations(Long constituencyId, List<Long> locationIds){
+		LOG.info("Exception raised in getBoothdForMultipleLocations in CadreRegistrationService service");
+		List<GenericVO> returnList = null;
+		try {
+			Constituency constituency = constituencyDAO.get(constituencyId);
+			if(constituency != null)
+			{
+				String araaType = constituency.getAreaType();
+
+				List<Object[]> tehsilList = tehsilDAO.findTehsilsByConstituencyIdAndPublicationDateId(constituencyId,IConstants.VOTER_DATA_PUBLICATION_ID); // 11
+				
+				List<Long> tehsilIds = new ArrayList<Long>();
+				returnList = new ArrayList<GenericVO>();
+				
+				if(tehsilList != null && tehsilList.size()>0)
+				{
+					for (Object[] param : tehsilList) 
+					{
+						tehsilIds.add(param[0] != null ? Long.valueOf(param[0].toString()):0L);
+					}
+				}
+				
+				
+				if(araaType != null && araaType.equalsIgnoreCase("RURAL") || araaType.equalsIgnoreCase("RURAL-URBAN")){	
+					List<Object[]> localelectinbody = localElectionBodyDAO.getMuncipalitiesAndCorporationsInAConstituency(tehsilIds);
+					List<Long> localElectionBodyIds = new ArrayList<Long>();
+					if(localelectinbody != null && localelectinbody.size()>0)
+					{
+						for (Object[] param : localelectinbody){
+							if(param[0]!=null){
+								localElectionBodyIds.add(Long.valueOf(param[0].toString()));
+							}
+						}
+					}
+					
+					List<Long> lclElectnBdyIds = new ArrayList<Long>();
+					List<Long> thslIds = new ArrayList<Long>();
+					for(Long lctnId:locationIds){
+						if(localElectionBodyIds.contains(lctnId)){
+							lclElectnBdyIds.add(lctnId);
+						}else{
+							thslIds.add(lctnId);
+						}
+					}
+					
+					if(lclElectnBdyIds != null && lclElectnBdyIds.size()>0){
+						List<Object[]> boothList = boothDAO.getAllBoothsInMuncipalities(lclElectnBdyIds, IConstants.VOTER_DATA_PUBLICATION_ID);
+						
+						if(boothList != null && boothList.size()>0){
+							for (Object[] param : boothList){
+								GenericVO vo = new GenericVO();
+								
+								vo.setId(param[0] != null ? Long.valueOf(param[0].toString()):0L);
+								vo.setName(param[1] != null ? "Booth - "+param[1].toString() + "  ("+(param[2] != null? param[2].toString()+") ":""):"");
+								
+								returnList.add(vo);
+							}
+						}
+					}
+					
+					else{
+						List<Object[]> boothList = boothDAO.getBoothIdsByPanchayatIdsInAPublication(thslIds,  IConstants.VOTER_DATA_PUBLICATION_ID);
+						if(boothList != null && boothList.size()>0){
+							for (Object[] param : boothList){
+								GenericVO vo = new GenericVO();
+								
+								vo.setId(param[0] != null ? Long.valueOf(param[0].toString()):0L);
+								vo.setName(param[2] != null ? "Booth - "+param[2].toString() + "  ("+(param[3] != null? param[3].toString()+") ":""):"");
+								
+								returnList.add(vo);
+							}
+						}
+					}
+				}
+				else{
+					List<Object[]> boothList = boothDAO.getAllBoothsInUrban(constituencyId, IConstants.VOTER_DATA_PUBLICATION_ID);
+					
+					if(boothList != null && boothList.size()>0)	{
+						for (Object[] param : boothList){
+							GenericVO vo = new GenericVO();
+							
+							vo.setId(param[0] != null ? Long.valueOf(param[0].toString()):0L);
+							vo.setName(param[1] != null ? "Booth - "+param[1].toString() + "  ("+(param[2] != null? param[2].toString()+") ":""):"");
+							
+							returnList.add(vo);
+						}
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getBoothdForMultipleLocations in CadreRegistrationService service", e);
+		}
+		return returnList; 
+	}
 	public String checkNFCNumberForVoterId(Long voterId)
 	{
 		String status = "fail";
@@ -3377,6 +3472,4 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}
 		return status;
 	}
-	
-	
 }
