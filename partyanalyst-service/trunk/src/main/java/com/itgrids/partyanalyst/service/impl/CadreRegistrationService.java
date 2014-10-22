@@ -3590,5 +3590,25 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return surveyCadreResponceVO;
 	}
 	
+	public String delinkNFCNumber(String cardNumber,Long voterId)
+	{
+		String status = "fail";
+		try {
+				
+			Integer count = tdpCadreDAO.updateNFCCardNumberByVoterIdForDelink(voterId,cardNumber);
+			if(count != null && count.longValue() > 0)
+			{
+				status = "success";
+			}			
+			else
+			{
+				status = "failed";
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in delinkNFCNumber in CadreRegistrationService service", e);
+		}
+		return status;
+	}
 	 
 }

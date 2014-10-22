@@ -78,4 +78,6 @@ public interface ICadreRegistrationService {
 	public String checkNFCNumberForVoterId(Long voterId);
 	
 	public SurveyCadreResponceVO tdpCardSenderSavingLogic(final CardSenderVO cardSenderVO);
+
+	public String delinkNFCNumber(String cardNumber,Long voterId);
 }
