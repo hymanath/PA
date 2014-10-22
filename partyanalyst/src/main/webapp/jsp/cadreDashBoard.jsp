@@ -191,7 +191,20 @@ table.dataTable tr.odd {
 				<table class="table table-bordered border-radius-0" style="margin-top: 5px;">
 					<tbody >
 						<tr>
-							<td><div style="text-align:center;" id="totalMembersWorkingTodayId"><img style=" margin-top: 36px;padding-left: 110px;" src="images/icons/search.gif"/></div></td>
+							<td>
+								Select Hours :
+								<select id="hoursId" onChange="getWorkingMembersInfo();">
+									<option value="0" selected="selected">All</option>
+									<option value="1">1 Hour Back </option>
+									<option value="2">2 Hours Back </option>
+									<option value="3">3 Hours Back </option>
+									<option value="4">4 Hours Back </option>
+									<option value="5">5 Hours Back </option>
+								</select>
+								<div style="text-align:center;" id="totalMembersWorkingTodayId">
+									<img style=" margin-top: 36px;padding-left: 110px;" src="images/icons/search.gif"/>
+								</div>
+							</td>
 							<td style="width:50%;text-align:center;"><div><a href="javascript:{}" onclick="openDialogToTrack();">Click Here To View</br> Users Working Status </br> & </br> Location Wise Cadre Registration Info</a></div></b></td>
 						</tr>
 					</tbody>
@@ -448,29 +461,37 @@ $('#membersCount').addClass('animated fadeInX');
    }
    function getWorkingMembersInfo(){
         $("#totalMembersWorkingTodayId").html('<img style=" margin-top: 36px;padding-left: 110px;" src="images/icons/search.gif"/>');
+		var hoursCount = $('#hoursId').val();
          $.ajax({
           type:'GET',
           url: 'getWorkingMembersInfo.action',
-          data: {task:"workingCount"}
+          data: {task:"workingCount",hours:hoursCount}
        }).done(function(result){
-
-	    //  $("#totalMembersWorkingTodayId").html('<h2>'+result.apCount+'<p>Members <br/>In Field 2 Hours Before</p>'+result.tgCount+'<p>Members <br/>In Field  1 Hours Before</p>'+result.totalCount+'</h2><p>Members <br/>In Field Today</p>');
 		
-		var str = '';
-		str+=' <span class="span4 btn "  style="height: 110px;cursor:auto;">';
-		str+=' <h4> '+result.apCount+' </h4> Members In Field, in last 2 Hours';		
-		str+=' </span>';
+		if(hoursCount != 0)
+		{	     
+		  $("#totalMembersWorkingTodayId").html('<h2>'+result.totalCount+'</h2><p>Members In Field, <br/> before last '+hoursCount+' Hour(s) </p>');
+		}
+		else
+		{
+			$("#totalMembersWorkingTodayId").html('<h2>'+result.totalCount+'</h2><p> Members <br/> In Field Today </p>');
+		}
 		
-		str+=' <span class="span4 btn "  style="height: 110px;cursor:auto;">';
-		str+=' <h4> '+result.tgCount+' </h4> Members In Field, in last 1 Hour';		
-		str+=' </span>';
-		
-		str+=' <span class="span4 btn "  style="height: 110px;cursor:auto;">';
-		str+=' <h4> '+result.totalCount+'  </h4> Members In Field Today';		
-		str+=' </span>';
-		
-		
-		 $("#totalMembersWorkingTodayId").html(str);
+		/*
+			var str = '';
+			str+=' <span class="span4 btn "  style="height: 110px;cursor:auto;">';
+			str+=' <h4> '+result.apCount+' </h4> Members In Field, in last 2 Hours';		
+			str+=' </span>';
+			
+			str+=' <span class="span4 btn "  style="height: 110px;cursor:auto;">';
+			str+=' <h4> '+result.tgCount+' </h4> Members In Field, in last 1 Hour';		
+			str+=' </span>';
+			
+			str+=' <span class="span4 btn "  style="height: 110px;cursor:auto;">';
+			str+=' <h4> '+result.totalCount+'  </h4> Members In Field Today';		
+			str+=' </span>';	
+			$("#totalMembersWorkingTodayId").html(str);
+		 */
 		 
 	   });
    }
