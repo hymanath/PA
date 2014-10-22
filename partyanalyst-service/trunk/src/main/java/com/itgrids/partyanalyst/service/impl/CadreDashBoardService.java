@@ -405,7 +405,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		
 		return returnList;
 	}
-	
+	/*
 	public CadreRegisterInfo getWorkingMembersInfo(){
 		CadreRegisterInfo info = new CadreRegisterInfo();
 		try{
@@ -429,6 +429,40 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			Long count2 = tdpCadreDAO.getLastHoursWorkingMemberCount(date, towHourBack); // field members in the last 2 hrs
 			info.setTgCount(count2);
 			
+		}catch(Exception e){
+			LOG.error("Exception rised in getWorkingMembersInfo",e);
+		}
+		
+		return info;
+	}
+	*/
+	public CadreRegisterInfo getWorkingMembersInfo(String hours)
+	{
+		CadreRegisterInfo info = new CadreRegisterInfo();
+		try{
+			Date date = dateService.getCurrentDateAndTime();
+			
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(date);
+			
+			Date hourBack = null;
+			Long count  = 0L;
+			
+			if(hours != null && hours.trim().length()>0 && !hours.equalsIgnoreCase("0"))
+			{
+				int hourCount = Integer.valueOf(hours);						
+				cal.add(Calendar.HOUR, -hourCount);
+				hourBack = cal.getTime();
+				
+				count = tdpCadreDAO.getLastHoursWorkingMemberCount(date,hourBack);
+			}
+			else
+			{
+				count = tdpCadreDAO.getWorkingMembersCount(date);
+			}
+			
+			info.setTotalCount(count);
+
 		}catch(Exception e){
 			LOG.error("Exception rised in getWorkingMembersInfo",e);
 		}
