@@ -1287,9 +1287,10 @@
 	</div>
 	<!----  srishailam starts  -->
 	
-		<div class="span12" >
+		<div class="container" >
+		  <div class="span12" >
 				<div class="row-fluid">
-					<div class="span  offset3 show-grid m_top10"  id="fadeInLeft" style="margin-left:204px;margin-bottom:10px;">						
+					<div class="span  offset3 show-grid m_top10"  id="fadeInLeft" style="margin-left:0px;margin-bottom:10px;">						
 						<div class="m_top10">
 						<div class="span12 " style="position: relative;">
 							<h3 class="text-align "> FAMILY DETAILS </h3>
@@ -1393,15 +1394,18 @@
 											<tbody>	
 										<input type="hidden" value="0" class="countVar"></input>
 											<tr class="voterDev0">
-												<td> 
-													<input type="text" class="form-control border-radius-0 text-align2" placeholder=" Voter Name "  ></input> 
-													<input type="hidden" class="form-control border-radius-0 text-align2"  name="cadreRegistrationVO.cadreFamilyDetails[0].voterId"  ;"></input> 
+											    <td style="width:25px;text-align:center;">   
+													<input type="checkbox" id="checkBox0"   class="nomineeCls" onclick="nomineeUpdate('checkBox0',0)" style="margin-top: -10px;" title="Click here to add make this member as nominee.">
 												</td>
 												<td> 
-													<input type="text" class="form-control border-radius-0 text-align2" placeholder=" Voter Id " name="cadreRegistrationVO.cadreFamilyDetails[0].voterCadreNO"  style="width:120px;"></input>
+													<input type="text" class="form-control border-radius-0 text-align2" name="cadreRegistrationVO.cadreFamilyDetails[0].voterName" id="voterName0"  placeholder=" Voter Name "  ></input> 
+													<input type="hidden" id="voterId0" class="form-control border-radius-0 text-align2"  name="cadreRegistrationVO.cadreFamilyDetails[0].voterId"  ;"></input> 
+												</td>
+												<td> 
+													<input type="text" id="voterCard0" class="form-control border-radius-0 text-align2" placeholder=" Voter Id " name="cadreRegistrationVO.cadreFamilyDetails[0].voterCadreNO"  style="width:120px;"></input>
 												</td>
 												<td style="width:80px;"> 
-													<input type="text" class="form-control border-radius-0 text-align2" placeholder=" Age " style="width:50px;"></input> 
+													<input type="text" id="voterAge0" class="form-control border-radius-0 text-align2" placeholder=" Age " style="width:50px;"></input> 
 												</td>
 												<td style="width:80px;">
 													<input type="text" class="form-control border-radius-0 text-align2" placeholder="Gender"  style="width:50px;"> </input>
@@ -1441,6 +1445,7 @@
 						</div>
 					</div>
 				
+	</div>
 	</div>
 	</div>
 	<!----  srishailam end  -->
