@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class CardSenderVO implements Serializable {
 
@@ -12,9 +13,16 @@ public class CardSenderVO implements Serializable {
 	private String			 message;
 	private	Long			 userId;
 	private Date		 	 insertedTime;
-	private String			 tdpCadreIds;
+	private List<Long>		 cadreIds;
 	
 	
+	
+	public List<Long> getCadreIds() {
+		return cadreIds;
+	}
+	public void setCadreIds(List<Long> cadreIds) {
+		this.cadreIds = cadreIds;
+	}
 	public String getName() {
 		return name;
 	}
@@ -45,14 +53,6 @@ public class CardSenderVO implements Serializable {
 	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
 	}
-	public String getTdpCadreIds() {
-		return tdpCadreIds;
-	}
-	public void setTdpCadreIds(String tdpCadreIds) {
-		this.tdpCadreIds = tdpCadreIds;
-	}
-	
-	
 	
 
 }

@@ -20,7 +20,7 @@ import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
-@Table(name = "card_sender")
+@Table(name = "card_receiver")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CardReceiver implements Serializable {
 

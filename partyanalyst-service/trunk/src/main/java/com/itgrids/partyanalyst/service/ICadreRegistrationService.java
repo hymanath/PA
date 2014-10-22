@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -75,4 +76,6 @@ public interface ICadreRegistrationService {
 	public List<GenericVO> getBoothsForMultipleLocations(Long constituencyId, List<Long> locationIds);
 	
 	public String checkNFCNumberForVoterId(Long voterId);
+	
+	public SurveyCadreResponceVO tdpCardSenderSavingLogic(final CardSenderVO cardSenderVO);
 }

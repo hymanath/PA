@@ -3531,53 +3531,19 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}
 		return status;
 	}
-	
-	
-	/**
-	 * This service is used for saving CardSender data and CardReceiver Data.
-	 * @author Sreenivas
-	 * @date 21-10-2014
-	 * @param CardSenderVO
-	 * @return surveyCadreResponceVO
-	 */
 		
-	public SurveyCadreResponceVO saveCardSenderAndReceiverRegistration(final CardSenderVO cardSenderVO)
-	{
-		final SurveyCadreResponceVO surveyCadreResponceVO = new SurveyCadreResponceVO();
-		
-		try {
-			LOG.info("Entered into saveCardSenderAndReceiverRegistration in CadreRegistrationService service");
-			
-			if(cardSenderVO != null)
-			{
-				CardSender cardSender=new CardSender();
-				List<CardReceiver> cardReceiverList=new ArrayList<CardReceiver>();
-				tdpCardSenderSavingLogic(cardSenderVO,cardSender,cardReceiverList,surveyCadreResponceVO);						
-							
-			}				
-
-		} catch (Exception e) {
-			surveyCadreResponceVO.setResultCode(ResultCodeMapper.FAILURE);
-			surveyCadreResponceVO.setStatus("EXCEPTION");
-			LOG.error("Exception raised in saveCardSenderAndReceiverRegistration in CadreRegistrationService service", e);
-		}
-		
-		return surveyCadreResponceVO;
-	}
-	
-	
 	/**
 	 * @author Sreenivas
 	 * @date 21-10-2014
 	 * @param CardSenderVO
 	 * @param surveyCadreResponceVO
 	 */
-	public void tdpCardSenderSavingLogic(final CardSenderVO cardSenderVO,final CardSender cardSender, final List<CardReceiver> cardReceiverList,final SurveyCadreResponceVO surveyCadreResponceVO)
-	{
+	public SurveyCadreResponceVO tdpCardSenderSavingLogic(final CardSenderVO cardSenderVO){
+		final SurveyCadreResponceVO surveyCadreResponceVO = new SurveyCadreResponceVO();
 		try {	
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				public void doInTransactionWithoutResult(TransactionStatus status) {
-					
+					CardSender cardSender = new CardSender();
 					if(cardSenderVO.getName() != null && !cardSenderVO.getName().equalsIgnoreCase("null") && cardSenderVO.getName().trim().length() > 0)
 					{
 						cardSender.setName(cardSenderVO.getName());
@@ -3590,45 +3556,38 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					{
 						cardSender.setMessage(cardSenderVO.getMessage());
 					}
-					if(cardSenderVO.getUserId() != null && Long.valueOf(cardSenderVO.getUserId()) > 0)
-					{
+					if(cardSenderVO.getUserId() != null){
 						cardSender.setUserId(cardSenderVO.getUserId());
 					}
 					cardSender.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 					cardSender.setIsDeleted("N");
 					
-					if(cardSenderVO.getTdpCadreIds() != null && !cardSenderVO.getTdpCadreIds().equalsIgnoreCase("null") && cardSenderVO.getTdpCadreIds().trim().length() > 0)
-					{   List<Long> tdpCadreIds=new ArrayList<Long>();
-						String[] tdpIds=cardSenderVO.getTdpCadreIds().split(",");
-						if(tdpIds != null && tdpIds.length > 0){
-							for(String Id:tdpIds){
-								tdpCadreIds.add(Long.valueOf(Id));
-							}
-							
-						}
-						cardSender.setTdpCadreIds(tdpCadreIds);
-					}
-					
 					CardSender cardSender1=cardSenderDAO.save(cardSender);
 					if(cardSender1!=null){
-						List<Long> tdpCardreIdsList=cardSender1.getTdpCadreIds();
-						for(Long tdpCadreId:tdpCardreIdsList){
-							CardReceiver cardReceiver=new CardReceiver();
-							cardReceiver.setCardSenderId(cardSender1.getCardSenderId());
-							cardReceiver.setTdpCadreId(tdpCadreId);
-							cardReceiver.setIsDeleted("N");
-							cardReceiverDAO.save(cardReceiver);
+						List<Long> tdpCardreIdsList=cardSenderVO.getCadreIds();
+						if(tdpCardreIdsList!=null && tdpCardreIdsList.size()>0){
+							for(Long tdpCadreId:tdpCardreIdsList){
+								CardReceiver cardReceiver=new CardReceiver();
+								cardReceiver.setCardSenderId(cardSender1.getCardSenderId());
+								cardReceiver.setTdpCadreId(tdpCadreId);
+								cardReceiver.setIsDeleted("N");
+								cardReceiverDAO.save(cardReceiver);
+							}
 						}
 					}
 			
 					surveyCadreResponceVO.setStatus("SUCCESS");
 					surveyCadreResponceVO.setResultCode(ResultCodeMapper.SUCCESS);
-				
+					
 				}
+				
 			});
 		} catch (Exception e) {
+			surveyCadreResponceVO.setResultCode(ResultCodeMapper.FAILURE);
+			surveyCadreResponceVO.setStatus("EXCEPTION");
 			LOG.error("Exception raised in tdpCardSenderSavingLogic in CadreRegistrationService service", e);
 		}
+		return surveyCadreResponceVO;
 	}
 	
 	 
