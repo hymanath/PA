@@ -338,7 +338,7 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 		
 	}*/
 	
-	public void testgetDistrictWiseCastCadreCount(){
+	/*public void testgetDistrictWiseCastCadreCount(){
 		Map<Long,List<CadreRegisterInfo>> casteMap = new HashMap<Long,List<CadreRegisterInfo>>();
 
 			//List<Object[]> casteInfoList = tdpCadreDAO.getDistrictWiseCastCadreCount(4L);
@@ -375,6 +375,20 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 		}
 		casteMap.put(2012L, genderInfo2012);	
 		casteMap.put(2014L, genderInfo2014);
+	}*/
+	
+	public void test(){
+		
+		List<Long> locationIds = new ArrayList<Long>();
+		List<Long> locationIds1 = new ArrayList<Long>();
+		
+		locationIds.add(7745l);
+		locationIds1.add(439807l);
+		locationIds1.add(439808l);
+		
+		List<Object[]> list =  tdpCadreDAO.getPanchayatWiseCadreInfoCount(locationIds);
+		List<Object[]> list1 = tdpCadreDAO.getBoothWiseCadreInfoCount(locationIds1);
+		
 	}
 	
 

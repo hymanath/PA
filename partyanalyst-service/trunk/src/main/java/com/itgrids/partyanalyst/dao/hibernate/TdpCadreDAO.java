@@ -730,15 +730,16 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 	}
 	public List<Object[]> getBoothWiseCadreInfo(List<Long> boothIds,int startIndex,int maxIndex,String orderBy,String orderType){
 		//0 id,1 image,2name,3relative,4mobile,5partNo,6panchayat
-        StringBuilder queryStr = new StringBuilder("select model.tdpCadreId,model.image,model.name,model.relativename,model.mobileNo,model.userAddress.booth.partNo,CASE " +
+        StringBuilder queryStr = new StringBuilder("select model.tdpCadreId,model.image,model.firstname,model.relativename,model.mobileNo,model.userAddress.booth.partNo,CASE " +
         		" WHEN model.userAddress.panchayat.panchayatId is not null THEN model.userAddress.panchayat.panchayatName ELSE '-' end  from TdpCadre model where model.enrollmentYear ='2014' " +
-        		"  and model.userAddress.booth.boothId in(:boothIds) and model.isDeleted = 'N' ");
+        		" and model.userAddress.booth.boothId in(:boothIds) and model.isDeleted = 'N' " +
+        		" and model.cardNumber is null and model.dispatchStatus is null ");
         if(orderBy.equalsIgnoreCase("panchayat")){
         	queryStr.append(" order by CASE WHEN model.userAddress.panchayat.panchayatId is not null THEN model.userAddress.panchayat.panchayatName ELSE '-' end ");
         }else if(orderBy.equalsIgnoreCase("booth")){
         	queryStr.append(" order by cast(model.userAddress.booth.boothId , int) ");
         }else if(orderBy.equalsIgnoreCase("name")){
-        	queryStr.append(" order by model.name ");
+        	queryStr.append(" order by model.firstName ");
         }else if(orderBy.equalsIgnoreCase("relativeName")){
         	queryStr.append(" order by model.relativename ");
         }
@@ -754,15 +755,16 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 	}
 	
 	public List<Object[]> getPanchayatWiseCadreInfo(List<Long> panchayatIds,int startIndex,int maxIndex,String orderBy,String orderType){
-        StringBuilder queryStr = new StringBuilder("select model.tdpCadreId,model.image,model.name,model.relativename,model.mobileNo,model.userAddress.booth.partNo, " +
+        StringBuilder queryStr = new StringBuilder("select model.tdpCadreId,model.image,model.firstname,model.relativename,model.mobileNo,model.userAddress.booth.partNo, " +
         		" model.userAddress.panchayat.panchayatName   from TdpCadre model where model.enrollmentYear ='2014' " +
-        		"  and model.userAddress.panchayat.panchayatId in(:panchayatIds) and model.isDeleted = 'N' ");
+        		" and model.userAddress.panchayat.panchayatId in(:panchayatIds) and model.isDeleted = 'N' " +
+        		" and model.cardNumber is null and model.dispatchStatus is null ");
         if(orderBy.equalsIgnoreCase("panchayat")){
         	queryStr.append(" order by model.userAddress.panchayat.panchayatName ");
         }else if(orderBy.equalsIgnoreCase("booth")){
         	queryStr.append(" order by cast(model.userAddress.booth.boothId , int) ");
         }else if(orderBy.equalsIgnoreCase("name")){
-        	queryStr.append(" order by model.name ");
+        	queryStr.append(" order by model.firstName ");
         }else if(orderBy.equalsIgnoreCase("relativeName")){
         	queryStr.append(" order by model.relativename ");
         }
@@ -805,5 +807,28 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		Query query = getSession().createQuery("select model.cardNumber from TdpCadre model where model.voterId = :voterId");
 		query.setParameter("voterId", voterId);
 		return (String) query.uniqueResult();
+	}
+	
+	public Long getBoothWiseCadreInfoCount(List<Long> boothIds){
+		//0 id,1 image,2name,3relative,4mobile,5partNo,6panchayat
+        StringBuilder queryStr = new StringBuilder("select count(distinct model.tdpCadreId) " +
+        		" from TdpCadre model where model.enrollmentYear ='2014' " +
+        		" and model.userAddress.booth.boothId in(:boothIds) and model.isDeleted = 'N' " +
+        		" and model.cardNumber is null and model.dispatchStatus is null ");
+       
+        Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("boothIds",boothIds);
+		return (Long) query.uniqueResult();
+	}
+	
+	public Long getPanchayatWiseCadreInfoCount(List<Long> panchayatIds){
+        StringBuilder queryStr = new StringBuilder("select count(distinct model.tdpCadreId) " +
+        		" from TdpCadre model where model.enrollmentYear ='2014' " +
+        		" and model.userAddress.panchayat.panchayatId in(:panchayatIds) and model.isDeleted = 'N' " +
+        		" and model.cardNumber is null and model.dispatchStatus is null ");
+        
+        Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("panchayatIds",panchayatIds);
+		return (Long) query.uniqueResult();
 	}
 }
