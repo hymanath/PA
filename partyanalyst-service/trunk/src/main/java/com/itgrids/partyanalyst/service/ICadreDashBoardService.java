@@ -49,4 +49,6 @@ public interface ICadreDashBoardService {
 	public List<CadreRegisterInfo> getDistrictWiseGenderCadreCount(Long districtId);
 	
 	public List<CadreRegisterInfo> getDistrictWiseCastCadreCount(Long districtId);
+	
+	public List<CadreRegisterInfo> getRegisteredDetailsByLocation(String locationType,List<Long> locationIds,int startIndex,int maxIndex,String orderBy,String orderType);
 }
