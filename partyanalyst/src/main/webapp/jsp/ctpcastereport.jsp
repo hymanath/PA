@@ -552,7 +552,7 @@ function clearFieldsData(){
 		<label id="ConstituencyDiv1"> Select Constituency <font class="requiredFont">*</font><s:select theme="simple"  label="Select Your State" name="constituencyList" id="constituencyList1" list="constituencyList" listKey="id" listValue="name" onchange="clearErrDiv(),getMandalOrMuncipalityList();"/></label>&nbsp;&nbsp;
 		
 	   <label id="reportLevelDiv1" >Select Level<font class="requiredFont">*</font><select id="reportLevel1"  name="constituencyList">
-	   <option value=0>Select Region Level</option>
+	   <option value=0>Select Location Level</option>
 	   <option value="1">Constituency</option>
 		<option value=2>Mandal</option>
 	    <option value=3>Panchayat</option>
