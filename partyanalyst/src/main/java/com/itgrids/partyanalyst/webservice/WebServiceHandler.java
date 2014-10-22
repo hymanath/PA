@@ -641,4 +641,22 @@ public class WebServiceHandler {
 			return "Fail";
 		}
 	}
+	
+	@GET
+	@Path("/delinkNFCNumber/{uniqueCode}/{voterId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Object delinkNFCNumber(@PathParam("uniqueCode") String uniqueCode,@PathParam("voterId") String voterId)
+	{
+		
+		try{
+
+			Object status= webServiceHandlerService.delinkNFCNumber(uniqueCode,Long.valueOf(voterId));
+			return status;
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in requestForAuthorisationForAccessKey() Method, Exception is ",e);
+			return "Fail";
+		}
+	}
 }
