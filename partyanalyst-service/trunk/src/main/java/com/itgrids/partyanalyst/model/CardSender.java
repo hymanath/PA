@@ -106,12 +106,5 @@ public class CardSender implements Serializable {
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
-	
-	public List<Long> getTdpCadreIds() {
-		return tdpCadreIds;
-	}
-	public void setTdpCadreIds(List<Long> tdpCadreIds) {
-		this.tdpCadreIds = tdpCadreIds;
-	}
-
+		
 }
