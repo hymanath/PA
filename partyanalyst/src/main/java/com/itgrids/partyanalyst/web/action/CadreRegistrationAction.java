@@ -612,6 +612,31 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		return Action.SUCCESS;
 	}
 	
+	public String getMultipleBoothsDetailsByLocation()
+	{
+		LOG.info("Entered into getconstituencyDetailsByConstiteuncy method in CadreRegistrationAction Action");
+		try {
+			jobj = new JSONObject(getTask());
+			
+			Long constituencyId = jobj.getLong("constituencyId");
+			JSONArray locationIds = jobj.getJSONArray("locationId");
+			List<Long> lctns = new ArrayList<Long>();
+			
+			for(int i=0; i<locationIds.length(); i++){
+				Long lctn = Long.valueOf(locationIds.get(i).toString());
+				lctns.add(lctn);
+			}
+			
+			//Long locationId = jobj.getLong("locationId");
+			
+			genericVOList = cadreRegistrationService.getBoothsForMultipleLocations(constituencyId,lctns);
+			
+		} catch (Exception e) {			
+			LOG.info("Entered into getconstituencyDetailsByConstiteuncy method in CadreRegistrationAction Action");
+		}
+		return Action.SUCCESS;
+	}
+	
 	public String getBoothCoverdVillagesDetails()
 	{
 		LOG.info("Entered into getconstituencyDetailsByConstiteuncy method in CadreRegistrationAction Action");
@@ -1022,6 +1047,31 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		catch(Exception e){
 			LOG.error("Exception raised in getCadreImageByPreviousEnrolId method in CadreRegistrationAction action", e);
 		}
+		return Action.SUCCESS;
+	}
+	public String getTdpCadreIdCardDetails(){
+		LOG.info("Entered into getTdpCadreIdCardDetails method in CadreRegistrationAction Action");
+		try {
+			
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			
+			if(user == null)
+				return Action.INPUT;
+			
+			//if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014"))
+			{
+				Long stateTypeId = 0L; // 0 for All, 1 for AP, 2 for TG 
+				Long stateId = 1L;
+
+				selectOptionVOList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(stateTypeId,stateId);
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getTdpCadreIdCardDetails method in CadreRegistrationAction Action",e);
+		}
+	
 		return Action.SUCCESS;
 	}
 }
