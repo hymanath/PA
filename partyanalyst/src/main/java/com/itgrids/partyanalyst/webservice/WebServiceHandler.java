@@ -624,4 +624,21 @@ public class WebServiceHandler {
 		}
 	}
 	
+	@GET
+	@Path("/checkNFCNumberForVoterId/{voterId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Object checkNFCNumberForVoterId(@PathParam("voterId") String voterId)
+	{
+		
+		try{
+
+			Object object= webServiceHandlerService.checkNFCNumberForVoterId(Long.valueOf(voterId));
+			return object;
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in requestForAuthorisationForAccessKey() Method, Exception is ",e);
+			return "Fail";
+		}
+	}
 }
