@@ -91,7 +91,9 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public List<Object[]> getGenderTotalCount(Long Id, String type);
 	
-
+	public List<Object[]> getBoothWiseCadreInfo(List<Long> boothIds,int startIndex,int maxIndex,String orderBy,String orderType);
+	
+	public List<Object[]> getPanchayatWiseCadreInfo(List<Long> panchayatIds,int startIndex,int maxIndex,String orderBy,String orderType);
 	
 	public String checkNFCnumberForVoter(Long voterId);
 	

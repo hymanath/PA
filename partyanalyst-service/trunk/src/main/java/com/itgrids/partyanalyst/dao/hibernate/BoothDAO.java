@@ -2061,4 +2061,20 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		return query.list();
 	}
 	
+	/**
+	 * This DAO is used for getting all booths in a muncipality's
+	 * @param Long localBodyId
+	 * @param Long publicationId
+	 * @return List<Object[]>
+	 */
+	public List<Object[]> getAllBoothsInMuncipalities(List<Long> localBodyIds,Long publicationId){
+		Query query = getSession().createQuery("select model.boothId,model.partNo, model.villagesCovered from Booth model " +
+				" where model.localBody.localElectionBodyId in( :localBodyIds) and " +
+				"  model.publicationDate.publicationDateId = :publicationId" +
+				" order by model.localBody.localElectionBodyId , model.partNo");
+		query.setParameterList("localBodyIds", localBodyIds);
+		query.setParameter("publicationId", publicationId);
+		return query.list();
+	}
+	
 }
