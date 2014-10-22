@@ -494,6 +494,8 @@
 				<value>com.itgrids.partyanalyst.model.CadreCommittee</value>
 				<value>com.itgrids.partyanalyst.model.CadreRoles</value>
 				<value>com.itgrids.partyanalyst.model.CadreCommitteeRole</value>
+				<value>com.itgrids.partyanalyst.model.CardSender</value>
+				<value>com.itgrids.partyanalyst.model.CardReceiver</value>
 				</list>
 			
 		</property>
