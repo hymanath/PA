@@ -1681,6 +1681,13 @@
 <bean id="cadreCommitteeRoleDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreCommitteeRoleDAO" >
 	<property name="sessionFactory" ref="sessionFactory" />
 </bean>	
-	
+
+<bean id="cardSenderDAO" class="com.itgrids.partyanalyst.dao.hibernate.CardSenderDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>	
+
+<bean id="cardReceiverDAO" class="com.itgrids.partyanalyst.dao.hibernate.CardReceiverDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>		
 	<!--  end -->
 </beans>		
