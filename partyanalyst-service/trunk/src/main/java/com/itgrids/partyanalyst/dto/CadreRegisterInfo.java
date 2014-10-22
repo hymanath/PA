@@ -24,6 +24,16 @@ public class CadreRegisterInfo implements Serializable{
 	private List<CadreRegisterInfo> allDetailsList;
 	private List<CadreRegisterInfo> cadreRegisterInfoList;
 	private String percentStr;
+	private String number;
+	
+	
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
 	
 	public List<CadreRegisterInfo> getCadreRegisterInfoList() {
 		return cadreRegisterInfoList;
