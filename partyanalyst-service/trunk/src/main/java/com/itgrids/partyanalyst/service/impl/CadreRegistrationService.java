@@ -493,9 +493,17 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						}*/
 						
 					}
-					if(cadreRegistrationVO.getAge() != null && Long.valueOf(cadreRegistrationVO.getAge()) > 0)
+					if(tdpCadre.getVoterId() != null)
 					{
-						tdpCadre.setAge(Long.valueOf(cadreRegistrationVO.getAge()));
+						tdpCadre.setAge(voterDAO.get(tdpCadre.getVoterId()).getAge());
+					}
+					else
+					{
+						if(cadreRegistrationVO.getAge() != null && cadreRegistrationVO.getAge() > 0)
+						{
+							tdpCadre.setAge(cadreRegistrationVO.getAge());
+						}
+						
 					}
 					
 					if(cadreRegistrationVO.getPreviousEnrollmentNumber() != null && !cadreRegistrationVO.getPreviousEnrollmentNumber().equalsIgnoreCase("null") && cadreRegistrationVO.getPreviousEnrollmentNumber().trim().length() > 0)
@@ -3128,6 +3136,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				returnVO.setConstiEng(userAddress.getConstituency() != null ?  userAddress.getConstituency().getName()  : "");
 				returnVO.setDistrictEng(userAddress.getDistrict() != null ?  userAddress.getDistrict().getDistrictName() :"");
 				
+				returnVO.setVillage(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getLocalName()   + "\u0C17\u0C4D\u0C30\u0C3E\u0C2E\u0C02": "");
+				returnVO.setMandal(userAddress.getTehsil() != null ?  userAddress.getTehsil().getLocalName() +"\u0C2E\u0C02\u0C21\u0C32\u0C02":"");
+				returnVO.setConstituency(userAddress.getConstituency() != null ?  userAddress.getConstituency().getLocalName() + "\u0C28\u0C3F" + "||" : "");
+				returnVO.setDistrict(userAddress.getDistrict() != null ?  userAddress.getDistrict().getLocalName() + "\u0C1C\u0C3F\u0C32\u0C4D\u0C32\u0C3E":"");
 				
 			}
 		} catch (Exception e) {
@@ -3151,8 +3163,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		 List<Object[]> result = tdpCadreDAO.getPanchayatWiseCadreDetails(panchayatId);
 		 if(result != null && result.size() > 0)
 		 {
+			 //String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
 			 returnList = new ArrayList<CadrePrintVO>();
 			 Long count = 1l;
+			 
 			 for (Object[] objects : result)
 			 {
 				 CadrePrintVO cadrePrintVO = new CadrePrintVO();
@@ -3170,6 +3184,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					cadrePrintVO.setRelativeName(objects[3] != null ? objects[3].toString() : "");
 					cadrePrintVO.setVoterId(objects[4] != null ? (Long)objects[4] : 0l);
 					cadrePrintVO.setVoterCardNo(objects[5] != null ? objects[5].toString() : "");
+					cadrePrintVO.setRefNumber(objects[6] != null ? objects[6].toString() : "");
+					cadrePrintVO.setCardNumber(objects[7] != null ? objects[7].toString() : "");
 					cadrePrintVO.setVillageEng(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getPanchayatName() : "");
 					cadrePrintVO.setMandalEng(userAddress.getTehsil() != null ?  userAddress.getTehsil().getTehsilName() :"");
 					cadrePrintVO.setConstiEng(userAddress.getConstituency() != null ?  userAddress.getConstituency().getName()  : "");
@@ -3177,6 +3193,14 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					cadrePrintVO.setRefNumber(objects[6] != null ? objects[6].toString() : "");
 					cadrePrintVO.setCardNumber(objects[7] != null ? objects[7].toString() : "");
 					cadrePrintVO.setImage(objects[8]!= null ? objects[8].toString() :  "");
+					if(userAddress.getConstituency() != null && userAddress.getBooth() !=null)
+					{
+						String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+cadrePrintVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";;
+						//String sourcePath = IConstants.STATIC_CONTENT_FOLDER_URL +""+"\\"+userAddress.getConstituency().getConstituencyId().toString().trim()+"\\"+"Part"+userAddress.getBooth().getPartNo().trim()+"\\"+cadrePrintVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
+						cadrePrintVO.setVoterImgPath(url);
+					}
+					
+					
 					returnList.add(cadrePrintVO);
 			 }
 		 }
