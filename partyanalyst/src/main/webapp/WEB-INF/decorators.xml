@@ -126,6 +126,7 @@
 		<pattern>/tdpCadreRegistrationAction*</pattern>
 		<pattern>/tdpCadreSurveyUsersDetailsAction*</pattern>
 		<pattern>/votersInCasteAction*</pattern>
+		<pattern>/tdpCadreIdCardDetailsAction*</pattern>
 		
 	</excludes>  
 	
