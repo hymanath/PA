@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,6 +35,7 @@ public class CardSender implements Serializable {
 	private Date 		insertedTime;
 	private String 		isDeleted;
 	private Long 		userId;
+	private List<Long>	tdpCadreIds;
 	
 	
 	@Id
@@ -103,6 +105,13 @@ public class CardSender implements Serializable {
 	}
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+	
+	public List<Long> getTdpCadreIds() {
+		return tdpCadreIds;
+	}
+	public void setTdpCadreIds(List<Long> tdpCadreIds) {
+		this.tdpCadreIds = tdpCadreIds;
 	}
 
 }
