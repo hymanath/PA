@@ -94,7 +94,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getBoothWiseCadreInfo(List<Long> boothIds,int startIndex,int maxIndex,String orderBy,String orderType);
 	
 	public List<Object[]> getPanchayatWiseCadreInfo(List<Long> panchayatIds,int startIndex,int maxIndex,String orderBy,String orderType);
-	
+	public Integer updateNFCCardNumberByVoterIdForDelink(Long voterId , String nfcCardNo);
 	public String checkNFCnumberForVoter(Long voterId);
 	
 	public Long getBoothWiseCadreInfoCount(List<Long> boothIds);

@@ -1090,5 +1090,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		String status = cadreRegistrationService.checkNFCNumberForVoterId(voterId);
 		return status;
 	}
+	public Object delinkNFCNumber(String cardNo , Long voterId)
+	{
+		String status = cadreRegistrationService.delinkNFCNumber(cardNo,voterId);
+		return status;
+	}
 }
 

@@ -831,4 +831,17 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		query.setParameterList("panchayatIds",panchayatIds);
 		return (Long) query.uniqueResult();
 	}
+
+	
+	public Integer updateNFCCardNumberByVoterIdForDelink(Long voterId , String nfcCardNo)
+	{
+		Query query = getSession().createQuery("update TdpCadre model set model.cardNumber = NULL where model.voterId = :voterId and  model.cardNumber =:nfcCardNo and model.enrollmentYear = :year ");
+		query.setParameter("nfcCardNo", nfcCardNo);
+		query.setParameter("year", IConstants.CADRE_ENROLLMENT_NUMBER);
+		query.setParameter("voterId", voterId);
+		Integer c = query.executeUpdate();
+		
+		return c;
+	}
+	
 }

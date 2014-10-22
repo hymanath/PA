@@ -60,4 +60,5 @@ public interface IWebServiceHandlerService {
 	public Object tagCardIdForNFCReader(String cardNo , Long voetrId);
 	public Object getCadreDetailsForPrinting(String memberNo);
 	public Object checkNFCNumberForVoterId(Long voterId);
+	public Object delinkNFCNumber(String cardNo , Long voterId);
 }
