@@ -30,7 +30,18 @@ public class CadreDashBoardAction implements ServletRequestAware {
 	private List<CadreRegisterInfo> resultList;
 	private JSONObject jObj;
 	private String task;
+	private CadreRegisterInfo resultVO;
 	
+	
+	
+	public CadreRegisterInfo getResultVO() {
+		return resultVO;
+	}
+
+	public void setResultVO(CadreRegisterInfo resultVO) {
+		this.resultVO = resultVO;
+	}
+
 	public String getTask() {
 		return task;
 	}
@@ -302,10 +313,10 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		try{
 			int startIndex = Integer.parseInt(request.getParameter("startIndex").trim());
 			int maxIndex = Integer.parseInt(request.getParameter("maxIndex").trim());
-			String orderBy = request.getParameter("orderBy").trim();
-			String orderType = request.getParameter("orderType").trim();
+			String orderBy = request.getParameter("sort").trim();
+			String orderType = request.getParameter("dir").trim();
 			List<Long> locationIds = getIds(request.getParameter("locationIds").trim());
-			resultList = cadreDashBoardService.getRegisteredDetailsByLocation(request.getParameter("locationType"),locationIds,startIndex,maxIndex,orderBy,orderType);
+			resultVO = cadreDashBoardService.getRegisteredDetailsByLocation(request.getParameter("locationType"),locationIds,startIndex,maxIndex,orderBy,orderType);
 		}catch(Exception e){
 			LOG.error("Exception rised in getRegisteredDetailsByLocation ",e);
 		}
