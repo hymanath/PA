@@ -707,7 +707,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		} else if (type.equalsIgnoreCase("district")) {
 			queryStr.append(" and model.userAddress.district.districtId = :Id ");
 		}
-		queryStr.append(" and model.age is not null group by model.enrollmentYear");
+		queryStr.append(" and model.age is not null and model.age>=18 group by model.enrollmentYear");
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("Id", Id);
 		return query.list();
