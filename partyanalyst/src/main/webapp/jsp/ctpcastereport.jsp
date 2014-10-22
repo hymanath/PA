@@ -421,7 +421,7 @@ function clearFieldsData(){
 	<li class="active"> <a href="#statusDiv">STATUS REPORT </a></li>
 <li ><a href="#voterSearchDiv">VOTER CASTE SEARCH </a></li>
 <li><a href="#voterCountDetailsDiv">VOTER CASTE REPORT </a></li>
-		<c:if test="${!fn:contains(sessionScope.USER.entitlements,'CTP_CASTE_ADMIN_ENTITLEMENT')}">
+		<c:if test="${fn:contains(sessionScope.USER.entitlements,'CTP_CASTE_ADMIN_ENTITLEMENT')}">
 <li><a href="#adminTabDiv" >ADMIN </a></li>
 </c:if>
 </ul>
@@ -572,8 +572,8 @@ function clearFieldsData(){
 	  <span style='display:none;' id='ajaxLoad1'><img src='./images/icons/search.gif' /></span>
 
 	</div>
-	   	<c:if test="${!fn:contains(sessionScope.USER.entitlements,'CTP_CASTE_ADMIN_ENTITLEMENT')}">
-	   <div id="adminTabDiv"  class="tab-pane active">
+	   	<c:if test="${fn:contains(sessionScope.USER.entitlements,'CTP_CASTE_ADMIN_ENTITLEMENT')}">
+	   <div id="adminTabDiv"  class="tab-pane">
 		
 		<div class="titleHeading1 offset3"> MOVE VOTER_CASTE DATA TO FINAL</div>
 		<div  class="offset3 form-inline">
