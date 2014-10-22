@@ -91,4 +91,8 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public List<Object[]> getGenderTotalCount(Long Id, String type);
 	
+
+	
+	public String checkNFCnumberForVoter(Long voterId);
+	
 }

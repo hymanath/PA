@@ -20,9 +20,11 @@ public class CadrePrintVO implements Serializable{
 	private String constiEng;
 	private String mandalEng;
 	private String villageEng;
-	
+	private String refNumber;
+	private String cardNumber;
 	private Long voterId;
 	private String voterCardNo;
+	private String image;
 	
 	public Long getCadrePrintVOId() {
 		return cadrePrintVOId;
@@ -113,6 +115,24 @@ public class CadrePrintVO implements Serializable{
 	}
 	public void setVoterCardNo(String voterCardNo) {
 		this.voterCardNo = voterCardNo;
+	}
+	public String getRefNumber() {
+		return refNumber;
+	}
+	public void setRefNumber(String refNumber) {
+		this.refNumber = refNumber;
+	}
+	public String getCardNumber() {
+		return cardNumber;
+	}
+	public void setCardNumber(String cardNumber) {
+		this.cardNumber = cardNumber;
+	}
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
 	}
 	
 	

@@ -1084,5 +1084,11 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		CadrePrintVO cadrePrintVO = cadreRegistrationService.getCadreDetailsForPrinting(memberNo);
 		return cadrePrintVO;
 	}
+	
+	public Object checkNFCNumberForVoterId(Long voterId)
+	{
+		String status = cadreRegistrationService.checkNFCNumberForVoterId(voterId);
+		return status;
+	}
 }
 

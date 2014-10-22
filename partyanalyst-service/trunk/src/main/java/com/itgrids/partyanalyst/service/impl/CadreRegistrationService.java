@@ -3138,7 +3138,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					cadrePrintVO.setMandalEng(userAddress.getTehsil() != null ?  userAddress.getTehsil().getTehsilName() :"");
 					cadrePrintVO.setConstiEng(userAddress.getConstituency() != null ?  userAddress.getConstituency().getName()  : "");
 					cadrePrintVO.setDistrictEng(userAddress.getDistrict() != null ?  userAddress.getDistrict().getDistrictName() :"");
-				 returnList.add(cadrePrintVO);
+					cadrePrintVO.setRefNumber(objects[6] != null ? objects[6].toString() : "");
+					cadrePrintVO.setCardNumber(objects[7] != null ? objects[7].toString() : "");
+					cadrePrintVO.setImage(objects[8]!= null ? objects[8].toString() :  "");
+					returnList.add(cadrePrintVO);
 			 }
 		 }
 		} catch (Exception e) {
@@ -3348,4 +3351,32 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}
 		return null;
 	}
+	
+	public String checkNFCNumberForVoterId(Long voterId)
+	{
+		String status = "fail";
+		try {
+			
+			String number =tdpCadreDAO.checkNFCnumberForVoter(voterId);
+			
+				if(number == null )
+				{
+					status = "success";
+				}
+				else if( number.isEmpty()){
+					status = "success";
+				}
+			
+				else
+				{
+					status = "CardAssigned";
+				}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in checkNFCNumberForVoterId in CadreRegistrationService service", e);
+		}
+		return status;
+	}
+	
+	
 }
