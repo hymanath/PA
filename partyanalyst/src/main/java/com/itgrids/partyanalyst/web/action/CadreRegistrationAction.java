@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -1073,5 +1074,39 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		}
 	
 		return Action.SUCCESS;
+	}
+	
+	public void setCardSenderAndReceiverDetails(){
+		LOG.info("Entered into setCardSenderAndReceiverDetails method in CadreRegistrationAction Action");
+		
+		try {
+			
+			jobj = new JSONObject(getTask());			
+			CardSenderVO cardSenderVO=new CardSenderVO();
+			cardSenderVO.setName(jobj.getString("name"));
+			cardSenderVO.setMobileNumber(jobj.getString("mobileno"));
+			cardSenderVO.setMessage(jobj.getString("message"));
+			
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			cardSenderVO.setUserId(user.getRegistrationID());
+						
+			JSONArray cadreIds = jobj.getJSONArray("tdpcadreids");
+			List<Long> cdrIds = new ArrayList<Long>();
+			
+			
+			
+			for(int i=0; i<cadreIds.length(); i++){
+				Long lctn = Long.valueOf(cadreIds.get(i).toString());
+				cdrIds.add(lctn);
+			}
+			
+			cardSenderVO.setCadreIds(cdrIds);
+						
+			surveyCadreResponceVO = cadreRegistrationService.tdpCardSenderSavingLogic(cardSenderVO);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in setCardSenderAndReceiverDetails method in CadreRegistrationAction Action",e);
+		}		
 	}
 }
