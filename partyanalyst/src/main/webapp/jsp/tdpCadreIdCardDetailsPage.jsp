@@ -16,6 +16,37 @@
 	 <script src="js/icheck/icheck.js"></script>
 
 	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+	<!-- YUI Dependency files (Start) -->
+	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
+	<script src="js/yahoo/resize-min.js"></script> 
+	<script src="js/yahoo/layout-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
+	<script type="text/javascript" src="js/json/json-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
+	<!-- Skin CSS files resize.css must load before layout.css --> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
+ 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
+	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css">      
+
+	<!-- YUI Dependency files (End) -->
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 	
 	<style>
@@ -82,7 +113,13 @@
 				
 					
 					
-					<a href="javascript:{searchCandidatesDetailsBySearchCriteria();}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
+					<a class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2 searchBtn"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
+					
+					
+		</div>
+		<div class="span8 offset2 show-grid pad-10b" style="">
+			<h5 style="text-align:center;"> CADRE DETAILS </h5>
+			<div id="dataTableDIV"></div>
 		</div>
 		
 	</div>
@@ -168,6 +205,91 @@
 				});
 	}
 	
+	function getRegCadreOfLocation(num){
+		var cosntiteucnyId = $('#userConstituencyId').val();
+		var locationIds = $('#panchayatList').val();
+		var boothIds = $('#boothsList').val();
+		
+		$('#loadingImg').show();			
+		var jsObj = {
+			constituencyId:cosntiteucnyId,	
+			locationIds : locationIds,
+			boothIds : boothIds,
+			firstRecord:num,
+			maxRecords:10,
+			task:"getRegCadreOfLocation"             
+		}				   
+		$.ajax({
+			type : "POST",
+			url : "getRegisteredDetailsByLocation.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			$('#loadingImg').hide();
+			console.log(result);
+		});
+	}
+	
+	function getTotalNewsToChangeKeywords(){
+		var locationIds = [];
+		var boothIds = $('#boothsList').val();
+		var locationIds = $('#panchayatList').val();
+		var locationType = "panchayat";
+		if(boothIds!=null){
+			locationIds =  boothIds;
+			locationType ="booth"
+		}
+		
+		YAHOO.widget.DataTable.checkBox = function(elLiner, oRecord, oColumn, oData){
+			var str='';
+			var name = oData;
+			var fileId = oRecord.getData("id");
+			
+			
+			str +="<input type='checkbox' class='cadreId' value='"+fileId+"'/>";
+			
+			elLiner.innerHTML=str;
+		};
+	
+	   var newsColumns = [
+				   {key:"SELECT",label:"SELECT",formatter:YAHOO.widget.DataTable.checkBox},
+				   {key:"name", label:"NAME"},
+				   {key:"percentStr", label:"RELATIVE NAME"},
+				   {key:"number", label:"MOBILE NO"}
+		];
+		
+		
+  
+		var newsDataSource = new YAHOO.util.DataSource("getRegisteredDetailsByLocation.action?&locationIds="+locationIds+"&locationType="+locationType+"&maxIndex=10&");
+		newsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+		newsDataSource.responseSchema = {
+		resultsList: "cadreRegisterInfoList",
+		fields: ["id","name","percentStr","number"],
+		metaFields: {
+		totalRecords: "totalCount"// Access to value in the server response
+		 },
+	  };
+  
+  
+	  var myConfigs = {
+		initialRequest: "&sort=relativeName&dir=asc&startIndex=0&results=10", // Initial request for first page of data
+		dynamicData: true, // Enables dynamic server-driven data
+		sortedBy : {key:"name", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+	    paginator : new YAHOO.widget.Paginator({ 
+					rowsPerPage    : 10 
+					})  // Enables pagination
+	};
+
+	var newsDataTable = new YAHOO.widget.DataTable("dataTableDIV",
+	newsColumns, newsDataSource, myConfigs);
+
+	newsDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
+		oPayload.totalRecords = oResponse.meta.totalRecords;
+		return oPayload;
+	}
+}
+	$(".searchBtn").click(function(){
+		getTotalNewsToChangeKeywords();
+	});
 	
 	</script>
   </body>
