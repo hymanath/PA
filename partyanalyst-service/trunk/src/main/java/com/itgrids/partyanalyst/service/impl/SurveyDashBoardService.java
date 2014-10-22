@@ -2139,10 +2139,15 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 			for(Map.Entry<Long,Long> entry : casteMap.entrySet())
 			{
 				try{
-					if(index % 1000 == 0)
-						LOG.error("Index at -->"+index+" At Time --> "+new Date());
 					Long voterId = entry.getKey();
 					Long casteStateId = entry.getValue();
+					++index;
+					
+					if(index % 1000 == 0)
+					{
+						LOG.error("Index at -->"+index+" At Time --> "+new Date());
+						LOG.error("Voter Id -->"+voterId+"\tCasteStateId -->"+casteStateId);
+					}
 					
 					UserVoterDetails userVoterDetails = userVoterDetailsDAO.getUserVoterDetailsByUserIdAndVoterId(IConstants.ADMIN_USER_ID,voterId);
 					
@@ -2155,6 +2160,10 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 					userVoterDetails.setCasteInsertType(casteInsertTypeDAO.get(5L));
 					userVoterDetailsDAO.save(userVoterDetails);
 					
+					if(index % 1000 == 0)
+					{
+						voterDAO.flushAndclearSession();
+					}
 				}catch(Exception e)
 				{
 					LOG.error(e);
