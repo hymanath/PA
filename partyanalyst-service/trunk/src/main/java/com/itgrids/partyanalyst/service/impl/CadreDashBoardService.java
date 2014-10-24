@@ -1041,6 +1041,8 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				toDate = format.parse(toDateStr);
 			}
 			
+			Long constituencyId = 0L;
+			
 			if(ids.size() > 0){
 				if(type.equals("assembly")){
 					constituencyInfoList = tdpCadreDAO.getCadreInfoConstituencytWise(ids,fromDate,toDate,2014l);
@@ -1051,14 +1053,17 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				    constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoDistrictWise(ids,null,null,2012l));
 				    namesList = districtDAO.getDistrictDetailsByDistrictIds(ids);
 				}else if(type.equals("panchayat")){
+					constituencyId = boothDAO.getConstituencyIdByLocationIdAndType(ids.get(0), type);
 				    constituencyInfoList = tdpCadreDAO.getCadreInfoPanchayatWise(ids,fromDate,toDate,2014l);
 				    constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoPanchayatWise(ids,null,null,2012l));
 				    namesList = panchayatDAO.getPanchayatNamesByIds(ids);
 				}else if(type.equals("booth")){
+					constituencyId = boothDAO.getConstituencyIdByLocationIdAndType(ids.get(0), type);
 				    constituencyInfoList = tdpCadreDAO.getCadreInfoBoothWise(ids,fromDate,toDate,2014l);
 				    constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoBoothWise(ids,null,null,2012l));
 				    namesList = boothDAO.getBoothNamesByIds(ids);
 				}else if(type.equals("mandal")){
+					constituencyId = boothDAO.getConstituencyIdByLocationIdAndType(ids.get(0), type);
 					List<Long> mandalIds = new ArrayList<Long>();
 					List<Long> localBodyIds = new ArrayList<Long>();
 					for(Long id:ids){
@@ -1089,19 +1094,104 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					 yearMap.put((Long)info[3], (Long)info[0]);
 				}
 			}
-			for(Object[] name:namesList){
-			    yearMap = locationMap.get((Long)name[0]);
-			    infoVo = new CadreRegisterInfo();
-			    infoVo.setLocation(name[1].toString());
-			    if(yearMap != null){
-					infoVo.setApCount(yearMap.get(2014l));
-					infoVo.setTgCount(yearMap.get(2012l));
-					if((type.equals("assembly") || type.equals("district")) && infoVo.getApCount() != null && infoVo.getApCount().longValue() > 0 && infoVo.getTgCount() != null && infoVo.getTgCount().longValue() > 0 ){
-						infoVo.setName(new BigDecimal(infoVo.getApCount()*(100.0)/infoVo.getTgCount().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			
+			Map<Long,Long> yearWiseTotalCadreMap = new HashMap<Long, Long>();
+			if(namesList != null && namesList.size()>0 )
+			{
+				for(Object[] name:namesList)
+				{
+					Long cadreCount2014 = 0L;
+					Long cadreCount2012 = 0L;
+					
+					try{
+							if(yearWiseTotalCadreMap.get(2014L) != null)
+							{
+								cadreCount2014 = yearWiseTotalCadreMap.get(2014L);
+							}
+							if(yearWiseTotalCadreMap.get(2012L) != null)
+							{
+								cadreCount2012 = yearWiseTotalCadreMap.get(2012L);
+							}	
+							
+						    yearMap = locationMap.get((Long)name[0]);
+						    infoVo = new CadreRegisterInfo();
+						    infoVo.setLocation(name[1].toString());
+						    if(yearMap != null)
+						    {
+						    	cadreCount2012 = cadreCount2012 + Long.valueOf(yearMap.get(2012L) != null ? yearMap.get(2012L).toString().trim():"0");
+								cadreCount2014 = cadreCount2014 + Long.valueOf(yearMap.get(2014L) != null ? yearMap.get(2014L).toString().trim():"0");
+									
+								yearWiseTotalCadreMap.put(2014L,cadreCount2014);
+								yearWiseTotalCadreMap.put(2012L,cadreCount2012);
+									
+								infoVo.setApCount(yearMap.get(2014l));
+								infoVo.setTgCount(yearMap.get(2012l));
+								
+								if((type.equals("assembly") || type.equals("district")) && infoVo.getApCount() != null && infoVo.getApCount().longValue() > 0 && infoVo.getTgCount() != null && infoVo.getTgCount().longValue() > 0 )
+								{
+									infoVo.setName(new BigDecimal(infoVo.getApCount()*(100.0)/infoVo.getTgCount().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+								}
+								
+						    }
+						    returnList.add(infoVo);
+					}catch(Exception e){
+						e.printStackTrace();
 					}
-			    }
-			    returnList.add(infoVo);
+				}
 			}
+			
+			if(constituencyId != null && constituencyId != 0L && ids.size() > 1)
+			{
+				
+				List<Object[]> enrollmentYearWiseCadreCount  = tdpCadreDAO.getEnrollmentYearWiseDetails(constituencyId,fromDate,toDate,2014L);
+				enrollmentYearWiseCadreCount.addAll( tdpCadreDAO.getEnrollmentYearWiseDetails(constituencyId,null,null,2012L));
+				
+				if(enrollmentYearWiseCadreCount != null && enrollmentYearWiseCadreCount.size()>0 && yearWiseTotalCadreMap != null && yearWiseTotalCadreMap.size()>0)
+				{
+					Long totalCount2012 = 0L;
+					Long actualCount2012 =  0L;
+					
+					Long totalCount2014 = 0L;
+					Long actualCount2014 =  0L;
+					
+					for (Object[] cadre : enrollmentYearWiseCadreCount) 
+					{
+						if(cadre[0] != null) 
+						{
+							Long enrollmentYear =  Long.valueOf(cadre[0].toString());
+							
+							if(enrollmentYear.longValue() == 2014L)
+							{
+								totalCount2014 = cadre[1] != null ? Long.valueOf(cadre[1].toString()):0L;
+								actualCount2014 = yearWiseTotalCadreMap.get(2014L) != null ? yearWiseTotalCadreMap.get(2014L):0L;
+							}
+							
+							if(enrollmentYear.longValue() == 2012L)
+							{
+								totalCount2012 = cadre[1] != null ? Long.valueOf(cadre[1].toString()):0L;
+								actualCount2012 = yearWiseTotalCadreMap.get(2012L) != null ? yearWiseTotalCadreMap.get(2012L):0L;
+							}
+							
+						}
+					}
+					
+					 infoVo = new CadreRegisterInfo();
+					 infoVo.setLocation(" Others ");
+					 Long count2014 = totalCount2014 - actualCount2014;
+					 Long count2012 = totalCount2012 - actualCount2012;
+					 
+					 infoVo.setApCount( count2014 );
+					 infoVo.setTgCount( count2012 );
+					 infoVo.setArea(" - ");
+					 if((count2014 != null && count2014 != 0L) || (count2012 != null && count2012 != 0L))
+					 {
+						// infoVo.setName(new BigDecimal((double)count2014*(100.0)/(double)count2012).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+						 returnList.add(0,infoVo);
+					 }
+				}
+			}
+
+			
 		}catch(Exception e){
 			LOG.error("Exception rised in getLocationWiseRegistrationInfo",e);
 		}
