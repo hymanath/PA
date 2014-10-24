@@ -195,11 +195,11 @@ table.dataTable tr.odd {
 								Select Hours :
 								<select id="hoursId" onChange="getWorkingMembersInfo();">
 									<option value="0" selected="selected">All</option>
-									<option value="1">1 Hour Back </option>
-									<option value="2">2 Hours Back </option>
-									<option value="3">3 Hours Back </option>
-									<option value="4">4 Hours Back </option>
-									<option value="5">5 Hours Back </option>
+									<option value="1"> 1 Hour  </option>
+									<option value="2"> 2 Hours  </option>
+									<option value="3"> 3 Hours  </option>
+									<option value="4"> 4 Hours  </option>
+									<option value="5"> 5 Hours  </option>
 								</select>
 								<div style="text-align:center;" id="totalMembersWorkingTodayId">
 									<img style=" margin-top: 36px;padding-left: 110px;" src="images/icons/search.gif"/>
@@ -342,7 +342,7 @@ $('#membersCount').addClass('animated fadeInX');
 				if(assId == 0){
 				  $("#constituencyWiseSelDivId").append('<option value='+result[i].tgCount+'>'+result[i].location+'</option>');
 				}
-				str += '<p><a href="javascript:{}" onclick="getConstituencyWiseAgeGenderCasteCount('+ result[i].tgCount+ ')">'+ result[i].location+ ' ('+ result[i].apCount+ '%  - '+ result[i].totalCount+ ' Members)</a></p>';
+				str += '<p><a href="javascript:{}" onclick="getConstituencyWiseAgeGenderCasteCount('+ result[i].tgCount+ ',\''+ result[i].location+ '\')">'+ result[i].location+ ' ('+ result[i].apCount+ '%  - '+ result[i].totalCount+ ' Members)</a></p>';
 				if(result[i].apCount <= 20){
 				   str+='<div class="progress progress-danger">';
 				}else if(result[i].apCount > 20 && result[i].apCount <= 40){
@@ -393,7 +393,7 @@ $('#membersCount').addClass('animated fadeInX');
 			    if(distId == 0){
 				  $("#districtWiseSelDivId").append('<option value='+result[i].tgCount+'>'+result[i].location+'</option>');
 				}
-				str += '<p><a href="javascript:{}" onclick="getDistrictWiseAgeGenderCasteCount('+ result[i].tgCount+ ')">'+ result[i].location+ ' ('+ result[i].apCount+ '%  - '+ result[i].totalCount+ ' Members)</a></p>';
+				str += '<p><a href="javascript:{}" onclick="getDistrictWiseAgeGenderCasteCount('+ result[i].tgCount+ ',\''+ result[i].location+ '\')">'+ result[i].location+ ' ('+ result[i].apCount+ '%  - '+ result[i].totalCount+ ' Members)</a></p>';
 				if(result[i].apCount <= 20){
 				   str+='<div class="progress progress-danger">';
 				}else if(result[i].apCount > 20 && result[i].apCount <= 40){
@@ -470,7 +470,7 @@ $('#membersCount').addClass('animated fadeInX');
 		
 		if(hoursCount != 0)
 		{	     
-		  $("#totalMembersWorkingTodayId").html('<h2>'+result.totalCount+'</h2><p>Members In Field, <br/> before last '+hoursCount+' Hour(s) </p>');
+		  $("#totalMembersWorkingTodayId").html('<h2>'+result.totalCount+'</h2><p>Members In Field, <br/> in last '+hoursCount+' Hour(s) </p>');
 		}
 		else
 		{
@@ -499,7 +499,7 @@ $('#membersCount').addClass('animated fadeInX');
 	{
 		img.src = "images/User.png";
 	}
-	function getConstituencyWiseAgeGenderCasteCount(constId) {
+	function getConstituencyWiseAgeGenderCasteCount(constId,locationName) {
 	        $('#agewiseDivForConstituency').html('<img src="images/Loading-data.gif" style="margin-top: 78px;width:70px;height:60px;">');
 			$('#genderWiseDivForConstituency').html("");
 			$('#casteWiseDivForConstituency').html("");
@@ -509,7 +509,7 @@ $('#membersCount').addClass('animated fadeInX');
 								{
 									width : 850,
 									height:550,
-									title : "Constituency Wise Cadre Age, Gender and Caste Information "
+									title : " "+locationName+" Constituency Cadre Age, Gender and Caste Information "
 								});
 
 			$.ajax({
@@ -850,7 +850,7 @@ $('#membersCount').addClass('animated fadeInX');
 				}
 			});
 		}*/
-		function getDistrictWiseAgeGenderCasteCount(distId) {
+		function getDistrictWiseAgeGenderCasteCount(distId,locationName) {
 	        $('#agewiseDivForDistrict').html('<img src="images/Loading-data.gif" style="margin-top: 78px;width:70px;height:60px;">');
 			$('#genderWiseDivForDistrict').html("");
 			$('#casteWiseDivForDistrict').html("");
@@ -860,7 +860,7 @@ $('#membersCount').addClass('animated fadeInX');
 					{
 						width : 850,
 						height:550,
-						title : "District Wise Cadre Age, Gender and Caste Information "
+						title : " "+locationName+" District Cadre Age, Gender and Caste Information "
 					});
 
 			$.ajax({
