@@ -70,7 +70,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 	
 	public String getLatestMemberNumber()
 	{
-		Query query = getSession().createQuery("select model.memberShipNo from TdpCadre model order by model.tdpCadreId desc ");
+		Query query = getSession().createQuery("select model.memberShipNo from TdpCadre model where model.isDeleted = 'N' order by model.tdpCadreId desc ");
 		query.setMaxResults(1);
 		return (String)query.uniqueResult();
 	}
@@ -109,7 +109,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 			str.append(" and TC.enrollmentYear not in (:cadreEnrollmentYear)  ");
 		}
 		
-		str.append(" and TC.userAddress.userAddressId = UA.userAddressId order by TC.houseNo ");
+		str.append(" and TC.userAddress.userAddressId = UA.userAddressId  and TC.isDeleted = 'N'  order by TC.houseNo ");
 		
 		Query query = getSession().createQuery(str.toString()); 
 		
@@ -146,7 +146,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 			str.append("  model.userAddress.district.districtId >= 11 ");
 		}
 				
-		str.append(" and model.userAddress.state.stateId = 1   ");
+		str.append(" and model.userAddress.state.stateId = 1  and model.isDeleted = 'N'  ");
 		
 		Query query = getSession().createQuery(str.toString());
 		
@@ -277,7 +277,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 	
 	public List<TdpCadre> getVoterByVoterId(Long voterId)
 	{
-		Query query = getSession().createQuery("select model  from TdpCadre model where model.voterId = :voterId");
+		Query query = getSession().createQuery("select model  from TdpCadre model where model.voterId = :voterId  and model.isDeleted = 'N'");
 		query.setParameter("voterId", voterId);
 		return query.list();
 	}
@@ -332,7 +332,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 			queryStr.append(" and model.enrollmentYear not in (:year) ");
 		}
 		
-		queryStr.append("  and model.isDeleted = 'N' order by model.firstname ");
+		queryStr.append(" and model.previousEnrollmentNo is not null and model.previousEnrollmentNo != '' and model.isDeleted = 'N' order by model.firstname ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		
@@ -373,14 +373,14 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 	
 	public List<Object[]> getCadreDetailsByMemberId(String memberCardNo)
 	{
-		Query query = getSession().createQuery("select model.memberShipNo , model.voterId,model.firstname,model.relativename,model.voter.voterId,model.voter.voterIDCardNo from TdpCadre model where model.memberShipNo = :memberCardNo");
+		Query query = getSession().createQuery("select model.memberShipNo , model.voterId,model.firstname,model.relativename,model.voter.voterId,model.voter.voterIDCardNo from TdpCadre model where model.memberShipNo = :memberCardNo  and model.isDeleted = 'N'");
 		query.setParameter("memberCardNo", memberCardNo);
 		return query.list();
 	}
 	
 	public List<Object[]> getPanchayatWiseCadreDetails(Long panchayatId )
 	{
-		Query query = getSession().createQuery("select model.memberShipNo , model.voterId,model.firstname,model.relativename,model.voter.voterId,model.voter.voterIDCardNo,model.refNo,model.cardNumber,model.image from TdpCadre model where model.userAddress.panchayat.panchayatId = :panchayatId");
+		Query query = getSession().createQuery("select model.memberShipNo , model.voterId,model.firstname,model.relativename,model.voter.voterId,model.voter.voterIDCardNo,model.refNo,model.cardNumber,model.image from TdpCadre model where model.userAddress.panchayat.panchayatId = :panchayatId  and model.isDeleted = 'N'");
 		query.setParameter("panchayatId", panchayatId);
 		return query.list();
 	}
@@ -395,7 +395,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 	
 	public Integer updateNFCCardNumberByVoterId(Long voterId , String nfcCardNo)
 	{
-		Query query = getSession().createQuery("update TdpCadre model set model.cardNumber = :nfcCardNo where model.voterId = :voterId and  model.enrollmentYear = :year ");
+		Query query = getSession().createQuery("update TdpCadre model set model.cardNumber = :nfcCardNo where model.voterId = :voterId and  model.enrollmentYear = :year  and model.isDeleted = 'N' ");
 		query.setParameter("nfcCardNo", nfcCardNo);
 		query.setParameter("year", IConstants.CADRE_ENROLLMENT_NUMBER);
 		query.setParameter("voterId", voterId);
@@ -852,6 +852,35 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		Integer c = query.executeUpdate();
 		
 		return c;
+	}
+
+	public List<Object[]> getEnrollmentYearWiseDetails(Long locationId , Date fromDate,Date toDate,Long enrollmentYear)
+	{
+		StringBuilder queryStr = new StringBuilder();
+
+		queryStr.append("select model.enrollmentYear, count(model.tdpCadreId) from TdpCadre model where model.isDeleted = 'N' ");
+		
+		if(fromDate != null && toDate != null)
+		{
+			queryStr.append(" and date(model.surveyTime) >=:fromDate ");
+			queryStr.append(" and date(model.surveyTime) <=:toDate ");
+		}
+		queryStr.append(" and  model.userAddress.constituency.constituencyId = :locationId ");
+		
+		queryStr.append(" and model.enrollmentYear = :enrollmentYear group by model.enrollmentYear  ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		query.setParameter("enrollmentYear", enrollmentYear);
+		query.setParameter("locationId", locationId);
+		
+		if(fromDate != null && toDate != null)
+		{
+		   query.setDate("fromDate", fromDate);
+		   query.setDate("toDate", toDate);
+		}
+		
+		return query.list();
 	}
 	
 	public Integer updateDispatchStatus(List<Long> cadreIds){
