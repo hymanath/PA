@@ -25,8 +25,18 @@ public class CadreRegisterInfo implements Serializable{
 	private List<CadreRegisterInfo> cadreRegisterInfoList;
 	private String percentStr;
 	private String number;
+	private String memberShipNo;
 	
 	
+	
+	public String getMemberShipNo() {
+		return memberShipNo;
+	}
+
+	public void setMemberShipNo(String memberShipNo) {
+		this.memberShipNo = memberShipNo;
+	}
+
 	public String getNumber() {
 		return number;
 	}

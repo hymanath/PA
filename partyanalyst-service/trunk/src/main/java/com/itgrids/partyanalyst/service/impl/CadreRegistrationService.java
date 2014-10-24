@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
@@ -3573,7 +3574,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					}
 					if(cardSenderVO.getMessage() != null && !cardSenderVO.getMessage().equalsIgnoreCase("null") && cardSenderVO.getMessage().trim().length() > 0)
 					{
-						cardSender.setMessage(cardSenderVO.getMessage());
+						cardSender.setMessage(StringEscapeUtils.escapeJava(cardSenderVO.getMessage()));
 					}
 					if(cardSenderVO.getUserId() != null){
 						cardSender.setUserId(cardSenderVO.getUserId());
@@ -3593,7 +3594,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								cardReceiverDAO.save(cardReceiver);
 							}
 						}
+						
+						tdpCadreDAO.updateDispatchStatus(tdpCardreIdsList);
 					}
+					
+					
 			
 					surveyCadreResponceVO.setStatus("SUCCESS");
 					surveyCadreResponceVO.setResultCode(ResultCodeMapper.SUCCESS);
@@ -3601,11 +3606,17 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				}
 				
 			});
+			String mobileNms = cardSenderVO.getMobileNums();
+			//sendSMSInTelugu(mobileNms, getUniCodeMessage(StringEscapeUtils.unescapeJava("\u0C24\u0C46\u0C32\u0C41\u0C17\u0C41 \u0C26\u0C47\u0C36\u0C02 \u0C2A\u0C3E\u0C30\u0C4D\u0C1F\u0C40 \u0C15\u0C3E\u0C30\u0C4D\u0C2F\u0C15\u0C30\u0C4D\u0C24\u0C17\u0C3E \u0C28\u0C2E\u0C4B\u0C26\u0C41 \u0C1A\u0C47\u0C38\u0C41\u0C15\u0C41\u0C28\u0C4D\u0C28\u0C02\u0C26\u0C41\u0C15\u0C41 \u0C27\u0C28\u0C4D\u0C2F\u0C35\u0C3E\u0C26\u0C3E\u0C32\u0C41. \u0C2E\u0C40 \u0C2F\u0C4A\u0C15\u0C4D\u0C15 \u0C30\u0C3F\u0C2B\u0C30\u0C46\u0C28\u0C4D\u0C38\u0C4D \u0C28\u0C46\u0C02\u0C2C\u0C30\u0C4D : Please Contact - "+cardSenderVO.getName()+" ")+cardSenderVO.getMobileNumber()));
+			sendSMSInTelugu(mobileNms, getUniCodeMessage(StringEscapeUtils.unescapeJava(cardSenderVO.getMessage()+" - "+cardSenderVO.getName()+" ")+cardSenderVO.getMobileNumber()));
+			
 		} catch (Exception e) {
 			surveyCadreResponceVO.setResultCode(ResultCodeMapper.FAILURE);
 			surveyCadreResponceVO.setStatus("EXCEPTION");
 			LOG.error("Exception raised in tdpCardSenderSavingLogic in CadreRegistrationService service", e);
 		}
+		
+		
 		return surveyCadreResponceVO;
 	}
 	
@@ -3629,5 +3640,5 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}
 		return status;
 	}
-	 
+			 
 }

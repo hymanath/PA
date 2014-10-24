@@ -101,4 +101,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public Long getPanchayatWiseCadreInfoCount(List<Long> panchayatIds);
 	
+	public Integer updateDispatchStatus(List<Long> cadreIds);
+	
 }

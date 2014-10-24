@@ -731,7 +731,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 	public List<Object[]> getBoothWiseCadreInfo(List<Long> boothIds,int startIndex,int maxIndex,String orderBy,String orderType){
 		//0 id,1 image,2name,3relative,4mobile,5partNo,6panchayat
         StringBuilder queryStr = new StringBuilder("select model.tdpCadreId,model.image,model.firstname,model.relativename,model.mobileNo,model.userAddress.booth.partNo,CASE " +
-        		" WHEN model.userAddress.panchayat.panchayatId is not null THEN model.userAddress.panchayat.panchayatName ELSE '-' end  from TdpCadre model where model.enrollmentYear ='2014' " +
+        		" WHEN model.userAddress.panchayat.panchayatId is not null THEN model.userAddress.panchayat.panchayatName ELSE '-' end, model.memberShipNo  from TdpCadre model where model.enrollmentYear ='2014' " +
         		" and model.userAddress.booth.boothId in(:boothIds) and model.isDeleted = 'N' " +
         		" and model.cardNumber is null and model.dispatchStatus is null ");
         if(orderBy.equalsIgnoreCase("panchayat")){
@@ -740,9 +740,14 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
         	queryStr.append(" order by cast(model.userAddress.booth.boothId , int) ");
         }else if(orderBy.equalsIgnoreCase("name")){
         	queryStr.append(" order by model.firstname ");
-        }else if(orderBy.equalsIgnoreCase("relativeName")){
+        }else if(orderBy.equalsIgnoreCase("percentStr")){
         	queryStr.append(" order by model.relativename ");
+        }else if(orderBy.equalsIgnoreCase("mobileNo")){
+        	queryStr.append(" order by model.mobileNo ");
+        }else if(orderBy.equalsIgnoreCase("memberShipNo")){
+        	queryStr.append(" order by model.memberShipNo ");
         }
+        
         if(orderType.equalsIgnoreCase("asc") || orderType.equalsIgnoreCase("desc")){
            queryStr.append(orderType);
         }
@@ -756,7 +761,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 	
 	public List<Object[]> getPanchayatWiseCadreInfo(List<Long> panchayatIds,int startIndex,int maxIndex,String orderBy,String orderType){
         StringBuilder queryStr = new StringBuilder("select model.tdpCadreId,model.image,model.firstname,model.relativename,model.mobileNo,model.userAddress.booth.partNo, " +
-        		" model.userAddress.panchayat.panchayatName   from TdpCadre model where model.enrollmentYear ='2014' " +
+        		" model.userAddress.panchayat.panchayatName, model.memberShipNo   from TdpCadre model where model.enrollmentYear ='2014' " +
         		" and model.userAddress.panchayat.panchayatId in(:panchayatIds) and model.isDeleted = 'N' " +
         		" and model.cardNumber is null and model.dispatchStatus is null ");
         if(orderBy.equalsIgnoreCase("panchayat")){
@@ -765,9 +770,14 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
         	queryStr.append(" order by cast(model.userAddress.booth.boothId , int) ");
         }else if(orderBy.equalsIgnoreCase("name")){
         	queryStr.append(" order by model.firstname ");
-        }else if(orderBy.equalsIgnoreCase("relativeName")){
+        }else if(orderBy.equalsIgnoreCase("percentStr")){
         	queryStr.append(" order by model.relativename ");
+        }else if(orderBy.equalsIgnoreCase("mobileNo")){
+        	queryStr.append(" order by model.mobileNo ");
+        }else if(orderBy.equalsIgnoreCase("memberShipNo")){
+        	queryStr.append(" order by model.memberShipNo ");
         }
+        
         if(orderType.equalsIgnoreCase("asc") || orderType.equalsIgnoreCase("desc")){
            queryStr.append(orderType);
         }
@@ -841,6 +851,14 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		query.setParameter("voterId", voterId);
 		Integer c = query.executeUpdate();
 		
+		return c;
+	}
+	
+	public Integer updateDispatchStatus(List<Long> cadreIds){
+		Query query = getSession().createQuery(" update TdpCadre model set model.dispatchStatus = 'dispatched' where model.tdpCadreId in (:cadreIds) ");
+		
+		query.setParameterList("cadreIds", cadreIds);
+		Integer c = query.executeUpdate();
 		return c;
 	}
 	
