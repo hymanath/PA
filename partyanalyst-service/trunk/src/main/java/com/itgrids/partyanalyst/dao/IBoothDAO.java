@@ -392,4 +392,6 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	
 	public List<Object[]> getAllBoothsInMuncipalities(List<Long> localBodyIds,Long publicationId);
 	
+	public Long getConstituencyIdByLocationIdAndType(Long locationId,String locationType);
+	
 }
