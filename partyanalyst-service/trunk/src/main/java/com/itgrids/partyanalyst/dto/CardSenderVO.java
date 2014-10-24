@@ -14,9 +14,14 @@ public class CardSenderVO implements Serializable {
 	private	Long			 userId;
 	private Date		 	 insertedTime;
 	private List<Long>		 cadreIds;
+	private String			 mobileNums;
 	
-	
-	
+	public String getMobileNums() {
+		return mobileNums;
+	}
+	public void setMobileNums(String mobileNums) {
+		this.mobileNums = mobileNums;
+	}
 	public List<Long> getCadreIds() {
 		return cadreIds;
 	}

@@ -1214,6 +1214,12 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				   cadreVo.setArea("");
 				}
 				
+				if(cadre[7] != null){
+					cadreVo.setMemberShipNo(cadre[7].toString());//Membership No
+				}else{
+					cadreVo.setMemberShipNo("");
+				}
+				
 				returnList.add(cadreVo);
 			}
 		}
