@@ -187,11 +187,14 @@ public class WebServiceHandler2 {
 		{
 			e.printStackTrace();
 		}
-		
-		if(!out.getStatus().equalsIgnoreCase("Success"))
+		if(out != null && out.getStatus() != null){
+			if(!out.getStatus().equalsIgnoreCase("Success"))
+				return "{\"status\":\"Failure\"}";
+			
+			 else return "{\"status\":\"Success\"}";
+		}else{
 			return "{\"status\":\"Failure\"}";
-		
-		 else return "{\"status\":\"Success\"}";
+		}
 	}
 	
 	
