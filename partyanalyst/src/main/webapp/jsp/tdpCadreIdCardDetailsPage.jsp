@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="s" uri="/struts-tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -12,8 +12,9 @@
     <link href="css/style.css" rel="stylesheet"/>
     <link href="css/animate.css" rel="stylesheet"/>	
 	<link href="styles/icheck_skins/all.css?v=1.0.2" rel="stylesheet"/>
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	 <script src="js/icheck/icheck.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+	<script src="js/icheck/icheck.js"></script>
 
 	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 	<!-- YUI Dependency files (Start) -->
@@ -50,6 +51,11 @@
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 	
 	<link href="css/bootstrap.min.css" rel="stylesheet"/>	
+	<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
+
+	<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.filter.css" />
+	<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.filter.js"></script>
 	
 	<style>
 	.show-grid:hover .block-hover-addBtn{display:table-cell; margin-right:-22px; top:-10px;}/*visibility: visible;*/
@@ -78,6 +84,8 @@
 	  .detailsCls{
 	    cursor:pointer;
 	  }
+	  .selcUnselc{margin:5px;}
+	  
 	</style>
    
 	
@@ -101,14 +109,14 @@
 	<div class="container" id="yourElement">
 	<div id="myDiv"></div>
 	<div id="tableDivForCadre" class="table-responsive"></div>
-	
+		<h2 style="color:white;text-decoration: underline;" class="offset2">Cadre Membership Card Dispatcher Details</h2>
 		<div class="span6 offset3 show-grid pad-10b" style="">
 		<div id="errorDiv" style="color:#ff0020;"></div>
 			<h5 class="text-align">SELECT CONSTITUENCY</h5>
 
 			<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="userConstituencyId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" style="width:460px;" onChange="getConstituencyWiseDetails();"/>
-			<select class="textWidth" id="panchayatList" onchange="getLocationWiseDetails();" multiple><option value="0"> Select Location </option></select>		
-			<select class="span4 marginWidth" id="boothsList" multiple> <option value="0"> Select Booth </option> </select> 	
+			<select class="textWidth" id="panchayatList" onchange="getLocationWiseDetails();" multiple="true"><option value="0"> Select Location </option></select>		
+			<select class="span4 marginWidth" id="boothsList" multiple="true"> <option value="0"> Select Booth </option> </select> 	
 			<!-- <select style="width:150px;" id="vilagecovrdList"> <option value="0"> Select Covered Village </option> </select>  -->
 			<img src='images/icons/search.gif' id="loadingImg" style="display:none;"/>
 				
@@ -119,22 +127,32 @@
 					
 					
 		</div>
-		<div class="span8 offset2 show-grid pad-10b" style="">
+		<div class="span9 offset2 show-grid pad-10b cadreDetailsDiv" style="display:none">
 			<h5 style="text-align:center;"> CADRE DETAILS </h5>
+			<span class='btn btn-info btn-mini selcUnselc' onclick="selectAllMems('selc')">SELECT ALL</span><span class='btn btn-danger btn-mini selcUnselc' onclick="selectAllMems('unselc')">UNSELECT ALL</span>
 			<div id="dataTableDIV" class="yui-skin-sam"></div>
+			<span class='btn btn-info btn-mini selcUnselc' onclick="selectAllMems('selc')">SELECT ALL</span><span class='btn btn-danger btn-mini selcUnselc' onclick="selectAllMems('unselc')">UNSELECT ALL</span>
 		</div>
 		
 			    	
-		<div class="span6 offset3 show-grid pad-10b" style="">
+		<div class="span9 offset2 show-grid pad-10b cardSenderDetailsDiv" style="display:none">
 		
-			<h5 class="text-align">CardSender Details</h5>
+			<h5 class="text-align">MEMBERSHIP CARD DISPATCHER DETAILS</h5>
 
-			<div id="cardSenderDiv" style="color:#ff0020;" >
-			Name:<input type="text" name="name"></br>
-			Mobile Number:<input type="text" name="mobileNumber"></br>
-			Message:<input type="text" name="message"></br>
+			<div id="cardSenderDiv" style="color:#ff0020;" class="span11 row-fluid" >
+				<div class="span5">
+					<div class=""><label style="color:gray">Name:</label> <input type="text" name="name" id="hostName"></div></br>
+					<div class=""><label style="color:gray">Mobile Number:</label> <input type="text" name="mobileNumber" id="hostNumber"></div></br>
+				</div>
+				<div class="span5">
+					<div class=""><label style="color:gray">Message:</label> <textarea name="message" id="hostMessage" cols="30" rows ="4" readonly="true"></textarea> </div></br>
+				</div>
+				
 		    </div>
-			
+			<div class="errorMsgDiv" class="offset1">
+					<span class="errorMsg offset1" style="color:red"></span>
+					<span class="statusMsg offset1" style="color:green"></span>
+				</div>
 		    <div id="tdpCadreIdsDiv" style="color:#ff0020;">
 		   
 		    </div>
@@ -155,12 +173,20 @@
 	<!-- Footer Row End-->
 	
 	<script>
-		
+	var defaultMsg = " మీ యొక్క పార్టీ గుర్తింపు కార్డు మీ నియోజకవర్గానికి పంపబడినది, రెండు రోజులు తర్వాత దయచేసి సంప్రదించగలరు .  ";
+	$("#hostMessage").val(defaultMsg);
+	
+	/* $(document).ready(function(){
+		 $('#panchayatList').multiselect({}); 	
+		 $('#boothsList').multiselect({}); 	
+	}); */
+	
 	function getConstituencyWiseDetails(){
 		var cosntiteucnyId = $('#userConstituencyId').val();
 		
 		$('#errorDiv').html('');
 		$('#searchNameId').val('');
+		//$('#panchayatList').multiselect('refresh'); 	
 		$('#panchayatList').find('option').remove();
 		$('#panchayatList').append('<option value="0"> Select Location </option>');
 		
@@ -186,17 +212,19 @@
 				}).done(function(result){
 						
 							$('#loadingImg').hide();
-					if(result != null )
-					{
-						for(var i in result)
-						{
+					if(result != null ){
+						for(var i in result){
 							$('#panchayatList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 						}
 					}
+					
+					//$('#panchayatList').multiselect({noneSelectedText:"Select Panchayat(s)"});
 				});
+				
+				
 	}
-	
 	function getLocationWiseDetails(){
+	
 		var cosntiteucnyId = $('#userConstituencyId').val();
 		var locationId = $('#panchayatList').val();
 		$('#errorDiv').html('');
@@ -215,23 +243,63 @@
 					data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
 					$('#loadingImg').hide();
-					if(result != null )
-					{
-						for(var i in result)
-						{
+					if(result != null ){
+						for(var i in result){
 							$('#boothsList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 						}
 					}
+					
 				});
+				/* $('#boothsList').multiselect({
+					noneSelectedText:"Select Booth(s)"}); */
 	}
 
 	function cardSenderAndReceiver(){			
-		var jsObj = 
-			   {
-					name:"sreenivas",
-					mobileno:"9985360898",
-					message:"Welcome",
-					tdpcadreids:[1,2,3,4,5,6],
+		var hName=$("#hostName").val();
+		var hNumber = $("#hostNumber").val();
+		var hMessage = $("#hostMessage").val();
+		var cadreIds = [];
+		var mobileNumbers= [];
+		$('input:checkbox.cadreId').each(function () {
+			var sThisVal = (this.checked ? $(this).val() : "");
+			if(sThisVal!=""){
+				cadreIds.push(sThisVal);
+				var mobi = $(".mobileNm"+sThisVal).text();
+				mobileNumbers.push(mobi);
+			}
+		});
+		
+		if(hName.trim()==""){
+			$(".errorMsg").html(" Please Enter Card Dispatcher Name ");
+			return;
+		}
+		//alert(isNaN(parseInt(hNumber)));
+		if(hNumber.trim()==""){
+			$(".errorMsg").html(" Please Enter Card Dispatcher Mobile Number ");
+			return;
+		}
+		if(hNumber.trim()!=""){
+			if(hNumber.trim().length!=10){
+				$(".errorMsg").html(" Please Enter Valid Mobile Number ");
+				return;
+			}
+			
+		}
+		if(hMessage.trim()==""){
+			$(".errorMsg").html(" Please Enter Message ");
+			return;
+		}
+		if(cadreIds.length<=0){
+			$(".errorMsg").html(" Please Select AtLeast One Cadre Member ");
+			return;
+		}
+		
+			var jsObj ={
+					name:hName,
+					mobileno:hNumber,
+					message:hMessage,
+					tdpcadreids:cadreIds,
+					mobileNumbers : mobileNumbers,
 					task:"setCardSenderReceiverDetails"             
 			   }				   
 			   $.ajax({
@@ -240,11 +308,10 @@
 					data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
 					$('#loadingImg').hide();
-					if(result != null )
-					{
-						alert("Success");
+					if(result != null ){
+						getTotalCadreMembers();
+						$(".statusMsg").html(" Dispatched Status Updated Successfully.");
 					}
-					
 				});
 	}	
 	
@@ -269,11 +336,29 @@
 			data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
 			$('#loadingImg').hide();
-			console.log(result);
 		});
 	}
-	
-	function getTotalNewsToChangeKeywords(){
+	var membersChecked = [];
+	function getTotalCadreMembers(){
+		
+		
+		
+		var consiId = $('#userConstituencyId').val();
+		var panId = $('#panchayatList').val();
+		var bthId = $('#boothsList').val();
+		
+		if(consiId==0){
+			$("#errorDiv").html("Please Select Constituency");
+			return;
+		}
+		if(panId == null || panId ==0){
+			$("#errorDiv").html("Please Select Panchayat");
+			return;
+		}
+		
+		$(".cadreDetailsDiv").css("display","block");
+		$(".cardSenderDetailsDiv").css("display","block");
+		
 		var locationIds = [];
 		var boothIds = $('#boothsList').val();
 		var locationIds = $('#panchayatList').val();
@@ -287,10 +372,13 @@
 			var str='';
 			var name = oData;
 			var fileId = oRecord.getData("id");
-			
-			
-			str +="<input type='checkbox' class='cadreId' value='"+fileId+"'/>";
-			
+				console.log(membersChecked);
+				
+				if(membersChecked.indexOf(fileId) != -1){
+					str +="<input type='checkbox' class='cadreId' value='"+fileId+"'  checked='checked' onclick='addToArray("+fileId+")'/>";
+				}else{
+					str +="<input type='checkbox' class='cadreId' value='"+fileId+"' onclick='addToArray("+fileId+")'/>";
+				}
 			elLiner.innerHTML=str;
 		};
 		
@@ -305,14 +393,29 @@
 			elLiner.innerHTML=str;
 		};
 		
+		YAHOO.widget.DataTable.mobileNumber = function(elLiner, oRecord, oColumn, oData){
+			var str='';
+			var name = oData;
+			var mobileNumber = oRecord.getData("number");
+			var id = oRecord.getData("id");
+			
+			
+			
+			str +='<span class="mobileNm'+id+'">'+mobileNumber+'</span>';
+			
+			elLiner.innerHTML=str;
+		};
+		
 		
 	
 	   var newsColumns = [
-				   {key:"SELECT",label:"SELECT",formatter:YAHOO.widget.DataTable.checkBox},
+				   {key:"SELECT" ,label:"SELECT",formatter:YAHOO.widget.DataTable.checkBox},
 				   {key:"PHOTO",label:"PHOTO",formatter:YAHOO.widget.DataTable.image},
-				   {key:"name", label:"NAME"},
-				   {key:"percentStr", label:"RELATIVE NAME"},
-				   {key:"number", label:"MOBILE NO"}
+				   {key:"name", label:"NAME",sortable: true},
+				   {key:"memberShipNo", label:"MEMBERSHIP NO",sortable: true},
+				   {key:"percentStr", label:"RELATIVE NAME",sortable: true},
+				   {key:"mobileNo", label:"MOBILE NO",sortable: true,formatter:YAHOO.widget.DataTable.mobileNumber}
+				   
 		];
 		
 		
@@ -321,7 +424,7 @@
 		newsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 		newsDataSource.responseSchema = {
 		resultsList: "cadreRegisterInfoList",
-		fields: ["id","name","percentStr","number","date"],
+		fields: ["id","name","percentStr","number","date","memberShipNo"],
 		metaFields: {
 		totalRecords: "totalCount"// Access to value in the server response
 		 },
@@ -329,7 +432,7 @@
   
   
 	  var myConfigs = {
-		initialRequest: "&sort=relativeName&dir=asc&startIndex=0&results=10", // Initial request for first page of data
+		initialRequest: "&sort=name&dir=asc&startIndex=0&results=10", // Initial request for first page of data
 		dynamicData: true, // Enables dynamic server-driven data
 		sortedBy : {key:"name", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
 	    paginator : new YAHOO.widget.Paginator({ 
@@ -342,16 +445,53 @@
 
 	newsDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
 		oPayload.totalRecords = oResponse.meta.totalRecords;
+		//$(".selectall").attr('checked', false); 
 		return oPayload;
 	}
 }
 	$(".searchBtn").click(function(){
-		getTotalNewsToChangeKeywords();
+		getTotalCadreMembers();
 	});
 	
 	function setDefaultImage(img){
 		img.src = "images/mahaNadu/user image.jpg";
 	}
+	
+	$(".dfltMsg").click(function(){
+		$("#hostMessage").val("");
+		if ($('input.dfltMsg').is(':checked')) {
+			$("#hostMessage").val(defaultMsg);
+		}
+	});
+	
+	function addToArray(cadreId){
+		var idx = $.inArray(cadreId, membersChecked);
+		if (idx == -1) {
+		  membersChecked.push(cadreId);
+		} else {
+		  membersChecked.splice(idx, 1);
+		}
+	}
+	 
+	
+	
+		function selectAllMems(fromBtn){
+			//if ($('input.selectall').is(':checked')) {
+			if(fromBtn =="selc"){
+				$('.cadreId').each(function() { 
+					this.checked = true;  
+					addToArray(parseInt($(this).val()));
+				});
+			}else{
+				$('.cadreId').each(function() { 
+					this.checked = false;
+					membersChecked = [];
+					//addToArray(parseInt($(this).val()));
+				});  
+			}
+		}
+		
+		
 	
 	</script>
   </body>

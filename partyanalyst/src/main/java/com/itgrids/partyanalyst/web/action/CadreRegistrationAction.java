@@ -1093,15 +1093,26 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 						
 			JSONArray cadreIds = jobj.getJSONArray("tdpcadreids");
 			List<Long> cdrIds = new ArrayList<Long>();
-			
-			
-			
 			for(int i=0; i<cadreIds.length(); i++){
 				Long lctn = Long.valueOf(cadreIds.get(i).toString());
 				cdrIds.add(lctn);
 			}
 			
 			cardSenderVO.setCadreIds(cdrIds);
+			
+			JSONArray mobiNums = jobj.getJSONArray("mobileNumbers");
+			StringBuffer mobileNms = new StringBuffer(); 
+			for(int i=0; i<mobiNums.length(); i++){
+				String mob = mobiNums.get(i).toString();
+				mobileNms.append(mob);
+				mobileNms.append(",");
+			}
+			
+			if(mobileNms.length()>1){
+				mobileNms.substring(0,mobileNms.length() - 1);
+			}
+			
+			cardSenderVO.setMobileNums(mobileNms.toString());
 						
 			surveyCadreResponceVO = cadreRegistrationService.tdpCardSenderSavingLogic(cardSenderVO);
 			
