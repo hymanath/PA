@@ -8,6 +8,8 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
  <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">	
 <script type="text/javascript" src="js/exportexcel.js"></script>
+	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 <style>
 	.show-grid:hover .block-hover-addBtn{display:table-cell; margin-right:-22px; top:-10px;}/*visibility: visible;*/
 	.block-hover-addBtn{display:none; position: relative;}/*visibility: hidden;*/
@@ -70,6 +72,13 @@
 	.highlight {
         cursor: pointer;
     }
+	
+	#usersStatusReportTab  thead th, #locationWiseReportTab  thead th{
+				background-color: #dff0d8  !important;
+				color : #468847 !important;
+				line-height: 20px !important;
+			}
+			
 	</style>
 </head>
 <body>
@@ -252,10 +261,10 @@
 	       var str='';
 	       if(result.length > 0){
 		        str+='<input type="button"  style="margin-bottom:15px;margin-left: 375px;"  class="btn" onclick="generateExcel();" value="Click Here To Generate Excel"/>';
-		        str+='<div id="resultTableDiv" style="overflow-x:scroll;"><table class="table table-bordered table-striped table-hover"><thead>';
+		        str+='<div id="resultTableDiv" style="overflow-x:scroll;"><table class="table table-bordered table-striped table-hover" id="usersStatusReportTab"><thead>';
 				str+='<tr>';
 				str+='<th rowspan="2">User</th>';
-				str+='<th rowspan="2">MobileNo</th>';
+				str+='<th rowspan="2" >MobileNo</th>';
 				for(var i in result[0].infoList){
 				  str+='<th colspan="3">'+result[0].infoList[i].date+'</th>';
 				}
@@ -302,6 +311,7 @@
 		   $("#userStatusDialogDIV").html(str);
 		   $("#ajaxImgStyle").hide();
 		   $("#getCandidateDataCollectionInfoId").removeAttr("disabled");
+		   $("#usersStatusReportTab").dataTable({});
        });
    }
    function generateExcel(){
@@ -623,7 +633,7 @@
 	       var str='';
 	       if(result.length > 0){
 		        str+='<input type="button"  style="margin-bottom:15px;margin-left: 375px;"  class="btn" onclick="generateExcel();" value="Click Here To Generate Excel"/>';
-		        str+='<div id="resultTableDiv"><table class="table table-bordered table-striped table-hover"><thead>';
+		        str+='<div id="resultTableDiv"><table class="table table-bordered table-striped table-hover" id="locationWiseReportTab"><thead>';
 				str+='<tr>';
 				if(locationId == 2){
 				    str+='<th>STATE</th>';
@@ -665,6 +675,7 @@
 		   $("#locationStatusDialogDIV").html(str);
 		   $("#ajaxImgStyleNew").hide();
 		   $("#locationSubmitBtn").removeAttr("disabled");
+		   $("#locationWiseReportTab").dataTable({"iDisplayLength": 50});
 	   });
   }
   function showHideTabs(id){
