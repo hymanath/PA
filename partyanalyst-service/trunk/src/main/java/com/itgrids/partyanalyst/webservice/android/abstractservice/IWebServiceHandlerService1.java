@@ -18,7 +18,7 @@ public interface IWebServiceHandlerService1 {
 	public LoginResponceVO checkForUserAuthenticationForCadre(UserLoginVO inputvo);
 	public Object saveSurveyFieldUsersForCadre(List<CadreRegistrationVO> inputResponse);
 	
-	//public Object getVCadreDataByPanchayatId(Long panchayatId);
+	public Object getVCadreDataByPanchayatId(Long panchayatId);
 
 /*	public ResultStatus checkUserAuthenticationAndUpdateAuthorisedTime(String userId,String macAdressId);
 */	
