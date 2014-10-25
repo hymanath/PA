@@ -43,6 +43,7 @@ import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
 import com.itgrids.partyanalyst.dao.ICardReceiverDAO;
 import com.itgrids.partyanalyst.dao.ICardSenderDAO;
+import com.itgrids.partyanalyst.dao.ICasteDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
@@ -68,6 +69,7 @@ import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
+import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -146,6 +148,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ICardSenderDAO						cardSenderDAO;
 	private ICardReceiverDAO					cardReceiverDAO;
 	
+	private ICasteDAO casteDAO;
+	
+	public ICasteDAO getCasteDAO() {
+		return casteDAO;
+	}
+
+	public void setCasteDAO(ICasteDAO casteDAO) {
+		this.casteDAO = casteDAO;
+	}
 
 	public void setCardSenderDAO(ICardSenderDAO cardSenderDAO) {
 		this.cardSenderDAO = cardSenderDAO;
@@ -3682,11 +3693,51 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}
 		return status;
 	}
-	
 	public  Comparator<Object[]> boothsSort = new Comparator<Object[]>(){		  
 		  public int compare(Object[] result1, Object[] result2)
 			{
 			   return ((Long.valueOf(result1[1].toString().trim())).intValue()) - ((Long.valueOf(result2[1].toString().trim())).intValue());
 			}
 		};
+	
+	public CastVO getAllCastes()
+	{
+	CastVO returnVo = new CastVO();
+	List<CastVO> castesList =new ArrayList<CastVO>();
+	List<CastVO> casteStateList =new ArrayList<CastVO>();
+	List<Object[]> list = casteDAO.getCastes();
+	List<Object[]> list1 = casteStateDAO.getAllCasteInfo();
+		try{
+			
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					CastVO vo = new CastVO();
+					vo.setCasteId((Long)params[0]);
+					vo.setCastName(params[1] != null ? params[1].toString() : "");
+					castesList.add(vo);
+				}
+			}
+			if(list1 != null && list1.size() > 0)
+			{
+				for(Object[] params : list1)
+				{
+					CastVO vo = new CastVO();
+					vo.setCastStateId((Long)params[0]);
+					vo.setCasteId((Long)params[1]);
+					vo.setCasteCategoryGroupId((Long)params[2]);
+					vo.setStateId((Long)params[3]);
+					
+					casteStateList.add(vo);
+				}
+			}
+			returnVo.setCasteList(castesList);
+			returnVo.setCasteStateList(casteStateList);
+		}
+		catch (Exception e) {
+			LOG.error("Exception raised in getAllCastes in CadreRegistrationService service", e);
+		}
+		return returnVo;
+	}
 }

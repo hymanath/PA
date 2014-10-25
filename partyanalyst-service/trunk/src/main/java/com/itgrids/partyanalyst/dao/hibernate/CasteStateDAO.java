@@ -126,6 +126,11 @@ public List<Object[]> getAllCasteInfoDetails(){
 		return query.list();
 	}
 	 
-	
+	public List<Object[]> getAllCasteInfo()
+	{
+		Query query = getSession().createQuery("select distinct model.casteStateId,model.caste.casteId,model.casteCategoryGroup.casteCategoryGroupId,model.state.stateId from CasteState model");
+		
+		return query.list();	
+	}
 
 }
