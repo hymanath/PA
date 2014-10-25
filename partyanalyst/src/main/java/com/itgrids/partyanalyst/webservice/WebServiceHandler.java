@@ -566,7 +566,7 @@ public class WebServiceHandler {
 		
 	}*/
 	
-	/*@GET
+	@GET
     @Path("/getCadreDetailsByPanchayat/{panchayatId}")
 	@Produces(MediaType.TEXT_PLAIN)
 	public Object getCadreDetailsByPanchayat(@PathParam("panchayatId") String panchayatId)
@@ -574,20 +574,20 @@ public class WebServiceHandler {
 		Object object = null;
 		object=(List<BasicVO>) webServiceHandlerService.getVCadreDataByPanchayatId(Long.valueOf(panchayatId));
 		return object;
-    }*/
+    }
 	
 	
 	@GET
-	@Path("/getVCadreDataByPanchayatId/{uniqueCode}/{type}")
+	@Path("/getVCadreDataByPanchayatId/{uniqueCode}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Object getVCadreDataByPanchayatId(@PathParam("uniqueCode") String uniqueCode,@PathParam("type") String type)
+	public Object getVCadreDataByPanchayatId(@PathParam("uniqueCode") String uniqueCode)
 	{
 		
 		try{
 			
 			//return webServiceHandlerService.requestForAuthorisationAccesskey(uniqueCode);
 			Object object = null;
-			object= webServiceHandlerService.getVCadreDataByPanchayatId(Long.valueOf(uniqueCode), type);
+			object= webServiceHandlerService.getVCadreDataByPanchayatId(Long.valueOf(uniqueCode));
 			return object;
 		}
 		catch(Exception e)
@@ -689,4 +689,25 @@ public class WebServiceHandler {
 			return null;
 		}
 	}
+	
+	@GET
+	@Path("/getVCadreDataByPanchayatId1/{panchayatId}/{type}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Object getVCadreDataByPanchayatId1(@PathParam("panchayatId") String panchayatId,@PathParam("type") String type)
+	{
+		
+		try{
+			
+			//return webServiceHandlerService.requestForAuthorisationAccesskey(uniqueCode);
+			Object object = null;
+			object= webServiceHandlerService.getVCadreDataByPanchayatId1(Long.valueOf(panchayatId),type);
+			return object;
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in requestForAuthorisationForAccessKey() Method, Exception is ",e);
+			return "Fail";
+		}
+	}
+
 }
