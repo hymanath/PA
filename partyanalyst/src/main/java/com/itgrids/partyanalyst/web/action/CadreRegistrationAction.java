@@ -733,7 +733,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		LOG.info("Entered into getOptionDetailsForCadre method in CadreRegistrationAction Action");
 		try {		
 			jobj = new JSONObject(getTask());
-			basicVOList = cadreRegistrationService.getSelectedLevelCadreDetails(jobj.getLong("panchayatId"),"panchayat");
+			basicVOList = cadreRegistrationService.getSelectedLevelCadreDetails(jobj.getLong("panchayatId"));
 			
 		} catch (Exception e) {			
 			LOG.info("Entered into getSelectedLevelCadreDetails method in CadreRegistrationAction Action");
