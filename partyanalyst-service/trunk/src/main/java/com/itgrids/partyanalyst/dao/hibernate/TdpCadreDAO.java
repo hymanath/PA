@@ -92,7 +92,11 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		
 		if(panchayatId.longValue() != 0L)
 		{
-			str.append(" and TC.userAddress.panchayatId = :panchayatId ");
+			if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+				str.append(" and TC.userAddress.panchayat.panchayatId = :id ");
+			}else if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+				str.append(" and TC.userAddress.localElectionBody.localElectionBodyId = :id ");
+			}
 		}
 		
 		if(boothId.longValue() != 0L)
@@ -118,7 +122,11 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 
 		if(panchayatId.longValue() != 0L)
 		{
-			query.setParameter("panchayatId", panchayatId);
+			if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+				query.setParameter("id", Long.valueOf(panchayatId.toString().substring(1)));
+			}else if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+				query.setParameter("id", Long.valueOf(panchayatId.toString().substring(1)));
+			}
 		}
 		
 		if(boothId.longValue() != 0L)
@@ -294,7 +302,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 	{
 		
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select model.firstname, model.relativename, model.previousEnrollmentNo, model.tdpCadreId from TdpCadre model where ");
+		queryStr.append(" select model.firstname, model.relativename, model.memberShipNo, model.tdpCadreId from TdpCadre model where ");
 		boolean candiNameExist = false;
 		if(candidateName.length()>2){
 			candiNameExist = true;
@@ -305,7 +313,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 			if(candiNameExist){
 				queryStr.append(" and ");
 			}
-			queryStr.append(" model.previousEnrollmentNo like '%"+enrollmentNo+"%' ");
+			queryStr.append(" model.memberShipNo like '%"+enrollmentNo+"%' ");
 		}
 		
 		
@@ -316,7 +324,12 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		
 		if(panchayatId != null && panchayatId.longValue() != 0L)
 		{
-			queryStr.append(" and model.userAddress.panchayatId = :panchayatId ");
+			//queryStr.append(" and model.userAddress.panchayatId = :panchayatId ");
+			if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+				queryStr.append(" and model.userAddress.panchayat.panchayatId = :id ");
+			}else if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+				queryStr.append(" and model.userAddress.localElectionBody.localElectionBodyId = :id ");
+			}
 		}
 		if(boothId != null && boothId.longValue() != 0L)
 		{
@@ -332,7 +345,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 			queryStr.append(" and model.enrollmentYear not in (:year) ");
 		}
 		
-		queryStr.append(" and model.previousEnrollmentNo is not null and model.previousEnrollmentNo != '' and model.isDeleted = 'N' order by model.firstname ");
+		queryStr.append(" and model.memberShipNo is not null and model.memberShipNo != '' and model.isDeleted = 'N' order by model.firstname ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		
@@ -343,7 +356,11 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		
 		if(panchayatId != null && panchayatId.longValue() != 0L)
 		{
-			query.setParameter("panchayatId", panchayatId);
+			if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+				query.setParameter("id", Long.valueOf(panchayatId.toString().substring(1)));
+			}else if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+				query.setParameter("id", Long.valueOf(panchayatId.toString().substring(1)));
+			}
 		}
 		if(boothId != null && boothId.longValue() != 0L)
 		{

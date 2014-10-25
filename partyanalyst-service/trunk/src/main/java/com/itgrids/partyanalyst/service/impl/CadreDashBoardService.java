@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CadreDashBoardService implements ICadreDashBoardService {
 
@@ -1268,8 +1269,35 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			cadres = tdpCadreDAO.getBoothWiseCadreInfo(locationIds,startIndex,maxIndex,orderBy,orderType);
 			totalCount = tdpCadreDAO.getBoothWiseCadreInfoCount(locationIds);
 		}else if(locationType != null && locationType.equalsIgnoreCase("panchayat")){
-			cadres = tdpCadreDAO.getPanchayatWiseCadreInfo(locationIds,startIndex,maxIndex,orderBy,orderType);
-			totalCount = tdpCadreDAO.getPanchayatWiseCadreInfoCount(locationIds);
+			List<Long> boothIds = new ArrayList<Long>();
+			List<Long> panchayatIds = new ArrayList<Long>();
+			List<Long> localBodyIds = new ArrayList<Long>();
+			List<Long> constiIds = new ArrayList<Long>();
+			for(Long id:locationIds){
+				if(id != null && id.longValue() > 0){
+					if(id.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+						panchayatIds.add(Long.valueOf(id.toString().substring(1)));
+					}else if(id.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+						localBodyIds.add(Long.valueOf(id.toString().substring(1)));
+					}else if(id.toString().substring(0,1).trim().equalsIgnoreCase("3")){
+						constiIds.add(Long.valueOf(id.toString().substring(1)));
+					}
+				}
+			}
+			List<Long> boothsList = new ArrayList<Long>();
+			if(panchayatIds.size() > 0){
+				boothIds.addAll(boothDAO.getAllBoothIdsInPanchayat(panchayatIds, IConstants.VOTER_DATA_PUBLICATION_ID));
+			}
+			if(localBodyIds.size() > 0){
+				boothIds.addAll(boothDAO.getAllBoothIdsInLocalBodies(localBodyIds,IConstants.VOTER_DATA_PUBLICATION_ID));
+			}
+            if(constiIds.size() > 0){
+            	boothIds.addAll(boothDAO.getAllBoothIdsByConsti(constiIds.get(0),IConstants.VOTER_DATA_PUBLICATION_ID));
+			}
+			/*cadres = tdpCadreDAO.getPanchayatWiseCadreInfo(locationIds,startIndex,maxIndex,orderBy,orderType);
+			totalCount = tdpCadreDAO.getPanchayatWiseCadreInfoCount(locationIds);*/
+            cadres = tdpCadreDAO.getBoothWiseCadreInfo(boothsList,startIndex,maxIndex,orderBy,orderType);
+			totalCount = tdpCadreDAO.getBoothWiseCadreInfoCount(boothsList);
 		}
 		if(cadres != null && cadres.size() > 0){
 			for(Object[] cadre:cadres){
