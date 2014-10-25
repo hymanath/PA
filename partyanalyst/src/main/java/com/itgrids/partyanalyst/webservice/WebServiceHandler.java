@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
+import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
@@ -33,7 +34,17 @@ public class WebServiceHandler {
 	private List<WSResultVO> wSResultVO;
 	private WSResultVO wSResult;
 	private final static Logger LOG = Logger.getLogger(WebServiceHandler.class);
+	private CastVO casteVo;
 	
+
+	
+	public CastVO getCasteVo() {
+		return casteVo;
+	}
+
+	public void setCasteVo(CastVO casteVo) {
+		this.casteVo = casteVo;
+	}
 
 	public WSResultVO getwSResult() {
 		return wSResult;
@@ -657,6 +668,25 @@ public class WebServiceHandler {
 		{
 			LOG.error("Exception Occured in requestForAuthorisationForAccessKey() Method, Exception is ",e);
 			return "Fail";
+		}
+	}
+	
+
+	@GET
+	@Path("/getAllCastes")
+	@Produces(MediaType.APPLICATION_JSON)
+	public CastVO getAllCastes()
+	{
+		
+		try{
+
+			casteVo = webServiceHandlerService.getAllCastes();
+			return casteVo;
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getAllCastes() Method, Exception is ",e);
+			return null;
 		}
 	}
 }
