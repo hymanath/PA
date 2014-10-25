@@ -566,7 +566,7 @@ public class WebServiceHandler {
 		
 	}*/
 	
-	@GET
+	/*@GET
     @Path("/getCadreDetailsByPanchayat/{panchayatId}")
 	@Produces(MediaType.TEXT_PLAIN)
 	public Object getCadreDetailsByPanchayat(@PathParam("panchayatId") String panchayatId)
@@ -574,20 +574,20 @@ public class WebServiceHandler {
 		Object object = null;
 		object=(List<BasicVO>) webServiceHandlerService.getVCadreDataByPanchayatId(Long.valueOf(panchayatId));
 		return object;
-    }
+    }*/
 	
 	
 	@GET
-	@Path("/getVCadreDataByPanchayatId/{uniqueCode}")
+	@Path("/getVCadreDataByPanchayatId/{uniqueCode}/{type}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Object getVCadreDataByPanchayatId(@PathParam("uniqueCode") String uniqueCode)
+	public Object getVCadreDataByPanchayatId(@PathParam("uniqueCode") String uniqueCode,@PathParam("type") String type)
 	{
 		
 		try{
 			
 			//return webServiceHandlerService.requestForAuthorisationAccesskey(uniqueCode);
 			Object object = null;
-			object= webServiceHandlerService.getVCadreDataByPanchayatId(Long.valueOf(uniqueCode));
+			object= webServiceHandlerService.getVCadreDataByPanchayatId(Long.valueOf(uniqueCode), type);
 			return object;
 		}
 		catch(Exception e)
