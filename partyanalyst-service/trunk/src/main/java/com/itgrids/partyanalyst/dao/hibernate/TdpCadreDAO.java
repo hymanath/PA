@@ -395,9 +395,18 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		return query.list();
 	}
 	
-	public List<Object[]> getPanchayatWiseCadreDetails(Long panchayatId )
+	public List<Object[]> getPanchayatWiseCadreDetails(Long panchayatId,String type )
 	{
-		Query query = getSession().createQuery("select model.memberShipNo , model.voterId,model.firstname,model.relativename,model.voter.voterId,model.voter.voterIDCardNo,model.refNo,model.cardNumber,model.image from TdpCadre model where model.userAddress.panchayat.panchayatId = :panchayatId  and model.isDeleted = 'N'");
+		
+		StringBuilder queryStr = new StringBuilder();
+
+		queryStr.append("select model.memberShipNo , model.voterId,model.firstname,model.relativename,model.voter.voterId,model.voter.voterIDCardNo,model.refNo,model.cardNumber,model.image from TdpCadre model " );
+				if (type.equalsIgnoreCase("panchayat")){
+					queryStr.append(" where model.userAddress.panchayat.panchayatId = :panchayatId");
+				}else if(type.equalsIgnoreCase("booth")){
+					queryStr.append(" where model.userAddress.booth.boothId = :panchayatId");
+				}
+		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("panchayatId", panchayatId);
 		return query.list();
 	}

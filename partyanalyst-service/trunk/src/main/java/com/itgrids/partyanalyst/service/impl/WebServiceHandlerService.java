@@ -1068,9 +1068,9 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		return wsResultVO;
 	}
 	
-	public Object getVCadreDataByPanchayatId(Long panchayatId)
+	public Object getVCadreDataByPanchayatId(Long panchayatId,String type)
 	{
-		List<CadrePrintVO> list = cadreRegistrationService.getSelectedLevelCadreDetails(panchayatId);
+		List<CadrePrintVO> list = cadreRegistrationService.getSelectedLevelCadreDetails(panchayatId,type);
 		return list;
 	}
 	

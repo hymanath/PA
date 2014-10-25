@@ -3197,11 +3197,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	 * @date 08-10-2014
 	 * @return returnList
 	 */
-	public List<CadrePrintVO> getSelectedLevelCadreDetails(Long panchayatId)
+	public List<CadrePrintVO> getSelectedLevelCadreDetails(Long panchayatId,String type)
 	{
 		List<CadrePrintVO> returnList = null;
 		try {
-		 List<Object[]> result = tdpCadreDAO.getPanchayatWiseCadreDetails(panchayatId);
+		 List<Object[]> result = tdpCadreDAO.getPanchayatWiseCadreDetails(panchayatId,type);
 		 if(result != null && result.size() > 0)
 		 {
 			 //String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
