@@ -7263,7 +7263,11 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		
 		if(panchayatId.longValue() != 0L)
 		{
-			queryStr1.append(" and BPV.booth.panchayat.panchayatId = :panchayatId ");
+			if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+				queryStr1.append(" and BPV.booth.panchayat.panchayatId = :id ");
+			}else if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+				queryStr1.append(" and BPV.booth.localBody.localElectionBodyId = :id ");
+			}
 		}
 		
 		if(boothId.longValue() != 0L)
@@ -7283,7 +7287,11 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		
 		if(panchayatId.longValue() != 0L)
 		{
-			query.setParameter("panchayatId", panchayatId);
+			if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+				query.setParameter("id", Long.valueOf(panchayatId.toString().substring(1)));
+			}else if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+				query.setParameter("id", Long.valueOf(panchayatId.toString().substring(1)));
+			}
 		}
 		
 		if(boothId.longValue() != 0L)

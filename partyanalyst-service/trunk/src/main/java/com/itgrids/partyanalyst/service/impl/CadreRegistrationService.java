@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Formatter;
 import java.util.GregorianCalendar;
@@ -2166,7 +2168,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							{
 								GenericVO vo = new GenericVO();
 								
-								vo.setId(param[0] != null ? Long.valueOf(param[0].toString()):0L);
+								vo.setId(param[0] != null ? Long.valueOf("1"+param[0].toString()):0L);
 								vo.setName(param[1] != null ? param[1].toString():"");
 								
 								returnList.add(vo);
@@ -2174,7 +2176,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							}
 						}
 						
-						List<Object[]> localelectinbody = localElectionBodyDAO.getMuncipalitiesAndCorporationsInAConstituency(tehsilIds);
+						List<Object[]> localelectinbody = boothDAO.getAllLocalBodies(constituencyId,IConstants.VOTER_DATA_PUBLICATION_ID);
 						
 						if(localelectinbody != null && localelectinbody.size()>0)
 						{
@@ -2182,8 +2184,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							{
 								GenericVO vo = new GenericVO();
 								
-								vo.setId(param[0] != null ? Long.valueOf(param[0].toString()):0L);
-								vo.setName(param[1] != null ? param[1].toString()+" Muncipality/Corporation ":"");
+								vo.setId(param[0] != null ? Long.valueOf("2"+param[0].toString()):0L);
+								vo.setName(param[1] != null ? param[1].toString():"");
 								
 								returnList.add(vo);
 								
@@ -2194,29 +2196,12 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					
 				}
 				else if(araaType != null && araaType.equalsIgnoreCase("URBAN"))
-				{
-					/*List<Object[]> boothList = boothDAO.getAllBoothsInUrban(constituencyId, IConstants.VOTER_DATA_PUBLICATION_ID);
-					
-					if(boothList != null && boothList.size()>0)
-					{
-						for (Object[] param : boothList)
-						{
-							GenericVO vo = new GenericVO();
-							
-							vo.setId(param[0] != null ? Long.valueOf(param[0].toString()):0L);
-							vo.setName(param[1] != null ? "Booth - "+param[1].toString() + "  ("+(param[2] != null? param[2].toString()+") ":""):"");
-							
-							returnList.add(vo);
-							
-						}
-					}
-					*/
-					
-					if(constituency != null )
+				{		
+		 		if(constituency != null )
 					{
 							GenericVO vo = new GenericVO();
 							
-							vo.setId(constituency.getConstituencyId());
+							vo.setId(Long.valueOf("3"+constituency.getConstituencyId()));
 							vo.setName(constituency.getName());
 							
 							returnList.add(vo);
@@ -2235,9 +2220,32 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	public List<GenericVO> getBoothForPanchayats(Long constituencyId, Long locationId)
 	{
 		LOG.info("Exception raised in getBoothForPanchayats in CadreRegistrationService service");
-		List<GenericVO> returnList = null;
+		List<GenericVO> returnList = new ArrayList<GenericVO>();
+		List<Object[]> locations = new ArrayList<Object[]>();
 		try {
-			Constituency constituency = constituencyDAO.get(constituencyId);
+			
+			if(locationId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+				List<Long> ids = new ArrayList<Long>();
+				ids.add(Long.valueOf(locationId.toString().substring(1)));
+				locations = boothDAO.getAllBoothsInPanchayat(ids, IConstants.VOTER_DATA_PUBLICATION_ID);
+			}else if(locationId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+				List<Long> ids = new ArrayList<Long>();
+				ids.add(Long.valueOf(locationId.toString().substring(1)));
+				locations =  boothDAO.getAllBoothsInMuncipalities(ids, IConstants.VOTER_DATA_PUBLICATION_ID);
+			}else if(locationId.toString().substring(0,1).trim().equalsIgnoreCase("3")){
+				locations =  boothDAO.getAllBoothsInUrban(Long.valueOf(locationId.toString().substring(1)), IConstants.VOTER_DATA_PUBLICATION_ID);
+			}
+			for (Object[] param : locations)
+			{
+				GenericVO vo = new GenericVO();
+				
+				vo.setId(param[0] != null ? Long.valueOf(param[0].toString()):0L);
+				vo.setName(param[1] != null ? "Booth - "+param[1].toString() + "  ("+(param[2] != null? param[2].toString()+") ":""):"");
+				
+				returnList.add(vo);
+				
+			}
+			/*Constituency constituency = constituencyDAO.get(constituencyId);
 			if(constituency != null)
 			{
 				String araaType = constituency.getAreaType();
@@ -2328,7 +2336,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						}
 					}
 				}
-			}
+			}*/
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in getBoothForPanchayats in CadreRegistrationService service", e);
@@ -2631,7 +2639,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	}
 	
 	private  String sendSMSInTelugu(String mobileNo,String message){
-
+        if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
+        	return "error"; 
+        }
 		HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
 		client.getHttpConnectionManager().getParams().setConnectionTimeout(
 			Integer.parseInt("30000"));
@@ -3072,7 +3082,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					tdpCadre.setImage(tdpCadre.getMemberShipNo()+"."+cadreRegistrationVO.getUploadImageContentType().split("/")[1]);
 				}
 			}
-			else if(cadreRegistrationVO.getPhotoType() != null  && cadreRegistrationVO.getPhotoType().trim().equalsIgnoreCase("new") && registrationType.equalsIgnoreCase("TAB") && cadreRegistrationVO.getImageBase64String() != null && 
+			else if(cadreRegistrationVO.getPhotoType() != null  && cadreRegistrationVO.getPhotoType().trim().equalsIgnoreCase("new")  && cadreRegistrationVO.getImageBase64String() != null && 
 					cadreRegistrationVO.getImageBase64String().trim().length() > 0){
 				  LOG.error("15");
 					String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
@@ -3433,10 +3443,42 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	}
 	public List<GenericVO> getBoothsForMultipleLocations(Long constituencyId, List<Long> locationIds){
 		LOG.info("Exception raised in getBoothdForMultipleLocations in CadreRegistrationService service");
-		List<GenericVO> returnList = null;
+		List<GenericVO> returnList = new ArrayList<GenericVO>();
 		try {
-			Constituency constituency = constituencyDAO.get(constituencyId);
-			if(constituency != null)
+			List<Long> panchayatIds = new ArrayList<Long>();
+			List<Long> localBodyIds = new ArrayList<Long>();
+			List<Long> constiIds = new ArrayList<Long>();
+			for(Long id:locationIds){
+				if(id != null && id.longValue() > 0){
+					if(id.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+						panchayatIds.add(Long.valueOf(id.toString().substring(1)));
+					}else if(id.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+						localBodyIds.add(Long.valueOf(id.toString().substring(1)));
+					}else if(id.toString().substring(0,1).trim().equalsIgnoreCase("3")){
+						constiIds.add(Long.valueOf(id.toString().substring(1)));
+					}
+				}
+			}
+			List<Object[]> boothsList = new ArrayList<Object[]>();
+			if(panchayatIds.size() > 0){
+				boothsList.addAll(boothDAO.getAllBoothsInPanchayat(panchayatIds, IConstants.VOTER_DATA_PUBLICATION_ID));
+			}
+			if(localBodyIds.size() > 0){
+				boothsList.addAll(boothDAO.getAllBoothsInMuncipalities(localBodyIds,IConstants.VOTER_DATA_PUBLICATION_ID));
+			}
+            if(constiIds.size() > 0){
+            	boothsList.addAll(boothDAO.getAllBoothsInUrban(constiIds.get(0),IConstants.VOTER_DATA_PUBLICATION_ID));
+			}
+            Collections.sort(boothsList,boothsSort);
+            for (Object[] param : boothsList){
+				GenericVO vo = new GenericVO();
+				
+				vo.setId(param[0] != null ? Long.valueOf(param[0].toString()):0L);
+				vo.setName(param[1] != null ? "Booth-"+param[1].toString() + "  ("+(param[2] != null? param[2].toString()+") ":""):"");
+				
+				returnList.add(vo);
+			}
+			/*if(constituency != null)
 			{
 				String araaType = constituency.getAreaType();
 
@@ -3519,7 +3561,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						}
 					}
 				}
-			}
+			}*/
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in getBoothdForMultipleLocations in CadreRegistrationService service", e);
@@ -3640,5 +3682,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}
 		return status;
 	}
-			 
+	
+	public  Comparator<Object[]> boothsSort = new Comparator<Object[]>(){		  
+		  public int compare(Object[] result1, Object[] result2)
+			{
+			   return ((Long.valueOf(result1[1].toString().trim())).intValue()) - ((Long.valueOf(result2[1].toString().trim())).intValue());
+			}
+		};
 }

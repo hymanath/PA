@@ -2104,4 +2104,52 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			return (Long) query.uniqueResult();
 		
 	}
+	
+	public List<Object[]> getAllBoothsInPanchayat(List<Long> panchayatIds,Long publicationId){
+		Query query = getSession().createQuery("select model.boothId,model.partNo, model.villagesCovered from Booth model " +
+				" where model.panchayat.panchayatId in(:panchayatIds) and " +
+				"  model.publicationDate.publicationDateId = :publicationId" +
+				" order by model.partNo");
+		query.setParameterList("panchayatIds", panchayatIds);
+		query.setParameter("publicationId", publicationId);
+		return query.list();
+	}
+	
+	public List<Object[]> getAllLocalBodies(Long constituencyId,Long publicationId){
+		Query query = getSession().createQuery("select distinct model.localBody.localElectionBodyId,concat(model.localBody.name,' ',model.localBody.electionType.electionType) " +
+				" from Booth model where model.publicationDate.publicationDateId =:publicationId and model.constituency.constituencyId =:constituencyId order by model.localBody.name");
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationId", publicationId);
+		
+		return query.list();
+	}
+	
+	public List<Long> getAllBoothIdsByConsti(Long constituencyId,Long publicationId)
+	{
+		Query query = getSession().createQuery("select model.boothId from Booth model " +
+				" where model.constituency.constituencyId = :constituencyId and " +
+				"  model.publicationDate.publicationDateId = :publicationId");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationId", publicationId);
+		return query.list();
+	}
+	
+	public List<Long> getAllBoothIdsInPanchayat(List<Long> panchayatIds,Long publicationId){
+		Query query = getSession().createQuery("select model.boothId from Booth model " +
+				" where model.panchayat.panchayatId in(:panchayatIds) and " +
+				"  model.publicationDate.publicationDateId = :publicationId");
+		query.setParameterList("panchayatIds", panchayatIds);
+		query.setParameter("publicationId", publicationId);
+		return query.list();
+	}
+	
+	public List<Long> getAllBoothIdsInLocalBodies(List<Long> localBodyIds,Long publicationId){
+		Query query = getSession().createQuery("select model.boothId from Booth model " +
+				" where model.localBody.localElectionBodyId in( :localBodyIds) and " +
+				"  model.publicationDate.publicationDateId = :publicationId");
+		query.setParameterList("localBodyIds", localBodyIds);
+		query.setParameter("publicationId", publicationId);
+		return query.list();
+	}
 }
