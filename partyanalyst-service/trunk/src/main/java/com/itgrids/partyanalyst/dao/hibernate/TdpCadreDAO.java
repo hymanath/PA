@@ -923,4 +923,10 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		query.setParameter("panchayatId", panchayatId);
 		return query.list();
 	}
+	
+	public Long checkCardNoExistsOrNot(String cardNo){
+		Query query = getSession().createQuery("select count(*) from TdpCadre model where model.cardNo = :cardNo");
+		query.setParameter("cardNo", cardNo);
+		return (Long) query.uniqueResult();
+	}
 }

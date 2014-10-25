@@ -107,4 +107,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public Integer updateDispatchStatus(List<Long> cadreIds);
 	
+	public Long checkCardNoExistsOrNot(String cardNo);
 }
