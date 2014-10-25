@@ -37,7 +37,7 @@ public interface ICadreRegistrationService {
 	
 	public CadrePrintVO getCadreDetailsForPrinting(String memberCardNo);
 	
-	public List<CadrePrintVO> getSelectedLevelCadreDetails(Long panchayatId);
+	public List<CadrePrintVO> getSelectedLevelCadreDetails(Long panchayatId,String type);
 	
 	public String tagCardIdForNFCReader(String cardNumber,Long voterId);
 	

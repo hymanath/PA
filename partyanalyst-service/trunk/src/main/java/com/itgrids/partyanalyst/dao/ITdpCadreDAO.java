@@ -49,7 +49,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public List<Object[]> getCadreDetailsByMemberId(String memberCardNo);
 	
-	public List<Object[]> getPanchayatWiseCadreDetails(Long panchayatId);
+	public List<Object[]> getPanchayatWiseCadreDetails(Long panchayatId,String type);
 	
 	public Integer updateNFCCardNumberByVoterId(Long voterId , String nfcCardNo);	
 		
