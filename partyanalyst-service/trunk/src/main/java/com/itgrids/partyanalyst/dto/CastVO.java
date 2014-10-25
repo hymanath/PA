@@ -29,7 +29,7 @@ public class CastVO implements Serializable, Comparable<CastVO>{
 	
 	private Long partyId;
 	
-	private List<CastVO> partiesList,casteList;
+	private List<CastVO> partiesList,casteList,casteStateList;
 	
 	private Map<Long,CastVO> partiesMap;
 	
@@ -50,6 +50,9 @@ public class CastVO implements Serializable, Comparable<CastVO>{
 	private String hamlet;
 	private String range;
 	private List<CastVO> range1;
+	private Long casteId;
+	private Long stateId;
+	private Long casteCategoryGroupId;
 
    public CastVO(){
 		
@@ -58,6 +61,38 @@ public class CastVO implements Serializable, Comparable<CastVO>{
 	public CastVO(String castName, String castPercentage) {
 		this.castName = castName;
 		this.castPercentage = castPercentage;
+	}
+
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+
+	public Long getCasteCategoryGroupId() {
+		return casteCategoryGroupId;
+	}
+
+	public void setCasteCategoryGroupId(Long casteCategoryGroupId) {
+		this.casteCategoryGroupId = casteCategoryGroupId;
+	}
+
+	public List<CastVO> getCasteStateList() {
+		return casteStateList;
+	}
+
+	public void setCasteStateList(List<CastVO> casteStateList) {
+		this.casteStateList = casteStateList;
+	}
+
+	public Long getCasteId() {
+		return casteId;
+	}
+
+	public void setCasteId(Long casteId) {
+		this.casteId = casteId;
 	}
 
 	public String getRange() {

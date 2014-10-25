@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
+import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.FlagVO;
 import com.itgrids.partyanalyst.dto.PanchayatCountVo;
@@ -1094,6 +1095,11 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	{
 		String status = cadreRegistrationService.delinkNFCNumber(cardNo,voterId);
 		return status;
+	}
+	
+	public CastVO getAllCastes()
+	{
+		return cadreRegistrationService.getAllCastes();
 	}
 }
 

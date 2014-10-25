@@ -108,4 +108,10 @@ public class CasteDAO extends GenericDaoHibernate<Caste, Long> implements ICaste
 	{
 		return getHibernateTemplate().find(" from Caste model ");
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCastes()
+	{
+		return getHibernateTemplate().find(" select distinct model.casteId,model.casteName from Caste model ");
+	}
 } 

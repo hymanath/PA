@@ -16,4 +16,5 @@ public interface ICasteDAO extends GenericDao<Caste,Long>{
 		public Caste getCasteByCastName(String casteName);
 		
 		public List<Caste> getCasteList();
+		public List<Object[]> getCastes();
 }
