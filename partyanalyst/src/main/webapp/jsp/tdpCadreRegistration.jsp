@@ -53,7 +53,11 @@
 
 	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
-	
+	<script type="text/javascript" src="js/photobooth/photobooth_min.js"></script>
+		<script type="text/javascript" src="js/photobooth/website/js/cadre.js"></script>
+		
+		<link type="text/css" rel="stylesheet" media="screen" href="js/photobooth/website/css/page.css" />
+  <style>
 	<!-- YUI Dependency files (End) -->
 	
 	
@@ -83,6 +87,11 @@
 	{
 	color:#FF0000;
 	}
+	#wrapper{
+	width: 470px;
+	margin: 10px auto 30px;
+	position: relative;
+}
 	</style>
 	
 		
@@ -246,7 +255,7 @@
 	var isRolesSet = true;
 	
 	function enableSearchByName(){
-		$('#preEnrollNoValue').removeAttr('readOnly');
+		//$('#preEnrollNoValue').removeAttr('readOnly');
 		$('#searchNameId,#searchVoterCardId,#searchHNoId').val("")
 		$('#searchDetailsDiv').html("");
 		$('#tableElement').hide();
@@ -261,7 +270,7 @@
             height: "auto", position: { my: 'right', at: 'top+10' }});
 	}
 	function enableLookupName(){
-		$('#cardNumber').removeAttr('readOnly');
+		//$('#cardNumber').removeAttr('readOnly');
 		$('#searchNameId,#searchVoterCardId,#searchHNoId').val("")
 		$('#searchDetailsDiv').html("");
 		$('#tableElement').hide();
@@ -747,6 +756,8 @@
 	
 	function changeImg()
 	{
+	$("#uploadImg").html('<img style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg">');
+		$("#base64Image").val("");
 		var photoElmt = document.getElementById("uploadFileId");
 		var file = photoElmt.files[0];
 		var reader = new FileReader();
@@ -1121,8 +1132,10 @@
 												<s:else>
 												  <span id="uploadImg"><img style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg"></span>
 												</s:else>
+												<input type="hidden" id="base64Image" name="cadreRegistrationVO.imageBase64String"/>
+												<span style="display:none;"><input type="checkbox" style="margin-top:-1px;" id="newTakenImgId" name="newTakenImgType" onclick="hideVoterImg();" /></span>
 												<input type="file" style="width: 79px;margin-left: 10px;" id="uploadFileId" onchange="changeImg();" name="cadreRegistrationVO.uploadImage" class="m_top10">
-													
+													<span><img id="takePicture" onclick="showTakeImage();" src="images/candidatePage/camera.png" title="Take Picture" /></span>
 													<span class="icon-remove" style="cursor: pointer;" title="Click Here To Delete Existing Image" onclick="clearExistingImg('uploadImg');"></span>
                                              </div>
 										   </li>
@@ -1197,7 +1210,7 @@
 											<div class="span4"> <input type="checkbox" title="Please Check If Cadre Didn't Have Voter Card And Using His Family Members Voter Card" id="relativeTypeChecked" name="relativeTypeChecked" onclick="showHideFamRelatinoSts();"/> Is Family Member</div>
 											<div  class="span6" id="showHideFammemberType" style="display:none; margin-left: 165px;margin-top: -33px;">
 												<span style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</span><select name="relativeTypeId" id="relativeTypeId"> </select>
-												<span style="color: #9a9a9a;font-weight: bold;">Voter Card &nbsp;</span><input type="text" id="familyVtrCrdId" value="${voterInfoVOList[0].fmlyVCardNo}">
+												<span style="color: #9a9a9a;font-weight: bold;">Voter Card &nbsp;</span><input type="text" readonly="readonly" id="familyVtrCrdId" value="${voterInfoVOList[0].fmlyVCardNo}">
 												<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByfName();}" style="margin-top:10px;"> LookUp </a>
 											</div>
 										</div>
@@ -1921,6 +1934,9 @@
 	
 <div id="statusDiv">
 </div>
+<div id="wrapper">
+			<div id="example"></div>
+		</div>
 	<!-- Footer Row -->
 		<div class="row-fluid">
 			<div class="span12 text-center m_top5 color-white">
@@ -2165,9 +2181,16 @@ function getCadreImage(id){
 }	
 function hideVoterImg(){
   $("#voterActualImgId").removeAttr('checked');
+  $("#newTakenImgId").removeAttr('checked');
 }
 function hideCadreImg(){
   $("#cadreActualImgId").removeAttr('checked');
+  $("#newTakenImgId").removeAttr('checked');
+}
+function showNewTakenImg(){
+  $("#cadreActualImgId").removeAttr('checked');
+  $("#voterActualImgId").removeAttr('checked');
+  $("#newTakenImgId").attr("checked","checked");
 }
 	function getCadreCommitteDetails( levelId,divId)
 	{
@@ -2194,6 +2217,7 @@ function hideCadreImg(){
 	function clearExistingImg(id){
 		$("#"+id+"").html('');
 		$("#"+id+"").html('<img style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg">');
+		 $("#newTakenImgId").removeAttr('checked');
 	}
 	
 	
@@ -2710,5 +2734,17 @@ function getExistingCadreInfo1(){
 	
 	
 }
+function showTakeImage(){
+  $('#wrapper').dialog({
+            autoOpen: true,
+			width:600,
+			title:"Take Image",
+            modal: true,
+			resizable: false
+        });
+}
+$(document).ready(function(){
+	$("#wrapper").hide();
+});
 </script>
 </html>

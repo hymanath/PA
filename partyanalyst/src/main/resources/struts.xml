@@ -8383,6 +8383,7 @@
 		<action name="tdpCadreSearchAction" class="cadreRegistrationAction" method="tdpCadreSearchPage">
 			<result name="success">/jsp/tdpCadreSearch.jsp</result>
 			<result name="input">/jsp/loginForm.jsp?src=tdpCadreSearchAction</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
 		
 		<action name="tdpCadreSurveyUsersDetailsAction" class="cadreRegistrationAction" method="cadreSurveyUserDetailsPage">
