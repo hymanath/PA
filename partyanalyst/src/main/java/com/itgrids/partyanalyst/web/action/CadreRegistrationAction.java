@@ -559,7 +559,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			session = request.getSession();
 			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 			if(user == null)
-				return ERROR;
+				return INPUT;
 			
 			if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATION_2014"))
 			{
@@ -577,7 +577,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			LOG.error("Exception raised in tdpCadreRegistrationPage method in CadreRegistrationAction Action",e);
 		}
 	
-		return Action.INPUT;
+		return Action.ERROR;
 	}
 	
 	public String getconstituencyDetailsByConstiteuncy()
