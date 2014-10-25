@@ -101,6 +101,9 @@ public class TdpCadre {
 	private Long						familyVoterId;
 	private String						previousMembershipYear;
 	private String						dispatchStatus;
+	private String                      noVoterId;
+	private String                      isDuplicate;
+	private String                      cardNo;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -630,15 +633,35 @@ public class TdpCadre {
 	public void setPreviousMembershipYear(String previousMembershipYear) {
 		this.previousMembershipYear = previousMembershipYear;
 	}
-	
 	@Column(name="dispatch_status")
 	public String getDispatchStatus() {
 		return dispatchStatus;
 	}
 	public void setDispatchStatus(String dispatchStatus) {
 		this.dispatchStatus = dispatchStatus;
+	}	
+	@Column(name="no_voter_id")
+	public String getNoVoterId() {
+		return noVoterId;
+	}
+	public void setNoVoterId(String noVoterId) {
+		this.noVoterId = noVoterId;
+	}
+	@Column(name="duplicate")
+	public String getIsDuplicate() {
+		return isDuplicate;
+	}
+	public void setIsDuplicate(String isDuplicate) {
+		this.isDuplicate = isDuplicate;
 	}
 	
+	@Column(name="card_no")
+	public String getCardNo() {
+		return cardNo;
+	}
+	public void setCardNo(String cardNo) {
+		this.cardNo = cardNo;
+	}
 	
 	
 	
