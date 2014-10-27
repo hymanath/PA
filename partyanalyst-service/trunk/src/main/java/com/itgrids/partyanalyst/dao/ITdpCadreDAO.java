@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.TdpCadre;
 
 public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
@@ -108,4 +109,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public Integer updateDispatchStatus(List<Long> cadreIds);
 	
 	public Long checkCardNoExistsOrNot(String cardNo);
+	public List<TdpCadre> getCadreDataByYear(Long enrollmentYear);
 }

@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.List;
+
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.VoterNames;
@@ -7,4 +9,5 @@ import com.itgrids.partyanalyst.model.VoterNames;
 public interface IVoterNamesDAO extends GenericDao<VoterNames, Long>{
 
 	public VoterNames gerVoterNamesObjByVoterId(Long voterId);
+	public List<Object[]> getVoterNames(Long constituencyId,Long publicationDateId);
 }

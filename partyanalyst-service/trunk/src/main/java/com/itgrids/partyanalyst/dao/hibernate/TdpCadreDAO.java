@@ -7,6 +7,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -931,4 +932,13 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		query.setParameter("cardNo", cardNo);
 		return (Long) query.uniqueResult();
 	}
+	
+	public List<TdpCadre> getCadreDataByYear(Long enrollmentYear)
+	{
+		Query query = getSession().createQuery("select model from TdpCadre model where model.enrollmentYear = :enrollmentYear");
+		query.setParameter("enrollmentYear", enrollmentYear);
+		
+		return query.list();
+	}
+	
 }

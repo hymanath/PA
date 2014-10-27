@@ -32,6 +32,7 @@ import javax.print.DocFlavor.STRING;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.sanselan.icc.IccConstants;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -73,6 +74,7 @@ import com.itgrids.partyanalyst.dao.IPartialBoothPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
@@ -88,6 +90,7 @@ import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterNamesDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzPartiesResultDAO;
@@ -127,6 +130,7 @@ import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.PartialBoothPanchayat;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PublicationDate;
+import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.VoterAgeInfo;
 import com.itgrids.partyanalyst.model.VoterAgeRange;
@@ -137,6 +141,7 @@ import com.itgrids.partyanalyst.model.VoterDataAvailableConstituencies;
 import com.itgrids.partyanalyst.model.VoterFamilyInfo;
 import com.itgrids.partyanalyst.model.VoterFamilyRange;
 import com.itgrids.partyanalyst.model.VoterInfo;
+import com.itgrids.partyanalyst.model.VoterNames;
 import com.itgrids.partyanalyst.model.VoterReportLevel;
 import com.itgrids.partyanalyst.model.VotingTrendz;
 import com.itgrids.partyanalyst.model.VotingTrendzPartiesResult;
@@ -211,7 +216,10 @@ public class MobileService implements IMobileService{
  private IVotersAnalysisService votersAnalysisService;
  private IIvrMobileDAO ivrMobileDAO;
  private IMobileNumbersDAO mobileNumbersDAO;
- 
+ @Autowired
+ private IVoterNamesDAO voterNamesDAO;
+ @Autowired
+ private ITdpCadreDAO tdpCadreDAO;
  
 public IMobileNumbersDAO getMobileNumbersDAO() {
 	return mobileNumbersDAO;
@@ -4239,5 +4247,252 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 			}
 			return rs;
 		 }
+		 
+		 
+		 public ResultStatus createCadreDataSqliteFileForAParliamnetConstituency(RegistrationVO reVo)
+		 {
+			 LOG.info("Entered into createCadreDataDumpFileForAParliamnetConstituency() Method ");
+			 ResultStatus resultStatus = new ResultStatus();
+			try{
+				Class.forName("org.sqlite.JDBC");
+				Connection connection = null;
+				Statement statement = null;
+				
+				Long pconstituencyId = reVo.getConstituencyId();
+				Long publicationId = reVo.getPublicationDateId();
+				String constituencyName = constituencyDAO.get(pconstituencyId).getName();
+				String path = reVo.getPath();
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String date = sdf.format(new Date());
+				String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+				
+				File destDir = new File(path+pathSeperator+constituencyName+"_"+date+"_Cadre");
+				destDir.mkdir();
+				File baseFile = new File(path+pathSeperator+"Base"+pathSeperator+"base.sqlite");
+				
+				FileOutputStream fos = new FileOutputStream(path+pathSeperator+constituencyName+"_"+date+"_Cadre.zip");
+				ZipOutputStream zos = new ZipOutputStream(fos);
+				
+				List<Constituency> acList = delimitationConstituencyAssemblyDetailsDAO.findAssemblyConstituencies(pconstituencyId,2009l);
+				
+				for(Constituency ac : acList)
+				{
+					try{
+					try{
+					File acFile = new File(path+pathSeperator+constituencyName+"_"+date+"_Cadre"+pathSeperator+ac.getName()+".sqlite");
+					FileUtils.copyFile(baseFile, acFile);
+					}catch(Exception e)
+					{
+						LOG.error("Exception is -",e);
+					}
+					
+					List<Object[]> votersList = boothPublicationVoterDAO.getVoterDetailsOfAConstituencyAndPublication(ac.getConstituencyId(),publicationId);
+					
+					if(votersList != null && votersList.size() > 0)
+					{
+						connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_Cadre"+pathSeperator+ac.getName()+".sqlite");
+						connection.setAutoCommit(false);
+						statement = connection.createStatement();
+						int records = 0;
+						for(Object[] params : votersList)
+						{
+							records++;
+							try{
+							statement.executeUpdate("INSERT INTO voter(voter_id,house_no,name,relationship_type,relative_name,gender,age,voter_id_card_no)" +
+									" VALUES ('"+params[0].toString()+"','"+params[1].toString().trim()+"','"+replaceSpecialChars(params[2].toString().trim())+"','"+params[3].toString().trim()+"','"+replaceSpecialChars(params[4].toString().trim())+"'," +
+											"'"+params[5].toString().trim()+"',"+params[6].toString().trim()+",'"+params[7].toString().trim()+"')");
+							}catch(Exception e)
+							{
+								LOG.error(e);
+							}
+						}
+						LOG.error(ac.getName()+" Constituency "+records+" Voter Records Inserted");
+						connection.commit();
+						statement.close();
+						connection.close();
+					}
+					
+					List<Object[]> votersAndSerialNosList = boothPublicationVoterDAO.getRecordsFromBoothPublicationVoter(ac.getConstituencyId(), publicationId);
+					if(votersAndSerialNosList != null && votersAndSerialNosList.size() > 0)
+					{
+						connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_Cadre"+pathSeperator+ac.getName()+".sqlite");
+						connection.setAutoCommit(false);
+						statement = connection.createStatement();
+						int records = 0;
+						for(Object[] params : votersAndSerialNosList)
+						{
+							records++;
+							try{
+							String serialNo = params[3]!= null ? params[3].toString() : "0";
+							statement.executeUpdate("INSERT INTO booth_publication_voter(booth_publication_voter_id, booth_id, voter_id, serial_no) VALUES (" +
+									"'"+params[0].toString()+"','"+params[1].toString()+"','"+params[2].toString()+"','"+serialNo+"')");
+							}catch(Exception e)
+							{
+								LOG.error(e);
+							}
+						}
+						LOG.error(ac.getName()+" Constituency "+records+" Booth Publication Voter Records Inserted");
+						connection.commit();
+						statement.close();
+						connection.close();
+					}
+					
+					List<Object[]> hamletsList = panchayatHamletDAO.getHamletsListByConstituency(ac.getConstituencyId(),publicationId);
+					
+					if(hamletsList != null && hamletsList.size() > 0)
+					{
+						try{
+						connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_Cadre"+pathSeperator+ac.getName()+".sqlite");
+						connection.setAutoCommit(false);
+						statement = connection.createStatement();
+						int records = 0;
+						for(Object[] params : hamletsList)
+						{
+							records++;
+							try{
+							statement.executeUpdate("INSERT INTO hamlet(hamlet_id,hamlet_name,panchayat_id,tehsil_id)" +
+									" VALUES ('"+params[0].toString()+"','"+params[1].toString().trim()+"','"+params[2].toString().trim()+"','"+params[3].toString()+"')");
+							}catch(Exception e)
+							{
+								LOG.error(e);
+							}
+						}
+						LOG.error(ac.getName()+" Constituency "+records+" hamlet Records Inserted");
+						connection.commit();
+						statement.close();
+						connection.close();
+						}catch(Exception e)
+						{
+							LOG.error(e);
+						}
+					}
+					
+					List<Object[]> voterNames = voterNamesDAO.getVoterNames(ac.getConstituencyId(),publicationId);
+					if(voterNames != null && voterNames.size() > 0)
+					{
+						try{
+					
+						connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_Cadre"+pathSeperator+ac.getName()+".sqlite");
+						connection.setAutoCommit(false);
+						statement = connection.createStatement();
+						int records = 0;
+						for(Object[] params : voterNames)	
+						{
+							records++;
+							try{
+								String vName = params[1] != null ? params[1].toString().trim()  :"" +" "+ params[2] != null ? params[2].toString().trim() :"";
+								String RelativeName =params[3] != null ? params[3].toString().trim() :"" +" "+ params[4] != null ? params[4].toString().trim() :"";
+								statement.executeUpdate("INSERT INTO voter_telugu_names(voter_id,voter_name,relative_name)" +
+										" VALUES ('"+(Long)params[0]+"','"+vName+"','"+RelativeName+"')");
+								}catch(Exception e)
+								{
+									LOG.error(e);
+								}
+							
+						}
+						LOG.error(ac.getName()+" Constituency "+records+" voterNames Records Inserted");
+						connection.commit();
+						statement.close();
+						connection.close();
+						}catch(Exception e)
+						{
+							LOG.error(e);
+							
+						}
+					}
+					
+					// member table 
+					List<TdpCadre> cadres = tdpCadreDAO.getCadreDataByYear(2010L);
+					if(cadres != null && cadres.size() > 0)
+					{
+						connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_Cadre"+pathSeperator+ac.getName()+".sqlite");
+						connection.setAutoCommit(false);
+						statement = connection.createStatement();
+						int records = 0;
+						saveMember(cadres,2010L,statement);
+					}
+					// member table 
+					List<TdpCadre> cadre = tdpCadreDAO.getCadreDataByYear(2012L);
+					if(cadres != null && cadres.size() > 0)
+					{
+						connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_Cadre"+pathSeperator+ac.getName()+".sqlite");
+						connection.setAutoCommit(false);
+						statement = connection.createStatement();
+						int records = 0;
+						saveMember(cadre,2012L,statement);
+					}
+					}catch(Exception e)
+					{
+						LOG.error("Exception Occured for "+ac.getName()+" Constituency, Exception is - ",e);
+					}
+					
+				}
+				
+				try{
+					 for(File rf : destDir.listFiles())
+						 addToZipFile(rf.getAbsolutePath(), zos);
+					 zos.close();
+					 fos.close();
+				 }catch(Exception e)
+				 {
+					 LOG.error("Exception Occured in Zipping Files");
+				 }
+				
+				resultStatus.setMessage("/SQLITE_DB/"+constituencyName+"_"+date+"_Cadre.zip");
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				return resultStatus;
+			}
+			catch (Exception e) {
+				 LOG.error("Exception Occured in createCadreDataDumpFileForAParliamnetConstituency(), Exception is - ",e);
+			}
+			return resultStatus;
+		 }
 	 
+		 public void saveMember(List<TdpCadre> cadres , Long year,Statement statement)
+		 {
+		
+			 for(TdpCadre cadre : cadres)
+			 {
+				 try{
+					
+					String memberShipNo = cadre.getMemberShipNo() != null ? cadre.getMemberShipNo().toString() : "" ;
+					String fName = cadre.getFirstname() != null ? cadre.getFirstname().toString() :"";
+					String relativeName = cadre.getRelativename() != null ? cadre.getRelativename().toString():"";
+					String gender = cadre.getGender() != null ? cadre.getGender().toString() : "";
+					String mobileNo = cadre.getMobileNo() != null ? cadre.getMobileNo().toString() : "";
+					String DOB = cadre.getDateOfBirth() != null ? cadre.getDateOfBirth().toString() : "";
+					String eduId = cadre.getEducationId() != null ? cadre.getEducationId().toString() : "";
+					
+					StringBuilder str = new StringBuilder();		
+		 str.append("INSERT INTO member(member_id,membership_no,member_name," +
+							"relative_name,gender,mobile,date_of_birth,education_id,panchayat_id,constituency_id,tehsil_id,local_election_body_id,occupation_id," +
+							"caste_state_id,year)" +
+										" VALUES (");
+		  str.append(cadre.getMemberId()+",'"+ cadre.getMemberShipNo()+"',");
+		  str.append(cadre.getFirstname() != null ?  cadre.getFirstname().toString() : "NULL" );
+		  
+		  str.append("," +cadre.getRelativename() != null ? cadre.getRelativename().toString() : "NULL");
+		  str.append("," +cadre.getGender() != null ? cadre.getGender() : "NULL");
+		  str.append("," +cadre.getMobileNo() != null ? cadre.getMobileNo() : "NULL");
+		  str.append("," +cadre.getDateOfBirth() != null ? cadre.getDateOfBirth() : "NULL");
+		  str.append("," +cadre.getEducationId() != null ? cadre.getEducationId() : "NULL");
+		  if(cadre.getUserAddress() != null)
+		  {
+		  str.append("," +cadre.getUserAddress().getPanchayat() != null ? cadre.getUserAddress().getPanchayat().getPanchayatId() : "NULL");
+		  str.append("," +cadre.getUserAddress().getConstituency() != null ?cadre.getUserAddress().getConstituency().getConstituencyId() : "NULL");
+		  str.append("," +cadre.getUserAddress().getTehsil() != null ? cadre.getUserAddress().getTehsil().getTehsilId(): "NULL");
+		  
+		  }
+		  str.append("," +cadre.getOccupationId() != null ? cadre.getOccupationId() : "NULL");
+		  str.append("," +cadre.getCasteState() != null ?cadre.getCasteState() .getCasteStateId() : "NULL");
+		  str.append("," +year);
+		  str.append(")");
+		  statement.executeUpdate(str.toString());
+					}catch(Exception e)
+						{
+									LOG.error(e);
+						}
+		 		}
+		 }
 }

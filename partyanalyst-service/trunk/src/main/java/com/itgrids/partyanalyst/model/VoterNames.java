@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -53,8 +54,9 @@ public class VoterNames extends BaseModel implements Serializable{
 		this.voterNamesId = voterNamesId;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "voterNames")
-	@JoinColumn(name = "voter_names_id",updatable = false, insertable = false)
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="voter_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Voter getVoter() {
 		return voter;
