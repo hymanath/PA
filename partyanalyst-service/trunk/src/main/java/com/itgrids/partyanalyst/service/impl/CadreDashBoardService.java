@@ -657,6 +657,10 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					}
 				}
 			}
+			
+			List<Object[]> cadreBelow18 = tdpCadreDAO.getAgeRangeCadreCount(constituencyId,"below 18","constituency");
+			setAgeWiseRangeCount(cadreBelow18,"below 18", totalConstituencyCount2012, totalConstituencyCount2014, ageWiseTotalList);
+			
 			List<Object[]> cadre18to25info = tdpCadreDAO.getAgeRangeCadreCount(constituencyId,"18-25","constituency");
 			setAgeWiseRangeCount(cadre18to25info,"18-25", totalConstituencyCount2012, totalConstituencyCount2014, ageWiseTotalList);
 			
@@ -696,6 +700,10 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 						}
 					}
 				}
+			
+			List<Object[]> cadreBelow18 = tdpCadreDAO.getAgeRangeCadreCount(districtId, "below 18","district");			
+			setAgeWiseRangeCount(cadreBelow18,"below 18", totalDistrictCount2012, totalDistrictCount2014, ageWiseTotalList);
+				
 			List<Object[]> cadre18to25info = tdpCadreDAO.getAgeRangeCadreCount(districtId, "18-25","district");			
 			setAgeWiseRangeCount(cadre18to25info,"18-25", totalDistrictCount2012, totalDistrictCount2014, ageWiseTotalList);
 			
