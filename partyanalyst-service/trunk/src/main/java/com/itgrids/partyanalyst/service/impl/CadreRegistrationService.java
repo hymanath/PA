@@ -2,15 +2,12 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.Formatter;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
@@ -22,6 +19,7 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -472,7 +470,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				public void doInTransactionWithoutResult(TransactionStatus status) {
 					TdpCadre  tdpCadre1 = null;
 					
-					if(registrationType != null && !registrationType.equalsIgnoreCase("null") && registrationType.trim().length() > 0)
+					if(registrationType != null && !registrationType.equalsIgnoreCase("null") && registrationType.trim().length() > 0 && !insertType.equalsIgnoreCase("update"))
 					{
 						tdpCadre.setDataSourceType(registrationType.trim().toUpperCase());
 					}
@@ -491,6 +489,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					if(cadreRegistrationVO.getRelativeName() != null && !cadreRegistrationVO.getRelativeName().equalsIgnoreCase("null") && cadreRegistrationVO.getRelativeName().trim().length() > 0)
 					{
 						tdpCadre.setRelativename(cadreRegistrationVO.getRelativeName());
+					}else{
+						tdpCadre.setRelativename(null);
 					}
 					if(cadreRegistrationVO.getVoterId() != null && Long.valueOf(cadreRegistrationVO.getVoterId()) > 0)
 					{
@@ -511,75 +511,100 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						}*/
 						
 					}
-					if(tdpCadre.getVoterId() != null)
+					if(cadreRegistrationVO.getAge() != null && cadreRegistrationVO.getAge() > 0)
+					{
+						tdpCadre.setAge(cadreRegistrationVO.getAge());
+					}
+					else if(tdpCadre.getVoterId() != null)
 					{
 						tdpCadre.setAge(voterDAO.get(tdpCadre.getVoterId()).getAge());
 					}
 					else
 					{
-						if(cadreRegistrationVO.getAge() != null && cadreRegistrationVO.getAge() > 0)
-						{
-							tdpCadre.setAge(cadreRegistrationVO.getAge());
-						}
+						tdpCadre.setAge(null);
 						
 					}
 					
 					if(cadreRegistrationVO.getPreviousEnrollmentNumber() != null && !cadreRegistrationVO.getPreviousEnrollmentNumber().equalsIgnoreCase("null") && cadreRegistrationVO.getPreviousEnrollmentNumber().trim().length() > 0)
 					{
 						tdpCadre.setPreviousEnrollmentNo(cadreRegistrationVO.getPreviousEnrollmentNumber());
+					}else{
+						tdpCadre.setPreviousEnrollmentNo(null);
 					}
 					if(cadreRegistrationVO.getPartyMemberSinceStr() != null && cadreRegistrationVO.getPartyMemberSinceStr().trim().length() > 0 && !cadreRegistrationVO.getPartyMemberSinceStr().trim().equalsIgnoreCase("null"))
 					{
 						tdpCadre.setPartyMemberSince(convertToDateFormet(cadreRegistrationVO.getPartyMemberSinceStr()));
+					}else{
+						tdpCadre.setPartyMemberSince(null);
 					}
 					if(cadreRegistrationVO.getBloodGroupId() != null && cadreRegistrationVO.getBloodGroupId().longValue() > 0)
 					{
 						tdpCadre.setBloodGroupId(cadreRegistrationVO.getBloodGroupId());
+					}else{
+						tdpCadre.setBloodGroupId(null);
 					}
 					
 					if(cadreRegistrationVO.getCasteId() != null && cadreRegistrationVO.getCasteId() > 0)
 					{
 						tdpCadre.setCasteStateId(cadreRegistrationVO.getCasteId());
+					}else{
+						tdpCadre.setCasteStateId(null);
 					}
 					
 					if(cadreRegistrationVO.getMobileNumber() != null && !cadreRegistrationVO.getMobileNumber().equalsIgnoreCase("null") && cadreRegistrationVO.getMobileNumber().trim().length() > 0)
 					{
 						tdpCadre.setMobileNo(cadreRegistrationVO.getMobileNumber());
+					}else{
+						tdpCadre.setMobileNo(null);
 					}
 					
 					if(cadreRegistrationVO.getEducationId() != null && cadreRegistrationVO.getEducationId().longValue() > 0)
 					{
 						tdpCadre.setEducationId(cadreRegistrationVO.getEducationId());
+					}else{
+						tdpCadre.setEducationId(null);
 					}
 					
 					if(cadreRegistrationVO.getOccupationId() != null && cadreRegistrationVO.getOccupationId().longValue() > 0)
 					{
 						tdpCadre.setOccupationId(cadreRegistrationVO.getOccupationId());
+					}else{
+						tdpCadre.setOccupationId(null);
 					}
 					if(cadreRegistrationVO.getHouseNo() != null && !cadreRegistrationVO.getHouseNo().equalsIgnoreCase("null") && cadreRegistrationVO.getHouseNo().trim().length() > 0)
 					{
 						tdpCadre.setHouseNo(cadreRegistrationVO.getHouseNo());
+					}else{
+						tdpCadre.setHouseNo(null);
 					}
-					if(cadreRegistrationVO.getPreviousEnrollmentNumber() != null && !cadreRegistrationVO.getPreviousEnrollmentNumber().equalsIgnoreCase("null") && cadreRegistrationVO.getPreviousEnrollmentNumber().trim().length() > 0)
+					/*if(cadreRegistrationVO.getPreviousEnrollmentNumber() != null && !cadreRegistrationVO.getPreviousEnrollmentNumber().equalsIgnoreCase("null") && cadreRegistrationVO.getPreviousEnrollmentNumber().trim().length() > 0)
 					{
 						tdpCadre.setPreviousEnrollmentNo(cadreRegistrationVO.getPreviousEnrollmentNumber());
-					}
+					}*/
 					if(cadreRegistrationVO.getCreatedUserId() != null && cadreRegistrationVO.getCreatedUserId().longValue() > 0  )
 					{
+					  if(!insertType.equalsIgnoreCase("update")){
 						if(registrationType.equalsIgnoreCase("TAB")){
 						    tdpCadre.setInsertedUserId(cadreRegistrationVO.getCreatedUserId().longValue());
 						}else{
 							tdpCadre.setInsertedWebUserId(cadreRegistrationVO.getCreatedUserId().longValue());
 						}
+					  }else{
+					    if(registrationType.equalsIgnoreCase("TAB")){
+						     tdpCadre.setUpdatedUserId(cadreRegistrationVO.getCreatedUserId().longValue());
+						}else{
+							 tdpCadre.setUpdatedWebUserId(cadreRegistrationVO.getCreatedUserId().longValue());
+						}
+					  }
 					}
-					if(cadreRegistrationVO.getUpdatedUserId() != null && cadreRegistrationVO.getUpdatedUserId().longValue() > 0)
+					/*if(cadreRegistrationVO.getUpdatedUserId() != null && cadreRegistrationVO.getUpdatedUserId().longValue() > 0)
 					{
 						if(registrationType.equalsIgnoreCase("TAB")){
 						     tdpCadre.setUpdatedUserId(cadreRegistrationVO.getUpdatedUserId().longValue());
 						}else{
 							 tdpCadre.setUpdatedWebUserId(cadreRegistrationVO.getUpdatedUserId().longValue());
 						}
-					}
+					}*/
 					
 					UserAddress userAddress = new UserAddress();
 					if(tdpCadre.getVoterId() != null && tdpCadre.getVoterId().longValue() > 0)
@@ -599,7 +624,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								userAddress.setConstituency(constituencyDAO.get(Long.valueOf(cadreRegistrationVO.getConstituencyId())));
 								userAddress.setCountry(countryDAO.get(1l));
 								userAddress.setState(stateDAO.get(1l));
-								userAddress.setConstituency(constituencyDAO.get(Long.valueOf(cadreRegistrationVO.getConstituencyId())));
+								//userAddress.setConstituency(constituencyDAO.get(Long.valueOf(cadreRegistrationVO.getConstituencyId())));
 								userAddress.setDistrict(constituencyDAO.get(Long.valueOf(cadreRegistrationVO.getConstituencyId())).getDistrict());
 								if(cadreRegistrationVO.getStreet() != null && cadreRegistrationVO.getStreet().trim().length() > 0 && cadreRegistrationVO.getStreet().trim().equalsIgnoreCase("null"))
 								{
@@ -655,7 +680,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					{
 						tdpCadre.setCadreType(cadreRegistrationVO.getCadreType());
 					}
-					tdpCadre.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					if(!insertType.equalsIgnoreCase("update")){
+					   tdpCadre.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					}
 					tdpCadre.setUpdatedTime(dateUtilService.getCurrentDateAndTime());		
 					tdpCadre.setEnrollmentYear(IConstants.CADRE_ENROLLMENT_NUMBER);
 					if(cadreRegistrationVO.getLongititude() != null && !cadreRegistrationVO.getLongititude().equalsIgnoreCase("null") && cadreRegistrationVO.getLongititude().trim().length() > 0)
@@ -725,6 +752,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					if(cadreRegistrationVO.getCandidateAadherNo() != null && cadreRegistrationVO.getCandidateAadherNo().trim().length() > 0 && !cadreRegistrationVO.getCandidateAadherNo().trim().equalsIgnoreCase("null"))
 					{
 						tdpCadre.setCadreAadherNo(cadreRegistrationVO.getCandidateAadherNo());
+					}else{
+						tdpCadre.setCadreAadherNo(null);
 					}
 					if(cadreRegistrationVO.getCadrePrevYear() != null && cadreRegistrationVO.getCadrePrevYear().trim().length() > 0 && !cadreRegistrationVO.getCadrePrevYear().trim().equalsIgnoreCase("null"))
 					{
@@ -752,22 +781,23 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					}				
 					if(cadreRegistrationVO.isRelative()){
 					   tdpCadre.setIsRelative("Y");
-					   tdpCadre.setRelationTypeId(cadreRegistrationVO.getRelationTypeId());
-					}else{
-					   tdpCadre.setIsRelative("N");
-					   tdpCadre.setRelationTypeId(null);
+					  
 					}
 					
 					if(cadreRegistrationVO.getFamilyVoterId() != null && cadreRegistrationVO.getFamilyVoterId().longValue() > 0 && registrationType.equalsIgnoreCase("TAB"))
 					{
 						tdpCadre.setFamilyVoterId(cadreRegistrationVO.getFamilyVoterId());
 						tdpCadre.setIsRelative("Y");
-						if(cadreRegistrationVO.getRelationType() != null && cadreRegistrationVO.getRelationType().trim().length() >0 && !cadreRegistrationVO.getRelationType().trim().equalsIgnoreCase("null"))
+						 tdpCadre.setRelationTypeId(cadreRegistrationVO.getRelationTypeId());
+						/*if(cadreRegistrationVO.getRelationType() != null && cadreRegistrationVO.getRelationType().trim().length() >0 && !cadreRegistrationVO.getRelationType().trim().equalsIgnoreCase("null"))
 						{
 							tdpCadre.setRelationType(voterRelationDAO.get(Long.valueOf(cadreRegistrationVO.getRelationType())));
-						}
+						}*/
 						
-					}
+					}else{
+						   tdpCadre.setIsRelative("N");
+						   tdpCadre.setRelationTypeId(null);
+						}
 					if(statusVar){
 						tdpCadre.setNoVoterId("Y");
 						tdpCadre.setCardNo(cadreRegistrationVO.getVoterCardNumber());
@@ -781,6 +811,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					}
 					if(cadreRegistrationVO.getFamilyVoterId()!=null && registrationType.equalsIgnoreCase("WEB")){
 						tdpCadre.setFamilyVoterId(cadreRegistrationVO.getFamilyVoterId());
+						tdpCadre.setIsRelative("Y");
+						 tdpCadre.setRelationTypeId(cadreRegistrationVO.getRelationTypeId());
 					}
 					
 					if(registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE")) && insertType.equalsIgnoreCase("new")){
@@ -803,14 +835,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
 							  tdpCadre1 = tdpCadreDAO.save(tdpCadre);	
 						}
-					}else{
+					}else if(registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE")) && !insertType.equalsIgnoreCase("new")){
+						tdpCadre1 = tdpCadreDAO.save(tdpCadre);	
+				    }else{
 					  if(insertType.equalsIgnoreCase("new")){
 						  synchronized (CadreRegistrationService.class) {
 						     tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
 						     if(userAddress.getDistrict() != null)
 						     {
 						    	 	String membershipNo = getMemberShipNo(userAddress.getDistrict().getDistrictId());
-							        tdpCadre.setMemberShipNo(membershipNo);
 							        tdpCadre.setMemberShipNo(membershipNo);
 						     }
 						       
@@ -819,7 +852,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								  tdpCadre1 = tdpCadreDAO.save(tdpCadre);	
 						  }
 					  }else{
-						  tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
+						  //tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
 						  uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
 						  surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
 						  
@@ -1040,13 +1073,6 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			tdpCadre.setOccupationId(null);
 			tdpCadre.setEducationId(null);
 			tdpCadre.setCasteStateId(null);
-			tdpCadre.setMobileNo(null);
-			tdpCadre.setLatitude(null);
-			tdpCadre.setLongititude(null);
-			tdpCadre.setSurveyTime(null);
-			tdpCadre.setUniqueKey(null);
-			tdpCadre.setImage(null);
-			tdpCadre.setRefNo(null);
 		} catch (Exception e) {
 			LOG.error("Exception raised in emptyTdpCadreData in CadreRegistrationService service", e);
 		}
@@ -1378,7 +1404,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								
 								vo.setCasteId(tdpCadre.getCasteState() != null ? tdpCadre.getCasteState().getCasteStateId():0L);							
 								vo.setCasteName(tdpCadre.getCasteState() != null ? tdpCadre.getCasteState().getCaste().getCasteName().toString():"");	
-								vo.setDateOfBirth(tdpCadre.getDateOfBirth() != null ? new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("yy-MM-dd").parse(tdpCadre.getDateOfBirth().toString())):"");
+								vo.setDateOfBirth(tdpCadre.getDateOfBirth() != null ? new SimpleDateFormat("yyyy-MM-dd").format(tdpCadre.getDateOfBirth()):"");
 								vo.setOccupationId(tdpCadre.getOccupation() != null ? tdpCadre.getOccupation().getOccupationId():0L);
 								vo.setOccupation(tdpCadre.getOccupation() != null ? tdpCadre.getOccupation().getOccupation():"");
 								
@@ -1387,7 +1413,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								vo.setLocation(tdpCadre.getUserAddress() != null ? (tdpCadre.getUserAddress().getStreet() != null ?tdpCadre.getUserAddress().getStreet().toString():""):"");
 								vo.setMobileNo(tdpCadre.getMobileNo() != null ? tdpCadre.getMobileNo():"");
 								vo.setMemberShipId(tdpCadre.getPreviousEnrollmentNo() != null ? tdpCadre.getPreviousEnrollmentNo().toString():"");
-								vo.setActiveDate(tdpCadre.getPartyMemberSince() != null ? new SimpleDateFormat("dd-MM-yyyy").format(new SimpleDateFormat("yy-MM-dd").parse(tdpCadre.getPartyMemberSince().toString())):"");
+								vo.setActiveDate(tdpCadre.getPartyMemberSince() != null ? new SimpleDateFormat("yyyy-MM-dd").format(tdpCadre.getPartyMemberSince()):"");
 								if(tdpCadre.getIsRelative() != null && tdpCadre.getIsRelative().equalsIgnoreCase("Y")){
 								  vo.setRelative("true");
 								  vo.setRelationTypeId(tdpCadre.getRelationType() != null ? tdpCadre.getRelationType().getVoterRelationId() : 0l);
@@ -1525,7 +1551,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								vo.setLocation(tdpCadre.getUserAddress() != null ? (tdpCadre.getUserAddress().getStreet() != null ?tdpCadre.getUserAddress().getStreet().toString():""):"");
 								vo.setMobileNo(tdpCadre.getMobileNo() != null ? tdpCadre.getMobileNo():"");
 								vo.setMemberShipId(tdpCadre.getMemberShipNo() != null ? tdpCadre.getMemberShipNo().toString():"");
-								vo.setActiveDate(tdpCadre.getPartyMemberSince() != null ? new SimpleDateFormat("dd-MM-yyyy").format(new SimpleDateFormat("yy-MM-dd").parse(tdpCadre.getPartyMemberSince().toString())):"");
+								vo.setActiveDate(tdpCadre.getPartyMemberSince() != null ? new SimpleDateFormat("yyyy-MM-dd").format(tdpCadre.getPartyMemberSince()):"");
 								vo.setAadharNo(tdpCadre.getAadheerNo() != null ? tdpCadre.getAadheerNo():"");
 								vo.setNomineeName(tdpCadre.getNomineeName() != null ? tdpCadre.getNomineeName():"");
 								vo.setVoterRelationId(tdpCadre.getVoterRelationId() != null ? tdpCadre.getVoterRelationId():0L);
@@ -3415,17 +3441,13 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	 try{
 		File file = new File(sourcePath);
 		if(file.exists()){
-			FileInputStream fis = new FileInputStream(file);
-			FileOutputStream fos = new FileOutputStream(destinationPath);
-			byte[] buff = new byte[fis.available()];
-			fis.read(buff);
-			fos.write(buff); 
-			fis.close();
-			fos.close();
+			FileUtils.copyFile(file,  new File(destinationPath));
+			LOG.error("Copy success");
 			return "success";
 		}
 	  }catch(Exception e){
 		  LOG.error("Exception raised in copyFile ", e);
+		  LOG.error("Copy error");
 		  return "error";
 	  }
 	 }
@@ -3810,5 +3832,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			LOG.error("Exception raised in getCadreDetailsForPrinting in CadreRegistrationService service", e);
 		}
 		return returnList;
+	}
+	
+	public List<Long> getVoterIdByVoterCard(String voterCardId){
+		return voterDAO.getVoterId(voterCardId);
 	}
 }
