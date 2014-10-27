@@ -423,6 +423,16 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 					return Action.SUCCESS;
 				}
 				cadreRegistrationVO.setCreatedUserId(user.getRegistrationID());
+				if(cadreRegistrationVO.getPanchayatId() != null &&  Long.valueOf(cadreRegistrationVO.getPanchayatId().trim()).longValue() > 0){
+					if(cadreRegistrationVO.getPanchayatId().substring(0,1).trim().equalsIgnoreCase("1")){
+					  cadreRegistrationVO.setPanchayatId(cadreRegistrationVO.getPanchayatId().substring(1));
+					}else if(cadreRegistrationVO.getPanchayatId().substring(0,1).trim().equalsIgnoreCase("2")){
+						cadreRegistrationVO.setMuncipalityId(cadreRegistrationVO.getPanchayatId().substring(1));
+						cadreRegistrationVO.setPanchayatId(null);
+					}else{
+						cadreRegistrationVO.setPanchayatId(null);
+					}
+				}
 				if(cadreRegistrationVO.getDobStr() != null && cadreRegistrationVO.getDobStr().trim().length() > 0)
 				cadreRegistrationVO.setDob(convertToDateFormet(cadreRegistrationVO.getDobStr()));
 				if(cadreRegistrationVO.getPartyMemberSinceStr() != null && cadreRegistrationVO.getPartyMemberSinceStr().trim().length() > 0)
@@ -430,7 +440,14 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				if(relativeTypeChecked != null){
 					cadreRegistrationVO.setRelative(true);
 					cadreRegistrationVO.setRelationTypeId(relativeTypeId);
-					cadreRegistrationVO.setRelativeVoterId(relativeVoterCardNo);
+					if(relativeVoterCardNo != null && relativeVoterCardNo.trim().length() > 0){
+						cadreRegistrationVO.setRelativeVoterId(relativeVoterCardNo);
+						List<Long> ids = cadreRegistrationService.getVoterIdByVoterCard(relativeVoterCardNo.trim());
+						if(ids.size() > 0 && ids.get(0)!= null){
+							cadreRegistrationVO.setFamilyVoterId(ids.get(0));
+						}
+					}
+					
 				}
 				if(cadreUploadImgCadreType != null){
 					cadreRegistrationVO.setPhotoType("cadre");
