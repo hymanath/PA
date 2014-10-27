@@ -84,4 +84,5 @@ public interface ICadreRegistrationService {
 
 	public String delinkNFCNumber(String cardNumber,Long voterId);
 	public CastVO getAllCastes();
+	public List<Long> getVoterIdByVoterCard(String voterCardId);
 }
