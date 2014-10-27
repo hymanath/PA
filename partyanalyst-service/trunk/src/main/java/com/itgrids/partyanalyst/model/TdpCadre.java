@@ -104,6 +104,7 @@ public class TdpCadre {
 	private String                      noVoterId;
 	private String                      isDuplicate;
 	private String                      cardNo;
+	private Long 						memberId;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -661,6 +662,13 @@ public class TdpCadre {
 	}
 	public void setCardNo(String cardNo) {
 		this.cardNo = cardNo;
+	}
+	@Column(name="member_id")
+	public Long getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(Long memberId) {
+		this.memberId = memberId;
 	}
 	
 	
