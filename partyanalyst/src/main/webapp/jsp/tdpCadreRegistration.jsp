@@ -163,7 +163,7 @@
 	
 	$(document).ready(function(){
 	    $('.datePickerCls').datepicker({
-		dateFormat: 'dd-mm-yy',
+		dateFormat: 'yy-mm-dd',
 		maxDate: new Date(),
 		changeMonth: true,
 		changeYear: true,
@@ -355,7 +355,7 @@
 		//$('.datePickerCls').datepicker({dateFormat: 'dd-mm-yy',minDate: '01-01-1900',maxDate: new Date()});
 		
 		 $('.datePickerCls').datepicker({
-		dateFormat: 'dd-mm-yy',
+		dateFormat: 'yy-mm-dd',
 		maxDate: new Date(),
 		changeMonth: true,
 		changeYear: true,
@@ -1210,7 +1210,7 @@
 											<div class="span4"> <input type="checkbox" title="Please Check If Cadre Didn't Have Voter Card And Using His Family Members Voter Card" id="relativeTypeChecked" name="relativeTypeChecked" onclick="showHideFamRelatinoSts();"/> Is Family Member</div>
 											<div  class="span6" id="showHideFammemberType" style="display:none; margin-left: 165px;margin-top: -33px;">
 												<span style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</span><select name="relativeTypeId" id="relativeTypeId"> </select>
-												<span style="color: #9a9a9a;font-weight: bold;">Voter Card &nbsp;</span><input type="text" readonly="readonly" id="familyVtrCrdId" value="${voterInfoVOList[0].fmlyVCardNo}">
+												<span style="color: #9a9a9a;font-weight: bold;">Voter Card &nbsp;</span><input type="text" readonly="readonly" id="familyVtrCrdId" name="relativeVoterCardNo" value="${voterInfoVOList[0].fmlyVCardNo}">
 												<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByfName();}" style="margin-top:10px;"> LookUp </a>
 											</div>
 										</div>
