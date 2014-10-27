@@ -434,7 +434,9 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 			queryStr.append(" and model.userAddress.district.districtId = :Id ");
 		}
 
-		if (ageRange.equals("18-25")) {
+		if (ageRange.equals("below 18")) {
+			queryStr.append(" and model.age <18 ");
+		} else if (ageRange.equals("18-25")) {
 			queryStr.append(" and model.age >=18 and model.age<=25 ");
 		} else if (ageRange.equals("26-35")) {
 			queryStr.append(" and model.age >=26 and model.age<=35 ");
@@ -724,7 +726,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		} else if (type.equalsIgnoreCase("district")) {
 			queryStr.append(" and model.userAddress.district.districtId = :Id ");
 		}
-		queryStr.append(" and model.age is not null and model.age>=18 group by model.enrollmentYear");
+		queryStr.append(" and model.age is not null group by model.enrollmentYear");
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("Id", Id);
 		return query.list();
