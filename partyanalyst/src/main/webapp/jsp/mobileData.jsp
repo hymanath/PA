@@ -241,6 +241,30 @@ var populateId ;
 </div>
 
 	 <!-- dataDumpforCmsPC  end -->
+	 
+	 <!-- cadre Registration Dump  -->
+	 <div class="widget" id="dataDumpforCadrepc">
+<h4>Create Sqllite Dump For Cadre Registration For A Parliament Constituency</h4>
+<div id="cadrepcerrorDiv"></div>
+<table>
+<tbody><tr>
+ <td>select Parliament </td><td></td><td> 
+ <s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="pcconstituencyList" id="cadrepcconstituencyList" list="pcconstituencyList" listKey="id" listValue="name" style="margin-top:10px;"/>
+ </td>
+ </tr>
+<tr>
+<td>Select Publication</td><td></td><td> <select style="margin-top:10px;" id="cadrepcpublicationDateList" name="publicationList" class="selectWidth" theme="simple"><option value="11">19-04-2014</option></select></td></tr>
+ </tbody></table>
+ <div style="margin-left: 150px;margin-top:10px;">
+	   <input type="button" id="cadrepccreateFile" value="create Dump File" class="btn btn-info">
+	    <img style="display: none;" id="cadrepcajaxImg" src="./images/icons/search.gif">
+	   <a class="btn btn-info" href="/PartyAnalyst/sqlite_dump.sql" style="margin-left: 11px;display:none;" id="cadrepcdownloadLink">Download link</a>
+	
+
+	</div>
+</div>
+	 <!-- cadre Registration Dump  end -->
+	 
 <br/>
   </div>
  <div class="widget blue">
@@ -509,6 +533,52 @@ $("#cmspcajaxImg").css("display","block");
 		callAjax(jsObj,url);	
 }
 	});
+	
+	
+	$("#cadrepccreateFile").click(function(){
+
+$("#cadrepcerrorDiv").html("");
+var flag = false;
+var errorDiv= document.getElementById("cadrepcerrorDiv");
+	
+var constituencyId = $("#cadrepcconstituencyList").val();  
+
+var publicationId = $("#cadrepcpublicationDateList").val();
+
+var str = '<font color="red">';
+
+ if(constituencyId == 0)
+	{
+	 str += 'Please Select Constituency<br>';
+	  flag = true;
+	 
+	}
+	 if(publicationId == 0)
+	{
+	 str += 'Please Select Publication<br>';
+	  flag = true;
+	 
+	}
+if(flag == true)
+	{
+cadrepcerrorDiv.innerHTML =str;
+return;
+	}
+else
+	{
+cadrepcerrorDiv.innerHTML = '';
+$("#cadrepcajaxImg").css("display","block");
+	var jsObj=
+		{
+		 constituencyId:constituencyId,
+		publicationId:publicationId,
+		 task:"createDataDumpForCadre"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "createDataDumpAction.action?"+rparam;						
+		callAjax(jsObj,url);	
+}
+	});
 function callAjax(jsObj,url)
 {
  var myResults;
@@ -552,6 +622,8 @@ function callAjax(jsObj,url)
 							     populateMobileAppUserData(myResults);
 								else if(jsObj.task == "createDataDumpForCMSPC")
 								showStatusForCMSPC(myResults);
+								else if(jsObj.task == "createDataDumpForCadre")
+								showStatusForCadrePC(myResults);
 							}
 							
 									catch (e) {
@@ -619,6 +691,24 @@ function callAjax(jsObj,url)
 	  $("#cmspcerrorMsgDiv").html("Data Dump Create Successfully.").css("color","green");
 	  $("#cmspcdownloadLink").attr('href',result.message);
 	  $("#cmspcdownloadLink").css("display","inline-block");
+	  return;
+	}
+ }
+ function showStatusForCadrePC()
+ {
+ $("#cadrepcerrorMsgDiv").html("");
+	$("#cadrepcajaxImg").css("display","none");
+	
+	if(result == null || result.resultCode == 1)
+	{
+	  $("#cadrepcerrorMsgDiv").html("Error Occured! Try Again.").css("color","red");
+	  return;
+	}
+	else
+	{
+	  $("#cadrepcerrorMsgDiv").html("Data Dump Create Successfully.").css("color","green");
+	  $("#cadrepcdownloadLink").attr('href',result.message);
+	  $("#cadrepcdownloadLink").css("display","inline-block");
 	  return;
 	}
  }
