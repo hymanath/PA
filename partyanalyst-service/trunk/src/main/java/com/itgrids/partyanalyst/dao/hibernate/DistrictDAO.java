@@ -184,4 +184,15 @@ public List<Object[]> getDistrictDetailsByDistrictIds(List<Long> districtIds)
 	return query.list();
 }
 
+	public List<Long> getDistrictsInAState(Long stateId) {
+	    StringBuilder str = new StringBuilder();
+	      str.append("select distinct model.districtId from District model where model.state.stateId =1 ");
+			if(stateId.longValue() == 1){
+				str.append(" and model.districtId > 10 ");
+			}else{
+				str.append(" and model.districtId < 11 ");
+			}
+			Query query = getSession().createQuery(str.toString());
+			return query.list();
+	}
 }
