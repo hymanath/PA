@@ -4403,7 +4403,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 					}
 					
 					// member table 
-					List<TdpCadre> cadres = tdpCadreDAO.getCadreDataByYear(2010L);
+					List<TdpCadre> cadres = tdpCadreDAO.getCadreDataByYear(2010L,ac.getConstituencyId());
 					if(cadres != null && cadres.size() > 0)
 					{
 						try{
@@ -4422,7 +4422,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 							}
 					}
 					// member table 
-					List<TdpCadre> cadre = tdpCadreDAO.getCadreDataByYear(2012L);
+					List<TdpCadre> cadre = tdpCadreDAO.getCadreDataByYear(2012L,ac.getConstituencyId());
 					if(cadre != null && cadre.size() > 0)
 					{
 						try{
@@ -4477,7 +4477,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 				 try{
 		  str.append("INSERT INTO member(member_id,membership_no,member_name," +
 							"relative_name,gender,mobile,date_of_birth,education_id,panchayat_id,constituency_id,tehsil_id,local_election_body_id,occupation_id," +
-							"caste_state_id,year)" +
+							"caste_state_id,year,image)" +
 										" VALUES (");
 		  str.append(cadre.getMemberId()+",'"+ cadre.getMemberShipNo()+"',");
 		  if(cadre.getFirstname() != null)
@@ -4542,6 +4542,11 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 		  str.append("NULL,");     
 		 
 		  str.append(year);
+		  if(cadre.getImage() != null)
+		  str.append(",'"+cadre.getImage()+"'");
+		   else
+		  str.append(",NULL");  
+		  
 		  str.append(")");
 		  statement.executeUpdate(str.toString());
 					}catch(Exception e)
