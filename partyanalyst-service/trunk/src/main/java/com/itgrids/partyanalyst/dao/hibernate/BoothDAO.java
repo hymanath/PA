@@ -2093,8 +2093,10 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			}
 			else if(locationType.equals("mandal"))
 			{
-				locationId = Long.valueOf(locationId.toString().substring(1));
 				queryStr.append(" and model.tehsil.tehsilId  = :locationId ");
+			}else if(locationType.equals("localBody"))
+			{
+				queryStr.append(" and model.localBody.localElectionBodyId  = :locationId ");
 			}
 			
 			Query query = getSession().createQuery(queryStr.toString());
@@ -2149,6 +2151,55 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 				" where model.localBody.localElectionBodyId in( :localBodyIds) and " +
 				"  model.publicationDate.publicationDateId = :publicationId");
 		query.setParameterList("localBodyIds", localBodyIds);
+		query.setParameter("publicationId", publicationId);
+		return query.list();
+	}
+	
+	public List<Long> getAllBoothsInAMandal(Long tehsilId,Long publicationId,Long constituencyId){
+		Query query = getSession().createQuery("select model.boothId from Booth model " +
+				" where model.tehsil.tehsilId = :tehsilId and model.localBody.localElectionBodyId is null and " +
+				"  model.publicationDate.publicationDateId = :publicationId and model.constituency.constituencyId =:constituencyId ");
+		query.setParameter("tehsilId", tehsilId);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationId", publicationId);
+		return query.list();
+	}
+	public List<Long> getAllPanchayatsInAMandal(Long tehsilId,Long publicationId,Long constituencyId){
+		Query query = getSession().createQuery("select distinct model.panchayat.panchayatId from Booth model " +
+				" where model.tehsil.tehsilId = :tehsilId and model.localBody.localElectionBodyId is null and " +
+				"  model.publicationDate.publicationDateId = :publicationId and model.constituency.constituencyId =:constituencyId and model.panchayat.panchayatId is not null ");
+		query.setParameter("tehsilId", tehsilId);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationId", publicationId);
+		return query.list();
+	}
+	
+	public List<Long> getAllTehsilsInAConstituency(Long constituencyId,Long publicationId){
+		Query query = getSession().createQuery("select distinct model.tehsil.tehsilId from Booth model where " +
+				"  model.publicationDate.publicationDateId = :publicationId and model.constituency.constituencyId =:constituencyId and model.tehsil.tehsilId is not null ");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationId", publicationId);
+		return query.list();
+	}
+	public List<Long> getLBSInAConstituency(Long constituencyId,Long publicationId){
+		Query query = getSession().createQuery("select distinct model.localBody.localElectionBodyId from Booth model where " +
+				"  model.publicationDate.publicationDateId = :publicationId and model.constituency.constituencyId =:constituencyId and  model.localBody.localElectionBodyId is not null");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationId", publicationId);
+		return query.list();
+	}
+	public List<Long> getAllPanchayatsInAConstituency(Long constituencyId,Long publicationId){
+		Query query = getSession().createQuery("select distinct model.panchayat.panchayatId from Booth model where " +
+				"  model.publicationDate.publicationDateId = :publicationId and model.constituency.constituencyId =:constituencyId and model.panchayat.panchayatId is not null ");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationId", publicationId);
+		return query.list();
+	}
+	
+	public List<Long> getAllBoothsInAConstituency(Long constituencyId,Long publicationId){
+		Query query = getSession().createQuery("select distinct model.boothId from Booth model where " +
+				"  model.publicationDate.publicationDateId = :publicationId and model.constituency.constituencyId =:constituencyId ");
+		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("publicationId", publicationId);
 		return query.list();
 	}

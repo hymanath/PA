@@ -403,4 +403,16 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	public List<Long> getAllBoothIdsInPanchayat(List<Long> panchayatIds,Long publicationId);
 	
 	public List<Long> getAllBoothIdsInLocalBodies(List<Long> localBodyIds,Long publicationId);
+	
+	public List<Long> getAllBoothsInAMandal(Long tehsilId,Long publicationId,Long constituencyId);
+	
+	public List<Long> getAllPanchayatsInAMandal(Long tehsilId,Long publicationId,Long constituencyId);
+	
+	public List<Long> getAllTehsilsInAConstituency(Long constituencyId,Long publicationId);
+	
+	public List<Long> getLBSInAConstituency(Long constituencyId,Long publicationId);
+	
+	public List<Long> getAllPanchayatsInAConstituency(Long constituencyId,Long publicationId);
+	
+	public List<Long> getAllBoothsInAConstituency(Long constituencyId,Long publicationId);
 }

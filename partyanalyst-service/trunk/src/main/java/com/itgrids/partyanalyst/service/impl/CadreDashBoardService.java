@@ -1007,6 +1007,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				 Long count_2014AP = tdpCadreDAO.getWorkStartedConstituencyYearCount(2014L,"AP",fromDate,toDate);
 				 CadreRegisterInfo apVo = new CadreRegisterInfo();
 				 apVo.setLocation("Andhra Pradesh");
+				 apVo.setId(1l);
 				 apVo.setApCount(count_2014AP);
 				 apVo.setTgCount(count_2012AP);
 				 returnList.add(apVo);
@@ -1016,6 +1017,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			    Long count_2014TS = tdpCadreDAO.getWorkStartedConstituencyYearCount(2014L,"TS",fromDate,toDate);
 			    CadreRegisterInfo tgVo = new CadreRegisterInfo();
 			    tgVo.setLocation("Telangana");
+			    tgVo.setId(36l);
 			    tgVo.setApCount(count_2014TS);
 			    tgVo.setTgCount(count_2012TS);
 				 returnList.add(tgVo);
@@ -1027,12 +1029,13 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	}
 	
 	
-	public List<CadreRegisterInfo> getLocationWiseRegistrationInfo(List<Long> ids,String type,String fromDateStr, String toDateStr){
+	public List<CadreRegisterInfo> getLocationWiseRegistrationInfo(List<Long> ids,String type,String fromDateStr, String toDateStr,boolean reqOthers){
 		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		try{
 			CadreRegisterInfo infoVo = null;
 			Map<Long,Map<Long,Long>> locationMap = new HashMap<Long,Map<Long,Long>>();//Map<locationId,Map<year,count>>
+			Map<Long,String> locationType = new HashMap<Long,String>();
 			Map<Long,Long> yearMap = null;
 			List<Object[]> namesList = new ArrayList<Object[]>();
 			//0 count,1 id,2 name ,3 year
@@ -1072,7 +1075,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				    constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoBoothWise(ids,null,null,2012l));
 				    namesList = boothDAO.getBoothNamesByIds(ids);
 				}else if(type.equals("mandal")){
-					constituencyId = boothDAO.getConstituencyIdByLocationIdAndType(ids.get(0), type);
+					
 					List<Long> mandalIds = new ArrayList<Long>();
 					List<Long> localBodyIds = new ArrayList<Long>();
 					for(Long id:ids){
@@ -1081,6 +1084,11 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 						}else{
 							mandalIds.add(new Long(id.toString().substring(1)));
 						}
+					}
+					if(mandalIds.size() > 0){
+						constituencyId = boothDAO.getConstituencyIdByLocationIdAndType(mandalIds.get(0), type);
+					}else if(localBodyIds.size() > 0){
+						constituencyId = boothDAO.getConstituencyIdByLocationIdAndType(localBodyIds.get(0), "localBody");
 					}
 					if(mandalIds.size() > 0){
 						constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoMandalWise(mandalIds,fromDate,toDate,2014l));
@@ -1099,6 +1107,9 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					 if(yearMap == null){
 						 yearMap = new HashMap<Long,Long>();
 						 locationMap.put((Long)info[1],yearMap);
+						 if(type.equals("assembly") || type.equals("mandal")){
+						   locationType.put((Long)info[1], info[4].toString());
+						 }
 					 }
 					 yearMap.put((Long)info[3], (Long)info[0]);
 				}
@@ -1124,6 +1135,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 							
 						    yearMap = locationMap.get((Long)name[0]);
 						    infoVo = new CadreRegisterInfo();
+						    infoVo.setId((Long)name[0]);
 						    infoVo.setLocation(name[1].toString());
 						    if(yearMap != null)
 						    {
@@ -1135,7 +1147,18 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 									
 								infoVo.setApCount(yearMap.get(2014l));
 								infoVo.setTgCount(yearMap.get(2012l));
-								
+								if(type.equals("assembly")){
+									String reqType = locationType.get((Long)name[0]);
+									 if(reqType != null && !reqType.equalsIgnoreCase("URBAN") ){
+										 infoVo.setName("True");
+										 infoVo.setArea("True");
+									 }
+								}else if(type.equals("mandal")){
+									String reqType = locationType.get((Long)name[0]);
+									 if(reqType != null && reqType.equalsIgnoreCase("mandal") ){
+										 infoVo.setArea("True");
+									 }
+								}
 								if((type.equals("assembly") || type.equals("district")) && infoVo.getApCount() != null && infoVo.getApCount().longValue() > 0 && infoVo.getTgCount() != null && infoVo.getTgCount().longValue() > 0 )
 								{
 									infoVo.setName(new BigDecimal(infoVo.getApCount()*(100.0)/infoVo.getTgCount().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
@@ -1149,7 +1172,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				}
 			}
 			
-			if(constituencyId != null && constituencyId != 0L && ids.size() > 1)
+			if(reqOthers && constituencyId != null && constituencyId != 0L && ids.size() > 1)
 			{
 				
 				List<Object[]> enrollmentYearWiseCadreCount  = tdpCadreDAO.getEnrollmentYearWiseDetails(constituencyId,fromDate,toDate,2014L);
@@ -1356,5 +1379,65 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		  LOG.error("Exception rised in getRegisteredDetailsByLocation",e);
 	  }
 		return returnVO;
+	}
+	
+	public List<CadreRegisterInfo> getDataForSubLocations(String fromLocation,Long fromLocationId,String toLocation,String fromDateStr, String toDateStr,Long constituencyId){
+		List<Long> ids = new ArrayList<Long>();
+		String type = "";
+		try{
+			if(fromLocation.equalsIgnoreCase("state")){
+				if(toLocation.equalsIgnoreCase("district")){
+					type ="district";
+					ids = districtDAO.getDistrictsInAState(fromLocationId);
+				}else if(toLocation.equalsIgnoreCase("constituency")){
+					type ="assembly";
+					ids = constituencyDAO.getConstituenciesInAState(fromLocationId);
+				}
+			}else if(fromLocation.equalsIgnoreCase("district")){
+	            if(toLocation.equalsIgnoreCase("constituency")){
+	            	type ="assembly";
+	            	ids = constituencyDAO.getConstituenciesInADistrict(fromLocationId);
+				}
+			}else if(fromLocation.equalsIgnoreCase("constituency")){
+	            if(toLocation.equalsIgnoreCase("mandal")){
+	            	type = "mandal";
+	            	List<Long> mandalIds = boothDAO.getAllTehsilsInAConstituency(fromLocationId, IConstants.VOTER_DATA_PUBLICATION_ID);
+	            	List<Long> lblIds = boothDAO.getLBSInAConstituency(fromLocationId, IConstants.VOTER_DATA_PUBLICATION_ID);
+	            	for(Long id:lblIds){
+	            		ids.add(Long.valueOf("1"+id));
+	            	}
+	            	for(Long id:mandalIds){
+	            		ids.add(Long.valueOf("2"+id));
+	            	}
+				}else if(toLocation.equalsIgnoreCase("panchayat")){
+					type = "panchayat";
+					ids = boothDAO.getAllPanchayatsInAConstituency(fromLocationId, IConstants.VOTER_DATA_PUBLICATION_ID);
+				}else if(toLocation.equalsIgnoreCase("booth")){
+					type = "booth";
+					ids = boothDAO.getAllBoothsInAConstituency(fromLocationId, IConstants.VOTER_DATA_PUBLICATION_ID);
+				}
+			}else if(fromLocation.equalsIgnoreCase("mandal")){
+				if(toLocation.equalsIgnoreCase("panchayat")){
+					type = "panchayat";
+					ids = boothDAO.getAllPanchayatsInAMandal(fromLocationId,IConstants.VOTER_DATA_PUBLICATION_ID,constituencyId);
+				}else if(toLocation.equalsIgnoreCase("booth")){
+					type = "booth";
+					ids = boothDAO.getAllBoothsInAMandal(fromLocationId,IConstants.VOTER_DATA_PUBLICATION_ID,constituencyId);
+				}
+			}else if(fromLocation.equalsIgnoreCase("panchayat")){
+				if(toLocation.equalsIgnoreCase("booth")){
+					type = "booth";
+					List<Long> panchayatIds = new ArrayList<Long>();
+					panchayatIds.add(fromLocationId);
+					ids = boothDAO.getAllBoothIdsInPanchayat(panchayatIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+				}
+			}
+			if(type.trim().length() == 0 || ids.size() == 0){
+				return new ArrayList<CadreRegisterInfo>();
+			}
+		}catch(Exception e){
+			LOG.error("Exception rised in getDataForSubLocations",e);
+		}
+		return getLocationWiseRegistrationInfo(ids,type,fromDateStr,toDateStr,false);
 	}
 }

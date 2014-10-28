@@ -34,7 +34,7 @@ public interface ICadreDashBoardService {
 	
 	public List<CadreRegisterInfo> getStateWiseRegistrationInfo(List<Long> stateIds,String fromDate,String toDate);
 	
-	public List<CadreRegisterInfo> getLocationWiseRegistrationInfo(List<Long> ids,String type,String fromDate,String toDate);
+	public List<CadreRegisterInfo> getLocationWiseRegistrationInfo(List<Long> ids,String type,String fromDate,String toDate,boolean reqOthers);
 	
 	public List<CadreRegisterInfo> getCastGroupWiseCadreCount(Long constituencyId,String type);
 	
@@ -51,4 +51,6 @@ public interface ICadreDashBoardService {
 	public List<CadreRegisterInfo> getDistrictWiseCastCadreCount(Long districtId);
 	
 	public CadreRegisterInfo getRegisteredDetailsByLocation(String locationType,List<Long> locationIds,int startIndex,int maxIndex,String orderBy,String orderType);
+	
+	public List<CadreRegisterInfo> getDataForSubLocations(String fromLocation,Long fromLocationId,String toLocation,String fromDateStr, String toDateStr,Long constituencyId);
 }
