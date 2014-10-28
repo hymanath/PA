@@ -4287,7 +4287,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 						LOG.error("Exception is -",e);
 					}
 					
-					List<Object[]> votersList = boothPublicationVoterDAO.getVoterDetailsOfAConstituencyAndPublication(ac.getConstituencyId(),publicationId);
+					/*List<Object[]> votersList = boothPublicationVoterDAO.getVoterDetailsOfAConstituencyAndPublication(ac.getConstituencyId(),publicationId);
 					
 					if(votersList != null && votersList.size() > 0)
 					{
@@ -4366,9 +4366,9 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 						{
 							LOG.error(e);
 						}
-					}
+					}*/
 					
-					List<Object[]> voterNames = voterNamesDAO.getVoterNames(ac.getConstituencyId(),publicationId);
+					/*List<Object[]> voterNames = voterNamesDAO.getVoterNames(ac.getConstituencyId(),publicationId);
 					if(voterNames != null && voterNames.size() > 0)
 					{
 						try{
@@ -4400,27 +4400,46 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 							LOG.error(e);
 							
 						}
-					}
+					}*/
 					
 					// member table 
 					List<TdpCadre> cadres = tdpCadreDAO.getCadreDataByYear(2010L);
 					if(cadres != null && cadres.size() > 0)
 					{
-						connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_Cadre"+pathSeperator+ac.getName()+".sqlite");
-						connection.setAutoCommit(false);
-						statement = connection.createStatement();
-						int records = 0;
-						saveMember(cadres,2010L,statement);
+						try{
+							connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_Cadre"+pathSeperator+ac.getName()+".sqlite");
+							connection.setAutoCommit(false);
+							statement = connection.createStatement();
+							int records = 0;
+							saveMember(cadres,2010L,statement);
+							LOG.error(ac.getName()+" Constituency 2010 cadre Data Records Inserted");
+							connection.commit();
+							statement.close();
+							connection.close();
+							}
+							catch (Exception e) {
+								
+							}
 					}
 					// member table 
 					List<TdpCadre> cadre = tdpCadreDAO.getCadreDataByYear(2012L);
-					if(cadres != null && cadres.size() > 0)
+					if(cadre != null && cadre.size() > 0)
 					{
+						try{
 						connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_Cadre"+pathSeperator+ac.getName()+".sqlite");
 						connection.setAutoCommit(false);
 						statement = connection.createStatement();
 						int records = 0;
 						saveMember(cadre,2012L,statement);
+						LOG.error(ac.getName()+" Constituency 2012 cadre Data Records Inserted");
+						connection.commit();
+						statement.close();
+						connection.close();
+						}
+						catch (Exception e) {
+							
+						}
+						
 					}
 					}catch(Exception e)
 					{
@@ -4439,7 +4458,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 					 LOG.error("Exception Occured in Zipping Files");
 				 }
 				
-				resultStatus.setMessage("/SQLITE_DB/"+constituencyName+"_"+date+"_Cadre.zip");
+				resultStatus.setMessage("/SQLITE_DB_CADRE/"+constituencyName+"_"+date+"_Cadre.zip");
 				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 				return resultStatus;
 			}
@@ -4451,46 +4470,83 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 	 
 		 public void saveMember(List<TdpCadre> cadres , Long year,Statement statement)
 		 {
-		
+			 
 			 for(TdpCadre cadre : cadres)
 			 {
+				 StringBuilder str = new StringBuilder();		
 				 try{
-					
-					String memberShipNo = cadre.getMemberShipNo() != null ? cadre.getMemberShipNo().toString() : "" ;
-					String fName = cadre.getFirstname() != null ? cadre.getFirstname().toString() :"";
-					String relativeName = cadre.getRelativename() != null ? cadre.getRelativename().toString():"";
-					String gender = cadre.getGender() != null ? cadre.getGender().toString() : "";
-					String mobileNo = cadre.getMobileNo() != null ? cadre.getMobileNo().toString() : "";
-					String DOB = cadre.getDateOfBirth() != null ? cadre.getDateOfBirth().toString() : "";
-					String eduId = cadre.getEducationId() != null ? cadre.getEducationId().toString() : "";
-					
-					StringBuilder str = new StringBuilder();		
-		 str.append("INSERT INTO member(member_id,membership_no,member_name," +
+		  str.append("INSERT INTO member(member_id,membership_no,member_name," +
 							"relative_name,gender,mobile,date_of_birth,education_id,panchayat_id,constituency_id,tehsil_id,local_election_body_id,occupation_id," +
 							"caste_state_id,year)" +
 										" VALUES (");
 		  str.append(cadre.getMemberId()+",'"+ cadre.getMemberShipNo()+"',");
-		  str.append(cadre.getFirstname() != null ?  cadre.getFirstname().toString() : "NULL" );
-		  
-		  str.append("," +cadre.getRelativename() != null ? cadre.getRelativename().toString() : "NULL");
-		  str.append("," +cadre.getGender() != null ? cadre.getGender() : "NULL");
-		  str.append("," +cadre.getMobileNo() != null ? cadre.getMobileNo() : "NULL");
-		  str.append("," +cadre.getDateOfBirth() != null ? cadre.getDateOfBirth() : "NULL");
-		  str.append("," +cadre.getEducationId() != null ? cadre.getEducationId() : "NULL");
+		  if(cadre.getFirstname() != null)
+		  str.append("'"+cadre.getFirstname().toString().trim()+"',");
+		  else
+			  str.append("NULL,");
+		  if(cadre.getRelativename() != null)
+		  str.append("'"+cadre.getRelativename().toString().trim()+"',");
+		  else
+			  str.append("NULL,");  
+		 if(cadre.getGender() != null )
+		  str.append("'"+cadre.getGender()+"',");
+		 else
+			 str.append("NULL,");   
+		 if(cadre.getMobileNo() != null)
+		  str.append("'"+cadre.getMobileNo()+"',");
+		 else
+			 str.append("NULL,");   
+		  if(cadre.getDateOfBirth() != null )
+		  str.append("'"+cadre.getDateOfBirth()+"',");
+		  else
+			  str.append("NULL,");    
+		 if(cadre.getEducationId() != null)
+		  str.append("'"+cadre.getEducationId()+"',");
+		 else
+			 str.append("NULL,"); 
+		
 		  if(cadre.getUserAddress() != null)
 		  {
-		  str.append("," +cadre.getUserAddress().getPanchayat() != null ? cadre.getUserAddress().getPanchayat().getPanchayatId() : "NULL");
-		  str.append("," +cadre.getUserAddress().getConstituency() != null ?cadre.getUserAddress().getConstituency().getConstituencyId() : "NULL");
-		  str.append("," +cadre.getUserAddress().getTehsil() != null ? cadre.getUserAddress().getTehsil().getTehsilId(): "NULL");
-		  
+			  if(cadre.getUserAddress().getPanchayat() != null )
+		  str.append("'"+cadre.getUserAddress().getPanchayat().getPanchayatId()+"',");
+			  else
+				  str.append("NULL,"); 	  
+		 if(cadre.getUserAddress().getConstituency() != null)
+		  str.append("'"+cadre.getUserAddress().getConstituency().getConstituencyId()+"',");
+		  else
+			  str.append("NULL,");  
+		 if(cadre.getUserAddress().getTehsil() != null)
+		  str.append("'"+cadre.getUserAddress().getTehsil().getTehsilId()+"',");
+		 else
+			  str.append("NULL,");  
+		 
+		 if(cadre.getUserAddress().getLocalElectionBody() != null)
+			 str.append("'"+cadre.getUserAddress().getLocalElectionBody()+"',"); 
+		 else
+			 str.append("NULL,"); 	 
 		  }
-		  str.append("," +cadre.getOccupationId() != null ? cadre.getOccupationId() : "NULL");
-		  str.append("," +cadre.getCasteState() != null ?cadre.getCasteState() .getCasteStateId() : "NULL");
-		  str.append("," +year);
+		  else
+		  {
+			  str.append("NULL,"); 
+			  str.append("NULL,"); 
+			  str.append("NULL,"); 
+			  str.append("NULL,"); 
+		  }
+		  if(cadre.getOccupationId() != null)
+		  str.append("'"+cadre.getOccupationId()+"',");
+		  else
+			  str.append("NULL,");    
+		 if(cadre.getCasteState() != null )
+		  str.append("'"+cadre.getCasteState() .getCasteStateId()+"',");
+		 else
+			  str.append("NULL,");     
+		 
+		  str.append(year);
 		  str.append(")");
 		  statement.executeUpdate(str.toString());
 					}catch(Exception e)
 						{
+						System.out.println(str.toString());
 									LOG.error(e);
 						}
 		 		}
