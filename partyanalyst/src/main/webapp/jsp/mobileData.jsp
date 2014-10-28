@@ -579,6 +579,7 @@ $("#cadrepcajaxImg").css("display","block");
 		callAjax(jsObj,url);	
 }
 	});
+
 function callAjax(jsObj,url)
 {
  var myResults;
@@ -694,8 +695,9 @@ function callAjax(jsObj,url)
 	  return;
 	}
  }
- function showStatusForCadrePC()
+ function showStatusForCadrePC(result)
  {
+	
  $("#cadrepcerrorMsgDiv").html("");
 	$("#cadrepcajaxImg").css("display","none");
 	
