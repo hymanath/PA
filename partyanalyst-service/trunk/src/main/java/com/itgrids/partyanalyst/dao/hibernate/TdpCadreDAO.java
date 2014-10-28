@@ -933,10 +933,11 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		return (Long) query.uniqueResult();
 	}
 	
-	public List<TdpCadre> getCadreDataByYear(Long enrollmentYear)
+	public List<TdpCadre> getCadreDataByYear(Long enrollmentYear,Long constituencyId)
 	{
-		Query query = getSession().createQuery("select model from TdpCadre model where model.enrollmentYear = :enrollmentYear");
+		Query query = getSession().createQuery("select model from TdpCadre model where model.enrollmentYear = :enrollmentYear and model.userAddress.constituency.constituencyId = :constituencyId");
 		query.setParameter("enrollmentYear", enrollmentYear);
+		query.setParameter("constituencyId", constituencyId);
 		
 		return query.list();
 	}
