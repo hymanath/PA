@@ -144,11 +144,10 @@
 				participationCount = participationCount + 1;
 			</c:forEach>
 		</s:if>
-
-	var isRolesCount = 0 ;
-		
-		<s:if test="%{voterInfoVOList[0].previousParticipationInfoList != null && voterInfoVOList[0].previousParticipationInfoList.size() > 0}">
-			<c:forEach var="role" items="${voterInfoVOList[0].previousParticipationInfoList}" varStatus="indexValue">
+  
+		var isRolesCount = 0 ;
+		<s:if test="%{voterInfoVOList[0].cadreRolesList != null && voterInfoVOList[0].cadreRolesList.size() > 0}">
+			<c:forEach var="role" items="${voterInfoVOList[0].cadreRolesList}" varStatus="indexValue">
 				isRolesCount = isRolesCount+1;
 			</c:forEach>
 		</s:if>	
@@ -279,10 +278,9 @@
 	}
 	
 	function createNewForm(){
-	
 		if(isRolesCount >= 1 &&  isRolesSet)
 		{
-			rolesSize = isRolesCount;
+			rolesSize = isRolesCount+1;
 			isRolesSet = false;
 		}
 
@@ -1091,7 +1089,7 @@
 					
 					<input type="hidden" class="form-control border-radius-0 text-align2" value="${constiteucnyId}" name="cadreRegistrationVO.constituencyId"> 
 					
-					<input type="hidden" class="form-control border-radius-0 text-align2" value="${panchayatId}" name="cadreRegistrationVO.panchayatId"> 
+					<input type="hidden" class="form-control border-radius-0 text-align2" value="${houseNo}" name="cadreRegistrationVO.panchayatId"> 
 					
 					<input type="hidden" class="form-control border-radius-0 text-align2" value = "${boothId}" name="cadreRegistrationVO.boothId" > 
 										<div class="span12">
@@ -1687,7 +1685,7 @@
 
 			</s:else>
 			
-			<a class="icon-plus-sign" style="float:left;margin-top:55px;" onClick="createNewForm();" title="Add More Details"></a>
+			<a class="icon-plus-sign" style="float:left;margin-top:15px;" onClick="createNewForm();" title="Add More Details"></a>
 			
 			</div>
 	</div>
@@ -1751,7 +1749,7 @@
 						</c:if>
 
 							<select   id="constituencyList${indexValue.index}"  style="margin-left: 12px" onchange="getCandidateDetailsForElection(this.value,'candidatesList${indexValue.index}','electionYearId${indexValue.index}',
-							'electionsTypeID${indexValue.index}');">
+							'electionsTypeID${indexValue.index}');" name="cadreRegistrationVO.previousParicaptedElectionsList[${indexValue.index}].constituencyId">
 								<option value="0"> Select Constituency</option>
 								<c:forEach var="educationList" items="${voterInfoVOList[0].previousParticipationInfoList[indexValue.index].basicVO.hamletCasteInfo}" >															
 									<c:if test="${educationList.id == role.rank }">																
@@ -1772,9 +1770,13 @@
 							<h5 class="text-align1">Candidate </h5>
 						</c:if>
 
-							<select   id="candidatesList${indexValue.index}"  style="margin-left: 12px;width:150px" onchange="getCandidateDetailsById('constituencyList${indexValue.index}','electionYearId${indexValue.index}',this.value);">
+							<select   id="candidatesList${indexValue.index}"  style="margin-left: 12px;width:150px" onchange="getCandidateDetailsById('constituencyList${indexValue.index}','electionYearId${indexValue.index}',this.value);" name="cadreRegistrationVO.previousParicaptedElectionsList[${indexValue.index}].candidateId">
 								<option value="0"> Select Candidate</option>
-								<c:forEach var="educationList" items="${voterInfoVOList[0].previousParticipationInfoList[indexValue.index].basicVO.hamletVoterInfo}" ><option value="${educationList.id}">${educationList.name}</option>
+								<c:forEach var="educationList" items="${voterInfoVOList[0].previousParticipationInfoList[indexValue.index].basicVO.hamletVoterInfo}" >
+								<c:if test="${educationList.id == role.nomineeAge }">	<option value="${educationList.id}" selected="selected">${educationList.name}</option>
+								</c:if>	
+								<c:if test="${educationList.id != role.nomineeAge }">	<option value="${educationList.id}">${educationList.name}</option>
+								</c:if>	
 								</c:forEach>
 							</select>
 							
