@@ -801,7 +801,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					if(statusVar){
 						tdpCadre.setNoVoterId("Y");
 						tdpCadre.setCardNo(cadreRegistrationVO.getVoterCardNumber());
-						if(cadreRegistrationVO.getVoterCardNumber() != null){
+						if(cadreRegistrationVO.getVoterCardNumber() != null && cadreRegistrationVO.getVoterCardNumber().trim().length()>0){
 						   Long count = tdpCadreDAO.checkCardNoExistsOrNot(cadreRegistrationVO.getVoterCardNumber());
 						   if(count.longValue() > 0){
 						      tdpCadre.setIsDeleted("Y");
@@ -1550,7 +1550,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								
 								vo.setLocation(tdpCadre.getUserAddress() != null ? (tdpCadre.getUserAddress().getStreet() != null ?tdpCadre.getUserAddress().getStreet().toString():""):"");
 								vo.setMobileNo(tdpCadre.getMobileNo() != null ? tdpCadre.getMobileNo():"");
-								vo.setMemberShipId(tdpCadre.getMemberShipNo() != null ? tdpCadre.getMemberShipNo().toString():"");
+								vo.setMemberShipId(tdpCadre.getPreviousEnrollmentNo() != null ? tdpCadre.getPreviousEnrollmentNo().toString():"");
 								vo.setActiveDate(tdpCadre.getPartyMemberSince() != null ? new SimpleDateFormat("yyyy-MM-dd").format(tdpCadre.getPartyMemberSince()):"");
 								vo.setAadharNo(tdpCadre.getAadheerNo() != null ? tdpCadre.getAadheerNo():"");
 								vo.setNomineeName(tdpCadre.getNomineeName() != null ? tdpCadre.getNomineeName():"");

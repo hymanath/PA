@@ -82,7 +82,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		
 		if(isPresentCadre != null && isPresentCadre.trim().length()>0 && !isPresentCadre.equalsIgnoreCase("0"))
 		{
-			str.append(" select distinct TC.tdpCadreId, TC.voter.name, TC.voter.relativeName, TC.dateOfBirth, TC.voter.age, TC.voter.gender, TC.voter.houseNo, UA.userAddressId,TC.voterId,TC.voter.relationshipType ");
+			str.append(" select distinct TC.tdpCadreId, TC.firstname, TC.relativename, TC.dateOfBirth, TC.age, TC.gender, TC.houseNo, UA.userAddressId,TC.voterId,TC.relativeType ");
 		}
 		else
 		{
