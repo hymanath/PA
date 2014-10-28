@@ -1688,6 +1688,11 @@
 
 <bean id="cardReceiverDAO" class="com.itgrids.partyanalyst.dao.hibernate.CardReceiverDAO" >
 	<property name="sessionFactory" ref="sessionFactory" />
-</bean>		
+</bean>	
+	
+<bean id="tdpCadreBackupDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreBackupDetailsDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
 	<!--  end -->
 </beans>		
