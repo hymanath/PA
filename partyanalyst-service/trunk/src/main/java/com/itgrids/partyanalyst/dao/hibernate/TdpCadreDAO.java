@@ -933,10 +933,15 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		return (Long) query.uniqueResult();
 	}
 	
-	public List<TdpCadre> getCadreDataByYear(Long enrollmentYear,Long constituencyId)
+	public List<Object[]> getCadreDataByYear(Long constituencyId)
 	{
-		Query query = getSession().createQuery("select model from TdpCadre model where model.enrollmentYear = :enrollmentYear and model.userAddress.constituency.constituencyId = :constituencyId");
-		query.setParameter("enrollmentYear", enrollmentYear);
+		//0 cadre.memberId,1cadre.memberShipNo,2cadre.firstname,3cadre.relativename,4cadre.gender,5cadre.mobileNo,
+		//6 cadre.dateOfBirth,7cadre.educationId,8 cadre.userAddress.panchayat,9 cadre.userAddress.constituency.constituencyId,
+		//10 cadre.userAddress().tehsil().tehsilId,11 cadre.userAddress.localElectionBody,12 cadre.occupationId,
+		//13 cadre.casteState.casteStateId, 14cadre.enrollmentYear,15cadre.image,16cadre.nameLocal
+		Query query = getSession().createQuery("select model.memberId,model.memberShipNo,model.firstname,model.relativename,model.gender,model.mobileNo,model.dateOfBirth,model.educationId,model.userAddress.panchayat.panchayatId," +
+				"  model.userAddress.constituency.constituencyId,model.userAddress.tehsil.tehsilId,model.userAddress.localElectionBody.localElectionBodyId,model.occupationId,model.casteState.casteStateId,model.enrollmentYear, " +
+				" model.image,model.nameLocal from TdpCadre model where model.enrollmentYear in (2010,2012) and model.userAddress.constituency.constituencyId = :constituencyId");
 		query.setParameter("constituencyId", constituencyId);
 		
 		return query.list();
