@@ -4381,8 +4381,20 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 						{
 							records++;
 							try{
-								String vName = params[1] != null ? params[1].toString().trim()  :"" +" "+ params[2] != null ? params[2].toString().trim() :"";
-								String RelativeName =params[3] != null ? params[3].toString().trim() :"" +" "+ params[4] != null ? params[4].toString().trim() :"";
+								String vName = "";
+								if(params[1] != null){
+								   vName =  params[1].toString().trim();
+								}
+								if(params[2] != null){
+								   vName = vName+" "+params[2].toString().trim();
+								}
+								String RelativeName = "";
+								if(params[3] != null){
+									RelativeName =  params[3].toString().trim();
+								}
+								if(params[4] != null){
+									RelativeName = RelativeName+" "+params[4].toString().trim();
+								}
 								statement.executeUpdate("INSERT INTO voter_telugu_names(voter_id,voter_name,relative_name)" +
 										" VALUES ('"+(Long)params[0]+"','"+vName+"','"+RelativeName+"')");
 								}catch(Exception e)
@@ -4403,7 +4415,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 					}
 					
 					// member table 
-					List<TdpCadre> cadres = tdpCadreDAO.getCadreDataByYear(2010L,ac.getConstituencyId());
+					/*List<TdpCadre> cadres = tdpCadreDAO.getCadreDataByYear(2010L,ac.getConstituencyId());
 					if(cadres != null && cadres.size() > 0)
 					{
 						try{
@@ -4420,17 +4432,110 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 							catch (Exception e) {
 								
 							}
-					}
+					}*/
 					// member table 
-					List<TdpCadre> cadre = tdpCadreDAO.getCadreDataByYear(2012L,ac.getConstituencyId());
-					if(cadre != null && cadre.size() > 0)
+					List<Object[]> cadres = tdpCadreDAO.getCadreDataByYear(ac.getConstituencyId());
+					if(cadres != null && cadres.size() > 0)
 					{
 						try{
 						connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_Cadre"+pathSeperator+ac.getName()+".sqlite");
 						connection.setAutoCommit(false);
 						statement = connection.createStatement();
 						int records = 0;
-						saveMember(cadre,2012L,statement);
+						//0 cadre.memberId,1cadre.memberShipNo,2cadre.firstname,3cadre.relativename,4cadre.gender,5cadre.mobileNo,
+						//6 cadre.dateOfBirth,7cadre.educationId,8 cadre.userAddress.panchayat,9 cadre.userAddress.constituency.constituencyId,
+						//10 cadre.userAddress().tehsil().tehsilId,11 cadre.userAddress.localElectionBody,12 cadre.occupationId,
+						//13 cadre.casteState.casteStateId, 14cadre.enrollmentYear,15cadre.image,16cadre.nameLocal
+						 
+						 for(Object[] cadre : cadres)
+						 {
+							 StringBuilder str = new StringBuilder();		
+							 try{
+					  str.append("INSERT INTO member(member_id,membership_no,member_name," +
+										"relative_name,gender,mobile,date_of_birth,education_id,panchayat_id,constituency_id,tehsil_id,local_election_body_id,occupation_id," +
+										"caste_state_id,year,image,member_telugu_name)" +
+													" VALUES (");
+					  if(cadre[0] != null){
+						  str.append(((Long)cadre[0])+",");
+					  }else{
+						  str.append("NULL,");
+					  }
+					  if(cadre[1] != null){
+						  str.append("'"+cadre[1].toString().trim()+"',");
+					  }else{
+						  str.append("NULL,");
+					  }
+					  if(cadre[2] != null)
+					  str.append("'"+cadre[2].toString().trim()+"',");
+					  else
+						  str.append("NULL,");
+					  if(cadre[3] != null)
+					  str.append("'"+cadre[3].toString().trim()+"',");
+					  else
+						  str.append("NULL,");  
+					 if(cadre[4] != null)
+					  str.append("'"+cadre[4].toString().trim()+"',");
+					 else
+						 str.append("NULL,");   
+					 if(cadre[5] != null)
+					  str.append("'"+cadre[5].toString().trim()+"',");
+					 else
+						 str.append("NULL,");   
+					  if(cadre[6] != null)
+					  str.append("'"+cadre[6].toString().substring(0,10)+"',");
+					  else
+						  str.append("NULL,");    
+					 if(cadre[7] != null)
+					  str.append("'"+(Long)cadre[7]+"',");
+					 else
+						 str.append("NULL,"); 
+					
+			
+						  if(cadre[8] != null)
+							  str.append("'"+(Long)cadre[8]+"',");
+						  else
+							  str.append("NULL,"); 	  
+						  if(cadre[9] != null )
+							  str.append("'"+(Long)cadre[9]+"',");
+						  else
+						  str.append("NULL,");  
+						  if(cadre[10] != null)
+							  str.append("'"+(Long)cadre[10]+"',");
+						  else
+						  str.append("NULL,");  
+					 
+						  if(cadre[11] != null)
+						 str.append("'"+(Long)cadre[11]+"',"); 
+						  else
+						 str.append("NULL,"); 	 
+					 
+					  if(cadre[12] != null)
+					  str.append("'"+(Long)cadre[12]+"',");
+					  else
+						  str.append("NULL,");    
+					  if(cadre[13] != null)
+					  str.append("'"+(Long)cadre[13]+"',");
+					   else
+					  str.append("NULL,");     
+					 
+					  str.append((Long)cadre[14]);
+					  if(cadre[15] != null)
+					  str.append(",'"+cadre[15].toString().trim()+"',");
+					   else
+					  str.append(",NULL,");  
+					  if(cadre[16] != null)
+						 str.append("'"+cadre[16].toString().trim()+"'");
+					  else
+					     str.append("NULL");  
+					  str.append(")");
+					  statement.executeUpdate(str.toString());
+								}catch(Exception e)
+									{
+									System.out.println(str.toString());
+												LOG.error(e);
+									}
+					 		}
+					 
 						LOG.error(ac.getName()+" Constituency 2012 cadre Data Records Inserted");
 						connection.commit();
 						statement.close();
@@ -4468,92 +4573,5 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 			return resultStatus;
 		 }
 	 
-		 public void saveMember(List<TdpCadre> cadres , Long year,Statement statement)
-		 {
-			 
-			 for(TdpCadre cadre : cadres)
-			 {
-				 StringBuilder str = new StringBuilder();		
-				 try{
-		  str.append("INSERT INTO member(member_id,membership_no,member_name," +
-							"relative_name,gender,mobile,date_of_birth,education_id,panchayat_id,constituency_id,tehsil_id,local_election_body_id,occupation_id," +
-							"caste_state_id,year,image)" +
-										" VALUES (");
-		  str.append(cadre.getMemberId()+",'"+ cadre.getMemberShipNo()+"',");
-		  if(cadre.getFirstname() != null)
-		  str.append("'"+cadre.getFirstname().toString().trim()+"',");
-		  else
-			  str.append("NULL,");
-		  if(cadre.getRelativename() != null)
-		  str.append("'"+cadre.getRelativename().toString().trim()+"',");
-		  else
-			  str.append("NULL,");  
-		 if(cadre.getGender() != null )
-		  str.append("'"+cadre.getGender()+"',");
-		 else
-			 str.append("NULL,");   
-		 if(cadre.getMobileNo() != null)
-		  str.append("'"+cadre.getMobileNo()+"',");
-		 else
-			 str.append("NULL,");   
-		  if(cadre.getDateOfBirth() != null )
-		  str.append("'"+cadre.getDateOfBirth()+"',");
-		  else
-			  str.append("NULL,");    
-		 if(cadre.getEducationId() != null)
-		  str.append("'"+cadre.getEducationId()+"',");
-		 else
-			 str.append("NULL,"); 
 		
-		  if(cadre.getUserAddress() != null)
-		  {
-			  if(cadre.getUserAddress().getPanchayat() != null )
-				  str.append("'"+cadre.getUserAddress().getPanchayat().getPanchayatId()+"',");
-			  else
-				  str.append("NULL,"); 	  
-			  if(cadre.getUserAddress().getConstituency() != null)
-				  str.append("'"+cadre.getUserAddress().getConstituency().getConstituencyId()+"',");
-			  else
-			  str.append("NULL,");  
-			  if(cadre.getUserAddress().getTehsil() != null)
-				  str.append("'"+cadre.getUserAddress().getTehsil().getTehsilId()+"',");
-			  else
-			  str.append("NULL,");  
-		 
-			  if(cadre.getUserAddress().getLocalElectionBody() != null)
-			 str.append("'"+cadre.getUserAddress().getLocalElectionBody()+"',"); 
-			  else
-			 str.append("NULL,"); 	 
-		  }
-		  else
-		  {
-			  str.append("NULL,"); 
-			  str.append("NULL,"); 
-			  str.append("NULL,"); 
-			  str.append("NULL,"); 
-		  }
-		  if(cadre.getOccupationId() != null)
-		  str.append("'"+cadre.getOccupationId()+"',");
-		  else
-			  str.append("NULL,");    
-		  if(cadre.getCasteState() != null )
-		  str.append("'"+cadre.getCasteState() .getCasteStateId()+"',");
-		   else
-		  str.append("NULL,");     
-		 
-		  str.append(year);
-		  if(cadre.getImage() != null)
-		  str.append(",'"+cadre.getImage()+"'");
-		   else
-		  str.append(",NULL");  
-		  
-		  str.append(")");
-		  statement.executeUpdate(str.toString());
-					}catch(Exception e)
-						{
-						System.out.println(str.toString());
-									LOG.error(e);
-						}
-		 		}
-		 }
 }
