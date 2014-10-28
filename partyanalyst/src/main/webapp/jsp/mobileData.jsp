@@ -698,17 +698,17 @@ function callAjax(jsObj,url)
  function showStatusForCadrePC(result)
  {
 	
- $("#cadrepcerrorMsgDiv").html("");
+ $("#cadrepcerrorDiv").html("");
 	$("#cadrepcajaxImg").css("display","none");
 	
 	if(result == null || result.resultCode == 1)
 	{
-	  $("#cadrepcerrorMsgDiv").html("Error Occured! Try Again.").css("color","red");
+	  $("#cadrepcerrorDiv").html("Error Occured! Try Again.").css("color","red");
 	  return;
 	}
 	else
 	{
-	  $("#cadrepcerrorMsgDiv").html("Data Dump Create Successfully.").css("color","green");
+	  $("#cadrepcerrorDiv").html("Data Dump Create Successfully.").css("color","green");
 	  $("#cadrepcdownloadLink").attr('href',result.message);
 	  $("#cadrepcdownloadLink").css("display","inline-block");
 	  return;
