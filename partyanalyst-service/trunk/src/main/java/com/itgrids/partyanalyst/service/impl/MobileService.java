@@ -4287,7 +4287,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 						LOG.error("Exception is -",e);
 					}
 					
-					/*List<Object[]> votersList = boothPublicationVoterDAO.getVoterDetailsOfAConstituencyAndPublication(ac.getConstituencyId(),publicationId);
+					List<Object[]> votersList = boothPublicationVoterDAO.getVoterDetailsOfAConstituencyAndPublication(ac.getConstituencyId(),publicationId);
 					
 					if(votersList != null && votersList.size() > 0)
 					{
@@ -4366,9 +4366,9 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 						{
 							LOG.error(e);
 						}
-					}*/
+					}
 					
-					/*List<Object[]> voterNames = voterNamesDAO.getVoterNames(ac.getConstituencyId(),publicationId);
+					List<Object[]> voterNames = voterNamesDAO.getVoterNames(ac.getConstituencyId(),publicationId);
 					if(voterNames != null && voterNames.size() > 0)
 					{
 						try{
@@ -4400,7 +4400,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 							LOG.error(e);
 							
 						}
-					}*/
+					}
 					
 					// member table 
 					List<TdpCadre> cadres = tdpCadreDAO.getCadreDataByYear(2010L);
