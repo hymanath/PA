@@ -158,7 +158,9 @@
 	var constituencyId = '${constiteucnyId}';
 	var panchayatId    = '${constiteucnyId}';
 	var boothId 	   = '${boothId}';
-	var boothId 	   = '${boothId}';
+	var srchType	   = '${searchType}';
+	var candiId		   = '${candidateId}';
+	
 	
 	$(document).ready(function(){
 	    $('.datePickerCls').datepicker({
@@ -434,8 +436,12 @@
 		}		
 		if(cadreCardNumber != null && cadreCardNumber.trim().length == 0)
 		{
-			isErrorStr = " error";
-			$('#cardErr').html(' Voter Card No is required.');
+			var cbck = $('#relativeTypeChecked').is(':checked'); 
+			
+			if(!cbck){
+				isErrorStr = " error";
+				$('#cardErr').html(' Voter Card No is required.');
+			}
 		}
 		if(dateOfbirth != null && dateOfbirth.trim().length == 0)
 		{
@@ -1205,12 +1211,29 @@
 											<h5 class="text-align1">H NO</h5>
 												<input type="text" class="form-control border-radius-0 " placeholder="House Number" name="cadreRegistrationVO.houseNo" style="width: 120px; float: left; margin-left: 0px;"  value="${voterInfoVOList[0].houseNo}"></input>
 											</div>
-											<div class="span4"> <input type="checkbox" title="Please Check If Cadre Didn't Have Voter Card And Using His Family Members Voter Card" id="relativeTypeChecked" name="relativeTypeChecked" onclick="showHideFamRelatinoSts();"/> Is Family Member</div>
-											<div  class="span6" id="showHideFammemberType" style="display:none; margin-left: 165px;margin-top: -33px;">
-												<span style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</span><select name="relativeTypeId" id="relativeTypeId"> </select>
-												<span style="color: #9a9a9a;font-weight: bold;">Voter Card &nbsp;</span><input type="text" readonly="readonly" id="familyVtrCrdId" name="relativeVoterCardNo" value="${voterInfoVOList[0].fmlyVCardNo}">
-												<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByfName();}" style="margin-top:10px;"> LookUp </a>
-											</div>
+											
+											
+												
+												<c:if test="${not empty voterInfoVOList[0].fmlyVCardNo}">
+													<div class="span4 famlyMemClsDiv">												
+														<input type="checkbox" title="Please Check If Cadre Didn't Have Voter Card And Using His Family Members Voter Card" id="relativeTypeChecked" name="relativeTypeChecked" onclick="showHideFamRelatinoSts();" checked="true"/> Is Family Member
+													</div>
+													<div  class="span6" id="showHideFammemberType" style="display:block; margin-left: 165px;margin-top: -33px;">
+														<span style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</span><select name="relativeTypeId" id="relativeTypeId"> </select>
+														<span style="color: #9a9a9a;font-weight: bold;">Voter Card &nbsp;</span><input type="text" readonly="readonly" id="familyVtrCrdId" name="relativeVoterCardNo" value="${voterInfoVOList[0].fmlyVCardNo}">
+														<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByfName();}" style="margin-top:10px;"> LookUp </a>
+													</div>
+												</c:if>
+												<c:if test="${empty voterInfoVOList[0].fmlyVCardNo}">	
+													<div class="span4 famlyMemClsDiv">
+														<input type="checkbox" title="Please Check If Cadre Didn't Have Voter Card And Using His Family Members Voter Card" id="relativeTypeChecked" name="relativeTypeChecked" onclick="showHideFamRelatinoSts();"/> Is Family Member 
+													</div>
+													<div  class="span6" id="showHideFammemberType" style="display:none ; margin-left: 165px;margin-top: -33px;">
+														<span style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</span><select name="relativeTypeId" id="relativeTypeId"> </select>
+														<span style="color: #9a9a9a;font-weight: bold;">Voter Card &nbsp;</span><input type="text" readonly="readonly" id="familyVtrCrdId" name="relativeVoterCardNo" value="${voterInfoVOList[0].fmlyVCardNo}">
+														<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByfName();}" style="margin-top:10px;"> LookUp </a>
+													</div>
+												</c:if>
 										</div>
 								</div>	
 								<input type="hidden" id="fmlyVtrId" class="form-control border-radius-0 input-block-level" placeholder="Text input"  style="width:260px;"  name="cadreRegistrationVO.familyVoterId"></input>
@@ -2748,5 +2771,13 @@ function showTakeImage(){
 $(document).ready(function(){
 	$("#wrapper").hide();
 });
+
+	if(srchType=="voter" && candiId =="0"){
+		$(".famlyMemClsDiv").css("display","block");
+	}else if(srchType=="voter" && candiId !="0"){
+		$(".famlyMemClsDiv").css("display","none");
+	}else{
+		$(".famlyMemClsDiv").css("display","block");
+	}
 </script>
 </html>

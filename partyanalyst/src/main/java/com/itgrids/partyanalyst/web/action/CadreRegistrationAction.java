@@ -457,7 +457,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				if(cadreRegistrationVO.getDobStr() != null && cadreRegistrationVO.getDobStr().trim().length() > 0)
 				cadreRegistrationVO.setDob(convertToDateFormet(cadreRegistrationVO.getDobStr()));
 				if(cadreRegistrationVO.getPartyMemberSinceStr() != null && cadreRegistrationVO.getPartyMemberSinceStr().trim().length() > 0)
-				cadreRegistrationVO.setPartyMemberSince(convertToDateFormet(cadreRegistrationVO.getPartyMemberSinceStr()));
+				cadreRegistrationVO.setPartyMemberSinceStr(cadreRegistrationVO.getPartyMemberSinceStr());
 				if(relativeTypeChecked != null){
 					cadreRegistrationVO.setRelative(true);
 					cadreRegistrationVO.setRelationTypeId(relativeTypeId);
