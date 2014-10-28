@@ -235,15 +235,15 @@ public class CadreDashBoardAction implements ServletRequestAware {
 			}
 			String task = request.getParameter("task");
 			if(task.equalsIgnoreCase("assemblyInfo")){
-				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"assembly",request.getParameter("fromDate"),request.getParameter("toDate"));
+				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"assembly",request.getParameter("fromDate"),request.getParameter("toDate"),true);
 			}else if(task.equalsIgnoreCase("districtInfo")){
-				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"district",request.getParameter("fromDate"),request.getParameter("toDate"));
+				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"district",request.getParameter("fromDate"),request.getParameter("toDate"),true);
 			}else if(task.equalsIgnoreCase("panchayatInfo")){
-				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"panchayat",request.getParameter("fromDate"),request.getParameter("toDate"));
+				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"panchayat",request.getParameter("fromDate"),request.getParameter("toDate"),true);
 			}else if(task.equalsIgnoreCase("boothInfo")){
-				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"booth",request.getParameter("fromDate"),request.getParameter("toDate"));
+				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"booth",request.getParameter("fromDate"),request.getParameter("toDate"),true);
 			}else if(task.equalsIgnoreCase("mandalInfo")){
-				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"mandal",request.getParameter("fromDate"),request.getParameter("toDate"));
+				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"mandal",request.getParameter("fromDate"),request.getParameter("toDate"),true);
 			}else if(task.equalsIgnoreCase("stateInfo")){
 				result = cadreDashBoardService.getStateWiseRegistrationInfo(getIds(request.getParameter("ids")),request.getParameter("fromDate"),request.getParameter("toDate"));
 			}else if(task.equalsIgnoreCase("boothNames")){
@@ -319,6 +319,20 @@ public class CadreDashBoardAction implements ServletRequestAware {
 			resultVO = cadreDashBoardService.getRegisteredDetailsByLocation(request.getParameter("locationType"),locationIds,startIndex,maxIndex,orderBy,orderType);
 		}catch(Exception e){
 			LOG.error("Exception rised in getRegisteredDetailsByLocation ",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getDataForSubLocations(){
+		try{
+			Long fromLocationId = Long.parseLong(request.getParameter("fromLocationId").trim());
+			Long constituencyId = Long.parseLong(request.getParameter("constituencyId").trim());
+			String fromLocation = request.getParameter("fromLocation").trim();
+			String toLocation = request.getParameter("toLocation").trim();
+			String fromDateStr = request.getParameter("fromDateStr").trim();
+			String toDateStr = request.getParameter("toDateStr").trim();
+			result = cadreDashBoardService.getDataForSubLocations(fromLocation,fromLocationId,toLocation,fromDateStr,toDateStr,constituencyId);
+		}catch(Exception e){
+			LOG.error("Exception rised in getDataForSubLocations ",e);
 		}
 		return Action.SUCCESS;
 	}
