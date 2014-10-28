@@ -4508,21 +4508,21 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 		  if(cadre.getUserAddress() != null)
 		  {
 			  if(cadre.getUserAddress().getPanchayat() != null )
-		  str.append("'"+cadre.getUserAddress().getPanchayat().getPanchayatId()+"',");
+				  str.append("'"+cadre.getUserAddress().getPanchayat().getPanchayatId()+"',");
 			  else
 				  str.append("NULL,"); 	  
-		 if(cadre.getUserAddress().getConstituency() != null)
-		  str.append("'"+cadre.getUserAddress().getConstituency().getConstituencyId()+"',");
-		  else
+			  if(cadre.getUserAddress().getConstituency() != null)
+				  str.append("'"+cadre.getUserAddress().getConstituency().getConstituencyId()+"',");
+			  else
 			  str.append("NULL,");  
-		 if(cadre.getUserAddress().getTehsil() != null)
-		  str.append("'"+cadre.getUserAddress().getTehsil().getTehsilId()+"',");
-		 else
+			  if(cadre.getUserAddress().getTehsil() != null)
+				  str.append("'"+cadre.getUserAddress().getTehsil().getTehsilId()+"',");
+			  else
 			  str.append("NULL,");  
 		 
-		 if(cadre.getUserAddress().getLocalElectionBody() != null)
+			  if(cadre.getUserAddress().getLocalElectionBody() != null)
 			 str.append("'"+cadre.getUserAddress().getLocalElectionBody()+"',"); 
-		 else
+			  else
 			 str.append("NULL,"); 	 
 		  }
 		  else
@@ -4536,10 +4536,10 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 		  str.append("'"+cadre.getOccupationId()+"',");
 		  else
 			  str.append("NULL,");    
-		 if(cadre.getCasteState() != null )
+		  if(cadre.getCasteState() != null )
 		  str.append("'"+cadre.getCasteState() .getCasteStateId()+"',");
-		 else
-			  str.append("NULL,");     
+		   else
+		  str.append("NULL,");     
 		 
 		  str.append(year);
 		  str.append(")");
