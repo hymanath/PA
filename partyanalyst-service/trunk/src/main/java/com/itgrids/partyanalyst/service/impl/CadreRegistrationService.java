@@ -2052,6 +2052,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		List<GenericVO> returnList = new ArrayList<GenericVO>();
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat yyMMddFt = new SimpleDateFormat("yyyy-MM-dd");
 		
 		try {
 			
@@ -2101,8 +2102,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					}
 					
 					vo.setRank(participation[2] != null ? Long.valueOf(participation[2].toString().trim()):0L);	// Committe role id
-					vo.setStartTime(participation[3] != null ?format.format(format1.parse(participation[3].toString())):"");		// from date
-					vo.setEndTime(participation[4] != null ? format.format(format1.parse(participation[4].toString())):"");		// to date 
+					vo.setStartTime(participation[3] != null ?yyMMddFt.format(format1.parse(participation[3].toString())):"");		// from date
+					vo.setEndTime(participation[4] != null ? yyMMddFt.format(format1.parse(participation[4].toString())):"");		// to date 
 					
 					returnList.add(vo);
 				}
