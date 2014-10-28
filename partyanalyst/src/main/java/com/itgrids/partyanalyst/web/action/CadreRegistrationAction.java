@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.text.SimpleDateFormat;
@@ -10,6 +11,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
@@ -33,6 +35,7 @@ import com.itgrids.partyanalyst.service.ICandidateUpdationDetailsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.itgrids.partyanalyst.util.IWebConstants;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -78,7 +81,8 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private Boolean                             cadreUploadImgVoterType;
 	private String								relativeVoterCardNo;
 	
-	
+	private String 								fromPath 	;						
+	private String 								toPath 	;						
 	
 	
 	
@@ -384,6 +388,23 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 
 	public void setCadreUploadImgVoterType(Boolean cadreUploadImgVoterType) {
 		this.cadreUploadImgVoterType = cadreUploadImgVoterType;
+	}
+
+	
+	public String getFromPath() {
+		return fromPath;
+	}
+
+	public void setFromPath(String fromPath) {
+		this.fromPath = fromPath;
+	}
+
+	public String getToPath() {
+		return toPath;
+	}
+
+	public void setToPath(String toPath) {
+		this.toPath = toPath;
 	}
 
 	public String execute()
@@ -1136,5 +1157,21 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		} catch (Exception e) {
 			LOG.error("Exception raised in setCardSenderAndReceiverDetails method in CadreRegistrationAction Action",e);
 		}		
+	}
+	
+	public String copySdCardDetails()
+	{
+		try {
+			String pathSep = System.getProperty(IConstants.FILE_SEPARATOR);
+			fromPath = fromPath.replaceAll("-",pathSep );
+			toPath = toPath.replaceAll("-",pathSep );
+			FileUtils.copyFile(new File(fromPath), new File(toPath));
+			searchType = "success";
+			LOG.error("SUCCESS FULLY COPIED");
+		} catch (Exception e) {
+			searchType = "failure";
+			LOG.error("Exception raised in copySdCardDetails method in CadreRegistrationAction Action",e);
+		}
+		return Action.SUCCESS;
 	}
 }
