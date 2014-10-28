@@ -484,17 +484,21 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 					for (CadrePreviousRollesVO cadrePreviousRollesVO : rolesVOList) 
 					{
 						CadrePreviousRollesVO rolesVO = new CadrePreviousRollesVO();
-
-						if(cadrePreviousRollesVO.getFromDateStr() != null && cadrePreviousRollesVO.getFromDateStr().trim().length() > 0)
-						rolesVO.setFromDate(convertToDateFormet(cadrePreviousRollesVO.getFromDateStr()));
-						if(cadrePreviousRollesVO.getToDateStr() != null && cadrePreviousRollesVO.getToDateStr().trim().length() > 0)
-						rolesVO.setToDate(convertToDateFormet(cadrePreviousRollesVO.getToDateStr()));
-						rolesVO.setCadreCommitteeId(cadrePreviousRollesVO.getCadreCommitteeId());
-						rolesVO.setCadreCommitteeLevelId(cadrePreviousRollesVO.getCadreCommitteeLevelId());
-						rolesVO.setCadreRoleId(cadrePreviousRollesVO.getCadreRoleId());
-						rolesList.add(rolesVO);
+						
+						if(cadrePreviousRollesVO!=null){
+							//if(cadrePreviousRollesVO.getFromDateStr() != null && cadrePreviousRollesVO.getFromDateStr().trim().length() > 0)
+							rolesVO.setFromDateStr(cadrePreviousRollesVO.getFromDateStr());
+							//if(cadrePreviousRollesVO.getToDateStr() != null && cadrePreviousRollesVO.getToDateStr().trim().length() > 0)
+							rolesVO.setToDateStr(cadrePreviousRollesVO.getToDateStr());
+							rolesVO.setCadreCommitteeId(cadrePreviousRollesVO.getCadreCommitteeId());
+							rolesVO.setCadreCommitteeLevelId(cadrePreviousRollesVO.getCadreCommitteeLevelId());
+							rolesVO.setCadreRoleId(cadrePreviousRollesVO.getCadreRoleId());
+							rolesList.add(rolesVO);
+							
+							cadreRegistrationVO.setPreviousRollesList(rolesList);
+						}
 					}
-					cadreRegistrationVO.setPreviousRollesList(rolesList);
+					
 				}
 				List<CadreRegistrationVO> cadreRegistrationVOList = new ArrayList<CadreRegistrationVO>();
 				cadreRegistrationVO.setPath(IWebConstants.STATIC_CONTENT_FOLDER_URL);
