@@ -105,6 +105,7 @@ public class TdpCadre {
 	private String                      isDuplicate;
 	private String                      cardNo;
 	private Long 						memberId;
+	private String 						nameLocal;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -671,9 +672,14 @@ public class TdpCadre {
 		this.memberId = memberId;
 	}
 	
+	@Column(name="name_local")
+	public String getNameLocal() {
+		return nameLocal;
+	}
+	public void setNameLocal(String nameLocal) {
+		this.nameLocal = nameLocal;
+	}
 	
 	
 	
-	
-
 }
