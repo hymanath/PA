@@ -194,6 +194,9 @@
 			  </div>
 		   </div>
 		</div>
+		<div id="dialogueLocationsCadDiv" style="display: none;">
+		  <div id="dialogueLocationsCadTable"></div>
+	    </div>
 	</div>
 <script type="text/javascript">
     $("#fromDate,#fromDate1").datepicker({
@@ -643,14 +646,19 @@
 				str+='<tr>';
 				if(locationId == 2){
 				    str+='<th>STATE</th>';
+				    str+='<th>VIEW DETAILS</th>';
 			    }else if(locationId == 3){
 				    str+='<th>DISTRICT</th>';
+				    str+='<th>VIEW DETAILS</th>';
 			    }else if(locationId == 4){
 				    str+='<th>CONSTITUENCY</th>';
+				    str+='<th>VIEW DETAILS</th>';
 			    }else if(locationId == 5){
 				    str+='<th>MANDAL/MUNICIPALITY</th>';
+				    str+='<th>VIEW DETAILS</th>';
 			    }else if(locationId == 6){
 				    str+='<th>PANCHAYAT</th>';
+				    str+='<th>VIEW DETAILS</th>';
 			    }else if(locationId == 9){
 				    str+='<th>BOOTH</th>';
 			    }
@@ -661,6 +669,39 @@
 				for(var i in result){
 				  str+='<tr>';
 				  str+='  <td>'+result[i].location+'</td>';
+				  if(locationId != 9){
+				    if(result[i].apCount == null || result[i].id == null){
+					  str+='<td></td>';
+				   }else if(locationId == 2){
+					    //str+='<td>STATE</td>';
+					    str+='<td><a href="javascript:{}" title="Click Here To View District Wise Registration Info" onclick="viewDetails(\'state\','+result[i].id+',\'district\',\''+startDate+'\',\''+endDate+'\')"><i class="icon-search"></i></a><a href="javascript:{}" title="Click Here To View Constituency Wise Registration Info" onclick="viewDetails(\'state\','+result[i].id+',\'constituency\',\''+startDate+'\',\''+endDate+'\')"><i class="icon-zoom-in"></i></a></td>';
+				    }else if(locationId == 3){
+					    //str+='<th>DISTRICT</th>';
+					    str+='<td><a href="javascript:{}" title="Click Here To View Constituency Wise Registration Info" onclick="viewDetails(\'district\','+result[i].id+',\'constituency\',\''+startDate+'\',\''+endDate+'\')"><i class="icon-search"></i></a></td>';
+				    }else if(locationId == 4){
+					    //str+='<th>CONSTITUENCY</th>';
+				    	str+='<td>';
+				    	if(result[i].name != null){
+				    	   str+='<a href="javascript:{}" title="Click Here To View Mandal/Municipality Wise Registration Info" onclick="viewDetails(\'constituency\','+result[i].id+',\'mandal\',\''+startDate+'\',\''+endDate+'\')"><i class="icon-ok"></i></a>';
+				        }
+				    	if(result[i].area != null){
+					       str+='<a href="javascript:{}" title="Click Here To View Panchayat Wise Registration Info" onclick="viewDetails(\'constituency\','+result[i].id+',\'panchayat\',\''+startDate+'\',\''+endDate+'\')"><i class="icon-zoom-in"></i></a>';
+					    }
+				    	   str+='<a href="javascript:{}" title="Click Here To View Booth Wise Registration Info" onclick="viewDetails(\'constituency\','+result[i].id+',\'booth\',\''+startDate+'\',\''+endDate+'\')"><i class="icon-search"></i></a>';
+				    	str+='</td>';
+				    }else if(locationId == 5){
+					    //str+='<th>MANDAL/MUNICIPALITY</th>';
+					    str+='<td>';
+					    if(result[i].area != null){
+					       str+='<a href="javascript:{}" title="Click Here To View Panchayat Wise Registration Info" onclick="viewDetails(\'mandal\','+result[i].id+',\'panchayat\',\''+startDate+'\',\''+endDate+'\')"><i class="icon-zoom-in"></i></a>';
+					    }
+				    	str+='<a href="javascript:{}" title="Click Here To View Booth Wise Registration Info" onclick="viewDetails(\'mandal\','+result[i].id+',\'booth\',\''+startDate+'\',\''+endDate+'\')"><i class="icon-search"></i></a>';
+				    	str+='</td>';
+				    }else if(locationId == 6){
+					    //str+='<th>PANCHAYAT</th>';
+					    str+='<td><a href="javascript:{}" title="Click Here To View Booth Wise Registration Info" onclick="viewDetails(\'panchayat\','+result[i].id+',\'booth\',\''+startDate+'\',\''+endDate+'\')"><i class="icon-search"></i></a></td>';
+				    }
+				  }
 				    if(result[i].apCount != null){
 				      str+='  <td>'+result[i].apCount+'</td>';
 					}else{
@@ -705,6 +746,66 @@
 	   $("#locationWiseCadreInfoDiv").show();
 	   
 	 }
+  }
+  function viewDetails(frmLocation,frmLocationId,toLoc,startDate,endDate){
+   $('#dialogueLocationsCadTable').html('<img src="images/Loading-data.gif" style="margin-left: 350px;margin-top:78px;width:70px;height:60px;">');
+       var constiId = $("#constituencyDispalyId").val();
+	   if(constiId == null || $.trim(constiId).length == 0){
+	      constiId =0;
+	   }
+	    $('#dialogueLocationsCadDiv').dialog(
+			{
+				width : 850,
+				height:550,
+				title : " "+toLoc+" Wise Registration Information"
+			});
+	   $.ajax({
+          type:'GET',
+          url: 'getDataForSubLocations.action',
+		  data: {fromLocationId:frmLocationId,constituencyId:constiId,fromLocation:frmLocation,toLocation:toLoc,fromDateStr:startDate,toDateStr:endDate}
+	   }).done(function(result){
+	      if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+    		   location.reload(); 
+    	   }
+		     var str='';
+	       if(result.length > 0){
+		        str+='<input type="button"  style="margin-bottom:15px;margin-left: 295px;"  class="btn" onclick="generateExcel(\'locationWiseReportTabPoP\');" value="Click Here To Generate Excel"/>';
+		        str+='<div><table class="table table-bordered table-striped table-hover" id="locationWiseReportTabPoP"><thead>';
+				str+='<tr>';
+				str+='<th>'+toLoc+'</th>';
+			    str+='<th>2014 CADRE COUNT</th>';
+			    str+='<th>2012 CADRE COUNT</th>';
+				str+='</tr>';
+				str+='</thead><tbody>';
+				for(var i in result){
+				  str+='<tr>';
+				  str+='  <td>'+result[i].location+'</td>';
+				    if(result[i].apCount != null){
+				      str+='  <td>'+result[i].apCount+'</td>';
+					}else{
+					  str+='  <td>-</td>';
+					}
+					if(result[i].tgCount != null){
+				      str+='  <td>'+result[i].tgCount+'</td>';
+					}else{
+					  str+='  <td>-</td>';
+					}
+				  str+='</tr>';
+				}
+				str+='</tbody></table></div>';
+				 str+='<input type="button" style="margin-top:15px;margin-left: 295px;" class="btn" onclick="generateExcel(\'locationWiseReportTabPoP\');" value="Click Here To Generate Excel"/>';
+		   }else{
+		     str+='<div style="font-weight:bold;padding-left: 375px;padding-top: 30px;">No Data Available</div>';
+		   }
+		   $("#dialogueLocationsCadTable").html(str);
+			   $("#locationWiseReportTabPoP").dataTable({
+					aLengthMenu: [
+						[25, 50, 100, 200, -1],
+						[25, 50, 100, 200, "All"]
+					],
+					iDisplayLength: -1
+				});
+	   });
   }
   getDistricts();
   getConstituencies("ALL");
