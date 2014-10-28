@@ -1167,8 +1167,8 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	{
 		try {
 			String pathSep = System.getProperty(IConstants.FILE_SEPARATOR);
-			fromPath = fromPath.replaceAll("-",pathSep );
-			toPath = toPath.replaceAll("-",pathSep );
+			fromPath = fromPath.replaceAll("$",pathSep );
+			toPath = toPath.replaceAll("$",pathSep );
 			FileUtils.copyFile(new File(fromPath), new File(toPath));
 			searchType = "success";
 			LOG.error("SUCCESS FULLY COPIED");
