@@ -260,7 +260,7 @@
 	   }
 	       var str='';
 	       if(result.length > 0){
-		        str+='<input type="button"  style="margin-bottom:15px;margin-left: 375px;"  class="btn" onclick="generateExcel();" value="Click Here To Generate Excel"/>';
+		        str+='<input type="button"  style="margin-bottom:15px;margin-left: 375px;"  class="btn" onclick="generateExcel(\'usersStatusReportTab\');" value="Click Here To Generate Excel"/>';
 		        str+='<div id="resultTableDiv" style="overflow-x:scroll;"><table class="table table-bordered table-striped table-hover" id="usersStatusReportTab"><thead>';
 				str+='<tr>';
 				str+='<th rowspan="2">User</th>';
@@ -304,18 +304,24 @@
 				  str+='</tr>';
 				}
 				str+='</tbody></table></div>';
-				 str+='<input type="button" style="margin-top:15px;margin-left: 375px;" class="btn" onclick="generateExcel();" value="Click Here To Generate Excel"/>';
+				 str+='<input type="button" style="margin-top:15px;margin-left: 375px;" class="btn" onclick="generateExcel(\'usersStatusReportTab\');" value="Click Here To Generate Excel"/>';
 		   }else{
 		     str+='<div style="font-weight:bold;padding-left: 375px;padding-top: 30px;">No Data Available</div>';
 		   }
 		   $("#userStatusDialogDIV").html(str);
 		   $("#ajaxImgStyle").hide();
 		   $("#getCandidateDataCollectionInfoId").removeAttr("disabled");
-		   $("#usersStatusReportTab").dataTable({});
+		   $("#usersStatusReportTab").dataTable({
+					aLengthMenu: [
+						[25, 50, 100, 200, -1],
+						[25, 50, 100, 200, "All"]
+					],
+					iDisplayLength: -1
+				});
        });
    }
-   function generateExcel(){
-     tableToExcel("resultTableDiv", 'Users Working Status');
+   function generateExcel(reqId){
+     tableToExcel(reqId, 'Users Working Status');
    }
    function showCorrespondingLocs(locationLvl){
       var state = false;
@@ -632,7 +638,7 @@
     	   }
 	       var str='';
 	       if(result.length > 0){
-		        str+='<input type="button"  style="margin-bottom:15px;margin-left: 375px;"  class="btn" onclick="generateExcel();" value="Click Here To Generate Excel"/>';
+		        str+='<input type="button"  style="margin-bottom:15px;margin-left: 375px;"  class="btn" onclick="generateExcel(\'locationWiseReportTab\');" value="Click Here To Generate Excel"/>';
 		        str+='<div id="resultTableDiv"><table class="table table-bordered table-striped table-hover" id="locationWiseReportTab"><thead>';
 				str+='<tr>';
 				if(locationId == 2){
@@ -668,14 +674,20 @@
 				  str+='</tr>';
 				}
 				str+='</tbody></table></div>';
-				 str+='<input type="button" style="margin-top:15px;margin-left: 375px;" class="btn" onclick="generateExcel();" value="Click Here To Generate Excel"/>';
+				 str+='<input type="button" style="margin-top:15px;margin-left: 375px;" class="btn" onclick="generateExcel(\'locationWiseReportTab\');" value="Click Here To Generate Excel"/>';
 		   }else{
 		     str+='<div style="font-weight:bold;padding-left: 375px;padding-top: 30px;">No Data Available</div>';
 		   }
 		   $("#locationStatusDialogDIV").html(str);
 		   $("#ajaxImgStyleNew").hide();
 		   $("#locationSubmitBtn").removeAttr("disabled");
-		   $("#locationWiseReportTab").dataTable({"iDisplayLength": 50});
+			   $("#locationWiseReportTab").dataTable({
+					aLengthMenu: [
+						[25, 50, 100, 200, -1],
+						[25, 50, 100, 200, "All"]
+					],
+					iDisplayLength: -1
+				});
 	   });
   }
   function showHideTabs(id){
