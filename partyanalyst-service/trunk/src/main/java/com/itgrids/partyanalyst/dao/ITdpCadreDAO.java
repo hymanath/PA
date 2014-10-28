@@ -109,5 +109,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public Integer updateDispatchStatus(List<Long> cadreIds);
 	
 	public Long checkCardNoExistsOrNot(String cardNo);
-	public List<TdpCadre> getCadreDataByYear(Long enrollmentYear,Long constituencyId);
+	public List<Object[]> getCadreDataByYear(Long constituencyId);
 }
