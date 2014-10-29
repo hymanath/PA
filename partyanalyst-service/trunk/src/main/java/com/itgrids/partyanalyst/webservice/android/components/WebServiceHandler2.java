@@ -237,5 +237,26 @@ public class WebServiceHandler2 {
 		return cadreSurveyTransactionService.updateTxnStatus(uniqueKey,status,constituencyId);
 	}
 	
+		
+	@GET
+	@Path("/getAllVersionsOfAnApp/{appName}/{version}/{isDebug}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Object getAllVersionsOfAnApp(@PathParam("appName") String appName,@PathParam("version") Double version,@PathParam("isDebug") String isDebug)
+	{
+		LOG.debug("inside getAllVersionsOfAnApp");
+		 Boolean includeTest = false;
+		 if(isDebug.equalsIgnoreCase("true")){
+			 includeTest = true;
+		 }
+		return webServiceHandlerService1.getAllVersionsOfAnApp(appName, version, includeTest);
+	}
 	
+	@GET
+	@Path("/getAllUpdatesByVersion/{appName}/{version}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Object getAllUpdatesByVersion(@PathParam("appName") String appName,@PathParam("version") Double version)
+	{
+		LOG.debug("inside getAllUpdatesByVersion");
+		return webServiceHandlerService1.getAllUpdatesByVersion(appName, version);
+	}
 }

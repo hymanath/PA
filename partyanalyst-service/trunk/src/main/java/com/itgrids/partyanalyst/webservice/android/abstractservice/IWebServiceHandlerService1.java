@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.webservice.android.abstractservice;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.AppDbDataVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -22,6 +23,7 @@ public interface IWebServiceHandlerService1 {
 
 /*	public ResultStatus checkUserAuthenticationAndUpdateAuthorisedTime(String userId,String macAdressId);
 */	
-
-
+	public AppDbDataVO getAllVersionsOfAnApp(String appName,Double currentVerson,boolean includeTest);
+	
+	public AppDbDataVO getAllUpdatesByVersion(String appName,Double version);
 }
