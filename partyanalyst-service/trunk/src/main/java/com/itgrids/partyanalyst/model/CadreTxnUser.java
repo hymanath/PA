@@ -28,17 +28,19 @@ public class CadreTxnUser extends BaseModel implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	private Long cadreTxnUserId;	
-	private User user;
+	private CadreSurveyUser cadreSurveyUser;
+	private Long cadreSurveyUserId;
 	private String mobileNo;
 	
 	public CadreTxnUser(){
 		
 	}
 	
-	public CadreTxnUser(Long cadreTxnUserId,User user, String mobileNo){
+	public CadreTxnUser(Long cadreTxnUserId,CadreSurveyUser cadreSurveyUser, String mobileNo,Long cadreSurveyUserId){
 		super();
 		this.cadreTxnUserId = cadreTxnUserId;
-		this.user = user;
+		this.cadreSurveyUser = cadreSurveyUser;
+		this.cadreSurveyUserId = cadreSurveyUserId;
 		this.mobileNo = mobileNo;
 	}
 
@@ -52,18 +54,26 @@ public class CadreTxnUser extends BaseModel implements Serializable{
 	public void setCadreTxnUserId(Long cadreTxnUserId) {
 		this.cadreTxnUserId = cadreTxnUserId;
 	}
-
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="user_id")
+	@JoinColumn(name="cadre_survey_user_id",updatable = false, insertable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public User getUser() {
-		return user;
+	public CadreSurveyUser getCadreSurveyUser() {
+		return cadreSurveyUser;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setCadreSurveyUser(CadreSurveyUser cadreSurveyUser) {
+		this.cadreSurveyUser = cadreSurveyUser;
+	}
+
+	@Column(name = "cadre_survye_user_id")
+	public Long getCadreSurveyUserId() {
+		return cadreSurveyUserId;
+	}
+
+	public void setCadreSurveyUserId(Long cadreSurveyUserId) {
+		this.cadreSurveyUserId = cadreSurveyUserId;
 	}
 
 	@Column(name = "mobile_no", length = 15)
