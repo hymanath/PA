@@ -8,6 +8,8 @@ public class VoterInfoVO implements java.io.Serializable
 
 	private Long id;
 	private String name;
+	private String teluguName;
+	private String TeluguRelativeName;
 	private String relativeName;
 	private String relationType;
 	private String age;
@@ -51,8 +53,20 @@ public class VoterInfoVO implements java.io.Serializable
 	private String fmlyVCardNo;
 	private Long fmlyVtrId;
 	private String candidateAadharNo;
+		
 	
-	
+	public String getTeluguRelativeName() {
+		return TeluguRelativeName;
+	}
+	public void setTeluguRelativeName(String teluguRelativeName) {
+		TeluguRelativeName = teluguRelativeName;
+	}
+	public String getTeluguName() {
+		return teluguName;
+	}
+	public void setTeluguName(String teluguName) {
+		this.teluguName = teluguName;
+	}
 	public String getCandidateAadharNo() {
 		return candidateAadharNo;
 	}
