@@ -42,7 +42,7 @@ public class CadreOtpDetails  extends BaseModel{
 	
 	
 	public CadreOtpDetails() {
-		super();
+		
 	}
 
 	@Id
