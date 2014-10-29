@@ -499,6 +499,7 @@
 				<value>com.itgrids.partyanalyst.model.CadreTxnDetails</value>
 				<value>com.itgrids.partyanalyst.model.CadreTxnUser</value>
 				<value>com.itgrids.partyanalyst.model.CadreOtpDetails</value>
+				<value>com.itgrids.partyanalyst.model.AppDbUpdate</value>
 				</list>
 			
 		</property>
