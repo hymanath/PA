@@ -73,7 +73,7 @@ public class CadreTxnDetails implements java.io.Serializable  {
 		this.cadreSurveyUser = cadreSurveyUser;
 	}
 
-	@Column(name = "cadre_survye_user_id", length =10)
+	@Column(name = "cadre_survey_user_id", length =10)
 	public Long getCadreSurveyUserId() {
 		return cadreSurveyUserId;
 	}
