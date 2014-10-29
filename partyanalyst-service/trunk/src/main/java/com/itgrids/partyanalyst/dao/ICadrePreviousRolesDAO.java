@@ -8,7 +8,7 @@ import com.itgrids.partyanalyst.model.CadrePreviousRoles;
 
 public interface ICadrePreviousRolesDAO extends GenericDao<CadrePreviousRoles, Long>{
 
-	public Integer inActiveCadreRollesDetailsById(Long tdpCadreId);
+	public Integer inActiveCadreRollesDetailsById(List<Long> tdpCadreIdList);
 	
 	public List<Object[]> getexistingRolesForTdpCadreByTdpCadreId(Long tdpCadreId);
 	

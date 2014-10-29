@@ -8,7 +8,7 @@ import com.itgrids.partyanalyst.model.TdpCadreFamilyDetails;
 
 public interface ITdpCadreFamilyDetailsDAO extends GenericDao<TdpCadreFamilyDetails, Long>
 {
-	public Integer inActiveCadreFamilyDetailsById(Long tdpCadreId);
+	public Integer inActiveCadreFamilyDetailsById(List<Long> tdpCadreId);
 	
 	public List<Object[]> getCadreFamilyDetailsBytdpCadreId(Long tdpCadreId);
 	
