@@ -1486,6 +1486,9 @@
 	   		<property name="ctpCasteReportService" ref="ctpCasteReportService" />
 	   		<property name="surveyDashBoardService" ref="surveyDashBoardService" />
 	    </bean>
+	    
+	    <bean id="cadreSurveyTransactionAction" class="com.itgrids.partyanalyst.web.action.CadreSurveyTransactionAction" singleton="false">	   		
+	    </bean>
 	
 </beans>	
 	
