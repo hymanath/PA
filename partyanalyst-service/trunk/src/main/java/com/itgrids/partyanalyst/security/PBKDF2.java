@@ -18,6 +18,30 @@ public class PBKDF2{
 	
 	public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeySpecException
     {
+		/*
+		Map<String,String> usersMap = new LinkedHashMap<String,String>();
+		
+		usersMap.put("wm_user1","WM_7253771");
+
+		for (String string : usersMap.keySet())
+		{
+			String md5Value=Util.MD5(Util.MD5(string)+Util.MD5(usersMap.get(string)));
+			//System.out.println(md5Value);
+			String generatedSecuredPasswordHash = generateStorngPasswordHash(md5Value);
+	        //System.out.print (string.trim()  +":" );
+	      String[] array = generatedSecuredPasswordHash.split(":");
+	        //System.out.print(array[1].trim() +":");
+	        //System.out.print(array[2].trim());
+	        
+	        String query = "update user set Salt_Key =\""+array[1].trim()+ "\", Hash_Key = \""+array[2].trim()+"\" where  username =\""+string.trim()+"\" ;" ;
+	        System.out.println(query);
+	        System.out.println();
+	        
+
+		}
+		*/
+        
+		
 		String md5Value=Util.MD5(Util.MD5("tdp_party")+Util.MD5("tdpP@rty"));
 		System.out.println(md5Value);
 		String generatedSecuredPasswordHash = generateStorngPasswordHash(md5Value);
