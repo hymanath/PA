@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterBoothActivitiesDAO;
 import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
+import com.itgrids.partyanalyst.dto.AppDbDataVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
@@ -41,6 +42,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.model.CadreSurveyUserAssignDetails;
+import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.ILoginService;
@@ -132,7 +134,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	
 	@Autowired ICadreRegistrationService cadreRegistrationService;
 	
-	
+	@Autowired ICadreDashBoardService cadreDashBoardService;
     
 	public IVoterBoothActivitiesDAO getVoterBoothActivitiesDAO() {
 		return voterBoothActivitiesDAO;
@@ -743,5 +745,12 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		return list;
 	}
 	
+	public AppDbDataVO getAllVersionsOfAnApp(String appName,Double currentVerson,boolean includeTest){
+		return cadreDashBoardService.getAllVersionsOfAnApp(appName, currentVerson, includeTest);
+	}
+	
+	public AppDbDataVO getAllUpdatesByVersion(String appName,Double version){
+		return cadreDashBoardService.getAllUpdatesByVersion(appName,version);
+	}
 }
 
