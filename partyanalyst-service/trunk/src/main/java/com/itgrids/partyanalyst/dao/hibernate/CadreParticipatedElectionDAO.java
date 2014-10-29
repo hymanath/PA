@@ -14,10 +14,10 @@ public class CadreParticipatedElectionDAO extends GenericDaoHibernate<CadreParti
 		super(CadreParticipatedElection.class);
 	}
 
-	public Integer inActiveCadreElectionDetailsById(Long tdpCadreId)
+	public Integer inActiveCadreElectionDetailsById(List<Long> tdpCadreIdList)
 	{
-		Query query = getSession().createQuery("update CadreParticipatedElection model set model.isDeleted = 'Y' where model.tdpCadreId = :tdpCadreId");
-		query.setParameter("tdpCadreId", tdpCadreId);
+		Query query = getSession().createQuery("update CadreParticipatedElection model set model.isDeleted = 'H' where model.tdpCadreId in (:tdpCadreIdList) and model.isDeleted = 'N'");
+		query.setParameterList("tdpCadreIdList", tdpCadreIdList);
 		Integer count = query.executeUpdate();
 		
 		return count;
@@ -25,8 +25,8 @@ public class CadreParticipatedElectionDAO extends GenericDaoHibernate<CadreParti
 	
 	public List<Object[]> getPreviousParticipationInfoByTdpCadreId(Long tdpCadreId)
 	{
-		Query query = getSession().createQuery("select model.election.electionScope.electionType.electionTypeId ,model.electionId, model.constituencyId, model.candidateId  from  " +
-				" CadreParticipatedElection model  where model.tdpCadreId = :tdpCadreId and model.isDeleted = 'N' order by model.cadreParticipatedElectionId ");
+		Query query = getSession().createQuery("select model.election, model.constituencyId, model.candidate  from  " +
+				" CadreParticipatedElection model  where model.tdpCadreId = :tdpCadreId and model.isDeleted = 'N' and model.candidate is not null and  model.election is not null ");
 		query.setParameter("tdpCadreId", tdpCadreId);
 		return query.list();
 	}	

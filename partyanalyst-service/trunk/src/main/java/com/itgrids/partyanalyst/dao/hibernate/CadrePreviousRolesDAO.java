@@ -15,10 +15,10 @@ public class CadrePreviousRolesDAO extends GenericDaoHibernate<CadrePreviousRole
 
 	}
 	
-	public Integer inActiveCadreRollesDetailsById(Long tdpCadreId)
+	public Integer inActiveCadreRollesDetailsById(List<Long> tdpCadreIdList)
 	{
-		Query query = getSession().createQuery("update CadrePreviousRoles model set model.isDeleted = 'Y' where model.tdpCadreId = :tdpCadreId");
-		query.setParameter("tdpCadreId", tdpCadreId);
+		Query query = getSession().createQuery("update CadrePreviousRoles model set model.isDeleted = 'H' where model.tdpCadreId in (:tdpCadreIdList) and model.isDeleted = 'N' ");
+		query.setParameterList("tdpCadreIdList", tdpCadreIdList);
 		Integer count = query.executeUpdate();
 		
 		return count;
