@@ -45,7 +45,7 @@ public class CadreTxnDetails implements java.io.Serializable  {
 	private String uniqueKey;
 	
 	public CadreTxnDetails() {
-		super();
+		
 	}
 	
 	@Id
@@ -128,7 +128,7 @@ public class CadreTxnDetails implements java.io.Serializable  {
 		this.pendingAmount = pendingAmount;
 	}
 
-	@Column(name = "inserted_time", length = 10)
+	@Column(name = "inserted_time")
 	public Date getInsertedTime() {
 		return insertedTime;
 	}
@@ -137,7 +137,7 @@ public class CadreTxnDetails implements java.io.Serializable  {
 		this.insertedTime = insertedTime;
 	}
 
-	@Column(name = "updated_time", length =15)
+	@Column(name = "updated_time")
 	public Date getUpdatedTime() {
 		return updatedTime;
 	}
@@ -146,7 +146,7 @@ public class CadreTxnDetails implements java.io.Serializable  {
 		this.updatedTime = updatedTime;
 	}
 
-	@Column(name = "survey_time", length =15)
+	@Column(name = "survey_time")
 	public Date getSurveyTime() {
 		return surveyTime;
 	}

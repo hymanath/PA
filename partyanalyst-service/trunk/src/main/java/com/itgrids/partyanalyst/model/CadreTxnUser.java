@@ -32,7 +32,7 @@ public class CadreTxnUser extends BaseModel implements Serializable{
 	private String mobileNo;
 	
 	public CadreTxnUser(){
-		super();
+		
 	}
 	
 	public CadreTxnUser(Long cadreTxnUserId,User user, String mobileNo){
