@@ -27,9 +27,12 @@ public class TdpCadreBackupDetails extends BaseModel implements java.io.Serializ
 	private String cadreBasicInfo;
 	private String cadrePreviousRoles;
 	private String cadrePreviousElections;
+	private String familyDetails;
 	private String dataSourceType;
 	private Long updatedBy;
 	private Date insertedTime;
+	
+	private String exception;
 
 	
 	@Id
@@ -100,6 +103,26 @@ public class TdpCadreBackupDetails extends BaseModel implements java.io.Serializ
 	public void setUpdatedBy(Long updatedBy) {
 		this.updatedBy = updatedBy;
 	}
+
+	@Column(name="exception_text")
+	public String getException() {
+		return exception;
+	}
+
+	public void setException(String exception) {
+		this.exception = exception;
+	}
+
+	@Column(name="family_Details")
+	public String getFamilyDetails() {
+		return familyDetails;
+	}
+
+	public void setFamilyDetails(String familyDetails) {
+		this.familyDetails = familyDetails;
+	}
+	
+	
 	
 	
 }
