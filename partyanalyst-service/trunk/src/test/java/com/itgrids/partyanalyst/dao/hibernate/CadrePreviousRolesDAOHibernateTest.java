@@ -1,14 +1,8 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.ICadrePreviousRolesDAO;
-import com.itgrids.partyanalyst.dto.GenericVO;
 
 public class CadrePreviousRolesDAOHibernateTest extends BaseDaoTestCase{
 
@@ -18,7 +12,7 @@ public class CadrePreviousRolesDAOHibernateTest extends BaseDaoTestCase{
 			ICadrePreviousRolesDAO cadrePreviousRolesDAO) {
 		this.cadrePreviousRolesDAO = cadrePreviousRolesDAO;
 	}
-	
+	/*
 	public void testDetails()
 	{
 		List<Object[]> participationInfo = cadrePreviousRolesDAO.getexistingRolesForTdpCadreByTdpCadreId(1400565L);
@@ -43,5 +37,5 @@ public class CadrePreviousRolesDAOHibernateTest extends BaseDaoTestCase{
 		}
 		
 		
-	}
+	}*/
 }
