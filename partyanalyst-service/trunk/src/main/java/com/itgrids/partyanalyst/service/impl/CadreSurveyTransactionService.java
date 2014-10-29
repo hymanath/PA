@@ -4,10 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -18,12 +16,10 @@ import com.itgrids.partyanalyst.dao.ICadreTxnDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreTxnUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dto.CadreTransactionVO;
-import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.model.CadreOtpDetails;
 import com.itgrids.partyanalyst.model.CadreTxnDetails;
 import com.itgrids.partyanalyst.service.ICadreSurveyTransactionService;
 import com.itgrids.partyanalyst.service.ISmsService;
-import com.itgrids.partyanalyst.utils.RandomGenaration;
 import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 
 
@@ -117,37 +113,35 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			{
 				try{
 					final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-				CadreTransactionVO assignedProblemsFromDB =  (CadreTransactionVO) transactionTemplate
-						.execute(new TransactionCallback() {
-							public Object doInTransaction(TransactionStatus status) {
-				CadreTxnDetails cadreTxnDetails = new CadreTxnDetails();
-				cadreTxnDetails.setCadreSurveyUser(cadreSurveyUserDAO.get(inputVO.getId()));
-				cadreTxnDetails.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
-				cadreTxnDetails.setSinkedRecords(inputVO.getSinkedRecords());
-				cadreTxnDetails.setPendingRecords(inputVO.getPendingRecords());
-				cadreTxnDetails.setTotalAmount(inputVO.getTotalAmount());
-				cadreTxnDetails.setPaidAmount(inputVO.getPaidAmount());
-				cadreTxnDetails.setPendingAmount(inputVO.getPendingAmount());
-				try {
-					cadreTxnDetails.setSurveyTime(sdf.parse(inputVO.getSurveyTime()));
-				} catch (ParseException e) {
-					
-				}
-				cadreTxnDetails.setInsertedTime(new Date());
-				cadreTxnDetails.setUpdatedTime(new Date());
-				cadreTxnDetails.setCompleteStatus("N");
-				cadreTxnDetails.setUniqueKey(inputVO.getUniqueKey());
-				cadreTxnDetails = cadreTxnDetailsDAO.save(cadreTxnDetails);
-				genarateOTP(cadreTxnDetails,inputVO,returnVo);
-				returnVo.setMessage("SUCCESS");
-				
-				return returnVo;
-				
+					CadreTransactionVO assignedProblemsFromDB =  (CadreTransactionVO) transactionTemplate.execute(new TransactionCallback() 
+						{
+							public Object doInTransaction(TransactionStatus status) 
+							{
+								CadreTxnDetails cadreTxnDetails = new CadreTxnDetails();
+								cadreTxnDetails.setCadreSurveyUser(cadreSurveyUserDAO.get(inputVO.getId()));
+								cadreTxnDetails.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
+								cadreTxnDetails.setSinkedRecords(inputVO.getSinkedRecords());
+								cadreTxnDetails.setPendingRecords(inputVO.getPendingRecords());
+								cadreTxnDetails.setTotalAmount(inputVO.getTotalAmount());
+								cadreTxnDetails.setPaidAmount(inputVO.getPaidAmount());
+								cadreTxnDetails.setPendingAmount(inputVO.getPendingAmount());
+								try {
+									cadreTxnDetails.setSurveyTime(sdf.parse(inputVO.getSurveyTime()));
+								} catch (ParseException e) {}
+								
+								cadreTxnDetails.setInsertedTime(new Date());
+								cadreTxnDetails.setUpdatedTime(new Date());
+								cadreTxnDetails.setCompleteStatus("N");
+								cadreTxnDetails.setUniqueKey(inputVO.getUniqueKey());
+								cadreTxnDetails = cadreTxnDetailsDAO.save(cadreTxnDetails);
+								genarateOTP(cadreTxnDetails,inputVO,returnVo);
+								returnVo.setMessage("SUCCESS");
+								
+								return returnVo;						
 							}
 						});
 				}
 				catch (Exception e) {
-					e.printStackTrace();
 					returnVo.setMessage("Exception");
 				}
 				
@@ -155,7 +149,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			
 		}
 		catch (Exception e) {
-			
+		LOG.error("Exception occured in genarateOTPAndSaveTxnDetails() in CadreSurveyTransactionService class.",e);	
 		}
 		return returnVo;
 	}
@@ -182,7 +176,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			smsCountrySmsService.sendSmsFromAdmin(message, true, phoneNumbers);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Exception occured in genarateOTP() in CadreSurveyTransactionService class.",e);
 		}
 	}
 	public String updateTxnStatus(String uniqueKey,String status,Long constituencyId)
@@ -198,10 +192,9 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 		}
 		catch (Exception e) {
 			msg = "Exception";
+			LOG.error("Exception occured in updateTxnStatus() in CadreSurveyTransactionService class.",e);
 		}
 		return msg;
 	}
-	
-	
 	
 }
