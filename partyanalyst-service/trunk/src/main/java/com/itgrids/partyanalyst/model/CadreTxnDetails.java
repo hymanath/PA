@@ -30,7 +30,9 @@ public class CadreTxnDetails implements java.io.Serializable  {
 	 */
 	private static final long serialVersionUID = 6017137644243190119L;
 	private Long cadreTxnDetailsId;
+	private Long cadreSurveyUserId;
 	private CadreSurveyUser cadreSurveyUser;
+	private Long constiteuncyId;
 	private Constituency constituency;
 	private Long sinkedRecords;
 	private Long pendingRecords;
@@ -60,7 +62,7 @@ public class CadreTxnDetails implements java.io.Serializable  {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="cadre_survey_user_id")
+	@JoinColumn(name="cadre_survey_user_id",updatable = false, insertable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public CadreSurveyUser getCadreSurveyUser() {
@@ -71,16 +73,34 @@ public class CadreTxnDetails implements java.io.Serializable  {
 		this.cadreSurveyUser = cadreSurveyUser;
 	}
 
+	@Column(name = "cadre_survye_user_id", length =10)
+	public Long getCadreSurveyUserId() {
+		return cadreSurveyUserId;
+	}
+
+	public void setCadreSurveyUserId(Long cadreSurveyUserId) {
+		this.cadreSurveyUserId = cadreSurveyUserId;
+	}
+	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="constituency_id")
+	@JoinColumn(name="constituency_id",updatable = false, insertable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Constituency getConstituency() {
 		return constituency;
 	}
-
+	
 	public void setConstituency(Constituency constituency) {
 		this.constituency = constituency;
+	}
+
+	@Column(name = "constituency_id", length =20)
+	public Long getConstiteuncyId() {
+		return constiteuncyId;
+	}
+
+	public void setConstiteuncyId(Long constiteuncyId) {
+		this.constiteuncyId = constiteuncyId;
 	}
 
 	@Column(name = "sinked_records", length =20)
