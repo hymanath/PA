@@ -413,11 +413,24 @@
 		var Ngender = $('#nomineeGenderId').val();
 		var NAge = $('#nomineeAgeId').val();
 		var Nrelation = $('#voterRelationId').val();
+		$('#imageErr').html('');
 		
 		$('#NaadharErr,#NnameErr,#NgenderErr,#NageErr,#dobErr,#NrelationErr').html('');
 		$('#casteErr,#mobileErr,#ageErr,#cardErr,#dobErr,#nameErr').html('');
+		var photoElmt = document.getElementById("uploadFileId").value;
 		
-		
+		if(photoElmt != null )
+		{
+			$('#imageErr').html('');
+			var FileUploadPath = document.getElementById("uploadFileId").value;
+			//To check if user upload any file
+			if (FileUploadPath == '') 
+			{
+				$('#imageErr').html('Please upload an image');
+				isErrorStr = " error";
+			}
+			
+		}
 		
 		if(casteId == 0)
 		{
@@ -763,10 +776,32 @@
 	$("#uploadImg").html('<img style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg">');
 		$("#base64Image").val("");
 		var photoElmt = document.getElementById("uploadFileId");
-		var file = photoElmt.files[0];
-		var reader = new FileReader();
-		reader.onloadend = handleReaderLoadEnd;
-		reader.readAsDataURL(file);
+		var FileUploadPath = photoElmt.value;
+		$('#imageErr').html('');
+		//To check if user upload any file
+        if (FileUploadPath == '') 
+		{
+			$('#imageErr').html('Please upload an image');
+		}
+		else 
+		{
+            var Extension = FileUploadPath.substring(FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
+			//The file uploaded is an image
+			if (Extension == "gif" || Extension == "png" || Extension == "bmp"
+								|| Extension == "jpeg" || Extension == "jpg") 
+			{
+                    var reader = new FileReader();
+					var file = photoElmt.files[0];
+					var reader = new FileReader();
+					reader.onloadend = handleReaderLoadEnd;
+					reader.readAsDataURL(file);              
+            } 
+			//The file upload is NOT an image
+			else 
+			{
+					$('#imageErr').html('Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ');
+			}
+        }
 	}
 	function handleReaderLoadEnd(evt)
 	{
@@ -1101,13 +1136,26 @@
 										<div class="span12">
 										<div class="span6">
 											<h5 style="color: #9a9a9a;">  CANDIDATE NAME <span class="mandatory">*</span> </h5>
-											<input type="text" class="form-control border-radius-0" placeholder="Candidate Name" name="cadreRegistrationVO.voterName"  value="${voterInfoVOList[0].name}" id="cadreNameId"></input>
+											<input type="text" class="form-control border-radius-0" placeholder="Candidate Name" name="cadreRegistrationVO.voterName"  value="${voterInfoVOList[0].name}" id="cadreNameId" onkeyup="validateName('nameErr','cadreNameId',1);"></input>
 											<span id="nameErr" style="color:red;font-size:12px;"></span>
 										</div>	
 										<div class="span4">	
 											<h5 class="text-align1">Age <span class="mandatory">*</span> </h5>
-											<input style="width:180px;" id="cadreAgeId" type="text" class="form-control border-radius-0 text-align2"  placeholder="Age" name="cadreRegistrationVO.age"   value="${voterInfoVOList[0].age}"></input>
+											<input style="width:180px;" id="cadreAgeId" type="text" class="form-control border-radius-0 text-align2"  placeholder="Age" name="cadreRegistrationVO.age"   value="${voterInfoVOList[0].age}"  onkeyup="validateName('ageErr','cadreAgeId',0);"></input>
 											<span id="ageErr" style="color:red;font-size:12px;"></span>
+										</div>
+										</div>
+										<div class="span12">
+										<div class="span6">
+											<h5 style="color: #9a9a9a;">  Voter Name <span class="mandatory">*</span> </h5>
+											<input type="checkbox" id="voterTNameId" class="cadreTnamesCls"  style="margin-top:-15px;" checked="true" value="Voter" name="cadreRegistrationVO.nameType" onClick="updateNameSelection('cadreTnamesCls','voterTNameId');"/>
+											<input type="text" class="form-control border-radius-0" placeholder="Voter Name" style="width:190px;" value="${voterInfoVOList[0].teluguName}"  ></input>											
+										</div>	
+										<div class="span6">	
+											<h5 class="text-align1"> Cadre Name <span class="mandatory">*</span> </h5>	
+											<input type="checkbox"  id="cadreTNameId" class="cadreTnamesCls" value="Cadre" style="margin-top:-15px;" name="cadreRegistrationVO.nameType" value="Cadre"  onClick="updateNameSelection('cadreTnamesCls','cadreTNameId');"/>
+											<input type="text" class="form-control border-radius-0" placeholder="Voter Name" style="width:170px;" value="${voterInfoVOList[0].teluguRelativeName}" ></input>
+											
 										</div>
 										</div>
 									<div class="span12"> 
@@ -1141,6 +1189,7 @@
 												<input type="file" style="width: 79px;margin-left: 10px;" id="uploadFileId" onchange="changeImg();" name="cadreRegistrationVO.uploadImage" class="m_top10">
 													<span><img id="takePicture" onclick="showTakeImage();" src="images/candidatePage/camera.png" title="Take Picture" /></span>
 													<span class="icon-remove" style="cursor: pointer;" title="Click Here To Delete Existing Image" onclick="clearExistingImg('uploadImg');"></span>
+													<br><span id="imageErr" style="color:red;font-size:12px;"></span>
                                              </div>
 										   </li>
                                        </ul>
@@ -1186,12 +1235,14 @@
 										
 										<div class="span6">
 										<h5 class="text-align1">GUARDIAN NAME </h5>
-										<input type="text" class="form-control border-radius-0 text-align2" placeholder="Guardian Name" name="cadreRegistrationVO.relativeName"   value="${voterInfoVOList[0].relativeName}"></input>
+										<input type="text" class="form-control border-radius-0 text-align2" placeholder="Guardian Name" name="cadreRegistrationVO.relativeName"   value="${voterInfoVOList[0].relativeName}"  id="gardianNameId" onkeyup="validateName('garErr','gardianNameId',1);"></input>
+										<br><span id="garErr" style="color:red;font-size:12px;"></span>
 										</div>
 										<input type="hidden" value="${voterInfoVOList[0].voterId}" name="cadreRegistrationVO.voterId"></input>
 										<div class="span6">
 										<h5 class="text-align1">Relationship Type</h5>
-											<input type="text" class="form-control border-radius-0 " placeholder="Relationship Type" name="cadreRegistrationVO.relationType"   value="${voterInfoVOList[0].relationType}"></input>
+											<input type="text" class="form-control border-radius-0 " placeholder="Relationship Type" name="cadreRegistrationVO.relationType"   value="${voterInfoVOList[0].relationType}" id="relationTypessId" onkeyup="validateName('relErr','relationTypessId',1);"></input>
+												<br><span id="relErr" style="color:red;font-size:12px;"></span>
 										</div>
 									</div>
 								</div>
@@ -1261,7 +1312,7 @@
 								</div>-->
 						
 					</div>
-					<div class="span6 show-grid pad-10b" id="fadeInRight" style="min-height: 674px;" >
+					<div class="span6 show-grid pad-10b" id="fadeInRight" style="min-height: 725px;" >
 							<!-- 
 							<div class=" m_top20" >
 								<h5 class="text-align1">Aadhar Card No .</h5>
@@ -1309,7 +1360,7 @@
 							<div class=" m_top20" > 
 									<h5 class="text-align1">PREVIOUS ENROLLMENT NUMBER</h5>
 									<input type="text" id="preEnrollNoValue" class="form-control border-radius-0 input-block-level" placeholder="Previous Enrollment No."  value="${voterInfoVOList[0].memberShipId}" style="width:260px;"  onkeyup="getExistingCadreInfo2();" name="cadreRegistrationVO.previousEnrollmentNumber" readonly></input>
-									<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByName();}" style="margin-top: -10px;"> LookUp For EnrollmentNo</a>
+									<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByName();}" > LookUp For EnrollmentNo</a>
 									<input type="hidden" id="preEnrollNo" class="form-control border-radius-0 input-block-level" placeholder="Text input"  value="${voterInfoVOList[0].memberShipId}" style="width:260px;" ></input>
 									
 							</div>
@@ -1432,8 +1483,8 @@
 													<input type="checkbox" id="checkBox0"   class="nomineeCls" onclick="nomineeUpdate('checkBox0',0)" style="margin-top: -10px;" title="Click here to add make this member as nominee.">
 												</td>
 												<td> 
-													<input type="text" class="form-control border-radius-0 text-align2" name="cadreRegistrationVO.cadreFamilyDetails[0].voterName" id="voterName0"  placeholder=" Voter Name "  ></input> 
-													<input type="hidden" id="voterId0" class="form-control border-radius-0 text-align2"  name="cadreRegistrationVO.cadreFamilyDetails[0].voterId"  ;"></input> 
+													<input type="text" id="voterName0" class="form-control border-radius-0 text-align2" name="cadreRegistrationVO.cadreFamilyDetails[0].voterName" id="voterName0"  placeholder=" Voter Name "  ></input> 
+													<input type="hidden" class="form-control border-radius-0 text-align2"  name="cadreRegistrationVO.cadreFamilyDetails[0].voterId"  ></input> 
 												</td>
 												<td> 
 													<input type="text" id="voterCard0" class="form-control border-radius-0 text-align2" placeholder=" Voter Id " name="cadreRegistrationVO.cadreFamilyDetails[0].voterCadreNO"  style="width:120px;"></input>
@@ -1442,7 +1493,7 @@
 													<input type="text" id="voterAge0" class="form-control border-radius-0 text-align2" placeholder=" Age " style="width:50px;"></input> 
 												</td>
 												<td style="width:80px;">
-													<input type="text" class="form-control border-radius-0 text-align2" placeholder="Gender"  style="width:50px;"> </input>
+													<input type="text" id="voterGender0" class="form-control border-radius-0 text-align2" placeholder="Gender"  style="width:50px;"> </input>
 												</td>
 												<td style="width:100px;"> 
 												
@@ -1893,10 +1944,12 @@
 								</div>
 							</div>
 							<a href="javascript:{searchCandidatesDetailsBySearchCriteria('voter');}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
-							<div id="errorDiv"></div>
+							<div align="center"><img style="width:70px;height:60px;display:none;" id="searchDataImg" class="" src="images/Loading-data.gif"></div>
+							<div id="errorDiv" class="mandatory"></div>
 							<div class="show-grid pad-5 m-bottom-10">
 								<div class="container" id="tableElement" style="margin-top:25px;display:none;">
 									<h3 class="text-align" style="color:red;">SEARCH DETAILS</h3>
+									
 									<div class="table-responsive" id="searchDetailsDiv" ></div>
 								</div>
 							</div>
@@ -1923,8 +1976,9 @@
 								</div>
 							</div>
 							<a href="javascript:{searchCandidatesDetailsBySearchCriteria('family');}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
-							<div id="errorDivFmly"></div>
-							<div class="show-grid pad-5 m-bottom-10">
+							<div align="center"><img style="width:70px;height:60px;display:none;" id="searchDataImg3" class="" src="images/Loading-data.gif"></div>
+							<div id="errorDivFmly" class="mandatory"></div>
+							<div class="show-grid pad-5 m-bottom-10">							
 								<div class="container" id="tableElementFmly" style="margin-top:25px;display:none;">
 									<h3 class="text-align" style="color:red;">SEARCH DETAILS</h3>
 									<div class="table-responsive" id="searchDetailsDivFmly" ></div>
@@ -1947,6 +2001,7 @@
 						</div>
 						
 						<a href="javascript:{getExistingCadreInfo1();}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
+						<div align="center"><img style="width:70px;height:60px;display:none;" id="searchDataImg1" class="" src="images/Loading-data.gif"></div>
 					</div>
 					<div id="errorDiv1"></div>
 					<div class="show-grid pad-5 m-bottom-10">
@@ -2126,11 +2181,11 @@ var electionsId = $('#'+electionId+'').val();
 			url : "getCandidateInfoByNominationAction.action",
 			data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
-			buildCandidateDetails(result);
+			buildCandidateDetails(result,nominationId);
 		});
 }
 var prvEleCount = 1;
-function buildCandidateDetails(result)
+function buildCandidateDetails(result,nominationId)
 {
 	var str ='';
 	if(result != null)
@@ -2144,6 +2199,7 @@ function buildCandidateDetails(result)
 				str += '<input type="hidden" value=""></input>';
 				str += '<input type="hidden" value='+result[i].orderId+' name="cadreRegistrationVO.previousParicaptedElectionsList['+prvEleCount+'].electionTypeId"></input>';
 				str += '<input type="hidden" value='+result[i].mainAccountId+' name="cadreRegistrationVO.previousParicaptedElectionsList['+prvEleCount+'].constituencyId"></input>';
+				str += '<input type="hidden" value='+nominationId+' name="cadreRegistrationVO.previousParicaptedElectionsList['+prvEleCount+'].candidateId"></input>';
 				str +='<td>'+result[i].name+'</td>';
 				str +='<td>'+result[i].location+'</td>';
 				str +='<td>'+result[i].panchayatName+' ('+result[i].partno+')</td>';
@@ -2240,6 +2296,7 @@ function showNewTakenImg(){
 	}
 	
 	function clearExistingImg(id){
+		$('#imageErr').html('');
 		$("#"+id+"").html('');
 		$("#"+id+"").html('<img style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg">');
 		 $("#newTakenImgId").removeAttr('checked');
@@ -2381,7 +2438,7 @@ function showNewTakenImg(){
 		if(!isError)
 		{			
 			$(errDivId).html('');
-			
+			 
 			$(srchDtlsDivId).html('');
 			$(tbleElmntId).hide();
 			
@@ -2391,6 +2448,7 @@ function showNewTakenImg(){
 			}
 					
 			$('#searchDataImg').show();
+			$('#searchDataImg3').show();
 
 			var jsObj = 
 				   {
@@ -2414,13 +2472,14 @@ function showNewTakenImg(){
 					}).done(function(result){
 						isSubmit = true;
 						$('#searchDataImg').hide();
+						$('#searchDataImg3').hide();
 						if(result != null && result.length >0)
 						{
 							buildSearchDetails(result,fromDiv);
 						}
 						else
 						{
-							$(srchDtlsDivId).html('No Data Available...');
+							$(srchDtlsDivId).html('<div align="center">No Data Available...</div>');
 							$(tbleElmntId).show();
 						}
 					});
@@ -2702,6 +2761,7 @@ function getExistingCadreInfo1(){
 	}
 	
 	if(canCallAjax){
+	$('#searchDataImg1').show();
 		var jsObj = {	
 			name : candidateName,
 			constituencyId : constituencyId,
@@ -2717,16 +2777,52 @@ function getExistingCadreInfo1(){
 			url : "getExistingCadreInfoAction.action",
 			data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
+		$('#searchDataImg1').hide();
 			buildExistingCadres(result);
 		});
 	}
 }	
+
+ 
+ function validateName(errDiv,fieldid,isNumber)
+ {
+	var str = $('#'+fieldid+'').val();
+	
+	if(isNumber >0)
+	{
+		if(str != null && str.trim().length>0 && !(/^[a-zA-Z ]+$/.test(str)))
+		{
+			$('#'+errDiv+'').html(' Name allows only alphabets.');
+		}		  
+		if(!isValid(str))
+		{
+			$('#'+errDiv+'').html('Special Characters not allowed for Candidate Name.');
+		} 
+	}
+	else
+	{
+		$('#mobileErr').html('');
+		if (str.length == 0) 
+		{
+			$('#'+errDiv+'').html('Please Enter Mobile No');
+			$('#cadreAgeId').val('');
+		}		 
+		else if (isNaN(str)) 
+		{
+			$('#'+errDiv+'').html('Invalid Mobile No.');	
+			$('#cadreAgeId').val('');			
+		}
+	}
+ }
+ 
 	function buildExistingCadres(results){
+			$('#searchDetailsDiv1').html("");
+			$('#tableElement1').show();
 		if(results==null){
-			$('#searchDetailsDiv1').html("<h4 style='color:red;text-align:center;'> No Data Available </h4>");	
+
+			$('#searchDetailsDiv1').html("<h4 style='text-align:center;'> No Data Available </h4>");	
 			return;
 		}
-		$('#searchDetailsDiv1').html("");
 		var str = '';
 			str +='<table class="table table-bordered m_top20 table-hover table-striped"  id="seachDetalsTab1">';
 				str +='<thead>';
@@ -2750,7 +2846,7 @@ function getExistingCadreInfo1(){
 			str +='</table>';
 			
 			$('#searchDetailsDiv1').html(str);
-			$('#tableElement1').show();
+			
 		 
 			$('#seachDetalsTab').dataTable({
 				"iDisplayLength": 100,
@@ -2778,6 +2874,12 @@ $(document).ready(function(){
 		$(".famlyMemClsDiv").css("display","none");
 	}else{
 		$(".famlyMemClsDiv").css("display","block");
+	}
+	
+	function updateNameSelection(clsName,id)
+	{
+		$('.'+clsName+'').prop('checked', false);
+		$('#'+id+'').prop('checked', true);		
 	}
 </script>
 </html>
