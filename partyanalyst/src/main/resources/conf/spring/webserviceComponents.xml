@@ -10,6 +10,7 @@
   <bean name="webServiceHandlerService1"  class="com.itgrids.partyanalyst.webservice.android.concreteservice.WebServiceHandlerService1"  > </bean>
         <bean name="webServiceHandler2"  class="com.itgrids.partyanalyst.webservice.android.components.WebServiceHandler2"  > 
                       <property name="webServiceHandlerService1" ref="webServiceHandlerService1" />
+                       <property name="cadreSurveyTransactionService" ref="cadreSurveyTransactionService" />
          </bean>
 	<context:component-scan base-package="com.itgrids.partyanalyst.webservice" /> 
 	
