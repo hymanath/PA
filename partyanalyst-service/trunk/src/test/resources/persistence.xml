@@ -94,6 +94,7 @@
 		<class>com.itgrids.partyanalyst.model.TdpCadreFamilyDetails</class>
 		<class>com.itgrids.partyanalyst.model.CadrePreviousRoles</class>
 		<class>com.itgrids.partyanalyst.model.VoterRelation</class>
+		<class>com.itgrids.partyanalyst.model.TdpCadreBackupDetails</class>
 		
 		 <properties> 
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />

@@ -2570,4 +2570,8 @@
 	<property name="sessionFactory" ref="sessionFactory" />
 </bean>
 	
+<bean id="tdpCadreBackupDetails" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreBackupDetailsDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
 </beans>
