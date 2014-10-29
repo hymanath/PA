@@ -29,21 +29,79 @@ import com.itgrids.partyanalyst.utils.RandomGenaration;
 public class CadreSurveyTransactionService implements ICadreSurveyTransactionService{
 
 	private final static Logger LOG = Logger.getLogger(CadreSurveyTransactionService.class);
-	@Autowired
+	
 	private ICadreTxnUserDAO cadreTxnUserDAO;
-	@Autowired
+	
 	private ICadreTxnDetailsDAO cadreTxnDetailsDAO;
-	@Autowired
+	
 	private ICadreSurveyUserDAO cadreSurveyUserDAO ;
-	@Autowired
+	
 	private IConstituencyDAO constituencyDAO;
-	@Autowired
+	
 	private TransactionTemplate transactionTemplate;
-	@Autowired
+	
 	private ICadreOtpDetailsDAO cadreOtpDetailsDAO;
-	@Autowired
+	
 	private ISmsService smsCountrySmsService;
 	
+	
+	
+	public ICadreTxnUserDAO getCadreTxnUserDAO() {
+		return cadreTxnUserDAO;
+	}
+
+	public void setCadreTxnUserDAO(ICadreTxnUserDAO cadreTxnUserDAO) {
+		this.cadreTxnUserDAO = cadreTxnUserDAO;
+	}
+
+	public ICadreTxnDetailsDAO getCadreTxnDetailsDAO() {
+		return cadreTxnDetailsDAO;
+	}
+
+	public void setCadreTxnDetailsDAO(ICadreTxnDetailsDAO cadreTxnDetailsDAO) {
+		this.cadreTxnDetailsDAO = cadreTxnDetailsDAO;
+	}
+
+	public ICadreSurveyUserDAO getCadreSurveyUserDAO() {
+		return cadreSurveyUserDAO;
+	}
+
+	public void setCadreSurveyUserDAO(ICadreSurveyUserDAO cadreSurveyUserDAO) {
+		this.cadreSurveyUserDAO = cadreSurveyUserDAO;
+	}
+
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
+
+	public ICadreOtpDetailsDAO getCadreOtpDetailsDAO() {
+		return cadreOtpDetailsDAO;
+	}
+
+	public void setCadreOtpDetailsDAO(ICadreOtpDetailsDAO cadreOtpDetailsDAO) {
+		this.cadreOtpDetailsDAO = cadreOtpDetailsDAO;
+	}
+
+	public ISmsService getSmsCountrySmsService() {
+		return smsCountrySmsService;
+	}
+
+	public void setSmsCountrySmsService(ISmsService smsCountrySmsService) {
+		this.smsCountrySmsService = smsCountrySmsService;
+	}
+
 	public CadreTransactionVO genarateOTPAndSaveTxnDetails(final CadreTransactionVO inputVO)
 	{
 		final CadreTransactionVO returnVo = new CadreTransactionVO();
