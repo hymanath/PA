@@ -14,11 +14,11 @@ public class VoterNamesDAO extends GenericDaoHibernate<VoterNames, Long> impleme
 		super(VoterNames.class);
 	}
 	
-	public VoterNames gerVoterNamesObjByVoterId(Long voterId)
+	public List<VoterNames> gerVoterNamesObjByVoterId(Long voterId)
 	{
 		Query query = getSession().createQuery("Select model from VoterNames model where model.voter.voterId = :voterId");
 		query.setParameter("voterId",voterId);
-		return (VoterNames) query.uniqueResult();
+		return query.list();
 	}
 	
 	
