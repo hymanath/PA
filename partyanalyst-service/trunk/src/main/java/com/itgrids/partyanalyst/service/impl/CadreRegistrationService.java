@@ -1849,11 +1849,19 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				{
 					List<Long> votersList = new ArrayList<Long>();
 					votersList.add(voterId);
-					VoterNames voterNames = voterNamesDAO.gerVoterNamesObjByVoterId(voterId);
+                    List<VoterNames> voterNamesList = voterNamesDAO.gerVoterNamesObjByVoterId(voterId);
 					
-					if(voterNames != null)
+					if(voterNamesList != null && voterNamesList.size() > 0 && voterNamesList.get(0) != null)
 					{
-						vo.setTeluguName(StringEscapeUtils.unescapeJava(StringEscapeUtils.escapeJava(voterNames.getFirstName()+" "+voterNames.getLastName())));
+						VoterNames voterNames = voterNamesList.get(0);
+						String voterName ="";
+						if(voterNames.getFirstName() != null){
+							voterName = voterNames.getFirstName();
+						}
+						if(voterNames.getLastName() != null){
+							voterName = voterName+" "+voterNames.getLastName();
+						}
+						vo.setTeluguName(voterName);
 					}
 					List<Object[]> voterInfo = boothPublicationVoterDAO.getBoothIdsDetailsOfVoterIds(votersList, IConstants.VOTER_DATA_PUBLICATION_ID);
 					

@@ -8,6 +8,6 @@ import com.itgrids.partyanalyst.model.VoterNames;
 
 public interface IVoterNamesDAO extends GenericDao<VoterNames, Long>{
 
-	public VoterNames gerVoterNamesObjByVoterId(Long voterId);
+	public List<VoterNames> gerVoterNamesObjByVoterId(Long voterId);
 	public List<Object[]> getVoterNames(Long constituencyId,Long publicationDateId);
 }

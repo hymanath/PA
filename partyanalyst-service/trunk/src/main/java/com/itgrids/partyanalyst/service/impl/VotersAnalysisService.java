@@ -21631,8 +21631,12 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 						for(VoterVO voter : list)
 						{
 							try{
-							VoterNames voterNames = voterNamesDAO.gerVoterNamesObjByVoterId(voteIdMap.get(voter.getVoterIDCardNo()));
-						  
+								VoterNames voterNames = null;
+								List<VoterNames> voterNamesList = voterNamesDAO.gerVoterNamesObjByVoterId(voteIdMap.get(voter.getVoterIDCardNo()));
+								if(voterNamesList != null && voterNamesList.size() > 0 && voterNamesList.get(0) != null)
+								{
+									 voterNames = voterNamesList.get(0);
+								}
 							if(voterNames == null)
 								voterNames = new VoterNames();
 						  
