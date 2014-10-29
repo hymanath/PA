@@ -11,8 +11,13 @@ public class ImageEncrypt {
 	public static void main(String[] args)
 	{
 		ImageEncrypt imageEncrypt = new ImageEncrypt();
-		imageEncrypt.imageEncrypt("D:\\Photos\\Voter_Images_Encript\\282\\",
-				"D:\\Photos\\Voter_Images_Encript_Logs\\282.txt");
+		File dir = new File("E:\\Guntur Images");
+		for(File inDir : dir.listFiles())
+		{
+			if(inDir.isDirectory())
+				imageEncrypt.imageEncrypt(inDir.getAbsolutePath(),inDir.getAbsolutePath()+".txt");
+		}
+		
 	}
 	
 	@SuppressWarnings("deprecation")
