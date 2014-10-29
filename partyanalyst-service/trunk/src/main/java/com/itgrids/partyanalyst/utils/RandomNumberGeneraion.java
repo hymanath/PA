@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.utils;
 
 import java.util.Random;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
@@ -36,4 +37,25 @@ public class RandomNumberGeneraion {
 				return -1;
 			}
 	}
+	 public static String randomStringOfLength(int length) {
+	     StringBuffer buffer = new StringBuffer();
+	     while (buffer.length() < length) {
+	         buffer.append(uuidString());
+	     }
+
+	     //this part controls the length of the returned string
+	     return buffer.substring(0, length);  
+	 }
+
+
+	 private static String uuidString() {
+	     return UUID.randomUUID().toString().replaceAll("-", "");
+	 }
+
+	 public static void main(String args[])
+	  {
+		 for(int i=0;i<1000;i++)
+		System.out.println(RandomNumberGeneraion.randomStringOfLength(8)); 
+		 
+	  }
 }
