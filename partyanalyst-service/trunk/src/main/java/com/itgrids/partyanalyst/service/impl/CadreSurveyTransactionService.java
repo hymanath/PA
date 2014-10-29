@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.model.CadreTxnDetails;
 import com.itgrids.partyanalyst.service.ICadreSurveyTransactionService;
 import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.utils.RandomGenaration;
+import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 
 
 public class CadreSurveyTransactionService implements ICadreSurveyTransactionService{
@@ -163,8 +164,8 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 	{
 		try{
 			cadreOtpDetailsDAO.updateIsDeleted(inputVo.getMobileNo());
-			RandomGenaration rnd = new RandomGenaration();
-			int otpRand =rnd.randomGenerator(4); 
+			RandomNumberGeneraion rnd = new RandomNumberGeneraion();
+			int otpRand =rnd.randomGenerator(6); 
 			int refRand = rnd.randomGenerator(6);
 			CadreOtpDetails cadreOtpDetails = new CadreOtpDetails();
 			cadreOtpDetails.setCadreTxnDetails(cadreTxnDetails);
