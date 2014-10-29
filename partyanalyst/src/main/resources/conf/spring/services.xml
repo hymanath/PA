@@ -2229,7 +2229,13 @@
      </bean>
      
       <bean name="cadreSurveyTransactionService"  class="com.itgrids.partyanalyst.service.impl.CadreSurveyTransactionService">
-     
+       <property name="cadreTxnUserDAO" ref="cadreTxnUserDAO" />
+        <property name="cadreTxnDetailsDAO" ref="cadreTxnDetailsDAO" />
+         <property name="cadreSurveyUserDAO" ref="cadreSurveyUserDAO" />
+          <property name="constituencyDAO" ref="constituencyDAO" />
+           <property name="transactionTemplate" ref="transactionTemplate" />
+            <property name="cadreOtpDetailsDAO" ref="cadreOtpDetailsDAO" />
+      <property name="smsCountrySmsService" ref="smsCountrySmsService" />
      </bean>
 </beans>		
 	
