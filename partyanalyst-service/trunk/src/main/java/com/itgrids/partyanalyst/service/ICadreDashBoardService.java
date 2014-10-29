@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.itgrids.partyanalyst.dto.AppDbDataVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 
 public interface ICadreDashBoardService {
@@ -53,4 +54,8 @@ public interface ICadreDashBoardService {
 	public CadreRegisterInfo getRegisteredDetailsByLocation(String locationType,List<Long> locationIds,int startIndex,int maxIndex,String orderBy,String orderType);
 	
 	public List<CadreRegisterInfo> getDataForSubLocations(String fromLocation,Long fromLocationId,String toLocation,String fromDateStr, String toDateStr,Long constituencyId);
+	
+	public AppDbDataVO getAllVersionsOfAnApp(String appName,Double currentVerson,boolean includeTest);
+	
+	public AppDbDataVO getAllUpdatesByVersion(String appName,Double version);
 }

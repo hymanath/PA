@@ -14,6 +14,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IAppDbUpdateDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -22,6 +23,7 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dto.AppDbDataVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -40,6 +42,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private ICadreSurveyUserDAO cadreSurveyUserDAO;
 	private DateUtilService dateService = new DateUtilService();
+	private IAppDbUpdateDAO appDbUpdateDAO;
 
 	public ITdpCadreDAO getTdpCadreDAO() {
 		return tdpCadreDAO;
@@ -103,6 +106,14 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 
 	public void setCadreSurveyUserDAO(ICadreSurveyUserDAO cadreSurveyUserDAO) {
 		this.cadreSurveyUserDAO = cadreSurveyUserDAO;
+	}
+
+	public IAppDbUpdateDAO getAppDbUpdateDAO() {
+		return appDbUpdateDAO;
+	}
+
+	public void setAppDbUpdateDAO(IAppDbUpdateDAO appDbUpdateDAO) {
+		this.appDbUpdateDAO = appDbUpdateDAO;
 	}
 
 	public List<CadreRegisterInfo> getDashBoardBasicInfo(){
@@ -1439,5 +1450,49 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			LOG.error("Exception rised in getDataForSubLocations",e);
 		}
 		return getLocationWiseRegistrationInfo(ids,type,fromDateStr,toDateStr,false);
+	}
+	
+	public AppDbDataVO getAllVersionsOfAnApp(String appName,Double currentVerson,boolean includeTest){
+		AppDbDataVO returnVo = new AppDbDataVO();
+		try{
+			List<Double> versions = appDbUpdateDAO.getAllVersionsOfAnApp(appName, currentVerson, includeTest);
+			if(versions.size() > 0){
+				returnVo.setStatus("Updates Available");
+				returnVo.setVersions(versions);
+			}else{
+				returnVo.setStatus("No Updates Available");
+				returnVo.setVersions(new ArrayList<Double>());
+			}
+		}catch(Exception e){
+			LOG.error("Exception rised in getAllVersionsOfAnApp",e);
+			returnVo.setStatus("Try Again Later");
+		}
+		return returnVo;
+	}
+	
+	public AppDbDataVO getAllUpdatesByVersion(String appName,Double version){
+		AppDbDataVO returnVo = new AppDbDataVO();
+		try{
+			List<Object[]> scriptList = appDbUpdateDAO.getAllUpdatesByVersion(appName, version);
+			if(scriptList.size() > 0){
+				returnVo.setStatus("Data Available");
+				List<AppDbDataVO> dataList = new ArrayList<AppDbDataVO>();
+				for(Object[] script:scriptList){
+					 AppDbDataVO data = new AppDbDataVO();
+					 data.setId((Long)script[0]);
+					 data.setOrder((Long)script[1]);
+					 data.setScript(script[2].toString());
+					 dataList.add(data);
+				}
+				returnVo.setDataList(dataList);
+			}else{
+				returnVo.setStatus("Data Not Available");
+				returnVo.setDataList(new ArrayList<AppDbDataVO>());
+			}
+		}catch(Exception e){
+			LOG.error("Exception rised in getAllVersionsOfAnApp",e);
+			returnVo.setStatus("Try Again Later");
+		}
+		return returnVo;
 	}
 }
