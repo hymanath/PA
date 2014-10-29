@@ -118,8 +118,8 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 							public Object doInTransaction(TransactionStatus status) 
 							{
 								CadreTxnDetails cadreTxnDetails = new CadreTxnDetails();
-								cadreTxnDetails.setCadreSurveyUser(cadreSurveyUserDAO.get(inputVO.getId()));
-								cadreTxnDetails.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
+								cadreTxnDetails.setCadreSurveyUserId(inputVO.getId());
+								cadreTxnDetails.setConstiteuncyId(inputVO.getConstituencyId());
 								cadreTxnDetails.setSinkedRecords(inputVO.getSinkedRecords());
 								cadreTxnDetails.setPendingRecords(inputVO.getPendingRecords());
 								cadreTxnDetails.setTotalAmount(inputVO.getTotalAmount());
@@ -169,11 +169,16 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			cadreOtpDetails.setIsDeleted("N");
 			cadreOtpDetails.setInsertedTime(new Date());
 			cadreOtpDetails.setUpdatedTime(new Date());
-			cadreOtpDetails.setTxnNumber(rnd.randomStringOfLength(8));
+			 String txnNo = rnd.randomStringOfLength(8);
+			cadreOtpDetails.setTxnNumber(txnNo);
 			cadreOtpDetailsDAO.save(cadreOtpDetails);
 			String message = "your OTP is "+otpRand+" for Request # " +refRand+" ";
 			String[] phoneNumbers = {inputVo.getMobileNo().toString()};
 			smsCountrySmsService.sendSmsFromAdmin(message, true, phoneNumbers);
+			returnVo.setOtpNo(String.valueOf(otpRand));
+			returnVo.setRefNo(String.valueOf(refRand));
+			returnVo.setMobileNo(inputVo.getMobileNo());
+			returnVo.setTxnNo(txnNo);
 		}
 		catch (Exception e) {
 			LOG.error("Exception occured in genarateOTP() in CadreSurveyTransactionService class.",e);
