@@ -42,9 +42,21 @@ public class WebServiceHandler2 {
 
 	private IWebServiceHandlerService1  webServiceHandlerService1;
 	
-	@Autowired
+	
 	private ICadreSurveyTransactionService cadreSurveyTransactionService;
 	
+	
+	public ICadreSurveyTransactionService getCadreSurveyTransactionService() {
+		return cadreSurveyTransactionService;
+	}
+
+
+	public void setCadreSurveyTransactionService(
+			ICadreSurveyTransactionService cadreSurveyTransactionService) {
+		this.cadreSurveyTransactionService = cadreSurveyTransactionService;
+	}
+
+
 	public IWebServiceHandlerService1 getWebServiceHandlerService1() {
 		return webServiceHandlerService1;
 	}
