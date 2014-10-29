@@ -14,16 +14,14 @@ public class CadreTxnUserDAO extends GenericDaoHibernate<CadreTxnUser, Long> imp
 		super(CadreTxnUser.class);
 	}
 	
-	
-	public List checkUserExists(Long userId , String mobileNo)
+	public List checkUserExists(Long cadreSurveyUserId , String mobileNo)
 	{
 		
-		Query query = getSession().createQuery("select model.user.userId from CadreTxnUser model where model.mobileNo =:mobileNo and model.user.userId =:userId");
+		Query query = getSession().createQuery("select model.cadreSurveyUser.cadreSurveyUserId from CadreTxnUser model where model.mobileNo =:mobileNo and model.cadreSurveyUser.cadreSurveyUserId =:cadreSurveyUserId");
 		query.setParameter("mobileNo", mobileNo);
-		query.setParameter("userId", userId);
+		query.setParameter("cadreSurveyUserId", cadreSurveyUserId);
 		return query.list();
 		
 	}
-
 
 }
