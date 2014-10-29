@@ -1694,5 +1694,17 @@
 	<property name="sessionFactory" ref="sessionFactory" />
 </bean>
 
+<bean id="cadreTxnUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreTxnUserDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="cadreTxnDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreTxnDetailsDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="cadreOtpDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreOtpDetailsDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
 	<!--  end -->
 </beans>		
