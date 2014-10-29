@@ -73,7 +73,9 @@ public interface ICadreRegistrationService {
 	public List<SelectOptionVO> getCadreCommitteRoles(Long levelId,Long committeeId);
 	
 	public List<SelectOptionVO> getCadreCommitteDetails(Long levelId);
-		
+	
+	public String updateRequestDetailsForBackup(List<CadreRegistrationVO> inputResponseList,String registrationType);
+	
 	public String getCadreImageByPreviousEnrolId(String enrolmentId,String staticContentLoc);
 	
 	public List<GenericVO> getBoothsForMultipleLocations(Long constituencyId, List<Long> locationIds);
