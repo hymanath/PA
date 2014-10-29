@@ -54,12 +54,14 @@ import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDesignationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreBackupDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreFamilyDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dao.IVoterNamesDAO;
 import com.itgrids.partyanalyst.dao.IVoterRelationDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreFamilyVO;
@@ -80,6 +82,7 @@ import com.itgrids.partyanalyst.model.CadreParticipatedElection;
 import com.itgrids.partyanalyst.model.CadrePreviousRoles;
 import com.itgrids.partyanalyst.model.CadreSurveyUser;
 import com.itgrids.partyanalyst.model.CadreSurveyUserAssignDetails;
+import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CardReceiver;
 import com.itgrids.partyanalyst.model.CardSender;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -87,10 +90,12 @@ import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.TdpCadre;
+import com.itgrids.partyanalyst.model.TdpCadreBackupDetails;
 import com.itgrids.partyanalyst.model.TdpCadreFamilyDetails;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
+import com.itgrids.partyanalyst.model.VoterNames;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -142,12 +147,19 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ICadreCommitteeLevelDAO				cadreCommitteeLevelDAO;
 	private ICadreRolesDAO						cadreRolesDAO;
 	private ICadreCommitteeRoleDAO				cadreCommitteeRoleDAO;
+	private ITdpCadreBackupDetailsDAO			tdpCadreBackupDetailsDAO;
 	
 	private ICardSenderDAO						cardSenderDAO;
 	private ICardReceiverDAO					cardReceiverDAO;
 	
 	private ICasteDAO casteDAO;
+	private IVoterNamesDAO 						voterNamesDAO;
 	
+	
+	public void setVoterNamesDAO(IVoterNamesDAO voterNamesDAO) {
+		this.voterNamesDAO = voterNamesDAO;
+	}
+
 	public ICasteDAO getCasteDAO() {
 		return casteDAO;
 	}
@@ -169,6 +181,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		this.cadreCommitteeRoleDAO = cadreCommitteeRoleDAO;
 	}
 
+	public void setTdpCadreBackupDetailsDAO(
+			ITdpCadreBackupDetailsDAO tdpCadreBackupDetailsDAO) {
+		this.tdpCadreBackupDetailsDAO = tdpCadreBackupDetailsDAO;
+	}
+	
 	public ICadreCommitteeDAO getCadreCommitteeDAO() {
 		return cadreCommitteeDAO;
 	}
@@ -349,6 +366,54 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		
 	}
 
+	public String updateRequestDetailsForBackup(List<CadreRegistrationVO> inputResponseList,String registrationType)
+	{
+		LOG.info("Entered into updateRequestDetailsForBackup in CadreRegistrationService service");
+		try {
+			
+			if(inputResponseList != null && inputResponseList.size() > 0)
+			{
+				for (CadreRegistrationVO inputResponse : inputResponseList)
+				{
+					String cadreBasicInfo = "Voter Name  " + ":" + inputResponse.getVoterName() + "-" +"Date Of Birth "+  ":" + inputResponse.getDob() +"-"+ "Gender "+  ":" +inputResponse.getGender()+  "-" +"Relative Name"+  ":" + inputResponse.getRelativeName() +"-" +"VoterCardNumber"+  ":" +  inputResponse.getVoterCardNo() + "-" + "H.NO" +  ":" + inputResponse.getHouseNo() + "-" +"Party Member Since" +  ":" +inputResponse.getPartyMemberSince()  + "-" + "Blood Group " +  ":" + inputResponse.getBloodGroupId() + "-" + "Street/hamle" +  ":" +inputResponse.getStreet() +"-" +"Caste" +  ":" + inputResponse.getCasteId() + "-" + "Mobile No" +  ":" + inputResponse.getMobileNumber() + "-" + "Education" +  ":" +inputResponse.getEducationId() + "-" + "Occupation " +  ":" +inputResponse.getOccupationId() + "-" + "Previous Enroll Ment No " +  ":" + inputResponse.getPreviousEnrollmentNumber();
+					String previousRoles = "";
+					String previousElections = "";
+					
+					if(inputResponse.getPreviousParicaptedElectionsList() != null && inputResponse.getPreviousParicaptedElectionsList().size() > 0)
+					{
+						for (CadrePreviousRollesVO electionVO : inputResponse.getPreviousParicaptedElectionsList())
+						{
+							previousElections = previousElections + "Designation Level"+ ":" +electionVO.getDesignationLevelId() + "-" +  "Designation Level Value" + ":" + electionVO.getDesignationLevelValue() + "-" + "From Date" + ":" + electionVO.getFromDate() + "-" + "To Date" + ":" + electionVO.getToDate()+" :: ";
+						}
+					}
+					if(inputResponse.getPreviousRollesList() != null && inputResponse.getPreviousRollesList().size() > 0)
+					{
+						for (CadrePreviousRollesVO electionVO : inputResponse.getPreviousRollesList())
+						{
+							previousRoles = previousRoles + "Election Id" + ":" +electionVO.getElectionTypeId() + "-" +  "Constituency Id" + ":" + electionVO.getConstituencyId()+" :: ";
+						}
+					}
+					
+					TdpCadreBackupDetails tdpCadreBackupDetails = new TdpCadreBackupDetails();
+					tdpCadreBackupDetails.setRefNo(inputResponse.getRefNo());
+					tdpCadreBackupDetails.setCadreBasicInfo(cadreBasicInfo);
+					tdpCadreBackupDetails.setCadrePreviousRoles(previousRoles);
+					tdpCadreBackupDetails.setCadrePreviousElections(previousElections);
+					tdpCadreBackupDetails.setUpdatedBy(inputResponse.getUpdatedUserId() != null ? inputResponse.getUpdatedUserId().longValue():0L);
+					tdpCadreBackupDetails.setDataSourceType(registrationType);
+					tdpCadreBackupDetails.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+					
+					tdpCadreBackupDetailsDAO.save(tdpCadreBackupDetails);
+				}
+			}
+			
+			return null;
+		} catch (Exception e) {
+			LOG.error("exception occured in updateRequestDetailsForBackup in CadreRegistrationService service");
+			return null;
+		}
+	}
+	
 	/**
 	 * This service is used for saving cadre data from tab as well web also
 	 * @author Prasad Thiragabathina
@@ -356,14 +421,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	 * @param cadreRegistrationVOList
 	 * @return surveyCadreResponceVO
 	 */
-	public SurveyCadreResponceVO saveCadreRegistration(final List<CadreRegistrationVO> cadreRegistrationVOList,final String registrationType)
-	{
+
+	public SurveyCadreResponceVO saveCadreRegistration(final List<CadreRegistrationVO> cadreRegistrationVOList,final String registrationType){
 		final SurveyCadreResponceVO surveyCadreResponceVO = new SurveyCadreResponceVO();
 		
 		try {
 			LOG.info("Entered into saveCadreRegistration in CadreRegistrationService service");
 			
-				
+			updateRequestDetailsForBackup(cadreRegistrationVOList,registrationType);
+			
 						if(cadreRegistrationVOList != null && cadreRegistrationVOList.size() >0)
 						{
 							for (CadreRegistrationVO cadreRegistrationVO : cadreRegistrationVOList)
@@ -384,11 +450,31 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 										{
 											if(voterIdsList.size() > 0)
 											{
+												List<Long> existingVoters = new ArrayList<Long>();
+												
+												for (TdpCadre tdpCadre : voterIdsList) 
+												{
+													existingVoters.add(tdpCadre.getTdpCadreId());
+												}
+												
+												cadrePreviousRolesDAO.inActiveCadreRollesDetailsById(existingVoters);
+												cadreParticipatedElectionDAO.inActiveCadreElectionDetailsById(existingVoters);
+												tdpCadreFamilyDetailsDAO.inActiveCadreFamilyDetailsById(existingVoters);
+												tdpCadreDAO.inActiveTdpCadreByCadreIds(existingVoters);
+												//emptyTdpCadreData(voterIdsList.get(0));
+												
+												TdpCadre tdpCadre = new TdpCadre();
+												
+												tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"new",false);
+											
+												
+												/*
 												cadrePreviousRolesDAO.inActiveCadreRollesDetailsById(voterIdsList.get(0).getTdpCadreId());
 												cadreParticipatedElectionDAO.inActiveCadreElectionDetailsById(voterIdsList.get(0).getTdpCadreId());
 												tdpCadreFamilyDetailsDAO.inActiveCadreFamilyDetailsById(voterIdsList.get(0).getTdpCadreId());
 												emptyTdpCadreData(voterIdsList.get(0));
 												tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,voterIdsList.get(0),"update",false);
+												*/
 											}
 											
 										}
@@ -417,10 +503,142 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 												{
 													if(voterIdsList.size() > 0)
 													{
+
+														List<Long> existingVoters = new ArrayList<Long>();
+														
+														for (TdpCadre tdpCadre : voterIdsList) 
+														{
+															existingVoters.add(tdpCadre.getTdpCadreId());
+														}
+														
+														cadrePreviousRolesDAO.inActiveCadreRollesDetailsById(existingVoters);
+														cadreParticipatedElectionDAO.inActiveCadreElectionDetailsById(existingVoters);
+														tdpCadreFamilyDetailsDAO.inActiveCadreFamilyDetailsById(existingVoters);
+														tdpCadreDAO.inActiveTdpCadreByCadreIds(existingVoters);
+														//emptyTdpCadreData(voterIdsList.get(0));
+														
+														TdpCadre tdpCadre = new TdpCadre();
+														
+														tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"new",false);
+														
+														/*
 														cadrePreviousRolesDAO.inActiveCadreRollesDetailsById(voterIdsList.get(0).getTdpCadreId());
 														cadreParticipatedElectionDAO.inActiveCadreElectionDetailsById(voterIdsList.get(0).getTdpCadreId());
 														tdpCadreFamilyDetailsDAO.inActiveCadreFamilyDetailsById(voterIdsList.get(0).getTdpCadreId());
 														emptyTdpCadreData(voterIdsList.get(0));
+														tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,voterIdsList.get(0),"update",false);
+														*/
+													}
+												}
+											}else{
+												TdpCadre tdpCadre = new TdpCadre();
+												tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"new",true);
+											}
+										}
+									    else
+										{
+									    	TdpCadre tdpCadre = new TdpCadre();
+											tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"new",true);
+										}
+									}
+								    
+									
+									
+								}
+							}
+						
+							
+						}
+				
+
+		} catch (Exception e) {
+			surveyCadreResponceVO.setResultCode(ResultCodeMapper.FAILURE);
+			surveyCadreResponceVO.setStatus("EXCEPTION");
+			LOG.error("Exception raised in saveCadreRegistration in CadreRegistrationService service", e);
+		}
+		
+		return surveyCadreResponceVO;
+	}
+	/*
+	 public SurveyCadreResponceVO saveCadreRegistration(final List<CadreRegistrationVO> cadreRegistrationVOList,final String registrationType)
+	{
+		final SurveyCadreResponceVO surveyCadreResponceVO = new SurveyCadreResponceVO();
+		
+		try {
+			LOG.info("Entered into saveCadreRegistration in CadreRegistrationService service");
+			
+			updateRequestDetailsForBackup(cadreRegistrationVOList,registrationType);
+			
+						if(cadreRegistrationVOList != null && cadreRegistrationVOList.size() >0)
+						{
+							for (CadreRegistrationVO cadreRegistrationVO : cadreRegistrationVOList)
+							{
+								Boolean flag = true;
+								if(cadreRegistrationVO != null)
+								{
+									if(cadreRegistrationVO.getVoterId() != null && Long.valueOf(cadreRegistrationVO.getVoterId()) > 0)
+									{
+										flag = false;
+										List<TdpCadre> voterIdsList = tdpCadreDAO.getVoterByVoterId(Long.valueOf(cadreRegistrationVO.getVoterId()));
+										if(voterIdsList.size()  == 0)
+										{
+											TdpCadre tdpCadre = new TdpCadre();
+											tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"new",false);
+										}
+										else
+										{
+											if(voterIdsList.size() > 0)
+											{
+												List<Long> existingVoters = new ArrayList<Long>();
+												
+												for (TdpCadre tdpCadre : voterIdsList) 
+												{
+													existingVoters.add(tdpCadre.getTdpCadreId());
+												}
+												cadrePreviousRolesDAO.inActiveCadreRollesDetailsById(existingVoters);
+												cadreParticipatedElectionDAO.inActiveCadreElectionDetailsById(existingVoters);
+												//tdpCadreFamilyDetailsDAO.inActiveCadreFamilyDetailsById(existingVoters);
+												emptyTdpCadreData(voterIdsList.get(0));
+												tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,voterIdsList.get(0),"update",false);
+											}
+											
+										}
+										
+									}
+									/*else
+									{
+										TdpCadre tdpCadre = new TdpCadre();
+										tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"new");
+									}*/
+								/*	if(flag)
+									{
+										if(cadreRegistrationVO.getVoterCardNumber() != null && !cadreRegistrationVO.getVoterCardNumber().equalsIgnoreCase("null") && cadreRegistrationVO.getVoterCardNumber().trim().length() > 0)
+										{
+											List<Long> voterCardNumbersList = voterDAO.getVoterId(cadreRegistrationVO.getVoterCardNumber());
+											if(voterCardNumbersList != null && voterCardNumbersList.size() > 0)
+											{
+												Long voterId = voterCardNumbersList.get(0);
+												List<TdpCadre> voterIdsList = tdpCadreDAO.getVoterByVoterId(voterId);
+												if(voterIdsList.size()  == 0)
+												{
+													TdpCadre tdpCadre = new TdpCadre();
+													tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"new",false);
+												}
+												else
+												{
+													if(voterIdsList.size() > 0)
+													{
+														List<Long> existingVoters = new ArrayList<Long>();
+														
+														for (TdpCadre tdpCadre : voterIdsList) 
+														{
+															existingVoters.add(tdpCadre.getTdpCadreId());
+														}
+														
+														cadrePreviousRolesDAO.inActiveCadreRollesDetailsById(existingVoters);
+														cadreParticipatedElectionDAO.inActiveCadreElectionDetailsById(existingVoters);
+														tdpCadreFamilyDetailsDAO.inActiveCadreFamilyDetailsById(existingVoters);
+														//emptyTdpCadreData(voterIdsList.get(0));
 														tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,voterIdsList.get(0),"update",false);
 													}
 												}
@@ -453,7 +671,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		
 		return surveyCadreResponceVO;
 	}
-	
+	*/
 	
 	/**
 	 * @author Prasad Thiragabathina
@@ -836,6 +1054,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							  tdpCadre1 = tdpCadreDAO.save(tdpCadre);	
 						}
 					}else if(registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE")) && !insertType.equalsIgnoreCase("new")){
+						surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
 						tdpCadre1 = tdpCadreDAO.save(tdpCadre);	
 				    }else{
 					  if(insertType.equalsIgnoreCase("new")){
@@ -905,6 +1124,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					List<CadrePreviousRollesVO> previousElectionPartList = cadreRegistrationVO.getPreviousParicaptedElectionsList();
 					if(previousElectionPartList != null && previousElectionPartList.size() > 0)
 					{
+						
 						for (CadrePreviousRollesVO electionVO : previousElectionPartList)
 						{
 							if(electionVO != null)
@@ -960,8 +1180,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							{
 								if(cadreFamilyVO != null)
 								{
-									if((cadreFamilyVO.getOccupationId() != null && cadreFamilyVO.getOccupationId().longValue() > 0) || cadreFamilyVO.getEducationId() != null && cadreFamilyVO.getEducationId().longValue() > 0)
-									{
+									//if((cadreFamilyVO.getOccupationId() != null && cadreFamilyVO.getOccupationId().longValue() > 0) || cadreFamilyVO.getEducationId() != null && cadreFamilyVO.getEducationId().longValue() > 0)
+								//	{
 										TdpCadreFamilyDetails tdpCadreFamilyDetails = new TdpCadreFamilyDetails();
 										tdpCadreFamilyDetails.setTdpCadreId(tdpCadre1.getTdpCadreId());
 										if(cadreFamilyVO.getVoterName() != null && cadreFamilyVO.getVoterName().equalsIgnoreCase("null") && cadreFamilyVO.getVoterName().trim().length() > 0)
@@ -996,7 +1216,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 										tdpCadreFamilyDetails.setInsertedDate(dateUtilService.getCurrentDateAndTime());
 										tdpCadreFamilyDetails.setUpdatedDate(dateUtilService.getCurrentDateAndTime());	
 										tdpCadreFamilyDetailsDAO.save(tdpCadreFamilyDetails);
-									}
+									//}
 									
 								}
 								
@@ -1386,7 +1606,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							if(tdpCadre != null)
 							{
 								Long tdpCadreId = tdpCadre.getTdpCadreId();
-								
+								vo.setName(tdpCadre.getFirstname() != null ? tdpCadre.getFirstname():"");
 								vo.setCandidateAadharNo(tdpCadre.getCadreAadherNo() != null ? tdpCadre.getCadreAadherNo() :"");
 								vo.setFmlyVtrId(tdpCadre.getFamilyVoterId() != null ? tdpCadre.getFamilyVoterId():0L);
 								
@@ -1400,8 +1620,46 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									}
 								}
 								
-								vo.setBlodGroupId(tdpCadre.getBloodGroup() != null ? tdpCadre.getBloodGroupId():0L);
+								vo.setHouseNo(tdpCadre.getHouseNo() != null ? tdpCadre.getHouseNo().toString():"");
+								vo.setRelativeName(tdpCadre.getRelativename() != null ? tdpCadre.getRelativename():"");
+								vo.setRelationType(tdpCadre.getRelativeType() != null ? tdpCadre.getRelativeType():"");
 								
+								if(tdpCadre.getAge() != null)
+								{
+									vo.setAge(tdpCadre.getAge() != null? tdpCadre.getAge().toString():"");
+								}
+								else if(tdpCadre.getDateOfBirth() != null)
+								{
+									
+									Date today = new Date();
+									Date DOB = tdpCadre.getDateOfBirth();
+
+									Calendar startCalendar = new GregorianCalendar();
+									startCalendar.setTime(DOB);
+									Calendar endCalendar = new GregorianCalendar();
+									endCalendar.setTime(today);
+	
+									int diffYear = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
+									//int diffMonth = diffYear * 12 + endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH);
+									
+									vo.setAge(diffYear != 0 ? Long.valueOf(Integer.toString(diffYear)).toString():"");
+								}
+								
+								if(tdpCadre.getGender() != null)
+								{
+									if(tdpCadre.getGender().equalsIgnoreCase("MALE") || tdpCadre.getGender().equalsIgnoreCase("M"))
+									{
+										vo.setGender("Male");
+									}
+									else if(tdpCadre.getGender().equalsIgnoreCase("FEMALE") || tdpCadre.getGender().equalsIgnoreCase("F"))
+									{
+										vo.setGender("Female");
+									}
+									
+								}
+								
+								vo.setBlodGroupId(tdpCadre.getBloodGroup() != null ? tdpCadre.getBloodGroupId():0L);
+
 								vo.setCasteId(tdpCadre.getCasteState() != null ? tdpCadre.getCasteState().getCasteStateId():0L);							
 								vo.setCasteName(tdpCadre.getCasteState() != null ? tdpCadre.getCasteState().getCaste().getCasteName().toString():"");	
 								vo.setDateOfBirth(tdpCadre.getDateOfBirth() != null ? new SimpleDateFormat("yyyy-MM-dd").format(tdpCadre.getDateOfBirth()):"");
@@ -1459,117 +1717,113 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							   vo.setImage("images/"+ IConstants.CADRE_IMAGES + "/" + tdpCadre.getImage());
 							}
 						try {
-								vo.setCadreId(tdpCadre.getTdpCadreId());
-								Date dateOfBirth = tdpCadre.getDateOfBirth() != null ? tdpCadre.getDateOfBirth():null;
-								vo.setDateOfBirth(dateOfBirth != null ? new SimpleDateFormat("yyyy-MM-dd").format(dateOfBirth):"");
-								
-								if(tdpCadre.getVoter() != null)
-									
+							Long tdpCadreId = tdpCadre.getTdpCadreId();
+							
+							vo.setCadreId(tdpCadre.getTdpCadreId());
+							vo.setDateOfBirth(tdpCadre.getDateOfBirth() != null ? new SimpleDateFormat("yyyy-MM-dd").format(tdpCadre.getDateOfBirth()):"");
+							vo.setName(tdpCadre.getFirstname() != null ? tdpCadre.getFirstname():"");
+							vo.setRelativeName(tdpCadre.getRelativename() != null ? tdpCadre.getRelativename():"");
+							vo.setRelationType(tdpCadre.getRelativeType() != null ? tdpCadre.getRelativeType():"");
+							
+							if(tdpCadre.getGender() != null)
+							{
+								if(tdpCadre.getGender().equalsIgnoreCase("MALE") || tdpCadre.getGender().equalsIgnoreCase("M"))
 								{
-									vo.setHouseNo(tdpCadre.getVoter().getHouseNo());
-									vo.setName(tdpCadre.getVoter().getName());
-									vo.setRelativeName(tdpCadre.getVoter().getRelativeName());
-									vo.setRelationType(tdpCadre.getVoter().getRelationshipType());
-									vo.setAge(tdpCadre.getVoter().getAge().toString());
-									vo.setGender(tdpCadre.getVoter().getGender());
-									vo.setVoterId(tdpCadre.getVoter() != null ? tdpCadre.getVoter().getVoterId(): 0L);
-									vo.setVoterCardNo(tdpCadre.getVoter() != null ? tdpCadre.getVoter().getVoterIDCardNo():"");
-									
-									voterId = tdpCadre.getVoter() != null ? tdpCadre.getVoter().getVoterId(): 0L;
-									houseNo = tdpCadre.getVoter().getHouseNo() != null ? tdpCadre.getVoter().getHouseNo().toString():"";	
-									
-									/*String filePath = staticContentLoc + "voter_images" + pathSeperator+tdpCadre.getVoter().getVoterIDCardNo()+".jpg";
-									if(checkFileExistingOrNot(filePath)){
-										vo.setVoterImagePresent(true);
-										vo.setVoterImage("voter_images/" +tdpCadre.getVoter().getVoterIDCardNo()+".jpg");
-									}*/
-									if(constituencyId != null){
-										List<String> partNos = boothPublicationVoterDAO.getPartNo(Long.valueOf(constituencyId), tdpCadre.getVoter().getVoterId());
-										if(partNos.size() > 0 && partNos.get(0) != null){
-											String filePath = staticContentLoc +"voter_images"+pathSeperator+constituencyId+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+tdpCadre.getVoter().getVoterIDCardNo()+".jpg";
-											if(checkFileExistingOrNot(filePath)){
-												vo.setVoterImagePresent(true);
-												vo.setVoterImage("voter_images"+pathSeperator+constituencyId+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+tdpCadre.getVoter().getVoterIDCardNo()+".jpg");
-											}
-										}
-									}
+									vo.setGender("Male");
 								}
-								else
+								else if(tdpCadre.getGender().equalsIgnoreCase("FEMALE") || tdpCadre.getGender().equalsIgnoreCase("F"))
 								{
-									vo.setName(tdpCadre.getFirstname() != null? tdpCadre.getFirstname():"");
-									vo.setRelativeName(tdpCadre.getRelativename() != null ? tdpCadre.getRelativename():"");
-									vo.setGender(tdpCadre.getGender() != null ? tdpCadre.getGender().toString():"");
-									
-									vo.setVoterId(0L);
-									vo.setVoterCardNo("");
-									vo.setHouseNo("");
-									vo.setRelationType("");
-									
-									if(dateOfBirth != null)
-									{
-										Calendar startDate = new GregorianCalendar();
-										Calendar endDate = new GregorianCalendar();
-										
-										startDate.setTime(dateOfBirth);
-										
-										endDate.setTime(new Date());
+									vo.setGender("Female");
+								}
+								
+							}
+							
+							vo.setCandidateAadharNo(tdpCadre.getCadreAadherNo() != null ? tdpCadre.getCadreAadherNo() :"");
+							vo.setFmlyVtrId(tdpCadre.getFamilyVoterId() != null ? tdpCadre.getFamilyVoterId():0L);
+							
+							List<Object[]> familyVoterInfo = voterDAO.getVoterInfoByVoterId(tdpCadre.getFamilyVoterId());
+							
+							if(familyVoterInfo != null && familyVoterInfo.size()>0)
+							{
+								for (Object[] param : familyVoterInfo) 
+								{
+									vo.setFmlyVCardNo(param[0] != null ? param[0].toString():"");
+								}
+							}
+							
+							vo.setHouseNo(tdpCadre.getHouseNo() != null ? tdpCadre.getHouseNo().toString():"");
+						
+							
+							if(tdpCadre.getAge() != null)
+							{
+								vo.setAge(tdpCadre.getAge() != null? tdpCadre.getAge().toString():"");
+							}
+							else if(tdpCadre.getDateOfBirth() != null)
+							{
+								
+								Date today = new Date();
+								Date DOB = tdpCadre.getDateOfBirth();
 
-										int diffYear = endDate.get(Calendar.YEAR) - startDate.get(Calendar.YEAR);
-										
-										vo.setAge(String.valueOf(diffYear));
-									}
-									else if(tdpCadre.getAge() != null && tdpCadre.getAge().toString().trim().length()>0 )
-									{
-										vo.setAge(tdpCadre.getAge().toString());
-									}
-								}
-								
+								Calendar startCalendar = new GregorianCalendar();
+								startCalendar.setTime(DOB);
+								Calendar endCalendar = new GregorianCalendar();
+								endCalendar.setTime(today);
 
-								vo.setCandidateAadharNo(tdpCadre.getCadreAadherNo() != null ? tdpCadre.getCadreAadherNo() :"");
-								vo.setFmlyVtrId(tdpCadre.getFamilyVoterId() != null ? tdpCadre.getFamilyVoterId():0L);
+								int diffYear = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
+								//int diffMonth = diffYear * 12 + endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH);
 								
-								List<Object[]> familyVoterInfo = voterDAO.getVoterInfoByVoterId(tdpCadre.getFamilyVoterId());
+								vo.setAge(diffYear != 0 ? Long.valueOf(Integer.toString(diffYear)).toString():"");
 								
-								if(familyVoterInfo != null && familyVoterInfo.size()>0)
-								{
-									for (Object[] param : familyVoterInfo) 
-									{
-										vo.setFmlyVCardNo(param[0] != null ? param[0].toString():"");
-									}
-								}
+									
+							}
+							
+							vo.setBlodGroupId(tdpCadre.getBloodGroup() != null ? tdpCadre.getBloodGroupId():0L);
+							vo.setCasteId(tdpCadre.getCasteState() != null ? tdpCadre.getCasteState().getCasteStateId():0L);							
+							vo.setCasteName(tdpCadre.getCasteState() != null ? tdpCadre.getCasteState().getCaste().getCasteName().toString():"");	
+							
+							vo.setOccupationId(tdpCadre.getOccupation() != null ? tdpCadre.getOccupation().getOccupationId():0L);
+							vo.setOccupation(tdpCadre.getOccupation() != null ? tdpCadre.getOccupation().getOccupation():"");
+							
+							vo.setEducation(tdpCadre.getEducationalQualifications() != null ? tdpCadre.getEducationalQualifications().getEduQualificationId().toString():"0");
+							
+							vo.setLocation(tdpCadre.getUserAddress() != null ? (tdpCadre.getUserAddress().getStreet() != null ?tdpCadre.getUserAddress().getStreet().toString():""):"");
+							vo.setMobileNo(tdpCadre.getMobileNo() != null ? tdpCadre.getMobileNo():"");
+							vo.setMemberShipId(tdpCadre.getPreviousEnrollmentNo() != null ? tdpCadre.getPreviousEnrollmentNo().toString():"");
+							vo.setActiveDate(tdpCadre.getPartyMemberSince() != null ? new SimpleDateFormat("yyyy-MM-dd").format(tdpCadre.getPartyMemberSince()):"");
+							if(tdpCadre.getIsRelative() != null && tdpCadre.getIsRelative().equalsIgnoreCase("Y")){
+							  vo.setRelative("true");
+							  vo.setRelationTypeId(tdpCadre.getRelationType() != null ? tdpCadre.getRelationType().getVoterRelationId() : 0l);
+							}
+														
+							vo.setAadharNo(tdpCadre.getAadheerNo() != null ? tdpCadre.getAadheerNo() : "");
+							vo.setNomineeName(tdpCadre.getNomineeName() != null ? tdpCadre.getNomineeName() : "");
+							vo.setNomineAge(tdpCadre.getNomineeAge() != null ? tdpCadre.getNomineeAge().toString() : "");
+							vo.setVoterRelationId(tdpCadre.getVoterRelationId() != null ? tdpCadre.getVoterRelationId() : 0l);
+							vo.setTeluguRelativeName(StringEscapeUtils.unescapeJava(StringEscapeUtils.escapeJava(tdpCadre.getNameLocal() != null? tdpCadre.getNameLocal():"")));
+							if(tdpCadre.getImage() != null && tdpCadre.getImage().trim().length() > 0){
+							   vo.setImage("images/"+ IConstants.CADRE_IMAGES + "/" + tdpCadre.getImage());
+							}
+							if(tdpCadre.getNomineeGender() != null && tdpCadre.getNomineeGender().trim().equalsIgnoreCase("MALE"))
+							{
+								vo.setNomineeGender(1l);
+							}
+							else if(tdpCadre.getNomineeGender() != null && tdpCadre.getNomineeGender().trim().equalsIgnoreCase("FEMALE"))
+							{
+								vo.setNomineeGender(2l);
+							}
+							else
+							{
+								vo.setNomineeGender(0l);
+							}
+							
+							if(tdpCadre.getVoter() != null)									
+							{
+								vo.setVoterId(tdpCadre.getVoter() != null ? tdpCadre.getVoter().getVoterId(): 0L);
+								vo.setVoterCardNo(tdpCadre.getVoter() != null ? tdpCadre.getVoter().getVoterIDCardNo():"");
 								
-								vo.setBlodGroupId(tdpCadre.getBloodGroup() != null ? tdpCadre.getBloodGroupId():0L);
+								voterId = tdpCadre.getVoter() != null ? tdpCadre.getVoter().getVoterId(): 0L;
+								houseNo = tdpCadre.getVoter().getHouseNo() != null ? tdpCadre.getVoter().getHouseNo().toString():"";	
 								
-								vo.setCasteId(tdpCadre.getCasteState() != null ? tdpCadre.getCasteState().getCasteStateId():0L);							
-								vo.setCasteName(tdpCadre.getCasteState() != null ? tdpCadre.getCasteState().getCaste().getCasteName().toString():"");	
-								
-								vo.setOccupationId(tdpCadre.getOccupation() != null ? tdpCadre.getOccupation().getOccupationId():0L);
-								vo.setOccupation(tdpCadre.getOccupation() != null ? tdpCadre.getOccupation().getOccupation():"");
-								
-								vo.setEducation(tdpCadre.getEducationalQualifications() != null ? tdpCadre.getEducationalQualifications().getEduQualificationId().toString():"0");
-								
-								vo.setLocation(tdpCadre.getUserAddress() != null ? (tdpCadre.getUserAddress().getStreet() != null ?tdpCadre.getUserAddress().getStreet().toString():""):"");
-								vo.setMobileNo(tdpCadre.getMobileNo() != null ? tdpCadre.getMobileNo():"");
-								vo.setMemberShipId(tdpCadre.getPreviousEnrollmentNo() != null ? tdpCadre.getPreviousEnrollmentNo().toString():"");
-								vo.setActiveDate(tdpCadre.getPartyMemberSince() != null ? new SimpleDateFormat("yyyy-MM-dd").format(tdpCadre.getPartyMemberSince()):"");
-								vo.setAadharNo(tdpCadre.getAadheerNo() != null ? tdpCadre.getAadheerNo():"");
-								vo.setNomineeName(tdpCadre.getNomineeName() != null ? tdpCadre.getNomineeName():"");
-								vo.setVoterRelationId(tdpCadre.getVoterRelationId() != null ? tdpCadre.getVoterRelationId():0L);
-								vo.setNomineAge(tdpCadre.getNomineeAge() != null ? tdpCadre.getNomineeAge().toString():"");
-								//vo.setNomineeGender(tdpCadre.getNomineeGender() != null ? Long.valueOf(tdpCadre.getNomineeGender()):0L);
-								
-								if(tdpCadre.getNomineeGender() != null && tdpCadre.getNomineeGender().trim().equalsIgnoreCase("MALE"))
-								{
-									vo.setNomineeGender(1l);
-								}
-								else if(tdpCadre.getNomineeGender() != null && tdpCadre.getNomineeGender().trim().equalsIgnoreCase("FEMALE"))
-								{
-									vo.setNomineeGender(2l);
-								}
-								else
-								{
-									vo.setNomineeGender(0l);
-								}
 								if(tdpCadre.getPreviousEnrollmentNo() != null){
 									String filePath = staticContentLoc + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + tdpCadre.getPreviousEnrollmentNo()+".jpg";
 									if(checkFileExistingOrNot(filePath)){
@@ -1577,15 +1831,17 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 										vo.setCadreImage("images/"  + IConstants.CADRE_IMAGES + "/" + tdpCadre.getPreviousEnrollmentNo()+".jpg");
 									}
 								}
-							} catch (Exception e) {
+								
+							}
+							
+							existingFamilyInfo =  getExistingCadreFamilyInfo(tdpCadreId);
+							existingParticipationDetails = getExistingCadreParticipationInfo(tdpCadreId);
+							existingrollsDetails = getExistingRollsInfo(tdpCadreId);
+
+						} catch (Exception e) {
 								LOG.error("Exception raised in getCandidateInfoBySearchCriteria in CadreRegistrationService service", e);
 							}
-						
-						existingFamilyInfo =  getExistingCadreFamilyInfo(tdpCadre.getTdpCadreId());
-						existingParticipationDetails = getExistingCadreParticipationInfo(tdpCadre.getTdpCadreId());
-						existingrollsDetails = getExistingRollsInfo(tdpCadre.getTdpCadreId());
-						
-						
+
 					}
 				}
 				
@@ -1593,7 +1849,12 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				{
 					List<Long> votersList = new ArrayList<Long>();
 					votersList.add(voterId);
+					VoterNames voterNames = voterNamesDAO.gerVoterNamesObjByVoterId(voterId);
 					
+					if(voterNames != null)
+					{
+						vo.setTeluguName(StringEscapeUtils.unescapeJava(StringEscapeUtils.escapeJava(voterNames.getFirstName()+" "+voterNames.getLastName())));
+					}
 					List<Object[]> voterInfo = boothPublicationVoterDAO.getBoothIdsDetailsOfVoterIds(votersList, IConstants.VOTER_DATA_PUBLICATION_ID);
 					
 					if(voterInfo != null && voterInfo.size()>0)
@@ -1603,70 +1864,72 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						
 						Long boothId = boothInfo[2] != null ?Long.valueOf(boothInfo[2].toString()):0L;
 						
-						if((houseNo != null && houseNo.toString().trim().length()>0) && (boothId != null && boothId.longValue() >0L))
+						familyList = new ArrayList<VoterInfoVO>();
+
+						if(existingFamilyInfo != null && existingFamilyInfo.size()>0)
 						{
-							List<Object[]> familyInfo = boothPublicationVoterDAO.getFamilyDetaislByHouseNoAndBoothId(boothId,houseNo);
-							
-							if(familyInfo != null && familyInfo.size()>0)
+							for (VoterInfoVO family : existingFamilyInfo) 
 							{
-								familyList = new ArrayList<VoterInfoVO>();
 								
-								for (Object[] family : familyInfo) 
+								if( family.getVoterId().longValue() != voterId.longValue())
 								{
-									Long familyVoterID = family[0] != null ? Long.valueOf(family[0].toString().trim()):0L;
+									VoterInfoVO fmilyVO = new VoterInfoVO();
+									fmilyVO.setVoterId(family.getVoterId() != null ? family.getVoterId():0L);
+									fmilyVO.setName(family.getName() != null? family.getName():"");	
+									fmilyVO.setGender(family.getGender() != null ? family.getGender():"");
+									fmilyVO.setAge(family.getAge() != null ? family.getAge():"");								
+									fmilyVO.setVoterCardNo(family.getVoterCardNo() != null ?family.getVoterCardNo():"");											
+									fmilyVO.setEducation(family.getEducation());
+									fmilyVO.setOccupation(family.getOccupation());
+									fmilyVO.setOccupationId(family.getOccupationId());
 									
-									if( familyVoterID.longValue() != voterId.longValue())
-									{
-										VoterInfoVO fmilyVO = new VoterInfoVO();
-										fmilyVO.setVoterId(family[0] != null ? Long.valueOf(family[0].toString().trim()):0L);
-										fmilyVO.setName(family[1] != null ? family[1].toString():"");
-										//fmilyVO.setRelativeName(family[2] != null ? family[2].toString():"");
-										//fmilyVO.setRelationType(family[3] != null ? family[3].toString():"");
-										fmilyVO.setGender(family[4] != null ? family[4].toString():"");
-										fmilyVO.setAge(family[5] != null ? family[5].toString():"");								
-										fmilyVO.setVoterCardNo(family[6] != null ? family[6].toString():"");
-										
-										if(existingFamilyInfo != null && existingFamilyInfo.size()>0)
-										{
-											VoterInfoVO existingFamilyMember = getmatchedVOByVoterId(existingFamilyInfo,family[0] != null ? Long.valueOf(family[0].toString().trim()):0L);
-											
-											if(existingFamilyMember != null)
-											{
-												fmilyVO.setEducation(existingFamilyMember.getEducation());
-												fmilyVO.setOccupation(existingFamilyMember.getOccupation());
-												fmilyVO.setOccupationId(existingFamilyMember.getOccupationId());
-												existingFamilyInfo.remove(existingFamilyMember);
-											}										
-										}
-										
-										familyList.add(fmilyVO);
-									}
+									familyList.add(fmilyVO);
 								}
+							}
+						}
+						else 
+						{
+							if((houseNo != null && houseNo.toString().trim().length()>0) && (boothId != null && boothId.longValue() >0L))
+							{
+								List<Object[]> familyInfo = boothPublicationVoterDAO.getFamilyDetaislByHouseNoAndBoothId(boothId,houseNo);
 								
-								if(existingFamilyInfo != null && existingFamilyInfo.size()>0)
+								if(familyInfo != null && familyInfo.size()>0)
 								{
-									for (VoterInfoVO family : existingFamilyInfo) 
+									for (Object[] family : familyInfo) 
 									{
+										Long familyVoterID = family[0] != null ? Long.valueOf(family[0].toString().trim()):0L;
 										
-										if( family.getVoterId().longValue() != voterId.longValue())
+										if( familyVoterID.longValue() != voterId.longValue())
 										{
 											VoterInfoVO fmilyVO = new VoterInfoVO();
-											fmilyVO.setVoterId(family.getVoterId() != null ? family.getVoterId():0L);
-											fmilyVO.setName(family.getName() != null? family.getName():"");	
-											fmilyVO.setGender(family.getGender() != null ? family.getGender():"");
-											fmilyVO.setAge(family.getAge() != null ? family.getAge():"");								
-											fmilyVO.setVoterCardNo(family.getVoterCardNo() != null ?family.getVoterCardNo():"");											
-											fmilyVO.setEducation(family.getEducation());
-											fmilyVO.setOccupation(family.getOccupation());
-											fmilyVO.setOccupationId(family.getOccupationId());
-											
+											fmilyVO.setVoterId(family[0] != null ? Long.valueOf(family[0].toString().trim()):0L);
+											fmilyVO.setName(family[1] != null ? family[1].toString():"");
+											//fmilyVO.setRelativeName(family[2] != null ? family[2].toString():"");
+											//fmilyVO.setRelationType(family[3] != null ? family[3].toString():"");
+											fmilyVO.setGender(family[4] != null ? family[4].toString():"");
+											fmilyVO.setAge(family[5] != null ? family[5].toString():"");								
+											fmilyVO.setVoterCardNo(family[6] != null ? family[6].toString():"");
+											/*
+											if(existingFamilyInfo != null && existingFamilyInfo.size()>0)
+											{
+												VoterInfoVO existingFamilyMember = getmatchedVOByVoterId(existingFamilyInfo,family[0] != null ? Long.valueOf(family[0].toString().trim()):0L);
+												
+												if(existingFamilyMember != null)
+												{
+													fmilyVO.setEducation(existingFamilyMember.getEducation());
+													fmilyVO.setOccupation(existingFamilyMember.getOccupation());
+													fmilyVO.setOccupationId(existingFamilyMember.getOccupationId());
+													existingFamilyInfo.remove(existingFamilyMember);
+												}										
+											}
+											*/
 											familyList.add(fmilyVO);
 										}
 									}
 								}
-								vo.setVoterInfoVOList(familyList);
 							}
 						}
+						vo.setVoterInfoVOList(familyList);
 					} 
 					
 				}
@@ -1936,19 +2199,40 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	{
 		List<GenericVO> returnList = new ArrayList<GenericVO>();
 		
-		try {
-			
+		try {			
 			List<Object[]> participationInfo = cadreParticipatedElectionDAO.getPreviousParticipationInfoByTdpCadreId(tdpCadreId);
-			
+			Long electionScopeId = 0L;
 			if(participationInfo != null && participationInfo.size()>0)
 			{
 				for (Object[] participation : participationInfo)
 				{
 					GenericVO vo = new GenericVO();
-					vo.setId(participation[0] != null ? Long.valueOf(participation[0].toString().trim()):0L);		//electionScopeId
-					vo.setCount(participation[1] != null ? Long.valueOf(participation[1].toString().trim()):0L);	// election Id
-					vo.setRank(participation[2] != null ? Long.valueOf(participation[2].toString().trim()):0L);		// constituencyId
-					vo.setNomineeAge(participation[3] != null ? Long.valueOf(participation[3].toString().trim()):0L); // candidate Id
+					if(participation[0] != null)
+					{
+						Election eleciton = (Election) participation[0];
+						vo.setId(eleciton.getElectionScope().getElectionScopeId());		//electionScopeId
+						vo.setDesc(eleciton.getElectionScope().getElectionType().getElectionType());
+						
+						vo.setCount(eleciton.getElectionId());
+						vo.setName(eleciton.getElectionYear()+" ("+eleciton.getElecSubtype()+" )");
+						
+						electionScopeId = eleciton.getElectionScope().getElectionScopeId();
+					}
+					//vo.setId(participation[0] != null ? Long.valueOf(participation[0].toString().trim()):0L);		//electionScopeId
+					//vo.setCount(participation[1] != null ? Long.valueOf(participation[1].toString().trim()):0L);	// election Id
+					vo.setRank(participation[1] != null ? Long.valueOf(participation[1].toString().trim()):0L);		// constituencyId
+					//vo.setNomineeAge(participation[3] != null ? Long.valueOf(participation[3].toString().trim()):0L); // candidate Id
+					if(vo.getRank() != null && vo.getRank() != 0L)
+					{
+						Constituency constituency = constituencyDAO.get(vo.getRank());					
+						vo.setCaste(constituency.getName());
+					}
+					
+					if(participation[2] != null)
+					{
+						Candidate candidate = (Candidate) participation[2];
+						vo.setNomineeAge(candidate.getCandidateId()); // candidate Id
+					}
 					
 					List<BasicVO> constituencyList = constituencyListForElection(vo.getCount(),vo.getRank());
 					
@@ -1961,10 +2245,16 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					
 					if(participatedCandList != null && participatedCandList.size()>0)
 					{
+							BasicVO returnVO = getMatchedVOByAge(participatedCandList, Long.valueOf(vo.getNomineeAge()));
+							
+							if(returnVO != null)
+							{
+								vo.setNomineeName(returnVO.getName());
+							}
 						vo.getBasicVO().setHamletVoterInfo(participatedCandList);
 					}
 					
-					List<SelectOptionVO> electionTypeList = getElectionYearsByElectionType(participation[0] != null ? Long.valueOf(participation[0].toString().trim()):0L);
+					List<SelectOptionVO> electionTypeList = getElectionYearsByElectionType(electionScopeId);
 					List<GenericVO> electionsList = new ArrayList<GenericVO>();
 					
 					if(electionTypeList != null && electionTypeList.size()>0)
@@ -1996,57 +2286,23 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return returnList;
 	}
 	
-	/*
-	
-	public List<GenericVO> getExistingCadreParticipationInfo(Long tdpCadreId)
+	public BasicVO getMatchedVOByAge(List<BasicVO> list, Long age)
 	{
-		List<GenericVO> returnList = new ArrayList<GenericVO>();
-		
+		BasicVO returnVO = null;
 		try {
-			
-			List<Object[]> participationInfo = cadreParticipatedElectionDAO.getPreviousParticipationInfoByTdpCadreId(tdpCadreId);
-			
-			if(participationInfo != null && participationInfo.size()>0)
+			for (BasicVO basicVO : list) 
 			{
-				for (Object[] participation : participationInfo)
+				if(basicVO.getId().longValue() == age)
 				{
-					GenericVO vo = new GenericVO();
-					vo.setId(participation[0] != null ? Long.valueOf(participation[0].toString().trim()):0L);		//electionScopeId
-					vo.setCount(participation[1] != null ? Long.valueOf(participation[1].toString().trim()):0L);	// election Id
-					vo.setRank(participation[2] != null ? Long.valueOf(participation[2].toString().trim()):0L);		// constituencyId
-					
-					List<SelectOptionVO> electionTypeList = getElectionYearsByElectionType(participation[0] != null ? Long.valueOf(participation[0].toString().trim()):0L);
-					List<GenericVO> electionsList = new ArrayList<GenericVO>();
-					
-					if(electionTypeList != null && electionTypeList.size()>0)
-					{
-						for (SelectOptionVO selectOptionVO : electionTypeList) 
-						{
-							GenericVO electionVo = new GenericVO();
-							electionVo.setId(selectOptionVO.getId());
-							electionVo.setName(selectOptionVO.getName());
-							
-							electionsList.add(electionVo);	
-						}
-						
-						vo.setGenericVOList(electionsList);						
-						returnList.add(vo);
-						
-					}
-					else
-					{
-						returnList.add(vo);
-					}
-					
+					return basicVO;	
 				}
+					
 			}
 		} catch (Exception e) {
-			LOG.error("Exception raised in getExistingCadreParticipationInfo in CadreRegistrationService service", e);
+			LOG.error("Exception raised in getMatchedVOByAge in CadreRegistrationService service", e);
 		}
-		
-		return returnList;
+		return returnVO;
 	}
-	*/
 	public List<GenericVO> getExistingRollsInfo(Long tdpCadreId)
 	{
 		List<GenericVO> returnList = new ArrayList<GenericVO>();
