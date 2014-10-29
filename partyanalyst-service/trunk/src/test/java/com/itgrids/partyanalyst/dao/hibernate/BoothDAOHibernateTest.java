@@ -815,9 +815,15 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(params[1]);
 	}*/
 	
-	public void testGetPanchayatsByConstituencyAndPublication()
+	/*public void testGetPanchayatsByConstituencyAndPublication()
 	{
 		List<Object[]> list = boothDAO.getPanchayatsByConstituencyAndPublication(232l,10l);
 		System.out.println(list.size());
+	}*/
+	public void testDetails()
+	{
+		Long id = boothDAO.getConstituencyIdByLocationIdAndType(3299L, "panchayat");
+		
+		System.out.println(id);
 	}
 }

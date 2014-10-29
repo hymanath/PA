@@ -1,16 +1,12 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
-import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
-import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 
 public class TdpCadreDAOHibernateTest extends BaseDaoTestCase {
 	private ITdpCadreDAO tdpCadreDAO;
@@ -376,7 +372,7 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 		casteMap.put(2012L, genderInfo2012);	
 		casteMap.put(2014L, genderInfo2014);
 	}*/
-	
+	/*
 	public void test(){
 		
 		List<Long> locationIds = new ArrayList<Long>();
@@ -391,5 +387,32 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 		
 	}
 	
-
+*/
+	
+	public void testDteaisl()
+	{
+	try {
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+		Date fromDate =  null;
+		Date toDate = null;
+		String fromDateStr = "15-10-2014";
+		String toDateStr = "24-10-2014";
+		
+		if(fromDateStr != null && fromDateStr.trim().length()>0)
+		{
+			fromDate = format.parse(fromDateStr);
+		}
+		if(toDateStr != null && toDateStr.trim().length()>0)
+		{
+			toDate = format.parse(toDateStr);
+		}
+	
+	List<Object[] > list = tdpCadreDAO.getEnrollmentYearWiseDetails(282L, fromDate, toDate, 2014L);
+	System.out.println(list.size());
+	
+} catch (Exception e) {
+	e.printStackTrace();
+}
+	
+	}
 }

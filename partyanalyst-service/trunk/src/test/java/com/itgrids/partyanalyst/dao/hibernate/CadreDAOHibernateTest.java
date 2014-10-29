@@ -2,9 +2,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -12,8 +10,6 @@ import org.appfuse.dao.BaseDaoTestCase;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
-import com.itgrids.partyanalyst.dto.VoterInfoVO;
-import com.itgrids.partyanalyst.model.Cadre;
 
 public class CadreDAOHibernateTest extends BaseDaoTestCase {
 	ICadreDAO cadreDAO;
