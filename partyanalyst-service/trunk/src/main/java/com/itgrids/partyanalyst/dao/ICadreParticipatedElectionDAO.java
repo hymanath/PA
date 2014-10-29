@@ -8,7 +8,7 @@ import com.itgrids.partyanalyst.model.CadreParticipatedElection;
 
 public interface ICadreParticipatedElectionDAO extends GenericDao<CadreParticipatedElection, Long>{
 	
-	public Integer inActiveCadreElectionDetailsById(Long tdpCadreId);
+	public Integer inActiveCadreElectionDetailsById(List<Long> tdpCadreIdList);
 	
 	public List<Object[]> getPreviousParticipationInfoByTdpCadreId(Long tdpCadreId);
 	
