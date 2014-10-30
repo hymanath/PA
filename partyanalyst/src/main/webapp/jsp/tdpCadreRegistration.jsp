@@ -930,10 +930,10 @@
 	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder=" Enter Voter Id " name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].voterCadreNO" style="width:121px;"  id="voterCard'+voterCount+'"></input>';
 	str +=' </td>';
 	str +=' <td style="width:80px;"> ';
-	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder=" Age " style="width:55px;"  id="voterAge'+voterCount+'"></input> ';
+	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder=" Age " style="width:55px;"   name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].age" id="voterAge'+voterCount+'"></input> ';
 	str +=' </td>';
 	str +=' <td style="width:82px;">';
-	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder="Gender"  style="width:53px;"  id="voterGender'+voterCount+'"> </input>';
+	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder="Gender"  style="width:53px;"  name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].gender"  id="voterGender'+voterCount+'"> </input>';
 	str +=' </td>';
 	str +=' <td style="width:100px;"> ';
 
@@ -1431,10 +1431,10 @@
 													<input type="text" id="voterCard${commentLoop.index}" class="form-control border-radius-0 text-align2" placeholder="Voter Card No " value="${familyVO.voterCardNo}"name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].voterCadreNO" style="width:120px;"></input>
 												</td>
 												<td style="width:80px;"> 
-													<input type="text" id="voterAge${commentLoop.index}" class="form-control border-radius-0 text-align2" placeholder="Age " value="${familyVO.age}" style="width:53px;"></input> 
+													<input type="text" id="voterAge${commentLoop.index}" class="form-control border-radius-0 text-align2" placeholder="Age "  name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].age"  value="${familyVO.age}" style="width:53px;"></input> 
 												</td>
 												<td style="width:80px;">
-													<input type="text" id="voterGender${commentLoop.index}" class="form-control border-radius-0 text-align2" placeholder="Gender " value="${familyVO.gender}" style="width:50px;"> </input>
+													<input type="text" id="voterGender${commentLoop.index}" class="form-control border-radius-0 text-align2" placeholder="Gender "  name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].gender"  value="${familyVO.gender}" style="width:50px;"> </input>
 												</td>
 												<td style="width:100px;"> 
 												
@@ -1505,10 +1505,10 @@
 													<input type="text" id="voterCard0" class="form-control border-radius-0 text-align2" placeholder=" Voter Id " name="cadreRegistrationVO.cadreFamilyDetails[0].voterCadreNO"  style="width:120px;"></input>
 												</td>
 												<td style="width:80px;"> 
-													<input type="text" id="voterAge0" class="form-control border-radius-0 text-align2" placeholder=" Age " style="width:50px;"></input> 
+													<input type="text" id="voterAge0" class="form-control border-radius-0 text-align2" placeholder=" Age "  name="cadreRegistrationVO.cadreFamilyDetails[0].age"  style="width:50px;"></input> 
 												</td>
 												<td style="width:80px;">
-													<input type="text" id="voterGender0" class="form-control border-radius-0 text-align2" placeholder="Gender"  style="width:50px;"> </input>
+													<input type="text" id="voterGender0" class="form-control border-radius-0 text-align2" placeholder="Gender"  name="cadreRegistrationVO.cadreFamilyDetails[0].gender"  style="width:50px;"> </input>
 												</td>
 												<td style="width:100px;"> 
 												
