@@ -841,14 +841,14 @@
 		str += '<div class="span2">';
 		str += '<div class=" " >';
 		//str += '<h5 class="text-align1">Year</h5>';
-		str += '<select  id="electionYears'+eletionCont+'" name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].electionTypeId"  onchange="getConstiteuncyListForElection(this.value,\'constituencyList'+eletionCont+'\')" >';	
+		str += '<select  id="electionYears'+eletionCont+'" style="width: 150px;" name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].electionTypeId"  onchange="getConstiteuncyListForElection(this.value,\'constituencyList'+eletionCont+'\')" >';	
 		str += '</select>';
 		str += '</div>';
 		str += '</div>';
 		str += '<div class="span3">';
 		str += '<div class=" " >';
 		//str += '<h5 class="text-align1">Constituency</h5>';
-		str += '<select class="" id="constituencyList'+eletionCont+'" name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].constituencyId" style="margin-left: 93px;width:220px" onchange="getCandidateDetailsForElection(this.value,\'candidatesList'+eletionCont+'\',\'electionYears'+eletionCont+'\',\'electionTypeId'+eletionCont+'\');">';
+		str += '<select class="" id="constituencyList'+eletionCont+'" name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].constituencyId" style="margin-left: 10px;width:220px" onchange="getCandidateDetailsForElection(this.value,\'candidatesList'+eletionCont+'\',\'electionYears'+eletionCont+'\',\'electionTypeId'+eletionCont+'\');">';
 		str += '<option value = "0"> Select Constituency </option>';
 		/*	if(constituencyArray != null && constituencyArray.length>0)
 			{
@@ -863,7 +863,7 @@
 		str += '</div>';
 		str += '<div class="span3">';
 				str += '<div class=" " >';
-				str += '<select   id="candidatesList'+eletionCont+'"  style="margin-left: 91px;width:160px;" onchange="getCandidateDetailsById(\'constituencyList'+eletionCont+'\',\'electionYearId'+eletionCont+'\',this.value); " name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].candidateId">';
+				str += '<select   id="candidatesList'+eletionCont+'"  style="margin-left: 10px;width:150px;" onchange="getCandidateDetailsById(\'constituencyList'+eletionCont+'\',\'electionYearId'+eletionCont+'\',this.value); " name="cadreRegistrationVO.previousParicaptedElectionsList['+eletionCont+'].candidateId">';
 				str += '<option value="0"> Select Candidate</option>	';							
 				str += '</select>';							
 				str += '</div>';
@@ -1251,7 +1251,7 @@
 								</div>
 								<div class="m_top10">
 										<div class="row-fluid">
-										  <c:if test="${not empty voterInfoVOList[0].fmlyVCardNo}">
+										  <!--<c:if test="${empty voterInfoVOList[0].fmlyVCardNo}">-->
 											<div style="width:150px;float:left;">
 											<h5 class="text-align1">VOTER ID <span class="mandatory">*</span></h5>
 												<input type="text" class="form-control border-radius-0 text-align2 " placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"   id="cardNumber" value="${voterInfoVOList[0].voterCardNo}" readonly style="width:135px;"></input>
@@ -1267,8 +1267,8 @@
 											<h5 class="text-align1">H NO</h5>
 												<input type="text" class="form-control border-radius-0 " placeholder="House Number" name="cadreRegistrationVO.houseNo" style="width: 120px; float: left; margin-left: 0px;"  value="${voterInfoVOList[0].houseNo}"></input>
 											</div>
-										  </c:if>
-										  <c:if test="${empty voterInfoVOList[0].fmlyVCardNo}">
+										   <!-- </c:if>
+										  <c:if test="${not empty voterInfoVOList[0].fmlyVCardNo}">
 											<div class="span6">
 											<h5 class="text-align1">VOTER ID <span class="mandatory">*</span></h5>
 												<input type="text" class="form-control border-radius-0 text-align2 " placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"   id="cardNumber" value="${voterInfoVOList[0].voterCardNo}" readonly ></input>
@@ -1279,7 +1279,7 @@
 											<h5 class="text-align1">H NO</h5>
 												<input type="text" class="form-control border-radius-0 " placeholder="House Number" name="cadreRegistrationVO.houseNo" style="float: left; margin-left: 0px;"  value="${voterInfoVOList[0].houseNo}"></input>
 											</div>
-										   </c:if>	
+										   </c:if>	-->
 												<c:if test="${not empty voterInfoVOList[0].fmlyVCardNo}">
 													<div class="span4 famlyMemClsDiv">												
 														<input type="checkbox" title="Please Check If Cadre Didn't Have Voter Card And Using His Family Members Voter Card" id="relativeTypeChecked" name="relativeTypeChecked" onclick="showHideFamRelatinoSts();" checked="true"/> Is Family Member
