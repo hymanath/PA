@@ -92,6 +92,9 @@
 	margin: 10px auto 30px;
 	position: relative;
 }
+  .detailsCls{
+    cursor: pointer;
+  }
 	</style>
 	
 		
@@ -918,7 +921,7 @@
 
 	str +=' <tr class="voterDev'+voterCount+'">';  
 	str +='<td style="width:25px;text-align:center;">  ';
-	str +='<input type="checkbox" id="checkBox'+voterCount+'"  name="" class="nomineeCls" onclick="nomineeUpdate(\'checkBox'+voterCount+'\','+voterCount+')" style="margin-top: -10px;" title="Click here to add make this member as nominee."></td>';
+	str +='<input type="checkbox" id="checkBox'+voterCount+'"  name="" class="nomineeCls" onclick="nomineeUpdate(\'checkBox'+voterCount+'\','+voterCount+')" style="margin-top: -10px;" title="Click here to use this member as nominee."></td>';
 	str +=' <td style="width:100px;">  <input id="countVar" type="hidden" value="'+voterCount+'">';
 	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder=" Enter Voter Name " name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].voterName" id="voterName'+voterCount+'" ></input> ';
 	str +=' <input type="hidden" class="form-control border-radius-0 text-align2"  name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].voterId" id="voterId'+voterCount+'"></input> ';
@@ -1125,7 +1128,7 @@
 		
 			<div class="span12" >
 				<div class="row-fluid">
-					<div class="span6   show-grid"  id="fadeInLeft">
+					<div class="span6   show-grid"  id="fadeInLeft" style="min-height: 779px;">
 					<input type="hidden" class="form-control border-radius-0 text-align2" value="${voterInfoVOList[0].voterId}" > 
 					
 					<input type="hidden" class="form-control border-radius-0 text-align2" value="${constiteucnyId}" name="cadreRegistrationVO.constituencyId"> 
@@ -1147,12 +1150,12 @@
 										</div>
 										<div class="span12">
 										<div class="span6">
-											<h5 style="color: #9a9a9a;">  Voter Name <span class="mandatory">*</span> </h5>
+											<h5 style="color: #9a9a9a;">  Voter Telugu Name <span class="mandatory">*</span> </h5>
 											<input type="checkbox" id="voterTNameId" class="cadreTnamesCls"  style="margin-top:-15px;" checked="true" value="Voter" name="cadreRegistrationVO.nameType" onClick="updateNameSelection('cadreTnamesCls','voterTNameId');"/>
 											<input type="text" class="form-control border-radius-0" placeholder="Voter Name" style="width:190px;" value="${voterInfoVOList[0].teluguName}"  ></input>											
 										</div>	
 										<div class="span6">	
-											<h5 class="text-align1"> Cadre Name <span class="mandatory">*</span> </h5>	
+											<h5 class="text-align1"> Cadre Telugu Name <span class="mandatory">*</span> </h5>	
 											<input type="checkbox"  id="cadreTNameId" class="cadreTnamesCls" value="Cadre" style="margin-top:-15px;" name="cadreRegistrationVO.nameType" value="Cadre"  onClick="updateNameSelection('cadreTnamesCls','cadreTNameId');"/>
 											<input type="text" class="form-control border-radius-0" placeholder="Voter Name" style="width:170px;" value="${voterInfoVOList[0].teluguRelativeName}" ></input>
 											
@@ -1248,23 +1251,35 @@
 								</div>
 								<div class="m_top10">
 										<div class="row-fluid">
-										
+										  <c:if test="${not empty voterInfoVOList[0].fmlyVCardNo}">
 											<div style="width:150px;float:left;">
 											<h5 class="text-align1">VOTER ID <span class="mandatory">*</span></h5>
 												<input type="text" class="form-control border-radius-0 text-align2 " placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"   id="cardNumber" value="${voterInfoVOList[0].voterCardNo}" readonly style="width:135px;"></input>
 												 <span id="cardErr" style="color:red;font-size:12px;"></span>
 												<!--<input type="hidden" id="cardNo" class="form-control border-radius-0 input-block-level" placeholder="Text input" value="${voterInfoVOList[0].voterCardNo}" style="width:260px;" ></input>-->
 											</div>
+											
 											<div style="width: 120px; float: left; margin-top: 20px;">
 												<a id="searchByNameId" class="btn btn-success" href="javascript:{enableLookupName();}" style="margin-top: 20px; width: 120px; margin-left: 16px;">LookUp</a>
 											</div>
+											
 											<div style="width: 120px; float: left; margin-left: 49px;">
 											<h5 class="text-align1">H NO</h5>
 												<input type="text" class="form-control border-radius-0 " placeholder="House Number" name="cadreRegistrationVO.houseNo" style="width: 120px; float: left; margin-left: 0px;"  value="${voterInfoVOList[0].houseNo}"></input>
 											</div>
+										  </c:if>
+										  <c:if test="${empty voterInfoVOList[0].fmlyVCardNo}">
+											<div class="span6">
+											<h5 class="text-align1">VOTER ID <span class="mandatory">*</span></h5>
+												<input type="text" class="form-control border-radius-0 text-align2 " placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"   id="cardNumber" value="${voterInfoVOList[0].voterCardNo}" readonly ></input>
+												 <span id="cardErr" style="color:red;font-size:12px;"></span>
+											</div>
 											
-											
-												
+											<div class="span6">
+											<h5 class="text-align1">H NO</h5>
+												<input type="text" class="form-control border-radius-0 " placeholder="House Number" name="cadreRegistrationVO.houseNo" style="float: left; margin-left: 0px;"  value="${voterInfoVOList[0].houseNo}"></input>
+											</div>
+										   </c:if>	
 												<c:if test="${not empty voterInfoVOList[0].fmlyVCardNo}">
 													<div class="span4 famlyMemClsDiv">												
 														<input type="checkbox" title="Please Check If Cadre Didn't Have Voter Card And Using His Family Members Voter Card" id="relativeTypeChecked" name="relativeTypeChecked" onclick="showHideFamRelatinoSts();" checked="true"/> Is Family Member
@@ -1312,7 +1327,7 @@
 								</div>-->
 						
 					</div>
-					<div class="span6 show-grid pad-10b" id="fadeInRight" style="min-height: 725px;" >
+					<div class="span6 show-grid pad-10b" id="fadeInRight" style="min-height: 779px;" >
 							<!-- 
 							<div class=" m_top20" >
 								<h5 class="text-align1">Aadhar Card No .</h5>
@@ -1359,7 +1374,7 @@
 							</div>
 							<div class=" m_top20" > 
 									<h5 class="text-align1">PREVIOUS ENROLLMENT NUMBER</h5>
-									<input type="text" id="preEnrollNoValue" class="form-control border-radius-0 input-block-level" placeholder="Previous Enrollment No."  value="${voterInfoVOList[0].memberShipId}" style="width:260px;"  onkeyup="getExistingCadreInfo2();" name="cadreRegistrationVO.previousEnrollmentNumber" readonly></input>
+									<input type="text" id="preEnrollNoValue" class="form-control border-radius-0 input-block-level" placeholder="Previous Enrollment No."  value="${voterInfoVOList[0].memberShipId}" style="width:260px;"  onkeyup="getExistingCadreInfo2();" name="cadreRegistrationVO.previousEnrollmentNumber" readonly></input>&nbsp;<span onclick="clearPreviousEnrol();" title="Click Here To Clear Previous Enrollment Number" style="cursor: pointer;" class="icon-remove"></span>
 									<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByName();}" > LookUp For EnrollmentNo</a>
 									<input type="hidden" id="preEnrollNo" class="form-control border-radius-0 input-block-level" placeholder="Text input"  value="${voterInfoVOList[0].memberShipId}" style="width:260px;" ></input>
 									
@@ -1444,9 +1459,9 @@
 													 <input type="hidden"  id="familyOccupation${commentLoop.index}0" name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].occupationId" class="form-control border-radius-0 text-align2" placeholder="Enter Occupation " style="width:50px;" value="${familyVO.occupationId}"> </input>
 													-->
 											<select name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].occupationId" id="familyOccupation%{commentLoop.index}" style="width:180px;margin-left:15px;">
-													<option value="0">Select Education</option>
+													<option value="0">Select Occupation</option>
 													
-											<c:forEach var="educationList" items="${genericVOList}" >													
+											<c:forEach var="educationList" items="${selectOptionVOList}" >													
 													<c:if test="${educationList.id == familyVO.occupationId }">																
 														<option value="${educationList.id}" selected="selected">${educationList.name}</option>
 													</c:if>	
@@ -2475,7 +2490,7 @@ function showNewTakenImg(){
 						$('#searchDataImg3').hide();
 						if(result != null && result.length >0)
 						{
-							buildSearchDetails(result,fromDiv);
+							buildSearchDetails(result,fromDiv,searchType);
 						}
 						else
 						{
@@ -2487,7 +2502,7 @@ function showNewTakenImg(){
 			
 	}
 	
-	function buildSearchDetails(result,fromDiv)
+	function buildSearchDetails(result,fromDiv,searchType)
 	{
 
 		var tableName = "seachDetalsTab";
@@ -2524,33 +2539,33 @@ function showNewTakenImg(){
 				}
 				
 				
-				str +='<td  style="background-color: #f9f9f9;"><img style="width:80px;height:80px;" src="'+result[i].image+'" id="candimgShowIdReg'+i+'" onerror="setDefaultImage(this);" /></td>';
+				str +='<td  style="background-color: #f9f9f9;"><img style="width:80px;height:80px;" src="'+result[i].image+'" class="detailsCls" reqSearchType="'+searchType+'"  key="'+result[i].id+'" id="candimgShowIdReg'+i+'" onerror="setDefaultImage(this);" /></td>';
 				if(result[i].name != null)
-					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" reqSearchType="'+searchType+'" key="'+result[i].id+'">'+result[i].name+'</span></td>';
 				else
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  reqSearchType="'+searchType+'" key="'+result[i].id+'"> -- </span></td>';
 					
 				if(result[i].relativeName != null)
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relativeName+'</span></td>';
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  reqSearchType="'+searchType+'" key="'+result[i].id+'">'+result[i].relativeName+'</span></td>';
 				else
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  reqSearchType="'+searchType+'" key="'+result[i].id+'"> -- </span></td>';
 				if(result[i].relationType != null)
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relationType+'</span></td>';
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  reqSearchType="'+searchType+'" key="'+result[i].id+'">'+result[i].relationType+'</span></td>';
 				else
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';					
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  reqSearchType="'+searchType+'" key="'+result[i].id+'"> -- </span></td>';					
 				if(result[i].age != null)
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].age+'</span></td>';
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  reqSearchType="'+searchType+'" key="'+result[i].id+'">'+result[i].age+'</span></td>';
 				else
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  reqSearchType="'+searchType+'" key="'+result[i].id+'"> -- </span></td>';
 				if(result[i].gender != null)
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].gender+'</span></td>';
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  reqSearchType="'+searchType+'" key="'+result[i].id+'">'+result[i].gender+'</span></td>';
 				else
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls" reqSearchType="'+searchType+'"  key="'+result[i].id+'"> -- </span></td>';
 				
 				if(result[i].houseNo != null)
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].houseNo+'</span></td>';
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  reqSearchType="'+searchType+'" key="'+result[i].id+'">'+result[i].houseNo+'</span></td>';
 				else
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  reqSearchType="'+searchType+'" key="'+result[i].id+'"> -- </span></td>';
 				
 				//str +='<td style="background-color:#52A552;"><input type="radio" value="'+result[i].id+'" name="optionsRadios" onClick="getDetailsForUser();"></label></td>';
 				str +='</tr>';
@@ -2563,33 +2578,33 @@ function showNewTakenImg(){
 				}else{
 					str +='<td  style="background-color: #f9f9f9;"><input type="checkbox" class="votersCB" name="voters" onclick="updateText(\''+result[i].voterId+'\')"></span>';
 				}
-				str +='<td style="background-color: #f9f9f9;"><img style="width:80px;height:80px;" src="'+result[i].image+'" id="candimgShowId'+i+'" onerror="setDefaultImage(this);" /></td>';
+				str +='<td style="background-color: #f9f9f9;"><img style="width:80px;height:80px;" class="detailsCls"  key="'+result[i].id+'" reqSearchType="'+searchType+'"  src="'+result[i].image+'" id="candimgShowId'+i+'" onerror="setDefaultImage(this);" /></td>';
 				if(result[i].name != null)
-					str +='<td style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
+					str +='<td style="cursor:pointer;"><span  class="detailsCls" reqSearchType="'+searchType+'"  key="'+result[i].id+'">'+result[i].name+'</span></td>';
 				else
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					str +='<td><span  class="detailsCls" reqSearchType="'+searchType+'"  key="'+result[i].id+'"> -- </span></td>';
 					
 				if(result[i].relativeName != null)
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relativeName+'</span></td>';
+					str +='<td><span  class="detailsCls" reqSearchType="'+searchType+'"  key="'+result[i].id+'">'+result[i].relativeName+'</span></td>';
 				else
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					str +='<td><span  class="detailsCls" reqSearchType="'+searchType+'"  key="'+result[i].id+'"> -- </span></td>';
 				if(result[i].relationType != null)
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relationType+'</span></td>';
+					str +='<td><span  class="detailsCls"  reqSearchType="'+searchType+'" key="'+result[i].id+'">'+result[i].relationType+'</span></td>';
 				else
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';					
+					str +='<td><span  class="detailsCls" reqSearchType="'+searchType+'"  id="'+result[i].id+'"> -- </span></td>';					
 				if(result[i].age != null)
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].age+'</span></td>';
+					str +='<td><span  class="detailsCls"  reqSearchType="'+searchType+'" key="'+result[i].id+'">'+result[i].age+'</span></td>';
 				else
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					str +='<td><span  class="detailsCls"  reqSearchType="'+searchType+'" key="'+result[i].id+'"> -- </span></td>';
 				if(result[i].gender != null)
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].gender+'</span></td>';
+					str +='<td><span  class="detailsCls"  reqSearchType="'+searchType+'" key="'+result[i].id+'">'+result[i].gender+'</span></td>';
 				else
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					str +='<td><span  class="detailsCls"  reqSearchType="'+searchType+'" key="'+result[i].id+'"> -- </span></td>';
 				
 				if(result[i].houseNo != null)
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'">'+result[i].houseNo+'</span></td>';
+					str +='<td><span  class="detailsCls"  reqSearchType="'+searchType+'" key="'+result[i].id+'">'+result[i].houseNo+'</span></td>';
 				else
-					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
+					str +='<td><span  class="detailsCls"  reqSearchType="'+searchType+'" key="'+result[i].id+'"> -- </span></td>';
 				
 			//	str +='<td><input type="radio" value="'+result[i].id+'" name="optionsRadios" onClick="getDetailsForUser();"></label></td>';
 				str +='</tr>';
@@ -2625,8 +2640,9 @@ function showNewTakenImg(){
 			});
 			*/
 			 $(".detailsCls").click(function(){
-			var id = $(this).attr('id');
-			getDetailsForUser(id);
+			var id = $(this).attr('key');
+			var reqSearchType =  $(this).attr("reqSearchType");	
+			getDetailsForUser(id,reqSearchType);
 		  
 		  });
 	}
@@ -2689,21 +2705,18 @@ function showNewTakenImg(){
 	}
 	
 	
-	function getDetailsForUser(candidateId)
+	function getDetailsForUser(candidateId,reqSearchType)
 	{
 		//var candidateId = $('input[name="optionsRadios"]:checked').val();
-		var searchType = $('input[name="searchTypeRadio"]:checked').val();
-		var cosntiteucnyId = $('#userConstituencyId').val();	
-		var boothId = $('#boothsList').val();	
-		var houseNo = $('#panchayatList').val();	
+		//var searchType = $('input[name="searchTypeRadio"]:checked').val();
+		var cosntiteucnyId = '${constiteucnyId}';	
+		var boothId = '${boothId}';	
+		var houseNo = '${houseNo}';	
 		
 		var panchayatId = 0;
-		if($("#isNewCadre").is(':checked'))
-			panchayatId = "true";  // checked
-		else
-			panchayatId = 0  // unchecked
+		
 			
-		window.open('tdpCadreRegistrationAction.action?candidateId='+candidateId+'&searchType='+searchType+'&constiteucnyId='+cosntiteucnyId+'&houseNo='+houseNo+'&boothId='+boothId+'&panchayatId='+panchayatId+'');
+		window.open('tdpCadreRegistrationAction.action?candidateId='+candidateId+'&searchType='+reqSearchType+'&constiteucnyId='+cosntiteucnyId+'&houseNo='+houseNo+'&boothId='+boothId+'&panchayatId='+panchayatId+'');
 		
 	}
 	function setDefaultImage(img)
@@ -2880,6 +2893,9 @@ $(document).ready(function(){
 	{
 		$('.'+clsName+'').prop('checked', false);
 		$('#'+id+'').prop('checked', true);		
+	}
+	function clearPreviousEnrol(){
+		$("#preEnrollNoValue").val("");
 	}
 </script>
 </html>
