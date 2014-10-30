@@ -5,6 +5,7 @@ import com.itgrids.partyanalyst.dto.CadreTransactionVO;
 public interface ICadreSurveyTransactionService {
 	
 	public CadreTransactionVO genarateOTPAndSaveTxnDetails(CadreTransactionVO inputVO);
-	public String updateTxnStatus(String uniqueKey,String status,Long constituencyId);
+	public String updateTxnStatus(CadreTransactionVO inputVo);
+	public String validateOTPForMobile(CadreTransactionVO inputVo);
 
 }
