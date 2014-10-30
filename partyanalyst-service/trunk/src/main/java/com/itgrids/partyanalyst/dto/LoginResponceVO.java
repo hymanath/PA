@@ -13,6 +13,8 @@ public class LoginResponceVO implements Serializable{
 	private Long userId;
 	private List<LoginStatusVO> statusList;
 	private String tabNo;
+	private Long acNo;
+	
 	
 	public Long getConstituencyId() {
 		return constituencyId;
@@ -50,6 +52,13 @@ public class LoginResponceVO implements Serializable{
 	public void setTabNo(String tabNo) {
 		this.tabNo = tabNo;
 	}
+	public Long getAcNo() {
+		return acNo;
+	}
+	public void setAcNo(Long acNo) {
+		this.acNo = acNo;
+	}
+	
 	
 	
 	
