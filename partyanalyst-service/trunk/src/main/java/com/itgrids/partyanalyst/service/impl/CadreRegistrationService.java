@@ -475,7 +475,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 												//emptyTdpCadreData(voterIdsList.get(0));
 												
 												TdpCadre tdpCadre = new TdpCadre();
-												
+												if(voterIdsList.get(0) != null){
+													tdpCadre.setImage(voterIdsList.get(0).getImage());
+													tdpCadre.setRefNo(voterIdsList.get(0).getRefNo());
+													tdpCadre.setMemberShipNo(voterIdsList.get(0).getMemberShipNo());
+												}
 												tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"new",false);
 											
 												
@@ -529,7 +533,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 														//emptyTdpCadreData(voterIdsList.get(0));
 														
 														TdpCadre tdpCadre = new TdpCadre();
-														
+														if(voterIdsList.get(0) != null){
+															tdpCadre.setImage(voterIdsList.get(0).getImage());
+															tdpCadre.setRefNo(voterIdsList.get(0).getRefNo());
+															tdpCadre.setMemberShipNo(voterIdsList.get(0).getMemberShipNo());
+														}
 														tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"new",false);
 														
 														/*
@@ -1097,13 +1105,17 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						}
 						String ref = getReferenceNo(userId,registrationType);
 						synchronized (CadreRegistrationService.class) {
-							ref = getUniueRefNo(ref,registrationType);
-							tdpCadre.setRefNo(ref);
-							cadreRegistrationVO.setRefNo(ref);
+							if(tdpCadre.getRefNo() == null || tdpCadre.getRefNo().trim().length() == 0){
+							  ref = getUniueRefNo(ref,registrationType);
+							  tdpCadre.setRefNo(ref);
+							}
+							cadreRegistrationVO.setRefNo(tdpCadre.getRefNo());
 							if(userAddress.getDistrict() != null)
 							{
-								String membershipNo = getMemberShipNo(userAddress.getDistrict().getDistrictId());
-								tdpCadre.setMemberShipNo(membershipNo);
+								if(tdpCadre.getMemberShipNo() == null || tdpCadre.getMemberShipNo().trim().length() == 0){
+								  String membershipNo = getMemberShipNo(userAddress.getDistrict().getDistrictId());
+								  tdpCadre.setMemberShipNo(membershipNo);
+								}
 							}
 							
 							surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
@@ -1119,8 +1131,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						     tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
 						     if(userAddress.getDistrict() != null)
 						     {
+						    	 if(tdpCadre.getMemberShipNo() == null || tdpCadre.getMemberShipNo().trim().length() == 0){
 						    	 	String membershipNo = getMemberShipNo(userAddress.getDistrict().getDistrictId());
 							        tdpCadre.setMemberShipNo(membershipNo);
+						    	 }
 						     }
 						       
 								surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
@@ -2028,7 +2042,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				returnList = new ArrayList<VoterInfoVO>();
 				vo = new VoterInfoVO();
 				vo.setCadreId(0L);
-				vo.setDateOfBirth("1980-01-01");	
+				vo.setDateOfBirth("");	
 				vo.setHouseNo("");
 				vo.setName("");
 				vo.setRelativeName("");
@@ -2049,7 +2063,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				vo.setLocation("");
 				vo.setMobileNo("");
 				vo.setMemberShipId("");
-				vo.setActiveDate("01-01-1980");
+				vo.setActiveDate("");
 				vo.setAadharNo("");
 				vo.setNomineeName("");
 				vo.setVoterRelationId(0L);
