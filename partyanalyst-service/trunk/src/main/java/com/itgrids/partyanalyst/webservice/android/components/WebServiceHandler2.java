@@ -229,15 +229,24 @@ public class WebServiceHandler2 {
 		
 	}
 
-	@GET
-	@Path("/updateTxnStatus/{uniqueKey}/{status}/{constituencyId}")
+	@POST
+	@Path("/updateTxnStatus")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String updateTxnStatus(@PathParam("uniqueKey") String uniqueKey,@PathParam("status") String status,@PathParam("constituencyId") Long constituencyId)
+	public String updateTxnStatus(CadreTransactionVO inputVo)
 	{
-		return cadreSurveyTransactionService.updateTxnStatus(uniqueKey,status,constituencyId);
+		return cadreSurveyTransactionService.updateTxnStatus(inputVo);
+	}
+	
+	@POST
+	@Path("/validateOTPForMobile")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String validateOTPForMobile(CadreTransactionVO inputVo)
+	{
+		return cadreSurveyTransactionService.validateOTPForMobile(inputVo);
 	}
 	
 		
+	
 	@GET
 	@Path("/getAllVersionsOfAnApp/{appName}/{version}/{isDebug}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -250,7 +259,6 @@ public class WebServiceHandler2 {
 		 }
 		return webServiceHandlerService1.getAllVersionsOfAnApp(appName, version, includeTest);
 	}
-	
 	@GET
 	@Path("/getAllUpdatesByVersion/{appName}/{version}")
 	@Produces(MediaType.APPLICATION_JSON)

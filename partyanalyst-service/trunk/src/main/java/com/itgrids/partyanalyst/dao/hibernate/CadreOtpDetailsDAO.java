@@ -24,4 +24,14 @@ public class CadreOtpDetailsDAO extends GenericDaoHibernate<CadreOtpDetails, Lon
 		query.setParameter("mobileNo", mobileNo);
 		return query.executeUpdate();
 	}
+	
+	public String checkOTPValid(String mobileNo,String otp,String refNo)
+	{
+		Query query = getSession().createQuery("select model.otpNo from CadreOtpDetails model where model.otpNo = :otp and model.otpReferenceId =:refNo " +
+				" and model.mobileNo = :mobileNo");
+		query.setParameter("mobileNo", mobileNo);
+		query.setParameter("otp", otp);
+		query.setParameter("refNo", refNo);
+		return (String) query.uniqueResult();
+	}
 }
