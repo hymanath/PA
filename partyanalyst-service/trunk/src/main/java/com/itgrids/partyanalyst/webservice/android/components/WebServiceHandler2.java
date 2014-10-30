@@ -293,4 +293,12 @@ public class WebServiceHandler2 {
 		LOG.debug("inside getAllUpdatesByVersion");
 		return webServiceHandlerService1.getAllUpdatesByVersion(appName, version);
 	}
+	@POST
+	@Path("/updatePendingAmount")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updatePendingAmount(CadreTransactionVO inputVo)
+	{
+		return cadreSurveyTransactionService.updatePendingAmount(inputVo);
+	}
+	
 }
