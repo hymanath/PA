@@ -263,7 +263,12 @@
 		$('#searchNameId,#searchVoterCardId,#searchHNoId').val("")
 		$('#searchDetailsDiv').html("");
 		$('#tableElement').hide();
-		$( "#myModal1" ).dialog({title: "Search For Enroll Number", width: "auto",
+		var errDivId = "#errorDiv1";
+		$('#searchDetailsDiv1').html('');
+		$('#tableElement1').hide();
+		$('#preEnrollNo').val('');
+		$(errDivId).html('');
+		$( "#myModal1" ).dialog({title: "Search For Enrollment Number", width: "auto",
             height: "auto", position: { my: 'right', at: 'top+10' }});
 	}
 	function enableSearchByfName(){
@@ -2010,15 +2015,15 @@
 						</div>
 						<div class=" m_top10 pad-10b">
 							<div class="row-fluid">
-								<h5 class="text-align1">ENROLLMENT NO</h5>
-								<input type="text" class="form-control border-radius-0" placeholder="Enter Voter ID"  id="enrollmentNoId"  name="searchVoterCard" onkeyUp="getExistingCadreInfo1();">
+								<h5 class="text-align1">PREVIOUS ENROLLMENT NUMBER</h5>
+								<input type="text" class="form-control border-radius-0" placeholder="Enter Enrollment Number"  id="enrollmentNoId"  name="searchVoterCard" onkeyUp="getExistingCadreInfo1();">
 							</div>
 						</div>
 						
 						<a href="javascript:{getExistingCadreInfo1();}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
 						<div align="center"><img style="width:70px;height:60px;display:none;" id="searchDataImg1" class="" src="images/Loading-data.gif"></div>
 					</div>
-					<div id="errorDiv1"></div>
+					<div id="errorDiv1"  class="mandatory"></div>
 					<div class="show-grid pad-5 m-bottom-10">
 						<div class="container" id="tableElement1" style="margin-top:25px;display:none;">
 							<h3 class="text-align" style="color:red;">SEARCH DETAILS</h3>
@@ -2755,9 +2760,11 @@ function showNewTakenImg(){
 </script>
 <script>
 function getExistingCadreInfo1(){
+    var errDivId = "#errorDiv1";
 	$('#searchDetailsDiv1').html('');
 	$('#tableElement1').hide();
 	$('#preEnrollNo').val('');
+	$(errDivId).html('');
 	
 	var candidateName = $('#candiNameId').val();
 	var enrollmentNo = $('#enrollmentNoId').val();
@@ -2765,15 +2772,31 @@ function getExistingCadreInfo1(){
 	var panchayatId = '${houseNo}';  // panchayat Id 
 	var boothId = '${boothId}';  // boothId Id 
 	var isPresentCadre = '${panchayatId}';  // ispresentCader checked ot not 
-	var canCallAjax = false;
-	if(candidateName.trim().length >2){
-		canCallAjax = true;
-	}
-	if(enrollmentNo.trim().length >2){
-		canCallAjax = true;
-	}
 	
-	if(canCallAjax){
+	var isError = false;
+	if((candidateName == null || candidateName.length == 0) && (enrollmentNo == null || enrollmentNo.length == 0))
+		{
+			$(errDivId).html('Enter any search criteria for details.');
+			 isError = true ;
+		}
+		
+		if(candidateName == null || candidateName.length <=2)
+		{	
+			if(enrollmentNo != null && enrollmentNo.length  >=3 )
+			{
+				 isError = false ;
+			}
+			else 
+			{
+				$(errDivId).html('Atleast 3 Characters required for Candidate Name.');
+				isError = true ;	
+			}		
+		}
+		else
+		{
+			 isError = false ;
+		}
+	if(!isError){
 	$('#searchDataImg1').show();
 		var jsObj = {	
 			name : candidateName,
