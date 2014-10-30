@@ -4414,25 +4414,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 						}
 					}
 					
-					// member table 
-					/*List<TdpCadre> cadres = tdpCadreDAO.getCadreDataByYear(2010L,ac.getConstituencyId());
-					if(cadres != null && cadres.size() > 0)
-					{
-						try{
-							connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_Cadre"+pathSeperator+ac.getName()+".sqlite");
-							connection.setAutoCommit(false);
-							statement = connection.createStatement();
-							int records = 0;
-							saveMember(cadres,2010L,statement);
-							LOG.error(ac.getName()+" Constituency 2010 cadre Data Records Inserted");
-							connection.commit();
-							statement.close();
-							connection.close();
-							}
-							catch (Exception e) {
-								
-							}
-					}*/
+					
 					// member table 
 					List<Object[]> cadres = tdpCadreDAO.getCadreDataByYear(ac.getConstituencyId());
 					if(cadres != null && cadres.size() > 0)
