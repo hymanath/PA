@@ -42,6 +42,8 @@ public class TdpCadreFamilyDetails implements Serializable{
 	private Voter 						voter;
 	private EducationalQualifications 	education;
 	private Occupation 					occupation;
+	private Long                        age;
+	private String                      gender;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -160,6 +162,22 @@ public class TdpCadreFamilyDetails implements Serializable{
 	}
 	public void setVoterName(String voterName) {
 		this.voterName = voterName;
+	}
+	
+	@Column(name="age")
+	public Long getAge() {
+		return age;
+	}
+	public void setAge(Long age) {
+		this.age = age;
+	}
+	
+	@Column(name="gender")
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 	
 	
