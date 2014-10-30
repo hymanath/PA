@@ -882,7 +882,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					}
 					else
 					{*/
-						if(cadreRegistrationVO.getConstituencyId() != null && cadreRegistrationVO.getConstituencyId().trim().length() > 0 && !cadreRegistrationVO.getConstituencyId().trim().equalsIgnoreCase("null"))
+						if(cadreRegistrationVO.getConstituencyId() != null && cadreRegistrationVO.getConstituencyId().trim().length() > 0 && !cadreRegistrationVO.getConstituencyId().trim().equalsIgnoreCase("null") && Long.valueOf(cadreRegistrationVO.getConstituencyId()) > 0)
 						{
 							userAddress = new UserAddress();
 							if(Long.valueOf(cadreRegistrationVO.getConstituencyId()) > 0)
@@ -891,7 +891,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								userAddress.setCountry(countryDAO.get(1l));
 								userAddress.setState(stateDAO.get(1l));
 								userAddress.setDistrict(constituencyDAO.get(Long.valueOf(cadreRegistrationVO.getConstituencyId())).getDistrict());
-								if(cadreRegistrationVO.getStreet() != null && cadreRegistrationVO.getStreet().trim().length() > 0 && cadreRegistrationVO.getStreet().trim().equalsIgnoreCase("null"))
+								if(cadreRegistrationVO.getStreet() != null && cadreRegistrationVO.getStreet().trim().length() > 0 && !cadreRegistrationVO.getStreet().trim().equalsIgnoreCase("null"))
 								{
 									userAddress.setStreet(cadreRegistrationVO.getStreet());
 								}
@@ -910,8 +910,6 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									{
 										userAddress.setBooth(boothDAO.get(Long.valueOf(cadreRegistrationVO.getBoothId())));
 									}
-									
-									
 								}
 								if(cadreRegistrationVO.getMuncipalityId() !=null && cadreRegistrationVO.getMuncipalityId().trim().length() > 0 && !cadreRegistrationVO.getMuncipalityId().trim().equalsIgnoreCase("null"))
 								{
@@ -924,10 +922,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							}
 							
 						}
-						
-					//}
-					
-						if(userAddress == null)
+						else
 						{
 							userAddress = new UserAddress();
 							if(tdpCadre.getVoterId() != null && tdpCadre.getVoterId().longValue() > 0)
@@ -939,6 +934,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								getVoterAddressDetails(cadreRegistrationVO.getFamilyVoterId(),userAddress,cadreRegistrationVO.getStreet());
 							}
 						}
+					//}
+					
+						
 					userAddress = userAddressDAO.save(userAddress);
 					tdpCadre.setUserAddress(userAddress);	
 					if(cadreRegistrationVO.getNomineeName() != null && cadreRegistrationVO.getNomineeName().trim().length() > 0 && !cadreRegistrationVO.getNomineeName().trim().equalsIgnoreCase("null"))
