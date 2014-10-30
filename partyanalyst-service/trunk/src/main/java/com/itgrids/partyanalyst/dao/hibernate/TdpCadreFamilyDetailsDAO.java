@@ -27,7 +27,8 @@ public class TdpCadreFamilyDetailsDAO extends GenericDaoHibernate<TdpCadreFamily
 	
 	public List<Object[]> getCadreFamilyDetailsBytdpCadreId(Long tdpCadreId)
 	{
-		Query query = getSession().createQuery("select model.voter, model.educationId,model.occupationId,model.voterName from TdpCadreFamilyDetails model where model.tdpCadreId = :tdpCadreId " +
+		//0voterId,1educationId,2occupationId,3voterName,4age,5gender
+		Query query = getSession().createQuery("select model.voter.voterId, model.educationId,model.occupationId,model.voterName,model.age,model.gender from TdpCadreFamilyDetails model where model.tdpCadreId = :tdpCadreId " +
 				" and model.isDeleted = 'N' ");
 		query.setParameter("tdpCadreId", tdpCadreId);
 		

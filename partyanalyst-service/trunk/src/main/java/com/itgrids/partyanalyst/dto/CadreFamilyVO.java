@@ -11,6 +11,8 @@ public class CadreFamilyVO implements Serializable{
 	private Long educationId;
 	private Long occupationId;
 	private String voterName;
+	private Long age;
+	private String gender;
 	
 
 	public Long getVoterId() {
@@ -42,6 +44,18 @@ public class CadreFamilyVO implements Serializable{
 	}
 	public void setVoterName(String voterName) {
 		this.voterName = voterName;
+	}
+	public Long getAge() {
+		return age;
+	}
+	public void setAge(Long age) {
+		this.age = age;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 	
 	
