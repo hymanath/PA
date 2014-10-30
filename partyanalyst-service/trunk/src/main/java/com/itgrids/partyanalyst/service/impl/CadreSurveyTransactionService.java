@@ -208,9 +208,9 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 		try{
 			String otpNo = cadreOtpDetailsDAO.checkOTPValid(inputVo.getMobileNo().toString().trim(),inputVo.getOtpNo().toString().trim(),inputVo.getRefNo().toString().trim());
 			if(otpNo != null)
-				msg = "VALID OTP";
+				msg = "success";
 			else
-				msg = "NOT VALID OTP";
+				msg = "failure";
 		}
 		catch (Exception e) {
 			LOG.error("Exception occured in validateOTPForMobile() in CadreSurveyTransactionService class.",e);
@@ -220,5 +220,29 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 		
 	}
 	
+	
+	public String updatePendingAmount(CadreTransactionVO inputVo)
+	{
+		String msg = "";
+		try{
+		 Long pendingAmount = cadreTxnDetailsDAO.getPendingAmountForUser(inputVo.getUniqueKey(),inputVo.getConstituencyId(),inputVo.getUserId());
+		 if(pendingAmount == null)
+			 return "notexists";
+		 if(pendingAmount < inputVo.getPendingAmount())
+			msg = "Invalid";
+		 else
+		 {
+			Long amount =  pendingAmount - inputVo.getPendingAmount();
+			cadreTxnDetailsDAO.updatePendingAmount(amount,inputVo.getUniqueKey(),inputVo.getConstituencyId(),inputVo.getUserId());
+			 msg ="updated";
+		 }
+		
+		}
+		catch (Exception e) {
+			LOG.error("Exception occured in updatePendingAmount() in CadreSurveyTransactionService class.",e);
+			msg = "EXCEPTION";
+		}
+		return msg;
+	}
 	
 }
