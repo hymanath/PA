@@ -67,7 +67,7 @@ public class CadreTxnUser extends BaseModel implements Serializable{
 		this.cadreSurveyUser = cadreSurveyUser;
 	}
 
-	@Column(name = "cadre_survye_user_id")
+	@Column(name = "cadre_survey_user_id")
 	public Long getCadreSurveyUserId() {
 		return cadreSurveyUserId;
 	}
