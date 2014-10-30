@@ -220,6 +220,32 @@ public class WebServiceHandler2 {
 	
 	
 	@POST
+	@Path("/databaseCheckForCadreUser")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object databaseCheckForCadreUser (UserLoginUtils inputs)
+	{
+
+		LoginResponceVO out=null;
+		Map<String,String> userDetails= new HashMap<String, String>();
+		userDetails.put("","");
+		try{
+			
+			out=(LoginResponceVO) webServiceHandlerService1.databaseCheckForCadreUser(inputs);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		if(out==null)
+			return "{\"status\":\"login failure\"}";
+		out.setStatusMsg("DBINITIALCHECK");
+
+		 return out;
+	}
+	
+	
+	@POST
 	@Path("/genarateOTPForCadreTxn")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)

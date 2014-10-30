@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppPingingDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserAccessKeyDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
@@ -134,6 +135,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	
 	@Autowired ICadreRegistrationService cadreRegistrationService;
 	
+	@Autowired IDelimitationConstituencyDAO  delimitationConstituencyDAO;
 	@Autowired ICadreDashBoardService cadreDashBoardService;
     
 	public IVoterBoothActivitiesDAO getVoterBoothActivitiesDAO() {
@@ -661,6 +663,29 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		return returnVO;
 	}
 	
+	public LoginResponceVO databaseCheckForCadreUser(UserLoginVO inputvo)
+	{
+		 LoginResponceVO returnVO = null;
+		 LOG.debug("Entered into the databaseCheckForCadreUser  method in WebServiceHandlerService");
+		try {
+			List<Long> userIds=cadreSurveyUserDAO.getUserByUserNameAndPassword(inputvo.getUserName(), inputvo.getPassWord());
+			if(userIds != null && userIds.size() > 0)
+			{
+				List<CadreSurveyUserAssignDetails> resultList = cadreSurveyUserAssignDetailsDAO.getCadreAssinedDetails(userIds.get(0));
+				if(resultList != null && resultList.size() > 0)
+				{
+					returnVO = new LoginResponceVO();
+					returnVO.setStatusMsg("DBINITIALCHECK");
+					returnVO.setConstituencyName(resultList.get(0).getConstituency() != null ? resultList.get(0).getConstituency().getName() : null);
+				}
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return returnVO;
+	}
+	
 	public void prepareResponce(Long userId,LoginResponceVO loginResponceVO)
 	{
 		try {
@@ -675,6 +700,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 				loginResponceVO.setTabNo(resultList.get(0).getTabNo());
 				List<LoginStatusVO> subList = new ArrayList<LoginStatusVO>();
 				Map<Long, List<Long>> subListMap = new HashMap<Long, List<Long>>();
+				loginResponceVO.setAcNo(delimitationConstituencyDAO.getConstituencyNo(loginResponceVO.getConstituencyId(),2009l));
 				for (CadreSurveyUserAssignDetails cadreSurveyUserAssignDetails : resultList) 
 				{
 					

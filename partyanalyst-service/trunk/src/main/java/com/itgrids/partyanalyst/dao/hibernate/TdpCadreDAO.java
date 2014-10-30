@@ -947,4 +947,11 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		return query.list();
 	}
 	
+	
+	public List<String> getExistingCadreMemberDetails(String preEnrollmentNo)
+	{
+		Query query = getSession().createQuery("select model.memberShipNo from TdpCadre model where model.memberShipNo = :preEnrollmentNo");
+		query.setParameter("preEnrollmentNo", preEnrollmentNo);
+		return query.list();
+	}
 }

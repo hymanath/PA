@@ -12,6 +12,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
+import com.itgrids.partyanalyst.model.TdpCadreBackupDetails;
 
 public interface ICadreRegistrationService {
 
@@ -74,7 +75,7 @@ public interface ICadreRegistrationService {
 	
 	public List<SelectOptionVO> getCadreCommitteDetails(Long levelId);
 	
-	public String updateRequestDetailsForBackup(List<CadreRegistrationVO> inputResponseList,String registrationType);
+	public TdpCadreBackupDetails updateRequestDetailsForBackup(List<CadreRegistrationVO> inputResponseList,String registrationType);
 	
 	public String getCadreImageByPreviousEnrolId(String enrolmentId,String staticContentLoc);
 	

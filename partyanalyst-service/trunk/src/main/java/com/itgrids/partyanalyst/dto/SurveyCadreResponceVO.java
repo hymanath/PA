@@ -16,6 +16,7 @@ public class SurveyCadreResponceVO implements Serializable{
 	
 	private Integer 		resultCode;
 	
+	private String 			errorCode;
 	
 	public String getStatus() {
 		return status;
@@ -58,6 +59,12 @@ public class SurveyCadreResponceVO implements Serializable{
 	}
 	public void setResultCode(Integer resultCode) {
 		this.resultCode = resultCode;
+	}
+	public String getErrorCode() {
+		return errorCode;
+	}
+	public void setErrorCode(String errorCode) {
+		this.errorCode = errorCode;
 	}
 	
 	

@@ -20,6 +20,8 @@ public interface IWebServiceHandlerService1 {
 	public Object saveSurveyFieldUsersForCadre(List<CadreRegistrationVO> inputResponse);
 	
 	public Object getVCadreDataByPanchayatId(Long panchayatId);
+	
+	public LoginResponceVO databaseCheckForCadreUser(UserLoginVO inputvo);
 
 /*	public ResultStatus checkUserAuthenticationAndUpdateAuthorisedTime(String userId,String macAdressId);
 */	
