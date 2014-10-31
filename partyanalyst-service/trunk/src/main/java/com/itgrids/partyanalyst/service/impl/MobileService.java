@@ -4576,7 +4576,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 										}else{
 											quertStr.append("'"+update[3].toString().trim()+"'");
 										}
-										 quertStr.append("where membership_no = '"+update[3]+"' and year='2012'");
+										 quertStr.append("where membership_no = '"+update[2]+"' and year='2012'");
 									statement.executeUpdate(quertStr.toString());
 									}catch(Exception e)
 									{
