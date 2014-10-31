@@ -123,6 +123,7 @@
 		<pattern>/mahaNaduAction*</pattern>
 		<pattern>/tdpCadreSearchAction*</pattern>
 		<pattern>/tdpCadreSearchDetailsAction*</pattern>
+		<pattern>/cadreSurveyTransactionsDashboardAction*</pattern>
 		<pattern>/tdpCadreRegistrationAction*</pattern>
 		<pattern>/tdpCadreSurveyUsersDetailsAction*</pattern>
 		<pattern>/votersInCasteAction*</pattern>
