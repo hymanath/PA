@@ -17,17 +17,13 @@ import com.itgrids.partyanalyst.dao.ICadreTxnDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreTxnUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
-import com.itgrids.partyanalyst.dao.IReconciliationFailureDetailsDAO;
-import com.itgrids.partyanalyst.dao.hibernate.ReconciliationFailureDetailsDAO;
 import com.itgrids.partyanalyst.dto.CadreTransactionVO;
-import com.itgrids.partyanalyst.dto.ReconciliationFailureVO;
 import com.itgrids.partyanalyst.dto.ReconciliationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyTransactionReportVO;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.model.CadreOtpDetails;
 import com.itgrids.partyanalyst.model.CadreTxnDetails;
-import com.itgrids.partyanalyst.model.ReconciliationFailureDetails;
 import com.itgrids.partyanalyst.service.ICadreSurveyTransactionService;
 import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -52,7 +48,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 	private ICadreOtpDetailsDAO cadreOtpDetailsDAO;
 	
 	private ISmsService smsCountrySmsService;
-	private IReconciliationFailureDetailsDAO reconciliationFailureDetailsDAO;
+	
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;	
 		
 	
@@ -61,10 +57,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
 	
-	public void setReconciliationFailureDetailsDAO(
-			IReconciliationFailureDetailsDAO reconciliationFailureDetailsDAO) {
-		this.reconciliationFailureDetailsDAO = reconciliationFailureDetailsDAO;
-	}
+
 
 	public ICadreTxnUserDAO getCadreTxnUserDAO() {
 		return cadreTxnUserDAO;

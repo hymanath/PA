@@ -18,7 +18,6 @@ import org.springframework.stereotype.Component;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreTransactionVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
-import com.itgrids.partyanalyst.dto.ReconciliationFailureVO;
 import com.itgrids.partyanalyst.dto.ReconciliationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
