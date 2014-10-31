@@ -757,7 +757,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			{
 				for(Object[] params : list)
 				{
-					returnVo.setTotalRecords((Long)params[3]);
+					returnVo.setTotalRecords((Long)params[3] != null ? (Long)params[3] : 0l);
 				}
 				
 			}
@@ -767,7 +767,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			{
 				for(Object[] params : todayRecords)
 				{
-					returnVo.setTodayRecords((Long)params[3]);
+					returnVo.setTodayRecords((Long)params[3] != null ? (Long)params[3] : 0l);
 				}
 			}
 			List<Object[]> list1 = cadreTxnDetailsDAO.getCompletedTransactionDetailsByDates(null, yesterDay);
@@ -776,10 +776,10 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 							for(Object[] params : list1)
 							{
 								
-								returnVo.setTodayMoneyCollected((Long)params[2]);
-								returnVo.setTodayPaidAmount((Long)params[0]);
-								returnVo.setTodayPendingAmount((Long)params[1]);
-								returnVo.setTodayotpTransactionCompleted((Long)params[3]);
+								returnVo.setTodayMoneyCollected((Long)params[2] != null ? (Long)params[2] :0l);
+								returnVo.setTodayPaidAmount((Long)params[0] != null ? (Long)params[0] : 0l);
+								returnVo.setTodayPendingAmount((Long)params[1] !=null ? (Long)params[1] : 0l);
+								returnVo.setTodayotpTransactionCompleted((Long)params[3] != null ? (Long)params[3] : 0l);
 								
 							}
 					}
@@ -792,9 +792,9 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 					{
 						for(Object[] params : list2)
 						{
-							returnVo.setYesterDayMoneyCollected((Long)params[2]);
-							returnVo.setYesterDayPaidAmount((Long)params[0]);
-							returnVo.setYesterDayPendingAmount((Long)params[1]);
+							returnVo.setYesterDayMoneyCollected((Long)params[2] != null ? (Long)params[2]  : 0l );
+							returnVo.setYesterDayPaidAmount((Long)params[0] != null ? (Long)params[0] : 0l);
+							returnVo.setYesterDayPendingAmount((Long)params[1] != null ? :(Long)params[1] :0l);
 						}
 					}
 			   // total users 
