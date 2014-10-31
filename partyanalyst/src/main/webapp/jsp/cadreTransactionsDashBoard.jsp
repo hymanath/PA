@@ -83,9 +83,9 @@
 						<tbody>
 							<tr>
 							
-								<td><h2>${surveyTransactionVO.yesterDayCount}</h2><p>Yesterday Live Records</p></td>
+								<td><h2>${surveyTransactionReportVO.todayRecords}</h2><p>Today Live Records</p></td>
 								<td><h2>${surveyTransactionVO.weekCount}</h2><p>This Week Records</p></td>
-								<td><h2>${surveyTransactionVO.recordsCount}</h2><p>Until Now Records</p></td>
+								<td><h2>${surveyTransactionReportVO.totalRecords}</h2><p>Total Records</p></td>
 								
 							</tr>
 							
@@ -97,8 +97,8 @@
 				    <table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" >
 						<tbody>
 							<tr>	
-								<td style="width:70%;"><p>Total Teams Count<small> (Records Submited)</small></p></td><td  style="width:30%;"><h2>${surveyTransactionVO.teamSize}</h2></td></tr>
-								<td style="width:70%;"><p>Total Teams Count<small> (Records Not Submited)</small></p></td><td  style="width:30%;"><h2>${surveyTransactionVO.idleTeamSize}</h2></td></tr>
+								<td style="width:70%;"><p>Total Teams Count</p></td><td  style="width:30%;"><h2>${surveyTransactionReportVO.totalUsers}</h2></td></tr>
+								<td style="width:70%;"><p>Today Teams Count</p></td><td  style="width:30%;"><h2>${surveyTransactionReportVO.todayUsers}</h2></td></tr>
 								
 						</tbody>
 					</table>
@@ -110,7 +110,7 @@
 				    <table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" >
 						<tbody>
 							<tr>	
-								<td style="width:70%;"><p>Teem Members OTP Requested</p></td><td  style="width:30%;"><h2>${surveyTransactionVO.otpRequestCount}</h2></td></tr>
+								<td style="width:70%;"><p>Today OTP Requested</p></td><td  style="width:30%;"><h2>${surveyTransactionReportVO.otpReqCount}</h2></td></tr>
 								
 						</tbody>
 					</table>
@@ -120,7 +120,7 @@
 				    <table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" >
 						<tbody>
 							<tr>	
-								<td style="width:70%;"><p>Team Members OTP transaction completed</p></td><td  style="width:30%;"><h2>${surveyTransactionVO.otpConfirmCount}</h2></td></tr>
+								<td style="width:70%;"><p>Today OTP transaction completed</p></td><td  style="width:30%;"><h2>${surveyTransactionReportVO.todayotpTransactionCompleted}</h2></td></tr>
 								
 						</tbody>
 					</table>
@@ -130,7 +130,7 @@
 				    <table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" >
 						<tbody>
 							<tr>	
-								<td style="width:70%;"><p>Team Members OTP transaction Pending</p></td><td  style="width:30%;"><h2>${surveyTransactionVO.remainingOTPCount}</h2></td></tr>
+								<td style="width:70%;"><p>Today OTP transaction Pending</p></td><td  style="width:30%;"><h2>${surveyTransactionReportVO.todayotpTransactionPending}</h2></td></tr>
 								
 						</tbody>
 					</table>
@@ -153,7 +153,7 @@
 				<table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" >
 					<tbody>
 						<tr>	
-							<td style="width:70%;"><p>Total Amount</p></td><td  style="width:30%;"><h2>${surveyTransactionVO.actualAmount}/-</h2></td></tr>
+							<td style="width:70%;"><p>Today Total Amount</p></td><td  style="width:30%;"><h2>${surveyTransactionReportVO.todayMoneyCollected}/-</h2></td></tr>
 							
 					</tbody>
 				</table>
@@ -163,7 +163,7 @@
 				<table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" >
 					<tbody>
 						<tr>	
-							<td style="width:70%;"><p>Submitted Amount</p></td><td  style="width:30%;"><h2>${surveyTransactionVO.depositedAmount}/-</h2></td></tr>
+							<td style="width:70%;"><p>Today Submitted Amount</p></td><td  style="width:30%;"><h2>${surveyTransactionReportVO.todayPaidAmount}/-</h2></td></tr>
 							
 					</tbody>
 				</table>
@@ -173,7 +173,39 @@
 				<table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" >
 					<tbody>
 						<tr>	
-							<td style="width:70%;"><p>Pending Amount</p></td><td  style="width:30%;"><h2>${surveyTransactionVO.remainingAmount}/-</h2></td></tr>
+							<td style="width:70%;"><p>Pending Amount</p></td><td  style="width:30%;"><h2>${surveyTransactionReportVO.todayPendingAmount}/-</h2></td></tr>
+							
+					</tbody>
+				</table>
+			</div>
+		</div>
+		
+			<div class="row-fluid " >	
+			<div class="span4 show-grid well well-small border-radius-0 mb-10">
+				<table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" >
+					<tbody>
+						<tr>	
+							<td style="width:70%;"><p>YesterDay Total Amount</p></td><td  style="width:30%;"><h2>${surveyTransactionReportVO.yesterDayMoneyCollected}/-</h2></td></tr>
+							
+					</tbody>
+				</table>
+			</div>
+			
+			<div class="span4 show-grid well well-small border-radius-0 mb-10">
+				<table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" >
+					<tbody>
+						<tr>	
+							<td style="width:70%;"><p>YesterDay Submitted Amount</p></td><td  style="width:30%;"><h2>${surveyTransactionReportVO.yesterDayPaidAmount}/-</h2></td></tr>
+							
+					</tbody>
+				</table>
+			</div>
+			
+			<div class="span4 show-grid well well-small border-radius-0 mb-10">
+				<table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" >
+					<tbody>
+						<tr>	
+							<td style="width:70%;"><p>Pending Amount</p></td><td  style="width:30%;"><h2>${surveyTransactionReportVO.yesterDayPendingAmount}/-</h2></td></tr>
 							
 					</tbody>
 				</table>
@@ -203,6 +235,25 @@
 		$(document).ready(function(){
 		 
 		});	
+		
+		/*function getSurveyTransactionDetails()
+		{
+			var jObj ={
+					task:"task"
+			}
+			$.ajax({
+		          type:'POST',
+		          url: 'basicCadreTransactionDetailsAction.action',
+		          dataType: 'json',
+		          data: {task:JSON.stringify(jObj)},
+		     	  }).done(function(result){ 
+					  //$("#ajaxLoad").css("display","none");
+					if(result != null){
+						
+					}
+			   });
+			   	
+		}*/
 	 </script>
     <script>$('#fadeInDown').addClass('animated fadeInDown');</script>
     <script>$('#fadeInLeft').addClass('animated fadeInLeft');</script>
@@ -212,7 +263,6 @@
     <script>$('#PreviousmembersCount').addClass('animated fadeInUp');</script>
     <script>$('#membersCount').addClass('animated fadeInX');</script>
 	<!----->
-	
 	
   </body>
 </html>
