@@ -108,4 +108,18 @@ public class TdMemberDAO extends GenericDaoHibernate<TdMember, Long> implements 
 		
 	}
 	
+	public List<Object[]> getCadreDataByYear(Long constituencyId)
+	{
+		//0 cadre.memberId,1cadre.memberShipNo,2cadre.firstname,3cadre.relativename,4cadre.gender,5cadre.mobileNo,
+		//6 cadre.dateOfBirth,7cadre.educationId,8 cadre.userAddress.panchayat,9 cadre.userAddress.constituency.constituencyId,
+		//10 cadre.userAddress().tehsil().tehsilId,11 cadre.userAddress.localElectionBody,12 cadre.occupationId,
+		//13 cadre.casteState.casteStateId, 14cadre.enrollmentYear,15cadre.image,16cadre.nameLocal
+		Query query = getSession().createSQLQuery("select nMemberId,sMemberShipNo,sMemberName,sRelationName,sGender,sMobileNumber,dtDOB,qualification_id_pa,panchayat_id_pa," +
+				"  constituency_id_pa,tehsil_id_pa,local_election_body_id_pa,occupation_id_pa,caste_id_pa,enrollmentYear, " +
+				" sPhoto,sMemberTName from td_member_total  where constituency_id_pa = "+constituencyId);
+		
+		
+		return query.list();
+	}
+	
 }
