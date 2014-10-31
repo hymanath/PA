@@ -44,4 +44,11 @@ public class CadreSurveyUserDAO extends GenericDaoHibernate<CadreSurveyUser, Lon
 		return query.list();
 		
 	}
+	
+	public Long  getTotalCadreSurveyDetails()
+	{
+		Query query = getSession().createQuery("select count(model.cadreSurveyUserId) from CadreSurveyUser model where " +
+				"  model.isDeleted ='N'  ");		
+		return (Long) query.uniqueResult();
+	}
 }
