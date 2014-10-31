@@ -58,7 +58,7 @@
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="mobileService" ref="mobileService" />
 		<property name="mobileNumbersDAO" ref="mobileNumbersDAO" />
-		<property name="tdMemberDAO" ref="tdMemberDAO" />
+		
 		
 		
 	</bean>
@@ -1890,7 +1890,7 @@
       <property name="votersAnalysisService" ref="votersAnalysisService"></property>
       <property name="ivrMobileDAO" ref="ivrMobileDAO"></property>
       <property name="mobileNumbersDAO" ref="mobileNumbersDAO"></property>
-      
+      <property name="tdMemberDAO" ref="tdMemberDAO" />
       
     </bean>
     
