@@ -16,7 +16,11 @@ public class ReconciliationVO implements Serializable
 	private Long 		pendingAmount;
 	private String 		insertedTime; 
 	private String		uniqueKey;
-	private String 		mobileNo;
+	private String 		mobileNo;	
+	private String 		agentName;
+	private String		agentReconConstyName;
+	private String      agentVillage;
+	private String 		agentMobileNo;
 	
 	
 	public Long getCadreSurveyUserId() {
@@ -78,6 +82,30 @@ public class ReconciliationVO implements Serializable
 	}
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
+	}
+	public String getAgentName() {
+		return agentName;
+	}
+	public void setAgentName(String agentName) {
+		this.agentName = agentName;
+	}
+	public String getAgentReconConstyName() {
+		return agentReconConstyName;
+	}
+	public void setAgentReconConstyName(String agentReconConstyName) {
+		this.agentReconConstyName = agentReconConstyName;
+	}
+	public String getAgentVillage() {
+		return agentVillage;
+	}
+	public void setAgentVillage(String agentVillage) {
+		this.agentVillage = agentVillage;
+	}
+	public String getAgentMobileNo() {
+		return agentMobileNo;
+	}
+	public void setAgentMobileNo(String agentMobileNo) {
+		this.agentMobileNo = agentMobileNo;
 	}
 	
 	

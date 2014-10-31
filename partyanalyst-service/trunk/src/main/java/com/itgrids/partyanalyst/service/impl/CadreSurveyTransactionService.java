@@ -17,13 +17,17 @@ import com.itgrids.partyanalyst.dao.ICadreTxnDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreTxnUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IReconciliationFailureDetailsDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ReconciliationFailureDetailsDAO;
 import com.itgrids.partyanalyst.dto.CadreTransactionVO;
+import com.itgrids.partyanalyst.dto.ReconciliationFailureVO;
 import com.itgrids.partyanalyst.dto.ReconciliationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyTransactionReportVO;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.model.CadreOtpDetails;
 import com.itgrids.partyanalyst.model.CadreTxnDetails;
+import com.itgrids.partyanalyst.model.ReconciliationFailureDetails;
 import com.itgrids.partyanalyst.service.ICadreSurveyTransactionService;
 import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -48,13 +52,18 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 	private ICadreOtpDetailsDAO cadreOtpDetailsDAO;
 	
 	private ISmsService smsCountrySmsService;
-	
+	private IReconciliationFailureDetailsDAO reconciliationFailureDetailsDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;	
-	
+		
 	
 	public void setDelimitationConstituencyAssemblyDetailsDAO(
 			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
 		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
+	}
+	
+	public void setReconciliationFailureDetailsDAO(
+			IReconciliationFailureDetailsDAO reconciliationFailureDetailsDAO) {
+		this.reconciliationFailureDetailsDAO = reconciliationFailureDetailsDAO;
 	}
 
 	public ICadreTxnUserDAO getCadreTxnUserDAO() {
@@ -228,6 +237,10 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			cadreTxnDetails.setUpdatedTime(dateUtil.getCurrentDateAndTime());
 			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT_24HRS);
 			cadreTxnDetails.setSurveyTime(sdf.parse(inputVo.getInsertedTime()));
+			cadreTxnDetails.setAgentMobileNo(inputVo.getAgentMobileNo());
+			cadreTxnDetails.setAgentName(inputVo.getAgentName());
+			cadreTxnDetails.setAgentReconConstyName(cadreTxnDetails.getAgentReconConstyName());
+			cadreTxnDetails.setAgentVillage(cadreTxnDetails.getAgentVillage());
 			CadreTxnDetails savedStatus = cadreTxnDetailsDAO.save(cadreTxnDetails);
 			if(savedStatus != null)
 			{
@@ -397,6 +410,33 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 		
 	}
 	
+/*	public String saveReconsilationFailedDetails(ReconciliationFailureVO inputVo)
+	{
+		
+		String msg = "EXCEPTION";
+		try 
+		{
+			ReconciliationFailureDetails reconciliationFailureDetails = new ReconciliationFailureDetails();
+			reconciliationFailureDetails.setAgentMobile(inputVo.getAgentMobile());
+			reconciliationFailureDetails.setCadreAmount(inputVo.getCadreAmount());
+			reconciliationFailureDetails.setCadreConstituency(inputVo.getCadreConstituency());
+			reconciliationFailureDetails.setCadreName(inputVo.getCadreName());
+			reconciliationFailureDetails.setCadreVillage(inputVo.getCadreVillage());
+			reconciliationFailureDetails.setUserId(inputVo.getUserId());
+			ReconciliationFailureDetails successStatus = reconciliationFailureDetailsDAO.save(reconciliationFailureDetails);
+			if(successStatus != null)
+			{
+				msg = "SUCCESS";
+			}
+			else
+			{
+				msg = "FAILURE";
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured in saveReconsilationFailedDetails() in CadreSurveyTransactionService class.",e);
+		}
+		return msg;
+	}*/
 	
 	public String updatePendingAmount(CadreTransactionVO inputVo)
 	{

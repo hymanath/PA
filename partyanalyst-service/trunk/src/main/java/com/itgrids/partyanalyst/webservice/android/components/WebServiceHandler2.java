@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreTransactionVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
+import com.itgrids.partyanalyst.dto.ReconciliationFailureVO;
 import com.itgrids.partyanalyst.dto.ReconciliationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
@@ -287,6 +288,14 @@ public class WebServiceHandler2 {
 	}
 	
 		
+	@POST
+	@Path("/storeReconciliationFailureData")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String storeReconciliationFailureData(ReconciliationFailureVO inputVo)
+	{
+		return cadreSurveyTransactionService.saveReconsilationFailedDetails(inputVo);
+	}
+	
 	
 	@GET
 	@Path("/getAllVersionsOfAnApp/{appName}/{version}/{isDebug}")
