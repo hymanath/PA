@@ -1157,13 +1157,13 @@
 										</div>
 										<div class="span12">
 										<div class="span6">
-											<h5 style="color: #9a9a9a;">  Voter Telugu Name <span class="mandatory">*</span> </h5>
-											<input type="checkbox" id="voterTNameId" class="cadreTnamesCls"  style="margin-top:-15px;" checked="true" value="Voter" name="cadreRegistrationVO.nameType" onClick="updateNameSelection('cadreTnamesCls','voterTNameId');"/>
+											<h5>  Voter Telugu Name  </h5>
+											<input type="checkbox" id="voterTNameId" class="cadreTnamesCls"  style="margin-top:-15px;" checked="true" value="Voter" name="cadreRegistrationVO.nameType" />
 											<input type="text" class="form-control border-radius-0" placeholder="Voter Name" style="width:190px;" value="${voterInfoVOList[0].teluguName}"  ></input>											
 										</div>	
 										<div class="span6">	
-											<h5 class="text-align1"> Cadre Telugu Name <span class="mandatory">*</span> </h5>	
-											<input type="checkbox"  id="cadreTNameId" class="cadreTnamesCls" value="Cadre" style="margin-top:-15px;" name="cadreRegistrationVO.nameType" value="Cadre"  onClick="updateNameSelection('cadreTnamesCls','cadreTNameId');"/>
+											<h5 class="text-align1"> Cadre Telugu Name  </h5>	
+											<input type="checkbox"  id="cadreTNameId" class="cadreTnamesCls" value="Cadre" style="margin-top:-15px;" name="cadreRegistrationVO.nameType" value="Cadre"  />
 											<input type="text" class="form-control border-radius-0" placeholder="Voter Name" style="width:170px;" value="${voterInfoVOList[0].teluguRelativeName}" ></input>
 											
 										</div>
