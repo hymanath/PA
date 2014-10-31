@@ -1258,7 +1258,7 @@
 								</div>
 								<div class="m_top10">
 										<div class="row-fluid">
-										  <!--<c:if test="${empty voterInfoVOList[0].fmlyVCardNo}">-->
+										  <s:if test="voterInfoVOList[0].voterCardNo == null || voterInfoVOList[0].voterCardNo.length == 0 ">
 											<div style="width:150px;float:left;">
 											<h5 class="text-align1">VOTER ID <span class="mandatory">*</span></h5>
 												<input type="text" class="form-control border-radius-0 text-align2 " placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"   id="cardNumber" value="${voterInfoVOList[0].voterCardNo}" readonly style="width:135px;"></input>
@@ -1274,8 +1274,8 @@
 											<h5 class="text-align1">H NO</h5>
 												<input type="text" class="form-control border-radius-0 " placeholder="House Number" name="cadreRegistrationVO.houseNo" style="width: 120px; float: left; margin-left: 0px;"  value="${voterInfoVOList[0].houseNo}"></input>
 											</div>
-										   <!-- </c:if>
-										  <c:if test="${not empty voterInfoVOList[0].fmlyVCardNo}">
+										    </s:if>
+										  <s:else>
 											<div class="span6">
 											<h5 class="text-align1">VOTER ID <span class="mandatory">*</span></h5>
 												<input type="text" class="form-control border-radius-0 text-align2 " placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"   id="cardNumber" value="${voterInfoVOList[0].voterCardNo}" readonly ></input>
@@ -1286,14 +1286,14 @@
 											<h5 class="text-align1">H NO</h5>
 												<input type="text" class="form-control border-radius-0 " placeholder="House Number" name="cadreRegistrationVO.houseNo" style="float: left; margin-left: 0px;"  value="${voterInfoVOList[0].houseNo}"></input>
 											</div>
-										   </c:if>	-->
+										  </s:else>
 												<c:if test="${not empty voterInfoVOList[0].fmlyVCardNo}">
 													<div class="span4 famlyMemClsDiv">												
 														<input type="checkbox" title="Please Check If Cadre Didn't Have Voter Card And Using His Family Members Voter Card" id="relativeTypeChecked" name="relativeTypeChecked" onclick="showHideFamRelatinoSts();" checked="true"/> Is Family Member
 													</div>
 													<div  class="span6" id="showHideFammemberType" style="display:block; margin-left: 165px;margin-top: -33px;">
 														<span style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</span><select name="relativeTypeId" id="relativeTypeId"> </select>
-														<span style="color: #9a9a9a;font-weight: bold;">Voter Card &nbsp;</span><input type="text" readonly="readonly" id="familyVtrCrdId" name="relativeVoterCardNo" value="${voterInfoVOList[0].fmlyVCardNo}">
+														<span style="color: #9a9a9a;font-weight: bold;">Voter Card &nbsp;</span><input type="text" readonly="readonly" id="familyVtrCrdId" style="width: 190px;" name="relativeVoterCardNo" value="${voterInfoVOList[0].fmlyVCardNo}"><span class="icon-remove" style="cursor: pointer;" title="Click Here To Clear Voter Card No" onclick="clearSelDiv('familyVtrCrdId');"></span>
 														<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByfName();}" style="margin-top:10px;"> LookUp </a>
 													</div>
 												</c:if>
@@ -1303,7 +1303,7 @@
 													</div>
 													<div  class="span6" id="showHideFammemberType" style="display:none ; margin-left: 165px;margin-top: -33px;">
 														<span style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</span><select name="relativeTypeId" id="relativeTypeId"> </select>
-														<span style="color: #9a9a9a;font-weight: bold;">Voter Card &nbsp;</span><input type="text" readonly="readonly" id="familyVtrCrdId" name="relativeVoterCardNo" value="${voterInfoVOList[0].fmlyVCardNo}">
+														<span style="color: #9a9a9a;font-weight: bold;">Voter Card &nbsp;</span><input type="text" readonly="readonly" id="familyVtrCrdId" style="width: 190px;" name="relativeVoterCardNo" value="${voterInfoVOList[0].fmlyVCardNo}"><span class="icon-remove" style="cursor: pointer;" title="Click Here To Clear Voter Card No" onclick="clearSelDiv('familyVtrCrdId');"></span>
 														<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByfName();}" style="margin-top:10px;"> LookUp </a>
 													</div>
 												</c:if>
@@ -1316,7 +1316,7 @@
 										
 											<div class="span6">
 											<h5 class="text-align1">PARTY MEMBER SINCE</h5>
-												<input type="text" class="form-control border-radius-0 text-align2 datePickerCls" placeholder="Party Member Since " name="cadreRegistrationVO.partyMemberSinceStr"  value="${voterInfoVOList[0].activeDate}"  readOnly="true"></input>
+												<input type="text" class="form-control border-radius-0 text-align2 datePickerCls" style="width: 186px;" placeholder="Party Member Since " name="cadreRegistrationVO.partyMemberSinceStr" id="reqPartyMemberSinceStrId" value="${voterInfoVOList[0].activeDate}"  readOnly="true"></input><span class="icon-remove" style="cursor: pointer;" title="Click Here To Clear Party Member Since" onclick="clearSelDiv('reqPartyMemberSinceStrId');"></span>
 											</div>
 											
 											<div class="span6">
@@ -2925,6 +2925,9 @@ $(document).ready(function(){
 	}
 	function clearPreviousEnrol(){
 		$("#preEnrollNoValue").val("");
+	}
+	function clearSelDiv(selId){
+	 $("#"+selId).val("");
 	}
 </script>
 </html>
