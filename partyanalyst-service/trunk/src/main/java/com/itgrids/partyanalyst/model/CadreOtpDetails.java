@@ -33,7 +33,7 @@ public class CadreOtpDetails  extends BaseModel{
 	private Long cadreOtpDetailsId;
 	private String otpReferenceId;
 	private String otpNo;
-	
+	private CadreSurveyUser cadreSurveyUser;
 	private String isDeleted;
 	private Date insertedTime;
 	private Date updatedTime;
@@ -125,7 +125,17 @@ public class CadreOtpDetails  extends BaseModel{
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
 	}
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="cadre_survey_user_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CadreSurveyUser getCadreSurveyUser() {
+		return cadreSurveyUser;
+	}
 
+	public void setCadreSurveyUser(CadreSurveyUser cadreSurveyUser) {
+		this.cadreSurveyUser = cadreSurveyUser;
+	}
 	@Column(name="cadre_survey_user_id")
 	public Long getCadreSurveyUserId() {
 		return cadreSurveyUserId;
