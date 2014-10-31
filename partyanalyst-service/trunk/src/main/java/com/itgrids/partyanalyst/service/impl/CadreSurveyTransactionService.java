@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dto.CadreTransactionVO;
 import com.itgrids.partyanalyst.dto.ReconciliationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SurveyTransactionReportVO;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.model.CadreOtpDetails;
 import com.itgrids.partyanalyst.model.CadreTxnDetails;
@@ -735,6 +736,83 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 		}
 		
 		return returnVO;
+	}
+	
+	public SurveyTransactionReportVO getBasicTransactionDetails()
+	{
+		SurveyTransactionReportVO returnVo = new SurveyTransactionReportVO();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		try {
+			Date today = new Date();
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(today);
+			cal.add(Calendar.DATE, -1);
+			Date yesterDay = cal.getTime();
+			cal.setTime(yesterDay);
+			cal.add(Calendar.DATE, -1);
+			Date beforeYesterDay = cal.getTime();
+			// Total Transactions	
+			List<Object[]> list = cadreTxnDetailsDAO.getTransactionDetailsByDates(today, null);
+			if(list !=null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					returnVo.setTotalRecords((Long)params[3]);
+				}
+				
+			}
+			// yesterday Transactions 
+			List<Object[]> todayRecords = cadreTxnDetailsDAO.getTransactionDetailsByDates(null, yesterDay);
+			if(todayRecords != null && todayRecords.size() > 0)
+			{
+				for(Object[] params : todayRecords)
+				{
+					returnVo.setTodayRecords((Long)params[3]);
+				}
+			}
+			List<Object[]> list1 = cadreTxnDetailsDAO.getCompletedTransactionDetailsByDates(null, yesterDay);
+				if(list1 !=null && list1.size() > 0)
+				  {
+							for(Object[] params : list1)
+							{
+								
+								returnVo.setTodayMoneyCollected((Long)params[2]);
+								returnVo.setTodayPaidAmount((Long)params[0]);
+								returnVo.setTodayPendingAmount((Long)params[1]);
+								returnVo.setTodayotpTransactionCompleted((Long)params[3]);
+								
+							}
+					}
+				
+				Long otpPending = cadreTxnDetailsDAO.getNotCompletedTransactionDetailsByDates(null, yesterDay);
+				returnVo.setTodayotpTransactionPending(otpPending != null ? otpPending : 0l);
+			// Day before Transactions
+					List<Object[]> list2 = cadreTxnDetailsDAO.getCompletedTransactionDetailsByDates(null, beforeYesterDay);	
+					if(list2 !=null && list2.size() > 0)
+					{
+						for(Object[] params : list2)
+						{
+							returnVo.setYesterDayMoneyCollected((Long)params[2]);
+							returnVo.setYesterDayPaidAmount((Long)params[0]);
+							returnVo.setYesterDayPendingAmount((Long)params[1]);
+						}
+					}
+			   // total users 
+				Long totalUsers = cadreTxnDetailsDAO.getUsersCount(yesterDay,null);
+				returnVo.setTotalUsers(totalUsers != null ? totalUsers : 0l);
+				// yesterday users 
+				Long todayUsers = cadreTxnDetailsDAO.getUsersCount(yesterDay,null);
+				returnVo.setTodayUsers(todayUsers != null ? todayUsers : 0l);
+				// beforeYesterDay users 
+				Long beforeYesterDayUsers = cadreTxnDetailsDAO.getUsersCount(beforeYesterDay,null);
+				returnVo.setYesterDayUsers(beforeYesterDayUsers != null ? beforeYesterDayUsers : 0l);
+				Long toDayOtpTxn =cadreOtpDetailsDAO.getOTPTxnCountByDate(yesterDay);
+				returnVo.setOtpReqCount(toDayOtpTxn != null ? toDayOtpTxn : 0l);
+		}
+		catch (Exception e) {
+			LOG.error(" exception occured at getBasicTransactionDetails() in CadreSurveyTransactionService service class. ", e);
+		}
+		return returnVo;
 	}
 
 }

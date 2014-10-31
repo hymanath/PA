@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.CadreTransactionVO;
 import com.itgrids.partyanalyst.dto.ReconciliationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SurveyTransactionReportVO;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 
 public interface ICadreSurveyTransactionService {
@@ -19,5 +20,5 @@ public interface ICadreSurveyTransactionService {
 	public String validateOTPForMobile(CadreTransactionVO inputVo);
 	public String updatePendingAmount(CadreTransactionVO inputVo);
 	public String saveReconciliationData(ReconciliationVO inputVo);
-
+	public SurveyTransactionReportVO getBasicTransactionDetails();
 }

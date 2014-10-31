@@ -98,4 +98,127 @@ public class CadreTxnDetailsDAO extends GenericDaoHibernate<CadreTxnDetails, Lon
 		return query.executeUpdate();
 	}
 	
+	
+	public Long getUsersCount(Date searchDate,Date todayDate)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select count(distinct model.cadreSurveyUser.cadreSurveyUserId) from CadreTxnDetails model where ");
+		if(todayDate == null) // yesterDay transaction details
+		{
+			queryStr.append(" date(model.surveyTime) = :searchDate  ");
+		}
+		else if(searchDate ==null) // total transaction details
+		{
+			queryStr.append("  date(model.surveyTime) <= :todayDate ");
+		}
+		else if(todayDate != null) // this week transaction details
+		{
+			queryStr.append("  date(model.surveyTime) >= :searchDate and date(model.surveyTime) <= :todayDate ");
+		}
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(todayDate == null)
+		{
+			query.setDate("searchDate", searchDate);
+		}
+		else if(searchDate ==null)
+		{
+			query.setDate("todayDate", todayDate);
+		}
+		else if(todayDate != null)
+		{
+			query.setDate("searchDate", searchDate);
+			query.setDate("todayDate", todayDate);
+		}
+		
+		
+		return (Long) query.uniqueResult();
+	}
+	
+	
+	public List<Object[]> getCompletedTransactionDetailsByDates(Date todayDate, Date searchDate)
+	{
+		StringBuilder queryStr = new StringBuilder();
+
+		queryStr.append(" select sum(model.paidAmount), sum(model.pendingAmount), sum(model.totalAmount),count(model.cadreTxnDetailsId) from CadreTxnDetails model where  ");	
+
+		if(todayDate == null) // yesterDay transaction details
+		{
+			queryStr.append(" date(model.surveyTime) = :searchDate  ");
+		}
+		else if(searchDate ==null) // total transaction details
+		{
+			queryStr.append("  date(model.surveyTime) <= :todayDate ");
+		}
+		else if(todayDate != null) //  transaction details
+		{
+			queryStr.append("  date(model.surveyTime) >= :searchDate and date(model.surveyTime) <= :todayDate ");
+		}
+		
+		queryStr.append(" and model.completeStatus = 'Y' ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(todayDate == null)
+		{
+			query.setDate("searchDate", searchDate);
+		}
+		else if(searchDate ==null)
+		{
+			query.setDate("todayDate", todayDate);
+		}
+		else if(todayDate != null)
+		{
+			query.setDate("searchDate", searchDate);
+			query.setDate("todayDate", todayDate);
+		}
+		
+		
+		return query.list();
+	}
+	
+	
+	public Long getNotCompletedTransactionDetailsByDates(Date todayDate, Date searchDate)
+	{
+		StringBuilder queryStr = new StringBuilder();
+
+		queryStr.append(" select count(model.cadreTxnDetailsId) from CadreTxnDetails model where  ");	
+
+		if(todayDate == null) // yesterDay transaction details
+		{
+			queryStr.append(" date(model.surveyTime) = :searchDate  ");
+		}
+		else if(searchDate ==null) // total transaction details
+		{
+			queryStr.append("  date(model.surveyTime) <= :todayDate ");
+		}
+		else if(todayDate != null) //  transaction details
+		{
+			queryStr.append("  date(model.surveyTime) >= :searchDate and date(model.surveyTime) <= :todayDate ");
+		}
+		
+		queryStr.append(" and model.completeStatus = 'N' ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(todayDate == null)
+		{
+			query.setDate("searchDate", searchDate);
+		}
+		else if(searchDate ==null)
+		{
+			query.setDate("todayDate", todayDate);
+		}
+		else if(todayDate != null)
+		{
+			query.setDate("searchDate", searchDate);
+			query.setDate("todayDate", todayDate);
+		}
+		
+		
+		return (Long) query.uniqueResult();
+	}
+	
+	
 }

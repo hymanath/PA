@@ -18,4 +18,8 @@ public interface ICadreTxnDetailsDAO extends GenericDao<CadreTxnDetails, Long>{
 	public Integer updateCompleteStatus(String uniqueKey,Long constituencyId);
 	public Long getPendingAmountForUser(String uniqueKey,Long constituencyId,Long userId);
 	public Integer updatePendingAmount(Long pendingAmount,String uniqueKey,Long constituencyId,Long userId);
+
+	public Long getUsersCount(Date searchDate,Date todayDate);
+	public List<Object[]> getCompletedTransactionDetailsByDates(Date todayDate, Date searchDate);
+	public Long getNotCompletedTransactionDetailsByDates(Date todayDate, Date searchDate);
 }
