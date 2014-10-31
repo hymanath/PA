@@ -203,11 +203,11 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			CadreTxnDetails cadreTxnDetails = new CadreTxnDetails();
 			cadreTxnDetails.setCadreSurveyUserId(inputVo.getCadreSurveyUserId().longValue() > 0 ? inputVo.getCadreSurveyUserId() : null);
 			cadreTxnDetails.setConstiteuncyId(inputVo.getConstituencyId().longValue() > 0 ? inputVo.getConstituencyId() : null);
-			cadreTxnDetails.setSinkedRecords(inputVo.getSinkedRecords() > 0 ? inputVo.getSinkedRecords() : null);
-			cadreTxnDetails.setPendingRecords(inputVo.getPendingRecords() > 0 ? inputVo.getPendingRecords() : null );
-			cadreTxnDetails.setTotalAmount(inputVo.getTotalAmount() > 0 ? inputVo.getTotalAmount() : null);
-			cadreTxnDetails.setPaidAmount(inputVo.getPaidAmount() > 0 ? inputVo.getPaidAmount()  : null);
-			cadreTxnDetails.setPendingAmount(inputVo.getPendingAmount() > 0 ? inputVo.getPendingAmount() : null);
+			cadreTxnDetails.setSinkedRecords(inputVo.getSinkedRecords() > 0 ? inputVo.getSinkedRecords() : 0);
+			cadreTxnDetails.setPendingRecords(inputVo.getPendingRecords() > 0 ? inputVo.getPendingRecords() : 0 );
+			cadreTxnDetails.setTotalAmount(inputVo.getTotalAmount() > 0 ? inputVo.getTotalAmount() : 0);
+			cadreTxnDetails.setPaidAmount(inputVo.getPaidAmount() > 0 ? inputVo.getPaidAmount()  : 0);
+			cadreTxnDetails.setPendingAmount(inputVo.getPendingAmount() > 0 ? inputVo.getPendingAmount() : 0);
 			cadreTxnDetails.setUniqueKey(inputVo.getUniqueKey() != null ? inputVo.getUniqueKey() : null);
 			cadreTxnDetails.setInsertedTime(dateUtil.getCurrentDateAndTime());
 			cadreTxnDetails.setMobileNo(inputVo.getMobileNo());
@@ -287,6 +287,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			cadreOtpDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 			cadreOtpDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 			cadreOtpDetails.setCadreSurveyUserId(inputVo.getUserId());
+			cadreOtpDetails.setIsDeleted("N");
 			CadreOtpDetails savedStatus = cadreOtpDetailsDAO.save(cadreOtpDetails);
 			if(savedStatus != null)
 			{
