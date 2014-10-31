@@ -8722,6 +8722,12 @@
 			<result name="input">/jsp/loginForm.jsp?src=tdpCadreIdCardDetailsAction</result>
 		</action>
 		
+		
+		<action name="basicCadreTransactionDetailsAction" class="cadreSurveyTransactionAction" method="getSurveyTransactionDetails" >
+			<result type="json" name="success">
+				<param name="root">surveyTransactionReportVO</param>
+			</result>
+		</action>
 </package>
 
 </struts>      

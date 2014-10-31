@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SurveyTransactionReportVO;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.service.ICadreSurveyTransactionService;
 import com.opensymphony.xwork2.Action;
@@ -34,8 +35,18 @@ public class CadreSurveyTransactionAction extends ActionSupport implements Servl
 	private SurveyTransactionVO surveyTransactionVO;
 	private ICadreSurveyTransactionService cadreSurveyTransactionService;
 	private List<SelectOptionVO> constituencyList = new ArrayList<SelectOptionVO>();
+	private SurveyTransactionReportVO surveyTransactionReportVO;
 	
 	
+	public SurveyTransactionReportVO getSurveyTransactionReportVO() {
+		return surveyTransactionReportVO;
+	}
+
+	public void setSurveyTransactionReportVO(
+			SurveyTransactionReportVO surveyTransactionReportVO) {
+		this.surveyTransactionReportVO = surveyTransactionReportVO;
+	}
+
 	public List<SelectOptionVO> getConstituencyList() {
 		return constituencyList;
 	}
@@ -93,7 +104,8 @@ public class CadreSurveyTransactionAction extends ActionSupport implements Servl
 	public String execute()
 	{
 		try {
-			surveyTransactionVO = cadreSurveyTransactionService.getCadreSurveyTransactionDetails();
+			//surveyTransactionVO = cadreSurveyTransactionService.getCadreSurveyTransactionDetails();
+			surveyTransactionReportVO = cadreSurveyTransactionService.getBasicTransactionDetails();
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in execute() in CadreSurveyTransactionAction class.", e);
@@ -147,6 +159,18 @@ public class CadreSurveyTransactionAction extends ActionSupport implements Servl
 			surveyTransactionVO = cadreSurveyTransactionService.getLocationWiseTransactionDetails(fromDate,toDate,searchType,locationIdList);
 		} catch (Exception e) {
 			LOG.error("Exception occured in getLocationWiseTransactionReport() in CadreSurveyTransactionAction class.", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getSurveyTransactionDetails()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			surveyTransactionReportVO = cadreSurveyTransactionService.getBasicTransactionDetails();
+		}
+		catch (Exception e) {
+			LOG.error("Exception occured in getSurveyTransactionDetails() in CadreSurveyTransactionAction class.", e);
 		}
 		return Action.SUCCESS;
 	}
