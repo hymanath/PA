@@ -16,6 +16,9 @@ public class ReconciliationVO implements Serializable
 	private Long 		pendingAmount;
 	private String 		insertedTime; 
 	private String		uniqueKey;
+	private String 		mobileNo;
+	
+	
 	public Long getCadreSurveyUserId() {
 		return cadreSurveyUserId;
 	}
@@ -69,6 +72,12 @@ public class ReconciliationVO implements Serializable
 	}
 	public void setUniqueKey(String uniqueKey) {
 		this.uniqueKey = uniqueKey;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
 	}
 	
 	
