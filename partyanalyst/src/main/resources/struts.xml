@@ -8717,6 +8717,11 @@
 			</result>
 		</action>
 		
+		<action name="cadreSurveyTransactionsDashboardAction" class="cadreSurveyTransactionAction" >
+			<result name="success">/jsp/cadreTransactionsDashBoard.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=tdpCadreIdCardDetailsAction</result>
+		</action>
+		
 </package>
 
 </struts>      
