@@ -494,6 +494,12 @@
 			isErrorStr = " error";
 			$('#NageErr').html(' Nominee Age required.');
 		}
+		if(NAge != null && NAge.trim().length > 0){
+		  if(isNaN(NAge.trim())){
+		    isErrorStr = " error";
+			$('#NageErr').html(' Nominee Age must be integer.');
+		  }
+		}
 		if( Nrelation == 0)
 		{
 			isErrorStr = " error";
