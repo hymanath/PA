@@ -201,15 +201,16 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			
 			DateUtilService dateUtil = new DateUtilService();
 			CadreTxnDetails cadreTxnDetails = new CadreTxnDetails();
-			cadreTxnDetails.setCadreSurveyUserId(inputVo.getCadreSurveyUserId());
-			cadreTxnDetails.setConstiteuncyId(inputVo.getConstituencyId());
-			cadreTxnDetails.setSinkedRecords(inputVo.getSinkedRecords());
-			cadreTxnDetails.setPendingRecords(inputVo.getPendingRecords());
-			cadreTxnDetails.setTotalAmount(inputVo.getTotalAmount());
-			cadreTxnDetails.setPaidAmount(inputVo.getPaidAmount());
-			cadreTxnDetails.setPendingAmount(inputVo.getPendingAmount());
-			cadreTxnDetails.setUniqueKey(inputVo.getUniqueKey());
+			cadreTxnDetails.setCadreSurveyUserId(inputVo.getCadreSurveyUserId().longValue() > 0 ? inputVo.getCadreSurveyUserId() : null);
+			cadreTxnDetails.setConstiteuncyId(inputVo.getConstituencyId().longValue() > 0 ? inputVo.getConstituencyId() : null);
+			cadreTxnDetails.setSinkedRecords(inputVo.getSinkedRecords() > 0 ? inputVo.getSinkedRecords() : null);
+			cadreTxnDetails.setPendingRecords(inputVo.getPendingRecords() > 0 ? inputVo.getPendingRecords() : null );
+			cadreTxnDetails.setTotalAmount(inputVo.getTotalAmount() > 0 ? inputVo.getTotalAmount() : null);
+			cadreTxnDetails.setPaidAmount(inputVo.getPaidAmount() > 0 ? inputVo.getPaidAmount()  : null);
+			cadreTxnDetails.setPendingAmount(inputVo.getPendingAmount() > 0 ? inputVo.getPendingAmount() : null);
+			cadreTxnDetails.setUniqueKey(inputVo.getUniqueKey() != null ? inputVo.getUniqueKey() : null);
 			cadreTxnDetails.setInsertedTime(dateUtil.getCurrentDateAndTime());
+			cadreTxnDetails.setMobileNo(inputVo.getMobileNo());
 			cadreTxnDetails.setUpdatedTime(dateUtil.getCurrentDateAndTime());
 			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT_24HRS);
 			cadreTxnDetails.setSurveyTime(sdf.parse(inputVo.getInsertedTime()));

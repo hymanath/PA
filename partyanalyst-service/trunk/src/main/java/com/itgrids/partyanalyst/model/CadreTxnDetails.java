@@ -45,6 +45,7 @@ public class CadreTxnDetails implements java.io.Serializable  {
 	private String txnStatus;
 	private String completeStatus;
 	private String uniqueKey;
+	private String mobileNo;
 	
 	public CadreTxnDetails() {
 		
@@ -201,5 +202,16 @@ public class CadreTxnDetails implements java.io.Serializable  {
 	public void setUniqueKey(String uniqueKey) {
 		this.uniqueKey = uniqueKey;
 	}
+
+	@Column(name = "mobile_no")
+	public String getMobileNo() {
+		return mobileNo;
+	}
+
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	
+	
 
 }
