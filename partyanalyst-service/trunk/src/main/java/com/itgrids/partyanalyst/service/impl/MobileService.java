@@ -4549,7 +4549,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 						List<Object[]> cadreUpdates = tdMemberDAO.getConstituencyDetails(ac.getConstituencyId());
 						if(cadreUpdates != null && cadreUpdates.size() > 0)
 						{
-							connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_CMS"+pathSeperator+ac.getName()+".sqlite");
+							connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_Cadre"+pathSeperator+ac.getName()+".sqlite");
 							connection.setAutoCommit(false);
 							statement = connection.createStatement();
 							
