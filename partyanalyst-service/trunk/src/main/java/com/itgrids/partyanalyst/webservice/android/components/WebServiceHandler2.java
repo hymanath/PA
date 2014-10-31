@@ -278,14 +278,6 @@ public class WebServiceHandler2 {
 		return cadreSurveyTransactionService.updateTxnStatus(inputVo);
 	}
 	
-	/*@POST
-	@Path("/validateOTPForMobile")
-	@Produces(MediaType.APPLICATION_JSON)
-	public String validateOTPForMobile(CadreTransactionVO inputVo)
-	{
-		return cadreSurveyTransactionService.validateOTPForMobile(inputVo);
-	}*/
-	
 	@POST
 	@Path("/validateOTP")
 	@Produces(MediaType.APPLICATION_JSON)
