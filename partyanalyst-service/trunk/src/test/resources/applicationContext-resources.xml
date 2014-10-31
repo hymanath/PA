@@ -499,6 +499,11 @@
 				<value>com.itgrids.partyanalyst.model.CadreCommittee</value>
 				<value>com.itgrids.partyanalyst.model.CadreCommitteeLevel</value>
 				<value>com.itgrids.partyanalyst.model.CadreRoles</value>
+				
+				<value>com.itgrids.partyanalyst.model.CadreTxnDetails</value>
+				<value>com.itgrids.partyanalyst.model.CadreTxnUser</value>
+				<value>com.itgrids.partyanalyst.model.CadreOtpDetails</value>
+				
 			</list>
 		</property>
 	</bean>
@@ -2574,4 +2579,26 @@
 	<property name="sessionFactory" ref="sessionFactory" />
 </bean>
 
+<bean id="cadreTxnUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreTxnUserDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="cadreTxnDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreTxnDetailsDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="cadreOtpDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreOtpDetailsDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+ <bean name="cadreSurveyTransactionService"  class="com.itgrids.partyanalyst.service.impl.CadreSurveyTransactionService">
+   	 <property name="cadreTxnUserDAO" ref="cadreTxnUserDAO" />
+     <property name="cadreTxnDetailsDAO" ref="cadreTxnDetailsDAO" />
+     <property name="cadreSurveyUserDAO" ref="cadreSurveyUserDAO" />
+     <property name="constituencyDAO" ref="constituencyDAO" />
+     <property name="transactionTemplate" ref="transactionTemplate" />
+     <property name="cadreOtpDetailsDAO" ref="cadreOtpDetailsDAO" />
+ 	 <property name="smsCountrySmsService" ref="smsCountrySmsService" />
+  </bean>
+	
 </beans>
