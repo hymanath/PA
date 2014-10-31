@@ -192,4 +192,15 @@ public class CadreOtpDetailsDAO extends GenericDaoHibernate<CadreOtpDetails, Lon
 		query.setParameter("mobileNo", mobileNo);
 		return query.list();
 	}
+	
+	public Long getOTPTxnCountByDate(Date searchDate)
+	{
+		Query query = getSession().createQuery("select count(distinct model.mobileNo) from CadreOtpDetails model where " +
+				" date(model.insertedTime) =:searchDate");
+		if(searchDate != null)
+		query.setDate("searchDate", searchDate);
+		return (Long) query.uniqueResult();
+	}
+	
+	
 }
