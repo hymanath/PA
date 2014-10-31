@@ -39,7 +39,7 @@ public class CadreOtpDetails  extends BaseModel{
 	private Date updatedTime;
 	private String txnNumber;
 	private String mobileNo;
-	
+	private Long cadreSurveyUserId;
 	
 	public CadreOtpDetails() {
 		
@@ -138,4 +138,14 @@ public class CadreOtpDetails  extends BaseModel{
 		this.mobileNo = mobileNo;
 	}
 
+	@Column(name="cadre_survey_user_id")
+	public Long getCadreSurveyUserId() {
+		return cadreSurveyUserId;
+	}
+
+	public void setCadreSurveyUserId(Long cadreSurveyUserId) {
+		this.cadreSurveyUserId = cadreSurveyUserId;
+	}
+
+	
 }
