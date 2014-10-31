@@ -1482,13 +1482,14 @@
 	 	<property name="entitlementsHelper" ref="entitlementsHelper" />
 	  </bean>
 	  
-	   <bean id="ctpCasteReportAction" class="com.itgrids.partyanalyst.web.action.CtpCasteReportAction" singleton="false">
-	   		<property name="ctpCasteReportService" ref="ctpCasteReportService" />
-	   		<property name="surveyDashBoardService" ref="surveyDashBoardService" />
-	    </bean>
-	    
-	    <bean id="cadreSurveyTransactionAction" class="com.itgrids.partyanalyst.web.action.CadreSurveyTransactionAction" singleton="false">	   		
-	    </bean>
+    <bean id="ctpCasteReportAction" class="com.itgrids.partyanalyst.web.action.CtpCasteReportAction" singleton="false">
+   		<property name="ctpCasteReportService" ref="ctpCasteReportService" />
+   		<property name="surveyDashBoardService" ref="surveyDashBoardService" />
+    </bean>
+    
+    <bean id="cadreSurveyTransactionAction" class="com.itgrids.partyanalyst.web.action.CadreSurveyTransactionAction" singleton="false">	  
+    	<property name="cadreSurveyTransactionService" ref="cadreSurveyTransactionService" />
+    </bean>
 	
 </beans>	
 	
