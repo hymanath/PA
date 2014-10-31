@@ -1,8 +1,6 @@
 package com.itgrids.partyanalyst.webservice.android.components;
 
 import java.util.HashMap;
-
-
 import java.util.List;
 import java.util.Map;
 
@@ -15,17 +13,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreTransactionVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
+import com.itgrids.partyanalyst.dto.ReconciliationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
-
 import com.itgrids.partyanalyst.service.ICadreSurveyTransactionService;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
@@ -245,7 +241,7 @@ public class WebServiceHandler2 {
 	}
 	
 	
-	@POST
+	/*@POST
 	@Path("/genarateOTPForCadreTxn")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -253,8 +249,27 @@ public class WebServiceHandler2 {
 	{
 		return cadreSurveyTransactionService.genarateOTPAndSaveTxnDetails(inputVo);
 		
+	}*/
+	
+	
+	@POST
+	@Path("/storeReconciliationData")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String storeReconciliationData(ReconciliationVO inputVo)
+	{
+		return cadreSurveyTransactionService.saveReconciliationData(inputVo);
+		
 	}
-
+	@POST
+	@Path("/generateOTPCadreTxn")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String generateOTPCadreTxn(CadreTransactionVO inputVo)
+	{
+		return cadreSurveyTransactionService.genarateOTPAndSaveTxnDetails(inputVo);
+		
+	}
 	@POST
 	@Path("/updateTxnStatus")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -263,10 +278,18 @@ public class WebServiceHandler2 {
 		return cadreSurveyTransactionService.updateTxnStatus(inputVo);
 	}
 	
-	@POST
+	/*@POST
 	@Path("/validateOTPForMobile")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String validateOTPForMobile(CadreTransactionVO inputVo)
+	{
+		return cadreSurveyTransactionService.validateOTPForMobile(inputVo);
+	}*/
+	
+	@POST
+	@Path("/validateOTP")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String validateOTP(CadreTransactionVO inputVo)
 	{
 		return cadreSurveyTransactionService.validateOTPForMobile(inputVo);
 	}

@@ -9,5 +9,7 @@ import com.itgrids.partyanalyst.model.CadreOtpDetails;
 
 public interface ICadreOtpDetailsDAO extends GenericDao<CadreOtpDetails, Long>{
 	public Integer updateIsDeleted(String mobileNo);
-	public String checkOTPValid(String mobileNo,String otp,String refNo);
+	public List<String> checkOTPValid(String mobileNo,String otp,Long userId);
+	public List<String> checkOTP(String otp);
+	public List<String> checkForMobile(String mobileNo);
 }

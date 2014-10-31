@@ -1,13 +1,9 @@
 package com.itgrids.partyanalyst.service.impl;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.ICadreOtpDetailsDAO;
@@ -16,10 +12,13 @@ import com.itgrids.partyanalyst.dao.ICadreTxnDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreTxnUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dto.CadreTransactionVO;
+import com.itgrids.partyanalyst.dto.ReconciliationVO;
 import com.itgrids.partyanalyst.model.CadreOtpDetails;
 import com.itgrids.partyanalyst.model.CadreTxnDetails;
 import com.itgrids.partyanalyst.service.ICadreSurveyTransactionService;
 import com.itgrids.partyanalyst.service.ISmsService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 
 
@@ -99,7 +98,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 		this.smsCountrySmsService = smsCountrySmsService;
 	}
 
-	public CadreTransactionVO genarateOTPAndSaveTxnDetails(final CadreTransactionVO inputVO)
+	/*public CadreTransactionVO genarateOTPAndSaveTxnDetails(final CadreTransactionVO inputVO)
 	{
 		final CadreTransactionVO returnVo = new CadreTransactionVO();
 		try{
@@ -152,9 +151,85 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 		LOG.error("Exception occured in genarateOTPAndSaveTxnDetails() in CadreSurveyTransactionService class.",e);	
 		}
 		return returnVo;
+	}*/
+	
+	public String genarateOTPAndSaveTxnDetails(final CadreTransactionVO inputVO)
+	{
+		String statusMag = "EXCEPTION";
+		final CadreTransactionVO returnVo = new CadreTransactionVO();
+		try{
+			
+			List<String> existMobileNos = cadreTxnUserDAO.checkForExistsMobileNo(inputVO.getMobileNo().toString().trim());
+			if(existMobileNos != null && existMobileNos.size() > 0)
+			{
+				List list = cadreTxnUserDAO.checkUserExists(inputVO.getUserId(),inputVO.getMobileNo().toString().trim());
+				if(list == null || list.size() == 0)
+				{
+					statusMag = "INVALID_USER";
+					return statusMag;
+				}
+				else
+				{
+					
+					try{
+						statusMag  = genarateOTP(inputVO,returnVo);
+					}
+					catch (Exception e) {
+						
+					}
+					
+				}
+			}
+			else
+			{
+				statusMag = "INVALID_MOBILENO";
+				return statusMag;
+			}
+			
+		}
+		catch (Exception e) {
+		LOG.error("Exception occured in genarateOTPAndSaveTxnDetails() in CadreSurveyTransactionService class.",e);	
+		}
+		return statusMag;
 	}
 	
-	public void genarateOTP(CadreTxnDetails cadreTxnDetails,CadreTransactionVO inputVo,CadreTransactionVO returnVo)
+	public String saveReconciliationData(ReconciliationVO inputVo)
+	{
+		String status = "EXCEPTION";
+		try 
+		{
+			
+			DateUtilService dateUtil = new DateUtilService();
+			CadreTxnDetails cadreTxnDetails = new CadreTxnDetails();
+			cadreTxnDetails.setCadreSurveyUserId(inputVo.getCadreSurveyUserId());
+			cadreTxnDetails.setConstiteuncyId(inputVo.getConstituencyId());
+			cadreTxnDetails.setSinkedRecords(inputVo.getSinkedRecords());
+			cadreTxnDetails.setPendingRecords(inputVo.getPendingRecords());
+			cadreTxnDetails.setTotalAmount(inputVo.getTotalAmount());
+			cadreTxnDetails.setPaidAmount(inputVo.getPaidAmount());
+			cadreTxnDetails.setPendingAmount(inputVo.getPendingAmount());
+			cadreTxnDetails.setUniqueKey(inputVo.getUniqueKey());
+			cadreTxnDetails.setInsertedTime(dateUtil.getCurrentDateAndTime());
+			cadreTxnDetails.setUpdatedTime(dateUtil.getCurrentDateAndTime());
+			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT_24HRS);
+			cadreTxnDetails.setSurveyTime(sdf.parse(inputVo.getInsertedTime()));
+			CadreTxnDetails savedStatus = cadreTxnDetailsDAO.save(cadreTxnDetails);
+			if(savedStatus != null)
+			{
+				status = "SUCCESS";
+			}
+			else
+			{
+				status = "FAILURE";
+			}
+		} catch (Exception e)
+		{
+			LOG.error("Exception occured in saveReconciliationData() in CadreSurveyTransactionService class.",e);	
+		}
+		return status;
+	}
+	
+	/*public void genarateOTP(CadreTxnDetails cadreTxnDetails,CadreTransactionVO inputVo,CadreTransactionVO returnVo)
 	{
 		try{
 			cadreOtpDetailsDAO.updateIsDeleted(inputVo.getMobileNo());
@@ -184,6 +259,50 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 		catch (Exception e) {
 			LOG.error("Exception occured in genarateOTP() in CadreSurveyTransactionService class.",e);
 		}
+	}*/
+	public String genarateOTP(CadreTransactionVO inputVo,CadreTransactionVO returnVo)
+	{
+		try
+		{
+			cadreOtpDetailsDAO.updateIsDeleted(inputVo.getMobileNo());
+			RandomNumberGeneraion rnd = new RandomNumberGeneraion();
+			int otpRand =rnd.randomGenerator(6); 
+			int refRand = rnd.randomGenerator(6);
+			String txnNo = rnd.randomStringOfLength(8);
+			String message = "your OTP is "+otpRand+" for Reference Id # " +refRand+" ";
+			String[] phoneNumbers = {inputVo.getMobileNo().toString()};
+			smsCountrySmsService.sendSmsFromAdmin(message, true, phoneNumbers);
+			returnVo.setOtpNo(String.valueOf(otpRand));
+			returnVo.setRefNo(String.valueOf(refRand));
+			returnVo.setMobileNo(inputVo.getMobileNo());
+			returnVo.setTxnNo(txnNo);
+			
+			DateUtilService dateUtilService = new DateUtilService();
+			CadreOtpDetails cadreOtpDetails  = new CadreOtpDetails();
+			cadreOtpDetails.setOtpNo(String.valueOf(otpRand));
+			cadreOtpDetails.setOtpReferenceId(String.valueOf(refRand));
+			cadreOtpDetails.setTxnNumber(txnNo);
+			cadreOtpDetails.setMobileNo(inputVo.getMobileNo());
+			cadreOtpDetails.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			cadreOtpDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+			cadreOtpDetails.setCadreSurveyUserId(inputVo.getUserId());
+			CadreOtpDetails savedStatus = cadreOtpDetailsDAO.save(cadreOtpDetails);
+			if(savedStatus != null)
+			{
+				returnVo.setMessage("SUCCESS");
+			}
+			else
+			{
+				returnVo.setMessage("FAILURE");
+			}
+			
+		}
+		catch (Exception e) {
+			returnVo.setMessage("EXCEPTION");
+			LOG.error("Exception occured in genarateOTP() in CadreSurveyTransactionService class.",e);
+		}
+
+		return returnVo.getMessage();
 	}
 	public String updateTxnStatus(CadreTransactionVO inputVo)
 	{
@@ -202,7 +321,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 		}
 		return msg;
 	}
-	public String validateOTPForMobile(CadreTransactionVO inputVo)
+	/*public String validateOTPForMobile(CadreTransactionVO inputVo)
 	{
 		String msg ="";
 		try{
@@ -211,6 +330,48 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 				msg = "success";
 			else
 				msg = "failure";
+		}
+		catch (Exception e) {
+			LOG.error("Exception occured in validateOTPForMobile() in CadreSurveyTransactionService class.",e);
+			msg = "EXCEPTION";
+		}
+		return msg;
+		
+	}*/
+	
+	public String validateOTPForMobile(CadreTransactionVO inputVo)
+	{
+		String msg ="";
+		try{
+			List<String> checkOtps =cadreOtpDetailsDAO.checkOTP(inputVo.getOtpNo().toString().trim());
+			if(checkOtps != null && checkOtps.size() > 0)
+			{
+				List<String> mobilesCheck = cadreOtpDetailsDAO.checkForMobile(inputVo.getMobileNo().toString().trim());
+				if(mobilesCheck != null && mobilesCheck.size() > 0)
+				{
+					List<String> otpNos = cadreOtpDetailsDAO.checkOTPValid(inputVo.getMobileNo().toString().trim(),inputVo.getOtpNo().toString().trim(),inputVo.getUserId());
+					if(otpNos != null && otpNos.size() > 0)
+					{
+						String otpNo = otpNos.get(0);
+						msg = "SUCCESS";
+					}
+					else
+					{
+						msg = "INVALID_USER";
+					}
+				}
+				else
+				{
+					msg = "INVALID_MOBILENO";
+				}
+				
+			}
+			else
+			{
+				msg = "INVALID_OTP";
+			}
+			
+				
 		}
 		catch (Exception e) {
 			LOG.error("Exception occured in validateOTPForMobile() in CadreSurveyTransactionService class.",e);
