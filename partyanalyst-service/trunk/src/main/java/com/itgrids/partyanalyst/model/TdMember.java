@@ -75,8 +75,12 @@ public class TdMember {
 	private Long nFStatus;
 	private Long panchayatIdTemp;
 	private Panchayat panchayat;
-	
-	
+	private Long education;
+	private Long tehsilId;
+	private Long localElectionId;
+	private Long occupationId;
+	private Long casteStateId;
+	private Long enrollmentYear;
 	
 /*
 CREATE TABLE `td_member` (
@@ -132,7 +136,7 @@ CREATE TABLE `td_member` (
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name = "nMemberID", unique = true, nullable = false)
+	@Column(name = "nMemberId", unique = true, nullable = false)
 	public Long getnMemberId() {
 		return nMemberId;
 	}
@@ -532,4 +536,52 @@ CREATE TABLE `td_member` (
 	public void setPanchayat(Panchayat panchayat) {
 		this.panchayat = panchayat;
 	}
+	
+	@Column(name="qualification_id_pa")
+	public Long getEducation() {
+		return education;
+	}
+	public void setEducation(Long education) {
+		this.education = education;
+	}
+	
+	@Column(name="tehsil_id_pa")
+	public Long getTehsilId() {
+		return tehsilId;
+	}
+	public void setTehsilId(Long tehsilId) {
+		this.tehsilId = tehsilId;
+	}
+	
+	@Column(name="local_election_body_id_pa")
+	public Long getLocalElectionId() {
+		return localElectionId;
+	}
+	public void setLocalElectionId(Long localElectionId) {
+		this.localElectionId = localElectionId;
+	}
+	
+	@Column(name="occupation_id_pa")
+	public Long getOccupationId() {
+		return occupationId;
+	}
+	public void setOccupationId(Long occupationId) {
+		this.occupationId = occupationId;
+	}
+	
+	@Column(name="caste_id_pa")
+	public Long getCasteStateId() {
+		return casteStateId;
+	}
+	public void setCasteStateId(Long casteStateId) {
+		this.casteStateId = casteStateId;
+	}
+	@Column(name="enrollmentYear")
+	public Long getEnrollmentYear() {
+		return enrollmentYear;
+	}
+	public void setEnrollmentYear(Long enrollmentYear) {
+		this.enrollmentYear = enrollmentYear;
+	}
+	
 }
