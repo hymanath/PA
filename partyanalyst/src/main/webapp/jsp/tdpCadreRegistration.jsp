@@ -507,47 +507,37 @@
 			$('#toDateErr'+keyId+'').html('');
 			
 			var startDate = $('#fromDateId'+keyId+'').val();
-			var endDate = $('#toDateId'+keyId+'').val();
-			/*
-			if(startDate.trim().length == 0)
-			{
-				isErrorStr = " error";
-				$('#fromDateErr'+keyId+'').html('From Date Required.')
-			}
-			if(endDate.trim().length == 0)
-			{
-				isErrorStr = " error";
-				$('#toDateErr'+keyId+'').html('To Date Required.')
-			}		
-			*/		
+			var endDate = $('#toDateId'+keyId+'').val();	
 			
 			if((startDate != null && startDate.trim().length >0) && (endDate != null && endDate.trim().length >0))
 			{
-				var dt1  = parseInt(startDate.substring(0,2),10);
-				var mon1 = parseInt(startDate.substring(3,5),10);
-				var yr1  = parseInt(startDate.substring(6,10),10);
-				var dt2  = parseInt(endDate.substring(0,2),10);
-				var mon2 = parseInt(endDate.substring(3,5),10);
-				var yr2  = parseInt(endDate.substring(6,10),10);
-				
-				var date1 = new Date(yr1, mon1, dt1);
-				var date2 = new Date(yr2, mon2, dt2);
-
-				if(startDate != "" || endDate != ""){
-
-					if(startDate == ""){
-						$('#fromDateErr'+keyId+'').html('<font style="color:red;">From Date should not Empty </font>');
-						isErrorStr = " error";
-					}
-					else if(endDate == ""){
-						$('#toDateErr'+keyId+'').html('<font style="color:red;">To Date should not Empty </font>');
-						isErrorStr = " error";
-					}					
-					if(date2 < date1){ 
-						 $('#fromDateErr'+keyId+'').html('<font style="color:red;">From Date should not greater than To Date </font>');
+				var arrr = startDate.split("-");
+				    var fromyear=arrr[0];
+					var frommonth=arrr[1];
+					var fromDat=arrr[2];
+			   var arr = endDate.split("-");
+					var toyear=arr[0];
+					var tomonth=arr[1];
+					var toDat=arr[2];
+					
+					if(fromyear>toyear){
+						$('#fromDateErr'+keyId+'').html('<font style="color:red;">From Date should not greater than To Date </font>');
 						  isErrorStr = " error";
+					}
+					 if(frommonth>tomonth){
+						   if(fromyear == toyear){
+							$('#fromDateErr'+keyId+'').html('<font style="color:red;">From Date should not greater than To Date </font>');
+						    isErrorStr = " error";
 						}
-				}	
+						
+					}
+					
+					if(fromDat>toDat){	
+						if(frommonth == tomonth && fromyear == toyear){			
+							$('#fromDateErr'+keyId+'').html('<font style="color:red;">From Date should not greater than To Date </font>');
+						    isErrorStr = " error";		
+						   }
+					}
 			}
 			
 		});
@@ -1157,14 +1147,24 @@
 										</div>
 										<div class="span12">
 										<div class="span6">
-											<h5>  Voter Telugu Name  </h5>
-											<input type="checkbox" id="voterTNameId" class="cadreTnamesCls"  style="margin-top:-15px;" checked="true" value="Voter" name="cadreRegistrationVO.nameType" />
-											<input type="text" class="form-control border-radius-0" placeholder="Voter Name" style="width:190px;" value="${voterInfoVOList[0].teluguName}"  ></input>											
+											<h5 style="color: #9a9a9a;">  Voter Telugu Name  </h5>
+											<s:if test="voterInfoVOList[0].nameType != null && (voterInfoVOList[0].nameType == 'VOTER' || voterInfoVOList[0].nameType == 'voter')">	
+											  <input type="checkbox" id="voterTNameId" class="cadreTnamesCls"  style="margin-top:-15px;" checked="true" value="Voter" name="cadreRegistrationVO.nameType" onClick="updateNameSelection('cadreTNameId');"/>
+											</s:if>
+											<s:else>
+											  <input type="checkbox" id="voterTNameId" class="cadreTnamesCls"  style="margin-top:-15px;"  value="Voter" name="cadreRegistrationVO.nameType" onClick="updateNameSelection('cadreTNameId');"/>
+											</s:else>
+											<input type="text" class="form-control border-radius-0" placeholder="Voter Telugu Name" style="width:190px;" value="${voterInfoVOList[0].teluguName}"  ></input>											
 										</div>	
 										<div class="span6">	
-											<h5 class="text-align1"> Cadre Telugu Name  </h5>	
-											<input type="checkbox"  id="cadreTNameId" class="cadreTnamesCls" value="Cadre" style="margin-top:-15px;" name="cadreRegistrationVO.nameType" value="Cadre"  />
-											<input type="text" class="form-control border-radius-0" placeholder="Voter Name" style="width:170px;" value="${voterInfoVOList[0].teluguRelativeName}" ></input>
+											<h5 class="text-align1"> Cadre Telugu Name  </h5>
+										<s:if test="voterInfoVOList[0].nameType != null && (voterInfoVOList[0].nameType == 'CADRE' || voterInfoVOList[0].nameType == 'cadre')">												
+											<input type="checkbox"  id="cadreTNameId" class="cadreTnamesCls" value="Cadre" style="margin-top:-15px;" name="cadreRegistrationVO.nameType"  checked="true" value="Cadre"  onClick="updateNameSelection('voterTNameId');"/>
+										</s:if>
+										<s:else>
+										   <input type="checkbox"  id="cadreTNameId" class="cadreTnamesCls" value="Cadre" style="margin-top:-15px;" name="cadreRegistrationVO.nameType" value="Cadre"  onClick="updateNameSelection('voterTNameId');"/>
+                                        </s:else>										
+											<input type="text" class="form-control border-radius-0" placeholder="Cadre Telugu Name" style="width:170px;" value="${voterInfoVOList[0].teluguRelativeName}" ></input>
 											
 										</div>
 										</div>
@@ -2919,10 +2919,9 @@ $(document).ready(function(){
 		$(".famlyMemClsDiv").css("display","block");
 	}
 	
-	function updateNameSelection(clsName,id)
+	function updateNameSelection(id)
 	{
-		$('.'+clsName+'').prop('checked', false);
-		$('#'+id+'').prop('checked', true);		
+		$('#'+id+'').removeAttr('checked');		
 	}
 	function clearPreviousEnrol(){
 		$("#preEnrollNoValue").val("");
