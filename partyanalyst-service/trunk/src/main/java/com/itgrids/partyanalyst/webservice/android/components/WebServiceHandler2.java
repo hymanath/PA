@@ -288,13 +288,13 @@ public class WebServiceHandler2 {
 	}
 	
 		
-	@POST
+	/*@POST
 	@Path("/storeReconciliationFailureData")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String storeReconciliationFailureData(ReconciliationFailureVO inputVo)
 	{
 		return cadreSurveyTransactionService.saveReconsilationFailedDetails(inputVo);
-	}
+	}*/
 	
 	
 	@GET
