@@ -10,10 +10,13 @@ public class SurveyTransactionVO implements java.io.Serializable{
 	private Long yesterDayCount;
 	private Long weekCount;
 	private Long totalCount;
+	private Long pendingCount;
+	
+	private Long teamSize ;
+	private Long idleTeamSize;
 	
 	private Long submittedCount;
 	private Long notSubmittedCount;
-	private Long teamCount;
 	
 	private Long otpRequestCount;
 	private Long otpConfirmCount;
@@ -24,13 +27,52 @@ public class SurveyTransactionVO implements java.io.Serializable{
 	private Long remainingNonOTPCount;
 	
 	private Long actualAmount;
-	private Long depositAmount;
 	private Long recordsCount;
 	private Long depositedAmount;
 	private Long remainingAmount;
+	private String surveyDate;
+	
+	private Long locationId;
+	private String LocationName;
 	
 	private List<SurveyTransactionVO> surveyTransactionVOList = new ArrayList<SurveyTransactionVO>(0);
 	
+	public Long getLocationId() {
+		return locationId;
+	}
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+	public String getLocationName() {
+		return LocationName;
+	}
+	public void setLocationName(String locationName) {
+		LocationName = locationName;
+	}
+	public String getSurveyDate() {
+		return surveyDate;
+	}
+	public void setSurveyDate(String surveyDate) {
+		this.surveyDate = surveyDate;
+	}
+	public Long getPendingCount() {
+		return pendingCount;
+	}
+	public void setPendingCount(Long pendingCount) {
+		this.pendingCount = pendingCount;
+	}
+	public Long getTeamSize() {
+		return teamSize;
+	}
+	public void setTeamSize(Long teamSize) {
+		this.teamSize = teamSize;
+	}
+	public Long getIdleTeamSize() {
+		return idleTeamSize;
+	}
+	public void setIdleTeamSize(Long idleTeamSize) {
+		this.idleTeamSize = idleTeamSize;
+	}
 	public List<SurveyTransactionVO> getSurveyTransactionVOList() {
 		return surveyTransactionVOList;
 	}
@@ -80,12 +122,6 @@ public class SurveyTransactionVO implements java.io.Serializable{
 	public void setNotSubmittedCount(Long notSubmittedCount) {
 		this.notSubmittedCount = notSubmittedCount;
 	}
-	public Long getTeamCount() {
-		return teamCount;
-	}
-	public void setTeamCount(Long teamCount) {
-		this.teamCount = teamCount;
-	}
 	public Long getOtpRequestCount() {
 		return otpRequestCount;
 	}
@@ -127,12 +163,6 @@ public class SurveyTransactionVO implements java.io.Serializable{
 	}
 	public void setActualAmount(Long actualAmount) {
 		this.actualAmount = actualAmount;
-	}
-	public Long getDepositAmount() {
-		return depositAmount;
-	}
-	public void setDepositAmount(Long depositAmount) {
-		this.depositAmount = depositAmount;
 	}
 	public Long getRecordsCount() {
 		return recordsCount;
