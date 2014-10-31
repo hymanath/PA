@@ -163,8 +163,12 @@
 	var boothId 	   = '${boothId}';
 	var srchType	   = '${searchType}';
 	var candiId		   = '${candidateId}';
-	
-	
+	var newCamPhotoTaken = false;
+	var newPhotoUploaded = false;
+	var alreadyImgPresent = false;
+	 <s:if test="voterInfoVOList[0].image != null">
+		alreadyImgPresent = true;
+	 </s:if>
 	$(document).ready(function(){
 	    $('.datePickerCls').datepicker({
 		dateFormat: 'yy-mm-dd',
@@ -425,20 +429,15 @@
 		
 		$('#NaadharErr,#NnameErr,#NgenderErr,#NageErr,#dobErr,#NrelationErr').html('');
 		$('#casteErr,#mobileErr,#ageErr,#cardErr,#dobErr,#nameErr').html('');
-		var photoElmt = document.getElementById("uploadFileId").value;
-		
-		if(photoElmt != null )
-		{
+
 			$('#imageErr').html('');
-			var FileUploadPath = document.getElementById("uploadFileId").value;
 			//To check if user upload any file
-			if (FileUploadPath == '') 
+			if (!newCamPhotoTaken && !newPhotoUploaded && !alreadyImgPresent && !$("#voterActualImgId").is(':checked') && !$("#cadreActualImgId").is(':checked')) 
 			{
 				$('#imageErr').html('Please upload an image');
 				isErrorStr = " error";
 			}
-			
-		}
+
 		
 		if(casteId == 0)
 		{
@@ -783,6 +782,7 @@
 	{
 	$("#uploadImg").html('<img style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg">');
 		$("#base64Image").val("");
+		newCamPhotoTaken = false;
 		var photoElmt = document.getElementById("uploadFileId");
 		var FileUploadPath = photoElmt.value;
 		$('#imageErr').html('');
@@ -802,12 +802,14 @@
 					var file = photoElmt.files[0];
 					var reader = new FileReader();
 					reader.onloadend = handleReaderLoadEnd;
-					reader.readAsDataURL(file);              
+					reader.readAsDataURL(file); 
+                    newPhotoUploaded = true;					
             } 
 			//The file upload is NOT an image
 			else 
-			{
-					$('#imageErr').html('Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ');
+			{       clearExistingImg('uploadImg');
+			        newPhotoUploaded = false;
+					$('#imageErr').html('Image Formate Must Be .GIF, .PNG, .JPG, .JPEG and .BMP Only');
 			}
         }
 	}
@@ -2319,7 +2321,12 @@ function showNewTakenImg(){
 		$('#imageErr').html('');
 		$("#"+id+"").html('');
 		$("#"+id+"").html('<img style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg">');
-		 $("#newTakenImgId").removeAttr('checked');
+		$("#newTakenImgId").removeAttr('checked');
+		$("#base64Image").val("");
+		newCamPhotoTaken = false;
+	    newPhotoUploaded = false;
+		document.getElementById("uploadFileId").value = "";
+		
 	}
 	
 	

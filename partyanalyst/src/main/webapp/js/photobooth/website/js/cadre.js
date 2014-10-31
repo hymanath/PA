@@ -1,6 +1,8 @@
 $(function(){
 	$( '#example' ).photobooth().on( "image", function( event, dataUrl ){
 		$("#uploadImg").html( '<img src="' + dataUrl + '"  style="width: 140px; height: 120px;">');
+		newCamPhotoTaken = true;
+		newPhotoUploaded = false;
 		$("#base64Image").val(dataUrl.replace("data:image/png;base64,",""));
 		showNewTakenImg();
 	});
