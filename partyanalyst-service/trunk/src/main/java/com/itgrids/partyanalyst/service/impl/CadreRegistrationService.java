@@ -1582,7 +1582,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				}
 				if(houseNo != null  && houseNo.trim().length()>0)
 				{
-					searchQuery.append("  UA.houseNo like '%"+houseNo+"%' and" );
+					searchQuery.append("  TC.houseNo like '%"+houseNo+"%' and" );
 				}
 
 				
@@ -1734,7 +1734,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								vo.setName(tdpCadre.getFirstname() != null ? tdpCadre.getFirstname():"");
 								vo.setCandidateAadharNo(tdpCadre.getCadreAadherNo() != null ? tdpCadre.getCadreAadherNo() :"");
 								vo.setFmlyVtrId(tdpCadre.getFamilyVoterId() != null ? tdpCadre.getFamilyVoterId():0L);
-								
+								vo.setNameType(tdpCadre.getNameType());
 								List<Object[]> familyVoterInfo = voterDAO.getVoterInfoByVoterId(tdpCadre.getFamilyVoterId());
 								
 								if(familyVoterInfo != null && familyVoterInfo.size()>0)
@@ -1843,7 +1843,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							}
 						try {
 							Long tdpCadreId = tdpCadre.getTdpCadreId();
-							
+							vo.setNameType(tdpCadre.getNameType());
 							vo.setCadreId(tdpCadre.getTdpCadreId());
 							vo.setDateOfBirth(tdpCadre.getDateOfBirth() != null ? new SimpleDateFormat("yyyy-MM-dd").format(tdpCadre.getDateOfBirth()):"");
 							vo.setName(tdpCadre.getFirstname() != null ? tdpCadre.getFirstname():"");

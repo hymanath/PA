@@ -53,6 +53,7 @@ public class VoterInfoVO implements java.io.Serializable
 	private String fmlyVCardNo;
 	private Long fmlyVtrId;
 	private String candidateAadharNo;
+	private String nameType;
 		
 	
 	public String getTeluguRelativeName() {
@@ -326,6 +327,12 @@ public class VoterInfoVO implements java.io.Serializable
 	}
 	public void setCadreImage(String cadreImage) {
 		this.cadreImage = cadreImage;
+	}
+	public String getNameType() {
+		return nameType;
+	}
+	public void setNameType(String nameType) {
+		this.nameType = nameType;
 	}
 	
 	
