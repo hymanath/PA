@@ -23,6 +23,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -366,14 +367,16 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		
 	}
 
-	public TdpCadreBackupDetails updateRequestDetailsForBackup(List<CadreRegistrationVO> inputResponseList,String registrationType)
+	public TdpCadreBackupDetails updateRequestDetailsForBackup(final List<CadreRegistrationVO> inputResponseList,final String registrationType)
 	{
 		LOG.info("Entered into updateRequestDetailsForBackup in CadreRegistrationService service");
 		TdpCadreBackupDetails returnData = null;
+		if(inputResponseList != null && inputResponseList.size() > 0)
+		{
 		try {
-	
-			if(inputResponseList != null && inputResponseList.size() > 0)
-			{
+			returnData = (TdpCadreBackupDetails)transactionTemplate.execute(new TransactionCallback() {
+			 public Object doInTransaction(TransactionStatus status) {
+				 TdpCadreBackupDetails tdpCadreBackupDetails = new TdpCadreBackupDetails();
 				for (CadreRegistrationVO inputResponse : inputResponseList)
 				{
 					String cadreBasicInfo = "Voter Name " + ":" + inputResponse.getVoterName() + "-" +"Date Of Birth "+ ":" + inputResponse.getDob() +"-"+ "Gender "+ ":" +inputResponse.getGender()+ "-" +"Relative Name"+ ":" + inputResponse.getRelativeName() +"-" +"VoterCardNumber"+ ":" + inputResponse.getVoterCardNo() + "-" + "H.NO" + ":" + inputResponse.getHouseNo() + "-" +"Party Member Since" + ":" +inputResponse.getPartyMemberSince() + "-" + "Blood Group " + ":" + inputResponse.getBloodGroupId() + "-" + "Street/hamle" + ":" +inputResponse.getStreet() +"-" +"Caste" + ":" + inputResponse.getCasteId() + "-" + "Mobile No" + ":" + inputResponse.getMobileNumber() + "-" + "Education" + ":" +inputResponse.getEducationId() + "-" + "Occupation " + ":" +inputResponse.getOccupationId() + "-" + "Previous Enroll Ment No " + ":" + inputResponse.getPreviousEnrollmentNumber();
@@ -403,7 +406,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						}
 					}
 				
-					TdpCadreBackupDetails tdpCadreBackupDetails = new TdpCadreBackupDetails();
+					
 					tdpCadreBackupDetails.setRefNo(inputResponse.getRefNo());
 					tdpCadreBackupDetails.setCadreBasicInfo(cadreBasicInfo);
 					tdpCadreBackupDetails.setCadrePreviousRoles(previousRoles);
@@ -413,15 +416,21 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					tdpCadreBackupDetails.setFamilyDetails(familyDetails);
 					tdpCadreBackupDetails.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
 				
-					returnData = tdpCadreBackupDetailsDAO.save(tdpCadreBackupDetails);
+					 tdpCadreBackupDetails = tdpCadreBackupDetailsDAO.save(tdpCadreBackupDetails);
+					
 				}
-			}
-		
+				return tdpCadreBackupDetails;
+				}
+			      
+			});
 			return returnData;
-		} catch (Exception e) {
+			}
+		 catch (Exception e) {
 		LOG.error("exception occured in updateRequestDetailsForBackup in CadreRegistrationService service");
 		return null;
 		}
+		}
+		return returnData;
 	}
 	
 	/**
@@ -448,7 +457,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								Boolean flag = true;
 								if(cadreRegistrationVO != null)
 								{
-									if(cadreRegistrationVO.getVoterId() != null && Long.valueOf(cadreRegistrationVO.getVoterId()) > 0)
+									if(cadreRegistrationVO.getVoterId() != null && cadreRegistrationVO.getVoterId().trim().length() > 0 && Long.valueOf(cadreRegistrationVO.getVoterId()) > 0)
 									{
 										flag = false;
 										List<TdpCadre> voterIdsList = tdpCadreDAO.getVoterByVoterId(Long.valueOf(cadreRegistrationVO.getVoterId()));
@@ -1246,19 +1255,17 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 										}
 										if(electionVO.getConstituencyId() != null && electionVO.getConstituencyId().trim().length()> 0)
 										{
-											if(Long.valueOf(electionVO.getConstituencyId()) > 0)
+											if(Long.valueOf(electionVO.getConstituencyId()).longValue() > 0)
 											{
 												cadreParticipatedElection.setConstituencyId(Long.valueOf(electionVO.getConstituencyId()));
 											}
 											
 										}
 										if(electionVO.getCandidateId() != null && electionVO.getCandidateId().trim().length()> 0)
-										{
-											if(previousElectionPartList.get(0).getCandidateId() != null && Long.valueOf(previousElectionPartList.get(0).getCandidateId())  > 0)
-											{
-												cadreParticipatedElection.setCandidateId((Long.valueOf(previousElectionPartList.get(0).getCandidateId())));
-											}
-											
+										{   if(Long.valueOf(electionVO.getCandidateId()).longValue() > 0)
+										   {
+												cadreParticipatedElection.setCandidateId((Long.valueOf(electionVO.getCandidateId())));
+										   }
 										}
 										cadreParticipatedElection.setIsDeleted("N");
 										cadreParticipatedElectionDAO.save(cadreParticipatedElection);
@@ -1838,9 +1845,6 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					{
 						returnList = new ArrayList<VoterInfoVO>();
 						vo = new VoterInfoVO();
-						if(tdpCadre.getImage() != null && tdpCadre.getImage().trim().length() > 0){
-							   vo.setImage("images/"+ IConstants.CADRE_IMAGES + "/" + tdpCadre.getImage());
-							}
 						try {
 							Long tdpCadreId = tdpCadre.getTdpCadreId();
 							vo.setNameType(tdpCadre.getNameType());
@@ -1926,8 +1930,16 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							vo.setVoterRelationId(tdpCadre.getVoterRelationId() != null ? tdpCadre.getVoterRelationId() : 0l);
 							vo.setTeluguRelativeName(tdpCadre.getNameLocal() != null? tdpCadre.getNameLocal():"");
 							if(tdpCadre.getImage() != null && tdpCadre.getImage().trim().length() > 0){
-							   vo.setImage("images/"+ IConstants.CADRE_IMAGES + "/" + tdpCadre.getImage());
-							}
+								if(tdpCadre.getEnrollmentYear() != null && tdpCadre.getEnrollmentYear().longValue() == 2014l){
+								   vo.setImage("images/"+ IConstants.CADRE_IMAGES + "/" + tdpCadre.getImage());
+								}else{
+									String filePath = staticContentLoc + "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator +tdpCadre.getImage();
+									if(checkFileExistingOrNot(filePath)){
+										vo.setCadreImagePresent(true);
+										vo.setCadreImage("images/"  + IConstants.CADRE_IMAGES + "/" +tdpCadre.getImage());
+									}
+								}
+							 }
 							if(tdpCadre.getNomineeGender() != null && tdpCadre.getNomineeGender().trim().equalsIgnoreCase("MALE"))
 							{
 								vo.setNomineeGender(1l);
@@ -1956,7 +1968,18 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 										vo.setCadreImage("images/"  + IConstants.CADRE_IMAGES + "/" + tdpCadre.getPreviousEnrollmentNo()+".jpg");
 									}
 								}
-								
+								Voter voter =tdpCadre.getVoter();
+								Long constiId = tdpCadre.getUserAddress().getConstituency().getConstituencyId();
+								if(voter != null &&  constiId!= null){
+									List<String> partNos = boothPublicationVoterDAO.getPartNo(constiId, voter.getVoterId());
+									if(partNos.size() > 0 && partNos.get(0) != null && voter.getVoterIDCardNo() != null){
+										String filePath = staticContentLoc +"voter_images"+pathSeperator+constituencyId+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo()+".jpg";
+										if(checkFileExistingOrNot(filePath)){
+											vo.setVoterImagePresent(true);
+											vo.setVoterImage("voter_images"+pathSeperator+constituencyId+pathSeperator+"Part"+partNos.get(0).trim()+pathSeperator+voter.getVoterIDCardNo()+".jpg");
+										}
+									}
+							   }
 							}
 							
 							existingFamilyInfo =  getExistingCadreFamilyInfo(tdpCadreId);
@@ -2147,7 +2170,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		} catch (Exception e) {
 			LOG.error("Exception raised in getCandidateInfoBySearchCriteria in CadreRegistrationService service", e);
 		}
-		
+		if(vo.getVoterId() == null){
+			vo.setVoterId(0l);
+		}
 		return returnList;
 	}
 	

@@ -74,6 +74,7 @@ import com.itgrids.partyanalyst.dao.IPartialBoothPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITdMemberDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
@@ -220,7 +221,17 @@ public class MobileService implements IMobileService{
  private IVoterNamesDAO voterNamesDAO;
  @Autowired
  private ITdpCadreDAO tdpCadreDAO;
+ private ITdMemberDAO tdMemberDAO;
  
+ 
+public ITdMemberDAO getTdMemberDAO() {
+	return tdMemberDAO;
+}
+
+public void setTdMemberDAO(ITdMemberDAO tdMemberDAO) {
+	this.tdMemberDAO = tdMemberDAO;
+}
+
 public IMobileNumbersDAO getMobileNumbersDAO() {
 	return mobileNumbersDAO;
 }
@@ -4533,6 +4544,53 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 						LOG.error("Exception Occured for "+ac.getName()+" Constituency, Exception is - ",e);
 					}
 					
+					try{
+						//0nMemberId member_id,1sMemberTName member_telugu_name,2sMemberShipNo membership_no,3sPhoto photo
+						List<Object[]> cadreUpdates = tdMemberDAO.getConstituencyDetails(ac.getConstituencyId());
+						if(cadreUpdates != null && cadreUpdates.size() > 0)
+						{
+							connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_CMS"+pathSeperator+ac.getName()+".sqlite");
+							connection.setAutoCommit(false);
+							statement = connection.createStatement();
+							
+							for(Object[] update : cadreUpdates)
+							{
+								
+									try{
+										StringBuilder quertStr= new StringBuilder();
+										 quertStr.append("UPDATE member set member_id = ");
+										if(update[0] == null){
+										  quertStr.append("''");
+										}else{
+											quertStr.append("'"+update[0]+"'");
+										}
+										 quertStr.append(",member_telugu_name= ");
+										 if(update[1] == null){
+											  quertStr.append("''");
+										}else{
+											quertStr.append("'"+update[1].toString().trim()+"'");
+										}
+										 quertStr.append(",image= ");
+										 if(update[3] == null){
+											  quertStr.append("''");
+										}else{
+											quertStr.append("'"+update[3].toString().trim()+"'");
+										}
+										 quertStr.append("where membership_no = '"+update[3]+"' and year='2012'");
+									statement.executeUpdate(quertStr.toString());
+									}catch(Exception e)
+									{
+										LOG.error(e);
+									}
+							}
+							connection.commit();
+							statement.close();
+							connection.close();
+						}
+					}catch(Exception e)
+					{
+						LOG.error("Exception Occured for "+ac.getName()+" Constituency, while updating cadre info Exception is - ",e);
+					}
 				}
 				
 				try{
