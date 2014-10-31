@@ -34,6 +34,7 @@ public class CadreOtpDetails  extends BaseModel{
 	private String otpReferenceId;
 	private String otpNo;
 	private CadreTxnDetails cadreTxnDetails;
+	private Long cadreTxnDetailsId;
 	private String isDeleted;
 	private Date insertedTime;
 	private Date updatedTime;
@@ -77,13 +78,21 @@ public class CadreOtpDetails  extends BaseModel{
 	}
 
 	 @ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	 @JoinColumn(name = "cadre_txn_details_id")
+	 @JoinColumn(name = "cadre_txn_details_id",updatable = false, insertable = false)
 	 @LazyToOne(LazyToOneOption.NO_PROXY)
 	 @org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public CadreTxnDetails getCadreTxnDetails() {
 		return cadreTxnDetails;
 	}
 
+	@JoinColumn(name = "cadre_txn_details_id")
+	public Long getCadreTxnDetailsId() {
+		return cadreTxnDetailsId;
+	}
+
+	public void setCadreTxnDetailsId(Long cadreTxnDetailsId) {
+		this.cadreTxnDetailsId = cadreTxnDetailsId;
+	}
 
 	public void setCadreTxnDetails(CadreTxnDetails cadreTxnDetails) {
 		this.cadreTxnDetails = cadreTxnDetails;
