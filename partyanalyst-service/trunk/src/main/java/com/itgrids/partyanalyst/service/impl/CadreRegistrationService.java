@@ -912,11 +912,20 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									}
 									
 								}
+								List<Booth> booths = boothPublicationVoterDAO.getVoterAddressDetails(tdpCadre.getVoterId());
 								if(cadreRegistrationVO.getBoothId() != null && cadreRegistrationVO.getBoothId().trim().length() > 0 && !cadreRegistrationVO.getBoothId().trim().equalsIgnoreCase("null"))
 								{
 									if(Long.valueOf(cadreRegistrationVO.getBoothId()) > 0)
 									{
 										userAddress.setBooth(boothDAO.get(Long.valueOf(cadreRegistrationVO.getBoothId())));
+									}
+									else
+									{
+										if(booths != null && booths.size() > 0)
+										{
+											userAddress.setBooth(booths.get(0));
+										}
+										
 									}
 								}
 								if(cadreRegistrationVO.getMuncipalityId() !=null && cadreRegistrationVO.getMuncipalityId().trim().length() > 0 && !cadreRegistrationVO.getMuncipalityId().trim().equalsIgnoreCase("null"))
@@ -927,6 +936,27 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									}
 									
 								}
+								List<Hamlet> hamletWardList = userVoterDetailsDAO.getHamletByVoterId(tdpCadre.getVoterId());
+								if(hamletWardList != null && hamletWardList.size() > 0)
+								{
+									userAddress.setHamlet(hamletWardList.get(0));
+								}
+								if(booths != null && booths.size() > 0)
+								{
+									if(booths.get(0).getLocalBodyWard() != null)
+									{
+										userAddress.setWard(booths.get(0).getLocalBodyWard());
+									}
+									else
+									{
+										List<Constituency> wardsList =  userVoterDetailsDAO.getWardByVoterId(tdpCadre.getVoterId());
+										if(wardsList != null && wardsList.size() > 0)
+										{
+											userAddress.setWard(wardsList.get(0));
+										}
+									}
+								}
+								
 							}
 							
 						}
