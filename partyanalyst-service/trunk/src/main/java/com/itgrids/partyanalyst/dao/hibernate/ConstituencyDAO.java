@@ -953,7 +953,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
     public List<Long> getConstituenciesInAState(Long stateId) {
 	      StringBuilder str = new StringBuilder();
             str.append("select distinct model.constituencyId from Constituency model where model.state.stateId =1 and " +
-			"  model.electionScope.electionType.electionTypeId = 2 and model.deformDate is null  ");
+			"  model.electionScope.electionType.electionTypeId = 2 and model.deformDate is null  order by model.name ");
 			if(stateId.longValue() == 1){
 				str.append(" and model.district.districtId > 10 ");
 			}else{
@@ -962,4 +962,30 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 			Query query = getSession().createQuery(str.toString());
 			return query.list();
 	}
+    
+	public List<Long> getAllAssemblyConstituencyIdsByStateId(Long stateId)
+	{
+		Query query = null;
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select  C.constituencyId from Constituency C where C.state.stateId = 1 and " +
+					" C.electionScope.electionType.electionTypeId = 2 and C.deformDate is null ");
+		
+		if(stateId == 1L) // AP
+		{
+			queryStr.append(" and C.district.districtId > 10  ");
+		}
+		else if(stateId == 2L) //Telangana
+		{
+			queryStr.append(" and C.district.districtId < 11 ");
+		}
+		else //All
+		{
+			queryStr.append(" and C.district.districtId between 1 and 23 ");
+		}
+		queryStr.append("  order by C.name ");
+		
+		query = getSession().createQuery(queryStr.toString());
+		return query.list();
+	}
+	
 }
