@@ -47,6 +47,11 @@ public class CadreTxnDetails implements java.io.Serializable  {
 	private String uniqueKey;
 	private String mobileNo;
 	
+	private String 		agentName;
+	private String		agentReconConstyName;
+	private String      agentVillage;
+	private String 		agentMobileNo;
+	
 	public CadreTxnDetails() {
 		
 	}
@@ -210,6 +215,42 @@ public class CadreTxnDetails implements java.io.Serializable  {
 
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
+	}
+	
+	@Column(name="agent_name")
+	public String getAgentName() {
+		return agentName;
+	}
+
+	public void setAgentName(String agentName) {
+		this.agentName = agentName;
+	}
+
+	@Column(name="agent_constituency")
+	public String getAgentReconConstyName() {
+		return agentReconConstyName;
+	}
+
+	public void setAgentReconConstyName(String agentReconConstyName) {
+		this.agentReconConstyName = agentReconConstyName;
+	}
+
+	@Column(name="agent_village")
+	public String getAgentVillage() {
+		return agentVillage;
+	}
+
+	public void setAgentVillage(String agentVillage) {
+		this.agentVillage = agentVillage;
+	}
+
+	@Column(name="agent_mobile_no")
+	public String getAgentMobileNo() {
+		return agentMobileNo;
+	}
+
+	public void setAgentMobileNo(String agentMobileNo) {
+		this.agentMobileNo = agentMobileNo;
 	}
 	
 	

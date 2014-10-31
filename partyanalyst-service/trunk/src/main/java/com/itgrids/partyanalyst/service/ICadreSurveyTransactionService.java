@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CadreTransactionVO;
+import com.itgrids.partyanalyst.dto.ReconciliationFailureVO;
 import com.itgrids.partyanalyst.dto.ReconciliationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyTransactionReportVO;
@@ -20,5 +21,6 @@ public interface ICadreSurveyTransactionService {
 	public String validateOTPForMobile(CadreTransactionVO inputVo);
 	public String updatePendingAmount(CadreTransactionVO inputVo);
 	public String saveReconciliationData(ReconciliationVO inputVo);
+//	public String saveReconsilationFailedDetails(ReconciliationFailureVO inputVo);
 	public SurveyTransactionReportVO getBasicTransactionDetails();
 }
