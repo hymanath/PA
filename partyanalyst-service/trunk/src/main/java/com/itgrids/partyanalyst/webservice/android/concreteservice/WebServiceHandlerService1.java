@@ -678,7 +678,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 					returnVO.setStatusMsg("DBINITIALCHECK");
 					
 					returnVO.setConstituencyName(resultList.get(0).getConstituency() != null ? resultList.get(0).getConstituency().getName() : null);
-					returnVO.setAcNo(delimitationConstituencyDAO.getConstituencyNo(returnVO.getConstituencyId(),2009l));
+					returnVO.setAcNo(delimitationConstituencyDAO.getConstituencyNo(resultList.get(0).getConstituency().getConstituencyId(),2009l));
 				}
 			}
 			
