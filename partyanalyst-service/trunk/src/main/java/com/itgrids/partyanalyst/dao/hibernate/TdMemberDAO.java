@@ -95,4 +95,17 @@ public class TdMemberDAO extends GenericDaoHibernate<TdMember, Long> implements 
 		
 	}
 	
+	public List<Object[]> getConstituencyDetails(Long constituencyId)
+	{
+		//0nMemberId member_id,1sMemberTName member_telugu_name,2sMemberShipNo membership_no,3sPhoto photo
+		Query query = getSession().createQuery("select  model.nMemberId,model.sMemberTName,model.sMemberShipNo,model.sPhoto from TdMember model " +
+				" where model.assemblyIdTemp = :constituencyId and model.sMemberShipNo is not null ");
+		
+		query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+		
+		
+	}
+	
 }

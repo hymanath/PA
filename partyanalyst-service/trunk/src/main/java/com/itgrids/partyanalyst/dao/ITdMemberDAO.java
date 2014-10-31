@@ -12,5 +12,5 @@ public interface ITdMemberDAO  extends GenericDao<TdMember, Long> {
 	public List<Object[]> getMembersDetailsByBooth(String boothNo,Long constId,int inttial,int max);
     public List<Object[]> getUrbanMembersDetails(Long constituencyId);
 	public List<Object[]> getPanchayatsDetailsByConstituencyId(Long constituencyId);
-
+	public List<Object[]> getConstituencyDetails(Long constituencyId);
 }
