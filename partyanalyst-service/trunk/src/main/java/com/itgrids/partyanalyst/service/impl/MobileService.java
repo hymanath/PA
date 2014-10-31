@@ -4427,7 +4427,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 					
 					
 					// member table 
-					List<Object[]> cadres = tdpCadreDAO.getCadreDataByYear(ac.getConstituencyId());
+					List<Object[]> cadres = tdMemberDAO.getCadreDataByYear(ac.getConstituencyId());
 					if(cadres != null && cadres.size() > 0)
 					{
 						try{
@@ -4544,7 +4544,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 						LOG.error("Exception Occured for "+ac.getName()+" Constituency, Exception is - ",e);
 					}
 					
-					try{
+					try{/*
 						//0nMemberId member_id,1sMemberTName member_telugu_name,2sMemberShipNo membership_no,3sPhoto photo
 						List<Object[]> cadreUpdates = tdMemberDAO.getConstituencyDetails(ac.getConstituencyId());
 						if(cadreUpdates != null && cadreUpdates.size() > 0)
@@ -4587,7 +4587,7 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 							statement.close();
 							connection.close();
 						}
-					}catch(Exception e)
+					*/}catch(Exception e)
 					{
 						LOG.error("Exception Occured for "+ac.getName()+" Constituency, while updating cadre info Exception is - ",e);
 					}
