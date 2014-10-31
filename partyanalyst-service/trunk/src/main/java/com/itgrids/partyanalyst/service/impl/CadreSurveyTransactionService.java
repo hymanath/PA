@@ -794,12 +794,12 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 						{
 							returnVo.setYesterDayMoneyCollected((Long)params[2] != null ? (Long)params[2]  : 0l );
 							returnVo.setYesterDayPaidAmount((Long)params[0] != null ? (Long)params[0] : 0l);
-							returnVo.setYesterDayPendingAmount((Long)params[1] != null ? :(Long)params[1] :0l);
+							returnVo.setYesterDayPendingAmount((Long)params[1] != null ? (Long)params[1] :0l);
 						}
 					}
 			   // total users 
 				Long totalUsers = cadreTxnDetailsDAO.getUsersCount(yesterDay,null);
-				returnVo.setTotalUsers(totalUsers != null ? totalUsers : 0l);
+				returnVo.setTotalUsers(totalUsers != null ? totalUsers : 0l); 
 				// yesterday users 
 				Long todayUsers = cadreTxnDetailsDAO.getUsersCount(yesterDay,null);
 				returnVo.setTodayUsers(todayUsers != null ? todayUsers : 0l);
