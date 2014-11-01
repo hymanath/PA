@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dao.ICadreTxnDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreTxnUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dto.CadreTransactionVO;
 import com.itgrids.partyanalyst.dto.ReconciliationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -50,15 +51,17 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 	private ISmsService smsCountrySmsService;
 	
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;	
-		
 	
+	private IDistrictDAO districtDAO;
+	
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+
 	public void setDelimitationConstituencyAssemblyDetailsDAO(
 			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
 		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
-	
-
-
 	public ICadreTxnUserDAO getCadreTxnUserDAO() {
 		return cadreTxnUserDAO;
 	}
@@ -463,8 +466,8 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 		LOG.info("entered into getCadreSurveyTransactionDetails() in CadreSurveyTransactionService service class. ");
 		SurveyTransactionVO returnVO = new SurveyTransactionVO();
 		
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		try {
+			
 			Date today = new Date();
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(today);
@@ -490,11 +493,9 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 					Long pendingAmount = transaction[1] != null ? Long.valueOf(transaction[1].toString()) :0L;
 					Long totalAmount = transaction[2] != null ? Long.valueOf(transaction[2].toString()) :0L;
 					
-					Long teamCount = transaction[3] != null ? Long.valueOf(transaction[3].toString()) :0L;
-					
-					returnVO.setSubmittedCount(paidAmount );
-					returnVO.setNotSubmittedCount(pendingAmount );					
-					returnVO.setYesterDayCount(teamCount);
+					returnVO.setSubmittedCount(paidAmount /100);
+					returnVO.setNotSubmittedCount(pendingAmount/100 );					
+					returnVO.setYesterDayCount(totalAmount/100);
 					
 					returnVO.setDepositedAmount(paidAmount);
 					returnVO.setRemainingAmount(pendingAmount);
@@ -511,8 +512,8 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			{
 				for (Object[] transactions : thisWeekTransactions )
 				{
-					Long totalWeekAmount = transactions[3] != null ? Long.valueOf(transactions[3].toString()) :0L;
-					returnVO.setWeekCount(totalWeekAmount);
+					Long totalWeekAmount = transactions[2] != null ? Long.valueOf(transactions[2].toString()) :0L;
+					returnVO.setWeekCount(totalWeekAmount / 100);
 				}
 			}
 			
@@ -522,16 +523,17 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			{
 				for (Object[] totalTransactins : totalTransactions )
 				{
-					Long totalTransactionsCount = totalTransactins[3] != null ? Long.valueOf(totalTransactins[3].toString()) :0L;
-					returnVO.setRecordsCount( totalTransactionsCount);
+					Long totalTransactionsCount = totalTransactins[2] != null ? Long.valueOf(totalTransactins[2].toString()) :0L;
+					returnVO.setRecordsCount( totalTransactionsCount/100);
 				}
 			}
+			
 			
 			List<Object[]> yesterDayOtpInfo = cadreOtpDetailsDAO.getOtpDetailsForDates(null,yesterDay);
 			Map<String,Long> transactionOtpMap = new TreeMap<String,Long>();
 			transactionOtpMap.put("Y", 0L);
 			transactionOtpMap.put("N", 0L);
-			
+			Long pendingAmount = 0L;
 			if(yesterDayOtpInfo != null && yesterDayOtpInfo.size()>0)
 			{
 				for (Object[] otp : yesterDayOtpInfo )
@@ -539,9 +541,10 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 					if(transactionOtpMap.get(otp[0] != null ? otp[0].toString().trim():"") != null)
 					{
 						Long count = transactionOtpMap.get(otp[0] != null ? otp[0].toString().trim():"");
-						count = count + ((otp[4] != null ? Long.valueOf(otp[4].toString().trim()):0L) ) ;
+						count = count + ((otp[1] != null ? Long.valueOf(otp[1].toString().trim()):0L) ) ;
+						pendingAmount = otp[2] != null ? Long.valueOf(otp[2].toString().trim()):0L;
 						
-						transactionOtpMap.put(otp[0] != null ? otp[0].toString().trim():"", count != 0L ? count:0L );
+						transactionOtpMap.put("Y", count != 0L ? count/100:0L );
 					}
 				}
 			}
@@ -558,12 +561,13 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 						}
 						if(status.trim().equalsIgnoreCase("N"))
 						{
-							returnVO.setRemainingOTPCount(transactionOtpMap.get(status.trim()));
+							returnVO.setRemainingOTPCount(pendingAmount/100);
 						}
 					}
 				}
 			}
 			
+
 			Long totalOTPGeneratedCount = returnVO.getOtpConfirmCount() + returnVO.getRemainingOTPCount();
 			returnVO.setOtpRequestCount(totalOTPGeneratedCount);
 			
@@ -581,10 +585,10 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 					if(transactionNONOtpMap.get(txnInfo[0] != null ? txnInfo[0].toString().trim():"") != null)
 					{
 						Long count = transactionNONOtpMap.get(txnInfo[0] != null ? txnInfo[0].toString().trim():"");
-						count = count+((txnInfo[2] != null ? Long.valueOf(txnInfo[2].toString().trim()):0L));
+						count = count+((txnInfo[1] != null ? Long.valueOf(txnInfo[1].toString().trim()):0L));
 						totalRecords = totalRecords + count;
 						
-						transactionNONOtpMap.put(txnInfo[0] != null ? txnInfo[0].toString().trim():"",count != 0L ? count:0L );
+						transactionNONOtpMap.put(txnInfo[0] != null ? txnInfo[0].toString().trim():"",count != 0L ? count/100:0L );
 					}
 				}
 				
@@ -608,10 +612,11 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 					}
 				}
 			}
-			
+
 			Long notPaidRecords = returnVO.getYesterDayCount() - (returnVO.getOtpConfirmCount() + returnVO.getNonOTPConfirmCount());
 			
 			returnVO.setPendingCount(notPaidRecords);
+			
 			
 		} catch (Exception e) {
 			LOG.error(" exception occured at getCadreSurveyTransactionDetails() in CadreSurveyTransactionService service class. ", e);
@@ -621,27 +626,106 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 	}
 	
 	
-	public List<SelectOptionVO> getParliamentsForState(String electionType,Long stateTypeId)
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getParliamentsForState(String searchType,Long stateTypeId)
 	{
-		List<SelectOptionVO> constituencyVOList = null;
+ 		List<SelectOptionVO> constituencyVOList = null;
 		try {
-			List<Object[]> PconstituencyList = null;
-			if(electionType.equalsIgnoreCase("Parliament"))
+			List<Object[]> locationsList = null;
+			StringBuilder queryStr = new StringBuilder();
+			
+			if(searchType.equalsIgnoreCase("district"))
 			{
-				if(stateTypeId == 0)
+				if(stateTypeId == 1L)
 				{
-					PconstituencyList = delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(0L);							
+					locationsList = districtDAO.getDistrictIdAndNameByStateForRegion(1L,"Andhra Pradesh");
+				}
+				else if(stateTypeId == 2L)
+				{
+					locationsList = districtDAO.getDistrictIdAndNameByStateForRegion(1L,"Telangana");
 				}
 				else
 				{
-					PconstituencyList= delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(stateTypeId);
+					locationsList = districtDAO.getDistrictIdAndNameByStateForRegion(1L,"All");
+				}
+				
+				queryStr.append("  select distinct model.constituency.district.districtId , model.constituency.district.districtName  from CadreTxnDetails model where model.constituency.district.districtId in (:locationIds) order by model.constituency.district.districtName asc  ");
+			}
+			if(searchType.equalsIgnoreCase("assembly"))
+			{
+				queryStr.append(" select distinct model.constituency.constituencyId , model.constituency.name  from CadreTxnDetails model where model.constituency.constituencyId in (:locationIds) order by model.constituency.name asc ");
+				if(stateTypeId == 1L)
+				{
+					locationsList = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(stateTypeId,1L,null);
+				}
+				else if(stateTypeId == 2L)
+				{
+					locationsList = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(stateTypeId,1L,null);
+				}
+				else
+				{
+					locationsList = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(stateTypeId,1L,null);
+				}
+			}
+			if(searchType.equalsIgnoreCase("Parliament"))
+			{
+				queryStr.append(" select distinct model.constituency.constituencyId , model.constituency.name  from CadreTxnDetails model where model.constituency.constituencyId in (:locationIds) order by model.constituency.name asc  ");
+				
+				if(stateTypeId == 0L )
+				{
+					locationsList =  delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(0L);							
+				}
+				else
+				{
+					locationsList =  delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(stateTypeId);
 				}
 			}
 		
-			if(PconstituencyList != null && PconstituencyList.size()>0)
+			List<Long> locationIds = new ArrayList<Long>();
+			if(locationsList != null && locationsList.size()>0)
+			{
+				for (Object[] param : locationsList)
+				{
+					locationIds.add(param[0] != null ? Long.valueOf(param[0].toString()) :0L);
+				}
+			}
+			
+			if(searchType.equalsIgnoreCase("Parliament"))
+			{				
+				
+				locationsList = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesListForAListOfParliamentConstituency(locationIds);
+				
+				locationIds.clear();
+				
+				if(locationsList != null && locationsList.size()>0)
+				{
+					for (Object[] param : locationsList)
+					{
+						locationIds.add(param[0] != null ? Long.valueOf(param[0].toString()) :0L);
+					}
+				}
+				
+				locationsList = cadreTxnDetailsDAO.findLocationDetailsByAssemblyIds(locationIds,queryStr.toString());
+				locationIds.clear();
+				if(locationsList != null && locationsList.size()>0)
+				{
+					for (Object[] param : locationsList)
+					{
+						locationIds.add(param[0] != null ? Long.valueOf(param[0].toString()) :0L);
+					}
+				}
+				
+				locationsList = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentsForAssembly(locationIds);
+			}
+			else
+			{
+				locationsList = cadreTxnDetailsDAO.findLocationDetailsByAssemblyIds(locationIds,queryStr.toString());
+			}
+
+			if(locationsList != null && locationsList.size()>0)
 			{
 				constituencyVOList = new ArrayList<SelectOptionVO>();
-				for (Object[] param : PconstituencyList)
+				for (Object[] param : locationsList)
 				{
 					SelectOptionVO vo = new SelectOptionVO();
 					vo.setId(param[0] != null ? Long.valueOf(param[0].toString()) :0L);
@@ -649,6 +733,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 					constituencyVOList.add(vo);
 				}
 			}
+			
 			
 		} catch (Exception e) {
 			LOG.error(" exception occured at getParliamentsForState() in CadreSurveyTransactionService service class. ", e);
@@ -661,6 +746,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 		SurveyTransactionVO returnVO = new SurveyTransactionVO();
 		List<SurveyTransactionVO> returnList = null;
 		SimpleDateFormat  format = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat  format1 = new SimpleDateFormat("dd-MM-yyyy");
 		try {
 			Date fromDate = format.parse(fromDateStr);
 			Date toDate = format.parse(toDateStr);
@@ -674,11 +760,11 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 				{
 					SurveyTransactionVO vo = new SurveyTransactionVO();
 
-					vo.setSurveyDate(transaction[0] != null ? transaction[0].toString().substring(0, 10):"");
+					vo.setSurveyDate(transaction[0] != null ? format1.format(format.parse(transaction[0].toString().substring(0, 10))):"");
 					vo.setTeamSize(transaction[1] != null ? Long.valueOf(transaction[1].toString()):0L);
-					vo.setSubmittedCount(transaction[2] != null ? Long.valueOf(transaction[2].toString()):0L);
-					vo.setOtpRequestCount(transaction[3] != null ? Long.valueOf(transaction[3].toString()):0L);
-					vo.setDepositedAmount(transaction[4] != null ? Long.valueOf(transaction[4].toString()):0L);
+					vo.setSubmittedCount(transaction[2] != null ? Long.valueOf(transaction[2].toString()) != 0L ? Long.valueOf(transaction[2].toString()) /100:0L :0L);
+					vo.setActualAmount(transaction[2] != null ? Long.valueOf(transaction[2].toString()):0L);
+					vo.setDepositedAmount(transaction[3] != null ? Long.valueOf(transaction[3].toString()):0L);
 					
 					returnList.add(vo);
 				}
@@ -711,27 +797,27 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 				if(stateId.longValue() == 1L)
 				{
 					locationIdList = constituencyDAO.getAllAssemblyConstituencyIdsByStateId(1L);
-					query.append(" and model.cadreTxnDetails.constituency.constituencyId in (:locationIdList) ");
+					query.append(" and model.constituency.constituencyId in (:locationIdList) ");
 				}
 				else if(stateId.longValue() == 2L)
 				{
 					locationIdList = constituencyDAO.getAllAssemblyConstituencyIdsByStateId(2L);
-					query.append(" and model.cadreTxnDetails.constituency.constituencyId in (:locationIdList)  ");
+					query.append(" and model.constituency.constituencyId in (:locationIdList)  ");
 				}
 				else
 				{
 					locationIdList = constituencyDAO.getAllAssemblyConstituencyIdsByStateId(0L);
-					query.append(" and model.cadreTxnDetails.constituency.constituencyId in (:locationIdList)");
+					query.append(" and model.constituency.constituencyId in (:locationIdList)");
 				
 				}
 			}
 			else if(searchType.equalsIgnoreCase("district"))
 			{
-				query.append(" and model.cadreTxnDetails.constituency.district.districtId in (:locationIdList) ");
+				query.append(" and model.constituency.district.districtId in (:locationIdList) ");
 			}
 			else if(searchType.equalsIgnoreCase("assembly"))
 			{
-				query.append(" and model.cadreTxnDetails.constituency.constituencyId in (:locationIdList) ");
+				query.append(" and model.constituency.constituencyId in (:locationIdList) ");
 			}
 			else if(searchType.equalsIgnoreCase("parliament"))
 			{
@@ -740,7 +826,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 				locationIdList.clear();
 				locationIdList.addAll(assembblyIds);
 				
-				query.append(" and model.cadreTxnDetails.constituency.constituencyId in (:locationIdList) ");
+				query.append(" and model.constituency.constituencyId in (:locationIdList) ");
 			}
 			
 			List<Object[]> locationWiseTransactions = cadreOtpDetailsDAO.getLocationWiseTransactionsByDates(fromDate,toDate,locationIdList,query.toString());
@@ -752,12 +838,16 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 				for (Object[] transction : locationWiseTransactions) 
 				{
 					SurveyTransactionVO vo = new SurveyTransactionVO();
+					
 					vo.setId(transction[0] != null ? Long.valueOf(transction[0].toString().trim()):0L);
 					vo.setName(transction[1] != null ? transction[1].toString().trim():"");
 					vo.setLocationId(transction[2] != null ? Long.valueOf(transction[2].toString().trim()):0L);
-					vo.setLocationName(transction[3] != null ? transction[3].toString().trim():"");
-					vo.setSubmittedCount(transction[4] != null ? Long.valueOf(transction[4].toString().trim()):0L);
-					vo.setRecordsCount(transction[5] != null ? Long.valueOf(transction[5].toString().trim()):0L);
+					vo.setLocationName(transction[3] != null ? transction[3].toString().trim():"");					
+					vo.setTotalCount(transction[4] != null ? Long.valueOf(transction[4].toString().trim()):0L);					
+					vo.setSubmittedCount(transction[5] != null ? Long.valueOf(transction[5].toString().trim()):0L);					
+					vo.setRecordsCount(transction[6] != null ? Long.valueOf(transction[6].toString().trim()) != 0L? Long.valueOf(transction[6].toString().trim()) /100:0L:0L);
+					vo.setOtpConfirmCount(transction[7] != null ? Long.valueOf(transction[7].toString().trim()) != 0L? Long.valueOf(transction[7].toString().trim()) /100:0L:0L);
+					vo.setDepositedAmount(transction[7] != null ? Long.valueOf(transction[7].toString().trim()):0L);
 					
 					returnList.add(vo);
 				}
