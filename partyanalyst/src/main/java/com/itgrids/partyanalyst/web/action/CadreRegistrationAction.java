@@ -20,6 +20,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
+import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
@@ -81,11 +82,21 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private Boolean                             cadreUploadImgVoterType;
 	private String								relativeVoterCardNo;
 	
+	private List<CadreRegisterInfo> cadreRegisterInfo=null;
 	private String 								fromPath 	;						
 	private String 								toPath 	;						
 	
 	
-	
+
+
+	public List<CadreRegisterInfo> getCadreRegisterInfo() {
+		return cadreRegisterInfo;
+	}
+
+	public void setCadreRegisterInfo(List<CadreRegisterInfo> cadreRegisterInfo) {
+		this.cadreRegisterInfo = cadreRegisterInfo;
+	}
+
 	public String getRelativeVoterCardNo() {
 		return relativeVoterCardNo;
 	}
@@ -1177,5 +1188,34 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			LOG.error("Exception raised in copySdCardDetails method in CadreRegistrationAction Action",e);
 		}
 		return Action.SUCCESS;
+	}	
+	public String getDistrictsByStateWiseAction(){
+		LOG.info("Entered into getDistrictsByStateWiseAction method in CadreRegistrationAction Action");
+		
+		try{
+			jobj = new JSONObject(getTask());
+			Long stateId = jobj.getLong("stateid");
+			
+			 cadreRegisterInfo=cadreRegistrationService.getDistrictsByStateWiseAction(stateId);
+		}
+		catch (Exception e) {
+			LOG.error("Exception raised in getDistrictsByStateWiseAction method in CadreRegistrationAction Action",e);
+		}
+		return Action.SUCCESS;
 	}
+	public String getConstsByStateWiseAction(){
+		LOG.info("Entered into getConstsByStateWiseAction method in CadreRegistrationAction Action");
+		
+		try{
+			jobj = new JSONObject(getTask());
+			Long stateId = jobj.getLong("stateid");
+			
+			 cadreRegisterInfo=cadreRegistrationService.getConstsByStateWiseAction(stateId);
+		}
+		catch (Exception e) {
+			LOG.error("Exception raised in getConstsByStateWiseAction method in CadreRegistrationAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }

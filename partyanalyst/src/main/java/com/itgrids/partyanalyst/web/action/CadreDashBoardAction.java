@@ -183,7 +183,8 @@ public class CadreDashBoardAction implements ServletRequestAware {
 				result = cadreDashBoardService.getWorkStartedConstituencyCount();
 			}else if(task.equalsIgnoreCase("candidateDataCollectionInfo")){
 				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-				result = cadreDashBoardService.getCandidateDataCollectionInfo(sdf.parse(request.getParameter("fromDate")),sdf.parse(request.getParameter("toDate")));
+				List<Long> locationIds = getIds(request.getParameter("locationId").trim());
+				result = cadreDashBoardService.getCandidateDataCollectionInfo(Long.parseLong(request.getParameter("locationType")),locationIds,sdf.parse(request.getParameter("fromDate")),sdf.parse(request.getParameter("toDate")));
 			}
 		}catch(Exception e){
 			LOG.error("Exception rised in getCadreDashBoardBasicInfo ",e);

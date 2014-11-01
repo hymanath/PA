@@ -79,6 +79,8 @@
 				line-height: 20px !important;
 			}
 			
+			#statedisplaydivid,#distdisplaydivid,#constdisplaydivid{display:none;}
+			
 	</style>
 </head>
 <body>
@@ -100,10 +102,44 @@
 			<div class="row-fluid ">
 			   <div style="min-height: 300px;background:#ffffff;" class="span12 show-grid well well-small border-radius-0 mb-10 form-inline">
 			   <div id="errStatusDiv" align="center" ></div>
-				<label style="margin-left:100px;"><b>From Date :</b>&nbsp;<input type="text" readonly="readonly" id="fromDate"/></label>
-					 <label><b>To Date   :</b>&nbsp;<input type="text" readonly="readonly" id="toDate" /> </label>
-					<input type="button" class="btn btn-success" id="getCandidateDataCollectionInfoId" onclick="getCandidateDataCollectionInfo();" value="Submit"/>
-					<img id="ajaxImgStyle" style="display:none;margin-left: 10px;" src="images/icons/search.gif"/>
+			   <table  style="margin-left: 270px;">
+					 <tr>
+					   <td><b>Select Scope : </b></td>
+					   <td>
+						  <select id="selLctnType" onchange="selectLocation(this.value)">
+							<option value="0">All</option>
+							<option value="1">State</option>
+							<option value="2">District</option>
+							<option value="3">Constituency</option>
+						  </select>
+						</td>
+					 </tr>
+				     <tr id="statedisplaydivid">
+						<td><b>Select State</b></td>
+						<td>
+						  <select id="statesDivId">
+							<option value="0">All</option>
+							<option value="1">AndhraPradesh</option>
+							<option value="2">Telangana</option>
+						  </select>
+						</td>
+				     </tr>
+				   <tr id="distdisplaydivid">
+					   <td><b>Select District : </b></td>
+					   <td><select id="displaydistbox"></select></td>
+				   </tr>
+				   <tr id="constdisplaydivid">
+					   <td><b>Select constituency : </b></td>
+					   <td><select id="displayconstbox"></select></td>
+				   </tr>
+				   <tr><td><b>From Date :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="fromDate"/></td></tr>
+				   <tr><td><b>To Date   :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="toDate" /></td></tr>
+				   <tr>
+				      <td></td><td><input type="button" style="margin-left: 12px;margin-top: 13px;" class="btn btn-success" id="getCandidateDataCollectionInfoId" onclick="getCandidateDataCollectionInfo();" value="Submit"/>
+						<img id="ajaxImgStyle" style="display:none;margin-left: 10px;" src="images/icons/search.gif"/>
+					  </td>
+				  </tr>
+			</table>
 					<div id="userStatusDialogDIV"></div>
 			  </div>
 			</div>
@@ -199,6 +235,19 @@
 	    </div>
 	</div>
 <script type="text/javascript">
+	$("#statesDivId").change(function(){
+		var lctnType = $("#selLctnType").val();
+		if(lctnType == 3){
+			getConstituenciesUWS();
+			$("#distdisplaydivid").hide();
+		}
+		if(lctnType ==2) {
+			getdistrictsUWS();
+			$("#constdisplaydivid").hide();
+		}
+	});
+	
+	
     $("#fromDate,#fromDate1").datepicker({
 		dateFormat: "dd-mm-yy",
 		changeMonth: true,
@@ -218,37 +267,47 @@
 	var ruralConstis = "";
     $("#userStatusDialogDIV").html("");
     $("#errStatusDiv").html("");
-
+	
+	var locationType=$( "#selLctnType" ).val();
+	
+	var locationId;
+	if(locationType==0){locationId=0;}
+	if(locationType==1){locationId=getReqIds("statesDivId");}
+	if(locationType==2){locationId=getReqIds("displaydistbox");}
+	if(locationType==3){locationId=getReqIds("displayconstbox");}
+	
 	var startDate = $("#fromDate").val();
 	var endDate = $("#toDate").val();
 	
 	if(startDate.trim().length >0 && endDate.trim().length >0)
 		{
-			var dt1  = parseInt(startDate.substring(0,2),10);
-			var mon1 = parseInt(startDate.substring(3,5),10);
-			var yr1  = parseInt(startDate.substring(6,10),10);
-			var dt2  = parseInt(endDate.substring(0,2),10);
-			var mon2 = parseInt(endDate.substring(3,5),10);
-			var yr2  = parseInt(endDate.substring(6,10),10);
-			
-			var date1 = new Date(yr1, mon1, dt1);
-			var date2 = new Date(yr2, mon2, dt2);
-
-			if(startDate != "" || endDate != ""){
-
-				if(startDate == ""){
-					$('#errStatusDiv').html('<font style="color:red;">From Date should not Empty </font>');
-					return;
-				}
-				else if(endDate == ""){
-					$('#errStatusDiv').html('<font style="color:red;">To Date should not Empty </font>');
-					return;
-				}					
-				if(date2 < date1){ 
-					$('#errStatusDiv').html('<font style="color:red;">From Date should not greater than To Date </font>');
-					return;
-				}
-			}	
+                 var arrr = startDate.split("-");
+				    var fromDat=arrr[0];
+					var frommonth=arrr[1];
+					var fromyear=arrr[2];
+			   var arr = endDate.split("-");
+					var toDat=arr[0];
+					var tomonth=arr[1];
+					var toyear=arr[2];
+					
+					if(fromyear>toyear){
+						$('#errStatusDiv').html('<font style="color:red;">From Date should not greater than To Date </font>');
+						  return;
+					}
+					 if(frommonth>tomonth){
+						   if(fromyear == toyear){
+							$('#errStatusDiv').html('<font style="color:red;">From Date should not greater than To Date </font>');
+						   return;
+						}
+						
+					}
+					
+					if(fromDat>toDat){	
+						if(frommonth == tomonth && fromyear == toyear){			
+							$('#errStatusDiv').html('<font style="color:red;">From Date should not greater than To Date </font>');
+						   return;	
+						   }
+					}			
 		}
 		
 	$("#getCandidateDataCollectionInfoId").attr("disabled","disabled");
@@ -256,7 +315,7 @@
     $.ajax({
           type:'GET',
           url: 'getCadreDashBoardBasicInfo.action',
-          data: {task:"candidateDataCollectionInfo",fromDate:$("#fromDate").val(),toDate:$("#toDate").val()}
+          data: {task:"candidateDataCollectionInfo",locationType:locationType,locationId:locationId,fromDate:$("#fromDate").val(),toDate:$("#toDate").val()}
        }).done(function(result){
 	   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
 		   location.reload(); 
@@ -268,6 +327,9 @@
 				str+='<tr>';
 				str+='<th rowspan="2">User</th>';
 				str+='<th rowspan="2" >MobileNo</th>';
+				str+='<th rowspan="2" >State</th>';
+				str+='<th rowspan="2" >District</th>';
+				str+='<th rowspan="2" >Constituency</th>';
 				for(var i in result[0].infoList){
 				  str+='<th colspan="3">'+result[0].infoList[i].date+'</th>';
 				}
@@ -283,10 +345,26 @@
 				for(var i in result){
 				  str+='<tr>';
 				  str+='  <td>'+result[i].name+'</td>';
-				  if(result[i].date != null){
+				  if(result[i].area != null){
 				     str+='  <td>'+result[i].area+'</td>';
+				   }else{
+				      str+='  <td>-</td>';
 				   }
-				  str+='  <td>-</td>';
+				  if(result[i].location != null){
+				     str+='  <td>'+result[i].location+'</td>';
+				   }else{
+				      str+='  <td>-</td>';
+				   }
+				  if(result[i].number != null){
+				     str+='  <td>'+result[i].number+'</td>';
+				   }else{
+				      str+='  <td>-</td>';
+				   }
+				  if(result[i].memberShipNo != null){
+				     str+='  <td>'+result[i].memberShipNo+'</td>';
+				   }else{
+				      str+='  <td>-</td>';
+				   }
 				  for(var j in result[i].infoList){
 				    if(result[i].infoList[j].area != null){
 				      str+='  <td>'+result[i].infoList[j].area+'</td>';
@@ -601,27 +679,30 @@
 	}
 	if(startDate.trim().length >0 && endDate.trim().length >0)
 		{
-			var dt1  = parseInt(startDate.substring(0,2),10);
-			var mon1 = parseInt(startDate.substring(3,5),10);
-			var yr1  = parseInt(startDate.substring(6,10),10);
-			var dt2  = parseInt(endDate.substring(0,2),10);
-			var mon2 = parseInt(endDate.substring(3,5),10);
-			var yr2  = parseInt(endDate.substring(6,10),10);
 			
-			var date1 = new Date(yr1, mon1, dt1);
-			var date2 = new Date(yr2, mon2, dt2);
-
-			if(startDate != "" || endDate != ""){
-
-				if(startDate == ""){
-					 errMsg ="From Date should not Empty";
+		    var arrr = startDate.split("-");
+		    var fromDat=arrr[0];
+			var frommonth=arrr[1];
+			var fromyear=arrr[2];
+	   var arr = endDate.split("-");
+			var toDat=arr[0];
+			var tomonth=arr[1];
+			var toyear=arr[2];
+			
+			if(fromyear>toyear){
+				 errMsg ="From Date should not greater than To Date";		
+			}
+			 if(frommonth>tomonth){
+				 if(fromyear == toyear){
+					 errMsg ="From Date should not greater than To Date";		
 				}
-				else if(endDate == ""){
-					 errMsg ="To Date should not Empty";
-				}					
-				if(date2 < date1){ 
-					  errMsg ="From Date should not greater than To Date";					
-				}
+				
+			}
+			
+			if(fromDat>toDat){	
+				if(frommonth == tomonth && fromyear == toyear){			
+					errMsg ="From Date should not greater than To Date";		
+			   }
 			}	
 		}
 		
@@ -810,6 +891,84 @@
   getDistricts();
   getConstituencies("ALL");
   getConstituencies("rural");
+  
+  function selectLocation(value){
+	if(value==0){
+		$("#statedisplaydivid").hide();
+		$("#distdisplaydivid").hide();
+		$("#constdisplaydivid").hide();
+	}
+	if(value==1){
+		$("#statedisplaydivid").show();	
+		$('#statesDivId').val('0');
+		$("#distdisplaydivid").hide();
+		$("#constdisplaydivid").hide();
+	}
+	if(value==2){
+		$("#statedisplaydivid").show();	
+		$('#statesDivId').val('0');
+		
+		$("#distdisplaydivid").hide();
+		$("#constdisplaydivid").hide();
+		getdistrictsUWS();
+	}
+	if(value==3){
+		$("#statedisplaydivid").show();
+		$('#statesDivId').val('0');
+		
+		$("#distdisplaydivid").hide();
+		$("#constdisplaydivid").hide();
+		getConstituenciesUWS();
+	}
+	
+  }
+  
+  function getdistrictsUWS(){
+	var selState = $("#statesDivId").val();
+	
+	$("#displaydistbox").html("");
+	
+	
+		var jsObj={
+			stateid:selState
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getDistrictsByStateWiseAction.action',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+			var str = "<option value='0'>All</option>";
+		   for(var i in result){
+				str +='<option value='+result[i].id+'>'+result[i].name+'</option>';
+			}
+			$("#displaydistbox").html(str);
+			$("#distdisplaydivid").show();
+	   });	
+	
+  }
+  
+ 
+	function getConstituenciesUWS(){
+		var selState = $("#statesDivId").val();
+		$("#displayconstbox").html("");
+		
+		var jObj ={
+			stateid:selState,				  
+			task:"getConstituenciesForUWS"             
+		}	
+		$.ajax({
+			type : "POST",
+			url : "getConstsAction.action",
+			data : {task:JSON.stringify(jObj)} ,
+		}).done(function(result){
+			var str = "<option value='0'>All</option>";
+		   for(var i in result){
+				str +='<option value='+result[i].id+'>'+result[i].name+'</option>';
+			}
+			$("#displayconstbox").html(str);
+			$("#constdisplaydivid").show();
+		});
+	}
 </script>
 </body>
 </html>
