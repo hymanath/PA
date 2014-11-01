@@ -10,17 +10,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title> Cadre Transactions Details </title>
 
-
     <link href="css/bootstrap.min.css" rel="stylesheet"/>	
     <link href="css/style.css" rel="stylesheet"/>
     <link href="css/animate.css" rel="stylesheet"/>	
-	<link href="styles/icheck_skins/all.css?v=1.0.2" rel="stylesheet"/>
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	 <script src="js/icheck/icheck.js"></script>
-
+	 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+	
 	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
-	
+	<script type="text/javascript" src="js/photobooth/photobooth_min.js"></script>
+		<script type="text/javascript" src="js/photobooth/website/js/cadre.js"></script>
+		
+		<link type="text/css" rel="stylesheet" media="screen" href="js/photobooth/website/css/page.css" />
 	<style>
 	.show-grid:hover .block-hover-addBtn{display:table-cell; margin-right:-22px; top:-10px;}/*visibility: visible;*/
 	.block-hover-addBtn{display:none; position: relative;}/*visibility: hidden;*/
@@ -48,6 +51,13 @@
 	.header-bg{background:#3598DB url('./images/cadre_images/2014-Header-BG.png') repeat-x; height:179px;}
 	.color-white{color:#f9f9f9;}
 	
+	
+		#daywiseReportTab  thead th {
+			background-color: #dff0d8  !important;
+			color : #468847 !important;
+			line-height: 15px !important;
+		
+		
 	</style>
    
 	
@@ -211,6 +221,81 @@
 				</table>
 			</div>
 		</div>
+		
+		<div class="row-fluid " >	
+			<div class="span12 show-grid well well-small border-radius-0 mb-10">
+				<div id="daywiseReportDiv"></div>
+			</div>
+		</div>
+		<div class="row-fluid ">
+			   <div style="min-height: 300px;background:#ffffff;" class="span12 show-grid well well-small border-radius-0 mb-10 form-inline">
+				  <div id="errMsgDiv"></div>
+				  <table  style="margin-left: 270px;">
+				     <tr>
+					   <td><b>Select Report Level :</b></td>
+					   <td><select id="locationsDispalyId" onchange="showCorrespondingLocs(this.value);">
+							 <option value="2">State</option>
+							 <option value="3">District</option>
+							 <option value="4">Constituency</option>
+							 <option value="5">Parliament Constituency</option>
+					       </select> 
+					   </td>
+				     </tr>
+				     <tr id="statesDispalyMainDiv">
+						 <td><b>Select State :</b></td>
+						 <td>  
+						   <select id="statesDispalyId" onchange="getLocationDetailsForState(this.value);">
+							 <option value="0">All</option>
+							 <option value="1">Andhra Pradesh</option>
+							 <option value="2">Telangana</option>
+						   </select> 
+						 </td>
+					 </tr>
+					 <tr id="districtsDispalyMainDiv" style="display:none;">
+						 <td><b>Select District :</b></td>
+						 <td>  
+						   <select id="districtsDispalyId">
+						   </select> 
+						 </td>
+					 </tr>
+					 <tr id="constituencyDispalyMainDiv" style="display:none;">
+						 <td><b>Select Constituency :</b></td>
+						 <td>  
+						   <div id="constituencySelectDIV"><select id="constituencyDispalyId">
+						   </select></div>
+						 </td>
+					 </tr>
+					 <tr id="mandalDispalyMainDiv" style="display:none;">
+						 <td><b>Select Parliament :</b></td>
+						 <td>  
+						   <select id="mandalDispalyId">
+						   </select> 
+						 </td>
+					 </tr>
+					 
+					  <tr id="formDateDiv" >
+						 <td><b>From Date :</b></td>
+						 <td>  
+						   <input type="text" id="fromDate" class="levelDtCls form-control border-radius-0 border-right-0 datePickerCls " placeholder="From Date"  readOnly="true" style="cursor:text;"></input>
+						 </td>
+					 </tr>
+					  <tr id="toDateDiv">
+						 <td><b>To Date :</b></td>
+						 <td>  
+						    <input type="text" id="toDate" class="levelDtCls form-control border-radius-0 border-right-0 datePickerCls "  placeholder="From Date"  readOnly="true" style="cursor:text;"></input>
+						 </td>
+					 </tr>
+					 
+					 <tr>
+					 <td></td>
+					 <td> <input style="margin-top:10px;" type="button" id="locationSubmitBtn" class="btn btn-success" onclick="locationWiseTransactionReport();" value="Submit"/>
+					 <img id="ajaxImgStyleNew" style="display:none;margin-left:10px; margin-top:10px;" src="images/icons/search.gif"/></td>
+					 </tr>
+				  </table>
+				  <div id="locationWiseTransactionDiv"></div>
+			  </div>
+		   </div>
+		
 	</div>
 	
 		<!-- Footer Row -->
@@ -222,47 +307,222 @@
 		</div>
 	<!-- Footer Row End-->
 		
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js2.3.2/bootstrap.min.js"></script>
-	<script src="icheck/jquery.js"></script>
-	 <script src="icheck/icheck.js"></script>
-	 <script src="scrollator/fm.scrollator.jquery.js"></script>
-
-		<script>
-		$(document).ready(function(){
-		 
-		});	
+	<script>
+	$(document).ready(function(){
+		//daywiseReport();
+		locationWiseTransactionReport();
+		 $("#fromDate,#toDate").datepicker({
+			dateFormat: "dd-mm-yy",
+			changeMonth: true,
+			changeYear: true,
+			maxDate: new Date()
+		})
+		$("#fromDate,#toDate").datepicker("setDate", new Date());
 		
-		/*function getSurveyTransactionDetails()
-		{
-			var jObj ={
-					task:"task"
-			}
-			$.ajax({
-		          type:'POST',
-		          url: 'basicCadreTransactionDetailsAction.action',
-		          dataType: 'json',
-		          data: {task:JSON.stringify(jObj)},
-		     	  }).done(function(result){ 
-					  //$("#ajaxLoad").css("display","none");
-					if(result != null){
-						
-					}
-			   });
-			   	
-		}*/
-	 </script>
-    <script>$('#fadeInDown').addClass('animated fadeInDown');</script>
-    <script>$('#fadeInLeft').addClass('animated fadeInLeft');</script>
-    <script>$('#fadeInRight').addClass('animated fadeInRight');</script>
-    <script>$('.fadeInUp').addClass('animated fadeInUp');</script>
-    <script>$('#fadeInUp1').addClass('animated fadeInUp');</script>
-    <script>$('#PreviousmembersCount').addClass('animated fadeInUp');</script>
-    <script>$('#membersCount').addClass('animated fadeInX');</script>
-	<!----->
+	});	
 	
+	function getLocationDetailsForState()
+	{
+	  var locationLvl = $('#locationsDispalyId').val();
+	  var divId = '';
+	  var stateId =  $('#statesDispalyId').val();
+	  var dataType = '';
+	  var selectOption = '';
+	 
+	  if(locationLvl == 3)
+	  {
+		divId = 'districtsDispalyId';
+		dataType = "district";
+		selectOption = 'Select District ';
+	  }
+	  else if(locationLvl == 4)
+	  {
+	  	divId = 'constituencyDispalyId';
+		dataType = "assembly";
+		selectOption = 'Select Constituency ';
+	  }
+	  else if(locationLvl == 5)
+	  {
+		divId = 'mandalDispalyId';	
+		dataType = "parliament";
+		selectOption = 'Select Parliament ';
+	  }
+	  
+	  if(locationLvl != 2)
+	  {	 
+		  var jsObj = {
+				searchType :dataType,
+				stateTypeId : stateId,
+				tesk:"locationWiseTransactionReport"            
+		   }
+	  
+			$.ajax({
+				type : "POST",
+				url : "getParliamentsForStateAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				$('#'+divId+'').find('option').remove();
+				$('#'+divId+'').append('<option value="0"> '+selectOption+' </option>');
+				if(result != null && result.length >0)
+				{
+					for(var i in result)
+					{
+						$('#'+divId+'').append('<option value="'+result[i].id+'"> '+result[i].name+' </option>');
+					}
+				}
+			});
+		}
+	}
+	function showCorrespondingLocs(locationLvl)
+	{
+	  $("#statesDispalyMainDiv").show();
+	  $("#statesDispalyId").val(0);
+	  
+	  if(locationLvl == 3)
+	  {
+		$("#districtsDispalyMainDiv").show();
+		$("#districtsDispalyId").val(0);
+		$("#constituencyDispalyMainDiv").hide();
+		$("#mandalDispalyMainDiv").hide();
+		
+	  }else if(locationLvl == 4)
+	  {
+		$("#districtsDispalyMainDiv").hide();
+		$("#constituencyDispalyMainDiv").show();
+		$("#mandalDispalyMainDiv").hide();
+	  }
+	 else if(locationLvl == 5)
+	  {
+		$("#mandalDispalyMainDiv").show();
+		$("#districtsDispalyMainDiv").hide();
+		$("#constituencyDispalyMainDiv").hide();		
+	  }
+	getLocationDetailsForState();
+   }
+	
+	function locationWiseTransactionReport()
+	{	
+	var locationIdsArr = new Array();	
+	locationIdsArr.push(232);
+	$('#locationWiseTransactionDiv').html('');
+	$('#ajaxImgStyleNew').show();
+		var jsObj = {
+			fromDate:"2014-10-10",
+			toDate : "2014-10-30",
+			searchType :"assembly",
+			locationIds : locationIdsArr,
+			tesk:"locationWiseTransactionReport"            
+	   }	
+		$.ajax({
+			type : "POST",
+			url : "locationWiseTransactionReportAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			$('#ajaxImgStyleNew').hide();
+			if(result !=null && result.surveyTransactionVOList != null && result.surveyTransactionVOList.length >0)
+			{
+				buildlocationWiseTransactionReports(result);	
+			}
+			else
+			{
+				$('#locationWiseTransactionDiv').html(' No Data Available...');
+			}			
+		});			
+	}
+	
+	function buildlocationWiseTransactionReports(result)
+	{
+		var str ='';
+		str+='<h4 align="center"> Location Wise Transaction Report </h4>';
+		str +='<table class="table " id="locationWiseReportTab">';
+		str +='<thead>';
+		str +='<tr>';
+		str +='<th> User Name </th>';
+		str +='<th> Constituency Name </th>';
+		str +='<th> No of Days Worked </th>';
+		str +='<th> No of OTP Payments Done </th>';
+		str +='<th> No of records collected As per live  </th>';
+		str +='<th> No of records collected As per OTP Recieved  </th>';
+		str +='<th> Payments Recieved  </th>';
+		str +='</tr>';
+		str +='</thead>';
+		str +='<tbody>';
+		
+		for(var i in result.surveyTransactionVOList)
+		{
+			str +='<tr>';
+			str +='<td></td>';
+			str +='<td></td>';
+			str +='<td></td>';
+			str +='<td></td>';
+			str +='<td></td>';
+			str +='<td></td>';
+			str +='<td></td>';
+			str +='</tr>';		
+		}
+		str +='</tbody>';
+		str +='</table>';
+		$('#locationWiseTransactionDiv').html(str);
+		$('#locationWiseReportTab').dataTable({});
+	}
+	function daywiseReport()
+	{	
+	$('#daywiseReportDiv').html('');
+		var jsObj = {
+		fromDate:"2014-10-10",
+		toDate : "2014-10-15",
+		 tesk:"daywiseTransactionReports"            
+	   }	
+		$.ajax({
+			type : "POST",
+			url : "daywiseTransactionReportsAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			if(result !=null && result.surveyTransactionVOList != null && result.surveyTransactionVOList.length >0)
+			{
+				buildDadyWiseTransactionReport(result);	
+			}
+			else
+			{
+				$('#daywiseReportDiv').html(' No Data Available...');
+			}
+			
+		});
+			
+	}
+	
+	function buildDadyWiseTransactionReport(result)
+	{
+		var str ='';
+		str+='<h4 align="center"> Day wise Transaction Report </h4>';
+		str +='<table class="table " id="daywiseReportTab">';
+		str +='<thead>';
+		str +='<tr>';
+		str +='<th> Date </th>';
+		str +='<th> Field Staff </th>';
+		str +='<th> Submitted Records </th>';
+		str +='<th> Field Staff OTP Payment Recieved </th>';
+		str +='<th> Amount Recieved  </th>';
+		str +='</tr>';
+		str +='</thead>';
+		str +='<tbody>';
+		
+		for(var i in result.surveyTransactionVOList)
+		{
+			str +='<tr>';
+			str +='<td>'+result.surveyTransactionVOList[i].surveyDate+'</td>';
+			str +='<td>'+result.surveyTransactionVOList[i].teamSize+'</td>';
+			str +='<td>'+result.surveyTransactionVOList[i].submittedCount+'</td>';
+			str +='<td>'+result.surveyTransactionVOList[i].otpRequestCount+'</td>';
+			str +='<td>'+result.surveyTransactionVOList[i].depositedAmount+'</td>';
+			str +='</tr>';		
+		}
+		str +='</tbody>';
+		str +='</table>';
+		$('#daywiseReportDiv').html(str);
+		$('#daywiseReportTab').dataTable({});
+	}
+	</script>
+
   </body>
 </html>
