@@ -49,7 +49,6 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 	private ICadreOtpDetailsDAO cadreOtpDetailsDAO;
 	
 	private ISmsService smsCountrySmsService;
-	
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;	
 	
 	private IDistrictDAO districtDAO;
@@ -62,6 +61,9 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
 		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
+	
+	
+
 	public ICadreTxnUserDAO getCadreTxnUserDAO() {
 		return cadreTxnUserDAO;
 	}
@@ -181,23 +183,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			List<String> existMobileNos = cadreTxnUserDAO.checkForExistsMobileNo(inputVO.getMobileNo().toString().trim());
 			if(existMobileNos != null && existMobileNos.size() > 0)
 			{
-				List list = cadreTxnUserDAO.checkUserExists(inputVO.getUserId(),inputVO.getMobileNo().toString().trim());
-				if(list == null || list.size() == 0)
-				{
-					statusMag = "INVALID_USER";
-					return statusMag;
-				}
-				else
-				{
-					
-					try{
-						statusMag  = genarateOTP(inputVO,returnVo);
-					}
-					catch (Exception e) {
-						
-					}
-					
-				}
+					statusMag  = genarateOTP(inputVO,returnVo);
 			}
 			else
 			{
@@ -235,8 +221,18 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			cadreTxnDetails.setSurveyTime(sdf.parse(inputVo.getInsertedTime()));
 			cadreTxnDetails.setAgentMobileNo(inputVo.getAgentMobileNo());
 			cadreTxnDetails.setAgentName(inputVo.getAgentName());
-			cadreTxnDetails.setAgentReconConstyName(cadreTxnDetails.getAgentReconConstyName());
-			cadreTxnDetails.setAgentVillage(cadreTxnDetails.getAgentVillage());
+			cadreTxnDetails.setAgentReconConstyName(inputVo.getAgentReconConstyName());
+			cadreTxnDetails.setAgentVillage(inputVo.getAgentVillage());
+			
+			if(inputVo.getOtpNumber() != null && inputVo.getOtpNumber().trim().length() > 0)
+			{
+				List<Long> cadreOtpDetails = cadreOtpDetailsDAO.getCadreotpDateils(inputVo.getOtpNumber().trim());
+				if(cadreOtpDetails != null && cadreOtpDetails.size() > 0)
+				{
+					cadreTxnDetails.setCadreOtpDetailsId(cadreOtpDetails.get(0));
+				}
+				
+			}
 			CadreTxnDetails savedStatus = cadreTxnDetailsDAO.save(cadreTxnDetails);
 			if(savedStatus != null)
 			{
@@ -253,37 +249,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 		return status;
 	}
 	
-	/*public void genarateOTP(CadreTxnDetails cadreTxnDetails,CadreTransactionVO inputVo,CadreTransactionVO returnVo)
-	{
-		try{
-			cadreOtpDetailsDAO.updateIsDeleted(inputVo.getMobileNo());
-			RandomNumberGeneraion rnd = new RandomNumberGeneraion();
-			int otpRand =rnd.randomGenerator(6); 
-			int refRand = rnd.randomGenerator(6);
-			CadreOtpDetails cadreOtpDetails = new CadreOtpDetails();
-			cadreOtpDetails.setCadreTxnDetails(cadreTxnDetails);
-			cadreOtpDetails.setMobileNo(inputVo.getMobileNo());
-			cadreOtpDetails.setOtpNo(String.valueOf(otpRand));
-			cadreOtpDetails.setOtpReferenceId(String.valueOf(refRand));
-			cadreOtpDetails.setIsDeleted("N");
-			cadreOtpDetails.setInsertedTime(new Date());
-			cadreOtpDetails.setUpdatedTime(new Date());
-			 String txnNo = rnd.randomStringOfLength(8);
-			cadreOtpDetails.setTxnNumber(txnNo);
-			cadreOtpDetailsDAO.save(cadreOtpDetails);
-			String message = "your OTP is "+otpRand+" for Reference Id # " +refRand+" ";
-			String[] phoneNumbers = {inputVo.getMobileNo().toString()};
-			smsCountrySmsService.sendSmsFromAdmin(message, true, phoneNumbers);
-			returnVo.setOtpNo(String.valueOf(otpRand));
-			returnVo.setRefNo(String.valueOf(refRand));
-			returnVo.setMobileNo(inputVo.getMobileNo());
-			returnVo.setUniqueKey(inputVo.getUniqueKey());
-			returnVo.setTxnNo(txnNo);
-		}
-		catch (Exception e) {
-			LOG.error("Exception occured in genarateOTP() in CadreSurveyTransactionService class.",e);
-		}
-	}*/
+	
 	public String genarateOTP(CadreTransactionVO inputVo,CadreTransactionVO returnVo)
 	{
 		try
@@ -346,23 +312,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 		}
 		return msg;
 	}
-	/*public String validateOTPForMobile(CadreTransactionVO inputVo)
-	{
-		String msg ="";
-		try{
-			String otpNo = cadreOtpDetailsDAO.checkOTPValid(inputVo.getMobileNo().toString().trim(),inputVo.getOtpNo().toString().trim(),inputVo.getRefNo().toString().trim());
-			if(otpNo != null)
-				msg = "success";
-			else
-				msg = "failure";
-		}
-		catch (Exception e) {
-			LOG.error("Exception occured in validateOTPForMobile() in CadreSurveyTransactionService class.",e);
-			msg = "EXCEPTION";
-		}
-		return msg;
-		
-	}*/
+	
 	
 	public String validateOTPForMobile(CadreTransactionVO inputVo)
 	{

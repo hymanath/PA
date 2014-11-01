@@ -846,6 +846,8 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		query.setParameter("presentDate", presentDate);
 		query.setParameter("lastHours", lastHours);
 		
+		System.out.println(" Cadre Query >>>>>>>>>>>>>>>> " + query.toString());
+		
 		return (Long)query.uniqueResult();
 	}
 	
