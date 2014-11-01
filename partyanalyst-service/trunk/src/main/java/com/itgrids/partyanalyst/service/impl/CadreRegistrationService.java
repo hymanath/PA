@@ -68,6 +68,7 @@ import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreFamilyVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
+import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.CastVO;
@@ -4258,4 +4259,59 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	public List<Long> getVoterIdByVoterCard(String voterCardId){
 		return voterDAO.getVoterId(voterCardId);
 	}
+	public List<CadreRegisterInfo> getDistrictsByStateWiseAction(Long stateId)
+	{
+		List<CadreRegisterInfo> cadreRegisterInfoList=null;
+		List<Object[]> returnList = null;
+		//Long distId;
+		try {
+				returnList = tdpCadreDAO.getDistrictsByStateWiseAction(stateId);
+				if(returnList !=null && returnList.size()>0)
+				{
+					cadreRegisterInfoList = new ArrayList<CadreRegisterInfo>();
+					for (Object[] objects : returnList) 
+					{
+						CadreRegisterInfo cadreRegisterInfo = new CadreRegisterInfo();
+						cadreRegisterInfo = new CadreRegisterInfo();
+						cadreRegisterInfo.setId(Long.valueOf(objects[0].toString()));
+						cadreRegisterInfo.setName(objects[1].toString());
+						
+						cadreRegisterInfoList.add(cadreRegisterInfo);
+					}
+				}
+			}
+			catch (Exception e) {
+				LOG.error("Exception raised in getDistrictsByStateWiseAction in CadreRegistrationService service", e);
+			}
+		return cadreRegisterInfoList;
+	}
+	
+	public List<CadreRegisterInfo> getConstsByStateWiseAction(Long stateId)
+	{
+		List<CadreRegisterInfo> cadreRegisterInfoList=null;
+		List<Object[]> returnList = null;
+		//Long distId;
+		try {
+				returnList = tdpCadreDAO.getConstsByStateWiseAction(stateId);
+				if(returnList !=null && returnList.size()>0)
+				{
+					cadreRegisterInfoList = new ArrayList<CadreRegisterInfo>();
+					for (Object[] objects : returnList) 
+					{
+						CadreRegisterInfo cadreRegisterInfo = new CadreRegisterInfo();
+						cadreRegisterInfo = new CadreRegisterInfo();
+						cadreRegisterInfo.setId(Long.valueOf(objects[0].toString()));
+						cadreRegisterInfo.setName(objects[1].toString());
+						
+						cadreRegisterInfoList.add(cadreRegisterInfo);
+					}
+				}
+			}
+			catch (Exception e) {
+				LOG.error("Exception raised in getDistrictsByStateWiseAction in CadreRegistrationService service", e);
+			}
+		return cadreRegisterInfoList;
+	}
+	
+	
 }

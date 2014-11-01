@@ -36,8 +36,9 @@ public class CadreSurveyUserDAO extends GenericDaoHibernate<CadreSurveyUser, Lon
 	}
 	
 	public List<Object[]> getUserMobileNos(Set<Long> ids){
-		Query query = getSession().createQuery("select model.cadreSurveyUserId, model.mobileNo from CadreSurveyUser model where " +
-				"  model.cadreSurveyUserId  in (:ids) ");
+		//0 userId,1mobile,2constituencyId,3constiname,4distiictId,5districtName
+		Query query = getSession().createQuery("select model.cadreSurveyUser.cadreSurveyUserId, model.cadreSurveyUser.mobileNo,model.constituency.constituencyId,model.constituency.name,model.constituency.district.districtId," +
+				" model.constituency.district.districtName from CadreSurveyUserAssignDetails model where model.cadreSurveyUser.cadreSurveyUserId  in (:ids) ");
 		
 		query.setParameterList("ids", ids);
 		
