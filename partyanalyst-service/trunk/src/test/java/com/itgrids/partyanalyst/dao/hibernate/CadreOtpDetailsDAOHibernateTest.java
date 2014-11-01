@@ -18,8 +18,8 @@ public class CadreOtpDetailsDAOHibernateTest extends BaseDaoTestCase {
 	public void setCadreOtpDetailsDAO(ICadreOtpDetailsDAO cadreOtpDetailsDAO) {
 		this.cadreOtpDetailsDAO = cadreOtpDetailsDAO;
 	}
-	/*
-	public void testDetails()
+	
+	/*public void testDetails()
 	{
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -32,16 +32,16 @@ public class CadreOtpDetailsDAOHibernateTest extends BaseDaoTestCase {
 		
 		try {
 			//System.out.println(format1.parse("2014-10-29 15:37:05"));
-			List<Object[]> list = cadreOtpDetailsDAO.getDayWiseReportForDates(null, yesterDay);
+			List<Object[]> list = cadreOtpDetailsDAO.getOtpDetailsForDates(null, yesterDay);
 			System.out.println(list);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-	}
-	*/
-	/*public void testDetails()
+	}*/
+	
+	public void testDetails()
 	{
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -54,16 +54,16 @@ public class CadreOtpDetailsDAOHibernateTest extends BaseDaoTestCase {
 		
 		try {
 			//System.out.println(format1.parse("2014-10-29 15:37:05"));
-			List<Object[]> list = cadreOtpDetailsDAO.getDayWiseReportForDates(yesterDay,today);
+			List<Object[]> list = cadreOtpDetailsDAO.getOfflineTxnDetailsIdsForDates(today,yesterDay);
 			System.out.println(list);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-	}*/
+	}
 	
-	public void testDetails()
+	/*public void testDetails()
 	{
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -83,5 +83,5 @@ public class CadreOtpDetailsDAOHibernateTest extends BaseDaoTestCase {
 		
 
 	}
-	
+	*/
 }
