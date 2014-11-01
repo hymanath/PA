@@ -104,7 +104,7 @@ public class CadreSurveyTransactionAction extends ActionSupport implements Servl
 	public String execute()
 	{
 		try {
-			surveyTransactionVO = cadreSurveyTransactionService.getCadreSurveyTransactionDetails();
+			surveyTransactionVO = cadreSurveyTransactionService.getCadreSurveyTransactionDetails(null);
 			//surveyTransactionReportVO = cadreSurveyTransactionService.getBasicTransactionDetails();
 			
 		} catch (Exception e) {
@@ -113,6 +113,20 @@ public class CadreSurveyTransactionAction extends ActionSupport implements Servl
 		return Action.SUCCESS;
 	}
 
+	public String getDateWiseDashboardReport()
+	{
+	
+		try {
+			
+			jObj = new JSONObject(getTask());
+			String searchDate = jObj.getString("searchDate");			
+			surveyTransactionVO = cadreSurveyTransactionService.getCadreSurveyTransactionDetails(searchDate);	
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getDateWiseDashboardReport() in CadreSurveyTransactionAction class.", e);
+		}
+		return Action.SUCCESS;
+	}
 	public String getParliamentsForState()
 	{
 		try {
