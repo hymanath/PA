@@ -104,8 +104,8 @@ public class CadreSurveyTransactionAction extends ActionSupport implements Servl
 	public String execute()
 	{
 		try {
-			//surveyTransactionVO = cadreSurveyTransactionService.getCadreSurveyTransactionDetails();
-			surveyTransactionReportVO = cadreSurveyTransactionService.getBasicTransactionDetails();
+			surveyTransactionVO = cadreSurveyTransactionService.getCadreSurveyTransactionDetails();
+			//surveyTransactionReportVO = cadreSurveyTransactionService.getBasicTransactionDetails();
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in execute() in CadreSurveyTransactionAction class.", e);
@@ -118,10 +118,10 @@ public class CadreSurveyTransactionAction extends ActionSupport implements Servl
 		try {
 			
 			jObj = new JSONObject(getTask());
-			String electionType = jObj.getString("electionType");
+			String searchType = jObj.getString("searchType");
 			Long stateTypeId = jObj.getLong("stateTypeId");
 			
-			constituencyList = cadreSurveyTransactionService.getParliamentsForState(electionType,stateTypeId);
+			constituencyList = cadreSurveyTransactionService.getParliamentsForState(searchType,stateTypeId);
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getParliamentsForState() in CadreSurveyTransactionAction class.", e);
@@ -151,7 +151,7 @@ public class CadreSurveyTransactionAction extends ActionSupport implements Servl
 			List<Long> locationIdList = new ArrayList<Long>();
 			if(locationIdsArr != null && locationIdsArr.length()>0)
 			{
-				for (int i = 0; i < locationIdsArr.length()-1; i++)
+				for (int i = 0; i < locationIdsArr.length(); i++)
 				{
 					locationIdList.add(Long.valueOf(locationIdsArr.get(i).toString()));
 				}
