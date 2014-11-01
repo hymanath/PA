@@ -10,7 +10,7 @@ import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 
 public interface ICadreSurveyTransactionService {
 
-	public SurveyTransactionVO getCadreSurveyTransactionDetails();	
+	public SurveyTransactionVO getCadreSurveyTransactionDetails(String searchDate);	
 	public SurveyTransactionVO getDayWiseReportByDates(String fromDateStr , String toDateStr);	
 	public SurveyTransactionVO getLocationWiseTransactionDetails(String fromDateStr , String toDateStr, String searchType, List<Long> locationIdList);	
 	public List<SelectOptionVO> getParliamentsForState(String electionType,Long stateTypeId);
