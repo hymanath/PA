@@ -22,4 +22,6 @@ public interface ICadreTxnDetailsDAO extends GenericDao<CadreTxnDetails, Long>{
 	public Long getUsersCount(Date searchDate,Date todayDate);
 	public List<Object[]> getCompletedTransactionDetailsByDates(Date todayDate, Date searchDate);
 	public Long getNotCompletedTransactionDetailsByDates(Date todayDate, Date searchDate);
+	
+	public List<Object[]> findLocationDetailsByAssemblyIds(List<Long> locationIds, String queryStr);
 }
