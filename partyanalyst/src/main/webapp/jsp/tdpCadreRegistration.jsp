@@ -1209,7 +1209,7 @@
 															<input type="file" class="m_top10 btn btn-mini" name="cadreRegistrationVO.uploadImage" onchange="changeImg();" id="uploadFileId" style="width: 58px; margin-left: 0px; padding-left: 0px;">
 															<span><img style="width: 22px; height: 17px; padding: 7px 3px; margin-top: 8px;" class="btn btn-mini" title="Take Picture" src="images/candidatePage/camera.png" onclick="showTakeImage();" id="takePicture"></span>
 															<a style="padding-top: 10px; padding-bottom: 7px; margin-top: 10px;" class="btn btn-mini"><span class="icon-remove" style="cursor: pointer;" title="Click Here To Delete Existing Image" onclick="clearExistingImg('uploadImg');"></span></a>
-															<span id="imageErr" style="color:red;font-size:12px;"></span>
+															<br/><span id="imageErr" style="color:red;font-size:12px;"></span>
 														</div>
 													</div>
 												  </li>
