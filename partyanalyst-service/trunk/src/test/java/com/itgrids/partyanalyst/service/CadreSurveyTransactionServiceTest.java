@@ -13,10 +13,7 @@ import org.junit.Test;
 import com.itgrids.partyanalyst.dao.ICadreOtpDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
 import com.itgrids.partyanalyst.dao.ICadreTxnDetailsDAO;
-import com.itgrids.partyanalyst.dao.ICadreTxnUserDAO;
-import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
-import com.itgrids.partyanalyst.service.impl.SmsCountrySmsService;
 
 public class CadreSurveyTransactionServiceTest  extends BaseDaoTestCase {
 
@@ -101,7 +98,7 @@ public class CadreSurveyTransactionServiceTest  extends BaseDaoTestCase {
 			}
 			
 			
-			List<Object[]> yesterDayOtpInfo = cadreOtpDetailsDAO.getOtpDetailsForDates(null,yesterDay);
+			List<Object[]> yesterDayOtpInfo = null;//cadreOtpDetailsDAO.getOtpDetailsForDates(null,yesterDay);
 			Map<String,Long> transactionOtpMap = new TreeMap<String,Long>();
 			transactionOtpMap.put("Y", 0L);
 			transactionOtpMap.put("N", 0L);
