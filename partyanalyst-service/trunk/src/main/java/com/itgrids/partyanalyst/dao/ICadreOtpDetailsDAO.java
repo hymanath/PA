@@ -23,4 +23,5 @@ public interface ICadreOtpDetailsDAO extends GenericDao<CadreOtpDetails, Long>{
 	public List<String> checkOTP(String otp);
 	public List<String> checkForMobile(String mobileNo);
 	public Long getOTPTxnCountByDate(Date date);
+	public List<Long> getCadreotpDateils(String otpNo);
 }

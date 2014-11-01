@@ -22,6 +22,8 @@ public class ReconciliationVO implements Serializable
 	private String      agentVillage;
 	private String 		agentMobileNo;
 	
+	private String 		otpNumber;
+	
 	
 	public Long getCadreSurveyUserId() {
 		return cadreSurveyUserId;
@@ -107,6 +109,13 @@ public class ReconciliationVO implements Serializable
 	public void setAgentMobileNo(String agentMobileNo) {
 		this.agentMobileNo = agentMobileNo;
 	}
+	public String getOtpNumber() {
+		return otpNumber;
+	}
+	public void setOtpNumber(String otpNumber) {
+		this.otpNumber = otpNumber;
+	}
+	
 	
 	
 	

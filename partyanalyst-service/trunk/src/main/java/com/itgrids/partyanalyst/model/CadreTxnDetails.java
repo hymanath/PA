@@ -46,6 +46,8 @@ public class CadreTxnDetails implements java.io.Serializable  {
 	private String completeStatus;
 	private String uniqueKey;
 	private String mobileNo;
+	private CadreOtpDetails cadreOtpDetails;
+	private Long cadreOtpDetailsId;
 	
 	private String 		agentName;
 	private String		agentReconConstyName;
@@ -252,6 +254,29 @@ public class CadreTxnDetails implements java.io.Serializable  {
 	public void setAgentMobileNo(String agentMobileNo) {
 		this.agentMobileNo = agentMobileNo;
 	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="cadre_otp_details_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CadreOtpDetails getCadreOtpDetails() {
+		return cadreOtpDetails;
+	}
+
+	public void setCadreOtpDetails(CadreOtpDetails cadreOtpDetails) {
+		this.cadreOtpDetails = cadreOtpDetails;
+	}
+
+	@Column(name="cadre_otp_details_id")
+	public Long getCadreOtpDetailsId() {
+		return cadreOtpDetailsId;
+	}
+
+	public void setCadreOtpDetailsId(Long cadreOtpDetailsId) {
+		this.cadreOtpDetailsId = cadreOtpDetailsId;
+	}
+	
+	
 	
 	
 

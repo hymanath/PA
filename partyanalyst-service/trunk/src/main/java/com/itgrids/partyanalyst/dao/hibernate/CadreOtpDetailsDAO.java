@@ -145,7 +145,7 @@ public class CadreOtpDetailsDAO extends GenericDaoHibernate<CadreOtpDetails, Lon
 		}
 		
 		return query.list();
-	}	
+	}
 	
 	public Integer updateIsDeleted(String mobileNo)
 	{
@@ -180,7 +180,7 @@ public class CadreOtpDetailsDAO extends GenericDaoHibernate<CadreOtpDetails, Lon
 	public List<String> checkOTP(String otp)
 	{
 		Query query = getSession().createQuery("select model.otpNo from CadreOtpDetails model where " +
-				" model.otpNo = :otp ");
+				" model.otpNo = :otp and model.isDeleted = 'N'");
 		query.setParameter("otp", otp);
 		return query.list();
 	}
@@ -202,5 +202,12 @@ public class CadreOtpDetailsDAO extends GenericDaoHibernate<CadreOtpDetails, Lon
 		return (Long) query.uniqueResult();
 	}
 	
+	public List<Long> getCadreotpDateils(String otpNo)
+	{
+		Query query = getSession().createQuery("select model.cadreOtpDetailsId from CadreOtpDetails model where model.otpNo = :otpNo");
+		query.setParameter("otpNo", otpNo);
+		return query.list();
+	}
+
 	
 }
