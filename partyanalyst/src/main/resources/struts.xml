@@ -8739,6 +8739,12 @@
 			</result>
 		</action>
 		
+		<action name="getTransactionDetailsForDateAction" class="cadreSurveyTransactionAction" method="getDateWiseDashboardReport">
+			<result type="json" name="success">
+				<param name="root">surveyTransactionVO</param>
+			</result>
+		</action>
+		
 		<action name="locationWiseTransactionReportAction" class="cadreSurveyTransactionAction" method="getLocationWiseTransactionReport">
 			<result type="json" name="success">
 				<param name="root">surveyTransactionVO</param>
@@ -8757,6 +8763,12 @@
 				<param name="root">surveyTransactionReportVO</param>
 			</result>
 		</action>
+		
+		<action name="cadreTransactionReportsAction" class="cadreSurveyTransactionAction" >
+			<result name="success">/jsp/cadreTransactionReports.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=tdpCadreIdCardDetailsAction</result>
+		</action>
+		
 </package>
 
 </struts>      
