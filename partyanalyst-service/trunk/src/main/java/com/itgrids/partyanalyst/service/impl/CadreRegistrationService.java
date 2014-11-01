@@ -888,21 +888,21 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						}
 					}*/
 					
-					UserAddress userAddress =null;
+					UserAddress userAddress = new UserAddress();
 					
-				/*	if(tdpCadre.getVoterId() != null && tdpCadre.getVoterId().longValue() > 0)
+					if(tdpCadre.getVoterId() != null && tdpCadre.getVoterId().longValue() > 0)
 					{
-						getVoterAddressDetails(tdpCadre.getVoterId(),userAddress,cadreRegistrationVO.getStreet());
+						getVoterAddressDetails(tdpCadre.getVoterId(),userAddress,cadreRegistrationVO);
 					}
 					else if(cadreRegistrationVO.getFamilyVoterId() != null && cadreRegistrationVO.getFamilyVoterId().longValue() > 0)
 					{
-						getVoterAddressDetails(cadreRegistrationVO.getFamilyVoterId(),userAddress,cadreRegistrationVO.getStreet());
+						getVoterAddressDetails(cadreRegistrationVO.getFamilyVoterId(),userAddress,cadreRegistrationVO);
 					}
-					else
-					{*/
+					if(userAddress.getBooth() == null)
+					{
 						if(cadreRegistrationVO.getConstituencyId() != null && cadreRegistrationVO.getConstituencyId().trim().length() > 0 && !cadreRegistrationVO.getConstituencyId().trim().equalsIgnoreCase("null") && Long.valueOf(cadreRegistrationVO.getConstituencyId()) > 0)
 						{
-							userAddress = new UserAddress();
+							//userAddress = new UserAddress();
 							if(Long.valueOf(cadreRegistrationVO.getConstituencyId()) > 0)
 							{
 								userAddress.setConstituency(constituencyDAO.get(Long.valueOf(cadreRegistrationVO.getConstituencyId())));
@@ -922,7 +922,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									}
 									
 								}
-								List<Booth> booths = boothPublicationVoterDAO.getVoterAddressDetails(tdpCadre.getVoterId());
+								List<Booth> booths = null;
+								if(tdpCadre.getVoterId() != null && tdpCadre.getVoterId().longValue() > 0){
+								   booths = boothPublicationVoterDAO.getVoterAddressDetails(tdpCadre.getVoterId());
+								}
 								if(cadreRegistrationVO.getBoothId() != null && cadreRegistrationVO.getBoothId().trim().length() > 0 && !cadreRegistrationVO.getBoothId().trim().equalsIgnoreCase("null"))
 								{
 									if(Long.valueOf(cadreRegistrationVO.getBoothId()) > 0)
@@ -946,7 +949,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									}
 									
 								}
-								List<Hamlet> hamletWardList = userVoterDetailsDAO.getHamletByVoterId(tdpCadre.getVoterId());
+								List<Hamlet> hamletWardList = null;
+								if(tdpCadre.getVoterId() != null){
+								 hamletWardList = userVoterDetailsDAO.getHamletByVoterId(tdpCadre.getVoterId());
+								}
 								if(hamletWardList != null && hamletWardList.size() > 0)
 								{
 									userAddress.setHamlet(hamletWardList.get(0));
@@ -959,7 +965,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									}
 									else
 									{
-										List<Constituency> wardsList =  userVoterDetailsDAO.getWardByVoterId(tdpCadre.getVoterId());
+										List<Constituency> wardsList = null;
+										if(tdpCadre.getVoterId() != null){
+										 wardsList =  userVoterDetailsDAO.getWardByVoterId(tdpCadre.getVoterId());
+										}
 										if(wardsList != null && wardsList.size() > 0)
 										{
 											userAddress.setWard(wardsList.get(0));
@@ -970,19 +979,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							}
 							
 						}
-						else
-						{
-							userAddress = new UserAddress();
-							if(tdpCadre.getVoterId() != null && tdpCadre.getVoterId().longValue() > 0)
-							{
-								getVoterAddressDetails(tdpCadre.getVoterId(),userAddress,cadreRegistrationVO.getStreet());
-							}
-							else if(cadreRegistrationVO.getFamilyVoterId() != null && cadreRegistrationVO.getFamilyVoterId().longValue() > 0)
-							{
-								getVoterAddressDetails(cadreRegistrationVO.getFamilyVoterId(),userAddress,cadreRegistrationVO.getStreet());
-							}
-						}
-					//}
+						
+					}
 					
 						
 					userAddress = userAddressDAO.save(userAddress);
@@ -1436,7 +1434,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	 * @param voterId
 	 * @param returnList
 	 */
-	public void getVoterAddressDetails(Long voterId,UserAddress userAddress,String street)
+	public void getVoterAddressDetails(Long voterId,UserAddress userAddress,CadreRegistrationVO cadreRegistrationVO)
 	{
 		try {
 			LOG.info("Entered into getVoterAddressDetails in CadreRegistrationService service");
@@ -1470,6 +1468,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					{
 						userAddress.setPanchayatId(booth.getPanchayat().getPanchayatId());
 					}
+					if(cadreRegistrationVO != null && cadreRegistrationVO.getPanchayatId() != null && cadreRegistrationVO.getPanchayatId().trim().length() > 0 && !cadreRegistrationVO.getPanchayatId().trim().equalsIgnoreCase("null"))
+					{
+						if(Long.valueOf(cadreRegistrationVO.getPanchayatId().trim()) > 0)
+						{
+							userAddress.setPanchayatId(Long.valueOf(cadreRegistrationVO.getPanchayatId().trim().trim()));
+							userAddress.setTehsil(panchayatDAO.get(Long.valueOf(cadreRegistrationVO.getPanchayatId().trim())).getTehsil());
+						}
+						
+					}
 					if(booth.getLocalBodyWard() != null)
 					{
 						userAddress.setWard(booth.getLocalBodyWard());
@@ -1488,9 +1495,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					{
 						userAddress.setHamlet(hamletWardList.get(0));
 					}
-					if(street != null && !street.equalsIgnoreCase("null") && street.trim().length() > 0)
+					if(cadreRegistrationVO != null && cadreRegistrationVO.getStreet() != null && !cadreRegistrationVO.getStreet().equalsIgnoreCase("null") && cadreRegistrationVO.getStreet().trim().length() > 0)
 					{
-						userAddress.setStreet(street);
+						userAddress.setStreet(cadreRegistrationVO.getStreet());
 					}
 					
 				}
