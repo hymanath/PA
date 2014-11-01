@@ -124,6 +124,7 @@
 		<pattern>/tdpCadreSearchAction*</pattern>
 		<pattern>/tdpCadreSearchDetailsAction*</pattern>
 		<pattern>/cadreSurveyTransactionsDashboardAction*</pattern>
+		<pattern>/cadreTransactionReportsAction*</pattern>
 		<pattern>/tdpCadreRegistrationAction*</pattern>
 		<pattern>/tdpCadreSurveyUsersDetailsAction*</pattern>
 		<pattern>/votersInCasteAction*</pattern>
