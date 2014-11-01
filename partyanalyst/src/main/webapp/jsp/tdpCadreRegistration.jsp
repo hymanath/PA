@@ -1174,42 +1174,47 @@
 											
 										</div>
 										</div>
-									<div class="span12"> 
-                                       <ul class="unstyled inline text-center">
-                                          <li id="voterActualImgLiId">
-										    <s:if test="voterInfoVOList[0].voterImagePresent == true">
-                                             <div style="width: 125px; padding-bottom: 15px;padding-top: 13px;" class="well  pad-5 m_top10">
-												<span><img style="width: 140px; height: 120px;" src="${voterInfoVOList[0].voterImage}"></span>
-												<input type="checkbox" style="margin-top:-1px;" id="voterActualImgId" name="cadreUploadImgVoterType" onclick="hideCadreImg();" class="m_top10"/><span style="color: #9a9a9a;font-weight: bold;">&nbsp;Use This Photo</span>
-                                             </div>
-										   </s:if>
-										  </li>
-                                          <li  id="cadreActualImgLiId">
-										    <s:if test="voterInfoVOList[0].cadreImagePresent == true">
-                                             <div style="width: 125px; padding-bottom: 15px;padding-top: 13px;" class="well  pad-5 m_top10">
-												<span><img style="width: 140px; height: 120px;" src="${voterInfoVOList[0].cadreImage}"></span>
-												<input type="checkbox" style="margin-top:-1px;" id="cadreActualImgId" name="cadreUploadImgCadreType" onclick="hideVoterImg();" class="m_top10"/><span style="color: #9a9a9a;font-weight: bold;">&nbsp;Use This Photo</span>
-                                             </div>
-										    </s:if>
-										   </li>
-										   <li>
-                                             <div style="width: 125px;" class="well  pad-5 m_top10">
-                                                <s:if test="voterInfoVOList[0].image != null">
-												  <span id="uploadImg"><img style="width: 140px; height: 120px;" id="actuploadImg" src="${voterInfoVOList[0].image}"></span>
-												</s:if>
-												<s:else>
-												  <span id="uploadImg"><img style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg"></span>
-												</s:else>
-												<input type="hidden" id="base64Image" name="cadreRegistrationVO.imageBase64String"/>
-												<span style="display:none;"><input type="checkbox" style="margin-top:-1px;" id="newTakenImgId" name="newTakenImgType" onclick="hideVoterImg();" /></span>
-												<input type="file" style="width: 79px;margin-left: 10px;" id="uploadFileId" onchange="changeImg();" name="cadreRegistrationVO.uploadImage" class="m_top10">
-													<span><img id="takePicture" onclick="showTakeImage();" src="images/candidatePage/camera.png" title="Take Picture" /></span>
-													<span class="icon-remove" style="cursor: pointer;" title="Click Here To Delete Existing Image" onclick="clearExistingImg('uploadImg');"></span>
-													<br><span id="imageErr" style="color:red;font-size:12px;"></span>
-                                             </div>
-										   </li>
-                                       </ul>
-	                                </div>
+										<div class="span12"> 
+											  <ul class="unstyled inline text-center">
+												  <li id="voterActualImgLiId">
+												   <s:if test="voterInfoVOList[0].voterImagePresent == true">
+													 <div class="well  pad-5 m_top10" style="width: 125px; padding-bottom: 15px;padding-top: 13px;">
+														<span><img src="${voterInfoVOList[0].voterImage}" style="width: 140px; height: 120px;"></span>
+														<div class="btn btn-mini btn-block"> <input type="checkbox" class="m_top10" onclick="hideCadreImg();" name="cadreUploadImgVoterType" id="voterActualImgId" style="margin-top:-1px;">
+															 <span style="color: #9a9a9a;font-weight: bold;">&nbsp;Use This Photo</span>
+														</div>
+													 </div>
+													</s:if>
+												  </li>
+												  <li id="cadreActualImgLiId">
+												   <s:if test="voterInfoVOList[0].cadreImagePresent == true">
+													 <div class="well  pad-5 m_top10" style="width: 125px; padding-bottom: 15px;padding-top: 13px;">
+														<span><img src="${voterInfoVOList[0].cadreImage}" style="width: 140px; height: 120px;"></span>
+														<div class="btn btn-mini btn-block"> <input type="checkbox" class="m_top10" onclick="hideVoterImg();" name="cadreUploadImgCadreType" id="cadreActualImgId" style="margin-top:-1px;">
+															 <span style="color: #9a9a9a;font-weight: bold;">&nbsp;Use This Photo</span>
+														</div>
+													 </div>
+													</s:if>
+												  </li>
+												  <li>
+													<div style="width: 125px;" class="well  pad-5 m_top10">
+														<s:if test="voterInfoVOList[0].image != null">
+														  <span id="uploadImg"><img style="width: 140px; height: 120px;" id="actuploadImg" src="${voterInfoVOList[0].image}"></span>
+														</s:if>
+														<s:else>
+														  <span id="uploadImg"><img style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg"></span>
+														</s:else>
+														<div class="btn-group"><input type="hidden" id="base64Image" name="cadreRegistrationVO.imageBase64String"/>
+															<span style="display:none;"><input type="checkbox" style="margin-top:-1px;" id="newTakenImgId" name="newTakenImgType" onclick="hideVoterImg();"></span>
+															<input type="file" class="m_top10 btn btn-mini" name="cadreRegistrationVO.uploadImage" onchange="changeImg();" id="uploadFileId" style="width: 58px; margin-left: 0px; padding-left: 0px;">
+															<span><img style="width: 22px; height: 17px; padding: 7px 3px; margin-top: 8px;" class="btn btn-mini" title="Take Picture" src="images/candidatePage/camera.png" onclick="showTakeImage();" id="takePicture"></span>
+															<a style="padding-top: 10px; padding-bottom: 7px; margin-top: 10px;" class="btn btn-mini"><span class="icon-remove" style="cursor: pointer;" title="Click Here To Delete Existing Image" onclick="clearExistingImg('uploadImg');"></span></a>
+															<span id="imageErr" style="color:red;font-size:12px;"></span>
+														</div>
+													</div>
+												  </li>
+											  </ul>
+										</div>
 									<div class="span12">
 										<div class="span6">
 											<h5 class="text-align1">DATE OF BIRTH  <span class="mandatory">*</span></h5>
