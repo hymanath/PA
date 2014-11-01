@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
+import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.CastVO;
@@ -88,4 +89,6 @@ public interface ICadreRegistrationService {
 	public String delinkNFCNumber(String cardNumber,Long voterId);
 	public CastVO getAllCastes();
 	public List<Long> getVoterIdByVoterCard(String voterCardId);
+	public List<CadreRegisterInfo> getDistrictsByStateWiseAction(Long stateId);
+	public List<CadreRegisterInfo> getConstsByStateWiseAction(Long stateId);
 }

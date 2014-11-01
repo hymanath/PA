@@ -44,7 +44,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public List<Object[]> getexistringCadreInfoByLocation(String candidateName, Long constid, Long panchayatId,Long boothId,String isPresentCadre, String enrollmentNo);
 	
-	public List<Object[]> getCandidateDataCollectionInfo(Date fromDate,Date toDate);
+	public List<Object[]> getCandidateDataCollectionInfo(Long locationType,List<Long> locationIds,Date fromDate,Date toDate);
 
 	public Long checkMemberShipExistsOrNot(String randomNo);
 	
@@ -111,4 +111,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public Long checkCardNoExistsOrNot(String cardNo);
 	public List<Object[]> getCadreDataByYear(Long constituencyId);
 	public List<String> getExistingCadreMemberDetails(String preEnrollmentNo);
+	public List<Object[]> getDistrictsByStateWiseAction(Long stateId);
+	public List<Object[]> getConstsByStateWiseAction(Long stateId);
 }

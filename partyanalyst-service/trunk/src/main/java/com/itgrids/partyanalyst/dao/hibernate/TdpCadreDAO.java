@@ -374,12 +374,40 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		
 	}
 		
-	public List<Object[]> getCandidateDataCollectionInfo(Date fromDate,Date toDate){
+	public List<Object[]> getCandidateDataCollectionInfo(Long locationType,List<Long> locationIds,Date fromDate,Date toDate){
 		//0 count,1 name,2 min,3 max,4 date,5 id
-		Query query = getSession().createQuery("select count(*),model.insertedBy.userName,min(model.surveyTime),max(model.surveyTime),date(model.surveyTime),model.insertedBy.cadreSurveyUserId  from TdpCadre model where model.enrollmentYear = 2014  and model.dataSourceType ='TAB'  " +
-				"   and model.isDeleted = 'N' and date(model.surveyTime) >=:fromDate and date(model.surveyTime) <=:toDate group by date(model.surveyTime),model.insertedBy.cadreSurveyUserId order by date(model.surveyTime),model.insertedBy.userName");
+
+		StringBuilder queryStr = new StringBuilder();
+
+		queryStr.append("select count(model.tdpCadreId),model.insertedBy.userName,min(model.surveyTime),max(model.surveyTime),date(model.surveyTime),model.insertedBy.cadreSurveyUserId  from TdpCadre model where model.enrollmentYear = 2014  and model.dataSourceType ='TAB'  " +
+				"   and model.isDeleted = 'N' and date(model.surveyTime) >=:fromDate and date(model.surveyTime) <=:toDate  ");
+		/*if (locationType==0) {
+			queryStr.append("");
+		} else*/ if(locationType.longValue() == 1l){
+			if(locationIds.contains(2l) && locationIds.contains(1l)){
+			   queryStr.append(" and model.userAddress.state.stateId= 1 ");
+			}else if(locationIds.contains(2l)){
+				queryStr.append(" and model.userAddress.state.stateId= 1  and model.userAddress.district.districtId < 11 ");
+			}else if(locationIds.contains(1l)){
+				queryStr.append(" and model.userAddress.state.stateId= 1  and model.userAddress.district.districtId > 10 ");
+			}
+		}
+		else if(locationType.longValue() == 2l){
+			queryStr.append(" and model.userAddress.district.districtId in(:locationIds) ");
+		}
+		else if(locationType.longValue() == 3l){
+			queryStr.append(" and model.userAddress.constituency.constituencyId in(:locationIds)  ");
+		}
+		queryStr.append(" group by date(model.surveyTime),model.insertedBy.cadreSurveyUserId order by date(model.surveyTime),model.insertedBy.userName ");
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		/*Query query = getSession().createQuery("select count(*),model.insertedBy.userName,min(model.surveyTime),max(model.surveyTime),date(model.surveyTime),model.insertedBy.cadreSurveyUserId  from TdpCadre model where model.enrollmentYear = 2014  and model.dataSourceType ='TAB'  " +
+				"   and model.isDeleted = 'N' and date(model.surveyTime) >=:fromDate and date(model.surveyTime) <=:toDate group by date(model.surveyTime),model.insertedBy.cadreSurveyUserId order by date(model.surveyTime),model.insertedBy.userName");*/
 		query.setDate("fromDate", fromDate);
 		query.setDate("toDate", toDate);
+		if(locationType.longValue() != 0l && locationType.longValue() != 1l){
+		   query.setParameterList("locationIds", locationIds);
+		}
 		return query.list();
 	}
 	
@@ -946,6 +974,40 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		
 		return query.list();
 	}
+	public List<Object[]> getDistrictsByStateWiseAction(Long stateId)
+	{		
+		Query query=null;
+		if(stateId==1)
+		{
+			query = getSession().createQuery("select model.districtId, model.districtName from District model where model.districtId > 10 and model.state.stateId = 1");
+		}
+		else if(stateId==2)
+		{
+			query = getSession().createQuery("select model.districtId, model.districtName from District model where model.districtId < 11 and model.state.stateId = 1 ");
+		}
+		else
+		{
+			query = getSession().createQuery("select model.districtId, model.districtName from District model where model.state.stateId = 1 ");
+		}
+		
+		return query.list();
+	}
+	public List<Object[]> getConstsByStateWiseAction(Long stateId)
+	{		
+		StringBuilder str = new StringBuilder();
+        str.append("select distinct model.constituencyId, model.name from Constituency model where model.state.stateId =1 and " +
+		"  model.electionScope.electionType.electionTypeId = 2 and model.deformDate is null  ");
+		if(stateId.longValue() == 1){
+			str.append(" and model.district.districtId > 10 ");
+		}else if(stateId.longValue() == 2){
+			str.append(" and model.district.districtId < 11 ");
+		}else{
+			str.append(" and model.district.districtId between 1 and 23 ");
+		}
+		Query query = getSession().createQuery(str.toString());
+		return query.list();
+	}
+	
 	
 	
 	public List<String> getExistingCadreMemberDetails(String preEnrollmentNo)

@@ -21,7 +21,7 @@ public interface ICadreDashBoardService {
 	
 	public CadreRegisterInfo getWorkingMembersInfo(String hours);
 	
-	public List<CadreRegisterInfo> getCandidateDataCollectionInfo(Date fromDate,Date toDate);
+	public List<CadreRegisterInfo> getCandidateDataCollectionInfo(Long locationType,List<Long> locationIds,Date fromDate,Date toDate);
 		
 	public List<CadreRegisterInfo> getDetailsForConstituency(Long constituencyId);
 	

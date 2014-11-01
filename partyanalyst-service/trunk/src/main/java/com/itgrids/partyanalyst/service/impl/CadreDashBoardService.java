@@ -482,7 +482,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		return info;
 	}
 	
-	public List<CadreRegisterInfo> getCandidateDataCollectionInfo(Date fromDate,Date toDate){
+	public List<CadreRegisterInfo> getCandidateDataCollectionInfo(Long locationType,List<Long> locationIds,Date fromDate,Date toDate){
 		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
 		CadreRegisterInfo vo = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -492,9 +492,9 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			Map<Long,Map<Date,CadreRegisterInfo>> userMap = new HashMap<Long,Map<Date,CadreRegisterInfo>>();//Map<userId,Map<Date,info>>
 			Map<Date,CadreRegisterInfo> dateMap = new HashMap<Date,CadreRegisterInfo>();//Map<Date,info>
 			Map<Long,String> userNames = new HashMap<Long,String>();
-			Map<Long,String> mobileNos = new HashMap<Long,String>();
+			Map<Long,CadreRegisterInfo> mobileNos = new HashMap<Long,CadreRegisterInfo>();
 			//0 count,1 name,2 min,3 max,4 date,5 id
-			List<Object[]> dataCollectedInfo = tdpCadreDAO.getCandidateDataCollectionInfo(fromDate, toDate);
+			List<Object[]> dataCollectedInfo = tdpCadreDAO.getCandidateDataCollectionInfo(locationType,locationIds,fromDate, toDate);
 			
 			for(Object[] data:dataCollectedInfo){
 				if(!datesList.contains((Date)data[4])){
@@ -514,20 +514,34 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			}
 			int count = 0;
 			if(userNames.size() > 0){
+				//0 userId,1mobile,2constituencyId,3constiname,4distiictId,5districtName
 				List<Object[]> mobileNosList = cadreSurveyUserDAO.getUserMobileNos(userNames.keySet());
 				for(Object[] mobileNo:mobileNosList){
+					CadreRegisterInfo userData = new CadreRegisterInfo();
 				 if(mobileNo[1] != null){
-					mobileNos.put((Long)mobileNo[0], mobileNo[1].toString());
-				 }else{
-					 mobileNos.put((Long)mobileNo[0], null);
+					userData.setArea(mobileNo[1].toString());//mobileNo
 				 }
+				 if(((Long)mobileNo[4]).longValue() < 11){
+				     userData.setLocation("Telangana");//state
+				 }else{
+					 userData.setLocation("AndhraPradesh");//state
+				 }
+				 userData.setNumber(mobileNo[5].toString());//district
+				 userData.setMemberShipNo(mobileNo[3].toString());//constituency
+				 mobileNos.put((Long)mobileNo[0], userData);
 				}
 			}
 			for(Long key:userMap.keySet()){
 				dateMap = userMap.get(key);
 				vo = new CadreRegisterInfo();
 				vo.setName(userNames.get(key));
-				vo.setArea(mobileNos.get(key));
+				CadreRegisterInfo userData = mobileNos.get(key);
+				if(userData != null){
+				    vo.setArea(userData.getArea());//mobileNo
+				    vo.setLocation(userData.getLocation());//state
+				    vo.setNumber(userData.getNumber());//district
+				    vo.setMemberShipNo(userData.getMemberShipNo());//constituency
+				}
 				List<CadreRegisterInfo> daysList = new ArrayList<CadreRegisterInfo>();
 				for(Date date:datesList){
 					if(dateMap.get(date) != null){
