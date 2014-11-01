@@ -2234,6 +2234,8 @@
          <property name="cadreTxnDetailsDAO" ref="cadreTxnDetailsDAO" />
          <property name="cadreSurveyUserDAO" ref="cadreSurveyUserDAO" />
          <property name="constituencyDAO" ref="constituencyDAO" />
+         <property name="districtDAO" ref="districtDAO" />
+         <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
          <property name="transactionTemplate" ref="transactionTemplate" />
          <property name="cadreOtpDetailsDAO" ref="cadreOtpDetailsDAO" />
      	 <property name="smsCountrySmsService" ref="smsCountrySmsService" />
