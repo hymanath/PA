@@ -107,13 +107,13 @@
 			</div>
 			<div class="row-fluid ">
 			   <div style="min-height: 300px;background:#ffffff;" class="span12 show-grid well well-small border-radius-0 mb-10 form-inline">
-			   <div id="errStatusDiv" align="center" ></div>
+			   <div id="ErrorDDiv" align="center" ></div>
 				<label style="margin-left:100px;"><b>From Date :</b>&nbsp;<input type="text" readonly="readonly" id="fromDate"/></label>
 					 <label><b>To Date   :</b>&nbsp;<input type="text" readonly="readonly" id="toDate" /> </label>
 					<input type="button" class="btn btn-success" id="getCandidateDataCollectionInfoId" onclick="daywiseReport();" value="Submit"/>
 					<input type="button" class="btn btn-success" style="display:none;" id="exportExclId1" onclick="generateExcel('daywiseReportTab');" value="Excel Excel"/>
 					
-					<img id="ajaxImgStyle" style="display:none;margin-left: 10px;" src="images/icons/search.gif"/>
+					 <img id="ajaxImgStyleNew" style="display:none;margin-left:10px; margin-top:10px;" src="images/icons/search.gif"/></td>
 					<div id="daywiseReportDiv"  align="center" style="margin:20px;"></div>
 			  </div>
 			</div>
@@ -126,7 +126,7 @@
 			</div>
 			<div class="row-fluid ">
 			   <div style="min-height: 300px;background:#ffffff;" class="span12 show-grid well well-small border-radius-0 mb-10 form-inline">
-				  <div id="errMsgDiv"></div>
+				  <div id="ErrorLDiv" align="center"></div>
 				  <table  style="margin-left: 270px;">
 				     <tr>
 					   <td><b>Select Report Level :</b></td>
@@ -187,7 +187,7 @@
 					 <td></td>
 					 <td> <input style="margin-top:10px;" type="button" id="locationSubmitBtn" class="btn btn-success" onclick="locationWiseTransactionReport();" value="Submit"/>
 					  <input style="display:none;margin-top: 10px;" type="button" id="exportExclId2" class="btn btn-success" onclick="generateExcel('locationWiseReportTab');" value="Export Excel"/>
-					 <img id="ajaxImgStyleNew" style="display:none;margin-left:10px; margin-top:10px;" src="images/icons/search.gif"/></td>
+					 <img id="ajaxImgStyleNew2" style="display:none;margin-left:10px; margin-top:10px;" src="images/icons/search.gif"/></td>
 					 </tr>
 				  </table>
 				  <div id="locationWiseTransactionDiv" align="center" style="margin:20px;"></div>
@@ -209,15 +209,12 @@
 		
 	<script>
 	$(document).ready(function(){
-	showHideTabs("userReportTab");
-		//daywiseReport();
-		//locationWiseTransactionReport();
+		showHideTabs("userReportTab");
 		 $("#fromDate,#fromDate1,#toDate,#toDate1").datepicker({
 			dateFormat: "yy-mm-dd",
 			maxDate: new Date()
 		})
-		$("#fromDate,#fromDate1,#toDate,#toDate1").datepicker("setDate", new Date());
-		
+		$("#fromDate,#fromDate1,#toDate,#toDate1").datepicker("setDate", new Date());		
 	});	
 	
 	function getLocationDetailsForState()
@@ -310,14 +307,14 @@
 	var locationIdsArr = new Array();	
 	$('#exportExclId2').hide();
 	$('#locationWiseTransactionDiv').html('');
-	$('#ajaxImgStyleNew').show();
-	
+		
 	var fromDate = $("#fromDate1").val();
 	var toDate = $("#toDate1").val();
+	var isErrorStr ='';
 	
 	 var locationLvl = $('#locationsDispalyId').val();
 	 var dataType = '';
-	  
+	  	$('#ErrorLDiv').html('');
 	  if(locationLvl == 2)
 	  {	 
 		dataType = "state";
@@ -342,32 +339,68 @@
 		var locationId = $('#mandalDispalyId').val();
 		locationIdsArr.push(locationId);
 	  }  
-	  
-		var jsObj = {
-			fromDate:fromDate,
-			toDate : toDate,
-			searchType :dataType,
-			locationIds : locationIdsArr,
-			tesk:"locationWiseTransactionReport"            
-	   }	
-		$.ajax({
-			type : "POST",
-			url : "locationWiseTransactionReportAction.action",
-			data : {task:JSON.stringify(jsObj)} ,
-		}).done(function(result){
-			$('#ajaxImgStyleNew').hide();
-			if(result !=null && result.surveyTransactionVOList != null && result.surveyTransactionVOList.length >0)
-			{
-				buildlocationWiseTransactionReports(result);	
-			}
-			else
-			{
-				$('#locationWiseTransactionDiv').html('<span class="span12" style="font-weight:bold;" align="center"> No Data Available...</span>');
-			}			
-		});			
+
+		if((fromDate != null && fromDate.trim().length >0) && (toDate != null && toDate.trim().length >0))
+		{
+			var arrr = fromDate.split("-");
+				var fromyear=arrr[0];
+				var frommonth=arrr[1];
+				var fromDat=arrr[2];
+		   var arr = toDate.split("-");
+				var toyear=arr[0];
+				var tomonth=arr[1];
+				var toDat=arr[2];
+				
+				if(fromyear>toyear){
+					$('#ErrorLDiv').html('<font style="color:red;">From Date should not greater than To Date </font>');
+					  isErrorStr = " error";
+				}
+				 if(frommonth>tomonth){
+					   if(fromyear == toyear){
+						$('#ErrorLDiv').html('<font style="color:red;">From Date should not greater than To Date </font>');
+						isErrorStr = " error";
+					}
+					
+				}
+				
+				if(fromDat>toDat){	
+					if(frommonth == tomonth && fromyear == toyear){			
+						$('#ErrorLDiv').html('<font style="color:red;">From Date should not greater than To Date </font>');
+						isErrorStr = " error";		
+					   }
+				}
+		}
+		console.log(isErrorStr != null && isErrorStr.length <= 0);
+			
+		if(isErrorStr != null && isErrorStr.length <= 0)
+		{
+			$("#ajaxImgStyleNew2").show();
+			var jsObj = {
+				fromDate:fromDate,
+				toDate : toDate,
+				searchType :dataType,
+				locationIds : locationIdsArr,
+				tesk:"locationWiseTransactionReport"            
+		    }	
+			$.ajax({
+				type : "POST",
+				url : "locationWiseTransactionReportAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				$("#ajaxImgStyleNew2").show();
+				if(result !=null && result.surveyTransactionVOList != null && result.surveyTransactionVOList.length >0)
+				{
+					buildlocationWisetTransactionReports(result);	
+				}
+				else
+				{
+					$('#locationWiseTransactionDiv').html('<span class="span12" style="font-weight:bold;" align="center"> No Data Available...</span>');
+				}			
+			});	
+		}		
 	}
 	
-	function buildlocationWiseTransactionReports(result)
+	function buildlocationWisetTransactionReports(result)
 	{
 		var str ='';
 		str+='<h4 align="center"> Location Wise Transaction Report </h4>';
@@ -409,28 +442,64 @@
 	$('#exportExclId1').hide();
 	var fromDate = $("#fromDate").val();
 	var toDate = $("#toDate").val();
-	
-		var jsObj = {
-		fromDate:fromDate,
-		toDate : toDate,
-		 tesk:"daywiseTransactionReports"            
-	   }	
-		$.ajax({
-			type : "POST",
-			url : "daywiseTransactionReportsAction.action",
-			data : {task:JSON.stringify(jsObj)} ,
-		}).done(function(result){
-			if(result !=null && result.surveyTransactionVOList != null && result.surveyTransactionVOList.length >0)
-			{
-				buildDadyWiseTransactionReport(result);	
-			}
-			else
-			{
-				$('#daywiseReportDiv').html(' <span class="span12" style="font-weight:bold;" align="center">No Data Available...</span>');
-			}
-			
-		});
-			
+	var isErrorStr ='';
+	$('#ErrorDDiv').html('');
+	if((fromDate != null && fromDate.trim().length >0) && (toDate != null && toDate.trim().length >0))
+		{
+			var arrr = fromDate.split("-");
+				var fromyear=arrr[0];
+				var frommonth=arrr[1];
+				var fromDat=arrr[2];
+		   var arr = toDate.split("-");
+				var toyear=arr[0];
+				var tomonth=arr[1];
+				var toDat=arr[2];
+				
+				if(fromyear>toyear){
+					$('#ErrorDDiv').html('<font style="color:red;">From Date should not greater than To Date </font>');
+					  isErrorStr = " error";
+				}
+				 if(frommonth>tomonth){
+					   if(fromyear == toyear){
+						$('#ErrorDDiv').html('<font style="color:red;">From Date should not greater than To Date </font>');
+						isErrorStr = " error";
+					}
+					
+				}
+				
+				if(fromDat>toDat){	
+					if(frommonth == tomonth && fromyear == toyear){			
+						$('#ErrorDDiv').html('<font style="color:red;">From Date should not greater than To Date </font>');
+						isErrorStr = " error";		
+					   }
+				}
+		}
+		
+		if(isErrorStr != null && isErrorStr.length <= 0)
+		{
+		$("#ajaxImgStyleNew").show();
+			var jsObj = {
+			fromDate:fromDate,
+			toDate : toDate,
+			 tesk:"daywiseTransactionReports"            
+		   }	
+			$.ajax({
+				type : "POST",
+				url : "daywiseTransactionReportsAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+			$("#ajaxImgStyleNew").hide();
+				if(result !=null && result.surveyTransactionVOList != null && result.surveyTransactionVOList.length >0)
+				{
+					buildDadyWiseTransactionReport(result);	
+				}
+				else
+				{
+					$('#daywiseReportDiv').html(' <span class="span12" style="font-weight:bold;" align="center">No Data Available...</span>');
+				}
+				
+			});
+		}	
 	}
 	
 	function buildDadyWiseTransactionReport(result)
@@ -491,8 +560,7 @@
   }
   function generateExcel(reqId){
      tableToExcel(reqId, 'Transaction Details');
-   }
-   
+   }   
 	</script>
 
   </body>
