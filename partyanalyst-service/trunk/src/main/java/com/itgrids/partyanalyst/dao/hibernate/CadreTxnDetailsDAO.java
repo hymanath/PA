@@ -36,8 +36,6 @@ public class CadreTxnDetailsDAO extends GenericDaoHibernate<CadreTxnDetails, Lon
 			queryStr.append("  date(model.surveyTime) >= :searchDate and date(model.surveyTime) <= :todayDate ");
 		}
 		
-		
-		
 		Query query = getSession().createQuery(queryStr.toString());
 		
 		if(todayDate == null)
@@ -53,7 +51,6 @@ public class CadreTxnDetailsDAO extends GenericDaoHibernate<CadreTxnDetails, Lon
 			query.setDate("searchDate", searchDate);
 			query.setDate("todayDate", todayDate);
 		}
-		
 		
 		return query.list();
 	}
@@ -86,9 +83,9 @@ public class CadreTxnDetailsDAO extends GenericDaoHibernate<CadreTxnDetails, Lon
 		query.setParameter("userId", userId);
 		return (Long) query.uniqueResult();	
 	}
+	
 	public Integer updatePendingAmount(Long pendingAmount,String uniqueKey,Long constituencyId,Long userId)
 	{
-	 
 		Query query = getSession().createQuery("update CadreTxnDetails model set model.pendingAmount = :pendingAmount where " +
 				" model.uniqueKey = :uniqueKey and model.constituency.constituencyId = :constituencyId and model.cadreSurveyUser.cadreSurveyUserId = :userId");
 		query.setParameter("uniqueKey", uniqueKey);
@@ -98,7 +95,6 @@ public class CadreTxnDetailsDAO extends GenericDaoHibernate<CadreTxnDetails, Lon
 		return query.executeUpdate();
 	}
 	
-	
 	public Long getUsersCount(Date searchDate,Date todayDate)
 	{
 		StringBuilder queryStr = new StringBuilder();
@@ -107,11 +103,11 @@ public class CadreTxnDetailsDAO extends GenericDaoHibernate<CadreTxnDetails, Lon
 		{
 			queryStr.append(" date(model.surveyTime) = :searchDate  ");
 		}
-		else if(searchDate ==null) // total transaction details
+		else if(searchDate ==null) // search date transaction details
 		{
 			queryStr.append("  date(model.surveyTime) <= :todayDate ");
 		}
-		else if(todayDate != null) // this week transaction details
+		else if(todayDate != null) // all transaction details
 		{
 			queryStr.append("  date(model.surveyTime) >= :searchDate and date(model.surveyTime) <= :todayDate ");
 		}
@@ -132,10 +128,8 @@ public class CadreTxnDetailsDAO extends GenericDaoHibernate<CadreTxnDetails, Lon
 			query.setDate("todayDate", todayDate);
 		}
 		
-		
 		return (Long) query.uniqueResult();
 	}
-	
 	
 	public List<Object[]> getCompletedTransactionDetailsByDates(Date todayDate, Date searchDate)
 	{
@@ -174,10 +168,8 @@ public class CadreTxnDetailsDAO extends GenericDaoHibernate<CadreTxnDetails, Lon
 			query.setDate("todayDate", todayDate);
 		}
 		
-		
 		return query.list();
 	}
-	
 	
 	public Long getNotCompletedTransactionDetailsByDates(Date todayDate, Date searchDate)
 	{
@@ -216,9 +208,16 @@ public class CadreTxnDetailsDAO extends GenericDaoHibernate<CadreTxnDetails, Lon
 			query.setDate("todayDate", todayDate);
 		}
 		
-		
 		return (Long) query.uniqueResult();
 	}
 	
-	
+	public List<Object[]> findLocationDetailsByAssemblyIds(List<Long> locationIds, String queryStr)
+	{
+
+		Query query = getSession().createQuery(queryStr);
+		
+		query.setParameterList("locationIds", locationIds);
+		
+		return query.list();
+	}
 }

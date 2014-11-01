@@ -18,27 +18,26 @@ public class CadreOtpDetailsDAO extends GenericDaoHibernate<CadreOtpDetails, Lon
 	
 	public List<Object[]> getOtpDetailsForDates(Date todayDate, Date searchDate)
 	{
-
 		StringBuilder queryStr = new StringBuilder();
 
-		queryStr.append(" select  model.cadreTxnDetails.completeStatus, sum(model.cadreTxnDetails.paidAmount), sum(model.cadreTxnDetails.pendingAmount), " +
-				" sum(model.cadreTxnDetails.totalAmount),count(model.cadreTxnDetails.cadreTxnDetailsId) from CadreOtpDetails model where  ");	
+		queryStr.append(" select  model.isDeleted, sum(model2.paidAmount), sum(model2.pendingAmount), " +
+				" sum(model2.totalAmount),count(model2.cadreTxnDetailsId) from CadreOtpDetails model, CadreTxnDetails model2  where  ");	
 
 		if(todayDate == null) // yesterDay transaction details
 		{
-			queryStr.append(" date(model.cadreTxnDetails.surveyTime) = :searchDate  ");
+			queryStr.append(" date(model2.surveyTime) = :searchDate  and ");
 		}
 		else if(searchDate ==null) // total transaction details
 		{
-			queryStr.append("   date(model.cadreTxnDetails.surveyTime) <= :todayDate ");
+			queryStr.append(" date(model2.surveyTime) <= :todayDate and ");
 		}
 		
 		else if(todayDate != null) // this week transaction details
 		{
-			queryStr.append(" date(model.cadreTxnDetails.surveyTime) >= :searchDate and date(model.cadreTxnDetails.surveyTime) <= :todayDate ");
+			queryStr.append(" (date(model2.surveyTime) >= :searchDate and date(model2.surveyTime) <= :todayDate) and ");
 		}		
 		
-		queryStr.append(" group by  model.cadreTxnDetails.completeStatus order by  model.cadreTxnDetails.completeStatus ");
+		queryStr.append(" model.cadreOtpDetailsId = model2.cadreOtpDetails.cadreOtpDetailsId  group by  model.isDeleted order by  model.isDeleted ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		
@@ -63,24 +62,25 @@ public class CadreOtpDetailsDAO extends GenericDaoHibernate<CadreOtpDetails, Lon
 
 		StringBuilder queryStr = new StringBuilder();
 		
-		queryStr.append(" select distinct CTD.complete_status, sum(CTD.total_amount),count( CTD.cadre_txn_details_id) from  " +
-				"   cadre_txn_details CTD left join cadre_otp_details COD ON COD.cadre_txn_details_id = CTD.cadre_txn_details_id " +
-				" where   ");
+		queryStr.append(" select COD.is_deleted, sum(CTD.total_amount),count( COD.cadre_otp_details_id) from  " +
+				"   cadre_txn_details CTD RIGHT JOIN cadre_otp_details COD ON CTD.cadre_otp_details_id = COD.cadre_otp_details_id " +
+				"  where   ");
 		
 		if(todayDate == null) // yesterDay transaction details
 		{
-			queryStr.append(" date(CTD.survey_time) = :searchDate and ");
+			queryStr.append(" ( date(CTD.survey_time) = :searchDate or date(COD.inserted_time) )  ");
 		}
 		else if(searchDate ==null) // total transaction details
 		{
-			queryStr.append("   date(CTD.survey_time) <= :todayDate and ");
+			queryStr.append(" ( date(CTD.survey_time) <= :todayDate or date(COD.inserted_time) )  ");
 		}
-		else if(todayDate != null) // this week transaction details
+		else if(todayDate != null) // all transaction details
 		{
-			queryStr.append("   ( date(CTD.survey_time) >= :searchDate and date(CTD.survey_time) <= :todayDate ) and  ");
+			queryStr.append("  ( ( date(CTD.survey_time) >= :searchDate and date(CTD.survey_time) <= :todayDate ) or " +
+					" (date(COD.inserted_time)  >= :searchDate and date(COD.inserted_time) <= :todayDate ) )  ");
 		}		
 		
-		queryStr.append("   COD.cadre_txn_details_id is null group by CTD.complete_status ");
+		queryStr.append("    group by COD.is_deleted order by COD.is_deleted ");
 		
 		Query query = getSession().createSQLQuery(queryStr.toString());
 		
@@ -105,10 +105,10 @@ public class CadreOtpDetailsDAO extends GenericDaoHibernate<CadreOtpDetails, Lon
 	{
 		StringBuilder queryStr = new StringBuilder();
 		
-		queryStr.append(" select model.cadreTxnDetails.surveyTime, count(distinct model.cadreTxnDetails.cadreSurveyUserId), count(model.cadreTxnDetails.cadreTxnDetailsId), " +
-				" SUM(CASE WHEN model.isDeleted IN ('Y') THEN 1 else 0 END) , sum(model.cadreTxnDetails.paidAmount)  from CadreOtpDetails model where ");
-		queryStr.append(" date(model.cadreTxnDetails.surveyTime) >= :fromDate and date(model.cadreTxnDetails.surveyTime) <= :toDate group by model.cadreTxnDetails.surveyTime " +
-				" order by model.cadreTxnDetails.surveyTime ");
+		queryStr.append(" select distinct model.surveyTime, count(distinct model.cadreSurveyUserId), SUM(model.totalAmount), " +
+				"  sum(model.paidAmount)  from CadreTxnDetails model where ");
+		queryStr.append(" date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate group by date(model.surveyTime) " +
+				" order by date(model.surveyTime) desc ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setDate("fromDate", fromDate);
@@ -119,21 +119,21 @@ public class CadreOtpDetailsDAO extends GenericDaoHibernate<CadreOtpDetails, Lon
 	{
 		StringBuilder queryStr = new StringBuilder();
 		
-		queryStr.append(" select model.cadreTxnDetails.cadreSurveyUser.cadreSurveyUserId , model.cadreTxnDetails.cadreSurveyUser.userName, " +
-				" model.cadreTxnDetails.constituency.constituencyId, model.cadreTxnDetails.constituency.name, " +
-				" count(distinct model.cadreTxnDetails.surveyTime ), " +
-				" sum(case when model.cadreTxnDetails.completeStatus in('Y') then 1 else 0 end) ," +
-				" sum(case when model.cadreTxnDetails.completeStatus in('Y','N') then 1 else 0 end), " +
-				" sum(model.cadreTxnDetails.totalAmount) " +
-				" from CadreOtpDetails model  ");
+		queryStr.append(" select distinct model.cadreSurveyUser.cadreSurveyUserId , model.cadreSurveyUser.userName, " +
+				" model.constituency.constituencyId, model.constituency.name, " +
+				" count(distinct model.surveyTime ), " +
+				" count(model.cadreTxnDetailsId) ," +
+				" SUM(model.totalAmount), " +
+				" sum(model.paidAmount) " +
+				" from CadreTxnDetails model  ");
 		
-		queryStr.append(" where (date(model.cadreTxnDetails.surveyTime) >= :fromDate and date(model.cadreTxnDetails.surveyTime) <= :toDate) " );
+		queryStr.append(" where (date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate) " );
 		
 		if(queryString != null && queryString.length()>0)
 		{
 			queryStr.append(" "+queryString+" ");
 		}
-		queryStr.append(" group by model.cadreTxnDetails.cadreSurveyUserId,model.cadreTxnDetails.constituency.constituencyId ");
+		queryStr.append(" group by  model.constituency.constituencyId,model.cadreSurveyUser.cadreSurveyUserId ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setDate("fromDate", fromDate);
