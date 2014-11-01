@@ -411,14 +411,23 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 	
 
 	
-	public SurveyTransactionVO getCadreSurveyTransactionDetails()
+	public SurveyTransactionVO getCadreSurveyTransactionDetails(String searchDate)
 	{
 		LOG.info("entered into getCadreSurveyTransactionDetails() in CadreSurveyTransactionService service class. ");
 		SurveyTransactionVO returnVO = new SurveyTransactionVO();
-		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		try {
+			Date today = null;
 			
-			Date today = new Date();
+			if(searchDate == null)
+			{
+				today = new Date();
+			}
+			else
+			{
+				today = format.parse(searchDate);
+			}
+			
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(today);
 			
@@ -453,8 +462,9 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 				}
 			}
 			
-			cal.add(Calendar.DATE, -7); 
-			Date oneWeekBackDate = cal.getTime();
+			Calendar cal1 = Calendar.getInstance();
+			cal1.add(Calendar.DATE, -7); 
+			Date oneWeekBackDate = cal1.getTime();
 			
 			List<Object[]> thisWeekTransactions = cadreTxnDetailsDAO.getTransactionDetailsByDates(today,oneWeekBackDate);
 			
@@ -567,6 +577,13 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			
 			returnVO.setPendingCount(notPaidRecords);
 			
+			Calendar cal2 = Calendar.getInstance();
+			cal2.add(Calendar.DATE, -2);
+			Date beforeYesterDay = cal2.getTime();
+			
+			Long beforeYesterDayUsers = cadreTxnDetailsDAO.getUsersCount(beforeYesterDay,null);
+			
+			returnVO.setRemainingNonOTPCount(beforeYesterDayUsers != null ? beforeYesterDayUsers : 0l);// day before yesterday team count
 			
 		} catch (Exception e) {
 			LOG.error(" exception occured at getCadreSurveyTransactionDetails() in CadreSurveyTransactionService service class. ", e);
