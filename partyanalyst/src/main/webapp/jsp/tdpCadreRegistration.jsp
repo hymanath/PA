@@ -1407,7 +1407,7 @@
 							
 								<div class=" m_top20" >
 										<h5 class="text-align1">ADDRESS/STREET/HAMLET/PINCODE</h5>
-										<textarea  class="form-control border-radius-0  input-block-level" placeholder="ADDRESS/STREET/HAMLET/PINCODE" name="cadreRegistrationVO.street"  value="${voterInfoVOList[0].location}" style="width:260px;"></textarea>
+										<textarea  class="form-control border-radius-0  input-block-level" placeholder="ADDRESS/STREET/HAMLET/PINCODE" name="cadreRegistrationVO.street"  style="width:260px;">${voterInfoVOList[0].location}</textarea>
 								</div>	
 							<div class=" m_top20" >
 										<h5 class="text-align1">CASTE NAME <span class="mandatory">*</span><span id="casteErr" style="color:red;font-size:12px;"></span>  </h5>
