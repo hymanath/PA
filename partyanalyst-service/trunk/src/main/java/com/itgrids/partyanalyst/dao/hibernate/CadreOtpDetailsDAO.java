@@ -115,13 +115,13 @@ public class CadreOtpDetailsDAO extends GenericDaoHibernate<CadreOtpDetails, Lon
 		query.setDate("toDate", toDate);
 		return query.list();
 	}	
-	public List<Object[]> getLocationWiseTransactionsByDates(Date fromDate, Date toDate,List<Long> locationIdList,String queryString)
+	/*public List<Object[]> getLocationWiseTransactionsByDates(Date fromDate, Date toDate,List<Long> locationIdList,String queryString)
 	{
 		StringBuilder queryStr = new StringBuilder();
 		
 		queryStr.append(" select distinct model.cadreSurveyUser.cadreSurveyUserId , model.cadreSurveyUser.userName, " +
 				" model.constituency.constituencyId, model.constituency.name, " +
-				" count(distinct model.surveyTime ), " +
+				"  COUNT(distinct(date( model.surveyTime))) , " +
 				" count(model.cadreTxnDetailsId) ," +
 				" SUM(model.totalAmount), " +
 				" sum(model.paidAmount) " +
@@ -133,9 +133,37 @@ public class CadreOtpDetailsDAO extends GenericDaoHibernate<CadreOtpDetails, Lon
 		{
 			queryStr.append(" "+queryString+" ");
 		}
-		queryStr.append(" group by  model.constituency.constituencyId,model.cadreSurveyUser.cadreSurveyUserId ");
+		queryStr.append(" group by  model.cadreSurveyUser.cadreSurveyUserId ,model.constituency.constituencyId");
 		
 		Query query = getSession().createQuery(queryStr.toString());
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+		
+		if(queryString != null && queryString.length()>0)
+		{
+			query.setParameterList("locationIdList", locationIdList);
+		}
+		
+		return query.list();
+	}*/
+	
+	public List<Object[]> getLocationWiseTransactionsByDates(Date fromDate, Date toDate,List<Long> locationIdList,String queryString)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select CTD.cadre_survey_user_id,CSU.user_name,CTD.constituency_id,C.name,count(distinct date(CTD.survey_time)),count(CTD.cadre_txn_details_id),sum(CTD.total_amount),"+
+						" sum(CTD.paid_amount), sum(paid_amount) from cadre_txn_details CTD,cadre_survey_user CSU,constituency C where "+ 
+						" CTD.cadre_survey_user_id = CSU.cadre_survey_user_id and CTD.constituency_id = C.constituency_id ");
+		
+		queryStr.append(" and date(CTD.survey_time) between :fromDate and :toDate " );
+		
+		if(queryString != null && queryString.length()>0)
+		{
+			queryStr.append(" "+queryString+" ");
+		}
+		queryStr.append(" group by CTD.cadre_survey_user_id,CTD.constituency_id ");
+		
+		Query query = getSession().createSQLQuery(queryStr.toString());
 		query.setDate("fromDate", fromDate);
 		query.setDate("toDate", toDate);
 		

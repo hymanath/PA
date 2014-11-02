@@ -58,7 +58,7 @@ public class CadreTxnDetailsDAO extends GenericDaoHibernate<CadreTxnDetails, Lon
 	
 	public List<Long>  getTotalCadreSurveyTxnTeamSize(Date searchDate)
 	{
-		Query query = getSession().createQuery("select distinct model.cadreSurveyUserId from CadreTxnDetails model where " +
+		Query query = getSession().createQuery("select distinct model.cadreSurveyUser.cadreSurveyUserId from CadreTxnDetails model where " +
 				" date(model.surveyTime) = :searchDate   ");	
 		query.setDate("searchDate", searchDate);
 		return  query.list();
