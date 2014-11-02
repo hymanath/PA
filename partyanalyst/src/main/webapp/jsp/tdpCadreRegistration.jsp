@@ -1071,8 +1071,10 @@
 		
 		if(mobileNumber.length == 0) 
 		{
-			$(errDiv).html(''+AadharNo+' Required.');		
-			numberFlag= false;
+			if(!(fieldId == "candAdrId")){
+				$(errDiv).html(''+AadharNo+' Required.');		
+				numberFlag= false;
+			}
 		}		 
 		else if (isNaN(mobileNumber)) 
 		{
