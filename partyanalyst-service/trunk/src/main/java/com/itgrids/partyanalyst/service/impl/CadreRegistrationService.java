@@ -3651,7 +3651,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				{
 					String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
 					returnVO.setVoterImgPath(url);
-					List<String> names = voterNamesDAO.getVoterNames(userAddress.getConstituency().getConstituencyId());
+					List<String> names = voterNamesDAO.getVoterNames((Long)voterIdDetails.get(0)[4] );
 					if(names != null && names.size() > 0)
 					{
 						returnVO.setVoterName(names.get(0));
