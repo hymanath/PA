@@ -427,9 +427,11 @@
 		var Nrelation = $('#voterRelationId').val();
 		$('#imageErr').html('');
 		
-		$('#NaadharErr,#NnameErr,#NgenderErr,#NageErr,#dobErr,#NrelationErr').html('');
+		$('#NaadharErr,#NnameErr,#NgenderErr,#NageErr,#dobErr,#NrelationErr,#gendReqErr').html('');
 		$('#casteErr,#mobileErr,#ageErr,#cardErr,#dobErr,#nameErr').html('');
-
+		 if(!$("#maleGenderRId").is(':checked') && !$("#femaleGenderRId").is(':checked')){
+			 $('#gendReqErr').html('Please select gender');
+		 }
 			$('#imageErr').html('');
 			//To check if user upload any file
 			if (!newCamPhotoTaken && !newPhotoUploaded && !alreadyImgPresent && !$("#voterActualImgId").is(':checked') && !$("#cadreActualImgId").is(':checked')) 
@@ -548,7 +550,47 @@
 			
 		});
 				
-		
+		if(validateName('nameErr','cadreNameId',1)){
+			isErrorStr = " error";	
+		}
+		if(validateName('ageErr','cadreAgeId',0)){
+			isErrorStr = " error";	
+		}
+		if(validateName('garErr','gardianNameId',1)){
+			isErrorStr = " error";	
+		}
+		if(validateName('relErr','relationTypessId',1)){
+			isErrorStr = " error";	
+		}
+		if(!isNumber()){//iferror return false
+			isErrorStr = " error";	
+		} 
+
+		if(!isAadharNumber('nomineAadharId','Aadhar No ')){
+			isErrorStr = " error";	
+		}//iferror return false
+		if(!isAadharNumber('candAdrId','Aadhar No ')){
+			isErrorStr = " error";	
+		}//iferror return false
+		if(isValidName('name')){
+			isErrorStr = " error";	
+		}
+		if(isValidName('number')){
+			isErrorStr = " error";	
+		}
+		$('.famAgeErrCls').each(function(){
+			var key = $(this).attr('key');
+			$('#famAgeErr'+key).html('');
+			if($.trim($(this).val()).length>0){	 	 
+				if (isNaN($.trim($(this).val()))) 
+				{
+					isErrorStr = " error";	
+					$('#famAgeErr'+key).html('must be number.');			
+				}
+			}else{
+				$(this).val("");
+			}
+		});
 		if(isErrorStr.trim().length >0)
 		{
 			$('html,body').animate({
@@ -933,7 +975,7 @@
 	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder=" Enter Voter Id " name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].voterCadreNO" style="width:121px;"  id="voterCard'+voterCount+'"></input>';
 	str +=' </td>';
 	str +=' <td style="width:80px;"> ';
-	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder=" Age " style="width:55px;"   name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].age" id="voterAge'+voterCount+'"></input> ';
+	str +=' <input type="text" class="form-control border-radius-0 text-align2 famAgeErrCls" placeholder=" Age " style="width:55px;"   name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].age"  key="'+voterCount+'" id="voterAge'+voterCount+'"></input> <br/> <span style="color:red;font-size:12px;" id="famAgeErr'+voterCount+'"></span>';
 	str +=' </td>';
 	str +=' <td style="width:82px;">';
 	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder="Gender"  style="width:53px;"  name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].gender"  id="voterGender'+voterCount+'"> </input>';
@@ -1017,21 +1059,24 @@
 	function isAadharNumber(fieldId,AadharNo)
 	{
 		var numberFlag = true;
+		var errDiv='#NaadharErr';
+		if(fieldId == "candAdrId"){
+			errDiv='#errcandAdrId';
+		}
 		var mobileNumber = $('#'+fieldId+'').val().trim();
 		
-		$('#NaadharErr').html('');
+		$(errDiv).html('');
 		
-		console.log(mobileNumber.length == 0);
-		console.log(isNaN(mobileNumber));
+		
 		
 		if(mobileNumber.length == 0) 
 		{
-			$('#NaadharErr').html(''+AadharNo+' Required.');		
+			$(errDiv).html(''+AadharNo+' Required.');		
 			numberFlag= false;
 		}		 
 		else if (isNaN(mobileNumber)) 
 		{
-			$('#NaadharErr').html('Invalid '+AadharNo+'.');			
+			$(errDiv).html('Invalid '+AadharNo+'.');			
 			numberFlag = false;
 		}
 		/*else if(mobileNumber.length < 12) 
@@ -1145,7 +1190,7 @@
 											<input type="text" class="form-control border-radius-0" placeholder="Candidate Name" name="cadreRegistrationVO.voterName"  value="${voterInfoVOList[0].name}" id="cadreNameId" onkeyup="validateName('nameErr','cadreNameId',1);"></input>
 											<span id="nameErr" style="color:red;font-size:12px;"></span>
 										</div>	
-										<div class="span4">	
+										<div class="span5">	
 											<h5 class="text-align1">Age <span class="mandatory">*</span> </h5>
 											<input style="width:180px;" id="cadreAgeId" type="text" class="form-control border-radius-0 text-align2"  placeholder="Age" name="cadreRegistrationVO.age"   value="${voterInfoVOList[0].age}"  onkeyup="validateName('ageErr','cadreAgeId',0);"></input>
 											<span id="ageErr" style="color:red;font-size:12px;"></span>
@@ -1231,23 +1276,23 @@
 												<s:if test="%{voterInfoVOList[0].gender != null}">
 												
 													<c:if test="${voterInfoVOList[0].gender == 'M' || voterInfoVOList[0].gender == 'Male'}">
-													   <label class="radio"><input type="radio" value="MALE"  name="cadreRegistrationVO.gender" checked="true" > MALE</input></label>
+													   <label class="radio"><input type="radio" value="MALE" id="maleGenderRId" name="cadreRegistrationVO.gender" checked="true" > MALE</input></label>
 														&nbsp;&nbsp;&nbsp;&nbsp;
-														<label class="radio"><input type="radio" value="FEMALE"  name="cadreRegistrationVO.gender"> FEMALE</input></label>
+														<label class="radio"><input type="radio" value="FEMALE"  id="femaleGenderRId"  name="cadreRegistrationVO.gender"> FEMALE</input></label>
 													</c:if>
 													<c:if test="${voterInfoVOList[0].gender == 'F' || voterInfoVOList[0].gender == 'Female'}">												
-														<label class="radio"><input type="radio" value="MALE"  name="cadreRegistrationVO.gender" > MALE</input></label>
+														<label class="radio"><input type="radio" value="MALE"  id="maleGenderRId"  name="cadreRegistrationVO.gender" > MALE</input></label>
 														&nbsp;&nbsp;&nbsp;&nbsp;
-														<label class="radio"><input type="radio" value="FEMALE"  name="cadreRegistrationVO.gender"  checked="true"> FEMALE</input></label>
+														<label class="radio"><input type="radio" value="FEMALE" id="femaleGenderRId"   name="cadreRegistrationVO.gender"  checked="true"> FEMALE</input></label>
 													</c:if>
 												
 												</s:if>
 												<s:else>
-												  <label class="radio"><input type="radio" value="MALE"  name="cadreRegistrationVO.gender" > MALE</input></label>
+												  <label class="radio"><input type="radio" value="MALE"  id="maleGenderRId"  name="cadreRegistrationVO.gender" > MALE</input></label>
 													&nbsp;&nbsp;&nbsp;&nbsp;
-													<label class="radio"><input type="radio" value="FEMALE"  name="cadreRegistrationVO.gender" > FEMALE</input></label>
+													<label class="radio"><input type="radio" value="FEMALE"  id="femaleGenderRId"  name="cadreRegistrationVO.gender" > FEMALE</input></label>
 												</s:else>
-														
+													<br><span id="gendReqErr" style="color:red;font-size:12px;"></span>
 											</div>		
 										</div>
 									</div>	
@@ -1353,14 +1398,14 @@
 							-->
 								<div class=" m_top20" >
 									<h5 class="text-align1">Aadhar Card No .</h5>
-									<input type="text" class=""  style="width:260px;" placeholder="Aadhar Number"  name="cadreRegistrationVO.candidateAadherNo" value="${voterInfoVOList[0].candidateAadharNo}"></input>
-								
+									<input type="text" class=""  style="width:260px;" placeholder="Aadhar Number" id="candAdrId" onkeyup="isAadharNumber('candAdrId','Aadhar No ')"  name="cadreRegistrationVO.candidateAadherNo" value="${voterInfoVOList[0].candidateAadharNo}"></input>
+								    <br/><span id="errcandAdrId" style="color:red;font-size:12px;"></span>
 								</div>
 							
 							
 								<div class=" m_top20" >
-										<h5 class="text-align1">STREET/HAMLET</h5>
-										<input type="text" class="form-control border-radius-0  input-block-level" placeholder=" Street / Hamlet " name="cadreRegistrationVO.street"  value="${voterInfoVOList[0].location}" style="width:260px;"></input>
+										<h5 class="text-align1">ADDRESS/STREET/HAMLET/PINCODE</h5>
+										<textarea  class="form-control border-radius-0  input-block-level" placeholder="ADDRESS/STREET/HAMLET/PINCODE" name="cadreRegistrationVO.street"  value="${voterInfoVOList[0].location}" style="width:260px;"></textarea>
 								</div>	
 							<div class=" m_top20" >
 										<h5 class="text-align1">CASTE NAME <span class="mandatory">*</span><span id="casteErr" style="color:red;font-size:12px;"></span>  </h5>
@@ -1449,7 +1494,7 @@
 													<input type="text" id="voterCard${commentLoop.index}" class="form-control border-radius-0 text-align2" placeholder="Voter Card No " value="${familyVO.voterCardNo}"name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].voterCadreNO" style="width:120px;"></input>
 												</td>
 												<td style="width:80px;"> 
-													<input type="text" id="voterAge${commentLoop.index}" class="form-control border-radius-0 text-align2" placeholder="Age "  name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].age"  value="${familyVO.age}" style="width:53px;"></input> 
+													<input type="text" id="voterAge${commentLoop.index}" class="form-control border-radius-0 text-align2 famAgeErrCls" placeholder="Age "  name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].age"  value="${familyVO.age}" key="${commentLoop.index}" style="width:53px;"></input> <br/> <span style="color:red;font-size:12px;" id="famAgeErr${commentLoop.index}"></span> 
 												</td>
 												<td style="width:80px;">
 													<input type="text" id="voterGender${commentLoop.index}" class="form-control border-radius-0 text-align2" placeholder="Gender "  name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].gender"  value="${familyVO.gender}" style="width:50px;"> </input>
@@ -1523,7 +1568,7 @@
 													<input type="text" id="voterCard0" class="form-control border-radius-0 text-align2" placeholder=" Voter Id " name="cadreRegistrationVO.cadreFamilyDetails[0].voterCadreNO"  style="width:120px;"></input>
 												</td>
 												<td style="width:80px;"> 
-													<input type="text" id="voterAge0" class="form-control border-radius-0 text-align2" placeholder=" Age "  name="cadreRegistrationVO.cadreFamilyDetails[0].age"  style="width:50px;"></input> 
+													<input type="text" id="voterAge0" key="0" class="form-control border-radius-0 text-align2 famAgeErrCls" placeholder=" Age "  name="cadreRegistrationVO.cadreFamilyDetails[0].age"  style="width:50px;"></input>  <br/> <span style="color:red;font-size:12px;" id="famAgeErr0"></span>
 												</td>
 												<td style="width:80px;">
 													<input type="text" id="voterGender0" class="form-control border-radius-0 text-align2" placeholder="Gender"  name="cadreRegistrationVO.cadreFamilyDetails[0].gender"  style="width:50px;"> </input>
@@ -2715,16 +2760,18 @@ function showNewTakenImg(){
 	{
 		$('#NnameErr,#NageErr').html('');
 		var candidateName = $('#nomineNameId').val();
+		var candidateAge = $('#nomineeAgeId').val();
 		if(type =='name' && candidateName != null && candidateName.trim().length>0 && !(/^[a-zA-Z ]+$/.test(candidateName)))
 		{
 				$('#NnameErr').html('Name allows only alphabets.');
-			return;
+			return true;
 		}
-		if(type =='number' && candidateName != null && candidateName.trim().length>0 && (/^[a-zA-Z ]+$/.test(candidateName)))
+		if(type =='number' && candidateAge != null && candidateAge.trim().length>0 && (/^[a-zA-Z ]+$/.test(candidateAge)))
 		{
-				$('#NageErr').html('Nominee age is not a No.');
-			return;
+				$('#NageErr').html('Nominee Age must be Number.');
+			return true;
 		}
+		return false;
 	}
 	
 	
@@ -2841,32 +2888,38 @@ function getExistingCadreInfo1(){
  function validateName(errDiv,fieldid,isNumber)
  {
 	var str = $('#'+fieldid+'').val();
-	
+	$('#'+errDiv+'').html('');
+	var reqErstatus = false;
 	if(isNumber >0)
 	{
 		if(str != null && str.trim().length>0 && !(/^[a-zA-Z ]+$/.test(str)))
 		{
-			$('#'+errDiv+'').html(' Name allows only alphabets.');
+			$('#'+errDiv+'').html('Allows only alphabets.');
+			reqErstatus = true;
 		}		  
 		if(!isValid(str))
 		{
-			$('#'+errDiv+'').html('Special Characters not allowed for Candidate Name.');
+			reqErstatus = true;
+			$('#'+errDiv+'').html('Special Characters are not allowed.');
 		} 
 	}
 	else
 	{
-		$('#mobileErr').html('');
+		$('#ageErr').html('');
 		if (str.length == 0) 
 		{
-			$('#'+errDiv+'').html('Please Enter Mobile No');
+			reqErstatus = true;
+			$('#'+errDiv+'').html('Please Enter Candidate Age');
 			$('#cadreAgeId').val('');
 		}		 
 		else if (isNaN(str)) 
 		{
-			$('#'+errDiv+'').html('Invalid Mobile No.');	
+			 reqErstatus = true;
+			$('#'+errDiv+'').html('Candidate Age must be number.');	
 			$('#cadreAgeId').val('');			
 		}
 	}
+	return reqErstatus;
  }
  
 	function buildExistingCadres(results){
