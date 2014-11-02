@@ -764,27 +764,27 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 				if(stateId.longValue() == 1L)
 				{
 					locationIdList = constituencyDAO.getAllAssemblyConstituencyIdsByStateId(1L);
-					query.append(" and model.constituency.constituencyId in (:locationIdList) ");
+					query.append(" and C.constituency_id in (:locationIdList) ");
 				}
 				else if(stateId.longValue() == 2L)
 				{
 					locationIdList = constituencyDAO.getAllAssemblyConstituencyIdsByStateId(2L);
-					query.append(" and model.constituency.constituencyId in (:locationIdList)  ");
+					query.append(" and C.constituency_id in (:locationIdList)  ");
 				}
 				else
 				{
 					locationIdList = constituencyDAO.getAllAssemblyConstituencyIdsByStateId(0L);
-					query.append(" and model.constituency.constituencyId in (:locationIdList)");
+					query.append(" and C.constituency_id in (:locationIdList) ");
 				
 				}
 			}
 			else if(searchType.equalsIgnoreCase("district"))
 			{
-				query.append(" and model.constituency.district.districtId in (:locationIdList) ");
+				query.append(" and C.district_id in (:locationIdList) ");
 			}
 			else if(searchType.equalsIgnoreCase("assembly"))
 			{
-				query.append(" and model.constituency.constituencyId in (:locationIdList) ");
+				query.append(" and C.constituency_id in (:locationIdList) ");
 			}
 			else if(searchType.equalsIgnoreCase("parliament"))
 			{
@@ -793,7 +793,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 				locationIdList.clear();
 				locationIdList.addAll(assembblyIds);
 				
-				query.append(" and model.constituency.constituencyId in (:locationIdList) ");
+				query.append(" and C.constituency_id in (:locationIdList) ");
 			}
 			
 			List<Object[]> locationWiseTransactions = cadreOtpDetailsDAO.getLocationWiseTransactionsByDates(fromDate,toDate,locationIdList,query.toString());
