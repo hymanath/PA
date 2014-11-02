@@ -3647,10 +3647,19 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				returnVO.setMandalEng(userAddress.getTehsil() != null ?  userAddress.getTehsil().getTehsilName() :"");
 				returnVO.setConstiEng(userAddress.getConstituency() != null ?  userAddress.getConstituency().getName()  : "");
 				returnVO.setDistrictEng(userAddress.getDistrict() != null ?  userAddress.getDistrict().getDistrictName() :"");
-				
+				if(userAddress.getConstituency() != null && userAddress.getBooth() !=null)
+				{
+					String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
+					returnVO.setVoterImgPath(url);
+					List<String> names = voterNamesDAO.getVoterNames(userAddress.getConstituency().getConstituencyId());
+					if(names != null && names.size() > 0)
+					{
+						returnVO.setVoterName(names.get(0));
+					}
+				}
 				returnVO.setVillage(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getLocalName()   + "\u0C17\u0C4D\u0C30\u0C3E\u0C2E\u0C02": "");
 				returnVO.setMandal(userAddress.getTehsil() != null ?  userAddress.getTehsil().getLocalName() +"\u0C2E\u0C02\u0C21\u0C32\u0C02":"");
-				returnVO.setConstituency(userAddress.getConstituency() != null ?  userAddress.getConstituency().getLocalName() + "\u0C28\u0C3F" + "||" : "");
+				returnVO.setConstituency(userAddress.getConstituency() != null ?  userAddress.getConstituency().getLocalName() + "\u0C28\u0C3F" + "," : "");
 				returnVO.setDistrict(userAddress.getDistrict() != null ?  userAddress.getDistrict().getLocalName() + "\u0C1C\u0C3F\u0C32\u0C4D\u0C32\u0C3E":"");
 				
 			}
