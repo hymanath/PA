@@ -440,7 +440,24 @@
 				isErrorStr = " error";
 			}
 
-		
+		if(validateName('nameErr','cadreNameId',1)){
+			isErrorStr = " error";	
+		}
+		if(validateName('ageErr','cadreAgeId',0)){
+			isErrorStr = " error";	
+		}
+		if(validateName('garErr','gardianNameId',1)){
+			isErrorStr = " error";	
+		}
+		if(validateName('relErr','relationTypessId',1)){
+			isErrorStr = " error";	
+		}
+		if(isValidName('name')){
+			isErrorStr = " error";	
+		}
+		if(isValidName('number')){
+			isErrorStr = " error";	
+		}
 		if(casteId == 0)
 		{
 			isErrorStr = " error";
@@ -550,18 +567,7 @@
 			
 		});
 				
-		if(validateName('nameErr','cadreNameId',1)){
-			isErrorStr = " error";	
-		}
-		if(validateName('ageErr','cadreAgeId',0)){
-			isErrorStr = " error";	
-		}
-		if(validateName('garErr','gardianNameId',1)){
-			isErrorStr = " error";	
-		}
-		if(validateName('relErr','relationTypessId',1)){
-			isErrorStr = " error";	
-		}
+		
 		if(!isNumber()){//iferror return false
 			isErrorStr = " error";	
 		} 
@@ -572,12 +578,7 @@
 		if(!isAadharNumber('candAdrId','Aadhar No ')){
 			isErrorStr = " error";	
 		}//iferror return false
-		if(isValidName('name')){
-			isErrorStr = " error";	
-		}
-		if(isValidName('number')){
-			isErrorStr = " error";	
-		}
+		
 		$('.famAgeErrCls').each(function(){
 			var key = $(this).attr('key');
 			$('#famAgeErr'+key).html('');
