@@ -38,6 +38,8 @@ public class LocalElectionBody extends BaseModel {
 	private Set<LocalGroupRegion> localGroupRegion = new HashSet<LocalGroupRegion>(0);
 	private Set<Locality> Localities = new HashSet<Locality>(0);
 	private Set<AssemblyLocalElectionBody> assemblyLocalElectionBody =new HashSet<AssemblyLocalElectionBody>();
+	
+	private String nameLocal;
 	public LocalElectionBody(){
 		
 	}
@@ -171,6 +173,18 @@ public class LocalElectionBody extends BaseModel {
 			Set<AssemblyLocalElectionBody> assemblyLocalElectionBody) {
 		this.assemblyLocalElectionBody = assemblyLocalElectionBody;
 	}
+
+	@Column(name="name_local")
+	public String getNameLocal() {
+		return nameLocal;
+	}
+
+	public void setNameLocal(String nameLocal) {
+		this.nameLocal = nameLocal;
+	}
+
+	
+	
 	
 	
 	
