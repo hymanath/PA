@@ -41,7 +41,7 @@ public class CadreOtpDetailsDAOHibernateTest extends BaseDaoTestCase {
 
 	}*/
 	
-	public void testDetails()
+	/*public void testDetails()
 	{
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -61,9 +61,9 @@ public class CadreOtpDetailsDAOHibernateTest extends BaseDaoTestCase {
 			e.printStackTrace();
 		}
 
-	}
+	}*/
 	
-	/*public void testDetails()
+	public void testGetLocationWiseTransactionsByDates()
 	{
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -71,17 +71,25 @@ public class CadreOtpDetailsDAOHibernateTest extends BaseDaoTestCase {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(today);
 		
-		cal.add(Calendar.DATE, -25);
+		cal.add(Calendar.DATE, -1);
 		Date yesterDay = cal.getTime();
 		List<Long> locationIds = new ArrayList<Long>();
 		locationIds.add(232L);
 		locationIds.add(282L);
+		String qstr = " and C.constituency_id in (:locationIdList) ";
 		
 			//System.out.println(format1.parse("2014-10-29 15:37:05"));
-			List<Object[]> list = cadreOtpDetailsDAO.getLocationWiseTransactionsByDates(yesterDay,today,locationIds," and model.cadreTxnDetails.constituency.constituencyId in (:locationIdList) ");
+			List<Object[]> list = cadreOtpDetailsDAO.getLocationWiseTransactionsByDates(yesterDay,yesterDay,locationIds,qstr);
 			System.out.println(list);
+			
+			for(Object[] params : list)
+			{
+				System.out.println();
+				for(Object obj : params)
+					System.out.print("\t"+obj.toString());
+			}
 		
 
 	}
-	*/
+	
 }
