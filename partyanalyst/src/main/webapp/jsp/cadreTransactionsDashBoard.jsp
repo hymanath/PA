@@ -78,8 +78,9 @@
 			</div>
 		</div><!-- Header Row End-->
 		
-	<div class="container ">	
-		<!-- Title Row -->
+
+	<div class="container ">
+	
 		<div class="row-fluid" id="fadeInDown">
 			<div class="span12 well well-small  border-radius-0 mb-10 ">
 			<input type="text" id="fromDate" class="levelDtCls form-control border-radius-0 border-right-0 datePickerCls " placeholder="From Date"  readOnly="true" style="cursor: text; float: left; margin-top: 5px; width: 100px;" ></input>
@@ -88,8 +89,7 @@
 			</div>
 		</div><!-- Title Row End-->
 		
-		<!--  -->
-		 <div> <img id="ajaxImgStyleNew" style="display:none;margin-left:10px; margin-top:10px;" src="images/icons/search.gif"/></div>
+		<div align="center"> <img id="ajaxImgStyleNew" style=" display:none;margin-top:10px; height: 60px;" src="images/Loading-data.gif"/></div>
 		<div id="basicTransactionDiv">
 		
 		<div class="row-fluid " id="PreviousmembersCount">
@@ -248,7 +248,14 @@
 				getTransactionDetailsForDate();
 			}
 		});
-		$("#fromDate").datepicker("setDate", new Date());		
+		$("#fromDate").datepicker("setDate", new Date());
+		
+		var dateValue = $("#fromDate").val();
+		
+		var date = new Date(dateValue);
+		date.setDate(date.getDate() - 1);
+		dateValue =  date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+		$('#dateId').html(' Transaction Details on ' + dateValue);	
 	});	
 	function getReportsForCadre()
 	{
@@ -371,6 +378,15 @@
 				getTransactionDetailsForDate();
 			}
 		});
+		
+		var dateValue = $("#fromDate").val();
+		
+		var date = new Date(dateValue);
+		date.setDate(date.getDate() - 1);
+		dateValue =  date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+		
+		$('#dateId').html(' Transaction Details on ' + dateValue);
+		
 	}
 	</script>
 

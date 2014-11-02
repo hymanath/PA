@@ -113,7 +113,7 @@
 					<input type="button" class="btn btn-success" id="getCandidateDataCollectionInfoId" onclick="daywiseReport();" value="Submit"/>
 					<input type="button" class="btn btn-success" style="display:none;" id="exportExclId1" onclick="generateExcel('daywiseReportTab');" value="Excel Excel"/>
 					
-					 <img id="ajaxImgStyleNew" style="display:none;margin-left:10px; margin-top:10px;" src="images/icons/search.gif"/></td>
+					 <img id="ajaxImgStyleNew" style="display:none;margin-left:10px; margin-top:10px;height: 60px;" src="images/Loading-data.gif"/></td>
 					<div id="daywiseReportDiv"  align="center" style="margin:20px;"></div>
 			  </div>
 			</div>
@@ -187,7 +187,7 @@
 					 <td></td>
 					 <td> <input style="margin-top:10px;" type="button" id="locationSubmitBtn" class="btn btn-success" onclick="locationWiseTransactionReport();" value="Submit"/>
 					  <input style="display:none;margin-top: 10px;" type="button" id="exportExclId2" class="btn btn-success" onclick="generateExcel('locationWiseReportTab');" value="Export Excel"/>
-					 <img id="ajaxImgStyleNew2" style="display:none;margin-left:10px; margin-top:10px;" src="images/icons/search.gif"/></td>
+					 <img id="ajaxImgStyleNew2" style="display:none;margin-left:10px; margin-top:10px;height: 60px;" src="images/Loading-data.gif"/></td>
 					 </tr>
 				  </table>
 				  <div id="locationWiseTransactionDiv" align="center" style="margin:20px;"></div>
@@ -387,7 +387,7 @@
 				url : "locationWiseTransactionReportAction.action",
 				data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
-				$("#ajaxImgStyleNew2").show();
+				$("#ajaxImgStyleNew2").hide();
 				if(result !=null && result.surveyTransactionVOList != null && result.surveyTransactionVOList.length >0)
 				{
 					buildlocationWisetTransactionReports(result);	
