@@ -3134,7 +3134,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		
 		post.addParameter("User",IConstants.ADMIN_USERNAME_FOR_SMS);
 		post.addParameter("passwd",IConstants.ADMIN_PASSWORD_FOR_SMS);
-		//post.addParameter("sid",IConstants.ADMIN_SENDERID_FOR_SMS);
+		post.addParameter("sid",IConstants.ADMIN_SENDERID_FOR_SMS);
 	    post.addParameter("mobilenumber", mobileNo);
 		post.addParameter("message", message);
 		post.addParameter("mtype", isEnglish ? "N" : "OL");
