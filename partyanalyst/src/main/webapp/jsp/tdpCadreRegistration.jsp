@@ -497,7 +497,7 @@
 		if(NAge != null && NAge.trim().length > 0){
 		  if(isNaN(NAge.trim())){
 		    isErrorStr = " error";
-			$('#NageErr').html(' Nominee Age must be integer.');
+			$('#NageErr').html(' Nominee Age must be Number.');
 		  }
 		}
 		if( Nrelation == 0)
