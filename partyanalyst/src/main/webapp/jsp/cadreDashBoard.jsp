@@ -15,6 +15,7 @@
 	<script type="text/javascript" src="js/icheck/icheck.min.js"></script>
 	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
+
 <style>
 	.show-grid:hover .block-hover-addBtn{display:table-cell; margin-right:-22px; top:-10px;}/*visibility: visible;*/
 	.block-hover-addBtn{display:none; position: relative;}/*visibility: hidden;*/
@@ -79,6 +80,7 @@ table.dataTable tr.odd {
 </head>
 <body>
 <div class="container m_top10">
+
 		<!-- Title Row -->
 		<div class="row-fluid" id="fadeInDown">
 			<div class="span12 well well-small  border-radius-0 mb-10 " style="background:#ffffff;">
@@ -273,16 +275,24 @@ $('#membersCount').addClass('animated fadeInX');
     	   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
     		   location.reload(); 
     	   }
-			$("#todayRegisCount").html('<h2>'+result[0].totalCount+'</h2><p>Members <br/> Registered <span  style="font-weight:bold;"  class="text-red">Today</span></p></div></td>');
-			$("#thisWeekRegisCount").html('<h2>'+result[1].totalCount+'</h2><p>Members <br/>Registered <span style="font-weight:bold;"  class="text-orange">This week</span></p></div></td>');
-			$("#monthRegisCount").html('<h2>'+result[2].totalCount+'</h2><p>Members <br/>Registered <span style="font-weight:bold;" class="text-skyblue">This Month</span></p></div></td>');
-			$("#totalRegisCount").html('<h2>'+result[3].totalCount+'</h2><p>Members <br/>In <span style="font-weight:bold;"  class="text-green">Total</span></p></div></td>');	
+			var TodayTotalWeb = result[0].apWebCount + result[0].tgWebCount;
+			var TodayTotalTab = result[0].apTabCount + result[0].tgTabCount;
+			var WeekTotalWeb = result[1].apWebCount + result[1].tgWebCount;
+			var WeekTotalTab = result[1].apTabCount + result[1].tgTabCount;
+			var MonthTotalWeb = result[2].apWebCount + result[2].tgWebCount;
+			var MonthTotalTab = result[2].apTabCount + result[2].tgTabCount;
+			var TotalWeb = result[3].apWebCount + result[3].tgWebCount;
+			var TotalTab = result[3].apTabCount + result[3].tgTabCount;
+			$("#todayRegisCount").html('<h2>'+result[0].totalCount+'</h2><p>Members <br/> Registered <span  style="font-weight:bold;">Today</span></p> <p class="label">Web -'+TodayTotalWeb+'</p>&nbsp&nbsp<p class="label">Tab - '+TodayTotalTab+'</p></div></td>');
+			$("#thisWeekRegisCount").html('<h2>'+result[1].totalCount+'</h2><p>Members <br/>Registered <span style="font-weight:bold;"  class="text-orange">This week</span></p><p class="label">Web -'+WeekTotalWeb+'</p>&nbsp&nbsp<p class="label">Tab - '+WeekTotalTab+'</p></div></td>');
+			$("#monthRegisCount").html('<h2>'+result[2].totalCount+'</h2><p>Members <br/>Registered <span style="font-weight:bold;" class="text-skyblue">This Month</span></p><p class="label">Web -'+MonthTotalWeb+'</p>&nbsp&nbsp<p class="label">Tab - '+MonthTotalTab+'</p></div></td>');
+			$("#totalRegisCount").html('<h2>'+result[3].totalCount+'</h2><p>Members <br/>In <span style="font-weight:bold;"  class="text-green">Total</span></p><p class="label">Web -'+TotalWeb+'</p>&nbsp&nbsp<p class="label">Tab - '+TotalTab+'</p></div></td>');	
 			
-			$("#todayApTgRegisCount").html('<div class="span6"><strong>AP </strong> <br/>'+result[0].apCount+'</div><div class="span6 text-right"><strong>TS </strong><br/> '+result[0].tgCount+'</div>');				
-			$("#thisWeekApTgRegisCount").html('<div class="span6"><strong>AP </strong> <br/>'+result[1].apCount+'</div><div class="span6 text-right"><strong>TS </strong><br/> '+result[1].tgCount+'</div>');					
-			$("#monthApTgRegisCount").html('<div class="span6"><strong>AP </strong> <br/>'+result[2].apCount+'</div><div class="span6 text-right"><strong>TS </strong><br/> '+result[2].tgCount+'</div>');
-			$("#totalApTgRegisCount").html('<div><strong>AP - </strong>'+result[3].apCount+'<span class="text-skyblue"> (NEW - '+result[4].apCount+')</span></div><div><strong>TS - </strong> '+result[3].tgCount+'<span class="text-skyblue"> (NEW - '+result[4].tgCount+')</span></div>');
-								
+			$("#todayApTgRegisCount").html('<div class="span6 mytooltip"  data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[0].apWebCount+'] [Tab - '+result[0].apTabCount+']"><strong>AP </strong> <br/><span>'+result[0].apCount+'</span></div><div class="span6 text-right mytooltip" data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[0].tgWebCount+'] [Tab - '+result[0].tgTabCount+']"><strong>TS </strong><br/><span> '+result[0].tgCount+'</div>');				
+			$("#thisWeekApTgRegisCount").html('<div class="span6 mytooltip" data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[1].apWebCount+'] [Tab - '+result[1].apTabCount+']"><strong>AP </strong> <br/><span >'+result[1].apCount+'</span></div><div class="span6 text-right mytooltip" data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[1].tgWebCount+'] [Tab - '+result[1].tgTabCount+']"><strong>TS </strong><br/> <span >'+result[1].tgCount+'</span></div>');					
+			$("#monthApTgRegisCount").html('<div class="span6 mytooltip" data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[2].apWebCount+'] [Tab - '+result[2].apTabCount+']"><strong>AP </strong> <br/><span>'+result[2].apCount+'</span></div><div class="span6 text-right mytooltip" data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[2].tgWebCount+'] [Tab - '+result[2].tgTabCount+']"><strong>TS </strong><br/> <span >'+result[2].tgCount+'</span></div>');
+			$("#totalApTgRegisCount").html('<div class="mytooltip"  data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[3].apWebCount+'] [Tab - '+result[3].apTabCount+']"><strong>AP - </strong><span >'+result[3].apCount+'</span><span class="text-skyblue"> (NEW - '+result[4].apCount+')</span></div><div class="mytooltip"  data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[3].tgWebCount+'] [Tab - '+result[3].tgTabCount+']"><strong>TS - </strong> <span >'+result[3].tgCount+'</span><span class="text-skyblue"> (NEW - '+result[4].tgCount+')</span></div>');
+			$('.mytooltip').tooltip();					
 	   });
    }
    
@@ -1066,5 +1076,6 @@ $('#membersCount').addClass('animated fadeInX');
 	   setInterval(function(){getDashBoardBasicInfo()},600000);
 	   setInterval(function(){getWorkingMembersInfo()},600000);
 </script>
+
 </body>
 </html>
