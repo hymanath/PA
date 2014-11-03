@@ -26,9 +26,44 @@ public class CadreRegisterInfo implements Serializable{
 	private String percentStr;
 	private String number;
 	private String memberShipNo;
+	private Long apWebCount;
+	private Long tgWebCount;
+	private Long apTabCount;
+	private Long tgTabCount;
 	
 	
-	
+	public Long getApWebCount() {
+		return apWebCount;
+	}
+
+	public void setApWebCount(Long apWebCount) {
+		this.apWebCount = apWebCount;
+	}
+
+	public Long getTgWebCount() {
+		return tgWebCount;
+	}
+
+	public void setTgWebCount(Long tgWebCount) {
+		this.tgWebCount = tgWebCount;
+	}
+
+	public Long getApTabCount() {
+		return apTabCount;
+	}
+
+	public void setApTabCount(Long apTabCount) {
+		this.apTabCount = apTabCount;
+	}
+
+	public Long getTgTabCount() {
+		return tgTabCount;
+	}
+
+	public void setTgTabCount(Long tgTabCount) {
+		this.tgTabCount = tgTabCount;
+	}
+
 	public String getMemberShipNo() {
 		return memberShipNo;
 	}

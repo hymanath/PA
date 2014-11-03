@@ -19,7 +19,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 
 	public List<Object[]> getRegisterCadreInfoBetweenDates(Date fromDate,Date toDate){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append("select count(model.tdpCadreId),model.userAddress.district.districtId from TdpCadre model where model.isDeleted = 'N' and  model.userAddress.state.stateId = 1 and model.enrollmentYear = 2014 ");
+		queryStr.append("select count(model.tdpCadreId),model.userAddress.district.districtId,model.dataSourceType from TdpCadre model where model.isDeleted = 'N' and  model.userAddress.state.stateId = 1 and model.enrollmentYear = 2014 ");
 		
 		if(fromDate != null){
 			queryStr.append(" and date(model.surveyTime) >=:fromDate ");
