@@ -161,14 +161,26 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		CadreRegisterInfo info = new CadreRegisterInfo();
 		Long apCount = 0l;
 		Long tgCount = 0l;
-		
+		Long apWebCount = 0l;
+		Long tgWebCount = 0l;
+		Long apTabCount = 0l;
+		Long tgTabCount = 0l;
 		try{
           List<Object[]> districtWiseCount = tdpCadreDAO.getRegisterCadreInfoBetweenDates(fromDate, toDate);
 		  for(Object[] districtCount:districtWiseCount){
 			if(((Long)districtCount[1]).longValue() > 10l){
 				apCount = apCount+(Long)districtCount[0];
+				if(districtCount[2] != null && districtCount[2].toString().trim().equalsIgnoreCase("WEB"))
+				apWebCount = apWebCount +  (Long)districtCount[0];
+				else
+				apTabCount = apTabCount + 	 (Long)districtCount[0];
+				
 			}else{
 				tgCount = tgCount+(Long)districtCount[0];	
+				if(districtCount[2] != null && districtCount[2].toString().trim().equalsIgnoreCase("WEB"))
+					tgWebCount = tgWebCount +  (Long)districtCount[0];
+					else
+					tgTabCount = tgTabCount + 	 (Long)districtCount[0];
 			}
 		  }
 		}catch(Exception e){
@@ -177,6 +189,10 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		info.setApCount(apCount);
 		info.setTgCount(tgCount);
 		info.setTotalCount(apCount+tgCount);
+		info.setApWebCount(apWebCount);
+		info.setApTabCount(apTabCount);
+		info.setTgWebCount(tgWebCount);
+		info.setTgTabCount(tgTabCount);
 		
 		return info;
 	}
