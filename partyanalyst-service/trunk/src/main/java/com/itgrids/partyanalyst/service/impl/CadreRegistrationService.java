@@ -3657,7 +3657,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						returnVO.setVoterName(names.get(0));
 					}
 				}
-				returnVO.setVillage(userAddress.getPanchayatId() != null ? panchayatDAO.get(userAddress.getPanchayat().getId()).getLocalName() : "");
+				returnVO.setVillage(userAddress.getPanchayatId() != null ? panchayatDAO.get(userAddress.getPanchayatId() ).getLocalName() : "");
 				returnVO.setMandal(userAddress.getTehsil() != null ?  userAddress.getTehsil().getLocalName() :"");
 				returnVO.setConstituency(userAddress.getConstituency() != null ?  userAddress.getConstituency().getLocalName() : "");
 				returnVO.setConstituencyType(userAddress.getConstituency() != null ? userAddress.getConstituency().getAreaType() : "");
