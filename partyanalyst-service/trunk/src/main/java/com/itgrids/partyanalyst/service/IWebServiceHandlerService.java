@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
+import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -64,4 +66,6 @@ public interface IWebServiceHandlerService {
 	public Object checkNFCNumberForVoterId(Long voterId);
 	public Object delinkNFCNumber(String cardNo , Long voterId);
 	public CastVO getAllCastes();
+	
+	public Object getVCadreDetailsBySelection(CadrePrintInputVO input);
 }
