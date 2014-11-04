@@ -8783,6 +8783,12 @@
 			<result name="input">/jsp/loginForm.jsp?src=cadreMemberShipCardDispatcherAction</result>
 		</action>
 		
+		<action name="getRegisteredInfoAction" class="cadreDashBoardAction" method="getRegisteredInfo">
+			<result type="json" name="success">
+				<param name="root">info</param>
+			</result>
+		</action>
+		
 </package>
 
 </struts>      

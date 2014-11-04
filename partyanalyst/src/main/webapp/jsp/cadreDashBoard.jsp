@@ -15,7 +15,37 @@
 	<script type="text/javascript" src="js/icheck/icheck.min.js"></script>
 	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
+	<!-- YUI Dependency files (Start) -->
+	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
+	<script src="js/yahoo/resize-min.js"></script> 
+	<script src="js/yahoo/layout-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
+	<script type="text/javascript" src="js/json/json-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
+	<!-- Skin CSS files resize.css must load before layout.css --> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
+ 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
+	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css">      
 
+	<!-- YUI Dependency files (End) -->
 <style>
 	.show-grid:hover .block-hover-addBtn{display:table-cell; margin-right:-22px; top:-10px;}/*visibility: visible;*/
 	.block-hover-addBtn{display:none; position: relative;}/*visibility: hidden;*/
@@ -237,6 +267,10 @@ table.dataTable tr.odd {
 		<div id="casteGroupDivForConstituency"></div>
 		<div id="casteWiseDivForConstituency"></div></center>
 	</div>
+	
+	<div id="dialogueConstituencyDistCadreDiv" style="display: none;">
+		<center><div id="constituencyDistCadreDiv" class="yui-skin-sam"></div></center>
+	</div>
 <script type="text/javascript">
 function openDialogToTrack(){
     window.open('cadreRegistrationReportAction.action','_blank');
@@ -363,7 +397,7 @@ $('#membersCount').addClass('animated fadeInX');
 				if(assId == 0){
 				  $("#constituencyWiseSelDivId").append('<option value='+result[i].tgCount+'>'+result[i].location+'</option>');
 				}
-				str += '<p><a href="javascript:{}" onclick="getConstituencyWiseAgeGenderCasteCount('+ result[i].tgCount+ ',\''+ result[i].location+ '\')">'+ result[i].location+ ' ('+ result[i].apCount+ '%  - '+ result[i].totalCount+ ' Members)</a></p>';
+				str += '<p><a href="javascript:{}" onclick="getConstituencyWiseAgeGenderCasteCount('+ result[i].tgCount+ ',\''+ result[i].location+ '\')">'+ result[i].location+ ' ('+ result[i].apCount+ '%  - '+ result[i].totalCount+ ' Members)</a>&nbsp;&nbsp;<i style="cursor:pointer;margin-top: 5px;" onclick="getCadreDetails('+ result[i].tgCount+ ',\'constituency\')"  title="Click here to view details" class=" icon-eye-open"></i></p>';
 				if(result[i].apCount <= 20){
 				   str+='<div class="progress progress-danger">';
 				}else if(result[i].apCount > 20 && result[i].apCount <= 40){
@@ -414,7 +448,7 @@ $('#membersCount').addClass('animated fadeInX');
 			    if(distId == 0){
 				  $("#districtWiseSelDivId").append('<option value='+result[i].tgCount+'>'+result[i].location+'</option>');
 				}
-				str += '<p><a href="javascript:{}" onclick="getDistrictWiseAgeGenderCasteCount('+ result[i].tgCount+ ',\''+ result[i].location+ '\')">'+ result[i].location+ ' ('+ result[i].apCount+ '%  - '+ result[i].totalCount+ ' Members)</a></p>';
+				str += '<p><a href="javascript:{}" onclick="getDistrictWiseAgeGenderCasteCount('+ result[i].tgCount+ ',\''+ result[i].location+ '\')">'+ result[i].location+ ' ('+ result[i].apCount+ '%  - '+ result[i].totalCount+ ' Members)</a>&nbsp;&nbsp;<i style="cursor:pointer;margin-top: 5px;" onclick="getCadreDetails('+ result[i].tgCount+ ',\'district\')" title="Click here to view details" class=" icon-eye-open"></i></p>';
 				if(result[i].apCount <= 20){
 				   str+='<div class="progress progress-danger">';
 				}else if(result[i].apCount > 20 && result[i].apCount <= 40){
@@ -1090,8 +1124,58 @@ $('#membersCount').addClass('animated fadeInX');
 			
 			getRecentlyRegisteredCadresInfo(strIndex,false);
 			
-		});
-	
+		});		
+		function getCadreDetails(locationId,type){
+		  $('#dialogueConstituencyDistCadreDiv').dialog(
+			{
+				width : 880,
+				height:550,
+				title : " Cadre Info"
+			});
+          YAHOO.widget.DataTable.image = function(elLiner, oRecord, oColumn, oData){
+			var str='';
+			var name = oData;
+			var image = oRecord.getData("memberShipNo");
+			str +='<img style="width:80px;height:80px;cursor:pointer;" src="'+image+'" onerror="setDefaultImage(this);" />';
+			elLiner.innerHTML=str;
+		};
+	     var newsColumns = [
+		           {key:"PHOTO",label:"PHOTO",formatter:YAHOO.widget.DataTable.image},
+				   {key:"name" ,label:"NAME"},
+				   {key:"area", label:"RELATIVE"},
+				   {key:"location", label:"CONSTITUENCY"},
+				   {key:"number", label:"AGE"},
+				   {key:"date", label:"SOURCE"}
+		   ];
+		var newsDataSource = new YAHOO.util.DataSource("getRegisteredInfoAction.action?&locationId="+locationId+"&locationType="+type+"&maxIndex=20&");
+		newsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+		newsDataSource.responseSchema = {
+		resultsList: "infoList",
+		fields: ["number","name","area","location","date","memberShipNo"],
+		metaFields: {
+		totalRecords: "totalCount"// Access to value in the server response
+		 },
+	  };
+
+	  var myConfigs = {
+		initialRequest: "&sort=name&dir=asc&startIndex=0&results=20", // Initial request for first page of data
+		dynamicData: true, // Enables dynamic server-driven data
+		sortedBy : {key:"name", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+	    paginator : new YAHOO.widget.Paginator({ 
+					rowsPerPage    : 20 
+					})  // Enables pagination
+	};
+
+	var newsDataTable = new YAHOO.widget.DataTable("constituencyDistCadreDiv",
+	newsColumns, newsDataSource, myConfigs);
+
+	newsDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
+		oPayload.totalRecords = oResponse.meta.totalRecords;
+		return oPayload;
+	}
+		
+		
+		}
        getWorkStartedConstituencyCount();
 	   getDistrictWiseCompletedPercentage(0,1);
 	   getAssemblyWiseCompletedPercentage(0,1);
