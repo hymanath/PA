@@ -25,6 +25,8 @@ public class CadrePrintVO implements Serializable{
 	private Long voterId;
 	private String voterCardNo;
 	private String image;
+	private String imgPath1;
+	private String imgPath2;
 	private String voterImgPath;
 	private String cadreImgPath;
 	private String newImgPath;
@@ -204,6 +206,19 @@ public class CadrePrintVO implements Serializable{
 	public void setPhotoType(String photoType) {
 		this.photoType = photoType;
 	}
+	public String getImgPath1() {
+		return imgPath1;
+	}
+	public void setImgPath1(String imgPath1) {
+		this.imgPath1 = imgPath1;
+	}
+	public String getImgPath2() {
+		return imgPath2;
+	}
+	public void setImgPath2(String imgPath2) {
+		this.imgPath2 = imgPath2;
+	}
+	
 	public String getCadreImgPath() {
 		return cadreImgPath;
 	}
