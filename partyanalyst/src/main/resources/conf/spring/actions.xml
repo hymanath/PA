@@ -1489,6 +1489,7 @@
     
     <bean id="cadreSurveyTransactionAction" class="com.itgrids.partyanalyst.web.action.CadreSurveyTransactionAction" singleton="false">	  
     	<property name="cadreSurveyTransactionService" ref="cadreSurveyTransactionService" />
+    	<property name="entitlementsHelper" ref="entitlementsHelper" />    	
     </bean>
 	
 </beans>	
