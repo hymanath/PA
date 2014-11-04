@@ -18,6 +18,8 @@ import com.itgrids.partyanalyst.dao.ICadreTxnUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreTransactionVO;
 import com.itgrids.partyanalyst.dto.ReconciliationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -49,10 +51,18 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 	private ICadreOtpDetailsDAO cadreOtpDetailsDAO;
 	
 	private ISmsService smsCountrySmsService;
+	
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;	
 	
 	private IDistrictDAO districtDAO;
 	
+	private ITdpCadreDAO tdpCadreDAO;
+	
+	
+	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
+		this.tdpCadreDAO = tdpCadreDAO;
+	}
+
 	public void setDistrictDAO(IDistrictDAO districtDAO) {
 		this.districtDAO = districtDAO;
 	}
@@ -905,4 +915,49 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 		return returnVo;
 	}
 
+	public CadreTransactionVO getTdpCadreDetailsBySearchCriteria( String refNo, String mobileNo)
+	{
+ 		CadreTransactionVO returnVO = new CadreTransactionVO();
+		try {
+			List<Object[]> tdpCadreInfoList = tdpCadreDAO.getTdpCadreDetailsBySearchCriteria(refNo,mobileNo);
+			List<CadreRegistrationVO> tdpCadreList = null;
+			if(tdpCadreInfoList!=null && tdpCadreInfoList.size()>0)
+			{
+				tdpCadreList = new ArrayList<CadreRegistrationVO>();
+				
+				for (Object[] tdpCadre : tdpCadreInfoList)
+				{
+					CadreRegistrationVO cadreRegistrationVO= new  CadreRegistrationVO();
+					
+					cadreRegistrationVO.setEnrollmentNumber(tdpCadre[10] != null ?Long.valueOf(tdpCadre[10].toString().trim()):0L);
+					
+					cadreRegistrationVO.setPreviousEnrollmentNumber(tdpCadre[0] != null ?tdpCadre[0].toString():"");					
+					cadreRegistrationVO.setRefNo(tdpCadre[1] != null ?tdpCadre[1].toString():" -- ");	
+					
+					String firstName = tdpCadre[2] != null ? tdpCadre[2].toString().trim() :"";
+					String lastName = tdpCadre[3] != null ? tdpCadre[3].toString().trim():"" ;
+					
+					cadreRegistrationVO.setVoterName(firstName+" "+lastName);
+					
+					cadreRegistrationVO.setRelativeName(tdpCadre[4] != null ?tdpCadre[4].toString():" -- ");
+					cadreRegistrationVO.setGender(tdpCadre[5] != null ?tdpCadre[5].toString():" -- ");
+					cadreRegistrationVO.setConstituencyId(tdpCadre[6] != null ?tdpCadre[6].toString():" -- ");
+					cadreRegistrationVO.setMobileNumber(tdpCadre[7] != null ?tdpCadre[7].toString():" -- ");
+					cadreRegistrationVO.setUploadImageFileName(tdpCadre[8] != null ?tdpCadre[8].toString():" -- ");					
+					cadreRegistrationVO.setCasteName(tdpCadre[9] != null ?tdpCadre[9].toString():" Pending "); //dispatch status
+					
+					tdpCadreList.add(cadreRegistrationVO);
+				}
+			
+				if(tdpCadreList != null && tdpCadreList.size()>0)
+				{
+					returnVO.setCadreRegistrationVOList(tdpCadreList);
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error(" exception occured at getTdpCadreDetailsBySearchCriteria() in CadreSurveyTransactionService service class. ", e);
+		}
+		return returnVO;
+	}
 }
