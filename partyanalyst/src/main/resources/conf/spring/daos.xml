@@ -1709,5 +1709,9 @@
 <bean id="appDbUpdateDAO" class="com.itgrids.partyanalyst.dao.hibernate.AppDbUpdateDAO" >
 	<property name="sessionFactory" ref="sessionFactory" />
 </bean>
+
+<bean id="loginDetailsByTabDAO" class="com.itgrids.partyanalyst.dao.hibernate.LoginDetailsByTabDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
 	<!--  end -->
 </beans>		
