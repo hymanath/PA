@@ -2029,7 +2029,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 
 	public List<Object[]> getAllDetails()
 	{
-		Query query = getSession().createQuery("select distinct model.constituency.constituencyId,model.constituency.name,model.tehsil.tehsilId,model.tehsil.tehsilName,model.panchayat.panchayatId,model.panchayat.panchayatName from Booth model where model.constituency.state.stateId = 1 and model.publicationDate.publicationDateId = 11 and model.refBooth is null and model.panchayat is not null and model.constituency.district.districtId >= 10 order by model.constituency.constituencyId");
+		Query query = getSession().createQuery("select distinct model.constituency.constituencyId,model.constituency.name,model.tehsil.tehsilId,model.tehsil.tehsilName,model.panchayat.panchayatId,model.panchayat.panchayatName from Booth model where model.constituency.state.stateId = 1 and model.publicationDate.publicationDateId = 11 and model.refBooth is null and model.panchayat is not null  and model.constituency.areaType='URBAN' order by model.constituency.constituencyId");
 		
 		return query.list();
 	}
@@ -2202,5 +2202,12 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("publicationId", publicationId);
 		return query.list();
+	}
+	
+	
+	public List<Object[]> getAllDetails1()
+	{
+	Query query = getSession().createQuery("select distinct model.constituency.constituencyId,model.constituency.name,model.localBody.localElectionBodyId, model.localBody.name, model.boothId, model.partNo from Booth model where model.constituency.state.stateId = 1 and model.publicationDate.publicationDateId = 11 and model.refBooth is null and  model.localBody is not null and model.constituency.areaType='URBAN' order by model.constituency.constituencyId");
+	return query.list();
 	}
 }

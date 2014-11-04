@@ -3640,7 +3640,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				returnVO.setConstituencyName(userAddress.getConstituency() != null ?  StringEscapeUtils.unescapeJava(userAddress.getConstituency().getLocalName() ) + StringEscapeUtils.unescapeJava("\u0C28\u0C3F") + "||" : "");
 				returnVO.setDistrictName(userAddress.getDistrict() != null ?  StringEscapeUtils.unescapeJava(userAddress.getDistrict().getLocalName() ) + StringEscapeUtils.unescapeJava("\u0C1C\u0C3F\u0C32\u0C4D\u0C32\u0C3E"):"");
 				returnVO.setFirstCode(voterIdDetails.get(0)[0] != null ? voterIdDetails.get(0)[0].toString() : "");
-				returnVO.setVoterName(voterIdDetails.get(0)[2] != null ? voterIdDetails.get(0)[2].toString() : "");
+				returnVO.setVoterName(userAddress.getPanchayatId() != null ? panchayatDAO.get(userAddress.getPanchayatId()).getPanchayatName() : "");
 				returnVO.setRelativeName(voterIdDetails.get(0)[3] != null ? voterIdDetails.get(0)[3].toString() : "");
 				returnVO.setVoterId(voterIdDetails.get(0)[4] != null ? (Long)voterIdDetails.get(0)[4] : 0l);
 				returnVO.setVoterCardNo(voterIdDetails.get(0)[5] != null ? voterIdDetails.get(0)[5].toString() : "");
@@ -3658,7 +3658,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						returnVO.setVoterName(names.get(0));
 					}
 				}
-				returnVO.setVillage(userAddress.getPanchayatId() != null ? panchayatDAO.get(userAddress.getPanchayatId() ).getLocalName() : "");
+				returnVO.setVillage(userAddress.getPanchayatId() != null ? panchayatDAO.get(userAddress.getPanchayatId()).getLocalName() : "");
 				returnVO.setMandal(userAddress.getTehsil() != null ?  userAddress.getTehsil().getLocalName() :"");
 				returnVO.setConstituency(userAddress.getConstituency() != null ?  userAddress.getConstituency().getLocalName() : "");
 				returnVO.setConstituencyType(userAddress.getConstituency() != null ? userAddress.getConstituency().getAreaType() : "");

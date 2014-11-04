@@ -113,7 +113,11 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getCadreDataByYear(Long constituencyId);
 	public List<String> getExistingCadreMemberDetails(String preEnrollmentNo);
 	public List<Object[]> getDistrictsByStateWiseAction(Long stateId);
-	public List<Object[]> getConstsByStateWiseAction(Long stateId);
+	public List<Object[]> getConstsByStateWiseAction(Long stateId);	
+	
+	//DAO methods to get the Survey Working Members details based on input datetime
+	public List<Object[]> getLastHoursWorkingMembersDetails(Date presentDate, Date lastHours);
+	public List<Object[]> getWorkingMembersDetails(Date date);
 	public List<Object[]> getCadreDetailsForSelection(CadrePrintInputVO input);
 	public List<Object[]> getRecentlyRegisteredCadres(Integer startIndex,Integer maxIndex);
 	

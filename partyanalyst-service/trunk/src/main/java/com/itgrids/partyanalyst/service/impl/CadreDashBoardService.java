@@ -466,8 +466,8 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		
 		return returnList;
 	}
-	/*
-	public CadreRegisterInfo getWorkingMembersInfo(){
+
+	/*public CadreRegisterInfo getWorkingMembersInfo(){
 		CadreRegisterInfo info = new CadreRegisterInfo();
 		try{
 			Date date = dateService.getCurrentDateAndTime();
@@ -495,8 +495,8 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		}
 		
 		return info;
-	}
-	*/
+	}*/
+	
 	public CadreRegisterInfo getWorkingMembersInfo(String hours)
 	{
 		CadreRegisterInfo info = new CadreRegisterInfo();
@@ -1558,4 +1558,67 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		}
 		return returnVo;
 	}
+	
+	/**
+	 * Service Method will call DAO to fetch Survey Working Member details
+	 * @param hours
+	 * @return
+	 */
+	public CadreRegisterInfo getWorkingMembersDetails(String hours)
+	{
+		CadreRegisterInfo info = new CadreRegisterInfo();
+		List<CadreRegisterInfo> infoLst = new ArrayList<CadreRegisterInfo>();
+		List<Object[]> resultsLst = null;
+		try{
+			Date date = dateService.getCurrentDateAndTime();
+			
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(date);
+			
+			Date hourBack = null;
+			Long count  = 0L;
+			
+			if(hours != null && hours.trim().length()>0 && !hours.equalsIgnoreCase("0"))
+			{
+				int hourCount = Integer.valueOf(hours);						
+				cal.add(Calendar.HOUR, -hourCount);
+				hourBack = cal.getTime();
+				
+				//count = tdpCadreDAO.getLastHoursWorkingMemberCount(date,hourBack);
+				resultsLst = tdpCadreDAO.getLastHoursWorkingMembersDetails(date, hourBack);
+			}
+			else
+			{
+				//count = tdpCadreDAO.getWorkingMembersCount(date);
+				resultsLst = tdpCadreDAO.getWorkingMembersDetails(date);
+			}
+			
+			if(resultsLst != null && resultsLst.size() > 0){
+				count = new Long(resultsLst.size());
+				
+				for(Object[] res:resultsLst){
+					
+					CadreRegisterInfo sInfo = new CadreRegisterInfo();
+					sInfo.setId((Long)res[0]);
+					sInfo.setName(res[2].toString());
+					//latitude
+					sInfo.setArea(res[3].toString());
+					//longitude
+					sInfo.setLocation(res[4].toString());					
+					infoLst.add(sInfo);
+				}
+			}
+			
+			info.setTotalCount(count);
+			info.setAllDetailsList(infoLst);
+			
+
+		}catch(Exception e){
+			LOG.error("Exception rised in getWorkingMembersInfo",e);
+		}
+		
+		return info;
+	}
+
+	
 }
