@@ -133,10 +133,16 @@
 			String regTypeName = regTypeCombo.getSelectionModel().getSelectedItem().toString();			
 			inputVO.setRegType(regTypeName);
 			
+			if(districtCombo.getSelectionModel().getSelectedItem() !=  null){
+				String districtName = districtCombo.getSelectionModel().getSelectedItem().toString();			
+				Long districtId = getMatchedName(districtsList, districtName);
+				inputVO.setDistrictId(districtId);
+			}
+			
 			if(constCombo.getSelectionModel().getSelectedItem() !=  null){
-			String constName = constCombo.getSelectionModel().getSelectedItem().toString();			
-			Long constId = getMatchedName(constiList, constName);
-			inputVO.setConstituencyId(constId);
+				String constName = constCombo.getSelectionModel().getSelectedItem().toString();			
+				Long constId = getMatchedName(constiList, constName);
+				inputVO.setConstituencyId(constId);
 			}
 			if(mandalCombo.getSelectionModel().getSelectedItem() != null){			
 			String mandalName = mandalCombo.getSelectionModel().getSelectedItem().toString();			
