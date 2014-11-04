@@ -58,5 +58,8 @@ public interface ICadreDashBoardService {
 	public AppDbDataVO getAllVersionsOfAnApp(String appName,Double currentVerson,boolean includeTest);
 	
 	public AppDbDataVO getAllUpdatesByVersion(String appName,Double version);
+
 	public  List<CadreRegisterInfo> getRecentlyRegisteredCadresInfo(Integer startIndex,Integer maxIndex);
+	
+	public CadreRegisterInfo getWorkingMembersDetails(String hours);
 }

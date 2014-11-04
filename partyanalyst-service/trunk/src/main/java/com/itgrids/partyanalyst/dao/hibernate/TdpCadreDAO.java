@@ -955,7 +955,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		
 		StringBuilder queryStr = new StringBuilder();
 
-		queryStr.append("select model.memberShipNo , model.voterId,model.firstname,model.relativename,model.voter.voterId,model.voter.voterIDCardNo,model.refNo,model.cardNumber,model.image,model.photoType from TdpCadre model where model.isDeleted = 'N' " );
+		queryStr.append("select model.memberShipNo , model.voterId,model.firstname,model.relativename,model.voter.voterId,model.voter.voterIDCardNo,model.refNo,model.cardNumber,model.image from TdpCadre model where model.isDeleted = 'N' " );
 				if (type.equalsIgnoreCase("panchayat")){
 					queryStr.append(" and model.userAddress.panchayat.panchayatId = :panchayatId");
 				}else if(type.equalsIgnoreCase("booth")){
@@ -1083,7 +1083,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 				if(input.getRegType() != null){
 					queryStr.append(" and model.dataSourceType = :dataSourceType ");
 				}
-				queryStr.append(" order by model.tdpCadreId desc");	
+				queryStr.append(" and model.enrollmentYear = 2014   and model.cardNumber is null order by model.tdpCadreId desc");	
 				
 		Query query = getSession().createQuery(queryStr.toString());
 		if(input.getDistrictId()!=null){
@@ -1108,6 +1108,32 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 			query.setParameter("dataSourceType", input.getRegType());
 		}
 		
+		query.setFirstResult(0);
+		query.setMaxResults(100);
 		return query.list();
 	}
+	/**
+	 * DAO Method will fetch Survey Member Details by input Datetime
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getLastHoursWorkingMembersDetails(Date presentDate, Date lastHours) {
+		
+		String resultQuery = "select model.tdpCadreId, model.insertedBy.cadreSurveyUserId, model.insertedBy.userName, model.latitude, model.longititude from TdpCadre model right join (select newmodel.insertedBy.cadreSurveyUserId crtUser, max(newmodel.surveyTime) survTime from TdpCadre newmodel where newmodel.enrollmentYear = 2014 and newmodel.isDeleted = 'N' and newmodel.dataSourceType = 'TAB' and (newmodel.surveyTime >= :lastHours and newmodel.surveyTime <= :presentDate) and newmodel.insertedBy.cadreSurveyUserId is not null group by newmodel.insertedBy.cadreSurveyUserId) surRes on model.insertedBy.cadreSurveyUserId = crtUser and model.surveyTime = survTime";
+		Query query = getSession().createQuery(resultQuery);
+		query.setParameter("presentDate", presentDate);
+		query.setParameter("lastHours", lastHours);
+		
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getWorkingMembersDetails(Date date){
+		
+		String resultQuery = "select model.tdpCadreId, model.insertedBy.cadreSurveyUserId, model.insertedBy.userName, model.latitude, model.longititude from TdpCadre model right join (select newmodel.insertedBy.cadreSurveyUserId crtUser, max(newmodel.surveyTime) survTime from TdpCadre newmodel where newmodel.enrollmentYear = 2014 and newmodel.isDeleted = 'N' and newmodel.dataSourceType = 'TAB' and date(model.surveyTime) = :date and newmodel.insertedBy.cadreSurveyUserId is not null group by newmodel.insertedBy.cadreSurveyUserId) surRes on model.insertedBy.cadreSurveyUserId = crtUser and model.surveyTime = survTime";
+		Query query = getSession().createQuery(resultQuery);
+		query.setDate("date", date);
+		
+		return query.list();
+	}
+	
 }
