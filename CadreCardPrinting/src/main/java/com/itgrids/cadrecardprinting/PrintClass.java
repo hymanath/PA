@@ -66,7 +66,15 @@ public class PrintClass {
 		            Graphics g1 = bufferedImage.getGraphics();
 		            g1.setFont(telegraficoFont);
 		            g1.setColor(Color.BLACK);
-		            g1.drawString(cadrePrintVO.getMandal() + " "+StringEscapeUtils.unescapeJava("\u0C2E\u0C41\u0C28\u0C4D\u0C38\u0C3F\u0C2A\u0C3E\u0C32\u0C3F\u0C1F\u0C40"), 290, 260);
+		            if(cadrePrintVO.getVillage() != null)
+		            {
+		            	g1.drawString(cadrePrintVO.getVillage()  +" "+ StringEscapeUtils.unescapeJava("\u0C17\u0C4D\u0C30\u0C3E\u0C2E\u0C02")+" "+  cadrePrintVO.getMandal() + ""+ StringEscapeUtils.unescapeJava("\u0C2E\u0C02\u0C21\u0C32\u0C02")+"   ", 290, 260);
+		            }
+		            else
+		            {
+		            	  g1.drawString(cadrePrintVO.getMandal() + " "+StringEscapeUtils.unescapeJava("\u0C2E\u0C41\u0C28\u0C4D\u0C38\u0C3F\u0C2A\u0C3E\u0C32\u0C3F\u0C1F\u0C40"), 290, 260);
+		            }
+		          
 		            g1.dispose();
 		            Graphics g2 = bufferedImage.getGraphics();
 		            telegraficoFont =  f1.deriveFont(Font.BOLD, 35);
@@ -140,8 +148,25 @@ public class PrintClass {
 	  
 	    private static BufferedImage resizeImage(BufferedImage originalImage, int type)
 	    {
-	        BufferedImage croppedImage = null;
+	      //  BufferedImage croppedImage = null;
+	        
+	        
+	    	BufferedImage resizedImage = null;
 	        try {
+	        	 resizedImage = new BufferedImage(155, 187, type);
+	        	Graphics2D g = resizedImage.createGraphics();
+		    	g.drawImage(originalImage, 0, 0, 155, 187, null);
+		    	g.dispose();
+			} catch (Exception e) {
+				resizedImage = new BufferedImage(155, 187, type);
+	                Graphics2D g = resizedImage.createGraphics();
+	                g.drawImage(originalImage, 0, 0, 160, 200, null);
+	                g.dispose();
+			}
+	    	
+	     
+	    	return resizedImage;
+	       /* try {
 	             croppedImage = originalImage.getSubimage( 0, 0, 155, 187);
 	        } catch (Exception e) {
 	                croppedImage = new BufferedImage(155, 187, type);
@@ -152,7 +177,7 @@ public class PrintClass {
 	      
 	       
 	       
-	        return croppedImage;
+	        return croppedImage;*/
 
 	       // return resizedImage;
 	    }

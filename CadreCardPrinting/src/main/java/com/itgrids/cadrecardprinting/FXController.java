@@ -404,7 +404,7 @@
 			  						        Image image1 = new Image(rb1.getUserData().toString());
 			  						        ImageView imageView1 =  new ImageView();  
 			  						        imageView1.setImage(image1);
-			  						        grd_pan.add(imageView, 1, 3);
+			  						        grd_pan.add(imageView1, 1, 3);
 	  						               
 			  						        RadioButton rb3 = new RadioButton("");
 			  						        rb3.setToggleGroup(group);
@@ -597,6 +597,14 @@
 					TypeToken<CadrePrintVO> token = new TypeToken<CadrePrintVO>(){};
 					
 					CadrePrintVO vo = gson.fromJson(obj.toString(), token.getType());
+					if(selectedImgPath != null)
+					{
+						vo.setVoterImgPath(selectedImgPath);
+					}
+					else
+					{
+						vo.setVoterImgPath(item.getImage());
+					}
 					printClass.imagePrinting(vo);
 				}
 			}
