@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CadreTransactionVO {
 
 	private Long id;
@@ -22,6 +25,17 @@ public class CadreTransactionVO {
 	private String message;
 	private String otpNo;
 	private String refNo;
+	
+	private List<CadreRegistrationVO> cadreRegistrationVOList = new ArrayList<CadreRegistrationVO>();
+	
+				
+	public List<CadreRegistrationVO> getCadreRegistrationVOList() {
+		return cadreRegistrationVOList;
+	}
+	public void setCadreRegistrationVOList(
+			List<CadreRegistrationVO> cadreRegistrationVOList) {
+		this.cadreRegistrationVOList = cadreRegistrationVOList;
+	}
 	public Long getId() {
 		return id;
 	}
