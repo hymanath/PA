@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
@@ -701,6 +702,29 @@ public class WebServiceHandler {
 			//return webServiceHandlerService.requestForAuthorisationAccesskey(uniqueCode);
 			Object object = null;
 			object= webServiceHandlerService.getVCadreDataByPanchayatId1(Long.valueOf(panchayatId),type);
+			return object;
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in requestForAuthorisationForAccessKey() Method, Exception is ",e);
+			return "Fail";
+		}
+	}
+	
+	@POST
+	@Path("/getVCadreDataBySelection")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object getVCadreDataBySelection(CadrePrintInputVO inputVO)
+	{
+		
+		try{
+			
+			System.out.println(inputVO);
+			//return webServiceHandlerService.requestForAuthorisationAccesskey(uniqueCode);
+			Object object = null;
+			  object = webServiceHandlerService.getVCadreDetailsBySelection(inputVO);
+			//object= webServiceHandlerService.getVCadreDataByPanchayatId1(Long.valueOf(panchayatId),type);
 			return object;
 		}
 		catch(Exception e)
