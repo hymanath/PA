@@ -154,7 +154,7 @@
 				
 			}
 			}
-			Object obj = client.getCadredetailsBySelection(inputVO);
+			final Object obj = client.getCadredetailsBySelection(inputVO);
 			
 			//System.out.println(id);
 			
@@ -177,7 +177,9 @@
 		
 			
 			if(obj != null){
-			
+				new Thread() {
+            	    @Override
+            	    public void run() {
 			try {
 				Gson gson = new Gson();
 				TypeToken<List<CadrePrintVO>> token = new TypeToken<List<CadrePrintVO>>(){};				
@@ -497,8 +499,15 @@
 		                    return cell;
 		            }		            
 		        }); */
+			 Platform.runLater(new Runnable() {
+                 @Override
+                 public void run() {
+                	 tableView.setItems(data);
+                 }
+               });
+           }
+       }.start();	
 			
-			tableView.setItems(data);
 	
 			searchId.setLayoutX(210);
 			searchId.setLayoutY(30);
