@@ -6,9 +6,8 @@ import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
-import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
-import com.itgrids.partyanalyst.model.Cadre;
+import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -1020,6 +1019,28 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		return query.list();
 	}
 	
+	public List<Object[]> getTdpCadreDetailsBySearchCriteria(String refNo, String mobileNo)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select distinct model.memberShipNo, model.refNo, model.firstname, model.lastname, model.relativename,  ");
+		queryStr.append(" model.gender, model.userAddress.constituency.name, model.mobileNo,model.image, model.dispatchStatus,model.tdpCadreId ");
+		queryStr.append(" from TdpCadre model where model.isDeleted = 'N' ");
+		
+		if(mobileNo != null && mobileNo.trim().length()>0)
+		{
+			queryStr.append(" and model.mobileNo like '%"+mobileNo+"%' ");
+		}
+		if(refNo != null && refNo.trim().length()>0)
+		{
+			queryStr.append(" and model.refNo like '%"+refNo+"%' ");
+		}
+		queryStr.append("order by model.firstname ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+				
+		return query.list();
+	}
 	
 	
 	public List<String> getExistingCadreMemberDetails(String preEnrollmentNo)
