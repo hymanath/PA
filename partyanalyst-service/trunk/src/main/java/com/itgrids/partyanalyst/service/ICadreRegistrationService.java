@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
@@ -91,4 +92,6 @@ public interface ICadreRegistrationService {
 	public List<Long> getVoterIdByVoterCard(String voterCardId);
 	public List<CadreRegisterInfo> getDistrictsByStateWiseAction(Long stateId);
 	public List<CadreRegisterInfo> getConstsByStateWiseAction(Long stateId);
+	
+	public List<CadrePrintVO> getSelectedLevelCadreDetailsBySelection(CadrePrintInputVO input);
 }
