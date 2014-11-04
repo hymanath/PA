@@ -22,4 +22,7 @@ public interface ICadreSurveyTransactionService {
 	public String saveReconciliationData(ReconciliationVO inputVo);
 //	public String saveReconsilationFailedDetails(ReconciliationFailureVO inputVo);
 	public SurveyTransactionReportVO getBasicTransactionDetails();
+	
+	public CadreTransactionVO getTdpCadreDetailsBySearchCriteria(String refNo, String mobileNo);
+	
 }
