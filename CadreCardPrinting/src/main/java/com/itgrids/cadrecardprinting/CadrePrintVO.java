@@ -27,7 +27,8 @@ public class CadrePrintVO implements Serializable{
 	private String mandalEng;
 	private String villageEng;
 	private String printStatus = "Pending";
-	
+	private String imgPath1;
+	private String imgPath2;
 	private SimpleStringProperty nfcNumber = new SimpleStringProperty("");
 	private String voterId;
 	private String voterCardNo;
@@ -237,6 +238,18 @@ public class CadrePrintVO implements Serializable{
 	}
 	public void setPhotoType(String photoType) {
 		this.photoType = photoType;
+	}
+	public String getImgPath1() {
+		return imgPath1;
+	}
+	public void setImgPath1(String imgPath1) {
+		this.imgPath1 = imgPath1;
+	}
+	public String getImgPath2() {
+		return imgPath2;
+	}
+	public void setImgPath2(String imgPath2) {
+		this.imgPath2 = imgPath2;
 	}
 	
 	

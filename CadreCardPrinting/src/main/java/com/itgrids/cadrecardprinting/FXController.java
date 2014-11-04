@@ -15,7 +15,6 @@
 		import javafx.fxml.FXML;
 		import javafx.fxml.Initializable;
 		import javafx.geometry.Pos;
-
 		import javafx.scene.Scene;
 		import javafx.scene.control.Button;
 		import javafx.scene.control.CheckBox;
@@ -23,11 +22,10 @@
 		import javafx.scene.control.ComboBox;
 		import javafx.scene.control.ContentDisplay;
 		import javafx.scene.control.ProgressBar;
-import javafx.scene.control.RadioButton;
+		import javafx.scene.control.RadioButton;
 		import javafx.scene.control.SelectionMode;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleGroup;
-
+		import javafx.scene.control.Toggle;
+		import javafx.scene.control.ToggleGroup;
 		import javafx.scene.control.TableCell;
 		import javafx.scene.control.TableColumn;
 		import javafx.scene.control.TableView;
@@ -37,12 +35,11 @@ import javafx.scene.control.ToggleGroup;
 		import javafx.scene.image.ImageView;
 		import javafx.scene.layout.AnchorPane;
 		import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 		import javafx.stage.Modality;
 		import javafx.stage.Stage;
 		import javafx.util.Callback;	
 		import com.google.gson.*;
-import com.google.gson.reflect.*;
+		import com.google.gson.reflect.*;
 		
 		
 		public class FXController implements Initializable{
@@ -92,18 +89,20 @@ import com.google.gson.reflect.*;
 		private ComboBox panchayatCombo;
 		@FXML
 		private ComboBox districtCombo;
-		TextField searchId = new TextField();
 		@FXML
 		private ComboBox regTypeCombo;
 		@FXML
-		private ProgressBar progressBar;
-		
+		private ProgressBar progressBar;		
 		@FXML
 		private Label loadingId;
 		
+		TextField searchId = new TextField();
+			
 		CadrePrintVO membershipValue = null;
 		
 		ObservableList<CadrePrintVO> data = null;
+		
+		String selectedImgPath ;
 		
 		@SuppressWarnings("unchecked")
 		@FXML private void handleButtonAction() {
@@ -153,6 +152,8 @@ import com.google.gson.reflect.*;
 				
 			}
 			}
+			Object obj = client.getCadredetailsBySelection(inputVO);
+			
 			//System.out.println(id);
 			
 			
@@ -169,10 +170,10 @@ import com.google.gson.reflect.*;
 				id = getMatchedName(boothsList, name);
 				type ="booth";				
 			}
-			System.out.println(id);
-			//Object obj = client.getCadredetailsBySelection(id,"panchayat");
-*/			
-			Object obj = client.getCadredetailsBySelection(inputVO);
+			System.out.println(id);*/
+			//Object obj = client.getCadredetailsByPanchayat(3347l,"panchayat");
+		
+			
 			if(obj != null){
 			
 			try {
@@ -295,7 +296,7 @@ import com.google.gson.reflect.*;
 			
 			typeId.setCellValueFactory(new PropertyValueFactory<CadrePrintVO, String>("photoType"));
 			
-			final String mamberPath = "http://mytdp.com/images/cadre_images/";
+			//final String mamberPath = "http://mytdp.com/images/cadre_images/";
 			imageId.setCellValueFactory(new PropertyValueFactory<CadrePrintVO,String>("image"));
 			imageId.setCellFactory(new Callback<TableColumn<CadrePrintVO,String>,TableCell<CadrePrintVO,String>>(){        
 		           
@@ -311,7 +312,11 @@ import com.google.gson.reflect.*;
 		        		            else {	                            
 		                              // Image folderIcon = new Image(SampleController.class.getResource("img").toString()+"/"+item); 
 		                               Image folderIcon = new Image(item);
-		                               setGraphic(new ImageView(folderIcon));
+		                               ImageView image = new ImageView(folderIcon);
+		                               image.setFitHeight(50);
+		                               image.setFitWidth(50);
+		                               setGraphic(image);
+
 		                        }
 		                	 }
 		                    };
@@ -342,50 +347,63 @@ import com.google.gson.reflect.*;
 			                btn.setOnAction(new EventHandler<ActionEvent>() {
 			                    
 			                	public void handle(ActionEvent event) {
-			                		final String mamberPath = "http://mytdp.com/images/cadre_images/";
+			                		//final String mamberPath = "http://mytdp.com/images/cadre_images/";
 			                		
 			                		final Stage dialogStage = new Stage();
 			                		GridPane grd_pan = new GridPane();
 			            			grd_pan.setAlignment(Pos.CENTER);
 			            			grd_pan.setHgap(10);
 			            			grd_pan.setVgap(10);//padding
-			            			Scene scene =new Scene(grd_pan,200,150);
+			            			Scene scene =new Scene(grd_pan,400,300);
 			            			dialogStage.setScene(scene);
 			            			
 			                		for(int i=0;i<data.size();i++){
 			  							    CadrePrintVO cellData = data.get(i);	
 			  							   if(cellData.getVoterId().equalsIgnoreCase(item.toString())){
-			  								   
+			  							    ImageView imageView = new ImageView();  
 			  								  
 			  						        final ToggleGroup group = new ToggleGroup();
-
-			  						        RadioButton rb1 = new RadioButton("Cadre Image");
-			  						        rb1.setToggleGroup(group);
-			  						        rb1.setUserData(mamberPath+cellData.getImage());
-			  						        grd_pan.add(rb1, 0, 2);		
-			  						        RadioButton rb2 = new RadioButton("New Image");
-			  						        rb2.setToggleGroup(group);
-			  						        rb2.setUserData("New");
-			  						        RadioButton rb3 = new RadioButton("Voter Image");
-			  						        rb3.setToggleGroup(group);
-			  						        rb3.setUserData(cellData.getVoterImgPath());
-			  						        grd_pan.add(rb3, 0, 3);		
+			  						        Label heading = new Label();
+				  						    heading.setText("Select the Image to Change");
+				  						    grd_pan.add(heading, 0, 1);	
 			  						        
-			  						        final ImageView icon = new ImageView();
+				  						    RadioButton rb1 = new RadioButton("");
+			  						        rb1.setToggleGroup(group);
+			  						        rb1.setUserData(cellData.getImage());
+			  						        grd_pan.add(rb1, 0, 2);	
+			  						        Image image = new Image(rb1.getUserData().toString());
+			  						        imageView.setImage(image);
+			  						        grd_pan.add(imageView, 1, 2);
+			  						        
+			  						        RadioButton rb2 = new RadioButton("");
+			  						        rb2.setToggleGroup(group);
+			  						        rb2.setUserData(cellData.getImgPath1());
+			  						        grd_pan.add(rb2, 0, 3);	
+			  						        Image image1 = new Image(rb1.getUserData().toString());
+			  						        ImageView imageView1 =  new ImageView();  
+			  						        imageView1.setImage(image1);
+			  						        grd_pan.add(imageView, 1, 3);
+	  						               
+			  						        RadioButton rb3 = new RadioButton("");
+			  						        rb3.setToggleGroup(group);
+			  						        rb3.setUserData(cellData.getImgPath2());
+			  						        Image image2 = new Image(rb3.getUserData().toString());
+			  						        ImageView imageView2 =  new ImageView();  
+			  						        imageView2.setImage(image2);
+			  						        grd_pan.add(imageView2, 1, 4);
+			  						        grd_pan.add(rb3, 0, 4);		
+			  						        
+			  						       
 			  						        group.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
 			  						            public void changed(ObservableValue<? extends Toggle> ov,
 			  						                Toggle old_toggle, Toggle new_toggle) {
 			  						                    if (group.getSelectedToggle() != null) {
-			  						                    final Image image = new Image(group.getSelectedToggle().getUserData().toString());
-			  						                icon.setImage(image);
-			  						                
+			  						                    /*final Image image = new Image(group.getSelectedToggle().getUserData().toString());
+			  						                	icon.setImage(image);*/
+			  						                    selectedImgPath = group.getSelectedToggle().getUserData().toString();
 			  						                }                
 			  						            }
 			  						        });
-			  						      grd_pan.add(icon, 1, 2);
-			  						    
-			  						       System.out.println(icon);
-			  						    
 			  							   }
 			                		 }
 			                		 
@@ -394,8 +412,8 @@ import com.google.gson.reflect.*;
 			                    }
 			                });
 			        
-			               // setGraphic(btn);
-			               // setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+			                setGraphic(btn);
+			                setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 					       
 			            }				       
 			        }
@@ -530,6 +548,7 @@ import com.google.gson.reflect.*;
 		@FXML private void handleButtonActionForCardSPrinting() {
 			JerseyClientGet client = new JerseyClientGet();
 			String[] args = null;
+			System.out.println(selectedImgPath);
 			for ( CadrePrintVO item :data) {
 				if(!item.getNfcNumber().isEmpty() && item.getPrintStatus().equalsIgnoreCase("Pending")){				
 					
