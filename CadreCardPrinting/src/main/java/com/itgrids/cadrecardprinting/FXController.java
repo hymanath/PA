@@ -5,6 +5,8 @@
 		import java.util.ArrayList;
 		import java.util.List;
 		import java.util.ResourceBundle;
+
+		import javafx.application.Platform;
 		import javafx.beans.property.BooleanProperty;
 		import javafx.beans.value.ChangeListener;
 		import javafx.beans.value.ObservableValue;
@@ -303,20 +305,29 @@
 		            public TableCell<CadrePrintVO,String> call(TableColumn<CadrePrintVO,String> param) {                
 		                TableCell<CadrePrintVO,String> cell = new TableCell<CadrePrintVO,String>(){
 		                    
-		                	 public void updateItem(String item, boolean empty) {
+		                	 public void updateItem(final String item, boolean empty) {
 		                            super.updateItem(item, empty);
 		                            if (empty) {
 		        		                setText(null);
 		        		                setGraphic(null);
 		        		            } 
 		        		            else {	                            
-		                              // Image folderIcon = new Image(SampleController.class.getResource("img").toString()+"/"+item); 
+		        		            	new Thread() {
+		        		            	    @Override
+		        		            	    public void run() {
 		                               Image folderIcon = new Image(item);
-		                               ImageView image = new ImageView(folderIcon);
+		                               final ImageView image = new ImageView(folderIcon);
 		                               image.setFitHeight(50);
 		                               image.setFitWidth(50);
-		                               setGraphic(image);
-
+		                               
+		                               Platform.runLater(new Runnable() {
+		                                   @Override
+		                                   public void run() {
+		                                	   setGraphic(image);
+		                                   }
+		                                 });
+		                             }
+		                         }.start();
 		                        }
 		                	 }
 		                    };
@@ -340,7 +351,10 @@
 			                setGraphic(null);
 			            } 
 			            else {
-			            	
+			            	new Thread() {
+    		            	    @Override
+    		            	    public void run() {
+                         
 			                final Button  btn = new Button(); 
 			                btn.setText("View Images");
 			                btn.setPrefWidth(180);
@@ -411,9 +425,17 @@
 			            			
 			                    }
 			                });
-			        
-			                setGraphic(btn);
-			                setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+
+	                           Platform.runLater(new Runnable() {
+	                               @Override
+	                               public void run() {
+	                            	   setGraphic(btn);
+	       			                setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+	                               }
+	                             });
+	                         }
+	                     }.start();
+			               
 					       
 			            }				       
 			        }
@@ -588,15 +610,6 @@
 			grd_pan.add(btn_ok, 0, 2);			
 			dialogStage.show();	
 		}
-		
-		public void msgBox1(){
-			final Stage dialogStage = new Stage();
-			
-		
-					
-			dialogStage.show();	
-		}
-		
 		
 		List<DataVO> constiList =new ArrayList<DataVO>();
 		List<DataVO> mandalList =new ArrayList<DataVO>();
