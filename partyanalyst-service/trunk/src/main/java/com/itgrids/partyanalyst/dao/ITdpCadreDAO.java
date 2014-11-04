@@ -108,7 +108,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public Long getPanchayatWiseCadreInfoCount(List<Long> panchayatIds);
 	
 	public Integer updateDispatchStatus(List<Long> cadreIds);
-	
+	public List<Object[]> getTdpCadreDetailsBySearchCriteria(String refNo, String mobileNo);
 	public Long checkCardNoExistsOrNot(String cardNo);
 	public List<Object[]> getCadreDataByYear(Long constituencyId);
 	public List<String> getExistingCadreMemberDetails(String preEnrollmentNo);
