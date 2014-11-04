@@ -178,6 +178,9 @@
 			<result type="redirect" name="mahaNaduAction">mahaNaduAction.action</result>
 			<result type="redirect" name="mahanadu">mahaNaduAction.action</result>
 			<result type="redirect" name="tdpCadreSearchAction">tdpCadreSearchAction.action</result>
+			<result type="redirect" name="cadreMemberShipCardDispatcherAction">cadreMemberShipCardDispatcherAction.action</result>	
+			<result type="redirect" name="cadreSurveyTransactionsDashboardAction">cadreSurveyTransactionsDashboardAction.action</result>
+			<result type="redirect" name="cadreTransactionReportsAction">cadreTransactionReportsAction.action</result>
 			<result type="redirect" name="cadreRegistration2014">tdpCadreSearchAction.action</result>
 			<result type="redirect" name="casteAndElectionResultsComparisonAction">casteAndElectionResultsComparisonAction.action</result>
 			<result type="redirect" name="votersAnalysisNewAction">votersAnalysisNewAction.action</result>
@@ -5606,7 +5609,8 @@
 		    <result name="partyCadre" type="redirect">partyCadreSearchAction.action</result>
 		    <result name="cadreDashBoard" type="redirect">cadreDashBoardAction.action</result>
 		    <result name="cadreRegistration" type="redirect">tdpCadreSearchAction.action</result>
-		     
+		    <result name="cadreTransactionsDashBoard" type="redirect">cadreSurveyTransactionsDashboardAction.action</result>
+		    <result name="cadreMemberShipCardDispatcher" type="redirect">cadreMemberShipCardDispatcherAction.action</result>
 		</action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
@@ -8729,9 +8733,13 @@
 		
 		<action name="cadreSurveyTransactionsDashboardAction" class="cadreSurveyTransactionAction" >
 			<result name="success">/jsp/cadreTransactionsDashBoard.jsp</result>
-			<result name="input">/jsp/loginForm.jsp?src=tdpCadreIdCardDetailsAction</result>
+			<result name="input">/jsp/loginForm.jsp?src=cadreSurveyTransactionsDashboardAction</result>
 		</action>
 		
+		<action name="cadreTransactionReportsAction" class="cadreSurveyTransactionAction" method="cadreTransactionReportsPage" >
+			<result name="success">/jsp/cadreTransactionReports.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=cadreTransactionReportsAction</result>
+		</action>
 		
 		<action name="daywiseTransactionReportsAction" class="cadreSurveyTransactionAction" method="getDayWiseReportByDates">
 			<result type="json" name="success">
@@ -8764,9 +8772,15 @@
 			</result>
 		</action>
 		
-		<action name="cadreTransactionReportsAction" class="cadreSurveyTransactionAction" >
-			<result name="success">/jsp/cadreTransactionReports.jsp</result>
-			<result name="input">/jsp/loginForm.jsp?src=tdpCadreIdCardDetailsAction</result>
+		<action name="getTdpCadreDetailsBySearchCriteriaAction" class="cadreSurveyTransactionAction" method="getTdpCadreDetailsBySearchCriteria" >
+			<result type="json" name="success">
+				<param name="root">cadreTransactionVO</param>
+			</result>
+		</action>
+		
+		<action name="cadreMemberShipCardDispatcherAction" class="cadreSurveyTransactionAction" method="cadreMemberShipCardDispatcher" >
+			<result name="success">/jsp/cadreCardDispatchStatus.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=cadreMemberShipCardDispatcherAction</result>
 		</action>
 		
 </package>
