@@ -13,10 +13,14 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CadreTransactionVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyTransactionReportVO;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreSurveyTransactionService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -36,8 +40,21 @@ public class CadreSurveyTransactionAction extends ActionSupport implements Servl
 	private ICadreSurveyTransactionService cadreSurveyTransactionService;
 	private List<SelectOptionVO> constituencyList = new ArrayList<SelectOptionVO>();
 	private SurveyTransactionReportVO surveyTransactionReportVO;
+	private CadreTransactionVO cadreTransactionVO;
+	private EntitlementsHelper entitlementsHelper;
 	
-	
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
+	public CadreTransactionVO getCadreTransactionVO() {
+		return cadreTransactionVO;
+	}
+
+	public void setCadreTransactionVO(CadreTransactionVO cadreTransactionVO) {
+		this.cadreTransactionVO = cadreTransactionVO;
+	}
+
 	public SurveyTransactionReportVO getSurveyTransactionReportVO() {
 		return surveyTransactionReportVO;
 	}
@@ -104,6 +121,13 @@ public class CadreSurveyTransactionAction extends ActionSupport implements Servl
 	public String execute()
 	{
 		try {
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			
+			if(user == null)
+				return Action.INPUT;
+			
+			
 			surveyTransactionVO = cadreSurveyTransactionService.getCadreSurveyTransactionDetails(null);
 			//surveyTransactionReportVO = cadreSurveyTransactionService.getBasicTransactionDetails();
 			
@@ -113,6 +137,41 @@ public class CadreSurveyTransactionAction extends ActionSupport implements Servl
 		return Action.SUCCESS;
 	}
 
+	
+	public String cadreTransactionReportsPage()
+	{
+		try {
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			
+			if(user == null)
+				return Action.INPUT;
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in cadreTransactionReportsPage() in CadreSurveyTransactionAction class.", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String cadreMemberShipCardDispatcher()
+	{
+		try {
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			
+			if(user == null)
+				return Action.INPUT;
+			
+			if(entitlementsHelper.checkForEntitlementToViewReport(user,IConstants.CADRE_MEMBERSHIPCARD_DISPATCHER))
+			{
+				return Action.SUCCESS;
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in cadreTransactionReportsPage() in CadreSurveyTransactionAction class.", e);
+		}
+		return Action.ERROR;
+	}
 	public String getDateWiseDashboardReport()
 	{
 	
@@ -188,4 +247,23 @@ public class CadreSurveyTransactionAction extends ActionSupport implements Servl
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getTdpCadreDetailsBySearchCriteria()
+	{
+		try{
+			
+			jObj = new JSONObject(getTask());
+
+			String refNo = jObj.getString("refNo");
+			String mobileNo = jObj.getString("mobileNo");
+			
+			cadreTransactionVO = cadreSurveyTransactionService.getTdpCadreDetailsBySearchCriteria(refNo,mobileNo);
+			
+		}
+		catch (Exception e) {
+			LOG.error("Exception occured in getSurveyTransactionDetails() in CadreSurveyTransactionAction class.", e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
