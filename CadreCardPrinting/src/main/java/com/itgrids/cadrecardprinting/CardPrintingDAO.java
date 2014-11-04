@@ -32,7 +32,7 @@ public class CardPrintingDAO {
 		List<DataVO> districts = new ArrayList<DataVO>();
 		try{
 			Class.forName("org.sqlite.JDBC");
-			connection = DriverManager.getConnection("jdbc:sqlite:C:/Users/Client/Desktop/189.sqlite");
+			connection = DriverManager.getConnection("jdbc:sqlite:D:189.sqlite");
 			statement = connection.createStatement();
 			rs = statement.executeQuery("SELECT distinct D.district_id,D.district_name FROM " +
 					" District D WHERE D.state_id = 1 order by D.district_name asc ");
@@ -61,7 +61,7 @@ public class CardPrintingDAO {
 		List<DataVO> constituencies = new ArrayList<DataVO>();
 		try{
 			Class.forName("org.sqlite.JDBC");
-			connection = DriverManager.getConnection("jdbc:sqlite:C:/Users/Client/Desktop/189.sqlite");
+			connection = DriverManager.getConnection("jdbc:sqlite:D:189.sqlite");
 			statement = connection.createStatement();
 			rs = statement.executeQuery("SELECT distinct C.constituency_id,C.constituency_name FROM " +
 					" booth B,constituency C WHERE C.constituency_id = B.constituency_id AND" +
@@ -89,7 +89,7 @@ public class CardPrintingDAO {
 		List<DataVO> mandals = new ArrayList<DataVO>();
 		try{
 			Class.forName("org.sqlite.JDBC");
-			connection = DriverManager.getConnection("jdbc:sqlite:C:/Users/Client/Desktop/189.sqlite");
+			connection = DriverManager.getConnection("jdbc:sqlite:D:189.sqlite");
 			statement = connection.createStatement();
 			
 			rs = statement.executeQuery("SELECT distinct T.tehsil_id,T.tehsil_name FROM " +
@@ -118,7 +118,7 @@ public class CardPrintingDAO {
 		List<DataVO> localbodies = new ArrayList<DataVO>();
 		try{
 			Class.forName("org.sqlite.JDBC");
-			connection = DriverManager.getConnection("jdbc:sqlite:C:/Users/Client/Desktop/189.sqlite");
+			connection = DriverManager.getConnection("jdbc:sqlite:D:189.sqlite");
 			statement = connection.createStatement();
 			
 			rs = statement.executeQuery("SELECT distinct LEB.local_election_body_id,LEB.name FROM " +
@@ -148,7 +148,7 @@ public class CardPrintingDAO {
 		List<DataVO> pancahayats = new ArrayList<DataVO>();
 		try{
 			Class.forName("org.sqlite.JDBC");
-			connection = DriverManager.getConnection("jdbc:sqlite:C:/Users/Client/Desktop/189.sqlite");
+			connection = DriverManager.getConnection("jdbc:sqlite:D:189.sqlite");
 			statement = connection.createStatement();
 			
 			rs = statement.executeQuery("SELECT distinct P.panchayat_id,P.panchayat_name FROM " +
@@ -177,7 +177,7 @@ public class CardPrintingDAO {
 		List<DataVO> booths = new ArrayList<DataVO>();
 		try{
 			Class.forName("org.sqlite.JDBC");
-			connection = DriverManager.getConnection("jdbc:sqlite:C:/Users/Client/Desktop/189.sqlite");
+			connection = DriverManager.getConnection("jdbc:sqlite:D:189.sqlite");
 			statement = connection.createStatement();
 			
 			rs = statement.executeQuery("SELECT distinct B.booth_id,B.part_no FROM " +
@@ -205,7 +205,7 @@ public class CardPrintingDAO {
 		List<DataVO> booths = new ArrayList<DataVO>();
 		try{
 			Class.forName("org.sqlite.JDBC");
-			connection = DriverManager.getConnection("jdbc:sqlite:C:/Users/Client/Desktop/189.sqlite");
+			connection = DriverManager.getConnection("jdbc:sqlite:D:189.sqlite");
 			statement = connection.createStatement();
 			
 			rs = statement.executeQuery("SELECT distinct B.booth_id,B.part_no FROM " +

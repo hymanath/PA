@@ -51,8 +51,8 @@ public class PrintDemo {
         ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
 
         // Show PrintDialog
-        boolean print = PrinterJob.getPrinterJob().printDialog(attributes);
-
+      //  boolean print = PrinterJob.getPrinterJob().printDialog(attributes);
+        boolean print = true;
         if(print) {
             DocPrintJob job = printServices[0].createPrintJob();
             Doc doc = new SimpleDoc(in, docFlavor, null);

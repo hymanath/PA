@@ -102,7 +102,7 @@
 			
 		CadrePrintVO membershipValue = null;
 		
-		ObservableList<CadrePrintVO> data = null;
+		static ObservableList<CadrePrintVO> data = null;
 		
 		String selectedImgPath ;
 		
@@ -782,7 +782,7 @@
 						  {						
 							   tableView.getItems().get(getIndex()).nfcNumberProperty().set(tableView.getItems().get(getIndex()).getCardNumber());
 						  }
-						 if( checkBox.isFocused())						   
+						/* if( checkBox.isFocused())						   
 						  {
 							 if(checkBox.isSelected()){
 									tableView.getItems().get(getIndex()).nfcNumberProperty().set("");
@@ -794,7 +794,23 @@
 									tableView.getItems().get(getIndex()).nfcNumberProperty().set("");
 								}
 						  }				
-						tableView.setItems(tableView.getItems());
+						tableView.setItems(tableView.getItems());*/
+						
+						for(int i=0;i<data.size();i++){
+							CadrePrintVO cellData = data.get(i);
+							if(cellData.getVoterIdTagging1().getValue()){
+							//tableView.getItems().get(getIndex()).nfcNumberProperty().set("");
+							cellData.nfcNumberProperty().set("");
+							CardReader cardTest = new CardReader();
+							String cardNo = cardTest.getUniCode();
+							cellData.nfcNumberProperty().set(cardNo);
+							}
+							else{
+								cellData.nfcNumberProperty().set("");
+							}
+							}
+							tableView.setItems(tableView.getItems());
+
 					}					
 				}
 			}
