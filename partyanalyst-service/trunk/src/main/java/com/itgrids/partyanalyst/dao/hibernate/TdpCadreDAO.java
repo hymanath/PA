@@ -341,10 +341,10 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 				queryStr.append(" and model.userAddress.localElectionBody.localElectionBodyId = :id ");
 			}
 		}
-		if(boothId != null && boothId.longValue() != 0L)
+		/*if(boothId != null && boothId.longValue() != 0L)
 		{
 			queryStr.append(" and model.userAddress.booth.boothId = :boothId");
-		}
+		}*/
 		if(isPresentCadre != null && isPresentCadre.trim().length()>0 && !isPresentCadre.equalsIgnoreCase("0"))
 		{
 			queryStr.append(" and model.enrollmentYear in (:year) ");
@@ -372,10 +372,10 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 				query.setParameter("id", Long.valueOf(panchayatId.toString().substring(1)));
 			}
 		}
-		if(boothId != null && boothId.longValue() != 0L)
+		/*if(boothId != null && boothId.longValue() != 0L)
 		{
 			query.setParameter("boothId", boothId);
-		}
+		}*/
 		
 			query.setParameter("year", IConstants.CADRE_ENROLLMENT_NUMBER);
 
@@ -1124,6 +1124,38 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		query.setParameter("lastHours", lastHours);
 		
 		return query.list();
+	}	
+	public List<Object[]> getCadreInfoDetails(Long locationId,String locationType,int startIndex,int maxIndex){
+		//0image,1name,2relative,3constituency,4age,5dataSourceType
+        StringBuilder queryStr = new StringBuilder("select model.image,model.firstname,model.relativename,model.userAddress.constituency.name,model.age," +
+        		" model.dataSourceType from TdpCadre model where model.enrollmentYear ='2014' and model.isDeleted = 'N'  ");
+        if(locationType.equalsIgnoreCase("district")){
+        	queryStr.append(" and model.userAddress.district.districtId =:locationId ");
+        }else if(locationType.equalsIgnoreCase("constituency")){
+        	queryStr.append(" and model.userAddress.constituency.constituencyId =:locationId ");
+        }
+        queryStr.append(" order by model.insertedTime desc ");
+        
+        Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("locationId",locationId);
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxIndex);
+		return query.list();
+	}
+	
+	public Long getCadreInfoDetailsCount(Long locationId,String locationType){
+        StringBuilder queryStr = new StringBuilder("select count(*)" +
+        		"  from TdpCadre model where model.enrollmentYear ='2014' and model.isDeleted = 'N'  ");
+        if(locationType.equalsIgnoreCase("district")){
+        	queryStr.append(" and model.userAddress.district.districtId =:locationId ");
+        }else if(locationType.equalsIgnoreCase("constituency")){
+        	queryStr.append(" and model.userAddress.constituency.constituencyId =:locationId ");
+        }
+        queryStr.append(" order by model.insertedTime desc ");
+        
+        Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("locationId",locationId);
+		return (Long)query.uniqueResult();
 	}
 	
 	@SuppressWarnings("unchecked")

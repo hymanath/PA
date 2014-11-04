@@ -1620,5 +1620,52 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		return info;
 	}
 
-	
+		
+	public CadreRegisterInfo getRegisteredInfo(Long locationId,String locationType,int startIndex,int maxIndex){
+		CadreRegisterInfo returnVo = new CadreRegisterInfo();
+		List<CadreRegisterInfo> resultList = new ArrayList<CadreRegisterInfo>();
+		CadreRegisterInfo vo = null;
+		try{
+			//0image,1name,2relative,3constituency,4age,5dataSourceType
+		    List<Object[]> cadreList = tdpCadreDAO.getCadreInfoDetails(locationId,locationType,startIndex,maxIndex);
+		    Long count = tdpCadreDAO.getCadreInfoDetailsCount(locationId,locationType);
+		    returnVo.setTotalCount(count);
+		    for(Object[] cadre:cadreList){
+		    	vo = new CadreRegisterInfo(); 
+		    	if(cadre[1] != null){
+		    	   vo.setName(cadre[1].toString());
+		    	}else{
+		    		 vo.setName("-");
+		    	}
+		    	if(cadre[4] != null){
+		    	  vo.setNumber(cadre[4].toString());//age
+		    	}else{
+		    		 vo.setNumber("-");//age
+		    	}
+		    	if(cadre[2] != null){
+		    	  vo.setArea(cadre[2].toString());//2relative
+		    	}else{
+	    		  vo.setArea("-");//2relative
+		    	}
+		    	if(cadre[3] != null){
+			      vo.setLocation(cadre[3].toString());//3constituency
+			    }else{
+	    		  vo.setLocation("-");//3constituency
+		    	}
+		    	if(cadre[0] != null){
+		    	 vo.setMemberShipNo("images/cadre_images/"+cadre[0].toString());//image
+		    	}
+		    	if(cadre[5] != null){
+			    	 vo.setDate(cadre[5].toString());//5datasource
+			    }else{
+			    	 vo.setDate("-");//5datasource
+			    }
+		    	resultList.add(vo);
+		    }
+		}catch(Exception e){
+			LOG.error("Exception rised in getRegisteredInfo",e);
+		}
+		returnVo.setInfoList(resultList);
+		return returnVo;
+	}
 }

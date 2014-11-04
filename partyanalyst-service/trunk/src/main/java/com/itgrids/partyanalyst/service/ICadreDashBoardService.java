@@ -60,6 +60,7 @@ public interface ICadreDashBoardService {
 	public AppDbDataVO getAllUpdatesByVersion(String appName,Double version);
 
 	public  List<CadreRegisterInfo> getRecentlyRegisteredCadresInfo(Integer startIndex,Integer maxIndex);
+	public CadreRegisterInfo getRegisteredInfo(Long locationId,String locationType,int startIndex,int maxIndex);
 	
 	public CadreRegisterInfo getWorkingMembersDetails(String hours);
 }
