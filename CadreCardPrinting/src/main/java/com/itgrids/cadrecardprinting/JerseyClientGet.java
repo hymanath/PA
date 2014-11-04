@@ -47,7 +47,7 @@ public class JerseyClientGet {
 
 			String input = panchayatId.toString();
 			WebResource webResource = client
-					.resource("http://mytdp.com/WebService/getVCadreDataByPanchayatId1/"+input+ "/"+type);
+					.resource("http://localhost:8080/PartyAnalyst/WebService/getVCadreDataByPanchayatId1/"+input+ "/"+type);
 
 			ClientResponse response = webResource.accept("application/json")
 					.get(ClientResponse.class);
@@ -122,7 +122,7 @@ public class JerseyClientGet {
 			Client client = Client.create();
 
 			WebResource webResource = client
-					.resource("http://mytdp.com/WebService/tagCardIdForNFCReader/"+cardNo+ "/"+voterId);
+					.resource("http://localhost:8080/PartyAnalyst/WebService/tagCardIdForNFCReader/"+cardNo+ "/"+voterId);
 
 			ClientResponse response = webResource.accept("application/json")
 					.get(ClientResponse.class);
@@ -153,7 +153,7 @@ public class JerseyClientGet {
 			Client client = Client.create();
 
 			WebResource webResource = client
-					.resource("http://192.168.11.94:8080/PartyAnalyst/WebService/getCadreDetailsForPrinting/"+memberShipNo);
+					.resource("http://localhost:8080/PartyAnalyst/WebService/getCadreDetailsForPrinting/"+memberShipNo);
 
 			ClientResponse response = webResource.accept("application/json")
 					.get(ClientResponse.class);
@@ -184,7 +184,7 @@ public class JerseyClientGet {
 			Client client = Client.create();
 
 			WebResource webResource = client
-					.resource("http://mytdp.com/WebService/checkNFCNumberForVoterId/"+voterId);
+					.resource("http://localhost:8080/PartyAnalyst/WebService/checkNFCNumberForVoterId/"+voterId);
 
 			ClientResponse response = webResource.accept("application/json")
 					.get(ClientResponse.class);
@@ -214,7 +214,7 @@ public class JerseyClientGet {
 			Client client = Client.create();
 
 			WebResource webResource = client
-					.resource("http://mytdp.com/WebService/delinkNFCNumber/"+cardNo+ "/"+voterId);
+					.resource("http://localhost:8080/PartyAnalyst/WebService/delinkNFCNumber/"+cardNo+ "/"+voterId);
 
 			ClientResponse response = webResource.accept("application/json")
 					.get(ClientResponse.class);

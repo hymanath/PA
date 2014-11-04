@@ -79,7 +79,7 @@ public static String getUniCode()
 		 
 		CardTerminal terminal = terminals.get(0);
 
-			terminal.waitForCardPresent( 0 );
+			//terminal.waitForCardPresent( 0 );
 			
 				Card card = terminal.connect("*");
 				CardChannel channel = card.getBasicChannel();
