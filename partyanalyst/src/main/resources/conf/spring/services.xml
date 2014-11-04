@@ -2239,6 +2239,7 @@
          <property name="transactionTemplate" ref="transactionTemplate" />
          <property name="cadreOtpDetailsDAO" ref="cadreOtpDetailsDAO" />
      	 <property name="smsCountrySmsService" ref="smsCountrySmsService" />
+     	 <property name="tdpCadreDAO" ref="tdpCadreDAO" />
      </bean>
 </beans>		
 	
