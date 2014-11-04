@@ -254,6 +254,39 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		return returnList;
 	}
 	
+	
+	public  List<CadreRegisterInfo> getRecentlyRegisteredCadresInfo(Integer startIndex,Integer maxIndex){
+		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
+		try{
+		   CadreRegisterInfo info = null;
+		 //0 first name ,1 lastname,2 constituency ,3 localArea, 4 image
+		   List<Object[]> cadreDetails = tdpCadreDAO.getRecentlyRegisteredCadres(startIndex,maxIndex);
+		   for(Object[] cadre:cadreDetails){
+			   StringBuilder name = new StringBuilder("");
+			   if(cadre[0] != null){
+				   name.append(cadre[0].toString());
+			   }
+			   if(cadre[1] != null){
+				   name.append(" "+cadre[1].toString());
+			   }
+				info = new CadreRegisterInfo();
+				info.setName(name.toString());
+				if(cadre[3] != null){
+				    info.setArea(cadre[3].toString());
+				}else{
+					info.setArea("");
+				}
+				info.setLocation(cadre[2].toString());
+				if(cadre[4] != null){
+				info.setDate("images/cadre_images/"+cadre[4].toString());
+				}
+				returnList.add(info);
+			}
+		}catch(Exception e){
+        	LOG.error("Exception rised in getRecentlyRegisteredCadresInfo",e);
+		}
+		return returnList;
+	}
 	public List<CadreRegisterInfo> getConstituencyWiseRegistrationInfo(){
 		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
 		CadreRegisterInfo info = null;

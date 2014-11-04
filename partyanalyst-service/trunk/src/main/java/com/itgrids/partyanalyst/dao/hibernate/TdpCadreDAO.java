@@ -30,7 +30,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 			queryStr.append(" and date(model.surveyTime) <=:toDate ");
 		}
 		
-		queryStr.append(" group by model.userAddress.district.districtId ");	
+		queryStr.append(" group by model.userAddress.district.districtId,model.dataSourceType ");	
 
 		Query query = getSession().createQuery(queryStr.toString());
 		if(fromDate != null){
@@ -205,6 +205,15 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 				" order by model.surveyTime desc");
 		query.setFirstResult(0);
 		query.setMaxResults(5);
+		return query.list();
+	}
+
+	public List<Object[]> getRecentlyRegisteredCadres(Integer startIndex,Integer maxIndex){
+		//0 first name ,1 lastname,2 constituency ,3 localArea, 4 image
+		Query query = getSession().createQuery("select model.firstname,model.lastname,model.userAddress.constituency.name,model.userAddress.localArea,model.image from TdpCadre model where model.isDeleted = 'N' and  model.userAddress.state.stateId = 1  and model.enrollmentYear = 2014 " +
+				" order by model.surveyTime desc");
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxIndex);
 		return query.list();
 	}
 

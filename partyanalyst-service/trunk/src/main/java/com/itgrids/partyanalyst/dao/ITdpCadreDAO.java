@@ -114,6 +114,8 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<String> getExistingCadreMemberDetails(String preEnrollmentNo);
 	public List<Object[]> getDistrictsByStateWiseAction(Long stateId);
 	public List<Object[]> getConstsByStateWiseAction(Long stateId);
-	
 	public List<Object[]> getCadreDetailsForSelection(CadrePrintInputVO input);
+	public List<Object[]> getRecentlyRegisteredCadres(Integer startIndex,Integer maxIndex);
+	
+	
 }
