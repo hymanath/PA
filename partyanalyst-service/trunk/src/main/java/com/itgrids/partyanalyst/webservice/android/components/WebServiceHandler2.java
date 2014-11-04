@@ -176,6 +176,12 @@ public class WebServiceHandler2 {
 		{
 			e.printStackTrace();
 		}
+		try {
+			webServiceHandlerService1.savingUserDetailsWhoLoggedIn(inputs,out);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in loginFieldDataUserForCadre method in WebServiceHandler2 class. ");
+		}
 		if(out==null)
 			return "{\"status\":\"login failure\"}";
 		//out.setStatus("Success");

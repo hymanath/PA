@@ -15,7 +15,7 @@ public class AccessRestrictedSessionDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void test()
 	{
-		accessRestrictedSessionDAO.getAll();
+		//accessRestrictedSessionDAO.getAll();
 	}
 
 }
