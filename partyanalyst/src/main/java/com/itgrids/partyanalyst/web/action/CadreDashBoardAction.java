@@ -212,6 +212,7 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		String task = request.getParameter("task");
 		if(task.equalsIgnoreCase("workingCount")){
 			info = cadreDashBoardService.getWorkingMembersInfo(request.getParameter("hours"));
+			//info = cadreDashBoardService.getWorkingMembersDetails(request.getParameter("hours"));
 		}
 	  }catch(Exception e){
 		  LOG.error("Exception rised in getWorkingMembersInfo ",e);

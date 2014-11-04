@@ -1101,7 +1101,90 @@ $('#membersCount').addClass('animated fadeInX');
 	   setInterval(function(){getWorkStartedConstituencyCount()},600000);
 	   setInterval(function(){getRecentlyRegisteredCadresInfo(strIndex,false)},600000);
 	   setInterval(function(){getDashBoardBasicInfo()},600000);
-	   setInterval(function(){getWorkingMembersInfo()},600000);
+	   setInterval(function(){getWorkingMembersInfo()},600000);	 
+	   
+	   
+	   function buildSurveyMemberDetails(result)
+	   { 
+	   	document.getElementById('weathermap').innerHTML = "<div class='span12 m_top20 widgetservey' id='map' style='height:500px'></div>";
+	   	$('#detaildDiv123').show();
+	   	$.each(result,function(index,value){
+	   	if(value.latitude != null && value.longititude != null)
+	   	{
+	   		var voterDetails = 
+	   		{ "type": "Feature",
+	   		"properties": {"name":value.name,"location":value.location,"partno":value.partno,"url":value.url,"value":value.value,"villageCovered":value.villageCovered},
+	   			"geometry": { "type": "Polygon", "coordinates": [[[value.latitude,value.longititude]]] }
+	   		};
+	   		apaccampus.features.push(voterDetails);
+	   	}
+	   	});
+	   	map = new L.Map('map').setView(new L.LatLng(result[0].longititude,result[0].latitude), 10);
+	   	var osm = new L.TileLayer('http://{s}.tile.osmosnimki.ru/kosmo/{z}/{x}/{y}.png');
+	   	var mpn = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+	   	var qst = new L.TileLayer('http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {attribution:'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">'}).addTo(map);
+	   	var hyb = new L.TileLayer('http://{s}.tile.osmosnimki.ru/hyb/{z}/{x}/{y}.png');
+	   	var irs = new L.TileLayer('http://tile.osmosnimki.ru/basesat/{z}/{x}/{y}.jpg');
+	   	var wms = new L.TileLayer.WMS('http://wms.latlon.org/', {layers:'irs', crs: L.CRS.EPSG4326});
+	   	var kadastr = new L.TileLayer.WMS('http://maps.rosreestr.ru/arcgis/services/Cadastre/CadastreWMS/MapServer/WMSServer', {format:'image/png', transparent:'true', layers:'16,15,14,13,11,10,9,22,21,20,19,18,7,6', tileSize:512});
+
+	   	map.addControl(new L.Control.Scale({width: 100, position: 'bottomleft'}));
+	   	map.addControl(new L.Control.Permalink());
+
+	   	map.addControl(new L.Control.Layers({ 'Mapnik':mpn, 'MapQuest':qst,  'Google':new L.Google()},{}
+	   	 ));
+	   	L.geoJson(apaccampus, {
+	   		
+	   		style: function (feature) {
+	   			return feature.properties && feature.properties.style;
+	   		},
+	   		
+	   		onEachFeature: onEachFeature,
+	   		
+	   		
+	   	   pointToLayer: function (feature, latlng) {
+	   			return L.circleMarker(latlng, {
+	   				
+	   			});
+	   		}
+	   	}).addTo(map);
+	   	for(var i in result)
+	   	{
+	   		if(result[i].latitude != null && result[i].longititude != null)
+	   		{
+	   			var iconImg = '';
+	   			if(result[i].type == "Data Collectors")
+	   			{
+	   				iconImg = 'images/DC.png';
+	   			}
+	   			else
+	   			{
+	   				iconImg = 'images/DV.png';
+	   			}
+	   			var icon = L.icon({
+	   			iconUrl: iconImg,
+
+	   			iconSize:     [30, 30], // size of the icon
+	   			shadowSize:   [10, 10], // size of the shadow
+	   			iconAnchor:   [10, 10], // point of the icon which will correspond to marker's location
+	   			shadowAnchor: [4, 62],  // the same for the shadow
+	   			popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+	   		   });
+	   			
+	   	
+	   			var markers = new L.Marker([result[i].longititude,result[i].latitude],{icon: icon});
+	   			var popuoContent = "<table class='table table-bordered m_top20 table-hover table-striped username'><tr><td>Name : </td><td>"+result[i].name+"</td></tr>";
+	   			popuoContent += "<tr><td>Mobile : </td><td>"+result[i].mandalName+"</td></tr>";
+	   			popuoContent += "</table>";
+	   			markers.bindPopup(popuoContent);
+	   			map.addLayer(markers);	
+	   		}
+	   		
+	   	}	   	
+	   	
+	   } 
+
+	   
 </script>
 
 </body>
