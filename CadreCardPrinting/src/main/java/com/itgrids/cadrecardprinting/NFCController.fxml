@@ -167,6 +167,7 @@
           </columns>
         </TableView>
             <Label fx:id="loadingId" layoutX="494.0" layoutY="519.0" prefHeight="17.0" prefWidth="67.0" text="Loading" visible="false" />
+            <!--<Label fx:id="errorId" layoutX="377.0" layoutY="6.0" prefHeight="17.0" prefWidth="218.0" />-->
       </children>
     </AnchorPane>
   </children>
