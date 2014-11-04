@@ -26,7 +26,9 @@ public class CadrePrintVO implements Serializable{
 	private String voterCardNo;
 	private String image;
 	private String voterImgPath;
-	
+	private String cadreImgPath;
+	private String newImgPath;
+	private String photoType;
 
 	
 	private String village;
@@ -196,8 +198,23 @@ public class CadrePrintVO implements Serializable{
 	public void setConstituencyType(String constituencyType) {
 		this.constituencyType = constituencyType;
 	}
-	
-	
-	
-	
+	public String getPhotoType() {
+		return photoType;
+	}
+	public void setPhotoType(String photoType) {
+		this.photoType = photoType;
+	}
+	public String getCadreImgPath() {
+		return cadreImgPath;
+	}
+	public void setCadreImgPath(String cadreImgPath) {
+		this.cadreImgPath = cadreImgPath;
+	}
+	public String getNewImgPath() {
+		return newImgPath;
+	}
+	public void setNewImgPath(String newImgPath) {
+		this.newImgPath = newImgPath;
+	}
+
 }
