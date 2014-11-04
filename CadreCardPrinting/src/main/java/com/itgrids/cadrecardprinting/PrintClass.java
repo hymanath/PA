@@ -51,7 +51,7 @@ public class PrintClass {
 		            Graphics g1 = bufferedImage.getGraphics();
 		            g1.setFont(telegraficoFont);
 		            g1.setColor(Color.BLACK);
-		            g1.drawString(cadrePrintVO.getVillage()  +" "+ StringEscapeUtils.unescapeJava("\u0C17\u0C4D\u0C30\u0C3E\u0C2E\u0C02")+" "+  cadrePrintVO.getMandal() + ""+ StringEscapeUtils.unescapeJava("\u0C2E\u0C02\u0C21\u0C32\u0C02")+"   ", 290, 260);
+		            g1.drawString(cadrePrintVO.getVillage()  +" "+ StringEscapeUtils.unescapeJava("\u0C17\u0C4D\u0C30\u0C3E\u0C2E\u0C02")+" "+  cadrePrintVO.getMandal() + " "+ StringEscapeUtils.unescapeJava("\u0C2E\u0C02\u0C21\u0C32\u0C02")+"   ", 290, 260);
 		            g1.dispose();
 		            Graphics g2 = bufferedImage.getGraphics();
 		            telegraficoFont =  f1.deriveFont(Font.BOLD, 35);
@@ -68,7 +68,7 @@ public class PrintClass {
 		            g1.setColor(Color.BLACK);
 		            if(cadrePrintVO.getVillage() != null)
 		            {
-		            	g1.drawString(cadrePrintVO.getVillage()  +" "+ StringEscapeUtils.unescapeJava("\u0C17\u0C4D\u0C30\u0C3E\u0C2E\u0C02")+" "+  cadrePrintVO.getMandal() + ""+ StringEscapeUtils.unescapeJava("\u0C2E\u0C02\u0C21\u0C32\u0C02")+"   ", 290, 260);
+		            	g1.drawString(cadrePrintVO.getVillage()  +" "+ StringEscapeUtils.unescapeJava("\u0C17\u0C4D\u0C30\u0C3E\u0C2E\u0C02")+" "+  cadrePrintVO.getMandal() + " "+ StringEscapeUtils.unescapeJava("\u0C2E\u0C02\u0C21\u0C32\u0C02")+"   ", 290, 260);
 		            }
 		            else
 		            {
