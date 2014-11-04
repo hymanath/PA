@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="562.0" prefWidth="1350.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.itgrids.cadrecardprinting.FXController">
+ 
+  <children>
+    <AnchorPane fx:id="anchorPaneId" layoutX="-3.0" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="549.0" prefWidth="1355.0">
+      <children>
+        <!--<TextField fx:id="NFCNumber" layoutX="99.0" layoutY="494.0" prefWidth="158.0" />
+        <Label layoutX="16.0" layoutY="497.0" prefWidth="81.0" text="NFC Number" />-->
+       <Button fx:id="NFCNumberLink" layoutX="1032.0" layoutY="517.0" mnemonicParsing="false" onMouseClicked="#handleButtonActionForCardSaning" prefWidth="145.0" text="NFC Link Voter Card" />
+        <Button fx:id="PrintMemberCard" layoutX="1190.0" layoutY="517.0" mnemonicParsing="false" onMouseClicked="#handleButtonActionForCardSPrinting" text="Print MemberShip Card" />
+        <Label blendMode="DARKEN" layoutX="18.0" layoutY="15.0" prefHeight="25.0" prefWidth="163.0" text="TDP Membership Drive" textFill="#1000cc" />
+            <ComboBox fx:id="regTypeCombo" layoutX="391.0" layoutY="29.0" prefHeight="25.0" prefWidth="137.0" promptText="Registration Type">
+            	 <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="WEB" />
+              <String fx:value="TAB" />
+              <String fx:value="ONLINE" />
+            </FXCollections>
+             <!--<value>
+		        <String fx:value="WEB" />
+		    </value>-->
+          </items>
+        </ComboBox>
+            <ComboBox fx:id="districtCombo" layoutX="542.0" layoutY="29.0" onAction="#getConstituencyHandleAction" prefHeight="25.0" prefWidth="120.0" promptText="District Name" />
+        <ComboBox fx:id="constCombo" layoutX="680.0" layoutY="28.0" onAction="#getMandalHandleAction" prefHeight="25.0" prefWidth="157.0" promptText="Constituency Name">
+          <!--<items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="Kuppam" />
+            </FXCollections>
+          </items>-->
+        </ComboBox>
+        <ComboBox fx:id="mandalCombo" layoutX="856.0" layoutY="28.0" onAction="#getPanchayatHandleAction" prefHeight="25.0" prefWidth="163.0" promptText="Mandal/Municipality Name">
+          <!--<items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="Item 1" />
+              <String fx:value="Item 2" />
+              <String fx:value="Item 3" />
+            </FXCollections>
+          </items>-->
+        </ComboBox>
+        <ComboBox fx:id="panchayatCombo" layoutX="1036.0" layoutY="28.0" prefHeight="25.0" prefWidth="137.0" promptText="Panchayat Name">
+          <!--<items>
+            <FXCollections fx:factory="observableArrayList">
+				<String fx:value="121 PEDDURU" />
+				<String fx:value="64 PEDDURU" />
+				<String fx:value="ABAKALADODDI" />
+				<String fx:value="ADAVIBUDUGUR" />
+				<String fx:value="AGARAM" />
+				<String fx:value="ANIKERA" />
+				<String fx:value="ANIMIGANIPALLE" />
+				<String fx:value="BAIPPAREDLAPALLE" />
+				<String fx:value="BALLA" />
+				<String fx:value="BANDARLAPALLE" />
+				<String fx:value="BEGGILAPALLE" />
+				<String fx:value="CBANDAPALLE" />
+				<String fx:value="CHANDAM" />
+				<String fx:value="CHEEKATIPALLE" />
+				<String fx:value="CHEELEPALLE" />
+				<String fx:value="CHEEMANAYANIPALLE" />
+				<String fx:value="CHEKKUNATHAM" />
+				<String fx:value="CHELDIGANIPALLE" />
+				<String fx:value="CHENGUBALLA" />
+				<String fx:value="CHINNAGOLLAPALLE" />
+				<String fx:value="CHINNARADODDI" />
+				<String fx:value="DALAVAIKOTHAPALLE" />
+				<String fx:value="DANDIKUPPAM" />
+				<String fx:value="DASEGOWNIYUR" />
+				<String fx:value="DASIMANIPALLE" />
+				<String fx:value="GARIGACHINNEPALLE" />
+				<String fx:value="GONUGUR" />
+				<String fx:value="GORIVIMAKULAPALLE" />
+				<String fx:value="GUDUPALLE" />
+				<String fx:value="GUNDLANAYANIPALLE" />
+				<String fx:value="GUNDLASAGARAM" />
+				<String fx:value="GUNJARLAPALLE" />
+				<String fx:value="JARUGU" />
+				<String fx:value="KADAPALLE" />
+				<String fx:value="KAMATHAMUR" />
+				<String fx:value="KANAMAKULAPALLE" />
+				<String fx:value="KANAMANAPALLE" />
+				<String fx:value="KANCHIBANDARLAPALLE" />
+				<String fx:value="KANGUNDI" />
+				<String fx:value="KARLAGATTA" />
+				<String fx:value="KENCHANABALLA" />
+				<String fx:value="KODATHANAPALLE" />
+				<String fx:value="KOLAMADUGU" />
+				<String fx:value="KONERUKUPPAM" />
+				<String fx:value="KONGANAPALLE" />
+				<String fx:value="KOTHAPALLE" />
+				<String fx:value="&gt;KOTTALURU" />
+				<String fx:value="KRISHNADASANAPALLE" />
+				<String fx:value="KUPPAM(MAJOR PTS)" />
+				<String fx:value="KUPPIGANIPALLE" />
+				<String fx:value="MALLANURU" />
+				<String fx:value="MANENDRAM" />
+				<String fx:value="MANKALADODDI" />
+				<String fx:value="MATTAM" />
+				<String fx:value="MITTAPALLE" />
+				<String fx:value="MORASANAPALLE" />
+				<String fx:value="MUDDANAPALLE" />
+				<String fx:value="MULLURUKRISHNAPURAM" />
+				<String fx:value="NADIMPALLE" />
+				<String fx:value="NADIMUR" />
+				<String fx:value="NOOLAKUNTA" />
+				<String fx:value="ONNAPPANAYANIKOTHUR" />
+				<String fx:value="PAIPALYAM" />
+				<String fx:value="PANDYALAMDUGU" />
+				<String fx:value="PEDDA BANGARUNATHAM" />
+				<String fx:value="PEDDABADANIWADA" />
+				<String fx:value="PEDDUR" />
+				<String fx:value="POGURUPALLE" />
+				<String fx:value="RAJUPETA" />
+				<String fx:value="RALLABODUGURU" />
+				<String fx:value="RAMAKUPPAM" />
+				<String fx:value="REGADADINNAPALLE" />
+				<String fx:value="SAMAGUTTAPALLE" />
+				<String fx:value="SANGANAPALLE" />
+				<String fx:value="SETTIPALLE" />
+				<String fx:value="SINGASAMUDRAM" />
+				<String fx:value="SIVARAMAPURAM" />
+				<String fx:value="SODIGANIPALLE" />
+				<String fx:value="SONNEGANIPALLE" />
+				<String fx:value="THAMBIGANIPALLE" />
+				<String fx:value="THUMISI" />
+				<String fx:value="UNISIGANIPALLE" />
+				<String fx:value="URLAOBANAPALLE" />
+				<String fx:value="VANAGUTTAPALLE" />
+				<String fx:value="VASANADU" />
+				<String fx:value="VEERANAMALA" />
+				<String fx:value="VENDUGAMPALLE" />
+				<String fx:value="VIJALAPURAM" />
+				<String fx:value="YAMAGANIPALLE" />
+
+            </FXCollections>
+          </items>-->
+        </ComboBox>
+        <Button fx:id="GetMemberDetails" layoutX="1196.0" layoutY="29.0" mnemonicParsing="false" onMouseClicked="#handleButtonAction" prefHeight="25.0" prefWidth="145.0" text="Get Member Details" />
+          <ProgressBar fx:id="progressBar" layoutX="557.0" layoutY="521.0" prefHeight="18.0" prefWidth="312.0" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="476.0" AnchorPane.topAnchor="516.0">
+         </ProgressBar>
+          <ScrollBar layoutX="1293.0" layoutY="66.0" orientation="VERTICAL" prefHeight="446.0" prefWidth="16.0" />
+        <TableView fx:id="tableView" layoutX="17.0" layoutY="66.0" prefHeight="446.0" prefWidth="1326.0">
+          <columns>
+          	<TableColumn fx:id="sId" maxWidth="5000.0" minWidth="10.0" prefWidth="38.0" text="SL No" />
+            <TableColumn fx:id="VoterCardNum" maxWidth="5000.0" minWidth="10.0" prefWidth="135.0" text="Voter Card Number" />
+            <TableColumn fx:id="VoterName" maxWidth="5000.0" minWidth="10.0" prefWidth="167.0" text="Voter Name" />
+            <TableColumn fx:id="RelativeName" maxWidth="5000.0" minWidth="2.0" prefWidth="122.0" text="Relative Name" />
+            <TableColumn fx:id="MemberShipNum" maxWidth="5000.0" minWidth="10.0" prefWidth="131.0" text="MemberShip Number" />
+                  <TableColumn fx:id="refId" prefWidth="114.0" text="Reference No" />
+            <TableColumn fx:id="NFCNumberId" prefWidth="110.0" text="NFC Number" />
+            <TableColumn fx:id="VoterIdTagging" maxWidth="5000.0" minWidth="1.0" prefWidth="77.0">
+             <graphic>
+                <CheckBox fx:id="VoterIdTag" disable="true" graphicTextGap="2.0" mnemonicParsing="false" onMouseClicked="#checkboxHandleAction" prefHeight="17.0" prefWidth="79.0" text="Tagging" />
+              </graphic>            
+            </TableColumn>
+            <TableColumn fx:id="linkId" prefWidth="124.0" text="NFC Linking" />
+            <TableColumn fx:id="voterIdValue" maxWidth="215.0" minWidth="0.0" prefWidth="0.0" text="Voter Id" />
+            <TableColumn fx:id="CardPrintStatus" maxWidth="5000.0" minWidth="0.0" prefWidth="101.0" text="Card Print Status" />
+            <TableColumn fx:id="imageId" prefWidth="111.0" text="Image" />
+                  <TableColumn fx:id="voterImageId" minWidth="0.0" prefWidth="94.0" text="Image Selection" />
+                  <TableColumn fx:id="typeId" minWidth="0.0" prefWidth="37.0" text="type" visible="false" />
+          </columns>
+        </TableView>
+            <Label fx:id="loadingId" layoutX="494.0" layoutY="519.0" prefHeight="17.0" prefWidth="67.0" text="Loading" visible="false" />
+      </children>
+    </AnchorPane>
+  </children>
+</AnchorPane>
