@@ -433,7 +433,10 @@
 		str +='</tbody>';
 		str +='</table>';
 		$('#locationWiseTransactionDiv').html(str);
-		$('#locationWiseReportTab').dataTable({});
+		$('#locationWiseReportTab').dataTable({
+			"iDisplayLength": 50,
+			"aLengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]]
+		});
 		$('#exportExclId2').show();
 	}
 	function daywiseReport()
@@ -531,7 +534,10 @@
 		str +='</tbody>';
 		str +='</table>';
 		$('#daywiseReportDiv').html(str);
-		$('#daywiseReportTab').dataTable({});
+		$('#daywiseReportTab').dataTable({
+			"iDisplayLength": 50,
+			"aLengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]]
+		});
 		$('#exportExclId1').show();
 	}
 	
