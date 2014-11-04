@@ -79,6 +79,9 @@ table.dataTable tr.odd {
 	</style>
 </head>
 <body>
+<script>
+ var strIndex = 0;
+</script>
 <div class="container m_top10">
 
 		<!-- Title Row -->
@@ -215,7 +218,7 @@ table.dataTable tr.odd {
 			
 			<!-- ReCently Registered Block -->
 			<div class="span4 show-grid well well-small border-radius-0 pad-0" style=" width: 31.9149%;margin-left:20px;min-height:454px;">
-				<h4 style="padding-bottom:5px;"><i class="icon-user" style="margin-top: 4px;"></i> &nbsp;Recently Registered </h4>
+				<h4 style="padding-bottom:5px;"><i class="icon-user" style="margin-top: 4px;"></i> &nbsp;Recently Registered <i class="icon-refresh" style="margin-top: 4px;margin-left:10px;cursor:pointer;" onclick="getRecentlyRegisteredCadresInfo(0,true);"></i> </h4>
 				<div id="recentRegisterCadresDiv"><img style="margin-top:180px;margin-left: 124px;" src="images/icons/loading.gif"/></div>
 					
 			</div><!-- ReCently Registered Block END -->
@@ -288,20 +291,24 @@ $('#membersCount').addClass('animated fadeInX');
 			$("#monthRegisCount").html('<h2>'+result[2].totalCount+'</h2><p>Members <br/>Registered <span style="font-weight:bold;" class="text-skyblue">This Month</span></p><p class="label">Web -'+MonthTotalWeb+'</p>&nbsp&nbsp<p class="label">Tab - '+MonthTotalTab+'</p></div></td>');
 			$("#totalRegisCount").html('<h2>'+result[3].totalCount+'</h2><p>Members <br/>In <span style="font-weight:bold;"  class="text-green">Total</span></p><p class="label">Web -'+TotalWeb+'</p>&nbsp&nbsp<p class="label">Tab - '+TotalTab+'</p></div></td>');	
 			
-			$("#todayApTgRegisCount").html('<div class="span6 mytooltip"  data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[0].apWebCount+'] [Tab - '+result[0].apTabCount+']"><strong>AP </strong> <br/><span>'+result[0].apCount+'</span></div><div class="span6 text-right mytooltip" data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[0].tgWebCount+'] [Tab - '+result[0].tgTabCount+']"><strong>TS </strong><br/><span> '+result[0].tgCount+'</div>');				
-			$("#thisWeekApTgRegisCount").html('<div class="span6 mytooltip" data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[1].apWebCount+'] [Tab - '+result[1].apTabCount+']"><strong>AP </strong> <br/><span >'+result[1].apCount+'</span></div><div class="span6 text-right mytooltip" data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[1].tgWebCount+'] [Tab - '+result[1].tgTabCount+']"><strong>TS </strong><br/> <span >'+result[1].tgCount+'</span></div>');					
-			$("#monthApTgRegisCount").html('<div class="span6 mytooltip" data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[2].apWebCount+'] [Tab - '+result[2].apTabCount+']"><strong>AP </strong> <br/><span>'+result[2].apCount+'</span></div><div class="span6 text-right mytooltip" data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[2].tgWebCount+'] [Tab - '+result[2].tgTabCount+']"><strong>TS </strong><br/> <span >'+result[2].tgCount+'</span></div>');
-			$("#totalApTgRegisCount").html('<div class="mytooltip"  data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[3].apWebCount+'] [Tab - '+result[3].apTabCount+']"><strong>AP - </strong><span >'+result[3].apCount+'</span><span class="text-skyblue"> (NEW - '+result[4].apCount+')</span></div><div class="mytooltip"  data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[3].tgWebCount+'] [Tab - '+result[3].tgTabCount+']"><strong>TS - </strong> <span >'+result[3].tgCount+'</span><span class="text-skyblue"> (NEW - '+result[4].tgCount+')</span></div>');
+			$("#todayApTgRegisCount").html('<div style="cursor:pointer;" class="span6 mytooltip"  data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[0].apWebCount+'] [Tab - '+result[0].apTabCount+']"><strong>AP </strong> <br/><span>'+result[0].apCount+'</span></div><div style="cursor:pointer;" class="span6 text-right mytooltip" data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[0].tgWebCount+'] [Tab - '+result[0].tgTabCount+']"><strong>TS </strong><br/><span> '+result[0].tgCount+'</div>');				
+			$("#thisWeekApTgRegisCount").html('<div style="cursor:pointer;" class="span6 mytooltip" data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[1].apWebCount+'] [Tab - '+result[1].apTabCount+']"><strong>AP </strong> <br/><span >'+result[1].apCount+'</span></div><div style="cursor:pointer;" class="span6 text-right mytooltip" data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[1].tgWebCount+'] [Tab - '+result[1].tgTabCount+']"><strong>TS </strong><br/> <span >'+result[1].tgCount+'</span></div>');					
+			$("#monthApTgRegisCount").html('<div style="cursor:pointer;" class="span6 mytooltip" data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[2].apWebCount+'] [Tab - '+result[2].apTabCount+']"><strong>AP </strong> <br/><span>'+result[2].apCount+'</span></div><div style="cursor:pointer;" class="span6 text-right mytooltip" data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[2].tgWebCount+'] [Tab - '+result[2].tgTabCount+']"><strong>TS </strong><br/> <span >'+result[2].tgCount+'</span></div>');
+			$("#totalApTgRegisCount").html('<div style="cursor:pointer;" class="mytooltip"  data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[3].apWebCount+'] [Tab - '+result[3].apTabCount+']"><strong>AP - </strong><span >'+result[3].apCount+'</span><span class="text-skyblue"> (NEW - '+result[4].apCount+')</span></div><div style="cursor:pointer;" class="mytooltip"  data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[3].tgWebCount+'] [Tab - '+result[3].tgTabCount+']"><strong>TS - </strong> <span >'+result[3].tgCount+'</span><span class="text-skyblue"> (NEW - '+result[4].tgCount+')</span></div>');
 			$('.mytooltip').tooltip();					
 	   });
    }
-   
-   function getRecentlyRegisteredCadresInfo(){
+  
+  
+   function getRecentlyRegisteredCadresInfo(startIndex,refreshFlag){
+	   if(refreshFlag == true)
+		strIndex = 0;
+	 
        $("#recentRegisterCadresDiv").html('<img style="margin-top:180px;margin-left: 124px;" src="images/icons/loading.gif"/></div>');
        $.ajax({
           type:'GET',
           url: 'getCadreDashBoardBasicInfo.action',
-          data: {task:"recentlyRegistered"}
+          data: {task:"recentlyRegistered",startIndex:startIndex,maxIndex: 5}
        }).done(function(result){
     	   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
     		   location.reload(); 
@@ -316,11 +323,15 @@ $('#membersCount').addClass('animated fadeInX');
 				  str+='</div></div></td></tr>';
 			   }
 			     str+='</tbody></table>';
+				  str+='<a style="float:right;cursor:pointer;" id="nextId">Next<i class="icon-forward " /></a>';
+				 str+=' <a style="float:left;cursor:pointer;" id="previousId"><i class="icon-backward " /> Previous</a>';
+				
 			   $("#recentRegisterCadresDiv").html(str);
 			}else{
                $("#recentRegisterCadresDiv").html('<div style="margin-left: 65px; margin-top: 75px;"><b>No Data Available</b></div>');
             }			
 	   });
+	   
    }
    
    function getAssemblyWiseCompletedPercentage(assId,statId){
@@ -1065,14 +1076,30 @@ $('#membersCount').addClass('animated fadeInX');
 				}
 			});
 		}
+		
+		$("#nextId").live("click",function(){
+			
+		strIndex = strIndex + 5;
+		
+		getRecentlyRegisteredCadresInfo(strIndex,false);
+		
+		});
+		$("#previousId").live("click",function(){
+			if(strIndex > 0)
+			strIndex = strIndex - 5;
+			
+			getRecentlyRegisteredCadresInfo(strIndex,false);
+			
+		});
+	
        getWorkStartedConstituencyCount();
 	   getDistrictWiseCompletedPercentage(0,1);
 	   getAssemblyWiseCompletedPercentage(0,1);
-	   getRecentlyRegisteredCadresInfo();
+	   getRecentlyRegisteredCadresInfo(strIndex,false);
 	   getDashBoardBasicInfo();
 	   getWorkingMembersInfo();
 	   setInterval(function(){getWorkStartedConstituencyCount()},600000);
-	   setInterval(function(){getRecentlyRegisteredCadresInfo()},600000);
+	   setInterval(function(){getRecentlyRegisteredCadresInfo(strIndex,false)},600000);
 	   setInterval(function(){getDashBoardBasicInfo()},600000);
 	   setInterval(function(){getWorkingMembersInfo()},600000);
 </script>

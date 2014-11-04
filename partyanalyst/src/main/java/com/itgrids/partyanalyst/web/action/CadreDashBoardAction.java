@@ -174,7 +174,8 @@ public class CadreDashBoardAction implements ServletRequestAware {
 			if(task.equalsIgnoreCase("basicInfo")){
 		       result = cadreDashBoardService.getDashBoardBasicInfo();
 			}else if(task.equalsIgnoreCase("recentlyRegistered")){
-				 result = cadreDashBoardService.getRecentlyRegisteredCadresInfo();
+				 result = cadreDashBoardService.getRecentlyRegisteredCadresInfo(Integer.parseInt(request.getParameter("startIndex")), Integer.parseInt(request.getParameter("maxIndex")));
+				// result = cadreDashBoardService.getRecentlyRegisteredCadresInfo();
 			}else if(task.equalsIgnoreCase("assemblyWise")){
 				result = cadreDashBoardService.getAssemblyWiseCompletedPercentage(Long.parseLong(request.getParameter("assemblyId")),Long.parseLong(request.getParameter("stateId")));
 			}else if(task.equalsIgnoreCase("districtWise")){
