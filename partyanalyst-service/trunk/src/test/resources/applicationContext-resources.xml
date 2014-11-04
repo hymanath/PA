@@ -503,7 +503,7 @@
 				<value>com.itgrids.partyanalyst.model.CadreTxnDetails</value>
 				<value>com.itgrids.partyanalyst.model.CadreTxnUser</value>
 				<value>com.itgrids.partyanalyst.model.CadreOtpDetails</value>
-				
+				<value>com.itgrids.partyanalyst.model.LoginDetailsByTab</value>
 			</list>
 		</property>
 	</bean>
@@ -2590,7 +2590,10 @@
 <bean id="cadreOtpDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreOtpDetailsDAO" >
 	<property name="sessionFactory" ref="sessionFactory" />
 </bean>
-
+<bean id="loginDetailsByTabDAO" class="com.itgrids.partyanalyst.dao.hibernate.LoginDetailsByTabDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+ 
  <bean name="cadreSurveyTransactionService"  class="com.itgrids.partyanalyst.service.impl.CadreSurveyTransactionService">
    	 <property name="cadreTxnUserDAO" ref="cadreTxnUserDAO" />
      <property name="cadreTxnDetailsDAO" ref="cadreTxnDetailsDAO" />
@@ -2600,5 +2603,6 @@
      <property name="cadreOtpDetailsDAO" ref="cadreOtpDetailsDAO" />
  	 <property name="smsCountrySmsService" ref="smsCountrySmsService" />
   </bean>
-	
+  
+  
 </beans>

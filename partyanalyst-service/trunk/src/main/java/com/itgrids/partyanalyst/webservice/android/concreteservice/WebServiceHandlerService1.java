@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.webservice.android.concreteservice;
        
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -20,6 +21,7 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.dao.ILoginDetailsByTabDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppPingingDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserAccessKeyDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
@@ -33,16 +35,20 @@ import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterBoothActivitiesDAO;
 import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
+import com.itgrids.partyanalyst.dao.hibernate.LoginDetailsByTabDAO;
 import com.itgrids.partyanalyst.dto.AppDbDataVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.CadreTransactionVO;
+import com.itgrids.partyanalyst.dto.LoginDetailsByTabVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.LoginStatusVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.model.CadreSurveyUserAssignDetails;
+import com.itgrids.partyanalyst.model.LoginDetailsByTab;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
@@ -56,6 +62,7 @@ import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.itgrids.partyanalyst.service.ISurveyDetailsService;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.BoothVoterVO;
@@ -98,6 +105,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	private IVoiceRecordingDetailsDAO voiceRecordingDetailsDAO;
 	private IPingingTypeDAO pingingTypeDAO;
 	private IMobileAppPingingDAO mobileAppPingingDAO;
+    private ILoginDetailsByTabDAO loginDetailsByTabDAO;
 	@Autowired private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	private IUserVoterDetailsDAO userVoterDetailsDAO;
 	@Autowired private IBoothDAO boothDAO;
@@ -298,7 +306,15 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	public void setLoginService(ILoginService loginService) {
 		this.loginService = loginService;
 	}
-    // @Override
+    public ILoginDetailsByTabDAO getLoginDetailsByTabDAO() {
+		return loginDetailsByTabDAO;
+	}
+
+	public void setLoginDetailsByTabDAO(ILoginDetailsByTabDAO loginDetailsByTabDAO) {
+		this.loginDetailsByTabDAO = loginDetailsByTabDAO;
+	}
+
+	// @Override
 	public UserResponseVO checkForUserAuthentication(UserLoginVO inputvo)
 	{/*
 		StringBuilder buffer= new StringBuilder();
@@ -660,7 +676,39 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 			LOG.error("Exception raised in checkForUserAuthenticationForCadre  method in WebServiceHandlerService",e);
 
 		}
+		
 		return returnVO;
+	}
+	public void savingUserDetailsWhoLoggedIn( UserLoginUtils inputs, LoginResponceVO out)
+	{
+		try{
+			
+			
+				LoginDetailsByTab loginDetailsByTab = new LoginDetailsByTab();
+				
+				loginDetailsByTab.setLoginDateTime(new DateUtilService().getCurrentDateAndTime());
+				if(inputs!=null)
+				{
+				  loginDetailsByTab.setUserName(inputs.getUserName());
+				  loginDetailsByTab.setPassWord(inputs.getPassWord());
+				}
+				
+				if(out!=null)
+				  loginDetailsByTab.setLoginStatus("Success");
+				else
+				  loginDetailsByTab.setLoginStatus("Failure");
+				
+				loginDetailsByTabDAO.save(loginDetailsByTab);
+				
+			
+		
+	     }
+		 catch(Exception e){
+			
+			LOG.error("Exception raised in savingUserDetailsWhoLoggedIn  method in WebServiceHandlerService1"+e);
+			e.printStackTrace();
+		}
+	
 	}
 	
 	public LoginResponceVO databaseCheckForCadreUser(UserLoginVO inputvo)

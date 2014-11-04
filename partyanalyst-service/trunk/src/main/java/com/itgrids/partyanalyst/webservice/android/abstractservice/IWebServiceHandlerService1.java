@@ -4,10 +4,12 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.AppDbDataVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.LoginDetailsByTabVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
+import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLoginUtils;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLoginVO;
 
 public interface IWebServiceHandlerService1 {
@@ -28,4 +30,6 @@ public interface IWebServiceHandlerService1 {
 	public AppDbDataVO getAllVersionsOfAnApp(String appName,Double currentVerson,boolean includeTest);
 	
 	public AppDbDataVO getAllUpdatesByVersion(String appName,Double version);
+	
+	public void savingUserDetailsWhoLoggedIn(final UserLoginUtils inputs,final LoginResponceVO out);
 }
