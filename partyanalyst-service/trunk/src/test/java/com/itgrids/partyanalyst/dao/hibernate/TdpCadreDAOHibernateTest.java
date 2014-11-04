@@ -389,7 +389,7 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 	
 */
 	
-	public void testDteaisl()
+	/*public void testDteaisl()
 	{
 	try {
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
@@ -414,5 +414,12 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 	e.printStackTrace();
 }
 	
+	}*/
+	
+	public void testGetTdpCadreDetailsBySearchCriteria()
+	{
+		List<Object[]> list = tdpCadreDAO.getTdpCadreDetailsBySearchCriteria( "TR-T-3025-22199", "9666272968");
+		System.out.println(list);
+		
 	}
 }
