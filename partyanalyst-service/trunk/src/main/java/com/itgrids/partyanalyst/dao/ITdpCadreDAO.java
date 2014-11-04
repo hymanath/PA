@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.TdpCadre;
 
@@ -113,4 +114,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<String> getExistingCadreMemberDetails(String preEnrollmentNo);
 	public List<Object[]> getDistrictsByStateWiseAction(Long stateId);
 	public List<Object[]> getConstsByStateWiseAction(Long stateId);
+	
+	public List<Object[]> getCadreDetailsForSelection(CadrePrintInputVO input);
 }

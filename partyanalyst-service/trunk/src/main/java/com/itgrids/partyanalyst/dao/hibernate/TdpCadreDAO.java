@@ -7,6 +7,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -946,7 +947,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		
 		StringBuilder queryStr = new StringBuilder();
 
-		queryStr.append("select model.memberShipNo , model.voterId,model.firstname,model.relativename,model.voter.voterId,model.voter.voterIDCardNo,model.refNo,model.cardNumber,model.image from TdpCadre model where model.isDeleted = 'N' " );
+		queryStr.append("select model.memberShipNo , model.voterId,model.firstname,model.relativename,model.voter.voterId,model.voter.voterIDCardNo,model.refNo,model.cardNumber,model.image,model.photoType from TdpCadre model where model.isDeleted = 'N' " );
 				if (type.equalsIgnoreCase("panchayat")){
 					queryStr.append(" and model.userAddress.panchayat.panchayatId = :panchayatId");
 				}else if(type.equalsIgnoreCase("booth")){
@@ -1016,6 +1017,67 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 	{
 		Query query = getSession().createQuery("select model.memberShipNo from TdpCadre model where model.memberShipNo = :preEnrollmentNo");
 		query.setParameter("preEnrollmentNo", preEnrollmentNo);
+		return query.list();
+	}
+	
+	public List<Object[]> getCadreDetailsForSelection(CadrePrintInputVO input){
+		
+		StringBuilder queryStr = new StringBuilder();
+
+		queryStr.append("select model.memberShipNo ," +
+				" model.voterId,model.firstname," +
+				" model.relativename," +
+				" model.voter.voterId," +
+				" model.voter.voterIDCardNo," +
+				" model.refNo,model.cardNumber," +
+				" model.image," +
+				" model.photoType from TdpCadre model where model.isDeleted = 'N' " );
+				if(input.getDistrictId()!=null){
+					queryStr.append(" and model.userAddress.district.districtId = :districtId");
+				}
+				if (input.getPanchayatId()!=null){
+					queryStr.append(" and model.userAddress.panchayat.panchayatId = :panchayatId");
+				}
+				if(input.getBoothId()!=null){
+					queryStr.append(" and model.userAddress.booth.boothId = :boothId");
+				}
+				if(input.getConstituencyId()!=null){
+					queryStr.append(" and model.userAddress.constituency.constituencyId = :constituencyId");
+				}
+				if(input.getMandalId()!=null){
+					queryStr.append(" and model.userAddress.tehsil.tehsilId = :tehsilId");
+				}
+				if(input.getLocalBodyId()!=null){
+					queryStr.append(" and model.userAddress.localElectionBody.localElectionBodyId = :localElectionBodyId");
+				}
+				if(input.getRegType() != null){
+					queryStr.append(" and model.dataSourceType = :dataSourceType ");
+				}
+				queryStr.append(" order by model.tdpCadreId desc");	
+				
+		Query query = getSession().createQuery(queryStr.toString());
+		if(input.getDistrictId()!=null){
+			query.setParameter("districtId", input.getDistrictId());
+		}
+		if (input.getPanchayatId()!=null){
+			query.setParameter("panchayatId", input.getPanchayatId());
+		}
+		if(input.getBoothId()!=null){
+			query.setParameter("boothId", input.getBoothId());
+		}
+		if(input.getConstituencyId()!=null){
+			query.setParameter("constituencyId", input.getConstituencyId());
+		}
+		if(input.getMandalId()!=null){
+			query.setParameter("tehsilId", input.getMandalId());
+		}
+		if(input.getLocalBodyId()!=null){
+			query.setParameter("localElectionBodyId", input.getLocalBodyId());
+		}
+		if(input.getRegType() != null){
+			query.setParameter("dataSourceType", input.getRegType());
+		}
+		
 		return query.list();
 	}
 }
