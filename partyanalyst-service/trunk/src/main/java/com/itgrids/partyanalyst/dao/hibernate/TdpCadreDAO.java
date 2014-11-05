@@ -1083,7 +1083,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 				if(input.getRegType() != null){
 					queryStr.append(" and model.dataSourceType = :dataSourceType ");
 				}
-				queryStr.append(" and model.enrollmentYear = 2014   and model.cardNumber is null order by model.tdpCadreId desc");	
+				queryStr.append(" and model.enrollmentYear = 2014   and model.cardNumber is null and model.isDeleted = 'N'  order by model.tdpCadreId desc");	
 				
 		Query query = getSession().createQuery(queryStr.toString());
 		if(input.getDistrictId()!=null){

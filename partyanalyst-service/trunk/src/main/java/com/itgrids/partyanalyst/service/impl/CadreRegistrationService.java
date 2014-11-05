@@ -3677,10 +3677,22 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				{
 					String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
 					returnVO.setVoterImgPath(url);
-					List<String> names = voterNamesDAO.getVoterTeluguNames((Long)voterIdDetails.get(0)[4] );
+					List<Object[]> names = voterNamesDAO.getVoterTeluguNames((Long)voterIdDetails.get(0)[4] );
 					if(names != null && names.size() > 0)
 					{
-						returnVO.setVoterName(names.get(0));
+						String name = "";
+						if( names.get(0)[0] != null && names.get(0)[0] .toString().trim().length() > 0)
+						{
+							name = names.get(0)[0].toString() ;
+						}
+						if(names.get(0)[1] != null && names.get(0)[1] .toString().trim().length() > 0)
+						{
+							name = name +  names.get(0)[1].toString() ;
+						}
+						
+						if(name.trim().length() > 0)
+						name = name.replaceAll(",", " ").replaceAll(".", " ");
+						returnVO.setVoterName(name);
 					}
 				}
 				returnVO.setVillage(userAddress.getPanchayatId() != null ? panchayatDAO.get(userAddress.getPanchayatId()).getLocalName() : "");
