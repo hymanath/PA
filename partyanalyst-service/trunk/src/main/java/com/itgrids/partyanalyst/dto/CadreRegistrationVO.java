@@ -85,7 +85,7 @@ public class CadreRegistrationVO implements Serializable{
 	
 	private List<CadreFamilyVO> cadreFamilyDetails;
 	private String			relativeVoterId;
-	
+	private String     voterTeluguName;
 	
 	
 	
@@ -442,6 +442,12 @@ public class CadreRegistrationVO implements Serializable{
 	}
 	public void setCadrePrevYear(String cadrePrevYear) {
 		this.cadrePrevYear = cadrePrevYear;
+	}
+	public String getVoterTeluguName() {
+		return voterTeluguName;
+	}
+	public void setVoterTeluguName(String voterTeluguName) {
+		this.voterTeluguName = voterTeluguName;
 	}
 	
 	

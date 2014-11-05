@@ -986,6 +986,31 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						
 					userAddress = userAddressDAO.save(userAddress);
 					tdpCadre.setUserAddress(userAddress);	
+					try{
+						if(cadreRegistrationVO.getVoterTeluguName()!= null && cadreRegistrationVO.getVoterTeluguName().trim().length() > 0 && tdpCadre.getVoterId() != null &&  tdpCadre.getVoterId().longValue() > 0){
+							List<VoterNames> voterNames = voterNamesDAO.gerVoterNamesObjByVoterId(tdpCadre.getVoterId());
+							
+							if(voterNames != null && voterNames.size() > 0 && voterNames.get(0) != null){
+								for(VoterNames voterName:voterNames){
+									if(voterName != null){
+										voterName.setFirstName(cadreRegistrationVO.getVoterTeluguName().trim());
+										voterName.setLastName("");
+										voterNamesDAO.save(voterName);
+									}
+								}
+							}else{
+								VoterNames voterName = new VoterNames();
+								voterName.setVoter(voterDAO.get(tdpCadre.getVoterId()));
+								voterName.setFirstName(cadreRegistrationVO.getVoterTeluguName().trim());
+								voterName.setLastName("");
+								voterNamesDAO.save(voterName);
+							}
+							
+							
+						}
+					}catch(Exception e){
+						LOG.error(e);
+					}
 					if(cadreRegistrationVO.getNomineeName() != null && cadreRegistrationVO.getNomineeName().trim().length() > 0 && !cadreRegistrationVO.getNomineeName().trim().equalsIgnoreCase("null"))
 					{
 						tdpCadre.setNomineeName(cadreRegistrationVO.getNomineeName());
