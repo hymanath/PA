@@ -211,7 +211,25 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 		
 	 return Action.SUCCESS;
 	}
-	
+
+	public String getDistrictsForState()
+	{
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		districtsListForACountry = regionServiceDataImp.getDistrictsForState(Long.valueOf(jObj.getString("stateId")));
+		
+		if(districtsListForACountry != null && districtsListForACountry.size() > 1)
+			districtsListForACountry.add(0, new SelectOptionVO(0L,"Select District"));
+		
+	 return Action.SUCCESS;
+	}
 	public String getConstituenciesForADistrict()
 	{
 		String param = null;
@@ -224,6 +242,31 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 			e.printStackTrace();
 		}
 		constituenciesListForADistrict = regionServiceDataImp.getConstituenciesByDistrictID(Long.valueOf(jObj.getString("districtId")));
+		/*
+		 * Modified by ravi 
+		 * please refer previous version to check for original code.
+		 */ 
+		if(constituenciesListForADistrict == null || constituenciesListForADistrict.size() == 0)
+			constituenciesListForADistrict.add(0, new SelectOptionVO(0L,"Select Constituency"));
+		
+		if(constituenciesListForADistrict != null && constituenciesListForADistrict.size() > 1)
+			constituenciesListForADistrict.add(0, new SelectOptionVO(0L,"Select Constituency"));
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getConstituenciesForState()
+	{
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		constituenciesListForADistrict = regionServiceDataImp.getConstituenciesForState(Long.valueOf(jObj.getString("stateId")));
 		/*
 		 * Modified by ravi 
 		 * please refer previous version to check for original code.

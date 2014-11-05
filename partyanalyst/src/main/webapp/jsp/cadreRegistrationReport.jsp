@@ -169,7 +169,7 @@
 				     <tr id="statesDispalyMainDiv">
 						 <td><b>Select State :</b></td>
 						 <td>  
-						   <select id="statesDispalyId">
+						   <select id="statesDispalyId" onchange="getConstituenciesForState(this.value);">
 							 <option value="0">All</option>
 							 <option value="1">Andhra Pradesh</option>
 							 <option value="36">Telangana</option>
@@ -179,7 +179,7 @@
 					 <tr id="districtsDispalyMainDiv" style="display:none;">
 						 <td><b>Select District :</b></td>
 						 <td>  
-						   <select id="districtsDispalyId">
+						   <select id="districtsDispalyId" onchange="getConstituenciesForDistricts(this.value);">
 						   </select> 
 						 </td>
 					 </tr>
@@ -235,6 +235,11 @@
 	    </div>
 	</div>
 <script type="text/javascript">
+
+   $(document).ready(function(){
+		$('#locationsDispalyId').val(1);
+	});
+	
 	$("#statesDivId").change(function(){
 		var lctnType = $("#selLctnType").val();
 		if(lctnType == 3){
@@ -416,6 +421,7 @@
 	     state = true;
 	  }else if(locationLvl == 3){
 	     district = true;
+		 getDistricts();
 	  }else if(locationLvl == 4){
 	     showCompleteConstituencyDetails("ALL");
 	     constituency = true;
@@ -442,28 +448,39 @@
 	     $("#statesDispalyMainDiv").hide();
 	  }
 	  if(district){
+	     $("#statesDispalyMainDiv").show();
+		 $("#statesDispalyId").val(0);
 	     $("#districtsDispalyMainDiv").show();
 		 $("#districtsDispalyId").val(0);
 	  }else{
 	    $("#districtsDispalyMainDiv").hide();
 	  }
 	  if(constituency){
-	    $("#constituencyDispalyMainDiv").show();
+	    $("#statesDispalyMainDiv").show();
+		$("#statesDispalyId").val(0);
+		$("#constituencyDispalyMainDiv").show();
+		$("#constituencyDispalyId").val(0);
 	  }else{
 	    $("#constituencyDispalyMainDiv").hide();
 	  }
 	  if(mandal){
+	     $("#constituencyDispalyMainDiv").show();
+		 $("#constituencyDispalyId").val(0);
 	     $("#mandalDispalyMainDiv").show();
+		 $("#mandalDispalyId").val(0);
+		 $("#statesDispalyMainDiv").hide();
 	  }else{
 	     $("#mandalDispalyMainDiv").hide();
 	  }
 	  if(panchayat){
 	    $("#panchayatDispalyMainDiv").show();
+		$("#statesDispalyMainDiv").hide();
 	  }else{
 	    $("#panchayatDispalyMainDiv").hide();
 	  }
 	  if(booth){
 	    $("#boothDispalyMainDiv").show();
+		$("#statesDispalyMainDiv").hide();
 	  }else{
 	    $("#boothDispalyMainDiv").hide();
 	  }
@@ -969,6 +986,93 @@
 			$("#constdisplaydivid").show();
 		});
 	}
+	
+  function getConstituenciesForState(state){
+  getDistrictsForStates(state);
+   var jsObj=
+   {				
+				stateId:state,
+				elmtId:"stateList",
+                type:"default",
+				task:"getConstituenciesForState"				
+	}
+    $.ajax({
+          type:'GET',
+          url: 'getConstituenciesForStateAjaxAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		   location.reload(); 
+	   }
+	   $("#constituencyDispalyId").empty();
+	   
+     for(var i in result){
+	   if(result[i].id == 0){
+          $("#constituencyDispalyId").append('<option value='+result[i].id+'>ALL</option>');
+	   }else{
+	      $("#constituencyDispalyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	   }
+	 }
+   });
+  }
+  
+  function getConstituenciesForDistricts(district){
+	var jsObj=
+   {				
+				districtId:district,
+				elmtId:"districtList_d",
+                type:"default",
+				task:"getConstituenciesForDistricts"				
+	}
+    $.ajax({
+          type:'GET',
+          url: 'getConstituenciesForADistrictAjaxAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		   location.reload(); 
+	   }
+	   $("#constituencyDispalyId").empty();
+     for(var i in result){
+	   if(result[i].id == 0){
+          $("#constituencyDispalyId").append('<option value='+result[i].id+'>ALL</option>');
+	   }else{
+	      $("#constituencyDispalyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	   }
+	 }
+   });
+  }
+  
+  function getDistrictsForStates(state){
+   
+   var jsObj=
+   {				
+				stateId:state,
+				elmtId:"districtList_d",
+                type:"default",
+				task:"getDistrictsForState"				
+	}
+    $.ajax({
+          type:'GET',
+          url: 'getDistrictsForStateAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		   location.reload(); 
+	   }
+	   $("#districtsDispalyId").empty();
+     for(var i in result){
+	   if(result[i].id == 0){
+          $("#districtsDispalyId").append('<option value='+result[i].id+'>ALL</option>');
+	   }else{
+	      $("#districtsDispalyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	   }
+	 }
+   });
+  }
 </script>
 </body>
 </html>
