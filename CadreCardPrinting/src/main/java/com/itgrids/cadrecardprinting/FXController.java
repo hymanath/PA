@@ -3,7 +3,9 @@
 
 		import java.net.URL;
 		import java.util.ArrayList;
+		import java.util.HashMap;
 		import java.util.List;
+		import java.util.Map;
 		import java.util.ResourceBundle;
 
 		import javafx.application.Platform;
@@ -104,7 +106,8 @@
 		
 		static ObservableList<CadrePrintVO> data = null;
 		
-		String selectedImgPath ;
+		Map<String, String> voterImgMap = new HashMap<String, String>();
+		
 		
 		@SuppressWarnings("unchecked")
 		@FXML private void handleButtonAction() {
@@ -422,7 +425,8 @@
 			  						                    if (group.getSelectedToggle() != null) {
 			  						                    /*final Image image = new Image(group.getSelectedToggle().getUserData().toString());
 			  						                	icon.setImage(image);*/
-			  						                    selectedImgPath = group.getSelectedToggle().getUserData().toString();
+			  						                    	voterImgMap.put(item.toString(), group.getSelectedToggle().getUserData().toString());
+			  						                    	 
 			  						                }                
 			  						            }
 			  						        });
@@ -574,7 +578,7 @@
 				if(item.getVoterIdTagging1().getValue()){
 					System.out.println(item.getVoterId() +" --- "+ item.getNfcNumber());
 					String status = client.tagCardIdForNFCReader(item.getNfcNumber(),new Long (item.getVoterId()));
-					//msgBox(status);
+					msgBox(status);
 					
 				}
 				tableView.setItems(data);
@@ -585,11 +589,17 @@
 		@FXML private void handleButtonActionForCardSPrinting() {
 			JerseyClientGet client = new JerseyClientGet();
 			String[] args = null;
-			System.out.println(selectedImgPath);
 			for ( CadrePrintVO item :data) {
-				if(!item.getNfcNumber().isEmpty() && item.getPrintStatus().equalsIgnoreCase("Pending")){				
+				
+				String  linked = client.checkNFCNumberForVoterId(Long.valueOf(item.getVoterId()));
+				if(linked.equalsIgnoreCase("success") && item.getPrintStatus().equalsIgnoreCase("Pending")){
+			
+				//if(!item.getNfcNumber().isEmpty() && item.getPrintStatus().equalsIgnoreCase("Pending")){				
 					
 					System.out.println(item.getFirstCode());
+					
+					System.out.println(voterImgMap.get(item.getVoterId()));
+					
 					Object obj = client.getCadreDetailsForPrinting(item.getFirstCode());
 					PrintClass printClass = new PrintClass();
 					
@@ -597,15 +607,19 @@
 					TypeToken<CadrePrintVO> token = new TypeToken<CadrePrintVO>(){};
 					
 					CadrePrintVO vo = gson.fromJson(obj.toString(), token.getType());
-					if(selectedImgPath != null)
+					if(voterImgMap != null && !voterImgMap.isEmpty())
 					{
-						vo.setVoterImgPath(selectedImgPath);
+						vo.setVoterImgPath(voterImgMap.get(item.getVoterId()));
 					}
 					else
 					{
 						vo.setVoterImgPath(item.getImage());
 					}
 					printClass.imagePrinting(vo);
+				}
+				else{
+					msgBox("Link the NFC Card");
+					return;
 				}
 			}
 		}
@@ -799,7 +813,6 @@
 						for(int i=0;i<data.size();i++){
 							CadrePrintVO cellData = data.get(i);
 							if(cellData.getVoterIdTagging1().getValue()){
-							//tableView.getItems().get(getIndex()).nfcNumberProperty().set("");
 							cellData.nfcNumberProperty().set("");
 							CardReader cardTest = new CardReader();
 							String cardNo = cardTest.getUniCode();
