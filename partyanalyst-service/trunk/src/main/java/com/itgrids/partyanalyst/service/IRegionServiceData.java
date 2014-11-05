@@ -91,4 +91,8 @@ public interface IRegionServiceData {
 	
 	public  List<SelectOptionVO> getLocalElectionBodiesByUrbanType(Long constituencyId, Long urbanTypeId);
 	
+	public List<SelectOptionVO> getDistrictsForState(Long stateID);
+	
+	public List<SelectOptionVO> getConstituenciesForState(Long stateID);
+	
 }

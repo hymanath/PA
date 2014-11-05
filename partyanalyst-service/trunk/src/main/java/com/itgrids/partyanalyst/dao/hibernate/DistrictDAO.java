@@ -80,6 +80,21 @@ IDistrictDAO {
 		return getHibernateTemplate().find("select model.districtId,model.districtName from District model where model.state.stateId = ? order by model.districtName",stateId);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List getDistrictsForState(Long stateId){
+		Long sid=1l;
+		StringBuilder query = new StringBuilder();
+		query.append("select model.districtId,model.districtName from District model where model.state.stateId = ? ");
+		if(stateId==1){
+			query.append(" and model.districtId>10 ");
+		}
+		if(stateId==36){
+			query.append(" and model.districtId>=1 and model.districtId<=10 ");
+		}
+		query.append(" order by model.districtName");
+		return getHibernateTemplate().find(query.toString(),sid);
+	}
+	
 
 	@SuppressWarnings("unchecked")
 	public List<Long> getAllDistrictByStateIds(List<Long> stateIds) {	
