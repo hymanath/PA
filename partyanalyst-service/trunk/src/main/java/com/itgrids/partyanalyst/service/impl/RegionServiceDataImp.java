@@ -239,7 +239,25 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		}
 	}
 	
-	
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getDistrictsForState(Long stateID) {
+		try
+		{
+			List<SelectOptionVO> formattedDistricts = new ArrayList<SelectOptionVO>();
+			List<Object[]> param = districtDAO.getDistrictsForState(stateID);
+			for(Object[] obj : param){
+				SelectOptionVO objVO = new SelectOptionVO();
+				objVO.setId((Long)obj[0]);
+				objVO.setName(WordUtils.capitalize(obj[1].toString().toLowerCase()));
+				formattedDistricts.add(objVO);
+			}
+		return formattedDistricts;
+		}
+		catch(Exception e){
+			log.error("Exception Occured During fetching Districts from state with stateId = "+ stateID + " Exception is -- "+e);
+			return null;
+		}
+	}	
 
 	public List<SelectOptionVO> getMandalsByConstituencyID(Long constituencyID){
 		List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(constituencyID);
@@ -338,6 +356,17 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
 		for(Constituency constituency : constituencies){
 			result.add(new SelectOptionVO(constituency.getConstituencyId(),WordUtils.capitalize(constituency.getName().toLowerCase())));
+		}
+		Collections.sort(result);
+		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getConstituenciesForState(Long stateID){
+		List<Object[]> constituencies = constituencyDAO.findConstituenciesByStateId(stateID);
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+		for(Object[] constituency : constituencies){
+			result.add(new SelectOptionVO((Long)constituency[0],WordUtils.capitalize(constituency[1].toString().toLowerCase())));
 		}
 		Collections.sort(result);
 		return result;
