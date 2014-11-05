@@ -392,6 +392,10 @@ $('#membersCount').addClass('animated fadeInX');
     		   location.reload(); 
     	   }
 	      if(result.length > 0){
+		  try{
+			result.sort(SortByName); 
+			}catch(e){
+			}
 		    var str='';
 		    for(var i in result){
 				if(assId == 0){
@@ -445,6 +449,10 @@ $('#membersCount').addClass('animated fadeInX');
 	       if(result.length > 0){
 		     var str='';
 		    for(var i in result){
+			try{
+			result.sort(SortByName); 
+			}catch(e){
+			}
 			    if(distId == 0){
 				  $("#districtWiseSelDivId").append('<option value='+result[i].tgCount+'>'+result[i].location+'</option>');
 				}
@@ -1267,7 +1275,11 @@ $('#membersCount').addClass('animated fadeInX');
 	   	}	   	
 	   	
 	   } 
-
+function SortByName(a, b){
+  var aName = a.location.toLowerCase();
+  var bName = b.location.toLowerCase(); 
+  return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+}
 	   
 </script>
 
