@@ -8789,6 +8789,19 @@
 			</result>
 		</action>
 		
+		<action name="getConstituenciesForStateAjaxAction" class="cadreSearchAjaxAction" method="getConstituenciesForState"> 
+              <result type="json" name="success">
+           		<param name="root">constituenciesListForADistrict</param>
+        	</result>       		
+        </action>
+        
+        <action name="getDistrictsForStateAction" class="cadreSearchAjaxAction" method="getDistrictsForState"> 
+              <result type="json" name="success">
+           		<param name="root">districtsListForACountry</param>
+        	</result>       		
+        </action>
+        
+        
 </package>
 
 </struts>      
