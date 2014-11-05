@@ -591,8 +591,8 @@
 			String[] args = null;
 			for ( CadrePrintVO item :data) {
 				
-				String  linked = client.checkNFCNumberForVoterId(Long.valueOf(item.getVoterId()));
-				if(linked.equalsIgnoreCase("success") && item.getPrintStatus().equalsIgnoreCase("Pending")){
+				String  linked = client.checkNFCNumberForVoterId(Long.valueOf(item.getVoterId()) );
+				if(!linked.equalsIgnoreCase("success") && item.getPrintStatus().equalsIgnoreCase("Pending") && !item.getNfcNumber().isEmpty()){
 			
 				//if(!item.getNfcNumber().isEmpty() && item.getPrintStatus().equalsIgnoreCase("Pending")){				
 					
