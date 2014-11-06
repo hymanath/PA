@@ -4422,7 +4422,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		List<CadrePrintVO> returnList = null;
 		try {
 		 //List<Object[]> result = tdpCadreDAO.getPanchayatWiseCadreDetails1(panchayatId,type);
-			 List<Object[]> finalResult = null;
+			 List<Object[]> finalResult = new ArrayList<Object[]>();
 			
 			 List<Object[]> result = tdpCadreDAO.getCadreDetailsForSelection(input);
 			 List<Object[]> result1 = tdpCadreDAO.getCadreDetailsForSelectionByFamilyVoterId(input);
