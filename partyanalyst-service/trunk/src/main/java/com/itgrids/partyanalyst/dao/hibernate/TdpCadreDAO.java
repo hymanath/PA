@@ -1120,7 +1120,7 @@ public List<Object[]> getCadreDetailsForSelectionByFamilyVoterId(CadrePrintInput
 		queryStr.append("select model.memberShipNo ," +
 				" model.familyVoterId,model.firstname," +
 				" model.relativename," +
-				" model.voter.familyVoterId," +
+				" model.familyVoterId," +
 				" model.voter.voterIDCardNo," +
 				" model.refNo,model.cardNumber," +
 				" model.image," +
