@@ -1406,8 +1406,8 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			}
 			/*cadres = tdpCadreDAO.getPanchayatWiseCadreInfo(locationIds,startIndex,maxIndex,orderBy,orderType);
 			totalCount = tdpCadreDAO.getPanchayatWiseCadreInfoCount(locationIds);*/
-            cadres = tdpCadreDAO.getBoothWiseCadreInfo(boothsList,startIndex,maxIndex,orderBy,orderType);
-			totalCount = tdpCadreDAO.getBoothWiseCadreInfoCount(boothsList);
+            cadres = tdpCadreDAO.getBoothWiseCadreInfo(boothIds,startIndex,maxIndex,orderBy,orderType);
+			totalCount = tdpCadreDAO.getBoothWiseCadreInfoCount(boothIds);
 		}
 		if(cadres != null && cadres.size() > 0){
 			for(Object[] cadre:cadres){
