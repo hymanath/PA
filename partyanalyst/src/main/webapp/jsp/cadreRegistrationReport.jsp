@@ -355,7 +355,7 @@
 				  str+='<th>End Time</th>';
 					}
 				  str+='<th>Count</th>';
-				  str+='<th>Amount need to paid</th>';
+				  str+='<th>Amount need to be paid</th>';
 				}
 				str+='</tr>';
 				str+='</thead><tbody>';
