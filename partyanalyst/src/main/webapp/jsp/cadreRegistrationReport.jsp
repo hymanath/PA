@@ -330,11 +330,13 @@
 		        str+='<input type="button"  style="margin-bottom:15px;margin-left: 375px;"  class="btn" onclick="generateExcel(\'usersStatusReportTab\');" value="Click Here To Generate Excel"/>';
 		        str+='<div id="resultTableDiv" style="overflow-x:scroll;"><table class="table table-bordered table-striped table-hover" id="usersStatusReportTab"><thead>';
 				str+='<tr>';
-				str+='<th rowspan="2">User</th>';
-				str+='<th rowspan="2" >MobileNo</th>';
+				
+				str+='<th rowspan="2" >Constituency</th>';
 				str+='<th rowspan="2" >State</th>';
 				str+='<th rowspan="2" >District</th>';
-				str+='<th rowspan="2" >Constituency</th>';
+				
+				str+='<th rowspan="2">User</th>';
+				str+='<th rowspan="2" >MobileNo</th>';
 				for(var i in result[0].infoList){
 				  str+='<th colspan="3">'+result[0].infoList[i].date+'</th>';
 				}
@@ -344,14 +346,14 @@
 				  str+='<th>Start Time</th>';
 				  str+='<th>End Time</th>';
 				  str+='<th>Count</th>';
+				  str+='<th>Amount need to paid</th>';
 				}
 				str+='</tr>';
 				str+='</thead><tbody>';
 				for(var i in result){
 				  str+='<tr>';
-				  str+='  <td>'+result[i].name+'</td>';
-				  if(result[i].area != null){
-				     str+='  <td>'+result[i].area+'</td>';
+				   if(result[i].memberShipNo != null){
+				     str+='  <td>'+result[i].memberShipNo+'</td>';
 				   }else{
 				      str+='  <td>-</td>';
 				   }
@@ -365,8 +367,11 @@
 				   }else{
 				      str+='  <td>-</td>';
 				   }
-				  if(result[i].memberShipNo != null){
-				     str+='  <td>'+result[i].memberShipNo+'</td>';
+				 
+				   str+='  <td>'+result[i].name+'</td>';
+				   
+				  if(result[i].area != null){
+				     str+='  <td>'+result[i].area+'</td>';
 				   }else{
 				      str+='  <td>-</td>';
 				   }
@@ -384,6 +389,12 @@
 					if(result[i].infoList[j].totalCount != null){
 				      str+='  <td>'+result[i].infoList[j].totalCount+'</td>';
 					}else{
+					  str+='  <td>-</td>';
+					}
+					if(result[i].infoList[j].totalCount != null){
+				      str+='  <td>'+result[i].infoList[j].amount+'</td>';
+					}
+					else{
 					  str+='  <td>-</td>';
 					}
 				  }
