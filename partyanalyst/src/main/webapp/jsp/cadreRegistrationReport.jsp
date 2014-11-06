@@ -134,6 +134,8 @@
 				   </tr>
 				   <tr><td><b>From Date :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="fromDate"/></td></tr>
 				   <tr><td><b>To Date   :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="toDate" /></td></tr>
+				<tr><td></td><td><input type="checkbox" id="timeCheckBox" style="margin-top:-3px">&nbsp;&nbsp;StartTime And End Time 
+				</td></tr>
 				   <tr>
 				      <td></td><td><input type="button" style="margin-left: 12px;margin-top: 13px;" class="btn btn-success" id="getCandidateDataCollectionInfoId" onclick="getCandidateDataCollectionInfo();" value="Submit"/>
 						<img id="ajaxImgStyle" style="display:none;margin-left: 10px;" src="images/icons/search.gif"/>
@@ -280,6 +282,7 @@
 	if(locationType==1){locationId=getReqIds("statesDivId");}
 	if(locationType==2){locationId=getReqIds("displaydistbox");}
 	if(locationType==3){locationId=getReqIds("displayconstbox");}
+	var timeCheckBox = $("#timeCheckBox").is(':checked');
 	
 	var startDate = $("#fromDate").val();
 	var endDate = $("#toDate").val();
@@ -320,7 +323,7 @@
     $.ajax({
           type:'GET',
           url: 'getCadreDashBoardBasicInfo.action',
-          data: {task:"candidateDataCollectionInfo",locationType:locationType,locationId:locationId,fromDate:$("#fromDate").val(),toDate:$("#toDate").val()}
+          data: {task:"candidateDataCollectionInfo",locationType:locationType,locationId:locationId,fromDate:$("#fromDate").val(),toDate:$("#toDate").val(),timeCheckBox:timeCheckBox}
        }).done(function(result){
 	   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
 		   location.reload(); 
@@ -338,13 +341,19 @@
 				str+='<th rowspan="2">User</th>';
 				str+='<th rowspan="2" >MobileNo</th>';
 				for(var i in result[0].infoList){
-				  str+='<th colspan="3">'+result[0].infoList[i].date+'</th>';
+					if(timeCheckBox == true)
+					 str+='<th colspan="4">'+result[0].infoList[i].date+'</th>';
+					else
+					str+='<th colspan="3">'+result[0].infoList[i].date+'</th>';
 				}
 				str+='</tr>';
 				str+='<tr>';
 				for(var i in result[0].infoList){
+					if(timeCheckBox == true)
+					{
 				  str+='<th>Start Time</th>';
 				  str+='<th>End Time</th>';
+					}
 				  str+='<th>Count</th>';
 				  str+='<th>Amount need to paid</th>';
 				}
@@ -376,6 +385,8 @@
 				      str+='  <td>-</td>';
 				   }
 				  for(var j in result[i].infoList){
+					  if(timeCheckBox == true)
+					{
 				    if(result[i].infoList[j].area != null){
 				      str+='  <td>'+result[i].infoList[j].area+'</td>';
 					}else{
@@ -385,6 +396,7 @@
 				      str+='  <td>'+result[i].infoList[j].location+'</td>';
 					}else{
 					  str+='  <td>-</td>';
+					}
 					}
 					if(result[i].infoList[j].totalCount != null){
 				      str+='  <td>'+result[i].infoList[j].totalCount+'</td>';
