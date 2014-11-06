@@ -3707,7 +3707,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						}
 						
 						if(name.trim().length() > 0)
-						name = name.replaceAll(",", " ").replaceAll(".", " ");
+						//name = name.replaceAll(",", " ").replaceAll(".", " ");
 						returnVO.setVoterName(name);
 					}
 				}
