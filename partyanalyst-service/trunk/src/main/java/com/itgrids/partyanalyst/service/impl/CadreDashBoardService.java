@@ -538,6 +538,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		SimpleDateFormat timeFormate = new SimpleDateFormat("HH:mm");
 		try{
 			List<Date> datesList = new ArrayList<Date>();
+			Map<Long,String> unameMap = new HashMap<Long, String>();
 			Map<Long,Map<Date,CadreRegisterInfo>> userMap = new HashMap<Long,Map<Date,CadreRegisterInfo>>();//Map<userId,Map<Date,info>>
 			Map<Date,CadreRegisterInfo> dateMap = new HashMap<Date,CadreRegisterInfo>();//Map<Date,info>
 			Map<Long,String> userNames = new HashMap<Long,String>();
@@ -554,11 +555,13 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				if(dateMap == null){
 					dateMap = new HashMap<Date,CadreRegisterInfo>();
 					userMap.put((Long)data[5],dateMap);
+					unameMap.put((Long)data[5], data[1].toString());
 				}
 				vo = new CadreRegisterInfo() ;
 				vo.setArea(convertTimeTo12HrsFormat(timeFormate.format((Date)data[2])));
 				vo.setLocation(convertTimeTo12HrsFormat(timeFormate.format((Date)data[3])));
 				vo.setTotalCount((Long)data[0]);
+				vo.setAmount(vo.getTotalCount() * 100);
 				dateMap.put((Date)data[4], vo);
 			}
 			int count = 0;
@@ -584,6 +587,8 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				dateMap = userMap.get(key);
 				vo = new CadreRegisterInfo();
 				vo.setName(userNames.get(key));
+				
+				vo.setUname(unameMap.get(key) != null ? unameMap.get(key).toString() : "");
 				CadreRegisterInfo userData = mobileNos.get(key);
 				if(userData != null){
 				    vo.setArea(userData.getArea());//mobileNo
