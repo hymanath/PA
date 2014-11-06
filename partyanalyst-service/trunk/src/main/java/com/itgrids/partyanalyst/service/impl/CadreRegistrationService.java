@@ -4422,16 +4422,22 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		List<CadrePrintVO> returnList = null;
 		try {
 		 //List<Object[]> result = tdpCadreDAO.getPanchayatWiseCadreDetails1(panchayatId,type);
-		
-		  List<Object[]> result = tdpCadreDAO.getCadreDetailsForSelection(input);
+			 List<Object[]> finalResult = null;
 			
-		 if(result != null && result.size() > 0)
-		 {
+			 List<Object[]> result = tdpCadreDAO.getCadreDetailsForSelection(input);
+			 List<Object[]> result1 = tdpCadreDAO.getCadreDetailsForSelectionByFamilyVoterId(input);
+			 if(result !=null && result.size()>0)
+				 finalResult.addAll(result);
+			 if(result1 !=null && result1.size()>0)
+				 finalResult.addAll(result1);
+		 
+			 if(finalResult != null && finalResult.size() > 0)
+			 {
 			 //String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
 			 returnList = new ArrayList<CadrePrintVO>();
 			 Long count = 1l;
 			 
-			 for (Object[] objects : result)
+			 for (Object[] objects : finalResult)
 			 {
 				 CadrePrintVO cadrePrintVO = new CadrePrintVO();
 				 	Long voterId = (Long)objects[1];
@@ -4517,6 +4523,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					returnList.add(cadrePrintVO);
 			 }
 		 }
+					
+				
 		} catch (Exception e) {
 			LOG.error("Exception raised in getCadreDetailsForPrinting in CadreRegistrationService service", e);
 		}
