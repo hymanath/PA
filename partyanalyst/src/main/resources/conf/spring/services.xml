@@ -2211,6 +2211,7 @@
 		<property name="cardReceiverDAO" ref="cardReceiverDAO" />
 		<property name="casteDAO" ref="casteDAO" />
 		<property name="voterNamesDAO" ref="voterNamesDAO" />
+		<property name="smsJobStatusDAO" ref="smsJobStatusDAO" />
 		
      </bean>
       
