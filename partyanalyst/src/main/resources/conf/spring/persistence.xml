@@ -501,6 +501,7 @@
 				<value>com.itgrids.partyanalyst.model.CadreOtpDetails</value>
 				<value>com.itgrids.partyanalyst.model.AppDbUpdate</value>
 				<value>com.itgrids.partyanalyst.model.LoginDetailsByTab</value>
+				<value>com.itgrids.partyanalyst.model.SmsJobStatus</value>
 				</list>
 			
 		</property>

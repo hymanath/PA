@@ -1713,5 +1713,9 @@
 <bean id="loginDetailsByTabDAO" class="com.itgrids.partyanalyst.dao.hibernate.LoginDetailsByTabDAO" >
 	<property name="sessionFactory" ref="sessionFactory" />
 </bean>
+
+<bean id="smsJobStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsJobStatusDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
 	<!--  end -->
 </beans>		
