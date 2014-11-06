@@ -34,8 +34,11 @@ public class PrintClass {
 	                
 	             }
 	             telegraficoFont =  f1.deriveFont(Font.BOLD, 45);
-	           
-	            String path = "D:/Empty.jpg";
+	             String path="";
+	            if(cadrePrintVO.getIsPrint()) 
+	            	path = "D:/Empty.jpg";
+	            else
+	            	path = "D:/Empty1.jpg";
 	            File file = new File(path);
 	            BufferedImage bufferedImage = ImageIO.read(file);
 	        
@@ -102,10 +105,11 @@ public class PrintClass {
 	           
 	            grph.drawImage(returnCreatedImage(cadrePrintVO.getFirstCode()), 246, 76, null);
 	            grph.dispose();
-	           RenderedImage  ri = bufferedImage;
-	         
-	         
-	           printDemo.print(ri);
+	            RenderedImage  ri = bufferedImage;
+	            if(cadrePrintVO.getIsPrint())
+	            	printDemo.print(ri);
+	            else
+	            	printDemo.print1(ri);
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }

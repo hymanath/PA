@@ -212,12 +212,11 @@
 			NFCNumberId.setEditable(true);
 			refId.setCellValueFactory(new PropertyValueFactory<CadrePrintVO, String>("refNumber"));
 			VoterIdTagging.setCellValueFactory(new PropertyValueFactory("voterIdTagging1"));
-			VoterIdTagging.setCellFactory(new Callback<TableColumn<CadrePrintVO, CheckBox>, TableCell<CadrePrintVO, CheckBox>>() {
+			VoterIdTagging.setCellFactory(new Callback<TableColumn<CadrePrintVO, Boolean>, TableCell<CadrePrintVO, Boolean>>() {
 			
-			public TableCell<CadrePrintVO, CheckBox> call(TableColumn<CadrePrintVO, CheckBox> p) {
+			public TableCell<CadrePrintVO, Boolean> call(TableColumn<CadrePrintVO, Boolean> p) {
 			
-				return new CheckBoxTableCell<CadrePrintVO, CheckBox>();
-			
+				return new CheckBoxTableCell();
 			}
 			
 			});
@@ -572,30 +571,33 @@
 		
 		@SuppressWarnings("unused")
 		@FXML private void handleButtonActionForCardSaning() {
+			Boolean linkingFlag = false;
 			JerseyClientGet client = new JerseyClientGet();
 			String[] args = null;
 			for ( CadrePrintVO item :data) {
 				if(item.getVoterIdTagging1().getValue()){
 					System.out.println(item.getVoterId() +" --- "+ item.getNfcNumber());
+					linkingFlag= true;
 					String status = client.tagCardIdForNFCReader(item.getNfcNumber(),new Long (item.getVoterId()));
 					msgBox(status);
 					
 				}
 				tableView.setItems(data);
 			}
+			if(!linkingFlag)
+				msgBox("Link the NFC Card");
 		}
 		
 		@SuppressWarnings("unused")
 		@FXML private void handleButtonActionForCardSPrinting() {
 			JerseyClientGet client = new JerseyClientGet();
 			String[] args = null;
+			boolean flag = false;
 			for ( CadrePrintVO item :data) {
 				
 				String  linked = client.checkNFCNumberForVoterId(Long.valueOf(item.getVoterId()) );
 				if(!linked.equalsIgnoreCase("success") && item.getPrintStatus().equalsIgnoreCase("Pending") && !item.getNfcNumber().isEmpty()){
-			
-				//if(!item.getNfcNumber().isEmpty() && item.getPrintStatus().equalsIgnoreCase("Pending")){				
-					
+					flag= true;
 					System.out.println(item.getFirstCode());
 					
 					System.out.println(voterImgMap.get(item.getVoterId()));
@@ -615,12 +617,55 @@
 					{
 						vo.setVoterImgPath(item.getImage());
 					}
+					vo.setIsPrint(true);
 					printClass.imagePrinting(vo);
+					   
+			 }
+			}
+				if(!flag){					
+					msgBox("Link the NFC Card");					
 				}
-				else{
-					msgBox("Link the NFC Card");
-					return;
-				}
+			
+		}
+		
+		
+		@SuppressWarnings("unused")
+		@FXML private void handleButtonActionForCardSPrintingPreview() {
+			JerseyClientGet client = new JerseyClientGet();
+			String[] args = null;
+			boolean flag1 = false;
+			for ( CadrePrintVO item :data) {
+				
+				String  linked = client.checkNFCNumberForVoterId(Long.valueOf(item.getVoterId()) );
+				if(!linked.equalsIgnoreCase("success") && item.getPrintStatus().equalsIgnoreCase("Pending") && !item.getNfcNumber().isEmpty()){
+					flag1= true;
+					System.out.println(item.getFirstCode());
+					
+					System.out.println(voterImgMap.get(item.getVoterId()));
+					
+					Object obj = client.getCadreDetailsForPrinting(item.getFirstCode());
+					PrintClass printClass = new PrintClass();
+					
+					Gson gson = new Gson();
+					TypeToken<CadrePrintVO> token = new TypeToken<CadrePrintVO>(){};
+					
+					CadrePrintVO vo = gson.fromJson(obj.toString(), token.getType());
+					if(voterImgMap != null && !voterImgMap.isEmpty())
+					{
+						vo.setVoterImgPath(voterImgMap.get(item.getVoterId()));
+					}
+					else
+					{
+						vo.setVoterImgPath(item.getImage());
+					}
+					vo.setIsPrint(false);
+					printClass.imagePrinting(vo);
+					
+				}		   
+			}
+				if(!flag1){					
+					msgBox("Link the NFC Card");					
+					
 			}
 		}
 		
@@ -765,19 +810,49 @@
 				
 		}
 		
-		public static class CheckBoxTableCell<S, T> extends TableCell<S, T> {
+		public static class CheckBoxTableCell extends TableCell<CadrePrintVO, Boolean> {
 			
-			private final CheckBox checkBox;			
-			private ObservableValue<T> ov;
+			 private CheckBox checkBox;			
 			
-			public CheckBoxTableCell() {		
-				this.checkBox = new CheckBox();
-				this.checkBox.setAlignment(Pos.CENTER);
-				setAlignment(Pos.CENTER);
-				//setGraphic(checkBox);
+			
+			 public void updateItem(Boolean item, boolean empty) {
+		            super.updateItem(item, empty);
+		            if (empty) {
+						setText(null);
+						setGraphic(null);
+		            }
+		            else{
+		            	this.setGraphic(checkBox);
+		            	checkBox.setSelected(item);
+		            }
+		        }
+			
+			public CheckBoxTableCell() {						
+				checkBox = new CheckBox(); 
+
+	            checkBox.selectedProperty().addListener(new ChangeListener<Boolean> () {
+	                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+	                	
+	                	if(newValue){
+	                		tableView.getItems().get(getIndex()).nfcNumberProperty().set("");	
+	                		tableView.getItems().get(getIndex()).getVoterIdTagging1().setValue(Boolean.TRUE);
+							CardReader cardTest = new CardReader();
+				          	String cardNo = cardTest.getUniCode();					         
+				          	tableView.getItems().get(getIndex()).nfcNumberProperty().set(cardNo);
+	                	}
+	                	else{
+	                		tableView.getItems().get(getIndex()).nfcNumberProperty().set("");
+	                		tableView.getItems().get(getIndex()).getVoterIdTagging1().setValue(Boolean.FALSE);
+	                	}
+	                	
+                		tableView.setItems(tableView.getItems());
+	                	
+	                	
+	                }
+	            });			
 			}
 			
-			@Override 
+		/*	@Override 
 			public void updateItem(T item, boolean empty) {
 				super.updateItem(item, empty);
 				if (empty) {
@@ -788,48 +863,71 @@
 					setGraphic(checkBox);
 					
 					ov = getTableColumn().getCellObservableValue(getIndex());
-					
+			
 					if(ov instanceof BooleanProperty) {
+						
 						checkBox.selectedProperty().bindBidirectional((BooleanProperty) ov);
 				
-						if( !tableView.getItems().get(getIndex()).getCardNumber().isEmpty())						   
-						  {						
-							   tableView.getItems().get(getIndex()).nfcNumberProperty().set(tableView.getItems().get(getIndex()).getCardNumber());
+						if( !tableView.getItems().get(getIndex()).getCardNumber().isEmpty()){						
+							   tableView.getItems().get(getIndex()).nfcNumberProperty().set(tableView.getItems().get(getIndex()).getCardNumber());		  
 						  }
-						/* if( checkBox.isFocused())						   
+						  
+		                if(!checkBox.isFocused() && !checkBox.isSelected() && tableView.getItems().get(getIndex()).voterIdTagging1Property().getValue() && tableView.getItems().get(getIndex()).getCardNumber().isEmpty())
+		                {
+		                	  int selectedIndex1 = getTableRow().getIndex();
+		                	  tableView.getItems().get(selectedIndex1).voterIdTagging1Property().setValue(Boolean.FALSE);
+		                }
+			   
+						if(! checkBox.isFocused() && tableView.getItems().get(getIndex()).getCardNumber().isEmpty())
+						{
+							tableView.getItems().get(getIndex()).getVoterIdTagging1().setValue(Boolean.FALSE);
+						}
+						 if( checkBox.isFocused())						   
 						  {
 							 if(checkBox.isSelected()){
 									tableView.getItems().get(getIndex()).nfcNumberProperty().set("");
+									tableView.getItems().get(getIndex()).getVoterIdTagging1().setValue(Boolean.TRUE);
 									CardReader cardTest = new CardReader();
 						          	String cardNo = cardTest.getUniCode();					         
 						          	tableView.getItems().get(getIndex()).nfcNumberProperty().set(cardNo);
 								}
 								else{
 									tableView.getItems().get(getIndex()).nfcNumberProperty().set("");
+									tableView.getItems().get(getIndex()).getVoterIdTagging1().setValue(Boolean.FALSE);
 								}
-						  }				
-						tableView.setItems(tableView.getItems());*/
+						  }
 						
-						for(int i=0;i<data.size();i++){
-							CadrePrintVO cellData = data.get(i);
-							if(cellData.getVoterIdTagging1().getValue()){
-							cellData.nfcNumberProperty().set("");
-							CardReader cardTest = new CardReader();
-							String cardNo = cardTest.getUniCode();
-							cellData.nfcNumberProperty().set(cardNo);
-							}
-							else{
-								cellData.nfcNumberProperty().set("");
-							}
-							}
-							tableView.setItems(tableView.getItems());
-
+						//tableView.setItems(tableView.getItems());
+						if(checkBox.isFocused())						   
+						  {
+							for(int i=0;i<tableView.getItems().size();i++){
+								 
+									CadrePrintVO cellData = tableView.getItems().get(i);
+									if(cellData.getVoterIdTagging1().getValue()){
+										cellData.nfcNumberProperty().set("");
+										CardReader cardTest = new CardReader();
+										String cardNo = cardTest.getUniCode();
+										cellData.nfcNumberProperty().set(cardNo);
+										cellData.getVoterIdTagging1().setValue(Boolean.TRUE);
+										checkBox.setUserData(cellData.getVoterIdTagging1().getValue());
+									}
+									else{
+										cellData.nfcNumberProperty().set("");
+										cellData.getVoterIdTagging1().setValue(Boolean.FALSE);
+										checkBox.setUserData(null);
+										
+										}
+								  }
+						  }
+						if(!checkBox.isFocused())
+							 tableView.getItems().get(getIndex()).getVoterIdTagging1().setValue(Boolean.FALSE);
+						
+						tableView.setItems(tableView.getItems());
+						
 					}					
 				}
-			}
+			}*/
 		}
-		
-		
 		
 	
 		public Long getMatchedName(List<DataVO> resultList,String name){
