@@ -1,7 +1,13 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -54,6 +60,7 @@ import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDesignationDAO;
+import com.itgrids.partyanalyst.dao.ISmsJobStatusDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreBackupDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
@@ -92,6 +99,7 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Hamlet;
+import com.itgrids.partyanalyst.model.SmsJobStatus;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.TdpCadreBackupDetails;
 import com.itgrids.partyanalyst.model.TdpCadreFamilyDetails;
@@ -157,8 +165,19 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	
 	private ICasteDAO casteDAO;
 	private IVoterNamesDAO 						voterNamesDAO;
+	private ISmsJobStatusDAO					smsJobStatusDAO;
 	
 	
+	
+	
+	public ISmsJobStatusDAO getSmsJobStatusDAO() {
+		return smsJobStatusDAO;
+	}
+
+	public void setSmsJobStatusDAO(ISmsJobStatusDAO smsJobStatusDAO) {
+		this.smsJobStatusDAO = smsJobStatusDAO;
+	}
+
 	public void setVoterNamesDAO(IVoterNamesDAO voterNamesDAO) {
 		this.voterNamesDAO = voterNamesDAO;
 	}
@@ -1392,7 +1411,30 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					if(insertType.equalsIgnoreCase("new") && cadreRegistrationVO.getMobileNumber() != null && cadreRegistrationVO.getMobileNumber().trim().length() > 0 && cadreRegistrationVO.getRefNo() != null){
 					   //sendSMS(cadreRegistrationVO.getMobileNumber().trim(), "Thank You for registering as TDP cadre.For further queries use Ref No "+cadreRegistrationVO.getRefNo());
 						if(!statusVar){
-						sendSMSInTelugu(cadreRegistrationVO.getMobileNumber().trim(), getUniCodeMessage(StringEscapeUtils.unescapeJava("\u0C24\u0C46\u0C32\u0C41\u0C17\u0C41 \u0C26\u0C47\u0C36\u0C02 \u0C2A\u0C3E\u0C30\u0C4D\u0C1F\u0C40 \u0C15\u0C3E\u0C30\u0C4D\u0C2F\u0C15\u0C30\u0C4D\u0C24\u0C17\u0C3E \u0C28\u0C2E\u0C4B\u0C26\u0C41 \u0C1A\u0C47\u0C38\u0C41\u0C15\u0C41\u0C28\u0C4D\u0C28\u0C02\u0C26\u0C41\u0C15\u0C41 \u0C27\u0C28\u0C4D\u0C2F\u0C35\u0C3E\u0C26\u0C3E\u0C32\u0C41. \u0C2E\u0C40 \u0C2F\u0C4A\u0C15\u0C4D\u0C15 \u0C30\u0C3F\u0C2B\u0C30\u0C46\u0C28\u0C4D\u0C38\u0C4D \u0C28\u0C46\u0C02\u0C2C\u0C30\u0C4D : ")+cadreRegistrationVO.getRefNo()));
+						
+							try{
+								String jobCode = sendSMSInTelugu(cadreRegistrationVO.getMobileNumber().trim(), getUniCodeMessage(StringEscapeUtils.unescapeJava("\u0C24\u0C46\u0C32\u0C41\u0C17\u0C41 \u0C26\u0C47\u0C36\u0C02 \u0C2A\u0C3E\u0C30\u0C4D\u0C1F\u0C40 \u0C15\u0C3E\u0C30\u0C4D\u0C2F\u0C15\u0C30\u0C4D\u0C24\u0C17\u0C3E \u0C28\u0C2E\u0C4B\u0C26\u0C41 \u0C1A\u0C47\u0C38\u0C41\u0C15\u0C41\u0C28\u0C4D\u0C28\u0C02\u0C26\u0C41\u0C15\u0C41 \u0C27\u0C28\u0C4D\u0C2F\u0C35\u0C3E\u0C26\u0C3E\u0C32\u0C41. \u0C2E\u0C40 \u0C2F\u0C4A\u0C15\u0C4D\u0C15 \u0C30\u0C3F\u0C2B\u0C30\u0C46\u0C28\u0C4D\u0C38\u0C4D \u0C28\u0C46\u0C02\u0C2C\u0C30\u0C4D : ")+cadreRegistrationVO.getRefNo()));
+								
+								
+								Long tdpCadreId = tdpCadre1.getTdpCadreId();
+								if(tdpCadreId!=null){
+									if(tdpCadre1.getMobileNo()!=null){
+										jobCode = jobCode.replace("OK:", "");
+										SmsJobStatus smsJobStatus = new SmsJobStatus();
+										smsJobStatus.setTdpCadreId(tdpCadreId);
+										
+										smsJobStatus.setMobileNumber(tdpCadre1.getMobileNo());
+										smsJobStatus.setJobCode(jobCode);
+										smsJobStatus.setFromTask("Registration");
+										
+										smsJobStatusDAO.save(smsJobStatus);
+										//tdpCadreDAO.updateSmsJobCode(tdpCadreId, jobCode.trim());
+									}
+								}
+							}catch (Exception e) {
+								LOG.error("Exception Raised while sending SMS"+e);
+							}
+							
 						}
 					}
 				}
@@ -3151,8 +3193,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return randomNo;
 	}
 	
-	private  String sendSMSInTelugu(String mobileNo,String message){
-        if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
+	private  String sendSMSInTelugu1(String mobileNo,String message){
+		if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
         	return "error"; 
         }
 		HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
@@ -3191,6 +3233,54 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				post.releaseConnection();
 		}
 		
+	}
+	
+	private  String sendSMSInTelugu(String mobileNo,String msg){
+		
+		try {
+			
+			if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
+	        	return "error"; 
+	        }
+			
+			String postData="";
+			String retval = "";
+			//give all Parameters In String String User ="User_Name";
+			String passwd = IConstants.ADMIN_PASSWORD_FOR_SMS;
+			String mobilenumber = mobileNo;
+			String message = msg;
+			String sid = IConstants.ADMIN_SENDERID_FOR_SMS;
+			String mtype = "OL";
+			String DR = "Y";
+			postData += "User=" + URLEncoder.encode(IConstants.ADMIN_USERNAME_FOR_SMS,"UTF-8") + "&passwd=" + passwd + "&mobilenumber=" + mobilenumber + "&message=" + URLEncoder.encode(message,"UTF-8") + "&sid=" + sid + "&mtype=" + mtype + "&DR=" + DR;
+			URL url = new URL("http://smscountry.com/SMSCwebservice_Bulk.aspx");
+			//URL url = new URL("http://smscountry.com/SMSCwebservice_Bulk.aspx");
+			HttpURLConnection urlconnection = (HttpURLConnection) url.openConnection();
+			// If You Are Behind The Proxy Server Set IP And PORT else Comment Below 4 Lines
+			//Properties sysProps = System.getProperties();
+			//sysProps.put("proxySet", "true");
+			//sysProps.put("proxyHost", "Proxy Ip");
+			//sysProps.put("proxyPort", "PORT");
+			urlconnection.setRequestMethod("POST");
+			urlconnection.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+			urlconnection.setDoOutput(true);
+			OutputStreamWriter out = new OutputStreamWriter(urlconnection.getOutputStream());
+			out.write(postData);
+			out.close();
+			BufferedReader in = new BufferedReader( new InputStreamReader(urlconnection.getInputStream()));
+			String decodedString;
+			while ((decodedString = in.readLine()) != null) {
+			retval += decodedString;
+			}
+			in.close();
+			//System.out.println(retval);
+			return retval;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			LOG.error("Exception Raised while Getting JobCode of SMS" + e);
+			return "00000";
+		} 
 	}
 
 
@@ -4193,7 +4283,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			});
 			String mobileNms = cardSenderVO.getMobileNums();
 			//sendSMSInTelugu(mobileNms, getUniCodeMessage(StringEscapeUtils.unescapeJava("\u0C24\u0C46\u0C32\u0C41\u0C17\u0C41 \u0C26\u0C47\u0C36\u0C02 \u0C2A\u0C3E\u0C30\u0C4D\u0C1F\u0C40 \u0C15\u0C3E\u0C30\u0C4D\u0C2F\u0C15\u0C30\u0C4D\u0C24\u0C17\u0C3E \u0C28\u0C2E\u0C4B\u0C26\u0C41 \u0C1A\u0C47\u0C38\u0C41\u0C15\u0C41\u0C28\u0C4D\u0C28\u0C02\u0C26\u0C41\u0C15\u0C41 \u0C27\u0C28\u0C4D\u0C2F\u0C35\u0C3E\u0C26\u0C3E\u0C32\u0C41. \u0C2E\u0C40 \u0C2F\u0C4A\u0C15\u0C4D\u0C15 \u0C30\u0C3F\u0C2B\u0C30\u0C46\u0C28\u0C4D\u0C38\u0C4D \u0C28\u0C46\u0C02\u0C2C\u0C30\u0C4D : Please Contact - "+cardSenderVO.getName()+" ")+cardSenderVO.getMobileNumber()));
-			sendSMSInTelugu(mobileNms, getUniCodeMessage(StringEscapeUtils.unescapeJava(cardSenderVO.getMessage()+" - "+cardSenderVO.getName()+" ")+cardSenderVO.getMobileNumber()));
+			String retVal = sendSMSInTelugu(mobileNms, getUniCodeMessage(StringEscapeUtils.unescapeJava(cardSenderVO.getMessage()+" - "+cardSenderVO.getName()+" ")+cardSenderVO.getMobileNumber()));
 			
 		} catch (Exception e) {
 			surveyCadreResponceVO.setResultCode(ResultCodeMapper.FAILURE);
@@ -4532,5 +4622,64 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	
 	}
 	
+	public String updateSmsJobStatus(String mobile,String jobcode,String dateTime,int status){
+		LOG.debug(" Entered into updateSmsJobStatus ");
+		try {
+			String statusCode="";
+			switch (status) {
+			 case 0:
+				statusCode = "pending";
+				break;
+             case 1:
+	             statusCode = "Submitted To Carrier";
+	             break;
+	         case 2:
+	             statusCode = "Un Delivered";
+	             break;
+	         case 3:
+	             statusCode = "Delivered";
+	             break;
+	         case 4:
+	             statusCode = "Expired";
+	             break;
+	         case 5:
+	             statusCode = "Deleted";
+	             break;
+	         case 6:
+	             statusCode = "Accepted";
+	             break;
+	         case 7:
+	             statusCode = "Unknown";
+	             break;
+	         case 8:
+	             statusCode = "Rejected";
+	             break;
+	         case 9:
+	             statusCode = "Message Sent";
+	             break;
+	         case 10:
+	             statusCode = "Opted Out";
+	             break;
+	         case 11:
+	             statusCode = "Invalid Mobile Number";
+	             break;
+	         default:
+	             statusCode = "Not Available";
+	             break;
+			}
+			
+			SimpleDateFormat originalFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+			SimpleDateFormat formatDt = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss ");
+			//Date date = originalFormat.parse(dateTime);
+			Date date = originalFormat.parse(dateTime);
+			//int updatedCount = tdpCadreDAO.updateSmsSentStatus(mobile, jobcode, dateTime, statusCode);
+			int updatedCount = smsJobStatusDAO.updateSmsSentStatus(mobile, jobcode, date, statusCode);
+			 
+		} catch (Exception e) {
+			LOG.error("Exception Raised in updateSmsJobStatus "+e);
+			return "failed";
+		}
+		return "success";
+	}
 	
 }
