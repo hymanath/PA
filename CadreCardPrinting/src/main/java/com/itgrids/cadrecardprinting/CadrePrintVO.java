@@ -50,6 +50,7 @@ public class CadrePrintVO implements Serializable{
    
     private String constituencyType;
 	private String photoType;
+	private Boolean isPrint;
 	
 	public Long getCadrePrintVOId() {
 		return cadrePrintVOId;
@@ -250,6 +251,12 @@ public class CadrePrintVO implements Serializable{
 	}
 	public void setImgPath2(String imgPath2) {
 		this.imgPath2 = imgPath2;
+	}
+	public Boolean getIsPrint() {
+		return isPrint;
+	}
+	public void setIsPrint(Boolean isPrint) {
+		this.isPrint = isPrint;
 	}
 	
 	

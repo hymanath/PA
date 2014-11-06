@@ -12,8 +12,8 @@
       <children>
         <!--<TextField fx:id="NFCNumber" layoutX="99.0" layoutY="494.0" prefWidth="158.0" />
         <Label layoutX="16.0" layoutY="497.0" prefWidth="81.0" text="NFC Number" />-->
-       <Button fx:id="NFCNumberLink" layoutX="1032.0" layoutY="517.0" mnemonicParsing="false" onMouseClicked="#handleButtonActionForCardSaning" prefWidth="145.0" text="NFC Link Voter Card" />
-        <Button fx:id="PrintMemberCard" layoutX="1190.0" layoutY="517.0" mnemonicParsing="false" onMouseClicked="#handleButtonActionForCardSPrinting" text="Print MemberShip Card" />
+       <Button fx:id="NFCNumberLink" layoutX="899.0" layoutY="517.0" mnemonicParsing="false" onMouseClicked="#handleButtonActionForCardSaning" prefWidth="145.0" text="NFC Link Voter Card" />
+        <Button fx:id="PrintMemberCard" layoutX="1189.0" layoutY="517.0" mnemonicParsing="false" onMouseClicked="#handleButtonActionForCardSPrinting" text="Print MemberShip Card" />
         <Label blendMode="DARKEN" layoutX="18.0" layoutY="15.0" prefHeight="25.0" prefWidth="163.0" text="TDP Membership Drive" textFill="#1000cc" />
             <ComboBox fx:id="regTypeCombo" layoutX="391.0" layoutY="29.0" prefHeight="25.0" prefWidth="137.0" promptText="Registration Type">
             	 <items>
@@ -167,6 +167,7 @@
           </columns>
         </TableView>
             <Label fx:id="loadingId" layoutX="494.0" layoutY="519.0" prefHeight="17.0" prefWidth="67.0" text="Loading" visible="false" />
+            <Button fx:id="previewId" layoutX="1052.0" layoutY="517.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="128.0" text="Print Preview" onAction="#handleButtonActionForCardSPrintingPreview" />
             <!--<Label fx:id="errorId" layoutX="377.0" layoutY="6.0" prefHeight="17.0" prefWidth="218.0" />-->
       </children>
     </AnchorPane>
