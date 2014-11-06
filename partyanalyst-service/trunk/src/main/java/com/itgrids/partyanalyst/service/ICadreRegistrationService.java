@@ -94,4 +94,6 @@ public interface ICadreRegistrationService {
 	public List<CadreRegisterInfo> getConstsByStateWiseAction(Long stateId);
 	
 	public List<CadrePrintVO> getSelectedLevelCadreDetailsBySelection(CadrePrintInputVO input);
+	
+	public String updateSmsJobStatus(String mobile,String jobcode,String dateTime,int status);
 }
