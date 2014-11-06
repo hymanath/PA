@@ -85,9 +85,22 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private List<CadreRegisterInfo> cadreRegisterInfo=null;
 	private String 								fromPath 	;						
 	private String 								toPath 	;						
-	
+	private String								mobilenumber;
+	private String								jobno;
+	private String								status;
+	private String								DoneTime;
+	private String								messagepart;
+	private String								sentStatus;
 	
 
+	
+	public String getSentStatus() {
+		return sentStatus;
+	}
+
+	public void setSentStatus(String sentStatus) {
+		this.sentStatus = sentStatus;
+	}
 
 	public List<CadreRegisterInfo> getCadreRegisterInfo() {
 		return cadreRegisterInfo;
@@ -416,6 +429,48 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 
 	public void setToPath(String toPath) {
 		this.toPath = toPath;
+	}
+	
+	
+
+	public String getMobilenumber() {
+		return mobilenumber;
+	}
+
+	public void setMobilenumber(String mobilenumber) {
+		this.mobilenumber = mobilenumber;
+	}
+
+	public String getJobno() {
+		return jobno;
+	}
+
+	public void setJobno(String jobno) {
+		this.jobno = jobno;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getDoneTime() {
+		return DoneTime;
+	}
+
+	public void setDoneTime(String doneTime) {
+		DoneTime = doneTime;
+	}
+
+	public String getMessagepart() {
+		return messagepart;
+	}
+
+	public void setMessagepart(String messagepart) {
+		this.messagepart = messagepart;
 	}
 
 	public String execute()
@@ -1214,6 +1269,25 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		}
 		catch (Exception e) {
 			LOG.error("Exception raised in getConstsByStateWiseAction method in CadreRegistrationAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String updateSmsJobStatus(){
+		LOG.info("Entered into updateSmsJobStatus method in CadreRegistrationAction Action");
+		
+		try{
+			String mobileNumber = request.getParameter("mobilenumber");
+			String jobno = request.getParameter("jobno");
+			String dateTime = request.getParameter("DoneTime");
+			int status = Integer.parseInt(request.getParameter("status"));
+			
+     
+			sentStatus = cadreRegistrationService.updateSmsJobStatus(mobileNumber,jobno,dateTime,status);
+			
+		}
+		catch (Exception e) {
+			LOG.error("Exception raised in updateSmsJobStatus method in CadreRegistrationAction Action",e);
 		}
 		return Action.SUCCESS;
 	}
