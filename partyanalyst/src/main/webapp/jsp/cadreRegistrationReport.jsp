@@ -340,7 +340,7 @@
 				
 				str+='<th rowspan="2">User</th>';
 				str+='<th rowspan="2">Total Count</th>';
-				str+='<th rowspan="2">Total Amount need to be paid</th>';
+				str+='<th rowspan="2">Total Amount</th>';
 				str+='<th rowspan="2" >MobileNo</th>';
 				for(var i in result[0].infoList){
 					if(timeCheckBox == true)
