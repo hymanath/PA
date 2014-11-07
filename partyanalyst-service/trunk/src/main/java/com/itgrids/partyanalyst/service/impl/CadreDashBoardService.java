@@ -174,18 +174,18 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				apCount = apCount+(Long)districtCount[0];
 				if(districtCount[2] != null && districtCount[2].toString().trim().equalsIgnoreCase("WEB"))
 				apWebCount = apWebCount +  (Long)districtCount[0];
-				 if(districtCount[2] != null && districtCount[2].toString().trim().equalsIgnoreCase("TAB"))
+				else if(districtCount[2] != null && districtCount[2].toString().trim().equalsIgnoreCase("TAB"))
 				apTabCount = apTabCount + 	 (Long)districtCount[0];
-				if(districtCount[2] != null && districtCount[2].toString().trim().equalsIgnoreCase("ONLINE"))
+				else if(districtCount[2] != null && districtCount[2].toString().trim().equalsIgnoreCase("ONLINE"))
 					apOnlineCount = apOnlineCount + 	 (Long)districtCount[0];	
 				
 			}else{
 				tgCount = tgCount+(Long)districtCount[0];	
 				if(districtCount[2] != null && districtCount[2].toString().trim().equalsIgnoreCase("WEB"))
 					tgWebCount = tgWebCount +  (Long)districtCount[0];
-					 if(districtCount[2] != null && districtCount[2].toString().trim().equalsIgnoreCase("TAB"))
+				else if(districtCount[2] != null && districtCount[2].toString().trim().equalsIgnoreCase("TAB"))
 					tgTabCount = tgTabCount + 	 (Long)districtCount[0];
-					if(districtCount[2] != null && districtCount[2].toString().trim().equalsIgnoreCase("ONLINE"))
+				else if(districtCount[2] != null && districtCount[2].toString().trim().equalsIgnoreCase("ONLINE"))
 						tgOnlineCount = tgOnlineCount + 	 (Long)districtCount[0];	
 			}
 		  }
