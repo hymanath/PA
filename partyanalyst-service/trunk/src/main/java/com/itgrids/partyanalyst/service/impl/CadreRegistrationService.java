@@ -1048,6 +1048,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						tdpCadreOnline.setShipAddress(cadreRegistrationVO.getShipAddress());
 						tdpCadreOnline.setEmail(cadreRegistrationVO.getEmail());
 						tdpCadreOnline.setPermanentAddress(cadreRegistrationVO.getAddress());
+						tdpCadreOnline.setOnlineId(cadreRegistrationVO.getOnlineId());
 						tdpCadreOnline = tdpCadreOnlineDAO.save(tdpCadreOnline);
 						
 					}
