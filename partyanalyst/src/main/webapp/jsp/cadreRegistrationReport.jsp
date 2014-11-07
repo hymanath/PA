@@ -339,12 +339,14 @@
 				str+='<th rowspan="2" >District</th>';
 				
 				str+='<th rowspan="2">User</th>';
+				str+='<th rowspan="2">Total Count</th>';
+				str+='<th rowspan="2">Total Amount need to be paid</th>';
 				str+='<th rowspan="2" >MobileNo</th>';
 				for(var i in result[0].infoList){
 					if(timeCheckBox == true)
-					 str+='<th colspan="4">'+result[0].infoList[i].date+'</th>';
+					 str+='<th colspan="3">'+result[0].infoList[i].date+'</th>';
 					else
-					str+='<th colspan="2">'+result[0].infoList[i].date+'</th>';
+					str+='<th colspan="1">'+result[0].infoList[i].date+'</th>';
 				}
 				str+='</tr>';
 				str+='<tr>';
@@ -355,7 +357,7 @@
 				  str+='<th>End Time</th>';
 					}
 				  str+='<th>Count</th>';
-				  str+='<th>Amount need to be paid</th>';
+				 // str+='<th>Amount need to be paid</th>';
 				}
 				str+='</tr>';
 				str+='</thead><tbody>';
@@ -378,7 +380,17 @@
 				   }
 				 
 				   str+='  <td>'+result[i].name+'</td>';
-				   
+				   if(result[i].totalCount > 0){
+				      str+='  <td>'+result[i].totalCount+'</td>';
+					}else{
+					  str+='  <td>-</td>';
+					}
+					if(result[i].totalCount > 0){
+				      str+='  <td>'+result[i].totalAmount+'</td>';
+					}
+					else{
+					  str+='  <td>-</td>';
+					}
 				  if(result[i].area != null){
 				     str+='  <td>'+result[i].area+'</td>';
 				   }else{
@@ -403,12 +415,12 @@
 					}else{
 					  str+='  <td>-</td>';
 					}
-					if(result[i].infoList[j].totalCount != null){
+					/*if(result[i].infoList[j].totalCount != null){
 				      str+='  <td>'+result[i].infoList[j].amount+'</td>';
 					}
 					else{
 					  str+='  <td>-</td>';
-					}
+					}*/
 				  }
 				  str+='</tr>';
 				}
