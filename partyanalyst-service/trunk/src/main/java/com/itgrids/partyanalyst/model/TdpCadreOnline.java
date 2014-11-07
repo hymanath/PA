@@ -25,6 +25,7 @@ public class TdpCadreOnline {
 	private String shipAddress;
 	private String email;
 	private String permanentAddress;
+	private String onlineId;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -117,6 +118,16 @@ public class TdpCadreOnline {
 	
 	public void setPermanentAddress(String permanentAddress) {
 		this.permanentAddress = permanentAddress;
+	}
+
+	@Column(name = "online_id")
+	public String getOnlineId() {
+		return onlineId;
+	}
+
+
+	public void setOnlineId(String onlineId) {
+		this.onlineId = onlineId;
 	}
 	
 	

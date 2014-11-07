@@ -97,6 +97,7 @@ public class CadreRegistrationVO implements Serializable{
 	private String     email;
 	private String       mandalId;
 	private String       wardId;
+	private String    onlineId;
 	
 	
 	public String getRelativeVoterId() {
@@ -524,6 +525,12 @@ public class CadreRegistrationVO implements Serializable{
 	}
 	public void setWardId(String wardId) {
 		this.wardId = wardId;
+	}
+	public String getOnlineId() {
+		return onlineId;
+	}
+	public void setOnlineId(String onlineId) {
+		this.onlineId = onlineId;
 	}
 
 	
