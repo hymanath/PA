@@ -1232,4 +1232,10 @@ public List<Object[]> getCadreDetailsForSelectionByFamilyVoterId(CadrePrintInput
 		return query.list();
 	}
 	
+	public List<TdpCadre> checkOnlineAccountExistsOrNot(String orderId){
+		String resultQuery = "select model from TdpCadre model where model.tdpCadreOnline.orderId =:orderId";
+		Query query = getSession().createQuery(resultQuery);
+		query.setParameter("orderId", orderId);
+		return query.list();
+	}
 }
