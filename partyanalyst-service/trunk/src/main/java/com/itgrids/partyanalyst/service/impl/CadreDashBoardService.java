@@ -157,7 +157,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	}
 	
 	
-	 public CadreRegisterInfo getRegisterCount(Date fromDate,Date toDate){
+	public CadreRegisterInfo getRegisterCount(Date fromDate,Date toDate){
 		CadreRegisterInfo info = new CadreRegisterInfo();
 		Long apCount = 0l;
 		Long tgCount = 0l;
@@ -538,7 +538,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		SimpleDateFormat timeFormate = new SimpleDateFormat("HH:mm");
 		try{
 			List<Date> datesList = new ArrayList<Date>();
-			//Map<Long,String> unameMap = new HashMap<Long, String>();
+			
 			Map<Long,Map<Date,CadreRegisterInfo>> userMap = new HashMap<Long,Map<Date,CadreRegisterInfo>>();//Map<userId,Map<Date,info>>
 			Map<Date,CadreRegisterInfo> dateMap = new HashMap<Date,CadreRegisterInfo>();//Map<Date,info>
 			Map<Long,String> userNames = new HashMap<Long,String>();
@@ -562,6 +562,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				vo.setLocation(convertTimeTo12HrsFormat(timeFormate.format((Date)data[3])));
 				vo.setTotalCount((Long)data[0]);
 				vo.setAmount(vo.getTotalCount() * 100);
+				
 				dateMap.put((Date)data[4], vo);
 			}
 			int count = 0;
@@ -580,6 +581,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				 }
 				 userData.setNumber(mobileNo[5].toString());//district
 				 userData.setMemberShipNo(mobileNo[3].toString());//constituency
+				
 				 mobileNos.put((Long)mobileNo[0], userData);
 				}
 			}
@@ -613,6 +615,17 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					}
 				}
 				vo.setInfoList(daysList);
+				if(vo.getInfoList() != null && vo.getInfoList().size() > 0)
+				{
+					Long count1 = 0l;
+					for(CadreRegisterInfo vo3 : vo.getInfoList())
+					{
+						if(vo3.getTotalCount() != null)
+						 count1 = count1 + vo3.getTotalCount();
+					}
+					vo.setTotalCount(count1);
+					vo.setTotalAmount(vo.getTotalCount() > 0 ?  vo.getTotalCount()* 100 : 0);
+				}
 				returnList.add(vo);
 				count++;
 			}
