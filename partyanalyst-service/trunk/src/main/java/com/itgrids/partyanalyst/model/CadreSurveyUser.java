@@ -29,6 +29,7 @@ public class CadreSurveyUser implements Serializable {
 	private Date 				insertedTime;
 	private Date 				updatedTime;
 	private String 				isDeleted;
+	private String               name;
 	
 	 
 	 @Id
@@ -87,6 +88,13 @@ public class CadreSurveyUser implements Serializable {
 	}
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+	@Column(name="name")
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	
