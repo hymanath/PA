@@ -157,7 +157,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	}
 	
 	
-	public CadreRegisterInfo getRegisterCount(Date fromDate,Date toDate){
+	 public CadreRegisterInfo getRegisterCount(Date fromDate,Date toDate){
 		CadreRegisterInfo info = new CadreRegisterInfo();
 		Long apCount = 0l;
 		Long tgCount = 0l;
@@ -165,6 +165,8 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		Long tgWebCount = 0l;
 		Long apTabCount = 0l;
 		Long tgTabCount = 0l;
+		Long apOnlineCount = 0l;
+		Long tgOnlineCount = 0l;
 		try{
           List<Object[]> districtWiseCount = tdpCadreDAO.getRegisterCadreInfoBetweenDates(fromDate, toDate);
 		  for(Object[] districtCount:districtWiseCount){
@@ -172,15 +174,19 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				apCount = apCount+(Long)districtCount[0];
 				if(districtCount[2] != null && districtCount[2].toString().trim().equalsIgnoreCase("WEB"))
 				apWebCount = apWebCount +  (Long)districtCount[0];
-				else
+				else if(districtCount[2] != null && districtCount[2].toString().trim().equalsIgnoreCase("TAB"))
 				apTabCount = apTabCount + 	 (Long)districtCount[0];
+				else
+					apOnlineCount = apOnlineCount + 	 (Long)districtCount[0];	
 				
 			}else{
 				tgCount = tgCount+(Long)districtCount[0];	
 				if(districtCount[2] != null && districtCount[2].toString().trim().equalsIgnoreCase("WEB"))
 					tgWebCount = tgWebCount +  (Long)districtCount[0];
-					else
+					else if(districtCount[2] != null && districtCount[2].toString().trim().equalsIgnoreCase("TAB"))
 					tgTabCount = tgTabCount + 	 (Long)districtCount[0];
+					else
+						tgOnlineCount = tgOnlineCount + 	 (Long)districtCount[0];	
 			}
 		  }
 		}catch(Exception e){
@@ -193,6 +199,8 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		info.setApTabCount(apTabCount);
 		info.setTgWebCount(tgWebCount);
 		info.setTgTabCount(tgTabCount);
+		info.setApOnlineCount(apOnlineCount);
+		info.setTgOnlineCount(tgOnlineCount);
 		
 		return info;
 	}
