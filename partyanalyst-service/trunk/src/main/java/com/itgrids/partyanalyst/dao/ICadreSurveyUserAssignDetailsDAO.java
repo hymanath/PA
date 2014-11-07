@@ -19,5 +19,6 @@ public interface ICadreSurveyUserAssignDetailsDAO extends GenericDao<CadreSurvey
 	public List<Long> checkIsAlreadyAssigned(Long cadreSurveyUserId, Long levelId,Long levelValue, Long constituencyId);
 
 	public List<Long> isTabAssignedAlready(String tabNo);
+	public List<Object[]> getTabNos(List<Long> cadreSurveyUserIds);
 	
 }
