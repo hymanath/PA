@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAppDbUpdateDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
@@ -43,6 +44,17 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	private ICadreSurveyUserDAO cadreSurveyUserDAO;
 	private DateUtilService dateService = new DateUtilService();
 	private IAppDbUpdateDAO appDbUpdateDAO;
+	private ICadreSurveyUserAssignDetailsDAO cadreSurveyUserAssignDetailsDAO;
+	
+	
+	public ICadreSurveyUserAssignDetailsDAO getCadreSurveyUserAssignDetailsDAO() {
+		return cadreSurveyUserAssignDetailsDAO;
+	}
+
+	public void setCadreSurveyUserAssignDetailsDAO(
+			ICadreSurveyUserAssignDetailsDAO cadreSurveyUserAssignDetailsDAO) {
+		this.cadreSurveyUserAssignDetailsDAO = cadreSurveyUserAssignDetailsDAO;
+	}
 
 	public ITdpCadreDAO getTdpCadreDAO() {
 		return tdpCadreDAO;
@@ -545,13 +557,15 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		SimpleDateFormat timeFormate = new SimpleDateFormat("HH:mm");
 		try{
+			List<Long> surveyUserIds = new ArrayList<Long>();
 			List<Date> datesList = new ArrayList<Date>();
-			
+			Map<Long,String> nameMap = new HashMap<Long, String>();
+			Map<Long,String> tabMap = new HashMap<Long, String>();
 			Map<Long,Map<Date,CadreRegisterInfo>> userMap = new HashMap<Long,Map<Date,CadreRegisterInfo>>();//Map<userId,Map<Date,info>>
 			Map<Date,CadreRegisterInfo> dateMap = new HashMap<Date,CadreRegisterInfo>();//Map<Date,info>
 			Map<Long,String> userNames = new HashMap<Long,String>();
 			Map<Long,CadreRegisterInfo> mobileNos = new HashMap<Long,CadreRegisterInfo>();
-			//0 count,1 name,2 min,3 max,4 date,5 id
+			//0 count,1 name,2 min,3 max,4 date,5 id,6 name
 			List<Object[]> dataCollectedInfo = tdpCadreDAO.getCandidateDataCollectionInfo(locationType,locationIds,fromDate, toDate);
 			
 			for(Object[] data:dataCollectedInfo){
@@ -563,7 +577,9 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				if(dateMap == null){
 					dateMap = new HashMap<Date,CadreRegisterInfo>();
 					userMap.put((Long)data[5],dateMap);
-					//unameMap.put((Long)data[5], data[1].toString());
+					nameMap.put((Long)data[5], data[6] != null ? data[6].toString() : "");
+					if(!surveyUserIds.contains((Long)data[5]))
+					surveyUserIds.add((Long)data[5]);
 				}
 				vo = new CadreRegisterInfo() ;
 				vo.setArea(convertTimeTo12HrsFormat(timeFormate.format((Date)data[2])));
@@ -572,6 +588,16 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				vo.setAmount(vo.getTotalCount() * 100);
 				
 				dateMap.put((Date)data[4], vo);
+			}
+			if(surveyUserIds != null && surveyUserIds.size() > 0)
+			{
+			List<Object[]> tabNos = cadreSurveyUserAssignDetailsDAO.getTabNos(surveyUserIds);
+			if(tabNos != null && tabNos.size() > 0)
+				for(Object[] params : tabNos)
+				{
+					tabMap.put((Long)params[0], params[1] != null ?  params[1].toString() : "");
+				}
+				
 			}
 			int count = 0;
 			if(userNames.size() > 0){
@@ -605,6 +631,8 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				    vo.setLocation(userData.getLocation());//state
 				    vo.setNumber(userData.getNumber());//district
 				    vo.setMemberShipNo(userData.getMemberShipNo());//constituency
+				    vo.setUname(nameMap.get(key));
+				    vo.setTabNo(tabMap.get(key));
 				}
 				List<CadreRegisterInfo> daysList = new ArrayList<CadreRegisterInfo>();
 				for(Date date:datesList){
@@ -642,6 +670,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		}
 		return returnList;
 	}
+	
 	
 	private String convertTimeTo12HrsFormat(String time){
 		String[] timeArray = time.split(":");
