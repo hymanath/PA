@@ -76,5 +76,10 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 		return query.list();
 	}
 	
-	
+	public List<Object[]> getTabNos(List<Long> cadreSurveyUserIds)
+	{
+		Query query = getSession().createQuery("select model.cadreSurveyUserId,model.tabNo from CadreSurveyUserAssignDetails model where model.cadreSurveyUserId in (:cadreSurveyUserIds) and model.isDeleted = 'N'");
+		query.setParameterList("cadreSurveyUserIds", cadreSurveyUserIds);
+		return query.list();
+	}
 }
