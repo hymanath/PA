@@ -3779,7 +3779,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					}
 					if(status){
 						tdpCadre.setImage(tdpCadre.getMemberShipNo()+".jpg");
-						tdpCadre.setPhotoType("new");
+						tdpCadre.setPhotoType("NEW");
 					}
 				}catch(Exception e){
 					 LOG.error(e);
