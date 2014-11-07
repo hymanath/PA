@@ -32,4 +32,6 @@ public interface IWebServiceHandlerService1 {
 	public AppDbDataVO getAllUpdatesByVersion(String appName,Double version);
 	
 	public void savingUserDetailsWhoLoggedIn(final UserLoginUtils inputs,final LoginResponceVO out);
+	
+	public Object saveSurveyFieldUsersForCadreOnline(List<CadreRegistrationVO> inputResponseList);
 }

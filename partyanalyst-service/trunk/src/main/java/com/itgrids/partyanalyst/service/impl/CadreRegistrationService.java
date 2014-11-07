@@ -65,6 +65,7 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreBackupDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreFamilyDetailsDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreOnlineDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
@@ -103,6 +104,7 @@ import com.itgrids.partyanalyst.model.SmsJobStatus;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.TdpCadreBackupDetails;
 import com.itgrids.partyanalyst.model.TdpCadreFamilyDetails;
+import com.itgrids.partyanalyst.model.TdpCadreOnline;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
@@ -165,8 +167,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	
 	private ICasteDAO casteDAO;
 	private IVoterNamesDAO 						voterNamesDAO;
+	private ITdpCadreOnlineDAO                  tdpCadreOnlineDAO;
 	private ISmsJobStatusDAO					smsJobStatusDAO;
-	
 	
 	
 	
@@ -375,6 +377,14 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	}
 	
 	
+	public ITdpCadreOnlineDAO getTdpCadreOnlineDAO() {
+		return tdpCadreOnlineDAO;
+	}
+
+	public void setTdpCadreOnlineDAO(ITdpCadreOnlineDAO tdpCadreOnlineDAO) {
+		this.tdpCadreOnlineDAO = tdpCadreOnlineDAO;
+	}
+
 	public Date convertToDateFormet(String dateStr)
 	{
 		Date date = null;
@@ -739,9 +749,19 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	 * @param cadreRegistrationVO
 	 * @param surveyCadreResponceVO
 	 */
-	public void tdpCadreSavingLogic(final String registrationType,final List<CadreRegistrationVO> cadreRegistrationVOList ,final CadreRegistrationVO cadreRegistrationVO, final SurveyCadreResponceVO surveyCadreResponceVO,final TdpCadre tdpCadre,final String insertType,final boolean statusVar)
+	public void tdpCadreSavingLogic(final String registrationType,final List<CadreRegistrationVO> cadreRegistrationVOList ,final CadreRegistrationVO cadreRegistrationVO, final SurveyCadreResponceVO surveyCadreResponceVO,TdpCadre tdpCadreNew,String insertTypeNew,final boolean statusVar)
 	{
 		/*try {	*/
+		
+		if(registrationType.equalsIgnoreCase("ONLINE") && cadreRegistrationVO.getOrderId() != null && cadreRegistrationVO.getOrderId().trim().length() > 0){
+			List<TdpCadre> tdpCadres = tdpCadreDAO.checkOnlineAccountExistsOrNot(cadreRegistrationVO.getOrderId());
+			if(tdpCadres != null && tdpCadres.size() > 0 && tdpCadres.get(0) != null){
+				tdpCadreNew = tdpCadres.get(0);
+				insertTypeNew ="update";
+			}
+		}
+		final String insertType = insertTypeNew;
+		final TdpCadre tdpCadre = tdpCadreNew;
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				public void doInTransactionWithoutResult(TransactionStatus status) {
 					TdpCadre  tdpCadre1 = null;
@@ -942,6 +962,16 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									}
 									
 								}
+								if(cadreRegistrationVO.getMandalId() != null && cadreRegistrationVO.getMandalId().trim().length() > 0 && Long.valueOf(cadreRegistrationVO.getMandalId().trim()).longValue() > 0l)
+								{
+										userAddress.setTehsil(tehsilDAO.get(Long.valueOf(cadreRegistrationVO.getMandalId().trim())));
+									
+								}
+								if(cadreRegistrationVO.getWardId() != null && cadreRegistrationVO.getWardId().trim().length() > 0 && Long.valueOf(cadreRegistrationVO.getWardId().trim()).longValue() > 0l)
+								{
+										userAddress.setWard(constituencyDAO.get(Long.valueOf(cadreRegistrationVO.getWardId().trim())));
+									
+								}
 								List<Booth> booths = null;
 								if(tdpCadre.getVoterId() != null && tdpCadre.getVoterId().longValue() > 0){
 								   booths = boothPublicationVoterDAO.getVoterAddressDetails(tdpCadre.getVoterId());
@@ -1005,6 +1035,23 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						
 					userAddress = userAddressDAO.save(userAddress);
 					tdpCadre.setUserAddress(userAddress);	
+					TdpCadreOnline tdpCadreOnline = null;
+					if(registrationType.equalsIgnoreCase("ONLINE")){
+						tdpCadre.setCardNo(cadreRegistrationVO.getVoterCardNo());
+						tdpCadreOnline = new TdpCadreOnline(); 
+						tdpCadreOnline.setOrderId(cadreRegistrationVO.getOrderId());
+						tdpCadreOnline.setArea(cadreRegistrationVO.getArea());
+						tdpCadreOnline.setAddress(cadreRegistrationVO.getPermanentAddress());
+						tdpCadreOnline.setPincode(cadreRegistrationVO.getPincode());
+						tdpCadreOnline.setDeliveryMode(cadreRegistrationVO.getDeliveryMode());
+						tdpCadreOnline.setShipCountry(cadreRegistrationVO.getShipCountry());
+						tdpCadreOnline.setShipAddress(cadreRegistrationVO.getShipAddress());
+						tdpCadreOnline.setEmail(cadreRegistrationVO.getEmail());
+						tdpCadreOnline.setPermanentAddress(cadreRegistrationVO.getAddress());
+						tdpCadreOnline = tdpCadreOnlineDAO.save(tdpCadreOnline);
+						
+					}
+					tdpCadre.setTdpCadreOnline(tdpCadreOnline);
 					try{
 						if(cadreRegistrationVO.getVoterTeluguName()!= null && cadreRegistrationVO.getVoterTeluguName().trim().length() > 0 && tdpCadre.getVoterId() != null &&  tdpCadre.getVoterId().longValue() > 0){
 							List<VoterNames> voterNames = voterNamesDAO.gerVoterNamesObjByVoterId(tdpCadre.getVoterId());
@@ -1076,7 +1123,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							// TODO: handle exception
 						}
 						
-					}else if( insertType.equalsIgnoreCase("new") && registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE"))){
+					}else if( insertType.equalsIgnoreCase("new") && registrationType != null && (registrationType.equalsIgnoreCase("WEB") )){
 						tdpCadre.setSurveyTime(tdpCadre.getInsertedTime());
 					}
 					
@@ -1550,7 +1597,12 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						}
 						
 					}
-					if(booth.getLocalBodyWard() != null)
+					if(cadreRegistrationVO.getWardId() != null && cadreRegistrationVO.getWardId().trim().length() > 0 && Long.valueOf(cadreRegistrationVO.getWardId().trim()).longValue() > 0l)
+					{
+							userAddress.setWard(constituencyDAO.get(Long.valueOf(cadreRegistrationVO.getWardId().trim())));
+						
+					}
+					else if(booth.getLocalBodyWard() != null)
 					{
 						userAddress.setWard(booth.getLocalBodyWard());
 					}

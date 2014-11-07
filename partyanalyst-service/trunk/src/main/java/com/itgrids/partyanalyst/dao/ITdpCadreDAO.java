@@ -123,4 +123,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getCadreInfoDetails(Long locationId,String locationType,int startIndex,int maxIndex);
 	public List<Object[]> getCadreDetailsForSelectionByFamilyVoterId(CadrePrintInputVO input);
 	public Long getCadreInfoDetailsCount(Long locationId,String locationType);
+	public List<TdpCadre> checkOnlineAccountExistsOrNot(String orderId);
 }

@@ -106,6 +106,7 @@ public class TdpCadre {
 	private String                      cardNo;
 	private Long 						memberId;
 	private String 						nameLocal;
+	private TdpCadreOnline              tdpCadreOnline;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -678,6 +679,18 @@ public class TdpCadre {
 	}
 	public void setNameLocal(String nameLocal) {
 		this.nameLocal = nameLocal;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "tdp_cadre_online_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TdpCadreOnline getTdpCadreOnline() {
+		return tdpCadreOnline;
+	}
+	
+	public void setTdpCadreOnline(TdpCadreOnline tdpCadreOnline) {
+		this.tdpCadreOnline = tdpCadreOnline;
 	}
 	
 	

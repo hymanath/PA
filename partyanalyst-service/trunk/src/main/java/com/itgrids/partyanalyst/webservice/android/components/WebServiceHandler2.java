@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.webservice.android.components;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -330,4 +331,94 @@ public class WebServiceHandler2 {
 		return cadreSurveyTransactionService.updatePendingAmount(inputVo);
 	}
 	
+	@POST
+	@Path("/saveFieldDataForOnlineCadre")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object saveFieldDataForOnlineCadre(CadreRegistrationVO input)
+	{
+		LOG.debug("inside save field data for saveFieldDataForOnlineCadre");
+		LOG.debug(input.toString());
+          List<CadreRegistrationVO> inputs = new ArrayList<CadreRegistrationVO>();
+          inputs.add(input);
+		SurveyCadreResponceVO out=null;
+		Map<String,String> userDetails= new HashMap<String, String>();
+		userDetails.put("","");
+		try{ 
+			if(input.getDobStr() != null && input.getDobStr().trim().length() == 10){
+				String[] dob = input.getDobStr().trim().split("/"); //26/08/1991
+				String reqDob = dob[2]+"-"+dob[1]+"-"+dob[0];//1991-08-26
+				input.setDobStr(reqDob);
+			}else{
+				input.setDobStr(null);
+			}
+			if(input.getMandalId() != null && input.getMandalId().trim().length() > 0){
+				if(input.getMandalId().contains("M-")){
+					input.setMuncipalityId(input.getMandalId().replace("M-", ""));
+					input.setWardId(input.getPanchayatId());
+					input.setMandalId(null);
+					input.setPanchayatId(null);
+				}
+			}
+			out=(SurveyCadreResponceVO) webServiceHandlerService1.saveSurveyFieldUsersForCadreOnline(inputs);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		if(out != null && out.getStatus() != null){
+			if(!out.getStatus().equalsIgnoreCase("Success"))
+				return "{\"status\":\"Failure\",\"orderId\":\""+input.getOrderId()+"\"}";
+			
+			 else return "{\"status\":\"Success\"}";
+		}else{
+			return "{\"status\":\"Failure\",\"orderId\":\""+input.getOrderId()+"\"}";
+		}
+	}
+	
+	@GET
+	@Path("/registrationStatus/{data}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Object saveFieldDataForCadre3(@PathParam("data") String inputs)
+	{
+		LOG.debug("inside save field data for cadre");
+		LOG.debug(inputs.toString());
+		SurveyCadreResponceVO out=null;
+		Map<String,String> userDetails= new HashMap<String, String>();
+		userDetails.put("","");
+		try{ 
+			/*CadreRegistrationVO vo = new CadreRegistrationVO();
+			String[] inputsArray = inputs.split("&");
+			for(String input:inputsArray){
+				String[] parameterArray = input.split("=");
+				if(parameterArray.length > 0){
+					if(parameterArray[0].equalsIgnoreCase("mobilenumber")){
+						if(parameterArray.length > 1){
+							vo.setMobileNumber(parameterArray[1]);
+						}
+					}else if(parameterArray[0].equalsIgnoreCase("message")){
+						if(parameterArray.length > 1){
+							vo.setRegistrationCount(parameterArray[1]);
+						}
+					}else if(parameterArray[0].equalsIgnoreCase("receivedon")){
+						if(parameterArray.length > 1){
+							vo.setDate(parameterArray[1]);
+						}
+					}
+				}
+			}
+			LOG.error("mobilenumber"+vo.getMobileNumber()+",message"+vo.getRegistrationCount()+",receivedon"+vo.getDate());
+			if((vo.getMobileNumber() != null && vo.getMobileNumber().trim().length() >0) || (vo.getRegistrationCount() != null && vo.getRegistrationCount().trim().length() >0) || (vo.getDate() != null && vo.getDate().trim().length() >0)){
+			     return webServiceHandlerService1.saveStatus(vo);
+			}else{
+				return "Invalid Inputs !";
+			}*/
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return "Error Occured";
+		}
+		return "success";
+	}
 }

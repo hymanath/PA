@@ -78,6 +78,7 @@ public class CadreRegistrationVO implements Serializable{
 	private String		    cadrePrevYear;
 	
 	private String		   surveyTimeStr;
+	private String          area;
 	
 	private List<CadrePreviousRollesVO> previousRollesList;
 	
@@ -86,7 +87,16 @@ public class CadreRegistrationVO implements Serializable{
 	private List<CadreFamilyVO> cadreFamilyDetails;
 	private String			relativeVoterId;
 	private String     voterTeluguName;
-	
+	private String     permanentAddress;
+	private String     address;
+	private String     pincode;
+	private String     deliveryMode;
+	private String     shipCountry;
+	private String     shipAddress;
+	private String     orderId;
+	private String     email;
+	private String       mandalId;
+	private String       wardId;
 	
 	
 	public String getRelativeVoterId() {
@@ -449,8 +459,73 @@ public class CadreRegistrationVO implements Serializable{
 	public void setVoterTeluguName(String voterTeluguName) {
 		this.voterTeluguName = voterTeluguName;
 	}
-	
-	
+	public String getPermanentAddress() {
+		return permanentAddress;
+	}
+	public void setPermanentAddress(String permanentAddress) {
+		this.permanentAddress = permanentAddress;
+	}
+	public String getArea() {
+		return area;
+	}
+	public void setArea(String area) {
+		this.area = area;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getPincode() {
+		return pincode;
+	}
+	public void setPincode(String pincode) {
+		this.pincode = pincode;
+	}
+	public String getDeliveryMode() {
+		return deliveryMode;
+	}
+	public void setDeliveryMode(String deliveryMode) {
+		this.deliveryMode = deliveryMode;
+	}
+	public String getShipCountry() {
+		return shipCountry;
+	}
+	public void setShipCountry(String shipCountry) {
+		this.shipCountry = shipCountry;
+	}
+	public String getShipAddress() {
+		return shipAddress;
+	}
+	public void setShipAddress(String shipAddress) {
+		this.shipAddress = shipAddress;
+	}
+	public String getOrderId() {
+		return orderId;
+	}
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getMandalId() {
+		return mandalId;
+	}
+	public void setMandalId(String mandalId) {
+		this.mandalId = mandalId;
+	}
+	public String getWardId() {
+		return wardId;
+	}
+	public void setWardId(String wardId) {
+		this.wardId = wardId;
+	}
+
 	
 	
 	
