@@ -344,7 +344,7 @@
 					if(timeCheckBox == true)
 					 str+='<th colspan="4">'+result[0].infoList[i].date+'</th>';
 					else
-					str+='<th colspan="3">'+result[0].infoList[i].date+'</th>';
+					str+='<th colspan="2">'+result[0].infoList[i].date+'</th>';
 				}
 				str+='</tr>';
 				str+='<tr>';
