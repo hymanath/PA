@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -3747,6 +3748,41 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				if(result != null){
 					tdpCadre.setImage(tdpCadre.getMemberShipNo()+"."+cadreRegistrationVO.getUploadImageContentType().split("/")[1]);
 				}
+			}else if(cadreRegistrationVO.getAbsolutePath() != null && cadreRegistrationVO.getAbsolutePath().trim().length() > 0){
+				try{
+					String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+					String destinationPath = IConstants.STATIC_CONTENT_FOLDER_URL+ "images" + pathSeperator + IConstants.CADRE_IMAGES + pathSeperator + tdpCadre.getMemberShipNo()+".jpg";
+                    boolean status = false;
+					URL head1 = new URL(cadreRegistrationVO.getAbsolutePath()+".jpg");
+					if(checkUrlExit(head1)){
+						status = copyNewImg(head1,destinationPath);
+					}
+					URL head2 = new URL(cadreRegistrationVO.getAbsolutePath()+".JPG");
+					if(!status && checkUrlExit(head2)){
+						status = copyNewImg(head2,destinationPath);
+					}
+					URL head3 = new URL(cadreRegistrationVO.getAbsolutePath()+".jpeg");
+					if(!status && checkUrlExit(head3)){
+						status = copyNewImg(head3,destinationPath);
+					}
+					URL head4 = new URL(cadreRegistrationVO.getAbsolutePath()+".JPEG");
+					if(!status && checkUrlExit(head4)){
+						status = copyNewImg(head4,destinationPath);
+					}
+					URL head5 = new URL(cadreRegistrationVO.getAbsolutePath()+".png");
+					if(!status && checkUrlExit(head5)){
+						status = copyNewImg(head5,destinationPath);
+					}
+					URL head6 = new URL(cadreRegistrationVO.getAbsolutePath()+".PNG");
+					if(!status && checkUrlExit(head6)){
+						status = copyNewImg(head6,destinationPath);
+					}
+					if(status){
+						tdpCadre.setImage(tdpCadre.getMemberShipNo()+".jpg");
+					}
+				}catch(Exception e){
+					 LOG.error(e);
+				}
 			}
 			else if(cadreRegistrationVO.getPhotoType() != null  && cadreRegistrationVO.getPhotoType().trim().equalsIgnoreCase("new")  && cadreRegistrationVO.getImageBase64String() != null && 
 					cadreRegistrationVO.getImageBase64String().trim().length() > 0){
@@ -3799,7 +3835,26 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		
 	}
 	
+	public boolean checkUrlExit(URL url) throws Exception{
+		URLConnection connection = url.openConnection();
+        connection.connect();
+        HttpURLConnection httpConnection = (HttpURLConnection) connection;
+        int code = httpConnection.getResponseCode();
+        if(code == 200){
+        	return true;
+        }else{
+        	return false;
+        }
+	}
 	
+	public boolean copyNewImg(URL head ,String destinationPath)  throws Exception{
+		BufferedImage image1 = ImageIO.read(head.openStream());
+    	if(image1!=null){
+    		ImageIO.write(image1, "jpg",new File(destinationPath));
+    		return true;
+    	}
+    	return false;
+	}
 	/**
 	 * This Service is used for cadre print cadre details
 	 * @param memberCardNo

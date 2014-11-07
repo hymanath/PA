@@ -352,13 +352,26 @@ public class WebServiceHandler2 {
 			}else{
 				input.setDobStr(null);
 			}
+			if(input.getSurveyTimeStr() != null && input.getSurveyTimeStr().trim().length() > 0){
+				input.setSurveyTimeStr(input.getSurveyTimeStr().replace("T", " ").replace("[\"", "").replace("\"]", ""));
+				LOG.error(input.getSurveyTimeStr());
+				System.out.println(input.getSurveyTimeStr());
+			}
 			if(input.getMandalId() != null && input.getMandalId().trim().length() > 0){
 				if(input.getMandalId().contains("M-")){
 					input.setMuncipalityId(input.getMandalId().replace("M-", ""));
 					input.setWardId(input.getPanchayatId());
 					input.setMandalId(null);
 					input.setPanchayatId(null);
+				}else if(input.getMandalId().contains("G-")){
+					input.setMuncipalityId("20");
+					input.setWardId(input.getPanchayatId());
+					input.setMandalId(null);
+					input.setPanchayatId(null);
 				}
+			}
+			if(input.getOccupationId() != null && input.getOccupationId().longValue() > 0){
+				input.setOccupationId(WebServiceHandler2.getMap().get(input.getOccupationId()));
 			}
 			out=(SurveyCadreResponceVO) webServiceHandlerService1.saveSurveyFieldUsersForCadreOnline(inputs);
 		}
@@ -368,11 +381,11 @@ public class WebServiceHandler2 {
 		}
 		if(out != null && out.getStatus() != null){
 			if(!out.getStatus().equalsIgnoreCase("Success"))
-				return "{\"status\":\"Failure\",\"orderId\":\""+input.getOrderId()+"\"}";
+				return "{\"status\":\"Failure\",\"orderId\":\""+input.getOrderId()+"\",\"onlineId\":\""+input.getOnlineId()+"\"}";
 			
-			 else return "{\"status\":\"Success\",\"orderId\":\""+input.getOrderId()+"\"}";
+			 else return "{\"status\":\"Success\",\"orderId\":\""+input.getOrderId()+"\",\"onlineId\":\""+input.getOnlineId()+"\"}";
 		}else{
-			return "{\"status\":\"Failure\",\"orderId\":\""+input.getOrderId()+"\"}";
+			return "{\"status\":\"Failure\",\"orderId\":\""+input.getOrderId()+"\",\"onlineId\":\""+input.getOnlineId()+"\"}";
 		}
 	}
 	
@@ -420,5 +433,60 @@ public class WebServiceHandler2 {
 			return "Error Occured";
 		}
 		return "success";
+	}
+	
+	public static Map<Long,Long> getMap(){
+		Map<Long,Long> map = new HashMap<Long,Long>();
+		map.put(1L,17L);
+		map.put(2L,18L);
+		map.put(3L,1L);
+		map.put(4L,19L); 
+		map.put(5L,20L);  
+		map.put(6L,21L); 
+		map.put(7L,22L); 
+		map.put(43L,3L); 
+		map.put(8L,23L); 
+		map.put(9L,24L);  
+		map.put(10L,25L); 
+		map.put(11L,26L); 
+		map.put(50L,59L); 
+		map.put(12L,27L); 
+		map.put(13L,28L); 
+		map.put(14L,29L); 
+		map.put(15L,30L); 
+		map.put(16L,31L); 
+		map.put(17L,32L); 
+		map.put(18L,33L); 
+		map.put(45L,54L); 
+		map.put(19L,34L);       
+		map.put(44L,12L); 
+		map.put(20L,4L);  
+		map.put(21L,35L); 
+		map.put(23L,37L); 
+		map.put(22L,36L); 
+		map.put(25L,39L); 
+		map.put(26L,40L);                    
+		map.put(27L,15L);                       
+		map.put(28L,14L);                       
+		map.put(29L,41L);                       
+		map.put(30L,42L);                  
+		map.put(42L,15L);                       
+		map.put(31L,43L);                       
+		map.put(32L,44L);                       
+		map.put(48L,57L);                       
+		map.put(33L,45L);                       
+		map.put(46L,55L);                       
+		map.put(34L,46L);                       
+		map.put(35L,47L);                       
+		map.put(36L,48L);                       
+		map.put(37L,15L);                       
+		map.put(49L,58L);                      
+		map.put(38L,49L);                      
+		map.put(39L,50L);                       
+		map.put(47L,56L);                      
+		map.put(24L,38L);                      
+		map.put(40L,51L);                      
+		map.put(41L,52L);  
+		    return map;                 
 	}
 }

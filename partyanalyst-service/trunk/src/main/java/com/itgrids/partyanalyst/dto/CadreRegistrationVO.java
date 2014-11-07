@@ -98,7 +98,7 @@ public class CadreRegistrationVO implements Serializable{
 	private String       mandalId;
 	private String       wardId;
 	private String    onlineId;
-	
+	private String    absolutePath;
 	
 	public String getRelativeVoterId() {
 		return relativeVoterId;
@@ -531,6 +531,12 @@ public class CadreRegistrationVO implements Serializable{
 	}
 	public void setOnlineId(String onlineId) {
 		this.onlineId = onlineId;
+	}
+	public String getAbsolutePath() {
+		return absolutePath;
+	}
+	public void setAbsolutePath(String absolutePath) {
+		this.absolutePath = absolutePath;
 	}
 
 	
