@@ -339,6 +339,8 @@
 				str+='<th rowspan="2" >District</th>';
 				
 				str+='<th rowspan="2">User</th>';
+				str+='<th rowspan="2">Name</th>';
+				str+='<th rowspan="2">Tab No</th>';
 				str+='<th rowspan="2">Total Count</th>';
 				str+='<th rowspan="2">Total Amount</th>';
 				str+='<th rowspan="2" >MobileNo</th>';
@@ -380,6 +382,8 @@
 				   }
 				 
 				   str+='  <td>'+result[i].name+'</td>';
+				   str+='  <td>'+result[i].uname+'</td>';
+				   str+='  <td>'+result[i].tabNo+'</td>';
 				   if(result[i].totalCount > 0){
 				      str+='  <td>'+result[i].totalCount+'</td>';
 					}else{
