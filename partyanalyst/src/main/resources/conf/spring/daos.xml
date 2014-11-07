@@ -1714,6 +1714,10 @@
 	<property name="sessionFactory" ref="sessionFactory" />
 </bean>
 
+<bean id="tdpCadreOnlineDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreOnlineDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
 <bean id="smsJobStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsJobStatusDAO" >
 	<property name="sessionFactory" ref="sessionFactory" />
 </bean>

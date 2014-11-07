@@ -2212,7 +2212,7 @@
 		<property name="casteDAO" ref="casteDAO" />
 		<property name="voterNamesDAO" ref="voterNamesDAO" />
 		<property name="smsJobStatusDAO" ref="smsJobStatusDAO" />
-		
+		<property name="tdpCadreOnlineDAO" ref="tdpCadreOnlineDAO" />
      </bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
