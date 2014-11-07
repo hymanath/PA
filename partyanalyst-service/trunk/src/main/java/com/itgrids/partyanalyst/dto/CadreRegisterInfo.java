@@ -35,8 +35,17 @@ public class CadreRegisterInfo implements Serializable{
 	private Long apOnlineCount;
 	private Long tgOnlineCount;
 	private Long totalAmount;
+	private String tabNo;
 	
 	
+	public String getTabNo() {
+		return tabNo;
+	}
+
+	public void setTabNo(String tabNo) {
+		this.tabNo = tabNo;
+	}
+
 	public Long getApOnlineCount() {
 		return apOnlineCount;
 	}
