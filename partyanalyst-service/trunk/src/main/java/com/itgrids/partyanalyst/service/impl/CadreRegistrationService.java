@@ -1216,9 +1216,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						   tdpCadre.setIsRelative("N");
 						   tdpCadre.setRelationTypeId(null);
 						}
+					tdpCadre.setCardNo(cadreRegistrationVO.getVoterCardNumber());
 					if(statusVar){
 						tdpCadre.setNoVoterId("Y");
-						tdpCadre.setCardNo(cadreRegistrationVO.getVoterCardNumber());
+						
 						if(cadreRegistrationVO.getVoterCardNumber() != null && cadreRegistrationVO.getVoterCardNumber().trim().length()>0){
 						   Long count = tdpCadreDAO.checkCardNoExistsOrNot(cadreRegistrationVO.getVoterCardNumber());
 						   if(count.longValue() > 0){
