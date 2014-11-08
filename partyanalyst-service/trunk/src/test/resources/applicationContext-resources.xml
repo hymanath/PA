@@ -505,6 +505,7 @@
 				<value>com.itgrids.partyanalyst.model.CadreOtpDetails</value>
 				<value>com.itgrids.partyanalyst.model.LoginDetailsByTab</value>
 				<value>com.itgrids.partyanalyst.model.SmsJobStatus</value>
+				<value>com.itgrids.partyanalyst.model.TdpCadreOnline</value>
 				<value>com.itgrids.partyanalyst.model.CadreRegAmountFile</value>
 				<value>com.itgrids.partyanalyst.model.CadreRegAmountDetails</value>
 			</list>
