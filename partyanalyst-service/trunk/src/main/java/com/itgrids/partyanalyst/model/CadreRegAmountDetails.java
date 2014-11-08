@@ -15,6 +15,9 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 
 @Entity
@@ -42,7 +45,9 @@ public class CadreRegAmountDetails extends BaseModel implements Serializable {
 	}
 	
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	 @JoinColumn(name = "cadre_reg_amount_file_id")
+	@JoinColumn(name = "cadre_reg_amount_file_id",insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public CadreRegAmountFile getCadreRegAmountFile() {
 		return cadreRegAmountFile;
 	}
@@ -51,7 +56,9 @@ public class CadreRegAmountDetails extends BaseModel implements Serializable {
 	}
 	
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	 @JoinColumn(name = "cadre_survey_user_id")
+	@JoinColumn(name = "cadre_survey_user_id",insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public CadreSurveyUser getCadreSurveyUser() {
 		return cadreSurveyUser;
 	}
@@ -75,8 +82,7 @@ public class CadreRegAmountDetails extends BaseModel implements Serializable {
 		this.branch = branch;
 	}
 	
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	 @JoinColumn(name = "cadre_survey_user_id",insertable = false, updatable = false)
+	@Column(name = "cadre_reg_amount_file_id")
 	public Long getCadreRegAmountFileId() {
 		return cadreRegAmountFileId;
 	}
@@ -84,8 +90,7 @@ public class CadreRegAmountDetails extends BaseModel implements Serializable {
 		this.cadreRegAmountFileId = cadreRegAmountFileId;
 	}
 	
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	 @JoinColumn(name = "cadre_survey_user_id",insertable = false, updatable = false)
+	@Column(name = "cadre_survey_user_id")
 	public Long getCadreSurveyUserId() {
 		return cadreSurveyUserId;
 	}
