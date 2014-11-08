@@ -32,7 +32,6 @@ public class CadreRegAmountFile extends BaseModel implements Serializable{
 	private Long uploadedById;
 	private Date uploadedTime;
 	private Date date;
-	private User updatedBy;
 	
 	
 	@Id
@@ -61,7 +60,11 @@ public class CadreRegAmountFile extends BaseModel implements Serializable{
 		this.path = path;
 	}
 	
-	@Column(name = "uploaded_by")
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "uploaded_by",insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	
 	public Long getUploadedById() {
 		return uploadedById;
 	}
@@ -85,20 +88,6 @@ public class CadreRegAmountFile extends BaseModel implements Serializable{
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	
-	
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "uploaded_by",insertable = false, updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public User getUpdatedBy() {
-		return updatedBy;
-	}
-	public void setUpdatedBy(User updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-	
-	
-	
+
 
 }
