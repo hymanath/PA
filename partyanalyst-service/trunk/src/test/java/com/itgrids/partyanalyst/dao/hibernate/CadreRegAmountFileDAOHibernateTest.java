@@ -14,5 +14,8 @@ public class CadreRegAmountFileDAOHibernateTest extends BaseDaoTestCase{
 		this.cadreRegAmountFileDAO = cadreRegAmountFileDAO;
 	}
 	
-	
+	public void test()
+	{
+		cadreRegAmountFileDAO.getAll();
+	}
 }
