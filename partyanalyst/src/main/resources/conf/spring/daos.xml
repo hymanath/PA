@@ -1721,5 +1721,14 @@
 <bean id="smsJobStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsJobStatusDAO" >
 	<property name="sessionFactory" ref="sessionFactory" />
 </bean>
+
+<bean id="cadreRegAmountFileDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRegAmountFileDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="cadreRegAmountDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRegAmountDetailsDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
 	<!--  end -->
 </beans>		
