@@ -3900,6 +3900,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						if( names.get(0)[0] != null && names.get(0)[0] .toString().trim().length() > 0)
 						{
 							name = names.get(0)[0].toString() ;
+							name = name +   "  " ;
 						}
 						if(names.get(0)[1] != null && names.get(0)[1] .toString().trim().length() > 0)
 						{
