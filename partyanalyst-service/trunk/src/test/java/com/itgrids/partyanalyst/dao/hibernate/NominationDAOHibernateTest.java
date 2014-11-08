@@ -1,7 +1,14 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -1766,7 +1773,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 	}*/
 	
 	
-	public void testDetails1()
+	/*public void testDetails1()
 	{
 		
 		List<Object[]> candidateList  = nominationDAO.getCandidateResultsByCandidateInfo(3424L,258L);
@@ -1792,6 +1799,35 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 			}
 		}
 		
+	}*/
+	
+	public void test() throws Exception
+	{
+		try {
+			FileInputStream file = new FileInputStream(new File("G:/Sample.xls"));
+			HSSFWorkbook workbook = new HSSFWorkbook(file);
+			HSSFSheet sheet = workbook.getSheetAt(0);
+			int totalRows = sheet.getLastRowNum();
+			
+			for(int index = 0;index<=totalRows;index++)
+			{
+				try{
+					HSSFRow row = sheet.getRow(index);
+					System.out.println();
+					System.out.print("Index -->"+index);
+					System.out.print("\t"+row.getCell(0));
+					System.out.print("\t"+row.getCell(1));
+					System.out.print("\t"+row.getCell(2));
+					
+				}catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	
