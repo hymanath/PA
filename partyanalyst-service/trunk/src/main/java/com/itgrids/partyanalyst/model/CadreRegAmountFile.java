@@ -26,17 +26,17 @@ import org.hibernate.annotations.NotFoundAction;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CadreRegAmountFile extends BaseModel implements Serializable{
 
+	private static final long serialVersionUID = 4347528196669387669L;
 	private Long CadreRegAmountFileId;
 	private String fileName;
 	private String path;
-	private Long uploadedById;
+	private User uploadedby;
 	private Date uploadedTime;
 	private Date date;
 	
-	
 	@Id
-	 @GeneratedValue(strategy = GenerationType.AUTO)
-	 @Column(name = "cadre_reg_amount_file_id", unique = true, nullable = false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "cadre_reg_amount_file_id", unique = true, nullable = false)
 	public Long getCadreRegAmountFileId() {
 		return CadreRegAmountFileId;
 	}
@@ -60,18 +60,6 @@ public class CadreRegAmountFile extends BaseModel implements Serializable{
 		this.path = path;
 	}
 	
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "uploaded_by",insertable = false, updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	
-	public Long getUploadedById() {
-		return uploadedById;
-	}
-	public void setUploadedById(Long uploadedById) {
-		this.uploadedById = uploadedById;
-	}
-	
 	@Column(name = "uploaded_time")
 	public Date getUploadedTime() {
 		return uploadedTime;
@@ -87,6 +75,17 @@ public class CadreRegAmountFile extends BaseModel implements Serializable{
 	}
 	public void setDate(Date date) {
 		this.date = date;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="uploaded_by")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUploadedby() {
+		return uploadedby;
+	}
+	public void setUploadedby(User uploadedby) {
+		this.uploadedby = uploadedby;
 	}
 
 
