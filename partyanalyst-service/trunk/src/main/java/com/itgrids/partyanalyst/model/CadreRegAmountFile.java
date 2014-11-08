@@ -3,15 +3,22 @@ package com.itgrids.partyanalyst.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 
 @Entity
@@ -22,9 +29,10 @@ public class CadreRegAmountFile extends BaseModel implements Serializable{
 	private Long CadreRegAmountFileId;
 	private String fileName;
 	private String path;
-	private Long uploadedBy;
+	private Long uploadedById;
 	private Date uploadedTime;
 	private Date date;
+	private User updatedBy;
 	
 	
 	@Id
@@ -53,18 +61,19 @@ public class CadreRegAmountFile extends BaseModel implements Serializable{
 		this.path = path;
 	}
 	
-	@Column(name = "uploaded_by", length = 45)
-	public Long getUploadedBy() {
-		return uploadedBy;
+	@Column(name = "uploaded_by")
+	public Long getUploadedById() {
+		return uploadedById;
 	}
-	public void setUploadedBy(Long uploadedBy) {
-		this.uploadedBy = uploadedBy;
+	public void setUploadedById(Long uploadedById) {
+		this.uploadedById = uploadedById;
 	}
 	
 	@Column(name = "uploaded_time")
 	public Date getUploadedTime() {
 		return uploadedTime;
 	}
+	
 	public void setUploadedTime(Date uploadedTime) {
 		this.uploadedTime = uploadedTime;
 	}
@@ -77,6 +86,17 @@ public class CadreRegAmountFile extends BaseModel implements Serializable{
 		this.date = date;
 	}
 	
+	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "uploaded_by",insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUpdatedBy() {
+		return updatedBy;
+	}
+	public void setUpdatedBy(User updatedBy) {
+		this.updatedBy = updatedBy;
+	}
 	
 	
 	
