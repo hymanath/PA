@@ -368,17 +368,17 @@
 				   if(result[i].memberShipNo != null){
 				     str+='  <td>'+result[i].memberShipNo+'</td>';
 				   }else{
-				      str+='  <td>-</td>';
+				      str+='  <td></td>';
 				   }
 				  if(result[i].location != null){
 				     str+='  <td>'+result[i].location+'</td>';
 				   }else{
-				      str+='  <td>-</td>';
+				      str+='  <td></td>';
 				   }
 				  if(result[i].number != null){
 				     str+='  <td>'+result[i].number+'</td>';
 				   }else{
-				      str+='  <td>-</td>';
+				      str+='  <td></td>';
 				   }
 				 
 				   str+='  <td>'+result[i].name+'</td>';
@@ -387,18 +387,18 @@
 				   if(result[i].totalCount > 0){
 				      str+='  <td>'+result[i].totalCount+'</td>';
 					}else{
-					  str+='  <td>-</td>';
+					  str+='  <td></td>';
 					}
 					if(result[i].totalCount > 0){
 				      str+='  <td>'+result[i].totalAmount+'</td>';
 					}
 					else{
-					  str+='  <td>-</td>';
+					  str+='  <td></td>';
 					}
 				  if(result[i].area != null){
 				     str+='  <td>'+result[i].area+'</td>';
 				   }else{
-				      str+='  <td>-</td>';
+				      str+='  <td></td>';
 				   }
 				  for(var j in result[i].infoList){
 					  if(timeCheckBox == true)
@@ -406,24 +406,24 @@
 				    if(result[i].infoList[j].area != null){
 				      str+='  <td>'+result[i].infoList[j].area+'</td>';
 					}else{
-					  str+='  <td>-</td>';
+					  str+='  <td></td>';
 					}
 					if(result[i].infoList[j].location != null){
 				      str+='  <td>'+result[i].infoList[j].location+'</td>';
 					}else{
-					  str+='  <td>-</td>';
+					  str+='  <td></td>';
 					}
 					}
 					if(result[i].infoList[j].totalCount != null){
 				      str+='  <td>'+result[i].infoList[j].totalCount+'</td>';
 					}else{
-					  str+='  <td>-</td>';
+					  str+='  <td></td>';
 					}
 					/*if(result[i].infoList[j].totalCount != null){
 				      str+='  <td>'+result[i].infoList[j].amount+'</td>';
 					}
 					else{
-					  str+='  <td>-</td>';
+					  str+='  <td></td>';
 					}*/
 				  }
 				  str+='</tr>';
@@ -842,12 +842,12 @@
 				    if(result[i].apCount != null){
 				      str+='  <td>'+result[i].apCount+'</td>';
 					}else{
-					  str+='  <td>-</td>';
+					  str+='  <td></td>';
 					}
 					if(result[i].tgCount != null){
 				      str+='  <td>'+result[i].tgCount+'</td>';
 					}else{
-					  str+='  <td>-</td>';
+					  str+='  <td></td>';
 					}
 				  str+='</tr>';
 				}
@@ -920,12 +920,12 @@
 				    if(result[i].apCount != null){
 				      str+='  <td>'+result[i].apCount+'</td>';
 					}else{
-					  str+='  <td>-</td>';
+					  str+='  <td></td>';
 					}
 					if(result[i].tgCount != null){
 				      str+='  <td>'+result[i].tgCount+'</td>';
 					}else{
-					  str+='  <td>-</td>';
+					  str+='  <td></td>';
 					}
 				  str+='</tr>';
 				}
