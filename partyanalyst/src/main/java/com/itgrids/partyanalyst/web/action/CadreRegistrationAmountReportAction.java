@@ -83,7 +83,8 @@ public class CadreRegistrationAmountReportAction extends ActionSupport{
 		}
 		return Action.SUCCESS;
 	}
-	public String getCadreRegAmountReport(){
+	public String getCadreRegAmountReport()
+	{
 		try{
 			request = ServletActionContext.getRequest();
 			String startDate = request.getParameter("startDate");
@@ -94,7 +95,7 @@ public class CadreRegistrationAmountReportAction extends ActionSupport{
 			
 		}
 		catch(Exception e){
-			LOG.info("Entered into execute method in  CadreRegistrationAmountReportAction Action");
+			LOG.info("Entered into getCadreRegAmountReport method in  CadreRegistrationAmountReportAction Action");
 		}
 		return Action.SUCCESS;
 	}
