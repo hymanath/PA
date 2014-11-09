@@ -2253,6 +2253,7 @@
      	<property name="voterDAO" ref="voterDAO"/>
      	<property name="cadreRegAmountDetailsDAO" ref="cadreRegAmountDetailsDAO"/>
      	<property name="cadreSurveyUserDAO" ref="cadreSurveyUserDAO"/>
+     	<property name="tdpCadreDAO" ref="tdpCadreDAO"/>
      </bean>
      
 </beans>		
