@@ -2249,5 +2249,15 @@
      <bean name="cadreRegAmountUploadService" class="com.itgrids.partyanalyst.service.impl.CadreRegAmountUploadService">
      
      </bean>
+     
+      <bean name="cadreRegAmountDetailsService" class="com.itgrids.partyanalyst.service.impl.CadreRegAmountDetailsService">
+		<property name="userDAO" ref="userDAO" />
+         <property name="cadreRegAmountFileDAO" ref="cadreRegAmountFileDAO" />
+         <property name="voterDAO" ref="voterDAO" />
+         <property name="cadreSurveyUserDAO" ref="cadreSurveyUserDAO" />
+     	 <property name="tdpCadreDAO" ref="tdpCadreDAO" />
+     	 <property name="cadreRegAmountDetailsDAO" ref="cadreRegAmountDetailsDAO" />
+     </bean>
+     
 </beans>		
 	
