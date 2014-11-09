@@ -9,6 +9,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Cadre Registration Amount Report</title>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
+	
 </head>
 <body>
 	<div class="container m_top10">
@@ -30,18 +34,21 @@
 					<input type="Submit" class = "btn" value = "Submit" onClick = "cadreRegAmountReportAction()"/>
 			</div>
 			</div>
+			<div class="row-fluid ">
+				<div id="usersDetails"></div>
+			</div>
 	</div>
 	
 	<script>
 		$("#fromDate").datepicker({
-			dateFormat: "dd-mm-yy",
+			dateFormat: "yy-mm-dd",
 			changeMonth: true,
 	        changeYear: true,
 			maxDate: new Date()
 		});
 		$("#fromDate").datepicker("setDate", new Date());
 		$("#toDate").datepicker({
-			dateFormat: "dd-mm-yy",
+			dateFormat: "yy-mm-dd",
 			changeMonth: true,
 	        changeYear: true,
 			maxDate: new Date()
@@ -93,8 +100,49 @@
           url: 'cadreRegAmountReportAction.action',
           data: {task:"cadreAmountReport",startDate:startDate,endDate:endDate,reportValue:reportValue}
 		}).done(function(result){
-			
+			buildUserData(result);
 		});
+	}
+	
+	function buildUserData(results){
+		$("#usersDetails").html("");
+		var str = '';
+			str +='<table class="table table-bordered m_top20 table-hover table-striped"  id="seachDetalsTab1">';
+				str +='<thead>';
+					str +='<tr>';
+						str +='<th class="text-align1">CONSTITUENCY</th>';
+						str +='<th class="text-align1">USERNAME</th>';
+						str +='<th class="text-align1">NAME</th>';
+						str +='<th class="text-align1">MOBILE</th>';
+						str +='<th class="text-align1">TOTAL RECORDS</th>';
+						str +='<th class="text-align1">AMOUNT</th>';
+						str +='<th class="text-align1">PAID</th>';
+						str +='<th class="text-align1">DIFFERENCE</th>';
+					str +='</tr>';
+				str +='</thead>';
+				str +='<tbody>';
+				for(var i in results){
+					str +='<tr>';
+						str +='<th class="text-align1">'+results[i].constituency+'</th>';
+						str +='<th class="text-align1">'+results[i].userName+'</th>';
+						str +='<th class="text-align1">'+results[i].name+'</th>';
+						str +='<th class="text-align1">'+results[i].mobileNo+'</th>';
+						str +='<th class="text-align1">'+results[i].totalCount+'</th>';
+						str +='<th class="text-align1">'+results[i].totalAmount+'</th>';
+						str +='<th class="text-align1">'+results[i].paidAmount+'</th>';
+						str +='<th class="text-align1">'+results[i].difference+'</th>';
+					str +='</tr>';
+				}
+				str +='</tbody>';
+			str +='</table>';
+			
+			$('#usersDetails').html(str);
+			
+		 
+			$('#seachDetalsTab1').dataTable({
+				"iDisplayLength": 100,
+				"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
+			});
 	}
 	</script>
 </body>
