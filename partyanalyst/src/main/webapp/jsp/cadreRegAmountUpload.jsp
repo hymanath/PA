@@ -7,6 +7,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+
 <title>Cadre Registration Report</title>
 
 <script>
@@ -15,37 +18,91 @@ $( "#date" ).datepicker();
 });
 
 </script>
+<style>
+
+.background {
+    background: none repeat scroll 0 0 #e5e5e5;
+	}
+</style>
+
 </head>
 
 <body>
-	<div id="contentDivId" align="center" style="margin-top:50px;margin-bottom:100px;">
-	<s:form name="cadreRegAmountFileUpload" action="cadreRegAmountFileUpload.action" method="post" enctype="multipart/form-data">
-	<table>
-		<tr>
-			<td><label>Select Date : </label></td>
-			<td><input type="text" id="date" name="date"></input></td>
-		</tr>
-		<tr>
-			<td><label>Select File : </label></td>
-			<td><input type="file" id="file" name="file"></input></td>
-		</tr>
-		<tr align="left">
-			<td></td>
-			<td align="centre"><input type="submit" value=" Submit "></td>
-		</tr>
-	</table>
-	</s:form>
-
-	<table>
-		<tr><td></td><td><b>1. Xls should be in Ms-Excel 97-2007 foemat with extention .xls .</b></td></tr>
-		<tr><td></td><td><b>2. First row should contains column headers .</b></td></tr>
-		<tr><td></td><td><b>3. Data should e in bellow format .</b></td></tr>
-			<tr align="left"><td></td><td>&nbsp;&nbsp;&nbsp;I. Column - Branch name</td></tr>
-			<tr align="left"><td></td><td>&nbsp;&nbsp;&nbsp;II. Column - Amount</td></tr>
-			<tr align="left"><td></td><td>&nbsp;&nbsp;&nbsp;III. Column - Username</td></tr>
-		<tr><td></td><td><b>4. Data should be in First work sheet .</b></td></tr>
-	</table>
-	</div>
 	
+
+	<div class="container">
+	
+	<div class="span12 well well-small border-radius-0 mb-0 " style="background:#ffffff;"">
+		<h3 class="text-center text-uppercase">Cadre Registration Amount Upload</h3>
+	</div>	
+	
+			
+		<div class="span12 well well-small" style="min-height:300px;background:#ffffff;">
+		<div id="errorDiv" style="margin-bottom:10px;margin-left:215px;color:red" > </div>
+			
+			<div id="contentDivId" align="center" style="margin-bottom:100px;">
+						
+			<s:form name="cadreRegAmountFileUpload" action="cadreRegAmountFileUpload.action" method="post" enctype="multipart/form-data" onsubmit="return validatefields();">
+	
+			<table style= "width:500px;"">
+				<tr>
+					<td><label>Select Date : </label></td>
+					<td><input type="text" id="date" name="date" readonly></input></td>
+				</tr>
+				<tr>
+					<td><label>Select File : </label></td>
+					<td><input type="file" id="file" name="file"></input></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td align="centre"><input type="submit" value=" Submit "></td>
+				</tr>
+			</table>
+			<br>
+	
+			<table style="margin-left: auto; margin-right: auto; width:505px;">
+				<tr><td></td><td><b>Instructions to Upload</b></td></tr>
+				<tr><td></td><td><b></b></td></tr>
+				<tr><td></td><td><b></b></td></tr>
+				<tr><td></td><td><b>1. Xls should be in Ms-Excel 97-2003 format with extention .xls .</b></td></tr>
+				<tr><td></td><td><b>2. First row should contains column headers .</b></td></tr>
+				<tr><td></td><td><b>3. Data should e in bellow format .</b></td></tr>
+					<tr><td></td><td>&nbsp;&nbsp;&nbsp;I. Column - Branch name</td></tr>
+					<tr><td></td><td>&nbsp;&nbsp;&nbsp;II. Column - Amount</td></tr>
+					<tr><td></td><td>&nbsp;&nbsp;&nbsp;III. Column - Username</td></tr>
+				<tr><td></td><td><b>4. Data should be in First work sheet .</b></td></tr>
+			</table>
+			</s:form>
+	
+	</div>	
+	</div>
+	</div>
+<script>	
+function validatefields(){   
+
+	var flag = true;
+	
+	  if($("#date").val().length == 0){
+		$("#errorDiv").text("Please Select Date");
+		flag= false;
+		return flag;
+	  } 
+	  var fileName = $("#file").val().trim();
+	  if(fileName == 0){
+		$("#errorDiv").text("Please Select file to Upload");
+		flag= false;
+		return flag;
+	  }
+	 var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+	 if(ext != "xls")
+	 {
+		$("#errorDiv").text("Please Select only .xls file");
+		flag= false;
+		return flag;
+	 } 
+	
+}
+
+</script>
 </body>
 </html>
