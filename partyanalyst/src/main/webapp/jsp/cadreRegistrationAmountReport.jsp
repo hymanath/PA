@@ -14,20 +14,20 @@
 	<div class="container m_top10">
 			<div class="row-fluid ">
 				<div id="errMsgDiv" align="center" ></div>
-				<div class = "row">
+				<div class = "row" style="margin-top:20px;">
 				<table  style="margin-left: 270px;">
-					<tr><td><b>From Date :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="fromDate"/></td></tr>
-				   <tr><td><b>To Date   :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="toDate" /></td></tr>		
+					<tr><td><label>From Date :</label>&nbsp;</td><td>&nbsp;&nbsp;<input type="text" readonly="readonly" id="fromDate"/></td></tr>
+				   <tr><td><label>To Date   :</label>&nbsp;</td><td>&nbsp;&nbsp;<input type="text" readonly="readonly" id="toDate" /></td></tr>		
 				</table>
 				</div>
 			</div>
-			<div class = "row-fluid " >
+			<div class = "row-fluid " style="margin-left: 270px;" >
 			<div class = "row">
-				<div><input type="radio" name = "cadreAmountReport" value = "DateWiseReport" checked = "checked"><label> Date Wise Report</label></div>
-				<div><input type="radio" name = "cadreAmountReport" value="CumilativeReport"><label> Cumilative Report</label></div>
-			</div>
-			<div>
-					<input type="Submit" value = "Submit" onClick = "cadreRegAmountReportAction()"/>
+				<table><tr><td><input type="radio" name = "cadreAmountReport" value = "DateWiseReport" checked = "checked"/></td><td><label>&nbsp;&nbsp;Date Wise Report</label><td></td><td>&nbsp;&nbsp;&nbsp;</td>
+				<td><input type="radio" name = "cadreAmountReport" value="CumilativeReport"/></td><td><label>&nbsp;&nbsp;Cumilative Report</label></td></tr></table>
+			</div><br/>
+			<div class = "span6" style="margin-left:100px;margin-bottom:50px;">
+					<input type="Submit" class = "btn" value = "Submit" onClick = "cadreRegAmountReportAction()"/>
 			</div>
 			</div>
 	</div>
