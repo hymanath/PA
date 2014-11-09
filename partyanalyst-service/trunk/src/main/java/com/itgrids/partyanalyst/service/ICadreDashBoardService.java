@@ -63,4 +63,6 @@ public interface ICadreDashBoardService {
 	public CadreRegisterInfo getRegisteredInfo(Long locationId,String locationType,int startIndex,int maxIndex);
 	
 	public CadreRegisterInfo getWorkingMembersDetails(String hours);
+	
+	public String getStateBasedOnLocation(String AccessType,String accessValue);
 }
