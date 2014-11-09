@@ -1188,6 +1188,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 						
 					}
 				});
+				voterDAO.flushAndclearSession();
 			}
 			else
 			{
@@ -2086,14 +2087,19 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 	{
 		ResultStatus resultStatus = new ResultStatus();
 		try{
+			LOG.error("Enter into saveVoterFinalCasteOfAConstituency Method - "+new Date());
 			List<GenericVO> list = getThirdPartyAvaliableBooths(constituencyId);
+			
+			LOG.error("getThirdPartyAvaliableBooths Completed - "+new Date());
 			
 			if(list != null && list.size() > 0)
 			{
 				for(GenericVO genericVO : list)
 				{
 					try{
+						LOG.error(genericVO.getId()+" Started - "+new Date());
 						ResultStatus rs = saveThirdPartyDetails(genericVO.getId());
+						LOG.error(genericVO.getId()+" Ended - "+new Date());
 						if(rs.getResultCode() == ResultCodeMapper.FAILURE)
 							LOG.error(rs.getMessage());
 					}catch(Exception e)
@@ -2102,7 +2108,7 @@ public class SurveyDashBoardService implements ISurveyDashBoardService {
 					}
 				}
 			}
-			
+			LOG.error("Existing from saveVoterFinalCasteOfAConstituency Method - "+new Date());
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			return resultStatus;
 		}catch(Exception e)
