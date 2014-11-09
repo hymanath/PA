@@ -505,9 +505,9 @@
 				<value>com.itgrids.partyanalyst.model.CadreOtpDetails</value>
 				<value>com.itgrids.partyanalyst.model.LoginDetailsByTab</value>
 				<value>com.itgrids.partyanalyst.model.SmsJobStatus</value>
-				<value>com.itgrids.partyanalyst.model.TdpCadreOnline</value>
 				<value>com.itgrids.partyanalyst.model.CadreRegAmountFile</value>
 				<value>com.itgrids.partyanalyst.model.CadreRegAmountDetails</value>
+				<value>com.itgrids.partyanalyst.model.TdpCadreOnline</value>
 			</list>
 		</property>
 	</bean>
@@ -571,12 +571,6 @@
 
 	<!-- Add new DAOs PARTY ANALYST DATABASE here -->
 	
-	<bean id="cadreRegAmountFileDAO" class="com.itgrids.partyanalyst.dao.hibernate.cadreRegAmountFileDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	<bean id="cadreRegAmountDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRegAmountDetailsDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
 	<bean id="voterBoothActivitiesDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterBoothActivitiesDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
@@ -2603,6 +2597,9 @@
 <bean id="loginDetailsByTabDAO" class="com.itgrids.partyanalyst.dao.hibernate.LoginDetailsByTabDAO" >
 	<property name="sessionFactory" ref="sessionFactory" />
 </bean>
+<bean id="tdpCadreOnlineDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreOnlineDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
  
  <bean name="cadreSurveyTransactionService"  class="com.itgrids.partyanalyst.service.impl.CadreSurveyTransactionService">
    	 <property name="cadreTxnUserDAO" ref="cadreTxnUserDAO" />
@@ -2618,5 +2615,12 @@
 	<property name="sessionFactory" ref="sessionFactory" />
   </bean>
   
+  <bean id="cadreRegAmountDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRegAmountDetailsDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+  
+  <bean id="cadreRegAmountFileDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRegAmountFileDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+  </bean>
   
 </beans>
