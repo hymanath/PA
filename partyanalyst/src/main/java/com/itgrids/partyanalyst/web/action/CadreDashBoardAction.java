@@ -32,8 +32,17 @@ public class CadreDashBoardAction implements ServletRequestAware {
 	private String task;
 	private CadreRegisterInfo resultVO;
 	
+	private String getState;
 	
 	
+	public String getGetState() {
+		return getState;
+	}
+
+	public void setGetState(String getState) {
+		this.getState = getState;
+	}
+
 	public CadreRegisterInfo getResultVO() {
 		return resultVO;
 	}
@@ -109,6 +118,11 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 			noaccess = false;
 		}
+		
+		if(regVO.getAccessType()!=null && regVO.getAccessValue()!=null){
+			getState = cadreDashBoardService.getStateBasedOnLocation(regVO.getAccessType(), regVO.getAccessValue());
+		}
+		
 		if(noaccess){
 			return "error";
 		}
