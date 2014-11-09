@@ -17,4 +17,5 @@ public interface ICadreSurveyUserDAO extends GenericDao<CadreSurveyUser, Long>{
 	
 	public Long  getTotalCadreSurveyDetails();
 	
+	public CadreSurveyUser getCadreSurveyUserByUsername(String username);
 }
