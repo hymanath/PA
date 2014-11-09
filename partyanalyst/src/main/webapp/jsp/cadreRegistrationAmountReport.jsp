@@ -15,6 +15,7 @@
 	
 </head>
 <body>
+	<h3 style="text-align:center;margin:10px;"> CADRE REGISTRATION AMOUNT DETAILS REPORT</h3>
 	<div class="container m_top10">
 			<div class="row-fluid ">
 				<div id="errMsgDiv" align="center" ></div>
@@ -26,7 +27,7 @@
 				</div>
 			</div>
 			<div class = "row-fluid " style="margin-left: 270px;" >
-			<div class = "row">
+			<div class = "row" style="display:none;">
 				<table><tr><td><input type="radio" name = "cadreAmountReport" value = "DateWiseReport" checked = "checked"/></td><td><label>&nbsp;&nbsp;Date Wise Report</label><td></td><td>&nbsp;&nbsp;&nbsp;</td>
 				<td><input type="radio" name = "cadreAmountReport" value="CumilativeReport"/></td><td><label>&nbsp;&nbsp;Cumilative Report</label></td></tr></table>
 			</div><br/>
@@ -58,7 +59,8 @@
 	  $("#errMsgDiv").html('');
 				var startDate = $("#fromDate").val();
 				var endDate = $("#toDate").val();
-				var reportValue=$('input[name=cadreAmountReport]:checked').val();
+				//var reportValue=$('input[name=cadreAmountReport]:checked').val();
+				var reportValue="CumilativeReport";
 				var errMsg="";
 				
 				if(startDate.trim().length >0 && endDate.trim().length >0)
