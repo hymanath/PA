@@ -2225,7 +2225,7 @@
          <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
          <property name="cadreSurveyUserDAO" ref="cadreSurveyUserDAO" />
          <property name="appDbUpdateDAO" ref="appDbUpdateDAO" />
-          
+          <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 		   <property name="cadreSurveyUserAssignDetailsDAO" ref="cadreSurveyUserAssignDetailsDAO" />
 		  
          
