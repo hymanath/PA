@@ -1,7 +1,9 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -9,11 +11,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.service.ICadreRegAmountUploadService;
+import com.itgrids.partyanalyst.dto.CadreRegAmountUploadVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.service.ICadreRegAmountDetailsService;
+import com.itgrids.partyanalyst.util.IWebConstants;
+import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.RandomGenaration;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -21,54 +31,42 @@ public class CadreRegAmountUploadAction extends ActionSupport implements
 		ServletRequestAware {
 
 	private static final long serialVersionUID = -4620729281316958397L;
-	private static final Logger LOG = Logger
-			.getLogger(CadreRegAmountUploadAction.class);
+	private static final Logger LOG = Logger.getLogger(CadreRegAmountUploadAction.class);
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private HttpSession session;
-	private String task;
-	JSONObject jObj;
-	private ICadreRegAmountUploadService cadreRegAmountUploadService;
-	private List<File> userImage = new ArrayList<File>();
-	private List<String> userImageContentType = new ArrayList<String>();
-	private List<String> userImageFileName = new ArrayList<String>();
+	private File file;
+	private String date;
+	private ICadreRegAmountDetailsService cadreRegAmountDetailsService;
+	DateUtilService dateUtilService = new DateUtilService();
 
-	public List<File> getUserImage() {
-		return userImage;
+	public ICadreRegAmountDetailsService getCadreRegAmountDetailsService() {
+		return cadreRegAmountDetailsService;
 	}
 
-	public void setUserImage(List<File> userImage) {
-		this.userImage = userImage;
+	public void setCadreRegAmountDetailsService(
+			ICadreRegAmountDetailsService cadreRegAmountDetailsService) {
+		this.cadreRegAmountDetailsService = cadreRegAmountDetailsService;
 	}
 
-	public List<String> getUserImageContentType() {
-		return userImageContentType;
+	public String getDate() {
+		return date;
 	}
 
-	public void setUserImageContentType(List<String> userImageContentType) {
-		this.userImageContentType = userImageContentType;
+	public void setDate(String date) {
+		this.date = date;
 	}
 
-	public List<String> getUserImageFileName() {
-		return userImageFileName;
+	public File getFile() {
+		return file;
 	}
 
-	public void setUserImageFileName(List<String> userImageFileName) {
-		this.userImageFileName = userImageFileName;
-	}
-
-	public ICadreRegAmountUploadService getCadreRegAmountUploadService() {
-		return cadreRegAmountUploadService;
-	}
-
-	public void setCadreRegAmountUploadService(
-			ICadreRegAmountUploadService cadreRegAmountUploadService) {
-		this.cadreRegAmountUploadService = cadreRegAmountUploadService;
+	public void setFile(File file) {
+		this.file = file;
 	}
 
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
-
 	}
 
 	public void setServletContext(ServletContext arg0) {
@@ -99,31 +97,9 @@ public class CadreRegAmountUploadAction extends ActionSupport implements
 		this.session = session;
 	}
 
-	public String getTask() {
-		return task;
-	}
-
-	public void setTask(String task) {
-		this.task = task;
-	}
-
-	public JSONObject getjObj() {
-		return jObj;
-	}
-
-	public void setjObj(JSONObject jObj) {
-		this.jObj = jObj;
-	}
-
 	public String execute() {
 		try{
-			LOG.info("Enterd into execute() in CadreRegAmountUploadAction");
-			String task=request.getParameter("task");
-			String date=request.getParameter("date");
-			String fileUrl=request.getParameter("fileUrl");
-			if(task.equalsIgnoreCase("savingFile")){
-				cadreRegAmountUploadService.getDashBoardBasicInfo(date,fileUrl);
-			}
+			
 		}
 		catch (Exception e) {
 			LOG.error("Exception raised in execute() in CadreRegAmountUploadAction");
@@ -135,9 +111,30 @@ public class CadreRegAmountUploadAction extends ActionSupport implements
 	{
 		try{
 			session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			/*if(user == null)
+				return ERROR;*/
+			RandomGenaration random = new RandomGenaration();
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			Date uploadedDate = sdf.parse(date);
+			Date uploadedTime = dateUtilService.getCurrentDateAndTime();
+			String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+			String fileName = Integer.valueOf(random.randomGenerator(10)).toString()+".xls";
+			String path = IWebConstants.STATIC_CONTENT_FOLDER_URL+IConstants.CADRE_REG_AMOUNT_FILES_FOLDER+pathSeperator+fileName;
+			FileUtils.copyFile(file,new File(path));
+			
+			CadreRegAmountUploadVO uploadVO = new CadreRegAmountUploadVO();
+			uploadVO.setUserId(1l);
+			uploadVO.setFileName(fileName);
+			uploadVO.setPath(path);
+			uploadVO.setUploadedDate(uploadedDate);
+			uploadVO.setUploadedTime(uploadedTime);
+			
+			ResultStatus resultStatus = cadreRegAmountDetailsService.uploadCadreRegAmountDetails(uploadVO);
+			return Action.SUCCESS;
 		}catch (Exception e) {
 			LOG.error(e);
+			return Action.ERROR;
 		}
-		return Action.SUCCESS;
 	}
 }
