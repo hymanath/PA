@@ -126,7 +126,7 @@ table.dataTable tr.odd {
 			<div class="span12 show-grid well well-small border-radius-0 mb-10">
 				    <table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" >
 						<tbody>
-						    <tr>
+						    <tr class="tsele">
 								<td>
 									<h2>TS</h2>
 									<img class="pull-right" src="images/TS.png" style="margin-top: -40px;">
@@ -136,7 +136,7 @@ table.dataTable tr.odd {
 								<td><div id="ts2014CountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
 								<td><div id="tsPercCountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
 							</tr>
-							<tr>
+							<tr class="apele">
 								<td>
 									<h2>AP</h2>
 									<img class="pull-right" src="images/AP.png" style="margin-top: -40px;">
@@ -164,22 +164,22 @@ table.dataTable tr.odd {
 								<td><div id="totalRegisCount"><img class="ajaxImgStyle" src="images/icons/search.gif"/></div></td>					
 							</tr>
 							<tr>
-								<td>
+								<td class="indiEle">
 									<div id="todayApTgRegisCount" class="row-fluid">
 										<img class="ajaxImgStyle" src="images/icons/search.gif"/>
 									</div>
 								</td>
-								<td>
+								<td class="indiEle">
 									<div id="thisWeekApTgRegisCount" class="row-fluid">
 										<img class="ajaxImgStyle" src="images/icons/search.gif"/>
 									</div>
 								</td>
-								<td>
+								<td class="indiEle">
 									<div id="monthApTgRegisCount" class="row-fluid">
 										<img class="ajaxImgStyle" src="images/icons/search.gif"/>
 									</div>
 								</td>
-								<td>
+								<td class="indiEle">
 									<div id="totalApTgRegisCount" class="row-fluid">
 										<img class="ajaxImgStyle" src="images/icons/search.gif"/>
 									</div>
@@ -195,8 +195,8 @@ table.dataTable tr.odd {
 			<!-- Constituency wise Registration Processing Areas Row -->
 			<div class="span6 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
 				<div class="btn-group pull-right">
-					<a class="btn btn-mini btn-success" href="javascript:{}" id="apConstiDetailsId" onclick="getAssemblyWiseCompletedPercentage(0,1);">AP</a>
-					<a class="btn btn-mini" href="javascript:{}" id="tgConstiDetailsId" onclick="getAssemblyWiseCompletedPercentage(0,36);">TS</a>
+					<a class="btn btn-mini btn-success apele" href="javascript:{}" id="apConstiDetailsId" onclick="getAssemblyWiseCompletedPercentage(0,1);">AP</a>
+					<a class="btn btn-mini tsele" href="javascript:{}" id="tgConstiDetailsId" onclick="getAssemblyWiseCompletedPercentage(0,36);">TS</a>
 				</div>
 				<h4 class="f-16" style="padding-bottom: 5px;">Constituency wise Registration Processing Areas</h4>
 				<div style="margin-bottom:10px;"><b>Select Constituency :&nbsp;</b><select id="constituencyWiseSelDivId" onchange="getConstituencyWisePerc(this.value);"><option value="0">ALL</option></select></div>
@@ -208,8 +208,8 @@ table.dataTable tr.odd {
 			<!-- District wise Registration Processing Areas ROW -->
 			<div class="span6  show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:20px;">
 				<div class="btn-group pull-right">
-					<a class="btn btn-mini btn-success" href="javascript:{}" id="apDistDetailsId" onclick="getDistrictWiseCompletedPercentage(0,1);">AP</a>
-					<a class="btn btn-mini" href="javascript:{}" id="tgDistDetailsId" onclick="getDistrictWiseCompletedPercentage(0,36);">TS</a>
+					<a class="btn btn-mini btn-success apele" href="javascript:{}" id="apDistDetailsId" onclick="getDistrictWiseCompletedPercentage(0,1);">AP</a>
+					<a class="btn btn-mini tsele" href="javascript:{}" id="tgDistDetailsId" onclick="getDistrictWiseCompletedPercentage(0,36);">TS</a>
 				</div>
 				<h4 class="f-16" style="padding-bottom: 25px;">District wise Registration Processing Areas</h4>
 				<div style="margin-bottom:10px;"><b>Select District :&nbsp;</b><select id="districtWiseSelDivId" onchange="getDistrictWisePerc(this.value);"><option value="0">ALL</option></select></div>
@@ -293,49 +293,46 @@ $('.fadeInUp').addClass('animated fadeInUp');
 $('#fadeInUp1').addClass('animated fadeInUp');
 $('#PreviousmembersCount').addClass('animated fadeInUp');
 $('#membersCount').addClass('animated fadeInX');
-	function getDashBoardBasicInfo(){
-    $("#todayRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');
-	$("#thisWeekRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');
-	$("#monthRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');
-	$("#totalRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');	
-	
-	$("#todayApTgRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');				
-	$("#thisWeekApTgRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');					
-	$("#monthApTgRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');
-	$("#totalApTgRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');
-		
-$.ajax({
-  type:'GET',
-  url: 'getCadreDashBoardBasicInfo.action',
-  data: {task:"basicInfo"}
-}).done(function(result){
-   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
-	   location.reload(); 
+   function getDashBoardBasicInfo(){
+            $("#todayRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');
+			$("#thisWeekRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');
+			$("#monthRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');
+			$("#totalRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');	
+			
+			$("#todayApTgRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');				
+			$("#thisWeekApTgRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');					
+			$("#monthApTgRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');
+			$("#totalApTgRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');
+				
+       $.ajax({
+          type:'GET',
+          url: 'getCadreDashBoardBasicInfo.action',
+          data: {task:"basicInfo"}
+       }).done(function(result){
+    	   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+    		   location.reload(); 
+    	   }
+			var TodayTotalWeb = result[0].apWebCount + result[0].tgWebCount;
+			var TodayTotalTab = result[0].apTabCount + result[0].tgTabCount;
+			var WeekTotalWeb = result[1].apWebCount + result[1].tgWebCount;
+			var WeekTotalTab = result[1].apTabCount + result[1].tgTabCount;
+			var MonthTotalWeb = result[2].apWebCount + result[2].tgWebCount;
+			var MonthTotalTab = result[2].apTabCount + result[2].tgTabCount;
+			var TotalWeb = result[3].apWebCount + result[3].tgWebCount;
+			var TotalTab = result[3].apTabCount + result[3].tgTabCount;
+			$("#todayRegisCount").html('<h2>'+result[0].totalCount+'</h2><p>Members <br/> Registered <span  style="font-weight:bold;">Today</span></p> <p class="label">Web -'+TodayTotalWeb+'</p>&nbsp&nbsp<p class="label">Tab - '+TodayTotalTab+'</p></div></td>');
+			$("#thisWeekRegisCount").html('<h2>'+result[1].totalCount+'</h2><p>Members <br/>Registered <span style="font-weight:bold;"  class="text-orange">This week</span></p><p class="label">Web -'+WeekTotalWeb+'</p>&nbsp&nbsp<p class="label">Tab - '+WeekTotalTab+'</p></div></td>');
+			$("#monthRegisCount").html('<h2>'+result[2].totalCount+'</h2><p>Members <br/>Registered <span style="font-weight:bold;" class="text-skyblue">This Month</span></p><p class="label">Web -'+MonthTotalWeb+'</p>&nbsp&nbsp<p class="label">Tab - '+MonthTotalTab+'</p></div></td>');
+			$("#totalRegisCount").html('<h2>'+result[3].totalCount+'</h2><p>Members <br/>In <span style="font-weight:bold;"  class="text-green">Total</span></p><p class="label">Web -'+TotalWeb+'</p>&nbsp&nbsp<p class="label">Tab - '+TotalTab+'</p></div></td>');	
+			
+			$("#todayApTgRegisCount").html('<div style="cursor:pointer;" class="span6 mytooltip apele"  data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[0].apWebCount+'] [Tab - '+result[0].apTabCount+']"><strong>AP </strong> <br/><span>'+result[0].apCount+'</span></div><div style="cursor:pointer;" class="span6 text-right mytooltip tsele" data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[0].tgWebCount+'] [Tab - '+result[0].tgTabCount+']"><strong>TS </strong><br/><span> '+result[0].tgCount+'</div>');				
+			$("#thisWeekApTgRegisCount").html('<div style="cursor:pointer;" class="span6 mytooltip apele" data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[1].apWebCount+'] [Tab - '+result[1].apTabCount+']"><strong>AP </strong> <br/><span >'+result[1].apCount+'</span></div><div style="cursor:pointer;" class="span6 text-right mytooltip tsele" data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[1].tgWebCount+'] [Tab - '+result[1].tgTabCount+']"><strong>TS </strong><br/> <span >'+result[1].tgCount+'</span></div>');					
+			$("#monthApTgRegisCount").html('<div style="cursor:pointer;" class="span6 mytooltip apele" data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[2].apWebCount+'] [Tab - '+result[2].apTabCount+']"><strong>AP </strong> <br/><span>'+result[2].apCount+'</span></div><div style="cursor:pointer;" class="span6 text-right mytooltip tsele" data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[2].tgWebCount+'] [Tab - '+result[2].tgTabCount+']"><strong>TS </strong><br/> <span >'+result[2].tgCount+'</span></div>');
+			$("#totalApTgRegisCount").html('<div style="cursor:pointer;" class="mytooltip apele"  data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[3].apWebCount+'] [Tab - '+result[3].apTabCount+']"><strong>AP - </strong><span >'+result[3].apCount+'</span><span class="text-skyblue"> (NEW - '+result[4].apCount+')</span></div><div style="cursor:pointer;" class="mytooltip tsele"  data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[3].tgWebCount+'] [Tab - '+result[3].tgTabCount+']"><strong>TS - </strong> <span >'+result[3].tgCount+'</span><span class="text-skyblue"> (NEW - '+result[4].tgCount+')</span></div>');
+			$('.mytooltip').tooltip();					
+	   });
    }
-	var TodayTotalWeb = result[0].apWebCount + result[0].tgWebCount;
-	var TodayTotalTab = result[0].apTabCount + result[0].tgTabCount;
-	var TodayTotalOnline =  result[0].apOnlineCount + result[0].tgOnlineCount;
-	var WeekTotalWeb = result[1].apWebCount + result[1].tgWebCount;
-	var WeekTotalTab = result[1].apTabCount + result[1].tgTabCount;
-	var WeekTotalOnline = result[1].apOnlineCount + result[1].tgOnlineCount;
-	var MonthTotalWeb = result[2].apWebCount + result[2].tgWebCount;
-	var MonthTotalTab = result[2].apTabCount + result[2].tgTabCount;
-	var MonthTotalOnline = result[2].apOnlineCount + result[2].tgOnlineCount;
-	var TotalWeb = result[3].apWebCount + result[3].tgWebCount;
-	var TotalTab = result[3].apTabCount + result[3].tgTabCount;
-	var TotalOnline = result[3].apOnlineCount + result[3].tgOnlineCount;
-	$("#todayRegisCount").html('<h2>'+result[0].totalCount+'</h2><p>Members <br/> Registered <span  style="font-weight:bold;">Today</span></p> <ul class="unstyled">  <li> <p class="label" style="width: 60%;">Web -'+TodayTotalWeb+'</p></li>  <li>  <p class="label" style="width: 60%;">Tab - '+TodayTotalTab+'</p>  </li>   <li> <p class="label" style="width: 60%;">Online - '+TodayTotalOnline+'</p>  </li> </ul></div></td>');
-	$("#thisWeekRegisCount").html('<h2>'+result[1].totalCount+'</h2><p>Members <br/>Registered <span style="font-weight:bold;"  class="text-orange">This week</span></p><ul class="unstyled"> <li><p class="label" style="width: 60%;">Web -'+WeekTotalWeb+'</p></li><li><p class="label" style="width: 60%;">Tab - '+WeekTotalTab+'</p></li><li><p class="label" style="width: 60%;">Online - '+WeekTotalOnline+'</p></li></ul></div></td>');
-	$("#monthRegisCount").html('<h2>'+result[2].totalCount+'</h2><p>Members <br/>Registered <span style="font-weight:bold;" class="text-skyblue">This Month</span></p><ul class="unstyled"> <li><p class="label" style="width: 60%;">Web -'+MonthTotalWeb+'</p></li><li><p class="label" style="width: 60%;">Tab - '+MonthTotalTab+'</p></li><li><p class="label" style="width: 60%;">Online - '+MonthTotalOnline+'</p></li></ul></div></td>');
-	$("#totalRegisCount").html('<h2>'+result[3].totalCount+'</h2><p>Members <br/>In <span style="font-weight:bold;"  class="text-green">Total</span></p><ul class="unstyled"> <li><p class="label" style="width: 60%;">Web -'+TotalWeb+'</p></li><li><p class="label" style="width: 60%;">Tab - '+TotalTab+'</p></li><li><p class="label" style="width: 60%;">Online - '+TotalOnline+'</p></li></ul></div></td>');	
-	
-	$("#todayApTgRegisCount").html('<div style="cursor:pointer;" class="span6 mytooltip"  data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[0].apWebCount+'] [Tab - '+result[0].apTabCount+'][Online - '+result[0].apOnlineCount+']"><strong>AP </strong> <br/><span>'+result[0].apCount+'</span></div><div style="cursor:pointer;" class="span6 text-right mytooltip" data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[0].tgWebCount+'] [Tab - '+result[0].tgTabCount+'] [Online - '+result[0].tgOnlineCount+']"><strong>TS </strong><br/><span> '+result[0].tgCount+'</div>');				
-	$("#thisWeekApTgRegisCount").html('<div style="cursor:pointer;" class="span6 mytooltip" data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[1].apWebCount+'] [Tab - '+result[1].apTabCount+'][Online - '+result[1].apOnlineCount+']"><strong>AP </strong> <br/><span >'+result[1].apCount+'</span></div><div style="cursor:pointer;" class="span6 text-right mytooltip" data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[1].tgWebCount+'] [Tab - '+result[1].tgTabCount+'][Online - '+result[1].tgOnlineCount+']"><strong>TS </strong><br/> <span >'+result[1].tgCount+'</span></div>');					
-	$("#monthApTgRegisCount").html('<div style="cursor:pointer;" class="span6 mytooltip" data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[2].apWebCount+'] [Tab - '+result[2].apTabCount+'][Online - '+result[2].apOnlineCount+']"><strong>AP </strong> <br/><span>'+result[2].apCount+'</span></div><div style="cursor:pointer;" class="span6 text-right mytooltip" data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[2].tgWebCount+'] [Tab - '+result[2].tgTabCount+'][Online - '+result[2].tgOnlineCount+']"><strong>TS </strong><br/> <span >'+result[2].tgCount+'</span></div>');
-	$("#totalApTgRegisCount").html('<div style="cursor:pointer;" class="mytooltip"  data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[3].apWebCount+'] [Tab - '+result[3].apTabCount+'][Online - '+result[3].apOnlineCount+']"><strong>AP - </strong><span >'+result[3].apCount+'</span><span class="text-skyblue"> (NEW - '+result[4].apCount+')</span></div><div style="cursor:pointer;" class="mytooltip"  data-placement="top" data-toggle="tooltip" data-original-title="[Web -'+result[3].tgWebCount+'] [Tab - '+result[3].tgTabCount+'][Online - '+result[3].tgOnlineCount+']"><strong>TS - </strong> <span >'+result[3].tgCount+'</span><span class="text-skyblue"> (NEW - '+result[4].tgCount+')</span></div>');
-	$('.mytooltip').tooltip();					
-});
-}
+  
   
    function getRecentlyRegisteredCadresInfo(startIndex,refreshFlag){
 	   if(refreshFlag == true)
@@ -1283,7 +1280,28 @@ function SortByName(a, b){
   var bName = b.location.toLowerCase(); 
   return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
 }
+
+	checkState();
+	function checkState(){
+		var state = "${getState}";
+		if(state=="both"){
+			$(".tsele").show();
+			$(".apele").show();
+			$(".indiEle").show();
+		}
+		if(state =="AP"){
+			$(".tsele").hide();
+			$(".apele").show();
+			$(".indiEle").hide();
+		}
+		if(state =="TS"){
+			$(".tsele").show();
+			$(".apele").hide();
+			$(".indiEle").hide();
+		}
+	}
 	   
+
 </script>
 
 </body>
