@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class CadreAmountDetailsVO implements Serializable{
 	private Long userId;
@@ -9,10 +10,14 @@ public class CadreAmountDetailsVO implements Serializable{
 	private String mobileNo;
 	private String constituency;
 	private Long constituencyId;
-	private Long totalCount;
-	private Long totalAmount;
-	private Long paidAmount;
-	private Long difference;
+	private Long totalCount = 0l;
+	private Long totalAmount = 0l;
+	private Long paidAmount = 0l;
+	private Long difference = 0l;
+	
+	private String date;
+	
+	private List<CadreAmountDetailsVO> infoList;
 	public Long getUserId() {
 		return userId;
 	}
@@ -73,6 +78,19 @@ public class CadreAmountDetailsVO implements Serializable{
 	public void setDifference(Long difference) {
 		this.difference = difference;
 	}
+	public List<CadreAmountDetailsVO> getInfoList() {
+		return infoList;
+	}
+	public void setInfoList(List<CadreAmountDetailsVO> infoList) {
+		this.infoList = infoList;
+	}
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
+	
 	
 	
 	
