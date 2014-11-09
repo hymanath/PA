@@ -1492,7 +1492,7 @@
     	<property name="entitlementsHelper" ref="entitlementsHelper" />    	
     </bean>
     <bean id="cadreRegistrationAmountReportAction" class="com.itgrids.partyanalyst.web.action.CadreRegistrationAmountReportAction" singleton="false">	  
-    		
+    	<property name="cadreRegAmountDetailsService" ref="cadreRegAmountDetailsService" />
     </bean>
 	
 </beans>	
