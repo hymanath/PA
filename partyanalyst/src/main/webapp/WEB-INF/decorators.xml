@@ -362,7 +362,7 @@
 			  <pattern>/cadreDashBoardAction*</pattern>
 			  <pattern>/cadreRegistrationReportAction*</pattern>
 			  <pattern>/ctpCasteReportAction*</pattern>
-			  
+			  <pattern>/cadreRegAmountUpload*</pattern>
 			  
             <!--  <pattern>/dashBoardAction*</pattern> -->
        </decorator>
