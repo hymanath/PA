@@ -5837,4 +5837,19 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			}
 			return resultList;
 		}
+	  
+	  public List<SelectOptionVO> getAssemblyOfLoggedUser(String accessValue,String accessType){
+		  List<SelectOptionVO> finalList = new ArrayList<SelectOptionVO>();
+		  if(accessType.equalsIgnoreCase("MLA")){
+			  String cname = constituencyDAO.getConstituencyNameByConstituencyId(Long.valueOf(accessValue));
+			  SelectOptionVO sv = new SelectOptionVO();
+			  sv.setId(Long.valueOf(accessValue));
+			  sv.setName(cname);
+			  
+			  finalList.add(sv);
+			  
+		  }
+		  
+		  return finalList;
+	  }
 }

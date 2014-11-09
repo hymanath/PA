@@ -117,5 +117,6 @@ public interface ISurveyDataDetailsService
 	public ResultStatus saveSurveyCallStatusMobileDetils(Long userId,Long voterId,Long boothId,Long surveyUserId,Long userTypeId, String  selectedMobileType, Long  mobileStatusId);
 	
 	public List<SelectOptionVO> getAssemblyConstituenciesByStateId(Long stateType, Long stateId);
+	public List<SelectOptionVO> getAssemblyOfLoggedUser(String accessValue,String accessType);
 
 }
