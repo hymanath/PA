@@ -8818,6 +8818,15 @@
 			</interceptor-ref>
 			<interceptor-ref name="defaultStack"></interceptor-ref>
 		</action>	
+		<action name="cadreRegistrationAmountReportAction" class="cadreRegistrationAmountReportAction">
+			<result name="success">/jsp/cadreRegistrationAmountReport.jsp</result>
+			<result name="input">/jsp/loginForm.jsp</result>
+		</action>
+		<action name="cadreRegAmountReportAction" class="cadreRegistrationAmountReportAction" method="getCadreRegAmountReport" >
+			<result type="json" name="success">
+				<param name="root"></param>
+			</result>
+		</action>
 		
 </package>
 
