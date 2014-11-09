@@ -1179,10 +1179,21 @@ public List<Object[]> getCadreDetailsForSelectionByFamilyVoterId(CadrePrintInput
 	/**
 	 * DAO Method will fetch Survey Member Details by input Datetime
 	 */
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public List<Object[]> getLastHoursWorkingMembersDetails(Date presentDate, Date lastHours) {
 		
 		String resultQuery = "select model.tdpCadreId, model.insertedBy.cadreSurveyUserId, model.insertedBy.userName, model.latitude, model.longititude from TdpCadre model right join (select newmodel.insertedBy.cadreSurveyUserId crtUser, max(newmodel.surveyTime) survTime from TdpCadre newmodel where newmodel.enrollmentYear = 2014 and newmodel.isDeleted = 'N' and newmodel.dataSourceType = 'TAB' and (newmodel.surveyTime >= :lastHours and newmodel.surveyTime <= :presentDate) and newmodel.insertedBy.cadreSurveyUserId is not null group by newmodel.insertedBy.cadreSurveyUserId) surRes on model.insertedBy.cadreSurveyUserId = crtUser and model.surveyTime = survTime";
+		Query query = getSession().createQuery(resultQuery);
+		query.setParameter("presentDate", presentDate);
+		query.setParameter("lastHours", lastHours);
+		
+		return query.list();
+	}	*/
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getLastHoursWorkingMembersDetails(Date presentDate, Date lastHours) {
+		
+		String resultQuery = "select model.tdpCadreId, model.insertedBy.cadreSurveyUserId, model.insertedBy.userName, model.latitude, model.longititude from TdpCadre model  where model.surveyTime >= :lastHours and model.surveyTime <= :presentDate and model.enrollmentYear = 2014 and model.isDeleted = 'N' and model.dataSourceType = 'TAB' group by model.insertedBy.cadreSurveyUserId  having max(model.surveyTime) < :presentDate";
 		Query query = getSession().createQuery(resultQuery);
 		query.setParameter("presentDate", presentDate);
 		query.setParameter("lastHours", lastHours);
@@ -1222,12 +1233,22 @@ public List<Object[]> getCadreDetailsForSelectionByFamilyVoterId(CadrePrintInput
 		return (Long)query.uniqueResult();
 	}
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public List<Object[]> getWorkingMembersDetails(Date date){
 		
 		String resultQuery = "select model.tdpCadreId, model.insertedBy.cadreSurveyUserId, model.insertedBy.userName, model.latitude, model.longititude from TdpCadre model right join (select newmodel.insertedBy.cadreSurveyUserId crtUser, max(newmodel.surveyTime) survTime from TdpCadre newmodel where newmodel.enrollmentYear = 2014 and newmodel.isDeleted = 'N' and newmodel.dataSourceType = 'TAB' and date(model.surveyTime) = :date and newmodel.insertedBy.cadreSurveyUserId is not null group by newmodel.insertedBy.cadreSurveyUserId) surRes on model.insertedBy.cadreSurveyUserId = crtUser and model.surveyTime = survTime";
 		Query query = getSession().createQuery(resultQuery);
 		query.setDate("date", date);
+		
+		return query.list();
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getWorkingMembersDetails(Date presentDate){
+		
+		String resultQuery = "select model.tdpCadreId, model.insertedBy.cadreSurveyUserId, model.insertedBy.userName, model.latitude, model.longititude from TdpCadre model  where  model.insertedTime = :presentDate and model.enrollmentYear = 2014 and model.isDeleted = 'N' and model.dataSourceType = 'TAB' and  model.insertedBy.cadreSurveyUserId is not null group by model.insertedBy.cadreSurveyUserId  having max(date(model.insertedTime)) = :presentDate";
+		Query query = getSession().createQuery(resultQuery);
+		query.setDate("presentDate", presentDate);
 		
 		return query.list();
 	}
@@ -1290,6 +1311,45 @@ public List<Object[]> getCadreDetailsForSelectionByFamilyVoterId(CadrePrintInput
 		query.setDate("toDate", toDate);
 		query.setParameterList("userIds", userIds);
 		
+		return query.list();
+	}
+	
+	public List<Object[]> getCandidateDataCollectedByDate(Date fromDate,Date toDate, List<Long> userIds){
+		//0 count,1 name,2 min,3 max,4 date,5 id
+
+		StringBuilder queryStr = new StringBuilder();
+
+		queryStr.append("select model.insertedBy.cadreSurveyUserId," +
+				" count(model.tdpCadreId)," +
+				" model.userAddress.constituency.constituencyId," +
+				" model.userAddress.constituency.name ,date(model.surveyTime) " +
+				" from TdpCadre model " +
+				" where model.enrollmentYear = 2014  " +
+				" and model.dataSourceType ='TAB'  " +
+				" and model.isDeleted = 'N' " +
+				" and date(model.surveyTime) >=:fromDate " +
+				" and date(model.surveyTime) <=:toDate  " +
+				" and model.insertedBy.cadreSurveyUserId in(:userIds)");
+		
+		queryStr.append(" group by model.insertedBy.cadreSurveyUserId,date(model.surveyTime) " +
+				" order by date(model.surveyTime),model.insertedBy.userName ");
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		/*Query query = getSession().createQuery("select count(*),model.insertedBy.userName,min(model.surveyTime),max(model.surveyTime),date(model.surveyTime),model.insertedBy.cadreSurveyUserId  from TdpCadre model where model.enrollmentYear = 2014  and model.dataSourceType ='TAB'  " +
+				"   and model.isDeleted = 'N' and date(model.surveyTime) >=:fromDate and date(model.surveyTime) <=:toDate group by date(model.surveyTime),model.insertedBy.cadreSurveyUserId order by date(model.surveyTime),model.insertedBy.userName");*/
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+		query.setParameterList("userIds", userIds);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getUserBetweenDates(Date fromDate,Date toDate)
+	{
+		Query query = getSession().createQuery("select distinct model.insertedBy.cadreSurveyUserId,model.insertedBy.userName,model.insertedBy.name,model.insertedBy.mobileNo  from TdpCadre model  where date(model.surveyTime) >=:fromDate " +
+				" and date(model.surveyTime) <=:toDate and model.insertedBy.cadreSurveyUserId is not null ");
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
 		return query.list();
 	}
 	

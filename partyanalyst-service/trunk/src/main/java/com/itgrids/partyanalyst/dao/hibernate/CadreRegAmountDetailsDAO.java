@@ -32,5 +32,24 @@ public class CadreRegAmountDetailsDAO extends GenericDaoHibernate<CadreRegAmount
 		query.setDate("toDate", toDate);
 		return query.list();
 	}
+	
+	
+	public List<Object[]> getAmountDetailsOfUserByDate(Date fromDate,Date toDate){
+		Query query = getSession().createQuery(" select model.cadreSurveyUser.cadreSurveyUserId," +
+				" model.cadreSurveyUser.userName," +
+				" model.cadreSurveyUser.name," +
+				" model.cadreSurveyUser.mobileNo," +
+				" sum(model.amount) , " +
+				" date(model.cadreRegAmountFile.date)" +
+				" from CadreRegAmountDetails model " +
+				" where model.cadreSurveyUser.isDeleted = 'N'" +
+				" and date(model.cadreRegAmountFile.date) >= :fromDate" +
+				" and date(model.cadreRegAmountFile.date) <= :toDate" +
+				" group by model.cadreSurveyUser.cadreSurveyUserId,model.cadreRegAmountFile.date");
+		
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+		return query.list();
+	}
 
 }
