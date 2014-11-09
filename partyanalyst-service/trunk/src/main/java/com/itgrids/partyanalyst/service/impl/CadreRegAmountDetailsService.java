@@ -142,13 +142,15 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 			HSSFSheet sheet = workbook.getSheetAt(0);
 			int totalRows = sheet.getLastRowNum();
 			CadreRegAmountUploadVO cadreRegAmountUploadVO = null;
-			for(int index = 1;index<totalRows;index++)
+			for(int index = 1;index<=totalRows;index++)
 			{
 				try{
 					cadreRegAmountUploadVO = new CadreRegAmountUploadVO();
 					HSSFRow row = sheet.getRow(index);
 					cadreRegAmountUploadVO.setBranch(row.getCell(0).toString());
-					cadreRegAmountUploadVO.setAmount(Integer.valueOf(row.getCell(1).toString()));
+					String amountStr = row.getCell(1).toString();
+					amountStr = amountStr.substring(0,amountStr.length()-2);
+					cadreRegAmountUploadVO.setAmount(Integer.valueOf(amountStr));
 					cadreRegAmountUploadVO.setUsername(row.getCell(2).toString());
 					list.add(cadreRegAmountUploadVO);
 				}catch(Exception e)
