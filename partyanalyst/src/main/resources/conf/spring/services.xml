@@ -2246,5 +2246,8 @@
      	 <property name="smsCountrySmsService" ref="smsCountrySmsService" />
      	 <property name="tdpCadreDAO" ref="tdpCadreDAO" />
      </bean>
+     <bean name="cadreRegAmountUploadService" class="com.itgrids.partyanalyst.service.impl.CadreRegAmountUploadService">
+     
+     </bean>
 </beans>		
 	
