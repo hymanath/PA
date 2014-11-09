@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
@@ -44,11 +45,17 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	private ICadreSurveyUserDAO cadreSurveyUserDAO;
 	private DateUtilService dateService = new DateUtilService();
 	private IAppDbUpdateDAO appDbUpdateDAO;
+	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private ICadreSurveyUserAssignDetailsDAO cadreSurveyUserAssignDetailsDAO;
 	
-	
-	public ICadreSurveyUserAssignDetailsDAO getCadreSurveyUserAssignDetailsDAO() {
-		return cadreSurveyUserAssignDetailsDAO;
+
+	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
+		return delimitationConstituencyAssemblyDetailsDAO;
+	}
+
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
 
 	public void setCadreSurveyUserAssignDetailsDAO(
@@ -1722,5 +1729,43 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		}
 		returnVo.setInfoList(resultList);
 		return returnVo;
+	}
+	
+	public String getStateBasedOnLocation(String AccessType,String accessValue){
+		
+		String state = "";
+		
+		if(AccessType.equalsIgnoreCase("STATE")){
+			state = "both";
+		}else{
+			Long dist = null;
+			if(AccessType.equalsIgnoreCase("MLA")){
+				List<Long> distIds = constituencyDAO.getDistrictIdByConstituencyId(Long.valueOf(accessValue));
+				if(distIds!=null){
+					dist = distIds.get(0);
+				}
+				
+			}
+			if(AccessType.equalsIgnoreCase("MP")){
+				List<Long> distIds = delimitationConstituencyAssemblyDetailsDAO.findDistrictsOfParliamentConstituency(Long.valueOf(accessValue));
+				if(distIds!=null){
+					dist = distIds.get(0);
+				}
+				
+			}
+			if(AccessType.equalsIgnoreCase("DISTRICT")){
+				dist = Long.valueOf(accessValue);
+			}
+			
+			if(dist!=null && dist>10){
+				state=  "AP";
+			}else{
+				state = "TS";
+			}
+			
+			
+		}
+		
+		return state;
 	}
 }
