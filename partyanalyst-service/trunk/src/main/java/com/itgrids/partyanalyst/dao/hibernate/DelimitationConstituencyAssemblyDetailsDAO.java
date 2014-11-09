@@ -311,4 +311,14 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 		return query.list();
 	} 
 	
+	public List<Long> findDistrictsOfParliamentConstituencies(List<Long> parliamentIds){
+		Query query = getSession().createQuery("select model.constituency.district.districtId, model.constituency.district.districtName " +
+				"from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.constituency.constituencyId in(:parliamentIds) " +
+				"and model.delimitationConstituency.year = (select max(model1.year) from DelimitationConstituency model1) group by " +
+				"model.constituency.district.districtId");
+		
+		query.setParameterList("parliamentIds", parliamentIds);
+		return query.list();
+	}
+	
 }
