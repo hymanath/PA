@@ -6,7 +6,6 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
-import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.TdpCadre;
 
 public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
@@ -123,5 +122,9 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getCadreInfoDetails(Long locationId,String locationType,int startIndex,int maxIndex);
 	public List<Object[]> getCadreDetailsForSelectionByFamilyVoterId(CadrePrintInputVO input);
 	public Long getCadreInfoDetailsCount(Long locationId,String locationType);
+	public List<Object[]> getCadreInfoDistrictConstiWise(List<Long> districtIds,Date fromDate, Date toDate,Long year,List<Long> constiIds);
+	
 	public List<TdpCadre> checkOnlineAccountExistsOrNot(String orderId);
+	
+	public List<Object[]> getCandidateDataCollected(Date fromDate,Date toDate, List<Long> userIds);
 }
