@@ -571,6 +571,12 @@
 
 	<!-- Add new DAOs PARTY ANALYST DATABASE here -->
 	
+	<bean id="cadreRegAmountFileDAO" class="com.itgrids.partyanalyst.dao.hibernate.cadreRegAmountFileDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cadreRegAmountDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRegAmountDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<bean id="voterBoothActivitiesDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterBoothActivitiesDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
