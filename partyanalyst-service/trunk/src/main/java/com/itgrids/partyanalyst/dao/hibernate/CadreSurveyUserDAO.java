@@ -52,4 +52,11 @@ public class CadreSurveyUserDAO extends GenericDaoHibernate<CadreSurveyUser, Lon
 				"  model.isDeleted ='N'  ");		
 		return (Long) query.uniqueResult();
 	}
+	
+	public CadreSurveyUser getCadreSurveyUserByUsername(String username)
+	{
+		Query query = getSession().createQuery("select model from CadreSurveyUser model where model.userName = :username");
+		query.setParameter("username", username);
+		return (CadreSurveyUser) query.uniqueResult();
+	}
 }
