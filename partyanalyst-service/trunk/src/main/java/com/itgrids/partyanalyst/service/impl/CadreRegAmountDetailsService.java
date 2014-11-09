@@ -10,21 +10,102 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+import com.itgrids.partyanalyst.dao.ICadreRegAmountDetailsDAO;
+import com.itgrids.partyanalyst.dao.ICadreRegAmountFileDAO;
+import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.CadreRegAmountUploadVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.model.CadreRegAmountDetails;
 import com.itgrids.partyanalyst.model.CadreRegAmountFile;
 import com.itgrids.partyanalyst.service.ICadreRegAmountDetailsService;
 
 public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsService{
 
 	private static final Logger LOG = Logger.getLogger(CadreRegAmountDetailsService.class);
+	private IUserDAO userDAO;
+	private ICadreRegAmountFileDAO cadreRegAmountFileDAO;
+	private IVoterDAO voterDAO;
+	private ICadreRegAmountDetailsDAO cadreRegAmountDetailsDAO;
+	private ICadreSurveyUserDAO cadreSurveyUserDAO;
 	
+	public ICadreSurveyUserDAO getCadreSurveyUserDAO() {
+		return cadreSurveyUserDAO;
+	}
+
+	public void setCadreSurveyUserDAO(ICadreSurveyUserDAO cadreSurveyUserDAO) {
+		this.cadreSurveyUserDAO = cadreSurveyUserDAO;
+	}
+
+	public ICadreRegAmountDetailsDAO getCadreRegAmountDetailsDAO() {
+		return cadreRegAmountDetailsDAO;
+	}
+
+	public void setCadreRegAmountDetailsDAO(
+			ICadreRegAmountDetailsDAO cadreRegAmountDetailsDAO) {
+		this.cadreRegAmountDetailsDAO = cadreRegAmountDetailsDAO;
+	}
+
+	public IVoterDAO getVoterDAO() {
+		return voterDAO;
+	}
+
+	public void setVoterDAO(IVoterDAO voterDAO) {
+		this.voterDAO = voterDAO;
+	}
+
+	public ICadreRegAmountFileDAO getCadreRegAmountFileDAO() {
+		return cadreRegAmountFileDAO;
+	}
+
+	public void setCadreRegAmountFileDAO(
+			ICadreRegAmountFileDAO cadreRegAmountFileDAO) {
+		this.cadreRegAmountFileDAO = cadreRegAmountFileDAO;
+	}
+
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
 	public ResultStatus uploadCadreRegAmountDetails(CadreRegAmountUploadVO cadreRegAmountUploadVO)
 	{
 		ResultStatus resultStatus = new ResultStatus();
 		try{
-			Long cadreRegAmountFileId = saveCadreRegAmountFile(cadreRegAmountUploadVO);
+			List<CadreRegAmountUploadVO> list = readCadreRegAmountExcel(cadreRegAmountUploadVO.getPath()) ;
+			
+			CadreRegAmountFile cadreRegAmountFile = new CadreRegAmountFile();
+			cadreRegAmountFile.setFileName(cadreRegAmountUploadVO.getFileName());
+			cadreRegAmountFile.setPath(cadreRegAmountUploadVO.getPath());
+			cadreRegAmountFile.setUploadedby(userDAO.get(cadreRegAmountUploadVO.getUserId()));
+			cadreRegAmountFile.setDate(cadreRegAmountUploadVO.getUploadedDate());
+			cadreRegAmountFile.setUploadedTime(cadreRegAmountUploadVO.getUploadedTime());
+			cadreRegAmountFile = cadreRegAmountFileDAO.save(cadreRegAmountFile);
+			
+			if(list != null && list.size() > 0)
+			{
+				for(CadreRegAmountUploadVO uploadVO : list)
+				{
+					try{
+					CadreRegAmountDetails cadreRegAmountDetails = new CadreRegAmountDetails();
+					cadreRegAmountDetails.setCadreRegAmountFile(cadreRegAmountFile);
+					cadreRegAmountDetails.setCadreSurveyUserId(cadreSurveyUserDAO.getCadreSurveyUserByUsername(uploadVO.getUsername()).getCadreSurveyUserId());
+					cadreRegAmountDetails.setAmount(Long.valueOf(uploadVO.getAmount().toString()));
+					cadreRegAmountDetails.setBranch(uploadVO.getBranch());
+					cadreRegAmountDetailsDAO.save(cadreRegAmountDetails);
+					}catch(Exception e)
+					{
+						LOG.error(e);
+					}
+				}
+			}
+			voterDAO.flushAndclearSession();
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			return resultStatus;
 		}catch(Exception e)
 		{
@@ -66,16 +147,4 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 		}
 	}
 	
-	public Long saveCadreRegAmountFile(CadreRegAmountUploadVO cadreRegAmountUploadVO)
-	{
-		try{
-			CadreRegAmountFile cadreRegAmountFile = new CadreRegAmountFile();
-			//cadreRegAmountFile.set
-			return null;
-		}catch(Exception e)
-		{
-			LOG.error("Exception Occured in saveCadreRegAmountFile method - "+e);
-			return null;
-		}
-	}
 }
