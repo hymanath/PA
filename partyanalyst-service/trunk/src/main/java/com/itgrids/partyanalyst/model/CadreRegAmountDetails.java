@@ -25,13 +25,13 @@ import org.hibernate.annotations.NotFoundAction;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CadreRegAmountDetails extends BaseModel implements Serializable {
 	
+	private static final long serialVersionUID = 1690027904675535867L;
+	
 	private Long CadreRegAmountDetailsId;
 	private CadreRegAmountFile cadreRegAmountFile;
 	private CadreSurveyUser cadreSurveyUser;
 	private Long amount;
 	private String branch;
-	
-	private Long cadreRegAmountFileId;
 	private Long cadreSurveyUserId;
 	
 	 @Id
@@ -45,7 +45,7 @@ public class CadreRegAmountDetails extends BaseModel implements Serializable {
 	}
 	
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "cadre_reg_amount_file_id",insertable = false, updatable = false)
+	@JoinColumn(name = "cadre_reg_amount_file_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public CadreRegAmountFile getCadreRegAmountFile() {
@@ -80,14 +80,6 @@ public class CadreRegAmountDetails extends BaseModel implements Serializable {
 	}
 	public void setBranch(String branch) {
 		this.branch = branch;
-	}
-	
-	@Column(name = "cadre_reg_amount_file_id")
-	public Long getCadreRegAmountFileId() {
-		return cadreRegAmountFileId;
-	}
-	public void setCadreRegAmountFileId(Long cadreRegAmountFileId) {
-		this.cadreRegAmountFileId = cadreRegAmountFileId;
 	}
 	
 	@Column(name = "cadre_survey_user_id")
