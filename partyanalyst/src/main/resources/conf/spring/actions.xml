@@ -1495,5 +1495,9 @@
     	<property name="cadreRegAmountDetailsService" ref="cadreRegAmountDetailsService" />
     </bean>
 	
+	<bean id="cadreRegAmountUploadAction" class="com.itgrids.partyanalyst.web.action.CadreRegAmountUploadAction" singleton="false">
+		<property name="cadreRegAmountDetailsService" ref="cadreRegAmountDetailsService" />
+	</bean>
+	
 </beans>	
 	
