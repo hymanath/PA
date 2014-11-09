@@ -1232,10 +1232,64 @@ public List<Object[]> getCadreDetailsForSelectionByFamilyVoterId(CadrePrintInput
 		return query.list();
 	}
 	
+	public List<Object[]> getCadreInfoDistrictConstiWise(List<Long> districtIds,Date fromDate, Date toDate,Long year,List<Long> constiIds){
+		StringBuilder queryStr = new StringBuilder();
+		//0 count,1 id,2 name ,3 year
+		queryStr.append("select count(model.tdpCadreId),model.userAddress.district.districtId,model.userAddress.district.districtName,model.enrollmentYear from TdpCadre model where model.isDeleted = 'N'   " +
+				" and model.userAddress.district.districtId in(:districtIds) " +
+				" and model.userAddress.constituency.constituencyId in (:constiIds)");
+		if(fromDate != null && toDate != null)
+		{
+			queryStr.append(" and date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate  " );
+		}	
+		queryStr.append(" and model.enrollmentYear =:year  group by model.userAddress.district.districtId,model.enrollmentYear");
+
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("districtIds", districtIds);
+		query.setParameterList("constiIds", constiIds);
+		query.setParameter("year", year);
+		if(fromDate != null && toDate != null)
+		{
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		return query.list();
+	}
+	
 	public List<TdpCadre> checkOnlineAccountExistsOrNot(String orderId){
 		String resultQuery = "select model from TdpCadre model where model.tdpCadreOnline.orderId =:orderId";
 		Query query = getSession().createQuery(resultQuery);
 		query.setParameter("orderId", orderId);
+		return query.list();
+	}
+	
+	public List<Object[]> getCandidateDataCollected(Date fromDate,Date toDate, List<Long> userIds){
+		//0 count,1 name,2 min,3 max,4 date,5 id
+
+		StringBuilder queryStr = new StringBuilder();
+
+		queryStr.append("select model.insertedBy.cadreSurveyUserId," +
+				" count(model.tdpCadreId)," +
+				" model.userAddress.constituency.constituencyId," +
+				" model.userAddress.constituency.name" +
+				" from TdpCadre model " +
+				" where model.enrollmentYear = 2014  " +
+				" and model.dataSourceType ='TAB'  " +
+				" and model.isDeleted = 'N' " +
+				" and date(model.surveyTime) >=:fromDate " +
+				" and date(model.surveyTime) <=:toDate  " +
+				" and model.insertedBy.cadreSurveyUserId in(:userIds)");
+		
+		queryStr.append(" group by model.insertedBy.cadreSurveyUserId " +
+				" order by date(model.surveyTime),model.insertedBy.userName ");
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		/*Query query = getSession().createQuery("select count(*),model.insertedBy.userName,min(model.surveyTime),max(model.surveyTime),date(model.surveyTime),model.insertedBy.cadreSurveyUserId  from TdpCadre model where model.enrollmentYear = 2014  and model.dataSourceType ='TAB'  " +
+				"   and model.isDeleted = 'N' and date(model.surveyTime) >=:fromDate and date(model.surveyTime) <=:toDate group by date(model.surveyTime),model.insertedBy.cadreSurveyUserId order by date(model.surveyTime),model.insertedBy.userName");*/
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+		query.setParameterList("userIds", userIds);
+		
 		return query.list();
 	}
 	
