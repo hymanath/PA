@@ -1491,10 +1491,9 @@
     	<property name="cadreSurveyTransactionService" ref="cadreSurveyTransactionService" />
     	<property name="entitlementsHelper" ref="entitlementsHelper" />    	
     </bean>
-	
-	<bean id="cadreRegAmountUploadAction" class="com.itgrids.partyanalyst.web.action.CadreRegAmountUploadAction" singleton="false">
-		<property name="cadreRegAmountUploadService" ref="cadreRegAmountUploadService" />
-	</bean>
+    <bean id="cadreRegistrationAmountReportAction" class="com.itgrids.partyanalyst.web.action.CadreRegistrationAmountReportAction" singleton="false">	  
+    		
+    </bean>
 	
 </beans>	
 	
