@@ -740,6 +740,7 @@ public interface IConstants {
 
     public static final String STATIC_CONTENT_FOLDER_URL = "C:\\Program Files (x86)\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
     //public static final String STATIC_CONTENT_FOLDER_URL = "/home/dakavara/public_html/";
+    public static final String CADRE_REG_AMOUNT_FILES_FOLDER = "cadre_reg_amount_files";
     
     public static final String STATIC_PARTIESFOR_DELIMATION = "'INC','PRP','TDP','TRS,Others'";
     
