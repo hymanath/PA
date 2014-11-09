@@ -27,7 +27,7 @@
 				</div>
 			</div>
 			<div class = "row-fluid " style="margin-left: 270px;" >
-			<div class = "row" style="display:none;">
+			<div class = "row" >
 				<table><tr><td><input type="radio" name = "cadreAmountReport" value = "DateWiseReport" checked = "checked"/></td><td><label>&nbsp;&nbsp;Date Wise Report</label><td></td><td>&nbsp;&nbsp;&nbsp;</td>
 				<td><input type="radio" name = "cadreAmountReport" value="CumilativeReport"/></td><td><label>&nbsp;&nbsp;Cumilative Report</label></td></tr></table>
 			</div><br/>
@@ -59,8 +59,8 @@
 	  $("#errMsgDiv").html('');
 				var startDate = $("#fromDate").val();
 				var endDate = $("#toDate").val();
-				//var reportValue=$('input[name=cadreAmountReport]:checked').val();
-				var reportValue="CumilativeReport";
+				var reportValue=$('input[name=cadreAmountReport]:checked').val();
+				//var reportValue="CumilativeReport";
 				var errMsg="";
 				
 				if(startDate.trim().length >0 && endDate.trim().length >0)
@@ -102,10 +102,70 @@
           url: 'cadreRegAmountReportAction.action',
           data: {task:"cadreAmountReport",startDate:startDate,endDate:endDate,reportValue:reportValue}
 		}).done(function(result){
-			buildUserData(result);
+			if(reportValue == 'CumilativeReport')
+			{
+				buildUserData(result);
+			}
+			else
+			{
+				buildUserDataForDayWise(result);
+			}
 		});
 	}
 	
+	function buildUserDataForDayWise(result)
+	{
+		$("#usersDetails").html("");
+		var str = '';
+			str +='<table class="table table-bordered m_top20 table-hover table-striped"  id="seachDetalsTab1">';
+				str +='<thead>';
+					str +='<tr>';
+						str +='<th rowspan = "2" class="text-align1">CONSTITUENCY</th>';
+						str +='<th  rowspan = "2"  class="text-align1">USERNAME</th>';
+						str +='<th  rowspan = "2"  class="text-align1">NAME</th>';
+						str +='<th  rowspan = "2" class="text-align1">MOBILE</th>';
+						for(var i in result[0].infoList)
+						{
+							str+='<th colspan="4">'+result[0].infoList[i].date+'</th>';
+						}
+						
+						str +='</tr>';
+						str +='<tr>';
+						if(result != null)
+						{
+							for(var i in result[0].infoList)
+							{
+								str +='<th class="text-align1">TOTAL RECORDS</th>';
+								str +='<th class="text-align1">AMOUNT</th>';
+								str +='<th class="text-align1">PAID</th>';
+								str +='<th class="text-align1">DIFFERENCE</th>';
+							}
+						}
+					str +='</tr>';
+				str +='</thead>';
+				str +='<tbody>';
+				for(var i in result){
+					str +='<tr>';
+						str +='<th class="text-align1">'+result[i].constituency+'</th>';
+						str +='<th class="text-align1">'+result[i].userName+'</th>';
+						str +='<th class="text-align1">'+result[i].name+'</th>';
+						str +='<th class="text-align1">'+result[i].mobileNo+'</th>';
+						for(var j in result[i].infoList)
+						{
+							str +='<th class="text-align1">'+result[i].infoList[j].totalCount+'</th>';
+							str +='<th class="text-align1">'+result[i].infoList[j].totalAmount+'</th>';
+							str +='<th class="text-align1">'+result[i].infoList[j].paidAmount+'</th>';
+							str +='<th class="text-align1">'+result[i].infoList[j].difference+'</th>';
+						}
+						
+						
+					str +='</tr>';
+				}
+				str +='</tbody>';
+			str +='</table>';
+			
+			$('#usersDetails').html(str);
+	}
 	function buildUserData(results){
 		$("#usersDetails").html("");
 		var str = '';
@@ -142,7 +202,7 @@
 			
 		 
 			$('#seachDetalsTab1').dataTable({
-				"iDisplayLength": 100,
+				"iDisplayLength": -1,
 				"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
 			});
 	}
