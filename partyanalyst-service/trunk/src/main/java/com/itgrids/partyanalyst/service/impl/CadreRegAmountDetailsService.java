@@ -2,7 +2,9 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -11,6 +13,8 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import com.itgrids.partyanalyst.dao.ICadreRegAmountDetailsDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dto.CadreAmountDetailsVO;
 import com.itgrids.partyanalyst.dao.ICadreRegAmountFileDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
@@ -28,32 +32,18 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 	private IUserDAO userDAO;
 	private ICadreRegAmountFileDAO cadreRegAmountFileDAO;
 	private IVoterDAO voterDAO;
-	private ICadreRegAmountDetailsDAO cadreRegAmountDetailsDAO;
 	private ICadreSurveyUserDAO cadreSurveyUserDAO;
+	private ITdpCadreDAO tdpCadreDAO;
+	private ICadreRegAmountDetailsDAO cadreRegAmountDetailsDAO;
 	
-	public ICadreSurveyUserDAO getCadreSurveyUserDAO() {
-		return cadreSurveyUserDAO;
+	
+	
+	public IUserDAO getUserDAO() {
+		return userDAO;
 	}
 
-	public void setCadreSurveyUserDAO(ICadreSurveyUserDAO cadreSurveyUserDAO) {
-		this.cadreSurveyUserDAO = cadreSurveyUserDAO;
-	}
-
-	public ICadreRegAmountDetailsDAO getCadreRegAmountDetailsDAO() {
-		return cadreRegAmountDetailsDAO;
-	}
-
-	public void setCadreRegAmountDetailsDAO(
-			ICadreRegAmountDetailsDAO cadreRegAmountDetailsDAO) {
-		this.cadreRegAmountDetailsDAO = cadreRegAmountDetailsDAO;
-	}
-
-	public IVoterDAO getVoterDAO() {
-		return voterDAO;
-	}
-
-	public void setVoterDAO(IVoterDAO voterDAO) {
-		this.voterDAO = voterDAO;
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
 	}
 
 	public ICadreRegAmountFileDAO getCadreRegAmountFileDAO() {
@@ -65,12 +55,39 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 		this.cadreRegAmountFileDAO = cadreRegAmountFileDAO;
 	}
 
-	public IUserDAO getUserDAO() {
-		return userDAO;
+	public IVoterDAO getVoterDAO() {
+		return voterDAO;
 	}
 
-	public void setUserDAO(IUserDAO userDAO) {
-		this.userDAO = userDAO;
+	public void setVoterDAO(IVoterDAO voterDAO) {
+		this.voterDAO = voterDAO;
+	}
+
+	public ICadreSurveyUserDAO getCadreSurveyUserDAO() {
+		return cadreSurveyUserDAO;
+	}
+
+	public void setCadreSurveyUserDAO(ICadreSurveyUserDAO cadreSurveyUserDAO) {
+		this.cadreSurveyUserDAO = cadreSurveyUserDAO;
+	}
+
+	public ITdpCadreDAO getTdpCadreDAO() {
+		return tdpCadreDAO;
+	}
+
+	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
+		this.tdpCadreDAO = tdpCadreDAO;
+	}
+	
+	
+
+	public ICadreRegAmountDetailsDAO getCadreRegAmountDetailsDAO() {
+		return cadreRegAmountDetailsDAO;
+	}
+
+	public void setCadreRegAmountDetailsDAO(
+			ICadreRegAmountDetailsDAO cadreRegAmountDetailsDAO) {
+		this.cadreRegAmountDetailsDAO = cadreRegAmountDetailsDAO;
 	}
 
 	public ResultStatus uploadCadreRegAmountDetails(CadreRegAmountUploadVO cadreRegAmountUploadVO)
@@ -147,4 +164,68 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 		}
 	}
 	
+	
+	public List<CadreAmountDetailsVO> getCadreRegAmountDetails(String fromDt,String toDt,String reportValue){
+		List<CadreAmountDetailsVO> finalList = new ArrayList<CadreAmountDetailsVO>();
+		try{
+			LOG.debug("Entered Into getCadreRegAmountDetails()");
+			
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			Date fromDate = format.parse(fromDt);
+			Date toDate = format.parse(toDt);
+			
+			List<Object[]> list1 = cadreRegAmountDetailsDAO.getAmountDetailsOfUser(fromDate,toDate);
+			List<Long> userIds = new ArrayList<Long>();
+			if(list1!=null && list1.size()>0){
+				for(Object[] obj:list1){
+					CadreAmountDetailsVO cd = new CadreAmountDetailsVO();
+					userIds.add(Long.valueOf(obj[0].toString()));
+					
+					cd.setUserId(Long.valueOf(obj[0].toString()));
+					cd.setUserName(obj[1]!=null?obj[1].toString():"-");
+					cd.setName(obj[2]!=null?obj[2].toString():"-");
+					cd.setMobileNo(obj[3]!=null?obj[3].toString():"-");
+					cd.setPaidAmount(obj[4]!=null?Long.valueOf(obj[4].toString()):0l);
+					
+					finalList.add(cd);
+				}
+				
+			}
+			
+			
+			//SETTING CONSTITUENCY AND TOTAL COUNTS FOR USER
+			List<Object[]> list2 = new ArrayList<Object[]>();
+			if(userIds!=null && userIds.size()>0){
+				 list2 = tdpCadreDAO.getCandidateDataCollected(fromDate, toDate, userIds);
+				
+			}
+			if(list2!=null && list2.size()>0){
+				for(Object[] obj:list2){
+					CadreAmountDetailsVO cd = getMatchedCadreCollector(finalList, Long.valueOf(obj[0].toString()));
+					cd.setTotalCount(obj[1]!=null?Long.valueOf(obj[1].toString()):0l);
+					cd.setConstituencyId(Long.valueOf(obj[2].toString()));
+					cd.setConstituency(obj[3].toString());
+					
+					cd.setTotalAmount(cd.getTotalCount()*100);
+					cd.setDifference(cd.getTotalAmount()-cd.getPaidAmount());
+				}
+			}
+			
+		}catch (Exception e) {
+			LOG.error("Exception Raised in getCadreRegAmountDetails()");
+		}
+		
+		return finalList;
+	}
+	
+	public CadreAmountDetailsVO getMatchedCadreCollector(List<CadreAmountDetailsVO> list,Long userId){
+		if(list!=null && list.size()>0 && userId!=null){
+			for(CadreAmountDetailsVO cd:list){
+				if(cd.getUserId().equals(userId)){
+					return cd;
+				}
+			}
+		}
+		return null;
+	}
 }
