@@ -27,7 +27,7 @@ public class PrintClass {
 	             Font  telegraficoFont = null;
 	             Font f1 = null;
 	             try {
-	                  File font_file = new File("D:/telugu.TTF");
+	                  File font_file = new File("D:/gautami.TTF");
 	                     f1 = Font.createFont(Font.TRUETYPE_FONT, font_file);
 	                      
 	             } catch (Exception e) {
