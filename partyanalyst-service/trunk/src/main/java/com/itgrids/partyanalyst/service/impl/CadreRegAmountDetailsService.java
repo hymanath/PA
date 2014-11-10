@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.hsqldb.lib.HashSet;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.ICadreRegAmountDetailsDAO;
@@ -247,6 +248,8 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 					
 					//SETTING CONSTITUENCY AND TOTAL COUNTS FOR USER
 					List<Object[]> list2 = new ArrayList<Object[]>();
+					/*userIds = new java.util.HashSet<Long>();
+					userIds.add(909l);*/
 					if(userIds!=null && userIds.size()>0){
 						
 							List<Object[]> constiDetails = cadreSurveyUserAssignDetailsDAO.getUserConstituencyDetails(new ArrayList<Long>(userIds));
@@ -293,7 +296,27 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 									{
 										cd.setDifference(cd.getTotalAmount()-0l);
 									}
-									finalMap.put(Long.valueOf(obj[1].toString()), cd);
+									finalMap.put(Long.valueOf(obj[0].toString()), cd);
+								}
+								else
+								{
+									cd = new CadreAmountDetailsVO();
+									cd.setTotalCount(obj[1]!=null?Long.valueOf(obj[1].toString()):0l);
+									cd.setConstituencyId(Long.valueOf(obj[2].toString()));
+									cd.setConstituency(obj[3].toString());
+									cd.setTotalAmount(cd.getTotalCount()*100);
+									
+									CadreAmountDetailsVO cd1 = finalMap.get(Long.valueOf(obj[0].toString()));
+									if(cd1 != null)
+									{
+										cd.setDifference(cd.getTotalAmount()-cd1.getPaidAmount());
+									}
+									else
+									{
+										cd.setDifference(cd.getTotalAmount()-0l);
+									}
+									finalMap.put(Long.valueOf(obj[0].toString()), cd);
+									
 								}
 								
 								
@@ -353,6 +376,24 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 									finalList.add(cd);
 								}
 								
+							}
+							
+							for(CadreAmountDetailsVO finalVO : finalList)
+							{
+								if(finalVO != null)
+								{
+									CadreAmountDetailsVO VO = new CadreAmountDetailsVO();
+									VO.setDate("Grand Total");
+									for(CadreAmountDetailsVO subVO : finalVO.getInfoList())
+									{
+										VO.setTotalAmount(VO.getTotalAmount() + subVO.getTotalAmount());
+										VO.setPaidAmount(VO.getPaidAmount() + subVO.getPaidAmount());
+										VO.setTotalCount(VO.getTotalCount() + subVO.getTotalCount() );
+										VO.setDifference(VO.getDifference() + subVO.getDifference());
+									}
+									finalVO.getInfoList().add(VO);
+								}
+								//finalList.add(finalVO);
 							}
 						}
 						
