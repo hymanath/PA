@@ -129,4 +129,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getCandidateDataCollected(Date fromDate,Date toDate, List<Long> userIds);
 	public List<Object[]> getCandidateDataCollectedByDate(Date fromDate,Date toDate, List<Long> userIds);
 	public List<Object[]> getUserBetweenDates(Date fromDate,Date toDate);
+	
+	public List<Object[]> getTotalRecordsDayWise();
 }
