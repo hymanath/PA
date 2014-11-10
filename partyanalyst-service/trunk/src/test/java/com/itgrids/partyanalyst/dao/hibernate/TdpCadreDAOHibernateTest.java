@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -437,7 +438,18 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 	}*/
 	
 	public void test(){
-		List<Object[]> list = tdpCadreDAO.getTotalRecordsDayWise();
+		List<Long> dist = new ArrayList<Long>();
+		dist.add(18l);
+		dist.add(17l);
+		List<Long> dist1 = new ArrayList<Long>();
+		dist1.add(217l);
+		dist1.add(213l);
+		dist1.add(209l);
+		dist1.add(228l);
+		dist1.add(218l);
+		dist1.add(219l);
+		dist1.add(229l);
+		List<Object[]> list = tdpCadreDAO.getCadreInfoDistrictConstiWise(dist, null, null, 2014l, dist1);
 		System.out.println(list.size());
 	}
 }
