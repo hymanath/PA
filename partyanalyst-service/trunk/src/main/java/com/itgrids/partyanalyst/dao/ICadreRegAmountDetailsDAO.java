@@ -10,4 +10,5 @@ import com.itgrids.partyanalyst.model.CadreRegAmountDetails;
 public interface ICadreRegAmountDetailsDAO extends GenericDao<CadreRegAmountDetails, Long>{
 	public List<Object[]> getAmountDetailsOfUser(Date fromDate,Date toDate);
 	public List<Object[]> getAmountDetailsOfUserByDate(Date fromDate,Date toDate);
+	public List<Object[]> getAmountDetailsDateWise();
 }

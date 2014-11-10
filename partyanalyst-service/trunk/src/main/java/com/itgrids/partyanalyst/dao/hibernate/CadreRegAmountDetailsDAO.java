@@ -51,5 +51,14 @@ public class CadreRegAmountDetailsDAO extends GenericDaoHibernate<CadreRegAmount
 		query.setDate("toDate", toDate);
 		return query.list();
 	}
+	
+	public List<Object[]> getAmountDetailsDateWise(){
+		Query query = getSession().createQuery(" select sum(model.amount)," +
+				" date(model.cadreRegAmountFile.date) from CadreRegAmountDetails model" +
+				" group by date(model.cadreRegAmountFile.date)" +
+				" order by date(model.cadreRegAmountFile.date)");
+		
+		return query.list();
+	}
 
 }

@@ -1353,4 +1353,19 @@ public List<Object[]> getCadreDetailsForSelectionByFamilyVoterId(CadrePrintInput
 		return query.list();
 	}
 	
+	public List<Object[]> getTotalRecordsDayWise(){
+		Query query = getSession().createQuery(" select count(model.tdpCadreId)," +
+				" date(model.surveyTime) from TdpCadre model" +
+				" where model.isDeleted = :deleteStatus " +
+				" and model.dataSourceType = :sourceType " +
+				" and model.enrollmentYear = 2014 " +
+				" group by date(model.surveyTime)" +
+				" order by date(model.surveyTime) asc");
+		
+		query.setParameter("deleteStatus", "N");
+		query.setParameter("sourceType", "TAB");
+		
+		return query.list();
+	}
+	
 }
