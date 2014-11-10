@@ -11,17 +11,17 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 
 public interface ICadreDashBoardService {
 	
-	public List<CadreRegisterInfo> getWorkStartedConstituencyCount();
+	
 
-	public List<CadreRegisterInfo> getDashBoardBasicInfo();
+	public List<CadreRegisterInfo> getDashBoardBasicInfo(String accessType,Long accessValue);
 	
 	public  List<CadreRegisterInfo> getRecentlyRegisteredCadresInfo();
 	
-	public List<CadreRegisterInfo> getAssemblyWiseCompletedPercentage(Long assemblyId,Long stateId);
+	public List<CadreRegisterInfo> getAssemblyWiseCompletedPercentage(Long assemblyId,Long stateId, String accessType, String accessValue);
 	
-	public List<CadreRegisterInfo> getDistrictWiseCompletedPercentage(Long districtId,Long stateId);
+	public List<CadreRegisterInfo> getDistrictWiseCompletedPercentage(Long districtId,Long stateId, String accessType, String accessValue);
 	
-	public CadreRegisterInfo getWorkingMembersInfo(String hours);
+	public CadreRegisterInfo getWorkingMembersInfo(String hours,String accessType,Long accessValue);
 	
 	public List<CadreRegisterInfo> getCandidateDataCollectionInfo(Long locationType,List<Long> locationIds,Date fromDate,Date toDate);
 		
@@ -61,15 +61,18 @@ public interface ICadreDashBoardService {
 	
 	public AppDbDataVO getAllUpdatesByVersion(String appName,Double version);
 
-	public  List<CadreRegisterInfo> getRecentlyRegisteredCadresInfo(Integer startIndex,Integer maxIndex);
+	public  List<CadreRegisterInfo> getRecentlyRegisteredCadresInfo(Integer startIndex,Integer maxIndex,String accessType,Long accessValue);
 	public CadreRegisterInfo getRegisteredInfo(Long locationId,String locationType,int startIndex,int maxIndex);
 	
 	public CadreRegisterInfo getWorkingMembersDetails(String hours);
-	
+
+	public List<CadreRegisterInfo> getWorkStartedConstituencyCount(String accessType,Long accessValue);
+
 	public String getStateBasedOnLocation(String AccessType,String accessValue);
 	public List<CadreBasicInformationVO> getConstituencySurveyUsers(Long constituencyId);
 	public ResultStatus saveCadreSurveyUserAssignInfo(CadreRegisterInfo vo);
 	public List<CadreRegisterInfo> getAssignedUsersForCadresurveyUser(Long constituencyId,Long userId);
-
+	
 	public List<CadreRegisterInfo> getSlowUserDetails(Long locationType,List<Long> locationIds,Date fromDate,Date toDate,Long recordsCount);
+
 }
