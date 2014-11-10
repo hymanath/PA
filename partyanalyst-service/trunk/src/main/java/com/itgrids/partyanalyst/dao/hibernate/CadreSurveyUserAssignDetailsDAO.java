@@ -82,4 +82,19 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 		query.setParameterList("cadreSurveyUserIds", cadreSurveyUserIds);
 		return query.list();
 	}
+	public List<Object[]> getCadreSurveyUsers(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select model.cadreSurveyUserId,model.cadreSurveyUser.userName from CadreSurveyUserAssignDetails model where model.cadreSurveyUser.isDeleted ='N' and model.constituency.constituencyId = :constituencyId ");
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	
+	public List<Object[]> getUsersByConstituencyAndUserId(Long constituencyId,Long userId)
+	{
+		Query query = getSession().createQuery("select model1.cadreSurveyUserAssigneeId,model1.name,model1.mobileNo,date(model1.fromDate),date(model1.toDate) from CadreSurveyUserAssignDetails model,CadreSurveyUserAssignee model1 where model.cadreSurveyUser.isDeleted ='N' and model.constituencyId = :constituencyId and model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId  and  model.cadreSurveyUser.cadreSurveyUserId = :userId" +
+				" order by model1.cadreSurveyUserAssigneeId desc");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
 }

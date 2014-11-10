@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.AppDbDataVO;
+import com.itgrids.partyanalyst.dto.CadreBasicInformationVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 
 public interface ICadreDashBoardService {
 	
@@ -65,4 +67,7 @@ public interface ICadreDashBoardService {
 	public CadreRegisterInfo getWorkingMembersDetails(String hours);
 	
 	public String getStateBasedOnLocation(String AccessType,String accessValue);
+	public List<CadreBasicInformationVO> getConstituencySurveyUsers(Long constituencyId);
+	public ResultStatus saveCadreSurveyUserAssignInfo(CadreRegisterInfo vo);
+	public List<CadreRegisterInfo> getAssignedUsersForCadresurveyUser(Long constituencyId,Long userId);
 }
