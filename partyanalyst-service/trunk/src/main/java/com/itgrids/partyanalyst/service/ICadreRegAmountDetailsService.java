@@ -10,4 +10,5 @@ public interface ICadreRegAmountDetailsService {
 
 	public ResultStatus uploadCadreRegAmountDetails(CadreRegAmountUploadVO cadreRegAmountUploadVO);
 	public List<CadreAmountDetailsVO> getCadreRegAmountDetails(String fromDt,String toDt,String reportValue);
+	public List<CadreAmountDetailsVO> getCadreSummaryAmountDayWise();
 }
