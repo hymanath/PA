@@ -73,7 +73,7 @@
         cursor: pointer;
     }
 	
-	#usersStatusReportTab  thead th, #locationWiseReportTab  thead th{
+	#usersStatusReportTab  thead th, #locationWiseReportTab  thead th,#usersStatusReportTab2  thead th{
 				background-color: #dff0d8  !important;
 				color : #468847 !important;
 				line-height: 20px !important;
@@ -81,7 +81,7 @@
 			
 			#statedisplaydivid,#distdisplaydivid,#constdisplaydivid{display:none;}
 			#statedisplaydivid1,#distdisplaydivid1,#constdisplaydivid1{display:none;}
-			
+			#statedisplaydivid2,#distdisplaydivid2,#constdisplaydivid2{display:none;}
 	</style>
 </head>
 <body>
@@ -92,6 +92,7 @@
 				<li><a onclick="showHideTabs(this.id);" id="userReportTab" class="highlight selected">Users Working Status</a></li>
                 <li><a onclick="showHideTabs(this.id);" id="locationReportTab" class="highlight">Location Wise Cadre Info</a></li>
 				<!--  <li><a onclick="showHideTabs(this.id);" id="userTrackingTab" class="highlight">User Tacking Details</a></li>  -->
+				<li><a onclick="showHideTabs(this.id);" id="slowUserTrackingTab" class="highlight">Slow User Tracking Details</a></li>
 			</ul>
 		  </div>
 		</div>
@@ -287,6 +288,60 @@
 			</div>
 		</div>
 		
+		
+		<div id="slowUserTrackingTabDiv"  style="display:none;">
+		   <div class="row-fluid" id="fadeInDown" style="padding-top: 5px;">
+				<div class="span12 well well-small  border-radius-0 mb-10 " style="padding:0px;">
+					<h3 class="text-center text-uppercase">Slow Users Tracking</h3>
+				</div>
+			</div>
+			<div class="row-fluid ">
+			   <div style="min-height: 300px;background:#ffffff;" class="span12 show-grid well well-small border-radius-0 mb-10 form-inline">
+			   <div id="errStatusDiv1" align="center" ></div>
+			   <table  style="margin-left: 270px;">
+					 <tr>
+					   <td><b>Select Scope : </b></td>
+					   <td>
+						  <select id="selLctnType2" onchange="selectLocation2(this.value)">
+							<option value="0">All</option>
+							<option value="1">State</option>
+							<option value="2">District</option>
+							<!--<option value="3">Constituency</option>-->
+						  </select>
+						</td>
+					 </tr>
+				     <tr id="statedisplaydivid2">
+						<td><b>Select State</b></td>
+						<td>
+						  <select id="statesDivId2">
+							<option value="0">All</option>
+							<option value="1">AndhraPradesh</option>
+							<option value="2">Telangana</option>
+						  </select>
+						</td>
+				     </tr>
+				   <tr id="distdisplaydivid2">
+					   <td><b>Select District: </b></td>
+					   <td><select id="displaydistbox2"></select></td>
+				   </tr>
+				   <tr id="constdisplaydivid2">
+					   <td><b>Select constituency : </b></td>
+					   <td><select id="displayconstbox2"></select></td>
+				   </tr>
+				   <tr><td><b>From Date :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="fromDate2"/></td></tr>
+				   <tr><td><b>To Date   :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="toDate2" /></td></tr>
+				   <tr>
+				      <td></td><td><input type="button" style="margin-top: 13px;" class="btn btn-success" id="getCandidateDataCollectionInfoId2" onclick="getCandidateDataCollectionInfo2();" value="Submit"/>
+						<img id="ajaxImgStyle2" style="display:none;margin-left: 10px;" src="images/icons/search.gif"/>
+					  </td>
+				  </tr>
+			</table>
+					<div id="userStatusDialogDIV2" style="padding-top: 20px"></div>
+			  </div>
+			</div>
+		</div>
+		
+		
 		<div id="dialogueLocationsCadDiv" style="display: none;">
 		  <div id="dialogueLocationsCadTable"></div>
 	    </div>
@@ -310,20 +365,20 @@
 	});
 	
 	
-    $("#fromDate,#fromDate1").datepicker({
+    $("#fromDate,#fromDate1,#fromDate2").datepicker({
 		dateFormat: "dd-mm-yy",
 		changeMonth: true,
         changeYear: true,
 		maxDate: new Date()
 	})
-	$("#fromDate,#fromDate1").datepicker("setDate", new Date());
-	$("#toDate,#toDate1").datepicker({
+	$("#fromDate,#fromDate1,#fromDate2").datepicker("setDate", new Date());
+	$("#toDate,#toDate1,#toDate2").datepicker({
 		dateFormat: "dd-mm-yy",
 		changeMonth: true,
         changeYear: true,
 		maxDate: new Date()
 	})
-	$("#toDate,#toDate1").datepicker("setDate", new Date());
+	$("#toDate,#toDate1,#toDate2").datepicker("setDate", new Date());
      function getCandidateDataCollectionInfo(){
     var allConstituencies = "";
 	var ruralConstis = "";
@@ -990,23 +1045,35 @@
      $("#userReportTab").removeClass("selected");
 	 $("#locationReportTab").removeClass("selected");
 	 $("#userTrackingTab").removeClass("selected");
+	 $("#slowUserTrackingTab").removeClass("selected");
 	 $("#userStatusDialogDIV").html("");
 	 $("#locationStatusDialogDIV").html("");
 	 $("#userTrackingTabDiv").html();
+	 //$("#slowUserTrackingTabDiv").html("");
      if(id == "userReportTab"){
        $("#userReportTab").addClass("selected");
 	   $("#locationWiseCadreInfoDiv").hide();
 	   $("#userTrackingTabDiv").hide();
+	   $("#slowUserTrackingTabDiv").hide();
 	   $("#usersWorkingStatusDiv").show();
 	 }else if(id == "locationReportTab"){
        $("#locationReportTab").addClass("selected");
 	   $("#usersWorkingStatusDiv").hide();
 	   $("#userTrackingTabDiv").hide();
+	   $("#slowUserTrackingTabDiv").hide();
 	   $("#locationWiseCadreInfoDiv").show();
+	 }
+	 else if(id == "slowUserTrackingTab"){
+       $("#slowUserTrackingTab").addClass("selected");
+	   $("#usersWorkingStatusDiv").hide();
+	   $("#userTrackingTabDiv").hide();
+	   $("#locationWiseCadreInfoDiv").hide();
+	   $("#slowUserTrackingTabDiv").show();
 	 }
 	 else{
 		$("#userTrackingTab").addClass("selected");
 		$("#usersWorkingStatusDiv").hide();
+		$("#slowUserTrackingTabDiv").hide();
 		$("#locationWiseCadreInfoDiv").hide();
 		$("#userTrackingTabDiv").show();
 	 }
@@ -1315,6 +1382,250 @@
 	 }
    });
   }
+  
+    function selectLocation2(value){
+  if(value==0){
+		$("#statedisplaydivid2").hide();
+		$("#distdisplaydivid2").hide();
+		$("#constdisplaydivid2").hide();
+	}
+	if(value==1){
+		$("#statedisplaydivid2").show();	
+		$('#statesDivId2').val('0');
+		$("#distdisplaydivid2").hide();
+		$("#constdisplaydivid2").hide();
+	}
+	if(value==2){
+		$("#statedisplaydivid2").show();	
+		$('#statesDivId2').val('0');
+		
+		$("#distdisplaydivid2").hide();
+		$("#constdisplaydivid2").hide();
+		getdistrictsUWS2();
+	}
+	if(value==3){
+		$("#statedisplaydivid2").show();
+		$('#statesDivId2').val('0');
+		
+		$("#distdisplaydivid2").hide();
+		$("#constdisplaydivid2").hide();
+		getConstituenciesUWS2();
+	}
+	}
+  
+  
+  function getdistrictsUWS2(){
+	var selState = $("#statesDivId2").val();
+	
+	$("#displaydistbox2").html("");
+	
+	
+		var jsObj={
+			stateid:selState
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getDistrictsByStateWiseAction.action',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+			var str = "<option value='0'>All</option>";
+		   for(var i in result){
+				str +='<option value='+result[i].id+'>'+result[i].name+'</option>';
+			}
+			$("#displaydistbox2").html(str);
+			$("#distdisplaydivid2").show();
+	   });	
+	
+  }
+ 
+	function getConstituenciesUWS2(){
+		var selState = $("#statesDivId2").val();
+		$("#displayconstbox2").html("");
+		
+		var jObj ={
+			stateid:selState,				  
+			task:"getConstituenciesForUWS"             
+		}	
+		$.ajax({
+			type : "POST",
+			url : "getConstsAction.action",
+			data : {task:JSON.stringify(jObj)} ,
+		}).done(function(result){
+			var str = "<option value='0'>All</option>";
+		   for(var i in result){
+				str +='<option value='+result[i].id+'>'+result[i].name+'</option>';
+			}
+			$("#displayconstbox2").html(str);
+			$("#constdisplaydivid2").show();
+		});
+	}
+	
+function getCandidateDataCollectionInfo2(){
+    var allConstituencies = "";
+	var ruralConstis = "";
+    $("#userStatusDialogDIV2").html("");
+    $("#errStatusDiv2").html("");
+	
+	var locationType=$( "#selLctnType2" ).val();
+	
+	var locationId;
+	if(locationType==0){locationId=0;}
+	if(locationType==1){locationId=getReqIds("statesDivId2");}
+	if(locationType==2){locationId=getReqIds("displaydistbox2");}
+	if(locationType==3){locationId=getReqIds("displayconstbox2");}
+
+	
+	var startDate = $("#fromDate2").val();
+	var endDate = $("#toDate2").val();
+	
+	if(startDate.trim().length >0 && endDate.trim().length >0)
+		{
+                 var arrr = startDate.split("-");
+				    var fromDat=arrr[0];
+					var frommonth=arrr[1];
+					var fromyear=arrr[2];
+			   var arr = endDate.split("-");
+					var toDat=arr[0];
+					var tomonth=arr[1];
+					var toyear=arr[2];
+					
+					if(fromyear>toyear){
+						$('#errStatusDiv2').html('<font style="color:red;">From Date should not greater than To Date </font>');
+						  return;
+					}
+					 if(frommonth>tomonth){
+						   if(fromyear == toyear){
+							$('#errStatusDiv2').html('<font style="color:red;">From Date should not greater than To Date </font>');
+						   return;
+						}
+						
+					}
+					
+					if(fromDat>toDat){	
+						if(frommonth == tomonth && fromyear == toyear){			
+							$('#errStatusDiv2').html('<font style="color:red;">From Date should not greater than To Date </font>');
+						   return;	
+						   }
+					}			
+		}
+		
+	$("#getCandidateDataCollectionInfoId2").attr("disabled","disabled");
+	$("#ajaxImgStyle2").show();
+    $.ajax({
+          type:'GET',
+          url: 'getCadreDashBoardBasicInfo.action',
+          data: {task:"slowPerformanceUsers",locationType:locationType,locationId:locationId,fromDate:$("#fromDate2").val(),toDate:$("#toDate2").val(),targetRecords:10}
+       }).done(function(result){
+			
+	       var str='';
+	       if(result.length > 0){
+		        str+='<input type="button"  style="margin-bottom:15px;margin-left: 375px;"  class="btn" onclick="generateExcel(\'usersStatusReportTab2\');" value="Click Here To Generate Excel"/>';
+		        str+='<div id="resultTableDiv2" style="overflow-x:scroll;"><table class="table table-bordered table-striped table-hover" id="usersStatusReportTab2"><thead>';
+				str+='<tr>';
+				str+='<th rowspan="2" >District</th>';
+				str+='<th rowspan="2" >Constituency</th>';		
+				str+='<th rowspan="2">User</th>';
+				str+='<th rowspan="2">Name</th>';
+				str+='<th rowspan="2" >MobileNo</th>';
+				for(var i in result[0].infoList){
+					
+					 str+='<th colspan="5">'+result[0].infoList[i].date+'</th>';
+					
+				}
+				str+='</tr>';
+				str+='<tr>';
+				for(var i in result[0].infoList){
+					
+				  str+='<th>Start Time</th>';
+				  str+='<th>End Time</th>';	
+				  str+='<th>Actual Records To Be Collected</th>';				  
+				  str+='<th>Records Collected</th>';
+				  str+='<th>Average Time(in mins)</th>';
+				}
+				str+='</tr>';
+				str+='</thead><tbody>';
+				for(var i in result){
+				  str+='<tr>';
+				   if(result[i].number != null){
+				     str+='  <td>'+result[i].number+'</td>';
+				   }else{
+				      str+='  <td></td>';
+				   }
+				   if(result[i].memberShipNo != null){
+				     str+='  <td>'+result[i].memberShipNo+'</td>';
+				   }else{
+				      str+='  <td></td>';
+				   }			 
+				   str+='  <td>'+result[i].name+'</td>';
+				   str+='  <td>'+result[i].uname+'</td>';
+				 
+				 
+				  if(result[i].area != null){
+				     str+='  <td>'+result[i].area+'</td>';
+				   }else{
+				      str+='  <td></td>';
+				   }
+				  for(var j in result[i].infoList){
+					  
+				    if(result[i].infoList[j].area != null){
+				      str+='  <td>'+result[i].infoList[j].area+'</td>';
+					}else{
+					  str+='  <td></td>';
+					}
+					if(result[i].infoList[j].location != null){
+				      str+='  <td>'+result[i].infoList[j].location+'</td>';
+					}else{
+					  str+='  <td></td>';
+					}
+					
+					if(result[i].infoList[j].tgCount != null){
+					if(result[i].infoList[j].tgCount > 0)
+				      str+='  <td>'+result[i].infoList[j].tgCount+'</td>';
+					else
+					 str+='  <td>1</td>';
+					}else{
+					  str+='  <td></td>';
+					}
+					
+					if(result[i].infoList[j].totalCount != null){
+					if(result[i].infoList[j].totalCount < result[i].infoList[j].tgCount)
+				      str+='  <td style="background-color:#D5432E">'+result[i].infoList[j].totalCount+'</td>';
+					  else
+					  str+='  <td style="background-color:#FFFFFF">'+result[i].infoList[j].totalCount+'</td>';
+					}else{
+					  str+='  <td></td>';
+					}
+					if(result[i].infoList[j].avgTime != null){
+						if(result[i].infoList[j].avgTime >0)
+							str+='  <td>'+result[i].infoList[j].avgTime+'</td>';
+						else
+							str+='  <td>10</td>';
+					}else{
+					  str+='  <td></td>';
+					}
+				  }
+				  str+='</tr>';
+				}
+				str+='</tbody></table></div>';
+			
+		   }else{
+		     str+='<div style="font-weight:bold;padding-left: 375px;padding-top: 30px;">No Data Available</div>';
+		   }
+		   $("#userStatusDialogDIV2").html(str);
+		   $("#ajaxImgStyle2").hide();
+		   $("#getCandidateDataCollectionInfoId2").removeAttr("disabled");
+		   $("#usersStatusReportTab2").dataTable({
+					aLengthMenu: [
+						[25, 50, 100, 200, -1],
+						[25, 50, 100, 200, "All"]
+					],
+					iDisplayLength: 25
+				});
+       });
+   }
+   
+   
+  
 </script>
 </body>
 </html>

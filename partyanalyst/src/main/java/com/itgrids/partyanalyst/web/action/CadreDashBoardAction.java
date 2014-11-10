@@ -223,6 +223,10 @@ public class CadreDashBoardAction implements ServletRequestAware {
 				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 				List<Long> locationIds = getIds(request.getParameter("locationId").trim());
 				result = cadreDashBoardService.getCandidateDataCollectionInfo(Long.parseLong(request.getParameter("locationType")),locationIds,sdf.parse(request.getParameter("fromDate")),sdf.parse(request.getParameter("toDate")));
+			}else if(task.equalsIgnoreCase("slowPerformanceUsers")){
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+				List<Long> locationIds = getIds(request.getParameter("locationId").trim());
+				result = cadreDashBoardService.getSlowUserDetails(Long.parseLong(request.getParameter("locationType")),locationIds,sdf.parse(request.getParameter("fromDate")),sdf.parse(request.getParameter("toDate")),Long.parseLong(request.getParameter("targetRecords")));
 			}
 		}catch(Exception e){
 			LOG.error("Exception rised in getCadreDashBoardBasicInfo ",e);
