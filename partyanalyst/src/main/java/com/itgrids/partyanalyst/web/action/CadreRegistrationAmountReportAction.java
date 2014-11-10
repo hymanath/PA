@@ -100,5 +100,15 @@ public class CadreRegistrationAmountReportAction extends ActionSupport{
 		return Action.SUCCESS;
 	}
 	
+	public String getCadreRegAmountSummary(){
+		LOG.debug("Entered Into getCadreRegAmountSummary()");
+		try{
+			cadreAmountList = cadreRegAmountDetailsService.getCadreSummaryAmountDayWise();
+		}catch(Exception e){
+			LOG.error("Exception Raised In getCadreRegAmountSummary()");
+		}
+		return Action.SUCCESS;
+	}
+	
 	
 }
