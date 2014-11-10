@@ -1880,4 +1880,161 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		}
 		return result;
 	}
+
+	
+	public List<CadreRegisterInfo> getSlowUserDetails(Long locationType,List<Long> locationIds,Date fromDate,Date toDate,Long recordsCount){
+		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
+		CadreRegisterInfo vo = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		SimpleDateFormat timeFormate1 = new SimpleDateFormat("HH:mm");
+		SimpleDateFormat timeFormate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		try{
+			List<Long> surveyUserIds = new ArrayList<Long>();
+			List<Date> datesList = new ArrayList<Date>();
+			Map<Long,String> nameMap = new HashMap<Long, String>();
+			Map<Long,String> tabMap = new HashMap<Long, String>();
+			Map<Long,Map<Date,CadreRegisterInfo>> userMap = new HashMap<Long,Map<Date,CadreRegisterInfo>>();//Map<userId,Map<Date,info>>
+			Map<Date,CadreRegisterInfo> dateMap = new HashMap<Date,CadreRegisterInfo>();//Map<Date,info>
+			Map<Long,String> userNames = new HashMap<Long,String>();
+			Map<Long,CadreRegisterInfo> mobileNos = new HashMap<Long,CadreRegisterInfo>();
+			//0 count,1 name,2 min,3 max,4 date,5 id,6 name
+			List<Object[]> dataCollectedInfo = tdpCadreDAO.getCandidateDataCollectionInfo(locationType,locationIds,fromDate, toDate);
+			
+			for(Object[] data:dataCollectedInfo){
+				if(!datesList.contains((Date)data[4])){
+					datesList.add((Date)data[4]);
+				}
+				userNames.put((Long)data[5], data[1].toString());
+				dateMap = userMap.get((Long)data[5]);
+				if(dateMap == null){
+					dateMap = new HashMap<Date,CadreRegisterInfo>();
+					userMap.put((Long)data[5],dateMap);
+					nameMap.put((Long)data[5], data[6] != null ? data[6].toString() : "");
+					if(!surveyUserIds.contains((Long)data[5]))
+					surveyUserIds.add((Long)data[5]);
+				}
+				vo = new CadreRegisterInfo() ;
+			
+				vo.setArea(convertTimeTo12HrsFormat(timeFormate1.format((Date)data[2])));
+				vo.setLocation(convertTimeTo12HrsFormat(timeFormate1.format((Date)data[3])));
+				//vo.setTotalCount((Long)data[0]);
+				//vo.setAmount(vo.getTotalCount() * 100);
+				
+				vo.setTotalCount((Long)data[0]);			
+				vo.setAmount(convertTimeToMinutesFormat(timeFormate.parse(data[2].toString()),timeFormate.parse(data[3].toString())));
+				vo.setTgCount(vo.getAmount() / recordsCount);
+				vo.setAvgTime(vo.getAmount()/ vo.getTotalCount());
+					dateMap.put((Date)data[4], vo);
+			}
+			if(surveyUserIds != null && surveyUserIds.size() > 0)
+			{
+			List<Object[]> tabNos = cadreSurveyUserAssignDetailsDAO.getTabNos(surveyUserIds);
+			if(tabNos != null && tabNos.size() > 0)
+				for(Object[] params : tabNos)
+				{
+					tabMap.put((Long)params[0], params[1] != null ?  params[1].toString() : "");
+				}
+				
+			}
+			int count = 0;
+			if(userNames.size() > 0){
+				//0 userId,1mobile,2constituencyId,3constiname,4distiictId,5districtName
+				List<Object[]> mobileNosList = cadreSurveyUserDAO.getUserMobileNos(userNames.keySet());
+				for(Object[] mobileNo:mobileNosList){
+					CadreRegisterInfo userData = new CadreRegisterInfo();
+				 if(mobileNo[1] != null){
+					userData.setArea(mobileNo[1].toString());//mobileNo
+				 }
+				 if(((Long)mobileNo[4]).longValue() < 11){
+				     userData.setLocation("Telangana");//state
+				 }else{
+					 userData.setLocation("AndhraPradesh");//state
+				 }
+				 userData.setNumber(mobileNo[5].toString());//district
+				 userData.setMemberShipNo(mobileNo[3].toString());//constituency
+				
+				 mobileNos.put((Long)mobileNo[0], userData);
+				}
+			}
+			for(Long key:userMap.keySet()){
+				dateMap = userMap.get(key);
+				vo = new CadreRegisterInfo();
+				vo.setName(userNames.get(key));
+				
+				//vo.setUname(unameMap.get(key) != null ? unameMap.get(key).toString() : "");
+				CadreRegisterInfo userData = mobileNos.get(key);
+				if(userData != null){
+				    vo.setArea(userData.getArea());//mobileNo
+				    vo.setLocation(userData.getLocation());//state
+				    vo.setNumber(userData.getNumber());//district
+				    vo.setMemberShipNo(userData.getMemberShipNo());//constituency
+				    vo.setUname(nameMap.get(key));
+				    vo.setTabNo(tabMap.get(key));
+				}
+				List<CadreRegisterInfo> daysList = new ArrayList<CadreRegisterInfo>();
+				for(Date date:datesList){
+					if(dateMap.get(date) != null){
+						CadreRegisterInfo day = dateMap.get(date);
+					    if(count == 0){
+						  day.setDate(sdf.format(date));
+					    }
+						daysList.add(day);
+					}else{
+						CadreRegisterInfo day = new CadreRegisterInfo();
+						if(count == 0){
+						   day.setDate(sdf.format(date));
+						 }
+						daysList.add(day);
+					}
+				}
+				vo.setInfoList(daysList);
+				if(vo.getInfoList() != null && vo.getInfoList().size() > 0)
+				{
+					Long count1 = 0l;
+					
+					for(CadreRegisterInfo vo3 : vo.getInfoList())
+					{
+						if(vo3.getTotalCount() != null)
+						 count1 = count1 + vo3.getTotalCount();
+					}
+					vo.setTotalCount(count1);
+					Long count2 = 0l;
+					
+					for(CadreRegisterInfo vo3 : vo.getInfoList())
+					{
+						if(vo3.getTgCount() != null)
+						 count2 = count2 + vo3.getTgCount();
+					}
+					vo.setTotalAmount(count2);
+				}
+			
+					returnList.add(vo);
+				count++;
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception rised in getCandidateDataCollectionInfo",e);
+		}
+		return returnList;
+	}
+	
+	private Long convertTimeToMinutesFormat(Date startTime,Date endTime){
+		
+		Long totalmins = 0L;
+		long diff = endTime.getTime() - startTime.getTime();
+
+		//long diffSeconds = diff / 1000 % 60;
+		long diffMinutes = diff / (60 * 1000) % 60;
+		long diffHours = diff / (60 * 60 * 1000) % 24;
+		
+		if(diffHours >= 1){
+			totalmins = (diffHours * 60) + diffMinutes;
+		}
+		else
+			totalmins = diffMinutes;
+	
+		return totalmins;
+	}
+	
+
 }
