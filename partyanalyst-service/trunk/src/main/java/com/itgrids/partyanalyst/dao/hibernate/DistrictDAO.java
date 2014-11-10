@@ -210,4 +210,13 @@ public List<Object[]> getDistrictDetailsByDistrictIds(List<Long> districtIds)
 			Query query = getSession().createQuery(str.toString());
 			return query.list();
 	}
+	@SuppressWarnings("unchecked")
+	public List<Long> getDistrictIdsByConstituency(List<Long> constituencyIds){
+		Query query = getSession().createQuery("select distinct model.district.districtId from Constituency model where model.constituencyId in(:constituencyIds)");
+		
+		query.setParameter("constituencyIds", constituencyIds);
+		return query.list();
+		
+	}
+
 }
