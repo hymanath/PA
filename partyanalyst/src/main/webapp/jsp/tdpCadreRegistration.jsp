@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tdp Cadre Registration</title>
+    <title>TDP Cadre Registration</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet"/>	
     <link href="css/style.css" rel="stylesheet"/>
@@ -95,10 +95,18 @@
   .detailsCls{
     cursor: pointer;
   }
+  .fadeInUpClass{
+	display:none;
+  }
 	</style>
 	
 		
 	<script>
+		$(document).ready(function(){
+			$("#toggleButtonId").click(function(){
+				$(".fadeInUpClass").toggle();
+			});
+		});
 		var constituencyArray = new Array();
 			<c:forEach var="constituency" items="${constituencyesList}">
 				var constituencys ={
@@ -482,26 +490,32 @@
 				$('#cardErr').html(' Voter Card No is required.');
 			}
 		}
-		if(dateOfbirth != null && dateOfbirth.trim().length == 0)
+		/*if(dateOfbirth != null && dateOfbirth.trim().length == 0)
 		{
 			isErrorStr = " error";
 			$('#dobErr').html(' Date of Birth is required.');
-		}
+		}*/
 		if(cadreName != null && cadreName.trim().length == 0)
 		{
 			isErrorStr = " error";
 			$('#nameErr').html(' Candidate Name is required.');
 		}		
 		
-		if(NAadharNo != null && NAadharNo.trim().length == 0)
+		/*if(NAadharNo != null && NAadharNo.trim().length == 0)
 		{
 			isErrorStr = " error";
 			$('#NaadharErr').html(' Aadhar No required.');
-		}
+		}*/
 		if(Nname != null && Nname.trim().length == 0)
 		{
 			isErrorStr = " error";
 			$('#NnameErr').html(' Nominee Name required.');
+		}
+		
+		if(Nname != null && Nname.trim().length>0 && !(/^[a-zA-Z]+$/.test(Nname)))
+		{
+				$('#NnameErr').html('Candidate Name allows only alphabets.');
+			return;
 		}
 		if(Ngender == 0)
 		{
@@ -572,9 +586,9 @@
 			isErrorStr = " error";	
 		} 
 
-		if(!isAadharNumber('nomineAadharId','Aadhar No ')){
+		/*if(!isAadharNumber('nomineAadharId','Aadhar No ')){
 			isErrorStr = " error";	
-		}//iferror return false
+		}*///iferror return false
 		if(!isAadharNumber('candAdrId','Aadhar No ')){
 			isErrorStr = " error";	
 		}//iferror return false
@@ -1267,7 +1281,7 @@
 										</div>
 									<div class="span12">
 										<div class="span6">
-											<h5 class="text-align1">DATE OF BIRTH  <span class="mandatory">*</span></h5>
+											<h5 class="text-align1">DATE OF BIRTH  <span class="mandatory"></span></h5>
 												
 												<div class="input-prepend text-align2 ">
 													
@@ -1441,7 +1455,7 @@
 							-->
 							</div>
 							<div class=" m_top20" > 
-									<h5 class="text-align1">PREVIOUS ENROLLMENT NUMBER</h5>
+									<h5 class="text-align1"> PREVIOUSLY ENROLLED  ? </h5>
 									<input type="text" id="preEnrollNoValue" class="form-control border-radius-0 input-block-level" placeholder="Previous Enrollment No."  value="${voterInfoVOList[0].memberShipId}" style="width:260px;"  onkeyup="getExistingCadreInfo2();" name="cadreRegistrationVO.previousEnrollmentNumber" readonly></input>&nbsp;<span onclick="clearPreviousEnrol();" title="Click Here To Clear Previous Enrollment Number" style="cursor: pointer;" class="icon-remove"></span>
 									<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByName();}" > LookUp For EnrollmentNo</a>
 									<input type="hidden" id="preEnrollNo" class="form-control border-radius-0 input-block-level" placeholder="Text input"  value="${voterInfoVOList[0].memberShipId}" style="width:260px;" ></input>
@@ -1637,7 +1651,7 @@
 		<div class="container m_top10">
 			<div class="span12 show-grid" style="position: relative;" id="accDiv">
 				<div class="span2">
-					<h5 class="text-align1"> Aadhar Card  <span class="mandatory">*</span></h5>
+					<h5 class="text-align1"> Aadhar Card  <span class="mandatory"></span></h5>
 					<input type="text" class="" style="width: 138px;" placeholder="Aadhaar Number"  name="cadreRegistrationVO.aadheerNo" value="${voterInfoVOList[0].aadharNo}" id="nomineAadharId" onkeyup="isAadharNumber('nomineAadharId','Aadhar No ')" maxlength="12"></input> 
 					 <span id="NaadharErr" style="color:red;font-size:11px;"></span>
 				</div>
@@ -1690,8 +1704,10 @@
 		</div>
 	</div>
 	
-	
-	<div id="fadeInUp">
+	<div id="toggleButtonDiv" style="margin-left:800px;">
+		<a id="toggleButtonId" class="btn btn-success text-align3 m_top10 m_bottom10 border-radius-0">Click To See/Hide Nominee Details And Previous Roles</a>
+	</div>
+	<div id="fadeInUp" class="fadeInUpClass">
 		<div class="container m_top10">
 			<div class="span12 show-grid" style="position: relative;">
 				<h3 class="text-align ">PREVIOUS ROLES PARTICIPATED IN PARTIES</h3>
@@ -1856,7 +1872,7 @@
 			</div>
 	</div>
 	</div>
-	<div id="fadeInUp1">
+	<div id="fadeInUp1"  class="fadeInUpClass">
 		<div class="container m_top10">
 			<div class="span12 show-grid" style="position: relative;">
 				<h3 class="text-align ">PREVIOUSLY PARTICIPATED IN ELECTION</h3>
@@ -2004,14 +2020,15 @@
 				
 			</div>
 		</div>
-		<div class="container m_top10">
-			<div class="span12 show-grid" style="position: relative;">
+		
+	</div>
+	<div class="container m_top10">
+			<div style="position: relative;">
 				<!-- <a class="btn btn-primary m_top20 border-radius-0 text-align2" href="search-constituency.html"><span class="icon-chevron-left icon-white"></span>&nbsp;&nbsp;Back </a> -->
 				
 				<a  class="btn btn-success text-align3 m_top20 pull-right border-radius-0"  onClick="submitCadreForm();"> &nbsp;&nbsp;Next<span class=" icon-chevron-right icon-white"></span></a>
 			</div>
 		</div>
-	</div>
 </form>
 </div>
 </div>
@@ -2112,7 +2129,7 @@
 	<!-- Footer Row -->
 		<div class="row-fluid">
 			<div class="span12 text-center m_top5 color-white">
-					Cadre Registration Drive
+					TDP Cadre Registration Drive
 				<p>Copyright &copy; 2014,  All Rights Reserved</p>
 			</div>
 		</div>
