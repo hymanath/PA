@@ -80,6 +80,7 @@
 			}
 			
 			#statedisplaydivid,#distdisplaydivid,#constdisplaydivid{display:none;}
+			#statedisplaydivid1,#distdisplaydivid1,#constdisplaydivid1{display:none;}
 			
 	</style>
 </head>
@@ -90,6 +91,7 @@
 			<ul class="inline unstyled">
 				<li><a onclick="showHideTabs(this.id);" id="userReportTab" class="highlight selected">Users Working Status</a></li>
                 <li><a onclick="showHideTabs(this.id);" id="locationReportTab" class="highlight">Location Wise Cadre Info</a></li>
+				<li><a onclick="showHideTabs(this.id);" id="userTrackingTab" class="highlight">User Tacking Details</a></li>
 			</ul>
 		  </div>
 		</div>
@@ -232,6 +234,59 @@
 			  </div>
 		   </div>
 		</div>
+		
+		<div id="userTrackingTabDiv"  style="display:none;">
+		   <div class="row-fluid" id="fadeInDown" style="padding-top: 5px;">
+				<div class="span12 well well-small  border-radius-0 mb-10 " style="padding:0px;">
+					<h3 class="text-center text-uppercase">Users Working Status</h3>
+				</div>
+			</div>
+			<div class="row-fluid ">
+			   <div style="min-height: 300px;background:#ffffff;" class="span12 show-grid well well-small border-radius-0 mb-10 form-inline">
+			   <div id="errStatusDiv1" align="center" ></div>
+			   <table  style="margin-left: 270px;">
+					 <tr>
+					   <td><b>Select Scope : </b></td>
+					   <td>
+						  <select id="selLctnType1" onchange="selectLocation1(this.value)">
+							<option value="0">All</option>
+							<option value="1">State</option>
+							<option value="2">District</option>
+							<option value="3">Constituency</option>
+						  </select>
+						</td>
+					 </tr>
+				     <tr id="statedisplaydivid1">
+						<td><b>Select State</b></td>
+						<td>
+						  <select id="statesDivId1">
+							<option value="0">All</option>
+							<option value="1">AndhraPradesh</option>
+							<option value="2">Telangana</option>
+						  </select>
+						</td>
+				     </tr>
+				   <tr id="distdisplaydivid1">
+					   <td><b>Select District: </b></td>
+					   <td><select id="displaydistbox1"></select></td>
+				   </tr>
+				   <tr id="constdisplaydivid1">
+					   <td><b>Select constituency : </b></td>
+					   <td><select id="displayconstbox1"></select></td>
+				   </tr>
+				   <tr><td><b>From Date :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="fromDate1"/></td></tr>
+				   <tr><td><b>To Date   :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="toDate1" /></td></tr>
+				   <tr>
+				      <td></td><td><input type="button" style="margin-left: 12px;margin-top: 13px;" class="btn btn-success" id="getCandidateDataCollectionInfoId1" onclick="getCandidateDataCollectionInfo1();" value="Submit"/>
+						<img id="ajaxImgStyle1" style="display:none;margin-left: 10px;" src="images/icons/search.gif"/>
+					  </td>
+				  </tr>
+			</table>
+					<div id="userStatusDialogDIV1"></div>
+			  </div>
+			</div>
+		</div>
+		
 		<div id="dialogueLocationsCadDiv" style="display: none;">
 		  <div id="dialogueLocationsCadTable"></div>
 	    </div>
@@ -445,6 +500,65 @@
 				});
        });
    }
+   function getCandidateDataCollectionInfo1(){
+    var allConstituencies = "";
+	var ruralConstis = "";
+    $("#userStatusDialogDIV1").html("");
+    $("#errStatusDiv1").html("");
+	
+	var locationType1=$( "#selLctnType1" ).val();
+	
+	var locationId1;
+	if(locationType1==0){locationId1=0;}
+	if(locationType1==1){locationId1=getReqIds("statesDivId1");}
+	if(locationType1==2){locationId1=getReqIds("displaydistbox1");}
+	if(locationType1==3){locationId1=getReqIds("displayconstbox1");}
+	
+	var startDate1 = $("#fromDate1").val();
+	var endDate1 = $("#toDate1").val();
+	
+	if(startDate1.trim().length >0 && endDate1.trim().length >0)
+		{
+                 var arrr = startDate1.split("-");
+				    var fromDat=arrr[0];
+					var frommonth=arrr[1];
+					var fromyear=arrr[2];
+			   var arr = endDate1.split("-");
+					var toDat=arr[0];
+					var tomonth=arr[1];
+					var toyear=arr[2];
+					
+					if(fromyear>toyear){
+						$('#errStatusDiv1').html('<font style="color:red;">From Date should not greater than To Date </font>');
+						  return;
+					}
+					 if(frommonth>tomonth){
+						   if(fromyear == toyear){
+							$('#errStatusDiv1').html('<font style="color:red;">From Date should not greater than To Date </font>');
+						   return;
+						}
+						
+					}
+					
+					if(fromDat>toDat){	
+						if(frommonth == tomonth && fromyear == toyear){			
+							$('#errStatusDiv1').html('<font style="color:red;">From Date should not greater than To Date </font>');
+						   return;	
+						   }
+					}			
+		}
+		
+	$("#getCandidateDataCollectionInfoId1").attr("disabled","disabled");
+	$("#ajaxImgStyle1").show();
+    $.ajax({
+          type:'GET',
+          url: 'getUserTrackingDetails.action',
+          data: {task:"userTrackingDetails",locationType:locationType1,locationId:locationId1,fromDate:$("#fromDate1").val(),toDate:$("#toDate1").val()}
+       }).done(function(result){
+			
+	   });
+   }
+   
    function generateExcel(reqId){
      tableToExcel(reqId, 'Users Working Status');
    }
@@ -869,19 +983,29 @@
 	   });
   }
   function showHideTabs(id){
+  debugger;
      $("#userReportTab").removeClass("selected");
 	 $("#locationReportTab").removeClass("selected");
+	 $("#userTrackingTab").removeClass("selected");
 	 $("#userStatusDialogDIV").html("");
 	 $("#locationStatusDialogDIV").html("");
+	 $("#userTrackingTabDiv").html();
      if(id == "userReportTab"){
        $("#userReportTab").addClass("selected");
 	   $("#locationWiseCadreInfoDiv").hide();
+	   $("#userTrackingTabDiv").hide();
 	   $("#usersWorkingStatusDiv").show();
-	 }else{
+	 }else if(id == "locationReportTab"){
        $("#locationReportTab").addClass("selected");
 	   $("#usersWorkingStatusDiv").hide();
+	   $("#userTrackingTabDiv").hide();
 	   $("#locationWiseCadreInfoDiv").show();
-	   
+	 }
+	 else{
+		$("#userTrackingTab").addClass("selected");
+		$("#usersWorkingStatusDiv").hide();
+		$("#locationWiseCadreInfoDiv").hide();
+		$("#userTrackingTabDiv").show();
 	 }
   }
   function viewDetails(frmLocation,frmLocationId,toLoc,startDate,endDate){
@@ -979,6 +1103,37 @@
 	
   }
   
+  function selectLocation1(value){
+  if(value==0){
+		$("#statedisplaydivid1").hide();
+		$("#distdisplaydivid1").hide();
+		$("#constdisplaydivid1").hide();
+	}
+	if(value==1){
+		$("#statedisplaydivid1").show();	
+		$('#statesDivId1').val('0');
+		$("#distdisplaydivid1").hide();
+		$("#constdisplaydivid1").hide();
+	}
+	if(value==2){
+		$("#statedisplaydivid1").show();	
+		$('#statesDivId1').val('0');
+		
+		$("#distdisplaydivid1").hide();
+		$("#constdisplaydivid1").hide();
+		getdistrictsUWS1();
+	}
+	if(value==3){
+		$("#statedisplaydivid1").show();
+		$('#statesDivId1').val('0');
+		
+		$("#distdisplaydivid1").hide();
+		$("#constdisplaydivid1").hide();
+		getConstituenciesUWS1();
+	}
+	
+  
+  }
   function getdistrictsUWS(){
 	var selState = $("#statesDivId").val();
 	
@@ -1003,6 +1158,29 @@
 	
   }
   
+  function getdistrictsUWS1(){
+	var selState = $("#statesDivId1").val();
+	
+	$("#displaydistbox1").html("");
+	
+	
+		var jsObj={
+			stateid:selState
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getDistrictsByStateWiseAction.action',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+			var str = "<option value='0'>All</option>";
+		   for(var i in result){
+				str +='<option value='+result[i].id+'>'+result[i].name+'</option>';
+			}
+			$("#displaydistbox1").html(str);
+			$("#distdisplaydivid1").show();
+	   });	
+	
+  }
  
 	function getConstituenciesUWS(){
 		var selState = $("#statesDivId").val();
@@ -1023,6 +1201,28 @@
 			}
 			$("#displayconstbox").html(str);
 			$("#constdisplaydivid").show();
+		});
+	}
+	
+	function getConstituenciesUWS1(){
+		var selState = $("#statesDivId1").val();
+		$("#displayconstbox1").html("");
+		
+		var jObj ={
+			stateid:selState,				  
+			task:"getConstituenciesForUWS"             
+		}	
+		$.ajax({
+			type : "POST",
+			url : "getConstsAction.action",
+			data : {task:JSON.stringify(jObj)} ,
+		}).done(function(result){
+			var str = "<option value='0'>All</option>";
+		   for(var i in result){
+				str +='<option value='+result[i].id+'>'+result[i].name+'</option>';
+			}
+			$("#displayconstbox1").html(str);
+			$("#constdisplaydivid1").show();
 		});
 	}
 	
