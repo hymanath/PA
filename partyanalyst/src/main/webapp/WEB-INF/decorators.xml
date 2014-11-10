@@ -363,6 +363,7 @@
 			  <pattern>/cadreRegistrationReportAction*</pattern>
 			  <pattern>/ctpCasteReportAction*</pattern>
 			  <pattern>/cadreRegAmountUpload*</pattern>
+			  <pattern>/surveyUserAssigneeAction*</pattern>
 			  
             <!--  <pattern>/dashBoardAction*</pattern> -->
        </decorator>
