@@ -206,6 +206,52 @@
 				"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
 			});
 	}
+	
+	getSummaryAmounts();
+	function getSummaryAmounts(){
+		$.ajax({
+          type:'GET',
+          url: 'getCadreRegAmountSummaryAction.action',
+          data: {task:"cadreAmountReportSummary"}
+		}).done(function(result){
+			buildSummary(result);
+		});
+	}
+	
+	function buildSummary(results){
+		$("#usersDetails").html("");
+		var str = '';
+			str +='<h4 style="text-align:center;"> CADRE AMOUNT SUMMARY DETAILS </h4>';
+			str +='<table class="table table-bordered m_top20 table-hover table-striped"  id="summaryTable">';
+				str +='<thead>';
+					str +='<tr>';
+						str +='<th class="text-align1">DATE</th>';
+						str +='<th class="text-align1">RECORDS</th>';
+						str +='<th class="text-align1">TOTAL AMOUNT</th>';
+						str +='<th class="text-align1">PAID AMOUNT</th>';
+						str +='<th class="text-align1">DIFFERENCE</th>';
+					str +='</tr>';
+				str +='</thead>';
+				str +='<tbody>';
+				for(var i in results){
+					str +='<tr>';
+						str +='<th class="text-align1">'+results[i].date+'</th>';
+						str +='<th class="text-align1">'+results[i].totalCount+'</th>';
+						str +='<th class="text-align1">'+results[i].totalAmount+'</th>';
+						str +='<th class="text-align1">'+results[i].paidAmount+'</th>';
+						str +='<th class="text-align1">'+results[i].difference+'</th>';
+					str +='</tr>';
+				}
+				str +='</tbody>';
+			str +='</table>';
+			
+			$('#usersDetails').html(str);
+			
+			$('#summaryTable').dataTable({
+				"iDisplayLength": -1,
+				"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
+			});
+	}
 	</script>
 </body>
 </html>
