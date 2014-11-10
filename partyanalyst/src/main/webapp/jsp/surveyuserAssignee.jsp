@@ -45,11 +45,11 @@
 						</td>
 				     </tr>
 					  <tr id="constdisplaydivid" onchange="getConstituencySurveyUsers();">
-					   <td><b>Select constituency </b></td>
+					   <td><b>Select Constituency </b></td>
 					   <td><select id="constituencyId"></select></td>
 				   </tr>
 				    <tr id="selectuserIdDiv">
-					   <td><b>Select user </b></td>
+					   <td><b>Select User </b></td>
 					   <td><select id="userId" onchange="getAssignedUsersForCadresurveyUser();"></select></td>
 				   </tr>
   </table>
