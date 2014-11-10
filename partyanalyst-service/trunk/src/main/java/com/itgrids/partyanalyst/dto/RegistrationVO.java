@@ -81,11 +81,19 @@ public class RegistrationVO extends BaseDTO{
 	private String designation;
 	private String createdTime;
 	private String ipAddress;
+	private String randomNumber;
+	private String stateName;
 	
-private String randomNumber;
 	
 	
-	
+	public String getStateName() {
+		return stateName;
+	}
+
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
+
 	public String getIpAddress() {
 	return ipAddress;
 }
