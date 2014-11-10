@@ -8827,13 +8827,31 @@
 				<param name="root">cadreAmountList</param>
 			</result>
 		</action>
-		
 		<action name="getCadreRegAmountSummaryAction" class="cadreRegistrationAmountReportAction" method="getCadreRegAmountSummary" >
 			<result type="json" name="success">
 				<param name="root">cadreAmountList</param>
 			</result>
 		</action>
-		
+		<action name="getConstituencySurveyUsersAction" class="cadreDashBoardAction" method="getConstituencySurveyUsers" >
+			<result type="json" name="success">
+				<param name="root">usersList</param>
+			</result>
+		</action>
+		<action name="insertcadreSurveyUserAssignAction" class="cadreDashBoardAction" method="saveCadreSurveyUserAssignInfo" >
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>
+			</result>
+		</action>
+		<action name="getAssignedUsersForCadresurveyUser" class="cadreDashBoardAction" method="getAssignedUsersForCadresurveyUser" >
+			<result type="json" name="success">
+				<param name="root">resultList</param>
+			</result>
+		</action>
+		<action name="surveyUserAssigneeAction" class="cadreDashBoardAction" >
+			<result name="success">/jsp/surveyuserAssignee.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=surveyuserAssigneeAction</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
+		</action>
 </package>
 
 </struts>      

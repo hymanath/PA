@@ -1,17 +1,23 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CadreBasicInformationVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -31,10 +37,27 @@ public class CadreDashBoardAction implements ServletRequestAware {
 	private JSONObject jObj;
 	private String task;
 	private CadreRegisterInfo resultVO;
-	
+	private List<CadreBasicInformationVO> usersList;
 	private String getState;
+	private ResultStatus resultStatus;
 	
 	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+
+	public List<CadreBasicInformationVO> getUsersList() {
+		return usersList;
+	}
+
+	public void setUsersList(List<CadreBasicInformationVO> usersList) {
+		this.usersList = usersList;
+	}
+
 	public String getGetState() {
 		return getState;
 	}
@@ -364,6 +387,65 @@ public class CadreDashBoardAction implements ServletRequestAware {
 			info = cadreDashBoardService.getRegisteredInfo(locationId,locationType,startIndex,maxIndex);
 		}catch(Exception e){
 			LOG.error("Exception rised in getRegisteredInfo ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getConstituencySurveyUsers()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			usersList = cadreDashBoardService.getConstituencySurveyUsers(jObj.getLong("constituencyId"));
+		}
+		catch (Exception e) {
+			LOG.error("Exception rised in getCadreSurveyUsers ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String saveCadreSurveyUserAssignInfo()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			JSONArray jsonArray = jObj.getJSONArray("inputArr");
+			for(int i=0;i<jsonArray.length();i++)
+			{
+				if(!jsonArray.isNull(i))
+				{
+					JSONObject jSONObject= jsonArray.getJSONObject(i);
+					CadreRegisterInfo vo = new CadreRegisterInfo();
+					vo.setId(jSONObject.getLong("userId"));
+					vo.setName(jSONObject.getString("name"));
+					vo.setNumber(jSONObject.getString("mobileNo"));
+					vo.setFromDate(jSONObject.getString("startDate"));
+					resultStatus = cadreDashBoardService.saveCadreSurveyUserAssignInfo(vo);
+				}
+			}
+			
+		}
+		catch (Exception e) {
+			LOG.error("Exception rised in getCadreSurveyUsers ",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getAssignedUsersForCadresurveyUser()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			resultList = cadreDashBoardService.getAssignedUsersForCadresurveyUser(jObj.getLong("constituencyId"),jObj.getLong("userId"));
+		}
+		catch (Exception e) {
+			LOG.error("Exception rised in getCadreSurveyUsers ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String assignUserExecute(){
+		
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		boolean noaccess = false;
+		if(regVO==null){
+			return "input";
 		}
 		return Action.SUCCESS;
 	}
