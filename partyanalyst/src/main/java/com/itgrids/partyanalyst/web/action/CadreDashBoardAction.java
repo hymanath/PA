@@ -263,45 +263,51 @@ public class CadreDashBoardAction implements ServletRequestAware {
     
 	public String getLocationWiseRegistrationInfo(){
 		try{
-			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
-			boolean noaccess = false;
-			if(regVO==null){
-				return "input";
-			}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
-				noaccess = true ;
-				
-			}
-			if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
-				noaccess = false;
-			}
-			if(noaccess){
-				return "input";
-			}
-			String task = request.getParameter("task");
-			if(task.equalsIgnoreCase("assemblyInfo")){
-				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"assembly",request.getParameter("fromDate"),request.getParameter("toDate"),true);
-			}else if(task.equalsIgnoreCase("districtInfo")){
-				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"district",request.getParameter("fromDate"),request.getParameter("toDate"),true);
-			}else if(task.equalsIgnoreCase("panchayatInfo")){
-				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"panchayat",request.getParameter("fromDate"),request.getParameter("toDate"),true);
-			}else if(task.equalsIgnoreCase("boothInfo")){
-				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"booth",request.getParameter("fromDate"),request.getParameter("toDate"),true);
-			}else if(task.equalsIgnoreCase("mandalInfo")){
-				result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"mandal",request.getParameter("fromDate"),request.getParameter("toDate"),true);
-			}else if(task.equalsIgnoreCase("stateInfo")){
-				result = cadreDashBoardService.getStateWiseRegistrationInfo(getIds(request.getParameter("ids")),request.getParameter("fromDate"),request.getParameter("toDate"));
-			}else if(task.equalsIgnoreCase("boothNames")){
-				result = cadreDashBoardService.getBoothsInConstituencies(Long.parseLong(request.getParameter("constituencyId")));
-			}else if(task.equalsIgnoreCase("panchayatNames")){
-				result = cadreDashBoardService.getPanchayatsInConstituencies(Long.parseLong(request.getParameter("constituencyId")));
-			}else if(task.equalsIgnoreCase("assemblyNames")){
-				result = cadreDashBoardService.getAssemblyConstituencies(request.getParameter("type"));
-			}
-		 }catch(Exception e){
-			  LOG.error("Exception rised in getLocationWiseRegistrationInfo ",e);
-		  }
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		boolean noaccess = false;
+		if(regVO==null){
+		return "input";
+		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
+		noaccess = true ;
+
+		}
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+		noaccess = false;
+		}
+		if(noaccess){
+		return "input";
+		}
+		Long userCountValue=null;
+		String countValue=request.getParameter("userCountValue");
+		if(countValue!="")
+		userCountValue=Long.parseLong(countValue);
+
+		String task = request.getParameter("task");
+		if(task.equalsIgnoreCase("assemblyInfo")){
+		result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"assembly",request.getParameter("fromDate"),request.getParameter("toDate"),true,userCountValue);
+		}else if(task.equalsIgnoreCase("districtInfo")){
+		result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"district",request.getParameter("fromDate"),request.getParameter("toDate"),true,userCountValue);
+		}else if(task.equalsIgnoreCase("panchayatInfo")){
+		result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"panchayat",request.getParameter("fromDate"),request.getParameter("toDate"),true,userCountValue);
+		}else if(task.equalsIgnoreCase("boothInfo")){
+		result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"booth",request.getParameter("fromDate"),request.getParameter("toDate"),true,userCountValue);
+		}else if(task.equalsIgnoreCase("mandalInfo")){
+		result = cadreDashBoardService.getLocationWiseRegistrationInfo(getIds(request.getParameter("ids")),"mandal",request.getParameter("fromDate"),request.getParameter("toDate"),true,userCountValue);
+		}else if(task.equalsIgnoreCase("stateInfo")){
+		result = cadreDashBoardService.getStateWiseRegistrationInfo(getIds(request.getParameter("ids")),request.getParameter("fromDate"),request.getParameter("toDate"),userCountValue);
+		}else if(task.equalsIgnoreCase("boothNames")){
+		result = cadreDashBoardService.getBoothsInConstituencies(Long.parseLong(request.getParameter("constituencyId")));
+		}else if(task.equalsIgnoreCase("panchayatNames")){
+		result = cadreDashBoardService.getPanchayatsInConstituencies(Long.parseLong(request.getParameter("constituencyId")));
+		}else if(task.equalsIgnoreCase("assemblyNames")){
+		result = cadreDashBoardService.getAssemblyConstituencies(request.getParameter("type"));
+		}
+		}catch(Exception e){
+		LOG.error("Exception rised in getLocationWiseRegistrationInfo ",e);
+		}
 		return Action.SUCCESS;
-	}
+		}
+
 	
 	public List<Long> getIds(String idsString){
 		List<Long> ids = new ArrayList<Long>();
