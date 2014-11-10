@@ -36,8 +36,17 @@ public class CadreRegisterInfo implements Serializable{
 	private Long tgOnlineCount;
 	private Long totalAmount;
 	private String tabNo;
+	private String fromDate;
 	
 	
+	public String getFromDate() {
+		return fromDate;
+	}
+
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+
 	public String getTabNo() {
 		return tabNo;
 	}
