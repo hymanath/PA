@@ -983,7 +983,6 @@
 	   });
   }
   function showHideTabs(id){
-  debugger;
      $("#userReportTab").removeClass("selected");
 	 $("#locationReportTab").removeClass("selected");
 	 $("#userTrackingTab").removeClass("selected");
