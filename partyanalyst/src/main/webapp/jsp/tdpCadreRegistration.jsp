@@ -98,6 +98,9 @@
   .fadeInUpClass{
 	display:none;
   }
+  .icon-remove{
+    cursor:pointer;
+  }
 	</style>
 	
 		
@@ -515,7 +518,7 @@
 		if(Nname != null && Nname.trim().length>0 && !(/^[a-zA-Z]+$/.test(Nname)))
 		{
 				$('#NnameErr').html('Candidate Name allows only alphabets.');
-			return;
+			isErrorStr = " error";
 		}
 		if(Ngender == 0)
 		{
@@ -1487,10 +1490,10 @@
 												<th  style="width:80px;"> AGE </th>
 												<th  style="width:80px;"> GENDER </th>
 												<th  style="width:156px;"> EDUCATION  </th>
-												<th  style="width:182px;"> OCCUPATION </th>
+												<th  style="width:182px;"> OCCUPATION <a class="icon-plus-sign" style="cursor:pointer;float:right;" onClick="addMoreVoters();"  title="Click Here To Add More Family Members"> </a><br></th>
 												
-												<th> <a class="icon-plus-sign" onClick="addMoreVoters();"  title="Add More Voter Details"> </a><br>
-												<a class="icon-minus-sign" style="" onClick="deleteRecordsForm();" title="Remove Selected Voters Details">
+												<th> 
+												<a class="icon-minus-sign"  style="cursor:pointer; padding-bottom: 5px;"  onClick="deleteRecordsForm();" title="Select Multiple Family Members And Click Here To Remove Them">
 												</th>
 													
 							<s:if test="%{voterInfoVOList[0].voterInfoVOList != null && voterInfoVOList[0].voterInfoVOList.size() > 0}">
@@ -1506,7 +1509,7 @@
 												<td style="width:25px;text-align:center;">   
 												<!--	<input type="checkbox" id="checkBox${commentLoop.index}"  name="" class="nomineeCls" onclick="nomineeUpdate('checkBox${commentLoop.index}',${commentLoop.index})" style="margin-top: -10px;" title="Click here to add make this member as nominee.">
 												-->
-													<a class="icon-remove nomineeCls" style="margin-top:-10px;" id="checkBox${commentLoop.index}" onclick="nomineeUpdate('checkBox${commentLoop.index}',${commentLoop.index})" title="Click here to add make this member as nominee.">
+													<a class="icon-remove nomineeCls" style="margin-top:-10px;" id="checkBox${commentLoop.index}" onclick="nomineeUpdate('checkBox${commentLoop.index}',${commentLoop.index})" title="Click here to add this member as nominee.">
 													
 												</td>
 												<td style="width:100px;">	
@@ -1585,7 +1588,7 @@
 											<tr class="voterDev0">
 											    <td style="width:25px;text-align:center;">
 											    <!-- <input type="checkbox" id="checkBox0"   class="nomineeCls" onclick="nomineeUpdate('checkBox0',0)" style="margin-top: -10px;" title="Click here to add make this member as nominee."> -->
-													<a class="icon-remove nomineeCls" style="margin-top:-10px;" onclick="nomineeUpdate('checkBox0',0)" title="Click here to add make this member as nominee.">
+													<a class="icon-remove nomineeCls" style="margin-top:-10px;" onclick="nomineeUpdate('checkBox0',0)" title="Click here to add this member as nominee.">
 												</td>
 												<td> 
 													<input type="text" id="voterName0" class="form-control border-radius-0 text-align2" name="cadreRegistrationVO.cadreFamilyDetails[0].voterName" id="voterName0"  placeholder=" Voter Name "  ></input> 
@@ -1704,8 +1707,8 @@
 		</div>
 	</div>
 	
-	<div id="toggleButtonDiv" style="margin-left:800px;">
-		<a id="toggleButtonId" class="btn btn-success text-align3 m_top10 m_bottom10 border-radius-0">Click To See/Hide Nominee Details And Previous Roles</a>
+	<div id="toggleButtonDiv" style="margin-left:685px;">
+		<a id="toggleButtonId" class="btn btn-success text-align3 m_top10 m_bottom10 border-radius-0">Click To See/Hide  Previous Roles And Previously Participated In Elections</a>
 	</div>
 	<div id="fadeInUp" class="fadeInUpClass">
 		<div class="container m_top10">
