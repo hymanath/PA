@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
+
 import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -8,19 +9,22 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.ICadreRegAmountDetailsDAO;
-import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
-import com.itgrids.partyanalyst.dto.CadreAmountDetailsVO;
 import com.itgrids.partyanalyst.dao.ICadreRegAmountFileDAO;
+import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dto.CadreAmountDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreRegAmountUploadVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -38,6 +42,8 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 	private ITdpCadreDAO tdpCadreDAO;
 	private ICadreRegAmountDetailsDAO cadreRegAmountDetailsDAO;
 	
+	@Autowired
+	private ICadreSurveyUserAssignDetailsDAO cadreSurveyUserAssignDetailsDAO;
 	
 	
 	public IUserDAO getUserDAO() {
@@ -181,6 +187,7 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 			Map<String,Map<Long, CadreAmountDetailsVO>> datesMap = new HashMap<String, Map<Long,CadreAmountDetailsVO>>();
 			Map<Long, CadreAmountDetailsVO> finalMap = null;
 			Map<Long, CadreAmountDetailsVO> usersMap = null;
+			Map<Long,String> constiMap = null;
 			List<Object[]> list1 = cadreRegAmountDetailsDAO.getAmountDetailsOfUserByDate(fromDate,toDate);
 			if(list1 != null && list1.size() > 0)
 			{
@@ -209,7 +216,7 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 					
 				}
 				
-				List<Long> userIds = new ArrayList<Long>();
+				Set<Long> userIds = new java.util.HashSet<Long>();
 				List<Object[]> userWiseDetails = tdpCadreDAO.getUserBetweenDates(fromDate, toDate);
 				if(userWiseDetails != null && userWiseDetails.size() > 0)
 				{
@@ -237,10 +244,24 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 						}
 					}
 					
+					
 					//SETTING CONSTITUENCY AND TOTAL COUNTS FOR USER
 					List<Object[]> list2 = new ArrayList<Object[]>();
 					if(userIds!=null && userIds.size()>0){
-						 list2 = tdpCadreDAO.getCandidateDataCollectedByDate(fromDate, toDate, userIds);
+						
+							List<Object[]> constiDetails = cadreSurveyUserAssignDetailsDAO.getUserConstituencyDetails(new ArrayList<Long>(userIds));
+							if(constiDetails != null)
+							{
+								constiMap = new HashMap<Long, String>();
+								for (Object[] objects : constiDetails) 
+								{
+									if(objects[0] != null && objects[1] != null)
+									{
+										constiMap.put(Long.valueOf(objects[0].toString()),objects[1].toString());
+									}
+								}
+							}
+						 list2 = tdpCadreDAO.getCandidateDataCollectedByDate(fromDate, toDate, new ArrayList<Long>(userIds));
 						
 					}
 					if(list2!=null && list2.size()>0)
@@ -263,19 +284,20 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 									cd.setConstituency(obj[3].toString());
 									cd.setTotalAmount(cd.getTotalCount()*100);
 									
-									
+									CadreAmountDetailsVO cd1 = finalMap.get(Long.valueOf(obj[0].toString()));
+									if(cd1 != null)
+									{
+										cd.setDifference(cd.getTotalAmount()-cd1.getPaidAmount());
+									}
+									else
+									{
+										cd.setDifference(cd.getTotalAmount()-0l);
+									}
+									finalMap.put(Long.valueOf(obj[1].toString()), cd);
 								}
 								
-								CadreAmountDetailsVO cd1 = finalMap.get(Long.valueOf(obj[0].toString()));
-								if(cd1 != null)
-								{
-									cd.setDifference(cd.getTotalAmount()-cd1.getPaidAmount());
-								}
-								else
-								{
-									cd.setDifference(cd.getTotalAmount()-0l);
-								}
-								finalMap.put(Long.valueOf(obj[1].toString()), cd);
+								
+								
 							}
 							
 							
@@ -289,38 +311,48 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 							finalList = new ArrayList<CadreAmountDetailsVO>();
 							for (Long userId : usersMap.keySet())
 							{
-								CadreAmountDetailsVO cd = usersMap.get(userId);
-								List<CadreAmountDetailsVO> subList = new ArrayList<CadreAmountDetailsVO>();
-								if(datesMap != null && datesMap.size() > 0)
+								if(constiMap.get(userId) != null)
 								{
-									for (String dateStr : datesMap.keySet()) 
+									CadreAmountDetailsVO cd = usersMap.get(userId);
+									cd.setConstituency(constiMap.get(userId));
+									List<CadreAmountDetailsVO> subList = new ArrayList<CadreAmountDetailsVO>();
+									
+									if(datesMap != null && datesMap.size() > 0)
 									{
-										CadreAmountDetailsVO subVO = new CadreAmountDetailsVO();
-										subVO.setDate(dateStr);
-										Map<Long, CadreAmountDetailsVO> dataMap = datesMap.get(dateStr);
-										if(dataMap != null && dataMap.size() > 0 )
+										for (String dateStr : datesMap.keySet()) 
 										{
-											CadreAmountDetailsVO vo = dataMap.get(userId);
-											if(vo != null)
+											CadreAmountDetailsVO subVO = new CadreAmountDetailsVO();
+											subVO.setDate(dateStr);
+											Map<Long, CadreAmountDetailsVO> dataMap = datesMap.get(dateStr);
+											if(dataMap != null && dataMap.size() > 0 )
 											{
-												subVO.setTotalCount(vo.getTotalCount());
-												subVO.setPaidAmount(vo.getPaidAmount());
-												subVO.setTotalAmount(vo.getTotalCount()*100);
-												subVO.setDifference(vo.getTotalAmount()-vo.getPaidAmount());
+												
+												CadreAmountDetailsVO vo = dataMap.get(userId);
+												
+												
+												if(vo != null)
+												{
+													subVO.setTotalCount(vo.getTotalCount());
+													subVO.setPaidAmount(vo.getPaidAmount());
+													subVO.setTotalAmount(vo.getTotalCount()*100);
+													subVO.setDifference(vo.getTotalAmount()-vo.getPaidAmount());
+												}
+												else
+												{
+													subVO.setTotalCount(0l);
+													subVO.setPaidAmount(0l);
+													subVO.setTotalAmount(0l);
+													subVO.setDifference(0l);
+												}
+												
 											}
-											else
-											{
-												subVO.setTotalCount(0l);
-												subVO.setPaidAmount(0l);
-												subVO.setTotalAmount(0l);
-												subVO.setDifference(0l);
-											}
+											subList.add(subVO);
 										}
-										subList.add(subVO);
 									}
+									cd.setInfoList(subList);
+									finalList.add(cd);
 								}
-								cd.setInfoList(subList);
-								finalList.add(cd);
+								
 							}
 						}
 						

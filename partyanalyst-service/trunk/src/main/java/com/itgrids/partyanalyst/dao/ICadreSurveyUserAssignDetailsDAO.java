@@ -23,6 +23,7 @@ public interface ICadreSurveyUserAssignDetailsDAO extends GenericDao<CadreSurvey
 	public List<Object[]> getTabNos(List<Long> cadreSurveyUserIds);
 	public List<Object[]> getCadreSurveyUsers(Long constituencyId);
 	public List<Object[]> getUsersByConstituencyAndUserId(Long constituencyId,Long userId);
+	public List<Object[]> getUserConstituencyDetails(List<Long> userIds);
 	
 	
 }
