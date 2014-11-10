@@ -354,7 +354,7 @@
 		str += '<div class="" style="width:60px;float:left;margin-top:-10px;">';
 		str += '<div class=" " >';
 		str += '<div class="input-prepend text-align2 ">';	
-		str += '<a class="icon-minus-sign" style="float:left;margin-top:30px;" onClick="deleteRollesForm(\'rolesList'+rolesSize+'\')" title="Remove Details"></a>';
+		//str += '<a class="icon-minus-sign" style="float:left;margin-top:30px;" onClick="deleteRollesForm(\'rolesList'+rolesSize+'\')" title="Remove Details"></a>';
 		str += '</div>';
 		str += '</div>';
 		str += '</div>';
@@ -967,7 +967,8 @@
 
 	str +=' <tr class="voterDev'+voterCount+'">';  
 	str +='<td style="width:25px;text-align:center;">  ';
-	str +='<input type="checkbox" id="checkBox'+voterCount+'"  name="" class="nomineeCls" onclick="nomineeUpdate(\'checkBox'+voterCount+'\','+voterCount+')" style="margin-top: -10px;" title="Click here to use this member as nominee."></td>';
+	//str +='<input type="checkbox" id="checkBox'+voterCount+'"  name="" class="nomineeCls" onclick="nomineeUpdate(\'checkBox'+voterCount+'\','+voterCount+')" style="margin-top: -10px;" title="Click here to use this member as nominee."></td>';
+	str +='<a class="icon-remove nomineeCls" id="checkBox'+voterCount+'" style="margin-top:-10px;"  onclick="nomineeUpdate(\'checkBox'+voterCount+'\','+voterCount+')"  title="Click here to use this member as nominee."></a> </td>';
 	str +=' <td style="width:100px;">  <input id="countVar" type="hidden" value="'+voterCount+'">';
 	str +=' <input type="text" class="form-control border-radius-0 text-align2" placeholder=" Enter Voter Name " name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].voterName" id="voterName'+voterCount+'" ></input> ';
 	str +=' <input type="hidden" class="form-control border-radius-0 text-align2"  name="cadreRegistrationVO.cadreFamilyDetails['+voterCount+'].voterId" id="voterId'+voterCount+'"></input> ';
@@ -1009,7 +1010,8 @@
 	
 	str +=' </td>';
 	str +='<td style="width:15px;"> ';
-		str +='<a class="icon-minus-sign" style="float:right;margin-top:-10px;" onClick="deleteRollesForm(\'voterDev'+voterCount+'\');" title="Remove Details"></a>';
+	str +='<input type="checkbox"   class="removeCls"   style="margin-top: -10px;"  id="voterDev'+voterCount+'">';
+		/*str +='<a class="icon-minus-sign" style="float:right;" onClick="deleteRollesForm(\'voterDev'+voterCount+'\');" title="Remove Details"></a>';*/
 	str +='</td>';
 	str +=' </tr>';
 
@@ -1473,7 +1475,9 @@
 												<th  style="width:156px;"> EDUCATION  </th>
 												<th  style="width:182px;"> OCCUPATION </th>
 												
-												<th> <a class="icon-plus-sign" style="float:right;margin-right:0px;margin-top:-13px;" onClick="addMoreVoters();"  title="Add More Voter Details"> </a></th>
+												<th> <a class="icon-plus-sign" onClick="addMoreVoters();"  title="Add More Voter Details"> </a><br>
+												<a class="icon-minus-sign" style="" onClick="deleteRecordsForm();" title="Remove Selected Voters Details">
+												</th>
 													
 							<s:if test="%{voterInfoVOList[0].voterInfoVOList != null && voterInfoVOList[0].voterInfoVOList.size() > 0}">
 											</tr>
@@ -1486,7 +1490,10 @@
 										<input type="hidden" value="${commentLoop.index}" id="countVar"></input>
 											<tr class="voterDev${commentLoop.index}">
 												<td style="width:25px;text-align:center;">   
-													<input type="checkbox" id="checkBox${commentLoop.index}"  name="" class="nomineeCls" onclick="nomineeUpdate('checkBox${commentLoop.index}',${commentLoop.index})" style="margin-top: -10px;" title="Click here to add make this member as nominee.">
+												<!--	<input type="checkbox" id="checkBox${commentLoop.index}"  name="" class="nomineeCls" onclick="nomineeUpdate('checkBox${commentLoop.index}',${commentLoop.index})" style="margin-top: -10px;" title="Click here to add make this member as nominee.">
+												-->
+													<a class="icon-remove nomineeCls" style="margin-top:-10px;" id="checkBox${commentLoop.index}" onclick="nomineeUpdate('checkBox${commentLoop.index}',${commentLoop.index})" title="Click here to add make this member as nominee.">
+													
 												</td>
 												<td style="width:100px;">	
 													<input type="text" id="voterName${commentLoop.index}" class="form-control border-radius-0 text-align2" placeholder="Voter Name " value="${familyVO.name}" name="cadreRegistrationVO.cadreFamilyDetails[${commentLoop.index}].voterName"></input> 
@@ -1542,7 +1549,9 @@
 													 
 												</td>
 												<td style="width:15px;"> 
-												<a class="icon-minus-sign" style="float:right;margin-top:-10px;margin-left:-3px;" onClick="deleteRollesForm('voterDev${commentLoop.index}');" title="Remove Details"></a>
+												
+												<input type="checkbox"  class="removeCls" style="float:left;margin-top:-10px;" id="voterDev${commentLoop.index}">
+												<!--<a class="icon-minus-sign" style="float:right;margin-left:-3px;" onClick="deleteRollesForm('voterDev${commentLoop.index}');" title="Remove Details"></a> -->
 												</td>
 											</tr>
 											
@@ -1560,8 +1569,9 @@
 											<tbody>	
 										<input type="hidden" value="0" class="countVar"></input>
 											<tr class="voterDev0">
-											    <td style="width:25px;text-align:center;">   
-													<input type="checkbox" id="checkBox0"   class="nomineeCls" onclick="nomineeUpdate('checkBox0',0)" style="margin-top: -10px;" title="Click here to add make this member as nominee.">
+											    <td style="width:25px;text-align:center;">
+											    <!-- <input type="checkbox" id="checkBox0"   class="nomineeCls" onclick="nomineeUpdate('checkBox0',0)" style="margin-top: -10px;" title="Click here to add make this member as nominee."> -->
+													<a class="icon-remove nomineeCls" style="margin-top:-10px;" onclick="nomineeUpdate('checkBox0',0)" title="Click here to add make this member as nominee.">
 												</td>
 												<td> 
 													<input type="text" id="voterName0" class="form-control border-radius-0 text-align2" name="cadreRegistrationVO.cadreFamilyDetails[0].voterName" id="voterName0"  placeholder=" Voter Name "  ></input> 
@@ -1598,7 +1608,8 @@
 												
 												</td>
 												<td style="width:15px;"> 
-													<a class="icon-minus-sign" style="float:right;margin-top:-10px;" onClick="deleteRollesForm('voterDev0');" title="Remove Details">
+													<input type="checkbox"  class="removeCls" style="float:left;margin-top:-10px;" id="voterDev0">
+													<!-- <a class="icon-minus-sign" style="float:right;" onClick="deleteRollesForm('voterDev0');" title="Remove Details"> -->
 												</td>
 											</tr>
 											
@@ -2724,15 +2735,22 @@ function showNewTakenImg(){
 		  
 		$('.nomineeCls').each(function(){
 			var id = $(this).attr('id');
+			$("#"+id+"").removeClass("icon-remove");
 			
 			if(id != voterSerialId)
-			{
-				$("#"+id+"").attr("checked", false);
+			{				
+				$("#"+id+"").removeClass("icon-ok");
+				$("#"+id+"").removeClass("label-info");
+				$("#"+id+"").addClass("icon-remove");
 			}
+			else
+			{
+				$("#"+id+"").addClass("icon-ok");
+				$("#"+id+"").addClass("label-info");
+			}
+			
 		});
 		
-		 if ($('#'+voterSerialId+'').is(':checked')) 
-		 {
 			$('#nomineNameId').val('');
 			$('#nomineeGenderId').val(0);
 			$('#nomineeAgeId').val('');
@@ -2755,7 +2773,6 @@ function showNewTakenImg(){
 			$('#nomineNameId').val(name);
 			$('#nomineeGenderId').val(gender);
 			$('#nomineeAgeId').val(age);
-		 }
 		
 	}
 	
@@ -2995,6 +3012,20 @@ $(document).ready(function(){
 	}
 	function clearSelDiv(selId){
 	 $("#"+selId).val("");
+	}
+		
+	function deleteRecordsForm()
+	{
+		var removeVoterArr = new Array();
+		$('.removeCls').each(function(){
+			var id = $(this).attr('id');
+			if ($('#'+id+'').is(':checked')) 
+			 {
+				console.log(id);
+				$('.'+id+'').remove();
+			 }
+		});
+
 	}
 </script>
 </html>
