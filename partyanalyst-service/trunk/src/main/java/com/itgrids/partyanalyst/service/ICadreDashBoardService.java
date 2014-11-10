@@ -70,4 +70,6 @@ public interface ICadreDashBoardService {
 	public List<CadreBasicInformationVO> getConstituencySurveyUsers(Long constituencyId);
 	public ResultStatus saveCadreSurveyUserAssignInfo(CadreRegisterInfo vo);
 	public List<CadreRegisterInfo> getAssignedUsersForCadresurveyUser(Long constituencyId,Long userId);
+
+	public List<CadreRegisterInfo> getSlowUserDetails(Long locationType,List<Long> locationIds,Date fromDate,Date toDate,Long recordsCount);
 }

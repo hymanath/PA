@@ -37,6 +37,7 @@ public class CadreRegisterInfo implements Serializable{
 	private Long totalAmount;
 	private String tabNo;
 	private String fromDate;
+	private Long avgTime;
 	
 	
 	public String getFromDate() {
@@ -246,6 +247,14 @@ public class CadreRegisterInfo implements Serializable{
 
 	public void setPercentStr(String percentStr) {
 		this.percentStr = percentStr;
+	}
+
+	public Long getAvgTime() {
+		return avgTime;
+	}
+
+	public void setAvgTime(Long avgTime) {
+		this.avgTime = avgTime;
 	}	
 
 }
