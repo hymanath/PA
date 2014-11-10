@@ -228,6 +228,12 @@
 						    <input type="text" id="toDate1" class="levelDtCls form-control border-radius-0 border-right-0 datePickerCls fromDateCls"  placeholder="From Date"  readOnly="true" style="cursor:text;"></input>
 						 </td>
 					 </tr>
+					 <tr>
+                       <td><b>Enter Cadre Count :</b></td>
+                       <td>
+                       <input type="text" id="cadreCountId" class="levelDtCls form-control border-radius-0 border-right-0 datePickerCls fromDateCls" style="cursor:text;"></input>
+                      </td>
+                     </tr>
 					 
 					 <tr><td></td><td> <input style="margin-top:10px;" type="button" id="locationSubmitBtn" class="btn btn-success" onclick="getLocationWiseCadreInfo();" value="Submit"/><img id="ajaxImgStyleNew" style="display:none;margin-left:10px; margin-top:10px;" src="images/icons/search.gif"/></td></tr>
 				  </table>
@@ -861,6 +867,8 @@
   function getLocationWiseCadreInfo(){
    $("#errMsgDiv").html('');
    $("#locationStatusDialogDIV").html("");
+   var cadreCount=$("#cadreCountId").val().trim();
+
     var locationId = $("#locationsDispalyId").val();
 	var reqTask="";
 	var reqIds ="";
@@ -944,7 +952,7 @@
          $.ajax({
           type:'GET',
           url: 'getLocationWiseRegistrationInfo.action',
-		  data: {task:reqTask,ids:reqIds,fromDate:startDate,toDate:endDate}
+		  data: {task:reqTask,ids:reqIds,fromDate:startDate,toDate:endDate,userCountValue:cadreCount}
 	   }).done(function(result){
 		   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
     		   location.reload(); 
