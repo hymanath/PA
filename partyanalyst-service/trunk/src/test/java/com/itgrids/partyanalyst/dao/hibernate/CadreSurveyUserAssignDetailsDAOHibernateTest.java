@@ -17,7 +17,11 @@ public class CadreSurveyUserAssignDetailsDAOHibernateTest extends BaseDaoTestCas
 	
 	public void testDetails()
 	{
-		List<Long> list = cadreSurveyUserAssignDetailsDAO.checkIsAlreadyAssigned(2L,1L,232L,232L);
+		/*List<Long> list = cadreSurveyUserAssignDetailsDAO.checkIsAlreadyAssigned(2L,1L,232L,232L);
+		System.out.println(list.size());*/
+	//	List<Object[]>  list = cadreSurveyUserAssignDetailsDAO.getUsersByConstituencyAndUserId(282l,1l);
+		List<Object[]> list = cadreSurveyUserAssignDetailsDAO.getUsersByConstituencyAndUserId(282l,1l);
 		System.out.println(list.size());
+		
 	}
 }

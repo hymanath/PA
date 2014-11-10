@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.IAppDbUpdateDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
+import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssigneeDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
@@ -26,7 +27,12 @@ import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.AppDbDataVO;
+import com.itgrids.partyanalyst.dto.CadreBasicInformationVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.model.CadreSurveyUser;
+import com.itgrids.partyanalyst.model.CadreSurveyUserAssignee;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -47,7 +53,17 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	private IAppDbUpdateDAO appDbUpdateDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private ICadreSurveyUserAssignDetailsDAO cadreSurveyUserAssignDetailsDAO;
+	private ICadreSurveyUserAssigneeDAO cadreSurveyUserAssigneeDAO;
 	
+	
+	public ICadreSurveyUserAssigneeDAO getCadreSurveyUserAssigneeDAO() {
+		return cadreSurveyUserAssigneeDAO;
+	}
+
+	public void setCadreSurveyUserAssigneeDAO(
+			ICadreSurveyUserAssigneeDAO cadreSurveyUserAssigneeDAO) {
+		this.cadreSurveyUserAssigneeDAO = cadreSurveyUserAssigneeDAO;
+	}
 
 	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
 		return delimitationConstituencyAssemblyDetailsDAO;
@@ -1767,5 +1783,101 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		}
 		
 		return state;
+	}
+	public List<CadreBasicInformationVO> getConstituencySurveyUsers(Long constituencyId)
+	{
+		List<CadreBasicInformationVO> resultlist = new ArrayList<CadreBasicInformationVO>();
+		try{
+			List<Object[]> list = cadreSurveyUserAssignDetailsDAO.getCadreSurveyUsers(constituencyId);
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					CadreBasicInformationVO vo = new CadreBasicInformationVO();
+					vo.setUserId((Long)params[0]);
+					vo.setName(params[1].toString());
+					resultlist.add(vo);
+				}
+			}
+		}
+		catch (Exception e) {
+			LOG.error("Exception Occured in getCadreSurveyUsers() method", e); 
+		}
+		return resultlist;
+	}
+	
+	public List<CadreRegisterInfo> getAssignedUsersForCadresurveyUser(Long constituencyId,Long userId)
+	{
+		List<CadreRegisterInfo>  returnList = new ArrayList<CadreRegisterInfo>();
+	try{
+		List<Object[]> list = cadreSurveyUserAssignDetailsDAO.getUsersByConstituencyAndUserId(constituencyId,userId);
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+			{
+				CadreRegisterInfo vo = new CadreRegisterInfo();
+				vo.setId((Long)params[0]);
+				vo.setName(params[1].toString());
+				vo.setNumber(params[2] != null? params[2].toString() : "");
+				vo.setFromDate(params[3] != null ? params[3].toString() : "");
+				vo.setDate(params[4] != null ? params[4].toString() : "");
+				returnList.add(vo);
+			}
+		}
+		
+	}
+	catch (Exception e) {
+		LOG.error("Exception Occured in getUsersList() method", e);
+	}
+	return returnList;
+	}
+	public ResultStatus saveCadreSurveyUserAssignInfo(CadreRegisterInfo vo)
+	{
+		ResultStatus result = new ResultStatus();
+	
+		DateUtilService dateUtilService = new DateUtilService();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yyyy");
+		try{
+			Date fromDate = sdf.parse(vo.getFromDate());
+			List avilability = cadreSurveyUserAssigneeDAO.checkUserExists(vo.getId(),fromDate);
+			if(avilability != null && avilability.size() > 0)
+			   result.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+			else
+			{
+				// update last user endTime 
+				Long previousUser = cadreSurveyUserAssigneeDAO.getLatestUserByCadreSurveyUser(vo.getId());
+				if(previousUser != null)
+				{
+				CadreSurveyUserAssignee updateUser = cadreSurveyUserAssigneeDAO.get(previousUser);
+				Calendar fromCalendar = Calendar.getInstance();
+				fromCalendar.setTime(fromDate);
+				fromCalendar.set(Calendar.DAY_OF_MONTH,  fromCalendar.get(Calendar.DAY_OF_MONTH)-1);
+				updateUser.setToDate(fromCalendar.getTime());
+				updateUser.setIsDeleted("Y");
+				cadreSurveyUserAssigneeDAO.save(updateUser);
+				}
+				
+				// add user to cadreSurveyUser
+				CadreSurveyUserAssignee cadreSurveyUserAssignee = new CadreSurveyUserAssignee();
+				cadreSurveyUserAssignee.setName(vo.getName());
+				cadreSurveyUserAssignee.setMobileNo(vo.getNumber());
+				cadreSurveyUserAssignee.setCadreSurveyUser(cadreSurveyUserDAO.get(vo.getId()));
+				cadreSurveyUserAssignee.setIsDeleted("N");
+				cadreSurveyUserAssignee.setFromDate(fromDate);
+				cadreSurveyUserAssigneeDAO.save(cadreSurveyUserAssignee);
+				result.setResultCode(ResultCodeMapper.SUCCESS);
+				// update CadreSurvey User
+				CadreSurveyUser user = cadreSurveyUserDAO.get(vo.getId());
+				user.setName(vo.getName());
+				user.setMobileNo(vo.getNumber());
+				user.setUpdatedTime(fromDate);
+				cadreSurveyUserDAO.save(user);
+			}
+		}
+		catch (Exception e) {
+			LOG.error("Exception Occured in getCadreSurveyUsers() method", e);
+			result.setResultCode(ResultCodeMapper.FAILURE);
+		}
+		return result;
 	}
 }
