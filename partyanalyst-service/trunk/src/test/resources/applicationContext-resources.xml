@@ -508,6 +508,7 @@
 				<value>com.itgrids.partyanalyst.model.CadreRegAmountFile</value>
 				<value>com.itgrids.partyanalyst.model.CadreRegAmountDetails</value>
 				<value>com.itgrids.partyanalyst.model.TdpCadreOnline</value>
+				<value>com.itgrids.partyanalyst.model.CadreSurveyUserAssignee</value>
 			</list>
 		</property>
 	</bean>
@@ -2622,5 +2623,7 @@
   <bean id="cadreRegAmountFileDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRegAmountFileDAO" >
 	<property name="sessionFactory" ref="sessionFactory" />
   </bean>
-  
+  <bean id="cadreSurveyUserAssigneeDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreSurveyUserAssigneeDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
 </beans>
