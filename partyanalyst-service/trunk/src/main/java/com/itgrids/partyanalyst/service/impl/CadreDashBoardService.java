@@ -1402,10 +1402,14 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			{
 				for (CadreRegisterInfo cadreRegisterInfo : returnList)
 				{
-					if(cadreRegisterInfo.getApCount() < userCountValue)
+					if(cadreRegisterInfo != null && cadreRegisterInfo.getApCount() != null)
 					{
-						returnList1.add(cadreRegisterInfo);
+						if(cadreRegisterInfo.getApCount() < userCountValue)
+						{
+							returnList1.add(cadreRegisterInfo);
+						}
 					}
+					
 				}
 				return returnList1;
 			}
