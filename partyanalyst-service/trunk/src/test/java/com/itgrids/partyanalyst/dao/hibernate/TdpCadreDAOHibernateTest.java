@@ -1,7 +1,5 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -416,10 +414,30 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 	
 	}*/
 	
-	public void testGetTdpCadreDetailsBySearchCriteria()
+	/*public void testGetTdpCadreDetailsBySearchCriteria()
 	{
 		List<Object[]> list = tdpCadreDAO.getTdpCadreDetailsBySearchCriteria( "TR-T-3025-22199", "9666272968");
 		System.out.println(list);
 		
+		try {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			String dt = "2014-10-02";
+			Date fromDate = format.parse(dt);
+			
+			String fdt = "2014-10-30";
+			Date toDate = format.parse(fdt);
+			
+			List<Object[]> list = tdpCadreDAO.getCandidateDataCollected(fromDate, toDate,);
+			System.out.println(list);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}*/
+	
+	public void test(){
+		List<Object[]> list = tdpCadreDAO.getTotalRecordsDayWise();
+		System.out.println(list.size());
 	}
 }
