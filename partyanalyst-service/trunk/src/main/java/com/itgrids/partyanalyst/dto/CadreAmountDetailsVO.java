@@ -14,10 +14,40 @@ public class CadreAmountDetailsVO implements Serializable{
 	private Long totalAmount = 0l;
 	private Long paidAmount = 0l;
 	private Long difference = 0l;
-	
 	private String date;
-	
 	private List<CadreAmountDetailsVO> infoList;
+	
+	private Long totalRecords;
+	private Long ttAmount;
+	private Long totalPaidAmount;
+	private Long totalDifference;
+	
+	
+	
+	public Long getTotalRecords() {
+		return totalRecords;
+	}
+	public void setTotalRecords(Long totalRecords) {
+		this.totalRecords = totalRecords;
+	}
+	public Long getTtAmount() {
+		return ttAmount;
+	}
+	public void setTtAmount(Long ttAmount) {
+		this.ttAmount = ttAmount;
+	}
+	public Long getTotalPaidAmount() {
+		return totalPaidAmount;
+	}
+	public void setTotalPaidAmount(Long totalPaidAmount) {
+		this.totalPaidAmount = totalPaidAmount;
+	}
+	public Long getTotalDifference() {
+		return totalDifference;
+	}
+	public void setTotalDifference(Long totalDifference) {
+		this.totalDifference = totalDifference;
+	}
 	public Long getUserId() {
 		return userId;
 	}

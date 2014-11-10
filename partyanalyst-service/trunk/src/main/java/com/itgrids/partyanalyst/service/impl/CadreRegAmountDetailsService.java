@@ -459,4 +459,91 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 		}
 		return null;
 	}
+	
+	public List<CadreAmountDetailsVO> getCadreSummaryAmountDayWise(){
+		LOG.debug(" Entered into getCadreSummaryAmountDayWise()");
+		List<CadreAmountDetailsVO> finalList = new ArrayList<CadreAmountDetailsVO>();
+		try{
+			List<Object[]> list = tdpCadreDAO.getTotalRecordsDayWise();
+			if(list!=null && list.size()>0){
+				for(Object[] obj:list){
+					CadreAmountDetailsVO cd = new CadreAmountDetailsVO();
+					cd.setDate(obj[1].toString());
+					cd.setTotalCount(Long.valueOf(obj[0].toString()));
+					cd.setTotalAmount(cd.getTotalCount()*100);
+					cd.setPaidAmount(0l);
+					cd.setDifference(0l);
+					finalList.add(cd);
+				}
+			}
+			
+			List<Object[]> list1 = cadreRegAmountDetailsDAO.getAmountDetailsDateWise();
+			if(list1!=null && list1.size()>0){
+				for(Object[] obj:list1){
+					CadreAmountDetailsVO cd = getMatchedDate(finalList,obj[1].toString());
+					if(cd!=null){
+						cd.setPaidAmount(Long.valueOf(obj[0].toString()));
+					}
+				}
+			}
+			
+			if(finalList.size()>0){
+				Long ttlRec = 0l;
+				Long ttlAmt = 0l;
+				Long ttlPaid = 0l;
+				Long ttlDiff = 0l;
+				
+				for(int i=0;i<finalList.size();i++){
+					if(i==0){
+						CadreAmountDetailsVO cd0 = finalList.get(0);
+						ttlRec =cd0.getTotalCount();
+						ttlPaid = cd0.getPaidAmount();
+						cd0.setDifference(cd0.getTotalAmount());
+					}
+					if(i>0){
+						
+						CadreAmountDetailsVO cd1 = finalList.get(i);
+						CadreAmountDetailsVO cd0 = finalList.get(i-1);
+						
+						ttlRec = ttlRec + cd1.getTotalCount();
+						ttlPaid = ttlPaid + cd1.getPaidAmount();
+						
+						
+						cd1.setDifference((cd1.getTotalAmount()+cd0.getDifference())-cd1.getPaidAmount());
+					}
+					
+				}
+				
+				ttlAmt = ttlRec * 100;
+				ttlDiff = ttlAmt - ttlPaid;
+				
+				CadreAmountDetailsVO cd = new CadreAmountDetailsVO();
+				cd.setTotalAmount(ttlAmt);
+				cd.setTotalCount(ttlRec);
+				cd.setPaidAmount(ttlPaid);
+				cd.setTotalDifference(ttlDiff);
+				
+				//finalList.add(cd);
+			}
+			
+			
+		}catch (Exception e) {
+			LOG.error("Exception Raised in getCadreSummaryAmountDayWise()"+e); 
+		}
+		
+		return finalList;
+	}
+	
+	public CadreAmountDetailsVO getMatchedDate(List<CadreAmountDetailsVO> list,String date){
+		if(list!=null && list.size()>0){
+			for(CadreAmountDetailsVO cd:list){
+				if(cd.getDate().equalsIgnoreCase(date)){
+					return cd;
+				}
+			}
+		}
+		return null;
+	}
+	
+	
 }
