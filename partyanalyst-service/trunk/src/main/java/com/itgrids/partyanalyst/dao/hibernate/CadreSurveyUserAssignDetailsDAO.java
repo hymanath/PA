@@ -97,4 +97,11 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 		query.setParameter("userId", userId);
 		return query.list();
 	}
+	
+	public List<Object[]> getUserConstituencyDetails(List<Long> userIds)
+	{
+		Query query = getSession().createQuery("select  model.cadreSurveyUserId , model.constituency.name from CadreSurveyUserAssignDetails model where model.cadreSurveyUserId in (:userIds)");
+		query.setParameterList("userIds", userIds);
+		return query.list();
+	}
 }
