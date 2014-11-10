@@ -207,18 +207,20 @@ public class CadreDashBoardAction implements ServletRequestAware {
 			if(noaccess){
 				return "input";
 			}
+			String accessType = regVO.getAccessType();
+			Long accessValue = Long.valueOf(regVO.getAccessValue());
 			String task = request.getParameter("task");
 			if(task.equalsIgnoreCase("basicInfo")){
-		       result = cadreDashBoardService.getDashBoardBasicInfo();
+		       result = cadreDashBoardService.getDashBoardBasicInfo(accessType,accessValue);
 			}else if(task.equalsIgnoreCase("recentlyRegistered")){
-				 result = cadreDashBoardService.getRecentlyRegisteredCadresInfo(Integer.parseInt(request.getParameter("startIndex")), Integer.parseInt(request.getParameter("maxIndex")));
+				 result = cadreDashBoardService.getRecentlyRegisteredCadresInfo(Integer.parseInt(request.getParameter("startIndex")), Integer.parseInt(request.getParameter("maxIndex")),accessType,accessValue);
 				// result = cadreDashBoardService.getRecentlyRegisteredCadresInfo();
 			}else if(task.equalsIgnoreCase("assemblyWise")){
-				result = cadreDashBoardService.getAssemblyWiseCompletedPercentage(Long.parseLong(request.getParameter("assemblyId")),Long.parseLong(request.getParameter("stateId")));
+				result = cadreDashBoardService.getAssemblyWiseCompletedPercentage(Long.parseLong(request.getParameter("assemblyId")),Long.parseLong(request.getParameter("stateId")), accessType, regVO.getAccessValue());
 			}else if(task.equalsIgnoreCase("districtWise")){
-				result = cadreDashBoardService.getDistrictWiseCompletedPercentage(Long.parseLong(request.getParameter("districtId")),Long.parseLong(request.getParameter("stateId")));
+				result = cadreDashBoardService.getDistrictWiseCompletedPercentage(Long.parseLong(request.getParameter("districtId")),Long.parseLong(request.getParameter("stateId")), accessType, regVO.getAccessValue());
 			}else if(task.equalsIgnoreCase("workStartedConstituency")){
-				result = cadreDashBoardService.getWorkStartedConstituencyCount();
+				result = cadreDashBoardService.getWorkStartedConstituencyCount(accessType,accessValue);
 			}else if(task.equalsIgnoreCase("candidateDataCollectionInfo")){
 				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 				List<Long> locationIds = getIds(request.getParameter("locationId").trim());
@@ -230,7 +232,7 @@ public class CadreDashBoardAction implements ServletRequestAware {
 			}
 		}catch(Exception e){
 			LOG.error("Exception rised in getCadreDashBoardBasicInfo ",e);
-		}
+	}
 		return Action.SUCCESS;
 	}
 	
@@ -252,7 +254,7 @@ public class CadreDashBoardAction implements ServletRequestAware {
 			}
 		String task = request.getParameter("task");
 		if(task.equalsIgnoreCase("workingCount")){
-			info = cadreDashBoardService.getWorkingMembersInfo(request.getParameter("hours"));
+			info = cadreDashBoardService.getWorkingMembersInfo(request.getParameter("hours"),regVO.getAccessType(),Long.valueOf(regVO.getAccessValue()));
 			//info = cadreDashBoardService.getWorkingMembersDetails(request.getParameter("hours"));
 		}
 	  }catch(Exception e){
