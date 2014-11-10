@@ -59,9 +59,9 @@
   <h3 class="text-center text-uppercase">ADD USER</h3>
   <div id="errorDiv"></div>
     <form class="form-inline">
-   Name <input type="text" class="input-small" placeholder="Name" id="name">
-   Mobile <input type="text" class="input-small" placeholder="Mobile" id="mobile">
-   Affected Date<input type="text" readonly="readonly" id="fromDate" style="width: 120px;">
+   Name &nbsp; <input type="text" class="input-small" placeholder="Name" id="name">&nbsp; 
+   Mobile &nbsp; <input type="text" class="input-small" placeholder="Mobile" id="mobile">&nbsp; 
+   Affected Date &nbsp; <input type="text" readonly="readonly" id="fromDate" style="width: 120px;">&nbsp; &nbsp; 
    
     <button type="button" class="btn" onclick="addUser()">Add</button>
 	<img id="addAjaxImg" src="./images/icons/search.gif" alt="Processing Image" style="display:none;"/>
