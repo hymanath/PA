@@ -125,10 +125,18 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getCadreInfoDistrictConstiWise(List<Long> districtIds,Date fromDate, Date toDate,Long year,List<Long> constiIds);
 	
 	public List<TdpCadre> checkOnlineAccountExistsOrNot(String orderId);
-	
 	public List<Object[]> getCandidateDataCollected(Date fromDate,Date toDate, List<Long> userIds);
 	public List<Object[]> getCandidateDataCollectedByDate(Date fromDate,Date toDate, List<Long> userIds);
 	public List<Object[]> getUserBetweenDates(Date fromDate,Date toDate);
 	
 	public List<Object[]> getTotalRecordsDayWise();
+	public List<Object[]> getRegisterCadreInfoForUserBetweenDates(Date fromDate,Date toDate,List<Long> constiIds,List<Long> districtIds);
+	public List<Object[]> getNewlyRegisterCadreInfo1(List<Long> constiIds,List<Long> districtIds);
+	public Long getWorkStartedConstituencyCount1(String state,List<Long> constituencyIds);
+	public Long getWorkStartedConstituencyYearCount1(Long year,String state,Date fromDate, Date toDate,List<Long> constituencyIds);
+	public List<Object[]> getRecentlyRegisteredCadresByConstituencies(Integer startIndex,Integer maxIndex,List<Long> constituencyIds);
+	
+	public Long getWorkingMembersCountOfAccessLevel(Date date,List<Long> constiIds);
+	public Long getLastHoursWorkingMemberCountOfAccessLevel(Date presentDate, Date lastHours,List<Long> constiIds);
+		
 }
