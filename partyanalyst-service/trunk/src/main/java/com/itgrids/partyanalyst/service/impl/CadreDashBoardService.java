@@ -1163,7 +1163,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		apVo.setApCount(count_2014AP);
 		apVo.setTgCount(count_2012AP);
 		if(userCountValue!=null){
-		if(count_2014AP<=userCountValue){
+		if(count_2014AP < userCountValue){
 		returnList.add(apVo);
 		}
 		}
@@ -1179,7 +1179,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		tgVo.setApCount(count_2014TS);
 		tgVo.setTgCount(count_2012TS);
 		if(userCountValue!=null){
-		if(count_2014TS<=userCountValue){
+		if(count_2014TS < userCountValue){
 		returnList.add(tgVo);
 		}
 		}
@@ -1402,7 +1402,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			{
 				for (CadreRegisterInfo cadreRegisterInfo : returnList)
 				{
-					if(cadreRegisterInfo.getApCount()<=userCountValue)
+					if(cadreRegisterInfo.getApCount() < userCountValue)
 					{
 						returnList1.add(cadreRegisterInfo);
 					}
