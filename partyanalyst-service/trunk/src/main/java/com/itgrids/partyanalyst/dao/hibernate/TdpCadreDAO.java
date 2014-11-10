@@ -1253,6 +1253,7 @@ public List<Object[]> getCadreDetailsForSelectionByFamilyVoterId(CadrePrintInput
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getCadreInfoDistrictConstiWise(List<Long> districtIds,Date fromDate, Date toDate,Long year,List<Long> constiIds){
 		StringBuilder queryStr = new StringBuilder();
 		//0 count,1 id,2 name ,3 year
@@ -1284,6 +1285,129 @@ public List<Object[]> getCadreDetailsForSelectionByFamilyVoterId(CadrePrintInput
 		return query.list();
 	}
 	
+	public List<Object[]> getRegisterCadreInfoForUserBetweenDates(Date fromDate,Date toDate,List<Long> constiIds,List<Long> districtIds){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select count(model.tdpCadreId),model.userAddress.district.districtId,model.dataSourceType from TdpCadre model where model.isDeleted = 'N' and  model.userAddress.state.stateId = 1 and model.enrollmentYear = 2014 ");
+		
+		if(fromDate != null){
+			queryStr.append(" and date(model.surveyTime) >=:fromDate ");
+		}
+		
+		if(toDate != null){
+			queryStr.append(" and date(model.surveyTime) <=:toDate ");
+		}
+		if(constiIds != null && constiIds.size() > 0)
+		queryStr.append(" and  model.userAddress.constituency.constituencyId in(:constiIds)");
+		if(districtIds != null && districtIds.size() > 0)
+		queryStr.append(" and  model.userAddress.district.districtId in(:districtIds)");
+		queryStr.append(" group by model.userAddress.district.districtId,model.dataSourceType ");	
+		Query query = getSession().createQuery(queryStr.toString());
+		if(fromDate != null){
+		   query.setDate("fromDate", fromDate);
+		}
+		if(toDate != null){
+		  query.setDate("toDate", toDate);
+		}
+		if(constiIds != null && constiIds.size() > 0)
+			query.setParameterList("constiIds", constiIds);
+		if(districtIds != null && districtIds.size() > 0)
+			query.setParameterList("districtIds", districtIds);
+		return query.list();
+	}
+	public List<Object[]> getNewlyRegisterCadreInfo1(List<Long> constiIds,List<Long> districtIds){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select count(model.tdpCadreId),model.userAddress.district.districtId from TdpCadre model where model.isDeleted = 'N' and  model.userAddress.state.stateId = 1 and model.enrollmentYear = 2014 ");
+		
+		queryStr.append(" and model.previousEnrollmentNo is null"); 	
+		if(constiIds != null && constiIds.size() > 0)
+			queryStr.append(" and  model.userAddress.constituency.constituencyId in (:constiIds)");
+			if(districtIds != null && districtIds.size() > 0)
+			queryStr.append(" and  model.userAddress.district.districtId in (:districtIds)");
+			queryStr.append(" group by model.userAddress.district.districtId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		if(constiIds != null && constiIds.size() > 0)
+			query.setParameterList("constiIds", constiIds);
+		if(districtIds != null && districtIds.size() > 0)
+			query.setParameterList("districtIds", districtIds);
+		return query.list();
+	}
+	public Long getWorkStartedConstituencyCount1(String state,List<Long> constituencyIds){
+        StringBuilder str = new StringBuilder();
+		
+		str.append("select count(distinct model.userAddress.constituency.constituencyId)  " +
+				"from TdpCadre model where model.enrollmentYear = 2014 and ");
+		if(state.equalsIgnoreCase("TS"))
+		{
+			str.append("  model.userAddress.district.districtId <= 10 ");
+		}
+		
+		if(state.equalsIgnoreCase("AP"))
+		{
+			str.append("  model.userAddress.district.districtId >= 11 ");
+		}
+				
+		str.append(" and model.userAddress.state.stateId = 1  and model.isDeleted = 'N'  ");
+		if(constituencyIds != null && constituencyIds.size() > 0)
+		str.append(" and  model.userAddress.constituency.constituencyId in(:constituencyIds)  ");
+		
+		Query query = getSession().createQuery(str.toString());
+		if(constituencyIds != null && constituencyIds.size() > 0)
+			query.setParameterList("constituencyIds", constituencyIds);
+		return (Long) query.uniqueResult();
+	}
+	
+	public Long getWorkStartedConstituencyYearCount1(Long year,String state,Date fromDate, Date toDate,List<Long> constituencyIds){
+		StringBuilder str = new StringBuilder();
+		str.append("select count(*)  " +
+				"from TdpCadre model " +
+				"where model.enrollmentYear = :year "+
+				"and model.isDeleted = 'N' ");
+		if(state.equalsIgnoreCase("TS"))
+		{
+			str.append(" and model.userAddress.district.districtId <= 10 ");
+		}
+		
+		if(state.equalsIgnoreCase("AP"))
+		{
+			str.append(" and model.userAddress.district.districtId >= 11 ");
+		}
+		
+		if(fromDate != null && toDate != null)
+		{
+			str.append(" and date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate  " );
+		}	
+			
+		str.append(" and model.userAddress.state.stateId = 1 ");
+		if(constituencyIds != null && constituencyIds.size() > 0)
+		str.append(" and  model.userAddress.constituency.constituencyId in(:constituencyIds)  ");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("year", year);
+		
+		if(fromDate != null && toDate != null)
+		{
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		if(constituencyIds != null && constituencyIds.size() > 0)
+			query.setParameterList("constituencyIds", constituencyIds);
+		return (Long) query.uniqueResult();
+	}
+	
+	
+	public List<Object[]> getRecentlyRegisteredCadresByConstituencies(Integer startIndex,Integer maxIndex,List<Long> constituencyIds){
+		//0 first name ,1 lastname,2 constituency ,3 localArea, 4 image
+		Query query = getSession().createQuery("select model.firstname,model.lastname,model.userAddress.constituency.name,model.userAddress.localArea,model.image from TdpCadre model where model.isDeleted = 'N' and model.userAddress.constituency.constituencyId in (:constituencyIds) and model.userAddress.state.stateId = 1 and model.enrollmentYear = 2014 " +
+		" order by model.surveyTime desc");
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxIndex);
+		query.setParameterList("constituencyIds", constituencyIds);
+		return query.list();
+		}
+	
+	
+
+
 	public List<Object[]> getCandidateDataCollected(Date fromDate,Date toDate, List<Long> userIds){
 		//0 count,1 name,2 min,3 max,4 date,5 id
 
@@ -1368,4 +1492,35 @@ public List<Object[]> getCadreDetailsForSelectionByFamilyVoterId(CadrePrintInput
 		return query.list();
 	}
 	
+	public Long getWorkingMembersCountOfAccessLevel(Date date,List<Long> constiIds){
+		Query query = getSession().createQuery("select count(distinct model.insertedBy.cadreSurveyUserId) from TdpCadre model " +
+				" where model.enrollmentYear = 2014 and " +
+				" model.isDeleted = 'N' and" +
+				" model.dataSourceType='TAB' and " +
+				" date(model.surveyTime) =:date and " +
+				" model.insertedBy.cadreSurveyUserId is not null" +
+				" and model.userAddress.constituency.constituencyId in (:constiIds)");
+		
+		query.setDate("date", date);
+		query.setParameterList("constiIds", constiIds);
+		return (Long)query.uniqueResult();
+	}
+	public Long getLastHoursWorkingMemberCountOfAccessLevel(Date presentDate, Date lastHours,List<Long> constiIds){
+		Query query = getSession().createQuery("select " +
+				" count(distinct model.insertedBy.cadreSurveyUserId) from TdpCadre model " +
+				" where model.enrollmentYear = 2014 and " +
+				" model.isDeleted = 'N' and" +
+				" model.dataSourceType='TAB' and" +
+				" (model.surveyTime >= :lastHours and model.surveyTime <= :presentDate) and" +
+				" model.insertedBy.cadreSurveyUserId is not null" +
+				" and model.userAddress.constituency.constituencyId in (:constiIds)");
+		
+		query.setParameter("presentDate", presentDate);
+		query.setParameter("lastHours", lastHours);
+		query.setParameter("constiIds", constiIds);
+		
+		return (Long)query.uniqueResult();
+	}
+	
+
 }

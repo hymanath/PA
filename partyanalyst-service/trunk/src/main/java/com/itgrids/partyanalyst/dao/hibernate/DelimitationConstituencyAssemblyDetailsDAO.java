@@ -312,13 +312,19 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 	} 
 	
 	public List<Long> findDistrictsOfParliamentConstituencies(List<Long> parliamentIds){
-		Query query = getSession().createQuery("select model.constituency.district.districtId, model.constituency.district.districtName " +
+		Query query = getSession().createQuery("select model.constituency.district.districtId  " +
 				"from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.constituency.constituencyId in(:parliamentIds) " +
 				"and model.delimitationConstituency.year = (select max(model1.year) from DelimitationConstituency model1) group by " +
 				"model.constituency.district.districtId");
 		
 		query.setParameterList("parliamentIds", parliamentIds);
 		return query.list();
+	}
+	public List<Long> findDistrictsBYParliament(Long parliamentId){
+		return getHibernateTemplate().find("select model.constituency.district.districtId " +
+				"from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.constituency.constituencyId = ? " +
+				"and model.delimitationConstituency.year = (select max(model1.year) from DelimitationConstituency model1) group by " +
+				"model.constituency.district.districtId", parliamentId);
 	}
 	
 }
