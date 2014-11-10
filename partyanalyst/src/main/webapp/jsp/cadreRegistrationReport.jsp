@@ -91,7 +91,7 @@
 			<ul class="inline unstyled">
 				<li><a onclick="showHideTabs(this.id);" id="userReportTab" class="highlight selected">Users Working Status</a></li>
                 <li><a onclick="showHideTabs(this.id);" id="locationReportTab" class="highlight">Location Wise Cadre Info</a></li>
-				<li><a onclick="showHideTabs(this.id);" id="userTrackingTab" class="highlight">User Tacking Details</a></li>
+				<!--  <li><a onclick="showHideTabs(this.id);" id="userTrackingTab" class="highlight">User Tacking Details</a></li>  -->
 			</ul>
 		  </div>
 		</div>
@@ -324,7 +324,7 @@
 		maxDate: new Date()
 	})
 	$("#toDate,#toDate1").datepicker("setDate", new Date());
-   function getCandidateDataCollectionInfo(){
+     function getCandidateDataCollectionInfo(){
     var allConstituencies = "";
 	var ruralConstis = "";
     $("#userStatusDialogDIV").html("");
@@ -388,17 +388,18 @@
 		        str+='<input type="button"  style="margin-bottom:15px;margin-left: 375px;"  class="btn" onclick="generateExcel(\'usersStatusReportTab\');" value="Click Here To Generate Excel"/>';
 		        str+='<div id="resultTableDiv" style="overflow-x:scroll;"><table class="table table-bordered table-striped table-hover" id="usersStatusReportTab"><thead>';
 				str+='<tr>';
-				
-				str+='<th rowspan="2" >Constituency</th>';
+								
 				str+='<th rowspan="2" >State</th>';
 				str+='<th rowspan="2" >District</th>';
-				
+				str+='<th rowspan="2" >Constituency</th>';				
 				str+='<th rowspan="2">User</th>';
 				str+='<th rowspan="2">Name</th>';
+				str+='<th rowspan="2" >MobileNo</th>';
+				
 				str+='<th rowspan="2">Tab No</th>';
 				str+='<th rowspan="2">Total Count</th>';
 				str+='<th rowspan="2">Total Amount</th>';
-				str+='<th rowspan="2" >MobileNo</th>';
+
 				for(var i in result[0].infoList){
 					if(timeCheckBox == true)
 					 str+='<th colspan="3">'+result[0].infoList[i].date+'</th>';
@@ -420,11 +421,7 @@
 				str+='</thead><tbody>';
 				for(var i in result){
 				  str+='<tr>';
-				   if(result[i].memberShipNo != null){
-				     str+='  <td>'+result[i].memberShipNo+'</td>';
-				   }else{
-				      str+='  <td></td>';
-				   }
+				  
 				  if(result[i].location != null){
 				     str+='  <td>'+result[i].location+'</td>';
 				   }else{
@@ -435,9 +432,20 @@
 				   }else{
 				      str+='  <td></td>';
 				   }
-				 
-				   str+='  <td>'+result[i].name+'</td>';
+				  if(result[i].memberShipNo != null){
+				     str+='  <td>'+result[i].memberShipNo+'</td>';
+				   }else{
+				      str+='  <td></td>';
+				   }
+  str+='  <td>'+result[i].name+'</td>';
 				   str+='  <td>'+result[i].uname+'</td>';
+				   
+				    if(result[i].area != null){
+				     str+='  <td>'+result[i].area+'</td>';
+				   }else{
+				      str+='  <td></td>';
+				   }
+				 
 				   str+='  <td>'+result[i].tabNo+'</td>';
 				   if(result[i].totalCount > 0){
 				      str+='  <td>'+result[i].totalCount+'</td>';
@@ -450,11 +458,7 @@
 					else{
 					  str+='  <td></td>';
 					}
-				  if(result[i].area != null){
-				     str+='  <td>'+result[i].area+'</td>';
-				   }else{
-				      str+='  <td></td>';
-				   }
+				 
 				  for(var j in result[i].infoList){
 					  if(timeCheckBox == true)
 					{
