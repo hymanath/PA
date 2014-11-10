@@ -65,6 +65,13 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		this.cadreSurveyUserAssigneeDAO = cadreSurveyUserAssigneeDAO;
 	}
 
+	
+
+	public void setCadreSurveyUserAssignDetailsDAO(
+			ICadreSurveyUserAssignDetailsDAO cadreSurveyUserAssignDetailsDAO) {
+		this.cadreSurveyUserAssignDetailsDAO = cadreSurveyUserAssignDetailsDAO;
+	}
+
 	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
 		return delimitationConstituencyAssemblyDetailsDAO;
 	}
@@ -72,11 +79,6 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	public void setDelimitationConstituencyAssemblyDetailsDAO(
 			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
 		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
-	}
-
-	public void setCadreSurveyUserAssignDetailsDAO(
-			ICadreSurveyUserAssignDetailsDAO cadreSurveyUserAssignDetailsDAO) {
-		this.cadreSurveyUserAssignDetailsDAO = cadreSurveyUserAssignDetailsDAO;
 	}
 
 	public ITdpCadreDAO getTdpCadreDAO() {
@@ -151,12 +153,28 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		this.appDbUpdateDAO = appDbUpdateDAO;
 	}
 
-	public List<CadreRegisterInfo> getDashBoardBasicInfo(){
+	public List<CadreRegisterInfo> getDashBoardBasicInfo(String accessType,Long accessValue){
 		
 		List<CadreRegisterInfo> returnResult = new ArrayList<CadreRegisterInfo>();
+		List<Long> constituencyIds = new ArrayList<Long>();
+		List<Long> districtIds = new ArrayList<Long>();
+			if(accessType.equalsIgnoreCase("MLA"))
+			{
+				constituencyIds.add(accessValue);
+				districtIds = constituencyDAO.getDistrictIdsByConstituency(constituencyIds);
+			}
+			else if(accessType.equalsIgnoreCase("MP"))
+			{
+				constituencyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesByParliament(accessValue);
+				districtIds = constituencyDAO.getDistrictIdsByConstituency(constituencyIds);
+			}
+			else if(accessType.equalsIgnoreCase("DISTRICT"))
+			{
+				districtIds.add(accessValue);
+			}
 		
 		Date currentDate = dateService.getCurrentDateAndTime();
-		CadreRegisterInfo todayInfo = getRegisterCount(currentDate,currentDate);
+		CadreRegisterInfo todayInfo = getRegisterCount(currentDate,currentDate,constituencyIds,districtIds);
 		
 		Calendar fromCalendar = Calendar.getInstance();
 		fromCalendar.setTime(currentDate);
@@ -168,7 +186,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		//toCalendar.setTime(fromCalendar.getTime());
 		//toCalendar.add(Calendar.DAY_OF_YEAR, 6);
 		
-		CadreRegisterInfo thisWeekInfo = getRegisterCount(fromCalendar.getTime(),toCalendar.getTime());
+		CadreRegisterInfo thisWeekInfo = getRegisterCount(fromCalendar.getTime(),toCalendar.getTime(),constituencyIds,districtIds);
 		
 		fromCalendar.setTime(currentDate);
 		fromCalendar.set(Calendar.DAY_OF_MONTH,  fromCalendar.get(Calendar.DAY_OF_MONTH)-29);
@@ -176,11 +194,11 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	    //toCalendar.set(Calendar.DAY_OF_MONTH,toCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 
 	     
-	     CadreRegisterInfo thisMonthInfo = getRegisterCount(fromCalendar.getTime(),toCalendar.getTime());
+	     CadreRegisterInfo thisMonthInfo = getRegisterCount(fromCalendar.getTime(),toCalendar.getTime(),constituencyIds,districtIds);
 	     
-	     CadreRegisterInfo totalCadreInfo = getRegisterCount(null,null);
+	     CadreRegisterInfo totalCadreInfo = getRegisterCount(null,null,constituencyIds,districtIds);
 	     
-	     CadreRegisterInfo newlyRegisterCadreInfo = getNewlyRegisterCount();
+	     CadreRegisterInfo newlyRegisterCadreInfo = getNewlyRegisterCount(constituencyIds,districtIds);
 	     
 	     returnResult.add(todayInfo);
 	     returnResult.add(thisWeekInfo);
@@ -192,7 +210,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	}
 	
 	
-	 public CadreRegisterInfo getRegisterCount(Date fromDate,Date toDate){
+	 public CadreRegisterInfo getRegisterCount(Date fromDate,Date toDate,List<Long> constituencyIds,List<Long> districtIds){
 		CadreRegisterInfo info = new CadreRegisterInfo();
 		Long apCount = 0l;
 		Long tgCount = 0l;
@@ -202,9 +220,12 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		Long tgTabCount = 0l;
 		Long apOnlineCount = 0l;
 		Long tgOnlineCount = 0l;
+		List<Object[]> districtWiseCount = null;
 		try{
-          List<Object[]> districtWiseCount = tdpCadreDAO.getRegisterCadreInfoBetweenDates(fromDate, toDate);
-		  for(Object[] districtCount:districtWiseCount){
+			districtWiseCount = tdpCadreDAO.getRegisterCadreInfoForUserBetweenDates(fromDate, toDate,constituencyIds,districtIds);
+			
+			if(districtWiseCount != null && districtWiseCount.size() > 0)
+		    for(Object[] districtCount:districtWiseCount){
 			if(((Long)districtCount[1]).longValue() > 10l){
 				apCount = apCount+(Long)districtCount[0];
 				if(districtCount[2] != null && districtCount[2].toString().trim().equalsIgnoreCase("WEB"))
@@ -218,35 +239,34 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				tgCount = tgCount+(Long)districtCount[0];	
 				if(districtCount[2] != null && districtCount[2].toString().trim().equalsIgnoreCase("WEB"))
 					tgWebCount = tgWebCount +  (Long)districtCount[0];
-				else if(districtCount[2] != null && districtCount[2].toString().trim().equalsIgnoreCase("TAB"))
+					else if(districtCount[2] != null && districtCount[2].toString().trim().equalsIgnoreCase("TAB"))
 					tgTabCount = tgTabCount + 	 (Long)districtCount[0];
-				else if(districtCount[2] != null && districtCount[2].toString().trim().equalsIgnoreCase("ONLINE"))
-						tgOnlineCount = tgOnlineCount + 	 (Long)districtCount[0];	
+					else if(districtCount[2] != null && districtCount[2].toString().trim().equalsIgnoreCase("ONLINE"))
+						tgOnlineCount = tgOnlineCount + (Long)districtCount[0];	
 			}
 		  }
 		}catch(Exception e){
 			LOG.error("Exception rised in getRegisterCount",e);
 		}
 		info.setApCount(apCount);
-		info.setTgCount(tgCount);
-		info.setTotalCount(apCount+tgCount);
 		info.setApWebCount(apWebCount);
 		info.setApTabCount(apTabCount);
+		info.setApOnlineCount(apOnlineCount);
+		info.setTgCount(tgCount);
 		info.setTgWebCount(tgWebCount);
 		info.setTgTabCount(tgTabCount);
-		info.setApOnlineCount(apOnlineCount);
 		info.setTgOnlineCount(tgOnlineCount);
-		
+		info.setTotalCount(apCount+tgCount);
 		return info;
 	}
 	 
-	 public CadreRegisterInfo getNewlyRegisterCount(){
+	 public CadreRegisterInfo getNewlyRegisterCount(List<Long> constituencyIds,List<Long> districtIds){
 			CadreRegisterInfo info = new CadreRegisterInfo();
 			Long apCount = 0l;
 			Long tgCount = 0l;
 			
 			try{
-	          List<Object[]> districtWiseCount = tdpCadreDAO.getNewlyRegisterCadreInfo();
+	          List<Object[]> districtWiseCount = tdpCadreDAO.getNewlyRegisterCadreInfo1(constituencyIds,districtIds);
 			  for(Object[] districtCount:districtWiseCount){
 				if(((Long)districtCount[1]).longValue() > 10l){
 					apCount = apCount+(Long)districtCount[0];
@@ -298,12 +318,31 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	}
 	
 	
-	public  List<CadreRegisterInfo> getRecentlyRegisteredCadresInfo(Integer startIndex,Integer maxIndex){
+	public  List<CadreRegisterInfo> getRecentlyRegisteredCadresInfo(Integer startIndex,Integer maxIndex,String accessType,Long accessValue){
 		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
 		try{
 		   CadreRegisterInfo info = null;
-		 //0 first name ,1 lastname,2 constituency ,3 localArea, 4 image
-		   List<Object[]> cadreDetails = tdpCadreDAO.getRecentlyRegisteredCadres(startIndex,maxIndex);
+		   List<Long> constiIds = new ArrayList<Long>();
+		   List<Object[]> cadreDetails = null;
+		   if(accessType.equalsIgnoreCase("STATE")){
+		   cadreDetails = tdpCadreDAO.getRecentlyRegisteredCadres(startIndex,maxIndex);
+		   }
+		   else if(accessType.equalsIgnoreCase("MLA")){
+		   constiIds.add(accessValue);
+		   cadreDetails = tdpCadreDAO.getRecentlyRegisteredCadresByConstituencies(startIndex,maxIndex,constiIds);
+		   }
+		   else if(accessType.equalsIgnoreCase("MP")){
+		   constiIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesByParliament(accessValue);
+		   cadreDetails = tdpCadreDAO.getRecentlyRegisteredCadresByConstituencies(startIndex,maxIndex,constiIds);
+		   }
+
+		   else if(accessType.equalsIgnoreCase("DISTRICT")){
+		   constiIds = constituencyDAO.getConstituenciesInADistrict(accessValue);
+		   cadreDetails = tdpCadreDAO.getRecentlyRegisteredCadresByConstituencies(startIndex,maxIndex,constiIds);
+		   }
+		   if(cadreDetails != null && cadreDetails.size() >0){
+		   
+		   //cadreDetails = tdpCadreDAO.getRecentlyRegisteredCadres(startIndex,maxIndex);
 		   for(Object[] cadre:cadreDetails){
 			   StringBuilder name = new StringBuilder("");
 			   if(cadre[0] != null){
@@ -324,7 +363,8 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				info.setDate("images/cadre_images/"+cadre[4].toString());
 				}
 				returnList.add(info);
-			}
+		   }
+		   }
 		}catch(Exception e){
         	LOG.error("Exception rised in getRecentlyRegisteredCadresInfo",e);
 		}
@@ -365,28 +405,51 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		return returnList;
 	}
 
-	public List<CadreRegisterInfo> getWorkStartedConstituencyCount(){
+	public List<CadreRegisterInfo> getWorkStartedConstituencyCount(String accessType,Long accessValue){
 		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
+		 Long tsCount = 0l;
+		 Long count_2012TS =0l;
+		 Long count_2014TS =0l;
+		 Long apCount = 0l;
+		 Long count_2012AP = 0l;
+		 Long count_2014AP = 0l;
 		try{
-			
-			 Long tsCount = tdpCadreDAO.getWorkStartedConstituencyCount("TS");
-			 Long apCount = tdpCadreDAO.getWorkStartedConstituencyCount("AP");
-			 Long count_2012TS = tdpCadreDAO.getWorkStartedConstituencyYearCount(2012L,"TS",null,null);
-			 Long count_2012AP = tdpCadreDAO.getWorkStartedConstituencyYearCount(2012L,"AP",null,null);
-			 Long count_2014AP = tdpCadreDAO.getWorkStartedConstituencyYearCount(2014L,"AP",null,null);
-			 Long count_2014TS = tdpCadreDAO.getWorkStartedConstituencyYearCount(2014L,"TS",null,null);
+				List<Long> constituencyIds = new ArrayList<Long>();
+				
+				if(accessType.equalsIgnoreCase("MLA"))
+				{
+					constituencyIds.add(accessValue);
+				}
+				else if(accessType.equalsIgnoreCase("MP"))
+				{
+					constituencyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesByParliament(accessValue);
+					
+				}
+				else if(accessType.equalsIgnoreCase("DISTRICT"))
+				{
+					constituencyIds = constituencyDAO.getConstituenciesInADistrict(accessValue);
+
+				}
+			 tsCount = tdpCadreDAO.getWorkStartedConstituencyCount1("TS",constituencyIds);
+			 count_2012TS = tdpCadreDAO.getWorkStartedConstituencyYearCount1(2012L,"TS",null,null,constituencyIds);
+			 count_2014TS = tdpCadreDAO.getWorkStartedConstituencyYearCount1(2014L,"TS",null,null,constituencyIds);
 			 
+			 apCount = tdpCadreDAO.getWorkStartedConstituencyCount1("AP",constituencyIds);
+			 
+			 count_2012AP = tdpCadreDAO.getWorkStartedConstituencyYearCount1(2012L,"AP",null,null,constituencyIds);
+			 count_2014AP = tdpCadreDAO.getWorkStartedConstituencyYearCount1(2014L,"AP",null,null,constituencyIds);
+
 			 CadreRegisterInfo apVo = new CadreRegisterInfo();
 			 CadreRegisterInfo tsVo = new CadreRegisterInfo();
 			 
-			 apVo.setTotalCount(apCount);
-			 tsVo.setTotalCount(tsCount);
+			 apVo.setTotalCount(apCount != null ? apCount : 0l);
+			 tsVo.setTotalCount(tsCount != null ? tsCount : 0l);
 			 
-			 apVo.setApCount(count_2012AP);
-			 tsVo.setApCount(count_2012TS);
+			 apVo.setApCount(count_2012AP != null ? count_2012AP : 0l);
+			 tsVo.setApCount(count_2012TS != null ? count_2012TS : 0l);
 			 
-			 apVo.setTgCount(count_2014AP);
-			 tsVo.setTgCount(count_2014TS);
+			 apVo.setTgCount(count_2014AP != null ? count_2014AP : 0l);
+			 tsVo.setTgCount(count_2014TS != null ? count_2014TS : 0l);
 			 
 			 apVo.setPercentage(0l);
 			 tsVo.setPercentage(0l);
@@ -408,13 +471,37 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		return returnList;
 	}
 			
-	public List<CadreRegisterInfo> getAssemblyWiseCompletedPercentage(Long assemblyId,Long stateId){
+	public List<CadreRegisterInfo> getAssemblyWiseCompletedPercentage(Long assemblyId,Long stateId, String accessType,String accessValue){
 		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
+		
 		try{
-			List<Long> assemblyIds = null;
+			List<Long> assemblyIds = new ArrayList<Long>();
 			CadreRegisterInfo infoVo = null;
 			if(assemblyId == null || assemblyId.longValue() == 0){
-				assemblyIds = tdpCadreDAO.getCadreAvailableConstituencies(stateId);
+				if(accessType.equalsIgnoreCase("STATE")){
+					assemblyIds = tdpCadreDAO.getCadreAvailableConstituencies(stateId);
+				}
+				if(accessType.equalsIgnoreCase("MLA")){
+					assemblyIds.add(Long.valueOf(accessValue));
+				}
+				if(accessType.equalsIgnoreCase("MP")){
+					List<Long> parlis = new ArrayList<Long>();
+					parlis.add(Long.valueOf(accessValue));
+					List<Object[]> list = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesListForAListOfParliamentConstituency(parlis);
+					if(list!=null && list.size()>0){
+						for(Object[] obj:list){
+							assemblyIds.add(Long.valueOf(obj[0].toString()));
+						}
+					}
+				}
+				if(accessType.equalsIgnoreCase("DISTRICT")){
+					List<Long> dists = new ArrayList<Long>();
+					dists.add(Long.valueOf(accessValue));
+					List<Long> list = constituencyDAO.getAllConstituencysByDistrictIds(dists, "Assembly");
+					assemblyIds = list;
+					
+				}
+				
 			}else{
 				assemblyIds = new ArrayList<Long>();
 				assemblyIds.add(assemblyId);
@@ -459,14 +546,62 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		return returnList;
 	}
 	
-	public List<CadreRegisterInfo> getDistrictWiseCompletedPercentage(Long districtId,Long stateId){
+	public List<CadreRegisterInfo> getDistrictWiseCompletedPercentage(Long districtId,Long stateId, String accessType, String accessValue){
 		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
 		try{
 			List<Long> districtIds = null;
 			CadreRegisterInfo infoVo = null;
+			List<Long> assemblyIds = null;
 			if(districtId == null || districtId.longValue() == 0){
-				districtIds = tdpCadreDAO.getCadreAvailableDistricts(stateId);
+				assemblyIds = new ArrayList<Long>();
+				districtIds = new ArrayList<Long>();
+				
+				if(accessType.equalsIgnoreCase("STATE")){
+					districtIds = tdpCadreDAO.getCadreAvailableDistricts(stateId);
+				}
+				if(accessType.equalsIgnoreCase("MLA")){
+					List<Long> consti = new ArrayList<Long>();
+					consti.add(Long.valueOf(accessValue));
+					assemblyIds.add(Long.valueOf(accessValue));
+					districtIds = constituencyDAO.getDistrictIdByConstituencyIds(consti);
+				}
+				if(accessType.equalsIgnoreCase("MP")){
+					List<Long> parlis = new ArrayList<Long>();
+					parlis.add(Long.valueOf(accessValue));
+					List<Long> list = delimitationConstituencyAssemblyDetailsDAO.findDistrictsOfParliamentConstituencies(parlis);
+					
+					List<Object[]> asslyList = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesListForAListOfParliamentConstituency(parlis);
+					if(asslyList!=null && asslyList.size()>0){
+						for(Object[] obj:asslyList){
+							assemblyIds.add(Long.valueOf(obj[0].toString()));
+						}
+					}
+					
+					districtIds = list;
+				}
+				if(accessType.equalsIgnoreCase("DISTRICT")){
+					districtIds.add(Long.valueOf(accessValue));
+					
+				}
+				
 			}else{
+				assemblyIds = new ArrayList<Long>();
+				if(accessType.equalsIgnoreCase("MLA")){
+					List<Long> consti = new ArrayList<Long>();
+					consti.add(Long.valueOf(accessValue));
+					assemblyIds.add(Long.valueOf(accessValue));
+				}
+				if(accessType.equalsIgnoreCase("MP")){
+					List<Long> parlis = new ArrayList<Long>();
+					parlis.add(Long.valueOf(accessValue));
+					List<Object[]> asslyList = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesListForAListOfParliamentConstituency(parlis);
+					if(asslyList!=null && asslyList.size()>0){
+						for(Object[] obj:asslyList){
+							assemblyIds.add(Long.valueOf(obj[0].toString()));
+						}
+					}
+				}
+				
 				districtIds = new ArrayList<Long>();
 				districtIds.add(districtId);
 			}
@@ -475,8 +610,18 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			Map<Long,Long> yearMap = null;
 			if(districtIds.size() > 0){
 				//0 count,1 id,2 name ,3 year
-				List<Object[]>  constituencyInfoList = tdpCadreDAO.getCadreInfoDistrictWise(districtIds,null,null,2014l);
-				constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoDistrictWise(districtIds,null,null,2012l));
+				List<Object[]>  constituencyInfoList = new ArrayList<Object[]>();
+				
+				if(accessType.equalsIgnoreCase("STATE") || accessType.equalsIgnoreCase("DISTRICT")){
+					constituencyInfoList = tdpCadreDAO.getCadreInfoDistrictWise(districtIds,null,null,2014l);
+					constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoDistrictWise(districtIds,null,null,2012l));
+				}
+				if(accessType.equalsIgnoreCase("MLA") || accessType.equalsIgnoreCase("MP")){
+					constituencyInfoList = tdpCadreDAO.getCadreInfoDistrictConstiWise(districtIds,null,null,2014l,assemblyIds);
+					constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoDistrictConstiWise(districtIds,null,null,2012l,assemblyIds));
+				}
+				
+				
 				for(Object[] info:constituencyInfoList){
 					 yearMap = locationMap.get((Long)info[1]);
 					 if(yearMap == null){
@@ -540,7 +685,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		return info;
 	}*/
 	
-	public CadreRegisterInfo getWorkingMembersInfo(String hours)
+	public CadreRegisterInfo getWorkingMembersInfo(String hours,String accessType,Long accessValue)
 	{
 		CadreRegisterInfo info = new CadreRegisterInfo();
 		try{
@@ -551,6 +696,17 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			
 			Date hourBack = null;
 			Long count  = 0L;
+			List<Long> constiIds = new ArrayList<Long>();
+			
+			if(accessType.equalsIgnoreCase("MLA")){
+			   constiIds.add(accessValue);
+			}
+			else if(accessType.equalsIgnoreCase("MP")){
+			   constiIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesByParliament(accessValue);
+			}
+			 else if(accessType.equalsIgnoreCase("DISTRICT")){
+			   constiIds = constituencyDAO.getConstituenciesInADistrict(accessValue);
+			 }
 			
 			if(hours != null && hours.trim().length()>0 && !hours.equalsIgnoreCase("0"))
 			{
@@ -558,11 +714,20 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				cal.add(Calendar.HOUR, -hourCount);
 				hourBack = cal.getTime();
 				
-				count = tdpCadreDAO.getLastHoursWorkingMemberCount(date,hourBack);
+				if(!accessType.equalsIgnoreCase("STATE")){
+					count = tdpCadreDAO.getLastHoursWorkingMemberCountOfAccessLevel(date, hourBack, constiIds);
+				}else{
+					count = tdpCadreDAO.getLastHoursWorkingMemberCount(date,hourBack);
+				}
+				
 			}
 			else
 			{
-				count = tdpCadreDAO.getWorkingMembersCount(date);
+				if(!accessType.equalsIgnoreCase("STATE")){
+					count = tdpCadreDAO.getWorkingMembersCountOfAccessLevel(date, constiIds);
+				}else{
+					count = tdpCadreDAO.getWorkingMembersCount(date);
+				}
 			}
 			
 			info.setTotalCount(count);
@@ -1799,7 +1964,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				
 			}
 			if(AccessType.equalsIgnoreCase("MP")){
-				List<Long> distIds = delimitationConstituencyAssemblyDetailsDAO.findDistrictsOfParliamentConstituency(Long.valueOf(accessValue));
+				List<Long> distIds = delimitationConstituencyAssemblyDetailsDAO.findDistrictsBYParliament(Long.valueOf(accessValue));
 				if(distIds!=null){
 					dist = distIds.get(0);
 				}
