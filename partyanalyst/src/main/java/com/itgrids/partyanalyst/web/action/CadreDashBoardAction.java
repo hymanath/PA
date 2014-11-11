@@ -155,7 +155,6 @@ public class CadreDashBoardAction implements ServletRequestAware {
 			return "input";
 		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
 			noaccess = true ;
-			
 		}
 		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 			noaccess = false;
@@ -168,6 +167,24 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		if(noaccess){
 			return "error";
 		}
+		return Action.SUCCESS;
+	}
+	
+	
+	
+	public String getCadreRegistrationReport(){
+		
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		
+		if(regVO == null)
+			return Action.INPUT;
+		
+		if(!entitlementsHelper.checkForEntitlementToViewReport(regVO,IConstants.TDP_CADRE_2014_ADMIN))
+			return Action.ERROR;
+		
+		if(regVO.getAccessType()!=null && regVO.getAccessValue()!=null)
+			getState = cadreDashBoardService.getStateBasedOnLocation(regVO.getAccessType(), regVO.getAccessValue());
+		
 		return Action.SUCCESS;
 	}
 	
