@@ -319,6 +319,8 @@ public interface IConstants {
     public static final String SURVEY_USER_CREATION = "SURVEY_USER_CREATION";
     public static final String CTP_CASTE_REPORT_ENTITLEMENT = "CTP_CASTE_REPORT_ENTITLEMENT";
     public static final String CTP_CASTE_ADMIN_ENTITLEMENT = "CTP_CASTE_ADMIN_ENTITLEMENT";
+    public static final String TDP_CADRE_2014_ADMIN = "TDP_CADRE_2014_ADMIN";
+    
     //Problem Management
     public static final String MLA = "MLA";
     public static final String MP = "MP";
