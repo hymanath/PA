@@ -95,15 +95,21 @@
 		  <div class="span12 m_top20 survey_nav">
 			<ul class="inline unstyled">
 				<li><a onclick="showHideTabs(this.id);" id="reconsilationTab" class="highlight selected">Reconciliation</a></li>
+				<li><a onclick="showHideTabs(this.id);" id="getSummaryTab" class="">Get Summary</a></li>
+				<li><a onclick="showHideTabs(this.id);" id="uploadTab" class=""> Upload Amount </a></li>
 			</ul>
 		  </div>
 	</div>
-	<div class="row-fluid" id="fadeInDown" style="padding-top: 5px;">
+	
+			
+		
+	<div class="show-grid well well-small border-radius-0 mb-10 form-inline" id="reconsilationTabDiv">
+			<!--<div class="row-fluid" id="fadeInDown" style="padding-top: 5px;">
 				<div class="span12 well well-small  border-radius-0 mb-10 " style="padding:0px;">
 					<h3 class="text-center text-uppercase">Reconciliation Report</h3>
 				</div>
-			</div>
-	<div class="show-grid well well-small border-radius-0 mb-10 form-inline" style="">
+			</div>-->
+			
 			<div class="row-fluid " >
 				<h3 style="text-align:center;margin:10px;"> CADRE REGISTRATION AMOUNT DETAILS REPORT</h3>
 				<div id="errMsgDiv" align="center" ></div>
@@ -126,18 +132,58 @@
 					<img id="ajaxImgStyle" style="display:none" src="images/icons/search.gif"/>
 			</div>
 			</div>
+			
 			<div class="row-fluid ">
 				<div id="usersDetails" style="overflow: scroll;"></div>
 			</div>
+			
 	</div>
+	
+	<div class="show-grid well well-small border-radius-0 mb-10 form-inline" id="getSummaryTabDiv" style="display:none;">
+		<div class="row-fluid ">
+			<img id="summaryDetailsAjxImg" src="images/icons/search.gif" style="display:none" height="40px;">
+			<div id="summaryDetails"></div>
+		</div>
+	</div>
+	
+	<div class="show-grid well well-small border-radius-0 mb-10 form-inline" id="uploadTabDiv" style="display:none;">
+		<div class="row-fluid ">
+			
+		</div>
+	</div>
+	
+	
 	</div>
 	<script>
 	
 	  function showHideTabs(id){
     
-		 if(id == "reconsilationTab")
-		 {
-
+		 if(id == "reconsilationTab"){
+			$("#reconsilationTab").addClass("selected");
+			$("#getSummaryTab").removeClass("selected");
+			$("#uploadTab").removeClass("selected");
+			
+			$("#getSummaryTabDiv").hide();
+			$("#reconsilationTabDiv").show();
+			$("#uploadTabDiv").hide();
+		 }
+		 if(id == "getSummaryTab"){
+			$("#reconsilationTab").removeClass("selected");
+			$("#getSummaryTab").addClass("selected");
+			$("#uploadTab").removeClass("selected");
+			
+			$("#getSummaryTabDiv").show();
+			$("#reconsilationTabDiv").hide();
+			$("#uploadTabDiv").hide();
+		 }
+		 if(id == "uploadTab"){
+			$("#reconsilationTab").removeClass("selected");
+			$("#getSummaryTab").removeClass("selected");
+			$("#uploadTab").addClass("selected");
+			
+			$("#getSummaryTabDiv").hide();
+			$("#reconsilationTabDiv").hide();
+			$("#uploadTabDiv").show();
 		 }
 	}
 	
@@ -330,8 +376,9 @@
 			$('#ajaxImgStyle').hide();
 	}
 	
-	//getSummaryAmounts();
+	
 	function getSummaryAmounts(){
+		$("#summaryDetailsAjxImg").show();
 		$.ajax({
           type:'GET',
           url: 'getCadreRegAmountSummaryAction.action',
@@ -342,7 +389,7 @@
 	}
 	
 	function buildSummary(results){
-		$("#usersDetails").html("");
+		$("#summaryDetails").html("");
 		var str = '';
 			str +='<h4 style="text-align:center;"> CADRE AMOUNT SUMMARY DETAILS </h4>';
 			str +='<table class="table table-bordered m_top20 table-hover table-striped"  id="summaryTable">';
@@ -368,13 +415,19 @@
 				str +='</tbody>';
 			str +='</table>';
 			
-			$('#usersDetails').html(str);
+			$('#summaryDetails').html(str);
+			
+			$("#summaryDetailsAjxImg").hide();
 			
 			$('#summaryTable').dataTable({
 				"iDisplayLength": -1,
 				"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
 			});
 	}
+	
+	$("#getSummaryTab").click(function(){
+		getSummaryAmounts();
+	});
 	</script>
 </body>
 </html>
