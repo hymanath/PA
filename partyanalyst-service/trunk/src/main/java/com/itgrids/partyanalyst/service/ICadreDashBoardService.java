@@ -2,12 +2,13 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.AppDbDataVO;
 import com.itgrids.partyanalyst.dto.CadreBasicInformationVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 
 public interface ICadreDashBoardService {
 	
@@ -75,4 +76,7 @@ public interface ICadreDashBoardService {
 	
 	public List<CadreRegisterInfo> getSlowUserDetails(Long locationType,List<Long> locationIds,Date fromDate,Date toDate,Long recordsCount);
 
+	public List<SelectOptionVO> getUserTrackingRsults(String searchType,Long stateTypeId,String areaType,String FdateStr, String TdateStr);
+	public List<SurveyTransactionVO> getLocationswiseUsersList(String usersType,String areaType, Long stateTypeId,String FdateStr, String TdateStr);
+	
 }
