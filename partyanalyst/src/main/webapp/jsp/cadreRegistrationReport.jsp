@@ -81,7 +81,7 @@
 			
 			#statedisplaydivid,#distdisplaydivid,#constdisplaydivid,#parlConstdisplaydivid{display:none;}
 			#statedisplaydivid1,#distdisplaydivid1,#constdisplaydivid1{display:none;}
-			#statedisplaydivid2,#distdisplaydivid2,#constdisplaydivid2{display:none;}
+			#statedisplaydivid2,#distdisplaydivid2,#constdisplaydivid2,#parlConstdisplaydivid2{display:none;}
 	</style>
 </head>
 <body>
@@ -340,7 +340,8 @@
 							<option value="0">All</option>
 							<option value="1">State</option>
 							<option value="2">District</option>
-							<!--<option value="3">Constituency</option>-->
+							<option value="3">Constituency</option>
+							<option value="4">Parliament</option>
 						  </select>
 						</td>
 					 </tr>
@@ -361,6 +362,10 @@
 				   <tr id="constdisplaydivid2">
 					   <td><b>Select constituency : </b></td>
 					   <td><select id="displayconstbox2"></select></td>
+				   </tr>
+				    <tr id="parlConstdisplaydivid2">
+					   <td><b>Select Parliament : </b></td>
+					   <td><select id="displayParlConstbox2"></select></td>
 				   </tr>
 				   <tr><td><b>From Date :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="fromDate2"/></td></tr>
 				   <tr><td><b>To Date   :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="toDate2" /></td></tr>
@@ -398,6 +403,20 @@
 			}
 			if(lctnType ==4) {
 				getparliamentConstituencies('displayParlConstbox');
+			}
+		});
+		$("#statesDivId2").change(function(){
+			var lctnType = $("#selLctnType2").val();
+			if(lctnType == 3){
+				getConstituenciesUWS2();
+				$("#distdisplaydivid2").hide();
+			}
+			if(lctnType ==2) {
+				getdistrictsUWS2();
+				$("#constdisplaydivid2").hide();
+			}
+			if(lctnType ==4) {
+				getparliamentConstituencies2('displayParlConstbox2');
 			}
 		});
 		$("#fromDate,#fromDate1,#userTrackingFromDate,#fromDate2").datepicker({
@@ -1499,22 +1518,24 @@
    });
   }
   
-    function selectLocation2(value){
+ function selectLocation2(value){
   if(value==0){
 		$("#statedisplaydivid2").hide();
 		$("#distdisplaydivid2").hide();
 		$("#constdisplaydivid2").hide();
+		$("#parlConstdisplaydivid2").hide();
 	}
 	if(value==1){
 		$("#statedisplaydivid2").show();	
 		$('#statesDivId2').val('0');
 		$("#distdisplaydivid2").hide();
 		$("#constdisplaydivid2").hide();
+		$("#parlConstdisplaydivid2").hide();
 	}
 	if(value==2){
 		$("#statedisplaydivid2").show();	
 		$('#statesDivId2').val('0');
-		
+		$("#parlConstdisplaydivid2").hide();
 		$("#distdisplaydivid2").hide();
 		$("#constdisplaydivid2").hide();
 		getdistrictsUWS2();
@@ -1522,10 +1543,19 @@
 	if(value==3){
 		$("#statedisplaydivid2").show();
 		$('#statesDivId2').val('0');
-		
+		$("#parlConstdisplaydivid2").hide();
 		$("#distdisplaydivid2").hide();
 		$("#constdisplaydivid2").hide();
 		getConstituenciesUWS2();
+	}
+	if(value==4){
+		$("#statedisplaydivid2").show();
+		$('#statesDivId2').val('0');
+		
+		$("#distdisplaydivid2").hide();
+		$("#constdisplaydivid2").hide();
+		$("#parlConstdisplaydivid2").hide();
+		getparliamentConstituencies2('displayParlConstbox2');
 	}
 	}
   
@@ -1576,6 +1606,41 @@
 		});
 	}
 	
+	function getparliamentConstituencies2(divId)
+	{
+		var stateTypeId = $('#statesDivId2').val();
+		$("#parlConstdisplaydivid2").show();
+		var jsObj = {
+		searchType :"parliament",
+		stateTypeId : stateTypeId,
+		tesk:"locationWiseTransactionReport"
+		}
+	
+	$('#'+divId+'').find('option').remove();
+	$('#'+divId+'').append('<option value="0"> All </option>');
+
+		$.ajax({
+		type : "POST",
+		url : "getParliamentsForStateAction.action",
+		data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+
+			var constiArr = new Array();
+			if(result != null && result.length >0)
+			{
+				for(var i in result)
+				{
+					if(constiArr.indexOf(result[i].id) <0)
+					{
+						$('#'+divId+'').append('<option value="'+result[i].id+'"> '+result[i].name+' </option>');
+						constiArr.push(result[i].id);
+					}
+					
+				}
+			}
+		});
+	}
+	
 function getCandidateDataCollectionInfo2(){
     var allConstituencies = "";
 	var ruralConstis = "";
@@ -1589,7 +1654,7 @@ function getCandidateDataCollectionInfo2(){
 	if(locationType==1){locationId=getReqIds("statesDivId2");}
 	if(locationType==2){locationId=getReqIds("displaydistbox2");}
 	if(locationType==3){locationId=getReqIds("displayconstbox2");}
-
+	if(locationType==4){locationId=getReqIds("displayParlConstbox2");}
 	
 	var startDate = $("#fromDate2").val();
 	var endDate = $("#toDate2").val();
@@ -1639,6 +1704,7 @@ function getCandidateDataCollectionInfo2(){
 		        str+='<div id="resultTableDiv2" style="overflow-x:scroll;"><table class="table table-bordered table-striped table-hover" id="usersStatusReportTab2"><thead>';
 				str+='<tr>';
 				str+='<th rowspan="2" >District</th>';
+				str+='<th rowspan="2" >Parliament</th>';
 				str+='<th rowspan="2" >Constituency</th>';		
 				str+='<th rowspan="2">User</th>';
 				str+='<th rowspan="2">Name</th>';
@@ -1671,7 +1737,12 @@ function getCandidateDataCollectionInfo2(){
 				     str+='  <td>'+result[i].memberShipNo+'</td>';
 				   }else{
 				      str+='  <td></td>';
-				   }			 
+				   }
+				   if(result[i].percentStr != null){
+				     str+='  <td>'+result[i].percentStr+'</td>';
+				   }else{
+				      str+='  <td></td>';
+				   }					   
 				   str+='  <td>'+result[i].name+'</td>';
 				   str+='  <td>'+result[i].uname+'</td>';
 				 
