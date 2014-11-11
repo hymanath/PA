@@ -2313,8 +2313,82 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			Map<Long,String> userNames = new HashMap<Long,String>();
 			Map<Long,CadreRegisterInfo> mobileNos = new HashMap<Long,CadreRegisterInfo>();
 			//0 count,1 name,2 min,3 max,4 date,5 id,6 name
-			List<Object[]> dataCollectedInfo = tdpCadreDAO.getCandidateDataCollectionInfo(locationType,locationIds,fromDate, toDate);
-			
+			//List<Object[]> dataCollectedInfo = tdpCadreDAO.getCandidateDataCollectionInfo(locationType,locationIds,fromDate, toDate);
+			String parlimentName = null;			
+			Map<String,String> parliamentForAssemblyMap = new TreeMap<String, String>();
+			List<Object[]> locationsList =  delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(0L);							
+				
+			List<SurveyTransactionVO> locationIdsList = new ArrayList<SurveyTransactionVO>();
+			if(locationsList != null && locationsList.size()>0)
+			{
+				for (Object[] param : locationsList)
+				{
+					SurveyTransactionVO surveyTransactionVO = new SurveyTransactionVO();
+					surveyTransactionVO.setId(param[0] != null ? Long.valueOf(param[0].toString()) :0L);
+					surveyTransactionVO.setName(param[1] != null ? param[1].toString() :"");
+					
+					locationIdsList.add(surveyTransactionVO);
+				}
+			}
+			List<Long> assemblyIds = new ArrayList<Long>(0);			
+			if(locationIdsList != null && locationIdsList.size()>0)
+			{
+				for (SurveyTransactionVO surveyTransctionVO : locationIdsList) 
+				{
+					List<Long> locationIdList = new ArrayList<Long>();
+					locationIdList.add(surveyTransctionVO.getId());
+					
+					locationsList = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesListForAListOfParliamentConstituency(locationIdList);
+											
+					if(locationsList != null && locationsList.size()>0)
+					{
+						for (Object[] param : locationsList)
+						{
+							assemblyIds.add(param[0] != null ? Long.valueOf(param[0].toString().trim()):0L );
+							parliamentForAssemblyMap.put(param[1] != null ? param[1].toString().trim() :"", surveyTransctionVO.getName());
+						}
+					}	
+					
+				}
+			}			
+			List<Object[]> dataCollectedInfo = null;
+			List<Long> assemblyIdsList = new ArrayList<Long>(0);
+			 if(locationType.longValue() == 4L )
+			 {
+				 Long parliamentID = locationIds.get(0) != null? locationIds.get(0):0L;
+				 try {
+						 if(parliamentID.longValue() >0 && locationIds.size() == 1 )
+						 {
+							 List<DelimitationConstituency> delimitationConstituencyList = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(parliamentID);
+								DelimitationConstituency parliamentConstituency = delimitationConstituencyList.get(0);
+								parlimentName = parliamentConstituency.getConstituency().getName();
+								assemblyIdsList = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesByParliament(parliamentID);
+							
+								
+						 }
+						 else
+						 {
+							// assemblyIdsList.addAll(assemblyIds);
+							 if(locationIds != null && locationIds.size()>0)
+							 {
+								 for (Long parliamentId : locationIds) 
+								 {
+										assemblyIdsList.addAll(delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesByParliament(parliamentId));
+								 }
+							 }
+						 }
+						 
+					} catch (Exception e) {}
+				 
+				 locationIds.clear();
+				 locationIds.addAll(assemblyIdsList);
+					
+				 dataCollectedInfo = tdpCadreDAO.getCandidateDataCollectionInfo(3L,assemblyIdsList,fromDate, toDate);
+			 }
+			 else
+			 {
+				 dataCollectedInfo = tdpCadreDAO.getCandidateDataCollectionInfo(locationType,locationIds,fromDate, toDate);
+			 }
 			for(Object[] data:dataCollectedInfo){
 				if(!datesList.contains((Date)data[4])){
 					datesList.add((Date)data[4]);
@@ -2367,7 +2441,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				 }
 				 userData.setNumber(mobileNo[5].toString());//district
 				 userData.setMemberShipNo(mobileNo[3].toString());//constituency
-				
+				 userData.setPercentStr(parliamentForAssemblyMap.get(mobileNo[3].toString()));//parliament
 				 mobileNos.put((Long)mobileNo[0], userData);
 				}
 			}
@@ -2383,6 +2457,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				    vo.setLocation(userData.getLocation());//state
 				    vo.setNumber(userData.getNumber());//district
 				    vo.setMemberShipNo(userData.getMemberShipNo());//constituency
+				    vo.setPercentStr(userData.getPercentStr());
 				    vo.setUname(nameMap.get(key));
 				    vo.setTabNo(tabMap.get(key));
 				}
