@@ -819,6 +819,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 								parlimentName = parliamentConstituency.getConstituency().getName();
 								assemblyIdsList = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesByParliament(parliamentID);
 							
+								
 						 }
 						 else
 						 {
@@ -827,6 +828,9 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 						 
 					} catch (Exception e) {}
 				 
+				 locationIds.clear();
+				 locationIds.addAll(assemblyIdsList);
+					
 				 dataCollectedInfo = tdpCadreDAO.getCandidateDataCollectionInfo(3L,assemblyIdsList,fromDate, toDate);
 			 }
 			 else
@@ -871,7 +875,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				int count = 0;
 				if(userNames.size() > 0){
 					//0 userId,1mobile,2constituencyId,3constiname,4distiictId,5districtName
-					List<Object[]> mobileNosList = cadreSurveyUserDAO.getAllUserMobileNos();
+					List<Object[]> mobileNosList = cadreSurveyUserDAO.getAllUserMobileNos(locationType,locationIds);
 					for(Object[] mobileNo:mobileNosList){
 						CadreRegisterInfo userData = new CadreRegisterInfo();
 					 if(mobileNo[1] != null){
