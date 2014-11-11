@@ -823,7 +823,14 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 						 }
 						 else
 						 {
-							 assemblyIdsList.addAll(assemblyIds);
+							// assemblyIdsList.addAll(assemblyIds);
+							 if(locationIds != null && locationIds.size()>0)
+							 {
+								 for (Long parliamentId : locationIds) 
+								 {
+										assemblyIdsList.addAll(delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesByParliament(parliamentId));
+								 }
+							 }
 						 }
 						 
 					} catch (Exception e) {}
@@ -901,11 +908,11 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					 {
 						 mobileNos.put((Long)mobileNo[0], userData);
 					 }
-					 else if(locationType.longValue() == 4L && userData.getPercentStr().trim().equalsIgnoreCase(parlimentName))
+					 else if(locationType.longValue() == 4L )
 					 {
 						 mobileNos.put((Long)mobileNo[0], userData);
 					 }
-					 else if(locationType.longValue() == 1L)
+					 else if(locationType.longValue() == 1L || locationType.longValue() == 0L)
 					 {
 						 mobileNos.put((Long)mobileNo[0], userData);
 					 }
