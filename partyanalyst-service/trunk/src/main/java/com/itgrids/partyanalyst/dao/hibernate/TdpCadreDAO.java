@@ -1476,6 +1476,34 @@ public List<Object[]> getCadreDetailsForSelectionByFamilyVoterId(CadrePrintInput
 		query.setDate("toDate", toDate);
 		return query.list();
 	}
+
+	public List<Object[]> getLocationWiseUsersDetails(List<Long> locationIdsList,Date fromDate, Date toDate,String queryString)
+	{
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameterList("locationIdsList", locationIdsList);
+		
+		if(fromDate != null && toDate != null)
+		{
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getCandidateListBySearchType(List<Long> locationIdsList,Date fromDate, Date toDate,String queryString)
+	{
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameterList("locationIdsList", locationIdsList);
+		
+		if(fromDate != null && toDate != null)
+		{
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		
+		return query.list();
+	}
 	
 	public List<Object[]> getTotalRecordsDayWise(){
 		Query query = getSession().createQuery(" select count(model.tdpCadreId)," +
