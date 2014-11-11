@@ -34,6 +34,7 @@ public interface ILoginService {
 	public void sendMailToAdminGroup(final RegistrationVO registrationVO ,final String ipAddress);
 	
 	public List<String> deActivateAllOtherSimultaneousSessions(Long userId);
+	public String getLocationNameByIdAndType(String accessType,String accessValue);
 	
 
 	
