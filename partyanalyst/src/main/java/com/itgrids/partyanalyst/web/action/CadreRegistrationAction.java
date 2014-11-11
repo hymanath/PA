@@ -1256,7 +1256,14 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			jobj = new JSONObject(getTask());
 			Long stateId = jobj.getLong("stateid");
 			
-			 cadreRegisterInfo=cadreRegistrationService.getDistrictsByStateWiseAction(stateId);
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			
+			String accessType = regVO.getAccessType();
+			Long accessValue = Long.valueOf(regVO.getAccessValue());
+			
+			cadreRegisterInfo = cadreRegistrationService.getDistrictsByStateWiseAction(stateId);
+			//cadreRegisterInfo = cadreRegistrationService.getDistrictsByStateBasedOnAccess(stateId,accessType,accessValue);
 		}
 		catch (Exception e) {
 			LOG.error("Exception raised in getDistrictsByStateWiseAction method in CadreRegistrationAction Action",e);
@@ -1270,7 +1277,14 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			jobj = new JSONObject(getTask());
 			Long stateId = jobj.getLong("stateid");
 			
-			 cadreRegisterInfo=cadreRegistrationService.getConstsByStateWiseAction(stateId);
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			
+			String accessType = regVO.getAccessType();
+			Long accessValue = Long.valueOf(regVO.getAccessValue());
+			
+			cadreRegisterInfo = cadreRegistrationService.getConstsByStateWiseAction(stateId);
+			//cadreRegisterInfo = cadreRegistrationService.getConstituenciesByStateBasedOnAccess(stateId,accessType,accessValue);
 		}
 		catch (Exception e) {
 			LOG.error("Exception raised in getConstsByStateWiseAction method in CadreRegistrationAction Action",e);
