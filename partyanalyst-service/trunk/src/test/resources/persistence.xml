@@ -100,6 +100,8 @@
 		<class>com.itgrids.partyanalyst.model.CadreTxnUser</class>
 		<class>com.itgrids.partyanalyst.model.CadreOtpDetails</class>
 		<class>com.itgrids.partyanalyst.model.LoginDetailsByTab</class>
+		<class>com.itgrids.partyanalyst.model.TdpCadreOnline</class>
+		
 		 <properties> 
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
 			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/party_analyst_schema" />
