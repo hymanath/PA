@@ -79,7 +79,7 @@
 				line-height: 20px !important;
 			}
 			
-			#statedisplaydivid,#distdisplaydivid,#constdisplaydivid,#parlConstdisplaydivid{display:none;}
+			#distdisplaydivid,#constdisplaydivid,#parlConstdisplaydivid{display:none;}
 			#statedisplaydivid1,#distdisplaydivid1,#constdisplaydivid1{display:none;}
 			#statedisplaydivid2,#distdisplaydivid2,#constdisplaydivid2{display:none;}
 	</style>
@@ -110,7 +110,7 @@
 					   <td><b>Select Scope : </b></td>
 					   <td>
 						  <select id="selLctnType" onchange="selectLocation(this.value)">
-							<option value="0">All</option>
+							<!-- <option value="0">All</option> -->
 							<option value="1">State</option>
 							<option value="2">District</option>
 							<option value="3">Constituency</option>
@@ -247,58 +247,80 @@
 		   </div>
 		</div>
 		
-		<div id="userTrackingTabDiv"  style="display:none;">
-		   <div class="row-fluid" id="fadeInDown" style="padding-top: 5px;">
+		<div id="userTrackingDiv" class="row-fluid " style="display:none;">
+		 <div class="row-fluid" id="fadeInDown" style="padding-top: 5px;">
 				<div class="span12 well well-small  border-radius-0 mb-10 " style="padding:0px;">
-					<h3 class="text-center text-uppercase">Users Working Consolidation Report</h3>
+					<h3 class="text-center text-uppercase"> Users Consolidation Report </h3>
 				</div>
 			</div>
-			<div class="row-fluid ">
-			   <div style="min-height: 300px;background:#ffffff;" class="span12 show-grid well well-small border-radius-0 mb-10 form-inline">
-			   <div id="errStatusDiv1" align="center" ></div>
-			   <table  style="margin-left: 270px;">
-					 <tr>
-					   <td><b>Select Scope : </b></td>
-					   <td>
-						  <select id="selLctnType1" onchange="selectLocation1(this.value)">
-							<option value="0">All</option>
-							<option value="1">State</option>
-							<option value="2">District</option>
-							<option value="3">Constituency</option>
-						  </select>
-						</td>
-					 </tr>
-				     <tr id="statedisplaydivid1">
-						<td><b>Select State</b></td>
-						<td>
-						  <select id="statesDivId1">
-							<option value="0">All</option>
-							<option value="1">AndhraPradesh</option>
-							<option value="2">Telangana</option>
-						  </select>
-						</td>
+			   <div style="min-height: 300px;background:#ffffff;margin-left: 0px;" class="span12 show-grid well well-small border-radius-0 mb-10 form-inline">
+				  <div id="ErrorLDiv" align="center"></div>
+				  <table  style="margin-left: 270px;">
+				     <tr>
+					   <td><b>Select Report Level :</b></td>
+					   <td><select id="trackingLocationsDispalyId" onchange="trackingShowCorrespondingLocs(this.value);">
+							 <option value="2">State</option>
+							 <option value="3">District</option>
+							 <option value="4">Constituency</option>
+							 <!-- <option value="5">Parliament Constituency</option>-->
+					       </select> 
+					   </td>
 				     </tr>
-				   <tr id="distdisplaydivid1">
-					   <td><b>Select District: </b></td>
-					   <td><select id="displaydistbox1"></select></td>
-				   </tr>
-				   <tr id="constdisplaydivid1">
-					   <td><b>Select constituency : </b></td>
-					   <td><select id="displayconstbox1"></select></td>
-				   </tr>
-				  <tr><td><b>From Date :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="userTrackingFromDate"/></td></tr>
-				   <tr><td><b>To Date   :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="userTrackingToDate" /></td></tr>
-				   <tr>
-				      <td></td>
-					   <td><input type="button" style="margin-left: 12px;margin-top: 13px;" class="btn btn-success" id="getUserTrackingReport" onclick="getUserTrackingReport();" value="Submit"/>
+				     <tr id="statesDispalyMainDiv">
+						 <td><b>Select State :</b></td>
+						 <td>  
+						   <select id="trackingStatesDispalyId" onchange="getLocationDetailsForState(this.value);">
+							 <option value="0">All</option>
+							 <option value="1">Andhra Pradesh</option>
+							 <option value="2">Telangana</option>
+						   </select> 
+						 </td>
+					 </tr>
+					 <tr id="trackingDistrictsDispalyMainDiv" style="display:none;">
+						 <td><b>Select District :</b></td>
+						 <td>  
+						   <select id="trackingDistrictsDispalyId">
+						   </select> 
+						 </td>
+					 </tr>
+					 <tr id="trackingConstituencyDispalyMainDiv" style="display:none;">
+						 <td><b>Select Constituency :</b></td>
+						 <td>  
+						   <div id="trackingConstituencySelectDIV"><select id="trackingConstituencyDispalyId">
+						   </select></div>
+						 </td>
+					 </tr>
+					 <tr id="trackingParlDispalyMainDiv" style="display:none;">
+						 <td><b>Select Parliament :</b></td>
+						 <td>  
+						   <select id="trackingParlDispalyId">
+						   </select> 
+						 </td>
+					 </tr>
+					 
+					  <tr id="formDateDiv" >
+						 <td><b>From Date :</b></td>
+						 <td>  
+						   <input type="text" id="userTrackingFromDate" class="levelDtCls form-control border-radius-0 border-right-0 datePickerCls " placeholder="From Date"  readOnly="true" style="cursor:text;"></input>
+						 </td>
+					 </tr>
+					  <tr id="toDateDiv">
+						 <td><b>To Date :</b></td>
+						 <td>  
+						    <input type="text" id="userTrackingToDate" class="levelDtCls form-control border-radius-0 border-right-0 datePickerCls "  placeholder="From Date"  readOnly="true" style="cursor:text;"></input>
+						 </td>
+					 </tr>
+					 
+					 <tr>
+					 <td></td>
+					 <td><input type="button" style="margin-left: 12px;margin-top: 13px;" class="btn btn-success" id="getUserTrackingReport" onclick="getUserTrackingReport();" value="Submit"/>
 						<img id="ajaxImgStyle1" style="display:none;margin-left: 10px;" src="images/icons/search.gif"/>
 					  </td>
-				  </tr>
-			</table>
-					<div id="userTrackingDetls" style="overflow:scroll;display:none;"></div>
+					 </tr>
+				  </table>
+				  <div id="userTrackingDetls" style="overflow:scroll;display:none;"></div>
 			  </div>
-			</div>
-		</div>
+		   </div>
 		
 		
 		<div id="slowUserTrackingTabDiv"  style="display:none;">
@@ -459,57 +481,65 @@
 		        str+='<input type="button"  style="margin-bottom:15px;margin-left: 375px;"  class="btn" onclick="generateExcel(\'usersStatusReportTab\');" value="Click Here To Generate Excel"/>';
 		        str+='<div id="resultTableDiv" style="overflow-x:scroll;"><table class="table table-bordered table-striped table-hover" id="usersStatusReportTab"><thead>';
 				str+='<tr>';
-								
-				str+='<th rowspan="2" >State</th>';
-				str+='<th rowspan="2" >District</th>';
-				str+='<th rowspan="2" >Parliament</th>';
-				str+='<th rowspan="2" >Constituency</th>';				
-				str+='<th rowspan="2">User</th>';
-				str+='<th rowspan="2">Name</th>';
-				str+='<th rowspan="2" >MobileNo</th>';
+				if($("#fromDate").val()!=$("#toDate").val()){				
+					str+='<th rowspan="2" >State</th>';
+					str+='<th rowspan="2" >District</th>';
+					str+='<th rowspan="2" >Parliament</th>';
+					str+='<th rowspan="2" >Constituency</th>';				
+					str+='<th rowspan="2">User</th>';
+					str+='<th rowspan="2">Name</th>';
+					str+='<th rowspan="2" >MobileNo</th>';
+					
+					str+='<th rowspan="2">Tab No</th>';
+					str+='<th rowspan="2">Total Count</th>';
+					//str+='<th rowspan="2">Total Amount</th>';
+				}else{
+					str+='<th>State</th>';
+					str+='<th>District</th>';
+					str+='<th>Parliament</th>';
+					str+='<th>Constituency</th>';				
+					str+='<th>User</th>';
+					str+='<th>Name</th>';
+					str+='<th>MobileNo</th>';
+					
+					str+='<th>Tab No</th>';
+					str+='<th>Total Count</th>';
+					//str+='<th>Total Amount</th>';
+				}
 				
-				str+='<th rowspan="2">Tab No</th>';
-				str+='<th rowspan="2">Total Count</th>';
-				str+='<th rowspan="2">Total Amount</th>';
 
-				if($("#fromDate").val() == $("#toDate").val())
-				{
-					if(timeCheckBox == true)
-						 str+='<th colspan="3">'+$("#fromDate").val()+'</th>';
-						else if(result[0].infoList[0].date == null)
-						{
-							str+='<th colspan="1">'+$("#fromDate").val()+'</th>';
-						}
-						else
-							str+='<th colspan="1">'+$("#fromDate").val()+'</th>';
-				}
-				else
-				{
 					for(var i in result[0].infoList){
-						if(timeCheckBox == true)
-						 str+='<th colspan="3">'+result[0].infoList[i].date+'</th>';
-						else if(result[0].infoList[i].date == null)
-						{
-							str+='<th colspan="1">'+$("#fromDate").val()+'</th>';
+						if($("#fromDate").val()!=$("#toDate").val()){
+							if(timeCheckBox == true){
+								str+='<th colspan="3">'+result[0].infoList[i].date+'</th>';
+							}else{ 
+								str+='<th colspan="1">'+result[0].infoList[i].date+'</th>';
+							}
+						}else{
+							if(timeCheckBox == true){
+								str+='<th>Start Time</th>';
+								str+='<th>End Time</th>';
+							}
+								//str+='<th>Count</th>';
 						}
-						else
-							str+='<th colspan="1">'+result[0].infoList[i].date+'</th>';
 					}
-				}
-				
 				str+='</tr>';
-				str+='<tr>';
-				for(var i in result[0].infoList){
-					if(timeCheckBox == true)
-					{
-				  str+='<th>Start Time</th>';
-				  str+='<th>End Time</th>';
+				if($("#fromDate").val()!=$("#toDate").val()){
+					str+='<tr>';
+					for(var i in result[0].infoList){
+						if(timeCheckBox == true){
+						   str+='<th>Start Time</th>';
+						   str+='<th>End Time</th>';
+						   str+='<th>Count</th>';
+						}else{
+						   str+='<th>Count</th>';
+						}
 					}
-				  str+='<th>Count</th>';
-				 // str+='<th>Amount need to be paid</th>';
+					str+='</tr>';
 				}
-				str+='</tr>';
 				str+='</thead><tbody>';
+				
+				
 				for(var i in result){
 				  str+='<tr>';
 				  
@@ -549,43 +579,69 @@
 					}else{
 					  str+='  <td></td>';
 					}
-					if(result[i].totalCount > 0){
+					/*if(result[i].totalCount > 0){
 				      str+='  <td>'+result[i].totalAmount+'</td>';
 					}
 					else{
 					  str+='  <td></td>';
-					}
+					}*/
 				 
 				  for(var j in result[i].infoList){
-					  if(timeCheckBox == true)
-					{
-				    if(result[i].infoList[j].area != null){
-				      str+='  <td>'+result[i].infoList[j].area+'</td>';
+				  
+				  if($("#fromDate").val()!=$("#toDate").val()){
+					if(timeCheckBox == true){
+						if(result[i].infoList[j].area != null){
+						  str+='  <td>'+result[i].infoList[j].area+'</td>';
+						}else{
+						  str+='  <td></td>';
+						}
+						if(result[i].infoList[j].location != null){
+						  str+='  <td>'+result[i].infoList[j].location+'</td>';
+						}else{
+						  str+='  <td></td>';
+						}
+						
+						if(result[i].infoList[j].totalCount != null){
+						  str+='  <td>'+result[i].infoList[j].totalCount+'</td>';
+						}else{
+						  str+='  <td></td>';
+						}
 					}else{
-					  str+='  <td></td>';
+						if(result[i].infoList[j].totalCount != null){
+						  str+='  <td>'+result[i].infoList[j].totalCount+'</td>';
+						}else{
+						  str+='  <td></td>';
+						}
 					}
-					if(result[i].infoList[j].location != null){
-				      str+='  <td>'+result[i].infoList[j].location+'</td>';
-					}else{
-					  str+='  <td></td>';
-					}
-					}
-					if(result[i].infoList[j].totalCount != null){
-				      str+='  <td>'+result[i].infoList[j].totalCount+'</td>';
-					}else{
-					  str+='  <td></td>';
-					}
+					
 					/*if(result[i].infoList[j].totalCount != null){
 				      str+='  <td>'+result[i].infoList[j].amount+'</td>';
 					}
 					else{
 					  str+='  <td></td>';
 					}*/
+				  }else{
+					if(timeCheckBox == true){
+						if(result[i].infoList[j].area != null){
+						  str+='  <td>'+result[i].infoList[j].area+'</td>';
+						}else{
+						  str+='  <td></td>';
+						}
+						
+						if(result[i].infoList[j].location != null){
+						  str+='  <td>'+result[i].infoList[j].location+'</td>';
+						}else{
+						  str+='  <td></td>';
+						}
+					}
 				  }
-				  str+='</tr>';
+				 
 				}
+				 str+='</tr>';
+			}	
+				
 				str+='</tbody></table></div>';
-				 str+='<input type="button" style="margin-top:15px;margin-left: 375px;" class="btn" onclick="generateExcel(\'usersStatusReportTab\');" value="Click Here To Generate Excel"/>';
+				str+='<input type="button" style="margin-top:15px;margin-left: 375px;" class="btn" onclick="generateExcel(\'usersStatusReportTab\');" value="Click Here To Generate Excel"/>';
 		   }else{
 		     str+='<div style="font-weight:bold;padding-left: 375px;padding-top: 30px;">No Data Available</div>';
 		   }
@@ -1100,18 +1156,21 @@
 	   $("#userTrackingTabDiv").hide();
 	   $("#slowUserTrackingTabDiv").hide();
 	   $("#usersWorkingStatusDiv").show();
+	     $("#userTrackingDiv").hide();
 	 }else if(id == "locationReportTab"){
        $("#locationReportTab").addClass("selected");
 	   $("#usersWorkingStatusDiv").hide();
 	   $("#userTrackingTabDiv").hide();
 	   $("#slowUserTrackingTabDiv").hide();
 	   $("#locationWiseCadreInfoDiv").show();
+	     $("#userTrackingDiv").hide();
 	 }
 	 else if(id == "slowUserTrackingTab"){
        $("#slowUserTrackingTab").addClass("selected");
 	   $("#usersWorkingStatusDiv").hide();
 	   $("#userTrackingTabDiv").hide();
 	   $("#locationWiseCadreInfoDiv").hide();
+	   $("#userTrackingDiv").hide();
 	   $("#slowUserTrackingTabDiv").show();
 	 }
 	 else{
@@ -1119,6 +1178,7 @@
 		$("#usersWorkingStatusDiv").hide();
 		$("#slowUserTrackingTabDiv").hide();
 		$("#locationWiseCadreInfoDiv").hide();
+		$("#userTrackingDiv").show();
 		$("#userTrackingTabDiv").show();
 	 }
   }
@@ -1684,12 +1744,12 @@ function getCandidateDataCollectionInfo2(){
     var allConstituencies = "";
 	var ruralConstis = "";
 	var areaType ="assembly";
-	var stateTypeId = $('#statesDivId1').val();
+	var stateTypeId = $('#trackingStatesDispalyId').val();
 	
     $("#userTrackingDetls").html("");
     $("#errStatusDiv1").html("");
 		$('#userTrackingDetls').hide();
-	var locationType1=$( "#selLctnType1" ).val();
+	var locationType1=$( "#trackingLocationsDispalyId" ).val();
 	
 	var locationId1;
 	if(locationType1==0)
@@ -1698,19 +1758,24 @@ function getCandidateDataCollectionInfo2(){
 	}
 	if(locationType1==1)
 	{
-		locationId1=getReqIds("statesDivId1");
-	}
-	if(locationType1==2)
-	{
-		locationId1=getReqIds("displaydistbox1");
-		areaType ="district";
+		locationId1=getReqIds("trackingStatesDispalyId");
 	}
 	if(locationType1==3)
 	{
-		locationId1=getReqIds("displayconstbox1");
+		locationId1=getReqIds("trackingDistrictsDispalyId");
+		areaType ="district";
+	}
+	if(locationType1==4)
+	{
+		locationId1=getReqIds("trackingConstituencyDispalyId");
 		areaType ="assembly";
 	}
-
+	if(locationType1==5)
+	{
+		locationId1=getReqIds("trackingParlDispalyId");
+		areaType ="parliament";
+	}
+	
 	var startDate1 = $("#userTrackingFromDate").val();
 	var endDate1 = $("#userTrackingToDate").val();
 	
@@ -1791,8 +1856,8 @@ function getCandidateDataCollectionInfo2(){
 			str +='<th> </th>';
 			for(var i in result[0].surveyTransactionVOList)
 			{
-				str +='<th> Submitted Users </th>';
-				str +='<th>  Not Submitted Users  </th>';
+				str +='<th> Started  </th>';
+				str +='<th>  Yet to be Started  </th>';
 				
 			}
 			str +='</tr>';
@@ -1857,6 +1922,102 @@ function getCandidateDataCollectionInfo2(){
 			}
 		});
 	}
+	
+	function trackingShowCorrespondingLocs(locationLvl)
+	{
+	  $("#trackingLocationsDispalyId").show();
+	  $("#trackingStatesDispalyId").val(0);
+	  
+	   
+	  if(locationLvl == 2)
+	  {
+		$("#constituencyDispalyMainDiv").hide();
+		$("#districtsDispalyMainDiv").hide();
+		$("#mandalDispalyMainDiv").hide();
+	  }
+	  if(locationLvl == 3)
+	  {
+		$("#trackingDistrictsDispalyMainDiv").show();
+		$("#trackingDistrictsDispalyId").val(0);
+		$("#trackingConstituencyDispalyMainDiv").hide();
+		$("#trackingParlDispalyMainDiv").hide();
+		
+	  }else if(locationLvl == 4)
+	  {
+		$("#trackingDistrictsDispalyMainDiv").hide();
+		$("#trackingDistrictsDispalyId").val(0);
+		$("#trackingConstituencyDispalyMainDiv").show();
+		$("#trackingParlDispalyMainDiv").hide();
+	  }
+	 else if(locationLvl == 5)
+	  {
+		$("#trackingDistrictsDispalyMainDiv").hide();
+		$("#trackingDistrictsDispalyId").val(0);
+		$("#trackingConstituencyDispalyMainDiv").hide();
+		$("#trackingParlDispalyMainDiv").show();		
+	  }
+	getLocationDetailsForState();
+   }
+	
+	function getLocationDetailsForState()
+	{
+	  var locationLvl = $('#trackingLocationsDispalyId').val();
+	  var divId = '';
+	  var stateId =  $('#trackingStatesDispalyId').val();
+	  var dataType = '';
+	  var selectOption = '';
+	
+	  if(locationLvl == 3)
+	  {
+		divId = 'trackingDistrictsDispalyId';
+		dataType = "district";
+		selectOption = 'Select District ';
+	  }
+	  else if(locationLvl == 4)
+	  {
+	  	divId = 'trackingConstituencyDispalyId';
+		dataType = "assembly";
+		selectOption = 'Select Constituency ';
+	  }
+	  else if(locationLvl == 5)
+	  {
+		divId = 'trackingParlDispalyId';	
+		dataType = "parliament";
+		selectOption = 'Select Parliament ';
+	  }
+	  
+	  if(locationLvl != 2)
+	  {	 
+		  var jsObj = {
+				searchType :dataType,
+				stateTypeId : stateId,
+				tesk:"locationWiseTransactionReport"            
+		   }
+	  
+			$.ajax({
+				type : "POST",
+				url : "getParliamentsForStateAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				$('#'+divId+'').find('option').remove();
+				$('#'+divId+'').append('<option value="0"> '+selectOption+' </option>');
+				var constiArr = new Array();
+				if(result != null && result.length >0)
+				{
+					for(var i in result)
+					{
+						if(constiArr.indexOf(result[i].id) <0)
+						{
+							$('#'+divId+'').append('<option value="'+result[i].id+'"> '+result[i].name+' </option>');
+							constiArr.push(result[i].id);
+						}
+					}
+				}
+			});
+		}
+	}
+	
+	
 </script>
 </body>
 </html>
