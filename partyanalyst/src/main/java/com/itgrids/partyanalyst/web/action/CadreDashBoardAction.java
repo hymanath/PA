@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
@@ -18,6 +17,7 @@ import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -40,8 +40,27 @@ public class CadreDashBoardAction implements ServletRequestAware {
 	private List<CadreBasicInformationVO> usersList;
 	private String getState;
 	private ResultStatus resultStatus;
+	private List<SurveyTransactionVO> surveyTransactionVOList = new ArrayList<SurveyTransactionVO>();
+	private List<SelectOptionVO> surveyUsersList = new ArrayList<SelectOptionVO>();
 	
 	
+	public List<SurveyTransactionVO> getSurveyTransactionVOList() {
+		return surveyTransactionVOList;
+	}
+
+	public void setSurveyTransactionVOList(
+			List<SurveyTransactionVO> surveyTransactionVOList) {
+		this.surveyTransactionVOList = surveyTransactionVOList;
+	}
+
+	public List<SelectOptionVO> getSurveyUsersList() {
+		return surveyUsersList;
+	}
+
+	public void setSurveyUsersList(List<SelectOptionVO> surveyUsersList) {
+		this.surveyUsersList = surveyUsersList;
+	}
+
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
@@ -461,4 +480,43 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getLocationswiseUsersList()
+	{
+		try{
+			 jObj = new JSONObject(getTask());				
+			 
+			String usersType = jObj.getString("usersType");
+			String areaType = jObj.getString("areaType");
+			Long stateTypeId = jObj.getLong("stateTypeId");
+			String fromdateStr = jObj.getString("fromdateStr");
+			String todateStr = jObj.getString("todateStr");
+
+			surveyTransactionVOList = cadreDashBoardService.getLocationswiseUsersList(usersType,areaType,stateTypeId,fromdateStr,todateStr);
+			
+		}catch(Exception e){
+			LOG.error("Exception rised in getLocationswiseUsersList ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getUserTrackingRsults()
+	{
+		try{
+			 jObj = new JSONObject(getTask());				
+			 
+			String searchType = jObj.getString("usersType");
+			String areaType = jObj.getString("areaType");
+			Long stateTypeId = jObj.getLong("stateTypeId");
+			String fromdateStr = jObj.getString("fromdateStr");
+			String todateStr = jObj.getString("todateStr");
+
+			surveyUsersList = cadreDashBoardService.getUserTrackingRsults(searchType,stateTypeId,areaType,fromdateStr,todateStr);
+			
+		}catch(Exception e){
+			LOG.error("Exception rised in getUserTrackingRsults ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
