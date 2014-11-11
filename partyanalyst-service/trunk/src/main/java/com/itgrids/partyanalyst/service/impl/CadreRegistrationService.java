@@ -54,6 +54,8 @@ import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
@@ -98,6 +100,7 @@ import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CardReceiver;
 import com.itgrids.partyanalyst.model.CardSender;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Hamlet;
@@ -170,9 +173,19 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IVoterNamesDAO 						voterNamesDAO;
 	private ITdpCadreOnlineDAO                  tdpCadreOnlineDAO;
 	private ISmsJobStatusDAO					smsJobStatusDAO;
+	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+	private IDistrictDAO districtDAO;
 	
 	
-	
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
+	}
+
 	public ISmsJobStatusDAO getSmsJobStatusDAO() {
 		return smsJobStatusDAO;
 	}
@@ -4591,6 +4604,40 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return cadreRegisterInfoList;
 	}
 	
+	public List<CadreRegisterInfo> getDistrictsByStateBasedOnAccess(Long stateId,String accessLevel,Long accessValue)
+	{
+		List<CadreRegisterInfo> cadreRegisterInfoList = new ArrayList<CadreRegisterInfo>(0);
+		List<Object[]> list = new ArrayList<Object[]>(0);
+		try{
+			if(accessLevel.equalsIgnoreCase(IConstants.MLA))
+			{
+				Long districtId = constituencyDAO.getDistrictIdByConstituencyId(accessValue).get(0);
+				District district = districtDAO.get(districtId);
+				Object[] objArr = {district.getDistrictId(),district.getDistrictName()};
+				list.add(objArr);
+			}
+			else if(accessLevel.equalsIgnoreCase(IConstants.MP))
+			{
+				list = (List<Object[]>)delimitationConstituencyAssemblyDetailsDAO.findDistrictsOfParliamentConstituency(accessValue);
+			}
+			else if(accessLevel.endsWith(IConstants.DISTRICT))
+			{
+				District district = districtDAO.get(accessValue);
+				Object[] objArr = {district.getDistrictId(),district.getDistrictName()};
+				list.add(objArr);
+			}
+			else if(accessLevel.endsWith(IConstants.STATE))
+			{
+				list = tdpCadreDAO.getDistrictsByStateWiseAction(stateId);
+			}
+			return cadreRegisterInfoList;
+		}catch(Exception e)
+		{
+			LOG.error("Exception raised in getDistrictsByStateWiseAction in CadreRegistrationService service", e);
+			return cadreRegisterInfoList;
+		}
+	}
+	
 	public List<CadreRegisterInfo> getConstsByStateWiseAction(Long stateId)
 	{
 		List<CadreRegisterInfo> cadreRegisterInfoList=null;
@@ -4616,6 +4663,52 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				LOG.error("Exception raised in getDistrictsByStateWiseAction in CadreRegistrationService service", e);
 			}
 		return cadreRegisterInfoList;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<CadreRegisterInfo> getConstituenciesByStateBasedOnAccess(Long stateId,String accessLevel,Long accessValue)
+	{
+		List<CadreRegisterInfo> cadreRegisterInfoList = null;
+		List<Object[]> list = new ArrayList<Object[]>(0);
+		try{
+			if(accessLevel.equalsIgnoreCase(IConstants.MLA))
+			{
+				Constituency constituency = constituencyDAO.get(accessValue);
+				Object[] objArr = {constituency.getConstituencyId(),constituency.getName()};
+				list.add(objArr);
+			}
+			else if(accessLevel.equalsIgnoreCase(IConstants.MP))
+			{
+				list = (List<Object[]>)delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituencies(accessValue);
+			}
+			else if(accessLevel.endsWith(IConstants.DISTRICT))
+			{
+				list = constituencyDAO.getConstituenciesByDistrictId(accessValue);
+			}
+			else if(accessLevel.endsWith(IConstants.STATE))
+			{
+				list = tdpCadreDAO.getConstsByStateWiseAction(stateId);
+			}
+			
+			if(list !=null && list.size()>0)
+			{
+				cadreRegisterInfoList = new ArrayList<CadreRegisterInfo>();
+				for (Object[] objects : list) 
+				{
+					CadreRegisterInfo cadreRegisterInfo = new CadreRegisterInfo();
+					cadreRegisterInfo = new CadreRegisterInfo();
+					cadreRegisterInfo.setId(Long.valueOf(objects[0].toString()));
+					cadreRegisterInfo.setName(objects[1].toString());
+					
+					cadreRegisterInfoList.add(cadreRegisterInfo);
+				}
+			}
+			return cadreRegisterInfoList;
+		}catch(Exception e)
+		{
+			LOG.error("Exception raised in getConstituenciesByStateBasedOnAccess in CadreRegistrationService service", e);
+			return cadreRegisterInfoList;
+		}
 	}
 	
 	public List<CadrePrintVO> getSelectedLevelCadreDetailsBySelection(CadrePrintInputVO input){
