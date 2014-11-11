@@ -492,7 +492,7 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 	}
 	
 	public List<CadreAmountDetailsVO> getCadreRegAmountDetails(String fromDt,String toDt,String reportValue){
-		List<CadreAmountDetailsVO> finalList = null;
+		List<CadreAmountDetailsVO> finalList = new ArrayList<CadreAmountDetailsVO>();
 		
 		try{
 			LOG.debug("Entered Into getCadreRegAmountDetails()");
