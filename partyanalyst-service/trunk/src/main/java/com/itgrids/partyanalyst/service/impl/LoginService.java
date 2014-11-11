@@ -338,6 +338,7 @@ public class LoginService implements ILoginService{
 				regVO.setUserStatus(IConstants.PARTY_ANALYST_USER);
 				regVO.setAccessType(user.getAccessType());
 				regVO.setAccessValue(user.getAccessValue());
+				regVO.setStateName(getStateBasedOnLocation(regVO.getAccessType(),regVO.getAccessValue()));
 				regVO.setSubscribePartyImpDate(user.getIncludePartyImpDateStatus());
 				regVO.setParentUserId(user.getParentUser() != null?user.getParentUser().getUserId():null);
 				regVO.setMainAccountId(user.getMainAccountUser() != null ? user.getMainAccountUser().getUserId() : null);
@@ -389,7 +390,43 @@ public class LoginService implements ILoginService{
 	
 	}
 	
-	
+public String getStateBasedOnLocation(String AccessType,String accessValue){
+		
+		String state = "";
+		
+		if(AccessType.equalsIgnoreCase("STATE")){
+			state = "both";
+		}else{
+			Long dist = null;
+			if(AccessType.equalsIgnoreCase("MLA")){
+				List<Long> distIds = constituencyDAO.getDistrictIdByConstituencyId(Long.valueOf(accessValue));
+				if(distIds!=null){
+					dist = distIds.get(0);
+				}
+				
+			}
+			if(AccessType.equalsIgnoreCase("MP")){
+				List<Long> distIds = delimitationConstituencyAssemblyDetailsDAO.findDistrictsBYParliament(Long.valueOf(accessValue));
+				if(distIds!=null){
+					dist = distIds.get(0);
+				}
+				
+			}
+			if(AccessType.equalsIgnoreCase("DISTRICT")){
+				dist = Long.valueOf(accessValue);
+			}
+			
+			if(dist!=null && dist>10){
+				state=  "AP";
+			}else{
+				state = "TS";
+			}
+			
+			
+		}
+		
+		return state;
+	}
 	private void getUserAccessInfo(Long userId, Set<SelectOptionVO> countries,
 			Set<SelectOptionVO> states, Set<SelectOptionVO> districts,
 			Set<SelectOptionVO> assemblies, Set<SelectOptionVO> parliaments){
