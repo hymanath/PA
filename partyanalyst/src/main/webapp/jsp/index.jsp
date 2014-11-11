@@ -1884,8 +1884,9 @@ $("#"+divElmt).dialog({ stack: false,
 	str+='<h3 style="font: bold 13px Trebuchet MS,Arial,Helvetica,sans-serif;color:#ff0000;display:inline;position:relative;top:-10px;">'; 
 	str+='Sorry, You Don\'t have Access Privileges To View Detailed Report. Please Contact Us For Access Privileges.</h3>';
 	str+='<span style="font: bold 13px Trebuchet MS,Arial,Helvetica,sans-serif;text-align:center;color:#000;display:block;">';
-	str+='Phone No:+91 40 40124153 / +91 96766 96760<br />';
-	str+='Email: <a href="mailTo:info@partyanalyst.com">info@partyanalyst.com</a></span>';
+	//str+='Phone No:+91 40 40124153 / +91 96766 96760<br />';
+	
+	//str+='Email: <a href="mailTo:info@partyanalyst.com">info@partyanalyst.com</a></span>';
 	
 	accessDivElmt.innerHTML=str;
 }

@@ -732,8 +732,9 @@ function showAlertMsg(divElmt){
 	str+='<img src="images/icons/smiley_sad.png" alt="sorry" style="display:inline;"/>&nbsp;&nbsp;';
 	str+='<h3 style="color: rgb(255, 0, 0); display: inline; position: relative; top: -10px; font: bold 12px/25px verdana;">Sorry,you don\'t have access privileges to view detailed report. <span style="margin-left:35px;">Please contact us for access privileges.</span></h3>';
 	str+='<span style="font: bold 14px/35px Trebuchet MS,Arial,Helvetica,sans-serif;text-align:center;color:#000;display:block;">';
-	str+='Phone No:+91 40 40124153 / +91 96766 96760<br />';
-	str+='Email: <a href="mailTo:info@partyanalyst.com">info@partyanalyst.com</a></span>';
+	//str+='Phone No:+91 40 40124153 / +91 96766 96760<br />';
+
+	//str+='Email: <a href="mailTo:info@partyanalyst.com">info@partyanalyst.com</a></span>';
 	
 	accessDivElmt.innerHTML=str;
 }
