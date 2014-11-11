@@ -46,9 +46,60 @@ public class CadreSurveyUserDAO extends GenericDaoHibernate<CadreSurveyUser, Lon
 		
 	}
 	
-	public List<Object[]> getAllUserMobileNos(){
-		Query query = getSession().createQuery("select model.cadreSurveyUser.cadreSurveyUserId, model.cadreSurveyUser.mobileNo,model.constituency.constituencyId,model.constituency.name,model.constituency.district.districtId," +
-				" model.constituency.district.districtName,model.cadreSurveyUser.userName,model.cadreSurveyUser.name,model.tabNo from CadreSurveyUserAssignDetails model ");
+	public List<Object[]> getAllUserMobileNos(Long locationType,List<Long> locationIds)
+	{
+		Query query = null;
+		
+		if(locationType.longValue() == 1L)
+		{
+			if(locationIds.contains(1l) && locationIds.contains(2l) )
+			 {
+				 query = getSession().createQuery("select model.cadreSurveyUser.cadreSurveyUserId, model.cadreSurveyUser.mobileNo,model.constituency.constituencyId," +
+							"model.constituency.name,model.constituency.district.districtId," +
+							" model.constituency.district.districtName,model.cadreSurveyUser.userName,model.cadreSurveyUser.name,model.tabNo from CadreSurveyUserAssignDetails model ");
+			}
+			else if(locationIds.contains(2l))
+			{
+				query = getSession().createQuery("select model.cadreSurveyUser.cadreSurveyUserId, model.cadreSurveyUser.mobileNo,model.constituency.constituencyId," +
+						"model.constituency.name,model.constituency.district.districtId," +
+						" model.constituency.district.districtName,model.cadreSurveyUser.userName,model.cadreSurveyUser.name,model.tabNo from CadreSurveyUserAssignDetails model where " +
+						" model.constituency.district.districtId < 11 and model.constituency.state.stateId = 1 ");
+			}
+			else if(locationIds.contains(1l))
+			{
+				 query = getSession().createQuery("select model.cadreSurveyUser.cadreSurveyUserId, model.cadreSurveyUser.mobileNo,model.constituency.constituencyId," +
+							"model.constituency.name,model.constituency.district.districtId," +
+							" model.constituency.district.districtName,model.cadreSurveyUser.userName,model.cadreSurveyUser.name,model.tabNo from CadreSurveyUserAssignDetails model where " +
+							" model.constituency.district.districtId > 10 and model.constituency.state.stateId = 1 ");
+			}			
+		}
+		else if(locationType.longValue() == 2L)
+		{
+			 query = getSession().createQuery("select model.cadreSurveyUser.cadreSurveyUserId, model.cadreSurveyUser.mobileNo,model.constituency.constituencyId," +
+						"model.constituency.name,model.constituency.district.districtId," +
+						" model.constituency.district.districtName,model.cadreSurveyUser.userName,model.cadreSurveyUser.name,model.tabNo from CadreSurveyUserAssignDetails model where " +
+						" model.constituency.district.districtId in (:locationIds) and model.constituency.state.stateId = 1 ");
+			 
+			 query.setParameterList("locationIds", locationIds);
+			
+		}
+		
+		else if(locationType.longValue() == 3L || locationType.longValue() == 4L)
+		{
+			 query = getSession().createQuery("select model.cadreSurveyUser.cadreSurveyUserId, model.cadreSurveyUser.mobileNo,model.constituency.constituencyId," +
+						"model.constituency.name,model.constituency.district.districtId," +
+						" model.constituency.district.districtName,model.cadreSurveyUser.userName,model.cadreSurveyUser.name,model.tabNo from CadreSurveyUserAssignDetails model where " +
+						" model.constituency.constituencyId in (:locationIds) and model.constituency.state.stateId = 1 ");
+			 
+			 query.setParameterList("locationIds", locationIds);
+			
+		}
+		else if(locationType.longValue() == 0L)
+		{
+			 query = getSession().createQuery("select model.cadreSurveyUser.cadreSurveyUserId, model.cadreSurveyUser.mobileNo,model.constituency.constituencyId," +
+						"model.constituency.name,model.constituency.district.districtId," +
+						" model.constituency.district.districtName,model.cadreSurveyUser.userName,model.cadreSurveyUser.name,model.tabNo from CadreSurveyUserAssignDetails model ");
+		}
 		return query.list();
 		
 	}
