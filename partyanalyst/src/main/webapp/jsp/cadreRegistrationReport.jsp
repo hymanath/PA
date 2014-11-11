@@ -73,13 +73,13 @@
         cursor: pointer;
     }
 	
-	#usersStatusReportTab  thead th, #locationWiseReportTab  thead th,#usersStatusReportTab2  thead th{
+	#usersStatusReportTab  thead th,#daywiseReportsTab  thead th, #locationWiseReportTab  thead th,#usersStatusReportTab2  thead th{
 				background-color: #dff0d8  !important;
 				color : #468847 !important;
 				line-height: 20px !important;
 			}
 			
-			#statedisplaydivid,#distdisplaydivid,#constdisplaydivid{display:none;}
+			#statedisplaydivid,#distdisplaydivid,#constdisplaydivid,#parlConstdisplaydivid{display:none;}
 			#statedisplaydivid1,#distdisplaydivid1,#constdisplaydivid1{display:none;}
 			#statedisplaydivid2,#distdisplaydivid2,#constdisplaydivid2{display:none;}
 	</style>
@@ -91,7 +91,7 @@
 			<ul class="inline unstyled">
 				<li><a onclick="showHideTabs(this.id);" id="userReportTab" class="highlight selected">Users Working Status</a></li>
                 <li><a onclick="showHideTabs(this.id);" id="locationReportTab" class="highlight">Location Wise Cadre Info</a></li>
-				<!--  <li><a onclick="showHideTabs(this.id);" id="userTrackingTab" class="highlight">User Tacking Details</a></li>  -->
+				<!-- <li><a onclick="showHideTabs(this.id);" id="userTrackingTab" class="highlight">Users Working Consolidation Report</a></li>  -->
 				<li><a onclick="showHideTabs(this.id);" id="slowUserTrackingTab" class="highlight">Slow User Tracking Details</a></li>
 			</ul>
 		  </div>
@@ -114,6 +114,7 @@
 							<option value="1">State</option>
 							<option value="2">District</option>
 							<option value="3">Constituency</option>
+							<option value="4">Parliament</option>
 						  </select>
 						</td>
 					 </tr>
@@ -134,6 +135,10 @@
 				   <tr id="constdisplaydivid">
 					   <td><b>Select constituency : </b></td>
 					   <td><select id="displayconstbox"></select></td>
+				   </tr>
+				   <tr id="parlConstdisplaydivid">
+					   <td><b>Select Parliament : </b></td>
+					   <td><select id="displayParlConstbox"></select></td>
 				   </tr>
 				   <tr><td><b>From Date :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="fromDate"/></td></tr>
 				   <tr><td><b>To Date   :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="toDate" /></td></tr>
@@ -245,7 +250,7 @@
 		<div id="userTrackingTabDiv"  style="display:none;">
 		   <div class="row-fluid" id="fadeInDown" style="padding-top: 5px;">
 				<div class="span12 well well-small  border-radius-0 mb-10 " style="padding:0px;">
-					<h3 class="text-center text-uppercase">Users Working Status</h3>
+					<h3 class="text-center text-uppercase">Users Working Consolidation Report</h3>
 				</div>
 			</div>
 			<div class="row-fluid ">
@@ -281,15 +286,16 @@
 					   <td><b>Select constituency : </b></td>
 					   <td><select id="displayconstbox1"></select></td>
 				   </tr>
-				   <tr><td><b>From Date :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="fromDate1"/></td></tr>
-				   <tr><td><b>To Date   :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="toDate1" /></td></tr>
+				  <tr><td><b>From Date :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="userTrackingFromDate"/></td></tr>
+				   <tr><td><b>To Date   :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="userTrackingToDate" /></td></tr>
 				   <tr>
-				      <td></td><td><input type="button" style="margin-left: 12px;margin-top: 13px;" class="btn btn-success" id="getCandidateDataCollectionInfoId1" onclick="getCandidateDataCollectionInfo1();" value="Submit"/>
+				      <td></td>
+					   <td><input type="button" style="margin-left: 12px;margin-top: 13px;" class="btn btn-success" id="getUserTrackingReport" onclick="getUserTrackingReport();" value="Submit"/>
 						<img id="ajaxImgStyle1" style="display:none;margin-left: 10px;" src="images/icons/search.gif"/>
 					  </td>
 				  </tr>
 			</table>
-					<div id="userStatusDialogDIV1"></div>
+					<div id="userTrackingDetls" style="overflow:scroll;display:none;"></div>
 			  </div>
 			</div>
 		</div>
@@ -359,32 +365,35 @@
 	});
 	
 	$("#statesDivId").change(function(){
-		var lctnType = $("#selLctnType").val();
-		if(lctnType == 3){
-			getConstituenciesUWS();
-			$("#distdisplaydivid").hide();
-		}
-		if(lctnType ==2) {
-			getdistrictsUWS();
-			$("#constdisplaydivid").hide();
-		}
-	});
+			var lctnType = $("#selLctnType").val();
+			if(lctnType == 3){
+				getConstituenciesUWS();
+				$("#distdisplaydivid").hide();
+			}
+			if(lctnType ==2) {
+				getdistrictsUWS();
+				$("#constdisplaydivid").hide();
+			}
+			if(lctnType ==4) {
+				getparliamentConstituencies('displayParlConstbox');
+			}
+		});
+		$("#fromDate,#fromDate1,#userTrackingFromDate").datepicker({
+			dateFormat: "dd-mm-yy",
+			changeMonth: true,
+			changeYear: true,
+			maxDate: new Date()
+		})
+		$("#fromDate,#fromDate1,#userTrackingFromDate").datepicker("setDate", new Date());
+		$("#toDate,#toDate1,#userTrackingToDate").datepicker({
+			dateFormat: "dd-mm-yy",
+			changeMonth: true,
+			changeYear: true,
+			maxDate: new Date()
+		})
+		$("#toDate,#toDate1,#userTrackingToDate").datepicker("setDate", new Date());
 	
 	
-    $("#fromDate,#fromDate1,#fromDate2").datepicker({
-		dateFormat: "dd-mm-yy",
-		changeMonth: true,
-        changeYear: true,
-		maxDate: new Date()
-	})
-	$("#fromDate,#fromDate1,#fromDate2").datepicker("setDate", new Date());
-	$("#toDate,#toDate1,#toDate2").datepicker({
-		dateFormat: "dd-mm-yy",
-		changeMonth: true,
-        changeYear: true,
-		maxDate: new Date()
-	})
-	$("#toDate,#toDate1,#toDate2").datepicker("setDate", new Date());
      function getCandidateDataCollectionInfo(){
     var allConstituencies = "";
 	var ruralConstis = "";
@@ -398,6 +407,7 @@
 	if(locationType==1){locationId=getReqIds("statesDivId");}
 	if(locationType==2){locationId=getReqIds("displaydistbox");}
 	if(locationType==3){locationId=getReqIds("displayconstbox");}
+	if(locationType==4){locationId=getReqIds("displayParlConstbox");}
 	var timeCheckBox = $("#timeCheckBox").is(':checked');
 	
 	var startDate = $("#fromDate").val();
@@ -452,6 +462,7 @@
 								
 				str+='<th rowspan="2" >State</th>';
 				str+='<th rowspan="2" >District</th>';
+				str+='<th rowspan="2" >Parliament</th>';
 				str+='<th rowspan="2" >Constituency</th>';				
 				str+='<th rowspan="2">User</th>';
 				str+='<th rowspan="2">Name</th>';
@@ -461,12 +472,31 @@
 				str+='<th rowspan="2">Total Count</th>';
 				str+='<th rowspan="2">Total Amount</th>';
 
-				for(var i in result[0].infoList){
+				if($("#fromDate").val() == $("#toDate").val())
+				{
 					if(timeCheckBox == true)
-					 str+='<th colspan="3">'+result[0].infoList[i].date+'</th>';
-					else
-					str+='<th colspan="1">'+result[0].infoList[i].date+'</th>';
+						 str+='<th colspan="3">'+$("#fromDate").val()+'</th>';
+						else if(result[0].infoList[0].date == null)
+						{
+							str+='<th colspan="1">'+$("#fromDate").val()+'</th>';
+						}
+						else
+							str+='<th colspan="1">'+$("#fromDate").val()+'</th>';
 				}
+				else
+				{
+					for(var i in result[0].infoList){
+						if(timeCheckBox == true)
+						 str+='<th colspan="3">'+result[0].infoList[i].date+'</th>';
+						else if(result[0].infoList[i].date == null)
+						{
+							str+='<th colspan="1">'+$("#fromDate").val()+'</th>';
+						}
+						else
+							str+='<th colspan="1">'+result[0].infoList[i].date+'</th>';
+					}
+				}
+				
 				str+='</tr>';
 				str+='<tr>';
 				for(var i in result[0].infoList){
@@ -493,12 +523,18 @@
 				   }else{
 				      str+='  <td></td>';
 				   }
+				   if(result[i].percentStr != null){
+				     str+='  <td>'+result[i].percentStr+'</td>';
+				   }else{
+				      str+='  <td></td>';
+				   }
+				   
 				  if(result[i].memberShipNo != null){
 				     str+='  <td>'+result[i].memberShipNo+'</td>';
 				   }else{
 				      str+='  <td></td>';
 				   }
-  str+='  <td>'+result[i].name+'</td>';
+					str+='  <td>'+result[i].name+'</td>';
 				   str+='  <td>'+result[i].uname+'</td>';
 				   
 				    if(result[i].area != null){
@@ -1155,12 +1191,14 @@
 		$("#statedisplaydivid").hide();
 		$("#distdisplaydivid").hide();
 		$("#constdisplaydivid").hide();
+		$("#parlConstdisplaydivid").hide();
 	}
 	if(value==1){
 		$("#statedisplaydivid").show();	
 		$('#statesDivId').val('0');
 		$("#distdisplaydivid").hide();
 		$("#constdisplaydivid").hide();
+		$("#parlConstdisplaydivid").hide();
 	}
 	if(value==2){
 		$("#statedisplaydivid").show();	
@@ -1168,6 +1206,7 @@
 		
 		$("#distdisplaydivid").hide();
 		$("#constdisplaydivid").hide();
+		$("#parlConstdisplaydivid").hide();
 		getdistrictsUWS();
 	}
 	if(value==3){
@@ -1176,9 +1215,18 @@
 		
 		$("#distdisplaydivid").hide();
 		$("#constdisplaydivid").hide();
+		$("#parlConstdisplaydivid").hide();
 		getConstituenciesUWS();
 	}
-	
+		if(value==4){
+		$("#statedisplaydivid").show();
+		$('#statesDivId').val('0');
+		
+		$("#distdisplaydivid").hide();
+		$("#constdisplaydivid").hide();
+		$("#parlConstdisplaydivid").hide();
+		getparliamentConstituencies('displayParlConstbox');
+	}
   }
   
   function selectLocation1(value){
@@ -1632,8 +1680,183 @@ function getCandidateDataCollectionInfo2(){
        });
    }
    
+   function getUserTrackingReport(){
+    var allConstituencies = "";
+	var ruralConstis = "";
+	var areaType ="assembly";
+	var stateTypeId = $('#statesDivId1').val();
+	
+    $("#userTrackingDetls").html("");
+    $("#errStatusDiv1").html("");
+		$('#userTrackingDetls').hide();
+	var locationType1=$( "#selLctnType1" ).val();
+	
+	var locationId1;
+	if(locationType1==0)
+	{
+		locationId1=0;
+	}
+	if(locationType1==1)
+	{
+		locationId1=getReqIds("statesDivId1");
+	}
+	if(locationType1==2)
+	{
+		locationId1=getReqIds("displaydistbox1");
+		areaType ="district";
+	}
+	if(locationType1==3)
+	{
+		locationId1=getReqIds("displayconstbox1");
+		areaType ="assembly";
+	}
+
+	var startDate1 = $("#userTrackingFromDate").val();
+	var endDate1 = $("#userTrackingToDate").val();
+	
+	if(startDate1.trim().length >0 && endDate1.trim().length >0)
+		{
+                 var arrr = startDate1.split("-");
+				    var fromDat=arrr[0];
+					var frommonth=arrr[1];
+					var fromyear=arrr[2];
+			   var arr = endDate1.split("-");
+					var toDat=arr[0];
+					var tomonth=arr[1];
+					var toyear=arr[2];
+					
+					if(fromyear>toyear){
+						$('#errStatusDiv1').html('<font style="color:red;">From Date should not greater than To Date </font>');
+						  return;
+					}
+					 if(frommonth>tomonth){
+						   if(fromyear == toyear){
+							$('#errStatusDiv1').html('<font style="color:red;">From Date should not greater than To Date </font>');
+						   return;
+						}
+						
+					}
+					
+					if(fromDat>toDat){	
+						if(frommonth == tomonth && fromyear == toyear){			
+							$('#errStatusDiv1').html('<font style="color:red;">From Date should not greater than To Date </font>');
+						   return;	
+						   }
+					}			
+		}
+		
+	$("#getCandidateDataCollectionInfoId1").attr("disabled","disabled");
+	$("#ajaxImgStyle1").show();
+	
+	var jsObj = {
+			usersType:"submiited",
+			areaType: areaType,
+			stateTypeId:stateTypeId,
+			fromdateStr:startDate1,
+			todateStr : endDate1,
+			 tesk:"daywiseTransactionReports"            
+		   }	
+			$.ajax({
+				type : "POST",
+				url : "getLocationswiseUsersListAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				$("#ajaxImgStyle1").hide();
+				$('#userTrackingDetls').show();
+				if(result !=null)
+				{
+					buildLocationWiseUsersReport(result);	
+				}
+				else
+				{
+					$('#userTrackingDetls').html(' <span class="span12" style="font-weight:bold;" align="center">No Data Available...</span>');
+				}
+			});
+   }
+    function buildLocationWiseUsersReport(result)
+   {
+		var str ='';
+		if(result.length >0)
+		{
+			str +='<table class="table table-bordered " id="daywiseReportsTab">';
+			str +='<thead>';
+			str +='<tr>';
+			str +='<th > Location Name </th>';
+			for(var i in result[0].surveyTransactionVOList)
+			{
+				str +='<th colspan="2">'+result[0].surveyTransactionVOList[i].surveyDate+'  </th>';
+			}
+			str +='</tr>';
+			str +='<tr>';
+			str +='<th> </th>';
+			for(var i in result[0].surveyTransactionVOList)
+			{
+				str +='<th> Submitted Users </th>';
+				str +='<th>  Not Submitted Users  </th>';
+				
+			}
+			str +='</tr>';
+		}
+	
+		str +='</thead>';
+		str +='<tbody>';
+		for(var i in result)
+		{
+			str +='<tr>';
+			str +='<td>'+result[i].name+'</td>';
+			for(var j in result[i].surveyTransactionVOList)
+				{
+					str +='<td> '+result[i].surveyTransactionVOList[j].teamSize+' </td>';
+					str +='<td> '+result[i].surveyTransactionVOList[j].idleTeamSize+' </td>';
+				}
+			str +='</tr>';
+		}
+		str +='</tbody>';
+		str +='</table>';
+		
+		$('#userTrackingDetls').html(str);
+		$('#daywiseReportsTab').dataTable({
+			"iDisplayLength": 50,
+			"aLengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]]
+		});
+		$('#exportExclId2').show();
+   }
    
   
+	function getparliamentConstituencies(divId)
+	{
+		var stateTypeId = $('#statesDivId').val();
+		$("#Pconstdisplaydivid").show();
+		var jsObj = {
+		searchType :"parliament",
+		stateTypeId : stateTypeId,
+		tesk:"locationWiseTransactionReport"
+		}
+	$("#parlConstdisplaydivid").show();
+	$('#'+divId+'').find('option').remove();
+	//$('#'+divId+'').append('<option value="0"> All </option>');
+
+		$.ajax({
+		type : "POST",
+		url : "getParliamentsForStateAction.action",
+		data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+
+			var constiArr = new Array();
+			if(result != null && result.length >0)
+			{
+				for(var i in result)
+				{
+					if(constiArr.indexOf(result[i].id) <0)
+					{
+						$('#'+divId+'').append('<option value="'+result[i].id+'"> '+result[i].name+' </option>');
+						constiArr.push(result[i].id);
+					}
+					
+				}
+			}
+		});
+	}
 </script>
 </body>
 </html>
