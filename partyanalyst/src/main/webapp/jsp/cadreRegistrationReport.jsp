@@ -400,20 +400,20 @@
 				getparliamentConstituencies('displayParlConstbox');
 			}
 		});
-		$("#fromDate,#fromDate1,#userTrackingFromDate").datepicker({
+		$("#fromDate,#fromDate1,#userTrackingFromDate,#fromDate2").datepicker({
 			dateFormat: "dd-mm-yy",
 			changeMonth: true,
 			changeYear: true,
 			maxDate: new Date()
 		})
-		$("#fromDate,#fromDate1,#userTrackingFromDate").datepicker("setDate", new Date());
-		$("#toDate,#toDate1,#userTrackingToDate").datepicker({
+		$("#fromDate,#fromDate1,#userTrackingFromDate,#fromDate2").datepicker("setDate", new Date());
+		$("#toDate,#toDate1,#userTrackingToDate,#toDate2").datepicker({
 			dateFormat: "dd-mm-yy",
 			changeMonth: true,
 			changeYear: true,
 			maxDate: new Date()
 		})
-		$("#toDate,#toDate1,#userTrackingToDate").datepicker("setDate", new Date());
+		$("#toDate,#toDate1,#userTrackingToDate,#toDate2").datepicker("setDate", new Date());
 	
 	
      function getCandidateDataCollectionInfo(){
