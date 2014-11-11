@@ -973,5 +973,29 @@ public String getStateBasedOnLocation(String AccessType,String accessValue){
 	}
 	return sessionIds;
 	}
-	
+	public String getLocationNameByIdAndType(String accessType,String accessValue)
+	{
+		String locationName = "";
+		try{
+			if(accessType.equalsIgnoreCase(IConstants.STATE))
+			{
+			State state = stateDAO.get(new Long(accessValue));
+			locationName = state.getStateName();
+			}
+			else if(accessType.equalsIgnoreCase(IConstants.DISTRICT))
+			{
+			District district = districtDAO.get(new Long(accessValue));
+			locationName = district.getDistrictName();
+			}
+			else if(accessType.equalsIgnoreCase("MP") || accessType.equalsIgnoreCase("MLA") )
+			{
+			Constituency constituency = constituencyDAO.get(new Long(accessValue));
+			locationName = constituency.getName();
+			}
+		}
+		catch (Exception e) {
+			log.error("Exception Rised in getLocationName : ", e);
+		}
+		return locationName;
+	}
 }
