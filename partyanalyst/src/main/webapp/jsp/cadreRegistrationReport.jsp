@@ -79,7 +79,7 @@
 				line-height: 20px !important;
 			}
 			
-			#distdisplaydivid,#constdisplaydivid,#parlConstdisplaydivid{display:none;}
+			#statedisplaydivid,#distdisplaydivid,#constdisplaydivid,#parlConstdisplaydivid{display:none;}
 			#statedisplaydivid1,#distdisplaydivid1,#constdisplaydivid1{display:none;}
 			#statedisplaydivid2,#distdisplaydivid2,#constdisplaydivid2{display:none;}
 	</style>
@@ -91,7 +91,7 @@
 			<ul class="inline unstyled">
 				<li><a onclick="showHideTabs(this.id);" id="userReportTab" class="highlight selected">Users Working Status</a></li>
                 <li><a onclick="showHideTabs(this.id);" id="locationReportTab" class="highlight">Location Wise Cadre Info</a></li>
-				<!-- <li><a onclick="showHideTabs(this.id);" id="userTrackingTab" class="highlight">Users Working Consolidation Report</a></li>  -->
+				<!-- <li><a onclick="showHideTabs(this.id);" id="userTrackingTab" class="highlight">Users Working Consolidation Report</a></li> -->
 				<li><a onclick="showHideTabs(this.id);" id="slowUserTrackingTab" class="highlight">Slow User Tracking Details</a></li>
 			</ul>
 		  </div>
@@ -110,7 +110,7 @@
 					   <td><b>Select Scope : </b></td>
 					   <td>
 						  <select id="selLctnType" onchange="selectLocation(this.value)">
-							<!-- <option value="0">All</option> -->
+							<option value="0">All</option> 
 							<option value="1">State</option>
 							<option value="2">District</option>
 							<option value="3">Constituency</option>
@@ -1899,7 +1899,7 @@ function getCandidateDataCollectionInfo2(){
 		}
 	$("#parlConstdisplaydivid").show();
 	$('#'+divId+'').find('option').remove();
-	//$('#'+divId+'').append('<option value="0"> All </option>');
+	$('#'+divId+'').append('<option value="0"> All </option>');
 
 		$.ajax({
 		type : "POST",
