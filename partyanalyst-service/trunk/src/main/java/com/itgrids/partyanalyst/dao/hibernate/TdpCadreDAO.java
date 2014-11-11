@@ -1517,7 +1517,7 @@ public List<Object[]> getCadreDetailsForSelectionByFamilyVoterId(CadrePrintInput
 		
 		query.setParameter("presentDate", presentDate);
 		query.setParameter("lastHours", lastHours);
-		query.setParameter("constiIds", constiIds);
+		query.setParameterList("constiIds", constiIds);
 		
 		return (Long)query.uniqueResult();
 	}
