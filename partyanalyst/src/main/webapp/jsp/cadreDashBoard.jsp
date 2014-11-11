@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -240,7 +241,12 @@ table.dataTable tr.odd {
 									<img style=" margin-top: 36px;padding-left: 110px;" src="images/icons/search.gif"/>
 								</div>
 							</td>
+							<c:if test="${sessionScope.USER.isAdmin == 'true' || sessionScope.USER.accessType != 'DISTRICT'}">
 							<td style="width:50%;text-align:center;"><div><a href="javascript:{}" onclick="openDialogToTrack();">Click Here To View</br> Users Working Status </br> & </br> Location Wise Cadre Registration Info</a></div></b></td>
+						  </c:if>
+						 <c:if test="${sessionScope.USER.accessType == 'DISTRICT'}">
+							<td style="width:50%;text-align:center;"><div></div></b></td>
+						  </c:if>
 						</tr>
 					</tbody>
 				</table>
@@ -1304,7 +1310,6 @@ function SortByName(a, b){
 			$(".indiEle").hide();
 		}
 	}
-	   
 
 </script>
 
