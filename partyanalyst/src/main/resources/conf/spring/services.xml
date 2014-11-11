@@ -2213,6 +2213,8 @@
 		<property name="voterNamesDAO" ref="voterNamesDAO" />
 		<property name="smsJobStatusDAO" ref="smsJobStatusDAO" />
 		<property name="tdpCadreOnlineDAO" ref="tdpCadreOnlineDAO" />
+		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
+		<property name="districtDAO" ref="districtDAO" />
      </bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
