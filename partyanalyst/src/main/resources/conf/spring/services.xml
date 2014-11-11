@@ -2228,6 +2228,7 @@
           <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 		   <property name="cadreSurveyUserAssignDetailsDAO" ref="cadreSurveyUserAssignDetailsDAO" />
 		    <property name="cadreSurveyUserAssigneeDAO" ref="cadreSurveyUserAssigneeDAO" />
+		    <property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
 		  
          
      </bean>
