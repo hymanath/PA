@@ -336,4 +336,15 @@ IDelimitationConstituencyDAO {
 				params);
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findTheDelimitationConstituencyByConstituencyIDs(List<Long> constituencyIDs){
+		String queryString = "select model2.constituency.constituencyId,model2.constituency.name from DelimitationConstituency model where model.constituency.constituencyId not in (:constituencyIDs) and " +
+				" model.year = (select max(model2.year) from DelimitationConstituency model2 where model2.constituency.constituencyId not in (:constituencyIDs)) " +
+				" order by model.year desc";
+		Query query  = getSession().createQuery(queryString);
+		query.setParameterList("constituencyIDs", constituencyIDs);
+		return query.list();
+	}
+	
 }

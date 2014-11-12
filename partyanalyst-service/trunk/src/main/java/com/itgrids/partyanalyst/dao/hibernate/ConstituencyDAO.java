@@ -1019,4 +1019,62 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstituencyInfoByNotConstituencyIdList(List<Long> constituenciesList,String searchType)
+	{
+		Query query = null ;
+		if(searchType.equalsIgnoreCase("assembly"))
+		{
+			if(constituenciesList != null && constituenciesList.size()>0)
+			{
+				 query = getSession().createQuery("select model.constituencyId, model.name,model.district.districtId, model.district.districtName  " +
+				 		"from Constituency model where model.state.stateId = 1 and model.constituencyId not in(:constituenciesList) " +
+				 		"and model.electionScope.electionType.electionTypeId = 2 and model.deformDate is null order by model.name  ");
+				query.setParameterList("constituenciesList",constituenciesList);
+				
+			}
+			else
+			{
+				 query = getSession().createQuery("select model.constituencyId, model.name,model.district.districtId , model.district.districtName  " +
+				 		"from Constituency model where model.state.stateId = 1 and model.district.districtId <=23 and model.electionScope.electionType.electionTypeId = 2 " +
+				 		"and model.deformDate is null order by model.name");
+			}
+		}
+		else if(searchType.equalsIgnoreCase("district"))
+		{
+			if(constituenciesList != null && constituenciesList.size()>0)
+			{
+				 query = getSession().createQuery("select distinct model.district.districtId, model.district.districtName  from Constituency model where model.state.stateId = 1 " +
+				 		"and model.constituencyId not in(:constituenciesList) and model.electionScope.electionType.electionTypeId = 2 and model.deformDate is null order by " +
+				 		"model.name  ");
+				query.setParameterList("constituenciesList",constituenciesList);
+			}
+			else
+			{
+				 query = getSession().createQuery("select distinct model.district.districtId , model.district.districtName  from Constituency model where model.state.stateId = 1 and" +
+				 		" model.district.districtId <=23 and model.electionScope.electionType.electionTypeId = 2 and model.deformDate is null order by model.name");
+			}
+		}
+		
+		else if(searchType.equalsIgnoreCase("Parliament"))
+		{	
+			StringBuilder str = new StringBuilder();
+			str.append("select distinct model.delimitationConstituency.constituency.constituencyId , model.delimitationConstituency.constituency.name from " +
+					" DelimitationConstituencyAssemblyDetails model " +
+					" where model.delimitationConstituency.constituency.electionScope.electionType.electionTypeId = 1 " +
+					" and model.delimitationConstituency.constituency.state.stateId = :stateID and model.delimitationConstituency.constituency.deformDate is null and" +
+					"  model.delimitationConstituency.year = 2009 ");
+			
+				str.append(" and model.constituency.district.districtId between 11 and 23 and model.delimitationConstituency.constituency.constituencyId not in (:constituenciesList) " +
+						" order by model.delimitationConstituency.constituency.name ");	
+				
+			query = getSession().createQuery(str.toString());
+			
+			query.setParameter("stateID", 1L);
+			query.setParameterList("constituenciesList",constituenciesList);
+		}
+		
+		return query.list();
+	}
+	
 }
