@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -103,7 +104,12 @@ public class CadreRegistrationAmountReportAction extends ActionSupport{
 	public String getCadreRegAmountSummary(){
 		LOG.debug("Entered Into getCadreRegAmountSummary()");
 		try{
-			cadreAmountList = cadreRegAmountDetailsService.getCadreSummaryAmountDayWise();
+			request = ServletActionContext.getRequest();
+			
+			String sourceType = request.getParameter("sourceType");
+			
+			
+			cadreAmountList = cadreRegAmountDetailsService.getCadreSummaryAmountDayWise(sourceType);
 		}catch(Exception e){
 			LOG.error("Exception Raised In getCadreRegAmountSummary()");
 		}
