@@ -364,6 +364,7 @@
 			  <pattern>/ctpCasteReportAction*</pattern>
 			  <pattern>/cadreRegAmountUpload*</pattern>
 			  <pattern>/surveyUserAssigneeAction*</pattern>
+			  <pattern>/cadreRegAmountFileUpload*</pattern>
 			  
             <!--  <pattern>/dashBoardAction*</pattern> -->
        </decorator>
