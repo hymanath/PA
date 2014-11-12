@@ -81,5 +81,5 @@ public interface ICadreDashBoardService {
 	public WSResultVO gettingUserDetailsByLocation(String location,Long locationId,String type,Date date);
 	
 	public WSResultVO getAllParliamentsForAssembly();
-	
+	public void getAnalysisData();
 }

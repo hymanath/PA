@@ -146,4 +146,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public Integer saveUrbanConstituencyDataType1(String prevDate);
 	public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersList,Date date);	
 	public List<Object[]> getRegisterCadreInfoForUserBetweenDates1(Date fromDate,Date toDate,List<Long> constiIds,List<Long> districtIds);
+	public List<Object[]> getAnalysisData(String reqDate);
+	public List<Object[]> getUserData();
 }
