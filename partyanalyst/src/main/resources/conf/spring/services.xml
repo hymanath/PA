@@ -1351,6 +1351,17 @@
 	  	<property name="targetMethod" value="runTheBatchJobForEveryDayMobilesInsert" />
 	</bean>
 	
+	
+	<!-- <bean name="insertTriggerForEveryDayCardPrintDetails" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="everyDayCardPrintDetailsInsertJob" />
+    	<property name="cronExpression" value="0 40 16 * * ?" />
+	</bean>
+	
+	<bean name="everyDayCardPrintDetailsInsertJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="runTheBatchJobForEveryDayCardDataInsert" /> 
+	</bean>-->
+	
 	<bean name="everyDayBatchJobForInsertCaste" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
 	  	<property name="targetMethod" value="runTheBatchJobForInsertCasteForEveryDay" />
@@ -1410,6 +1421,7 @@
 			<ref bean="cronTriggerForEveryDayJobTosendSmsToMobileAppUsers" />
 			<ref bean="cronTriggerForeveryDayBatchJobForPopulateVoterData" />
 			<ref bean="insertTriggerForEveryDayMobiles" />
+		<!-- 	<ref bean="insertTriggerForEveryDayCardPrintDetails" /> -->
 			
         </list>
     	</property>
