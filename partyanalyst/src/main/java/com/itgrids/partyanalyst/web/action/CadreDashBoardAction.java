@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.web.action;
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
+import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -42,7 +44,7 @@ public class CadreDashBoardAction implements ServletRequestAware {
 	private ResultStatus resultStatus;
 	private List<SurveyTransactionVO> surveyTransactionVOList = new ArrayList<SurveyTransactionVO>();
 	private List<SelectOptionVO> surveyUsersList = new ArrayList<SelectOptionVO>();
-	
+	private WSResultVO wsResultVO;
 	
 	public List<SurveyTransactionVO> getSurveyTransactionVOList() {
 		return surveyTransactionVOList;
@@ -146,6 +148,14 @@ public class CadreDashBoardAction implements ServletRequestAware {
 	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
 		this.entitlementsHelper = entitlementsHelper;
 	}
+    
+	public WSResultVO getWsResultVO() {
+		return wsResultVO;
+	}
+
+	public void setWsResultVO(WSResultVO wsResultVO) {
+		this.wsResultVO = wsResultVO;
+	}
 
 	public String execute(){
 		
@@ -184,6 +194,8 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		
 		if(regVO.getAccessType()!=null && regVO.getAccessValue()!=null)
 			getState = cadreDashBoardService.getStateBasedOnLocation(regVO.getAccessType(), regVO.getAccessValue());
+		
+			//wsResultVO = cadreDashBoardService.getAllParliamentsForAssembly();
 		
 		return Action.SUCCESS;
 	}
@@ -517,23 +529,25 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		return Action.SUCCESS;
 	}
 	
-	public String getUserTrackingRsults()
+	public String gettingUserDetailsByLocation()
 	{
 		try{
 			 jObj = new JSONObject(getTask());				
 			 
-			String searchType = jObj.getString("usersType");
-			String areaType = jObj.getString("areaType");
-			Long stateTypeId = jObj.getLong("stateTypeId");
-			String fromdateStr = jObj.getString("fromdateStr");
-			String todateStr = jObj.getString("todateStr");
-
-			surveyUsersList = cadreDashBoardService.getUserTrackingRsults(searchType,stateTypeId,areaType,fromdateStr,todateStr);
+			String location = jObj.getString("location");
+			Long locationId = jObj.getLong("locationId");
+			String type = jObj.getString("type");
+			String dateString = jObj.getString("dateString");
+			
+			SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+			Date date=sdf.parse(dateString);
+            wsResultVO = cadreDashBoardService.gettingUserDetailsByLocation(location,locationId,type,date);
 			
 		}catch(Exception e){
-			LOG.error("Exception rised in getUserTrackingRsults ",e);
+			LOG.error("Exception rised in gettingUserDetailsByLocation ",e);
 		}
 		return Action.SUCCESS;
+	
 	}
 	
 }
