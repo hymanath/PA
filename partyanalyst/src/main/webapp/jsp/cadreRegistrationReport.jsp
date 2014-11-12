@@ -369,6 +369,7 @@
 				   </tr>
 				   <tr><td><b>From Date :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="fromDate2"/></td></tr>
 				   <tr><td><b>To Date   :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="toDate2" /></td></tr>
+				   <tr><td><input type="checkbox" id="slowUsersCheck" style="margin-top:-3px">&nbsp;&nbsp;Show Slow Users</td></tr>
 				   <tr>
 				      <td></td><td><input type="button" style="margin-top: 13px;" class="btn btn-success" id="getCandidateDataCollectionInfoId2" onclick="getCandidateDataCollectionInfo2();" value="Submit"/>
 						<img id="ajaxImgStyle2" style="display:none;margin-left: 10px;" src="images/icons/search.gif"/>
@@ -1659,7 +1660,7 @@ function getCandidateDataCollectionInfo2(){
 	if(locationType==2){locationId=getReqIds("displaydistbox2");}
 	if(locationType==3){locationId=getReqIds("displayconstbox2");}
 	if(locationType==4){locationId=getReqIds("displayParlConstbox2");}
-	
+	var slowUsersCheck = $("#slowUsersCheck").is(':checked');
 	var startDate = $("#fromDate2").val();
 	var endDate = $("#toDate2").val();
 	
@@ -1731,6 +1732,78 @@ function getCandidateDataCollectionInfo2(){
 				str+='</tr>';
 				str+='</thead><tbody>';
 				for(var i in result){
+				if(slowUsersCheck == true){
+				if(result[i].slowUser == true){
+					str+='<tr>';
+					
+				   if(result[i].number != null){
+				     str+='  <td>'+result[i].number+'</td>';
+				   }else{
+				      str+='  <td></td>';
+				   }
+				   if(result[i].memberShipNo != null){
+				     str+='  <td>'+result[i].memberShipNo+'</td>';
+				   }else{
+				      str+='  <td></td>';
+				   }
+				   if(result[i].percentStr != null){
+				     str+='  <td>'+result[i].percentStr+'</td>';
+				   }else{
+				      str+='  <td></td>';
+				   }					   
+				   str+='  <td>'+result[i].name+'</td>';
+				   str+='  <td>'+result[i].uname+'</td>';
+				 
+				 
+				  if(result[i].area != null){
+				     str+='  <td>'+result[i].area+'</td>';
+				   }else{
+				      str+='  <td></td>';
+				   }
+				  for(var j in result[i].infoList){
+					  
+				    if(result[i].infoList[j].area != null){
+				      str+='  <td>'+result[i].infoList[j].area+'</td>';
+					}else{
+					  str+='  <td></td>';
+					}
+					if(result[i].infoList[j].location != null){
+				      str+='  <td>'+result[i].infoList[j].location+'</td>';
+					}else{
+					  str+='  <td></td>';
+					}
+					
+					if(result[i].infoList[j].tgCount != null){
+					if(result[i].infoList[j].tgCount > 0)
+				      str+='  <td>'+result[i].infoList[j].tgCount+'</td>';
+					else
+					 str+='  <td>1</td>';
+					}else{
+					  str+='  <td></td>';
+					}
+					
+					if(result[i].infoList[j].totalCount != null){
+					if(result[i].infoList[j].totalCount < result[i].infoList[j].tgCount)
+				      str+='  <td style="background-color:#D5432E">'+result[i].infoList[j].totalCount+'</td>';
+					  else
+					  str+='  <td style="background-color:#FFFFFF">'+result[i].infoList[j].totalCount+'</td>';
+					}else{
+					  str+='  <td></td>';
+					}
+					if(result[i].infoList[j].avgTime != null){
+						if(result[i].infoList[j].avgTime >0)
+							str+='  <td>'+result[i].infoList[j].avgTime+'</td>';
+						else
+							str+='  <td>10</td>';
+					}else{
+					  str+='  <td></td>';
+					}
+				  }
+				  str+='</tr>';
+				}	
+				}
+				else{
+				
 				  str+='<tr>';
 				   if(result[i].number != null){
 				     str+='  <td>'+result[i].number+'</td>';
@@ -1796,6 +1869,7 @@ function getCandidateDataCollectionInfo2(){
 					}
 				  }
 				  str+='</tr>';
+				}
 				}
 				str+='</tbody></table></div>';
 			
@@ -1933,21 +2007,7 @@ function getCandidateDataCollectionInfo2(){
 			str +='<table class="table table-bordered " id="daywiseReportsTab">';
 			str +='<thead>';
 			str +='<tr>';
-			
-			if(locationTypeFinder==2)
-			{
-			 str +='<th > Constituency  </th>';
-			}
-			else if(locationTypeFinder==3){
-			 str +='<th > District  </th>';
-			}
-			else if(locationTypeFinder==4){
-			 str +='<th > Constituency  </th>';
-			}
-			 else if(locationTypeFinder==5){
-			 str +='<th > Parliament  </th>';
-			}
-		 
+			str +='<th > Location Name </th>';
 			if(locationTypeFinder != 3 && locationTypeFinder != 5)
 			{
 				str +='<th > Parliament </th>';
