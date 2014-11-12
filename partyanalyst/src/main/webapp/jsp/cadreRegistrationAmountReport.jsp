@@ -112,6 +112,7 @@
 			
 			<div class="row-fluid " >
 				<h3 style="text-align:center;margin:10px;"> CADRE REGISTRATION AMOUNT DETAILS REPORT</h3>
+				<div style="margin-left:685px;"><a href="cadreRegAmountUpload.action"><b>Upload File</b></a></div>
 				<div id="errMsgDiv" align="center" ></div>
 				<div class = "row" style="margin-top:20px;">
 				<table  style="margin-left: 270px;">
