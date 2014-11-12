@@ -1597,6 +1597,7 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
   query.setParameter("surveyTime", date);
   return query.list();
 }
+
 	
 	public Integer saveRuralConstituencyDataType1(String prevDate)
 	{
@@ -1679,4 +1680,49 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
 				",model.cadreSurveyUser.mobileNo from CadreSurveyUserAssignDetails model");
 		return query.list();
 	}
+	public List<Object[]> getCandidateDataCollectionInfo1(Long locationType,List<Long> locationIds,Date fromDate,Date toDate,String sourceType){
+		//0 count,1 name,2 min,3 max,4 date,5 id
+
+		StringBuilder queryStr = new StringBuilder();
+
+		queryStr.append("select count(model.tdpCadreId),min(model.surveyTime),max(model.surveyTime),date(model.surveyTime)");
+		if(sourceType.equalsIgnoreCase("TAB"))
+		queryStr.append(" ,model.insertedBy.cadreSurveyUserId,model.insertedBy.userName,model.insertedBy.name ");
+		else if(sourceType.equalsIgnoreCase("WEB"))
+		queryStr.append(" ,model.insertedWebUser.userId,model.insertedWebUser.firstName,model.insertedWebUser.lastName,model.insertedWebUser.accessType,model.insertedWebUser.accessValue ");
+
+		queryStr.append(" from TdpCadre model where model.enrollmentYear = 2014  " +
+		" and model.isDeleted = 'N' and date(model.surveyTime) >=:fromDate and date(model.surveyTime) <=:toDate  ");
+		queryStr.append(" and model.dataSourceType = :sourceType  ");
+		if(locationType.longValue() == 1l){
+		if(locationIds.contains(2l) && locationIds.contains(1l)){
+		queryStr.append(" and model.userAddress.state.stateId= 1 ");
+		}else if(locationIds.contains(2l)){
+		queryStr.append(" and model.userAddress.state.stateId= 1  and model.userAddress.district.districtId < 11 ");
+		}else if(locationIds.contains(1l)){
+		queryStr.append(" and model.userAddress.state.stateId= 1  and model.userAddress.district.districtId > 10 ");
+		}
+		}
+		else if(locationType.longValue() == 2l){
+		queryStr.append(" and model.userAddress.district.districtId in(:locationIds) ");
+		}
+		else if(locationType.longValue() == 3l){
+		queryStr.append(" and model.userAddress.constituency.constituencyId in(:locationIds)  ");
+		}
+		if(sourceType.equalsIgnoreCase("TAB"))
+		queryStr.append(" group by date(model.surveyTime),model.insertedBy.cadreSurveyUserId order by date(model.surveyTime),model.insertedBy.userName ");
+		if(sourceType.equalsIgnoreCase("WEB"))
+		queryStr.append(" group by date(model.surveyTime),model.insertedWebUser.userId order by date(model.surveyTime),model.insertedWebUser.firstName ");
+		if(sourceType.equalsIgnoreCase("ONLINE"))
+		queryStr.append(" group by date(model.surveyTime) order by date(model.surveyTime)"); 
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+		if(locationType.longValue() != 0l && locationType.longValue() != 1l){
+		query.setParameterList("locationIds", locationIds);
+		}
+		query.setParameter("sourceType", sourceType);
+		return query.list();
+		}
+
 }
