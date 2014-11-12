@@ -336,8 +336,10 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		}
 		Long userCountValue=null;
 		String countValue=request.getParameter("userCountValue");
-		if(countValue!="")
-		userCountValue=Long.parseLong(countValue);
+		if( countValue!= null && countValue!=""){
+			userCountValue=Long.parseLong(countValue);
+		}
+		
 
 		String task = request.getParameter("task");
 		if(task.equalsIgnoreCase("assemblyInfo")){
