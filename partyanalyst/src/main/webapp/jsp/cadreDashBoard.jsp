@@ -222,9 +222,9 @@ table.dataTable tr.odd {
 		</div>
 		
 		<div class="row-fluid fadeInUp">
-			<div class="span8 show-grid well well-small border-radius-0 mb-10">
+			<div class="span8 show-grid well well-small border-radius-0 mb-10" style=" min-height: 485px;">
 				<iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d3929013.1516925395!2d79.7399875!3d15.912899799999996!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1412166071097" width="580" height="300" frameborder="0" style="border:0"></iframe>
-				<table class="table table-bordered border-radius-0" style="margin-top: 5px;">
+				<table class="table table-bordered border-radius-0" style="margin-top: 5px; margin-bottom: 0px;">
 					<tbody >
 						<tr>
 							<td>
@@ -237,7 +237,7 @@ table.dataTable tr.odd {
 									<option value="4"> 4 Hours  </option>
 									<option value="5"> 5 Hours  </option>
 								</select>
-								<div style="text-align:center;" id="totalMembersWorkingTodayId">
+								<div style="text-align:center;padding-top: 6px;" id="totalMembersWorkingTodayId">
 									<img style=" margin-top: 36px;padding-left: 110px;" src="images/icons/search.gif"/>
 								</div>
 							</td>
@@ -537,7 +537,7 @@ $('#membersCount').addClass('animated fadeInX');
      getDistrictWiseCompletedPercentage(id,stateId);
    }
    function getWorkingMembersInfo(){
-        $("#totalMembersWorkingTodayId").html('<img style=" margin-top: 36px;padding-left: 110px;" src="images/icons/search.gif"/>');
+        $("#totalMembersWorkingTodayId").html('<img style=" margin-top: 36px;" src="images/icons/search.gif"/>');
 		var hoursCount = $('#hoursId').val();
          $.ajax({
           type:'GET',
@@ -547,11 +547,11 @@ $('#membersCount').addClass('animated fadeInX');
 		
 		if(hoursCount != 0)
 		{	     
-		  $("#totalMembersWorkingTodayId").html('<h2>'+result.totalCount+'</h2><p>Members In Field, <br/> in last '+hoursCount+' Hour(s) </p>');
+		  $("#totalMembersWorkingTodayId").html('<b style="font-size: 22px;">'+result.totalCount+'</b><p>TAB Members In Field, since last '+hoursCount+' Hour(s) </p><b style="font-size: 22px;">'+result.apCount+'</b><p>WEB Members working, since last '+hoursCount+' Hour(s) </p>');
 		}
 		else
 		{
-			$("#totalMembersWorkingTodayId").html('<h2>'+result.totalCount+'</h2><p> Members <br/> In Field Today </p>');
+			$("#totalMembersWorkingTodayId").html('<b style="font-size: 22px;">'+result.totalCount+'</b><p>TAB Members In Field Today </p><b style="font-size: 22px;">'+result.apCount+'</b><p>WEB Members  working Today </p>');
 		}
 		
 		/*
