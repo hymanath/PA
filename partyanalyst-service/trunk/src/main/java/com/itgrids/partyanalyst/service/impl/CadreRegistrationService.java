@@ -1128,14 +1128,21 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						tdpCadre.setLatitude(cadreRegistrationVO.getLatitude());
 					}
 					tdpCadre.setIsDeleted("N");
+					
 					if(cadreRegistrationVO.getSurveyTimeStr() != null && cadreRegistrationVO.getSurveyTimeStr().trim().length() > 0 && !cadreRegistrationVO.getSurveyTimeStr().trim().equalsIgnoreCase("null"))
 					{
 						//tdpCadre.setSurveyTime(convertToDateFormet(cadreRegistrationVO.getSurveyTimeStr()));
 						try {
 							SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT_24HRS);
-							tdpCadre.setSurveyTime(sdf.parse(cadreRegistrationVO.getSurveyTimeStr()));
+							if(sdf.parse(cadreRegistrationVO.getSurveyTimeStr()).before(tdpCadre.getInsertedTime()))
+								tdpCadre.setSurveyTime(sdf.parse(cadreRegistrationVO.getSurveyTimeStr()));
+							else
+							{
+								tdpCadre.setSurveyTime(tdpCadre.getInsertedTime());
+								tdpCadre.setRefSurveyTime(sdf.parse(cadreRegistrationVO.getSurveyTimeStr()));
+							}
 						} catch (Exception e) {
-							// TODO: handle exception
+							LOG.error(e);
 						}
 						
 					}else if( insertType.equalsIgnoreCase("new") && registrationType != null && (registrationType.equalsIgnoreCase("WEB") )){
