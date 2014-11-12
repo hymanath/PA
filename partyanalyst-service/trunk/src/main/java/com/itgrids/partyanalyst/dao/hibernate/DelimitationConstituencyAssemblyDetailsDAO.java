@@ -252,7 +252,14 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 				" where model.delimitationConstituency.constituency.electionScope.electionType.electionType = :electionType" +
 				" and model.delimitationConstituency.constituency.state.stateId = :stateID and model.delimitationConstituency.constituency.deformDate is null and model.delimitationConstituency.year = 2009");
 		if(region.equalsIgnoreCase("Telangana"))
-		str.append(" and model.constituency.district.districtId between 1 and 10 order by model.delimitationConstituency.constituency.name");
+		{
+			str.append(" and model.constituency.district.districtId between 1 and 10 order by model.delimitationConstituency.constituency.name");
+			
+		}
+		if(region.equalsIgnoreCase("All"))
+		{
+			str.append(" and model.constituency.district.districtId between 1 and 23 order by model.delimitationConstituency.constituency.name");
+		}
 		else
 		{
 			str.append(" and model.constituency.district.districtId between 11 and 23 order by model.delimitationConstituency.constituency.name");	
