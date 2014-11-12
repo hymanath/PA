@@ -34,8 +34,8 @@ import com.itgrids.partyanalyst.dto.CadreBasicInformationVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
+import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.model.CadreSurveyUser;
 import com.itgrids.partyanalyst.model.CadreSurveyUserAssignee;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
@@ -2526,7 +2526,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		return totalmins;
 	}
 	
-	public List<SurveyTransactionVO> getUserTrackingDetails(List<Object[]> userTrackList, List<SurveyTransactionVO> returnList,Map<Long,Long> assignedUsersMap)
+	public List<SurveyTransactionVO> getUserTrackingDetails(List<Object[]> userTrackList, List<SurveyTransactionVO> returnList,Map<Long,Long> assignedUsersMap,String type)
 	{
 		 List<SurveyTransactionVO> surveyTransactionVOList = null;
 		final SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -2535,6 +2535,47 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			Map<String,List<SurveyTransactionVO>> userCountByLocationMap = new TreeMap<String, List<SurveyTransactionVO>>();
 			Map<String,Long> assignCountByLocationMap = new TreeMap<String, Long>();
 			List<String> datesSet = new ArrayList<String>();
+			
+			Map<String,String> parliamentForAssemblyMap = new TreeMap<String, String>();
+			Map<String,Long> assemblyForAssemblyIdMap = new TreeMap<String, Long>();
+			Map<String,Long> parliamentForParliamentMap = new TreeMap<String, Long>();
+			List<Object[]> locationsList =  delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(0L);							
+				
+			List<SurveyTransactionVO> locationIdsList = new ArrayList<SurveyTransactionVO>();
+			if(locationsList != null && locationsList.size()>0)
+			{
+				for (Object[] param : locationsList)
+				{
+					SurveyTransactionVO surveyTransactionVO = new SurveyTransactionVO();
+					surveyTransactionVO.setId(param[0] != null ? Long.valueOf(param[0].toString()) :0L);
+					surveyTransactionVO.setName(param[1] != null ? param[1].toString() :"");
+					
+					locationIdsList.add(surveyTransactionVO);
+					parliamentForParliamentMap.put(surveyTransactionVO.getName(), surveyTransactionVO.getId());
+				}
+			}
+			
+			if(locationIdsList != null && locationIdsList.size()>0)
+			{
+				for (SurveyTransactionVO surveyTransctionVO : locationIdsList) 
+				{
+					List<Long> locationIdList = new ArrayList<Long>();
+					locationIdList.add(surveyTransctionVO.getId());
+					
+					locationsList = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesListForAListOfParliamentConstituency(locationIdList);
+											
+					if(locationsList != null && locationsList.size()>0)
+					{
+						for (Object[] param : locationsList)
+						{
+							assemblyForAssemblyIdMap.put(param[1] != null ? param[1].toString().trim() :"",param[0] != null ? Long.valueOf(param[0].toString().trim()):0L);
+							parliamentForAssemblyMap.put(param[1] != null ? param[1].toString().trim() :"", surveyTransctionVO.getName());
+						
+						}
+					}	
+					
+				}
+			}
 			
 			if(userTrackList != null && userTrackList.size()>0)
 			{
@@ -2551,7 +2592,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					
 					surveyTransactionVO.setId(Long.valueOf(location[0].toString().trim()));
 					surveyTransactionVO.setName(location[1].toString().trim());
-					
+					surveyTransactionVO.setLocationName(parliamentForAssemblyMap.get(surveyTransactionVO.getName()));
 					Long totalAssignUsers = assignedUsersMap.get(Long.valueOf(location[0].toString().trim())) != null ? assignedUsersMap.get(Long.valueOf(location[0].toString().trim())):0L;
 					Long workedUsers = location[3] != null ? Long.valueOf(location[3].toString().trim()):0L;
 					Long notWorkedUsers = totalAssignUsers - workedUsers;
@@ -2593,7 +2634,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					
 					SurveyTransactionVO surveyTransactionVO = new SurveyTransactionVO();	
 					surveyTransactionVO.setName(constiteuncy);
-					
+					surveyTransactionVO.setLocationName(parliamentForAssemblyMap.get(surveyTransactionVO.getName()));
 					if(datesSet != null && datesSet.size()>0)
 					{
 						for (String date : datesSet)
@@ -2607,6 +2648,15 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 							{
 								survyTransactionVO = new SurveyTransactionVO();
 								survyTransactionVO.setName(constiteuncy);
+								if(type != null)
+								{
+									survyTransactionVO.setId(parliamentForParliamentMap.get(constiteuncy));
+								}
+								else
+								{
+									survyTransactionVO.setId(assemblyForAssemblyIdMap.get(constiteuncy));
+								}
+								surveyTransactionVO.setLocationName(parliamentForAssemblyMap.get(surveyTransactionVO.getName()));
 								survyTransactionVO.setSurveyDate(date);
 								survyTransactionVO.setTeamSize(0L);
 								survyTransactionVO.setIdleTeamSize(assignCountByLocationMap.get(constiteuncy));
@@ -2652,7 +2702,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	}
 	
 	//99999
-	public List<SurveyTransactionVO> getLocationswiseUsersList(String usersType,String areaType, Long stateTypeId,String FdateStr, String TdateStr)
+	public List<SurveyTransactionVO> getLocationswiseUsersList(String areaId,String areaType, Long stateTypeId,String FdateStr, String TdateStr)
 	{
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -2662,6 +2712,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			Date fromDate = format.parse(FdateStr);
 			Date toDate = format.parse(TdateStr);
 			
+			String[] areaidsArr = areaId.split(",");
 			
 			List<Object[]> locationsList = new ArrayList<Object[]>(0);
 			StringBuilder queryStr = new StringBuilder();
@@ -2669,17 +2720,26 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			
 			if(areaType.equalsIgnoreCase("district"))
 			{
-				if(stateTypeId == 1L)
+				if(areaidsArr != null && areaidsArr.length > 1 )
 				{
-					locationsList = districtDAO.getDistrictIdAndNameByStateForRegion(1L,"Andhra Pradesh");
-				}
-				else if(stateTypeId == 2L)
-				{
-					locationsList = districtDAO.getDistrictIdAndNameByStateForRegion(1L,"Telangana");
+					if(stateTypeId == 1L)
+					{
+						locationsList = districtDAO.getDistrictIdAndNameByStateForRegion(1L,"Andhra Pradesh");
+					}
+					else if(stateTypeId == 2L)
+					{
+						locationsList = districtDAO.getDistrictIdAndNameByStateForRegion(1L,"Telangana");
+					}
+					else
+					{
+						locationsList = districtDAO.getDistrictIdAndNameByStateForRegion(1L,"All");
+					}
 				}
 				else
 				{
-					locationsList = districtDAO.getDistrictIdAndNameByStateForRegion(1L,"All");
+					List<Long> areaIdsList = new ArrayList<Long>(0);
+					areaIdsList.add(Long.valueOf(areaId));
+					locationsList = districtDAO.getDistrictDetailsByDistrictIds(areaIdsList);
 				}
 				
 				queryStr.append(" select distinct model.userAddress.district.districtId, model.userAddress.district.districtName , date(model.surveyTime) , count( distinct model.insertedBy.cadreSurveyUserId) " );
@@ -2696,17 +2756,27 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			
 			else if(areaType.equalsIgnoreCase("assembly"))
 			{
-				if(stateTypeId == 1L)
+				if(areaidsArr != null && areaidsArr.length > 1 )
 				{
-					locationsList = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(stateTypeId,1L,null);
-				}
-				else if(stateTypeId == 2L)
-				{
-					locationsList = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(stateTypeId,1L,null);
+					if(stateTypeId == 1L)
+					{
+						locationsList = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(stateTypeId,1L,null);
+					}
+					else if(stateTypeId == 2L)
+					{
+						locationsList = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(stateTypeId,1L,null);
+					}
+					else
+					{
+						locationsList = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(stateTypeId,1L,null);
+					}
+					
 				}
 				else
 				{
-					locationsList = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(stateTypeId,1L,null);
+					List<Long> areaIdsList = new ArrayList<Long>(0);
+					areaIdsList.add(Long.valueOf(areaId));
+					locationsList = constituencyDAO.getConstituencyInfoByConstituencyIdList(areaIdsList);
 				}
 				
 				queryStr.append(" select model.userAddress.constituency.constituencyId , model.userAddress.constituency.name,  date(model.surveyTime) , count( distinct model.insertedBy.cadreSurveyUserId) " );
@@ -2720,30 +2790,41 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			
 			else if(areaType.equalsIgnoreCase("Parliament"))
 			{
-				
-				if(stateTypeId == 0L )
+				if(areaidsArr != null && areaidsArr.length > 1 )
 				{
-					locationsList =  delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(0L);							
+					if(stateTypeId == 0L )
+					{
+						locationsList =  delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(0L);							
+					}
+					else
+					{
+						locationsList =  delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(stateTypeId);
+					}
+					
 				}
 				else
 				{
-					locationsList =  delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(stateTypeId);
+					Object[] parlaimentInfo = {areaidsArr[0],""};
+					locationsList.add(parlaimentInfo);
 				}
-				
-				queryStr.append(" select distinct model.userAddress.constituency.constituencyId , model.userAddress.constituency.name , date(model.surveyTime) , count( distinct model.insertedBy.cadreSurveyUserId) " );
-				queryStr.append(" from TdpCadre model, where model.userAddress.district.districtId in (:locationIdsList) and ( date(model.surveyTime) >=:fromDate  and date(model.surveyTime) <=:toDate ) ");
-				queryStr.append(" group by model.userAddress.district.districtId,date(model.surveyTime) order by date(model.insertedTime) desc ");
+				assignUsersQuery.append(" select distinct model2.delimitationConstituency.constituency.constituencyId, count( distinct model.cadreSurveyUserId ) " +
+						" from CadreSurveyUserAssignDetails model, DelimitationConstituencyAssemblyDetails model2  where " +
+						" model.isDeleted = 'N' and model.constituency.constituencyId = model2.constituency.constituencyId and model2.delimitationConstituency.year = 2009  " +
+						" group by  model2.delimitationConstituency.constituency.constituencyId ");	
+			
 			}
+			
 			
 			List<Long> locationIds = new ArrayList<Long>();
-			if(locationsList != null && locationsList.size()>0)
-			{
-				for (Object[] param : locationsList)
-				{
-					locationIds.add(param[0] != null ? Long.valueOf(param[0].toString()) :0L);
-				}
-			}
 			
+				if(locationsList != null && locationsList.size()>0)
+				{
+					for (Object[] param : locationsList)
+					{
+						locationIds.add(param[0] != null ? Long.valueOf(param[0].toString()) :0L);
+					}
+				}
+				
 			List<Object[]> userTrackList = null; 
 			Map<Long,Long> assignedUsersMap = new TreeMap<Long, Long>();
 			List<Object[]> assignedCandidates = cadreSurveyUserAssignDetailsDAO.getCandidatesInfo(assignUsersQuery.toString());
@@ -2759,38 +2840,22 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			if(areaType.equalsIgnoreCase("Parliament"))
 			{				
 				
-				if(locationIds != null && locationIds.size()>0)
-				{
-					for (Long locationId : locationIds) 
-					{
-						List<Long> locationIdsList = new ArrayList<Long>();
-						locationIdsList.add(locationId);
+				if(locationIds != null && locationIds.size() > 0)
+				{						
+						queryStr.append(" select model2.delimitationConstituency.constituency.constituencyId,model2.delimitationConstituency.constituency.name,date(model.surveyTime),count( distinct model.insertedBy.cadreSurveyUserId) " );
+						queryStr.append(" from TdpCadre model,DelimitationConstituencyAssemblyDetails model2 where model.userAddress.constituency.constituencyId = model2.constituency.constituencyId and " );
+						queryStr.append(" model2.delimitationConstituency.year = 2009 and model2.delimitationConstituency.constituency.constituencyId in (:locationIdsList) and ( date(model.surveyTime) >=:fromDate  and date(model.surveyTime) <=:toDate ) ");
+						queryStr.append(" group by model2.delimitationConstituency.constituency.constituencyId,date(model.surveyTime) order by date(model.insertedTime) desc ");
 						
-						locationsList = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesListForAListOfParliamentConstituency(locationIdsList);
-						
-						locationIdsList.clear();
-						
-						if(locationsList != null && locationsList.size()>0)
-						{
-							for (Object[] param : locationsList)
-							{
-								locationIdsList.add(param[0] != null ? Long.valueOf(param[0].toString()) :0L);
-							}
-						}	
-						
-						queryStr.append(" select model.userAddress.constituency.constituencyId , model.userAddress.constituency.name , date(model.surveyTime) , count( distinct model.insertedBy.cadreSurveyUserId) " );
-						queryStr.append(" from TdpCadre model, where model.userAddress.district.districtId in (:locationIdsList) and ( date(model.surveyTime) >=:fromDate  and date(model.surveyTime) <=:toDate ) ");
-						queryStr.append(" group by model.userAddress.district.districtId,date(model.surveyTime) order by date(model.insertedTime) desc ");
-						
-						userTrackList = tdpCadreDAO.getLocationWiseUsersDetails(locationIdsList, fromDate, toDate, queryStr.toString());
-						surveyTransactionVOList = getUserTrackingDetails(userTrackList,surveyTransactionVOList,assignedUsersMap);
-					}
+						userTrackList = tdpCadreDAO.getLocationWiseUsersDetails(locationIds, fromDate, toDate, queryStr.toString());
+					
+					surveyTransactionVOList = getUserTrackingDetails(userTrackList,surveyTransactionVOList,assignedUsersMap,"parliament");
 				}
 			}
 			else
 			{
 				userTrackList = tdpCadreDAO.getLocationWiseUsersDetails(locationIds, fromDate, toDate, queryStr.toString());
-				surveyTransactionVOList = getUserTrackingDetails(userTrackList,surveyTransactionVOList,assignedUsersMap);
+				surveyTransactionVOList = getUserTrackingDetails(userTrackList,surveyTransactionVOList,assignedUsersMap, null);
 			}
 
 			
@@ -2801,120 +2866,298 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		
 		return surveyTransactionVOList;
 	}
-	
-	
-	public List<SelectOptionVO> getUserTrackingRsults(String searchType,Long stateTypeId,String areaType,String FdateStr, String TdateStr)
+
+	public WSResultVO gettingUserDetailsByLocation(String location,Long locationId,String type,Date date)
 	{
-		List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>(0);
-		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-		try {
-			Date fromDate = format.parse(FdateStr);
-			Date toDate = format.parse(TdateStr);
+		 WSResultVO  finalVO=new WSResultVO();
+		try{
 			
-			List<Object[]> locationsList = new ArrayList<Object[]>(0);
-			StringBuilder queryStr = new StringBuilder();
-			if(areaType.equalsIgnoreCase("district"))
-			{
-				if(stateTypeId == 1L)
-				{
-					locationsList = districtDAO.getDistrictIdAndNameByStateForRegion(1L,"Andhra Pradesh");
-				}
-				else if(stateTypeId == 2L)
-				{
-					locationsList = districtDAO.getDistrictIdAndNameByStateForRegion(1L,"Telangana");
-				}
-				else
-				{
-					locationsList = districtDAO.getDistrictIdAndNameByStateForRegion(1L,"All");
-				}
+			Map<String,String> parliamentForAssemblyMap = new TreeMap<String, String>();
+			List<Object[]> locationsList =  delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(0L);							
 				
-				queryStr.append(" select  model.userAddress.district.districtId, model.userAddress.district.districtName , date(model.surveyTime) , count( distinct model.insertedBy.cadreSurveyUserId) " );
-				queryStr.append(" from TdpCadre model where model.userAddress.district.districtId in (:locationIdsList) and ( date(model.surveyTime) >=:fromDate  and date(model.surveyTime) <=:toDate ) ");
-				queryStr.append(" group by model.userAddress.district.districtId,date(model.surveyTime) order by date(model.insertedTime) desc ");
-				
-			}
-			
-			else if(areaType.equalsIgnoreCase("assembly"))
-			{
-				queryStr.append("  ");
-				if(stateTypeId == 1L)
-				{
-					locationsList = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(stateTypeId,1L,null);
-				}
-				else if(stateTypeId == 2L)
-				{
-					locationsList = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(stateTypeId,1L,null);
-				}
-				else
-				{
-					locationsList = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(stateTypeId,1L,null);
-				}
-			}
-			
-			else if(areaType.equalsIgnoreCase("Parliament"))
-			{
-				queryStr.append("  ");
-				
-				if(stateTypeId == 0L )
-				{
-					locationsList =  delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(0L);							
-				}
-				else
-				{
-					locationsList =  delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(stateTypeId);
-				}
-			}
-			
-			List<Long> locationIds = new ArrayList<Long>();
+			List<SurveyTransactionVO> locationIdsList = new ArrayList<SurveyTransactionVO>();
 			if(locationsList != null && locationsList.size()>0)
 			{
 				for (Object[] param : locationsList)
 				{
-					locationIds.add(param[0] != null ? Long.valueOf(param[0].toString()) :0L);
+					SurveyTransactionVO surveyTransactionVO = new SurveyTransactionVO();
+					surveyTransactionVO.setId(param[0] != null ? Long.valueOf(param[0].toString()) :0L);
+					surveyTransactionVO.setName(param[1] != null ? param[1].toString() :"");
+					
+					locationIdsList.add(surveyTransactionVO);
 				}
 			}
 			
-			List<Object[]> userTrackList = null; 
-			
-			if(areaType.equalsIgnoreCase("Parliament"))
-			{				
-				
-				if(locationIds != null && locationIds.size()>0)
-				{
-					for (Long locationId : locationIds) 
-					{
-						List<Long> locationIdsList = new ArrayList<Long>();
-						locationIdsList.add(locationId);
-						
-						locationsList = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesListForAListOfParliamentConstituency(locationIdsList);
-						
-						locationIdsList.clear();
-						
-						if(locationsList != null && locationsList.size()>0)
-						{
-							for (Object[] param : locationsList)
-							{
-								locationIdsList.add(param[0] != null ? Long.valueOf(param[0].toString()) :0L);
-							}
-						}	
-						//userTrackList = tdpCadreDAO.getLocationWiseUsersDetails(locationIdsList, fromDate, toDate, queryStr.toString());
-					}
-				}
-			}
-			
-			
-			
-			if(searchType.equalsIgnoreCase("submittedUsers"))
+			if(locationIdsList != null && locationIdsList.size()>0)
 			{
-				//userTrackList = cadreSurveyUserDAO.getSurveyCadreUserListByLocation(locationIds,queryStr.toString());
+				for (SurveyTransactionVO surveyTransctionVO : locationIdsList) 
+				{
+					List<Long> locationIdList = new ArrayList<Long>();
+					locationIdList.add(surveyTransctionVO.getId());
+					
+					locationsList = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesListForAListOfParliamentConstituency(locationIdList);
+											
+					if(locationsList != null && locationsList.size()>0)
+					{
+						for (Object[] param : locationsList)
+						{
+							parliamentForAssemblyMap.put(param[1] != null ? param[1].toString().trim() :"", surveyTransctionVO.getName());
+						}
+					}	
+					
+				}
 			}
-
+						
+			if(location.equalsIgnoreCase("constituency"))
+			{
+				List<Long> assignedUsersList=cadreSurveyUserAssignDetailsDAO.getCadreSurveyUserIdsByLocation(location,locationId,null);
+				
+				if(type.equalsIgnoreCase("submit")){
+				List<Long> startedList=null;
+				if(assignedUsersList!=null && assignedUsersList.size()>0){
+				   startedList=tdpCadreDAO.getCadreSurveyUsersStartedByLocation(assignedUsersList,date);
+				}
+				
+				if(startedList != null && startedList.size()>0)
+				{
+					List<Object[]> startedUsersDetailsList=cadreSurveyUserAssignDetailsDAO.getUsersDetails(startedList);
+					List<WSResultVO> startedUsersList=null;
+					if(startedUsersDetailsList!=null && startedUsersDetailsList.size()>0){
+						startedUsersList=new ArrayList<WSResultVO>();
+						for (Object[] objects : startedUsersDetailsList)//uname,name,nobileno,tabno
+						{
+							WSResultVO wsResultVO=new WSResultVO();
+							wsResultVO.setUserName(objects[0]!=null?objects[0].toString():"");
+							wsResultVO.setName(objects[1]!=null?objects[1].toString():"");
+							wsResultVO.setDescription(objects[2]!=null?objects[2].toString():"");//mobileNO.
+							wsResultVO.setPwd(objects[3]!=null?objects[3].toString():"");//tabno
+							wsResultVO.setLocation(objects[4]!=null?objects[4].toString():""); // constituency
+							wsResultVO.setUniqueCode(parliamentForAssemblyMap.get(wsResultVO.getLocation()));//parliament
+							startedUsersList.add(wsResultVO);
+						}
+						finalVO.setStartVO(startedUsersList);
+					  }
+				}
+				
+				}
+				else if(type.equalsIgnoreCase("notSubmit"))
+				{
+					
+						List<Long> startedList=null;
+						if(assignedUsersList!=null && assignedUsersList.size()>0){
+						   startedList=tdpCadreDAO.getCadreSurveyUsersStartedByLocation(assignedUsersList,date);
+						}
+						if(startedList != null && startedList.size()>0)
+						{
+							List<Object[]> startedUsersDetailsList=cadreSurveyUserAssignDetailsDAO.getUsersDetails(startedList);
+							List<WSResultVO> startedUsersList=null;
+							if(startedUsersDetailsList!=null && startedUsersDetailsList.size()>0){
+								startedUsersList=new ArrayList<WSResultVO>();
+								for (Object[] objects : startedUsersDetailsList)//uname,name,nobileno,tabno
+								{
+									WSResultVO wsResultVO=new WSResultVO();
+									wsResultVO.setUserName(objects[0]!=null?objects[0].toString():"");
+									wsResultVO.setName(objects[1]!=null?objects[1].toString():"");
+									wsResultVO.setDescription(objects[2]!=null?objects[2].toString():"");//mobileNO.
+									wsResultVO.setPwd(objects[3]!=null?objects[3].toString():"");//tabno
+									wsResultVO.setLocation(objects[4]!=null?objects[4].toString():"");
+									wsResultVO.setUniqueCode(parliamentForAssemblyMap.get(wsResultVO.getLocation()));
+									startedUsersList.add(wsResultVO);
+								}
+								finalVO.setStartVO(startedUsersList);
+							  }
+						}
+						
+				List<Long> notStartedList=new ArrayList<Long>();
+				if(assignedUsersList!=null && assignedUsersList.size()>0)
+				{
+					for (Long assignedUser : assignedUsersList)
+					{
+						if(assignedUser!=null){
+						  if(startedList!=null && startedList.size()>0){
+							if(!startedList.contains(assignedUser)){
+								notStartedList.add(assignedUser);
+							 }
+						   }
+						  else
+						  {
+							  notStartedList.add(assignedUser);
+						  }
+						 }
+					 }
+				 }
+				
+				List<Object[]> nonStartedUsersDetailsList=cadreSurveyUserAssignDetailsDAO.getUsersDetails(notStartedList);
+				List<WSResultVO> nonStartedUsersList=null;
+			    if(nonStartedUsersDetailsList!=null && nonStartedUsersDetailsList.size()>0){
+					 nonStartedUsersList=new ArrayList<WSResultVO>();
+						for (Object[] objects : nonStartedUsersDetailsList)//uname,name,nobileno,tabno
+						{
+							WSResultVO wsResultVO=new WSResultVO();
+							wsResultVO.setUserName(objects[0]!=null?objects[0].toString():"");
+							wsResultVO.setName(objects[1]!=null?objects[1].toString():"");
+							wsResultVO.setDescription(objects[2]!=null?objects[2].toString():"");//mobileNO.
+							wsResultVO.setPwd(objects[3]!=null?objects[3].toString():"");//tabno
+							wsResultVO.setLocation(objects[4]!=null?objects[4].toString():"");
+							wsResultVO.setUniqueCode(parliamentForAssemblyMap.get(wsResultVO.getLocation()));
+							nonStartedUsersList.add(wsResultVO);
+						}
+						finalVO.setNotStartVO(nonStartedUsersList);
+					  }
+				}	
+			}
 			
-		} catch (Exception e) {
-			LOG.error("Exception rised in getUserTrackingRsults() ",e);
-		}
+		    else if(location.equalsIgnoreCase("district"))
+			{
+		    	List<Long> assignedUsersList=cadreSurveyUserAssignDetailsDAO.getCadreSurveyUserIdsByLocation(location,locationId,null);
+		    	List<Long> startedList=null;
+				List<Long> notStartedList=new ArrayList<Long>();
+				if(assignedUsersList!=null && assignedUsersList.size()>0){
+				   startedList=tdpCadreDAO.getCadreSurveyUsersStartedByLocation(assignedUsersList,date);
+				}
+				if(assignedUsersList!=null && assignedUsersList.size()>0)
+				{
+					for (Long assignedUser : assignedUsersList)
+					{
+						if(assignedUser!=null){
+						  if(startedList!=null && startedList.size()>0){
+							if(!startedList.contains(assignedUser)){
+								notStartedList.add(assignedUser);
+							 }
+						   }
+						  else
+						  {
+							  notStartedList.add(assignedUser);
+						  }
+						 }
+					 }
+				 }
+				
+				if(startedList != null && startedList.size()>0)
+				{
+					 List<Object[]> startedUsersDetailsList=cadreSurveyUserAssignDetailsDAO.getUsersDetails(startedList);
+					 List<WSResultVO> startedUsersList=null;
+					 
+					 if(startedUsersDetailsList!=null && startedUsersDetailsList.size()>0){
+						startedUsersList=new ArrayList<WSResultVO>();
+						for (Object[] objects : startedUsersDetailsList)//uname,name,nobileno,tabno
+						{
+							WSResultVO wsResultVO=new WSResultVO();
+							wsResultVO.setUserName(objects[0]!=null?objects[0].toString():"");
+							wsResultVO.setName(objects[1]!=null?objects[1].toString():"");
+							wsResultVO.setDescription(objects[2]!=null?objects[2].toString():"");//mobileNO.
+							wsResultVO.setPwd(objects[3]!=null?objects[3].toString():"");//tabno
+							wsResultVO.setLocation(objects[4]!=null?objects[4].toString():"");
+							wsResultVO.setUniqueCode(parliamentForAssemblyMap.get(wsResultVO.getLocation()));
+							startedUsersList.add(wsResultVO);
+						}
+						finalVO.setStartVO(startedUsersList);
+					  }
+				}
+								 
+				 List<Object[]> nonStartedUsersDetailsList=cadreSurveyUserAssignDetailsDAO.getUsersDetails(notStartedList);
+				 List<WSResultVO> nonStartedUsersList=null;
+				 if(nonStartedUsersDetailsList!=null && nonStartedUsersDetailsList.size()>0){
+					 nonStartedUsersList=new ArrayList<WSResultVO>();
+						for (Object[] objects : nonStartedUsersDetailsList)//uname,name,nobileno,tabno
+						{
+							WSResultVO wsResultVO=new WSResultVO();
+							wsResultVO.setUserName(objects[0]!=null?objects[0].toString():"");
+							wsResultVO.setName(objects[1]!=null?objects[1].toString():"");
+							wsResultVO.setDescription(objects[2]!=null?objects[2].toString():"");//mobileNO.
+							wsResultVO.setPwd(objects[3]!=null?objects[3].toString():"");//tabno
+							wsResultVO.setLocation(objects[4]!=null?objects[4].toString():"");
+							wsResultVO.setUniqueCode(parliamentForAssemblyMap.get(wsResultVO.getLocation()));
+							nonStartedUsersList.add(wsResultVO);
+						}
+						finalVO.setNotStartVO(nonStartedUsersList);
+					  }
+			}				 
+		    else if(location.equalsIgnoreCase("parliament"))
+			{
+		    	StringBuilder assignUsersQuery = new StringBuilder();
+		    	
+		    	assignUsersQuery.append(" select distinct model.cadreSurveyUserId  " +
+						" from CadreSurveyUserAssignDetails model, DelimitationConstituencyAssemblyDetails model2  where " +
+						" model.isDeleted = 'N' and model.constituency.constituencyId = model2.constituency.constituencyId and model2.delimitationConstituency.year = 2009   ");	
+		    	
+							
+		    	List<Long> assignedUsersList=cadreSurveyUserAssignDetailsDAO.getCadreSurveyUserIdsByLocation(location,locationId,assignUsersQuery.toString());
+		    	List<Long> startedList=null;
+				List<Long> notStartedList=new ArrayList<Long>();
+				if(assignedUsersList!=null && assignedUsersList.size()>0){
+				   startedList=tdpCadreDAO.getCadreSurveyUsersStartedByLocation(assignedUsersList,date);
+				}
+				if(assignedUsersList!=null && assignedUsersList.size()>0)
+				{
+					for (Long assignedUser : assignedUsersList)
+					{
+						if(assignedUser!=null){
+						  if(startedList!=null && startedList.size()>0){
+							if(!startedList.contains(assignedUser)){
+								notStartedList.add(assignedUser);
+							 }
+						   }
+						  else
+						  {
+							  notStartedList.add(assignedUser);
+						  }
+						 }
+					 }
+				 }
+				
+				if(startedList != null && startedList.size()>0)
+				{
+					 List<Object[]> startedUsersDetailsList=cadreSurveyUserAssignDetailsDAO.getUsersDetails(startedList);
+					 List<WSResultVO> startedUsersList=null;
+					 
+					 if(startedUsersDetailsList!=null && startedUsersDetailsList.size()>0){
+						startedUsersList=new ArrayList<WSResultVO>();
+						for (Object[] objects : startedUsersDetailsList)//uname,name,nobileno,tabno
+						{
+							WSResultVO wsResultVO=new WSResultVO();
+							wsResultVO.setUserName(objects[0]!=null?objects[0].toString():"");
+							wsResultVO.setName(objects[1]!=null?objects[1].toString():"");
+							wsResultVO.setDescription(objects[2]!=null?objects[2].toString():"");//mobileNO.
+							wsResultVO.setPwd(objects[3]!=null?objects[3].toString():"");//tabno
+							wsResultVO.setLocation(objects[4]!=null?objects[4].toString():"");
+							wsResultVO.setUniqueCode(parliamentForAssemblyMap.get(wsResultVO.getLocation()));
+							startedUsersList.add(wsResultVO);
+						}
+						finalVO.setStartVO(startedUsersList);
+					  }
+				}
+								 
+				 List<Object[]> nonStartedUsersDetailsList=cadreSurveyUserAssignDetailsDAO.getUsersDetails(notStartedList);
+				 List<WSResultVO> nonStartedUsersList=null;
+				 if(nonStartedUsersDetailsList!=null && nonStartedUsersDetailsList.size()>0){
+					 nonStartedUsersList=new ArrayList<WSResultVO>();
+						for (Object[] objects : nonStartedUsersDetailsList)//uname,name,nobileno,tabno
+						{
+							WSResultVO wsResultVO=new WSResultVO();
+							wsResultVO.setUserName(objects[0]!=null?objects[0].toString():"");
+							wsResultVO.setName(objects[1]!=null?objects[1].toString():"");
+							wsResultVO.setDescription(objects[2]!=null?objects[2].toString():"");//mobileNO.
+							wsResultVO.setPwd(objects[3]!=null?objects[3].toString():"");//tabno
+							wsResultVO.setLocation(objects[4]!=null?objects[4].toString():"");
+							wsResultVO.setUniqueCode(parliamentForAssemblyMap.get(wsResultVO.getLocation()));
+							nonStartedUsersList.add(wsResultVO);
+						}
+						finalVO.setNotStartVO(nonStartedUsersList);
+					  }
+			}
+					
+		   }catch (Exception e)
+		   {
+			LOG.error("Exception rised in gettingUserDetailsByLocation() ",e);
+			
+		   }
+		 return  finalVO;
 		
-		return returnList;
-		
+	}
+
+	public WSResultVO getAllParliamentsForAssembly()
+	{
+		return null;
 	}
 }

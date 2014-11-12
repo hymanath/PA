@@ -657,7 +657,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 					locationsList =  delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(stateTypeId);
 				}
 			}
-		
+			/*	
 			List<Long> locationIds = new ArrayList<Long>();
 			if(locationsList != null && locationsList.size()>0)
 			{
@@ -671,7 +671,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			{				
 				
 				locationsList = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesListForAListOfParliamentConstituency(locationIds);
-				
+			
 				locationIds.clear();
 				
 				if(locationsList != null && locationsList.size()>0)
@@ -698,7 +698,8 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			{
 				locationsList = cadreTxnDetailsDAO.findLocationDetailsByAssemblyIds(locationIds,queryStr.toString());
 			}
-
+*/
+			
 			if(locationsList != null && locationsList.size()>0)
 			{
 				constituencyVOList = new ArrayList<SelectOptionVO>();
