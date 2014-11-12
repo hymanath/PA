@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
@@ -2577,6 +2578,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				}
 			}
 			
+			List<Long> workingConstituencyList = new ArrayList<Long>();
 			if(userTrackList != null && userTrackList.size()>0)
 			{
 				for (Object[] location : userTrackList) 
@@ -2609,6 +2611,8 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					
 					userCountByLocationMap.put(location[1].toString().trim(), surveyTransactionVOList);
 					assignCountByLocationMap.put(location[1].toString().trim(), totalAssignUsers);
+					if(!workingConstituencyList.contains(surveyTransactionVO.getId()))
+					workingConstituencyList.add(surveyTransactionVO.getId());
 				}
 			}
 			
@@ -2623,10 +2627,94 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			    }
 			});	
 			
+			
+			if(workingConstituencyList != null && workingConstituencyList.size()>0)
+			{
+				List<Object[]> constituencyInfo = constituencyDAO.getConstituencyInfoByNotConstituencyIdList(workingConstituencyList,type);
+				
+				if(constituencyInfo != null && constituencyInfo.size()>0)
+				{
+					for (Object[] constituency : constituencyInfo) 
+					{
+						if(datesSet != null && datesSet.size()>0)
+						{
+							for (String date : datesSet) {
+
+								if(userCountByLocationMap.get(constituency[1].toString()) != null)
+								{
+									surveyTransactionVOList = userCountByLocationMap.get(constituency[1].toString().trim());
+								}
+								
+								SurveyTransactionVO surveyTransactionVO = new SurveyTransactionVO();
+								
+								surveyTransactionVO.setId(Long.valueOf(constituency[0].toString().trim()));
+								surveyTransactionVO.setName(constituency[1].toString().trim());
+								surveyTransactionVO.setLocationName(parliamentForAssemblyMap.get(surveyTransactionVO.getName()));
+								Long totalAssignUsers = assignedUsersMap.get(surveyTransactionVO.getId());
+								Long workedUsers = 0L;
+								Long notWorkedUsers = totalAssignUsers - workedUsers;
+								
+								surveyTransactionVO.setTeamSize(workedUsers);
+								surveyTransactionVO.setIdleTeamSize(notWorkedUsers);
+								surveyTransactionVO.setSurveyDate(date);
+								surveyTransactionVOList.add(surveyTransactionVO);
+								
+								
+								userCountByLocationMap.put(constituency[1].toString().trim(), surveyTransactionVOList);
+								assignCountByLocationMap.put(constituency[1].toString().trim(), totalAssignUsers);
+							}
+						}
+						
+					}
+				}
+			}
+			else
+			{
+
+				List<Object[]> constituencyInfo = constituencyDAO.getConstituencyInfoByNotConstituencyIdList(workingConstituencyList,null);
+				
+				if(constituencyInfo != null && constituencyInfo.size()>0)
+				{
+					for (Object[] constituency : constituencyInfo) 
+					{
+						if(datesSet != null && datesSet.size()>0)
+						{
+							for (String date : datesSet) {
+
+								if(userCountByLocationMap.get(constituency[1].toString()) != null)
+								{
+									surveyTransactionVOList = userCountByLocationMap.get(constituency[1].toString().trim());
+								}
+								
+								SurveyTransactionVO surveyTransactionVO = new SurveyTransactionVO();
+								
+								surveyTransactionVO.setId(Long.valueOf(constituency[0].toString().trim()));
+								surveyTransactionVO.setName(constituency[1].toString().trim());
+								surveyTransactionVO.setLocationName(parliamentForAssemblyMap.get(surveyTransactionVO.getName()));
+								Long totalAssignUsers = assignedUsersMap.get(surveyTransactionVO.getId());
+								Long workedUsers = 0L;
+								Long notWorkedUsers = totalAssignUsers - workedUsers;
+								
+								surveyTransactionVO.setTeamSize(workedUsers);
+								surveyTransactionVO.setIdleTeamSize(notWorkedUsers);
+								surveyTransactionVO.setSurveyDate(date);
+								surveyTransactionVOList.add(surveyTransactionVO);
+								
+								
+								userCountByLocationMap.put(constituency[1].toString().trim(), surveyTransactionVOList);
+								assignCountByLocationMap.put(constituency[1].toString().trim(), totalAssignUsers);
+							}
+						}
+						
+					}
+				}
+			
+			}
+			
 			if(userCountByLocationMap != null && userCountByLocationMap.size()>0)
 			{
 				returnList = (returnList != null ? returnList :new ArrayList<SurveyTransactionVO>()) ;
-				
+								
 				for (String constiteuncy : userCountByLocationMap.keySet()) 
 				{
 					List<SurveyTransactionVO> list = userCountByLocationMap.get(constiteuncy);
@@ -2639,7 +2727,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					{
 						for (String date : datesSet)
 						{
-							SurveyTransactionVO survyTransactionVO = getMatchedVOForDate(list,date);
+							SurveyTransactionVO survyTransactionVO = getMatchedVOForDate(list,date,constiteuncy);
 							if(survyTransactionVO != null)
 							{
 								constituencyWiseList.add(survyTransactionVO);
@@ -2648,7 +2736,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 							{
 								survyTransactionVO = new SurveyTransactionVO();
 								survyTransactionVO.setName(constiteuncy);
-								if(type != null)
+								if(type.equalsIgnoreCase("Parliament"))
 								{
 									survyTransactionVO.setId(parliamentForParliamentMap.get(constiteuncy));
 								}
@@ -2678,7 +2766,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		return returnList;
 	}
 	
-	public SurveyTransactionVO getMatchedVOForDate(List<SurveyTransactionVO> datesWiseReportList,String date)
+	public SurveyTransactionVO getMatchedVOForDate(List<SurveyTransactionVO> datesWiseReportList,String date,String locationName)
 	{
 		SurveyTransactionVO vo = null;
 		try {
@@ -2687,7 +2775,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			{
 				for (SurveyTransactionVO surveyTransactionVO : datesWiseReportList) 
 				{
-					if(surveyTransactionVO.getSurveyDate().trim().equalsIgnoreCase(date.trim()))
+					if(surveyTransactionVO.getSurveyDate().trim().equalsIgnoreCase(date.trim()) && surveyTransactionVO.getName().trim().equalsIgnoreCase(locationName))
 					{
 						return surveyTransactionVO;
 					}
@@ -2742,9 +2830,10 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					locationsList = districtDAO.getDistrictDetailsByDistrictIds(areaIdsList);
 				}
 				
-				queryStr.append(" select distinct model.userAddress.district.districtId, model.userAddress.district.districtName , date(model.surveyTime) , count( distinct model.insertedBy.cadreSurveyUserId) " );
-				queryStr.append(" from TdpCadre model where model.userAddress.district.districtId in (:locationIdsList) and ( date(model.surveyTime) >=:fromDate  and date(model.surveyTime) <=:toDate ) ");
-				queryStr.append(" group by model.userAddress.district.districtId,date(model.surveyTime) order by date(model.insertedTime) desc ");
+				queryStr.append(" select distinct model2.constituency.district.districtId, model2.constituency.district.districtName , date(model.surveyTime) , count( distinct model.insertedBy.cadreSurveyUserId) " );
+				queryStr.append(" from TdpCadre model,CadreSurveyUserAssignDetails model2 where model2.constituency.district.districtId in (:locationIdsList) and ( date(model.surveyTime) >=:fromDate  and date(model.surveyTime) <=:toDate ) ");
+				queryStr.append(" and model2.cadreSurveyUser.cadreSurveyUserId = model.insertedBy.cadreSurveyUserId ");
+				queryStr.append(" group by  model2.constituency.district.districtId,date(model.surveyTime) order by date(model.insertedTime) desc ");
 				/*
 				 * Query query = getSession().createQuery(" select model.constituencyId, count(model.cadreSurveyUserId)  
 				 *  " +
@@ -2778,10 +2867,11 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					areaIdsList.add(Long.valueOf(areaId));
 					locationsList = constituencyDAO.getConstituencyInfoByConstituencyIdList(areaIdsList);
 				}
-				
-				queryStr.append(" select model.userAddress.constituency.constituencyId , model.userAddress.constituency.name,  date(model.surveyTime) , count( distinct model.insertedBy.cadreSurveyUserId) " );
-				queryStr.append(" from TdpCadre model where model.userAddress.constituency.constituencyId in (:locationIdsList) and ( date(model.surveyTime) >=:fromDate  and date(model.surveyTime) <=:toDate ) ");
-				queryStr.append(" group by model.userAddress.constituency.constituencyId, date(model.surveyTime) order by date(model.insertedTime) desc ");
+								
+				queryStr.append(" select model2.constituency.constituencyId , model2.constituency.name,  date(model.surveyTime) , count( distinct model.insertedBy.cadreSurveyUserId) " );
+				queryStr.append(" from TdpCadre model , CadreSurveyUserAssignDetails model2 where model2.constituency.constituencyId in (:locationIdsList) and ( date(model.surveyTime) >=:fromDate  and date(model.surveyTime) <=:toDate ) ");
+				queryStr.append(" and model2.cadreSurveyUser.cadreSurveyUserId = model.insertedBy.cadreSurveyUserId ");
+				queryStr.append(" group by model2.constituency.constituencyId, date(model.surveyTime) order by date(model.insertedTime) desc ");
 				
 				assignUsersQuery.append(" select distinct model.constituency.constituencyId, count( distinct model.cadreSurveyUserId ) from CadreSurveyUserAssignDetails model where " +
 						" model.isDeleted = 'N' group by model.constituency.constituencyId ");	
@@ -2849,13 +2939,13 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 						
 						userTrackList = tdpCadreDAO.getLocationWiseUsersDetails(locationIds, fromDate, toDate, queryStr.toString());
 					
-					surveyTransactionVOList = getUserTrackingDetails(userTrackList,surveyTransactionVOList,assignedUsersMap,"parliament");
+					surveyTransactionVOList = getUserTrackingDetails(userTrackList,surveyTransactionVOList,assignedUsersMap,areaType);
 				}
 			}
 			else
 			{
 				userTrackList = tdpCadreDAO.getLocationWiseUsersDetails(locationIds, fromDate, toDate, queryStr.toString());
-				surveyTransactionVOList = getUserTrackingDetails(userTrackList,surveyTransactionVOList,assignedUsersMap, null);
+				surveyTransactionVOList = getUserTrackingDetails(userTrackList,surveyTransactionVOList,assignedUsersMap, areaType);
 			}
 
 			
