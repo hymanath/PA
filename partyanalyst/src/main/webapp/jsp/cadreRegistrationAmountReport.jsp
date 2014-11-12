@@ -300,6 +300,7 @@
 						str +='<th  rowspan = "2"  class="text-align1">USERNAME</th>';
 						str +='<th  rowspan = "2"  class="text-align1">NAME</th>';
 						str +='<th  rowspan = "2" class="text-align1">MOBILE</th>';
+						str +='<th  rowspan = "2" class="text-align1">USER TYPE</th>';
 						for(var i in result[0].infoList)
 						{
 							str+='<th colspan="4">'+result[0].infoList[i].date+'</th>';
@@ -328,6 +329,7 @@
 						str +='<td class="text-align1">'+result[i].userName+'</td>';
 						str +='<td class="text-align1">'+result[i].name+'</td>';
 						str +='<td class="text-align1">'+result[i].mobileNo+'</td>';
+						str +='<td class="text-align1">'+result[i].userType+'</td>';
 						for(var j in result[i].infoList)
 						{
 							str +='<td class="text-align1">'+result[i].infoList[j].totalCount+'</td>';
@@ -337,7 +339,7 @@
 						}
 						
 						
-					str +='</tr>';
+						str +='</tr>';
 					}
 					
 				}
@@ -363,6 +365,7 @@
 						str +='<th class="text-align1">USERNAME</th>';
 						str +='<th class="text-align1">NAME</th>';
 						str +='<th class="text-align1">MOBILE</th>';
+						str +='<th class="text-align1">USER TYPE</th>';
 						str +='<th class="text-align1">TOTAL RECORDS</th>';
 						str +='<th class="text-align1">AMOUNT</th>';
 						str +='<th class="text-align1">PAID</th>';
@@ -378,6 +381,7 @@
 						str +='<td class="text-align1">'+results[i].userName+'</td>';
 						str +='<td class="text-align1">'+results[i].name+'</td>';
 						str +='<td class="text-align1">'+results[i].mobileNo+'</td>';
+						str +='<td class="text-align1">'+results[i].userType+'</td>';
 						str +='<td class="text-align1">'+results[i].totalCount+'</td>';
 						str +='<td class="text-align1">'+results[i].totalAmount+'</td>';
 						str +='<td class="text-align1">'+results[i].paidAmount+'</td>';
