@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WSResultVO implements Serializable{
 
@@ -18,6 +20,8 @@ public class WSResultVO implements Serializable{
 	private Long constituencyId;
 	private Long publicationDateId;
 	
+	private List<WSResultVO> startVO=new ArrayList<WSResultVO>();
+	private List<WSResultVO> notStartVO=new ArrayList<WSResultVO>();
 	
 	public Long getId() {
 		return id;
@@ -78,6 +82,18 @@ public class WSResultVO implements Serializable{
 	}
 	public void setPublicationDateId(Long publicationDateId) {
 		this.publicationDateId = publicationDateId;
+	}
+	public List<WSResultVO> getStartVO() {
+		return startVO;
+	}
+	public void setStartVO(List<WSResultVO> startVO) {
+		this.startVO = startVO;
+	}
+	public List<WSResultVO> getNotStartVO() {
+		return notStartVO;
+	}
+	public void setNotStartVO(List<WSResultVO> notStartVO) {
+		this.notStartVO = notStartVO;
 	}
 
 }
