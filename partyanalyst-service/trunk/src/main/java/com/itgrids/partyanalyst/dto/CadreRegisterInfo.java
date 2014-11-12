@@ -38,8 +38,25 @@ public class CadreRegisterInfo implements Serializable{
 	private String tabNo;
 	private String fromDate;
 	private Long avgTime;
+	public Long getApPartyWebCount() {
+		return apPartyWebCount;
+	}
+
+	public void setApPartyWebCount(Long apPartyWebCount) {
+		this.apPartyWebCount = apPartyWebCount;
+	}
+
+	public Long getTgPartyWebCount() {
+		return tgPartyWebCount;
+	}
+
+	public void setTgPartyWebCount(Long tgPartyWebCount) {
+		this.tgPartyWebCount = tgPartyWebCount;
+	}
+
 	private boolean slowUser = false;
-	
+	private Long apPartyWebCount;
+	private Long tgPartyWebCount;
 	
 	
 	

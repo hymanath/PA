@@ -229,14 +229,17 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		Long tgCount = 0l;
 		Long apWebCount = 0l;
 		Long tgWebCount = 0l;
+		Long apPartyWebCount = 0l;
+		Long tgPartyWebCount = 0l;
 		Long apTabCount = 0l;
 		Long tgTabCount = 0l;
 		Long apOnlineCount = 0l;
 		Long tgOnlineCount = 0l;
 		List<Object[]> districtWiseCount = null;
+		List<Object[]> districtWiseCount1 = null;
 		try{
 			districtWiseCount = tdpCadreDAO.getRegisterCadreInfoForUserBetweenDates(fromDate, toDate,constituencyIds,districtIds);
-			
+			districtWiseCount1 = tdpCadreDAO.getRegisterCadreInfoForUserBetweenDates1(fromDate, toDate,constituencyIds,districtIds);
 			if(districtWiseCount != null && districtWiseCount.size() > 0)
 		    for(Object[] districtCount:districtWiseCount){
 			if(((Long)districtCount[1]).longValue() > 10l){
@@ -258,6 +261,27 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 						tgOnlineCount = tgOnlineCount + (Long)districtCount[0];	
 			}
 		  }
+			if(districtWiseCount1 != null && districtWiseCount1.size() > 0)
+			    for(Object[] districtCnt:districtWiseCount1){
+				if(((Long)districtCnt[1]).longValue() > 10l){
+					apCount = apCount+(Long)districtCnt[0];
+					if(districtCnt[2] != null && districtCnt[2].toString().trim().equalsIgnoreCase("WEB"))
+						apPartyWebCount = apPartyWebCount +  (Long)districtCnt[0];
+					/*else if(districtCnt[2] != null && districtCnt[2].toString().trim().equalsIgnoreCase("TAB"))
+					apTabCount = apTabCount + 	 (Long)districtCnt[0];
+					else if(districtCnt[2] != null && districtCnt[2].toString().trim().equalsIgnoreCase("ONLINE"))
+						apOnlineCount = apOnlineCount + 	 (Long)districtCnt[0];	*/
+					
+				}else{
+					tgCount = tgCount+(Long)districtCnt[0];	
+					if(districtCnt[2] != null && districtCnt[2].toString().trim().equalsIgnoreCase("WEB"))
+						tgPartyWebCount = tgPartyWebCount +  (Long)districtCnt[0];
+						/*else if(districtCnt[2] != null && districtCnt[2].toString().trim().equalsIgnoreCase("TAB"))
+						tgTabCount = tgTabCount + 	 (Long)districtCnt[0];
+						else if(districtCnt[2] != null && districtCnt[2].toString().trim().equalsIgnoreCase("ONLINE"))
+							tgOnlineCount = tgOnlineCount + (Long)districtCnt[0];	*/
+				}
+			  }
 		}catch(Exception e){
 			LOG.error("Exception rised in getRegisterCount",e);
 		}
@@ -270,6 +294,8 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		info.setTgTabCount(tgTabCount);
 		info.setTgOnlineCount(tgOnlineCount);
 		info.setTotalCount(apCount+tgCount);
+		info.setApPartyWebCount(apPartyWebCount);
+		info.setTgPartyWebCount(tgPartyWebCount);
 		return info;
 	}
 	 
