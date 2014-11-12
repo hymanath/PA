@@ -16,6 +16,7 @@ public class CadreAmountDetailsVO implements Serializable{
 	private Long difference = 0l;
 	private String date;
 	private List<CadreAmountDetailsVO> infoList;
+	private String userType;
 	
 	private Long totalRecords;
 	private Long ttAmount;
@@ -119,6 +120,12 @@ public class CadreAmountDetailsVO implements Serializable{
 	}
 	public void setDate(String date) {
 		this.date = date;
+	}
+	public String getUserType() {
+		return userType;
+	}
+	public void setUserType(String userType) {
+		this.userType = userType;
 	}
 	
 	

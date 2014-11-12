@@ -188,6 +188,8 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 			Map<String,Map<Long, CadreAmountDetailsVO>> datesMap = new HashMap<String, Map<Long,CadreAmountDetailsVO>>();
 			Map<Long, CadreAmountDetailsVO> finalMap = null;
 			Map<Long, CadreAmountDetailsVO> usersMap = null;
+			Map<Long, CadreAmountDetailsVO> webFinalMap = null;
+			Map<Long, CadreAmountDetailsVO> webUsersMap = null;
 			Map<Long,String> constiMap = null;
 			List<Object[]> list1 = cadreRegAmountDetailsDAO.getAmountDetailsOfUserByDate(fromDate,toDate);
 			if(list1 != null && list1.size() > 0)
@@ -209,6 +211,7 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 							cd.setUserName(obj[1]!=null?obj[1].toString():"-");
 							cd.setName(obj[2]!=null?obj[2].toString():"-");
 							cd.setMobileNo(obj[3]!=null?obj[3].toString():"-");
+							cd.setUserType("TAB");
 							cd.setPaidAmount(obj[4]!=null?Long.valueOf(obj[4].toString()):0l);
 							finalMap.put(cd.getUserId(), cd);
 						}
@@ -218,6 +221,7 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 				}
 				
 				Set<Long> userIds = new java.util.HashSet<Long>();
+				Set<Long> webUserIds = new java.util.HashSet<Long>();
 				List<Object[]> userWiseDetails = tdpCadreDAO.getUserBetweenDates(fromDate, toDate);
 				if(userWiseDetails != null && userWiseDetails.size() > 0)
 				{
@@ -237,6 +241,7 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 								cd.setUserName(obj[1]!=null?obj[1].toString():"-");
 								cd.setName(obj[2]!=null?obj[2].toString():"-");
 								cd.setMobileNo(obj[3]!=null?obj[3].toString():"-");
+								cd.setUserType("TAB");
 								finalMap.put(cd.getUserId(), cd);
 							}
 							
@@ -244,13 +249,40 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 							
 						}
 					}
+				}	
+					
+					List<Object[]> webUserWiseDetails =  tdpCadreDAO.getUserBetweenDatesForWeb(fromDate, toDate);
+					if(webUserWiseDetails != null && webUserWiseDetails.size() > 0)
+					{
+						webUsersMap = new HashMap<Long, CadreAmountDetailsVO>();
+						for(String dateStr : datesMap.keySet())
+						{
+							webFinalMap = datesMap.get(dateStr);
+							for (Object[] obj : webUserWiseDetails)
+							{
+								webUserIds.add(Long.valueOf(obj[0].toString()));
+								CadreAmountDetailsVO cd = webFinalMap.get(Long.valueOf(obj[0].toString()));
+								
+								if(cd == null)
+								{
+									cd = new CadreAmountDetailsVO();
+									cd.setUserId(Long.valueOf(obj[0].toString()));
+									cd.setUserName(obj[1]!=null?obj[1].toString():"-");
+									cd.setName(obj[2]!=null?obj[2].toString():"-");
+									cd.setMobileNo(obj[3]!=null?obj[3].toString():"-");
+									cd.setUserType("WEB");
+									webFinalMap.put(cd.getUserId(), cd);
+								}
+								
+								webUsersMap.put(Long.valueOf(obj[0].toString()), cd);
+								
+							}
+						}
+					}
 					
 					
-					//SETTING CONSTITUENCY AND TOTAL COUNTS FOR USER
-					List<Object[]> list2 = new ArrayList<Object[]>();
-					/*userIds = new java.util.HashSet<Long>();
-					userIds.add(909l);*/
-					if(userIds!=null && userIds.size()>0){
+					if(userIds!=null && userIds.size()>0)
+					{
 						
 							List<Object[]> constiDetails = cadreSurveyUserAssignDetailsDAO.getUserConstituencyDetails(new ArrayList<Long>(userIds));
 							if(constiDetails != null)
@@ -264,13 +296,14 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 									}
 								}
 							}
-						 list2 = tdpCadreDAO.getCandidateDataCollectedByDate(fromDate, toDate, new ArrayList<Long>(userIds));
+						
 						
 					}
+					List<Object[]> list2 = tdpCadreDAO.getCandidateDataCollectedByDate(fromDate, toDate, new ArrayList<Long>(userIds));
 					if(list2!=null && list2.size()>0)
 					{
-						for(Object[] obj:list2){
-							//CadreAmountDetailsVO cd = getMatchedCadreCollector(finalList, Long.valueOf(obj[0].toString()));
+						for(Object[] obj:list2)
+						{		
 							if(obj[4].toString() != null)
 							{
 								finalMap = datesMap.get(obj[4].toString());
@@ -318,26 +351,198 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 									finalMap.put(Long.valueOf(obj[0].toString()), cd);
 									
 								}
-								
-								
+							}
+						}
+					}
+					
+					List<Object[]> list3 = tdpCadreDAO.getCandidateDataCollectedByDateWeb(fromDate, toDate, new ArrayList<Long>(webUserIds));
+					if(list3!=null && list3.size()>0)
+					{
+						for(Object[] obj:list3)
+						{		
+							if(obj[4].toString() != null)
+							{
+								webFinalMap = datesMap.get(obj[4].toString());
+								if(webFinalMap == null)
+								{
+									webFinalMap = new HashMap<Long, CadreAmountDetailsVO>();
+									datesMap.put(obj[4].toString(), webFinalMap);
+								}
+								CadreAmountDetailsVO cd = webFinalMap.get(Long.valueOf(obj[0].toString()));
+								if(cd != null)
+								{
+									cd.setTotalCount(obj[1]!=null?Long.valueOf(obj[1].toString()):0l);
+									cd.setConstituencyId(Long.valueOf(obj[2].toString()));
+									cd.setConstituency(obj[3].toString());
+									cd.setTotalAmount(cd.getTotalCount()*100);
+									
+									CadreAmountDetailsVO cd1 = webFinalMap.get(Long.valueOf(obj[0].toString()));
+									if(cd1 != null)
+									{
+										cd.setDifference(cd.getTotalAmount()-cd1.getPaidAmount());
+									}
+									else
+									{
+										cd.setDifference(cd.getTotalAmount()-0l);
+									}
+									webFinalMap.put(Long.valueOf(obj[0].toString()), cd);
+								}
+								else
+								{
+									cd = new CadreAmountDetailsVO();
+									cd.setTotalCount(obj[1]!=null?Long.valueOf(obj[1].toString()):0l);
+									cd.setConstituencyId(Long.valueOf(obj[2].toString()));
+									cd.setConstituency(obj[3].toString());
+									cd.setTotalAmount(cd.getTotalCount()*100);
+									
+									CadreAmountDetailsVO cd1 = webFinalMap.get(Long.valueOf(obj[0].toString()));
+									if(cd1 != null)
+									{
+										cd.setDifference(cd.getTotalAmount()-cd1.getPaidAmount());
+									}
+									else
+									{
+										cd.setDifference(cd.getTotalAmount()-0l);
+									}
+									webFinalMap.put(Long.valueOf(obj[0].toString()), cd);
+									
+								}
+							}
+						}
+					}
+					
+					List<Object[]> list4 = tdpCadreDAO.getCandidateDataCollectedByDateWebParty(fromDate, toDate, 3930l);
+					if(list4!=null && list4.size()>0)
+					{
+						for(Object[] obj:list4)
+						{		
+							if(obj[4].toString() != null)
+							{
+								webFinalMap = datesMap.get(obj[4].toString());
+								if(webFinalMap == null)
+								{
+									webFinalMap = new HashMap<Long, CadreAmountDetailsVO>();
+									datesMap.put(obj[4].toString(), webFinalMap);
+								}
+								CadreAmountDetailsVO cd = webFinalMap.get(Long.valueOf(obj[0].toString()));
+								if(cd != null)
+								{
+									cd.setUserId(3930l);
+									cd.setUserName("tdp_cadre");
+									cd.setName("CADRE");
+									cd.setMobileNo("9999999999");
+									cd.setUserType("WEB-PARTY");
+									cd.setTotalCount(obj[1]!=null?Long.valueOf(obj[1].toString()):0l);
+									cd.setConstituencyId(Long.valueOf(obj[2].toString()));
+									cd.setConstituency("STATE");
+									cd.setTotalAmount(cd.getTotalCount()*100);
+									CadreAmountDetailsVO cd1 = webFinalMap.get(Long.valueOf(obj[0].toString()));
+									if(cd1 != null)
+									{
+										cd.setDifference(cd.getTotalAmount()-cd1.getPaidAmount());
+									}
+									else
+									{
+										cd.setDifference(cd.getTotalAmount()-0l);
+									}
+									webFinalMap.put(Long.valueOf(obj[0].toString()), cd);
+								}
+								else
+								{
+									cd = new CadreAmountDetailsVO();
+									cd.setUserId(3930l);
+									cd.setUserName("tdp_cadre");
+									cd.setName("CADRE");
+									cd.setMobileNo("9999999999");
+									cd.setUserType("WEB-PARTY");
+									cd.setTotalCount(obj[1]!=null?Long.valueOf(obj[1].toString()):0l);
+									cd.setConstituencyId(Long.valueOf(obj[2].toString()));
+									cd.setConstituency("STATE");
+									cd.setTotalAmount(cd.getTotalCount()*100);
+									CadreAmountDetailsVO cd1 = webFinalMap.get(Long.valueOf(obj[0].toString()));
+									if(cd1 != null)
+									{
+										cd.setDifference(cd.getTotalAmount()-cd1.getPaidAmount());
+									}
+									else
+									{
+										cd.setDifference(cd.getTotalAmount()-0l);
+									}
+									webFinalMap.put(Long.valueOf(obj[0].toString()), cd);
+								}
 								
 							}
-							
-							
-							
-							
+						}
+					}
+					if(usersMap != null && usersMap.size() > 0)
+					{
+						finalList = new ArrayList<CadreAmountDetailsVO>();
+						for (Long userId : usersMap.keySet())
+						{
+							if(constiMap.get(userId) != null)
+							{
+								CadreAmountDetailsVO cd = usersMap.get(userId);
+								cd.setConstituency(constiMap.get(userId));
+								List<CadreAmountDetailsVO> subList = new ArrayList<CadreAmountDetailsVO>();
+								
+								if(datesMap != null && datesMap.size() > 0)
+								{
+									for (String dateStr : datesMap.keySet()) 
+									{
+										CadreAmountDetailsVO subVO = new CadreAmountDetailsVO();
+										subVO.setDate(dateStr);
+										Map<Long, CadreAmountDetailsVO> dataMap = datesMap.get(dateStr);
+										if(dataMap != null && dataMap.size() > 0 )
+										{
+											
+											CadreAmountDetailsVO vo = dataMap.get(userId);
+											
+											
+											if(vo != null)
+											{
+												subVO.setTotalCount(vo.getTotalCount());
+												subVO.setPaidAmount(vo.getPaidAmount());
+												subVO.setTotalAmount(vo.getTotalCount()*100);
+												subVO.setDifference(vo.getTotalAmount()-vo.getPaidAmount());
+											}
+											else
+											{
+												subVO.setTotalCount(0l);
+												subVO.setPaidAmount(0l);
+												subVO.setTotalAmount(0l);
+												subVO.setDifference(0l);
+											}
+											
+										}
+										subList.add(subVO);
+									}
+								}
+								cd.setInfoList(subList);
+								finalList.add(cd);
+							}
 							
 						}
-						
-						if(usersMap != null && usersMap.size() > 0)
+					}
+					
+					
+					List<Object[]> webUserConstiDetails = tdpCadreDAO.getWebUserConstituecny(new ArrayList<Long>(webUserIds));
+					Map<Long,String> webConstiUserMap = new HashMap<Long, String>(); 
+					if(webUserConstiDetails != null && webUserConstiDetails.size() > 0)
+					{
+						for (Object[] objects : webUserConstiDetails) 
 						{
-							finalList = new ArrayList<CadreAmountDetailsVO>();
-							for (Long userId : usersMap.keySet())
-							{
-								if(constiMap.get(userId) != null)
+							webConstiUserMap.put(Long.valueOf(objects[0].toString()), objects[1].toString());
+						}
+					}
+					if(webUsersMap != null && webUsersMap.size() > 0)
+					{
+						for (Long userId : webUsersMap.keySet())
+						{
+							
+								if(webConstiUserMap.get(userId) != null)
 								{
-									CadreAmountDetailsVO cd = usersMap.get(userId);
-									cd.setConstituency(constiMap.get(userId));
+									CadreAmountDetailsVO cd = webUsersMap.get(userId);
+									cd.setConstituency(webConstiUserMap.get(userId));
 									List<CadreAmountDetailsVO> subList = new ArrayList<CadreAmountDetailsVO>();
 									
 									if(datesMap != null && datesMap.size() > 0)
@@ -376,29 +581,30 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 									finalList.add(cd);
 								}
 								
-							}
 							
-							for(CadreAmountDetailsVO finalVO : finalList)
-							{
-								if(finalVO != null)
-								{
-									CadreAmountDetailsVO VO = new CadreAmountDetailsVO();
-									VO.setDate("Grand Total");
-									for(CadreAmountDetailsVO subVO : finalVO.getInfoList())
-									{
-										VO.setTotalAmount(VO.getTotalAmount() + subVO.getTotalAmount());
-										VO.setPaidAmount(VO.getPaidAmount() + subVO.getPaidAmount());
-										VO.setTotalCount(VO.getTotalCount() + subVO.getTotalCount() );
-										VO.setDifference(VO.getDifference() + subVO.getDifference());
-									}
-									finalVO.getInfoList().add(VO);
-								}
-								//finalList.add(finalVO);
-							}
+							
 						}
-						
 					}
-				}
+					for(CadreAmountDetailsVO finalVO : finalList)
+					{
+						if(finalVO != null)
+						{
+							CadreAmountDetailsVO VO = new CadreAmountDetailsVO();
+							VO.setDate("Grand Total");
+							for(CadreAmountDetailsVO subVO : finalVO.getInfoList())
+							{
+								VO.setTotalAmount(VO.getTotalAmount() + subVO.getTotalAmount());
+								VO.setPaidAmount(VO.getPaidAmount() + subVO.getPaidAmount());
+								VO.setTotalCount(VO.getTotalCount() + subVO.getTotalCount() );
+								VO.setDifference(VO.getDifference() + subVO.getDifference());
+							}
+							finalVO.getInfoList().add(VO);
+						}
+					}
+						
+						
+					
+				
 			}
 		} 
 		catch (Exception e)
@@ -409,19 +615,25 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 		return finalList;
 	}
 	
-	
+	/**
+	 * This Service is used for getting all details for reconsication process for Cumilative report
+	 * @param fromDt
+	 * @param toDt
+	 * @return finalList
+	 */
 	public List<CadreAmountDetailsVO> getCadreRegAmountDetailsByCumilativeReport(String fromDt,String toDt)
 	{
 		List<CadreAmountDetailsVO> finalList = new ArrayList<CadreAmountDetailsVO>();
 		Map<Long, CadreAmountDetailsVO> finalMap = new HashMap<Long, CadreAmountDetailsVO>();
+		Map<Long, CadreAmountDetailsVO> webFinalMap = new HashMap<Long, CadreAmountDetailsVO>();
 		try {
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			Date fromDate = format.parse(fromDt);
 			Date toDate = format.parse(toDt);
 			
 			List<Object[]> list1 = cadreRegAmountDetailsDAO.getAmountDetailsOfUser(fromDate,toDate);
-			//List<Long> userIds = new ArrayList<Long>();
-			if(list1!=null && list1.size()>0){
+			if(list1!=null && list1.size()>0)
+			{
 				for(Object[] obj:list1){
 					CadreAmountDetailsVO cd = new CadreAmountDetailsVO();
 					//userIds.add(Long.valueOf(obj[0].toString()));
@@ -431,6 +643,7 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 					cd.setName(obj[2]!=null?obj[2].toString():"-");
 					cd.setMobileNo(obj[3]!=null?obj[3].toString():"-");
 					cd.setPaidAmount(obj[4]!=null?Long.valueOf(obj[4].toString()):0l);
+					cd.setUserType("TAB");
 					finalMap.put(cd.getUserId(), cd);
 					//finalList.add(cd);
 				}
@@ -438,6 +651,9 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 			}
 			
 			List<Long> userIds = new ArrayList<Long>();
+			List<Long> webUserIds = new ArrayList<Long>();
+			
+			// HERE WE ARE GETTING ALL TAB USER BASED ON SELETED DATES AND PLACING ALL TAB USERS WITH THEIR DETAILS IN SINGLE MAP
 			List<Object[]> userWiseDetails = tdpCadreDAO.getUserBetweenDates(fromDate, toDate);
 			if(userWiseDetails != null && userWiseDetails.size() > 0)
 			{
@@ -453,37 +669,105 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 						cd.setUserName(obj[1]!=null?obj[1].toString():"-");
 						cd.setName(obj[2]!=null?obj[2].toString():"-");
 						cd.setMobileNo(obj[3]!=null?obj[3].toString():"-");
+						cd.setUserType("TAB");
 						cd.setPaidAmount(0l);
 						finalMap.put(cd.getUserId(), cd);
 					}
 					
 				}
-				//SETTING CONSTITUENCY AND TOTAL COUNTS FOR USER
-				List<Object[]> list2 = new ArrayList<Object[]>();
-				if(userIds!=null && userIds.size()>0){
-					 list2 = tdpCadreDAO.getCandidateDataCollected(fromDate, toDate, userIds);
+				
+				// HERE WE ARE GETTING ALL WEB USER BASED ON SELETED DATES AND PLACING ALL TAB USERS WITH THEIR DETAILS IN SINGLE MAP
+				List<Object[]> webUsers = tdpCadreDAO.getUserBetweenDatesForWeb(fromDate, toDate);
+				if(webUsers != null && webUsers.size() > 0)
+				{
+					for (Object[] obj : webUsers)
+					{
+						webUserIds.add(Long.valueOf(obj[0].toString()));
+						CadreAmountDetailsVO cd = webFinalMap.get(Long.valueOf(obj[0].toString()));
+						
+						if(cd == null)
+						{
+							cd = new CadreAmountDetailsVO();
+							cd.setUserId(Long.valueOf(obj[0].toString()));
+							cd.setUserName(obj[1]!=null?obj[1].toString():"-");
+							cd.setName(obj[2]!=null?obj[2].toString():"-");
+							cd.setMobileNo(obj[3]!=null?obj[3].toString():"-");
+							cd.setUserType("WEB");
+							cd.setPaidAmount(0l);
+							webFinalMap.put(cd.getUserId(), cd);
+						}
+					}
 					
 				}
-				if(list2!=null && list2.size()>0){
-					for(Object[] obj:list2){
-						//CadreAmountDetailsVO cd = getMatchedCadreCollector(finalList, Long.valueOf(obj[0].toString()));
-						CadreAmountDetailsVO cd = finalMap.get( Long.valueOf(obj[0].toString()));
-						if(cd != null)
-						{
-							cd.setTotalCount(obj[1]!=null?Long.valueOf(obj[1].toString()):0l);
-							cd.setConstituencyId(Long.valueOf(obj[2].toString()));
-							cd.setConstituency(obj[3].toString());
-							cd.setTotalAmount(cd.getTotalCount()*100);
-							cd.setDifference(cd.getTotalAmount()-cd.getPaidAmount());
-							finalList.add(cd);
+				
+				// HERE WE ARE GETTING ALL TAB USER COLLECTED RECORDS AND CONSTITUENCY DETAILS 
+				if(userIds!=null && userIds.size()>0)
+				{
+					List<Object[]> list2 = tdpCadreDAO.getCandidateDataCollected(fromDate, toDate, userIds);
+					 if(list2!=null && list2.size()>0){
+							for(Object[] obj:list2){
+								CadreAmountDetailsVO cd = finalMap.get( Long.valueOf(obj[0].toString()));
+								if(cd != null)
+								{
+									cd.setTotalCount(obj[1]!=null?Long.valueOf(obj[1].toString()):0l);
+									cd.setConstituencyId(Long.valueOf(obj[2].toString()));
+									cd.setConstituency(obj[3].toString());
+									cd.setTotalAmount(cd.getTotalCount()*100);
+									cd.setDifference(cd.getTotalAmount()-cd.getPaidAmount());
+									finalList.add(cd);
+								}
+								
+								
+							}
 						}
-						
-						
-					}
+				}
+				
+				// HERE WE ARE GETTING ALL WEB USER COLLECTED RECORDS AND CONSTITUENCY DETAILS 
+				if(webUserIds != null && webUserIds.size() > 0)
+				{
+					List<Object[]> list2 = tdpCadreDAO.getCandidateDataCollectedWeb(fromDate, toDate, webUserIds);
+					 if(list2!=null && list2.size()>0){
+							for(Object[] obj:list2){
+								CadreAmountDetailsVO cd = webFinalMap.get( Long.valueOf(obj[0].toString()));
+								if(cd != null)
+								{
+									cd.setTotalCount(obj[1]!=null?Long.valueOf(obj[1].toString()):0l);
+									cd.setConstituencyId(Long.valueOf(obj[2].toString()));
+									cd.setConstituency(obj[3].toString());
+									cd.setTotalAmount(cd.getTotalCount()*100);
+									cd.setDifference(cd.getTotalAmount()-cd.getPaidAmount());
+									finalList.add(cd);
+								}
+								
+								
+							}
+						}
+				}
+				
+				// HERE WE ARE GETTING ALL WEB USER COLLECTED RECORDS AND CONSTITUENCY DETAILS 
+				if(webUserIds != null && webUserIds.size() > 0)
+				{
+					List<Object[]> list2 = tdpCadreDAO.getCandidateDataCollectedWebParty(fromDate, toDate, 3930l);
+					 if(list2!=null && list2.size()>0){
+							for(Object[] obj:list2){
+								CadreAmountDetailsVO cd = new CadreAmountDetailsVO();
+									cd.setUserId(3930l);
+									cd.setUserName("tdp_cadre");
+									cd.setName("Cadre");
+									cd.setMobileNo("9999999999");
+									cd.setUserType("WEB-PARTY");
+									cd.setTotalCount(obj[1]!=null?Long.valueOf(obj[1].toString()):0l);
+									//cd.setConstituencyId(Long.valueOf(obj[2].toString()));
+									cd.setConstituency("STATE");
+									cd.setTotalAmount(cd.getTotalCount()*100);
+									cd.setDifference(cd.getTotalAmount()-cd.getPaidAmount());
+									finalList.add(cd);
+							}
+						}
 				}
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
+			LOG.error("Exception Raised in getCadreRegAmountDetailsByCumilativeReport()",e);
 		}
 		
 		

@@ -155,5 +155,11 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public Long getWorkingMembersCountOfAccessLevelForWeb(Date date,List<Long> constiIds);
 	
-	public Long getWorkingMembersForWebCount(Date date);
+	public Long getWorkingMembersForWebCount(Date date);	
+	public List<Object[]> getUserBetweenDatesForWeb(Date fromDate,Date toDate);
+	public List<Object[]> getCandidateDataCollectedWeb(Date fromDate,Date toDate, List<Long> userIds);
+	public List<Object[]> getCandidateDataCollectedWebParty(Date fromDate,Date toDate, Long userIds);
+	public List<Object[]> getCandidateDataCollectedByDateWeb(Date fromDate,Date toDate, List<Long> userIds);
+	public List<Object[]> getCandidateDataCollectedByDateWebParty(Date fromDate,Date toDate, Long userId);
+	public List<Object[]> getWebUserConstituecny(List<Long> webUserIds);
 }
