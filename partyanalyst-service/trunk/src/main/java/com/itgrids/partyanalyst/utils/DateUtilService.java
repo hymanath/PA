@@ -81,6 +81,14 @@ public class DateUtilService {
 			return null;
 		}
 	}
+	
+	public String getYesterdayDateString()
+	{
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);    
+        return dateFormat.format(cal.getTime());
+	}
 	public Date getDayBeforeYesterDayDate()
 	{
 		try{
@@ -106,10 +114,37 @@ public class DateUtilService {
 			return null;
 		}
 	}
+	
+	public Date getYesterDayDate()
+	{
+		try{
+			Date updatedDate = new Date();
+			Calendar geCal = new GregorianCalendar(TimeZone.getTimeZone(IConstants.TIME_ZONE_INDIA));
+			geCal.setTimeInMillis(updatedDate.getTime());
+
+			Calendar calendar = Calendar.getInstance();
+			
+			calendar.set(Calendar.YEAR, geCal.get(Calendar.YEAR));
+			calendar.set(Calendar.MONTH, geCal.get(Calendar.MONTH));
+			calendar.set(Calendar.DAY_OF_MONTH, geCal.get(Calendar.DAY_OF_MONTH));
+	            	calendar.set(Calendar.HOUR_OF_DAY, geCal.get(Calendar.HOUR_OF_DAY));
+			calendar.set(Calendar.MINUTE, geCal.get(Calendar.MINUTE));
+			calendar.set(Calendar.SECOND, geCal.get(Calendar.SECOND));
+			calendar.set(Calendar.MILLISECOND, geCal.get(Calendar.MILLISECOND));
+			calendar.add(Calendar.DATE, -1);
+			
+			return calendar.getTime();
+		}catch (Exception e) {
+			log.error("Exception Occured in DateUtilService.getCurrentDateAndTime() " +
+			" check for log details");
+			return null;
+		}
+	}
+	
 	public static void main(String[] args) {
 		
 	System.out.println(	new DateUtilService().getDayBeforeYesterDayDate());
-	System.out.println( new  DateUtilService().getCurrentDateAndTime());
+	System.out.println( new  DateUtilService().getYesterdayDateString());
 	}
 	
 	public Date getDateAndTime(String DateString)
