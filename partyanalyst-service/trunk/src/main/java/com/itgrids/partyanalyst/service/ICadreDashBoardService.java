@@ -9,6 +9,7 @@ import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
+import com.itgrids.partyanalyst.dto.WSResultVO;
 
 public interface ICadreDashBoardService {
 	
@@ -76,7 +77,9 @@ public interface ICadreDashBoardService {
 	
 	public List<CadreRegisterInfo> getSlowUserDetails(Long locationType,List<Long> locationIds,Date fromDate,Date toDate,Long recordsCount);
 
-	public List<SelectOptionVO> getUserTrackingRsults(String searchType,Long stateTypeId,String areaType,String FdateStr, String TdateStr);
 	public List<SurveyTransactionVO> getLocationswiseUsersList(String usersType,String areaType, Long stateTypeId,String FdateStr, String TdateStr);
+	public WSResultVO gettingUserDetailsByLocation(String location,Long locationId,String type,Date date);
+	
+	public WSResultVO getAllParliamentsForAssembly();
 	
 }
