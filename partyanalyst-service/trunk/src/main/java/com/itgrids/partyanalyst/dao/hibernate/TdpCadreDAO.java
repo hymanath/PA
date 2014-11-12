@@ -1664,4 +1664,19 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
 		Integer c = query.executeUpdate();
 		return c;
 	}
+	
+	//0 userId,constiId,time
+	public List<Object[]> getAnalysisData(String reqDate){
+		Query query = getSession().createQuery("select model.insertedBy.cadreSurveyUserId,model.userAddress.constituency.constituencyId,model.surveyTime from TdpCadre model" +
+				" where model.enrollmentYear = 2014 and date(model.surveyTime)= '"+reqDate+"' and  model.isDeleted = 'N' and  model.dataSourceType='TAB' order by model.userAddress.constituency.constituencyId,model.updatedBy.cadreSurveyUserId,model.surveyTime ");
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getUserData(){
+		//0 constiId,1constiName,2userId,3name,4userName,5 tab,6 mobile
+		Query query = getSession().createQuery("select model.constituency.constituencyId,model.constituency.name,model.cadreSurveyUser.cadreSurveyUserId,model.cadreSurveyUser.name,model.cadreSurveyUser.userName,model.tabNo " +
+				",model.cadreSurveyUser.mobileNo from CadreSurveyUserAssignDetails model");
+		return query.list();
+	}
 }

@@ -6,12 +6,26 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.service.impl.CadreDashBoardService;
 
 public class TdpCadreDAOHibernateTest extends BaseDaoTestCase {
 	private ITdpCadreDAO tdpCadreDAO;
+	private CadreDashBoardService cadreDashBoardService;
 	
 	public ITdpCadreDAO getTdpCadreDAO() {
 		return tdpCadreDAO;
+	}
+
+
+
+	public CadreDashBoardService getCadreDashBoardService() {
+		return cadreDashBoardService;
+	}
+
+
+
+	public void setCadreDashBoardService(CadreDashBoardService cadreDashBoardService) {
+		this.cadreDashBoardService = cadreDashBoardService;
 	}
 
 
@@ -437,7 +451,7 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 		
 	}*/
 	
-	public void test(){
+	/*public void test(){
 		List<Long> dist = new ArrayList<Long>();
 		dist.add(18l);
 		dist.add(17l);
@@ -451,5 +465,9 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 		dist1.add(229l);
 		List<Object[]> list = tdpCadreDAO.getCadreInfoDistrictConstiWise(dist, null, null, 2014l, dist1);
 		System.out.println(list.size());
+	}*/
+	
+	public void testgetAnalysisData(){
+		cadreDashBoardService.getAnalysisData();
 	}
 }

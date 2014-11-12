@@ -1,5 +1,10 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,12 +15,16 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
 
 import com.itgrids.partyanalyst.dao.IAppDbUpdateDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -3291,5 +3300,166 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	public WSResultVO getAllParliamentsForAssembly()
 	{
 		return null;
+	}
+	
+	public void getAnalysisData(){
+		String reqDate ="2014-11-12";
+      //LinkedHashMap<constiId,LinkedHashMap<userId,List<Date>>>
+		LinkedHashMap<Long,LinkedHashMap<Long,List<Date>>> resultMap = new LinkedHashMap<Long,LinkedHashMap<Long,List<Date>>>();
+		LinkedHashMap<Long,List<Date>> constiMap = null;
+		Map<Long,String> constituencyMap = new HashMap<Long,String>();
+		Map<Long,String> nameMap = new HashMap<Long,String>();
+		Map<Long,String> userNameMap = new HashMap<Long,String>();
+		Map<Long,String> tabMap = new HashMap<Long,String>();
+		Map<Long,String> mobileMap = new HashMap<Long,String>();
+		
+		//0 constiId,1constiName,2userId,3name,4userName,5 tab,6 mobile
+		List<Object[]> userDataList = tdpCadreDAO.getUserData();
+		for(Object[] userData:userDataList){
+			if(userData[1] != null){
+			   constituencyMap.put((Long)userData[0], userData[1].toString());
+			}
+			if(userData[3] != null){
+				nameMap.put((Long)userData[2], userData[3].toString());
+			}
+			if(userData[4] != null){
+				userNameMap.put((Long)userData[2], userData[4].toString());
+			}
+			if(userData[5] != null){
+				tabMap.put((Long)userData[2], userData[5].toString());
+			}
+			if(userData[6] != null){
+				mobileMap.put((Long)userData[2], userData[6].toString());
+			}
+		}
+		//0 userId,constiId,time
+		List<Object[]> dataList = tdpCadreDAO.getAnalysisData(reqDate);	
+		for(Object[] result:dataList){
+			constiMap = resultMap.get((Long)result[1]);
+			if(constiMap == null){
+				constiMap = new LinkedHashMap<Long,List<Date>>();
+				resultMap.put((Long)result[1], constiMap);
+			}
+			List<Date> dates = constiMap.get((Long)result[0]);
+			if(dates == null){
+				dates = new ArrayList<Date>();
+				constiMap.put((Long)result[0],dates);
+			}
+			dates.add((Date)result[2]);
+		}
+		   try{
+		         FileOutputStream fileOut =
+		         new FileOutputStream("D:/tmp/obj.ser");
+		         ObjectOutputStream out = new ObjectOutputStream(fileOut);
+		         out.writeObject(resultMap);
+		         out.close();
+		         fileOut.close();
+	       }catch(Exception e){
+					e.printStackTrace();
+				}
+		   
+		/*try
+	      {
+	         FileInputStream fileIn = new FileInputStream("D:/tmp/obj.ser");
+	         ObjectInputStream in = new ObjectInputStream(fileIn);
+	         resultMap = (LinkedHashMap<Long,LinkedHashMap<Long,List<Date>>>) in.readObject();
+	         in.close();
+	         fileIn.close();
+	      }catch(Exception e){
+				e.printStackTrace();
+			}*/
+		try{
+			int row = 0;
+		      HSSFWorkbook workbook = new HSSFWorkbook();
+				HSSFSheet sheet = workbook.createSheet("Users");
+				Row header = sheet.createRow(0);
+				header.createCell(0).setCellValue("CONSTITUENCY");
+			    header.createCell(1).setCellValue("USER1");
+			    //header.createCell(2).setCellValue("NAME");
+			    header.createCell(2).setCellValue("START TIME");
+			    header.createCell(3).setCellValue("END TIME");
+			    header.createCell(4).setCellValue("MOBILE");
+			    header.createCell(5).setCellValue("TABNO");
+				header.createCell(6).setCellValue("USER2");
+				//header.createCell(8).setCellValue("NAME");
+				header.createCell(7).setCellValue("STATE TIME");
+				header.createCell(8).setCellValue("END TIME");
+				header.createCell(9).setCellValue("MOBILE");
+				header.createCell(10).setCellValue("TABNO");
+				//header.createCell(7).setCellValue("USER1 ALL RECORDS");
+				//header.createCell(8).setCellValue("USER2 ALL RECORDS");
+		   for(Long constiId:resultMap.keySet()){
+			   constiMap = resultMap.get(constiId);
+			   if(constiMap.size()== 1){
+				   continue;
+			   }else{
+				   List<Long> users = new ArrayList<Long>(constiMap.keySet());
+				   for(int i=0;i<users.size();i++){
+					  
+					   List<Date> user1Dates = constiMap.get(users.get(i));
+					   if(user1Dates.size() > 1){
+						 Date user1MinDate = constiMap.get(users.get(i)).get(0);
+						 Date user1MaxDate = constiMap.get(users.get(i)).get(constiMap.get(users.get(i)).size()-1);  
+					    for(int j=i+1;j<users.size();j++){
+					    if(constiMap.get(users.get(j)).size()>1){	
+						   boolean isExchange = false;
+						  
+						   Date user2MinDate = constiMap.get(users.get(j)).get(0);
+						   Date user2MaxDate = constiMap.get(users.get(j)).get(constiMap.get(users.get(j)).size()-1);
+						   /*for(Date ser1Date:user1Dates){
+							   if(!isExchange){
+								   continue;
+							   }*/
+							   if((user1MaxDate.compareTo(user2MinDate) <= 0) || user2MaxDate.compareTo(user1MinDate) <=0){
+								   isExchange = true;
+							   }
+							  
+						   //}
+						   if(isExchange){
+							   row=row+1;
+							   Row dataRow = sheet.createRow(row);
+							   if(constituencyMap.get(constiId) != null){
+							      dataRow.createCell(0).setCellValue(constituencyMap.get(constiId));
+							   }else{
+								   dataRow.createCell(0).setCellValue("");
+							   }
+							   String str1 ="";
+							   String str2 ="";
+							   /*for(Date ser1Date:user1Dates){
+								   str1=str1+ser1Date.toString().replace(reqDate, "")+",";
+							   }
+							   for(Date ser1Date:constiMap.get(users.get(j))){
+								   str2=str2+ser1Date.toString().replace(reqDate, "")+",";
+							   }*/
+							   dataRow.createCell(1).setCellValue(userNameMap.get(users.get(i)));
+							   //dataRow.createCell(2).setCellValue(nameMap.get(users.get(i)));
+							   dataRow.createCell(2).setCellValue(user1Dates.get(0).toString().replace(reqDate, ""));
+							   dataRow.createCell(3).setCellValue(user1Dates.get(user1Dates.size()-1).toString().replace(reqDate, ""));
+							   dataRow.createCell(4).setCellValue(mobileMap.get(users.get(i)));
+							   dataRow.createCell(5).setCellValue(tabMap.get(users.get(i)));
+							   dataRow.createCell(6).setCellValue(userNameMap.get(users.get(j)));
+							   //dataRow.createCell(8).setCellValue(nameMap.get(users.get(j)));
+							   dataRow.createCell(7).setCellValue(constiMap.get(users.get(j)).get(0).toString().replace(reqDate, ""));
+							   dataRow.createCell(8).setCellValue(constiMap.get(users.get(j)).get(constiMap.get(users.get(j)).size()-1).toString().replace(reqDate, ""));
+							   dataRow.createCell(9).setCellValue(mobileMap.get(users.get(j)));
+							   dataRow.createCell(10).setCellValue(tabMap.get(users.get(j)));
+							   //dataRow.createCell(7).setCellValue(str1);
+							   //dataRow.createCell(8).setCellValue(str2);
+							   System.out.println("Constituency:"+constiId+" Exchange"+users.get(i)+"("+str1+"),"+users.get(j)+"("+str2+")");
+						   }
+					   }
+					   }
+				    }
+				   }
+				  
+			   }
+		   }
+		   FileOutputStream out =
+	                new FileOutputStream(new File("D:\\tmp\\abc.xls"));
+	        workbook.write(out);
+	        out.close();
+	}catch(Exception e){
+		   e.printStackTrace();
+	   }
 	}
 }
