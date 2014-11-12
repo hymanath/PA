@@ -144,6 +144,8 @@
 				   <tr><td><b>To Date   :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="toDate" /></td></tr>
 				<tr><td></td><td><input type="checkbox" id="timeCheckBox" style="margin-top:-3px">&nbsp;&nbsp;StartTime And End Time 
 				</td></tr>
+				<tr><td></td><td> <input type="radio" name="sourceTyperadio" id="sourceType" value="TAB" checked style="margin-top: -3px;">&nbsp;TAB&nbsp;<input type="radio" name="sourceTyperadio" id="sourceType1" value="WEB" style="margin-top: -3px;">&nbsp;WEB&nbsp;<input type="radio" name="sourceTyperadio" id="sourceType2" value="ONLINE" style="margin-top: -3px;">&nbsp;ONLINE&nbsp;
+				</td></tr>
 				   <tr>
 				      <td></td><td><input type="button" style="margin-left: 12px;margin-top: 13px;" class="btn btn-success" id="getCandidateDataCollectionInfoId" onclick="getCandidateDataCollectionInfo();" value="Submit"/>
 						<img id="ajaxImgStyle" style="display:none;margin-left: 10px;" src="images/icons/search.gif"/>
@@ -439,15 +441,14 @@
 		})
 		$("#toDate,#toDate1,#userTrackingToDate,#toDate2").datepicker("setDate", new Date());
 	
-	
-     function getCandidateDataCollectionInfo(){
+function getCandidateDataCollectionInfo(){
     var allConstituencies = "";
 	var ruralConstis = "";
     $("#userStatusDialogDIV").html("");
     $("#errStatusDiv").html("");
 	
 	var locationType=$( "#selLctnType" ).val();
-	
+	var sourceType = $('input[name=sourceTyperadio]:radio:checked').val();
 	var locationId;
 	if(locationType==0){locationId=0;}
 	if(locationType==1){locationId=getReqIds("statesDivId");}
@@ -495,13 +496,387 @@
     $.ajax({
           type:'GET',
           url: 'getCadreDashBoardBasicInfo.action',
-          data: {task:"candidateDataCollectionInfo",locationType:locationType,locationId:locationId,fromDate:$("#fromDate").val(),toDate:$("#toDate").val(),timeCheckBox:timeCheckBox}
+          data: {task:"candidateDataCollectionInfo",locationType:locationType,locationId:locationId,fromDate:$("#fromDate").val(),toDate:$("#toDate").val(),timeCheckBox:timeCheckBox,sourceType:sourceType}
        }).done(function(result){
 	   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
 		   location.reload(); 
 	   }
-	       var str='';
-	       if(result.length > 0){
+		  if(sourceType == "TAB")
+	      buildTABUsers(result,sourceType,timeCheckBox);
+		  else if(sourceType == "WEB")
+		buildWEBUsers(result,sourceType,timeCheckBox);
+		else if(sourceType == "ONLINE")
+		buildONLINEUsers(result,sourceType,timeCheckBox);
+       });
+   }
+   function buildONLINEUsers(result,sourceType,timeCheckBox)
+   {
+	    var str ='';
+if(result.length > 0){
+		        str+='<input type="button"  style="margin-bottom:15px;margin-left: 375px;"  class="btn" onclick="generateExcel(\'usersStatusReportTab\');" value="Click Here To Generate Excel"/>';
+		        str+='<div id="resultTableDiv" style="overflow-x:scroll;"><table class="table table-bordered table-striped table-hover" id="usersStatusReportTab"><thead>';
+				str+='<tr>';
+				if($("#fromDate").val()!=$("#toDate").val()){				
+					//str+='<th rowspan="2" >State</th>';
+					//str+='<th rowspan="2" >District</th>';
+					//str+='<th rowspan="2" >Parliament</th>';
+					//str+='<th rowspan="2" >Constituency</th>';				
+					//str+='<th rowspan="2">User</th>';
+					//str+='<th rowspan="2">Name</th>';
+					//str+='<th rowspan="2" >MobileNo</th>';
+					
+					//str+='<th rowspan="2">Tab No</th>';*/
+					str+='<th rowspan="2">Total Count</th>';
+					//str+='<th rowspan="2">Total Amount</th>';
+				}else{
+					/*str+='<th>State</th>';
+					str+='<th>District</th>';
+					str+='<th>Parliament</th>';
+					str+='<th>Constituency</th>';				
+					str+='<th>User</th>';
+					str+='<th>Name</th>';
+					str+='<th>MobileNo</th>';
+					
+					str+='<th>Tab No</th>';*/
+					str+='<th>Total Count</th>';
+					//str+='<th>Total Amount</th>';
+				}
+				
+
+					for(var i in result[0].infoList){
+						if($("#fromDate").val()!=$("#toDate").val()){
+							if(timeCheckBox == true){
+								str+='<th colspan="3">'+result[0].infoList[i].date+'</th>';
+							}else{ 
+								str+='<th colspan="1">'+result[0].infoList[i].date+'</th>';
+							}
+						}else{
+							if(timeCheckBox == true){
+								str+='<th>Start Time</th>';
+								str+='<th>End Time</th>';
+							}
+								//str+='<th>Count</th>';
+						}
+					}
+				str+='</tr>';
+				if($("#fromDate").val()!=$("#toDate").val()){
+					str+='<tr>';
+					for(var i in result[0].infoList){
+						if(timeCheckBox == true){
+						   str+='<th>Start Time</th>';
+						   str+='<th>End Time</th>';
+						   str+='<th>Count</th>';
+						}else{
+						   str+='<th>Count</th>';
+						}
+					}
+					str+='</tr>';
+				}
+				str+='</thead><tbody>';
+				
+				
+				for(var i in result){
+				  str+='<tr>';
+				  
+				 /* if(result[i].location != null){
+				     str+='  <td>'+result[i].location+'</td>';
+				   }else{
+				      str+='  <td></td>';
+				   }
+				  if(result[i].number != null){
+				     str+='  <td>'+result[i].number+'</td>';
+				   }else{
+				      str+='  <td></td>';
+				   }
+				   if(result[i].percentStr != null){
+				     str+='  <td>'+result[i].percentStr+'</td>';
+				   }else{
+				      str+='  <td></td>';
+				   }
+				   
+				  if(result[i].memberShipNo != null){
+				     str+='  <td>'+result[i].memberShipNo+'</td>';
+				   }else{
+				      str+='  <td></td>';
+				   }
+					str+='  <td>'+result[i].name+'</td>';
+				   str+='  <td>'+result[i].uname+'</td>';
+				   
+				    if(result[i].area != null){
+				     str+='  <td>'+result[i].area+'</td>';
+				   }else{
+				      str+='  <td></td>';
+				   }
+				 
+				   str+='  <td>'+result[i].tabNo+'</td>';*/
+				   if(result[i].totalCount > 0){
+				      str+='  <td>'+result[i].totalCount+'</td>';
+					}else{
+					  str+='  <td></td>';
+					}
+					/*if(result[i].totalCount > 0){
+				      str+='  <td>'+result[i].totalAmount+'</td>';
+					}
+					else{
+					  str+='  <td></td>';
+					}*/
+				 
+				  for(var j in result[i].infoList){
+				  
+				  if($("#fromDate").val()!=$("#toDate").val()){
+					if(timeCheckBox == true){
+						if(result[i].infoList[j].area != null){
+						  str+='  <td>'+result[i].infoList[j].area+'</td>';
+						}else{
+						  str+='  <td></td>';
+						}
+						if(result[i].infoList[j].location != null){
+						  str+='  <td>'+result[i].infoList[j].location+'</td>';
+						}else{
+						  str+='  <td></td>';
+						}
+						
+						if(result[i].infoList[j].totalCount != null){
+						  str+='  <td>'+result[i].infoList[j].totalCount+'</td>';
+						}else{
+						  str+='  <td></td>';
+						}
+					}else{
+						if(result[i].infoList[j].totalCount != null){
+						  str+='  <td>'+result[i].infoList[j].totalCount+'</td>';
+						}else{
+						  str+='  <td></td>';
+						}
+					}
+					
+					/*if(result[i].infoList[j].totalCount != null){
+				      str+='  <td>'+result[i].infoList[j].amount+'</td>';
+					}
+					else{
+					  str+='  <td></td>';
+					}*/
+				  }else{
+					if(timeCheckBox == true){
+						if(result[i].infoList[j].area != null){
+						  str+='  <td>'+result[i].infoList[j].area+'</td>';
+						}else{
+						  str+='  <td></td>';
+						}
+						
+						if(result[i].infoList[j].location != null){
+						  str+='  <td>'+result[i].infoList[j].location+'</td>';
+						}else{
+						  str+='  <td></td>';
+						}
+					}
+				  }
+				 
+				}
+				 str+='</tr>';
+			}	
+				
+				str+='</tbody></table></div>';
+				str+='<input type="button" style="margin-top:15px;margin-left: 375px;" class="btn" onclick="generateExcel(\'usersStatusReportTab\');" value="Click Here To Generate Excel"/>';
+		   }else{
+		     str+='<div style="font-weight:bold;padding-left: 375px;padding-top: 30px;">No Data Available</div>';
+		   }
+		   $("#userStatusDialogDIV").html(str);
+		   $("#ajaxImgStyle").hide();
+		   $("#getCandidateDataCollectionInfoId").removeAttr("disabled");
+		   $("#usersStatusReportTab").dataTable({
+					aLengthMenu: [
+						[25, 50, 100, 200, -1],
+						[25, 50, 100, 200, "All"]
+					],
+					iDisplayLength: -1
+				});
+   }
+   function buildWEBUsers(result,sourceType,timeCheckBox)
+   {
+	    var str ='';
+if(result.length > 0){
+		        str+='<input type="button"  style="margin-bottom:15px;margin-left: 375px;"  class="btn" onclick="generateExcel(\'usersStatusReportTab\');" value="Click Here To Generate Excel"/>';
+		        str+='<div id="resultTableDiv" style="overflow-x:scroll;"><table class="table table-bordered table-striped table-hover" id="usersStatusReportTab"><thead>';
+				str+='<tr>';
+				if($("#fromDate").val()!=$("#toDate").val()){				
+					//str+='<th rowspan="2" >State</th>';
+					//str+='<th rowspan="2" >District</th>';
+					//str+='<th rowspan="2" >Parliament</th>';
+					str+='<th rowspan="2" >Constituency</th>';				
+					str+='<th rowspan="2">User</th>';
+					//str+='<th rowspan="2">Name</th>';
+					//str+='<th rowspan="2" >MobileNo</th>';
+					
+					//str+='<th rowspan="2">Tab No</th>';
+					str+='<th rowspan="2">Total Count</th>';
+					//str+='<th rowspan="2">Total Amount</th>';
+				}else{
+					/*str+='<th>State</th>';
+					str+='<th>District</th>';
+					str+='<th>Parliament</th>';*/
+					str+='<th>Constituency</th>';				
+					str+='<th>User</th>';
+					//str+='<th>Name</th>';
+					//str+='<th>MobileNo</th>';
+					
+					//str+='<th>Tab No</th>';
+					str+='<th>Total Count</th>';
+					//str+='<th>Total Amount</th>';
+				}
+				
+
+					for(var i in result[0].infoList){
+						if($("#fromDate").val()!=$("#toDate").val()){
+							if(timeCheckBox == true){
+								str+='<th colspan="3">'+result[0].infoList[i].date+'</th>';
+							}else{ 
+								str+='<th colspan="1">'+result[0].infoList[i].date+'</th>';
+							}
+						}else{
+							if(timeCheckBox == true){
+								str+='<th>Start Time</th>';
+								str+='<th>End Time</th>';
+							}
+								//str+='<th>Count</th>';
+						}
+					}
+				str+='</tr>';
+				if($("#fromDate").val()!=$("#toDate").val()){
+					str+='<tr>';
+					for(var i in result[0].infoList){
+						if(timeCheckBox == true){
+						   str+='<th>Start Time</th>';
+						   str+='<th>End Time</th>';
+						   str+='<th>Count</th>';
+						}else{
+						   str+='<th>Count</th>';
+						}
+					}
+					str+='</tr>';
+				}
+				str+='</thead><tbody>';
+				
+				
+				for(var i in result){
+				  str+='<tr>';
+				  
+				  /*if(result[i].location != null){
+				     str+='  <td>'+result[i].location+'</td>';
+				   }else{
+				      str+='  <td></td>';
+				   }
+				  if(result[i].number != null){
+				     str+='  <td>'+result[i].number+'</td>';
+				   }else{
+				      str+='  <td></td>';
+				   }
+				   if(result[i].percentStr != null){
+				     str+='  <td>'+result[i].percentStr+'</td>';
+				   }else{
+				      str+='  <td></td>';
+				   }
+				   */
+				  if(result[i].memberShipNo != null){
+				     str+='  <td>'+result[i].memberShipNo+'</td>';
+				   }else{
+				      str+='  <td> PartyOffice</td>';
+				   }
+					str+='  <td>'+result[i].name+'</td>';
+				   //str+='  <td>'+result[i].uname+'</td>';
+				   
+				   /* if(result[i].area != null){
+				     str+='  <td>'+result[i].area+'</td>';
+				   }else{
+				      str+='  <td></td>';
+				   }
+				 */
+				  // str+='  <td>'+result[i].tabNo+'</td>';
+				   if(result[i].totalCount > 0){
+				      str+='  <td>'+result[i].totalCount+'</td>';
+					}else{
+					  str+='  <td></td>';
+					}
+					/*if(result[i].totalCount > 0){
+				      str+='  <td>'+result[i].totalAmount+'</td>';
+					}
+					else{
+					  str+='  <td></td>';
+					}*/
+				 
+				  for(var j in result[i].infoList){
+				  
+				  if($("#fromDate").val()!=$("#toDate").val()){
+					if(timeCheckBox == true){
+						if(result[i].infoList[j].area != null){
+						  str+='  <td>'+result[i].infoList[j].area+'</td>';
+						}else{
+						  str+='  <td></td>';
+						}
+						if(result[i].infoList[j].location != null){
+						  str+='  <td>'+result[i].infoList[j].location+'</td>';
+						}else{
+						  str+='  <td></td>';
+						}
+						
+						if(result[i].infoList[j].totalCount != null){
+						  str+='  <td>'+result[i].infoList[j].totalCount+'</td>';
+						}else{
+						  str+='  <td></td>';
+						}
+					}else{
+						if(result[i].infoList[j].totalCount != null){
+						  str+='  <td>'+result[i].infoList[j].totalCount+'</td>';
+						}else{
+						  str+='  <td></td>';
+						}
+					}
+					
+					/*if(result[i].infoList[j].totalCount != null){
+				      str+='  <td>'+result[i].infoList[j].amount+'</td>';
+					}
+					else{
+					  str+='  <td></td>';
+					}*/
+				  }else{
+					if(timeCheckBox == true){
+						if(result[i].infoList[j].area != null){
+						  str+='  <td>'+result[i].infoList[j].area+'</td>';
+						}else{
+						  str+='  <td></td>';
+						}
+						
+						if(result[i].infoList[j].location != null){
+						  str+='  <td>'+result[i].infoList[j].location+'</td>';
+						}else{
+						  str+='  <td></td>';
+						}
+					}
+				  }
+				 
+				}
+				 str+='</tr>';
+			}	
+				
+				str+='</tbody></table></div>';
+				str+='<input type="button" style="margin-top:15px;margin-left: 375px;" class="btn" onclick="generateExcel(\'usersStatusReportTab\');" value="Click Here To Generate Excel"/>';
+		   }else{
+		     str+='<div style="font-weight:bold;padding-left: 375px;padding-top: 30px;">No Data Available</div>';
+		   }
+		   $("#userStatusDialogDIV").html(str);
+		   $("#ajaxImgStyle").hide();
+		   $("#getCandidateDataCollectionInfoId").removeAttr("disabled");
+		   $("#usersStatusReportTab").dataTable({
+					aLengthMenu: [
+						[25, 50, 100, 200, -1],
+						[25, 50, 100, 200, "All"]
+					],
+					iDisplayLength: -1
+				});
+   }
+function buildTABUsers(result,sourceType,timeCheckBox)
+{
+		   var str ='';
+if(result.length > 0){
 		        str+='<input type="button"  style="margin-bottom:15px;margin-left: 375px;"  class="btn" onclick="generateExcel(\'usersStatusReportTab\');" value="Click Here To Generate Excel"/>';
 		        str+='<div id="resultTableDiv" style="overflow-x:scroll;"><table class="table table-bordered table-striped table-hover" id="usersStatusReportTab"><thead>';
 				str+='<tr>';
@@ -679,8 +1054,8 @@
 					],
 					iDisplayLength: -1
 				});
-       });
-   }
+}
+   
    function getCandidateDataCollectionInfo1(){
     var allConstituencies = "";
 	var ruralConstis = "";

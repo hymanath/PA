@@ -272,7 +272,14 @@ public class CadreDashBoardAction implements ServletRequestAware {
 			}else if(task.equalsIgnoreCase("candidateDataCollectionInfo")){
 				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 				List<Long> locationIds = getIds(request.getParameter("locationId").trim());
-				result = cadreDashBoardService.getCandidateDataCollectionInfo(Long.parseLong(request.getParameter("locationType")),locationIds,sdf.parse(request.getParameter("fromDate")),sdf.parse(request.getParameter("toDate")));
+				
+				if(request.getParameter("sourceType").equalsIgnoreCase("ONLINE"))
+				result = cadreDashBoardService.getCandidateDataCollectionInfoForOnlineUsers(Long.parseLong(request.getParameter("locationType")),locationIds,sdf.parse(request.getParameter("fromDate")),sdf.parse(request.getParameter("toDate")),request.getParameter("sourceType"));
+				else
+				result = cadreDashBoardService.getCandidateDataCollectionInfo(Long.parseLong(request.getParameter("locationType")),locationIds,sdf.parse(request.getParameter("fromDate")),sdf.parse(request.getParameter("toDate")),request.getParameter("sourceType"));
+				
+
+
 			}else if(task.equalsIgnoreCase("slowPerformanceUsers")){
 				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 				List<Long> locationIds = getIds(request.getParameter("locationId").trim());
