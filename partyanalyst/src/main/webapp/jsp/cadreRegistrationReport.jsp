@@ -79,7 +79,7 @@
 				line-height: 20px !important;
 			}
 			
-			#statedisplaydivid,#distdisplaydivid,#constdisplaydivid,#parlConstdisplaydivid{display:none;}
+			#statedisplaydivid,#trackingStatesDispalyMainDiv,#distdisplaydivid,#constdisplaydivid,#parlConstdisplaydivid{display:none;}
 			#statedisplaydivid1,#distdisplaydivid1,#constdisplaydivid1{display:none;}
 			#statedisplaydivid2,#distdisplaydivid2,#constdisplaydivid2,#parlConstdisplaydivid2{display:none;}
 	</style>
@@ -1831,7 +1831,7 @@ function getCandidateDataCollectionInfo2(){
 	{
 		locationId1=0;
 	}
-	if(locationType1==1)
+	if(locationType1==2)
 	{
 		locationId1=getReqIds("trackingStatesDispalyId");
 	}
@@ -2046,7 +2046,7 @@ function getCandidateDataCollectionInfo2(){
 	   
 	  if(locationLvl == 2)
 	  {
-		$("#trackingStatesDispalyMainDiv").show();
+		$("#trackingStatesDispalyMainDiv").hide();
 		$("#trackingConstituencyDispalyMainDiv").hide();
 		$("#trackingDistrictsDispalyMainDiv").hide();
 		$("#mandalDispalyMainDiv").hide();
