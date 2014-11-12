@@ -139,8 +139,29 @@
 	</div>
 	
 	<div class="show-grid well well-small border-radius-0 mb-10 form-inline" id="getSummaryTabDiv" style="display:none;">
+		<div class="row-fluid span8" style="padding:10px;margin-left:250px;">
+			<div style="margin:10px;float:left;">
+				<label style="margin-top: 7px;font-weight:bold;"> SOURCE TYPE </label>	
+			</div>
+			
+			<div style="margin:10px;float:left;">
+				<input type="radio" name = "sourceType" value="all" checked = "checked"/>
+				<label style="margin-top: 7px;font-weight:bold;"> Tab & Web </label>	
+			</div>
+			
+			<div style="margin:10px;float:left;">
+				<input type="radio" name = "sourceType" value = "tab" />
+				<label style="margin-top: 7px;font-weight:bold;"> Tab </label>
+			</div>
+			
+			<div style="margin:10px;float:left;">
+				<input type="radio" name = "sourceType" value="web"/>
+				<label style="margin-top: 7px;font-weight:bold;"> Web </label>	
+			</div>
+		</div>
+				
 		<div class="row-fluid ">
-			<img id="summaryDetailsAjxImg" src="images/icons/search.gif" style="display:none" height="40px;">
+			<img id="summaryDetailsAjxImg" src="images/icons/search.gif" style="display:none;margin-left:400px;">
 			<div id="summaryDetails"></div>
 		</div>
 	</div>
@@ -253,14 +274,17 @@
           url: 'cadreRegAmountReportAction.action',
           data: {task:"cadreAmountReport",startDate:startDate,endDate:endDate,reportValue:reportValue}
 		}).done(function(result){
-			if(reportValue == 'CumilativeReport')
-			{
-				buildUserData(result);
+			if(result != null && result.length > 0){
+				if(reportValue == 'CumilativeReport'){
+					buildUserData(result);
+				}
+				else{
+					buildUserDataForDayWise(result);
+				}
+			}else{
+				$('#usersDetails').html('<h4 style="text-align:center;color:red;margin:5px;"> Data Not Available </h4>');
 			}
-			else
-			{
-				buildUserDataForDayWise(result);
-			}
+			$('#ajaxImgStyle').hide();
 		});
 	}
 	
@@ -375,13 +399,19 @@
 			$('#ajaxImgStyle').hide();
 	}
 	
+	$("input:radio[name=sourceType]").click(function() {
+		var sourceType = $(this).val();
+		getSummaryAmounts(sourceType);
+	});
 	
-	function getSummaryAmounts(){
+	
+	function getSummaryAmounts(srcType){
 		$("#summaryDetailsAjxImg").show();
+		var sourceType = srcType;
 		$.ajax({
           type:'GET',
           url: 'getCadreRegAmountSummaryAction.action',
-          data: {task:"cadreAmountReportSummary"}
+          data: {task:"cadreAmountReportSummary",sourceType :sourceType}
 		}).done(function(result){
 			buildSummary(result);
 		});
@@ -425,7 +455,7 @@
 	}
 	
 	$("#getSummaryTab").click(function(){
-		getSummaryAmounts();
+		getSummaryAmounts("all");
 	});
 	</script>
 </body>
