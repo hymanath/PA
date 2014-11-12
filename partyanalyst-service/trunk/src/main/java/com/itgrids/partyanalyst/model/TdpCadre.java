@@ -60,7 +60,7 @@ public class TdpCadre {
 	private Long 						updatedWebUserId;
 	private Long 						insertedWebUserId;
 	private User				        updatedWebUser;
-	private User				         insertedWebUser;
+	private User				        insertedWebUser;
 	
 	private Voter 						voter;
 	private BloodGroup 					bloodGroup;

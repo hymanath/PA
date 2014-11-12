@@ -1487,6 +1487,67 @@ public List<Object[]> getCadreDetailsForSelectionByFamilyVoterId(CadrePrintInput
 		return query.list();
 	}
 	
+	
+	public List<Object[]> getCandidateDataCollectedWeb(Date fromDate,Date toDate, List<Long> userIds){
+		//0 count,1 name,2 min,3 max,4 date,5 id
+
+		StringBuilder queryStr = new StringBuilder();
+
+		queryStr.append("select model.insertedWebUser.userId," +
+				" count(model.tdpCadreId)," +
+				" model.userAddress.constituency.constituencyId," +
+				" model.userAddress.constituency.name" +
+				" from TdpCadre model " +
+				" where model.enrollmentYear = 2014  " +
+				" and model.dataSourceType ='WEB'  " +
+				" and model.isDeleted = 'N' " +
+				" and date(model.surveyTime) >=:fromDate " +
+				" and date(model.surveyTime) <=:toDate  " +
+				" and model.insertedWebUser.userId in(:userIds)");
+		
+		queryStr.append(" group by model.insertedWebUser.userId " +
+				" order by date(model.surveyTime),model.insertedWebUser.firstName ");
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		/*Query query = getSession().createQuery("select count(*),model.insertedBy.userName,min(model.surveyTime),max(model.surveyTime),date(model.surveyTime),model.insertedBy.cadreSurveyUserId  from TdpCadre model where model.enrollmentYear = 2014  and model.dataSourceType ='TAB'  " +
+				"   and model.isDeleted = 'N' and date(model.surveyTime) >=:fromDate and date(model.surveyTime) <=:toDate group by date(model.surveyTime),model.insertedBy.cadreSurveyUserId order by date(model.surveyTime),model.insertedBy.userName");*/
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+		query.setParameterList("userIds", userIds);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getCandidateDataCollectedWebParty(Date fromDate,Date toDate, Long userId){
+		//0 count,1 name,2 min,3 max,4 date,5 id
+
+		StringBuilder queryStr = new StringBuilder();
+
+		queryStr.append("select model.insertedWebUser.userId," +
+				" count(model.tdpCadreId)," +
+				" model.userAddress.constituency.constituencyId," +
+				" model.userAddress.constituency.name" +
+				" from TdpCadre model " +
+				" where model.enrollmentYear = 2014  " +
+				" and model.dataSourceType ='WEB'  " +
+				" and model.isDeleted = 'N' " +
+				" and date(model.surveyTime) >=:fromDate " +
+				" and date(model.surveyTime) <=:toDate  " +
+				" and model.insertedWebUser.userId  = :userId");
+		
+		queryStr.append(" group by model.insertedWebUser.userId " +
+				" order by date(model.surveyTime),model.insertedWebUser.firstName ");
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		/*Query query = getSession().createQuery("select count(*),model.insertedBy.userName,min(model.surveyTime),max(model.surveyTime),date(model.surveyTime),model.insertedBy.cadreSurveyUserId  from TdpCadre model where model.enrollmentYear = 2014  and model.dataSourceType ='TAB'  " +
+				"   and model.isDeleted = 'N' and date(model.surveyTime) >=:fromDate and date(model.surveyTime) <=:toDate group by date(model.surveyTime),model.insertedBy.cadreSurveyUserId order by date(model.surveyTime),model.insertedBy.userName");*/
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+		query.setParameter("userId", userId);
+		
+		return query.list();
+	}
+	
 	public List<Object[]> getCandidateDataCollectedByDate(Date fromDate,Date toDate, List<Long> userIds){
 		//0 count,1 name,2 min,3 max,4 date,5 id
 
@@ -1517,10 +1578,80 @@ public List<Object[]> getCadreDetailsForSelectionByFamilyVoterId(CadrePrintInput
 		return query.list();
 	}
 	
+	public List<Object[]> getCandidateDataCollectedByDateWeb(Date fromDate,Date toDate, List<Long> userIds){
+		//0 count,1 name,2 min,3 max,4 date,5 id
+
+		StringBuilder queryStr = new StringBuilder();
+
+		queryStr.append("select model.insertedWebUser.userId," +
+				" count(model.tdpCadreId)," +
+				" model.userAddress.constituency.constituencyId," +
+				" model.userAddress.constituency.name ,date(model.surveyTime) " +
+				" from TdpCadre model " +
+				" where model.enrollmentYear = 2014  " +
+				" and model.dataSourceType ='WEB'  " +
+				" and model.isDeleted = 'N' " +
+				" and date(model.surveyTime) >=:fromDate " +
+				" and date(model.surveyTime) <=:toDate  " +
+				" and model.insertedWebUser.userId in(:userIds) and model.insertedWebUser.userId != 3930");
+		
+		queryStr.append(" group by model.insertedWebUser.userId,date(model.surveyTime) " +
+				" order by date(model.surveyTime),model.insertedWebUser.firstName ");
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		/*Query query = getSession().createQuery("select count(*),model.insertedBy.userName,min(model.surveyTime),max(model.surveyTime),date(model.surveyTime),model.insertedBy.cadreSurveyUserId  from TdpCadre model where model.enrollmentYear = 2014  and model.dataSourceType ='TAB'  " +
+				"   and model.isDeleted = 'N' and date(model.surveyTime) >=:fromDate and date(model.surveyTime) <=:toDate group by date(model.surveyTime),model.insertedBy.cadreSurveyUserId order by date(model.surveyTime),model.insertedBy.userName");*/
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+		query.setParameterList("userIds", userIds);
+		
+		return query.list();
+	}
+	
+	
+	public List<Object[]> getCandidateDataCollectedByDateWebParty(Date fromDate,Date toDate, Long userId){
+		//0 count,1 name,2 min,3 max,4 date,5 id
+
+		StringBuilder queryStr = new StringBuilder();
+
+		queryStr.append("select model.insertedWebUser.userId," +
+				" count(model.tdpCadreId)," +
+				" model.userAddress.constituency.constituencyId," +
+				" model.userAddress.constituency.name ,date(model.surveyTime) " +
+				" from TdpCadre model " +
+				" where model.enrollmentYear = 2014  " +
+				" and model.dataSourceType ='WEB'  " +
+				" and model.isDeleted = 'N' " +
+				" and date(model.surveyTime) >=:fromDate " +
+				" and date(model.surveyTime) <=:toDate  " +
+				" and model.insertedWebUser.userId  = :userId");
+		
+		queryStr.append(" group by model.insertedWebUser.userId,date(model.surveyTime) " +
+				" order by date(model.surveyTime),model.insertedWebUser.firstName ");
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		/*Query query = getSession().createQuery("select count(*),model.insertedBy.userName,min(model.surveyTime),max(model.surveyTime),date(model.surveyTime),model.insertedBy.cadreSurveyUserId  from TdpCadre model where model.enrollmentYear = 2014  and model.dataSourceType ='TAB'  " +
+				"   and model.isDeleted = 'N' and date(model.surveyTime) >=:fromDate and date(model.surveyTime) <=:toDate group by date(model.surveyTime),model.insertedBy.cadreSurveyUserId order by date(model.surveyTime),model.insertedBy.userName");*/
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+		query.setParameter("userId", userId);
+		
+		return query.list();
+	}
+	
 	public List<Object[]> getUserBetweenDates(Date fromDate,Date toDate)
 	{
 		Query query = getSession().createQuery("select distinct model.insertedBy.cadreSurveyUserId,model.insertedBy.userName,model.insertedBy.name,model.insertedBy.mobileNo  from TdpCadre model  where date(model.surveyTime) >=:fromDate " +
-				" and date(model.surveyTime) <=:toDate and model.insertedBy.cadreSurveyUserId is not null ");
+				" and date(model.surveyTime) <=:toDate and model.insertedBy.cadreSurveyUserId is not null and model.isDeleted = 'N' ");
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+		return query.list();
+	}
+	
+	public List<Object[]> getUserBetweenDatesForWeb(Date fromDate,Date toDate)
+	{
+		Query query = getSession().createQuery("select distinct model.insertedWebUser.userId,model.insertedWebUser.userName,model.insertedWebUser.firstName,model.insertedWebUser.mobile  from TdpCadre model  where date(model.surveyTime) >=:fromDate " +
+				" and date(model.surveyTime) <=:toDate and model.insertedWebUser.userId is not null   and model.isDeleted = 'N'");
 		query.setDate("fromDate", fromDate);
 		query.setDate("toDate", toDate);
 		return query.list();
@@ -1771,5 +1902,11 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
 		query.setParameter("sourceType", sourceType);
 		return query.list();
 		}
-
+	
+	public List<Object[]> getWebUserConstituecny(List<Long> webUserIds)
+	{
+		Query query = getSession().createQuery("select distinct model.insertedWebUser.userId , model.userAddress.constituency.name from TdpCadre model where model.insertedWebUser.userId in (:webUserIds)");
+		query.setParameterList("webUserIds", webUserIds);
+		return query.list();
+	}
 }
