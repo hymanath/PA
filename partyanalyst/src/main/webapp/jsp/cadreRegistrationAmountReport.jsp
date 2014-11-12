@@ -96,6 +96,7 @@
 			<ul class="inline unstyled">
 				<li><a onclick="showHideTabs(this.id);" id="reconsilationTab" class="highlight selected">Reconciliation</a></li>
 				<li><a onclick="showHideTabs(this.id);" id="getSummaryTab" class="">Get Summary</a></li>
+				<!--<li><a onclick="showHideTabs(this.id);" id="uploadTab" class=""> Upload Amount </a></li>-->
 			</ul>
 		  </div>
 	</div>
@@ -145,7 +146,7 @@
 			</div>
 			
 			<div style="margin:10px;float:left;">
-				<input type="radio" name = "sourceType" value="all" checked = "checked"/>
+				<input type="radio" name = "sourceType" value="all" id="all" checked = "checked"/>
 				<label style="margin-top: 7px;font-weight:bold;"> Tab & Web </label>	
 			</div>
 			
@@ -406,6 +407,7 @@
 	
 	
 	function getSummaryAmounts(srcType){
+		$("#summaryDetails").html("");
 		$("#summaryDetailsAjxImg").show();
 		var sourceType = srcType;
 		$.ajax({
@@ -455,6 +457,7 @@
 	}
 	
 	$("#getSummaryTab").click(function(){
+		$("#all").prop("checked", true)
 		getSummaryAmounts("all");
 	});
 	</script>
