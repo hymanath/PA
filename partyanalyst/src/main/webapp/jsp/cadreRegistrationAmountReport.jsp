@@ -96,7 +96,6 @@
 			<ul class="inline unstyled">
 				<li><a onclick="showHideTabs(this.id);" id="reconsilationTab" class="highlight selected">Reconciliation</a></li>
 				<li><a onclick="showHideTabs(this.id);" id="getSummaryTab" class="">Get Summary</a></li>
-				<li><a onclick="showHideTabs(this.id);" id="uploadTab" class=""> Upload Amount </a></li>
 			</ul>
 		  </div>
 	</div>
