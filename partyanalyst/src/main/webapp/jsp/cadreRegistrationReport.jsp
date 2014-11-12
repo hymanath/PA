@@ -1933,7 +1933,21 @@ function getCandidateDataCollectionInfo2(){
 			str +='<table class="table table-bordered " id="daywiseReportsTab">';
 			str +='<thead>';
 			str +='<tr>';
-			str +='<th > Location Name </th>';
+			
+			if(locationTypeFinder==2)
+			{
+			 str +='<th > Constituency  </th>';
+			}
+			else if(locationTypeFinder==3){
+			 str +='<th > District  </th>';
+			}
+			else if(locationTypeFinder==4){
+			 str +='<th > Constituency  </th>';
+			}
+			 else if(locationTypeFinder==5){
+			 str +='<th > Parliament  </th>';
+			}
+		 
 			if(locationTypeFinder != 3 && locationTypeFinder != 5)
 			{
 				str +='<th > Parliament </th>';
