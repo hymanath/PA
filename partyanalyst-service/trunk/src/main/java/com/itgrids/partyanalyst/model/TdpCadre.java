@@ -71,6 +71,7 @@ public class TdpCadre {
 	private CadreSurveyUser				updatedBy;
 	private CadreSurveyUser				insertedBy;
 	private Date                        surveyTime;
+	private Date                        refSurveyTime;
 	private String                      isDeleted;
 	
 	private String 						latitude;
@@ -691,6 +692,14 @@ public class TdpCadre {
 	
 	public void setTdpCadreOnline(TdpCadreOnline tdpCadreOnline) {
 		this.tdpCadreOnline = tdpCadreOnline;
+	}
+	
+	@Column(name="ref_survey_time")
+	public Date getRefSurveyTime() {
+		return refSurveyTime;
+	}
+	public void setRefSurveyTime(Date refSurveyTime) {
+		this.refSurveyTime = refSurveyTime;
 	}
 	
 	
