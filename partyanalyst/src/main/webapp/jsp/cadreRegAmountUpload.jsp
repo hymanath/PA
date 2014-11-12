@@ -13,8 +13,9 @@
 <title>Cadre Registration Report</title>
 
 <script>
-$(function() {
-$( "#date" ).datepicker();
+
+$('document').ready(function(){
+	$( "#date" ).datepicker();
 });
 
 </script>
