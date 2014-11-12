@@ -533,11 +533,23 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 		return null;
 	}
 	
-	public List<CadreAmountDetailsVO> getCadreSummaryAmountDayWise(){
+	public List<CadreAmountDetailsVO> getCadreSummaryAmountDayWise(String sourceType){
 		LOG.debug(" Entered into getCadreSummaryAmountDayWise()");
 		List<CadreAmountDetailsVO> finalList = new ArrayList<CadreAmountDetailsVO>();
 		try{
-			List<Object[]> list = tdpCadreDAO.getTotalRecordsDayWise();
+			
+			
+			List<String> sourcesList = new ArrayList<String>();
+			if(sourceType.equalsIgnoreCase("ALL")){
+				sourcesList.add("TAB");
+				sourcesList.add("WEB");
+			}else if(sourceType.equalsIgnoreCase("TAB")){
+				sourcesList.add("TAB");
+			}else if(sourceType.equalsIgnoreCase("WEB")){
+				sourcesList.add("WEB");
+			}
+			
+			List<Object[]> list = tdpCadreDAO.getTotalRecordsDayWise(sourcesList);
 			if(list!=null && list.size()>0){
 				for(Object[] obj:list){
 					CadreAmountDetailsVO cd = new CadreAmountDetailsVO();

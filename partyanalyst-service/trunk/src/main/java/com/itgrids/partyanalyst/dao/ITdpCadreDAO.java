@@ -130,7 +130,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getCandidateDataCollectedByDate(Date fromDate,Date toDate, List<Long> userIds);
 	public List<Object[]> getUserBetweenDates(Date fromDate,Date toDate);
 	
-	public List<Object[]> getTotalRecordsDayWise();
+	public List<Object[]> getTotalRecordsDayWise(List<String> sourceTypes);
 	public List<Object[]> getRegisterCadreInfoForUserBetweenDates(Date fromDate,Date toDate,List<Long> constiIds,List<Long> districtIds);
 	public List<Object[]> getNewlyRegisterCadreInfo1(List<Long> constiIds,List<Long> districtIds);
 	public Long getWorkStartedConstituencyCount1(String state,List<Long> constituencyIds);
