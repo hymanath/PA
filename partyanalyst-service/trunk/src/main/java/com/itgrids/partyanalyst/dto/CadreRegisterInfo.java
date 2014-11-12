@@ -38,8 +38,20 @@ public class CadreRegisterInfo implements Serializable{
 	private String tabNo;
 	private String fromDate;
 	private Long avgTime;
+	private boolean slowUser = false;
 	
 	
+	
+	
+	
+	public boolean isSlowUser() {
+		return slowUser;
+	}
+
+	public void setSlowUser(boolean slowUser) {
+		this.slowUser = slowUser;
+	}
+
 	public String getFromDate() {
 		return fromDate;
 	}
