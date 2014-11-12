@@ -744,6 +744,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			
 			Date hourBack = null;
 			Long count  = 0L;
+			Long webCount  = 0L;
 			List<Long> constiIds = new ArrayList<Long>();
 			
 			if(accessType.equalsIgnoreCase("MLA")){
@@ -764,8 +765,10 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				
 				if(!accessType.equalsIgnoreCase("STATE")){
 					count = tdpCadreDAO.getLastHoursWorkingMemberCountOfAccessLevel(date, hourBack, constiIds);
+					webCount = tdpCadreDAO.getLastHoursWorkingMemberCountOfAccessLevelForWeb(date, hourBack, constiIds);
 				}else{
 					count = tdpCadreDAO.getLastHoursWorkingMemberCount(date,hourBack);
+					webCount = tdpCadreDAO.getLastHoursWorkingMemberCountForWeb(date,hourBack);
 				}
 				
 			}
@@ -773,13 +776,15 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			{
 				if(!accessType.equalsIgnoreCase("STATE")){
 					count = tdpCadreDAO.getWorkingMembersCountOfAccessLevel(date, constiIds);
+					webCount = tdpCadreDAO.getWorkingMembersCountOfAccessLevelForWeb(date, constiIds);
 				}else{
 					count = tdpCadreDAO.getWorkingMembersCount(date);
+					webCount = tdpCadreDAO.getWorkingMembersForWebCount(date);
 				}
 			}
 			
 			info.setTotalCount(count);
-
+			info.setApCount(webCount);
 		}catch(Exception e){
 			LOG.error("Exception rised in getWorkingMembersInfo",e);
 		}

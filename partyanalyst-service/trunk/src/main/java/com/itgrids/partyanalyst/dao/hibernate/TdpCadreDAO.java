@@ -292,7 +292,12 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		query.setDate("date", date);
 		return (Long)query.uniqueResult();
 	}
-	
+	public Long getWorkingMembersForWebCount(Date date){
+		Query query = getSession().createQuery("select count(distinct  model.insertedWebUser.userId) from TdpCadre model where model.enrollmentYear = 2014 and model.isDeleted = 'N' and model.dataSourceType='WEB' and date(model.surveyTime) =:date and  model.insertedWebUser.userId is not null");
+		
+		query.setDate("date", date);
+		return (Long)query.uniqueResult();
+	}
 	public List<TdpCadre> getVoterByVoterId(Long voterId)
 	{
 		Query query = getSession().createQuery("select model  from TdpCadre model where model.voterId = :voterId  and model.isDeleted = 'N'");
@@ -855,11 +860,24 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		query.setParameter("presentDate", presentDate);
 		query.setParameter("lastHours", lastHours);
 		
-		System.out.println(" Cadre Query >>>>>>>>>>>>>>>> " + query.toString());
+		//System.out.println(" Cadre Query >>>>>>>>>>>>>>>> " + query.toString());
 		
 		return (Long)query.uniqueResult();
 	}
 	
+	public Long getLastHoursWorkingMemberCountForWeb(Date presentDate, Date lastHours)
+	{
+		Query query = getSession().createQuery("select " +
+				" count(distinct  model.insertedWebUser.userId) from TdpCadre model where model.enrollmentYear = 2014 and model.isDeleted = 'N' " +
+				" and model.dataSourceType='WEB' and ( model.surveyTime >= :lastHours and model.surveyTime <= :presentDate) and  model.insertedWebUser.userId is not null");
+		
+		query.setParameter("presentDate", presentDate);
+		query.setParameter("lastHours", lastHours);
+		
+		//System.out.println(" Cadre Query >>>>>>>>>>>>>>>> " + query.toString());
+		
+		return (Long)query.uniqueResult();
+	}
 	
 	public Integer inActiveTdpCadreByCadreIds(List<Long> tdpCadreIdList)
 	{
@@ -1564,6 +1582,19 @@ public List<Object[]> getCadreDetailsForSelectionByFamilyVoterId(CadrePrintInput
 		query.setParameterList("constiIds", constiIds);
 		return (Long)query.uniqueResult();
 	}
+	public Long getWorkingMembersCountOfAccessLevelForWeb(Date date,List<Long> constiIds){
+		Query query = getSession().createQuery("select count(distinct  model.insertedWebUser.userId) from TdpCadre model " +
+				" where model.enrollmentYear = 2014 and " +
+				" model.isDeleted = 'N' and" +
+				" model.dataSourceType='WEB' and " +
+				" date(model.surveyTime) =:date and " +
+				"  model.insertedWebUser.userId is not null" +
+				" and model.userAddress.constituency.constituencyId in (:constiIds)");
+		
+		query.setDate("date", date);
+		query.setParameterList("constiIds", constiIds);
+		return (Long)query.uniqueResult();
+	}
 	public Long getLastHoursWorkingMemberCountOfAccessLevel(Date presentDate, Date lastHours,List<Long> constiIds){
 		Query query = getSession().createQuery("select " +
 				" count(distinct model.insertedBy.cadreSurveyUserId) from TdpCadre model " +
@@ -1572,6 +1603,22 @@ public List<Object[]> getCadreDetailsForSelectionByFamilyVoterId(CadrePrintInput
 				" model.dataSourceType='TAB' and" +
 				" (model.surveyTime >= :lastHours and model.surveyTime <= :presentDate) and" +
 				" model.insertedBy.cadreSurveyUserId is not null" +
+				" and model.userAddress.constituency.constituencyId in (:constiIds)");
+		
+		query.setParameter("presentDate", presentDate);
+		query.setParameter("lastHours", lastHours);
+		query.setParameterList("constiIds", constiIds);
+		
+		return (Long)query.uniqueResult();
+	}
+	public Long getLastHoursWorkingMemberCountOfAccessLevelForWeb(Date presentDate, Date lastHours,List<Long> constiIds){
+		Query query = getSession().createQuery("select " +
+				" count(distinct model.insertedWebUser.userId) from TdpCadre model " +
+				" where model.enrollmentYear = 2014 and " +
+				" model.isDeleted = 'N' and" +
+				" model.dataSourceType='WEB' and" +
+				" (model.surveyTime >= :lastHours and model.surveyTime <= :presentDate) and" +
+				" model.insertedWebUser.userId is not null" +
 				" and model.userAddress.constituency.constituencyId in (:constiIds)");
 		
 		query.setParameter("presentDate", presentDate);
