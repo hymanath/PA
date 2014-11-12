@@ -2534,27 +2534,26 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					vo.setTotalAmount(count2);
 				}
 			
-					returnList.add(vo);
+				returnList.add(vo);
 				count++;
 			}
-			
-		}catch(Exception e){
-			LOG.error("Exception rised in getCandidateDataCollectionInfo",e);
-		}
-		
-		if(returnList!=null && returnList.size()>0){
-			for(CadreRegisterInfo cd:returnList){
-				List<CadreRegisterInfo> list  = cd.getInfoList();
-				if(list!=null && list.size()>0){
-					for(CadreRegisterInfo temp:list){
-						if(!cd.isSlowUser()){
-							if(temp.getTgCount()>temp.getTotalCount()){
-								cd.setSlowUser(true);
+			if(returnList!=null && returnList.size()>0){
+				for(CadreRegisterInfo cd:returnList){
+					List<CadreRegisterInfo> list  = cd.getInfoList();
+					if(list!=null && list.size()>0){
+						for(CadreRegisterInfo temp:list){
+							if(!cd.isSlowUser()){
+								if(temp.getTgCount()>temp.getTotalCount()){
+									cd.setSlowUser(true);
+								}
 							}
 						}
 					}
 				}
 			}
+			
+		}catch(Exception e){
+			LOG.error("Exception rised in getCandidateDataCollectionInfo",e);
 		}
 		
 		return returnList;
