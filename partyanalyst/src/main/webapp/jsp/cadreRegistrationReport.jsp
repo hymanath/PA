@@ -2160,7 +2160,7 @@ function getCandidateDataCollectionInfo2(){
 				    str +='<table class="table table-bordered " id="getUsersDetailsId">';
 			        str +='<thead>';
 			        str +='<tr>';
-					if(location == 'district')
+					if(location == 'district' || location == 'parliament')
 					{
 						str +='<th> Constituency </th>';
 						str +='<th> Parliament </th>';
@@ -2179,7 +2179,7 @@ function getCandidateDataCollectionInfo2(){
 						for(var i in result.notStartVO ) 
 							{
 							  str+='<tr>';
-							  if(location == 'district')
+							  if(location == 'district'  || location == 'parliament')
 								{
 								str+='<td>'+result.notStartVO[i].location+'</td>';
 								str+='<td>'+result.notStartVO[i].uniqueCode+'</td>';
@@ -2198,7 +2198,7 @@ function getCandidateDataCollectionInfo2(){
 						for(var i in result.startVO ) 
 							{
 							  str+='<tr>';
-							  if(location == 'district')
+							  if(location == 'district'  || location == 'parliament')
 							  {
 							   str+='<td>'+result.startVO[i].location+'</td>';
 							   str+='<td>'+result.startVO[i].uniqueCode+'</td>';
