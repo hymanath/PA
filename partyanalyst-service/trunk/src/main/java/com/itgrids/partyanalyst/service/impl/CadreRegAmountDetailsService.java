@@ -563,6 +563,7 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 			}
 			
 			List<Object[]> list1 = cadreRegAmountDetailsDAO.getAmountDetailsDateWise();
+			if(!sourceType.equalsIgnoreCase("WEB")){
 			if(list1!=null && list1.size()>0){
 				for(Object[] obj:list1){
 					CadreAmountDetailsVO cd = getMatchedDate(finalList,obj[1].toString());
@@ -570,6 +571,7 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 						cd.setPaidAmount(Long.valueOf(obj[0].toString()));
 					}
 				}
+			}
 			}
 			
 			if(finalList.size()>0){
