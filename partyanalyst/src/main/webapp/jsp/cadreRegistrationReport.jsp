@@ -89,6 +89,7 @@
         <div class="row" style="margin-top:10px;">
 		  <div class="span12 m_top20 survey_nav">
 			<ul class="inline unstyled">
+				<li><a href="cadreDashBoardAction.action">Home</a></li>
 				<li><a onclick="showHideTabs(this.id);" id="userReportTab" class="highlight selected">Users Working Status</a></li>
                 <li><a onclick="showHideTabs(this.id);" id="locationReportTab" class="highlight">Location Wise Cadre Info</a></li>
 				<li><a onclick="showHideTabs(this.id);" id="userTrackingTab" class="highlight">Users Working Consolidation Report</a></li>
