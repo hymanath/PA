@@ -1549,6 +1549,21 @@ public List<Object[]> getCadreDetailsForSelectionByFamilyVoterId(CadrePrintInput
 		
 		return (Long)query.uniqueResult();
 	}
-	
 
+
+
+public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersList,Date date)
+{
+	/*select distinct csu.cadre_survey_user_id
+	from tdp_cadre tc,cadre_survey_user csu
+	where tc.created_by=csu.cadre_survey_user_id and 
+	created_by  in(1672,1673,1674,1675,1676) and date(survey_time)='2014-11-05' ;#1673,1675,1676*/
+	
+  Query query=getSession().createQuery("select distinct model.insertedBy.cadreSurveyUserId from   TdpCadre  model " +
+  		" where model.insertedBy.cadreSurveyUserId in(:cadreSurveyUserIds) and " +
+  		" date(model.surveyTime)=:surveyTime ");	
+  query.setParameterList("cadreSurveyUserIds", assignedUsersList);
+  query.setParameter("surveyTime", date);
+  return query.list();
+}
 }
