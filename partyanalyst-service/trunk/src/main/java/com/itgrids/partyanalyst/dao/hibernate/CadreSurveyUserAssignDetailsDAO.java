@@ -110,4 +110,43 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 		query.setParameterList("userIds", userIds);
 		return query.list();
 	}
+	public List<Long> getCadreSurveyUserIdsByLocation(String location,Long locationId,String queryString)
+	{
+		/*select csuas.cadre_survey_user_id
+		from cadre_survey_user_assign_details csuas
+		where constituency_id=232  and is_deleted='N';#1672,1673,1674,1675,1676*/
+		if(queryString == null)
+		{
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append("select distinct model.cadreSurveyUserId  from CadreSurveyUserAssignDetails model ");
+			if(location.equalsIgnoreCase("constituency"))
+				queryStr.append(" where model.constituencyId=:locationId and model.isDeleted='N' ");
+			else if(location.equalsIgnoreCase("district"))
+				queryStr.append(" where model.constituency.district.districtId=:locationId and model.isDeleted='N' ");
+			else if(location.equalsIgnoreCase("state"))
+				queryStr.append(" where model.constituency.state.stateId=:locationId and model.isDeleted='N' ");
+			Query query = getSession().createQuery(queryStr.toString());
+		    
+			query.setParameter("locationId", locationId);
+		    return query.list();	
+		}
+		else
+		{
+			Query query = getSession().createQuery(queryString +" and model2.delimitationConstituency.constituency.constituencyId = :locationId");
+			query.setParameter("locationId", locationId);
+			
+		    return query.list();
+		}
+	
+	}
+	public List<Object[]> getUsersDetails(List<Long> cadreSurveyUserIds)
+	{
+		Query query=getSession().createQuery("select model.cadreSurveyUser.userName,model.cadreSurveyUser.name,model.cadreSurveyUser.mobileNo,model.tabNo,model.constituency.name" +
+				" from CadreSurveyUserAssignDetails model " +
+				" where cadreSurveyUser.cadreSurveyUserId in(:cadreSurveyUserIds) and " +
+				" model.isDeleted='N' " +
+				" order by model.cadreSurveyUser.userName");
+		query.setParameterList("cadreSurveyUserIds", cadreSurveyUserIds);
+		 return query.list();	
+	}
 }
