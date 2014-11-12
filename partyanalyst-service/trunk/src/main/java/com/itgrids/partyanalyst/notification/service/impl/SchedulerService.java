@@ -1,8 +1,5 @@
 package com.itgrids.partyanalyst.notification.service.impl;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.ISearchEngineIPAddressDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.IUserTrackingDAO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -29,6 +27,9 @@ public class SchedulerService implements ISchedulerService{
 	
 	@Autowired
 	private ISurveyDetailsInfoDAO surveyDetailsInfoDAO;
+	
+	@Autowired
+	private ITdpCadreDAO tdpCadreDAO;
 	
 	public IUserTrackingDAO getUserTrackingDAO() {
 		return userTrackingDAO;
@@ -106,6 +107,86 @@ public class SchedulerService implements ISchedulerService{
 			LOG.error("Exception Occured in saveDailyWmCorrectedMobileNUmbers() Method, Exception is - ",e);
 		}
 		
+		
+	}
+	
+	/**
+	 * This Service is used for saving Card Print Details  from  Cadre registration
+	 * @param prevDate
+	 * @author Prasad Thiragabathina
+	 */
+	public void prepareDatForCardPrinting(String prevDate)
+	{
+		try 
+		{
+			//PREPARE DATA FOR RURAL BY USING RURAL CONSTITUECYES
+			saveRuralConstituencysDataType1(prevDate);
+			//PREPARE DATA FOR RURAL BY USING RURAL-URBAN CONSTITUECYES
+			saveRuralConstituencysDataType2(prevDate);
+			//PREPARE DATA FOR RURAL-URBAN BY USING RURAL-URBAN CONSTITUECYES
+			saveRuralUrbanConstituencysDataType(prevDate);
+			//PREPARE DATA FOR URBAN BY USING URBAN CONSTITUECYES
+			saveUrbanConstituencysDataType(prevDate);
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception Raised in prepareDatForCardPrinting()",e); 
+		}
+	}
+	
+	public void saveRuralConstituencysDataType1(String prevDate)
+	{
+		try
+		{
+			Integer count = tdpCadreDAO.saveRuralConstituencyDataType1(prevDate);
+			LOG.error(" R1 TYPE RECORDS INSERTED FOR CARD PRINTING   "+count );
+		}
+		catch (Exception e)
+		{
+			LOG.error("Exception Raised in saveRuralConstituencysDataType1()",e); 
+		}
+		
+	}
+	
+	public void saveRuralConstituencysDataType2(String prevDate)
+	{
+		try 
+		{
+			Integer count = tdpCadreDAO.saveRuralUrbanConstituencyDataType2(prevDate);
+			LOG.error(" R2 TYPE RECORDS INSERTED FOR CARD PRINTING   "+count );
+		} 
+		catch (Exception e) 
+		{
+			LOG.error("Exception Raised in saveRuralConstituencysDataType2()",e); 
+		}
+		
+	}
+	
+	public void saveRuralUrbanConstituencysDataType(String prevDate)
+	{
+		try
+		{
+			Integer count = tdpCadreDAO.saveRuralUrbanConstituencyDataType(prevDate);
+			LOG.error(" RU TYPE RECORDS INSERTED FOR CARD PRINTING   "+count );
+		} 
+		catch (Exception e) 
+		{
+			LOG.error("Exception Raised in saveRuralUrbanConstituencysDataType()",e); 
+		}
+		
+	}
+	
+	public void saveUrbanConstituencysDataType(String prevDate)
+	{
+		try 
+		{
+			Integer count = tdpCadreDAO.saveUrbanConstituencyDataType1(prevDate);
+			LOG.error(" U TYPE RECORDS INSERTED FOR CARD PRINTING   "+count );
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception Raised in saveUrbanConstituencysDataType()",e); 
+		}
 		
 	}
 	

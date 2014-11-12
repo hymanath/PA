@@ -12,4 +12,6 @@ public interface ISchedulerService {
 	public List<String> getAllSearchEngineIPAddresses();
 	
 	public void saveDailyWmCorrectedMobileNUmbers(Date fromDate);
+	
+	public void prepareDatForCardPrinting(String prevDate);
 }

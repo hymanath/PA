@@ -107,6 +107,11 @@ public class Scheduler {
 		schedulerService.saveDailyWmCorrectedMobileNUmbers(dateUtilService.getCurrentDateAndTime());
 	}
 	
+	
+	public void runTheBatchJobForEveryDayCardDataInsert()
+	{
+		schedulerService.prepareDatForCardPrinting(dateUtilService.getYesterdayDateString());
+	}
 	public void runTheBatchJobForEveryWeek()
 	{
 		if(!IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
