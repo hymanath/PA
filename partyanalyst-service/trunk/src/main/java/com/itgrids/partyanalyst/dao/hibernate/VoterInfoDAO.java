@@ -432,4 +432,45 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 		return query.list();
 	}
 	
+	public Long getVotersCountInADistrict(Long districtId, Long publicationDateId)
+	{
+		Query query = getSession().createQuery("Select sum(model.totalVoters) from VoterInfo model,Constituency model2 where model.constituencyId = model2.constituencyId and " +
+				" model.voterReportLevel.voterReportLevelId = :reportLevelId and model.reportLevelValue = model.constituencyId and model.publicationDate.publicationDateId = :publicationDateId and " +
+				" model2.district.districtId = :districtId");
+		
+		query.setParameter("reportLevelId", 1L);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("districtId", districtId);
+		
+		return (Long)query.uniqueResult();
+    }
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVotersCountInADistrictsList(List<Long> districtIdsList, Long publicationDateId)
+	{
+		Query query = getSession().createQuery("Select model2.district.districtId,model2.district.districtName,sum(model.totalVoters) from VoterInfo model,Constituency model2 where model.constituencyId = model2.constituencyId and " +
+				" model.voterReportLevel.voterReportLevelId = :reportLevelId and model.reportLevelValue = model.constituencyId and model.publicationDate.publicationDateId = :publicationDateId and " +
+				" model2.district.districtId in (:districtIdsList) group by model2.district.districtId");
+		
+		query.setParameter("reportLevelId", 1L);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameterList("districtIdsList", districtIdsList);
+		
+		return query.list();
+    }
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVotersCountInConstituenciesByDistrictsList(List<Long> districtIdsList, Long publicationDateId)
+	{
+		Query query = getSession().createQuery("Select model2.constituencyId,model2.name,sum(model.totalVoters) from VoterInfo model,Constituency model2 where model.constituencyId = model2.constituencyId and " +
+				" model.voterReportLevel.voterReportLevelId = :reportLevelId and model.reportLevelValue = model.constituencyId and model.publicationDate.publicationDateId = :publicationDateId and " +
+				" model2.district.districtId in (:districtIdsList) group by model2.constituencyId");
+		
+		query.setParameter("reportLevelId", 1L);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameterList("districtIdsList", districtIdsList);
+		
+		return query.list();
+    }
+	
 }

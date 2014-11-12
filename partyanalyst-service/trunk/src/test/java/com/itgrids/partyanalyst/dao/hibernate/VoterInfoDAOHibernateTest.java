@@ -218,13 +218,53 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(count);
 	}*/
 	
-	public void testGetFamiliesCountInAPanchayats()
+	/*public void testGetFamiliesCountInAPanchayats()
 	{
 		List<Long> panchayatIds = new ArrayList<Long>();
 		panchayatIds.add(1l);
 		panchayatIds.add(2l);
 		List<Object[]> list = voterInfoDAO.getFamiliesCountInAPanchayats(panchayatIds,10l);
 		System.out.println(list.size()); 
+	}*/
+	
+	public void testGetVotersCountInADistrict()
+	{
+		Long count = voterInfoDAO.getVotersCountInADistrict(3l,10l);
+		System.out.println(count);
+	}
+	
+	public void testGetVotersCountInADistrictsList()
+	{
+		List<Long> districtIdsList = new ArrayList<Long>(0);
+		districtIdsList.add(1l);
+		districtIdsList.add(2l);
+		districtIdsList.add(3l);
+		
+		List<Object[]> list = voterInfoDAO.getVotersCountInADistrictsList(districtIdsList, 10l);
+		
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object obj : params)
+			System.out.print("\t"+obj);
+		}
+	}
+	
+	public void testGetVotersCountInConstituenciesByDistrictsList()
+	{
+		List<Long> districtIdsList = new ArrayList<Long>(0);
+		districtIdsList.add(1l);
+		districtIdsList.add(2l);
+		districtIdsList.add(3l);
+		
+		List<Object[]> list = voterInfoDAO.getVotersCountInConstituenciesByDistrictsList(districtIdsList, 10l);
+		
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object obj : params)
+			System.out.print("\t"+obj);
+		}
 	}
 
 }
