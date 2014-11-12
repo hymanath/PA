@@ -2089,10 +2089,12 @@ function getCandidateDataCollectionInfo2(){
 				str+='<th rowspan="2">User</th>';
 				str+='<th rowspan="2">Name</th>';
 				str+='<th rowspan="2" >MobileNo</th>';
-				for(var i in result[0].infoList){
+				if(result[0].infoList.length>1){
+					for(var i in result[0].infoList){
 					
-					 str+='<th colspan="5">'+result[0].infoList[i].date+'</th>';
+						str+='<th colspan="5">'+result[0].infoList[i].date+'</th>';
 					
+					}
 				}
 				str+='</tr>';
 				str+='<tr>';
