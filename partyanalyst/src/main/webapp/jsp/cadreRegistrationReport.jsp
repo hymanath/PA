@@ -91,7 +91,7 @@
 			<ul class="inline unstyled">
 				<li><a onclick="showHideTabs(this.id);" id="userReportTab" class="highlight selected">Users Working Status</a></li>
                 <li><a onclick="showHideTabs(this.id);" id="locationReportTab" class="highlight">Location Wise Cadre Info</a></li>
-				<!-- <li><a onclick="showHideTabs(this.id);" id="userTrackingTab" class="highlight">Users Working Consolidation Report</a></li> -->
+				<li><a onclick="showHideTabs(this.id);" id="userTrackingTab" class="highlight">Users Working Consolidation Report</a></li>
 				<li><a onclick="showHideTabs(this.id);" id="slowUserTrackingTab" class="highlight">Slow User Tracking Details</a></li>
 			</ul>
 		  </div>
@@ -262,11 +262,11 @@
 							 <option value="2">State</option>
 							 <option value="3">District</option>
 							 <option value="4">Constituency</option>
-							 <!-- <option value="5">Parliament Constituency</option>-->
+							  <option value="5">Parliament Constituency</option>
 					       </select> 
 					   </td>
 				     </tr>
-				     <tr id="statesDispalyMainDiv">
+				     <tr id="trackingStatesDispalyMainDiv">
 						 <td><b>Select State :</b></td>
 						 <td>  
 						   <select id="trackingStatesDispalyId" onchange="getLocationDetailsForState(this.value);">
@@ -384,7 +384,11 @@
 		<div id="dialogueLocationsCadDiv" style="display: none;">
 		  <div id="dialogueLocationsCadTable"></div>
 	    </div>
+			<div id="userDetailsIdForDialog">
+			<div id="userDetailsId" style="display:none"> </div>
+			</div>
 	</div>
+	
 <script type="text/javascript">
 
    $(document).ready(function(){
@@ -1885,7 +1889,7 @@ function getCandidateDataCollectionInfo2(){
 	$("#ajaxImgStyle1").show();
 	
 	var jsObj = {
-			usersType:"submiited",
+			usersType:locationId1,
 			areaType: areaType,
 			stateTypeId:stateTypeId,
 			fromdateStr:startDate1,
@@ -1911,6 +1915,18 @@ function getCandidateDataCollectionInfo2(){
    }
     function buildLocationWiseUsersReport(result)
    {
+    
+	 var locationTypeFinder=$( "#trackingLocationsDispalyId" ).val();
+		var location="";
+		if(locationTypeFinder==2)
+		 location="constituency";
+		else if(locationTypeFinder==3)
+		 location="district";
+		else if(locationTypeFinder==4)
+		 location="constituency";
+		 else if(locationTypeFinder==5)
+		 location="parliament";
+		 
 		var str ='';
 		if(result.length >0)
 		{
@@ -1918,6 +1934,10 @@ function getCandidateDataCollectionInfo2(){
 			str +='<thead>';
 			str +='<tr>';
 			str +='<th > Location Name </th>';
+			if(locationTypeFinder != 3 && locationTypeFinder != 5)
+			{
+				str +='<th > Parliament </th>';
+			}
 			for(var i in result[0].surveyTransactionVOList)
 			{
 				str +='<th colspan="2">'+result[0].surveyTransactionVOList[i].surveyDate+'  </th>';
@@ -1925,6 +1945,10 @@ function getCandidateDataCollectionInfo2(){
 			str +='</tr>';
 			str +='<tr>';
 			str +='<th> </th>';
+			if(locationTypeFinder != 3 && locationTypeFinder != 5)
+			{
+				str +='<th> </th>';
+			}
 			for(var i in result[0].surveyTransactionVOList)
 			{
 				str +='<th> Started  </th>';
@@ -1940,10 +1964,30 @@ function getCandidateDataCollectionInfo2(){
 		{
 			str +='<tr>';
 			str +='<td>'+result[i].name+'</td>';
+			if(locationTypeFinder != 3 && locationTypeFinder != 5)
+			{
+				str +='<td> '+result[i].locationName+'</td>';
+			}
 			for(var j in result[i].surveyTransactionVOList)
 				{
-					str +='<td> '+result[i].surveyTransactionVOList[j].teamSize+' </td>';
-					str +='<td> '+result[i].surveyTransactionVOList[j].idleTeamSize+' </td>';
+					if(result[i].surveyTransactionVOList[j].teamSize != 0)
+					{
+						str+='<td><a href="javascript:{getUserDetails('+result[i].surveyTransactionVOList[j].id+',\''+location+'\',\'submit\',\'Started\',\''+result[i].surveyTransactionVOList[j].surveyDate+'\',\''+result[i].name+'\',1)}">'+result[i].surveyTransactionVOList[j].teamSize+'</a></td>';
+					}
+					else
+					{
+						str+='<td>'+result[i].surveyTransactionVOList[j].teamSize+'</td>';
+					}
+					
+					if(result[i].surveyTransactionVOList[j].idleTeamSize != 0)
+					{
+						str+='<td><a href="javascript:{getUserDetails('+result[i].surveyTransactionVOList[j].id+',\''+location+'\',\'notSubmit\',\'Yet to be Started \',\''+result[i].surveyTransactionVOList[j].surveyDate+'\',\''+result[i].name+'\',2)}">'+result[i].surveyTransactionVOList[j].idleTeamSize+'</a></td>';
+					}
+					else
+					{
+						str+='<td>'+result[i].surveyTransactionVOList[j].idleTeamSize+'</td>';
+					}
+					
 				}
 			str +='</tr>';
 		}
@@ -2002,12 +2046,14 @@ function getCandidateDataCollectionInfo2(){
 	   
 	  if(locationLvl == 2)
 	  {
-		$("#constituencyDispalyMainDiv").hide();
-		$("#districtsDispalyMainDiv").hide();
+		$("#trackingStatesDispalyMainDiv").show();
+		$("#trackingConstituencyDispalyMainDiv").hide();
+		$("#trackingDistrictsDispalyMainDiv").hide();
 		$("#mandalDispalyMainDiv").hide();
 	  }
 	  if(locationLvl == 3)
 	  {
+		$("#trackingStatesDispalyMainDiv").show();
 		$("#trackingDistrictsDispalyMainDiv").show();
 		$("#trackingDistrictsDispalyId").val(0);
 		$("#trackingConstituencyDispalyMainDiv").hide();
@@ -2015,6 +2061,7 @@ function getCandidateDataCollectionInfo2(){
 		
 	  }else if(locationLvl == 4)
 	  {
+		$("#trackingStatesDispalyMainDiv").show();
 		$("#trackingDistrictsDispalyMainDiv").hide();
 		$("#trackingDistrictsDispalyId").val(0);
 		$("#trackingConstituencyDispalyMainDiv").show();
@@ -2022,6 +2069,7 @@ function getCandidateDataCollectionInfo2(){
 	  }
 	 else if(locationLvl == 5)
 	  {
+		$("#trackingStatesDispalyMainDiv").show();
 		$("#trackingDistrictsDispalyMainDiv").hide();
 		$("#trackingDistrictsDispalyId").val(0);
 		$("#trackingConstituencyDispalyMainDiv").hide();
@@ -2042,19 +2090,19 @@ function getCandidateDataCollectionInfo2(){
 	  {
 		divId = 'trackingDistrictsDispalyId';
 		dataType = "district";
-		selectOption = 'Select District ';
+		selectOption = 'All ';
 	  }
 	  else if(locationLvl == 4)
 	  {
 	  	divId = 'trackingConstituencyDispalyId';
 		dataType = "assembly";
-		selectOption = 'Select Constituency ';
+		selectOption = 'All ';
 	  }
 	  else if(locationLvl == 5)
 	  {
 		divId = 'trackingParlDispalyId';	
 		dataType = "parliament";
-		selectOption = 'Select Parliament ';
+		selectOption = 'All ';
 	  }
 	  
 	  if(locationLvl != 2)
@@ -2088,6 +2136,105 @@ function getCandidateDataCollectionInfo2(){
 		}
 	}
 	
+	function getUserDetails(locationId,location,searchType,type,dateString,locationName,typeId)
+   {
+   
+				var jsObj = {
+	             
+			      location:location,
+				  locationId: locationId,
+		          type:searchType,
+			      dateString:dateString,
+			      }	
+			$.ajax({
+				type : "GET",
+				url : "gettingUserDetailsByLocationAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+					$("#userDetailsIdForDialog,#userDetailsId").show();
+				if(result!=null)
+				 {
+				 var str ='';
+				  if((result.notStartVO !=null && result.notStartVO.length > 0) || (result.startVO !=null && result.startVO.length > 0))
+				  {
+				    str +='<table class="table table-bordered " id="getUsersDetailsId">';
+			        str +='<thead>';
+			        str +='<tr>';
+					if(location == 'district')
+					{
+						str +='<th> Constituency </th>';
+						str +='<th> Parliament </th>';
+					}
+			        
+			        str +='<th>UserName</th>';
+				    str +='<th>Name</th>';
+				    str+='<th>MobileNO</th>';
+				    str+='<th>TabNO</th>';
+				    str +='</tr>';
+				    str +='</thead>';
+					str+="</tbody>";
+					
+					if(typeId == 2)
+					{
+						for(var i in result.notStartVO ) 
+							{
+							  str+='<tr>';
+							  if(location == 'district')
+								{
+								str+='<td>'+result.notStartVO[i].location+'</td>';
+								str+='<td>'+result.notStartVO[i].uniqueCode+'</td>';
+								}
+							  
+							  str+='<td>'+result.notStartVO[i].userName+'</td>';
+							  str+='<td>'+result.notStartVO[i].name+'</td>';
+							  str+='<td>'+result.notStartVO[i].description+'</td>';
+							  str+='<td>'+result.notStartVO[i].pwd+'</td>';
+							  str+='</tr>';
+							}			
+					}
+					else if(typeId == 1)
+					{
+						 
+						for(var i in result.startVO ) 
+							{
+							  str+='<tr>';
+							  if(location == 'district')
+							  {
+							   str+='<td>'+result.startVO[i].location+'</td>';
+							   str+='<td>'+result.startVO[i].uniqueCode+'</td>';
+							  }
+							  str+='<td>'+result.startVO[i].userName+'</td>';
+							  str+='<td>'+result.startVO[i].name+'</td>';
+							  str+='<td>'+result.startVO[i].description+'</td>';
+							  str+='<td>'+result.startVO[i].pwd+'</td>';
+							   str+='</tr>';
+							}			
+					}
+					
+				    str+="</tbody>";
+					str+="</table>";
+				 }
+
+				$("#userDetailsId").html(str);
+			
+				$('#getUsersDetailsId').dataTable({
+			      "iDisplayLength": 10,
+			      "aLengthMenu": [[10,20,50, 100, 200, -1], [10,20,50, 100, 200, "All"]]
+		         });
+				 
+				 
+				 $('#userDetailsIdForDialog').dialog(
+				   {
+					 width : 850,
+					 height: 350,
+					 title : "<span style='text-transform: capitalize;'>"+locationName+" "+location+" "+type+"</span> Users Details on "+ dateString+" "
+				  });
+
+   
+   }
+  });
+  }
+  
 	
 </script>
 </body>
