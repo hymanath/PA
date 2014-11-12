@@ -149,4 +149,11 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getAnalysisData(String reqDate);
 	public List<Object[]> getUserData();
 	public List<Object[]> getCandidateDataCollectionInfo1(Long locationType,List<Long> locationIds,Date fromDate,Date toDate,String sourceType);
+	public Long getLastHoursWorkingMemberCountOfAccessLevelForWeb(Date presentDate, Date lastHours,List<Long> constiIds);
+	
+	public Long getLastHoursWorkingMemberCountForWeb(Date presentDate, Date lastHours);
+	
+	public Long getWorkingMembersCountOfAccessLevelForWeb(Date date,List<Long> constiIds);
+	
+	public Long getWorkingMembersForWebCount(Date date);
 }
