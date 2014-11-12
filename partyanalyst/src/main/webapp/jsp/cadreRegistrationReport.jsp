@@ -142,7 +142,7 @@
 				   </tr>
 				   <tr><td><b>From Date :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="fromDate"/></td></tr>
 				   <tr><td><b>To Date   :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="toDate" /></td></tr>
-				<tr><td></td><td><input type="checkbox" id="timeCheckBox" style="margin-top:-3px">&nbsp;&nbsp;StartTime And End Time 
+				<tr><td></td><td><input type="checkbox" id="timeCheckBox" style="margin-top:-3px">&nbsp;&nbsp;Start Time And End Time 
 				</td></tr>
 				<tr><td></td><td> <input type="radio" name="sourceTyperadio" id="sourceType" value="TAB" checked style="margin-top: -3px;">&nbsp;TAB&nbsp;<input type="radio" name="sourceTyperadio" id="sourceType1" value="WEB" style="margin-top: -3px;">&nbsp;WEB&nbsp;<input type="radio" name="sourceTyperadio" id="sourceType2" value="ONLINE" style="margin-top: -3px;">&nbsp;ONLINE&nbsp;
 				</td></tr>
