@@ -8806,7 +8806,12 @@
 				<param name="root">sentStatus</param>
 			</result>
 		</action>
-		
+		<action name="gettingUserDetailsByLocationAction" class="cadreDashBoardAction" method="gettingUserDetailsByLocation" >
+			<result type="json" name="success">
+				<param name="root">wsResultVO</param>
+			</result>
+		</action>
+
 		<action name="cadreRegAmountUpload" class="cadreRegAmountUploadAction">
 			<result name="success">/jsp/cadreRegAmountUpload.jsp</result>
 		</action>
