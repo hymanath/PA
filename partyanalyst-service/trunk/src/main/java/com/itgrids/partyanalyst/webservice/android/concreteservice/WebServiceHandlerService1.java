@@ -867,9 +867,10 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	
     public LoginResponceVO checkValidLoginOrNot(String userName,String password,String imei1,String imei2,String version){
     	LoginResponceVO vo = new LoginResponceVO();
-    	vo.setStatus("login failure");
+    	
 	 List<CadreSurveyUser> users = cadreSurveyUserDAO.getByUserNameAndPassword(userName, password);
 	 if(users == null || users.size() == 0 || users.get(0) == null){
+		 vo.setStatus("login failure");
 		 return vo;
 	 }
 	 if((imei1 != null && imei1.length() > 0) && (imei2 != null && imei2.length() > 0) ){
