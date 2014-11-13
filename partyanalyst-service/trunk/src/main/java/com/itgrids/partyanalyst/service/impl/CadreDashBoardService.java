@@ -600,10 +600,10 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 							Long targetCount = 0l;
 							Long votersCount = 0l;
 							if(stateId.equals(1l)){
-								votersCount = vtrsMap.get(Long.valueOf(obj[1].toString()));
+								votersCount = vtrsMap.get(obj[1]!=null ? Long.valueOf(obj[1].toString()) : 0l);
 								targetCount = ap_perc*votersCount/100;
 							}else{
-								votersCount = vtrsMap.get(Long.valueOf(obj[1].toString()));
+								votersCount = vtrsMap.get(obj[1]!=null ? Long.valueOf(obj[1].toString()) : 0l);
 								targetCount = tg_perc*votersCount/100;
 							}
 							infoVo.setVotersCount(votersCount);
@@ -759,10 +759,10 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 							Long targetCount = 0l;
 							Long votersCount = 0l;
 							if(stateId.equals(1l)){
-								votersCount = vtrsMap.get(Long.valueOf(obj[1].toString()));
+								votersCount = vtrsMap.get(obj[1] != null ? Long.valueOf(obj[1].toString()) : 0l);
 								targetCount = ap_perc*votersCount/100;
 							}else{
-								votersCount = vtrsMap.get(Long.valueOf(obj[1].toString()));
+								votersCount = vtrsMap.get(obj[1] != null ? Long.valueOf(obj[1].toString()) : 0l);
 								targetCount = tg_perc*votersCount/100;
 							}
 							infoVo.setVotersCount(votersCount);
