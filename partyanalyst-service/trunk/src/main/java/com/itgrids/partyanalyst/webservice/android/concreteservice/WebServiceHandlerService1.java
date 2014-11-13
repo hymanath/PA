@@ -884,7 +884,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		  checkVaidLogInOrNot(users.get(0).getCadreSurveyUserId(),reqImei,version,vo);
 		  
 	 }
-	 if(vo.getStatus().equalsIgnoreCase("success")){
+	 if(vo.getStatus().equalsIgnoreCase("logged")){
 	    List<CadreSurveyUserAssignDetails> resultList = cadreSurveyUserAssignDetailsDAO.getCadreAssinedDetails(users.get(0).getCadreSurveyUserId());
 		if(resultList != null && resultList.size() > 0)
 		{
@@ -908,7 +908,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
     		tabLogInAuth.setIsDeleted("N");
     		tabLogInAuth.setStatus("success");
     		tabLogInAuthDAO.save(tabLogInAuth);
-    		vo.setStatus("success");
+    		vo.setStatus("logged");
     		return vo;
     	}else{
     		count = tabLogInAuthDAO.checkRecordBelongsToUserOrNot(userId, imei);
@@ -922,7 +922,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
         		tabLogInAuth.setIsDeleted("N");
         		tabLogInAuth.setStatus("success");
         		tabLogInAuthDAO.save(tabLogInAuth);
-        		vo.setStatus("success");
+        		vo.setStatus("logged");
         		return vo;
     		}else{
     			return getActualCaseForNotAllowingToLogIn(userId,imei,version,vo);
@@ -968,7 +968,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
     		tabLogInAuth.setIsDeleted("N");
     		tabLogInAuth.setStatus("success");
     		tabLogInAuthDAO.save(tabLogInAuth);
-    		vo.setStatus("success");
+    		vo.setStatus("logged");
     		return vo;
     	}else{
     		count = tabLogInAuthDAO.checkRecordBelongsToUserOrNot(userId,imei1,imei2);
@@ -983,7 +983,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
         		tabLogInAuth.setIsDeleted("N");
         		tabLogInAuth.setStatus("success");
         		tabLogInAuthDAO.save(tabLogInAuth);
-        		vo.setStatus("success");
+        		vo.setStatus("logged");
         		return vo;
     		}else{
     			return getActualCaseForNotAllowingToLogIn(userId,imei1,imei2,version,vo);

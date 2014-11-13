@@ -501,8 +501,9 @@ public class WebServiceHandler2 {
 		Map<String,String> userDetails= new HashMap<String, String>();
 		userDetails.put("","");
 		try{
-			
+			synchronized ("checkValidCadreUserOrNot") {
 			return (LoginResponceVO) webServiceHandlerService1.checkValidLoginOrNot(inputs.getUserName(),inputs.getPassWord(), inputs.getImei1(), inputs.getImei2(), inputs.getVersion());
+			}
 		}
 		catch(Exception e)
 		{
