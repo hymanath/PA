@@ -38,6 +38,27 @@ public class CadreRegisterInfo implements Serializable{
 	private String tabNo;
 	private String fromDate;
 	private Long avgTime;
+	
+	private Long votersCount;
+	private Long targetCount;
+	
+	
+	public Long getVotersCount() {
+		return votersCount;
+	}
+
+	public void setVotersCount(Long votersCount) {
+		this.votersCount = votersCount;
+	}
+
+	public Long getTargetCount() {
+		return targetCount;
+	}
+
+	public void setTargetCount(Long targetCount) {
+		this.targetCount = targetCount;
+	}
+
 	public Long getApPartyWebCount() {
 		return apPartyWebCount;
 	}
