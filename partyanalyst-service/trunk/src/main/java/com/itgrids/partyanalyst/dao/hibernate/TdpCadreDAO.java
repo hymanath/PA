@@ -1863,7 +1863,7 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
 
 		StringBuilder queryStr = new StringBuilder();
 
-		queryStr.append("select count(model.tdpCadreId),min(model.surveyTime),max(model.surveyTime),date(model.surveyTime), model.userAddress.constituency.constituencyId ");
+		queryStr.append("select count(model.tdpCadreId),min(model.surveyTime),max(model.surveyTime),date(model.surveyTime)");
 		if(sourceType.equalsIgnoreCase("TAB"))
 		queryStr.append(" ,model.insertedBy.cadreSurveyUserId,model.insertedBy.userName,model.insertedBy.name ");
 		else if(sourceType.equalsIgnoreCase("WEB"))
