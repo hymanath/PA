@@ -264,9 +264,9 @@ public class CadreDashBoardAction implements ServletRequestAware {
 				 result = cadreDashBoardService.getRecentlyRegisteredCadresInfo(Integer.parseInt(request.getParameter("startIndex")), Integer.parseInt(request.getParameter("maxIndex")),accessType,accessValue);
 				// result = cadreDashBoardService.getRecentlyRegisteredCadresInfo();
 			}else if(task.equalsIgnoreCase("assemblyWise")){
-				result = cadreDashBoardService.getAssemblyWiseCompletedPercentage(Long.parseLong(request.getParameter("assemblyId")),Long.parseLong(request.getParameter("stateId")), accessType, regVO.getAccessValue());
+				result = cadreDashBoardService.getAssemblyWiseCompletedPercentage(Long.parseLong(request.getParameter("assemblyId")),Long.parseLong(request.getParameter("stateId")), accessType, regVO.getAccessValue(),request.getParameter("percType"));
 			}else if(task.equalsIgnoreCase("districtWise")){
-				result = cadreDashBoardService.getDistrictWiseCompletedPercentage(Long.parseLong(request.getParameter("districtId")),Long.parseLong(request.getParameter("stateId")), accessType, regVO.getAccessValue());
+				result = cadreDashBoardService.getDistrictWiseCompletedPercentage(Long.parseLong(request.getParameter("districtId")),Long.parseLong(request.getParameter("stateId")), accessType, regVO.getAccessValue(),request.getParameter("percType"));
 			}else if(task.equalsIgnoreCase("workStartedConstituency")){
 				result = cadreDashBoardService.getWorkStartedConstituencyCount(accessType,accessValue);
 			}else if(task.equalsIgnoreCase("candidateDataCollectionInfo")){
