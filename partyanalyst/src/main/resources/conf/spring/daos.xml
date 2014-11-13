@@ -1734,5 +1734,8 @@
 	<property name="sessionFactory" ref="sessionFactory" />
 </bean>
 
+<bean id="tabLogInAuthDAO" class="com.itgrids.partyanalyst.dao.hibernate.TabLogInAuthDAO" >
+	<property name="sessionFactory" ref="sessionFactory" />
+</bean>
 	<!--  end -->
 </beans>		

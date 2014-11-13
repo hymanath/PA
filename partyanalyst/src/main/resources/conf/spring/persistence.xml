@@ -506,6 +506,7 @@
 				<value>com.itgrids.partyanalyst.model.CadreRegAmountFile</value>
 				<value>com.itgrids.partyanalyst.model.CadreRegAmountDetails</value>
 				<value>com.itgrids.partyanalyst.model.CadreSurveyUserAssignee</value>
+				<value>com.itgrids.partyanalyst.model.TabLogInAuth</value>
 				</list>
 			
 		</property>
