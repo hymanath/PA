@@ -601,15 +601,28 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 							Long votersCount = 0l;
 							if(stateId.equals(1l)){
 								votersCount = vtrsMap.get(obj[1]!=null ? Long.valueOf(obj[1].toString()) : 0l);
+								if(votersCount==null){
+									votersCount = 0l;
+								}
 								targetCount = ap_perc*votersCount/100;
 							}else{
 								votersCount = vtrsMap.get(obj[1]!=null ? Long.valueOf(obj[1].toString()) : 0l);
+								if(votersCount==null){
+									votersCount = 0l;
+								}
 								targetCount = tg_perc*votersCount/100;
 							}
 							infoVo.setVotersCount(votersCount);
 							infoVo.setTargetCount(targetCount);
-							infoVo.setApCount((Long.valueOf(obj[0].toString())*100)/targetCount);
-							infoVo.setDate(new BigDecimal(Long.valueOf(obj[0].toString())*(100.0)/targetCount).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+							if(targetCount!=0){
+								infoVo.setApCount((Long.valueOf(obj[0].toString())*100)/targetCount);
+								infoVo.setDate(new BigDecimal(Long.valueOf(obj[0].toString())*(100.0)/targetCount).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+							}else{
+								infoVo.setApCount(0l);
+								infoVo.setDate(" - ");
+							}
+							
+							
 							infoVo.setTgCount(Long.valueOf(obj[1].toString()));
 							returnList.add(infoVo);
 						}
@@ -760,15 +773,27 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 							Long votersCount = 0l;
 							if(stateId.equals(1l)){
 								votersCount = vtrsMap.get(obj[1] != null ? Long.valueOf(obj[1].toString()) : 0l);
+								if(votersCount==null){
+									votersCount = 0l;
+								}
 								targetCount = ap_perc*votersCount/100;
 							}else{
 								votersCount = vtrsMap.get(obj[1] != null ? Long.valueOf(obj[1].toString()) : 0l);
+								if(votersCount==null){
+									votersCount = 0l;
+								}
 								targetCount = tg_perc*votersCount/100;
 							}
 							infoVo.setVotersCount(votersCount);
 							infoVo.setTargetCount(targetCount);
-							infoVo.setApCount((Long.valueOf(obj[0].toString())*100)/targetCount);
-							infoVo.setDate(new BigDecimal(Long.valueOf(obj[0].toString())*(100.0)/targetCount).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+							
+							if(targetCount!=0){
+								infoVo.setApCount((Long.valueOf(obj[0].toString())*100)/targetCount);
+								infoVo.setDate(new BigDecimal(Long.valueOf(obj[0].toString())*(100.0)/targetCount).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+							}else{
+								infoVo.setApCount(0l);
+								infoVo.setDate(" - ");
+							}
 							infoVo.setTgCount(Long.valueOf(obj[1].toString()));
 							returnList.add(infoVo);
 						}
