@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+	<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -110,23 +111,55 @@
 					 <tr>
 					   <td><b>Select Scope : </b></td>
 					   <td>
-						  <select id="selLctnType" onchange="selectLocation(this.value)">
+						 <c:if test="${sessionScope.USER.accessType == 'STATE'}">
+							<select id="selLctnType" onchange="selectLocation(this.value)">						 
 							<option value="0">All</option> 
 							<option value="1">State</option>
 							<option value="2">District</option>
 							<option value="3">Constituency</option>
 							<option value="4">Parliament</option>
-						  </select>
+							</select>
+							</c:if>
+							<c:if test="${sessionScope.USER.accessType == 'DISTRICT'}">
+							<select id="selLctnType" onChange="selectLocationByAccess(this.value)">	
+								<option value="2">District</option>
+								<option value="3">Constituency</option>
+								<option value="4">Parliament</option>
+								</select>
+							</c:if>
+							<c:if test="${sessionScope.USER.accessType == 'MP'}">
+								<select id="selLctnType">	
+								
+								<option value="4">Parliament</option>
+								</select>
+							</c:if>
+							<c:if test="${sessionScope.USER.accessType == 'MLA'}">
+								<select id="selLctnType">	
+								<option value="3">Constituency</option>			
+								</select>
+							</c:if>
 						</td>
 					 </tr>
 				     <tr id="statedisplaydivid">
 						<td><b>Select State</b></td>
 						<td>
+						 <c:if test="${sessionScope.USER.stateName == 'both'}">
 						  <select id="statesDivId">
 							<option value="0">All</option>
 							<option value="1">AndhraPradesh</option>
 							<option value="2">Telangana</option>
 						  </select>
+						  </c:if>
+						  <c:if test="${sessionScope.USER.stateName == 'TS'}">
+						  <select id="statesDivId">
+							<option value="2">Telangana</option>
+						  </select>
+						  </c:if>
+						   <c:if test="${sessionScope.USER.stateName == 'AP'}">
+						  <select id="statesDivId">
+							<option value="1">AndhraPradesh</option>
+						  </select>
+						  </c:if>
 						</td>
 				     </tr>
 				   <tr id="distdisplaydivid">
@@ -169,7 +202,9 @@
 				  <table  style="margin-left: 270px;">
 				     <tr>
 					   <td><b>Select Report Level :</b></td>
-					   <td><select id="locationsDispalyId" onchange="showCorrespondingLocs(this.value);">
+					   <td>
+					    <c:if test="${sessionScope.USER.accessType == 'STATE'}">
+					   <select id="locationsDispalyId" onchange="showCorrespondingLocs(this.value);">
 							 <option value="2">State</option>
 							 <option value="3">District</option>
 							 <option value="4">Constituency</option>
@@ -177,16 +212,47 @@
 							 <option value="6">Panchayat</option>
 							 <option value="9">Booth</option>
 					       </select> 
+						   </c:if>
+						    <c:if test="${sessionScope.USER.accessType == 'DISTRICT'}">
+							 <select id="locationsDispalyId" onchange="showCorrespondingLocsByAccess(this.value,'${sessionScope.USER.accessType}');">
+							<option value="3">District</option>
+							 <option value="4">Constituency</option>
+							 <option value="5">Mandal/Municipality</option>
+							 <option value="6">Panchayat</option>
+							 <option value="9">Booth</option>
+							</select>
+							</c:if>
+							 <c:if test="${sessionScope.USER.accessType == 'MP' || sessionScope.USER.accessType == 'MLA'}">
+							 <select id="locationsDispalyId" onchange="showCorrespondingLocsByAccess(this.value,'${sessionScope.USER.accessType}');">
+							 <option value="4">Constituency</option>
+							 <option value="5">Mandal/Municipality</option>
+							 <option value="6">Panchayat</option>
+							 <option value="9">Booth</option>
+							</select>
+							</c:if>
+							
 					   </td>
 				     </tr>
 				     <tr id="statesDispalyMainDiv">
 						 <td><b>Select State :</b></td>
 						 <td>  
+						  <c:if test="${sessionScope.USER.stateName == 'both'}">
 						   <select id="statesDispalyId" onchange="getConstituenciesForState(this.value);">
 							 <option value="0">All</option>
 							 <option value="1">Andhra Pradesh</option>
 							 <option value="36">Telangana</option>
 						   </select> 
+						   </c:if>
+						    <c:if test="${sessionScope.USER.stateName == 'TS'}">
+							<select id="statesDispalyId">							
+							  <option value="36">Telangana</option>							
+						   </select> 
+							</c:if>
+							 <c:if test="${sessionScope.USER.stateName == 'AP'}">
+							 <select id="statesDispalyId">						
+							 <option value="1">Andhra Pradesh</option>							
+						   </select> 
+							 </c:if>
 						 </td>
 					 </tr>
 					 <tr id="districtsDispalyMainDiv" style="display:none;">
@@ -261,22 +327,57 @@
 				  <table  style="margin-left: 270px;">
 				     <tr>
 					   <td><b>Select Report Level :</b></td>
-					   <td><select id="trackingLocationsDispalyId" onchange="trackingShowCorrespondingLocs(this.value);">
+					    <td>
+					    <c:if test="${sessionScope.USER.accessType == 'STATE'}">
+						<select id="trackingLocationsDispalyId" onchange="trackingShowCorrespondingLocs(this.value);">
 							 <option value="2">State</option>
 							 <option value="3">District</option>
 							 <option value="4">Constituency</option>
+							 <option value="5">Parliament Constituency</option>
+					       </select>
+						   </c:if>
+							<c:if test="${sessionScope.USER.accessType == 'DISTRICT'}">
+						    <select id="trackingLocationsDispalyId" onchange="trackingShowCorrespondingLocsByAccess(this.value);">
+							<option value="3">District</option>
+							 <option value="4">Constituency</option>
 							  <option value="5">Parliament Constituency</option>
-					       </select> 
+						
+						  </select>
+						  </c:if>
+						    <c:if test="${sessionScope.USER.accessType == 'MLA'}">
+						  <select id="trackingLocationsDispalyId">				
+						  <option value="4">Constituency</option>
+						  </select>
+						  </c:if>
+						  <c:if test="${sessionScope.USER.accessType == 'MP'}">
+						  <select id="trackingLocationsDispalyId">			
+							<option value="5">Parliament</option>
+						  </select>
+						  
+						  </c:if>						   
 					   </td>
 				     </tr>
 				     <tr id="trackingStatesDispalyMainDiv">
 						 <td><b>Select State :</b></td>
 						 <td>  
-						   <select id="trackingStatesDispalyId" onchange="getLocationDetailsForState(this.value);">
+						
+						 <c:if test="${sessionScope.USER.stateName == 'both'}">
+						  <select id="trackingStatesDispalyId" onchange="getLocationDetailsForState(this.value);">
 							 <option value="0">All</option>
 							 <option value="1">Andhra Pradesh</option>
 							 <option value="2">Telangana</option>
-						   </select> 
+						   </select>
+						   </c:if>
+						  <c:if test="${sessionScope.USER.stateName == 'TS'}">
+						    <select id="trackingStatesDispalyId">							
+							 <option value="1">Andhra Pradesh</option>						
+						   </select>
+						    </c:if>
+						   <c:if test="${sessionScope.USER.stateName == 'AP'}">
+						   <select id="trackingStatesDispalyId">							
+							 <option value="1">Andhra Pradesh</option>							
+						   </select>
+						   </c:if>						   
 						 </td>
 					 </tr>
 					 <tr id="trackingDistrictsDispalyMainDiv" style="display:none;">
@@ -339,6 +440,7 @@
 					 <tr>
 					   <td><b>Select Scope : </b></td>
 					   <td>
+					    <c:if test="${sessionScope.USER.accessType == 'STATE'}">
 						  <select id="selLctnType2" onchange="selectLocation2(this.value)">
 							<option value="0">All</option>
 							<option value="1">State</option>
@@ -346,16 +448,47 @@
 							<option value="3">Constituency</option>
 							<option value="4">Parliament</option>
 						  </select>
+						  </c:if>
+						  <c:if test="${sessionScope.USER.accessType == 'DISTRICT'}">
+						    <select id="selLctnType2" onchange="selectLocationByAccess(this.value)">
+							<option value="2">District</option>
+							<option value="3">Constituency</option>
+							<option value="4">Parliament</option>
+						  </select>
+						  </c:if>
+						    <c:if test="${sessionScope.USER.accessType == 'MLA'}">
+						  <select id="selLctnType2">						
+							<option value="3">Constituency</option>
+						  </select>
+						  </c:if>
+						  <c:if test="${sessionScope.USER.accessType == 'MP'}">
+						  <select id="selLctnType2">						
+							<option value="4">Parliament</option>
+						  </select>
+						  
+						  </c:if>
 						</td>
 					 </tr>
 				     <tr id="statedisplaydivid2">
 						<td><b>Select State</b></td>
 						<td>
+						<c:if test="${sessionScope.USER.stateName == 'both'}">
 						  <select id="statesDivId2">
 							<option value="0">All</option>
 							<option value="1">AndhraPradesh</option>
 							<option value="2">Telangana</option>
 						  </select>
+						   </c:if>
+						  <c:if test="${sessionScope.USER.stateName == 'TS'}">
+						   <select id="statesDivId2">
+							<option value="2">Telangana</option>
+						  </select>
+						    </c:if>
+						   <c:if test="${sessionScope.USER.stateName == 'AP'}">
+						    <select id="statesDivId2">
+							<option value="1">AndhraPradesh</option>
+						  </select>
+						   </c:if>
 						</td>
 				     </tr>
 				   <tr id="distdisplaydivid2">
@@ -395,9 +528,29 @@
 	
 <script type="text/javascript">
 
-   $(document).ready(function(){
+	var accessType = "${sessionScope.USER.accessType}";
+	var accessValue = "${sessionScope.USER.accessValue}";
+	var accessState = "${sessionScope.USER.stateName}"
+	$(document).ready(function(){
 		$('#locationsDispalyId').val(1);
 	});
+	
+	<c:if test="${sessionScope.USER.accessType == 'DISTRICT'}">	
+	selectLocationByAccess(2);
+	trackingShowCorrespondingLocsByAccess(3);
+	showCorrespondingLocsByAccess(3,"DISTRICT");
+	</c:if>
+	<c:if test="${sessionScope.USER.accessType == 'MLA'}">	
+	selectLocationByAccess(3);
+	trackingShowCorrespondingLocsByAccess(4);
+	showCorrespondingLocsByAccess(4,"MLA");
+	</c:if>
+	<c:if test="${sessionScope.USER.accessType == 'MP'}">	
+	selectLocationByAccess(4);
+	trackingShowCorrespondingLocsByAccess(5);
+	showCorrespondingLocsByAccess(4,"MP");
+	</c:if>
+	getLocationNameByAccessValues(accessType,accessValue);
 	
 	$("#statesDivId").change(function(){
 			var lctnType = $("#selLctnType").val();
@@ -1561,6 +1714,7 @@ if(result.length > 0){
 				});
 	   });
   }
+  var tabSelected=false;
   function showHideTabs(id){
      $("#userReportTab").removeClass("selected");
 	 $("#locationReportTab").removeClass("selected");
@@ -1584,6 +1738,7 @@ if(result.length > 0){
 	   $("#slowUserTrackingTabDiv").hide();
 	   $("#locationWiseCadreInfoDiv").show();
 	     $("#userTrackingDiv").hide();
+		tabSelected= true; 
 	 }
 	 else if(id == "slowUserTrackingTab"){
        $("#slowUserTrackingTab").addClass("selected");
@@ -1601,6 +1756,9 @@ if(result.length > 0){
 		$("#userTrackingDiv").show();
 		$("#userTrackingTabDiv").show();
 	 }
+	<c:if test="${sessionScope.USER.accessType != 'STATE'}">
+	 getLocationNameByAccessValues(accessType,accessValue);
+	 </c:if>
   }
   function viewDetails(frmLocation,frmLocationId,toLoc,startDate,endDate){
    $('#dialogueLocationsCadTable').html('<img src="images/Loading-data.gif" style="margin-left: 350px;margin-top:78px;width:70px;height:60px;">');
@@ -2139,16 +2297,17 @@ function getCandidateDataCollectionInfo2(){
 				   }else{
 				      str+='  <td></td>';
 				   }
+				     if(result[i].percentStr != null){
+				     str+='  <td>'+result[i].percentStr+'</td>';
+				   }else{
+				      str+='  <td></td>';
+				   }	
 				   if(result[i].memberShipNo != null){
 				     str+='  <td>'+result[i].memberShipNo+'</td>';
 				   }else{
 				      str+='  <td></td>';
 				   }
-				   if(result[i].percentStr != null){
-				     str+='  <td>'+result[i].percentStr+'</td>';
-				   }else{
-				      str+='  <td></td>';
-				   }					   
+				 				   
 				   str+='  <td>'+result[i].name+'</td>';
 				   str+='  <td>'+result[i].uname+'</td>';
 				 
@@ -2208,16 +2367,17 @@ function getCandidateDataCollectionInfo2(){
 				   }else{
 				      str+='  <td></td>';
 				   }
+				     if(result[i].percentStr != null){
+				     str+='  <td>'+result[i].percentStr+'</td>';
+				   }else{
+				      str+='  <td></td>';
+				   }	
 				   if(result[i].memberShipNo != null){
 				     str+='  <td>'+result[i].memberShipNo+'</td>';
 				   }else{
 				      str+='  <td></td>';
 				   }
-				   if(result[i].percentStr != null){
-				     str+='  <td>'+result[i].percentStr+'</td>';
-				   }else{
-				      str+='  <td></td>';
-				   }					   
+				 				   
 				   str+='  <td>'+result[i].name+'</td>';
 				   str+='  <td>'+result[i].uname+'</td>';
 				 
@@ -2708,6 +2868,237 @@ function getCandidateDataCollectionInfo2(){
   }
   
 	
+	function selectLocationByAccess(value){
+		if(value==2){
+			
+			$("#statedisplaydivid").show();
+			$("#distdisplaydivid").show();
+			$("#constdisplaydivid").hide();
+			$("#parlConstdisplaydivid").hide();
+			$("#distdisplaydivid2").show();
+			$("#constdisplaydivid2").hide();
+			$("#parlConstdisplaydivid2").hide();
+			getLocationNameByAccessValues(value,"DISTRICT");
+		}
+		if(value==3){
+			$("#statedisplaydivid").show();		
+			$("#distdisplaydivid").hide();
+			$("#constdisplaydivid").show();
+			$("#parlConstdisplaydivid").hide();
+			$("#distdisplaydivid2").hide();
+			$("#constdisplaydivid2").show();
+			$("#parlConstdisplaydivid2").hide();
+			getAssemblyParlConstituencies(accessValue,"Assembly");
+		}
+		if(value==4){
+			$("#statedisplaydivid").show();
+			$("#distdisplaydivid").hide();
+			$("#constdisplaydivid").hide();
+			$("#parlConstdisplaydivid").show();
+			$("#distdisplaydivid2").hide();
+			$("#constdisplaydivid2").hide();
+			$("#parlConstdisplaydivid2").show();
+			getAssemblyParlConstituencies(accessValue,"Parliament");
+		}	
+  }
+	function trackingShowCorrespondingLocsByAccess(locationLvl)
+	{
+	  
+	  if(locationLvl == 3)
+	  {		  
+	    $("#trackingStatesDispalyMainDiv").show();
+		$("#trackingDistrictsDispalyMainDiv").show();
+		$("#trackingConstituencyDispalyMainDiv").hide();
+		$("#trackingParlDispalyMainDiv").hide();
+		
+		getLocationNameByAccessValues(locationLvl,"DISTRICT");
+	  }
+	  
+	 if(locationLvl == 4)
+	  {	
+	    $("#trackingStatesDispalyMainDiv").show();
+		$("#trackingDistrictsDispalyMainDiv").hide();
+		$("#trackingConstituencyDispalyMainDiv").show();
+		$("#trackingParlDispalyMainDiv").hide();
+		getAssemblyParlConstituencies(accessValue,"Assembly");
+	  }
+	 else if(locationLvl == 5)
+	  {	
+		 $("#trackingStatesDispalyMainDiv").show();
+		$("#trackingDistrictsDispalyMainDiv").hide();
+		$("#trackingConstituencyDispalyMainDiv").hide();
+		$("#trackingParlDispalyMainDiv").show();
+		getAssemblyParlConstituencies(accessValue,"Parliament");		
+	  }
+	
+   }
+	
+	
+	
+	function getLocationNameByAccessValues(type,value){
+
+	  var str='';
+		var jsObj={
+			usersType:type,
+			areaType:value
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getLocationNameByIdAndTypeAction.action',
+			  data: {task:JSON.stringify(jsObj)}
+			
+	   }).done(function(result){
+			if(type == 'DISTRICT'){
+		  		str +='<option value="${sessionScope.USER.accessValue}">'+result+'</option>';
+				$("#displaydistbox").html(str);
+				$("#displaydistbox2").html(str);
+				$("#trackingDistrictsDispalyId").html(str);	
+				$("#districtsDispalyId").html(str);
+			}
+			if(type == 'MLA'){
+		  		str +='<option value="${sessionScope.USER.accessValue}">'+result+'</option>';
+				$("#displayconstbox").html(str);
+				$("#displayconstbox2").html(str);
+				$("#trackingConstituencyDispalyId").html(str);
+				$("#constituencyDispalyId").html(str);
+			}
+			if(type == 'MP'){
+		  		str +='<option value="${sessionScope.USER.accessValue}">'+result+'</option>';
+				$("#displayParlConstbox").html(str);
+				$("#displayParlConstbox2").html(str);
+				$("#trackingParlDispalyId").html(str);
+				$("#constituencyDispalyId").html(str);
+			}
+	   });	
+	
+	
+	}
+	
+function getAssemblyParlConstituencies(districtId,type){
+
+		var str='';
+		var jsObj={
+			mainUserLocationId:districtId,
+			reportLevel:type
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getSubUserAccessValueAction.action',
+			  data: {task:JSON.stringify(jsObj)}
+			
+	   }).done(function(result){
+				for(var i in result)
+				{
+					str +='<option value='+result[i].id+'>'+result[i].name+'</option>';
+				}
+				if(type=="Parliament"){				
+					$("#displayParlConstbox").html(str);
+					$("#displayParlConstbox2").html(str);
+					$("#trackingParlDispalyId").html(str);
+				}	
+				if(type=="Assembly"){
+					$("#displayconstbox").html(str);
+					$("#displayconstbox2").html(str);
+					$("#trackingConstituencyDispalyId").html(str);
+					$("#constituencyDispalyId").html(str);
+					var selConstituencyId =$("#constituencyDispalyId").val();
+					if(tabSelected == true && $("#locationsDispalyId").val() == 5){					
+					getTehsils(selConstituencyId);
+					}
+					if(tabSelected == true && $("#locationsDispalyId").val() == 9){			
+					getBooths(selConstituencyId);
+					}
+					if(tabSelected == true && $("#locationsDispalyId").val() == 6){		
+					getPanchayats(selConstituencyId);
+					}
+				}		
+	   });		
+	}
+	
+	 function showCorrespondingLocsByAccess(locationLvl,access){
+    
+	  if(locationLvl == 3){
+		   $("#statesDispalyMainDiv").show();
+		   $("#districtsDispalyMainDiv").show();
+		   $("#constituencyDispalyMainDiv").hide();
+		   $("#mandalDispalyMainDiv").hide();
+		   $("#panchayatDispalyMainDiv").hide();
+		   $("#boothDispalyMainDiv").hide();
+		   getLocationNameByAccessValues(locationLvl,access);
+	  }else if(locationLvl == 4){
+	       $("#statesDispalyMainDiv").show();
+		   $("#districtsDispalyMainDiv").hide();
+		   $("#constituencyDispalyMainDiv").show();
+		   $("#mandalDispalyMainDiv").hide();
+		   $("#panchayatDispalyMainDiv").hide();
+		   $("#boothDispalyMainDiv").hide();
+		   if(access == 'DISTRICT')
+			getAssemblyParlConstituencies(accessValue,"Assembly");
+			else
+			 getLocationNameByAccessValues(locationLvl,access);
+	  }else if(locationLvl == 5){
+		   $("#statesDispalyMainDiv").hide();
+		   $("#districtsDispalyMainDiv").hide();
+		   $("#constituencyDispalyMainDiv").show();
+		   $("#mandalDispalyMainDiv").show();
+		   $("#panchayatDispalyMainDiv").hide();
+		   $("#boothDispalyMainDiv").hide();
+		   if(access == 'DISTRICT'){
+		     getAssemblyParlConstituencies(accessValue,"Assembly");
+			   showCorrespondingConstituencyDivs("mandal");
+			  
+			   }
+		   else{			
+			 getLocationNameByAccessValues(locationLvl,access);
+			 getTehsils(accessValue);			 
+			 }
+		   
+	  }else if(locationLvl == 6){
+		   $("#statesDispalyMainDiv").hide();
+	       $("#districtsDispalyMainDiv").hide();
+		   $("#constituencyDispalyMainDiv").show();
+		   $("#mandalDispalyMainDiv").hide();
+		   $("#panchayatDispalyMainDiv").show();
+		   $("#boothDispalyMainDiv").hide();
+		   if(access == 'DISTRICT'){
+			   getAssemblyParlConstituencies(accessValue,"Assembly");
+			   showCorrespondingConstituencyDivs("panchayat");
+		   }
+		   else{			
+			 getLocationNameByAccessValues(locationLvl,access);
+			 getPanchayats(accessValue);			 
+			}
+	  }else if(locationLvl == 9){
+		   $("#statesDispalyMainDiv").hide();
+		   $("#districtsDispalyMainDiv").hide();
+		   $("#constituencyDispalyMainDiv").show();
+		   $("#mandalDispalyMainDiv").hide();
+		   $("#panchayatDispalyMainDiv").hide();
+		   $("#boothDispalyMainDiv").show();
+		   if(access == 'DISTRICT'){
+		   getAssemblyParlConstituencies(accessValue,"Assembly");
+		   showCorrespondingConstituencyDivs("booth");
+		   }
+		   else{
+		    getLocationNameByAccessValues(locationLvl,access);
+			 getBooths(accessValue);	
+		   }
+		   
+	  }
+  }
+  
+   function showCorrespondingConstituencyDivs(type){
+     if(type == "mandal"){
+	   $("#constituencySelectDIV").html('<select id="constituencyDispalyId" onchange="getTehsils(this.value);"></select>');
+	 }else if(type == "booth"){
+	   $("#constituencySelectDIV").html('<select id="constituencyDispalyId" onchange="getBooths(this.value);"></select>');
+	 }else if(type == "panchayat"){
+	   $("#constituencySelectDIV").html('<select id="constituencyDispalyId" onchange="getPanchayats(this.value);"></select>');
+	 } 
+	
+  }
+ 
+  
 </script>
 </body>
 </html>
