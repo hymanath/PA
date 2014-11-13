@@ -8863,6 +8863,10 @@
 				<param name="root">surveyTransactionVOList</param>
 			</result>
 		</action>
+		
+		<action name="leaderCadreDashBoardAction" class="leaderCadreDashBoardAction">
+			<result name="success">/jsp/leaderCadreDashBoard.jsp</result>
+		</action>
 </package>
 
 </struts>      
