@@ -42,7 +42,37 @@ public class CadreRegisterInfo implements Serializable{
 	private Long votersCount;
 	private Long targetCount;
 	
+	private String parliament;
+	private String state;
+	private String district;
 	
+	
+	
+	
+	public String getParliament() {
+		return parliament;
+	}
+
+	public void setParliament(String parliament) {
+		this.parliament = parliament;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
 	public Long getVotersCount() {
 		return votersCount;
 	}
