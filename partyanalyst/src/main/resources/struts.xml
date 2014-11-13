@@ -8867,6 +8867,12 @@
 		<action name="leaderCadreDashBoardAction" class="leaderCadreDashBoardAction">
 			<result name="success">/jsp/leaderCadreDashBoard.jsp</result>
 		</action>
+				
+		<action name="getLocationNameByIdAndTypeAction" class="cadreDashBoardAction" method="getLocationNameByIdAndType" >
+			<result type="json" name="success">
+				<param name="root">getState</param>
+			</result>
+		</action>
 </package>
 
 </struts>      

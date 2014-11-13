@@ -1480,6 +1480,7 @@
 	 <bean id="cadreDashBoardAction" class="com.itgrids.partyanalyst.web.action.CadreDashBoardAction" singleton="false">
 	 	<property name="cadreDashBoardService" ref="cadreDashBoardService" />
 	 	<property name="entitlementsHelper" ref="entitlementsHelper" />
+	 	<property name="loginService" ref="loginService" />
 	  </bean>
 	  
     <bean id="ctpCasteReportAction" class="com.itgrids.partyanalyst.web.action.CtpCasteReportAction" singleton="false">
