@@ -815,4 +815,11 @@ public interface IConstants {
     public static final String DATE_AND_TIME_FORMAT_24HRS = "yyyy-MM-dd HH:mm:ss";
     
     public static final String CADRE_MEMBERSHIPCARD_DISPATCHER = "CADRE_MEMBERSHIPCARD_DISPATCHER";
+    
+    public static final int AP_VOTERS_2014 = 36467129;
+    public static final int TG_VOTERS_2014 = 27922932;
+    
+    public static final int TARGET_CADRE_AP = 2000000;
+    public static final int TARGET_CADRE_TG = 1000000;
+    		
 }
