@@ -201,6 +201,12 @@ table.dataTable tr.odd {
 				</div>
 				<h4 class="f-16" style="padding-bottom: 5px;">Constituency wise Registration Processing Areas</h4>
 				<div style="margin-bottom:10px;"><b>Select Constituency :&nbsp;</b><select id="constituencyWiseSelDivId" onchange="getConstituencyWisePerc(this.value);"><option value="0">ALL</option></select></div>
+				
+				<div style="padding:5px;">
+					<input type="radio" id="targetCId" name="percCalcC" value="target" checked="true" style="margin-top:0px;"/><span> Target</span>
+					<input type="radio" id="prevCId" name="percCalcC" value="prev" style="margin-top:0px;"/><span> Prev - Enrollment</span>
+				</div>  
+				
 				<div id="constituencyWiseSelDivRes" class="height-300 scrollable_div">
 					<img style="margin-left: 180px;margin-top: 101px;" src="images/icons/loading.gif"/>
 				</div>
@@ -214,6 +220,12 @@ table.dataTable tr.odd {
 				</div>
 				<h4 class="f-16" style="padding-bottom: 25px;">District wise Registration Processing Areas</h4>
 				<div style="margin-bottom:10px;"><b>Select District :&nbsp;</b><select id="districtWiseSelDivId" onchange="getDistrictWisePerc(this.value);"><option value="0">ALL</option></select></div>
+				
+				<div style="padding:5px;">
+					<input type="radio" id="targetDId" name="percCalcD" value="target" checked="true" style="margin-top:0px;"/><span> Target</span>
+					<input type="radio" id="prevDId" name="percCalcD" value="prev" style="margin-top:0px;"/><span> Prev - Enrollment</span>
+				</div>
+				
 				<div id="districtWiseSelDivRes" class="height-320 scrollable_div">
 					<img style="margin-left: 180px;margin-top: 101px;" src="images/icons/loading.gif"/>
 				</div>
@@ -282,13 +294,13 @@ function openDialogToTrack(){
     window.open('cadreRegistrationReportAction.action','_blank');
 }
 
-$(document).ready(function(){
+/* $(document).ready(function(){
 	  $('input').iCheck({
 		checkboxClass: 'icheckbox_square-blue',
 		radioClass: 'iradio_square-blue',
 		increaseArea: '20%' // optional
 	  });
-	});
+	}); */
 	//scrollator
 	$('.scrollable_div').scrollator();
 	
@@ -396,11 +408,15 @@ $('#membersCount').addClass('animated fadeInX');
 		 $("#apConstiDetailsId").removeClass("btn-success");
 	   }
 	 }
+	 
+	 var val = $('input:radio[name=percCalcC]:checked').val();
+	 
+	 
 	 $("#constituencyWiseSelDivRes").html('<img style="margin-left: 180px;margin-top: 101px;" src="images/icons/loading.gif"/>');
        $.ajax({
           type:'GET',
           url: 'getCadreDashBoardBasicInfo.action',
-          data: {task:"assemblyWise",assemblyId:assId,stateId:statId}
+          data: {task:"assemblyWise",assemblyId:assId,stateId:statId,percType:val}
        }).done(function(result){
     	   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
     		   location.reload(); 
@@ -451,11 +467,13 @@ $('#membersCount').addClass('animated fadeInX');
 		 $("#apDistDetailsId").removeClass("btn-success");
 	   }
 	 }
+	  var val = $('input:radio[name=percCalcD]:checked').val();
+	 
 	  $("#districtWiseSelDivRes").html('<img style="margin-left: 180px;margin-top: 101px;" src="images/icons/loading.gif"/>');
        $.ajax({
           type:'GET',
           url: 'getCadreDashBoardBasicInfo.action',
-          data: {task:"districtWise",districtId:distId,stateId:statId}
+          data: {task:"districtWise",districtId:distId,stateId:statId,percType:val}
        }).done(function(result){
     	   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
     		   location.reload(); 
@@ -1209,6 +1227,15 @@ $('#membersCount').addClass('animated fadeInX');
 	   setInterval(function(){getDashBoardBasicInfo()},600000);
 	   setInterval(function(){getWorkingMembersInfo()},600000);	 
 	   
+	   $("input:radio[name=percCalcC]").click(function() {
+			//var value = $(this).val();
+			getAssemblyWiseCompletedPercentage(0,1);
+		});
+		
+		$("input:radio[name=percCalcD]").click(function() {
+			//var value = $(this).val();
+			getDistrictWiseCompletedPercentage(0,1);
+		});
 	   
 	   function buildSurveyMemberDetails(result)
 	   { 
@@ -1314,7 +1341,7 @@ function SortByName(a, b){
 			$(".indiEle").hide();
 		}
 	}
-
+	
 </script>
 
 </body>
