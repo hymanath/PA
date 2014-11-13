@@ -365,6 +365,7 @@
 			  <pattern>/cadreRegAmountUpload*</pattern>
 			  <pattern>/surveyUserAssigneeAction*</pattern>
 			  <pattern>/cadreRegAmountFileUpload*</pattern>
+			  <pattern>/leaderCadreDashBoardAction*</pattern>
 			  
             <!--  <pattern>/dashBoardAction*</pattern> -->
        </decorator>
