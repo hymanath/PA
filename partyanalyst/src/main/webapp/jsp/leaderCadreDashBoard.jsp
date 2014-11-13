@@ -38,7 +38,7 @@
 						<td><b>Select State</b></td>
 						<td>
 						  <select id="statesDivId">
-							<option value="0">All</option>
+							
 							<option value="1">AndhraPradesh</option>
 							<option value="2">Telangana</option>
 						  </select>
