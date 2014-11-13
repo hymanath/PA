@@ -35,6 +35,7 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.AppDbDataVO;
 import com.itgrids.partyanalyst.dto.CadreBasicInformationVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
@@ -68,8 +69,18 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	private ICadreSurveyUserAssignDetailsDAO cadreSurveyUserAssignDetailsDAO;
 	private ICadreSurveyUserAssigneeDAO cadreSurveyUserAssigneeDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
+	private IVoterInfoDAO voterInfoDAO;
 	
 	
+	
+	public IVoterInfoDAO getVoterInfoDAO() {
+		return voterInfoDAO;
+	}
+
+	public void setVoterInfoDAO(IVoterInfoDAO voterInfoDAO) {
+		this.voterInfoDAO = voterInfoDAO;
+	}
+
 	public void setDelimitationConstituencyDAO(
 			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
 		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
@@ -516,7 +527,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		return returnList;
 	}
 			
-	public List<CadreRegisterInfo> getAssemblyWiseCompletedPercentage(Long assemblyId,Long stateId, String accessType,String accessValue){
+	public List<CadreRegisterInfo> getAssemblyWiseCompletedPercentage(Long assemblyId,Long stateId, String accessType,String accessValue,String percType){
 		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
 		
 		try{
@@ -551,36 +562,88 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				assemblyIds = new ArrayList<Long>();
 				assemblyIds.add(assemblyId);
 			}
+			
+			int ap_perc = 0;
+			int tg_perc = 0;
+			if(percType.equalsIgnoreCase("target")){
+				ap_perc = IConstants.TARGET_CADRE_AP*100/IConstants.AP_VOTERS_2014;
+				tg_perc = IConstants.TARGET_CADRE_TG*100/IConstants.TG_VOTERS_2014;
+			}
+			
+			
+			
 			Map<Long,Map<Long,Long>> locationMap = new HashMap<Long,Map<Long,Long>>();//Map<locationId,Map<year,count>>
 			Map<Long,String> locationNames = new HashMap<Long,String>();
 			Map<Long,Long> yearMap = null;
-			if(assemblyIds.size() > 0){
-				//0 count,1 id,2 name ,3 year
-				List<Object[]>  constituencyInfoList = tdpCadreDAO.getCadreInfoConstituencytWise(assemblyIds,null,null,2014l);
-				constituencyInfoList.addAll( tdpCadreDAO.getCadreInfoConstituencytWise(assemblyIds,null,null,2012l));
-				for(Object[] info:constituencyInfoList){
-					 yearMap = locationMap.get((Long)info[1]);
-					 if(yearMap == null){
-						 yearMap = new HashMap<Long,Long>();
-						 locationMap.put((Long)info[1],yearMap);
-						 locationNames.put((Long)info[1],info[2].toString());
-					 }
-					 yearMap.put((Long)info[3], (Long)info[0]);
+			
+			if(percType.equalsIgnoreCase("target")){
+				if(assemblyIds.size() > 0){
+					List<Object[]>  constituencyInfoList = tdpCadreDAO.getCadreInfoConstituencytWise(assemblyIds,null,null,2014l);
+					List<Object[]> vtrsCounts = voterInfoDAO.getVotersCountForAllConstituencies(IConstants.VOTER_DATA_PUBLICATION_ID, assemblyIds);
+					
+					Map<Long,Long> vtrsMap = new HashMap<Long, Long>();
+					
+					if(vtrsCounts!=null && vtrsCounts.size()>0){
+						for(Object[] obj:vtrsCounts){
+							Long vtrs = vtrsMap.get(obj[0]);
+							if(vtrs==null){
+								vtrsMap.put(Long.valueOf(obj[0].toString()), Long.valueOf(obj[1].toString()));
+							}
+						}
+					}
+					
+					if(constituencyInfoList!=null && constituencyInfoList.size()>0){
+						for(Object[] obj:constituencyInfoList){
+							infoVo = new CadreRegisterInfo();
+							infoVo.setLocation(obj[2].toString());
+							infoVo.setTotalCount(Long.valueOf(obj[0].toString()));
+							Long targetCount = 0l;
+							Long votersCount = 0l;
+							if(stateId.equals(1l)){
+								votersCount = vtrsMap.get(Long.valueOf(obj[1].toString()));
+								targetCount = ap_perc*votersCount/100;
+							}else{
+								votersCount = vtrsMap.get(Long.valueOf(obj[1].toString()));
+								targetCount = tg_perc*votersCount/100;
+							}
+							infoVo.setVotersCount(votersCount);
+							infoVo.setTargetCount(targetCount);
+							infoVo.setApCount((Long.valueOf(obj[0].toString())*100)/targetCount);
+							infoVo.setDate(new BigDecimal(Long.valueOf(obj[0].toString())*(100.0)/targetCount).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+							infoVo.setTgCount(Long.valueOf(obj[1].toString()));
+							returnList.add(infoVo);
+						}
+					}
 				}
-			}
-			for(Long locationId:locationMap.keySet()){
-				yearMap = locationMap.get(locationId);
-				if(yearMap.size() >= 2){
-					Long previousCount = yearMap.get(2012l);
-					Long currentCount = yearMap.get(2014l);
-					if(previousCount != null && previousCount.longValue() > 0 && currentCount != null && currentCount.longValue() > 0){
-						infoVo = new CadreRegisterInfo();
-						infoVo.setLocation(locationNames.get(locationId));
-						infoVo.setTotalCount(currentCount);
-						infoVo.setApCount((currentCount*100)/previousCount);
-						infoVo.setDate(new BigDecimal(currentCount*(100.0)/previousCount).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-						infoVo.setTgCount(locationId);
-						returnList.add(infoVo);
+			}else{
+				if(assemblyIds.size() > 0){
+					//0 count,1 id,2 name ,3 year
+					List<Object[]>  constituencyInfoList = tdpCadreDAO.getCadreInfoConstituencytWise(assemblyIds,null,null,2014l);
+					constituencyInfoList.addAll( tdpCadreDAO.getCadreInfoConstituencytWise(assemblyIds,null,null,2012l));
+					for(Object[] info:constituencyInfoList){
+						 yearMap = locationMap.get((Long)info[1]);
+						 if(yearMap == null){
+							 yearMap = new HashMap<Long,Long>();
+							 locationMap.put((Long)info[1],yearMap);
+							 locationNames.put((Long)info[1],info[2].toString());
+						 }
+						 yearMap.put((Long)info[3], (Long)info[0]);
+					}
+				}
+				for(Long locationId:locationMap.keySet()){
+					yearMap = locationMap.get(locationId);
+					if(yearMap.size() >= 2){
+						Long previousCount = yearMap.get(2012l);
+						Long currentCount = yearMap.get(2014l);
+						if(previousCount != null && previousCount.longValue() > 0 && currentCount != null && currentCount.longValue() > 0){
+							infoVo = new CadreRegisterInfo();
+							infoVo.setLocation(locationNames.get(locationId));
+							infoVo.setTotalCount(currentCount);
+							infoVo.setApCount((currentCount*100)/previousCount);
+							infoVo.setDate(new BigDecimal(currentCount*(100.0)/previousCount).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+							infoVo.setTgCount(locationId);
+							returnList.add(infoVo);
+						}
 					}
 				}
 			}
@@ -591,7 +654,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		return returnList;
 	}
 	
-	public List<CadreRegisterInfo> getDistrictWiseCompletedPercentage(Long districtId,Long stateId, String accessType, String accessValue){
+	public List<CadreRegisterInfo> getDistrictWiseCompletedPercentage(Long districtId,Long stateId, String accessType, String accessValue, String percType){
 		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
 		try{
 			List<Long> districtIds = null;
@@ -650,49 +713,111 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				districtIds = new ArrayList<Long>();
 				districtIds.add(districtId);
 			}
+			
+			int ap_perc = 0;
+			int tg_perc = 0;
+			if(percType.equalsIgnoreCase("target")){
+				ap_perc = IConstants.TARGET_CADRE_AP*100/IConstants.AP_VOTERS_2014;
+				tg_perc = IConstants.TARGET_CADRE_TG*100/IConstants.TG_VOTERS_2014;
+			}
+			
 			Map<Long,Map<Long,Long>> locationMap = new HashMap<Long,Map<Long,Long>>();//Map<locationId,Map<year,count>>
 			Map<Long,String> locationNames = new HashMap<Long,String>();
 			Map<Long,Long> yearMap = null;
-			if(districtIds.size() > 0){
-				//0 count,1 id,2 name ,3 year
-				List<Object[]>  constituencyInfoList = new ArrayList<Object[]>();
-				
-				if(accessType.equalsIgnoreCase("STATE") || accessType.equalsIgnoreCase("DISTRICT")){
-					constituencyInfoList = tdpCadreDAO.getCadreInfoDistrictWise(districtIds,null,null,2014l);
-					constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoDistrictWise(districtIds,null,null,2012l));
-				}
-				if(accessType.equalsIgnoreCase("MLA") || accessType.equalsIgnoreCase("MP")){
-					constituencyInfoList = tdpCadreDAO.getCadreInfoDistrictConstiWise(districtIds,null,null,2014l,assemblyIds);
-					constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoDistrictConstiWise(districtIds,null,null,2012l,assemblyIds));
-				}
-				
-				
-				for(Object[] info:constituencyInfoList){
-					 yearMap = locationMap.get((Long)info[1]);
-					 if(yearMap == null){
-						 yearMap = new HashMap<Long,Long>();
-						 locationMap.put((Long)info[1],yearMap);
-						 locationNames.put((Long)info[1],info[2].toString());
-					 }
-					 yearMap.put((Long)info[3], (Long)info[0]);
-				}
-			}
-			for(Long locationId:locationMap.keySet()){
-				yearMap = locationMap.get(locationId);
-				if(yearMap.size() >= 2){
-					Long previousCount = yearMap.get(2012l);
-					Long currentCount = yearMap.get(2014l);
-					if(previousCount != null && previousCount.longValue() > 0 && currentCount != null && currentCount.longValue() > 0){
-						infoVo = new CadreRegisterInfo();
-						infoVo.setLocation(locationNames.get(locationId));
-						infoVo.setTotalCount(currentCount);
-						infoVo.setApCount((currentCount*100)/previousCount);
-						infoVo.setDate(new BigDecimal(currentCount*(100.0)/previousCount).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-						infoVo.setTgCount(locationId);
-						returnList.add(infoVo);
+			
+			if(percType.equalsIgnoreCase("target")){
+				if(districtIds.size() > 0){
+					List<Object[]>  constituencyInfoList = new ArrayList<Object[]>();
+					
+					if(accessType.equalsIgnoreCase("STATE") || accessType.equalsIgnoreCase("DISTRICT")){
+						constituencyInfoList = tdpCadreDAO.getCadreInfoDistrictWise(districtIds,null,null,2014l);
+						//constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoDistrictWise(districtIds,null,null,2012l));
+					}
+					if(accessType.equalsIgnoreCase("MLA") || accessType.equalsIgnoreCase("MP")){
+						constituencyInfoList = tdpCadreDAO.getCadreInfoDistrictConstiWise(districtIds,null,null,2014l,assemblyIds);
+						//constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoDistrictConstiWise(districtIds,null,null,2012l,assemblyIds));
+					}
+					
+					List<Object[]> vtrsCounts = voterInfoDAO.getVotersCountInADistrictsList(districtIds, IConstants.VOTER_DATA_PUBLICATION_ID);
+					
+					Map<Long,Long> vtrsMap = new HashMap<Long, Long>();
+					
+					if(vtrsCounts!=null && vtrsCounts.size()>0){
+						for(Object[] obj:vtrsCounts){
+							Long vtrs = vtrsMap.get(obj[0]);
+							if(vtrs==null){
+								vtrsMap.put(Long.valueOf(obj[0].toString()), Long.valueOf(obj[2].toString()));
+							}
+						}
+					}
+					
+					if(constituencyInfoList!=null && constituencyInfoList.size()>0){
+						for(Object[] obj:constituencyInfoList){
+							infoVo = new CadreRegisterInfo();
+							infoVo.setLocation(obj[2].toString());
+							infoVo.setTotalCount(Long.valueOf(obj[0].toString()));
+							Long targetCount = 0l;
+							Long votersCount = 0l;
+							if(stateId.equals(1l)){
+								votersCount = vtrsMap.get(Long.valueOf(obj[1].toString()));
+								targetCount = ap_perc*votersCount/100;
+							}else{
+								votersCount = vtrsMap.get(Long.valueOf(obj[1].toString()));
+								targetCount = tg_perc*votersCount/100;
+							}
+							infoVo.setVotersCount(votersCount);
+							infoVo.setTargetCount(targetCount);
+							infoVo.setApCount((Long.valueOf(obj[0].toString())*100)/targetCount);
+							infoVo.setDate(new BigDecimal(Long.valueOf(obj[0].toString())*(100.0)/targetCount).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+							infoVo.setTgCount(Long.valueOf(obj[1].toString()));
+							returnList.add(infoVo);
+						}
 					}
 				}
 			}
+			else{
+				if(districtIds.size() > 0){
+					//0 count,1 id,2 name ,3 year
+					List<Object[]>  constituencyInfoList = new ArrayList<Object[]>();
+					
+					if(accessType.equalsIgnoreCase("STATE") || accessType.equalsIgnoreCase("DISTRICT")){
+						constituencyInfoList = tdpCadreDAO.getCadreInfoDistrictWise(districtIds,null,null,2014l);
+						constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoDistrictWise(districtIds,null,null,2012l));
+					}
+					if(accessType.equalsIgnoreCase("MLA") || accessType.equalsIgnoreCase("MP")){
+						constituencyInfoList = tdpCadreDAO.getCadreInfoDistrictConstiWise(districtIds,null,null,2014l,assemblyIds);
+						constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoDistrictConstiWise(districtIds,null,null,2012l,assemblyIds));
+					}
+					
+					
+					for(Object[] info:constituencyInfoList){
+						 yearMap = locationMap.get((Long)info[1]);
+						 if(yearMap == null){
+							 yearMap = new HashMap<Long,Long>();
+							 locationMap.put((Long)info[1],yearMap);
+							 locationNames.put((Long)info[1],info[2].toString());
+						 }
+						 yearMap.put((Long)info[3], (Long)info[0]);
+					}
+				}
+				for(Long locationId:locationMap.keySet()){
+					yearMap = locationMap.get(locationId);
+					if(yearMap.size() >= 2){
+						Long previousCount = yearMap.get(2012l);
+						Long currentCount = yearMap.get(2014l);
+						if(previousCount != null && previousCount.longValue() > 0 && currentCount != null && currentCount.longValue() > 0){
+							infoVo = new CadreRegisterInfo();
+							infoVo.setLocation(locationNames.get(locationId));
+							infoVo.setTotalCount(currentCount);
+							infoVo.setApCount((currentCount*100)/previousCount);
+							infoVo.setDate(new BigDecimal(currentCount*(100.0)/previousCount).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+							infoVo.setTgCount(locationId);
+							returnList.add(infoVo);
+						}
+					}
+				}
+			}
+			
 		}catch(Exception e){
 			LOG.error("Exception rised in getDistrictWiseCompletedPercentage",e);
 		}
