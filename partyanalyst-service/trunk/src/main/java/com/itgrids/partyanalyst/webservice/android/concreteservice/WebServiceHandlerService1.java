@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.webservice.android.concreteservice;
        
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -29,26 +28,27 @@ import com.itgrids.partyanalyst.dao.IMobileAppUserProfileDAO;
 import com.itgrids.partyanalyst.dao.IPingingTypeDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserBoothAssignDAO;
+import com.itgrids.partyanalyst.dao.ITabLogInAuthDAO;
 import com.itgrids.partyanalyst.dao.IUserSurveyBoothsDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterBoothActivitiesDAO;
 import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
-import com.itgrids.partyanalyst.dao.hibernate.LoginDetailsByTabDAO;
 import com.itgrids.partyanalyst.dto.AppDbDataVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
+import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
-import com.itgrids.partyanalyst.dto.CadreTransactionVO;
-import com.itgrids.partyanalyst.dto.LoginDetailsByTabVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.LoginStatusVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
+import com.itgrids.partyanalyst.model.CadreSurveyUser;
 import com.itgrids.partyanalyst.model.CadreSurveyUserAssignDetails;
 import com.itgrids.partyanalyst.model.LoginDetailsByTab;
+import com.itgrids.partyanalyst.model.TabLogInAuth;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
@@ -146,6 +146,8 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	@Autowired IDelimitationConstituencyDAO  delimitationConstituencyDAO;
 	@Autowired ICadreDashBoardService cadreDashBoardService;
     
+	@Autowired ITabLogInAuthDAO tabLogInAuthDAO;
+	
 	public IVoterBoothActivitiesDAO getVoterBoothActivitiesDAO() {
 		return voterBoothActivitiesDAO;
 	}
@@ -861,5 +863,157 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	public AppDbDataVO getAllUpdatesByVersion(String appName,Double version){
 		return cadreDashBoardService.getAllUpdatesByVersion(appName,version);
 	}
+	
+	
+    public LoginResponceVO checkValidLoginOrNot(String userName,String password,String imei1,String imei2,String version){
+    	LoginResponceVO vo = new LoginResponceVO();
+    	vo.setStatus("login failure");
+	 List<CadreSurveyUser> users = cadreSurveyUserDAO.getByUserNameAndPassword(userName, password);
+	 if(users == null || users.size() == 0 || users.get(0) == null){
+		 return vo;
+	 }
+	 if((imei1 != null && imei1.length() > 0) && (imei2 != null && imei2.length() > 0) ){
+		  checkVaidLogInOrNot(users.get(0).getCadreSurveyUserId(),imei1,imei2,version,vo);
+		 
+	 }else{
+		 String reqImei = imei1;
+		 if(imei2 != null && imei2.length() > 0){
+			 reqImei = imei2;
+		 }		 
+		  checkVaidLogInOrNot(users.get(0).getCadreSurveyUserId(),reqImei,version,vo);
+		  
+	 }
+	 if(vo.getStatus().equalsIgnoreCase("success")){
+	    List<CadreSurveyUserAssignDetails> resultList = cadreSurveyUserAssignDetailsDAO.getCadreAssinedDetails(users.get(0).getCadreSurveyUserId());
+		if(resultList != null && resultList.size() > 0)
+		{
+			vo.setStatusMsg("DBINITIALCHECK");
+			vo.setConstituencyName(resultList.get(0).getConstituency() != null ? resultList.get(0).getConstituency().getName() : null);
+			vo.setAcNo(delimitationConstituencyDAO.getConstituencyNo(resultList.get(0).getConstituency().getConstituencyId(),2009l));
+		}
+	 }
+	 return vo;
+	}
+    
+    public LoginResponceVO checkVaidLogInOrNot(Long userId,String imei,String version,LoginResponceVO vo){
+    	Long count = tabLogInAuthDAO.checkRecordExistWithGivenDetailsOrNot(userId, imei);
+    	
+    	if(count.longValue() == 0){
+    		TabLogInAuth tabLogInAuth = new TabLogInAuth();
+    		tabLogInAuth.setCadreSurveyUserId(userId);
+    		tabLogInAuth.setImeiNo(imei);
+    		tabLogInAuth.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+    		tabLogInAuth.setVersion(version);
+    		tabLogInAuth.setIsDeleted("N");
+    		tabLogInAuth.setStatus("success");
+    		tabLogInAuthDAO.save(tabLogInAuth);
+    		vo.setStatus("success");
+    		return vo;
+    	}else{
+    		count = tabLogInAuthDAO.checkRecordBelongsToUserOrNot(userId, imei);
+    		if(count.longValue() > 0){
+    			tabLogInAuthDAO.updateRecordBelongsToUserOrNot(userId, imei);
+    			TabLogInAuth tabLogInAuth = new TabLogInAuth();
+        		tabLogInAuth.setCadreSurveyUserId(userId);
+        		tabLogInAuth.setImeiNo(imei);
+        		tabLogInAuth.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+        		tabLogInAuth.setVersion(version);
+        		tabLogInAuth.setIsDeleted("N");
+        		tabLogInAuth.setStatus("success");
+        		tabLogInAuthDAO.save(tabLogInAuth);
+        		vo.setStatus("success");
+        		return vo;
+    		}else{
+    			return getActualCaseForNotAllowingToLogIn(userId,imei,version,vo);
+    		}
+    	}
+    	
+    }
+    
+    private LoginResponceVO getActualCaseForNotAllowingToLogIn(Long userId,String imei,String version,LoginResponceVO vo){
+    	
+    	TabLogInAuth tabLogInAuth = new TabLogInAuth();
+		tabLogInAuth.setCadreSurveyUserId(userId);
+		tabLogInAuth.setImeiNo(imei);
+		tabLogInAuth.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+		tabLogInAuth.setVersion(version);
+		tabLogInAuth.setIsDeleted("Y");
+		
+    	Long count = tabLogInAuthDAO.checkUserAlreadyLoggedInAnotherTab(userId, imei);
+    	
+    	if(count.longValue() > 0){
+    		tabLogInAuth.setStatus("same user");
+    		tabLogInAuthDAO.save(tabLogInAuth);
+    		vo.setStatus("same user");
+    		return vo;
+    	}else{
+    		tabLogInAuth.setStatus("same tab");
+    		tabLogInAuthDAO.save(tabLogInAuth);
+    		vo.setStatus("same tab");
+    		return vo;
+    	}
+    }
+    
+    public LoginResponceVO checkVaidLogInOrNot(Long userId,String imei1,String imei2,String version,LoginResponceVO vo){
+    	Long count = tabLogInAuthDAO.checkRecordExistWithGivenDetailsOrNot(userId,imei1,imei2);
+    	
+    	if(count.longValue() == 0){
+    		TabLogInAuth tabLogInAuth = new TabLogInAuth();
+    		tabLogInAuth.setCadreSurveyUserId(userId);
+    		tabLogInAuth.setImeiNo(imei1);
+    		tabLogInAuth.setImeiNo2(imei2);
+    		tabLogInAuth.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+    		tabLogInAuth.setVersion(version);
+    		tabLogInAuth.setIsDeleted("N");
+    		tabLogInAuth.setStatus("success");
+    		tabLogInAuthDAO.save(tabLogInAuth);
+    		vo.setStatus("success");
+    		return vo;
+    	}else{
+    		count = tabLogInAuthDAO.checkRecordBelongsToUserOrNot(userId,imei1,imei2);
+    		if(count.longValue() > 0){
+    			tabLogInAuthDAO.updateRecordBelongsToUserOrNot(userId,imei1,imei2);
+    			TabLogInAuth tabLogInAuth = new TabLogInAuth();
+        		tabLogInAuth.setCadreSurveyUserId(userId);
+        		tabLogInAuth.setImeiNo(imei1);
+        		tabLogInAuth.setImeiNo2(imei2);
+        		tabLogInAuth.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+        		tabLogInAuth.setVersion(version);
+        		tabLogInAuth.setIsDeleted("N");
+        		tabLogInAuth.setStatus("success");
+        		tabLogInAuthDAO.save(tabLogInAuth);
+        		vo.setStatus("success");
+        		return vo;
+    		}else{
+    			return getActualCaseForNotAllowingToLogIn(userId,imei1,imei2,version,vo);
+    		}
+    	}
+    	
+    }
+    
+    private LoginResponceVO getActualCaseForNotAllowingToLogIn(Long userId,String imei1,String imei2,String version,LoginResponceVO vo){
+    	
+    	TabLogInAuth tabLogInAuth = new TabLogInAuth();
+		tabLogInAuth.setCadreSurveyUserId(userId);
+		tabLogInAuth.setImeiNo(imei1);
+		tabLogInAuth.setImeiNo2(imei2);
+		tabLogInAuth.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+		tabLogInAuth.setVersion(version);
+		tabLogInAuth.setIsDeleted("Y");
+		
+    	Long count = tabLogInAuthDAO.checkUserAlreadyLoggedInAnotherTab(userId, imei1,imei2);
+    	
+    	if(count.longValue() > 0){
+    		tabLogInAuth.setStatus("same user");
+    		tabLogInAuthDAO.save(tabLogInAuth);
+    		vo.setStatus("same user");
+    		return vo;
+    	}else{
+    		tabLogInAuth.setStatus("same tab");
+    		tabLogInAuthDAO.save(tabLogInAuth);
+    		vo.setStatus("same tab");
+    		return vo;
+    	}
+    }
 }
 

@@ -45,7 +45,7 @@ public class CadreRegisterInfo implements Serializable{
 	private String parliament;
 	private String state;
 	private String district;
-	
+	private String status;
 	
 	
 	
@@ -335,6 +335,14 @@ public class CadreRegisterInfo implements Serializable{
 
 	public void setAvgTime(Long avgTime) {
 		this.avgTime = avgTime;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}	
 
 }

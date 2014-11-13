@@ -489,4 +489,28 @@ public class WebServiceHandler2 {
 		map.put(41L,52L);  
 		    return map;                 
 	}
+	
+	@POST
+	@Path("/checkValidCadreUser")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object checkValidLoginOrNot(UserLoginUtils inputs)
+	{
+
+		LoginResponceVO out=null;
+		Map<String,String> userDetails= new HashMap<String, String>();
+		userDetails.put("","");
+		try{
+			
+			return (LoginResponceVO) webServiceHandlerService1.checkValidLoginOrNot(inputs.getUserName(),inputs.getPassWord(), inputs.getImei1(), inputs.getImei2(), inputs.getVersion());
+		}
+		catch(Exception e)
+		{
+			out = new LoginResponceVO();
+			out.setStatus("error");
+			LOG.error("Exception rised in checkValidLoginOrNot",e);
+			return out;
+		}
+		
+	}
 }
