@@ -47,6 +47,7 @@ import com.itgrids.partyanalyst.model.CadreSurveyUser;
 import com.itgrids.partyanalyst.model.CadreSurveyUserAssignee;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
+import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -3977,7 +3978,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		}
 		
 
-		public List<CadreRegisterInfo> getCandidateDataCollectionInfoForOnlineUsers(Long locationType,List<Long> locationIds,Date fromDate,Date toDate,String sourceType){
+		/*public List<CadreRegisterInfo> getCandidateDataCollectionInfoForOnlineUsers(Long locationType,List<Long> locationIds,Date fromDate,Date toDate,String sourceType,Long stateTypeId){
 			List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
 			CadreRegisterInfo returnVo = null;
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -4119,7 +4120,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				LOG.error("Exception rised in getCandidateDataCollectionInfo",e);
 			}
 			return returnList;
-		}
+		}*/
 		public void setDataForOnlineUsers(List<Object[]> dataCollectedInfo,List<CadreRegisterInfo> returnList)
 		{
 			CadreRegisterInfo returnVo = null;
@@ -4183,6 +4184,259 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			}
 		}
 
-
-
+		@SuppressWarnings("unchecked")
+		public List<CadreRegisterInfo> getCandidateDataCollectionInfoForOnlineUsers(Long locationType,List<Long> locationIds,Date fromDate,Date toDate,String sourceType,Long stateTypeId){
+			List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
+			CadreRegisterInfo returnVo = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			SimpleDateFormat timeFormate = new SimpleDateFormat("HH:mm");
+			try{
+				List<Date> datesList = new ArrayList<Date>();
+				//Map<Long,Map<Date,CadreRegisterInfo>> userMap = new HashMap<Long,Map<Date,CadreRegisterInfo>>();//Map<userId,Map<Date,info>>
+				Map<Date,CadreRegisterInfo> dateMap = new HashMap<Date,CadreRegisterInfo>();//Map<Date,info>
+				Map<Long,Map<Date,CadreRegisterInfo>> userMap = new HashMap<Long,Map<Date,CadreRegisterInfo>>();//Map<userId,Map<Date,info>>
+				//0 count,1 name,2 min,3 max,4 date,5 id,6 name
+				Map<String,String> parliamentForAssemblyMap = new TreeMap<String, String>();
+				List<Object[]> locationsList =  delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(0L);							
+					
+				List<SurveyTransactionVO> locationIdsList = new ArrayList<SurveyTransactionVO>();
+				if(locationsList != null && locationsList.size()>0)
+				{
+					for (Object[] param : locationsList)
+					{
+						SurveyTransactionVO surveyTransactionVO = new SurveyTransactionVO();
+						surveyTransactionVO.setId(param[0] != null ? Long.valueOf(param[0].toString()) :0L);
+						surveyTransactionVO.setName(param[1] != null ? param[1].toString() :"");
+						locationIdsList.add(surveyTransactionVO);
+					}
+				}
+				List<Long> assemblyIds = new ArrayList<Long>(0);
+				
+				if(locationIdsList != null && locationIdsList.size()>0)
+				{
+					for (SurveyTransactionVO surveyTransctionVO : locationIdsList) 
+					{
+						List<Long> locationIdList = new ArrayList<Long>();
+						locationIdList.add(surveyTransctionVO.getId());
+						
+						locationsList = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesListForAListOfParliamentConstituency(locationIdList);
+												
+						if(locationsList != null && locationsList.size()>0)
+						{
+							for (Object[] param : locationsList)
+							{
+								assemblyIds.add(param[0] != null ? Long.valueOf(param[0].toString().trim()):0L );
+								parliamentForAssemblyMap.put(param[1] != null ? param[1].toString().trim() :"", surveyTransctionVO.getName());
+							}
+						}	
+						
+					}
+				}
+				locationsList.clear();
+				StringBuilder queryStr = new StringBuilder();
+				
+				if(locationType.longValue() == 0L)
+				{
+					locationsList = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(stateTypeId,1L,null);
+					
+					queryStr.append(" select  count(model.tdpCadreId),min(model.surveyTime),max(model.surveyTime),date(model.surveyTime),model2.constituency.constituencyId ,model2.constituency.name ");		
+					queryStr.append(" from TdpCadre model,UserAddress model2 where model.enrollmentYear = 2014  " );
+					queryStr.append(" and model.isDeleted = 'N' and ( date(model.surveyTime) >=:fromDate and date(model.surveyTime) <=:toDate  ) and ");
+					queryStr.append(" model.userAddress.userAddressId = model2.userAddressId ");
+					queryStr.append(" and model.dataSourceType = :sourceType and model2.constituency.constituencyId in (:locationIds)  ");
+					queryStr.append(" group by date(model.surveyTime), model2.constituency.constituencyId order by date(model.surveyTime) "); 
+					
+				}
+				else if(locationType.longValue() == 1L)
+				{
+					if(stateTypeId == 1L)
+					{
+						locationsList = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(locationIds.get(0),1L,null);
+					}
+					else if(stateTypeId == 2L)
+					{
+						locationsList = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(stateTypeId,1L,null);
+					}
+					else
+					{
+						locationsList = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(stateTypeId,1L,null);
+					}
+					
+					queryStr.append(" select  count(model.tdpCadreId),min(model.surveyTime),max(model.surveyTime),date(model.surveyTime),model2.constituency.constituencyId,model2.constituency.name ");		
+					queryStr.append(" from TdpCadre model,UserAddress model2 where model.enrollmentYear = 2014  " );
+					queryStr.append(" and model.isDeleted = 'N' and ( date(model.surveyTime) >=:fromDate and date(model.surveyTime) <=:toDate  ) and ");
+					queryStr.append(" model.userAddress.userAddressId = model2.userAddressId ");
+					queryStr.append(" and model.dataSourceType = :sourceType and model2.constituency.constituencyId in (:locationIds)  ");
+					queryStr.append(" group by date(model.surveyTime), model2.constituency.constituencyId order by date(model.surveyTime) "); 
+					
+				}
+				else if(locationType.longValue() == 2L)
+				{
+						locationsList = districtDAO.getDistrictDetailsByDistrictIds(locationIds);
+						
+						queryStr.append(" select  count(model.tdpCadreId),min(model.surveyTime),max(model.surveyTime),date(model.surveyTime),model2.district.districtId,model2.district.districtName, model2.constituency.constituencyId,model2.constituency.name ");		
+						queryStr.append(" from TdpCadre model,UserAddress model2 where model.enrollmentYear = 2014  " );
+						queryStr.append(" and model.isDeleted = 'N' and ( date(model.surveyTime) >=:fromDate and date(model.surveyTime) <=:toDate  ) and ");
+						queryStr.append(" model.userAddress.userAddressId = model2.userAddressId ");
+						queryStr.append(" and model.dataSourceType = :sourceType and model2.district.districtId in (:locationIds)  ");
+						queryStr.append(" group by date(model.surveyTime), model2.district.districtId order by date(model.surveyTime) "); 
+						
+				}
+				else if(locationType.longValue() == 3L)
+				{
+						locationsList = constituencyDAO.getConstituencyInfoByConstituencyIdList(locationIds);
+						
+						queryStr.append(" select  count(model.tdpCadreId),min(model.surveyTime),max(model.surveyTime),date(model.surveyTime),model2.constituency.constituencyId,model2.constituency.name ");		
+						queryStr.append(" from TdpCadre model,UserAddress model2 where model.enrollmentYear = 2014  " );
+						queryStr.append(" and model.isDeleted = 'N' and ( date(model.surveyTime) >=:fromDate and date(model.surveyTime) <=:toDate  ) and ");
+						queryStr.append(" model.userAddress.userAddressId = model2.userAddressId ");
+						queryStr.append(" and model.dataSourceType = :sourceType and model2.constituency.constituencyId in (:locationIds)  ");
+						queryStr.append(" group by date(model.surveyTime), model2.constituency.constituencyId order by date(model.surveyTime) "); 
+				}
+				
+				if(locationsList != null && locationsList.size()>0)
+				{
+					locationIds.clear();
+					for (Object[] param : locationsList)
+					{
+						locationIds.add(param[0] != null ? Long.valueOf(param[0].toString().trim()):0L );
+					}
+				}	
+				
+				 if(locationType.longValue() == 4L )
+				 {
+					 	queryStr.append(" select  count(model.tdpCadreId), min(model.surveyTime), max(model.surveyTime), date(model.surveyTime), " );
+					 	queryStr.append(" model.userAddress.constituency.constituencyId, model.userAddress.constituency.name ");		
+						queryStr.append(" from TdpCadre model,DelimitationConstituencyAssemblyDetails model3 where model.enrollmentYear = 2014  " );
+						queryStr.append(" and model3.constituency.constituencyId = model.userAddress.constituency.constituencyId ");
+						queryStr.append(" and model.isDeleted = 'N' and ( date(model.surveyTime) >=:fromDate and date(model.surveyTime) <=:toDate  ) ");						
+						queryStr.append(" and model.dataSourceType = :sourceType and model3.delimitationConstituency.constituency.constituencyId in (:locationIds) ");
+						queryStr.append(" and model3.delimitationConstituency.year = 2009 ");						
+						queryStr.append(" group by date(model.surveyTime), model3.delimitationConstituency.constituency.constituencyId order by date(model.surveyTime) desc "); 
+						
+				 }
+				List<Object[]>  dataCollectedInfo = tdpCadreDAO.getCandidateDataCollectionInfoForOnline(locationType,locationIds,fromDate, toDate,sourceType,queryStr.toString());
+				Map<Long,String> constiNameMap = new HashMap<Long, String>();
+				Map<Long,String> districtNameMap = new HashMap<Long, String>();
+				for(Object[] data:dataCollectedInfo){
+					if(!datesList.contains((Date)data[3])){
+						datesList.add((Date)data[3]);
+						
+					}
+					dateMap = userMap.get((Long)data[4]);
+						if(dateMap == null)
+						{
+							dateMap = new HashMap<Date,CadreRegisterInfo>();
+							userMap.put((Long)data[4],dateMap);
+							constiNameMap.put((Long)data[4], data[5].toString());
+							if(locationType == 2L)
+								districtNameMap.put((Long)data[4], data[7].toString());
+						}
+						
+						CadreRegisterInfo vo = dateMap.get((Date)data[3]);
+						if(vo == null){
+							vo = new CadreRegisterInfo() ;
+							vo.setArea(convertTimeTo12HrsFormat(timeFormate.format((Date)data[1])));
+							vo.setLocation(convertTimeTo12HrsFormat(timeFormate.format((Date)data[2])));
+							vo.setTotalCount((Long)data[0]);
+							vo.setAmount(vo.getTotalCount() * 100);
+							dateMap.put((Date)data[3], vo);
+						}
+						
+					}
+					
+					
+				
+				int count = 0;
+				for(Long key:userMap.keySet()){
+					dateMap = userMap.get(key);
+					returnVo = new CadreRegisterInfo();
+					returnVo.setId(key);
+					returnVo.setName(constiNameMap.get(key));
+					if(locationType != 2L)
+					{
+						returnVo.setParliament(parliamentForAssemblyMap.get(returnVo.getName()));
+						
+						Constituency constituency = constituencyDAO.get(key);
+						if(constituency != null)
+						{
+							if(constituency.getDistrict() != null)
+							{
+								returnVo.setDistrict(constituency.getDistrict().getDistrictName());
+								
+								if(constituency.getDistrict().getDistrictId()<11)
+								{
+									returnVo.setState("TG");
+								}
+								if(constituency.getDistrict().getDistrictId()>10 && constituency.getDistrict().getDistrictId() < 24)
+								{
+									returnVo.setState("AP");
+								}
+							}
+						}
+						
+					}
+					else
+					{
+						returnVo.setParliament(parliamentForAssemblyMap.get(districtNameMap.get(key)));
+						returnVo.setMemberShipNo(districtNameMap.get(key));
+						
+						District district = districtDAO.get(key);
+						if(district != null)
+						{							
+								returnVo.setDistrict(district.getDistrictName());
+								
+								if(district.getDistrictId()<11)
+								{
+									returnVo.setState("TG");
+								}
+								if(district.getDistrictId()>10 && district.getDistrictId() < 24)
+								{
+									returnVo.setState("AP");
+								}
+							
+						}
+						
+					}
+					
+					
+					List<CadreRegisterInfo> daysList = new ArrayList<CadreRegisterInfo>();
+						for(Date date:datesList){
+							if(dateMap.get(date) != null){
+								CadreRegisterInfo day = dateMap.get(date);
+							    if(count == 0){
+								  day.setDate(sdf.format(date));
+							    }
+								daysList.add(day);
+							}else{
+								CadreRegisterInfo day = new CadreRegisterInfo();
+								if(count == 0){
+								   day.setDate(sdf.format(date));
+								 }
+								daysList.add(day);
+							}
+						}
+						returnVo.setInfoList(daysList);
+						if(returnVo.getInfoList() != null && returnVo.getInfoList().size() > 0)
+						{
+							Long count1 = 0l;
+							for(CadreRegisterInfo vo3 : returnVo.getInfoList())
+							{
+								if(vo3.getTotalCount() != null)
+								 count1 = count1 + vo3.getTotalCount();
+							}
+							returnVo.setTotalCount(count1);
+							returnVo.setTotalAmount(returnVo.getTotalCount() > 0 ?  returnVo.getTotalCount()* 100 : 0);
+						}
+						returnList.add(returnVo);
+						count++;
+						
+			}
+					
+						
+			}catch(Exception e){
+				LOG.error("Exception rised in getCandidateDataCollectionInfo",e);
+			}
+			return returnList;
+		}
 }
