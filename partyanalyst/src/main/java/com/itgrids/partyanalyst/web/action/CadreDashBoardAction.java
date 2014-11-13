@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
+import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 
@@ -45,6 +46,7 @@ public class CadreDashBoardAction implements ServletRequestAware {
 	private List<SurveyTransactionVO> surveyTransactionVOList = new ArrayList<SurveyTransactionVO>();
 	private List<SelectOptionVO> surveyUsersList = new ArrayList<SelectOptionVO>();
 	private WSResultVO wsResultVO;
+	private ILoginService loginService;
 	
 	public List<SurveyTransactionVO> getSurveyTransactionVOList() {
 		return surveyTransactionVOList;
@@ -155,6 +157,14 @@ public class CadreDashBoardAction implements ServletRequestAware {
 
 	public void setWsResultVO(WSResultVO wsResultVO) {
 		this.wsResultVO = wsResultVO;
+	}
+
+	public ILoginService getLoginService() {
+		return loginService;
+	}
+
+	public void setLoginService(ILoginService loginService) {
+		this.loginService = loginService;
 	}
 
 	public String execute(){
@@ -559,4 +569,19 @@ public class CadreDashBoardAction implements ServletRequestAware {
 	
 	}
 	
+	
+	public String getLocationNameByIdAndType(){
+		try{
+			
+			 jObj = new JSONObject(getTask());				
+			 String type = jObj.getString("usersType");
+			 String value = jObj.getString("areaType");
+		
+				getState = loginService.getLocationNameByIdAndType(type,value);
+						
+		}catch(Exception e){
+			LOG.error("Exception rised in getLocationNameByIdAndType ",e);
+		}
+		return Action.SUCCESS;
+	}
 }
