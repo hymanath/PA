@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
 import com.itgrids.partyanalyst.model.CadreSurveyUserAssignDetails;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSurveyUserAssignDetails, Long> implements ICadreSurveyUserAssignDetailsDAO{
 
@@ -148,5 +149,23 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 				" order by model.cadreSurveyUser.userName");
 		query.setParameterList("cadreSurveyUserIds", cadreSurveyUserIds);
 		 return query.list();	
+	}
+	
+	public List<Object[]> getTDPCadreAmountDetails(List<Long> districtIds,String type)
+	{
+		StringBuilder str = new StringBuilder();
+		if(type.equalsIgnoreCase(IConstants.DISTRICT))
+		str.append("select sum(model1.amount), model.constituency.district.districtId");
+		else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			str.append("select sum(model1.amount), model.constituency.constituencyId");	
+		str.append(" from CadreSurveyUserAssignDetails model, CadreRegAmountDetails model1 where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
+				" and model.constituency.district.districtId in(:districtIds) ");
+		if(type.equalsIgnoreCase(IConstants.DISTRICT))
+		str.append("group by model.constituency.district.districtId");
+		else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			str.append("group by model.constituency.constituencyId");
+		Query query=getSession().createQuery(str.toString()); 
+		query.setParameterList("districtIds", districtIds);
+		return query.list();
 	}
 }

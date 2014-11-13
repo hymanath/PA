@@ -6,6 +6,7 @@ import java.util.List;
 public class CadreAmountDetailsVO implements Serializable{
 	private Long userId;
 	private String userName;
+	private Long id;
 	private String name;
 	private String mobileNo;
 	private String constituency;
@@ -13,6 +14,7 @@ public class CadreAmountDetailsVO implements Serializable{
 	private Long totalCount = 0l;
 	private Long totalAmount = 0l;
 	private Long paidAmount = 0l;
+	
 	private Long difference = 0l;
 	private String date;
 	private List<CadreAmountDetailsVO> infoList;
@@ -22,9 +24,70 @@ public class CadreAmountDetailsVO implements Serializable{
 	private Long ttAmount;
 	private Long totalPaidAmount;
 	private Long totalDifference;
+	private Long totalVoters;
+	private Long targetCadres;
+	private Long registeredCadres;
+	private String percentage;
+	private String parliament;
+	private Long parliamentId;
+	private String districtName;
+	private Long districtId;
 	
 	
-	
+	public String getParliament() {
+		return parliament;
+	}
+	public void setParliament(String parliament) {
+		this.parliament = parliament;
+	}
+	public Long getParliamentId() {
+		return parliamentId;
+	}
+	public void setParliamentId(Long parliamentId) {
+		this.parliamentId = parliamentId;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public Long getTotalVoters() {
+		return totalVoters;
+	}
+	public void setTotalVoters(Long totalVoters) {
+		this.totalVoters = totalVoters;
+	}
+	public Long getTargetCadres() {
+		return targetCadres;
+	}
+	public void setTargetCadres(Long targetCadres) {
+		this.targetCadres = targetCadres;
+	}
+	public Long getRegisteredCadres() {
+		return registeredCadres;
+	}
+	public void setRegisteredCadres(Long registeredCadres) {
+		this.registeredCadres = registeredCadres;
+	}
+	public String getPercentage() {
+		return percentage;
+	}
+	public void setPercentage(String percentage) {
+		this.percentage = percentage;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public Long getTotalRecords() {
 		return totalRecords;
 	}
