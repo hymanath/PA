@@ -1499,5 +1499,8 @@
 		<property name="cadreRegAmountDetailsService" ref="cadreRegAmountDetailsService" />
 	</bean>
 	
+	<bean id="leaderCadreDashBoardAction" class="com.itgrids.partyanalyst.web.action.LeaderCadreDashBoardAction" singleton="false">
+		<property name="leaderCadreDashBoardService" ref="leaderCadreDashBoardService" />
+	</bean>
 </beans>	
 	
