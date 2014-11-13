@@ -1909,4 +1909,18 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
 		query.setParameterList("webUserIds", webUserIds);
 		return query.list();
 	}
+	
+	public List<Object[]> getCandidateDataCollectionInfoForOnline(Long locationType,List<Long> locationIds,Date fromDate,Date toDate,String sourceType,String queryStr)
+	{
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);		
+		query.setParameterList("locationIds", locationIds);
+		query.setParameter("sourceType", sourceType);
+		
+		return query.list();
+		}
+	
 }
