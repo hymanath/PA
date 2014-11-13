@@ -3,6 +3,8 @@
  */
 package com.itgrids.partyanalyst.webserviceutils.android.utilvos;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 /**
  * @author Administrator Jul 10, 2014
  *
@@ -42,9 +44,12 @@ public class UserLoginUtils  extends UserLoginVO{
 	public void setPartNo(String partNo) {
 		this.partNo = partNo;
 	}
+	
 	public long getUserId() {
 		return userId;
 	}
+	
+	@JsonIgnore
 	public void setUserId(long userId) {
 		this.userId = userId;
 	}
