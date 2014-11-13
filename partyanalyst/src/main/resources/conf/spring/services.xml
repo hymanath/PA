@@ -2273,5 +2273,7 @@
      	<property name="tdpCadreDAO" ref="tdpCadreDAO"/>
      </bean>
      
+     <bean name="leaderCadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.LeaderCadreDashBoardService"></bean>
+     
 </beans>		
 	
