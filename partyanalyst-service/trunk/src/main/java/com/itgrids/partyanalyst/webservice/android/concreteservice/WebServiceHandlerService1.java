@@ -105,7 +105,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	private IVoiceRecordingDetailsDAO voiceRecordingDetailsDAO;
 	private IPingingTypeDAO pingingTypeDAO;
 	private IMobileAppPingingDAO mobileAppPingingDAO;
-    private ILoginDetailsByTabDAO loginDetailsByTabDAO;
+	@Autowired private ILoginDetailsByTabDAO loginDetailsByTabDAO;
 	@Autowired private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	private IUserVoterDetailsDAO userVoterDetailsDAO;
 	@Autowired private IBoothDAO boothDAO;
