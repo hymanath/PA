@@ -497,7 +497,7 @@ function getCandidateDataCollectionInfo(){
     $.ajax({
           type:'GET',
           url: 'getCadreDashBoardBasicInfo.action',
-          data: {task:"candidateDataCollectionInfo",locationType:locationType,locationId:locationId,fromDate:$("#fromDate").val(),toDate:$("#toDate").val(),timeCheckBox:timeCheckBox,sourceType:sourceType}
+          data: {task:"candidateDataCollectionInfo",locationType:locationType,locationId:locationId,fromDate:$("#fromDate").val(),toDate:$("#toDate").val(),timeCheckBox:timeCheckBox,sourceType:sourceType,stateTypeId:$('#statesDivId').val()}
        }).done(function(result){
 	   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
 		   location.reload(); 
@@ -513,15 +513,19 @@ function getCandidateDataCollectionInfo(){
    function buildONLINEUsers(result,sourceType,timeCheckBox)
    {
 	    var str ='';
-if(result.length > 0){
+		var searchType = $('#selLctnType').val();
+			if(result.length > 0){
 		        str+='<input type="button"  style="margin-bottom:15px;margin-left: 375px;"  class="btn" onclick="generateExcel(\'usersStatusReportTab\');" value="Click Here To Generate Excel"/>';
 		        str+='<div id="resultTableDiv" style="overflow-x:scroll;"><table class="table table-bordered table-striped table-hover" id="usersStatusReportTab"><thead>';
 				str+='<tr>';
 				if($("#fromDate").val()!=$("#toDate").val()){				
-					//str+='<th rowspan="2" >State</th>';
-					//str+='<th rowspan="2" >District</th>';
-					//str+='<th rowspan="2" >Parliament</th>';
-					//str+='<th rowspan="2" >Constituency</th>';				
+					str+='<th rowspan="2" >State</th>';
+					str+='<th rowspan="2" >District</th>';
+					if(searchType != 2)
+					{
+						str+='<th rowspan="2">Parliament</th>';
+						str+='<th rowspan="2">Constituency</th>';	
+					}					
 					//str+='<th rowspan="2">User</th>';
 					//str+='<th rowspan="2">Name</th>';
 					//str+='<th rowspan="2" >MobileNo</th>';
@@ -530,11 +534,14 @@ if(result.length > 0){
 					str+='<th rowspan="2">Total Count</th>';
 					//str+='<th rowspan="2">Total Amount</th>';
 				}else{
-					/*str+='<th>State</th>';
+					str+='<th>State</th>';
 					str+='<th>District</th>';
-					str+='<th>Parliament</th>';
-					str+='<th>Constituency</th>';				
-					str+='<th>User</th>';
+					if(searchType != 2)
+					{
+						str+='<th>Parliament</th>';
+						str+='<th>Constituency</th>';	
+					}					
+					/*str+='<th>User</th>';
 					str+='<th>Name</th>';
 					str+='<th>MobileNo</th>';
 					
@@ -579,22 +586,33 @@ if(result.length > 0){
 				for(var i in result){
 				  str+='<tr>';
 				  
-				 /* if(result[i].location != null){
-				     str+='  <td>'+result[i].location+'</td>';
+				  if(result[i].state != null){
+				     str+='  <td>'+result[i].state+'</td>';
+				   }else{
+				      str+='  <td></td>';
+				   }				   
+				   if(result[i].district != null){
+				     str+='  <td>'+result[i].district+'</td>';
 				   }else{
 				      str+='  <td></td>';
 				   }
-				  if(result[i].number != null){
-				     str+='  <td>'+result[i].number+'</td>';
-				   }else{
-				      str+='  <td></td>';
-				   }
-				   if(result[i].percentStr != null){
-				     str+='  <td>'+result[i].percentStr+'</td>';
-				   }else{
-				      str+='  <td></td>';
-				   }
+				   if(searchType != 2)
+				   {
+						if(result[i].parliament != null){
+							str+='  <td>'+result[i].parliament+'</td>';
+						}else{
+							str+='  <td></td>';
+						}
 				   
+				 
+					   if(result[i].name != null){
+						 str+='  <td>'+result[i].name+'</td>';
+					   }else{
+						  str+='  <td></td>';
+					   }
+				   
+				   }
+				  /* 
 				  if(result[i].memberShipNo != null){
 				     str+='  <td>'+result[i].memberShipNo+'</td>';
 				   }else{
@@ -702,10 +720,10 @@ if(result.length > 0){
 				if($("#fromDate").val()!=$("#toDate").val()){				
 					//str+='<th rowspan="2" >State</th>';
 					//str+='<th rowspan="2" >District</th>';
-					//str+='<th rowspan="2" >Parliament</th>';
-					str+='<th rowspan="2" >Constituency</th>';				
+					str+='<th rowspan="2" >Parliament</th>';
+					//str+='<th rowspan="2" >Constituency</th>';				
 					str+='<th rowspan="2">User</th>';
-					//str+='<th rowspan="2">Name</th>';
+					str+='<th rowspan="2">Name</th>';
 					//str+='<th rowspan="2" >MobileNo</th>';
 					
 					//str+='<th rowspan="2">Tab No</th>';
@@ -715,9 +733,9 @@ if(result.length > 0){
 					/*str+='<th>State</th>';
 					str+='<th>District</th>';*/
 					str+='<th>Parliament</th>';
-					str+='<th>Constituency</th>';				
+					//str+='<th>Constituency</th>';				
 					str+='<th>User</th>';
-					//str+='<th>Name</th>';
+					str+='<th>Name</th>';
 					//str+='<th>MobileNo</th>';
 					
 					//str+='<th>Tab No</th>';
@@ -759,6 +777,8 @@ if(result.length > 0){
 				
 				
 				for(var i in result){
+					if(result[i].name != 'Test User')
+					{
 				  str+='<tr>';
 				  /*
 				  if(result[i].state != null){
@@ -857,7 +877,7 @@ if(result.length > 0){
 				}
 				 str+='</tr>';
 			}	
-				
+			}	
 				str+='</tbody></table></div>';
 				str+='<input type="button" style="margin-top:15px;margin-left: 375px;" class="btn" onclick="generateExcel(\'usersStatusReportTab\');" value="Click Here To Generate Excel"/>';
 		   }else{
@@ -2621,7 +2641,7 @@ function getCandidateDataCollectionInfo2(){
 			        str +='<th>UserName</th>';
 				    str +='<th>Name</th>';
 				    str+='<th>MobileNO</th>';
-				    str+='<th>TabNO</th>';
+				   // str+='<th>TabNO</th>';
 				    str +='</tr>';
 				    str +='</thead>';
 					str+="</tbody>";
@@ -2640,7 +2660,7 @@ function getCandidateDataCollectionInfo2(){
 							  str+='<td>'+result.notStartVO[i].userName+'</td>';
 							  str+='<td>'+result.notStartVO[i].name+'</td>';
 							  str+='<td>'+result.notStartVO[i].description+'</td>';
-							  str+='<td>'+result.notStartVO[i].pwd+'</td>';
+							 // str+='<td>'+result.notStartVO[i].pwd+'</td>';
 							  str+='</tr>';
 							}			
 					}
@@ -2658,7 +2678,7 @@ function getCandidateDataCollectionInfo2(){
 							  str+='<td>'+result.startVO[i].userName+'</td>';
 							  str+='<td>'+result.startVO[i].name+'</td>';
 							  str+='<td>'+result.startVO[i].description+'</td>';
-							  str+='<td>'+result.startVO[i].pwd+'</td>';
+							 // str+='<td>'+result.startVO[i].pwd+'</td>';
 							   str+='</tr>';
 							}			
 					}
