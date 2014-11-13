@@ -2273,7 +2273,12 @@
      	<property name="tdpCadreDAO" ref="tdpCadreDAO"/>
      </bean>
      
-     <bean name="leaderCadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.LeaderCadreDashBoardService"></bean>
+     <bean name="leaderCadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.LeaderCadreDashBoardService">
+     <property name="voterInfoDAO" ref="voterInfoDAO" />
+     <property name="cadreSurveyUserAssignDetailsDAO" ref="cadreSurveyUserAssignDetailsDAO" />
+     <property name="tdpCadreDAO" ref="tdpCadreDAO" />
+     <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
+     </bean>
      
 </beans>		
 	
