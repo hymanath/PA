@@ -48,7 +48,6 @@ import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.model.CadreSurveyUser;
 import com.itgrids.partyanalyst.model.CadreSurveyUserAssignee;
-import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -3559,8 +3558,6 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					 dataCollectedInfo = tdpCadreDAO.getCandidateDataCollectionInfo1(locationType,locationIds,fromDate, toDate,sourceType);
 				 }
 				 
-				 Map<String, String> districtMap = new TreeMap<String, String>();
-				 Map<String, String> stateMap = new TreeMap<String, String>();
 				 
 				for(Object[] data:dataCollectedInfo){
 					if(!datesList.contains((Date)data[3])){
@@ -3576,19 +3573,8 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 						userNames.put((Long)data[4],name);
 						if(data[7] != null && data[7].toString().equalsIgnoreCase("MLA") )
 						{
-							Constituency constituency = constituencyDAO.get(new Long(data[8].toString()));
-							String constiName = constituency.getName();
+							String constiName = constituencyDAO.get(new Long(data[8].toString())).getName();
 							webUserAccessMap.put((Long)data[4],constiName);
-							districtMap.put(constiName, constituency.getDistrict().getDistrictName());
-							
-							if(constituency.getDistrict() != null && constituency.getDistrict().getDistrictId().longValue() < 11)
-							{
-								stateMap.put(constiName, "TG");
-							}
-							if(constituency.getDistrict() != null && ( constituency.getDistrict().getDistrictId().longValue() > 10 && constituency.getDistrict().getDistrictId().longValue() < 24 ) )
-							{
-								stateMap.put(constiName, "AP");
-							}
 						}
 					}
 					dateMap = userMap.get((Long)data[4]);
@@ -3773,19 +3759,14 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 						vo = new CadreRegisterInfo();
 						vo.setName(userNames.get(key));
 						if(sourceType.equalsIgnoreCase("WEB"))
-						{
 							vo.setMemberShipNo(webUserAccessMap.get(key));
-							vo.setParliament(parliamentForAssemblyMap.get(vo.getMemberShipNo() != null?vo.getMemberShipNo():"") != null ? parliamentForAssemblyMap.get(vo.getMemberShipNo() != null?vo.getMemberShipNo():"") :" -- ");
-							vo.setDistrict(districtMap.get(vo.getMemberShipNo() != null?vo.getMemberShipNo():"") != null ? districtMap.get(vo.getMemberShipNo() != null?vo.getMemberShipNo():"") :" -- ");
-							vo.setState(stateMap.get(vo.getMemberShipNo() != null?vo.getMemberShipNo():"") != null ? stateMap.get(vo.getMemberShipNo() != null?vo.getMemberShipNo():"") :" -- ");
-						}
 						//vo.setUname(unameMap.get(key) != null ? unameMap.get(key).toString() : "");
 						CadreRegisterInfo userData = mobileNos.get(key);
 						if(userData != null && sourceType.equalsIgnoreCase("TAB")){
 						    vo.setArea(userData.getArea());//mobileNo
 						    vo.setLocation(userData.getLocation());//state
 						    vo.setNumber(userData.getNumber());//district
-						    vo.setMemberShipNo(userData.getMemberShipNo());//constituency						   
+						    vo.setMemberShipNo(userData.getMemberShipNo());//constituency
 						    vo.setPercentStr(userData.getPercentStr());
 						    vo.setUname(nameMap.get(key));
 						    vo.setTabNo(tabMap.get(key));
@@ -3918,9 +3899,6 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					 dataCollectedInfo = tdpCadreDAO.getCandidateDataCollectionInfo1(locationType,locationIds,fromDate, toDate,sourceType);
 				 }
 				 
-				 Map<String, String> districtMap = new TreeMap<String, String>();
-				 Map<String, String> stateMap = new TreeMap<String, String>();
-				 Map<Long, String> webUserAccessMap = new TreeMap<Long, String>();
 				 
 				for(Object[] data:dataCollectedInfo){
 					if(!datesList.contains((Date)data[3])){
@@ -3933,20 +3911,6 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 						vo.setLocation(convertTimeTo12HrsFormat(timeFormate.format((Date)data[2])));
 						vo.setTotalCount((Long)data[0]);
 						vo.setAmount(vo.getTotalCount() * 100);
-						Constituency constituency = constituencyDAO.get( data[0] != null ? (Long)data[0]:0L);
-						
-						String constiName = constituency.getName();
-						webUserAccessMap.put((Long)data[4],constiName);
-						districtMap.put(constiName, constituency.getDistrict().getDistrictName());
-						
-						if(constituency.getDistrict() != null && constituency.getDistrict().getDistrictId().longValue() < 11)
-						{
-							stateMap.put(constiName, "TG");
-						}
-						if(constituency.getDistrict() != null && ( constituency.getDistrict().getDistrictId().longValue() > 10 && constituency.getDistrict().getDistrictId().longValue() < 24 ) )
-						{
-							stateMap.put(constiName, "AP");
-						}
 						dateMap.put((Date)data[3], vo);
 					}
 					
