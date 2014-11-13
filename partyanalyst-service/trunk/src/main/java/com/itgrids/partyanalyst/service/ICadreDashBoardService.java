@@ -19,9 +19,9 @@ public interface ICadreDashBoardService {
 	
 	public  List<CadreRegisterInfo> getRecentlyRegisteredCadresInfo();
 	
-	public List<CadreRegisterInfo> getAssemblyWiseCompletedPercentage(Long assemblyId,Long stateId, String accessType, String accessValue);
+	public List<CadreRegisterInfo> getAssemblyWiseCompletedPercentage(Long assemblyId,Long stateId, String accessType, String accessValue, String percType);
 	
-	public List<CadreRegisterInfo> getDistrictWiseCompletedPercentage(Long districtId,Long stateId, String accessType, String accessValue);
+	public List<CadreRegisterInfo> getDistrictWiseCompletedPercentage(Long districtId,Long stateId, String accessType, String accessValue, String percType);
 	
 	public CadreRegisterInfo getWorkingMembersInfo(String hours,String accessType,Long accessValue);
 	
