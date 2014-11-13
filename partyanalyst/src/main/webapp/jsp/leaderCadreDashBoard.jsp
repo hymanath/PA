@@ -125,8 +125,16 @@
 		}
 		str+='<td>'+result[i].totalVoters+'</td>';
 		str+='<td>'+result[i].targetCadres+'</td>';
-		str+='<td>'+result[i].totalRecords+'</td>';
-		str+='<td>'+result[i].percentage+'</td>';
+		if(result[i].totalRecords==null){
+			str+='<td>-</td>'
+		}else{
+			str+='<td>'+result[i].totalRecords+'</td>';
+		}
+		if(result[i].percentage==null){
+			str+='<td>-</td>'
+		}else{
+			str+='<td>'+result[i].percentage+'</td>';
+		}
 		str+='<td>'+result[i].totalAmount+'</td>';
 		str+='<td>'+result[i].paidAmount+'</td>';
 		str+='<td>'+result[i].difference+'</td>';
