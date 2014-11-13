@@ -372,7 +372,7 @@
 				   </tr>
 				   <tr><td><b>From Date :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="fromDate2"/></td></tr>
 				   <tr><td><b>To Date   :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="toDate2" /></td></tr>
-				   <tr><td><input type="checkbox" id="slowUsersCheck" style="margin-top:-3px">&nbsp;&nbsp;Show Slow Users</td></tr>
+				   <tr><td><input type="checkbox" id="slowUsersCheck" style="margin-top:-3px">&nbsp;&nbsp;Show Only Slow Users</td></tr>
 				   <tr>
 				      <td></td><td><input type="button" style="margin-top: 13px;" class="btn btn-success" id="getCandidateDataCollectionInfoId2" onclick="getCandidateDataCollectionInfo2();" value="Submit"/>
 						<img id="ajaxImgStyle2" style="display:none;margin-left: 10px;" src="images/icons/search.gif"/>
