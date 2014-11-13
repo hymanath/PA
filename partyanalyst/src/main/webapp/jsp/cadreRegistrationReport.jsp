@@ -713,8 +713,8 @@ if(result.length > 0){
 					//str+='<th rowspan="2">Total Amount</th>';
 				}else{
 					/*str+='<th>State</th>';
-					str+='<th>District</th>';
-					str+='<th>Parliament</th>';*/
+					str+='<th>District</th>';*/
+					str+='<th>Parliament</th>';
 					str+='<th>Constituency</th>';				
 					str+='<th>User</th>';
 					//str+='<th>Name</th>';
@@ -760,27 +760,27 @@ if(result.length > 0){
 				
 				for(var i in result){
 				  str+='<tr>';
-				  
-				  /*if(result[i].location != null){
-				     str+='  <td>'+result[i].location+'</td>';
+				  /*
+				  if(result[i].state != null){
+				     str+='  <td>'+result[i].state+'</td>';
 				   }else{
 				      str+='  <td></td>';
 				   }
-				  if(result[i].number != null){
-				     str+='  <td>'+result[i].number+'</td>';
+				  if(result[i].district != null){
+				     str+='  <td>'+result[i].district+'</td>';
+				   }else{
+				      str+='  <td></td>';
+				   }*/
+				   if(result[i].parliament != null){
+				     str+='  <td>'+result[i].parliament+'</td>';
 				   }else{
 				      str+='  <td></td>';
 				   }
-				   if(result[i].percentStr != null){
-				     str+='  <td>'+result[i].percentStr+'</td>';
-				   }else{
-				      str+='  <td></td>';
-				   }
-				   */
+				   
 				  if(result[i].memberShipNo != null){
 				     str+='  <td>'+result[i].memberShipNo+'</td>';
 				   }else{
-				      str+='  <td> PartyOffice</td>';
+				      str+='  <td> Party Office</td>';
 				   }
 					str+='  <td>'+result[i].name+'</td>';
 				   //str+='  <td>'+result[i].uname+'</td>';
