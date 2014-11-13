@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
+
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -1912,5 +1913,24 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
 		
 		return query.list();
 		}
-	
+	public List<Object[]> getTotalRecords(List<Long> districtIds,String type){
+		StringBuilder str = new StringBuilder();
+		if(type.equalsIgnoreCase(IConstants.DISTRICT))
+		 str.append("select count(model.tdpCadreId),model.userAddress.constituency.district.districtId"); 
+		else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			 str.append("select count(model.tdpCadreId),model.userAddress.constituency.constituencyId"); 
+		 str.append("  from TdpCadre model" +
+				" where model.isDeleted = 'N' " +
+				" and model.enrollmentYear = 2014 and model.userAddress.constituency.district.districtId in(:districtIds)"); 
+		 if(type.equalsIgnoreCase(IConstants.DISTRICT))
+		    str.append(" group by model.userAddress.constituency.district.districtId");
+		 else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			str.append(" group by model.userAddress.constituency.constituencyId");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("districtIds", districtIds);
+		
+		return query.list();
+	}
+
 }

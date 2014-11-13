@@ -163,6 +163,8 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getCandidateDataCollectedByDateWebParty(Date fromDate,Date toDate, Long userId);
 	public List<Object[]> getWebUserConstituecny(List<Long> webUserIds);
 	
+	public List<Object[]> getTotalRecords(List<Long> districtIds,String type);
+	
 	public List<Object[]> getCandidateDataCollectionInfoForOnline(Long locationType,List<Long> locationIds,Date fromDate,Date toDate,String sourceType,String queryStr);
 	
 }
