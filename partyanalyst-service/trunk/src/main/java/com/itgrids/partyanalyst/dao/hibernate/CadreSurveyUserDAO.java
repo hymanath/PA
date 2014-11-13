@@ -118,4 +118,13 @@ public class CadreSurveyUserDAO extends GenericDaoHibernate<CadreSurveyUser, Lon
 		query.setParameter("username", username);
 		return (CadreSurveyUser) query.uniqueResult();
 	}
+	
+	
+	public List<CadreSurveyUser> getByUserNameAndPassword(String userName , String password)
+	{
+		Query query = getSession().createQuery("select model from CadreSurveyUser model where model.userName = :userName and model.password = :password and model.isDeleted = 'N' ");
+		query.setParameter("userName", userName);
+		query.setParameter("password", password);
+		return query.list();
+	}
 }

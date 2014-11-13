@@ -34,4 +34,6 @@ public interface IWebServiceHandlerService1 {
 	public void savingUserDetailsWhoLoggedIn(final UserLoginUtils inputs,final LoginResponceVO out);
 	
 	public Object saveSurveyFieldUsersForCadreOnline(List<CadreRegistrationVO> inputResponseList);
+	
+	public LoginResponceVO checkValidLoginOrNot(String userName,String password,String imei1,String imei2,String version);
 }

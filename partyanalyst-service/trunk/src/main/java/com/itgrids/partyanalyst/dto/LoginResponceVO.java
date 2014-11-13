@@ -14,6 +14,7 @@ public class LoginResponceVO implements Serializable{
 	private List<LoginStatusVO> statusList;
 	private String tabNo;
 	private Long acNo;
+	private String status;
 	
 	
 	public Long getConstituencyId() {
@@ -57,6 +58,12 @@ public class LoginResponceVO implements Serializable{
 	}
 	public void setAcNo(Long acNo) {
 		this.acNo = acNo;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 	

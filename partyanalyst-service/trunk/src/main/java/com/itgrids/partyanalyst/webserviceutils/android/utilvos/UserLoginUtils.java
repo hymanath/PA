@@ -18,6 +18,9 @@ public class UserLoginUtils  extends UserLoginVO{
 	private String partNo;
 	private Long userId;
 	private String type;
+	private String imei1;
+	private String imei2;
+	private String version;
 	
 	
 	
@@ -43,6 +46,27 @@ public class UserLoginUtils  extends UserLoginVO{
 		return userId;
 	}
 	public void setUserId(long userId) {
+		this.userId = userId;
+	}
+	public String getImei1() {
+		return imei1;
+	}
+	public void setImei1(String imei1) {
+		this.imei1 = imei1;
+	}
+	public String getImei2() {
+		return imei2;
+	}
+	public void setImei2(String imei2) {
+		this.imei2 = imei2;
+	}
+	public String getVersion() {
+		return version;
+	}
+	public void setVersion(String version) {
+		this.version = version;
+	}
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 	
