@@ -523,15 +523,22 @@ public class WebServiceHandler2 {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Object getTabUsersRecordsDetails(List<TabRecordsStatusVO> tabRecordsStatusVOList)
 	{
-		Object object = null;
 		try{
-			  object = webServiceHandlerService1.getTabUsersRecordsDetails(tabRecordsStatusVOList);
-			return object;
+			  String status = webServiceHandlerService1.getTabUsersRecordsDetails(tabRecordsStatusVOList);
+			  
+			  if(status.equalsIgnoreCase("success"))
+				 {				  
+					  return "{\"status\":\"Success\"}";
+				 }
+				  else
+				  {
+					  return "{\"status\":\"Failure\"}";
+				  }
 		}
 		catch(Exception e)
 		{
 			LOG.error("Exception Occured in getTabUsersLoginDetails() Method, Exception is ",e);
-			return "Fail";
+			 return "{\"status\":\"Failure\"}";
 		}
 	}
 	
@@ -541,15 +548,22 @@ public class WebServiceHandler2 {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Object storeLoginUserDetails(TabRecordsStatusVO tabRecordsStatusVO)
 	{
-		Object object = null;
 		try{			
-			  object = webServiceHandlerService1.getTabUsersLoginDetails(tabRecordsStatusVO);
-			return object;
+			 String status  = webServiceHandlerService1.getTabUsersLoginDetails(tabRecordsStatusVO);
+			
+			 if(status.equalsIgnoreCase("success"))
+			 {				  
+				  return "{\"status\":\"Success\"}";
+			 }
+			  else
+			  {
+				  return "{\"status\":\"Failure\"}";
+			  }
 		}
 		catch(Exception e)
 		{
 			LOG.error("Exception Occured in storeLoginUserDetails() Method, Exception is ",e);
-			return "Fail";
+			return "{\"status\":\"Failure\"}";
 		}
 	}
 	
