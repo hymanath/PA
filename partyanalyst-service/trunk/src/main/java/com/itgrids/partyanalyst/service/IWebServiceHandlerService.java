@@ -3,10 +3,10 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
-import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
@@ -68,4 +68,6 @@ public interface IWebServiceHandlerService {
 	public CastVO getAllCastes();
 	
 	public Object getVCadreDetailsBySelection(CadrePrintInputVO input);
+
+	
 }
