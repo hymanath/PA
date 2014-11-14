@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
+import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
 import com.itgrids.partyanalyst.model.TdpCadreBackupDetails;
 
@@ -100,5 +101,9 @@ public interface ICadreRegistrationService {
 	public List<CadreRegisterInfo> getConstituenciesByStateBasedOnAccess(Long stateId,String accessLevel,Long accessValue);
 	
 	public List<CadreRegisterInfo> getDistrictsByStateBasedOnAccess(Long stateId,String accessLevel,Long accessValue);
+	
+	public String updateTabLoginUserDetails(TabRecordsStatusVO tabRecordsStatusVO);
+	
+	public String updateTabUserDetails(List<TabRecordsStatusVO> tabRecordsStatusVOList);
 	
 }
