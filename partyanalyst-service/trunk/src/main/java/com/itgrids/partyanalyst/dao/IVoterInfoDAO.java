@@ -80,4 +80,6 @@ public interface IVoterInfoDAO extends GenericDao<VoterInfo, Long>{
 	public List<Object[]> getVotersCountInADistrictsList(List<Long> districtIdsList, Long publicationDateId);
 	
 	public List<Object[]> getVotersCountInConstituenciesByDistrictsList(List<Long> districtIdsList, Long publicationDateId);
+	
+	public List<Object[]> getVotersCountInATehsilList(List<Long> tehsilIdsList, Long publicationDateId);
 }

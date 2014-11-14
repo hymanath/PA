@@ -10,5 +10,6 @@ public interface ILeaderCadreDashBoardService {
 
 	public void testMethod();
 	public List<CadreAmountDetailsVO> getLoationWiseLeaderCadreDetails(String locationtype,Long stateId);
+	public List<CadreAmountDetailsVO> getSubLevelLoationWiseLeaderCadreDetails(String type,Long id);
 	
 }

@@ -472,5 +472,18 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 		
 		return query.list();
     }
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVotersCountInATehsilList(List<Long> tehsilIdsList, Long publicationDateId)
+	{
+		Query query = getSession().createQuery("Select model.reportLevelValue,sum(model.totalVoters),model.district.districtId from VoterInfo model,Tehsil model2 where model.reportLevelValue = model2.tehsilId and " +
+				" model.voterReportLevel.voterReportLevelId = :reportLevelId and model.publicationDate.publicationDateId = :publicationDateId and " +
+				" model2.tehsilId in (:tehsilIdsList) group by model2.tehsilId");
+		query.setParameter("reportLevelId", 2L);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameterList("tehsilIdsList", tehsilIdsList);
+		
+		return query.list();
+    }
+	
 	
 }
