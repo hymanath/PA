@@ -2278,6 +2278,10 @@
      <property name="cadreSurveyUserAssignDetailsDAO" ref="cadreSurveyUserAssignDetailsDAO" />
      <property name="tdpCadreDAO" ref="tdpCadreDAO" />
      <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
+	 <property name="constituencyDAO" ref="constituencyDAO" />
+	 <property name="regionServiceDataImp" ref="regionServiceDataImp" />
+	 
+	 
      </bean>
      
 </beans>		
