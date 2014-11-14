@@ -1504,7 +1504,8 @@ public List<Object[]> getCadreDetailsForSelectionByFamilyVoterId(CadrePrintInput
 				" and model.isDeleted = 'N' " +
 				" and date(model.surveyTime) >=:fromDate " +
 				" and date(model.surveyTime) <=:toDate  " +
-				" and model.insertedWebUser.userId in(:userIds) and model.insertedWebUser.userId != 3930");
+				" and model.insertedWebUser.userId in(:userIds) ");
+				//"and model.insertedWebUser.userId != 3930");
 		
 		queryStr.append(" group by model.insertedWebUser.userId " +
 				" order by date(model.surveyTime),model.insertedWebUser.firstName ");

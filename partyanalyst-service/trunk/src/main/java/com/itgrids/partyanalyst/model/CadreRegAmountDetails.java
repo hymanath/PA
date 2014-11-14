@@ -33,8 +33,14 @@ public class CadreRegAmountDetails extends BaseModel implements Serializable {
 	private Long amount;
 	private String branch;
 	private Long cadreSurveyUserId;
+	private Long webUserId;
+	private String registrationType;
+	private User webUser;
 	
-	 @Id
+	
+	
+	 
+	@Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
 	 @Column(name = "cadre_reg_amount_details_id", unique = true, nullable = false)
 	public Long getCadreRegAmountDetailsId() {
@@ -90,7 +96,32 @@ public class CadreRegAmountDetails extends BaseModel implements Serializable {
 		this.cadreSurveyUserId = cadreSurveyUserId;
 	}
 	
+	@Column(name = "web_user_id")
+	public Long getWebUserId() {
+		return webUserId;
+	}
+	public void setWebUserId(Long webUserId) {
+		this.webUserId = webUserId;
+	}
 	
+	@Column(name = "registration_type")
+	public String getRegistrationType() {
+		return registrationType;
+	}
+	public void setRegistrationType(String registrationType) {
+		this.registrationType = registrationType;
+	}
+	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "web_user_id",insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getWebUser() {
+		return webUser;
+	}
+	public void setWebUser(User webUser) {
+		this.webUser = webUser;
+	}
 	
 
 }
