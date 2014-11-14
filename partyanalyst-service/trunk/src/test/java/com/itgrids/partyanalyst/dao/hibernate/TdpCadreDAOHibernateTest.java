@@ -1,17 +1,30 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.service.impl.CadreDashBoardService;
 
 public class TdpCadreDAOHibernateTest extends BaseDaoTestCase {
 	private ITdpCadreDAO tdpCadreDAO;
 	private CadreDashBoardService cadreDashBoardService;
+	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	
+	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
+		return delimitationConstituencyAssemblyDetailsDAO;
+	}
+
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
+	}
+
 	public ITdpCadreDAO getTdpCadreDAO() {
 		return tdpCadreDAO;
 	}
@@ -467,7 +480,7 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 		System.out.println(list.size());
 	}*/
 	
-	public void testgetAnalysisData(){
+/*	public void testgetAnalysisData(){
 		List<Long> dist = new ArrayList<Long>();
 		dist.add(18l);
 		dist.add(17l);
@@ -475,4 +488,115 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 		List<Object[]> list = tdpCadreDAO.getTotalRecords(dist,"DISTRICT");
 		System.out.println(list.size());
 	}
+	*/
+	/*
+	public void testgetAnalysisData(){
+		List<Long> locationIds = new ArrayList<Long>();
+		/*locationIds.add(315L);
+		locationIds.add(168L);
+		locationIds.add(339L);
+		locationIds.add(229L);
+		locationIds.add(199L);*/
+	/*	
+		locationIds.add(15L);
+		locationIds.add(16L);
+		locationIds.add(17L);
+		locationIds.add(18L);
+		locationIds.add(5L);
+		*/
+		
+	/*	locationIds.add(461L);
+		locationIds.add(463L);
+		locationIds.add(464L);
+		locationIds.add(465L);
+		locationIds.add(466L);
+		locationIds.add(467L);
+		locationIds.add(469L);
+		locationIds.add(471L);
+		locationIds.add(472L);
+		locationIds.add(473L);
+		locationIds.add(474L);
+		locationIds.add(476L);
+		locationIds.add(477L);
+		locationIds.add(478L);
+		locationIds.add(479L);
+		locationIds.add(480L);
+		locationIds.add(481L);
+		locationIds.add(482L);
+		locationIds.add(483L);
+		locationIds.add(484L);
+		locationIds.add(485L);
+		locationIds.add(486L);
+		locationIds.add(487L);
+		locationIds.add(489L);
+		locationIds.add(490L);
+		locationIds.add(491L);
+		locationIds.add(493L);
+		locationIds.add(494L);
+		locationIds.add(495L);
+		locationIds.add(496L);
+		locationIds.add(497L);
+		locationIds.add(499L);
+		locationIds.add(500L);
+		locationIds.add(501L);
+		locationIds.add(502L);
+		locationIds.add(504L);
+		locationIds.add(506L);
+		locationIds.add(507L);
+		locationIds.add(508L);
+		locationIds.add(509L);
+		locationIds.add(510L);
+		locationIds.add(511L);
+
+		
+		List<Object[]> list = null;
+		try {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			Date fdate = format.parse("2014-11-12");
+			Date tDate = format.parse("2014-11-12");
+			
+			StringBuilder queryStr = new StringBuilder();
+			
+			/*queryStr.append(" select  count(model.tdpCadreId),min(model.surveyTime),max(model.surveyTime),date(model.surveyTime),model2.constituency.constituencyId,model2.constituency.name ");		
+			queryStr.append(" from TdpCadre model,UserAddress model2 where model.enrollmentYear = 2014  " );
+			queryStr.append(" and model.isDeleted = 'N' and ( date(model.surveyTime) >=:fromDate and date(model.surveyTime) <=:toDate  ) and ");
+			queryStr.append(" model.userAddress.userAddressId = model2.userAddressId ");
+			queryStr.append(" and model.dataSourceType = :sourceType and model2.constituency.constituencyId in (:locationIds)  ");
+			queryStr.append(" group by date(model.surveyTime), model2.constituency.constituencyId order by date(model.surveyTime) ");
+			*/
+			
+			/*queryStr.append(" select  count(model.tdpCadreId),min(model.surveyTime),max(model.surveyTime),date(model.surveyTime),model2.district.districtId,model2.district.districtName ");		
+			queryStr.append(" from TdpCadre model,UserAddress model2 where model.enrollmentYear = 2014  " );
+			queryStr.append(" and model.isDeleted = 'N' and ( date(model.surveyTime) >=:fromDate and date(model.surveyTime) <=:toDate  ) and ");
+			queryStr.append(" model.userAddress.userAddressId = model2.userAddressId ");
+			queryStr.append(" and model.dataSourceType = :sourceType and model2.district.districtId in (:locationIds)  ");
+			queryStr.append(" group by date(model.surveyTime), model2.district.districtId order by date(model.surveyTime) "); 
+			*/
+			
+			//	locationIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesByParliamentList(locationIds);
+				
+			 //dataCollectedInfo = tdpCadreDAO.getCandidateDataCollectionInfo1(3L,assemblyIdsList,fromDate, toDate,sourceType);
+			 					
+			/* 	queryStr.append(" select  count(model.tdpCadreId), min(model.surveyTime), max(model.surveyTime), date(model.surveyTime), " );
+			 	queryStr.append(" model3.delimitationConstituency.constituency.constituencyId, model3.delimitationConstituency.constituency.name ");		
+				queryStr.append(" from TdpCadre model, UserAddress model2, DelimitationConstituencyAssemblyDetails model3 where model.enrollmentYear = 2014  " );
+				queryStr.append(" and model.isDeleted = 'N' and ( date(model.surveyTime) >=:fromDate and date(model.surveyTime) <=:toDate  ) ");						
+				queryStr.append(" and model.dataSourceType = :sourceType and model3.delimitationConstituency.constituency.constituencyId in (:locationIds)  and ");
+				queryStr.append(" model.userAddress.userAddressId = model2.userAddressId and model2.constituency.constituencyId = model3.delimitationConstituency.constituency.constituencyId ");
+				queryStr.append(" and model3.delimitationConstituency.year = 2009 ");						
+				queryStr.append(" group by date(model.surveyTime), model3.delimitationConstituency.constituency.constituencyId order by date(model.surveyTime) desc "); 
+				
+	
+				
+			list = tdpCadreDAO.getCandidateDataCollectionInfoForOnline(0L,locationIds,fdate,tDate,"ONLINE",queryStr.toString());
+			
+			System.out.println(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println(list);
+		
+	}
+	*/
 }
