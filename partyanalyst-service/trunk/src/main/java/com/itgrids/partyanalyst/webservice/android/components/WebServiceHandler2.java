@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dto.ReconciliationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
+import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
 import com.itgrids.partyanalyst.service.ICadreSurveyTransactionService;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
@@ -514,4 +515,43 @@ public class WebServiceHandler2 {
 		}
 		
 	}
+	
+	
+	@POST
+	@Path("/storeTabUsersDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object getTabUsersRecordsDetails(List<TabRecordsStatusVO> tabRecordsStatusVOList)
+	{
+		Object object = null;
+		try{
+			  object = webServiceHandlerService1.getTabUsersRecordsDetails(tabRecordsStatusVOList);
+			return object;
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getTabUsersLoginDetails() Method, Exception is ",e);
+			return "Fail";
+		}
+	}
+	
+	@POST
+	@Path("/storeLoginUserDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object storeLoginUserDetails(TabRecordsStatusVO tabRecordsStatusVO)
+	{
+		Object object = null;
+		try{			
+			  object = webServiceHandlerService1.getTabUsersLoginDetails(tabRecordsStatusVO);
+			return object;
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in storeLoginUserDetails() Method, Exception is ",e);
+			return "Fail";
+		}
+	}
+	
+	
 }
