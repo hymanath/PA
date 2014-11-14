@@ -30,7 +30,7 @@ public class CadreSurveyUser implements Serializable {
 	private Date 				updatedTime;
 	private String 				isDeleted;
 	private String               name;
-	
+	private String              isExcluded;
 	 
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
@@ -97,5 +97,12 @@ public class CadreSurveyUser implements Serializable {
 		this.name = name;
 	}
 	
+	@Column(name="is_excluded")
+	public String getIsExcluded() {
+		return isExcluded;
+	}
+	public void setIsExcluded(String isExcluded) {
+		this.isExcluded = isExcluded;
+	}
 	
 }

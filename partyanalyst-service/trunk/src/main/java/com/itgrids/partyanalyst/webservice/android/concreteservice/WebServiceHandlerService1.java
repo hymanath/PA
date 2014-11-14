@@ -871,27 +871,46 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	 List<CadreSurveyUser> users = cadreSurveyUserDAO.getByUserNameAndPassword(userName, password);
 	 if(users == null || users.size() == 0 || users.get(0) == null){
 		 vo.setStatus("login failure");
+		 TabLogInAuth tabLogInAuth = new TabLogInAuth();
+			tabLogInAuth.setUserName(userName);
+			tabLogInAuth.setPassword(password);
+			tabLogInAuth.setImeiNo(imei1);
+			tabLogInAuth.setImeiNo2(imei2);
+			tabLogInAuth.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+			tabLogInAuth.setVersion(version);
+			tabLogInAuth.setIsDeleted("Y");
+			tabLogInAuth.setStatus("failure");
+			tabLogInAuthDAO.save(tabLogInAuth);
 		 return vo;
+	 }else if(users.get(0).getIsExcluded().equalsIgnoreCase("Y")){
+		 vo.setStatus("logged");
+		 prepareResponceNew(users.get(0).getCadreSurveyUserId(), vo);
+		TabLogInAuth tabLogInAuth = new TabLogInAuth();
+		tabLogInAuth.setCadreSurveyUserId(users.get(0).getCadreSurveyUserId());
+		tabLogInAuth.setImeiNo(imei1);
+		tabLogInAuth.setImeiNo2(imei2);
+		tabLogInAuth.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+		tabLogInAuth.setVersion(version);
+		tabLogInAuth.setIsDeleted("Y");
+		tabLogInAuth.setStatus("success with exclude");
+		tabLogInAuthDAO.save(tabLogInAuth);
+		return vo;
 	 }
-	 if((imei1 != null && imei1.length() > 0) && (imei2 != null && imei2.length() > 0) ){
-		  checkVaidLogInOrNot(users.get(0).getCadreSurveyUserId(),imei1,imei2,version,vo);
-		 
-	 }else{
-		 String reqImei = imei1;
-		 if(imei2 != null && imei2.length() > 0){
-			 reqImei = imei2;
-		 }		 
-		  checkVaidLogInOrNot(users.get(0).getCadreSurveyUserId(),reqImei,version,vo);
-		  
+	 synchronized ("checkValidCadreUserOrNot") {
+		 if((imei1 != null && imei1.length() > 0) && (imei2 != null && imei2.length() > 0) ){
+			  checkVaidLogInOrNot(users.get(0).getCadreSurveyUserId(),imei1,imei2,version,vo);
+			 
+		 }else{
+			 String reqImei = imei1;
+			 if(imei2 != null && imei2.length() > 0){
+				 reqImei = imei2;
+			 }		 
+			  checkVaidLogInOrNot(users.get(0).getCadreSurveyUserId(),reqImei,version,vo);
+			  
+		 }
 	 }
 	 if(vo.getStatus().equalsIgnoreCase("logged")){
-	    List<CadreSurveyUserAssignDetails> resultList = cadreSurveyUserAssignDetailsDAO.getCadreAssinedDetails(users.get(0).getCadreSurveyUserId());
-		if(resultList != null && resultList.size() > 0)
-		{
-			vo.setStatusMsg("DBINITIALCHECK");
-			vo.setConstituencyName(resultList.get(0).getConstituency() != null ? resultList.get(0).getConstituency().getName() : null);
-			vo.setAcNo(delimitationConstituencyDAO.getConstituencyNo(resultList.get(0).getConstituency().getConstituencyId(),2009l));
-		}
+		 prepareResponceNew(users.get(0).getCadreSurveyUserId(), vo);
 	 }
 	 return vo;
 	}
@@ -1016,5 +1035,50 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
     		return vo;
     	}
     }
+    
+    public void prepareResponceNew(Long userId,LoginResponceVO loginResponceVO)
+	{
+		try {
+			LOG.debug("Entered into the prepareResponceNew  method in WebServiceHandlerService");
+			List<CadreSurveyUserAssignDetails> resultList = cadreSurveyUserAssignDetailsDAO.getCadreAssinedDetails(userId);
+			if(resultList != null && resultList.size() > 0)
+			{
+				loginResponceVO.setStatusMsg("DBINITIALCHECK");
+				loginResponceVO.setConstituencyId(resultList.get(0).getConstituencyId());
+				loginResponceVO.setConstituencyName(resultList.get(0).getConstituency() != null ? resultList.get(0).getConstituency().getName() : null);
+				loginResponceVO.setUserId(userId);
+				loginResponceVO.setTabNo(resultList.get(0).getTabNo());
+				List<LoginStatusVO> subList = new ArrayList<LoginStatusVO>();
+				Map<Long, List<Long>> subListMap = new HashMap<Long, List<Long>>();
+				loginResponceVO.setAcNo(delimitationConstituencyDAO.getConstituencyNo(loginResponceVO.getConstituencyId(),2009l));
+				for (CadreSurveyUserAssignDetails cadreSurveyUserAssignDetails : resultList) 
+				{
+					
+					List<Long> ids = subListMap.get(cadreSurveyUserAssignDetails.getLevelId());
+					if(ids == null)
+					{
+						ids = new ArrayList<Long>();
+						subListMap.put(cadreSurveyUserAssignDetails.getLevelId(), ids);
+					}
+					ids.add(cadreSurveyUserAssignDetails.getLevelValue());
+					
+				}
+				if(subListMap != null && subListMap.size() > 0)
+				{
+					for(Long statusId : subListMap.keySet())
+					{
+						LoginStatusVO loginStatusVO = new LoginStatusVO();
+						loginStatusVO.setStatusId(statusId);
+						loginStatusVO.setStatusRelatedValues(subListMap.get(statusId));
+						subList.add(loginStatusVO);
+					}
+					loginResponceVO.setStatusList(subList);
+				}
+				
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in prepareResponceNew  method in WebServiceHandlerService",e);
+		}
+	}
 }
 

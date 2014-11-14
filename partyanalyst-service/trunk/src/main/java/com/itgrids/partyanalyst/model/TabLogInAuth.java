@@ -34,7 +34,9 @@ public class TabLogInAuth {
 	private String isDeleted;
 	private User updatedBy;
 	private Long updatedById;
-	
+	private String cause;
+	private String userName;
+	private String password;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -142,5 +144,33 @@ public class TabLogInAuth {
 	public void setUpdatedById(Long updatedById) {
 		this.updatedById = updatedById;
 	}
+
+	@Column(name="cause")
+	public String getCause() {
+		return cause;
+	}
+
+	public void setCause(String cause) {
+		this.cause = cause;
+	}
+
+	@Column(name="user_name")
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	@Column(name="password")
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
 	
 }
