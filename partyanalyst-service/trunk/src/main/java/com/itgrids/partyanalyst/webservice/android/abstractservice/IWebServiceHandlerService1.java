@@ -8,6 +8,7 @@ import com.itgrids.partyanalyst.dto.LoginDetailsByTabVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
+import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLoginUtils;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLoginVO;
@@ -35,5 +36,10 @@ public interface IWebServiceHandlerService1 {
 	
 	public Object saveSurveyFieldUsersForCadreOnline(List<CadreRegistrationVO> inputResponseList);
 	
-	public LoginResponceVO checkValidLoginOrNot(String userName,String password,String imei1,String imei2,String version);
+	public LoginResponceVO checkValidLoginOrNot(String userName,String password,String imei1,String imei2,String version);	
+	
+	public String getTabUsersLoginDetails(TabRecordsStatusVO inputVo);
+	
+	public String getTabUsersRecordsDetails(List<TabRecordsStatusVO> inputVo);
+	
 }
