@@ -8879,6 +8879,12 @@
 				<param name="root">amountDetails</param>
 			</result>
 		</action>
+		<action name="getSubLocationswiseleaderCadreInfoAction" class="leaderCadreDashBoardAction" method="getLoationWiseLeaderCadreInfo" >
+			<result type="json" name="success">
+				<param name="root">amountDetails</param>
+			</result>
+		</action>
+		
 </package>
 
 </struts>      

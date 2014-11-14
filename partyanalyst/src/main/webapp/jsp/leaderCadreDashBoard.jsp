@@ -10,7 +10,7 @@
 <script type="text/javascript" src="js/exportexcel.js"></script>
 	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
-
+<script type="text/javascript" src="js/sample.js"></script>
 </head>
 <body>
    <div class="container m_top10">
@@ -52,6 +52,8 @@
 				  </tr>
 			</table>
 					  <div id="leaderDataDiv"></div>
+					  <div id="constituencyDynamicDiv"></div>
+					   <div id="tehsilDynamicDiv"></div>
 			  </div>
 			
 			</div>
@@ -76,7 +78,7 @@
 		var jObj = {
 		type : scope,
 		stateId:stateId,
-		task:""
+		task:"mainLevel"
 		}
 		 $.ajax({
           type:'GET',
@@ -117,7 +119,7 @@
 	   {
 		str+='<tr>';
 		if(type == "District")
-		str+='<td>'+result[i].name+'</td>';
+	str+='<td><a onclick="displaySublevelDetails('+result[i].id+',\'District\');">'+result[i].name+'</a></td>';
 		if(type == "Constituency"){
 		str+='<td>'+result[i].districtName+'</td>';	
 		str+='<td>'+result[i].parliament+'</td>';
@@ -144,6 +146,94 @@
 		str+='</table>';
 		$("#leaderDataDiv").html(str);
 		$("#tabledata").dataTable({
+			         "iDisplayLength": 20,
+			          "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+			     });
+		
+   }
+   
+   function displaySublevelDetails(id,type)
+   {
+   var scope = "";
+   if(type == "District")
+	   {
+	scope = "Constituency";
+	   }
+   var jObj = {
+		type : type,
+		id:id,
+		task:"subLevel"
+		}
+		 $.ajax({
+          type:'GET',
+          url: 'getSubLocationswiseleaderCadreInfoAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+       }).done(function(result){
+				
+				buildData1(result,scope);
+		});
+   }
+   
+function buildData1(result,type)
+   {
+	  
+	   var str='';
+	    str+='<h4>Constituency Details In District</h4>';
+		str+='<table class="table table-bordered" id="tabledata1">';
+		str+='<thead>';
+		str+='<tr>';
+		
+		if(type == "District")
+		str+='<th>District</th>';
+		else if(type == "Constituency")
+	   {
+		//str+='<th>District</th>';
+		str+='<th>Parliament</th>';
+		str+='<th>Constituency</th>';
+	   }
+		str+='<th>Total Voters</th>';
+		str+='<th>Target Cadres</th>';
+		str+='<th>Registered Cadres</th>';
+		str+='<th>% of Register cadres</th>';
+		str+='<th>Total Amount</th>';
+		str+='<th>Received Amount</th>';
+		str+='<th>Pending Amount</th>';
+		
+		str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result)
+	   {
+		str+='<tr>';
+		if(type == "District")
+		str+='<td><a  onclick="displaySublevelDetails('+result[i].id+',\'Constituency\');">'+result[i].name+'</a></td>';
+		if(type == "Constituency"){
+		//str+='<td>'+result[i].districtName+'</td>';	
+		str+='<td>'+result[i].parliament+'</td>';
+		str+='<td>'+result[i].name+'</td>';
+		}
+		str+='<td>'+result[i].totalVoters+'</td>';
+		str+='<td>'+result[i].targetCadres+'</td>';
+		if(result[i].totalRecords==null){
+			str+='<td>-</td>'
+		}else{
+			str+='<td>'+result[i].totalRecords+'</td>';
+		}
+		if(result[i].percentage==null){
+			str+='<td>-</td>'
+		}else{
+			str+='<td>'+result[i].percentage+'</td>';
+		}
+		str+='<td>'+result[i].totalAmount+'</td>';
+		str+='<td>'+result[i].paidAmount+'</td>';
+		str+='<td>'+result[i].difference+'</td>';
+		str+='</tr>';
+	   }
+	   str+='</tbody>';
+		str+='</table>';
+		if(type == "Constituency")
+		$("#constituencyDynamicDiv").html(str);
+		$("#tabledata1").dataTable({
 			         "iDisplayLength": 20,
 			          "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
 			     });

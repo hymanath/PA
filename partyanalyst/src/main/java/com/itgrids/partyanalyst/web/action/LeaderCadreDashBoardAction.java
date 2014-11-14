@@ -75,7 +75,10 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 	{
 		try{
 			jObj = new JSONObject(getTask());
+			if(jObj.getString("task").equalsIgnoreCase("mainLevel"))
 			amountDetails = leaderCadreDashBoardService.getLoationWiseLeaderCadreDetails(jObj.getString("type"),jObj.getLong("stateId"));
+			if(jObj.getString("task").equalsIgnoreCase("subLevel"))
+				amountDetails = leaderCadreDashBoardService.getSubLevelLoationWiseLeaderCadreDetails(jObj.getString("type"),jObj.getLong("id"));	
 		}
 		catch (Exception e) {
 			LOG.info("Entered into getLoationLeaderCadreInfo() in LeaderCadreDashBoardActioon class");
