@@ -468,6 +468,11 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 	}*/
 	
 	public void testgetAnalysisData(){
-		cadreDashBoardService.getAnalysisData();
+		List<Long> dist = new ArrayList<Long>();
+		dist.add(18l);
+		dist.add(17l);
+		
+		List<Object[]> list = tdpCadreDAO.getTotalRecords(dist,"DISTRICT");
+		System.out.println(list.size());
 	}
 }

@@ -33,6 +33,39 @@ public class CadreRegAmountDetailsDAO extends GenericDaoHibernate<CadreRegAmount
 		return query.list();
 	}
 	
+	public List<Object[]> getAmountDetailsOfWebUser(Date fromDate,Date toDate){
+		Query query = getSession().createQuery(" select model.webUser.userId," +
+				" model.webUser.userName," +
+				" model.webUser.firstName," +
+				" model.webUser.mobile," +
+				" sum(model.amount)" +
+				" from CadreRegAmountDetails model" +
+				" where date(model.cadreRegAmountFile.date) >= :fromDate" +
+				" and date(model.cadreRegAmountFile.date) <= :toDate" +
+				" group by model.webUser.userId");
+		
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+		return query.list();
+	}
+	
+	public List<Object[]> getAmountDetailsOfWebUserByDate(Date fromDate,Date toDate){
+		Query query = getSession().createQuery(" select model.webUser.userId," +
+				" model.webUser.userName," +
+				" model.webUser.firstName," +
+				" model.webUser.mobile," +
+				" sum(model.amount)," +
+				" date(model.cadreRegAmountFile.date)" +
+				" from CadreRegAmountDetails model" +
+				" where date(model.cadreRegAmountFile.date) >= :fromDate" +
+				" and date(model.cadreRegAmountFile.date) <= :toDate" +
+				" group by model.webUser.userId");
+		
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+		return query.list();
+	}
+	
 	
 	public List<Object[]> getAmountDetailsOfUserByDate(Date fromDate,Date toDate){
 		Query query = getSession().createQuery(" select model.cadreSurveyUser.cadreSurveyUserId," +
@@ -52,11 +85,23 @@ public class CadreRegAmountDetailsDAO extends GenericDaoHibernate<CadreRegAmount
 		return query.list();
 	}
 	
-	public List<Object[]> getAmountDetailsDateWise(){
-		Query query = getSession().createQuery(" select sum(model.amount)," +
-				" date(model.cadreRegAmountFile.date) from CadreRegAmountDetails model" +
-				" group by date(model.cadreRegAmountFile.date)" +
+	public List<Object[]> getAmountDetailsDateWise(String type){
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append("select sum(model.amount)," +
+				" date(model.cadreRegAmountFile.date) from CadreRegAmountDetails model");
+		if(!type.equalsIgnoreCase("all")){
+			sb.append(" where model.registrationType =:type ");
+		}
+		
+		sb.append(" group by date(model.cadreRegAmountFile.date)" +
 				" order by date(model.cadreRegAmountFile.date)");
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		if(!type.equalsIgnoreCase("all")){
+			query.setParameter("type", type);
+		}
 		
 		return query.list();
 	}

@@ -188,7 +188,7 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 			Map<String,Map<Long, CadreAmountDetailsVO>> datesMap = new HashMap<String, Map<Long,CadreAmountDetailsVO>>();
 			Map<Long, CadreAmountDetailsVO> finalMap = null;
 			Map<Long, CadreAmountDetailsVO> usersMap = null;
-			Map<Long, CadreAmountDetailsVO> webFinalMap = null;
+			Map<Long, CadreAmountDetailsVO> webFinalMap = new HashMap<Long, CadreAmountDetailsVO>();
 			Map<Long, CadreAmountDetailsVO> webUsersMap = null;
 			Map<Long,String> constiMap = null;
 			List<Object[]> list1 = cadreRegAmountDetailsDAO.getAmountDetailsOfUserByDate(fromDate,toDate);
@@ -250,6 +250,33 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 						}
 					}
 				}	
+				
+				List<Object[]> webAmtList = cadreRegAmountDetailsDAO.getAmountDetailsOfWebUserByDate(fromDate,toDate);
+				if(webAmtList!=null && webAmtList.size()>0)
+				{
+					for(Object[] obj:webAmtList)
+					{
+						if(obj[5] != null)
+						{
+							webFinalMap = datesMap.get(obj[5].toString());
+							if(webFinalMap == null)
+							{
+								webFinalMap = new HashMap<Long, CadreAmountDetailsVO>();
+								datesMap.put(obj[5].toString(), finalMap);
+							}
+							CadreAmountDetailsVO cd = new CadreAmountDetailsVO();
+							cd.setUserId(Long.valueOf(obj[0].toString()));
+							cd.setUserName(obj[1]!=null?obj[1].toString():"-");
+							cd.setName(obj[2]!=null?obj[2].toString():"-");
+							cd.setMobileNo(obj[3]!=null?obj[3].toString():"-");
+							cd.setUserType("WEB");
+							cd.setPaidAmount(obj[4]!=null?Long.valueOf(obj[4].toString()):0l);
+							webFinalMap.put(cd.getUserId(), cd);
+						}
+						
+					}
+					
+				}
 					
 					List<Object[]> webUserWiseDetails =  tdpCadreDAO.getUserBetweenDatesForWeb(fromDate, toDate);
 					if(webUserWiseDetails != null && webUserWiseDetails.size() > 0)
@@ -625,7 +652,8 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 	{
 		List<CadreAmountDetailsVO> finalList = new ArrayList<CadreAmountDetailsVO>();
 		Map<Long, CadreAmountDetailsVO> finalMap = new HashMap<Long, CadreAmountDetailsVO>();
-		Map<Long, CadreAmountDetailsVO> webFinalMap = new HashMap<Long, CadreAmountDetailsVO>();
+		Map<Long, CadreAmountDetailsVO> webAmtMap = new HashMap<Long, CadreAmountDetailsVO>();
+		
 		try {
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			Date fromDate = format.parse(fromDt);
@@ -649,6 +677,27 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 				}
 				
 			}
+			
+			List<Object[]> webAmtList = cadreRegAmountDetailsDAO.getAmountDetailsOfWebUser(fromDate,toDate);
+			if(webAmtList!=null && webAmtList.size()>0)
+			{
+				for(Object[] obj:webAmtList){
+					CadreAmountDetailsVO cd = new CadreAmountDetailsVO();
+					//userIds.add(Long.valueOf(obj[0].toString()));
+					
+					cd.setUserId(Long.valueOf(obj[0].toString()));
+					cd.setUserName(obj[1]!=null?obj[1].toString():"-");
+					cd.setName(obj[2]!=null?obj[2].toString():"-");
+					cd.setMobileNo(obj[3]!=null?obj[3].toString():"-");
+					cd.setPaidAmount(obj[4]!=null?Long.valueOf(obj[4].toString()):0l);
+					cd.setUserType("WEB");
+					webAmtMap.put(cd.getUserId(), cd);
+					//finalList.add(cd);
+				}
+				
+			}
+			
+			
 			
 			List<Long> userIds = new ArrayList<Long>();
 			List<Long> webUserIds = new ArrayList<Long>();
@@ -683,7 +732,7 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 					for (Object[] obj : webUsers)
 					{
 						webUserIds.add(Long.valueOf(obj[0].toString()));
-						CadreAmountDetailsVO cd = webFinalMap.get(Long.valueOf(obj[0].toString()));
+						CadreAmountDetailsVO cd = webAmtMap.get(Long.valueOf(obj[0].toString()));
 						
 						if(cd == null)
 						{
@@ -694,7 +743,7 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 							cd.setMobileNo(obj[3]!=null?obj[3].toString():"-");
 							cd.setUserType("WEB");
 							cd.setPaidAmount(0l);
-							webFinalMap.put(cd.getUserId(), cd);
+							webAmtMap.put(cd.getUserId(), cd);
 						}
 					}
 					
@@ -728,7 +777,7 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 					List<Object[]> list2 = tdpCadreDAO.getCandidateDataCollectedWeb(fromDate, toDate, webUserIds);
 					 if(list2!=null && list2.size()>0){
 							for(Object[] obj:list2){
-								CadreAmountDetailsVO cd = webFinalMap.get( Long.valueOf(obj[0].toString()));
+								CadreAmountDetailsVO cd = webAmtMap.get( Long.valueOf(obj[0].toString()));
 								if(cd != null)
 								{
 									cd.setTotalCount(obj[1]!=null?Long.valueOf(obj[1].toString()):0l);
@@ -846,8 +895,7 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 				}
 			}
 			
-			List<Object[]> list1 = cadreRegAmountDetailsDAO.getAmountDetailsDateWise();
-			if(!sourceType.equalsIgnoreCase("WEB")){
+			List<Object[]> list1 = cadreRegAmountDetailsDAO.getAmountDetailsDateWise(sourceType);
 			if(list1!=null && list1.size()>0){
 				for(Object[] obj:list1){
 					CadreAmountDetailsVO cd = getMatchedDate(finalList,obj[1].toString());
@@ -855,7 +903,6 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 						cd.setPaidAmount(Long.valueOf(obj[0].toString()));
 					}
 				}
-			}
 			}
 			
 			if(finalList.size()>0){
