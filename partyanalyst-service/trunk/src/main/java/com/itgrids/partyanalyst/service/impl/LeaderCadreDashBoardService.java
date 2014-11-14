@@ -48,6 +48,7 @@ import com.itgrids.partyanalyst.dto.CadreBasicInformationVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.model.CadreSurveyUser;
@@ -56,6 +57,7 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.service.ILeaderCadreDashBoardService;
+import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -78,8 +80,17 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 	private ICadreSurveyUserAssigneeDAO cadreSurveyUserAssigneeDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IVoterInfoDAO voterInfoDAO;
+	private IRegionServiceData regionServiceDataImp;
 	
 	
+	public IRegionServiceData getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
+
+	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
+	}
+
 	public IVoterInfoDAO getVoterInfoDAO() {
 		return voterInfoDAO;
 	}
@@ -292,40 +303,95 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 	public List<CadreAmountDetailsVO> getSubLevelLoationWiseLeaderCadreDetails(String type,Long id)
 	{
 		List<CadreAmountDetailsVO> resultList = new ArrayList<CadreAmountDetailsVO>(); 
-		List<Long> constituenycIds = new ArrayList<Long>();
-		List<Long> districtIds = new ArrayList<Long>();
+		
 		List<Object[]> voterCountList = null;
 		String locationtype = "";
-		String state = "";
+		List<Long> districtIds = new ArrayList<Long>();
+		List<Long> tehsilIds = new ArrayList<Long>();
+		List<Long> constituencyIds = new ArrayList<Long>();
+		List<Long> localbodyIds = new ArrayList<Long>();
 		try{
 				if(type.equalsIgnoreCase(IConstants.DISTRICT))
 				{
-					/*List<Constituency> constituencies = delimitationConstituencyDAO.getLatestConstituenciesForDistrict(id);
-					if(constituencies != null && constituencies.size() > 0)
-						for(Constituency constituency : constituencies)
-							constituenycIds.add(constituency.getConstituencyId());*/
 							locationtype = IConstants.CONSTITUENCY;
 							districtIds.add(id);
-							voterCountList = voterInfoDAO.getVotersCountInConstituenciesByDistrictsList(districtIds,IConstants.VOTER_DATA_PUBLICATION_ID);	
-							 state =  getStateByDistrictId(id);
+							voterCountList = voterInfoDAO.getVotersCountInConstituenciesByDistrictsList(districtIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+							setLocationWiseCadreData(locationtype,districtIds,voterCountList,constituencyIds,resultList);
 				}
-				if(voterCountList != null && voterCountList.size() > 0)
-				for(Object[] params :voterCountList)
+				
+				if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
 				{
-					CadreAmountDetailsVO basicVo = new CadreAmountDetailsVO();
-					basicVo.setId((Long)params[0]);
-					basicVo.setName(params[1] != null ? params[1].toString() : "");
-					basicVo.setTotalVoters((Long)params[2]);
-					if(state.equalsIgnoreCase("AP"))
-					basicVo.setTargetCadres((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014);
-					else
-						basicVo.setTargetCadres((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_TG) / IConstants.TG_VOTERS_2014);
-					
-						constituenycIds.add((Long)params[0]);
-					resultList.add(basicVo);
+							
+							Constituency constituency = constituencyDAO.get(id);
+							constituencyIds.add(id);
+							if(constituency.getAreaType().equalsIgnoreCase(IConstants.RURAL)|| constituency.getAreaType().equalsIgnoreCase(IConstants.RURALURBAN))
+							{
+								 List<SelectOptionVO> list = regionServiceDataImp.getSubRegionsInConstituency(id,  IConstants.PRESENT_YEAR, constituency.getAreaType());
+								 if(list != null && list.size() > 0)
+									 for(SelectOptionVO vo : list)
+									 {
+										 if(vo.getId().toString().substring(0,1).trim().equalsIgnoreCase("2"))
+								      tehsilIds.add(new Long(vo.getId().toString().substring(1)));
+								      else
+								    	  localbodyIds.add(new Long(vo.getId().toString().substring(1)));
+									 }
+							}
+							if(tehsilIds != null && tehsilIds.size() > 0)
+							{
+								locationtype = IConstants.TEHSIL;
+							    voterCountList = voterInfoDAO.getVotersCountInATehsilList(tehsilIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+							    setLocationWiseCadreData(locationtype,tehsilIds,voterCountList,constituencyIds,resultList);
+							}
+							if(localbodyIds != null && localbodyIds.size() > 0)
+							{
+								locationtype = IConstants.LOCAL_ELECTION_BODY;
+								voterCountList = voterInfoDAO.getVotersCountInALocalBodyList(localbodyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+							    setLocationWiseCadreData(locationtype,localbodyIds,voterCountList,constituencyIds,resultList);
+							}
 				}
+				
+				
 			
-			List<Object[]> receivedAmountDetails = cadreSurveyUserAssignDetailsDAO.getTDPCadreAmountDetails(districtIds,locationtype);
+			
+		}
+		catch (Exception e) {
+			LOG.info("Enterd into getLoationWiseLeaderCadreDetails() in LeaderCaderDashBoardService");
+		}
+		return resultList;
+	}
+	
+	public void setLocationWiseCadreData(String locationtype,List<Long> Ids,List<Object[]> voterCountList,List<Long> constituencyIds,List<CadreAmountDetailsVO> resultList)
+	{
+		
+		List<Long> districtIds = new ArrayList<Long>();
+		
+		try{
+		if(voterCountList != null && voterCountList.size() > 0)
+			for(Object[] params :voterCountList)
+			{
+				String state = "";
+				CadreAmountDetailsVO basicVo = new CadreAmountDetailsVO();
+				basicVo.setId((Long)params[0]);
+				if(locationtype.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION))
+				basicVo.setName(params[1] != null ? params[1].toString()+ "Muncipality" : "");
+				else
+				basicVo.setName(params[1] != null ? params[1].toString() : "");	
+				basicVo.setTotalVoters((Long)params[2]);
+				if(locationtype.equalsIgnoreCase(IConstants.CONSTITUENCY))
+				 state = getStateByDistrictId(Ids.get(0));//DistrictId
+				else if(locationtype.equalsIgnoreCase(IConstants.TEHSIL) || locationtype.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION))
+					 state = getStateByDistrictId((Long)params[2]);//DistrictId
+				if(state.equalsIgnoreCase("AP"))
+				basicVo.setTargetCadres((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014);
+				else
+				basicVo.setTargetCadres((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_TG) / IConstants.TG_VOTERS_2014);
+				if(locationtype.equalsIgnoreCase(IConstants.CONSTITUENCY))
+				constituencyIds.add((Long)params[0]);
+				resultList.add(basicVo);
+			}
+		if(locationtype.equalsIgnoreCase(IConstants.CONSTITUENCY))
+		{
+			List<Object[]> receivedAmountDetails = cadreSurveyUserAssignDetailsDAO.getTDPCadreAmountDetails(Ids,locationtype);
 			if(receivedAmountDetails != null && receivedAmountDetails.size() > 0)
 			{
 				for(Object[] params : receivedAmountDetails)
@@ -336,51 +402,52 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 					 
 				}
 			}
-			List<Object[]> totalRecords = tdpCadreDAO.getTotalRecords(districtIds,locationtype);
-			
-			if(totalRecords != null && totalRecords.size() > 0)
+		}	
+		List<Object[]> totalRecords = tdpCadreDAO.getTotalRecords(Ids,locationtype);
+		
+		if(totalRecords != null && totalRecords.size() > 0)
+		{
+			for(Object[] params : totalRecords)
 			{
-				for(Object[] params : totalRecords)
-				{
-					  CadreAmountDetailsVO vo = getMatchedVO(resultList,(Long)params[1]);
-					  if(vo != null)
-					  {
-						  vo.setTotalRecords(params[0] != null ? (Long)params[0] : 0);
-						  vo.setTotalAmount(vo.getTotalRecords() * 100);
-						  vo.setDifference(vo.getTotalAmount() - vo.getPaidAmount());
-						  String percentage ="";
-						  percentage = (new BigDecimal(vo.getTotalRecords()*(100.0)/vo.getTargetCadres().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-						  vo.setPercentage(percentage);
-					  }
-				}
-			}	
-			
-			if(constituenycIds != null && constituenycIds.size() > 0)
+				  CadreAmountDetailsVO vo = getMatchedVO(resultList,(Long)params[1]);
+				  if(vo != null)
+				  {
+					  vo.setTotalRecords(params[0] != null ? (Long)params[0] : 0);
+					  vo.setTotalAmount(vo.getTotalRecords() * 100);
+					  if(locationtype.equalsIgnoreCase(IConstants.CONSTITUENCY))
+					  vo.setDifference(vo.getTotalAmount() - vo.getPaidAmount());
+					  String percentage ="";
+					  percentage = (new BigDecimal(vo.getTotalRecords()*(100.0)/vo.getTargetCadres().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+					  vo.setPercentage(percentage);
+				  }
+			}
+		}	
+		
+		if(constituencyIds != null && constituencyIds.size() > 0)
+		{
+			List<Object[]> list = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentsAndDistrictForAssembly(constituencyIds);
+			if(list != null && list.size() > 0)
 			{
-				List<Object[]> list = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentsAndDistrictForAssembly(constituenycIds);
-				if(list != null && list.size() > 0)
+				for(Object[] params : list)
 				{
-					for(Object[] params : list)
+					CadreAmountDetailsVO vo1 = getMatchedVO(resultList,(Long)params[0]);
+					if(vo1 != null)
 					{
-						CadreAmountDetailsVO vo1 = getMatchedVO(resultList,(Long)params[0]);
-						if(vo1 != null)
-						{
-							vo1.setParliamentId((Long)params[1]);
-							vo1.setParliament(params[2] != null ? params[2].toString() : "");
-							vo1.setDistrictId((Long)params[3]);
-							vo1.setDistrictName(params[4] != null ? params[4].toString() : "");
-							}
-						
-					}
+						vo1.setParliamentId((Long)params[1]);
+						vo1.setParliament(params[2] != null ? params[2].toString() : "");
+						vo1.setDistrictId((Long)params[3]);
+						vo1.setDistrictName(params[4] != null ? params[4].toString() : "");
+						vo1.setConstituency(params[5] != null ? params[5].toString() : "");
+						}
+					
 				}
 			}
-			
+		}
+		}
+		catch(Exception e)
+		{
 			
 		}
-		catch (Exception e) {
-			LOG.info("Enterd into getLoationWiseLeaderCadreDetails() in LeaderCaderDashBoardService");
-		}
-		return resultList;
 	}
 	
 	public CadreAmountDetailsVO getMatchedVO(List<CadreAmountDetailsVO> resultList,Long Id)
