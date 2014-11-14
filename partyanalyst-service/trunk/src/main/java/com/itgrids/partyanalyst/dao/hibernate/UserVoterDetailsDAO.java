@@ -39,8 +39,8 @@ IUserVoterDetailsDAO{
 	
 	public UserVoterDetails getUserVoterDetailsByUserIdAndVoterId(Long userId,Long voterId){
 		Query query = getSession().createQuery("select model from UserVoterDetails model where model.voter.voterId = :voterId and model.user.userId = :userId");
-		query.setParameter("userId",voterId);
-		query.setParameter("voterId",userId);
+		query.setParameter("userId",userId);
+		query.setParameter("voterId",voterId);
 		return (UserVoterDetails) query.uniqueResult();
 	}
 	
