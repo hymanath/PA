@@ -509,6 +509,9 @@
 				<value>com.itgrids.partyanalyst.model.CadreRegAmountDetails</value>
 				<value>com.itgrids.partyanalyst.model.TdpCadreOnline</value>
 				<value>com.itgrids.partyanalyst.model.CadreSurveyUserAssignee</value>
+				<value>com.itgrids.partyanalyst.model.TabRecordsStatus</value>
+				<value>com.itgrids.partyanalyst.model.TabUserLoginDetails</value>
+				
 			</list>
 		</property>
 	</bean>
@@ -2626,7 +2629,14 @@
   <bean id="cadreSurveyUserAssigneeDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreSurveyUserAssigneeDAO" >
 	<property name="sessionFactory" ref="sessionFactory" />
 </bean>
-<bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
- 	 <property name="tdpCadreDAO" ref="tdpCadreDAO" />
-  </bean>
+	 <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
+ 		 <property name="tdpCadreDAO" ref="tdpCadreDAO" />
+	 </bean>
+ 	 <bean id="tabRecordsStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.TabRecordsStatusDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+ 	<bean id="tabUserLoginDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.TabUserLoginDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
 </beans>
