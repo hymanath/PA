@@ -65,6 +65,8 @@ import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDesignationDAO;
 import com.itgrids.partyanalyst.dao.ISmsJobStatusDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITabRecordsStatusDAO;
+import com.itgrids.partyanalyst.dao.ITabUserLoginDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreBackupDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreFamilyDetailsDAO;
@@ -89,6 +91,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
+import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
 import com.itgrids.partyanalyst.model.BloodGroup;
 import com.itgrids.partyanalyst.model.Booth;
@@ -105,6 +108,8 @@ import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.SmsJobStatus;
+import com.itgrids.partyanalyst.model.TabRecordsStatus;
+import com.itgrids.partyanalyst.model.TabUserLoginDetails;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.TdpCadreBackupDetails;
 import com.itgrids.partyanalyst.model.TdpCadreFamilyDetails;
@@ -175,8 +180,23 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ISmsJobStatusDAO					smsJobStatusDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private IDistrictDAO districtDAO;
+	private ITabRecordsStatusDAO tabRecordsStatusDAO;
+	private ITabUserLoginDetailsDAO tabUserLoginDetailsDAO;
 	
 	
+	public void setTabUserLoginDetailsDAO(
+			ITabUserLoginDetailsDAO tabUserLoginDetailsDAO) {
+		this.tabUserLoginDetailsDAO = tabUserLoginDetailsDAO;
+	}
+
+	public void setTabRecordsStatusDAO(ITabRecordsStatusDAO tabRecordsStatusDAO) {
+		this.tabRecordsStatusDAO = tabRecordsStatusDAO;
+	}
+
+	public void setBoothsSort(Comparator<Object[]> boothsSort) {
+		this.boothsSort = boothsSort;
+	}
+
 	public void setDistrictDAO(IDistrictDAO districtDAO) {
 		this.districtDAO = districtDAO;
 	}
@@ -4891,6 +4911,71 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			return "failed";
 		}
 		return "success";
+	}
+	
+	public String updateTabUserDetails(List<TabRecordsStatusVO> tabRecordsStatusVOList)
+	{
+		
+		String status = null;
+		try {
+			
+			if(tabRecordsStatusVOList != null && tabRecordsStatusVOList.size()>0)
+			{
+				
+					for (TabRecordsStatusVO recordsStatusVO :tabRecordsStatusVOList) 
+					{
+						TabRecordsStatus tabRecordsStatus = new TabRecordsStatus();
+						tabRecordsStatus.setCadreSurveyUserId(recordsStatusVO.getUserId());
+						tabRecordsStatus.setCompletedRecords(recordsStatusVO.getTotalRecords()); // completed records
+						tabRecordsStatus.setPendingRecords(recordsStatusVO.getPendingRecords());
+						tabRecordsStatus.setTabIMEINo(recordsStatusVO.getTabIMEINo());
+						tabRecordsStatus.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+						
+						tabRecordsStatusDAO.save(tabRecordsStatus);
+				}
+				status = "success";
+			}
+			else
+			{
+				status = "failure";
+			}
+			
+		} catch (Exception e) {
+			status = "failure";
+			LOG.error("Exception Raised in updateTabUserDetails "+e);
+		}
+		return status;
+	}
+	
+	public String  updateTabLoginUserDetails(TabRecordsStatusVO recordsStatusVO)
+	{
+		
+		String status = null;
+		try {
+			
+			if(recordsStatusVO != null)
+			{
+						TabUserLoginDetails tabUserLoginDetails = new TabUserLoginDetails();
+						tabUserLoginDetails.setCadreSurveyUserId(recordsStatusVO.getUserId());
+						tabUserLoginDetails.setUserName(recordsStatusVO.getName());
+						tabUserLoginDetails.setMobileNo(recordsStatusVO.getMobileNo());
+						tabUserLoginDetails.setTabIMEINo(recordsStatusVO.getTabIMEINo());
+						tabUserLoginDetails.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+						
+						tabUserLoginDetailsDAO.save(tabUserLoginDetails);
+						
+						status = "success";
+			}
+			else
+			{
+				status = "failure";
+			}
+			
+		} catch (Exception e) {
+			status = "failure";
+			LOG.error("Exception Raised in updateTabUserDetails "+e);
+		}
+		return status;
 	}
 	
 }
