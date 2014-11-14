@@ -52,6 +52,7 @@ import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.model.CadreSurveyUser;
 import com.itgrids.partyanalyst.model.CadreSurveyUserAssignee;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.service.ILeaderCadreDashBoardService;
@@ -287,6 +288,101 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 		return resultList;
 	}
 	
+	
+	public List<CadreAmountDetailsVO> getSubLevelLoationWiseLeaderCadreDetails(String type,Long id)
+	{
+		List<CadreAmountDetailsVO> resultList = new ArrayList<CadreAmountDetailsVO>(); 
+		List<Long> constituenycIds = new ArrayList<Long>();
+		List<Long> districtIds = new ArrayList<Long>();
+		List<Object[]> voterCountList = null;
+		String locationtype = "";
+		String state = "";
+		try{
+				if(type.equalsIgnoreCase(IConstants.DISTRICT))
+				{
+					/*List<Constituency> constituencies = delimitationConstituencyDAO.getLatestConstituenciesForDistrict(id);
+					if(constituencies != null && constituencies.size() > 0)
+						for(Constituency constituency : constituencies)
+							constituenycIds.add(constituency.getConstituencyId());*/
+							locationtype = IConstants.CONSTITUENCY;
+							districtIds.add(id);
+							voterCountList = voterInfoDAO.getVotersCountInConstituenciesByDistrictsList(districtIds,IConstants.VOTER_DATA_PUBLICATION_ID);	
+							 state =  getStateByDistrictId(id);
+				}
+				if(voterCountList != null && voterCountList.size() > 0)
+				for(Object[] params :voterCountList)
+				{
+					CadreAmountDetailsVO basicVo = new CadreAmountDetailsVO();
+					basicVo.setId((Long)params[0]);
+					basicVo.setName(params[1] != null ? params[1].toString() : "");
+					basicVo.setTotalVoters((Long)params[2]);
+					if(state.equalsIgnoreCase("AP"))
+					basicVo.setTargetCadres((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014);
+					else
+						basicVo.setTargetCadres((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_TG) / IConstants.TG_VOTERS_2014);
+					
+						constituenycIds.add((Long)params[0]);
+					resultList.add(basicVo);
+				}
+			
+			List<Object[]> receivedAmountDetails = cadreSurveyUserAssignDetailsDAO.getTDPCadreAmountDetails(districtIds,locationtype);
+			if(receivedAmountDetails != null && receivedAmountDetails.size() > 0)
+			{
+				for(Object[] params : receivedAmountDetails)
+				{
+					  CadreAmountDetailsVO vo = getMatchedVO(resultList,(Long)params[1]);
+					  if(vo != null)
+					  vo.setPaidAmount((Long)params[0]);
+					 
+				}
+			}
+			List<Object[]> totalRecords = tdpCadreDAO.getTotalRecords(districtIds,locationtype);
+			
+			if(totalRecords != null && totalRecords.size() > 0)
+			{
+				for(Object[] params : totalRecords)
+				{
+					  CadreAmountDetailsVO vo = getMatchedVO(resultList,(Long)params[1]);
+					  if(vo != null)
+					  {
+						  vo.setTotalRecords(params[0] != null ? (Long)params[0] : 0);
+						  vo.setTotalAmount(vo.getTotalRecords() * 100);
+						  vo.setDifference(vo.getTotalAmount() - vo.getPaidAmount());
+						  String percentage ="";
+						  percentage = (new BigDecimal(vo.getTotalRecords()*(100.0)/vo.getTargetCadres().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+						  vo.setPercentage(percentage);
+					  }
+				}
+			}	
+			
+			if(constituenycIds != null && constituenycIds.size() > 0)
+			{
+				List<Object[]> list = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentsAndDistrictForAssembly(constituenycIds);
+				if(list != null && list.size() > 0)
+				{
+					for(Object[] params : list)
+					{
+						CadreAmountDetailsVO vo1 = getMatchedVO(resultList,(Long)params[0]);
+						if(vo1 != null)
+						{
+							vo1.setParliamentId((Long)params[1]);
+							vo1.setParliament(params[2] != null ? params[2].toString() : "");
+							vo1.setDistrictId((Long)params[3]);
+							vo1.setDistrictName(params[4] != null ? params[4].toString() : "");
+							}
+						
+					}
+				}
+			}
+			
+			
+		}
+		catch (Exception e) {
+			LOG.info("Enterd into getLoationWiseLeaderCadreDetails() in LeaderCaderDashBoardService");
+		}
+		return resultList;
+	}
+	
 	public CadreAmountDetailsVO getMatchedVO(List<CadreAmountDetailsVO> resultList,Long Id)
 	{
 		try{
@@ -302,5 +398,21 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 			return null;
 		}
 		return null;
+	}
+	
+	public String getStateByDistrictId(Long districtId)
+	{
+		String state = "";
+		try{
+			
+			if(districtId <= 10)
+				state = "TG";
+			else if(districtId >= 11 && districtId <= 23)
+				state = "AP";
+		}
+		catch (Exception e) {
+			LOG.info("Enterd into getStateByDistrictId() in LeaderCaderDashBoardService");
+		}
+		return state;
 	}
 }
