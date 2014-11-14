@@ -45,6 +45,7 @@ import com.itgrids.partyanalyst.dto.LoginStatusVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
+import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
 import com.itgrids.partyanalyst.model.CadreSurveyUser;
 import com.itgrids.partyanalyst.model.CadreSurveyUserAssignDetails;
 import com.itgrids.partyanalyst.model.LoginDetailsByTab;
@@ -1011,6 +1012,18 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
     	
     }
     
+    public String getTabUsersRecordsDetails(List<TabRecordsStatusVO> inputVoList)
+	{
+		return  cadreRegistrationService.updateTabUserDetails(inputVoList);
+		
+	}
+	
+	public String getTabUsersLoginDetails(TabRecordsStatusVO inputVo)
+	{
+		return  cadreRegistrationService.updateTabLoginUserDetails(inputVo);
+		
+	}
+	
     private LoginResponceVO getActualCaseForNotAllowingToLogIn(Long userId,String imei1,String imei2,String version,LoginResponceVO vo){
     	
     	TabLogInAuth tabLogInAuth = new TabLogInAuth();
