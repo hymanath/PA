@@ -314,10 +314,14 @@ margin-top:10px;
 						<li><a href="cadreDashBoardAction.action"><span>2014 Cadre Dashboard</span></a></li>
 					</c:if>
 					<c:if test="${sessionScope.USER.isAdmin == 'true'}">
-						<li><a href="cadreRegistrationAmountReportAction.action"><span>2014 Cadre Reports</span></a></li>
-					</c:if>
-					<c:if test="${sessionScope.USER.isAdmin == 'true'}">
-						<li><a href="leaderCadreDashBoardAction.action"><span>2014 Cadre Reconciliation Report</span></a></li>
+						<li><a onmousedown="return false;" class="parent"><span>2014 Cadre Reports</span></a>
+							<div>
+								<ul>
+									<li><a href="cadreRegistrationAmountReportAction.action"><span>2014 Cadre Reconciliation Report</span></a></li>
+									<li><a href="leaderCadreDashBoardAction.action"><span>Leader Cadre DashBoard</span></a></li>
+								</ul>
+							</div>
+						</li>
 					</c:if>
 					</c:if>
 					
