@@ -101,6 +101,8 @@
 		<class>com.itgrids.partyanalyst.model.CadreOtpDetails</class>
 		<class>com.itgrids.partyanalyst.model.LoginDetailsByTab</class>
 		<class>com.itgrids.partyanalyst.model.TdpCadreOnline</class>
+		<class>com.itgrids.partyanalyst.model.TabRecordsStatus</class>
+		<class>com.itgrids.partyanalyst.model.TabUserLoginDetails</class>
 		
 		 <properties> 
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
