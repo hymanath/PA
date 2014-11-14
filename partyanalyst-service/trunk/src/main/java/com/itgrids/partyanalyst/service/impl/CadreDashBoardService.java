@@ -566,9 +566,14 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			
 			int ap_perc = 0;
 			int tg_perc = 0;
+			Float ap_percentage=0f;
+			Float tg_percentage=0f;
 			if(percType.equalsIgnoreCase("target")){
 				ap_perc = IConstants.TARGET_CADRE_AP*100/IConstants.AP_VOTERS_2014;
 				tg_perc = IConstants.TARGET_CADRE_TG*100/IConstants.TG_VOTERS_2014;
+				
+				ap_percentage=(float)IConstants.TARGET_CADRE_AP/IConstants.AP_VOTERS_2014;
+				tg_percentage=(float)IConstants.TARGET_CADRE_TG*100/IConstants.TG_VOTERS_2014;
 			}
 			
 			
@@ -605,13 +610,20 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 								if(votersCount==null){
 									votersCount = 0l;
 								}
-								targetCount = ap_perc*votersCount/100;
+								
+								Float ap_temp=((ap_percentage)*100)*votersCount/100;
+								targetCount =ap_temp.longValue() ;
+								//targetCount = ap_perc*votersCount/100;
 							}else{
 								votersCount = vtrsMap.get(obj[1]!=null ? Long.valueOf(obj[1].toString()) : 0l);
 								if(votersCount==null){
 									votersCount = 0l;
 								}
-								targetCount = tg_perc*votersCount/100;
+								
+								
+								Float tg_temp=((tg_percentage)*100)*votersCount/100;
+								targetCount = tg_temp.longValue();
+								//targetCount = tg_perc*votersCount/100;
 							}
 							infoVo.setVotersCount(votersCount);
 							infoVo.setTargetCount(targetCount);
@@ -730,9 +742,14 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			
 			int ap_perc = 0;
 			int tg_perc = 0;
+			Float ap_percentage=0f;
+			Float tg_percentage=0f;
 			if(percType.equalsIgnoreCase("target")){
 				ap_perc = IConstants.TARGET_CADRE_AP*100/IConstants.AP_VOTERS_2014;
 				tg_perc = IConstants.TARGET_CADRE_TG*100/IConstants.TG_VOTERS_2014;
+				
+				ap_percentage=(float)IConstants.TARGET_CADRE_AP*100/IConstants.AP_VOTERS_2014;
+				tg_percentage=(float)IConstants.TARGET_CADRE_TG*100/IConstants.TG_VOTERS_2014;
 			}
 			
 			Map<Long,Map<Long,Long>> locationMap = new HashMap<Long,Map<Long,Long>>();//Map<locationId,Map<year,count>>
@@ -777,13 +794,19 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 								if(votersCount==null){
 									votersCount = 0l;
 								}
-								targetCount = ap_perc*votersCount/100;
+								
+								Float ap_temp=((ap_percentage)*100)*votersCount/100;
+								targetCount =ap_temp.longValue() ;
+								//targetCount = ap_percentage*votersCount/100;
 							}else{
 								votersCount = vtrsMap.get(obj[1] != null ? Long.valueOf(obj[1].toString()) : 0l);
 								if(votersCount==null){
 									votersCount = 0l;
 								}
-								targetCount = tg_perc*votersCount/100;
+								
+								Float tg_temp=((tg_percentage)*100)*votersCount/100;
+								targetCount = tg_temp.longValue();
+								//targetCount = tg_perc*votersCount/100;
 							}
 							infoVo.setVotersCount(votersCount);
 							infoVo.setTargetCount(targetCount);
