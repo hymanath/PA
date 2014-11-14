@@ -46,7 +46,7 @@ public class CadreRegAmountDetailsDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 	
 	public void test(){
-		List<Object[]> list = cadreRegAmountDetailsDAO.getAmountDetailsDateWise();
+		List<Object[]> list = null;//cadreRegAmountDetailsDAO.getAmountDetailsDateWise();
 		System.out.println(list.size());
 	}
 	
