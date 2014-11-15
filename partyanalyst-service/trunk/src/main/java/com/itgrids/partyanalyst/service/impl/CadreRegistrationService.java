@@ -55,6 +55,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
@@ -63,6 +64,7 @@ import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDesignationDAO;
+import com.itgrids.partyanalyst.dao.IPrintedCardDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISmsJobStatusDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITabRecordsStatusDAO;
@@ -87,6 +89,7 @@ import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.PrintedCardDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -107,6 +110,7 @@ import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Hamlet;
+import com.itgrids.partyanalyst.model.PrintedCardDetails;
 import com.itgrids.partyanalyst.model.SmsJobStatus;
 import com.itgrids.partyanalyst.model.TabRecordsStatus;
 import com.itgrids.partyanalyst.model.TabUserLoginDetails;
@@ -182,8 +186,30 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IDistrictDAO districtDAO;
 	private ITabRecordsStatusDAO tabRecordsStatusDAO;
 	private ITabUserLoginDetailsDAO tabUserLoginDetailsDAO;
+	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
+	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
 	
+	
+	
+	public IPrintedCardDetailsDAO getPrintedCardDetailsDAO() {
+		return printedCardDetailsDAO;
+	}
+
+	public void setPrintedCardDetailsDAO(
+			IPrintedCardDetailsDAO printedCardDetailsDAO) {
+		this.printedCardDetailsDAO = printedCardDetailsDAO;
+	}*/
+
+	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
+		return delimitationConstituencyDAO;
+	}
+
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
+
 	public void setTabUserLoginDetailsDAO(
 			ITabUserLoginDetailsDAO tabUserLoginDetailsDAO) {
 		this.tabUserLoginDetailsDAO = tabUserLoginDetailsDAO;
@@ -1640,7 +1666,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						}
 						
 					}
-					if(cadreRegistrationVO.getWardId() != null && cadreRegistrationVO.getWardId().trim().length() > 0 && Long.valueOf(cadreRegistrationVO.getWardId().trim()).longValue() > 0l)
+					if(cadreRegistrationVO != null &&  cadreRegistrationVO.getWardId() != null && cadreRegistrationVO.getWardId().trim().length() > 0 && Long.valueOf(cadreRegistrationVO.getWardId().trim()).longValue() > 0l)
 					{
 							userAddress.setWard(constituencyDAO.get(Long.valueOf(cadreRegistrationVO.getWardId().trim())));
 						
@@ -4978,4 +5004,143 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return status;
 	}
 	
+	public List<CadrePrintVO> getTDPCadreDetailsBySearch(CadrePrintInputVO input){
+		
+		List<CadrePrintVO> finalList = new ArrayList<CadrePrintVO>();
+		try{
+			String date = input.getDate();
+			String trNo = input.getTrNo();
+			String constituency = input.getConstituency();
+			Long constiNo = input.getConstituecyNo();
+			String mobileNo = input.getMobileNo();
+			Long constiId = input.getConstituencyId();
+			
+			StringBuffer sb = new StringBuffer();
+			SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
+			
+			Date srvyDt = null;
+			if(date!=null){
+				srvyDt = originalFormat.parse(date);
+			}
+			
+			if(date!=null && date.trim().length()>0){
+				sb.append(" and date(model.surveyTime) =:surveyDate");
+			}
+			if(trNo!=null && trNo.trim().length()>0){
+				sb.append(" and model.refNo =:trNo");
+			}
+			
+			if(mobileNo!=null && mobileNo.trim().length()>0){
+				sb.append(" and model.mobileNo = :mobileNo");
+			}
+			
+			Long constituencyId = null;
+			if(constiNo!=null){
+				constituencyId = delimitationConstituencyDAO.getConstituencyIdByNo(constiNo);
+				sb.append(" and model.userAddress.constituency.constituencyId =:constituencyId");
+			}
+			
+			
+			List<String> memberCards = tdpCadreDAO.getCardNumbers(sb.toString(), constituencyId, mobileNo, trNo, srvyDt);
+			List<Object[]> vtrDetails = tdpCadreDAO.getCadreDetailsByMemberShipId(memberCards);
+			
+			
+			
+			if(vtrDetails != null && vtrDetails.size() > 0){
+				for(Object[] obj:vtrDetails){
+					Long voterId = Long.valueOf(obj[1].toString());
+					UserAddress userAddress = new UserAddress()	;
+					CadrePrintVO returnVO = new CadrePrintVO();
+					getVoterAddressDetails(voterId,userAddress,null);
+					returnVO.setVillageName(userAddress.getPanchayat() != null ? StringEscapeUtils.unescapeJava(userAddress.getPanchayat().getLocalName()  )  + StringEscapeUtils.unescapeJava("\u0C17\u0C4D\u0C30\u0C3E\u0C2E\u0C02"): "");
+					returnVO.setMandalName(userAddress.getTehsil() != null ?  StringEscapeUtils.unescapeJava(userAddress.getTehsil().getLocalName() ) + StringEscapeUtils.unescapeJava("\u0C2E\u0C02\u0C21\u0C32\u0C02"):"");
+					returnVO.setConstituencyName(userAddress.getConstituency() != null ?  StringEscapeUtils.unescapeJava(userAddress.getConstituency().getLocalName() ) + StringEscapeUtils.unescapeJava("\u0C28\u0C3F") + "||" : "");
+					returnVO.setDistrictName(userAddress.getDistrict() != null ?  StringEscapeUtils.unescapeJava(userAddress.getDistrict().getLocalName() ) + StringEscapeUtils.unescapeJava("\u0C1C\u0C3F\u0C32\u0C4D\u0C32\u0C3E"):"");
+					returnVO.setFirstCode(obj[0] != null ? obj[0].toString() : "");
+					returnVO.setVoterName(userAddress.getPanchayatId() != null ? panchayatDAO.get(userAddress.getPanchayatId()).getPanchayatName() : "");
+					returnVO.setRelativeName(obj[3] != null ? obj[3].toString() : "");
+					returnVO.setVoterId(obj[4] != null ?(Long)obj[4] : 0l);
+					returnVO.setVoterCardNo(obj[5] != null ? obj[5].toString() : "");
+					returnVO.setVillageEng(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getPanchayatName() : "");
+					returnVO.setMandalEng(userAddress.getTehsil() != null ?  userAddress.getTehsil().getTehsilName() :"");
+					returnVO.setConstiEng(userAddress.getConstituency() != null ?  userAddress.getConstituency().getName()  : "");
+					returnVO.setDistrictEng(userAddress.getDistrict() != null ?  userAddress.getDistrict().getDistrictName() :"");
+					if(userAddress.getConstituency() != null && userAddress.getBooth() !=null)
+					{
+						String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
+						returnVO.setVoterImgPath(url);
+						List<Object[]> names = voterNamesDAO.getVoterTeluguNames((Long)obj[4] );
+						if(names != null && names.size() > 0)
+						{
+							String name = "";
+							if( names.get(0)[0] != null && names.get(0)[0] .toString().trim().length() > 0)
+							{
+								name = names.get(0)[0].toString() ;
+								name = name +   "  " ;
+							}
+							if(names.get(0)[1] != null && names.get(0)[1] .toString().trim().length() > 0)
+							{
+								name = name +  names.get(0)[1].toString() ;
+							}
+							
+							if(name.trim().length() > 0)
+							//name = name.replaceAll(",", " ").replaceAll(".", " ");
+							returnVO.setVoterName(name);
+						}
+					}
+					returnVO.setVillage(userAddress.getPanchayatId() != null ? panchayatDAO.get(userAddress.getPanchayatId()).getLocalName() : "");
+					returnVO.setMandal(userAddress.getTehsil() != null ?  userAddress.getTehsil().getLocalName() :"");
+					returnVO.setConstituency(userAddress.getConstituency() != null ?  userAddress.getConstituency().getLocalName() : "");
+					returnVO.setConstituencyType(userAddress.getConstituency() != null ? userAddress.getConstituency().getAreaType() : "");
+					returnVO.setDistrict(userAddress.getDistrict() != null ?  userAddress.getDistrict().getLocalName():"");
+					returnVO.setMuncipalityName(userAddress.getLocalElectionBody() != null ? userAddress.getLocalElectionBody().getNameLocal() : "" );
+					
+					finalList.add(returnVO);
+				}
+				
+			}
+		
+	}catch(Exception e){
+		LOG.error("Exception Raised in getTDPCadreDetailsBySearch");
+	}
+		
+		return finalList;
+	}
+	
+	/*public String updatePrintedCardDetails(final List<PrintedCardDetailsVO> inputList){
+		LOG.debug("Entered Into updatePrintedCardDetails");
+		String status = "";
+		
+		
+		if(inputList!=null && inputList.size()>0){
+			try{
+				status = (String) transactionTemplate.execute(new TransactionCallback() {
+					 public Object doInTransaction(TransactionStatus status) {
+						 for(PrintedCardDetailsVO tmp: inputList){
+							 
+							 PrintedCardDetails model = new PrintedCardDetails();
+
+							 //GETTING ALREADY EXISTED RECORDS TO UPDATE
+							 List<Object[]> list =  printedCardDetailsDAO.getUpdateVoterAndMemNo(tmp.getVoterId(),tmp.getMemberShipNo());
+							 if(list!=null && list.size()>0){
+								 //printedCardDetailsDAO.getUpdateVoterAndNfc();
+							 }
+							 
+							 //IF NOT EXISTED HAVE TO INSERT
+							 
+							 
+							 //tdpCadreDAO.updateNFCCardNumberByVoterId(voterId, nfcCardNo);
+						 }
+						 return "success";
+					 }});
+			}catch (Exception e) {
+				LOG.error("Exception Raised in updatePrintedCardDetails" + e);
+				status = "failed";
+			}
+		}else{
+			status = "failed";
+		}
+		
+		return status;
+	}*/
 }
