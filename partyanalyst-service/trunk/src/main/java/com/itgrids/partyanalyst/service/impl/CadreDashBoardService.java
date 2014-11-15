@@ -796,7 +796,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 									votersCount = 0l;
 								}
 								
-								Float ap_temp=((ap_percentage)*100)*votersCount/100;
+								Float ap_temp = ap_percentage*votersCount/100;
 								targetCount =ap_temp.longValue() ;
 								//targetCount = ap_percentage*votersCount/100;
 							}else{
@@ -805,7 +805,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 									votersCount = 0l;
 								}
 								
-								Float tg_temp=((tg_percentage)*100)*votersCount/100;
+								Float tg_temp=tg_percentage*votersCount/100;
 								targetCount = tg_temp.longValue();
 								//targetCount = tg_perc*votersCount/100;
 							}
