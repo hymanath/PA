@@ -585,9 +585,9 @@ $('#membersCount').addClass('animated fadeInX');
 		  str+='<b style="font-size: 22px;">'+result.totalCount+'</b><p>TAB Members In Field, since last '+hoursCount+' Hour(s) </p>';
 		  str+='<b style="font-size: 22px;">'+result.apCount+'</b><p>WEB Members working, since last '+hoursCount+' Hour(s) </p>';
 		   if(result.votersCount==null)
-		    str+='<span style="margin-left: 166px;"><span style="font-size:18px;margin-left:-40px">0 InActive Users</span></span>';
+		    str+='<span style="margin-left: 166px;"><span style="font-size:18px;margin-left:-40px">0 In Active Users</span></span>';
 		  else
-		    str+='<span style="margin-left: 166px;"><a href="javascript:{gettingInActiveUsersDetails('+hoursCount+')}"><span style="font-size:18px;margin-left:-40px">'+result.votersCount+'</a> InActive Users</span></span>';
+		    str+='<span style="margin-left: 166px;"><a href="javascript:{gettingInActiveUsersDetails('+hoursCount+')}"><span style="font-size:18px;margin-left:-40px">'+result.votersCount+'</a> In Active Users</span></span>';
 		  
           $("#totalMembersWorkingTodayId").html(str);
 		}
