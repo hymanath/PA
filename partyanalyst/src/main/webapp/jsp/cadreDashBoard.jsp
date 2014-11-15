@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -254,8 +255,11 @@ table.dataTable tr.odd {
 								</div>
 							</td>
 							<c:if test="${sessionScope.USER.isAdmin == 'true' || sessionScope.USER.accessType != 'DISTRICT'}">
-							<td style="width:50%;text-align:center;"><div><a href="javascript:{}" onclick="openDialogToTrack();">Click Here To View</br> Users Working Status </br> & </br> Location Wise Cadre Registration Info</a></div></b></td>
-						  </c:if>
+							  <td style="width:50%;text-align:center;"><div><a href="javascript:{}" onclick="openDialogToTrack();">Click Here To View</br> Users Working Status </br> & </br> Location Wise Cadre Registration Info</a></br>
+							   <c:if test="${fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) }">
+					             </br><a title="Click Here For Leader Cadre DashBoard" href="leaderCadreDashBoardAction.action"><span>Leader Cadre DashBoard</span></a>
+					           </c:if></div></b></td>
+						    </c:if>
 						 <c:if test="${sessionScope.USER.accessType == 'DISTRICT'}">
 							<td style="width:50%;text-align:center;"><div></div></b></td>
 						  </c:if>
