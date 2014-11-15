@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.text.SimpleDateFormat;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +14,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreBasicInformationVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
+import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -47,6 +47,7 @@ public class CadreDashBoardAction implements ServletRequestAware {
 	private List<SelectOptionVO> surveyUsersList = new ArrayList<SelectOptionVO>();
 	private WSResultVO wsResultVO;
 	private ILoginService loginService;
+	private List<GenericVO> genericVOList;
 	
 	public List<SurveyTransactionVO> getSurveyTransactionVOList() {
 		return surveyTransactionVOList;
@@ -165,6 +166,14 @@ public class CadreDashBoardAction implements ServletRequestAware {
 
 	public void setLoginService(ILoginService loginService) {
 		this.loginService = loginService;
+	}
+    
+	public List<GenericVO> getGenericVOList() {
+		return genericVOList;
+	}
+
+	public void setGenericVOList(List<GenericVO> genericVOList) {
+		this.genericVOList = genericVOList;
 	}
 
 	public String execute(){
@@ -583,5 +592,19 @@ public class CadreDashBoardAction implements ServletRequestAware {
 			LOG.error("Exception rised in getLocationNameByIdAndType ",e);
 		}
 		return Action.SUCCESS;
+	}
+	public String gettingInActiveUsersDetails()
+	{
+		try{
+			
+			 String hoursCount=request.getParameter("hoursCount");
+			 genericVOList=cadreDashBoardService.getInactiveUsersListDetails(hoursCount);
+			
+		}catch(Exception e){
+			LOG.error("Exception rised in getLocationNameByIdAndType ",e);
+		}
+		return Action.SUCCESS;
+		
+		
 	}
 }
