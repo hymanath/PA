@@ -68,6 +68,8 @@ public interface IWebServiceHandlerService {
 	public CastVO getAllCastes();
 	
 	public Object getVCadreDetailsBySelection(CadrePrintInputVO input);
+	
+	public Object getTDPCadreDetailsBySearch(CadrePrintInputVO input);
 
 	
 }
