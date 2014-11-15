@@ -1221,13 +1221,52 @@ if(result.length > 0){
 		   $("#userStatusDialogDIV").html(str);
 		   $("#ajaxImgStyle").hide();
 		   $("#getCandidateDataCollectionInfoId").removeAttr("disabled");
-		   $("#usersStatusReportTab").dataTable({
+		   
+		   var  selectLevelType = $("#selLctnType").val();
+		   
+		   if(selectLevelType  == 0 || selectLevelType == 1){
+				 $("#usersStatusReportTab").dataTable({
 					aLengthMenu: [
-						[25, 50, 100, 200, -1],
-						[25, 50, 100, 200, "All"]
-					],
-					iDisplayLength: -1
+								[25, 50, 100, 200, -1],
+								[25, 50, 100, 200, "All"]
+							],
+							iDisplayLength: -1
+				 });
+		   }
+		   
+		   if(selectLevelType  == 2){
+		   		   $("#usersStatusReportTab").dataTable({
+							"aaSortingFixed": [[1,'asc']],
+							aLengthMenu: [
+								[25, 50, 100, 200, -1],
+								[25, 50, 100, 200, "All"]
+							],
+							iDisplayLength: -1
 				});
+				
+		   }
+		   
+		   if(selectLevelType  == 3){
+		   		   $("#usersStatusReportTab").dataTable({
+							"aaSortingFixed": [[3,'asc']],
+							aLengthMenu: [
+								[25, 50, 100, 200, -1],
+								[25, 50, 100, 200, "All"]
+							],
+							iDisplayLength: -1
+				});
+		   }
+		   
+		   if(selectLevelType  == 4){
+		   		   $("#usersStatusReportTab").dataTable({
+							"aaSortingFixed": [[2,'asc']],
+							aLengthMenu: [
+								[25, 50, 100, 200, -1],
+								[25, 50, 100, 200, "All"]
+							],
+							iDisplayLength: -1
+				});
+		   }
 }
    
    function getCandidateDataCollectionInfo1(){
@@ -2437,13 +2476,40 @@ function getCandidateDataCollectionInfo2(){
 		   $("#userStatusDialogDIV2").html(str);
 		   $("#ajaxImgStyle2").hide();
 		   $("#getCandidateDataCollectionInfoId2").removeAttr("disabled");
-		   $("#usersStatusReportTab2").dataTable({
+		   var selLoctnType2 = $("#selLctnType2").val();
+		   
+		   if(selLoctnType2 == 0 || selLoctnType2 == 1 || selLoctnType2 == 2){
+				 $("#usersStatusReportTab2").dataTable({
 					aLengthMenu: [
 						[25, 50, 100, 200, -1],
 						[25, 50, 100, 200, "All"]
 					],
 					iDisplayLength: 25
 				});
+		   }
+		   
+		   if(selLoctnType2 == 3){
+				$("#usersStatusReportTab2").dataTable({
+				"aaSortingFixed": [[2,'asc']],
+					aLengthMenu: [
+						[25, 50, 100, 200, -1],
+						[25, 50, 100, 200, "All"]
+					],
+					iDisplayLength: 25
+				});
+		   }
+		   
+		   if(selLoctnType2 == 4){
+				$("#usersStatusReportTab2").dataTable({
+				"aaSortingFixed": [[1,'asc']],
+					aLengthMenu: [
+						[25, 50, 100, 200, -1],
+						[25, 50, 100, 200, "All"]
+					],
+					iDisplayLength: 25
+				});
+		   }
+		  
        });
    }
    
