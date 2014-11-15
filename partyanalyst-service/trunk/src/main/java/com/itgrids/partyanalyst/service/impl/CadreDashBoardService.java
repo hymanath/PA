@@ -2753,7 +2753,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		return totalmins;
 	}
 	
-	public List<SurveyTransactionVO> getUserTrackingDetails(List<Object[]> userTrackList, List<SurveyTransactionVO> returnList,Map<Long,Long> assignedUsersMap,String type)
+	public List<SurveyTransactionVO> getUserTrackingDetails(List<Object[]> userTrackList, List<SurveyTransactionVO> returnList,Map<Long,Long> assignedUsersMap,String type,Long stateTypeId,List<Long> areaIdsList,String FdateStr)
 	{
 		 List<SurveyTransactionVO> surveyTransactionVOList = null;
 		final SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -2766,7 +2766,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			Map<String,String> parliamentForAssemblyMap = new TreeMap<String, String>();
 			Map<String,Long> assemblyForAssemblyIdMap = new TreeMap<String, Long>();
 			Map<String,Long> parliamentForParliamentMap = new TreeMap<String, Long>();
-			List<Object[]> locationsList =  delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(0L);							
+			List<Object[]> locationsList =  delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(stateTypeId);							
 				
 			List<SurveyTransactionVO> locationIdsList = new ArrayList<SurveyTransactionVO>();
 			if(locationsList != null && locationsList.size()>0)
@@ -2854,9 +2854,15 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			});	
 			
 			
-			if(workingConstituencyList != null && workingConstituencyList.size()>0)
+			if(areaIdsList != null && areaIdsList.size()>0)
 			{
-				List<Object[]> constituencyInfo = constituencyDAO.getConstituencyInfoByNotConstituencyIdList(workingConstituencyList,type);
+				List<Object[]> constituencyInfo = constituencyDAO.getConstituencyInfoByNotConstituencyIdList(areaIdsList,type);
+				
+				if(datesSet != null && datesSet.size() == 0)
+				{
+					surveyTransactionVOList = new ArrayList<SurveyTransactionVO>();
+					datesSet.add(FdateStr);
+				}
 				
 				if(constituencyInfo != null && constituencyInfo.size()>0)
 				{
@@ -2876,7 +2882,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 								surveyTransactionVO.setId(Long.valueOf(constituency[0].toString().trim()));
 								surveyTransactionVO.setName(constituency[1].toString().trim());
 								surveyTransactionVO.setLocationName(parliamentForAssemblyMap.get(surveyTransactionVO.getName()));
-								Long totalAssignUsers = assignedUsersMap.get(surveyTransactionVO.getId());
+								Long totalAssignUsers = assignedUsersMap.get(surveyTransactionVO.getId()) != null ?assignedUsersMap.get(surveyTransactionVO.getId()):0L ;
 								Long workedUsers = 0L;
 								Long notWorkedUsers = totalAssignUsers - workedUsers;
 								
@@ -2893,48 +2899,6 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 						
 					}
 				}
-			}
-			else
-			{
-
-				List<Object[]> constituencyInfo = constituencyDAO.getConstituencyInfoByNotConstituencyIdList(workingConstituencyList,null);
-				
-				if(constituencyInfo != null && constituencyInfo.size()>0)
-				{
-					for (Object[] constituency : constituencyInfo) 
-					{
-						if(datesSet != null && datesSet.size()>0)
-						{
-							for (String date : datesSet) {
-
-								if(userCountByLocationMap.get(constituency[1].toString()) != null)
-								{
-									surveyTransactionVOList = userCountByLocationMap.get(constituency[1].toString().trim());
-								}
-								
-								SurveyTransactionVO surveyTransactionVO = new SurveyTransactionVO();
-								
-								surveyTransactionVO.setId(Long.valueOf(constituency[0].toString().trim()));
-								surveyTransactionVO.setName(constituency[1].toString().trim());
-								surveyTransactionVO.setLocationName(parliamentForAssemblyMap.get(surveyTransactionVO.getName()));
-								Long totalAssignUsers = assignedUsersMap.get(surveyTransactionVO.getId());
-								Long workedUsers = 0L;
-								Long notWorkedUsers = totalAssignUsers - workedUsers;
-								
-								surveyTransactionVO.setTeamSize(workedUsers);
-								surveyTransactionVO.setIdleTeamSize(notWorkedUsers);
-								surveyTransactionVO.setSurveyDate(date);
-								surveyTransactionVOList.add(surveyTransactionVO);
-								
-								
-								userCountByLocationMap.put(constituency[1].toString().trim(), surveyTransactionVOList);
-								assignCountByLocationMap.put(constituency[1].toString().trim(), totalAssignUsers);
-							}
-						}
-						
-					}
-				}
-			
 			}
 			
 			if(userCountByLocationMap != null && userCountByLocationMap.size()>0)
@@ -3027,72 +2991,49 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			Date toDate = format.parse(TdateStr);
 			
 			String[] areaidsArr = areaId.split(",");
+			List<Long> areaIdsList = new ArrayList<Long>(0);
 			
-			List<Object[]> locationsList = new ArrayList<Object[]>(0);
+			
+				if(areaidsArr != null && areaidsArr.length > 0 )
+				{
+					for (String locationId : areaidsArr)
+					{
+						if(Long.valueOf(locationId) != 0L)
+						{
+							areaIdsList.add(Long.valueOf(locationId));
+						}
+					}
+				}
+			
+			if(areaIdsList != null && areaIdsList.size() == 0)
+			{
+				List<Object[]> locationsList = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(stateTypeId,1L,null);
+				
+				if(locationsList != null && locationsList.size()>0)
+				{
+					for (Object[] locationId : locationsList) {
+						areaIdsList.add(Long.valueOf(locationId[0] != null ? locationId[0].toString():"0"));
+					}
+				}
+				
+			}
 			StringBuilder queryStr = new StringBuilder();
 			StringBuilder assignUsersQuery = new StringBuilder();
 			
 			if(areaType.equalsIgnoreCase("district"))
 			{
-				if(areaidsArr != null && areaidsArr.length > 1 )
-				{
-					if(stateTypeId == 1L)
-					{
-						locationsList = districtDAO.getDistrictIdAndNameByStateForRegion(1L,"Andhra Pradesh");
-					}
-					else if(stateTypeId == 2L)
-					{
-						locationsList = districtDAO.getDistrictIdAndNameByStateForRegion(1L,"Telangana");
-					}
-					else
-					{
-						locationsList = districtDAO.getDistrictIdAndNameByStateForRegion(1L,"All");
-					}
-				}
-				else
-				{
-					List<Long> areaIdsList = new ArrayList<Long>(0);
-					areaIdsList.add(Long.valueOf(areaId));
-					locationsList = districtDAO.getDistrictDetailsByDistrictIds(areaIdsList);
-				}
 				
 				queryStr.append(" select distinct model2.constituency.district.districtId, model2.constituency.district.districtName , date(model.surveyTime) , count( distinct model.insertedBy.cadreSurveyUserId) " );
 				queryStr.append(" from TdpCadre model,CadreSurveyUserAssignDetails model2 where model2.constituency.district.districtId in (:locationIdsList) and ( date(model.surveyTime) >=:fromDate  and date(model.surveyTime) <=:toDate ) ");
 				queryStr.append(" and model2.cadreSurveyUser.cadreSurveyUserId = model.insertedBy.cadreSurveyUserId ");
 				queryStr.append(" group by  model2.constituency.district.districtId,date(model.surveyTime) order by date(model.insertedTime) desc ");
-				/*
-				 * Query query = getSession().createQuery(" select model.constituencyId, count(model.cadreSurveyUserId)  
-				 *  " +
-				"  ");
-				*/
+
 				assignUsersQuery.append(" select distinct model.constituency.district.districtId, count( distinct model.cadreSurveyUserId ) from CadreSurveyUserAssignDetails model where " +
-						" model.isDeleted = 'N' group by model.constituency.district.districtId  ");				
+						" model.isDeleted = 'N' and  model.constituency.district.districtId in (:locationIdsList) group by model.constituency.district.districtId  ");				
 			}
 			
 			else if(areaType.equalsIgnoreCase("assembly"))
 			{
-				if(areaidsArr != null && areaidsArr.length > 1 )
-				{
-					if(stateTypeId == 1L)
-					{
-						locationsList = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(stateTypeId,1L,null);
-					}
-					else if(stateTypeId == 2L)
-					{
-						locationsList = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(stateTypeId,1L,null);
-					}
-					else
-					{
-						locationsList = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(stateTypeId,1L,null);
-					}
-					
-				}
-				else
-				{
-					List<Long> areaIdsList = new ArrayList<Long>(0);
-					areaIdsList.add(Long.valueOf(areaId));
-					locationsList = constituencyDAO.getConstituencyInfoByConstituencyIdList(areaIdsList);
-				}
 								
 				queryStr.append(" select model2.constituency.constituencyId , model2.constituency.name,  date(model.surveyTime) , count( distinct model.insertedBy.cadreSurveyUserId) " );
 				queryStr.append(" from TdpCadre model , CadreSurveyUserAssignDetails model2 where model2.constituency.constituencyId in (:locationIdsList) and ( date(model.surveyTime) >=:fromDate  and date(model.surveyTime) <=:toDate ) ");
@@ -3100,50 +3041,22 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				queryStr.append(" group by model2.constituency.constituencyId, date(model.surveyTime) order by date(model.insertedTime) desc ");
 				
 				assignUsersQuery.append(" select distinct model.constituency.constituencyId, count( distinct model.cadreSurveyUserId ) from CadreSurveyUserAssignDetails model where " +
-						" model.isDeleted = 'N' group by model.constituency.constituencyId ");	
+						" model.isDeleted = 'N' and model.constituency.constituencyId in (:locationIdsList)  group by model.constituency.constituencyId ");	
 				
 			}
 			
 			else if(areaType.equalsIgnoreCase("Parliament"))
 			{
-				if(areaidsArr != null && areaidsArr.length > 1 )
-				{
-					if(stateTypeId == 0L )
-					{
-						locationsList =  delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(0L);							
-					}
-					else
-					{
-						locationsList =  delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(stateTypeId);
-					}
-					
-				}
-				else
-				{
-					Object[] parlaimentInfo = {areaidsArr[0],""};
-					locationsList.add(parlaimentInfo);
-				}
 				assignUsersQuery.append(" select distinct model2.delimitationConstituency.constituency.constituencyId, count( distinct model.cadreSurveyUserId ) " +
 						" from CadreSurveyUserAssignDetails model, DelimitationConstituencyAssemblyDetails model2  where " +
 						" model.isDeleted = 'N' and model.constituency.constituencyId = model2.constituency.constituencyId and model2.delimitationConstituency.year = 2009  " +
-						" group by  model2.delimitationConstituency.constituency.constituencyId ");	
+						"  and  model2.delimitationConstituency.constituency.constituencyId in (:locationIdsList) group by model2.delimitationConstituency.constituency.constituencyId , model2.delimitationConstituency.constituency.constituencyId ");	
 			
 			}
 			
-			
-			List<Long> locationIds = new ArrayList<Long>();
-			
-				if(locationsList != null && locationsList.size()>0)
-				{
-					for (Object[] param : locationsList)
-					{
-						locationIds.add(param[0] != null ? Long.valueOf(param[0].toString()) :0L);
-					}
-				}
-				
 			List<Object[]> userTrackList = null; 
 			Map<Long,Long> assignedUsersMap = new TreeMap<Long, Long>();
-			List<Object[]> assignedCandidates = cadreSurveyUserAssignDetailsDAO.getCandidatesInfo(assignUsersQuery.toString());
+			List<Object[]> assignedCandidates = cadreSurveyUserAssignDetailsDAO.getCandidatesInfo(assignUsersQuery.toString(),areaIdsList);
 			
 			if(assignedCandidates != null && assignedCandidates.size()>0)
 			{
@@ -3154,24 +3067,21 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			}
 			
 			if(areaType.equalsIgnoreCase("Parliament"))
-			{				
-				
-				if(locationIds != null && locationIds.size() > 0)
-				{						
+			{						
 						queryStr.append(" select model2.delimitationConstituency.constituency.constituencyId,model2.delimitationConstituency.constituency.name,date(model.surveyTime),count( distinct model.insertedBy.cadreSurveyUserId) " );
 						queryStr.append(" from TdpCadre model,DelimitationConstituencyAssemblyDetails model2 where model.userAddress.constituency.constituencyId = model2.constituency.constituencyId and " );
 						queryStr.append(" model2.delimitationConstituency.year = 2009 and model2.delimitationConstituency.constituency.constituencyId in (:locationIdsList) and ( date(model.surveyTime) >=:fromDate  and date(model.surveyTime) <=:toDate ) ");
 						queryStr.append(" group by model2.delimitationConstituency.constituency.constituencyId,date(model.surveyTime) order by date(model.insertedTime) desc ");
 						
-						userTrackList = tdpCadreDAO.getLocationWiseUsersDetails(locationIds, fromDate, toDate, queryStr.toString());
+						userTrackList = tdpCadreDAO.getLocationWiseUsersDetails(areaIdsList, fromDate, toDate, queryStr.toString());
 					
-					surveyTransactionVOList = getUserTrackingDetails(userTrackList,surveyTransactionVOList,assignedUsersMap,areaType);
-				}
+					surveyTransactionVOList = getUserTrackingDetails(userTrackList,surveyTransactionVOList,assignedUsersMap,areaType,stateTypeId,areaIdsList,FdateStr);
+				
 			}
 			else
 			{
-				userTrackList = tdpCadreDAO.getLocationWiseUsersDetails(locationIds, fromDate, toDate, queryStr.toString());
-				surveyTransactionVOList = getUserTrackingDetails(userTrackList,surveyTransactionVOList,assignedUsersMap, areaType);
+				userTrackList = tdpCadreDAO.getLocationWiseUsersDetails(areaIdsList, fromDate, toDate, queryStr.toString());
+				surveyTransactionVOList = getUserTrackingDetails(userTrackList,surveyTransactionVOList,assignedUsersMap, areaType,stateTypeId,areaIdsList,FdateStr);
 			}
 
 			
