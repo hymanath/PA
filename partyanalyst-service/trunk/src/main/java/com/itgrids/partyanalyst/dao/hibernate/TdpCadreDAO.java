@@ -1978,5 +1978,51 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
 		query.setParameterList("memberCardNos", memberCardNos);
 		return query.list();
 	}
-
+	public List<Long> lastHoursActiveUsers(Date presentTime,Date lastHoursTime)
+	{
+		Query query = getSession().createQuery("select " +
+				" distinct model.insertedBy.cadreSurveyUserId from TdpCadre model " +
+				" where model.enrollmentYear = 2014 and " +
+				" model.isDeleted = 'N' and" +
+				" (model.surveyTime >= :lastHoursTime and model.surveyTime <= :presentTime) and" +
+				" model.insertedBy.cadreSurveyUserId is not null and " +
+				" model.dataSourceType='TAB'" 
+				);
+		
+		query.setParameter("lastHoursTime", lastHoursTime);
+		query.setParameter("presentTime", presentTime);
+		return query.list();
+		
+	 }
+	public List<Long> inActiveUsersCountInLastHours(Date surveyTime,List<Long> cadreSurveyUserIdsList)
+	{
+		Query query=getSession().createQuery("" +
+				"select count(distinct model.insertedBy.cadreSurveyUserId) " +
+				" from TdpCadre model" +
+				" where model.surveyTime>=:surveyTime and" +
+				" model.isDeleted='N' and model.enrollmentYear = 2014 and " +
+				" model.insertedBy.cadreSurveyUserId is not null and " +
+				" model.insertedBy.cadreSurveyUserId not in(:cadreSurveyUserIdsList) and " +
+				" model.dataSourceType='TAB' ");
+		query.setDate("surveyTime",surveyTime);	
+		query.setParameterList("cadreSurveyUserIdsList", cadreSurveyUserIdsList);
+		return query.list();	
+	}
+	
+	public List<Object[]> inActiveUsersInLastHours(Date surveyTime,List<Long> cadreSurveyUserIdsList)
+	{
+		Query query=getSession().createQuery("" +
+				"select distinct model.insertedBy.userName,model.insertedBy.name,model.insertedBy.mobileNo,model1.tabNo" +
+				" from TdpCadre model,CadreSurveyUserAssignDetails model1 " +
+				" where model.insertedBy.cadreSurveyUserId=model1.cadreSurveyUser.cadreSurveyUserId and" +
+				" model.surveyTime>=:surveyTime and" +
+				" model.isDeleted='N' and model.enrollmentYear = 2014 and " +
+				" model.insertedBy.cadreSurveyUserId is not null and " +
+				" model.insertedBy.cadreSurveyUserId not in(:cadreSurveyUserIdsList) and " +
+				" model.dataSourceType='TAB' ");
+		query.setDate("surveyTime",surveyTime);	
+		query.setParameterList("cadreSurveyUserIdsList", cadreSurveyUserIdsList);
+		return query.list();	
+	}
+   
 }
