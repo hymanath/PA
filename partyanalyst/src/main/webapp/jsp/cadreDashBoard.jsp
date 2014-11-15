@@ -1368,6 +1368,13 @@ function SortByName(a, b){
 	
  function gettingInActiveUsersDetails(hoursCount)
  {
+ $('#inActiveUsers').html('<img src="images/Loading-data.gif" style="margin-top: 78px;width:70px;height:60px; margin-left:314px;">');
+ $('#inActiveUsersForDialog').dialog({	
+	     width : 850,
+	     height:550,
+	     title : "In Active Users Details For Last" +hoursCount+" Hour(s) "
+    });
+   
    $.ajax({
 				type : 'GET',
 				url : 'gettingInActiveUsersDetailsAction.action',
@@ -1405,14 +1412,7 @@ function SortByName(a, b){
 					         "iDisplayLength": 20,
 					          "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
 					     });
-					   $('#inActiveUsersForDialog')
-						.dialog(
-								{	
-									width : 850,
-									height:550,
-									title : "In Active Users Details For Last" +hoursCount+" Hour(s) "
-								});
-					
+					  
 				}
 			});
  
