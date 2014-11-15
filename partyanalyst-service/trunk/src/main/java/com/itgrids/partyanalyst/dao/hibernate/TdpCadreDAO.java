@@ -1043,7 +1043,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		StringBuilder queryStr = new StringBuilder();
 		
 		queryStr.append(" select distinct model.memberShipNo, model.refNo, model.firstname, model.lastname, model.relativename,  ");
-		queryStr.append(" model.gender, model.userAddress.constituency.name, model.mobileNo,model.image, model.dispatchStatus,model.tdpCadreId ");
+		queryStr.append(" model.gender, model.userAddress.constituency.name, model.mobileNo,model.image, model.cardNumber,model.tdpCadreId, model.voter.voterIDCardNo ");
 		queryStr.append(" from TdpCadre model where model.isDeleted = 'N' and model.isDeleted is not null and model.enrollmentYear = 2014 ");
 		
 		if(mobileNo != null && mobileNo.trim().length()>0)
