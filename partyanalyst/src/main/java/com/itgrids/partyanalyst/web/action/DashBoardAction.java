@@ -558,7 +558,9 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),IConstants.CADRE_MEMBERSHIPCARD_DISPATCHER)){
 			return "cadreMemberShipCardDispatcher";
 		}
-		
+		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"TABDEALLOCATIONALTER")){
+			return "tabAllocationDetailsAction";
+		}
 		statesList = staticDataService.getParticipatedStatesForAnElectionType(Long.valueOf(2));
 		
 		//electionYearsList=staticDataService.getElectionYearsForBooths(1l,2l);

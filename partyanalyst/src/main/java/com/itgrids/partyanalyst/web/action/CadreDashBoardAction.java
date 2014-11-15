@@ -606,5 +606,47 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		return Action.SUCCESS;
 		
 		
+	}	
+	public String updateTabAllocationDetails(){
+		try{
+			
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		
+			if(regVO==null){
+				return "SUCCESS";
+			}
+			 task = cadreDashBoardService.updateTabAllocationDetails(Long.valueOf(request.getParameter("authId")),request.getParameter("cause"),regVO.getRegistrationID());
+						
+		}catch(Exception e){
+			LOG.error("Exception rised in updateTabAllocationDetails ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getAuthDetails(){
+		try{
+			
+			result = cadreDashBoardService.getAuthDetails(Long.valueOf(request.getParameter("id")),request.getParameter("variable"));
+						
+		}catch(Exception e){
+			LOG.error("Exception rised in getAuthDetails ",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String  tabAllocationDetails(){
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		boolean noaccess = false;
+		if(regVO==null){
+			return "input";
+		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"TABDEALLOCATIONALTER")){
+			noaccess = true ;
+		}
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		if(noaccess){
+			return "error";
+		}
+		return Action.SUCCESS;
 	}
 }
