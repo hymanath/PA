@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.FlagVO;
 import com.itgrids.partyanalyst.dto.PanchayatCountVo;
+import com.itgrids.partyanalyst.dto.PrintedCardDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
@@ -1114,6 +1115,18 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		List<CadrePrintVO> list = cadreRegistrationService.getSelectedLevelCadreDetailsBySelection(input);
 		return list;
 	}
+	
+	public Object getTDPCadreDetailsBySearch(CadrePrintInputVO input){
+		List<CadrePrintVO> status = cadreRegistrationService.getTDPCadreDetailsBySearch(input);
+		return status;
+	}
+	
+	
+	/*public Object updatePrintedCardDetails(List<PrintedCardDetailsVO> inputVOList){
+		String status = cadreRegistrationService.updatePrintedCardDetails(inputVOList);
+		return status;
+	}*/
+	
 	
 	
 }
