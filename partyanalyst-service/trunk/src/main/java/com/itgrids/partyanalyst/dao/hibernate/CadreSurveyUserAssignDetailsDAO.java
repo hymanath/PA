@@ -77,9 +77,15 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 		return query.list();
 	}
 	
-	public List<Object[]> getCandidatesInfo(String queryStr)
+	public List<Object[]> getCandidatesInfo(String queryStr,List<Long> locationIdsList)
 	{
 		Query query = getSession().createQuery(queryStr);
+		
+		if(locationIdsList != null && locationIdsList.size()>0)
+		{
+			query.setParameterList("locationIdsList", locationIdsList);
+		}
+		
 		return query.list();
 	}
 	
