@@ -108,6 +108,11 @@ table.dataTable tr.even td.sorting_1 {
 table.dataTable tr.odd {
     background-color: #f3f3f3;
 }
+ #inActiveUsersId  thead th{
+				background-color: #dff0d8  !important;
+				color : #468847 !important;
+				line-height: 20px !important;
+			}
 	</style>
 </head>
 <body>
@@ -235,7 +240,7 @@ table.dataTable tr.odd {
 		</div>
 		
 		<div class="row-fluid fadeInUp">
-			<div class="span8 show-grid well well-small border-radius-0 mb-10" style=" min-height: 485px;">
+			<div class="span8 show-grid well well-small border-radius-0 mb-10" style=" min-height: 510px;">
 				<iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d3929013.1516925395!2d79.7399875!3d15.912899799999996!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1412166071097" width="580" height="300" frameborder="0" style="border:0"></iframe>
 				<table class="table table-bordered border-radius-0" style="margin-top: 5px; margin-bottom: 0px;">
 					<tbody >
@@ -269,7 +274,7 @@ table.dataTable tr.odd {
 			</div>
 			
 			<!-- ReCently Registered Block -->
-			<div class="span4 show-grid well well-small border-radius-0 pad-0" style=" width: 31.9149%;margin-left:20px;height:485px;">
+			<div class="span4 show-grid well well-small border-radius-0 pad-0" style=" width: 31.9149%;margin-left:20px;min-height:510px;">
 				<h4 style="padding-bottom:5px;"><i class="icon-user" style="margin-top: 4px;"></i> &nbsp;Recently Registered <i class="icon-refresh" style="margin-top: 4px;margin-left:10px;cursor:pointer;" onclick="getRecentlyRegisteredCadresInfo(0,true);"></i> </h4>
 				<div id="recentRegisterCadresDiv"><img style="margin-top:180px;margin-left: 124px;" src="images/icons/loading.gif"/></div>
 					
@@ -293,6 +298,12 @@ table.dataTable tr.odd {
 	<div id="dialogueConstituencyDistCadreDiv" style="display: none;">
 		<center><div id="constituencyDistCadreDiv" class="yui-skin-sam"></div></center>
 	</div>
+	
+	
+	<div id="inActiveUsersForDialog">
+	  <div id="inActiveUsers" > </div>
+	</div>
+	
 <script type="text/javascript">
 function openDialogToTrack(){
     window.open('cadreRegistrationReportAction.action','_blank');
@@ -569,7 +580,16 @@ $('#membersCount').addClass('animated fadeInX');
 		
 		if(hoursCount != 0)
 		{	     
-		  $("#totalMembersWorkingTodayId").html('<b style="font-size: 22px;">'+result.totalCount+'</b><p>TAB Members In Field, since last '+hoursCount+' Hour(s) </p><b style="font-size: 22px;">'+result.apCount+'</b><p>WEB Members working, since last '+hoursCount+' Hour(s) </p>');
+		  //$("#totalMembersWorkingTodayId").html('<b style="font-size: 22px;">'+result.totalCount+'</b><p>TAB Members In Field, since last '+hoursCount+' //Hour(s) </p><b style="font-size: 22px;">'+result.apCount+'</b><p>WEB Members working, since last '+hoursCount+' Hour(s) </p>');
+		  var str='';
+		  str+='<b style="font-size: 22px;">'+result.totalCount+'</b><p>TAB Members In Field, since last '+hoursCount+' Hour(s) </p>';
+		  str+='<b style="font-size: 22px;">'+result.apCount+'</b><p>WEB Members working, since last '+hoursCount+' Hour(s) </p>';
+		   if(result.votersCount==null)
+		    str+='<span style="margin-left: 166px;"><span style="font-size:18px;margin-left:-40px">0 InActive Users</span></span>';
+		  else
+		    str+='<span style="margin-left: 166px;"><a href="javascript:{gettingInActiveUsersDetails('+hoursCount+')}"><span style="font-size:18px;margin-left:-40px">'+result.votersCount+'</a> InActive Users</span></span>';
+		  
+          $("#totalMembersWorkingTodayId").html(str);
 		}
 		else
 		{
@@ -1345,6 +1365,58 @@ function SortByName(a, b){
 			$(".indiEle").hide();
 		}
 	}
+	
+ function gettingInActiveUsersDetails(hoursCount)
+ {
+   $.ajax({
+				type : 'GET',
+				url : 'gettingInActiveUsersDetailsAction.action',
+				data :{hoursCount:hoursCount
+				      }
+			}).done(function(result) {
+			    
+				
+				if (result != null) {
+					var str3 = '';
+					str3 += '<table class="table table-bordered m_top20 " id="inActiveUsersId">';
+					str3 += '<thead>';
+					str3 += '<tr>';
+					str3 += '<th> User Name </th>';
+					str3 += '<th>Name</th>';
+					str3 += '<th>Mobile No</th>';
+					str3 += '<th>TabNo</th>';
+					str3 += '</tr>';
+					str3 += '</thead>';
+					str3 += '<tbody>';
+                    var reqRes =result;
+					for ( var i in reqRes) { 
+					str3 += '<tr>';
+					str3 += '  <td>' +reqRes[i].desc+ '</td>';
+					str3 += '  <td>' +reqRes[i].name+ '</td>';
+					str3 += '  <td>'+reqRes[i].mobileNo+ '</td>';
+					str3 += '  <td>'+reqRes[i].caste+ '</td>';
+					str3 += '</tr>';
+							}
+                    str3 += '</tbody>';
+					str3 += '</table>';
+
+					   $('#inActiveUsers').html(str3);
+					   $('#inActiveUsersId').dataTable({
+					         "iDisplayLength": 20,
+					          "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+					     });
+					   $('#inActiveUsersForDialog')
+						.dialog(
+								{	
+									width : 850,
+									height:550,
+									title : "In Active Users Details For Last" +hoursCount+" Hour(s) "
+								});
+					
+				}
+			});
+ 
+ }
 	
 </script>
 
