@@ -162,7 +162,8 @@ public class CadreSurveyTransactionAction extends ActionSupport implements Servl
 			if(user == null)
 				return Action.INPUT;
 			
-			if(entitlementsHelper.checkForEntitlementToViewReport(user,IConstants.CADRE_MEMBERSHIPCARD_DISPATCHER))
+			if(entitlementsHelper.checkForEntitlementToViewReport(user,IConstants.CADRE_MEMBERSHIPCARD_DISPATCHER) || 
+					 entitlementsHelper.checkForEntitlementToViewReport(user,IConstants.CADRE_MEMBERSHIPCARD_DISPATCHER_GROUP))
 			{
 				return Action.SUCCESS;
 			}
