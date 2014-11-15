@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.AppDbDataVO;
 import com.itgrids.partyanalyst.dto.CadreBasicInformationVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
+import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
@@ -956,6 +957,11 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			
 			info.setTotalCount(count);
 			info.setApCount(webCount);
+			//For Inactive users count.
+			Long inActiveUsersCount=(Long)getInActiveUsers(hours,"count");
+			info.setVotersCount(inActiveUsersCount);
+			
+		
 		}catch(Exception e){
 			LOG.error("Exception rised in getWorkingMembersInfo",e);
 		}
@@ -4372,4 +4378,95 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			}
 			return returnList;
 		}
+		public List<GenericVO> getInactiveUsersListDetails(String hours)
+		{
+			 List<GenericVO> totalDetails=null;
+			try
+			{
+				totalDetails=(List<GenericVO>)getInActiveUsers(hours,"total");
+				return totalDetails;
+				
+			} catch (Exception e) {
+				LOG.error("Exception rised in getInactiveUsersListDetails",e);
+				return null;
+			}
+			
+		}
+		public Object getInActiveUsers(String hours,String value)
+		{
+			 List<Long> inActiveUsersCount=null;
+			 List<GenericVO> inActiveUsersDetails=null;
+		  try
+		  {
+			  if(hours != null && hours.trim().length()>0 && !hours.equalsIgnoreCase("0")){
+				  int hourCount = Integer.valueOf(hours);
+				  
+				  
+				       //Last hours active list.
+					    DateUtilService dateService1 = new DateUtilService();
+						Date date1 = dateService1.getCurrentDateAndTime();
+						Calendar cal1 = Calendar.getInstance();
+						cal1.setTime(date1);
+						cal1.add(Calendar.HOUR, -hourCount);
+						Date hourBack = cal1.getTime();
+					    List<Long>	lastHoursList=tdpCadreDAO.lastHoursActiveUsers(date1,hourBack);
+					    
+						
+					
+				//total inactive users last one hour....started with 6am..and their details
+					   //settingDate to today 6AM. 
+						DateUtilService dateService = new DateUtilService();
+						Date date = dateService.getCurrentDateAndTime();
+						Calendar cal = Calendar.getInstance();
+						cal.setTime(date);
+						cal.set(Calendar.HOUR_OF_DAY,6);
+						cal.set(Calendar.MINUTE, 0);
+						cal.set(Calendar.SECOND,0);
+						
+						if(value.equalsIgnoreCase("count")){
+						  if(lastHoursList!=null && lastHoursList.size()>0)
+						     inActiveUsersCount=tdpCadreDAO.inActiveUsersCountInLastHours(cal.getTime(),lastHoursList);
+						   
+						}
+						else if(value.equalsIgnoreCase("total")){
+						  List<Object[]> objList=tdpCadreDAO.inActiveUsersInLastHours(cal.getTime(),lastHoursList);
+						  if(objList!=null && objList.size()>0)
+							{
+							  inActiveUsersDetails=new ArrayList<GenericVO>();
+								for (Object[] objects : objList)
+								{
+									GenericVO genericVO=new GenericVO();
+									genericVO.setDesc(objects[0]!=null?objects[0].toString():"");//username
+									genericVO.setName(objects[1]!=null?objects[1].toString():"");//name
+									genericVO.setMobileNo(objects[2]!=null?objects[2].toString():"");//mobileno
+									genericVO.setCaste(objects[3]!=null?objects[3].toString():"");//tabno
+									inActiveUsersDetails.add(genericVO);
+									
+								}
+							 }
+						 }
+			
+			  }
+			 if(value.equalsIgnoreCase("count")){
+				  
+			      if(inActiveUsersCount!=null && inActiveUsersCount.size()>0)
+				  {
+					 return inActiveUsersCount.get(0);
+				  }
+			      else 
+				   return null;
+			 }
+			 else if(value.equalsIgnoreCase("total")) {
+			   return inActiveUsersDetails; 
+			 }
+			 else 
+				return null;
+		  }catch (Exception e){
+			  LOG.error("Exception rised in getInActiveUsersCount",e);
+			  return null;
+		  }	
+		  
+			
+		}
+		
 }
