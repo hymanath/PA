@@ -15,7 +15,44 @@ public class CadrePrintInputVO {
 	
 	private String regType;
 	
+	private String date;
+	private String mobileNo;
+	private String trNo;
+	private String cardNo;
+	private Long constituecyNo;
 	
+	
+	
+	public Long getConstituecyNo() {
+		return constituecyNo;
+	}
+	public void setConstituecyNo(Long constituecyNo) {
+		this.constituecyNo = constituecyNo;
+	}
+	public String getCardNo() {
+		return cardNo;
+	}
+	public void setCardNo(String cardNo) {
+		this.cardNo = cardNo;
+	}
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	public String getTrNo() {
+		return trNo;
+	}
+	public void setTrNo(String trNo) {
+		this.trNo = trNo;
+	}
 	public Long getLocalBodyId() {
 		return localBodyId;
 	}
