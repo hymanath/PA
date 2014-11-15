@@ -347,4 +347,16 @@ IDelimitationConstituencyDAO {
 		return query.list();
 	}
 	
+	public Long getConstituencyIdByNo(Long constituencyNo){
+		Query query = getSession().createQuery(" select model.constituency.constituencyId from DelimitationConstituency model" +
+				" where model.constituencyNO = :constituencyNo" +
+				" and model.year = 2009" +
+				" and model.constituency.electionScope.electionScopeId =2 ");
+		
+		query.setParameter("constituencyNo", constituencyNo);
+		return (Long)query.uniqueResult();
+	}
+	
+	
+	
 }

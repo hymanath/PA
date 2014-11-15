@@ -1940,5 +1940,43 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
 		
 		return query.list();
 	}
+	
+	public List<String> getCardNumbers(String query,Long constiId,String mobileNo,String trNo,Date surveyDate){
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select model.memberShipNo from TdpCadre model " +
+				" where model.isDeleted = 'N' and model.enrollmentYear = 2014 ");
+		str.append(query);
+		str.append( " order by date(model.surveyTime)" );
+		
+		Query qry = getSession().createQuery(str.toString());
+		
+		if(constiId!=null){
+			qry.setParameter("constituencyId", constiId);
+		}
+		if(mobileNo!=null && mobileNo.trim().length()>0){
+			qry.setParameter("mobileNo", mobileNo);
+		}
+		if(trNo!=null && trNo.trim().length()>0){
+			qry.setParameter("mobileNo", trNo);
+		}
+		if(surveyDate!=null){
+			qry.setDate("surveyDate", surveyDate);
+		}
+		
+		return qry.list();
+	}
+	
+	public List<Object[]> getCadreDetailsByMemberShipId(List<String> memberCardNos)	{
+		Query query = getSession().createQuery("select model.memberShipNo , " +
+				" model.voterId," +
+				" model.firstname," +
+				" model.relativename," +
+				" model.voter.voterId," +
+				" model.voter.voterIDCardNo from TdpCadre model " +
+				" where model.memberShipNo in(:memberCardNos) and model.isDeleted = 'N'");
+		query.setParameterList("memberCardNos", memberCardNos);
+		return query.list();
+	}
 
 }
