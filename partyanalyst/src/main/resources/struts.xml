@@ -8884,7 +8884,11 @@
 				<param name="root">amountDetails</param>
 			</result>
 		</action>
-		
+		<action name="gettingInActiveUsersDetailsAction" class="cadreDashBoardAction" method="gettingInActiveUsersDetails" >
+			<result type="json" name="success">
+				<param name="root">genericVOList</param>
+			</result>
+		</action>
 </package>
 
 </struts>      
