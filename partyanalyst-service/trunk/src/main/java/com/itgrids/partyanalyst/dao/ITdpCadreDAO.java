@@ -167,4 +167,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public List<Object[]> getCandidateDataCollectionInfoForOnline(Long locationType,List<Long> locationIds,Date fromDate,Date toDate,String sourceType,String queryStr);
 	
+	public List<String> getCardNumbers(String query,Long constiId,String mobileNo,String trNo,Date surveyDate);
+	public List<Object[]> getCadreDetailsByMemberShipId(List<String> memberCardNos);
 }
