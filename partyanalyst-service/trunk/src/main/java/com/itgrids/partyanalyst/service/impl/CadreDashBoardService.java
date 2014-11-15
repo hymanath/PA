@@ -33,6 +33,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.ITabLogInAuthDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
@@ -72,6 +73,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	private ICadreSurveyUserAssigneeDAO cadreSurveyUserAssigneeDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IVoterInfoDAO voterInfoDAO;
+	private ITabLogInAuthDAO tabLogInAuthDAO;
 	
 	
 	
@@ -183,6 +185,14 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 
 	public void setAppDbUpdateDAO(IAppDbUpdateDAO appDbUpdateDAO) {
 		this.appDbUpdateDAO = appDbUpdateDAO;
+	}
+
+	public ITabLogInAuthDAO getTabLogInAuthDAO() {
+		return tabLogInAuthDAO;
+	}
+
+	public void setTabLogInAuthDAO(ITabLogInAuthDAO tabLogInAuthDAO) {
+		this.tabLogInAuthDAO = tabLogInAuthDAO;
 	}
 
 	public List<CadreRegisterInfo> getDashBoardBasicInfo(String accessType,Long accessValue){
@@ -4468,5 +4478,52 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		  
 			
 		}
+				
+		public String updateTabAllocationDetails(Long authId,String cause,Long userId){
+			try{
+				tabLogInAuthDAO.updateStatus(authId, cause, userId);
+				return "success";
+			}catch(Exception e){
+				LOG.error("Exception rised in updateTabAllocationDetails",e);
+				return "error";
+			}
+		}
 		
+		public List<CadreRegisterInfo> getAuthDetails(Long id,String variable){
+			List<CadreRegisterInfo> authDetails = new ArrayList<CadreRegisterInfo>();
+			try{
+				List<Object[]> usersList = null;
+				CadreRegisterInfo info = null;
+				if(id.longValue() == 1l){//for userName
+					usersList = tabLogInAuthDAO.getAuthDetailsByUserId(variable);
+				}else{//for imei
+					//0authId,1userName,2name,3mobileNo,4imei
+					usersList = tabLogInAuthDAO.getAuthDetailsByImei(variable);
+				}
+				if(usersList != null && usersList.size() > 0){
+					for(Object[] user:usersList){
+						info = new CadreRegisterInfo();
+						info.setId((Long)user[0]);
+						if(user[2] != null){
+						   info.setName(user[2].toString());
+						}else{
+						  info.setName("");
+						}
+						info.setUname(user[1].toString());
+						if(user[3] != null){
+						  info.setNumber(user[3].toString());
+						}else{
+						  info.setNumber("");
+						}
+						if(user[4] != null){
+						  info.setTabNo(user[4].toString());
+						}
+						authDetails.add(info);
+					}
+				}
+			}catch(Exception e){
+				LOG.error("Exception rised in getAuthDetails",e);
+			}
+			return authDetails;
+		}
 }
