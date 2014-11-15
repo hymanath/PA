@@ -177,7 +177,7 @@ public class DelimitationConstituencyDAOHibernateTest extends BaseDaoTestCase {
 	
 	public void testgetConstituencyNo()
 	{
-		Long constituency = delimitationConstituencyDAO.getConstituencyNo(232l,2009l);
+		Long constituency = delimitationConstituencyDAO.getConstituencyIdByNo(232l);
 		System.out.println(constituency);
 	}
 }
