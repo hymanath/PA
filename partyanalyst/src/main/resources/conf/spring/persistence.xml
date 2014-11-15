@@ -507,6 +507,8 @@
 				<value>com.itgrids.partyanalyst.model.CadreRegAmountDetails</value>
 				<value>com.itgrids.partyanalyst.model.CadreSurveyUserAssignee</value>
 				<value>com.itgrids.partyanalyst.model.TabLogInAuth</value>
+				<value>com.itgrids.partyanalyst.model.TabRecordsStatus</value>
+				<value>com.itgrids.partyanalyst.model.TabUserLoginDetails</value>
 				</list>
 			
 		</property>
