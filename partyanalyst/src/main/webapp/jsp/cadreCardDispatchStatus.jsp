@@ -200,6 +200,7 @@
 		str +='<tr>';
 		str +='<th> Name </th>';
 		str +='<th> Relative Name </th>';
+		str +='<th> Voter Card No </th>';
 		str +='<th> Gender </th>';
 		str +='<th> Mobile No. </th>';
 		str +='<th> Constituency </th>';
@@ -218,6 +219,7 @@
 			
 				str +='<td>'+result.cadreRegistrationVOList[i].voterName+'</td>';
 				str +='<td>'+result.cadreRegistrationVOList[i].relativeName+'</td>';
+				str +='<td>'+result.cadreRegistrationVOList[i].cadreType+'</td>';
 				str +='<td>'+result.cadreRegistrationVOList[i].gender+'</td>';
 				str +='<td>'+result.cadreRegistrationVOList[i].mobileNumber+'</td>';
 				str +='<td>'+result.cadreRegistrationVOList[i].constituencyId+'</td>';
@@ -238,6 +240,7 @@
 		strs +='<tr>';
 		strs +='<th> Name </th>';
 		strs +='<th> Relative Name </th>';
+		strs +='<th> Voter Card No </th>';
 		strs +='<th> Gender </th>';
 		strs +='<th> Mobile No. </th>';
 		strs +='<th> Constituency </th>';
@@ -256,6 +259,7 @@
 			
 				strs +='<td>'+result.cadreRegistrationVOList[i].voterName+'</td>';
 				strs +='<td style="text-align:center;">'+result.cadreRegistrationVOList[i].relativeName+'</td>';
+				strs +='<td style="text-align:center;">'+result.cadreRegistrationVOList[i].cadreType+'</td>';
 				strs +='<td>'+result.cadreRegistrationVOList[i].gender+'</td>';
 				strs +='<td>'+result.cadreRegistrationVOList[i].mobileNumber+'</td>';
 				strs +='<td>'+result.cadreRegistrationVOList[i].constituencyId+'</td>';
