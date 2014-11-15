@@ -6,6 +6,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.AppDbDataVO;
 import com.itgrids.partyanalyst.dto.CadreBasicInformationVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
+import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
@@ -84,4 +85,5 @@ public interface ICadreDashBoardService {
 	public void getAnalysisData();
 	public List<CadreRegisterInfo> getCandidateDataCollectionInfoForOnlineUsers(Long locationType,List<Long> locationIds,Date fromDate,Date toDate,String sourceType,Long stateTypeId);
 	public List<CadreRegisterInfo> getCandidateDataCollectionInfo(Long locationType,List<Long> locationIds,Date fromDate,Date toDate,String sourceType);
+	public List<GenericVO> getInactiveUsersListDetails(String hours);
 }
