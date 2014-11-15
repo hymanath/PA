@@ -2229,6 +2229,7 @@
 		<property name="districtDAO" ref="districtDAO" />
 		<property name="tabRecordsStatusDAO" ref="tabRecordsStatusDAO" />
 		<property name="tabUserLoginDetailsDAO" ref="tabUserLoginDetailsDAO" />
+		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
      </bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
