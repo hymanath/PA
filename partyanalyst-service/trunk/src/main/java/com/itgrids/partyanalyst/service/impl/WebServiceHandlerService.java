@@ -24,14 +24,13 @@ import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
+import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.FlagVO;
 import com.itgrids.partyanalyst.dto.PanchayatCountVo;
-import com.itgrids.partyanalyst.dto.PrintedCardDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.model.Booth;
@@ -1122,10 +1121,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	}
 	
 	
-	/*public Object updatePrintedCardDetails(List<PrintedCardDetailsVO> inputVOList){
+	public Object updatePrintedCardDetails(List<CardNFCDetailsVO> inputVOList){
 		String status = cadreRegistrationService.updatePrintedCardDetails(inputVOList);
 		return status;
-	}*/
+	}
 	
 	
 	

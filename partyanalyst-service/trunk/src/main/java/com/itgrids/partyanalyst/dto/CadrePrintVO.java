@@ -43,6 +43,10 @@ public class CadrePrintVO implements Serializable{
 	
 	private String constituencyType;
 	
+	private String dataSourceType;
+	
+	private Long tdpCadreId;
+	
 	public Long getCadrePrintVOId() {
 		return cadrePrintVOId;
 	}
@@ -231,5 +235,19 @@ public class CadrePrintVO implements Serializable{
 	public void setNewImgPath(String newImgPath) {
 		this.newImgPath = newImgPath;
 	}
+	public String getDataSourceType() {
+		return dataSourceType;
+	}
+	public void setDataSourceType(String dataSourceType) {
+		this.dataSourceType = dataSourceType;
+	}
+	public Long getTdpCadreId() {
+		return tdpCadreId;
+	}
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
+	
+	
 
 }

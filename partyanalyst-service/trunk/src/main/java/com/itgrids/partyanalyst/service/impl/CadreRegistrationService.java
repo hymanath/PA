@@ -64,7 +64,6 @@ import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDesignationDAO;
-import com.itgrids.partyanalyst.dao.IPrintedCardDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISmsJobStatusDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITabRecordsStatusDAO;
@@ -86,10 +85,10 @@ import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
-import com.itgrids.partyanalyst.dto.PrintedCardDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -110,7 +109,6 @@ import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Hamlet;
-import com.itgrids.partyanalyst.model.PrintedCardDetails;
 import com.itgrids.partyanalyst.model.SmsJobStatus;
 import com.itgrids.partyanalyst.model.TabRecordsStatus;
 import com.itgrids.partyanalyst.model.TabUserLoginDetails;
@@ -3959,10 +3957,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				{
 					String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
 					returnVO.setVoterImgPath(url);
-					List<Object[]> names = voterNamesDAO.getVoterTeluguNames((Long)voterIdDetails.get(0)[4] );
+					List<String> names = voterNamesDAO.getVoterTeluguNames((Long)voterIdDetails.get(0)[4] );
 					if(names != null && names.size() > 0)
 					{
-						String name = "";
+						returnVO.setVoterName(names.get(0));
+						/*String name = "";
 						if( names.get(0)[0] != null && names.get(0)[0] .toString().trim().length() > 0)
 						{
 							name = names.get(0)[0].toString() ;
@@ -3975,7 +3974,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						
 						if(name.trim().length() > 0)
 						//name = name.replaceAll(",", " ").replaceAll(".", " ");
-						returnVO.setVoterName(name);
+*/						
 					}
 				}
 				returnVO.setVillage(userAddress.getPanchayatId() != null ? panchayatDAO.get(userAddress.getPanchayatId()).getLocalName() : "");
@@ -5033,60 +5032,38 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			if(mobileNo!=null && mobileNo.trim().length()>0){
 				sb.append(" and model.mobileNo = :mobileNo");
 			}
-			
-			Long constituencyId = null;
+
 			if(constiNo!=null){
-				constituencyId = delimitationConstituencyDAO.getConstituencyIdByNo(constiNo);
+				//constituencyId = delimitationConstituencyDAO.getConstituencyIdByNo(constiNo);
 				sb.append(" and model.userAddress.constituency.constituencyId =:constituencyId");
 			}
 			
 			
-			List<String> memberCards = tdpCadreDAO.getCardNumbers(sb.toString(), constituencyId, mobileNo, trNo, srvyDt);
+			List<String> memberCards = tdpCadreDAO.getCardNumbers(sb.toString(), constiNo, mobileNo, trNo, srvyDt);
 			List<Object[]> vtrDetails = tdpCadreDAO.getCadreDetailsByMemberShipId(memberCards);
-			
-			
-			
 			if(vtrDetails != null && vtrDetails.size() > 0){
 				for(Object[] obj:vtrDetails){
 					Long voterId = Long.valueOf(obj[1].toString());
 					UserAddress userAddress = new UserAddress()	;
 					CadrePrintVO returnVO = new CadrePrintVO();
 					getVoterAddressDetails(voterId,userAddress,null);
-					returnVO.setVillageName(userAddress.getPanchayat() != null ? StringEscapeUtils.unescapeJava(userAddress.getPanchayat().getLocalName()  )  + StringEscapeUtils.unescapeJava("\u0C17\u0C4D\u0C30\u0C3E\u0C2E\u0C02"): "");
-					returnVO.setMandalName(userAddress.getTehsil() != null ?  StringEscapeUtils.unescapeJava(userAddress.getTehsil().getLocalName() ) + StringEscapeUtils.unescapeJava("\u0C2E\u0C02\u0C21\u0C32\u0C02"):"");
-					returnVO.setConstituencyName(userAddress.getConstituency() != null ?  StringEscapeUtils.unescapeJava(userAddress.getConstituency().getLocalName() ) + StringEscapeUtils.unescapeJava("\u0C28\u0C3F") + "||" : "");
-					returnVO.setDistrictName(userAddress.getDistrict() != null ?  StringEscapeUtils.unescapeJava(userAddress.getDistrict().getLocalName() ) + StringEscapeUtils.unescapeJava("\u0C1C\u0C3F\u0C32\u0C4D\u0C32\u0C3E"):"");
 					returnVO.setFirstCode(obj[0] != null ? obj[0].toString() : "");
-					returnVO.setVoterName(userAddress.getPanchayatId() != null ? panchayatDAO.get(userAddress.getPanchayatId()).getPanchayatName() : "");
-					returnVO.setRelativeName(obj[3] != null ? obj[3].toString() : "");
+					int size = returnVO.getFirstCode().length();
+					returnVO.setSecondCode(returnVO.getFirstCode().substring(4, size));
 					returnVO.setVoterId(obj[4] != null ?(Long)obj[4] : 0l);
 					returnVO.setVoterCardNo(obj[5] != null ? obj[5].toString() : "");
-					returnVO.setVillageEng(userAddress.getPanchayat() != null ? userAddress.getPanchayat().getPanchayatName() : "");
-					returnVO.setMandalEng(userAddress.getTehsil() != null ?  userAddress.getTehsil().getTehsilName() :"");
-					returnVO.setConstiEng(userAddress.getConstituency() != null ?  userAddress.getConstituency().getName()  : "");
-					returnVO.setDistrictEng(userAddress.getDistrict() != null ?  userAddress.getDistrict().getDistrictName() :"");
+					returnVO.setDataSourceType(obj[6] != null ? obj[6].toString() : "");
+					returnVO.setTdpCadreId(obj[7] != null ? Long.valueOf(obj[7].toString()) : 0l);
 					if(userAddress.getConstituency() != null && userAddress.getBooth() !=null)
 					{
 						String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
 						returnVO.setVoterImgPath(url);
-						List<Object[]> names = voterNamesDAO.getVoterTeluguNames((Long)obj[4] );
+						List<String> names = voterNamesDAO.getVoterTeluguNames((Long)obj[4] );
 						if(names != null && names.size() > 0)
 						{
-							String name = "";
-							if( names.get(0)[0] != null && names.get(0)[0] .toString().trim().length() > 0)
-							{
-								name = names.get(0)[0].toString() ;
-								name = name +   "  " ;
-							}
-							if(names.get(0)[1] != null && names.get(0)[1] .toString().trim().length() > 0)
-							{
-								name = name +  names.get(0)[1].toString() ;
-							}
-							
-							if(name.trim().length() > 0)
-							//name = name.replaceAll(",", " ").replaceAll(".", " ");
-							returnVO.setVoterName(name);
+							returnVO.setVoterName(names.get(0));
 						}
+						
 					}
 					returnVO.setVillage(userAddress.getPanchayatId() != null ? panchayatDAO.get(userAddress.getPanchayatId()).getLocalName() : "");
 					returnVO.setMandal(userAddress.getTehsil() != null ?  userAddress.getTehsil().getLocalName() :"");
@@ -5101,46 +5078,45 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			}
 		
 	}catch(Exception e){
-		LOG.error("Exception Raised in getTDPCadreDetailsBySearch");
+		LOG.error("Exception Raised in getTDPCadreDetailsBySearch",e);
 	}
 		
 		return finalList;
 	}
 	
-	/*public String updatePrintedCardDetails(final List<PrintedCardDetailsVO> inputList){
+	public String updatePrintedCardDetails(final List<CardNFCDetailsVO> inputList){
 		LOG.debug("Entered Into updatePrintedCardDetails");
-		String status = "";
-		
-		
-		if(inputList!=null && inputList.size()>0){
-			try{
-				status = (String) transactionTemplate.execute(new TransactionCallback() {
-					 public Object doInTransaction(TransactionStatus status) {
-						 for(PrintedCardDetailsVO tmp: inputList){
-							 
-							 PrintedCardDetails model = new PrintedCardDetails();
-
-							 //GETTING ALREADY EXISTED RECORDS TO UPDATE
-							 List<Object[]> list =  printedCardDetailsDAO.getUpdateVoterAndMemNo(tmp.getVoterId(),tmp.getMemberShipNo());
-							 if(list!=null && list.size()>0){
-								 //printedCardDetailsDAO.getUpdateVoterAndNfc();
+		String returnMsg = "";
+		try {
+			if(inputList!=null && inputList.size()>0){
+				try{
+					returnMsg = (String) transactionTemplate.execute(new TransactionCallback() {
+						 public Object doInTransaction(TransactionStatus status) {
+							 for(CardNFCDetailsVO cardNFCDetailsVO: inputList)
+							 {		
+								 List<String> checkForNumber =tdpCadreDAO.chechForCardNumber(cardNFCDetailsVO.getNfcNumber());
+									if(checkForNumber.size() == 0)
+									{
+										Integer count =  tdpCadreDAO.updateNFCCardNumberByTdpCadreId(cardNFCDetailsVO.getTdpCadreId(),cardNFCDetailsVO.getNfcNumber());
+									}
+								 	
 							 }
-							 
-							 //IF NOT EXISTED HAVE TO INSERT
-							 
-							 
-							 //tdpCadreDAO.updateNFCCardNumberByVoterId(voterId, nfcCardNo);
-						 }
-						 return "success";
-					 }});
-			}catch (Exception e) {
-				LOG.error("Exception Raised in updatePrintedCardDetails" + e);
-				status = "failed";
+							 return "SUCCESS";
+						 }});
+				}catch (Exception e) {
+					LOG.error("Exception Raised in updatePrintedCardDetails" + e);
+					returnMsg = "FAIL";
+				}
+			}else{
+				returnMsg = "FAIL";
 			}
-		}else{
-			status = "failed";
+			
+		} catch (Exception e) {
+			returnMsg = "EXCEPTION";
+			LOG.error("Exception Raised in updatePrintedCardDetails",e);
 		}
 		
-		return status;
-	}*/
+		
+		return returnMsg;
+	}
 }
