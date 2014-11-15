@@ -930,7 +930,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 				{
 					CadreRegistrationVO cadreRegistrationVO= new  CadreRegistrationVO();
 					
-					cadreRegistrationVO.setEnrollmentNumber(tdpCadre[10] != null ?Long.valueOf(tdpCadre[10].toString().trim()):0L);
+					cadreRegistrationVO.setEnrollmentNumber(tdpCadre[10] != null ?Long.valueOf(tdpCadre[10].toString().trim()):0L); // tdpcadreId
 					
 					cadreRegistrationVO.setPreviousEnrollmentNumber(tdpCadre[0] != null ?tdpCadre[0].toString():"");					
 					cadreRegistrationVO.setRefNo(tdpCadre[1] != null ?tdpCadre[1].toString():" -- ");	
@@ -945,8 +945,8 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 					cadreRegistrationVO.setConstituencyId(tdpCadre[6] != null ?tdpCadre[6].toString():" -- ");
 					cadreRegistrationVO.setMobileNumber(tdpCadre[7] != null ?tdpCadre[7].toString():" -- ");
 					cadreRegistrationVO.setUploadImageFileName(tdpCadre[8] != null ?tdpCadre[8].toString():" -- ");					
-					cadreRegistrationVO.setCasteName(tdpCadre[9] != null ?tdpCadre[9].toString():" Pending "); //dispatch status
-					
+					cadreRegistrationVO.setCasteName(tdpCadre[9] != null ? " Dispatched ":" Pending "); //dispatch status
+					cadreRegistrationVO.setCadreType(tdpCadre[11] != null ?tdpCadre[11].toString():" -- "); // voterIdcard No
 					tdpCadreList.add(cadreRegistrationVO);
 				}
 			
