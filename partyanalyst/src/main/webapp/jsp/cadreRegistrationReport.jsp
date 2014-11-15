@@ -2531,7 +2531,8 @@ function getCandidateDataCollectionInfo2(){
 	}
 	if(locationType1==2)
 	{
-		locationId1=getReqIds("trackingStatesDispalyId");
+		//locationId1=getReqIds("trackingStatesDispalyId");
+		locationId1=0;
 	}
 	if(locationType1==3)
 	{
@@ -2617,21 +2618,21 @@ function getCandidateDataCollectionInfo2(){
 	 var locationTypeFinder=$( "#trackingLocationsDispalyId" ).val();
 		var location="";
 		if(locationTypeFinder==2)
-		 location="constituency";
+		 location="Constituency";
 		else if(locationTypeFinder==3)
-		 location="district";
+		 location="District";
 		else if(locationTypeFinder==4)
-		 location="constituency";
+		 location="Constituency";
 		 else if(locationTypeFinder==5)
-		 location="parliament";
-		 
+		 location="Parliament";
+
 		var str ='';
 		if(result.length >0)
 		{
 			str +='<table class="table table-bordered " id="daywiseReportsTab">';
 			str +='<thead>';
 			str +='<tr>';
-			str +='<th > Location Name </th>';
+			str +='<th > '+location+' </th>';
 			if(locationTypeFinder != 3 && locationTypeFinder != 5)
 			{
 				str +='<th > Parliament </th>';
@@ -2747,6 +2748,7 @@ function getCandidateDataCollectionInfo2(){
 		$("#trackingStatesDispalyMainDiv").hide();
 		$("#trackingConstituencyDispalyMainDiv").hide();
 		$("#trackingDistrictsDispalyMainDiv").hide();
+		$("#trackingParlDispalyMainDiv").hide();
 		$("#mandalDispalyMainDiv").hide();
 	  }
 	  if(locationLvl == 3)
