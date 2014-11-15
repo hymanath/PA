@@ -294,13 +294,16 @@ public class DelimitationConstituencyAssemblyDetailsDAOTest extends BaseDaoTestC
 	
 	public void test()
 	{
-		List<Object[]> list = delimitationConstituencyAssemblyDetailsDAO.findDistrictsOfParliamentConstituencies(467l);
+		/*List<Object[]> list = delimitationConstituencyAssemblyDetailsDAO.findDistrictsOfParliamentConstituencies(467l);
 		System.out.println(list.size());
 		
 		for(Object[] params : list)
 		{
 			
 		System.out.println(new BigInteger(params[0].toString()).longValue());
-		}
+		}*/
+		
+		Long l = delimitationConstituencyAssemblyDetailsDAO.getConstituencyByNo(228l);
+		System.out.println(l);
 	}
 }
