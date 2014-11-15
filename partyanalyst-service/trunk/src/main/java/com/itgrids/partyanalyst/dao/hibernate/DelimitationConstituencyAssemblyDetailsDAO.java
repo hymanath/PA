@@ -351,6 +351,17 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 			"(select max(model1.year) from DelimitationConstituency model1) and model.constituency.constituencyId in(:assemblyIds) order by model.delimitationConstituency.constituency.name asc ");
 	query.setParameterList("assemblyIds", assemblyIds);
 	return query.list();
-} 
+	}
+	
+	public Long getConstituencyByNo(Long constituencyNo){
+		Query query = getSession().createQuery(" select model.constituency.constituencyId from DelimitationConstituencyAssemblyDetails model" +
+				" where model.delimitationConstituency.constituencyNO = :constituencyNo" +
+				" and model.delimitationConstituency.year = 2009" +
+				" and model.constituency.electionScope.electionScopeId = 2");
+		
+		query.setParameter("constituencyNo", constituencyNo);
+		
+		return (Long) query.uniqueResult();
+	}
 	
 }
