@@ -733,5 +733,48 @@ public class WebServiceHandler {
 			return "Fail";
 		}
 	}
+	
+	@POST
+	@Path("/getTDPCadreDetailsBySearch")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object getTDPCadreDetailsBySearch(CadrePrintInputVO inputVO){
+		
+		try{
+			
+			if(inputVO==null){
+				inputVO = new CadrePrintInputVO();
+				inputVO.setConstituecyNo(164l);
+			}
+			
+			
+			Object object = null;
+			object = webServiceHandlerService.getTDPCadreDetailsBySearch(inputVO);
+			return object;
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in requestForAuthorisationForAccessKey() Method, Exception is ",e);
+			return "Fail";
+		}
+	}
+	
+	/*@POST
+	@Path("/updatePrintedCardDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object updatePrintedCardDetails(List<PrintedCardDetailsVO> inputVOList){
+		
+		try{
+			Object object = null;
+			object = webServiceHandlerService.getTDPCadreDetailsBySearch(inputVOList);
+			return object;
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in requestForAuthorisationForAccessKey() Method, Exception is ",e);
+			return "Fail";
+		}
+	}*/
 
 }
