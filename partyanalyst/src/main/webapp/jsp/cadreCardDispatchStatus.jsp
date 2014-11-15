@@ -203,8 +203,8 @@
 		str +='<th> Gender </th>';
 		str +='<th> Mobile No. </th>';
 		str +='<th> Constituency </th>';
+		str +='<th> Membership No </th>';
 		str +='<th> TR.No </th>';
-		str +='<th> Reference No </th>';
 		str +='<th> Image </th>';
 		str +='<th> Dispatch Status </th>';
 		str +='</tr>';
@@ -241,8 +241,8 @@
 		strs +='<th> Gender </th>';
 		strs +='<th> Mobile No. </th>';
 		strs +='<th> Constituency </th>';
+		strs +='<th> Membership No </th>';
 		strs +='<th> TR.No </th>';
-		strs +='<th> Reference No </th>';
 		strs +='<th> Image </th>';
 		strs +='<th> Dispatch Status </th>';
 		strs +='</tr>';
