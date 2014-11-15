@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.List;
+
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.TabLogInAuth;
@@ -21,4 +23,10 @@ public interface ITabLogInAuthDAO  extends GenericDao<TabLogInAuth,Long>{
 	public Long checkUserAlreadyLoggedInAnotherTab(Long userId,String imei);
 	
 	public Long checkUserAlreadyLoggedInAnotherTab(Long userId,String imei1,String imei2);
+	
+	public void updateStatus(Long authId,String cause,Long userId);
+	
+	public List<Object[]> getAuthDetailsByUserId(String userName);
+	
+	public List<Object[]> getAuthDetailsByImei(String imei);
 }

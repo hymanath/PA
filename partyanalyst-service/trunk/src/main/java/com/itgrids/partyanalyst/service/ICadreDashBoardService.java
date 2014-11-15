@@ -86,4 +86,7 @@ public interface ICadreDashBoardService {
 	public List<CadreRegisterInfo> getCandidateDataCollectionInfoForOnlineUsers(Long locationType,List<Long> locationIds,Date fromDate,Date toDate,String sourceType,Long stateTypeId);
 	public List<CadreRegisterInfo> getCandidateDataCollectionInfo(Long locationType,List<Long> locationIds,Date fromDate,Date toDate,String sourceType);
 	public List<GenericVO> getInactiveUsersListDetails(String hours);
+	public String updateTabAllocationDetails(Long authId,String cause,Long userId);
+	
+	public List<CadreRegisterInfo> getAuthDetails(Long id,String variable);
 }
