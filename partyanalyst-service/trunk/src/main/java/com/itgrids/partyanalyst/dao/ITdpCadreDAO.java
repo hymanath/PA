@@ -55,6 +55,8 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getPanchayatWiseCadreDetails(Long panchayatId);
 	
 	public Integer updateNFCCardNumberByVoterId(Long voterId , String nfcCardNo);	
+	
+	public Integer updateNFCCardNumberByTdpCadreId(Long tdpCadreId,String nfcCardNo);
 		
 	public Long getAgeRangeTotalCount(Long Id,Long enrollmentYear,String type);
 		

@@ -10,5 +10,5 @@ public interface IVoterNamesDAO extends GenericDao<VoterNames, Long>{
 
 	public List<VoterNames> gerVoterNamesObjByVoterId(Long voterId);
 	public List<Object[]> getVoterNames(Long constituencyId,Long publicationDateId);
-	public List<Object[]> getVoterTeluguNames(Long voterId);
+	public List<String> getVoterTeluguNames(Long voterId);
 }

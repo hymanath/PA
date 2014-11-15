@@ -465,6 +465,16 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		return c;
 	}
 	
+	public Integer updateNFCCardNumberByTdpCadreId(Long tdpCadreId,String nfcCardNo)
+	{
+		Query query = getSession().createQuery("update TdpCadre model set model.cardNumber = :nfcCardNo where model.tdpCadreId = :tdpCadreId and  model.enrollmentYear = :year  and model.isDeleted = 'N' ");
+		query.setParameter("nfcCardNo", nfcCardNo);
+		query.setParameter("year", IConstants.CADRE_ENROLLMENT_NUMBER);
+		query.setParameter("tdpCadreId", tdpCadreId);
+		Integer c = query.executeUpdate();
+		
+		return c;
+	}
 	
 	public List<Object[]> getAgeRangeCadreCount(Long Id, String ageRange,
 			String type) {
@@ -1946,6 +1956,7 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
 		
 		str.append(" select model.memberShipNo from TdpCadre model " +
 				" where model.isDeleted = 'N' and model.enrollmentYear = 2014 ");
+		str.append( " and model.dataSourceType != 'TAB' and model.cardNumber is  null  " );
 		str.append(query);
 		str.append( " order by date(model.surveyTime)" );
 		
@@ -1973,7 +1984,7 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
 				" model.firstname," +
 				" model.relativename," +
 				" model.voter.voterId," +
-				" model.voter.voterIDCardNo from TdpCadre model " +
+				" model.voter.voterIDCardNo,model.dataSourceType,model.tdpCadreId from TdpCadre model " +
 				" where model.memberShipNo in(:memberCardNos) and model.isDeleted = 'N'");
 		query.setParameterList("memberCardNos", memberCardNos);
 		return query.list();
@@ -2025,4 +2036,11 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
 		return query.list();	
 	}
    
+	public int getUpdateVoterAndMemNo(Long voterId , String memberShipNumber)
+	{
+		Query query = getSession().createQuery("");
+		
+		int c = query.executeUpdate();
+		return c;
+	}
 }

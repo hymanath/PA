@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
+import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -70,6 +71,7 @@ public interface IWebServiceHandlerService {
 	public Object getVCadreDetailsBySelection(CadrePrintInputVO input);
 	
 	public Object getTDPCadreDetailsBySearch(CadrePrintInputVO input);
+	public Object updatePrintedCardDetails(List<CardNFCDetailsVO> inputVOList);
 
 	
 }

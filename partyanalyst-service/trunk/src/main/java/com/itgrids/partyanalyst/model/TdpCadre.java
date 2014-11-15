@@ -91,7 +91,7 @@ public class TdpCadre {
 	private VoterRelation				voterRelation;
 	
 	private String						cadreType;
-	private String                     isRelative;
+	private String                      isRelative;
 	private VoterRelation				relationType;
 	private Long						relationTypeId;
 	

@@ -7,10 +7,10 @@ import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
-import com.itgrids.partyanalyst.dto.PrintedCardDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
@@ -109,7 +109,7 @@ public interface ICadreRegistrationService {
 	
 	public List<CadrePrintVO> getTDPCadreDetailsBySearch(CadrePrintInputVO input);
 	
-	//public String updatePrintedCardDetails(List<PrintedCardDetailsVO> inputList);
+	public String updatePrintedCardDetails(List<CardNFCDetailsVO> inputList);
 	
 	
 }
