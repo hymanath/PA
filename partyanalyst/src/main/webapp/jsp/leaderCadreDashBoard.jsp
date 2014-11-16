@@ -50,8 +50,8 @@
 				     </tr>
 				
 				   <tr>
-				      <td></td><td><input type="button" style="margin-left: 12px;margin-top: 13px;" class="btn btn-success" onclick="getLocationswiseleaderCadreInfo();" value="Submit"/>
-						<img id="ajaxImgStyle" style="display:none;margin-left: 10px;" src="images/icons/search.gif"/>
+				      <td></td><td><input type="button" style="margin-left: 12px;margin-top: 13px;" class="btn btn-success" onclick="getLocationswiseleaderCadreInfo();" value="Submit"/> 
+						<div><img id="ajaxImgStyle" style="margin-left: 10px;width:80px;display:none;" src="images/Loading-data.gif"/></div>
 					  </td>
 				  </tr>
 			</table>
@@ -96,7 +96,7 @@
    function buildData(result,type)
    {
 	   var str='';
-		str+='<table class="table table-bordered" id="tabledata">';
+		str+='<table class="table table-bordered" id="tabledataTab">';
 		str+='<thead>';
 		str+='<tr>';
 		
@@ -121,9 +121,9 @@
 		str+='<tbody>';
 		for(var i in result)
 	   {
-		str+='<tr id='+result[i].id+'" class="removeCls clearCls'+result[i].id+'">';
+		str+='<tr id='+result[i].id+' class="removeCls clearCls'+result[i].id+'">';
 		if(type == "District")
-		str+='<td class="removeCls clearClsTD'+result[i].id+'"><a onclick="displaySublevelDetails('+result[i].id+',\'District\');">'+result[i].name+'</a></td>';
+		str+='<td class="removeCls clearClsTD'+result[i].id+'"><a onclick="displaySublevelDetails('+result[i].id+',\'District\');" style="cursor:pointer;">'+result[i].name+'</a></td>';
 		if(type == "Constituency"){
 		str+='<td>'+result[i].districtName+'</td>';	
 		str+='<td>'+result[i].parliament+'</td>';
@@ -149,11 +149,16 @@
 	   str+='</tbody>';
 		str+='</table>';
 		$("#leaderDataDiv").html(str);
-		$("#tabledata").dataTable({
+		$("#tabledataTab").dataTable({
 			         "iDisplayLength": 20,
 			          "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
 			     });
-		
+				 
+		var firstRowId = $('#tabledataTab tr').eq(1).attr('id');
+		if(type == "District")
+		{		
+		displaySublevelDetails(firstRowId.replace('"',''),'District');
+		}
    }
    
    function closeDiv(trID)
@@ -171,7 +176,7 @@
    var scope = "";
     $('.added').remove('');
 	$(".removeCls").removeClass("selected");
-	$('.clearCls'+id).after('<tr class="selectedchild"><td id="subLevel'+id+'" colspan="8" class="added"><div><img id="ajaxImgStyle1" style="display:none;margin-left: 10px;" src="images/icons/barloader.gif"/></div></td></tr>');;
+	$('.clearCls'+id).after('<tr class="selectedchild"><td id="subLevel'+id+'" colspan="8" class="added"><div align="center"><img id="ajaxImgStyle1" style="display:none;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
 	$('.clearCls'+id).addClass("selected");
 	$('.clearClsTD'+id).addClass("selected");
 	$("#ajaxImgStyle1").show();
@@ -265,7 +270,7 @@ function buildData1(result,type,divId)
 		str+='<tr class="removeCls1 clearCls1'+result[i].id+'">';
 		
 		if(type == "Constituency"){
-			str+='<td class="removeCls1 clearClsTD1'+result[i].id+'"><a  onclick="displaySublevelDetails1('+result[i].id+',\'Constituency\');">'+result[i].name+'</a></td>';
+			str+='<td class="removeCls1 clearClsTD1'+result[i].id+'"><a  onclick="displaySublevelDetails1('+result[i].id+',\'Constituency\');" style="cursor:pointer;">'+result[i].name+'</a></td>';
 		}
 		  else if(type == "Mandal")
 		   {

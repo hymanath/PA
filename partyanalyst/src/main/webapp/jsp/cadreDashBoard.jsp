@@ -1419,7 +1419,7 @@ function SortByName(a, b){
  $('#inActiveUsersForDialog').dialog({	
 	     width : 850,
 	     height:550,
-	     title : "In Active Users Details For Last" +hoursCount+" Hour(s) "
+	     title : "In Active Users Details For Last  " +hoursCount+" Hour(s) "
     });
    
    $.ajax({
@@ -1435,20 +1435,26 @@ function SortByName(a, b){
 					str3 += '<table class="table table-bordered m_top20 " id="inActiveUsersId">';
 					str3 += '<thead>';
 					str3 += '<tr>';
+					str3 += '<th> District </th>';
+					str3 += '<th> Parliament </th>';
+					str3 += '<th> Constituency </th>';
 					str3 += '<th> User Name </th>';
 					str3 += '<th>Name</th>';
 					str3 += '<th>Mobile No</th>';
-					str3 += '<th>TabNo</th>';
+					//str3 += '<th>TabNo</th>';
 					str3 += '</tr>';
 					str3 += '</thead>';
 					str3 += '<tbody>';
                     var reqRes =result;
 					for ( var i in reqRes) { 
 					str3 += '<tr>';
+					str3 += '  <td>' +reqRes[i].startTime+ '</td>';
+					str3 += '  <td>' +reqRes[i].endTime+ '</td>';
+					str3 += '  <td>' +reqRes[i].workedTime+ '</td>';
 					str3 += '  <td>' +reqRes[i].desc+ '</td>';
 					str3 += '  <td>' +reqRes[i].name+ '</td>';
 					str3 += '  <td>'+reqRes[i].mobileNo+ '</td>';
-					str3 += '  <td>'+reqRes[i].caste+ '</td>';
+					//str3 += '  <td>'+reqRes[i].caste+ '</td>';
 					str3 += '</tr>';
 							}
                     str3 += '</tbody>';
