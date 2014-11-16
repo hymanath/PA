@@ -8,17 +8,56 @@
 	<meta http-equiv="Content-Type" content="text/html" charset="utf-8">
     <title>TDP Cadre Search </title>
 
+  
     <link href="css/bootstrap.min.css" rel="stylesheet"/>	
     <link href="css/style.css" rel="stylesheet"/>
     <link href="css/animate.css" rel="stylesheet"/>	
 	<link href="styles/icheck_skins/all.css?v=1.0.2" rel="stylesheet"/>
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	 <script src="js/icheck/icheck.js"></script>
-
+	 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+	 	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+		<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+		<script src="js/icheck/icheck.js"></script>
+	
 	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
-	
+
+		<script type="text/javascript" src="js/exportexcel.js"></script>
+
 	<style>
+	.show-grid:hover .block-hover-addBtn{display:table-cell; margin-right:-22px; top:-10px;}/*visibility: visible;*/
+	.block-hover-addBtn{display:none; position: relative;}/*visibility: hidden;*/
+	.border-none{border:none;}
+	.text-lowercase{text-transform:lowercase;}
+	.text-uppercase{text-transform:uppercase;}
+	.text-capitalize{text-transform:capitalize;}
+	.text-red{color:#dc504a;}
+	.text-green{color:#4dbd74;}
+	.text-orange{color:#f9a834;}
+	.text-skyblue{color:#46acca;}
+	.mb-0{margin-bottom:0px}
+	.mb-10{margin-bottom:10px}
+	.Previousmembercount td{width:20%;}
+	.membercount td{width:25%;}
+	.membercount td h2, .Previousmembercount td h2{margin:0px;}
+	.progress{height:10px;}
+	.height-300{height: 300px; overflow: auto;}
+	.f-16{font-size: 16px;}
+	 .bgc{background-color:#3598db}
+	 
+	.dataTables_length, .dataTables_filter , .dataTables_info {
+		color : #666666 !important;
+	}
+	.header-bg{background:#3598DB url('./images/cadre_images/2014-Header-BG.png') repeat-x; height:179px;}
+	.color-white{color:#f9f9f9;}
+
+		#searchCadreTab  thead th {
+			background-color: #dff0d8  !important;
+			color : #468847 !important;
+			line-height: 15px !important;
+		}
+
 	.show-grid:hover .block-hover-addBtn{display:table-cell; margin-right:-22px; top:-10px;}/*visibility: visible;*/
 	.block-hover-addBtn{display:none; position: relative;}/*visibility: hidden;*/
 	.border-none{border:none;}
@@ -36,15 +75,14 @@
 	.span10 {
 	    width: 840px;
 	}
-	.textWidth{
-	    width: 156px;
-	}
-	.marginWidth{
-	  margin-left: 6px;
-	  }
-	  .detailsCls{
-	    cursor:pointer;
-	  }
+
+	#dayWiseUsersDetailsId  thead th{
+				background-color: #dff0d8  !important;
+				color : #468847 !important;
+				line-height: 20px !important;
+			}
+			
+			
 	</style>
    
 	
@@ -59,7 +97,11 @@
 						<img src="images/cadre_images/2014-cadre-Registration-Logo.png">
 				  </div>
 				  <div class="span4">
-					 <a href="newlogoutAction.action" style="font-weight: bold;" class="btn btn-mini pull-left m_top20">Logout</a>
+					 <a href="newlogoutAction.action" class="btn btn-mini pull-left m_top20">Logout</a>					
+				  </div> 
+				  <div class="span4">
+					  <a  class="btn btn-info btn-mini" id="statusDivsId1" href="javascript:{hideDashBoard();}" style="margin-top:-25px;margin-left:-225px;"> Know User Status </a>
+					  <a class="btn btn-info btn-mini" id="statusDivsId2" style="margin-top:-25px;margin-left:-225px;display:none; width: 90px;" href="javascript:{showDashBoard();}"> Home </a>
 				  </div>
 				</div>
 			</div>
@@ -69,13 +111,13 @@
 	<div id="myDiv"></div>
 	<div id="tableDivForCadre" class="table-responsive"></div>
 	
-		<div class="span6 offset3 show-grid pad-10b" style="">
+		<div class="span6 offset3 show-grid pad-10b" >
 		<div id="errorDiv" style="color:#ff0020;"></div>
-			<h5 class="text-align">SELECT CONSTITUENCY</h5>
+			<h5 class="text-align">SELECT CONSTITUENCY </h5>
 
 			<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="userConstituencyId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" style="width:460px;" onChange="getConstituencyWiseDetails();"/>
-			<select class="textWidth" id="panchayatList" onchange="getLocationWiseDetails();"><option value="0"> Select Location </option></select>		
-			<select class="span4 marginWidth" id="boothsList"> <option value="0"> Select Booth </option> </select> 	
+			<select style="width:150px;" id="panchayatList" onchange="getLocationWiseDetails();"><option value="0"> Select Location </option></select>		
+			<select style="width:250px;" id="boothsList"> <option value="0"> Select Booth </option> </select> 	
 			<!-- <select style="width:150px;" id="vilagecovrdList"> <option value="0"> Select Covered Village </option> </select>  -->
 			<img src='images/icons/search.gif' id="loadingImg" style="display:none;"/>
 				
@@ -113,6 +155,32 @@
 					<a href="javascript:{searchCandidatesDetailsBySearchCriteria();}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
 		</div>
 		
+		
+	</div>
+	<div class="container " id="dashboadElmnt" style="display:none;">	
+	
+		<div id="locationWiseCadreInfoDiv">
+		    <div class="row-fluid" id="fadeInDown" style="padding-top: 5px;">
+				<div class="span12 well well-small  border-radius-0 mb-0 " style="padding:0px;">
+					<h3 class="offset3 text-uppercase"> user dashboard details </h3>
+				</div>
+			</div>
+			<div class="row-fluid show-grid">
+			   <div class="row-fluid offset3">						
+							<div class="span5" style="margin-bottom:-20px;">
+							<h5 class="text-align1">Form Date : 
+							<input type="text" class="form-control border-radius-0 datePickerCls" placeholder="From Date " id="fromDateId"></h5>
+							</div>							
+							<div class="span">
+								<h5 class="text-align1"> To Date : 
+								<input type="text" class="form-control border-radius-0 datePickerCls" placeholder="To Date " id="toDateId"></h5>
+							</div>
+						</div>
+						<a href="javascript:{getDashboardDetailsForUser();}" class="btn btn-success col-xs-offset-4 border-radius-0 offset5"> Get Details  <span class="glyphicon glyphicon-chevron-right"></span></a>
+						<div id="dashBoadDiv" style="padding: 10px;"></div>
+						
+			</div>
+		</div>
 	</div>
 	<img src='images/Loading-data.gif' class="offset7"  id="searchDataImg" style=" margin-left: 660px;margin-top: 20px;width:70px;height:60px;display:none;"/>
 	<div class="container" id="tableElement" style="margin-top:25px;display:none;">
@@ -149,6 +217,13 @@
 				
 			});
 			*/
+			
+			//getDashboardDetailsForUser();
+			 $('.datePickerCls').datepicker({
+				dateFormat: 'dd-mm-yy',
+				maxDate: new Date()
+			  });
+			$(".datePickerCls").datepicker("setDate", new Date());
 		});
 		
 	function isValid(str)
@@ -338,33 +413,33 @@
 			if(result[i].isRegistered == 'Y')
 			{
 				str +='<tr>';
-				str +='<td  style="background-color: #f9f9f9;"><img style="width:80px;height:80px;cursor:pointer;" src="'+result[i].image+'" id="candimgShowIdReg'+i+'" onclick="getDetailsForUser('+result[i].id+');" onerror="setDefaultImage(this);" /></td>';
+				str +='<td  style="background-color: #f9f9f9;"><img style="width:80px;height:80px;" class="detailsCls"  src="'+result[i].image+'" id="'+result[i].id+'" onerror="setDefaultImage(this);" /></td>';
 				if(result[i].name != null)
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" >'+result[i].name+'</span></td>';
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
 				else
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" > -- </span></td>';
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 					
 				if(result[i].relativeName != null)
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" >'+result[i].relativeName+'</span></td>';
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relativeName+'</span></td>';
 				else
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" > -- </span></td>';
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 				if(result[i].relationType != null)
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" >'+result[i].relationType+'</span></td>';
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relationType+'</span></td>';
 				else
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" > -- </span></td>';					
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';					
 				if(result[i].age != null)
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" >'+result[i].age+'</span></td>';
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].age+'</span></td>';
 				else
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" > -- </span></td>';
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 				if(result[i].gender != null)
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" >'+result[i].gender+'</span></td>';
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].gender+'</span></td>';
 				else
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" > -- </span></td>';
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 				
 				if(result[i].houseNo != null)
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" >'+result[i].houseNo+'</span></td>';
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].houseNo+'</span></td>';
 				else
-					str +='<td style="background-color:#52A552;"><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" > -- </span></td>';
+					str +='<td style="background-color:#52A552;cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 				
 				//str +='<td style="background-color:#52A552;"><input type="radio" value="'+result[i].id+'" name="optionsRadios" onClick="getDetailsForUser();"></label></td>';
 				str +='</tr>';
@@ -372,33 +447,33 @@
 			else
 			{
 				str +='<tr>';
-				str +='<td style="background-color: #f9f9f9;"><img style="width:80px;height:80px;cursor:pointer;" src="'+result[i].image+'" id="candimgShowId'+i+'"  onclick="getDetailsForUser('+result[i].id+');"  onerror="setDefaultImage(this);" /></td>';
+				str +='<td style="background-color: #f9f9f9;cursor:pointer;"><img style="width:80px;height:80px;" class="detailsCls" src="'+result[i].image+'" id="'+result[i].id+'" onerror="setDefaultImage(this);" /></td>';
 				if(result[i].name != null)
-					str +='<td><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" >'+result[i].name+'</span></td>';
+					str +='<td style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].name+'</span></td>';
 				else
-					str +='<td><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" > -- </span></td>';
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 					
 				if(result[i].relativeName != null)
-					str +='<td><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" >'+result[i].relativeName+'</span></td>';
+					str +='<td style="cursor:pointer;" style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relativeName+'</span></td>';
 				else
-					str +='<td><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" > -- </span></td>';
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 				if(result[i].relationType != null)
-					str +='<td><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" >'+result[i].relationType+'</span></td>';
+					str +='<td style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].relationType+'</span></td>';
 				else
-					str +='<td><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" > -- </span></td>';					
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';					
 				if(result[i].age != null)
-					str +='<td><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" >'+result[i].age+'</span></td>';
+					str +='<td style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].age+'</span></td>';
 				else
-					str +='<td><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" > -- </span></td>';
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 				if(result[i].gender != null)
-					str +='<td><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" >'+result[i].gender+'</span></td>';
+					str +='<td style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].gender+'</span></td>';
 				else
-					str +='<td><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" > -- </span></td>';
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 				
 				if(result[i].houseNo != null)
-					str +='<td><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" >'+result[i].houseNo+'</span></td>';
+					str +='<td style="cursor:pointer;"><span  class="detailsCls" id="'+result[i].id+'">'+result[i].houseNo+'</span></td>';
 				else
-					str +='<td><span  class="detailsCls"  onclick="getDetailsForUser('+result[i].id+');" > -- </span></td>';
+					str +='<td><span  class="detailsCls" id="'+result[i].id+'"> -- </span></td>';
 				
 			//	str +='<td><input type="radio" value="'+result[i].id+'" name="optionsRadios" onClick="getDetailsForUser();"></label></td>';
 				str +='</tr>';
@@ -427,7 +502,11 @@
 				
 			});
 			*/
-			
+			 $(".detailsCls").click(function(){
+			var id = $(this).attr('id');
+			getDetailsForUser(id);
+		  
+		  });
 	}
 	
 	function getDetailsForUser(candidateId)
@@ -703,6 +782,122 @@
 					}
 				});
 	}
+	
+	function showDashBoard() 
+	{	
+		$('#yourElement').show();
+		$('#dashboadElmnt').hide();		
+		$('#statusDivsId1').show();
+		$('#statusDivsId2').hide();
+	}
+	function hideDashBoard()
+	{
+		$('#yourElement').hide();
+		$('#dashboadElmnt').show();		
+		$('#statusDivsId1').hide();
+		$('#statusDivsId2').show();
+	}
+	function getDashboardDetailsForUser()
+	{
+		$('#dashBoadDiv').html('');
+		//var userId = $('#webUserId).val();
+		var formDate = $('#fromDateId').val();
+		var toDate = $('#toDateId').val();
+		
+		var jsObj = 
+			   {
+				  userId:0,	 // 4015
+				  fromDate:formDate,					  
+				  toDate:toDate,					  
+				  task:"getDaywiseWebUserDetails"             
+			   }	
+		 $.ajax({
+					url : "getDaywiseWebUserDetailsAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					if(result != null)
+					{
+						buildDashBoardDetails(result);
+					}
+				});
+				
+	}
+	
+	function buildDashBoardDetails(result)
+	{
+		var str='<div class="span12" style="font-weight:bold;">';
+		str+='<div class="span3 show-grid" style="background-color:#D3D3D3;padding:5px;"> Total Records :'+result.recordsCount+' </div> ';
+		str+='<div class="span3 show-grid" style="background-color:#D3D3D3;padding:5px;"> Total Amount :'+result.actualAmount+' </div> ';
+		str+='<div class="span3 show-grid" style="background-color:#D3D3D3;padding:5px;"> Paid  Amount :'+result.depositedAmount+' </div> ';
+		str+='<div class="span3 show-grid" style="background-color:#D3D3D3;padding:5px;"> Balance Amount  :'+result.remainingAmount+' </div> ';
+			str+='</div><br></br>';
+			str +='<h4 align="center" > USER DAY WISE REPORT </h4>';
+			str+='<table id="dayWiseUsersDetailsId" class="table table-bordered ">';
+			str+='<thead>';
+			str+='<tr>';
+			str+='<th> Survey Date </th>';
+			str+='<th> Total Records </th>';
+			str+='<th> Total Amount </th>';
+			str+='<th> Depositted Amount </th>';
+			str+='<th> Balance Amount </th>';
+			str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';			
+			if(result.surveyTransactionVOList != null && result.surveyTransactionVOList.length >0)
+			{
+				for(var i in result.surveyTransactionVOList)
+				{
+					str+='<tr>';
+						str+='<td style="text-align:center">'+result.surveyTransactionVOList[i].surveyDate+'</td>';
+						if(result.surveyTransactionVOList[i].recordsCount != 0)
+						{
+							str+='<td style="text-align:center">'+result.surveyTransactionVOList[i].recordsCount+'</td>';
+						}
+						else
+						{
+							str+='<td style="text-align:center"> -- </td>';
+						}
+						if(result.surveyTransactionVOList[i].actualAmount != 0)
+						{
+							str+='<td style="text-align:center">'+result.surveyTransactionVOList[i].actualAmount+'</td>';
+						}
+						else
+						{
+							str+='<td style="text-align:center"> -- </td>';
+						}
+						if(result.surveyTransactionVOList[i].depositedAmount != 0)
+						{
+							str+='<td style="text-align:center">'+result.surveyTransactionVOList[i].depositedAmount+'</td>';
+						}
+						else
+						{
+							str+='<td style="text-align:center"> -- </td>';
+						}
+						if(result.surveyTransactionVOList[i].remainingAmount != 0)
+						{
+							str+='<td style="text-align:center">'+result.surveyTransactionVOList[i].remainingAmount+'</td>';
+						}
+						else
+						{
+							str+='<td style="text-align:center"> -- </td>';
+						}
+					str+='</tr>';
+				}
+			}
+					
+			str+='</tr>';
+			str+='</tr>';
+			str+='</tbody>';
+			str+='</table>';
+			
+			$('#dashBoadDiv').html(str);
+		$('#dayWiseUsersDetailsId').dataTable({
+				  "aaSorting": [[ 0, "desc" ]],
+			      "iDisplayLength": 10,
+			      "aLengthMenu": [[10,20,50, 100, 200, -1], [10,20,50, 100, 200, "All"]]
+		         });
+	}
+	
 		</script>
 		 <script>$('#yourElement').addClass('animated fadeInDown');</script>
 	<!----->
