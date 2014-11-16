@@ -112,6 +112,16 @@ public class Scheduler {
 	{
 		schedulerService.prepareDatForCardPrinting(dateUtilService.getYesterdayDateString());
 	}
+	
+	public void runTheBatchJobForEveryDayCardDataInsertForZebra()
+	{
+		schedulerService.prepareDatForCardPrintingForZebra(dateUtilService.getYesterdayDateString());
+	}
+	
+	public void runTheBatchJobForEveryDayCardDataInsertForMax()
+	{
+		schedulerService.prepareDatForCardPrintingForMax(dateUtilService.getYesterdayDateString());
+	}
 	public void runTheBatchJobForEveryWeek()
 	{
 		if(!IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
