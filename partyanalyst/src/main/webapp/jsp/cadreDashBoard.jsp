@@ -113,6 +113,9 @@ table.dataTable tr.odd {
 				color : #468847 !important;
 				line-height: 20px !important;
 			}
+			
+			#leaderDataDiv1,#leaderDataDiv2 {font-size:10px !important;font-family:verdana;font-weight:bold;}
+			
 	</style>
 </head>
 <body>
@@ -280,6 +283,42 @@ table.dataTable tr.odd {
 					
 			</div><!-- ReCently Registered Block END -->
 		</div>
+		
+		<div class="row-fluid">
+			<div class="span6 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
+				<h4> District wise Target & Registred Cadre Comparison</h4>
+				<div style="padding:5px;">
+					<input type="radio" id="todayId" name="compareD" value="today" checked="true" style="margin-top:0px;"/><span> TODAY</span>
+					<input type="radio" id="asOfNowId" name="compareD" value="previous" style="margin-top:0px;"/><span>AS OF NOW</span>
+					
+					<div class="btn-group pull-right">
+					<a class="btn btn-mini btn-success apele" href="javascript:{}" id="apDistTargetComp">AP</a>
+					<a class="btn btn-mini tsele" href="javascript:{}" id="tgDistTargetComp">TS</a>
+				</div>
+				</div>
+				
+				<div id="leaderDataDiv1" class="height-300 scrollable_div">
+					<img style="margin-left: 180px;margin-top: 101px;" id="ajaxImgStyle" src="images/icons/loading.gif"/>
+				</div>
+			</div>
+			<div class="span6 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
+				<h4> Constituency wise Target & Registred Cadre Comparison</h4>
+				<div style="padding:5px;">
+					<input type="radio" id="todayId" name="compareC" value="today" checked="true" style="margin-top:0px;"/><span> TODAY</span>
+					<input type="radio" id="asOfNowId" name="compareC" value="previous" style="margin-top:0px;"/><span>AS OF NOW</span>
+					
+					<div class="btn-group pull-right">
+					<a class="btn btn-mini btn-success apele" id="apConstTargetComp">AP</a>
+					<a class="btn btn-mini tsele" id="tgConstTargetComp">TS</a>
+				</div>
+				</div>
+				
+				<div id="leaderDataDiv2" class="height-300 scrollable_div">
+					<img style="margin-left: 180px;margin-top: 101px;" id="ajaxImgStyle" src="images/icons/loading.gif"/>
+				</div>
+			</div>
+		</div>
+		
 	</div>
 	<div id="dialogueDiv" style="display: none;">
 		<center><div id="agewiseDivForDistrict"></div>
@@ -300,6 +339,8 @@ table.dataTable tr.odd {
 	</div>
 	
 	
+	
+	
 	<div id="inActiveUsersForDialog">
 	  <div id="inActiveUsers" > </div>
 	</div>
@@ -308,6 +349,8 @@ table.dataTable tr.odd {
 function openDialogToTrack(){
     window.open('cadreRegistrationReportAction.action','_blank');
 }
+
+
 
 /* $(document).ready(function(){
 	  $('input').iCheck({
@@ -1417,6 +1460,251 @@ function SortByName(a, b){
 			});
  
  }
+ 
+  function getLocationswiseleaderCadreInfo1(scpId,scp,stId,targetDiv){
+		var scopeId = scpId; // 2 -- District 3 -- Constituency
+		var scope = scp;
+		var stateId = stId; // 1-- AP 2-- TS
+		$(targetDiv).html('<img style="margin-left: 180px;margin-top: 101px;" id="ajaxImgStyle" src="images/icons/loading.gif"/>');
+		
+		if(scopeId == 0){
+			$("#errStatusDiv").html("Select Scope").css("color","red");
+			return;
+		}
+		//$("#ajaxImgStyle").show();
+		var jObj = {
+			type : scope,
+			stateId:stateId,
+			task:"mainLevel"
+		}
+		
+		var constant = "1"
+		if(targetDiv == "#leaderDataDiv2"){
+			constant = "2"
+		}
+		$.ajax({
+          type:'GET',
+          url: 'getLocationWiseAsOfNowDetailsAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+				//$("#ajaxImgStyle").hide();
+				var str='';
+					str+='<table class="table table-bordered" id="'+constant+'tabledata1">';
+					str+='<thead><tr>';
+					str+='<th>Constituency</th>';
+					str+='<th>Target Cadres</th>';
+					str+='<th>Registered Cadres</th>';
+					//str+='<th>Difference</th>';
+					str+='<th>% of Register cadres</th>';
+					str+='</tr></thead>';
+					str+='<tbody>';
+					for(var i in result)
+					{
+						str+='<tr>';
+						str+='<td>'+result[i].name+'</td>';
+						str+='<td>'+result[i].targetCadres+'</td>';
+						if(result[i].totalRecords==null){
+							str+='<td>-</td>';
+						}else{
+						str+='<td>'+result[i].totalRecords+'</td>';
+						}
+						//str+='<td>'+result[i].difference+'</td>';
+						if(result[i].percentage==null){
+							str+='<td style="background-color: #e77c79;>-</td>';
+						}else{
+							var colorStatus = result[i].colorStatus;
+							if(colorStatus=="Best"){
+								str+='<td style="background-color: green;">'+result[i].percentage+'</td>';
+							}
+							if(colorStatus=="Good"){
+								str+='<td style="background-color:lightgreen">'+result[i].percentage+'</td>';
+							}
+							if(colorStatus=="Ok"){
+								str+='<td style="background-color:lightblue">'+result[i].percentage+'</td>';
+							}
+							if(colorStatus=="Poor"){
+								str+='<td style="background-color:#F89406">'+result[i].percentage+'</td>';
+							}
+							if(colorStatus=="Worst"){
+								str+='<td style="background-color:#C43C35">'+result[i].percentage+'</td>';
+							}
+							
+						}
+						str+='</tr>';
+					}
+					str+='</tbody>';
+					str+='</table>';
+					$(targetDiv).html(str);
+					$("#"+constant+"tabledata1").dataTable({
+						"iDisplayLength": -1,
+						"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+					});
+				 
+				 if(targetDiv == "#leaderDataDiv1"){
+					$("#leaderDataDiv1 .dataTables_length").hide();
+				 }else{
+					$("#leaderDataDiv2 .dataTables_length").hide();
+				 }
+				 
+				 
+			});
+		}
+   
+		function getLocationswiseleaderCadreInfo2(scpId,scp,stId,targetDiv){
+			
+			var date = $.datepicker.formatDate('yy-mm-dd', new Date());
+			var scopeId = scpId;
+			var scope = scp;
+			var stateId = stId;
+			$(targetDiv).html('<img style="margin-left: 180px;margin-top: 101px;" id="ajaxImgStyle" src="images/icons/loading.gif"/>');
+			if(scopeId == 0){
+				$("#errStatusDiv").html("Select Scope").css("color","red");
+				return;
+			}
+			
+			var constant = "1"
+			if(targetDiv == "#leaderDataDiv2"){
+				constant = "2"
+			}
+		
+			$("#ajaxImgStyle").show();
+			var jObj = {
+				type : scope,
+				stateId:stateId,
+				date:date,
+				task:"mainLevel"
+			}
+			$.ajax({
+			  type:'GET',
+			  url: 'getLocationWiseToDayDetailsAction.action',
+			  data : {task:JSON.stringify(jObj)} ,
+            }).done(function(result){
+				//$("#ajaxImgStyle").hide();
+				var str='';
+					str+='<table class="table table-bordered" id="'+constant+'tabledata2">';
+					str+='<thead><tr>';
+					str+='<th>Constituency</th>';
+					str+='<th>Target Cadres</th>';
+					str+='<th>Registered Cadres</th>';
+					//str+='<th>Difference</th>';
+					str+='<th>% of Register cadres</th>';
+					str+='</tr></thead>';
+					str+='<tbody>';
+					for(var i in result){
+						
+						str+='<tr>';
+						str+='<td>'+result[i].name+'</td>';
+						str+='<td>'+result[i].targetCadres+'</td>';
+						if(result[i].totalRecords==null){
+							str+='<td>-</td>';
+						}else{
+						str+='<td>'+result[i].totalRecords+'</td>';
+						}
+						//str+='<td>'+result[i].difference+'</td>';
+						 if(result[i].percentage==null){
+							str+='<td style="background-color: #e77c79;>-</td>';
+						}else{
+							var colorStatus = result[i].colorStatus;
+							if(colorStatus=="Best"){
+								str+='<td style="background-color: green;">'+result[i].percentage+'</td>';
+							}
+							if(colorStatus=="Good"){
+								str+='<td style="background-color:lightgreen">'+result[i].percentage+'</td>';
+							}
+							if(colorStatus=="Ok"){
+								str+='<td style="background-color:lightblue">'+result[i].percentage+'</td>';
+							}
+							if(colorStatus=="Poor"){
+								str+='<td style="background-color:#F89406">'+result[i].percentage+'</td>';
+							}
+							if(colorStatus=="Worst"){
+								str+='<td style="background-color:#C43C35">'+result[i].percentage+'</td>';
+							}
+						} 
+						str+='</tr>';
+					}
+					str+='</tbody>';
+					str+='</table>';
+					$(targetDiv).html(str);
+					$("#"+constant+"tabledata2").dataTable({
+						"iDisplayLength": -1,
+						"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+			     });
+				 
+				 if(targetDiv == "#leaderDataDiv1"){
+					$("#leaderDataDiv1 .dataTables_length").hide();
+				 }else{
+					$("#leaderDataDiv2 .dataTables_length").hide();
+				 }
+			});
+		}
+   
+   
+	   $("#apConstTargetComp").click(function(){
+		
+			$(this).addClass("btn-success");
+			$("#tgConstTargetComp").removeClass("btn-success");
+	   
+			var val = $('input:radio[name=compareC]:checked').val();
+			if(val=='today'){
+				getLocationswiseleaderCadreInfo2(3,"Constituency",1,"#leaderDataDiv2");
+			}else{
+				getLocationswiseleaderCadreInfo1(3,"Constituency",1,"#leaderDataDiv2");
+			}
+	   });
+	   
+	   $("#apDistTargetComp").click(function(){
+			
+			$(this).addClass("btn-success");
+			$("#tgDistTargetComp").removeClass("btn-success");
+	   
+			var val = $('input:radio[name=compareD]:checked').val();
+			if(val=='today'){
+				getLocationswiseleaderCadreInfo2(2,"District",1,"#leaderDataDiv1");
+			}else{
+				getLocationswiseleaderCadreInfo1(2,"District",1,"#leaderDataDiv1");
+			}
+			
+	   });
+	   
+	   $("#tgConstTargetComp").click(function(){
+			
+			$(this).addClass("btn-success");
+			$("#apConstTargetComp").removeClass("btn-success");
+	   
+			var val = $('input:radio[name=compareC]:checked').val();
+			if(val=='today'){
+				getLocationswiseleaderCadreInfo2(3,"Constituency",2,"#leaderDataDiv2");
+			}else{
+				getLocationswiseleaderCadreInfo1(3,"Constituency",2,"#leaderDataDiv2");
+			}
+	   });
+	   $("#tgDistTargetComp").click(function(){
+			
+			//$(this).removeClass("btn-success");
+			$(this).addClass("btn-success");
+			$("#apDistTargetComp").removeClass("btn-success");
+			
+			var val = $('input:radio[name=compareD]:checked').val();
+			if(val=='today'){
+				getLocationswiseleaderCadreInfo2(2,"District",2,"#leaderDataDiv1");
+			}else{
+				getLocationswiseleaderCadreInfo1(2,"District",2,"#leaderDataDiv1");
+			}
+	   });
+	   
+	   
+	    $('input:radio[name=compareC]').click(function() {
+			$("#apConstTargetComp").click();
+			var val = $('input:radio[name=compareC]:checked').val();
+		});
+	   $('input:radio[name=compareD]').click(function() {
+			$("#apDistTargetComp").click();
+			var val = $('input:radio[name=compareD]:checked').val();
+		});
+	   
+	  getLocationswiseleaderCadreInfo2(3,"Constituency",1,"#leaderDataDiv2");
+	  getLocationswiseleaderCadreInfo2(2,"District",1,"#leaderDataDiv1");
 	
 </script>
 

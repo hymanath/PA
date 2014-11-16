@@ -8906,6 +8906,19 @@
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
 			<result name="input">/jsp/loginForm.jsp?src=tabAllocationDetailsAction</result>
 		</action>
+		
+		<action name="getLocationWiseAsOfNowDetailsAction" class="leaderCadreDashBoardAction" method="getLocationWiseAsOfNowDetails" >
+			<result type="json" name="success">
+				<param name="root">amountDetails</param>
+			</result>
+		</action>
+		
+		<action name="getLocationWiseToDayDetailsAction" class="leaderCadreDashBoardAction" method="getLocationWiseToDayDetails" >
+			<result type="json" name="success">
+				<param name="root">amountDetails</param>
+			</result>
+		</action>
+		
 </package>
 
 </struts>      
