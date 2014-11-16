@@ -41,6 +41,7 @@ import com.itgrids.partyanalyst.dto.AppDbDataVO;
 import com.itgrids.partyanalyst.dto.CadreBasicInformationVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
@@ -51,6 +52,7 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
+import com.itgrids.partyanalyst.service.IRegistrationService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -74,9 +76,18 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IVoterInfoDAO voterInfoDAO;
 	private ITabLogInAuthDAO tabLogInAuthDAO;
+	private IRegistrationService registrationService;
 	
 	
 	
+	public IRegistrationService getRegistrationService() {
+		return registrationService;
+	}
+
+	public void setRegistrationService(IRegistrationService registrationService) {
+		this.registrationService = registrationService;
+	}
+
 	public IVoterInfoDAO getVoterInfoDAO() {
 		return voterInfoDAO;
 	}
@@ -4525,5 +4536,8 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				LOG.error("Exception rised in getAuthDetails",e);
 			}
 			return authDetails;
+		}
+		public String registerAllUsers(RegistrationVO user){
+			return registrationService.registerAllUsers(user);
 		}
 }

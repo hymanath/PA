@@ -25,6 +25,7 @@ public interface IRegistrationService {
 	 
 	 public ResultStatus saveDataInToUserRolesTable(User registration,RegistrationVO values);
 	 
+	 public String registerAllUsers(RegistrationVO user);
 	 //public ResultStatus saveDataInToUserRolesTable(User user, RegistrationVO values);
 	 
 }
