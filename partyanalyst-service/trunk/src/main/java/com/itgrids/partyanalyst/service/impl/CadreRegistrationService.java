@@ -5054,6 +5054,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					returnVO.setVoterCardNo(obj[5] != null ? obj[5].toString() : "");
 					returnVO.setDataSourceType(obj[6] != null ? obj[6].toString() : "");
 					returnVO.setTdpCadreId(obj[7] != null ? Long.valueOf(obj[7].toString()) : 0l);
+					returnVO.setRefNumber(obj[8] != null ? obj[8].toString() : "");
 					if(userAddress.getConstituency() != null && userAddress.getBooth() !=null)
 					{
 						String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
