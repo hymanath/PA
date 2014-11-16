@@ -48,7 +48,17 @@ public class CadreDashBoardAction implements ServletRequestAware {
 	private WSResultVO wsResultVO;
 	private ILoginService loginService;
 	private List<GenericVO> genericVOList;
+	private SurveyTransactionVO surveyTransactionVO;
 	
+	
+	public SurveyTransactionVO getSurveyTransactionVO() {
+		return surveyTransactionVO;
+	}
+
+	public void setSurveyTransactionVO(SurveyTransactionVO surveyTransactionVO) {
+		this.surveyTransactionVO = surveyTransactionVO;
+	}
+
 	public List<SurveyTransactionVO> getSurveyTransactionVOList() {
 		return surveyTransactionVOList;
 	}
@@ -578,6 +588,29 @@ public class CadreDashBoardAction implements ServletRequestAware {
 	
 	}
 	
+	public String getDaywiseWebUserDetails(){
+		try{
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO != null)
+			{
+				 jObj = new JSONObject(getTask());	
+				 Long userId = jObj.getLong("userId");
+				 String FdateStr = jObj.getString("fromDate");
+				 String TdateStr = jObj.getString("toDate");
+			
+				 if(userId == 0L )
+				 {
+					 userId =  regVO.getRegistrationID();
+				 }
+				 
+				 surveyTransactionVO = cadreDashBoardService.getDaywiseWebUserDetails(userId,FdateStr, TdateStr);
+			}
+						
+		}catch(Exception e){
+			LOG.error("Exception rised in getDaywiseWebUserDetails ",e);
+		}
+		return Action.SUCCESS;
+	}
 	
 	public String getLocationNameByIdAndType(){
 		try{
