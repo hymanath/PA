@@ -106,4 +106,31 @@ public class CadreRegAmountDetailsDAO extends GenericDaoHibernate<CadreRegAmount
 		return query.list();
 	}
 
+	public List<Object[]> getPaidAmountDetailsOfWebUserByDateANDType(Long webUserId, Date fromDate,Date toDate,String type)
+	{
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append(" select distinct date(model.cadreRegAmountFile.date), sum(model.amount) from CadreRegAmountDetails model ");
+		//sb.append(" where model.registrationType = "+type+"  and  model.webUser.userId =:webUserId ");
+		
+		sb.append(" where model.registrationType = '"+type+"'  and  model.cadreSurveyUser.cadreSurveyUserId =:webUserId ");
+		
+		if(fromDate != null && toDate != null)
+		{
+			sb.append(" and ( date(model.cadreRegAmountFile.date) >= :fromDate and date(model.cadreRegAmountFile.date) <= :toDate  )  ");
+		}
+		
+		sb.append(" group by date(model.cadreRegAmountFile.date)  order by date(model.cadreRegAmountFile.date) desc ");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("webUserId", webUserId);
+		if(fromDate != null && toDate != null)
+		{
+			query.setDate("fromDate",fromDate);	
+			query.setDate("toDate",toDate);	
+		}
+		
+		return query.list();
+	}
+	
 }
