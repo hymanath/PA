@@ -81,7 +81,7 @@ public interface ICadreDashBoardService {
 
 	public List<SurveyTransactionVO> getLocationswiseUsersList(String usersType,String areaType, Long stateTypeId,String FdateStr, String TdateStr);
 	public WSResultVO gettingUserDetailsByLocation(String location,Long locationId,String type,Date date);
-	
+	public SurveyTransactionVO getDaywiseWebUserDetails(Long userId,String FdateStr, String TdateStr);
 	public WSResultVO getAllParliamentsForAssembly();
 	public void getAnalysisData();
 	public List<CadreRegisterInfo> getCandidateDataCollectionInfoForOnlineUsers(Long locationType,List<Long> locationIds,Date fromDate,Date toDate,String sourceType,Long stateTypeId);
