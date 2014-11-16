@@ -7,6 +7,7 @@ import com.itgrids.partyanalyst.dto.AppDbDataVO;
 import com.itgrids.partyanalyst.dto.CadreBasicInformationVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
@@ -89,4 +90,6 @@ public interface ICadreDashBoardService {
 	public String updateTabAllocationDetails(Long authId,String cause,Long userId);
 	
 	public List<CadreRegisterInfo> getAuthDetails(Long id,String variable);
+	
+	public String registerAllUsers(RegistrationVO user);
 }

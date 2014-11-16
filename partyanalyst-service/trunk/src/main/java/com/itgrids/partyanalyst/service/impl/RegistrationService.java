@@ -1,12 +1,20 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
@@ -537,5 +545,107 @@ public class RegistrationService implements IRegistrationService{
 		}
 		
 		
+	}
+	public String registerAllUsers(RegistrationVO user){
+		try{
+			RegistrationVO regVO = new RegistrationVO();
+		MD5Encrypt encrypt = new MD5Encrypt();
+		FileInputStream file = new FileInputStream(new File("D:\\users.xls"));
+		HSSFWorkbook workbook = new HSSFWorkbook(file);
+		HSSFSheet sheet = workbook.getSheetAt(0);
+		Iterator<Row> rowIterator = sheet.iterator();
+		int count = 0;
+		Cell cell = null;
+		Long constituencyId = null;
+		String constiPerc = null;
+		while(rowIterator.hasNext())
+		{
+		Row row = rowIterator.next();
+
+		String usname =row.getCell(3).toString().trim();
+		String pasword =RegistrationService.randomGenerator(7)+"";
+		String firstName =row.getCell(1).toString().trim();
+		String lastName =row.getCell(2).toString().trim();
+		
+		String mobileNo = row.getCell(5).toString().replace(".", "").replace("E9", "");
+
+		if(mobileNo.length() == 9)
+		{
+		mobileNo = mobileNo+0;
+		}
+		if(mobileNo.length() == 8)
+		{
+		mobileNo = mobileNo+0+0;
+		}
+		if(mobileNo.length() == 7)
+		{
+		mobileNo = mobileNo+0+0+0;
+		}
+		if(mobileNo.length() == 6)
+		{
+		mobileNo = mobileNo+0+0+0+0;
+		}
+		if(mobileNo.length() == 5)
+		{
+		mobileNo = mobileNo+0+0+0+0+0;
+		}
+		String mobile = mobileNo;
+		if(mobile.length() == 0){
+			mobile="999999999";
+		}
+		String address =row.getCell(0).toString().trim();
+		String accessValue =row.getCell(6).toString().trim().replace(".0", "");
+		String enKey = encrypt.MD5(usname)+encrypt.MD5(pasword);
+		String md5Key = encrypt.MD5(enKey);
+		regVO.setParty(872l);
+		regVO.setUserName(usname);
+		regVO.setFirstName(firstName);
+		regVO.setLastName(lastName);
+		regVO.setPassword(md5Key);
+		regVO.setGender("Male");
+		
+		regVO.setDateOfBirth("16/1/1970");
+		regVO.setMobile(mobile);
+		regVO.setAddress(address);
+		regVO.setUserType("Politician");
+		regVO.setAccessValue(accessValue);
+		regVO.setParentUserId(user.getRegistrationID());
+		regVO.setMainAccountId(user.getMainAccountId() != null ? user.getMainAccountId() : user.getRegistrationID());
+		
+			regVO.setAccessType(IConstants.MLA);
+		
+			
+		 saveRegistration(regVO,IConstants.PARTY_ANALYST_USER);
+		 System.out.println("UserName:"+usname+" Password:"+pasword);
+		}
+		file.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	 return "success";
+	}
+	public static int randomGenerator(int length)
+	{
+		Random random = new Random();
+		Integer randomNum = 0;
+		int number = 1;
+			try
+			{
+				for(int i=0;i<length;i++)
+				{
+					number = number * 10;
+				}
+			
+				for(;;)
+				{
+					randomNum = random.nextInt(number);
+					if(randomNum.toString().length() >= length)
+					break;
+				}
+				return randomNum;
+			}catch (Exception e) {
+				e.printStackTrace();
+				return -1;
+			}
 	}
 }
