@@ -5034,7 +5034,6 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			}
 
 			if(constiNo!=null){
-				//constituencyId = delimitationConstituencyDAO.getConstituencyIdByNo(constiNo);
 				sb.append(" and model.userAddress.constituency.constituencyId =:constituencyId");
 			}
 			
@@ -5055,6 +5054,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					returnVO.setDataSourceType(obj[6] != null ? obj[6].toString() : "");
 					returnVO.setTdpCadreId(obj[7] != null ? Long.valueOf(obj[7].toString()) : 0l);
 					returnVO.setRefNumber(obj[8] != null ? obj[8].toString() : "");
+					returnVO.setMobileNo(obj[9] != null ? obj[9].toString() : "");
 					if(userAddress.getConstituency() != null && userAddress.getBooth() !=null)
 					{
 						String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
