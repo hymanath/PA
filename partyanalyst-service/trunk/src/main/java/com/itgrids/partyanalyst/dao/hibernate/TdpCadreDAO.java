@@ -1988,7 +1988,7 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
 		
 		str.append(" select model.memberShipNo from TdpCadre model " +
 				" where model.isDeleted = 'N' and model.enrollmentYear = 2014 ");
-		str.append( " and model.dataSourceType != 'TAB' and model.cardNumber is  null  " );
+		str.append( " and model.insertedWebUser.userId = 3930  and model.cardNumber is  null  and model.insertedWebUser.userId is not null " );
 		str.append(query);
 		str.append( " order by date(model.surveyTime)" );
 		
@@ -2016,7 +2016,7 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
 				" model.firstname," +
 				" model.relativename," +
 				" model.voter.voterId," +
-				" model.voter.voterIDCardNo,model.dataSourceType,model.tdpCadreId from TdpCadre model " +
+				" model.voter.voterIDCardNo,model.dataSourceType,model.tdpCadreId,model.refNo from TdpCadre model " +
 				" where model.memberShipNo in(:memberCardNos) and model.isDeleted = 'N'");
 		query.setParameterList("memberCardNos", memberCardNos);
 		return query.list();
