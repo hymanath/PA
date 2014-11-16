@@ -33,7 +33,17 @@ public class CadreAmountDetailsVO implements Serializable{
 	private String districtName;
 	private Long districtId;
 	
+	private String colorStatus;
 	
+	
+	
+	
+	public String getColorStatus() {
+		return colorStatus;
+	}
+	public void setColorStatus(String colorStatus) {
+		this.colorStatus = colorStatus;
+	}
 	public String getParliament() {
 		return parliament;
 	}

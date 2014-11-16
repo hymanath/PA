@@ -2043,4 +2043,38 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
 		int c = query.executeUpdate();
 		return c;
 	}
+	
+	public List<Object[]> getTotalRecords(List<Long> districtIds,String type,Date date){
+		StringBuilder str = new StringBuilder();
+		
+		if(type.equalsIgnoreCase(IConstants.DISTRICT))
+		 str.append("select count(model.tdpCadreId),model.userAddress.constituency.district.districtId"); 
+		else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			 str.append("select count(model.tdpCadreId),model.userAddress.constituency.constituencyId"); 
+		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+			str.append("select count(model.tdpCadreId),model.userAddress.tehsil.tehsilId"); 
+		else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+			str.append("select count(model.tdpCadreId),model.userAddress.constituency.localElectionBody.localElectionBodyId");
+		
+		 str.append("  from TdpCadre model" +
+				" where model.isDeleted = 'N' " +
+				" and model.enrollmentYear = 2014 "+
+				" and date(model.surveyTime)=:date "); 
+		 
+		 if(type.equalsIgnoreCase(IConstants.DISTRICT))
+		    str.append(" and model.userAddress.constituency.district.districtId in(:districtIds) group by model.userAddress.constituency.district.districtId ");
+		 else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			str.append(" and model.userAddress.constituency.district.districtId in(:districtIds) group by model.userAddress.constituency.constituencyId");
+		 else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+				str.append(" and model.userAddress.tehsil.tehsilId in(:districtIds) group by model.userAddress.tehsil.tehsilId");
+		 else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+				str.append(" and model.userAddress.localElectionBody.localElectionBodyId in(:districtIds) group by model.userAddress.localElectionBody.localElectionBodyId");
+		 
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("districtIds", districtIds);
+		query.setParameter("date", date);
+		
+		
+		return query.list();
+	}
 }
