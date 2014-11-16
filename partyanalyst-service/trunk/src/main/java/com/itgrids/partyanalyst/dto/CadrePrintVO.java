@@ -47,6 +47,8 @@ public class CadrePrintVO implements Serializable{
 	
 	private Long tdpCadreId;
 	
+	private String mobileNo;
+	
 	public Long getCadrePrintVOId() {
 		return cadrePrintVOId;
 	}
@@ -246,6 +248,12 @@ public class CadrePrintVO implements Serializable{
 	}
 	public void setTdpCadreId(Long tdpCadreId) {
 		this.tdpCadreId = tdpCadreId;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
 	}
 	
 	

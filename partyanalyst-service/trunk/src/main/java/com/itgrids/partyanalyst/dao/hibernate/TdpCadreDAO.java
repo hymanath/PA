@@ -2016,7 +2016,7 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
 				" model.firstname," +
 				" model.relativename," +
 				" model.voter.voterId," +
-				" model.voter.voterIDCardNo,model.dataSourceType,model.tdpCadreId,model.refNo from TdpCadre model " +
+				" model.voter.voterIDCardNo,model.dataSourceType,model.tdpCadreId,model.refNo,model.mobileNo from TdpCadre model " +
 				" where model.memberShipNo in(:memberCardNos) and model.isDeleted = 'N'");
 		query.setParameterList("memberCardNos", memberCardNos);
 		return query.list();
