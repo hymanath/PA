@@ -8918,7 +8918,12 @@
 				<param name="root">amountDetails</param>
 			</result>
 		</action>
-		
+				
+		<action name="registerAllUsers" class="cadreDashBoardAction" method="registerAllUsers" >
+			<result type="json" name="success">
+				<param name="root">task</param>
+			</result>
+		</action>
 </package>
 
 </struts>      
