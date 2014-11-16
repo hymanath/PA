@@ -12,4 +12,7 @@ public interface ILeaderCadreDashBoardService {
 	public List<CadreAmountDetailsVO> getLoationWiseLeaderCadreDetails(String locationtype,Long stateId);
 	public List<CadreAmountDetailsVO> getSubLevelLoationWiseLeaderCadreDetails(String type,Long id);
 	
+	public List<CadreAmountDetailsVO> getLocationWiseToDayDetails(String locationtype,Long stateId,String date);
+	public List<CadreAmountDetailsVO> getLocationWiseAsOfNowDetails(String locationtype,Long stateId);
+	
 }
