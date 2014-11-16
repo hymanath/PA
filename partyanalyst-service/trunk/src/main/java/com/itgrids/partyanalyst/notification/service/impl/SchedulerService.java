@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.notification.service.impl;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -120,13 +121,13 @@ public class SchedulerService implements ISchedulerService{
 		try 
 		{
 			//PREPARE DATA FOR RURAL BY USING RURAL CONSTITUECYES
-			saveRuralConstituencysDataType1(prevDate);
+			saveRuralConstituencysDataType1(prevDate,"card_prining_details1",null);
 			//PREPARE DATA FOR RURAL BY USING RURAL-URBAN CONSTITUECYES
-			saveRuralConstituencysDataType2(prevDate);
+			saveRuralConstituencysDataType2(prevDate,"card_prining_details1",null);
 			//PREPARE DATA FOR RURAL-URBAN BY USING RURAL-URBAN CONSTITUECYES
-			saveRuralUrbanConstituencysDataType(prevDate);
+			saveRuralUrbanConstituencysDataType(prevDate,"card_prining_details1",null);
 			//PREPARE DATA FOR URBAN BY USING URBAN CONSTITUECYES
-			saveUrbanConstituencysDataType(prevDate);
+			saveUrbanConstituencysDataType(prevDate,"card_prining_details1",null);
 		} 
 		catch (Exception e)
 		{
@@ -134,12 +135,88 @@ public class SchedulerService implements ISchedulerService{
 		}
 	}
 	
-	public void saveRuralConstituencysDataType1(String prevDate)
+	
+	/**
+	 * This Service is used for saving Card Print Details For Zebra  from  Cadre registration
+	 * @param prevDate
+	 * @author Prasad Thiragabathina
+	 */
+	public void prepareDatForCardPrintingForZebra(String prevDate)
+	{
+		try 
+		{
+			List<Long> distIds = new ArrayList<Long>();
+			
+			distIds.add(11l);
+			distIds.add(12l);
+			distIds.add(13l);
+			distIds.add(14l);
+			distIds.add(15l);
+			distIds.add(16l);
+			distIds.add(17l);
+			distIds.add(18l);
+			distIds.add(19l);
+			distIds.add(20l);
+			distIds.add(21l);
+			distIds.add(22l);
+			distIds.add(23l);
+			//PREPARE DATA FOR RURAL BY USING RURAL CONSTITUECYES
+			saveRuralConstituencysDataType1(prevDate,"zebra_print_details",distIds);
+			//PREPARE DATA FOR RURAL BY USING RURAL-URBAN CONSTITUECYES
+			saveRuralConstituencysDataType2(prevDate,"zebra_print_details",distIds);
+			//PREPARE DATA FOR RURAL-URBAN BY USING RURAL-URBAN CONSTITUECYES
+			saveRuralUrbanConstituencysDataType(prevDate,"zebra_print_details",distIds);
+			//PREPARE DATA FOR URBAN BY USING URBAN CONSTITUECYES
+			saveUrbanConstituencysDataType(prevDate,"zebra_print_details",distIds);
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception Raised in prepareDatForCardPrintingForZebra()",e); 
+		}
+	}
+	
+	
+	/**
+	 * This Service is used for saving Card Print Details For Max  from  Cadre registration
+	 * @param prevDate
+	 * @author Prasad Thiragabathina
+	 */
+	public void prepareDatForCardPrintingForMax(String prevDate)
+	{
+		try 
+		{
+			List<Long> distIds = new ArrayList<Long>();
+			distIds.add(1l);
+			distIds.add(2l);
+			distIds.add(3l);
+			distIds.add(4l);
+			distIds.add(5l);
+			distIds.add(6l);
+			distIds.add(7l);
+			distIds.add(8l);
+			distIds.add(9l);
+			distIds.add(10l);
+			//PREPARE DATA FOR RURAL BY USING RURAL CONSTITUECYES
+			saveRuralConstituencysDataType1(prevDate,"max_print_details",distIds);
+			//PREPARE DATA FOR RURAL BY USING RURAL-URBAN CONSTITUECYES
+			saveRuralConstituencysDataType2(prevDate,"max_print_details",distIds);
+			//PREPARE DATA FOR RURAL-URBAN BY USING RURAL-URBAN CONSTITUECYES
+			saveRuralUrbanConstituencysDataType(prevDate,"max_print_details",distIds);
+			//PREPARE DATA FOR URBAN BY USING URBAN CONSTITUECYES
+			saveUrbanConstituencysDataType(prevDate,"max_print_details",distIds);
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception Raised in prepareDatForCardPrintingForMax()",e); 
+		}
+	}
+	
+	public void saveRuralConstituencysDataType1(String prevDate,String tableName,List<Long> distIds)
 	{
 		try
 		{
-			Integer count = tdpCadreDAO.saveRuralConstituencyDataType1(prevDate);
-			LOG.error(" R1 TYPE RECORDS INSERTED FOR CARD PRINTING   "+count );
+			Integer count = tdpCadreDAO.saveRuralConstituencyDataType1(prevDate,tableName,distIds);
+			LOG.error(" R1 TYPE RECORDS INSERTED FOR CARD PRINTING   "+ prevDate +":" +tableName+":" +count );
 		}
 		catch (Exception e)
 		{
@@ -148,12 +225,12 @@ public class SchedulerService implements ISchedulerService{
 		
 	}
 	
-	public void saveRuralConstituencysDataType2(String prevDate)
+	public void saveRuralConstituencysDataType2(String prevDate,String tableName,List<Long> distIds)
 	{
 		try 
 		{
-			Integer count = tdpCadreDAO.saveRuralUrbanConstituencyDataType2(prevDate);
-			LOG.error(" R2 TYPE RECORDS INSERTED FOR CARD PRINTING   "+count );
+			Integer count = tdpCadreDAO.saveRuralUrbanConstituencyDataType2(prevDate,tableName,distIds);
+			LOG.error(" R2 TYPE RECORDS INSERTED FOR CARD PRINTING   "+ prevDate +":" +tableName+":" +count );
 		} 
 		catch (Exception e) 
 		{
@@ -162,12 +239,12 @@ public class SchedulerService implements ISchedulerService{
 		
 	}
 	
-	public void saveRuralUrbanConstituencysDataType(String prevDate)
+	public void saveRuralUrbanConstituencysDataType(String prevDate,String tableName,List<Long> distIds)
 	{
 		try
 		{
-			Integer count = tdpCadreDAO.saveRuralUrbanConstituencyDataType(prevDate);
-			LOG.error(" RU TYPE RECORDS INSERTED FOR CARD PRINTING   "+count );
+			Integer count = tdpCadreDAO.saveRuralUrbanConstituencyDataType(prevDate,tableName,distIds);
+			LOG.error(" RU TYPE RECORDS INSERTED FOR CARD PRINTING   "+ prevDate +":" +tableName+":" +count);
 		} 
 		catch (Exception e) 
 		{
@@ -176,12 +253,12 @@ public class SchedulerService implements ISchedulerService{
 		
 	}
 	
-	public void saveUrbanConstituencysDataType(String prevDate)
+	public void saveUrbanConstituencysDataType(String prevDate,String tableName,List<Long> distIds)
 	{
 		try 
 		{
-			Integer count = tdpCadreDAO.saveUrbanConstituencyDataType1(prevDate);
-			LOG.error(" U TYPE RECORDS INSERTED FOR CARD PRINTING   "+count );
+			Integer count = tdpCadreDAO.saveUrbanConstituencyDataType1(prevDate,tableName,distIds);
+			LOG.error(" U TYPE RECORDS INSERTED FOR CARD PRINTING   "+ prevDate +":" +tableName+":" +count);
 		} 
 		catch (Exception e)
 		{
