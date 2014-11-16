@@ -1442,9 +1442,9 @@
 			<ref bean="cronTriggerForEveryDayJobTosendSmsToMobileAppUsers" />
 			<ref bean="cronTriggerForeveryDayBatchJobForPopulateVoterData" />
 			<ref bean="insertTriggerForEveryDayMobiles" />
-			<ref bean="runTheBatchJobForEveryDayCardDataInsertForMax" />
+		<!--	<ref bean="runTheBatchJobForEveryDayCardDataInsertForMax" />
 			<ref bean="runTheBatchJobForEveryDayCardDataInsertForZebra" />
-		<!-- 	<ref bean="insertTriggerForEveryDayCardPrintDetails" /> -->
+		 	<ref bean="insertTriggerForEveryDayCardPrintDetails" /> -->
 			
         </list>
     	</property>
