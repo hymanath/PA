@@ -1,7 +1,7 @@
-var ipaddress;
+var ipaddress = "";
 function setIp()
 {
-$.get("http://ipinfo.io", function(response) {
+$.get("http://ipinfo.io/?token=e9c2130d7772ec", function(response) {
  ipaddress =response.ip;
 }, "jsonp");
 }
