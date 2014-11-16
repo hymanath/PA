@@ -515,7 +515,7 @@
 			$('#NnameErr').html(' Nominee Name required.');
 		}
 		
-		if(Nname != null && Nname.trim().length>0 && !(/^[a-zA-Z]+$/.test(Nname)))
+		if(Nname != null && Nname.trim().length>0 && !(/^[a-zA-Z ]+$/.test(Nname)))
 		{
 				$('#NnameErr').html('Candidate Name allows only alphabets.');
 			isErrorStr = " error";
@@ -2488,7 +2488,7 @@ function showNewTakenImg(){
 				
 		var isError = false ;
 		
-		if(candidateName != null && candidateName.trim().length>0 && !(/^[a-zA-Z]+$/.test(candidateName)))
+		if(candidateName != null && candidateName.trim().length>0 && !(/^[a-zA-Z ]+$/.test(candidateName)))
 		{
 				$(errDivId).html('Candidate Name allows only alphabets.');
 			return;
