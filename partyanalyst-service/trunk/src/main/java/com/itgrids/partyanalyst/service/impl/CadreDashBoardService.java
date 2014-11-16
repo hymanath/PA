@@ -24,6 +24,7 @@ import org.apache.poi.ss.usermodel.Row;
 
 import com.itgrids.partyanalyst.dao.IAppDbUpdateDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.ICadreRegAmountDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssigneeDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
@@ -75,11 +76,15 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	private ICadreSurveyUserAssigneeDAO cadreSurveyUserAssigneeDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IVoterInfoDAO voterInfoDAO;
+	private ICadreRegAmountDetailsDAO cadreRegAmountDetailsDAO;
 	private ITabLogInAuthDAO tabLogInAuthDAO;
 	private IRegistrationService registrationService;
 	
-	
-	
+	public void setCadreRegAmountDetailsDAO(
+			ICadreRegAmountDetailsDAO cadreRegAmountDetailsDAO) {
+		this.cadreRegAmountDetailsDAO = cadreRegAmountDetailsDAO;
+	}
+
 	public IRegistrationService getRegistrationService() {
 		return registrationService;
 	}
@@ -4413,6 +4418,131 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			}
 			
 		}
+		public SurveyTransactionVO getDaywiseWebUserDetails(Long userId,String FdateStr, String TdateStr)
+		{
+			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+			//String FdateStr ="01-11-2014";
+			//String TdateStr = "15-11-2014";
+			SurveyTransactionVO returnVO = new SurveyTransactionVO();		
+			
+			try {
+				List<SurveyTransactionVO> finalList = new ArrayList<SurveyTransactionVO>();
+				List<SurveyTransactionVO> returnList = new ArrayList<SurveyTransactionVO>();
+				Date fromDate = format.parse(FdateStr);
+				Date toDate = format.parse(TdateStr);
+				Map<String,Long> dateWiseAmountMap = new LinkedHashMap<String, Long>();
+				
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(fromDate);
+				dateWiseAmountMap.put(format.format(cal.getTime()), 0L);
+				while (cal.getTime().before(toDate)) {
+				    cal.add(Calendar.DATE, 1);
+				    dateWiseAmountMap.put(format.format(cal.getTime()), 0L);
+				}
+				
+				
+				List<Object[]> acountInfo = cadreRegAmountDetailsDAO.getPaidAmountDetailsOfWebUserByDateANDType(userId, fromDate, toDate,"WEB");
+				
+				
+				if(acountInfo != null && acountInfo.size()>0)
+				{
+					for (Object[] amount : acountInfo) 
+					{
+						String Date = amount[0] != null ? format.format(format1.parse(amount[0].toString().trim())):"";					
+						
+							dateWiseAmountMap.put(Date, amount[1] != null ? Long.valueOf(amount[1].toString().trim()):0L);
+					
+					}
+				}
+				
+				List<Object[]> webUserRecordsList = tdpCadreDAO.getDaywiseWebuserDetailsByUserANDType(userId, fromDate, toDate,"WEB");
+				
+				Long recordsCount = 0L;
+				Long actualAmount = 0L;
+				Long depositedAmount = 0L;
+				Long remainingAmount = 0L;
+						
+				if(webUserRecordsList != null && webUserRecordsList.size()>0)
+				{
+					
+					for (Object[] param : webUserRecordsList)
+					{
+						String Date = param[0] != null ? format.format(format1.parse(param[0].toString().trim())):"";
+						SurveyTransactionVO vo = new SurveyTransactionVO();
+						
+						vo.setSurveyDate(Date);
+						vo.setRecordsCount(param[1] != null ? Long.valueOf(param[1].toString()):0L);
+						vo.setActualAmount(vo.getRecordsCount() * 100);					
+						vo.setDepositedAmount(dateWiseAmountMap.get(Date) != null ? dateWiseAmountMap.get(Date) :0L);
+						vo.setRemainingAmount(vo.getActualAmount() - vo.getDepositedAmount());
+						
+						returnList.add(vo);
+						
+						recordsCount = recordsCount + vo.getRecordsCount();
+						actualAmount = actualAmount + vo.getActualAmount();
+						depositedAmount = depositedAmount + vo.getDepositedAmount();
+						remainingAmount = remainingAmount + vo.getRemainingAmount();
+						
+					}
+				}
+							
+				if(dateWiseAmountMap != null && dateWiseAmountMap.size()>0)
+				{
+					for (String date : dateWiseAmountMap.keySet()) 
+					{
+						SurveyTransactionVO vo = getMatchedVOForDate(returnList,date);
+						
+						if(vo == null)
+						{
+							vo = new SurveyTransactionVO();							
+							vo.setSurveyDate(date);
+							vo.setRecordsCount(0L);
+							vo.setActualAmount(0L);					
+							vo.setDepositedAmount(0L);
+							vo.setRemainingAmount(0L);
+						}
+						
+						finalList.add(vo);
+					}
+				}
+				
+				returnVO.setRecordsCount(recordsCount);
+				returnVO.setActualAmount(actualAmount);
+				returnVO.setDepositedAmount(depositedAmount);
+				returnVO.setRemainingAmount(remainingAmount);
+				
+				returnVO.setSurveyTransactionVOList(finalList);
+				
+				
+			} catch (Exception e) {
+				LOG.error(" exception occured at getDaywiseWebUserDetails() in CadreSurveyTransactionService service class. ", e);
+			}
+			return returnVO;
+		}
+		
+		private SurveyTransactionVO getMatchedVOForDate(List<SurveyTransactionVO> list, String date)
+		{
+			SurveyTransactionVO returnVO = null;
+			
+			try {
+				if(list != null && list.size()>0)
+				{
+					for (SurveyTransactionVO vo : list) 
+					{
+						if(vo.getSurveyDate().trim().equalsIgnoreCase(date.trim()))
+						{
+							return vo;
+						}
+					}
+				}
+			} catch (Exception e) {
+				LOG.error(" exception occured at getMatchedVOForDate() in CadreSurveyTransactionService service class. ", e);
+			}
+			
+			return returnVO;
+		}
+		
 		public Object getInActiveUsers(String hours,String value)
 		{
 			 List<Long> inActiveUsersCount=null;
@@ -4450,6 +4580,33 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 						   
 						}
 						else if(value.equalsIgnoreCase("total")){
+							
+							  Map<String,String> parliamentForAssemblyMap = new TreeMap<String, String>();
+							  List<Long> parliamentIds = new ArrayList<Long>();
+							  
+								List<Object[]> locationsList =  delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(0L);							
+									
+								if(locationsList != null && locationsList.size()>0)
+								{
+									for (Object[] param : locationsList)
+									{
+										parliamentIds.add(param[0] != null ? Long.valueOf(param[0].toString()) :0L);
+									}
+								}
+								
+								if(parliamentIds != null && parliamentIds.size()>0)
+								{
+									locationsList = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesListForAListOfParliamentConstituency(parliamentIds);
+															
+									if(locationsList != null && locationsList.size()>0)
+									{
+										for (Object[] param : locationsList)
+										{
+											parliamentForAssemblyMap.put(param[1] != null ? param[1].toString().trim() :"", param[2] != null ? param[2].toString().trim() :"");
+										}
+									}	
+								}
+								
 						  List<Object[]> objList=tdpCadreDAO.inActiveUsersInLastHours(cal.getTime(),lastHoursList);
 						  if(objList!=null && objList.size()>0)
 							{
@@ -4460,7 +4617,12 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 									genericVO.setDesc(objects[0]!=null?objects[0].toString():"");//username
 									genericVO.setName(objects[1]!=null?objects[1].toString():"");//name
 									genericVO.setMobileNo(objects[2]!=null?objects[2].toString():"");//mobileno
-									genericVO.setCaste(objects[3]!=null?objects[3].toString():"");//tabno
+									genericVO.setCaste(objects[3]!=null?objects[3].toString():"");//tabno									
+									
+									genericVO.setWorkedTime(objects[5]!=null?objects[5].toString():"");//constituencyName
+									genericVO.setStartTime(objects[6]!=null?objects[6].toString():""); //district Name
+									genericVO.setEndTime(parliamentForAssemblyMap.get(genericVO.getWorkedTime()));// parliament
+									
 									inActiveUsersDetails.add(genericVO);
 									
 								}
