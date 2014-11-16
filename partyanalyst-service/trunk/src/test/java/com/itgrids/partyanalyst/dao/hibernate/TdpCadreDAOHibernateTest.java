@@ -2,20 +2,32 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
+import com.itgrids.partyanalyst.dao.ICadreRegAmountDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.service.impl.CadreDashBoardService;
 
 public class TdpCadreDAOHibernateTest extends BaseDaoTestCase {
 	private ITdpCadreDAO tdpCadreDAO;
 	private CadreDashBoardService cadreDashBoardService;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+	private ICadreRegAmountDetailsDAO cadreRegAmountDetailsDAO;
 	
+	
+	public void setCadreRegAmountDetailsDAO(
+			ICadreRegAmountDetailsDAO cadreRegAmountDetailsDAO) {
+		this.cadreRegAmountDetailsDAO = cadreRegAmountDetailsDAO;
+	}
+
 	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
 		return delimitationConstituencyAssemblyDetailsDAO;
 	}
@@ -599,4 +611,128 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 		
 	}
 	*/
+	/*
+	public void testgetDaywiseWebuserDetailsByUser()
+	{
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+		String FdateStr ="01-11-2014";
+		String TdateStr = "15-11-2014";
+		SurveyTransactionVO returnVO = new SurveyTransactionVO();
+		
+		try {
+			List<SurveyTransactionVO> finalList = new ArrayList<SurveyTransactionVO>();
+			List<SurveyTransactionVO> returnList = new ArrayList<SurveyTransactionVO>();
+			Date fromDate = format.parse(FdateStr);
+			Date toDate = format.parse(TdateStr);
+			Map<String,Long> dateWiseAmountMap = new LinkedHashMap<String, Long>();
+			
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(fromDate);
+			while (cal.getTime().before(toDate)) {
+			    cal.add(Calendar.DATE, 1);
+			    dateWiseAmountMap.put(format.format(cal.getTime()), 0L);
+			}
+			
+			
+			List<Object[]> acountInfo = cadreRegAmountDetailsDAO.getPaidAmountDetailsOfWebUserByDateANDType(2189L, fromDate, toDate,"TAB");
+			
+			
+			if(acountInfo != null && acountInfo.size()>0)
+			{
+				for (Object[] amount : acountInfo) 
+				{
+					String Date = amount[0] != null ? format.format(format1.parse(amount[0].toString().trim())):"";					
+					
+						dateWiseAmountMap.put(Date, amount[1] != null ? Long.valueOf(amount[1].toString().trim()):0L);
+				
+				}
+			}
+			
+			List<Object[]> webUserRecordsList = tdpCadreDAO.getDaywiseWebuserDetailsByUserANDType(4197L, fromDate, toDate,"WEB");
+			
+			Long recordsCount = 0L;
+			Long actualAmount = 0L;
+			Long depositedAmount = 0L;
+			Long remainingAmount = 0L;
+					
+			if(webUserRecordsList != null && webUserRecordsList.size()>0)
+			{
+				
+				for (Object[] param : webUserRecordsList)
+				{
+					String Date = param[0] != null ? format.format(format1.parse(param[0].toString().trim())):"";
+					SurveyTransactionVO vo = new SurveyTransactionVO();
+					
+					vo.setSurveyDate(Date);
+					vo.setRecordsCount(param[1] != null ? Long.valueOf(param[1].toString()):0L);
+					vo.setActualAmount(vo.getRecordsCount() * 100);					
+					vo.setDepositedAmount(dateWiseAmountMap.get(Date));
+					vo.setRemainingAmount(vo.getActualAmount() - vo.getDepositedAmount());
+					
+					returnList.add(vo);
+					
+					recordsCount = recordsCount + vo.getRecordsCount();
+					actualAmount = actualAmount + vo.getActualAmount();
+					depositedAmount = depositedAmount + vo.getDepositedAmount();
+					remainingAmount = remainingAmount + vo.getRemainingAmount();
+					
+				}
+			}
+						
+			if(dateWiseAmountMap != null && dateWiseAmountMap.size()>0)
+			{
+				for (String date : dateWiseAmountMap.keySet()) 
+				{
+					SurveyTransactionVO vo = getMatchedVOForDate(returnList,date);
+					
+					if(vo == null)
+					{
+						vo = new SurveyTransactionVO();							
+						vo.setSurveyDate(date);
+						vo.setRecordsCount(0L);
+						vo.setActualAmount(0L);					
+						vo.setDepositedAmount(0L);
+						vo.setRemainingAmount(0L);
+					}
+					
+					finalList.add(vo);
+				}
+			}
+			
+			returnVO.setRecordsCount(recordsCount);
+			returnVO.setActualAmount(actualAmount);
+			returnVO.setDepositedAmount(depositedAmount);
+			returnVO.setRemainingAmount(remainingAmount);
+			
+			returnVO.setSurveyTransactionVOList(finalList);
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+	
+
+	private SurveyTransactionVO getMatchedVOForDate(List<SurveyTransactionVO> list, String date)
+	{
+		SurveyTransactionVO returnVO = null;
+		
+		try {
+			if(list != null && list.size()>0)
+			{
+				for (SurveyTransactionVO vo : list) 
+				{
+					if(vo.getSurveyDate().trim().equalsIgnoreCase(date.trim()))
+					{
+						return vo;
+					}
+				}
+			}
+		} catch (Exception e) {
+			
+		}
+		
+		return returnVO;
+	}*/
+	
 }
