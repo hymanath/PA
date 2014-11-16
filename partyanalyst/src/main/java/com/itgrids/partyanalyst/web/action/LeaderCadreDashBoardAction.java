@@ -9,6 +9,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreAmountDetailsVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ILeaderCadreDashBoardService;
 import com.opensymphony.xwork2.Action;
@@ -74,11 +75,13 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 	public String getLoationWiseLeaderCadreInfo()
 	{
 		try{
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			
 			jObj = new JSONObject(getTask());
 			if(jObj.getString("task").equalsIgnoreCase("mainLevel"))
-			amountDetails = leaderCadreDashBoardService.getLoationWiseLeaderCadreDetails(jObj.getString("type"),jObj.getLong("stateId"));
+			amountDetails = leaderCadreDashBoardService.getLoationWiseLeaderCadreDetails(jObj.getString("type"),jObj.getLong("stateId"),regVO.getAccessType(),regVO.getAccessValue());
 			if(jObj.getString("task").equalsIgnoreCase("subLevel"))
-				amountDetails = leaderCadreDashBoardService.getSubLevelLoationWiseLeaderCadreDetails(jObj.getString("type"),jObj.getLong("id"));	
+				amountDetails = leaderCadreDashBoardService.getSubLevelLoationWiseLeaderCadreDetails(jObj.getString("type"),jObj.getLong("id"),regVO.getAccessType(),regVO.getAccessValue());	
 		}
 		catch (Exception e) {
 			LOG.info("Entered into getLoationLeaderCadreInfo() in LeaderCadreDashBoardActioon class");
