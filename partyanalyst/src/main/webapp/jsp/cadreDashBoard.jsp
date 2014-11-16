@@ -284,25 +284,11 @@ table.dataTable tr.odd {
 			</div><!-- ReCently Registered Block END -->
 		</div>
 		
+		<c:if test="${fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) }">
 		<div class="row-fluid">
+			
 			<div class="span6 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
-				<h4> District wise Target & Registred Cadre Comparison <i class="icon-refresh" onclick="getLocationswiseleaderCadreInfo2(2,'District',1,'#leaderDataDiv1')" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i></h4>
-				<div style="padding:5px;">
-					<input type="radio" id="todayId" name="compareD" value="today" checked="true" style="margin-top:0px;"/><span> TODAY</span>
-					<input type="radio" id="asOfNowId" name="compareD" value="previous" style="margin-top:0px;"/><span>AS OF NOW</span>
-					
-					<div class="btn-group pull-right">
-					<a class="btn btn-mini btn-success apele" href="javascript:{}" id="apDistTargetComp">AP</a>
-					<a class="btn btn-mini tsele" href="javascript:{}" id="tgDistTargetComp">TS</a>
-				</div>
-				</div>
-				
-				<div id="leaderDataDiv1" class="height-300 scrollable_div">
-					<img style="margin-left: 180px;margin-top: 101px;" id="ajaxImgStyle" src="images/icons/loading.gif"/>
-				</div>
-			</div>
-			<div class="span6 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
-				<h4> Constituency wise Target & Registred Cadre Comparison <i class="icon-refresh" onclick="getLocationswiseleaderCadreInfo2(3,'Constituency',1,'#leaderDataDiv2')" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i></h4>
+				<h4> Constituency Target VS Registred Cadre  <i class="icon-refresh" onclick="getLocationswiseleaderCadreInfo2(3,'Constituency',1,'#leaderDataDiv2')" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i></h4>
 				<div style="padding:5px;">
 					<input type="radio" id="todayId" name="compareC" value="today" checked="true" style="margin-top:0px;"/><span> TODAY</span>
 					<input type="radio" id="asOfNowId" name="compareC" value="previous" style="margin-top:0px;"/><span>AS OF NOW</span>
@@ -317,7 +303,25 @@ table.dataTable tr.odd {
 					<img style="margin-left: 180px;margin-top: 101px;" id="ajaxImgStyle" src="images/icons/loading.gif"/>
 				</div>
 			</div>
+			
+			<div class="span6 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
+				<h4> District  Target Vs Registred Cadre  <i class="icon-refresh" onclick="getLocationswiseleaderCadreInfo2(2,'District',1,'#leaderDataDiv1')" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i></h4>
+				<div style="padding:5px;">
+					<input type="radio" id="todayId" name="compareD" value="today" checked="true" style="margin-top:0px;"/><span> TODAY</span>
+					<input type="radio" id="asOfNowId" name="compareD" value="previous" style="margin-top:0px;"/><span>AS OF NOW</span>
+					
+					<div class="btn-group pull-right">
+					<a class="btn btn-mini btn-success apele" href="javascript:{}" id="apDistTargetComp">AP</a>
+					<a class="btn btn-mini tsele" href="javascript:{}" id="tgDistTargetComp">TS</a>
+				</div>
+				</div>
+				
+				<div id="leaderDataDiv1" class="height-300 scrollable_div">
+					<img style="margin-left: 180px;margin-top: 101px;" id="ajaxImgStyle" src="images/icons/loading.gif"/>
+				</div>
+			</div>
 		</div>
+		</c:if>
 		
 	</div>
 	<div id="dialogueDiv" style="display: none;">
@@ -1703,8 +1707,10 @@ function SortByName(a, b){
 			var val = $('input:radio[name=compareD]:checked').val();
 		});
 	   
+	  <c:if test="${fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) }"> 
 	  getLocationswiseleaderCadreInfo2(3,"Constituency",1,"#leaderDataDiv2");
 	  getLocationswiseleaderCadreInfo2(2,"District",1,"#leaderDataDiv1");
+	  </c:if>
 	
 </script>
 
