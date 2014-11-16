@@ -2256,6 +2256,7 @@
      </bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
+      	 <property name="cadreRegAmountDetailsDAO" ref="cadreRegAmountDetailsDAO" />
          <property name="tdpCadreDAO" ref="tdpCadreDAO" />
          <property name="constituencyDAO" ref="constituencyDAO" />
          <property name="boothDAO" ref="boothDAO" />
