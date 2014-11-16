@@ -2001,7 +2001,7 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
 			qry.setParameter("mobileNo", mobileNo);
 		}
 		if(trNo!=null && trNo.trim().length()>0){
-			qry.setParameter("mobileNo", trNo);
+			qry.setParameter("trNo", trNo);
 		}
 		if(surveyDate!=null){
 			qry.setDate("surveyDate", surveyDate);
