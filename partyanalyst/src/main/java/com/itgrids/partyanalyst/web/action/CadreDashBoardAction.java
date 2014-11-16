@@ -649,4 +649,10 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String registerAllUsers(){
+		RegistrationVO user = (RegistrationVO) request.getSession().getAttribute("USER");
+		task = cadreDashBoardService.registerAllUsers(user);
+		return Action.SUCCESS;
+	}
 }
