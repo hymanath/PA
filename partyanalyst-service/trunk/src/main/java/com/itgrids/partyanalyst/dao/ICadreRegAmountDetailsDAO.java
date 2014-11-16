@@ -13,4 +13,7 @@ public interface ICadreRegAmountDetailsDAO extends GenericDao<CadreRegAmountDeta
 	public List<Object[]> getAmountDetailsDateWise(String type);
 	public List<Object[]> getAmountDetailsOfWebUser(Date fromDate,Date toDate);
 	public List<Object[]> getAmountDetailsOfWebUserByDate(Date fromDate,Date toDate);
+	
+	public List<Object[]> getPaidAmountDetailsOfWebUserByDateANDType(Long webUserId, Date fromDate,Date toDate,String type);
+	
 }
