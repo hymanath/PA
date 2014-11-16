@@ -1,14 +1,13 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
-
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
-import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -2052,10 +2051,38 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
 		return query.list();	
 	}
 	
+	
+	 
+		public List<Object[]> getDaywiseWebuserDetailsByUserANDType(Long userId, Date fromDate,Date toDate,String type)
+		{
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append(" select date(model.surveyTime), count(model.tdpCadreId) from TdpCadre model where model.isDeleted='N' and model.enrollmentYear = 2014 and ");
+			queryStr.append(" model.insertedWebUserId = :userId and model.dataSourceType='"+type+"' ");
+			
+			if(fromDate != null && toDate != null)
+			{
+				queryStr.append(" and ( date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate  )  ");
+			}
+			
+			queryStr.append(" group by date(model.surveyTime) order by date(model.surveyTime) desc ");
+			
+			Query query=getSession().createQuery(queryStr.toString());
+			
+			if(fromDate != null && toDate != null)
+			{
+				query.setDate("fromDate",fromDate);	
+				query.setDate("toDate",toDate);	
+			}
+			
+			query.setParameter("userId",userId);	
+			
+			return query.list();
+		}
+		
 	public List<Object[]> inActiveUsersInLastHours(Date surveyTime,List<Long> cadreSurveyUserIdsList)
 	{
 		Query query=getSession().createQuery("" +
-				"select distinct model.insertedBy.userName,model.insertedBy.name,model.insertedBy.mobileNo,model1.tabNo" +
+				"select distinct model.insertedBy.userName,model.insertedBy.name,model.insertedBy.mobileNo,model1.tabNo ,model1.constituency.constituencyId, model1.constituency.name, model1.constituency.district.districtName " +
 				" from TdpCadre model,CadreSurveyUserAssignDetails model1 " +
 				" where model.insertedBy.cadreSurveyUserId=model1.cadreSurveyUser.cadreSurveyUserId and" +
 				" model.surveyTime>=:surveyTime and" +
