@@ -286,7 +286,7 @@ table.dataTable tr.odd {
 		
 		<div class="row-fluid">
 			<div class="span6 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
-				<h4> District wise Target & Registred Cadre Comparison</h4>
+				<h4> District wise Target & Registred Cadre Comparison <i class="icon-refresh" onclick="getLocationswiseleaderCadreInfo2(2,'District',1,'#leaderDataDiv1')" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i></h4>
 				<div style="padding:5px;">
 					<input type="radio" id="todayId" name="compareD" value="today" checked="true" style="margin-top:0px;"/><span> TODAY</span>
 					<input type="radio" id="asOfNowId" name="compareD" value="previous" style="margin-top:0px;"/><span>AS OF NOW</span>
@@ -302,7 +302,7 @@ table.dataTable tr.odd {
 				</div>
 			</div>
 			<div class="span6 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
-				<h4> Constituency wise Target & Registred Cadre Comparison</h4>
+				<h4> Constituency wise Target & Registred Cadre Comparison <i class="icon-refresh" onclick="getLocationswiseleaderCadreInfo2(3,'Constituency',1,'#leaderDataDiv2')" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i></h4>
 				<div style="padding:5px;">
 					<input type="radio" id="todayId" name="compareC" value="today" checked="true" style="margin-top:0px;"/><span> TODAY</span>
 					<input type="radio" id="asOfNowId" name="compareC" value="previous" style="margin-top:0px;"/><span>AS OF NOW</span>
