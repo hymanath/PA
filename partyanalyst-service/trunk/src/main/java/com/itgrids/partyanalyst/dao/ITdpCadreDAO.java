@@ -180,4 +180,9 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public List<Object[]> getTotalRecords(List<Long> districtIds,String type,Date date);
 	public List<Object[]> getTotalRecordsUnderDate(List<Long> districtIds,String type,Date date);
+
+	public List<Object[]> getTotalRecords1(List<Long> ids,String type);
+	public List<Object[]> getLocationWiseGenderCadreCount(List<Long> Ids,String type);
+	public List<Object[]> getLocationWiseAgeRangeCount(List<Long> Ids,String ageRange ,String type);
+	public List<Object[]> getLocationWiseTotalRecords(List<Long> districtIds,String type);
 }

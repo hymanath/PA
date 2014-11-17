@@ -698,4 +698,5 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getVotersDetailsByCTPSearchCriteria(Long publicationDateId,Long id,String queryString,Long userId);
 	  
 	  public List<String> getPartNo(Long constituencyId,Long voterId);
+	  public List<Object[]> getLocationWiseVoterAgeRangeCount(List<Long> locationIdsList,String locationType,Long publicationDateId);
 }
