@@ -8936,6 +8936,17 @@
 			<result name="input">/jsp/loginForm.jsp?src=tabAllocationDetailsAction</result>
 		</action>
 		
+		
+		
+		<action name="cadreAgeGenderAnalysisAction" class="cadreAgeGenderAnalysisAction">
+			<result name="success">/jsp/cadreAgeGenderAnalysis.jsp</result>
+		</action>
+		
+		<action name="getLocationWiseGenderAgeInfoAction" class="cadreAgeGenderAnalysisAction" method="getLocationWiseGenderAgeInfo">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
 </package>
 
 </struts>      
