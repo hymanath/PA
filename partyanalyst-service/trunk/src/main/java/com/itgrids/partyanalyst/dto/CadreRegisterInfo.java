@@ -20,8 +20,8 @@ public class CadreRegisterInfo implements Serializable{
 	private Long percentage;
 	private String date;
 	private Long id;
-	private List<CadreRegisterInfo> infoList;
-	private List<CadreRegisterInfo> allDetailsList;
+	private List<CadreRegisterInfo> infoList = new ArrayList<CadreRegisterInfo>();
+	private List<CadreRegisterInfo> allDetailsList = new ArrayList<CadreRegisterInfo>();
 	private List<CadreRegisterInfo> cadreRegisterInfoList;
 	private String percentStr;
 	private String number;
@@ -46,6 +46,16 @@ public class CadreRegisterInfo implements Serializable{
 	private String state;
 	private String district;
 	private String status;
+	private Long registeredCount = 0L;
+	private Long maleVotersCount = 0L;
+	private Long femaleVotersCount = 0L;
+	private Long maleCadreCount = 0L;
+	private Long femaleCadreCount = 0L;
+	private String constituency;
+	private Long districtId;
+	private Long parliamentId;
+	private Long ageRangeCadreValues = 0L;
+	private Long ageRangeVoterValues = 0L;
 	
 	
 	
@@ -343,6 +353,87 @@ public class CadreRegisterInfo implements Serializable{
 
 	public void setStatus(String status) {
 		this.status = status;
-	}	
+	}
+
+	public Long getRegisteredCount() {
+		return registeredCount;
+	}
+
+	public void setRegisteredCount(Long registeredCount) {
+		this.registeredCount = registeredCount;
+	}
+
+	public Long getMaleVotersCount() {
+		return maleVotersCount;
+	}
+
+	public void setMaleVotersCount(Long maleVotersCount) {
+		this.maleVotersCount = maleVotersCount;
+	}
+
+	public Long getFemaleVotersCount() {
+		return femaleVotersCount;
+	}
+
+	public void setFemaleVotersCount(Long femaleVotersCount) {
+		this.femaleVotersCount = femaleVotersCount;
+	}
+
+	public Long getMaleCadreCount() {
+		return maleCadreCount;
+	}
+
+	public void setMaleCadreCount(Long maleCadreCount) {
+		this.maleCadreCount = maleCadreCount;
+	}
+
+	public Long getFemaleCadreCount() {
+		return femaleCadreCount;
+	}
+
+	public void setFemaleCadreCount(Long femaleCadreCount) {
+		this.femaleCadreCount = femaleCadreCount;
+	}
+
+	public String getConstituency() {
+		return constituency;
+	}
+
+	public void setConstituency(String constituency) {
+		this.constituency = constituency;
+	}
+
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+
+	public Long getParliamentId() {
+		return parliamentId;
+	}
+
+	public void setParliamentId(Long parliamentId) {
+		this.parliamentId = parliamentId;
+	}
+
+	public Long getAgeRangeCadreValues() {
+		return ageRangeCadreValues;
+	}
+
+	public void setAgeRangeCadreValues(Long ageRangeCadreValues) {
+		this.ageRangeCadreValues = ageRangeCadreValues;
+	}
+
+	public Long getAgeRangeVoterValues() {
+		return ageRangeVoterValues;
+	}
+
+	public void setAgeRangeVoterValues(Long ageRangeVoterValues) {
+		this.ageRangeVoterValues = ageRangeVoterValues;
+	}
+
 
 }
