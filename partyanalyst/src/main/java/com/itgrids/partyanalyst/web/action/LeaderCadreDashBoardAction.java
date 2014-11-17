@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -78,10 +80,22 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 			
 			jObj = new JSONObject(getTask());
-			if(jObj.getString("task").equalsIgnoreCase("mainLevel"))
-			amountDetails = leaderCadreDashBoardService.getLoationWiseLeaderCadreDetails(jObj.getString("type"),jObj.getLong("stateId"),regVO.getAccessType(),regVO.getAccessValue());
-			if(jObj.getString("task").equalsIgnoreCase("subLevel"))
-				amountDetails = leaderCadreDashBoardService.getSubLevelLoationWiseLeaderCadreDetails(jObj.getString("type"),jObj.getLong("id"),regVO.getAccessType(),regVO.getAccessValue());	
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Date reqFromDate = null;
+			Date reqToDate = null;
+			if(fromDate.trim().length() > 0){
+				reqFromDate = sdf.parse(fromDate);
+			}
+			if(toDate.trim().length() > 0){
+				reqToDate = sdf.parse(toDate);
+			}
+			if(jObj.getString("task").equalsIgnoreCase("mainLevel")){
+			    amountDetails = leaderCadreDashBoardService.getLoationWiseLeaderCadreDetails(jObj.getString("type"),jObj.getLong("stateId"),regVO.getAccessType(),regVO.getAccessValue(),reqFromDate,reqToDate);
+			}if(jObj.getString("task").equalsIgnoreCase("subLevel")){
+				amountDetails = leaderCadreDashBoardService.getSubLevelLoationWiseLeaderCadreDetails(jObj.getString("type"),jObj.getLong("id"),regVO.getAccessType(),regVO.getAccessValue(),reqFromDate,reqToDate);
+			}
 		}
 		catch (Exception e) {
 			LOG.info("Entered into getLoationLeaderCadreInfo() in LeaderCadreDashBoardActioon class");
