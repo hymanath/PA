@@ -7354,5 +7354,51 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
   		query.setParameter("voterId", voterId);
 	   return query.list();
    }
+   
+	public List<Object[]> getLocationWiseVoterAgeRangeCount(List<Long> locationIdsList,String locationType,Long publicationDateId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(distinct model.voter.voterId),model.voter.voterAgeRange.voterAgeRangeId,model.voter.voterAgeRange.ageRange ");
+		
+		if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+		 str.append(",model.booth.constituency.constituencyId ");
+		else if(locationType.equalsIgnoreCase(IConstants.DISTRICT))
+			str.append(" ,model.booth.constituency.district.districtId " );
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.TEHSIL))
+		 str.append(",model.booth.tehsil.tehsilId ");
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+			 str.append(",model.booth.localBody.localElectionBodyId ");
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+		 str.append(",model.booth.panchayat.panchayatId ");
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.BOOTH))
+		 str.append(",model.booth.boothId  ");
+		
+		
+		
+		str.append(" from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId =:publicationDateId ");
+		
+		if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+		 str.append(" and model.booth.constituency.district.districtId in (:locationIdsList) group by model.booth.constituency.constituencyId ");
+		else if(locationType.equalsIgnoreCase(IConstants.DISTRICT))
+			str.append("  and model.booth.constituency.district.districtId in (:locationIdsList) group by model.booth.constituency.district.districtId" );
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.TEHSIL))
+			str.append(" and model.booth.tehsil.tehsilId in (:locationIdsList) group by model.booth.tehsil.tehsilId ");
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
+			str.append(" and model.booth.localBody.localElectionBodyId in(:locationIdsList) group by model.booth.localBody.localElectionBodyId ");
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+			str.append(" and model.booth.panchayat.panchayatId in(:locationIdsList) and model.booth.localBody is null group by model.booth.panchayat.panchayatId ");
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.BOOTH))
+			str.append(" and model.booth.boothId in(:locationIdsList) group by model.booth.boothId ");
+		
+		
+		str.append(",model.voter.voterAgeRange.voterAgeRangeId ");
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameterList("locationIdsList", locationIdsList);
+		
+		return query.list();
+	}
+   
   
 }

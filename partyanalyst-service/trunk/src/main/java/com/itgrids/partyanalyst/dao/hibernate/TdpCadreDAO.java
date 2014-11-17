@@ -2177,4 +2177,148 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
 		
 		return query.list();
 	}
+	
+	
+	public List<Object[]> getTotalRecords1(List<Long> ids,String type){
+		StringBuilder str = new StringBuilder();
+		if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
+		 str.append("select count(model.tdpCadreId),model.userAddress.panchayat.panchayatId "); 
+		else if(type.equalsIgnoreCase(IConstants.BOOTH))
+			 str.append("select count(model.tdpCadreId),model.userAddress.booth.boothId "); 
+		
+		 str.append("  from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = 2014 "); 
+		 if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
+		    str.append(" and model.userAddress.panchayat.panchayatId in(:ids) group by model.userAddress.panchayat.panchayatId ");
+		 else if(type.equalsIgnoreCase(IConstants.BOOTH))
+			str.append(" and model.userAddress.booth.boothId in(:ids) group by model.userAddress.booth.boothId");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("ids", ids);
+		
+		return query.list();
+	}
+	
+	
+	public List<Object[]> getLocationWiseGenderCadreCount(List<Long> Ids,String type){		
+		
+		StringBuilder queryStr=new StringBuilder();
+		
+		if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+	    	queryStr.append("select count(model.gender),model.gender,model.userAddress.constituency.constituencyId ");
+		else if(type.equalsIgnoreCase(IConstants.DISTRICT))
+				queryStr.append("select count(model.gender),model.gender,model.userAddress.district.districtId " );
+		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+			queryStr.append("select count(model.gender),model.gender, model.userAddress.tehsil.tehsilId "); 
+	 	else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+			queryStr.append("select count(model.gender),model.gender, model.userAddress.constituency.localElectionBody.localElectionBodyId "); 
+		else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
+			queryStr.append("select count(model.gender),model.gender,model.userAddress.panchayat.panchayatId "); 
+		else if(type.equalsIgnoreCase(IConstants.BOOTH))
+			queryStr.append("select count(model.gender),model.gender, model.userAddress.booth.boothId "); 
+		
+            queryStr.append(" from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = 2014 and model.gender is not null");
+            
+		if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+		    	queryStr.append(" and model.userAddress.district.districtId in (:Ids) group by model.gender,model.userAddress.constituency.constituencyId ");
+		else if(type.equalsIgnoreCase(IConstants.DISTRICT))
+				queryStr.append(" and model.userAddress.district.districtId in (:Ids) group by model.gender,model.userAddress.district.districtId  " );
+		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+			queryStr.append(" and model.userAddress.tehsil.tehsilId in (:Ids) group by model.gender,model.userAddress.tehsil.tehsilId "); 
+	 	else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+			queryStr.append(" and model.userAddress.constituency.localElectionBody.localElectionBodyId in (:Ids) group by model.gender,model.userAddress.constituency.localElectionBody.localElectionBodyId "); 
+		else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
+			queryStr.append(" and model.userAddress.panchayat.panchayatId in (:Ids) group by model.gender,model.userAddress.panchayat.panchayatId "); 
+		else if(type.equalsIgnoreCase(IConstants.BOOTH))
+			queryStr.append(" and model.userAddress.booth.boothId in (:Ids) group by model.gender,model.userAddress.booth.boothId "); 
+		
+		
+		Query query = getSession().createQuery(queryStr.toString());		
+		query.setParameterList("Ids", Ids);
+				
+		return query.list();
+    }
+	
+	public List<Object[]> getLocationWiseAgeRangeCount(List<Long> Ids,String ageRange ,String type){
+
+		StringBuilder queryStr = new StringBuilder();
+		
+		if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+	    	queryStr.append("select count(model.tdpCadreId),model.userAddress.constituency.constituencyId ");
+		else if(type.equalsIgnoreCase(IConstants.DISTRICT))
+				queryStr.append("select count(model.tdpCadreId),model.userAddress.district.districtId " );
+		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+			queryStr.append("select count(model.tdpCadreId),model.userAddress.tehsil.tehsilId "); 
+	 	else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+			queryStr.append("select count(model.tdpCadreId), model.userAddress.constituency.localElectionBody.localElectionBodyId "); 
+		else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
+			queryStr.append("select count(model.tdpCadreId),model.userAddress.panchayat.panchayatId "); 
+		else if(type.equalsIgnoreCase(IConstants.BOOTH))
+			queryStr.append("select count(model.tdpCadreId),model.userAddress.booth.boothId "); 
+		
+		
+		queryStr.append(" from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = 2014 ");
+		
+	
+		if (ageRange.equals("below 18")) {
+			queryStr.append(" and model.age <18 ");
+		} else if (ageRange.equals("18-25")) {
+			queryStr.append(" and model.age >=18 and model.age<=25 ");
+		} else if (ageRange.equals("26-35")) {
+			queryStr.append(" and model.age >=26 and model.age<=35 ");
+		} else if (ageRange.equals("36-45")) {
+			queryStr.append(" and model.age >=36 and model.age<=45 ");
+		} else if (ageRange.equals("46-60")) {
+			queryStr.append(" and model.age >=46 and model.age<=60 ");
+		} else if (ageRange.equals("above 60")) {
+			queryStr.append(" and model.age >60 ");
+		}
+		
+		if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+	    	queryStr.append(" and model.userAddress.district.districtId in (:Ids) group by model.userAddress.constituency.constituencyId ");
+		else if(type.equalsIgnoreCase(IConstants.DISTRICT))
+				queryStr.append(" and model.userAddress.district.districtId in (:Ids) group by model.userAddress.district.districtId  " );
+		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+			queryStr.append(" and model.userAddress.tehsil.tehsilId in (:Ids) group by model.userAddress.tehsil.tehsilId "); 
+	 	else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+			queryStr.append(" and model.userAddress.constituency.localElectionBody.localElectionBodyId in (:Ids) group by model.userAddress.constituency.localElectionBody.localElectionBodyId "); 
+		else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
+			queryStr.append(" and model.userAddress.panchayat.panchayatId in (:Ids) group by model.userAddress.panchayat.panchayatId "); 
+		else if(type.equalsIgnoreCase(IConstants.BOOTH))
+			queryStr.append(" and model.userAddress.booth.boothId in (:Ids) group by model.userAddress.booth.boothId "); 
+			
+
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("Ids", Ids);
+		return query.list();
+	}
+
+
+	
+	
+	public List<Object[]> getLocationWiseTotalRecords(List<Long> districtIds,String type){
+		StringBuilder str = new StringBuilder();
+		if(type.equalsIgnoreCase(IConstants.DISTRICT))
+		 str.append("select count(model.tdpCadreId),model.userAddress.constituency.district.districtId"); 
+		else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			 str.append("select count(model.tdpCadreId),model.userAddress.constituency.constituencyId"); 
+		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+			str.append("select count(model.tdpCadreId),model.userAddress.tehsil.tehsilId"); 
+		else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+			str.append("select count(model.tdpCadreId),model.userAddress.constituency.localElectionBody.localElectionBodyId"); 
+		 str.append("  from TdpCadre model" +
+				" where model.isDeleted = 'N' " +
+				" and model.enrollmentYear = 2014 "); 
+		 if(type.equalsIgnoreCase(IConstants.DISTRICT))
+		    str.append(" and model.userAddress.constituency.district.districtId in(:districtIds) group by model.userAddress.constituency.district.districtId ");
+		 else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			str.append(" and model.userAddress.constituency.district.districtId in(:districtIds) group by model.userAddress.constituency.constituencyId");
+		 else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+				str.append(" and model.userAddress.tehsil.tehsilId in(:districtIds) group by model.userAddress.tehsil.tehsilId");
+		 else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+				str.append(" and model.userAddress.localElectionBody.localElectionBodyId in(:districtIds) group by model.userAddress.localElectionBody.localElectionBodyId");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("districtIds", districtIds);
+		
+		return query.list();
+	}
 }

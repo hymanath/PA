@@ -448,7 +448,7 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getVotersCountInADistrictsList(List<Long> districtIdsList, Long publicationDateId)
 	{
-		Query query = getSession().createQuery("Select model2.district.districtId,model2.district.districtName,sum(model.totalVoters) from VoterInfo model,Constituency model2 where model.constituencyId = model2.constituencyId and " +
+		Query query = getSession().createQuery("Select model2.district.districtId,model2.district.districtName,sum(model.totalVoters),sum(model.maleVoters),sum(model.femaleVoters) from VoterInfo model,Constituency model2 where model.constituencyId = model2.constituencyId and " +
 				" model.voterReportLevel.voterReportLevelId = :reportLevelId and model.reportLevelValue = model2.constituencyId and model.publicationDate.publicationDateId = :publicationDateId and " +
 				" model2.district.districtId in (:districtIdsList) group by model2.district.districtId");
 		
@@ -462,7 +462,7 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getVotersCountInConstituenciesByDistrictsList(List<Long> districtIdsList, Long publicationDateId)
 	{
-		Query query = getSession().createQuery("Select model2.constituencyId,model2.name,sum(model.totalVoters),model2.district.districtId from VoterInfo model,Constituency model2 where model.constituencyId = model2.constituencyId and " +
+		Query query = getSession().createQuery("Select model2.constituencyId,model2.name,sum(model.totalVoters),model2.district.districtId,sum(model.maleVoters),sum(model.femaleVoters) from VoterInfo model,Constituency model2 where model.constituencyId = model2.constituencyId and " +
 				" model.voterReportLevel.voterReportLevelId = :reportLevelId and model.reportLevelValue = model2.constituencyId and model.publicationDate.publicationDateId = :publicationDateId and " +
 				" model2.district.districtId in (:districtIdsList) group by model2.constituencyId");
 		
@@ -475,7 +475,7 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getVotersCountInATehsilList(List<Long> tehsilIdsList, Long publicationDateId)
 	{
-		Query query = getSession().createQuery("Select model.reportLevelValue,model2.tehsilName,sum(model.totalVoters),model2.district.districtId from VoterInfo model,Tehsil model2 where model.reportLevelValue = model2.tehsilId and " +
+		Query query = getSession().createQuery("Select model.reportLevelValue,model2.tehsilName,sum(model.totalVoters),model2.district.districtId,sum(model.maleVoters),sum(model.femaleVoters) from VoterInfo model,Tehsil model2 where model.reportLevelValue = model2.tehsilId and " +
 				" model.voterReportLevel.voterReportLevelId = :reportLevelId and model.publicationDate.publicationDateId = :publicationDateId and " +
 				" model2.tehsilId in (:tehsilIdsList) group by model2.tehsilId");
 		query.setParameter("reportLevelId", 2L);
@@ -487,7 +487,7 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getVotersCountInALocalBodyList(List<Long> localbodyIdsList, Long publicationDateId)
 	{
-		Query query = getSession().createQuery("Select model.reportLevelValue,model2.name,sum(model.totalVoters),model2.district.districtId from VoterInfo model,LocalElectionBody model2 where model.reportLevelValue = model2.localElectionBodyId and " +
+		Query query = getSession().createQuery("Select model.reportLevelValue,model2.name,sum(model.totalVoters),model2.district.districtId,sum(model.maleVoters),sum(model.femaleVoters) from VoterInfo model,LocalElectionBody model2 where model.reportLevelValue = model2.localElectionBodyId and " +
 				" model.voterReportLevel.voterReportLevelId = :reportLevelId and model.publicationDate.publicationDateId = :publicationDateId and " +
 				" model2.localElectionBodyId in (:localbodyIdsList) group by model2.localElectionBodyId");
 		query.setParameter("reportLevelId", 5L);
@@ -498,4 +498,30 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
     }
 	
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVotersCountInPanchayatList(List<Long> panchayatIds, Long publicationDateId)
+	{
+		Query query = getSession().createQuery("Select model.reportLevelValue,model2.panchayatName,sum(model.totalVoters),model2.tehsil.district.districtId,sum(model.maleVoters),sum(model.femaleVoters) from VoterInfo model,Panchayat model2 where model.reportLevelValue = model2.panchayatId and " +
+				" model.voterReportLevel.voterReportLevelId = :reportLevelId and model.publicationDate.publicationDateId = :publicationDateId and " +
+				" model2.panchayatId in (:panchayatIds) group by model2.panchayatId");
+		query.setParameter("reportLevelId",3L);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameterList("panchayatIds", panchayatIds);
+		
+		return query.list();
+    }
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVotersCountInBoothsList(List<Long> boothIds, Long publicationDateId)
+	{
+		Query query = getSession().createQuery("Select model.reportLevelValue,model2.partNo,sum(model.totalVoters),model2.tehsil.district.districtId,sum(model.maleVoters),sum(model.femaleVoters) from VoterInfo model,Booth model2 where model.reportLevelValue = model2.boothId and " +
+				" model.voterReportLevel.voterReportLevelId = :reportLevelId and model.publicationDate.publicationDateId = :publicationDateId and " +
+				" model2.boothId in (:boothIds) group by model2.boothId");
+		query.setParameter("reportLevelId",4L);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameterList("boothIds", boothIds);
+		
+		return query.list();
+    }
+
 }
