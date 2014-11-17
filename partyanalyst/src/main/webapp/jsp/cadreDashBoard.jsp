@@ -1544,7 +1544,7 @@ function SortByName(a, b){
 								str1+="<td attr='constituency' attrst='bestCount' class='statusBsc'>"+result[0].bestCount+"</td>";
 								str1+="<td attr='constituency' attrst='goodCount' class='statusBsc'>"+result[0].goodCount+"</td>";
 								str1+="<td attr='constituency' attrst='okCount' class='statusBsc'>"+result[0].okCount+"</td>";
-								str1+="<td attr='constituency' attrst='poorCount' class='statusBsc'>"+result[0].poorCCount+"</td>";
+								str1+="<td attr='constituency' attrst='poorCount' class='statusBsc'>"+result[0].poorCount+"</td>";
 								str1+="<td attr='constituency' attrst='worstCount' class='statusBsc'>"+result[0].worstCount+"</td>";
 							str1+="</tr>";
 						str1+='</table>';
@@ -1657,7 +1657,7 @@ function SortByName(a, b){
 								str1+="<td attr='district' attrst='bestCount' class='statusBsd'>"+result[0].bestCount+"</td>";
 								str1+="<td attr='district' attrst='goodCount' class='statusBsd'>"+result[0].goodCount+"</td>";
 								str1+="<td attr='district' attrst='okCount' class='statusBsd'>"+result[0].okCount+"</td>";
-								str1+="<td attr='district' attrst='poorCount' class='statusBsd'>"+result[0].poorCCount+"</td>";
+								str1+="<td attr='district' attrst='poorCount' class='statusBsd'>"+result[0].poorCount+"</td>";
 								str1+="<td attr='district' attrst='worstCount' class='statusBsd'>"+result[0].worstCount+"</td>";
 							str1+="</tr>";
 						str1+='</table>';
