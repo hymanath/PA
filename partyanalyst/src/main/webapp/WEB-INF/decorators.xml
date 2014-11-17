@@ -287,6 +287,7 @@
 			<pattern>/leaderCadreDashBoardAction*</pattern>
 			<pattern>/tdpCadreReportsAction*</pattern>
 			<pattern>/tabAllocationDetailsAction*</pattern>
+			 <pattern>/cadreAgeGenderAnalysisAction*</pattern>
        </decorator>
        
        <decorator name="tdpHome_old" page="tdplayout_old.jsp">
