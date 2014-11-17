@@ -2273,7 +2273,8 @@
 		    <property name="voterInfoDAO" ref="voterInfoDAO" />
 		    <property name="tabLogInAuthDAO" ref="tabLogInAuthDAO" />
 		    <property name="registrationService" ref="registrationService" />
-		  
+		   <property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
+		   <property name="regionServiceDataImp" ref="regionServiceDataImp" />
          
      </bean>
     <bean name="ctpCasteReportService"  class="com.itgrids.partyanalyst.service.impl.CtpCasteReportService">

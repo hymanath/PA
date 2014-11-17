@@ -1508,5 +1508,8 @@
 		<property name="tdpCadreReportService" ref="tdpCadreReportService" />
 	</bean>
 	
+	<bean id="cadreAgeGenderAnalysisAction" class="com.itgrids.partyanalyst.web.action.CadreAgeGenderAnalysisAction" singleton="false">
+		<property name="cadreDashBoardService" ref="cadreDashBoardService" />
+	</bean>
 </beans>	
 	
