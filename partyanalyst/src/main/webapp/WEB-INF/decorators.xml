@@ -285,6 +285,7 @@
 			<pattern>/cadreRegAmountUpload*</pattern>
 			<pattern>/cadreRegistrationAmountReportAction*</pattern>
 			<pattern>/leaderCadreDashBoardAction*</pattern>
+			<pattern>/tdpCadreReportsAction*</pattern>
 			<pattern>/tabAllocationDetailsAction*</pattern>
        </decorator>
        
