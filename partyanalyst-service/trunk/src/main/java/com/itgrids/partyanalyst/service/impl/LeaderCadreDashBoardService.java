@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
@@ -476,12 +477,18 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 		return state;
 	}
 	
-	public List<CadreAmountDetailsVO> getLocationWiseAsOfNowDetails(String locationtype,Long stateId)
-	{
+	public List<CadreAmountDetailsVO> getLocationWiseAsOfNowDetails(String locationtype,Long stateId){
 		List<CadreAmountDetailsVO> resultList = new ArrayList<CadreAmountDetailsVO>(); 
 		List<Long> constituenycIds = new ArrayList<Long>();
 		List<Long> districtIds = new ArrayList<Long>();
 		List<Object[]> voterCountList = null;
+		
+		
+		int ok_status_count = 0;
+		int good_status_count = 0;
+		int best_status_count = 0;
+		int poor_status_count = 0;
+		int worst_status_count = 0;
 		
 		try{
 				if(stateId == 2){
@@ -509,6 +516,8 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 					basicVo.setDifference(0l);
 					basicVo.setPercentage("0.0");
 					basicVo.setColorStatus("Worst");
+					
+					String currentDate = dateService.getCurrentDateAndTimeInStringFormat();
 					if(stateId == 1)
 					basicVo.setTargetCadres((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014);
 					else
@@ -545,13 +554,17 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 						  percentage = (new BigDecimal(vo.getTotalRecords()*(100.0)/vo.getTargetCadres().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 						  //percentage = (new BigDecimal(vo.getDifference()*(100.0)/vo.getTargetCadres().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 						  float fl_perc = Float.parseFloat(percentage);
-						  if(fl_perc>=140f){
+						  if(fl_perc>=120f){
+							  best_status_count = best_status_count+1;
 							  vo.setColorStatus("Best");
-						  }else if(fl_perc<140f && fl_perc>=110f){
+						  }else if(fl_perc>=100f && fl_perc<120f){
+							  good_status_count = good_status_count+1;
 							  vo.setColorStatus("Good");
-						  }else if(fl_perc>=90f && fl_perc<110f){
+						  }else if(fl_perc>=75f && fl_perc<100f){
+							  ok_status_count = ok_status_count+1;	
 							  vo.setColorStatus("Ok");
-						  }else if(fl_perc>=70f && fl_perc<90f){
+						  }else if(fl_perc>=50f && fl_perc<75f){
+							  poor_status_count =poor_status_count+1;
 							  vo.setColorStatus("Poor");
 						  }else {
 							  vo.setColorStatus("Worst");
@@ -560,7 +573,18 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 						  vo.setPercentage(percentage);
 					  }
 				}
-			}	
+			}
+			
+			worst_status_count = totalRecords.size()-best_status_count-good_status_count-ok_status_count-poor_status_count;
+			
+			if(resultList!=null && resultList.size()>1){
+				CadreAmountDetailsVO cv = resultList.get(0);
+				cv.setOkCount(ok_status_count);
+				cv.setBestCount(ok_status_count);
+				cv.setGoodCount(good_status_count);
+				cv.setPoorCCount(poor_status_count);
+				cv.setWorstCount(worst_status_count);
+			}
 			
 			if(constituenycIds != null && constituenycIds.size() > 0)
 			{
@@ -590,12 +614,20 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 		return resultList;
 	}
 	
-	public List<CadreAmountDetailsVO> getLocationWiseToDayDetails(String locationtype,Long stateId,String date)
-	{
+	public List<CadreAmountDetailsVO> getLocationWiseToDayDetails(String locationtype,Long stateId,String fromTask){
 		List<CadreAmountDetailsVO> resultList = new ArrayList<CadreAmountDetailsVO>(); 
 		List<Long> constituenycIds = new ArrayList<Long>();
 		List<Long> districtIds = new ArrayList<Long>();
 		List<Object[]> voterCountList = null;
+		
+		String date = dateService.getCurrentDateInStringFormatYYYYMMDD();
+		
+		int ok_status_count = 0;
+		int good_status_count = 0;
+		int best_status_count = 0;
+		int poor_status_count = 0;
+		int worst_status_count = 0;
+		
 		
 		try{
 				if(stateId == 2){
@@ -623,12 +655,32 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 					basicVo.setDifference(0l);
 					basicVo.setPercentage("0.0");
 					basicVo.setColorStatus("Worst");
-					if(stateId == 1)
-					basicVo.setTargetCadres(((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014)/30);
-					else
-						basicVo.setTargetCadres(((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_TG) / IConstants.TG_VOTERS_2014)/30);
-					if(locationtype.equalsIgnoreCase(IConstants.CONSTITUENCY))
+					
+					
+					if(fromTask.equalsIgnoreCase("today")){
+						Long noOfDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, IConstants.CADRE_2014_LAST_DATE);
+						
+						if(stateId == 1){
+							basicVo.setTargetCadres(((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014)/noOfDays);
+						}else{
+							basicVo.setTargetCadres(((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_TG) / IConstants.TG_VOTERS_2014)/noOfDays);
+						}
+					}else{
+						String currentDate = dateService.getCurrentDateInStringFormatYYYYMMDD();
+						Long tillDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, currentDate);
+						Long noOfDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, IConstants.CADRE_2014_LAST_DATE);
+						
+						if(stateId == 1){
+							basicVo.setTargetCadres((((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014)/noOfDays)*tillDays);
+						}else{
+							basicVo.setTargetCadres((((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_TG) / IConstants.TG_VOTERS_2014)/noOfDays)*tillDays);
+						}
+						
+					}
+					
+					if(locationtype.equalsIgnoreCase(IConstants.CONSTITUENCY)){
 						constituenycIds.add((Long)params[0]);
+					}
 					resultList.add(basicVo);
 				}
 			
@@ -645,7 +697,15 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 			}
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			Date formatedDate = format.parse(date);
-			List<Object[]> totalRecords = tdpCadreDAO.getTotalRecords(districtIds,locationtype,formatedDate);
+			
+			List<Object[]> totalRecords = new ArrayList<Object[]>();
+			
+			if(fromTask.equalsIgnoreCase("today")){
+				totalRecords = tdpCadreDAO.getTotalRecords(districtIds,locationtype,formatedDate);
+			}else{
+				totalRecords = tdpCadreDAO.getTotalRecordsUnderDate(districtIds,locationtype,formatedDate);
+			}
+			
 			
 			if(totalRecords != null && totalRecords.size() > 0)
 			{
@@ -662,23 +722,37 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 						  
 						 // percentage = (new BigDecimal(vo.getDifference()*(100.0)/vo.getTargetCadres().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 						  float fl_perc = Float.parseFloat(percentage);
-						  if(fl_perc>=140f){
+						  if(fl_perc>=120f){
+							  best_status_count = best_status_count+1;
 							  vo.setColorStatus("Best");
-						  }else if(fl_perc<140f && fl_perc>=110f){
+						  }else if(fl_perc>=100f && fl_perc<120f){
+							  good_status_count = good_status_count+1;
 							  vo.setColorStatus("Good");
-						  }else if(fl_perc>=90f && fl_perc<110f){
+						  }else if(fl_perc>=75f && fl_perc<100f){
+							  ok_status_count = ok_status_count+1;	
 							  vo.setColorStatus("Ok");
-						  }else if(fl_perc>=70f && fl_perc<90f){
+						  }else if(fl_perc>=50f && fl_perc<75f){
+							  poor_status_count =poor_status_count+1;
 							  vo.setColorStatus("Poor");
 						  }else {
 							  vo.setColorStatus("Worst");
 						  }
 						  
-						  
 						  vo.setPercentage(percentage);
 					  }
 				}
 			}	
+			
+			worst_status_count = totalRecords.size()-best_status_count-good_status_count-ok_status_count-poor_status_count;
+			
+			if(resultList!=null && resultList.size()>1){
+				CadreAmountDetailsVO cv = resultList.get(0);
+				cv.setOkCount(ok_status_count);
+				cv.setBestCount(ok_status_count);
+				cv.setGoodCount(good_status_count);
+				cv.setPoorCCount(poor_status_count);
+				cv.setWorstCount(worst_status_count);
+			}
 			
 			if(constituenycIds != null && constituenycIds.size() > 0)
 			{
@@ -707,4 +781,5 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 		}
 		return resultList;
 	}
+	
 }
