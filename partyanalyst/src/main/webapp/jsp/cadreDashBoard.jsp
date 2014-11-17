@@ -288,10 +288,11 @@ table.dataTable tr.odd {
 		<div class="row-fluid">
 			
 			<div class="span6 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
-				<h4> Constituency Target VS Registred Cadre  <i class="icon-refresh" onclick="getLocationswiseleaderCadreInfo2(3,'Constituency',1,'#leaderDataDiv2')" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i></h4>
+				<h4> Constituency Target VS Registred Cadre  <i class="icon-refresh" onclick="getLocationswiseleaderCadreInfo2(3,'Constituency',1,'#leaderDataDiv2','today')" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i></h4>
 				<div style="padding:5px;">
-					<input type="radio" id="todayId" name="compareC" value="today" checked="true" style="margin-top:0px;"/><span> TODAY</span>
-					<input type="radio" id="asOfNowId" name="compareC" value="previous" style="margin-top:0px;"/><span>AS OF NOW</span>
+					<input type="radio" id="todayCId" name="compareC" value="today" checked="true" style="margin-top:0px;"/><span> TODAY</span>
+					<input type="radio" id="overAllCId" name="compareC" value="overall" style="margin-top:0px;"/><span> OVER ALL </span>
+					<input type="radio" id="asOfNowCId" name="compareC" value="asoftoday" style="margin-top:0px;"/><span> AS OF TODAY </span>
 					
 					<div class="btn-group pull-right">
 					<a class="btn btn-mini btn-success apele" id="apConstTargetComp">AP</a>
@@ -305,10 +306,11 @@ table.dataTable tr.odd {
 			</div>
 			
 			<div class="span6 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
-				<h4> District  Target Vs Registred Cadre  <i class="icon-refresh" onclick="getLocationswiseleaderCadreInfo2(2,'District',1,'#leaderDataDiv1')" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i></h4>
+				<h4> District  Target Vs Registred Cadre  <i class="icon-refresh" onclick="getLocationswiseleaderCadreInfo2(2,'District',1,'#leaderDataDiv1','today')" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i></h4>
 				<div style="padding:5px;">
-					<input type="radio" id="todayId" name="compareD" value="today" checked="true" style="margin-top:0px;"/><span> TODAY</span>
-					<input type="radio" id="asOfNowId" name="compareD" value="previous" style="margin-top:0px;"/><span>AS OF NOW</span>
+					<input type="radio" id="todayDId" name="compareD" value="today" checked="true" style="margin-top:0px;"/><span> TODAY</span>
+					<input type="radio" id="overAllDId" name="compareD" value="overall" style="margin-top:0px;"/><span> OVER ALL</span>
+					<input type="radio" id="asOfNowDId" name="compareD" value="asoftoday" style="margin-top:0px;"/><span>AS OF TODAY</span>
 					
 					<div class="btn-group pull-right">
 					<a class="btn btn-mini btn-success apele" href="javascript:{}" id="apDistTargetComp">AP</a>
@@ -1560,9 +1562,8 @@ function SortByName(a, b){
 			});
 		}
    
-		function getLocationswiseleaderCadreInfo2(scpId,scp,stId,targetDiv){
-			
-			var date = $.datepicker.formatDate('yy-mm-dd', new Date());
+		function getLocationswiseleaderCadreInfo2(scpId,scp,stId,targetDiv,fromTask){
+			//var date = $.datepicker.formatDate('yy-mm-dd', new Date());
 			var scopeId = scpId;
 			var scope = scp;
 			var stateId = stId;
@@ -1576,12 +1577,13 @@ function SortByName(a, b){
 			if(targetDiv == "#leaderDataDiv2"){
 				constant = "2"
 			}
-		
+			
 			$("#ajaxImgStyle").show();
 			var jObj = {
 				type : scope,
 				stateId:stateId,
-				date:date,
+				//date:date,
+				fromTask:fromTask,
 				task:"mainLevel"
 			}
 			$.ajax({
@@ -1657,7 +1659,9 @@ function SortByName(a, b){
 	   
 			var val = $('input:radio[name=compareC]:checked').val();
 			if(val=='today'){
-				getLocationswiseleaderCadreInfo2(3,"Constituency",1,"#leaderDataDiv2");
+				getLocationswiseleaderCadreInfo2(3,"Constituency",1,"#leaderDataDiv2","today");
+			}else if(val=='asoftoday'){
+				getLocationswiseleaderCadreInfo2(3,"Constituency",1,"#leaderDataDiv2","asOfToday");
 			}else{
 				getLocationswiseleaderCadreInfo1(3,"Constituency",1,"#leaderDataDiv2");
 			}
@@ -1670,7 +1674,9 @@ function SortByName(a, b){
 	   
 			var val = $('input:radio[name=compareD]:checked').val();
 			if(val=='today'){
-				getLocationswiseleaderCadreInfo2(2,"District",1,"#leaderDataDiv1");
+				getLocationswiseleaderCadreInfo2(2,"District",1,"#leaderDataDiv1","today");
+			}if(val=='asoftoday'){
+				getLocationswiseleaderCadreInfo2(2,"District",1,"#leaderDataDiv1","asOfToday");
 			}else{
 				getLocationswiseleaderCadreInfo1(2,"District",1,"#leaderDataDiv1");
 			}
@@ -1684,7 +1690,9 @@ function SortByName(a, b){
 	   
 			var val = $('input:radio[name=compareC]:checked').val();
 			if(val=='today'){
-				getLocationswiseleaderCadreInfo2(3,"Constituency",2,"#leaderDataDiv2");
+				getLocationswiseleaderCadreInfo2(3,"Constituency",2,"#leaderDataDiv2","today");
+			}else if(val=='asoftoday'){
+				getLocationswiseleaderCadreInfo2(3,"Constituency",2,"#leaderDataDiv2","asOfToday");
 			}else{
 				getLocationswiseleaderCadreInfo1(3,"Constituency",2,"#leaderDataDiv2");
 			}
@@ -1697,7 +1705,9 @@ function SortByName(a, b){
 			
 			var val = $('input:radio[name=compareD]:checked').val();
 			if(val=='today'){
-				getLocationswiseleaderCadreInfo2(2,"District",2,"#leaderDataDiv1");
+				getLocationswiseleaderCadreInfo2(2,"District",2,"#leaderDataDiv1","today");
+			}else if(val=='asoftoday'){
+				getLocationswiseleaderCadreInfo2(2,"District",2,"#leaderDataDiv1","asOfToday");
 			}else{
 				getLocationswiseleaderCadreInfo1(2,"District",2,"#leaderDataDiv1");
 			}
@@ -1714,8 +1724,8 @@ function SortByName(a, b){
 		});
 	   
 	  <c:if test="${fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) }"> 
-	  getLocationswiseleaderCadreInfo2(3,"Constituency",1,"#leaderDataDiv2");
-	  getLocationswiseleaderCadreInfo2(2,"District",1,"#leaderDataDiv1");
+		  getLocationswiseleaderCadreInfo2(3,"Constituency",1,"#leaderDataDiv2","today");
+		  getLocationswiseleaderCadreInfo2(2,"District",1,"#leaderDataDiv1","today");
 	  </c:if>
 	
 </script>
