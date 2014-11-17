@@ -6,7 +6,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Leader Cadre DashBoard</title>
 
- <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">	
+ <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css"> 
 <script type="text/javascript" src="js/exportexcel.js"></script>
 	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
@@ -39,7 +40,7 @@
 						</td>
 					 </tr>
 				     <tr id="statedisplaydivid">
-						<td><b>Select State</b></td>
+						<td><b>Select State :</b></td>
 						<td>
 						  <select id="statesDivId">
 							
@@ -48,7 +49,8 @@
 						  </select>
 						</td>
 				     </tr>
-				
+				   <tr><td><b>From Date :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="fromDate"/></td></tr>
+				   <tr><td><b>To Date   :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="toDate" /></td></tr>
 				   <tr>
 				      <td></td><td><input type="button" style="margin-left: 12px;margin-top: 13px;" class="btn btn-success" onclick="getLocationswiseleaderCadreInfo();" value="Submit"/> 
 						<div><img id="ajaxImgStyle" style="margin-left: 10px;width:80px;display:none;" src="images/Loading-data.gif"/></div>
@@ -65,9 +67,23 @@
 		</div>
    </div>
    <script>
+   $("#fromDate").datepicker({
+			dateFormat: "dd-mm-yy",
+			changeMonth: true,
+			changeYear: true,
+			maxDate: new Date()
+		})
+		$("#fromDate").datepicker("setDate", new Date());
+		$("#toDate").datepicker({
+			dateFormat: "dd-mm-yy",
+			changeMonth: true,
+			changeYear: true,
+			maxDate: new Date()
+		})
+		$("#toDate").datepicker("setDate", new Date());
    function getLocationswiseleaderCadreInfo()
    {
-		
+		$("#errStatusDiv").html("");
 		var scopeId = $("#selLctnType").val();
 		var scope = $("#selLctnType option:selected").text();
 		var stateId = $("#statesDivId").val();
@@ -82,6 +98,8 @@
 		var jObj = {
 		type : scope,
 		stateId:stateId,
+		fromDate:$("#fromDate").val(),
+		toDate:$("#toDate").val(),
 		task:"mainLevel"
 		}
 		 $.ajax({
@@ -193,6 +211,8 @@
    var jObj = {
 		type : type,
 		id:id,
+		fromDate:$("#fromDate").val(),
+		toDate:$("#toDate").val(),
 		task:"subLevel"
 		}
 		 $.ajax({
@@ -227,6 +247,8 @@ function displaySublevelDetails1(id,type)
    var jObj = {
 		type : type,
 		id:id,
+		fromDate:$("#fromDate").val(),
+		toDate:$("#toDate").val(),
 		task:"subLevel"
 		}
 		 $.ajax({
