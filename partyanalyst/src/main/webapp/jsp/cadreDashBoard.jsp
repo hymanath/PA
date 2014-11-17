@@ -303,7 +303,7 @@ table.dataTable tr.odd {
 		<div class="row-fluid">
 			
 			<div class="span6 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
-				<h4> Constituency Target VS Registred Cadre  <i class="icon-refresh refreshCon" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i></h4>
+				<h4> Constituency Target VS Registered Cadre  <i class="icon-refresh refreshCon" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i></h4>
 				<div style="padding:5px;">
 					<input type="radio" id="todayCId" name="compareC" value="today" checked="true" style="margin-top:0px;"/><span> TODAY</span>
 					<input type="radio" id="overAllCId" name="compareC" value="overall" style="margin-top:0px;"/><span> OVER ALL </span>
@@ -321,7 +321,7 @@ table.dataTable tr.odd {
 			</div>
 			
 			<div class="span6 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
-				<h4> District  Target Vs Registred Cadre  <i class="icon-refresh refreshDist" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i></h4>
+				<h4> District  Target Vs Registered Cadre  <i class="icon-refresh refreshDist" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i></h4>
 				<div style="padding:5px;">
 					<input type="radio" id="todayDId" name="compareD" value="today" checked="true" style="margin-top:0px;"/><span> TODAY</span>
 					<input type="radio" id="overAllDId" name="compareD" value="overall" style="margin-top:0px;"/><span> OVER ALL</span>
@@ -1520,24 +1520,24 @@ function SortByName(a, b){
 				str1+='<div>';
 						str1+='<table class="summary">';
 							str1+="<tr>";
-								str1+="<th> BEST </th>";
+								str1+="<th> VERY GOOD </th>";
 								str1+="<th> GOOD </th>";
 								str1+="<th> OK </th>";
 								str1+="<th> POOR </th>";
-								str1+="<th> WORST</th>";
+								str1+="<th> VERY POOR </th>";
 							str1+="</tr>";
 							str1+="<tr>";
 								str1+="<td attr='constituency' attrst='bestCount' class='statusBsc'>"+result[0].bestCount+"</td>";
 								str1+="<td attr='constituency' attrst='goodCount' class='statusBsc'>"+result[0].goodCount+"</td>";
 								str1+="<td attr='constituency' attrst='okCount' class='statusBsc'>"+result[0].okCount+"</td>";
-								str1+="<td attr='constituency' attrst='poorCount' class='statusBsc'>"+result[0].poorCount+"</td>";
+								str1+="<td attr='constituency' attrst='poorCount' class='statusBsc'>"+result[0].poorCCount+"</td>";
 								str1+="<td attr='constituency' attrst='worstCount' class='statusBsc'>"+result[0].worstCount+"</td>";
 							str1+="</tr>";
 						str1+='</table>';
 					str1+='</div>';
 					str+='<table class="table table-bordered" id="'+constant+'tabledata1">';
 					str+='<thead><tr>';
-					str+='<th>Constituency</th>';
+					str+='<th>'+scope+'</th>';
 					str+='<th>Target Cadres</th>';
 					str+='<th>Registered Cadres</th>';
 					//str+='<th>Difference</th>';
@@ -1633,24 +1633,24 @@ function SortByName(a, b){
 					str1+='<div>';
 						str1+='<table class="summary">';
 							str1+="<tr>";
-								str1+="<th> BEST </th>";
+								str1+="<th> VERY GOOD </th>";
 								str1+="<th> GOOD </th>";
 								str1+="<th> OK </th>";
 								str1+="<th> POOR </th>";
-								str1+="<th> WORST</th>";
+								str1+="<th> VERY POOR </th>";
 							str1+="</tr>";
 							str1+="<tr>";
 								str1+="<td attr='district' attrst='bestCount' class='statusBsd'>"+result[0].bestCount+"</td>";
 								str1+="<td attr='district' attrst='goodCount' class='statusBsd'>"+result[0].goodCount+"</td>";
 								str1+="<td attr='district' attrst='okCount' class='statusBsd'>"+result[0].okCount+"</td>";
-								str1+="<td attr='district' attrst='poorCount' class='statusBsd'>"+result[0].poorCount+"</td>";
+								str1+="<td attr='district' attrst='poorCount' class='statusBsd'>"+result[0].poorCCount+"</td>";
 								str1+="<td attr='district' attrst='worstCount' class='statusBsd'>"+result[0].worstCount+"</td>";
 							str1+="</tr>";
 						str1+='</table>';
 					str1+='</div>';
 					str+='<table class="table table-bordered" id="'+constant+'tabledata2">';
 					str+='<thead><tr>';
-					str+='<th>Constituency</th>';
+					str+='<th>'+scope+'</th>';
 					str+='<th>Target Cadres</th>';
 					str+='<th>Registered Cadres</th>';
 					//str+='<th>Difference</th>';
@@ -1816,7 +1816,7 @@ function SortByName(a, b){
 				var str='';
 					str+='<table class="table table-bordered" id="'+constant+'tabledata1">';
 					str+='<thead><tr>';
-					str+='<th>Constituency</th>';
+					str+='<th>'+scope+'</th>';
 					str+='<th>Target Cadres</th>';
 					str+='<th>Registered Cadres</th>';
 					//str+='<th>Difference</th>';
@@ -1917,7 +1917,7 @@ function SortByName(a, b){
 				
 					str+='<table class="table table-bordered" id="'+constant+'tabledata2">';
 					str+='<thead><tr>';
-					str+='<th>Constituency</th>';
+					str+='<th>'+scope+'</th>';
 					str+='<th>Target Cadres</th>';
 					str+='<th>Registered Cadres</th>';
 					//str+='<th>Difference</th>';
