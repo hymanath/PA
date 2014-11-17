@@ -179,4 +179,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> inActiveUsersInLastHours(Date surveyTime,List<Long> cadreSurveyUserIdsList);
 	
 	public List<Object[]> getTotalRecords(List<Long> districtIds,String type,Date date);
+	public List<Object[]> getTotalRecordsUnderDate(List<Long> districtIds,String type,Date date);
 }

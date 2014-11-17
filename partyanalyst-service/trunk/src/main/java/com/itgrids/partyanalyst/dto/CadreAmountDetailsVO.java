@@ -35,9 +35,47 @@ public class CadreAmountDetailsVO implements Serializable{
 	
 	private String colorStatus;
 	
+	private int okCount;
+	private int goodCount;
+	private int bestCount;
+	private int poorCCount;
+	private int worstCount;
 	
 	
 	
+	
+	
+	
+	public int getOkCount() {
+		return okCount;
+	}
+	public void setOkCount(int okCount) {
+		this.okCount = okCount;
+	}
+	public int getGoodCount() {
+		return goodCount;
+	}
+	public void setGoodCount(int goodCount) {
+		this.goodCount = goodCount;
+	}
+	public int getBestCount() {
+		return bestCount;
+	}
+	public void setBestCount(int bestCount) {
+		this.bestCount = bestCount;
+	}
+	public int getPoorCCount() {
+		return poorCCount;
+	}
+	public void setPoorCCount(int poorCCount) {
+		this.poorCCount = poorCCount;
+	}
+	public int getWorstCount() {
+		return worstCount;
+	}
+	public void setWorstCount(int worstCount) {
+		this.worstCount = worstCount;
+	}
 	public String getColorStatus() {
 		return colorStatus;
 	}
@@ -200,6 +238,8 @@ public class CadreAmountDetailsVO implements Serializable{
 	public void setUserType(String userType) {
 		this.userType = userType;
 	}
+	
+	
 	
 	
 	

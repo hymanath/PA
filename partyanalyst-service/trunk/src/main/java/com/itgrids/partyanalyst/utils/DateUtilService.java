@@ -1,10 +1,12 @@
 package com.itgrids.partyanalyst.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
@@ -142,9 +144,11 @@ public class DateUtilService {
 	}
 	
 	public static void main(String[] args) {
+		/*System.out.println(	new DateUtilService().getDayBeforeYesterDayDate());
+		System.out.println( new  DateUtilService().getYesterdayDateString());*/
 		
-	System.out.println(	new DateUtilService().getDayBeforeYesterDayDate());
-	System.out.println( new  DateUtilService().getYesterdayDateString());
+		Long l = new DateUtilService().noOfDayBetweenDates("2014-11-03","2014-11-17");
+		System.out.println(l);
 	}
 	
 	public Date getDateAndTime(String DateString)
@@ -160,4 +164,36 @@ public class DateUtilService {
 		}
 		
 	}
+	
+	public Long noOfDayBetweenDates(String startDate,String endDate){
+		
+		SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Long diff = 0l;
+		Long noOfDays = 0l;
+		try {
+		    Date date1 = myFormat.parse(startDate);
+		    Date date2 = myFormat.parse(endDate);
+		    diff = date2.getTime() - date1.getTime();
+		    
+		  //  System.out.println ("Days: " + TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
+		    noOfDays =  TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+		} catch (ParseException e) {
+		    log.error("Exception Raised in noOfDayBetweenDates ");
+		}
+		return noOfDays+1;
+	}
+	
+	public String getCurrentDateInStringFormatYYYYMMDD(){
+		try
+		{
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			return sdf.format(new Date());
+			
+		}catch(Exception e){
+			log.error("Exception Occured in DateUtilService.getCurrentDateInStringFormat() " +
+					" check for log details");
+			return null;
+		}
+	}
+	
 }

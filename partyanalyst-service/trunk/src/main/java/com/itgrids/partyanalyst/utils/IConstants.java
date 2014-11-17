@@ -823,5 +823,9 @@ public interface IConstants {
     
     public static final int TARGET_CADRE_AP = 2000000;
     public static final int TARGET_CADRE_TG = 1000000;
+    
+    public static final String CADRE_2014_START_DATE = "2014-11-03";
+    public static final String CADRE_2014_LAST_DATE = "2014-12-02";
+    
     		
 }
