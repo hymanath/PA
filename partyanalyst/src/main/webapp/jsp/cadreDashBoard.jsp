@@ -1310,10 +1310,10 @@ $('#membersCount').addClass('animated fadeInX');
 	   getRecentlyRegisteredCadresInfo(strIndex,false);
 	   getDashBoardBasicInfo();
 	   getWorkingMembersInfo();
-	   setInterval(function(){getWorkStartedConstituencyCount()},600000);
-	   setInterval(function(){getRecentlyRegisteredCadresInfo(strIndex,false)},600000);
-	   setInterval(function(){getDashBoardBasicInfo()},600000);
-	   setInterval(function(){getWorkingMembersInfo()},600000);	 
+	   setInterval(function(){getWorkStartedConstituencyCount()},1800000);
+	   setInterval(function(){getRecentlyRegisteredCadresInfo(strIndex,false)},1800000);
+	   setInterval(function(){getDashBoardBasicInfo()},1800000);
+	   setInterval(function(){getWorkingMembersInfo()},1800000);	 
 	   
 	   $("input:radio[name=percCalcC]").click(function() {
 			//var value = $(this).val();
