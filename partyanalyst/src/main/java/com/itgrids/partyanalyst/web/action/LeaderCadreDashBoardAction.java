@@ -89,8 +89,7 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 		return Action.SUCCESS;
 	}
 	
-	public String getLocationWiseAsOfNowDetails()
-	{
+	public String getLocationWiseAsOfNowDetails(){
 		try{
 			jObj = new JSONObject(getTask());
 			amountDetails = leaderCadreDashBoardService.getLocationWiseAsOfNowDetails(jObj.getString("type"),jObj.getLong("stateId"));
@@ -101,11 +100,15 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 		return Action.SUCCESS;
 	}
 	
-	public String getLocationWiseToDayDetails()
-	{
+	public String getLocationWiseToDayDetails()	{
 		try{
 			jObj = new JSONObject(getTask());
-			amountDetails = leaderCadreDashBoardService.getLocationWiseToDayDetails(jObj.getString("type"),jObj.getLong("stateId"),jObj.getString("date"));
+			String task = jObj.getString("fromTask");
+			if(task.equalsIgnoreCase("today")){
+				amountDetails = leaderCadreDashBoardService.getLocationWiseToDayDetails(jObj.getString("type"),jObj.getLong("stateId"),"today");
+			}else{
+				amountDetails = leaderCadreDashBoardService.getLocationWiseToDayDetails(jObj.getString("type"),jObj.getLong("stateId"),"asOfToday");
+			}
 		}
 		catch (Exception e) {
 			LOG.info("Entered into getLocationWiseToDayDetails() in LeaderCadreDashBoardActioon class");
