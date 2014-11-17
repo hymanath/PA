@@ -97,11 +97,15 @@
 						<img src="images/cadre_images/2014-cadre-Registration-Logo.png">
 				  </div>
 				  <div class="span4">
-					 <a href="newlogoutAction.action" class="btn btn-mini pull-left m_top20">Logout</a>					
-				  </div> 
-				  <div class="span4">
-					  <a  class="btn btn-info btn-mini" id="statusDivsId1" href="javascript:{hideDashBoard();}" style="margin-top:-25px;margin-left:-225px;"> Know User Status </a>
-					  <a class="btn btn-info btn-mini" id="statusDivsId2" style="margin-top:-25px;margin-left:-225px;display:none; width: 90px;" href="javascript:{showDashBoard();}"> Home </a>
+					<span>
+					 <a href="newlogoutAction.action" class="btn btn-mini pull-left m_top20">Logout</a>	
+					</span>
+					<span>
+					  <a  class="btn btn-info btn-mini offset1" style="float: left;margin-top: 20px;" id="statusDivsId1" href="javascript:{hideDashBoard();}" > Know User Status </a>
+					 </span>
+					<span>
+					  <a class="btn btn-info btn-mini offset1" style="float: left;margin-top: 20px; width: 90px;display:none;" id="statusDivsId2" href="javascript:{showDashBoard();}"> Home </a>	
+					</span>
 				  </div>
 				</div>
 			</div>
@@ -162,7 +166,7 @@
 		<div id="locationWiseCadreInfoDiv">
 		    <div class="row-fluid" id="fadeInDown" style="padding-top: 5px;">
 				<div class="span12 well well-small  border-radius-0 mb-0 " style="padding:0px;">
-					<h3 class="offset3 text-uppercase"> user dashboard details </h3>
+					<h3 class="offset4 text-uppercase"> user dashboard </h3>
 				</div>
 			</div>
 			<div class="row-fluid show-grid">
@@ -177,6 +181,9 @@
 							</div>
 						</div>
 						<a href="javascript:{getDashboardDetailsForUser();}" class="btn btn-success col-xs-offset-4 border-radius-0 offset5"> Get Details  <span class="glyphicon glyphicon-chevron-right"></span></a>
+						
+						<div><img src='images/Loading-data.gif' class="offset5"  id="searchDashboardImg" style="width:70px;height:60px;display:none;"/>
+						</div>
 						<div id="dashBoadDiv" style="padding: 10px;"></div>
 						
 			</div>
@@ -800,6 +807,7 @@
 	function getDashboardDetailsForUser()
 	{
 		$('#dashBoadDiv').html('');
+		$('#searchDashboardImg').show();
 		//var userId = $('#webUserId).val();
 		var formDate = $('#fromDateId').val();
 		var toDate = $('#toDateId').val();
@@ -815,6 +823,7 @@
 					url : "getDaywiseWebUserDetailsAction.action",
 					data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
+				$('#searchDashboardImg').hide();
 					if(result != null)
 					{
 						buildDashBoardDetails(result);
