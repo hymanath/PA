@@ -38,7 +38,7 @@ public class CadreAmountDetailsVO implements Serializable{
 	private int okCount;
 	private int goodCount;
 	private int bestCount;
-	private int poorCCount;
+	private int poorCount;
 	private int worstCount;
 	
 	
@@ -64,11 +64,11 @@ public class CadreAmountDetailsVO implements Serializable{
 	public void setBestCount(int bestCount) {
 		this.bestCount = bestCount;
 	}
-	public int getPoorCCount() {
-		return poorCCount;
+	public int getPoorCount() {
+		return poorCount;
 	}
-	public void setPoorCCount(int poorCCount) {
-		this.poorCCount = poorCCount;
+	public void setPoorCount(int poorCount) {
+		this.poorCount = poorCount;
 	}
 	public int getWorstCount() {
 		return worstCount;

@@ -597,7 +597,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 				cv.setOkCount(ok_status_count);
 				cv.setBestCount(best_status_count);
 				cv.setGoodCount(good_status_count);
-				cv.setPoorCCount(poor_status_count);
+				cv.setPoorCount(poor_status_count);
 				cv.setWorstCount(worst_status_count);
 			}
 			
@@ -758,14 +758,14 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 				}
 			}	
 			
-			worst_status_count = totalRecords.size()-best_status_count-good_status_count-ok_status_count-poor_status_count;
+			worst_status_count = resultList.size()-best_status_count-good_status_count-ok_status_count-poor_status_count;
 			
 			if(resultList!=null && resultList.size()>1){
 				CadreAmountDetailsVO cv = resultList.get(0);
 				cv.setOkCount(ok_status_count);
 				cv.setBestCount(best_status_count);
 				cv.setGoodCount(good_status_count);
-				cv.setPoorCCount(poor_status_count);
+				cv.setPoorCount(poor_status_count);
 				cv.setWorstCount(worst_status_count);
 			}
 			
