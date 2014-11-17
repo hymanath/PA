@@ -25,6 +25,7 @@ import org.apache.poi.ss.usermodel.Row;
 import com.itgrids.partyanalyst.dao.IAppDbUpdateDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegAmountDetailsDAO;
+import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssigneeDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
@@ -45,6 +46,7 @@ import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.model.CadreSurveyUser;
@@ -54,6 +56,7 @@ import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.service.IRegistrationService;
+import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -79,6 +82,10 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	private ICadreRegAmountDetailsDAO cadreRegAmountDetailsDAO;
 	private ITabLogInAuthDAO tabLogInAuthDAO;
 	private IRegistrationService registrationService;
+
+	private IRegionServiceData regionServiceDataImp;
+	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
+	
 	
 	public void setCadreRegAmountDetailsDAO(
 			ICadreRegAmountDetailsDAO cadreRegAmountDetailsDAO) {
@@ -209,6 +216,22 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 
 	public void setTabLogInAuthDAO(ITabLogInAuthDAO tabLogInAuthDAO) {
 		this.tabLogInAuthDAO = tabLogInAuthDAO;
+	}
+	
+	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
+		return boothPublicationVoterDAO;
+	}
+	public void setBoothPublicationVoterDAO(
+			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
+		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
+	}
+
+	public IRegionServiceData getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
+
+	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
 	}
 
 	public List<CadreRegisterInfo> getDashBoardBasicInfo(String accessType,Long accessValue){
@@ -4702,4 +4725,306 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		public String registerAllUsers(RegistrationVO user){
 			return registrationService.registerAllUsers(user);
 		}
+
+		
+		public List<CadreRegisterInfo> getLocationWiseAgeRangeAndGenderCount(String type,Long stateId,Long constituencyId){
+			List<CadreRegisterInfo> resultList = new ArrayList<CadreRegisterInfo>();
+			try{
+				List<Object[]> votersCountList = null;
+				List<Object[]> totalRecords = null;
+				List<Object[]> genderWiseCount = null;
+				List<Long> districtIds = new ArrayList<Long>();
+				List<Long> constituencyIds = new ArrayList<Long>();
+				List<Long> tehsilIds = new ArrayList<Long>();
+				List<Long> localbodyIds = new ArrayList<Long>();
+				List<Long> panchayatIds = new ArrayList<Long>();
+				List<Long> boothIds = new ArrayList<Long>();
+		
+				if(stateId == 2){
+					for(int i=1;i<=10;i++)
+						districtIds.add(new Long(i));
+				}
+				else if(stateId == 1){
+				    for(int i=11;i<=23;i++)
+						districtIds.add(new Long(i));
+				}	
+				if(type.equalsIgnoreCase(IConstants.DISTRICT))
+				{					
+					votersCountList = voterInfoDAO.getVotersCountInADistrictsList(districtIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+					totalRecords = tdpCadreDAO.getLocationWiseTotalRecords(districtIds,type);
+					genderWiseCount = tdpCadreDAO.getLocationWiseGenderCadreCount(districtIds,type);					
+					setLocationWiseGenderData(votersCountList,totalRecords,genderWiseCount,type,resultList,districtIds,constituencyIds);
+					setLocationWiseAgeData(type,resultList,districtIds);
+					
+				}else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+					votersCountList = voterInfoDAO.getVotersCountInConstituenciesByDistrictsList(districtIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+					totalRecords = tdpCadreDAO.getLocationWiseTotalRecords(districtIds,type);
+					genderWiseCount = tdpCadreDAO.getLocationWiseGenderCadreCount(districtIds,type);
+					setLocationWiseGenderData(votersCountList,totalRecords,genderWiseCount,type,resultList,districtIds,constituencyIds);	
+					setLocationWiseAgeData(type,resultList,districtIds);
+					
+				}else if(type.equalsIgnoreCase(IConstants.TEHSIL) || type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY)){
+					
+					Constituency constituency = constituencyDAO.get(constituencyId);
+					constituencyIds.add(constituencyId);
+					if(constituency.getAreaType().equalsIgnoreCase(IConstants.RURAL)|| constituency.getAreaType().equalsIgnoreCase(IConstants.RURALURBAN))
+					{
+						 List<SelectOptionVO> list = regionServiceDataImp.getSubRegionsInConstituency(constituencyId,  IConstants.PRESENT_YEAR, constituency.getAreaType());
+						 if(list != null && list.size() > 0)
+							 for(SelectOptionVO vo : list)
+							 {
+								 if(vo.getId().toString().substring(0,1).trim().equalsIgnoreCase("2"))
+									 tehsilIds.add(new Long(vo.getId().toString().substring(1)));
+								 else
+						    	  	localbodyIds.add(new Long(vo.getId().toString().substring(1)));
+							 }
+					}
+					if(tehsilIds != null && tehsilIds.size() > 0)
+					{					
+					    votersCountList = voterInfoDAO.getVotersCountInATehsilList(tehsilIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+					    totalRecords = tdpCadreDAO.getLocationWiseTotalRecords(tehsilIds,IConstants.TEHSIL);
+					    genderWiseCount = tdpCadreDAO.getLocationWiseGenderCadreCount(tehsilIds,IConstants.TEHSIL);
+					    setLocationWiseGenderData(votersCountList,totalRecords,genderWiseCount,IConstants.TEHSIL,resultList,tehsilIds,constituencyIds);
+					    setLocationWiseAgeData(type,resultList,tehsilIds);
+					}
+					if(localbodyIds != null && localbodyIds.size() > 0)
+					{
+						votersCountList = voterInfoDAO.getVotersCountInALocalBodyList(localbodyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+						totalRecords = tdpCadreDAO.getLocationWiseTotalRecords(localbodyIds,IConstants.LOCAL_ELECTION_BODY);
+						genderWiseCount = tdpCadreDAO.getLocationWiseGenderCadreCount(localbodyIds,IConstants.LOCAL_ELECTION_BODY);
+						setLocationWiseGenderData(votersCountList,totalRecords,genderWiseCount,IConstants.LOCAL_ELECTION_BODY,resultList,localbodyIds,constituencyIds);
+						setLocationWiseAgeData(type,resultList,localbodyIds);
+					}
+				}else if(type.equalsIgnoreCase(IConstants.PANCHAYAT)){
+						Constituency constituency = constituencyDAO.get(constituencyId);
+						constituencyIds.add(constituencyId);
+						List<Object[]> panchayatsList = boothDAO.getPanchayatsByConstituencyAndPublication(constituencyId,IConstants.VOTER_DATA_PUBLICATION_ID);
+						for(Object[] obj:panchayatsList){
+								panchayatIds.add((Long)obj[0]);								
+						}
+						votersCountList = voterInfoDAO.getVotersCountInPanchayatList(panchayatIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+						totalRecords = tdpCadreDAO.getTotalRecords1(panchayatIds,IConstants.PANCHAYAT);
+						genderWiseCount = tdpCadreDAO.getLocationWiseGenderCadreCount(panchayatIds,IConstants.PANCHAYAT);
+						setLocationWiseGenderData(votersCountList,totalRecords,genderWiseCount,type,resultList,panchayatIds,constituencyIds);	
+						setLocationWiseAgeData(type,resultList,panchayatIds);
+				
+				}else if(type.equalsIgnoreCase(IConstants.BOOTH)){
+						Constituency constituency = constituencyDAO.get(constituencyId);
+						constituencyIds.add(constituencyId);
+						List<Object[]> boothsList = boothDAO.getBoothsInAConstituency(constituencyId,IConstants.VOTER_DATA_PUBLICATION_ID);
+						for(Object[] obj:boothsList){
+							boothIds.add((Long)obj[0]);								
+					    }
+						votersCountList = voterInfoDAO.getVotersCountInBoothsList(boothIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+						totalRecords = tdpCadreDAO.getTotalRecords1(boothIds,IConstants.BOOTH);
+						genderWiseCount = tdpCadreDAO.getLocationWiseGenderCadreCount(boothIds,IConstants.BOOTH);
+						setLocationWiseGenderData(votersCountList,totalRecords,genderWiseCount,type,resultList,boothIds,constituencyIds);
+						setLocationWiseAgeData(type,resultList,boothIds);
+				}
+							
+			}catch(Exception e){
+				LOG.error("Exception rised in getLocationWiseAgeRangeAndGenderCount",e);
+			}
+			return resultList;
+		}
+		
+		
+		public CadreRegisterInfo getMatchedVO(List<CadreRegisterInfo> list,Long id)
+		{
+			try{
+				if(list == null || list.size() == 0)
+					return null;
+				for(CadreRegisterInfo vo :list)
+				{
+					if(vo.getId().longValue() == id)
+						return vo;
+				}
+			}
+			catch (Exception e) {
+				return null;
+			}
+			return null;
+		}	
+		
+		
+		public void setLocationWiseGenderData(List<Object[]> votersCountList,List<Object[]> totalRecords,List<Object[]> genderWiseCount,String type,List<CadreRegisterInfo> resultList,List<Long> ids,List<Long> constituencyIds)
+		{
+			if(votersCountList != null && votersCountList.size() > 0){
+				for(Object[] params :votersCountList)
+				{
+					CadreRegisterInfo vo = new CadreRegisterInfo();
+					vo.setId((Long)params[0]);						
+					vo.setName(params[1] != null ? params[1].toString() : "");	
+					vo.setVotersCount((Long)params[2]);
+					
+					if(type.equalsIgnoreCase(IConstants.DISTRICT)){
+						vo.setMaleVotersCount((Long)params[3]);
+						vo.setFemaleVotersCount((Long)params[4]);
+					}
+					else{
+						vo.setMaleVotersCount((Long)params[4]);
+						vo.setFemaleVotersCount((Long)params[5]);
+					}
+					if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+						constituencyIds.add((Long)params[0]);
+					
+					resultList.add(vo);
+				}				
+			}
+			if(totalRecords != null && totalRecords.size() > 0){
+				for(Object[] params : totalRecords)
+				{
+					CadreRegisterInfo vo = getMatchedVO(resultList,(Long)params[1]);
+					  if(vo != null)
+					  {
+						  vo.setRegisteredCount(params[0] != null ? (Long)params[0] : 0);
+						  vo.setFemaleCadreCount(0L);
+						  vo.setMaleCadreCount(0L);
+					  }
+				}					
+			}
+			if(genderWiseCount != null && genderWiseCount.size() > 0){
+				for(Object[] params : genderWiseCount)
+				{
+					CadreRegisterInfo vo = getMatchedVO(resultList,(Long)params[2]);
+					  if(vo != null && params[1] != null)
+					  {
+						  if(params[1].toString().equalsIgnoreCase("M") || params[1].toString().equalsIgnoreCase("Male"))
+						    vo.setMaleCadreCount(params[0] != null ? (Long)params[0]+vo.getMaleCadreCount() : vo.getMaleCadreCount());
+						  else if(params[1].toString().equalsIgnoreCase("F") || params[1].toString().equalsIgnoreCase("Female"))
+							vo.setFemaleCadreCount(params[0] != null ? (Long)params[0]+vo.getFemaleCadreCount() : vo.getFemaleCadreCount());
+						  
+					  }
+				}					
+			}
+			
+			
+			if(constituencyIds != null && constituencyIds.size() > 0)
+			{
+				List<Object[]> list = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentsAndDistrictForAssembly(constituencyIds);
+				if(list != null && list.size() > 0)
+				{
+					for(Object[] params : list)
+					{
+						CadreRegisterInfo vo1 = getMatchedVO(resultList,(Long)params[0]);
+						if(vo1 != null){
+							vo1.setParliamentId((Long)params[1]);
+							vo1.setParliament(params[2] != null ? params[2].toString() : "");
+							vo1.setDistrictId((Long)params[3]);
+							vo1.setDistrict(params[4] != null ? params[4].toString() : "");
+							vo1.setConstituency(params[5] != null ? params[5].toString() : "");													
+						}
+					}
+				}
+			}
+		
+		}
+
+		public void setLocationWiseAgeData(String type,List<CadreRegisterInfo> resultList,List<Long> ids) {
+			
+			try {	
+				
+				List<Object[]>  voterAgeRangeCount = boothPublicationVoterDAO.getLocationWiseVoterAgeRangeCount(ids,type,IConstants.VOTER_DATA_PUBLICATION_ID);
+			
+				for(Object[] obj: voterAgeRangeCount){					
+					
+					CadreRegisterInfo vo = getMatchedVO(resultList,(Long)obj[3]);
+					if(vo != null){						
+							CadreRegisterInfo ageRangeVo = new CadreRegisterInfo();
+							ageRangeVo.setName(obj[2].toString());
+							ageRangeVo.setId((Long)obj[1]);
+							ageRangeVo.setAgeRangeVoterValues(obj[0] != null ? (Long)obj[0] :0);	
+							vo.getAllDetailsList().add(ageRangeVo);
+							if(vo.getRegisteredCount() >0 ){
+							vo.setPercentStr(new BigDecimal((vo.getFemaleCadreCount().doubleValue() / vo.getRegisteredCount().doubleValue()) * 100.0).setScale(2, BigDecimal.ROUND_HALF_UP).toString());							
+							vo.setStatus(new BigDecimal((vo.getMaleCadreCount().doubleValue() / vo.getRegisteredCount().doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+							}
+							if(vo.getVotersCount()>0){
+							vo.setNumber(new BigDecimal((vo.getFemaleVotersCount().doubleValue() / vo.getVotersCount().doubleValue()) * 100.0).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+							vo.setUname(new BigDecimal((vo.getMaleVotersCount().doubleValue() / vo.getVotersCount().doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+							}
+					}					
+				}
+											
+				List<Object[]> ageRange18 = tdpCadreDAO.getLocationWiseAgeRangeCount(ids,"below 18",type);				
+				setAgeRanges(ageRange18,"below 18",resultList);
+				List<Object[]> ageRange18to25 = tdpCadreDAO.getLocationWiseAgeRangeCount(ids,"18-25",type);
+				setAgeRanges(ageRange18to25,"18-25",resultList);
+				List<Object[]> ageRange26to35 = tdpCadreDAO.getLocationWiseAgeRangeCount(ids,"26-35",type);
+				setAgeRanges(ageRange26to35,"26-35",resultList);
+				List<Object[]> ageRange36to45 = tdpCadreDAO.getLocationWiseAgeRangeCount(ids,"36-45",type);
+				setAgeRanges(ageRange36to45,"36-45",resultList);
+				List<Object[]> ageRange46to60 = tdpCadreDAO.getLocationWiseAgeRangeCount(ids,"46-60",type);
+				setAgeRanges(ageRange46to60,"46-60",resultList);
+				List<Object[]> ageRange60 = tdpCadreDAO.getLocationWiseAgeRangeCount(ids,"above 60",type);
+				setAgeRanges(ageRange60,"above 60",resultList);
+				
+			} catch (Exception e) {
+				LOG.error("Exception rised in getLocationsWiseAgeRangeCount", e);
+			}
+			
+		}
+		
+		public void setAgeRanges(List<Object[]> result,String ageRange,List<CadreRegisterInfo> resultList) {
+			
+			if (result!=null && result.size() > 0){		
+				
+				for(Object[] obj : result){
+					CadreRegisterInfo vo = getMatchedVO(resultList,(Long)obj[1]);
+									
+					if(vo != null){	
+						List<CadreRegisterInfo> subList = vo.getAllDetailsList();
+					
+						for(CadreRegisterInfo info :subList){							
+								
+								 if(ageRange.equals("18-25") && info.getId()== 2 ){
+									
+									info.setAgeRangeCadreValues(obj[0] != null ? (Long)obj[0] : 0);	
+									if(vo.getRegisteredCount() > 0 )
+									info.setPercentStr( new BigDecimal((info.getAgeRangeCadreValues().doubleValue() / vo.getRegisteredCount().doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+									if( vo.getVotersCount() > 0)
+									info.setNumber(new BigDecimal((info.getAgeRangeVoterValues().doubleValue() / vo.getVotersCount().doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+									
+								}
+								else if(ageRange.equals("26-35") && info.getId()== 3 ){
+									info.setAgeRangeCadreValues(obj[0] != null ? (Long)obj[0] :0);
+									if(vo.getRegisteredCount() > 0 )
+									info.setPercentStr(new BigDecimal((info.getAgeRangeCadreValues().doubleValue() / vo.getRegisteredCount().doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+									if( vo.getVotersCount() > 0)
+									info.setNumber(new BigDecimal((info.getAgeRangeVoterValues().doubleValue() / vo.getVotersCount().doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+									
+								}
+								else if(ageRange.equals("36-45") && info.getId()== 4 ){
+									info.setAgeRangeCadreValues(obj[0] != null ? (Long)obj[0] : 0);
+									if(vo.getRegisteredCount() > 0)
+									info.setPercentStr(new BigDecimal((info.getAgeRangeCadreValues().doubleValue() / vo.getRegisteredCount().doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+									if( vo.getVotersCount() > 0)
+									info.setNumber(new BigDecimal((info.getAgeRangeVoterValues().doubleValue() / vo.getVotersCount().doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+									
+								}
+								else if(ageRange.equals("46-60") && info.getId()== 5){
+									info.setAgeRangeCadreValues(obj[0] != null ? (Long)obj[0] :0);
+									if(vo.getRegisteredCount() > 0)
+									info.setPercentStr(new BigDecimal((info.getAgeRangeCadreValues().doubleValue() / vo.getRegisteredCount().doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+									if( vo.getVotersCount() > 0)
+									info.setNumber(new BigDecimal((info.getAgeRangeVoterValues().doubleValue() / vo.getVotersCount().doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+								
+								}
+								else if(ageRange.equals("above 60") && info.getId()== 6 ){
+									info.setAgeRangeCadreValues(obj[0] != null ? (Long)obj[0] :0);
+									if(vo.getRegisteredCount() > 0 )
+									info.setPercentStr(new BigDecimal((info.getAgeRangeCadreValues().doubleValue() / vo.getRegisteredCount().doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+									if( vo.getVotersCount() > 0)
+									info.setNumber(new BigDecimal((info.getAgeRangeVoterValues().doubleValue() / vo.getVotersCount().doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+									
+								}
+								
+						}
+										
+					}
+							
+				}
+			}  			
+		} 
+		
 }

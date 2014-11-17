@@ -92,4 +92,6 @@ public interface ICadreDashBoardService {
 	public List<CadreRegisterInfo> getAuthDetails(Long id,String variable);
 	
 	public String registerAllUsers(RegistrationVO user);
+
+	public List<CadreRegisterInfo> getLocationWiseAgeRangeAndGenderCount(String type,Long stateId,Long constituencyId);
 }
