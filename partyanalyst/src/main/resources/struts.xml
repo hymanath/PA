@@ -8929,6 +8929,13 @@
 				<param name="root">task</param>
 			</result>
 		</action>
+		
+		<action name="tdpCadreReportsAction" class="tdpCadreReportAction" >
+			<result name="success">/jsp/tdpCadreReport.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
+			<result name="input">/jsp/loginForm.jsp?src=tabAllocationDetailsAction</result>
+		</action>
+		
 </package>
 
 </struts>      

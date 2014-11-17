@@ -2313,5 +2313,8 @@
 	 
      </bean>
      
+      <bean name="tdpCadreReportService"  class="com.itgrids.partyanalyst.service.impl.TdpCadreReportService">
+       	<property name="tdpCadreReportService" ref="tdpCadreReportService" />	 
+     </bean>
 </beans>		
 	

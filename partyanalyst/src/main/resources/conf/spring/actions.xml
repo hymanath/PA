@@ -1503,5 +1503,10 @@
 	<bean id="leaderCadreDashBoardAction" class="com.itgrids.partyanalyst.web.action.LeaderCadreDashBoardAction" singleton="false">
 		<property name="leaderCadreDashBoardService" ref="leaderCadreDashBoardService" />
 	</bean>
+	
+	<bean id="tdpCadreReportAction" class="com.itgrids.partyanalyst.web.action.TdpCadreReportAction" singleton="false">
+		<property name="tdpCadreReportService" ref="tdpCadreReportService" />
+	</bean>
+	
 </beans>	
 	
