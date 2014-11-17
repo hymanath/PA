@@ -231,7 +231,7 @@ table.dataTable tr.odd {
 					<input type="radio" id="prevCId" name="percCalcC" value="prev" style="margin-top:0px;"/><span> Prev - Enrollment</span>
 				</div>  
 				
-				<div id="constituencyWiseSelDivRes" class="height-300 scrollable_div">
+				<div id="constituencyWiseSelDivRes" class="height-300 scrollable_div" style="min-height:320px;"> 
 					<img style="margin-left: 180px;margin-top: 101px;" src="images/icons/loading.gif"/>
 				</div>
 			</div><!-- Constituency wise Registration Processing Areas Row END-->
@@ -258,12 +258,13 @@ table.dataTable tr.odd {
 		</div>
 		
 		<div class="row-fluid fadeInUp">
-			<div class="span8 show-grid well well-small border-radius-0 mb-10" style=" min-height: 510px;">
-				<iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d3929013.1516925395!2d79.7399875!3d15.912899799999996!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1412166071097" width="580" height="300" frameborder="0" style="border:0"></iframe>
+			<div class="span5 show-grid well well-small border-radius-0 mb-10" style=" min-height: 345px;">
+				<!--<iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d3929013.1516925395!2d79.7399875!3d15.912899799999996!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1412166071097" width="580" height="300" frameborder="0" style="border:0"></iframe>-->
 				<table class="table table-bordered border-radius-0" style="margin-top: 5px; margin-bottom: 0px;">
 					<tbody >
 						<tr>
 							<td>
+							<div style="text-align:center;">
 								Select Hours :
 								<select id="hoursId" onChange="getWorkingMembersInfo();">
 									<option value="0" selected="selected">All</option>
@@ -273,10 +274,13 @@ table.dataTable tr.odd {
 									<option value="4"> 4 Hours  </option>
 									<option value="5"> 5 Hours  </option>
 								</select>
-								<div style="text-align:center;padding-top: 6px;" id="totalMembersWorkingTodayId">
+								</div>
+								<div style="text-align:center;padding-top: 15px;" id="totalMembersWorkingTodayId">
 									<img style=" margin-top: 36px;padding-left: 110px;" src="images/icons/search.gif"/>
 								</div>
 							</td>
+							</tr>
+							<tr>
 							<c:if test="${sessionScope.USER.isAdmin == 'true' || sessionScope.USER.accessType != 'DISTRICT'}">
 							  <td style="width:50%;text-align:center;"><div><a href="javascript:{}" onclick="openDialogToTrack();">Click Here To View</br> Users Working Status </br> & </br> Location Wise Cadre Registration Info</a></br>
 							   <c:if test="${fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) }">
@@ -287,14 +291,15 @@ table.dataTable tr.odd {
 							<td style="width:50%;text-align:center;"><div></div></b></td>
 						  </c:if>
 						</tr>
+						
 					</tbody>
 				</table>
 			</div>
 			
 			<!-- ReCently Registered Block -->
-			<div class="span4 show-grid well well-small border-radius-0 pad-0" style=" width: 31.9149%;margin-left:20px;min-height:510px;">
-				<h4 style="padding-bottom:5px;"><i class="icon-user" style="margin-top: 4px;"></i> &nbsp;Recently Registered <i class="icon-refresh" style="margin-top: 4px;margin-left:10px;cursor:pointer;" onclick="getRecentlyRegisteredCadresInfo(0,true);"></i> </h4>
-				<div id="recentRegisterCadresDiv"><img style="margin-top:180px;margin-left: 124px;" src="images/icons/loading.gif"/></div>
+			<div class="span7 show-grid well well-small border-radius-0 pad-0" style="margin-left:20px;min-height:345px;">
+				<h4 style="padding-bottom:5px;padding-top:5px;"><i class="icon-user" style="margin-top: 4px;"></i> &nbsp;Recently Registered <i class="icon-refresh" style="margin-top: 4px;margin-left:10px;cursor:pointer;" onclick="getRecentlyRegisteredCadresInfo(0,true);"></i> </h4>
+				<div id="recentRegisterCadresDiv" style="margin-top:15px;"><img style="margin-top:180px;margin-left: 124px;" src="images/icons/loading.gif"/></div>
 					
 			</div><!-- ReCently Registered Block END -->
 		</div>
@@ -447,19 +452,28 @@ $('#membersCount').addClass('animated fadeInX');
        $.ajax({
           type:'GET',
           url: 'getCadreDashBoardBasicInfo.action',
-          data: {task:"recentlyRegistered",startIndex:startIndex,maxIndex: 5}
+          data: {task:"recentlyRegistered",startIndex:startIndex,maxIndex: 6}
        }).done(function(result){
     	   if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
     		   location.reload(); 
     	   }
 			if(result != null && result.length > 0){
 			 var str ='<table class="table table-bordered border-radius-0"><tbody>';
-			   for(var i in result){
-			      str+='<tr><td><div class="media"><a href="javascript:{}" class="pull-left"><img style="width:64px;height:64px;" id="cadreRegId'+i+'" onerror="setDefaultImage(this);" src="'+result[i].date+'"  /></a>'
+			
+			   for(var i=0;i<result.length;i=i+2){
+				  str+='<tr>';
+			      str+='<td><div class="media"><a href="javascript:{}" class="pull-left"><img style="width:64px;height:64px;" id="cadreRegId'+i+'" onerror="setDefaultImage(this);" src="'+result[i].date+'"  /></a>'
 			      str+='<div class="media-body">';
 				  str+='<h4 class="media-heading">'+result[i].name+'</h4>';
 				  str+='<i class="icon-map-marker"></i>'+result[i].location;
-				  str+='</div></div></td></tr>';
+				  str+='</div></div></td>';
+				  
+				  str+='<td><div class="media"><a href="javascript:{}" class="pull-left"><img style="width:64px;height:64px;" id="cadreRegId'+(i+1)+'" onerror="setDefaultImage(this);" src="'+result[i+1].date+'"  /></a>'
+			      str+='<div class="media-body">';
+				  str+='<h4 class="media-heading">'+result[i+1].name+'</h4>';
+				  str+='<i class="icon-map-marker"></i>'+result[i+1].location;
+				  str+='</div></div></td>';
+				  str+='</tr>';
 			   }
 			     str+='</tbody></table>';
 				  str+='<a style="float:right;cursor:pointer;" id="nextId">Next<i class="icon-forward " /></a>';
@@ -1241,14 +1255,14 @@ $('#membersCount').addClass('animated fadeInX');
 		
 		$("#nextId").live("click",function(){
 			
-		strIndex = strIndex + 5;
+		strIndex = strIndex + 6;
 		
 		getRecentlyRegisteredCadresInfo(strIndex,false);
 		
 		});
 		$("#previousId").live("click",function(){
 			if(strIndex > 0)
-			strIndex = strIndex - 5;
+			strIndex = strIndex - 6;
 			
 			getRecentlyRegisteredCadresInfo(strIndex,false);
 			
