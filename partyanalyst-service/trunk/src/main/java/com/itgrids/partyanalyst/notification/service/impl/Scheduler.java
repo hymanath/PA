@@ -108,7 +108,7 @@ public class Scheduler {
 	}
 	
 	
-	public void runTheBatchJobForEveryDayCardDataInsert()
+	/*public void runTheBatchJobForEveryDayCardDataInsert()
 	{
 		schedulerService.prepareDatForCardPrinting(dateUtilService.getYesterdayDateString());
 	}
@@ -121,6 +121,11 @@ public class Scheduler {
 	public void runTheBatchJobForEveryDayCardDataInsertForMax()
 	{
 		schedulerService.prepareDatForCardPrintingForMax(dateUtilService.getYesterdayDateString());
+	}*/
+	
+	public void schedularForCardPrintDataFilling()
+	{
+		schedulerService.schedularForCardPrintDataFilling(dateUtilService.getYesterdayDateString());
 	}
 	public void runTheBatchJobForEveryWeek()
 	{

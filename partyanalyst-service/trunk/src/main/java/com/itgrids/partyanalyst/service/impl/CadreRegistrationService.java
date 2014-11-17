@@ -5055,16 +5055,36 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					returnVO.setTdpCadreId(obj[7] != null ? Long.valueOf(obj[7].toString()) : 0l);
 					returnVO.setRefNumber(obj[8] != null ? obj[8].toString() : "");
 					returnVO.setMobileNo(obj[9] != null ? obj[9].toString() : "");
-					if(userAddress.getConstituency() != null && userAddress.getBooth() !=null)
+					if(obj[10] != null)
 					{
-						String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
-						returnVO.setVoterImgPath(url);
-						List<String> names = voterNamesDAO.getVoterTeluguNames((Long)obj[4] );
-						if(names != null && names.size() > 0)
+						String photoType = obj[10].toString();
+						if(photoType.equalsIgnoreCase("NEW"))
 						{
-							returnVO.setVoterName(names.get(0));
-						}
+							
+							
+							String url = "http://mytdp.com/images/cadre_images/"+obj[11].toString();
+							returnVO.setVoterImgPath(url);
 						
+						}
+						else if(photoType.equalsIgnoreCase("CADRE"))
+						{							
+								String url = "http://mytdp.com/images/cadre_images/"+obj[11].toString();
+								returnVO.setVoterImgPath(url);
+						}
+					}
+					else
+					{
+						if(userAddress.getConstituency() != null && userAddress.getBooth() !=null)
+						{
+							String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
+							returnVO.setVoterImgPath(url);
+						}
+					}
+					
+					List<String> names = voterNamesDAO.getVoterTeluguNames((Long)obj[4] );
+					if(names != null && names.size() > 0)
+					{
+						returnVO.setVoterName(names.get(0));
 					}
 					returnVO.setVillage(userAddress.getPanchayatId() != null ? panchayatDAO.get(userAddress.getPanchayatId()).getLocalName() : "");
 					returnVO.setMandal(userAddress.getTehsil() != null ?  userAddress.getTehsil().getLocalName() :"");

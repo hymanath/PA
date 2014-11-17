@@ -13,7 +13,9 @@ public interface ISchedulerService {
 	
 	public void saveDailyWmCorrectedMobileNUmbers(Date fromDate);
 	
-	public void prepareDatForCardPrinting(String prevDate);
-	public void prepareDatForCardPrintingForZebra(String prevDate);
-	public void prepareDatForCardPrintingForMax(String prevDate);
+	//public void prepareDatForCardPrinting(String prevDate);
+	//public void prepareDatForCardPrintingForZebra(String prevDate);
+	//public void prepareDatForCardPrintingForMax(String prevDate);
+	//public void fillDataForCardPrinting(String prevDate , String type);
+	public void schedularForCardPrintDataFilling(String prevDate);
 }
