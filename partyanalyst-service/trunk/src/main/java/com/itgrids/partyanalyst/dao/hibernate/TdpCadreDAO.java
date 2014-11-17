@@ -1977,7 +1977,7 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
 			str.append(" and model.userAddress.constituency.district.districtId in(:districtIds) group by model.userAddress.constituency.constituencyId");
 		 else if(type.equalsIgnoreCase(IConstants.TEHSIL))
 				str.append(" and model.userAddress.tehsil.tehsilId in(:districtIds) group by model.userAddress.tehsil.tehsilId");
-		 else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+		 else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
 				str.append(" and model.userAddress.localElectionBody.localElectionBodyId in(:districtIds) group by model.userAddress.localElectionBody.localElectionBodyId");
 		Query query = getSession().createQuery(str.toString());
 		if(fromDate != null && toDate != null){
@@ -2133,7 +2133,7 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
 			str.append(" and model.userAddress.constituency.district.districtId in(:districtIds) group by model.userAddress.constituency.constituencyId");
 		 else if(type.equalsIgnoreCase(IConstants.TEHSIL))
 				str.append(" and model.userAddress.tehsil.tehsilId in(:districtIds) group by model.userAddress.tehsil.tehsilId");
-		 else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+		 else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
 				str.append(" and model.userAddress.localElectionBody.localElectionBodyId in(:districtIds) group by model.userAddress.localElectionBody.localElectionBodyId");
 		 
 		Query query = getSession().createQuery(str.toString());
@@ -2167,7 +2167,7 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
 			str.append(" and model.userAddress.constituency.district.districtId in(:districtIds) group by model.userAddress.constituency.constituencyId");
 		 else if(type.equalsIgnoreCase(IConstants.TEHSIL))
 				str.append(" and model.userAddress.tehsil.tehsilId in(:districtIds) group by model.userAddress.tehsil.tehsilId");
-		 else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+		 else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
 				str.append(" and model.userAddress.localElectionBody.localElectionBodyId in(:districtIds) group by model.userAddress.localElectionBody.localElectionBodyId");
 		 
 		Query query = getSession().createQuery(str.toString());
