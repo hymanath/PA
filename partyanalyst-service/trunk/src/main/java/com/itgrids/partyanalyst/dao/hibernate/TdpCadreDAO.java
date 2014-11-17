@@ -1955,7 +1955,7 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
 		
 		return query.list();
 		}
-	public List<Object[]> getTotalRecords(List<Long> districtIds,String type){
+	public List<Object[]> getTotalRecords(List<Long> districtIds,String type,Date fromDate,Date toDate){
 		StringBuilder str = new StringBuilder();
 		if(type.equalsIgnoreCase(IConstants.DISTRICT))
 		 str.append("select count(model.tdpCadreId),model.userAddress.constituency.district.districtId"); 
@@ -1968,6 +1968,9 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
 		 str.append("  from TdpCadre model" +
 				" where model.isDeleted = 'N' " +
 				" and model.enrollmentYear = 2014 "); 
+		 if(fromDate != null && toDate != null){
+		   str.append(" and date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate ");
+		 }
 		 if(type.equalsIgnoreCase(IConstants.DISTRICT))
 		    str.append(" and model.userAddress.constituency.district.districtId in(:districtIds) group by model.userAddress.constituency.district.districtId ");
 		 else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
@@ -1977,6 +1980,10 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
 		 else if(type.equalsIgnoreCase(IConstants.TEHSIL))
 				str.append(" and model.userAddress.localElectionBody.localElectionBodyId in(:districtIds) group by model.userAddress.localElectionBody.localElectionBodyId");
 		Query query = getSession().createQuery(str.toString());
+		if(fromDate != null && toDate != null){
+			query.setParameter("fromDate",fromDate);
+			query.setParameter("toDate",toDate);
+		}
 		query.setParameterList("districtIds", districtIds);
 		
 		return query.list();

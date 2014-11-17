@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -157,21 +158,41 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 		 return query.list();	
 	}
 	
-	public List<Object[]> getTDPCadreAmountDetails(List<Long> districtIds,String type)
+	public List<Object[]> getTDPCadreAmountDetails(List<Long> districtIds,String type,Date fromDate,Date toDate )
 	{
 		StringBuilder str = new StringBuilder();
-		if(type.equalsIgnoreCase(IConstants.DISTRICT))
-		str.append("select sum(model1.amount), model.constituency.district.districtId");
-		else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
-			str.append("select sum(model1.amount), model.constituency.constituencyId");	
-		str.append(" from CadreSurveyUserAssignDetails model, CadreRegAmountDetails model1 where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
-				" and model.constituency.district.districtId in(:districtIds) ");
-		if(type.equalsIgnoreCase(IConstants.DISTRICT))
-		str.append("group by model.constituency.district.districtId");
-		else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
-			str.append("group by model.constituency.constituencyId");
-		Query query=getSession().createQuery(str.toString()); 
-		query.setParameterList("districtIds", districtIds);
-		return query.list();
+		if(fromDate != null && toDate != null){
+			if(type.equalsIgnoreCase(IConstants.DISTRICT))
+			str.append("select sum(model1.amount), model.constituency.district.districtId");
+			else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+				str.append("select sum(model1.amount), model.constituency.constituencyId");	
+			str.append(" from CadreSurveyUserAssignDetails model, CadreRegAmountDetails model1 where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
+					" and model.constituency.district.districtId in(:districtIds) and date(model1.cadreRegAmountFile.date) >=:fromDate and date(model1.cadreRegAmountFile.date) <=:toDate ");
+			if(type.equalsIgnoreCase(IConstants.DISTRICT))
+			str.append("group by model.constituency.district.districtId");
+			else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+				str.append("group by model.constituency.constituencyId");
+			Query query=getSession().createQuery(str.toString()); 
+			query.setParameterList("districtIds", districtIds);
+			query.setParameter("fromDate",fromDate);
+			query.setParameter("toDate",toDate);
+			return query.list();
+		}else{
+			if(type.equalsIgnoreCase(IConstants.DISTRICT))
+				str.append("select sum(model1.amount), model.constituency.district.districtId");
+				else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+					str.append("select sum(model1.amount), model.constituency.constituencyId");	
+				str.append(" from CadreSurveyUserAssignDetails model, CadreRegAmountDetails model1 where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
+						" and model.constituency.district.districtId in(:districtIds) ");
+				if(type.equalsIgnoreCase(IConstants.DISTRICT))
+				str.append("group by model.constituency.district.districtId");
+				else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+					str.append("group by model.constituency.constituencyId");
+				Query query=getSession().createQuery(str.toString()); 
+				query.setParameterList("districtIds", districtIds);
+				return query.list();
+		}
+		
+		
 	}
 }

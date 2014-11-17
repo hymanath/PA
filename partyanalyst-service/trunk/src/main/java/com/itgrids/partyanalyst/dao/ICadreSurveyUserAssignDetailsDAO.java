@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -26,7 +27,7 @@ public interface ICadreSurveyUserAssignDetailsDAO extends GenericDao<CadreSurvey
 	public List<Object[]> getUserConstituencyDetails(List<Long> userIds);
 	public List<Long> getCadreSurveyUserIdsByLocation(String location,Long locationId,String queryString);
 	public List<Object[]> getUsersDetails(List<Long> cadreSurveyUserIds);
-	public List<Object[]> getTDPCadreAmountDetails(List<Long> districtIds,String type);
+	public List<Object[]> getTDPCadreAmountDetails(List<Long> districtIds,String type,Date fromDate,Date toDate);
 	
 	
 }

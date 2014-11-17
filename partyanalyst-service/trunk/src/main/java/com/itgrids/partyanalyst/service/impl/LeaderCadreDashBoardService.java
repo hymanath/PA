@@ -174,7 +174,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 	public void testMethod(){
 		LOG.info("Enterd into testMethod() in LeaderCaderDashBoardService");
 	}
-	public List<CadreAmountDetailsVO> getLoationWiseLeaderCadreDetails(String locationtype,Long stateId,String accessType,String accessValue)
+	public List<CadreAmountDetailsVO> getLoationWiseLeaderCadreDetails(String locationtype,Long stateId,String accessType,String accessValue,Date fromDate,Date toDate)
 	{
 		List<CadreAmountDetailsVO> resultList = new ArrayList<CadreAmountDetailsVO>(); 
 		List<Long> constituenycIds = new ArrayList<Long>();
@@ -251,7 +251,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 								resultList.add(basicVo);
 						}
 					
-					List<Object[]> receivedAmountDetails = cadreSurveyUserAssignDetailsDAO.getTDPCadreAmountDetails(districtIds,locationtype);
+					List<Object[]> receivedAmountDetails = cadreSurveyUserAssignDetailsDAO.getTDPCadreAmountDetails(districtIds,locationtype,fromDate,toDate);
 					if(receivedAmountDetails != null && receivedAmountDetails.size() > 0)
 					{
 						for(Object[] params : receivedAmountDetails)
@@ -262,7 +262,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 							 
 						}
 					}
-					List<Object[]> totalRecords = tdpCadreDAO.getTotalRecords(districtIds,locationtype);
+					List<Object[]> totalRecords = tdpCadreDAO.getTotalRecords(districtIds,locationtype,fromDate,toDate);
 					
 					if(totalRecords != null && totalRecords.size() > 0)
 					{
@@ -309,7 +309,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 	}
 	
 	
-	public List<CadreAmountDetailsVO> getSubLevelLoationWiseLeaderCadreDetails(String type,Long id,String accessType,String accessValue)
+	public List<CadreAmountDetailsVO> getSubLevelLoationWiseLeaderCadreDetails(String type,Long id,String accessType,String accessValue,Date fromDate,Date toDate)
 	{
 		List<CadreAmountDetailsVO> resultList = new ArrayList<CadreAmountDetailsVO>(); 
 		
@@ -325,7 +325,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 							locationtype = IConstants.CONSTITUENCY;
 							districtIds.add(id);
 							voterCountList = voterInfoDAO.getVotersCountInConstituenciesByDistrictsList(districtIds,IConstants.VOTER_DATA_PUBLICATION_ID);
-							setLocationWiseCadreData(locationtype,districtIds,voterCountList,constituencyIds,resultList);
+							setLocationWiseCadreData(locationtype,districtIds,voterCountList,constituencyIds,resultList,fromDate,toDate);
 				}
 				
 				if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
@@ -349,13 +349,13 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 							{
 								locationtype = IConstants.TEHSIL;
 							    voterCountList = voterInfoDAO.getVotersCountInATehsilList(tehsilIds,IConstants.VOTER_DATA_PUBLICATION_ID);
-							    setLocationWiseCadreData(locationtype,tehsilIds,voterCountList,constituencyIds,resultList);
+							    setLocationWiseCadreData(locationtype,tehsilIds,voterCountList,constituencyIds,resultList,fromDate,toDate);
 							}
 							if(localbodyIds != null && localbodyIds.size() > 0)
 							{
 								locationtype = IConstants.LOCAL_ELECTION_BODY;
 								voterCountList = voterInfoDAO.getVotersCountInALocalBodyList(localbodyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
-							    setLocationWiseCadreData(locationtype,localbodyIds,voterCountList,constituencyIds,resultList);
+							    setLocationWiseCadreData(locationtype,localbodyIds,voterCountList,constituencyIds,resultList,fromDate,toDate);
 							}
 				}
 				
@@ -369,7 +369,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 		return resultList;
 	}
 	
-	public void setLocationWiseCadreData(String locationtype,List<Long> Ids,List<Object[]> voterCountList,List<Long> constituencyIds,List<CadreAmountDetailsVO> resultList)
+	public void setLocationWiseCadreData(String locationtype,List<Long> Ids,List<Object[]> voterCountList,List<Long> constituencyIds,List<CadreAmountDetailsVO> resultList,Date fromDate,Date toDate)
 	{
 		
 		List<Long> districtIds = new ArrayList<Long>();
@@ -400,7 +400,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 			}
 		if(locationtype.equalsIgnoreCase(IConstants.CONSTITUENCY))
 		{
-			List<Object[]> receivedAmountDetails = cadreSurveyUserAssignDetailsDAO.getTDPCadreAmountDetails(Ids,locationtype);
+			List<Object[]> receivedAmountDetails = cadreSurveyUserAssignDetailsDAO.getTDPCadreAmountDetails(Ids,locationtype,fromDate,toDate);
 			if(receivedAmountDetails != null && receivedAmountDetails.size() > 0)
 			{
 				for(Object[] params : receivedAmountDetails)
@@ -412,7 +412,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 				}
 			}
 		}	
-		List<Object[]> totalRecords = tdpCadreDAO.getTotalRecords(Ids,locationtype);
+		List<Object[]> totalRecords = tdpCadreDAO.getTotalRecords(Ids,locationtype,fromDate,toDate);
 		
 		if(totalRecords != null && totalRecords.size() > 0)
 		{
@@ -542,7 +542,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 					resultList.add(basicVo);
 				}
 			
-			List<Object[]> receivedAmountDetails = cadreSurveyUserAssignDetailsDAO.getTDPCadreAmountDetails(districtIds,locationtype);
+			List<Object[]> receivedAmountDetails = cadreSurveyUserAssignDetailsDAO.getTDPCadreAmountDetails(districtIds,locationtype,null,null);
 			if(receivedAmountDetails != null && receivedAmountDetails.size() > 0)
 			{
 				for(Object[] params : receivedAmountDetails)
@@ -553,7 +553,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 					 
 				}
 			}
-			List<Object[]> totalRecords = tdpCadreDAO.getTotalRecords(districtIds,locationtype);
+			List<Object[]> totalRecords = tdpCadreDAO.getTotalRecords(districtIds,locationtype,null,null);
 			
 			if(totalRecords != null && totalRecords.size() > 0)
 			{
@@ -699,7 +699,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 					resultList.add(basicVo);
 				}
 			
-			List<Object[]> receivedAmountDetails = cadreSurveyUserAssignDetailsDAO.getTDPCadreAmountDetails(districtIds,locationtype);
+			List<Object[]> receivedAmountDetails = cadreSurveyUserAssignDetailsDAO.getTDPCadreAmountDetails(districtIds,locationtype,null,null);
 			if(receivedAmountDetails != null && receivedAmountDetails.size() > 0)
 			{
 				for(Object[] params : receivedAmountDetails)
