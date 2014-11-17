@@ -199,15 +199,30 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 				
 				if(accessType.trim().equalsIgnoreCase(IConstants.DISTRICT))
 				{
-					districtIds.clear();
-					districtIds.add(Long.valueOf(accessValue.trim()).longValue());
+					if(!districtIds.contains(Long.valueOf(accessValue.trim()).longValue()))
+					{
+						districtIds.clear();
+					}
+					else
+					{
+						districtIds.clear();
+						districtIds.add(Long.valueOf(accessValue.trim()).longValue());
+					}
 				}
 				else if(accessType.trim().equalsIgnoreCase(IConstants.MLA))
 				{
 					Constituency constituency = constituencyDAO.get(Long.valueOf(accessValue.trim()));
 					
-					districtIds.clear();
-					districtIds.add(constituency.getDistrict().getDistrictId());
+					if(!districtIds.contains(constituency.getDistrict().getDistrictId().longValue()))
+					{
+						districtIds.clear();
+					}
+					else
+					{
+						districtIds.clear();
+						districtIds.add(constituency.getDistrict().getDistrictId());
+					}
+
 				}
 				
 				if(districtIds != null && districtIds.size()>0)
