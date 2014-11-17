@@ -595,7 +595,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 			if(resultList!=null && resultList.size()>1){
 				CadreAmountDetailsVO cv = resultList.get(0);
 				cv.setOkCount(ok_status_count);
-				cv.setBestCount(ok_status_count);
+				cv.setBestCount(best_status_count);
 				cv.setGoodCount(good_status_count);
 				cv.setPoorCCount(poor_status_count);
 				cv.setWorstCount(worst_status_count);
@@ -763,7 +763,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 			if(resultList!=null && resultList.size()>1){
 				CadreAmountDetailsVO cv = resultList.get(0);
 				cv.setOkCount(ok_status_count);
-				cv.setBestCount(ok_status_count);
+				cv.setBestCount(best_status_count);
 				cv.setGoodCount(good_status_count);
 				cv.setPoorCCount(poor_status_count);
 				cv.setWorstCount(worst_status_count);

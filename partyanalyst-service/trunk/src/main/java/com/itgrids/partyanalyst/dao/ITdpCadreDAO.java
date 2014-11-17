@@ -142,10 +142,10 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public Long getWorkingMembersCountOfAccessLevel(Date date,List<Long> constiIds);
 	public Long getLastHoursWorkingMemberCountOfAccessLevel(Date presentDate, Date lastHours,List<Long> constiIds);
 	
-	public Integer saveRuralConstituencyDataType1(String prevDate,String table ,List<Long> distIds );
-	public Integer saveRuralUrbanConstituencyDataType2(String prevDate,String table ,List<Long> distIds );
-	public Integer saveRuralUrbanConstituencyDataType(String prevDate,String table ,List<Long> distIds );
-	public Integer saveUrbanConstituencyDataType1(String prevDate,String table ,List<Long> distIds );
+	public Integer saveRuralConstituencyDataType1(String prevDate,String table ,Long distIds ,Long limit);
+	public Integer saveRuralUrbanConstituencyDataType2(String prevDate,String table ,Long distIds ,Long limit );
+	public Integer saveRuralUrbanConstituencyDataType(String prevDate,String table ,Long distIds  ,Long limit);
+	public Integer saveUrbanConstituencyDataType1(String prevDate,String table ,Long distIds  ,Long limit);
 	
 	
 	public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersList,Date date);	
