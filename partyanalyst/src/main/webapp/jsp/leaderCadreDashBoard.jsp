@@ -143,7 +143,7 @@
 		}
 		str+='<td>'+result[i].totalAmount+'</td>';
 		str+='<td>'+result[i].paidAmount+'</td>';
-		str+='<td id="appendID">'+result[i].difference+'<span class="pull-right" onclick="closeDiv('+result[i].id+');"><i class="icon-remove"></i></span></td>';
+		str+='<td id="appendID">'+result[i].difference+'<span class="pull-right removeicon"  id="iconDiv'+result[i].id+'" onclick="closeDiv('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span></td>';
 		str+='</tr>';
 	   }
 	   str+='</tbody>';
@@ -175,11 +175,13 @@
    {
    var scope = "";
     $('.added').remove('');
+	$(".removeicon").hide();
 	$(".removeCls").removeClass("selected");
 	$('.clearCls'+id).after('<tr class="selectedchild"><td id="subLevel'+id+'" colspan="8" class="added"><div align="center"><img id="ajaxImgStyle1" style="display:none;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
 	$('.clearCls'+id).addClass("selected");
 	$('.clearClsTD'+id).addClass("selected");
 	$("#ajaxImgStyle1").show();
+	$("#iconDiv"+id).show();
    if(type == "District")
 	   {
 	scope = "Constituency";
@@ -207,11 +209,13 @@ function displaySublevelDetails1(id,type)
    {
    var scope = "";
     $('.added1').remove('');
+	$(".removeicon1").hide();
 	$(".removeCls1").removeClass("selected1");
 	$('.clearCls1'+id).after('<tr class="selected1child"><td id="subLevel'+id+'" colspan="8" class="added1"><div><img id="ajaxImgStyle2" style="display:none;margin-left: 10px;" src="images/icons/barloader.gif"/></div></td></tr>');;
 	$('.clearCls1'+id).addClass("selected1");
 	$('.clearClsTD1'+id).addClass("selected1");
 	$("#ajaxImgStyle2").show();
+	$("#iconDiv1"+id).show();
    if(type == "District")
 	   {
 	scope = "Constituency";
@@ -292,7 +296,7 @@ function buildData1(result,type,divId)
 		if(type == "Constituency")
 		   {
 		str+='<td>'+result[i].paidAmount+'</td>';
-		str+='<td>'+result[i].difference+'<span class="pull-right" onclick="closeDiv1('+result[i].id+');"><i class="icon-remove"></i></span></td>';
+		str+='<td>'+result[i].difference+'<span class="pull-right removeicon1"  id="iconDiv1'+result[i].id+'" onclick="closeDiv1('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span></td>';
 		   }
 		str+='</tr>';
 	   }
