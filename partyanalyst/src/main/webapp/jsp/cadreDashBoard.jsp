@@ -462,13 +462,13 @@ $('#membersCount').addClass('animated fadeInX');
 			
 			   for(var i=0;i<result.length;i=i+2){
 				  str+='<tr>';
-			      str+='<td><div class="media"><a href="javascript:{}" class="pull-left"><img style="width:64px;height:64px;" id="cadreRegId'+i+'" onerror="setDefaultImage(this);" src="'+result[i].date+'"  /></a>'
+			      str+='<td style="width:50%;"><div class="media"><a href="javascript:{}" class="pull-left"><img style="width:64px;height:64px;" id="cadreRegId'+i+'" onerror="setDefaultImage(this);" src="'+result[i].date+'"  /></a>'
 			      str+='<div class="media-body">';
 				  str+='<h4 class="media-heading">'+result[i].name+'</h4>';
 				  str+='<i class="icon-map-marker"></i>'+result[i].location;
 				  str+='</div></div></td>';
 				  
-				  str+='<td><div class="media"><a href="javascript:{}" class="pull-left"><img style="width:64px;height:64px;" id="cadreRegId'+(i+1)+'" onerror="setDefaultImage(this);" src="'+result[i+1].date+'"  /></a>'
+				  str+='<td style="width:50%;"><div class="media"><a href="javascript:{}" class="pull-left"><img style="width:64px;height:64px;" id="cadreRegId'+(i+1)+'" onerror="setDefaultImage(this);" src="'+result[i+1].date+'"  /></a>'
 			      str+='<div class="media-body">';
 				  str+='<h4 class="media-heading">'+result[i+1].name+'</h4>';
 				  str+='<i class="icon-map-marker"></i>'+result[i+1].location;
