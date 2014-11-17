@@ -140,19 +140,19 @@
 					
 					<div class="pad-10b">
 					<h5 class="text-align1">CANDIDATE NAME</h5>
-							<input type="text" class="form-control border-radius-0" placeholder="Enter Name" id="searchNameId" name="searchName" style="width:425px;" onkeyUp="searchCandidatesDetailsBySearchCriteria();">
+							<input type="text" class="form-control border-radius-0" placeholder="Enter Name" id="searchNameId" name="searchName" style="width:425px;">
 					</div>
 					<div class=" m_top10 pad-10b">
 						<div class="row-fluid">
 						
 							<div class="span6">
 							<h5 class="text-align1">VOTER ID</h5>
-								<input type="text" class="form-control border-radius-0" placeholder="Enter Voter ID"  id="searchVoterCardId"  name="searchVoterCard" onkeyUp="searchCandidatesDetailsBySearchCriteria();">
+								<input type="text" class="form-control border-radius-0" placeholder="Enter Voter ID"  id="searchVoterCardId"  name="searchVoterCard">
 							</div>
 							
 							<div class="span6">
 							<h5 class="text-align1">H NO</h5>
-								<input type="text" class="form-control border-radius-0" placeholder="House Number"  id="searchHNoId"   name="searchHNo" onkeyUp="searchCandidatesDetailsBySearchCriteria();">
+								<input type="text" class="form-control border-radius-0" placeholder="House Number"  id="searchHNoId"   name="searchHNo">
 							</div>
 						</div>
 					</div>
