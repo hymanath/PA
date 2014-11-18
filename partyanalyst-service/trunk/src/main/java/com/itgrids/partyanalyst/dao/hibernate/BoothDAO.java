@@ -2210,4 +2210,32 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 	Query query = getSession().createQuery("select distinct model.constituency.constituencyId,model.constituency.name,model.localBody.localElectionBodyId, model.localBody.name, model.boothId, model.partNo from Booth model where model.constituency.state.stateId = 1 and model.publicationDate.publicationDateId = 11 and model.refBooth is null and  model.localBody is not null and model.constituency.areaType='URBAN' order by model.constituency.constituencyId");
 	return query.list();
 	}
+	
+	
+	public List<Long> getLocalbodiesByConstituencyIds(List<Long> constiIds,Long publicationDateId){
+		
+		Query query=getSession().createQuery("select distinct model.localBody.localElectionBodyId from Booth model where model.constituency.constituencyId in (:constiIds) and model.publicationDate.publicationDateId = :publicationDateId " +
+				" and model.tehsil.tehsilId is null" );
+		query.setParameterList("constiIds", constiIds);
+		query.setParameter("publicationDateId", publicationDateId);
+		return query.list();
+	}
+	
+	public List<Long> getTehsilsByConstituencyIds(List<Long> constiIds,Long publicationDateId){
+		
+		Query query=getSession().createQuery("select distinct model.tehsil.tehsilId from Booth model where model.constituency.constituencyId in (:constiIds) and model.publicationDate.publicationDateId = :publicationDateId " +
+				" and model.localBody.localElectionBodyId is null" );
+		query.setParameterList("constiIds", constiIds);
+		query.setParameter("publicationDateId", publicationDateId);
+		return query.list();
+	}
+	
+	
+	public List<Long> getPanchayatsByConstituencyIds(List<Long> constituencyIds,Long publicationDateId)
+	{
+		Query query = getSession().createQuery("select distinct model.panchayat.panchayatId from Booth model where model.constituency.constituencyId in (:constituencyIds) and model.publicationDate.publicationDateId = :publicationDateId order by model.panchayat.panchayatName");
+		query.setParameterList("constituencyIds",constituencyIds);
+		query.setParameter("publicationDateId", publicationDateId);
+		return query.list();
+	}
 }
