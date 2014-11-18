@@ -180,7 +180,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public List<Object[]> getTotalRecords(List<Long> districtIds,String type,Date date);
 	public List<Object[]> getTotalRecordsUnderDate(List<Long> districtIds,String type,Date date);
-
 	public List<Object[]> getTotalRecords1(List<Long> ids,String type);
 	public List<Object[]> getLocationWiseGenderCadreCount(List<Long> Ids,String type);
 	public List<Object[]> getLocationWiseAgeRangeCount(List<Long> Ids,String ageRange ,String type);
@@ -189,4 +188,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getLocationWiseCount(List<Long> ids,String type);
 	public List<Object[]> getTdpCadreAgeRangeByConstituency(List<Long> constituencyIds);
 	public List<Object[]> getTdpCadregenderWiseByConstituency(List<Long> constituencyIds);
+	public List<Object[]> getDuplicateUsersInConstituencies(Date startDate,Date endDate,String type);
+	public List<Object[]> getDuplicateUsersCountInConstituencies(Date startDate,Date endDate,String type,List<Long> Ids);
+	public List<Object[]> getDuplicateUsersByUserId(Date startDate,Date endDate,Long userId,Long locationId,String type,Long constituencyId);
 }
