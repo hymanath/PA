@@ -186,4 +186,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getLocationWiseAgeRangeCount(List<Long> Ids,String ageRange ,String type);
 	public List<Object[]> getLocationWiseTotalRecords(List<Long> districtIds,String type);
 	public Long getCadreDetailsForCadreRegistratiobByconstituencIdCount(Long constituencyId, String queryStr,Long panchayatId,Long boothId,String isPresentCadre);
+	public List<Object[]> getLocationWiseCount(List<Long> ids,String type);
 }
