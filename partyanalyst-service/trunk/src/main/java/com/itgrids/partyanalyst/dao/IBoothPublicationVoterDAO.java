@@ -688,7 +688,7 @@ public interface IBoothPublicationVoterDAO extends
 	  public Long getTotalVoterByBooths(List<Long> boothIds);
 	  public List<Object[]> getBoothWiseTotalVotersByConstituencyId(Long constituencyId);
 
-	  public List getVotersDetailsForCadreRegistratiobByconstituencId(Long constituencyId, Long publicationDate,String queryStr,Long panchayatId,Long boothId,String villagesCovered);
+	  public List getVotersDetailsForCadreRegistratiobByconstituencId(Long constituencyId, Long publicationDate,String queryStr,Long panchayatId,Long boothId,String villagesCovered,Integer startIndex,Integer maxIndex);
 	  
 	  public List<Object[]> getCTPVoterDetailsByBooth(Long boothId);
 	  
@@ -699,4 +699,5 @@ public interface IBoothPublicationVoterDAO extends
 	  
 	  public List<String> getPartNo(Long constituencyId,Long voterId);
 	  public List<Object[]> getLocationWiseVoterAgeRangeCount(List<Long> locationIdsList,String locationType,Long publicationDateId);
+	  public Long getVotersDetailsForCadreRegistratiobByconstituencIdCount(Long constituencyId, Long publicationDate,String queryStr,Long panchayatId,Long boothId,String villageCovered);
 }
