@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CadreAmountDetailsVO implements Serializable{
@@ -17,7 +18,9 @@ public class CadreAmountDetailsVO implements Serializable{
 	
 	private Long difference = 0l;
 	private String date;
-	private List<CadreAmountDetailsVO> infoList;
+	private List<CadreAmountDetailsVO> infoList = new ArrayList<CadreAmountDetailsVO>();
+	private List<CadreAmountDetailsVO> localbodyList = new ArrayList<CadreAmountDetailsVO>();
+	
 	private String userType;
 	
 	private Long totalRecords;
@@ -41,11 +44,23 @@ public class CadreAmountDetailsVO implements Serializable{
 	private int poorCount;
 	private int worstCount;
 	
+	private String toDate;
 	
 	
 	
 	
-	
+	public String getToDate() {
+		return toDate;
+	}
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
+	public List<CadreAmountDetailsVO> getLocalbodyList() {
+		return localbodyList;
+	}
+	public void setLocalbodyList(List<CadreAmountDetailsVO> localbodyList) {
+		this.localbodyList = localbodyList;
+	}
 	public int getOkCount() {
 		return okCount;
 	}

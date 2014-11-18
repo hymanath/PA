@@ -476,6 +476,22 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 		return null;
 	}
 	
+	public CadreAmountDetailsVO getMatchedVO1(List<CadreAmountDetailsVO> resultList,Long Id,String type)
+	{
+		try{
+			if(resultList == null || resultList.size() == 0 || Id == null)
+				return null;
+			for(CadreAmountDetailsVO vo :resultList)
+			{
+				if(vo.getId().longValue() == Id  && vo.getUserType().equalsIgnoreCase(type))
+					return vo;
+			}
+		}
+		catch (Exception e) {
+			return null;
+		}
+		return null;
+	}
 	public String getStateByDistrictId(Long districtId)
 	{
 		String state = "";
@@ -797,4 +813,166 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 		return resultList;
 	}
 	
+	public CadreAmountDetailsVO getDuplicateUsersInLocation(Date fromDate,Date toDate)
+	{
+		CadreAmountDetailsVO returnVo = new CadreAmountDetailsVO();
+		List<CadreAmountDetailsVO> resultList = new ArrayList<CadreAmountDetailsVO>();
+		List<CadreAmountDetailsVO> localbodyList = new ArrayList<CadreAmountDetailsVO>();
+		List<Long> constituencyIds = new ArrayList<Long>();
+		List<Long> tehsilIds = new ArrayList<Long>();
+		List<Long> localbodyIds = new ArrayList<Long>();
+		try{
+			
+			List<Object[]> list = tdpCadreDAO.getDuplicateUsersInConstituencies(fromDate,toDate,IConstants.TEHSIL);
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					if(!tehsilIds.contains((Long)params[2]))
+					tehsilIds.add((Long)params[2]);
+				}
+			returnVo.setInfoList(resultList);
+			setDataForDuplicateUsers(list,resultList,constituencyIds,IConstants.TEHSIL);
+			List<Object[]> list1 = tdpCadreDAO.getDuplicateUsersCountInConstituencies(fromDate,toDate,IConstants.TEHSIL,tehsilIds);
+			setCountForDuplicateUsers(list1,resultList,IConstants.TEHSIL);
+			}
+			List<Object[]> list2 = tdpCadreDAO.getDuplicateUsersInConstituencies(fromDate,toDate,IConstants.LOCAL_ELECTION_BODY);
+			if(list2 != null && list2.size() > 0)
+			{
+				for(Object[] params : list2)
+				{
+					if(!localbodyIds.contains((Long)params[2]))
+					localbodyIds.add((Long)params[2]);
+				}
+			
+			setDataForDuplicateUsers(list2,resultList,constituencyIds,IConstants.LOCAL_ELECTION_BODY);
+			List<Object[]> list3 = tdpCadreDAO.getDuplicateUsersCountInConstituencies(fromDate,toDate,IConstants.LOCAL_ELECTION_BODY,localbodyIds);
+			setCountForDuplicateUsers(list3,resultList,IConstants.LOCAL_ELECTION_BODY);
+			}
+			
+			
+		}
+		catch(Exception e)
+		{
+			LOG.info("Enterd into getDuplicateUsersInLocation() in LeaderCaderDashBoardService");	
+		}
+		return returnVo;
+	}
+	
+	public void setDataForDuplicateUsers(List<Object[]> list,List<CadreAmountDetailsVO> resultList,List<Long> constituencyIds,String type)
+	{
+		try{
+			if(list !=null && list.size()> 0)
+			{
+				for(Object[] params : list)
+				{
+				if(!constituencyIds.contains((Long)params[0]))
+						{
+						CadreAmountDetailsVO vo =new CadreAmountDetailsVO();
+						vo.setId((Long)params[0]);
+						vo.setName(params[1].toString());
+						resultList.add(vo);
+						constituencyIds.add((Long)params[0]);
+						}
+				}
+				for(Object[] params : list)
+				{
+				 CadreAmountDetailsVO vo = getMatchedVO(resultList, (Long)params[0]);
+					 if(vo != null)
+					 {
+						 CadreAmountDetailsVO subVo = new CadreAmountDetailsVO();
+						 subVo.setId((Long)params[2]);
+						 if(type.equalsIgnoreCase(IConstants.TEHSIL))
+						 {
+						 subVo.setName(params[3].toString());
+						 subVo.setUserType((IConstants.TEHSIL));
+						 vo.getInfoList().add(subVo);
+						 }
+						 if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+						 {
+							 subVo.setName(params[3].toString() + " Muncipality");
+							 subVo.setUserType((IConstants.LOCAL_ELECTION_BODY));
+							 vo.getInfoList().add(subVo);
+						 }
+						
+						 
+					 }
+				}
+				 
+			}
+			
+		}
+		catch(Exception e)
+		{
+			LOG.info("Enterd into setDataForDuplicateUsers() in LeaderCaderDashBoardService");		
+		}
+	}
+	public void setCountForDuplicateUsers(List<Object[]> list,List<CadreAmountDetailsVO> resultList,String type)
+	{
+		try{
+			if(list !=null && list.size()> 0)
+			{
+				
+				for(Object[] params : list)
+				{
+					
+				 CadreAmountDetailsVO vo = getMatchedVO(resultList, (Long)params[0]);
+					 if(vo != null)
+					 {
+						
+						 
+							 CadreAmountDetailsVO subVo = getMatchedVO1(vo.getInfoList(), (Long)params[1],type);
+							 
+							 if(subVo != null)
+							 {
+								 CadreAmountDetailsVO userVo = new CadreAmountDetailsVO();
+								 
+									 userVo.setTotalCount((Long)params[2]);
+									 userVo.setUserName(params[4] != null ? params[4].toString() : "");
+									 userVo.setUserType(params[5] != null ? params[5].toString() : "");
+									 userVo.setMobileNo(params[6] != null ? params[6].toString() : "");
+									 userVo.setId((Long)params[3]);
+									 subVo.getInfoList().add(userVo);
+									 vo.setTotalAmount(vo.getTotalAmount() + 1); // all users in constituency
+								
+							 }
+					 }
+				}
+			}
+		 }
+		catch(Exception e)
+		{
+			LOG.info("Enterd into setCountForDuplicateUsers() in LeaderCaderDashBoardService");		
+		}
+	}
+	
+	public CadreAmountDetailsVO getUsersInLocation(Date reqFromDate,Date reqToDate,Long userId,Long locationId,String type,Long constituencyId) {
+	
+		CadreAmountDetailsVO returnVo = new CadreAmountDetailsVO();
+		List<CadreAmountDetailsVO> resultList = new ArrayList<CadreAmountDetailsVO>();
+		try{
+			List<Object[]> list = tdpCadreDAO.getDuplicateUsersByUserId(reqFromDate,reqToDate,userId,locationId,type,constituencyId);
+			if(list != null&& list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					CadreAmountDetailsVO vo = new CadreAmountDetailsVO();	
+					
+					vo.setName(params[0] != null ? params[0].toString() : "");
+					vo.setMobileNo(params[1] != null ? params[1].toString() : "");
+					vo.setDate(params[2] != null ? params[2].toString() : "");
+					vo.setToDate(params[3] != null ? params[3].toString() : "");
+					resultList.add(vo);
+					
+				}
+				
+			}
+			returnVo.setInfoList(resultList);
+		}
+		catch(Exception e)
+		{
+			LOG.info("Enterd into getUsersInLocation() in LeaderCaderDashBoardService");		
+		}
+		return returnVo;
+	}
 }

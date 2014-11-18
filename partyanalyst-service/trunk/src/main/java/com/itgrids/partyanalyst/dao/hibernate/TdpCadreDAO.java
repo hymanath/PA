@@ -2557,4 +2557,75 @@ public Integer saveUrbanConstituencyDataType1(String prevDate,String table,Long 
 	 return query.list();		 
 	
 	}
+	public List<Object[]> getDuplicateUsersInConstituencies(Date startDate,Date endDate,String type)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select model.userAddress.constituency.constituencyId,model.userAddress.constituency.name");
+		if(type.equalsIgnoreCase(IConstants.TEHSIL))
+		str.append(" ,model.userAddress.tehsil.tehsilId,model.userAddress.tehsil.tehsilName");
+		 else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+		str.append(" ,model.userAddress.localElectionBody.localElectionBodyId,model.userAddress.localElectionBody.name");
+		str.append(" ,count(distinct model.insertedUserId)");
+		str.append(" from TdpCadre model" +
+				" where model.isDeleted = 'N' " +
+				" and model.enrollmentYear = 2014 "+
+				" and date(model.surveyTime)>=:startDate and date(model.surveyTime)<=:endDate");
+		  if(type.equalsIgnoreCase(IConstants.TEHSIL))
+				str.append(" group by model.userAddress.constituency.constituencyId,model.userAddress.tehsil.tehsilId");
+		 else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+				str.append(" group by model.userAddress.constituency.constituencyId,model.userAddress.localElectionBody.localElectionBodyId");
+		  str.append(" having count(distinct model.insertedUserId) > 1");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
+		return query.list();
+	}
+
+	
+	public List<Object[]> getDuplicateUsersCountInConstituencies(Date startDate,Date endDate,String type,List<Long> Ids)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select model.userAddress.constituency.constituencyId");
+		if(type.equalsIgnoreCase(IConstants.TEHSIL))
+		str.append(" ,model.userAddress.tehsil.tehsilId");
+		 else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+		str.append(" ,model.userAddress.localElectionBody.localElectionBodyId");
+		str.append(" ,count(model.tdpCadreId),model.insertedBy.cadreSurveyUserId,model.insertedBy.userName,model.insertedBy.name,model.insertedBy.mobileNo");
+		str.append(" from TdpCadre model" +
+				" where model.isDeleted = 'N' " +
+				" and model.enrollmentYear = 2014 "+
+				" and date(model.surveyTime)>=:startDate and date(model.surveyTime)<=:endDate");
+		  if(type.equalsIgnoreCase(IConstants.TEHSIL))
+				str.append(" and model.userAddress.tehsil.tehsilId in(:Ids) group by model.userAddress.constituency.constituencyId,model.userAddress.tehsil.tehsilId,model.insertedBy.cadreSurveyUserId");
+		 else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+				str.append(" and model.userAddress.localElectionBody.localElectionBodyId in(:Ids)  group by model.userAddress.constituency.constituencyId,model.userAddress.localElectionBody.localElectionBodyId,model.insertedBy.cadreSurveyUserId");
+		  
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
+		query.setParameterList("Ids", Ids);
+		return query.list();
+	}
+	
+	public List<Object[]> getDuplicateUsersByUserId(Date startDate,Date endDate,Long userId,Long locationId,String type,Long constituencyId)
+	{
+	
+		StringBuilder str = new StringBuilder();
+		str.append(" select distinct model1.name,model1.mobileNo,date(model1.fromDate),date(model1.toDate) from TdpCadre model,CadreSurveyUserAssignee model1");
+		str.append( " where model1.cadreSurveyUser.cadreSurveyUserId = model.insertedBy.cadreSurveyUserId  and model.isDeleted = 'N' " +
+				" and model.enrollmentYear = 2014 ");
+		 if(type.equalsIgnoreCase(IConstants.TEHSIL))
+				str.append(" and model.userAddress.tehsil.tehsilId = :locationId and model.userAddress.constituency.constituencyId = :constituencyId and model.insertedBy.cadreSurveyUserId = :userId");
+		 else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+				str.append(" and model.userAddress.localElectionBody.localElectionBodyId = :locationId and model.userAddress.constituency.constituencyId = :constituencyId  and model.insertedBy.cadreSurveyUserId = :userId");
+		 str.append(" and date(model.surveyTime)>=:startDate and date(model.surveyTime)<=:endDate ");
+		 str.append(" and date(model1.fromDate)>=:startDate and (model1.toDate is null or date(model1.toDate)<=:endDate)");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
+		query.setParameter("userId", userId);
+		query.setParameter("locationId", locationId);
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
 }
