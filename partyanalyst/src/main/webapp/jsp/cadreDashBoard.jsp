@@ -303,7 +303,7 @@ table.dataTable tr.odd {
 			
 			<!-- ReCently Registered Block -->
 			<div class="span7 show-grid well well-small border-radius-0 pad-0" style="margin-left:20px;min-height:345px;">
-				<h4 style="padding-bottom:5px;padding-top:5px;"><i class="icon-user" style="margin-top: 4px;"></i> &nbsp;Recently Registered <i class="icon-refresh" style="margin-top: 4px;margin-left:10px;cursor:pointer;" onclick="getRecentlyRegisteredCadresInfo(0,true);"></i> </h4>
+				<h4 style="padding-bottom:5px;padding-top:5px;"><i class="icon-user" style="margin-top: 4px;margin-left:20px;"></i> &nbsp;Recently Registered <i class="icon-refresh" style="margin-top: 4px;margin-left:10px;cursor:pointer;" onclick="getRecentlyRegisteredCadresInfo(0,true);"></i> </h4>
 				<div id="recentRegisterCadresDiv" style="margin-top:15px;"><img style="margin-top:180px;margin-left: 124px;" src="images/icons/loading.gif"/></div>
 					
 			</div><!-- ReCently Registered Block END -->
