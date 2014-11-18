@@ -2315,7 +2315,10 @@
      </bean>
      
       <bean name="tdpCadreReportService"  class="com.itgrids.partyanalyst.service.impl.TdpCadreReportService">
-       	<property name="tdpCadreReportService" ref="tdpCadreReportService" />	 
+       	<property name="tdpCadreReportService" ref="tdpCadreReportService" />
+       	 <property name="tdpCadreDAO" ref="tdpCadreDAO" />
+	     <property name="boothDAO" ref="boothDAO" />
+	     <property name="voterInfoDAO" ref="voterInfoDAO" />
      </bean>
 </beans>		
 	
