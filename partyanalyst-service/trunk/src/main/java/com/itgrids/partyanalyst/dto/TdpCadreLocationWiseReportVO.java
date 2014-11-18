@@ -26,6 +26,10 @@ public class TdpCadreLocationWiseReportVO implements java.io.Serializable{
 	private Long cadresInAge;
 	private Double agePerc;
 	
+	private Long registeredCadre;
+	private String percentage;
+	
+	
 	List<TdpCadreLocationWiseReportVO>	 tdpCadreLocationWiseReportVOList = new ArrayList<TdpCadreLocationWiseReportVO>();
 	List<TdpCadreLocationWiseReportVO>	 tehsilWiseList = new ArrayList<TdpCadreLocationWiseReportVO>();
 	List<TdpCadreLocationWiseReportVO>	 panchayatWiseList = new ArrayList<TdpCadreLocationWiseReportVO>();
@@ -199,6 +203,22 @@ public class TdpCadreLocationWiseReportVO implements java.io.Serializable{
 	public void setTdpCadreLocationWiseReportVOList(
 			List<TdpCadreLocationWiseReportVO> tdpCadreLocationWiseReportVOList) {
 		this.tdpCadreLocationWiseReportVOList = tdpCadreLocationWiseReportVOList;
+	}
+
+	public Long getRegisteredCadre() {
+		return registeredCadre;
+	}
+
+	public void setRegisteredCadre(Long registeredCadre) {
+		this.registeredCadre = registeredCadre;
+	}
+
+	public String getPercentage() {
+		return percentage;
+	}
+
+	public void setPercentage(String percentage) {
+		this.percentage = percentage;
 	}
 
 	
