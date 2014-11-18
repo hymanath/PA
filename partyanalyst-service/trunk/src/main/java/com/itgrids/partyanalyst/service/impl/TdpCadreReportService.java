@@ -7,7 +7,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
-import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationWiseReportVO;
@@ -22,8 +21,6 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	private ITdpCadreDAO tdpCadreDAO;
 	private IBoothDAO boothDAO;
 	private IVoterInfoDAO voterInfoDAO;
-	private IDistrictDAO districtDAO;
-	
 	
 	public void setTdpCadreReportService(
 			ITdpCadreReportService tdpCadreReportService) {
@@ -58,16 +55,6 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 
 	public void setVoterInfoDAO(IVoterInfoDAO voterInfoDAO) {
 		this.voterInfoDAO = voterInfoDAO;
-	}
-
-
-	public IDistrictDAO getDistrictDAO() {
-		return districtDAO;
-	}
-
-
-	public void setDistrictDAO(IDistrictDAO districtDAO) {
-		this.districtDAO = districtDAO;
 	}
 
 
