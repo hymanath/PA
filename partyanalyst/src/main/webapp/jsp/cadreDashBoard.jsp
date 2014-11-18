@@ -159,7 +159,10 @@ table.dataTable tr.odd {
 	.typeRd{margin:5px;}
 	.cCodeDiv{height:8px;width:8px;margin:6px;float:left;}
 	
-			
+	
+.progress {
+    height: 3px !important;
+}		
 	</style>
 </head>
 <body>
@@ -255,9 +258,9 @@ table.dataTable tr.odd {
 				<h4 class="f-16" style="padding-bottom: 5px;">Constituency wise Registration Processing Areas</h4>
 				<div style="margin-bottom:10px;"><b>Select Constituency :&nbsp;</b><select id="constituencyWiseSelDivId" onchange="getConstituencyWisePerc(this.value);"><option value="0">ALL</option></select></div>
 				
-				<div style="padding:5px;">
-					<input type="radio" id="targetCId" name="percCalcC" value="target" checked="true" style="margin-top:0px;"/><span> Target</span>
-					<input type="radio" id="prevCId" name="percCalcC" value="prev" style="margin-top:0px;"/><span> Prev - Enrollment</span>
+				<div style="padding:2px 10px;" class="well">
+					<input type="radio" id="targetCId" name="percCalcC" value="target" checked="true" style="margin-top:0px;"/><span> Target &nbsp;&nbsp;</span>
+					<input type="radio" id="prevCId" name="percCalcC" value="prev" style="margin-top:0px;"/><span> Prev - Enrollment </span>
 				</div>  
 				
 				<div id="constituencyWiseSelDivRes" class="height-300 scrollable_div" style="min-height:320px;"> 
@@ -266,16 +269,16 @@ table.dataTable tr.odd {
 			</div><!-- Constituency wise Registration Processing Areas Row END-->
 			
 			<!-- District wise Registration Processing Areas ROW -->
-			<div class="span6  show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:20px;">
+			<div class="span6  show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:20px;min-height:452px;">
 				<div class="btn-group pull-right">
 					<a class="btn btn-mini btn-success apele" href="javascript:{}" id="apDistDetailsId" onclick="getDistrictWiseCompletedPercentage(0,1);">AP</a>
 					<a class="btn btn-mini tsele" href="javascript:{}" id="tgDistDetailsId" onclick="getDistrictWiseCompletedPercentage(0,36);">TS</a>
 				</div>
-				<h4 class="f-16" style="padding-bottom: 25px;">District wise Registration Processing Areas</h4>
+				<h4 class="f-16" style="padding-bottom: 5px;">District wise Registration Processing Areas</h4>
 				<div style="margin-bottom:10px;"><b>Select District :&nbsp;</b><select id="districtWiseSelDivId" onchange="getDistrictWisePerc(this.value);"><option value="0">ALL</option></select></div>
 				
-				<div style="padding:5px;">
-					<input type="radio" id="targetDId" name="percCalcD" value="target" checked="true" style="margin-top:0px;"/><span> Target</span>
+				<div class="well" style="padding:2px 10px;">
+					<input type="radio" id="targetDId" name="percCalcD" value="target" checked="true" style="margin-top:0px;"/><span> Target &nbsp;&nbsp;</span>
 					<input type="radio" id="prevDId" name="percCalcD" value="prev" style="margin-top:0px;"/><span> Prev - Enrollment</span>
 				</div>
 				
@@ -327,7 +330,7 @@ table.dataTable tr.odd {
 			
 			<!-- ReCently Registered Block -->
 			<div class="span7 show-grid well well-small border-radius-0 pad-0" style="margin-left:20px;min-height:345px;">
-				<h4 style="padding-bottom:5px;padding-top:5px;"><i class="icon-user" style="margin-top: 4px;"></i> &nbsp;Recently Registered <i class="icon-refresh" style="margin-top: 4px;margin-left:10px;cursor:pointer;" onclick="getRecentlyRegisteredCadresInfo(0,true);"></i> </h4>
+				<h4 style="padding :10px"><i class="icon-user" style="margin-top: 4px;"></i> &nbsp;Recently Registered <i class="icon-refresh" style="margin-top: 4px;margin-left:10px;cursor:pointer;" onclick="getRecentlyRegisteredCadresInfo(0,true);"></i> </h4>
 				<div id="recentRegisterCadresDiv" style="margin-top:15px;"><img style="margin-top:180px;margin-left: 124px;" src="images/icons/loading.gif"/></div>
 					
 			</div><!-- ReCently Registered Block END -->
@@ -476,7 +479,7 @@ $('#membersCount').addClass('animated fadeInX');
     		$("#todayApTgRegisCount").html('<div style="cursor:pointer;background-color:#EAEAEA" class="span6 mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[0].apTabCount+'] [Web -'+result[0].apWebCount+'] <br> [PartyOffice -'+result[0].apPartyWebCount+'] [Online - '+result[0].apOnlineCount+']"><strong><span style="margin-left:10px;">  AP</span></strong><br><span style="margin-left:10px;"> '+result[0].apCount+'</span></div><div style="cursor:pointer;background-color:#EAEAEA" class="span6 text-right mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[0].tgTabCount+'] [Web -'+result[0].tgWebCount+'] <br>[PartyOffice -'+result[0].tgPartyWebCount+'] [Online - '+result[0].tgOnlineCount+']"><strong><span style="margin-right:15px;"> TS </span></strong><br/><span style="margin-right:15px;"> '+result[0].tgCount+'</span></div>');		
     		$("#thisWeekApTgRegisCount").html('<div style="cursor:pointer;background-color:#fdedd6" class="span6 mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[1].apTabCount+'] [Web -'+result[1].apWebCount+']<br>[PartyOffice -'+result[1].apPartyWebCount+'] [Online - '+result[1].apOnlineCount+']"><strong><span style="margin-left:10px;"> AP</span></strong> <br/><span style="margin-left:10px;">'+result[1].apCount+'</span></div><div style="cursor:pointer;background-color:#fdedd6" class="span6 text-right mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[1].tgTabCount+'] [Web -'+result[1].tgWebCount+'] <br> [PartyOffice -'+result[1].tgPartyWebCount+'] [Online - '+result[1].tgOnlineCount+']"><strong><span style="margin-right:15px;"> TS </span></strong><br/> <span style="margin-right:15px;">'+result[1].tgCount+'</span></div>');					
     		$("#monthApTgRegisCount").html('<div style="cursor:pointer;background-color:#DBEEF4" class="span6 mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[2].apTabCount+'] [Web -'+result[2].apWebCount+'] <br> [PartyOffice -'+result[2].apPartyWebCount+'] [Online - '+result[2].apOnlineCount+']"><strong><span style="margin-left:10px;"> AP</span></strong> <br/><span style="margin-left:10px;">'+result[2].apCount+'</span></div><div style="cursor:pointer;background-color:#DBEEF4" class="span6 text-right mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[2].tgTabCount+'] [Web -'+result[2].tgWebCount+'] <br> [PartyOffice -'+result[2].tgPartyWebCount+'] [Online - '+result[2].tgOnlineCount+']"><strong><span style="margin-right:15px;"> TS</span></strong><br/><span style="margin-right:15px;">'+result[2].tgCount+'</span></div>');
-    		$("#totalApTgRegisCount").html('<div style="cursor:pointer;background-color:#DBF1E4" class="mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[3].apTabCount+'] [Web -'+result[3].apWebCount+'] <br> [PartyOffice -'+result[3].apPartyWebCount+'] [Online - '+result[3].apOnlineCount+']"><strong><span style="margin-left:10px;">AP - </span></strong><span >'+result[3].apCount+'</span><span class="text-skyblue"> (NEW - '+result[4].apCount+')</span></div><div style="cursor:pointer;background-color:#DBF1E4" class="mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[3].tgTabCount+'] [Web -'+result[3].tgWebCount+'] <br> [PartyOffice -'+result[3].tgPartyWebCount+'][Online - '+result[3].tgOnlineCount+']"><strong><span style="margin-left:10px;">TS - </span></strong> <span >'+result[3].tgCount+'</span><span class="text-skyblue"> (NEW - '+result[4].tgCount+')</span></div>');
+    		$("#totalApTgRegisCount").html('<div style="cursor:pointer;background-color:#DBF1E4" class="mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[3].apTabCount+'] [Web -'+result[3].apWebCount+'] <br> [PartyOffice -'+result[3].apPartyWebCount+'] [Online - '+result[3].apOnlineCount+']"><strong><span style="margin-left:10px;">AP - </span></strong><span >'+result[3].apCount+'</span><span class="text-skyblue"> (NEW - '+result[4].apCount+')</span></div><div style="cursor:pointer;background-color:#DBF1E4;margin-top:2px;" class="mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[3].tgTabCount+'] [Web -'+result[3].tgWebCount+'] <br> [PartyOffice -'+result[3].tgPartyWebCount+'][Online - '+result[3].tgOnlineCount+']"><strong><span style="margin-left:10px;;margin-top:2px;">TS - </span></strong> <span >'+result[3].tgCount+'</span><span class="text-skyblue"> (NEW - '+result[4].tgCount+')</span></div>');
     		$('.mytooltip').tooltip();					
 	   });
    }
@@ -514,8 +517,8 @@ $('#membersCount').addClass('animated fadeInX');
 				  str+='</tr>';
 			   }
 			     str+='</tbody></table>';
-				  str+='<a style="float:right;cursor:pointer;" id="nextId">Next<i class="icon-forward " /></a>';
-				 str+=' <a style="float:left;cursor:pointer;" id="previousId"><i class="icon-backward " /> Previous</a>';
+				  str+='<a style="float:right;cursor:pointer;" id="nextId">Next &rarr; &nbsp;</a>';
+				 str+=' <a style="float:left;cursor:pointer;" id="previousId"> &nbsp;&larr; Previous</a>';
 				
 			   $("#recentRegisterCadresDiv").html(str);
 			}else{
@@ -562,7 +565,18 @@ $('#membersCount').addClass('animated fadeInX');
 				if(assId == 0){
 				  $("#constituencyWiseSelDivId").append('<option value='+result[i].tgCount+'>'+result[i].location+'</option>');
 				}
-				str += '<p><a href="javascript:{}" onclick="getConstituencyWiseAgeGenderCasteCount('+ result[i].tgCount+ ',\''+ result[i].location+ '\')">'+ result[i].location+ ' ('+ result[i].apCount+ '%  - '+ result[i].totalCount+ ' Members)</a>&nbsp;&nbsp;<i style="cursor:pointer;margin-top: 5px;" onclick="getCadreDetails('+ result[i].tgCount+ ',\'constituency\')"  title="Click here to view details" class=" icon-eye-open"></i></p>';
+				str += '<p style="padding-bottom:2px;"><a href="javascript:{}" onclick="getConstituencyWiseAgeGenderCasteCount('+ result[i].tgCount+ ',\''+ result[i].location+ '\')">'+ result[i].location+ ' [&nbsp;'+ result[i].totalCount+ ' Members&nbsp;]';
+					if(result[i].apCount <= 20)
+					str+='<span class="pull-right label label-important"> '+ result[i].apCount+ '% </span>';
+					else if(result[i].apCount > 20 && result[i].apCount <= 40)
+										str+='<span class="pull-right label label-warning"> '+ result[i].apCount+ '% </span>';
+					else if(result[i].apCount > 40 && result[i].apCount <= 60)
+										str+='<span class="pull-right label label-info"> '+ result[i].apCount+ '% </span>';
+					else if(result[i].apCount > 60 && result[i].apCount <= 80)
+										str+='<span class="pull-right label label-info"> '+ result[i].apCount+ '% </span>';
+					else
+					str+='<span class="pull-right label label-success"> '+ result[i].apCount+ '% </span>';
+					str+='</a>&nbsp;&nbsp;<i style="cursor:pointer;margin-top: 5px;" onclick="getCadreDetails('+ result[i].tgCount+ ',\'constituency\')"  title="Click here to view details" class=" icon-eye-open"></i></p>';
 				if(result[i].apCount <= 20){
 				   str+='<div class="progress progress-danger">';
 				}else if(result[i].apCount > 20 && result[i].apCount <= 40){
@@ -574,6 +588,7 @@ $('#membersCount').addClass('animated fadeInX');
 				}else{
 				   str+='<div class="progress progress-success">';
 				}
+
 				str+='  <div style="width:'+result[i].apCount+'%" class="bar"></div>';
 				str+='</div>';
 			}
@@ -619,7 +634,18 @@ $('#membersCount').addClass('animated fadeInX');
 			    if(distId == 0){
 				  $("#districtWiseSelDivId").append('<option value='+result[i].tgCount+'>'+result[i].location+'</option>');
 				}
-				str += '<p><a href="javascript:{}" onclick="getDistrictWiseAgeGenderCasteCount('+ result[i].tgCount+ ',\''+ result[i].location+ '\')">'+ result[i].location+ ' ('+ result[i].apCount+ '%  - '+ result[i].totalCount+ ' Members)</a>&nbsp;&nbsp;<i style="cursor:pointer;margin-top: 5px;" onclick="getCadreDetails('+ result[i].tgCount+ ',\'district\')" title="Click here to view details" class=" icon-eye-open"></i></p>';
+				str += '<p  style="padding-bottom:2px;"><a href="javascript:{}" onclick="getDistrictWiseAgeGenderCasteCount('+ result[i].tgCount+ ',\''+ result[i].location+ '\')">'+ result[i].location+ ' [&nbsp;'+ result[i].totalCount+ ' Members&nbsp;]';
+				if(result[i].apCount <= 20)
+					str+='<span class="pull-right label label-important"> '+ result[i].apCount+ '% </span>';
+					else if(result[i].apCount > 20 && result[i].apCount <= 40)
+										str+='<span class="pull-right label label-warning"> '+ result[i].apCount+ '% </span>';
+					else if(result[i].apCount > 40 && result[i].apCount <= 60)
+										str+='<span class="pull-right label label-info"> '+ result[i].apCount+ '% </span>';
+					else if(result[i].apCount > 60 && result[i].apCount <= 80)
+										str+='<span class="pull-right label label-info"> '+ result[i].apCount+ '% </span>';
+					else
+					str+='<span class="pull-right label label-success"> '+ result[i].apCount+ '% </span>';
+					str+='</a>&nbsp;&nbsp;<i style="cursor:pointer;margin-top: 5px;" onclick="getCadreDetails('+ result[i].tgCount+ ',\'district\')" title="Click here to view details" class=" icon-eye-open"></i></p>';
 				if(result[i].apCount <= 20){
 				   str+='<div class="progress progress-danger">';
 				}else if(result[i].apCount > 20 && result[i].apCount <= 40){

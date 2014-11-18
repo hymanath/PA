@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +28,18 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 	private String task;
 	private ILeaderCadreDashBoardService leaderCadreDashBoardService;
 	private List<CadreAmountDetailsVO> amountDetails;
+	private CadreAmountDetailsVO amountDetailsVO;
 	
+		public CadreAmountDetailsVO getAmountDetailsVO() {
+		return amountDetailsVO;
+	}
+
+
+	public void setAmountDetailsVO(CadreAmountDetailsVO amountDetailsVO) {
+		this.amountDetailsVO = amountDetailsVO;
+	}
+
+
 		public String getTask() {
 		return task;
 	}
@@ -129,4 +141,44 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String duplicateUserExecute()
+	{
+		
+		return Action.SUCCESS;
+	}
+	public String getDuplicateUsersInLocation()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		String fromDate = jObj.getString("fromDate");
+		String toDate = jObj.getString("toDate");
+		Date reqFromDate = null;
+		Date reqToDate = null;
+		if(fromDate.trim().length() > 0){
+			reqFromDate = sdf.parse(fromDate);
+		}
+		if(toDate.trim().length() > 0){
+			reqToDate = sdf.parse(toDate);
+		}
+		if(jObj.getString("task").equalsIgnoreCase("usersData"))
+		{
+			Long  userId = jObj.getLong("userId");
+			Long locationId = jObj.getLong("locationId");
+			String type = jObj.getString("type");
+			Long constituencyId = jObj.getLong("constituencyId");
+			amountDetailsVO = leaderCadreDashBoardService.getUsersInLocation(reqFromDate,reqToDate,userId,locationId,type,constituencyId);
+		}
+		else if(jObj.getString("task").equalsIgnoreCase("getUsers"))
+		amountDetailsVO = leaderCadreDashBoardService.getDuplicateUsersInLocation(reqFromDate,reqToDate);
+		} catch (ParseException e) {
+			
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+	
+	
 }

@@ -8929,7 +8929,7 @@
 				<param name="root">task</param>
 			</result>
 		</action>
-		
+			
 		<action name="tdpCadreReportsAction" class="tdpCadreReportAction" >
 			<result name="success">/jsp/tdpCadreReport.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
@@ -8947,6 +8947,15 @@
 				<param name="root">result</param>
 			</result>
 		</action>
+		<action name="duplicateUsers" class="leaderCadreDashBoardAction" method="duplicateUserExecute">
+			<result name="success">/jsp/duplicateUsers.jsp</result>
+	 </action>
+		<action name="duplicateUsersDetails" class="leaderCadreDashBoardAction" method="getDuplicateUsersInLocation" >
+			<result type="json" name="success">
+				<param name="root">amountDetailsVO</param>
+			</result>
+		</action>
+		
 </package>
 
 </struts>      
