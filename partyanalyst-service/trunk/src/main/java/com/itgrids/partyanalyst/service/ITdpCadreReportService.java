@@ -5,5 +5,5 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationWiseReportVO;
 
 public interface ITdpCadreReportService {
-	public List<TdpCadreLocationWiseReportVO> getLocationWiseGenderReport(List<Long> constituencyIds);
+	public List<TdpCadreLocationWiseReportVO> getLocationWiseReportDetailsForExcel(List<Long> constituencyIds);
 }
