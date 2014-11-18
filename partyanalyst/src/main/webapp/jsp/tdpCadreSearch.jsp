@@ -394,6 +394,7 @@
 						else
 						{
 							$('#searchDetailsDiv').html('No Data Available...');
+							$("#paginationId").html("");
 							$('#tableElement').show();
 						}
 					});
