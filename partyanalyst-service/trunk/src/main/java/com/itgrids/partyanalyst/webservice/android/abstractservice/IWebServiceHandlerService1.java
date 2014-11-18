@@ -9,6 +9,7 @@ import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
+import com.itgrids.partyanalyst.dto.VoterWebServiceDataVO;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLoginUtils;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLoginVO;
@@ -42,4 +43,5 @@ public interface IWebServiceHandlerService1 {
 	
 	public String getTabUsersRecordsDetails(List<TabRecordsStatusVO> inputVo);
 	
+	public List<VoterWebServiceDataVO> voterSearchDetails(Long constituencyId,String candidateName,String voterCardId,Integer startIndex);
 }
