@@ -1759,7 +1759,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					}
 				}
 				
-				if(isPresentCadre != null && isPresentCadre.trim().length()>0 && !isPresentCadre.equalsIgnoreCase("0"))
+				if(isPresentCadre != null && isPresentCadre.trim().length()>0 && !isPresentCadre.equalsIgnoreCase("0") && voterIds.size()>0)
 				{
 					List<Long> tdpCadreVoterIds = tdpCadreDAO.getVoterDetailsByVoterIds(voterIds);
 					
