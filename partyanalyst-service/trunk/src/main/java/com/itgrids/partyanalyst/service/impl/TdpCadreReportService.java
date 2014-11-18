@@ -67,21 +67,17 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	}
 
 
-	public void generateExcelReportForTdpCadre()
+	public TdpCadreLocationWiseReportVO generateExcelReportForTdpCadre(List<Long> constituencyIds)
 	{
+		TdpCadreLocationWiseReportVO resultVO = new TdpCadreLocationWiseReportVO();
 		try {
-			List<TdpCadreLocationWiseReportVO> constituncyReportList = new ArrayList<TdpCadreLocationWiseReportVO>();
 			
-			if(constituncyReportList != null && constituncyReportList.size() >0)
-			{
-				for (TdpCadreLocationWiseReportVO tdpCadreLocationWiseReportVO : constituncyReportList) 
-				{
-					
-				}
-			}
+			
+			
 		} catch (Exception e) {
 			LOG.error(" exception occured in generateExcelReportForTdpCadre () at TdpCadreReportService ",e);
 		}
+		return resultVO;
 	}
 	
 	
