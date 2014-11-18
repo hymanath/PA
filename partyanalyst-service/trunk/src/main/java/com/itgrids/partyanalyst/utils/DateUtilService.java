@@ -183,7 +183,7 @@ public class DateUtilService {
 		return noOfDays+1;
 	}
 	
-	public String getCurrentDateInStringFormatYYYYMMDD(){
+	/*public String getCurrentDateInStringFormatYYYYMMDD(){
 		try
 		{
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -191,6 +191,20 @@ public class DateUtilService {
 			
 		}catch(Exception e){
 			log.error("Exception Occured in DateUtilService.getCurrentDateInStringFormat() " +
+					" check for log details");
+			return null;
+		}
+	}*/
+	
+	public String getCurrentDateInStringFormatYYYYMMDD(){
+		try	{
+			Date updatedDate = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			sdf.setTimeZone(TimeZone.getTimeZone(IConstants.TIME_ZONE_INDIA));
+			return sdf.format(updatedDate);
+			
+		}catch(Exception e){
+			log.error("Exception Occured in DateUtilService.getCurrentDateAndTimeInStringFormat() " +
 					" check for log details");
 			return null;
 		}
