@@ -152,7 +152,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		}
 		else
 		{
-			str.append(" select (*) ");
+			str.append(" select count(*) ");
 		}
 
 		str.append("  from TdpCadre TC, UserAddress UA where "+queryStr+" TC.userAddress.constituency.constituencyId = :constituencyId ");
