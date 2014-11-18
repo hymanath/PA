@@ -116,29 +116,40 @@ table.dataTable tr.odd {
 			}
 			
 			#leaderDataDiv1,#leaderDataDiv2 {font-size:10px !important;font-family:verdana;font-weight:bold;}
+	
+	
 	.summary td {
 		//color: #666699;
 		padding: 7px 17px;
 		cursor:pointer;
+		border-bottom:1px solid lightblue;
+		border-left:1px solid lightblue;
+		border-right:1px solid lightblue;
 	}
 	.summary th {
-		border-bottom: 1px dashed #6699CC;
+		border:1px solid lightblue;
 		color: #003399;
 		font-size: 14px;
 		font-weight: normal;
 		padding: 12px;
 	}
+	
 	.summary{
-		margin-left:40px;margin-bottom:10px;
+		margin-left:25px;margin-bottom:10px;
 	}
 	
 	.info td {
 		color: #666699;
 		padding: 7px 17px;
 		cursor:pointer;
+		border-left:    1px solid #6699CC;
+		border-right:  1px solid #6699CC; 
+		border-bottom: 1px solid #6699CC;
 	}
 	.info th {
-		border-bottom: 1px dashed #6699CC;
+		border-left:    1px solid #6699CC;
+		border-right:  1px solid #6699CC; 
+		border-top: 1px solid #6699CC;
 		color: #003399;
 		font-size: 14px;
 		font-weight: normal;
@@ -146,7 +157,7 @@ table.dataTable tr.odd {
 	}
 	
 	.typeRd{margin:5px;}
-	
+	.cCodeDiv{height:8px;width:8px;margin:6px;float:left;}
 	
 			
 	</style>
@@ -1569,17 +1580,17 @@ function SortByName(a, b){
 							str1+="</tr>";
 							str1+="<tr>";
 								if(scopeId==2){
-									str1+="<td attr='district' attrst='Best' class='statusBsd best' title='Click to View Districts With Status Very Good'>"+result[0].bestCount+"</td>";
-									str1+="<td attr='district' attrst='Good' class='statusBsd good' title='Click to View Districts With Status  Good'>"+result[0].goodCount+"</td>";
-									str1+="<td attr='district' attrst='Ok' class='statusBsd ok' title='Click to View Districts With Status Ok'>"+result[0].okCount+"</td>";
-									str1+="<td attr='district' attrst='Poor' class='statusBsd poor' title='Click to View Districts With Status  Poor'>"+result[0].poorCount+"</td>";
-									str1+="<td attr='district' attrst='Worst' class='statusBsd worst' title='Click to View Districts With Status Very Poor'>"+result[0].worstCount+"</td>";
+									str1+="<td attr='district' attrst='Best' class='statusBsd best' title='Click to View Districts With Status Very Good'> <div class='cCodeDiv' style='background-color:green;'/>"+result[0].bestCount+"</td>";
+									str1+="<td attr='district' attrst='Good' class='statusBsd good' title='Click to View Districts With Status  Good'><div class='cCodeDiv' style='background-color:lightgreen;'/>"+result[0].goodCount+"</td>";
+									str1+="<td attr='district' attrst='Ok' class='statusBsd ok' title='Click to View Districts With Status Ok'><div class='cCodeDiv' style='background-color:yellow;'/>"+result[0].okCount+"</td>";
+									str1+="<td attr='district' attrst='Poor' class='statusBsd poor' title='Click to View Districts With Status  Poor'><div class='cCodeDiv' style='background-color:orange;'/>"+result[0].poorCount+"</td>";
+									str1+="<td attr='district' attrst='Worst' class='statusBsd worst' title='Click to View Districts With Status Very Poor'><div class='cCodeDiv' style='background-color:#C43C35;'/>"+result[0].worstCount+"</td>";
 								}else{
-									str1+="<td attr='constituency' attrst='Best' class='statusBsc best' title='Click to View Constituencies With Status Very Good'>"+result[0].bestCount+"</td>";
-									str1+="<td attr='constituency' attrst='Good' class='statusBsc good' title='Click to View Constituencies With Status Good'>"+result[0].goodCount+"</td>";
-									str1+="<td attr='constituency' attrst='Ok' class='statusBsc ok' title='Click to View Constituencies With Status Ok'>"+result[0].okCount+"</td>";
-									str1+="<td attr='constituency' attrst='Poor' class='statusBsc poor' title='Click to View Constituencies With Status Poor'>"+result[0].poorCount+"</td>";
-									str1+="<td attr='constituency' attrst='Worst' class='statusBsc worst' title='Click to View Constituencies With Status Very Poor'>"+result[0].worstCount+"</td>";
+									str1+="<td attr='constituency' attrst='Best' class='statusBsc best' title='Click to View Constituencies With Status Very Good'> <div class='cCodeDiv' style='background-color:green;'/>"+result[0].bestCount+"</td>";
+									str1+="<td attr='constituency' attrst='Good' class='statusBsc good' title='Click to View Constituencies With Status Good'><div class='cCodeDiv' style='background-color:lightgreen;'/>"+result[0].goodCount+"</td>";
+									str1+="<td attr='constituency' attrst='Ok' class='statusBsc ok' title='Click to View Constituencies With Status Ok'><div class='cCodeDiv' style='background-color:yellow;'/>"+result[0].okCount+"</td>";
+									str1+="<td attr='constituency' attrst='Poor' class='statusBsc poor' title='Click to View Constituencies With Status Poor'><div class='cCodeDiv' style='background-color:orange;'/>"+result[0].poorCount+"</td>";
+									str1+="<td attr='constituency' attrst='Worst' class='statusBsc worst' title='Click to View Constituencies With Status Very Poor'><div class='cCodeDiv' style='background-color:#C43C35;'/>"+result[0].worstCount+"</td>";
 								}
 							str1+="</tr>";
 						str1+='</table>';
@@ -1690,17 +1701,17 @@ function SortByName(a, b){
 							str1+="</tr>";
 							str1+="<tr>";
 								if(scopeId==2){
-									str1+="<td attr='district' attrst='Best' class='statusBsd best' title='Click to View Districts with Status Very Good'>"+result[0].bestCount+"</td>";
-									str1+="<td attr='district' attrst='Good' class='statusBsd good' title='Click to View Districts with Status Good'>"+result[0].goodCount+"</td>";
-									str1+="<td attr='district' attrst='Ok' class='statusBsd ok' title='Click to View Districts with Status Ok'>"+result[0].okCount+"</td>";
-									str1+="<td attr='district' attrst='Poor' class='statusBsd poor' title='Click to View Districts with Status Poor'>"+result[0].poorCount+"</td>";
-									str1+="<td attr='district' attrst='Worst' class='statusBsd worst' title='Click to View Districts with Status Very Poor'>"+result[0].worstCount+"</td>";
+									str1+="<td attr='district' attrst='Best' class='statusBsd best' title='Click to View Districts with Status Very Good'><div class='cCodeDiv' style='background-color:green;'/>"+result[0].bestCount+"</td>";
+									str1+="<td attr='district' attrst='Good' class='statusBsd good' title='Click to View Districts with Status Good'><div class='cCodeDiv' style='background-color:lightgreen;'/>"+result[0].goodCount+"</td>";
+									str1+="<td attr='district' attrst='Ok' class='statusBsd ok' title='Click to View Districts with Status Ok'><div class='cCodeDiv' style='background-color:yellow;'/>"+result[0].okCount+"</td>";
+									str1+="<td attr='district' attrst='Poor' class='statusBsd poor' title='Click to View Districts with Status Poor'><div class='cCodeDiv' style='background-color:orange;'/>"+result[0].poorCount+"</td>";
+									str1+="<td attr='district' attrst='Worst' class='statusBsd worst' title='Click to View Districts with Status Very Poor'><div class='cCodeDiv' style='background-color:#C43C35;'/>"+result[0].worstCount+"</td>";
 								}else{
-									str1+="<td attr='constituency' attrst='Best' class='statusBsc best'title='Click to View Constituencies with Status Very Good'>"+result[0].bestCount+"</td>";
-									str1+="<td attr='constituency' attrst='Good' class='statusBsc good' title='Click to View Constituencies with Status Good'>"+result[0].goodCount+"</td>";
-									str1+="<td attr='constituency' attrst='Ok' class='statusBsc ok' title='Click to View Constituencies with Status Ok'>"+result[0].okCount+"</td>";
-									str1+="<td attr='constituency' attrst='Poor' class='statusBsc poor' title='Click to View Constituencies with Status Poor'>"+result[0].poorCount+"</td>";
-									str1+="<td attr='constituency' attrst='Worst' class='statusBsc worst' title='Click to View Constituencies with Status Very Poor'>"+result[0].worstCount+"</td>";
+									str1+="<td attr='constituency' attrst='Best' class='statusBsc best'title='Click to View Constituencies with Status Very Good'><div class='cCodeDiv' style='background-color:green;'/>"+result[0].bestCount+"</td>";
+									str1+="<td attr='constituency' attrst='Good' class='statusBsc good' title='Click to View Constituencies with Status Good'><div class='cCodeDiv' style='background-color:lightgreen;'/>"+result[0].goodCount+"</td>";
+									str1+="<td attr='constituency' attrst='Ok' class='statusBsc ok' title='Click to View Constituencies with Status Ok'><div class='cCodeDiv' style='background-color:yellow;'/>"+result[0].okCount+"</td>";
+									str1+="<td attr='constituency' attrst='Poor' class='statusBsc poor' title='Click to View Constituencies with Status Poor'><div class='cCodeDiv' style='background-color:orange;'/>"+result[0].poorCount+"</td>";
+									str1+="<td attr='constituency' attrst='Worst' class='statusBsc worst' title='Click to View Constituencies with Status Very Poor'><div class='cCodeDiv' style='background-color:#C43C35;'/>"+result[0].worstCount+"</td>";
 								}
 							str1+="</tr>";
 						str1+='</table>';
@@ -1883,17 +1894,17 @@ function SortByName(a, b){
 							str1+="</tr>";
 							str1+="<tr>";
 								if(scopeId==2){
-									str1+="<td attr='district' attrst='Best' class='statusBsd best' title='Click to View Districts with Status Very Good'>"+result[0].bestCount+"</td>";
-									str1+="<td attr='district' attrst='Good' class='statusBsd good' title='Click to View Districts with Status Good'>"+result[0].goodCount+"</td>";
-									str1+="<td attr='district' attrst='Ok' class='statusBsd ok' title='Click to View Districts with Status Ok'>"+result[0].okCount+"</td>";
-									str1+="<td attr='district' attrst='Poor' class='statusBsd poor' title='Click to View Districts with Status Poor'>"+result[0].poorCount+"</td>";
-									str1+="<td attr='district' attrst='Worst' class='statusBsd worst' title='Click to View Districts with Status Very Poor'>"+result[0].worstCount+"</td>";
+									str1+="<td attr='district' attrst='Best' class='statusBsd best' title='Click to View Districts with Status Very Good'> <div class='cCodeDiv' style='background-color:green;'/>"+result[0].bestCount+"</td>";
+									str1+="<td attr='district' attrst='Good' class='statusBsd good' title='Click to View Districts with Status Good'> <div class='cCodeDiv' style='background-color:lightgreen;'/>"+result[0].goodCount+"</td>";
+									str1+="<td attr='district' attrst='Ok' class='statusBsd ok' title='Click to View Districts with Status Ok'> <div class='cCodeDiv' style='background-color:yellow;'/>"+result[0].okCount+"</td>";
+									str1+="<td attr='district' attrst='Poor' class='statusBsd poor' title='Click to View Districts with Status Poor'><div class='cCodeDiv' style='background-color:orange;'/>"+result[0].poorCount+"</td>";
+									str1+="<td attr='district' attrst='Worst' class='statusBsd worst' title='Click to View Districts with Status Very Poor'><div class='cCodeDiv' style='background-color:#C43C35;'/>"+result[0].worstCount+"</td>";
 								}else{
-									str1+="<td attr='constituency' attrst='Best' class='statusBsc best' title='Click to View Constituencies with Status Very Good'>"+result[0].bestCount+"</td>";
-									str1+="<td attr='constituency' attrst='Good' class='statusBsc good' title='Click to View Constituencies with Status Good'>"+result[0].goodCount+"</td>";
-									str1+="<td attr='constituency' attrst='Ok' class='statusBsc ok' title='Click to View Constituencies with Status Ok'>"+result[0].okCount+"</td>";
-									str1+="<td attr='constituency' attrst='Poor' class='statusBsc poor' title='Click to View Constituencies with Status Poor'>"+result[0].poorCount+"</td>";
-									str1+="<td attr='constituency' attrst='Worst' class='statusBsc worst' title='Click to View Constituencies with Status Very Poor'>"+result[0].worstCount+"</td>";
+									str1+="<td attr='constituency' attrst='Best' class='statusBsc best' title='Click to View Constituencies with Status Very Good'> <div class='cCodeDiv' style='background-color:green;'/>"+result[0].bestCount+"</td>";
+									str1+="<td attr='constituency' attrst='Good' class='statusBsc good' title='Click to View Constituencies with Status Good'> <div class='cCodeDiv' style='background-color:lightgreen;'/>"+result[0].goodCount+"</td>";
+									str1+="<td attr='constituency' attrst='Ok' class='statusBsc ok' title='Click to View Constituencies with Status Ok'> <div class='cCodeDiv' style='background-color:yellow'/>"+result[0].okCount+"</td>";
+									str1+="<td attr='constituency' attrst='Poor' class='statusBsc poor' title='Click to View Constituencies with Status Poor'> <div class='cCodeDiv' style='background-color:orange;'/>"+result[0].poorCount+"</td>";
+									str1+="<td attr='constituency' attrst='Worst' class='statusBsc worst' title='Click to View Constituencies with Status Very Poor'> <div class='cCodeDiv' style='background-color:#C43C35;'/>"+result[0].worstCount+"</td>";
 								}
 							str1+="</tr>";
 						str1+='</table>';
@@ -2000,7 +2011,7 @@ function SortByName(a, b){
 					str1+='<div>';
 						str1+='<table class="summary">';
 							str1+="<tr>";
-								str1+="<th class='best'> VERY GOOD </th>";
+								str1+="<th class='best'>  VERY GOOD </th>";
 								str1+="<th class='good'> GOOD </th>";
 								str1+="<th class='ok'> OK </th>";
 								str1+="<th class='poor'> POOR </th>";
@@ -2008,17 +2019,17 @@ function SortByName(a, b){
 							str1+="</tr>";
 							str1+="<tr>";
 								if(scopeId==2){
-									str1+="<td attr='district' attrst='Best' class='statusBsd best' title='Click to View Districts with Status Very Good'>"+result[0].bestCount+"</td>";
-									str1+="<td attr='district' attrst='Good' class='statusBsd good' title='Click to View Districts with Status Good'>"+result[0].goodCount+"</td>";
-									str1+="<td attr='district' attrst='Ok' class='statusBsd ok' title='Click to View Districts with Status Ok'>"+result[0].okCount+"</td>";
-									str1+="<td attr='district' attrst='Poor' class='statusBsd poor' title='Click to View Districts with Status Poor'>"+result[0].poorCount+"</td>";
-									str1+="<td attr='district' attrst='Worst' class='statusBsd worst' title='Click to View Districts with Status Very Poor'>"+result[0].worstCount+"</td>";
+									str1+="<td attr='district' attrst='Best' class='statusBsd best' title='Click to View Districts with Status Very Good'> <div class='cCodeDiv' style='background-color:green;'/> "+result[0].bestCount+"</td>";
+									str1+="<td attr='district' attrst='Good' class='statusBsd good' title='Click to View Districts with Status Good'> <div class='cCodeDiv' style='background-color:lightgreen;'/>"+result[0].goodCount+"</td>";
+									str1+="<td attr='district' attrst='Ok' class='statusBsd ok' title='Click to View Districts with Status Ok'> <div class='cCodeDiv' style='background-color:yellow;'/>"+result[0].okCount+"</td>";
+									str1+="<td attr='district' attrst='Poor' class='statusBsd poor' title='Click to View Districts with Status Poor'><div class='cCodeDiv' style='background-color:orange;'/>"+result[0].poorCount+"</td>";
+									str1+="<td attr='district' attrst='Worst' class='statusBsd worst' title='Click to View Districts with Status Very Poor'> <div class='cCodeDiv' style='background-color:#C43C35;'/>"+result[0].worstCount+"</td>";
 								}else{
-									str1+="<td attr='constituency' attrst='Best' class='statusBsc best' title='Click to View Constituencies with Status Very Good'>"+result[0].bestCount+"</td>";
-									str1+="<td attr='constituency' attrst='Good' class='statusBsc good' title='Click to View Constituencies with Status Good'>"+result[0].goodCount+"</td>";
-									str1+="<td attr='constituency' attrst='Ok' class='statusBsc ok' title='Click to View Constituencies with Status Ok'>"+result[0].okCount+"</td>";
-									str1+="<td attr='constituency' attrst='Poor' class='statusBsc poor' title='Click to View Constituencies with Status Poor'>"+result[0].poorCount+"</td>";
-									str1+="<td attr='constituency' attrst='Worst' class='statusBsc worst' title='Click to View Constituencies with Status Very Poor'>"+result[0].worstCount+"</td>";
+									str1+="<td attr='constituency' attrst='Best' class='statusBsc best' title='Click to View Constituencies with Status Very Good'> <div class='cCodeDiv' style='background-color:green;'/>"+result[0].bestCount+"</td>";
+									str1+="<td attr='constituency' attrst='Good' class='statusBsc good' title='Click to View Constituencies with Status Good'> <div class='cCodeDiv' style='background-color:lightgreen;'/>"+result[0].goodCount+"</td>";
+									str1+="<td attr='constituency' attrst='Ok' class='statusBsc ok' title='Click to View Constituencies with Status Ok'> <div class='cCodeDiv' style='background-color:yellow;'/>"+result[0].okCount+"</td>";
+									str1+="<td attr='constituency' attrst='Poor' class='statusBsc poor' title='Click to View Constituencies with Status Poor'> <div class='cCodeDiv' style='background-color:orange;'/>"+result[0].poorCount+"</td>";
+									str1+="<td attr='constituency' attrst='Worst' class='statusBsc worst' title='Click to View Constituencies with Status Very Poor'><div class='cCodeDiv' style='background-color:#C43C35;'/>"+result[0].worstCount+"</td>";
 								}
 							str1+="</tr>";
 						str1+='</table>';
