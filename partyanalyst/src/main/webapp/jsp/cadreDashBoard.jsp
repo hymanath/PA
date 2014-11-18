@@ -117,8 +117,9 @@ table.dataTable tr.odd {
 			
 			#leaderDataDiv1,#leaderDataDiv2 {font-size:10px !important;font-family:verdana;font-weight:bold;}
 	.summary td {
-		color: #666699;
+		//color: #666699;
 		padding: 7px 17px;
+		cursor:pointer;
 	}
 	.summary th {
 		border-bottom: 1px dashed #6699CC;
@@ -130,6 +131,10 @@ table.dataTable tr.odd {
 	.summary{
 		margin-left:40px;margin-bottom:10px;
 	}
+	
+	.typeRd{margin:5px;}
+	
+	
 			
 	</style>
 </head>
@@ -304,19 +309,19 @@ table.dataTable tr.odd {
 			</div><!-- ReCently Registered Block END -->
 		</div>
 		
-		<c:if test="${fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) }">
+		
 		<div class="row-fluid">
 			
 			<div class="span6 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
 				<h4> Constituency Target VS Registered Cadre  <i class="icon-refresh refreshCon" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i></h4>
 				<div style="padding:5px;">
-					<input type="radio" id="todayCId" name="compareC" value="today" checked="true" style="margin-top:0px;"/><span> TODAY</span>
-					<input type="radio" id="overAllCId" name="compareC" value="overall" style="margin-top:0px;"/><span> OVER ALL </span>
-					<input type="radio" id="asOfNowCId" name="compareC" value="asoftoday" style="margin-top:0px;"/><span> AS OF TODAY </span>
+					<input type="radio" class="typeRd" id="todayCId" name="compareC" value="today" checked="true" style="margin-top:0px;"/><span style="margin-right:10px;"> TODAY</span>
+					<input type="radio" class="typeRd" id="asOfNowCId" name="compareC" value="asoftoday" style="margin-top:0px;"/><span style="margin-right:10px;"> AS OF TODAY </span>
+					<input type="radio" class="typeRd" id="overAllCId" name="compareC" value="overall" style="margin-top:0px;"/><span style="margin-right:10px;"> OVER ALL </span>
 					
 					<div class="btn-group pull-right">
-					<button class="btn btn-mini btn-success apele" name="constTargetBtn" id="apConstTargetComp" checked="checked">AP</button>
-					<button class="btn btn-mini tsele" name="constTargetBtn" id="tgConstTargetComp">TS</button>
+					<input type="button" class="btn btn-mini btn-success apele" value="AP" name="constTargetBtn" id="apConstTargetComp" checked="checked">AP</input>
+					<input type="button" class="btn btn-mini tsele" value="TS" name="constTargetBtn" id="tgConstTargetComp" >TS</input>
 				</div>
 				</div>
 				<div id="leaderDataDiv2smry"></div>
@@ -325,16 +330,16 @@ table.dataTable tr.odd {
 				</div>
 			</div>
 			
-			<div class="span6 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
+			<div class="span6 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:20px;" >
 				<h4> District  Target Vs Registered Cadre  <i class="icon-refresh refreshDist" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i></h4>
 				<div style="padding:5px;">
-					<input type="radio" id="todayDId" name="compareD" value="today" checked="true" style="margin-top:0px;"/><span> TODAY</span>
-					<input type="radio" id="overAllDId" name="compareD" value="overall" style="margin-top:0px;"/><span> OVER ALL</span>
-					<input type="radio" id="asOfNowDId" name="compareD" value="asoftoday" style="margin-top:0px;"/><span>AS OF TODAY</span>
+					<input type="radio" class="typeRd" id="todayDId" name="compareD" value="today" checked="true" style="margin-top:0px;"/><span style="margin-right:10px;"> TODAY</span>
+					<input type="radio" class="typeRd" id="asOfNowDId" name="compareD" value="asoftoday" style="margin-top:0px;"/><span style="margin-right:10px;"> AS OF TODAY</span>
+					<input type="radio" class="typeRd" id="overAllDId" name="compareD" value="overall" style="margin-top:0px;"/><span style="margin-right:10px;"> OVER ALL</span>
 					
 					<div class="btn-group pull-right">
-					<button class="btn btn-mini btn-success apele" name="distTargetBtn" id="apDistTargetComp" checked="checked">AP</button>
-					<button class="btn btn-mini tsele" name="distTargetBtn" id="tgDistTargetComp">TS</button>
+					<input type="button" value="AP" class="btn btn-mini btn-success apele" name="distTargetBtn" id="apDistTargetComp" checked="checked">AP</input>
+					<input type="button" value="TS" class="btn btn-mini tsele" name="distTargetBtn" id="tgDistTargetComp">TS</input>
 				</div>
 				</div>
 				<div id="leaderDataDiv1smry"></div>
@@ -343,7 +348,7 @@ table.dataTable tr.odd {
 				</div>
 			</div>
 		</div>
-		</c:if>
+	
 		
 	</div>
 	<div id="dialogueDiv" style="display: none;">
@@ -1534,18 +1539,26 @@ function SortByName(a, b){
 				str1+='<div>';
 						str1+='<table class="summary">';
 							str1+="<tr>";
-								str1+="<th> VERY GOOD </th>";
-								str1+="<th> GOOD </th>";
-								str1+="<th> OK </th>";
-								str1+="<th> POOR </th>";
-								str1+="<th> VERY POOR </th>";
+								str1+="<th class='best'> VERY GOOD </th>";
+								str1+="<th class='good'> GOOD </th>";
+								str1+="<th class='ok'> OK </th>";
+								str1+="<th class='poor'> POOR </th>";
+								str1+="<th class='worst'> VERY POOR </th>";
 							str1+="</tr>";
 							str1+="<tr>";
-								str1+="<td attr='constituency' attrst='bestCount' class='statusBsc'>"+result[0].bestCount+"</td>";
-								str1+="<td attr='constituency' attrst='goodCount' class='statusBsc'>"+result[0].goodCount+"</td>";
-								str1+="<td attr='constituency' attrst='okCount' class='statusBsc'>"+result[0].okCount+"</td>";
-								str1+="<td attr='constituency' attrst='poorCount' class='statusBsc'>"+result[0].poorCount+"</td>";
-								str1+="<td attr='constituency' attrst='worstCount' class='statusBsc'>"+result[0].worstCount+"</td>";
+								if(scopeId==2){
+									str1+="<td attr='district' attrst='Best' class='statusBsd best' title='Click to View Districts With Status Very Good'>"+result[0].bestCount+"</td>";
+									str1+="<td attr='district' attrst='Good' class='statusBsd good' title='Click to View Districts With Status  Good'>"+result[0].goodCount+"</td>";
+									str1+="<td attr='district' attrst='Ok' class='statusBsd ok' title='Click to View Districts With Status Ok'>"+result[0].okCount+"</td>";
+									str1+="<td attr='district' attrst='Poor' class='statusBsd poor' title='Click to View Districts With Status  Poor'>"+result[0].poorCount+"</td>";
+									str1+="<td attr='district' attrst='Worst' class='statusBsd worst' title='Click to View Districts With Status Very Poor'>"+result[0].worstCount+"</td>";
+								}else{
+									str1+="<td attr='constituency' attrst='Best' class='statusBsc best' title='Click to View Constituencies With Status Very Good'>"+result[0].bestCount+"</td>";
+									str1+="<td attr='constituency' attrst='Good' class='statusBsc good' title='Click to View Constituencies With Status Good'>"+result[0].goodCount+"</td>";
+									str1+="<td attr='constituency' attrst='Ok' class='statusBsc ok' title='Click to View Constituencies With Status Ok'>"+result[0].okCount+"</td>";
+									str1+="<td attr='constituency' attrst='Poor' class='statusBsc poor' title='Click to View Constituencies With Status Poor'>"+result[0].poorCount+"</td>";
+									str1+="<td attr='constituency' attrst='Worst' class='statusBsc worst' title='Click to View Constituencies With Status Very Poor'>"+result[0].worstCount+"</td>";
+								}
 							str1+="</tr>";
 						str1+='</table>';
 					str1+='</div>';
@@ -1580,10 +1593,10 @@ function SortByName(a, b){
 								str+='<td style="background-color:lightgreen">'+result[i].percentage+'</td>';
 							}
 							if(colorStatus=="Ok"){
-								str+='<td style="background-color:lightblue">'+result[i].percentage+'</td>';
+								str+='<td style="background-color:yellow">'+result[i].percentage+'</td>';
 							}
 							if(colorStatus=="Poor"){
-								str+='<td style="background-color:#F89406">'+result[i].percentage+'</td>';
+								str+='<td style="background-color:orange">'+result[i].percentage+'</td>';
 							}
 							if(colorStatus=="Worst"){
 								str+='<td style="background-color:#C43C35">'+result[i].percentage+'</td>';
@@ -1647,18 +1660,26 @@ function SortByName(a, b){
 					str1+='<div>';
 						str1+='<table class="summary">';
 							str1+="<tr>";
-								str1+="<th> VERY GOOD </th>";
-								str1+="<th> GOOD </th>";
-								str1+="<th> OK </th>";
-								str1+="<th> POOR </th>";
-								str1+="<th> VERY POOR </th>";
+								str1+="<th class='best'> VERY GOOD </th>";
+								str1+="<th class='good'> GOOD </th>";
+								str1+="<th class='ok'> OK </th>";
+								str1+="<th class='poor'> POOR </th>";
+								str1+="<th class='worst'> VERY POOR </th>";
 							str1+="</tr>";
 							str1+="<tr>";
-								str1+="<td attr='district' attrst='bestCount' class='statusBsd'>"+result[0].bestCount+"</td>";
-								str1+="<td attr='district' attrst='goodCount' class='statusBsd'>"+result[0].goodCount+"</td>";
-								str1+="<td attr='district' attrst='okCount' class='statusBsd'>"+result[0].okCount+"</td>";
-								str1+="<td attr='district' attrst='poorCount' class='statusBsd'>"+result[0].poorCount+"</td>";
-								str1+="<td attr='district' attrst='worstCount' class='statusBsd'>"+result[0].worstCount+"</td>";
+								if(scopeId==2){
+									str1+="<td attr='district' attrst='Best' class='statusBsd best' title='Click to View Districts with Status Very Good'>"+result[0].bestCount+"</td>";
+									str1+="<td attr='district' attrst='Good' class='statusBsd good' title='Click to View Districts with Status Good'>"+result[0].goodCount+"</td>";
+									str1+="<td attr='district' attrst='Ok' class='statusBsd ok' title='Click to View Districts with Status Ok'>"+result[0].okCount+"</td>";
+									str1+="<td attr='district' attrst='Poor' class='statusBsd poor' title='Click to View Districts with Status Poor'>"+result[0].poorCount+"</td>";
+									str1+="<td attr='district' attrst='Worst' class='statusBsd worst' title='Click to View Districts with Status Very Poor'>"+result[0].worstCount+"</td>";
+								}else{
+									str1+="<td attr='constituency' attrst='Best' class='statusBsc best'title='Click to View Constituencies with Status Very Good'>"+result[0].bestCount+"</td>";
+									str1+="<td attr='constituency' attrst='Good' class='statusBsc good' title='Click to View Constituencies with Status Good'>"+result[0].goodCount+"</td>";
+									str1+="<td attr='constituency' attrst='Ok' class='statusBsc ok' title='Click to View Constituencies with Status Ok'>"+result[0].okCount+"</td>";
+									str1+="<td attr='constituency' attrst='Poor' class='statusBsc poor' title='Click to View Constituencies with Status Poor'>"+result[0].poorCount+"</td>";
+									str1+="<td attr='constituency' attrst='Worst' class='statusBsc worst' title='Click to View Constituencies with Status Very Poor'>"+result[0].worstCount+"</td>";
+								}
 							str1+="</tr>";
 						str1+='</table>';
 					str1+='</div>';
@@ -1693,7 +1714,7 @@ function SortByName(a, b){
 								str+='<td style="background-color:lightgreen">'+result[i].percentage+'</td>';
 							}
 							if(colorStatus=="Ok"){
-								str+='<td style="background-color:lightblue">'+result[i].percentage+'</td>';
+								str+='<td style="background-color:yellow">'+result[i].percentage+'</td>';
 							}
 							if(colorStatus=="Poor"){
 								str+='<td style="background-color:#F89406">'+result[i].percentage+'</td>';
@@ -1828,6 +1849,33 @@ function SortByName(a, b){
         }).done(function(result){
 				//$("#ajaxImgStyle").hide();
 				var str='';
+				var str1='';
+				str1+='<div>';
+						str1+='<table class="summary">';
+							str1+="<tr>";
+								str1+="<th class='best'> VERY GOOD </th>";
+								str1+="<th class='good'> GOOD </th>";
+								str1+="<th class='ok'> OK </th>";
+								str1+="<th class='poor'> POOR </th>";
+								str1+="<th class='worst'> VERY POOR </th>";
+							str1+="</tr>";
+							str1+="<tr>";
+								if(scopeId==2){
+									str1+="<td attr='district' attrst='Best' class='statusBsd best' title='Click to View Districts with Status Very Good'>"+result[0].bestCount+"</td>";
+									str1+="<td attr='district' attrst='Good' class='statusBsd good' title='Click to View Districts with Status Good'>"+result[0].goodCount+"</td>";
+									str1+="<td attr='district' attrst='Ok' class='statusBsd ok' title='Click to View Districts with Status Ok'>"+result[0].okCount+"</td>";
+									str1+="<td attr='district' attrst='Poor' class='statusBsd poor' title='Click to View Districts with Status Poor'>"+result[0].poorCount+"</td>";
+									str1+="<td attr='district' attrst='Worst' class='statusBsd worst' title='Click to View Districts with Status Very Poor'>"+result[0].worstCount+"</td>";
+								}else{
+									str1+="<td attr='constituency' attrst='Best' class='statusBsc best' title='Click to View Constituencies with Status Very Good'>"+result[0].bestCount+"</td>";
+									str1+="<td attr='constituency' attrst='Good' class='statusBsc good' title='Click to View Constituencies with Status Good'>"+result[0].goodCount+"</td>";
+									str1+="<td attr='constituency' attrst='Ok' class='statusBsc ok' title='Click to View Constituencies with Status Ok'>"+result[0].okCount+"</td>";
+									str1+="<td attr='constituency' attrst='Poor' class='statusBsc poor' title='Click to View Constituencies with Status Poor'>"+result[0].poorCount+"</td>";
+									str1+="<td attr='constituency' attrst='Worst' class='statusBsc worst' title='Click to View Constituencies with Status Very Poor'>"+result[0].worstCount+"</td>";
+								}
+							str1+="</tr>";
+						str1+='</table>';
+					str1+='</div>';
 					str+='<table class="table table-bordered" id="'+constant+'tabledata1">';
 					str+='<thead><tr>';
 					str+='<th>'+scope+'</th>';
@@ -1838,44 +1886,44 @@ function SortByName(a, b){
 					str+='</tr></thead>';
 					str+='<tbody>';
 					for(var i in result){
-						if(result[i].colorStatus == status){
+						if(status == result[i].colorStatus){
 							str+='<tr>';
-						str+='<td>'+result[i].name+'</td>';
-						str+='<td>'+result[i].targetCadres+'</td>';
-						if(result[i].totalRecords==null){
-							str+='<td>-</td>';
-						}else{
-						str+='<td>'+result[i].totalRecords+'</td>';
+							str+='<td>'+result[i].name+'</td>';
+							str+='<td>'+result[i].targetCadres+'</td>';
+							if(result[i].totalRecords==null){
+								str+='<td>-</td>';
+							}else{
+							str+='<td>'+result[i].totalRecords+'</td>';
+							}
+							//str+='<td>'+result[i].difference+'</td>';
+							if(result[i].percentage==null){
+								str+='<td style="background-color: #e77c79;>-</td>';
+							}else{
+								var colorStatus = result[i].colorStatus;
+								if(colorStatus=="Best"){
+									str+='<td style="background-color: green;">'+result[i].percentage+'</td>';
+								}
+								if(colorStatus=="Good"){
+									str+='<td style="background-color:lightgreen">'+result[i].percentage+'</td>';
+								}
+								if(colorStatus=="Ok"){
+									str+='<td style="background-color:yellow">'+result[i].percentage+'</td>';
+								}
+								if(colorStatus=="Poor"){
+									str+='<td style="background-color:orange">'+result[i].percentage+'</td>';
+								}
+								if(colorStatus=="Worst"){
+									str+='<td style="background-color:#C43C35">'+result[i].percentage+'</td>';
+								}
+								
+							}
+							str+='</tr>';
 						}
-						//str+='<td>'+result[i].difference+'</td>';
-						if(result[i].percentage==null){
-							str+='<td style="background-color: #e77c79;>-</td>';
-						}else{
-							var colorStatus = result[i].colorStatus;
-							if(colorStatus=="Best"){
-								str+='<td style="background-color: green;">'+result[i].percentage+'</td>';
-							}
-							if(colorStatus=="Good"){
-								str+='<td style="background-color:lightgreen">'+result[i].percentage+'</td>';
-							}
-							if(colorStatus=="Ok"){
-								str+='<td style="background-color:lightblue">'+result[i].percentage+'</td>';
-							}
-							if(colorStatus=="Poor"){
-								str+='<td style="background-color:#F89406">'+result[i].percentage+'</td>';
-							}
-							if(colorStatus=="Worst"){
-								str+='<td style="background-color:#C43C35">'+result[i].percentage+'</td>';
-							}
-							
-						}
-						str+='</tr>';
-						}
-						
 					}
 					str+='</tbody>';
 					str+='</table>';
 					$(targetDiv).html(str);
+					$(targetDiv+"smry").html(str1);
 					$("#"+constant+"tabledata1").dataTable({
 						"iDisplayLength": -1,
 						"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
@@ -1894,9 +1942,7 @@ function SortByName(a, b){
 		function getLocationswiseleaderCadreInfo2status(scpId,scp,stId,targetDiv,fromTask,status){
 			//var date = $.datepicker.formatDate('yy-mm-dd', new Date());
 			
-			var val = $('input:button[name=distTargetBtn]').val();
 			
-			alert(val);
 			
 			$(targetDiv+"smry").html("");
 			var scopeId = scpId;
@@ -1928,7 +1974,33 @@ function SortByName(a, b){
             }).done(function(result){
 				//$("#ajaxImgStyle").hide();
 				var str='';
-				
+				var str1 = '';
+					str1+='<div>';
+						str1+='<table class="summary">';
+							str1+="<tr>";
+								str1+="<th class='best'> VERY GOOD </th>";
+								str1+="<th class='good'> GOOD </th>";
+								str1+="<th class='ok'> OK </th>";
+								str1+="<th class='poor'> POOR </th>";
+								str1+="<th class='worst'> VERY POOR </th>";
+							str1+="</tr>";
+							str1+="<tr>";
+								if(scopeId==2){
+									str1+="<td attr='district' attrst='Best' class='statusBsd best' title='Click to View Districts with Status Very Good'>"+result[0].bestCount+"</td>";
+									str1+="<td attr='district' attrst='Good' class='statusBsd good' title='Click to View Districts with Status Good'>"+result[0].goodCount+"</td>";
+									str1+="<td attr='district' attrst='Ok' class='statusBsd ok' title='Click to View Districts with Status Ok'>"+result[0].okCount+"</td>";
+									str1+="<td attr='district' attrst='Poor' class='statusBsd poor' title='Click to View Districts with Status Poor'>"+result[0].poorCount+"</td>";
+									str1+="<td attr='district' attrst='Worst' class='statusBsd worst' title='Click to View Districts with Status Very Poor'>"+result[0].worstCount+"</td>";
+								}else{
+									str1+="<td attr='constituency' attrst='Best' class='statusBsc best' title='Click to View Constituencies with Status Very Good'>"+result[0].bestCount+"</td>";
+									str1+="<td attr='constituency' attrst='Good' class='statusBsc good' title='Click to View Constituencies with Status Good'>"+result[0].goodCount+"</td>";
+									str1+="<td attr='constituency' attrst='Ok' class='statusBsc ok' title='Click to View Constituencies with Status Ok'>"+result[0].okCount+"</td>";
+									str1+="<td attr='constituency' attrst='Poor' class='statusBsc poor' title='Click to View Constituencies with Status Poor'>"+result[0].poorCount+"</td>";
+									str1+="<td attr='constituency' attrst='Worst' class='statusBsc worst' title='Click to View Constituencies with Status Very Poor'>"+result[0].worstCount+"</td>";
+								}
+							str1+="</tr>";
+						str1+='</table>';
+					str1+='</div>';
 					str+='<table class="table table-bordered" id="'+constant+'tabledata2">';
 					str+='<thead><tr>';
 					str+='<th>'+scope+'</th>';
@@ -1939,43 +2011,46 @@ function SortByName(a, b){
 					str+='</tr></thead>';
 					str+='<tbody>';
 					for(var i in result){
-						if(result[i].colorStatus==status){
+						if(status == result[i].colorStatus){
 							str+='<tr>';
-						str+='<td>'+result[i].name+'</td>';
-						str+='<td>'+result[i].targetCadres+'</td>';
-						if(result[i].totalRecords==null){
-							str+='<td>-</td>';
-						}else{
-						str+='<td>'+result[i].totalRecords+'</td>';
+							str+='<td>'+result[i].name+'</td>';
+							str+='<td>'+result[i].targetCadres+'</td>';
+							if(result[i].totalRecords==null){
+								str+='<td>-</td>';
+							}else{
+							str+='<td>'+result[i].totalRecords+'</td>';
+							}
+							//str+='<td>'+result[i].difference+'</td>';
+							 if(result[i].percentage==null){
+								str+='<td style="background-color: #e77c79;>-</td>';
+							}else{
+								var colorStatus = result[i].colorStatus;
+								if(status == colorStatus){
+									if(colorStatus=="Best"){
+										str+='<td style="background-color: green;">'+result[i].percentage+'</td>';
+									}
+									if(colorStatus=="Good"){
+										str+='<td style="background-color:lightgreen">'+result[i].percentage+'</td>';
+									}
+									if(colorStatus=="Ok"){
+										str+='<td style="background-color:yellow">'+result[i].percentage+'</td>';
+									}
+									if(colorStatus=="Poor"){
+										str+='<td style="background-color:orange">'+result[i].percentage+'</td>';
+									}
+									if(colorStatus=="Worst"){
+										str+='<td style="background-color:#C43C35">'+result[i].percentage+'</td>';
+									}
+								}
+							}
+								
+							str+='</tr>';
 						}
-						//str+='<td>'+result[i].difference+'</td>';
-						 if(result[i].percentage==null){
-							str+='<td style="background-color: #e77c79;>-</td>';
-						}else{
-							var colorStatus = result[i].colorStatus;
-							if(colorStatus=="Best"){
-								str+='<td style="background-color: green;">'+result[i].percentage+'</td>';
-							}
-							if(colorStatus=="Good"){
-								str+='<td style="background-color:lightgreen">'+result[i].percentage+'</td>';
-							}
-							if(colorStatus=="Ok"){
-								str+='<td style="background-color:lightblue">'+result[i].percentage+'</td>';
-							}
-							if(colorStatus=="Poor"){
-								str+='<td style="background-color:#F89406">'+result[i].percentage+'</td>';
-							}
-							if(colorStatus=="Worst"){
-								str+='<td style="background-color:#C43C35">'+result[i].percentage+'</td>';
-							}
-						} 
-						str+='</tr>';
-						}
-						
 					}
 					str+='</tbody>';
 					str+='</table>';
 					$(targetDiv).html(str);
+					$(targetDiv+"smry").html(str1);
 					$("#"+constant+"tabledata2").dataTable({
 						"iDisplayLength": -1,
 						"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
@@ -2003,17 +2078,45 @@ function SortByName(a, b){
 			getLocationswiseleaderCadreInfo2(2,"District",1,"#leaderDataDiv1","today");
 		});
 		
-		
-		$(".statusBsd").on("click",function(){
+		$(document).on('click',".statusBsd",function(){
 			var attr = $(this).attr("attr");
 			var attrst = $(this).attr("attrst");
+			var stateId = 2;
+			var state = $('input:button[name=distTargetBtn]:checked').val();
+				if(state == "AP"){
+					stateId = 1;
+				}
+			var reportType = $('input:radio[name=compareD]:checked').val();
+			
+			if(reportType == "overall"){
+				getLocationswiseleaderCadreInfo1status(2,"District",stateId,"#leaderDataDiv1",attrst);
+			}else{
+				getLocationswiseleaderCadreInfo2status(2,"District",stateId,"#leaderDataDiv1",reportType,attrst);
+			}
+			
+			
 		});
-		
-		$(".statusBsc").on("click",function(){
+		$(document).on('click',".statusBsc",function(){
 			var attr = $(this).attr("attr");
 			var attrst = $(this).attr("attrst");
+			var stateId = 2;
+			var state = $('input:button[name=constTargetBtn]:checked').val();
+			
+				if(state == "AP"){
+					stateId = 1;
+				}
+			var reportType = $('input:radio[name=compareC]:checked').val();
+			
+			if(reportType == "overall"){
+				getLocationswiseleaderCadreInfo1status(3,"Constituency",stateId,"#leaderDataDiv2",attrst);
+			}else{
+				getLocationswiseleaderCadreInfo2status(3,"Constituency",stateId,"#leaderDataDiv2",reportType,attrst);
+			}
+			
+		
 		});
-	   
+		
+		
 	  <c:if test="${fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) }"> 
 		  getLocationswiseleaderCadreInfo2(3,"Constituency",1,"#leaderDataDiv2","today");
 		  getLocationswiseleaderCadreInfo2(2,"District",1,"#leaderDataDiv1","today");
