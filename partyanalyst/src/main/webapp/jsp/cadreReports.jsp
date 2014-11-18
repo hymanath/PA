@@ -24,8 +24,11 @@
  table.target {
 	font: 11px/24px Verdana, Arial, Helvetica, sans-serif;
 	border-collapse: collapse;
-	width: 320px;
+	width: 750px;
 	}
+	
+	#leaderDataDivStatusBars h4{margin:0px;}
+	#leaderDataDivStatusBars .progress{margin:0px;}
 </style>
 </head>
 <body>
@@ -93,8 +96,12 @@
    
    function closeDiv1(trID)
    {
-	  
 	$(".selected1child").remove();
+   }
+   function closeDiv(trID)
+   {
+	  
+	$(".selectedchild").remove();
    }
    
 
@@ -260,14 +267,14 @@ function displaySublevelDetails1(id,type)
    function buildDataForBars(result,type)
    {
 	   var str='';
-		str+='<table class="table table-bordered" id="tabledataTab">';
+		str+='<table class="table-bordered" style="width:900px;margin-left:10px;" id="tabledataTab">';
 		str+='<thead>';
 		str+='<tr>';
 		
 		if(type == "District")
-		str+='<th><h4 style="color:red">DISTRICT</h4></th>';
+		str+='<th><h4 style="color:red">DISTRICTS</h4></th>';
 		else if(type == "Constituency"){
-		str+='<th><h4 style="color:red">DISTRICT</h4></th>';
+		str+='<th><h4 style="color:red">DISTRICTS</h4></th>';
 		//str+='<th>Parliament</th>';
 		//str+='<th>Constituency</th>';
 	   }
@@ -306,7 +313,7 @@ function displaySublevelDetails1(id,type)
 		str+='<tr id='+result[i].id+' class="removeCls clearCls'+result[i].id+'">';
 		if(type == "District")
 		//str+='<td style="width:320px;" class="removeCls clearClsTD'+result[i].id+'"><a onclick="displaySublevelDetailsForBars('+result[i].id+',\'District\');" style="cursor:pointer;">'+result[i].name+'('+ totalVoters+ ' , '+targetCadres+' , '+totalRecords+' , '+percentage+'%)</a>';
-		str+='<td style="width:320px;" class="removeCls clearClsTD'+result[i].id+'" title= "Total Voters - '+ totalVoters+ ' ,&nbsp;&nbsp;Target Voters - '+targetCadres+' ,Total Records -  '+totalRecords+'"><a onclick="displaySublevelDetailsForBars('+result[i].id+',\'District\');" style="cursor:pointer;"><h4>'+result[i].name+' &nbsp;&nbsp; ('+percentage+'%)</h4></a>';
+		str+='<td style="width:800px;padding:12px;border-bottom:1px solid #cdcdcd;" class="removeCls clearClsTD'+result[i].id+'" title= "Total Voters - '+ totalVoters+ ' ,&nbsp;&nbsp;Target Voters - '+targetCadres+' ,Total Records -  '+totalRecords+'"><a onclick="displaySublevelDetailsForBars('+result[i].id+',\'District\');" style="cursor:pointer;"><h4>'+result[i].name+' &nbsp;&nbsp; ('+percentage+'%)</h4></a>';
 		if(percentage <= 20){
 				   str+='<div class="progress progress-danger" style="height:15px;">';
 				}else if(percentage > 20 && percentage <= 40){
@@ -323,44 +330,14 @@ function displaySublevelDetails1(id,type)
 		
 		
 		str+='</td>';
+		
+		
+		str+='<td id="appendID" style="border-left:0px;"><span class="pull-right removeicon"  id="iconDiv'+result[i].id+'" onclick="closeDiv('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span></td>';
 		str+='</tr>';
-		if(type == "Constituency"){
-		str+='<td>'+result[i].districtName+'('+ result[i].totalVoters+ ' , '+result[i].targetCadres+' , '+result[i].totalRecords+' , '+result[i].percentage+'%)</td>';	
-		/* str+='<td>'+result[i].parliament+'</td>';
-		str+='<td>'+result[i].name+'</td>'; */
-		}
-		/* str+='<td>'+result[i].totalVoters+'</td>';
-		str+='<td>'+result[i].targetCadres+'</td>';
-		if(result[i].totalRecords==null){
-			str+='<td>-</td>'
-		}else{
-			str+='<td>'+result[i].totalRecords+'</td>';
-		}
-		if(result[i].percentage==null){
-			str+='<td>-</td>'
-		}else{
-			str+='<td>'+result[i].percentage+'</td>';
-		}
-		str+='<td>'+result[i].totalAmount+'</td>';
-		str+='<td>'+result[i].paidAmount+'</td>';
-		str+='<td id="appendID">'+result[i].difference+'<span class="pull-right removeicon"  id="iconDiv'+result[i].id+'" onclick="closeDiv('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span></td>'; */
-		
 	   }
-	   str+='</tbody>';
+	    str+='</tbody>';
 		str+='</table>';
-		$("#leaderDataDivStatusBars").html(str);
-		/* $("#tabledataTab").dataTable({
-			         "iDisplayLength": 20,
-			          "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
-			     }); */
-				 
-		/* var firstRowId = $('#tabledataTab tr').eq(1).attr('id');
-		if(type == "District")
-		{		
-		displaySublevelDetails(firstRowId.replace('"',''),'District');
-		} */
-		
-		
+    	$("#leaderDataDivStatusBars").html(str);
    }
    function displaySublevelDetailsForBars(id,type)
    {
@@ -414,18 +391,19 @@ function displaySublevelDetails1(id,type)
 	   var str='';
 	  $("#ajaxImgStyle1").css("display","none");
 	   
-		str+='<table class="table table-bordered" id="tabledata1">';
+		str+='<table class="table table-bordered" id="tabledata1" style="width:800px;margin-left:50px;background:#f3f3f3;">';
 		str+='<thead>';
 		str+='<tr>';
 		if(type == "Constituency")
 	   {
 		
-		str+='<th> <h4 style="color:red"> CONSTITUENCY </h4></th>';
+		str+='<th> <h4 style="color:red"> CONSTITUENCYS </h4></th>';
 	   }
 	   else if(type == "Mandal")
 	   {
-		   str+='<th> <h4 style="color:red"> MANDAL </h4></th>';
+		   str+='<th> <h4 style="color:red"> MANDALS </h4></th>';
 	   }
+	   str +="<th style='border-left:0px;'></th>";
 		/* str+='<th>Total Voters</th>';
 		str+='<th>Target Cadres</th>';
 		str+='<th>Registered Cadres</th>';
@@ -478,6 +456,8 @@ function displaySublevelDetails1(id,type)
 				   str+='<div class="progress progress-success" style="height:15px;">';
 				} 
 				str+='<div style="width:'+percentage+'%" class="bar" style="height:15px;"></div>';
+				str+='</div></td>';
+				str +='<td style="border-left:0px;"><span class="pull-right removeicon1"  id="iconDiv1'+result[i].id+'" onclick="closeDiv1('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span>';
 		str+='</td></tr>';
 		}
 		  else if(type == "Mandal")
@@ -496,12 +476,12 @@ function displaySublevelDetails1(id,type)
 		}else{
 			str+='<td>'+result[i].percentage+'</td>';
 		}
-		str+='<td>'+result[i].totalAmount+'</td>';
+		str+='<td>'+result[i].totalAmount+'</td>';*/
 		if(type == "Constituency")
 		   {
-		str+='<td>'+result[i].paidAmount+'</td>';
-		str+='<td>'+result[i].difference+'<span class="pull-right removeicon1"  id="iconDiv1'+result[i].id+'" onclick="closeDiv1('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span></td>';
-		   } */
+		//str+='<td>'+result[i].paidAmount+'</td>';
+		//str+='<td><span class="pull-right removeicon1"  id="iconDiv1'+result[i].id+'" onclick="closeDiv1('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span></td>';
+		   } 
 		str+='</tr>';
 	   }
 	   str+='</tbody>';
@@ -562,17 +542,17 @@ function displaySublevelDetails1(id,type)
 	   var str='';
 	  $("#ajaxImgStyle2").css("display","none");
 	   
-		str+='<table class="table table-bordered" id="tabledata1">';
+		str+='<table class="table table-bordered" id="tabledata1" style="width: 800px; margin-left: 50px;">';
 		str+='<thead>';
 		str+='<tr>';
 		if(type == "Constituency")
 	   {
 		
-		str+='<th><h4 style="color:red"> CONSTITUENCY </h4></th>';
+		str+='<th><h4 style="color:red"> CONSTITUENCYS </h4></th>';
 	   }
 	   else if(type == "Mandal")
 	   {
-		   str+='<th><h4 style="color:red" > MANADAL </h4></th>';
+		   str+='<th><h4 style="color:red" > MANADALS </h4></th>';
 	   }
 		/* str+='<th>Total Voters</th>';
 		str+='<th>Target Cadres</th>';
