@@ -132,6 +132,19 @@ table.dataTable tr.odd {
 		margin-left:40px;margin-bottom:10px;
 	}
 	
+	.info td {
+		color: #666699;
+		padding: 7px 17px;
+		cursor:pointer;
+	}
+	.info th {
+		border-bottom: 1px dashed #6699CC;
+		color: #003399;
+		font-size: 14px;
+		font-weight: normal;
+		padding: 12px;
+	}
+	
 	.typeRd{margin:5px;}
 	
 	
@@ -303,7 +316,7 @@ table.dataTable tr.odd {
 			
 			<!-- ReCently Registered Block -->
 			<div class="span7 show-grid well well-small border-radius-0 pad-0" style="margin-left:20px;min-height:345px;">
-				<h4 style="padding-bottom:5px;padding-top:5px;"><i class="icon-user" style="margin-top: 4px;margin-left:20px;"></i> &nbsp;Recently Registered <i class="icon-refresh" style="margin-top: 4px;margin-left:10px;cursor:pointer;" onclick="getRecentlyRegisteredCadresInfo(0,true);"></i> </h4>
+				<h4 style="padding-bottom:5px;padding-top:5px;"><i class="icon-user" style="margin-top: 4px;"></i> &nbsp;Recently Registered <i class="icon-refresh" style="margin-top: 4px;margin-left:10px;cursor:pointer;" onclick="getRecentlyRegisteredCadresInfo(0,true);"></i> </h4>
 				<div id="recentRegisterCadresDiv" style="margin-top:15px;"><img style="margin-top:180px;margin-left: 124px;" src="images/icons/loading.gif"/></div>
 					
 			</div><!-- ReCently Registered Block END -->
@@ -311,9 +324,10 @@ table.dataTable tr.odd {
 		
 		
 		<div class="row-fluid">
-			
 			<div class="span6 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
-				<h4> Constituency Target VS Registered Cadre  <i class="icon-refresh refreshCon" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i></h4>
+				<h4> Constituency Target VS Registered Cadre  <i class="icon-refresh refreshCon" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i>
+				<i class="icon-info-sign" onClick="popUpForInformation()" title="Click To View the Color Code Information" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i></h4>
+			
 				<div style="padding:5px;">
 					<input type="radio" class="typeRd" id="todayCId" name="compareC" value="today" checked="true" style="margin-top:0px;"/><span style="margin-right:10px;"> TODAY</span>
 					<input type="radio" class="typeRd" id="asOfNowCId" name="compareC" value="asoftoday" style="margin-top:0px;"/><span style="margin-right:10px;"> AS OF TODAY </span>
@@ -331,7 +345,9 @@ table.dataTable tr.odd {
 			</div>
 			
 			<div class="span6 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:20px;" >
-				<h4> District  Target Vs Registered Cadre  <i class="icon-refresh refreshDist" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i></h4>
+				<h4> District  Target Vs Registered Cadre  <i class="icon-refresh refreshDist" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i>
+				<i class="icon-info-sign" onClick="popUpForInformation()" title="Click To View the Color Code Information" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i></h4>
+				
 				<div style="padding:5px;">
 					<input type="radio" class="typeRd" id="todayDId" name="compareD" value="today" checked="true" style="margin-top:0px;"/><span style="margin-right:10px;"> TODAY</span>
 					<input type="radio" class="typeRd" id="asOfNowDId" name="compareD" value="asoftoday" style="margin-top:0px;"/><span style="margin-right:10px;"> AS OF TODAY</span>
@@ -374,6 +390,12 @@ table.dataTable tr.odd {
 	
 	<div id="inActiveUsersForDialog">
 	  <div id="inActiveUsers" > </div>
+	</div>
+	
+	<div id="informationWindowDIV">
+		<div id="informationWindowInner" style="margin-left:10px;">
+			
+		</div>
 	</div>
 	
 <script type="text/javascript">
@@ -2116,6 +2138,42 @@ function SortByName(a, b){
 		
 		});
 		
+		
+		function popUpForInformation(){
+			var str = "";
+				$("#informationWindowDIV").dialog({
+					resizable:false,
+					title:'Color Codes Information ',
+					height: 'auto',
+					width:'300',
+					top:250,
+					left:100,
+					modal: true
+				});
+				str+='<table class="info">';
+				str+='<tr>';
+						str+='<td><div style="height:13px;width:13px;background-color:green;"/></td>';
+						str+='<td> >120% </td><td> Very Good </td>';
+				str+='</tr>';
+				str+='<tr>';
+						str+='<td><div style="height:13px;width:13px;background-color:lightgreen;"/></td>';
+						str+='<td>   100-120% </td><td> Good</td>';
+				str+='</tr>';
+				str+='<tr>';
+						str+='<td><div style="height:13px;width:13px;background-color:yellow;"/></td>';
+						str+='<td>   75-100%  </td><td> Ok</td>';
+				str+='</tr>';
+				str+='<tr>';
+						str+='<td><div style="height:13px;width:13px;background-color:orange;"/></td>';
+						str+='<td>  50-75% </td><td> Poor</td>';
+				str+='</tr>';
+				str+='<tr>';
+						str+='<td><div style="height:13px;width:13px;background-color:#C43C35;"/></td>';
+						str+='<td>  <50% </td><td> Worst</td>';
+				str+='</tr>';
+				str+='</table>';	
+			$("#informationWindowInner").html(str);
+		}
 		
 	  <c:if test="${fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) }"> 
 		  getLocationswiseleaderCadreInfo2(3,"Constituency",1,"#leaderDataDiv2","today");
