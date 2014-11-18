@@ -5066,8 +5066,6 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						String photoType = obj[10].toString();
 						if(photoType.equalsIgnoreCase("NEW"))
 						{
-							
-							
 							String url = "http://mytdp.com/images/cadre_images/"+obj[11].toString();
 							returnVO.setVoterImgPath(url);
 						
@@ -5077,15 +5075,13 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								String url = "http://mytdp.com/images/cadre_images/"+obj[11].toString();
 								returnVO.setVoterImgPath(url);
 						}
-					}
-					else
-					{
-						if(userAddress.getConstituency() != null && userAddress.getBooth() !=null)
+						else
 						{
 							String url = "http://mytdp.com/voter_images/"+userAddress.getConstituency().getConstituencyId().toString().trim()+"/"+"Part"+userAddress.getBooth().getPartNo().trim()+"/"+returnVO.getVoterCardNo().toUpperCase().toString().trim()+".jpg";
 							returnVO.setVoterImgPath(url);
 						}
 					}
+					
 					
 					List<String> names = voterNamesDAO.getVoterTeluguNames((Long)obj[4] );
 					if(names != null && names.size() > 0)
