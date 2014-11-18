@@ -1867,7 +1867,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		} catch (Exception e) {
 			LOG.error("Exception raised in getSearchDetailsCadreRegistration in CadreRegistrationService service", e);
 		}
-		if(returnList.size() > 0){
+		if(returnList !=null && returnList.size() > 0){
 			returnList.get(0).setCount(count);
 		}
 		return returnList;
