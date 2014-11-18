@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -23,6 +26,7 @@ public class TdpCadreReportAction extends ActionSupport {
 	
 	private ITdpCadreReportService  tdpCadreReportService;
 	private TdpCadreLocationWiseReportVO tdpCadreLocationWiseReportVO;
+	private TdpCadreLocationWiseReportVO result = new TdpCadreLocationWiseReportVO();
 	
 	
 	public TdpCadreLocationWiseReportVO getTdpCadreLocationWiseReportVO() {
@@ -34,11 +38,23 @@ public class TdpCadreReportAction extends ActionSupport {
 		this.tdpCadreLocationWiseReportVO = tdpCadreLocationWiseReportVO;
 	}
 
+	public ITdpCadreReportService getTdpCadreReportService() {
+		return tdpCadreReportService;
+	}
+
 	public void setTdpCadreReportService(
 			ITdpCadreReportService tdpCadreReportService) {
 		this.tdpCadreReportService = tdpCadreReportService;
 	}
 	
+	public TdpCadreLocationWiseReportVO getResult() {
+		return result;
+	}
+
+	public void setResult(TdpCadreLocationWiseReportVO result) {
+		this.result = result;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
@@ -63,6 +79,27 @@ public class TdpCadreReportAction extends ActionSupport {
 
 	public String execute()
 	{
+		return Action.SUCCESS;
+	}
+	
+	
+	
+	
+	public String getLocationWiseDetailsForExcelReport(){
+		try{
+			jobj = new JSONObject(getTask());
+			String constiIds       = jobj.getString("constituencyIds");
+			List<Long> constituencyIdsList = new ArrayList<Long>();
+			String[] constituency       = constiIds.split(",");
+			for (String string : constituency) 
+			{
+				constituencyIdsList.add(Long.valueOf(string));
+			}			
+			result = tdpCadreReportService.generateExcelReportForTdpCadre(constituencyIdsList);
+		}
+		catch (Exception e) {
+			LOG.info("Entered into getLocationWiseAsOfNowDetails() in getLocationWiseDetailsForExcelReport class");
+		}
 		return Action.SUCCESS;
 	}
 	

@@ -8954,6 +8954,11 @@
 			<result type="json" name="success">
 				<param name="root">amountDetailsVO</param>
 			</result>
+		</action>		
+		<action name="getLocationWiseDetailsForExcelReportAction" class="tdpCadreReportAction" method="getLocationWiseDetailsForExcelReport">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
 		</action>
 		
 </package>
