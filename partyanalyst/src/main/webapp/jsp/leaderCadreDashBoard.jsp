@@ -34,9 +34,9 @@
 			   <div style="min-height: 300px;background:#ffffff;" class="span12 show-grid well well-small border-radius-0 mb-10 form-inline">
 			   <div id="errStatusDiv" align="center" ></div>
 			   
-			   <div style="margin-left:270px;">
-					<h5 style="color:blue;"> <input type ="radio" style="margin-top:-2px;" class="rprtType" name="reportType" value="normal" checked="checked">&nbsp;&nbsp;Tabular Report</input>
-					 <input style="margin-top:-2px;margin-left:12px;" type ="radio" class="rprtType" name="reportType" value="bar">&nbsp; Status Bar Report</h5></input>
+			   <div style="margin-left:250px;">
+					<h4 style="color:black;"> <input type ="radio" style="margin-top:-2px;" class="rprtType" name="reportType" value="normal" checked="checked">&nbsp;&nbsp;TABULAR REPORT</input>
+					 <input style="margin-top:-2px;margin-left:12px;" type ="radio" class="rprtType" name="reportType" value="bar">&nbsp; STATUS BAR REPORT </h4></input>
 			   </div>
 			   
 			   
