@@ -2528,4 +2528,33 @@ public Integer saveUrbanConstituencyDataType1(String prevDate,String table,Long 
 		
 		
 	}
+	public List<Object[]> getTdpCadreAgeRangeByConstituency(List<Long> constituencyIds)
+	{
+	
+	 Query query=getSession().createQuery("select model.age,date(model.dateOfBirth),model.userAddress.constituency.name " +
+	 		"  from TdpCadre model " +
+	 		"  where model.enrollmentYear=2014 and" +
+	 		"  model.isDeleted='N' and" +
+	 		"  model.userAddress.constituency.constituencyId in(:constituencyIds) " +
+	 		"  order by model.userAddress.constituency.name");
+	 
+	 query.setParameterList("constituencyIds", constituencyIds);
+	 return query.list();		 
+	
+	}
+	public List<Object[]> getTdpCadregenderWiseByConstituency(List<Long> constituencyIds)
+	{
+	 Query query=getSession().createQuery("select model.userAddress.constituency.name,model.gender,count(model.tdpCadreId) " +
+	 		"  from TdpCadre model " +
+	 		"  where model.enrollmentYear=2014 and" +
+	 		"  model.isDeleted='N' and" +
+	 		"  model.userAddress.constituency.constituencyId in(:constituencyIds) and " +
+	 		"  model.gender is not null " +
+	 		"  group by model.userAddress.constituency.name,model.gender " +
+	 		"  order by model.userAddress.constituency.name");
+	 
+	 query.setParameterList("constituencyIds", constituencyIds);
+	 return query.list();		 
+	
+	}
 }
