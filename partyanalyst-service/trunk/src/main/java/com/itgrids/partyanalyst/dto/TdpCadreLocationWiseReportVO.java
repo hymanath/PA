@@ -20,6 +20,11 @@ public class TdpCadreLocationWiseReportVO implements java.io.Serializable{
 	private Long registeredMaleCount;
 	private Long registeredFemaleCount;
 	
+	private Long cadresCount;
+	private Double genderPerc;
+	private String gender;
+	
+	
 	private Long ageRangeId;
 	private String ageRange;
 	private Long votersInAge;
@@ -221,5 +226,28 @@ public class TdpCadreLocationWiseReportVO implements java.io.Serializable{
 		this.percentage = percentage;
 	}
 
-	
+	public Long getCadresCount() {
+		return cadresCount;
+	}
+
+	public void setCadresCount(Long cadresCount) {
+		this.cadresCount = cadresCount;
+	}
+
+	public Double getGenderPerc() {
+		return genderPerc;
+	}
+
+	public void setGenderPerc(Double genderPerc) {
+		this.genderPerc = genderPerc;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+ 
 }
