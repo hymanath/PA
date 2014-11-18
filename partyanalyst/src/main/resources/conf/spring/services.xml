@@ -2319,6 +2319,7 @@
        	 <property name="tdpCadreDAO" ref="tdpCadreDAO" />
 	     <property name="boothDAO" ref="boothDAO" />
 	     <property name="voterInfoDAO" ref="voterInfoDAO" />
+         <property name="voterAgeInfoDAO" ref="voterAgeInfoDAO" />
      </bean>
 </beans>		
 	
