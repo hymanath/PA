@@ -1700,13 +1700,14 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	}
 	
 
-	public List<VoterInfoVO> getSearchDetailsCadreRegistration(Long constituencyId, String seachType, String candidateName, String voterCardId, String houseNo,Long panchayatId,Long boothId,String isPresentCadre)
+	public List<VoterInfoVO> getSearchDetailsCadreRegistration(Long constituencyId, String seachType, String candidateName, String voterCardId, String houseNo,Long panchayatId,Long boothId,String isPresentCadre,Integer startIndex,Integer maxIndex)
 	{
 		String cadrePath="images/cadre_images/";
 		String voterPath="voter_images/"+constituencyId+"/Part";
 		StringBuilder searchQuery = new StringBuilder();
 		List<VoterInfoVO> returnList = null;
 		List searchList = null;
+		Long count = 0l;
 		SimpleDateFormat format  = new SimpleDateFormat("yy-MM-dd");
 		
 		try {
@@ -1727,7 +1728,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					searchQuery.append(" BPV.voter.houseNo like '%"+houseNo+"%' and" );
 				}
 
-				searchList = boothPublicationVoterDAO.getVotersDetailsForCadreRegistratiobByconstituencId(constituencyId,IConstants.VOTER_DATA_PUBLICATION_ID,searchQuery.toString(),panchayatId,boothId,isPresentCadre);
+				searchList = boothPublicationVoterDAO.getVotersDetailsForCadreRegistratiobByconstituencId(constituencyId,IConstants.VOTER_DATA_PUBLICATION_ID,searchQuery.toString(),panchayatId,boothId,isPresentCadre,startIndex,maxIndex);
+				 count = boothPublicationVoterDAO.getVotersDetailsForCadreRegistratiobByconstituencIdCount(constituencyId,IConstants.VOTER_DATA_PUBLICATION_ID,searchQuery.toString(),panchayatId,boothId,isPresentCadre);
+				
 				List<Long> voterIds = new ArrayList<Long>();
 				if(searchList != null && searchList.size()>0 )
 				{
@@ -1793,7 +1796,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				}
 
 				
-				searchList = tdpCadreDAO.getCadreDetailsForCadreRegistratiobByconstituencId(constituencyId, searchQuery.toString(), panchayatId, boothId, isPresentCadre);
+				searchList = tdpCadreDAO.getCadreDetailsForCadreRegistratiobByconstituencId(constituencyId, searchQuery.toString(), panchayatId, boothId, isPresentCadre,startIndex,maxIndex);
+				 count = tdpCadreDAO.getCadreDetailsForCadreRegistratiobByconstituencIdCount(constituencyId, searchQuery.toString(), panchayatId, boothId, isPresentCadre);
 				
 				if(searchList != null && searchList.size()>0 )
 				{
@@ -1863,7 +1867,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		} catch (Exception e) {
 			LOG.error("Exception raised in getSearchDetailsCadreRegistration in CadreRegistrationService service", e);
 		}
-		
+		if(returnList.size() > 0){
+			returnList.get(0).setCount(count);
+		}
 		return returnList;
 	}
 	

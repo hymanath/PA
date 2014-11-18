@@ -54,6 +54,7 @@ public class VoterInfoVO implements java.io.Serializable
 	private Long fmlyVtrId;
 	private String candidateAadharNo;
 	private String nameType;
+	private Long count;
 		
 	
 	public String getTeluguRelativeName() {
@@ -333,6 +334,12 @@ public class VoterInfoVO implements java.io.Serializable
 	}
 	public void setNameType(String nameType) {
 		this.nameType = nameType;
+	}
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
 	}
 	
 	
