@@ -2361,9 +2361,9 @@ public Integer saveUrbanConstituencyDataType1(String prevDate,String table,Long 
 	public List<Object[]> getTotalRecords1(List<Long> ids,String type){
 		StringBuilder str = new StringBuilder();
 		if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
-		 str.append("select count(model.tdpCadreId),model.userAddress.panchayat.panchayatId "); 
+		 str.append("select count(model.tdpCadreId),model.userAddress.panchayat.panchayatId,model.userAddress.constituency.constituencyId "); 
 		else if(type.equalsIgnoreCase(IConstants.BOOTH))
-			 str.append("select count(model.tdpCadreId),model.userAddress.booth.boothId "); 
+			 str.append("select count(model.tdpCadreId),model.userAddress.booth.boothId,model.userAddress.constituency.constituencyId "); 
 		
 		 str.append("  from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = 2014 "); 
 		 if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
@@ -2499,5 +2499,33 @@ public Integer saveUrbanConstituencyDataType1(String prevDate,String table,Long 
 		query.setParameterList("districtIds", districtIds);
 		
 		return query.list();
+	}
+	
+	public List<Object[]> getLocationWiseCount(List<Long> ids,String type){
+		
+		StringBuilder str = new StringBuilder();
+		
+		if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			 str.append("select count(model.tdpCadreId),model.userAddress.constituency.constituencyId "); 
+		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+			str.append("select count(model.tdpCadreId),model.userAddress.tehsil.tehsilId,model.userAddress.constituency.constituencyId"); 
+		else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+			str.append("select count(model.tdpCadreId),model.userAddress.constituency.localElectionBody.localElectionBodyId,model.userAddress.constituency.constituencyId"); 
+		 str.append("  from TdpCadre model" +
+				" where model.isDeleted = 'N' " +
+				" and model.enrollmentYear = 2014 "); 
+		
+		 if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			str.append(" and model.userAddress.constituency.constituencyId in (:ids) group by model.userAddress.constituency.constituencyId");
+		 else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+				str.append(" and model.userAddress.tehsil.tehsilId in(:ids) group by model.userAddress.tehsil.tehsilId");
+		 else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+				str.append(" and model.userAddress.localElectionBody.localElectionBodyId in (:ids) group by model.userAddress.localElectionBody.localElectionBodyId");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("ids", ids);
+		
+		return query.list();
+		
+		
 	}
 }

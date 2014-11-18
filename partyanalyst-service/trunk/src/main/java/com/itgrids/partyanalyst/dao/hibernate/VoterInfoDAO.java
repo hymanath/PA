@@ -475,7 +475,7 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getVotersCountInATehsilList(List<Long> tehsilIdsList, Long publicationDateId)
 	{
-		Query query = getSession().createQuery("Select model.reportLevelValue,model2.tehsilName,sum(model.totalVoters),model2.district.districtId,sum(model.maleVoters),sum(model.femaleVoters) from VoterInfo model,Tehsil model2 where model.reportLevelValue = model2.tehsilId and " +
+		Query query = getSession().createQuery("Select model.reportLevelValue,model2.tehsilName,sum(model.totalVoters),model2.district.districtId,sum(model.maleVoters),sum(model.femaleVoters),model.constituencyId from VoterInfo model,Tehsil model2 where model.reportLevelValue = model2.tehsilId and " +
 				" model.voterReportLevel.voterReportLevelId = :reportLevelId and model.publicationDate.publicationDateId = :publicationDateId and " +
 				" model2.tehsilId in (:tehsilIdsList) group by model2.tehsilId");
 		query.setParameter("reportLevelId", 2L);
@@ -487,7 +487,7 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getVotersCountInALocalBodyList(List<Long> localbodyIdsList, Long publicationDateId)
 	{
-		Query query = getSession().createQuery("Select model.reportLevelValue,model2.name,sum(model.totalVoters),model2.district.districtId,sum(model.maleVoters),sum(model.femaleVoters) from VoterInfo model,LocalElectionBody model2 where model.reportLevelValue = model2.localElectionBodyId and " +
+		Query query = getSession().createQuery("Select model.reportLevelValue,model2.name,sum(model.totalVoters),model2.district.districtId,sum(model.maleVoters),sum(model.femaleVoters),model.constituencyId from VoterInfo model,LocalElectionBody model2 where model.reportLevelValue = model2.localElectionBodyId and " +
 				" model.voterReportLevel.voterReportLevelId = :reportLevelId and model.publicationDate.publicationDateId = :publicationDateId and " +
 				" model2.localElectionBodyId in (:localbodyIdsList) group by model2.localElectionBodyId");
 		query.setParameter("reportLevelId", 5L);
@@ -501,7 +501,7 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getVotersCountInPanchayatList(List<Long> panchayatIds, Long publicationDateId)
 	{
-		Query query = getSession().createQuery("Select model.reportLevelValue,model2.panchayatName,sum(model.totalVoters),model2.tehsil.district.districtId,sum(model.maleVoters),sum(model.femaleVoters) from VoterInfo model,Panchayat model2 where model.reportLevelValue = model2.panchayatId and " +
+		Query query = getSession().createQuery("Select model.reportLevelValue,model2.panchayatName,sum(model.totalVoters),model2.tehsil.district.districtId,sum(model.maleVoters),sum(model.femaleVoters),model.constituencyId from VoterInfo model,Panchayat model2 where model.reportLevelValue = model2.panchayatId and " +
 				" model.voterReportLevel.voterReportLevelId = :reportLevelId and model.publicationDate.publicationDateId = :publicationDateId and " +
 				" model2.panchayatId in (:panchayatIds) group by model2.panchayatId");
 		query.setParameter("reportLevelId",3L);
@@ -523,5 +523,19 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 		
 		return query.list();
     }
-
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVotersCountInConstituencies(List<Long> constituencyIds, Long publicationDateId)
+	{
+		Query query = getSession().createQuery("select model.constituencyId,model2.name,sum(model.totalVoters),model2.district.districtId,sum(model.maleVoters),sum(model.femaleVoters) from VoterInfo model,Constituency model2 where model.constituencyId = model2.constituencyId and " +
+				" model.voterReportLevel.voterReportLevelId = :reportLevelId and model.reportLevelValue = model2.constituencyId and model.publicationDate.publicationDateId = :publicationDateId and " +
+				" model.constituencyId in (:constituencyIds) group by model.constituencyId");
+		
+		query.setParameter("reportLevelId", 1L);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameterList("constituencyIds", constituencyIds);
+		
+		return query.list();
+    }
+	
 }
