@@ -24,7 +24,8 @@
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 
 		<script type="text/javascript" src="js/exportexcel.js"></script>
-
+		<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/> 
+<script type="text/javascript" src="js/simplePagination/simplePagination1.js" ></script>
 	<style>
 	.show-grid:hover .block-hover-addBtn{display:table-cell; margin-right:-22px; top:-10px;}/*visibility: visible;*/
 	.block-hover-addBtn{display:none; position: relative;}/*visibility: hidden;*/
@@ -156,7 +157,7 @@
 							</div>
 						</div>
 					</div>
-					<a href="javascript:{searchCandidatesDetailsBySearchCriteria();}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
+					<a href="javascript:{searchCandidatesDetailsBySearchCriteria(0);}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
 		</div>
 		
 		
@@ -196,7 +197,9 @@
 			<span class="glyphicon glyphicon-chevron-right"></span></a>
 			<h3 class="text-align">SEARCH DETAILS</h3>
 			<div class="table-responsive" id="searchDetailsDiv" ></div>
-
+            <div class="span12 text-center">
+				<div id="paginationId"></div>
+			</div>
 		</div>
 	</div>
 
@@ -248,7 +251,7 @@
 	}
 	
 	var request;	
-	function searchCandidatesDetailsBySearchCriteria()
+	function searchCandidatesDetailsBySearchCriteria(start)
 	{
 	
 		var cosntiteucnyId = $('#userConstituencyId').val();
@@ -370,6 +373,8 @@
 					  panchayatId : panchayatId,
 					  boothId : boothId ,
 					  isPresentCadre : ischecked,
+					  startIndex : start,
+					  maxIndex:30,
 					  task:"searchCandidatesDtailsBySearchCriteria"             
 				   }
 
@@ -384,7 +389,7 @@
 						$('#searchDataImg').hide();
 						if(result != null && result.length >0)
 						{
-							buildSearchDetails(result);
+							buildSearchDetails(result,start);
 						}
 						else
 						{
@@ -396,7 +401,7 @@
 			
 	}
 	
-	function buildSearchDetails(result)
+	function buildSearchDetails(result,startIndex)
 	{
 
 	var str = '';
@@ -492,23 +497,14 @@
 		$('#searchDetailsDiv').html(str);
 		$('#tableElement').show();
 		 
-		 $('#seachDetalsTab').dataTable({
-			"iDisplayLength": 100,
-			"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
-			});
-		/*	
-			$('input').iCheck({
-			checkboxClass: 'icheckbox_square-blue',
-			radioClass: 'iradio_square-blue',
-			increaseArea: '20%' // optional
-		  });
-		  
-		   $('input[name="optionsRadios"]').on('ifClicked', function (event) {
-				//alert("You clicked " + this.value);
-				getDetailsForUser(this.value);
-				
-			});
-			*/
+     if(startIndex == 0 && result.length > 0){
+		$("#paginationId").pagination({
+			items: result[0].count,
+			itemsOnPage: 30,
+			cssStyle: 'light-theme'
+		});
+    }
+		
 			 $(".detailsCls").click(function(){
 			var id = $(this).attr('id');
 			getDetailsForUser(id);

@@ -622,8 +622,10 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			Long panchayatId = jobj.getLong("panchayatId");
 			Long boothId = jobj.getLong("boothId");
 			String isPresentCadre = jobj.getString("isPresentCadre");
+			int startIndex = jobj.getInt("startIndex");
+			int maxIndex = jobj.getInt("maxIndex");
 			
-			voterInfoVOList = cadreRegistrationService.getSearchDetailsCadreRegistration(constituencyId,searchType,candidateName,voterCardNo,houseNo,panchayatId,boothId,isPresentCadre);
+			voterInfoVOList = cadreRegistrationService.getSearchDetailsCadreRegistration(constituencyId,searchType,candidateName,voterCardNo,houseNo,panchayatId,boothId,isPresentCadre,startIndex,maxIndex);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in searchVoterAndCadreInfoBySearchCriteria method in CadreRegistrationAction Action",e);
