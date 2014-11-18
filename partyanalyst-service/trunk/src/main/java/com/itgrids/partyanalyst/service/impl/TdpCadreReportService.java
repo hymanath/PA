@@ -76,7 +76,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	}
 	
 	
-	public List<TdpCadreLocationWiseReportVO> getLocationWiseGenderReport(List<Long> constituencyIds){
+	public List<TdpCadreLocationWiseReportVO> getLocationWiseReportDetailsForExcel(List<Long> constituencyIds){
 		List<TdpCadreLocationWiseReportVO> resultList = new ArrayList<TdpCadreLocationWiseReportVO>();
 		try{
 		
