@@ -406,6 +406,7 @@
 					});
 					return false;
 				}
+				$("#submitCadreFormBtnReqId").attr("disabled","disabled");
 				var uploadHandler = {
 						upload: function(o) {
 							uploadResult = o.responseText;
@@ -2029,7 +2030,7 @@
 			<div style="position: relative;">
 				<!-- <a class="btn btn-primary m_top20 border-radius-0 text-align2" href="search-constituency.html"><span class="icon-chevron-left icon-white"></span>&nbsp;&nbsp;Back </a> -->
 				
-				<a  class="btn btn-success text-align3 m_top20 pull-right border-radius-0"  onClick="submitCadreForm();"> &nbsp;&nbsp;Next<span class=" icon-chevron-right icon-white"></span></a>
+				<button  class="btn btn-success text-align3 m_top20 pull-right border-radius-0" id="submitCadreFormBtnReqId" onClick="submitCadreForm();"> &nbsp;&nbsp;Next<span class=" icon-chevron-right icon-white"></span></button>
 			</div>
 		</div>
 </form>
