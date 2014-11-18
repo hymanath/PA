@@ -319,7 +319,8 @@ margin-top:10px;
 								<ul>
 									<li><a href="cadreRegistrationAmountReportAction.action"><span>2014 Cadre Reconciliation Report</span></a></li>
 									<li><a href="leaderCadreDashBoardAction.action"><span>Leader Cadre DashBoard</span></a></li>
-										<li><a href="cadreMemberShipCardDispatcherAction.action"><span> Membership Card Status </span></a></li>
+									<li><a href="cadreMemberShipCardDispatcherAction.action"><span> Membership Card Status </span></a></li>
+									<li><a href="cadreReportsAction.action"><span> Cadre Reports - 2014 </span></a></li>
 								</ul>
 							</div>
 						</li>
