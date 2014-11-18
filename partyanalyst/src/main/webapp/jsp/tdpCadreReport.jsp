@@ -24,8 +24,8 @@
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 
 		<script type="text/javascript" src="js/exportexcel.js"></script>
-
-	
+<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
 	<style>
 	.show-grid:hover .block-hover-addBtn{display:table-cell; margin-right:-22px; top:-10px;}/*visibility: visible;*/
 	.block-hover-addBtn{display:none; position: relative;}/*visibility: hidden;*/
@@ -103,7 +103,7 @@
 			   <div class="row-fluid offset4">						
 					<div class="span8" style="margin-bottom:-20px;">
 					<h5 class="text-align1">  State : 
-					<select id="statesList"> 
+					<select id="statesList" onChange="getdistricts(this.value);getConstituencyValues(this.value);"> 
 					<option value="1"> Andhra Pradesh </option>
 					<option value="2"> Telangana </option>
 					
@@ -113,7 +113,7 @@
 				<div class="row-fluid offset4">						
 					<div class="span8">
 						<h5 class="text-align1" style="margin-left: -22px;">  District : 
-					<select id="districtsList"> 
+					<select id="districtsList"  onChange="getConstituencies(this.value)"> 
 						<option value="0"> Select District </option>							
 					</select></h5>
 					</div>
@@ -135,5 +135,113 @@
 			</div>
 		</div>
 	</div>
+	
+<script>
+
+	function getdistricts(id){
+	
+	$("#districtsList").html("");
+	var str ='';
+		var jsObj={
+			stateid:id
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getDistrictsByStateWiseAction.action',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   for(var i in result){
+				str +='<option value='+result[i].id+'>'+result[i].name+'</option>';
+			}
+			$("#districtsList").html(str);
+	   });	
+	
+  }
+
+
+
+ function getConstituencies(districtId){
+		var stateId = $("#statesList").val();
+		$("#constiList").html("");
+		var str ="";
+		var jObj ={
+			districtId:districtId,				  
+			task:"getConstituencyNames"             
+		}	
+		$.ajax({
+			type : "POST",
+			url : "sendUpdatesByemailsAction.action",
+			data : {task:JSON.stringify(jObj)} ,
+		}).done(function(result){
+			$('#constiList').find('option').remove();
+		   for(var i in result){
+				$('#constiList').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+			
+			 $('#constiList').multiselect('refresh');
+			  
+		});
+	}
+	
+	function getConstituencyValues(stateId){
+	if(stateId == 1)	
+		districtId = 11;
+	else
+		districtId = 1;
+		
+		var str ="";
+		var jObj ={
+			districtId:districtId,				  
+			task:"getConstituencyNames"             
+		}	
+		$.ajax({
+			type : "POST",
+			url : "sendUpdatesByemailsAction.action",
+			data : {task:JSON.stringify(jObj)} ,
+		}).done(function(result){
+				$('#constiList').find('option').remove();
+		   for(var i in result){
+		   
+				$('#constiList').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}			
+			 $('#constiList').multiselect('refresh');
+			  
+		});
+	}
+	
+	
+function generateDetailReports(){		
+	var constituencyIds = "";
+	var selectedValues = $("#constiList").multiselect("getChecked").map(function(){
+        return this.value;
+    }).get();
+	for(var j in selectedValues)
+	{
+        constituencyIds = constituencyIds+""+selectedValues[j]+",";
+    }
+	console.log(constituencyIds);
+	
+	var jsObj =
+	{ 		
+		constituencyIds : constituencyIds,	
+		task: "constituencyWiseDetails"
+	};
+	$.ajax({
+	type: "POST",
+	url: "getLocationWiseDetailsForExcelReportAction.action",
+	data: {task : JSON.stringify(jsObj)}
+	})
+	.done(function( result ) {
+		buildCategoeryDetails(result,jsObj);
+     });
+	
+	
+	}
+
+getdistricts(1);
+getConstituencies(11);
+$('#constiList').multiselect({noneSelectedText:"Select Constittuency(s)"});
+</script>	
+	
 </body>
 </html>
