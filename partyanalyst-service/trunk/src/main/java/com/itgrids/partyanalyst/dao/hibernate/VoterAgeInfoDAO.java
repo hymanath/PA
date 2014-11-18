@@ -162,4 +162,37 @@ public class VoterAgeInfoDAO extends GenericDaoHibernate<VoterAgeInfo, Long> imp
 		
 		return query.list();
 	}
+	public List<Object[]> getTotalVotersBasedOnAConstituency(List<Long> constituencyIds,Long publicationDateId)
+    {
+    	Query  query = getSession().createQuery("select model1.voterAgeRange.voterAgeRangeId,model1.totalVoters,model2.name,model1.voterAgeRange.ageRange " +
+    			" from VoterAgeInfo model1,Constituency model2 " +
+    			" where model1.constituencyId=model2.constituencyId and" +
+    			" model1.voterReportLevel.voterReportLevelId=1 and " +
+    			" model1.publicationDate.publicationDateId=:publicationDateId and " +
+    			" model2.constituencyId in(:constituencyIds) " +
+    			" group by model2.name,model1.voterAgeRange.voterAgeRangeId " +
+    			" having model1.voterAgeRange.voterAgeRangeId!=1" +
+    			" order by  model2.name");
+    		query.setParameter("publicationDateId", publicationDateId);
+    		query.setParameterList("constituencyIds", constituencyIds);
+    	
+    	 return query.list();
+    }
+   public List<Object[]> getGenderWiseVoterDetailsByConstituency(List<Long> constituencyIds,Long publicationDateId)
+   {
+	
+	   Query query = getSession().createQuery("select sum(model1.maleVoters),sum(model1.femaleVoters),model2.name " +
+	   		" from VoterAgeInfo model1,Constituency model2 " +
+	   		" where model1.constituencyId=model2.constituencyId and " +
+	   		" model1.voterReportLevel.voterReportLevelId=1 and " +
+	   		" model1.publicationDate.publicationDateId=:publicationDateId and" +
+	   		" model1.voterAgeRange.voterAgeRangeId!=1 and " +
+	   		" model2.constituencyId in(:constituencyIds) " +
+	   		" group by model1.constituencyId " +
+	   		" order by model2.name");  
+	   query.setParameter("publicationDateId", publicationDateId);
+   	   query.setParameterList("constituencyIds", constituencyIds);
+   	   return query.list();
+   }
+    
 }
