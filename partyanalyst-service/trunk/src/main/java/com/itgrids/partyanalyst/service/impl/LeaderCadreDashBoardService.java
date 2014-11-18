@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
@@ -974,5 +976,195 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 			LOG.info("Enterd into getUsersInLocation() in LeaderCaderDashBoardService");		
 		}
 		return returnVo;
+	}	
+	public List<CadreAmountDetailsVO> getYouthMahilaInfo(String locationtype,Long stateId,String accessType,String accessValue,Date fromDate,Date toDate)
+	{
+		Map<Long,CadreAmountDetailsVO> locationsMap = new HashMap<Long,CadreAmountDetailsVO>();
+		List<Long> ids = new ArrayList<Long>();
+		List<Object[]> voterCountList = null;
+		try{
+				if(stateId == 2)
+				{
+				for(int i=1;i<=10;i++)
+					ids.add(new Long(i));
+				}
+				else if(stateId == 1)
+				{
+			    for(int i=11;i<=23;i++)
+			    	ids.add(new Long(i));
+			    }
+				if(stateId == 0)
+				{
+				    for(int i=1;i<=23;i++)
+				    	ids.add(new Long(i));
+				}
+				
+				if(accessType.trim().equalsIgnoreCase(IConstants.DISTRICT))
+				{
+					if(!ids.contains(Long.valueOf(accessValue.trim()).longValue()))
+					{
+						ids.clear();
+					}
+					else
+					{
+						ids.clear();
+						ids.add(Long.valueOf(accessValue.trim()).longValue());
+					}
+				}
+				else if(accessType.trim().equalsIgnoreCase(IConstants.MLA))
+				{
+					Constituency constituency = constituencyDAO.get(Long.valueOf(accessValue.trim()));
+					
+					if(!ids.contains(constituency.getDistrict().getDistrictId().longValue()))
+					{
+						ids.clear();
+					}
+					else
+					{
+						ids.clear();
+						ids.add(constituency.getDistrict().getDistrictId());
+					}
+
+				}
+				
+				if(ids != null && ids.size()>0)
+				{
+					//getting total voters in location
+					if(locationtype.equalsIgnoreCase(IConstants.DISTRICT)){
+						//0id, 1name,2 totalvoters,3 male,4 female
+						voterCountList = voterInfoDAO.getVotersCountInADistrictsList(ids,IConstants.VOTER_DATA_PUBLICATION_ID);
+					}else if(locationtype.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+						voterCountList = voterInfoDAO.getVotersCountInConstituenciesByDistrictsList(ids,IConstants.VOTER_DATA_PUBLICATION_ID);
+					}
+					getOtherInfo(voterCountList, locationsMap, ids, locationtype, fromDate, toDate);
+				}
+		}
+		catch (Exception e) {
+			LOG.error("Exception rised in getYouthMahilaInfo() of LeaderCaderDashBoardService",e);
+		}
+		return new ArrayList<CadreAmountDetailsVO>(locationsMap.values());
 	}
+	
+	public void getOtherInfo(List<Object[]> voterCountList,Map<Long,CadreAmountDetailsVO> locationsMap,List<Long> ids,String locationtype,Date fromDate,Date toDate){
+
+		if(voterCountList != null && voterCountList.size() > 0)
+			for(Object[] params :voterCountList)
+			{
+				CadreAmountDetailsVO basicVo = new CadreAmountDetailsVO();
+				basicVo.setId((Long)params[0]);
+				basicVo.setName(params[1] != null ? params[1].toString() : "");
+				basicVo.setTotalVoters((Long)params[2]);//total voters
+				if(locationtype.equalsIgnoreCase(IConstants.DISTRICT)){
+					if(params[2] != null && ((Long)params[2]).longValue() >0 && params[4] != null){
+						basicVo.setPercentage(new BigDecimal((((Long)params[4])*(100.0))/(Long)params[2]).setScale(2, BigDecimal.ROUND_HALF_UP).toString());//femalePercent
+					}
+				}else{
+					if(params[2] != null && ((Long)params[2]).longValue() >0 && params[5] != null){
+						basicVo.setPercentage(new BigDecimal((((Long)params[5])*(100.0))/(Long)params[2]).setScale(2, BigDecimal.ROUND_HALF_UP).toString());//femalePercent
+					}
+				}
+				locationsMap.put((Long)params[0],basicVo);
+			}
+		
+		//0 count 1Id
+		//getting total cadres register in location
+		List<Object[]> totalRecords = tdpCadreDAO.getTotalRecords(ids,locationtype,fromDate,toDate);
+		for(Object[] total:totalRecords){
+			CadreAmountDetailsVO location = locationsMap.get((Long)total[1]);
+			if(location != null){
+				location.setTotalCount((Long)total[0]);//totalCadres
+			}
+		}
+		totalRecords = null;
+		
+		//getting total female cadres register in location
+		List<Object[]> femaleTotalRecords = tdpCadreDAO.getTotalFemaleRecords(ids,locationtype,fromDate,toDate);
+		for(Object[] female:femaleTotalRecords){
+			CadreAmountDetailsVO location = locationsMap.get((Long)female[1]);
+			if(location != null){
+				location.setTotalAmount((Long)female[0]);//female total
+				if(location.getTotalCount() != null && location.getTotalCount().longValue() >0 && female[0] != null){
+				 location.setFemalePerc(new BigDecimal((((Long)female[0])*(100.0))/location.getTotalCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());//female Percentage
+				}
+			}
+		}
+		femaleTotalRecords = null;
+		
+		//getting total youth cadres register in location
+        List<Object[]> youthTotalRecords = tdpCadreDAO.getTotalYouthRecords(ids,locationtype,fromDate,toDate);
+		for(Object[] youth:youthTotalRecords){
+			CadreAmountDetailsVO location = locationsMap.get((Long)youth[1]);
+			if(location != null){
+				location.setTotalRecords((Long)youth[0]);//young total
+				if(location.getTotalCount() != null && location.getTotalCount().longValue() >0 && youth[0] != null){
+				  location.setMalePerc(new BigDecimal((((Long)youth[0])*(100.0))/location.getTotalCount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());//young Percentage
+				}
+			}
+		}
+		youthTotalRecords = null;
+	
+	}
+	public List<CadreAmountDetailsVO> getSubLevelLoationWiseYouthMahilaInfo(String type,Long id,String accessType,String accessValue,Date fromDate,Date toDate)
+	{
+		Map<Long,CadreAmountDetailsVO> locationsMap = new HashMap<Long,CadreAmountDetailsVO>();
+		
+		List<Object[]> voterCountList = null;
+		String locationtype = "";
+		List<Long> districtIds = new ArrayList<Long>();
+		List<Long> tehsilIds = new ArrayList<Long>();
+		List<Long> constituencyIds = new ArrayList<Long>();
+		List<Long> localbodyIds = new ArrayList<Long>();
+		try{
+				if(type.equalsIgnoreCase(IConstants.DISTRICT))
+				{
+							locationtype = IConstants.CONSTITUENCY;
+							districtIds.add(id);
+							voterCountList = voterInfoDAO.getVotersCountInConstituenciesByDistrictsList(districtIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+							for(Object[] consti:voterCountList){
+								constituencyIds.add((Long)consti[0]);
+							}
+							 getOtherInfo(voterCountList, locationsMap, constituencyIds, locationtype, fromDate, toDate);
+				}
+				
+				if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+				{
+							
+							Constituency constituency = constituencyDAO.get(id);
+							constituencyIds.add(id);
+							if(constituency.getAreaType().equalsIgnoreCase(IConstants.RURAL)|| constituency.getAreaType().equalsIgnoreCase(IConstants.RURALURBAN))
+							{
+								 List<SelectOptionVO> list = regionServiceDataImp.getSubRegionsInConstituency(id,  IConstants.PRESENT_YEAR, constituency.getAreaType());
+								 if(list != null && list.size() > 0)
+									 for(SelectOptionVO vo : list)
+									 {
+										 if(vo.getId().toString().substring(0,1).trim().equalsIgnoreCase("2"))
+								      tehsilIds.add(new Long(vo.getId().toString().substring(1)));
+								      else
+								    	  localbodyIds.add(new Long(vo.getId().toString().substring(1)));
+									 }
+							}
+							if(tehsilIds != null && tehsilIds.size() > 0)
+							{
+								locationtype = IConstants.TEHSIL;
+							    voterCountList = voterInfoDAO.getVotersCountInATehsilList(tehsilIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+							    getOtherInfo(voterCountList, locationsMap, tehsilIds, locationtype, fromDate, toDate);
+							}
+							if(localbodyIds != null && localbodyIds.size() > 0)
+							{
+								locationtype = IConstants.LOCAL_ELECTION_BODY;
+								voterCountList = voterInfoDAO.getVotersCountInALocalBodyList(localbodyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+								getOtherInfo(voterCountList, locationsMap, localbodyIds, locationtype, fromDate, toDate);
+							}
+				}
+				
+				
+			
+			
+		}
+		catch (Exception e) {
+			LOG.error("Exception rised in  getSubLevelLoationWiseYouthMahilaInfo() in LeaderCaderDashBoardService",e);
+		}
+		return new ArrayList<CadreAmountDetailsVO>(locationsMap.values());
+	}
+	
 }

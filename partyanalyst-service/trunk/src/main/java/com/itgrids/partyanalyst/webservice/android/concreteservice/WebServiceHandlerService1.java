@@ -46,6 +46,8 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
+import com.itgrids.partyanalyst.dto.VoterInfoVO;
+import com.itgrids.partyanalyst.dto.VoterWebServiceDataVO;
 import com.itgrids.partyanalyst.model.CadreSurveyUser;
 import com.itgrids.partyanalyst.model.CadreSurveyUserAssignDetails;
 import com.itgrids.partyanalyst.model.LoginDetailsByTab;
@@ -1093,5 +1095,21 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 			LOG.error("Exception raised in prepareResponceNew  method in WebServiceHandlerService",e);
 		}
 	}
+    
+    public List<VoterWebServiceDataVO> voterSearchDetails(Long constituencyId,String candidateName,String voterCardId,Integer startIndex){
+    	List<VoterWebServiceDataVO> returnList = new ArrayList<VoterWebServiceDataVO>();
+    	List<VoterInfoVO> votersList = cadreRegistrationService.getSearchDetailsCadreRegistration(constituencyId,"voter", candidateName, voterCardId,null, 0l, 0l, null, startIndex, 30);
+    	for(VoterInfoVO voter:votersList){
+    		VoterWebServiceDataVO voterVo = new VoterWebServiceDataVO();
+    		voterVo.setVoterCardNo(voter.getVoterCardNo());
+    		voterVo.setName(voter.getName());
+    		voterVo.setRelativeName(voter.getRelativeName());
+    		voterVo.setRelation(voter.getRelationType());
+    		voterVo.setAge(voter.getAge());
+    		voterVo.setDoorNo(voter.getHouseNo());
+    		returnList.add(voterVo);
+    	}
+    	return returnList;
+    }
 }
 

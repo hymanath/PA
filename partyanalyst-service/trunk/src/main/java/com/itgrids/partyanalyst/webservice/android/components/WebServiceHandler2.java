@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
+import com.itgrids.partyanalyst.dto.VoterWebServiceDataVO;
 import com.itgrids.partyanalyst.service.ICadreSurveyTransactionService;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
@@ -568,4 +569,17 @@ public class WebServiceHandler2 {
 	}
 	
 	
+	public Object voterSearchDetails(VoterWebServiceDataVO dataVO)
+	{
+		try{			
+			List<VoterWebServiceDataVO> searchResult  = webServiceHandlerService1.voterSearchDetails(dataVO.getConstituencyId(),dataVO.getName(),dataVO.getVoterCardNo(),dataVO.getPageNo()*30);
+			
+			 return searchResult;
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in storeLoginUserDetails() Method, Exception is ",e);
+			return new ArrayList<VoterWebServiceDataVO>();
+		}
+	}
 }

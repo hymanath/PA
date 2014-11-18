@@ -43,11 +43,14 @@ public class CadreAmountDetailsVO implements Serializable{
 	private int bestCount;
 	private int poorCount;
 	private int worstCount;
+	private String femalePerc;
+	private String malePerc;
 	
 	private String toDate;
 	
 	
 	
+
 	
 	public String getToDate() {
 		return toDate;
@@ -253,11 +256,19 @@ public class CadreAmountDetailsVO implements Serializable{
 	public void setUserType(String userType) {
 		this.userType = userType;
 	}
-	
-	
-	
-	
-	
+	public String getFemalePerc() {
+		return femalePerc;
+	}
+	public void setFemalePerc(String femalePerc) {
+		this.femalePerc = femalePerc;
+	}
+	public String getMalePerc() {
+		return malePerc;
+	}
+	public void setMalePerc(String malePerc) {
+		this.malePerc = malePerc;
+	}
+
 	
 	
 }
