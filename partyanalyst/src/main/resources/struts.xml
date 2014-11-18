@@ -8961,6 +8961,10 @@
 			</result>
 		</action>
 		
+		<action name="cadreReportsAction" class="leaderCadreDashBoardAction">
+			<result name="success">/jsp/cadreReports.jsp</result>
+		</action>
+		
 </package>
 
 </struts>      
