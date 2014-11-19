@@ -852,6 +852,26 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 			setCountForDuplicateUsers(list3,resultList,IConstants.LOCAL_ELECTION_BODY);
 			}
 			
+			if(resultList != null && resultList.size()> 0)
+			{
+				
+					List<Object[]> list3 = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentsAndDistrictForAssembly(constituencyIds);
+					if(list3 != null && list3.size() > 0)
+					{
+						for(Object[] params : list3)
+						{
+							CadreAmountDetailsVO vo1 = getMatchedVO(resultList,(Long)params[0]);
+							if(vo1 != null)
+							{
+								vo1.setParliamentId((Long)params[1]);
+								vo1.setParliament(params[2] != null ? params[2].toString() : "");
+								vo1.setDistrictId((Long)params[3]);
+								vo1.setDistrictName(params[4] != null ? params[4].toString() : "");
+								}
+							
+						}
+					}
+				}
 			
 		}
 		catch(Exception e)
@@ -948,12 +968,12 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 		}
 	}
 	
-	public CadreAmountDetailsVO getUsersInLocation(Date reqFromDate,Date reqToDate,Long userId,Long locationId,String type,Long constituencyId) {
+	public CadreAmountDetailsVO getUsersInLocation(Long userId) {
 	
 		CadreAmountDetailsVO returnVo = new CadreAmountDetailsVO();
 		List<CadreAmountDetailsVO> resultList = new ArrayList<CadreAmountDetailsVO>();
 		try{
-			List<Object[]> list = tdpCadreDAO.getDuplicateUsersByUserId(reqFromDate,reqToDate,userId,locationId,type,constituencyId);
+			List<Object[]> list = cadreSurveyUserAssigneeDAO.getDuplicateUsersByUserId(userId);
 			if(list != null&& list.size() > 0)
 			{
 				for(Object[] params : list)

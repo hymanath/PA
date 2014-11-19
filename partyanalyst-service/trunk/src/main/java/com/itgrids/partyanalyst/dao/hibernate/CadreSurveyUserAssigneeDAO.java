@@ -9,6 +9,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssigneeDAO;
 import com.itgrids.partyanalyst.model.CadreSurveyUserAssignee;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CadreSurveyUserAssigneeDAO extends GenericDaoHibernate<CadreSurveyUserAssignee, Long> implements ICadreSurveyUserAssigneeDAO{
 
@@ -37,6 +38,14 @@ public class CadreSurveyUserAssigneeDAO extends GenericDaoHibernate<CadreSurveyU
 		
 	}
 	
-	
+	public List<Object[]> getDuplicateUsersByUserId(Long userId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select distinct model.name,model.mobileNo,date(model.fromDate),date(model.toDate) from CadreSurveyUserAssignee model");
+		str.append( " where model.cadreSurveyUser.cadreSurveyUserId =:userId");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("userId", userId);
+		return query.list();
+	}	
 	
 }
