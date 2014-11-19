@@ -5,7 +5,9 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
@@ -125,8 +127,8 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		
 			List<Object[]> constiCadreCount = null;			
 			List<Object[]> constiVoterCount = null;
-			List<Object[]> panchayatCadreCount = null;			
-			List<Object[]> panchayatVoterCount = null;
+			List<Object[]> boothCadreCount = null;			
+			List<Object[]> boothVoterCount = null;
 			List<Object[]> tehsilCadreCount = null;			
 			List<Object[]> tehsilVoterCount = null;
 			List<Object[]> localCadreCount = null;			
@@ -134,9 +136,9 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			
 			List<Long> tehsilIds = new ArrayList<Long>();
 			List<Long> localbodyIds = new ArrayList<Long>();
-			List<Long> panchayatIds = new ArrayList<Long>();
-			
-						
+			//List<Long> panchayatIds = new ArrayList<Long>();
+			List<Long> boothIds = new ArrayList<Long>();
+			Map<Long,String> boothLocationMap = new HashMap<Long, String>();			
 				
 				constiCadreCount = tdpCadreDAO.getLocationWiseCount(constituencyIds,IConstants.CONSTITUENCY);
 				
@@ -160,7 +162,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 						  {
 							  vo.setRegisteredCadre(params[0] != null ? (Long)params[0] : 0);	//2837						
 							  String percentage ="";
-							  percentage = (new BigDecimal(vo.getRegisteredCadre()*(100.0)/vo.getTargetedCadre().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+							  percentage = (new BigDecimal(vo.getRegisteredCadre()*(100.0)/vo.getTotalVoters().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 							  vo.setPercentage(percentage);							  
 						  }
 					}				
@@ -172,18 +174,35 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 				if(tehsilIds != null && tehsilIds.size() > 0){									   
 					tehsilCadreCount = tdpCadreDAO.getLocationWiseCount(tehsilIds,IConstants.TEHSIL);
 					tehsilVoterCount = voterInfoDAO.getVotersCountInATehsilList(tehsilIds,IConstants.VOTER_DATA_PUBLICATION_ID);
-					setData(tehsilVoterCount,tehsilCadreCount,IConstants.TEHSIL,resultList);
+					setData(tehsilVoterCount,tehsilCadreCount,IConstants.TEHSIL,resultList,boothLocationMap);
 				    
 				 }
 				if(localbodyIds != null && localbodyIds.size() > 0){				
 					localCadreCount = tdpCadreDAO.getLocationWiseCount(localbodyIds,IConstants.LOCAL_ELECTION_BODY);
 					localVoterCount = voterInfoDAO.getVotersCountInALocalBodyList(localbodyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
-					setData(localVoterCount,localCadreCount,IConstants.LOCAL_ELECTION_BODY,resultList);
+					setData(localVoterCount,localCadreCount,IConstants.LOCAL_ELECTION_BODY,resultList,boothLocationMap);
 				}
-				panchayatIds = boothDAO.getPanchayatsByConstituencyIds(constituencyIds,IConstants.VOTER_DATA_PUBLICATION_ID);				
+				
+				boothIds = boothDAO.getBoothIdsByConstituencyIdsAndPublicationId(constituencyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+				
+								
+				List<Object[]> list1 = boothDAO.getBooths(boothIds);
+				List<Object[]> list2 = boothDAO.getBoothsInAMuncipality(boothIds);
+				for(Object[] params : list1){
+						boothLocationMap.put((Long)params[0], params[1] != null ?  params[1].toString() : "");
+				}
+				for(Object[] params : list2){
+						boothLocationMap.put((Long)params[0], params[1] != null ?  params[1].toString() : "");
+				}
+				
+				boothCadreCount = tdpCadreDAO.getTotalRecords1(boothIds,IConstants.BOOTH);
+				boothVoterCount = voterInfoDAO.getVotersCountInBoothsList(boothIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+				setData(boothVoterCount,boothCadreCount,IConstants.BOOTH,resultList,boothLocationMap);
+				
+			/*	panchayatIds = boothDAO.getPanchayatsByConstituencyIds(constituencyIds,IConstants.VOTER_DATA_PUBLICATION_ID);				
 				panchayatCadreCount = tdpCadreDAO.getTotalRecords1(panchayatIds,IConstants.PANCHAYAT);
 				panchayatVoterCount = voterInfoDAO.getVotersCountInPanchayatList(panchayatIds,IConstants.VOTER_DATA_PUBLICATION_ID);
-				setData(panchayatVoterCount,panchayatCadreCount,IConstants.PANCHAYAT,resultList);	
+				setData(panchayatVoterCount,panchayatCadreCount,IConstants.PANCHAYAT,resultList);*/	
 						
 		}catch(Exception e){
 			LOG.error("Exception rised in getLocationWiseAgeRangeAndGenderCount",e);
@@ -209,7 +228,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	}	
 	
 	
-	public void setData(List<Object[]> voterList,List<Object[]> cadreList,String type,List<TdpCadreLocationWiseReportVO> resultList)
+	public void setData(List<Object[]> voterList,List<Object[]> cadreList,String type,List<TdpCadreLocationWiseReportVO> resultList,Map<Long,String> boothMap)
 	{
 		
 		if(voterList != null && voterList.size() > 0){
@@ -217,15 +236,26 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 				TdpCadreLocationWiseReportVO vo = getMatchedVO(resultList,(Long)params[6]);
 				if(vo != null){
 					List<TdpCadreLocationWiseReportVO> list = new ArrayList<TdpCadreLocationWiseReportVO>();
-					if(type.equals(IConstants.PANCHAYAT)){
+					if(type.equals(IConstants.BOOTH)){
 						list = vo.getPanchayatWiseList();
 					}
 					else if(type.equals(IConstants.TEHSIL) || type.equals(IConstants.LOCAL_ELECTION_BODY)){
 						list = vo.getTehsilWiseList();
 					}
 					TdpCadreLocationWiseReportVO vo1 = new TdpCadreLocationWiseReportVO();
-					vo1.setId((Long)params[0]);						
-					vo1.setName(params[1] != null ? params[1].toString() : "");					
+					vo1.setId((Long)params[0]);
+					if(type.equals(IConstants.BOOTH)){
+						vo1.setName(params[1] != null ? "Part-"+params[1].toString() : "");					
+						String panchayatName = boothMap.get((Long)params[0]);
+						vo1.setLocationType(panchayatName);
+					}
+					else{
+						if(type.equals(IConstants.LOCAL_ELECTION_BODY)){
+							vo1.setName(params[1] != null ? params[1].toString()+" Muncipality" : "");
+						}else{
+							vo1.setName(params[1] != null ? params[1].toString() : "");
+						}
+					}
 					vo1.setTotalVoters((Long)params[2]);
 					vo1.setTargetedCadre((vo1.getTotalVoters() * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014);	
 					list.add(vo1);
@@ -241,7 +271,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 				  {
 					  List<TdpCadreLocationWiseReportVO> list = new ArrayList<TdpCadreLocationWiseReportVO>();
 					 
-						  if(type.equals(IConstants.PANCHAYAT)){
+						  if(type.equals(IConstants.BOOTH)){
 							  list = vo.getPanchayatWiseList();
 							}
 							else if(type.equals(IConstants.TEHSIL) || type.equals(IConstants.LOCAL_ELECTION_BODY)){
@@ -250,7 +280,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 						  for(TdpCadreLocationWiseReportVO data : list){
 							  data.setRegisteredCadre(params[0] != null ? (Long)params[0] : 0);
 							  String percentage ="";
-							  percentage = (new BigDecimal(data.getRegisteredCadre()*(100.0)/data.getTargetedCadre().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+							  percentage = (new BigDecimal(data.getRegisteredCadre()*(100.0)/data.getTotalVoters().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 							  data.setPercentage(percentage);
 						  }						  
 					
