@@ -2088,8 +2088,20 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 				}
 			}
 		}
-		List<Object[]> casteInfoList = tdpCadreDAO.getCastGroupWiseCadreCount(constituencyId,type);
-		//0 count,1 year,2 4casteGroupId ,3 casteGroup
+		List<Object[]> casteInfoList = tdpCadreDAO.getCasteGroupWiseCadreCountExcludingMinorities(constituencyId,type);
+		//0 count,1 year,2 casteGroupId ,3 casteGroup
+		
+		List<Object[]> minList = tdpCadreDAO.getCadreCountInMinorities(constituencyId,type);
+		
+		if(minList != null && minList.size() > 0)
+		{
+			for(Object[] params : minList)
+			{
+				Object[] objArr = {params[0],params[1],Long.parseLong("99"),"Minority"};
+				casteInfoList.add(objArr);
+			}
+		}
+		
 		for(Object[] caste:casteInfoList){
 			
 			CadreRegisterInfo casteVo = casteMap.get((Long)caste[2]);
