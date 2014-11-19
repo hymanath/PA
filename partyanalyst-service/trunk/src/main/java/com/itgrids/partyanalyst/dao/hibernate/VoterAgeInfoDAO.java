@@ -171,7 +171,7 @@ public class VoterAgeInfoDAO extends GenericDaoHibernate<VoterAgeInfo, Long> imp
     			" model1.publicationDate.publicationDateId=:publicationDateId and " +
     			" model2.constituencyId in(:constituencyIds) " +
     			" group by model2.name,model1.voterAgeRange.voterAgeRangeId " +
-    			" having model1.voterAgeRange.voterAgeRangeId!=1" +
+    			" having model1.voterAgeRange.voterAgeRangeId in (2,3,4,5,6)" +
     			" order by  model2.name");
     		query.setParameter("publicationDateId", publicationDateId);
     		query.setParameterList("constituencyIds", constituencyIds);

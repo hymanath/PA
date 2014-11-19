@@ -60,10 +60,43 @@ public class CadreSurveyTransactionServiceTest  extends BaseDaoTestCase {
 		try {
 			
 			List<Long> constituencyIds = new ArrayList<Long>();
-			constituencyIds.add(232L);
+			/*constituencyIds.add(232L);
+			constituencyIds.add(354L);
+			constituencyIds.add(282L);
+			*/
+			//constituencyIds.add(241L);
+			
+			constituencyIds.add(267L);
+			constituencyIds.add(270L);
+			constituencyIds.add(271L);
+			constituencyIds.add(272L);
+			constituencyIds.add(273L);
+			constituencyIds.add(275L);
+			constituencyIds.add(276L);
+			constituencyIds.add(277L);
+			constituencyIds.add(278L);
+			constituencyIds.add(279L);
+			constituencyIds.add(297L);
+			constituencyIds.add(298L);
+			constituencyIds.add(299L);
+			constituencyIds.add(300L);
+
+
+
+
+
+
+
+
+
+
+
+
+
 			
 			TdpCadreLocationWiseReportVO constituencyReportVO1 = tdpCadreReportService.generateExcelReportForTdpCadre(constituencyIds);
-			HSSFWorkbook workbook = new HSSFWorkbook(); 
+			
+			/*HSSFWorkbook workbook = new HSSFWorkbook(); 
 			
 			DecimalFormat df2 = new DecimalFormat("###.##");
 			
@@ -117,7 +150,8 @@ public class CadreSurveyTransactionServiceTest  extends BaseDaoTestCase {
 		    style.setFont(font);
 		   
 		    String constituencyName = constituencyReportVO1.getName();
-			
+		    Long totalRegistered = 0l;
+			Long totalVoters = 0l;
 			HSSFSheet constituencyWiseSheet;
 			
 			int randomNumber = -100;
@@ -125,22 +159,19 @@ public class CadreSurveyTransactionServiceTest  extends BaseDaoTestCase {
 			{
 				randomNumber = new Random().nextInt()*10000000;
 			}
-
-			String path = "D:/apache-tomcat-6.0.37/webapps/PartyAnalyst/Reports";
-			String filename1 = "abc";
-			String pathSeperator = "/";
-			
-			File destDir = new File(pathSeperator+filename1);
-			
-			destDir.mkdir();
-			String returnString = filename1+".zip";
+			 String path = "D:/apache-tomcat-6.0.37/webapps/PartyAnalyst/Reports";
+			 FileOutputStream fileOut = null;
+			 String filename = "";
+			 FileOutputStream fos = null;
 			 
-			Long totalRegistered = 0l;
-			Long totalVoters = 0l;
-			
-			String filename  =  path+"/"+constituencyName+"_"+randomNumber+".xls";
-			FileOutputStream 	out=new FileOutputStream(filename);
-			
+			 fos  = new FileOutputStream(path+"/"+randomNumber+"_Reports" +".zip");
+			 ZipOutputStream zos = new ZipOutputStream(fos);
+			 filename= path+"/"+"_"+constituencyName+ " "+randomNumber+".xls";
+			 String FILE = filename;
+			 File file  = new File(FILE);
+			 file.createNewFile();
+			 fileOut =  new FileOutputStream(FILE);
+			 
 			constituencyWiseSheet = workbook.createSheet(IConstants.CONSTITUENCY);
 
 			constituencyWiseSheet.addMergedRegion(new CellRangeAddress(2,2,1,5 )); // TOTAL OVERVIEW  HEADING
@@ -275,7 +306,7 @@ public class CadreSurveyTransactionServiceTest  extends BaseDaoTestCase {
 		    cell11.setCellValue(constituencyReportVO1.getPanchayatWiseList().get(0).getTehsilWiseList().get(1).getGenderPerc() != null ? constituencyReportVO1.getPanchayatWiseList().get(0).getTehsilWiseList().get(1).getGenderPerc() :0.0d);
 		    cell11.setCellStyle(style2);
 		    
-		   /* 
+		    
 		    HSSFRow row12 = constituencyWiseSheet.createRow(13);
 		    Cell cell12 = row12.createCell((short)1);
 		    cell12.setCellValue(" OTHERS ");
@@ -283,8 +314,8 @@ public class CadreSurveyTransactionServiceTest  extends BaseDaoTestCase {
 		    
 		   /* cell12 = row12.createCell((short)2);
 		    cell12.setCellValue(constituencyReportVO1.getPanchayatWiseList().get(0).getTehsilWiseList().get(2).getTotalVoters() != null ? constituencyReportVO1.getPanchayatWiseList().get(0).getTehsilWiseList().get(2).getTotalVoters() :0L);
-		    cell12.setCellStyle(style2);*/
-		    /*
+		    cell12.setCellStyle(style2);
+		    
 		    cell12 = row12.createCell((short)2);
 		    cell12.setCellValue( totalVoters - genderCount);
 		    cell12.setCellStyle(style2);
@@ -296,14 +327,14 @@ public class CadreSurveyTransactionServiceTest  extends BaseDaoTestCase {
 		    cell12 = row12.createCell((short)4);
 		    cell12.setCellValue(constituencyReportVO1.getPanchayatWiseList().get(0).getTehsilWiseList().get(2).getGenderPerc() != null ? constituencyReportVO1.getPanchayatWiseList().get(0).getTehsilWiseList().get(2).getGenderPerc() :0.0d);
 		    cell12.setCellStyle(style2);
-		    */
+		    
 		    
 		    constituencyWiseSheet.addMergedRegion(new CellRangeAddress(15,15,1,4 )); // CASTE OVER VIEW HEADING
 		    
 		    HSSFRow row13 = constituencyWiseSheet.createRow((short)15);
 		    Cell cell13 = row13.createCell((short)1);
 		    cell13.setCellValue(" CASTE CATEGORY WISE OVERVIEW  ");
-		    cell13.setCellStyle(style5);
+		    cell1.setCellStyle(style5);
 		   
 		    HSSFRow row14 = constituencyWiseSheet.createRow(16);
 		    Cell cell14 = row14.createCell((short)1);
@@ -345,7 +376,7 @@ public class CadreSurveyTransactionServiceTest  extends BaseDaoTestCase {
 		    HSSFRow rowForAgeHead = constituencyWiseSheet.createRow(rowNo);
 		    Cell cellForAgeHead = rowForAgeHead.createCell((short)1);
 		    cellForAgeHead.setCellValue(" AGE WISE OVERVIEW  ");
-		    cellForAgeHead.setCellStyle(style5);
+		    cellForAgeHead.setCellStyle(style);
 		    
 		    rowNo = rowNo + 1;
 		    HSSFRow rowForAge = constituencyWiseSheet.createRow(rowNo);
@@ -421,7 +452,7 @@ public class CadreSurveyTransactionServiceTest  extends BaseDaoTestCase {
 		    HSSFRow row17 = constituencyWiseSheet.createRow(rowNo);
 		    Cell cell17 = row17.createCell((short)1);
 		    cell17.setCellValue(" MANDAL WISE OVERVIEW  ");
-		    cell17.setCellStyle(style5);
+		    cell17.setCellStyle(style);
 		    
 		    rowNo = rowNo+1;
 		    HSSFRow row18 = constituencyWiseSheet.createRow(rowNo);
@@ -483,13 +514,13 @@ public class CadreSurveyTransactionServiceTest  extends BaseDaoTestCase {
 		    HSSFRow row = constituencyWiseSheet.createRow(rowNo);
 		    Cell cell = row.createCell((short)1);
 		    cell.setCellValue(" BOOTH WISE OVERVIEW  ");
-		    cell.setCellStyle(style5);
+		    cell.setCellStyle(style);
 		    
 		    rowNo = rowNo + 1;
 		    
 		    HSSFRow textRow = constituencyWiseSheet.createRow(rowNo);
 		    Cell textCell = textRow.createCell((short)1);
-		    textCell.setCellValue(IConstants.BOOTH);
+		    textCell.setCellValue(IConstants.PANCHAYAT);
 		    textCell.setCellStyle(style1);   
 			    
 		    textCell = textRow.createCell((short)2);
@@ -542,48 +573,41 @@ public class CadreSurveyTransactionServiceTest  extends BaseDaoTestCase {
 				}
 		    }
 		    
-		    workbook.write(out);
+		    workbook.write(fileOut);
 		    
-		    
-		    FileOutputStream fos = new FileOutputStream(path+pathSeperator+""+filename1+".zip");
-			ZipOutputStream zos = new ZipOutputStream(fos);
-			try{
-				 for(File rf : destDir.listFiles())
-					 addToZipFile(rf.getAbsolutePath(), zos);
-				 zos.close();
-				 fos.close();
-			 }catch(Exception e)
-			 {
-				 log.error("Exception Occured in Zipping Files");
-			 }
+		    addToZipFile(filename, zos);
+		    zos.close();
+			fos.close(); 
 			
-
+*/
 	} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
 	}
 	
-	  public  void addToZipFile(String fileName, ZipOutputStream zos)
-		 {
-				try {
-					File file = new File(fileName);
-					FileInputStream fis = new FileInputStream(file);
-					ZipEntry zipEntry = new ZipEntry(fileName);
-					zos.putNextEntry(zipEntry);
+	  public  void addToZipFile(String fileName, ZipOutputStream zos)  {
 
-					byte[] bytes = new byte[1024];
-					int length;
-					while ((length = fis.read(bytes)) >= 0){
-						zos.write(bytes, 0, length);
-					}
-					zos.closeEntry();
-					fis.close();
-				} catch (Exception e) {
-					log.error("Exception Occured in addToZipFile() Method ");
+			//System.out.println("Writing '" + fileName + "' to zip file");
+			try {
+				File file = new File(fileName);
+				FileInputStream fis = new FileInputStream(file);
+				ZipEntry zipEntry = new ZipEntry(fileName);
+				zos.putNextEntry(zipEntry);
+
+				byte[] bytes = new byte[1024];
+				int length;
+				while ((length = fis.read(bytes)) >= 0) {
+					zos.write(bytes, 0, length);
 				}
-				
+
+				zos.closeEntry();
+				fis.close();
+			} catch (Exception e) {
+				// TODO: handle exception
 			}
+			
+		}
 	  
 	/*
 	@Test

@@ -1647,9 +1647,9 @@ public class CasteReportService implements ICasteReportService{
 			List<PartyTrendsVO> voa=  map.get(long1);
 		 HSSFWorkbook workbook=new HSSFWorkbook();
 		 HSSFSheet sheet =null;
-		File f1 = new File(path+pathSeperator+filename+pathSeperator+constiNosMap.get(long1)+"_"+constituencyDAO.get(long1).getDistrict().getDistrictName()+"_"+voa.get(0).getConstituencyName()+".xls");
+		 File f1 = new File(path+pathSeperator+filename+pathSeperator+constiNosMap.get(long1)+"_"+constituencyDAO.get(long1).getDistrict().getDistrictName()+"_"+voa.get(0).getConstituencyName()+".xls");
 		
-	      FileOutputStream fileOut =    new FileOutputStream(f1);
+	     FileOutputStream fileOut =    new FileOutputStream(f1);
 	  
 	   
 	    
