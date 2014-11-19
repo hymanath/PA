@@ -212,11 +212,6 @@
 	  
 	$(".selectedchild").remove();
    }
-   function closeDiv1(trID)
-   {
-	  
-	$(".selected1child").remove();
-   }
    function displaySublevelDetails(id,type)
    {
    var scope = "";
@@ -533,7 +528,7 @@ function buildData1(result,type,divId)
 		str+='<tr id='+result[i].id+' class="removeCls clearCls'+result[i].id+'">';
 		if(type == "District")
 		//str+='<td style="width:320px;" class="removeCls clearClsTD'+result[i].id+'"><a onclick="displaySublevelDetailsForBars('+result[i].id+',\'District\');" style="cursor:pointer;">'+result[i].name+'('+ totalVoters+ ' , '+targetCadres+' , '+totalRecords+' , '+percentage+'%)</a>';
-		str+='<td style="width:320px;" class="removeCls clearClsTD'+result[i].id+'" title= "Total Voters - '+ totalVoters+ ' ,&nbsp;&nbsp;Target Voters - '+targetCadres+' ,Total Records -  '+totalRecords+'"><a onclick="displaySublevelDetailsForBars('+result[i].id+',\'District\');" style="cursor:pointer;"><h4>'+result[i].name+' &nbsp;&nbsp; ('+percentage+'%)</h4></a>';
+		str+='<td style="width:320px;" class="removeCls clearClsTD'+result[i].id+'" title= "Total Voters - '+ totalVoters+ ' ,&nbsp;&nbsp;Target Voters - '+targetCadres+' ,Total Registered Cadre -  '+totalRecords+' ,Percentage - '+percentage+'"><a onclick="displaySublevelDetailsForBars('+result[i].id+',\'District\');" style="cursor:pointer;"><h4>'+result[i].name+' &nbsp;&nbsp; ('+percentage+'%)</h4></a><span class="pull-right removeicon"  id="iconDiv'+result[i].id+'" onclick="closeDiv('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span>';
 		if(percentage <= 20){
 				   str+='<div class="progress progress-danger" style="height:15px;">';
 				}else if(percentage > 20 && percentage <= 40){
@@ -746,7 +741,7 @@ function buildData1(result,type,divId)
     $('.added1').remove('');
 	$(".removeicon1").hide();
 	$(".removeCls1").removeClass("selected1");
-	$('.clearCls1'+id).after('<tr class="selected1child"><td id="subLevel'+id+'" colspan="8" class="added1"><div><img id="ajaxImgStyle2" style="display:none;margin-left: 10px;width:70px;" src="images/Loading-data.gif"/></div></td></tr>');;
+	$('.clearCls1'+id).after('<tr class="selectedchild"><td id="subLevel'+id+'" colspan="8" class="added1"><div><img id="ajaxImgStyle2" style="display:none;margin-left: 10px;width:70px;" src="images/Loading-data.gif"/></div></td></tr>');;
 	$('.clearCls1'+id).addClass("selected1");
 	$('.clearClsTD1'+id).addClass("selected1");
 	$("#ajaxImgStyle2").show();
