@@ -827,5 +827,6 @@ public interface IConstants {
     public static final String CADRE_2014_START_DATE = "2014-11-03";
     public static final String CADRE_2014_LAST_DATE = "2014-12-02";
     
+    public static final String MINORITY_CASTE_IDS = "292,301,430";
     		
 }
