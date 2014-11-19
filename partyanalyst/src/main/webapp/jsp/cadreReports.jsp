@@ -1412,6 +1412,69 @@ function displaySublevelCasteDetails1(id,type)
 		buildDataForSublevelCaste2(result.infoList,"subLevel"+id);
 		});
    }
+   function buildDataForSublevelCaste2(result,rid)
+   {
+	   var str='';
+		str+='<table class="table table-bordered" id="tabledataTab1">';
+		str+='<thead>';
+		str+='<tr>';
+		
+		
+		str+='<th rowspan="2">Constituency</th>';
+		
+		str+='<th rowspan="2">Total Voters</th>';
+		str+='<th rowspan="2">Registred Cadre</th>';
+		for(var i in result[0].infoList)
+	   {
+			str+='<th colspan="2">'+result[0].infoList[i].casteCategory+'</th>';
+			
+			
+	   }
+		
+		str+='</tr>';
+		str+='<tr>';
+		for(var i in result[0].infoList)
+	   {
+		str+='<th>Total Cadre</th>';
+		str+='<th>%</th>';
+	   }
+		str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result)
+	   {
+		str+='<tr id='+result[i].id+' class="removeCls clearCls'+result[i].id+'">';
+		
+		str+='<td class="removeCls1 clearClsTD1'+result[i].id+'"><a onclick="displaySublevelCasteDetails1('+result[i].id+',\'CONSTITUENCY\');" style="cursor:pointer;">'+result[i].name+'</a></td>';
+		
+		str+='<td>'+result[i].totalVoters+'</td>';
+		
+		if(result[i].totalRecords==null){
+			str+='<td>-</td>'
+		}else{
+			str+='<td>'+result[i].totalRecords+'</td>';
+		}
+		for(var j in result[i].infoList)
+	   {
+			str+='<td>'+result[i].infoList[j].totalCount+'</td>';
+			if(result[i].infoList[j].percentage != null){
+			  
+			   str+='<td>'+result[i].infoList[j].percentage+' %</td>';
+			  
+			}
+			else{
+			  
+			  str+='<td> - </td>';
+			  
+			}
+	   }
+		str+='</tr>';
+	   }
+	   str+='</tbody>';
+		str+='</table>';
+		$("#"+rid).html(str);
+		
+   }
     function buildDataForSublevelCaste1(result,rid)
    {
 	   var str='';
