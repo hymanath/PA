@@ -111,7 +111,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					returnVO.setPanchayatWiseList(genderWiseReportList);
 					returnVO.setTehsilWiseList(ageWiseReportList);
 					
-					genereteOriginalExcelReport(returnVO);
+					//genereteOriginalExcelReport(returnVO);
 				}
 			}			
 		} catch (Exception e) {
