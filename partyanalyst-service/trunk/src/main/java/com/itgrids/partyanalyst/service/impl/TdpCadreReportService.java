@@ -281,7 +281,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 							  if(subVO != null){
 								  subVO.setRegisteredCadre(params[0] != null ? (Long)params[0] : 0);
 								  String percentage ="";
-								  percentage = (new BigDecimal(subVO.getRegisteredCadre()*(100.0)/subVO.getTotalVoters().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+								  percentage = (new BigDecimal(subVO.getRegisteredCadre()*(100.0)/vo.getRegisteredCadre().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 								  subVO.setPercentage(percentage);
 							  }
 						
