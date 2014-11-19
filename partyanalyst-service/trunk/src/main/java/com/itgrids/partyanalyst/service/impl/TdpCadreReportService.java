@@ -154,7 +154,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 				constiCadreCount = tdpCadreDAO.getLocationWiseCount(constituencyIds,IConstants.CONSTITUENCY);
 				constiCadreCount2012 = tdpCadreDAO.getRegisteredCadreCountIn2012(constituencyIds);
 				constiVoterCount = voterInfoDAO.getVotersCountInConstituencies(constituencyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
-				List<Object[]> constiNos = delimitationConstituencyDAO.getConstituencyNo(constituencyIds,2009L);
+				List<Object[]> constiNos = delimitationConstituencyDAO.getConstituencyNo(constituencyIds,IConstants.DELIMITATION_YEAR);
 				
 				if(constiVoterCount != null && constiVoterCount.size() > 0){
 					for(Object[] params : constiVoterCount){					
