@@ -352,7 +352,7 @@ table.dataTable tr.odd {
 					<input type="button" class="btn btn-mini tsele" value="TS" name="constTargetBtn" id="tgConstTargetComp" >TS</input>
 				</div>
 				</div>
-				<div id="leaderDataDiv2smry"></div>
+				<div id="leaderDataDiv2smry" style="margin-left:-20px;"></div>
 				<div id="leaderDataDiv2" class="height-300 scrollable_div">
 					<img style="margin-left: 180px;margin-top: 101px;" id="ajaxImgStyle" src="images/icons/loading.gif"/>
 				</div>
@@ -372,7 +372,7 @@ table.dataTable tr.odd {
 					<input type="button" value="TS" class="btn btn-mini tsele" name="distTargetBtn" id="tgDistTargetComp">TS</input>
 				</div>
 				</div>
-				<div id="leaderDataDiv1smry"></div>
+				<div id="leaderDataDiv1smry" style="margin-left:-20px;"></div>
 				<div id="leaderDataDiv1" class="height-300 scrollable_div">
 					<img style="margin-left: 180px;margin-top: 101px;" id="ajaxImgStyle" src="images/icons/loading.gif"/>
 				</div>
@@ -2206,7 +2206,7 @@ function SortByName(a, b){
 				str+='</tr>';
 				str+='<tr>';
 						str+='<td><div style="height:13px;width:13px;background-color:#C43C35;"/></td>';
-						str+='<td>  <50% </td><td> Worst</td>';
+						str+='<td>  <50% </td><td> Very Poor</td>';
 				str+='</tr>';
 				str+='</table>';	
 			$("#informationWindowInner").html(str);
