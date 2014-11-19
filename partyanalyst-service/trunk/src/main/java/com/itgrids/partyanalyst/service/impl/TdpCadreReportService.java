@@ -460,7 +460,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 						 TdpCadreLocationWiseReportVO constituencyVO =  getMatchedVOByName(resultList ,obj[0].toString());
 						 
 						 TdpCadreLocationWiseReportVO genderVO     =    getMatchedVOByName1(constituencyVO.getTdpCadreLocationWiseReportVOList(),obj[1]!=null?obj[1].toString():"Others");
-						  genderVO.setTotalVoters(genderVO.getTargetedCadre()==null?(Long)obj[2]:genderVO.getTargetedCadre()+(Long)obj[2]);
+						  genderVO.setTotalVoters(genderVO.getTotalVoters()==null?(Long)obj[2]:genderVO.getTotalVoters()+(Long)obj[2]);
 						
 					 }
 			      }
@@ -831,7 +831,9 @@ public TdpCadreLocationWiseReportVO genereteOriginalExcelReport(TdpCadreLocation
 			randomNumber = new Random().nextInt()*10000000;
 		}
 
-		String path = "D:/apache-tomcat-6.0.37/webapps/PartyAnalyst/Reports";
+		String path = IConstants.STATIC_CONTENT_FOLDER_URL+"VMR/";
+		
+		//String path = "C:/apache-tomcat-6.0.37/webapps/PartyAnalyst/Reports";
 		String filename1 = "abc";
 		String pathSeperator = "/";
 		
