@@ -152,27 +152,31 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 		try {
 			jObj = new JSONObject(getTask());
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-		String fromDate = jObj.getString("fromDate");
-		String toDate = jObj.getString("toDate");
-		Date reqFromDate = null;
-		Date reqToDate = null;
-		if(fromDate.trim().length() > 0){
-			reqFromDate = sdf.parse(fromDate);
-		}
-		if(toDate.trim().length() > 0){
-			reqToDate = sdf.parse(toDate);
-		}
 		if(jObj.getString("task").equalsIgnoreCase("usersData"))
 		{
 			Long  userId = jObj.getLong("userId");
-			Long locationId = jObj.getLong("locationId");
-			String type = jObj.getString("type");
-			Long constituencyId = jObj.getLong("constituencyId");
-			amountDetailsVO = leaderCadreDashBoardService.getUsersInLocation(reqFromDate,reqToDate,userId,locationId,type,constituencyId);
+			//Long locationId = jObj.getLong("locationId");
+			//String type = jObj.getString("type");
+			//Long constituencyId = jObj.getLong("constituencyId");
+			amountDetailsVO = leaderCadreDashBoardService.getUsersInLocation(userId);
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("getUsers"))
-		amountDetailsVO = leaderCadreDashBoardService.getDuplicateUsersInLocation(reqFromDate,reqToDate);
+		{
+
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Date reqFromDate = null;
+			Date reqToDate = null;
+			if(fromDate.trim().length() > 0){
+				reqFromDate = sdf.parse(fromDate);
+			}
+			if(toDate.trim().length() > 0){
+				reqToDate = sdf.parse(toDate);
+			}
+			amountDetailsVO = leaderCadreDashBoardService.getDuplicateUsersInLocation(reqFromDate,reqToDate);
+		}
+	
 		} catch (ParseException e) {
 			
 			e.printStackTrace();

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Leader Cadre DashBoard</title>
+<title>Duplicate Users</title>
 
  <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css"> 
@@ -37,7 +37,7 @@
 				  </tr>
 			</table>
 			 <div id="userDataDiv"></div>
-					 
+				<div id="userDetailsDiv" style="display:none;"><div id="userDetailsInnerDiv"></div></div>	 
 			  </div>
 			
 			</div>
@@ -79,17 +79,14 @@
 				buildData(result,$("#fromDate").val(),$("#toDate").val());
 		});
    }
-    function getUsersInfo(fromDate,toDate,userId,locationId,type,constituencyId)
+    function getUsersInfo(userId)
    {
 		
 		var jObj = {
 		
-		fromDate:fromDate,
-		toDate:toDate,
+		
 		userId:userId,
-		locationId:locationId,
-		type:type,
-	    constituencyId:constituencyId,
+		
 		task:"usersData"
 		}
 		 $.ajax({
@@ -98,7 +95,7 @@
          data : {task:JSON.stringify(jObj)} ,
        }).done(function(result){
 				
-				buildData1(result);
+				buildUserDetails(result);
 		});
    }
 function buildData(resultList,fromDate,toDate)
@@ -107,12 +104,12 @@ function buildData(resultList,fromDate,toDate)
 	
 		var result = resultList.infoList;
 		var str='';
-		str+='<table class="table table-bordered" id="tabledataTab">';
+		str+='<table class="table table-bordered table-condensed" id="tabledataTab">';
 		str+='<thead>';
-		str+='<tr>';
+		str+='<tr class="alert-success">';
 		
-		//str+='<th>District</th>';
-		//str+='<th>Parliament</th>';
+		str+='<th>District</th>';
+		str+='<th>Parliament</th>';
 		str+='<th>Constituency</th>';
 		str+='<th>Mandal</th>';
 		str+='<th>User</th>';
@@ -133,6 +130,8 @@ function buildData(resultList,fromDate,toDate)
 				str += '<tr>';
 
 				 var totalUsers = result[i].totalAmount;
+				 str += '<td rowspan='+totalUsers+'>'+result[i].districtName+'</td>';
+				 str += '<td rowspan='+totalUsers+'>'+result[i].parliament+'</td>';
 				str += '<td rowspan='+totalUsers+'>'+result[i].name+'</td>';
 				if(result[i].infoList.length > 0)
 				{
@@ -142,7 +141,7 @@ function buildData(resultList,fromDate,toDate)
 					str += '<td rowspan='+result[i].infoList[j].infoList.length+'>'+result[i].infoList[j].name+'</td>';
 					for(var k in result[i].infoList[j].infoList)
 					{
-						str += '<td><a onclick="getUsersInfo(\''+fromDate+'\',\''+toDate+'\',\''+result[i].infoList[j].infoList[k].id+'\',\''+result[i].infoList[j].id+'\',\''+result[i].infoList[j].userType+'\',\''+result[i].id+'\');">'+result[i].infoList[j].infoList[k].userName+'</a></td>';
+						str += '<td><a onclick="getUsersInfo(\''+result[i].infoList[j].infoList[k].id+'\');">'+result[i].infoList[j].infoList[k].userName+'</a></td>';
 						str += '<td>'+result[i].infoList[j].infoList[k].totalCount+'</td>';
 						str += '<td>'+result[i].infoList[j].infoList[k].userType+'</td>';
 						str += '<td>'+result[i].infoList[j].infoList[k].mobileNo+'</td>';
@@ -168,9 +167,40 @@ function buildData(resultList,fromDate,toDate)
 				 
 		
    }
+   function buildUserDetails(resultList)
+{
+$("#userDetailsDiv").css("display","block");
+	 $('#userDetailsInnerDiv').html('');
+	 var result = resultList.infoList;
+  var str = '';
+ 
+  str +='<table class="table table-bordered table-striped" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;text-align:center;">';
+  str +='<tr>';
+  str +='<th>Name</th>';
+  str +='<th>Mobile</th>';
+ 
+  str +='</tr>';
+  for(var i in result)
+  {
+    str +='<tr>';
+    
+    str +='<td>'+result[i].name+'</td>';
+    str +='<td>'+result[i].mobileNo+'</td>';
    
+    str +='</tr>'; 
+  }
+  str+='</table>';
+
+  $('#userDetailsInnerDiv').html(str);
+$('#userDetailsDiv').dialog({                   
+		    modal: true,
+            title: "<b>User Details</b>",
+			width: 400,
+            height: 300
+     });
+}
   
-  
+  	
    </script>
 </body>
 </html>
