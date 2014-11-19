@@ -180,5 +180,33 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 		return Action.SUCCESS;
 	}
 	
+	public String getYouthAndMahilaInfo(){
+		try{
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			
+			jObj = new JSONObject(getTask());
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Date reqFromDate = null;
+			Date reqToDate = null;
+			if(fromDate.trim().length() > 0){
+				reqFromDate = sdf.parse(fromDate);
+			}
+			if(toDate.trim().length() > 0){
+				reqToDate = sdf.parse(toDate);
+			}
+			if(jObj.getString("task").equalsIgnoreCase("mainLevel")){
+			    amountDetails = leaderCadreDashBoardService.getYouthMahilaInfo(jObj.getString("locationType"),jObj.getLong("locationId"),regVO.getAccessType(),regVO.getAccessValue(),reqFromDate,reqToDate);
+			}if(jObj.getString("task").equalsIgnoreCase("subLevel")){
+				amountDetails = leaderCadreDashBoardService.getSubLevelLoationWiseYouthMahilaInfo(jObj.getString("locationType"),jObj.getLong("locationId"),regVO.getAccessType(),regVO.getAccessValue(),reqFromDate,reqToDate);
+			}
+		}
+		catch (Exception e) {
+			LOG.info("Entered into getLoationLeaderCadreInfo() in LeaderCadreDashBoardActioon class");
+		}
+		return Action.SUCCESS;
+	}
+	
 	
 }
