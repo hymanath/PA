@@ -2430,7 +2430,7 @@ public Integer saveUrbanConstituencyDataType1(String prevDate,String table,Long 
 		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
 			queryStr.append("select count(model.gender),model.gender, model.userAddress.tehsil.tehsilId "); 
 	 	else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
-			queryStr.append("select count(model.gender),model.gender, model.userAddress.constituency.localElectionBody.localElectionBodyId "); 
+			queryStr.append("select count(model.gender),model.gender, model.userAddress.localElectionBody.localElectionBodyId "); 
 		else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
 			queryStr.append("select count(model.gender),model.gender,model.userAddress.panchayat.panchayatId "); 
 		else if(type.equalsIgnoreCase(IConstants.BOOTH))
@@ -2443,7 +2443,7 @@ public Integer saveUrbanConstituencyDataType1(String prevDate,String table,Long 
 		else if(type.equalsIgnoreCase(IConstants.DISTRICT))
 				queryStr.append(" and model.userAddress.district.districtId in (:Ids) group by model.gender,model.userAddress.district.districtId  " );
 		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
-			queryStr.append(" and model.userAddress.tehsil.tehsilId in (:Ids) group by model.gender,model.userAddress.tehsil.tehsilId "); 
+			queryStr.append(" and model.userAddress.tehsil.tehsilId in (:Ids) and model.userAddress.localElectionBody.localElectionBodyId is null group by model.gender,model.userAddress.tehsil.tehsilId "); 
 	 	else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
 			queryStr.append(" and model.userAddress.constituency.localElectionBody.localElectionBodyId in (:Ids) group by model.gender,model.userAddress.constituency.localElectionBody.localElectionBodyId "); 
 		else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
@@ -2469,7 +2469,7 @@ public Integer saveUrbanConstituencyDataType1(String prevDate,String table,Long 
 		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
 			queryStr.append("select count(model.tdpCadreId),model.userAddress.tehsil.tehsilId "); 
 	 	else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
-			queryStr.append("select count(model.tdpCadreId), model.userAddress.constituency.localElectionBody.localElectionBodyId "); 
+			queryStr.append("select count(model.tdpCadreId), model.userAddress.localElectionBody.localElectionBodyId "); 
 		else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
 			queryStr.append("select count(model.tdpCadreId),model.userAddress.panchayat.panchayatId "); 
 		else if(type.equalsIgnoreCase(IConstants.BOOTH))
@@ -2498,7 +2498,7 @@ public Integer saveUrbanConstituencyDataType1(String prevDate,String table,Long 
 		else if(type.equalsIgnoreCase(IConstants.DISTRICT))
 				queryStr.append(" and model.userAddress.district.districtId in (:Ids) group by model.userAddress.district.districtId  " );
 		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
-			queryStr.append(" and model.userAddress.tehsil.tehsilId in (:Ids) group by model.userAddress.tehsil.tehsilId "); 
+			queryStr.append(" and model.userAddress.tehsil.tehsilId in (:Ids) and model.userAddress.localElectionBody.localElectionBodyId is null group by model.userAddress.tehsil.tehsilId "); 
 	 	else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
 			queryStr.append(" and model.userAddress.constituency.localElectionBody.localElectionBodyId in (:Ids) group by model.userAddress.constituency.localElectionBody.localElectionBodyId "); 
 		else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
@@ -2524,7 +2524,7 @@ public Integer saveUrbanConstituencyDataType1(String prevDate,String table,Long 
 		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
 			str.append("select count(model.tdpCadreId),model.userAddress.tehsil.tehsilId"); 
 		else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
-			str.append("select count(model.tdpCadreId),model.userAddress.constituency.localElectionBody.localElectionBodyId"); 
+			str.append("select count(model.tdpCadreId),model.userAddress.localElectionBody.localElectionBodyId"); 
 		 str.append("  from TdpCadre model" +
 				" where model.isDeleted = 'N' " +
 				" and model.enrollmentYear = 2014 "); 
@@ -2533,7 +2533,7 @@ public Integer saveUrbanConstituencyDataType1(String prevDate,String table,Long 
 		 else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
 			str.append(" and model.userAddress.constituency.district.districtId in(:districtIds) group by model.userAddress.constituency.constituencyId");
 		 else if(type.equalsIgnoreCase(IConstants.TEHSIL))
-				str.append(" and model.userAddress.tehsil.tehsilId in(:districtIds) group by model.userAddress.tehsil.tehsilId");
+				str.append(" and model.userAddress.tehsil.tehsilId in(:districtIds) and model.userAddress.localElectionBody.localElectionBodyId is null group by model.userAddress.tehsil.tehsilId");
 		 else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
 				str.append(" and model.userAddress.localElectionBody.localElectionBodyId in(:districtIds) group by model.userAddress.localElectionBody.localElectionBodyId");
 		Query query = getSession().createQuery(str.toString());
