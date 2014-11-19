@@ -17,5 +17,7 @@ public interface ILeaderCadreDashBoardService {
 	public CadreAmountDetailsVO getUsersInLocation(Long userId);
 	public List<CadreAmountDetailsVO> getYouthMahilaInfo(String locationtype,Long stateId,String accessType,String accessValue,Date fromDate,Date toDate);
 	public List<CadreAmountDetailsVO> getSubLevelLoationWiseYouthMahilaInfo(String type,Long id,String accessType,String accessValue,Date fromDate,Date toDate);
+	public CadreAmountDetailsVO getCasteWiseDetails(Long stateId,String locationtype);
+	public CadreAmountDetailsVO getSubLoctaionCasteWiseDetails(Long stateId,String locationtype,Long Id);
 	
 }

@@ -49,10 +49,38 @@ public class CadreAmountDetailsVO implements Serializable{
 	private String cadrePerc;
 	private String toDate;
 	
+	private Long casteId;
+	private String casteName;
+	private Long casteCategoryId;
+	private String casteCategory;
 	
 	
 
 	
+	public Long getCasteId() {
+		return casteId;
+	}
+	public void setCasteId(Long casteId) {
+		this.casteId = casteId;
+	}
+	public String getCasteName() {
+		return casteName;
+	}
+	public void setCasteName(String casteName) {
+		this.casteName = casteName;
+	}
+	public Long getCasteCategoryId() {
+		return casteCategoryId;
+	}
+	public void setCasteCategoryId(Long casteCategoryId) {
+		this.casteCategoryId = casteCategoryId;
+	}
+	public String getCasteCategory() {
+		return casteCategory;
+	}
+	public void setCasteCategory(String casteCategory) {
+		this.casteCategory = casteCategory;
+	}
 	public String getToDate() {
 		return toDate;
 	}

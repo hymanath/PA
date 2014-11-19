@@ -2194,7 +2194,7 @@ public Integer saveUrbanConstituencyDataType1(String prevDate,String table,Long 
 		 if(type.equalsIgnoreCase(IConstants.DISTRICT))
 		    str.append(" and model.userAddress.constituency.district.districtId in(:districtIds) group by model.userAddress.constituency.district.districtId ");
 		 else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
-			str.append(" and model.userAddress.constituency.constituencyId in(:districtIds) group by model.userAddress.constituency.constituencyId");
+			str.append(" and model.userAddress.constituency.district.districtId in(:districtIds) group by model.userAddress.constituency.constituencyId");
 		 else if(type.equalsIgnoreCase(IConstants.TEHSIL))
 				str.append(" and model.userAddress.tehsil.tehsilId in(:districtIds) group by model.userAddress.tehsil.tehsilId");
 		 else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
@@ -2758,4 +2758,95 @@ public Integer saveUrbanConstituencyDataType1(String prevDate,String table,Long 
 		return query.list();
 	
 	}	
+	
+	public List<Object[]> getCastGroupWiseCadreCountExcludeminority(List<Long> Ids,String type)
+	{
+		StringBuilder str=new StringBuilder(); 
+		str.append("select count(model.casteStateId),model.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.casteState.casteCategoryGroup.casteCategory.categoryName ");
+		if(type.equalsIgnoreCase(IConstants.DISTRICT))
+			 str.append(",model.userAddress.constituency.district.districtId"); 
+			else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+				 str.append(",model.userAddress.constituency.constituencyId"); 
+			else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+				str.append(",model.userAddress.tehsil.tehsilId"); 
+			else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+				str.append("model.userAddress.constituency.localElectionBody.localElectionBodyId"); 
+		str.append(" from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = 2014");
+		
+			str.append(" and model.casteStateId not in("+IConstants.MINORITY_CASTE_IDS+")");
+			if(type.equalsIgnoreCase(IConstants.DISTRICT))
+			    str.append(" and model.userAddress.constituency.district.districtId in(:Ids) group by model.userAddress.constituency.district.districtId,model.casteState.casteCategoryGroup.casteCategory.casteCategoryId ");
+			 else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+				str.append(" and model.userAddress.constituency.constituencyId in(:Ids) group by model.userAddress.constituency.constituencyId,model.casteState.casteCategoryGroup.casteCategory.casteCategoryId");
+			 else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+					str.append(" and model.userAddress.tehsil.tehsilId in(:Ids) group by model.userAddress.tehsil.tehsilId,model.casteState.casteCategoryGroup.casteCategory.casteCategoryId");
+			 else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+					str.append(" and model.userAddress.localElectionBody.localElectionBodyId in(:Ids) group by model.userAddress.localElectionBody.localElectionBodyId,model.casteState.casteCategoryGroup.casteCategory.casteCategoryId");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("Ids", Ids);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getCastGroupWiseCadreCountMinority(List<Long> Ids,String type)
+	{
+		StringBuilder str=new StringBuilder(); 
+		str.append("select count(model.casteStateId) ");
+		if(type.equalsIgnoreCase(IConstants.DISTRICT))
+			 str.append(",model.userAddress.constituency.district.districtId"); 
+			else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+				 str.append(",model.userAddress.constituency.constituencyId"); 
+			else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+				str.append(",model.userAddress.tehsil.tehsilId"); 
+			else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+				str.append("model.userAddress.constituency.localElectionBody.localElectionBodyId"); 
+		str.append(" from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = 2014");
+		
+			str.append(" and model.casteStateId in("+IConstants.MINORITY_CASTE_IDS+")");
+			if(type.equalsIgnoreCase(IConstants.DISTRICT))
+			    str.append(" and model.userAddress.constituency.district.districtId in(:Ids) group by model.userAddress.constituency.district.districtId");
+			 else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+				str.append(" and model.userAddress.constituency.constituencyId in(:Ids) group by model.userAddress.constituency.constituencyId");
+			 else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+					str.append(" and model.userAddress.tehsil.tehsilId in(:Ids) group by model.userAddress.tehsil.tehsilId");
+			 else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+					str.append(" and model.userAddress.localElectionBody.localElectionBodyId in(:Ids) group by model.userAddress.localElectionBody.localElectionBodyId");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("Ids", Ids);
+		
+		return query.list();
+	}
+	public List<Object[]> getTotalRecordsByIds(List<Long> Ids,String type,Date fromDate,Date toDate){
+		StringBuilder str = new StringBuilder();
+		if(type.equalsIgnoreCase(IConstants.DISTRICT))
+		 str.append("select count(model.tdpCadreId),model.userAddress.constituency.district.districtId"); 
+		else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			 str.append("select count(model.tdpCadreId),model.userAddress.constituency.constituencyId"); 
+		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+			str.append("select count(model.tdpCadreId),model.userAddress.tehsil.tehsilId"); 
+		else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+			str.append("select count(model.tdpCadreId),model.userAddress.constituency.localElectionBody.localElectionBodyId"); 
+		 str.append("  from TdpCadre model" +
+				" where model.isDeleted = 'N' " +
+				" and model.enrollmentYear = 2014 "); 
+		 if(fromDate != null && toDate != null){
+		   str.append(" and date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate ");
+		 }
+		 if(type.equalsIgnoreCase(IConstants.DISTRICT))
+		    str.append(" and model.userAddress.constituency.district.districtId in(:Ids) group by model.userAddress.constituency.district.districtId ");
+		 else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			str.append(" and model.userAddress.constituency.constituencyId in(:Ids) group by model.userAddress.constituency.constituencyId");
+		 else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+				str.append(" and model.userAddress.tehsil.tehsilId in(:Ids) group by model.userAddress.tehsil.tehsilId");
+		 else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+				str.append(" and model.userAddress.localElectionBody.localElectionBodyId in(:Ids) group by model.userAddress.localElectionBody.localElectionBodyId");
+		Query query = getSession().createQuery(str.toString());
+		if(fromDate != null && toDate != null){
+			query.setParameter("fromDate",fromDate);
+			query.setParameter("toDate",toDate);
+		}
+		query.setParameterList("Ids", Ids);
+		
+		return query.list();
+	}
 }
