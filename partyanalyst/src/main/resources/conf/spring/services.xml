@@ -2312,7 +2312,7 @@
 	 <property name="regionServiceDataImp" ref="regionServiceDataImp" />
 	 <property name="cadreSurveyUserAssigneeDAO" ref="cadreSurveyUserAssigneeDAO" />
 	 <property name="voterAgeInfoDAO" ref="voterAgeInfoDAO" />
-	 
+	 <property name="casteCategoryDAO" ref="casteCategoryDAO" />
      </bean>
      
       <bean name="tdpCadreReportService"  class="com.itgrids.partyanalyst.service.impl.TdpCadreReportService">
