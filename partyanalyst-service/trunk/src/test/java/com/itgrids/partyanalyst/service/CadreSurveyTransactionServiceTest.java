@@ -125,7 +125,7 @@ public class CadreSurveyTransactionServiceTest  extends BaseDaoTestCase {
 				
 				HSSFRow row1 = constituencyWiseSheet.createRow((short)1);							
 			    Cell cell1 = row1.createCell((short)1);
-			    cell1.setCellValue(" CONSTITUENCY WISE OVER VIEW  ");
+			    cell1.setCellValue(" CONSTITUENCY WISE OVER VIEW ");
 			    cell1.setCellStyle(style);
 			    
 			    HSSFRow row2 = constituencyWiseSheet.createRow((short)2);
@@ -142,7 +142,7 @@ public class CadreSurveyTransactionServiceTest  extends BaseDaoTestCase {
 			    cell2.setCellStyle(style1);
 			    
 			    cell2 = row2.createCell((short)4);
-			    cell2.setCellValue(" REGISTRIED CADRE ");
+			    cell2.setCellValue(" REGISTERED CADRE ");
 			    cell2.setCellStyle(style1);
 			    
 			    cell2 = row2.createCell((short)5);
@@ -225,11 +225,6 @@ public class CadreSurveyTransactionServiceTest  extends BaseDaoTestCase {
 			    cell8 = row8.createCell((short)4);
 			    cell8.setCellValue(constituencyReportVO1.getPanchayatWiseList().get(0).getTehsilWiseList().get(1).getGenderPerc() != null ? constituencyReportVO1.getPanchayatWiseList().get(0).getTehsilWiseList().get(1).getGenderPerc() :0.0d);
 			    cell8.setCellStyle(style2);
-			    
-			    
-			    
-			    
-			    
 			    
 			    
 			    HSSFRow row10 = constituencyWiseSheet.createRow(10);
@@ -365,7 +360,7 @@ public class CadreSurveyTransactionServiceTest  extends BaseDaoTestCase {
 			    cell17.setCellStyle(style);
 			    
 			    HSSFRow row18 = constituencyWiseSheet.createRow((short)18);
-			    Cell cell18 = row16.createCell((short)1);
+			    Cell cell18 = row18.createCell((short)1);
 			    cell18.setCellValue(IConstants.TEHSIL);
 			    cell18.setCellStyle(style1);   
 				    
@@ -378,11 +373,11 @@ public class CadreSurveyTransactionServiceTest  extends BaseDaoTestCase {
 			    cell18.setCellStyle(style1);
 			    
 			    cell18 = row18.createCell((short)4);
-			    cell18.setCellValue(" REGISTRIED CADRE ");
+			    cell18.setCellValue(" REGISTERED CADRE ");
 			    cell18.setCellStyle(style1);
 			    
 			    cell18 = row18.createCell((short)5);
-			    cell18.setCellValue(" REGISTRIED CADRE PERCENTAGE ");
+			    cell18.setCellValue(" REGISTERED CADRE PERCENTAGE ");
 			    cell18.setCellStyle(style1);
 			    List<TdpCadreLocationWiseReportVO> mandalsList = constituencyReportVO1.getTdpCadreLocationWiseReportVOList().get(0).getTehsilWiseList();
 			    short count = 19;
@@ -443,11 +438,11 @@ public class CadreSurveyTransactionServiceTest  extends BaseDaoTestCase {
 			    textCell.setCellStyle(style1);
 			    
 			    textCell = textRow.createCell((short)4);
-			    textCell.setCellValue(" REGISTRIED CADRE ");
+			    textCell.setCellValue(" REGISTERED CADRE ");
 			    textCell.setCellStyle(style1);
 			    
 			    textCell = textRow.createCell((short)5);
-			    textCell.setCellValue(" REGISTRIED CADRE PERCENTAGE ");
+			    textCell.setCellValue(" REGISTERED CADRE PERCENTAGE ");
 			    textCell.setCellStyle(style1);
 			    
 			    count = (short) (count+1);
