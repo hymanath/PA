@@ -2770,8 +2770,8 @@ public Integer saveUrbanConstituencyDataType1(String prevDate,String table,Long 
 			else if(type.equalsIgnoreCase(IConstants.TEHSIL))
 				str.append(",model.userAddress.tehsil.tehsilId"); 
 			else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
-				str.append("model.userAddress.constituency.localElectionBody.localElectionBodyId"); 
-		str.append(" from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = 2014");
+				str.append(",model.userAddress.constituency.localElectionBody.localElectionBodyId"); 
+		str.append(" from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = 2014 ");
 		
 			str.append(" and model.casteStateId not in("+IConstants.MINORITY_CASTE_IDS+")");
 			if(type.equalsIgnoreCase(IConstants.DISTRICT))
