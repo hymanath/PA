@@ -113,7 +113,8 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 				randomNumber = new Random().nextInt()*10000000;
 			}
 			
-			String path = "D:/apache-tomcat-6.0.37/webapps/PartyAnalyst/Reports";
+			//String path = "D:/apache-tomcat-6.0.37/webapps/PartyAnalyst/Reports";
+			String path = IConstants.STATIC_CONTENT_FOLDER_URL;
 			FileOutputStream fileOut = null;
 			String filename = "";
 			
