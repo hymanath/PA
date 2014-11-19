@@ -91,9 +91,15 @@ public class TdpCadreReportAction extends ActionSupport {
 			String constiIds       = jobj.getString("constituencyIds");
 			List<Long> constituencyIdsList = new ArrayList<Long>();
 			String[] constituency       = constiIds.split(",");
-			for (String string : constituency) 
+			for (String cosntituencyId : constituency) 
 			{
-				constituencyIdsList.add(Long.valueOf(string));
+				cosntituencyId = cosntituencyId.trim().replace("[","").replace("]", "").trim(); 
+						
+				if(cosntituencyId.trim().length()>0)
+				{
+					constituencyIdsList.add(Long.valueOf(cosntituencyId));
+				}
+				
 			}			
 			result = tdpCadreReportService.generateExcelReportForTdpCadre(constituencyIdsList);
 		}
