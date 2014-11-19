@@ -212,6 +212,11 @@
 	  
 	$(".selectedchild").remove();
    }
+   function closeDiv1(trID)
+   {
+	  
+	$(".selected1child").remove();
+   }
    function displaySublevelDetails(id,type)
    {
    var scope = "";
