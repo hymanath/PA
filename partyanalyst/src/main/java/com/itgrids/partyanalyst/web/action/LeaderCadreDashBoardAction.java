@@ -212,5 +212,22 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 		return Action.SUCCESS;
 	}
 	
-	
+	public String getCasteWiseInfo()
+	{
+		try{
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			
+			jObj = new JSONObject(getTask());
+			
+			if(jObj.getString("task").equalsIgnoreCase("mainLevel")){
+				amountDetailsVO = leaderCadreDashBoardService.getCasteWiseDetails(jObj.getLong("stateId"),jObj.getString("locationtype"));
+			}if(jObj.getString("task").equalsIgnoreCase("subLevel")){
+				amountDetailsVO = leaderCadreDashBoardService.getSubLoctaionCasteWiseDetails(jObj.getLong("stateId"),jObj.getString("locationtype"),jObj.getLong("Id"));
+			}
+		}
+		catch (Exception e) {
+			LOG.info("Entered into getLoationLeaderCadreInfo() in LeaderCadreDashBoardActioon class");
+		}
+		return Action.SUCCESS;
+	}
 }
