@@ -24,6 +24,7 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
@@ -40,7 +41,9 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	private IBoothDAO boothDAO;
 	private IVoterInfoDAO voterInfoDAO;
 	private IVoterAgeInfoDAO voterAgeInfoDAO;
-
+	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
+	
+	
 	public void setVoterAgeInfoDAO(IVoterAgeInfoDAO voterAgeInfoDAO) {
 		this.voterAgeInfoDAO = voterAgeInfoDAO;
 	}
@@ -79,7 +82,14 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		this.voterInfoDAO = voterInfoDAO;
 	}
 
-
+	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
+		return delimitationConstituencyDAO;
+	}
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
+	
 	public TdpCadreLocationWiseReportVO generateExcelReportForTdpCadre(List<Long> constituencyIdsList)
 	{
 		TdpCadreLocationWiseReportVO returnVO = new TdpCadreLocationWiseReportVO();
@@ -144,6 +154,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 				constiCadreCount = tdpCadreDAO.getLocationWiseCount(constituencyIds,IConstants.CONSTITUENCY);
 				constiCadreCount2012 = tdpCadreDAO.getRegisteredCadreCountIn2012(constituencyIds);
 				constiVoterCount = voterInfoDAO.getVotersCountInConstituencies(constituencyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+				List<Object[]> constiNos = delimitationConstituencyDAO.getConstituencyNo(constituencyIds,2009L);
 				
 				if(constiVoterCount != null && constiVoterCount.size() > 0){
 					for(Object[] params : constiVoterCount){					
@@ -172,10 +183,17 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 				if(constiCadreCount2012 != null && constiCadreCount2012.size() > 0){
 					for(Object[] params : constiCadreCount2012){					
 						TdpCadreLocationWiseReportVO vo = getMatchedVO(resultList,(Long)params[1]);
-						  if(vo != null)
-						  {
-							  vo.setCadresCount(params[0] != null ? (Long)params[0] : 0);					
-							 					  
+						  if(vo != null){
+							  vo.setCadresCount(params[0] != null ? (Long)params[0] : 0);							 					  
+						  }
+					}				
+				}
+				
+				if(constiNos != null && constiNos.size() > 0){
+					for(Object[] params : constiNos){					
+						TdpCadreLocationWiseReportVO vo = getMatchedVO(resultList,(Long)params[0]);
+						  if(vo != null){
+							  vo.setConstituencyNo(params[1] != null ? (Long)params[1] : 0);							 					  
 						  }
 					}				
 				}
