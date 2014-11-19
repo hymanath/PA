@@ -2310,6 +2310,8 @@
      <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 	 <property name="constituencyDAO" ref="constituencyDAO" />
 	 <property name="regionServiceDataImp" ref="regionServiceDataImp" />
+	 <property name="cadreSurveyUserAssigneeDAO" ref="cadreSurveyUserAssigneeDAO" />
+	 
 	 
 	 
      </bean>
