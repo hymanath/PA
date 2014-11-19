@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
@@ -24,6 +23,7 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.CadreAmountDetailsVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -53,6 +53,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IVoterInfoDAO voterInfoDAO;
 	private IRegionServiceData regionServiceDataImp;
+	private IVoterAgeInfoDAO voterAgeInfoDAO;
 	
 	
 	public IRegionServiceData getRegionServiceDataImp() {
@@ -176,6 +177,15 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 	public void testMethod(){
 		LOG.info("Enterd into testMethod() in LeaderCaderDashBoardService");
 	}
+	
+	public IVoterAgeInfoDAO getVoterAgeInfoDAO() {
+		return voterAgeInfoDAO;
+	}
+
+	public void setVoterAgeInfoDAO(IVoterAgeInfoDAO voterAgeInfoDAO) {
+		this.voterAgeInfoDAO = voterAgeInfoDAO;
+	}
+
 	public List<CadreAmountDetailsVO> getLoationWiseLeaderCadreDetails(String locationtype,Long stateId,String accessType,String accessValue,Date fromDate,Date toDate)
 	{
 		List<CadreAmountDetailsVO> resultList = new ArrayList<CadreAmountDetailsVO>(); 
@@ -1053,7 +1063,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 					if(locationtype.equalsIgnoreCase(IConstants.DISTRICT)){
 						//0id, 1name,2 totalvoters,3 male,4 female
 						voterCountList = voterInfoDAO.getVotersCountInADistrictsList(ids,IConstants.VOTER_DATA_PUBLICATION_ID);
-					}else if(locationtype.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+					}else if(locationtype.equalsIgnoreCase(IConstants.CONSTITUENCY)){//0id,1 name,2 total,3districtId,4male total,5female total
 						voterCountList = voterInfoDAO.getVotersCountInConstituenciesByDistrictsList(ids,IConstants.VOTER_DATA_PUBLICATION_ID);
 					}
 					getOtherInfo(voterCountList, locationsMap, ids, locationtype, fromDate, toDate);
@@ -1074,11 +1084,14 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 				basicVo.setId((Long)params[0]);
 				basicVo.setName(params[1] != null ? params[1].toString() : "");
 				basicVo.setTotalVoters((Long)params[2]);//total voters
+				
 				if(locationtype.equalsIgnoreCase(IConstants.DISTRICT)){
+					basicVo.setRegisteredCadres((Long)params[4]);//female total voters
 					if(params[2] != null && ((Long)params[2]).longValue() >0 && params[4] != null){
 						basicVo.setPercentage(new BigDecimal((((Long)params[4])*(100.0))/(Long)params[2]).setScale(2, BigDecimal.ROUND_HALF_UP).toString());//femalePercent
 					}
 				}else{
+					basicVo.setRegisteredCadres((Long)params[5]);//female total voters
 					if(params[2] != null && ((Long)params[2]).longValue() >0 && params[5] != null){
 						basicVo.setPercentage(new BigDecimal((((Long)params[5])*(100.0))/(Long)params[2]).setScale(2, BigDecimal.ROUND_HALF_UP).toString());//femalePercent
 					}
@@ -1087,12 +1100,40 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 			}
 		
 		//0 count 1Id
-		//getting total cadres register in location
-		List<Object[]> totalRecords = tdpCadreDAO.getTotalRecords(ids,locationtype,fromDate,toDate);
-		for(Object[] total:totalRecords){
-			CadreAmountDetailsVO location = locationsMap.get((Long)total[1]);
-			if(location != null){
-				location.setTotalCount((Long)total[0]);//totalCadres
+		       //getting total cadres register in location
+				List<Object[]> totalRecords = tdpCadreDAO.getTotalRecords(ids,locationtype,fromDate,toDate);
+				for(Object[] total:totalRecords){
+					CadreAmountDetailsVO location = locationsMap.get((Long)total[1]);
+					if(location != null){
+						location.setTotalCount((Long)total[0]);//totalCadres
+						if(location.getTotalVoters() != null && location.getTotalVoters().longValue() >0 && total[0] != null){
+						  location.setCadrePerc(new BigDecimal((((Long)total[0])*(100.0))/location.getTotalVoters()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());//total cadre Percentage
+						}
+					}
+				}
+				
+		//0 count 1Id
+		
+				//getting total voters with age range 18 to 30(youth voters)
+		List<Object[]> totalYouthRecords = null;
+		if(locationtype.equalsIgnoreCase(IConstants.DISTRICT)){		
+		    totalYouthRecords = voterAgeInfoDAO.getYouthVotersInfoForDistrict(ids);
+		}else if(locationtype.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			totalYouthRecords = voterAgeInfoDAO.getYouthVotersInfo(null, ids, 1l);
+		}else if(locationtype.equalsIgnoreCase(IConstants.TEHSIL)){
+			totalYouthRecords = voterAgeInfoDAO.getYouthVotersInfo(null, ids, 2l);
+		}else if(locationtype.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY)){
+			totalYouthRecords = voterAgeInfoDAO.getYouthVotersInfo(null, ids, 5l);
+		}
+		if(totalYouthRecords != null){
+			for(Object[] total:totalYouthRecords){
+				CadreAmountDetailsVO location = locationsMap.get((Long)total[1]);
+				if(location != null){
+					location.setTargetCadres((Long)total[0]);//youth total voters
+					if(location.getTotalVoters() != null && location.getTotalVoters().longValue() >0 && total[0] != null){
+					 location.setTotalYouthPerc(new BigDecimal((((Long)total[0])*(100.0))/location.getTotalVoters()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());//female Percentage
+					}
+				}
 			}
 		}
 		totalRecords = null;

@@ -36,4 +36,8 @@ public interface IVoterAgeInfoDAO extends GenericDao<VoterAgeInfo, Long>{
 	
 	public List<Object[]> getTotalVotersBasedOnAConstituency(List<Long> constituencyIds,Long publicationDateId);
 	public List<Object[]> getGenderWiseVoterDetailsByConstituency(List<Long> constituencyIds,Long publicationDateId);
+	
+	 public List<Object[]> getYouthVotersInfoForDistrict(List<Long> ids);
+	 
+	 public List<Object[]> getYouthVotersInfo(Long constiId,List<Long> ids,Long reportLevel);
 }
