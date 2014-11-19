@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -12,6 +13,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -100,7 +103,25 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	public TdpCadreLocationWiseReportVO generateExcelReportForTdpCadre(List<Long> constituencyIdsList)
 	{
 		TdpCadreLocationWiseReportVO returnVO = new TdpCadreLocationWiseReportVO();
+		ZipOutputStream zos = null;
+		FileOutputStream fos = null;
 		try {
+			
+			int randomNumber = -100;
+			while(randomNumber < 0)
+			{
+				randomNumber = new Random().nextInt()*10000000;
+			}
+			
+			String path = "D:/apache-tomcat-6.0.37/webapps/PartyAnalyst/Reports";
+			FileOutputStream fileOut = null;
+			String filename = "";
+			
+
+			fos  = new FileOutputStream(path+"/"+randomNumber+"_Reports" +".zip");
+			zos = new ZipOutputStream(fos);
+			
+			
 			if(constituencyIdsList != null && constituencyIdsList.size()>0)
 			{
 				for (Long constituencyId : constituencyIdsList)
@@ -109,8 +130,8 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					constituencyIds.add(constituencyId);
 					
 					List<TdpCadreLocationWiseReportVO> locationWiseReportsList = getLocationWiseReportDetailsForExcel(constituencyIds);
-					List<TdpCadreLocationWiseReportVO> ageWiseReportList  = ageWiseDetailsForConstituencies(constituencyIds,10L);
-					List<TdpCadreLocationWiseReportVO> genderWiseReportList  = genderWiseDetailsForConstituencies(constituencyIds,10L); 
+					List<TdpCadreLocationWiseReportVO> ageWiseReportList  = ageWiseDetailsForConstituencies(constituencyIds,11L);
+					List<TdpCadreLocationWiseReportVO> genderWiseReportList  = genderWiseDetailsForConstituencies(constituencyIds,11L); 
 					
 					List<CadreRegisterInfo> casteGroupList = cadreDashBoardService.getCastGroupWiseCadreCount( constituencyId, "constituency");
 					
@@ -130,15 +151,64 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					returnVO.setPanchayatWiseList(genderWiseReportList);
 					returnVO.setTehsilWiseList(ageWiseReportList);
 					returnVO.setCasteGroupList(casteGroupList);
-					genereteOriginalExcelReport(returnVO);
+					
+					String constituencyName = locationWiseReportsList.get(0).getConstituencyNo().toString();
+					
+					filename= path+"/"+constituencyName+ ".xls";
+					String FILE = filename;
+					File file  = new File(FILE);
+					file.createNewFile();
+					fileOut =  new FileOutputStream(FILE);
+					HSSFWorkbook workbook=new HSSFWorkbook();
+					HSSFSheet constituencyWiseSheet = workbook.createSheet(IConstants.CONSTITUENCY);
+					genereteOriginalExcelReport(returnVO,workbook,constituencyWiseSheet);
+					
+					 workbook.write(fileOut);
+					    
+					 addToZipFile(filename, zos);
 				}
 			}			
 		} catch (Exception e) {
 			LOG.error(" exception occured in generateExcelReportForTdpCadre () at TdpCadreReportService ",e);
+		}finally{
+			try {
+				if(zos != null)
+				{
+					zos.close();
+				}
+				if(fos != null)
+				{
+					fos.close();	
+				}
+				 
+			} catch (Exception e2) {
+			}
 		}
+		
 		return returnVO;
 	}
-	
+	 public  void addToZipFile(String fileName, ZipOutputStream zos)  {
+
+			//System.out.println("Writing '" + fileName + "' to zip file");
+			try {
+				File file = new File(fileName);
+				FileInputStream fis = new FileInputStream(file);
+				ZipEntry zipEntry = new ZipEntry(fileName);
+				zos.putNextEntry(zipEntry);
+
+				byte[] bytes = new byte[1024];
+				int length;
+				while ((length = fis.read(bytes)) >= 0) {
+					zos.write(bytes, 0, length);
+				}
+
+				zos.closeEntry();
+				fis.close();
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			
+		}
 	
 	public List<TdpCadreLocationWiseReportVO> getLocationWiseReportDetailsForExcel(List<Long> constituencyIds){
 		List<TdpCadreLocationWiseReportVO> resultList = new ArrayList<TdpCadreLocationWiseReportVO>();
@@ -764,11 +834,10 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 
 
 
-public TdpCadreLocationWiseReportVO genereteOriginalExcelReport(TdpCadreLocationWiseReportVO constituencyReportVO1)
+public TdpCadreLocationWiseReportVO genereteOriginalExcelReport(TdpCadreLocationWiseReportVO constituencyReportVO1,HSSFWorkbook workbook,HSSFSheet constituencyWiseSheet)
 {
 	try {
 
-		HSSFWorkbook workbook = new HSSFWorkbook(); 
 		
 		DecimalFormat df2 = new DecimalFormat("###.##");
 		
@@ -822,33 +891,28 @@ public TdpCadreLocationWiseReportVO genereteOriginalExcelReport(TdpCadreLocation
 	    style.setFont(font);
 	   
 	    String constituencyName = constituencyReportVO1.getName();
-		
-		HSSFSheet constituencyWiseSheet;
-		
+
 		int randomNumber = -100;
 		while(randomNumber < 0)
 		{
 			randomNumber = new Random().nextInt()*10000000;
 		}
 
-		String path = IConstants.STATIC_CONTENT_FOLDER_URL+"VMR/";
+		//String path = "D:/apache-tomcat-6.0.37/webapps/PartyAnalyst/Reports";
+		//String filename1 = "abc";
+		//String pathSeperator = "/";
 		
-		//String path = "C:/apache-tomcat-6.0.37/webapps/PartyAnalyst/Reports";
-		String filename1 = "abc";
-		String pathSeperator = "/";
+		//File destDir = new File(pathSeperator+filename1);
 		
-		File destDir = new File(pathSeperator+filename1);
-		
-		destDir.mkdir();
-		String returnString = filename1+".zip";
+		//destDir.mkdir();
+		//String returnString = filename1+".zip";
 		 
 		Long totalRegistered = 0l;
 		Long totalVoters = 0l;
 		
-		String filename  =  path+"/"+constituencyName+"_"+randomNumber+".xls";
-		FileOutputStream 	out=new FileOutputStream(filename);
+		//String filename  =  path+"/"+constituencyName+"_"+randomNumber+".xls";
 		
-		constituencyWiseSheet = workbook.createSheet(IConstants.CONSTITUENCY);
+		//constituencyWiseSheet = workbook.createSheet(IConstants.CONSTITUENCY);
 
 		constituencyWiseSheet.addMergedRegion(new CellRangeAddress(2,2,1,5 )); // TOTAL OVERVIEW  HEADING
 		
@@ -989,6 +1053,7 @@ public TdpCadreLocationWiseReportVO genereteOriginalExcelReport(TdpCadreLocation
 	    cell12.setCellStyle(style1);
 	    
 	   /* cell12 = row12.createCell((short)2);
+	    
 	    cell12.setCellValue(constituencyReportVO1.getPanchayatWiseList().get(0).getTehsilWiseList().get(2).getTotalVoters() != null ? constituencyReportVO1.getPanchayatWiseList().get(0).getTehsilWiseList().get(2).getTotalVoters() :0L);
 	    cell12.setCellStyle(style2);*/
 	    /*
@@ -1124,67 +1189,71 @@ public TdpCadreLocationWiseReportVO genereteOriginalExcelReport(TdpCadreLocation
 	    }
 	    
 	    rowNo = rowNo+2;
-	    constituencyWiseSheet.addMergedRegion(new CellRangeAddress(rowNo,rowNo,1,4 )); // AGE OVER VIEW HEADING
-	    HSSFRow row17 = constituencyWiseSheet.createRow(rowNo);
-	    Cell cell17 = row17.createCell((short)1);
-	    cell17.setCellValue(" MANDAL WISE OVERVIEW  ");
-	    cell17.setCellStyle(style5);
-	    
-	    rowNo = rowNo+1;
-	    HSSFRow row18 = constituencyWiseSheet.createRow(rowNo);
-	    Cell cell18 = row18.createCell((short)1);
-	    cell18.setCellValue(IConstants.TEHSIL);
-	    cell18.setCellStyle(style1);   
-		    
-	    cell18 = row18.createCell((short)2);
-	    cell18.setCellValue(" TOTAL VOTERS ");
-	    cell18.setCellStyle(style1);
 	   
-	    cell18 = row18.createCell((short)3);
-	    cell18.setCellValue(" TARGET ");
-	    cell18.setCellStyle(style1);
-	    
-	    cell18 = row18.createCell((short)4);
-	    cell18.setCellValue(" ACHIEVED ");
-	    cell18.setCellStyle(style1);
-	    
-	    cell18 = row18.createCell((short)5);
-	    cell18.setCellValue(" ACHIEVED % ");
-	    cell18.setCellStyle(style1);
 	    List<TdpCadreLocationWiseReportVO> mandalsList = constituencyReportVO1.getTdpCadreLocationWiseReportVOList().get(0).getTehsilWiseList();
-	    
-	    rowNo = rowNo+1;
+
 	    if(mandalsList != null && mandalsList.size()>0)
 	    {
+	    	constituencyWiseSheet.addMergedRegion(new CellRangeAddress(rowNo,rowNo,1,4 )); // AGE OVER VIEW HEADING
+	 	    HSSFRow row17 = constituencyWiseSheet.createRow(rowNo);
+	 	    Cell cell17 = row17.createCell((short)1);
+	 	    cell17.setCellValue(" MANDAL WISE OVERVIEW  ");
+	 	    cell17.setCellStyle(style5);
+	 	    
+	 	    rowNo = rowNo+1;
+	 	    HSSFRow tehsilrow = constituencyWiseSheet.createRow(rowNo);
+	 	    Cell tehsilCell = tehsilrow.createCell((short)1);
+	 	   tehsilCell.setCellValue(IConstants.TEHSIL);
+	 	   tehsilCell.setCellStyle(style1);   
+	 		    
+	 	   tehsilCell = tehsilrow.createCell((short)2);
+	 	   tehsilCell.setCellValue(" TOTAL VOTERS ");
+	 	   tehsilCell.setCellStyle(style1);
+	 	   
+	 	   tehsilCell = tehsilrow.createCell((short)3);
+	 	   tehsilCell.setCellValue(" TARGET ");
+	 	   tehsilCell.setCellStyle(style1);
+	 	    
+	 	   tehsilCell = tehsilrow.createCell((short)4);
+	 	   tehsilCell.setCellValue(" ACHIEVED ");
+	 	   tehsilCell.setCellStyle(style1);
+	 	    
+	 	   tehsilCell = tehsilrow.createCell((short)5);
+	 	   tehsilCell.setCellValue(" ACHIEVED % ");
+	 	   tehsilCell.setCellStyle(style1);
+	 	   
+	 	    rowNo = rowNo+1;
+	 	    
 	    	for (TdpCadreLocationWiseReportVO mandalsVo : mandalsList) 
 	    	{
 	    		HSSFRow tehsilRow = constituencyWiseSheet.createRow(rowNo);
-	    		 Cell tehsilCell = tehsilRow.createCell((short)1);
-	    		 tehsilCell.setCellValue(mandalsVo.getName() != null ? mandalsVo.getName() : "");
-	    		 tehsilCell.setCellStyle(style2);
+	    		 Cell tehsilCells = tehsilRow.createCell((short)1);
+	    		 tehsilCells.setCellValue(mandalsVo.getName() != null ? mandalsVo.getName() : "");
+	    		 tehsilCells.setCellStyle(style2);
 	    		 
-	    		 tehsilCell = tehsilRow.createCell((short)2);
-	    		 tehsilCell.setCellValue(mandalsVo.getTotalVoters() != null ?mandalsVo.getTotalVoters().toString():" -- ");
-	    		 tehsilCell.setCellStyle(style2);
+	    		 tehsilCells = tehsilRow.createCell((short)2);
+	    		 tehsilCells.setCellValue(mandalsVo.getTotalVoters() != null ?mandalsVo.getTotalVoters().toString():" -- ");
+	    		 tehsilCells.setCellStyle(style2);
 			    
-	    		 tehsilCell = tehsilRow.createCell((short)3);
-	    		 tehsilCell.setCellValue(mandalsVo.getTargetedCadre() != null ? mandalsVo.getTargetedCadre().toString() :" -- ");
-	    		 tehsilCell.setCellStyle(style2);
+	    		 tehsilCells = tehsilRow.createCell((short)3);
+	    		 tehsilCells.setCellValue(mandalsVo.getTargetedCadre() != null ? mandalsVo.getTargetedCadre().toString() :" -- ");
+	    		 tehsilCells.setCellStyle(style2);
 			    			    
-	    		 tehsilCell = tehsilRow.createCell((short)4);
-	    		 tehsilCell.setCellValue(mandalsVo.getRegisteredCadre() != null ? mandalsVo.getRegisteredCadre().toString():" -- ");
-	    		 tehsilCell.setCellStyle(style2);
+	    		 tehsilCells = tehsilRow.createCell((short)4);
+	    		 tehsilCells.setCellValue(mandalsVo.getRegisteredCadre() != null ? mandalsVo.getRegisteredCadre().toString():" -- ");
+	    		 tehsilCells.setCellStyle(style2);
+	    		 
 	    		 Double mandalPerc =  mandalsVo.getRegisteredCadre() != null ? mandalsVo.getRegisteredCadre() * 100.0 / mandalsVo.getTargetedCadre() :0.00d;
 
-	    		 tehsilCell = tehsilRow.createCell((short)5);//mandal wise percentage
-	    		 tehsilCell.setCellValue(mandalPerc > 0 ? Double.valueOf(df2.format(mandalPerc)).toString():" -- ");
-			     tehsilCell.setCellStyle(style2);
-
+	    		 tehsilCells = tehsilRow.createCell((short)5);//mandal wise percentage
+	    		 tehsilCells.setCellValue(mandalPerc > 0 ? Double.valueOf(df2.format(mandalPerc)).toString():" -- ");
+	    		 tehsilCells.setCellStyle(style2);
 				 
 			     rowNo = rowNo+1;
 			}
 	    }
 	    
+	    /*
 	    rowNo = rowNo+2;
 	    constituencyWiseSheet.addMergedRegion(new CellRangeAddress(rowNo,rowNo,1,6 )); // PANCHAYAT WISE OVER VIEW 
 	    HSSFRow row = constituencyWiseSheet.createRow(rowNo);
@@ -1200,18 +1269,22 @@ public TdpCadreLocationWiseReportVO genereteOriginalExcelReport(TdpCadreLocation
 	    textCell.setCellStyle(style1);   
 		    
 	    textCell = textRow.createCell((short)2);
+	    textCell.setCellValue(" PANCHAYAT / AREA COVERED ");
+	    textCell.setCellStyle(style1);
+	    
+	    textCell = textRow.createCell((short)3);
 	    textCell.setCellValue(" TOTAL VOTERS ");
 	    textCell.setCellStyle(style1);
 	   
-	    textCell = textRow.createCell((short)3);
+	    textCell = textRow.createCell((short)4);
 	    textCell.setCellValue(" TARGET ");
 	    textCell.setCellStyle(style1);
 	    
-	    textCell = textRow.createCell((short)4);
+	    textCell = textRow.createCell((short)5);
 	    textCell.setCellValue(" ACHIEVED ");
 	    textCell.setCellStyle(style1);
 	    
-	    textCell = textRow.createCell((short)5);
+	    textCell = textRow.createCell((short)6);
 	    textCell.setCellValue(" ACHIEVED % ");
 	    textCell.setCellStyle(style1);
 	    
@@ -1228,28 +1301,31 @@ public TdpCadreLocationWiseReportVO genereteOriginalExcelReport(TdpCadreLocation
 	    		 panchaytCell.setCellStyle(style2);
 	    		 
 	    		 panchaytCell = panchaytrow.createCell((short)2);
+	    		 panchaytCell.setCellValue(mandalsVo.getLocationType() != null ? mandalsVo.getLocationType() : "");
+	    		 panchaytCell.setCellStyle(style2);
+	    		 
+	    		 panchaytCell = panchaytrow.createCell((short)3);
 	    		 panchaytCell.setCellValue(mandalsVo.getTotalVoters() != null ?mandalsVo.getTotalVoters().toString():" -- ");
 	    		 panchaytCell.setCellStyle(style2);
 			    
-	    		 panchaytCell = panchaytrow.createCell((short)3);
+	    		 panchaytCell = panchaytrow.createCell((short)4);
 	    		 panchaytCell.setCellValue(mandalsVo.getTargetedCadre() != null ? mandalsVo.getTargetedCadre().toString() :" -- ");
 	    		 panchaytCell.setCellStyle(style2);
 			    			    
-	    		 panchaytCell = panchaytrow.createCell((short)4);
+	    		 panchaytCell = panchaytrow.createCell((short)5);
 	    		 panchaytCell.setCellValue(mandalsVo.getRegisteredCadre() != null ? mandalsVo.getRegisteredCadre().toString()  :" -- ");
 	    		 panchaytCell.setCellStyle(style2);
 	    		 
 	    		 Double boothPerc =  mandalsVo.getRegisteredCadre() != null ? mandalsVo.getRegisteredCadre() * 100.0 / mandalsVo.getTargetedCadre() :0.00d;
 
-	    		 panchaytCell = panchaytrow.createCell((short)5);
+	    		 panchaytCell = panchaytrow.createCell((short)6);
 	    		 panchaytCell.setCellValue(boothPerc > 0 ? Double.valueOf(df2.format(boothPerc)).toString() :" -- ") ;
 	    		 panchaytCell.setCellStyle(style2);
 				 
 	    		 rowNo = rowNo + 1;
 			}
 	    }
-	    
-	    workbook.write(out);
+	     */
 	    
 	    System.out.println( constituencyName +" Constituency Excel Report generation completed. ");
 	    LOG.info( constituencyName +" Constituency Excel Report generation completed. ");
