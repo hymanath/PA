@@ -2589,8 +2589,7 @@ public Integer saveUrbanConstituencyDataType1(String prevDate,String table,Long 
 	 		"  from TdpCadre model " +
 	 		"  where model.enrollmentYear=2014 and" +
 	 		"  model.isDeleted='N' and" +
-	 		"  model.userAddress.constituency.constituencyId in(:constituencyIds) and " +
-	 		"  model.gender is not null " +
+	 		"  model.userAddress.constituency.constituencyId in(:constituencyIds) " +
 	 		"  group by model.userAddress.constituency.name,model.gender " +
 	 		"  order by model.userAddress.constituency.name");
 	 
@@ -2736,4 +2735,17 @@ public Integer saveUrbanConstituencyDataType1(String prevDate,String table,Long 
 		
 		return query.list();
 	}
+	public List<Object[]> gettingRegisteredVotersForConstituencys(List<Long> constituencyIds)
+	{
+		Query query=getSession().createQuery("select count(model.tdpCadreId),model.userAddress.constituency.name " +
+				" from TdpCadre model " +
+				" where model.userAddress.constituency.constituencyId in(:constituencyIds) and" +
+				"  model.enrollmentYear = 2014 and" +
+				"  model.isDeleted='N'" +
+				"  group by model.userAddress.constituency.constituencyId " +
+				"  order by model.userAddress.constituency.name");
+        query.setParameterList("constituencyIds", constituencyIds);
+		return query.list();
+	}
+	
 }
