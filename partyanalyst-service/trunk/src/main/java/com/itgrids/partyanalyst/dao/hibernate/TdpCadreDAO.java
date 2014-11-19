@@ -704,6 +704,47 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 
 		return query.list();
 	}
+   
+   	@SuppressWarnings("unchecked")
+	public List<Object[]> getCasteGroupWiseCadreCountExcludingMinorities(Long Id,String type)
+   	{
+   		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" SELECT count(model.casteStateId),model.enrollmentYear,model.casteState.casteCategoryGroup.casteCategory.casteCategoryId, ");
+		queryStr.append(" model.casteState.casteCategoryGroup.casteCategory.categoryName from TdpCadre model where model.isDeleted = 'N' ");
+		queryStr.append(" and model.casteState.casteStateId not in("+IConstants.MINORITY_CASTE_IDS+") ");
+		
+		if (type.equalsIgnoreCase("constituency"))
+			queryStr.append(" and model.userAddress.constituency.constituencyId = :Id ");
+		else if (type.equalsIgnoreCase("district"))
+			queryStr.append(" and model.userAddress.constituency.district.districtId = :Id ");
+
+		queryStr.append(" group by  model.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.enrollmentYear  ");
+
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("Id", Id);
+
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCadreCountInMinorities(Long Id,String type)
+   	{
+   		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" SELECT count(model.casteStateId),model.enrollmentYear from TdpCadre model where model.isDeleted = 'N' ");
+		queryStr.append(" and model.casteState.casteStateId in("+IConstants.MINORITY_CASTE_IDS+") ");
+		
+		if (type.equalsIgnoreCase("constituency"))
+			queryStr.append(" and model.userAddress.constituency.constituencyId = :Id ");
+		else if (type.equalsIgnoreCase("district"))
+			queryStr.append(" and model.userAddress.constituency.district.districtId = :Id ");
+
+		queryStr.append(" group by model.enrollmentYear ");
+
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("Id", Id);
+
+		return query.list();
+	}
 
 	
 	public List<Object[]> getCadreInfoPanchayatWise(List<Long> panchayatIds,Date fromDate, Date toDate,Long year){
