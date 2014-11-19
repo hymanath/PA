@@ -35,6 +35,7 @@ public class TdpCadreLocationWiseReportVO implements java.io.Serializable{
 	
 	private Long registeredCadre;
 	private String percentage;
+	private Long constituencyNo;
 	
 	
 	List<TdpCadreLocationWiseReportVO>	 tdpCadreLocationWiseReportVOList = new ArrayList<TdpCadreLocationWiseReportVO>();
@@ -266,6 +267,14 @@ public class TdpCadreLocationWiseReportVO implements java.io.Serializable{
 
 	public void setGender(String gender) {
 		this.gender = gender;
+	}
+
+	public Long getConstituencyNo() {
+		return constituencyNo;
+	}
+
+	public void setConstituencyNo(Long constituencyNo) {
+		this.constituencyNo = constituencyNo;
 	}
  
 }
