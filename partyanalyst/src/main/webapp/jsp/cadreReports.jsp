@@ -1332,12 +1332,22 @@ function buildData1(result,type,divId)
 		for(var j in result[i].infoList)
 	   {
 			str+='<td>'+result[i].infoList[j].totalCount+'</td>';
-			if(result[i].infoList[j].percentage != null)
-			str+='<td>'+result[i].infoList[j].percentage+' %</td>';
-			else
-			str+='<td> - </td>';
+			if(result[i].infoList[j].percentage != null){
+			  if(j==result[i].infoList.length){
+			   str+='<td>'+result[i].infoList[j].percentage+' %</td><span class="pull-right removeicon"  id="iconDiv'+result[i].id+'" onclick="closeDiv('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span></td>';
+			  }else{
+			   str+='<td>'+result[i].infoList[j].percentage+' %</td>';
+			  }
+			}
+			else{
+			  if(j==result[i].infoList.length){
+			   str+='<td>-</td><span class="pull-right removeicon"  id="iconDiv'+result[i].id+'" onclick="closeDiv('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span></td>';
+			  }else{
+			  str+='<td> - </td>';
+			  }
+			}
 	   }
-		
+		str+='';
 		str+='</tr>';
 	   }
 	   str+='</tbody>';
@@ -1348,7 +1358,7 @@ function buildData1(result,type,divId)
 			          "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
 			     });
 				 
-		var firstRowId = $('#tabledataTab tr').eq(1).attr('id');
+		var firstRowId = $('#tabledataTab tr').eq(2).attr('id');
 	   displaySublevelCasteDetails(firstRowId.replace('"',''),'DISTRICT');
 	
    }
@@ -1356,8 +1366,8 @@ function buildData1(result,type,divId)
    function displaySublevelCasteDetails(id,type)
 
    {
-	//$('.added').remove('');
-	//$(".removeicon").hide();
+	 $('.added').remove('');
+	$(".removeicon").hide();
 	$(".removeCls").removeClass("selected");
 	$('.clearCls'+id).after('<tr class="selectedchild"><td id="subLevel'+id+'" colspan="8" class="added"><div align="center"><img id="ajaxImgStyle1" style="display:none;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
 	$('.clearCls'+id).addClass("selected");
@@ -1375,19 +1385,19 @@ function buildData1(result,type,divId)
           url: 'getSubLocationswiseCasteInfoAction.action',
          data : {task:JSON.stringify(jObj)} ,
        }).done(function(result){
-		buildDataForSublevelCaste1(result.infoList);
+		buildDataForSublevelCaste1(result.infoList,"subLevel"+id);
 		});
    }
 function displaySublevelCasteDetails1(id,type)
    {
-	  //  $('.added1').remove('');
+	  $('.added1').remove('');
 	$(".removeicon1").hide();
 	$(".removeCls1").removeClass("selected1");
 	$('.clearCls1'+id).after('<tr class="selected1child"><td id="subLevel'+id+'" colspan="8" class="added1"><div><img id="ajaxImgStyle2" style="display:none;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
 	$('.clearCls1'+id).addClass("selected1");
 	$('.clearClsTD1'+id).addClass("selected1");
 	$("#ajaxImgStyle2").show();
-	//$("#iconDiv1"+id).show();
+	$("#iconDiv1"+id).show();
 	    var jObj = {
 		stateId:1,
 		locationtype:type,
@@ -1399,10 +1409,10 @@ function displaySublevelCasteDetails1(id,type)
           url: 'getSubLocationswiseCasteInfoAction.action',
          data : {task:JSON.stringify(jObj)} ,
        }).done(function(result){
-		buildDataForSublevelCaste2(result.infoList);
+		buildDataForSublevelCaste2(result.infoList,"subLevel"+id);
 		});
    }
-    function buildDataForSublevelCaste1(result)
+    function buildDataForSublevelCaste1(result,rid)
    {
 	   var str='';
 		str+='<table class="table table-bordered" id="tabledataTab1">';
@@ -1418,17 +1428,24 @@ function displaySublevelCasteDetails1(id,type)
 	   {
 			str+='<th colspan="2">'+result[0].infoList[i].casteCategory+'</th>';
 			
+			
 	   }
 		
 		str+='</tr>';
 		str+='<tr>';
+		for(var i in result[0].infoList)
+	   {
+		str+='<th>Total Cadre</th>';
+		str+='<th>%</th>';
+	   }
+		str+='</tr>';
 		str+='</thead>';
 		str+='<tbody>';
 		for(var i in result)
 	   {
 		str+='<tr id='+result[i].id+' class="removeCls clearCls'+result[i].id+'">';
 		
-		str+='<td class="removeCls clearClsTD'+result[i].id+'"><a onclick="displaySublevelCasteDetails1('+result[i].id+',\'CONSTITUENCY\');" style="cursor:pointer;">'+result[i].name+'</a></td>';
+		str+='<td class="removeCls1 clearClsTD1'+result[i].id+'"><a onclick="displaySublevelCasteDetails1('+result[i].id+',\'CONSTITUENCY\');" style="cursor:pointer;">'+result[i].name+'</a></td>';
 		
 		str+='<td>'+result[i].totalVoters+'</td>';
 		
@@ -1440,21 +1457,26 @@ function displaySublevelCasteDetails1(id,type)
 		for(var j in result[i].infoList)
 	   {
 			str+='<td>'+result[i].infoList[j].totalCount+'</td>';
-			if(result[i].infoList[j].percentage != null)
-			str+='<td>'+result[i].infoList[j].percentage+' %</td>';
-			else
-			str+='<td> - </td>';
+			if(result[i].infoList[j].percentage != null){
+			  if(j==result[i].infoList.length){
+			   str+='<td>'+result[i].infoList[j].percentage+' %</td><span class="pull-right removeicon1"  id="iconDiv1'+result[i].id+'" onclick="closeDiv1('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span></td>';
+			  }else{
+			   str+='<td>'+result[i].infoList[j].percentage+' %</td>';
+			  }
+			}
+			else{
+			  if(j==result[i].infoList.length){
+			   str+='<td>-</td><span class="pull-right removeicon1"  id="iconDiv1'+result[i].id+'" onclick="closeDiv1('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span></td>';
+			  }else{
+			  str+='<td> - </td>';
+			  }
+			}
 	   }
 		str+='</tr>';
 	   }
 	   str+='</tbody>';
 		str+='</table>';
-		$("#CasteDataDiv").html(str);
-		$("#tabledataTab").dataTable({
-			         "iDisplayLength": 20,
-			          "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
-			     });
-				 
+		$("#"+rid).html(str);
 		
    }
    </script>
