@@ -8970,7 +8970,17 @@
 				<param name="root">amountDetails</param>
 			</result>
 		</action>
+		<action name="getLocationswiseCasteInfoAction" class="leaderCadreDashBoardAction" method="getCasteWiseInfo" >
+			<result type="json" name="success">
+				<param name="root">amountDetailsVO</param>
+			</result>
+		</action>
 		
+		<action name="getSubLocationswiseCasteInfoAction" class="leaderCadreDashBoardAction" method="getCasteWiseInfo" >
+			<result type="json" name="success">
+				<param name="root">amountDetailsVO</param>
+			</result>
+		</action>
 </package>
 
 </struts>      
