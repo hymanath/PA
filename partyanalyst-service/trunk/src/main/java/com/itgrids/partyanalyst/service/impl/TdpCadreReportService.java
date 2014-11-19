@@ -294,13 +294,24 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	{
 		List<TdpCadreLocationWiseReportVO> resultList = null ;
 	  try
-	  {
+	  {     List<Object[]> registeredCadreCountList=tdpCadreDAO.gettingRegisteredVotersForConstituencys(constituencyIds);
 		    List<Object[]> votersList=voterAgeInfoDAO.getGenderWiseVoterDetailsByConstituency(constituencyIds,publicationId);//mc fc cname
 			List<Object[]> votersList1=tdpCadreDAO.getTdpCadregenderWiseByConstituency(constituencyIds);//name,gender,count
 		
 			
 			resultList=settingtDataGenderWise(votersList,"voterInfo");
 			List<TdpCadreLocationWiseReportVO> resultList1=settingtDataGenderWise(votersList1,"tdpCadre");
+			
+			
+			if(registeredCadreCountList!=null && registeredCadreCountList.size()>0)
+			{
+				for(Object[] obj:registeredCadreCountList)
+				{
+					
+					 TdpCadreLocationWiseReportVO constituencyVO =  getMatchedVOByName(resultList,obj[1].toString()); 
+					 constituencyVO.setRegisteredCadre(obj[0]!=null?(Long)obj[0]:0l);
+				}
+			}
 			
 			//comparing two lists.
 			if(resultList!=null && resultList.size()>0)
@@ -315,7 +326,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 						  TdpCadreLocationWiseReportVO genderVO=getMatchedVOByName(constituencyVO.getTehsilWiseList(),tdpCadreVO.getGender()); 
 						    genderVO.setCadresCount(tdpCadreVO.getTotalVoters()); 
 						  
-						  Double agePerc=(genderVO.getCadresCount()*100.0)/(genderVO.getTotalVoters());
+						  Double agePerc=(genderVO.getCadresCount()*100.0)/(constituencyVO.getRegisteredCadre());
 						  //Round the double value to 2 decimal values.
 						   DecimalFormat df2 = new DecimalFormat("###.##");
 						   genderVO.setGenderPerc( (Double.valueOf(df2.format(agePerc))));
@@ -324,7 +335,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					 }
 					 
 				  }
-			 } 
+			 }
 	  }catch(Exception e)
 	  {
 		  LOG.error(" exception occured in genderWiseDetailsForConstituencies () at TdpCadreReportService ",e);
@@ -347,12 +358,20 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 				      List<TdpCadreLocationWiseReportVO> genderList=constituencyVO.getTehsilWiseList();
 				      TdpCadreLocationWiseReportVO maleVO=new TdpCadreLocationWiseReportVO();
 				      TdpCadreLocationWiseReportVO femaleVO=new TdpCadreLocationWiseReportVO();
+				      TdpCadreLocationWiseReportVO othersVO=new TdpCadreLocationWiseReportVO();
+				      
 				      maleVO.setTotalVoters(objects[0]!=null?(Long)objects[0]:0l);
-				      maleVO.setName("male");
+				      maleVO.setName("Male");
+				      
 				      femaleVO.setTotalVoters(objects[1]!=null?(Long)objects[1]:0l);
-				      femaleVO.setName("female");
+				      femaleVO.setName("Female");
+				      
+				      othersVO.setTotalVoters(0l);
+				      othersVO.setName("Others");
+				      
 				      genderList.add(maleVO);
 				      genderList.add(femaleVO);
+				      genderList.add(othersVO);
 				      
 				      resultList.add(constituencyVO);
 				  }
@@ -370,8 +389,9 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					 constituenciesSet.add(obj[0].toString());
 					
 				 }
-				 genderssSet.add("male");
-				 genderssSet.add("female");
+				 genderssSet.add("Male");
+				 genderssSet.add("Female");
+				 genderssSet.add("Others");
 			 }	
              
 			 if(constituenciesSet!=null && constituenciesSet.size()>0){
@@ -392,13 +412,15 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			 }	
 			 }
 			 
-		           if(votersList!=null && votersList.size()>0){  
+		//iterrate and set.
+			    
+				 if(votersList!=null && votersList.size()>0){ //name,gender,count. 
 			 
 					  for(Object[] obj:votersList)
 					 {
 						 TdpCadreLocationWiseReportVO constituencyVO =  getMatchedVOByName(resultList ,obj[0].toString());
 						 
-						 TdpCadreLocationWiseReportVO genderVO     =    getMatchedVOByName1(constituencyVO.getTdpCadreLocationWiseReportVOList(),obj[1].toString());
+						 TdpCadreLocationWiseReportVO genderVO     =    getMatchedVOByName1(constituencyVO.getTdpCadreLocationWiseReportVOList(),obj[1]!=null?obj[1].toString():"Others");
 						  genderVO.setTotalVoters(genderVO.getTargetedCadre()==null?(Long)obj[2]:genderVO.getTargetedCadre()+(Long)obj[2]);
 						
 					 }
@@ -406,24 +428,38 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		 
 		 }
 		}catch(Exception e)
-		{
-			LOG.error(" exception occured in settingtDataGenderWise () at TdpCadreReportService ",e);
+		{LOG.error(" exception occured in settingtDataGenderWise () at TdpCadreReportService ",e);
 			return null;
 			
 		}
 		return resultList;
 	}
 	
+	
 	public List<TdpCadreLocationWiseReportVO> ageWiseDetailsForConstituencies(List<Long> constituencyIds,Long publicationId)
 	{
 		List<TdpCadreLocationWiseReportVO> resultList = null;
 		try
 		{
+	    List<Object[]> registeredCadreCountList=tdpCadreDAO.gettingRegisteredVotersForConstituencys(constituencyIds);
 		List<Object[]> votersList=voterAgeInfoDAO.getTotalVotersBasedOnAConstituency(constituencyIds,publicationId);//0-->agerangeId,1-->totalvoters,2-->cname.
 		List<Object[]> votersList1=tdpCadreDAO.getTdpCadreAgeRangeByConstituency(constituencyIds);//age,dob,name
 		
+		
 		resultList=settingtheData(votersList,"voterInfo");
 		List<TdpCadreLocationWiseReportVO> resultList1=settingtheData(votersList1,"tdpCadre");
+		
+		//setting registeredcadre count for matched constituency.
+		if(registeredCadreCountList!=null && registeredCadreCountList.size()>0)
+		{
+			for(Object[] obj:registeredCadreCountList)
+			{
+				
+				 TdpCadreLocationWiseReportVO constituencyVO =  getMatchedVOByName(resultList,obj[1].toString()); 
+				 constituencyVO.setRegisteredCadre(obj[0]!=null?(Long)obj[0]:0l);
+			}
+		}
+		
 		//comparing two lists.
 		if(resultList!=null && resultList.size()>0)
 		{
@@ -437,7 +473,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					  TdpCadreLocationWiseReportVO ageRangeVO=getMatchedLocationVO(constituencyVO.getTdpCadreLocationWiseReportVOList(),tdpCadreVO.getAgeRangeId()); 
 					  ageRangeVO.setCadresInAge(tdpCadreVO.getTotalVoters());
 					 
-					  Double agePerc=(ageRangeVO.getCadresInAge()*100.0)/(ageRangeVO.getTotalVoters());
+					  Double agePerc=(ageRangeVO.getCadresInAge()*100.0)/(ageRangeVO.getRegisteredCadre());
 					  //Round the double value to 2 decimal values.
 					   DecimalFormat df2 = new DecimalFormat("###.##");
 					   ageRangeVO.setAgePerc(Double.valueOf(df2.format(agePerc)));
@@ -654,27 +690,36 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	 	  
 	 }
 	
-public TdpCadreLocationWiseReportVO getMatchedVOByName1(List<TdpCadreLocationWiseReportVO> list,String name)
-{
-		  if(list!=null && list.size()>0){
-		  for(TdpCadreLocationWiseReportVO gender:list){
-			 if( name.equalsIgnoreCase("M")||name.equalsIgnoreCase("Male") ){
-				 if(gender.getGender().equalsIgnoreCase("male")) {
-					return gender;
-					 
-				 }
-		      }
-			 else if( name.equalsIgnoreCase("F")||name.equalsIgnoreCase("Female") ){
-			     if(gender.getGender().equalsIgnoreCase("Female")) {
-				   return gender;
-				 
-			      }
-			  }
-		 }//for
-		}  
-		  return null;
+	 public TdpCadreLocationWiseReportVO getMatchedVOByName1(List<TdpCadreLocationWiseReportVO> list,String name)
+	 {
+	 		  if(list!=null && list.size()>0){
+	 		  for(TdpCadreLocationWiseReportVO gender:list){
+	 			 if( name.equalsIgnoreCase("M")||name.equalsIgnoreCase("Male") ){
+	 				 if(gender.getGender().equalsIgnoreCase("male")) {
+	 					return gender;
+	 					 
+	 				 }
+	 		      }
+	 			 else if( name.equalsIgnoreCase("F")||name.equalsIgnoreCase("Female") ){
+ 				     if(gender.getGender().equalsIgnoreCase("Female")) {
+ 					   return gender;
+ 					 
+ 				      }
+ 				  }
+	 			 else if(name.equalsIgnoreCase("others")){
+	 				if(gender.getGender().equalsIgnoreCase("others")) {
+	 					   return gender;
+	 					 
+	 				      } 
+	 			
+	 			 }
+	 		 }//for
+	 		}  
+	 		  return null;
+	
+	 }
 
-}	
+
 
 public TdpCadreLocationWiseReportVO genereteOriginalExcelReport(TdpCadreLocationWiseReportVO constituencyReportVO1)
 {
