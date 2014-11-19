@@ -195,4 +195,25 @@ public class VoterAgeInfoDAO extends GenericDaoHibernate<VoterAgeInfo, Long> imp
    	   return query.list();
    }
     
+   public List<Object[]> getYouthVotersInfoForDistrict(List<Long> ids){
+	   Query query = getSession().createQuery("select sum(model1.totalVoters),model2.district.districtId from VoterAgeInfo model1,Constituency model2 where model1.voterReportLevel.voterReportLevelId = 1 and" +
+	   		" model1.publicationDate.publicationDateId = 11 and model1.voterAgeRange.voterAgeRangeId = 7 and model1.reportLevelValue = model2.constituencyId and model2.district.districtId in(:ids) group by model2.district.districtId");
+	     query.setParameterList("ids", ids);
+	   return query.list();
+   }
+   public List<Object[]> getYouthVotersInfo(Long constiId,List<Long> ids,Long reportLevel){
+	   StringBuilder queryStr = new StringBuilder();  
+	   queryStr.append("select model.totalVoters,model.reportLevelValue from VoterAgeInfo model where model.voterReportLevel.voterReportLevelId = :reportLevel and" +
+	   		" model.publicationDate.publicationDateId = 11 and model.voterAgeRange.voterAgeRangeId = 7 and model.reportLevelValue in(:ids) ");
+	   if(constiId != null && constiId.longValue() > 0){
+		   queryStr.append(" and model.constituencyId =:constiId");
+	   }
+	   Query query = getSession().createQuery(queryStr.toString());
+	     query.setParameterList("ids", ids);
+	     query.setParameter("reportLevel", reportLevel);
+	     if(constiId != null && constiId.longValue() > 0){
+	    	 query.setParameter("constiId",constiId);
+		   }
+	   return query.list();
+   }
 }

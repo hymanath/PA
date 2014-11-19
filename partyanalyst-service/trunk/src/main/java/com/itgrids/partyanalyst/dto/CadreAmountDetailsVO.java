@@ -45,7 +45,8 @@ public class CadreAmountDetailsVO implements Serializable{
 	private int worstCount;
 	private String femalePerc;
 	private String malePerc;
-	
+	private String totalYouthPerc;
+	private String cadrePerc;
 	private String toDate;
 	
 	
@@ -267,6 +268,18 @@ public class CadreAmountDetailsVO implements Serializable{
 	}
 	public void setMalePerc(String malePerc) {
 		this.malePerc = malePerc;
+	}
+	public String getTotalYouthPerc() {
+		return totalYouthPerc;
+	}
+	public void setTotalYouthPerc(String totalYouthPerc) {
+		this.totalYouthPerc = totalYouthPerc;
+	}
+	public String getCadrePerc() {
+		return cadrePerc;
+	}
+	public void setCadrePerc(String cadrePerc) {
+		this.cadrePerc = cadrePerc;
 	}
 
 	
