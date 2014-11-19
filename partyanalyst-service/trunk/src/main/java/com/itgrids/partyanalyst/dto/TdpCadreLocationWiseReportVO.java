@@ -19,6 +19,8 @@ public class TdpCadreLocationWiseReportVO implements java.io.Serializable{
 	private Long femaleCount;
 	private Long registeredMaleCount;
 	private Long registeredFemaleCount;
+	private Double registeredMalePerc;
+	private Double registeredFemalePerc;
 	
 	private Long cadresCount;
 	private Double genderPerc;
@@ -40,6 +42,22 @@ public class TdpCadreLocationWiseReportVO implements java.io.Serializable{
 	List<TdpCadreLocationWiseReportVO>	 panchayatWiseList = new ArrayList<TdpCadreLocationWiseReportVO>();
 	
 	
+	public Double getRegisteredMalePerc() {
+		return registeredMalePerc;
+	}
+
+	public void setRegisteredMalePerc(Double registeredMalePerc) {
+		this.registeredMalePerc = registeredMalePerc;
+	}
+
+	public Double getRegisteredFemalePerc() {
+		return registeredFemalePerc;
+	}
+
+	public void setRegisteredFemalePerc(Double registeredFemalePerc) {
+		this.registeredFemalePerc = registeredFemalePerc;
+	}
+
 	public List<TdpCadreLocationWiseReportVO> getTehsilWiseList() {
 		return tehsilWiseList;
 	}
