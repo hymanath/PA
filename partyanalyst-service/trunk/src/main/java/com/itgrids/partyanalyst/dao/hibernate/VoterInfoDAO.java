@@ -514,7 +514,7 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getVotersCountInBoothsList(List<Long> boothIds, Long publicationDateId)
 	{
-		Query query = getSession().createQuery("Select model.reportLevelValue,model2.partNo,sum(model.totalVoters),model2.tehsil.district.districtId,sum(model.maleVoters),sum(model.femaleVoters) from VoterInfo model,Booth model2 where model.reportLevelValue = model2.boothId and " +
+		Query query = getSession().createQuery("Select model.reportLevelValue,model2.partNo,sum(model.totalVoters),model2.tehsil.district.districtId,sum(model.maleVoters),sum(model.femaleVoters),model.constituencyId from VoterInfo model,Booth model2 where model.reportLevelValue = model2.boothId and " +
 				" model.voterReportLevel.voterReportLevelId = :reportLevelId and model.publicationDate.publicationDateId = :publicationDateId and " +
 				" model2.boothId in (:boothIds) group by model2.boothId");
 		query.setParameter("reportLevelId",4L);
