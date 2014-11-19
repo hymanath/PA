@@ -2311,8 +2311,7 @@
 	 <property name="constituencyDAO" ref="constituencyDAO" />
 	 <property name="regionServiceDataImp" ref="regionServiceDataImp" />
 	 <property name="cadreSurveyUserAssigneeDAO" ref="cadreSurveyUserAssigneeDAO" />
-	 
-	 
+	 <property name="voterAgeInfoDAO" ref="voterAgeInfoDAO" />
 	 
      </bean>
      
