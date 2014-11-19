@@ -195,4 +195,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getTotalYouthRecords(List<Long> districtIds,String type,Date fromDate,Date toDate);
 	public List<Object[]> getCadreCountInMinorities(Long Id,String type);
 	public List<Object[]> getCasteGroupWiseCadreCountExcludingMinorities(Long Id,String type);
+	
+	public List<Object[]> gettingRegisteredVotersForConstituencys(List<Long> constituencyIds);
 }
