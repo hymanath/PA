@@ -160,13 +160,7 @@ function buildData(resultList,fromDate,toDate)
 		str+='</tbody>';
 		str+='</table>';
 		$("#userDataDiv").html(str);
-		$("#tabledataTab").dataTable({
-			         "iDisplayLength": 20,
-			          "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
-			     });
-				 
-		
-   }
+	 }
    function buildUserDetails(resultList)
 {
 $("#userDetailsDiv").css("display","block");
