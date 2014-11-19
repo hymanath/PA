@@ -27,6 +27,7 @@
 	width: 750px;
 	}
 	
+	#leaderDataDivStatusBars {margin-top:45px;}
 	#leaderDataDivStatusBars h4{margin:0px;}
 	#leaderDataDivStatusBars .progress{margin:0px;}
 </style>
@@ -50,7 +51,7 @@
 			   
 			   <div style="margin-left:250px;">
 					<h4 style="color:black;"> <input type ="radio" style="margin-top:-2px;" class="stType" name="stateType" value="ap" checked="checked">&nbsp;&nbsp;ANDHRA PRADESH</input>
-					 <input style="margin-top:-2px;margin-left:12px;" type ="radio" class="stType" name="stateType" value="tg">&nbsp; TELANGANA </h4></input>
+					 <input style="margin-top:-2px;margin-left:12px;" disabled="true" type ="radio" class="stType" name="stateType" value="tg">&nbsp; TELANGANA </h4></input>
 			   </div>
 			   
 			   
@@ -60,13 +61,14 @@
 					<td>
 						<div id="reportTypeId">
 							<a class="btn rprtCls" id="targetId" >&nbsp;TARGET VS ACHIEVED&nbsp;</a>
-							<a class="btn rprtCls" id="womenId" >&nbsp;WOMEN & YOUTH&nbsp;</a>
+							<a class="btn rprtCls" id="womenId" >&nbsp;MAHILA & YOUTH&nbsp;</a>
 							<a class="btn rprtCls" id="communityId" >&nbsp;COMMUNITY WISE REPORT&nbsp;</a>
 						</div>
 					</td>
 					<td></td>
-					<td><div><img id="ajaxImg" style="margin-left: 10px;width:80px;display:none;" src="images/Loading-data.gif"/></div></td>
+					<td><div><img id="ajaxImg" style="width:40px;display:none;" src="images/Loading-data.gif"/></div></td>
 				  </tr>
+				  
 			</table>	  
 					  <div id="leaderDataDiv"></div>
 					  <div id="leaderDataDivStatusBars"></div>
@@ -272,9 +274,9 @@ function displaySublevelDetails1(id,type)
 		str+='<tr>';
 		
 		if(type == "District")
-		str+='<th><h4 style="color:red">DISTRICTS</h4></th>';
+		str+='<th><h4 style="color:red;float:left;margin-left:10px;">DISTRICTS</h4></th>';
 		else if(type == "Constituency"){
-		str+='<th><h4 style="color:red">DISTRICTS</h4></th>';
+		str+='<th><h4 style="color:red;float:left;margin-left:10px;margin-top:10px;">DISTRICTS</h4></th>';
 		//str+='<th>Parliament</th>';
 		//str+='<th>Constituency</th>';
 	   }
@@ -313,20 +315,20 @@ function displaySublevelDetails1(id,type)
 		str+='<tr id='+result[i].id+' class="removeCls clearCls'+result[i].id+'">';
 		if(type == "District")
 		//str+='<td style="width:320px;" class="removeCls clearClsTD'+result[i].id+'"><a onclick="displaySublevelDetailsForBars('+result[i].id+',\'District\');" style="cursor:pointer;">'+result[i].name+'('+ totalVoters+ ' , '+targetCadres+' , '+totalRecords+' , '+percentage+'%)</a>';
-		str+='<td style="width:800px;padding:12px;border-bottom:1px solid #cdcdcd;" class="removeCls clearClsTD'+result[i].id+'" title= "Total Voters - '+ totalVoters+ ' ,&nbsp;&nbsp;Target Voters - '+targetCadres+' ,Total Records -  '+totalRecords+'"><a onclick="displaySublevelDetailsForBars('+result[i].id+',\'District\');" style="cursor:pointer;"><h4>'+result[i].name+' &nbsp;&nbsp; ('+percentage+'%)</h4></a>';
+		str+='<td style="width:800px;padding:12px;border-bottom:1px solid #cdcdcd;" class="removeCls clearClsTD'+result[i].id+'" ><a onclick="displaySublevelDetailsForBars('+result[i].id+',\'District\');" style="cursor:pointer;"><h4>'+result[i].name+' &nbsp;&nbsp; ('+percentage+'%)<span class="pull-right" style="font-size:14px;font-weight:normal;">  Voters - '+ totalVoters+ ', Target - '+targetCadres+', Acheived -  '+totalRecords+'  </span></h4></a>';
 		if(percentage <= 20){
-				   str+='<div class="progress progress-danger" style="height:15px;">';
+				   str+='<div class="progress progress-danger" style="height:10x;">';
 				}else if(percentage > 20 && percentage <= 40){
-				   str+='<div class="progress progress-warning" style="height:15px;">';
+				   str+='<div class="progress progress-warning" style="height:10px;">';
 				}else if(percentage > 40 && percentage <= 60){
-				   str+='<div class="progress progress-info" style="height:15px;">';
+				   str+='<div class="progress progress-info" style="height:10px;">';
 				}else if(percentage > 60 && percentage <= 80){
-				   str+='<div class="progress" style="height:15px;">';
+				   str+='<div class="progress" style="height:10px;">';
 				}else{
-				   str+='<div class="progress progress-success" style="height:15px;">';
+				   str+='<div class="progress progress-success" style="height:10px;">';
 				} 
 				
-				str+='<div style="width:'+result[i].percentage+'%" class="bar" style="height:15px;"></div>';
+				str+='<div style="width:'+result[i].percentage+'%" class="bar" style="height:10px;"></div>';
 		
 		
 		str+='</td>';
@@ -397,7 +399,7 @@ function displaySublevelDetails1(id,type)
 		if(type == "Constituency")
 	   {
 		
-		str+='<th> <h4 style="color:red"> CONSTITUENCYS </h4></th>';
+		str+='<th> <h4 style="color:red"> CONSTITUENCIES </h4></th>';
 	   }
 	   else if(type == "Mandal")
 	   {
@@ -443,19 +445,19 @@ function displaySublevelDetails1(id,type)
 			
 		
 			//str+='<td class="removeCls1 clearClsTD1'+result[i].id+'"><a  onclick="displaySublevelDetailsForBars1('+result[i].id+',\'Constituency\');" style="cursor:pointer;">'+result[i].name+'('+ totalVoters+ ' , '+targetCadres+' , '+totalRecords+' , '+percentage+'%)</a>';
-			str+='<td class="removeCls1 clearClsTD1'+result[i].id+'" title= "Total Voters - '+ totalVoters+ ' ,&nbsp;&nbsp;Target Voters - '+targetCadres+' ,Total Records -  '+totalRecords+'"><a  onclick="displaySublevelDetailsForBars1('+result[i].id+',\'Constituency\');" style="cursor:pointer;"><h4>'+result[i].name+' &nbsp;&nbsp; ('+percentage+'%)</h4></a>';
+			str+='<td class="removeCls1 clearClsTD1'+result[i].id+'" style="padding:12px;" ><a  onclick="displaySublevelDetailsForBars1('+result[i].id+',\'Constituency\');" style="cursor:pointer;"><h4>'+result[i].name+' &nbsp;&nbsp; ('+percentage+'%)<span class="pull-right" style="font-size:14px;font-weight:normal;">  Voters - '+ totalVoters+ ', Target - '+targetCadres+', Acheived -  '+totalRecords+'  </span></h4></a>';
 			if(percentage <= 20){
-				   str+='<div class="progress progress-danger" style="height:15px;">';
+				   str+='<div class="progress progress-danger" style="height:10px;">';
 				}else if(percentage > 20 && percentage <= 40){
-				   str+='<div class="progress progress-warning" style="height:15px;">';
+				   str+='<div class="progress progress-warning" style="height:10px;">';
 				}else if(percentage > 40 && percentage <= 60){
-				   str+='<div class="progress progress-info" style="height:15px;">';
+				   str+='<div class="progress progress-info" style="height:10px;">';
 				}else if(percentage > 60 && percentage <= 80){
-				   str+='<div class="progress" style="height:15px;">';
+				   str+='<div class="progress" style="height:10px;">';
 				}else{
-				   str+='<div class="progress progress-success" style="height:15px;">';
+				   str+='<div class="progress progress-success" style="height:10px;">';
 				} 
-				str+='<div style="width:'+percentage+'%" class="bar" style="height:15px;"></div>';
+				str+='<div style="width:'+percentage+'%" class="bar" style="height:10px;"></div>';
 				str+='</div></td>';
 				str +='<td style="border-left:0px;"><span class="pull-right removeicon1"  id="iconDiv1'+result[i].id+'" onclick="closeDiv1('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span>';
 		str+='</td></tr>';
@@ -548,7 +550,7 @@ function displaySublevelDetails1(id,type)
 		if(type == "Constituency")
 	   {
 		
-		str+='<th><h4 style="color:red"> CONSTITUENCYS </h4></th>';
+		str+='<th><h4 style="color:red"> CONSTITUENCIES </h4></th>';
 	   }
 	   else if(type == "Mandal")
 	   {
@@ -595,19 +597,19 @@ function displaySublevelDetails1(id,type)
 				} 
 				
 			  
-			  str+='<td title= "Total Voters - '+ totalVoters+ ' ,&nbsp;&nbsp;Target Voters - '+targetCadres+' ,Total Records -  '+totalRecords+'"><h4>'+result[i].name+'  &nbsp;&nbsp;('+percentage+'%)</h4>';
+			  str+='<td style="padding:12px;"><h4>'+result[i].name+'  &nbsp;&nbsp;('+percentage+'%) <span class="pull-right" style="font-size:14px;font-weight:normal;">  Voters - '+ totalVoters+ ' ,Target - '+targetCadres+' ,Acheived -  '+totalRecords+'  </span></h4>';
 			  if(percentage <= 20){
-				   str+='<div class="progress progress-danger" style="height:15px;">';
+				   str+='<div class="progress progress-danger" style="height:10px;">';
 				}else if(percentage > 20 && percentage <= 40){
-				   str+='<div class="progress progress-warning" style="height:15px;">';
+				   str+='<div class="progress progress-warning" style="height:10px;">';
 				}else if(percentage > 40 && percentage <= 60){
-				   str+='<div class="progress progress-info" style="height:15px;">';
+				   str+='<div class="progress progress-info" style="height:10px;">';
 				}else if(percentage > 60 && percentage <= 80){
-				   str+='<div class="progress" style="height:15px;">';
+				   str+='<div class="progress" style="height:10px;">';
 				}else{
-				   str+='<div class="progress progress-success" style="height:15px;">';
+				   str+='<div class="progress progress-success" style="height:10px;">';
 				} 
-				str+='<div style="width:'+percentage+'%" class="bar" style="height:15px;"></div>';
+				str+='<div style="width:'+percentage+'%" class="bar" style="height:10px;"></div>';
 		str+='</td></tr>';
 			  
 			  
@@ -647,7 +649,7 @@ function displaySublevelDetails1(id,type)
 	$("#toggleDiv").toggle();
    });
    
-   $(".stType").click(function(){
+   /* $(".stType").click(function(){
 	
 		$("#leaderDataDiv").html("");
 		$("#leaderDataDivStatusBars").html("");
@@ -664,7 +666,7 @@ function displaySublevelDetails1(id,type)
 			$("#barReport").hide();
 			$("#tabularReport").show();
 		}
-   });
+   }); */
    
    $(".rprtCls").click(function(){
 	var divId = $(this).attr("id");
@@ -683,6 +685,40 @@ function displaySublevelDetails1(id,type)
 		}
 	
    });
+   
+   
+  // getYouthAndMahilaInfo(1,"district");
+   function getYouthAndMahilaInfo(id,type){
+   
+	   fromDate="03-11-2014";
+	   var toDate = new Date();
+				var dd = toDate.getDate();
+				var mm = toDate.getMonth()+1; //January is 0!
+				var yyyy = toDate.getFullYear();
+				if(dd<10) {
+					dd='0'+dd
+				} 
+				if(mm<10) {
+					mm='0'+mm
+				} 
+				toDate = dd+'-'+mm+'-'+yyyy;
+		
+		var jObj = {
+			locationType : type,
+			locationId:id,
+			fromDate:fromDate,
+			toDate:toDate,
+			task:"mainLevel"
+		}
+		
+		$.ajax({
+			type:'GET',
+			url: 'getLocationswiseYouthAndMahilaInfoAction.action',
+			data : {task:JSON.stringify(jObj)} ,
+		}).done(function(result){
+			console.log(result);
+		});
+   }
    </script>
 </body>
 </html>
