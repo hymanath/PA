@@ -276,14 +276,15 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 							}
 							else if(type.equals(IConstants.TEHSIL) || type.equals(IConstants.LOCAL_ELECTION_BODY)){
 								list = vo.getTehsilWiseList();
-							}					 
-						  for(TdpCadreLocationWiseReportVO data : list){
-							  data.setRegisteredCadre(params[0] != null ? (Long)params[0] : 0);
-							  String percentage ="";
-							  percentage = (new BigDecimal(data.getRegisteredCadre()*(100.0)/data.getTotalVoters().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-							  data.setPercentage(percentage);
-						  }						  
-					
+							}					 						 
+							  TdpCadreLocationWiseReportVO subVO = getMatchedVO(list,(Long)params[1]);
+							  if(subVO != null){
+								  subVO.setRegisteredCadre(params[0] != null ? (Long)params[0] : 0);
+								  String percentage ="";
+								  percentage = (new BigDecimal(subVO.getRegisteredCadre()*(100.0)/subVO.getTotalVoters().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+								  subVO.setPercentage(percentage);
+							  }
+						
 				  }
 			}				
 		}
