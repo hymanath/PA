@@ -178,7 +178,8 @@ $("#userDetailsDiv").css("display","block");
   str +='<tr>';
   str +='<th>Name</th>';
   str +='<th>Mobile</th>';
- 
+  str +='<th>FromDate</th>';
+  str +='<th>ToDate</th>';
   str +='</tr>';
   for(var i in result)
   {
@@ -186,8 +187,9 @@ $("#userDetailsDiv").css("display","block");
     
     str +='<td>'+result[i].name+'</td>';
     str +='<td>'+result[i].mobileNo+'</td>';
-   
-    str +='</tr>'; 
+	 str +='<td>'+result[i].date+'</td>';
+	  str +='<td>'+result[i].toDate+'</td>';
+	  str +='</tr>'; 
   }
   str+='</table>';
 
