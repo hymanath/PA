@@ -2646,5 +2646,15 @@
  	<bean id="tabUserLoginDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.TabUserLoginDetailsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-
+<bean name="leaderCadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.LeaderCadreDashBoardService">
+     <property name="voterInfoDAO" ref="voterInfoDAO" />
+     <property name="cadreSurveyUserAssignDetailsDAO" ref="cadreSurveyUserAssignDetailsDAO" />
+     <property name="tdpCadreDAO" ref="tdpCadreDAO" />
+     <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
+	 <property name="constituencyDAO" ref="constituencyDAO" />
+	 <property name="regionServiceDataImp" ref="regionServiceDataImp" />
+	 <property name="cadreSurveyUserAssigneeDAO" ref="cadreSurveyUserAssigneeDAO" />
+	 <property name="casteCategoryDAO" ref="casteCategoryDAO" />
+	</bean>
+     
 </beans>
