@@ -735,4 +735,16 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 		return returnVO;
 	}*/
 	
+	public void test()
+	{
+		List<Object[]> list = tdpCadreDAO.getCadreCountInMinorities(282l,"constituency");
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object obj : params)
+				System.out.print("\t"+obj);
+		}
+	}
 }
