@@ -2549,19 +2549,19 @@ public Integer saveUrbanConstituencyDataType1(String prevDate,String table,Long 
 		if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
 			 str.append("select count(model.tdpCadreId),model.userAddress.constituency.constituencyId "); 
 		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
-			str.append("select count(model.tdpCadreId),model.userAddress.tehsil.tehsilId,model.userAddress.constituency.constituencyId"); 
+			str.append("select count(model.tdpCadreId),model.userAddress.tehsil.tehsilId,model.userAddress.constituency.constituencyId "); 
 		else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
-			str.append("select count(model.tdpCadreId),model.userAddress.constituency.localElectionBody.localElectionBodyId,model.userAddress.constituency.constituencyId"); 
-		 str.append("  from TdpCadre model" +
+			str.append("select count(model.tdpCadreId),model.userAddress.localElectionBody.localElectionBodyId,model.userAddress.constituency.constituencyId "); 
+		 str.append("  from TdpCadre model " +
 				" where model.isDeleted = 'N' " +
 				" and model.enrollmentYear = 2014 "); 
 		
 		 if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
-			str.append(" and model.userAddress.constituency.constituencyId in (:ids) group by model.userAddress.constituency.constituencyId");
+			str.append(" and model.userAddress.constituency.constituencyId in (:ids) group by model.userAddress.constituency.constituencyId ");
 		 else if(type.equalsIgnoreCase(IConstants.TEHSIL))
-				str.append(" and model.userAddress.tehsil.tehsilId in(:ids) group by model.userAddress.tehsil.tehsilId");
+				str.append(" and model.userAddress.tehsil.tehsilId in(:ids) and model.userAddress.localElectionBody.localElectionBodyId is null group by model.userAddress.tehsil.tehsilId ");
 		 else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
-				str.append(" and model.userAddress.localElectionBody.localElectionBodyId in (:ids) group by model.userAddress.localElectionBody.localElectionBodyId");
+				str.append(" and model.userAddress.localElectionBody.localElectionBodyId in (:ids) group by model.userAddress.localElectionBody.localElectionBodyId ");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameterList("ids", ids);
 		
@@ -2748,4 +2748,14 @@ public Integer saveUrbanConstituencyDataType1(String prevDate,String table,Long 
 		return query.list();
 	}
 	
+	public List<Object[]> getRegisteredCadreCountIn2012(List<Long> constituencyIds){
+		
+		 Query query=getSession().createQuery("select count(model.tdpCadreId),model.userAddress.constituency.constituencyId from TdpCadre model " +
+		 		" where model.isDeleted = 'N'  and model.enrollmentYear = 2012  and model.userAddress.constituency.constituencyId in (:constituencyIds) " +
+		 		" group by model.userAddress.constituency.constituencyId");
+		
+		 query.setParameterList("constituencyIds", constituencyIds);		
+		return query.list();
+	
+	}	
 }

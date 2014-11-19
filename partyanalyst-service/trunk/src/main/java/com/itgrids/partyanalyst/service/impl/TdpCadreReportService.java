@@ -133,6 +133,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			List<Object[]> tehsilVoterCount = null;
 			List<Object[]> localCadreCount = null;			
 			List<Object[]> localVoterCount = null;
+			List<Object[]> constiCadreCount2012 = null;
 			
 			List<Long> tehsilIds = new ArrayList<Long>();
 			List<Long> localbodyIds = new ArrayList<Long>();
@@ -141,7 +142,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			Map<Long,String> boothLocationMap = new HashMap<Long, String>();			
 				
 				constiCadreCount = tdpCadreDAO.getLocationWiseCount(constituencyIds,IConstants.CONSTITUENCY);
-				
+				constiCadreCount2012 = tdpCadreDAO.getRegisteredCadreCountIn2012(constituencyIds);
 				constiVoterCount = voterInfoDAO.getVotersCountInConstituencies(constituencyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
 				
 				if(constiVoterCount != null && constiVoterCount.size() > 0){
@@ -164,6 +165,17 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 							  String percentage ="";
 							  percentage = (new BigDecimal(vo.getRegisteredCadre()*(100.0)/vo.getTotalVoters().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 							  vo.setPercentage(percentage);							  
+						  }
+					}				
+				}
+				
+				if(constiCadreCount2012 != null && constiCadreCount2012.size() > 0){
+					for(Object[] params : constiCadreCount2012){					
+						TdpCadreLocationWiseReportVO vo = getMatchedVO(resultList,(Long)params[1]);
+						  if(vo != null)
+						  {
+							  vo.setCadresCount(params[0] != null ? (Long)params[0] : 0);					
+							 					  
 						  }
 					}				
 				}
@@ -245,7 +257,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					TdpCadreLocationWiseReportVO vo1 = new TdpCadreLocationWiseReportVO();
 					vo1.setId((Long)params[0]);
 					if(type.equals(IConstants.BOOTH)){
-						vo1.setName(params[1] != null ? "Part-"+params[1].toString() : "");					
+						vo1.setName(params[1] != null ? "Booth-"+params[1].toString() : "");					
 						String panchayatName = boothMap.get((Long)params[0]);
 						vo1.setLocationType(panchayatName);
 					}
