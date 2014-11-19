@@ -599,7 +599,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 			}
 			catch(Exception e)
 			{
-				
+				LOG.info("Enterd into setLocationWiseCadreCasteData() in LeaderCaderDashBoardService",e);
 			}
 		}
 		
