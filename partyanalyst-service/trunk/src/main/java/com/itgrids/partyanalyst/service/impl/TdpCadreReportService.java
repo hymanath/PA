@@ -503,10 +503,11 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					  TdpCadreLocationWiseReportVO ageRangeVO=getMatchedLocationVO(constituencyVO.getTdpCadreLocationWiseReportVOList(),tdpCadreVO.getAgeRangeId()); 
 					  ageRangeVO.setCadresInAge(tdpCadreVO.getTotalVoters());
 					 
-					  Double agePerc=(ageRangeVO.getCadresInAge()*100.0)/(ageRangeVO.getRegisteredCadre());
+					  Double agePerc=(ageRangeVO.getCadresInAge()*100.0)/(constituencyVO.getRegisteredCadre());
 					  //Round the double value to 2 decimal values.
 					   DecimalFormat df2 = new DecimalFormat("###.##");
 					   ageRangeVO.setAgePerc(Double.valueOf(df2.format(agePerc)));
+
 
 					 }
 				 }
