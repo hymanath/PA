@@ -120,7 +120,18 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 					try{
 					CadreRegAmountDetails cadreRegAmountDetails = new CadreRegAmountDetails();
 					cadreRegAmountDetails.setCadreRegAmountFile(cadreRegAmountFile);
+					if(uploadVO.getUsername().contains("w"))
+					{
+						cadreRegAmountDetails.setCadreSurveyUserId(userDAO.getUserByUsername(uploadVO.getUsername()).getUserId());
+						cadreRegAmountDetails.setRegistrationType("WEB");
+						
+					}
+					else
+					{
 					cadreRegAmountDetails.setCadreSurveyUserId(cadreSurveyUserDAO.getCadreSurveyUserByUsername(uploadVO.getUsername()).getCadreSurveyUserId());
+					cadreRegAmountDetails.setRegistrationType("TAB");
+					
+					}
 					cadreRegAmountDetails.setAmount(Long.valueOf(uploadVO.getAmount().toString()));
 					cadreRegAmountDetails.setBranch(uploadVO.getBranch());
 					cadreRegAmountDetailsDAO.save(cadreRegAmountDetails);
