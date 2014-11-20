@@ -634,6 +634,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 				String state = "";
 				CadreAmountDetailsVO basicVo = new CadreAmountDetailsVO();
 				basicVo.setId((Long)params[0]);
+				basicVo.setUserType(locationtype);
 				if(locationtype.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION))
 				basicVo.setName(params[1] != null ? params[1].toString()+ "Muncipality" : "");
 				else
@@ -671,7 +672,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 		{
 			for(Object[] params : totalRecords)
 			{
-				  CadreAmountDetailsVO vo = getMatchedVO(resultList,(Long)params[1]);
+				  CadreAmountDetailsVO vo = getMatchedVO1(resultList,(Long)params[1],locationtype);
 				  if(vo != null)
 				  {
 					  vo.setTotalRecords(params[0] != null ? (Long)params[0] : 0);
@@ -1104,10 +1105,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 			setCountForDuplicateUsers(list3,resultList,IConstants.LOCAL_ELECTION_BODY);
 			}
 			
-			if(resultList != null && resultList.size()> 0)
-			{
-				
-			}
+			
 		}
 		catch(Exception e)
 		{
@@ -1154,6 +1152,25 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 						
 						 
 					 }
+				}
+				if(constituencyIds != null && constituencyIds.size() > 0)
+				{
+					List<Object[]> list1 = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentsAndDistrictForAssembly(constituencyIds);
+					if(list != null && list.size() > 0)
+					{
+						for(Object[] params : list1)
+						{
+							CadreAmountDetailsVO vo1 = getMatchedVO(resultList,(Long)params[0]);
+							if(vo1 != null)
+							{
+								vo1.setParliamentId((Long)params[1]);
+								vo1.setParliament(params[2] != null ? params[2].toString() : "");
+								vo1.setDistrictId((Long)params[3]);
+								vo1.setDistrictName(params[4] != null ? params[4].toString() : "");
+								}
+							
+						}
+					}
 				}
 				 
 			}
