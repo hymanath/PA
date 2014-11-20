@@ -1524,28 +1524,21 @@ public List<Object[]> getCadreDetailsForSelectionByFamilyVoterId(CadrePrintInput
 	
 	public Long getWorkStartedConstituencyYearCount1(Long year,String state,Date fromDate, Date toDate,List<Long> constituencyIds){
 		StringBuilder str = new StringBuilder();
-		str.append("select count(*)  " +
-				"from TdpCadre model " +
-				"where model.enrollmentYear = :year "+
-				"and model.isDeleted = 'N' ");
+		str.append("select count(model.tdpCadreId) from TdpCadre model where model.enrollmentYear = :year and model.isDeleted = 'N' ");
+		
 		if(state.equalsIgnoreCase("TS"))
-		{
-			str.append(" and model.userAddress.district.districtId <= 10 ");
-		}
+			str.append(" and model.userAddress.constituency.district.districtId between 1 and 10 ");
 		
 		if(state.equalsIgnoreCase("AP"))
-		{
-			str.append(" and model.userAddress.district.districtId >= 11 ");
-		}
+			str.append(" and model.userAddress.constituency.district.districtId between 11 and 23 ");
 		
 		if(fromDate != null && toDate != null)
-		{
 			str.append(" and date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate  " );
-		}	
 			
 		str.append(" and model.userAddress.state.stateId = 1 ");
+		
 		if(constituencyIds != null && constituencyIds.size() > 0)
-		str.append(" and  model.userAddress.constituency.constituencyId in(:constituencyIds)  ");
+			str.append(" and  model.userAddress.constituency.constituencyId in(:constituencyIds)  ");
 		
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("year", year);
