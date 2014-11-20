@@ -267,25 +267,36 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		//toCalendar.setTime(fromCalendar.getTime());
 		//toCalendar.add(Calendar.DAY_OF_YEAR, 6);
 		
-		CadreRegisterInfo thisWeekInfo = getRegisterCount(fromCalendar.getTime(),toCalendar.getTime(),constituencyIds,districtIds);
+		//CadreRegisterInfo thisWeekInfo = getRegisterCount(fromCalendar.getTime(),toCalendar.getTime(),constituencyIds,districtIds);
 		
 		fromCalendar.setTime(currentDate);
 		fromCalendar.set(Calendar.DAY_OF_MONTH,  fromCalendar.get(Calendar.DAY_OF_MONTH)-29);
 		//fromCalendar.set(Calendar.DAY_OF_MONTH, 1);
 	    //toCalendar.set(Calendar.DAY_OF_MONTH,toCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-
+		CadreRegisterInfo info = new CadreRegisterInfo();
+		info.setApCount(0l);
+		info.setApWebCount(0l);
+		info.setApTabCount(0l);
+		info.setApOnlineCount(0l);
+		info.setTgCount(0l);
+		info.setTgWebCount(0l);
+		info.setTgTabCount(0l);
+		info.setTgOnlineCount(0l);
+		info.setTotalCount(0l);
+		info.setApPartyWebCount(0l);
+		info.setTgPartyWebCount(0l);
 	     
-	     CadreRegisterInfo thisMonthInfo = getRegisterCount(fromCalendar.getTime(),toCalendar.getTime(),constituencyIds,districtIds);
+	     //CadreRegisterInfo thisMonthInfo = getRegisterCount(fromCalendar.getTime(),toCalendar.getTime(),constituencyIds,districtIds);
 	     
 	     CadreRegisterInfo totalCadreInfo = getRegisterCount(null,null,constituencyIds,districtIds);
 	     
-	     CadreRegisterInfo newlyRegisterCadreInfo = getNewlyRegisterCount(constituencyIds,districtIds);
+	     //CadreRegisterInfo newlyRegisterCadreInfo = getNewlyRegisterCount(constituencyIds,districtIds);
 	     
 	     returnResult.add(todayInfo);
-	     returnResult.add(thisWeekInfo);
-	     returnResult.add(thisMonthInfo);
+	     returnResult.add(info);
+	     returnResult.add(info);
 	     returnResult.add(totalCadreInfo);
-	     returnResult.add(newlyRegisterCadreInfo);
+	     returnResult.add(info);
 	     
 	     return returnResult;
 	}
