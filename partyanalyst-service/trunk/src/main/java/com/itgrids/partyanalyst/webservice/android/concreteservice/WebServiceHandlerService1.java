@@ -1099,15 +1099,17 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
     public List<VoterWebServiceDataVO> voterSearchDetails(Long constituencyId,String candidateName,String voterCardId,Integer startIndex){
     	List<VoterWebServiceDataVO> returnList = new ArrayList<VoterWebServiceDataVO>();
     	List<VoterInfoVO> votersList = cadreRegistrationService.getSearchDetailsCadreRegistration(constituencyId,"voter", candidateName, voterCardId,null, 0l, 0l, null, startIndex, 30);
-    	for(VoterInfoVO voter:votersList){
-    		VoterWebServiceDataVO voterVo = new VoterWebServiceDataVO();
-    		voterVo.setVoterCardNo(voter.getVoterCardNo());
-    		voterVo.setName(voter.getName());
-    		voterVo.setRelativeName(voter.getRelativeName());
-    		voterVo.setRelation(voter.getRelationType());
-    		voterVo.setAge(voter.getAge());
-    		voterVo.setDoorNo(voter.getHouseNo());
-    		returnList.add(voterVo);
+    	if(votersList != null){
+	    	for(VoterInfoVO voter:votersList){
+	    		VoterWebServiceDataVO voterVo = new VoterWebServiceDataVO();
+	    		voterVo.setVoterCardNo(voter.getVoterCardNo());
+	    		voterVo.setName(voter.getName());
+	    		voterVo.setRelativeName(voter.getRelativeName());
+	    		voterVo.setRelation(voter.getRelationType());
+	    		voterVo.setAge(voter.getAge());
+	    		voterVo.setDoorNo(voter.getHouseNo());
+	    		returnList.add(voterVo);
+	    	}
     	}
     	return returnList;
     }

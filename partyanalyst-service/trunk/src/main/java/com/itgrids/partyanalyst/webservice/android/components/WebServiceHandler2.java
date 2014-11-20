@@ -568,17 +568,29 @@ public class WebServiceHandler2 {
 		}
 	}
 	
-	
+	@POST
+	@Path("/searchVoterDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
 	public Object voterSearchDetails(VoterWebServiceDataVO dataVO)
 	{
-		try{			
-			List<VoterWebServiceDataVO> searchResult  = webServiceHandlerService1.voterSearchDetails(dataVO.getConstituencyId(),dataVO.getName(),dataVO.getVoterCardNo(),dataVO.getPageNo()*30);
+		try{
+			if(dataVO.getConstituencyId() == null || dataVO.getConstituencyId().longValue() == 0){
+				return new ArrayList<VoterWebServiceDataVO>();
+			}
+			if(dataVO.getPageNo() == null || dataVO.getPageNo().intValue() == 0 ){
+				return new ArrayList<VoterWebServiceDataVO>();
+			}
+			if((dataVO.getName() == null || dataVO.getName().trim().length() <3) && (dataVO.getVoterCardNo() == null || dataVO.getVoterCardNo().trim().length() <3)){
+				return new ArrayList<VoterWebServiceDataVO>();
+			}
+			List<VoterWebServiceDataVO> searchResult  = webServiceHandlerService1.voterSearchDetails(dataVO.getConstituencyId(),dataVO.getName(),dataVO.getVoterCardNo(),(dataVO.getPageNo()-1)*30);
 			
 			 return searchResult;
 		}
 		catch(Exception e)
 		{
-			LOG.error("Exception Occured in storeLoginUserDetails() Method, Exception is ",e);
+			LOG.error("Exception Occured in voterSearchDetails() Method, Exception is ",e);
 			return new ArrayList<VoterWebServiceDataVO>();
 		}
 	}
