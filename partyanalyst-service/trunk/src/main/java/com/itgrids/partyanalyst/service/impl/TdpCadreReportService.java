@@ -114,7 +114,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			}
 			
 			//String path = "D:/apache-tomcat-6.0.37/webapps/PartyAnalyst/Reports";
-			String path = IConstants.STATIC_CONTENT_FOLDER_URL;
+			String path = IConstants.STATIC_CONTENT_FOLDER_URL+"VMR"+"/";
 			FileOutputStream fileOut = null;
 			String filename = "";
 			
@@ -893,28 +893,9 @@ public TdpCadreLocationWiseReportVO genereteOriginalExcelReport(TdpCadreLocation
 	   
 	    String constituencyName = constituencyReportVO1.getName();
 
-		int randomNumber = -100;
-		while(randomNumber < 0)
-		{
-			randomNumber = new Random().nextInt()*10000000;
-		}
-
-		//String path = "D:/apache-tomcat-6.0.37/webapps/PartyAnalyst/Reports";
-		//String filename1 = "abc";
-		//String pathSeperator = "/";
-		
-		//File destDir = new File(pathSeperator+filename1);
-		
-		//destDir.mkdir();
-		//String returnString = filename1+".zip";
-		 
 		Long totalRegistered = 0l;
 		Long totalVoters = 0l;
-		
-		//String filename  =  path+"/"+constituencyName+"_"+randomNumber+".xls";
-		
-		//constituencyWiseSheet = workbook.createSheet(IConstants.CONSTITUENCY);
-
+	
 		constituencyWiseSheet.addMergedRegion(new CellRangeAddress(2,2,1,5 )); // TOTAL OVERVIEW  HEADING
 		
 		HSSFRow row2 = constituencyWiseSheet.createRow((short)2);							
