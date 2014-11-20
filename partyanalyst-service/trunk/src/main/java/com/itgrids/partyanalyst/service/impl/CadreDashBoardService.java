@@ -537,13 +537,17 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					constituencyIds = constituencyDAO.getConstituenciesInADistrict(accessValue);
 
 				}
-			 tsCount = tdpCadreDAO.getWorkStartedConstituencyCount1("TS",constituencyIds);
-			 count_2012TS = tdpCadreDAO.getWorkStartedConstituencyYearCount1(2012L,"TS",null,null,constituencyIds);
+			 //tsCount = tdpCadreDAO.getWorkStartedConstituencyCount1("TS",constituencyIds);
+			 tsCount = 119l;
+			 //count_2012TS = tdpCadreDAO.getWorkStartedConstituencyYearCount1(2012L,"TS",null,null,constituencyIds);
+			 count_2012TS = 482566l;
 			 count_2014TS = tdpCadreDAO.getWorkStartedConstituencyYearCount1(2014L,"TS",null,null,constituencyIds);
 			 
-			 apCount = tdpCadreDAO.getWorkStartedConstituencyCount1("AP",constituencyIds);
+			 //apCount = tdpCadreDAO.getWorkStartedConstituencyCount1("AP",constituencyIds);
+			 apCount = 175l;
 			 
-			 count_2012AP = tdpCadreDAO.getWorkStartedConstituencyYearCount1(2012L,"AP",null,null,constituencyIds);
+			 //count_2012AP = tdpCadreDAO.getWorkStartedConstituencyYearCount1(2012L,"AP",null,null,constituencyIds);
+			 count_2012AP = 914359l;
 			 count_2014AP = tdpCadreDAO.getWorkStartedConstituencyYearCount1(2014L,"AP",null,null,constituencyIds);
 
 			 CadreRegisterInfo apVo = new CadreRegisterInfo();
