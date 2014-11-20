@@ -15,14 +15,17 @@
 <style>
  #mahilaAndYouth .selected, #mahilaAndYouth .selectedchild{background:lightblue !important;}
  #mahilaAndYouth .selected1, #mahilaAndYouth .selected1child{background: #cad5df !important;}
+ 
+ #leaderDataDiv .selected, #leaderDataDiv .selectedchild{background:lightblue !important;}
+ #leaderDataDiv .selected1, #leaderDataDiv .selected1child{background: #cad5df !important;}
 
  #leaderDataDivStatusBars .selected{background:lightblue !important;}
  #leaderDataDivStatusBars .selectedchild{background:lightblue !important;}
  #leaderDataDivStatusBars .selected1{background: #cad5df !important;}
  #leaderDataDivStatusBars .selected1child{background: #cad5df !important;}
- 
-  #CasteDataDiv .selected, #CasteDataDiv .selectedchild{background:#EA4F5A !important;}
- #CasteDataDiv .selected1, #CasteDataDiv .selected1child{background: #0BBA7C !important;}
+
+  #CasteDataDiv .selected, #CasteDataDiv .selectedchild{background:lightblue !important;}
+ #CasteDataDiv .selected1, #CasteDataDiv .selected1child{background: #cad5df !important;}
  
  table.target {
 	font: 11px/24px Verdana, Arial, Helvetica, sans-serif;
@@ -32,7 +35,8 @@
 	
 	#leaderDataDivStatusBars {margin-top:45px;}
 	#leaderDataDivStatusBars h4{margin:0px;}
-	#leaderDataDivStatusBars .progress{margin:0px;}
+	#leaderDataDivStatusBars .progress{margin:0px;height:4px !important;}
+	.percLbl{margin:4px;}
 </style>
 </head>
 <body>
@@ -72,9 +76,12 @@
 					<td></td>
 				  </tr>
 				  
-			</table>	
-                      <div><img id="ajaxImg" style="  margin-left: 345px;margin-top: 55px;width:90px;display:none;" src="images/Loading-data.gif"/></div>			
+			</table>	  
+					 <div>
+						<img id="ajaxImg" style="width:80px;display:none;margin-left:350px;margin-top:20px;" src="images/Loading-data.gif"/>
+					 </div>
 					  <div id="mahilaAndYouth"></div>
+					  <div id="leaderDataDiv"></div>
 					  <div id="leaderDataDivStatusBars"></div>
 					  <div id="constituencyDynamicDiv"></div>
 					  <div id="MandalDynamicDiv"></div>
@@ -84,7 +91,7 @@
 			</div>
 			
 		</div>
-				
+		
    </div>
    <script>
    $("#fromDate").datepicker({
@@ -102,54 +109,14 @@
 		})
 		$("#toDate").datepicker("setDate", new Date());
    
-   function closeDiv1(trID)
-   {
-	$(".selected1child").remove();
+   function closeDiv1(trID){
+		$(".selected1child").remove();
    }
-   function closeDiv(trID)
-   {
-	  
-	$(".selectedchild").remove();
+   function closeDiv(trID){
+		$(".selectedchild").remove();
    }
    
-
-
-/* function displaySublevelDetails1(id,type)
-   {
-   var scope = "";
-    $('.added1').remove('');
-	$(".removeicon1").hide();
-	$(".removeCls1").removeClass("selected1");
-	$('.clearCls1'+id).after('<tr class="selected1child"><td id="subLevel'+id+'" colspan="8" class="added1"><div><img id="ajaxImgStyle2" style="display:none;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
-	$('.clearCls1'+id).addClass("selected1");
-	$('.clearClsTD1'+id).addClass("selected1");
-	$("#ajaxImgStyle2").show();
-	$("#iconDiv1"+id).show();
-   if(type == "District")
-	   {
-	scope = "Constituency";
- 	   }
-   if(type == "Constituency")
-	   {
-	scope = "Mandal";
-	   }
-   var jObj = {
-		type : type,
-		id:id,
-		fromDate:$("#fromDate").val(),
-		toDate:$("#toDate").val(),
-		task:"subLevel"
-		}
-		 $.ajax({
-          type:'GET',
-          url: 'getSubLocationswiseleaderCadreInfoAction.action',
-         data : {task:JSON.stringify(jObj)} ,
-       }).done(function(result){
-		buildData2(result,scope,"subLevel"+id);
-		});
-   } */
-   
-   function buildData2(result,type,divId)
+   function buildSublocationInfoOfConstiYouthAndMahila(result,type,divId)
    {
 	 
 	   var str='';
@@ -321,7 +288,25 @@
 		str+='<tr id='+result[i].id+' class="removeCls clearCls'+result[i].id+'">';
 		if(type == "District")
 		//str+='<td style="width:320px;" class="removeCls clearClsTD'+result[i].id+'"><a onclick="displaySublevelDetailsForBars('+result[i].id+',\'District\');" style="cursor:pointer;">'+result[i].name+'('+ totalVoters+ ' , '+targetCadres+' , '+totalRecords+' , '+percentage+'%)</a>';
-		str+='<td style="width:800px;padding:12px;border-bottom:1px solid #cdcdcd;" class="removeCls clearClsTD'+result[i].id+'" ><a onclick="displaySublevelDetailsForBars('+result[i].id+',\'District\');" style="cursor:pointer;"><h4>'+result[i].name+' &nbsp;&nbsp; ('+percentage+'%)<span class="pull-right" style="font-size:14px;font-weight:normal;">  Voters - '+ totalVoters+ ', Target - '+targetCadres+', Acheived -  '+totalRecords+'  </span></h4></a>';
+		str+='<td style="width:800px;padding:12px;border-bottom:1px solid #cdcdcd;" class="removeCls clearClsTD'+result[i].id+'" ><a onclick="displaySublevelDetailsForBars('+result[i].id+',\'District\');" style="cursor:pointer;"><h4>'+result[i].name+'';
+		
+		if(percentage <= 20){
+						str+='<span class=" label label-important percLbl">&nbsp;&nbsp;('+percentage+'%) </span>';
+					}
+					else if(percentage > 20 && percentage <= 40){
+						str+='<span class=" label label-warning percLbl"> &nbsp;&nbsp;('+percentage+'%) </span>';
+					}
+					else if(percentage > 40 && percentage <= 60){
+						str+='<span class=" label label-info percLbl"> &nbsp;&nbsp;('+percentage+'%) </span>';
+					}
+					else if(percentage > 60 && percentage <= 80){
+						str+='<span class=" label label-info percLbl"> &nbsp;&nbsp;('+percentage+'%) </span>';
+					}
+					else{
+						str+='<span class=" label label-success percLbl"> &nbsp;&nbsp;('+percentage+'%) </span>';
+					}
+		//str+='&nbsp;&nbsp; ('+percentage+'%)';
+		str+='<span class="pull-right" style="font-size:14px;font-weight:normal;">  Voters - '+ totalVoters+ ', Target - '+targetCadres+', Acheived -  '+totalRecords+'  </span></h4></a>';
 		if(percentage <= 20){
 				   str+='<div class="progress progress-danger" style="height:10x;">';
 				}else if(percentage > 20 && percentage <= 40){
@@ -451,7 +436,27 @@
 			
 		
 			//str+='<td class="removeCls1 clearClsTD1'+result[i].id+'"><a  onclick="displaySublevelDetailsForBars1('+result[i].id+',\'Constituency\');" style="cursor:pointer;">'+result[i].name+'('+ totalVoters+ ' , '+targetCadres+' , '+totalRecords+' , '+percentage+'%)</a>';
-			str+='<td class="removeCls1 clearClsTD1'+result[i].id+'" style="padding:12px;" ><a  onclick="displaySublevelDetailsForBars1('+result[i].id+',\'Constituency\');" style="cursor:pointer;"><h4>'+result[i].name+' &nbsp;&nbsp; ('+percentage+'%)<span class="pull-right" style="font-size:14px;font-weight:normal;">  Voters - '+ totalVoters+ ', Target - '+targetCadres+', Acheived -  '+totalRecords+'  </span></h4></a>';
+			str+='<td class="removeCls1 clearClsTD1'+result[i].id+'" style="padding:12px;" ><a  onclick="displaySublevelDetailsForBars1('+result[i].id+',\'Constituency\');" style="cursor:pointer;"><h4>'+result[i].name+'';
+			
+			if(percentage <= 20){
+						str+='<span class=" label label-important percLbl">&nbsp;&nbsp;('+percentage+'%) </span>';
+					}
+					else if(percentage > 20 && percentage <= 40){
+						str+='<span class=" label label-warning percLbl"> &nbsp;&nbsp;('+percentage+'%) </span>';
+					}
+					else if(percentage > 40 && percentage <= 60){
+						str+='<span class=" label label-info percLbl"> &nbsp;&nbsp;('+percentage+'%) </span>';
+					}
+					else if(percentage > 60 && percentage <= 80){
+						str+='<span class=" label label-info percLbl"> &nbsp;&nbsp;('+percentage+'%) </span>';
+					}
+					else{
+						str+='<span class=" label label-success percLbl"> &nbsp;&nbsp;('+percentage+'%) </span>';
+					}
+					
+					
+			//str+='&nbsp;&nbsp; ('+percentage+'%)';
+			str+='<span class="pull-right" style="font-size:14px;font-weight:normal;">  Voters - '+ totalVoters+ ', Target - '+targetCadres+', Acheived -  '+totalRecords+'  </span></h4></a>';
 			if(percentage <= 20){
 				   str+='<div class="progress progress-danger" style="height:10px;">';
 				}else if(percentage > 20 && percentage <= 40){
@@ -603,7 +608,27 @@
 				} 
 				
 			  
-			  str+='<td style="padding:12px;"><h4>'+result[i].name+'  &nbsp;&nbsp;('+percentage+'%) <span class="pull-right" style="font-size:14px;font-weight:normal;">  Voters - '+ totalVoters+ ' ,Target - '+targetCadres+' ,Acheived -  '+totalRecords+'  </span></h4>';
+			  str+='<td style="padding:12px;"><h4>'+result[i].name+'';
+			  
+					if(percentage <= 20){
+						str+='<span class=" label label-important percLbl">&nbsp;&nbsp;('+percentage+'%) </span>';
+					}
+					else if(percentage > 20 && percentage <= 40){
+						str+='<span class=" label label-warning percLbl"> &nbsp;&nbsp;('+percentage+'%) </span>';
+					}
+					else if(percentage > 40 && percentage <= 60){
+						str+='<span class=" label label-info percLbl"> &nbsp;&nbsp;('+percentage+'%) </span>';
+					}
+					else if(percentage > 60 && percentage <= 80){
+						str+='<span class=" label label-info percLbl"> &nbsp;&nbsp;('+percentage+'%) </span>';
+					}
+					else{
+						str+='<span class=" label label-success percLbl"> &nbsp;&nbsp;('+percentage+'%) </span>';
+					}
+					
+					
+			  //str+='&nbsp;&nbsp;('+percentage+'%)';
+			  str+='<span class="pull-right" style="font-size:14px;font-weight:normal;">  Voters - '+ totalVoters+ ' ,Target - '+targetCadres+' ,Acheived -  '+totalRecords+'  </span></h4>';
 			  if(percentage <= 20){
 				   str+='<div class="progress progress-danger" style="height:10px;">';
 				}else if(percentage > 20 && percentage <= 40){
@@ -679,42 +704,38 @@
 	$(this).parent().find("a.btn-success").removeClass("btn-success");
 	$(this).addClass("btn-success");
 
+	
+	var stateId = 1;
+	if(state == "tg"){
+		stateId = 2;
+	}
+	
+	clearDataDivs();
+	
 	var state = $('input:radio[name=stateType]:checked').val();
 		if(divId == "targetId"){
-		    $("#leaderDataDivStatusBars").show();
-			$("#mahilaAndYouth").hide();
-			$("#leaderDataDivStatusBars").html("");
-			$("#mahilaAndYouth").html("");
-			$("#CasteDataDiv").html("");
-			$("#CasteDataDiv").hide();
 			getLocationswiseleaderCadreInfoForBars(state);
 		}
 		if(divId == "womenId"){
-		    $("#leaderDataDivStatusBars").hide();
-		    $("#mahilaAndYouth").show();
-			$("#leaderDataDivStatusBars").html("");
-			$("#mahilaAndYouth").html("");
-			$("#CasteDataDiv").html("");
-			$("#CasteDataDiv").hide();
-			getYouthAndMahilaInfo(1,'District');
+			getYouthAndMahilaInfo(stateId,"district");
 		}
 		if(divId == "communityId"){
-			$("#leaderDataDivStatusBars").hide();
-		    $("#mahilaAndYouth").hide();
-			$("#leaderDataDivStatusBars").html("");
-			$("#mahilaAndYouth").html("");
-			$("#CasteDataDiv").html("");
-			$("#CasteDataDiv").show();
-			 getCasteWiseInfo();
+			getCasteWiseInfo(stateId,"DISTRICT");
 		}
 	
    });
    
+   function clearDataDivs(){
+		$("#leaderDataDivStatusBars").html("");
+		$("#mahilaAndYouth").html("");
+		$("#CasteDataDiv").html("");
+   }
    
-   //getYouthAndMahilaInfo(1,"District");
-   function getYouthAndMahilaInfo1(id,type){
    
-	   fromDate="03-11-2014";
+   //getYouthAndMahilaInfo(1,"district");
+   function getYouthAndMahilaInfo(id,type){
+		$("#ajaxImg").show();
+	   var fromDate="03-11-2014";
 	   var toDate = new Date();
 				var dd = toDate.getDate();
 				var mm = toDate.getMonth()+1; //January is 0!
@@ -740,199 +761,260 @@
 			url: 'getLocationswiseYouthAndMahilaInfoAction.action',
 			data : {task:JSON.stringify(jObj)} ,
 		}).done(function(result){
-			buildDistrictTable(result);
+			$("#ajaxImg").hide();
+			buildYouthAndMahilaMain(result,type);
 		});
    }
-   
-   function buildDistrictTable(result){
-	var str = "";
-	str += "<table class='table table-striped table-bordered districtTable'>";
-	str += "<thead>";
-		str +="<tr>";
-			str +="<th> DISTRICT </th>";
-			str +="<th> TOTAL VOTERS</th>";
-			str +="<th> ACHIEVED </th>";
-			str +="<th> MAHILA VOTERS ACHIEVED</th>";
-			str +="<th> YOUNG VOTERS ACHIEVED</th>";
-		str +="</tr>";
-	str +="</thead>";
-	str += "<tbody>";
-		for(var i in result){
-			str +="<tr id="+result[i].id+" class='removeCls clearCls"+result[i].id+"'>";
-				str +='<td><a onclick="getSublevelsOfLocation('+result[i].id+',\'District\');" style="cursor:pointer;">'+result[i].name+'</a></td>';
-				str +="<td>"+result[i].totalVoters+"</td>";
-				str +="<td> "+result[i].totalCount+" </td>";
-				str +="<td> "+result[i].totalAmount+"</td>";
-				str +="<td> "+result[i].totalRecords+"</td>";
-			str +="</tr>";
-		}
-	str +="</tbody>";
-	$("#mahilaAndYouth").html(str);
-	$(".districtTable").dataTable({
-		"iDisplayLength": 20,
-		"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
-	});
-   }
-   
-   function getToDate(){
-		var toDate = new Date();
-				var dd = toDate.getDate();
-				var mm = toDate.getMonth()+1; //January is 0!
-				var yyyy = toDate.getFullYear();
-				if(dd<10) {
-					dd='0'+dd
-				} 
-				if(mm<10) {
-					mm='0'+mm
-				} 
-				toDate = dd+'-'+mm+'-'+yyyy;
-				return toDate;
-   }
-   
-   function getSublevelsOfDistrict(id,type){
-   
-	   var fromDate="03-11-2014";
-	   var toDate = getToDate();
-		
+
+   /* add */
+   function getCasteWiseInfo(stId,type){
+		$("#ajaxImg").show();
 		var jObj = {
-			locationType : type,
-			locationId:id,
-			fromDate:fromDate,
-			toDate:toDate,
-			task:"subLevel"
+			stateId:stId,
+			locationtype:type,
+			task:"mainLevel"
 		}
-		
 		$.ajax({
-			type:'GET',
-			url: 'getLocationswiseYouthAndMahilaInfoAction.action',
-			data : {task:JSON.stringify(jObj)} ,
+          type:'GET',
+          url: 'getLocationswiseCasteInfoAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
 		}).done(function(result){
-			console.log(result);
-			//buildDistrictTable(result);
+			$("#ajaxImg").hide();
+			buildDataForCaste(result.infoList);
 		});
    }
+
+   function buildDataForCaste(result){
    
-   function getSublevelsOfLocation(id,type){
-   var scope = "";
-    $('.added').remove('');
+	   var str='';
+		str+='<table class="table table-bordered" id="casteTable">';
+		str+='<thead>';
+		str+='<tr>';
+		str+='<th rowspan="2">District</th>';
+		
+		str+='<th rowspan="2">Total Voters</th>';
+		str+='<th rowspan="2">Registred Cadre</th>';
+		for(var i in result[0].infoList){
+			str+='<th colspan="2">'+result[0].infoList[i].casteCategory+'</th>';
+		}
+		
+		str+='</tr>';
+		str+='<tr>';
+		for(var i in result[0].infoList){
+		str+='<th>Total Cadre</th>';
+		str+='<th>%</th>';
+	   }
+		str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result){
+		str+='<tr id='+result[i].id+' class="removeCls clearCls'+result[i].id+'">';
+		
+		str+='<td class="removeCls clearClsTD'+result[i].id+'"><a onclick="displaySublevelCasteDetails('+result[i].id+',\'DISTRICT\');" style="cursor:pointer;">'+result[i].name+'</a></td>';
+		
+		str+='<td>'+result[i].totalVoters+'</td>';
+		
+		if(result[i].totalRecords==null){
+			str+='<td>-</td>'
+		}else{
+			str+='<td>'+result[i].totalRecords+'</td>';
+		}
+		for(var j in result[i].infoList) {
+			str+='<td>'+result[i].infoList[j].totalCount+'</td>';
+			if(result[i].infoList[j].percentage != null){
+				str+='<td>'+result[i].infoList[j].percentage+'% ';
+			}
+			else{
+				str+='<td> - ';
+			}
+		}
+		
+		str+='<span class="pull-right removeicon"  id="iconDiv'+result[i].id+'" onclick="closeDiv('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span></td>';
+		
+		str+='</tr>';
+	   }
+	   str+='</tbody>';
+		str+='</table>';
+		$("#CasteDataDiv").html(str);
+		$("#casteTable").dataTable({
+			         "iDisplayLength": 20,
+			          "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+			     });
+				 
+		var firstRowId = $('#casteTable tr').eq(2).attr('id');
+		
+	   displaySublevelCasteDetails(firstRowId.replace('"',''),'DISTRICT');
+	
+   }
+
+   function displaySublevelCasteDetails(id,type){
+	$('.added').remove('');
 	//$(".removeicon").hide();
 	$(".removeCls").removeClass("selected");
-	$('.clearCls'+id).after('<tr class="selectedchild"><td id="subLevel'+id+'" colspan="8" class="added"><div align="center"><img id="subLevelAjImg" style="display:none;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
+	$('.clearCls'+id).after('<tr class="selectedchild"><td id="subLevel'+id+'" colspan="14" class="added"><div align="center"><img id="ajaxImgStyle1" style="display:none;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
 	$('.clearCls'+id).addClass("selected");
-	//$('.clearClsTD'+id).addClass("selected");
-	$("#subLevelAjImg").show();
-	//$("#iconDiv"+id).show();
-	if(type == "District"){
-		scope = "Constituency";
- 	}
-	if(type == "Constituency"){
-		scope = "Mandal";
-	}
-	
-	var fromDate="03-11-2014";
-	var toDate = getToDate();
-	   
-	   
-	var jObj = {
-		locationType : type,
-		locationId:id,
-		fromDate:fromDate,
-		toDate:toDate,
+	$('.clearClsTD'+id).addClass("selected");
+	$("#ajaxImgStyle1").show();
+	$("#iconDiv"+id).show();
+	    var jObj = {
+		stateId:1,
+		locationtype:type,
+		Id:id,
 		task:"subLevel"
 		}
 		 $.ajax({
-			type:'GET',
-			url: 'getLocationswiseYouthAndMahilaInfoAction.action',
-			data : {task:JSON.stringify(jObj)} ,
-		}).done(function(result){
-			buildSubLocationData(result,scope,"subLevel"+id);
-		});
-   }
-   function buildSubLocationData(result,type,divId){
-	  var str='';
-		$("#subLevelAjImg").hide();
-		str+='<table class="table table-bordered" id="tabledata1">';
-			str+='<thead>';
-				str+='<tr>';
-					if(type == "Constituency"){
-						str+='<th>Constituency</th>';
-					}
-					else if(type == "Mandal"){
-						str+='<th>Mandal</th>';
-					}
-						str +="<th> TOTAL VOTERS</th>";
-						str +="<th> ACHIEVED </th>";
-						str +="<th> MAHILA VOTERS ACHIEVED</th>";
-						str +="<th> YOUNG VOTERS ACHIEVED</th>";
-				str+='</tr>';
-			str+='</thead>';
-			str+='<tbody>';
-				for(var i in result){
-					str+='<tr class="removeCls1 clearCls1'+result[i].id+'">';
-						if(type == "Constituency"){
-							str+='<td class="removeCls1 clearClsTD1'+result[i].id+'"><a  onclick="getSublevelsOfLocation('+result[i].id+',\'Constituency\');" style="cursor:pointer;">'+result[i].name+'</a></td>';
-						}else if(type == "Mandal"){
-						  str+='<td>'+result[i].name+'</td>';
-						}
-						str +="<td>"+result[i].totalVoters+"</td>";
-						str +="<td> "+result[i].totalCount+" </td>";
-						str +="<td> "+result[i].totalAmount+"</td>";
-						str +="<td> "+result[i].totalRecords+"</td>";
-					str+='</tr>';
-				}
-			str+='</tbody>';
-		str+='</table>';
-		$("#"+divId).html(str);
-	}
-	function getYouthAndMahilaInfo(stateId,scope){
-	
-		
-		
-		$("#errStatusDiv").html("");
-		$("#leaderDataDiv").html('');
-		
-		
-		$("#ajaxImg").show();
-		var jObj = {
-		locationType : scope,
-		locationId:stateId,
-		fromDate:"",
-		toDate:"",
-		task:"mainLevel"
-		}
-		 $.ajax({
           type:'GET',
-          url: 'getLocationswiseYouthAndMahilaInfoAction.action',
+          url: 'getSubLocationswiseCasteInfoAction.action',
          data : {task:JSON.stringify(jObj)} ,
        }).done(function(result){
-				$("#ajaxImg").hide();
-				buildData(result,scope);
+		buildDataForSublevelCaste1(result.infoList,type,"subLevel"+id);
 		});
    }
-   function buildData(result,type)
-   {
+function displaySublevelCasteDetails1(id,type){
+	$('.added1').remove('');
+	$(".removeicon1").hide();
+	$(".removeCls1").removeClass("selected1");
+	$('.clearCls1'+id).after('<tr class="selected1child"><td id="subLevel'+id+'" colspan="14" class="added1"><div><img id="ajaxImgStyle2" style="display:none;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
+	$('.clearCls1'+id).addClass("selected1");
+	$('.clearClsTD1'+id).addClass("selected1");
+	$("#iconDiv1"+id).show();
+	$("#ajaxImgStyle2").show();
+	    var jObj = {
+			stateId:1,
+			locationtype:type,
+			Id:id,
+			task:"subLevel"
+		}
+		$.ajax({
+			type:'GET',
+			url: 'getSubLocationswiseCasteInfoAction.action',
+			data : {task:JSON.stringify(jObj)} ,
+		}).done(function(result){
+			buildDataForSublevelCaste2(result.infoList,type,"subLevel"+id);
+		});
+   }
+    function buildDataForSublevelCaste2(result,type,divId){
+	  var str='';
+	  $("#ajaxImgStyle2").css("display","none");
+	   str+='<table class="table table-bordered" style="width:990px;">';
+		str+='<thead>';
+		str+='<tr>';
+		str+='<th rowspan="2">Mandal</th>';
+		
+		str+='<th rowspan="2">Total Voters</th>';
+		str+='<th rowspan="2">Registred Cadre</th>';
+		for(var i in result[0].infoList){
+			str+='<th colspan="2">'+result[0].infoList[i].casteCategory+'</th>';
+		}
+		str+='</tr>';
+		str+='<tr>';	
+			for(var i in result[0].infoList){
+				str+='<th> Cadre </th>';
+				str+='<th> % </th>';
+			}
+		str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result){
+		str+='<tr id='+result[i].id+' class="removeCls clearCls'+result[i].id+'">';
+		
+		str+='<td class="removeCls clearClsTD'+result[i].id+'">'+result[i].name+'</td>';
+		
+		str+='<td>'+result[i].totalVoters+'</td>';
+		
+		if(result[i].totalRecords==null){
+			str+='<td>-</td>'
+		}else{
+			str+='<td>'+result[i].totalRecords+'</td>';
+		}
+		for(var j in result[i].infoList){
+			str+='<td>'+result[i].infoList[j].totalCount+'</td>';
+			if(result[i].infoList[j].percentage != null){
+				str+='<td>'+result[i].infoList[j].percentage+'%';
+				str+='<span class="pull-right removeicon1"  id="iconDiv1'+result[i].id+'" onclick="closeDiv1('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span></td>';
+			}else{
+				str+='<td> - ';
+				str+='<span class="pull-right removeicon1"  id="iconDiv1'+result[i].id+'" onclick="closeDiv1('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span></td>';
+			}
+	   }
+		str+='</tr>';
+	   }
+	   str+='</tbody>';
+	   str+='</table>';
+	   $("#"+divId).html(str);
+			
+   }
+    function buildDataForSublevelCaste1(result,type,divId){
+		var str='';
+		str+='<table class="table table-bordered" id="tabledataTab1">';
+		str+='<thead>';
+		str+='<tr>';
+		str+='<th rowspan="2">Constituency</th>';
+		
+		str+='<th rowspan="2">Total Voters</th>';
+		str+='<th rowspan="2">Registred Cadre</th>';
+		for(var i in result[0].infoList){
+			str+='<th colspan="2">'+result[0].infoList[i].casteCategory+'</th>';
+		}
+		str+='<tr>';	
+			for(var i in result[0].infoList){
+				str+='<th> Cadre </th>';
+				str+='<th> % </th>';
+			}
+		str+='</tr>';
+		str+='</tr>';
+		str+='<tr>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result){
+		//str+='<tr id='+result[i].id+' class="removeCls clearCls'+result[i].id+'">';
+		str+='<tr class="removeCls1 clearCls1'+result[i].id+'">';
+		
+		
+		str+='<td class="removeCls1 clearClsTD1'+result[i].id+'"><a  onclick="displaySublevelCasteDetails1('+result[i].id+',\'Constituency\');" style="cursor:pointer;">'+result[i].name+'</a></td>';
+		
+		//str+='<td class="removeCls clearClsTD'+result[i].id+'"><a onclick="displaySublevelCasteDetails1('+result[i].id+',\'CONSTITUENCY\');" style="cursor:pointer;">'+result[i].name+'</a></td>';
+		
+		str+='<td>'+result[i].totalVoters+'</td>';
+		
+		if(result[i].totalRecords==null){
+			str+='<td>-</td>'
+		}else{
+			str+='<td>'+result[i].totalRecords+'</td>';
+		}
+		for(var j in result[i].infoList){
+			str+='<td>'+result[i].infoList[j].totalCount+'</td>';
+			if(result[i].infoList[j].percentage != null){
+				str+='<td>'+result[i].infoList[j].percentage+'%';
+			}else{
+				str+='<td> - ';
+			}
+	   }
+	   str+='<span class="pull-right removeicon1"  id="iconDiv1'+result[i].id+'" onclick="closeDiv1('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span></td>';
+		str+='</tr>';
+	   }
+	   str+='</tbody>';
+	   str+='</table>';
+	   $("#"+divId).html(str);
+   }
+   /* end */
+   
+   function buildYouthAndMahilaMain(result,type){
 	   var str='';
 		str+='<table class="table table-bordered" id="tabledataTab">';
 		str+='<thead>';
 		str+='<tr>';
-		str+='<th rowspan="2">District</th>';
-		str+='<th rowspan="2">Total Voters</th>';
-		str+='<th rowspan="2">Total Registered Cadres(%)</th>';
-		str+='<th colspan="2">Mahila Voters</th>';
-		str+='<th colspan="2">Youth Voters</th>';
-		str+='</tr>';
-		str+='<tr>';
-		str+='<th>Total Mahila Voters(%)</th>';
-		str+='<th>Total Mahila Cadres(%)</th>';
-		str+='<th>Total Youth Voters(%)</th>';
-		str+='<th>Total Youth Cadres(%)</th>';
+		str+='<th>District</th>';
+		str+='<th>Total Voters</th>';
+		str+='<th>Total Registered Cadres(%)</th>';
+		str+='<th> Registered Mahila Cadres(%)</th>';
+		str+='<th> Registered Youth Cadres(%)</th>';
 		str+='</tr>';
 		str+='</thead>';
 		str+='<tbody>';
-		for(var i in result)
-	   {
+		for(var i in result){
 		str+='<tr id='+result[i].id+' class="removeCls clearCls'+result[i].id+'">';
-		str+='<td class="removeCls clearClsTD'+result[i].id+'"><a onclick="displaySublevelDetails('+result[i].id+',\'District\');" style="cursor:pointer;">'+result[i].name+'</a></td>';
+		str+='<td class="removeCls clearClsTD'+result[i].id+'"><a onclick="getSublocationOfDistYouthAndMahila('+result[i].id+',\'District\');" style="cursor:pointer;">'+result[i].name+'</a></td>';
 		if(result[i].totalVoters != null){
 		  str+='<td>'+result[i].totalVoters+'</td>';
 		}else{
@@ -947,7 +1029,7 @@
 		  }
 		 str+='</td>';
 		}
-		if(result[i].registeredCadres==null){
+		/* if(result[i].registeredCadres==null){
 			str+='<td>-</td>'
 		}else{
 		 str+='<td>'+result[i].registeredCadres;
@@ -955,7 +1037,7 @@
 		    str+='('+result[i].percentage+'%)';
 		  }
 		 str+='</td>';
-		}
+		} */
 		if(result[i].totalAmount==null){
 			str+='<td>-</td>'
 		}else{
@@ -965,7 +1047,7 @@
 		  }
 		 str+='</td>';
 		}
-		if(result[i].targetCadres==null){
+		/* if(result[i].targetCadres==null){
 			str+='<td>-</td>'
 		}else{
 		 str+='<td>'+result[i].targetCadres;
@@ -973,7 +1055,7 @@
 		    str+='('+result[i].totalYouthPerc+'%)';
 		  }
 		 str+='</td>';
-		}
+		} */
 		if(result[i].totalRecords==null){
 			str+='<td>-</td>'
 		}else{
@@ -995,15 +1077,9 @@
 			     });
 				 
 		var firstRowId = $('#tabledataTab tr').eq(2).attr('id');		
-		//displaySublevelDetails(firstRowId.replace('"',''),'District');
+		getSublocationOfDistYouthAndMahila(firstRowId.replace('"',''),'District');
    }
-   
-   function closeDiv(trID)
-   {
-	  
-	$(".selectedchild").remove();
-   }
-   function displaySublevelDetails(id,type) {
+   function getSublocationOfDistYouthAndMahila(id,type) {
 		
     var scope = "";
     $('.added').remove('');
@@ -1032,12 +1108,12 @@
           url: 'getLocationswiseYouthAndMahilaInfoAction.action',
          data : {task:JSON.stringify(jObj)} ,
        }).done(function(result){
-		buildData1(result,scope,"subLevel"+id);
+		buildDistSublocationYouthAndMahila(result,scope,"subLevel"+id);
 		});
    }
 
 
-function displaySublevelDetails1(id,type){
+  function getSublocationOfConstiYouthAndMahila(id,type){
 	
    var scope = "";
     $('.added1').remove('');
@@ -1066,14 +1142,12 @@ function displaySublevelDetails1(id,type){
           url: 'getLocationswiseYouthAndMahilaInfoAction.action',
          data : {task:JSON.stringify(jObj)} ,
        }).done(function(result){
-			buildData2(result,scope,"subLevel"+id);
+			buildSublocationInfoOfConstiYouthAndMahila(result,scope,"subLevel"+id);
 		});
-   }
+   }  
    
-function buildData1(result,type,divId)
-   {
-	 
-	   var str='';
+	function buildDistSublocationYouthAndMahila(result,type,divId){
+	  var str='';
 	  $("#ajaxImgStyle1").css("display","none");
 	   
 		str+='<table class="table table-bordered" id="tabledata1">';
@@ -1081,22 +1155,16 @@ function buildData1(result,type,divId)
 		str+='<tr>';
 		if(type == "Constituency")
 	    {
-		  str+='<th rowspan="2">Constituency</th>';
+		  str+='<th> Constituency</th>';
 	    }
 	    else if(type == "Mandal")
 	    {
-		   str+='<th rowspan="2">Mandal</th>';
+		   str+='<th> Mandal</th>';
 	    }
-		str+='<th rowspan="2">Total Voters</th>';
-		str+='<th rowspan="2">Total Registered Cadres(%)</th>';
-		str+='<th colspan="2">Mahila Voters</th>';
-		str+='<th colspan="2">Youth Voters</th>';
-		str+='</tr>';
-		str+='<tr>';
-		str+='<th>Total Mahila Voters(%)</th>';
-		str+='<th>Total Mahila Cadres(%)</th>';
-		str+='<th>Total Youth Voters(%)</th>';
-		str+='<th>Total Youth Cadres(%)</th>';
+		str+='<th> Total Voters</th>';
+		str+='<th> Total Registered Cadres(%)</th>';
+		str+='<th> Registered Mahila Cadres(%)</th>';
+		str+='<th> Registered Youth Cadres(%)</th>';
 		str+='</tr>';
 		str+='</thead>';
 		str+='<tbody>';
@@ -1105,7 +1173,7 @@ function buildData1(result,type,divId)
 		str+='<tr class="removeCls1 clearCls1'+result[i].id+'">';
 		
 		if(type == "Constituency"){
-			str+='<td class="removeCls1 clearClsTD1'+result[i].id+'"><a  onclick="displaySublevelDetails1('+result[i].id+',\'Constituency\');" style="cursor:pointer;">'+result[i].name+'</a></td>';
+			str+='<td class="removeCls1 clearClsTD1'+result[i].id+'"><a  onclick="getSublocationOfConstiYouthAndMahila('+result[i].id+',\'Constituency\');" style="cursor:pointer;">'+result[i].name+'</a></td>';
 		}
 	   else if(type == "Mandal")
 	   {
@@ -1125,7 +1193,7 @@ function buildData1(result,type,divId)
 		  }
 		 str+='</td>';
 		}
-		if(result[i].registeredCadres==null){
+		/* if(result[i].registeredCadres==null){
 			str+='<td>-</td>'
 		}else{
 		 str+='<td>'+result[i].registeredCadres;
@@ -1133,7 +1201,7 @@ function buildData1(result,type,divId)
 		    str+='('+result[i].percentage+'%)';
 		  }
 		 str+='</td>';
-		}
+		} */
 		if(result[i].totalAmount==null){
 			str+='<td>-</td>'
 		}else{
@@ -1143,7 +1211,7 @@ function buildData1(result,type,divId)
 		  }
 		 str+='</td>';
 		}
-		if(result[i].targetCadres==null){
+		/* if(result[i].targetCadres==null){
 			str+='<td>-</td>'
 		}else{
 		 str+='<td>'+result[i].targetCadres;
@@ -1151,7 +1219,7 @@ function buildData1(result,type,divId)
 		    str+='('+result[i].totalYouthPerc+'%)';
 		  }
 		 str+='</td>';
-		}
+		} */
 		if(result[i].totalRecords==null){
 			str+='<td>-</td>'
 		}else{
@@ -1169,7 +1237,7 @@ function buildData1(result,type,divId)
    }
 
 
-   function buildData2(result,type,divId){
+   function buildSublocationInfoOfConstiYouthAndMahila(result,type,divId){
 	  var str='';
 	  $("#ajaxImgStyle2").css("display","none");
 	   
@@ -1178,22 +1246,16 @@ function buildData1(result,type,divId)
 		str+='<tr>';
 		if(type == "Constituency")
 	   {
-		str+='<th rowspan="2">Constituency</th>';
+		str+='<th>Constituency</th>';
 	   }
 	   else if(type == "Mandal")
 	   {
-		   str+='<th rowspan="2">Mandal</th>';
+		   str+='<th>Mandal</th>';
 	   }
-		str+='<th rowspan="2">Total Voters</th>';
-		str+='<th rowspan="2">Total Registered Cadres(%)</th>';
-		str+='<th colspan="2">Mahila Voters</th>';
-		str+='<th colspan="2">Youth Voters</th>';
-		str+='</tr>';
-		str+='<tr>';
-		str+='<th>Total Mahila Voters(%)</th>';
-		str+='<th>Total Mahila Cadres(%)</th>';
-		str+='<th>Total Youth Voters(%)</th>';
-		str+='<th>Total Youth Cadres(%)</th>';
+		str+='<th> Total Voters</th>';
+		str+='<th> Total Registered Cadres(%)</th>';
+		str+='<th> Registered Mahila Cadres(%)</th>';
+		str+='<th> Registered Youth Cadres(%)</th>';
 		str+='</tr>';
 		str+='</thead>';
 		str+='<tbody>';
@@ -1222,7 +1284,7 @@ function buildData1(result,type,divId)
 		  }
 		 str+='</td>';
 		}
-		if(result[i].registeredCadres==null){
+		/* if(result[i].registeredCadres==null){
 			str+='<td>-</td>'
 		}else{
 		 str+='<td>'+result[i].registeredCadres;
@@ -1230,7 +1292,7 @@ function buildData1(result,type,divId)
 		    str+='('+result[i].percentage+'%)';
 		  }
 		 str+='</td>';
-		}
+		} */
 		if(result[i].totalAmount==null){
 			str+='<td>-</td>'
 		}else{
@@ -1240,7 +1302,7 @@ function buildData1(result,type,divId)
 		  }
 		 str+='</td>';
 		}
-		if(result[i].targetCadres==null){
+		/* if(result[i].targetCadres==null){
 			str+='<td>-</td>'
 		}else{
 		 str+='<td>'+result[i].targetCadres;
@@ -1248,7 +1310,7 @@ function buildData1(result,type,divId)
 		    str+='('+result[i].totalYouthPerc+'%)';
 		  }
 		 str+='</td>';
-		}
+		} */
 		if(result[i].totalRecords==null){
 			str+='<td>-</td>'
 		}else{
@@ -1266,282 +1328,9 @@ function buildData1(result,type,divId)
 			
    }
 
-   /* add */
-   function getCasteWiseInfo()
-   {
-		
-		
-		$("#ajaxImg").show();
-	var jObj = {
-		
-		stateId:1,
-		locationtype:"DISTRICT",
-		task:"mainLevel"
-		}
-		 $.ajax({
-          type:'GET',
-          url: 'getLocationswiseCasteInfoAction.action',
-         data : {task:JSON.stringify(jObj)} ,
-       }).done(function(result){
-				$("#ajaxImg").hide();
-				buildDataForCaste(result.infoList);
-		});
-   }
-
-   function buildDataForCaste(result)
-   {
-	   var str='';
-		str+='<table class="table table-bordered" id="tabledataTab">';
-		str+='<thead>';
-		str+='<tr>';
-		
-		
-		str+='<th rowspan="2">District</th>';
-		
-		str+='<th rowspan="2">Total Voters</th>';
-		str+='<th rowspan="2">Registred Cadre</th>';
-		for(var i in result[0].infoList)
-	   {
-			str+='<th colspan="2">'+result[0].infoList[i].casteCategory+'</th>';
-			
-	   }
-		
-		str+='</tr>';
-		str+='<tr>';
-		for(var i in result[0].infoList)
-	   {
-		str+='<th>Total Cadre</th>';
-		str+='<th>%</th>';
-	   }
-		str+='</tr>';
-		str+='</thead>';
-		str+='<tbody>';
-		for(var i in result)
-	   {
-		str+='<tr id='+result[i].id+' class="removeCls clearCls'+result[i].id+'">';
-		
-		str+='<td class="removeCls clearClsTD'+result[i].id+'"><a onclick="displaySublevelCasteDetails('+result[i].id+',\'DISTRICT\');" style="cursor:pointer;">'+result[i].name+'</a></td>';
-		
-		str+='<td>'+result[i].totalVoters+'</td>';
-		
-		if(result[i].totalRecords==null){
-			str+='<td>-</td>'
-		}else{
-			str+='<td>'+result[i].totalRecords+'</td>';
-		}
-		for(var j in result[i].infoList)
-	   {
-			str+='<td>'+result[i].infoList[j].totalCount+'</td>';
-			if(result[i].infoList[j].percentage != null){
-			  if(j==result[i].infoList.length){
-			   str+='<td>'+result[i].infoList[j].percentage+' %</td><span class="pull-right removeicon"  id="iconDiv'+result[i].id+'" onclick="closeDiv('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span></td>';
-			  }else{
-			   str+='<td>'+result[i].infoList[j].percentage+' %</td>';
-			  }
-			}
-			else{
-			  if(j==result[i].infoList.length){
-			   str+='<td>-</td><span class="pull-right removeicon"  id="iconDiv'+result[i].id+'" onclick="closeDiv('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span></td>';
-			  }else{
-			  str+='<td> - </td>';
-			  }
-			}
-	   }
-		str+='';
-		str+='</tr>';
-	   }
-	   str+='</tbody>';
-		str+='</table>';
-		$("#CasteDataDiv").html(str);
-		$("#tabledataTab").dataTable({
-			         "iDisplayLength": 20,
-			          "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
-			     });
-				 
-		var firstRowId = $('#tabledataTab tr').eq(2).attr('id');
-	   displaySublevelCasteDetails(firstRowId.replace('"',''),'DISTRICT');
+   </script>
+   <script>
 	
-   }
-
-   function displaySublevelCasteDetails(id,type)
-
-   {
-	 $('.added').remove('');
-	$(".removeicon").hide();
-	$(".removeCls").removeClass("selected");
-	$('.clearCls'+id).after('<tr class="selectedchild"><td id="subLevel'+id+'" colspan="8" class="added"><div align="center"><img id="ajaxImgStyle1" style="display:none;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
-	$('.clearCls'+id).addClass("selected");
-	$('.clearClsTD'+id).addClass("selected");
-	$("#ajaxImgStyle1").show();
-	//$("#iconDiv"+id).show();
-	    var jObj = {
-		stateId:1,
-		locationtype:type,
-		Id:id,
-		task:"subLevel"
-		}
-		 $.ajax({
-          type:'GET',
-          url: 'getSubLocationswiseCasteInfoAction.action',
-         data : {task:JSON.stringify(jObj)} ,
-       }).done(function(result){
-		buildDataForSublevelCaste1(result.infoList,"subLevel"+id);
-		});
-   }
-function displaySublevelCasteDetails1(id,type)
-   {
-	  $('.added1').remove('');
-	$(".removeicon1").hide();
-	$(".removeCls1").removeClass("selected1");
-	$('.clearCls1'+id).after('<tr class="selected1child"><td id="subLevel'+id+'" colspan="8" class="added1"><div><img id="ajaxImgStyle2" style="display:none;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
-	$('.clearCls1'+id).addClass("selected1");
-	$('.clearClsTD1'+id).addClass("selected1");
-	$("#ajaxImgStyle2").show();
-	$("#iconDiv1"+id).show();
-	    var jObj = {
-		stateId:1,
-		locationtype:type,
-		Id:id,
-		task:"subLevel"
-		}
-		 $.ajax({
-          type:'GET',
-          url: 'getSubLocationswiseCasteInfoAction.action',
-         data : {task:JSON.stringify(jObj)} ,
-       }).done(function(result){
-		buildDataForSublevelCaste2(result.infoList,"subLevel"+id);
-		});
-   }
-   function buildDataForSublevelCaste2(result,rid)
-   {
-	   var str='';
-		str+='<table class="table table-bordered" id="tabledataTab1">';
-		str+='<thead>';
-		str+='<tr>';
-		
-		
-		str+='<th rowspan="2">Constituency</th>';
-		
-		str+='<th rowspan="2">Total Voters</th>';
-		str+='<th rowspan="2">Registred Cadre</th>';
-		for(var i in result[0].infoList)
-	   {
-			str+='<th colspan="2">'+result[0].infoList[i].casteCategory+'</th>';
-			
-			
-	   }
-		
-		str+='</tr>';
-		str+='<tr>';
-		for(var i in result[0].infoList)
-	   {
-		str+='<th>Total Cadre</th>';
-		str+='<th>%</th>';
-	   }
-		str+='</tr>';
-		str+='</thead>';
-		str+='<tbody>';
-		for(var i in result)
-	   {
-		str+='<tr id='+result[i].id+' class="removeCls clearCls'+result[i].id+'">';
-		
-		str+='<td class="removeCls1 clearClsTD1'+result[i].id+'"><a onclick="displaySublevelCasteDetails1('+result[i].id+',\'CONSTITUENCY\');" style="cursor:pointer;">'+result[i].name+'</a></td>';
-		
-		str+='<td>'+result[i].totalVoters+'</td>';
-		
-		if(result[i].totalRecords==null){
-			str+='<td>-</td>'
-		}else{
-			str+='<td>'+result[i].totalRecords+'</td>';
-		}
-		for(var j in result[i].infoList)
-	   {
-			str+='<td>'+result[i].infoList[j].totalCount+'</td>';
-			if(result[i].infoList[j].percentage != null){
-			  
-			   str+='<td>'+result[i].infoList[j].percentage+' %</td>';
-			  
-			}
-			else{
-			  
-			  str+='<td> - </td>';
-			  
-			}
-	   }
-		str+='</tr>';
-	   }
-	   str+='</tbody>';
-		str+='</table>';
-		$("#"+rid).html(str);
-		
-   }
-    function buildDataForSublevelCaste1(result,rid)
-   {
-	   var str='';
-		str+='<table class="table table-bordered" id="tabledataTab1">';
-		str+='<thead>';
-		str+='<tr>';
-		
-		
-		str+='<th rowspan="2">Constituency</th>';
-		
-		str+='<th rowspan="2">Total Voters</th>';
-		str+='<th rowspan="2">Registred Cadre</th>';
-		for(var i in result[0].infoList)
-	   {
-			str+='<th colspan="2">'+result[0].infoList[i].casteCategory+'</th>';
-			
-			
-	   }
-		
-		str+='</tr>';
-		str+='<tr>';
-		for(var i in result[0].infoList)
-	   {
-		str+='<th>Total Cadre</th>';
-		str+='<th>%</th>';
-	   }
-		str+='</tr>';
-		str+='</thead>';
-		str+='<tbody>';
-		for(var i in result)
-	   {
-		str+='<tr id='+result[i].id+' class="removeCls clearCls'+result[i].id+'">';
-		
-		str+='<td class="removeCls1 clearClsTD1'+result[i].id+'"><a onclick="displaySublevelCasteDetails1('+result[i].id+',\'CONSTITUENCY\');" style="cursor:pointer;">'+result[i].name+'</a></td>';
-		
-		str+='<td>'+result[i].totalVoters+'</td>';
-		
-		if(result[i].totalRecords==null){
-			str+='<td>-</td>'
-		}else{
-			str+='<td>'+result[i].totalRecords+'</td>';
-		}
-		for(var j in result[i].infoList)
-	   {
-			str+='<td>'+result[i].infoList[j].totalCount+'</td>';
-			if(result[i].infoList[j].percentage != null){
-			  if(j==result[i].infoList.length){
-			   str+='<td>'+result[i].infoList[j].percentage+' %</td><span class="pull-right removeicon1"  id="iconDiv1'+result[i].id+'" onclick="closeDiv1('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span></td>';
-			  }else{
-			   str+='<td>'+result[i].infoList[j].percentage+' %</td>';
-			  }
-			}
-			else{
-			  if(j==result[i].infoList.length){
-			   str+='<td>-</td><span class="pull-right removeicon1"  id="iconDiv1'+result[i].id+'" onclick="closeDiv1('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span></td>';
-			  }else{
-			  str+='<td> - </td>';
-			  }
-			}
-	   }
-		str+='</tr>';
-	   }
-	   str+='</tbody>';
-		str+='</table>';
-		$("#"+rid).html(str);
-		
-   }
    </script>
 </body>
 </html>
