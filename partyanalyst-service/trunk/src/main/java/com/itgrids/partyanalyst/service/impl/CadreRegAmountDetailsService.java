@@ -122,7 +122,7 @@ public class CadreRegAmountDetailsService implements ICadreRegAmountDetailsServi
 					cadreRegAmountDetails.setCadreRegAmountFile(cadreRegAmountFile);
 					if(uploadVO.getUsername().contains("w"))
 					{
-						cadreRegAmountDetails.setCadreSurveyUserId(userDAO.getUserByUsername(uploadVO.getUsername()).getUserId());
+						cadreRegAmountDetails.setCadreSurveyUserId(userDAO.getUserByUser(uploadVO.getUsername()).getUserId());
 						cadreRegAmountDetails.setRegistrationType("WEB");
 						
 					}
