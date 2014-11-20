@@ -215,18 +215,18 @@ table.dataTable tr.odd {
 				    <table class="table table-bordered border-radius-0 mb-0 membercount" style="background:#ffffff;">
 						<tbody>
 							<tr>
-								<td><div id="todayRegisCount"><img class="ajaxImgStyle" src="images/icons/search.gif"/></div></td>
-								<td><div id="thisWeekRegisCount"><img class="ajaxImgStyle" src="images/icons/search.gif"/></div></td>
-								<td><div id="monthRegisCount"><img class="ajaxImgStyle" src="images/icons/search.gif"/></div></td>
-								<td><div id="totalRegisCount"><img class="ajaxImgStyle" src="images/icons/search.gif"/></div></td>					
+								<td style="background-color:#EAEAEA"><div id="todayRegisCount" class="row-fluid offset1"><img class="ajaxImgStyle" src="images/icons/search.gif"/></div></td>
+								<!--<td><div id="thisWeekRegisCount"><img class="ajaxImgStyle" src="images/icons/search.gif"/></div></td>
+								<td><div id="monthRegisCount"><img class="ajaxImgStyle" src="images/icons/search.gif"/></div></td>-->
+								<td style="background-color:#DBF1E4"><div id="totalRegisCount" class="row-fluid offset1"><img class="ajaxImgStyle" src="images/icons/search.gif"/></div></td>					
 							</tr>
 							<tr>
 								<td class="indiEle">
-									<div id="todayApTgRegisCount" class="row-fluid">
+									<div id="todayApTgRegisCount" class="row-fluid ">
 										<img class="ajaxImgStyle" src="images/icons/search.gif"/>
 									</div>
 								</td>
-								<td class="indiEle">
+								<!--<td class="indiEle">
 									<div id="thisWeekApTgRegisCount" class="row-fluid">
 										<img class="ajaxImgStyle" src="images/icons/search.gif"/>
 									</div>
@@ -235,7 +235,7 @@ table.dataTable tr.odd {
 									<div id="monthApTgRegisCount" class="row-fluid">
 										<img class="ajaxImgStyle" src="images/icons/search.gif"/>
 									</div>
-								</td>
+								</td>-->
 								<td class="indiEle">
 									<div id="totalApTgRegisCount" class="row-fluid">
 										<img class="ajaxImgStyle" src="images/icons/search.gif"/>
@@ -448,13 +448,13 @@ $('#PreviousmembersCount').addClass('animated fadeInUp');
 $('#membersCount').addClass('animated fadeInX');
    function getDashBoardBasicInfo(){
             $("#todayRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');
-			$("#thisWeekRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');
-			$("#monthRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');
+			//$("#thisWeekRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');
+			//$("#monthRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');
 			$("#totalRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');	
 			
 			$("#todayApTgRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');				
-			$("#thisWeekApTgRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');					
-			$("#monthApTgRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');
+			//$("#thisWeekApTgRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');					
+			//$("#monthApTgRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');
 			$("#totalApTgRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');
 				
        $.ajax({
@@ -469,27 +469,32 @@ $('#membersCount').addClass('animated fadeInX');
 		    var TodayTotalWeb1 = result[0].apPartyWebCount + result[0].tgPartyWebCount;
     		var TodayTotalTab = result[0].apTabCount + result[0].tgTabCount;
     		var TodayTotalOnline =  result[0].apOnlineCount + result[0].tgOnlineCount;
-    		var WeekTotalWeb = result[1].apWebCount + result[1].tgWebCount;
+    		/*var WeekTotalWeb = result[1].apWebCount + result[1].tgWebCount;
 			var WeekTotalWeb1 = result[1].apPartyWebCount + result[1].tgPartyWebCount;
     		var WeekTotalTab = result[1].apTabCount + result[1].tgTabCount;
     		var WeekTotalOnline = result[1].apOnlineCount + result[1].tgOnlineCount;
     		var MonthTotalWeb = result[2].apWebCount + result[2].tgWebCount;
 			var MonthTotalWeb1 = result[2].apPartyWebCount + result[2].tgPartyWebCount;
     		var MonthTotalTab = result[2].apTabCount + result[2].tgTabCount;
-    		var MonthTotalOnline = result[2].apOnlineCount + result[2].tgOnlineCount;
+    		var MonthTotalOnline = result[2].apOnlineCount + result[2].tgOnlineCount;*/
     		var TotalWeb = result[3].apWebCount + result[3].tgWebCount;
 			var TotalWeb1 = result[3].apPartyWebCount + result[3].tgPartyWebCount;
     		var TotalTab = result[3].apTabCount + result[3].tgTabCount;
     		var TotalOnline = result[3].apOnlineCount + result[3].tgOnlineCount;
-    		$("#todayRegisCount").html('<h2>'+result[0].totalCount+'</h2><p>Members Registered <br/><span  style="font-weight:bold;">Today</span></p> <ul class="unstyled"> <li>  <p class="label" style="width: 60%;">Tab - '+TodayTotalTab+'</p>  </li> <li> <p class="label" style="width: 60%;">Web -'+TodayTotalWeb+'</p></li> <li> <p class="label" style="width: 60%;">Party Office -'+TodayTotalWeb1+'</p></li>    <li> <p class="label" style="width: 60%;">Online - '+TodayTotalOnline+'</p>  </li> </ul></div></td>');
-    		$("#thisWeekRegisCount").html('<h2>'+result[1].totalCount+'</h2><p>Members Registered In <br/><span style="font-weight:bold;"  class="text-orange">Last 7 Days</span></p><ul class="unstyled"> <li><p class="label" style="width: 60%;">Tab - '+WeekTotalTab+'</p></li> <li><p class="label" style="width: 60%;">Web -'+WeekTotalWeb+'</p></li><li><p class="label" style="width: 60%;">Party Office -'+WeekTotalWeb1+'</p></li><li><p class="label" style="width: 60%;">Online - '+WeekTotalOnline+'</p></li></ul></div></td>');
-    		$("#monthRegisCount").html('<h2>'+result[2].totalCount+'</h2><p>Members Registered In <br/><span style="font-weight:bold;" class="text-skyblue">Last One Month</span></p><ul class="unstyled"> <li><p class="label" style="width: 60%;">Tab - '+MonthTotalTab+'</p></li> <li><p class="label" style="width: 60%;">Web -'+MonthTotalWeb+'</p></li><li><p class="label" style="width: 60%;">Party Office -'+MonthTotalWeb1+'</p></li><li><p class="label" style="width: 60%;">Online - '+MonthTotalOnline+'</p></li></ul></div></td>');
-    		$("#totalRegisCount").html('<h2>'+result[3].totalCount+'</h2><p>Members In<br/><span style="font-weight:bold;"  class="text-green">Total</span></p><ul class="unstyled"> <li><p class="label" style="width: 60%;">Tab - '+TotalTab+'</p></li> <li><p class="label" style="width: 60%;">Web -'+TotalWeb+'</p></li><li><p class="label" style="width: 60%;">Party Office -'+TotalWeb1+'</p></li><li><p class="label" style="width: 60%;">Online - '+TotalOnline+'</p></li></ul></div></td>');	
     		
-    		$("#todayApTgRegisCount").html('<div style="cursor:pointer;background-color:#EAEAEA" class="span6 mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[0].apTabCount+'] [Web -'+result[0].apWebCount+'] <br> [PartyOffice -'+result[0].apPartyWebCount+'] [Online - '+result[0].apOnlineCount+']"><strong><span style="margin-left:10px;">  AP</span></strong><br><span style="margin-left:10px;"> '+result[0].apCount+'</span></div><div style="cursor:pointer;background-color:#EAEAEA" class="span6 text-right mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[0].tgTabCount+'] [Web -'+result[0].tgWebCount+'] <br>[PartyOffice -'+result[0].tgPartyWebCount+'] [Online - '+result[0].tgOnlineCount+']"><strong><span style="margin-right:15px;"> TS </span></strong><br/><span style="margin-right:15px;"> '+result[0].tgCount+'</span></div>');		
-    		$("#thisWeekApTgRegisCount").html('<div style="cursor:pointer;background-color:#fdedd6" class="span6 mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[1].apTabCount+'] [Web -'+result[1].apWebCount+']<br>[PartyOffice -'+result[1].apPartyWebCount+'] [Online - '+result[1].apOnlineCount+']"><strong><span style="margin-left:10px;"> AP</span></strong> <br/><span style="margin-left:10px;">'+result[1].apCount+'</span></div><div style="cursor:pointer;background-color:#fdedd6" class="span6 text-right mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[1].tgTabCount+'] [Web -'+result[1].tgWebCount+'] <br> [PartyOffice -'+result[1].tgPartyWebCount+'] [Online - '+result[1].tgOnlineCount+']"><strong><span style="margin-right:15px;"> TS </span></strong><br/> <span style="margin-right:15px;">'+result[1].tgCount+'</span></div>');					
-    		$("#monthApTgRegisCount").html('<div style="cursor:pointer;background-color:#DBEEF4" class="span6 mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[2].apTabCount+'] [Web -'+result[2].apWebCount+'] <br> [PartyOffice -'+result[2].apPartyWebCount+'] [Online - '+result[2].apOnlineCount+']"><strong><span style="margin-left:10px;"> AP</span></strong> <br/><span style="margin-left:10px;">'+result[2].apCount+'</span></div><div style="cursor:pointer;background-color:#DBEEF4" class="span6 text-right mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[2].tgTabCount+'] [Web -'+result[2].tgWebCount+'] <br> [PartyOffice -'+result[2].tgPartyWebCount+'] [Online - '+result[2].tgOnlineCount+']"><strong><span style="margin-right:15px;"> TS</span></strong><br/><span style="margin-right:15px;">'+result[2].tgCount+'</span></div>');
-    		$("#totalApTgRegisCount").html('<div style="cursor:pointer;background-color:#DBF1E4" class="mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[3].apTabCount+'] [Web -'+result[3].apWebCount+'] <br> [PartyOffice -'+result[3].apPartyWebCount+'] [Online - '+result[3].apOnlineCount+']"><strong><span style="margin-left:10px;">AP - </span></strong><span >'+result[3].apCount+'</span><span class="text-skyblue"> (NEW - '+result[4].apCount+')</span></div><div style="cursor:pointer;background-color:#DBF1E4;margin-top:2px;" class="mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[3].tgTabCount+'] [Web -'+result[3].tgWebCount+'] <br> [PartyOffice -'+result[3].tgPartyWebCount+'][Online - '+result[3].tgOnlineCount+']"><strong><span style="margin-left:10px;;margin-top:2px;">TS - </span></strong> <span >'+result[3].tgCount+'</span><span class="text-skyblue"> (NEW - '+result[4].tgCount+')</span></div>');
+			$("#todayRegisCount").html('<div class="span6"><ul class="unstyled"> <li>  <p class="label" style="width: 100%;">Tab - '+TodayTotalTab+'</p>  </li> <li> <p class="label" style="width: 100%;">Web -'+TodayTotalWeb+'</p></li> <li> <p class="label" style="width: 100%;">Party Office -'+TodayTotalWeb1+'</p></li>    <li> <p class="label" style="width: 100%;">Online - '+TodayTotalOnline+'</p>  </li> </ul></div><div class="span1"><img src="images/icons/brace.png" style="margin-top: 10px; margin-left: 5px;"></div><div class="span4"><h2>52331</h2><p>Members Registered <br><span style="font-weight:bold;">Today</span></p> </div></div></td>');
+    		
+			/*$("#thisWeekRegisCount").html('<h2>'+result[1].totalCount+'</h2><p>Members Registered In <br/><span style="font-weight:bold;"  class="text-orange">Last 7 Days</span></p><ul class="unstyled"> <li><p class="label" style="width: 60%;">Tab - '+WeekTotalTab+'</p></li> <li><p class="label" style="width: 60%;">Web -'+WeekTotalWeb+'</p></li><li><p class="label" style="width: 60%;">Party Office -'+WeekTotalWeb1+'</p></li><li><p class="label" style="width: 60%;">Online - '+WeekTotalOnline+'</p></li></ul></div></td>');
+    		$("#monthRegisCount").html('<h2>'+result[2].totalCount+'</h2><p>Members Registered In <br/><span style="font-weight:bold;" class="text-skyblue">Last One Month</span></p><ul class="unstyled"> <li><p class="label" style="width: 60%;">Tab - '+MonthTotalTab+'</p></li> <li><p class="label" style="width: 60%;">Web -'+MonthTotalWeb+'</p></li><li><p class="label" style="width: 60%;">Party Office -'+MonthTotalWeb1+'</p></li><li><p class="label" style="width: 60%;">Online - '+MonthTotalOnline+'</p></li></ul></div></td>');*/
+    		
+			$("#totalRegisCount").html('<div class="span6"><ul class="unstyled"> <li><p class="label" style="width: 100%;">Tab - '+TotalTab+'</p></li> <li><p class="label" style="width:100%;">Web -'+TotalWeb+'</p></li><li><p class="label" style="width: 100%;">Party Office -'+TotalWeb1+'</p></li><li><p class="label" style="width: 100%;">Online - '+TotalOnline+'</p></li></ul></div><div class="span1"><img src="images/icons/brace.png" style="margin-top: 10px; margin-left: 5px;"></div><div><h2>'+result[3].totalCount+'</h2><p>Members In<br/><span style="font-weight:bold;"  class="text-green">Total</span></p></div></div></td>');
+			
+			$("#todayApTgRegisCount").html('<div style="cursor:pointer;background-color:#EAEAEA;" class="span6 mytooltip text-center" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[0].apTabCount+'] [Web -'+result[0].apWebCount+'] <br> [PartyOffice -'+result[0].apPartyWebCount+'] [Online - '+result[0].apOnlineCount+']"><strong><span style="margin-left:10px;">  ANDHRA PRADEH </span></strong><br><span style="margin-left:10px;"> '+result[0].apCount+'</span></div><div style="cursor:pointer;background-color:#EAEAEA;" class="span6 text-center mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[0].tgTabCount+'] [Web -'+result[0].tgWebCount+'] <br>[PartyOffice -'+result[0].tgPartyWebCount+'] [Online - '+result[0].tgOnlineCount+']"><strong><span style="margin-right:15px;"> TELAGANA </span></strong><br/><span style="margin-right:15px;"> '+result[0].tgCount+'</span></div>');	
+    			
+    		<!--$("#thisWeekApTgRegisCount").html('<div style="cursor:pointer;background-color:#fdedd6" class="span6 mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[1].apTabCount+'] [Web -'+result[1].apWebCount+']<br>[PartyOffice -'+result[1].apPartyWebCount+'] [Online - '+result[1].apOnlineCount+']"><strong><span style="margin-left:10px;"> AP</span></strong> <br/><span style="margin-left:10px;">'+result[1].apCount+'</span></div><div style="cursor:pointer;background-color:#fdedd6" class="span6 text-right mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[1].tgTabCount+'] [Web -'+result[1].tgWebCount+'] <br> [PartyOffice -'+result[1].tgPartyWebCount+'] [Online - '+result[1].tgOnlineCount+']"><strong><span style="margin-right:15px;"> TS </span></strong><br/> <span style="margin-right:15px;">'+result[1].tgCount+'</span></div>');					
+    		<!--$("#monthApTgRegisCount").html('<div style="cursor:pointer;background-color:#DBEEF4" class="span6 mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[2].apTabCount+'] [Web -'+result[2].apWebCount+'] <br> [PartyOffice -'+result[2].apPartyWebCount+'] [Online - '+result[2].apOnlineCount+']"><strong><span style="margin-left:10px;"> AP</span></strong> <br/><span style="margin-left:10px;">'+result[2].apCount+'</span></div><div style="cursor:pointer;background-color:#DBEEF4" class="span6 text-right mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[2].tgTabCount+'] [Web -'+result[2].tgWebCount+'] <br> [PartyOffice -'+result[2].tgPartyWebCount+'] [Online - '+result[2].tgOnlineCount+']"><strong><span style="margin-right:15px;"> TS</span></strong><br/><span style="margin-right:15px;">'+result[2].tgCount+'</span></div>');-->
+    					
+			$("#totalApTgRegisCount").html('<div style="cursor:pointer;background-color:#DBF1E4" class="span6 mytooltip text-center" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[3].apTabCount+'] [Web -'+result[3].apWebCount+'] <br> [PartyOffice -'+result[3].apPartyWebCount+'] [Online - '+result[3].apOnlineCount+']"><strong><span style="margin-left:10px;">ANDHRA PRADESH  </span></strong><br><span >'+result[3].apCount+'</span><span class="text-skyblue"></span></div><div style="cursor:pointer;background-color:#DBF1E4;margin-top:2px;" class="span6 mytooltip text-center" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[3].tgTabCount+'] [Web -'+result[3].tgWebCount+'] <br> [PartyOffice -'+result[3].tgPartyWebCount+'][Online - '+result[3].tgOnlineCount+']"><strong><span style="margin-left:10px;;margin-top:2px;">TELANGANA </span></strong> <br><span >'+result[3].tgCount+'</span><span class="text-skyblue"> </span></div>');
     		$('.mytooltip').tooltip();					
 	   });
    }
