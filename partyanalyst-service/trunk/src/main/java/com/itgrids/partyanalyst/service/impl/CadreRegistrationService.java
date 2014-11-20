@@ -1306,51 +1306,49 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						   userId = cadreRegistrationVO.getCreatedUserId().toString();
 						}
 						String ref = getReferenceNo(userId,registrationType);
-						synchronized (CadreRegistrationService.class) {
+						
 							if(tdpCadre.getRefNo() == null || tdpCadre.getRefNo().trim().length() == 0){
 							  ref = getUniueRefNo(ref,registrationType);
 							  tdpCadre.setRefNo(ref);
 							}
 							cadreRegistrationVO.setRefNo(tdpCadre.getRefNo());
-							if(userAddress.getDistrict() != null)
-							{
-								if(tdpCadre.getMemberShipNo() == null || tdpCadre.getMemberShipNo().trim().length() == 0){
-								  String membershipNo = getMemberShipNo(userAddress.getDistrict().getDistrictId());
-								  tdpCadre.setMemberShipNo(membershipNo);
-								}
-							}
+							
 							
 							surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
-							uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
+							//uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
 							  tdpCadre1 = tdpCadreDAO.save(tdpCadre);	
-						}
+						
 					}else if(registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE")) && !insertType.equalsIgnoreCase("new")){
 						surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
 						tdpCadre1 = tdpCadreDAO.save(tdpCadre);	
 				    }else{
 					  if(insertType.equalsIgnoreCase("new")){
-						  synchronized (CadreRegistrationService.class) {
+						 
 						     tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
-						     if(userAddress.getDistrict() != null)
-						     {
-						    	 if(tdpCadre.getMemberShipNo() == null || tdpCadre.getMemberShipNo().trim().length() == 0){
-						    	 	String membershipNo = getMemberShipNo(userAddress.getDistrict().getDistrictId());
-							        tdpCadre.setMemberShipNo(membershipNo);
-						    	 }
-						     }
+						     
 						       
 								surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
-								uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
+								//uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
 								  tdpCadre1 = tdpCadreDAO.save(tdpCadre);	
-						  }
+						  
 					  }else{
 						  //tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
-						  uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
+						  //uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
 						  surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
 						  
 						    tdpCadre1= tdpCadreDAO.save(tdpCadre);	
 					  }
 					}
+					   if(tdpCadre1.getMemberShipNo() == null || tdpCadre1.getMemberShipNo().trim().length() == 0){
+						   Long distId =1l;
+						   if(userAddress.getDistrict() != null){
+							   distId = userAddress.getDistrict().getDistrictId();
+						   }
+						  String membershipNo = getMemberShipNo(distId,tdpCadre1.getTdpCadreId());
+						  tdpCadre1.setMemberShipNo(membershipNo);
+						}
+					   uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre1);
+					   tdpCadre1 = tdpCadreDAO.save(tdpCadre1);
 					surveyCadreResponceVO.setEnrollmentNumber(tdpCadre1.getRefNo());
 					List<CadrePreviousRollesVO> previousRollesPartList = cadreRegistrationVO.getPreviousRollesList();
 					if(previousRollesPartList != null && previousRollesPartList.size() > 0)
@@ -3275,8 +3273,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	public String getRandomNo(){
 		String number ="";
 		Random randomNum = new Random();
-		number = number+randomNum.nextInt(999999);
-		if(number.length()<6){
+		number = number+randomNum.nextInt(99999999);
+		if(number.length()<8){
 			for(int i=number.length();i<6;i++){
 				number="0"+number;
 			}
@@ -3306,14 +3304,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	
 	public String getUniueRefNo(String ref,String dataSource){
 		String randomNo = null;
-		while(true){
-			 randomNo = ref+getRandomNo();
-			Long count = tdpCadreDAO.checkRandomNoExistsOrNot(dataSource, randomNo);
-			if(count.longValue() == 0l){
-				break;
-			}
-			
-		}
+		
+	    randomNo = ref+getRandomNo();
 		
 		return randomNo;
 	}
@@ -3682,20 +3674,13 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return returnMessage; 
 	}
 	
-	private String getMemberShipNo(Long districtId){
+	private String getMemberShipNo(Long districtId,Long id){
 		String memberShipNo ="AP14";
 		if(districtId != null && districtId.longValue() < 11l){
 			memberShipNo = "TS14";
 		}
-		String randomNo = "";
-		while(true){
-			randomNo = memberShipNo+RandomNumberGeneraion.randomGenerator(8);
-			Long count = tdpCadreDAO.checkMemberShipExistsOrNot(randomNo);
-			if(count.longValue() == 0l){
-				break;
-			}
-			
-		}
+		String randomNo = memberShipNo+"0"+id;
+		
 		return randomNo;
 	}
 	
