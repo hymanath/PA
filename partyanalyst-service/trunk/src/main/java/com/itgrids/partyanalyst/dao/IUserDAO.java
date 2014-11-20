@@ -137,5 +137,5 @@ public interface IUserDAO extends GenericDao<User,Long>{
 	//public String checkInfoManagerOrNot(Long userId);
 	public List<Object[]> getAllWebMonitoringUsersDetails(String entitlement);
 
-	
+	public User getUserByUser(String userName);
 }
