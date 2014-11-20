@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -15,7 +16,7 @@ import com.itgrids.partyanalyst.service.ITdpCadreReportService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class TdpCadreReportAction extends ActionSupport {
+public class TdpCadreReportAction extends ActionSupport implements ServletRequestAware{
 
 	private static final Logger LOG = Logger.getLogger(TdpCadreReportAction.class);
 	
@@ -109,5 +110,51 @@ public class TdpCadreReportAction extends ActionSupport {
 		return Action.SUCCESS;
 	}
 	
+	public String memberShipCardReportStatus()
+	{
+		try
+		{
+		  HttpSession session=request.getSession();
+		  RegistrationVO regVO=(RegistrationVO)session.getAttribute("USER");
+		  if(regVO==null)
+			return Action.INPUT;
+		
+		}
+		catch(Exception e)
+		{
+			LOG.info("Entered into memberShipCardReportStatus() in getLocationWiseDetailsForExcelReport class");
+		}
+		return Action.SUCCESS;
+	}
+	public String getMemberShipCardDetails()
+	{
+		try
+		{
+		    jobj = new JSONObject(getTask());
+		    Long districtId=jobj.getLong("district");
+			String constiIds       = jobj.getString("constituencyIds");
+			List<Long> constituencyIdsList = new ArrayList<Long>();
+			String[] constituency       = constiIds.split(",");
+			for (String cosntituencyId : constituency) 
+			{
+				cosntituencyId = cosntituencyId.trim().replace("[","").replace("]", "").trim(); 
+						
+				if(cosntituencyId.trim().length()>0)
+				{
+					constituencyIdsList.add(Long.valueOf(cosntituencyId));
+				}
+				
+			}
+			String fromDate=jobj.getString("fromDate");
+			String  toDate=jobj.getString("toDate");
+		Object o=	tdpCadreReportService.getMemberShipCardDetails(districtId,constituencyIdsList,fromDate,toDate);
+		}
+		catch(Exception e)
+		{
+			LOG.info("Entered into getMemberShipCardDetails() in getLocationWiseDetailsForExcelReport class");
+		}
+	
+		return Action.SUCCESS;	
+	}
 	
 }
