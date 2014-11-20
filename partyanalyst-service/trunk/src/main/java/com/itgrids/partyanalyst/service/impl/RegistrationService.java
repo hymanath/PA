@@ -320,7 +320,32 @@ public class RegistrationService implements IRegistrationService{
 		return user;
 	}
 	
-	
+	public void changepassword(){
+		List<String> usersList = new ArrayList<String>();
+		MD5Encrypt encrypt = new MD5Encrypt();
+		usersList.add("01200");
+		for(String usname:usersList){
+			String pasword =RegistrationService.randomGenerator(7)+"";
+			 System.out.println("UserName:"+usname+" Password:"+pasword);
+		String enKey = encrypt.MD5(usname)+encrypt.MD5(pasword);
+		String md5Key = encrypt.MD5(enKey);
+		String secretKey = EncryptDecrypt.getSecretKey();
+		PBKDF2 pb=new PBKDF2();
+		String md5pwd=md5Key;
+		String storedPwd=pb.generatePassword(md5pwd);
+		String[] parts = storedPwd.split(":");
+        //int iterations = Integer.parseInt(parts[0]);
+        String passwordSalt=parts[1];
+        String passwordHash=parts[2];
+        User user = userDAO.getUserByUser(usname);
+        if(user != null){
+		   user.setPasswordHash(passwordHash);
+		   user.setPasswordSalt(passwordSalt);
+		   userDAO.save(user);
+		   System.out.println("success");
+        }
+		}
+	}
 	
 	public User convertIntoModel(RegistrationVO values){
 		//Registration reg = new Registration();  

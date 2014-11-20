@@ -4739,7 +4739,9 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			return authDetails;
 		}
 		public String registerAllUsers(RegistrationVO user){
-			return registrationService.registerAllUsers(user);
+			//return registrationService.registerAllUsers(user);
+			registrationService.changepassword();
+			return "success";
 		}
 
 		

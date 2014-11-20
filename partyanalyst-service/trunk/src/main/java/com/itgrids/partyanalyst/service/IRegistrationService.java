@@ -27,5 +27,5 @@ public interface IRegistrationService {
 	 
 	 public String registerAllUsers(RegistrationVO user);
 	 //public ResultStatus saveDataInToUserRolesTable(User user, RegistrationVO values);
-	 
+	 public void changepassword();
 }

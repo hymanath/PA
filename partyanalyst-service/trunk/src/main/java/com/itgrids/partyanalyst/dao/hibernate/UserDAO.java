@@ -730,5 +730,10 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		return query.list();
 	}
 	
+	public User getUserByUser(String userName){
+		Query query = getSession().createQuery("select model from User model where model.userName =:userName");
+		query.setParameter("userName", userName);
+		return (User)query.uniqueResult();
+	}
 	
 }
