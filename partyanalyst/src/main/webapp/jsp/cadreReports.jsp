@@ -351,7 +351,7 @@
 	   {
 	scope = "Mandal";
 	   }
-	   fromDate="03-11-2014";
+	   fromDate="15-10-2014";
 	   var toDate = new Date();
 				var dd = toDate.getDate();
 				var mm = toDate.getMonth()+1; //January is 0!
@@ -522,7 +522,7 @@
  	}if(type == "Constituency"){
 		scope = "Mandal";
 	  }
-	   fromDate="03-11-2014";
+	   fromDate="15-10-2014";
 	   var toDate = new Date();
 				var dd = toDate.getDate();
 				var mm = toDate.getMonth()+1; //January is 0!
@@ -735,7 +735,7 @@
    //getYouthAndMahilaInfo(1,"district");
    function getYouthAndMahilaInfo(id,type){
 		$("#ajaxImg").show();
-	   var fromDate="03-11-2014";
+	   var fromDate="15-10-2014";
 	   var toDate = new Date();
 				var dd = toDate.getDate();
 				var mm = toDate.getMonth()+1; //January is 0!
