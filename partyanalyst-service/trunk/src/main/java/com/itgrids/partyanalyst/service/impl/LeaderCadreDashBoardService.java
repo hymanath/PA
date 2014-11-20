@@ -597,9 +597,8 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 				}
 			}
 			}
-			catch(Exception e)
-			{
-				LOG.info("Enterd into setLocationWiseCadreCasteData() in LeaderCaderDashBoardService",e);
+			catch(Exception e){
+					LOG.error("Exception Raised in setLocationWiseCadreCasteData()" + e);
 			}
 		}
 		
@@ -1327,7 +1326,16 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 		
 		//0 count 1Id
 		       //getting total cadres register in location
-				List<Object[]> totalRecords = tdpCadreDAO.getTotalRecords(ids,locationtype,fromDate,toDate);
+				List<Object[]> totalRecords = new ArrayList<Object[]>();
+				
+				if(locationtype.equalsIgnoreCase("constituency")){
+					totalRecords = tdpCadreDAO.getTotalRecordsForALocation(ids,locationtype,fromDate,toDate);
+				}else{
+					totalRecords = tdpCadreDAO.getTotalRecords(ids,locationtype,fromDate,toDate);
+				}
+					
+					
+					
 				for(Object[] total:totalRecords){
 					CadreAmountDetailsVO location = locationsMap.get((Long)total[1]);
 					if(location != null){
