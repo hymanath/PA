@@ -180,6 +180,7 @@ table.dataTable tr.odd {
 		
 		<!-- Members Registered Previous Row -->
 		<div class="row-fluid " id="PreviousmembersCount">
+		  <c:if test="${fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) }"> 
 			<div class="span12 show-grid well well-small border-radius-0 mb-10">
 				    <table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" >
 						<tbody>
@@ -188,8 +189,8 @@ table.dataTable tr.odd {
 									<h2>TS</h2>
 									<img class="pull-right" src="images/TS.png" style="margin-top: -40px;">
 								</td>
-								<td><div id="tsConstiCountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
-								<td><div id="ts2012CountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
+								<td><div id="tsConstiCountId"><h2>119</h2><p>Registration Started Constituencies</p></div></td>
+								<td><div id="ts2012CountId"><h2>482566</h2><p>Members Registered in<br><span class="text-red">2012</span></p></div></td>
 								<td><div id="ts2014CountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
 								<td><div id="tsPercCountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
 							</tr>
@@ -198,8 +199,8 @@ table.dataTable tr.odd {
 									<h2>AP</h2>
 									<img class="pull-right" src="images/AP.png" style="margin-top: -40px;">
 								</td>
-								<td><div id="apConstiCountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
-								<td><div id="ap2012CountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
+								<td><div id="apConstiCountId"><h2>175</h2><p>Registration Started Constituencies</p></div></td>
+								<td><div id="ap2012CountId"><h2>914359</h2><p>Members Registered in<br><span class="text-red">2012</span></p></div></td>
 								<td><div id="ap2014CountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
 								<td><div id="apPercCountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>	
 							</tr>
@@ -207,6 +208,7 @@ table.dataTable tr.odd {
 						</tbody>
 					</table>
 			</div>
+		  </c:if>
 		</div><!-- Members Registered Previous Row -->
 		
 		<!-- Members Count Row -->
@@ -223,7 +225,7 @@ table.dataTable tr.odd {
 							<tr>
 								<td class="indiEle">
 									<div id="todayApTgRegisCount" class="row-fluid ">
-										<img class="ajaxImgStyle" src="images/icons/search.gif"/>
+										<img class="ajaxImgStyle" style="margin-left:10px;" src="images/icons/search.gif"/>
 									</div>
 								</td>
 								<!--<td class="indiEle">
@@ -447,15 +449,21 @@ $('#fadeInUp1').addClass('animated fadeInUp');
 $('#PreviousmembersCount').addClass('animated fadeInUp');
 $('#membersCount').addClass('animated fadeInX');
    function getDashBoardBasicInfo(){
-            $("#todayRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');
+            $("#todayRegisCount").html('<img class="ajaxImgStyle" style="margin-left:145px;" src="images/icons/search.gif"/>');
 			//$("#thisWeekRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');
 			//$("#monthRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');
-			$("#totalRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');	
+			$("#totalRegisCount").html('<img class="ajaxImgStyle" style="margin-left:145px;" src="images/icons/search.gif"/>');	
 			
-			$("#todayApTgRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');				
+			$("#todayApTgRegisCount").html('<img class="ajaxImgStyle" style="margin-left:180px;" src="images/icons/search.gif"/>');				
 			//$("#thisWeekApTgRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');					
 			//$("#monthApTgRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');
-			$("#totalApTgRegisCount").html('<img class="ajaxImgStyle" src="images/icons/search.gif"/>');
+			$("#totalApTgRegisCount").html('<img class="ajaxImgStyle" style="margin-left:180px;"  src="images/icons/search.gif"/>');
+			
+			$("#ts2014CountId").html('<img class="imgStyle" src="images/icons/search.gif"/>');
+			$("#tsPercCountId").html('<img class="imgStyle" src="images/icons/search.gif"/>');
+						
+			$("#ap2014CountId").html('<img class="imgStyle" src="images/icons/search.gif"/>');
+			$("#apPercCountId").html('<img class="imgStyle" src="images/icons/search.gif"/>');	
 				
        $.ajax({
           type:'GET',
@@ -495,7 +503,11 @@ $('#membersCount').addClass('animated fadeInX');
     		<!--$("#monthApTgRegisCount").html('<div style="cursor:pointer;background-color:#DBEEF4" class="span6 mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[2].apTabCount+'] [Web -'+result[2].apWebCount+'] <br> [PartyOffice -'+result[2].apPartyWebCount+'] [Online - '+result[2].apOnlineCount+']"><strong><span style="margin-left:10px;"> AP</span></strong> <br/><span style="margin-left:10px;">'+result[2].apCount+'</span></div><div style="cursor:pointer;background-color:#DBEEF4" class="span6 text-right mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[2].tgTabCount+'] [Web -'+result[2].tgWebCount+'] <br> [PartyOffice -'+result[2].tgPartyWebCount+'] [Online - '+result[2].tgOnlineCount+']"><strong><span style="margin-right:15px;"> TS</span></strong><br/><span style="margin-right:15px;">'+result[2].tgCount+'</span></div>');-->
     					
 			$("#totalApTgRegisCount").html('<div style="cursor:pointer;background-color:#DBF1E4" class="span6 mytooltip text-center" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[3].apTabCount+'] [Web -'+result[3].apWebCount+'] <br> [PartyOffice -'+result[3].apPartyWebCount+'] [Online - '+result[3].apOnlineCount+']"><strong><span style="margin-left:10px;">ANDHRA PRADESH  </span></strong><br><span >'+result[3].apCount+'</span><span class="text-skyblue"></span></div><div style="cursor:pointer;background-color:#DBF1E4;margin-top:2px;" class="span6 mytooltip text-center" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[3].tgTabCount+'] [Web -'+result[3].tgWebCount+'] <br> [PartyOffice -'+result[3].tgPartyWebCount+'][Online - '+result[3].tgOnlineCount+']"><strong><span style="margin-left:10px;;margin-top:2px;">TELANGANA </span></strong> <br><span >'+result[3].tgCount+'</span><span class="text-skyblue"> </span></div>');
-    		$('.mytooltip').tooltip();					
+    		$('.mytooltip').tooltip();
+			$("#ts2014CountId").html('<h2>'+result[3].tgCount+'</h2><p>Members Registered in<br/><span class="text-green">2014</span></p></div></td>');
+            $("#ap2014CountId").html('<h2>'+result[3].apCount+'</h2><p>Members Registered in<br/><span class="text-green">2014</span></p></div></td>');
+            $("#tsPercCountId").html('<h2>'+parseInt((result[3].tgCount)*100/482566)+'%</h2><p>Members In <br/><span class="text-orange">Total </span></p></div></td>');
+            $("#apPercCountId").html('<h2>'+parseInt((result[3].apCount)*100/914359)+'%</h2><p>Members In <br/><span class="text-orange">Total </span></p></div></td>');			
 	   });
    }
   
@@ -1397,7 +1409,7 @@ $('#membersCount').addClass('animated fadeInX');
 		
 		
 		}
-       getWorkStartedConstituencyCount();
+       //getWorkStartedConstituencyCount();
 	   getRecentlyRegisteredCadresInfo(strIndex,false);
 	   getDashBoardBasicInfo();
 	   getWorkingMembersInfo();
@@ -2291,8 +2303,6 @@ function SortByName(a, b){
 		  getLocationswiseleaderCadreInfo2(3,"Constituency",1,"#leaderDataDiv2","today");
 		  getLocationswiseleaderCadreInfo2(2,"District",1,"#leaderDataDiv1","today");
 	  </c:if>
-	  
-	  
 	    <c:if test="${ not fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) }"> 
 		getDistrictWiseCompletedPercentage(0,1);
 		getAssemblyWiseCompletedPercentage(0,1);
