@@ -247,9 +247,8 @@ table.dataTable tr.odd {
 			</div>
 		</div><!-- Members Count Row End -->
 		
-		
+		 <c:if test="${not fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) }"> 
 		<div class="row-fluid">
-			<!-- Constituency wise Registration Processing Areas Row -->
 			<div class="span6 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
 				<div class="btn-group pull-right">
 					<a class="btn btn-mini btn-success apele" href="javascript:{}" id="apConstiDetailsId" onclick="getAssemblyWiseCompletedPercentage(0,1);">AP</a>
@@ -266,9 +265,8 @@ table.dataTable tr.odd {
 				<div id="constituencyWiseSelDivRes" class="height-300 scrollable_div" style="min-height:320px;"> 
 					<img style="margin-left: 180px;margin-top: 101px;" src="images/icons/loading.gif"/>
 				</div>
-			</div><!-- Constituency wise Registration Processing Areas Row END-->
+			</div>
 			
-			<!-- District wise Registration Processing Areas ROW -->
 			<div class="span6  show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:20px;min-height:452px;">
 				<div class="btn-group pull-right">
 					<a class="btn btn-mini btn-success apele" href="javascript:{}" id="apDistDetailsId" onclick="getDistrictWiseCompletedPercentage(0,1);">AP</a>
@@ -286,9 +284,59 @@ table.dataTable tr.odd {
 					<img style="margin-left: 180px;margin-top: 101px;" src="images/icons/loading.gif"/>
 				</div>
 				
-			</div>	<!-- District wise Registration Processing Areas ROW -->		
+			</div>			
 		</div>
-		
+		</c:if>
+		 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) }"> 
+		<div class="row-fluid">
+			<div class="span6 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
+				<h4> Constituency Target VS Registered Cadre  <i class="icon-refresh refreshCon" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i>
+				<!--
+				<i class="icon-info-sign" onClick="popUpForInformation()" title="Click To View the Color Code Information" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i>
+				-->
+				</h4>
+			
+				<div style="padding:5px;">
+					<input type="radio" class="typeRd" id="todayCId" name="compareC" value="today" checked="true" style="margin-top:0px;"/><span style="margin-right:10px;"> TODAY</span>
+					<input type="radio" class="typeRd" id="asOfNowCId" name="compareC" value="asoftoday" style="margin-top:0px;"/><span style="margin-right:10px;"> AS OF TODAY </span>
+					<input type="radio" class="typeRd" id="overAllCId" name="compareC" value="overall" style="margin-top:0px;"/><span style="margin-right:10px;"> OVER ALL </span>
+					
+					<div class="btn-group pull-right">
+					<input type="button" class="btn btn-mini btn-success apele" value="AP" name="constTargetBtn" id="apConstTargetComp" checked="checked">AP</input>
+					<input type="button" class="btn btn-mini tsele" value="TS" name="constTargetBtn" id="tgConstTargetComp" >TS</input>
+				</div>
+				</div>
+				<div id="leaderDataDiv2smry" style="margin-left:-30px;"  class="m_top10"></div>
+				<div id="leaderDataDiv2" class="height-300 scrollable_div" style="margin-top: -1px">
+					<img style="margin-left: 180px;margin-top: 101px;" id="ajaxImgStyle" src="images/icons/loading.gif"/>
+				</div>
+			</div>
+			
+			<div class="span6 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:20px;" >
+				<h4> District  Target Vs Registered Cadre  <i class="icon-refresh refreshDist" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i>
+				<!--
+				<i class="icon-info-sign" onClick="popUpForInformation()" title="Click To View the Color Code Information" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i>
+				
+				-->
+				</h4>
+				
+				<div style="padding:5px;">
+					<input type="radio" class="typeRd" id="todayDId" name="compareD" value="today" checked="true" style="margin-top:0px;"/><span style="margin-right:10px;"> TODAY</span>
+					<input type="radio" class="typeRd" id="asOfNowDId" name="compareD" value="asoftoday" style="margin-top:0px;"/><span style="margin-right:10px;"> AS OF TODAY</span>
+					<input type="radio" class="typeRd" id="overAllDId" name="compareD" value="overall" style="margin-top:0px;"/><span style="margin-right:10px;"> OVER ALL</span>
+					
+					<div class="btn-group pull-right">
+					<input type="button" value="AP" class="btn btn-mini btn-success apele" name="distTargetBtn" id="apDistTargetComp" checked="checked">AP</input>
+					<input type="button" value="TS" class="btn btn-mini tsele" name="distTargetBtn" id="tgDistTargetComp">TS</input>
+				</div>
+				</div>
+				<div id="leaderDataDiv1smry" style="margin-left:-30px;"  class="m_top10"></div>
+				<div id="leaderDataDiv1" class="height-300 scrollable_div" style="margin-top: -1px">
+					<img style="margin-left: 180px;margin-top: 101px;" id="ajaxImgStyle" src="images/icons/loading.gif"/>
+				</div>
+			</div>
+		</div>
+		</c:if>
 		<div class="row-fluid fadeInUp">
 			<div class="span5 show-grid well well-small border-radius-0 mb-10" style=" min-height: 345px;">
 				<!--<iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d3929013.1516925395!2d79.7399875!3d15.912899799999996!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1412166071097" width="580" height="300" frameborder="0" style="border:0"></iframe>-->
@@ -331,7 +379,7 @@ table.dataTable tr.odd {
 			</div>
 			
 			<!-- ReCently Registered Block -->
-			<div class="span7 show-grid well well-small border-radius-0 pad-0" style="margin-left:20px;min-height:345px;">
+			<div class="span7 show-grid well well-small border-radius-0 pad-0" style="margin-left:20px;min-height:370px;">
 				<h4 style="padding :10px"><i class="icon-user" style="margin-top: 4px;"></i> &nbsp;Recently Registered <i class="icon-refresh" style="margin-top: 4px;margin-left:10px;cursor:pointer;" onclick="getRecentlyRegisteredCadresInfo(0,true);"></i> </h4>
 				<div id="recentRegisterCadresDiv" style="margin-top:15px;"><img style="margin-top:180px;margin-left: 124px;" src="images/icons/loading.gif"/></div>
 					
@@ -339,47 +387,7 @@ table.dataTable tr.odd {
 		</div>
 		
 		
-		<div class="row-fluid">
-			<div class="span6 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
-				<h4> Constituency Target VS Registered Cadre  <i class="icon-refresh refreshCon" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i>
-				<i class="icon-info-sign" onClick="popUpForInformation()" title="Click To View the Color Code Information" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i></h4>
-			
-				<div style="padding:5px;">
-					<input type="radio" class="typeRd" id="todayCId" name="compareC" value="today" checked="true" style="margin-top:0px;"/><span style="margin-right:10px;"> TODAY</span>
-					<input type="radio" class="typeRd" id="asOfNowCId" name="compareC" value="asoftoday" style="margin-top:0px;"/><span style="margin-right:10px;"> AS OF TODAY </span>
-					<input type="radio" class="typeRd" id="overAllCId" name="compareC" value="overall" style="margin-top:0px;"/><span style="margin-right:10px;"> OVER ALL </span>
-					
-					<div class="btn-group pull-right">
-					<input type="button" class="btn btn-mini btn-success apele" value="AP" name="constTargetBtn" id="apConstTargetComp" checked="checked">AP</input>
-					<input type="button" class="btn btn-mini tsele" value="TS" name="constTargetBtn" id="tgConstTargetComp" >TS</input>
-				</div>
-				</div>
-				<div id="leaderDataDiv2smry" style="margin-left:-20px;"></div>
-				<div id="leaderDataDiv2" class="height-300 scrollable_div">
-					<img style="margin-left: 180px;margin-top: 101px;" id="ajaxImgStyle" src="images/icons/loading.gif"/>
-				</div>
-			</div>
-			
-			<div class="span6 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:20px;" >
-				<h4> District  Target Vs Registered Cadre  <i class="icon-refresh refreshDist" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i>
-				<i class="icon-info-sign" onClick="popUpForInformation()" title="Click To View the Color Code Information" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i></h4>
-				
-				<div style="padding:5px;">
-					<input type="radio" class="typeRd" id="todayDId" name="compareD" value="today" checked="true" style="margin-top:0px;"/><span style="margin-right:10px;"> TODAY</span>
-					<input type="radio" class="typeRd" id="asOfNowDId" name="compareD" value="asoftoday" style="margin-top:0px;"/><span style="margin-right:10px;"> AS OF TODAY</span>
-					<input type="radio" class="typeRd" id="overAllDId" name="compareD" value="overall" style="margin-top:0px;"/><span style="margin-right:10px;"> OVER ALL</span>
-					
-					<div class="btn-group pull-right">
-					<input type="button" value="AP" class="btn btn-mini btn-success apele" name="distTargetBtn" id="apDistTargetComp" checked="checked">AP</input>
-					<input type="button" value="TS" class="btn btn-mini tsele" name="distTargetBtn" id="tgDistTargetComp">TS</input>
-				</div>
-				</div>
-				<div id="leaderDataDiv1smry" style="margin-left:-20px;"></div>
-				<div id="leaderDataDiv1" class="height-300 scrollable_div">
-					<img style="margin-left: 180px;margin-top: 101px;" id="ajaxImgStyle" src="images/icons/loading.gif"/>
-				</div>
-			</div>
-		</div>
+		
 	
 		
 	</div>
@@ -578,7 +586,7 @@ $('#membersCount').addClass('animated fadeInX');
 										str+='<span class="pull-right label label-info"> '+ result[i].apCount+ '% </span>';
 					else
 					str+='<span class="pull-right label label-success"> '+ result[i].apCount+ '% </span>';
-					str+='</a>&nbsp;&nbsp;<i style="cursor:pointer;margin-top: 5px;" onclick="getCadreDetails('+ result[i].tgCount+ ',\'constituency\')"  title="Click here to view details" class=" icon-eye-open"></i></p>';
+					str+='</a>&nbsp;&nbsp;<i style="cursor:pointer;" onclick="getCadreDetails('+ result[i].tgCount+ ',\'constituency\')"  title="Click here to view details" class=" icon-eye-open"></i></p>';
 				if(result[i].apCount <= 20){
 				   str+='<div class="progress progress-danger">';
 				}else if(result[i].apCount > 20 && result[i].apCount <= 40){
@@ -647,7 +655,7 @@ $('#membersCount').addClass('animated fadeInX');
 										str+='<span class="pull-right label label-info"> '+ result[i].apCount+ '% </span>';
 					else
 					str+='<span class="pull-right label label-success"> '+ result[i].apCount+ '% </span>';
-					str+='</a>&nbsp;&nbsp;<i style="cursor:pointer;margin-top: 5px;" onclick="getCadreDetails('+ result[i].tgCount+ ',\'district\')" title="Click here to view details" class=" icon-eye-open"></i></p>';
+					str+='</a>&nbsp;&nbsp;<i style="cursor:pointer;" onclick="getCadreDetails('+ result[i].tgCount+ ',\'district\')" title="Click here to view details" class=" icon-eye-open"></i></p>';
 				if(result[i].apCount <= 20){
 				   str+='<div class="progress progress-danger">';
 				}else if(result[i].apCount > 20 && result[i].apCount <= 40){
@@ -1385,8 +1393,6 @@ $('#membersCount').addClass('animated fadeInX');
 		
 		}
        getWorkStartedConstituencyCount();
-	   getDistrictWiseCompletedPercentage(0,1);
-	   getAssemblyWiseCompletedPercentage(0,1);
 	   getRecentlyRegisteredCadresInfo(strIndex,false);
 	   getDashBoardBasicInfo();
 	   getWorkingMembersInfo();
@@ -1397,12 +1403,12 @@ $('#membersCount').addClass('animated fadeInX');
 	   
 	   $("input:radio[name=percCalcC]").click(function() {
 			//var value = $(this).val();
-			getAssemblyWiseCompletedPercentage(0,1);
+			//getAssemblyWiseCompletedPercentage(0,1);
 		});
 		
 		$("input:radio[name=percCalcD]").click(function() {
 			//var value = $(this).val();
-			getDistrictWiseCompletedPercentage(0,1);
+			//getDistrictWiseCompletedPercentage(0,1);
 		});
 	   
 	   function buildSurveyMemberDetails(result)
@@ -1622,6 +1628,8 @@ function SortByName(a, b){
 								}
 							str1+="</tr>";
 						str1+='</table>';
+						str1+='<div class="span12"> <i class="icon-info-sign pull-right" onClick="popUpForInformation()" title="Click To View the Color Code Information" style="margin-top: -75px;margin-right:20px ; cursor:pointer;cursor:pointer;"></i> </deiv>';
+					
 					str1+='</div>';
 					str+='<table class="table table-bordered" id="'+constant+'tabledata1">';
 					str+='<thead><tr>';
@@ -1629,13 +1637,20 @@ function SortByName(a, b){
 					str+='<th>Target Cadres</th>';
 					str+='<th>Registered Cadres</th>';
 					//str+='<th>Difference</th>';
-					str+='<th>% of Register cadres</th>';
+					str+='<th>% of Register cadres   </th>';
 					str+='</tr></thead>';
 					str+='<tbody>';
 					for(var i in result)
 					{
 						str+='<tr>';
-						str+='<td>'+result[i].name+'</td>';
+						if(scopeId == 2)
+						{
+							str+='<td><a href="javascript:{}" onclick="getDistrictWiseAgeGenderCasteCount('+ result[i].id+ ',\''+ result[i].name+ '\')"> '+result[i].name+' </a></td>';
+						}
+						else
+						{
+							str+='<td><a href="javascript:{}" onclick="getConstituencyWiseAgeGenderCasteCount('+ result[i].id+ ',\''+ result[i].name+ '\')"> '+result[i].name+' </a></td>';
+						}
 						str+='<td>'+result[i].targetCadres+'</td>';
 						if(result[i].totalRecords==null){
 							str+='<td>-</td>';
@@ -1648,21 +1663,28 @@ function SortByName(a, b){
 						}else{
 							var colorStatus = result[i].colorStatus;
 							if(colorStatus=="Best"){
-								str+='<td style="background-color: green;">'+result[i].percentage+'</td>';
+								str+='<td style="background-color: green;">'+result[i].percentage+'';
 							}
 							if(colorStatus=="Good"){
-								str+='<td style="background-color:lightgreen">'+result[i].percentage+'</td>';
+								str+='<td style="background-color:lightgreen">'+result[i].percentage+'';
 							}
 							if(colorStatus=="Ok"){
-								str+='<td style="background-color:yellow">'+result[i].percentage+'</td>';
+								str+='<td style="background-color:yellow">'+result[i].percentage+'';
 							}
 							if(colorStatus=="Poor"){
-								str+='<td style="background-color:orange">'+result[i].percentage+'</td>';
+								str+='<td style="background-color:orange">'+result[i].percentage+'';
 							}
 							if(colorStatus=="Worst"){
-								str+='<td style="background-color:#C43C35">'+result[i].percentage+'</td>';
+								str+='<td style="background-color:#C43C35">'+result[i].percentage+'';
 							}
-							
+							if(scopeId == 2)
+							{
+								str+=' <i style="cursor:pointer;;" onclick="getCadreDetails('+ result[i].id+ ',\'District\')"  title="Click here to view details" class=" icon-eye-open"></i></td> ';
+							}
+							else
+							{
+								str+=' <i style="cursor:pointer;" onclick="getCadreDetails('+ result[i].id+ ',\'constituency\')"  title="Click here to view details" class=" icon-eye-open"></i></td> ';
+							}
 						}
 						str+='</tr>';
 					}
@@ -1743,6 +1765,7 @@ function SortByName(a, b){
 								}
 							str1+="</tr>";
 						str1+='</table>';
+					str1+='<div class="span12"> <i class="icon-info-sign pull-right" onClick="popUpForInformation()" title="Click To View the Color Code Information" style="margin-top: -75px;margin-right:20px ; cursor:pointer;"></i> </deiv>';
 					str1+='</div>';
 					str+='<table class="table table-bordered" id="'+constant+'tabledata2">';
 					str+='<thead><tr>';
@@ -1750,13 +1773,21 @@ function SortByName(a, b){
 					str+='<th>Target Cadres</th>';
 					str+='<th>Registered Cadres</th>';
 					//str+='<th>Difference</th>';
-					str+='<th>% of Register cadres</th>';
+					str+='<th>% of Register cadres  </th>';
 					str+='</tr></thead>';
 					str+='<tbody>';
 					for(var i in result){
 						
 						str+='<tr>';
-						str+='<td>'+result[i].name+'</td>';
+						if(scopeId == 2)
+						{
+							str+='<td><a href="javascript:{}" onclick="getDistrictWiseAgeGenderCasteCount('+ result[i].id+ ',\''+ result[i].name+ '\')"> '+result[i].name+' </a></td>';
+						}
+						else
+						{
+							str+='<td><a href="javascript:{}" onclick="getConstituencyWiseAgeGenderCasteCount('+ result[i].id+ ',\''+ result[i].name+ '\')"> '+result[i].name+' </a></td>';
+						}
+						
 						str+='<td>'+result[i].targetCadres+'</td>';
 						if(result[i].totalRecords==null){
 							str+='<td>-</td>';
@@ -1769,19 +1800,27 @@ function SortByName(a, b){
 						}else{
 							var colorStatus = result[i].colorStatus;
 							if(colorStatus=="Best"){
-								str+='<td style="background-color: green;">'+result[i].percentage+'</td>';
+								str+='<td style="background-color: green;">'+result[i].percentage+'';
 							}
 							if(colorStatus=="Good"){
-								str+='<td style="background-color:lightgreen">'+result[i].percentage+'</td>';
+								str+='<td style="background-color:lightgreen">'+result[i].percentage+'';
 							}
 							if(colorStatus=="Ok"){
-								str+='<td style="background-color:yellow">'+result[i].percentage+'</td>';
+								str+='<td style="background-color:yellow">'+result[i].percentage+'';
 							}
 							if(colorStatus=="Poor"){
-								str+='<td style="background-color:#F89406">'+result[i].percentage+'</td>';
+								str+='<td style="background-color:#F89406">'+result[i].percentage+'';
 							}
 							if(colorStatus=="Worst"){
-								str+='<td style="background-color:#C43C35">'+result[i].percentage+'</td>';
+								str+='<td style="background-color:#C43C35">'+result[i].percentage+'';
+							}
+							if(scopeId == 2)
+							{
+								str+=' <i style="cursor:pointer;" onclick="getCadreDetails('+ result[i].id+ ',\'District\')"  title="Click here to view details" class=" icon-eye-open"></i></td> ';
+							}
+							else
+							{
+								str+=' <i style="cursor:pointer;" onclick="getCadreDetails('+ result[i].id+ ',\'constituency\')"  title="Click here to view details" class=" icon-eye-open"></i></td> ';
 							}
 						} 
 						str+='</tr>';
@@ -1943,13 +1982,20 @@ function SortByName(a, b){
 					str+='<th>Target Cadres</th>';
 					str+='<th>Registered Cadres</th>';
 					//str+='<th>Difference</th>';
-					str+='<th>% of Register cadres</th>';
+					str+='<th>% of Register cadres  </th>';
 					str+='</tr></thead>';
 					str+='<tbody>';
 					for(var i in result){
 						if(status == result[i].colorStatus){
 							str+='<tr>';
-							str+='<td>'+result[i].name+'</td>';
+							if(scopeId == 2)
+						{
+							str+='<td><a href="javascript:{}" onclick="getDistrictWiseAgeGenderCasteCount('+ result[i].id+ ',\''+ result[i].name+ '\')"> '+result[i].name+' </a></td>';
+						}
+						else
+						{
+							str+='<td><a href="javascript:{}" onclick="getConstituencyWiseAgeGenderCasteCount('+ result[i].id+ ',\''+ result[i].name+ '\')"> '+result[i].name+' </a></td>';
+						}
 							str+='<td>'+result[i].targetCadres+'</td>';
 							if(result[i].totalRecords==null){
 								str+='<td>-</td>';
@@ -1962,21 +2008,28 @@ function SortByName(a, b){
 							}else{
 								var colorStatus = result[i].colorStatus;
 								if(colorStatus=="Best"){
-									str+='<td style="background-color: green;">'+result[i].percentage+'</td>';
+									str+='<td style="background-color: green;">'+result[i].percentage+'';
 								}
 								if(colorStatus=="Good"){
-									str+='<td style="background-color:lightgreen">'+result[i].percentage+'</td>';
+									str+='<td style="background-color:lightgreen">'+result[i].percentage+'';
 								}
 								if(colorStatus=="Ok"){
-									str+='<td style="background-color:yellow">'+result[i].percentage+'</td>';
+									str+='<td style="background-color:yellow">'+result[i].percentage+'';
 								}
 								if(colorStatus=="Poor"){
-									str+='<td style="background-color:orange">'+result[i].percentage+'</td>';
+									str+='<td style="background-color:orange">'+result[i].percentage+'';
 								}
 								if(colorStatus=="Worst"){
-									str+='<td style="background-color:#C43C35">'+result[i].percentage+'</td>';
+									str+='<td style="background-color:#C43C35">'+result[i].percentage+'';
 								}
-								
+								if(scopeId == 2)
+								{
+									str+=' <i style="cursor:pointer;" onclick="getCadreDetails('+ result[i].id+ ',\'District\')"  title="Click here to view details" class=" icon-eye-open"></i></td> ';
+								}
+								else
+								{
+									str+=' <i style="cursor:pointer;" onclick="getCadreDetails('+ result[i].id+ ',\'constituency\')"  title="Click here to view details" class=" icon-eye-open"></i></td> ';
+								}
 							}
 							str+='</tr>';
 						}
@@ -2068,13 +2121,20 @@ function SortByName(a, b){
 					str+='<th>Target Cadres</th>';
 					str+='<th>Registered Cadres</th>';
 					//str+='<th>Difference</th>';
-					str+='<th>% of Register cadres</th>';
+					str+='<th>% of Register cadres  </th>';
 					str+='</tr></thead>';
 					str+='<tbody>';
 					for(var i in result){
 						if(status == result[i].colorStatus){
 							str+='<tr>';
-							str+='<td>'+result[i].name+'</td>';
+							if(scopeId == 2)
+						{
+							str+='<td><a href="javascript:{}" onclick="getDistrictWiseAgeGenderCasteCount('+ result[i].id+ ',\''+ result[i].name+ '\')"> '+result[i].name+' </a></td>';
+						}
+						else
+						{
+							str+='<td><a href="javascript:{}" onclick="getConstituencyWiseAgeGenderCasteCount('+ result[i].id+ ',\''+ result[i].name+ '\')"> '+result[i].name+' </a></td>';
+						}
 							str+='<td>'+result[i].targetCadres+'</td>';
 							if(result[i].totalRecords==null){
 								str+='<td>-</td>';
@@ -2088,19 +2148,27 @@ function SortByName(a, b){
 								var colorStatus = result[i].colorStatus;
 								if(status == colorStatus){
 									if(colorStatus=="Best"){
-										str+='<td style="background-color: green;">'+result[i].percentage+'</td>';
+										str+='<td style="background-color: green;">'+result[i].percentage+'';
 									}
 									if(colorStatus=="Good"){
-										str+='<td style="background-color:lightgreen">'+result[i].percentage+'</td>';
+										str+='<td style="background-color:lightgreen">'+result[i].percentage+'';
 									}
 									if(colorStatus=="Ok"){
-										str+='<td style="background-color:yellow">'+result[i].percentage+'</td>';
+										str+='<td style="background-color:yellow">'+result[i].percentage+'';
 									}
 									if(colorStatus=="Poor"){
-										str+='<td style="background-color:orange">'+result[i].percentage+'</td>';
+										str+='<td style="background-color:orange">'+result[i].percentage+'';
 									}
 									if(colorStatus=="Worst"){
-										str+='<td style="background-color:#C43C35">'+result[i].percentage+'</td>';
+										str+='<td style="background-color:#C43C35">'+result[i].percentage+'';
+									}
+									if(scopeId == 2)
+									{
+										str+=' <i style="cursor:pointer;" onclick="getCadreDetails('+ result[i].id+ ',\'District\')"  title="Click here to view details" class=" icon-eye-open"></i></td> ';
+									}
+									else
+									{
+										str+=' <i style="cursor:pointer;" onclick="getCadreDetails('+ result[i].id+ ',\'constituency\')"  title="Click here to view details" class=" icon-eye-open"></i></td> ';
 									}
 								}
 							}
@@ -2208,7 +2276,7 @@ function SortByName(a, b){
 				str+='</tr>';
 				str+='<tr>';
 						str+='<td><div style="height:13px;width:13px;background-color:#C43C35;"/></td>';
-						str+='<td>  <50% </td><td> Very Poor</td>';
+						str+='<td>  <50% </td><td> Very Poor </td>';
 				str+='</tr>';
 				str+='</table>';	
 			$("#informationWindowInner").html(str);
@@ -2220,7 +2288,10 @@ function SortByName(a, b){
 	  </c:if>
 	  
 	  
-	  
+	    <c:if test="${ not fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) }"> 
+		getDistrictWiseCompletedPercentage(0,1);
+		getAssemblyWiseCompletedPercentage(0,1);
+	   </c:if>
 	
 </script>
 
