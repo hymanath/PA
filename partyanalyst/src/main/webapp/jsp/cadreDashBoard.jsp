@@ -317,6 +317,8 @@ table.dataTable tr.odd {
 							  <td style="width:50%;text-align:center;"><div><a href="javascript:{}" onclick="openDialogToTrack();">Click Here To View</br> Users Working Status </br> & </br> Location Wise Cadre Registration Info</a></br>
 							   <c:if test="${fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) }">
 					             </br><a title="Click Here For Leader Cadre DashBoard" href="leaderCadreDashBoardAction.action"><span>Leader Cadre DashBoard</span></a>
+								 </br></br>
+								 <a title="Click Here For Cadre Reports - 2014 " href="cadreReportsAction.action"><span>Cadre Reports - 2014 </span></a>
 					           </c:if></div></b></td>
 						    </c:if>
 						 <c:if test="${sessionScope.USER.accessType == 'DISTRICT'}">
