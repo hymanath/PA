@@ -1320,4 +1320,18 @@ public TdpCadreLocationWiseReportVO genereteOriginalExcelReport(TdpCadreLocation
 	
 	return constituencyReportVO1;
 }
+public Object getMemberShipCardDetails(Long districtId,List<Long> constituencyIdsList,String fromDate,String toDate)
+{
+	try 
+	{
+		
+		
+	}
+	catch (Exception e)
+	{
+		LOG.error(" exception occured in getMemberShipCardDetails()  @ TdpCadreReportService class.",e);
+	}
+	
+	return null;
+}
 }
