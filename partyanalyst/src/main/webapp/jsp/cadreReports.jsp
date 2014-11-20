@@ -202,7 +202,7 @@
 			$("#tg").addClass("btn-success");
 			var stateId=2;
 		}
-		var fromDate="03-11-2014";
+		var fromDate="15-10-2014";
 		var toDate;
 		var toDate = new Date();
 				var dd = toDate.getDate();
