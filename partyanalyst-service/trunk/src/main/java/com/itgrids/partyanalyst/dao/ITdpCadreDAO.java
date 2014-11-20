@@ -203,4 +203,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getCastGroupWiseCadreCountExcludeminority(List<Long> Ids,String type);
 	public List<Object[]> getCastGroupWiseCadreCountMinority(List<Long> Ids,String type);
 	public List<Object[]> getTotalRecordsByIds(List<Long> Ids,String type,Date fromDate,Date toDate);
+	
+	public List<Object[]> getTotalRecordsForALocation(List<Long> districtIds,String type,Date fromDate,Date toDate);
 }
