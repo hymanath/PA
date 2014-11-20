@@ -199,6 +199,8 @@
 			<result type="redirect" name="candidateUpdateDetailsAction">candidateUpdateDetailsAction.action</result> 
 			<result type="redirect" name="tdpCadreSurveyUsersDetailsAction">tdpCadreSurveyUsersDetailsAction.action</result>
 			<result type="redirect" name="tabAllocationDetailsAction">tabAllocationDetailsAction.action</result>
+		    <result type="redirect" name="memberShipCardReportStatusAction">memberShipCardReportStatusAction.action</result>
+			
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
@@ -8981,6 +8983,21 @@
 				<param name="root">amountDetailsVO</param>
 			</result>
 		</action>
+		
+		<action name="memberShipCardReportStatusAction" class="tdpCadreReportAction" method="memberShipCardReportStatus">
+			
+			<result name="success">/jsp/MemberShipCardReportStatus.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
+			<result name="input">/jsp/loginForm.jsp?src=memberShipCardReportStatusAction</result>
+		</action>
+		
+		<action name="getMemberShipCardDetailsAction" class="tdpCadreReportAction" method="getMemberShipCardDetails" >
+			<result type="json" name="success">
+				<param name="root"></param>
+			</result>
+		</action>
+		
+		
 </package>
 
 </struts>      
