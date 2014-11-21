@@ -1125,15 +1125,15 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		Query query=null;
 		if(stateId==1)
 		{
-			query = getSession().createQuery("select model.districtId, model.districtName from District model where model.districtId > 10 and model.state.stateId = 1");
+			query = getSession().createQuery("select model.districtId, model.districtName from District model where model.districtId > 10 and model.state.stateId = 1 order by model.districtName asc ");
 		}
 		else if(stateId==2)
 		{
-			query = getSession().createQuery("select model.districtId, model.districtName from District model where model.districtId < 11 and model.state.stateId = 1 ");
+			query = getSession().createQuery("select model.districtId, model.districtName from District model where model.districtId < 11 and model.state.stateId = 1 order by model.districtName asc  ");
 		}
 		else
 		{
-			query = getSession().createQuery("select model.districtId, model.districtName from District model where model.state.stateId = 1 ");
+			query = getSession().createQuery("select model.districtId, model.districtName from District model where model.state.stateId = 1 order by model.districtName asc  ");
 		}
 		
 		return query.list();
