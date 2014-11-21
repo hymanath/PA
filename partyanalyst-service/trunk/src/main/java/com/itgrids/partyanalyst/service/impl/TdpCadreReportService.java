@@ -30,6 +30,7 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
@@ -56,7 +57,12 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IZebraPrintDetailsDAO zebraPrintDetailsDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+	private IConstituencyDAO constituencyDAO;
 	
+	
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
 	public void setDelimitationConstituencyAssemblyDetailsDAO(
 			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
 		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
@@ -1448,5 +1454,40 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		}
 		
 		return returnVo;
+	}
+	
+	public SurveyTransactionVO getConstituencyDetailsInDistricts(List<Long> districtIdList)
+	{
+		SurveyTransactionVO returnVO = new SurveyTransactionVO();
+		
+		try {
+			if(districtIdList != null && districtIdList.size()>0)
+			{
+				List<Object[]> constituencyList = constituencyDAO.getConstituencysByDistrictId(districtIdList);
+				
+				List<SurveyTransactionVO> returnList = null;
+				if(constituencyList != null && constituencyList.size()>0)
+				{
+					returnList = new ArrayList<SurveyTransactionVO>(0);
+					for (Object[] printStatus : constituencyList) 
+					{
+						SurveyTransactionVO reportVo = new SurveyTransactionVO();
+						reportVo.setId(printStatus[0] != null ? Long.valueOf(printStatus[0].toString().trim()):0L);
+						reportVo.setName(printStatus[1] != null ? printStatus[1].toString().trim():"");
+						returnList.add(reportVo);
+					}
+				}
+				
+				if(returnList != null && returnList.size()>0)
+				{
+					returnVO.setSurveyTransactionVOList(returnList);
+				}
+			}
+						
+		} catch (Exception e) {
+			LOG.error(" exception occured in getConstituencyDetailsInDistricts()  @ TdpCadreReportService class.",e);
+		}
+		
+		return returnVO;
 	}
 }
