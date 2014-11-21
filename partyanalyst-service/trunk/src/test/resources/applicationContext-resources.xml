@@ -511,6 +511,7 @@
 				<value>com.itgrids.partyanalyst.model.CadreSurveyUserAssignee</value>
 				<value>com.itgrids.partyanalyst.model.TabRecordsStatus</value>
 				<value>com.itgrids.partyanalyst.model.TabUserLoginDetails</value>
+				<value>com.itgrids.partyanalyst.model.ZebraPrintDetails</value>
 				
 			</list>
 		</property>
@@ -2647,6 +2648,10 @@
  	<bean id="tabUserLoginDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.TabUserLoginDetailsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="zebraPrintDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ZebraPrintDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 <bean name="leaderCadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.LeaderCadreDashBoardService">
      <property name="voterInfoDAO" ref="voterInfoDAO" />
      <property name="cadreSurveyUserAssignDetailsDAO" ref="cadreSurveyUserAssignDetailsDAO" />
