@@ -2339,6 +2339,8 @@
          <property name="cadreDashBoardService" ref="cadreDashBoardService" />
          <property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
           <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
+          <property name="zebraPrintDetailsDAO" ref="zebraPrintDetailsDAO" />
+          <property name="constituencyDAO" ref="constituencyDAO" />
      </bean>
 </beans>		
 	

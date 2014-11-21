@@ -93,7 +93,20 @@
 </head>
 
 
-<body>
+<body  class="bgc">
+		<!-- Header Row -->
+		<div class="row-fluid">
+			<div class="span12 header-bg text-center">
+				<div class="row-fluid">
+				  <div class="span4 offset4 ">
+						<img src="images/cadre_images/2014-cadre-Registration-Logo.png">
+				  </div>
+				  <div class="span4">
+					 <a href="newlogoutAction.action" style="font-weight: bold;" class="btn btn-mini pull-left m_top20">Logout</a>
+				  </div>
+				</div>
+			</div>
+		</div><!-- Header Row End-->
 	<div class="container " id="dashboadElmnt">	
 
 		<div id="locationWiseCadreInfoDiv">
@@ -110,6 +123,7 @@
 					<div class="span8" style="margin-bottom:-20px;">
 					<h5 class="text-align1" style="margin-left: -8px;">  State : 
 					<select id="statesList" onChange="getdistricts(this.value);"> 
+					<option value="0"> All </option>
 					<option value="1"> Andhra Pradesh </option>
 					<option value="2"> Telangana </option>
 					
@@ -153,7 +167,14 @@
 			</div>
 		</div>
 	</div>
-	
+		<!-- Footer Row -->
+		<div class="row-fluid">
+			<div class="span12 text-center m_top5 color-white">
+					TDP Cadre Registration Drive
+				<p>Copyright &copy; 2014,  All Rights Reserved</p>
+			</div>
+		</div>
+	<!-- Footer Row End-->
 <script>
 
 
@@ -189,25 +210,28 @@ $(document).ready(function(){
 
 
  function getConstituencies(districtId){
-		var stateId = $("#statesList").val();
-		
+	
 		var str ="";
 		var jObj ={
-			districtId:districtId,				  
+			districtIds:districtId,				  
 			task:"getConstituencyNames"             
 		}	
 		$.ajax({
 			type : "POST",
-			url : "sendUpdatesByemailsAction.action",
+			url : "getConstituencyDetailsInDistrictsAtion.action",
 			data : {task:JSON.stringify(jObj)} ,
 		}).done(function(result){
-		$("#constiList").html("");
+			$("#constiList").html("");
 			$('#constiList').find('option').remove();
-			$('#constiList').append('<option value="0"> Select Constituency </option>')
-		   for(var i in result){
-				$('#constiList').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			$('#constiList').append('<option value="0"> All </option>')
+			if(result.surveyTransactionVOList != null && result.surveyTransactionVOList.length)
+			{
+				for(var i in result.surveyTransactionVOList)
+				{
+					$('#constiList').append('<option value='+result.surveyTransactionVOList[i].id+'>'+result.surveyTransactionVOList[i].name+'</option>');
+				}			
 			}
-			
+		   
 			// $('#constiList').multiselect('refresh');
 			  
 		});
@@ -239,10 +263,35 @@ $(document).ready(function(){
 		});
 	}
 	
-	
+	function getReqIds(id){
+    var selectedId = $("#"+id).val();
+	if(selectedId == null){
+	  return "";
+	}
+	if(selectedId == 0){
+	 selectedId = "";
+	 var options = $('#'+id+' option');
+	 var values = $.map(options ,function(option) {
+        return option.value;
+     });
+	  for(var i in values){
+	    if(values[i] != 0){
+		   if(selectedId.length > 0){
+		     selectedId=selectedId+','+values[i];
+		   }else{
+		     selectedId = values[i];
+		   }
+		}
+	  }
+	}
+	return selectedId;
+  }
 function generateDetailReports(){		
 
-	var constituencyIds = $("#constiList").val();
+	//var constituencyIds = $("#constiList").val();
+	
+	var constituencyIds=getReqIds("constiList");
+	
 	$('#reportsStatusDiv').html('');
 	var startDate = $('#fromDateId').val();
 	var endDate = $('#toDateId').val();
@@ -256,17 +305,11 @@ function generateDetailReports(){
 		isError = 'error';
 			$("#errorDiv").html("Please Select District.");
 	}
-	if(constituencyIds ==0)
-	{
-		isError = 'error';
-		$("#errorDiv").html("Please Select District.");
-	}
-	
+		
 	if(startDate != null && endDate != null)
 	{
 		if((startDate != null && startDate.trim().length >0) && (endDate != null && endDate.trim().length >0))
-		{
-		
+		{		
 			var arrr = startDate.split("-");
 				var fromyear=arrr[2];
 				var frommonth=arrr[1];
@@ -334,7 +377,7 @@ function generateDetailReports(){
 	function buildCategoeryDetails(result)
 	{
 		var str ='';			
-			str+='<h4 align="center" > USER DAY WISE REPORT </h4>';
+			str+='<h4 align="center" > PRINTING DAY WISE REPORT </h4>';
 			str+='<table id="dayWiseUsersDetailsId" class="table table-bordered ">';
 			str+='<thead>';
 			str+='<tr>';
@@ -344,7 +387,7 @@ function generateDetailReports(){
 			str+='<th> Constituency </th>';
 			str+='<th> Total Cards </th>';
 			str+='<th> Print Completed </th>';
-			str+='<th> Print Not Completed </th>';
+			str+='<th> Errors in Printing </th>';
 			str+='</tr>';
 			str+='</thead>';
 			
@@ -374,7 +417,7 @@ function generateDetailReports(){
 			      "aLengthMenu": [[10,20,50, 100, 200, -1], [10,20,50, 100, 200, "All"]]
 		         });
 	}
-getdistricts(1);
+getdistricts(0);
 //getConstituencies(11);
 //$('#constiList').multiselect({noneSelectedText:"Select Constittuency(s)"});
 </script>	
