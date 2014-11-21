@@ -34,6 +34,7 @@ public class TdpCadreFamilyDetails implements Serializable{
 	private Long 						voterId;
 	private String 						voterName;
 	private String 						isDeleted;
+	private Long						familyRelationId;
 	
 	private Date 						insertedDate;
 	private Date 						updatedDate;
@@ -178,6 +179,14 @@ public class TdpCadreFamilyDetails implements Serializable{
 	}
 	public void setGender(String gender) {
 		this.gender = gender;
+	}
+	
+	@Column(name="family_relation_id")
+	public Long getFamilyRelationId() {
+		return familyRelationId;
+	}
+	public void setFamilyRelationId(Long familyRelationId) {
+		this.familyRelationId = familyRelationId;
 	}
 	
 	

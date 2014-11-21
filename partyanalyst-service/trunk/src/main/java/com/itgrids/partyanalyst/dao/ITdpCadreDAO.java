@@ -142,10 +142,10 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public Long getWorkingMembersCountOfAccessLevel(Date date,List<Long> constiIds);
 	public Long getLastHoursWorkingMemberCountOfAccessLevel(Date presentDate, Date lastHours,List<Long> constiIds);
 	
-	public Integer saveRuralConstituencyDataType1(String prevDate,String table ,Long distIds ,Long limit);
-	public Integer saveRuralUrbanConstituencyDataType2(String prevDate,String table ,Long distIds ,Long limit );
-	public Integer saveRuralUrbanConstituencyDataType(String prevDate,String table ,Long distIds  ,Long limit);
-	public Integer saveUrbanConstituencyDataType1(String prevDate,String table ,Long distIds  ,Long limit);
+	public Integer saveRuralConstituencyDataType1(String prevDate,String table ,List<Long> constiIds ,Long limit);
+	public Integer saveRuralUrbanConstituencyDataType2(String prevDate,String table ,List<Long> constiIds ,Long limit );
+	public Integer saveRuralUrbanConstituencyDataType(String prevDate,String table ,List<Long> constiIds ,Long limit);
+	public Integer saveUrbanConstituencyDataType1(String prevDate,String table ,List<Long> constiIds ,Long limit);
 	
 	
 	public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersList,Date date);	
@@ -185,6 +185,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getLocationWiseAgeRangeCount(List<Long> Ids,String ageRange ,String type);
 	public List<Object[]> getLocationWiseTotalRecords(List<Long> districtIds,String type);
 	public Long getCadreDetailsForCadreRegistratiobByconstituencIdCount(Long constituencyId, String queryStr,Long panchayatId,Long boothId,String isPresentCadre);
+	public void flushAndclearSession();
 	public List<Object[]> getLocationWiseCount(List<Long> ids,String type);
 	public List<Object[]> getTdpCadreAgeRangeByConstituency(List<Long> constituencyIds);
 	public List<Object[]> getTdpCadregenderWiseByConstituency(List<Long> constituencyIds);
@@ -193,6 +194,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getDuplicateUsersByUserId(Date startDate,Date endDate,Long userId,Long locationId,String type,Long constituencyId);
 	public List<Object[]> getTotalFemaleRecords(List<Long> districtIds,String type,Date fromDate,Date toDate);
 	public List<Object[]> getTotalYouthRecords(List<Long> districtIds,String type,Date fromDate,Date toDate);
+	public Integer insertPrintCompanyType(Long id,String table);
 	public List<Object[]> getCadreCountInMinorities(Long Id,String type);
 	public List<Object[]> getCasteGroupWiseCadreCountExcludingMinorities(Long Id,String type);
 
@@ -205,4 +207,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getTotalRecordsByIds(List<Long> Ids,String type,Date fromDate,Date toDate);
 	
 	public List<Object[]> getTotalRecordsForALocation(List<Long> districtIds,String type,Date fromDate,Date toDate);
+
+
 }
