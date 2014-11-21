@@ -128,6 +128,7 @@
 		<pattern>/tdpCadreSurveyUsersDetailsAction*</pattern>
 		<pattern>/votersInCasteAction*</pattern>
         <pattern>/cadreMemberShipCardDispatcherAction*</pattern>
+        <pattern>/memberShipCardPrintStatusAction*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
