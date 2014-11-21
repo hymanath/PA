@@ -961,6 +961,7 @@
 	
 	<bean id="changePasswordAction" class="com.itgrids.partyanalyst.web.action.ChangePasswordAction" singleton="false">
 		<property name="loginService" ref="loginService" />
+		<property name="dashBoardElectionResultsService" ref="dashBoardElectionResultsService"/>
 	</bean>
 	
 	<bean id="completeProblemDetailsAction" class="com.itgrids.partyanalyst.web.action.CompleteProblemDetailsAction" singleton="false">
@@ -1510,6 +1511,10 @@
 	
 	<bean id="cadreAgeGenderAnalysisAction" class="com.itgrids.partyanalyst.web.action.CadreAgeGenderAnalysisAction" singleton="false">
 		<property name="cadreDashBoardService" ref="cadreDashBoardService" />
+	</bean>
+	
+	<bean id="userDetailsAction" class="com.itgrids.partyanalyst.web.action.UserDetailsAction" singleton="false">
+		<property name="dashBoardElectionResultsService" ref="dashBoardElectionResultsService" />
 	</bean>
 </beans>	
 	
