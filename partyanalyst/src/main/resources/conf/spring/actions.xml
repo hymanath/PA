@@ -1504,6 +1504,7 @@
 	<bean id="leaderCadreDashBoardAction" class="com.itgrids.partyanalyst.web.action.LeaderCadreDashBoardAction" singleton="false">
 		<property name="leaderCadreDashBoardService" ref="leaderCadreDashBoardService" />
 	</bean>
+
 	
 	<bean id="tdpCadreReportAction" class="com.itgrids.partyanalyst.web.action.TdpCadreReportAction" singleton="false">
 		<property name="tdpCadreReportService" ref="tdpCadreReportService" />
@@ -1513,8 +1514,12 @@
 		<property name="cadreDashBoardService" ref="cadreDashBoardService" />
 	</bean>
 	
-	<bean id="userDetailsAction" class="com.itgrids.partyanalyst.web.action.UserDetailsAction" singleton="false">
-		<property name="dashBoardElectionResultsService" ref="dashBoardElectionResultsService" />
+	<bean id="cadreMap" class="com.itgrids.partyanalyst.web.action.CadreMapAction" singleton="false">
+		
 	</bean>
+	
+	<!-- <bean id="userDetailsAction" class="com.itgrids.partyanalyst.web.action.UserDetailsAction" singleton="false">
+		<property name="dashBoardElectionResultsService" ref="dashBoardElectionResultsService" />
+	</bean> -->
 </beans>	
 	

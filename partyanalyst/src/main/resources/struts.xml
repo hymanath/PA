@@ -8914,6 +8914,11 @@
 			<result name="input">/jsp/loginForm.jsp?src=tabAllocationDetailsAction</result>
 		</action>
 		
+		<action name="cadreMap" class="cadreDashBoardAction">
+			<result name="success">/jsp/cadreMap.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=tabAllocationDetailsAction</result>
+		</action>
+		
 		<action name="getLocationWiseAsOfNowDetailsAction" class="leaderCadreDashBoardAction" method="getLocationWiseAsOfNowDetails" >
 			<result type="json" name="success">
 				<param name="root">amountDetails</param>
