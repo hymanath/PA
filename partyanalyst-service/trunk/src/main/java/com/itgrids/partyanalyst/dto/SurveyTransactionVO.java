@@ -34,9 +34,17 @@ public class SurveyTransactionVO implements java.io.Serializable{
 	
 	private Long locationId;
 	private String LocationName;
+	private String parliamentName;
 	
 	private List<SurveyTransactionVO> surveyTransactionVOList = new ArrayList<SurveyTransactionVO>(0);
 	
+	
+	public String getParliamentName() {
+		return parliamentName;
+	}
+	public void setParliamentName(String parliamentName) {
+		this.parliamentName = parliamentName;
+	}
 	public Long getLocationId() {
 		return locationId;
 	}
