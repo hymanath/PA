@@ -9,4 +9,5 @@ public interface ITdpCadreReportService {
 	public List<TdpCadreLocationWiseReportVO> getLocationWiseReportDetailsForExcel(List<Long> constituencyIds);
 	public TdpCadreLocationWiseReportVO generateExcelReportForTdpCadre(List<Long> constituencyIds);
 	public SurveyTransactionVO getMemberShipCardPrintDetails(Long districtId,List<Long> constituencyIdsList,String fromDate,String toDate);
+	public SurveyTransactionVO getConstituencyDetailsInDistricts(List<Long> districtIdList);
 }
