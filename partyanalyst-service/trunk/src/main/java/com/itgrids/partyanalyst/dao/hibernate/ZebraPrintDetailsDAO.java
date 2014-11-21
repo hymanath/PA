@@ -23,21 +23,33 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 		queryStr.append(" TD.tdpCadreId = ZPD.tdpCadreId and TD.userAddress.userAddressId = UA.userAddressId and  ");
 		queryStr.append("  TD.isDeleted = 'N' and TD.enrollmentYear = 2014 and UA.constituency.constituencyId in (:constituencyIds)  ");
 		
-		if(fromDate != null && toDate != null)
-		{
-			queryStr.append(" and ( date(ZPD.insertedTime) >= :fromDate and date(ZPD.insertedTime) <= :toDate ) ");
-		}
+		
 		
 		if(type != null && type.equalsIgnoreCase("printStatus"))
 		{
+			if(fromDate != null && toDate != null)
+			{
+				queryStr.append(" and ( date(ZPD.updatedTime) >= :fromDate and date(ZPD.updatedTime) <= :toDate ) ");
+			}
+			
 			queryStr.append(" and ( ZPD.printStatus like '%Y%' OR ZPD.printStatus like '%y%' ) ");
 		}		
 		else if(type != null && type.equalsIgnoreCase("errorStatus"))
 		{
+			if(fromDate != null && toDate != null)
+			{
+				queryStr.append(" and ( date(ZPD.updatedTime) >= :fromDate and date(ZPD.updatedTime) <= :toDate ) ");
+			}
+			
 			queryStr.append(" and ( ZPD.errorStatus like '%Y%' OR ZPD.errorStatus like '%y%' ) ");
 		}
 		else
 		{
+			if(fromDate != null && toDate != null)
+			{
+				queryStr.append(" and ( date(ZPD.insertedTime) >= :fromDate and date(ZPD.insertedTime) <= :toDate ) ");
+			}
+			
 			queryStr.append(" and ZPD.printStatus is not null  ");
 		}
 		queryStr.append(" group by UA.constituency.constituencyId, date(ZPD.insertedTime) order by date(ZPD.insertedTime) desc ");
