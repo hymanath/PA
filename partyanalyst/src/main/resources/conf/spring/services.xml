@@ -1383,6 +1383,19 @@
 	  	<property name="targetMethod" value="runTheBatchJobForEveryDayCardDataInsertForMax" /> 
 	</bean>-->
 	
+	
+	<!--<bean name="schedularForCardPrintDataFilling" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="everyMaxCardPrintDetailsInsertJob" />
+    	<property name="cronExpression" value="0 53 17 * * ?" />
+	</bean>
+	
+	<bean name="everyMaxCardPrintDetailsInsertJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="schedularForCardPrintDataFilling" /> 
+	</bean>-->
+	
+	
+	
 	<bean name="everyDayBatchJobForInsertCaste" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
 	  	<property name="targetMethod" value="runTheBatchJobForInsertCasteForEveryDay" />
@@ -1442,7 +1455,8 @@
 			<ref bean="cronTriggerForEveryDayJobTosendSmsToMobileAppUsers" />
 			<ref bean="cronTriggerForeveryDayBatchJobForPopulateVoterData" />
 			<ref bean="insertTriggerForEveryDayMobiles" />
-		<!--	<ref bean="runTheBatchJobForEveryDayCardDataInsertForMax" />
+			<!--<ref bean="schedularForCardPrintDataFilling" />
+			<ref bean="runTheBatchJobForEveryDayCardDataInsertForMax" />
 			<ref bean="runTheBatchJobForEveryDayCardDataInsertForZebra" />
 		 	<ref bean="insertTriggerForEveryDayCardPrintDetails" /> -->
 			
