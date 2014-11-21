@@ -8997,6 +8997,21 @@
 			</result>
 		</action>
 		
+		<action name="changeUserPasswords" class="changePasswordAction">
+		    <result name="SUCCESS">/jsp/userDetails.jsp</result>	
+		</action>
+		
+		<action name="getUserDetailsAction" class="changePasswordAction" method="getUserDetails">
+		    	<result type="json" name="success">
+					<param name="root">basicVO</param>
+				</result>
+		</action>
+		
+		<action name="updatingPassword" class="changePasswordAction" method="updatingPassword">
+		    	<result type="json" name="success">
+					<param name="root">resuStatus</param>
+				</result>
+		</action>
 		
 </package>
 

@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,11 +10,14 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
+import org.jfree.util.Log;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.IDashBoardElectionResultsService;
 import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMailsSendingService;
@@ -39,6 +43,26 @@ public class ChangePasswordAction implements ServletRequestAware ,ServletRespons
 	private String invalidPassword;
 	private IMailsSendingService mailsSendingService;
 	private String userName;
+	private IDashBoardElectionResultsService dashBoardElectionResultsService;
+	
+	public IDashBoardElectionResultsService getDashBoardElectionResultsService() {
+		return dashBoardElectionResultsService;
+	}
+
+	public void setDashBoardElectionResultsService(
+			IDashBoardElectionResultsService dashBoardElectionResultsService) {
+		this.dashBoardElectionResultsService = dashBoardElectionResultsService;
+	}
+
+	public List<BasicVO> getBasicVO() {
+		return basicVO;
+	}
+
+	public void setBasicVO(List<BasicVO> basicVO) {
+		this.basicVO = basicVO;
+	}
+
+	private List<BasicVO> basicVO;
 	
 	public String getUserName() {
 		return userName;
@@ -241,6 +265,29 @@ public class ChangePasswordAction implements ServletRequestAware ,ServletRespons
 			
 		}catch (Exception e) {
 			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getUserDetails(){
+		try{
+			basicVO = dashBoardElectionResultsService.gettingUserDetails();
+			}
+		catch(Exception e){
+			Log.error("Exception Raised in getUserDetails() -- ChangePasswordAction" + e); 
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String updatingPassword(){
+		try {
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			jObj = new JSONObject(getTask());
+			resuStatus = dashBoardElectionResultsService.updatePassword(jObj.getString("id"),jObj.getString("newPassword"),user.getRegistrationID());
+		} catch (ParseException e) {
+			Log.error("Exception Raised in updatingPassword() -- ChangePasswordAction" + e);
 		}
 		return Action.SUCCESS;
 	}
