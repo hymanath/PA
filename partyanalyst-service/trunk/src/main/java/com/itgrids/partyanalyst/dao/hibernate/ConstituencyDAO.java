@@ -488,16 +488,16 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	
 	public List<Constituency> findByConstituencyNameAndDistrictIdElectionType(String constituencyName,Long districtId,Long electionType){
 		Object[] params = {constituencyName,districtId,electionType};
-		return getHibernateTemplate().find("from Constituency model where model.name = ? and model.district.districtId = ? and model.electionScope.electionType.electionTypeId = ?", params);
+		return getHibernateTemplate().find("from Constituency model where model.name = ? and model.district.districtId = ? and model.electionScope.electionType.electionTypeId = ?  order by model.name asc ", params);
 	}
 	
 	public List<Constituency> findConstituenciesByDistrictId(Long districtId) {
-		return getHibernateTemplate().find("from Constituency model where model.district.districtId = ? and model.deformDate is null and model.electionScope.electionType.electionTypeId = 2 order by model.name",districtId);
+		return getHibernateTemplate().find("from Constituency model where model.district.districtId = ? and model.deformDate is null and model.electionScope.electionType.electionTypeId = 2 order by model.name asc ",districtId);
 	}
 	
 	public List<Object[]> getConstituencyName(Long constituencyId)
 	{
-		return getHibernateTemplate().find("select model.name,model.electionScope.electionType.electionType from Constituency model where model.constituencyId =? ",constituencyId);
+		return getHibernateTemplate().find("select model.name,model.electionScope.electionType.electionType from Constituency model where model.constituencyId =?  order by model.name asc ",constituencyId);
 	}
 	public List<Object[]> getWardsInMuncipality(Long assemblyElectionBodyId)
 	{
