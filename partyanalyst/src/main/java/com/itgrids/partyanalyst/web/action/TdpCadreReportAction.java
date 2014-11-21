@@ -11,6 +11,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationWiseReportVO;
 import com.itgrids.partyanalyst.service.ITdpCadreReportService;
 import com.opensymphony.xwork2.Action;
@@ -26,10 +27,17 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 	private JSONObject                  		jobj;
 	
 	private ITdpCadreReportService  tdpCadreReportService;
-	private TdpCadreLocationWiseReportVO tdpCadreLocationWiseReportVO;
-	private TdpCadreLocationWiseReportVO result = new TdpCadreLocationWiseReportVO();
+	private TdpCadreLocationWiseReportVO tdpCadreLocationWiseReportVO = new TdpCadreLocationWiseReportVO();
+	private SurveyTransactionVO surveyTransactionVO;
 	
-	
+	public SurveyTransactionVO getSurveyTransactionVO() {
+		return surveyTransactionVO;
+	}
+
+	public void setSurveyTransactionVO(SurveyTransactionVO surveyTransactionVO) {
+		this.surveyTransactionVO = surveyTransactionVO;
+	}
+
 	public TdpCadreLocationWiseReportVO getTdpCadreLocationWiseReportVO() {
 		return tdpCadreLocationWiseReportVO;
 	}
@@ -47,15 +55,7 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 			ITdpCadreReportService tdpCadreReportService) {
 		this.tdpCadreReportService = tdpCadreReportService;
 	}
-	
-	public TdpCadreLocationWiseReportVO getResult() {
-		return result;
-	}
-
-	public void setResult(TdpCadreLocationWiseReportVO result) {
-		this.result = result;
-	}
-
+		
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
@@ -102,7 +102,7 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 				}
 				
 			}			
-			result = tdpCadreReportService.generateExcelReportForTdpCadre(constituencyIdsList);
+			tdpCadreLocationWiseReportVO = tdpCadreReportService.generateExcelReportForTdpCadre(constituencyIdsList);
 		}
 		catch (Exception e) {
 			LOG.info("Entered into getLocationWiseAsOfNowDetails() in getLocationWiseDetailsForExcelReport class");
@@ -147,7 +147,8 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 			}
 			String fromDate=jobj.getString("fromDate");
 			String  toDate=jobj.getString("toDate");
-		Object o=	tdpCadreReportService.getMemberShipCardDetails(districtId,constituencyIdsList,fromDate,toDate);
+			
+			surveyTransactionVO =	tdpCadreReportService.getMemberShipCardPrintDetails(districtId,constituencyIdsList,fromDate,toDate);
 		}
 		catch(Exception e)
 		{
