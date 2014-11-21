@@ -1743,5 +1743,8 @@
 <bean id="tabLogInAuthDAO" class="com.itgrids.partyanalyst.dao.hibernate.TabLogInAuthDAO" >
 	<property name="sessionFactory" ref="sessionFactory" />
 </bean>
+<bean id="zebraPrintDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ZebraPrintDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
 	<!--  end -->
 </beans>		
