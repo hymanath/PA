@@ -291,6 +291,7 @@
 			 <pattern>/cadreAgeGenderAnalysisAction*</pattern>
 			 <pattern>/duplicateUsers*</pattern>
 			 <pattern>/cadreReportsAction*</pattern>
+			 <pattern>/changeUserPasswords*</pattern>
        </decorator>
        
        <decorator name="tdpHome_old" page="tdplayout_old.jsp">
