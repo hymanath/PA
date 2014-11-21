@@ -3,9 +3,11 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 import java.util.Map;
 
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.DashBoardResultsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.survey.soa.endpoints.OptionVO;
 
 public interface IDashBoardElectionResultsService {
@@ -33,4 +35,6 @@ public interface IDashBoardElectionResultsService {
     public Map<String,String> getConstituencyDetaisByRegionid(Long regionId);
 
     public List<OptionVO> getTop5CastePeopleOpnionOnPartyStateWide(Long stateType,List<Long> surveyIds);
+    public List<BasicVO> gettingUserDetails();
+    public ResultStatus updatePassword(String id,String newPassword,Long regId);
 }

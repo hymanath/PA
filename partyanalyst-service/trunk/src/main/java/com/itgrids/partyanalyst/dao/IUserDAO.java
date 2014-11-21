@@ -138,4 +138,5 @@ public interface IUserDAO extends GenericDao<User,Long>{
 	public List<Object[]> getAllWebMonitoringUsersDetails(String entitlement);
 
 	public User getUserByUser(String userName);
+	public List<Object[]> getUserDetails();
 }

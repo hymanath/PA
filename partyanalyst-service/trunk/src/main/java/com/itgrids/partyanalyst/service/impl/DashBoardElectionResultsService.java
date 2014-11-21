@@ -33,11 +33,18 @@ import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IStateSubRegionDAO;
 import com.itgrids.partyanalyst.dao.IStateSubRegionDistrictDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.DashBoardResultsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.model.User;
+import com.itgrids.partyanalyst.security.PBKDF2;
 import com.itgrids.partyanalyst.service.IDashBoardElectionResultsService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.webservice.client.WebServiceClient;
 import com.itgrids.survey.soa.endpoints.ElectionComparisonVO;
 import com.itgrids.survey.soa.endpoints.OptionVO;
@@ -47,7 +54,7 @@ public class DashBoardElectionResultsService implements
 		IDashBoardElectionResultsService {
 	
 	private static final Logger LOG = Logger.getLogger(DashBoardElectionResultsService.class);
-
+	private DateUtilService dateUtilService = new DateUtilService();
 	
 	
 	@Autowired
@@ -89,8 +96,19 @@ public class DashBoardElectionResultsService implements
 	@Autowired
 	private IConstituencyElectionResultDAO constituencyElectionResultDAO;
 	
-	private WebServiceClient webServiceClient;
+	@Autowired
+	private IUserDAO userDAO;
 	
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
+	private WebServiceClient webServiceClient;
+
 	public WebServiceClient getWebServiceClient() {
 		return webServiceClient;
 	}
@@ -2887,5 +2905,64 @@ public GenericVO getparticipatedPartiesInLocation(Long electionId,List<Long> reg
     	
     	return constituenciesMap;
     	
+    }
+    
+    public List<BasicVO> gettingUserDetails(){
+    	List<BasicVO> list = new ArrayList<BasicVO>();
+    	 List<Object[]> user=userDAO.getUserDetails();
+    	 try{
+    		 LOG.info("entered into gettingUserDetails()");
+    	 if(user !=null && user.size()>0){
+    		 
+    		 for (Object[] objects : user) {
+    			BasicVO vo= new BasicVO();
+    			 vo.setId(Long.valueOf(objects[0].toString()));//user id
+    			 vo.setName(objects[1].toString());//user name
+    			 vo.setMandalName(objects[2].toString());//first name
+    			 vo.setHamletName(objects[3].toString());//last name
+    			 
+    			 list.add(vo);
+			}
+    	 }
+    	 }
+    	 catch (Exception e) {
+			LOG.error("Exception ocured in gettingUserDetails()"+e);
+		}
+		return list;
+    }
+    
+    public ResultStatus updatePassword(String id,String newPassword,Long regId){
+    	ResultStatus rs = new ResultStatus();
+    	try	{
+           User user = userDAO.get(Long.valueOf(id));
+           
+          /* String savedSecretKey = user.getHashKeyTxt();
+           String encryptedPassword = user.getPasswdHashTxt();*/
+          
+           String salt = user.getPasswordSalt();
+    	   String hash = user.getPasswordHash();
+    	   
+    	   
+    	   PBKDF2 pb1=new PBKDF2();
+			String storedPwd=pb1.generatePassword(newPassword);
+			String[] parts = storedPwd.split(":");
+	        //int iterations = Integer.parseInt(parts[0]);
+	        String passwordSalt=parts[1];
+	        String passwordHash=parts[2];
+			
+	        user.setPasswordHash(passwordHash);
+			user.setPasswordSalt(passwordSalt);
+			
+			//user.setPassword(newpassword);
+			user.setIsPwdChanged(IConstants.TRUE);
+			user.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
+			user = userDAO.save(user);
+			rs.setResultCode(ResultCodeMapper.SUCCESS);
+    	}
+    	catch (Exception e) {
+    		rs.setResultCode(ResultCodeMapper.FAILURE);
+			LOG.error("Exception raised in updatePassword()");
+		}
+    	return rs;
     }
 }

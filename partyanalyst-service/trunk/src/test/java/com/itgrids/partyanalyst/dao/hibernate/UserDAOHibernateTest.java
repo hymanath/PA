@@ -46,11 +46,13 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 	}
 
 	
-	
-	
-
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
+	}
+	
+	public void test(){
+		List<Object[]> list = userDAO.getUserDetails();
+		System.out.println(list.size());
 	}
 
 	public AgeRangeVO getConstituencyWiseDetails(Long constituencyId,Long publicationId,List<String> ageRanges)	
@@ -1660,7 +1662,7 @@ HSSFSheet boothWiseSheet;
 HSSFSheet hamletWiseSheet;
 FileOutputStream out;
 
-public void test1234()
+/*public void test1234()
 {
 	try {
 		ageRanges.add("18-22");
@@ -1693,20 +1695,20 @@ public void test1234()
 				
 				
 				 // Mandal Wise Report Genereation
-				/* List<AgeRangeVO> muncipalityWise = getMunicipalityWiseForAConstituency(232l,10l,ageRanges);
+				 List<AgeRangeVO> muncipalityWise = getMunicipalityWiseForAConstituency(232l,10l,ageRanges);
 				 List<AgeRangeVO> muncipalityWise1 = new ArrayList<AgeRangeVO>();//kavali---->kavali municipality.
 				 for (AgeRangeVO ageRangeVO : muncipalityWise) {
 					 ageRangeVO.setTehsilName(ageRangeVO.getTehsilName() + " Munciplity");
 					 ageRangeVO.setPanchayatName(ageRangeVO.getPanchayatName() + " Munciplity");
 					 muncipalityWise1.add(ageRangeVO);
 				}
-				*/
+				
 				List<AgeRangeVO> mandalWise = getMandalWiseForAConstituency(constituecnyId,10l,ageRanges);
 				
 				Collections.sort(mandalWise,mandalWiseSort);//dnso of mandalname.
 				
-				 /*if(muncipalityWise1 != null && muncipalityWise1.size() > 0)
-				  mandalWise.addAll(muncipalityWise1);*/
+				 if(muncipalityWise1 != null && muncipalityWise1.size() > 0)
+				  mandalWise.addAll(muncipalityWise1);
 				
 				 mandalWiseSheet = workbook.createSheet("Mandal");
 				 mandalWiseSheet.autoSizeColumn((short) 1000);
@@ -1718,14 +1720,14 @@ public void test1234()
 				 // Panchayat Wise Report Generation
 				// List<AgeRangeVO> muncipalityWise = getMunicipalityWiseForAConstituency(232l,10l,ageRanges);
 				 //List<AgeRangeVO> muncipalityWise1 = new ArrayList<AgeRangeVO>();//kavali---->kavali municipality.
-				/* for (AgeRangeVO ageRangeVO : muncipalityWise) {
+				 for (AgeRangeVO ageRangeVO : muncipalityWise) {
 					 ageRangeVO.setTehsilName(ageRangeVO.getTehsilName() + " Munciplity");
 					 ageRangeVO.setPanchayatName(ageRangeVO.getPanchayatName() + " Munciplity");
 					 muncipalityWise1.add(ageRangeVO);
-				 }*/
+				 }
 				 List<AgeRangeVO> panchayatWise = getPanchayatWiseForAConstituency(constituecnyId,10l,ageRanges,false);
-				/* if(muncipalityWise1 != null && muncipalityWise1.size() > 0)
-				 panchayatWise.addAll(muncipalityWise1);*/
+				 if(muncipalityWise1 != null && muncipalityWise1.size() > 0)
+				 panchayatWise.addAll(muncipalityWise1);
 				 panchayatwiseSheet = workbook.createSheet("Panchayat");
 				 panchayatwiseSheet.autoSizeColumn((short) 1000);
 				 generateExcelsForPanchayatReport(panchayatWise,panchayatwiseSheet,workbook);
@@ -1750,15 +1752,15 @@ public void test1234()
 				 
 				 //List<AgeRangeVO> panchayatWiseForBooth = getPanchayatWiseForBoothForAConstituency(232l,10l,ageRanges);
 				 //List<AgeRangeVO> panchayatWiseForBooth1 = new ArrayList<AgeRangeVO>();
-				 /*for (AgeRangeVO ageRangeVO : panchayatWiseForBooth) {
+				 for (AgeRangeVO ageRangeVO : panchayatWiseForBooth) {
 					 ageRangeVO.setTehsilName(ageRangeVO.getTehsilName() + " Munciplity");
 					 panchayatWiseForBooth1.add(ageRangeVO);
-				}*/
+				}
 				 
-				/* if(panchayatWiseForBooth1 != null && panchayatWiseForBooth1.size() > 0)
+				 if(panchayatWiseForBooth1 != null && panchayatWiseForBooth1.size() > 0)
 				 {
 					 boothWise.addAll(panchayatWiseForBooth1);
-				 }*/
+				 }
 				 generateExcelsForBoothReport(boothWise,boothWiseSheet,workbook);
 			}
 			else if(parms[2].toString().equalsIgnoreCase("URBAN"))
@@ -1780,10 +1782,10 @@ public void test1234()
 					 panchayatWiseForBooth1.add(ageRangeVO);
 				}
 				 
-				/* if(panchayatWiseForBooth1 != null && panchayatWiseForBooth1.size() > 0)
+				 if(panchayatWiseForBooth1 != null && panchayatWiseForBooth1.size() > 0)
 				 {
 					 boothWise.addAll(panchayatWiseForBooth1);
-				 }*/
+				 }
 				 generateExcelsForBoothReport(panchayatWiseForBooth1,boothWiseSheet,workbook);
 			}//111
 			else
@@ -1820,11 +1822,11 @@ public void test1234()
 				 // Panchayat Wise Report Generation
 				// List<AgeRangeVO> muncipalityWise = getMunicipalityWiseForAConstituency(232l,10l,ageRanges);
 				 //List<AgeRangeVO> muncipalityWise1 = new ArrayList<AgeRangeVO>();//kavali---->kavali municipality.
-				/* for (AgeRangeVO ageRangeVO : muncipalityWise) {
+				 for (AgeRangeVO ageRangeVO : muncipalityWise) {
 					 ageRangeVO.setTehsilName(ageRangeVO.getTehsilName() + " Munciplity");
 					 ageRangeVO.setPanchayatName(ageRangeVO.getPanchayatName() + " Munciplity");
 					 muncipalityWise1.add(ageRangeVO);
-				 }*/
+				 }
 				 List<AgeRangeVO> panchayatWise = getPanchayatWiseForAConstituency(constituecnyId,10l,ageRanges,false);
 				 if(muncipalityWise1 != null && muncipalityWise1.size() > 0)
 				 panchayatWise.addAll(muncipalityWise1);
@@ -1874,7 +1876,7 @@ public void test1234()
 		e.printStackTrace();
 	}
 
-}
+}*/
 
 
 public void generateExcelsForBoothReport(List<AgeRangeVO>  list ,HSSFSheet sheet,HSSFWorkbook workbook)
