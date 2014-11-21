@@ -854,7 +854,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								surveyCadreResponceVO.setErrorCode("VOTER GENDER MISS MATCH");
 							}
 						}
-						
+						else
+						{
+							tdpCadre.setGender(cadreRegistrationVO.getGender());
+						}
 						
 					}
 					if(cadreRegistrationVO.getRelativeName() != null && !cadreRegistrationVO.getRelativeName().equalsIgnoreCase("null") && cadreRegistrationVO.getRelativeName().trim().length() > 0)
