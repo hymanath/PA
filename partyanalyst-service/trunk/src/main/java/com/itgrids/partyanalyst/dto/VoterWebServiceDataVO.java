@@ -6,14 +6,14 @@ public class VoterWebServiceDataVO  implements java.io.Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -2463037785793965855L;
-	String voterCardNo;
-	String name;
-	String relativeName;
-	String relation;
-	String age;
-	String doorNo;
-	Long constituencyId;
-	Integer pageNo;
+	private String voterCardNo;
+	private String name;
+	private String relativeName;
+	private String relation;
+	private String age;
+	private String doorNo;
+	private Long constituencyId;
+	private Integer pageNo;
 	
 	public String getVoterCardNo() {
 		return voterCardNo;
