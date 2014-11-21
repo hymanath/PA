@@ -208,6 +208,9 @@
 									</span><br>
 									<span class="fontStyle">Assign Sub User&nbsp;:&nbsp;&nbsp;
 										<a class="alinkstyle" href="<s:url action="assignSubUserAction"/>">Assign</a>
+									</span><br>
+									<span class="fontStyle">Change User Password&nbsp;:&nbsp;&nbsp;
+										<a class="alinkstyle" href="<s:url action="changeUserPasswords"/>">Manage</a>
 									</span>
 									</fieldset>
 								</td>
