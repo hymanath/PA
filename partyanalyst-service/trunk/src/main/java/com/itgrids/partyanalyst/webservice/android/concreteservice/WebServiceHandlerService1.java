@@ -1108,6 +1108,9 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	    		voterVo.setRelation(voter.getRelationType());
 	    		voterVo.setAge(voter.getAge());
 	    		voterVo.setDoorNo(voter.getHouseNo());
+	    		if(voter.getCount() != null){
+	    		  voterVo.setPageNo(voter.getCount().intValue());
+	    		}
 	    		returnList.add(voterVo);
 	    	}
     	}
