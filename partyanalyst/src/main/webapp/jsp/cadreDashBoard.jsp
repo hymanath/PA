@@ -1654,7 +1654,8 @@ function SortByName(a, b){
 					str+='<th>Target Cadres</th>';
 					str+='<th>Registered Cadres</th>';
 					//str+='<th>Difference</th>';
-					str+='<th>% of Register cadres   </th>';
+					str+='<th>% of Register cadres</th>';
+					str+='<th>Cadre Details</th>';
 					str+='</tr></thead>';
 					str+='<tbody>';
 					for(var i in result)
@@ -1680,27 +1681,27 @@ function SortByName(a, b){
 						}else{
 							var colorStatus = result[i].colorStatus;
 							if(colorStatus=="Best"){
-								str+='<td style="background-color: green;">'+result[i].percentage+'';
+								str+='<td style="background-color: green;">'+result[i].percentage+'</td>';
 							}
 							if(colorStatus=="Good"){
-								str+='<td style="background-color:lightgreen">'+result[i].percentage+'';
+								str+='<td style="background-color:lightgreen">'+result[i].percentage+'</td>';
 							}
 							if(colorStatus=="Ok"){
-								str+='<td style="background-color:yellow">'+result[i].percentage+'';
+								str+='<td style="background-color:yellow">'+result[i].percentage+'</td>';
 							}
 							if(colorStatus=="Poor"){
-								str+='<td style="background-color:orange">'+result[i].percentage+'';
+								str+='<td style="background-color:orange">'+result[i].percentage+'</td>';
 							}
 							if(colorStatus=="Worst"){
-								str+='<td style="background-color:#C43C35">'+result[i].percentage+'';
+								str+='<td style="background-color:#C43C35">'+result[i].percentage+'</td>';
 							}
 							if(scopeId == 2)
 							{
-								str+=' <i style="cursor:pointer;;" onclick="getCadreDetails('+ result[i].id+ ',\'District\')"  title="Click here to view details" class=" icon-eye-open"></i></td> ';
+								str+='<td> <i style="cursor:pointer;;" onclick="getCadreDetails('+ result[i].id+ ',\'District\')"  title="Click here to view details" class=" icon-eye-open"></i></td> ';
 							}
 							else
 							{
-								str+=' <i style="cursor:pointer;" onclick="getCadreDetails('+ result[i].id+ ',\'constituency\')"  title="Click here to view details" class=" icon-eye-open"></i></td> ';
+								str+='<td> <i style="cursor:pointer;" onclick="getCadreDetails('+ result[i].id+ ',\'constituency\')"  title="Click here to view details" class=" icon-eye-open"></i></td> ';
 							}
 						}
 						str+='</tr>';
@@ -1790,7 +1791,8 @@ function SortByName(a, b){
 					str+='<th>Target Cadres</th>';
 					str+='<th>Registered Cadres</th>';
 					//str+='<th>Difference</th>';
-					str+='<th>% of Register cadres  </th>';
+					str+='<th>% of Register cadres</th>';
+					str+='<th>Cadre Details</th>';
 					str+='</tr></thead>';
 					str+='<tbody>';
 					for(var i in result){
@@ -1817,27 +1819,27 @@ function SortByName(a, b){
 						}else{
 							var colorStatus = result[i].colorStatus;
 							if(colorStatus=="Best"){
-								str+='<td style="background-color: green;">'+result[i].percentage+'';
+								str+='<td style="background-color: green;">'+result[i].percentage+'</td>';
 							}
 							if(colorStatus=="Good"){
-								str+='<td style="background-color:lightgreen">'+result[i].percentage+'';
+								str+='<td style="background-color:lightgreen">'+result[i].percentage+'</td>';
 							}
 							if(colorStatus=="Ok"){
-								str+='<td style="background-color:yellow">'+result[i].percentage+'';
+								str+='<td style="background-color:yellow">'+result[i].percentage+'</td>';
 							}
 							if(colorStatus=="Poor"){
-								str+='<td style="background-color:#F89406">'+result[i].percentage+'';
+								str+='<td style="background-color:#F89406">'+result[i].percentage+'</td>';
 							}
 							if(colorStatus=="Worst"){
-								str+='<td style="background-color:#C43C35">'+result[i].percentage+'';
+								str+='<td style="background-color:#C43C35">'+result[i].percentage+'</td>';
 							}
 							if(scopeId == 2)
 							{
-								str+=' <i style="cursor:pointer;" onclick="getCadreDetails('+ result[i].id+ ',\'District\')"  title="Click here to view details" class=" icon-eye-open"></i></td> ';
+								str+='<td> <i style="cursor:pointer;" onclick="getCadreDetails('+ result[i].id+ ',\'District\')"  title="Click here to view details" class=" icon-eye-open"></i></td> ';
 							}
 							else
 							{
-								str+=' <i style="cursor:pointer;" onclick="getCadreDetails('+ result[i].id+ ',\'constituency\')"  title="Click here to view details" class=" icon-eye-open"></i></td> ';
+								str+='<td> <i style="cursor:pointer;" onclick="getCadreDetails('+ result[i].id+ ',\'constituency\')"  title="Click here to view details" class=" icon-eye-open"></i></td> ';
 							}
 						} 
 						str+='</tr>';
@@ -1999,7 +2001,8 @@ function SortByName(a, b){
 					str+='<th>Target Cadres</th>';
 					str+='<th>Registered Cadres</th>';
 					//str+='<th>Difference</th>';
-					str+='<th>% of Register cadres  </th>';
+					str+='<th>% of Register cadres</th>';
+					str+='<th>Cadre Details</th>';
 					str+='</tr></thead>';
 					str+='<tbody>';
 					for(var i in result){
@@ -2025,27 +2028,27 @@ function SortByName(a, b){
 							}else{
 								var colorStatus = result[i].colorStatus;
 								if(colorStatus=="Best"){
-									str+='<td style="background-color: green;">'+result[i].percentage+'';
+									str+='<td style="background-color: green;">'+result[i].percentage+'</td>';
 								}
 								if(colorStatus=="Good"){
-									str+='<td style="background-color:lightgreen">'+result[i].percentage+'';
+									str+='<td style="background-color:lightgreen">'+result[i].percentage+'</td>';
 								}
 								if(colorStatus=="Ok"){
-									str+='<td style="background-color:yellow">'+result[i].percentage+'';
+									str+='<td style="background-color:yellow">'+result[i].percentage+'</td>';
 								}
 								if(colorStatus=="Poor"){
-									str+='<td style="background-color:orange">'+result[i].percentage+'';
+									str+='<td style="background-color:orange">'+result[i].percentage+'</td>';
 								}
 								if(colorStatus=="Worst"){
-									str+='<td style="background-color:#C43C35">'+result[i].percentage+'';
+									str+='<td style="background-color:#C43C35">'+result[i].percentage+'</td>';
 								}
 								if(scopeId == 2)
 								{
-									str+=' <i style="cursor:pointer;" onclick="getCadreDetails('+ result[i].id+ ',\'District\')"  title="Click here to view details" class=" icon-eye-open"></i></td> ';
+									str+='<td> <i style="cursor:pointer;" onclick="getCadreDetails('+ result[i].id+ ',\'District\')"  title="Click here to view details" class=" icon-eye-open"></i></td> ';
 								}
 								else
 								{
-									str+=' <i style="cursor:pointer;" onclick="getCadreDetails('+ result[i].id+ ',\'constituency\')"  title="Click here to view details" class=" icon-eye-open"></i></td> ';
+									str+='<td> <i style="cursor:pointer;" onclick="getCadreDetails('+ result[i].id+ ',\'constituency\')"  title="Click here to view details" class=" icon-eye-open"></i></td> ';
 								}
 							}
 							str+='</tr>';
@@ -2138,7 +2141,8 @@ function SortByName(a, b){
 					str+='<th>Target Cadres</th>';
 					str+='<th>Registered Cadres</th>';
 					//str+='<th>Difference</th>';
-					str+='<th>% of Register cadres  </th>';
+					str+='<th>% of Register cadres</th>';
+					str+='<th>Cadre Details</th>';
 					str+='</tr></thead>';
 					str+='<tbody>';
 					for(var i in result){
@@ -2165,27 +2169,27 @@ function SortByName(a, b){
 								var colorStatus = result[i].colorStatus;
 								if(status == colorStatus){
 									if(colorStatus=="Best"){
-										str+='<td style="background-color: green;">'+result[i].percentage+'';
+										str+='<td style="background-color: green;">'+result[i].percentage+'</td>';
 									}
 									if(colorStatus=="Good"){
-										str+='<td style="background-color:lightgreen">'+result[i].percentage+'';
+										str+='<td style="background-color:lightgreen">'+result[i].percentage+'</td>';
 									}
 									if(colorStatus=="Ok"){
-										str+='<td style="background-color:yellow">'+result[i].percentage+'';
+										str+='<td style="background-color:yellow">'+result[i].percentage+'</td>';
 									}
 									if(colorStatus=="Poor"){
-										str+='<td style="background-color:orange">'+result[i].percentage+'';
+										str+='<td style="background-color:orange">'+result[i].percentage+'</td>';
 									}
 									if(colorStatus=="Worst"){
-										str+='<td style="background-color:#C43C35">'+result[i].percentage+'';
+										str+='<td style="background-color:#C43C35">'+result[i].percentage+'</td>';
 									}
 									if(scopeId == 2)
 									{
-										str+=' <i style="cursor:pointer;" onclick="getCadreDetails('+ result[i].id+ ',\'District\')"  title="Click here to view details" class=" icon-eye-open"></i></td> ';
+										str+='<td> <i style="cursor:pointer;" onclick="getCadreDetails('+ result[i].id+ ',\'District\')"  title="Click here to view details" class=" icon-eye-open"></i></td> ';
 									}
 									else
 									{
-										str+=' <i style="cursor:pointer;" onclick="getCadreDetails('+ result[i].id+ ',\'constituency\')"  title="Click here to view details" class=" icon-eye-open"></i></td> ';
+										str+='<td> <i style="cursor:pointer;" onclick="getCadreDetails('+ result[i].id+ ',\'constituency\')"  title="Click here to view details" class=" icon-eye-open"></i></td> ';
 									}
 								}
 							}
