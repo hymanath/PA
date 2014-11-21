@@ -34,6 +34,7 @@ public class TdpCadreBackupDetails extends BaseModel implements java.io.Serializ
 	
 	private String exception;
 
+	private String jsonObject;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -120,6 +121,16 @@ public class TdpCadreBackupDetails extends BaseModel implements java.io.Serializ
 
 	public void setFamilyDetails(String familyDetails) {
 		this.familyDetails = familyDetails;
+	}
+
+	
+	@Column(name="json_obj")
+	public String getJsonObject() {
+		return jsonObject;
+	}
+
+	public void setJsonObject(String jsonObject) {
+		this.jsonObject = jsonObject;
 	}
 	
 	

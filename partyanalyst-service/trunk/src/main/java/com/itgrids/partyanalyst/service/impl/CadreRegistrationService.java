@@ -34,6 +34,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.google.gson.Gson;
 import com.itgrids.partyanalyst.dao.IBloodGroupDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
@@ -125,7 +126,6 @@ import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ImageAndStringConverter;
-import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 
 public class CadreRegistrationService implements ICadreRegistrationService {
 	
@@ -468,7 +468,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				 TdpCadreBackupDetails tdpCadreBackupDetails = new TdpCadreBackupDetails();
 				for (CadreRegistrationVO inputResponse : inputResponseList)
 				{
-					String cadreBasicInfo = "Voter Name " + ":" + inputResponse.getVoterName() + "-" +"Date Of Birth "+ ":" + inputResponse.getDob() +"-"+ "Gender "+ ":" +inputResponse.getGender()+ "-" +"Relative Name"+ ":" + inputResponse.getRelativeName() +"-" +"VoterCardNumber"+ ":" + inputResponse.getVoterCardNo() + "-" + "H.NO" + ":" + inputResponse.getHouseNo() + "-" +"Party Member Since" + ":" +inputResponse.getPartyMemberSince() + "-" + "Blood Group " + ":" + inputResponse.getBloodGroupId() + "-" + "Street/hamle" + ":" +inputResponse.getStreet() +"-" +"Caste" + ":" + inputResponse.getCasteId() + "-" + "Mobile No" + ":" + inputResponse.getMobileNumber() + "-" + "Education" + ":" +inputResponse.getEducationId() + "-" + "Occupation " + ":" +inputResponse.getOccupationId() + "-" + "Previous Enroll Ment No " + ":" + inputResponse.getPreviousEnrollmentNumber();
+					/*String cadreBasicInfo = "Voter Name " + ":" + inputResponse.getVoterName() + "-" +"Date Of Birth "+ ":" + inputResponse.getDob() +"-"+ "Gender "+ ":" +inputResponse.getGender()+ "-" +"Relative Name"+ ":" + inputResponse.getRelativeName() +"-" +"VoterCardNumber"+ ":" + inputResponse.getVoterCardNo() + "-" + "H.NO" + ":" + inputResponse.getHouseNo() + "-" +"Party Member Since" + ":" +inputResponse.getPartyMemberSince() + "-" + "Blood Group " + ":" + inputResponse.getBloodGroupId() + "-" + "Street/hamle" + ":" +inputResponse.getStreet() +"-" +"Caste" + ":" + inputResponse.getCasteId() + "-" + "Mobile No" + ":" + inputResponse.getMobileNumber() + "-" + "Education" + ":" +inputResponse.getEducationId() + "-" + "Occupation " + ":" +inputResponse.getOccupationId() + "-" + "Previous Enroll Ment No " + ":" + inputResponse.getPreviousEnrollmentNumber();
 					String previousRoles = "";
 					String previousElections = "";
 					String familyDetails = "";
@@ -493,19 +493,23 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						{
 							familyDetails = familyDetails + "Voter Id" + ":" +familyVO.getVoterId() + "-" + "Occupation Id" + ":" + familyVO.getOccupationId()+" : " +"education Id" + ":" + familyVO.getEducationId() + ":: ";
 						}
-					}
-				
+					}*/
+					Gson gson = new Gson();
+					 
+					System.out.println(gson.toJson(inputResponse));
+					
+					
 					
 					tdpCadreBackupDetails.setRefNo(inputResponse.getRefNo());
-					tdpCadreBackupDetails.setCadreBasicInfo(cadreBasicInfo);
-					tdpCadreBackupDetails.setCadrePreviousRoles(previousRoles);
-					tdpCadreBackupDetails.setCadrePreviousElections(previousElections);
+					//tdpCadreBackupDetails.setCadreBasicInfo(cadreBasicInfo);
+					//tdpCadreBackupDetails.setCadrePreviousRoles(previousRoles);
+					//tdpCadreBackupDetails.setCadrePreviousElections(previousElections);
 					tdpCadreBackupDetails.setUpdatedBy(inputResponse.getUpdatedUserId() != null ? inputResponse.getUpdatedUserId().longValue():0L);
 					tdpCadreBackupDetails.setDataSourceType(registrationType);
-					tdpCadreBackupDetails.setFamilyDetails(familyDetails);
+					//tdpCadreBackupDetails.setFamilyDetails(familyDetails);
 					tdpCadreBackupDetails.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
-				
-					 tdpCadreBackupDetails = tdpCadreBackupDetailsDAO.save(tdpCadreBackupDetails);
+					tdpCadreBackupDetails.setJsonObject(gson.toJson(inputResponse));
+					tdpCadreBackupDetails = tdpCadreBackupDetailsDAO.save(tdpCadreBackupDetails);
 					
 				}
 				return tdpCadreBackupDetails;
@@ -1323,7 +1327,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						tdpCadre1 = tdpCadreDAO.save(tdpCadre);	
 				    }else{
 					  if(insertType.equalsIgnoreCase("new")){
-						 
+							 							 
 						     tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
 						     
 						       
@@ -1471,6 +1475,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 										if(cadreFamilyVO.getGender() != null && cadreFamilyVO.getGender().trim().length() > 0)
 										{
 											tdpCadreFamilyDetails.setGender(cadreFamilyVO.getGender().trim());
+										}
+										if(cadreFamilyVO.getFamilyRelationId() != null && cadreFamilyVO.getFamilyRelationId().longValue() > 0)
+										{
+											tdpCadreFamilyDetails.setFamilyRelationId(cadreFamilyVO.getFamilyRelationId().longValue());
 										}
 										if(cadreFamilyVO.getVoterId() != null && cadreFamilyVO.getVoterId().longValue() > 0l)
 										{
@@ -5092,6 +5100,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return finalList;
 	}
 	
+
 	public String updatePrintedCardDetails(final List<CardNFCDetailsVO> inputList){
 		LOG.debug("Entered Into updatePrintedCardDetails");
 		String returnMsg = "";

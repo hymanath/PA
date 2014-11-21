@@ -42,8 +42,9 @@ public class TdpCadreLocationWiseReportVO implements java.io.Serializable{
 	List<TdpCadreLocationWiseReportVO>	 tehsilWiseList = new ArrayList<TdpCadreLocationWiseReportVO>();
 	List<TdpCadreLocationWiseReportVO>	 panchayatWiseList = new ArrayList<TdpCadreLocationWiseReportVO>();
 	
-	List<CadreRegisterInfo> casteGroupList = new ArrayList<CadreRegisterInfo>();
-	List<CadreRegisterInfo> casteList = new ArrayList<CadreRegisterInfo>();
+	List<CadreRegisterInfo>     casteGroupList = new ArrayList<CadreRegisterInfo>();
+	List<CadreRegisterInfo>     casteList = new ArrayList<CadreRegisterInfo>();
+	
 	
 	public Double getRegisteredMalePerc() {
 		return registeredMalePerc;
@@ -286,8 +287,6 @@ public class TdpCadreLocationWiseReportVO implements java.io.Serializable{
 	public void setCasteList(List<CadreRegisterInfo> casteList) {
 		this.casteList = casteList;
 	}
-	
-	
 
 	public Long getConstituencyNo() {
 		return constituencyNo;
@@ -296,5 +295,7 @@ public class TdpCadreLocationWiseReportVO implements java.io.Serializable{
 	public void setConstituencyNo(Long constituencyNo) {
 		this.constituencyNo = constituencyNo;
 	}
+	
+	
  
 }
