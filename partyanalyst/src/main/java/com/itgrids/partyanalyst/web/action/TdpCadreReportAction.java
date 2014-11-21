@@ -158,4 +158,33 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 		return Action.SUCCESS;	
 	}
 	
+	public String getConstituencyDetailsInDistricts()
+	{
+		try
+		{
+		    jobj = new JSONObject(getTask());
+
+			String districtIds       = jobj.getString("districtIds");
+			List<Long> districtIdList = new ArrayList<Long>();
+			String[] district       = districtIds.split(",");
+			for (String districtId : district) 
+			{
+				districtId = districtId.trim().replace("[","").replace("]", "").trim(); 
+						
+				if(districtId.trim().length()>0)
+				{
+					districtIdList.add(Long.valueOf(districtId));
+				}
+				
+			}
+			surveyTransactionVO =	tdpCadreReportService.getConstituencyDetailsInDistricts(districtIdList);
+		}
+		catch(Exception e)
+		{
+			LOG.info("Entered into getMemberShipCardDetails() in getLocationWiseDetailsForExcelReport class");
+		}
+	
+		return Action.SUCCESS;	
+	}
+	
 }
