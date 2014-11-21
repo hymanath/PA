@@ -4188,7 +4188,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	}
 		
 	public String copyFile(String sourcePath,String destinationPath){
-		synchronized ("copyFile"){
+		//synchronized ("copyFile"){
 	 try{
 		File file = new File(sourcePath);
 		if(file.exists()){
@@ -4201,7 +4201,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		  LOG.error("Copy error");
 		  return "error";
 	  }
-	 }
+	// }
 	 return "failure";
 	}
 	
