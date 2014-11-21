@@ -66,21 +66,8 @@ public class CadreSurveyTransactionServiceTest  extends BaseDaoTestCase {
 			*/
 			//constituencyIds.add(241L);
 			
-			constituencyIds.add(267L);
-			constituencyIds.add(270L);
-			constituencyIds.add(271L);
-			constituencyIds.add(272L);
-			constituencyIds.add(273L);
-			constituencyIds.add(275L);
-			constituencyIds.add(276L);
-			constituencyIds.add(277L);
-			constituencyIds.add(278L);
-			constituencyIds.add(279L);
-			constituencyIds.add(297L);
-			constituencyIds.add(298L);
-			constituencyIds.add(299L);
-			constituencyIds.add(300L);
-
+			constituencyIds.add(331L);
+			
 
 
 
