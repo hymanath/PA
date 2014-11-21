@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title> Tdp Cadre Reports </title>
+<title> Membership Cards Print Status Report </title>
 
 
     <link href="css/bootstrap.min.css" rel="stylesheet"/>	
@@ -82,7 +82,10 @@
 				color : #468847 !important;
 				line-height: 20px !important;
 			}
-			
+	#errorDiv
+	{
+			color:#ff0020;
+	}	
 			
 	</style>
    
@@ -92,18 +95,21 @@
 
 <body>
 	<div class="container " id="dashboadElmnt">	
-	    <div id="errorDiv" style="display:none"></div>
+
 		<div id="locationWiseCadreInfoDiv">
 		    <div class="row-fluid" id="fadeInDown" style="padding-top: 5px;">
 				<div class="span12 well well-small  border-radius-0 mb-0 " style="padding:0px;">
-					<h3 class="offset4 text-uppercase"> Generate Tdp Cadre Reports  </h3>
+					<h3 class="offset2 text-uppercase"> Membership Cards Printing Status Report  </h3>
 				</div>
 			</div>
+			
+
 			<div class="row-fluid show-grid">
+			<div id="errorDiv" style="" class="offset4"></div><br>
 			   <div class="row-fluid offset4">						
 					<div class="span8" style="margin-bottom:-20px;">
-					<h5 class="text-align1">  State : 
-					<select id="statesList" onChange="getdistricts(this.value);getConstituencyValues(this.value);"> 
+					<h5 class="text-align1" style="margin-left: -8px;">  State : 
+					<select id="statesList" onChange="getdistricts(this.value);"> 
 					<option value="1"> Andhra Pradesh </option>
 					<option value="2"> Telangana </option>
 					
@@ -127,14 +133,14 @@
 					</div>
 				</div>
 				<div class="row-fluid offset4">						
-					<div class="span8">
-						<h5 class="text-align1" style="margin-left: -65px;margin-top:-10px">  From Date : 
+					<div class="span8"  style="margin-top: -20px">
+						<h5 class="text-align1" style="margin-left: -45px;">  From Date : 
 					    <input type="text" id="fromDateId" class="datePickerCls" placeholder="From Date"  readOnly="true" style="cursor:text;"></input></h5>
 					</div>
 				</div>
 				<div class="row-fluid offset4">						
-					<div class="span8">
-						<h5 class="text-align1" style="margin-left: -65px;margin-top:-10px">  To Date : 
+					<div class="span8"  style="margin-top: -20px;margin-left: 20px;">
+						<h5 class="text-align1" style="margin-left: -45px;">  To Date : 
 					<input type="text" id="toDateId" class="datePickerCls" placeholder="To Date"  readOnly="true" style="cursor:text;"></input></h5>
 					</div>
 				</div>
@@ -152,18 +158,14 @@
 
 
 $(document).ready(function(){
-	  $("#fromDateId").datepicker({
-		dateFormat: "yy-mm-dd",
+	  $("#fromDateId,#toDateId").datepicker({
+		dateFormat: "dd-mm-yy",
 		maxDate: new Date()
 	 });
-	 $("#toDateId").datepicker({
-		dateFormat: "yy-mm-dd",
-		maxDate: new Date()
-     });	 
+	$("#fromDateId,#toDateId").datepicker("setDate", new Date());	 
 });
-	function getdistricts(id){
+	function getdistricts(id){	
 	
-	$("#districtsList").html("");
 	var str ='';
 		var jsObj={
 			stateid:id
@@ -173,10 +175,13 @@ $(document).ready(function(){
 			  url: 'getDistrictsByStateWiseAction.action',
 			  data: {task:JSON.stringify(jsObj)}
 	   }).done(function(result){
+	   $("#districtsList").html("");
+			str +='<option value="0"> Select District </option>';
 		   for(var i in result){
 				str +='<option value='+result[i].id+'>'+result[i].name+'</option>';
 			}
 			$("#districtsList").html(str);
+			
 	   });	
 	
   }
@@ -185,7 +190,7 @@ $(document).ready(function(){
 
  function getConstituencies(districtId){
 		var stateId = $("#statesList").val();
-		$("#constiList").html("");
+		
 		var str ="";
 		var jObj ={
 			districtId:districtId,				  
@@ -196,12 +201,14 @@ $(document).ready(function(){
 			url : "sendUpdatesByemailsAction.action",
 			data : {task:JSON.stringify(jObj)} ,
 		}).done(function(result){
+		$("#constiList").html("");
 			$('#constiList').find('option').remove();
+			$('#constiList').append('<option value="0"> Select Constituency </option>')
 		   for(var i in result){
 				$('#constiList').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			}
 			
-			 $('#constiList').multiselect('refresh');
+			// $('#constiList').multiselect('refresh');
 			  
 		});
 	}
@@ -234,43 +241,142 @@ $(document).ready(function(){
 	
 	
 function generateDetailReports(){		
-	var constituencyIds = "";
-	var selectedValues = $("#constiList").multiselect("getChecked").map(function(){
-        return this.value;
-    }).get();
-	for(var j in selectedValues)
-	{
-        constituencyIds = constituencyIds+""+selectedValues[j]+",";
-    }
-	
-	
-	var fromDate = $('#fromDateId').val();
-	var toDate = $('#fromDateId').val();
-	
+
+	var constituencyIds = $("#constiList").val();
+	$('#reportsStatusDiv').html('');
+	var startDate = $('#fromDateId').val();
+	var endDate = $('#toDateId').val();
+	$("#errorDiv").html("");
 	var district= $("#districtsList option:selected").val();
-	var jsObj =
-	{ 		
-	     district:district,	 
-		 constituencyIds : constituencyIds,
-		 fromDate = fromDate,
-		 toDate   = toDate,
-		 task: "printingStatus"
-	};
-	$.ajax({
-	type: "POST",
-	url: "getMemberShipCardDetailsAction.action",
-	data: {task : JSON.stringify(jsObj)}
-	})
-	.done(function( result ) {
-		buildCategoeryDetails(result,jsObj);
-     });
 	
+	var isError = '';
 	
+	if(district == 0)
+	{
+		isError = 'error';
+			$("#errorDiv").html("Please Select District.");
+	}
+	if(constituencyIds ==0)
+	{
+		isError = 'error';
+		$("#errorDiv").html("Please Select District.");
+	}
+	
+	if(startDate != null && endDate != null)
+	{
+		if((startDate != null && startDate.trim().length >0) && (endDate != null && endDate.trim().length >0))
+		{
+		
+			var arrr = startDate.split("-");
+				var fromyear=arrr[2];
+				var frommonth=arrr[1];
+				var fromDat=arrr[0];
+		   var arr = endDate.split("-");
+				var toyear=arr[2];
+				var tomonth=arr[1];
+				var toDat=arr[0];
+
+				if(fromyear>toyear){
+				isError = 'error';
+					$('#errorDiv').html('<font style="color:red;">From Date should not greater than To Date </font>');
+				}
+			
+				if(frommonth>tomonth){
+					   if(fromyear == toyear){
+					  isError = 'error';
+						$('#errorDiv').html('<font style="color:red;">From Date should not greater than To Date </font>');
+					}
+					
+				}
+				if(fromDat>toDat){
+					if(frommonth == tomonth && fromyear == toyear){		
+									
+						$('#errorDiv').html('<font style="color:red;">From Date should not greater than To Date </font>');
+						  isError = 'error';		
+					   }
+				}
+		}
+			
 	}
 
+		if(isError.length == 0)
+		{			
+			$('#searchDashboardImg').show();
+			var jsObj =
+			{ 		
+				 district:district,	 
+				 constituencyIds : constituencyIds,
+				 fromDate : startDate,
+				 toDate   : endDate,
+				 task: "printingStatus"
+			};
+			$.ajax({
+			type: "POST",
+			url: "getMemberShipCardDetailsAction.action",
+			data: {task : JSON.stringify(jsObj)}
+			})
+			.done(function( result ) {
+			$('#searchDashboardImg').hide();
+				if(result != null )
+				{
+					buildCategoeryDetails(result);
+				}
+				else
+				{
+					$('#reportsStatusDiv').html('<span class="span12 offset4"> No Data Avaialable...</span>');
+				}
+				
+			 });
+			
+		}
+	}
+
+	function buildCategoeryDetails(result)
+	{
+		var str ='';			
+			str+='<h4 align="center" > USER DAY WISE REPORT </h4>';
+			str+='<table id="dayWiseUsersDetailsId" class="table table-bordered ">';
+			str+='<thead>';
+			str+='<tr>';
+			str+='<th> Date </th>';
+			str+='<th> District  </th>';
+			str+='<th> Parliament </th>';
+			str+='<th> Constituency </th>';
+			str+='<th> Total Cards </th>';
+			str+='<th> Print Completed </th>';
+			str+='<th> Print Not Completed </th>';
+			str+='</tr>';
+			str+='</thead>';
+			
+			str+='<tbody>';
+			if(result.surveyTransactionVOList != null && result.surveyTransactionVOList.length > 0)
+			{
+				for(var i in result.surveyTransactionVOList)
+				{
+				str+='<tr>';
+				str+='<td> '+result.surveyTransactionVOList[i].surveyDate+'</td>';
+				str+='<td> '+result.surveyTransactionVOList[i].name+'</td>';
+				str+='<td> '+result.surveyTransactionVOList[i].parliamentName+'</td>';
+				str+='<td> '+result.surveyTransactionVOList[i].locationName+'</td>';
+				str+='<td> '+result.surveyTransactionVOList[i].totalCount+'</td>';
+				str+='<td> '+result.surveyTransactionVOList[i].submittedCount+'</td>';
+				str+='<td> '+result.surveyTransactionVOList[i].notSubmittedCount+'</td>';
+				str+='</tr>';
+				}
+			}
+			str+='</tbody>';
+			str+='</table>';
+			
+			$('#reportsStatusDiv').html(str);
+		$('#dayWiseUsersDetailsId').dataTable({
+				  "aaSorting": [[ 0, "desc" ]],
+			      "iDisplayLength": 10,
+			      "aLengthMenu": [[10,20,50, 100, 200, -1], [10,20,50, 100, 200, "All"]]
+		         });
+	}
 getdistricts(1);
-getConstituencies(11);
-$('#constiList').multiselect({noneSelectedText:"Select Constittuency(s)"});
+//getConstituencies(11);
+//$('#constiList').multiselect({noneSelectedText:"Select Constittuency(s)"});
 </script>	
 	
 </body>
