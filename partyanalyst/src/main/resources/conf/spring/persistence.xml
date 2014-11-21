@@ -509,6 +509,7 @@
 				<value>com.itgrids.partyanalyst.model.TabLogInAuth</value>
 				<value>com.itgrids.partyanalyst.model.TabRecordsStatus</value>
 				<value>com.itgrids.partyanalyst.model.TabUserLoginDetails</value>
+				<value>com.itgrids.partyanalyst.model.ZebraPrintDetails</value>
 				</list>
 			
 		</property>
