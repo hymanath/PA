@@ -1235,26 +1235,59 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 		}
 	}
 	
-	public CadreAmountDetailsVO getUsersInLocation(Long userId) {
+	public CadreAmountDetailsVO getUsersInLocation(Long userId,Date fromDate,Date toDate,Long locationId,Long constituencyId,String type) {
 	
 		CadreAmountDetailsVO returnVo = new CadreAmountDetailsVO();
 		List<CadreAmountDetailsVO> resultList = new ArrayList<CadreAmountDetailsVO>();
 		try{
-			List<Object[]> list = cadreSurveyUserAssigneeDAO.getDuplicateUsersByUserId(userId);
-			if(list != null&& list.size() > 0)
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			
+			List<Object[]> list = tdpCadreDAO.getDuplicateUsersByUserId(fromDate,toDate,userId,locationId,constituencyId,type);
+			if(list != null &&list.size() >0)
 			{
 				for(Object[] params : list)
 				{
-					CadreAmountDetailsVO vo = new CadreAmountDetailsVO();	
-					
-					vo.setName(params[0] != null ? params[0].toString() : "");
-					vo.setMobileNo(params[1] != null ? params[1].toString() : "");
-					vo.setDate(params[2] != null ? params[2].toString() : "");
-					vo.setToDate(params[3] != null ? params[3].toString() : "");
-					resultList.add(vo);
-					
+				CadreAmountDetailsVO vo = new CadreAmountDetailsVO();	
+				vo.setDate(params[1] != null ? params[1].toString(): "");
+				vo.setTotalCount((Long)params[0]);
+				resultList.add(vo);
 				}
-				
+	
+			}
+			
+			List<Object[]> list1 = cadreSurveyUserAssigneeDAO.getDuplicateUsersForUserId(userId);
+			
+			if(list1 != null&& list1.size() > 0)
+			{
+				for(CadreAmountDetailsVO vo : resultList)
+				{
+					boolean flag = false;
+					for(Object[] params : list1)
+					{
+						
+						/*CadreAmountDetailsVO vo = getMatchedDateVO(resultList,params[2].toString());
+						if(vo != null)
+						{
+						vo.setName(params[0] != null ? params[0].toString() : "");
+						vo.setMobileNo(params[1] != null ? params[1].toString() : "");
+						vo.setDate(params[2] != null ? params[2].toString() : "");
+						vo.setToDate(params[3] != null ? params[3].toString() : "");
+						}*/
+						Date surveyDate = format.parse(vo.getDate());
+						if((surveyDate.equals((Date)params[2])) || (((((Date) params[2]).before(surveyDate))  || (((Date) params[2]).equals(surveyDate)) )&& params[3]== null)||
+								( ( (((Date) params[2]).before(surveyDate))  || (((Date) params[2]).equals(surveyDate)) ) && ( ((Date) params[3]).after(surveyDate)) || ((Date) params[3]).equals(surveyDate)) )
+						{
+							vo.setName(params[0] != null ? params[0].toString() : "");
+							vo.setMobileNo(params[1] != null ? params[1].toString() : "");
+							vo.setConstituency(params[2] != null ? params[2].toString() : "");
+							vo.setToDate(params[3] != null ? params[3].toString() : "");
+							flag = true;
+						}
+						if(flag)
+						break;
+							
+					}
+				}
 			}
 			returnVo.setInfoList(resultList);
 		}
@@ -1264,6 +1297,23 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 		}
 		return returnVo;
 	}	
+	
+	public CadreAmountDetailsVO getMatchedDateVO(List<CadreAmountDetailsVO> resultList,String Date)
+	{
+		try{
+			if(resultList == null || resultList.size() == 0 )
+				return null;
+			for(CadreAmountDetailsVO vo :resultList)
+			{
+				if(vo.getDate().toString().equalsIgnoreCase(Date.toString()))
+					return vo;
+			}
+		}
+		catch (Exception e) {
+			return null;
+		}
+		return null;
+	}
 	public List<CadreAmountDetailsVO> getYouthMahilaInfo(String locationtype,Long stateId,String accessType,String accessValue,Date fromDate,Date toDate)
 	{
 		Map<Long,CadreAmountDetailsVO> locationsMap = new HashMap<Long,CadreAmountDetailsVO>();
