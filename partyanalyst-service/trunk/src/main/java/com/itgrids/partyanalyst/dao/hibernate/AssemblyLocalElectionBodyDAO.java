@@ -271,7 +271,20 @@ public class AssemblyLocalElectionBodyDAO extends GenericDaoHibernate<AssemblyLo
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("urbanTypeId", urbanTypeId);
 		return query.list();
-		
+	}	
+	
+	 /**
+     * @author <a href="mailto:sasi.itgrids.hyd@gmail.com">SASI</a>
+     * @since 22-NOV-2014
+     * This DAO Call is to Get LocalElectionBodyIds
+     * @param List<Long> AssemblyLocalElectionBodyIds
+     * @return List<Long> LocalElectionBodyIds
+     */
+	public List<Long> getLEBIdsByALEBIds(List<Long> assemblyLocalElectionBodyIds){
+		Query query = getSession().createQuery(" select model.localElectionBody.localElectionBodyId from AssemblyLocalElectionBody  model " +
+				" where model.assemblyLocalElectionBodyId in(:assemblyLocalElectionBodyIds)");
+		query.setParameterList("assemblyLocalElectionBodyIds", assemblyLocalElectionBodyIds);
+		return query.list();
 	}
 
 	
