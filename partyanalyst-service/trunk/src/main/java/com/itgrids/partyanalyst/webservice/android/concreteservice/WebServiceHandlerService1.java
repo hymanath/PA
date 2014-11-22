@@ -792,6 +792,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		SurveyCadreResponceVO  surveyCadreResponceVO = null;
 		if(inputResponseList != null && inputResponseList.size() > 0)
 		{
+			if(IConstants.ENABLE_CADRE_LOGS)
 			for (CadreRegistrationVO inputResponse : inputResponseList)
 			{
 				LOG.debug(inputResponse.toString());
