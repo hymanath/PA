@@ -11,13 +11,15 @@ public class ImageEncrypt {
 	public static void main(String[] args)
 	{
 		ImageEncrypt imageEncrypt = new ImageEncrypt();
-		File dir = new File("E:\\Guntur Images");
+		File dir = new File("D:\\Photos\\CD_IMG");
 		for(File inDir : dir.listFiles())
 		{
 			if(inDir.isDirectory())
 				imageEncrypt.imageEncrypt(inDir.getAbsolutePath(),inDir.getAbsolutePath()+".txt");
 		}
 		
+		//imageEncrypt.imageEncrypt("Z:\\Voter_Images_Encrypt\\EastGodavari\\AC_155_PRATHIPAD",
+									//"Z:\\Voter_Images_Encrypt\\EastGodavari\\AC_155_PRATHIPAD.txt");
 	}
 	
 	@SuppressWarnings("deprecation")
