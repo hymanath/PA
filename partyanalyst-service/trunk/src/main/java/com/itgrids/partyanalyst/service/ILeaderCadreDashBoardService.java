@@ -14,10 +14,11 @@ public interface ILeaderCadreDashBoardService {
 	public List<CadreAmountDetailsVO> getLocationWiseToDayDetails(String locationtype,Long stateId,String fromTask);
 	public List<CadreAmountDetailsVO> getLocationWiseAsOfNowDetails(String locationtype,Long stateId);
 	public CadreAmountDetailsVO getDuplicateUsersInLocation(Date fromDate,Date toDate);
-	public CadreAmountDetailsVO getUsersInLocation(Long userId);
+	
 	public List<CadreAmountDetailsVO> getYouthMahilaInfo(String locationtype,Long stateId,String accessType,String accessValue,Date fromDate,Date toDate);
 	public List<CadreAmountDetailsVO> getSubLevelLoationWiseYouthMahilaInfo(String type,Long id,String accessType,String accessValue,Date fromDate,Date toDate);
 	public CadreAmountDetailsVO getCasteWiseDetails(Long stateId,String locationtype);
 	public CadreAmountDetailsVO getSubLoctaionCasteWiseDetails(Long stateId,String locationtype,Long Id);
+	public CadreAmountDetailsVO getUsersInLocation(Long userId,Date fromDate,Date toDate,Long locationId,Long constituencyId,String type);
 	
 }
