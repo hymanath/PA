@@ -127,4 +127,17 @@ public class CadreSurveyUserDAO extends GenericDaoHibernate<CadreSurveyUser, Lon
 		query.setParameter("password", password);
 		return query.list();
 	}
+	
+	
+	public List<Object[]> getCadreSurveyUserDetails(List<Long> ids){
+		
+		Query query = getSession().createQuery("select model.cadreSurveyUser.cadreSurveyUserId,model.cadreSurveyUser.userName,model.cadreSurveyUser.name,model.cadreSurveyUser.mobileNo,model.constituency.constituencyId,model.constituency.name,model.constituency.district.districtId," +
+				" model.constituency.district.districtName from CadreSurveyUserAssignDetails model where model.cadreSurveyUser.cadreSurveyUserId  in (:ids) ");
+		
+		query.setParameterList("ids", ids);
+		
+		return query.list();
+		
+	}
+	
 }

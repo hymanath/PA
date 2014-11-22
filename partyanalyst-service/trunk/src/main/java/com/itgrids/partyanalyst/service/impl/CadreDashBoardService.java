@@ -5056,4 +5056,115 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			}  			
 		} 
 		
+		public List<CadreRegisterInfo> getRegisteredCountByUserForHourWise(Date fromDate,Date toDate)
+		{
+			List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			
+			try{
+				
+				List<Date> datesList = new ArrayList<Date>();
+				List<Long> userIds = new ArrayList<Long>();
+				Map<Long,Map<Date,Map<Long,Long>>> userMap = new HashMap<Long, Map<Date,Map<Long,Long>>>();
+				Map<Date,Map<Long,Long>> dateMap = null;
+				Map<Long,CadreRegisterInfo> userNames = new HashMap<Long,CadreRegisterInfo>();
+			
+				//0 count,1 userId,2 hour,3 date,4 name
+				List<Object[]> dataCollectedInfo = tdpCadreDAO.getRegisteredCountByHourWise(fromDate, toDate);
+				
+				if(dataCollectedInfo != null && dataCollectedInfo.size() > 0){
+				for(Object[] data:dataCollectedInfo){
+					if(!datesList.contains((Date)data[3])){
+						datesList.add((Date)data[3]);
+					}
+					if(!userIds.contains((Long)data[1])){
+							userIds.add((Long)data[1]);	
+					}
+				
+				
+					dateMap = userMap.get((Long)data[1]);
+					if(dateMap == null){
+						dateMap = new HashMap<Date, Map<Long,Long>>();
+						userMap.put((Long)data[1],dateMap);
+						
+					}
+					Map<Long,Long> hourMap = dateMap.get((Date)data[3]);
+					if(hourMap == null){
+						hourMap = new HashMap<Long, Long>();
+						dateMap.put((Date)data[3], hourMap);
+					}					
+					hourMap.put(Long.parseLong(String.valueOf(data[2])),(Long)data[0]);
+					
+				}
+				}
+				if(userIds.size() > 0){
+					List<Object[]> userDetails = cadreSurveyUserDAO.getCadreSurveyUserDetails(userIds);				
+					for(Object[] obj : userDetails){
+						CadreRegisterInfo userData = new CadreRegisterInfo();
+						userData.setId((Long)obj[0]);
+						userData.setName(obj[1].toString());
+						userData.setUname(obj[2] != null ? obj[2].toString() : "");
+						userData.setConstituency(obj[5] != null ? obj[5].toString() : "");
+						userData.setDistrict(obj[7] != null ? obj[7].toString() : "");
+						userNames.put((Long)obj[0], userData);
+					}	
+				}				
+				CadreRegisterInfo userVo = null;
+				for(Long key:userMap.keySet()){
+					dateMap = userMap.get(key);
+					userVo = userNames.get(key);
+					//userVo = new CadreRegisterInfo();
+					userVo.setId(key);
+					
+					List<CadreRegisterInfo> daysList = new ArrayList<CadreRegisterInfo>();
+					for(Date date:datesList){
+						CadreRegisterInfo day = new CadreRegisterInfo();
+						day.setDate(date.toString());					
+						if(dateMap.get(date) != null){							
+							Map<Long, Long> hours =  dateMap.get(date);								
+							for(int i=0;i<=23;i++){
+								Long count = hours.get(new Long(i)); 
+								if(count == null)
+									day.getHours().add(0l);	
+								else
+									day.getHours().add(count);
+							}									
+						}					
+						daysList.add(day);						
+					}
+					userVo.setInfoList(daysList);			
+					returnList.add(userVo);					
+				}				
+			}catch(Exception e){
+				LOG.error("Exception rised in getRegisteredCountByUserForHourWise",e);
+			}
+			
+			return returnList;
+		}
+		
+		public List<CadreRegisterInfo> getHours()
+		{
+			List<CadreRegisterInfo>  resultList = new ArrayList<CadreRegisterInfo>();
+			try{			
+				for(int i=0;i<=23;i++){
+					CadreRegisterInfo vo = new CadreRegisterInfo();
+					vo.setId(new Long(i));
+					if(i<12){
+						if(i==0)
+							vo.setName(12 +"AM");
+						else
+							vo.setName(i +"AM");					
+					}else if(i >= 12){
+						if(i==12)
+							vo.setName(12 +"PM");
+						else
+							vo.setName(i - 12 +"PM");
+					}
+					resultList.add(vo);
+			   }
+			}catch (Exception e) {
+		
+			}
+			return resultList;
+		}
 }

@@ -209,5 +209,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getTotalRecordsForALocation(List<Long> districtIds,String type,Date fromDate,Date toDate);
 
 	public List<Object[]> getDuplicateUsersByUserId(Date startDate,Date endDate,Long userId,Long locationId,Long constituencyId,String type);
-
+	
+	public List<Object[]> getRegisteredCountByHourWise(Date fromDate, Date toDate);
 }
