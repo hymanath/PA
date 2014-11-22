@@ -1648,6 +1648,10 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 							{
 								daywiseVOMap.put(reportVO.getUpdatedDate(), null);
 							}
+							else
+							{
+								daywiseVOMap.put(reportVO.getDataPushDate(), null);
+							}
 						}
 					}
 				}
