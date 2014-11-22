@@ -10,4 +10,6 @@ import com.itgrids.partyanalyst.model.ZebraPrintDetails;
 public interface IZebraPrintDetailsDAO extends GenericDao<ZebraPrintDetails, Long>{ 
 
 	public List<Object[]> getMemberShipCardPrintStatusByDate(List<Long> constituencyIds,Date fromDate, Date toDate,String type);
+	
+	public List<Object[]> getMemberShipCardPushStatusByDate(List<Long> locationIdList,Date fromDate, Date toDate,String queryStr);
 }
