@@ -1286,6 +1286,19 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					if(cadreRegistrationVO.getFamilyVoterId() != null && cadreRegistrationVO.getFamilyVoterId().longValue() > 0 && registrationType.equalsIgnoreCase("TAB"))
 					{
 						tdpCadre.setFamilyVoterId(cadreRegistrationVO.getFamilyVoterId());
+						try {
+							if(cadreRegistrationVO.getVoterId() != null && cadreRegistrationVO.getVoterId().trim().length() > 0)
+							{
+								if(cadreRegistrationVO.getFamilyVoterId().longValue() == Long.valueOf(cadreRegistrationVO.getVoterId().toString()).longValue())
+								{
+									tdpCadre.setVoterId(null);
+									tdpCadre.setGender(cadreRegistrationVO.getGender());
+								}
+							}
+						} catch (Exception e) {
+							// TODO: handle exception
+						}
+						
 						tdpCadre.setIsRelative("Y");
 						 tdpCadre.setRelationTypeId(cadreRegistrationVO.getRelationTypeId());
 						/*if(cadreRegistrationVO.getRelationType() != null && cadreRegistrationVO.getRelationType().trim().length() >0 && !cadreRegistrationVO.getRelationType().trim().equalsIgnoreCase("null"))
