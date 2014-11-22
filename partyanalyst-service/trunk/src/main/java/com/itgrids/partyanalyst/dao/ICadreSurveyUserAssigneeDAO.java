@@ -10,7 +10,7 @@ import com.itgrids.partyanalyst.model.CadreSurveyUserAssignee;
 public interface ICadreSurveyUserAssigneeDAO extends GenericDao<CadreSurveyUserAssignee, Long>{
 	public List checkUserExists(Long userId,Date startDate);
 	public Long getLatestUserByCadreSurveyUser(Long userId);
-	public List<Object[]> getDuplicateUsersByUserId(Long userId);
+	public List<Object[]> getDuplicateUsersForUserId(Long userId);
 	
 
 }
