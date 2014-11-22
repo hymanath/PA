@@ -2885,4 +2885,18 @@ public void flushAndclearSession(){
 		return query.list();
 	}	
 	
+	public List<Object[]> getRegisteredCountByHourWise(Date fromDate, Date toDate){
+		Query query = getSession().createQuery("select " +
+				" count(model.tdpCadreId),model.insertedBy.cadreSurveyUserId,hour(model.surveyTime),date(model.surveyTime) from TdpCadre model " +
+				" where model.enrollmentYear = 2014 and " +
+				" model.isDeleted = 'N' and" +
+				" model.dataSourceType='TAB' and" +
+				" date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate and" +
+				" model.insertedBy.cadreSurveyUserId is not null" +
+				"  group by model.insertedBy.cadreSurveyUserId,date(model.surveyTime),hour(model.surveyTime)");
+		
+		query.setParameter("fromDate", fromDate);
+		query.setParameter("toDate", toDate);		
+		return query.list();
+	}		
 }

@@ -22,4 +22,6 @@ public interface ICadreSurveyUserDAO extends GenericDao<CadreSurveyUser, Long>{
 	public List<Object[]> getAllUserMobileNos(Long locationType,List<Long> locationIds);
 	
 	public List<CadreSurveyUser> getByUserNameAndPassword(String userName , String password);
+	
+	public List<Object[]> getCadreSurveyUserDetails(List<Long> ids);
 }

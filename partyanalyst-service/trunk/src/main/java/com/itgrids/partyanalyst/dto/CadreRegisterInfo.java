@@ -56,9 +56,18 @@ public class CadreRegisterInfo implements Serializable{
 	private Long parliamentId;
 	private Long ageRangeCadreValues = 0L;
 	private Long ageRangeVoterValues = 0L;
+	private List<Long> hours = new ArrayList<Long>();
 	
 	
 	
+	public List<Long> getHours() {
+		return hours;
+	}
+
+	public void setHours(List<Long> hours) {
+		this.hours = hours;
+	}
+
 	public String getParliament() {
 		return parliament;
 	}
