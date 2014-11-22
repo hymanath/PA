@@ -155,10 +155,21 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 		if(jObj.getString("task").equalsIgnoreCase("usersData"))
 		{
 			Long  userId = jObj.getLong("userId");
-			//Long locationId = jObj.getLong("locationId");
-			//String type = jObj.getString("type");
-			//Long constituencyId = jObj.getLong("constituencyId");
-			amountDetailsVO = leaderCadreDashBoardService.getUsersInLocation(userId);
+			Long locationId = jObj.getLong("locationId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			String type = jObj.getString("type");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Date reqFromDate = null;
+			Date reqToDate = null;
+			if(fromDate.trim().length() > 0){
+				reqFromDate = sdf.parse(fromDate);
+			}
+			if(toDate.trim().length() > 0){
+				reqToDate = sdf.parse(toDate);
+			}
+			amountDetailsVO = leaderCadreDashBoardService.getUsersInLocation(userId,reqFromDate,reqToDate,locationId,constituencyId,type);
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("getUsers"))
 		{
