@@ -2183,8 +2183,8 @@ public void flushAndclearSession(){
 			 str.append("select count(model.tdpCadreId),model.userAddress.constituency.constituencyId"); 
 		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
 			str.append("select count(model.tdpCadreId),model.userAddress.tehsil.tehsilId"); 
-		else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
-			str.append("select count(model.tdpCadreId),model.userAddress.constituency.localElectionBody.localElectionBodyId"); 
+		else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY) || type.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION))
+			str.append("select count(model.tdpCadreId),model.userAddress.localElectionBody.localElectionBodyId"); 
 		 str.append("  from TdpCadre model" +
 				" where model.isDeleted = 'N' " +
 				" and model.enrollmentYear = 2014 "); 
@@ -2197,7 +2197,7 @@ public void flushAndclearSession(){
 			str.append(" and model.userAddress.constituency.district.districtId in(:districtIds) group by model.userAddress.constituency.constituencyId");
 		 else if(type.equalsIgnoreCase(IConstants.TEHSIL))
 				str.append(" and model.userAddress.tehsil.tehsilId in(:districtIds) group by model.userAddress.tehsil.tehsilId");
-		 else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+		 else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY) || type.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION) )
 				str.append(" and model.userAddress.localElectionBody.localElectionBodyId in(:districtIds) group by model.userAddress.localElectionBody.localElectionBodyId");
 		Query query = getSession().createQuery(str.toString());
 		if(fromDate != null && toDate != null){
@@ -2340,7 +2340,7 @@ public void flushAndclearSession(){
 		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
 			str.append("select count(model.tdpCadreId),model.userAddress.tehsil.tehsilId"); 
 		else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
-			str.append("select count(model.tdpCadreId),model.userAddress.constituency.localElectionBody.localElectionBodyId");
+			str.append("select count(model.tdpCadreId),model.userAddress.localElectionBody.localElectionBodyId");
 		
 		 str.append("  from TdpCadre model" +
 				" where model.isDeleted = 'N' " +
@@ -2374,7 +2374,7 @@ public void flushAndclearSession(){
 		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
 			str.append("select count(model.tdpCadreId),model.userAddress.tehsil.tehsilId"); 
 		else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
-			str.append("select count(model.tdpCadreId),model.userAddress.constituency.localElectionBody.localElectionBodyId");
+			str.append("select count(model.tdpCadreId),model.userAddress.localElectionBody.localElectionBodyId");
 		
 		 str.append("  from TdpCadre model" +
 				" where model.isDeleted = 'N' " +
@@ -2445,7 +2445,7 @@ public void flushAndclearSession(){
 		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
 			queryStr.append(" and model.userAddress.tehsil.tehsilId in (:Ids) and model.userAddress.localElectionBody.localElectionBodyId is null group by model.gender,model.userAddress.tehsil.tehsilId "); 
 	 	else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
-			queryStr.append(" and model.userAddress.constituency.localElectionBody.localElectionBodyId in (:Ids) group by model.gender,model.userAddress.constituency.localElectionBody.localElectionBodyId "); 
+			queryStr.append(" and model.userAddress.localElectionBody.localElectionBodyId in (:Ids) group by model.gender,model.userAddress.localElectionBody.localElectionBodyId "); 
 		else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
 			queryStr.append(" and model.userAddress.panchayat.panchayatId in (:Ids) group by model.gender,model.userAddress.panchayat.panchayatId "); 
 		else if(type.equalsIgnoreCase(IConstants.BOOTH))
@@ -2500,7 +2500,7 @@ public void flushAndclearSession(){
 		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
 			queryStr.append(" and model.userAddress.tehsil.tehsilId in (:Ids) and model.userAddress.localElectionBody.localElectionBodyId is null group by model.userAddress.tehsil.tehsilId "); 
 	 	else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
-			queryStr.append(" and model.userAddress.constituency.localElectionBody.localElectionBodyId in (:Ids) group by model.userAddress.constituency.localElectionBody.localElectionBodyId "); 
+			queryStr.append(" and model.userAddress.localElectionBody.localElectionBodyId in (:Ids) group by model.userAddress.localElectionBody.localElectionBodyId "); 
 		else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
 			queryStr.append(" and model.userAddress.panchayat.panchayatId in (:Ids) group by model.userAddress.panchayat.panchayatId "); 
 		else if(type.equalsIgnoreCase(IConstants.BOOTH))
@@ -2677,7 +2677,7 @@ public void flushAndclearSession(){
 		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
 			str.append("select count(model.tdpCadreId),model.userAddress.tehsil.tehsilId"); 
 		else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
-			str.append("select count(model.tdpCadreId),model.userAddress.constituency.localElectionBody.localElectionBodyId"); 
+			str.append("select count(model.tdpCadreId),model.userAddress.localElectionBody.localElectionBodyId"); 
 		 str.append("  from TdpCadre model" +
 				" where model.isDeleted = 'N' " +
 				" and model.enrollmentYear = 2014 and (model.gender ='Female' or model.gender ='F') "); 
@@ -2711,7 +2711,7 @@ public void flushAndclearSession(){
 		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
 			str.append("select count(model.tdpCadreId),model.userAddress.tehsil.tehsilId"); 
 		else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
-			str.append("select count(model.tdpCadreId),model.userAddress.constituency.localElectionBody.localElectionBodyId"); 
+			str.append("select count(model.tdpCadreId),model.userAddress.localElectionBody.localElectionBodyId"); 
 		 str.append("  from TdpCadre model" +
 				" where model.isDeleted = 'N' " +
 				" and model.enrollmentYear = 2014 and model.age < 31 "); 
@@ -2770,7 +2770,7 @@ public void flushAndclearSession(){
 			else if(type.equalsIgnoreCase(IConstants.TEHSIL))
 				str.append(",model.userAddress.tehsil.tehsilId"); 
 			else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
-				str.append(",model.userAddress.constituency.localElectionBody.localElectionBodyId"); 
+				str.append(",model.userAddress.localElectionBody.localElectionBodyId"); 
 		str.append(" from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = 2014 ");
 		
 			str.append(" and model.casteStateId not in("+IConstants.MINORITY_CASTE_IDS+")");
@@ -2799,7 +2799,7 @@ public void flushAndclearSession(){
 			else if(type.equalsIgnoreCase(IConstants.TEHSIL))
 				str.append(",model.userAddress.tehsil.tehsilId"); 
 			else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
-				str.append("model.userAddress.constituency.localElectionBody.localElectionBodyId"); 
+				str.append("model.userAddress.localElectionBody.localElectionBodyId"); 
 		str.append(" from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = 2014");
 		
 			str.append(" and model.casteStateId in("+IConstants.MINORITY_CASTE_IDS+")");
@@ -2825,7 +2825,7 @@ public void flushAndclearSession(){
 		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
 			str.append("select count(model.tdpCadreId),model.userAddress.tehsil.tehsilId"); 
 		else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
-			str.append("select count(model.tdpCadreId),model.userAddress.constituency.localElectionBody.localElectionBodyId"); 
+			str.append("select count(model.tdpCadreId),model.userAddress.localElectionBody.localElectionBodyId"); 
 		 str.append("  from TdpCadre model" +
 				" where model.isDeleted = 'N' " +
 				" and model.enrollmentYear = 2014 "); 
@@ -2859,7 +2859,7 @@ public void flushAndclearSession(){
 		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
 			str.append("select count(model.tdpCadreId),model.userAddress.tehsil.tehsilId"); 
 		else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
-			str.append("select count(model.tdpCadreId),model.userAddress.constituency.localElectionBody.localElectionBodyId"); 
+			str.append("select count(model.tdpCadreId),model.userAddress.localElectionBody.localElectionBodyId"); 
 		 str.append("  from TdpCadre model" +
 				" where model.isDeleted = 'N' " +
 				" and model.enrollmentYear = 2014 "); 
