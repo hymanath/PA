@@ -1150,6 +1150,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		}else{
 			str.append(" and model.district.districtId between 1 and 23 ");
 		}
+		str.append(" order by model.name");
 		Query query = getSession().createQuery(str.toString());
 		return query.list();
 	}

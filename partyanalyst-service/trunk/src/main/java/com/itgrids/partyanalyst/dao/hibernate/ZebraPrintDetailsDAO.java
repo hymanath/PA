@@ -64,4 +64,19 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 		return query.list();
 		
 	}
+	
+	public List<Object[]> getMemberShipCardPushStatusByDate(List<Long> locationIdList,Date fromDate, Date toDate,String queryStr)
+	{
+		Query query = getSession().createQuery(queryStr.toString()); 
+		query.setParameterList("locationIdList", locationIdList);
+		if(fromDate != null && toDate != null)
+		{
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+			
+		}
+		return query.list();
+		
+	}
+	
 }
