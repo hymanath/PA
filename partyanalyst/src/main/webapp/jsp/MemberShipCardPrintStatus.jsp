@@ -114,7 +114,11 @@
 		<div id="locationWiseCadreInfoDiv">
 		    <div class="row-fluid" id="fadeInDown" style="padding-top: 5px;">
 				<div class="span12 well well-small  border-radius-0 mb-0 " style="padding:0px;">
-					<h3 class="offset2 text-uppercase"> Membership Cards Printing Status Report  </h3>
+					<h3 class="offset2 text-uppercase"> Membership Cards Printing Status Report 
+					<c:if test="${sessionScope.USER.isAdmin == 'true'}">
+					<a class="btn btn-success" style="float: right;margin-right:25px;" href="cadreDashBoardAction.action"> home </a>					
+					</c:if> 
+					</h3>
 				</div>
 			</div>
 			
@@ -202,7 +206,7 @@
 					  </td>
 				  </tr>
 			</table>
-					<div id="reportsStatusDiv" style="padding: 10px;"></div>
+					<div id="reportsStatusDiv" style="padding: 10px;overflow: scroll;display:none;"></div>
 			  </div>
 			</div>
 		</div>
@@ -267,7 +271,7 @@ $(document).ready(function(){
   }
 function generateDetailReports()
 {		
-
+$('#reportsStatusDiv').hide();
 	var locationType = $("#selLctnType").val();
 	var stateTyleId = $("#statesDivId").val();
 	var searchType = "constituency";
@@ -362,13 +366,16 @@ function generateDetailReports()
 			})
 			.done(function( result ) {
 			$('#searchDashboardImg').hide();
+			$('#reportsStatusDiv').show();
 				if(result != null &&  ( result.datesList != null && result.datesList.length > 0 ))
 				{
+					$('#reportsStatusDiv').css("overflow","scroll").css("padding","10px;");;
 					buildCategoeryDetails(result,locationType);
 				}
 				else
 				{
-					$('#reportsStatusDiv').html('<span class="span12 offset4"> No Data Avaialable...</span>');
+					$('#reportsStatusDiv').removeAttr("style");
+					$('#reportsStatusDiv').html('<span class="span12 offset5 m_top20" style="font-weight:bold;"> No Data Avaialable...</span>');
 				}
 				
 			 });
@@ -379,7 +386,7 @@ function generateDetailReports()
 	function buildCategoeryDetails(result,locationType)
 	{
 		var str ='';			
-			str+='<h4 align="center" > PRINTING DAY WISE REPORT </h4>';
+			str+='<h4 align="center" >  DAY WISE PRINTING REPORT </h4>';
 			str+='<table id="dayWiseUsersDetailsId" class="table table-bordered ">';
 			str+='<thead>';
 			str+='<tr>';
@@ -452,8 +459,8 @@ function generateDetailReports()
 			$('#reportsStatusDiv').html(str);
 		    $('#dayWiseUsersDetailsId').dataTable({
 				  "aaSorting": [[ 0, "desc" ]],
-			      "iDisplayLength": 10,
-			      "aLengthMenu": [[10,20,50, 100, 200, -1], [10,20,50, 100, 200, "All"]]
+			      "iDisplayLength": 20,
+			      "aLengthMenu": [[20,50, 100, 200, -1], [20,50, 100, 200, "All"]]
 		         });
 	}
 
