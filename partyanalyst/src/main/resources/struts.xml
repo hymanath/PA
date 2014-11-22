@@ -8997,7 +8997,7 @@
 		
 		<action name="getMemberShipCardDetailsAction" class="tdpCadreReportAction" method="getMemberShipCardDetails" >
 			<result type="json" name="success">
-				<param name="root">surveyTransactionVO</param>
+				<param name="root">zebraPrintDetailsVO</param>
 			</result>
 		</action>
 		
