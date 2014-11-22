@@ -86,7 +86,9 @@
 	{
 			color:#ff0020;
 	}	
-			
+	#statedisplaydivid,#trackingStatesDispalyMainDiv,#distdisplaydivid,#constdisplaydivid,#parlConstdisplaydivid{display:none;}
+	#statedisplaydivid1,#distdisplaydivid1,#constdisplaydivid1{display:none;}
+	#statedisplaydivid2,#distdisplaydivid2,#constdisplaydivid2,#parlConstdisplaydivid2{display:none;}
 	</style>
    
    
@@ -117,54 +119,93 @@
 			</div>
 			
 
-			<div class="row-fluid show-grid">
-			<div id="errorDiv" style="" class="offset4"></div><br>
-			   <div class="row-fluid offset4">						
-					<div class="span8" style="margin-bottom:-20px;">
-					<h5 class="text-align1" style="margin-left: -8px;">  State : 
-					<select id="statesList" onChange="getdistricts(this.value);"> 
-					<option value="0"> All </option>
-					<option value="1"> Andhra Pradesh </option>
-					<option value="2"> Telangana </option>
-					
-					</select></h5>
-					</div>	
-				</div>
-				<div class="row-fluid offset4">						
-					<div class="span8">
-						<h5 class="text-align1" style="margin-left: -22px;">  District : 
-					<select id="districtsList"  onChange="getConstituencies(this.value)"> 
-						<option value="0"> Select District </option>							
-					</select></h5>
-					</div>
-				</div>
-				<div class="row-fluid offset4">						
-					<div class="span8">
-						<h5 class="text-align1" style="margin-left: -65px;margin-top:-10px">  Constituency : 
-					<select id="constiList"> 
-						<option value="0"> Select Constituency </option>							
-					</select></h5>
-					</div>
-				</div>
-				<div class="row-fluid offset4">						
-					<div class="span8"  style="margin-top: -20px">
-						<h5 class="text-align1" style="margin-left: -45px;">  From Date : 
-					    <input type="text" id="fromDateId" class="datePickerCls" placeholder="From Date"  readOnly="true" style="cursor:text;"></input></h5>
-					</div>
-				</div>
-				<div class="row-fluid offset4">						
-					<div class="span8"  style="margin-top: -20px;margin-left: 20px;">
-						<h5 class="text-align1" style="margin-left: -45px;">  To Date : 
-					<input type="text" id="toDateId" class="datePickerCls" placeholder="To Date"  readOnly="true" style="cursor:text;"></input></h5>
-					</div>
-				</div>
-				<a href="javascript:{generateDetailReports();}" class="btn btn-success col-xs-offset-4 border-radius-0 offset5  m_top20"> Submit <span class="glyphicon glyphicon-chevron-right"></span></a>
+			<div id="usersWorkingStatusDiv">
+			
+			<div class="row-fluid ">
+			   <div style="min-height: 300px;background:#ffffff;" class="span12 show-grid well well-small border-radius-0 mb-10 form-inline">
+			   <div id="errStatusDiv" align="center" ></div>
+			   <table  style="margin-left: 270px;">
+					 <tr>
+					   <td><b>Select Scope : </b></td>
+					   <td>
+						 <c:if test="${sessionScope.USER.accessType == 'STATE'}">
+							<select id="selLctnType" onchange="selectLocation(this.value)">						 
+							<!-- <option value="0">All</option>   -->
+							<option value="1">State</option>
+							<option value="2">District</option>
+							<option value="3">Constituency</option>
+							<!-- <option value="4">Parliament</option> -->
+							</select>
+							</c:if>
+							<c:if test="${sessionScope.USER.accessType == 'DISTRICT'}">
+							<select id="selLctnType" onChange="selectLocationByAccess(this.value)">	
+								<option value="2">District</option>
+								<option value="3">Constituency</option>
+								<option value="4">Parliament</option>
+								</select>
+							</c:if>
+							<c:if test="${sessionScope.USER.accessType == 'MP'}">
+								<select id="selLctnType">	
+								
+								<option value="4">Parliament</option>
+								</select>
+							</c:if>
+							<c:if test="${sessionScope.USER.accessType == 'MLA'}">
+								<select id="selLctnType">	
+								<option value="3">Constituency</option>			
+								</select>
+							</c:if>
+						</td>
+					 </tr>
+				     <tr id="statedisplaydivid">
+						<td><b>Select State</b></td>
+						<td>
+						 <c:if test="${sessionScope.USER.stateName == 'both'}">
+						  <select id="statesDivId">
+							<option value="0">All</option>
+							<option value="1">AndhraPradesh</option>
+							<option value="2">Telangana</option>
+						  </select>
+						  </c:if>
+						  <c:if test="${sessionScope.USER.stateName == 'TS'}">
+						  <select id="statesDivId">
+							<option value="2">Telangana</option>
+						  </select>
+						  </c:if>
+						   <c:if test="${sessionScope.USER.stateName == 'AP'}">
+						  <select id="statesDivId">
+							<option value="1">AndhraPradesh</option>
+						  </select>
+						  </c:if>
+						</td>
+				     </tr>
+				   <tr id="distdisplaydivid">
+					   <td><b>Select District : </b></td>
+					   <td><select id="displaydistbox"></select></td>
+				   </tr>
+				   <tr id="constdisplaydivid">
+					   <td><b>Select constituency : </b></td>
+					   <td><select id="displayconstbox"></select></td>
+				   </tr>
+				   <tr id="parlConstdisplaydivid">
+					   <td><b>Select Parliament : </b></td>
+					   <td><select id="displayParlConstbox"></select></td>
+				   </tr>
+				   <tr><td><b>From Date :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="fromDateId"/></td></tr>
+				   <tr><td><b>To Date   :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="toDateId" /></td></tr>
+				
+				   <tr>
+				      <td></td><td><a href="javascript:{generateDetailReports();}" class="btn btn-success col-xs-offset-4 border-radius-0 offset4  m_top20"> Get Report <span class="glyphicon glyphicon-chevron-right"></span></a>
 				
 				<div><img src='images/Loading-data.gif' class="offset5"  id="searchDashboardImg" style="width:70px;height:60px;display:none;"/>
-				</div>
-				<div id="reportsStatusDiv" style="padding: 10px;"></div>
-						
+				
+					  </td>
+				  </tr>
+			</table>
+					<div id="reportsStatusDiv" style="padding: 10px;"></div>
+			  </div>
 			</div>
+		</div>
 		</div>
 	</div>
 		<!-- Footer Row -->
@@ -183,86 +224,24 @@ $(document).ready(function(){
 		dateFormat: "dd-mm-yy",
 		maxDate: new Date()
 	 });
-	$("#fromDateId,#toDateId").datepicker("setDate", new Date());	 
+	$("#fromDateId,#toDateId").datepicker("setDate", new Date());	
+
+	$("#statesDivId").change(function(){
+			var lctnType = $("#selLctnType").val();
+			if(lctnType == 3){
+				getConstituenciesUWS();
+				$("#distdisplaydivid").hide();
+			}
+			if(lctnType ==2) {
+				getdistrictsUWS();
+				$("#constdisplaydivid").hide();
+			}
+			if(lctnType ==4) {
+				getparliamentConstituencies('displayParlConstbox');
+			}
+		});	
 });
-	function getdistricts(id){	
-	
-	var str ='';
-		var jsObj={
-			stateid:id
-		}
-		$.ajax({
-			  type:'GET',
-			  url: 'getDistrictsByStateWiseAction.action',
-			  data: {task:JSON.stringify(jsObj)}
-	   }).done(function(result){
-	   $("#districtsList").html("");
-			str +='<option value="0"> Select District </option>';
-		   for(var i in result){
-				str +='<option value='+result[i].id+'>'+result[i].name+'</option>';
-			}
-			$("#districtsList").html(str);
-			
-	   });	
-	
-  }
 
-
-
- function getConstituencies(districtId){
-	
-		var str ="";
-		var jObj ={
-			districtIds:districtId,				  
-			task:"getConstituencyNames"             
-		}	
-		$.ajax({
-			type : "POST",
-			url : "getConstituencyDetailsInDistrictsAtion.action",
-			data : {task:JSON.stringify(jObj)} ,
-		}).done(function(result){
-			$("#constiList").html("");
-			$('#constiList').find('option').remove();
-			$('#constiList').append('<option value="0"> All </option>')
-			if(result.surveyTransactionVOList != null && result.surveyTransactionVOList.length)
-			{
-				for(var i in result.surveyTransactionVOList)
-				{
-					$('#constiList').append('<option value='+result.surveyTransactionVOList[i].id+'>'+result.surveyTransactionVOList[i].name+'</option>');
-				}			
-			}
-		   
-			// $('#constiList').multiselect('refresh');
-			  
-		});
-	}
-	
-	function getConstituencyValues(stateId){
-	if(stateId == 1)	
-		districtId = 11;
-	else
-		districtId = 1;
-		
-		var str ="";
-		var jObj ={
-			districtId:districtId,				  
-			task:"getConstituencyNames"             
-		}	
-		$.ajax({
-			type : "POST",
-			url : "sendUpdatesByemailsAction.action",
-			data : {task:JSON.stringify(jObj)} ,
-		}).done(function(result){
-				$('#constiList').find('option').remove();
-		   for(var i in result){
-		   
-				$('#constiList').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-			}			
-			 $('#constiList').multiselect('refresh');
-			  
-		});
-	}
-	
 	function getReqIds(id){
     var selectedId = $("#"+id).val();
 	if(selectedId == null){
@@ -286,11 +265,33 @@ $(document).ready(function(){
 	}
 	return selectedId;
   }
-function generateDetailReports(){		
+function generateDetailReports()
+{		
 
-	//var constituencyIds = $("#constiList").val();
-	
-	var constituencyIds=getReqIds("constiList");
+	var locationType = $("#selLctnType").val();
+	var stateTyleId = $("#statesDivId").val();
+	var searchType = "constituency";
+	var constituencyIds;
+	if(locationType==0){
+		searchType = "constituency";
+		constituencyIds=0;
+	}
+	if(locationType==1){
+		searchType = "state";
+		constituencyIds=getReqIds("statesDivId");
+	}
+	if(locationType==2){
+		searchType = "district";
+		constituencyIds=getReqIds("displaydistbox");
+	}
+	if(locationType==3){
+	searchType = "constituency";
+	constituencyIds=getReqIds("displayconstbox");
+	}
+	if(locationType==4){
+	searchType = "parliament";
+	constituencyIds=getReqIds("displayParlConstbox");
+	}
 	
 	$('#reportsStatusDiv').html('');
 	var startDate = $('#fromDateId').val();
@@ -347,8 +348,9 @@ function generateDetailReports(){
 			$('#searchDashboardImg').show();
 			var jsObj =
 			{ 		
-				 district:district,	 
 				 constituencyIds : constituencyIds,
+				 stateTyleId : stateTyleId,
+				 searchType : searchType,
 				 fromDate : startDate,
 				 toDate   : endDate,
 				 task: "printingStatus"
@@ -360,9 +362,9 @@ function generateDetailReports(){
 			})
 			.done(function( result ) {
 			$('#searchDashboardImg').hide();
-				if(result != null )
+				if(result != null &&  ( result.datesList != null && result.datesList.length > 0 ))
 				{
-					buildCategoeryDetails(result);
+					buildCategoeryDetails(result,locationType);
 				}
 				else
 				{
@@ -374,7 +376,7 @@ function generateDetailReports(){
 		}
 	}
 
-	function buildCategoeryDetails(result)
+	function buildCategoeryDetails(result,locationType)
 	{
 		var str ='';			
 			str+='<h4 align="center" > PRINTING DAY WISE REPORT </h4>';
@@ -383,27 +385,64 @@ function generateDetailReports(){
 			str+='<tr>';
 			str+='<th> Date </th>';
 			str+='<th> District  </th>';
-			str+='<th> Parliament </th>';
-			str+='<th> Constituency </th>';
+			if(locationType !=2)
+			{
+				str+='<th> Parliament </th>';
+				str+='<th> Constituency </th>';
+			}			
+			
 			str+='<th> Total Cards </th>';
-			str+='<th> Print Completed </th>';
-			str+='<th> Errors in Printing </th>';
+			for(var i in result.datesList)
+			{
+				str+='<th COLSPAN="2"> '+result.datesList[i]+' </th>';
+			}
 			str+='</tr>';
+
+			str+='<tr>';
+			str+='<th></th>';
+			str+='<th> </th>';
+			if(locationType !=2)
+			{
+				str+='<th></th>';
+				str+='<th></th>';
+			}
+			
+			str+='<th></th>';
+			for(var i in result.datesList)
+			{
+				str+='<th> Printed </th>';
+				str+='<th> Errors </th>';
+			}
+			
+			str+='</tr>';
+			
 			str+='</thead>';
 			
 			str+='<tbody>';
-			if(result.surveyTransactionVOList != null && result.surveyTransactionVOList.length > 0)
+			
+			if(result.zebraPrintDetailsVOList != null && result.zebraPrintDetailsVOList.length > 0)
 			{
-				for(var i in result.surveyTransactionVOList)
+				for(var i in result.zebraPrintDetailsVOList)
 				{
 				str+='<tr>';
-				str+='<td> '+result.surveyTransactionVOList[i].surveyDate+'</td>';
-				str+='<td> '+result.surveyTransactionVOList[i].name+'</td>';
-				str+='<td> '+result.surveyTransactionVOList[i].parliamentName+'</td>';
-				str+='<td> '+result.surveyTransactionVOList[i].locationName+'</td>';
-				str+='<td> '+result.surveyTransactionVOList[i].totalCount+'</td>';
-				str+='<td> '+result.surveyTransactionVOList[i].submittedCount+'</td>';
-				str+='<td> '+result.surveyTransactionVOList[i].notSubmittedCount+'</td>';
+				str+='<td> '+result.zebraPrintDetailsVOList[i].dataPushDate+'</td>';
+				str+='<td> '+result.zebraPrintDetailsVOList[i].district+'</td>';
+				if(locationType !=2)
+				{
+					str+='<td> '+result.zebraPrintDetailsVOList[i].parliament+'</td>';				
+					str+='<td> '+result.zebraPrintDetailsVOList[i].name+'</td>';
+				}
+				str+='<td> '+result.zebraPrintDetailsVOList[i].totalPushCount+'</td>';
+				
+				if(result.zebraPrintDetailsVOList[i].zebraPrintDetailsVOList != null && result.zebraPrintDetailsVOList[i].zebraPrintDetailsVOList.length >0)
+				{
+					for(var j in result.zebraPrintDetailsVOList[i].zebraPrintDetailsVOList)
+					{
+						str+='<td> '+result.zebraPrintDetailsVOList[i].zebraPrintDetailsVOList[j].printStatusCount+'</td>';
+						str+='<td> '+result.zebraPrintDetailsVOList[i].zebraPrintDetailsVOList[j].errorStatusCount+'</td>';
+					}
+				}
+				
 				str+='</tr>';
 				}
 			}
@@ -411,15 +450,141 @@ function generateDetailReports(){
 			str+='</table>';
 			
 			$('#reportsStatusDiv').html(str);
-		$('#dayWiseUsersDetailsId').dataTable({
+		    $('#dayWiseUsersDetailsId').dataTable({
 				  "aaSorting": [[ 0, "desc" ]],
 			      "iDisplayLength": 10,
 			      "aLengthMenu": [[10,20,50, 100, 200, -1], [10,20,50, 100, 200, "All"]]
 		         });
 	}
-getdistricts(0);
-//getConstituencies(11);
-//$('#constiList').multiselect({noneSelectedText:"Select Constittuency(s)"});
+
+	
+	selectLocation(1);
+ function selectLocation(value){
+	if(value==0){
+		$("#statedisplaydivid").hide();
+		$("#distdisplaydivid").hide();
+		$("#constdisplaydivid").hide();
+		$("#parlConstdisplaydivid").hide();
+	}
+	if(value==1){
+		$("#statedisplaydivid").show();	
+		$('#statesDivId').val('0');
+		$("#distdisplaydivid").hide();
+		$("#constdisplaydivid").hide();
+		$("#parlConstdisplaydivid").hide();
+	}
+	if(value==2){
+		$("#statedisplaydivid").show();	
+		$('#statesDivId').val('0');
+		
+		$("#distdisplaydivid").hide();
+		$("#constdisplaydivid").hide();
+		$("#parlConstdisplaydivid").hide();
+		getdistrictsUWS();
+	}
+	if(value==3){
+		$("#statedisplaydivid").show();
+		$('#statesDivId').val('0');
+		
+		$("#distdisplaydivid").hide();
+		$("#constdisplaydivid").hide();
+		$("#parlConstdisplaydivid").hide();
+		getConstituenciesUWS();
+	}
+		if(value==4){
+		$("#statedisplaydivid").show();
+		$('#statesDivId').val('0');
+		
+		$("#distdisplaydivid").hide();
+		$("#constdisplaydivid").hide();
+		$("#parlConstdisplaydivid").hide();
+		getparliamentConstituencies('displayParlConstbox');
+	}
+  }
+  
+  
+	function getparliamentConstituencies(divId)
+	{
+		var stateTypeId = $('#statesDivId').val();
+		$("#Pconstdisplaydivid").show();
+		var jsObj = {
+		searchType :"parliament",
+		stateTypeId : stateTypeId,
+		tesk:"locationWiseTransactionReport"
+		}
+	$("#parlConstdisplaydivid").show();
+	$('#'+divId+'').find('option').remove();
+	$('#'+divId+'').append('<option value="0"> All </option>');
+
+		$.ajax({
+		type : "POST",
+		url : "getParliamentsForStateAction.action",
+		data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+
+			var constiArr = new Array();
+			if(result != null && result.length >0)
+			{
+				for(var i in result)
+				{
+					if(constiArr.indexOf(result[i].id) <0)
+					{
+						$('#'+divId+'').append('<option value="'+result[i].id+'"> '+result[i].name+' </option>');
+						constiArr.push(result[i].id);
+					}
+					
+				}
+			}
+		});
+	}
+	
+	function getConstituenciesUWS(){
+		var selState = $("#statesDivId").val();
+		$("#displayconstbox").html("");
+		
+		var jObj ={
+			stateid:selState,				  
+			task:"getConstituenciesForUWS"             
+		}	
+		$.ajax({
+			type : "POST",
+			url : "getConstsAction.action",
+			data : {task:JSON.stringify(jObj)} ,
+		}).done(function(result){
+			var str = "<option value='0'>All</option>";
+		   for(var i in result){
+				str +='<option value='+result[i].id+'>'+result[i].name+'</option>';
+			}
+			$("#displayconstbox").html(str);
+			$("#constdisplaydivid").show();
+		});
+	}
+	
+  
+  function getdistrictsUWS(){
+	var selState = $("#statesDivId").val();
+	
+	$("#displaydistbox").html("");
+	
+	
+		var jsObj={
+			stateid:selState
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getDistrictsByStateWiseAction.action',
+			  data: {task:JSON.stringify(jsObj)}
+	   }).done(function(result){
+			var str = "<option value='0'>All</option>";
+		   for(var i in result){
+				str +='<option value='+result[i].id+'>'+result[i].name+'</option>';
+			}
+			$("#displaydistbox").html(str);
+			$("#distdisplaydivid").show();
+	   });	
+	
+  }
+  
 </script>	
 	
 </body>
