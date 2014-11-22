@@ -9023,6 +9023,18 @@
 				</result>
 		</action>
 		
+		
+		<action name="hourWiseUserColletedInfoAction" class="cadreDashBoardAction" method="execute1">
+			<result name="success">/jsp/cadreRegisteredHourWiseReport.jsp</result>
+	 	</action>
+		
+		<action name="getHourWiseUserColletedInfoAction" class="cadreDashBoardAction" method="getHourWiseUserColletedInfo">
+		    	<result type="json" name="success">
+					<param name="root">result</param>
+				</result>
+		</action>
+		
+		
 </package>
 
 </struts>      

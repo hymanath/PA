@@ -688,4 +688,41 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		task = cadreDashBoardService.registerAllUsers(user);
 		return Action.SUCCESS;
 	}
+	
+	public String execute1()
+	{
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		boolean noaccess = false;
+		if(regVO==null){
+			return "input";
+		}
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		if(noaccess){
+			return "error";
+		}
+		return Action.SUCCESS;		
+	}
+	
+	public String getHourWiseUserColletedInfo(){
+			
+	try{
+	
+		jObj = new JSONObject(getTask());				
+		 
+		String fromDateStr = jObj.getString("fromDate");
+		String toDateStr = jObj.getString("toDate");
+		SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+		Date date=sdf.parse(fromDateStr);
+		Date date1=sdf.parse(toDateStr);	
+		
+		result = cadreDashBoardService.getRegisteredCountByUserForHourWise(date,date1);
+					
+	}catch(Exception e){
+		LOG.error("Exception raised in getHourWiseUserColletedInfo ",e);
+	}
+	return Action.SUCCESS;
+	
+	}
 }
