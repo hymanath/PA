@@ -290,7 +290,7 @@
 			<pattern>/leaderCadreDashBoardAction*</pattern>
 			<pattern>/tdpCadreReportsAction*</pattern>
 			<pattern>/tabAllocationDetailsAction*</pattern>
-			
+			<pattern>/hourWiseUserColletedInfoAction*</pattern>
 			 <pattern>/cadreAgeGenderAnalysisAction*</pattern>
 			 <pattern>/duplicateUsers*</pattern>
 			 <pattern>/cadreReportsAction*</pattern>
