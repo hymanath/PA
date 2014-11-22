@@ -11,6 +11,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAppDbUpdateDAO;
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssigneeDAO;
@@ -58,8 +59,18 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 	private IRegionServiceData regionServiceDataImp;
 	private ICasteCategoryDAO casteCategoryDAO;
 	private IVoterAgeInfoDAO voterAgeInfoDAO;
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	
 	
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
+
 	public ICasteCategoryDAO getCasteCategoryDAO() {
 		return casteCategoryDAO;
 	}
@@ -378,9 +389,13 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 							}
 							if(localbodyIds != null && localbodyIds.size() > 0)
 							{
-								locationtype = IConstants.LOCAL_ELECTION_BODY;
-								voterCountList = voterInfoDAO.getVotersCountInALocalBodyList(localbodyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
-							    setLocationWiseCadreData(locationtype,localbodyIds,voterCountList,constituencyIds,resultList,fromDate,toDate);
+								locationtype = IConstants.LOCAL_BODY_ELECTION;
+								List<Long> assmblyLclIds = new ArrayList<Long>();
+								assmblyLclIds = assemblyLocalElectionBodyDAO.getLEBIdsByALEBIds(localbodyIds);
+								if(assmblyLclIds!=null && assmblyLclIds.size()>0){
+									voterCountList = voterInfoDAO.getVotersCountInALocalBodyList(assmblyLclIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+								}
+							    setLocationWiseCadreData(locationtype,assmblyLclIds,voterCountList,constituencyIds,resultList,fromDate,toDate);
 							}
 				}
 				
@@ -636,14 +651,14 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 				basicVo.setId((Long)params[0]);
 				basicVo.setUserType(locationtype);
 				if(locationtype.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION))
-				basicVo.setName(params[1] != null ? params[1].toString()+ "Muncipality" : "");
+				basicVo.setName(params[1] != null ? params[1].toString()+ " Muncipality" : "");
 				else
 				basicVo.setName(params[1] != null ? params[1].toString() : "");	
 				basicVo.setTotalVoters((Long)params[2]);
 				if(locationtype.equalsIgnoreCase(IConstants.CONSTITUENCY))
 				 state = getStateByDistrictId(Ids.get(0));//DistrictId
 				else if(locationtype.equalsIgnoreCase(IConstants.TEHSIL) || locationtype.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION))
-					 state = getStateByDistrictId((Long)params[2]);//DistrictId
+					 state = getStateByDistrictId((Long)params[3]);//DistrictId
 				if(state.equalsIgnoreCase("AP"))
 				basicVo.setTargetCadres((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014);
 				else
