@@ -2328,6 +2328,7 @@
 	 <property name="cadreSurveyUserAssigneeDAO" ref="cadreSurveyUserAssigneeDAO" />
 	 <property name="voterAgeInfoDAO" ref="voterAgeInfoDAO" />
 	 <property name="casteCategoryDAO" ref="casteCategoryDAO" />
+	 <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
      </bean>
      
       <bean name="tdpCadreReportService"  class="com.itgrids.partyanalyst.service.impl.TdpCadreReportService">
