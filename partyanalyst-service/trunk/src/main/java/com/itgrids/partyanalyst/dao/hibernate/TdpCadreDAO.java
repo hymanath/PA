@@ -2647,23 +2647,24 @@ public void flushAndclearSession(){
 		return query.list();
 	}
 	
-	public List<Object[]> getDuplicateUsersByUserId(Date startDate,Date endDate,Long userId,Long locationId,String type,Long constituencyId)
+	public List<Object[]> getDuplicateUsersByUserId(Date startDate,Date endDate,Long userId,Long locationId,Long constituencyId,String type)
 	{
 	
 		StringBuilder str = new StringBuilder();
-		str.append(" select distinct model1.name,model1.mobileNo,date(model1.fromDate),date(model1.toDate) from TdpCadre model,CadreSurveyUserAssignee model1");
-		str.append( " where model1.cadreSurveyUser.cadreSurveyUserId = model.insertedBy.cadreSurveyUserId  and model.isDeleted = 'N' " +
+		str.append(" select count(model.tdpCadreId),date(model.surveyTime) from TdpCadre model ");
+		str.append( " where model.insertedBy.cadreSurveyUserId = :userId  and model.isDeleted = 'N' " +
 				" and model.enrollmentYear = 2014 ");
-		 if(type.equalsIgnoreCase(IConstants.TEHSIL))
-				str.append(" and model.userAddress.tehsil.tehsilId = :locationId and model.userAddress.constituency.constituencyId = :constituencyId and model.insertedBy.cadreSurveyUserId = :userId");
-		 else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
-				str.append(" and model.userAddress.localElectionBody.localElectionBodyId = :locationId and model.userAddress.constituency.constituencyId = :constituencyId  and model.insertedBy.cadreSurveyUserId = :userId");
-		 str.append(" and date(model.surveyTime)>=:startDate and date(model.surveyTime)<=:endDate ");
-		 str.append(" and date(model1.fromDate)>=:startDate and (model1.toDate is null or date(model1.toDate)<=:endDate)");
+		 str.append(" and date(model.surveyTime)>=:startDate and date(model.surveyTime)<=:endDate " );
+		if(type.equalsIgnoreCase(IConstants.TEHSIL))
+				str.append(" and model.userAddress.tehsil.tehsilId =:locationId"); 
+		if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+				str.append(" and model.userAddress.constituency.localElectionBody.localElectionBodyId =:locationId"); 
+	
+		 str.append(" and model.userAddress.constituency.constituencyId =:constituencyId group by date(model.surveyTime) order by date(model.surveyTime)");
 		Query query = getSession().createQuery(str.toString());
+		query.setParameter("userId", userId);
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
-		query.setParameter("userId", userId);
 		query.setParameter("locationId", locationId);
 		query.setParameter("constituencyId", constituencyId);
 		return query.list();
