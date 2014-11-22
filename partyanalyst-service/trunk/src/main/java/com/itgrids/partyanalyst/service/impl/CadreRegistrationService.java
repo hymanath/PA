@@ -537,7 +537,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	public SurveyCadreResponceVO saveCadreRegistration(final List<CadreRegistrationVO> cadreRegistrationVOList,final String registrationType){
 		final SurveyCadreResponceVO surveyCadreResponceVO = new SurveyCadreResponceVO();
 		
-		TdpCadreBackupDetails tdpCadreBackupDetails = updateRequestDetailsForBackup(cadreRegistrationVOList,registrationType);
+		TdpCadreBackupDetails tdpCadreBackupDetails= null;
+		if(IConstants.ENABLE_LOGS_SAVE)
+		{
+			Date d1 = new Date();
+			tdpCadreBackupDetails = updateRequestDetailsForBackup(cadreRegistrationVOList,registrationType);
+			Date d2 = new Date();
+			LOG.error(d2.getTime()-d1.getTime() + "IN MILLI SECONDS");
+		}
+		
 		try {
 			LOG.info("Entered into saveCadreRegistration in CadreRegistrationService service");
 			
