@@ -79,14 +79,16 @@
 				buildData(result,$("#fromDate").val(),$("#toDate").val());
 		});
    }
-    function getUsersInfo(userId)
+    function getUsersInfo(userId,fromDate,toDate,locationId,constituencyId,type)
    {
 		
 		var jObj = {
-		
-		
 		userId:userId,
-		
+		fromDate:fromDate,
+		toDate:toDate,
+		locationId:locationId,
+		constituencyId:constituencyId,
+		type:type,
 		task:"usersData"
 		}
 		 $.ajax({
@@ -141,7 +143,7 @@ function buildData(resultList,fromDate,toDate)
 					str += '<td rowspan='+result[i].infoList[j].infoList.length+'>'+result[i].infoList[j].name+'</td>';
 					for(var k in result[i].infoList[j].infoList)
 					{
-						str += '<td><a onclick="getUsersInfo(\''+result[i].infoList[j].infoList[k].id+'\');">'+result[i].infoList[j].infoList[k].userName+'</a></td>';
+						str += '<td><a onclick="getUsersInfo(\''+result[i].infoList[j].infoList[k].id+'\',\''+fromDate+'\',\''+toDate+'\',\''+result[i].infoList[j].id+'\',\''+result[i].id+'\',\''+result[i].infoList[j].userType+'\');">'+result[i].infoList[j].infoList[k].userName+'</a></td>';
 						str += '<td>'+result[i].infoList[j].infoList[k].totalCount+'</td>';
 						str += '<td>'+result[i].infoList[j].infoList[k].userType+'</td>';
 						str += '<td>'+result[i].infoList[j].infoList[k].mobileNo+'</td>';
@@ -171,6 +173,8 @@ $("#userDetailsDiv").css("display","block");
   str +='<table class="table table-bordered table-striped" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;text-align:center;">';
   str +='<tr>';
   str +='<th>Name</th>';
+  str +='<th>SurveyTime</th>';
+  str +='<th>Count</th>';
   str +='<th>Mobile</th>';
   str +='<th>FromDate</th>';
   str +='<th>ToDate</th>';
@@ -180,10 +184,12 @@ $("#userDetailsDiv").css("display","block");
     str +='<tr>';
     
     str +='<td>'+result[i].name+'</td>';
+	str +='<td>'+result[i].date+'</td>';
+	str +='<td>'+result[i].totalCount+'</td>';
     str +='<td>'+result[i].mobileNo+'</td>';
-	 str +='<td>'+result[i].date+'</td>';
-	  str +='<td>'+result[i].toDate+'</td>';
-	  str +='</tr>'; 
+	str +='<td>'+result[i].constituency+'</td>';
+	str +='<td>'+result[i].toDate+'</td>';
+	str +='</tr>'; 
   }
   str+='</table>';
 
@@ -191,8 +197,8 @@ $("#userDetailsDiv").css("display","block");
 $('#userDetailsDiv').dialog({                   
 		    modal: true,
             title: "<b>User Details</b>",
-			width: 400,
-            height: 300
+			width: 550,
+            height: 400
      });
 }
   
