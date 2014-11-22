@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationWiseReportVO;
+import com.itgrids.partyanalyst.dto.ZebraPrintDetailsVO;
 import com.itgrids.partyanalyst.service.ITdpCadreReportService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -29,7 +30,16 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 	private ITdpCadreReportService  tdpCadreReportService;
 	private TdpCadreLocationWiseReportVO tdpCadreLocationWiseReportVO = new TdpCadreLocationWiseReportVO();
 	private SurveyTransactionVO surveyTransactionVO;
-	
+	private ZebraPrintDetailsVO zebraPrintDetailsVO;
+
+	public ZebraPrintDetailsVO getZebraPrintDetailsVO() {
+		return zebraPrintDetailsVO;
+	}
+
+	public void setZebraPrintDetailsVO(ZebraPrintDetailsVO zebraPrintDetailsVO) {
+		this.zebraPrintDetailsVO = zebraPrintDetailsVO;
+	}
+
 	public SurveyTransactionVO getSurveyTransactionVO() {
 		return surveyTransactionVO;
 	}
@@ -131,7 +141,6 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 		try
 		{
 		    jobj = new JSONObject(getTask());
-		    Long districtId=jobj.getLong("district");
 			String constiIds       = jobj.getString("constituencyIds");
 			List<Long> constituencyIdsList = new ArrayList<Long>();
 			String[] constituency       = constiIds.split(",");
@@ -147,8 +156,10 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 			}
 			String fromDate=jobj.getString("fromDate");
 			String  toDate=jobj.getString("toDate");
+			Long stateTyleId = jobj.getLong("stateTyleId");
+			String searchType = jobj.getString("searchType");
 			
-			surveyTransactionVO =	tdpCadreReportService.getMemberShipCardPrintDetails(districtId,constituencyIdsList,fromDate,toDate);
+			zebraPrintDetailsVO =	tdpCadreReportService.getMemberShipCardPrintDetails(searchType,stateTyleId,constituencyIdsList,fromDate,toDate);
 		}
 		catch(Exception e)
 		{
