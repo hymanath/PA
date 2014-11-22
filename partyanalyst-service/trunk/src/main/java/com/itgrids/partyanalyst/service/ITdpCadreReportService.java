@@ -4,10 +4,11 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationWiseReportVO;
+import com.itgrids.partyanalyst.dto.ZebraPrintDetailsVO;
 
 public interface ITdpCadreReportService {
 	public List<TdpCadreLocationWiseReportVO> getLocationWiseReportDetailsForExcel(List<Long> constituencyIds);
 	public TdpCadreLocationWiseReportVO generateExcelReportForTdpCadre(List<Long> constituencyIds);
-	public SurveyTransactionVO getMemberShipCardPrintDetails(Long districtId,List<Long> constituencyIdsList,String fromDate,String toDate);
+	public ZebraPrintDetailsVO getMemberShipCardPrintDetails(String searchType,Long stateTypeId,List<Long> selectedLocationIds,String fromDateStr,String toDateStr);
 	public SurveyTransactionVO getConstituencyDetailsInDistricts(List<Long> districtIdList);
 }
