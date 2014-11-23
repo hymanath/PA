@@ -2900,4 +2900,12 @@ public void flushAndclearSession(){
 		query.setParameter("toDate", toDate);		
 		return query.list();
 	}		
+	
+	public Long getTotalRegisteredCadreCountByLocation(List<Long> locationIds, String queryStr)
+	{
+		Query query = getSession().createQuery(queryStr);
+		
+		query.setParameterList("locationIds", locationIds);		
+		return (Long) query.uniqueResult();
+	}
 }
