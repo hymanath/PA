@@ -1503,6 +1503,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 				Date fromDate = format.parse(fromDateStr);
 				Date toDate = format.parse(toDateStr);
 				StringBuilder queryStr = new StringBuilder();
+				StringBuilder queryStrForCount = new StringBuilder();
 				List<Object[]> printStatusDetailsList = null;
 				List<ZebraPrintDetailsVO> printStatusList = null;
 				
@@ -1563,6 +1564,8 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					
 					queryStr.append(" group by UA.constituency.constituencyId, date(ZPD.insertedTime) , date(ZPD.updatedTime), ZPD.printStatus, ZPD.errorStatus  order by date(ZPD.updatedTime) asc ");
 					
+					
+					queryStrForCount.append(" select count(TC.tdpCadreId) from TdpCadre TC where TC.userAddress.constituency.constituencyId in (:locationIds) and TC.isDeleted='N' and TC.enrollmentYear = 2014  ");
 				}
 				else if(searchType.equalsIgnoreCase(IConstants.DISTRICT))
 				{
@@ -1579,6 +1582,8 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					}
 					
 					queryStr.append(" group by UA.district.districtId, date(ZPD.insertedTime) , date(ZPD.updatedTime), ZPD.printStatus, ZPD.errorStatus  order by date(ZPD.updatedTime) asc ");
+					
+					queryStrForCount.append(" select count(TC.tdpCadreId) from TdpCadre TC where TC.userAddress.district.districtId in (:locationIds) and TC.isDeleted='N' and TC.enrollmentYear = 2014 ");
 				
 				}
 				else if(searchType.equalsIgnoreCase("parliament"))
@@ -1596,9 +1601,14 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					}
 					
 					queryStr.append(" group by model2.delimitationConstituency.constituency.constituencyId, date(ZPD.insertedTime) , date(ZPD.updatedTime), ZPD.printStatus, ZPD.errorStatus  order by date(ZPD.updatedTime) asc ");
+					
+					queryStrForCount.append(" select count(TC.tdpCadreId) from TdpCadre TC ,DelimitationConstituencyAssemblyDetails model2  where " +
+							" TC.userAddress.constituency.constituencyId = model2.constituency.constituencyId and model2.delimitationConstituency.year = 2009 and " +
+							" model2.delimitationConstituency.constituency.constituencyId in (:locationIds) and TC.isDeleted='N' and TC.enrollmentYear = 2014");
 				
 				}
 				printStatusDetailsList = zebraPrintDetailsDAO.getMemberShipCardPushStatusByDate(selectedLocationIds, fromDate, toDate,queryStr.toString());
+				Long registeredCount = tdpCadreDAO.getTotalRegisteredCadreCountByLocation(selectedLocationIds, queryStrForCount.toString());
 				Map<Long,ZebraPrintDetailsVO> zebraPrintMap = new HashMap<Long, ZebraPrintDetailsVO>(0);
 				
 				Map<String,ZebraPrintDetailsVO>  daywiseVOMap = new TreeMap<String, ZebraPrintDetailsVO>();
@@ -1657,6 +1667,10 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 				}
 				
 				List<ZebraPrintDetailsVO> finalReturnList = new ArrayList<ZebraPrintDetailsVO>();
+				
+				Long totalPrintedCount = 0L;
+				Long totalErrorsCount = 0L;
+				
 				if(zebraPrintMap != null && zebraPrintMap.size()>0)
 				{
 					for (Long constituencyId : zebraPrintMap.keySet()) 
@@ -1727,6 +1741,8 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 										daywiseCountMap.put(date.trim(), updatedVO);
 									}
 								
+									totalPrintedCount = totalPrintedCount + printCount;
+									totalErrorsCount = totalErrorsCount + errorCount;
 								}
 							}
 							
@@ -1737,6 +1753,8 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 									printStatusList.add(daywiseCountMap.get(updatedDate));
 								}
 							}
+							
+							
 							
 							constituencyVO.setTotalPushCount(totalCount);
 							constituencyVO.setZebraPrintDetailsVOList(printStatusList);
@@ -1754,6 +1772,9 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					returnVO.getDatesList().addAll(daywiseVOMap.keySet());
 				}
 				returnVO.setZebraPrintDetailsVOList(finalReturnList);
+				returnVO.setPrintStatusCount(totalPrintedCount);
+				returnVO.setErrorStatusCount(totalErrorsCount);
+				returnVO.setTotalPushCount(registeredCount);
 			}
 		}
 		catch (Exception e)
