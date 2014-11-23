@@ -32,11 +32,13 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.AgeRangeVO;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.service.IRegistrationService;
 
 public class UserDAOHibernateTest extends BaseDaoTestCase{
 
 	private IUserDAO userDAO;
 	private IConstituencyDAO constituencyDAO ;
+	private IRegistrationService registrationService;
 	public IUserDAO getUserDAO() {
 		return userDAO;
 	}
@@ -51,8 +53,17 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 	}
 	
 	public void test(){
-		List<Object[]> list = userDAO.getUserDetails();
-		System.out.println(list.size());
+		//List<Object[]> list = userDAO.getUserDetails();
+		registrationService.changepassword();
+		//System.out.println(list.size());
+	}
+
+	public IRegistrationService getRegistrationService() {
+		return registrationService;
+	}
+
+	public void setRegistrationService(IRegistrationService registrationService) {
+		this.registrationService = registrationService;
 	}
 
 	public AgeRangeVO getConstituencyWiseDetails(Long constituencyId,Long publicationId,List<String> ageRanges)	

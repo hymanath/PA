@@ -323,7 +323,7 @@ public class RegistrationService implements IRegistrationService{
 	public void changepassword(){
 		List<String> usersList = new ArrayList<String>();
 		MD5Encrypt encrypt = new MD5Encrypt();
-		usersList.add("01200");
+		usersList.add("107_w_002");
 		for(String usname:usersList){
 			String pasword =RegistrationService.randomGenerator(7)+"";
 			 System.out.println("UserName:"+usname+" Password:"+pasword);
