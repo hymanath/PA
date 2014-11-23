@@ -594,7 +594,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 												//emptyTdpCadreData(voterIdsList.get(0));
 												
 												TdpCadre tdpCadre = new TdpCadre();
-												if(voterIdsList.get(0) != null){
+												if(voterIdsList.get(0) != null && needUpdate){
 													tdpCadre.setImage(voterIdsList.get(0).getImage());
 													tdpCadre.setRefNo(voterIdsList.get(0).getRefNo());
 													tdpCadre.setMemberShipNo(voterIdsList.get(0).getMemberShipNo());
@@ -662,7 +662,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 															//emptyTdpCadreData(voterIdsList.get(0));
 														}
 														TdpCadre tdpCadre = new TdpCadre();
-														if(voterIdsList.get(0) != null){
+														if(voterIdsList.get(0) != null && needUpdate){
 															tdpCadre.setImage(voterIdsList.get(0).getImage());
 															tdpCadre.setRefNo(voterIdsList.get(0).getRefNo());
 															tdpCadre.setMemberShipNo(voterIdsList.get(0).getMemberShipNo());
