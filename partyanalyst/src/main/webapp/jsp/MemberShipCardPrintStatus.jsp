@@ -199,7 +199,9 @@
 				   <tr><td><b>To Date   :</b>&nbsp;</td><td><input type="text" readonly="readonly" id="toDateId" /></td></tr>
 				
 				   <tr>
-				      <td></td><td><a href="javascript:{generateDetailReports();}" class="btn btn-success col-xs-offset-4 border-radius-0 offset4  m_top20"> Get Report <span class="glyphicon glyphicon-chevron-right"></span></a>
+				      <td></td><td>
+					  <a href="javascript:{generateDetailReports();}" class="btn btn-success col-xs-offset-4 border-radius-0 m_top20"> Get Report </a>
+					  <a id="excelBtnId" href="javascript:{exportExcelREport('dayWiseUsersDetailsIdForExcel');}" class="btn btn-success col-xs-offset-4 border-radius-0  " style="display:none;margin-top: 19px;"> Export Excel </a>
 				
 				<div><img src='images/Loading-data.gif' class="offset5"  id="searchDashboardImg" style="width:70px;height:60px;display:none;"/>
 				
@@ -207,6 +209,7 @@
 				  </tr>
 			</table>
 					<div id="reportsStatusDiv" style="padding: 10px;overflow: scroll;display:none;"></div>
+					<div id="reportsStatusExcelDiv" style="display:none;"></div>
 			  </div>
 			</div>
 		</div>
@@ -222,7 +225,10 @@
 	<!-- Footer Row End-->
 <script>
 
-
+function exportExcelREport(tableId)
+{
+		tableToExcel(tableId, 'Membership Cards Print Status Report');
+}
 $(document).ready(function(){
 	  $("#fromDateId,#toDateId").datepicker({
 		dateFormat: "dd-mm-yy",
@@ -272,6 +278,7 @@ $(document).ready(function(){
 function generateDetailReports()
 {		
 $('#reportsStatusDiv').hide();
+$('#excelBtnId').hide();
 	var locationType = $("#selLctnType").val();
 	var stateTyleId = $("#statesDivId").val();
 	var searchType = "constituency";
@@ -298,6 +305,7 @@ $('#reportsStatusDiv').hide();
 	}
 	
 	$('#reportsStatusDiv').html('');
+	$('#reportsStatusExcelDiv').html('');
 	var startDate = $('#fromDateId').val();
 	var endDate = $('#toDateId').val();
 	$("#errorDiv").html("");
@@ -369,8 +377,10 @@ $('#reportsStatusDiv').hide();
 			$('#reportsStatusDiv').show();
 				if(result != null &&  ( result.datesList != null && result.datesList.length > 0 ))
 				{
+				$('#excelBtnId').show();
 					$('#reportsStatusDiv').css("overflow","scroll").css("padding","10px;");;
 					buildCategoeryDetails(result,locationType);
+					buildForExcelSheet(result,locationType);
 				}
 				else
 				{
@@ -464,7 +474,81 @@ $('#reportsStatusDiv').hide();
 		         });
 	}
 
-	
+	function buildForExcelSheet(result,locationType)
+	{
+		var str ='';			
+			str+='<h4 align="center" >  DAY WISE PRINTING REPORT </h4>';
+			str+='<table id="dayWiseUsersDetailsIdForExcel" class="table table-bordered ">';
+			str+='<thead>';
+			str+='<tr>';
+			str+='<th> Date </th>';
+			str+='<th> District  </th>';
+			if(locationType !=2)
+			{
+				str+='<th> Parliament </th>';
+				str+='<th> Constituency </th>';
+			}			
+			
+			str+='<th> Total Cards </th>';
+			for(var i in result.datesList)
+			{
+				str+='<th COLSPAN="2"> '+result.datesList[i]+' </th>';
+			}
+			str+='</tr>';
+
+			str+='<tr>';
+			str+='<th></th>';
+			str+='<th> </th>';
+			if(locationType !=2)
+			{
+				str+='<th></th>';
+				str+='<th></th>';
+			}
+			
+			str+='<th></th>';
+			for(var i in result.datesList)
+			{
+				str+='<th> Printed </th>';
+				str+='<th> Errors </th>';
+			}
+			
+			str+='</tr>';
+			
+			str+='</thead>';
+			
+			str+='<tbody>';
+			
+			if(result.zebraPrintDetailsVOList != null && result.zebraPrintDetailsVOList.length > 0)
+			{
+				for(var i in result.zebraPrintDetailsVOList)
+				{
+				str+='<tr>';
+				str+='<td> '+result.zebraPrintDetailsVOList[i].dataPushDate+'</td>';
+				str+='<td> '+result.zebraPrintDetailsVOList[i].district+'</td>';
+				if(locationType !=2)
+				{
+					str+='<td> '+result.zebraPrintDetailsVOList[i].parliament+'</td>';				
+					str+='<td> '+result.zebraPrintDetailsVOList[i].name+'</td>';
+				}
+				str+='<td> '+result.zebraPrintDetailsVOList[i].totalPushCount+'</td>';
+				
+				if(result.zebraPrintDetailsVOList[i].zebraPrintDetailsVOList != null && result.zebraPrintDetailsVOList[i].zebraPrintDetailsVOList.length >0)
+				{
+					for(var j in result.zebraPrintDetailsVOList[i].zebraPrintDetailsVOList)
+					{
+						str+='<td> '+result.zebraPrintDetailsVOList[i].zebraPrintDetailsVOList[j].printStatusCount+'</td>';
+						str+='<td> '+result.zebraPrintDetailsVOList[i].zebraPrintDetailsVOList[j].errorStatusCount+'</td>';
+					}
+				}
+				
+				str+='</tr>';
+				}
+			}
+			str+='</tbody>';
+			str+='</table>';
+			
+			$('#reportsStatusExcelDiv').html(str);
+	}
 	selectLocation(1);
  function selectLocation(value){
 	if(value==0){
