@@ -735,7 +735,7 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 		return returnVO;
 	}*/
 	
-	public void test()
+/*	public void test()
 	{
 		List<Object[]> list = tdpCadreDAO.getCadreCountInMinorities(282l,"constituency");
 		System.out.println(list.size());
@@ -746,5 +746,25 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 			for(Object obj : params)
 				System.out.print("\t"+obj);
 		}
+	}*/
+	
+	public void testgetTotalRegisteredCadreCountByLocation()
+	{
+		List<Long> locationIds = new ArrayList<Long>();
+		locationIds.add(1L);
+		locationIds.add(2L);
+		locationIds.add(3L);
+		locationIds.add(4L);
+		locationIds.add(5L);
+		locationIds.add(6L);
+		locationIds.add(7L);
+		locationIds.add(8L);
+		locationIds.add(9L);
+		locationIds.add(10L);
+		
+		
+		Long count = tdpCadreDAO.getTotalRegisteredCadreCountByLocation(locationIds," select count(TC.tdpCadreId) from TdpCadre TC where TC.userAddress.district.districtId in (:locationIds) and TC.isDeleted='N' and TC.enrollmentYear = 2014 ");
+		System.out.println(count);
+		
 	}
 }
