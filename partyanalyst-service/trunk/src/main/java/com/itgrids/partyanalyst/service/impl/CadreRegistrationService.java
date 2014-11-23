@@ -1214,11 +1214,16 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						//tdpCadre.setSurveyTime(convertToDateFormet(cadreRegistrationVO.getSurveyTimeStr()));
 						try {
 							SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT_24HRS);
-							if(sdf.parse(cadreRegistrationVO.getSurveyTimeStr()).before(tdpCadre.getInsertedTime()))
-								if(tdpCadre.getSurveyTime() == null)
+							//System.out.println(sdf.parse(cadreRegistrationVO.getSurveyTimeStr()));
+							//System.out.println(1);
+							if(sdf.parse(cadreRegistrationVO.getSurveyTimeStr()).before(tdpCadre.getInsertedTime())){
+								//System.out.println(sdf.parse(cadreRegistrationVO.getSurveyTimeStr()));
+								if(tdpCadre.getSurveyTime() == null){
+									//System.out.println("2");
 								   tdpCadre.setSurveyTime(sdf.parse(cadreRegistrationVO.getSurveyTimeStr()));
-							else
-							{
+								}
+							}else
+							{//System.out.println("3");
 								if(tdpCadre.getSurveyTime() == null)	
 								tdpCadre.setSurveyTime(tdpCadre.getInsertedTime());
 								tdpCadre.setRefSurveyTime(sdf.parse(cadreRegistrationVO.getSurveyTimeStr()));
