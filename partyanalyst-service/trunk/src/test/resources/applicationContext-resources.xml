@@ -2662,5 +2662,8 @@
 	 <property name="cadreSurveyUserAssigneeDAO" ref="cadreSurveyUserAssigneeDAO" />
 	 <property name="casteCategoryDAO" ref="casteCategoryDAO" />
 	</bean>
+	<bean id="registrationService" class="com.itgrids.partyanalyst.service.impl.RegistrationService" >
+		
+	</bean>
      
 </beans>
