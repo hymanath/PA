@@ -1668,8 +1668,6 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 						if(constituencyVO.getZebraPrintDetailsVOList() != null && constituencyVO.getZebraPrintDetailsVOList().size()>0)
 						{
 							Long totalCount = 0L;
-							Long printCount = 0L;
-							Long errorCount = 0L;
 							
 							if(daywiseVOMap != null && daywiseVOMap.size()>0)
 							{
@@ -1681,6 +1679,9 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 								{
 									ZebraPrintDetailsVO updatedVO = null;
 									ZebraPrintDetailsVO filterVO  = getMatchedZebraPrintDetailsVOByDate(constituencyVO.getZebraPrintDetailsVOList(),date);
+
+									Long printCount = 0L;
+									Long errorCount = 0L;
 									
 									if(filterVO != null)
 									{										
