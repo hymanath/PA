@@ -395,8 +395,13 @@ $('#excelBtnId').hide();
 
 	function buildCategoeryDetails(result,locationType)
 	{
-		var str ='';			
-			str+='<h4 align="center" >  DAY WISE PRINTING REPORT </h4>';
+		var str ='';
+		str+='<h4 align="center" >  DAY WISE PRINTING REPORT </h4>';
+		str+='<div class="span12  m_top20" style="font-weight:bold;margin-bottom: 30px;">';
+		str+='<div class="span3 show-grid" style="background-color:#D3D3D3;padding:5px;"> Total Registered :'+result.totalPushCount+' </div> ';
+		str+='<div class="span3 show-grid offset1" style="background-color:#D3D3D3;padding:5px;"> Cards Printed :'+result.printStatusCount+' </div> ';
+		str+='<div class="span3 show-grid offset1" style="background-color:#D3D3D3;padding:5px;"> Errors  :'+result.errorStatusCount+' </div> ';
+		str+='</div><br></br>';
 			str+='<table id="dayWiseUsersDetailsId" class="table table-bordered ">';
 			str+='<thead>';
 			str+='<tr>';
