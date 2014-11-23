@@ -22,7 +22,7 @@
 
 		<div id="constituencyPageRightMapDiv1" class="contentDivClass" style="height:90%;">
 			<div style="margin-top:5px;margin-bottom:20px;">
-				<font color="red" size="3px"><b>Sorry! we are unable to process your request to continue
+				<font color="red" size="3px"><b>Sorry! we are unable to process your request, click here to continue
 				<c:choose>       
 			      <c:when test="${fn:contains(theString, 'tdpserver')}">
 			      <c:set var="theString" value='<%=IConstants.DEPLOYED_HOST%>'/>
@@ -35,6 +35,7 @@
 			</b>
 				</font><br><br>
 			</div>
+			<!--
 			<div style="background:none repeat scroll 0 0 #CEDCF3;border:1px solid #9ABAED;">
 			<table width="100%">
 			<tr>
@@ -52,7 +53,8 @@
 			</tr>
 			</table>	
 				
-			</div>											
+			</div>
+			-->
 		</div>	
 	</div>
 </div>	
