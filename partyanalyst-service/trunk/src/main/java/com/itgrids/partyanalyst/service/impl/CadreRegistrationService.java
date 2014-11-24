@@ -4552,16 +4552,16 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			}
 		};
 	
-	public CasteDetailsVO getAllCastes()
+	public List<CasteDetailsVO> getAllCastes()
 	{
-	CasteDetailsVO returnVo = new CasteDetailsVO();
+	
 	List<CasteDetailsVO> castesList =new ArrayList<CasteDetailsVO>();
-	List<CasteDetailsVO> casteStateList =new ArrayList<CasteDetailsVO>();
-	List<Object[]> list = casteDAO.getCastes();
-	List<Object[]> list1 = casteStateDAO.getAllCasteInfo();
+
+	//List<Object[]> list = casteDAO.getCastes();
+	//List<Object[]> list1 = casteStateDAO.getAllCasteInfo();
 		try{
 			
-			if(list != null && list.size() > 0)
+			/*if(list != null && list.size() > 0)
 			{
 				for(Object[] params : list)
 				{
@@ -4570,7 +4570,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					vo.setCastName(params[1] != null ? params[1].toString() : "");
 					castesList.add(vo);
 				}
-			}
+			}*/
+			List<Object[]> list1 = casteStateDAO.getAllUpdatedCasteInfo();
 			if(list1 != null && list1.size() > 0)
 			{
 				for(Object[] params : list1)
@@ -4580,16 +4581,16 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					vo.setCasteId((Long)params[1]);
 					vo.setCasteCategoryGroupId((Long)params[2]);
 					vo.setStateId((Long)params[3]);
-					casteStateList.add(vo);
+					vo.setCastName(params[4] != null ? params[4].toString() : "");
+					castesList.add(vo);
 				}
 			}
-			returnVo.setCasteList(castesList);
-			returnVo.setCasteStateList(casteStateList);
+			
 		}
 		catch (Exception e) {
 			LOG.error("Exception raised in getAllCastes in CadreRegistrationService service", e);
 		}
-		return returnVo;
+		return castesList;
 	}
 	
 	

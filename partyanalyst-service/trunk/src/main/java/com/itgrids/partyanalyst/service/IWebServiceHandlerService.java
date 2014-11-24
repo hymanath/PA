@@ -67,7 +67,7 @@ public interface IWebServiceHandlerService {
 	public Object getCadreDetailsForPrinting(String memberNo);
 	public Object checkNFCNumberForVoterId(Long voterId);
 	public Object delinkNFCNumber(String cardNo , Long voterId);
-	public CasteDetailsVO getAllCastes();
+	public List<CasteDetailsVO> getAllCastes();
 	
 	public Object getVCadreDetailsBySelection(CadrePrintInputVO input);
 	
