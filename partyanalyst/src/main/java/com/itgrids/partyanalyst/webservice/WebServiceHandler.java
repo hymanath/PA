@@ -36,19 +36,14 @@ public class WebServiceHandler {
 	private List<WSResultVO> wSResultVO;
 	private WSResultVO wSResult;
 	private final static Logger LOG = Logger.getLogger(WebServiceHandler.class);
-	private CasteDetailsVO casteDetailsVO;
-	
-	
-
-	
-	
+	private List<CasteDetailsVO> casteDetailsVO;
 	
 
-	public CasteDetailsVO getCasteDetailsVO() {
+	public List<CasteDetailsVO> getCasteDetailsVO() {
 		return casteDetailsVO;
 	}
 
-	public void setCasteDetailsVO(CasteDetailsVO casteDetailsVO) {
+	public void setCasteDetailsVO(List<CasteDetailsVO> casteDetailsVO) {
 		this.casteDetailsVO = casteDetailsVO;
 	}
 
@@ -681,7 +676,7 @@ public class WebServiceHandler {
 	@GET
 	@Path("/getAllCastes")
 	@Produces(MediaType.APPLICATION_JSON)
-	public CasteDetailsVO getAllCastes()
+	public List<CasteDetailsVO> getAllCastes()
 	{
 		
 		try{
