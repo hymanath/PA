@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CastVO;
+import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
@@ -35,16 +36,20 @@ public class WebServiceHandler {
 	private List<WSResultVO> wSResultVO;
 	private WSResultVO wSResult;
 	private final static Logger LOG = Logger.getLogger(WebServiceHandler.class);
-	private CastVO casteVo;
+	private CasteDetailsVO casteDetailsVO;
+	
 	
 
 	
-	public CastVO getCasteVo() {
-		return casteVo;
+	
+	
+
+	public CasteDetailsVO getCasteDetailsVO() {
+		return casteDetailsVO;
 	}
 
-	public void setCasteVo(CastVO casteVo) {
-		this.casteVo = casteVo;
+	public void setCasteDetailsVO(CasteDetailsVO casteDetailsVO) {
+		this.casteDetailsVO = casteDetailsVO;
 	}
 
 	public WSResultVO getwSResult() {
@@ -676,13 +681,13 @@ public class WebServiceHandler {
 	@GET
 	@Path("/getAllCastes")
 	@Produces(MediaType.APPLICATION_JSON)
-	public CastVO getAllCastes()
+	public CasteDetailsVO getAllCastes()
 	{
 		
 		try{
 
-			casteVo = webServiceHandlerService.getAllCastes();
-			return casteVo;
+			casteDetailsVO = webServiceHandlerService.getAllCastes();
+			return casteDetailsVO;
 		}
 		catch(Exception e)
 		{
