@@ -16,7 +16,9 @@
 	
 	<div style="margin-left:500px;margin-top:25px;margin-bottom:25px;">
 	<div id="errorDiv" class="offset1" style="font-weight:bold;color:red;font-size:15px;height:25px;"></div>
-	<div><h4>Select User : <select style="margin-left: 53px; width: 220px;" id="usersListId" onchange="diplayValues()"></select></h4></div>
+	<div><h4>Select User : <select style="margin-left: 53px; width: 220px;" id="usersListId" onchange="diplayValues()"></select></h4>
+	<img id="ajaxImage" src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/>
+	</div>
 	<div class="user_details" id="user_details" style="display: none;margin-top:8px;">
 			<!--<b>First Name :</b><input type="text" id="first_name" /><br/>
 			<b>Last	Name :</b><input type="text" id="last_name" /><br/>
@@ -36,6 +38,7 @@
 			$(".user_details").show();
 		}
 		function getUserDetails(){
+		$('#ajaxImage').show();
 				$.ajax({
 					  type:'GET',
 					  url: 'getUserDetailsAction.action',
@@ -49,6 +52,7 @@
 							$('#usersListId').append('<option value='+result[i].id+'>'+result[i].name+'  --  '+result[i].mandalName+' '+result[i].hamletName+' </option>');
 							for(var j in result){
 								$('#first_name').append(result[i].name);
+								$('#ajaxImage').hide();
 							
 							}
 						}
