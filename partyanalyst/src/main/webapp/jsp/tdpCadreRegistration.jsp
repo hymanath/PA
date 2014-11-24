@@ -1233,7 +1233,7 @@
 											<s:else>
 											  <input type="checkbox" id="voterTNameId" class="cadreTnamesCls"  style="margin-top:-15px;"  value="Voter" name="cadreRegistrationVO.nameType" onClick="updateNameSelection('cadreTNameId');"/>
 											</s:else>
-											<input type="text" class="form-control border-radius-0" placeholder="Voter Telugu Name" style="width:190px;"  value="${voterInfoVOList[0].teluguName}"  ></input>											
+											<input type="text" class="form-control border-radius-0" placeholder="Voter Telugu Name" style="width:190px;"  value="${voterInfoVOList[0].teluguName}" name="cadreRegistrationVO.voterTeluguName" ></input>											
 										</div>	
 										<div class="span6">	
 											<h5 class="text-align1"> Cadre Telugu Name  </h5>
