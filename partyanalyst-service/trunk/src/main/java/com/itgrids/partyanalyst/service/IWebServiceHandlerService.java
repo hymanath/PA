@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CastVO;
+import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
@@ -66,7 +67,7 @@ public interface IWebServiceHandlerService {
 	public Object getCadreDetailsForPrinting(String memberNo);
 	public Object checkNFCNumberForVoterId(Long voterId);
 	public Object delinkNFCNumber(String cardNo , Long voterId);
-	public CastVO getAllCastes();
+	public CasteDetailsVO getAllCastes();
 	
 	public Object getVCadreDetailsBySelection(CadrePrintInputVO input);
 	
