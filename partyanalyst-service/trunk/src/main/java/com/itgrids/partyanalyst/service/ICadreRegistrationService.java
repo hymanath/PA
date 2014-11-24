@@ -91,7 +91,8 @@ public interface ICadreRegistrationService {
 	public SurveyCadreResponceVO tdpCardSenderSavingLogic(final CardSenderVO cardSenderVO);
 
 	public String delinkNFCNumber(String cardNumber,Long voterId);
-	public CasteDetailsVO getAllCastes();
+
+	public List<CasteDetailsVO> getAllCastes();
 	public List<Long> getVoterIdByVoterCard(String voterCardId);
 	public List<CadreRegisterInfo> getDistrictsByStateWiseAction(Long stateId);
 	public List<CadreRegisterInfo> getConstsByStateWiseAction(Long stateId);

@@ -1100,7 +1100,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		return status;
 	}
 	
-	public CasteDetailsVO getAllCastes()
+	public List<CasteDetailsVO> getAllCastes()
 	{
 		return cadreRegistrationService.getAllCastes();
 	}

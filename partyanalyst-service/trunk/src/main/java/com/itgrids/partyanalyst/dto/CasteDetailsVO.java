@@ -8,7 +8,7 @@ public class CasteDetailsVO {
 	private Long casteId;
 	private Long stateId;
 	private Long casteCategoryGroupId;
-	private List<CasteDetailsVO> casteList,casteStateList;
+	
 	public String getCastName() {
 		return castName;
 	}
@@ -39,19 +39,5 @@ public class CasteDetailsVO {
 	public void setCasteCategoryGroupId(Long casteCategoryGroupId) {
 		this.casteCategoryGroupId = casteCategoryGroupId;
 	}
-	public List<CasteDetailsVO> getCasteList() {
-		return casteList;
-	}
-	public void setCasteList(List<CasteDetailsVO> casteList) {
-		this.casteList = casteList;
-	}
-	public List<CasteDetailsVO> getCasteStateList() {
-		return casteStateList;
-	}
-	public void setCasteStateList(List<CasteDetailsVO> casteStateList) {
-		this.casteStateList = casteStateList;
-	}
-	
-	
 	
 }

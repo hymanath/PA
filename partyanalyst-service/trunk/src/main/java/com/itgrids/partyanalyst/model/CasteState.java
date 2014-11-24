@@ -38,6 +38,8 @@ public class CasteState extends BaseModel implements Serializable{
 	private String isGlobal;
 	private User user;
 	private Set<FieldVoterData> fieldVoterData = new HashSet<FieldVoterData>(0);
+	private String isNew;
+	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="caste_category_group_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -145,6 +147,14 @@ public class CasteState extends BaseModel implements Serializable{
 
 	public void setFieldVoterData(Set<FieldVoterData> fieldVoterData) {
 		this.fieldVoterData = fieldVoterData;
+	}
+	@Column(name = "is_new")
+	public String getIsNew() {
+		return isNew;
+	}
+
+	public void setIsNew(String isNew) {
+		this.isNew = isNew;
 	}
 	
 	
