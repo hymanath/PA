@@ -89,6 +89,7 @@ import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.CastVO;
+import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -4551,11 +4552,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			}
 		};
 	
-	public CastVO getAllCastes()
+	public CasteDetailsVO getAllCastes()
 	{
-	CastVO returnVo = new CastVO();
-	List<CastVO> castesList =new ArrayList<CastVO>();
-	List<CastVO> casteStateList =new ArrayList<CastVO>();
+	CasteDetailsVO returnVo = new CasteDetailsVO();
+	List<CasteDetailsVO> castesList =new ArrayList<CasteDetailsVO>();
+	List<CasteDetailsVO> casteStateList =new ArrayList<CasteDetailsVO>();
 	List<Object[]> list = casteDAO.getCastes();
 	List<Object[]> list1 = casteStateDAO.getAllCasteInfo();
 		try{
@@ -4564,7 +4565,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			{
 				for(Object[] params : list)
 				{
-					CastVO vo = new CastVO();
+					CasteDetailsVO vo = new CasteDetailsVO();
 					vo.setCasteId((Long)params[0]);
 					vo.setCastName(params[1] != null ? params[1].toString() : "");
 					castesList.add(vo);
@@ -4574,12 +4575,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			{
 				for(Object[] params : list1)
 				{
-					CastVO vo = new CastVO();
+					CasteDetailsVO vo = new CasteDetailsVO();
 					vo.setCastStateId((Long)params[0]);
 					vo.setCasteId((Long)params[1]);
 					vo.setCasteCategoryGroupId((Long)params[2]);
 					vo.setStateId((Long)params[3]);
-					
 					casteStateList.add(vo);
 				}
 			}

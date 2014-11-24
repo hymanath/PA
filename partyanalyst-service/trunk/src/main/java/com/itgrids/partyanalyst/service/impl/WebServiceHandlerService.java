@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CastVO;
+import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.FlagVO;
 import com.itgrids.partyanalyst.dto.PanchayatCountVo;
@@ -1099,7 +1100,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		return status;
 	}
 	
-	public CastVO getAllCastes()
+	public CasteDetailsVO getAllCastes()
 	{
 		return cadreRegistrationService.getAllCastes();
 	}

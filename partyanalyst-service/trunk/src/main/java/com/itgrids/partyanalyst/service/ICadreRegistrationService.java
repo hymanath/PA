@@ -10,6 +10,7 @@ import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.CastVO;
+import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -90,7 +91,7 @@ public interface ICadreRegistrationService {
 	public SurveyCadreResponceVO tdpCardSenderSavingLogic(final CardSenderVO cardSenderVO);
 
 	public String delinkNFCNumber(String cardNumber,Long voterId);
-	public CastVO getAllCastes();
+	public CasteDetailsVO getAllCastes();
 	public List<Long> getVoterIdByVoterCard(String voterCardId);
 	public List<CadreRegisterInfo> getDistrictsByStateWiseAction(Long stateId);
 	public List<CadreRegisterInfo> getConstsByStateWiseAction(Long stateId);
