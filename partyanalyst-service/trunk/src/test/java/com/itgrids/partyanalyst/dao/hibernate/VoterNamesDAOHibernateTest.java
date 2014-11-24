@@ -14,6 +14,10 @@ public class VoterNamesDAOHibernateTest extends BaseDaoTestCase {
 	
 	public void test()
 	{
-		voterNamesDAO.getAll();
+		int count =voterNamesDAO.updateVoterName("రావిపూడి", 1l);
+		System.out.println(count);
+		
 	}
+	
+	
 }

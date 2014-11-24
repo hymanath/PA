@@ -39,5 +39,13 @@ public class VoterNamesDAO extends GenericDaoHibernate<VoterNames, Long> impleme
 		return query.list();
 	}
 	
+	public int updateVoterName(String name,Long voterNamesId){
+		Query query = getSession().createSQLQuery(" update voter_names2 set firstname='"+name+"' where voter_names_id="+voterNamesId+" ");
+		/*query.setParameter("name", name);
+		query.setParameter("voterNamesId", voterNamesId);*/
+		return query.executeUpdate();
+	}
+	
+	
 	
 }
