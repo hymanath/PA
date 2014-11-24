@@ -1157,12 +1157,16 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									if(voterName != null){
 										voterName.setFirstName(cadreRegistrationVO.getVoterTeluguName().trim());
 										voterName.setLastName("");
+										voterName.getVoterNamesId();
+										
+										//voterNamesDAO.updateVoterName(voterName.getFirstName(), voterName.getVoterNamesId());
 										voterNamesDAO.save(voterName);
 									}
 								}
 							}else{
 								VoterNames voterName = new VoterNames();
-								voterName.setVoter(voterDAO.get(tdpCadre.getVoterId()));
+								//voterName.setVoter(voterDAO.get(tdpCadre.getVoterId()));
+								voterName.setVoterId(tdpCadre.getVoterId());
 								voterName.setFirstName(cadreRegistrationVO.getVoterTeluguName().trim());
 								voterName.setLastName("");
 								voterNamesDAO.save(voterName);
