@@ -1746,5 +1746,8 @@
 <bean id="zebraPrintDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ZebraPrintDetailsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
+<bean id="tdpCadreTeluguNamesDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreTeluguNamesDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
 	<!--  end -->
 </beans>		
