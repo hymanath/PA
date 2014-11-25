@@ -512,7 +512,7 @@
 				<value>com.itgrids.partyanalyst.model.TabRecordsStatus</value>
 				<value>com.itgrids.partyanalyst.model.TabUserLoginDetails</value>
 				<value>com.itgrids.partyanalyst.model.ZebraPrintDetails</value>
-				
+				<value>com.itgrids.partyanalyst.model.TdpCadreTeluguNames</value>
 			</list>
 		</property>
 	</bean>
@@ -2664,6 +2664,10 @@
 	</bean>
 	<bean id="registrationService" class="com.itgrids.partyanalyst.service.impl.RegistrationService" >
 		
+	</bean>
+	
+	<bean id="tdpCadreTeluguNamesDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreTeluguNamesDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
      
 </beans>
