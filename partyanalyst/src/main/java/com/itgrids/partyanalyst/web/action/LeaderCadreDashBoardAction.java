@@ -12,6 +12,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreAmountDetailsVO;
+import com.itgrids.partyanalyst.dto.CadreDataAnalysisVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ILeaderCadreDashBoardService;
@@ -29,7 +30,19 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 	private ILeaderCadreDashBoardService leaderCadreDashBoardService;
 	private List<CadreAmountDetailsVO> amountDetails;
 	private CadreAmountDetailsVO amountDetailsVO;
+	private List<CadreDataAnalysisVO> resultList;
 	
+	
+		public List<CadreDataAnalysisVO> getResultList() {
+		return resultList;
+	}
+
+
+	public void setResultList(List<CadreDataAnalysisVO> resultList) {
+		this.resultList = resultList;
+	}
+
+
 		public CadreAmountDetailsVO getAmountDetailsVO() {
 		return amountDetailsVO;
 	}
@@ -241,4 +254,32 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String cadreBoothAnalysisExecute()
+	{
+		try{
+			
+		}
+		catch(Exception e)
+		{
+			
+		}
+		return Action.SUCCESS;
+	}
+	public String getCadreBoothAnalysisInfo()
+	{
+		try{
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			
+			jObj = new JSONObject(getTask());
+			
+			resultList = leaderCadreDashBoardService.getCadreBoothAnalysisReport(jObj.getLong("stateId"));
+			
+		}
+		catch (Exception e) {
+			LOG.info("Entered into getCadreBoothAnalysisInfo() in LeaderCadreDashBoardActioon class");
+		}
+		return Action.SUCCESS;
+	}
+	
 }
