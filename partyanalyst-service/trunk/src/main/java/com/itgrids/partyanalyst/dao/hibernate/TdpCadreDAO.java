@@ -2248,34 +2248,36 @@ public void flushAndclearSession(){
 		query.setParameterList("memberCardNos", memberCardNos);
 		return query.list();
 	}
-	public List<Long> lastHoursActiveUsers(Date presentTime,Date lastHoursTime)
+	public List<Long> lastHoursActiveUsers(Date presentTime,Date lastHoursTime,List<Long> consituencyIdsList)
 	{
 		Query query = getSession().createQuery("select " +
-				" distinct model.insertedBy.cadreSurveyUserId from TdpCadre model " +
+				" distinct model.insertedBy.cadreSurveyUserId from TdpCadre model, CadreSurveyUserAssignDetails model2 " +
 				" where model.enrollmentYear = 2014 and " +
-				" model.isDeleted = 'N' and" +
-				" (model.surveyTime >= :lastHoursTime and model.surveyTime <= :presentTime) and" +
+				" model.isDeleted = 'N' and " +
+				" (model.surveyTime >= :lastHoursTime and model.surveyTime <= :presentTime) and model.insertedBy.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId and " +
 				" model.insertedBy.cadreSurveyUserId is not null and " +
-				" model.dataSourceType='TAB'" 
+				" model.dataSourceType='TAB' and model2.constituency.constituencyId in (:consituencyIdsList) " 
 				);
 		
 		query.setParameter("lastHoursTime", lastHoursTime);
 		query.setParameter("presentTime", presentTime);
+		query.setParameterList("consituencyIdsList", consituencyIdsList);
 		return query.list();
 		
 	 }
-	public List<Long> inActiveUsersCountInLastHours(Date surveyTime,List<Long> cadreSurveyUserIdsList)
+	public List<Long> inActiveUsersCountInLastHours(Date surveyTime,List<Long> cadreSurveyUserIdsList,List<Long> consituencyIdsList) 
 	{
 		Query query=getSession().createQuery("" +
 				"select count(distinct model.insertedBy.cadreSurveyUserId) " +
-				" from TdpCadre model" +
+				" from TdpCadre model , CadreSurveyUserAssignDetails model2 " +
 				" where model.surveyTime>=:surveyTime and" +
 				" model.isDeleted='N' and model.enrollmentYear = 2014 and " +
 				" model.insertedBy.cadreSurveyUserId is not null and " +
-				" model.insertedBy.cadreSurveyUserId not in(:cadreSurveyUserIdsList) and " +
-				" model.dataSourceType='TAB' ");
+				" model.insertedBy.cadreSurveyUserId not in(:cadreSurveyUserIdsList)  and model.insertedBy.cadreSurveyUserId = model2.cadreSurveyUser.cadreSurveyUserId and " +
+				" model.dataSourceType='TAB' and model2.constituency.constituencyId in (:consituencyIdsList) ");
 		query.setDate("surveyTime",surveyTime);	
 		query.setParameterList("cadreSurveyUserIdsList", cadreSurveyUserIdsList);
+		query.setParameterList("consituencyIdsList", consituencyIdsList);
 		return query.list();	
 	}
 	
@@ -2307,7 +2309,7 @@ public void flushAndclearSession(){
 			return query.list();
 		}
 		
-	public List<Object[]> inActiveUsersInLastHours(Date surveyTime,List<Long> cadreSurveyUserIdsList)
+	public List<Object[]> inActiveUsersInLastHours(Date surveyTime,List<Long> cadreSurveyUserIdsList,List<Long> constituencyIds)
 	{
 		Query query=getSession().createQuery("" +
 				"select distinct model.insertedBy.userName,model.insertedBy.name,model.insertedBy.mobileNo,model1.tabNo ,model1.constituency.constituencyId, model1.constituency.name, model1.constituency.district.districtName " +
@@ -2317,9 +2319,10 @@ public void flushAndclearSession(){
 				" model.isDeleted='N' and model.enrollmentYear = 2014 and " +
 				" model.insertedBy.cadreSurveyUserId is not null and " +
 				" model.insertedBy.cadreSurveyUserId not in(:cadreSurveyUserIdsList) and " +
-				" model.dataSourceType='TAB' ");
+				" model.dataSourceType='TAB' and model1.constituency.constituencyId in (:constituencyIds) ");
 		query.setDate("surveyTime",surveyTime);	
 		query.setParameterList("cadreSurveyUserIdsList", cadreSurveyUserIdsList);
+		query.setParameterList("constituencyIds", constituencyIds);
 		return query.list();	
 	}
    
