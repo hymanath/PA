@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.hibernate.CasteCategoryDAO;
 import com.itgrids.partyanalyst.dto.CadreAmountDetailsVO;
+import com.itgrids.partyanalyst.dto.CadreDataAnalysisVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.service.ILeaderCadreDashBoardService;
@@ -736,7 +737,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 				return null;
 			for(CadreAmountDetailsVO vo :resultList)
 			{
-				if(vo.getId().longValue() == id)
+				if(vo.getId().longValue() == id.longValue())
 					return vo;
 			}
 		}
@@ -745,7 +746,22 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 		}
 		return null;
 	}
-	
+	public CadreDataAnalysisVO getMatchedVO2(List<CadreDataAnalysisVO> resultList,Long id)
+	{
+		try{
+			if(resultList == null || resultList.size() == 0 || id == null)
+				return null;
+			for(CadreDataAnalysisVO vo :resultList)
+			{
+				if(vo.getId().longValue() == id.longValue())
+					return vo;
+			}
+		}
+		catch (Exception e) {
+			return null;
+		}
+		return null;
+	}
 	public CadreAmountDetailsVO getMatchedVO1(List<CadreAmountDetailsVO> resultList,Long Id,String type)
 	{
 		try{
@@ -753,7 +769,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 				return null;
 			for(CadreAmountDetailsVO vo :resultList)
 			{
-				if(vo.getId().longValue() == Id  && vo.getUserType().equalsIgnoreCase(type))
+				if(vo.getId().longValue() == Id.longValue()  && vo.getUserType().equalsIgnoreCase(type))
 					return vo;
 			}
 		}
@@ -1544,6 +1560,110 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 		return new ArrayList<CadreAmountDetailsVO>(locationsMap.values());
 	}
 	
-	
+	public List<CadreDataAnalysisVO> getCadreBoothAnalysisReport(Long stateId)
+	{
+		List<CadreDataAnalysisVO> resultList = new ArrayList<CadreDataAnalysisVO>();
+		try{
+			
+			 List<Long> constituencyIds = constituencyDAO.getAllAssemblyConstituencyIdsByStateId(stateId);
+			 if(constituencyIds != null && constituencyIds.size() > 0)
+			 {
+			 List<Object[]> list = boothDAO.getBoothCountInfoByConstiIds(constituencyIds);
+			 		if(list != null && list.size() > 0)
+			 		{
+			 			for(Object[] params : list)
+			 			{
+			 				CadreDataAnalysisVO vo = new CadreDataAnalysisVO();
+			 				  vo.setId((Long)params[1]);
+			 				 vo.setName(params[2].toString());
+			 				  vo.setTotalBooths((Long)params[0]);
+			 				  resultList.add(vo);
+			 			}
+			 			
+			 			List<Object[]> startedBooths = tdpCadreDAO.getRegistrationStartedLocations(constituencyIds);
+			 			if(startedBooths != null && startedBooths.size() > 0)
+			 			{
+			 				for(Object[] params : startedBooths)
+			 				{
+			 				CadreDataAnalysisVO vo1 = getMatchedVO2(resultList,(Long)params[1]);
+			 				if(vo1 != null)
+			 					vo1.setStartedBooths((Long)params[0]);
+			 				}
+			 			}
+			 			List<Object[]> below10 = tdpCadreDAO. getBelowCadresBooths(constituencyIds);
+			 			if(below10 != null && below10.size() > 0)
+			 			{
+			 				for(Object[] params : below10)
+			 				{
+			 				CadreDataAnalysisVO vo2 = getMatchedVO2(resultList,(Long)params[1]);
+			 				if(vo2 != null)
+			 					vo2.setBelowCadres(vo2.getBelowCadres() + 1);
+			 				}	
+			 			}
+			 			
+			 			List<Object[]> genderInfo = tdpCadreDAO.getLocationWiseGenderCadreCount1(constituencyIds,IConstants.CONSTITUENCY);
+			 			if(genderInfo != null && genderInfo.size()> 0)
+			 			{
+			 				for(Object[] params : genderInfo)
+			 				{
+			 				CadreDataAnalysisVO vo3 = getMatchedVO2(resultList,(Long)params[2]);
+				 				if(vo3 != null)
+				 				{
+				 					CadreDataAnalysisVO boothVo = getMatchedVO2(vo3.getSubList(),(Long)params[3]);
+				 					if(boothVo == null)
+				 					{
+				 						boothVo = new CadreDataAnalysisVO();
+				 						if(params[1].toString().equalsIgnoreCase("Male") || params[1].toString().equalsIgnoreCase("M"))
+					 						boothVo.setMaleCnt((Long)params[0]);
+					 					else if(params[1].toString().equalsIgnoreCase("Female") || params[1].toString().equalsIgnoreCase("F"))
+					 						boothVo.setFeMaleCnt((Long)params[0] );
+				 						boothVo.setId((Long)params[3]);
+					 					vo3.getSubList().add(boothVo);
+				 					}
+				 					else
+				 					{
+				 						if(params[1].toString().equalsIgnoreCase("Male") || params[1].toString().equalsIgnoreCase("M"))
+					 						boothVo.setMaleCnt((Long)params[0] + vo3.getMaleCnt());
+					 					else if(params[1].toString().equalsIgnoreCase("Female") || params[1].toString().equalsIgnoreCase("F"))
+					 						boothVo.setFeMaleCnt((Long)params[0] + vo3.getFeMaleCnt());
+				 					}
+				 						
+				 				}
+			 				}	
+			 			}
+			 			
+			 			if(resultList != null && resultList.size()> 0)
+			 			{
+			 				for(CadreDataAnalysisVO vo : resultList)
+			 				{
+			 					if(vo.getSubList() != null && vo.getSubList().size()> 0)
+			 					for(CadreDataAnalysisVO boothVo :vo.getSubList())
+			 					{
+			 						boothVo.setTotal(boothVo.getMaleCnt() + boothVo.getFeMaleCnt());
+			 						boothVo.setDifference(boothVo.getMaleCnt() - boothVo.getFeMaleCnt());
+			 						boothVo.setPercentage(boothVo.getTotal() > 0 ? (new BigDecimal(boothVo.getDifference()*(100.0)/boothVo.getTotal().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString() : "-");
+				 					boothVo.setMalePercentage(boothVo.getTotal() > 0 ? (new BigDecimal(boothVo.getMaleCnt()*(100.0)/boothVo.getTotal().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString() : "-");
+				 					boothVo.setFemalePercentage(boothVo.getTotal() > 0 ? (new BigDecimal(boothVo.getFeMaleCnt()*(100.0)/boothVo.getTotal().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString() : "-");
+			 						if((boothVo.getDifference()*(100))/boothVo.getTotal().longValue() >= IConstants.CADREPERCENTAGE.longValue())
+			 						vo.setCount(vo.getCount() + 1);	
+			 						if((boothVo.getMaleCnt()*(100))/boothVo.getTotal().longValue() >= IConstants.CADREPERCENTAGE.longValue())
+			 							vo.setmCount(vo.getmCount() + 1);
+			 						if((boothVo.getFeMaleCnt()*(100))/boothVo.getTotal().longValue()>= IConstants.CADREPERCENTAGE.longValue())
+			 							vo.setfCount(vo.getfCount() + 1);
+			 						
+			 					}
+			 				}
+			 			}
+			 			
+			 			
+			 		}
+			 }
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception rised in  getCadreBoothAnalysisReport() in LeaderCaderDashBoardService",e);	
+		}
+		return resultList;
+	}
 	
 }
