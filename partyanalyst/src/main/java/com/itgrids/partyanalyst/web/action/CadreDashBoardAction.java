@@ -630,8 +630,14 @@ public class CadreDashBoardAction implements ServletRequestAware {
 	{
 		try{
 			
-			 String hoursCount=request.getParameter("hoursCount");
-			 genericVOList=cadreDashBoardService.getInactiveUsersListDetails(hoursCount);
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			
+			if(regVO != null)
+			{
+				String hoursCount=request.getParameter("hoursCount");
+				genericVOList=cadreDashBoardService.getInactiveUsersListDetails(hoursCount,regVO.getAccessType(),regVO.getAccessValue());
+			}
+			 
 			
 		}catch(Exception e){
 			LOG.error("Exception rised in getLocationNameByIdAndType ",e);
