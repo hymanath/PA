@@ -295,6 +295,8 @@
 			 <pattern>/duplicateUsers*</pattern>
 			 <pattern>/cadreReportsAction*</pattern>
 			 <pattern>/changeUserPasswords*</pattern>
+			  <pattern>/cadreBoothAnalysisAction*</pattern>
+			 
        </decorator>
        
        <decorator name="tdpHome_old" page="tdplayout_old.jsp">
