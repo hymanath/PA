@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CadreAmountDetailsVO;
+import com.itgrids.partyanalyst.dto.CadreDataAnalysisVO;
 
 public interface ILeaderCadreDashBoardService {
 
@@ -20,5 +21,6 @@ public interface ILeaderCadreDashBoardService {
 	public CadreAmountDetailsVO getCasteWiseDetails(Long stateId,String locationtype);
 	public CadreAmountDetailsVO getSubLoctaionCasteWiseDetails(Long stateId,String locationtype,Long Id);
 	public CadreAmountDetailsVO getUsersInLocation(Long userId,Date fromDate,Date toDate,Long locationId,Long constituencyId,String type);
+	public List<CadreDataAnalysisVO> getCadreBoothAnalysisReport(Long stateId);
 	
 }

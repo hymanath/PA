@@ -2197,7 +2197,7 @@ public void flushAndclearSession(){
 		 else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
 			str.append(" and model.userAddress.constituency.district.districtId in(:districtIds) group by model.userAddress.constituency.constituencyId");
 		 else if(type.equalsIgnoreCase(IConstants.TEHSIL))
-				str.append(" and model.userAddress.tehsil.tehsilId in(:districtIds) group by model.userAddress.tehsil.tehsilId");
+				str.append(" and model.userAddress.tehsil.tehsilId in(:districtIds) and model.userAddress.localElectionBody.localElectionBodyId is null group by model.userAddress.tehsil.tehsilId");
 		 else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY) || type.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION) )
 				str.append(" and model.userAddress.localElectionBody.localElectionBodyId in(:districtIds) group by model.userAddress.localElectionBody.localElectionBodyId");
 		Query query = getSession().createQuery(str.toString());
@@ -2911,4 +2911,44 @@ public void flushAndclearSession(){
 		query.setParameterList("locationIds", locationIds);		
 		return (Long) query.uniqueResult();
 	}
+	
+	
+	public List<Object[]> getRegistrationStartedLocations(List<Long> Ids){
+		StringBuilder str = new StringBuilder();
+		str.append("select count(distinct model.userAddress.booth.boothId),model.userAddress.constituency.constituencyId"); 
+		str.append("  from TdpCadre model" +
+				" where model.isDeleted = 'N' " +
+				" and model.enrollmentYear = 2014 and model.userAddress.constituency.constituencyId in(:Ids) group by model.userAddress.constituency.constituencyId"); 
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("Ids", Ids);
+		return query.list();
+	}
+	public List<Object[]> getBelowCadresBooths(List<Long> Ids){
+		StringBuilder str = new StringBuilder();
+		str.append("select model.userAddress.booth.boothId,model.userAddress.constituency.constituencyId"); 
+		str.append("  from TdpCadre model" +
+				" where model.isDeleted = 'N' " +
+				" and model.enrollmentYear = 2014 and model.userAddress.constituency.constituencyId in(:Ids) and  model.userAddress.booth.boothId  is not null group by model.userAddress.constituency.constituencyId, model.userAddress.booth.boothId " +
+				"  having count(model.tdpCadreId) < 10"); 
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("Ids", Ids);
+		return query.list();
+	}
+	
+	public List<Object[]> getLocationWiseGenderCadreCount1(List<Long> Ids,String type){		
+		
+		StringBuilder queryStr=new StringBuilder();
+		
+		if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+	    	queryStr.append("select count(model.gender),model.gender,model.userAddress.constituency.constituencyId,model.userAddress.booth.boothId ");
+		
+            queryStr.append(" from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = 2014 and model.gender is not null and model.userAddress.booth.boothId is not null");
+            
+		if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+		    	queryStr.append(" and model.userAddress.constituency.constituencyId in (:Ids) group by model.userAddress.constituency.constituencyId,model.userAddress.booth.boothId,model.gender ");
+		Query query = getSession().createQuery(queryStr.toString());		
+		query.setParameterList("Ids", Ids);
+				
+		return query.list();
+    }
 }
