@@ -992,7 +992,9 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			 else if(accessType.equalsIgnoreCase("DISTRICT")){
 			   constiIds = constituencyDAO.getConstituenciesInADistrict(accessValue);
 			 }
-			
+			 else if(accessType.equalsIgnoreCase("STATE")){
+				 constiIds = tdpCadreDAO.getCadreAvailableConstituencies(0L); // AP & TS constituencies list
+				}
 			if(hours != null && hours.trim().length()>0 && !hours.equalsIgnoreCase("0"))
 			{
 				int hourCount = Integer.valueOf(hours);						
