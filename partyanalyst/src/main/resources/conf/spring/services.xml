@@ -2268,6 +2268,7 @@
 		<property name="tabRecordsStatusDAO" ref="tabRecordsStatusDAO" />
 		<property name="tabUserLoginDetailsDAO" ref="tabUserLoginDetailsDAO" />
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
+		<property name="tdpCadreTeluguNamesDAO" ref="tdpCadreTeluguNamesDAO" />
      </bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
