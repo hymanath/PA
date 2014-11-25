@@ -73,6 +73,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreBackupDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreFamilyDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreOnlineDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreTeluguNamesDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
@@ -118,6 +119,7 @@ import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.TdpCadreBackupDetails;
 import com.itgrids.partyanalyst.model.TdpCadreFamilyDetails;
 import com.itgrids.partyanalyst.model.TdpCadreOnline;
+import com.itgrids.partyanalyst.model.TdpCadreTeluguNames;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
@@ -186,6 +188,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ITabRecordsStatusDAO tabRecordsStatusDAO;
 	private ITabUserLoginDetailsDAO tabUserLoginDetailsDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
+	private ITdpCadreTeluguNamesDAO				tdpCadreTeluguNamesDAO;
+	
+	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
 	
@@ -199,6 +204,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			IPrintedCardDetailsDAO printedCardDetailsDAO) {
 		this.printedCardDetailsDAO = printedCardDetailsDAO;
 	}*/
+
+	public ITdpCadreTeluguNamesDAO getTdpCadreTeluguNamesDAO() {
+		return tdpCadreTeluguNamesDAO;
+	}
+
+	public void setTdpCadreTeluguNamesDAO(
+			ITdpCadreTeluguNamesDAO tdpCadreTeluguNamesDAO) {
+		this.tdpCadreTeluguNamesDAO = tdpCadreTeluguNamesDAO;
+	}
 
 	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
 		return delimitationConstituencyDAO;
@@ -1412,6 +1426,19 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						}
 					   uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre1);
 					   tdpCadre1 = tdpCadreDAO.save(tdpCadre1);
+					   
+					   
+					//SAVING THE TELUGU NAME OF NON VOTER -- START //SASI
+					if(tdpCadre1.getVoterId() == null && cadreRegistrationVO.getVoterTeluguName()!= null && cadreRegistrationVO.getVoterTeluguName().trim().length() > 0){
+						TdpCadreTeluguNames model = new TdpCadreTeluguNames();
+						model.setTeluguName(cadreRegistrationVO.getVoterTeluguName().trim());
+						model.setTdpCadreId(tdpCadre1.getTdpCadreId());
+						model.setEnglishName(cadreRegistrationVO.getVoterName());
+						model.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+						tdpCadreTeluguNamesDAO.save(model);
+					}
+					//SAVING THE TELUGU NAME OF NON VOTER -- END
+					   
 					surveyCadreResponceVO.setEnrollmentNumber(tdpCadre1.getRefNo());
 					List<CadrePreviousRollesVO> previousRollesPartList = cadreRegistrationVO.getPreviousRollesList();
 					if(previousRollesPartList != null && previousRollesPartList.size() > 0)
@@ -2256,6 +2283,13 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							existingFamilyInfo =  getExistingCadreFamilyInfo(tdpCadreId);
 							existingParticipationDetails = getExistingCadreParticipationInfo(tdpCadreId);
 							existingrollsDetails = getExistingRollsInfo(tdpCadreId);
+							
+							if(voterId==null || voterId == 0l){
+								List<String> names= tdpCadreTeluguNamesDAO.getTeluguVoterNameByTdpCadreId(tdpCadreId);
+								if(names!=null && names.size()>0){
+									vo.setTeluguName(names.get(0));
+								}
+							}
 
 						} catch (Exception e) {
 								LOG.error("Exception raised in getCandidateInfoBySearchCriteria in CadreRegistrationService service", e);
