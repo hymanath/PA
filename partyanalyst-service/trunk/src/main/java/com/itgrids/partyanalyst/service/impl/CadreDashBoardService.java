@@ -1022,7 +1022,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			info.setTotalCount(count);
 			info.setApCount(webCount);
 			//For Inactive users count.
-			Long inActiveUsersCount=(Long)getInActiveUsers(hours,"count");
+			Long inActiveUsersCount=(Long)getInActiveUsers(hours,"count",constiIds);
 			info.setVotersCount(inActiveUsersCount);
 			
 		
@@ -4454,12 +4454,51 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			}
 			return returnList;
 		}
-		public List<GenericVO> getInactiveUsersListDetails(String hours)
+		public List<GenericVO> getInactiveUsersListDetails(String hours, String accessType, String accessValue)
 		{
 			 List<GenericVO> totalDetails=null;
 			try
 			{
-				totalDetails=(List<GenericVO>)getInActiveUsers(hours,"total");
+				List<Long> assemblyIds = null;
+				assemblyIds = new ArrayList<Long>();
+				
+					assemblyIds = new ArrayList<Long>();
+					if(accessType.equalsIgnoreCase("MLA"))
+					{
+						List<Long> consti = new ArrayList<Long>();
+						consti.add(Long.valueOf(accessValue));
+						assemblyIds.add(Long.valueOf(accessValue));
+					}
+					else if(accessType.equalsIgnoreCase("MP"))
+					{
+						List<Long> parlis = new ArrayList<Long>();
+						parlis.add(Long.valueOf(accessValue));
+						List<Object[]> asslyList = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesListForAListOfParliamentConstituency(parlis);
+						if(asslyList!=null && asslyList.size()>0){
+							for(Object[] obj:asslyList){
+								assemblyIds.add(Long.valueOf(obj[0].toString()));
+							}
+						}
+					}
+					else if(accessType.equalsIgnoreCase("DISTRICT"))
+					{
+						List<Object[]> asslyList = constituencyDAO.getConstituenciesByDistrictId(Long.valueOf(accessValue));
+						if(asslyList!=null && asslyList.size()>0){
+							for(Object[] obj:asslyList){
+								assemblyIds.add(Long.valueOf(obj[0].toString()));
+							}
+						}
+					}
+					else if(accessType.equalsIgnoreCase("STATE"))
+					{						
+						List<Object[]> asslyList = constituencyDAO.getConstituencyByState(Long.valueOf(accessValue));
+						if(asslyList!=null && asslyList.size()>0){
+							for(Object[] obj:asslyList){
+								assemblyIds.add(Long.valueOf(obj[0].toString()));
+							}
+						}
+					}
+				totalDetails=(List<GenericVO>)getInActiveUsers(hours,"total",assemblyIds);
 				return totalDetails;
 				
 			} catch (Exception e) {
@@ -4593,7 +4632,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			return returnVO;
 		}
 		
-		public Object getInActiveUsers(String hours,String value)
+		public Object getInActiveUsers(String hours,String value,List<Long> constiIds)
 		{
 			 List<Long> inActiveUsersCount=null;
 			 List<GenericVO> inActiveUsersDetails=null;
@@ -4610,7 +4649,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 						cal1.setTime(date1);
 						cal1.add(Calendar.HOUR, -hourCount);
 						Date hourBack = cal1.getTime();
-					    List<Long>	lastHoursList=tdpCadreDAO.lastHoursActiveUsers(date1,hourBack);
+					    List<Long>	lastHoursList=tdpCadreDAO.lastHoursActiveUsers(date1,hourBack,constiIds);
 					    
 						
 					
@@ -4626,7 +4665,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 						
 						if(value.equalsIgnoreCase("count")){
 						  if(lastHoursList!=null && lastHoursList.size()>0)
-						     inActiveUsersCount=tdpCadreDAO.inActiveUsersCountInLastHours(cal.getTime(),lastHoursList);
+						     inActiveUsersCount=tdpCadreDAO.inActiveUsersCountInLastHours(cal.getTime(),lastHoursList,constiIds);
 						   
 						}
 						else if(value.equalsIgnoreCase("total")){
@@ -4657,7 +4696,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 									}	
 								}
 								
-						  List<Object[]> objList=tdpCadreDAO.inActiveUsersInLastHours(cal.getTime(),lastHoursList);
+						  List<Object[]> objList=tdpCadreDAO.inActiveUsersInLastHours(cal.getTime(),lastHoursList,constiIds);
 						  if(objList!=null && objList.size()>0)
 							{
 							  inActiveUsersDetails=new ArrayList<GenericVO>();
