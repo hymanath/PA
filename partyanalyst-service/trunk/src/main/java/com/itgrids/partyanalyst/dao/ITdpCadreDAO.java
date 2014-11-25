@@ -173,10 +173,10 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public List<String> getCardNumbers(String query,Long constiId,String mobileNo,String trNo,Date surveyDate);
 	public List<Object[]> getCadreDetailsByMemberShipId(List<String> memberCardNos);
-	public List<Long> lastHoursActiveUsers(Date presentTime,Date lastHoursTime);
-	public List<Long> inActiveUsersCountInLastHours(Date surveyTime,List<Long> cadreSurveyUserIdsList);
+	public List<Long> lastHoursActiveUsers(Date presentTime,Date lastHoursTime,List<Long> consituencyIdsList);
+	public List<Long> inActiveUsersCountInLastHours(Date surveyTime,List<Long> cadreSurveyUserIdsList,List<Long> consituencyIdsList);
 	public List<Object[]> getDaywiseWebuserDetailsByUserANDType(Long userId, Date fromDate,Date toDate,String type);
-	public List<Object[]> inActiveUsersInLastHours(Date surveyTime,List<Long> cadreSurveyUserIdsList);
+	public List<Object[]> inActiveUsersInLastHours(Date surveyTime,List<Long> cadreSurveyUserIdsList,List<Long> constituencyIds);
 	
 	public List<Object[]> getTotalRecords(List<Long> districtIds,String type,Date date);
 	public List<Object[]> getTotalRecordsUnderDate(List<Long> districtIds,String type,Date date);
