@@ -486,7 +486,7 @@ $('#excelBtnId').hide();
 			str+='<table id="dayWiseUsersDetailsIdForExcel" class="table table-bordered ">';
 			str+='<thead>';
 			str+='<tr>';
-			str+='<th> Date </th>';
+			//str+='<th> Date </th>';
 			str+='<th> District  </th>';
 			if(locationType !=2)
 			{
@@ -502,7 +502,7 @@ $('#excelBtnId').hide();
 			str+='</tr>';
 
 			str+='<tr>';
-			str+='<th></th>';
+			//str+='<th></th>';
 			str+='<th> </th>';
 			if(locationType !=2)
 			{
@@ -528,7 +528,7 @@ $('#excelBtnId').hide();
 				for(var i in result.zebraPrintDetailsVOList)
 				{
 				str+='<tr>';
-				str+='<td> '+result.zebraPrintDetailsVOList[i].dataPushDate+'</td>';
+			//	str+='<td> '+result.zebraPrintDetailsVOList[i].dataPushDate+'</td>';
 				str+='<td> '+result.zebraPrintDetailsVOList[i].district+'</td>';
 				if(locationType !=2)
 				{
