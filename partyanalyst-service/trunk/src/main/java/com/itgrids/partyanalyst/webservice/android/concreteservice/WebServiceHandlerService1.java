@@ -38,11 +38,11 @@ import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
 import com.itgrids.partyanalyst.dto.AppDbDataVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
-import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.LoginStatusVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SinkVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
@@ -1115,6 +1115,26 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	    		returnList.add(voterVo);
 	    	}
     	}
+    	return returnList;
+    }
+    
+    /**
+     * THIS SERVICE IS USED FOR SINKING MISSING DATA FROM TAB
+     * @param inputs
+     * @return returnVO
+     */
+    public List<SinkVO> sinkMissingData(List<SinkVO> inputs)
+    {
+    	List<SinkVO> returnList = null;
+    	try 
+    	{
+    		returnList = cadreRegistrationService.sinkMissingData(inputs);
+		} 
+    	catch (Exception e)
+    	{
+    		returnList = null;
+			LOG.error("Exception raised in sinkPendingData  method in WebServiceHandlerService",e);
+		}
     	return returnList;
     }
 }

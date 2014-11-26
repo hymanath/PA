@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dto.CadreTransactionVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.ReconciliationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SinkVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
@@ -593,5 +594,26 @@ public class WebServiceHandler2 {
 			LOG.error("Exception Occured in voterSearchDetails() Method, Exception is ",e);
 			return new ArrayList<VoterWebServiceDataVO>();
 		}
+	}
+	
+	@POST
+	@Path("/sinkMissingData")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object sinkMissingData(List<SinkVO> inputs)
+	{
+		Object obj = null;
+		try
+		{
+			List<SinkVO> returnList = webServiceHandlerService1.sinkMissingData(inputs);
+			obj = returnList;
+		} 
+		catch (Exception e) 
+		{
+			obj = null;
+			LOG.error("Exception Occured in sinkPendingData() Method, Exception is ",e);
+		}
+		return obj;
+		
 	}
 }

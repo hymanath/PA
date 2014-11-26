@@ -7,6 +7,7 @@ import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.LoginDetailsByTabVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SinkVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
 import com.itgrids.partyanalyst.dto.VoterWebServiceDataVO;
@@ -44,4 +45,6 @@ public interface IWebServiceHandlerService1 {
 	public String getTabUsersRecordsDetails(List<TabRecordsStatusVO> inputVo);
 	
 	public List<VoterWebServiceDataVO> voterSearchDetails(Long constituencyId,String candidateName,String voterCardId,Integer startIndex);
+	
+	public List<SinkVO> sinkMissingData(List<SinkVO> inputs);
 }

@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -216,4 +217,8 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getRegistrationStartedLocations(List<Long> Ids);
 	public List<Object[]> getBelowCadresBooths(List<Long> Ids);
 	public List<Object[]> getLocationWiseGenderCadreCount1(List<Long> Ids,String type);
+	
+	public List<Object[]> getMissingDetails(Set<Long> voterIds);
+	
+	public Integer checkForExists(String uniqueKey);
 }
