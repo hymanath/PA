@@ -36,6 +36,11 @@ public class TabRecordsStatus implements java.io.Serializable{
 	private Long pendingRecords;
 	private String tabIMEINo;
 	private Date insertedTime;
+	private Long duplicateRecords;
+	private Long currPendingRecords;
+	private Long  currTotalRecords;
+	private Long currDuplicateRecords;
+	private Long currLoginUser;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -96,5 +101,48 @@ public class TabRecordsStatus implements java.io.Serializable{
 	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
 	}
+	
+	@Column(name="duplicate_count")
+	public Long getDuplicateRecords() {
+		return duplicateRecords;
+	}
+	public void setDuplicateRecords(Long duplicateRecords) {
+		this.duplicateRecords = duplicateRecords;
+	}
+	
+	@Column(name="curr_pending_records")
+	public Long getCurrPendingRecords() {
+		return currPendingRecords;
+	}
+	public void setCurrPendingRecords(Long currPendingRecords) {
+		this.currPendingRecords = currPendingRecords;
+	}
+	
+	@Column(name="curr_total_records")
+	public Long getCurrTotalRecords() {
+		return currTotalRecords;
+	}
+	public void setCurrTotalRecords(Long currTotalRecords) {
+		this.currTotalRecords = currTotalRecords;
+	}
+	
+	@Column(name="curr_duplicate_records")
+	public Long getCurrDuplicateRecords() {
+		return currDuplicateRecords;
+	}
+	public void setCurrDuplicateRecords(Long currDuplicateRecords) {
+		this.currDuplicateRecords = currDuplicateRecords;
+	}
+	
+	@Column(name="curr_login_user")
+	public Long getCurrLoginUser() {
+		return currLoginUser;
+	}
+	public void setCurrLoginUser(Long currLoginUser) {
+		this.currLoginUser = currLoginUser;
+	}
+	
+	
+	
 	
 }
