@@ -619,6 +619,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 													tdpCadre.setMemberShipNo(voterIdsList.get(0).getMemberShipNo());
 													tdpCadre.setSurveyTime(voterIdsList.get(0).getSurveyTime());
 													tdpCadre.setInsertedTime(voterIdsList.get(0).getInsertedTime());
+													tdpCadre.setCardNumber(voterIdsList.get(0).getCardNumber());
 												}
 												tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"new",false);
 											
@@ -687,6 +688,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 															tdpCadre.setMemberShipNo(voterIdsList.get(0).getMemberShipNo());
 															tdpCadre.setSurveyTime(voterIdsList.get(0).getSurveyTime());
 															tdpCadre.setInsertedTime(voterIdsList.get(0).getInsertedTime());
+															tdpCadre.setCardNumber(voterIdsList.get(0).getCardNumber());
 														}
 														tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"new",false);
 														
@@ -699,6 +701,32 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 														*/
 													}
 												}
+											}else{
+												TdpCadre tdpCadre = new TdpCadre();
+												tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"new",false);
+											}
+										}else if(cadreRegistrationVO.getCadreId() != null && cadreRegistrationVO.getCadreId().longValue() > 0){
+											TdpCadre cadre = null;
+											try{
+												cadre = tdpCadreDAO.get(cadreRegistrationVO.getCadreId());
+											}catch(Exception e){
+												LOG.error(e);
+											}
+											if(cadre != null){
+												TdpCadre tdpCadre = new TdpCadre();
+												List<Long> existingVoters = new ArrayList<Long>();
+												existingVoters.add(cadreRegistrationVO.getCadreId());
+												cadrePreviousRolesDAO.inActiveCadreRollesDetailsById(existingVoters);
+												cadreParticipatedElectionDAO.inActiveCadreElectionDetailsById(existingVoters);
+												tdpCadreFamilyDetailsDAO.inActiveCadreFamilyDetailsById(existingVoters);
+												tdpCadreDAO.inActiveTdpCadreByCadreIds(existingVoters);
+												tdpCadre.setImage(cadre.getImage());
+												tdpCadre.setRefNo(cadre.getRefNo());
+												tdpCadre.setMemberShipNo(cadre.getMemberShipNo());
+												tdpCadre.setSurveyTime(cadre.getSurveyTime());
+												tdpCadre.setInsertedTime(cadre.getInsertedTime());
+												tdpCadre.setCardNumber(cadre.getCardNumber());
+												tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"new",false);
 											}else{
 												TdpCadre tdpCadre = new TdpCadre();
 												tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"new",false);
@@ -5051,6 +5079,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						tabRecordsStatus.setPendingRecords(recordsStatusVO.getPendingRecords());
 						tabRecordsStatus.setTabIMEINo(recordsStatusVO.getTabIMEINo());
 						tabRecordsStatus.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+						tabRecordsStatus.setDuplicateRecords(recordsStatusVO.getDuplicateRecords());
+						tabRecordsStatus.setCurrPendingRecords(recordsStatusVO.getCurrPendingRecords());
+						tabRecordsStatus.setCurrTotalRecords(recordsStatusVO.getCurrTotalRecords());
+						tabRecordsStatus.setCurrDuplicateRecords(recordsStatusVO.getCurrDuplicateRecords());
+						tabRecordsStatus.setCurrLoginUser(recordsStatusVO.getActualUsrId());
 						
 						tabRecordsStatusDAO.save(tabRecordsStatus);
 				}

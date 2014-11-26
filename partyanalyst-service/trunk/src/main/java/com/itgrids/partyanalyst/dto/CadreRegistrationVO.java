@@ -17,7 +17,7 @@ public class CadreRegistrationVO implements Serializable{
 	private String		 	 dobStr;
 	private String			 gender;
 	private String 			 relativeName;
-
+    private Long             cadreId;
 	private String 			 voterId;
 	private String 			 previousEnrollmentNumber;
 	private String 			 voterCardNo;
@@ -545,6 +545,12 @@ public class CadreRegistrationVO implements Serializable{
 	}
 	public void setFamilyRelationId(Long familyRelationId) {
 		this.familyRelationId = familyRelationId;
+	}
+	public Long getCadreId() {
+		return cadreId;
+	}
+	public void setCadreId(Long cadreId) {
+		this.cadreId = cadreId;
 	}
 
 	
