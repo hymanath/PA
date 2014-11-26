@@ -753,10 +753,14 @@ $('#membersCount').addClass('animated fadeInX');
 		  var str='';
 		  str+='<b style="font-size: 22px;">'+result.totalCount+'</b><p>TAB Members In Field, since last '+hoursCount+' Hour(s) </p>';
 		  str+='<b style="font-size: 22px;">'+result.apCount+'</b><p>WEB Members working, since last '+hoursCount+' Hour(s) </p>';
-		   if(result.votersCount==null)
+		   if(result.votersCount==null || result.votersCount == 0)
+		   {
 		    str+='<span style="margin-left: 166px;"><span style="font-size:18px;margin-left:-40px">0 In Active Users</span></span>';
+		   }
 		  else
+		  {
 		    str+='<span style="margin-left: 166px;"><a href="javascript:{gettingInActiveUsersDetails('+hoursCount+')}"><span style="font-size:18px;margin-left:-40px">'+result.votersCount+'</a> In Active Users</span></span>';
+		  }
 		  
           $("#totalMembersWorkingTodayId").html(str);
 		}
@@ -2315,4 +2319,3 @@ function SortByName(a, b){
 </script>
 
 </body>
-</html>
