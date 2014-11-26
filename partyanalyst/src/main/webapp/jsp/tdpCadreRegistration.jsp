@@ -1212,6 +1212,8 @@
 					<input type="hidden" class="form-control border-radius-0 text-align2" value="${houseNo}" name="cadreRegistrationVO.panchayatId"> 
 					
 					<input type="hidden" class="form-control border-radius-0 text-align2" value = "${boothId}" name="cadreRegistrationVO.boothId" > 
+					<input type="hidden"  value = "${voterInfoVOList[0].cadreId}" name="cadreRegistrationVO.cadreId" > 
+					
 										<div class="span12">
 										<div class="span6">
 											<h5 style="color: #9a9a9a;">  CANDIDATE NAME <span class="mandatory">*</span> </h5>
