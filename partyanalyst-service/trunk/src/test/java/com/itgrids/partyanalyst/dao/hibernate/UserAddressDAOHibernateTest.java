@@ -29,6 +29,9 @@ public class UserAddressDAOHibernateTest extends BaseDaoTestCase {
 
    public void testgetUserAddressList()
    {
-	   userAddressDAO.getUserAddressList();
+	   //userAddressDAO.getUserAddressList();
+	   List<UserAddress> list = userAddressDAO.getUserAddressByUserAddressId(7741l);
+	   System.out.println(list.size());
+			   
    }
 }
