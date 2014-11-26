@@ -24,4 +24,11 @@ public class UserAddressDAO extends GenericDaoHibernate<UserAddress, Long> imple
 	{
 		return getHibernateTemplate().find(" from UserAddress model ");
 	}
+	
+	public List<UserAddress> getUserAddressByUserAddressId(Long userAddressId){
+		Query query = getSession().createQuery(" select model from UserAddress model where model.userAddressId =:userAddressId ");
+		query.setParameter("userAddressId", userAddressId);
+		
+		return query.list();
+	}
 }
