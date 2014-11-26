@@ -913,7 +913,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
         StringBuilder queryStr = new StringBuilder("select model.tdpCadreId,model.image,model.firstname,model.relativename,model.mobileNo,model.userAddress.booth.partNo,CASE " +
         		" WHEN model.userAddress.panchayat.panchayatId is not null THEN model.userAddress.panchayat.panchayatName ELSE '-' end, model.memberShipNo  from TdpCadre model where model.enrollmentYear ='2014' " +
         		" and model.userAddress.booth.boothId in(:boothIds) and model.isDeleted = 'N' " +
-        		" and model.cardNumber is null and model.dispatchStatus is null ");
+        		" and model.cardNumber is not null and model.cardNumber !='' ");
         if(orderBy.equalsIgnoreCase("panchayat")){
         	queryStr.append(" order by CASE WHEN model.userAddress.panchayat.panchayatId is not null THEN model.userAddress.panchayat.panchayatName ELSE '-' end ");
         }else if(orderBy.equalsIgnoreCase("booth")){
@@ -1019,7 +1019,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
         StringBuilder queryStr = new StringBuilder("select count(distinct model.tdpCadreId) " +
         		" from TdpCadre model where model.enrollmentYear ='2014' " +
         		" and model.userAddress.booth.boothId in(:boothIds) and model.isDeleted = 'N' " +
-        		" and model.cardNumber is null and model.dispatchStatus is null ");
+        		" and model.cardNumber is not null and model.cardNumber != '' ");
        
         Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("boothIds",boothIds);
