@@ -16,8 +16,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
@@ -80,6 +83,7 @@ import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterNamesDAO;
 import com.itgrids.partyanalyst.dao.IVoterRelationDAO;
+import com.itgrids.partyanalyst.dao.hibernate.TdpCadreDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreFamilyVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
@@ -89,12 +93,12 @@ import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
-import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SinkVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
@@ -534,7 +538,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			return returnData;
 			}
 		 catch (Exception e) {
-		LOG.error("exception occured in updateRequestDetailsForBackup in CadreRegistrationService service");
+		LOG.error("exception occured in updateRequestDetailsForBackup in CadreRegistrationService service",e);
 		return null;
 		}
 		}
@@ -5228,5 +5232,82 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		
 		
 		return returnMsg;
+	}
+	
+	/**
+	 * 
+	 * @param inputs
+	 * @return returnVO
+	 */
+	public List<SinkVO> sinkMissingData(List<SinkVO> inputs)
+	{
+		List<SinkVO> returnList = new ArrayList<SinkVO>();
+		try 
+		{
+			Map<Long,List<String>> voterUidMap = new HashMap<Long, List<String>>();
+			
+			for(SinkVO sinkVO : inputs)
+			{
+				if(sinkVO.getFid() != null && sinkVO.getFid().toString().trim().length() > 0 && !sinkVO.getFid().toString().trim().equalsIgnoreCase("null") && sinkVO.getFid().longValue() > 0)
+				{
+					Integer count =  tdpCadreDAO.checkForExists(sinkVO.getUid());
+					if(count == 0)
+					{
+						sinkVO.setVid(0l);
+						returnList.add(sinkVO);
+					}
+				}
+				else if(sinkVO.getVid() != null && sinkVO.getVid().toString().trim().length() > 0 && !sinkVO.getVid().toString().trim().equalsIgnoreCase("null")  && sinkVO.getVid().longValue() > 0)
+				{
+					List<String> uidsList = voterUidMap.get(sinkVO.getVid());
+					if(uidsList == null)
+					{
+						uidsList = new ArrayList<String>();
+						voterUidMap.put(sinkVO.getVid(), uidsList);
+					}
+					uidsList.add(sinkVO.getUid());
+				}
+			}
+			
+			Set<Long> voterIds = voterUidMap.keySet();
+			
+			LOG.error("TOTAL RECORDS : " + voterIds.size());
+			List<Object[]> matchedVoters = tdpCadreDAO.getMissingDetails(voterIds);
+			
+			if(matchedVoters != null && matchedVoters.size() > 0)
+			{
+				LOG.error("MATCHED RECORDS : " + matchedVoters.size());
+				LOG.error("MISSING RECORDS : " + (voterIds.size() - matchedVoters.size()));
+				for(Object[] obj : matchedVoters)
+				{
+					if(obj[0] != null)
+					{
+						voterUidMap.remove((Long)obj[0]);
+					}
+					
+				}
+			}
+			if(voterUidMap != null && voterUidMap.size() > 0)
+			{
+				for (Long voterId : voterUidMap.keySet())
+				{
+					List<String> uids = voterUidMap.get(voterId);
+					if(uids != null)
+					{
+						SinkVO returnVO = new SinkVO();
+						returnVO.setVid(voterId);
+						returnVO.setUid(uids.get(0));
+						returnVO.setFid(0l);
+						returnList.add(returnVO);
+					}
+				}
+			}
+		} 
+		catch (Exception e) 
+		{
+			returnList = null;
+			LOG.error("Exception Raised in updatePrintedCardDetails",e);
+		}
+		return returnList;
 	}
 }

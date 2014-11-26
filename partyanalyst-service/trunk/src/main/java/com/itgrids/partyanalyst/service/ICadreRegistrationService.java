@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SinkVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
@@ -112,6 +113,8 @@ public interface ICadreRegistrationService {
 	public List<CadrePrintVO> getTDPCadreDetailsBySearch(CadrePrintInputVO input);
 	
 	public String updatePrintedCardDetails(List<CardNFCDetailsVO> inputList);
+	
+	public List<SinkVO> sinkMissingData(List<SinkVO> inputs);
 	
 	
 }
