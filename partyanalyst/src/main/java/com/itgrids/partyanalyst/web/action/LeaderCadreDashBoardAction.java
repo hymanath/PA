@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -270,10 +271,17 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 	{
 		try{
 			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
-			
+			List<Long> boothIds = new ArrayList<Long>();
 			jObj = new JSONObject(getTask());
-			
+			if(jObj.getString("task").equalsIgnoreCase("constituencyInfo"))
 			resultList = leaderCadreDashBoardService.getCadreBoothAnalysisReport(jObj.getLong("stateId"));
+			if(jObj.getString("task").equalsIgnoreCase("boothInfo"))
+			{
+				String[] Ids = jObj.getString("ids").split(",");
+				for(String boothId : Ids)
+				boothIds.add(Long.parseLong(boothId));
+				resultList = leaderCadreDashBoardService.getBoothInfo(boothIds,jObj.getLong("id"));
+			}
 			
 		}
 		catch (Exception e) {
