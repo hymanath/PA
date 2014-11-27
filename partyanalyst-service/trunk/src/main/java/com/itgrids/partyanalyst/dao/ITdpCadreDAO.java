@@ -228,4 +228,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyId);
 		
 	public Integer updateDetails(List<String> uniqueKey);
+	public Long checkForFamilyExists(String uniqueKey);
 }
