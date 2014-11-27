@@ -616,4 +616,29 @@ public class WebServiceHandler2 {
 		return obj;
 		
 	}
+	
+	@POST
+	@Path("/storeLoginUserKeyDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object storeLoginUserKeyDetails(TabRecordsStatusVO tabRecordsStatusVO)
+	{
+		try{			
+			 String status  = webServiceHandlerService1.getTabUsersLoginKeyDetails(tabRecordsStatusVO);
+			
+			 if(status.equalsIgnoreCase("success"))
+			 {				  
+				  return "{\"status\":\"Success\"}";
+			 }
+			  else
+			  {
+				  return "{\"status\":\"Failure\"}";
+			  }
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in storeLoginUserDetails() Method, Exception is ",e);
+			return "{\"status\":\"Failure\"}";
+		}
+	}
 }

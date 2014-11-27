@@ -1137,5 +1137,11 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		}
     	return returnList;
     }
+    
+    public String getTabUsersLoginKeyDetails(TabRecordsStatusVO inputVo)
+	{
+		return  cadreRegistrationService.saveTabUsersLoginKeyDetails(inputVo);
+		
+	}
 }
 

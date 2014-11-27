@@ -47,4 +47,6 @@ public interface IWebServiceHandlerService1 {
 	public List<VoterWebServiceDataVO> voterSearchDetails(Long constituencyId,String candidateName,String voterCardId,Integer startIndex);
 	
 	public List<SinkVO> sinkMissingData(List<SinkVO> inputs);
+	
+	public String getTabUsersLoginKeyDetails(TabRecordsStatusVO inputVo);
 }
