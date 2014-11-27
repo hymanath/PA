@@ -1749,5 +1749,10 @@
 <bean id="tdpCadreTeluguNamesDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreTeluguNamesDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
+
+<bean id="tdpCadreVerfiedDataDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreVerfiedDataDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
 	<!--  end -->
 </beans>		

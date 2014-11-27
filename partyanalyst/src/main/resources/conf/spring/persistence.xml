@@ -511,6 +511,7 @@
 				<value>com.itgrids.partyanalyst.model.TabUserLoginDetails</value>
 				<value>com.itgrids.partyanalyst.model.ZebraPrintDetails</value>
 				<value>com.itgrids.partyanalyst.model.TdpCadreTeluguNames</value>
+				<value>com.itgrids.partyanalyst.model.TdpCadreVerfiedData</value>
 				</list>
 			
 		</property>
