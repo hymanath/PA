@@ -5497,22 +5497,26 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				//LOG.error("FAMILY RECORDS : " + count1);
 				LOG.error("FAMILY RECORDS : " + uniqueids.size());
 			}
-			
-			List<Object[]> matchedVoters = tdpCadreDAO.getMissingDetails(voterIds);
-			
-			if(matchedVoters != null && matchedVoters.size() > 0)
+			if(voterIds != null && voterIds.size() > 0)
 			{
-				LOG.error("MATCHED RECORDS : " + matchedVoters.size());
-				LOG.error("MISSING RECORDS : " + (voterIds.size() - matchedVoters.size()));
-				for(Object[] obj : matchedVoters)
+				List<Object[]> matchedVoters = tdpCadreDAO.getMissingDetails(voterIds);
+				if(matchedVoters != null && matchedVoters.size() > 0)
 				{
-					if(obj[0] != null)
+					LOG.error("MATCHED RECORDS : " + matchedVoters.size());
+					LOG.error("MISSING RECORDS : " + (voterIds.size() - matchedVoters.size()));
+					for(Object[] obj : matchedVoters)
 					{
-						voterUidMap.remove((Long)obj[0]);
+						if(obj[0] != null)
+						{
+							voterUidMap.remove((Long)obj[0]);
+						}
+						
 					}
-					
 				}
 			}
+			
+			
+			
 			if(voterUidMap != null && voterUidMap.size() > 0)
 			{
 				for (Long voterId : voterUidMap.keySet())
