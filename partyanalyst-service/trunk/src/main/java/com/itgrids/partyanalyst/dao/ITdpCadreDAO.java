@@ -220,12 +220,12 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public List<Object[]> getMissingDetails(Set<Long> voterIds);
 	
-	public Integer checkForExists(String uniqueKey);
+	public Long checkForExists(String uniqueKey);
 	
 	public List<String> getCardNumbersForNonVoters(String query,Long constiId,String mobileNo,String trNo,Date surveyDate);
 	
 	public List<Object[]> getCadreDetailsByMemberShipIdForNonVoters(List<String> memberCardNos);
 	public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyId);
-	
-	
+		
+	public Integer updateDetails(List<String> uniqueKey);
 }

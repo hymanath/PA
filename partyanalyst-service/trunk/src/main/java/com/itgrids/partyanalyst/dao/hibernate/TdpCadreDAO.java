@@ -2992,10 +2992,29 @@ public void flushAndclearSession(){
 		return query.list();
 	}
 	
-	public Integer checkForExists(String uniqueKey)
+	/*public List<Object[]> checkForExists(String uniqueKey)
 	{
-		Query query = getSession().createQuery("select count(model.uniqueKey) from TdpCadre model where model.uniqueKey = :uniqueKey and  model.isDeleted = 'N' and model.enrollmentYear = :enrollmentYear and model.familyVoterId is not null ");
+		Query query = getSession().createQuery("select model.uniqueKey,model.isDeleted from TdpCadre model where model.uniqueKey = :uniqueKey  and model.enrollmentYear = :enrollmentYear and model.familyVoterId is not null ");
 		query.setParameter("uniqueKey", uniqueKey);
+		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
+		
+		return query.list();
+	}*/
+	
+	
+	public Long checkForExists(String uniqueKey)
+	{
+		Query query = getSession().createQuery("select count(model.uniqueKey) from TdpCadre model where model.uniqueKey = :uniqueKey  and model.enrollmentYear = :enrollmentYear and model.familyVoterId is not null and model.isDeleted = 'NA' ");
+		query.setParameter("uniqueKey", uniqueKey);
+		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
+		Long count = (Long)query.uniqueResult();
+		return count;
+	}
+	
+	public Integer updateDetails(List<String> uniqueKeys)
+	{
+		Query query = getSession().createQuery("update TdpCadre model set model.isDeleted = 'H'   where model.uniqueKey in (:uniqueKeys) and model.enrollmentYear = :enrollmentYear and model.familyVoterId is not null and model.isDeleted = 'N' ");
+		query.setParameterList("uniqueKeys", uniqueKeys);
 		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
 		Integer count = query.executeUpdate();
 		return count;

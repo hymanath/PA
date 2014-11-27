@@ -9,6 +9,8 @@ public class SinkVO implements Serializable{
 	private Long 	fid;
 	private Long 	vid;
 	private String 	uid;
+	private String	status;
+	private Long	usId;
 	
 	
 	public Long getFid() {
@@ -29,6 +31,19 @@ public class SinkVO implements Serializable{
 	public void setUid(String uid) {
 		this.uid = uid;
 	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public Long getUsId() {
+		return usId;
+	}
+	public void setUsId(Long usId) {
+		this.usId = usId;
+	}
+	
 	
 	
 }
