@@ -5398,6 +5398,16 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	 */
 	public List<SinkVO> sinkMissingData(List<SinkVO> inputs)
 	{
+		
+		LOG.error("IN SINK SERVICE");
+		if(inputs != null)
+		{
+			LOG.error(inputs.toArray());
+		}
+		else
+		{
+			LOG.error("Empty");
+		}
 		List<SinkVO> returnList = new ArrayList<SinkVO>();
 		try 
 		{
