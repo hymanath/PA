@@ -116,5 +116,5 @@ public interface ICadreRegistrationService {
 	
 	public List<SinkVO> sinkMissingData(List<SinkVO> inputs);
 	
-	
+	public String  saveTabUsersLoginKeyDetails(TabRecordsStatusVO recordsStatusVO);
 }

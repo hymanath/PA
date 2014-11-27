@@ -71,6 +71,7 @@ import com.itgrids.partyanalyst.dao.IPartyDesignationDAO;
 import com.itgrids.partyanalyst.dao.ISmsJobStatusDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITabRecordsStatusDAO;
+import com.itgrids.partyanalyst.dao.ITabUserKeysDAO;
 import com.itgrids.partyanalyst.dao.ITabUserLoginDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreBackupDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
@@ -118,6 +119,7 @@ import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.SmsJobStatus;
 import com.itgrids.partyanalyst.model.TabRecordsStatus;
+import com.itgrids.partyanalyst.model.TabUserKeys;
 import com.itgrids.partyanalyst.model.TabUserLoginDetails;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.TdpCadreBackupDetails;
@@ -196,7 +198,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private ITdpCadreTeluguNamesDAO				tdpCadreTeluguNamesDAO;
 	private ITdpCadreVerfiedDataDAO             tdpCadreVerfiedDataDAO;
-	
+	private ITabUserKeysDAO tabUserKeysDAO;
 	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
@@ -469,6 +471,14 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 
 	public void setTdpCadreOnlineDAO(ITdpCadreOnlineDAO tdpCadreOnlineDAO) {
 		this.tdpCadreOnlineDAO = tdpCadreOnlineDAO;
+	}
+
+	public ITabUserKeysDAO getTabUserKeysDAO() {
+		return tabUserKeysDAO;
+	}
+
+	public void setTabUserKeysDAO(ITabUserKeysDAO tabUserKeysDAO) {
+		this.tabUserKeysDAO = tabUserKeysDAO;
 	}
 
 	public Date convertToDateFormet(String dateStr)
@@ -5572,5 +5582,34 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		} catch (Exception e) {
 			LOG.error("Exception raised in getUserAddressForCadreRegistered in CadreRegistrationService service", e);
 		}
+	}
+	
+	public String  saveTabUsersLoginKeyDetails(TabRecordsStatusVO recordsStatusVO)
+	{
+		
+		String status = null;
+		try {
+			
+			if(recordsStatusVO != null && recordsStatusVO.getTabRecordsStatusVOList() != null && recordsStatusVO.getTabRecordsStatusVOList().size() > 0)
+			{
+				   for(TabRecordsStatusVO key:recordsStatusVO.getTabRecordsStatusVOList()){
+				        TabUserKeys tabUserKeys = new TabUserKeys();
+				        tabUserKeys.setImei(recordsStatusVO.getName());
+				        tabUserKeys.setUserId(key.getUserId());
+				        tabUserKeys.setKeys(key.getName());
+				        tabUserKeys.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+				        tabUserKeys.setLogInUserId(recordsStatusVO.getUserId());
+						
+						tabUserKeysDAO.save(tabUserKeys);
+				   }
+						
+			}
+			status = "success";
+			
+		} catch (Exception e) {
+			status = "failure";
+			LOG.error("Exception Raised in saveTabUsersLoginKeyDetails "+e);
+		}
+		return status;
 	}
 }
