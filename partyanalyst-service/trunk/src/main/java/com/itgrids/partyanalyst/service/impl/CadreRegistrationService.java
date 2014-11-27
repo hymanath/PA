@@ -5491,9 +5491,13 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			Set<Long> voterIds = voterUidMap.keySet();
 			
 			LOG.error("TOTAL RECORDS : " + inputs.size());
-			Integer count1 = tdpCadreDAO.updateDetails(new ArrayList<String>(uniqueids));
-			//LOG.error("FAMILY RECORDS : " + count1);
-			LOG.error("FAMILY RECORDS : " + uniqueids.size());
+			if(uniqueids != null && uniqueids.size() > 0)
+			{
+				Integer count1 = tdpCadreDAO.updateDetails(new ArrayList<String>(uniqueids));
+				//LOG.error("FAMILY RECORDS : " + count1);
+				LOG.error("FAMILY RECORDS : " + uniqueids.size());
+			}
+			
 			List<Object[]> matchedVoters = tdpCadreDAO.getMissingDetails(voterIds);
 			
 			if(matchedVoters != null && matchedVoters.size() > 0)
