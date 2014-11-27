@@ -225,4 +225,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<String> getCardNumbersForNonVoters(String query,Long constiId,String mobileNo,String trNo,Date surveyDate);
 	
 	public List<Object[]> getCadreDetailsByMemberShipIdForNonVoters(List<String> memberCardNos);
+	public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyId);
+	
+	
 }

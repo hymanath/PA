@@ -2241,14 +2241,14 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 	
 	
 	public List<Object[]> getBoothsInAMuncipality(List<Long> boothIds){
-		Query query = getSession().createQuery("select model.boothId,model.villagesCovered from Booth model where model.boothId in (:boothIds) and model.panchayat is null " +
+		Query query = getSession().createQuery("select model.boothId,model.villagesCovered,model.localBody.name from Booth model where model.boothId in (:boothIds) and model.panchayat is null " +
 				" group by model.boothId ");
 		query.setParameterList("boothIds", boothIds);
 		return query.list();
 	}
 	
 	public List<Object[]> getBooths(List<Long> boothIds){
-		Query query = getSession().createQuery("select model.boothId, model.panchayat.panchayatName from Booth model where model.boothId in (:boothIds) and model.panchayat is not null" +
+		Query query = getSession().createQuery("select model.boothId, model.panchayat.panchayatName,model.tehsil.tehsilName from Booth model where model.boothId in (:boothIds) and model.panchayat is not null" +
 				" group by model.boothId");
 		query.setParameterList("boothIds", boothIds);
 		return query.list();

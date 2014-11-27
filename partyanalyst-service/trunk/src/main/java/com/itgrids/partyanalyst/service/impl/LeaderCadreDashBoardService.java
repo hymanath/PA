@@ -1566,8 +1566,10 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 		try{
 			
 			 List<Long> constituencyIds = constituencyDAO.getAllAssemblyConstituencyIdsByStateId(stateId);
+			
 			 if(constituencyIds != null && constituencyIds.size() > 0)
 			 {
+			
 			 List<Object[]> list = boothDAO.getBoothCountInfoByConstiIds(constituencyIds);
 			 		if(list != null && list.size() > 0)
 			 		{
@@ -1575,32 +1577,37 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 			 			{
 			 				CadreDataAnalysisVO vo = new CadreDataAnalysisVO();
 			 				  vo.setId((Long)params[1]);
-			 				 vo.setName(params[2].toString());
+			 				  vo.setName(params[2].toString());
 			 				  vo.setTotalBooths((Long)params[0]);
 			 				  resultList.add(vo);
 			 			}
-			 			
+			 		
 			 			List<Object[]> startedBooths = tdpCadreDAO.getRegistrationStartedLocations(constituencyIds);
 			 			if(startedBooths != null && startedBooths.size() > 0)
 			 			{
+			 				
 			 				for(Object[] params : startedBooths)
 			 				{
 			 				CadreDataAnalysisVO vo1 = getMatchedVO2(resultList,(Long)params[1]);
 			 				if(vo1 != null)
 			 					vo1.setStartedBooths((Long)params[0]);
+			 					
 			 				}
 			 			}
 			 			List<Object[]> below10 = tdpCadreDAO. getBelowCadresBooths(constituencyIds);
 			 			if(below10 != null && below10.size() > 0)
 			 			{
+			 				
 			 				for(Object[] params : below10)
 			 				{
 			 				CadreDataAnalysisVO vo2 = getMatchedVO2(resultList,(Long)params[1]);
-			 				if(vo2 != null)
-			 					vo2.setBelowCadres(vo2.getBelowCadres() + 1);
+				 				if(vo2 != null)
+				 				{
+				 					vo2.setBelowCadres(vo2.getBelowCadres() + 1);
+				 					vo2.getBelow10BoothIds().add((Long)params[0]);
+				 				}
 			 				}	
 			 			}
-			 			
 			 			List<Object[]> genderInfo = tdpCadreDAO.getLocationWiseGenderCadreCount1(constituencyIds,IConstants.CONSTITUENCY);
 			 			if(genderInfo != null && genderInfo.size()> 0)
 			 			{
@@ -1623,9 +1630,9 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 				 					else
 				 					{
 				 						if(params[1].toString().equalsIgnoreCase("Male") || params[1].toString().equalsIgnoreCase("M"))
-					 						boothVo.setMaleCnt((Long)params[0] + vo3.getMaleCnt());
+					 						boothVo.setMaleCnt((Long)params[0] + boothVo.getMaleCnt());
 					 					else if(params[1].toString().equalsIgnoreCase("Female") || params[1].toString().equalsIgnoreCase("F"))
-					 						boothVo.setFeMaleCnt((Long)params[0] + vo3.getFeMaleCnt());
+					 						boothVo.setFeMaleCnt((Long)params[0] + boothVo.getFeMaleCnt());
 				 					}
 				 						
 				 				}
@@ -1645,7 +1652,10 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 				 					boothVo.setMalePercentage(boothVo.getTotal() > 0 ? (new BigDecimal(boothVo.getMaleCnt()*(100.0)/boothVo.getTotal().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString() : "-");
 				 					boothVo.setFemalePercentage(boothVo.getTotal() > 0 ? (new BigDecimal(boothVo.getFeMaleCnt()*(100.0)/boothVo.getTotal().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString() : "-");
 			 						if((boothVo.getDifference()*(100))/boothVo.getTotal().longValue() >= IConstants.CADREPERCENTAGE.longValue())
+			 						{
+			 						vo.getBoothIds().add(boothVo.getId());
 			 						vo.setCount(vo.getCount() + 1);	
+			 						}
 			 						if((boothVo.getMaleCnt()*(100))/boothVo.getTotal().longValue() >= IConstants.CADREPERCENTAGE.longValue())
 			 							vo.setmCount(vo.getmCount() + 1);
 			 						if((boothVo.getFeMaleCnt()*(100))/boothVo.getTotal().longValue()>= IConstants.CADREPERCENTAGE.longValue())
@@ -1662,6 +1672,64 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 		catch(Exception e)
 		{
 			LOG.error("Exception rised in  getCadreBoothAnalysisReport() in LeaderCaderDashBoardService",e);	
+		}
+		return resultList;
+	}
+	
+	public List<CadreDataAnalysisVO> getBoothInfo(List<Long> boothIds,Long constituencyId)
+	{
+		List<CadreDataAnalysisVO> resultList = new ArrayList<CadreDataAnalysisVO>();
+		
+		try{
+			Map<Long,String> boothLocationMap = new HashMap<Long, String>();
+			 List<Object[]> list2 = boothDAO.getBoothsInAMuncipality( boothIds);
+			 List<Object[]> list3 = boothDAO.getBooths(boothIds);
+			 
+			 for(Object[] params : list2){
+					boothLocationMap.put((Long)params[0], params[2] != null ?  params[2].toString() +" Muncipality" : "");
+			}
+			for(Object[] params : list3){
+					boothLocationMap.put((Long)params[0], params[2] != null ?  params[2].toString() : "");
+			}
+			List<Object[]> boothInfo = tdpCadreDAO.getBoothWiseGenderCadres(boothIds,constituencyId);
+			
+			if(boothInfo != null && boothInfo.size() > 0)
+			{
+				
+				for(Object[] params : boothInfo)
+	 				{
+	 				
+		 					CadreDataAnalysisVO boothVo = getMatchedVO2(resultList,(Long)params[2]);
+		 					if(boothVo == null)
+		 					{
+		 						boothVo = new CadreDataAnalysisVO();
+		 						if(params[1].toString().equalsIgnoreCase("Male") || params[1].toString().equalsIgnoreCase("M"))
+		 						{
+			 						boothVo.setMaleCnt((Long)params[0]);
+		 						}
+			 					else if(params[1].toString().equalsIgnoreCase("Female") || params[1].toString().equalsIgnoreCase("F"))
+			 						boothVo.setFeMaleCnt((Long)params[0] );
+		 						boothVo.setId((Long)params[2]);
+		 						boothVo.setName(params[3] !=null ? params[3].toString():"");
+		 						boothVo.setDistrictName(boothLocationMap.get((Long)params[2]));
+		 						resultList.add(boothVo);
+		 					}
+		 					else
+		 					{
+		 						if(params[1].toString().equalsIgnoreCase("Male") || params[1].toString().equalsIgnoreCase("M"))
+			 						boothVo.setMaleCnt((Long)params[0] + boothVo.getMaleCnt());
+			 					else if(params[1].toString().equalsIgnoreCase("Female") || params[1].toString().equalsIgnoreCase("F"))
+			 						boothVo.setFeMaleCnt((Long)params[0] + boothVo.getFeMaleCnt());
+		 					}
+		 		
+			}
+				
+				
+			}
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception rised in  getBoothInfo() in LeaderCaderDashBoardService",e);		
 		}
 		return resultList;
 	}
