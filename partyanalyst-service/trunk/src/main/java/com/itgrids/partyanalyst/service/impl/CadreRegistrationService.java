@@ -5083,6 +5083,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						tabRecordsStatus.setCurrPendingRecords(recordsStatusVO.getCurrPendingRecords());
 						tabRecordsStatus.setCurrTotalRecords(recordsStatusVO.getCurrTotalRecords());
 						tabRecordsStatus.setCurrDuplicateRecords(recordsStatusVO.getCurrDuplicateRecords());
+						tabRecordsStatus.setPrevPendingRecords(recordsStatusVO.getPrevPendingRecords());
+						tabRecordsStatus.setPrevTotalRecords(recordsStatusVO.getPrevTotalRecords());
+						tabRecordsStatus.setPrevDuplicateRecords(recordsStatusVO.getPrevDuplicateRecords());
 						tabRecordsStatus.setCurrLoginUser(recordsStatusVO.getActualUsrId());
 						
 						tabRecordsStatusDAO.save(tabRecordsStatus);

@@ -15,6 +15,9 @@ public class TabRecordsStatusVO implements java.io.Serializable{
 	private Long currPendingRecords;
 	private Long  currTotalRecords;
 	private Long currDuplicateRecords;
+	private Long prevPendingRecords;
+	private Long  prevTotalRecords;
+	private Long prevDuplicateRecords;
 	private Long actualUsrId;
 	
 	private List<TabRecordsStatusVO> tabRecordsStatusVOList = new ArrayList<TabRecordsStatusVO>(0);
@@ -91,6 +94,24 @@ public class TabRecordsStatusVO implements java.io.Serializable{
 	}
 	public void setActualUsrId(Long actualUsrId) {
 		this.actualUsrId = actualUsrId;
+	}
+	public Long getPrevPendingRecords() {
+		return prevPendingRecords;
+	}
+	public void setPrevPendingRecords(Long prevPendingRecords) {
+		this.prevPendingRecords = prevPendingRecords;
+	}
+	public Long getPrevTotalRecords() {
+		return prevTotalRecords;
+	}
+	public void setPrevTotalRecords(Long prevTotalRecords) {
+		this.prevTotalRecords = prevTotalRecords;
+	}
+	public Long getPrevDuplicateRecords() {
+		return prevDuplicateRecords;
+	}
+	public void setPrevDuplicateRecords(Long prevDuplicateRecords) {
+		this.prevDuplicateRecords = prevDuplicateRecords;
 	}
 	
 	

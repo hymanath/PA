@@ -40,6 +40,9 @@ public class TabRecordsStatus implements java.io.Serializable{
 	private Long currPendingRecords;
 	private Long  currTotalRecords;
 	private Long currDuplicateRecords;
+	private Long prevPendingRecords;
+	private Long  prevTotalRecords;
+	private Long prevDuplicateRecords;
 	private Long currLoginUser;
 	
 	@Id
@@ -138,8 +141,34 @@ public class TabRecordsStatus implements java.io.Serializable{
 	public Long getCurrLoginUser() {
 		return currLoginUser;
 	}
+	
 	public void setCurrLoginUser(Long currLoginUser) {
 		this.currLoginUser = currLoginUser;
+	}
+	
+	@Column(name="prev_pending_records")
+	public Long getPrevPendingRecords() {
+		return prevPendingRecords;
+	}
+	
+	public void setPrevPendingRecords(Long prevPendingRecords) {
+		this.prevPendingRecords = prevPendingRecords;
+	}
+	
+	@Column(name="prev_total_records")
+	public Long getPrevTotalRecords() {
+		return prevTotalRecords;
+	}
+	public void setPrevTotalRecords(Long prevTotalRecords) {
+		this.prevTotalRecords = prevTotalRecords;
+	}
+	
+	@Column(name="prev_duplicate_records")
+	public Long getPrevDuplicateRecords() {
+		return prevDuplicateRecords;
+	}
+	public void setPrevDuplicateRecords(Long prevDuplicateRecords) {
+		this.prevDuplicateRecords = prevDuplicateRecords;
 	}
 	
 	
