@@ -2270,6 +2270,7 @@
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
 		<property name="tdpCadreTeluguNamesDAO" ref="tdpCadreTeluguNamesDAO" />
 		<property name="tdpCadreVerfiedDataDAO" ref="tdpCadreVerfiedDataDAO" />
+		<property name="tabUserKeysDAO" ref="tabUserKeysDAO" />	
      </bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
