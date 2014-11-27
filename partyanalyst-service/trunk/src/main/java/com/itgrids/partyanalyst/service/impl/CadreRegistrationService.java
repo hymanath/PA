@@ -1658,26 +1658,40 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					if(insertType.equalsIgnoreCase("new") && cadreRegistrationVO.getMobileNumber() != null && cadreRegistrationVO.getMobileNumber().trim().length() > 0 && cadreRegistrationVO.getRefNo() != null){
 					   //sendSMS(cadreRegistrationVO.getMobileNumber().trim(), "Thank You for registering as TDP cadre.For further queries use Ref No "+cadreRegistrationVO.getRefNo());
 						if(!statusVar){
-						
+								Boolean flag = true;
 							try{
-								String jobCode = sendSMSInTelugu(cadreRegistrationVO.getMobileNumber().trim(), getUniCodeMessage(StringEscapeUtils.unescapeJava("\u0C24\u0C46\u0C32\u0C41\u0C17\u0C41 \u0C26\u0C47\u0C36\u0C02 \u0C2A\u0C3E\u0C30\u0C4D\u0C1F\u0C40 \u0C15\u0C4D\u0C30\u0C3F\u0C2F\u0C3E\u0C36\u0C40\u0C32 \u0C15\u0C3E\u0C30\u0C4D\u0C2F\u0C15\u0C30\u0C4D\u0C24\u0C17\u0C3E \u0C28\u0C2E\u0C4B\u0C26\u0C41 \u0C1A\u0C47\u0C38\u0C41\u0C15\u0C41\u0C28\u0C4D\u0C28\u0C02\u0C26\u0C41\u0C15\u0C41 \u0C27\u0C28\u0C4D\u0C2F\u0C35\u0C3E\u0C26\u0C3E\u0C32\u0C41. \u0C2E\u0C40 \u0C2F\u0C4A\u0C15\u0C4D\u0C15 \u0C30\u0C3F\u0C2B\u0C30\u0C46\u0C28\u0C4D\u0C38\u0C4D \u0C28\u0C46\u0C02\u0C2C\u0C30\u0C4D : ")+cadreRegistrationVO.getRefNo()));
 								
+								if(cadreRegistrationVO.getFamilyVoterId() != null && cadreRegistrationVO.getFamilyVoterId().toString().trim().length() > 0 && !cadreRegistrationVO.getFamilyVoterId().toString().trim().equalsIgnoreCase("null") && cadreRegistrationVO.getFamilyVoterId().longValue() > 0)
+								{
+									Long  count = tdpCadreDAO.checkForFamilyExists(cadreRegistrationVO.getUniqueKey());
+									if(count > 0)
+									{
+										flag = false;
+									}
+									
+								}
 								
-								Long tdpCadreId = tdpCadre1.getTdpCadreId();
-								if(tdpCadreId!=null){
-									if(tdpCadre1.getMobileNo()!=null){
-										jobCode = jobCode.replace("OK:", "");
-										SmsJobStatus smsJobStatus = new SmsJobStatus();
-										smsJobStatus.setTdpCadreId(tdpCadreId);
-										
-										smsJobStatus.setMobileNumber(tdpCadre1.getMobileNo());
-										smsJobStatus.setJobCode(jobCode);
-										smsJobStatus.setFromTask("Registration");
-										
-										smsJobStatusDAO.save(smsJobStatus);
-										//tdpCadreDAO.updateSmsJobCode(tdpCadreId, jobCode.trim());
+								if(flag)
+								{
+									String jobCode = sendSMSInTelugu(cadreRegistrationVO.getMobileNumber().trim(), getUniCodeMessage(StringEscapeUtils.unescapeJava("\u0C24\u0C46\u0C32\u0C41\u0C17\u0C41 \u0C26\u0C47\u0C36\u0C02 \u0C2A\u0C3E\u0C30\u0C4D\u0C1F\u0C40 \u0C15\u0C4D\u0C30\u0C3F\u0C2F\u0C3E\u0C36\u0C40\u0C32 \u0C15\u0C3E\u0C30\u0C4D\u0C2F\u0C15\u0C30\u0C4D\u0C24\u0C17\u0C3E \u0C28\u0C2E\u0C4B\u0C26\u0C41 \u0C1A\u0C47\u0C38\u0C41\u0C15\u0C41\u0C28\u0C4D\u0C28\u0C02\u0C26\u0C41\u0C15\u0C41 \u0C27\u0C28\u0C4D\u0C2F\u0C35\u0C3E\u0C26\u0C3E\u0C32\u0C41. \u0C2E\u0C40 \u0C2F\u0C4A\u0C15\u0C4D\u0C15 \u0C30\u0C3F\u0C2B\u0C30\u0C46\u0C28\u0C4D\u0C38\u0C4D \u0C28\u0C46\u0C02\u0C2C\u0C30\u0C4D : ")+cadreRegistrationVO.getRefNo()));
+									Long tdpCadreId = tdpCadre1.getTdpCadreId();
+									if(tdpCadreId!=null){
+										if(tdpCadre1.getMobileNo()!=null){
+											jobCode = jobCode.replace("OK:", "");
+											SmsJobStatus smsJobStatus = new SmsJobStatus();
+											smsJobStatus.setTdpCadreId(tdpCadreId);
+											
+											smsJobStatus.setMobileNumber(tdpCadre1.getMobileNo());
+											smsJobStatus.setJobCode(jobCode);
+											smsJobStatus.setFromTask("Registration");
+											
+											smsJobStatusDAO.save(smsJobStatus);
+											//tdpCadreDAO.updateSmsJobCode(tdpCadreId, jobCode.trim());
+										}
 									}
 								}
+								
+								
 							}catch (Exception e) {
 								LOG.error("Exception Raised while sending SMS"+e);
 							}
