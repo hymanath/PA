@@ -13,6 +13,9 @@
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 <script type="text/javascript" src="js/sample.js"></script>
 <style>
+  #boothDataDiv .selected, #boothDataDiv .selectedchild{background:#EA4F5A !important;}
+ #boothDataDiv .selected1, #boothDataDiv .selected1child{background: #0BBA7C !important;}
+
  
 </style>
 </head>
@@ -74,7 +77,7 @@
 		var jObj = {
 		
 		stateId:stateId,
-		task:""
+		task:"constituencyInfo"
 		}
 		 $.ajax({
           type:'GET',
@@ -91,6 +94,7 @@
 	  str+='<table class="table table-bordered" id="tabledata1">';
 		str+='<thead>';
 		str+='<tr>';
+		
 		str+='<th>Constituency</th>';
 		str+='<th>Total Booths</th>';
 		str+='<th>Registration Started Booths</th>';
@@ -104,16 +108,16 @@
 		str+='<tbody>';
 		for(var i in result)
 	   {
-		str+='<tr>';
+		str+='<tr class="removeCls clearCls'+result[i].id+'">';
 		
-	   str+='<td>'+result[i].name+'</td>';
-		str+='<td>'+result[i].totalBooths+'</td>';
+	   str+='<td class="removeCls clearClsTD'+result[i].id+'">'+result[i].name+'</td>';
+		str+='<td >'+result[i].totalBooths+'</td>';
 
 		str+='<td>'+result[i].startedBooths+'</td>';
-		str+='<td>'+result[i].belowCadres+'</td>';
+		str+='<td  class="removeCls clearClsTD'+result[i].id+'"><a  onclick="displayBoothDetails('+result[i].id+',\''+result[i].below10BoothIds+'\');" style="cursor:pointer;">'+result[i].belowCadres+'</a></td>';
 		//str+='<td>'+result[i].mCount+'</td>';
 		//str+='<td>'+result[i].fCount+'</td>';
-		str+='<td>'+result[i].count+'</td>';
+		str+='<td class="removeCls clearClsTD'+result[i].id+'"><span class="pull-right removeicon1"  id="iconDiv'+result[i].id+'" onclick="closeDiv('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span><a  onclick="displayBoothDetails('+result[i].id+',\''+result[i].boothIds+'\');" style="cursor:pointer;">'+result[i].count+'</a></td>';
 		
 		str+='</tr>';
 	   }
@@ -121,6 +125,69 @@
 		str+='</table>';
 		$("#boothDataDiv").html(str);
 		$("#tabledata1").dataTable();
+   }
+      function closeDiv(trID)
+   {
+	  
+	$(".selectedchild").remove();
+   }
+   function displayBoothDetails(id,boothIds)
+   {
+	 $('.added').remove('');
+	$(".removeicon").hide();
+	$(".removeCls").removeClass("selected");
+	$('.clearCls'+id).after('<tr class="selectedchild"><td id="subLevel'+id+'" colspan="8" class="added"><div align="center"><img id="ajaxImgStyle1" style="display:none;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
+	$('.clearCls'+id).addClass("selected");
+	$('.clearClsTD'+id).addClass("selected");
+	$("#ajaxImgStyle1").show();
+	$("#iconDiv"+id).show();
+   var jObj = {
+		
+		id:id,
+		ids :boothIds,
+		task:"boothInfo"
+		}
+		 $.ajax({
+          type:'GET',
+          url: 'getCadreBoothAnalysisInfoAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+       }).done(function(result){
+				$("#ajaxImgStyle1").hide();
+				buildData1(result,"subLevel"+id);
+		});
+   }
+   function buildData1(result,divId)
+   {
+	   var str='';
+	  str+='<table class="table table-bordered" id="tabledata1">';
+		str+='<thead>';
+		str+='<tr>';
+		str+='<th>SNO</th>';
+		str+='<th>Mandal/Muncipality</th>';
+		str+='<th>Booth</th>';
+		str+='<th>male count</th>';
+		str+='<th>female count</th>';
+		
+		str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+		var j =1;
+		for(var i in result)
+	   {
+		str+='<tr>';
+		str+='<td>'+j+'</td>';
+	   str+='<td >'+result[i].districtName+'</td>';
+	   str+='<td>'+result[i].name+'</td>';
+		str+='<td>'+result[i].maleCnt+'</td>';
+
+		str+='<td>'+result[i].feMaleCnt+'</td>';
+		
+		j++;
+		str+='</tr>';
+	   }
+	   str+='</tbody>';
+		str+='</table>';
+		$("#"+divId).html(str);;
    }
  </script>
 </body>
