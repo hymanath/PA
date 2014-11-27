@@ -24,10 +24,24 @@ public class CadreDataAnalysisVO {
 	private Long count = 0l;
 	private Long mCount =0l;
 	private Long fCount= 0l;
-	
+	private List<Long> below10BoothIds = new ArrayList<Long>();
+	private List<Long> boothIds = new ArrayList<Long>();
 	private List<CadreDataAnalysisVO> subList = new ArrayList<CadreDataAnalysisVO>();
 	
 	
+
+	public List<Long> getBoothIds() {
+		return boothIds;
+	}
+	public void setBoothIds(List<Long> boothIds) {
+		this.boothIds = boothIds;
+	}
+	public List<Long> getBelow10BoothIds() {
+		return below10BoothIds;
+	}
+	public void setBelow10BoothIds(List<Long> below10BoothIds) {
+		this.below10BoothIds = below10BoothIds;
+	}
 	public Long getmCount() {
 		return mCount;
 	}

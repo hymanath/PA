@@ -2981,6 +2981,8 @@ public void flushAndclearSession(){
 		return query.list();
     }
 	
+
+	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getMissingDetails(Set<Long> voterIds)
 	{
@@ -3017,4 +3019,19 @@ public void flushAndclearSession(){
 		query.setParameterList("memberCardNos", memberCardNos);
 		return query.list();
 	}
+public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyId){		
+		
+		StringBuilder queryStr=new StringBuilder();
+		queryStr.append(" select count(model.tdpCadreId),model.gender,model.userAddress.booth.boothId,model.userAddress.booth.partNo ");
+		//queryStr.append(" CASE WHEN model.userAddress.booth.panchayat is null THEN model.userAddress.booth.localBody.name ");
+		//queryStr.append(" WHEN model.userAddress.booth.panchayat is not null THEN model.userAddress.booth.tehsil.tehsilName END ");
+		queryStr.append(" from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = 2014 and model.gender is not null and model.userAddress.booth.boothId in(:Ids)");
+		
+		queryStr.append(" and model.userAddress.constituency.constituencyId =:constituencyId group by model.userAddress.booth.boothId,model.gender ");
+		Query query = getSession().createQuery(queryStr.toString());		
+		query.setParameterList("Ids", Ids);
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+    }
+
 }
