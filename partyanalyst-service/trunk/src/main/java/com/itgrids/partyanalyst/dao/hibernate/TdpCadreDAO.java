@@ -3011,6 +3011,16 @@ public void flushAndclearSession(){
 		return count;
 	}
 	
+	
+	public Long checkForFamilyExists(String uniqueKey)
+	{
+		Query query = getSession().createQuery("select count(model.uniqueKey) from TdpCadre model where model.uniqueKey = :uniqueKey  and model.enrollmentYear = :enrollmentYear and model.familyVoterId is not null  ");
+		query.setParameter("uniqueKey", uniqueKey);
+		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
+		Long count = (Long)query.uniqueResult();
+		return count;
+	}
+	
 	public Integer updateDetails(List<String> uniqueKeys)
 	{
 		Query query = getSession().createQuery("update TdpCadre model set model.isDeleted = 'H'   where model.uniqueKey in (:uniqueKeys) and model.enrollmentYear = :enrollmentYear and model.familyVoterId is not null and model.isDeleted = 'N' ");
