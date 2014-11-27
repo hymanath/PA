@@ -117,7 +117,7 @@
 		str+='<td  class="removeCls clearClsTD'+result[i].id+'"><a  onclick="displayBoothDetails('+result[i].id+',\''+result[i].below10BoothIds+'\');" style="cursor:pointer;">'+result[i].belowCadres+'</a></td>';
 		//str+='<td>'+result[i].mCount+'</td>';
 		//str+='<td>'+result[i].fCount+'</td>';
-		str+='<td class="removeCls clearClsTD'+result[i].id+'"><span class="pull-right removeicon1"  id="iconDiv'+result[i].id+'" onclick="closeDiv('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span><a  onclick="displayBoothDetails('+result[i].id+',\''+result[i].boothIds+'\');" style="cursor:pointer;">'+result[i].count+'</a></td>';
+		str+='<td class="removeCls clearClsTD'+result[i].id+'"><span class="pull-right removeicon"  id="iconDiv'+result[i].id+'" onclick="closeDiv('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span><a  onclick="displayBoothDetails('+result[i].id+',\''+result[i].boothIds+'\');" style="cursor:pointer;">'+result[i].count+'</a></td>';
 		
 		str+='</tr>';
 	   }
