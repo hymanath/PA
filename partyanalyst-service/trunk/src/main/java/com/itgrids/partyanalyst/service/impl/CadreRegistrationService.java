@@ -77,13 +77,13 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreFamilyDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreOnlineDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTeluguNamesDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreVerfiedDataDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterNamesDAO;
 import com.itgrids.partyanalyst.dao.IVoterRelationDAO;
-import com.itgrids.partyanalyst.dao.hibernate.TdpCadreDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreFamilyVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
@@ -124,6 +124,7 @@ import com.itgrids.partyanalyst.model.TdpCadreBackupDetails;
 import com.itgrids.partyanalyst.model.TdpCadreFamilyDetails;
 import com.itgrids.partyanalyst.model.TdpCadreOnline;
 import com.itgrids.partyanalyst.model.TdpCadreTeluguNames;
+import com.itgrids.partyanalyst.model.TdpCadreVerfiedData;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
@@ -133,6 +134,7 @@ import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ImageAndStringConverter;
+
 
 public class CadreRegistrationService implements ICadreRegistrationService {
 	
@@ -193,6 +195,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ITabUserLoginDetailsDAO tabUserLoginDetailsDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private ITdpCadreTeluguNamesDAO				tdpCadreTeluguNamesDAO;
+	private ITdpCadreVerfiedDataDAO             tdpCadreVerfiedDataDAO;
 	
 	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
@@ -209,8 +212,14 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		this.printedCardDetailsDAO = printedCardDetailsDAO;
 	}*/
 
+	
 	public ITdpCadreTeluguNamesDAO getTdpCadreTeluguNamesDAO() {
 		return tdpCadreTeluguNamesDAO;
+	}
+
+	public void setTdpCadreVerfiedDataDAO(
+			ITdpCadreVerfiedDataDAO tdpCadreVerfiedDataDAO) {
+		this.tdpCadreVerfiedDataDAO = tdpCadreVerfiedDataDAO;
 	}
 
 	public void setTdpCadreTeluguNamesDAO(
@@ -5369,17 +5378,69 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		try 
 		{
 			Map<Long,List<String>> voterUidMap = new HashMap<Long, List<String>>();
+			Set<Long> usIds = new java.util.HashSet<Long>();
+			Set<String> uniqueids = new java.util.HashSet<String>();
 			
 			for(SinkVO sinkVO : inputs)
 			{
+				if(sinkVO.getUsId() != null)
+				{
+					usIds.add(sinkVO.getUsId());
+				}
+				
 				if(sinkVO.getFid() != null && sinkVO.getFid().toString().trim().length() > 0 && !sinkVO.getFid().toString().trim().equalsIgnoreCase("null") && sinkVO.getFid().longValue() > 0)
 				{
-					Integer count =  tdpCadreDAO.checkForExists(sinkVO.getUid());
-					if(count == 0)
+					
+					/*List<Object[]> result = tdpCadreDAO.checkForExists(sinkVO.getUid());
+					if(result != null && result.size() > 0)
 					{
+						for (Object[] objects : result)
+						{
+							if(objects[1] != null)
+							{
+								if(objects[1].toString().equalsIgnoreCase("NA"))
+								{
+									sinkVO.setStatus("duplicate");
+									sinkVO.setVid(0l);
+									returnList.add(sinkVO);
+								}
+								else if(objects[1].toString().equalsIgnoreCase("H"))
+								{
+									sinkVO.setStatus("false");
+									sinkVO.setVid(0l);
+									returnList.add(sinkVO);
+								}
+								else if(objects[1].toString().equalsIgnoreCase("Y"))
+								{
+									sinkVO.setStatus("false");
+									sinkVO.setVid(0l);
+									returnList.add(sinkVO);
+								}
+							}
+						}
+						
+					}
+					else
+					{
+						sinkVO.setStatus("false");
+						sinkVO.setVid(0l);
+						returnList.add(sinkVO);
+					}*/
+					Long count = tdpCadreDAO.checkForExists(sinkVO.getUid());
+					if(count > 0)
+					{
+						sinkVO.setStatus("duplicate");
 						sinkVO.setVid(0l);
 						returnList.add(sinkVO);
 					}
+					else
+					{
+						uniqueids.add(sinkVO.getUid());
+						sinkVO.setStatus("false");
+						sinkVO.setVid(0l);
+						returnList.add(sinkVO);
+					}
+					
 				}
 				else if(sinkVO.getVid() != null && sinkVO.getVid().toString().trim().length() > 0 && !sinkVO.getVid().toString().trim().equalsIgnoreCase("null")  && sinkVO.getVid().longValue() > 0)
 				{
@@ -5395,7 +5456,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			
 			Set<Long> voterIds = voterUidMap.keySet();
 			
-			LOG.error("TOTAL RECORDS : " + voterIds.size());
+			LOG.error("TOTAL RECORDS : " + inputs.size());
+			Integer count1 = tdpCadreDAO.updateDetails(new ArrayList<String>(uniqueids));
+			//LOG.error("FAMILY RECORDS : " + count1);
+			LOG.error("FAMILY RECORDS : " + uniqueids.size());
 			List<Object[]> matchedVoters = tdpCadreDAO.getMissingDetails(voterIds);
 			
 			if(matchedVoters != null && matchedVoters.size() > 0)
@@ -5419,6 +5483,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					if(uids != null)
 					{
 						SinkVO returnVO = new SinkVO();
+						returnVO.setStatus("false");
 						returnVO.setVid(voterId);
 						returnVO.setUid(uids.get(0));
 						returnVO.setFid(0l);
@@ -5426,6 +5491,31 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					}
 				}
 			}
+			
+			//SAVING REQUESTED AND RESPONCE DATA FOR BACKUP PURPOSE
+			
+			
+					try {
+						String usrStr = "";
+						if(usIds != null)
+						{
+							for (Long usId : usIds)
+							{
+								usrStr = usrStr + "::"  +  usId;
+							}
+						}
+						TdpCadreVerfiedData tdpCadreVerfiedData = new TdpCadreVerfiedData();
+						Gson gson = new Gson();
+						tdpCadreVerfiedData.setRequestData(gson.toJson(inputs));
+						tdpCadreVerfiedData.setResponceData(gson.toJson(returnList));
+						tdpCadreVerfiedData.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+						tdpCadreVerfiedData.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						tdpCadreVerfiedData.setUserId(usrStr);
+						tdpCadreVerfiedDataDAO.save(tdpCadreVerfiedData);
+					} catch (Exception e) {
+						LOG.error("Exception Raised in updatePrintedCardDetails",e);
+					}
+			
 		} 
 		catch (Exception e) 
 		{
