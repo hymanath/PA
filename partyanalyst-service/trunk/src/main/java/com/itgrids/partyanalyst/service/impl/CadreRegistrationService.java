@@ -1674,7 +1674,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								if(cadreRegistrationVO.getFamilyVoterId() != null && cadreRegistrationVO.getFamilyVoterId().toString().trim().length() > 0 && !cadreRegistrationVO.getFamilyVoterId().toString().trim().equalsIgnoreCase("null") && cadreRegistrationVO.getFamilyVoterId().longValue() > 0)
 								{
 									Long  count = tdpCadreDAO.checkForFamilyExists(cadreRegistrationVO.getUniqueKey());
-									if(count > 0)
+									if(count > 1)
 									{
 										flag = false;
 									}
