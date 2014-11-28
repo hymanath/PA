@@ -751,20 +751,21 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 	public void testgetTotalRegisteredCadreCountByLocation()
 	{
 		List<Long> locationIds = new ArrayList<Long>();
-		locationIds.add(1L);
-		locationIds.add(2L);
-		locationIds.add(3L);
-		locationIds.add(4L);
-		locationIds.add(5L);
-		locationIds.add(6L);
-		locationIds.add(7L);
-		locationIds.add(8L);
-		locationIds.add(9L);
-		locationIds.add(10L);
+		locationIds.add(209L);
+		locationIds.add(213L);
+		locationIds.add(217L);
+		locationIds.add(228L);
+		locationIds.add(229L);
+		locationIds.add(218L);
+		locationIds.add(219L);
 		
 		
-		Long count = tdpCadreDAO.getTotalRegisteredCadreCountByLocation(locationIds," select count(TC.tdpCadreId) from TdpCadre TC where TC.userAddress.district.districtId in (:locationIds) and TC.isDeleted='N' and TC.enrollmentYear = 2014 ");
-		System.out.println(count);
+		List<Object[]> list =  tdpCadreDAO.getTotalRecordsByAccessType(locationIds, "", null, null);
+		System.out.println(list.size());
+		
+		/*Long count = tdpCadreDAO.getTotalRegisteredCadreCountByLocation(locationIds," select count(TC.tdpCadreId) from TdpCadre TC where TC.userAddress.district.districtId in (:locationIds) and TC.isDeleted='N' and TC.enrollmentYear = 2014 ");
+		System.out.println(count);*/
+		
 		
 	}
 }

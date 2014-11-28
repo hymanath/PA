@@ -230,6 +230,10 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public Integer updateDetails(List<String> uniqueKey);
 	public Long checkForFamilyExists(String uniqueKey);
 	
+	public List<Object[]> getTotalRecordsByAccessType(List<Long> districtIds,String type,Date fromDate,Date toDate);
+	public List<Object[]> getTotalRecordsByAccessTypeUnderDate(List<Long> districtIds,String type,Date date);
+	public List<Object[]> getTotalRecordsByAccessTypeByDate(List<Long> districtIds,String type,Date date);
+	
 	public List<Object[]> getCasteGroupTotalCountByAccessType(Long districtId, List<Long> constituencyId);
 	public List<Object[]> getGenderTotalCountByAccessType(Long districtId, List<Long> constituencyId);
 	public List<Object[]> getGenderWiseCadreCountByAccessType(Long districtId, List<Long> constituencyId);
