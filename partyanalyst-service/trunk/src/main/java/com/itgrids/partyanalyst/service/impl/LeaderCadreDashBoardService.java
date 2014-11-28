@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
@@ -860,9 +861,9 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 					districtIds.add(accessValue);
 				}
 				
-				
+			resultList =  getResultsSimplified(locationtype,accessValue,accessType,resultList,voterCountList,assemblyIds,districtIds,constituenycIds,"no",stateId);
 			
-			if(locationtype.equalsIgnoreCase(IConstants.DISTRICT))
+			/*if(locationtype.equalsIgnoreCase(IConstants.DISTRICT))
 				voterCountList = voterInfoDAO.getVotersCountInADistrictsList(districtIds,IConstants.VOTER_DATA_PUBLICATION_ID);
 			else if(locationtype.equalsIgnoreCase(IConstants.CONSTITUENCY))
 				voterCountList = voterInfoDAO.getVotersCountInConstituenciesByDistrictsList(districtIds,IConstants.VOTER_DATA_PUBLICATION_ID);
@@ -910,7 +911,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 						}
 						
 					}
-				}
+				}*/
 			
 			List<Object[]> receivedAmountDetails = cadreSurveyUserAssignDetailsDAO.getTDPCadreAmountDetails(districtIds,locationtype,null,null);
 			if(receivedAmountDetails != null && receivedAmountDetails.size() > 0)
@@ -923,7 +924,19 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 					 
 				}
 			}
-			List<Object[]> totalRecords = tdpCadreDAO.getTotalRecords(districtIds,locationtype,null,null);
+			
+			List<Object[]> totalRecords = new ArrayList<Object[]>();
+			
+			if(locationtype.equalsIgnoreCase(IConstants.DISTRICT)){
+				if(accessType.equalsIgnoreCase("MLA") || accessType.equalsIgnoreCase("MP")){
+					totalRecords = tdpCadreDAO.getTotalRecordsByAccessType(assemblyIds,locationtype,null,null);
+				}else{
+					totalRecords = tdpCadreDAO.getTotalRecords(districtIds,locationtype,null,null);
+				}
+			}else{
+				totalRecords = tdpCadreDAO.getTotalRecords(districtIds,locationtype,null,null);
+			}
+			
 			
 			if(totalRecords != null && totalRecords.size() > 0)
 			{
@@ -962,7 +975,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 			
 			worst_status_count = resultList.size()-best_status_count-good_status_count-ok_status_count-poor_status_count;
 			
-			if(resultList!=null && resultList.size()>1){
+			if(resultList!=null && resultList.size()>=1){
 				CadreAmountDetailsVO cv = resultList.get(0);
 				cv.setOkCount(ok_status_count);
 				cv.setBestCount(best_status_count);
@@ -1068,89 +1081,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 				
 				
 			
-			if(locationtype.equalsIgnoreCase(IConstants.DISTRICT))
-				voterCountList = voterInfoDAO.getVotersCountInADistrictsList(districtIds,IConstants.VOTER_DATA_PUBLICATION_ID);
-			else if(locationtype.equalsIgnoreCase(IConstants.CONSTITUENCY))
-				voterCountList = voterInfoDAO.getVotersCountInConstituenciesByDistrictsList(districtIds,IConstants.VOTER_DATA_PUBLICATION_ID);
-			if(voterCountList != null && voterCountList.size() > 0)
-				for(Object[] params :voterCountList){
-					if(locationtype.equalsIgnoreCase(IConstants.CONSTITUENCY)){
-						if(assemblyIds.contains(Long.valueOf(params[0].toString()))){
-							CadreAmountDetailsVO basicVo = new CadreAmountDetailsVO();
-							basicVo.setId((Long)params[0]);
-							basicVo.setName(params[1] != null ? params[1].toString() : "");
-							basicVo.setTotalVoters((Long)params[2]);
-							basicVo.setTotalRecords(0l);
-							basicVo.setDifference(0l);
-							basicVo.setPercentage("0.0");
-							basicVo.setColorStatus("Worst");
-							
-							
-							if(fromTask.equalsIgnoreCase("today")){
-								Long noOfDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, IConstants.CADRE_2014_LAST_DATE);
-								
-								if(stateId == 1){
-									basicVo.setTargetCadres(((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014)/noOfDays);
-								}else{
-									basicVo.setTargetCadres(((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_TG) / IConstants.TG_VOTERS_2014)/noOfDays);
-								}
-							}else{
-								String currentDate = dateService.getCurrentDateInStringFormatYYYYMMDD();
-								Long tillDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, currentDate);
-								Long noOfDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, IConstants.CADRE_2014_LAST_DATE);
-								
-								if(stateId == 1){
-									basicVo.setTargetCadres((((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014)/noOfDays)*tillDays);
-								}else{
-									basicVo.setTargetCadres((((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_TG) / IConstants.TG_VOTERS_2014)/noOfDays)*tillDays);
-								}
-								
-							}
-							
-							if(locationtype.equalsIgnoreCase(IConstants.CONSTITUENCY)){
-								constituenycIds.add((Long)params[0]);
-							}
-							resultList.add(basicVo);
-						}
-						
-					}else{
-						CadreAmountDetailsVO basicVo = new CadreAmountDetailsVO();
-						basicVo.setId((Long)params[0]);
-						basicVo.setName(params[1] != null ? params[1].toString() : "");
-						basicVo.setTotalVoters((Long)params[2]);
-						basicVo.setTotalRecords(0l);
-						basicVo.setDifference(0l);
-						basicVo.setPercentage("0.0");
-						basicVo.setColorStatus("Worst");
-						
-						
-						if(fromTask.equalsIgnoreCase("today")){
-							Long noOfDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, IConstants.CADRE_2014_LAST_DATE);
-							
-							if(stateId == 1){
-								basicVo.setTargetCadres(((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014)/noOfDays);
-							}else{
-								basicVo.setTargetCadres(((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_TG) / IConstants.TG_VOTERS_2014)/noOfDays);
-							}
-						}else{
-							String currentDate = dateService.getCurrentDateInStringFormatYYYYMMDD();
-							Long tillDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, currentDate);
-							Long noOfDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, IConstants.CADRE_2014_LAST_DATE);
-							
-							if(stateId == 1){
-								basicVo.setTargetCadres((((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014)/noOfDays)*tillDays);
-							}else{
-								basicVo.setTargetCadres((((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_TG) / IConstants.TG_VOTERS_2014)/noOfDays)*tillDays);
-							}
-							
-						}
-						
-						if(locationtype.equalsIgnoreCase(IConstants.CONSTITUENCY)){
-							constituenycIds.add((Long)params[0]);
-						}
-						resultList.add(basicVo);
-					}
-				}
+			resultList =  getResultsSimplified(locationtype,accessValue,accessType,resultList,voterCountList,assemblyIds,districtIds,constituenycIds,fromTask,stateId);
 			
 			List<Object[]> receivedAmountDetails = cadreSurveyUserAssignDetailsDAO.getTDPCadreAmountDetails(districtIds,locationtype,null,null);
 			if(receivedAmountDetails != null && receivedAmountDetails.size() > 0)
@@ -1169,9 +1100,25 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 			List<Object[]> totalRecords = new ArrayList<Object[]>();
 			
 			if(fromTask.equalsIgnoreCase("today")){
-				totalRecords = tdpCadreDAO.getTotalRecords(districtIds,locationtype,formatedDate);
+				if(locationtype.equalsIgnoreCase(IConstants.DISTRICT)){
+					if(accessType.equalsIgnoreCase("MLA") || accessType.equalsIgnoreCase("MP")){
+						totalRecords = tdpCadreDAO.getTotalRecordsByAccessTypeByDate(assemblyIds,locationtype,formatedDate);
+					}else{
+						totalRecords = tdpCadreDAO.getTotalRecords(districtIds,locationtype,formatedDate);
+					}
+				}else{
+					totalRecords = tdpCadreDAO.getTotalRecords(districtIds,locationtype,formatedDate);
+				}
 			}else{
-				totalRecords = tdpCadreDAO.getTotalRecordsUnderDate(districtIds,locationtype,formatedDate);
+				if(locationtype.equalsIgnoreCase(IConstants.DISTRICT)){
+					if(accessType.equalsIgnoreCase("MLA") || accessType.equalsIgnoreCase("MP")){
+						totalRecords = tdpCadreDAO.getTotalRecordsByAccessTypeUnderDate(assemblyIds,locationtype,formatedDate);
+					}else{
+						totalRecords = tdpCadreDAO.getTotalRecordsUnderDate(districtIds,locationtype,formatedDate);
+					}
+				}else{
+					totalRecords = tdpCadreDAO.getTotalRecordsUnderDate(districtIds,locationtype,formatedDate);
+				}
 			}
 			
 			
@@ -1213,7 +1160,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 			
 			worst_status_count = resultList.size()-best_status_count-good_status_count-ok_status_count-poor_status_count;
 			
-			if(resultList!=null && resultList.size()>1){
+			if(resultList!=null && resultList.size()>=1){
 				CadreAmountDetailsVO cv = resultList.get(0);
 				cv.setOkCount(ok_status_count);
 				cv.setBestCount(best_status_count);
@@ -1882,6 +1829,162 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 		{
 			LOG.error("Exception rised in  getBoothInfo() in LeaderCaderDashBoardService",e);		
 		}
+		return resultList;
+	}
+	
+	public Long getTargetOfDistrict(String fromTask,Long totalVoters,Long stateId){
+		Long targetCadre = 0l;
+		if(fromTask.equalsIgnoreCase("today")){
+			Long noOfDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, IConstants.CADRE_2014_LAST_DATE);
+			
+			if(stateId == 1){
+				targetCadre = ((totalVoters * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014)/noOfDays;
+			}else{
+				targetCadre = ((totalVoters * IConstants.TARGET_CADRE_TG) / IConstants.TG_VOTERS_2014)/noOfDays;
+			}
+		}else if(fromTask.equalsIgnoreCase("no")){
+			if(stateId == 1){
+				targetCadre =	(totalVoters * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014;
+			}else{
+				targetCadre =  (totalVoters * IConstants.TARGET_CADRE_TG) / IConstants.TG_VOTERS_2014;
+			}
+		}else{
+			String currentDate = dateService.getCurrentDateInStringFormatYYYYMMDD();
+			Long tillDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, currentDate);
+			Long noOfDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, IConstants.CADRE_2014_LAST_DATE);
+			
+			if(stateId == 1){
+				targetCadre =  (((totalVoters * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014)/noOfDays)*tillDays;
+			}else{
+				targetCadre =  (((totalVoters * IConstants.TARGET_CADRE_TG) / IConstants.TG_VOTERS_2014)/noOfDays)*tillDays;
+			}
+			
+		}
+		return targetCadre;
+	}
+			
+	
+	public List<CadreAmountDetailsVO> getResultsSimplified(String locationtype,Long accessValue,String accessType,List<CadreAmountDetailsVO> resultList,List<Object[]> voterCountList,List<Long> assemblyIds,List<Long> districtIds,List<Long> constituenycIds,String fromTask,Long stateId){
+		Map<Long,Long> distMap = new HashMap<Long, Long>();
+		if(locationtype.equalsIgnoreCase(IConstants.DISTRICT)){
+			if(accessType.equalsIgnoreCase("MLA") || accessType.equalsIgnoreCase("MP")){
+				voterCountList = voterInfoDAO.getVotersCountInConstituenciesByDistrictsListAndConstituencies(districtIds,IConstants.VOTER_DATA_PUBLICATION_ID,assemblyIds);
+				List<Object[]> tempList = voterInfoDAO.getVotersCountInConstituenciesByDistrictsList(districtIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+				
+				if(tempList!=null && tempList.size()>0){
+					for(Object[] obj:tempList){
+						if(assemblyIds.contains(Long.valueOf(obj[0].toString()))){
+							Long cnt = distMap.get(Long.valueOf(obj[3].toString()));
+							Long target = getTargetOfDistrict(fromTask,Long.valueOf(obj[2].toString()),stateId);
+							if(cnt==null){
+								distMap.put(Long.valueOf(obj[3].toString()), target);
+							}else{
+								distMap.put(Long.valueOf(obj[3].toString()), cnt+target);
+							}
+						}
+					}
+				}
+				
+				
+			}else{
+				voterCountList = voterInfoDAO.getVotersCountInADistrictsList(districtIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+			}
+		}else if(locationtype.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			voterCountList = voterInfoDAO.getVotersCountInConstituenciesByDistrictsList(districtIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+		}
+		
+		if(voterCountList != null && voterCountList.size() > 0)
+			for(Object[] params :voterCountList){
+				if(locationtype.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+					if(assemblyIds.contains(Long.valueOf(params[0].toString()))){
+						CadreAmountDetailsVO basicVo = new CadreAmountDetailsVO();
+						basicVo.setId((Long)params[0]);
+						basicVo.setName(params[1] != null ? params[1].toString() : "");
+						basicVo.setTotalVoters((Long)params[2]);
+						basicVo.setTotalRecords(0l);
+						basicVo.setDifference(0l);
+						basicVo.setPercentage("0.0");
+						basicVo.setColorStatus("Worst");
+						
+						
+						if(fromTask.equalsIgnoreCase("today")){
+							Long noOfDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, IConstants.CADRE_2014_LAST_DATE);
+							
+							if(stateId == 1){
+								basicVo.setTargetCadres(((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014)/noOfDays);
+							}else{
+								basicVo.setTargetCadres(((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_TG) / IConstants.TG_VOTERS_2014)/noOfDays);
+							}
+						}else if(fromTask.equalsIgnoreCase("no")){
+							if(stateId == 1){
+								basicVo.setTargetCadres((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014);
+							}else{
+									basicVo.setTargetCadres((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_TG) / IConstants.TG_VOTERS_2014);
+							}
+						}else{
+							String currentDate = dateService.getCurrentDateInStringFormatYYYYMMDD();
+							Long tillDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, currentDate);
+							Long noOfDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, IConstants.CADRE_2014_LAST_DATE);
+							
+							if(stateId == 1){
+								basicVo.setTargetCadres((((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014)/noOfDays)*tillDays);
+							}else{
+								basicVo.setTargetCadres((((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_TG) / IConstants.TG_VOTERS_2014)/noOfDays)*tillDays);
+							}
+							
+						}
+						
+						if(locationtype.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+							constituenycIds.add((Long)params[0]);
+						}
+						resultList.add(basicVo);
+					}
+					
+				}else{
+					
+					CadreAmountDetailsVO basicVo = new CadreAmountDetailsVO();
+					basicVo.setId((Long)params[0]);
+					basicVo.setName(params[1] != null ? params[1].toString() : "");
+					basicVo.setTotalVoters((Long)params[2]);
+					basicVo.setTotalRecords(0l);
+					basicVo.setDifference(0l);
+					basicVo.setPercentage("0.0");
+					basicVo.setColorStatus("Worst");
+					
+					if(accessType.equalsIgnoreCase("STATE") || accessType.equalsIgnoreCase("DISTRICT")){
+						if(fromTask.equalsIgnoreCase("today")){
+							Long noOfDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, IConstants.CADRE_2014_LAST_DATE);
+							
+							if(stateId == 1){
+								basicVo.setTargetCadres(((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014)/noOfDays);
+							}else{
+								basicVo.setTargetCadres(((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_TG) / IConstants.TG_VOTERS_2014)/noOfDays);
+							}
+						}else if(fromTask.equalsIgnoreCase("no")){
+							if(stateId == 1){
+								basicVo.setTargetCadres((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014);
+							}else{
+									basicVo.setTargetCadres((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_TG) / IConstants.TG_VOTERS_2014);
+							}
+						}else{
+							String currentDate = dateService.getCurrentDateInStringFormatYYYYMMDD();
+							Long tillDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, currentDate);
+							Long noOfDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, IConstants.CADRE_2014_LAST_DATE);
+							
+							if(stateId == 1){
+								basicVo.setTargetCadres((((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014)/noOfDays)*tillDays);
+							}else{
+								basicVo.setTargetCadres((((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_TG) / IConstants.TG_VOTERS_2014)/noOfDays)*tillDays);
+							}
+						}
+					}else{
+						basicVo.setTargetCadres(distMap.get(Long.valueOf(params[0].toString())));
+					}
+					
+					resultList.add(basicVo);
+				}
+			}
+		
 		return resultList;
 	}
 	

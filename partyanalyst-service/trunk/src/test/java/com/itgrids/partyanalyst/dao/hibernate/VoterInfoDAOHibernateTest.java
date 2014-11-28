@@ -269,9 +269,20 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void test(){
 		List<Long> lst = new ArrayList<Long>();
-		lst.add(1l);
-		lst.add(2l);
-		List<Object[]> list = voterInfoDAO.getVotersCountInADistrictsList(lst, 11l);
+		lst.add(17l);
+		lst.add(18l);
+		
+		List<Long> locationIds = new ArrayList<Long>();
+		locationIds.add(209L);
+		locationIds.add(213L);
+		locationIds.add(217L);
+		locationIds.add(228L);
+		locationIds.add(229L);
+		locationIds.add(218L);
+		locationIds.add(219L);
+		
+		//List<Object[]> list = voterInfoDAO.getVotersCountInADistrictsList(lst, 11l);
+		List<Object[]> list = voterInfoDAO.getVotersCountInConstituenciesByDistrictsListAndConstituencies(lst, 11l,locationIds);
 		System.out.println(list.size());
 		
 	}

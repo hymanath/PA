@@ -3063,6 +3063,71 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		return query.list();
     }
 
+
+	public List<Object[]> getTotalRecordsByAccessType(List<Long> districtIds,String type,Date fromDate,Date toDate){
+		StringBuilder str = new StringBuilder();
+		
+		 str.append(" select count(model.tdpCadreId),model.userAddress.constituency.district.districtId "); 
+		 
+		 str.append("  from TdpCadre model" +
+				" where model.isDeleted = 'N' " +
+				" and model.enrollmentYear = 2014 "); 
+		 if(fromDate != null && toDate != null){
+		   str.append(" and date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate ");
+		 }
+		 
+		str.append(" and model.userAddress.constituency.constituencyId in (:districtIds) group by model.userAddress.constituency.district.districtId ");
+		 
+		
+		Query query = getSession().createQuery(str.toString());
+		if(fromDate != null && toDate != null){
+			query.setParameter("fromDate",fromDate);
+			query.setParameter("toDate",toDate);
+		}
+		query.setParameterList("districtIds", districtIds);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getTotalRecordsByAccessTypeByDate(List<Long> districtIds,String type,Date date){
+		StringBuilder str = new StringBuilder();
+		
+		 str.append(" select count(model.tdpCadreId),model.userAddress.constituency.district.districtId "); 
+		 
+		 str.append("  from TdpCadre model" +
+				" where model.isDeleted = 'N' " +
+				" and model.enrollmentYear = 2014 " +
+				" and date(model.surveyTime)=:date "); 
+		 
+		str.append(" and model.userAddress.constituency.constituencyId in (:districtIds) group by model.userAddress.constituency.district.districtId ");
+		 
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("districtIds", districtIds);
+		query.setParameter("date", date);
+		return query.list();
+	}
+	
+	public List<Object[]> getTotalRecordsByAccessTypeUnderDate(List<Long> districtIds,String type,Date date){
+		StringBuilder str = new StringBuilder();
+		
+		str.append("select count(model.tdpCadreId),model.userAddress.constituency.district.districtId"); 
+		
+		str.append("  from TdpCadre model" +
+				" where model.isDeleted = 'N' " +
+				" and model.enrollmentYear = 2014 "+
+				" and date(model.surveyTime)<=:date "); 
+		 
+		str.append(" and model.userAddress.constituency.constituencyId in (:districtIds) group by model.userAddress.constituency.district.districtId ");
+		 
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("districtIds", districtIds);
+		query.setParameter("date", date);
+		
+		
+		return query.list();
+	}
+	
 	public List<Object[]> getGenderTotalCountByAccessType(Long districtId, List<Long> constituencyId){
 		StringBuilder queryStr = new StringBuilder();
 
