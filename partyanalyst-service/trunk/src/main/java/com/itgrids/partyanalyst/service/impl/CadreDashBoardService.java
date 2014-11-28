@@ -5208,4 +5208,228 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			}
 			return resultList;
 		}
+		
+		public List<CadreRegisterInfo> getDistrictWiseAgeRangeCountByAccess(Long districtId,String accessType,String accessValue) {
+			List<CadreRegisterInfo> ageWiseTotalList=new ArrayList<CadreRegisterInfo>();
+			
+			try {
+				List<Long> constiIds = new ArrayList<Long>();
+				
+				if(accessType.equalsIgnoreCase("MLA")){
+					constiIds.add(Long.valueOf(accessValue));
+				
+				}
+				else if(accessType.equalsIgnoreCase("MP")){
+					List<Long> parliamentConstiId = new ArrayList<Long>();
+					parliamentConstiId.add(Long.valueOf(accessValue));
+					List<Object[]> list = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesListForAListOfParliamentConstituency(parliamentConstiId);
+									
+					if(list!=null && list.size()>0){
+						for(Object[] obj:list){
+							constiIds.add(Long.valueOf(obj[0].toString()));
+						}
+					}
+				}
+				 List<Object[]> countsList = tdpCadreDAO.getAgeTotalCountByAccessType(districtId,constiIds);
+					Long totalDistrictCount2014 = null;
+					Long totalDistrictCount2012 = null;
+					for(Object[] counts:countsList){
+						if(counts[1] != null){
+							if(((Long)counts[1]).longValue() == 2012l){
+								totalDistrictCount2012 = (Long)counts[0];
+							}else if(((Long)counts[1]).longValue() == 2014l){
+								totalDistrictCount2014 = (Long)counts[0];
+							}
+						}
+					}
+				
+				List<Object[]> cadreBelow18 = tdpCadreDAO.getAgeRangeCadreCountByAccessType(districtId, "below 18",constiIds);			
+				setAgeWiseRangeCount(cadreBelow18,"below 18", totalDistrictCount2012, totalDistrictCount2014, ageWiseTotalList);
+					
+				List<Object[]> cadre18to25info = tdpCadreDAO.getAgeRangeCadreCountByAccessType(districtId, "18-25",constiIds);			
+				setAgeWiseRangeCount(cadre18to25info,"18-25", totalDistrictCount2012, totalDistrictCount2014, ageWiseTotalList);
+				
+				List<Object[]> cadre26to35info = tdpCadreDAO.getAgeRangeCadreCountByAccessType(districtId, "26-35",constiIds);
+				setAgeWiseRangeCount(cadre26to35info,"26-35", totalDistrictCount2012, totalDistrictCount2014, ageWiseTotalList);
+				
+				List<Object[]> cadre36to45info = tdpCadreDAO.getAgeRangeCadreCountByAccessType(districtId,"36-45",constiIds);
+				setAgeWiseRangeCount(cadre36to45info,"36-45", totalDistrictCount2012, totalDistrictCount2014, ageWiseTotalList);
+				
+				List<Object[]> cadre46to60info = tdpCadreDAO.getAgeRangeCadreCountByAccessType(districtId,"46-60",constiIds);
+				setAgeWiseRangeCount(cadre46to60info,"46-60", totalDistrictCount2012, totalDistrictCount2014, ageWiseTotalList);
+				
+				List<Object[]> cadreabove60info = tdpCadreDAO.getAgeRangeCadreCountByAccessType(districtId,"above 60",constiIds);
+				setAgeWiseRangeCount(cadreabove60info,"above 60", totalDistrictCount2012, totalDistrictCount2014, ageWiseTotalList);
+				
+	            
+			} catch (Exception e) {
+				LOG.error("Exception rised in getDistrictWiseAgeRangeCountByAccess", e);
+			}
+			return ageWiseTotalList;
+		}	
+		
+		
+		public List<CadreRegisterInfo> getCastGroupWiseCadreCountByAccess(Long districtId,String accessType,String accessValue){
+		
+			LinkedHashMap<Long,CadreRegisterInfo> casteMap = new LinkedHashMap<Long,CadreRegisterInfo>();
+		 try{
+			 
+			 List<Long> constiIds = new ArrayList<Long>();
+				
+				if(accessType.equalsIgnoreCase("MLA")){
+					constiIds.add(Long.valueOf(accessValue));
+				
+				}
+				else if(accessType.equalsIgnoreCase("MP")){
+					List<Long> parliamentConstiId = new ArrayList<Long>();
+					parliamentConstiId.add(Long.valueOf(accessValue));
+					List<Object[]> list = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesListForAListOfParliamentConstituency(parliamentConstiId);
+									
+					if(list!=null && list.size()>0){
+						for(Object[] obj:list){
+							constiIds.add(Long.valueOf(obj[0].toString()));
+						}
+					}
+				}
+			List<Object[]> countsList = tdpCadreDAO.getCasteGroupTotalCountByAccessType(districtId, constiIds);
+			Long totalCount2014 = null;
+			Long totalCount2012 = null;
+			for(Object[] counts:countsList){
+				if(counts[1] != null){
+					if(((Long)counts[1]).longValue() == 2012l){
+						totalCount2012 = (Long)counts[0];
+					}else if(((Long)counts[1]).longValue() == 2014l){
+						totalCount2014 = (Long)counts[0];
+					}
+				}
+			}
+			List<Object[]> casteInfoList = tdpCadreDAO.getCasteGroupWiseCadreCountExcludingMinoritiesByAccessType(districtId,constiIds);
+			//0 count,1 year,2 casteGroupId ,3 casteGroup
+			
+			List<Object[]> minList = tdpCadreDAO.getCadreCountInMinoritiesByAccessType(districtId,constiIds);
+			
+			if(minList != null && minList.size() > 0)
+			{
+				for(Object[] params : minList)
+				{
+					Object[] objArr = {params[0],params[1],Long.parseLong("99"),"Minority"};
+					casteInfoList.add(objArr);
+				}
+			}
+			
+			for(Object[] caste:casteInfoList){
+				
+				CadreRegisterInfo casteVo = casteMap.get((Long)caste[2]);
+				if(casteVo == null){
+					casteVo = new CadreRegisterInfo();
+					casteVo.setName(caste[3].toString());
+					casteVo.setApCount(0l);//2014 total count
+					casteVo.setTgCount(0l);//2012 total count
+					casteVo.setPercentStr("0");//2014 perc
+					casteVo.setArea("0");//2012 perc
+					//casteVo.setDate(caste[4].toString());//casteGroup
+					casteMap.put((Long)caste[2],casteVo);
+				}
+				if(((Long)caste[1]).longValue() == 2014l){
+					casteVo.setApCount((Long)caste[0]);
+					if(totalCount2014 != null && totalCount2014.longValue() > 0){
+						casteVo.setPercentStr(new BigDecimal((casteVo.getApCount().doubleValue() / totalCount2014.doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					}
+				}else if(((Long)caste[1]).longValue() == 2012l){
+					casteVo.setTgCount((Long)caste[0]);
+					if(totalCount2012 != null && totalCount2012.longValue() > 0){
+						casteVo.setArea(new BigDecimal((casteVo.getTgCount().doubleValue() / totalCount2012.doubleValue()) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					}
+				}
+				
+			}
+		 }catch(Exception e){
+			 LOG.error("Exception rised in getCastGroupWiseCadreCountByAccess",e);
+		 }
+			return new ArrayList<CadreRegisterInfo>(casteMap.values());
+		}
+		
+		public List<CadreRegisterInfo> getDistrictWiseGenderCadreCountByAccess(Long districtId,String accessType,String accessValue){
+			List<CadreRegisterInfo> genderList = new ArrayList<CadreRegisterInfo>();
+			try{
+				
+				List<Long> constiIds = new ArrayList<Long>();					
+				if(accessType.equalsIgnoreCase("MLA")){
+					constiIds.add(Long.valueOf(accessValue));
+				
+				}
+				else if(accessType.equalsIgnoreCase("MP")){
+					List<Long> parliamentConstiId = new ArrayList<Long>();
+					parliamentConstiId.add(Long.valueOf(accessValue));
+					List<Object[]> list = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesListForAListOfParliamentConstituency(parliamentConstiId);
+									
+					if(list!=null && list.size()>0){
+						for(Object[] obj:list){
+							constiIds.add(Long.valueOf(obj[0].toString()));
+						}
+					}
+				}
+
+				List<Object[]>	countsList = tdpCadreDAO.getGenderTotalCountByAccessType(districtId,constiIds);
+								 
+				Long totalCount2014 = null;
+				Long totalCount2012 = null;
+				for(Object[] counts:countsList){
+					if(counts[1] != null){
+						if(((Long)counts[1]).longValue() == 2012l){
+							totalCount2012 = (Long)counts[0];
+						}else if(((Long)counts[1]).longValue() == 2014l){
+							totalCount2014 = (Long)counts[0];
+						}
+					}
+				}
+				List<Object[]>	genderInfoList=tdpCadreDAO.getGenderWiseCadreCountByAccessType(districtId,constiIds);
+				setGenderWiseCount(genderInfoList,genderList,totalCount2012,totalCount2014);
+				
+				} catch (Exception e) {
+					LOG.error("Exception rised in getDistrictWiseGenderCadreCountByAccess", e);
+				}
+			return genderList;
+			
+		}
+		
+		public List<CadreRegisterInfo> getDistrictWiseCastCadreCountByAccess(Long districtId,String accessType,String accessValue){
+			List<CadreRegisterInfo> casteList = new ArrayList<CadreRegisterInfo>();
+			try{
+				List<Long> constiIds = new ArrayList<Long>();					
+				if(accessType.equalsIgnoreCase("MLA")){
+					constiIds.add(Long.valueOf(accessValue));
+				
+				}
+				else if(accessType.equalsIgnoreCase("MP")){
+					List<Long> parliamentConstiId = new ArrayList<Long>();
+					parliamentConstiId.add(Long.valueOf(accessValue));
+					List<Object[]> list = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesListForAListOfParliamentConstituency(parliamentConstiId);
+									
+					if(list!=null && list.size()>0){
+						for(Object[] obj:list){
+							constiIds.add(Long.valueOf(obj[0].toString()));
+						}
+					}
+				}
+				List<Object[]>	countsList = tdpCadreDAO.getCasteGroupTotalCountByAccessType(districtId,constiIds);
+				
+				Long totalCount2014 = null;
+				Long totalCount2012 = null;
+				for(Object[] counts:countsList){
+					if(counts[1] != null){
+						if(((Long)counts[1]).longValue() == 2012l){
+							totalCount2012 = (Long)counts[0];
+						}else if(((Long)counts[1]).longValue() == 2014l){
+							totalCount2014 = (Long)counts[0];
+						}
+					}
+				}
+				List<Object[]> casteInfoList = tdpCadreDAO.getCastWiseCadreCountByAccessType(districtId,constiIds);
+				setCasteWiseCount(casteInfoList, casteList,totalCount2012,totalCount2014);
+			}catch (Exception e) {
+				LOG.error("Exception rised in getDistrictWiseCastCadreCountByAccess", e);
+			}		
+			return casteList;		
+		}
 }
