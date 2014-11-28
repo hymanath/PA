@@ -1158,12 +1158,19 @@ $('#membersCount').addClass('animated fadeInX');
 						height:550,
 						title : " "+locationName+" District Cadre Age, Gender and Caste Information "
 					});
-
+			<c:choose>
+				<c:when test="${sessionScope.USER.accessType == 'MP' || sessionScope.USER.accessType == 'MLA'}">
+					var taskVal="castGroupDistByAccess";
+				</c:when>  
+				<c:otherwise>
+				  var taskVal="castGroupDist";
+				</c:otherwise>
+			</c:choose>			
 			$.ajax({
 				type : 'GET',
 				url : 'getRepInfo.action',
 				data : {
-					task :'castGroupDist',
+					task :taskVal,
 					id: distId
 				}
 			}).done(function(result) {
@@ -1207,12 +1214,20 @@ $('#membersCount').addClass('animated fadeInX');
 					$('#casteGroupDivForDistrict').html(str3);
 				}
 			});
+			<c:choose>
+				<c:when test="${sessionScope.USER.accessType == 'MP' || sessionScope.USER.accessType == 'MLA'}">
+				var taskValue="ageDistrictByAccess";
+				</c:when>  
+				<c:otherwise>
+				var taskValue="ageDistrict";
+				</c:otherwise>
+			</c:choose>
 			
 			$.ajax({
 				type : 'GET',
 				url : 'getRepInfo.action',
 				data : {
-					task :"ageDistrict",
+					task :taskValue,
 					id:distId
 				}
 			}).done(function(result) {
@@ -1250,11 +1265,20 @@ $('#membersCount').addClass('animated fadeInX');
 				}
 			});
 			
+			<c:choose>
+				<c:when test="${sessionScope.USER.accessType == 'MP' || sessionScope.USER.accessType == 'MLA'}">
+				var taskVal1="gendDistrictByAccess";
+				</c:when>  
+				<c:otherwise>
+				var taskVal1="gendDistrict";
+				</c:otherwise>
+			</c:choose>
+			
 			$.ajax({
 				type : 'GET',
 				url : 'getRepInfo.action',
 				data : {
-					task :"gendDistrict",
+					task :taskVal1,
 					id:distId
 				}
 			}).done(function(result) {
@@ -1295,12 +1319,20 @@ $('#membersCount').addClass('animated fadeInX');
 					   $('#genderWiseDivForDistrict').html(str2);
 				}
 			});
+			<c:choose>
+				<c:when test="${sessionScope.USER.accessType == 'MP' || sessionScope.USER.accessType == 'MLA'}">
+				var taskValue1="castDistrictByAccess";
+				</c:when>  
+				<c:otherwise>
+				var taskValue1="castDistrict";
+				</c:otherwise>
+			</c:choose>
 			
 			$.ajax({
 				type : 'GET',
 				url : 'getRepInfo.action',
 				data : {
-					task :"castDistrict",
+					task :taskValue1,
 					id:distId
 				}
 			}).done(function(result) {
