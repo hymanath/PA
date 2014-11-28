@@ -96,4 +96,9 @@ public interface ICadreDashBoardService {
 	public List<CadreRegisterInfo> getLocationWiseAgeRangeAndGenderCount(String type,Long stateId,Long constituencyId);
 	
 	public List<CadreRegisterInfo> getRegisteredCountByUserForHourWise(Date fromDate,Date toDate);
+	
+	public List<CadreRegisterInfo> getDistrictWiseAgeRangeCountByAccess(Long districtId,String accessType,String accessValue);
+	public List<CadreRegisterInfo> getCastGroupWiseCadreCountByAccess(Long districtId,String accessType,String accessValue);
+	public List<CadreRegisterInfo> getDistrictWiseGenderCadreCountByAccess(Long districtId,String accessType,String accessValue);
+	public List<CadreRegisterInfo> getDistrictWiseCastCadreCountByAccess(Long districtId,String accessType,String accessValue);
 }
