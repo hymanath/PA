@@ -954,12 +954,13 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
     public List<Long> getConstituenciesInAState(Long stateId) {
 	      StringBuilder str = new StringBuilder();
             str.append("select distinct model.constituencyId from Constituency model where model.state.stateId =1 and " +
-			"  model.electionScope.electionType.electionTypeId = 2 and model.deformDate is null  order by model.name ");
+			"  model.electionScope.electionType.electionTypeId = 2 and model.deformDate is null   ");
 			if(stateId.longValue() == 1){
 				str.append(" and model.district.districtId > 10 ");
 			}else{
 				str.append(" and model.district.districtId < 11 ");
 			}
+			str.append(" order by model.name ");
 			Query query = getSession().createQuery(str.toString());
 			return query.list();
 	}
