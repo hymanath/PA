@@ -441,6 +441,14 @@ public class CadreDashBoardAction implements ServletRequestAware {
 				resultList =  cadreDashBoardService.getDistrictWiseGenderCadreCount(Long.parseLong(request.getParameter("id")));
 			}else if(task.equalsIgnoreCase("castDistrict")){
 				resultList =  cadreDashBoardService.getDistrictWiseCastCadreCount(Long.parseLong(request.getParameter("id")));
+			}else if(task.equalsIgnoreCase("ageDistrictByAccess")){
+				resultList =  cadreDashBoardService.getDistrictWiseAgeRangeCountByAccess(Long.parseLong(request.getParameter("id")),regVO.getAccessType(),regVO.getAccessValue());
+			}else if(task.equalsIgnoreCase("castGroupDistByAccess")){
+			    resultList =  cadreDashBoardService.getCastGroupWiseCadreCountByAccess(Long.parseLong(request.getParameter("id")),regVO.getAccessType(),regVO.getAccessValue());
+			}else if(task.equalsIgnoreCase("castDistrictByAccess")){
+				resultList =  cadreDashBoardService.getDistrictWiseCastCadreCountByAccess(Long.parseLong(request.getParameter("id")),regVO.getAccessType(),regVO.getAccessValue());
+			}else if(task.equalsIgnoreCase("gendDistrictByAccess")){
+				resultList =  cadreDashBoardService.getDistrictWiseGenderCadreCountByAccess(Long.parseLong(request.getParameter("id")),regVO.getAccessType(),regVO.getAccessValue());
 			}
 		 }catch(Exception e){
 			  LOG.error("Exception rised in getRepInfo ",e);
