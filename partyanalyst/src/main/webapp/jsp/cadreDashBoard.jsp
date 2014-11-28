@@ -62,7 +62,7 @@
 	.text-skyblue{color:#46acca;}
 	.mb-0{margin-bottom:0px}
 	.mb-10{margin-bottom:10px}
-	.Previousmembercount td{width:20%;}
+	.Previousmembercount td{width:16.6%;}
 	.membercount td{width:25%;}
 	.membercount td h2, .Previousmembercount td h2{margin:0px;}
 	.progress{height:10px;}
@@ -190,9 +190,10 @@ table.dataTable tr.odd {
 									<img class="pull-right" src="images/TS.png" style="margin-top: -40px;">
 								</td>
 								<td><div id="tsConstiCountId"><h2>119</h2><p>Registration Started Constituencies</p></div></td>
-								<td><div id="ts2012CountId"><h2>482566</h2><p>Members Registered in<br><span class="text-red">2012</span></p></div></td>
+								<td><div id="ts2012CountId"><h2>482566</h2><p>Members Registered in&nbsp;<span class="text-red">2012</span></p></div></td>
 								<td><div id="ts2014CountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
 								<td><div id="tsPercCountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
+								<td><div id="tsPercNewCountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
 							</tr>
 							<tr class="apele">
 								<td>
@@ -200,9 +201,10 @@ table.dataTable tr.odd {
 									<img class="pull-right" src="images/AP.png" style="margin-top: -40px;">
 								</td>
 								<td><div id="apConstiCountId"><h2>175</h2><p>Registration Started Constituencies</p></div></td>
-								<td><div id="ap2012CountId"><h2>914359</h2><p>Members Registered in<br><span class="text-red">2012</span></p></div></td>
+								<td><div id="ap2012CountId"><h2>914359</h2><p>Members Registered in&nbsp;<span class="text-red">2012</span></p></div></td>
 								<td><div id="ap2014CountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
-								<td><div id="apPercCountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>	
+								<td><div id="apPercCountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
+								<td><div id="apPercNewCountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>								
 							</tr>
 							
 						</tbody>
@@ -504,10 +506,12 @@ $('#membersCount').addClass('animated fadeInX');
     					
 			$("#totalApTgRegisCount").html('<div style="cursor:pointer;background-color:#DBF1E4" class="span6 mytooltip text-center" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[3].apTabCount+'] [Web -'+result[3].apWebCount+'] <br> [PartyOffice -'+result[3].apPartyWebCount+'] [Online - '+result[3].apOnlineCount+']"><strong><span style="margin-left:10px;">ANDHRA PRADESH  </span></strong><br><span >'+result[3].apCount+'</span><span class="text-skyblue"></span></div><div style="cursor:pointer;background-color:#DBF1E4;margin-top:2px;" class="span6 mytooltip text-center" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[3].tgTabCount+'] [Web -'+result[3].tgWebCount+'] <br> [PartyOffice -'+result[3].tgPartyWebCount+'][Online - '+result[3].tgOnlineCount+']"><strong><span style="margin-left:10px;;margin-top:2px;">TELANGANA </span></strong> <br><span >'+result[3].tgCount+'</span><span class="text-skyblue"> </span></div>');
     		$('.mytooltip').tooltip();
-			$("#ts2014CountId").html('<h2>'+result[3].tgCount+'</h2><p>Members Registered in<br/><span class="text-green">2014</span></p></div></td>');
-            $("#ap2014CountId").html('<h2>'+result[3].apCount+'</h2><p>Members Registered in<br/><span class="text-green">2014</span></p></div></td>');
-            $("#tsPercCountId").html('<h2>'+parseInt((result[3].tgCount)*100/482566)+'%</h2><p>Members In <br/><span class="text-orange">Total </span></p></div></td>');
-            $("#apPercCountId").html('<h2>'+parseInt((result[3].apCount)*100/914359)+'%</h2><p>Members In <br/><span class="text-orange">Total </span></p></div></td>');			
+			$("#ts2014CountId").html('<h2>'+result[3].tgCount+'</h2><p>Members Registered in &nbsp;<span class="text-green">2014</span></p></div></td>');
+            $("#ap2014CountId").html('<h2>'+result[3].apCount+'</h2><p>Members Registered in&nbsp;<span class="text-green">2014</span></p></div></td>');
+            $("#tsPercCountId").html('<h2>'+parseInt((result[3].tgCount)*100/482566)+'%</h2><p>Members In <span class="text-orange">Total </span>(Based on 2012 cadre count)</p></div></td>');
+            $("#apPercCountId").html('<h2>'+parseInt((result[3].apCount)*100/914359)+'%</h2><p>Members In <span class="text-orange">Total </span>(Based on 2012 cadre count)</p></div></td>');
+            $("#tsPercNewCountId").html('<h2>'+parseInt((result[3].tgCount)*100/1000000)+'%</h2><p>Members In <span class="text-orange">Total </span>(Based on 2014 Target)</p></div></td>');
+            $("#apPercNewCountId").html('<h2>'+parseInt((result[3].apCount)*100/2000000)+'%</h2><p>Members In <span class="text-orange">Total </span>(Based on 2014 Target)</p></div></td>');						
 	   });
    }
   
@@ -713,13 +717,13 @@ $('#membersCount').addClass('animated fadeInX');
     		   location.reload(); 
     	   }
 			$("#tsConstiCountId").html('<h2>'+result[1].totalCount+'</h2><p>Registration Started Constituencies</p></div></td>');
-			$("#ts2012CountId").html('<h2>'+result[1].apCount+'</h2><p>Members Registered in<br/><span class="text-red">2012</span></p></div></td>');
-			$("#ts2014CountId").html('<h2>'+result[1].tgCount+'</h2><p>Members Registered in<br/><span class="text-green">2014</span></p></div></td>');
+			$("#ts2012CountId").html('<h2>'+result[1].apCount+'</h2><p>Members Registered in &nbsp;<span class="text-red">2012</span></p></div></td>');
+			$("#ts2014CountId").html('<h2>'+result[1].tgCount+'</h2><p>Members Registered in &nbsp;<span class="text-green">2014</span></p></div></td>');
 			$("#tsPercCountId").html('<h2>'+result[1].percentage+'%</h2><p>Members In <br/><span class="text-orange">Total </span></p></div></td>');
 							
 			$("#apConstiCountId").html('<h2>'+result[0].totalCount+'</h2><p>Registration Started Constituencies</p></div></td>');
-			$("#ap2012CountId").html('<h2>'+result[0].apCount+'</h2><p>Members Registered in<br/><span class="text-red">2012</span></p></div></td>');
-			$("#ap2014CountId").html('<h2>'+result[0].tgCount+'</h2><p>Members Registered in<br/><span class="text-green">2014</span></p></div></td>');
+			$("#ap2012CountId").html('<h2>'+result[0].apCount+'</h2><p>Members Registered in &nbsp;<span class="text-red">2012</span></p></div></td>');
+			$("#ap2014CountId").html('<h2>'+result[0].tgCount+'</h2><p>Members Registered in &nbsp;<span class="text-green">2014</span></p></div></td>');
 			$("#apPercCountId").html('<h2>'+result[0].percentage+'%</h2><p>Members In <br/><span class="text-orange">Total </span></p></div></td>');	
 								
 	   });
