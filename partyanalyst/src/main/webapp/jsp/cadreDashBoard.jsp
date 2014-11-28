@@ -249,7 +249,7 @@ table.dataTable tr.odd {
 			</div>
 		</div><!-- Members Count Row End -->
 		
-		 <c:if test="${not fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) }"> 
+		 <c:if test="${not fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) && not fn:contains(sessionScope.USER.entitlements, 'CADRE_2014_MP' )}"> 
 		<div class="row-fluid">
 			<div class="span6 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
 				<div class="btn-group pull-right">
@@ -289,7 +289,7 @@ table.dataTable tr.odd {
 			</div>			
 		</div>
 		</c:if>
-		 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) }"> 
+		 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_2014_MP' ) }"> 
 		<div class="row-fluid">
 			<div class="span6 show-grid well well-small border-radius-0 mb-10 fadeInUp " style="margin-left:0px;" >
 				<h4> Constituency Target VS Registered Cadre  <i class="icon-refresh refreshCon" style="margin-top: 4px;margin-left:10px;cursor:pointer;"></i>
@@ -2307,11 +2307,11 @@ function SortByName(a, b){
 			$("#informationWindowInner").html(str);
 		}
 		
-	  <c:if test="${fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) }"> 
+	  <c:if test="${fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_2014_MP' ) }"> 
 		  getLocationswiseleaderCadreInfo2(3,"Constituency",1,"#leaderDataDiv2","today");
 		  getLocationswiseleaderCadreInfo2(2,"District",1,"#leaderDataDiv1","today");
 	  </c:if>
-	    <c:if test="${ not fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) }"> 
+	    <c:if test="${not fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) && not fn:contains(sessionScope.USER.entitlements, 'CADRE_2014_MP' )}"> 
 		getDistrictWiseCompletedPercentage(0,1);
 		getAssemblyWiseCompletedPercentage(0,1);
 	   </c:if>
