@@ -130,28 +130,41 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 	}
 	
 	public String getLocationWiseAsOfNowDetails(){
-		try{
-			jObj = new JSONObject(getTask());
-			amountDetails = leaderCadreDashBoardService.getLocationWiseAsOfNowDetails(jObj.getString("type"),jObj.getLong("stateId"));
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO!=null){
+			String accessType = regVO.getAccessType();
+			Long accessValue = Long.valueOf(regVO.getAccessValue());
+			
+			try{
+				jObj = new JSONObject(getTask());
+				amountDetails = leaderCadreDashBoardService.getLocationWiseAsOfNowDetails(jObj.getString("type"),jObj.getLong("stateId"),accessType,accessValue);
+			}
+			catch (Exception e) {
+				LOG.info("Entered into getLocationWiseAsOfNowDetails() in LeaderCadreDashBoardActioon class");
+			}
 		}
-		catch (Exception e) {
-			LOG.info("Entered into getLocationWiseAsOfNowDetails() in LeaderCadreDashBoardActioon class");
-		}
+		
 		return Action.SUCCESS;
 	}
 	
 	public String getLocationWiseToDayDetails()	{
-		try{
-			jObj = new JSONObject(getTask());
-			String task = jObj.getString("fromTask");
-			if(task.equalsIgnoreCase("today")){
-				amountDetails = leaderCadreDashBoardService.getLocationWiseToDayDetails(jObj.getString("type"),jObj.getLong("stateId"),"today");
-			}else{
-				amountDetails = leaderCadreDashBoardService.getLocationWiseToDayDetails(jObj.getString("type"),jObj.getLong("stateId"),"asOfToday");
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO!=null){
+			String accessType = regVO.getAccessType();
+			Long accessValue = Long.valueOf(regVO.getAccessValue());
+			
+			try{
+				jObj = new JSONObject(getTask());
+				String task = jObj.getString("fromTask");
+				if(task.equalsIgnoreCase("today")){
+					amountDetails = leaderCadreDashBoardService.getLocationWiseToDayDetails(jObj.getString("type"),jObj.getLong("stateId"),"today",accessType,accessValue);
+				}else{
+					amountDetails = leaderCadreDashBoardService.getLocationWiseToDayDetails(jObj.getString("type"),jObj.getLong("stateId"),"asOfToday",accessType,accessValue);
+				}
 			}
-		}
-		catch (Exception e) {
-			LOG.info("Entered into getLocationWiseToDayDetails() in LeaderCadreDashBoardActioon class");
+			catch (Exception e) {
+				LOG.info("Entered into getLocationWiseToDayDetails() in LeaderCadreDashBoardActioon class");
+			}
 		}
 		return Action.SUCCESS;
 	}
