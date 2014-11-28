@@ -1570,7 +1570,23 @@ function SortByName(a, b){
 			$(".tsele").show();
 			$(".apele").hide();
 			$(".indiEle").hide();
+			
+			updateSelectBtnToTS();
+			
 		}
+	}
+	
+	function updateSelectBtnToTS(){
+			$("#apDistTargetComp").removeAttr('checked');
+			$("#tgDistTargetComp").attr('checked', 'checked');
+			$("#tgDistTargetComp").addClass("btn-success");
+			$("#apDistTargetComp").removeClass("btn-success");
+			
+			
+			$("#apConstTargetComp").removeAttr('checked');
+			$("#tgConstTargetComp").attr('checked', 'checked');
+			$("#tgConstTargetComp").addClass("btn-success");
+			$("#apConstTargetComp").removeClass("btn-success");
 	}
 	
  function gettingInActiveUsersDetails(hoursCount)
@@ -1972,11 +1988,22 @@ function SortByName(a, b){
 	   
 	   
 	    $('input:radio[name=compareC]').click(function() {
-			$("#apConstTargetComp").click();
+			var state = "${getState}";
+			if(state == "TS"){
+				$("#tgConstTargetComp").click();
+			}else{
+				$("#apConstTargetComp").click();
+			}
+			
 			var val = $('input:radio[name=compareC]:checked').val();
 		});
 	   $('input:radio[name=compareD]').click(function() {
-			$("#apDistTargetComp").click();
+			var state = "${getState}";
+			if(state == "TS"){
+				$("#tgDistTargetComp").click();
+			}else{
+				$("#apDistTargetComp").click();
+			}
 			var val = $('input:radio[name=compareD]:checked').val();
 		});
 		
@@ -2259,13 +2286,26 @@ function SortByName(a, b){
 			$("#tgConstTargetComp").removeClass("btn-success");
 			
 			$("#todayCId").attr("checked","checked");
-			getLocationswiseleaderCadreInfo2(3,"Constituency",1,"#leaderDataDiv2","today");
+			
+			var state = "${getState}";
+			if(state == "TS"){
+				getLocationswiseleaderCadreInfo2(3,"Constituency",2,"#leaderDataDiv2","today");
+			}else{
+				getLocationswiseleaderCadreInfo2(3,"Constituency",1,"#leaderDataDiv2","today");
+			}
 		});
 		$(".refreshDist").click(function(){
 			$("#apDistTargetComp").addClass("btn-success");
 			$("#tgDistTargetComp").removeClass("btn-success");
 			$("#todayDId").attr("checked","checked");
-			getLocationswiseleaderCadreInfo2(2,"District",1,"#leaderDataDiv1","today");
+			
+			var state = "${getState}";
+			if(state == "TS"){
+				getLocationswiseleaderCadreInfo2(2,"District",2,"#leaderDataDiv1","today");
+			}else{
+				getLocationswiseleaderCadreInfo2(2,"District",1,"#leaderDataDiv1","today");
+			}
+			
 		});
 		
 		$(document).on('click',".statusBsd",function(){
@@ -2344,8 +2384,15 @@ function SortByName(a, b){
 		}
 		
 	  <c:if test="${fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_2014_MP' ) }"> 
-		  getLocationswiseleaderCadreInfo2(3,"Constituency",1,"#leaderDataDiv2","today");
-		  getLocationswiseleaderCadreInfo2(2,"District",1,"#leaderDataDiv1","today");
+		  var state = "${getState}";
+		  if(state == "TS"){
+			getLocationswiseleaderCadreInfo2(3,"Constituency",2,"#leaderDataDiv2","today");
+			getLocationswiseleaderCadreInfo2(2,"District",2,"#leaderDataDiv1","today");
+		  }else{
+			getLocationswiseleaderCadreInfo2(3,"Constituency",1,"#leaderDataDiv2","today");
+			getLocationswiseleaderCadreInfo2(2,"District",1,"#leaderDataDiv1","today");
+		  }
+		  
 	  </c:if>
 	    <c:if test="${not fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) && not fn:contains(sessionScope.USER.entitlements, 'CADRE_2014_MP' )}"> 
 		getDistrictWiseCompletedPercentage(0,1);
