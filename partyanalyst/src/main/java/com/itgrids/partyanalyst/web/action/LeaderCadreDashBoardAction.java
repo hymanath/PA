@@ -303,4 +303,14 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 		return Action.SUCCESS;
 	}
 	
+	public String getBoothWiseDetails(){
+		try{
+			jObj = new JSONObject(getTask());
+			amountDetails = leaderCadreDashBoardService.getBoothWiseDetails(jObj.getLong("constituencyId"));
+		}
+		catch (Exception e) {
+			LOG.error("Entered into getBoothWiseDetails() in LeaderCadreDashBoardAction class",e);
+		}
+		return Action.SUCCESS;
+	}
 }
