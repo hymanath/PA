@@ -425,7 +425,11 @@ table.dataTable tr.odd {
 			
 		</div>
 	</div>
-	
+	<div id="boothWiseInfoWindowDIV">
+		<div id="boothWiseInfoWindowInner" style="margin-left:10px;">
+			
+		</div>
+	</div>
 <script type="text/javascript">
 function openDialogToTrack(){
     window.open('cadreRegistrationReportAction.action','_blank');
@@ -1895,7 +1899,9 @@ function SortByName(a, b){
 							}
 							else
 							{
-								str+='<td> <i style="cursor:pointer;" onclick="getCadreDetails('+ result[i].id+ ',\'constituency\')"  title="Click here to view details" class=" icon-eye-open"></i></td> ';
+								str+='<td> <i style="cursor:pointer;" onclick="getCadreDetails('+ result[i].id+ ',\'constituency\')"  title="Click here to view details" class=" icon-eye-open"></i>'; 
+								//str+='<i style="cursor:pointer;" onclick="getBoothWiseTargetInfo('+ result[i].id+ ')"  title="Click here to view booth wise target info " class=" icon-eye-open"></i>';
+								str+='</td> ';
 							}
 						} 
 						str+='</tr>';
@@ -2382,7 +2388,28 @@ function SortByName(a, b){
 				str+='</table>';	
 			$("#informationWindowInner").html(str);
 		}
-		
+		function getBoothWiseTargetInfo(id){
+		    $("#boothWiseInfoWindowDIV").dialog({
+					resizable:false,
+					title:'Booth Wise Target Information',
+					height: '500',
+					width:'800',
+					top:250,
+					left:100,
+					modal: true
+				});
+				$("#boothWiseInfoWindowInner").html('<img src="images/Loading-data.gif" style="margin-left:325px;margin-top:120px;width:70px;height:60px;">');
+			var jObj = {
+				constituencyId : id
+			}
+			$.ajax({
+			  type:'GET',
+			  url: 'getLocationBoothWisDetailsAction.action',
+			  data : {task:JSON.stringify(jObj)} ,
+            }).done(function(result){
+			   
+			});
+		}
 	  <c:if test="${fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_2014_MP' ) }"> 
 		  var state = "${getState}";
 		  if(state == "TS"){
