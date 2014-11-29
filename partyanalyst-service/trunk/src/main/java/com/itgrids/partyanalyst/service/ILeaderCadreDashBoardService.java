@@ -23,5 +23,5 @@ public interface ILeaderCadreDashBoardService {
 	public CadreAmountDetailsVO getUsersInLocation(Long userId,Date fromDate,Date toDate,Long locationId,Long constituencyId,String type);
 	public List<CadreDataAnalysisVO> getCadreBoothAnalysisReport(Long stateId);
 	public List<CadreDataAnalysisVO> getBoothInfo(List<Long> boothIds,Long constituencyId);
-	
+	public List<CadreAmountDetailsVO> getBoothWiseDetails(Long constituencyId);
 }

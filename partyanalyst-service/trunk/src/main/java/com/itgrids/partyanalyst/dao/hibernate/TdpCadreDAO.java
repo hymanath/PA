@@ -3274,5 +3274,20 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			query.setParameterList("constituencyId", constituencyId);
 			return query.list();
 		}
-	
+	  public List<Object[]> getTotalRecordsBoothWise(Long constituencyId,Date fromDate,Date toDate){
+			StringBuilder str = new StringBuilder();
+			 str.append("select count(model.tdpCadreId),model.userAddress.booth.boothId from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = 2014 and model.userAddress.booth.boothId is not null "); 
+			 if(fromDate != null && toDate != null){
+			   str.append(" and date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate ");
+			 }
+			  str.append(" and model.userAddress.constituency.constituencyId = :constituencyId group by model.userAddress.booth.boothId ");
+			 
+				Query query = getSession().createQuery(str.toString());
+			if(fromDate != null && toDate != null){
+				query.setParameter("fromDate",fromDate);
+				query.setParameter("toDate",toDate);
+			}
+			query.setParameter("constituencyId",constituencyId);
+			return query.list();
+		  }
 }
