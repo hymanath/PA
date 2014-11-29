@@ -138,7 +138,7 @@
 							<option value="1">State</option>
 							<option value="2">District</option>
 							<option value="3">Constituency</option>
-							<!-- <option value="4">Parliament</option> -->
+							 <option value="4">Parliament</option> 
 							</select>
 							</c:if>
 							<c:if test="${sessionScope.USER.accessType == 'DISTRICT'}">
@@ -224,11 +224,125 @@
 		</div>
 	<!-- Footer Row End-->
 <script>
+var accessType = "${sessionScope.USER.accessType}";
+	var accessValue = "${sessionScope.USER.accessValue}";
+	var accessState = "${sessionScope.USER.stateName}"
+	$(document).ready(function(){
+		$('#locationsDispalyId').val(1);
+	});
+	
+	<c:if test="${sessionScope.USER.accessType == 'DISTRICT'}">	
+	selectLocationByAccess(2);
+	</c:if>
+	<c:if test="${sessionScope.USER.accessType == 'MLA'}">	
+	selectLocationByAccess(3);
+	</c:if>
+	<c:if test="${sessionScope.USER.accessType == 'MP'}">	
+	selectLocationByAccess(4);
+	</c:if>
+	getLocationNameByAccessValues(accessType,accessValue);
 
 function exportExcelREport(tableId)
 {
 		tableToExcel(tableId, 'Membership Cards Print Status Report');
 }
+function selectLocationByAccess(value){
+		if(value==2){
+			
+			$("#statedisplaydivid").show();
+			$("#distdisplaydivid").show();
+			$("#constdisplaydivid").hide();
+			$("#parlConstdisplaydivid").hide();
+			$("#distdisplaydivid2").show();
+			$("#constdisplaydivid2").hide();
+			$("#parlConstdisplaydivid2").hide();
+			getLocationNameByAccessValues(value,"DISTRICT");
+		}
+		if(value==3){
+			$("#statedisplaydivid").show();		
+			$("#distdisplaydivid").hide();
+			$("#constdisplaydivid").show();
+			$("#parlConstdisplaydivid").hide();
+			$("#distdisplaydivid2").hide();
+			$("#constdisplaydivid2").show();
+			$("#parlConstdisplaydivid2").hide();
+			getAssemblyParlConstituencies(accessValue,"Assembly");
+		}
+		if(value==4){
+			$("#statedisplaydivid").show();
+			$("#distdisplaydivid").hide();
+			$("#constdisplaydivid").hide();
+			$("#parlConstdisplaydivid").show();
+			$("#distdisplaydivid2").hide();
+			$("#constdisplaydivid2").hide();
+			$("#parlConstdisplaydivid2").show();
+			getAssemblyParlConstituencies(accessValue,"Parliament");
+		}	
+  }
+function getAssemblyParlConstituencies(districtId,type){
+
+		var str='';
+		var jsObj={
+			mainUserLocationId:districtId,
+			reportLevel:type
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getSubUserAccessValueAction.action',
+			  data: {task:JSON.stringify(jsObj)}
+			
+	   }).done(function(result){
+				for(var i in result)
+				{
+					str +='<option value='+result[i].id+'>'+result[i].name+'</option>';
+				}
+				if(type=="Parliament"){				
+					$("#displayParlConstbox").html(str);
+					$("#displayParlConstbox2").html(str);
+					$("#trackingParlDispalyId").html(str);
+				}	
+				if(type=="Assembly"){
+					$("#displayconstbox").html(str);
+					$("#displayconstbox2").html(str);
+					$("#trackingConstituencyDispalyId").html(str);
+					$("#constituencyDispalyId").html(str);
+					
+				}		
+	   });		
+	}
+	function getLocationNameByAccessValues(type,value){
+
+	  var str='';
+		var jsObj={
+			usersType:type,
+			areaType:value
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getLocationNameByIdAndTypeAction.action',
+			  data: {task:JSON.stringify(jsObj)}
+			
+	   }).done(function(result){
+			if(type == 'DISTRICT'){
+		  		str +='<option value="${sessionScope.USER.accessValue}">'+result+'</option>';
+				$("#displaydistbox").html(str);
+				
+			}
+			if(type == 'MLA'){
+		  		str +='<option value="${sessionScope.USER.accessValue}">'+result+'</option>';
+				$("#displayconstbox").html(str);
+				
+			}
+			if(type == 'MP'){
+		  		str +='<option value="${sessionScope.USER.accessValue}">'+result+'</option>';
+				$("#displayParlConstbox").html(str);
+				
+			}
+	   });	
+	
+	
+	}
+	
 $(document).ready(function(){
 	  $("#fromDateId,#toDateId").datepicker({
 		dateFormat: "dd-mm-yy",
@@ -554,7 +668,7 @@ $('#excelBtnId').hide();
 			
 			$('#reportsStatusExcelDiv').html(str);
 	}
-	selectLocation(1);
+	
  function selectLocation(value){
 	if(value==0){
 		$("#statedisplaydivid").hide();
