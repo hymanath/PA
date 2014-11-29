@@ -1987,5 +1987,57 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 		
 		return resultList;
 	}
+		
+	public List<CadreAmountDetailsVO> getBoothWiseDetails(Long constituencyId){
+	  List<CadreAmountDetailsVO> resultList = new ArrayList<CadreAmountDetailsVO>();
+	  List<Object[]> voterCountList = null;
 	
+	try{
+		//0 id,1name,2total,3districtId,4tehsilName,5 localBody,6localBody type
+			voterCountList = boothDAO.getTotalVotersInBooths(constituencyId,IConstants.VOTER_DATA_PUBLICATION_ID);
+		if(voterCountList != null && voterCountList.size() > 0)
+			for(Object[] params :voterCountList)
+			{
+				CadreAmountDetailsVO basicVo = new CadreAmountDetailsVO();
+				basicVo.setId((Long)params[0]);
+				basicVo.setName(params[1] != null ? params[1].toString() : "");
+				basicVo.setTotalVoters((Long)params[2]);
+				basicVo.setTotalRecords(0l);
+				basicVo.setDifference(0l);
+				basicVo.setPercentage("0.0");
+				basicVo.setColorStatus("Worst");
+				if(params[5] != null){
+				    basicVo.setConstituency(params[5].toString()+" "+params[6].toString());
+				}else{
+					basicVo.setConstituency(params[4].toString()+" Mandal");
+				}
+				
+				if(((Long)params[3]).longValue() > 10){
+				    basicVo.setTargetCadres((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014);
+				}else{
+					basicVo.setTargetCadres((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_TG) / IConstants.TG_VOTERS_2014);
+				}
+				
+				resultList.add(basicVo);
+			}
+		List<Object[]> totalRecords = tdpCadreDAO.getTotalRecordsBoothWise(constituencyId,null,null);
+		
+		if(totalRecords != null && totalRecords.size() > 0)
+		{
+			for(Object[] params : totalRecords)
+			{
+				  CadreAmountDetailsVO vo = getMatchedVO(resultList,(Long)params[1]);
+				  if(vo != null)
+				  {
+					  vo.setTotalRecords(params[0] != null ? (Long)params[0] : 0);
+				  }
+			}
+		}
+		
+	}
+	catch (Exception e) {
+		LOG.error("Exception rised in  getBoothWiseDetails() ",e);
+	}
+	return resultList;
+ }
 }

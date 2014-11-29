@@ -242,4 +242,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getCasteGroupWiseCadreCountExcludingMinoritiesByAccessType(Long districtId, List<Long> constituencyId);
 	public List<Object[]> getCadreCountInMinoritiesByAccessType(Long districtId, List<Long> constituencyId);
 	public List<Object[]> getCastWiseCadreCountByAccessType(Long districtId, List<Long> constituencyId);
+	public List<Object[]> getTotalRecordsBoothWise(Long constituencyId,Date fromDate,Date toDate);
 }
