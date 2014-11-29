@@ -23,6 +23,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 
 import com.itgrids.partyanalyst.dao.IAppDbUpdateDAO;
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegAmountDetailsDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
@@ -85,8 +86,18 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 
 	private IRegionServiceData regionServiceDataImp;
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	
 	
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
+
 	public void setCadreRegAmountDetailsDAO(
 			ICadreRegAmountDetailsDAO cadreRegAmountDetailsDAO) {
 		this.cadreRegAmountDetailsDAO = cadreRegAmountDetailsDAO;
@@ -1924,13 +1935,18 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		}
 		if(mandalIds.size() > 0){
 		constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoMandalWise(mandalIds,fromDate,toDate,2014l));
-		constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoMandalWise(ids,null,null,2012l));
+		constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoMandalWise(mandalIds,null,null,2012l));
 		namesList.addAll(tehsilDAO.getTehsilNameByTehsilIdsList(mandalIds));
 		}
 		if(localBodyIds.size() > 0){
-		constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoLocalBodyWise(localBodyIds,fromDate,toDate,2014l));
-		constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoLocalBodyWise(ids,null,null,2012l));
-		namesList.addAll(localElectionBodyDAO.getLocalElectionBodyNames(localBodyIds));
+			List<Long> assmblyLclIds = new ArrayList<Long>();
+			assmblyLclIds = assemblyLocalElectionBodyDAO.getLEBIdsByALEBIds(localBodyIds);
+			if(assmblyLclIds!=null && assmblyLclIds.size()>0){
+				constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoLocalBodyWise(assmblyLclIds,fromDate,toDate,2014l));
+				constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoLocalBodyWise(assmblyLclIds,null,null,2012l));
+				namesList.addAll(localElectionBodyDAO.getLocalElectionBodyNames(assmblyLclIds));
+			}
+		
 		}
 
 		}
