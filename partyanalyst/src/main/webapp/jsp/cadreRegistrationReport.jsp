@@ -534,21 +534,22 @@
 	$(document).ready(function(){
 		$('#locationsDispalyId').val(1);
 	});
-	
+	 
+	 
 	<c:if test="${sessionScope.USER.accessType == 'DISTRICT'}">	
-	selectLocationByAccess(2);
-	trackingShowCorrespondingLocsByAccess(3);
-	showCorrespondingLocsByAccess(3,"DISTRICT");
+		selectLocationByAccess(2);
+		trackingShowCorrespondingLocsByAccess(3);
+		showCorrespondingLocsByAccess(3,"DISTRICT");
 	</c:if>
 	<c:if test="${sessionScope.USER.accessType == 'MLA'}">	
-	selectLocationByAccess(3);
-	trackingShowCorrespondingLocsByAccess(4);
-	showCorrespondingLocsByAccess(4,"MLA");
+		selectLocationByAccess(3);
+		trackingShowCorrespondingLocsByAccess(4);
+		showCorrespondingLocsByAccess(4,"MLA");
 	</c:if>
 	<c:if test="${sessionScope.USER.accessType == 'MP'}">	
-	selectLocationByAccess(4);
-	trackingShowCorrespondingLocsByAccess(5);
-	showCorrespondingLocsByAccess(4,"MP");
+		selectLocationByAccess(4);
+		trackingShowCorrespondingLocsByAccess(5);
+		showCorrespondingLocsByAccess(4,"MP");
 	</c:if>
 	getLocationNameByAccessValues(accessType,accessValue);
 	
@@ -1778,6 +1779,9 @@ if(result.length > 0){
 	   $("#locationWiseCadreInfoDiv").show();
 	     $("#userTrackingDiv").hide();
 		tabSelected= true; 
+		<c:if test="${sessionScope.USER.accessType  == 'MP'}">	
+		getAssemblyConstituencies(accessValue);
+		</c:if>
 	 }
 	 else if(id == "slowUserTrackingTab"){
        $("#slowUserTrackingTab").addClass("selected");
@@ -1795,9 +1799,12 @@ if(result.length > 0){
 		$("#userTrackingDiv").show();
 		$("#userTrackingTabDiv").show();
 	 }
-	<c:if test="${sessionScope.USER.accessType != 'STATE'}">
-	 getLocationNameByAccessValues(accessType,accessValue);
-	 </c:if>
+	 <c:if test="${sessionScope.USER.accessType  != 'STATE'}">	
+		if(id != "locationReportTab"){
+			getLocationNameByAccessValues(accessType,accessValue);
+		}
+	</c:if>
+	  
   }
   function viewDetails(frmLocation,frmLocationId,toLoc,startDate,endDate){
    $('#dialogueLocationsCadTable').html('<img src="images/Loading-data.gif" style="margin-left: 350px;margin-top:78px;width:70px;height:60px;">');
@@ -2946,7 +2953,7 @@ function getCandidateDataCollectionInfo2(){
 			$("#distdisplaydivid2").show();
 			$("#constdisplaydivid2").hide();
 			$("#parlConstdisplaydivid2").hide();
-			getLocationNameByAccessValues(value,"DISTRICT");
+			getLocationNameByAccessValues("DISTRICT",accessValue);
 		}
 		if(value==3){
 			$("#statedisplaydivid").show();		
@@ -2979,7 +2986,7 @@ function getCandidateDataCollectionInfo2(){
 		$("#trackingConstituencyDispalyMainDiv").hide();
 		$("#trackingParlDispalyMainDiv").hide();
 		
-		getLocationNameByAccessValues(locationLvl,"DISTRICT");
+		getLocationNameByAccessValues("DISTRICT",accessValue);
 	  }
 	  
 	 if(locationLvl == 4)
@@ -3029,6 +3036,16 @@ function getCandidateDataCollectionInfo2(){
 				$("#displayconstbox2").html(str);
 				$("#trackingConstituencyDispalyId").html(str);
 				$("#constituencyDispalyId").html(str);
+					var selConstituencyId =$("#constituencyDispalyId").val();
+					if(tabSelected == true && $("#locationsDispalyId").val() == 5){					
+					getTehsils(selConstituencyId);
+					}
+					if(tabSelected == true && $("#locationsDispalyId").val() == 9){			
+					getBooths(selConstituencyId);
+					}
+					if(tabSelected == true && $("#locationsDispalyId").val() == 6){		
+					getPanchayats(selConstituencyId);
+					}
 			}
 			if(type == 'MP'){
 		  		str +='<option value="${sessionScope.USER.accessValue}">'+result+'</option>';
@@ -3060,7 +3077,7 @@ function getAssemblyParlConstituencies(districtId,type){
 					str +='<option value='+result[i].id+'>'+result[i].name+'</option>';
 				}
 				if(type=="Parliament"){				
-					$("#displayParlConstbox").html(str);
+					
 					$("#displayParlConstbox2").html(str);
 					$("#trackingParlDispalyId").html(str);
 				}	
@@ -3069,30 +3086,20 @@ function getAssemblyParlConstituencies(districtId,type){
 					$("#displayconstbox2").html(str);
 					$("#trackingConstituencyDispalyId").html(str);
 					$("#constituencyDispalyId").html(str);
-					var selConstituencyId =$("#constituencyDispalyId").val();
-					if(tabSelected == true && $("#locationsDispalyId").val() == 5){					
-					getTehsils(selConstituencyId);
-					}
-					if(tabSelected == true && $("#locationsDispalyId").val() == 9){			
-					getBooths(selConstituencyId);
-					}
-					if(tabSelected == true && $("#locationsDispalyId").val() == 6){		
-					getPanchayats(selConstituencyId);
-					}
+					
 				}		
 	   });		
 	}
 	
-	 function showCorrespondingLocsByAccess(locationLvl,access){
-    
-	  if(locationLvl == 3){
+	function showCorrespondingLocsByAccess(locationLvl,access){
+      if(locationLvl == 3){
 		   $("#statesDispalyMainDiv").show();
 		   $("#districtsDispalyMainDiv").show();
 		   $("#constituencyDispalyMainDiv").hide();
 		   $("#mandalDispalyMainDiv").hide();
 		   $("#panchayatDispalyMainDiv").hide();
 		   $("#boothDispalyMainDiv").hide();
-		   getLocationNameByAccessValues(locationLvl,access);
+		   getLocationNameByAccessValues(access,accessValue);
 	  }else if(locationLvl == 4){
 	       $("#statesDispalyMainDiv").show();
 		   $("#districtsDispalyMainDiv").hide();
@@ -3100,10 +3107,15 @@ function getAssemblyParlConstituencies(districtId,type){
 		   $("#mandalDispalyMainDiv").hide();
 		   $("#panchayatDispalyMainDiv").hide();
 		   $("#boothDispalyMainDiv").hide();
-		   if(access == 'DISTRICT')
-			getAssemblyParlConstituencies(accessValue,"Assembly");
-			else
-			 getLocationNameByAccessValues(locationLvl,access);
+		   if(access == 'DISTRICT'){
+			 getAssemblyParlConstituencies(accessValue,"Assembly");
+			}
+			else if(access == 'MLA'){		
+			  getLocationNameByAccessValues(access,accessValue);
+			}
+		   else if(access == 'MP'){		   
+			getAssemblyConstituencies(accessValue);
+		   }
 	  }else if(locationLvl == 5){
 		   $("#statesDispalyMainDiv").hide();
 		   $("#districtsDispalyMainDiv").hide();
@@ -3112,15 +3124,19 @@ function getAssemblyParlConstituencies(districtId,type){
 		   $("#panchayatDispalyMainDiv").hide();
 		   $("#boothDispalyMainDiv").hide();
 		   if(access == 'DISTRICT'){
-		     getAssemblyParlConstituencies(accessValue,"Assembly");
-			   showCorrespondingConstituencyDivs("mandal");
-			  
-			   }
-		   else{			
-			 getLocationNameByAccessValues(locationLvl,access);
-			 getTehsils(accessValue);			 
-			 }
+		        showCorrespondingConstituencyDivs("mandal");
+				getAssemblyParlConstituencies(accessValue,"Assembly");
+				
+		   }else if(access == 'MLA'){
+			  getLocationNameByAccessValues(access,accessValue);
+			}
+		   else if(access == 'MP'){
+		   	showCorrespondingConstituencyDivs("mandal");
+			getAssemblyConstituencies(accessValue);
+				
+		   }
 		   
+			  
 	  }else if(locationLvl == 6){
 		   $("#statesDispalyMainDiv").hide();
 	       $("#districtsDispalyMainDiv").hide();
@@ -3129,13 +3145,18 @@ function getAssemblyParlConstituencies(districtId,type){
 		   $("#panchayatDispalyMainDiv").show();
 		   $("#boothDispalyMainDiv").hide();
 		   if(access == 'DISTRICT'){
-			   getAssemblyParlConstituencies(accessValue,"Assembly");
 			   showCorrespondingConstituencyDivs("panchayat");
-		   }
-		   else{			
-			 getLocationNameByAccessValues(locationLvl,access);
-			 getPanchayats(accessValue);			 
+			   getAssemblyParlConstituencies(accessValue,"Assembly");
+				
+		   }else if(access == 'MLA'){
+			  getLocationNameByAccessValues(access,accessValue);
 			}
+		   else if(access == 'MP'){
+			showCorrespondingConstituencyDivs("panchayat");
+			 getAssemblyConstituencies(accessValue);
+		    
+		   }
+		  
 	  }else if(locationLvl == 9){
 		   $("#statesDispalyMainDiv").hide();
 		   $("#districtsDispalyMainDiv").hide();
@@ -3144,18 +3165,23 @@ function getAssemblyParlConstituencies(districtId,type){
 		   $("#panchayatDispalyMainDiv").hide();
 		   $("#boothDispalyMainDiv").show();
 		   if(access == 'DISTRICT'){
-		   getAssemblyParlConstituencies(accessValue,"Assembly");
-		   showCorrespondingConstituencyDivs("booth");
+			 showCorrespondingConstituencyDivs("booth");
+			 getAssemblyParlConstituencies(accessValue,"Assembly");
+			
+		   }else if(access == 'MLA'){
+			  getLocationNameByAccessValues(access,accessValue);
+			}
+		   else if(access == 'MP'){
+			 showCorrespondingConstituencyDivs("booth");
+		     getAssemblyConstituencies(accessValue);
+						 
 		   }
-		   else{
-		    getLocationNameByAccessValues(locationLvl,access);
-			 getBooths(accessValue);	
-		   }
-		   
+		  
 	  }
   }
   
    function showCorrespondingConstituencyDivs(type){
+
      if(type == "mandal"){
 	   $("#constituencySelectDIV").html('<select id="constituencyDispalyId" onchange="getTehsils(this.value);"></select>');
 	 }else if(type == "booth"){
@@ -3166,6 +3192,43 @@ function getAssemblyParlConstituencies(districtId,type){
 	
   }
  
+ 
+ function getAssemblyConstituencies(constiId){
+	var str;
+	var jsObj = 
+	       {
+			  parliamentConstiId : constiId,
+			  electionYear:2005,
+			  task:"getAssemblyDetailsForParliamnt"             
+	       }	
+		    $.ajax({
+				type : "POST",
+				url : "getAssemblyDetailsForParliamntAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				$("#constituencyDispalyId option").remove();
+				$('#constituencyDispalyId').append('<option value="0"> All</option>');
+				if(result.selectOptionsList != null && result.selectOptionsList.length > 0)
+				{						
+					for(var i in result.selectOptionsList)
+					{
+						str +='<option value='+result.selectOptionsList[i].id+'>'+result.selectOptionsList[i].name+'</option>';
+					}
+					$("#constituencyDispalyId").html(str);
+					var selConstituencyId =$("#constituencyDispalyId").val();
+					
+					if($("#locationsDispalyId").val() == 5){							
+					getTehsils(selConstituencyId);
+					}
+					if( $("#locationsDispalyId").val() == 9){	
+					getBooths(selConstituencyId);
+					}
+					if($("#locationsDispalyId").val() == 6){
+					getPanchayats(selConstituencyId);
+					}
+				}
+		  });
+}
   
 </script>
 </body>
