@@ -218,7 +218,7 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		if(regVO == null)
 			return Action.INPUT;
 		
-		if(!entitlementsHelper.checkForEntitlementToViewReport(regVO,IConstants.TDP_CADRE_2014_ADMIN))
+		if(!(entitlementsHelper.checkForEntitlementToViewReport(regVO,IConstants.TDP_CADRE_2014_ADMIN) || entitlementsHelper.checkForEntitlementToViewReport(regVO,"CADRE_2014_MP")))
 			return Action.ERROR;
 		
 		if(regVO.getAccessType()!=null && regVO.getAccessValue()!=null)
