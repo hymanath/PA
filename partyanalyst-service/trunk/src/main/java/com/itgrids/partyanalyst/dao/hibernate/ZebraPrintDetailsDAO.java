@@ -198,4 +198,12 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 		return (Long)query.uniqueResult();
 	}
 	
+	public int updateVoterName(Long zebraPrintDetailsId,String voterName)
+	{
+		Query query = getSession().createQuery("update ZebraPrintDetails model set model.voterName = :voterName where model.zebraPrintDetailsId = :zebraPrintDetailsId ");
+		query.setParameter("voterName",voterName);
+		query.setParameter("zebraPrintDetailsId",zebraPrintDetailsId);
+		return query.executeUpdate();
+	}
+	
 }
