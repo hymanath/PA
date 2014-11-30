@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -2101,7 +2102,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			List<Object[]> errorCountList = zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, accessType,"errorStatus");
 			List<Object[]> totalPushedCountList = zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, accessType,"totalCount");
 			
-			Map<Long,ZebraPrintDetailsVO> locationWiseMap = new HashMap<Long, ZebraPrintDetailsVO>(0);
+			Map<Long,ZebraPrintDetailsVO> locationWiseMap = new LinkedHashMap<Long, ZebraPrintDetailsVO>(0);
 			Long totalRegisteredCount = 0L;
 			Long totalPrintCount = 0L;
 			Long totalErrorCount = 0L;
