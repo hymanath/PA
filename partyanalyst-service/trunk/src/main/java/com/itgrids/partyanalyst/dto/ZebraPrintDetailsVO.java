@@ -19,13 +19,54 @@ public class ZebraPrintDetailsVO implements java.io.Serializable{
 	
 	private String errorStatus;
 	private Long errorStatusCount;
+	private Long remainingCount;
 	
 	private Long rowCount;
+	private Double erroPerc;
+	private Double printPerc;
+	private Double pendingPerc;
 	
 	List<ZebraPrintDetailsVO> zebraPrintDetailsVOList = new ArrayList<ZebraPrintDetailsVO>(0);
+	List<ZebraPrintDetailsVO> dataPushDetailsList = new ArrayList<ZebraPrintDetailsVO>(0);
 	List<String> datesList = new ArrayList<String>(); 
+	List<String> dataPushDatesList = new ArrayList<String>(); 
 	
-	
+	public Long getRemainingCount() {
+		return remainingCount;
+	}
+	public void setRemainingCount(Long remainingCount) {
+		this.remainingCount = remainingCount;
+	}
+	public Double getErroPerc() {
+		return erroPerc;
+	}
+	public void setErroPerc(Double erroPerc) {
+		this.erroPerc = erroPerc;
+	}
+	public Double getPrintPerc() {
+		return printPerc;
+	}
+	public void setPrintPerc(Double printPerc) {
+		this.printPerc = printPerc;
+	}
+	public Double getPendingPerc() {
+		return pendingPerc;
+	}
+	public void setPendingPerc(Double pendingPerc) {
+		this.pendingPerc = pendingPerc;
+	}
+	public List<String> getDataPushDatesList() {
+		return dataPushDatesList;
+	}
+	public void setDataPushDatesList(List<String> dataPushDatesList) {
+		this.dataPushDatesList = dataPushDatesList;
+	}
+	public List<ZebraPrintDetailsVO> getDataPushDetailsList() {
+		return dataPushDetailsList;
+	}
+	public void setDataPushDetailsList(List<ZebraPrintDetailsVO> dataPushDetailsList) {
+		this.dataPushDetailsList = dataPushDetailsList;
+	}
 	public List<String> getDatesList() {
 		return datesList;
 	}
