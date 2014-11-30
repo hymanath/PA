@@ -353,18 +353,40 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		return query.list();
 	}
 	
-	public Long getWorkingMembersCount(Date date){
+	/*public Long getWorkingMembersCount(Date date){
 		Query query = getSession().createQuery("select count(distinct model.insertedBy.cadreSurveyUserId) from TdpCadre model where model.enrollmentYear = 2014 and model.isDeleted = 'N' and model.dataSourceType='TAB' and date(model.surveyTime) =:date and model.insertedBy.cadreSurveyUserId is not null");
 		
 		query.setDate("date", date);
 		return (Long)query.uniqueResult();
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	public Long getWorkingMembersCount(Date date){
+		Query query = getSession().createQuery("select model.insertedBy.cadreSurveyUserId from TdpCadre model where model.enrollmentYear = 2014 and model.isDeleted = 'N' and model.dataSourceType='TAB' and " +
+				" date(model.surveyTime) =:date and model.insertedBy.cadreSurveyUserId is not null group by model.insertedBy.cadreSurveyUserId ");
+		
+		query.setDate("date", date);
+		List<Long> list = query.list();
+		return Long.valueOf(Integer.valueOf(list.size()).toString());
 	}
-	public Long getWorkingMembersForWebCount(Date date){
+	
+	/*public Long getWorkingMembersForWebCount(Date date){
 		Query query = getSession().createQuery("select count(distinct  model.insertedWebUser.userId) from TdpCadre model where model.enrollmentYear = 2014 and model.isDeleted = 'N' and model.dataSourceType='WEB' and date(model.surveyTime) =:date and  model.insertedWebUser.userId is not null");
 		
 		query.setDate("date", date);
 		return (Long)query.uniqueResult();
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	public Long getWorkingMembersForWebCount(Date date){
+		Query query = getSession().createQuery("select model.insertedWebUser.userId from TdpCadre model where model.enrollmentYear = 2014 and model.isDeleted = 'N' " +
+				" and model.dataSourceType='WEB' and date(model.surveyTime) =:date and model.insertedWebUser.userId is not null group by model.insertedWebUser.userId ");
+		
+		query.setDate("date", date);
+		List<Long> list = query.list();
+		return Long.valueOf(Integer.valueOf(list.size()).toString());
 	}
+	
 	public List<TdpCadre> getVoterByVoterId(Long voterId)
 	{
 		Query query = getSession().createQuery("select model  from TdpCadre model where model.voterId = :voterId  and model.isDeleted = 'N'");
@@ -971,7 +993,7 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		return query.list();
 	}
 	
-	public Long getLastHoursWorkingMemberCount(Date presentDate, Date lastHours)
+	/*public Long getLastHoursWorkingMemberCount(Date presentDate, Date lastHours)
 	{
 		Query query = getSession().createQuery("select " +
 				" count(distinct model.insertedBy.cadreSurveyUserId) from TdpCadre model where model.enrollmentYear = 2014 and model.isDeleted = 'N' " +
@@ -980,12 +1002,25 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		query.setParameter("presentDate", presentDate);
 		query.setParameter("lastHours", lastHours);
 		
-		//System.out.println(" Cadre Query >>>>>>>>>>>>>>>> " + query.toString());
-		
 		return (Long)query.uniqueResult();
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	public Long getLastHoursWorkingMemberCount(Date presentDate, Date lastHours)
+	{
+		Query query = getSession().createQuery("select " +
+				" model.insertedBy.cadreSurveyUserId from TdpCadre model where model.enrollmentYear = 2014 and model.isDeleted = 'N' " +
+				" and model.dataSourceType='TAB' and ( model.surveyTime >= :lastHours and model.surveyTime <= :presentDate) and model.insertedBy.cadreSurveyUserId is not null " +
+				" group by model.insertedBy.cadreSurveyUserId ");
+		
+		query.setParameter("presentDate", presentDate);
+		query.setParameter("lastHours", lastHours);
+		
+		List<Long> list = query.list();
+		return Long.valueOf(Integer.valueOf(list.size()).toString());
 	}
 	
-	public Long getLastHoursWorkingMemberCountForWeb(Date presentDate, Date lastHours)
+	/*public Long getLastHoursWorkingMemberCountForWeb(Date presentDate, Date lastHours)
 	{
 		Query query = getSession().createQuery("select " +
 				" count(distinct  model.insertedWebUser.userId) from TdpCadre model where model.enrollmentYear = 2014 and model.isDeleted = 'N' " +
@@ -994,9 +1029,22 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		query.setParameter("presentDate", presentDate);
 		query.setParameter("lastHours", lastHours);
 		
-		//System.out.println(" Cadre Query >>>>>>>>>>>>>>>> " + query.toString());
-		
 		return (Long)query.uniqueResult();
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	public Long getLastHoursWorkingMemberCountForWeb(Date presentDate, Date lastHours)
+	{
+		Query query = getSession().createQuery("select " +
+				" model.insertedWebUser.userId from TdpCadre model where model.enrollmentYear = 2014 and model.isDeleted = 'N' " +
+				" and model.dataSourceType='WEB' and ( model.surveyTime >= :lastHours and model.surveyTime <= :presentDate) and  " +
+				" model.insertedWebUser.userId is not null group by model.insertedWebUser.userId");
+		
+		query.setParameter("presentDate", presentDate);
+		query.setParameter("lastHours", lastHours);
+		
+		List<Long> list = query.list();
+		return Long.valueOf(Integer.valueOf(list.size()).toString());
 	}
 	
 	public Integer inActiveTdpCadreByCadreIds(List<Long> tdpCadreIdList)
