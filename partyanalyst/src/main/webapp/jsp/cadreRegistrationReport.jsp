@@ -2963,6 +2963,7 @@ function getCandidateDataCollectionInfo2(){
 			$("#distdisplaydivid2").hide();
 			$("#constdisplaydivid2").show();
 			$("#parlConstdisplaydivid2").hide();
+			if(accessType == "DISTRICT")
 			getAssemblyParlConstituencies(accessValue,"Assembly");
 		}
 		if(value==4){
@@ -2973,6 +2974,7 @@ function getCandidateDataCollectionInfo2(){
 			$("#distdisplaydivid2").hide();
 			$("#constdisplaydivid2").hide();
 			$("#parlConstdisplaydivid2").show();
+			if(accessType == "DISTRICT")
 			getAssemblyParlConstituencies(accessValue,"Parliament");
 		}	
   }
@@ -2984,8 +2986,7 @@ function getCandidateDataCollectionInfo2(){
 	    $("#trackingStatesDispalyMainDiv").show();
 		$("#trackingDistrictsDispalyMainDiv").show();
 		$("#trackingConstituencyDispalyMainDiv").hide();
-		$("#trackingParlDispalyMainDiv").hide();
-		
+		$("#trackingParlDispalyMainDiv").hide();		
 		getLocationNameByAccessValues("DISTRICT",accessValue);
 	  }
 	  
@@ -2995,7 +2996,8 @@ function getCandidateDataCollectionInfo2(){
 		$("#trackingDistrictsDispalyMainDiv").hide();
 		$("#trackingConstituencyDispalyMainDiv").show();
 		$("#trackingParlDispalyMainDiv").hide();
-		getAssemblyParlConstituencies(accessValue,"Assembly");
+		if(accessType == "DISTRICT")
+			getAssemblyParlConstituencies(accessValue,"Assembly");
 	  }
 	 else if(locationLvl == 5)
 	  {	
@@ -3003,7 +3005,8 @@ function getCandidateDataCollectionInfo2(){
 		$("#trackingDistrictsDispalyMainDiv").hide();
 		$("#trackingConstituencyDispalyMainDiv").hide();
 		$("#trackingParlDispalyMainDiv").show();
-		getAssemblyParlConstituencies(accessValue,"Parliament");		
+		if(accessType == "DISTRICT")
+			getAssemblyParlConstituencies(accessValue,"Parliament");		
 	  }
 	
    }
@@ -3036,16 +3039,16 @@ function getCandidateDataCollectionInfo2(){
 				$("#displayconstbox2").html(str);
 				$("#trackingConstituencyDispalyId").html(str);
 				$("#constituencyDispalyId").html(str);
-					var selConstituencyId =$("#constituencyDispalyId").val();
-					if(tabSelected == true && $("#locationsDispalyId").val() == 5){					
+				var selConstituencyId =$("#constituencyDispalyId").val();
+				if(tabSelected == true && $("#locationsDispalyId").val() == 5){					
 					getTehsils(selConstituencyId);
-					}
-					if(tabSelected == true && $("#locationsDispalyId").val() == 9){			
+				}
+				if(tabSelected == true && $("#locationsDispalyId").val() == 9){			
 					getBooths(selConstituencyId);
-					}
-					if(tabSelected == true && $("#locationsDispalyId").val() == 6){		
+				}
+				if(tabSelected == true && $("#locationsDispalyId").val() == 6){		
 					getPanchayats(selConstituencyId);
-					}
+				}
 			}
 			if(type == 'MP'){
 		  		str +='<option value="${sessionScope.USER.accessValue}">'+result+'</option>';
@@ -3077,7 +3080,7 @@ function getAssemblyParlConstituencies(districtId,type){
 					str +='<option value='+result[i].id+'>'+result[i].name+'</option>';
 				}
 				if(type=="Parliament"){				
-					
+					$("#displayParlConstbox").html(str);
 					$("#displayParlConstbox2").html(str);
 					$("#trackingParlDispalyId").html(str);
 				}	
@@ -3086,7 +3089,16 @@ function getAssemblyParlConstituencies(districtId,type){
 					$("#displayconstbox2").html(str);
 					$("#trackingConstituencyDispalyId").html(str);
 					$("#constituencyDispalyId").html(str);
-					
+					var selConstituencyId =$("#constituencyDispalyId").val();					
+					if(tabSelected == true && $("#locationsDispalyId").val() == 5){							
+					getTehsils(selConstituencyId);
+					}
+					if(tabSelected == true && $("#locationsDispalyId").val() == 9){	
+					getBooths(selConstituencyId);
+					}
+					if(tabSelected == true && $("#locationsDispalyId").val() == 6){
+					getPanchayats(selConstituencyId);
+					}
 				}		
 	   });		
 	}
@@ -3107,15 +3119,13 @@ function getAssemblyParlConstituencies(districtId,type){
 		   $("#mandalDispalyMainDiv").hide();
 		   $("#panchayatDispalyMainDiv").hide();
 		   $("#boothDispalyMainDiv").hide();
-		   if(access == 'DISTRICT'){
-			 getAssemblyParlConstituencies(accessValue,"Assembly");
-			}
-			else if(access == 'MLA'){		
-			  getLocationNameByAccessValues(access,accessValue);
-			}
-		   else if(access == 'MP'){		   
-			getAssemblyConstituencies(accessValue);
-		   }
+			if(access == 'DISTRICT'){
+				getAssemblyParlConstituencies(accessValue,"Assembly");
+			}else if(access == 'MLA'){		
+				getLocationNameByAccessValues(access,accessValue);
+			}else if(access == 'MP'){		   
+				getAssemblyConstituencies(accessValue);
+		    }
 	  }else if(locationLvl == 5){
 		   $("#statesDispalyMainDiv").hide();
 		   $("#districtsDispalyMainDiv").hide();
@@ -3125,18 +3135,14 @@ function getAssemblyParlConstituencies(districtId,type){
 		   $("#boothDispalyMainDiv").hide();
 		   if(access == 'DISTRICT'){
 		        showCorrespondingConstituencyDivs("mandal");
-				getAssemblyParlConstituencies(accessValue,"Assembly");
-				
+				getAssemblyParlConstituencies(accessValue,"Assembly");	
 		   }else if(access == 'MLA'){
-			  getLocationNameByAccessValues(access,accessValue);
-			}
-		   else if(access == 'MP'){
-		   	showCorrespondingConstituencyDivs("mandal");
-			getAssemblyConstituencies(accessValue);
-				
+				getLocationNameByAccessValues(access,accessValue);
 		   }
-		   
-			  
+		   else if(access == 'MP'){
+				showCorrespondingConstituencyDivs("mandal");
+				getAssemblyConstituencies(accessValue);		
+		   }	  
 	  }else if(locationLvl == 6){
 		   $("#statesDispalyMainDiv").hide();
 	       $("#districtsDispalyMainDiv").hide();
@@ -3147,16 +3153,13 @@ function getAssemblyParlConstituencies(districtId,type){
 		   if(access == 'DISTRICT'){
 			   showCorrespondingConstituencyDivs("panchayat");
 			   getAssemblyParlConstituencies(accessValue,"Assembly");
-				
 		   }else if(access == 'MLA'){
-			  getLocationNameByAccessValues(access,accessValue);
-			}
-		   else if(access == 'MP'){
-			showCorrespondingConstituencyDivs("panchayat");
-			 getAssemblyConstituencies(accessValue);
-		    
+				getLocationNameByAccessValues(access,accessValue);
 		   }
-		  
+		   else if(access == 'MP'){
+				showCorrespondingConstituencyDivs("panchayat");
+				getAssemblyConstituencies(accessValue);	    
+		   }		  
 	  }else if(locationLvl == 9){
 		   $("#statesDispalyMainDiv").hide();
 		   $("#districtsDispalyMainDiv").hide();
@@ -3165,31 +3168,26 @@ function getAssemblyParlConstituencies(districtId,type){
 		   $("#panchayatDispalyMainDiv").hide();
 		   $("#boothDispalyMainDiv").show();
 		   if(access == 'DISTRICT'){
-			 showCorrespondingConstituencyDivs("booth");
-			 getAssemblyParlConstituencies(accessValue,"Assembly");
-			
+			  getAssemblyParlConstituencies(accessValue,"Assembly");
+			  showCorrespondingConstituencyDivs("booth");	
 		   }else if(access == 'MLA'){
 			  getLocationNameByAccessValues(access,accessValue);
-			}
+		   }
 		   else if(access == 'MP'){
 			 showCorrespondingConstituencyDivs("booth");
-		     getAssemblyConstituencies(accessValue);
-						 
-		   }
-		  
+		     getAssemblyConstituencies(accessValue);			 
+		   }	  
 	  }
   }
   
    function showCorrespondingConstituencyDivs(type){
-
      if(type == "mandal"){
 	   $("#constituencySelectDIV").html('<select id="constituencyDispalyId" onchange="getTehsils(this.value);"></select>');
 	 }else if(type == "booth"){
 	   $("#constituencySelectDIV").html('<select id="constituencyDispalyId" onchange="getBooths(this.value);"></select>');
 	 }else if(type == "panchayat"){
 	   $("#constituencySelectDIV").html('<select id="constituencyDispalyId" onchange="getPanchayats(this.value);"></select>');
-	 } 
-	
+	 } 	
   }
  
  
