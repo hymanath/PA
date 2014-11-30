@@ -13,4 +13,6 @@ public interface ITdpCadreReportService {
 	public SurveyTransactionVO getConstituencyDetailsInDistricts(List<Long> districtIdList);
 	public String updatePrintingStatusInTdpCadreTable();
 	public ZebraPrintDetailsVO createDashBoardForPrintingCardsDetails(String accessType,String accessValue,Long stateTypeId);
+	
+	public ZebraPrintDetailsVO getCadreDetailsByStatus(Long constituencyId,String status);
 }
