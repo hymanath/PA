@@ -2224,6 +2224,64 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		return returnVO;
 	}
 	
+	public ZebraPrintDetailsVO dashBoardForPrintingCardsDetails(String accessType,String accessValue,Long stateTypeId)
+	{
+		ZebraPrintDetailsVO returnVO = new ZebraPrintDetailsVO();
+		try {
+		
+			List<Long> selectedLocationIds = new ArrayList<Long>();
+			StringBuilder queryStrForCount = new StringBuilder();
+			List<Object[]> constituencyList =null;
+			
+			if(accessType.equals(IConstants.STATE))
+			{
+				constituencyList = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(0L, 1L, null);
+				
+			}
+			else if(accessType.equalsIgnoreCase(IConstants.DISTRICT))
+			{
+				constituencyList = constituencyDAO.getConstituenciesByDistrictId(Long.valueOf(accessValue));
+			}
+			else if(accessType.equalsIgnoreCase(IConstants.MP))
+			{
+				constituencyList = (List<Object[]>) delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituencies(Long.valueOf(accessValue));
+			}
+			else if(accessType.equalsIgnoreCase(IConstants.MLA))
+			{
+				selectedLocationIds.add(Long.valueOf(accessValue));
+			}
+			
+			if(!accessType.equalsIgnoreCase(IConstants.MLA))
+			{
+				if(constituencyList != null && constituencyList.size()>0)
+				{
+					for (Object[] cosntituency : constituencyList)
+					{
+						selectedLocationIds.add(cosntituency[0] != null? Long.valueOf(cosntituency[0].toString().trim()):0L);
+					}     
+				}
+			}
+			
+			queryStrForCount.append(" select count(TC.tdpCadreId) from TdpCadre TC where TC.userAddress.constituency.constituencyId in (:locationIds) and TC.isDeleted='N' and TC.enrollmentYear = 2014  ");
+
+			Long totalRegisteredCount = tdpCadreDAO.getRegisteredVotersForConstituencys(selectedLocationIds);
+			Long totalPrintCount = zebraPrintDetailsDAO.getTotalPrintStatusCount(selectedLocationIds, accessType,"printStatus");
+			Long totalErrorCount = zebraPrintDetailsDAO.getTotalPrintStatusCount(selectedLocationIds, accessType,"errorStatus");
+			Long totalPushCount =  zebraPrintDetailsDAO.getTotalPrintStatusCount(selectedLocationIds, accessType,"totalCount");
+		
+			returnVO.setRowCount(totalRegisteredCount);
+			returnVO.setPrintStatusCount(totalPrintCount);
+			returnVO.setErrorStatusCount(totalErrorCount);
+			returnVO.setTotalPushCount(totalPushCount);
+		
+			
+		} catch (Exception e) {
+			LOG.error(" exception occured in createDashBoardForPrintingCardsDetails()  @ TdpCadreReportService class.",e);
+		}
+		
+		return returnVO;
+	}
+	
 	public ZebraPrintDetailsVO getCadreDetailsByStatus(Long constituencyId,String status)
 	{
 		ZebraPrintDetailsVO returnVo = new ZebraPrintDetailsVO();

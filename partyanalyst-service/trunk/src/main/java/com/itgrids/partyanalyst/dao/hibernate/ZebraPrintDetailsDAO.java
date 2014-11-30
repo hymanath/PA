@@ -173,4 +173,29 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 		query.setParameter("Id", Id);
 		return query.list();	}
 	
+	public Long getTotalPrintStatusCount(List<Long> consituencyIdsList, String searchType,String dataType)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		
+		if(!searchType.equalsIgnoreCase(IConstants.MP)){
+			queryStr.append(" select count(model.zebraPrintDetailsId) from ZebraPrintDetails model where ");
+			queryStr.append(" model.tdpCadre.userAddress.constituency.constituencyId in (:consituencyIdsList) ");
+		}
+		else{
+			queryStr.append(" select count(model.zebraPrintDetailsId) from ZebraPrintDetails model where  ");
+			queryStr.append(" model.tdpCadre.userAddress.constituency.constituencyId in (:consituencyIdsList) ");
+		}
+		
+		if(dataType.equalsIgnoreCase("printStatus")){
+			queryStr.append(" and ((model.printStatus ='Y' or model.printStatus ='y' ) and (model.errorStatus is null or model.errorStatus ='0' ))  ");
+		}
+		else if(dataType.equalsIgnoreCase("errorStatus")){
+			queryStr.append(" and ((model.printStatus !='Y' or model.printStatus !='y' ) and (model.errorStatus is not null and model.errorStatus !='0' ))  ");
+		}
+	
+		Query query = getSession().createQuery(queryStr.toString()); 
+		query.setParameterList("consituencyIdsList", consituencyIdsList);
+		return (Long)query.uniqueResult();
+	}
+	
 }
