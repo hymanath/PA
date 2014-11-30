@@ -229,5 +229,19 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 		}
 		return Action.SUCCESS;
 	}
-	
+	public String getCadreDetails()
+	{
+		try {
+			
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			jobj = new JSONObject(getTask());
+			
+			zebraPrintDetailsVO = tdpCadreReportService.getCadreDetailsByStatus(jobj.getLong("Id"),jobj.getString("status"));
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in printingDashBoard method in CadreRegistrationAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
 }

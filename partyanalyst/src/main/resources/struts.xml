@@ -9051,6 +9051,11 @@
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
 			<result name="input">/jsp/loginForm.jsp?src=tabAllocationDetailsAction</result>
 		</action>
+		<action name="getCadreDetailsByStatusAction" class="tdpCadreReportAction" method="getCadreDetails" >
+			<result type="json" name="success">
+				<param name="root">zebraPrintDetailsVO</param>
+			</result>
+		</action>
 		
 </package>
 

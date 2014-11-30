@@ -6,6 +6,7 @@
 
 <html lang="en">
   <head>
+
 	 <!-- Bootstrap -->
     <link href="js/cardsDashBoard/css2.3.2/bootstrap.min.css" rel="stylesheet">	
 	<!-- Custom Styles-->
@@ -13,7 +14,6 @@
 	
 	<!-- bootstrap switch Styles-->
     <link href="js/cardsDashBoard/css2.3.2/bootstrap-switch.css" rel="stylesheet">	
-	
 	<!-- scrollator -->
 	<link href="js/cardsDashBoard/scrollator/fm.scrollator.jquery.css" rel="stylesheet">	
 	
@@ -35,8 +35,10 @@
 	 
 	 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
+	 <!-- Include all compiled plugins (below), or include individual files as needed -->
+	  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script src="js/cardsDashBoard/js2.3.2/bootstrap.min.js"></script>
+	  <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
 	<!---Bootstrap Swich-->
 	 <script src="js/cardsDashBoard/js2.3.2/bootstrap-switch.js"></script>
 	
@@ -48,6 +50,7 @@
 				<h2>PRINTING STATUS REPORT DASHBOARD</h2>
 			</div>
 		</div>
+		<div id="cadrePopupDiv" style="display:none;"><div id="cadrePopupInnerDiv"></div></div>
 		<div class="row">
 			<div class="span4 ">
 				<div class="widget">
@@ -111,7 +114,7 @@
 												<td>2000</td>
 												<td>1900</td>
 												<td>1500</td>
-												<td>100</td>
+												<td><a onclick="getCadreDetails('ERROR');">100</a></td>
 												<td>400 <small>(100 Errors)</small> /1900</td>
 											</tr>
 										</tbody>
@@ -136,7 +139,9 @@
 					
 				</div>
 			</div>
+			
 		</div>
+		
 	</div>
 	
 	
@@ -155,7 +160,55 @@
 		//scrollator
 		$('.scrollable_div').scrollator();
 		$("[name='my-checkbox']").bootstrapSwitch();
-		
+		function getCadreDetails(status)
+		{
+			 $('#cadrePopupInnerDiv').html('');
+		var jObj = {
+		Id:2,
+		status:status,
+		task:"cadreInfo"
+		}
+		 $.ajax({
+          type:'GET',
+          url: 'getCadreDetailsByStatusAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+       }).done(function(result){
+		buildPopup(result);
+		});
+		}
+
+		function buildPopup(result)
+		{
+			$("#cadrePopupDiv").css("display","block");
+			var str='';
+			str+='<table  class="table table-bordered table-striped" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;text-align:center;">';
+			 str +='<tr>';
+			  str +='<th>Name</th>';
+			  str +='<th>Relative Name</th>';
+			  str +='<th>Mobile</th>';
+			  str +='<th>MembershipNo</th>';
+			  str +='<th>Status</th>';
+			  str +='</tr>';
+			  for(var i in result.zebraPrintDetailsVOList)
+			  {
+				str +='<tr>';
+				str +='<td>'+result.zebraPrintDetailsVOList[i].name+'</td>';
+				str +='<td>'+result.zebraPrintDetailsVOList[i].relativeName+'</td>';
+				str +='<td>'+result.zebraPrintDetailsVOList[i].mobileNo+'</td>';
+				str +='<td>'+result.zebraPrintDetailsVOList[i].membershipNo+'</td>';
+				str +='<td>'+result.zebraPrintDetailsVOList[i].printStatus+'</td>';
+				str +='</tr>'; 
+			  }
+			  str+='</table>';
+			str+='</table>';
+			 $('#cadrePopupInnerDiv').html(str);
+			$('#cadrePopupDiv').dialog({                   
+		    modal: true,
+            title: "<b>Cadre Details</b>",
+			width: 600,
+            height: 500
+     });
+		}
 	</script>
 	
   </body>
