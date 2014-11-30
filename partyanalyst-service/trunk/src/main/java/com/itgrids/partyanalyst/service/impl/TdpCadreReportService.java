@@ -42,6 +42,7 @@ import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationWiseReportVO;
 import com.itgrids.partyanalyst.dto.ZebraPrintDetailsVO;
+import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.service.ITdpCadreReportService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -1502,6 +1503,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 				
 				Date fromDate = format.parse(fromDateStr);
 				Date toDate = format.parse(toDateStr);
+				StringBuilder queryStrForPushData = new StringBuilder();
 				StringBuilder queryStr = new StringBuilder();
 				StringBuilder queryStrForCount = new StringBuilder();
 				List<Object[]> printStatusDetailsList = null;
@@ -1550,22 +1552,45 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 							}
 						}
 					}
-					queryStr.append(" select UA.constituency.constituencyId, UA.constituency.name, UA.district.districtName, date(ZPD.insertedTime), count(ZPD.zebraPrintDetailsId) ,  ");
+					// start query for printing cards details
+					queryStr.append(" select TD.userAddress.constituency.constituencyId, TD.userAddress.constituency.name, TD.userAddress.district.districtName, date(ZPD.insertedTime), count(ZPD.zebraPrintDetailsId) ,  ");
 					queryStr.append(" date(ZPD.updatedTime), ZPD.printStatus, count(ZPD.printStatus), ZPD.errorStatus, count(ZPD.errorStatus)  ");
-					queryStr.append(" from ZebraPrintDetails ZPD, TdpCadre TD, UserAddress UA where ");
+					queryStr.append(" from ZebraPrintDetails ZPD, TdpCadre TD where ");
 					
-					queryStr.append(" TD.tdpCadreId = ZPD.tdpCadreId and TD.userAddress.userAddressId = UA.userAddressId and ((ZPD.printStatus !='' or ZPD.printStatus is null) or ( ZPD.errorStatus !='' or ZPD.errorStatus is null )) and ");
-					queryStr.append(" TD.isDeleted = 'N' and TD.enrollmentYear = 2014 and UA.constituency.constituencyId in (:locationIdList) ");
+					queryStr.append(" TD.tdpCadreId = ZPD.tdpCadreId and ZPD.printStatus is not null  and ");
+					queryStr.append(" TD.isDeleted = 'N' and TD.enrollmentYear = 2014 and TD.userAddress.constituency.constituencyId in (:locationIdList) ");
 					
 					if(fromDate != null && toDate != null)
 					{
-						queryStr.append(" and ( date(ZPD.insertedTime) >= :fromDate and date(ZPD.insertedTime) <= :toDate ) ");
+						queryStr.append(" and ( date(ZPD.updatedTime) >= :fromDate and date(ZPD.updatedTime) <= :toDate ) ");
 					}
 					
-					queryStr.append(" group by UA.constituency.constituencyId, date(ZPD.insertedTime) , date(ZPD.updatedTime), ZPD.printStatus, ZPD.errorStatus  order by date(ZPD.updatedTime) asc ");
+					queryStr.append(" group by TD.userAddress.constituency.constituencyId, date(ZPD.insertedTime),date(ZPD.updatedTime), ZPD.printStatus, ZPD.errorStatus  order by date(ZPD.updatedTime) asc ");
+					
+					// end query for printing cards details
 					
 					
+					// start query for total cadre
 					queryStrForCount.append(" select count(TC.tdpCadreId) from TdpCadre TC where TC.userAddress.constituency.constituencyId in (:locationIds) and TC.isDeleted='N' and TC.enrollmentYear = 2014  ");
+
+					// end query for total cadre
+					
+					
+					// start query for push data details for printing
+					queryStrForPushData.append(" select TD.userAddress.constituency.constituencyId, TD.userAddress.constituency.name, TD.userAddress.district.districtName, date(ZPD.insertedTime), count(ZPD.zebraPrintDetailsId) ");
+					queryStrForPushData.append(" from ZebraPrintDetails ZPD, TdpCadre TD  where ");
+					
+					queryStrForPushData.append(" TD.tdpCadreId = ZPD.tdpCadreId and ");
+					queryStrForPushData.append(" TD.isDeleted = 'N' and TD.enrollmentYear = 2014 and TD.userAddress.constituency.constituencyId in (:locationIdList) ");
+					
+					if(fromDate != null && toDate != null)
+					{
+						queryStrForPushData.append(" and ( date(ZPD.insertedTime) >= :fromDate and date(ZPD.insertedTime) <= :toDate ) ");
+					}
+					
+					queryStrForPushData.append(" group by date(ZPD.insertedTime),TD.userAddress.constituency.constituencyId order by date(ZPD.insertedTime) asc ");
+					
+					// end query for push data details for printing
 				}
 				else if(searchType.equalsIgnoreCase(IConstants.DISTRICT))
 				{
@@ -1573,18 +1598,35 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					queryStr.append(" date(ZPD.updatedTime), ZPD.printStatus, count(ZPD.printStatus), ZPD.errorStatus, count(ZPD.errorStatus)  ");
 					queryStr.append(" from ZebraPrintDetails ZPD, TdpCadre TD, UserAddress UA where ");
 					
-					queryStr.append(" TD.tdpCadreId = ZPD.tdpCadreId and TD.userAddress.userAddressId = UA.userAddressId and ((ZPD.printStatus !='' or ZPD.printStatus is null) or ( ZPD.errorStatus !='' or ZPD.errorStatus is null )) and ");
+					queryStr.append(" TD.tdpCadreId = ZPD.tdpCadreId and TD.userAddress.userAddressId = UA.userAddressId and ((ZPD.printStatus !='' or ZPD.printStatus is null) and ( ZPD.errorStatus != '0' or ZPD.errorStatus is null )) and ");
 					queryStr.append(" TD.isDeleted = 'N' and TD.enrollmentYear = 2014 and UA.district.districtId in (:locationIdList) ");
 					
 					if(fromDate != null && toDate != null)
 					{
-						queryStr.append(" and ( date(ZPD.insertedTime) >= :fromDate and date(ZPD.insertedTime) <= :toDate ) ");
+						queryStr.append(" and ( date(ZPD.updatedTime) >= :fromDate and date(ZPD.updatedTime) <= :toDate ) ");
 					}
 					
-					queryStr.append(" group by UA.district.districtId, date(ZPD.insertedTime) , date(ZPD.updatedTime), ZPD.printStatus, ZPD.errorStatus  order by date(ZPD.updatedTime) asc ");
+					queryStr.append(" group by UA.district.districtId, date(ZPD.insertedTime),date(ZPD.updatedTime), ZPD.printStatus, ZPD.errorStatus  order by date(ZPD.updatedTime) asc ");
 					
 					queryStrForCount.append(" select count(TC.tdpCadreId) from TdpCadre TC where TC.userAddress.district.districtId in (:locationIds) and TC.isDeleted='N' and TC.enrollmentYear = 2014 ");
 				
+					
+					// start query for push data details for printing
+					queryStrForPushData.append(" select UA.district.districtId,UA.district.districtName, UA.district.districtName, date(ZPD.insertedTime), count(ZPD.zebraPrintDetailsId)  ");
+					queryStrForPushData.append(" from ZebraPrintDetails ZPD, TdpCadre TD, UserAddress UA where ");
+					
+					queryStrForPushData.append(" TD.tdpCadreId = ZPD.tdpCadreId and TD.userAddress.userAddressId = UA.userAddressId  and ");
+					queryStrForPushData.append(" TD.isDeleted = 'N' and TD.enrollmentYear = 2014 and TD.userAddress.district.districtId in (:locationIdList) ");
+					
+					if(fromDate != null && toDate != null)
+					{
+						queryStrForPushData.append(" and ( date(ZPD.insertedTime) >= :fromDate and date(ZPD.insertedTime) <= :toDate ) ");
+					}
+					
+					queryStrForPushData.append(" group by date(ZPD.insertedTime),TD.userAddress.district.districtId order by date(ZPD.insertedTime) asc ");
+					
+					// end query for push data details for printing
+					
 				}
 				else if(searchType.equalsIgnoreCase("parliament"))
 				{
@@ -1597,17 +1639,18 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					
 					if(fromDate != null && toDate != null)
 					{
-						queryStr.append(" and ( date(ZPD.insertedTime) >= :fromDate and date(ZPD.insertedTime) <= :toDate ) ");
+						queryStr.append(" and ( date(ZPD.updatedTime) >= :fromDate and date(ZPD.updatedTime) <= :toDate ) ");
 					}
 					
-					queryStr.append(" group by model2.delimitationConstituency.constituency.constituencyId, date(ZPD.insertedTime) , date(ZPD.updatedTime), ZPD.printStatus, ZPD.errorStatus  order by date(ZPD.updatedTime) asc ");
+					queryStr.append(" group by model2.delimitationConstituency.constituency.constituencyId ,date(ZPD.insertedTime), date(ZPD.updatedTime), ZPD.printStatus, ZPD.errorStatus  order by date(ZPD.updatedTime) asc ");
 					
 					queryStrForCount.append(" select count(TC.tdpCadreId) from TdpCadre TC ,DelimitationConstituencyAssemblyDetails model2  where " +
 							" TC.userAddress.constituency.constituencyId = model2.constituency.constituencyId and model2.delimitationConstituency.year = 2009 and " +
 							" model2.delimitationConstituency.constituency.constituencyId in (:locationIds) and TC.isDeleted='N' and TC.enrollmentYear = 2014");
 				
 				}
-				printStatusDetailsList = zebraPrintDetailsDAO.getMemberShipCardPushStatusByDate(selectedLocationIds, fromDate, toDate,queryStr.toString());
+				ZebraPrintDetailsVO pushDataVO = getMemberShipCardDataPushDetails(parliamentForAssemblyMap,selectedLocationIds, fromDate, toDate,queryStrForPushData.toString());
+				printStatusDetailsList = zebraPrintDetailsDAO.getMemberShipPrintCardStatusByDate(selectedLocationIds, fromDate, toDate,queryStr.toString());
 				Long registeredCount = tdpCadreDAO.getTotalRegisteredCadreCountByLocation(selectedLocationIds, queryStrForCount.toString());
 				Map<Long,ZebraPrintDetailsVO> zebraPrintMap = new HashMap<Long, ZebraPrintDetailsVO>(0);
 				
@@ -1775,11 +1818,141 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 				returnVO.setPrintStatusCount(totalPrintedCount);
 				returnVO.setErrorStatusCount(totalErrorsCount);
 				returnVO.setTotalPushCount(registeredCount);
+				
+				
+				if(pushDataVO != null && pushDataVO.getZebraPrintDetailsVOList() != null && pushDataVO.getZebraPrintDetailsVOList().size()>0)
+				{
+					returnVO.setDataPushDetailsList(pushDataVO.getZebraPrintDetailsVOList());
+					returnVO.getDataPushDatesList().addAll(pushDataVO.getDatesList());
+				}
+				
 			}
 		}
 		catch (Exception e)
 		{
 			LOG.error(" exception occured in getMemberShipCardPrintStatusDetails()  @ TdpCadreReportService class.",e);
+		}
+		
+		return returnVO;
+	}
+
+	public ZebraPrintDetailsVO getMemberShipCardDataPushDetails(Map<Long,String> parliamentForAssemblyMap,List<Long> selectedLocationIds, Date fromDate,Date toDate,String queryStrForPushData)
+	{							
+		ZebraPrintDetailsVO returnVO = new ZebraPrintDetailsVO();
+		
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			List<ZebraPrintDetailsVO> printStatusList = new ArrayList<ZebraPrintDetailsVO>();
+			
+			List<Object[]> printStatusDetailsList = zebraPrintDetailsDAO.getMemberShipCardPushDataStatusByDate(selectedLocationIds, fromDate, toDate,queryStrForPushData.toString());
+			Map<Long,ZebraPrintDetailsVO> zebraPrintMap = new HashMap<Long, ZebraPrintDetailsVO>(0);
+			Map<String,ZebraPrintDetailsVO>  daywiseVOMap = new TreeMap<String, ZebraPrintDetailsVO>();					
+			if(printStatusDetailsList != null && printStatusDetailsList.size()>0)
+			{
+				for (Object[] printStatus : printStatusDetailsList) 
+				{
+					ZebraPrintDetailsVO locationVO = null;
+					
+					if(zebraPrintMap.get(printStatus[0] != null ? Long.valueOf(printStatus[0].toString().trim()):0L) != null)
+					{
+						locationVO = zebraPrintMap.get(printStatus[0] != null ? Long.valueOf(printStatus[0].toString().trim()):0L);
+						printStatusList = locationVO.getZebraPrintDetailsVOList();
+					}
+					else
+					{
+						locationVO = new ZebraPrintDetailsVO();
+						locationVO.setId(printStatus[0] != null ? Long.valueOf(printStatus[0].toString().trim()):0L);
+						locationVO.setName(printStatus[1] != null ? printStatus[1].toString().trim():"");
+						locationVO.setDistrict(printStatus[2] != null ? printStatus[2].toString().trim():"");
+						locationVO.setParliament(parliamentForAssemblyMap.get(locationVO.getId()) != null ? parliamentForAssemblyMap.get(locationVO.getId()):"");
+						locationVO.setDataPushDate(printStatus[3] != null ? format.format(dateFormat.parse(printStatus[3] != null ? printStatus[3].toString().trim():"")):null);
+						printStatusList = new ArrayList<ZebraPrintDetailsVO>();
+					}
+					
+					ZebraPrintDetailsVO reportVO = new ZebraPrintDetailsVO();
+					
+					reportVO.setDataPushDate(printStatus[3] != null ? format.format(dateFormat.parse(printStatus[3] != null ? printStatus[3].toString().trim():"")):null);
+					reportVO.setTotalPushCount(printStatus[4] != null ? Long.valueOf(printStatus[4].toString().trim()):0L);
+					
+											
+					printStatusList.add(reportVO);
+					
+					locationVO.setZebraPrintDetailsVOList(printStatusList);
+					
+					zebraPrintMap.put(locationVO.getId(), locationVO);
+					
+					if(reportVO.getDataPushDate() != null)
+					{
+						daywiseVOMap.put(reportVO.getDataPushDate(), null);
+					}
+				}
+			}
+			
+			List<ZebraPrintDetailsVO> finalReturnList = new ArrayList<ZebraPrintDetailsVO>();
+			if(zebraPrintMap != null && zebraPrintMap.size()>0)
+			{
+				for (Long constituencyId : zebraPrintMap.keySet()) 
+				{
+					ZebraPrintDetailsVO constituencyVO = zebraPrintMap.get(constituencyId);
+					printStatusList = new ArrayList<ZebraPrintDetailsVO>();
+					Map<String,ZebraPrintDetailsVO>  daywiseCountMap = new TreeMap<String, ZebraPrintDetailsVO>();									
+					if(constituencyVO.getZebraPrintDetailsVOList() != null && constituencyVO.getZebraPrintDetailsVOList().size()>0)
+					{
+						Long totalCount = 0L;
+						
+						if(daywiseVOMap != null && daywiseVOMap.size()>0)
+						{
+							for (String date : daywiseVOMap.keySet()) 
+							{
+								ZebraPrintDetailsVO updatedVO = null;
+								ZebraPrintDetailsVO filterVO  = getMatchedZebraPrintDetailsVOByPushDate(constituencyVO.getZebraPrintDetailsVOList(),date);
+								
+								if(filterVO != null)
+								{
+									totalCount = totalCount + filterVO.getTotalPushCount();
+									daywiseCountMap.put(date.trim(), filterVO);
+								}									
+								else
+								{
+									updatedVO = new ZebraPrintDetailsVO();
+									updatedVO.setDataPushDate(date);
+									updatedVO.setTotalPushCount(0L);											
+									daywiseCountMap.put(date.trim(), updatedVO);
+								}
+							
+							}
+						}
+						
+						if(daywiseCountMap != null && daywiseCountMap.size()>0)
+						{
+							for (String updatedDate : daywiseCountMap.keySet()) 
+							{
+								printStatusList.add(daywiseCountMap.get(updatedDate));
+							}
+						}
+						
+						constituencyVO.setTotalPushCount(totalCount);
+						constituencyVO.setZebraPrintDetailsVOList(printStatusList);
+					}
+					
+					
+
+					finalReturnList.add(constituencyVO);
+				}
+			}
+			
+			System.out.println(finalReturnList.size());
+			if(daywiseVOMap != null && daywiseVOMap.size()>0)
+			{
+				returnVO.getDatesList().addAll(daywiseVOMap.keySet());
+			}
+			returnVO.setZebraPrintDetailsVOList(finalReturnList);
+			
+		}
+		catch (Exception e)
+		{
+			LOG.error(" exception occured in getMemberShipCardDataPushDetails()  @ TdpCadreReportService class.",e);
 		}
 		
 		return returnVO;
@@ -1811,4 +1984,242 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		return returnVo;
 	}
 	
+	
+	public ZebraPrintDetailsVO getMatchedZebraPrintDetailsVOByPushDate(List<ZebraPrintDetailsVO> reportVOList,String dateStr)
+	{
+		ZebraPrintDetailsVO returnVo = null;
+		try {
+			
+			if(reportVOList != null && reportVOList.size()>0)
+			{
+				for (ZebraPrintDetailsVO reportVO : reportVOList) 
+				{
+					if(reportVO.getDataPushDate() != null)
+					{
+						if(reportVO.getDataPushDate().trim().equalsIgnoreCase(dateStr.trim()))
+						{
+							return reportVO;
+						}
+					}
+					
+				}
+			}
+		} catch (Exception e) {
+			LOG.error(" exception occured in getMatchedZebraPrintDetailsVOByDate()  @ TdpCadreReportService class.",e);
+		}
+		
+		return returnVo;
+	}
+	
+	
+	public String updatePrintingStatusInTdpCadreTable()
+	{
+		String status = "";
+		Long count = 0L;
+		try {
+			
+			List<Object[]> printedCadreList = zebraPrintDetailsDAO.getPrintedCardsDetails();
+			
+			if(printedCadreList != null && printedCadreList.size()>0)
+			{
+				for (Object[] cadre : printedCadreList) 
+				{
+					if(cadre[0] != null)
+					{
+						TdpCadre tdpCadre = tdpCadreDAO.get(Long.valueOf(cadre[0].toString().trim()));
+						tdpCadre.setCardNumber(cadre[1] != null ? cadre[1].toString().trim():null);
+						tdpCadre.setDispatchStatus("dispatched");
+						
+						tdpCadreDAO.save(tdpCadre);
+						
+						count = count+1;
+					}
+				}
+				status = ""+count+" records are Successfully updated.";
+			}
+			else
+			{
+				status = "no records are updated";
+			}
+			
+		} catch (Exception e) {
+			if(count != 0)
+			{
+				status = ""+count+" records are Successfully updated.";
+				status = status + "But some records are not updated. ";
+			}
+			
+			LOG.error(" exception occured in updatePrintingStatusInTdpCadreTable()  @ TdpCadreReportService class.",e);
+		}
+		
+		return status;
+	}
+	
+	public ZebraPrintDetailsVO createDashBoardForPrintingCardsDetails(String accessType,String accessValue,Long stateTypeId)
+	{
+		ZebraPrintDetailsVO returnVO = new ZebraPrintDetailsVO();
+		try {
+			List<ZebraPrintDetailsVO> locationWiseInfoList = null;
+			List<Long> selectedLocationIds = new ArrayList<Long>();
+			StringBuilder queryStrForCount = new StringBuilder();
+			List<Object[]> constituencyList =null;
+			
+			if(accessType.equals(IConstants.STATE))
+			{
+				constituencyList = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(0L, 1L, null);
+				
+			}
+			else if(accessType.equalsIgnoreCase(IConstants.DISTRICT))
+			{
+				constituencyList = constituencyDAO.getConstituenciesByDistrictId(Long.valueOf(accessValue));
+			}
+			else if(accessType.equalsIgnoreCase(IConstants.MP))
+			{
+				constituencyList = (List<Object[]>) delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituencies(Long.valueOf(accessValue));
+			}
+			else if(accessType.equalsIgnoreCase(IConstants.MLA))
+			{
+				selectedLocationIds.add(Long.valueOf(accessValue));
+			}
+			
+			if(!accessType.equalsIgnoreCase(IConstants.MLA))
+			{
+				if(constituencyList != null && constituencyList.size()>0)
+				{
+					for (Object[] cosntituency : constituencyList)
+					{
+						selectedLocationIds.add(cosntituency[0] != null? Long.valueOf(cosntituency[0].toString().trim()):0L);
+					}     
+				}
+			}
+			
+			queryStrForCount.append(" select count(TC.tdpCadreId) from TdpCadre TC where TC.userAddress.constituency.constituencyId in (:locationIds) and TC.isDeleted='N' and TC.enrollmentYear = 2014  ");
+			
+			List<Object[]>  registeredCountList = tdpCadreDAO.gettingRegisteredVotersForConstituencys(selectedLocationIds);
+			List<Object[]> printedCountList = zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, accessType,"printStatus");
+			List<Object[]> errorCountList = zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, accessType,"errorStatus");
+			List<Object[]> totalPushedCountList = zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, accessType,"totalCount");
+			
+			Map<Long,ZebraPrintDetailsVO> locationWiseMap = new HashMap<Long, ZebraPrintDetailsVO>(0);
+			Long totalRegisteredCount = 0L;
+			Long totalPrintCount = 0L;
+			Long totalErrorCount = 0L;
+			Long totalPushCount = 0L;
+			
+			if(registeredCountList != null && registeredCountList.size()>0)
+			{
+				for (Object[] tdpCadre : registeredCountList) 
+				{
+					Long constiteuncyId  = tdpCadre[2] != null ? Long.valueOf(tdpCadre[2].toString().trim()):0L;
+					ZebraPrintDetailsVO zebraPrintDetailsVO = null;
+					if(locationWiseMap.get(constiteuncyId) != null)
+					{
+						zebraPrintDetailsVO = locationWiseMap.get(constiteuncyId);
+					}
+					else
+					{
+						zebraPrintDetailsVO = new ZebraPrintDetailsVO();
+					}
+					
+					zebraPrintDetailsVO.setRowCount(tdpCadre[0] != null ? Long.valueOf(tdpCadre[0].toString().trim()):0L);
+					locationWiseMap.put(constiteuncyId, zebraPrintDetailsVO);
+					
+					totalRegisteredCount = totalRegisteredCount + zebraPrintDetailsVO.getRowCount();
+				}
+			}
+			
+
+			if(totalPushedCountList != null && totalPushedCountList.size()>0)
+			{
+				for (Object[] zebraPrint3 : totalPushedCountList) 
+				{
+					Long constiteuncyId  = zebraPrint3[0] != null ? Long.valueOf(zebraPrint3[0].toString().trim()):0L;
+					ZebraPrintDetailsVO zebraPrintDetailsVO = null;
+					if(locationWiseMap.get(constiteuncyId) != null)
+					{
+						zebraPrintDetailsVO = locationWiseMap.get(constiteuncyId);
+					}
+					else
+					{
+						zebraPrintDetailsVO = new ZebraPrintDetailsVO();
+					}
+					zebraPrintDetailsVO.setName(zebraPrint3[1] != null ? zebraPrint3[1].toString().trim():"");
+					zebraPrintDetailsVO.setTotalPushCount(zebraPrint3[2] != null ? Long.valueOf(zebraPrint3[2].toString().trim()):0L);
+					locationWiseMap.put(constiteuncyId, zebraPrintDetailsVO);
+					
+					totalPushCount = totalPushCount + zebraPrintDetailsVO.getTotalPushCount();
+				}
+			}
+			
+			if(printedCountList != null && printedCountList.size()>0)
+			{
+				for (Object[] zebraPrint1 : printedCountList) 
+				{
+					Long constiteuncyId  = zebraPrint1[0] != null ? Long.valueOf(zebraPrint1[0].toString().trim()):0L;
+					ZebraPrintDetailsVO zebraPrintDetailsVO = null;
+					if(locationWiseMap.get(constiteuncyId) != null)
+					{
+						zebraPrintDetailsVO = locationWiseMap.get(constiteuncyId);
+					}
+					else
+					{
+						zebraPrintDetailsVO = new ZebraPrintDetailsVO();
+					}
+					
+					zebraPrintDetailsVO.setPrintStatusCount(zebraPrint1[2] != null ? Long.valueOf(zebraPrint1[2].toString().trim()):0L);
+					locationWiseMap.put(constiteuncyId, zebraPrintDetailsVO);
+					
+					totalPrintCount = totalPrintCount + zebraPrintDetailsVO.getPrintStatusCount();
+				}
+			}
+			
+			if(errorCountList != null && errorCountList.size()>0)
+			{
+				for (Object[] zebraPrint2 : errorCountList) 
+				{
+					Long constiteuncyId  = zebraPrint2[0] != null ? Long.valueOf(zebraPrint2[0].toString().trim()):0L;
+					ZebraPrintDetailsVO zebraPrintDetailsVO = null;
+					if(locationWiseMap.get(constiteuncyId) != null)
+					{
+						zebraPrintDetailsVO = locationWiseMap.get(constiteuncyId);
+					}
+					else
+					{
+						zebraPrintDetailsVO = new ZebraPrintDetailsVO();
+					}
+					
+					zebraPrintDetailsVO.setErrorStatusCount(zebraPrint2[2] != null ? Long.valueOf(zebraPrint2[2].toString().trim()):0L);
+					locationWiseMap.put(constiteuncyId, zebraPrintDetailsVO);
+					
+					totalErrorCount = totalErrorCount + zebraPrintDetailsVO.getErrorStatusCount();
+				}
+			}
+			
+			if(locationWiseMap != null && locationWiseMap.size()>0)
+			{
+				locationWiseInfoList = new ArrayList<ZebraPrintDetailsVO>(0);
+				for (Long constiteuncyId : locationWiseMap.keySet()) 
+				{
+					ZebraPrintDetailsVO zebraPrintDetailsVO = locationWiseMap.get(constiteuncyId);
+					Long remainingCount =zebraPrintDetailsVO.getTotalPushCount() - zebraPrintDetailsVO.getPrintStatusCount();
+					zebraPrintDetailsVO.setRemainingCount(remainingCount);
+					
+					
+					
+					locationWiseInfoList.add(zebraPrintDetailsVO);
+				}
+			}
+			
+			returnVO.setRowCount(totalRegisteredCount);
+			returnVO.setPrintStatusCount(totalPrintCount);
+			returnVO.setErrorStatusCount(totalErrorCount);
+			returnVO.setTotalPushCount(totalPushCount);
+			returnVO.setZebraPrintDetailsVOList(locationWiseInfoList);
+			
+		} catch (Exception e) {
+			LOG.error(" exception occured in createDashBoardForPrintingCardsDetails()  @ TdpCadreReportService class.",e);
+		}
+		
+		return returnVO;
+	}
 }
