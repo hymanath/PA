@@ -1878,6 +1878,11 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		try{
 		CadreRegisterInfo infoVo = null;
 		Map<Long,Map<Long,Long>> locationMap = new HashMap<Long,Map<Long,Long>>();//Map<locationId,Map<year,count>>
+		
+		
+		Map<Long,Long> vtrMap = new HashMap<Long, Long>();
+		Map<Long,Long> cdrCountMap = new HashMap<Long, Long>();
+		
 		Map<Long,String> locationType = new HashMap<Long,String>();
 		Map<Long,Long> yearMap = null;
 		List<Object[]> namesList = new ArrayList<Object[]>();
@@ -1897,127 +1902,258 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		}
 
 		Long constituencyId = 0L;
+		
+		Long noOfDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, IConstants.CADRE_2014_LAST_DATE);
+		Long districtId = null;
 
 		if(ids.size() > 0){
-		if(type.equals("assembly")){
-		constituencyInfoList = tdpCadreDAO.getCadreInfoConstituencytWise(ids,fromDate,toDate,2014l);
-		constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoConstituencytWise(ids,null,null,2012l));
-		namesList = constituencyDAO.getConstituencyNameByConstituencyIdsList(ids);
-		}else if(type.equals("district")){
-		constituencyInfoList = tdpCadreDAO.getCadreInfoDistrictWise(ids,fromDate,toDate,2014l);
-		constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoDistrictWise(ids,null,null,2012l));
-		namesList = districtDAO.getDistrictDetailsByDistrictIds(ids);
-		}else if(type.equals("panchayat")){
-		constituencyId = boothDAO.getConstituencyIdByLocationIdAndType(ids.get(0), type);
-		constituencyInfoList = tdpCadreDAO.getCadreInfoPanchayatWise(ids,fromDate,toDate,2014l);
-		constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoPanchayatWise(ids,null,null,2012l));
-		namesList = panchayatDAO.getPanchayatNamesByIds(ids);
-		}else if(type.equals("booth")){
-		constituencyId = boothDAO.getConstituencyIdByLocationIdAndType(ids.get(0), type);
-		constituencyInfoList = tdpCadreDAO.getCadreInfoBoothWise(ids,fromDate,toDate,2014l);
-		constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoBoothWise(ids,null,null,2012l));
-		namesList = boothDAO.getBoothNamesByIds(ids);
-		}else if(type.equals("mandal")){
-
-		List<Long> mandalIds = new ArrayList<Long>();
-		List<Long> localBodyIds = new ArrayList<Long>();
-		for(Long id:ids){
-		if(id.toString().substring(0,1).trim().equalsIgnoreCase("1")){
-		localBodyIds.add(new Long(id.toString().substring(1)));
-		}else{
-		mandalIds.add(new Long(id.toString().substring(1)));
-		}
-		}
-		if(mandalIds.size() > 0){
-		constituencyId = boothDAO.getConstituencyIdByLocationIdAndType(mandalIds.get(0), type);
-		}else if(localBodyIds.size() > 0){
-		constituencyId = boothDAO.getConstituencyIdByLocationIdAndType(localBodyIds.get(0), "localBody");
-		}
-		if(mandalIds.size() > 0){
-		constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoMandalWise(mandalIds,fromDate,toDate,2014l));
-		constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoMandalWise(mandalIds,null,null,2012l));
-		namesList.addAll(tehsilDAO.getTehsilNameByTehsilIdsList(mandalIds));
-		}
-		if(localBodyIds.size() > 0){
-			List<Long> assmblyLclIds = new ArrayList<Long>();
-			assmblyLclIds = assemblyLocalElectionBodyDAO.getLEBIdsByALEBIds(localBodyIds);
-			if(assmblyLclIds!=null && assmblyLclIds.size()>0){
-				constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoLocalBodyWise(assmblyLclIds,fromDate,toDate,2014l));
-				constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoLocalBodyWise(assmblyLclIds,null,null,2012l));
-				namesList.addAll(localElectionBodyDAO.getLocalElectionBodyNames(assmblyLclIds));
+			if(type.equals("assembly")){
+			constituencyInfoList = tdpCadreDAO.getCadreInfoConstituencytWise(ids,fromDate,toDate,2014l);
+			constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoConstituencytWise(ids,null,null,2012l));
+			namesList = constituencyDAO.getConstituencyNameByConstituencyIdsList(ids);
+			}else if(type.equals("district")){
+			constituencyInfoList = tdpCadreDAO.getCadreInfoDistrictWise(ids,fromDate,toDate,2014l);
+			constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoDistrictWise(ids,null,null,2012l));
+			namesList = districtDAO.getDistrictDetailsByDistrictIds(ids);
+			}else if(type.equals("panchayat")){
+				constituencyId = boothDAO.getConstituencyIdByLocationIdAndType(ids.get(0), type);
+				constituencyInfoList = tdpCadreDAO.getCadreInfoPanchayatWise(ids,fromDate,toDate,2014l);
+				constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoPanchayatWise(ids,null,null,2012l));
+				
+				List<Object[]> totRegList = tdpCadreDAO.getCadreInfoPanchayatWise(ids,null,null,2014l);
+				
+				List<Object[]> list = voterInfoDAO.getVotersCountInPanchayatList(ids, IConstants.VOTER_DATA_PUBLICATION_ID);
+				
+				if(list!=null && list.size()>0){
+					districtId =  Long.valueOf(list.get(0)[3].toString());
+					for(Object[] obj:list){
+						vtrMap.put(Long.valueOf(obj[0].toString()), Long.valueOf(obj[2].toString()));
+					}
+				}
+				
+				if(totRegList!=null && totRegList.size()>0){
+					for(Object[] obj:totRegList){
+						cdrCountMap.put(Long.valueOf(obj[1].toString()), Long.valueOf(obj[0].toString()));
+					}
+				}
+				
+				namesList = panchayatDAO.getPanchayatNamesByIds(ids);
+			}else if(type.equals("booth")){
+				constituencyId = boothDAO.getConstituencyIdByLocationIdAndType(ids.get(0), type);
+				constituencyInfoList = tdpCadreDAO.getCadreInfoBoothWise(ids,fromDate,toDate,2014l);
+				constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoBoothWise(ids,null,null,2012l));
+				
+				List<Object[]> list = voterInfoDAO.getVotersCountInBoothsList(ids, IConstants.VOTER_DATA_PUBLICATION_ID);
+				
+				if(list!=null && list.size()>0){
+					districtId =  Long.valueOf(list.get(0)[3].toString());
+					for(Object[] obj:list){
+						vtrMap.put(Long.valueOf(obj[0].toString()), Long.valueOf(obj[2].toString()));
+					}
+				}
+				
+				List<Object[]> totRegList = tdpCadreDAO.getCadreInfoBoothWise(ids,null,null,2014l);
+				if(totRegList!=null && totRegList.size()>0){
+					for(Object[] obj:totRegList){
+						cdrCountMap.put(Long.valueOf(obj[1].toString()), Long.valueOf(obj[0].toString()));
+					}
+				}
+				
+				namesList = boothDAO.getBoothNamesByIds(ids);
+			}else if(type.equals("mandal")){
+				List<Long> mandalIds = new ArrayList<Long>();
+				List<Long> localBodyIds = new ArrayList<Long>();
+				for(Long id:ids){
+				if(id.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+				localBodyIds.add(new Long(id.toString().substring(1)));
+				}else{
+				mandalIds.add(new Long(id.toString().substring(1)));
+				}
+				}
+				if(mandalIds.size() > 0){
+				constituencyId = boothDAO.getConstituencyIdByLocationIdAndType(mandalIds.get(0), type);
+				}else if(localBodyIds.size() > 0){
+				constituencyId = boothDAO.getConstituencyIdByLocationIdAndType(localBodyIds.get(0), "localBody");
+				}
+				if(mandalIds.size() > 0){
+				constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoMandalWise(mandalIds,fromDate,toDate,2014l));
+				constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoMandalWise(mandalIds,null,null,2012l));
+				
+				List<Object[]> list = voterInfoDAO.getVotersCountInATehsilList(mandalIds, IConstants.VOTER_DATA_PUBLICATION_ID);
+				
+				if(list!=null && list.size()>0){
+					districtId =  Long.valueOf(list.get(0)[3].toString());
+					for(Object[] obj:list){
+						vtrMap.put(Long.valueOf(obj[0].toString()), Long.valueOf(obj[2].toString()));
+					}
+				}
+				
+				List<Object[]> totRegList = tdpCadreDAO.getCadreInfoMandalWise(mandalIds,null,null,2014l);
+				if(totRegList!=null && totRegList.size()>0){
+					for(Object[] obj:totRegList){
+						cdrCountMap.put(Long.valueOf(obj[1].toString()), Long.valueOf(obj[0].toString()));
+					}
+				}
+				
+				
+				namesList.addAll(tehsilDAO.getTehsilNameByTehsilIdsList(mandalIds));
+				}
+				if(localBodyIds.size() > 0){
+					List<Long> assmblyLclIds = new ArrayList<Long>();
+					assmblyLclIds = assemblyLocalElectionBodyDAO.getLEBIdsByALEBIds(localBodyIds);
+					if(assmblyLclIds!=null && assmblyLclIds.size()>0){
+						constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoLocalBodyWise(assmblyLclIds,fromDate,toDate,2014l));
+						constituencyInfoList.addAll(tdpCadreDAO.getCadreInfoLocalBodyWise(assmblyLclIds,null,null,2012l));
+						
+						List<Object[]> list = voterInfoDAO.getVotersCountInALocalBodyList(assmblyLclIds, IConstants.VOTER_DATA_PUBLICATION_ID);
+						if(list!=null && list.size()>0){
+							districtId =  Long.valueOf(list.get(0)[3].toString());
+							for(Object[] obj:list){
+								vtrMap.put(Long.valueOf(obj[0].toString()), Long.valueOf(obj[2].toString()));
+							}
+						}
+						
+						List<Object[]> totRegList = tdpCadreDAO.getCadreInfoLocalBodyWise(assmblyLclIds,null,null,2014l);
+						if(totRegList!=null && totRegList.size()>0){
+							for(Object[] obj:totRegList){
+								cdrCountMap.put(Long.valueOf(obj[1].toString()), Long.valueOf(obj[0].toString()));
+							}
+						}
+						
+						namesList.addAll(localElectionBodyDAO.getLocalElectionBodyNames(assmblyLclIds));
+					}
+				
+				}
 			}
-		
-		}
-
-		}
-		for(Object[] info:constituencyInfoList){
-		yearMap = locationMap.get((Long)info[1]);
-		if(yearMap == null){
-		yearMap = new HashMap<Long,Long>();
-		locationMap.put((Long)info[1],yearMap);
-		if(type.equals("assembly") || type.equals("mandal")){
-		locationType.put((Long)info[1], info[4].toString());
-		}
-		}
-		yearMap.put((Long)info[3], (Long)info[0]);
-		}
+			for(Object[] info:constituencyInfoList){
+				yearMap = locationMap.get((Long)info[1]);
+				if(yearMap == null){
+					yearMap = new HashMap<Long,Long>();
+					locationMap.put((Long)info[1],yearMap);
+					if(type.equals("assembly") || type.equals("mandal")){
+						locationType.put((Long)info[1], info[4].toString());
+					}
+				}
+				yearMap.put((Long)info[3], (Long)info[0]);
+			}
 		}
 
 		Map<Long,Long> yearWiseTotalCadreMap = new HashMap<Long, Long>();
-		if(namesList != null && namesList.size()>0 )
-		{
-		for(Object[] name:namesList)
-		{
-		Long cadreCount2014 = 0L;
-		Long cadreCount2012 = 0L;
-
-		try{
-		if(yearWiseTotalCadreMap.get(2014L) != null)
-		{
-		cadreCount2014 = yearWiseTotalCadreMap.get(2014L);
-		}
-		if(yearWiseTotalCadreMap.get(2012L) != null)
-		{
-		cadreCount2012 = yearWiseTotalCadreMap.get(2012L);
-		}
-
-		yearMap = locationMap.get((Long)name[0]);
-		infoVo = new CadreRegisterInfo();
-		infoVo.setId((Long)name[0]);
-		infoVo.setLocation(name[1].toString());
-		if(yearMap != null)
-		{
-		cadreCount2012 = cadreCount2012 + Long.valueOf(yearMap.get(2012L) != null ? yearMap.get(2012L).toString().trim():"0");
-		cadreCount2014 = cadreCount2014 + Long.valueOf(yearMap.get(2014L) != null ? yearMap.get(2014L).toString().trim():"0");
-
-		yearWiseTotalCadreMap.put(2014L,cadreCount2014);
-		yearWiseTotalCadreMap.put(2012L,cadreCount2012);
-
-		infoVo.setApCount(yearMap.get(2014l));
-		infoVo.setTgCount(yearMap.get(2012l));
-		if(type.equals("assembly")){
-		String reqType = locationType.get((Long)name[0]);
-		if(reqType != null && !reqType.equalsIgnoreCase("URBAN") ){
-		infoVo.setName("True");
-		infoVo.setArea("True");
-		}
-		}else if(type.equals("mandal")){
-		String reqType = locationType.get((Long)name[0]);
-		if(reqType != null && reqType.equalsIgnoreCase("mandal") ){
-		infoVo.setArea("True");
-		}
-		}
-		if((type.equals("assembly") || type.equals("district")) && infoVo.getApCount() != null && infoVo.getApCount().longValue() > 0 && infoVo.getTgCount() != null && infoVo.getTgCount().longValue() > 0 )
-		{
-		infoVo.setName(new BigDecimal(infoVo.getApCount()*(100.0)/infoVo.getTgCount().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-		}
-
-		}
-		returnList.add(infoVo);
-		}catch(Exception e){
-		e.printStackTrace();
-		}
-		}
+		if(namesList != null && namesList.size()>0 ){
+			for(Object[] name:namesList){
+				Long cadreCount2014 = 0L;
+				Long cadreCount2012 = 0L;
+		
+				try{
+					if(yearWiseTotalCadreMap.get(2014L) != null){
+						cadreCount2014 = yearWiseTotalCadreMap.get(2014L);
+					}
+					if(yearWiseTotalCadreMap.get(2012L) != null){
+						cadreCount2012 = yearWiseTotalCadreMap.get(2012L);
+					}
+			
+					yearMap = locationMap.get((Long)name[0]);
+					infoVo = new CadreRegisterInfo();
+					infoVo.setId((Long)name[0]);
+					infoVo.setLocation(name[1].toString());
+					
+					Long count_2014 = 0l;
+					if(yearMap!=null){
+					 count_2014 = Long.valueOf(yearMap.get(2014L) != null ? yearMap.get(2014L).toString().trim():"0");
+					}
+					if(type.equalsIgnoreCase("panchayat") || type.equalsIgnoreCase("booth") || type.equalsIgnoreCase("mandal")){
+						
+						String currentDate = dateService.getCurrentDateInStringFormatYYYYMMDD();
+						Long tillDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, IConstants.CADRE_2014_LAST_DATE);
+						Long stateId = 2l;
+						if(districtId>10){
+							stateId = 1l;
+						}
+						
+						Long registerdCount = cdrCountMap.get((Long)name[0]); //OVERALL REGISTERED COUNT
+						Long votersCount = vtrMap.get((Long)name[0]);
+						
+						infoVo.setOverAllRegCount(registerdCount);
+						
+						if(votersCount!=null){
+							Long targetCadre = 0l;
+							if(stateId == 1){
+								if(((votersCount * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014)<noOfDays){
+									targetCadre = ((votersCount * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014);
+								}else{
+									targetCadre =  (((votersCount * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014)/noOfDays)*tillDays;
+								}
+							}else{
+								if(((votersCount * IConstants.TARGET_CADRE_TG) / IConstants.TG_VOTERS_2014)<noOfDays){
+									targetCadre = ((votersCount * IConstants.TARGET_CADRE_TG) / IConstants.TG_VOTERS_2014);
+								}else{
+									targetCadre =  (((votersCount * IConstants.TARGET_CADRE_TG) / IConstants.TG_VOTERS_2014)/noOfDays)*tillDays;
+								}
+							}
+							
+							infoVo.setTargetCadre(targetCadre);
+							infoVo.setTotalVoters(votersCount);
+						}
+						
+						  String percentage ="0.0";
+					
+						  /*if(infoVo.getTargetCadre()!=null && infoVo.getTargetCadre()>0){
+							  percentage = (new BigDecimal(count_2014*(100.0)/infoVo.getTargetCadre().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+						  }*/
+						  if(infoVo.getTargetCadre()!=null && infoVo.getTargetCadre()>0 && infoVo.getOverAllRegCount()!=null){
+							  percentage = (new BigDecimal(infoVo.getOverAllRegCount()*(100.0)/infoVo.getTargetCadre().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+						  }
+						  float fl_perc = Float.parseFloat(percentage);
+						  if(fl_perc>=120f){
+							  infoVo.setColorStatus("Best");
+						  }else if(fl_perc>=100f && fl_perc<120f){
+							  infoVo.setColorStatus("Good");
+						  }else if(fl_perc>=75f && fl_perc<100f){
+							  infoVo.setColorStatus("Ok");
+						  }else if(fl_perc>=50f && fl_perc<75f){
+							  infoVo.setColorStatus("Poor");
+						  }else {
+							  infoVo.setColorStatus("Worst");
+						  }
+						  
+						  infoVo.setRegPercent(percentage);
+					}
+					
+					if(yearMap != null)	{
+						
+						
+						
+						
+						cadreCount2012 = cadreCount2012 + Long.valueOf(yearMap.get(2012L) != null ? yearMap.get(2012L).toString().trim():"0");
+						cadreCount2014 = cadreCount2014 + Long.valueOf(yearMap.get(2014L) != null ? yearMap.get(2014L).toString().trim():"0");
+				
+						yearWiseTotalCadreMap.put(2014L,cadreCount2014);
+						yearWiseTotalCadreMap.put(2012L,cadreCount2012);
+				
+						infoVo.setApCount(yearMap.get(2014l));
+						infoVo.setTgCount(yearMap.get(2012l));
+						if(type.equals("assembly")){
+							String reqType = locationType.get((Long)name[0]);
+							if(reqType != null && !reqType.equalsIgnoreCase("URBAN") ){
+								infoVo.setName("True");
+								infoVo.setArea("True");
+							}
+						}else if(type.equals("mandal")){
+							String reqType = locationType.get((Long)name[0]);
+							if(reqType != null && reqType.equalsIgnoreCase("mandal") ){
+								infoVo.setArea("True");
+							}
+						}
+						if((type.equals("assembly") || type.equals("district")) && infoVo.getApCount() != null && infoVo.getApCount().longValue() > 0 && infoVo.getTgCount() != null && infoVo.getTgCount().longValue() > 0 ){
+							infoVo.setName(new BigDecimal(infoVo.getApCount()*(100.0)/infoVo.getTgCount().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+						}
+			
+					}
+					returnList.add(infoVo);
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+			}
 		}
 
 		if(reqOthers && constituencyId != null && constituencyId != 0L && ids.size() > 1)
@@ -2059,8 +2195,11 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		infoVo.setLocation(" Others ");
 		Long count2014 = totalCount2014 - actualCount2014;
 		Long count2012 = totalCount2012 - actualCount2012;
-
-		infoVo.setApCount( count2014 );
+		if(count2014<0){
+			infoVo.setApCount(0l);
+		}else{
+			infoVo.setApCount( count2014 );
+		}
 		infoVo.setTgCount( count2012 );
 		infoVo.setArea(" - ");
 		if((count2014 != null && count2014 != 0L) || (count2012 != null && count2012 != 0L))

@@ -800,7 +800,9 @@ public class TdpCadreDAO extends GenericDaoHibernate<TdpCadre, Long> implements 
 		{
 			queryStr.append(" and date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate  " );
 		}				
-		queryStr.append("  and model.enrollmentYear =:year group by model.userAddress.tehsil.tehsilId,model.enrollmentYear");
+		queryStr.append("  and model.enrollmentYear =:year " +
+				" and model.userAddress.localElectionBody.localElectionBodyId is null " +
+				" group by model.userAddress.tehsil.tehsilId,model.enrollmentYear");
 
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("tehsilIds", tehsilIds);

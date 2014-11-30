@@ -58,8 +58,55 @@ public class CadreRegisterInfo implements Serializable{
 	private Long ageRangeVoterValues = 0L;
 	private List<Long> hours = new ArrayList<Long>();
 	
+	private Long targetCadre;
+	private Long totalVoters;
+	private String regPercent;
+	private String colorStatus;
+	private Long overAllRegCount;
 	
 	
+	
+	
+	public Long getOverAllRegCount() {
+		return overAllRegCount;
+	}
+
+	public void setOverAllRegCount(Long overAllRegCount) {
+		this.overAllRegCount = overAllRegCount;
+	}
+
+	public String getRegPercent() {
+		return regPercent;
+	}
+
+	public void setRegPercent(String regPercent) {
+		this.regPercent = regPercent;
+	}
+
+	public String getColorStatus() {
+		return colorStatus;
+	}
+
+	public void setColorStatus(String colorStatus) {
+		this.colorStatus = colorStatus;
+	}
+
+	public Long getTargetCadre() {
+		return targetCadre;
+	}
+
+	public void setTargetCadre(Long targetCadre) {
+		this.targetCadre = targetCadre;
+	}
+
+	public Long getTotalVoters() {
+		return totalVoters;
+	}
+
+	public void setTotalVoters(Long totalVoters) {
+		this.totalVoters = totalVoters;
+	}
+
 	public List<Long> getHours() {
 		return hours;
 	}
