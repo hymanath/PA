@@ -9046,6 +9046,12 @@
 				<param name="root">amountDetails</param>
 			</result>
 		</action>
+		<action name="tdpCadreCardsPrintingDashBoardAction" class="tdpCadreReportAction" method="tdpCadreCardsPrintingDashBoard">
+			<result name="success">/jsp/tdpCadreCardsPrintingDashBoard.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
+			<result name="input">/jsp/loginForm.jsp?src=tabAllocationDetailsAction</result>
+		</action>
+		
 </package>
 
 </struts>      
