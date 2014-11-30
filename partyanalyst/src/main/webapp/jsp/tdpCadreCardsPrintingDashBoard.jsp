@@ -35,22 +35,25 @@
 	 
 	 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	 <!-- Include all compiled plugins (below), or include individual files as needed -->
+	
+	
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
 	  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script src="js/cardsDashBoard/js2.3.2/bootstrap.min.js"></script>
-	  <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
 	<!---Bootstrap Swich-->
 	 <script src="js/cardsDashBoard/js2.3.2/bootstrap-switch.js"></script>
 	
   </head>
   <body>
+  
 	<div class="container">
 		<div class="row">
 			<div class="span12 widget text-center">
 				<h2>PRINTING STATUS REPORT DASHBOARD</h2>
 			</div>
 		</div>
-		<div id="cadrePopupDiv" style="display:none;"><div id="cadrePopupInnerDiv"></div></div>
+		<div id="cadrePopupDiv"></div>
+		
 		<div class="row">
 			<div class="span4 ">
 				<div class="widget">
@@ -114,7 +117,7 @@
 												<td>2000</td>
 												<td>1900</td>
 												<td>1500</td>
-												<td><a onclick="getCadreDetails('ERROR');">100</a></td>
+												<td><a href="#myModal" onclick="getCadreDetails('ERROR');">100</a></td>
 												<td>400 <small>(100 Errors)</small> /1900</td>
 											</tr>
 										</tbody>
@@ -178,7 +181,7 @@
 	getTotalPrintingStatusCount();
 		function getCadreDetails(status)
 		{
-			 $('#cadrePopupInnerDiv').html('');
+			 //$('#cadrePopupInnerDiv').html('');
 		var jObj = {
 		Id:2,
 		status:status,
@@ -189,14 +192,20 @@
           url: 'getCadreDetailsByStatusAction.action',
          data : {task:JSON.stringify(jObj)} ,
        }).done(function(result){
-		//buildPopup(result);
+		buildPopup(result);
 		});
 		}
 
 		function buildPopup(result)
 		{
-			$("#cadrePopupDiv").css("display","block");
+			//$("#cadrePopupDiv").css("display","block");
 			var str='';
+			str+='<div id="myModal" class="modal" aria-labelledby="myModalLabel" >';
+			 str+='<div class="modal-header">';
+			str+='<button type="button" class="close" data-dismiss="modal" onclick="closePopup();">×</button>';
+			str+='<h3 id="myModalLabel">Cadre Details</h3>';
+			str+='</div>';
+			str+='<div class="modal-body">';
 			str+='<table  class="table table-bordered table-striped" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;text-align:center;">';
 			 str +='<tr>';
 			  str +='<th>Name</th>';
@@ -216,14 +225,14 @@
 				str +='</tr>'; 
 			  }
 			  str+='</table>';
-			str+='</table>';
-			 $('#cadrePopupInnerDiv').html(str);
-			$('#cadrePopupDiv').dialog({                   
-		    modal: true,
-            title: "<b>Cadre Details</b>",
-			width: 600,
-            height: 500
-     });
+			str+='</div></div>';
+			 $('#cadrePopupDiv').html(str);
+			 $('#myModal').modal('hide')
+			$('#myModal').modal('show');
+		}
+		function closePopup()
+		{
+		    $('#myModal').modal('hide');
 		}
 	</script>
 	
