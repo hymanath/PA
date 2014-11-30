@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IZebraPrintDetailsDAO;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.dto.ZebraPrintDetailsVO;
+import com.itgrids.partyanalyst.model.ZebraPrintDetails;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ZebraPrintDetailsDAOHibernateTest extends BaseDaoTestCase{
@@ -32,7 +33,7 @@ public class ZebraPrintDetailsDAOHibernateTest extends BaseDaoTestCase{
 		this.zebraPrintDetailsDAO = zebraPrintDetailsDAO;
 	}
 
-	public void testgetMemberShipCardPrintStatusByDate()
+	/*public void testgetMemberShipCardPrintStatusByDate()
 	{
 		ZebraPrintDetailsVO returnVO = new ZebraPrintDetailsVO();
 		
@@ -281,5 +282,14 @@ public class ZebraPrintDetailsDAOHibernateTest extends BaseDaoTestCase{
 		}
 		
 		return returnVo;
+	}*/
+	
+	public void testUpdateVoterName()
+	{
+		ZebraPrintDetails zebraPrintDetails = zebraPrintDetailsDAO.get(206753l);
+		long zebraPrintDetailsId = zebraPrintDetails.getZebraPrintDetailsId();
+		String voterName = zebraPrintDetails.getVoterName();
+		voterName = voterName.replaceAll("\\p{C}", "");
+		System.out.println(zebraPrintDetailsDAO.updateVoterName(zebraPrintDetailsId, voterName));
 	}
 }
