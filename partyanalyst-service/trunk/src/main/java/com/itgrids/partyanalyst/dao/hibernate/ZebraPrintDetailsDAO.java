@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IZebraPrintDetailsDAO;
 import com.itgrids.partyanalyst.model.ZebraPrintDetails;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails, Long> implements IZebraPrintDetailsDAO {
 
@@ -65,7 +66,7 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 		
 	}
 	
-	public List<Object[]> getMemberShipCardPushStatusByDate(List<Long> locationIdList,Date fromDate, Date toDate,String queryStr)
+	public List<Object[]> getMemberShipPrintCardStatusByDate(List<Long> locationIdList,Date fromDate, Date toDate,String queryStr)
 	{
 		Query query = getSession().createQuery(queryStr.toString()); 
 		query.setParameterList("locationIdList", locationIdList);
@@ -73,10 +74,90 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 		{
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
-			
 		}
 		return query.list();
 		
+	}
+	
+	
+	public List<Object[]> getMemberShipCardPushDataStatusByDate(List<Long> locationIdList,Date fromDate, Date toDate,String queryStr)
+	{
+		Query query = getSession().createQuery(queryStr.toString()); 
+		query.setParameterList("locationIdList", locationIdList);
+		if(fromDate != null && toDate != null)
+		{
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		return query.list();	
+	}
+	public List<Object[]> getPrintedCardsDetails()
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model.tdpCadreId, model.printSerialNo from ZebraPrintDetails model where ( model.printStatus ='Y' or model.printStatus ='y' )");
+		Query query = getSession().createQuery(queryStr.toString()); 
+		return query.list();
+	}
+	
+	public Long getPrintedCountByLocations(List<Long> consituencyIdsList, String searchType,String dataType)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		
+		if(!searchType.equalsIgnoreCase(IConstants.MP))
+		{
+			queryStr.append(" select count(model.zebraPrintDetailsId) from ZebraPrintDetails model where ");
+			queryStr.append(" model.tdpCadre.userAddress.constituency.constituencyId in (:consituencyIdsList) ");
+		}
+		else
+		{
+			queryStr.append(" select count(model.zebraPrintDetailsId) from ZebraPrintDetails model where  ");
+			queryStr.append(" model.tdpCadre.userAddress.constituency.constituencyId in (:consituencyIdsList) ");
+		}
+		
+		if(dataType.equalsIgnoreCase("printStatus"))
+		{
+			queryStr.append(" and ((model.printStatus ='Y' or model.printStatus ='y' ) and (model.errorStatus is null or model.errorStatus ='0' ))  ");
+		}
+		else if(dataType.equalsIgnoreCase("errorStatus"))
+		{
+			queryStr.append(" and ((model.printStatus !='Y' or model.printStatus !='y' ) and (model.errorStatus is not null and model.errorStatus !='0' ))  ");
+		}
+		
+		Query query = getSession().createQuery(queryStr.toString()); 
+		query.setParameterList("consituencyIdsList", consituencyIdsList);
+		return (Long) query.uniqueResult();
+	}
+	
+	
+
+	public List<Object[]> getPrintedCountByLocationWise(List<Long> consituencyIdsList, String searchType,String dataType)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		
+		if(!searchType.equalsIgnoreCase(IConstants.MP))
+		{
+			queryStr.append(" select model.tdpCadre.userAddress.constituency.constituencyId,model.tdpCadre.userAddress.constituency.name, count(model.zebraPrintDetailsId) from ZebraPrintDetails model where ");
+			queryStr.append(" model.tdpCadre.userAddress.constituency.constituencyId in (:consituencyIdsList) ");
+		}
+		else
+		{
+			queryStr.append(" select model.tdpCadre.userAddress.constituency.constituencyId, model.tdpCadre.userAddress.constituency.name, count(model.zebraPrintDetailsId) from ZebraPrintDetails model where  ");
+			queryStr.append(" model.tdpCadre.userAddress.constituency.constituencyId in (:consituencyIdsList) ");
+		}
+		
+		if(dataType.equalsIgnoreCase("printStatus"))
+		{
+			queryStr.append(" and ((model.printStatus ='Y' or model.printStatus ='y' ) and (model.errorStatus is null or model.errorStatus ='0' ))  ");
+		}
+		else if(dataType.equalsIgnoreCase("errorStatus"))
+		{
+			queryStr.append(" and ((model.printStatus !='Y' or model.printStatus !='y' ) and (model.errorStatus is not null and model.errorStatus !='0' ))  ");
+		}
+		
+		queryStr.append(" group by model.tdpCadre.userAddress.constituency.constituencyId ");
+		Query query = getSession().createQuery(queryStr.toString()); 
+		query.setParameterList("consituencyIdsList", consituencyIdsList);
+		return query.list();
 	}
 	
 }
