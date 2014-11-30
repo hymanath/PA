@@ -397,8 +397,7 @@ public class MobileNumbersExtractor {
     		StringBuilder sb = new StringBuilder();
     		BufferedWriter outwriter = new BufferedWriter(new FileWriter("H:\\KOTI\\"+path));
     		
-    		//ResultSet rs = stmt.executeQuery("select constituency_id from constituency where election_scope_id = 2 and deform_date is null and district_id  between 11 and 23");
-    		ResultSet rs = stmt.executeQuery("select constituency_id from constituency where election_scope_id = 2 and deform_date is null and constituency_id in(354,355,356,357,358,141,135,368)");
+    		ResultSet rs = stmt.executeQuery("select constituency_id from constituency where election_scope_id = 2 and deform_date is null and district_id  between 11 and 23");
     		
 			List<Integer> constituencyIdsList = new ArrayList<Integer>(0); 
 			while(rs.next())
@@ -411,7 +410,7 @@ public class MobileNumbersExtractor {
 				System.out.println(++index+") constituency -- "+constituencyId);
 				rs = stmt.executeQuery("select DISTINCT mobile_number,C.name,D.district_name from mobile_numbers MN,constituency C,district D " +
 						" where C.district_id = D.district_id and MN.constituency_id = C.constituency_id and " +
-						" MN.constituency_id = "+constituencyId+" order by rand() limit "+ind+",3750");
+						" MN.constituency_id = "+constituencyId+" order by rand() limit "+ind+",1000");
 				while(rs.next()){
 					sb.append(rs.getString(1)+"\t"+rs.getString(2)+"\t"+rs.getString(3)+"\n");
 				}
@@ -469,6 +468,6 @@ public class MobileNumbersExtractor {
 	public static void main(String[] args)
 	{
 		MobileNumbersExtractor extractor = new MobileNumbersExtractor();
-		extractor.getconstituencyWiseCadreMobileNumbers("Cadre_Mobile.txt",0);
+		extractor.getconstituencyWiseMobileNumbers("Constituency_1000.txt",0);
 	}
 }

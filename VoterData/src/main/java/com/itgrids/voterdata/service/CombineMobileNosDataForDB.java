@@ -60,22 +60,22 @@ public class CombineMobileNosDataForDB {
 						for(File data2 : data.listFiles())
 						{
 							try{
-							String village = data2.getName().substring(0,data2.getName().indexOf("-"));
+							//String village = data2.getName().substring(0,data2.getName().indexOf("-"));
 							//System.out.println("Reading --> "+data2.getAbsolutePath());
 							br = new BufferedReader(new FileReader(data2));
 							while((line = br.readLine()) != null)
 							{
 								int index = line.indexOf("|");
-								if(index != -1)
-								{
-									String[] d = line.split("\\|");
+								/*if(index != -1)
+								{*/
+									/*String[] d = line.split("\\|");
 									sb.append(district+"\t"+constituency+"\t"+mandal+"\t"+village+"\t"+line.substring(0,index).trim());
 									if(d.length >= 2)
 										sb.append("\t"+d[1]);
 									if(d.length >= 3)
-										sb.append("\t"+d[2]);
-									sb.append("\n");
-								}
+										sb.append("\t"+d[2]);*/
+									sb.append(line+"\n");
+								/*}*/
 								/*if(index != -1)
 								{
 									String[] d = line.split("\\|");
