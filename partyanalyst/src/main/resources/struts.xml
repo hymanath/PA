@@ -9057,6 +9057,11 @@
 			</result>
 		</action>
 		
+		<action name="getPrintingStatusDetialsAction" class="tdpCadreReportAction" method="getPrintingStatusDetails" >
+			<result type="json" name="success">
+				<param name="root">zebraPrintDetailsVO</param>
+			</result>
+		</action>
 </package>
 
 </struts>      

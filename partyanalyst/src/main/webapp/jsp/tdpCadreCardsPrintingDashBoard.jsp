@@ -160,6 +160,22 @@
 		//scrollator
 		$('.scrollable_div').scrollator();
 		$("[name='my-checkbox']").bootstrapSwitch();
+		 
+	  function getTotalPrintingStatusCount(){
+		var jsObj = 
+			   {
+				  stateTyleId : 1,
+				  task:"totalPrintingCount"             
+			   }	
+				$.ajax({
+					type : "POST",
+					url : "getPrintingStatusDetialsAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+				
+			  });
+	  }
+	getTotalPrintingStatusCount();
 		function getCadreDetails(status)
 		{
 			 $('#cadrePopupInnerDiv').html('');
