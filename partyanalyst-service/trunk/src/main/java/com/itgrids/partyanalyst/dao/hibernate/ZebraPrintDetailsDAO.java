@@ -165,7 +165,7 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 		str.append("select model.tdpCadre.tdpCadreId,model.tdpCadre.firstname,model.tdpCadre.lastname,model.tdpCadre.relativename,model.tdpCadre.mobileNo,model.tdpCadre.memberShipNo,model.errorStatus from ZebraPrintDetails model");
 		if(Status.equalsIgnoreCase("ERROR"))
 		{
-			str.append(" where ((model.printStatus !='Y' or model.printStatus !='y' ) and (model.errorStatus is not null and model.errorStatus !='0' ))");
+			str.append(" where model.errorStatus is not null and model.errorStatus !='0' ");
 			
 		}
 		str.append(" and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 and model.tdpCadre.userAddress.constituency.constituencyId =:Id");
