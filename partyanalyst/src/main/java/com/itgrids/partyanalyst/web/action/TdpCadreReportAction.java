@@ -198,4 +198,36 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 		return Action.SUCCESS;	
 	}
 	
+	public String tdpCadreCardsPrintingDashBoard()
+	{
+		try {
+			
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			zebraPrintDetailsVO = tdpCadreReportService.createDashBoardForPrintingCardsDetails(user.getAccessType(),user.getAccessValue(),0L);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in printingDashBoard method in CadreRegistrationAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getPringtinDashBoardDetails()
+	{
+		try {
+			
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			jobj = new JSONObject(getTask());
+			Long stateTyleId = jobj.getLong("stateTyleId");
+				
+			zebraPrintDetailsVO = tdpCadreReportService.createDashBoardForPrintingCardsDetails(user.getAccessType(),user.getAccessValue(),stateTyleId);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in printingDashBoard method in CadreRegistrationAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
