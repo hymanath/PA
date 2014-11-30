@@ -11,4 +11,6 @@ public interface ITdpCadreReportService {
 	public TdpCadreLocationWiseReportVO generateExcelReportForTdpCadre(List<Long> constituencyIds);
 	public ZebraPrintDetailsVO getMemberShipCardPrintDetails(String searchType,Long stateTypeId,List<Long> selectedLocationIds,String fromDateStr,String toDateStr);
 	public SurveyTransactionVO getConstituencyDetailsInDistricts(List<Long> districtIdList);
+	public String updatePrintingStatusInTdpCadreTable();
+	public ZebraPrintDetailsVO createDashBoardForPrintingCardsDetails(String accessType,String accessValue,Long stateTypeId);
 }
