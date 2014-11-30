@@ -23,4 +23,6 @@ public interface IZebraPrintDetailsDAO extends GenericDao<ZebraPrintDetails, Lon
 	
 	public Long getTotalPrintStatusCount(List<Long> consituencyIdsList, String searchType,String dataType);
 	public List<Object[]> getCadreDetailsByStatus(Long Id,String Status);
+	
+	public int updateVoterName(Long zebraPrintDetailsId,String voterName);
 }
