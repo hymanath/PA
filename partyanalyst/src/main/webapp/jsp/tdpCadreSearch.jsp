@@ -264,7 +264,15 @@
 		//var villageCoveredId = $('#vilagecovrdList').val(); 
 		var ischecked = "0";
 	
-
+	cosntiteucnyId = (cosntiteucnyId != null && cosntiteucnyId != null ? cosntiteucnyId = cosntiteucnyId:0);
+	 candidateName = (candidateName != null && candidateName.length > 0 ? candidateName = candidateName:"");
+	   voterCardNo = (voterCardNo != null && voterCardNo.length > 0 ? voterCardNo = voterCardNo:"");
+	       houseNo = (houseNo != null && houseNo.length > 0 ? houseNo = houseNo:"");
+	    searchType = (searchType != null && searchType.length > 0 ? searchType = searchType:"");
+	   panchayatId = (typeof(panchayatId) != 'undefined' && panchayatId != null ? panchayatId = panchayatId:0);
+	       boothId = ( typeof(boothId) != 'undefined' && boothId != null ? boothId = boothId:0);
+		      
+			  //console.log("panchayatId  :"+panchayatId);
 		if($("#isNewCadre").is(':checked'))
 			ischecked = "true";  // checked
 		else
