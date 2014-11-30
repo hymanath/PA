@@ -173,7 +173,7 @@
           url: 'getCadreDetailsByStatusAction.action',
          data : {task:JSON.stringify(jObj)} ,
        }).done(function(result){
-		buildPopup(result);
+		//buildPopup(result);
 		});
 		}
 
