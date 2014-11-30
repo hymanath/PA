@@ -11,5 +11,13 @@ public interface IZebraPrintDetailsDAO extends GenericDao<ZebraPrintDetails, Lon
 
 	public List<Object[]> getMemberShipCardPrintStatusByDate(List<Long> constituencyIds,Date fromDate, Date toDate,String type);
 	
-	public List<Object[]> getMemberShipCardPushStatusByDate(List<Long> locationIdList,Date fromDate, Date toDate,String queryStr);
+	public List<Object[]> getMemberShipPrintCardStatusByDate(List<Long> locationIdList,Date fromDate, Date toDate,String queryStr);
+	
+	public List<Object[]> getPrintedCardsDetails();
+	
+	public List<Object[]> getMemberShipCardPushDataStatusByDate(List<Long> locationIdList,Date fromDate, Date toDate,String queryStr);
+	
+	public Long getPrintedCountByLocations(List<Long> consituencyIdsList, String searchType,String dataType);
+	
+	public List<Object[]> getPrintedCountByLocationWise(List<Long> consituencyIdsList, String searchType,String dataType);
 }
