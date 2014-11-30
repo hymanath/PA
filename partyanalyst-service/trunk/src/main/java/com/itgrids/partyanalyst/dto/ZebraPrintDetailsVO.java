@@ -25,6 +25,9 @@ public class ZebraPrintDetailsVO implements java.io.Serializable{
 	private Double erroPerc;
 	private Double printPerc;
 	private Double pendingPerc;
+	private String relativeName;
+	private String mobileNo;
+	private String membershipNo;
 	
 	List<ZebraPrintDetailsVO> zebraPrintDetailsVOList = new ArrayList<ZebraPrintDetailsVO>(0);
 	List<ZebraPrintDetailsVO> dataPushDetailsList = new ArrayList<ZebraPrintDetailsVO>(0);
@@ -152,6 +155,24 @@ public class ZebraPrintDetailsVO implements java.io.Serializable{
 	}
 	public void setErrorStatusCount(Long errorStatusCount) {
 		this.errorStatusCount = errorStatusCount;
+	}
+	public String getRelativeName() {
+		return relativeName;
+	}
+	public void setRelativeName(String relativeName) {
+		this.relativeName = relativeName;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	public String getMembershipNo() {
+		return membershipNo;
+	}
+	public void setMembershipNo(String membershipNo) {
+		this.membershipNo = membershipNo;
 	}
 	
 }

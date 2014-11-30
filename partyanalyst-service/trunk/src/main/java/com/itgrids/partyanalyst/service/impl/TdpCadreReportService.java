@@ -38,6 +38,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IZebraPrintDetailsDAO;
+import com.itgrids.partyanalyst.dto.CadreAmountDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationWiseReportVO;
@@ -2221,5 +2222,48 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		}
 		
 		return returnVO;
+	}
+	
+	public ZebraPrintDetailsVO getCadreDetailsByStatus(Long constituencyId,String status)
+	{
+		ZebraPrintDetailsVO returnVo = new ZebraPrintDetailsVO();
+		try{
+			
+			List<Object[]> list = zebraPrintDetailsDAO.getCadreDetailsByStatus(constituencyId, status);
+			if(list !=null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					ZebraPrintDetailsVO vo = new ZebraPrintDetailsVO();
+					vo.setId((Long)params[0]);
+					vo.setName(params[1] != null ? params[1].toString() :"" +" " + params[2] != null ? params[2].toString() :"" );
+					vo.setRelativeName(params[3] != null ? params[3].toString() : "");
+					vo.setMobileNo(params[4] != null ? params[4].toString() : "");
+					vo.setMembershipNo(params[5] != null ? params[5].toString() : "");
+					vo.setPrintStatus(params[6] != null ? params[6].toString() : "");
+					returnVo.getZebraPrintDetailsVOList().add(vo);
+					
+				}
+				returnVo.setId(constituencyId);
+				List<Long>constituencyIds = new ArrayList<Long>();
+				constituencyIds.add(constituencyId);
+					List<Object[]> list1 = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentsAndDistrictForAssembly(constituencyIds);
+					if(list != null && list.size() > 0)
+					{
+						for(Object[] params : list1)
+						{
+							returnVo.setParliament(params[2] != null ? params[2].toString() : "");
+							returnVo.setDistrict(params[4] != null ? params[4].toString() : "");
+						}
+					}
+				
+			}
+		}
+		catch(Exception e)
+		{
+			LOG.error(" exception occured in getCadreDetailsByStatus()  @ TdpCadreReportService class.",e);	
+		}
+		return returnVo;
+		
 	}
 }
