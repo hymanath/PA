@@ -125,6 +125,7 @@
 		<pattern>/tdpCadreRegistrationAction*</pattern>
 		<pattern>/tdpCadreSearchDetailsAction*</pattern>
 		<pattern>/tdpCadreSearchAction*</pattern>
+		<pattern>/tdpCadreCardsPrintingDashBoardAction*</pattern>
 		<pattern>/tdpCadreSurveyUsersDetailsAction*</pattern>
 		<pattern>/votersInCasteAction*</pattern>
         <pattern>/cadreMemberShipCardDispatcherAction*</pattern>
