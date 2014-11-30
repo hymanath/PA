@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationWiseReportVO;
 import com.itgrids.partyanalyst.dto.ZebraPrintDetailsVO;
 import com.itgrids.partyanalyst.service.ITdpCadreReportService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -205,7 +206,7 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 			HttpSession session = request.getSession();
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 			
-			zebraPrintDetailsVO = tdpCadreReportService.createDashBoardForPrintingCardsDetails(user.getAccessType(),user.getAccessValue(),0L);
+			zebraPrintDetailsVO = tdpCadreReportService.dashBoardForPrintingCardsDetails(user.getAccessType(),user.getAccessValue(),0L);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in printingDashBoard method in CadreRegistrationAction Action",e);
@@ -213,22 +214,6 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 		return Action.SUCCESS;
 	}
 	
-	public String getPringtinDashBoardDetails()
-	{
-		try {
-			
-			HttpSession session = request.getSession();
-			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-			jobj = new JSONObject(getTask());
-			Long stateTyleId = jobj.getLong("stateTyleId");
-				
-			zebraPrintDetailsVO = tdpCadreReportService.createDashBoardForPrintingCardsDetails(user.getAccessType(),user.getAccessValue(),stateTyleId);
-			
-		} catch (Exception e) {
-			LOG.error("Exception raised in printingDashBoard method in CadreRegistrationAction Action",e);
-		}
-		return Action.SUCCESS;
-	}
 	public String getCadreDetails()
 	{
 		try {
@@ -252,8 +237,38 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 			jobj = new JSONObject(getTask());
 			Long stateTyleId = jobj.getLong("stateTyleId");
-				
-			zebraPrintDetailsVO = tdpCadreReportService.dashBoardForPrintingCardsDetails(user.getAccessType(),user.getAccessValue(),stateTyleId);
+			
+			zebraPrintDetailsVO = tdpCadreReportService.createDashBoardForPrintingCardsDetails(user.getAccessType(),user.getAccessValue(),stateTyleId);
+			
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in printingDashBoard method in CadreRegistrationAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getPrintDetailsInfoByConstituency()
+	{
+		try {
+			
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			jobj = new JSONObject(getTask());
+			
+			String accessValue = jobj.getString("constituencyId");
+			String accessType = IConstants.MLA;
+			
+			if(accessValue.equalsIgnoreCase("0"))
+			{
+				accessType = user.getAccessType();
+				accessValue = user.getAccessValue();
+			}
+			else
+			{
+				accessType = IConstants.MLA;				
+			}
+			
+			zebraPrintDetailsVO = tdpCadreReportService.createDashBoardForPrintingCardsDetails(accessType,accessValue,0L);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in printingDashBoard method in CadreRegistrationAction Action",e);
