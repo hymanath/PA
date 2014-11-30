@@ -9062,6 +9062,13 @@
 				<param name="root">zebraPrintDetailsVO</param>
 			</result>
 		</action>
+		
+		<action name="getPrintDetailsInfoByConstituencyAction" class="tdpCadreReportAction" method="getPrintDetailsInfoByConstituency" >
+			<result type="json" name="success">
+				<param name="root">zebraPrintDetailsVO</param>
+			</result>
+		</action>
+		
 </package>
 
 </struts>      
