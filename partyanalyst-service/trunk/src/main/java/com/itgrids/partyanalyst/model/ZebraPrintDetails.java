@@ -57,6 +57,12 @@ public class ZebraPrintDetails extends BaseModel implements java.io.Serializable
 	private String errorStatus;
 	private String photoType;
 	private String voterImagePath;
+	private String mobileNo;
+	private String jobCode;
+	private String partNo;
+	private String areaCovered;
+	private String houseNo;
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -285,6 +291,46 @@ public class ZebraPrintDetails extends BaseModel implements java.io.Serializable
 	}
 	public void setVoterImagePath(String voterImagePath) {
 		this.voterImagePath = voterImagePath;
+	}
+	
+	@Column(name="mobile_no")
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	
+	@Column(name="job_code")
+	public String getJobCode() {
+		return jobCode;
+	}
+	public void setJobCode(String jobCode) {
+		this.jobCode = jobCode;
+	}
+	
+	@Column(name="part_no")
+	public String getPartNo() {
+		return partNo;
+	}
+	public void setPartNo(String partNo) {
+		this.partNo = partNo;
+	}
+	
+	@Column(name="area_covered")
+	public String getAreaCovered() {
+		return areaCovered;
+	}
+	public void setAreaCovered(String areaCovered) {
+		this.areaCovered = areaCovered;
+	}
+	
+	@Column(name="house_no")
+	public String getHouseNo() {
+		return houseNo;
+	}
+	public void setHouseNo(String houseNo) {
+		this.houseNo = houseNo;
 	}
 	
 	
