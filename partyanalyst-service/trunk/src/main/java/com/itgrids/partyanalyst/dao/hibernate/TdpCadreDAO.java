@@ -2771,7 +2771,7 @@ public void flushAndclearSession(){
 	}
 	public List<Object[]> gettingRegisteredVotersForConstituencys(List<Long> constituencyIds)
 	{
-		Query query=getSession().createQuery("select count(model.tdpCadreId),model.userAddress.constituency.name " +
+		Query query=getSession().createQuery("select count(model.tdpCadreId),model.userAddress.constituency.name,model.userAddress.constituency.constituencyId " +
 				" from TdpCadre model " +
 				" where model.userAddress.constituency.constituencyId in(:constituencyIds) and" +
 				"  model.enrollmentYear = 2014 and" +
