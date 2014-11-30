@@ -1,7 +1,5 @@
 package com.itgrids.voterdata.service;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -27,9 +25,9 @@ public class SpecialCharactersRemover {
     		stmt = conn.createStatement();
     		Map<Integer,String> map = new HashMap<Integer, String>(0);
     		Date d1 = new Date();
-    		ResultSet rs = stmt.executeQuery("select zebra_print_details_id,voter_name from zebra_print_details limit 0,100");
+    		ResultSet rs = stmt.executeQuery("select zebra_print_details_id,voter_name from zebra_print_details limit 188973,500000");
     		
-    		int index = 0;
+    		int index = 100000;
     		while(rs.next())
     		{
     			String str = rs.getString(2);

@@ -15,8 +15,8 @@ import com.itgrids.voterdata.util.IConstants;
 public class PopulateVoterTempDataFor2014 {
 
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-	static final String DB_URL = "jdbc:mysql://localhost/"+IConstants.DB_NAME;
-	static final String INSERT_DB_URL = "jdbc:mysql://localhost/dakavara_pa";
+	static final String DB_URL = "jdbc:mysql://localhost:3372/"+IConstants.DB_NAME;
+	static final String INSERT_DB_URL = "jdbc:mysql://localhost:3372/dakavara_pa";
 	static final String USER = "root";
 	static final String PASS = "root";
 	

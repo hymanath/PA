@@ -111,7 +111,7 @@ public class MobileInserter {
     		System.out.println("Total Mobiles Available --> "+total);
     		
     		int index = 0;
-    		int toIndex = 10000;
+    		int toIndex = 50000;
     		for(;;)
     		{
     			try{
@@ -138,8 +138,8 @@ public class MobileInserter {
     			if(!aviMobilesList.contains(ms))
     				sb.append(ms+"\n");
     			
-    			index += 10000;
-    			toIndex += 10000;
+    			index += 50000;
+    			toIndex += 50000;
     			
     			}catch(Exception e)
     			{
