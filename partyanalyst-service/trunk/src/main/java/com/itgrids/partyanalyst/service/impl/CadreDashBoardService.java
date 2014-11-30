@@ -1004,7 +1004,8 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			   constiIds = constituencyDAO.getConstituenciesInADistrict(accessValue);
 			 }
 			 else if(accessType.equalsIgnoreCase("STATE")){
-				 constiIds = tdpCadreDAO.getCadreAvailableConstituencies(0L); // AP & TS constituencies list
+				 //constiIds = tdpCadreDAO.getCadreAvailableConstituencies(0L); // AP & TS constituencies list
+				 constiIds = constituencyDAO.getConstituencyIdsByStateIdForAElectionType(1l,2l);
 				}
 			if(hours != null && hours.trim().length()>0 && !hours.equalsIgnoreCase("0"))
 			{
