@@ -209,7 +209,9 @@
 				  </tr>
 			</table>
 					<div id="reportsStatusDiv" style="padding: 10px;overflow: scroll;display:none;"></div>
+					<div id="reportsPushStatusDiv" style="padding: 10px;overflow: scroll;display:none;"></div>
 					<div id="reportsStatusExcelDiv" style="display:none;"></div>
+					<div id="reportsStatusPushExcelDiv" style="display:none;"></div>
 			  </div>
 			</div>
 		</div>
@@ -392,6 +394,7 @@ $(document).ready(function(){
 function generateDetailReports()
 {		
 $('#reportsStatusDiv').hide();
+$('#reportsPushStatusDiv').hide();
 $('#excelBtnId').hide();
 	var locationType = $("#selLctnType").val();
 	var stateTyleId = $("#statesDivId").val();
@@ -419,7 +422,9 @@ $('#excelBtnId').hide();
 	}
 	
 	$('#reportsStatusDiv').html('');
+	$('#reportsPushStatusDiv').html('');
 	$('#reportsStatusExcelDiv').html('');
+	$('#reportsStatusPushExcelDiv').html('');
 	var startDate = $('#fromDateId').val();
 	var endDate = $('#toDateId').val();
 	$("#errorDiv").html("");
@@ -489,17 +494,25 @@ $('#excelBtnId').hide();
 			.done(function( result ) {
 			$('#searchDashboardImg').hide();
 			$('#reportsStatusDiv').show();
+			$('#reportsPushStatusDiv').show();
 				if(result != null &&  ( result.datesList != null && result.datesList.length > 0 ))
 				{
 				$('#excelBtnId').show();
 					$('#reportsStatusDiv').css("overflow","scroll").css("padding","10px;");;
+					$('#reportsPushStatusDiv').css("overflow","scroll").css("padding","10px;");;
 					buildCategoeryDetails(result,locationType);
 					buildForExcelSheet(result,locationType);
-				}
+					
+					buildPushDataForExcelSheet(result,locationType)
+					buildPushDataResult(result,locationType)
+	
+				}  
 				else
 				{
 					$('#reportsStatusDiv').removeAttr("style");
+					$('#reportsPushStatusDiv').removeAttr("style");
 					$('#reportsStatusDiv').html('<span class="span12 offset5 m_top20" style="font-weight:bold;"> No Data Avaialable...</span>');
+					$('#reportsPushStatusDiv').html('<span class="span12 offset5 m_top20" style="font-weight:bold;"> No Data Avaialable...</span>');
 				}
 				
 			 });
@@ -519,7 +532,7 @@ $('#excelBtnId').hide();
 			str+='<table id="dayWiseUsersDetailsId" class="table table-bordered ">';
 			str+='<thead>';
 			str+='<tr>';
-			str+='<th> Date </th>';
+			//str+='<th> Date </th>';
 			str+='<th> District  </th>';
 			if(locationType !=2)
 			{
@@ -535,7 +548,7 @@ $('#excelBtnId').hide();
 			str+='</tr>';
 
 			str+='<tr>';
-			str+='<th></th>';
+			//str+='<th></th>';
 			str+='<th> </th>';
 			if(locationType !=2)
 			{
@@ -561,7 +574,7 @@ $('#excelBtnId').hide();
 				for(var i in result.zebraPrintDetailsVOList)
 				{
 				str+='<tr>';
-				str+='<td> '+result.zebraPrintDetailsVOList[i].dataPushDate+'</td>';
+				//str+='<td> '+result.zebraPrintDetailsVOList[i].dataPushDate+'</td>';
 				str+='<td> '+result.zebraPrintDetailsVOList[i].district+'</td>';
 				if(locationType !=2)
 				{
@@ -795,6 +808,167 @@ $('#excelBtnId').hide();
 	
   }
   
+  
+	function buildPushDataResult(result,locationType)
+	{
+		var str ='';
+		str+='<h4 align="center" >  DAY WISE UPDATED DATA  REPORT </h4>';
+		str+='<div class="span12  m_top20" style="font-weight:bold;margin-bottom: 30px;">';
+		str+='<div class="span3 show-grid" style="background-color:#D3D3D3;padding:5px;"> Total Registered :'+result.totalPushCount+' </div> ';
+		str+='<div class="span3 show-grid offset1" style="background-color:#D3D3D3;padding:5px;"> Cards Printed :'+result.printStatusCount+' </div> ';
+		str+='<div class="span3 show-grid offset1" style="background-color:#D3D3D3;padding:5px;"> Errors  :'+result.errorStatusCount+' </div> ';
+		str+='</div><br></br>';
+			str+='<table id="dayWiseUsersPushDetailsId" class="table table-bordered ">';
+			str+='<thead>';
+			str+='<tr>';
+			//str+='<th> Date </th>';
+			str+='<th> District  </th>';
+			if(locationType !=2)
+			{
+				str+='<th> Parliament </th>';
+				str+='<th> Constituency </th>';
+			}			
+			
+			str+='<th> Total Cards </th>';
+			for(var i in result.dataPushDatesList)
+			{
+				str+='<th> '+result.dataPushDatesList[i]+' </th>';
+			}
+			str+='</tr>';
+
+			str+='<tr>';
+			//str+='<th></th>';
+			str+='<th> </th>';
+			if(locationType !=2)
+			{
+				str+='<th></th>';
+				str+='<th></th>';
+			}
+			
+			str+='<th></th>';
+			for(var i in result.dataPushDatesList)
+			{
+				str+='<th> Updated Count </th>';
+			}
+			
+			str+='</tr>';
+			
+			str+='</thead>';
+			
+			str+='<tbody>';
+			
+			if(result.dataPushDetailsList != null && result.dataPushDetailsList.length > 0)
+			{
+				for(var i in result.dataPushDetailsList)
+				{
+				str+='<tr>';
+			//	str+='<td> '+result.zebraPrintDetailsVOList[i].dataPushDate+'</td>';
+				str+='<td> '+result.dataPushDetailsList[i].district+'</td>';
+				if(locationType !=2)
+				{
+					str+='<td> '+result.dataPushDetailsList[i].parliament+'</td>';				
+					str+='<td> '+result.dataPushDetailsList[i].name+'</td>';
+				}
+				str+='<td> '+result.dataPushDetailsList[i].totalPushCount+'</td>';
+				
+				if(result.dataPushDetailsList[i].zebraPrintDetailsVOList != null && result.dataPushDetailsList[i].zebraPrintDetailsVOList.length >0)
+				{
+					for(var j in result.dataPushDetailsList[i].zebraPrintDetailsVOList)
+					{
+						str+='<td> '+result.dataPushDetailsList[i].zebraPrintDetailsVOList[j].totalPushCount+'</td>';
+						//str+='<td> '+result.dataPushDetailsList[i].zebraPrintDetailsVOList[j].errorStatusCount+'</td>';
+					}
+				}
+				
+				str+='</tr>';
+				}
+			}
+			str+='</tbody>';
+			str+='</table>';
+			
+			$('#reportsPushStatusDiv').html(str);
+		    $('#dayWiseUsersPushDetailsId').dataTable({
+				  "aaSorting": [[ 0, "desc" ]],
+			      "iDisplayLength": 20,
+			      "aLengthMenu": [[20,50, 100, 200, -1], [20,50, 100, 200, "All"]]
+		         });
+	}
+
+	function buildPushDataForExcelSheet(result,locationType)
+	{
+		var str ='';			
+			str+='<h4 align="center" >  DAY WISE UPDATED DATA REPORT </h4>';
+			str+='<table id="dayWiseUsersDetailsIdForExcel" class="table table-bordered ">';
+			str+='<thead>';
+			str+='<tr>';
+			//str+='<th> Date </th>';
+			str+='<th> District  </th>';
+			if(locationType !=2)
+			{
+				str+='<th> Parliament </th>';
+				str+='<th> Constituency </th>';
+			}			
+			
+			str+='<th> Total Cards </th>';
+			for(var i in result.datesList)
+			{
+				str+='<th> '+result.datesList[i]+' </th>';
+			}
+			str+='</tr>';
+
+			str+='<tr>';
+			//str+='<th></th>';
+			str+='<th> </th>';
+			if(locationType !=2)
+			{
+				str+='<th></th>';
+				str+='<th></th>';
+			}
+			
+			str+='<th></th>';
+			for(var i in result.datesList)
+			{
+				str+='<th> Updated Count </th>';
+			}
+			
+			str+='</tr>';
+			
+			str+='</thead>';
+			
+			str+='<tbody>';
+			
+			if(result.zebraPrintDetailsVOList != null && result.zebraPrintDetailsVOList.length > 0)
+			{
+				for(var i in result.zebraPrintDetailsVOList)
+				{
+				str+='<tr>';
+			//	str+='<td> '+result.zebraPrintDetailsVOList[i].dataPushDate+'</td>';
+				str+='<td> '+result.zebraPrintDetailsVOList[i].district+'</td>';
+				if(locationType !=2)
+				{
+					str+='<td> '+result.zebraPrintDetailsVOList[i].parliament+'</td>';				
+					str+='<td> '+result.zebraPrintDetailsVOList[i].name+'</td>';
+				}
+				str+='<td> '+result.zebraPrintDetailsVOList[i].totalPushCount+'</td>';
+				
+				if(result.zebraPrintDetailsVOList[i].zebraPrintDetailsVOList != null && result.zebraPrintDetailsVOList[i].zebraPrintDetailsVOList.length >0)
+				{
+					for(var j in result.zebraPrintDetailsVOList[i].zebraPrintDetailsVOList)
+					{
+						str+='<td> '+result.zebraPrintDetailsVOList[i].zebraPrintDetailsVOList[j].totalPushCount+'</td>';
+						//str+='<td> '+result.zebraPrintDetailsVOList[i].zebraPrintDetailsVOList[j].errorStatusCount+'</td>';
+					}
+				}
+				
+				str+='</tr>';
+				}
+			}
+			str+='</tbody>';
+			str+='</table>';
+			
+			$('#reportsStatusPushExcelDiv').html(str);
+	}
+	
 </script>	
 	
 </body>
