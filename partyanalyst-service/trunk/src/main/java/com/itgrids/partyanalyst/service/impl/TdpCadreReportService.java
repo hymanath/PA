@@ -2121,6 +2121,13 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					{
 						zebraPrintDetailsVO = new ZebraPrintDetailsVO();
 					}
+					zebraPrintDetailsVO.setId(tdpCadre[2] != null ? Long.valueOf(tdpCadre[2].toString().trim()):0L);
+					zebraPrintDetailsVO.setName(tdpCadre[1] != null ? tdpCadre[1].toString().trim():"");
+					
+					zebraPrintDetailsVO.setPrintStatusCount(0L);
+					zebraPrintDetailsVO.setErrorStatusCount(0L);
+					zebraPrintDetailsVO.setRemainingCount(0L);
+					zebraPrintDetailsVO.setTotalPushCount(0L);
 					
 					zebraPrintDetailsVO.setRowCount(tdpCadre[0] != null ? Long.valueOf(tdpCadre[0].toString().trim()):0L);
 					locationWiseMap.put(constiteuncyId, zebraPrintDetailsVO);
@@ -2144,7 +2151,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					{
 						zebraPrintDetailsVO = new ZebraPrintDetailsVO();
 					}
-					zebraPrintDetailsVO.setName(zebraPrint3[1] != null ? zebraPrint3[1].toString().trim():"");
+					
 					zebraPrintDetailsVO.setTotalPushCount(zebraPrint3[2] != null ? Long.valueOf(zebraPrint3[2].toString().trim()):0L);
 					locationWiseMap.put(constiteuncyId, zebraPrintDetailsVO);
 					
@@ -2195,16 +2202,51 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					totalErrorCount = totalErrorCount + zebraPrintDetailsVO.getErrorStatusCount();
 				}
 			}
-			
+			DecimalFormat decimalPlaces = new DecimalFormat("##.##");
 			if(locationWiseMap != null && locationWiseMap.size()>0)
 			{
 				locationWiseInfoList = new ArrayList<ZebraPrintDetailsVO>(0);
 				for (Long constiteuncyId : locationWiseMap.keySet()) 
 				{
 					ZebraPrintDetailsVO zebraPrintDetailsVO = locationWiseMap.get(constiteuncyId);
-					Long remainingCount =zebraPrintDetailsVO.getTotalPushCount() - zebraPrintDetailsVO.getPrintStatusCount();
-					zebraPrintDetailsVO.setRemainingCount(remainingCount);
-					
+					Long printCount = zebraPrintDetailsVO.getPrintStatusCount() != null ? zebraPrintDetailsVO.getPrintStatusCount() :0L;
+					Long errorCount = zebraPrintDetailsVO.getErrorStatusCount() != null ? zebraPrintDetailsVO.getErrorStatusCount() :0L;
+					if(zebraPrintDetailsVO.getTotalPushCount() != null)
+					{
+						Long remainingCount =zebraPrintDetailsVO.getTotalPushCount() - printCount;
+						zebraPrintDetailsVO.setRemainingCount(remainingCount);
+						
+						if(printCount != 0L)
+						{
+							Double printPerc  = (printCount * 100.00 )/zebraPrintDetailsVO.getTotalPushCount();
+							zebraPrintDetailsVO.setPrintPerc(Double.valueOf(decimalPlaces.format(printPerc)));
+						}
+						else
+						{
+							zebraPrintDetailsVO.setPrintPerc(0.00);
+						}
+						
+						if(errorCount != 0L)
+						{
+							Double errorPerc  = (errorCount * 100.00 )/zebraPrintDetailsVO.getTotalPushCount();
+							zebraPrintDetailsVO.setErroPerc(Double.valueOf(decimalPlaces.format(errorPerc)));
+						}
+						else
+						{
+							zebraPrintDetailsVO.setErroPerc(0.00);
+						}
+						
+						if(remainingCount != 0L)
+						{
+							Double remainingPerc  = (remainingCount * 100.00 )/zebraPrintDetailsVO.getTotalPushCount();
+							zebraPrintDetailsVO.setPendingPerc(Double.valueOf(decimalPlaces.format(remainingPerc)));
+						}
+						else
+						{
+							zebraPrintDetailsVO.setPendingPerc(0.00);
+						}
+					}
+						
 					
 					
 					locationWiseInfoList.add(zebraPrintDetailsVO);
@@ -2217,6 +2259,45 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			returnVO.setTotalPushCount(totalPushCount);
 			returnVO.setZebraPrintDetailsVOList(locationWiseInfoList);
 			
+			if(returnVO.getTotalPushCount() != null )
+			{
+				Long printCount = returnVO.getPrintStatusCount() != null ? returnVO.getPrintStatusCount() :0L;
+				Long errorCount = returnVO.getErrorStatusCount() != null ? returnVO.getErrorStatusCount() :0L;
+				Long remainingCount =returnVO.getTotalPushCount() - printCount;
+				returnVO.setRemainingCount(remainingCount);
+				
+				if(printCount != 0L)
+				{
+					Double printPerc  = (printCount * 100.00 )/returnVO.getTotalPushCount();
+					returnVO.setPrintPerc(Double.valueOf(decimalPlaces.format(printPerc)));
+				}
+				else
+				{
+					returnVO.setPrintPerc(0.00);
+				}
+				
+				if(errorCount != 0L)
+				{
+					Double errorPerc  = (errorCount * 100.00 )/returnVO.getTotalPushCount();
+					returnVO.setErroPerc(Double.valueOf(decimalPlaces.format(errorPerc)));
+				}
+				else
+				{
+					returnVO.setErroPerc(0.00);
+				}
+				
+				if(remainingCount != 0L)
+				{
+					Double remainingPerc  = (remainingCount * 100.00 )/returnVO.getTotalPushCount();
+					returnVO.setPendingPerc(Double.valueOf(decimalPlaces.format(remainingPerc)));
+				}
+				else
+				{
+					returnVO.setPendingPerc(0.00);
+				}
+				
+			}
+			
 		} catch (Exception e) {
 			LOG.error(" exception occured in createDashBoardForPrintingCardsDetails()  @ TdpCadreReportService class.",e);
 		}
@@ -2227,6 +2308,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	public ZebraPrintDetailsVO dashBoardForPrintingCardsDetails(String accessType,String accessValue,Long stateTypeId)
 	{
 		ZebraPrintDetailsVO returnVO = new ZebraPrintDetailsVO();
+		DecimalFormat decimalPlaces = new DecimalFormat("##.##");
 		try {
 		
 			List<Long> selectedLocationIds = new ArrayList<Long>();
@@ -2274,6 +2356,45 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			returnVO.setErrorStatusCount(totalErrorCount);
 			returnVO.setTotalPushCount(totalPushCount);
 		
+
+			if(returnVO.getTotalPushCount() != null )
+			{
+				Long printCount = returnVO.getPrintStatusCount() != null ? returnVO.getPrintStatusCount() :0L;
+				Long errorCount = returnVO.getErrorStatusCount() != null ? returnVO.getErrorStatusCount() :0L;
+				Long remainingCount =returnVO.getTotalPushCount() - printCount;
+				returnVO.setRemainingCount(remainingCount);
+				
+				if(printCount != 0L)
+				{
+					Double printPerc  = (printCount * 100.00 )/returnVO.getTotalPushCount();
+					returnVO.setPrintPerc(Double.valueOf(decimalPlaces.format(printPerc)));
+				}
+				else
+				{
+					returnVO.setPrintPerc(0.00);
+				}
+				
+				if(errorCount != 0L)
+				{
+					Double errorPerc  = (errorCount * 100.00 )/returnVO.getTotalPushCount();
+					returnVO.setErroPerc(Double.valueOf(decimalPlaces.format(errorPerc)));
+				}
+				else
+				{
+					returnVO.setErroPerc(0.00);
+				}
+				
+				if(remainingCount != 0L)
+				{
+					Double remainingPerc  = (remainingCount * 100.00 )/returnVO.getTotalPushCount();
+					returnVO.setPendingPerc(Double.valueOf(decimalPlaces.format(remainingPerc)));
+				}
+				else
+				{
+					returnVO.setPendingPerc(0.00);
+				}
+				
+			}
 			
 		} catch (Exception e) {
 			LOG.error(" exception occured in createDashBoardForPrintingCardsDetails()  @ TdpCadreReportService class.",e);
