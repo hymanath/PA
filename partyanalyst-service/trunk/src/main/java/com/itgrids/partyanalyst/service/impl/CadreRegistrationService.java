@@ -5552,6 +5552,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						tdpCadreVerfiedData.setResponceData(gson.toJson(returnList));
 						tdpCadreVerfiedData.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 						tdpCadreVerfiedData.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						tdpCadreVerfiedData.setReqSize(Long.valueOf(inputs.size()));
+						tdpCadreVerfiedData.setResSize(Long.valueOf(returnList.size()));
 						tdpCadreVerfiedData.setUserId(usrStr);
 						tdpCadreVerfiedDataDAO.save(tdpCadreVerfiedData);
 					} catch (Exception e) {
