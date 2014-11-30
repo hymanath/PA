@@ -25,6 +25,8 @@ public class TdpCadreVerfiedData implements Serializable{
 	private String 		userId;
 	private Date 		insertedTime;
 	private Date 		updatedTime;
+	private Long		reqSize;
+	private Long 		resSize;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -75,6 +77,23 @@ public class TdpCadreVerfiedData implements Serializable{
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
 	}
+	
+	@Column(name="requested_size")
+	public Long getReqSize() {
+		return reqSize;
+	}
+	public void setReqSize(Long reqSize) {
+		this.reqSize = reqSize;
+	}
+	
+	@Column(name="responce_size")
+	public Long getResSize() {
+		return resSize;
+	}
+	public void setResSize(Long resSize) {
+		this.resSize = resSize;
+	}
+	
 	
 	
 	
