@@ -107,7 +107,7 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 	{
 		Object[] params = {districtId, year};
 		return getHibernateTemplate().find("select distinct model.delimitationConstituency.constituency.constituencyId, model.delimitationConstituency.constituency.name from DelimitationConstituencyAssemblyDetails model " +
-				"where model.constituency.district.districtId = ? and model.delimitationConstituency.year = ?",params);
+				"where model.constituency.district.districtId = ? and model.delimitationConstituency.year = ?  order by model.delimitationConstituency.constituency.name "  ,params);
 	}
 	public List<Object[]> findDistrictsOfParliamentConstituencies(Long parliamentId){
 		return getHibernateTemplate().find("select distinct model.constituency.district.districtId, model.constituency.district.districtName " +
@@ -363,5 +363,18 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 		
 		return (Long) query.uniqueResult();
 	}
+	
+	public List<Object[]> findParliamentDetailsByParliamentId(Long parliamentId){
+		StringBuilder q = new StringBuilder();
+		 q.append("select distinct model.delimitationConstituency.constituency.constituencyId,model.delimitationConstituency.constituency.name " +
+				" from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.year = " +
+				"(select max(model1.year) from DelimitationConstituency model1) and model.delimitationConstituency.constituency.constituencyId = :parliamentId  ");					
+       q.append(" order by model.delimitationConstituency.constituency.name ");
+       
+       Query query = getSession().createQuery(q.toString());
+		query.setParameter("parliamentId", parliamentId);
+		
+		return query.list();
+	} 
 	
 }

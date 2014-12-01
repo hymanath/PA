@@ -191,6 +191,31 @@ public List getDistrictIdAndNameByStateForRegion(Long stateId,String region){
 	
 }
 
+@SuppressWarnings("unchecked")
+public List<Object[]> getDistrictIdAndNameByStateForStateTypeId(Long stateId,Long stateTypeId){
+	StringBuilder str = new StringBuilder();
+	str.append("select distinct model.districtId,model.districtName from District model where model.state.stateId = :stateId ");
+	if(stateTypeId.longValue() == 0L)
+	{
+		str.append(" and model.districtId between 1 and 23 ");
+	}
+	else if(stateTypeId.longValue() == 1L)
+	{
+		str.append(" and model.districtId between 11 and 23 ");
+	}
+	else if(stateTypeId.longValue() == 2L)
+	{
+		str.append(" and model.districtId between 1 and 10 ");
+	}
+	str.append(" order by model.districtName "); 
+	
+	Query query = getSession().createQuery(str.toString());
+	query.setParameter("stateId", stateId);
+	return query.list();
+	
+	
+}
+
 public List<Object[]> getDistrictDetailsByDistrictIds(List<Long> districtIds)
 {
 	Query query = getSession().createQuery("select D.districtId,D.districtName from District D where " +
@@ -219,4 +244,10 @@ public List<Object[]> getDistrictDetailsByDistrictIds(List<Long> districtIds)
 		
 	}
 
+	public List<Object[]> getDistrictDetailsById(Long districtId)
+	{
+		Query query = getSession().createQuery("select model.districtId, model.districtName from District model where model.districtId = ?");
+		query.setParameter(0,districtId);
+		return query.list();
+	}
 }
