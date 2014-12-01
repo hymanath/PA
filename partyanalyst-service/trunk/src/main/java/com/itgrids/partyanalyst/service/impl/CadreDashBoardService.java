@@ -2443,6 +2443,11 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					type = "booth";
 					ids = boothDAO.getAllBoothsInAMandal(fromLocationId,IConstants.VOTER_DATA_PUBLICATION_ID,constituencyId);
 				}
+			}else if(fromLocation.equalsIgnoreCase("municipality")){
+				if(toLocation.equalsIgnoreCase("booth")){
+					type = "booth";
+					ids = boothDAO.getAllBoothIdsInALocalBody(fromLocationId,IConstants.VOTER_DATA_PUBLICATION_ID,constituencyId);
+				}
 			}else if(fromLocation.equalsIgnoreCase("panchayat")){
 				if(toLocation.equalsIgnoreCase("booth")){
 					type = "booth";
