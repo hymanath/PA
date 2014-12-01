@@ -2832,6 +2832,35 @@ public void flushAndclearSession(){
 		return query.list();
 	}
 	
+	public List<Object[]> gettingRegisteredVotersForDistricts(List<Long> districtsIdsList)
+	{
+		Query query=getSession().createQuery("select count(model.tdpCadreId), model.userAddress.district.districtName, model.userAddress.district.districtId " +
+				" from TdpCadre model " +
+				" where model.userAddress.district.districtId in(:districtsIdsList) and" +
+				"  model.enrollmentYear = 2014 and" +
+				"  model.isDeleted='N'" +
+				"  group by model.userAddress.district.districtId " +
+				"  order by model.userAddress.district.districtName asc ");
+        query.setParameterList("districtsIdsList", districtsIdsList);
+		return query.list();
+	}
+		
+	@SuppressWarnings("unchecked")
+	public List<Object[]> gettingRegisteredVotersForParliaments(List<Long> parliamentsList)
+	{
+		Query query=getSession().createQuery("select count(TC.tdpCadreId), DCAD.delimitationConstituency.constituency.name, DCAD.delimitationConstituency.constituency.constituencyId " +
+				"  from TdpCadre TC, DelimitationConstituencyAssemblyDetails DCAD " +
+				"  where DCAD.delimitationConstituency.year = 2009 and " +
+				"  TC.userAddress.constituency.constituencyId = DCAD.constituency.constituencyId and " +
+				"  DCAD.delimitationConstituency.constituency.constituencyId in (:parliamentsList) and " +
+				"  TC.enrollmentYear = 2014 and " +
+				"  TC.isDeleted='N' " +
+				"  group by DCAD.delimitationConstituency.constituency.constituencyId " +
+				"  order by DCAD.delimitationConstituency.constituency.name asc  ");
+        query.setParameterList("parliamentsList", parliamentsList);
+		return query.list();
+	}
+	
 	public List<Object[]> getRegisteredCadreCountIn2012(List<Long> constituencyIds){
 		
 		 Query query=getSession().createQuery("select count(model.tdpCadreId),model.userAddress.constituency.constituencyId from TdpCadre model " +
