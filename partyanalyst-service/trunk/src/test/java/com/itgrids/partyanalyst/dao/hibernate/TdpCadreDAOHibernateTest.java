@@ -748,7 +748,7 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 		}
 	}*/
 	
-	public void testgetTotalRegisteredCadreCountByLocation()
+	/*public void testgetTotalRegisteredCadreCountByLocation()
 	{
 		List<Long> locationIds = new ArrayList<Long>();
 		locationIds.add(209L);
@@ -763,8 +763,26 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 		List<Object[]> list =  tdpCadreDAO.getTotalRecordsByAccessType(locationIds, "", null, null);
 		System.out.println(list.size());
 		
-		/*Long count = tdpCadreDAO.getTotalRegisteredCadreCountByLocation(locationIds," select count(TC.tdpCadreId) from TdpCadre TC where TC.userAddress.district.districtId in (:locationIds) and TC.isDeleted='N' and TC.enrollmentYear = 2014 ");
-		System.out.println(count);*/
+		Long count = tdpCadreDAO.getTotalRegisteredCadreCountByLocation(locationIds," select count(TC.tdpCadreId) from TdpCadre TC where TC.userAddress.district.districtId in (:locationIds) and TC.isDeleted='N' and TC.enrollmentYear = 2014 ");
+		System.out.println(count);
+		
+		
+	}*/
+	
+	public void testgetTotalRegisteredCadreCountByLocation()
+	{
+		try {
+			
+			List<Long> locationIds = new ArrayList<Long>();
+			locationIds.add(489L);
+			List<Object[]> list =  tdpCadreDAO.gettingRegisteredVotersForParliaments(locationIds);
+			System.out.println(list.size());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+
 		
 		
 	}

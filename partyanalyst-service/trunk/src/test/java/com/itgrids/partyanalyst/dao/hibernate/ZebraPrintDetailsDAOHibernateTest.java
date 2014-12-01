@@ -1,21 +1,10 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IZebraPrintDetailsDAO;
-import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
-import com.itgrids.partyanalyst.dto.ZebraPrintDetailsVO;
 import com.itgrids.partyanalyst.model.ZebraPrintDetails;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ZebraPrintDetailsDAOHibernateTest extends BaseDaoTestCase{
 
