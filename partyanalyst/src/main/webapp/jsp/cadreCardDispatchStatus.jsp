@@ -269,7 +269,7 @@
 				strs +='<td>'+result.cadreRegistrationVOList[i].constituencyId+'</td>';
 				strs +='<td>'+result.cadreRegistrationVOList[i].previousEnrollmentNumber+'</td>';
 				strs +='<td style="text-align:center;">'+result.cadreRegistrationVOList[i].refNo+'</td>';
-				strs +='<td> <img id="'+result.cadreRegistrationVOList[i].enrollmentNumber+'" src="images/tdp_cadre/'+result.cadreRegistrationVOList[i].uploadImageFileName+'" width="50px"/></td>';
+				strs +='<td> <img id="'+result.cadreRegistrationVOList[i].enrollmentNumber+'" src="images/cadre_images/'+result.cadreRegistrationVOList[i].uploadImageFileName+'" width="50px"/></td>';
 				strs +='<td>'+result.cadreRegistrationVOList[i].casteName+'</td>';  // dispatch Status
 				
 				strs +='</tr>';
