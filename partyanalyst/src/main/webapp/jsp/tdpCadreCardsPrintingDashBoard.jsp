@@ -96,7 +96,7 @@
 									<th class="alert-info"> Printed </th><td class="alert-info"> ${zebraPrintDetailsVO.printStatusCount}</td>
 								</tr>
 								<tr>
-									<th class="alert-info"> Error </th><td class="alert-info">  ${zebraPrintDetailsVO.errorStatusCount}</td>
+									<th class="alert-info"> Errors </th><td class="alert-info">  ${zebraPrintDetailsVO.errorStatusCount}</td>
 								</tr>
 								<tr>
 									<th class="alert-info"> Pending </th><td class="alert-info">${zebraPrintDetailsVO.remainingCount} </td>
@@ -143,12 +143,15 @@
 		
 		$('#constituencyList').change(function(){
 		var constituencyId = $(this).val();
+		var stateTypeId = 0;
 		
 		 $('#accordion2').html('');
 		 $('#searchDataImg').show();
 		var jsObj = 
 			   {
-				  constituencyId : constituencyId,
+				  locationId : constituencyId,
+				  searchType :"constituency",
+				  stateTypeId : stateTypeId,
 				  task:"totalPrintingCount"             
 			   }	
 				$.ajax({
@@ -175,7 +178,7 @@
 		 $('#searchDataImg').show();
 		var jsObj = 
 			   {
-				  stateTyleId : 1,
+				  stateTyleId : 0,
 				  task:"totalPrintingCount"             
 			   }	
 				$.ajax({
@@ -222,7 +225,7 @@
 				str+=' <th class="alert-info" > Sent to print  </th>';
 				str+=' <th class="alert-info" > Cards Printed </th>';
 				str+=' <th class="alert-info" > Printing Error  </th>';
-				str+=' <th class="alert-info"> Pending Cards  </th>';
+				str+=' <th class="alert-info"  style="width:200px"> Pending Cards  </th>';
 				str+=' </tr>';
 				str+=' </thead>';
 				str+=' <tbody>';
@@ -232,8 +235,16 @@
 				str+=' <td>'+result.zebraPrintDetailsVOList[i].totalPushCount+'</td>';
 				str+=' <td>'+result.zebraPrintDetailsVOList[i].printStatusCount+'</td>';
 				str+=' <td>'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</td>';
-				str+=' <td>'+result.zebraPrintDetailsVOList[i].remainingCount+'</td>';
+				
+				var remainingCount = result.zebraPrintDetailsVOList[i].totalPushCount  - result.zebraPrintDetailsVOList[i].errorStatusCount;
+				var pendingCount = remainingCount + result.zebraPrintDetailsVOList[i].errorStatusCount;
+				str+=' <td style="width:200px"> '+pendingCount+' <br> ('+remainingCount+' - Not Started Print ';
+				if(result.zebraPrintDetailsVOList[i].errorStatusCount !=0)
+				{
+					str+='<span style="color:#cd0950"> & </span>'+result.zebraPrintDetailsVOList[i].errorStatusCount+' - Errors  ';
+				}
 
+				str+=') </td>';
 				str+=' </tr>';
 				str+=' </tbody>';
 				str+=' </table>';
