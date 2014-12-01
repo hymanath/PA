@@ -1720,10 +1720,14 @@ if(result.length > 0){
 				    }else if(locationId == 5){
 					    //str+='<th>MANDAL/MUNICIPALITY</th>';
 					    str+='<td>';
+						if(result[i].area == null){
+							str+='<a href="javascript:{}" title="Click Here To View Booth Wise Registration Info" onclick="viewDetails(\'municipality\','+result[i].id+',\'booth\',\''+startDate+'\',\''+endDate+'\')"><i class="icon-search"></i></a>';					
+						}
 					    if(result[i].area != null){
 					       str+='<a href="javascript:{}" title="Click Here To View Panchayat Wise Registration Info" onclick="viewDetails(\'mandal\','+result[i].id+',\'panchayat\',\''+startDate+'\',\''+endDate+'\')"><i class="icon-zoom-in"></i></a>';
+						   str+='<a href="javascript:{}" title="Click Here To View Booth Wise Registration Info" onclick="viewDetails(\'mandal\','+result[i].id+',\'booth\',\''+startDate+'\',\''+endDate+'\')"><i class="icon-search"></i></a>';
 					    }
-				    	str+='<a href="javascript:{}" title="Click Here To View Booth Wise Registration Info" onclick="viewDetails(\'mandal\','+result[i].id+',\'booth\',\''+startDate+'\',\''+endDate+'\')"><i class="icon-search"></i></a>';
+				    	
 				    	str+='</td>';
 				    }else if(locationId == 6){
 					    //str+='<th>PANCHAYAT</th>';
