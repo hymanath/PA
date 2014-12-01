@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CadreAmountDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreDataAnalysisVO;
+import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
 
 public interface ILeaderCadreDashBoardService {
 
@@ -24,4 +25,5 @@ public interface ILeaderCadreDashBoardService {
 	public List<CadreDataAnalysisVO> getCadreBoothAnalysisReport(Long stateId);
 	public List<CadreDataAnalysisVO> getBoothInfo(List<Long> boothIds,Long constituencyId);
 	public List<CadreAmountDetailsVO> getBoothWiseDetails(Long constituencyId);
+	public  TabRecordsStatusVO getMISReport(String batchCode);
 }
