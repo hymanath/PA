@@ -5400,6 +5400,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	{
 		
 		LOG.error("IN SINK SERVICE");
+		Long familyCount = 0l;
+		String familyStr = "";
 		if(inputs != null)
 		{
 			LOG.error(inputs.toArray());
@@ -5422,9 +5424,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					usIds.add(sinkVO.getUsId());
 				}
 				
+				
 				if(sinkVO.getFid() != null && sinkVO.getFid().toString().trim().length() > 0 && !sinkVO.getFid().toString().trim().equalsIgnoreCase("null") && sinkVO.getFid().longValue() > 0)
 				{
-					
+					familyCount = familyCount + 1;
+					familyStr = familyStr + "," + sinkVO.getUid();
 					/*List<Object[]> result = tdpCadreDAO.checkForExists(sinkVO.getUid());
 					if(result != null && result.size() > 0)
 					{
@@ -5491,12 +5495,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			Set<Long> voterIds = voterUidMap.keySet();
 			
 			LOG.error("TOTAL RECORDS : " + inputs.size());
-			if(uniqueids != null && uniqueids.size() > 0)
+			/*if(uniqueids != null && uniqueids.size() > 0)
 			{
 				Integer count1 = tdpCadreDAO.updateDetails(new ArrayList<String>(uniqueids));
 				//LOG.error("FAMILY RECORDS : " + count1);
 				LOG.error("FAMILY RECORDS : " + uniqueids.size());
-			}
+			}*/
+			Integer matchedCount = 0;
+			Integer missingCount = 0;
+			String str = "";
 			if(voterIds != null && voterIds.size() > 0)
 			{
 				List<Object[]> matchedVoters = tdpCadreDAO.getMissingDetails(voterIds);
@@ -5504,6 +5511,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				{
 					LOG.error("MATCHED RECORDS : " + matchedVoters.size());
 					LOG.error("MISSING RECORDS : " + (voterIds.size() - matchedVoters.size()));
+					matchedCount = matchedVoters.size();
+					missingCount = voterIds.size() - matchedVoters.size();
 					for(Object[] obj : matchedVoters)
 					{
 						if(obj[0] != null)
@@ -5530,6 +5539,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						returnVO.setUid(uids.get(0));
 						returnVO.setFid(0l);
 						returnList.add(returnVO);
+						
+						str = str + "," +returnVO.getUid();
 					}
 				}
 			}
@@ -5554,6 +5565,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						tdpCadreVerfiedData.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						tdpCadreVerfiedData.setReqSize(Long.valueOf(inputs.size()));
 						tdpCadreVerfiedData.setResSize(Long.valueOf(returnList.size()));
+						tdpCadreVerfiedData.setMatchedCount(Long.valueOf(matchedCount));
+						tdpCadreVerfiedData.setMissingData(Long.valueOf(missingCount));
+						tdpCadreVerfiedData.setFamilyCount(familyCount);
+						tdpCadreVerfiedData.setFamilySinkUids(familyStr);
+						tdpCadreVerfiedData.setMissingIds(str);
 						tdpCadreVerfiedData.setUserId(usrStr);
 						tdpCadreVerfiedDataDAO.save(tdpCadreVerfiedData);
 					} catch (Exception e) {
