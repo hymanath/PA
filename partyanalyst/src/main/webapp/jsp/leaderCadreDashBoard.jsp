@@ -20,6 +20,7 @@
  #leaderDataDivStatusBars .selectedchild{background:lightblue !important;}
  #leaderDataDivStatusBars .selected1{background: #cad5df !important;}
  #leaderDataDivStatusBars .selected1child{background: #cad5df !important;}
+ .customMg{margin-left:-150px;}
 </style>
 </head>
 <body>
@@ -86,14 +87,16 @@
 			</table>	  
 					 
 			  </div>
-			 <div id="leaderDataDiv"></div>
+			
+			
+		</div>
+   </div>
+	
+    <div id="leaderDataDiv" ></div>
 					  <div id="leaderDataDivStatusBars"></div>
 					  <div id="constituencyDynamicDiv"></div>
 					   <div id="MandalDynamicDiv"></div>
 			</div>
-			
-		</div>
-   </div>
    <script>
    $("#fromDate").datepicker({
 			dateFormat: "dd-mm-yy",
@@ -206,6 +209,10 @@
 	   }
 	   str+='</tbody>';
 		str+='</table>';
+		if(type == "District")
+		$("#leaderDataDiv").removeClass("customMg");
+		if(type == "Constituency")
+		$("#leaderDataDiv").addClass("customMg");
 		$("#leaderDataDiv").html(str);
 		$("#tabledataTab").dataTable({
 			         "iDisplayLength": 20,
