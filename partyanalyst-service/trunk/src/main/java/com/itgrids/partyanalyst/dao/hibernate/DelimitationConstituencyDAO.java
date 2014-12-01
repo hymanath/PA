@@ -357,6 +357,27 @@ IDelimitationConstituencyDAO {
 		return (Long)query.uniqueResult();
 	}
 	
-	
+	public List<Object[]> getConstituencyNosByConstituency(List<Long> constitIds,Long year,Long electionScopeId)
+	{
+		StringBuffer sb = new StringBuffer();
+		if(electionScopeId.longValue() == 2l)
+			{
+				sb.append("select model.constituency.constituencyId,model.constituencyNO " +
+					" from DelimitationConstituency model where model.constituency.constituencyId in (:constitIds) " +
+					" and model.year = :year and model.constituency.electionScope.electionScopeId = :electionScopeId");
+			}
+			else
+			{
+				sb.append("select model.constituency.constituencyId,model.constituencyNO " +
+						" from DelimitationConstituency model where model.constituency.constituencyId in (:constitIds) " +
+						" and model.constituency.state.stateId = 1" +
+						" and model.year = :year and model.constituency.electionScope.electionScopeId = :electionScopeId");
+			}
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameterList("constitIds", constitIds);
+		query.setParameter("electionScopeId", electionScopeId);
+		query.setParameter("year", year);
+		return query.list();
+	}
 	
 }

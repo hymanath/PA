@@ -54,9 +54,25 @@ public class CadreAmountDetailsVO implements Serializable{
 	private Long casteCategoryId;
 	private String casteCategory;
 	
+	private String constiNo;
+	private String pcConstiNo;
+	
 	
 
 	
+	
+	public String getConstiNo() {
+		return constiNo;
+	}
+	public void setConstiNo(String constiNo) {
+		this.constiNo = constiNo;
+	}
+	public String getPcConstiNo() {
+		return pcConstiNo;
+	}
+	public void setPcConstiNo(String pcConstiNo) {
+		this.pcConstiNo = pcConstiNo;
+	}
 	public Long getCasteId() {
 		return casteId;
 	}
