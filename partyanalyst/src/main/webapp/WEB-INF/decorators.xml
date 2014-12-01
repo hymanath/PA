@@ -297,7 +297,7 @@
 			 <pattern>/cadreReportsAction*</pattern>
 			 <pattern>/changeUserPasswords*</pattern>
 			  <pattern>/cadreBoothAnalysisAction*</pattern>
-			 
+			 <pattern>/misReportAction*</pattern>
        </decorator>
        
        <decorator name="tdpHome_old" page="tdplayout_old.jsp">

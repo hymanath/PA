@@ -173,6 +173,7 @@
 			<result type="redirect" name="specialPageManageAction">specialPageManageAction.action</result>
 			<result type="redirect" name="hamletBoothMapperAction">hamletBoothMapperAction.action</result>
 			<result type="redirect" name="cadreDashBoardAction">cadreDashBoardAction.action</result>
+			<result type="redirect" name="misReportAction">misReportAction.action</result>
 			<result type="redirect" name="profileManagePageAction">profileManagePageAction.action</result>
 			<result type="redirect" name="voterAnalysisAction">votersAnalysisAction.action</result>
 			<result type="redirect" name="mahaNaduAction">mahaNaduAction.action</result>
@@ -5611,6 +5612,7 @@
 		    <result name="surveyUser" type="redirect">surveyDataDetailsAction.action</result>
 		    <result name="partyCadre" type="redirect">partyCadreSearchAction.action</result>
 		    <result name="cadreDashBoard" type="redirect">cadreDashBoardAction.action</result>
+		    <result type="redirect" name="misReportAction">misReportAction.action</result>
 		    <result name="cadreRegistration" type="redirect">tdpCadreSearchAction.action</result>
 		    <result name="cadreTransactionsDashBoard" type="redirect">cadreSurveyTransactionsDashboardAction.action</result>
 		    <result name="cadreMemberShipCardDispatcher" type="redirect">cadreMemberShipCardDispatcherAction.action</result>
@@ -9068,7 +9070,18 @@
 				<param name="root">zebraPrintDetailsVO</param>
 			</result>
 		</action>
+			
+		<action name="getMISReport" class="leaderCadreDashBoardAction" method="getMISReport" >
+			<result type="json" name="success">
+				<param name="root">status</param>
+			</result>
+		</action>
 		
+		<action name="misReportAction" class="leaderCadreDashBoardAction"  method="misReport">
+			<result name="success">/jsp/misReport.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=misReportAction</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
+		</action>
 </package>
 
 </struts>      

@@ -1503,6 +1503,7 @@
 	
 	<bean id="leaderCadreDashBoardAction" class="com.itgrids.partyanalyst.web.action.LeaderCadreDashBoardAction" singleton="false">
 		<property name="leaderCadreDashBoardService" ref="leaderCadreDashBoardService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />		
 	</bean>
 
 	
