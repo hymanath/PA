@@ -2346,6 +2346,8 @@
           <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
           <property name="zebraPrintDetailsDAO" ref="zebraPrintDetailsDAO" />
           <property name="constituencyDAO" ref="constituencyDAO" />
+          <property name="districtDAO" ref="districtDAO" />
+          <property name="localNameConstantDAO" ref="localNameConstantDAO" />
      </bean>
 </beans>		
 	
