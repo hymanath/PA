@@ -31,13 +31,13 @@
 				</div>
 			</div>
 			<div class="row-fluid ">
-			   <div style="min-height: 300px;background:#ffffff;" class="span12 show-grid well well-small border-radius-0 mb-10 form-inline">
+			   <div style="min-height: 215px;background:#ffffff;" class="span12 show-grid well well-small border-radius-0 mb-10 form-inline">
 			   <div id="errStatusDiv" align="center" ></div>
 			   
-			   <div style="margin-left:250px;">
+			  <!-- <div style="margin-left:250px;">
 					<h4 style="color:black;"> <input type ="radio" style="margin-top:-2px;" class="rprtType" name="reportType" value="normal" checked="checked">&nbsp;&nbsp;TABULAR REPORT</input>
 					 <input style="margin-top:-2px;margin-left:12px;" type ="radio" class="rprtType" name="reportType" value="bar">&nbsp; STATUS BAR REPORT </h4></input>
-			   </div>
+			   </div>-->
 			   
 			   
 			   <table  style="margin-left: 270px;" id="tabularReport">
@@ -84,12 +84,12 @@
 					<td><div><img id="ajaxImg" style="margin-left: 10px;width:80px;display:none;" src="images/Loading-data.gif"/></div></td>
 				  </tr>
 			</table>	  
-					  <div id="leaderDataDiv"></div>
+					 
+			  </div>
+			 <div id="leaderDataDiv"></div>
 					  <div id="leaderDataDivStatusBars"></div>
 					  <div id="constituencyDynamicDiv"></div>
 					   <div id="MandalDynamicDiv"></div>
-			  </div>
-			
 			</div>
 			
 		</div>
@@ -147,11 +147,17 @@
 		str+='<tr>';
 		
 		if(type == "District")
+	   {
+		str+='<th>Dist#</th>';
 		str+='<th>District</th>';
+	   }
 		else if(type == "Constituency")
 	   {
+		str+='<th>Dist#</th>';
 		str+='<th>District</th>';
+		str+='<th>Parl#</th>';
 		str+='<th>Parliament</th>';
+		str+='<th>Const#</th>';
 		str+='<th>Constituency</th>';
 	   }
 		str+='<th>Total Voters</th>';
@@ -169,10 +175,16 @@
 	   {
 		str+='<tr id='+result[i].id+' class="removeCls clearCls'+result[i].id+'">';
 		if(type == "District")
-		str+='<td class="removeCls clearClsTD'+result[i].id+'"><a onclick="displaySublevelDetails('+result[i].id+',\'District\');" style="cursor:pointer;">'+result[i].name+'</a></td>';
+		   {
+		str+='<td class="removeCls clearClsTD'+result[i].id+'">'+result[i].id+'</td>';
+		str+='<td ><a onclick="displaySublevelDetails('+result[i].id+',\'District\');" style="cursor:pointer;">'+result[i].name+'</a></td>';
+		   }
 		if(type == "Constituency"){
+		str+='<td>'+result[i].districtId+'</td>'; 
 		str+='<td>'+result[i].districtName+'</td>';	
+		str+='<td>'+result[i].pcConstiNo+'</td>'; 
 		str+='<td>'+result[i].parliament+'</td>';
+		str+='<td>'+result[i].constiNo+'</td>';
 		str+='<td>'+result[i].name+'</td>';
 		}
 		str+='<td>'+result[i].totalVoters+'</td>';
@@ -223,19 +235,19 @@
     $('.added').remove('');
 	$(".removeicon").hide();
 	$(".removeCls").removeClass("selected");
-	$('.clearCls'+id).after('<tr class="selectedchild"><td id="subLevel'+id+'" colspan="8" class="added"><div align="center"><img id="ajaxImgStyle1" style="display:none;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
+	$('.clearCls'+id).after('<tr class="selectedchild"><td id="subLevelConst'+id+'" colspan="9" class="added"><div align="center"><img id="ajaxImgStyle1" style="display:none;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
 	$('.clearCls'+id).addClass("selected");
 	$('.clearClsTD'+id).addClass("selected");
 	$("#ajaxImgStyle1").show();
 	$("#iconDiv"+id).show();
-   if(type == "District")
+  /* if(type == "District")
 	   {
 	scope = "Constituency";
  	   }
    if(type == "Constituency")
 	   {
 	scope = "Mandal";
-	   }
+	   }*/
    var jObj = {
 		type : type,
 		id:id,
@@ -248,7 +260,7 @@
           url: 'getSubLocationswiseleaderCadreInfoAction.action',
          data : {task:JSON.stringify(jObj)} ,
        }).done(function(result){
-		buildData1(result,scope,"subLevel"+id);
+		buildData1(result,"subLevelConst"+id);
 		});
    }
 
@@ -259,19 +271,12 @@ function displaySublevelDetails1(id,type)
     $('.added1').remove('');
 	$(".removeicon1").hide();
 	$(".removeCls1").removeClass("selected1");
-	$('.clearCls1'+id).after('<tr class="selected1child"><td id="subLevel'+id+'" colspan="8" class="added1"><div><img id="ajaxImgStyle2" style="display:none;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
+	$('.clearCls1'+id).after('<tr class="selected1child"><td id="subLevel'+id+'" colspan="9" class="added1"><div><img id="ajaxImgStyle2" style="display:none;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
 	$('.clearCls1'+id).addClass("selected1");
 	$('.clearClsTD1'+id).addClass("selected1");
 	$("#ajaxImgStyle2").show();
 	$("#iconDiv1"+id).show();
-   if(type == "District")
-	   {
-	scope = "Constituency";
- 	   }
-   if(type == "Constituency")
-	   {
-	scope = "Mandal";
-	   }
+   
    var jObj = {
 		type : type,
 		id:id,
@@ -284,11 +289,11 @@ function displaySublevelDetails1(id,type)
           url: 'getSubLocationswiseleaderCadreInfoAction.action',
          data : {task:JSON.stringify(jObj)} ,
        }).done(function(result){
-		buildData2(result,scope,"subLevel"+id);
+		buildData2(result,"subLevel"+id);
 		});
    }
    
-function buildData1(result,type,divId)
+function buildData1(result,divId)
    {
 	 
 	   var str='';
@@ -297,25 +302,19 @@ function buildData1(result,type,divId)
 		str+='<table class="table table-bordered" id="tabledata1">';
 		str+='<thead>';
 		str+='<tr>';
-		if(type == "Constituency")
-	   {
 		
+		str+='<th>Const#</th>';
 		str+='<th>Constituency</th>';
-	   }
-	   else if(type == "Mandal")
-	   {
-		   str+='<th>Mandal</th>';
-	   }
+	  
 		str+='<th>Total Voters</th>';
 		str+='<th>Target Cadres</th>';
 		str+='<th>Registered Cadres</th>';
 		str+='<th>% of Register cadres</th>';
 		str+='<th>Total Amount</th>';
-		if(type == "Constituency")
-	   {
+	
 		str+='<th>Received Amount</th>';
 		str+='<th>Pending Amount</th>';
-	   }
+	  
 		str+='</tr>';
 		str+='</thead>';
 		str+='<tbody>';
@@ -323,13 +322,9 @@ function buildData1(result,type,divId)
 	   {
 		str+='<tr class="removeCls1 clearCls1'+result[i].id+'">';
 		
-		if(type == "Constituency"){
+			str+='<td>'+result[i].constiNo+'</td>';
 			str+='<td class="removeCls1 clearClsTD1'+result[i].id+'"><a  onclick="displaySublevelDetails1('+result[i].id+',\'Constituency\');" style="cursor:pointer;">'+result[i].name+'</a></td>';
-		}
-		  else if(type == "Mandal")
-		   {
-			  str+='<td>'+result[i].name+'</td>';
-		   }
+		
 		str+='<td>'+result[i].totalVoters+'</td>';
 		str+='<td>'+result[i].targetCadres+'</td>';
 		if(result[i].totalRecords==null){
@@ -343,11 +338,10 @@ function buildData1(result,type,divId)
 			str+='<td>'+result[i].percentage+'</td>';
 		}
 		str+='<td>'+result[i].totalAmount+'</td>';
-		if(type == "Constituency")
-		   {
+		
 		str+='<td>'+result[i].paidAmount+'</td>';
 		str+='<td>'+result[i].difference+'<span class="pull-right removeicon1"  id="iconDiv1'+result[i].id+'" onclick="closeDiv1('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span></td>';
-		   }
+	
 		str+='</tr>';
 	   }
 	   str+='</tbody>';
@@ -361,7 +355,7 @@ function buildData1(result,type,divId)
    }
 
 
-   function buildData2(result,type,divId)
+   function buildData2(result,divId)
    {
 	 
 	   var str='';
@@ -370,25 +364,15 @@ function buildData1(result,type,divId)
 		str+='<table class="table table-bordered" id="tabledata1">';
 		str+='<thead>';
 		str+='<tr>';
-		if(type == "Constituency")
-	   {
 		
-		str+='<th>Constituency</th>';
-	   }
-	   else if(type == "Mandal")
-	   {
 		   str+='<th>Mandal</th>';
-	   }
+	  
 		str+='<th>Total Voters</th>';
 		str+='<th>Target Cadres</th>';
 		str+='<th>Registered Cadres</th>';
 		str+='<th>% of Register cadres</th>';
 		str+='<th>Total Amount</th>';
-		if(type == "Constituency")
-	   {
-		str+='<th>Received Amount</th>';
-		str+='<th>Pending Amount</th>';
-	   }
+		
 		str+='</tr>';
 		str+='</thead>';
 		str+='<tbody>';
@@ -396,13 +380,8 @@ function buildData1(result,type,divId)
 	   {
 		str+='<tr class="removeCls1 clearCls1'+result[i].id+'">';
 		
-		if(type == "Constituency"){
-			str+='<td class="removeCls1 clearClsTD1'+result[i].id+'">'+result[i].name+'</td>';
-		}
-		  else if(type == "Mandal")
-		   {
 			  str+='<td>'+result[i].name+'</td>';
-		   }
+		
 		str+='<td>'+result[i].totalVoters+'</td>';
 		str+='<td>'+result[i].targetCadres+'</td>';
 		if(result[i].totalRecords==null){
@@ -416,11 +395,7 @@ function buildData1(result,type,divId)
 			str+='<td>'+result[i].percentage+'</td>';
 		}
 		str+='<td>'+result[i].totalAmount+'</td>';
-		if(type == "Constituency")
-		   {
-		str+='<td>'+result[i].paidAmount+'</td>';
-		str+='<td>'+result[i].difference+'</td>';
-		   }
+		
 		str+='</tr>';
 	   }
 	   str+='</tbody>';
