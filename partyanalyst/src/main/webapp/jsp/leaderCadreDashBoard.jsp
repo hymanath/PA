@@ -247,14 +247,7 @@
 	$('.clearClsTD'+id).addClass("selected");
 	$("#ajaxImgStyle1").show();
 	$("#iconDiv"+id).show();
-  /* if(type == "District")
-	   {
-	scope = "Constituency";
- 	   }
-   if(type == "Constituency")
-	   {
-	scope = "Mandal";
-	   }*/
+ 
    var jObj = {
 		type : type,
 		id:id,
