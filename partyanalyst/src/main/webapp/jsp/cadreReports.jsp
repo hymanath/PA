@@ -698,7 +698,14 @@
 			$("#tabularReport").show();
 		}
    }); */
-   
+    $(".stType").change(function(){
+		
+		$("#targetId").removeClass("btn-success");
+		$("#womenId").removeClass("btn-success");
+		$("#communityId").removeClass("btn-success");
+		clearDataDivs();
+		
+   });
    $(".rprtCls").click(function(){
 	var divId = $(this).attr("id");
 	$(this).parent().find("a.btn-success").removeClass("btn-success");
