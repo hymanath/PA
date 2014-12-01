@@ -15,8 +15,10 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.CadreAmountDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreDataAnalysisVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ILeaderCadreDashBoardService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 
 public class LeaderCadreDashBoardAction implements ServletRequestAware {
@@ -32,7 +34,7 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 	private List<CadreAmountDetailsVO> amountDetails;
 	private CadreAmountDetailsVO amountDetailsVO;
 	private List<CadreDataAnalysisVO> resultList;
-	
+	private TabRecordsStatusVO  status;
 	
 		public List<CadreDataAnalysisVO> getResultList() {
 		return resultList;
@@ -94,6 +96,16 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 		this.entitlementsHelper = entitlementsHelper;
 	}
  
+	public TabRecordsStatusVO getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(TabRecordsStatusVO status) {
+		this.status = status;
+	}
+
+
 	public String execute(){
 		LOG.info("Entered into execute() in LeaderCadreDashBoardActioon class");
 		leaderCadreDashBoardService.testMethod();
@@ -310,6 +322,49 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 		}
 		catch (Exception e) {
 			LOG.error("Entered into getBoothWiseDetails() in LeaderCadreDashBoardAction class",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getMISReport(){
+		try{
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			boolean noaccess = false;
+			if(regVO==null){
+				return "input";
+			}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"MISREPORT")){
+				noaccess = true ;
+			}
+			if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+				noaccess = false;
+			}
+			if(noaccess){
+				status = new TabRecordsStatusVO();
+				status.setName("refresh");
+				return Action.SUCCESS;
+			}
+			jObj = new JSONObject(getTask());
+			status = leaderCadreDashBoardService.getMISReport(jObj.getString("batchCode"));
+		}
+		catch (Exception e) {
+			LOG.error("Entered into getMISReport() in LeaderCadreDashBoardAction class",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String misReport(){
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		boolean noaccess = false;
+		if(regVO==null){
+			return "input";
+		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"MISREPORT")){
+			noaccess = true ;
+		}
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		
+		if(noaccess){
+			return "error";
 		}
 		return Action.SUCCESS;
 	}
