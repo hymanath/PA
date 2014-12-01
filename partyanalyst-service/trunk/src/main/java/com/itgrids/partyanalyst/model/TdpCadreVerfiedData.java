@@ -32,6 +32,7 @@ public class TdpCadreVerfiedData implements Serializable{
 	private String 		missingIds;
 	private Long		familyCount;
 	private String		familySinkUids;
+	private Long		newFamilyCount;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -138,6 +139,14 @@ public class TdpCadreVerfiedData implements Serializable{
 	}
 	public void setFamilySinkUids(String familySinkUids) {
 		this.familySinkUids = familySinkUids;
+	}
+	
+	@Column(name="new_family_count")
+	public Long getNewFamilyCount() {
+		return newFamilyCount;
+	}
+	public void setNewFamilyCount(Long newFamilyCount) {
+		this.newFamilyCount = newFamilyCount;
 	}
 	
 	
