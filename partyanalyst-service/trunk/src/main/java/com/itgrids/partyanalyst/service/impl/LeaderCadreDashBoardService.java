@@ -321,6 +321,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 					
 					if(constituenycIds != null && constituenycIds.size() > 0)
 					{
+						List<Long> parliamentIds = new ArrayList<Long>();
 						List<Object[]> list = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentsAndDistrictForAssembly(constituenycIds);
 						if(list != null && list.size() > 0)
 						{
@@ -333,12 +334,38 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 									vo1.setParliament(params[2] != null ? params[2].toString() : "");
 									vo1.setDistrictId((Long)params[3]);
 									vo1.setDistrictName(params[4] != null ? params[4].toString() : "");
+								}
+								if(!parliamentIds.add((Long)params[1]))
+								parliamentIds.add((Long)params[1]);
+							}
+						}
+						
+						List<Object[]> pcList = delimitationConstituencyDAO.getConstituencyNosByConstituency(parliamentIds,2009l,1l);
+						Map<Long,String> pcConstiNoMap = new HashMap<Long, String>();
+						if(pcList != null && pcList.size() > 0)
+						{
+							for(Object[] params : pcList)
+							{
+								String constiNo = params[1] != null ? params[1].toString() : "";
+								pcConstiNoMap.put((Long)params[0], constiNo);
+							}
+						}
+						List<Object[]> list1 = delimitationConstituencyDAO.getConstituencyNosByConstituency(constituenycIds,2009l,2l);
+						if(list1 != null && list1.size() > 0)
+						{
+							for(Object[] params : list1)
+							{
+								CadreAmountDetailsVO vo1 = getMatchedVO(resultList,(Long)params[0]);
+									if(vo1 != null)
+									{
+										String constiNo = params[1] != null ? params[1].toString() : "";
+										vo1.setConstiNo(constiNo);
+										vo1.setPcConstiNo(pcConstiNoMap.get(vo1.getParliamentId()));
 									}
-								
+							 	}
 							}
 						}
 					}
-				}
 		}
 		catch (Exception e) {
 			LOG.info("Enterd into getLoationWiseLeaderCadreDetails() in LeaderCaderDashBoardService");
@@ -713,6 +740,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 		
 		if(constituencyIds != null && constituencyIds.size() > 0)
 		{
+			List<Long> parliamentIds = new ArrayList<Long>();
 			List<Object[]> list = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentsAndDistrictForAssembly(constituencyIds);
 			if(list != null && list.size() > 0)
 			{
@@ -725,12 +753,37 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 						vo1.setParliament(params[2] != null ? params[2].toString() : "");
 						vo1.setDistrictId((Long)params[3]);
 						vo1.setDistrictName(params[4] != null ? params[4].toString() : "");
-						vo1.setConstituency(params[5] != null ? params[5].toString() : "");
-						}
-					
+					}
+					if(!parliamentIds.add((Long)params[1]))
+					parliamentIds.add((Long)params[1]);
 				}
 			}
-		}
+			
+			List<Object[]> pcList = delimitationConstituencyDAO.getConstituencyNosByConstituency(parliamentIds,2009l,1l);
+			Map<Long,String> pcConstiNoMap = new HashMap<Long, String>();
+			if(pcList != null && pcList.size() > 0)
+			{
+				for(Object[] params : pcList)
+				{
+					String constiNo = params[1] != null ? params[1].toString() : "";
+					pcConstiNoMap.put((Long)params[0], constiNo);
+				}
+			}
+			List<Object[]> list1 = delimitationConstituencyDAO.getConstituencyNosByConstituency(constituencyIds,2009l,2l);
+			if(list1 != null && list1.size() > 0)
+			{
+				for(Object[] params : list1)
+				{
+					CadreAmountDetailsVO vo1 = getMatchedVO(resultList,(Long)params[0]);
+						if(vo1 != null)
+						{
+							String constiNo = params[1] != null ? params[1].toString() : "";
+							vo1.setConstiNo(constiNo);
+							vo1.setPcConstiNo(pcConstiNoMap.get(vo1.getParliamentId()));
+						}
+				 	}
+				}
+			}
 		}
 		catch(Exception e)
 		{
@@ -786,6 +839,23 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 		}
 		return null;
 	}
+	public CadreAmountDetailsVO getMatchedParliament(List<CadreAmountDetailsVO> resultList,Long id)
+	{
+		try{
+			if(resultList == null || resultList.size() == 0 || id == null)
+				return null;
+			for(CadreAmountDetailsVO vo :resultList)
+			{
+				if(vo.getParliamentId().longValue() == id.longValue())
+					return vo;
+			}
+		}
+		catch (Exception e) {
+			return null;
+		}
+		return null;
+	}
+	
 	public String getStateByDistrictId(Long districtId)
 	{
 		String state = "";
