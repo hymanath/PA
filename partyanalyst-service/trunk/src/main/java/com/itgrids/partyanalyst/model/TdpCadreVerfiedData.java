@@ -27,6 +27,11 @@ public class TdpCadreVerfiedData implements Serializable{
 	private Date 		updatedTime;
 	private Long		reqSize;
 	private Long 		resSize;
+	private Long 		missingData;
+	private Long		matchedCount;
+	private String 		missingIds;
+	private Long		familyCount;
+	private String		familySinkUids;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -92,6 +97,47 @@ public class TdpCadreVerfiedData implements Serializable{
 	}
 	public void setResSize(Long resSize) {
 		this.resSize = resSize;
+	}
+	
+	@Column(name="missing_size")
+	public Long getMissingData() {
+		return missingData;
+	}
+	public void setMissingData(Long missingData) {
+		this.missingData = missingData;
+	}
+	
+	@Column(name="matched_size")
+	public Long getMatchedCount() {
+		return matchedCount;
+	}
+	public void setMatchedCount(Long matchedCount) {
+		this.matchedCount = matchedCount;
+	}
+	
+	@Column(name="missing_unique_ids")
+	public String getMissingIds() {
+		return missingIds;
+	}
+	public void setMissingIds(String missingIds) {
+		this.missingIds = missingIds;
+	}
+	
+	@Column(name="family_count")
+	public Long getFamilyCount() {
+		return familyCount;
+	}
+	public void setFamilyCount(Long familyCount) {
+		this.familyCount = familyCount;
+	}
+	
+	
+	@Column(name="family_unique_ids")
+	public String getFamilySinkUids() {
+		return familySinkUids;
+	}
+	public void setFamilySinkUids(String familySinkUids) {
+		this.familySinkUids = familySinkUids;
 	}
 	
 	
