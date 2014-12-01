@@ -338,7 +338,7 @@
     $('.added').remove('');
 	$(".removeicon").hide();
 	$(".removeCls").removeClass("selected");
-	$('.clearCls'+id).after('<tr class="selectedchild"><td id="subLevel'+id+'" colspan="8" class="added"><div align="center"><img id="ajaxImgStyle1" style="display:none;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
+	$('.clearCls'+id).after('<tr class="selectedchild"><td id="subLevelConsti'+id+'" colspan="8" class="added"><div align="center"><img id="ajaxImgStyle1" style="display:none;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
 	$('.clearCls'+id).addClass("selected");
 	$('.clearClsTD'+id).addClass("selected");
 	$("#ajaxImgStyle1").show();
@@ -375,7 +375,7 @@
           url: 'getSubLocationswiseleaderCadreInfoAction.action',
          data : {task:JSON.stringify(jObj)} ,
        }).done(function(result){
-		buildDataForBars1(result,scope,"subLevel"+id);
+		buildDataForBars1(result,scope,"subLevelConsti"+id);
 		});
    }
    
