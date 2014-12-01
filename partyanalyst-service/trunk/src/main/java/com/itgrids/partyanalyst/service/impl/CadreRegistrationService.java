@@ -5402,6 +5402,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		LOG.error("IN SINK SERVICE");
 		Long familyCount = 0l;
 		String familyStr = "";
+		Integer newFamilyVoters = 0;
 		if(inputs != null)
 		{
 			LOG.error(inputs.toArray());
@@ -5495,12 +5496,13 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			Set<Long> voterIds = voterUidMap.keySet();
 			
 			LOG.error("TOTAL RECORDS : " + inputs.size());
-			/*if(uniqueids != null && uniqueids.size() > 0)
+			if(uniqueids != null && uniqueids.size() > 0)
 			{
 				Integer count1 = tdpCadreDAO.updateDetails(new ArrayList<String>(uniqueids));
 				//LOG.error("FAMILY RECORDS : " + count1);
+				newFamilyVoters = uniqueids.size() - count1;
 				LOG.error("FAMILY RECORDS : " + uniqueids.size());
-			}*/
+			}
 			Integer matchedCount = 0;
 			Integer missingCount = 0;
 			String str = "";
@@ -5568,6 +5570,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						tdpCadreVerfiedData.setMatchedCount(Long.valueOf(matchedCount));
 						tdpCadreVerfiedData.setMissingData(Long.valueOf(missingCount));
 						tdpCadreVerfiedData.setFamilyCount(familyCount);
+						tdpCadreVerfiedData.setNewFamilyCount(Long.valueOf(newFamilyVoters));
 						tdpCadreVerfiedData.setFamilySinkUids(familyStr);
 						tdpCadreVerfiedData.setMissingIds(str);
 						tdpCadreVerfiedData.setUserId(usrStr);
