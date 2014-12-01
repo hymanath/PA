@@ -1,15 +1,28 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Row;
 
 import com.itgrids.partyanalyst.dao.IAppDbUpdateDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
@@ -25,6 +38,7 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.IZebraPrintDetailsDAO;
 
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
@@ -33,6 +47,7 @@ import com.itgrids.partyanalyst.dao.hibernate.CasteCategoryDAO;
 import com.itgrids.partyanalyst.dto.CadreAmountDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreDataAnalysisVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.service.ILeaderCadreDashBoardService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
@@ -62,6 +77,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 	private ICasteCategoryDAO casteCategoryDAO;
 	private IVoterAgeInfoDAO voterAgeInfoDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	private IZebraPrintDetailsDAO zebraPrintDetailsDAO;
 	
 	
 	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
@@ -209,6 +225,14 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 
 	public void setVoterAgeInfoDAO(IVoterAgeInfoDAO voterAgeInfoDAO) {
 		this.voterAgeInfoDAO = voterAgeInfoDAO;
+	}
+
+	public IZebraPrintDetailsDAO getZebraPrintDetailsDAO() {
+		return zebraPrintDetailsDAO;
+	}
+
+	public void setZebraPrintDetailsDAO(IZebraPrintDetailsDAO zebraPrintDetailsDAO) {
+		this.zebraPrintDetailsDAO = zebraPrintDetailsDAO;
 	}
 
 	public List<CadreAmountDetailsVO> getLoationWiseLeaderCadreDetails(String locationtype,Long stateId,String accessType,String accessValue,Date fromDate,Date toDate)
@@ -2118,4 +2142,226 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 	}
 	return resultList;
  }
+	
+	public  TabRecordsStatusVO getMISReport(String batchCode) {
+		TabRecordsStatusVO status = new TabRecordsStatusVO();
+		try {
+			String key = UUID.randomUUID().toString();
+			String url = IConstants.STATIC_CONTENT_FOLDER_URL+"VMR/MIS/"+key+".xls";
+			String returnUrl = "VMR/MIS/"+key+".xls";
+			status.setMobileNo(returnUrl);
+			LinkedHashMap<String, List<Object[]>> constituencyMap = new LinkedHashMap<String, List<Object[]>>();
+			LinkedHashMap<String,LinkedHashMap<String,Long>> locationDetails = new LinkedHashMap<String,LinkedHashMap<String,Long>>();
+			List<Object[]> cadreInfo = zebraPrintDetailsDAO.getAllCadreDetailsByBatchCode(batchCode);
+			if(cadreInfo.size() == 0){
+				status.setName("noData");
+				return status;
+			}
+			
+			
+
+			for(Object[] cadre:cadreInfo){
+				 List<Object[]> cadres = constituencyMap.get(cadre[4].toString().trim());
+				 if(cadres == null){
+					 cadres = new ArrayList<Object[]>();
+					 constituencyMap.put(cadre[4].toString().trim(),cadres);
+				 }
+				 cadres.add(cadre);
+				 LinkedHashMap<String,Long> subLocation = locationDetails.get(cadre[4].toString().trim());
+				 if(subLocation == null){
+					 subLocation = new LinkedHashMap<String,Long>();
+					 locationDetails.put(cadre[4].toString().trim(),subLocation);
+				 }
+				 if(cadre[6] != null && cadre[6].toString().trim().length() > 0){
+					Long count = subLocation.get(cadre[6].toString().trim()+" "+StringEscapeUtils.unescapeJava("\u0C2E\u0C41\u0C28\u0C4D\u0C38\u0C3F\u0C2A\u0C3E\u0C32\u0C3F\u0C1F\u0C40"));
+					if(count == null){
+						subLocation.put(cadre[6].toString().trim()+" "+StringEscapeUtils.unescapeJava("\u0C2E\u0C41\u0C28\u0C4D\u0C38\u0C3F\u0C2A\u0C3E\u0C32\u0C3F\u0C1F\u0C40"),1l);
+					}else{
+						subLocation.put(cadre[6].toString().trim()+" "+StringEscapeUtils.unescapeJava("\u0C2E\u0C41\u0C28\u0C4D\u0C38\u0C3F\u0C2A\u0C3E\u0C32\u0C3F\u0C1F\u0C40"),subLocation.get(cadre[6].toString().trim()+" "+StringEscapeUtils.unescapeJava("\u0C2E\u0C41\u0C28\u0C4D\u0C38\u0C3F\u0C2A\u0C3E\u0C32\u0C3F\u0C1F\u0C40"))+1l);
+					}
+				 }else{
+					 if(cadre[5] != null && cadre[5].toString().trim().length() > 0){
+							Long count = subLocation.get(cadre[5].toString().trim());
+							if(count == null){
+								subLocation.put(cadre[5].toString().trim(),1l);
+							}else{
+								subLocation.put(cadre[5].toString().trim(),subLocation.get(cadre[5].toString().trim())+1l);
+							}
+						 }
+				 }
+			}
+			HSSFWorkbook workbook = new HSSFWorkbook();
+			CellStyle style = workbook.createCellStyle();
+			style.setFillForegroundColor(HSSFColor.YELLOW.index);
+			style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+			style.setAlignment(CellStyle.ALIGN_CENTER);
+			Font font = workbook.createFont();
+			font.setFontHeightInPoints((short)12);
+			style.setFont(font);
+			HSSFSheet sheet = workbook.createSheet("Abstract");
+			Row row = sheet.createRow(0);
+			
+			 Cell cell = row.createCell(0);
+			 cell.setCellValue("Constituency");
+			 cell.setCellStyle(style);
+			 
+			 cell = row.createCell(1);
+			 cell.setCellValue("Mandal/Municipality");
+			 cell.setCellStyle(style);
+			 
+			 cell = row.createCell(2);
+			 cell.setCellValue("Count");
+			 cell.setCellStyle(style);
+			
+			int j =1;
+			Long total = 0l;
+			
+			for(String constituency: new ArrayList<String>(locationDetails.keySet())){
+				LinkedHashMap<String,Long> subLoc = locationDetails.get(constituency);
+				for(String mandal:subLoc.keySet()){
+					 row = sheet.createRow(j);
+					row.createCell(0).setCellValue(constituency);
+					row.createCell(1).setCellValue(mandal);
+					row.createCell(2).setCellValue(subLoc.get(mandal));
+					total = total+subLoc.get(mandal);
+					j++;
+				}
+				
+			}
+			if(total > 0){
+				 row = sheet.createRow(j);
+				row.createCell(1).setCellValue("TOTAL");
+				row.createCell(2).setCellValue(total);
+			}
+			for (String constituency : constituencyMap.keySet()) {
+				sheet = workbook.createSheet(constituency);
+				 row = sheet.createRow(0);
+				row.createCell(0).setCellValue("Member Ship Number");
+				row.createCell(1).setCellValue("Voter Name");
+				row.createCell(2).setCellValue("Mobile Number");
+				row.createCell(3).setCellValue("District Name");
+				row.createCell(4).setCellValue("Constituency Name");
+				row.createCell(5).setCellValue("Mandal Name");
+				row.createCell(6).setCellValue("Municipality Name");
+				row.createCell(7).setCellValue("Panchayat Name");
+				row.createCell(8).setCellValue("Booth");
+				row.createCell(9).setCellValue("House No");
+				row.createCell(10).setCellValue("zebra_print_details_id");
+				
+				 cell = row.createCell(0);
+				 cell.setCellValue("Member Ship Number");
+				 cell.setCellStyle(style);
+				 
+				 cell = row.createCell(1);
+				 cell.setCellValue("Voter Name");
+				 cell.setCellStyle(style);
+				 
+				 cell = row.createCell(2);
+				 cell.setCellValue("Mobile Number");
+				 cell.setCellStyle(style);
+				 
+				 cell = row.createCell(3);
+				 cell.setCellValue("District Name");
+				 cell.setCellStyle(style);
+				 
+				 cell = row.createCell(4);
+				 cell.setCellValue("Constituency Name");
+				 cell.setCellStyle(style);
+				 
+				 cell = row.createCell(5);
+				 cell.setCellValue("Mandal Name");
+				 cell.setCellStyle(style);
+				 
+				 cell = row.createCell(6);
+				 cell.setCellValue("Municipality Name");
+				 cell.setCellStyle(style);
+				 
+				 cell = row.createCell(7);
+				 cell.setCellValue("Panchayat Name");
+				 cell.setCellStyle(style);
+				 
+				 cell = row.createCell(8);
+				 cell.setCellValue("Booth");
+				 cell.setCellStyle(style);
+				 
+				 cell = row.createCell(9);
+				 cell.setCellValue("House No");
+				 cell.setCellStyle(style);
+				 
+				 cell = row.createCell(10);
+				 cell.setCellValue("zebra_print_details_id");
+				 cell.setCellStyle(style);
+				 
+				int rowCount = 0;
+				List<Object[]> results = constituencyMap.get(constituency);
+				for (Object[] cadre : results) {
+					rowCount++;
+					row = sheet.createRow(rowCount);
+					if (cadre[0] != null) {
+						row.createCell(0).setCellValue(cadre[0].toString());
+					} else {
+						row.createCell(0).setCellValue("");
+					}
+					if (cadre[1] != null) {
+						row.createCell(1).setCellValue(cadre[1].toString());
+					} else {
+						row.createCell(1).setCellValue("");
+					}
+					if (cadre[2] != null) {
+						row.createCell(2).setCellValue(cadre[2].toString());
+					} else {
+						row.createCell(2).setCellValue("");
+					}
+					if (cadre[3] != null) {
+						row.createCell(3).setCellValue(cadre[3].toString());
+					} else {
+						row.createCell(3).setCellValue("");
+					}
+					if (cadre[4] != null) {
+						row.createCell(4).setCellValue(cadre[4].toString());
+					} else {
+						row.createCell(4).setCellValue("");
+					}
+					if (cadre[5] != null) {
+						row.createCell(5).setCellValue(cadre[5].toString());
+					} else {
+						row.createCell(5).setCellValue("");
+					}
+					if (cadre[6] != null) {
+						row.createCell(6).setCellValue(cadre[6].toString());
+					} else {
+						row.createCell(6).setCellValue("");
+					}
+					if (cadre[7] != null) {
+						row.createCell(7).setCellValue(cadre[7].toString());
+					} else {
+						row.createCell(7).setCellValue("");
+					}
+					if (cadre[8] != null) {
+						row.createCell(8).setCellValue(cadre[8].toString());
+					} else {
+						row.createCell(8).setCellValue("");
+					}
+					if (cadre[9] != null) {
+						row.createCell(9).setCellValue(cadre[9].toString());
+					} else {
+						row.createCell(9).setCellValue("");
+					}
+					if (cadre[10] != null) {
+						row.createCell(10).setCellValue(cadre[10].toString());
+					} else {
+						row.createCell(10).setCellValue("");
+					}
+				}
+			}
+			FileOutputStream out = new FileOutputStream(new File(url));
+			workbook.write(out);
+			out.close();
+			status.setName("success");
+		} catch (Exception e) {
+			e.printStackTrace();
+			status.setName("error");
+		}
+		return status;
+	}
 }
