@@ -236,9 +236,7 @@
 				str+=' <td>'+result.zebraPrintDetailsVOList[i].printStatusCount+'</td>';
 				str+=' <td>'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</td>';
 				str+=' <td>'+result.zebraPrintDetailsVOList[i].remainingCount+'</td>';
-				
-				
-				str+=') </td>';
+
 				str+=' </tr>';
 				str+=' </tbody>';
 				str+=' </table>';
