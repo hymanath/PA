@@ -419,9 +419,16 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 		List<Long> constituencyIds = new ArrayList<Long>();
 		List<CadreAmountDetailsVO> resultList = new ArrayList<CadreAmountDetailsVO>(); 
 		try{
-		if(stateId == 1)
-			for(int i=11;i<=23;i++)
+		if(stateId == 1){
+			for(int i=11;i<=23;i++){
 				districtIds.add(new Long(i));
+			}
+		}else{
+			for(int i=1;i<=10;i++){
+				districtIds.add(new Long(i));
+			}
+		}
+			
 			if(districtIds != null && districtIds.size()>0)
 			{
 				if(locationtype.equalsIgnoreCase(IConstants.DISTRICT))
