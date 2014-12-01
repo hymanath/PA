@@ -58,7 +58,7 @@
 			   
 			   <div style="margin-left:250px;">
 					<h4 style="color:black;"> <input type ="radio" style="margin-top:-2px;" class="stType" name="stateType" value="ap" checked="checked">&nbsp;&nbsp;ANDHRA PRADESH</input>
-					 <input style="margin-top:-2px;margin-left:12px;" disabled="true" type ="radio" class="stType" name="stateType" value="tg">&nbsp; TELANGANA </h4></input>
+					 <input style="margin-top:-2px;margin-left:12px;" type ="radio" class="stType" name="stateType" value="tg">&nbsp; TELANGANA </h4></input>
 			   </div>
 			   
 			   
@@ -704,7 +704,7 @@
 	$(this).parent().find("a.btn-success").removeClass("btn-success");
 	$(this).addClass("btn-success");
 
-	
+	var state = $('input:radio[name=stateType]:checked').val();
 	var stateId = 1;
 	if(state == "tg"){
 		stateId = 2;
@@ -712,7 +712,7 @@
 	
 	clearDataDivs();
 	
-	var state = $('input:radio[name=stateType]:checked').val();
+	
 		if(divId == "targetId"){
 			getLocationswiseleaderCadreInfoForBars(state);
 		}
