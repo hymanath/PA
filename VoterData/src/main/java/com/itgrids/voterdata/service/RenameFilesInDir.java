@@ -21,7 +21,7 @@ public class RenameFilesInDir {
 						try{
 							String fileName = file.getName();
 							fileName = fileName.substring(0,fileName.length()-1);
-							if(file.renameTo(new File(fileName)))
+							if(file.renameTo(new File(dirPath+"/"+fileName)))
 								System.out.println("File "+fileName+" is Renamed");
 							else
 								System.out.println("Error in renaming the file "+fileName);
