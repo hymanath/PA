@@ -19,6 +19,7 @@ import java.util.TreeSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -35,16 +36,20 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.ILocalNameConstantDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IZebraPrintDetailsDAO;
-import com.itgrids.partyanalyst.dto.CadreAmountDetailsVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
+import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationWiseReportVO;
 import com.itgrids.partyanalyst.dto.ZebraPrintDetailsVO;
+import com.itgrids.partyanalyst.model.LocalNameConstant;
 import com.itgrids.partyanalyst.model.TdpCadre;
+import com.itgrids.partyanalyst.model.ZebraPrintDetails;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.service.ITdpCadreReportService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -62,8 +67,15 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	private IZebraPrintDetailsDAO zebraPrintDetailsDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private IConstituencyDAO constituencyDAO;
+	private IDistrictDAO districtDAO;
+	private ILocalNameConstantDAO localNameConstantDAO;
 	
-	
+	public void setLocalNameConstantDAO(ILocalNameConstantDAO localNameConstantDAO) {
+		this.localNameConstantDAO = localNameConstantDAO;
+	}
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
 	}
@@ -2057,50 +2069,107 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		return status;
 	}
 	
-	public ZebraPrintDetailsVO createDashBoardForPrintingCardsDetails(String accessType,String accessValue,Long stateTypeId)
+	public ZebraPrintDetailsVO createDashBoardForPrintingCardsDetails(String accessType,String accessValue,Long stateTypeId,String searchType, Long selectedLocationId)
 	{
 		ZebraPrintDetailsVO returnVO = new ZebraPrintDetailsVO();
 		try {
 			List<ZebraPrintDetailsVO> locationWiseInfoList = null;
 			List<Long> selectedLocationIds = new ArrayList<Long>();
-			StringBuilder queryStrForCount = new StringBuilder();
 			List<Object[]> constituencyList =null;
 			
-			if(accessType.equals(IConstants.STATE))
+			if(selectedLocationId != 0L)
 			{
-				constituencyList = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(0L, 1L, null);
-				
+				selectedLocationIds.add(selectedLocationId);
 			}
-			else if(accessType.equalsIgnoreCase(IConstants.DISTRICT))
+			else
 			{
-				constituencyList = constituencyDAO.getConstituenciesByDistrictId(Long.valueOf(accessValue));
-			}
-			else if(accessType.equalsIgnoreCase(IConstants.MP))
-			{
-				constituencyList = (List<Object[]>) delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituencies(Long.valueOf(accessValue));
-			}
-			else if(accessType.equalsIgnoreCase(IConstants.MLA))
-			{
-				selectedLocationIds.add(Long.valueOf(accessValue));
-			}
-			
-			if(!accessType.equalsIgnoreCase(IConstants.MLA))
-			{
-				if(constituencyList != null && constituencyList.size()>0)
+				if(accessType.equals(IConstants.STATE))
 				{
-					for (Object[] cosntituency : constituencyList)
+					if(searchType.equalsIgnoreCase(IConstants.CONSTITUENCY))
 					{
-						selectedLocationIds.add(cosntituency[0] != null? Long.valueOf(cosntituency[0].toString().trim()):0L);
-					}     
+						constituencyList = constituencyDAO.getAllAssemblyConstituenciesByStateTypeId(stateTypeId, 1L, null);
+					}
+					else if(searchType.equalsIgnoreCase(IConstants.DISTRICT))
+					{
+						constituencyList = districtDAO.getDistrictIdAndNameByStateForStateTypeId(1L, stateTypeId);
+					}
+					else if(searchType.equalsIgnoreCase(IConstants.MP))
+					{
+						constituencyList = delimitationConstituencyAssemblyDetailsDAO.getPcListByRegion(stateTypeId);
+					}
+				}
+				else if(accessType.equalsIgnoreCase(IConstants.DISTRICT))
+				{
+					if(searchType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+					{
+						constituencyList = constituencyDAO.getConstituenciesByDistrictId(Long.valueOf(accessValue));
+					}
+					else if(searchType.equalsIgnoreCase(IConstants.DISTRICT))
+					{
+						constituencyList = districtDAO.getDistrictDetailsById(Long.valueOf(accessValue));
+					}
+					else if(searchType.equalsIgnoreCase(IConstants.MP))
+					{
+						constituencyList = (List<Object[]>) delimitationConstituencyAssemblyDetailsDAO.findParliamentConstituenciesByDistrictId(Long.valueOf(accessValue),2009L);
+					}
+				}
+				else if(accessType.equalsIgnoreCase(IConstants.MP))
+				{
+					if(searchType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+					{
+						constituencyList = (List<Object[]>) delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituencies(Long.valueOf(accessValue));
+					}				
+					else if(searchType.equalsIgnoreCase(IConstants.MP))
+					{
+						constituencyList =  delimitationConstituencyAssemblyDetailsDAO.findParliamentDetailsByParliamentId(Long.valueOf(accessValue));
+					}
+				}
+				else if(accessType.equalsIgnoreCase(IConstants.MLA))
+				{
+					selectedLocationIds.add(Long.valueOf(accessValue));
+				}
+				
+				if(!accessType.equalsIgnoreCase(IConstants.MLA))
+				{
+					if(constituencyList != null && constituencyList.size()>0)
+					{
+						for (Object[] cosntituency : constituencyList)
+						{
+							selectedLocationIds.add(cosntituency[0] != null? Long.valueOf(cosntituency[0].toString().trim()):0L);
+						}     
+					}
 				}
 			}
 			
-			queryStrForCount.append(" select count(TC.tdpCadreId) from TdpCadre TC where TC.userAddress.constituency.constituencyId in (:locationIds) and TC.isDeleted='N' and TC.enrollmentYear = 2014  ");
+			List<Object[]> printedCountList 	= null;
+			List<Object[]> errorCountList		= null;
+			List<Object[]> totalPushedCountList = null;
+			List<Object[]>  registeredCountList = null;
 			
-			List<Object[]>  registeredCountList = tdpCadreDAO.gettingRegisteredVotersForConstituencys(selectedLocationIds);
-			List<Object[]> printedCountList = zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, accessType,"printStatus");
-			List<Object[]> errorCountList = zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, accessType,"errorStatus");
-			List<Object[]> totalPushedCountList = zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, accessType,"totalCount");
+			if(searchType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			{
+				 registeredCountList    = tdpCadreDAO.gettingRegisteredVotersForConstituencys(selectedLocationIds);
+				 printedCountList 		= zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, searchType,"printStatus");
+				 errorCountList			= zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, searchType,"errorStatus");
+				 totalPushedCountList 	= zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, searchType,"totalCount");
+			}
+			else if(searchType.equalsIgnoreCase(IConstants.DISTRICT))
+			{
+				 registeredCountList    = tdpCadreDAO.gettingRegisteredVotersForDistricts(selectedLocationIds);
+				 printedCountList 		= zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, searchType,"printStatus");
+				 errorCountList			= zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, searchType,"errorStatus");
+				 totalPushedCountList 	= zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, searchType,"totalCount");
+				 
+			}
+			else if(searchType.equalsIgnoreCase(IConstants.MP))
+			{
+				 registeredCountList    = tdpCadreDAO.gettingRegisteredVotersForParliaments(selectedLocationIds);
+				 printedCountList 		= zebraPrintDetailsDAO.getParliamentWiseResults(selectedLocationIds,"printStatus");
+				 errorCountList			= zebraPrintDetailsDAO.getParliamentWiseResults(selectedLocationIds,"errorStatus");
+				 totalPushedCountList 	= zebraPrintDetailsDAO.getParliamentWiseResults(selectedLocationIds,"totalCount"); 
+			}
+			
+			
 			
 			Map<Long,ZebraPrintDetailsVO> locationWiseMap = new LinkedHashMap<Long, ZebraPrintDetailsVO>(0);
 			Long totalRegisteredCount = 0L;
@@ -2398,7 +2467,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			}
 			
 		} catch (Exception e) {
-			LOG.error(" exception occured in createDashBoardForPrintingCardsDetails()  @ TdpCadreReportService class.",e);
+			LOG.error(" exception occured in dashBoardPageForPrintingCardsDetails()  @ TdpCadreReportService class.",e);
 		}
 		
 		return returnVO;
@@ -2445,5 +2514,59 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		}
 		return returnVo;
 		
+	}
+	
+	public List<CadreRegistrationVO> getCadreDetailsInTeluguByMembershipId(String membershipId)
+	{
+		List<CadreRegistrationVO> returnList = null;
+		try {
+			List<LocalNameConstant> localNamesList = localNameConstantDAO.getAll();
+			Map<String,String> areaInTeluguFontMap = new HashMap<String, String>();
+			
+			if(localNamesList != null && localNamesList.size()>0)
+			{
+				for (LocalNameConstant localNameConstant : localNamesList)
+				{
+					areaInTeluguFontMap.put(localNameConstant.getName().trim(), StringEscapeUtils.unescapeJava(localNameConstant.getLocalName()));
+				}
+			}
+			
+			List<ZebraPrintDetails> resultList = zebraPrintDetailsDAO.getCadreDetailsByMembershipId(membershipId);			
+			if(resultList != null && resultList.size()>0)
+			{
+				returnList = new ArrayList<CadreRegistrationVO>();
+				for (ZebraPrintDetails zebraPrintDetails : resultList)
+				{
+					CadreRegistrationVO registrationVO = new CadreRegistrationVO();
+					
+					if(zebraPrintDetails != null)
+					{
+						registrationVO.setImageBase64String(zebraPrintDetails.getImage());
+						
+						registrationVO.setVoterName(StringEscapeUtils.unescapeJava(zebraPrintDetails.getVoterName()));					
+						registrationVO.setConstituencyId(StringEscapeUtils.unescapeJava(zebraPrintDetails.getConsiteuncyName())+" "+"( "+areaInTeluguFontMap.get("constituency")+" )");
+						registrationVO.setAddress(StringEscapeUtils.unescapeJava(zebraPrintDetails.getDistrictName())+" "+"( "+areaInTeluguFontMap.get("district")+" )");
+						registrationVO.setPreviousEnrollmentNumber(zebraPrintDetails.getMemberShipNumber());
+						
+						if(zebraPrintDetails.getConstituencyType().trim().equalsIgnoreCase("R"))
+						{
+							registrationVO.setPanchayatId(StringEscapeUtils.unescapeJava(zebraPrintDetails.getPanchayatName()+" "+"( "+areaInTeluguFontMap.get("village")+" )"));
+							registrationVO.setMandalId(StringEscapeUtils.unescapeJava(zebraPrintDetails.getMandalName())+" "+"( "+areaInTeluguFontMap.get("mandal")+" )");
+						}
+						else if(zebraPrintDetails.getConstituencyType().trim().equalsIgnoreCase("RU"))
+						{
+							registrationVO.setMuncipalityId(StringEscapeUtils.unescapeJava(zebraPrintDetails.getMuncipalityName())+" "+"( "+areaInTeluguFontMap.get("municipality")+" )");
+						}
+						
+						returnList.add(registrationVO);
+					}
+				}
+				
+			}
+		} catch (Exception e) {
+			LOG.error(" exception occured in getCadreDetailsByMembershipId()  @ TdpCadreReportService class.",e);	
+		}
+		
+		return returnList;
 	}
 }
