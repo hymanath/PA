@@ -513,6 +513,7 @@
 				<value>com.itgrids.partyanalyst.model.TabUserLoginDetails</value>
 				<value>com.itgrids.partyanalyst.model.ZebraPrintDetails</value>
 				<value>com.itgrids.partyanalyst.model.TdpCadreTeluguNames</value>
+				<value>com.itgrids.partyanalyst.model.LocalNameConstant</value>
 			</list>
 		</property>
 	</bean>
@@ -2669,5 +2670,8 @@
 	<bean id="tdpCadreTeluguNamesDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreTeluguNamesDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-     
+	
+     <bean id="localNameConstantDAO" class="com.itgrids.partyanalyst.dao.hibernate.LocalNameConstantDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
 </beans>
