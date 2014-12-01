@@ -235,15 +235,9 @@
 				str+=' <td>'+result.zebraPrintDetailsVOList[i].totalPushCount+'</td>';
 				str+=' <td>'+result.zebraPrintDetailsVOList[i].printStatusCount+'</td>';
 				str+=' <td>'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</td>';
+				str+=' <td>'+result.zebraPrintDetailsVOList[i].remainingCount+'</td>';
 				
-				var remainingCount = result.zebraPrintDetailsVOList[i].totalPushCount  - result.zebraPrintDetailsVOList[i].errorStatusCount;
-				var pendingCount = remainingCount + result.zebraPrintDetailsVOList[i].errorStatusCount;
-				str+=' <td style="width:200px"> '+pendingCount+' <br> ('+remainingCount+' - Not Started Print ';
-				if(result.zebraPrintDetailsVOList[i].errorStatusCount !=0)
-				{
-					str+='<span style="color:#cd0950"> & </span>'+result.zebraPrintDetailsVOList[i].errorStatusCount+' - Errors  ';
-				}
-
+				
 				str+=') </td>';
 				str+=' </tr>';
 				str+=' </tbody>';
