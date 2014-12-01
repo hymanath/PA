@@ -10,10 +10,12 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationWiseReportVO;
 import com.itgrids.partyanalyst.dto.ZebraPrintDetailsVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ITdpCadreReportService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -32,6 +34,24 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 	private TdpCadreLocationWiseReportVO tdpCadreLocationWiseReportVO = new TdpCadreLocationWiseReportVO();
 	private SurveyTransactionVO surveyTransactionVO;
 	private ZebraPrintDetailsVO zebraPrintDetailsVO;
+	private List<CadreRegistrationVO> registrationVOList = new ArrayList<CadreRegistrationVO>();
+	private EntitlementsHelper 					entitlementsHelper;
+	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
+	public List<CadreRegistrationVO> getRegistrationVOList() {
+		return registrationVOList;
+	}
+
+	public void setRegistrationVOList(List<CadreRegistrationVO> registrationVOList) {
+		this.registrationVOList = registrationVOList;
+	}
 
 	public ZebraPrintDetailsVO getZebraPrintDetailsVO() {
 		return zebraPrintDetailsVO;
@@ -238,7 +258,7 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 			jobj = new JSONObject(getTask());
 			Long stateTyleId = jobj.getLong("stateTyleId");
 			
-			zebraPrintDetailsVO = tdpCadreReportService.createDashBoardForPrintingCardsDetails(user.getAccessType(),user.getAccessValue(),stateTyleId);
+			zebraPrintDetailsVO = tdpCadreReportService.createDashBoardForPrintingCardsDetails(user.getAccessType(),user.getAccessValue(),stateTyleId,IConstants.CONSTITUENCY,0L);
 			
 			
 		} catch (Exception e) {
@@ -255,23 +275,50 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 			jobj = new JSONObject(getTask());
 			
-			String accessValue = jobj.getString("constituencyId");
-			String accessType = IConstants.MLA;
+			String searchType = jobj.getString("searchType");
+			Long stateTypeId = jobj.getLong("stateTypeId");
+			Long selectedLocationId = jobj.getLong("locationId");
 			
-			if(accessValue.equalsIgnoreCase("0"))
-			{
-				accessType = user.getAccessType();
-				accessValue = user.getAccessValue();
-			}
-			else
-			{
-				accessType = IConstants.MLA;				
-			}
-			
-			zebraPrintDetailsVO = tdpCadreReportService.createDashBoardForPrintingCardsDetails(accessType,accessValue,0L);
+			zebraPrintDetailsVO = tdpCadreReportService.createDashBoardForPrintingCardsDetails(user.getAccessType(),user.getAccessValue(),stateTypeId,searchType,selectedLocationId);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in printingDashBoard method in CadreRegistrationAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getCadreDetailsInTeluguByMembershipId()
+	{
+		try {
+			
+			jobj = new JSONObject(getTask());			
+			String membershipId = jobj.getString("membershipId");
+			registrationVOList = tdpCadreReportService.getCadreDetailsInTeluguByMembershipId(membershipId);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in printingDashBoard method in CadreRegistrationAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String memberShipCardSampleDetails()
+	{
+		try
+		{
+		  HttpSession session=request.getSession();
+		  RegistrationVO regVO=(RegistrationVO)session.getAttribute("USER");
+		  if(regVO==null)
+			return Action.INPUT;
+
+		  if(entitlementsHelper.checkForEntitlementToViewReport(regVO,"CADRE_2014_CARD_SAMPLE") || entitlementsHelper.checkForEntitlementToViewReport(regVO,"CADRE_2014_CARD_SAMPLE_GROUP"))
+			{
+				return Action.SUCCESS;
+			}
+		  
+		}
+		catch(Exception e)
+		{
+			LOG.info("Entered into memberShipCardSampleDetails() in getLocationWiseDetailsForExcelReport class");
 		}
 		return Action.SUCCESS;
 	}
