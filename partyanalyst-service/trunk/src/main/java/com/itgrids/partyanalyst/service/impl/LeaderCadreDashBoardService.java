@@ -498,13 +498,14 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 		List<CadreAmountDetailsVO> resultList = new ArrayList<CadreAmountDetailsVO>(); 
 		try{
 			returnVo.setInfoList(resultList);
+			String subType = "";
 		if(locationtype.equalsIgnoreCase(IConstants.DISTRICT))
 		{
-					locationtype = IConstants.CONSTITUENCY;
+					subType = IConstants.CONSTITUENCY;
 					 constituencyIds = constituencyDAO.getConstituenciesInADistrict(Id);
 					districtIds.add(Id);
 					voterCountList = voterInfoDAO.getVotersCountInConstituenciesByDistrictsList(districtIds,IConstants.VOTER_DATA_PUBLICATION_ID);
-					setLocationWiseCadreCasteData(locationtype,constituencyIds,voterCountList,resultList);
+					setLocationWiseCadreCasteData(subType,constituencyIds,voterCountList,resultList);
 		}
 		
 		if(locationtype.equalsIgnoreCase(IConstants.CONSTITUENCY))
@@ -526,30 +527,30 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 					}
 					if(tehsilIds != null && tehsilIds.size() > 0)
 					{
-						locationtype = IConstants.TEHSIL;
+						subType = IConstants.TEHSIL;
 					    voterCountList = voterInfoDAO.getVotersCountInATehsilList(tehsilIds,IConstants.VOTER_DATA_PUBLICATION_ID);
-					    setLocationWiseCadreCasteData(locationtype,tehsilIds,voterCountList,resultList);
+					    setLocationWiseCadreCasteData(subType,tehsilIds,voterCountList,resultList);
 					}
 					if(localbodyIds != null && localbodyIds.size() > 0)
 					{
-						locationtype = IConstants.LOCAL_ELECTION_BODY;
+						subType = IConstants.LOCAL_ELECTION_BODY;
 						voterCountList = voterInfoDAO.getVotersCountInALocalBodyList(localbodyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
-						setLocationWiseCadreCasteData(locationtype,localbodyIds,voterCountList,resultList);
+						setLocationWiseCadreCasteData(subType,localbodyIds,voterCountList,resultList);
 					}
-					if(resultList!= null && resultList.size()>0)
-					{
-						for(CadreAmountDetailsVO vo : resultList)
-						{
-							if(vo.getInfoList() != null && vo.getInfoList().size()> 0)
-							for(CadreAmountDetailsVO castVo : vo.getInfoList())
-							{
-								 String percentage ="";
-								 if(vo.getDifference() > 0 )
-								  percentage = (new BigDecimal(castVo.getTotalCount()*(100.0)/vo.getDifference().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-								  castVo.setPercentage(percentage);
-							}
-						}
-					}
+		}
+		if(resultList!= null && resultList.size()>0)
+		{
+			for(CadreAmountDetailsVO vo : resultList)
+			{
+				if(vo.getInfoList() != null && vo.getInfoList().size()> 0)
+				for(CadreAmountDetailsVO castVo : vo.getInfoList())
+				{
+					 String percentage ="";
+					 if(vo.getDifference() > 0 )
+					  percentage = (new BigDecimal(castVo.getTotalCount()*(100.0)/vo.getDifference().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+					  castVo.setPercentage(percentage);
+				}
+			}
 		}
 			
 		}
