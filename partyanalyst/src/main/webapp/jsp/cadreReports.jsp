@@ -856,9 +856,9 @@
 
    function displaySublevelCasteDetails(id,type){
 	$('.added').remove('');
-	//$(".removeicon").hide();
+	$(".removeicon").hide();
 	$(".removeCls").removeClass("selected");
-	$('.clearCls'+id).after('<tr class="selectedchild"><td id="subLevel'+id+'" colspan="14" class="added"><div align="center"><img id="ajaxImgStyle1" style="display:none;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
+	$('.clearCls'+id).after('<tr class="selectedchild"><td id="subLevelConstis'+id+'" colspan="14" class="added"><div align="center"><img id="ajaxImgStyle1" style="display:none;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
 	$('.clearCls'+id).addClass("selected");
 	$('.clearClsTD'+id).addClass("selected");
 	$("#ajaxImgStyle1").show();
@@ -874,7 +874,7 @@
           url: 'getSubLocationswiseCasteInfoAction.action',
          data : {task:JSON.stringify(jObj)} ,
        }).done(function(result){
-		buildDataForSublevelCaste1(result.infoList,type,"subLevel"+id);
+		buildDataForSublevelCaste1(result.infoList,type,"subLevelConstis"+id);
 		});
    }
 function displaySublevelCasteDetails1(id,type){
@@ -1092,7 +1092,7 @@ function displaySublevelCasteDetails1(id,type){
     $('.added').remove('');
 	$(".removeicon").hide();
 	$(".removeCls").removeClass("selected");
-	$('.clearCls'+id).after('<tr class="selectedchild"><td id="subLevel'+id+'" colspan="8" class="added"><div align="center"><img id="ajaxImgStyle1" style="display:none;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
+	$('.clearCls'+id).after('<tr class="selectedchild"><td id="subLevelConst'+id+'" colspan="8" class="added"><div align="center"><img id="ajaxImgStyle1" style="display:none;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
 	$('.clearCls'+id).addClass("selected");
 	$('.clearClsTD'+id).addClass("selected");
 	$("#ajaxImgStyle1").show();
@@ -1115,7 +1115,7 @@ function displaySublevelCasteDetails1(id,type){
           url: 'getLocationswiseYouthAndMahilaInfoAction.action',
          data : {task:JSON.stringify(jObj)} ,
        }).done(function(result){
-		buildDistSublocationYouthAndMahila(result,scope,"subLevel"+id);
+		buildDistSublocationYouthAndMahila(result,scope,"subLevelConst"+id);
 		});
    }
 
