@@ -1754,6 +1754,12 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
 
+<bean id="localNameConstantDAO" class="com.itgrids.partyanalyst.dao.hibernate.LocalNameConstantDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+
+
 <bean id="tabUserKeysDAO" class="com.itgrids.partyanalyst.dao.hibernate.TabUserKeysDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>

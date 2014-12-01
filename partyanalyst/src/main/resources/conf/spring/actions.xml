@@ -1509,6 +1509,7 @@
 	
 	<bean id="tdpCadreReportAction" class="com.itgrids.partyanalyst.web.action.TdpCadreReportAction" singleton="false">
 		<property name="tdpCadreReportService" ref="tdpCadreReportService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 	
 	<bean id="cadreAgeGenderAnalysisAction" class="com.itgrids.partyanalyst.web.action.CadreAgeGenderAnalysisAction" singleton="false">
