@@ -1687,6 +1687,11 @@ if(result.length > 0){
 			    }
 			    str+='<th>2014 CADRE COUNT</th>';
 			    str+='<th>2012 CADRE COUNT</th>';
+				if(locationId == 5 || locationId == 6 || locationId == 9){
+					str+='<th> OVERALL TARGET CADRE </th>';
+					str+='<th> OVERALL REGISTERED CADRE </th>';
+					str+='<th> REGISTERED %</th>';
+				}
 				str+='</tr>';
 				str+='</thead><tbody>';
 				for(var i in result){
@@ -1735,6 +1740,24 @@ if(result.length > 0){
 					}else{
 					  str+='  <td></td>';
 					}
+					if(locationId == 5 || locationId == 6 || locationId == 9){
+						if(result[i].targetCadre != null){
+							str+='  <td>'+result[i].targetCadre+'</td>';
+							if(result[i].overAllRegCount == null){
+								str+='  <td> 0 </td>';
+							}else{
+								str+='  <td>'+result[i].overAllRegCount+'</td>';
+							}
+							str+='  <td>'+result[i].regPercent+'</td>';
+						}else{
+							str+='  <td> - </td>';
+							str+='  <td> - </td>';
+							str+='  <td> - </td>';
+						}
+					}
+					
+					
+					
 				  str+='</tr>';
 				}
 				str+='</tbody></table></div>';
