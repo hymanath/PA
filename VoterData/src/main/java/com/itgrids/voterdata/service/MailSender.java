@@ -14,7 +14,8 @@ public class MailSender {
 
 	public static void main(String[] args)
 	{
-		
+		MailSender mailSender = new MailSender();
+		mailSender.sendEmail("sasi.itgrids.hyd@gmail.com");
 	}
 	
 	public void sendEmail(String to)
@@ -40,8 +41,23 @@ public class MailSender {
 		      });
 
 		      try {
-		}catch(Exception e)
-		{
-			
-		}
+		          Message message = new MimeMessage(session);
+		          message.setFrom(new InternetAddress(from));
+		          message.setRecipients(Message.RecipientType.TO,
+		          InternetAddress.parse(to));
+		          message.setSubject("Testing Subject");
+		          message.setText("Hello, this is sample for to check send "
+		             + "email using JavaMailAPI ");
+		          Transport.send(message);
+		          System.out.println("Sent message successfully....");
+
+		       } catch (MessagingException e) {
+		             throw new RuntimeException(e);
+		       }
+
+			}catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+	}
 }
