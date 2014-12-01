@@ -208,10 +208,10 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 		
 	public List<Object[]> getAllCadreDetailsByBatchCode(String batchCode){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append("select model.memberShipNumber,model.voterName,model.mobileNo,model.districtName,model.consiteuncyName,model.mandalName," +
-				"model.muncipalityName,model.panchayatName,model.partNo,model.houseNo,model.zebraPrintDetailsId from ZebraPrintDetails model where model.jobCode =:batchCode" +
-				" and model.printStatus ='Y' and (model.errorStatus is null or model.errorStatus='0') ");
-		Query query = getSession().createQuery(queryStr.toString()); 
+		queryStr.append("select model.member_ship_member,model.voter_name,model.mobile_no,model.district_name,model.constituency_name,model.mandal_name,model.muncipality_name," +
+				"model.panchayat_name,model.part_no,model.house_no,model.zebra_print_details_id,tca.location,tca.town from ZebraPrintDetails " +
+				" model LEFT JOIN tdp_cadre_address tca on model.tdp_cadre_id = tca.tdp_cadre_id where model.jobCode =:batchCode and model.printStatus ='Y' and (model.errorStatus is null or model.errorStatus='0') ");
+		Query query = getSession().createSQLQuery(queryStr.toString()); 
 		query.setParameter("batchCode", batchCode);
 		return query.list();
 	}

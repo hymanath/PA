@@ -2236,17 +2236,6 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 			for (String constituency : constituencyMap.keySet()) {
 				sheet = workbook.createSheet(constituency);
 				 row = sheet.createRow(0);
-				row.createCell(0).setCellValue("Member Ship Number");
-				row.createCell(1).setCellValue("Voter Name");
-				row.createCell(2).setCellValue("Mobile Number");
-				row.createCell(3).setCellValue("District Name");
-				row.createCell(4).setCellValue("Constituency Name");
-				row.createCell(5).setCellValue("Mandal Name");
-				row.createCell(6).setCellValue("Municipality Name");
-				row.createCell(7).setCellValue("Panchayat Name");
-				row.createCell(8).setCellValue("Booth");
-				row.createCell(9).setCellValue("House No");
-				row.createCell(10).setCellValue("zebra_print_details_id");
 				
 				 cell = row.createCell(0);
 				 cell.setCellValue("Member Ship Number");
@@ -2289,6 +2278,14 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 				 cell.setCellStyle(style);
 				 
 				 cell = row.createCell(10);
+				 cell.setCellValue("Location");
+				 cell.setCellStyle(style);
+				 
+				 cell = row.createCell(11);
+				 cell.setCellValue("Town");
+				 cell.setCellStyle(style);
+					
+				 cell = row.createCell(12);
 				 cell.setCellValue("zebra_print_details_id");
 				 cell.setCellStyle(style);
 				 
@@ -2347,10 +2344,20 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 					} else {
 						row.createCell(9).setCellValue("");
 					}
-					if (cadre[10] != null) {
-						row.createCell(10).setCellValue(cadre[10].toString());
+					if (cadre[11] != null) {
+						row.createCell(10).setCellValue(cadre[11].toString());
 					} else {
 						row.createCell(10).setCellValue("");
+					}
+					if (cadre[12] != null) {
+						row.createCell(11).setCellValue(cadre[12].toString());
+					} else {
+						row.createCell(11).setCellValue("");
+					}
+					if (cadre[10] != null) {
+						row.createCell(12).setCellValue(cadre[10].toString());
+					} else {
+						row.createCell(12).setCellValue("");
 					}
 				}
 			}
