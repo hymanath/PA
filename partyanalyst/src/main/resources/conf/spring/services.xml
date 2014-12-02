@@ -2333,6 +2333,8 @@
 	 <property name="casteCategoryDAO" ref="casteCategoryDAO" />
 	 <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
 	 <property name="boothDAO" ref="boothDAO" />
+	  <property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
+	 
 	 <property name="zebraPrintDetailsDAO" ref="zebraPrintDetailsDAO" />	 
      </bean>
      
