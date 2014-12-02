@@ -120,7 +120,7 @@
 					<div class="widget-heading">
 						<h4>Constituency Wise Cards Prints Overview <select class="pull-right input-medium" id="constituencyList" style="margin-top:-5px;" onChange="searchByName(this.id,'CONSTITUENCY')"><option value="0"> All </option></select></h4>
 					</div>
-					<div class="widget-body scrollable_div" style="width:97%; height:483px;overflow:auto;">		
+					<div class="widget-body scrollable_div" style="width:97%; height:464px;overflow:auto;">		
 						<div align="center"><img style="width:70px;height:60px;display:none;" id="searchDataImg" class="" src="images/Loading-data.gif"></div>					
 						<div id="accordion2" class="accordion"> </div>						
 					</div>	
@@ -201,7 +201,7 @@
 			stateId = 2;
 		var jsObj = 
 		{
-			  stateTyleId : stateId,
+			  stateTyleId : 0,
 			  type : type,
 			  task:"totalPrintingCount"             
 		}	
@@ -303,7 +303,8 @@
 		var visitData = constiteuncyInfoArr;
 		var params = {
 			type: "pie",
-			sliceColors: ["#D7EA2C", "#D9D9D9", "#5399D5"],
+			 sliceColors: ["#0B3B0B", "#B18904", "#610B21"],
+
 		}
 		for(var k in result.zebraPrintDetailsVOList){
 			$('#mini-pie-chart'+k+'').sparkline(visitData[k], params);
@@ -442,7 +443,8 @@
 			var visitData = districtInfoArr;
 			var params = {
 				type: "pie",
-				sliceColors: ["#D7EA2C", "#D9D9D9", "#5399D5"],
+				 sliceColors: ["#0B3B0B", "#B18904", "#610B21"],
+
 			}
 			for(var k in result.zebraPrintDetailsVOList){
 				$('#mini-pie-chart-district'+k+'').sparkline(visitData[k], params);
@@ -523,7 +525,8 @@
 			var visitData = parliamentInfoArr;
 			var params = {
 				type: "pie",
-				sliceColors: ["#D7EA2C", "#D9D9D9", "#5399D5"],
+				 sliceColors: ["#0B3B0B", "#B18904", "#610B21"],
+
 			}
 			for(var k in result.zebraPrintDetailsVOList){
 				$('#mini-pie-chart-parliament'+k+'').sparkline(visitData[k], params);
@@ -556,7 +559,7 @@
 			   {
 				  locationId : locId,
 				  searchType :loctype,
-				  stateTypeId : stateId,
+				  stateTypeId : 0,
 				  task:"totalPrintingCount"             
 			   }	
 				$.ajax({
