@@ -144,7 +144,7 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 			}
 			else if(dataType.equalsIgnoreCase("errorStatus"))
 			{
-				queryStr.append(" and (model.errorStatus is not null and model.errorStatus !='0')  )  ");
+				queryStr.append(" and (model.errorStatus is not null and model.errorStatus !='0') ");
 			}
 			queryStr.append(" group by model.tdpCadre.userAddress.constituency.constituencyId ");
 			queryStr.append(" order by model.tdpCadre.userAddress.constituency.name asc ");
@@ -159,7 +159,7 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 			}
 			else if(dataType.equalsIgnoreCase("errorStatus"))
 			{
-				queryStr.append(" and (model.errorStatus is not null and model.errorStatus !='0')  )  ");
+				queryStr.append(" and (model.errorStatus is not null and  model.errorStatus !='0' ) ");
 			}
 			queryStr.append(" group by model.tdpCadre.userAddress.district.districtId ");
 			queryStr.append(" order by model.tdpCadre.userAddress.district.districtName asc ");
