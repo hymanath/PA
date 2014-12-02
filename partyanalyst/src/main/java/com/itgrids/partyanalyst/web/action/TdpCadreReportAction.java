@@ -36,7 +36,16 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 	private ZebraPrintDetailsVO zebraPrintDetailsVO;
 	private List<CadreRegistrationVO> registrationVOList = new ArrayList<CadreRegistrationVO>();
 	private EntitlementsHelper 					entitlementsHelper;
+	private List<ZebraPrintDetailsVO> zebraPrintDetails;
 	
+	public List<ZebraPrintDetailsVO> getZebraPrintDetails() {
+		return zebraPrintDetails;
+	}
+
+	public void setZebraPrintDetails(List<ZebraPrintDetailsVO> zebraPrintDetails) {
+		this.zebraPrintDetails = zebraPrintDetails;
+	}
+
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
 	}
@@ -322,5 +331,20 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 		}
 		return Action.SUCCESS;
 	}
-	
+	public String getDayWiseCardPrintedCount()
+	{
+		try{
+			jobj = new JSONObject(getTask());
+			Long stateId = 0l;
+			if(!jobj.getString("type").equalsIgnoreCase("Parliament"))
+			zebraPrintDetails = tdpCadreReportService.getDayWiseCardPrintedCountInfo(jobj.getString("type"),jobj.getString("status"),jobj.getLong("Id"),stateId);
+			else
+				zebraPrintDetails = tdpCadreReportService.getDayWiseCardPrintedCountInfoForParlment(jobj.getString("status"),jobj.getLong("Id"),stateId);	
+		}
+		catch(Exception e)
+		{
+			LOG.info("Entered into getDayWiseCardPrintedCount() in getLocationWiseDetailsForExcelReport class");	
+		}
+		return Action.SUCCESS;
+	}
 }
