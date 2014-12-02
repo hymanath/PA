@@ -140,11 +140,11 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 			queryStr.append(" model.tdpCadre.userAddress.constituency.constituencyId in (:locationIdsList) ");
 			if(dataType.equalsIgnoreCase("printStatus"))
 			{
-				queryStr.append(" and (model.printStatus is not null and model.printStatus ='Y' )  ");
+				queryStr.append(" and ((model.printStatus is not null and model.printStatus ='Y' ) and (model.errorStatus is null or model.errorStatus ='0' )) ");
 			}
 			else if(dataType.equalsIgnoreCase("errorStatus"))
 			{
-				queryStr.append(" and (model.errorStatus is not null or ( model.errorStatus !='0' or model.errorStatus !='0 ')  )  ");
+				queryStr.append(" and (model.errorStatus is not null and model.errorStatus !='0')  )  ");
 			}
 			queryStr.append(" group by model.tdpCadre.userAddress.constituency.constituencyId ");
 			queryStr.append(" order by model.tdpCadre.userAddress.constituency.name asc ");
@@ -155,11 +155,11 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 			queryStr.append(" model.tdpCadre.userAddress.district.districtId in (:locationIdsList) ");
 			if(dataType.equalsIgnoreCase("printStatus"))
 			{
-				queryStr.append(" and (model.printStatus is not null and model.printStatus ='Y' )  ");
+				queryStr.append(" and ((model.printStatus is not null and model.printStatus ='Y' ) and (model.errorStatus is null or model.errorStatus ='0' )) ");
 			}
 			else if(dataType.equalsIgnoreCase("errorStatus"))
 			{
-				queryStr.append(" and (model.errorStatus is not null or ( model.errorStatus !='0' or model.errorStatus !='0 ')  )  ");
+				queryStr.append(" and (model.errorStatus is not null and model.errorStatus !='0')  )  ");
 			}
 			queryStr.append(" group by model.tdpCadre.userAddress.district.districtId ");
 			queryStr.append(" order by model.tdpCadre.userAddress.district.districtName asc ");
@@ -206,7 +206,7 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 		}
 		else if(dataType.equalsIgnoreCase("errorStatus"))
 		{
-			queryStr.append(" and (ZPD.errorStatus is not null or ZPD.errorStatus !='0' )  ");
+			queryStr.append(" and (ZPD.errorStatus is not null and ZPD.errorStatus !='0' )  ");
 		}
 		
 		queryStr.append(" group by DCA.delimitationConstituency.constituency.constituencyId order by DCA.delimitationConstituency.constituency.name asc  ");
@@ -243,7 +243,7 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 			queryStr.append(" and ((model.printStatus ='Y' or model.printStatus ='y' ) and (model.errorStatus is null or model.errorStatus ='0' ))  ");
 		}
 		else if(dataType.equalsIgnoreCase("errorStatus")){
-			queryStr.append(" and (model.errorStatus is not null or model.errorStatus !='0' )  ");
+			queryStr.append(" and (model.errorStatus is not null and model.errorStatus !='0' )  ");
 		}
 	
 		Query query = getSession().createQuery(queryStr.toString()); 
@@ -266,6 +266,80 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 				" model LEFT JOIN tdp_cadre_address tca on model.tdp_cadre_id = tca.tdp_cadre_id where model.job_code =:batchCode and model.print_status ='Y' and (model.error_Status is null or model.error_Status='0') ");
 		Query query = getSession().createSQLQuery(queryStr.toString()); 
 		query.setParameter("batchCode", batchCode);
+		return query.list();
+	}
+	
+	public List<Object[]> getPrintedCountByLocationWise(Long locationId, String searchType,String dataType)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select count(model.zebraPrintDetailsId)"); 
+		if(dataType.equalsIgnoreCase("totalCount"))
+		queryStr.append(",date(model.insertedTime)" );
+		else
+		queryStr.append(",date(model.updatedTime)" );
+		queryStr.append(" from ZebraPrintDetails model where ");
+		
+		if(searchType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+		{
+			queryStr.append(" model.tdpCadre.userAddress.constituency.constituencyId  =:locationId");
+		}
+		else if(searchType.equalsIgnoreCase(IConstants.DISTRICT))
+		{
+			queryStr.append(" model.tdpCadre.userAddress.district.districtId =:locationId ");
+		}
+		else if(searchType.equalsIgnoreCase("Parliament"))
+		{
+			queryStr.append(" model.tdpCadre.userAddress.constituency.constituencyId  =:locationId");
+		}
+		if(dataType.equalsIgnoreCase("printStatus"))
+		{
+			queryStr.append(" and ((model.printStatus is not null and model.printStatus ='Y' ) and (model.errorStatus is null or model.errorStatus ='0' )) ");
+		}
+		else if(dataType.equalsIgnoreCase("errorStatus"))
+		{
+			queryStr.append(" and (model.errorStatus is not null and  model.errorStatus !='0' )  ");
+		}
+		if(dataType.equalsIgnoreCase("totalCount"))
+		queryStr.append(" group by date(model.insertedTime)");
+		else
+		queryStr.append(" group by date(model.updatedTime)");
+		Query query = getSession().createQuery(queryStr.toString()); 
+		query.setParameter("locationId", locationId);
+		return query.list();
+	}
+	
+	public List<Object[]> getPrintedCountByParliamentise(Long parliamentId, String dataType)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		
+		
+		queryStr.append("  select count(ZPD.zebraPrintDetailsId)"); 
+		if(dataType.equalsIgnoreCase("totalCount"))
+		queryStr.append(",date(ZPD.insertedTime)" );
+		else
+		queryStr.append(",date(ZPD.updatedTime)" );
+		queryStr.append(" from ZebraPrintDetails ZPD, DelimitationConstituencyAssemblyDetails DCA ,DelimitationConstituency DC  " +
+				" where DC.year = 2009 and " +
+				" DCA.delimitationConstituency.delimitationConstituencyID = DC.delimitationConstituencyID and " +
+				" ZPD.tdpCadre.userAddress.constituency.constituencyId = DCA.constituency.constituencyId and " +
+				" DCA.delimitationConstituency.constituency.constituencyId =:parliamentId and " +
+				" ZPD.tdpCadre.isDeleted = 'N' and " +
+				" ZPD.tdpCadre.enrollmentYear = 2014 ");
+				
+		if(dataType.equalsIgnoreCase("printStatus"))
+		{
+			queryStr.append(" and ((ZPD.printStatus ='Y' or ZPD.printStatus ='y' ) and (ZPD.errorStatus is null or ZPD.errorStatus ='0' ))  ");
+		}
+		else if(dataType.equalsIgnoreCase("errorStatus"))
+		{
+			queryStr.append(" and (ZPD.errorStatus is not null and ZPD.errorStatus !='0' )  ");
+		}
+		if(dataType.equalsIgnoreCase("totalCount"))
+		queryStr.append(" group by date(ZPD.insertedTime)");
+		else
+		queryStr.append(" group by date(ZPD.updatedTime)");
+		Query query = getSession().createQuery(queryStr.toString()); 
+		query.setParameter("parliamentId", parliamentId);
 		return query.list();
 	}
 }
