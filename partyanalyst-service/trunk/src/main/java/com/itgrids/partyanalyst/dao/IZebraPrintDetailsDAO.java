@@ -32,4 +32,6 @@ public interface IZebraPrintDetailsDAO extends GenericDao<ZebraPrintDetails, Lon
 	public int updateVoterName(Long zebraPrintDetailsId,String voterName);
 	
 	public List<Object[]> getAllCadreDetailsByBatchCode(String batchCode);
+	public List<Object[]> getPrintedCountByLocationWise(Long locationId, String searchType,String dataType);
+	public List<Object[]> getPrintedCountByParliamentise(Long parliamentId, String dataType);
 }

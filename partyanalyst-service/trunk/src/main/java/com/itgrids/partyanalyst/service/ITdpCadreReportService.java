@@ -19,5 +19,7 @@ public interface ITdpCadreReportService {
 	public ZebraPrintDetailsVO getCadreDetailsByStatus(Long constituencyId,String status);
 	
 	public List<CadreRegistrationVO> getCadreDetailsInTeluguByMembershipId(String membershipId);
+	public List<ZebraPrintDetailsVO> getDayWiseCardPrintedCountInfo(String type,String status,Long Id,Long stateId);
+	public List<ZebraPrintDetailsVO> getDayWiseCardPrintedCountInfoForParlment(String status,Long Id,Long stateId);
 	
 }
