@@ -247,7 +247,7 @@
 	}	
 		str+=' <div class="accordion-group">';
 		str+=' <div class="accordion-heading">';
-		str+=' <a href="#collapse'+i+'" data-parent="#accordion2" data-toggle="collapse" class="accordion-toggle collapsed">'+result.zebraPrintDetailsVOList[i].name+'  <span id="mini-pie-chart'+i+'" class="pull-right mini-pie-chart"></span></a>';
+		str+=' <a onclick="hideConstiDiv()" href="#collapse'+i+'" data-parent="#accordion2" data-toggle="collapse" class="accordion-toggle collapsed">'+result.zebraPrintDetailsVOList[i].name+'  <span id="mini-pie-chart'+i+'" class="pull-right mini-pie-chart"></span></a>';
 		str+=' </div>';
 		str+=' <div class="accordion-body collapse" id="collapse'+i+'" style="height: 0px;">';
 		str+=' <div class="accordion-inner">';
@@ -265,14 +265,31 @@
 			str+=' <tr>';
 
 			str+=' <td>'+result.zebraPrintDetailsVOList[i].rowCount+'</td>';
-			str+=' <td>'+result.zebraPrintDetailsVOList[i].totalPushCount+'</td>';
+			if(result.zebraPrintDetailsVOList[i].totalPushCount > 0)
+			{
+			str+=' <td><a onclick="getDayWiseCardPrintedCount(\'CONSTITUENCY\',\'SENT\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].totalPushCount+'</a></td>';
+			}
+			else
+		    str+=' <td>'+result.zebraPrintDetailsVOList[i].totalPushCount+'</td>';
+			if(result.zebraPrintDetailsVOList[i].printStatusCount > 0)
+			{
+			str+=' <td><a onclick="getDayWiseCardPrintedCount(\'CONSTITUENCY\',\'PRINTED\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].printStatusCount+'</a></td>';
+			}
+			else
 			str+=' <td>'+result.zebraPrintDetailsVOList[i].printStatusCount+'</td>';
+			if(result.zebraPrintDetailsVOList[i].errorStatusCount > 0)
+			{
+			str+=' <td><a onclick="getDayWiseCardPrintedCount(\'CONSTITUENCY\',\'ERROR\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</a></td>';
+			}
+			else
 			str+=' <td>'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</td>';
 			str+=' <td>'+result.zebraPrintDetailsVOList[i].remainingCount+'</td>';
 
 			str+=' </tr>';
 			str+=' </tbody>';
 		str+=' </table>';
+		str+='<div id="CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'" style="display:none;"><img style="width:70px;height:60px;"  src="images/Loading-data.gif"></div>';
+		str+='<div id="CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'" class="ConstiremoveCls"></div>';
 		str+='</div>';
 		str+=' </div>';
 		str+=' </div>';
@@ -369,7 +386,7 @@
 		}
 			str+=' <div class="accordion-group">';
 			str+=' <div class="accordion-heading">';
-			str+=' <a href="#collapseDistrict'+i+'" data-parent="#districtAccordion" data-toggle="collapse" class="accordion-toggle collapsed">'+result.zebraPrintDetailsVOList[i].name+'  <span id="mini-pie-chart-district'+i+'" class="pull-right mini-pie-chart-district"></span></a>';
+			str+=' <a onclick="hideDistDiv();" href="#collapseDistrict'+i+'" data-parent="#districtAccordion" data-toggle="collapse" class="accordion-toggle collapsed">'+result.zebraPrintDetailsVOList[i].name+'  <span id="mini-pie-chart-district'+i+'" class="pull-right mini-pie-chart-district"></span></a>';
 			str+=' </div>';
 			str+=' <div class="accordion-body collapse" id="collapseDistrict'+i+'" style="height: 0px;">';
 			str+=' <div class="accordion-inner">';
@@ -387,14 +404,31 @@
 				str+=' <tr>';
 
 				str+=' <td>'+result.zebraPrintDetailsVOList[i].rowCount+'</td>';
-				str+=' <td>'+result.zebraPrintDetailsVOList[i].totalPushCount+'</td>';
-				str+=' <td>'+result.zebraPrintDetailsVOList[i].printStatusCount+'</td>';
-				str+=' <td>'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</td>';
+				if(result.zebraPrintDetailsVOList[i].totalPushCount > 0)
+			{
+			str+=' <td><a onclick="getDayWiseCardPrintedCount(\'DISTRICT\',\'SENT\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICT'+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICTImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].totalPushCount+'</a></td>';
+			}
+			else
+		    str+=' <td>'+result.zebraPrintDetailsVOList[i].totalPushCount+'</td>';
+			if(result.zebraPrintDetailsVOList[i].printStatusCount > 0)
+			{
+			str+=' <td><a onclick="getDayWiseCardPrintedCount(\'DISTRICT\',\'PRINTED\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICT'+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICTImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].printStatusCount+'</a></td>';
+			}
+			else
+			str+=' <td>'+result.zebraPrintDetailsVOList[i].printStatusCount+'</td>';
+			if(result.zebraPrintDetailsVOList[i].errorStatusCount > 0)
+			{
+			str+=' <td><a onclick="getDayWiseCardPrintedCount(\'DISTRICT\',\'ERROR\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICT'+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICTImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</a></td>';
+			}
+			else
+			str+=' <td>'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</td>';
 				str+=' <td>'+result.zebraPrintDetailsVOList[i].remainingCount+'</td>';
 
 				str+=' </tr>';
 				str+=' </tbody>';
 			str+=' </table>';
+			str+='<div id="DISTRICTImg'+result.zebraPrintDetailsVOList[i].id+'"  style="display:none;"><img style="width:70px;height:60px;"  src="images/Loading-data.gif"></div>';
+			str+='<div id="DISTRICT'+result.zebraPrintDetailsVOList[i].id+'" class="DistremoveCls"></div>';
 			str+='</div>';
 			str+=' </div>';
 			str+=' </div>';
@@ -433,7 +467,7 @@
 		}
 			str+=' <div class="accordion-group">';
 			str+=' <div class="accordion-heading">';
-			str+=' <a href="#collapseParliament'+i+'" data-parent="#parliamentAccordion" data-toggle="collapse" class="accordion-toggle collapsed">'+result.zebraPrintDetailsVOList[i].name+'  <span id="mini-pie-chart-parliament'+i+'" class="pull-right mini-pie-chart-parliament"></span></a>';
+			str+=' <a onclick="hideParlDiv();" href="#collapseParliament'+i+'" data-parent="#parliamentAccordion" data-toggle="collapse" class="accordion-toggle collapsed">'+result.zebraPrintDetailsVOList[i].name+'  <span id="mini-pie-chart-parliament'+i+'" class="pull-right mini-pie-chart-parliament"></span></a>';
 			str+=' </div>';
 			str+=' <div class="accordion-body collapse" id="collapseParliament'+i+'" style="height: 0px;">';
 			str+=' <div class="accordion-inner">';
@@ -451,14 +485,31 @@
 				str+=' <tr>';
 
 				str+=' <td>'+result.zebraPrintDetailsVOList[i].rowCount+'</td>';
-				str+=' <td>'+result.zebraPrintDetailsVOList[i].totalPushCount+'</td>';
-				str+=' <td>'+result.zebraPrintDetailsVOList[i].printStatusCount+'</td>';
-				str+=' <td>'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</td>';
+				if(result.zebraPrintDetailsVOList[i].totalPushCount > 0)
+			{
+			str+=' <td><a onclick="getDayWiseCardPrintedCount(\'Parliament\',\'SENT\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'Parliament'+result.zebraPrintDetailsVOList[i].id+'\',\'ParliamentImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].totalPushCount+'</a></td>';
+			}
+			else
+		    str+=' <td>'+result.zebraPrintDetailsVOList[i].totalPushCount+'</td>';
+			if(result.zebraPrintDetailsVOList[i].printStatusCount > 0)
+			{
+			str+=' <td><a onclick="getDayWiseCardPrintedCount(\'Parliament\',\'PRINTED\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'Parliament'+result.zebraPrintDetailsVOList[i].id+'\',\'ParliamentImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].printStatusCount+'</a></td>';
+			}
+			else
+			str+=' <td>'+result.zebraPrintDetailsVOList[i].printStatusCount+'</td>';
+			if(result.zebraPrintDetailsVOList[i].errorStatusCount > 0)
+			{
+			str+=' <td><a onclick="getDayWiseCardPrintedCount(\'Parliament\',\'ERROR\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'Parliament'+result.zebraPrintDetailsVOList[i].id+'\',\'ParliamentImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</a></td>';
+			}
+			else
+			str+=' <td>'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</td>';
 				str+=' <td>'+result.zebraPrintDetailsVOList[i].remainingCount+'</td>';
 
 				str+=' </tr>';
 				str+=' </tbody>';
 			str+=' </table>';
+			str+='<div id="ParliamentImg'+result.zebraPrintDetailsVOList[i].id+'"  style="display:none;"><img style="width:70px;height:60px;"  src="images/Loading-data.gif"></div>';
+			str+='<div id="Parliament'+result.zebraPrintDetailsVOList[i].id+'" class="ParlremoveCls"></div>';
 			str+='</div>';
 			str+=' </div>';
 			str+=' </div>';
@@ -574,7 +625,72 @@
 		
 		$("#mainChartDiv").html(str);
    }
-  	
+  	function getDayWiseCardPrintedCount(type,status,id,divId,processId)
+		{
+			
+			$("#"+processId).show();
+			$("#"+divId).html('');
+		var jObj = {
+		Id:id,
+		status:status,
+		type:type,
+		task:"dayWiseCount"
+		}
+		 $.ajax({
+          type:'GET',
+          url: 'getDayWiseCardPrintedCountAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+       }).done(function(result){
+			  
+			$("#"+processId).hide();
+		buildDayWiseTable(result,divId,status);
+		});
+		}
+		function buildDayWiseTable(result,divId,status)
+		{
+			var str ='';
+			str+='<table class="table table-striped table-bordered table-condensed border-radius-0">';
+			str+='<thead>';
+			str+='<tr class="">';
+			str+='<th colspan="3" class="alert-success border-radius-0 text-center"><center>Day Wise Card Printed Status</center></th>';												
+			str+='</tr>';
+			str+='<tr class="alert-info">';
+			str+='<th>Batch NO</th>';
+			if(status =='SENT')
+			str+='<th>Sent to Print</th>';
+			if(status =='ERROR')
+			str+='<th>Error in Print</th>';
+			if(status =='PRINTED')
+			str+='<th>Printed</th>';
+			str+='</tr>	';											
+			str+='</thead>';
+			str+='<tbody>';
+			for(var i in result)
+			{
+			str+='<tr>';
+			if(result[i].updatedDate != '')
+			str+='<td>'+result[i].updatedDate+'</td>';
+			else
+			str+='<td>-</td>';
+			str+='<td>'+result[i].totalPushCount+'</td>';
+			str+='</tr>';
+			}
+			str+='</tbody>';
+			str+='</table>';
+			$('#'+divId).html(str);
+		}
+		function hideConstiDiv()
+		{
+		$(".ConstiremoveCls").html('');
+		}
+		function hideDistDiv()
+		{
+		$(".DistremoveCls").html('');
+		}
+		function hideParlDiv()
+		{
+		$(".ParlremoveCls").html('');
+		}
   </script>	
  </body>
  </html>
