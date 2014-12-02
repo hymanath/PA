@@ -177,7 +177,7 @@
 		{
 			for(var i in result)
 			{
-				str+=' <div class="span2 offset3"> <img class="offset1" src="http://'+result[i].imageBase64String+'" style="float: inherit;position: absolute;margin-top: 70px;width: 75px;height: 92px;margin-left: 10px;"></div>';
+				str+=' <div class="span2 offset3"> <img class="offset1" src="http://'+result[i].imageBase64String+'" style="float: inherit;position: absolute;margin-top: 70px;width: 75px;height: 92px;margin-left: 10px;" onerror="buildDefault();"/></div>';
 				str+=' <div class="span5 " style="float: inherit;position: absolute;margin-top: 67px;font-size: 12px;font-weight: bold;color: yellow;margin-left: 55px;"> <span> '+result[i].previousEnrollmentNumber+' </span> <br><span style="margin-top:5px;"> 2014-2016 </span></div>';
 				str+=' <div class="span5 offset2" style="float: inherit;position: absolute;margin-top: 105px;margin-left: 80px;">';
 
@@ -208,6 +208,11 @@
 		}
 	$('#searchCadreInfoDiv').html(str);
 	}
+	
+	function buildDefault(){
+			$("#ErrorLDiv").html("Photo Not Avaliable");	
+	}
+	
 	</script>
 
   </body>
