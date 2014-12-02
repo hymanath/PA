@@ -266,8 +266,8 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 			jobj = new JSONObject(getTask());
 			Long stateTyleId = jobj.getLong("stateTyleId");
-			
-			zebraPrintDetailsVO = tdpCadreReportService.createDashBoardForPrintingCardsDetails(user.getAccessType(),user.getAccessValue(),stateTyleId,IConstants.CONSTITUENCY,0L);
+			String locType = jobj.getString("type");
+			zebraPrintDetailsVO = tdpCadreReportService.createDashBoardForPrintingCardsDetails(user.getAccessType(),user.getAccessValue(),stateTyleId,locType,0l);
 			
 			
 		} catch (Exception e) {
