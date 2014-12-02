@@ -202,11 +202,11 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 				
 		if(dataType.equalsIgnoreCase("printStatus"))
 		{
-			queryStr.append(" and ((model.printStatus ='Y' or model.printStatus ='y' ) and (model.errorStatus is null or model.errorStatus ='0' ))  ");
+			queryStr.append(" and ((ZPD.printStatus ='Y' or ZPD.printStatus ='y' ) and (ZPD.errorStatus is null or ZPD.errorStatus ='0' ))  ");
 		}
 		else if(dataType.equalsIgnoreCase("errorStatus"))
 		{
-			queryStr.append(" and (model.errorStatus is not null or model.errorStatus !='0' )  ");
+			queryStr.append(" and (ZPD.errorStatus is not null or ZPD.errorStatus !='0' )  ");
 		}
 		
 		queryStr.append(" group by DCA.delimitationConstituency.constituency.constituencyId order by DCA.delimitationConstituency.constituency.name asc  ");
