@@ -300,7 +300,7 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 			queryStr.append(" and (model.errorStatus is not null and  model.errorStatus !='0' )  ");
 		}
 		if(dataType.equalsIgnoreCase("totalCount"))
-		queryStr.append(" group by date(model.insertedTime)");
+		queryStr.append(" and model.insertedTime is not null group by date(model.insertedTime)");
 		else
 		queryStr.append(" group by date(model.updatedTime)");
 		Query query = getSession().createQuery(queryStr.toString()); 
@@ -335,7 +335,7 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 			queryStr.append(" and (ZPD.errorStatus is not null and ZPD.errorStatus !='0' )  ");
 		}
 		if(dataType.equalsIgnoreCase("totalCount"))
-		queryStr.append(" group by date(ZPD.insertedTime)");
+		queryStr.append(" and ZPD.insertedTime is not null group by date(ZPD.insertedTime)");
 		else
 		queryStr.append(" group by date(ZPD.updatedTime)");
 		Query query = getSession().createQuery(queryStr.toString()); 

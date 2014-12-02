@@ -2569,4 +2569,91 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		
 		return returnList;
 	}
+	
+	public List<ZebraPrintDetailsVO> getDayWiseCardPrintedCountInfo(String type,String status,Long Id,Long stateId)
+	{
+		List<ZebraPrintDetailsVO> resultList = new ArrayList<ZebraPrintDetailsVO>();
+		try{
+			List<Object[]> list = null;
+			
+				// printedCountList 		= zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, searchType,"printStatus");
+				// errorCountList			= zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, searchType,"errorStatus");
+			if(status.equalsIgnoreCase("ERROR"))
+			list 	= zebraPrintDetailsDAO.getPrintedCountByLocationWise(Id, type,"errorStatus");
+			else if(status.equalsIgnoreCase("SENT"))
+			list 	= zebraPrintDetailsDAO.getPrintedCountByLocationWise(Id, type,"totalCount");
+			else if(status.equalsIgnoreCase("PRINTED"))
+			list 	= zebraPrintDetailsDAO.getPrintedCountByLocationWise(Id, type,"printStatus");
+			
+			
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					ZebraPrintDetailsVO vo = new ZebraPrintDetailsVO();
+					vo.setUpdatedDate(params[1] != null ? params[1].toString() : "");
+					vo.setTotalPushCount((Long)params[0]);
+					resultList.add(vo);
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			LOG.error(" exception occured in getDayWiseCardPrintedCountInfo()  @ TdpCadreReportService class.",e);	
+		}
+		return resultList;
+		
+	}
+	
+	
+	public List<ZebraPrintDetailsVO> getDayWiseCardPrintedCountInfoForParlment(String status,Long Id,Long stateId)
+	{
+		List<ZebraPrintDetailsVO> resultList = new ArrayList<ZebraPrintDetailsVO>();
+		try{
+			List<Object[]> list = null;
+			
+				// printedCountList 		= zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, searchType,"printStatus");
+				// errorCountList			= zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, searchType,"errorStatus");
+			if(status.equalsIgnoreCase("ERROR"))
+			list 	= zebraPrintDetailsDAO.getPrintedCountByParliamentise(Id,"errorStatus");
+			else if(status.equalsIgnoreCase("SENT"))
+			list 	= zebraPrintDetailsDAO.getPrintedCountByParliamentise(Id,"totalCount");
+			else if(status.equalsIgnoreCase("PRINTED"))
+			list 	= zebraPrintDetailsDAO.getPrintedCountByParliamentise(Id,"printStatus");
+			
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					ZebraPrintDetailsVO vo = new ZebraPrintDetailsVO();
+					vo.setUpdatedDate(params[1] != null ? params[1].toString() : "");
+					vo.setTotalPushCount((Long)params[0]);
+					resultList.add(vo);
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			LOG.error(" exception occured in getDayWiseCardPrintedCountInfo()  @ TdpCadreReportService class.",e);	
+		}
+		return resultList;
+		
+	}
+	public ZebraPrintDetailsVO getMatchedDate(List<ZebraPrintDetailsVO> list,String date)
+	{
+		try{
+			if(list == null || list.size() == 0)
+				return null;
+			for(ZebraPrintDetailsVO vo :list)
+			{
+				if(vo.getUpdatedDate().toString().equalsIgnoreCase(date.toString()))
+					return vo;
+			}
+		}
+		catch (Exception e) {
+			return null;
+		}
+		return null;
+	}	
+	
 }
