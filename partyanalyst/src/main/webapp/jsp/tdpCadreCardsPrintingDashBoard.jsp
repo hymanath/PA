@@ -205,7 +205,7 @@
 		}
 		 var stateTypeId = $('input:radio[name=stateType]:checked').val();
 		
-		 var stateId;
+		 var stateId = 0;
 		 if(stateTypeId == "both")
 			stateId = 0;
 		else if(stateTypeId == "ap")
@@ -551,7 +551,7 @@
 	
 		var locId = $('#'+id).val();		
 		 var stateTypeId = $('input:radio[name=stateType]:checked').val();
-		 var stateId;
+		 var stateId = 0;
 		 if(stateTypeId == "both")
 			stateId = 0;
 		else if(stateTypeId == "ap")
