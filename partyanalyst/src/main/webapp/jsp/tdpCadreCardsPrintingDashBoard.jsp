@@ -267,19 +267,19 @@
 			str+=' <td>'+result.zebraPrintDetailsVOList[i].rowCount+'</td>';
 			if(result.zebraPrintDetailsVOList[i].totalPushCount > 0)
 			{
-			str+=' <td><a onclick="getDayWiseCardPrintedCount(\'CONSTITUENCY\',\'SENT\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].totalPushCount+'</a></td>';
+			str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'CONSTITUENCY\',\'SENT\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].totalPushCount+'</a></td>';
 			}
 			else
 		    str+=' <td>'+result.zebraPrintDetailsVOList[i].totalPushCount+'</td>';
 			if(result.zebraPrintDetailsVOList[i].printStatusCount > 0)
 			{
-			str+=' <td><a onclick="getDayWiseCardPrintedCount(\'CONSTITUENCY\',\'PRINTED\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].printStatusCount+'</a></td>';
+			str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'CONSTITUENCY\',\'PRINTED\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].printStatusCount+'</a></td>';
 			}
 			else
 			str+=' <td>'+result.zebraPrintDetailsVOList[i].printStatusCount+'</td>';
 			if(result.zebraPrintDetailsVOList[i].errorStatusCount > 0)
 			{
-			str+=' <td><a onclick="getDayWiseCardPrintedCount(\'CONSTITUENCY\',\'ERROR\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</a></td>';
+			str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'CONSTITUENCY\',\'ERROR\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</a></td>';
 			}
 			else
 			str+=' <td>'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</td>';
@@ -407,19 +407,19 @@
 				str+=' <td>'+result.zebraPrintDetailsVOList[i].rowCount+'</td>';
 				if(result.zebraPrintDetailsVOList[i].totalPushCount > 0)
 			{
-			str+=' <td><a onclick="getDayWiseCardPrintedCount(\'DISTRICT\',\'SENT\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICT'+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICTImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].totalPushCount+'</a></td>';
+			str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'DISTRICT\',\'SENT\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICT'+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICTImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].totalPushCount+'</a></td>';
 			}
 			else
 		    str+=' <td>'+result.zebraPrintDetailsVOList[i].totalPushCount+'</td>';
 			if(result.zebraPrintDetailsVOList[i].printStatusCount > 0)
 			{
-			str+=' <td><a onclick="getDayWiseCardPrintedCount(\'DISTRICT\',\'PRINTED\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICT'+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICTImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].printStatusCount+'</a></td>';
+			str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'DISTRICT\',\'PRINTED\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICT'+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICTImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].printStatusCount+'</a></td>';
 			}
 			else
 			str+=' <td>'+result.zebraPrintDetailsVOList[i].printStatusCount+'</td>';
 			if(result.zebraPrintDetailsVOList[i].errorStatusCount > 0)
 			{
-			str+=' <td><a onclick="getDayWiseCardPrintedCount(\'DISTRICT\',\'ERROR\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICT'+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICTImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</a></td>';
+			str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'DISTRICT\',\'ERROR\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICT'+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICTImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</a></td>';
 			}
 			else
 			str+=' <td>'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</td>';
@@ -489,19 +489,19 @@
 				str+=' <td>'+result.zebraPrintDetailsVOList[i].rowCount+'</td>';
 				if(result.zebraPrintDetailsVOList[i].totalPushCount > 0)
 			{
-			str+=' <td><a onclick="getDayWiseCardPrintedCount(\'Parliament\',\'SENT\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'Parliament'+result.zebraPrintDetailsVOList[i].id+'\',\'ParliamentImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].totalPushCount+'</a></td>';
+			str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'Parliament\',\'SENT\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'Parliament'+result.zebraPrintDetailsVOList[i].id+'\',\'ParliamentImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].totalPushCount+'</a></td>';
 			}
 			else
 		    str+=' <td>'+result.zebraPrintDetailsVOList[i].totalPushCount+'</td>';
 			if(result.zebraPrintDetailsVOList[i].printStatusCount > 0)
 			{
-			str+=' <td><a onclick="getDayWiseCardPrintedCount(\'Parliament\',\'PRINTED\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'Parliament'+result.zebraPrintDetailsVOList[i].id+'\',\'ParliamentImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].printStatusCount+'</a></td>';
+			str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'Parliament\',\'PRINTED\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'Parliament'+result.zebraPrintDetailsVOList[i].id+'\',\'ParliamentImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].printStatusCount+'</a></td>';
 			}
 			else
 			str+=' <td>'+result.zebraPrintDetailsVOList[i].printStatusCount+'</td>';
 			if(result.zebraPrintDetailsVOList[i].errorStatusCount > 0)
 			{
-			str+=' <td><a onclick="getDayWiseCardPrintedCount(\'Parliament\',\'ERROR\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'Parliament'+result.zebraPrintDetailsVOList[i].id+'\',\'ParliamentImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</a></td>';
+			str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'Parliament\',\'ERROR\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'Parliament'+result.zebraPrintDetailsVOList[i].id+'\',\'ParliamentImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</a></td>';
 			}
 			else
 			str+=' <td>'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</td>';
