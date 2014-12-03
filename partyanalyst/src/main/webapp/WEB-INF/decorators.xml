@@ -125,7 +125,7 @@
 		<pattern>/tdpCadreRegistrationAction*</pattern>
 		<pattern>/tdpCadreSearchDetailsAction*</pattern>
 		<pattern>/tdpCadreSearchAction*</pattern>
-		<pattern>/tdpCadreCardsPrintingDashBoardAction*</pattern>
+		<!--<pattern>/tdpCadreCardsPrintingDashBoardAction*</pattern>-->
 		<pattern>/tdpCadreSurveyUsersDetailsAction*</pattern>
 		<pattern>/votersInCasteAction*</pattern>
         <pattern>/memberShipCardSamplePrint*</pattern>
@@ -299,6 +299,7 @@
 			 <pattern>/changeUserPasswords*</pattern>
 			  <pattern>/cadreBoothAnalysisAction*</pattern>
 			 <pattern>/misReportAction*</pattern>
+			 <pattern>/tdpCadreCardsPrintingDashBoardAction*</pattern>
        </decorator>
        
        <decorator name="tdpHome_old" page="tdplayout_old.jsp">
