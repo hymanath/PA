@@ -16,7 +16,7 @@
 	<link href="js/cardsDashBoard/assets/css/smain.css" rel="stylesheet" type="text/css" media="screen">
 
 	<style>	
-		.widget{background:#f9f9f9; border:1px solid #ddd; margin-bottom:15px;}
+		.widget{background:#f9f9f9; border:1px solid #ddd; margin-bottom:15px;padding:0px !important;}
 		.widget-heading{border-bottom:1px solid #c1c1c1; background:#ddd; padding:1px 10px;}
 		.widget-body{padding:10px;}
 		.widget-footer{border-top:1px solid #ddd;  padding:0px 10px;}
@@ -32,6 +32,9 @@
 		
 		.text-uppercase{text-transform: uppercase;}
 		.f-bold{ font-weight: bold;;}
+		.widget h2 {border-bottom: none !important;}
+		.height-auto{height:auto !important;}
+		.height-0{height:0px !important;}
 		
 	</style>
 	 
@@ -67,7 +70,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="span12 widget text-center">
-				<h2>PRINTING STATUS REPORT DASHBOARD</h2>
+				<h2 style="padding:15px 20px;font-size: 20px;">PRINTING STATUS REPORT DASHBOARD</h2>
 			</div>
 		</div>
 		<!-------------->
@@ -120,7 +123,7 @@
 					<div class="widget-heading">
 						<h4>Constituency Wise Cards Prints Overview <select class="pull-right input-medium" id="constituencyList" style="margin-top:-5px;" onChange="searchByName(this.id,'CONSTITUENCY')"><option value="0"> All </option></select></h4>
 					</div>
-					<div class="widget-body scrollable_div" style="width:97%; height:464px;overflow:auto;">		
+					<div class="widget-body scrollable_div" style="width:97%; height:484px;overflow:auto;">		
 						<div align="center"><img style="width:70px;height:60px;display:none;" id="searchDataImg" class="" src="images/Loading-data.gif"></div>					
 						<div id="accordion2" class="accordion"> </div>						
 					</div>	
@@ -201,7 +204,7 @@
 			stateId = 2;
 		var jsObj = 
 		{
-			  stateTyleId : 0,
+			  stateTyleId : 1,
 			  type : type,
 			  task:"totalPrintingCount"             
 		}	
@@ -247,9 +250,9 @@
 	}	
 		str+=' <div class="accordion-group">';
 		str+=' <div class="accordion-heading">';
-		str+=' <a onclick="hideConstiDiv()" href="#collapse'+i+'" data-parent="#accordion2" data-toggle="collapse" class="accordion-toggle collapsed">'+result.zebraPrintDetailsVOList[i].name+'  <span id="mini-pie-chart'+i+'" class="pull-right mini-pie-chart"></span></a>';
+		str+=' <a onclick="hideConstiDiv();toggleDiv(\'collapse'+i+'\');" href="#collapse'+i+'" data-parent="#accordion2" data-toggle="collapse" class="accordion-toggle collapsed">'+result.zebraPrintDetailsVOList[i].name+'  <span id="mini-pie-chart'+i+'" class="pull-right mini-pie-chart"></span></a>';
 		str+=' </div>';
-		str+=' <div class="accordion-body collapse" id="collapse'+i+'" style="height: 0px;">';
+		str+=' <div class="accordion-body collapse toggleCls" id="collapse'+i+'" style="height: 0px;">';
 		str+=' <div class="accordion-inner">';
 		str+=' <table class="table table-bordered">';
 			str+=' <thead>';
@@ -311,9 +314,9 @@
 		}
 	}
   }
-  getTotalPrintingStatusCount("CONSTITUENCY",0);
-  getTotalPrintingStatusCount("DISTRICT",0);
-  getTotalPrintingStatusCount("MP",0);
+getTotalPrintingStatusCount("CONSTITUENCY",0);
+ getTotalPrintingStatusCount("DISTRICT",0);
+ getTotalPrintingStatusCount("MP",0);
   function getCadreDetails(status)
   {
 	var jObj = {
@@ -387,9 +390,9 @@
 		}
 			str+=' <div class="accordion-group">';
 			str+=' <div class="accordion-heading">';
-			str+=' <a onclick="hideDistDiv();" href="#collapseDistrict'+i+'" data-parent="#districtAccordion" data-toggle="collapse" class="accordion-toggle collapsed">'+result.zebraPrintDetailsVOList[i].name+'  <span id="mini-pie-chart-district'+i+'" class="pull-right mini-pie-chart-district"></span></a>';
+			str+=' <a onclick="hideDistDiv();toggleDiv(\'collapseDistrict'+i+'\');" href="#collapseDistrict'+i+'" data-parent="#districtAccordion" data-toggle="collapse" class="accordion-toggle collapsed">'+result.zebraPrintDetailsVOList[i].name+'  <span id="mini-pie-chart-district'+i+'" class="pull-right mini-pie-chart-district"></span></a>';
 			str+=' </div>';
-			str+=' <div class="accordion-body collapse" id="collapseDistrict'+i+'" style="height: 0px;">';
+			str+=' <div class="accordion-body collapse toggleCls" id="collapseDistrict'+i+'" style="height: 0px;">';
 			str+=' <div class="accordion-inner">';
 			str+=' <table class="table table-bordered">';
 				str+=' <thead>';
@@ -469,9 +472,9 @@
 		}
 			str+=' <div class="accordion-group">';
 			str+=' <div class="accordion-heading">';
-			str+=' <a onclick="hideParlDiv();" href="#collapseParliament'+i+'" data-parent="#parliamentAccordion" data-toggle="collapse" class="accordion-toggle collapsed">'+result.zebraPrintDetailsVOList[i].name+'  <span id="mini-pie-chart-parliament'+i+'" class="pull-right mini-pie-chart-parliament"></span></a>';
+			str+=' <a onclick="hideParlDiv();toggleDiv(\'collapseParliament'+i+'\');" href="#collapseParliament'+i+'" data-parent="#parliamentAccordion" data-toggle="collapse" class="accordion-toggle collapsed">'+result.zebraPrintDetailsVOList[i].name+'  <span id="mini-pie-chart-parliament'+i+'" class="pull-right mini-pie-chart-parliament"></span></a>';
 			str+=' </div>';
-			str+=' <div class="accordion-body collapse" id="collapseParliament'+i+'" style="height: 0px;">';
+			str+=' <div class="accordion-body collapse toggleCls" id="collapseParliament'+i+'" style="height: 0px;">';
 			str+=' <div class="accordion-inner">';
 			str+=' <table class="table table-bordered">';
 				str+=' <thead>';
@@ -685,6 +688,7 @@
 		function hideConstiDiv()
 		{
 		$(".ConstiremoveCls").html('');
+		
 		}
 		function hideDistDiv()
 		{
@@ -694,6 +698,25 @@
 		{
 		$(".ParlremoveCls").html('');
 		}
+		
+		function toggleDiv(id)
+		{
+			var height = $("#"+id).css('height').match(/\d+/);
+			$(".toggleCls").removeClass("height-auto");
+			if(height == 0 || $("#"+id).hasClass('height-0'))
+			{
+			$("#"+id).addClass("height-auto");
+			$("#"+id).removeClass("height-0");
+			
+			}
+			else
+			{
+				$("#"+id).removeClass("height-auto");
+				$("#"+id).addClass("height-0");
+				
+			}
+		}
+
   </script>	
  </body>
  </html>

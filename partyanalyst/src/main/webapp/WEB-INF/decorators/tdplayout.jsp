@@ -314,6 +314,9 @@ margin-top:10px;
 						<li><a href="cadreDashBoardAction.action"><span>2014 Cadre Dashboard</span></a></li>
 					</c:if>
 					<c:if test="${sessionScope.USER.isAdmin == 'true'}">
+						<li><a href="tdpCadreCardsPrintingDashBoardAction.action"><span>Cards Printing Dashboard</span></a></li>
+					</c:if>
+					<c:if test="${sessionScope.USER.isAdmin == 'true'}">
 						<li><a onmousedown="return false;" class="parent"><span>2014 Cadre Reports</span></a>
 							<div>
 								<ul>
