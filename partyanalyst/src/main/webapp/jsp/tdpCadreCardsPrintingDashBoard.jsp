@@ -82,16 +82,20 @@
 					<div class="widget-heading">
 						<h4>State Wise Cards Prints Overview</h4>
 					</div>
-					<div class="widget-body">
+					<div class="widget-body"  style="height:483px">
 						
 						<!--<input type="radio" name="radio1" checked value="ALL" class="radio1" data-size="mini" data-label-text="AP & TS">
 						<input type="radio" name="radio1" value="AP" class="radio1"  data-size="mini" data-label-text="AP">
 						<input type="radio" name="radio1" value="TS" class="radio1" data-size="mini" data-label-text="TS">-->
+						
+						<c:if test="${sessionScope.USER.isAdmin == 'true'}">
 						<input style="margin-top:-2px;margin-left:60px;" type ="radio"  class="stType" name="stateType" value="both" checked="checked">&nbsp;AP & TS&nbsp;&nbsp;&nbsp;</input>
 						<input type ="radio" style="margin-top:-2px;" class="stType" name="stateType" value="ap" >&nbsp;AP&nbsp;&nbsp;&nbsp;</input>
 						<input style="margin-top:-2px;" type ="radio" class="stType" name="stateType" value="ts">&nbsp;TS </h4></input>
-					
-						<div id="mainChartDiv">
+						</c:if>
+						<div align="center"><img style="width:70px;height:60px;display:none;" id="mainImg" class="" src="images/Loading-data.gif"></div>
+						<div id="mainChartDiv">					
+							
 						<div class="demo-flot-chart" id="demo-donut-chart"></div>
 						<table class="table table-bordered" style="margin-top:10px;">
 							<tbody>
@@ -123,7 +127,7 @@
 					<div class="widget-heading">
 						<h4>Constituency Wise Cards Prints Overview <select class="pull-right input-medium" id="constituencyList" style="margin-top:-5px;" onChange="searchByName(this.id,'CONSTITUENCY')"><option value="0"> All </option></select></h4>
 					</div>
-					<div class="widget-body scrollable_div" style="width:97%; height:484px;overflow:auto;">		
+					<div class="widget-body scrollable_div" style="width:97%; height:481px;overflow:auto;">		
 						<div align="center"><img style="width:70px;height:60px;display:none;" id="searchDataImg" class="" src="images/Loading-data.gif"></div>					
 						<div id="accordion2" class="accordion"> </div>						
 					</div>	
@@ -172,6 +176,8 @@
 	</div>
 
 	<!--scrollator-->
+	<script src="js/cardsDashBoard/js2.3.2/Chart.js"></script>
+	<script src="js/cardsDashBoard/js2.3.2/Chart.min.js"></script>
 	<script src="js/cardsDashBoard/scrollator/fm.scrollator.jquery.js"></script>
 	<script src="js/cardsDashBoard/js2.3.2/plugins/stat/flot/jquery.flot.min.js"></script>
 	<script src="js/cardsDashBoard/js2.3.2/plugins/stat/flot/jquery.flot.resize.min.js"></script>
@@ -192,7 +198,11 @@
 		 $('#parliamentAccordion').html('');
 		 $('#searchDataImg').show();
 		 $('#ajaxImg').show();	
-		 $('#ajaxImg1').show();	
+		 $('#ajaxImg1').show();
+		 if(searchTypeId == 1){
+			$('#mainChartDiv').html('');
+			$('#mainImg').show();						
+		}
 		 var stateTypeId = $('input:radio[name=stateType]:checked').val();
 		
 		 var stateId;
@@ -204,7 +214,7 @@
 			stateId = 2;
 		var jsObj = 
 		{
-			  stateTyleId : 1,
+			  stateTyleId : stateId,
 			  type : type,
 			  task:"totalPrintingCount"             
 		}	
@@ -223,7 +233,8 @@
 				buildDistrictWiseResults(result,1);
 				if(searchTypeId == 1)
 				{
-					//buildMainChart(result);
+					$('#mainImg').hide();		
+					buildMainChart(result);
 				}
 			}else if(type == "MP"){
 				$('#ajaxImg1').hide();			
@@ -314,9 +325,9 @@
 		}
 	}
   }
-getTotalPrintingStatusCount("CONSTITUENCY",0);
- getTotalPrintingStatusCount("DISTRICT",0);
- getTotalPrintingStatusCount("MP",0);
+  getTotalPrintingStatusCount("CONSTITUENCY",0);
+  getTotalPrintingStatusCount("DISTRICT",0);
+  getTotalPrintingStatusCount("MP",0);
   function getCadreDetails(status)
   {
 	var jObj = {
@@ -562,7 +573,7 @@ getTotalPrintingStatusCount("CONSTITUENCY",0);
 			   {
 				  locationId : locId,
 				  searchType :loctype,
-				  stateTypeId : 0,
+				  stateTypeId : stateId,
 				  task:"totalPrintingCount"             
 			   }	
 				$.ajax({
@@ -593,22 +604,12 @@ getTotalPrintingStatusCount("CONSTITUENCY",0);
    });
    
    function buildMainChart(result){
-
+     var mainArr=[];
 		$("#mainChartDiv").html("");
-		var str;
-		var printPerc = result.printPerc;
-		var errorPerc = result.erroPerc;
-		var pendingPerc = result.pendingPerc;
 		
-		var dataValues1 = [{label: "Printed ",  data: printPerc},{label: "Errors ", data: errorPerc},{label: "Pending ", data: pendingPerc}];
-		
-		var data = dataValues1;
-		console.log(data);
-		
-		
+		var str="";
 	
-		
-		
+		str+='<canvas id="myChart" style="margin-bottom: 28px; height: 175px; width: 339px; margin-left: -61px; margin-top: 29px;" height="190" width="380"></canvas>';
 		str+='<table class="table table-bordered" style="margin-top:10px;">';
 		str+=' <tbody>';
 		str+='<tr>';
@@ -621,7 +622,7 @@ getTotalPrintingStatusCount("CONSTITUENCY",0);
 		str+=' <th class="alert-info" > Printed </th><td class="alert-info">'+result.printStatusCount+'</td>';
 		str+=' </tr>';
 		str+=' <tr>';
-		str+=' <th class="alert-info" > Errors </th><td class="alert-info">'+result.printStatusCount+'</td>';
+		str+=' <th class="alert-info" > Errors </th><td class="alert-info">'+result.errorStatusCount+'</td>';
 		str+=' </tr>';
 		str+=' <tr>';
 		str+=' <th class="alert-info" > Pending </th><td class="alert-info">'+result.remainingCount+'</td>';	
@@ -630,6 +631,58 @@ getTotalPrintingStatusCount("CONSTITUENCY",0);
 		str+=' </table>';
 		
 		$("#mainChartDiv").html(str);
+	
+		options = {
+		
+        animateRotate : false,
+        animateScale : false,
+			   
+		 onAnimationProgress: function()
+        {
+            this.showTooltip(this.segments, true);			
+        },
+        tooltipEvents: [],
+		tooltipYPadding:2,
+		tooltipXPadding: 2,
+		tooltipXOffset: 1000,
+		tooltipYOffset: 1000,   
+		tooltipFillColor: "rgba(0,0,0,0.5)",
+		tooltipCaretSize: 0,
+		tooltipCornerRadius:0,
+		tooltipFontSize: 12,
+		tooltipFontStyle: "normal",
+        showTooltips: true
+  
+        };
+		
+		var data = [
+		{
+        value: result.pendingPerc,
+        color:"#B18904",
+        highlight: "#D7C482",
+        label: "Pending",
+		labelFontSize: '12'
+		},
+		{
+        value: result.erroPerc,
+        color: "#F7464A",
+        highlight: "#FF5A5E",
+        label: "Errors",
+		labelFontSize: '12'
+		},
+		{
+        value: result.printPerc,
+        color: "#0B3B0B",
+        highlight: "#859D85",
+        label: "printed",
+		labelFontSize: '12'
+		}
+		
+	]
+
+	  ctx = $("#myChart").get(0).getContext("2d");
+	  myNewChart = new Chart(ctx).Doughnut(data,options);
+		
    }
   	function getDayWiseCardPrintedCount(type,status,id,divId,processId)
 		{
