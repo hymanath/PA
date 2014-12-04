@@ -285,17 +285,17 @@
 			}
 			else
 		    str+=' <td>'+result.zebraPrintDetailsVOList[i].totalPushCount+'</td>';
-			if(result.zebraPrintDetailsVOList[i].printStatusCount > 0)
+			/*if(result.zebraPrintDetailsVOList[i].printStatusCount > 0)
 			{
 			str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'CONSTITUENCY\',\'PRINTED\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].printStatusCount+'</a></td>';
 			}
-			else
+			else*/
 			str+=' <td>'+result.zebraPrintDetailsVOList[i].printStatusCount+'</td>';
-			if(result.zebraPrintDetailsVOList[i].errorStatusCount > 0)
+			/*if(result.zebraPrintDetailsVOList[i].errorStatusCount > 0)
 			{
 			str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'CONSTITUENCY\',\'ERROR\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</a></td>';
 			}
-			else
+			else*/
 			str+=' <td>'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</td>';
 			str+=' <td>'+result.zebraPrintDetailsVOList[i].remainingCount+'</td>';
 
@@ -425,17 +425,17 @@
 			}
 			else
 		    str+=' <td>'+result.zebraPrintDetailsVOList[i].totalPushCount+'</td>';
-			if(result.zebraPrintDetailsVOList[i].printStatusCount > 0)
+			/*if(result.zebraPrintDetailsVOList[i].printStatusCount > 0)
 			{
 			str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'DISTRICT\',\'PRINTED\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICT'+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICTImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].printStatusCount+'</a></td>';
 			}
-			else
+			else*/
 			str+=' <td>'+result.zebraPrintDetailsVOList[i].printStatusCount+'</td>';
-			if(result.zebraPrintDetailsVOList[i].errorStatusCount > 0)
+			/*if(result.zebraPrintDetailsVOList[i].errorStatusCount > 0)
 			{
 			str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'DISTRICT\',\'ERROR\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICT'+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICTImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</a></td>';
 			}
-			else
+			else*/
 			str+=' <td>'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</td>';
 				str+=' <td>'+result.zebraPrintDetailsVOList[i].remainingCount+'</td>';
 
@@ -507,17 +507,17 @@
 			}
 			else
 		    str+=' <td>'+result.zebraPrintDetailsVOList[i].totalPushCount+'</td>';
-			if(result.zebraPrintDetailsVOList[i].printStatusCount > 0)
+			/*if(result.zebraPrintDetailsVOList[i].printStatusCount > 0)
 			{
 			str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'Parliament\',\'PRINTED\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'Parliament'+result.zebraPrintDetailsVOList[i].id+'\',\'ParliamentImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].printStatusCount+'</a></td>';
 			}
-			else
+			else*/
 			str+=' <td>'+result.zebraPrintDetailsVOList[i].printStatusCount+'</td>';
-			if(result.zebraPrintDetailsVOList[i].errorStatusCount > 0)
+			/*if(result.zebraPrintDetailsVOList[i].errorStatusCount > 0)
 			{
 			str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'Parliament\',\'ERROR\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'Parliament'+result.zebraPrintDetailsVOList[i].id+'\',\'ParliamentImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</a></td>';
 			}
-			else
+			else*/
 			str+=' <td>'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</td>';
 				str+=' <td>'+result.zebraPrintDetailsVOList[i].remainingCount+'</td>';
 
@@ -665,7 +665,7 @@
 		},
 		{
         value: result.erroPerc,
-        color: "#F7464A",
+        color: "#610B21",
         highlight: "#FF5A5E",
         label: "Errors",
 		labelFontSize: '12'
@@ -711,28 +711,64 @@
 			str+='<table class="table table-striped table-bordered table-condensed border-radius-0">';
 			str+='<thead>';
 			str+='<tr class="">';
-			str+='<th colspan="3" class="alert-success border-radius-0 text-center"><center>Day Wise Card Printed Status</center></th>';												
+			str+='<th colspan="5" class="alert-success border-radius-0 text-center"><center>Day Wise Card Printed Status</center></th>';												
 			str+='</tr>';
 			str+='<tr class="alert-info">';
 			str+='<th>Batch NO</th>';
 			if(status =='SENT')
-			str+='<th>Sent to Print</th>';
-			if(status =='ERROR')
-			str+='<th>Error in Print</th>';
-			if(status =='PRINTED')
-			str+='<th>Printed</th>';
+			{
+				str+='<th>Sent to Print</th>';
+				str+='<th>Error in Print</th>';
+				str+='<th>Printed Date</th>';
+				str+='<th>Printed</th>';
+				
+			}
+			
 			str+='</tr>	';											
 			str+='</thead>';
 			str+='<tbody>';
-			for(var i in result)
+
+			for(var i=0;i<result.length;i++)
 			{
-			str+='<tr>';
-			if(result[i].updatedDate != '')
-			str+='<td>'+result[i].updatedDate+'</td>';
-			else
-			str+='<td>-</td>';
-			str+='<td>'+result[i].totalPushCount+'</td>';
-			str+='</tr>';
+				var rspan = result[i].dataPushDetailsList.length;
+				if(rspan == 0)
+					rspan = 1;
+				str+='<tr>';
+				
+				if(result[i].updatedDate != '')
+					str+='<td rowspan='+rspan+'>'+result[i].updatedDate+'</td>';
+				else
+					str+='<td rowspan='+rspan+'>-</td>';
+			
+				str+='<td rowspan='+rspan+'>'+result[i].totalPushCount+'</td>';
+				if(result[i].errorStatusCount != null)
+				str+='<td rowspan='+rspan+'>'+result[i].errorStatusCount+'</td>';
+				else
+				str+='<td rowspan='+rspan+'>0</td>';
+
+				if(result[i].dataPushDetailsList != null && result[i].dataPushDetailsList.length > 0)
+				{
+					for(var j=0;j<result[i].dataPushDetailsList.length;j++)
+					{
+						if(j!=0)
+							str+='<tr>';
+						if(result[i].dataPushDetailsList[j].updatedDate != '')
+							str+='<td>'+result[i].dataPushDetailsList[j].updatedDate+'</td>';
+						else
+							str+='<td>-</td>';
+						str+='<td>'+result[i].dataPushDetailsList[j].printStatusCount+'</td>';
+						str+='</tr>';
+					}
+				}
+				else
+				{
+					str+='<td>-</td>';
+					str+='<td>0</td>';
+					str+='</tr>';
+				}
+				
+				
+				
 			}
 			str+='</tbody>';
 			str+='</table>';
@@ -751,7 +787,23 @@
 		{
 		$(".ParlremoveCls").html('');
 		}
-		
+		/*var showflag=true;
+		function toggleDiv(id)
+		{
+			alert(showflag)
+			$(".toggleCls").removeClass("heightCls");
+			if(showflag) {
+				alert('a');
+			showflag=false;
+			$("#"+id).addClass("heightCls");
+			}
+			else {
+				alert('b');
+				$("#"+id).removeClass("heightCls");
+				$("#"+id).addClass("heightCls1");
+				showflag = true;
+			}
+		}*/
 		function toggleDiv(id)
 		{
 			var height = $("#"+id).css('height').match(/\d+/);
