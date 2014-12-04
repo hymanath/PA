@@ -101,4 +101,6 @@ public interface ICadreDashBoardService {
 	public List<CadreRegisterInfo> getCastGroupWiseCadreCountByAccess(Long districtId,String accessType,String accessValue);
 	public List<CadreRegisterInfo> getDistrictWiseGenderCadreCountByAccess(Long districtId,String accessType,String accessValue);
 	public List<CadreRegisterInfo> getDistrictWiseCastCadreCountByAccess(Long districtId,String accessType,String accessValue);
+	
+	public CadreRegisterInfo getTotalRegisterCadreInfo();
 }

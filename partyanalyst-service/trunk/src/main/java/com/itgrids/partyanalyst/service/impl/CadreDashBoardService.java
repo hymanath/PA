@@ -5958,4 +5958,25 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			}		
 			return casteList;		
 		}
+		
+		public CadreRegisterInfo getTotalRegisterCadreInfo(){
+			CadreRegisterInfo info = new CadreRegisterInfo();
+			Long tgCount = 0l;
+			Long apCount = 0l;
+			try{
+				List<Object[]> districtWiseCount = tdpCadreDAO.getTotalRegisterCadreInfo();
+				for(Object[] districtCount:districtWiseCount){
+					if(((Long)districtCount[1]).longValue() > 10l){
+						apCount = apCount+(Long)districtCount[0];
+					}else{
+						tgCount = tgCount+(Long)districtCount[0];
+					}
+				}
+			}catch(Exception e){
+				LOG.error("Exception rised in getTotalRegisterCadreInfo", e);
+			}
+			info.setApCount(apCount);
+			info.setTgCount(tgCount);
+			return info;
+		}
 }
