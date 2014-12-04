@@ -25,6 +25,8 @@ public class ZebraPrintDetailsVO implements java.io.Serializable{
 	private Double erroPerc;
 	private Double printPerc;
 	private Double pendingPerc;
+	private Double sentPerc;
+	private Double registeredPerc;
 	private String relativeName;
 	private String mobileNo;
 	private String membershipNo;
@@ -34,6 +36,18 @@ public class ZebraPrintDetailsVO implements java.io.Serializable{
 	List<String> datesList = new ArrayList<String>(); 
 	List<String> dataPushDatesList = new ArrayList<String>(); 
 	
+	public Double getSentPerc() {
+		return sentPerc;
+	}
+	public void setSentPerc(Double sentPerc) {
+		this.sentPerc = sentPerc;
+	}
+	public Double getRegisteredPerc() {
+		return registeredPerc;
+	}
+	public void setRegisteredPerc(Double registeredPerc) {
+		this.registeredPerc = registeredPerc;
+	}
 	public Long getRemainingCount() {
 		return remainingCount;
 	}

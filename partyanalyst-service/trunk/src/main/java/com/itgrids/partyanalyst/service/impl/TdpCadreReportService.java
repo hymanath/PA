@@ -2283,6 +2283,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					Long errorCount = zebraPrintDetailsVO.getErrorStatusCount() != null ? zebraPrintDetailsVO.getErrorStatusCount() :0L;
 					if(zebraPrintDetailsVO.getTotalPushCount() != null)
 					{
+						
 						Long remainingCount =zebraPrintDetailsVO.getTotalPushCount() - printCount;
 						zebraPrintDetailsVO.setRemainingCount(remainingCount);
 						
@@ -2328,9 +2329,31 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			returnVO.setErrorStatusCount(totalErrorCount);
 			returnVO.setTotalPushCount(totalPushCount);
 			returnVO.setZebraPrintDetailsVOList(locationWiseInfoList);
+			if(returnVO.getRowCount() != null && returnVO.getRowCount() > 0)
+			{
+				Double registeredPerc = 0.00;
+				if(returnVO.getRowCount() != null && returnVO.getRowCount() > 0)
+				{
+					if(stateTypeId == 1)
+					registeredPerc  = (returnVO.getRowCount() * 100.00 )/IConstants.TARGET_CADRE_AP;
+					else if(stateTypeId == 2)
+						registeredPerc  = (returnVO.getRowCount() * 100.00 )/IConstants.TARGET_CADRE_TG;
+					else if(stateTypeId == 0)
+					{
+						int APTSTARGET = IConstants.TARGET_CADRE_AP + IConstants.TARGET_CADRE_TG;
+						registeredPerc  = (returnVO.getRowCount() * 100.00 )/APTSTARGET;
+					}
+				}
+				returnVO.setRegisteredPerc(Double.valueOf(decimalPlaces.format(registeredPerc)));
+			}
 			
 			if(returnVO.getTotalPushCount() != null )
 			{
+				
+				Double sentPerc = 0.00;
+				if(returnVO.getRowCount() != null && returnVO.getRowCount() > 0)
+				sentPerc  = (returnVO.getTotalPushCount() * 100.00 )/returnVO.getRowCount();
+				returnVO.setSentPerc(Double.valueOf(decimalPlaces.format(sentPerc)));
 				Long printCount = returnVO.getPrintStatusCount() != null ? returnVO.getPrintStatusCount() :0L;
 				Long errorCount = returnVO.getErrorStatusCount() != null ? returnVO.getErrorStatusCount() :0L;
 				Long remainingCount =returnVO.getTotalPushCount() - printCount;
@@ -2425,10 +2448,31 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			returnVO.setPrintStatusCount(totalPrintCount);
 			returnVO.setErrorStatusCount(totalErrorCount);
 			returnVO.setTotalPushCount(totalPushCount);
-		
-
+			if(returnVO.getRowCount() != null && returnVO.getRowCount() > 0)
+			{
+				Double registeredPerc = 0.00;
+				if(returnVO.getRowCount() != null && returnVO.getRowCount() > 0)
+				{
+					if(stateTypeId == 1)
+					registeredPerc  = (returnVO.getRowCount() * 100.00 )/IConstants.TARGET_CADRE_AP;
+					else if(stateTypeId == 2)
+						registeredPerc  = (returnVO.getRowCount() * 100.00 )/IConstants.TARGET_CADRE_TG;
+					else if(stateTypeId == 0)
+					{
+						int APTSTARGET = IConstants.TARGET_CADRE_AP + IConstants.TARGET_CADRE_TG;
+						registeredPerc  = (returnVO.getRowCount() * 100.00 )/APTSTARGET;
+					}
+				}
+				returnVO.setRegisteredPerc(Double.valueOf(decimalPlaces.format(registeredPerc)));
+			}
+			
+			
 			if(returnVO.getTotalPushCount() != null )
 			{
+				Double sentPerc = 0.00;
+				if(returnVO.getRowCount() != null && returnVO.getRowCount() > 0)
+				sentPerc  = (returnVO.getTotalPushCount() * 100.00 )/returnVO.getRowCount();
+				returnVO.setSentPerc(Double.valueOf(decimalPlaces.format(sentPerc)));
 				Long printCount = returnVO.getPrintStatusCount() != null ? returnVO.getPrintStatusCount() :0L;
 				Long errorCount = returnVO.getErrorStatusCount() != null ? returnVO.getErrorStatusCount() :0L;
 				Long remainingCount =returnVO.getTotalPushCount() - printCount;
@@ -2463,6 +2507,8 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 				{
 					returnVO.setPendingPerc(0.00);
 				}
+				
+				
 				
 			}
 			
