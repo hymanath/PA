@@ -248,4 +248,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> gettingRegisteredVotersForDistricts(List<Long> districtsIdsList);
 	
 	public List<Object[]> gettingRegisteredVotersForParliaments(List<Long> ParliamentsList);
+	
+	 public List<Object[]> getTotalRegisterCadreInfo();
 }
