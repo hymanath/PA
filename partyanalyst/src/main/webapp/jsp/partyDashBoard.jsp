@@ -57,9 +57,9 @@
 	
 	
 	
-	.vticker{border: 1px solid #ccc; width: 440px;;}
+	.vticker1,.vticker2,.vticker3,.vticker4{border: 1px solid #ccc; width: 440px;;}
 	
-	.vticker li{border-bottom: 1px solid green;	padding: 10px; display:block; width:440px;}
+	.vticker1 li,.vticker2 li,.vticker3 li,.vticker4 li{border-bottom: 1px solid green;	padding: 10px; display:block; width:440px;}
 	.et-run{	background: red;}
 	.rank{background:#3598DB; width:20px; height:20px; padding:5px 6px; color:#fff; font-weight:bold; font-size:18px; border-radius:50%;}
 	.rank-success{background:#BFD662; width:20px; height:20px; padding:5px 6px; color:#fff; font-weight:bold; font-size:18px; border-radius:50%;}
@@ -130,124 +130,40 @@
 		
 		<div class="row-fluid" >
 			<div id="fadeInLeft" class="span6 show-grid well well-small border-radius-0 mb-5 ">
-						<h4 class="m-0 text-center"><span style="background:#ffffff; padding:0px 3px;">TODAY TOP 20 <img src="bullhorn-c.gif" /> CONSTITUENCIES IN AP</span></h4>
+						<h4 class="m-0 text-center"><span style="background:#ffffff; padding:0px 3px;font-size: 16px;">TODAY TOP 20 <img src="js/media/bullhorn-c.gif" /> CONSTITUENCIES IN AP</span></h4>
 						<div class="span10" style="border-top: 1px solid rgb(204, 204, 204); height: 0px ! important; margin-top: -27px; margin-left: 27px;">
 						</div>
 				
-				<div class="vticker">
-					<ul class="unstyled ">
-						<li><span class="rank">01</span> Constituencies </li>
-						<li><span class="rank">02</span></li>
-						<li><span class="rank">03</span></li>
-						<li><span class="rank">04</span></li>
-						<li><span class="rank">05</span></li>
-						<li><span class="rank">06</span></li>
-						<li><span class="rank">07</span></li>
-						<li><span class="rank">08</span></li>
-						<li><span class="rank">09</span></li>
-						<li><span class="rank">10</span></li>
-						<li><span class="rank">11</span></li>
-						<li><span class="rank">12</span></li>
-						<li><span class="rank">13</span></li>
-						<li><span class="rank">14</span></li>
-						<li><span class="rank">15</span></li>
-						<li><span class="rank">16</span></li>
-						<li><span class="rank">17</span></li>
-						<li><span class="rank">18</span></li>
-						<li><span class="rank">19</span></li>
-						<li><span class="rank">20</span></li>
-					</ul>
+				<div class="vticker1" id="apTodayN">
+					<img style="margin-left:-180px;"  class="imgStyle" src="images/icons/search.gif"/>
 				</div>
 							
 			</div>
 			<div id="fadeInRight"class="span6 show-grid well well-small border-radius-0 mb-10 ">
-				<h4 class="m-0 text-center"><span style="background:#ffffff; padding:0px 3px;">TODAY TOP 20 <img src="bullhorn-c.gif" /> CONSTITUENCIES IN TS</span></h4>
+				<h4 class="m-0 text-center"><span style="background:#ffffff; padding:0px 3px;font-size: 16px;">TODAY TOP 20 <img src="js/media/bullhorn-c.gif" /> CONSTITUENCIES IN TS</span></h4>
 				<div class="span10 " style="border-top: 1px solid rgb(204, 204, 204); height: 0px ! important; margin-top: -27px; margin-left: 27px;"></div>
-				<div class="vticker">
-					<ul class="unstyled ">
-						<li><span class="rank">01</span> Constituencies </li>
-						<li><span class="rank">02</span></li>
-						<li><span class="rank">03</span></li>
-						<li><span class="rank">04</span></li>
-						<li><span class="rank">05</span></li>
-						<li><span class="rank">06</span></li>
-						<li><span class="rank">07</span></li>
-						<li><span class="rank">08</span></li>
-						<li><span class="rank">09</span></li>
-						<li><span class="rank">10</span></li>
-						<li><span class="rank">11</span></li>
-						<li><span class="rank">12</span></li>
-						<li><span class="rank">13</span></li>
-						<li><span class="rank">14</span></li>
-						<li><span class="rank">15</span></li>
-						<li><span class="rank">16</span></li>
-						<li><span class="rank">17</span></li>
-						<li><span class="rank">18</span></li>
-						<li><span class="rank">19</span></li>
-						<li><span class="rank">20</span></li>
-						</ul>
+				<div class="vticker2"  id="tsTodayN">
+					<img style="margin-left:-180px;"  class="imgStyle" src="images/icons/search.gif"/>
 				</div>
 			</div>
 		</div>
 		
 		<div class="row-fluid" >
 			<div id="fadeInLeft" class="span6 show-grid well well-small border-radius-0 mb-10 ">
-						<h4 class="m-0 text-center"><span style="background:#ffffff; padding:0px 3px;">OVERALL TOP 20 <img src="bullhorn-c.gif" /> CONSTITUENCIES IN AP</span></h4>
+						<h4 class="m-0 text-center"><span style="background:#ffffff; padding:0px 3px;font-size: 16px;">OVERALL TOP 20 <img src="js/media/bullhorn-c.gif" /> CONSTITUENCIES IN AP</span></h4>
 						<div class="span10" style="border-top: 1px solid rgb(204, 204, 204); height: 0px ! important; margin-top: -27px; margin-left: 20px;">
 						</div>
 				
-				<div class="vticker">
-					<ul class="unstyled ">
-						<li><span class="rank-success">01</span> Constituency Name</li>
-						<li><span class="rank-success">02</span></li>
-						<li><span class="rank-success">03</span></li>
-						<li><span class="rank-success">04</span></li>
-						<li><span class="rank-success">05</span></li>
-						<li><span class="rank-success">06</span></li>
-						<li><span class="rank-success">07</span></li>
-						<li><span class="rank-success">08</span></li>
-						<li><span class="rank-success">09</span></li>
-						<li><span class="rank-success">10</span></li>
-						<li><span class="rank-success">11</span></li>
-						<li><span class="rank-success">12</span></li>
-						<li><span class="rank-success">13</span></li>
-						<li><span class="rank-success">14</span></li>
-						<li><span class="rank-success">15</span></li>
-						<li><span class="rank-success">16</span></li>
-						<li><span class="rank-success">17</span></li>
-						<li><span class="rank-success">18</span></li>
-						<li><span class="rank-success">19</span></li>
-						<li><span class="rank-success">20</span></li>
-					</ul>
+				<div class="vticker3"  id="apAllN">
+					<img style="margin-left:-180px;"  class="imgStyle" src="images/icons/search.gif"/>
 				</div>
 							
 			</div>
 			<div id="fadeInRight"class="span6 show-grid well well-small border-radius-0 mb-10 ">
-				<h4 class="m-0 text-center"><span style="background:#ffffff; padding:0px 3px;">OVERALL TOP 20 <img src="bullhorn-c.gif" /> CONSTITUENCIES IN TS</span></h4>
+				<h4 class="m-0 text-center"><span style="background:#ffffff; padding:0px 3px;font-size: 16px;">OVERALL TOP 20 <img src="js/media/bullhorn-c.gif" /> CONSTITUENCIES IN TS</span></h4>
 				<div class="span10 " style="border-top: 1px solid rgb(204, 204, 204); height: 0px ! important; margin-top: -27px; margin-left: 20px;"></div>
-				<div class="vticker">
-					<ul class="unstyled ">
-						<li><span class="rank">01</span> Constituency Name</li>
-						<li><span class="rank">02</span></li>
-						<li><span class="rank">03</span></li>
-						<li><span class="rank">04</span></li>
-						<li><span class="rank">05</span></li>
-						<li><span class="rank">06</span></li>
-						<li><span class="rank">07</span></li>
-						<li><span class="rank">08</span></li>
-						<li><span class="rank">09</span></li>
-						<li><span class="rank">10</span></li>
-						<li><span class="rank">11</span></li>
-						<li><span class="rank">12</span></li>
-						<li><span class="rank">13</span></li>
-						<li><span class="rank">14</span></li>
-						<li><span class="rank">15</span></li>
-						<li><span class="rank">16</span></li>
-						<li><span class="rank">17</span></li>
-						<li><span class="rank">18</span></li>
-						<li><span class="rank">19</span></li>
-						<li><span class="rank">20</span></li>
-						</ul>
+				<div class="vticker4" id="tsAllN">
+					<img style="margin-left:-180px;"  class="imgStyle" src="images/icons/search.gif"/>
 				</div>
 			</div>
 		</div>
@@ -281,8 +197,8 @@
 	
 
 <script type="text/javascript">
-$(document).ready(function(){
-	var dd = $('.vticker').easyTicker({
+function callScrollingMethod(rsId){
+	var dd = $('.'+rsId).easyTicker({
 		direction: 'up',
 		easing: 'easeInOutBack',
 		speed: 'slow',
@@ -305,9 +221,8 @@ $(document).ready(function(){
 	});
 	
 	
-	
-	
-});
+	}
+
 </script>	
 <script type="text/javascript">
 
@@ -358,6 +273,24 @@ $(document).ready(function(){
 			  data : {task:JSON.stringify(jObj)} ,
             }).done(function(result){
                   result.sort(SortByPerc);
+				  var count = 1;
+				  var str ="";
+				  str+='<ul class="unstyled ">';
+						
+				  for(var i in result){
+				  if(count < 10){
+				    str+='<li><span class="rank">0'+count+'</span>&nbsp;'+ result[i].name+'</li>';
+				   }else{
+				     str+='<li><span class="rank">'+count+'</span>&nbsp;'+ result[i].name+'</li>';
+				   }
+				    count++;
+					if(count == 21){
+					   break;
+					}
+				  }
+				  str+='</ul>';
+				  $("#apTodayN").html(str);
+				  callScrollingMethod("vticker1");
 			});
 		}
 	   function getApTotal(){
@@ -371,8 +304,26 @@ $(document).ready(function(){
 			  data : {task:JSON.stringify(jObj)} ,
             }).done(function(result){
                   result.sort(SortByPerc);
-				 
+				  var count = 1;
+				  var str ="";
+				  str+='<ul class="unstyled ">';
+						
+				  for(var i in result){
+				  if(count < 10){
+				    str+='<li><span class="rank-success">0'+count+'</span>&nbsp;'+ result[i].name+'</li>';
+				   }else{
+				     str+='<li><span class="rank-success">'+count+'</span>&nbsp;'+ result[i].name+'</li>';
+				   }
+				    count++;
+					if(count == 21){
+					   break;
+					}
+				  }
+				  str+='</ul>';
+				  $("#apAllN").html(str);
+				  callScrollingMethod("vticker3");
 			});
+			
 		}
      function getTgToday(){
 			
@@ -384,7 +335,25 @@ $(document).ready(function(){
 			  url: 'getLocationWiseToDayDetailsAction.action',
 			  data : {task:JSON.stringify(jObj)} ,
             }).done(function(result){
-                 result.sort(SortByPerc);
+                  result.sort(SortByPerc);
+				  var count = 1;
+				  var str ="";
+				  str+='<ul class="unstyled ">';
+						
+				  for(var i in result){
+				  if(count < 10){
+				    str+='<li><span class="rank">0'+count+'</span>&nbsp;'+ result[i].name+'</li>';
+				   }else{
+				     str+='<li><span class="rank">'+count+'</span>&nbsp;'+ result[i].name+'</li>';
+				   }
+				    count++;
+					if(count == 21){
+					   break;
+					}
+				  }
+				  str+='</ul>';
+				  $("#tsTodayN").html(str);
+				  callScrollingMethod("vticker2");
 				 
 			});
 		}
@@ -398,7 +367,25 @@ $(document).ready(function(){
 			  url: 'getLocationWiseAsOfNowDetailsAction.action',
 			  data : {task:JSON.stringify(jObj)} ,
             }).done(function(result){
-                result.sort(SortByPerc);
+                 result.sort(SortByPerc);
+				  var count = 1;
+				  var str ="";
+				  str+='<ul class="unstyled ">';
+						
+				  for(var i in result){
+				  if(count < 10){
+				    str+='<li><span class="rank-success">0'+count+'</span>&nbsp;'+ result[i].name+'</li>';
+				   }else{
+				     str+='<li><span class="rank-success">'+count+'</span>&nbsp;'+ result[i].name+'</li>';
+				   }
+				    count++;
+					if(count == 21){
+					   break;
+					}
+				  }
+				  str+='</ul>';
+				  $("#tsAllN").html(str);
+				  callScrollingMethod("vticker4");
 				
 			});
 		}
