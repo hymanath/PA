@@ -132,7 +132,7 @@
         <pattern>/cadreMemberShipCardDispatcherAction*</pattern>
         <pattern>/memberShipCardPrintStatusAction*</pattern>
         <pattern>/tdpCadreIdCardDetailsAction*</pattern>
-        
+        <pattern>/partyDashBoardAction*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
