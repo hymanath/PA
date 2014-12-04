@@ -93,8 +93,8 @@
 						<tbody>
 							<tr>
 								<td>
-									<h3 class="m-0 h-30">AP</h3>
-									<img class="pull-right" src="js/media/AP.png" style="margin-top: -40px;">
+									<h3 class="m-0 h-30">TS</h3>
+									<img class="pull-right" src="js/media/TS.png" style="margin-top: -40px;">
 								</td>
 								<td><h3 class="m-0 h-30">119</h3><p class="f-10">Registration Started Constituencies</p></td>
 								<td><h3 class="m-0 h-30">482566</h3><p class="f-10">Members Registered in<span class="text-red"> &nbsp;2012</span></p></td>
@@ -104,8 +104,8 @@
 							</tr>
 							<tr>
 								<td>
-									<h3 class="m-0 h-30">TS</h3>
-									<img class="pull-right" src="js/media/TS.png" style="margin-top: -40px;">
+									<h3 class="m-0 h-30">AP</h3>
+									<img class="pull-right" src="js/media/AP.png" style="margin-top: -40px;">
 								</td>
 								<td><h3 class="m-0 h-30">175</h3><p class="f-10">Registration Started Constituencies</p></td>
 								<td><h3  class="m-0 h-30">914359</h3><p class="f-10">Members Registered in<span class="text-red">&nbsp;2012</span></p></td>
