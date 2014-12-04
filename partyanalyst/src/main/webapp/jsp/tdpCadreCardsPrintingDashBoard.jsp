@@ -57,7 +57,7 @@
 	var printPerc = '${zebraPrintDetailsVO.printPerc}';
 	var errorPerc = '${zebraPrintDetailsVO.erroPerc}';
 	var pendingPerc = '${zebraPrintDetailsVO.pendingPerc}';
-	
+	var sentPerc = '${zebraPrintDetailsVO.sentPerc}';
 	var dataValues = [{label: "Printed ",  data: printPerc},{label: "Errors ", data: errorPerc},{label: "Pending ", data: pendingPerc}];
 
 	
@@ -100,19 +100,19 @@
 						<table class="table table-bordered" style="margin-top:10px;">
 							<tbody>
 								<tr>
-									<th class="alert-success" > Registrations </th> <td class="alert-success"> ${zebraPrintDetailsVO.rowCount}</td>
+									<th class="alert-success" > Registrations </th> <td class="alert-success"> ${zebraPrintDetailsVO.rowCount}<span class="pull-right label label-info">${zebraPrintDetailsVO.registeredPerc} %</span></td>
 								</tr>
 								<tr>
-									<th class="alert-info"> Sent to print </th><td class="alert-info"> ${zebraPrintDetailsVO.totalPushCount} </td>
+									<th class="alert-info"> Sent to print </th><td class="alert-info"> ${zebraPrintDetailsVO.totalPushCount} <span class="pull-right label label-info">${zebraPrintDetailsVO.sentPerc} %</span></td>
 								</tr>
 								<tr>
-									<th class="alert-info"> Printed </th><td class="alert-info"> ${zebraPrintDetailsVO.printStatusCount}</td>
+									<th class="alert-info"> Printed </th><td class="alert-info"> ${zebraPrintDetailsVO.printStatusCount}<span class="pull-right label label-info">${zebraPrintDetailsVO.printPerc} %</span></td>
 								</tr>
 								<tr>
-									<th class="alert-info"> Errors </th><td class="alert-info">  ${zebraPrintDetailsVO.errorStatusCount}</td>
+									<th class="alert-info"> Errors </th><td class="alert-info">  ${zebraPrintDetailsVO.errorStatusCount}<span class="pull-right label label-info">${zebraPrintDetailsVO.erroPerc} %</span></td>
 								</tr>
 								<tr>
-									<th class="alert-info"> Pending </th><td class="alert-info">${zebraPrintDetailsVO.remainingCount} </td>
+									<th class="alert-info"> Pending </th><td class="alert-info">${zebraPrintDetailsVO.remainingCount}<span class="pull-right label label-info">${zebraPrintDetailsVO.pendingPerc} %</span> </td>
 								</tr>
 							</tbody>
 						</table>
@@ -613,19 +613,19 @@
 		str+='<table class="table table-bordered" style="margin-top:10px;">';
 		str+=' <tbody>';
 		str+='<tr>';
-		str+='<th class="alert-success">Registrations  </th><td class="alert-success">'+result.rowCount+'</td>';		
+		str+='<th class="alert-success">Registrations  </th><td class="alert-success">'+result.rowCount+'<span class="pull-right label label-info">'+result.registeredPerc+'%</span></td>';		
 		str+=' </tr>';
 		str+='<tr>';
-		str+=' <th class="alert-info" > Sent to print  </th><td class="alert-info">'+result.totalPushCount+'</td>';
+		str+=' <th class="alert-info" > Sent to print  </th><td class="alert-info">'+result.totalPushCount+'<span class="pull-right label label-info">'+result.sentPerc+'%</span></td>';
 		str+=' </tr>';
 		str+=' <tr>';
-		str+=' <th class="alert-info" > Printed </th><td class="alert-info">'+result.printStatusCount+'</td>';
+		str+=' <th class="alert-info" > Printed </th><td class="alert-info">'+result.printStatusCount+'<span class="pull-right label label-info">'+result.printPerc+'%</span></td>';
 		str+=' </tr>';
 		str+=' <tr>';
-		str+=' <th class="alert-info" > Errors </th><td class="alert-info">'+result.errorStatusCount+'</td>';
+		str+=' <th class="alert-info" > Errors </th><td class="alert-info">'+result.errorStatusCount+'<span class="pull-right label label-info">'+result.erroPerc+'%</span></td>';
 		str+=' </tr>';
 		str+=' <tr>';
-		str+=' <th class="alert-info" > Pending </th><td class="alert-info">'+result.remainingCount+'</td>';	
+		str+=' <th class="alert-info" > Pending </th><td class="alert-info">'+result.remainingCount+'<span class="pull-right label label-info">'+result.pendingPerc+'%</span></td>';	
 		str+=' </tr>';
 		str+=' </tbody>';
 		str+=' </table>';
