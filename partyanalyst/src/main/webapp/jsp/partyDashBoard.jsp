@@ -134,7 +134,7 @@
 						<div class="span10" style="border-top: 1px solid rgb(204, 204, 204); height: 0px ! important; margin-top: -27px; margin-left: 27px;">
 						</div>
 				
-				<div class="vticker1" id="apTodayN">
+				<div id="apTodayN">
 					<img style="margin-left:-180px;"  class="imgStyle" src="images/icons/search.gif"/>
 				</div>
 							
@@ -142,7 +142,7 @@
 			<div id="fadeInRight"class="span6 show-grid well well-small border-radius-0 mb-10 ">
 				<h4 class="m-0 text-center"><span style="background:#ffffff; padding:0px 3px;font-size: 16px;">TODAY TOP 20 <img src="js/media/bullhorn-c.gif" /> CONSTITUENCIES IN TS</span></h4>
 				<div class="span10 " style="border-top: 1px solid rgb(204, 204, 204); height: 0px ! important; margin-top: -27px; margin-left: 27px;"></div>
-				<div class="vticker2"  id="tsTodayN">
+				<div id="tsTodayN">
 					<img style="margin-left:-180px;"  class="imgStyle" src="images/icons/search.gif"/>
 				</div>
 			</div>
@@ -154,7 +154,7 @@
 						<div class="span10" style="border-top: 1px solid rgb(204, 204, 204); height: 0px ! important; margin-top: -27px; margin-left: 20px;">
 						</div>
 				
-				<div class="vticker3"  id="apAllN">
+				<div  id="apAllN">
 					<img style="margin-left:-180px;"  class="imgStyle" src="images/icons/search.gif"/>
 				</div>
 							
@@ -162,13 +162,17 @@
 			<div id="fadeInRight"class="span6 show-grid well well-small border-radius-0 mb-10 ">
 				<h4 class="m-0 text-center"><span style="background:#ffffff; padding:0px 3px;font-size: 16px;">OVERALL TOP 20 <img src="js/media/bullhorn-c.gif" /> CONSTITUENCIES IN TS</span></h4>
 				<div class="span10 " style="border-top: 1px solid rgb(204, 204, 204); height: 0px ! important; margin-top: -27px; margin-left: 20px;"></div>
-				<div class="vticker4" id="tsAllN">
+				<div id="tsAllN">
 					<img style="margin-left:-180px;"  class="imgStyle" src="images/icons/search.gif"/>
 				</div>
 			</div>
 		</div>
 	
 		<script>
+		apTodayC = 0;
+        apTotalC=0;
+        tsTodayC = 0;
+        tsTotalC=0;
 		$(document).ready(function(){
 		  $('input').iCheck({
 			checkboxClass: 'icheckbox_square-blue',
@@ -198,7 +202,7 @@
 
 <script type="text/javascript">
 function callScrollingMethod(rsId){
-	var dd = $('.'+rsId).easyTicker({
+	var dd = $('#'+rsId).easyTicker({
 		direction: 'up',
 		easing: 'easeInOutBack',
 		speed: 'slow',
@@ -213,13 +217,6 @@ function callScrollingMethod(rsId){
 			stopText: 'Stop !!!'
 		}
 	}).data('easyTicker');
-	
-	cc = 1;
-	$('.aa').click(function(){
-		$('.vticker ul').append('<li>' + cc + ' Triangles can be made easily using CSS also without any images. This trick requires only div tags and some</li>');
-		cc++;
-	});
-	
 	
 	}
 
@@ -272,10 +269,19 @@ function callScrollingMethod(rsId){
 			  url: 'getLocationWiseToDayDetailsAction.action',
 			  data : {task:JSON.stringify(jObj)} ,
             }).done(function(result){
+			      if(result[0].name == undefined){
+					   location.reload(); 
+				   }
+				   try{
+					 if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+						location.reload();
+					 }
+				   }catch(e){
+				   }
                   result.sort(SortByPerc);
 				  var count = 1;
 				  var str ="";
-				  str+='<ul class="unstyled ">';
+				  str+='<div class="vticker1" style="float:left" id="apTodayC'+apTodayC+'"><ul class="unstyled ">';
 						
 				  for(var i in result){
 				  if(count < 10){
@@ -288,9 +294,10 @@ function callScrollingMethod(rsId){
 					   break;
 					}
 				  }
-				  str+='</ul>';
+				  str+='</ul></div>';
 				  $("#apTodayN").html(str);
-				  callScrollingMethod("vticker1");
+				  callScrollingMethod("apTodayC"+apTodayC);
+				  apTodayC++;
 			});
 		}
 	   function getApTotal(){
@@ -303,10 +310,19 @@ function callScrollingMethod(rsId){
 			  url: 'getLocationWiseAsOfNowDetailsAction.action',
 			  data : {task:JSON.stringify(jObj)} ,
             }).done(function(result){
+			       if(result[0].name == undefined){
+					   location.reload(); 
+				   }
+				   try{
+					 if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+						location.reload();
+					 }
+				   }catch(e){
+				   }
                   result.sort(SortByPerc);
 				  var count = 1;
 				  var str ="";
-				  str+='<ul class="unstyled ">';
+				  str+='<div class="vticker3" style="float:left" id="apTotalC'+apTotalC+'"><ul class="unstyled ">';
 						
 				  for(var i in result){
 				  if(count < 10){
@@ -319,9 +335,10 @@ function callScrollingMethod(rsId){
 					   break;
 					}
 				  }
-				  str+='</ul>';
+				  str+='</ul></div>';
 				  $("#apAllN").html(str);
-				  callScrollingMethod("vticker3");
+				  callScrollingMethod("apTotalC"+apTotalC);
+				  apTotalC++;
 			});
 			
 		}
@@ -335,10 +352,19 @@ function callScrollingMethod(rsId){
 			  url: 'getLocationWiseToDayDetailsAction.action',
 			  data : {task:JSON.stringify(jObj)} ,
             }).done(function(result){
+			        if(result[0].name == undefined){
+					   location.reload(); 
+				   }
+				   try{
+					 if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+						location.reload();
+					 }
+				   }catch(e){
+				   }
                   result.sort(SortByPerc);
 				  var count = 1;
 				  var str ="";
-				  str+='<ul class="unstyled ">';
+				  str+='<div class="vticker2" style="float:left" id="tsTodayC'+tsTodayC+'"><ul class="unstyled ">';
 						
 				  for(var i in result){
 				  if(count < 10){
@@ -351,9 +377,10 @@ function callScrollingMethod(rsId){
 					   break;
 					}
 				  }
-				  str+='</ul>';
+				  str+='</ul></div>';
 				  $("#tsTodayN").html(str);
-				  callScrollingMethod("vticker2");
+				  callScrollingMethod('tsTodayC'+tsTodayC);
+				  tsTodayC++;
 				 
 			});
 		}
@@ -367,10 +394,19 @@ function callScrollingMethod(rsId){
 			  url: 'getLocationWiseAsOfNowDetailsAction.action',
 			  data : {task:JSON.stringify(jObj)} ,
             }).done(function(result){
+			       if(result[0].name == undefined){
+					   location.reload(); 
+				   }
+				   try{
+					 if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+						location.reload();
+					 }
+				   }catch(e){
+				   }
                  result.sort(SortByPerc);
 				  var count = 1;
 				  var str ="";
-				  str+='<ul class="unstyled ">';
+				  str+='<div  class="vticker4" style="float:left" id="tsTotalC'+tsTotalC+'"><ul class="unstyled ">';
 						
 				  for(var i in result){
 				  if(count < 10){
@@ -383,10 +419,10 @@ function callScrollingMethod(rsId){
 					   break;
 					}
 				  }
-				  str+='</ul>';
+				  str+='</ul></div>';
 				  $("#tsAllN").html(str);
-				  callScrollingMethod("vticker4");
-				
+				  callScrollingMethod("tsTotalC"+tsTotalC);
+				tsTotalC++;
 			});
 		}
        getApToday();
