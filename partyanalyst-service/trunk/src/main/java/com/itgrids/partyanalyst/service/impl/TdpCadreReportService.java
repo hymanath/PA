@@ -2575,17 +2575,21 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		List<ZebraPrintDetailsVO> resultList = new ArrayList<ZebraPrintDetailsVO>();
 		try{
 			List<Object[]> list = null;
+			List<Object[]> printedList = null;
+			List<Object[]> errorList = null;
 			
 				// printedCountList 		= zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, searchType,"printStatus");
 				// errorCountList			= zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, searchType,"errorStatus");
 			if(status.equalsIgnoreCase("ERROR"))
 			list 	= zebraPrintDetailsDAO.getPrintedCountByLocationWise(Id, type,"errorStatus");
 			else if(status.equalsIgnoreCase("SENT"))
+			{
 			list 	= zebraPrintDetailsDAO.getPrintedCountByLocationWise(Id, type,"totalCount");
+			printedList = zebraPrintDetailsDAO.getPrintedCountByInsertedTime(Id, type,"printStatus");
+			errorList = zebraPrintDetailsDAO.getPrintedCountByInsertedTime(Id, type,"errorStatus");
+			}
 			else if(status.equalsIgnoreCase("PRINTED"))
 			list 	= zebraPrintDetailsDAO.getPrintedCountByLocationWise(Id, type,"printStatus");
-			
-			
 			if(list != null && list.size() > 0)
 			{
 				for(Object[] params : list)
@@ -2596,6 +2600,35 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					resultList.add(vo);
 				}
 			}
+			if(printedList != null && printedList.size() > 0)
+			{
+				for(Object[] params : printedList)
+				{
+					ZebraPrintDetailsVO vo = getMatchedDate(resultList,params[1].toString());
+					if(vo != null)
+					{
+						ZebraPrintDetailsVO updateDateVo = new ZebraPrintDetailsVO();
+						updateDateVo.setUpdatedDate(params[2] != null ? params[2].toString() : "");
+						updateDateVo.setPrintStatusCount((Long)params[0]);
+						vo.getDataPushDetailsList().add(updateDateVo);
+					}
+					
+				}
+			}
+			
+			if(errorList != null && errorList.size() > 0)
+			{
+				for(Object[] params : errorList)
+				{
+					ZebraPrintDetailsVO vo = getMatchedDate(resultList,params[1].toString());
+					if(vo != null)
+					{
+						vo.setErrorStatusCount((Long)params[0]);
+					}
+				}
+			}
+			
+			
 		}
 		catch(Exception e)
 		{
@@ -2611,13 +2644,18 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		List<ZebraPrintDetailsVO> resultList = new ArrayList<ZebraPrintDetailsVO>();
 		try{
 			List<Object[]> list = null;
-			
+			List<Object[]> printedList = null;
+			List<Object[]> errorList = null;
 				// printedCountList 		= zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, searchType,"printStatus");
 				// errorCountList			= zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, searchType,"errorStatus");
 			if(status.equalsIgnoreCase("ERROR"))
 			list 	= zebraPrintDetailsDAO.getPrintedCountByParliamentise(Id,"errorStatus");
 			else if(status.equalsIgnoreCase("SENT"))
+			{
 			list 	= zebraPrintDetailsDAO.getPrintedCountByParliamentise(Id,"totalCount");
+			printedList = zebraPrintDetailsDAO.getPrintedCountByParlmentInsertedTime(Id,"printStatus");
+			errorList = zebraPrintDetailsDAO.getPrintedCountByParlmentInsertedTime(Id,"errorStatus");
+			}
 			else if(status.equalsIgnoreCase("PRINTED"))
 			list 	= zebraPrintDetailsDAO.getPrintedCountByParliamentise(Id,"printStatus");
 			
@@ -2629,6 +2667,33 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					vo.setUpdatedDate(params[1] != null ? params[1].toString() : "");
 					vo.setTotalPushCount((Long)params[0]);
 					resultList.add(vo);
+				}
+			}
+			if(printedList != null && printedList.size() > 0)
+			{
+				for(Object[] params : printedList)
+				{
+					ZebraPrintDetailsVO vo = getMatchedDate(resultList,params[1].toString());
+					if(vo != null)
+					{
+						ZebraPrintDetailsVO updateDateVo = new ZebraPrintDetailsVO();
+						updateDateVo.setUpdatedDate(params[2] != null ? params[2].toString() : "");
+						updateDateVo.setPrintStatusCount((Long)params[0]);
+						vo.getDataPushDetailsList().add(updateDateVo);
+					}
+					
+				}
+			}
+			
+			if(errorList != null && errorList.size() > 0)
+			{
+				for(Object[] params : errorList)
+				{
+					ZebraPrintDetailsVO vo = getMatchedDate(resultList,params[1].toString());
+					if(vo != null)
+					{
+						vo.setErrorStatusCount((Long)params[0]);
+					}
 				}
 			}
 		}

@@ -34,4 +34,6 @@ public interface IZebraPrintDetailsDAO extends GenericDao<ZebraPrintDetails, Lon
 	public List<Object[]> getAllCadreDetailsByBatchCode(String batchCode);
 	public List<Object[]> getPrintedCountByLocationWise(Long locationId, String searchType,String dataType);
 	public List<Object[]> getPrintedCountByParliamentise(Long parliamentId, String dataType);
+	public List<Object[]> getPrintedCountByInsertedTime(Long locationId, String searchType,String dataType);
+	public List<Object[]> getPrintedCountByParlmentInsertedTime(Long parliamentId, String dataType);
 }
