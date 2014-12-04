@@ -739,4 +739,29 @@ public class CadreDashBoardAction implements ServletRequestAware {
 	return Action.SUCCESS;
 	
 	}
+	
+	public String partyDashBoard(){
+		try{
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO==null){
+				return "input";
+			}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"PARTYCADREDASHBOARD")){
+				return "error";
+			}
+			
+			return Action.SUCCESS;
+		}catch(Exception e){
+			LOG.error("Exception raised in partyDashBoard ",e);
+		}
+		return "input";
+	}
+	
+	public String getTotalRegisterCadreInfo(){
+		try{
+			info = cadreDashBoardService.getTotalRegisterCadreInfo();
+		}catch(Exception e){
+			LOG.error("Exception raised in getTotalRegisterCadreInfo ",e);
+		}
+		return Action.SUCCESS;
+	}
 }
