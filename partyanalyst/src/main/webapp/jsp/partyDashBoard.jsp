@@ -65,30 +65,37 @@
 	.rank-success{background:#BFD662; width:20px; height:20px; padding:5px 6px; color:#fff; font-weight:bold; font-size:18px; border-radius:50%;}
 	.h-30{height:30px;}
 	.f-10{font-size:10px;}
+	#menu{display:none;}
+	.mainwrapper {height: 90px;}
+	#mainImgAlignId{margin-bottom: -10px;}
+	body{background:#F8D53B url('js/media/background_fixed.jpg') !important;}
 	</style>
 </head>
 <body>
 <body>
 	
-		<!-- Header Row --
-		<div class="row-fluid">
-			<div class="span12 header-bg text-center">
-				<img src="2014-cadre-Registration-Logo.png" />
-			</div>
-		</div><!-- Header Row End-->
-		
-	<div class="container ">	
+		<div class="container-fluid mb-5" style="background: transparent url('js/media/red-thread.png') repeat-x;">	
 		<!-- Title Row -->
+		<div class="container ">	
 		<div class="row-fluid" id="fadeInDown">
-			<div class="span12 well well-small text-center border-radius-0 mb-5 pad-0">
-				<img class=""src="js/media/LOGO.png" />
-				<!--<h3  class="text-center text-uppercase m-0">2014 Cadre Enrollment</h3>-->
+			<div class="span12   border-radius-0 mb-5 pad-0">
+				<img src="js/media/logo3.gif" class="">	<a class="pull-right" href="newlogoutAction.action"><i class="icon-off"></i></a>
+                 <img class=""src="js/media/ntr_small_image.png" style="margin-left:300px; margin-top:-35px" />
+				<img src="js/media/cbn-ntr-img.png" class="pull-right">
+			
+				<h2 class=" text-uppercase m-0" style="margin-top: -43px; margin-left: 280px; color: rgb(246, 211, 59);">2014 Cadre Enrollment</h2>
 			</div>
 		</div><!-- Title Row End-->
+		</div>
+		
+	</div><!-- Header Row End-->
+		
+	<div class="container ">	
+		
 		
 		<!-- Members Registered Previous Row -->
 		<div class="row-fluid " id="PreviousmembersCount">
-			<div class="span12 show-grid well well-small border-radius-0 mb-10 ">
+			<div class="span12 show-grid well well-small border-radius-0 mb-10 " >
 				    <table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" >
 						<tbody>
 							<tr>
@@ -97,7 +104,7 @@
 									<img class="pull-right" src="js/media/TS.png" style="margin-top: -40px;">
 								</td>
 								<td><h3 class="m-0 h-30">119</h3><p class="f-10">Registration Started Constituencies</p></td>
-								<td><h3 class="m-0 h-30">482566</h3><p class="f-10">Members Registered in<span class="text-red"> &nbsp;2012</span></p></td>
+								<td><h3 class="m-0 h-30">482566</h3><p class="f-10">Members Registered in<span class="text-red"> &nbsp;<b>2012</b></span></p></td>
 								<td><div id="ts2014CountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
 								<td><div id="tsPercCountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
 								
@@ -108,7 +115,7 @@
 									<img class="pull-right" src="js/media/AP.png" style="margin-top: -40px;">
 								</td>
 								<td><h3 class="m-0 h-30">175</h3><p class="f-10">Registration Started Constituencies</p></td>
-								<td><h3  class="m-0 h-30">914359</h3><p class="f-10">Members Registered in<span class="text-red">&nbsp;2012</span></p></td>
+								<td><h3  class="m-0 h-30">914359</h3><p class="f-10">Members Registered in<span class="text-red">&nbsp;<b>2012</b></span></p></td>
 								<td><div id="ap2014CountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
 								<td><div id="apPercCountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
 
@@ -119,7 +126,7 @@
 									
 								</td>
 								<!--<td><h3  class="m-0 h-30"></h3><p class="f-10"> </p></td>-->
-								<td><h3 class="m-0 h-30">1396925</h3><p class="f-10">Members Registered in<span class="text-red">&nbsp;2012</span></p></td>
+								<td><h3 class="m-0 h-30">1396925</h3><p class="f-10">Members Registered in<span class="text-red">&nbsp;<b>2012</b></span></p></td>
 								<td><div id="tot2014CountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
 								<td><div id="totPercCountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
 							</tr>
@@ -128,7 +135,7 @@
 			</div>
 		</div>
 		
-		<div class="row-fluid" >
+		<div class="row-fluid">
 			<div id="fadeInLeft" class="span6 show-grid well well-small border-radius-0 mb-5 ">
 						<h4 class="m-0 text-center"><span style="background:#ffffff; padding:0px 3px;font-size: 16px;">TODAY TOP 20 <img src="js/media/bullhorn-c.gif" /> CONSTITUENCIES IN AP</span></h4>
 						<div class="span10" style="border-top: 1px solid rgb(204, 204, 204); height: 0px ! important; margin-top: -27px; margin-left: 27px;">
@@ -148,7 +155,7 @@
 			</div>
 		</div>
 		
-		<div class="row-fluid" >
+		<div class="row-fluid">
 			<div id="fadeInLeft" class="span6 show-grid well well-small border-radius-0 mb-10 ">
 						<h4 class="m-0 text-center"><span style="background:#ffffff; padding:0px 3px;font-size: 16px;">OVERALL TOP 20 <img src="js/media/bullhorn-c.gif" /> CONSTITUENCIES IN AP</span></h4>
 						<div class="span10" style="border-top: 1px solid rgb(204, 204, 204); height: 0px ! important; margin-top: -27px; margin-left: 20px;">
@@ -250,12 +257,12 @@ function callScrollingMethod(rsId){
 			 }
 		   }catch(e){
 		   }
-		   $("#ts2014CountId").html('<h3 class="m-0 h-30">'+result.tgCount+'</h3><p class="f-10">Members Registered in<span class="text-green"> &nbsp;2014</span></p>');
-           $("#tsPercCountId").html('<h3 class="m-0 h-30">'+parseInt((result.tgCount)*100/482566)+'%</h3><p class="f-10">Members In <span class="text-orange">Total </span></p>');	
-		   $("#ap2014CountId").html('<h3  class="m-0 h-30">'+result.apCount+'</h3><p class="f-10">Members Registered in<span class="text-green">&nbsp;2014</span></p>');
-		   $("#apPercCountId").html('<h3  class="m-0 h-30">'+parseInt((result.apCount)*100/914359)+'%</h3><p class="f-10">Members In <span class="text-orange">Total </span></p>');
-		   $("#tot2014CountId").html('<h3  class="m-0 h-30">'+(result.tgCount+result.apCount)+'</h3><p class="f-10">Members Registered in<span class="text-green">&nbsp;2014</span></p>');
-		   $("#totPercCountId").html('<h3  class="m-0 h-30">'+parseInt((result.apCount+result.tgCount)*100/1396925)+'%</h3><p class="f-10">Members In <span class="text-orange">Total Party</span></p>');
+		   $("#ts2014CountId").html('<h3 class="m-0 h-30">'+result.tgCount+'</h3><p class="f-10">Members Registered in<span class="text-green"> &nbsp;<b>2014</b></span></p>');
+           $("#tsPercCountId").html('<h3 class="m-0 h-30">'+parseInt((result.tgCount)*100/482566)+'%</h3><p class="f-10">Members In <span class="text-orange"><b>Total</b> </span></p>');	
+		   $("#ap2014CountId").html('<h3  class="m-0 h-30">'+result.apCount+'</h3><p class="f-10">Members Registered in<span class="text-green">&nbsp;<b>2014</b></span></p>');
+		   $("#apPercCountId").html('<h3  class="m-0 h-30">'+parseInt((result.apCount)*100/914359)+'%</h3><p class="f-10">Members In <span class="text-orange"><b>Total</b> </span></p>');
+		   $("#tot2014CountId").html('<h3  class="m-0 h-30">'+(result.tgCount+result.apCount)+'</h3><p class="f-10">Members Registered in<span class="text-green">&nbsp;<b>2014</b></span></p>');
+		   $("#totPercCountId").html('<h3  class="m-0 h-30">'+parseInt((result.apCount+result.tgCount)*100/1396925)+'%</h3><p class="f-10">Members In <span class="text-orange"><b>Total Party</b></span></p>');
 	   });
    }
    
@@ -281,22 +288,22 @@ function callScrollingMethod(rsId){
                   result.sort(SortByPerc);
 				  var count = 1;
 				  var str ="";
-				  str+='<div class="vticker1" style="float:left" id="apTodayC'+apTodayC+'"><ul class="unstyled ">';
+				  str+='<marquee scrollamount="4">';
 						
 				  for(var i in result){
 				  if(count < 10){
-				    str+='<li><span class="rank">0'+count+'</span>&nbsp;'+ result[i].name+'</li>';
+				    str+='<span class="rank">0'+count+'</span>&nbsp;<b>'+ result[i].name+'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 				   }else{
-				     str+='<li><span class="rank">'+count+'</span>&nbsp;'+ result[i].name+'</li>';
+				     str+='<span class="rank">'+count+'</span>&nbsp;<b>'+ result[i].name+'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 				   }
 				    count++;
 					if(count == 21){
 					   break;
 					}
 				  }
-				  str+='</ul></div>';
+				  str+='</marquee>';
 				  $("#apTodayN").html(str);
-				  callScrollingMethod("apTodayC"+apTodayC);
+				  //callScrollingMethod("apTodayC"+apTodayC);
 				  apTodayC++;
 			});
 		}
@@ -322,22 +329,22 @@ function callScrollingMethod(rsId){
                   result.sort(SortByPerc);
 				  var count = 1;
 				  var str ="";
-				  str+='<div class="vticker3" style="float:left" id="apTotalC'+apTotalC+'"><ul class="unstyled ">';
+				 str+='<marquee scrollamount="4">';
 						
 				  for(var i in result){
 				  if(count < 10){
-				    str+='<li><span class="rank-success">0'+count+'</span>&nbsp;'+ result[i].name+'</li>';
+				    str+='<span class="rank-success">0'+count+'</span>&nbsp;<b>'+ result[i].name+'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 				   }else{
-				     str+='<li><span class="rank-success">'+count+'</span>&nbsp;'+ result[i].name+'</li>';
+				     str+='<span class="rank-success">'+count+'</span>&nbsp;<b>'+ result[i].name+'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 				   }
 				    count++;
 					if(count == 21){
 					   break;
 					}
 				  }
-				  str+='</ul></div>';
+				  str+='</marquee>';
 				  $("#apAllN").html(str);
-				  callScrollingMethod("apTotalC"+apTotalC);
+				  //callScrollingMethod("apTotalC"+apTotalC);
 				  apTotalC++;
 			});
 			
@@ -364,22 +371,22 @@ function callScrollingMethod(rsId){
                   result.sort(SortByPerc);
 				  var count = 1;
 				  var str ="";
-				  str+='<div class="vticker2" style="float:left" id="tsTodayC'+tsTodayC+'"><ul class="unstyled ">';
+				  str+='<marquee scrollamount="4">';
 						
 				  for(var i in result){
 				  if(count < 10){
-				    str+='<li><span class="rank">0'+count+'</span>&nbsp;'+ result[i].name+'</li>';
+				    str+='<span class="rank">0'+count+'</span>&nbsp;<b>'+ result[i].name+'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 				   }else{
-				     str+='<li><span class="rank">'+count+'</span>&nbsp;'+ result[i].name+'</li>';
+				     str+='<span class="rank">'+count+'</span>&nbsp;<b>'+ result[i].name+'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 				   }
 				    count++;
 					if(count == 21){
 					   break;
 					}
 				  }
-				  str+='</ul></div>';
+				 str+='</marquee>';
 				  $("#tsTodayN").html(str);
-				  callScrollingMethod('tsTodayC'+tsTodayC);
+				  //callScrollingMethod('tsTodayC'+tsTodayC);
 				  tsTodayC++;
 				 
 			});
@@ -406,22 +413,22 @@ function callScrollingMethod(rsId){
                  result.sort(SortByPerc);
 				  var count = 1;
 				  var str ="";
-				  str+='<div  class="vticker4" style="float:left" id="tsTotalC'+tsTotalC+'"><ul class="unstyled ">';
+				  str+='<marquee scrollamount="4">';
 						
 				  for(var i in result){
 				  if(count < 10){
-				    str+='<li><span class="rank-success">0'+count+'</span>&nbsp;'+ result[i].name+'</li>';
+				    str+='<span class="rank-success">0'+count+'</span>&nbsp;<b>'+ result[i].name+'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 				   }else{
-				     str+='<li><span class="rank-success">'+count+'</span>&nbsp;'+ result[i].name+'</li>';
+				     str+='<span class="rank-success">'+count+'</span>&nbsp;<b>'+ result[i].name+'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 				   }
 				    count++;
 					if(count == 21){
 					   break;
 					}
 				  }
-				  str+='</ul></div>';
+				  str+='</marquee>';
 				  $("#tsAllN").html(str);
-				  callScrollingMethod("tsTotalC"+tsTotalC);
+				  //callScrollingMethod("tsTotalC"+tsTotalC);
 				tsTotalC++;
 			});
 		}
