@@ -114,11 +114,11 @@
 
 							</tr>
 							<tr>
-								<td>
-									<h4  class="m-0 h-30">TOTAL IN <br>AP <small>[and]</small> TS</h4>
+								<td colspan="2">
+									<h4 style="margin-left: 130px;margin-top: 6px;" class="m-0 h-30">TOTAL IN <br>AP <small>[and]</small> TS</h4>
 									
 								</td>
-								<td><h3  class="m-0 h-30">294</h3><p class="f-10">Constituencies Data Collecting </p></td>
+								<!--<td><h3  class="m-0 h-30"></h3><p class="f-10"> </p></td>-->
 								<td><h3 class="m-0 h-30">1396925</h3><p class="f-10">Members Registered in<span class="text-red">&nbsp;2012</span></p></td>
 								<td><div id="tot2014CountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
 								<td><div id="totPercCountId"><img class="imgStyle" src="images/icons/search.gif"/></div></td>
