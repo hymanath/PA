@@ -79,7 +79,7 @@
 		<div class="container ">	
 		<div class="row-fluid" id="fadeInDown">
 			<div class="span12   border-radius-0 mb-5 pad-0">
-				<img src="js/media/logo3.gif" class="">	<a class="pull-right" title="LogOut" href="newlogoutAction.action"><i class="icon-off"></i></a>
+				<img src="js/media/logo4.gif" class="">	<a class="pull-right" title="LogOut" href="newlogoutAction.action"><i class="icon-off"></i></a>
                  <img class=""src="js/media/ntr_small_image.png" style="margin-left:300px; margin-top:-35px" />
 				<img src="js/media/cbn-ntr-img.png" class="pull-right">
 			
