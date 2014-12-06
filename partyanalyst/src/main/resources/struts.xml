@@ -9114,6 +9114,24 @@
 				<param name="root">info</param>
 			</result>
 		</action>
+	
+		<action name="callCenterMembershipCardStatusAction" class="tdpCadreReportAction" method="callCenterMembershipCardStatus">
+			<result name="success">/jsp/callCenterMembershipCardStatusReport.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>			
+		</action>
+		
+		<action name="getCadreDetailsForCallCenterAction" class="tdpCadreReportAction" method="getCadreDetailsForCallCenter" >
+			<result type="json" name="success">
+				<param name="root">registrationVOList</param>
+			</result>
+		</action>
+		
+		<action name="saveCallCenterFeedbackAction" class="tdpCadreReportAction" method="saveCallCenterFeedback" >
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
 		<action name="getJobCodesAction" class="tdpCadreReportAction"  method="getJobCodesByLocationWise">
 		<result type="json" name="success">
 				<param name="root">zebraPrintDetails</param>

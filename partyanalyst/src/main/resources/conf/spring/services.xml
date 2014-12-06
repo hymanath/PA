@@ -2350,6 +2350,11 @@
           <property name="constituencyDAO" ref="constituencyDAO" />
           <property name="districtDAO" ref="districtDAO" />
           <property name="localNameConstantDAO" ref="localNameConstantDAO" />
+          <property name="userAddressDAO" ref="userAddressDAO" />
+          <property name="tdpCadreCallCenterFeedbackDAO" ref="tdpCadreCallCenterFeedbackDAO" />
+          <property name="tdpCadreCallCenterRemarksDAO" ref="tdpCadreCallCenterRemarksDAO" />
+          <property name="transactionTemplate" ref="transactionTemplate" />
+          <property name="tdpCadreTeluguNamesDAO" ref="tdpCadreTeluguNamesDAO" />
      </bean>
 </beans>		
 	

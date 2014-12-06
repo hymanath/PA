@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationWiseReportVO;
 import com.itgrids.partyanalyst.dto.ZebraPrintDetailsVO;
@@ -37,9 +38,39 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 	private List<CadreRegistrationVO> registrationVOList = new ArrayList<CadreRegistrationVO>();
 	private EntitlementsHelper 					entitlementsHelper;
 	private List<ZebraPrintDetailsVO> zebraPrintDetails;
+	private ResultStatus result;
+	private String mobileNumber;
+	private String trNo;
+	private String membership;
 	private List<String> jobCodes;
 	
 	
+	
+	
+	public String getMobileNumber() {
+		return mobileNumber;
+	}
+
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}
+
+	public String getTrNo() {
+		return trNo;
+	}
+
+	public void setTrNo(String trNo) {
+		this.trNo = trNo;
+	}
+
+	public String getMembership() {
+		return membership;
+	}
+
+	public void setMembership(String membership) {
+		this.membership = membership;
+	}
+
 	public List<String> getJobCodes() {
 		return jobCodes;
 	}
@@ -127,6 +158,15 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 	public void setJobj(JSONObject jobj) {
 		this.jobj = jobj;
 	}
+
+	public ResultStatus getResult() {
+		return result;
+	}
+
+	public void setResult(ResultStatus result) {
+		this.result = result;
+	}
+	
 
 	public String execute()
 	{
@@ -357,6 +397,69 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String callCenterMembershipCardStatus()
+	{
+		try
+		{
+		  HttpSession session=request.getSession();
+		  RegistrationVO regVO=(RegistrationVO)session.getAttribute("USER");
+		  //if(regVO==null)
+		 //return Action.INPUT;
+		
+		}
+		catch(Exception e)
+		{
+			LOG.info("Error in callCenterMembershipCardStatus()");
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getCadreDetailsForCallCenter()
+	{
+		try {
+			
+			jobj = new JSONObject(getTask());			
+			String membershipNo = jobj.getString("membershipNo");
+			String trNumber = jobj.getString("trNumber");
+			String mobileNo = jobj.getString("mobileNo");
+			registrationVOList = tdpCadreReportService.getMembershipCardDetailsForCallCenter(mobileNo,trNumber,membershipNo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in printingDashBoard method in CadreRegistrationAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String saveCallCenterFeedback(){
+		try {
+			
+			jobj = new JSONObject(getTask());
+			
+			TdpCadreLocationWiseReportVO vo = new TdpCadreLocationWiseReportVO();
+			
+			String comments = jobj.getString("comments");
+			 if(comments != null && comments.length() > 0){
+	    		  List<String> commentsList = new ArrayList<String>();
+	    		  String[] commentValues = comments.split(",");
+	    		  for(String value:commentValues){
+	    			  commentsList.add(value);
+	    		  }
+	    		  vo.setComments(commentsList);	
+	    	  }
+	    	  			
+			vo.setId(jobj.getLong("tdpCadreId"));
+			vo.setName(jobj.getString("name"));
+			vo.setRemarks(jobj.getString("remarks"));
+			result = tdpCadreReportService.saveCallCenterFeedbackForCardStatus(vo);
+			
+		} catch (Exception e) {
+				
+				e.printStackTrace();
+			}
+			return SUCCESS;
+		}
+	
 	
 	public String getJobCodesByLocationWise()
 	{
