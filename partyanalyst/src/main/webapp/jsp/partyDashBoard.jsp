@@ -288,7 +288,7 @@ function callScrollingMethod(rsId){
                   result.sort(SortByPerc);
 				  var count = 1;
 				  var str ="";
-				  str+='<marquee scrollamount="3">';
+				  str+='<marquee  style="width:100%" scrollamount="3">';
 						
 				  for(var i in result){
 				  if(count < 10){
@@ -329,7 +329,7 @@ function callScrollingMethod(rsId){
                   result.sort(SortByPerc);
 				  var count = 1;
 				  var str ="";
-				 str+='<marquee scrollamount="3">';
+				 str+='<marquee style="width:100%" scrollamount="3">';
 						
 				  for(var i in result){
 				  if(count < 10){
@@ -371,7 +371,7 @@ function callScrollingMethod(rsId){
                   result.sort(SortByPerc);
 				  var count = 1;
 				  var str ="";
-				  str+='<marquee scrollamount="3">';
+				  str+='<marquee  style="width:100%" scrollamount="3">';
 						
 				  for(var i in result){
 				  if(count < 10){
@@ -413,7 +413,7 @@ function callScrollingMethod(rsId){
                  result.sort(SortByPerc);
 				  var count = 1;
 				  var str ="";
-				  str+='<marquee scrollamount="3">';
+				  str+='<marquee  style="width:100%"  scrollamount="3">';
 						
 				  for(var i in result){
 				  if(count < 10){
