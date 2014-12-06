@@ -1,14 +1,11 @@
 package com.itgrids.partyanalyst.notification.service.impl;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
@@ -20,8 +17,8 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.IUserTrackingDAO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.keys.PropertyKeys;
 import com.itgrids.partyanalyst.notification.service.ISchedulerService;
+import com.itgrids.partyanalyst.service.ICadreSurveyTransactionService;
 import com.itgrids.partyanalyst.service.IMailService;
 
 public class SchedulerService implements ISchedulerService{
@@ -38,6 +35,14 @@ public class SchedulerService implements ISchedulerService{
 	@Autowired
 	private ITdpCadreDAO tdpCadreDAO;
 	
+	private ICadreSurveyTransactionService cadreSurveyTransactionService;
+	
+	
+	public void setCadreSurveyTransactionService(
+			ICadreSurveyTransactionService cadreSurveyTransactionService) {
+		this.cadreSurveyTransactionService = cadreSurveyTransactionService;
+	}
+
 	public IUserTrackingDAO getUserTrackingDAO() {
 		return userTrackingDAO;
 	}
@@ -656,6 +661,15 @@ public class SchedulerService implements ISchedulerService{
 		}
 		return count;
 		
+	}
+	
+	public void runSchuduler()
+	{
+		try {
+			cadreSurveyTransactionService.sendTargetBasedSMSforLocationWiseManagers();
+		} catch (Exception e) {
+			LOG.error("Exception Raised in runSchuduler()",e); 
+		}
 	}
 	
 	

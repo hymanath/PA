@@ -18,4 +18,5 @@ public interface ISchedulerService {
 	//public void prepareDatForCardPrintingForMax(String prevDate);
 	//public void fillDataForCardPrinting(String prevDate , String type);
 	public void schedularForCardPrintDataFilling(String prevDate);
+	public void runSchuduler();
 }

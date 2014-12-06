@@ -189,5 +189,14 @@ public class Scheduler {
 		}
 	}
 	
+	public void runSriSch()
+	{
+		try {
+			schedulerService.runSchuduler();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
 	
 }
