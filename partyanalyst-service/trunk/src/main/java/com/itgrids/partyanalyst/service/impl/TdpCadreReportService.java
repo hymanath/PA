@@ -2069,13 +2069,14 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		return status;
 	}
 	
-	public ZebraPrintDetailsVO createDashBoardForPrintingCardsDetails(String accessType,String accessValue,Long stateTypeId,String searchType, Long selectedLocationId)
+	public ZebraPrintDetailsVO createDashBoardForPrintingCardsDetails(String accessType,String accessValue,Long stateTypeId,String searchType, Long selectedLocationId,String statusType)
 	{
 		ZebraPrintDetailsVO returnVO = new ZebraPrintDetailsVO();
 		try {
 			List<ZebraPrintDetailsVO> locationWiseInfoList = null;
 			List<Long> selectedLocationIds = new ArrayList<Long>();
 			List<Object[]> constituencyList =null;
+			
 			
 			if(selectedLocationId != 0L)
 			{
@@ -2145,28 +2146,111 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			List<Object[]> errorCountList		= null;
 			List<Object[]> totalPushedCountList = null;
 			List<Object[]>  registeredCountList = null;
-			
+			List<Long> statusSeacrhLoctaionIds = new ArrayList<Long>();
+			List<Object[]> searchList = null;
+			if(!statusType.equalsIgnoreCase(""))
+			{
+				if(statusType.equalsIgnoreCase("PRINTED"))
+				{
+					if(!searchType.equalsIgnoreCase(IConstants.MP))
+					searchList = zebraPrintDetailsDAO.getPrintedCountDetailsByStatusTypeSeacrh(selectedLocationIds,searchType,"printStatus");
+					else
+						searchList = zebraPrintDetailsDAO.getParliamentWiseResultsByStatusType(selectedLocationIds,"printStatus");	
+				}
+				else if(statusType.equalsIgnoreCase("ERROR"))
+				{
+					if(!searchType.equalsIgnoreCase(IConstants.MP))
+					searchList = zebraPrintDetailsDAO.getPrintedCountDetailsByStatusTypeSeacrh(selectedLocationIds,searchType,"errorStatus");
+					else
+					searchList = zebraPrintDetailsDAO.getParliamentWiseResultsByStatusType(selectedLocationIds,"errorStatus");	
+				}
+				else if(statusType.equalsIgnoreCase("SENT"))
+				{
+					if(!searchType.equalsIgnoreCase(IConstants.MP))
+					searchList = zebraPrintDetailsDAO.getPrintedCountDetailsByStatusTypeSeacrh(selectedLocationIds,searchType,"totalCount");
+					else
+					searchList = zebraPrintDetailsDAO.getParliamentWiseResultsByStatusType(selectedLocationIds,"totalCount");	
+				}
+				if(searchList != null && searchList.size() > 0)
+				{
+					for(Object[] params : searchList)
+					{
+						statusSeacrhLoctaionIds.add((Long)params[0]);
+					}
+				}
+				else if(statusType.equalsIgnoreCase("PENDING"))
+				{
+					List<Object[]> sentList  = null;
+					List<Object[]> printList = null;
+					if(!searchType.equalsIgnoreCase(IConstants.MP))
+					{
+					 sentList = zebraPrintDetailsDAO.getPrintedCountDetailsByStatusTypeSeacrh(selectedLocationIds,searchType,"totalCount");
+					 printList = zebraPrintDetailsDAO.getPrintedCountDetailsByStatusTypeSeacrh(selectedLocationIds,searchType,"printStatus");
+					}
+					else
+					{
+						 sentList = zebraPrintDetailsDAO.getParliamentWiseResultsByStatusType(selectedLocationIds,"totalCount");
+						 printList = zebraPrintDetailsDAO.getParliamentWiseResultsByStatusType(selectedLocationIds,"printStatus");
+					}
+					Map<Long,Long> printCntMap = new HashMap<Long, Long>();
+					if(printList != null && printList.size() > 0)
+					{
+						for(Object[] params : printList)
+						{
+							printCntMap.put((Long)params[0], (Long)params[1]);
+						}
+					}
+					if(sentList != null && sentList.size() > 0)
+					{
+						for(Object[] params : sentList)
+						{
+							Long printCnt = printCntMap.get((Long)params[0]);
+							if(printCnt == null)
+							{
+								statusSeacrhLoctaionIds.add((Long)params[0]);
+							}
+							else
+							{
+								Long sentCnt = (Long)params[1];
+								 if((sentCnt - printCnt) > 0)
+								 {
+									 if(!statusSeacrhLoctaionIds.contains((Long)params[0]))
+									 statusSeacrhLoctaionIds.add((Long)params[0]);	 
+								 }
+									 
+							}
+							
+						}
+					}
+					
+				}
+				
+			}
+			else
+			{
+				statusSeacrhLoctaionIds = selectedLocationIds;
+			}
 			if(searchType.equalsIgnoreCase(IConstants.CONSTITUENCY))
 			{
-				 registeredCountList    = tdpCadreDAO.gettingRegisteredVotersForConstituencys(selectedLocationIds);
-				 printedCountList 		= zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, searchType,"printStatus");
-				 errorCountList			= zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, searchType,"errorStatus");
-				 totalPushedCountList 	= zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, searchType,"totalCount");
+				 registeredCountList    = tdpCadreDAO.gettingRegisteredVotersForConstituencys(statusSeacrhLoctaionIds);
+				 printedCountList 		= zebraPrintDetailsDAO.getPrintedCountByLocationWise(statusSeacrhLoctaionIds, searchType,"printStatus");
+				 errorCountList			= zebraPrintDetailsDAO.getPrintedCountByLocationWise(statusSeacrhLoctaionIds, searchType,"errorStatus");
+				 totalPushedCountList 	= zebraPrintDetailsDAO.getPrintedCountByLocationWise(statusSeacrhLoctaionIds, searchType,"totalCount");
 			}
 			else if(searchType.equalsIgnoreCase(IConstants.DISTRICT))
 			{
-				 registeredCountList    = tdpCadreDAO.gettingRegisteredVotersForDistricts(selectedLocationIds);
-				 printedCountList 		= zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, searchType,"printStatus");
-				 errorCountList			= zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, searchType,"errorStatus");
-				 totalPushedCountList 	= zebraPrintDetailsDAO.getPrintedCountByLocationWise(selectedLocationIds, searchType,"totalCount");
+				 registeredCountList    = tdpCadreDAO.gettingRegisteredVotersForDistricts(statusSeacrhLoctaionIds);
+				 printedCountList 		= zebraPrintDetailsDAO.getPrintedCountByLocationWise(statusSeacrhLoctaionIds, searchType,"printStatus");
+				 errorCountList			= zebraPrintDetailsDAO.getPrintedCountByLocationWise(statusSeacrhLoctaionIds, searchType,"errorStatus");
+				 totalPushedCountList 	= zebraPrintDetailsDAO.getPrintedCountByLocationWise(statusSeacrhLoctaionIds, searchType,"totalCount");
 				 
 			}
 			else if(searchType.equalsIgnoreCase(IConstants.MP))
 			{
-				 registeredCountList    = tdpCadreDAO.gettingRegisteredVotersForParliaments(selectedLocationIds);
-				 printedCountList 		= zebraPrintDetailsDAO.getParliamentWiseResults(selectedLocationIds,"printStatus");
-				 errorCountList			= zebraPrintDetailsDAO.getParliamentWiseResults(selectedLocationIds,"errorStatus");
-				 totalPushedCountList 	= zebraPrintDetailsDAO.getParliamentWiseResults(selectedLocationIds,"totalCount"); 
+				 registeredCountList    = tdpCadreDAO.gettingRegisteredVotersForParliaments(statusSeacrhLoctaionIds);
+				 printedCountList 		= zebraPrintDetailsDAO.getParliamentWiseResults(statusSeacrhLoctaionIds,"printStatus");
+				 errorCountList			= zebraPrintDetailsDAO.getParliamentWiseResults(statusSeacrhLoctaionIds,"errorStatus");
+				 totalPushedCountList 	= zebraPrintDetailsDAO.getParliamentWiseResults(statusSeacrhLoctaionIds,"totalCount"); 
 			}
 			
 			
@@ -2766,5 +2850,62 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		}
 		return null;
 	}	
+	
+	public List<ZebraPrintDetailsVO> getJobCodesByLocationWise(String type,Long Id)
+	{
+		
+		List<Object[]> jobCodes = null; 
+		List<ZebraPrintDetailsVO> returnList = new ArrayList<ZebraPrintDetailsVO>();
+		try{
+			
+			if(type.equalsIgnoreCase("Parliament"))
+			jobCodes = zebraPrintDetailsDAO.getJobCodesByParliament(Id,type);
+			else
+			jobCodes = zebraPrintDetailsDAO.getJobCodesByLocationWise(Id,type);
+			Map<String,List<String>> bachCodeMap = new HashMap<String, List<String>>();
+			if(jobCodes !=null && jobCodes.size() > 0)
+			{
+			if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			{
+				for(Object[] params : jobCodes)
+				{
+					ZebraPrintDetailsVO vo =new ZebraPrintDetailsVO();
+					vo.setName(params[0].toString());
+					returnList.add(vo);
+				}
+				
+			}
+			else
+			{
+				for(Object[] params : jobCodes)
+				{
+					List<String> names = bachCodeMap.get(params[0].toString());
+					if(names == null)
+					{
+						names = new ArrayList<String>();
+						bachCodeMap.put(params[0].toString(), names);
+					}
+					if(!names.contains(params[1].toString()))
+						names.add(params[1].toString());
+				}
+				for(String key : bachCodeMap.keySet())
+				{
+					ZebraPrintDetailsVO vo =new ZebraPrintDetailsVO();
+					vo.setName(key);
+					vo.setDatesList(bachCodeMap.get(key));
+					returnList.add(vo);	
+				}
+				
+			}
+			}
+			
+		}
+		catch(Exception e)
+		{
+			LOG.error(" exception occured in getJobCodesByLocationWise()  @ TdpCadreReportService class.",e);	
+		}
+		return returnList;
+		
+	}
 	
 }

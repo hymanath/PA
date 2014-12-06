@@ -401,4 +401,154 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 		query.setParameter("parliamentId", parliamentId);
 		return query.list();
 	}
+	
+	
+	
+	public List<Object[]> getJobCodesByLocationWise(Long locationId, String searchType)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct model.jobCode,model.tdpCadre.userAddress.constituency.name"); 
+			
+		queryStr.append(" from ZebraPrintDetails model where model.jobCode is not null ");
+		queryStr.append(" and model.printStatus ='Y' and (model.errorStatus is null or model.errorStatus='0')");
+		if(searchType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+		{
+			queryStr.append(" and model.tdpCadre.userAddress.constituency.constituencyId  =:locationId");
+		}
+		else if(searchType.equalsIgnoreCase(IConstants.DISTRICT))
+		{
+			queryStr.append(" and model.tdpCadre.userAddress.district.districtId =:locationId  group by  model.jobCode, model.tdpCadre.userAddress.constituency.constituencyId");
+		}
+		
+		Query query = getSession().createQuery(queryStr.toString()); 
+		query.setParameter("locationId", locationId);
+		return query.list();
+	}
+	
+	public List<Object[]> getJobCodesByParliament(Long parliamentId, String dataType)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct ZPD.jobCode,DCA.constituency.name"); 
+		queryStr.append(" from ZebraPrintDetails ZPD, DelimitationConstituencyAssemblyDetails DCA ,DelimitationConstituency DC  " +
+				" where DC.year = 2009 and " +
+				" DCA.delimitationConstituency.delimitationConstituencyID = DC.delimitationConstituencyID and " +
+				" ZPD.tdpCadre.userAddress.constituency.constituencyId = DCA.constituency.constituencyId and " +
+				" DCA.delimitationConstituency.constituency.constituencyId =:parliamentId and " +
+				" ZPD.tdpCadre.isDeleted = 'N' and " +
+				" ZPD.tdpCadre.enrollmentYear = 2014 and ZPD.jobCode is not null");
+		queryStr.append(" and ZPD.printStatus ='Y' and (ZPD.errorStatus is null or ZPD.errorStatus='0') group by ZPD.jobCode,DCA.constituency.constituencyId");
+		Query query = getSession().createQuery(queryStr.toString()); 
+		query.setParameter("parliamentId", parliamentId);
+		return query.list();
+	}
+	
+	
+	public List<Object[]> getAllCadreDetailsByBatchCodeandLocation(String batchCode,String searchType,Long Id){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select model.member_ship_member,model.voter_name,model.mobile_no,model.district_name,model.constituency_name,model.mandal_name,model.muncipality_name," +
+				"model.panchayat_name,model.part_no,model.house_no,model.zebra_print_details_id,tca.location,tca.town from zebra_print_details " +
+				" model LEFT JOIN tdp_cadre_address tca on model.tdp_cadre_id = tca.tdp_cadre_id ");
+		queryStr.append(" LEFT JOIN tdp_cadre tc ON model.tdp_cadre_id = tc.tdp_cadre_id");
+		queryStr.append(" LEFT JOIN user_address ua ON tc.address_id = ua.user_address_id");
+		queryStr.append(" where model.job_code =:batchCode and model.print_status ='Y' and (model.error_Status is null or model.error_Status='0') "); 
+		if(searchType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+		{
+			queryStr.append(" and ua.constituency_id = :Id");	
+		}
+		else if(searchType.equalsIgnoreCase(IConstants.DISTRICT))
+		{
+			queryStr.append(" and ua.district_id = :Id");	
+		}
+		Query query = getSession().createSQLQuery(queryStr.toString()); 
+		query.setParameter("batchCode", batchCode);
+		query.setParameter("Id", Id);
+		return query.list();
+	}
+	
+	public List<Object[]> getAllCadreDetailsByParliament(String batchCode,String searchType,List<Long> Ids){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select model.member_ship_member,model.voter_name,model.mobile_no,model.district_name,model.constituency_name,model.mandal_name,model.muncipality_name," +
+				"model.panchayat_name,model.part_no,model.house_no,model.zebra_print_details_id,tca.location,tca.town from zebra_print_details " +
+				" model LEFT JOIN tdp_cadre_address tca on model.tdp_cadre_id = tca.tdp_cadre_id ");
+		queryStr.append(" LEFT JOIN tdp_cadre tc ON model.tdp_cadre_id = tc.tdp_cadre_id ");
+		queryStr.append(" LEFT JOIN user_address ua ON tc.address_id = ua.user_address_id ");
+		queryStr.append(" where model.job_code =:batchCode and model.print_status ='Y' and (model.error_Status is null or model.error_Status='0') "); 
+		queryStr.append(" and ua.constituency_id in(:Ids) ");	
+		
+		Query query = getSession().createSQLQuery(queryStr.toString()); 
+		query.setParameter("batchCode", batchCode);
+		query.setParameterList("Ids", Ids);
+		return query.list();
+	}
+	
+	public List<Object[]> getPrintedCountDetailsByStatusTypeSeacrh(List<Long> locationIdsList, String searchType,String dataType)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		
+		if(searchType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+		{
+			queryStr.append(" select model.tdpCadre.userAddress.constituency.constituencyId,count(model.zebraPrintDetailsId) from ZebraPrintDetails model where ");
+			queryStr.append(" model.tdpCadre.userAddress.constituency.constituencyId in (:locationIdsList) ");
+			if(dataType.equalsIgnoreCase("printStatus"))
+			{
+				queryStr.append(" and ((model.printStatus is not null and model.printStatus ='Y' ) and (model.errorStatus is null or model.errorStatus ='0' )) ");
+			}
+			else if(dataType.equalsIgnoreCase("errorStatus"))
+			{
+				queryStr.append(" and (model.errorStatus is not null and model.errorStatus !='0') ");
+			}
+			queryStr.append(" group by model.tdpCadre.userAddress.constituency.constituencyId ");
+			queryStr.append(" order by model.tdpCadre.userAddress.constituency.name asc ");
+		}
+		else if(searchType.equalsIgnoreCase(IConstants.DISTRICT))
+		{
+			queryStr.append(" select model.tdpCadre.userAddress.district.districtId,count(model.zebraPrintDetailsId) from ZebraPrintDetails model where  ");
+			queryStr.append(" model.tdpCadre.userAddress.district.districtId in (:locationIdsList) ");
+			if(dataType.equalsIgnoreCase("printStatus"))
+			{
+				queryStr.append(" and ((model.printStatus is not null and model.printStatus ='Y' ) and (model.errorStatus is null or model.errorStatus ='0' )) ");
+			}
+			else if(dataType.equalsIgnoreCase("errorStatus"))
+			{
+				queryStr.append(" and (model.errorStatus is not null and  model.errorStatus !='0' ) ");
+			}
+			queryStr.append(" group by model.tdpCadre.userAddress.district.districtId ");
+			queryStr.append(" order by model.tdpCadre.userAddress.district.districtName asc ");
+		}
+		
+		
+		
+		Query query = getSession().createQuery(queryStr.toString()); 
+		query.setParameterList("locationIdsList", locationIdsList);
+		return query.list();
+	}
+	
+	public List<Object[]> getParliamentWiseResultsByStatusType(List<Long> parliamentIdsList, String dataType)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		
+		
+		queryStr.append("  select DCA.delimitationConstituency.constituency.constituencyId, count(ZPD.zebraPrintDetailsId)  " +
+				" from ZebraPrintDetails ZPD, DelimitationConstituencyAssemblyDetails DCA ,DelimitationConstituency DC  " +
+				" where DC.year = 2009 and " +
+				" DCA.delimitationConstituency.delimitationConstituencyID = DC.delimitationConstituencyID and " +
+				" ZPD.tdpCadre.userAddress.constituency.constituencyId = DCA.constituency.constituencyId and " +
+				" DCA.delimitationConstituency.constituency.constituencyId in (:parliamentIdsList) and " +
+				" ZPD.tdpCadre.isDeleted = 'N' and " +
+				" ZPD.tdpCadre.enrollmentYear = 2014 ");
+				
+		if(dataType.equalsIgnoreCase("printStatus"))
+		{
+			queryStr.append(" and ((ZPD.printStatus ='Y' or ZPD.printStatus ='y' ) and (ZPD.errorStatus is null or ZPD.errorStatus ='0' ))  ");
+		}
+		else if(dataType.equalsIgnoreCase("errorStatus"))
+		{
+			queryStr.append(" and (ZPD.errorStatus is not null and ZPD.errorStatus !='0' )  ");
+		}
+		
+		queryStr.append(" group by DCA.delimitationConstituency.constituency.constituencyId order by DCA.delimitationConstituency.constituency.name asc  ");
+		Query query = getSession().createQuery(queryStr.toString()); 
+		query.setParameterList("parliamentIdsList", parliamentIdsList);
+		return query.list();
+	}
 }

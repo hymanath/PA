@@ -2143,16 +2143,29 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 	return resultList;
  }
 	
-	public  TabRecordsStatusVO getMISReport(String batchCode) {
+	public  TabRecordsStatusVO getMISReport(String batchCode,Long Id,String type) {
 		TabRecordsStatusVO status = new TabRecordsStatusVO();
 		try {
+			List<Object[]> cadreInfo = null;
 			String key = UUID.randomUUID().toString();
 			String url = IConstants.STATIC_CONTENT_FOLDER_URL+"VMR/MIS/"+key+".xls";
 			String returnUrl = "VMR/MIS/"+key+".xls";
 			status.setMobileNo(returnUrl);
 			LinkedHashMap<String, List<Object[]>> constituencyMap = new LinkedHashMap<String, List<Object[]>>();
 			LinkedHashMap<String,LinkedHashMap<String,Long>> locationDetails = new LinkedHashMap<String,LinkedHashMap<String,Long>>();
-			List<Object[]> cadreInfo = zebraPrintDetailsDAO.getAllCadreDetailsByBatchCode(batchCode);
+			if(type == null)
+			 cadreInfo = zebraPrintDetailsDAO.getAllCadreDetailsByBatchCode(batchCode);
+			else
+			{
+				if(type.equalsIgnoreCase("Parliament"))
+				{
+				List<Long> assemblyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesByParliament(Id);
+				if(assemblyIds != null && assemblyIds.size() > 0)
+				cadreInfo = zebraPrintDetailsDAO.getAllCadreDetailsByParliament(batchCode,type,assemblyIds);	
+				}
+				else
+				 cadreInfo = zebraPrintDetailsDAO.getAllCadreDetailsByBatchCodeandLocation(batchCode,type,Id);
+			}
 			if(cadreInfo.size() == 0){
 				status.setName("noData");
 				return status;
@@ -2371,4 +2384,6 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 		}
 		return status;
 	}
+	
+	
 }
