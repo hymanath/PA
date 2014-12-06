@@ -3359,7 +3359,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			 if(fromDate != null && toDate != null){
 			   str.append(" and date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate ");
 			 }
-			  str.append(" and model.userAddress.constituency.constituencyId = :constituencyId group by model.userAddress.booth.boothId ");
+			  str.append(" and model.userAddress.constituency.constituencyId = :constituencyId group by model.userAddress.booth.partNo ");
 			 
 				Query query = getSession().createQuery(str.toString());
 			if(fromDate != null && toDate != null){
@@ -3378,6 +3378,17 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 	        query.setParameterList("constituencyIds", constituencyIds);
 			return (Long)query.uniqueResult();
 		}
+	  
+	  public List<Object[]> getTotalRecordsByBoothWise(Long constituencyId){
+			StringBuilder str = new StringBuilder();
+			 str.append(" select count(model.tdpCadreId), model.userAddress.booth.boothId, model.userAddress.booth.partNo, model.userAddress.tehsil.tehsilId,model.userAddress.tehsil.tehsilName ");
+			 str.append(" from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = 2014 and model.userAddress.booth.boothId is not null and model.userAddress.tehsil is not null ");
+			 str.append(" and model.userAddress.constituency.constituencyId = :constituencyId  group by model.userAddress.booth.boothId ");
+			 
+			Query query = getSession().createQuery(str.toString());
+			query.setParameter("constituencyId",constituencyId);
+			return query.list();
+	  }
 	  
 	  public List<Object[]> getTotalRegisterCadreInfo(){
 			StringBuilder queryStr = new StringBuilder();
