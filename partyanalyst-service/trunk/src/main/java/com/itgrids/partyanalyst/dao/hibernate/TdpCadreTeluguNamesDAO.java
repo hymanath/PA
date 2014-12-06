@@ -23,4 +23,14 @@ public class TdpCadreTeluguNamesDAO extends GenericDaoHibernate<TdpCadreTeluguNa
 		return query.list();
 	}
 	
+
+	public List<Object[]> getTeluguVoterNameByTdpCadreIds(List<Long> tdpCadreIds){
+		Query query = getSession().createQuery(" select model.tdpCadreId,model.teluguName " +
+				" from TdpCadreTeluguNames model " +
+				" where model.tdpCadre.tdpCadreId in (:tdpCadreIds) ");
+		
+		query.setParameterList("tdpCadreIds", tdpCadreIds);
+		return query.list();
+	}
+	
 }

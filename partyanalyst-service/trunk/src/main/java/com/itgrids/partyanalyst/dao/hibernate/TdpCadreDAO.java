@@ -3386,4 +3386,30 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			Query query = getSession().createQuery(queryStr.toString());
 			return query.list();
 		}
+
+	  public List<Object[]> getCadreDetails(String queryStr)
+		{
+			/*StringBuilder queryStr = new StringBuilder();
+			queryStr.append(" select model.tdpCadreId,model.image,model.userAddress.userAddressId,model.memberShipNo,model.mobileNo,model.firstname,model.cardNumber,model.constituencyId " +
+					"   from  TdpCadre model ");
+			if(searchType.equalsIgnoreCase("membership"))
+				queryStr.append("where substring(model.memberShipNo,5) = :value " );
+			else if(searchType.equalsIgnoreCase("mobile"))
+				queryStr.append("where model.mobileNo = :value ");
+			else if(searchType.equalsIgnoreCase("tr"))
+				queryStr.append("where model.refNo = :value ");
+			queryStr.append("and  model.isDeleted='N' and model.enrollmentYear = 2014" );	*/
+			Query query = getSession().createQuery(queryStr.toString()); 
+		
+			return query.list();
+		}
+	  
+	  public List<Object[]> getTeluguVoterNames(List<Long> tdpCadreId){
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append("select tc.tdpCadreId,concat(vn.firstName,' ',vn.lastName) from TdpCadre tc,VoterNames vn where tc.isDeleted = 'N'  and tc.enrollmentYear = 2014 ");
+			queryStr.append(" and  tc.tdpCadreId in (:tdpCadreId) and  tc.voterId = vn.voterId and tc.voterId is not null");	
+			Query query = getSession().createQuery(queryStr.toString());
+		    query.setParameterList("tdpCadreId", tdpCadreId);
+			return query.list();
+		}
 }
