@@ -1154,6 +1154,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 								else
 								{
 									Long remainingTarget = targetCount.longValue() - totalRegisteredCount.longValue();
+									remainingTarget = targetCount.longValue() + ( remainingTarget );
 									assemblyMessage.append(",\nToday Target : "+remainingTarget);
 								}
 								if(returnVO.getNotSubmittedCount() != null)
@@ -1470,6 +1471,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 							else
 							{
 								Long remainingTarget = targetCount.longValue() - finalTehsilVO.getTotalCount().longValue();
+								remainingTarget = targetCount.longValue() + ( remainingTarget );
 								mandalMessage.append(",\nToday Target : "+remainingTarget);
 							}
 							if(finalTehsilVO.getNotSubmittedCount() != null)
