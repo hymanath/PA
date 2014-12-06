@@ -1754,6 +1754,10 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
 
+<bean id="partyPresidentsDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyPresidentsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
 <bean id="localNameConstantDAO" class="com.itgrids.partyanalyst.dao.hibernate.LocalNameConstantDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>

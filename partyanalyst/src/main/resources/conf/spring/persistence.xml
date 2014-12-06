@@ -513,6 +513,7 @@
 				<value>com.itgrids.partyanalyst.model.TdpCadreTeluguNames</value>
 				<value>com.itgrids.partyanalyst.model.TdpCadreVerfiedData</value>
 				<value>com.itgrids.partyanalyst.model.TabUserKeys</value>
+				<value>com.itgrids.partyanalyst.model.PartyPresidents</value>
 				<value>com.itgrids.partyanalyst.model.LocalNameConstant</value>
 				<value>com.itgrids.partyanalyst.model.TdpCadreCallCenterRemarks</value>
 				<value>com.itgrids.partyanalyst.model.TdpCadreCallCenterFeedback</value>

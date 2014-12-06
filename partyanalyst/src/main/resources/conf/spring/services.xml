@@ -1316,7 +1316,7 @@
 		<property name="mailService" ref="mailService"/>
 		<property name="searchEngineIPAddressDAO" ref="searchEngineIPAddressDAO"/>
 		<property name="userTrackingDAO" ref="userTrackingDAO"/>
-		
+		<property name="cadreSurveyTransactionService" ref="cadreSurveyTransactionService"/>
 	</bean>
 	
 	<bean name="scheduler" class="com.itgrids.partyanalyst.notification.service.impl.Scheduler">
@@ -1394,8 +1394,17 @@
 	  	<property name="targetMethod" value="schedularForCardPrintDataFilling" /> 
 	</bean>-->
 	
-	
-	
+	<!-- 
+	<bean name="schForSri" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="schForSri1" />
+    	<property name="cronExpression" value="0 0 6 * * ?" />
+	</bean>	
+	<bean name="schForSri1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="runSriSch" /> 
+	</bean>	
+	 -->
+	 	 	
 	<bean name="everyDayBatchJobForInsertCaste" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
 	  	<property name="targetMethod" value="runTheBatchJobForInsertCasteForEveryDay" />
@@ -1455,6 +1464,7 @@
 			<ref bean="cronTriggerForEveryDayJobTosendSmsToMobileAppUsers" />
 			<ref bean="cronTriggerForeveryDayBatchJobForPopulateVoterData" />
 			<ref bean="insertTriggerForEveryDayMobiles" />
+			<!--<ref bean="schForSri" />-->
 			<!--<ref bean="schedularForCardPrintDataFilling" />
 			<ref bean="runTheBatchJobForEveryDayCardDataInsertForMax" />
 			<ref bean="runTheBatchJobForEveryDayCardDataInsertForZebra" />
@@ -2310,6 +2320,10 @@
          <property name="cadreOtpDetailsDAO" ref="cadreOtpDetailsDAO" />
      	 <property name="smsCountrySmsService" ref="smsCountrySmsService" />
      	 <property name="tdpCadreDAO" ref="tdpCadreDAO" />
+     	 <property name="boothDAO" ref="boothDAO" />
+     	 <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+     	 <property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
+     	 <property name="partyPresidentsDAO" ref="partyPresidentsDAO" />
      </bean>
      
      <bean name="cadreRegAmountDetailsService"  class="com.itgrids.partyanalyst.service.impl.CadreRegAmountDetailsService">
