@@ -2010,7 +2010,8 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 						
 						
 						if(fromTask.equalsIgnoreCase("today")){
-							Long noOfDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, IConstants.CADRE_2014_LAST_DATE);
+							//Long noOfDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, IConstants.CADRE_2014_LAST_DATE);
+							Long noOfDays = 30l;
 							
 							if(stateId == 1){
 								basicVo.setTargetCadres(((basicVo.getTotalVoters() * IConstants.TARGET_CADRE_AP) / IConstants.AP_VOTERS_2014)/noOfDays);
@@ -2025,7 +2026,8 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 							}
 						}else{
 							String currentDate = dateService.getCurrentDateInStringFormatYYYYMMDD();
-							Long tillDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, currentDate);
+							//Long tillDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, currentDate);
+							Long tillDays = 30l;
 							Long noOfDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, IConstants.CADRE_2014_LAST_DATE);
 							
 							if(stateId == 1){
