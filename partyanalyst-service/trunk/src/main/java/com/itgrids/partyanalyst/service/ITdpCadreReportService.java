@@ -13,7 +13,7 @@ public interface ITdpCadreReportService {
 	public ZebraPrintDetailsVO getMemberShipCardPrintDetails(String searchType,Long stateTypeId,List<Long> selectedLocationIds,String fromDateStr,String toDateStr);
 	public SurveyTransactionVO getConstituencyDetailsInDistricts(List<Long> districtIdList);
 	public String updatePrintingStatusInTdpCadreTable();
-	public ZebraPrintDetailsVO createDashBoardForPrintingCardsDetails(String accessType,String accessValue,Long stateTypeId,String searchType, Long selectedLocationId);
+	//public ZebraPrintDetailsVO createDashBoardForPrintingCardsDetails(String accessType,String accessValue,Long stateTypeId,String searchType, Long selectedLocationId);
 	public ZebraPrintDetailsVO dashBoardForPrintingCardsDetails(String accessType,String accessValue,Long stateTypeId);
 	
 	public ZebraPrintDetailsVO getCadreDetailsByStatus(Long constituencyId,String status);
@@ -21,5 +21,8 @@ public interface ITdpCadreReportService {
 	public List<CadreRegistrationVO> getCadreDetailsInTeluguByMembershipId(String membershipId);
 	public List<ZebraPrintDetailsVO> getDayWiseCardPrintedCountInfo(String type,String status,Long Id,Long stateId);
 	public List<ZebraPrintDetailsVO> getDayWiseCardPrintedCountInfoForParlment(String status,Long Id,Long stateId);
+	//public List<String> getJobCodesByLocationWise(String type,Long Id);
+	public List<ZebraPrintDetailsVO> getJobCodesByLocationWise(String type,Long Id);
+	public ZebraPrintDetailsVO createDashBoardForPrintingCardsDetails(String accessType,String accessValue,Long stateTypeId,String searchType, Long selectedLocationId,String statusType);
 	
 }
