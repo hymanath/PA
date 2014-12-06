@@ -73,7 +73,7 @@
 		<div class="row" id="cardMainDiv" style="display:none">
 		<!-----CARD--------->
 			<div class="span7"  >
-				<div class="widget" id="cardDisplayId" style="height:370px;"></div>
+				<div class="widget" id="cardDisplayId" style="height:339px;"></div>
 			</div>
 		<!------CARD End-------->
 			<div class="span5" >
@@ -83,9 +83,9 @@
 					</div>
 				</div>
 				<div class="widget">
-					<div class="widget-body">
-						<div id="errorDiv1"></div>
-						<h5 style="margin-top:5px;">Feedback</h5>	
+					<div class="widget-body" style="height:262px;">
+						<div id="errorDiv1" style="margin-bottom: -8px; margin-top: -9px;"></div>
+						<h5 style="margin-top:6px;margin-bottom:2px;">Feedback</h5>	
 						<label class="checkbox"> 
 							<input type="checkbox" class="feedbackCls" name="feedbackCheck" value="Photo Wrong"> Photo Wrong
 						</label><label class="checkbox"> 
@@ -100,7 +100,7 @@
 						<label class="checkbox"> 
 							<input type="checkbox" class="feedbackCls" name="feedbackCheck" value="Other"> Other
 						</label>
-						<h5 style="margin-bottom:0px;"> 
+						<h5 style="margin-bottom:2px;margin-top:2px;"> 
 							Remarks</h5>						
 							<textarea rows="1" id="remarksId" class="input-block-level"></textarea>
 						<button type="button" class="btn btn-success btn-block border-radius-0 m-top10" onclick="saveFeedbackDetials();">SUBMIT</button>
@@ -287,12 +287,22 @@
 	
 	
 	function saveFeedbackDetials(){
-
-		//var data = $( "input:[name=feedbackCheck]:checked" ).val();
+		 
 		 var checkCount = $( "input:checked" ).length - 1;
 		 var remarks=  $.trim($('#remarksId').val());
 		
+		 if(cadreId.length == 0){
+			$('#errorDiv1').html('No Cadre Selected').css("color","red");
+			return false;
+		 }		 
+		 else if(checkCount < 0){
+			if(remarks == ''){
+				$('#errorDiv1').html('Enter The Feedback').css("color","red");
+				return false ;
+				}
+		 }
 		var comments = "";
+		$('#errorDiv1').html("");
 		var selectedValues = $("input[name=feedbackCheck]:checked").map(function() {
 			return this.value;
 		}).get();
@@ -323,7 +333,7 @@
 						}
 						else
 						{
-							$('#errorDiv1').html('Error Occured');
+							$('#errorDiv1').html('<span style="color:red;">Error Occured</span>');
 						}
 					}
 		
@@ -332,8 +342,8 @@
 	}
 	
 	function getCadreDetailsBySearchCriteria1()
-	{
-	$("#ajaxImage").show();
+	{		
+		$("#ajaxImage").show();
 		var jsObj = {
 			mobileNo:mobileNumber,
 			membershipNo:membership,
