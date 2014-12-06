@@ -36,9 +36,45 @@ public class SurveyTransactionVO implements java.io.Serializable{
 	private String LocationName;
 	private String parliamentName;
 	
+	private String below10CountLocations;
+	private String notSumbittedLocations;
+	
+	private Long dayWiseTarget;
+	private Long archeivedTarget;
+	private String locationType;
+	
 	private List<SurveyTransactionVO> surveyTransactionVOList = new ArrayList<SurveyTransactionVO>(0);
 	
-	
+	public String getLocationType() {
+		return locationType;
+	}
+	public void setLocationType(String locationType) {
+		this.locationType = locationType;
+	}
+	public Long getDayWiseTarget() {
+		return dayWiseTarget;
+	}
+	public void setDayWiseTarget(Long dayWiseTarget) {
+		this.dayWiseTarget = dayWiseTarget;
+	}
+	public Long getArcheivedTarget() {
+		return archeivedTarget;
+	}
+	public void setArcheivedTarget(Long archeivedTarget) {
+		this.archeivedTarget = archeivedTarget;
+	}
+	public String getBelow10CountLocations() {
+		return below10CountLocations;
+	}
+	public void setBelow10CountLocations(String below10CountLocations) {
+		this.below10CountLocations = below10CountLocations;
+	}
+	public String getNotSumbittedLocations() {
+		return notSumbittedLocations;
+	}
+	public void setNotSumbittedLocations(String notSumbittedLocations) {
+		this.notSumbittedLocations = notSumbittedLocations;
+	}
 	public String getParliamentName() {
 		return parliamentName;
 	}
