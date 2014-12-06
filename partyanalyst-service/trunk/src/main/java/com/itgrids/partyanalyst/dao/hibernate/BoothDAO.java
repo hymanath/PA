@@ -2273,4 +2273,40 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		return query.list();
 	}
 
+	public List<String> getUnregisteredBoothsByBooths(List<Long> boothIdsList,Long constituencyId, Long publicationDateId,Long tehsilId,String tehsilType)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct model.partNo from Booth model where model.constituency.constituencyId = :constituencyId  and ");
+		queryStr.append(" model.publicationDate.publicationDateId = :publicationDateId and model.boothId not in (:boothIdsList) ");
+		
+		if(tehsilType.equalsIgnoreCase("notRural"))
+		{
+			queryStr.append("and model.localBody.localElectionBodyId =:tehsilId ");
+		}
+		else
+		{
+			queryStr.append(" and model.tehsil.tehsilId = :tehsilId ");
+		}
+		queryStr.append(" order by model.boothId");
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		query.setParameterList("boothIdsList",boothIdsList);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("tehsilId", tehsilId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> findBoothInfoByConstituencyAndPublication(Long constituencyId, Long publicationDateId){
+		
+		Query query = getSession().createQuery("select distinct model.boothId, model.partNo, model.tehsil.tehsilId, model.tehsil.tehsilName,  model.localBody.localElectionBodyId  " +
+				" from Booth model where model.constituency.constituencyId = :constituencyId and model.publicationDate.publicationDateId = :publicationDateId order by model.partNo");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDateId", publicationDateId);
+		
+		return query.list();
+		
+	}
+	
 }
