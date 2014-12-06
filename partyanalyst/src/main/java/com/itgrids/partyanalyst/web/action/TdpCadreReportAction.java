@@ -37,7 +37,17 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 	private List<CadreRegistrationVO> registrationVOList = new ArrayList<CadreRegistrationVO>();
 	private EntitlementsHelper 					entitlementsHelper;
 	private List<ZebraPrintDetailsVO> zebraPrintDetails;
+	private List<String> jobCodes;
 	
+	
+	public List<String> getJobCodes() {
+		return jobCodes;
+	}
+
+	public void setJobCodes(List<String> jobCodes) {
+		this.jobCodes = jobCodes;
+	}
+
 	public List<ZebraPrintDetailsVO> getZebraPrintDetails() {
 		return zebraPrintDetails;
 	}
@@ -267,7 +277,7 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 			jobj = new JSONObject(getTask());
 			Long stateTyleId = jobj.getLong("stateTyleId");
 			String locType = jobj.getString("type");
-			zebraPrintDetailsVO = tdpCadreReportService.createDashBoardForPrintingCardsDetails(user.getAccessType(),user.getAccessValue(),stateTyleId,locType,0l);
+			zebraPrintDetailsVO = tdpCadreReportService.createDashBoardForPrintingCardsDetails(user.getAccessType(),user.getAccessValue(),stateTyleId,locType,0l,"");
 			
 			
 		} catch (Exception e) {
@@ -287,8 +297,8 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 			String searchType = jobj.getString("searchType");
 			Long stateTypeId = jobj.getLong("stateTypeId");
 			Long selectedLocationId = jobj.getLong("locationId");
-			
-			zebraPrintDetailsVO = tdpCadreReportService.createDashBoardForPrintingCardsDetails(user.getAccessType(),user.getAccessValue(),stateTypeId,searchType,selectedLocationId);
+			String statusType = jobj.getString("statusType");
+			zebraPrintDetailsVO = tdpCadreReportService.createDashBoardForPrintingCardsDetails(user.getAccessType(),user.getAccessValue(),stateTypeId,searchType,selectedLocationId,statusType);
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in printingDashBoard method in CadreRegistrationAction Action",e);
@@ -340,6 +350,20 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 			zebraPrintDetails = tdpCadreReportService.getDayWiseCardPrintedCountInfo(jobj.getString("type"),jobj.getString("status"),jobj.getLong("Id"),stateId);
 			else
 				zebraPrintDetails = tdpCadreReportService.getDayWiseCardPrintedCountInfoForParlment(jobj.getString("status"),jobj.getLong("Id"),stateId);	
+		}
+		catch(Exception e)
+		{
+			LOG.info("Entered into getDayWiseCardPrintedCount() in getLocationWiseDetailsForExcelReport class");	
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getJobCodesByLocationWise()
+	{
+		try{
+			jobj = new JSONObject(getTask());
+			Long stateId = 0l;
+			zebraPrintDetails = tdpCadreReportService.getJobCodesByLocationWise(jobj.getString("type"),jobj.getLong("Id"));	
 		}
 		catch(Exception e)
 		{

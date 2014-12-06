@@ -9114,6 +9114,16 @@
 				<param name="root">info</param>
 			</result>
 		</action>
+		<action name="getJobCodesAction" class="tdpCadreReportAction"  method="getJobCodesByLocationWise">
+		<result type="json" name="success">
+				<param name="root">zebraPrintDetails</param>
+			</result>
+		</action>
+		<action name="getMISReportForLocation" class="leaderCadreDashBoardAction" method="getMISReportForLocation" >
+			<result type="json" name="success">
+				<param name="root">status</param>
+			</result>
+		</action>
 </package>
 
 </struts>      
