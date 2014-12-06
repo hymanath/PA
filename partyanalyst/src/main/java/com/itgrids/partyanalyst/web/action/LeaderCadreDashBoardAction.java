@@ -344,7 +344,34 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 				return Action.SUCCESS;
 			}
 			jObj = new JSONObject(getTask());
-			status = leaderCadreDashBoardService.getMISReport(jObj.getString("batchCode"));
+			status = leaderCadreDashBoardService.getMISReport(jObj.getString("batchCode"),null,null);
+		}
+		catch (Exception e) {
+			LOG.error("Entered into getMISReport() in LeaderCadreDashBoardAction class",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getMISReportForLocation()
+	{
+		try{
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			boolean noaccess = false;
+			if(regVO==null){
+				return "input";
+			}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"MISREPORT")){
+				noaccess = true ;
+			}
+			if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+				noaccess = false;
+			}
+			if(noaccess){
+				status = new TabRecordsStatusVO();
+				status.setName("refresh");
+				return Action.SUCCESS;
+			}
+			jObj = new JSONObject(getTask());
+			status = leaderCadreDashBoardService.getMISReport(jObj.getString("batchCode"),jObj.getLong("Id"),jObj.getString("type"));
 		}
 		catch (Exception e) {
 			LOG.error("Entered into getMISReport() in LeaderCadreDashBoardAction class",e);
