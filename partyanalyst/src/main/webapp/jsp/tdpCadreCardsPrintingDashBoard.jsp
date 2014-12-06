@@ -9,8 +9,7 @@
     <link href="js/cardsDashBoard/css2.3.2/bootstrap.min.css" rel="stylesheet">	
 	<!-- Custom Styles-->
     <link href="js/cardsDashBoard/css2.3.2/style.css" rel="stylesheet">	
-	<!-- bootstrap switch Styles-->
-    <link href="js/cardsDashBoard/css2.3.2/bootstrap-switch.css" rel="stylesheet">		
+		
 	<!-- scrollator -->
 	<link href="js/cardsDashBoard/scrollator/fm.scrollator.jquery.css" rel="stylesheet">		
 	<link href="js/cardsDashBoard/assets/css/smain.css" rel="stylesheet" type="text/css" media="screen">
@@ -43,10 +42,9 @@
 	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/cardsDashBoard/js2.3.2/bootstrap.min.js"></script>
-	<!---Bootstrap Swich-->
-	<script src="js/cardsDashBoard/js2.3.2/bootstrap-switch.js"></script>
 	
 	
+		<script type="text/javascript" src="js/blockui.js"></script>
 	<script>
 	var totalRegistered = '${zebraPrintDetailsVO.rowCount}';
 	var pushForPrint = '${zebraPrintDetailsVO.totalPushCount}';
@@ -68,6 +66,7 @@
   <body>
   	
 	<div class="container">
+
 		<div class="row">
 			<div class="span12 widget text-center">
 				<h2 style="padding:15px 20px;font-size: 20px;">PRINTING STATUS REPORT DASHBOARD</h2>
@@ -125,8 +124,16 @@
 			<div class="span8">
 				<div class="widget">
 					<div class="widget-heading">
-						<h4>Constituency Wise Cards Prints Overview <select class="pull-right input-medium" id="constituencyList" style="margin-top:-5px;" onChange="searchByName(this.id,'CONSTITUENCY')"><option value="0"> All </option></select></h4>
+						<h4>Constituency Wise Cards Prints Overview 
+						<select class="pull-right input-small" id="ConstiSeacrhId" style="margin-top:-5px;" onChange="searchByStatus('CONSTITUENCY')"><option value="0"> Select</option><option value="SENT"> SENT TO PRINT </option>
+						<option value="PRINTED"> PRINTED </option>
+						<option value="ERROR"> ERROR </option>
+						<option value="PENDING"> PENDING </option></select>
+						<select class="pull-right input-small" id="constituencyList" style="margin-top:-5px;" onChange="searchByName(this.id,'CONSTITUENCY')"><option value="0"> All </option></select>
+						
+						</h4>
 					</div>
+
 					<div class="widget-body scrollable_div" style="width:97%; height:481px;overflow:auto;">		
 						<div align="center"><img style="width:70px;height:60px;display:none;" id="searchDataImg" class="" src="images/Loading-data.gif"></div>					
 						<div id="accordion2" class="accordion"> </div>						
@@ -151,7 +158,10 @@
 				<div class="span6 ">
 					<div class="widget">
 						<div class="widget-heading">
-							<h5>District Wise Cards Prints Overview<select class="pull-right input-medium" id="districtList" style="margin-top:-5px;" onChange="searchByName(this.id,'DISTRICT')"><option value="0"> All </option></select></h5>
+							<h5>District Wise Cards Prints Overview<select class="pull-right input-small" id="DistSeacrhId" style="margin-top:-5px;" onChange="searchByStatus('DISTRICT')"><option value="0"> Select</option><option value="SENT"> SENT TO PRINT </option>
+						<option value="PRINTED"> PRINTED </option>
+						<option value="ERROR"> ERROR </option><option value="PENDING"> PENDING </option></select>
+						<select class="pull-right input-small" id="districtList" style="margin-top:-5px;" onChange="searchByName(this.id,'DISTRICT')"><option value="0"> All </option></select></h5>
 						</div>						
 						<div class="widget-body" style="width:95%;height:230px;overflow:auto;">
 							<div align="center"><img style="width:70px;height:60px;display:none;" id="ajaxImg" src="images/Loading-data.gif"></div>											
@@ -163,7 +173,10 @@
 				<div class="span6 ">
 					<div class="widget">
 						<div class="widget-heading">
-							<h5>Parliament Wise Cards Prints Overview<select class="pull-right input-medium" id="parlConstiList" style="margin-top:-5px;" onChange="searchByName(this.id,'MP')"><option value="0"> All </option></select></h5>
+							<h5>Parliament Wise Cards Prints Overview<select class="pull-right input-small" id="ParlSeacrhId" style="margin-top:-5px;" onChange="searchByStatus('MP')"><option value="0"> Select</option><option value="SENT"> SENT TO PRINT </option>
+						<option value="PRINTED"> PRINTED </option>
+						<option value="ERROR"> ERROR </option><option value="PENDING"> PENDING </option></select>
+							<select class="pull-right input-small" id="parlConstiList" style="margin-top:-5px;" onChange="searchByName(this.id,'MP')"><option value="0"> All </option></select></h5>
 						</div>
 						<div class="widget-body"  style="width:95%;height:230px;overflow:auto;">						
 								<div align="center"><img style="width:70px;height:60px;display:none;" id="ajaxImg1" src="images/Loading-data.gif"></div>											
@@ -214,7 +227,7 @@
 			stateId = 2;
 		var jsObj = 
 		{
-			  stateTyleId : stateId,
+			  stateTyleId : 2,
 			  type : type,
 			  task:"totalPrintingCount"             
 		}	
@@ -261,11 +274,18 @@
 	}	
 		str+=' <div class="accordion-group">';
 		str+=' <div class="accordion-heading">';
-		str+=' <a onclick="hideConstiDiv();toggleDiv(\'collapse'+i+'\');" href="#collapse'+i+'" data-parent="#accordion2" data-toggle="collapse" class="accordion-toggle collapsed">'+result.zebraPrintDetailsVOList[i].name+'  <span id="mini-pie-chart'+i+'" class="pull-right mini-pie-chart"></span></a>';
+		str+=' <a style="font-weight:bold;font-size:16px;" onclick="hideConstiDiv();toggleDiv(\'collapse'+i+'\');getJOBCodeS(\'CONSTITUENCY\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYMIS'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImgMIS'+result.zebraPrintDetailsVOList[i].id+'\');getDayWiseCardPrintedCount(\'CONSTITUENCY\',\'SENT\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'\');" href="#collapse'+i+'" data-parent="#accordion2" data-toggle="collapse" class="accordion-toggle collapsed">'+result.zebraPrintDetailsVOList[i].name+'  <span id="mini-pie-chart'+i+'" class="pull-right mini-pie-chart"></span></a>';
+		 str+='<ul class="unstyled inline">';
+		 str+='<li> Total<br/><span class="label" style="width:50px;">' +result.zebraPrintDetailsVOList[i].rowCount+'&nbsp;</span></li>';
+		 str+='<li> Sent to Print<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].totalPushCount+'&nbsp;</span></li>';
+		 str+=' <li>Printed<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].printStatusCount+'&nbsp;</span></li>';
+		 str+=' <li>Error<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'&nbsp;</span></li>';
+		 str+=' <li>Pending<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].remainingCount+'&nbsp;</span></li>';
+		str+='</ul>';
 		str+=' </div>';
 		str+=' <div class="accordion-body collapse toggleCls" id="collapse'+i+'" style="height: 0px;">';
 		str+=' <div class="accordion-inner">';
-		str+=' <table class="table table-bordered">';
+		/*str+=' <table class="table table-bordered">';
 			str+=' <thead>';
 			str+=' <tr>';
 			str+=' <th class="alert-success"> Total Registered  </th>';
@@ -285,25 +305,29 @@
 			}
 			else
 		    str+=' <td>'+result.zebraPrintDetailsVOList[i].totalPushCount+'</td>';
-			/*if(result.zebraPrintDetailsVOList[i].printStatusCount > 0)
+			if(result.zebraPrintDetailsVOList[i].printStatusCount > 0)
 			{
 			str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'CONSTITUENCY\',\'PRINTED\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].printStatusCount+'</a></td>';
 			}
-			else*/
+			else
 			str+=' <td>'+result.zebraPrintDetailsVOList[i].printStatusCount+'</td>';
-			/*if(result.zebraPrintDetailsVOList[i].errorStatusCount > 0)
+			if(result.zebraPrintDetailsVOList[i].errorStatusCount > 0)
 			{
 			str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'CONSTITUENCY\',\'ERROR\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</a></td>';
 			}
-			else*/
+			else
 			str+=' <td>'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</td>';
 			str+=' <td>'+result.zebraPrintDetailsVOList[i].remainingCount+'</td>';
-
+			
 			str+=' </tr>';
 			str+=' </tbody>';
-		str+=' </table>';
+		str+=' </table>';*/
+		/*str+=' <a style="cursor:pointer"  class="btn btn-block btn-success border-radius-0" onclick="getJOBCodeS(\'CONSTITUENCY\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYMIS'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImgMIS'+result.zebraPrintDetailsVOList[i].id+'\');">MISREPORTS</a>';*/
+		str+='<div id="CONSTITUENCYImgMIS'+result.zebraPrintDetailsVOList[i].id+'" style="display:none;"><img style="width:70px;height:60px;"  src="images/Loading-data.gif"></div>';
+		str+='<div id="CONSTITUENCYMIS'+result.zebraPrintDetailsVOList[i].id+'" class="ConstiremoveCls"></div>';
 		str+='<div id="CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'" style="display:none;"><img style="width:70px;height:60px;"  src="images/Loading-data.gif"></div>';
 		str+='<div id="CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'" class="ConstiremoveCls"></div>';
+		
 		str+='</div>';
 		str+=' </div>';
 		str+=' </div>';
@@ -350,7 +374,7 @@
 		var str='';
 		str+='<div id="myModal" class="modal" aria-labelledby="myModalLabel" >';
 		 str+='<div class="modal-header">';
-		str+='<button type="button" class="close" data-dismiss="modal" onclick="closePopup();">�</button>';
+		str+='<button type="button" class="close" data-dismiss="modal" onclick="closePopup();">×</button>';
 		str+='<h3 id="myModalLabel">Cadre Details</h3>';
 		str+='</div>';
 		str+='<div class="modal-body">';
@@ -401,11 +425,20 @@
 		}
 			str+=' <div class="accordion-group">';
 			str+=' <div class="accordion-heading">';
-			str+=' <a onclick="hideDistDiv();toggleDiv(\'collapseDistrict'+i+'\');" href="#collapseDistrict'+i+'" data-parent="#districtAccordion" data-toggle="collapse" class="accordion-toggle collapsed">'+result.zebraPrintDetailsVOList[i].name+'  <span id="mini-pie-chart-district'+i+'" class="pull-right mini-pie-chart-district"></span></a>';
+			str+=' <a style="font-weight:bold;font-size:16px;" onclick="hideDistDiv();toggleDiv(\'collapseDistrict'+i+'\');getJOBCodeS(\'DISTRICT\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICTMIS'+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICTImgMIS'+result.zebraPrintDetailsVOList[i].id+'\');getDayWiseCardPrintedCount(\'DISTRICT\',\'SENT\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICT'+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICTImg'+result.zebraPrintDetailsVOList[i].id+'\');" href="#collapseDistrict'+i+'" data-parent="#districtAccordion" data-toggle="collapse" class="accordion-toggle collapsed">'+result.zebraPrintDetailsVOList[i].name+'  <span id="mini-pie-chart-district'+i+'" class="pull-right mini-pie-chart-district"></span></a>';
+			 str+='<ul class="unstyled inline">';
+		 str+='<li> Total<br/><span class="label" style="width:50px;">' +result.zebraPrintDetailsVOList[i].rowCount+'&nbsp;</span></li>';
+		 str+='<li> Sent to Print<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].totalPushCount+'&nbsp;</span></li>';
+		 str+=' <li>Printed<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].printStatusCount+'&nbsp;</span></li>';
+		
+		 
+		 str+=' <li>Error<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'&nbsp;</span></li>';
+		 str+=' <li>Pending<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].remainingCount+'&nbsp;</span></li>';
+		str+='</ul>';
 			str+=' </div>';
 			str+=' <div class="accordion-body collapse toggleCls" id="collapseDistrict'+i+'" style="height: 0px;">';
 			str+=' <div class="accordion-inner">';
-			str+=' <table class="table table-bordered">';
+			/*str+=' <table class="table table-bordered">';
 				str+=' <thead>';
 				str+=' <tr>';
 				str+=' <th class="alert-success"> Total Registered  </th>';
@@ -425,25 +458,28 @@
 			}
 			else
 		    str+=' <td>'+result.zebraPrintDetailsVOList[i].totalPushCount+'</td>';
-			/*if(result.zebraPrintDetailsVOList[i].printStatusCount > 0)
+			if(result.zebraPrintDetailsVOList[i].printStatusCount > 0)
 			{
 			str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'DISTRICT\',\'PRINTED\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICT'+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICTImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].printStatusCount+'</a></td>';
 			}
-			else*/
+			else
 			str+=' <td>'+result.zebraPrintDetailsVOList[i].printStatusCount+'</td>';
-			/*if(result.zebraPrintDetailsVOList[i].errorStatusCount > 0)
+			if(result.zebraPrintDetailsVOList[i].errorStatusCount > 0)
 			{
 			str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'DISTRICT\',\'ERROR\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICT'+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICTImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</a></td>';
 			}
-			else*/
+			else
 			str+=' <td>'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</td>';
 				str+=' <td>'+result.zebraPrintDetailsVOList[i].remainingCount+'</td>';
 
 				str+=' </tr>';
 				str+=' </tbody>';
-			str+=' </table>';
+			str+=' </table>';*/
+			str+='<div id="DISTRICTImgMIS'+result.zebraPrintDetailsVOList[i].id+'" style="display:none;"><img style="width:70px;height:60px;"  src="images/Loading-data.gif"></div>';
+			str+='<div id="DISTRICTMIS'+result.zebraPrintDetailsVOList[i].id+'" class="DistremoveCls"></div>';
 			str+='<div id="DISTRICTImg'+result.zebraPrintDetailsVOList[i].id+'"  style="display:none;"><img style="width:70px;height:60px;"  src="images/Loading-data.gif"></div>';
 			str+='<div id="DISTRICT'+result.zebraPrintDetailsVOList[i].id+'" class="DistremoveCls"></div>';
+			
 			str+='</div>';
 			str+=' </div>';
 			str+=' </div>';
@@ -483,11 +519,19 @@
 		}
 			str+=' <div class="accordion-group">';
 			str+=' <div class="accordion-heading">';
-			str+=' <a onclick="hideParlDiv();toggleDiv(\'collapseParliament'+i+'\');" href="#collapseParliament'+i+'" data-parent="#parliamentAccordion" data-toggle="collapse" class="accordion-toggle collapsed">'+result.zebraPrintDetailsVOList[i].name+'  <span id="mini-pie-chart-parliament'+i+'" class="pull-right mini-pie-chart-parliament"></span></a>';
+			str+=' <a style="font-weight:bold;font-size:16px;" onclick="hideParlDiv();toggleDiv(\'collapseParliament'+i+'\');getJOBCodeS(\'Parliament\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'ParliamentMIS'+result.zebraPrintDetailsVOList[i].id+'\',\'ParliamentImgMIS'+result.zebraPrintDetailsVOList[i].id+'\');getDayWiseCardPrintedCount(\'Parliament\',\'SENT\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'Parliament'+result.zebraPrintDetailsVOList[i].id+'\',\'ParliamentImg'+result.zebraPrintDetailsVOList[i].id+'\');" href="#collapseParliament'+i+'" data-parent="#parliamentAccordion" data-toggle="collapse" class="accordion-toggle collapsed">'+result.zebraPrintDetailsVOList[i].name+'  <span id="mini-pie-chart-parliament'+i+'" class="pull-right mini-pie-chart-parliament"></span></a>';
+			 str+='<ul class="unstyled inline">';
+		 str+='<li> Total<br/><span class="label" style="width:50px;">' +result.zebraPrintDetailsVOList[i].rowCount+'&nbsp;</span></li>';
+		 str+='<li> Sent to Print<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].totalPushCount+'&nbsp;</span></li>';
+		 str+=' <li>Printed<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].printStatusCount+'&nbsp;</span></li>';
+		 str+=' <li>Error<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'&nbsp;</span></li>';
+		 str+=' <li>Pending<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].remainingCount+'&nbsp;</span></li>';
+		str+='</ul>';
+
 			str+=' </div>';
 			str+=' <div class="accordion-body collapse toggleCls" id="collapseParliament'+i+'" style="height: 0px;">';
 			str+=' <div class="accordion-inner">';
-			str+=' <table class="table table-bordered">';
+			/*str+=' <table class="table table-bordered">';
 				str+=' <thead>';
 				str+=' <tr>';
 				str+=' <th class="alert-success"> Total Registered  </th>';
@@ -507,25 +551,28 @@
 			}
 			else
 		    str+=' <td>'+result.zebraPrintDetailsVOList[i].totalPushCount+'</td>';
-			/*if(result.zebraPrintDetailsVOList[i].printStatusCount > 0)
+			if(result.zebraPrintDetailsVOList[i].printStatusCount > 0)
 			{
 			str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'Parliament\',\'PRINTED\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'Parliament'+result.zebraPrintDetailsVOList[i].id+'\',\'ParliamentImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].printStatusCount+'</a></td>';
 			}
-			else*/
+			else
 			str+=' <td>'+result.zebraPrintDetailsVOList[i].printStatusCount+'</td>';
-			/*if(result.zebraPrintDetailsVOList[i].errorStatusCount > 0)
+			if(result.zebraPrintDetailsVOList[i].errorStatusCount > 0)
 			{
 			str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'Parliament\',\'ERROR\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'Parliament'+result.zebraPrintDetailsVOList[i].id+'\',\'ParliamentImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</a></td>';
 			}
-			else*/
+			else
 			str+=' <td>'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</td>';
 				str+=' <td>'+result.zebraPrintDetailsVOList[i].remainingCount+'</td>';
 
 				str+=' </tr>';
 				str+=' </tbody>';
-			str+=' </table>';
+			str+=' </table>';*/
+			str+='<div id="ParliamentImgMIS'+result.zebraPrintDetailsVOList[i].id+'" style="display:none;"><img style="width:70px;height:60px;"  src="images/Loading-data.gif"></div>';
+			str+='<div id="ParliamentMIS'+result.zebraPrintDetailsVOList[i].id+'" class="ParlremoveCls"></div>';
 			str+='<div id="ParliamentImg'+result.zebraPrintDetailsVOList[i].id+'"  style="display:none;"><img style="width:70px;height:60px;"  src="images/Loading-data.gif"></div>';
 			str+='<div id="Parliament'+result.zebraPrintDetailsVOList[i].id+'" class="ParlremoveCls"></div>';
+			
 			str+='</div>';
 			str+=' </div>';
 			str+=' </div>';
@@ -548,7 +595,7 @@
 		}
   }
 	function searchByName(id,loctype){
-	
+		var statusType = "";
 		var locId = $('#'+id).val();		
 		 var stateTypeId = $('input:radio[name=stateType]:checked').val();
 		 var stateId = 0;
@@ -561,10 +608,21 @@
 		if(loctype == "CONSTITUENCY"){
 		$('#accordion2').html('');
 		$('#searchDataImg').show();
+		
+			var ConstiSeacrhId = $("#ConstiSeacrhId").val();
+		if(ConstiSeacrhId != 0)
+		statusType =ConstiSeacrhId;
 		}else if(loctype == "DISTRICT"){
+			
+			var DistSeacrhId = $("#DistSeacrhId").val();
+			if(DistSeacrhId != 0)
+			statusType = DistSeacrhId;
 		$('#districtAccordion').html('');
 		$('#ajaxImg').show();
 		}else if(loctype == "MP"){
+			var ParlSeacrhId = $("#ParlSeacrhId").val();
+			if(ParlSeacrhId != 0)
+			statusType = ParlSeacrhId;
 		$('#parliamentAccordion').html('');
 		$('#ajaxImg1').show();
 		}
@@ -574,6 +632,7 @@
 				  locationId : locId,
 				  searchType :loctype,
 				  stateTypeId : stateId,
+				  statusType:statusType,
 				  task:"totalPrintingCount"             
 			   }	
 				$.ajax({
@@ -596,7 +655,69 @@
 				}
 			  });			  	
 	}
-	
+	function searchByStatus(loctype){
+		var statusType = "";
+		var id;
+		var locId = $('#'+id).val();		
+		 var stateTypeId = $('input:radio[name=stateType]:checked').val();
+		 var stateId = 0;
+		 if(stateTypeId == "both")
+			stateId = 0;
+		else if(stateTypeId == "ap")
+			stateId = 1;
+		else if(stateTypeId == "ts")
+			stateId = 2;
+		if(loctype == "CONSTITUENCY"){
+		$('#accordion2').html('');
+		$('#searchDataImg').show();
+		id = $("#constituencyList").val();
+			var ConstiSeacrhId = $("#ConstiSeacrhId").val();
+		if(ConstiSeacrhId != 0)
+		statusType =ConstiSeacrhId;
+		}else if(loctype == "DISTRICT"){
+			id = $("#districtList").val();
+			var DistSeacrhId = $("#DistSeacrhId").val();
+			if(DistSeacrhId != 0)
+			statusType = DistSeacrhId;
+		$('#districtAccordion').html('');
+		$('#ajaxImg').show();
+		}else if(loctype == "MP"){
+			id = $("#parlConstiList").val();
+			var ParlSeacrhId = $("#ParlSeacrhId").val();
+			if(ParlSeacrhId != 0)
+			statusType = ParlSeacrhId;
+		$('#parliamentAccordion').html('');
+		$('#ajaxImg1').show();
+		}
+		
+		var jsObj = 
+			   {
+				  locationId : id,
+				  searchType :loctype,
+				  stateTypeId : stateId,
+				  statusType:statusType,
+				  task:"totalPrintingCount"             
+			   }	
+				$.ajax({
+					type : "POST",
+					url : "getPrintDetailsInfoByConstituencyAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+				if(result != null)
+				{
+					if(loctype == "CONSTITUENCY"){
+					$('#searchDataImg').hide();
+					buildConstituencyWiseResults(result,0);
+					}else if(loctype == "DISTRICT"){
+					$('#ajaxImg').hide();
+					buildDistrictWiseResults(result,0);
+					}else if(loctype == "MP"){
+					$('#ajaxImg1').hide();
+					buildParliamentWiseResults(result,0);
+					}
+				}
+			  });			  		
+	}
 	$(".stType").change(function(){		
 		getTotalPrintingStatusCount("CONSTITUENCY",1);
 		getTotalPrintingStatusCount("DISTRICT",1);
@@ -684,6 +805,113 @@
 	  myNewChart = new Chart(ctx).Doughnut(data,options);
 		
    }
+
+   function getJOBCodeS(type,id,divId,processId)
+   {
+	   $("#"+processId).show();
+			$("#"+divId).html('');
+		var jObj = {
+		Id:id,
+		type:type,
+		task:"getJobCodes"
+		}
+		 $.ajax({
+          type:'GET',
+          url: 'getJobCodesAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+       }).done(function(result){
+			  
+			$("#"+processId).hide();
+		buildJOBCODES(result,divId,id,type);
+		});
+   }
+
+   function buildJOBCODES(result,divId,Id,type)
+   {
+	   var str ='';
+	   if(result != null && result.length > 0)
+	   {
+		   str+='<ul class="unstyled inline">';
+		   for(var i in result)
+		   {
+			   str +='<li><a class="label" onclick="getMISReport(\''+result[i].name+'\',\''+Id+'\',\''+type+'\',\''+type+'misDiv\',\''+type+'InnerdivId\');">'+result[i].name+'</a></li>';
+		   }
+		str+='</ul>';
+		str+='<div id="'+type+'misDiv" class="misDialogue"> <div id="'+type+'InnerdivId" class="popupcont"></div>';
+		/*str+='<div class="modal-header">';
+		str+='<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		str+='<h3 id="myModalLabel">Modal header</h3>';
+		str+='</div>';
+		<img style="width:70px;height:60px;display:none;" src="images/Loading-data.gif" class="misImg">
+		str+='<div class="modal-body">';
+		str+='<p>One fine body…</p>';
+		str+='</div>';
+		str+='<div class="modal-footer">';
+		str+='<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>';
+		str+='<button class="btn btn-primary">Save changes</button>';
+		str+='</div>';
+		str+='</div>';*/
+	   }
+	   $('#'+divId).html(str);
+
+   }
+
+   function getMISReport(jobCode,locationId,type,divId,InnerdivId)
+   {
+	    $(".popupcont").html('');
+	   $.blockUI({ message: '<span> Loading, Please Wait .. </span>' }); 
+	 $(".misImg").show();
+	    $('#'+divId).dialog({
+		title:'MIS Report Genaration',
+		height:150,
+		width:400,
+		modal: true
+	 });
+	  
+		var jObj = {
+		Id:locationId,
+		batchCode:jobCode,
+		type:type,
+		task:"misReport"
+		}
+		 $.ajax({
+          type:'GET',
+          url: 'getMISReportForLocation.action',
+         data : {task:JSON.stringify(jObj)} ,
+       }).done(function(result){
+			var str='';	
+				
+	        	if(result.name == "refresh" || (result.name == undefined && result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1)){
+		    		   location.reload(); 
+		    	  }
+	        	if(result.name == "noData"){
+				   $('#'+InnerdivId).html("<span style='font-weight:bold;color:red;'>No Data</span>");
+				}else if(result.name == "error"){
+				   $('#'+InnerdivId).html("<span style='font-weight:bold;color:red;'>Error Occured!</span>");
+				}else if(result.name == "success"){
+				   $('#'+InnerdivId).html("<span style='font-weight:bold;'><b><a href='"+result.mobileNo+"'> View Report</a></b></span>");
+				}
+			$(".misImg").hide();
+			 $.unblockUI();	
+		/*str+='<div id="myModal" class="modal" aria-labelledby="myModalLabel">';
+		str+='<div class="modal-header">';
+		str+='<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>';
+		str+='<h3 id="myModalLabel">Modal header</h3>';
+		str+='</div>';
+		str+='<div class="modal-body">';
+		str+='<p>One fine body…</p>';
+		str+='</div>';
+		str+='<div class="modal-footer">';
+		str+='<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>';
+		str+='<button class="btn btn-primary">Save changes</button>';
+		str+='</div>';
+		str+='</div>';*/
+		 // $('#'+InnerdivId).html(str);
+		  
+		//  $('#myModal').modal('show');
+		});
+   }
+  
   	function getDayWiseCardPrintedCount(type,status,id,divId,processId)
 		{
 			
@@ -705,6 +933,8 @@
 		buildDayWiseTable(result,divId,status);
 		});
 		}
+
+
 		function buildDayWiseTable(result,divId,status)
 		{
 			var str ='';
