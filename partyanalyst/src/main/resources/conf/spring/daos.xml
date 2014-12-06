@@ -1758,9 +1758,15 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
 
-
-
 <bean id="tabUserKeysDAO" class="com.itgrids.partyanalyst.dao.hibernate.TabUserKeysDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="tdpCadreCallCenterFeedbackDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreCallCenterFeedbackDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="tdpCadreCallCenterRemarksDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreCallCenterRemarksDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
 	<!--  end -->

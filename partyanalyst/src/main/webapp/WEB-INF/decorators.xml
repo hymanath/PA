@@ -132,6 +132,7 @@
         <pattern>/cadreMemberShipCardDispatcherAction*</pattern>
         <pattern>/memberShipCardPrintStatusAction*</pattern>
         <pattern>/tdpCadreIdCardDetailsAction*</pattern>
+		 <pattern>/callCenterMembershipCardStatusAction*</pattern>
         <pattern>/partyDashBoardAction*</pattern>
 	</excludes>  
 	
