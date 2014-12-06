@@ -24,5 +24,6 @@ public interface ICadreSurveyTransactionService {
 	public SurveyTransactionReportVO getBasicTransactionDetails();
 	
 	public CadreTransactionVO getTdpCadreDetailsBySearchCriteria(String refNo, String mobileNo);
-	
+
+	public void sendTargetBasedSMSforLocationWiseManagers();
 }
