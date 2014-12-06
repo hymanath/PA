@@ -108,7 +108,7 @@ public class TdpCadre {
 	private Long 						memberId;
 	private String 						nameLocal;
 	private TdpCadreOnline              tdpCadreOnline;
-	
+	private Long 						constituencyId;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "tdp_cadre_id", unique = true, nullable = false)
@@ -700,6 +700,14 @@ public class TdpCadre {
 	}
 	public void setRefSurveyTime(Date refSurveyTime) {
 		this.refSurveyTime = refSurveyTime;
+	}
+	
+	@Column(name="constituency_id")	
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
 	}
 	
 	

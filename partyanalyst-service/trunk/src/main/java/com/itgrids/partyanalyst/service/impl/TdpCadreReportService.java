@@ -31,6 +31,10 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -38,20 +42,30 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalNameConstantDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreCallCenterFeedbackDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreCallCenterRemarksDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreTeluguNamesDAO;
+import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IZebraPrintDetailsDAO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationWiseReportVO;
 import com.itgrids.partyanalyst.dto.ZebraPrintDetailsVO;
 import com.itgrids.partyanalyst.model.LocalNameConstant;
 import com.itgrids.partyanalyst.model.TdpCadre;
+import com.itgrids.partyanalyst.model.TdpCadreCallCenterFeedback;
+import com.itgrids.partyanalyst.model.TdpCadreCallCenterRemarks;
+import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.ZebraPrintDetails;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.service.ITdpCadreReportService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class TdpCadreReportService implements ITdpCadreReportService{
@@ -69,6 +83,12 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	private IConstituencyDAO constituencyDAO;
 	private IDistrictDAO districtDAO;
 	private ILocalNameConstantDAO localNameConstantDAO;
+	private IUserAddressDAO userAddressDAO;
+	private ITdpCadreTeluguNamesDAO tdpCadreTeluguNamesDAO;
+	private DateUtilService dateUtilService = new DateUtilService();
+	private ITdpCadreCallCenterFeedbackDAO tdpCadreCallCenterFeedbackDAO;
+	private TransactionTemplate transactionTemplate = null;
+	private ITdpCadreCallCenterRemarksDAO tdpCadreCallCenterRemarksDAO;
 	
 	public void setLocalNameConstantDAO(ILocalNameConstantDAO localNameConstantDAO) {
 		this.localNameConstantDAO = localNameConstantDAO;
@@ -127,6 +147,53 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	public void setDelimitationConstituencyDAO(
 			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
 		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
+
+	public IUserAddressDAO getUserAddressDAO() {
+		return userAddressDAO;
+	}
+	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
+		this.userAddressDAO = userAddressDAO;
+	}
+	
+	public ITdpCadreTeluguNamesDAO getTdpCadreTeluguNamesDAO() {
+		return tdpCadreTeluguNamesDAO;
+	}
+	public void setTdpCadreTeluguNamesDAO(
+			ITdpCadreTeluguNamesDAO tdpCadreTeluguNamesDAO) {
+		this.tdpCadreTeluguNamesDAO = tdpCadreTeluguNamesDAO;
+	}
+	
+	public DateUtilService getDateUtilService() {
+		return dateUtilService;
+	}
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
+	}
+	public IZebraPrintDetailsDAO getZebraPrintDetailsDAO() {
+		return zebraPrintDetailsDAO;
+	}
+	
+	public ITdpCadreCallCenterFeedbackDAO getTdpCadreCallCenterFeedbackDAO() {
+		return tdpCadreCallCenterFeedbackDAO;
+	}
+	public void setTdpCadreCallCenterFeedbackDAO(
+			ITdpCadreCallCenterFeedbackDAO tdpCadreCallCenterFeedbackDAO) {
+		this.tdpCadreCallCenterFeedbackDAO = tdpCadreCallCenterFeedbackDAO;
+	}
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
+
+	public ITdpCadreCallCenterRemarksDAO getTdpCadreCallCenterRemarksDAO() {
+		return tdpCadreCallCenterRemarksDAO;
+	}
+	public void setTdpCadreCallCenterRemarksDAO(
+			ITdpCadreCallCenterRemarksDAO tdpCadreCallCenterRemarksDAO) {
+		this.tdpCadreCallCenterRemarksDAO = tdpCadreCallCenterRemarksDAO;
 	}
 	
 	public TdpCadreLocationWiseReportVO generateExcelReportForTdpCadre(List<Long> constituencyIdsList)
@@ -2906,6 +2973,148 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		}
 		return returnList;
 		
+	}
+	
+	public List<CadreRegistrationVO> getMembershipCardDetailsForCallCenter(String mobileNo,String trNumber,String membership)
+	{
+		List<CadreRegistrationVO> returnList = null;
+		try {
+			
+			List<LocalNameConstant> localNamesList = localNameConstantDAO.getAll();
+			Map<String,String> areaInTeluguFontMap = new HashMap<String, String>();
+			
+			if(localNamesList != null && localNamesList.size()>0){
+				for (LocalNameConstant localNameConstant : localNamesList){
+					areaInTeluguFontMap.put(localNameConstant.getName().trim(), StringEscapeUtils.unescapeJava(localNameConstant.getLocalName()));
+				}
+			}
+			
+			//List<Object[]> resultList = tdpCadreDAO.getCadreDetails(id,searchtype);	
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append(" select model.tdpCadreId,model.image,model.userAddress.userAddressId,model.memberShipNo,model.mobileNo,model.firstname,model.cardNumber,model.constituencyId " +
+					"   from  TdpCadre model where model.isDeleted='N' and model.enrollmentYear = 2014 ");
+			
+			if(membership != null && !membership.isEmpty())
+				queryStr.append(" and substring(model.memberShipNo,5) = '"+membership+"'");
+		    if(mobileNo != null && !mobileNo.isEmpty())
+				queryStr.append(" and model.mobileNo = '" +mobileNo+"'");
+			if(trNumber != null && !trNumber.isEmpty())
+				queryStr.append(" and model.refNo = '"+trNumber+"'");
+			List<Object[]> resultList = tdpCadreDAO.getCadreDetails(queryStr.toString());
+			Map<Long,String> teluguNames = new HashMap<Long, String>();
+			List<Long> tdpCadreIds= new ArrayList<Long>();
+			
+			if(resultList != null && resultList.size()>0){			
+				for(Object[] zebraPrintDetails : resultList){
+					if(!tdpCadreIds.contains((Long)zebraPrintDetails[0]))
+						tdpCadreIds.add((Long)zebraPrintDetails[0]);					
+				}
+				
+				if(tdpCadreIds.size()>0){
+					List<Object[]> names = tdpCadreDAO.getTeluguVoterNames(tdpCadreIds);
+					if( names!= null && names.size()>0){
+						for (Object[] name : names){
+							teluguNames.put((Long)name[0], StringEscapeUtils.unescapeJava(name[1].toString()));
+						}
+					}
+					else{
+						List<Object[]> names1 = tdpCadreTeluguNamesDAO.getTeluguVoterNameByTdpCadreIds(tdpCadreIds);
+						if( names1!= null && names1.size()>0){
+							for (Object[] name1 : names1){
+								teluguNames.put((Long)name1[0], StringEscapeUtils.unescapeJava(name1[1].toString()));
+							}
+						}
+					}
+				}
+		
+				returnList = new ArrayList<CadreRegistrationVO>();
+				for (Object[] zebraPrintDetails : resultList)
+				{
+					CadreRegistrationVO vo = new CadreRegistrationVO();					
+					if(zebraPrintDetails != null){
+						vo.setAge(zebraPrintDetails[2] != null ? (Long)zebraPrintDetails[2] :0l);						
+						UserAddress userAddress = userAddressDAO.get((Long)zebraPrintDetails[2]);
+						if(userAddress != null){
+							if(userAddress.getConstituency() != null)
+								vo.setConstituencyId(userAddress.getConstituency().getLocalName()+" "+"( "+areaInTeluguFontMap.get("constituency")+" )");
+							if(userAddress.getDistrict() != null)
+								vo.setAddress(userAddress.getDistrict().getLocalName()+" "+"( "+areaInTeluguFontMap.get("district")+" )");
+							if(userAddress.getConstituency().getAreaType().equalsIgnoreCase("RURAL")){
+								if(userAddress.getPanchayat() != null)
+									vo.setPanchayatId(userAddress.getPanchayat().getLocalName()+" "+"( "+areaInTeluguFontMap.get("village")+" )");
+								if(userAddress.getTehsil() != null)
+									vo.setMandalId(userAddress.getTehsil().getLocalName()+" "+"( "+areaInTeluguFontMap.get("mandal")+" )");
+							}
+							if(userAddress.getConstituency().getAreaType().equalsIgnoreCase(IConstants.AREA_TYPE_RURAL_URBAN)){	
+								if(userAddress.getLocalElectionBody() != null)
+									vo.setMuncipalityId(userAddress.getLocalElectionBody().getNameLocal()+" "+"( "+areaInTeluguFontMap.get("municipality")+" )");
+							}
+						}
+						vo.setCadreId((Long)zebraPrintDetails[0]);
+						vo.setVoterName(teluguNames.get((Long)zebraPrintDetails[0]));
+						vo.setImageBase64String(zebraPrintDetails[1] != null ? zebraPrintDetails[1].toString(): "");
+						vo.setPreviousEnrollmentNumber(zebraPrintDetails[3] != null ? zebraPrintDetails[3].toString().substring(4) : "");
+						vo.setMobileNumber(zebraPrintDetails[4] != null ? zebraPrintDetails[4].toString(): "");
+						vo.setNameType(zebraPrintDetails[5] != null ? zebraPrintDetails[5].toString() :"");
+						if(zebraPrintDetails[6] != null ){
+							if(!zebraPrintDetails[6].toString().isEmpty())
+								vo.setShipAddress("Card Printing Completed");
+						}
+						else if(zebraPrintDetails[6] == null && zebraPrintDetails[7] == null)
+							vo.setShipAddress("Card Printing Not Started");
+						else if(zebraPrintDetails[6] == null && zebraPrintDetails[7] != null)
+							vo.setShipAddress("Card Printing is in Progress ");
+						returnList.add(vo);
+					}
+				}				
+			}
+		} catch (Exception e) {
+			LOG.error(" exception occured in getMembershipCardDetailsForCallCenter()",e);	
+		}
+		
+		return returnList;
+	}
+	
+	
+	public ResultStatus saveCallCenterFeedbackForCardStatus(final TdpCadreLocationWiseReportVO vo)
+	{
+		ResultStatus rs = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
+			public Object doInTransaction(TransactionStatus status) {
+				ResultStatus rs = new ResultStatus();
+				try
+				{	
+					TdpCadreCallCenterRemarks tdpCadreCallCenterRemarks = null;
+					if(!vo.getRemarks().isEmpty()){
+						tdpCadreCallCenterRemarks = new TdpCadreCallCenterRemarks();
+						tdpCadreCallCenterRemarks.setTdpCadreId(vo.getId());			
+						tdpCadreCallCenterRemarks.setRemarks(vo.getRemarks());
+						tdpCadreCallCenterRemarks = tdpCadreCallCenterRemarksDAO.save(tdpCadreCallCenterRemarks);
+					}
+					if(vo.getComments().size()>0){
+						for(String comment : vo.getComments()){
+						 if(comment != null){
+							 TdpCadreCallCenterFeedback tdpCadreCallCenterFeedback = new TdpCadreCallCenterFeedback();
+							 tdpCadreCallCenterFeedback.setTdpCadreId(vo.getId());
+							 tdpCadreCallCenterFeedback.setComment(comment);
+							 if(tdpCadreCallCenterRemarks != null )
+									tdpCadreCallCenterFeedback.setRemarkId(tdpCadreCallCenterRemarks.getTdpCadreCallCenterRemarksId());
+							 tdpCadreCallCenterFeedback.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							 tdpCadreCallCenterFeedback.setUserName(vo.getName());			
+							 tdpCadreCallCenterFeedbackDAO.save(tdpCadreCallCenterFeedback);
+						 }
+						}
+					}				
+				rs.setResultCode(ResultCodeMapper.SUCCESS);
+			}
+			catch(Exception e)
+			{
+				rs.setResultCode(ResultCodeMapper.FAILURE);
+				e.printStackTrace();
+				LOG.debug(e);
+			}
+				return rs;
+			} });
+		return rs;
 	}
 	
 }

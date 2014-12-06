@@ -44,6 +44,9 @@ public class TdpCadreLocationWiseReportVO implements java.io.Serializable{
 	
 	List<CadreRegisterInfo>     casteGroupList = new ArrayList<CadreRegisterInfo>();
 	List<CadreRegisterInfo>     casteList = new ArrayList<CadreRegisterInfo>();
+	private List<String> comments;
+	private String remarks;
+	private String comment;
 	
 	
 	public Double getRegisteredMalePerc() {
@@ -295,7 +298,29 @@ public class TdpCadreLocationWiseReportVO implements java.io.Serializable{
 	public void setConstituencyNo(Long constituencyNo) {
 		this.constituencyNo = constituencyNo;
 	}
-	
-	
- 
+
+	public List<String> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<String> comments) {
+		this.comments = comments;
+	}
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
 }

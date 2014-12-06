@@ -8,4 +8,5 @@ import com.itgrids.partyanalyst.model.TdpCadreTeluguNames;
 
 public interface ITdpCadreTeluguNamesDAO extends GenericDao<TdpCadreTeluguNames, Long>{
 	public List<String> getTeluguVoterNameByTdpCadreId(Long tdpCadreId);
+	public List<Object[]> getTeluguVoterNameByTdpCadreIds(List<Long> tdpCadreIds);
 }
