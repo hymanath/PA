@@ -193,10 +193,13 @@ public class SmsCountrySmsService implements ISmsService {
 
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < phoneNumbers.length; i++) {
-				sb.append("91");
-				sb.append(phoneNumbers[i]);
-				if (i < (phoneNumbers.length-1))
-					sb.append(",");
+				if(phoneNumbers[i].toString().trim().length()>0)
+				{
+					sb.append("91");
+					sb.append(phoneNumbers[i]);
+					if (i < (phoneNumbers.length-1))
+						sb.append(",");
+				}
 			}
 			
 			//PostMethod post = new PostMethod("http://sms.partyanalyst.com/WebserviceSMS.aspx");
