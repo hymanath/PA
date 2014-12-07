@@ -1015,7 +1015,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			Long noOfDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, IConstants.CADRE_2014_LAST_DATE);
 			Long totalConstituencyCount = 0L;
 			
-			Date today = new Date();					
+			Date today = dateService.getCurrentDateAndTime();					
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(today);
 			
@@ -1079,7 +1079,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 						}
 					}
 					
-					finalList = getLocationWiseRegistereDetailsByDates(boothsBasicList,constituency,yesterDay,yesterDay,noOfDays,yesterDay);
+					finalList = getLocationWiseRegistereDetailsByDates(boothsBasicList,constituency,yesterDay,yesterDay,noOfDays);
 					
 					if(finalList != null && finalList.size()>0)
 					{
@@ -1182,7 +1182,6 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 										//String[] phoneNumbers = {"919959796608".toString()};								
 										ResultStatus status = smsCountrySmsService.sendSmsFromAdmin(assemblyMessage.toString(), true, phoneNumbersArr);
 									} catch (Exception e) {
-										//LOG.error(" exception occured when sending SMS for mandal at getLocationWiseRegistereDetailsByDates() in CadreSurveyTransactionService service class. ", e);
 									}
 									/* Sending SMS for Mandal wise managers*/
 								}
@@ -1200,7 +1199,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 		}
 	}
 	
-	private List<SurveyTransactionVO> getLocationWiseRegistereDetailsByDates( List<SurveyTransactionVO> boothsBasicList, Constituency constituency,Date fromDate, Date toDate,Long noOfDays,Date yesterDay)
+	private List<SurveyTransactionVO> getLocationWiseRegistereDetailsByDates( List<SurveyTransactionVO> boothsBasicList, Constituency constituency,Date fromDate, Date toDate,Long noOfDays)
 	{
 		List<SurveyTransactionVO> finalList = null;
 		try {
@@ -1470,7 +1469,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 							{
 								mandalMessage.append( tehsilVO.getLocationType() +" Registrations Overview  ");
 							}
-							mandalMessage.append("\nDate : "+new SimpleDateFormat("dd-MM-yyyy").format(yesterDay));
+							mandalMessage.append("\nDate : "+new SimpleDateFormat("dd-MM-yyyy").format(fromDate));
 							mandalMessage.append(",\nTarget : "+ finalTehsilVO.getArcheivedTarget());
 							mandalMessage.append(",\nAchieved : "+finalTehsilVO.getTotalCount());
 							
@@ -1508,7 +1507,6 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 									//String[] phoneNumbers = {"919959796608".toString()};								
 									ResultStatus status = smsCountrySmsService.sendSmsFromAdmin(mandalMessage.toString(), true, phoneNumbersArr);
 								} catch (Exception e) {
-									//LOG.error(" exception occured when sending SMS for mandal at getLocationWiseRegistereDetailsByDates() in CadreSurveyTransactionService service class. ", e);
 								}
 								/* Sending SMS for Mandal wise managers*/
 							}
