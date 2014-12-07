@@ -33,23 +33,24 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.ICallCenterFeedbackDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalNameConstantDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCallCenterFeedbackDAO;
-import com.itgrids.partyanalyst.dao.ITdpCadreCallCenterRemarksDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreCallCenterCommentDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTeluguNamesDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IZebraPrintDetailsDAO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -60,7 +61,7 @@ import com.itgrids.partyanalyst.dto.ZebraPrintDetailsVO;
 import com.itgrids.partyanalyst.model.LocalNameConstant;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.TdpCadreCallCenterFeedback;
-import com.itgrids.partyanalyst.model.TdpCadreCallCenterRemarks;
+import com.itgrids.partyanalyst.model.TdpCadreCallCenterComment;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.ZebraPrintDetails;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
@@ -88,7 +89,8 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	private DateUtilService dateUtilService = new DateUtilService();
 	private ITdpCadreCallCenterFeedbackDAO tdpCadreCallCenterFeedbackDAO;
 	private TransactionTemplate transactionTemplate = null;
-	private ITdpCadreCallCenterRemarksDAO tdpCadreCallCenterRemarksDAO;
+	private ITdpCadreCallCenterCommentDAO tdpCadreCallCenterCommentDAO;
+	private ICallCenterFeedbackDAO callCenterFeedbackDAO;
 	
 	public void setLocalNameConstantDAO(ILocalNameConstantDAO localNameConstantDAO) {
 		this.localNameConstantDAO = localNameConstantDAO;
@@ -188,12 +190,20 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		this.transactionTemplate = transactionTemplate;
 	}
 
-	public ITdpCadreCallCenterRemarksDAO getTdpCadreCallCenterRemarksDAO() {
-		return tdpCadreCallCenterRemarksDAO;
+	public ICallCenterFeedbackDAO getCallCenterFeedbackDAO() {
+		return callCenterFeedbackDAO;
 	}
-	public void setTdpCadreCallCenterRemarksDAO(
-			ITdpCadreCallCenterRemarksDAO tdpCadreCallCenterRemarksDAO) {
-		this.tdpCadreCallCenterRemarksDAO = tdpCadreCallCenterRemarksDAO;
+	public void setCallCenterFeedbackDAO(
+			ICallCenterFeedbackDAO callCenterFeedbackDAO) {
+		this.callCenterFeedbackDAO = callCenterFeedbackDAO;
+	}
+
+	public ITdpCadreCallCenterCommentDAO getTdpCadreCallCenterCommentDAO() {
+		return tdpCadreCallCenterCommentDAO;
+	}
+	public void setTdpCadreCallCenterCommentDAO(
+			ITdpCadreCallCenterCommentDAO tdpCadreCallCenterCommentDAO) {
+		this.tdpCadreCallCenterCommentDAO = tdpCadreCallCenterCommentDAO;
 	}
 	
 	public TdpCadreLocationWiseReportVO generateExcelReportForTdpCadre(List<Long> constituencyIdsList)
@@ -3082,28 +3092,24 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			public Object doInTransaction(TransactionStatus status) {
 				ResultStatus rs = new ResultStatus();
 				try
-				{	
-					TdpCadreCallCenterRemarks tdpCadreCallCenterRemarks = null;
-					if(!vo.getRemarks().isEmpty()){
-						tdpCadreCallCenterRemarks = new TdpCadreCallCenterRemarks();
-						tdpCadreCallCenterRemarks.setTdpCadreId(vo.getId());			
-						tdpCadreCallCenterRemarks.setRemarks(vo.getRemarks());
-						tdpCadreCallCenterRemarks = tdpCadreCallCenterRemarksDAO.save(tdpCadreCallCenterRemarks);
-					}
+				{				
+					TdpCadreCallCenterFeedback tdpCadreCallCenterFeedback = new TdpCadreCallCenterFeedback();
+					tdpCadreCallCenterFeedback.setTdpCadreId(vo.getId());
+					tdpCadreCallCenterFeedback.setRemarks(vo.getRemarks());
+					tdpCadreCallCenterFeedback.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					tdpCadreCallCenterFeedback.setUserName(vo.getName());			
+					tdpCadreCallCenterFeedback = tdpCadreCallCenterFeedbackDAO.save(tdpCadreCallCenterFeedback);
+							
 					if(vo.getComments().size()>0){
-						for(String comment : vo.getComments()){
-						 if(comment != null){
-							 TdpCadreCallCenterFeedback tdpCadreCallCenterFeedback = new TdpCadreCallCenterFeedback();
-							 tdpCadreCallCenterFeedback.setTdpCadreId(vo.getId());
-							 tdpCadreCallCenterFeedback.setComment(comment);
-							 if(tdpCadreCallCenterRemarks != null )
-									tdpCadreCallCenterFeedback.setRemarkId(tdpCadreCallCenterRemarks.getTdpCadreCallCenterRemarksId());
-							 tdpCadreCallCenterFeedback.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-							 tdpCadreCallCenterFeedback.setUserName(vo.getName());			
-							 tdpCadreCallCenterFeedbackDAO.save(tdpCadreCallCenterFeedback);
-						 }
+						for(Long comment : vo.getComments()){
+							if(comment != null){
+									TdpCadreCallCenterComment tdpCadreCallCenterComment = new TdpCadreCallCenterComment();
+									tdpCadreCallCenterComment.setCallCenterFeedbackId(comment);			
+									tdpCadreCallCenterComment.setTdpCadreCallCenterFeedbackId(tdpCadreCallCenterFeedback.getTdpCadreCallCenterFeedbackId());
+									tdpCadreCallCenterComment = tdpCadreCallCenterCommentDAO.save(tdpCadreCallCenterComment);
+								}
 						}
-					}				
+					}
 				rs.setResultCode(ResultCodeMapper.SUCCESS);
 			}
 			catch(Exception e)
@@ -3116,5 +3122,29 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			} });
 		return rs;
 	}
+	
+	
+	public List<BasicVO> getfeedbackDetails()
+	{
+		List<BasicVO> returnList = null;
+		try 
+		{			
+			List<Object[]> feedbackList =  callCenterFeedbackDAO.getAllFeedbackData();
+			if(feedbackList!=null && feedbackList.size()>0){
+				returnList = new ArrayList<BasicVO>();
+				for(Object[] feedback:feedbackList){
+					BasicVO vo = new BasicVO();
+					vo.setId((Long)feedback[0]);
+					vo.setName(feedback[1].toString());			
+					returnList.add(vo);
+				}
+			}	
+		} 
+		catch (Exception e){
+			e.printStackTrace();
+		}
+		return returnList;
+	}
+
 	
 }
