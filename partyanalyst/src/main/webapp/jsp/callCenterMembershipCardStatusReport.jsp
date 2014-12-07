@@ -86,25 +86,13 @@
 					<div class="widget-body" style="height:262px;">
 						<div id="errorDiv1" style="margin-bottom: -8px; margin-top: -9px;"></div>
 						<h5 style="margin-top:6px;margin-bottom:2px;">Feedback</h5>	
-						<label class="checkbox"> 
-							<input type="checkbox" class="feedbackCls" name="feedbackCheck" value="Photo Wrong"> Photo Wrong
-						</label><label class="checkbox"> 
-							<input type="checkbox" class="feedbackCls" name="feedbackCheck" value="Photo Not Printed Properly"> Photo Not Printed Properly /or/ Photo Clarity
-						</label>
-						<label class="checkbox"> 
-							<input type="checkbox" class="feedbackCls" name="feedbackCheck" value="Name Wrong"> Name Wrong
-						</label>
-						<label class="checkbox"> 
-							<input type="checkbox" class="feedbackCls" name="feedbackCheck" value="Location Name Wrong"> Location Name Wrong
-						</label>
-						<label class="checkbox"> 
-							<input type="checkbox" class="feedbackCls" name="feedbackCheck" value="Other"> Other
-						</label>
+						<div id="feedbackId">
+						</div>
 						<h5 style="margin-bottom:2px;margin-top:2px;"> 
 							Remarks</h5>						
 							<textarea rows="1" id="remarksId" class="input-block-level"></textarea>
 						<button type="button" class="btn btn-success btn-block border-radius-0 m-top10" onclick="saveFeedbackDetials();">SUBMIT</button>
-					</div>					
+					</div>				
 				</div>
 			</div>
 		</div>
@@ -172,6 +160,7 @@
 			}
 		
 		});
+		getfeedbackDetails();
 	}
 	var cadreId = "";	
 	function buildCadreInfo(result)
@@ -290,7 +279,7 @@
 		 
 		 var checkCount = $( "input:checked" ).length - 1;
 		 var remarks=  $.trim($('#remarksId').val());
-		
+	
 		 if(cadreId.length == 0){
 			$('#errorDiv1').html('No Cadre Selected').css("color","red");
 			return false;
@@ -329,6 +318,7 @@
 						if(result.resultCode == 0)
 						{
 							$('#errorDiv1').html('<span style="color:green;">Feedback Submitted</span>');
+							setTimeout(function(){$("#errorDiv1").html("");},2000)
 							$('#remarksId').val('');
 						}
 						else
@@ -379,6 +369,26 @@
 	}
 	getCadreDetailsBySearchCriteria1();
 	
+	function getfeedbackDetails()
+	{		
+		var jsObj = {		
+			task:"feedbackDetails"            
+		}
+  
+		$.ajax({
+			type : "POST",
+			url : "getFeedbackDataAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			var str='';
+			for(var i in result){
+			str+='<label class="checkbox"> ';
+			str+='<input type="checkbox" class="feedbackCls" name="feedbackCheck" value="'+result[i].id+'"> '+result[i].name+'</label>';
+			}
+			$("#feedbackId").html(str);
+		});
+	}
+	getfeedbackDetails();
 	</script>
 	
   </body>
