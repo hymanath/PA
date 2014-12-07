@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
@@ -1382,8 +1384,9 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 						
 							String teshilWiseRegisteredBooths = tehsilWiseRegisteredBoothsMap.get(tehsilId);
 							String[] registeredBooths = teshilWiseRegisteredBooths.split(",");
-							List<Long> boothIdsList = new ArrayList<Long>();
-									
+							Set<Long> boothIdsList = new HashSet<Long>();
+							List<Long> boothsList = new ArrayList<Long>();
+							
 							if(registeredBooths != null && registeredBooths.length>0)
 							{
 								for (String boothId : registeredBooths) 
@@ -1393,25 +1396,34 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 										boothIdsList.add(Long.valueOf(boothId.toString().trim()));
 									}
 								}
-								
+							}
+							
+							if(boothWiseTotalCountMap != null && boothWiseTotalCountMap.size()>0)
+							{
+								boothIdsList.addAll(boothWiseTotalCountMap.keySet());
+							}
+							
+							if(boothIdsList != null && boothIdsList.size()>0)
+							{
+								boothsList.addAll(boothIdsList);
 							}
 							
 							String notRegisteredBoothsStr = "";
 							Long mandalVoters = 0L;
 							List<String> notRegisteredBooths = null;
 							String localName="";
-							if(boothIdsList != null && boothIdsList.size()>0)
+							if(boothsList != null && boothsList.size()>0)
 							{								
-								Booth booth = boothDAO.get(boothIdsList.get(0));
+								Booth booth = boothDAO.get(boothsList.get(0));
 								if(booth.getLocalBody() != null)
 								{
-									notRegisteredBooths = boothDAO.getUnregisteredBoothsByBooths(boothIdsList,constituency.getConstituencyId(),IConstants.VOTER_DATA_PUBLICATION_ID,tehsilId,"notRural");
+									notRegisteredBooths = boothDAO.getUnregisteredBoothsByBooths(boothsList,constituency.getConstituencyId(),IConstants.VOTER_DATA_PUBLICATION_ID,tehsilId,"notRural");
 									mandalVoters = boothPublicationVoterDAO.findVotersCountByPublicationIdInALocation("localElectionBody", tehsilId, IConstants.VOTER_DATA_PUBLICATION_ID);
 									localName = booth.getLocalBody().getName()+" "+booth.getLocalBody().getElectionType().getElectionType();
 								}
 								else
 								{
-									notRegisteredBooths = boothDAO.getUnregisteredBoothsByBooths(boothIdsList,constituency.getConstituencyId(),IConstants.VOTER_DATA_PUBLICATION_ID,tehsilId,"rural");
+									notRegisteredBooths = boothDAO.getUnregisteredBoothsByBooths(boothsList,constituency.getConstituencyId(),IConstants.VOTER_DATA_PUBLICATION_ID,tehsilId,"rural");
 									mandalVoters = boothPublicationVoterDAO.findVotersCountByPublicationIdInALocation("mandal", tehsilId, IConstants.VOTER_DATA_PUBLICATION_ID);
 								}
 								
