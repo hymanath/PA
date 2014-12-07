@@ -44,7 +44,7 @@ public class TdpCadreLocationWiseReportVO implements java.io.Serializable{
 	
 	List<CadreRegisterInfo>     casteGroupList = new ArrayList<CadreRegisterInfo>();
 	List<CadreRegisterInfo>     casteList = new ArrayList<CadreRegisterInfo>();
-	private List<String> comments;
+	private List<Long> comments;
 	private String remarks;
 	private String comment;
 	
@@ -299,14 +299,6 @@ public class TdpCadreLocationWiseReportVO implements java.io.Serializable{
 		this.constituencyNo = constituencyNo;
 	}
 
-	public List<String> getComments() {
-		return comments;
-	}
-
-	public void setComments(List<String> comments) {
-		this.comments = comments;
-	}
-
 	public String getRemarks() {
 		return remarks;
 	}
@@ -323,4 +315,12 @@ public class TdpCadreLocationWiseReportVO implements java.io.Serializable{
 		this.comment = comment;
 	}
 
+	public List<Long> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Long> comments) {
+		this.comments = comments;
+	}
+	
 }

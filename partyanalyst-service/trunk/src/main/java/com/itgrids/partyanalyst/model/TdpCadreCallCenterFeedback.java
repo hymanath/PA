@@ -29,9 +29,7 @@ public class TdpCadreCallCenterFeedback extends BaseModel implements java.io.Ser
 	private Long tdpCadreCallCenterFeedbackId;
 	private TdpCadre tdpCadre;
 	private Long tdpCadreId;
-	private String comment;
-	private TdpCadreCallCenterRemarks tdpCadreCallCenterRemarks;
-	private Long remarkId;
+	private String remarks;
 	private String userName;
 	private Date insertedTime;
 	
@@ -66,14 +64,6 @@ public class TdpCadreCallCenterFeedback extends BaseModel implements java.io.Ser
 		this.tdpCadreId = tdpCadreId;
 	}
 	
-	@Column(name="comment")
-	public String getComment() {
-		return comment;
-	}
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
-	
 	@Column(name="user_name")
 	public String getUserName() {
 		return userName;
@@ -90,25 +80,15 @@ public class TdpCadreCallCenterFeedback extends BaseModel implements java.io.Ser
 		this.insertedTime = insertedTime;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY )
-	@JoinColumn(name = "remarks" , insertable = false, updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	public TdpCadreCallCenterRemarks getTdpCadreCallCenterRemarks() {
-		return tdpCadreCallCenterRemarks;
+	@Column(name="remarks")
+	public String getRemarks() {
+		return remarks;
 	}
-	public void setTdpCadreCallCenterRemarks(
-			TdpCadreCallCenterRemarks tdpCadreCallCenterRemarks) {
-		this.tdpCadreCallCenterRemarks = tdpCadreCallCenterRemarks;
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
 	}
 	
-	@Column(name="remarks")
-	public Long getRemarkId() {
-		return remarkId;
-	}
-	public void setRemarkId(Long remarkId) {
-		this.remarkId = remarkId;
-	}
-
+	
 	
 	
 
