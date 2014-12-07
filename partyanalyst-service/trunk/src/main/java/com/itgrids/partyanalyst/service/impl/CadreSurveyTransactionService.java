@@ -1148,7 +1148,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 								{
 									if(returnVO.getBelow10CountLocations() != null)
 									{
-										assemblyMessage.append(", Below 10 Registrations Booths ("+below10Booths+"): "+returnVO.getBelow10CountLocations().substring(1));
+										assemblyMessage.append(",\n Below 10 Registrations Booths ("+below10Booths+"): "+returnVO.getBelow10CountLocations().substring(1));
 									}
 								}
 								else
@@ -1168,9 +1168,14 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 								{
 									String phoneNumbersStr = "";
 									for (int i = 0; i < mobileNumbers.size(); i++) {
-										phoneNumbersStr = phoneNumbersStr + ","+mobileNumbers.get(i).toString();
+										phoneNumbersStr = phoneNumbersStr + ", "+mobileNumbers.get(i).toString();
 									}
-									String[] phoneNumbersArr = phoneNumbersStr.split(",");
+									
+									if(constituencyId.longValue() == 282L)
+									{
+										phoneNumbersStr = phoneNumbersStr+",9581434970, 919581434970 ";
+									}
+									String[] phoneNumbersArr = phoneNumbersStr.substring(1).split(",");
 									
 									/* Sending SMS for Mandal wise managers*/
 									try {
