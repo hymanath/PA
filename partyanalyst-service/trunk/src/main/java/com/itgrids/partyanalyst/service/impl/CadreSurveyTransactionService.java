@@ -1141,16 +1141,38 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 								finalVO.getSurveyTransactionVOList().add(returnVO);
 								
 								StringBuilder assemblyMessage = new StringBuilder();
-								assemblyMessage.append( returnVO.getName() +" Constituency Overview \n");
+								
+								String value = returnVO.getName();								
+								StringBuilder finalName = new StringBuilder(value);
+								for (int index = 0; index < finalName.length(); index++)
+								{
+								    char c = finalName.charAt(index);
+								    if(index >0)
+								    {
+								    	if (Character.isLowerCase(c))
+									    {
+								    		finalName.setCharAt(index, Character.toUpperCase(c));
+									    } else
+									    {
+									    	finalName.setCharAt(index, Character.toLowerCase(c));
+									    }
+								    }
+								}
+							
 								assemblyMessage.append("Date : "+new SimpleDateFormat("dd-MM-yyyy").format(yesterDay));
-								assemblyMessage.append(",\nTarget : "+ daywiseTarget);
+								assemblyMessage.append( "\n"+finalName.toString() +" Constituency Cadre Enrollment Update");								
+								assemblyMessage.append("\nTarget : "+ daywiseTarget);
 								assemblyMessage.append(",\nAchieved : "+returnVO.getArcheivedTarget());
 								
 								if(constituency.getDistrict().getDistrictId()>10)
 								{
 									if(returnVO.getBelow10CountLocations() != null)
 									{
-										assemblyMessage.append(",\n Below 10 Registrations Booths ("+below10Booths+"): "+returnVO.getBelow10CountLocations().substring(1));
+										assemblyMessage.append(",\nBelow 10 Registrations Booths ("+below10Booths+"): "+returnVO.getBelow10CountLocations().substring(1));
+									}
+									if(returnVO.getNotSubmittedCount() != null)
+									{
+										assemblyMessage.append(",\n Registration not started Booths  ("+notRegisteredBooths+"): "+returnVO.getNotSumbittedLocations().substring(1));
 									}
 								}
 								else
@@ -1165,25 +1187,42 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 										remainingTarget = daywiseTarget ;
 									}
 									assemblyMessage.append(",\nToday Target : "+remainingTarget);
+									
+									int mandalCount=0;
+									for (SurveyTransactionVO mandalsVO : reportVOList)
+									{
+										mandalCount = mandalCount+1;
+										assemblyMessage.append("\n");
+										assemblyMessage.append(mandalCount+") "+mandalsVO.getName());
+										assemblyMessage.append(",\nTarget : "+ mandalsVO.getArcheivedTarget());
+										assemblyMessage.append(",\nAchieved : "+mandalsVO.getTotalCount());
+										
+										Long mandalTarget = mandalsVO.getArcheivedTarget() - mandalsVO.getTotalCount();
+										if(mandalTarget>0)
+										{
+											mandalTarget = mandalsVO.getArcheivedTarget() + ( mandalTarget );
+										}
+										else
+										{
+											mandalTarget = mandalsVO.getArcheivedTarget() ;
+										}
+										assemblyMessage.append(",\nToday Target : "+mandalTarget);										
+									}
 								}
-								if(returnVO.getNotSubmittedCount() != null)
-								{
-									assemblyMessage.append(",\n Registration not started Booths  ("+notRegisteredBooths+"): "+returnVO.getNotSumbittedLocations().substring(1));
-								}
-								
 								List<Long> mobileNumbers = partyPresidentsDAO.getMobileNumebrsBylocation(constituency.getConstituencyId(), 0L, IConstants.CONSTITUENCY);
 								
 								if(mobileNumbers != null && mobileNumbers.size()>0)
 								{
 									String phoneNumbersStr = "";
 									for (int i = 0; i < mobileNumbers.size(); i++) {
-										phoneNumbersStr = phoneNumbersStr + ", "+mobileNumbers.get(i).toString();
+										phoneNumbersStr = phoneNumbersStr + ", "+mobileNumbers.get(i).toString().trim();
 									}
 									
-									if(constituencyId.longValue() == 282L)
+									if(constituencyId.longValue() == 69L || constituencyId.longValue() == 232L )
 									{
 										phoneNumbersStr = phoneNumbersStr+",9581434970, 919581434970 ";
 									}
+									//phoneNumbersStr = phoneNumbersStr+",9581434970, 919581434970 ";
 									String[] phoneNumbersArr = phoneNumbersStr.substring(1).split(",");
 									
 									/* Sending SMS for Mandal wise managers*/
@@ -1386,13 +1425,14 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 							String[] registeredBooths = teshilWiseRegisteredBooths.split(",");
 							Set<Long> boothIdsList = new HashSet<Long>();
 							List<Long> boothsList = new ArrayList<Long>();
-							
+							Long boothID= 0L;
 							if(registeredBooths != null && registeredBooths.length>0)
 							{
 								for (String boothId : registeredBooths) 
 								{
 									if(boothId != null && boothId.toString().trim().length()>0)
 									{
+										boothID = Long.valueOf(boothId.toString().trim());
 										boothIdsList.add(Long.valueOf(boothId.toString().trim()));
 									}
 								}
@@ -1414,12 +1454,33 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 							String localName="";
 							if(boothsList != null && boothsList.size()>0)
 							{								
-								Booth booth = boothDAO.get(boothsList.get(0));
+								Booth booth = boothDAO.get(boothID);
 								if(booth.getLocalBody() != null)
 								{
 									notRegisteredBooths = boothDAO.getUnregisteredBoothsByBooths(boothsList,constituency.getConstituencyId(),IConstants.VOTER_DATA_PUBLICATION_ID,tehsilId,"notRural");
 									mandalVoters = boothPublicationVoterDAO.findVotersCountByPublicationIdInALocation("localElectionBody", tehsilId, IConstants.VOTER_DATA_PUBLICATION_ID);
-									localName = booth.getLocalBody().getName()+" "+booth.getLocalBody().getElectionType().getElectionType();
+									
+									if(localName != null && localName.trim().length() == 0)
+									{
+										String value = booth.getLocalBody().getElectionType().getElectionType();								
+										StringBuilder finalName = new StringBuilder(value);
+										for (int index = 0; index < finalName.length(); index++)
+										{
+										    char c = finalName.charAt(index);
+										    if(index >0)
+										    {
+										    	if (Character.isLowerCase(c))
+											    {
+										    		finalName.setCharAt(index, Character.toUpperCase(c));
+											    } else
+											    {
+											    	finalName.setCharAt(index, Character.toLowerCase(c));
+											    }
+										    }
+										}
+										
+										localName = booth.getLocalBody().getName()+" "+finalName;
+									}
 								}
 								else
 								{
@@ -1477,19 +1538,20 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 							finalTehsilVO.setNotSumbittedLocations(notRegisteredBoothsStr.length()>0? notRegisteredBoothsStr:null);
 							finalTehsilVO.setSurveyTransactionVOList(tehsiVOList);
 							finalTehsilVO.setArcheivedTarget(Math.round(targetCount/noOfDays)); // daywise target
+							finalTehsilVO.setLocationName(localName);
 							tehslList.add(finalTehsilVO);
 							
 							StringBuilder mandalMessage = new StringBuilder();
+							mandalMessage.append("\nDate : "+new SimpleDateFormat("dd-MM-yyyy").format(fromDate));
 							if(localName != null && localName.length()>0)
 							{
-								mandalMessage.append( localName +" Registrations Overview   ");
+								mandalMessage.append( localName +" Cadre Enrollment Update   ");
 							}
 							else
 							{
-								mandalMessage.append( tehsilVO.getLocationType() +" Registrations Overview  ");
+								mandalMessage.append( tehsilVO.getLocationType() +" Cadre Enrollment Update  ");
 							}
-							mandalMessage.append("\nDate : "+new SimpleDateFormat("dd-MM-yyyy").format(fromDate));
-							mandalMessage.append(",\nTarget : "+ finalTehsilVO.getArcheivedTarget());
+							mandalMessage.append("\nTarget : "+ finalTehsilVO.getArcheivedTarget());
 							mandalMessage.append(",\nAchieved : "+finalTehsilVO.getTotalCount());
 							
 							if(constituency.getDistrict().getDistrictId()>10)
@@ -1497,6 +1559,11 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 								if(finalTehsilVO.getBelow10CountLocations() != null)
 								{
 									mandalMessage.append(",\nBelow 10 Registrations Booths  ("+finalTehsilVO.getPendingCount()+"): "+finalTehsilVO.getBelow10CountLocations().substring(1));
+								}
+								
+								if(finalTehsilVO.getNotSubmittedCount() != null)
+								{
+									mandalMessage.append(",\nRegistration not started Booths ("+finalTehsilVO.getNotSubmittedCount()+"): "+finalTehsilVO.getNotSumbittedLocations().substring(1));
 								}
 							}
 							else
@@ -1512,10 +1579,6 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 								}
 								mandalMessage.append(",\nToday Target : "+remainingTarget);
 							}
-							if(finalTehsilVO.getNotSubmittedCount() != null)
-							{
-								mandalMessage.append(",\nRegistration not started Booths ("+finalTehsilVO.getNotSubmittedCount()+"): "+finalTehsilVO.getNotSumbittedLocations().substring(1));
-							}
 							
 							List<Long> mobileNumbers = partyPresidentsDAO.getMobileNumebrsBylocation(constituency.getConstituencyId(), tehsilId, IConstants.TEHSIL);
 							
@@ -1523,11 +1586,15 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 							{
 								String phoneNumbersStr = "";
 								for (int i = 0; i < mobileNumbers.size(); i++) {
-									phoneNumbersStr = phoneNumbersStr + ","+mobileNumbers.get(i).toString();
+									phoneNumbersStr = phoneNumbersStr + ","+mobileNumbers.get(i).toString().trim();
+								}	
+								if(constituency.getConstituencyId().longValue() == 69L || constituency.getConstituencyId().longValue() == 232L )
+								{
+									phoneNumbersStr = phoneNumbersStr+", 9581434970, 919581434970 ";
 								}
+								//phoneNumbersStr = phoneNumbersStr+",9581434970, 919581434970 ";
 								String[] phoneNumbersArr = phoneNumbersStr.split(",");
 							
-								
 								/* Sending SMS for Mandal wise managers*/
 								try {
 									//String[] phoneNumbersArr = {"919959796608,9581434970,919581434970".toString()};									
