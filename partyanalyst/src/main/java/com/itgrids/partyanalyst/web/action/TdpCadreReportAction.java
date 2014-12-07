@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -43,6 +44,7 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 	private String trNo;
 	private String membership;
 	private List<String> jobCodes;
+	private List<BasicVO> resultList;
 	
 	
 	
@@ -141,8 +143,6 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 		this.request = request;
 	}
 
-
-
 	public String getTask() {
 		return task;
 	}
@@ -165,8 +165,15 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 
 	public void setResult(ResultStatus result) {
 		this.result = result;
+	}	
+
+	public List<BasicVO> getResultList() {
+		return resultList;
 	}
-	
+
+	public void setResultList(List<BasicVO> resultList) {
+		this.resultList = resultList;
+	}
 
 	public String execute()
 	{
@@ -440,10 +447,10 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 			
 			String comments = jobj.getString("comments");
 			 if(comments != null && comments.length() > 0){
-	    		  List<String> commentsList = new ArrayList<String>();
+	    		  List<Long> commentsList = new ArrayList<Long>();
 	    		  String[] commentValues = comments.split(",");
 	    		  for(String value:commentValues){
-	    			  commentsList.add(value);
+	    			  commentsList.add(Long.parseLong(value));
 	    		  }
 	    		  vo.setComments(commentsList);	
 	    	  }
@@ -471,6 +478,19 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 		catch(Exception e)
 		{
 			LOG.info("Entered into getDayWiseCardPrintedCount() in getLocationWiseDetailsForExcelReport class");	
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getAllFeedbackDetails()
+	{
+		try{
+			jobj = new JSONObject(getTask());
+		
+			resultList = tdpCadreReportService.getfeedbackDetails();	
+		}
+		catch(Exception e){
+			LOG.info("Entered into getAllFeedbackDetails()");	
 		}
 		return Action.SUCCESS;
 	}
