@@ -1009,7 +1009,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			
 			/*List<Long> constituencyIdsList = new ArrayList<Long>();
 			constituencyIdsList.add(232L);
-			constituencyIdsList.add(282L);
+			constituencyIdsList.add(237L);
 			constituencyIdsList.add(65L);
 			*/
 			Long noOfDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, IConstants.CADRE_2014_LAST_DATE);
@@ -1141,7 +1141,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 								StringBuilder assemblyMessage = new StringBuilder();
 								assemblyMessage.append( returnVO.getName() +" Constituency Overview \n");
 								assemblyMessage.append("Date : "+new SimpleDateFormat("dd-MM-yyyy").format(yesterDay));
-								assemblyMessage.append(",\nTarget : "+ (new Double(targetCount)).longValue());
+								assemblyMessage.append(",\nTarget : "+ daywiseTarget);
 								assemblyMessage.append(",\nAchieved : "+returnVO.getArcheivedTarget());
 								
 								if(constituency.getDistrict().getDistrictId()>10)
@@ -1153,13 +1153,13 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 								}
 								else
 								{
-									Long remainingTarget = targetCount.longValue() - totalRegisteredCount.longValue();
-									remainingTarget = targetCount.longValue() + ( remainingTarget );
+									Long remainingTarget = daywiseTarget - totalRegisteredCount.longValue();
+									remainingTarget = daywiseTarget + ( remainingTarget );
 									assemblyMessage.append(",\nToday Target : "+remainingTarget);
 								}
 								if(returnVO.getNotSubmittedCount() != null)
 								{
-									assemblyMessage.append(", Registration not started Booths  ("+notRegisteredBooths+"): "+returnVO.getNotSumbittedLocations().substring(1));
+									assemblyMessage.append(",\n Registration not started Booths  ("+notRegisteredBooths+"): "+returnVO.getNotSumbittedLocations().substring(1));
 								}
 								
 								List<Long> mobileNumbers = partyPresidentsDAO.getMobileNumebrsBylocation(constituency.getConstituencyId(), 0L, IConstants.CONSTITUENCY);
@@ -1388,19 +1388,20 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 							String notRegisteredBoothsStr = "";
 							Long mandalVoters = 0L;
 							List<String> notRegisteredBooths = null;
+							String localName="";
 							if(boothIdsList != null && boothIdsList.size()>0)
 							{								
 								Booth booth = boothDAO.get(boothIdsList.get(0));
 								if(booth.getLocalBody() != null)
 								{
 									notRegisteredBooths = boothDAO.getUnregisteredBoothsByBooths(boothIdsList,constituency.getConstituencyId(),IConstants.VOTER_DATA_PUBLICATION_ID,tehsilId,"notRural");
-									 mandalVoters = boothPublicationVoterDAO.findVotersCountByPublicationIdInALocation("localElectionBody", tehsilId, IConstants.VOTER_DATA_PUBLICATION_ID);
+									mandalVoters = boothPublicationVoterDAO.findVotersCountByPublicationIdInALocation("localElectionBody", tehsilId, IConstants.VOTER_DATA_PUBLICATION_ID);
+									localName = booth.getLocalBody().getName()+" "+booth.getLocalBody().getElectionType().getElectionType();
 								}
 								else
 								{
 									notRegisteredBooths = boothDAO.getUnregisteredBoothsByBooths(boothIdsList,constituency.getConstituencyId(),IConstants.VOTER_DATA_PUBLICATION_ID,tehsilId,"rural");
-									 mandalVoters = boothPublicationVoterDAO.findVotersCountByPublicationIdInALocation("mandal", tehsilId, IConstants.VOTER_DATA_PUBLICATION_ID);
-									
+									mandalVoters = boothPublicationVoterDAO.findVotersCountByPublicationIdInALocation("mandal", tehsilId, IConstants.VOTER_DATA_PUBLICATION_ID);
 								}
 								
 								if(notRegisteredBooths != null && notRegisteredBooths.size()>0)
@@ -1456,9 +1457,16 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 							tehslList.add(finalTehsilVO);
 							
 							StringBuilder mandalMessage = new StringBuilder();
-							mandalMessage.append( tehsilVO.getLocationType() +" Registrations Overview ");
+							if(localName != null && localName.length()>0)
+							{
+								mandalMessage.append( localName +" Registrations Overview   ");
+							}
+							else
+							{
+								mandalMessage.append( tehsilVO.getLocationType() +" Registrations Overview  ");
+							}
 							mandalMessage.append("\nDate : "+new SimpleDateFormat("dd-MM-yyyy").format(yesterDay));
-							mandalMessage.append(",\nTarget : "+ (new Double(targetCount)).longValue());
+							mandalMessage.append(",\nTarget : "+ finalTehsilVO.getArcheivedTarget());
 							mandalMessage.append(",\nAchieved : "+finalTehsilVO.getTotalCount());
 							
 							if(constituency.getDistrict().getDistrictId()>10)
@@ -1470,8 +1478,8 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 							}
 							else
 							{
-								Long remainingTarget = targetCount.longValue() - finalTehsilVO.getTotalCount().longValue();
-								remainingTarget = targetCount.longValue() + ( remainingTarget );
+								Long remainingTarget = Math.round(targetCount/noOfDays) - finalTehsilVO.getTotalCount().longValue();
+								remainingTarget = Math.round(targetCount/noOfDays) + ( remainingTarget );
 								mandalMessage.append(",\nToday Target : "+remainingTarget);
 							}
 							if(finalTehsilVO.getNotSubmittedCount() != null)
