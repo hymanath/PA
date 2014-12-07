@@ -125,17 +125,25 @@
 				<div class="widget">
 					<div class="widget-heading">
 						<h4>Constituency Wise Cards Prints Overview 
-						<select class="pull-right input-small" id="ConstiSeacrhId" style="margin-top:-5px;" onChange="searchByStatus('CONSTITUENCY')"><option value="0"> Select</option><option value="SENT"> SENT TO PRINT </option>
-						<option value="PRINTED"> PRINTED </option>
-						<option value="ERROR"> ERROR </option>
-						<option value="PENDING"> PENDING </option></select>
-						<select class="pull-right input-small" id="constituencyList" style="margin-top:-5px;" onChange="searchByName(this.id,'CONSTITUENCY')"><option value="0"> All </option></select>
 						
 						</h4>
 					</div>
 
-					<div class="widget-body scrollable_div" style="width:97%; height:481px;overflow:auto;">		
-						<div align="center"><img style="width:70px;height:60px;display:none;" id="searchDataImg" class="" src="images/Loading-data.gif"></div>					
+					<div class="widget-body scrollable_div" style="width:97%; height:481px;overflow:auto;">	
+					<span id="constiErrMsg"></span>
+					<div class="form-inine">
+					<input class="input-medium myTooltip" type="text"  min="1" max="100" placeholder="Enter Number" style="margin-top: -4px;" id="constipercSearch" onkeypress="return isNumberKey(event);" title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Enter numbers" />
+					<select class="input-medium" id="constituencyList" style="margin-top:-5px;" onChange="searchByStatus('CONSTITUENCY')"><option value="0"> All </option></select>
+						<select class="input-medium" id="ConstiSeacrhId" style="margin-top:-5px;" onChange="searchByStatus('CONSTITUENCY',0)"><option value="0"> All</option><option value="SENT"> SENT TO PRINT </option>
+						<option value="PRINTED"> PRINTED </option>
+						<option value="ERROR"> ERROR </option>
+						<option value="PENDING"> PENDING </option></select>
+						
+						</div>
+						<div align="center">
+						<img style="width:70px;height:60px;display:none;" id="searchDataImg" class="" src="images/Loading-data.gif"></div>
+						
+											
 						<div id="accordion2" class="accordion"> </div>						
 					</div>	
 				</div>
@@ -158,12 +166,18 @@
 				<div class="span6 ">
 					<div class="widget">
 						<div class="widget-heading">
-							<h5>District Wise Cards Prints Overview<select class="pull-right input-small" id="DistSeacrhId" style="margin-top:-5px;" onChange="searchByStatus('DISTRICT')"><option value="0"> Select</option><option value="SENT"> SENT TO PRINT </option>
-						<option value="PRINTED"> PRINTED </option>
-						<option value="ERROR"> ERROR </option><option value="PENDING"> PENDING </option></select>
-						<select class="pull-right input-small" id="districtList" style="margin-top:-5px;" onChange="searchByName(this.id,'DISTRICT')"><option value="0"> All </option></select></h5>
+							<h5>District Wise Cards Prints Overview</h5>
 						</div>						
 						<div class="widget-body" style="width:95%;height:230px;overflow:auto;">
+						<span id="distErrMsg"></span>
+						<div class="form-inine">	
+						<input class="input-small myTooltip" type="text" min="1" max="100" placeholder="Enter Number" style="margin-top: -4px;" id="distpercSearch" onkeypress="return isNumberKey(event);" title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Enter numbers"/>
+						<select class="input-medium" id="districtList" style="margin-top:-5px;" onChange="searchByStatus('DISTRICT',0)"><option value="0"> All </option></select>
+					<select class="input-medium" id="DistSeacrhId" style="margin-top:-5px;" onChange="searchByStatus('DISTRICT',0)"><option value="0"> All</option><option value="SENT"> SENT TO PRINT </option>
+						<option value="PRINTED"> PRINTED </option>
+						<option value="ERROR"> ERROR </option><option value="PENDING"> PENDING </option></select>
+						
+					</div>
 							<div align="center"><img style="width:70px;height:60px;display:none;" id="ajaxImg" src="images/Loading-data.gif"></div>											
 							<div id="districtAccordion" class="accordion"></div>
 						</div>
@@ -173,12 +187,18 @@
 				<div class="span6 ">
 					<div class="widget">
 						<div class="widget-heading">
-							<h5>Parliament Wise Cards Prints Overview<select class="pull-right input-small" id="ParlSeacrhId" style="margin-top:-5px;" onChange="searchByStatus('MP')"><option value="0"> Select</option><option value="SENT"> SENT TO PRINT </option>
+							<h5>Parliament Wise Cards Prints Overview</h5>
+						</div>
+						<div class="widget-body"  style="width:95%;height:230px;overflow:auto;">
+						<span id="parlErrMsg"></span>
+						<div class="form-inine">
+						<input class="input-small myTooltip" type="text" placeholder="Enter Number" style="margin-top: -4px;" id="parlpercSearch" onkeypress="return isNumberKey(event);" title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Enter numbers"/>
+					<select class="input-medium" id="parlConstiList" style="margin-top:-5px;" onChange="searchByStatus('MP',0)"><option value="0"> All </option></select>
+					<select class="input-medium " id="ParlSeacrhId" style="margin-top:-5px;" onChange="searchByStatus('MP',0)"><option value="0"> All</option><option value="SENT"> SENT TO PRINT </option>
 						<option value="PRINTED"> PRINTED </option>
 						<option value="ERROR"> ERROR </option><option value="PENDING"> PENDING </option></select>
-							<select class="pull-right input-small" id="parlConstiList" style="margin-top:-5px;" onChange="searchByName(this.id,'MP')"><option value="0"> All </option></select></h5>
-						</div>
-						<div class="widget-body"  style="width:95%;height:230px;overflow:auto;">						
+							
+					</div>
 								<div align="center"><img style="width:70px;height:60px;display:none;" id="ajaxImg1" src="images/Loading-data.gif"></div>											
 								<div id="parliamentAccordion" class="accordion"></div>					
 							</div>
@@ -227,7 +247,7 @@
 			stateId = 2;
 		var jsObj = 
 		{
-			  stateTyleId : 2,
+			  stateTyleId : stateId,
 			  type : type,
 			  task:"totalPrintingCount"             
 		}	
@@ -240,10 +260,10 @@
 		{
 			if(type == "CONSTITUENCY"){
 				$('#searchDataImg').hide();			
-				buildConstituencyWiseResults(result,1);
+				buildConstituencyWiseResults(result,1,0);//default searchperc -0
 			}else if(type == "DISTRICT"){
 				$('#ajaxImg').hide();			
-				buildDistrictWiseResults(result,1);
+				buildDistrictWiseResults(result,1,0);//default searchperc -0
 				if(searchTypeId == 1)
 				{
 					$('#mainImg').hide();		
@@ -251,13 +271,13 @@
 				}
 			}else if(type == "MP"){
 				$('#ajaxImg1').hide();			
-				buildParliamentWiseResults(result,1);
+				buildParliamentWiseResults(result,1,0);//default searchperc -0
 			}
 		}
 	  });
   }
 
-  function buildConstituencyWiseResults(result,type)
+  function buildConstituencyWiseResults(result,type,percentage)
   {
 	var  constiteuncyInfoArr = [];
 	if(type !=0)
@@ -265,76 +285,123 @@
 		$('#constituencyList').find('option').remove();
 		$('#constituencyList').append('<option value="0"> All </option>');			
 	}
-
+	
 	var str='';
-	for(var i in result.zebraPrintDetailsVOList)
-	{		
-	if(type !=0){
-		$('#constituencyList').append('<option value="'+result.zebraPrintDetailsVOList[i].id+'">'+result.zebraPrintDetailsVOList[i].name+'</option>');			
-	}	
-		str+=' <div class="accordion-group">';
-		str+=' <div class="accordion-heading">';
-		str+=' <a style="font-weight:bold;font-size:16px;" onclick="hideConstiDiv();toggleDiv(\'collapse'+i+'\');getJOBCodeS(\'CONSTITUENCY\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYMIS'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImgMIS'+result.zebraPrintDetailsVOList[i].id+'\');getDayWiseCardPrintedCount(\'CONSTITUENCY\',\'SENT\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'\');" href="#collapse'+i+'" data-parent="#accordion2" data-toggle="collapse" class="accordion-toggle collapsed">'+result.zebraPrintDetailsVOList[i].name+'  <span id="mini-pie-chart'+i+'" class="pull-right mini-pie-chart"></span></a>';
-		 str+='<ul class="unstyled inline">';
-		 str+='<li> Total<br/><span class="label" style="width:50px;">' +result.zebraPrintDetailsVOList[i].rowCount+'&nbsp;</span></li>';
-		 str+='<li> Sent to Print<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].totalPushCount+'&nbsp;</span></li>';
-		 str+=' <li>Printed<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].printStatusCount+'&nbsp;</span></li>';
-		 str+=' <li>Error<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'&nbsp;</span></li>';
-		 str+=' <li>Pending<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].remainingCount+'&nbsp;</span></li>';
-		str+='</ul>';
-		str+=' </div>';
-		str+=' <div class="accordion-body collapse toggleCls" id="collapse'+i+'" style="height: 0px;">';
-		str+=' <div class="accordion-inner">';
-		/*str+=' <table class="table table-bordered">';
-			str+=' <thead>';
-			str+=' <tr>';
-			str+=' <th class="alert-success"> Total Registered  </th>';
-			str+=' <th class="alert-info" > Sent to print  </th>';
-			str+=' <th class="alert-info" > Cards Printed </th>';
-			str+=' <th class="alert-info" > Printing Error  </th>';
-			str+=' <th class="alert-info"  style="width:200px"> Pending Cards  </th>';
-			str+=' </tr>';
-			str+=' </thead>';
-			str+=' <tbody>';
-			str+=' <tr>';
+	if(percentage > 0)
+		{
+		 buildPercentageWise(result,type,percentage);
+		}
+		else
+	  {
+		for(var i in result.zebraPrintDetailsVOList)
+		{	
+		if(type !=0){
+			$('#constituencyList').append('<option value="'+result.zebraPrintDetailsVOList[i].id+'">'+result.zebraPrintDetailsVOList[i].name+'</option>');			
+		}	
+			str+=' <div class="accordion-group">';
+			str+=' <div class="accordion-heading">';
+			str+=' <a style="font-weight:bold;font-size:16px;" onclick="hideConstiDiv();toggleDiv(\'collapse'+i+'\');getJOBCodeS(\'CONSTITUENCY\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYMIS'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImgMIS'+result.zebraPrintDetailsVOList[i].id+'\');getDayWiseCardPrintedCount(\'CONSTITUENCY\',\'SENT\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'\');" href="#collapse'+i+'" data-parent="#accordion2" data-toggle="collapse" class="accordion-toggle collapsed">'+result.zebraPrintDetailsVOList[i].name+'  <span id="mini-pie-chart'+i+'" class="pull-right mini-pie-chart"></span></a>';
+			 str+='<ul class="unstyled inline">';
+			 str+='<li> Total<br/><span class="label" style="width:50px;">' +result.zebraPrintDetailsVOList[i].rowCount+'&nbsp;</span></li>';
+			 str+='<li> Sent to Print<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].totalPushCount+'&nbsp;</span></li>';
+			 str+=' <li>Printed<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].printStatusCount+'&nbsp;</span></li>';
+			 str+=' <li>Error<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'&nbsp;</span></li>';
+			 str+=' <li>Pending<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].remainingCount+'&nbsp;</span></li>';
+			  str+=' <li>Printed<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].printPerc+'%&nbsp;</span></li>';
+			 
+			str+='</ul>';
+			str+=' </div>';
+			str+=' <div class="accordion-body collapse toggleCls" id="collapse'+i+'" style="height: 0px;">';
+			str+=' <div class="accordion-inner">';
+			/*str+=' <table class="table table-bordered">';
+				str+=' <thead>';
+				str+=' <tr>';
+				str+=' <th class="alert-success"> Total Registered  </th>';
+				str+=' <th class="alert-info" > Sent to print  </th>';
+				str+=' <th class="alert-info" > Cards Printed </th>';
+				str+=' <th class="alert-info" > Printing Error  </th>';
+				str+=' <th class="alert-info"  style="width:200px"> Pending Cards  </th>';
+				str+=' </tr>';
+				str+=' </thead>';
+				str+=' <tbody>';
+				str+=' <tr>';
 
-			str+=' <td>'+result.zebraPrintDetailsVOList[i].rowCount+'</td>';
-			if(result.zebraPrintDetailsVOList[i].totalPushCount > 0)
-			{
-			str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'CONSTITUENCY\',\'SENT\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].totalPushCount+'</a></td>';
-			}
-			else
-		    str+=' <td>'+result.zebraPrintDetailsVOList[i].totalPushCount+'</td>';
-			if(result.zebraPrintDetailsVOList[i].printStatusCount > 0)
-			{
-			str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'CONSTITUENCY\',\'PRINTED\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].printStatusCount+'</a></td>';
-			}
-			else
-			str+=' <td>'+result.zebraPrintDetailsVOList[i].printStatusCount+'</td>';
-			if(result.zebraPrintDetailsVOList[i].errorStatusCount > 0)
-			{
-			str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'CONSTITUENCY\',\'ERROR\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</a></td>';
-			}
-			else
-			str+=' <td>'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</td>';
-			str+=' <td>'+result.zebraPrintDetailsVOList[i].remainingCount+'</td>';
+				str+=' <td>'+result.zebraPrintDetailsVOList[i].rowCount+'</td>';
+				if(result.zebraPrintDetailsVOList[i].totalPushCount > 0)
+				{
+				str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'CONSTITUENCY\',\'SENT\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].totalPushCount+'</a></td>';
+				}
+				else
+				str+=' <td>'+result.zebraPrintDetailsVOList[i].totalPushCount+'</td>';
+				if(result.zebraPrintDetailsVOList[i].printStatusCount > 0)
+				{
+				str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'CONSTITUENCY\',\'PRINTED\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].printStatusCount+'</a></td>';
+				}
+				else
+				str+=' <td>'+result.zebraPrintDetailsVOList[i].printStatusCount+'</td>';
+				if(result.zebraPrintDetailsVOList[i].errorStatusCount > 0)
+				{
+				str+=' <td><a style="cursor:pointer" onclick="getDayWiseCardPrintedCount(\'CONSTITUENCY\',\'ERROR\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'\');">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</a></td>';
+				}
+				else
+				str+=' <td>'+result.zebraPrintDetailsVOList[i].errorStatusCount+'</td>';
+				str+=' <td>'+result.zebraPrintDetailsVOList[i].remainingCount+'</td>';
+				
+				str+=' </tr>';
+				str+=' </tbody>';
+			str+=' </table>';*/
+			/*str+=' <a style="cursor:pointer"  class="btn btn-block btn-success border-radius-0" onclick="getJOBCodeS(\'CONSTITUENCY\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYMIS'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImgMIS'+result.zebraPrintDetailsVOList[i].id+'\');">MISREPORTS</a>';*/
+			str+='<div id="CONSTITUENCYImgMIS'+result.zebraPrintDetailsVOList[i].id+'" style="display:none;"><img style="width:70px;height:60px;"  src="images/Loading-data.gif"></div>';
+			str+='<div id="CONSTITUENCYMIS'+result.zebraPrintDetailsVOList[i].id+'" class="ConstiremoveCls"></div>';
+			str+='<div id="CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'" style="display:none;"><img style="width:70px;height:60px;"  src="images/Loading-data.gif"></div>';
+			str+='<div id="CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'" class="ConstiremoveCls"></div>';
 			
-			str+=' </tr>';
-			str+=' </tbody>';
-		str+=' </table>';*/
-		/*str+=' <a style="cursor:pointer"  class="btn btn-block btn-success border-radius-0" onclick="getJOBCodeS(\'CONSTITUENCY\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYMIS'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImgMIS'+result.zebraPrintDetailsVOList[i].id+'\');">MISREPORTS</a>';*/
-		str+='<div id="CONSTITUENCYImgMIS'+result.zebraPrintDetailsVOList[i].id+'" style="display:none;"><img style="width:70px;height:60px;"  src="images/Loading-data.gif"></div>';
-		str+='<div id="CONSTITUENCYMIS'+result.zebraPrintDetailsVOList[i].id+'" class="ConstiremoveCls"></div>';
-		str+='<div id="CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'" style="display:none;"><img style="width:70px;height:60px;"  src="images/Loading-data.gif"></div>';
-		str+='<div id="CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'" class="ConstiremoveCls"></div>';
-		
-		str+='</div>';
-		str+=' </div>';
-		str+=' </div>';
+			str+='</div>';
+			str+=' </div>';
+			str+=' </div>';
+	}
 		var details = [result.zebraPrintDetailsVOList[i].printStatusCount,result.zebraPrintDetailsVOList[i].remainingCount,result.zebraPrintDetailsVOList[i].errorStatusCount];
 		constiteuncyInfoArr.push(details);
+	
 	}
+	
+	function buildPercentageWise(result,type,percentage)
+	  {
+		for(var i in result.zebraPrintDetailsVOList)
+		{	
 
+		if(type !=0){
+			$('#constituencyList').append('<option value="'+result.zebraPrintDetailsVOList[i].id+'">'+result.zebraPrintDetailsVOList[i].name+'</option>');			
+			}	
+			if(Math.round(result.zebraPrintDetailsVOList[i].printPerc) >= percentage)
+			{
+			str+=' <div class="accordion-group">';
+			str+=' <div class="accordion-heading">';
+			str+=' <a style="font-weight:bold;font-size:16px;" onclick="hideConstiDiv();toggleDiv(\'collapse'+i+'\');getJOBCodeS(\'CONSTITUENCY\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYMIS'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImgMIS'+result.zebraPrintDetailsVOList[i].id+'\');getDayWiseCardPrintedCount(\'CONSTITUENCY\',\'SENT\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'\',\'CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'\');" href="#collapse'+i+'" data-parent="#accordion2" data-toggle="collapse" class="accordion-toggle collapsed">'+result.zebraPrintDetailsVOList[i].name+'  <span id="mini-pie-chart'+i+'" class="pull-right mini-pie-chart"></span></a>';
+			 str+='<ul class="unstyled inline">';
+			 str+='<li> Total<br/><span class="label" style="width:50px;">' +result.zebraPrintDetailsVOList[i].rowCount+'&nbsp;</span></li>';
+			 str+='<li> Sent to Print<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].totalPushCount+'&nbsp;</span></li>';
+			 str+=' <li>Printed<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].printStatusCount+'&nbsp;</span></li>';
+			 str+=' <li>Error<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'&nbsp;</span></li>';
+			 str+=' <li>Pending<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].remainingCount+'&nbsp;</span></li>';
+			  str+=' <li>Printed<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].printPerc+'%&nbsp;</span></li>';
+			 
+			str+='</ul>';
+			str+=' </div>';
+			str+=' <div class="accordion-body collapse toggleCls" id="collapse'+i+'" style="height: 0px;">';
+			str+=' <div class="accordion-inner">';
+			
+			str+='<div id="CONSTITUENCYImgMIS'+result.zebraPrintDetailsVOList[i].id+'" style="display:none;"><img style="width:70px;height:60px;"  src="images/Loading-data.gif"></div>';
+			str+='<div id="CONSTITUENCYMIS'+result.zebraPrintDetailsVOList[i].id+'" class="ConstiremoveCls"></div>';
+			str+='<div id="CONSTITUENCYImg'+result.zebraPrintDetailsVOList[i].id+'" style="display:none;"><img style="width:70px;height:60px;"  src="images/Loading-data.gif"></div>';
+			str+='<div id="CONSTITUENCY'+result.zebraPrintDetailsVOList[i].id+'" class="ConstiremoveCls"></div>';
+			
+			str+='</div>';
+			str+=' </div>';
+			str+=' </div>';
+			}
+		}
+	  }
 	$('#accordion2').html(str);
 	
 	if( $('.mini-pie-chart').length > 0 ) {
@@ -408,7 +475,7 @@
 		$('#myModal').modal('hide');
 	}
 	
-	function buildDistrictWiseResults(result,type)
+	function buildDistrictWiseResults(result,type,percentage)
 	{
 		var  districtInfoArr = [];
 		if(type !=0)
@@ -418,6 +485,12 @@
 		}
 
 		var str='';
+		if(percentage > 0)
+		{
+		 buildDistctwisePercentageSearch(result,type,percentage);
+		}
+		else
+	  {
 		for(var i in result.zebraPrintDetailsVOList)
 		{		
 		if(type !=0){
@@ -434,6 +507,8 @@
 		 
 		 str+=' <li>Error<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'&nbsp;</span></li>';
 		 str+=' <li>Pending<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].remainingCount+'&nbsp;</span></li>';
+		  str+=' <li>Printed<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].printPerc+'%&nbsp;</span></li>';
+		 
 		str+='</ul>';
 			str+=' </div>';
 			str+=' <div class="accordion-body collapse toggleCls" id="collapseDistrict'+i+'" style="height: 0px;">';
@@ -483,10 +558,48 @@
 			str+='</div>';
 			str+=' </div>';
 			str+=' </div>';
+		}
 			var details = [result.zebraPrintDetailsVOList[i].printStatusCount,result.zebraPrintDetailsVOList[i].remainingCount,result.zebraPrintDetailsVOList[i].errorStatusCount];
 			districtInfoArr.push(details);
 		}
-
+function buildDistctwisePercentageSearch(result,type,percentage)
+	  {
+	for(var i in result.zebraPrintDetailsVOList)
+			{		
+			if(type !=0){
+				$('#districtList').append('<option value="'+result.zebraPrintDetailsVOList[i].id+'">'+result.zebraPrintDetailsVOList[i].name+'</option>');			
+			}
+			if(Math.round(result.zebraPrintDetailsVOList[i].printPerc) >= percentage)
+			{
+			str+=' <div class="accordion-group">';
+			str+=' <div class="accordion-heading">';
+			str+=' <a style="font-weight:bold;font-size:16px;" onclick="hideDistDiv();toggleDiv(\'collapseDistrict'+i+'\');getJOBCodeS(\'DISTRICT\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICTMIS'+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICTImgMIS'+result.zebraPrintDetailsVOList[i].id+'\');getDayWiseCardPrintedCount(\'DISTRICT\',\'SENT\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICT'+result.zebraPrintDetailsVOList[i].id+'\',\'DISTRICTImg'+result.zebraPrintDetailsVOList[i].id+'\');" href="#collapseDistrict'+i+'" data-parent="#districtAccordion" data-toggle="collapse" class="accordion-toggle collapsed">'+result.zebraPrintDetailsVOList[i].name+'  <span id="mini-pie-chart-district'+i+'" class="pull-right mini-pie-chart-district"></span></a>';
+			 str+='<ul class="unstyled inline">';
+		 str+='<li> Total<br/><span class="label" style="width:50px;">' +result.zebraPrintDetailsVOList[i].rowCount+'&nbsp;</span></li>';
+		 str+='<li> Sent to Print<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].totalPushCount+'&nbsp;</span></li>';
+		 str+=' <li>Printed<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].printStatusCount+'&nbsp;</span></li>';
+		
+		 
+		 str+=' <li>Error<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'&nbsp;</span></li>';
+		 str+=' <li>Pending<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].remainingCount+'&nbsp;</span></li>';
+		  str+=' <li>Printed<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].printPerc+'%&nbsp;</span></li>';
+		 
+		str+='</ul>';
+			str+=' </div>';
+			str+=' <div class="accordion-body collapse toggleCls" id="collapseDistrict'+i+'" style="height: 0px;">';
+			str+=' <div class="accordion-inner">';
+			
+			str+='<div id="DISTRICTImgMIS'+result.zebraPrintDetailsVOList[i].id+'" style="display:none;"><img style="width:70px;height:60px;"  src="images/Loading-data.gif"></div>';
+			str+='<div id="DISTRICTMIS'+result.zebraPrintDetailsVOList[i].id+'" class="DistremoveCls"></div>';
+			str+='<div id="DISTRICTImg'+result.zebraPrintDetailsVOList[i].id+'"  style="display:none;"><img style="width:70px;height:60px;"  src="images/Loading-data.gif"></div>';
+			str+='<div id="DISTRICT'+result.zebraPrintDetailsVOList[i].id+'" class="DistremoveCls"></div>';
+			
+			str+='</div>';
+			str+=' </div>';
+			str+=' </div>';
+			}
+		}
+	 }
 		$('#districtAccordion').html(str);
 		
 		if( $('.mini-pie-chart-district').length > 0 ) {
@@ -502,7 +615,7 @@
 		}
   }
   var parliamentInfoArr = [];
-  function buildParliamentWiseResults(result,type)
+  function buildParliamentWiseResults(result,type,percentage)
   {
 		var  districtInfoArr = [];
 		if(type !=0)
@@ -512,6 +625,12 @@
 		}
 
 		var str='';
+		if(percentage > 0)
+		{
+		 buildParlmentPercentageSearch(result,type,percentage);
+		}
+		else
+	  {
 		for(var i in result.zebraPrintDetailsVOList)
 		{		
 		if(type !=0){
@@ -526,6 +645,8 @@
 		 str+=' <li>Printed<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].printStatusCount+'&nbsp;</span></li>';
 		 str+=' <li>Error<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'&nbsp;</span></li>';
 		 str+=' <li>Pending<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].remainingCount+'&nbsp;</span></li>';
+		  str+=' <li>Printed<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].printPerc+'%&nbsp;</span></li>';
+		 
 		str+='</ul>';
 
 			str+=' </div>';
@@ -576,10 +697,47 @@
 			str+='</div>';
 			str+=' </div>';
 			str+=' </div>';
+		}
 			var details = [result.zebraPrintDetailsVOList[i].printStatusCount,result.zebraPrintDetailsVOList[i].remainingCount,result.zebraPrintDetailsVOList[i].errorStatusCount];
 			parliamentInfoArr.push(details);
 		}
+		function buildParlmentPercentageSearch(result,type,percentage)
+	  {
+			for(var i in result.zebraPrintDetailsVOList)
+		{		
+		if(type !=0){
+			$('#parlConstiList').append('<option value="'+result.zebraPrintDetailsVOList[i].id+'">'+result.zebraPrintDetailsVOList[i].name+'</option>');			
+		}
+		if(Math.round(result.zebraPrintDetailsVOList[i].printPerc) >= percentage)
+			{
+			str+=' <div class="accordion-group">';
+			str+=' <div class="accordion-heading">';
+			str+=' <a style="font-weight:bold;font-size:16px;" onclick="hideParlDiv();toggleDiv(\'collapseParliament'+i+'\');getJOBCodeS(\'Parliament\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'ParliamentMIS'+result.zebraPrintDetailsVOList[i].id+'\',\'ParliamentImgMIS'+result.zebraPrintDetailsVOList[i].id+'\');getDayWiseCardPrintedCount(\'Parliament\',\'SENT\',\''+result.zebraPrintDetailsVOList[i].id+'\',\'Parliament'+result.zebraPrintDetailsVOList[i].id+'\',\'ParliamentImg'+result.zebraPrintDetailsVOList[i].id+'\');" href="#collapseParliament'+i+'" data-parent="#parliamentAccordion" data-toggle="collapse" class="accordion-toggle collapsed">'+result.zebraPrintDetailsVOList[i].name+'  <span id="mini-pie-chart-parliament'+i+'" class="pull-right mini-pie-chart-parliament"></span></a>';
+			 str+='<ul class="unstyled inline">';
+		 str+='<li> Total<br/><span class="label" style="width:50px;">' +result.zebraPrintDetailsVOList[i].rowCount+'&nbsp;</span></li>';
+		 str+='<li> Sent to Print<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].totalPushCount+'&nbsp;</span></li>';
+		 str+=' <li>Printed<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].printStatusCount+'&nbsp;</span></li>';
+		 str+=' <li>Error<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'&nbsp;</span></li>';
+		 str+=' <li>Pending<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].remainingCount+'&nbsp;</span></li>';
+		  str+=' <li>Printed<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].printPerc+'%&nbsp;</span></li>';
+		 
+		str+='</ul>';
 
+			str+=' </div>';
+			str+=' <div class="accordion-body collapse toggleCls" id="collapseParliament'+i+'" style="height: 0px;">';
+			str+=' <div class="accordion-inner">';
+			
+			str+='<div id="ParliamentImgMIS'+result.zebraPrintDetailsVOList[i].id+'" style="display:none;"><img style="width:70px;height:60px;"  src="images/Loading-data.gif"></div>';
+			str+='<div id="ParliamentMIS'+result.zebraPrintDetailsVOList[i].id+'" class="ParlremoveCls"></div>';
+			str+='<div id="ParliamentImg'+result.zebraPrintDetailsVOList[i].id+'"  style="display:none;"><img style="width:70px;height:60px;"  src="images/Loading-data.gif"></div>';
+			str+='<div id="Parliament'+result.zebraPrintDetailsVOList[i].id+'" class="ParlremoveCls"></div>';
+			
+			str+='</div>';
+			str+=' </div>';
+			str+=' </div>';
+			}
+		}
+	  }
 		$('#parliamentAccordion').html(str);
 		
 		if( $('.mini-pie-chart-parliament').length > 0 ) {
@@ -594,7 +752,7 @@
 			}
 		}
   }
-	function searchByName(id,loctype){
+	/*function searchByName(id,loctype){
 		var statusType = "";
 		var locId = $('#'+id).val();		
 		 var stateTypeId = $('input:radio[name=stateType]:checked').val();
@@ -654,11 +812,12 @@
 					}
 				}
 			  });			  	
-	}
-	function searchByStatus(loctype){
+	}*/
+	function searchByStatus(loctype,percentage){
+		
 		var statusType = "";
 		var id;
-		var locId = $('#'+id).val();		
+		//var locId = $('#'+id).val();		
 		 var stateTypeId = $('input:radio[name=stateType]:checked').val();
 		 var stateId = 0;
 		 if(stateTypeId == "both")
@@ -707,13 +866,13 @@
 				{
 					if(loctype == "CONSTITUENCY"){
 					$('#searchDataImg').hide();
-					buildConstituencyWiseResults(result,0);
+					buildConstituencyWiseResults(result,0,percentage);
 					}else if(loctype == "DISTRICT"){
 					$('#ajaxImg').hide();
-					buildDistrictWiseResults(result,0);
+					buildDistrictWiseResults(result,0,percentage);
 					}else if(loctype == "MP"){
 					$('#ajaxImg1').hide();
-					buildParliamentWiseResults(result,0);
+					buildParliamentWiseResults(result,0,percentage);
 					}
 				}
 			  });			  		
@@ -1051,6 +1210,78 @@
 				
 			}
 		}
+
+		$("#constipercSearch").blur(function(){
+		$("#constiErrMsg").html('');
+		var flag = true;
+		var	percSearch = $.trim($("#constipercSearch").val());
+		$("#ConstiSeacrhId").val(0);
+		 if(percSearch == ""){
+				percSearch=0;
+			}
+		if(percSearch > 100)
+			{
+		$("#constiErrMsg").html('Enter No lessthan 100').css("color","red");
+		flag = false;
+			}
+		 if(flag == true)
+		 searchByStatus('CONSTITUENCY',percSearch);
+			
+		});
+		$("#distpercSearch").blur(function(){
+		var flag = true;
+		$("#distErrMsg").html('');
+		var	percSearch1 = $.trim($("#distpercSearch").val());
+		$("#DistSeacrhId").val(0);
+		 if(percSearch1 == ""){
+				percSearch1=0;
+			 }
+		if(percSearch1 > 100)
+			{
+		$("#distErrMsg").html('Enter No lessthan 100').css("color","red");
+		flag = false;
+			}
+		 if(flag == true)
+		 searchByStatus('DISTRICT',percSearch1);
+			
+		});
+		$("#parlpercSearch").blur(function(){
+		var flag = true;
+		$("#parlErrMsg").html('');
+		var	percSearch2 = $.trim($("#parlpercSearch").val());
+		$("#ParlSeacrhId").val(0);
+		 if(percSearch2 == ""){
+				percSearch2=0;
+			 }
+		if(percSearch2 > 100)
+			{
+		$("#parlErrMsg").html('Enter No lessthan 100').css("color","red");
+		flag = false;
+			}
+		 if(flag == true)
+		 searchByStatus('MP',percSearch2);
+		
+		});
+	$("#ConstiSeacrhId").change(function() {
+		$("#constipercSearch").val('');
+	});
+	$("#DistSeacrhId").change(function() {
+		$("#distpercSearch").val('');
+	});
+	$("#ParlSeacrhId").change(function() {
+		$("#parlpercSearch").val('');
+	});
+
+      function isNumberKey(evt)
+      {
+         var charCode = (evt.which) ? evt.which : event.keyCode
+         if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+		
+         return true;
+      }
+    
+	$('.myTooltip').tooltip();
 
   </script>	
  </body>
