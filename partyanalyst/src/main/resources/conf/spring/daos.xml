@@ -1770,7 +1770,11 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
 
-<bean id="tdpCadreCallCenterRemarksDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreCallCenterRemarksDAO" >
+<bean id="tdpCadreCallCenterCommentDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreCallCenterCommentDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="callCenterFeedbackDAO" class="com.itgrids.partyanalyst.dao.hibernate.CallCenterFeedbackDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
 	<!--  end -->

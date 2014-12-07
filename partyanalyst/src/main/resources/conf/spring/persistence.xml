@@ -515,8 +515,9 @@
 				<value>com.itgrids.partyanalyst.model.TabUserKeys</value>
 				<value>com.itgrids.partyanalyst.model.PartyPresidents</value>
 				<value>com.itgrids.partyanalyst.model.LocalNameConstant</value>
-				<value>com.itgrids.partyanalyst.model.TdpCadreCallCenterRemarks</value>
-				<value>com.itgrids.partyanalyst.model.TdpCadreCallCenterFeedback</value>
+				<value>com.itgrids.partyanalyst.model.TdpCadreCallCenterComment</value>
+				<value>com.itgrids.partyanalyst.model.TdpCadreCallCenterFeedback</value>				
+				<value>com.itgrids.partyanalyst.model.CallCenterFeedback</value>
 				</list>
 			
 		</property>

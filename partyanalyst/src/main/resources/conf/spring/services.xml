@@ -2365,9 +2365,10 @@
           <property name="localNameConstantDAO" ref="localNameConstantDAO" />
           <property name="userAddressDAO" ref="userAddressDAO" />
           <property name="tdpCadreCallCenterFeedbackDAO" ref="tdpCadreCallCenterFeedbackDAO" />
-          <property name="tdpCadreCallCenterRemarksDAO" ref="tdpCadreCallCenterRemarksDAO" />
+          <property name="tdpCadreCallCenterCommentDAO" ref="tdpCadreCallCenterCommentDAO" />
           <property name="transactionTemplate" ref="transactionTemplate" />
           <property name="tdpCadreTeluguNamesDAO" ref="tdpCadreTeluguNamesDAO" />
+          <property name="callCenterFeedbackDAO" ref="callCenterFeedbackDAO" />
      </bean>
 </beans>		
 	
