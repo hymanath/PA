@@ -1007,11 +1007,11 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			List<SurveyTransactionVO> finalList = new ArrayList<SurveyTransactionVO>();
 			List<Long> constituencyIdsList = constituencyDAO.getAllAssemblyConstituencyIdsByStateId(0L);
 			
-			/*List<Long> constituencyIdsList = new ArrayList<Long>();
-			constituencyIdsList.add(232L);
-			constituencyIdsList.add(237L);
-			constituencyIdsList.add(65L);
-			*/
+			//List<Long> constituencyIdsList = new ArrayList<Long>();
+			//constituencyIdsList.add(282L);
+			//constituencyIdsList.add(237L);
+			//constituencyIdsList.add(69L);
+			
 			Long noOfDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, IConstants.CADRE_2014_LAST_DATE);
 			Long totalConstituencyCount = 0L;
 			
@@ -1154,7 +1154,14 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 								else
 								{
 									Long remainingTarget = daywiseTarget - totalRegisteredCount.longValue();
-									remainingTarget = daywiseTarget + ( remainingTarget );
+									if(remainingTarget>0)
+									{
+										remainingTarget = daywiseTarget + ( remainingTarget );
+									}
+									else
+									{
+										remainingTarget = daywiseTarget ;
+									}
 									assemblyMessage.append(",\nToday Target : "+remainingTarget);
 								}
 								if(returnVO.getNotSubmittedCount() != null)
@@ -1179,7 +1186,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 									
 									/* Sending SMS for Mandal wise managers*/
 									try {
-										//String[] phoneNumbers = {"919959796608".toString()};								
+										//String[] phoneNumbersArr = {"919959796608,9581434970,919581434970".toString()};								
 										ResultStatus status = smsCountrySmsService.sendSmsFromAdmin(assemblyMessage.toString(), true, phoneNumbersArr);
 									} catch (Exception e) {
 									}
@@ -1483,7 +1490,14 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 							else
 							{
 								Long remainingTarget = Math.round(targetCount/noOfDays) - finalTehsilVO.getTotalCount().longValue();
-								remainingTarget = Math.round(targetCount/noOfDays) + ( remainingTarget );
+								if(remainingTarget >0)
+								{
+									remainingTarget = Math.round(targetCount/noOfDays) + ( remainingTarget );
+								}
+								else
+								{
+									remainingTarget = Math.round(targetCount/noOfDays);
+								}
 								mandalMessage.append(",\nToday Target : "+remainingTarget);
 							}
 							if(finalTehsilVO.getNotSubmittedCount() != null)
@@ -1504,7 +1518,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 								
 								/* Sending SMS for Mandal wise managers*/
 								try {
-									//String[] phoneNumbers = {"919959796608".toString()};								
+									//String[] phoneNumbersArr = {"919959796608,9581434970,919581434970".toString()};									
 									ResultStatus status = smsCountrySmsService.sendSmsFromAdmin(mandalMessage.toString(), true, phoneNumbersArr);
 								} catch (Exception e) {
 								}
