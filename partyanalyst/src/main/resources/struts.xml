@@ -9142,6 +9142,11 @@
 				<param name="root">status</param>
 			</result>
 		</action>
+		<action name="getFeedbackDataAction" class="tdpCadreReportAction" method="getAllFeedbackDetails" >
+			<result type="json" name="success">
+				<param name="root">resultList</param>
+			</result>
+		</action>
 </package>
 
 </struts>      
