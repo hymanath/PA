@@ -1004,8 +1004,13 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 	public void sendTargetBasedSMSforLocationWiseManagers()
 	{
 		SurveyTransactionVO finalVO = new SurveyTransactionVO();
+		List<Long> smsSuccessConstiIds = new ArrayList<Long>();
 		try {
 			
+			if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
+				return ;
+			}
+
 			List<SurveyTransactionVO> finalList = new ArrayList<SurveyTransactionVO>();
 			List<Long> constituencyIdsList = constituencyDAO.getAllAssemblyConstituencyIdsByStateId(0L);
 			
@@ -1033,7 +1038,8 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 					totalConstituencyCount = totalConstituencyCount+1;
 					Constituency constituency = constituencyDAO.get(constituencyId);				
 					Long constiteuncyVotersCount =boothPublicationVoterDAO.findVotersCountByPublicationIdInALocation("constituency", constituencyId, IConstants.VOTER_DATA_PUBLICATION_ID);
-					System.out.println(constituency.getName()+" Constituency Start sending SMS... ");
+					//System.out.println(constituency.getName()+" Constituency Start sending SMS... ");
+					LOG.info(" \n \n"+constituency.getName()+" Constituency Start sending SMS... \n\n");
 					double consituencyVoters = Double.valueOf(constiteuncyVotersCount.toString());
 					Double targetCount ;
 					 if(constituency.getDistrict().getDistrictId() > 10)
@@ -1083,173 +1089,194 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 					
 					finalList = getLocationWiseRegistereDetailsByDates(boothsBasicList,constituency,yesterDay,yesterDay,noOfDays);
 					
-					if(finalList != null && finalList.size()>0)
+					List<Long> mobileNumbers = partyPresidentsDAO.getMobileNumebrsBylocation(constituency.getConstituencyId(), 0L, IConstants.CONSTITUENCY);
+					
+					if(mobileNumbers != null)
 					{
-						Long totalRegisteredCount = 0L;
-						Long registerdBooths=0L;
-						Long notRegisteredBooths = 0L;
-						Long below10Booths = 0L;
-						String below10count ="";
-						String notSubmitted = "";
-						
-						for (SurveyTransactionVO reportVO : finalList) 
+						if(finalList != null && finalList.size()>0)
 						{
-							List<SurveyTransactionVO> reportVOList = reportVO.getSurveyTransactionVOList();
+							Long totalRegisteredCount = 0L;
+							Long registerdBooths=0L;
+							Long notRegisteredBooths = 0L;
+							Long below10Booths = 0L;
+							String below10count ="";
+							String notSubmitted = "";
 							
-							if(reportVOList != null && reportVOList.size()>0)
+							for (SurveyTransactionVO reportVO : finalList) 
 							{
+								List<SurveyTransactionVO> reportVOList = reportVO.getSurveyTransactionVOList();
 								
-								for (SurveyTransactionVO mandalsVO : reportVOList)
+								if(reportVOList != null && reportVOList.size()>0)
 								{
-									totalRegisteredCount = totalRegisteredCount + mandalsVO.getTotalCount();
 									
-									if(mandalsVO.getBelow10CountLocations() != null)
+									for (SurveyTransactionVO mandalsVO : reportVOList)
 									{
-									below10count = below10count+mandalsVO.getBelow10CountLocations();
+										totalRegisteredCount = totalRegisteredCount + mandalsVO.getTotalCount();
+										
+										if(mandalsVO.getBelow10CountLocations() != null)
+										{
+										below10count = below10count+mandalsVO.getBelow10CountLocations();
+										}
+										if(mandalsVO.getNotSumbittedLocations() != null)
+										{
+											notSubmitted = notSubmitted+mandalsVO.getNotSumbittedLocations();
+										}
+										if(mandalsVO.getSubmittedCount() != null)
+										{
+											registerdBooths = registerdBooths + mandalsVO.getSubmittedCount();
+										}
+									
+										if(mandalsVO.getNotSubmittedCount() != null)
+										{
+											notRegisteredBooths = notRegisteredBooths + mandalsVO.getNotSubmittedCount();
+										}
+										if(mandalsVO.getPendingCount() != null)
+										{
+											below10Booths = below10Booths + mandalsVO.getPendingCount();
+										}
 									}
-									if(mandalsVO.getNotSumbittedLocations() != null)
+									
+									SurveyTransactionVO returnVO = new SurveyTransactionVO();
+									returnVO.setId(reportVO.getId());
+									returnVO.setName(reportVO.getName());
+									returnVO.setDayWiseTarget(daywiseTarget);
+									returnVO.setArcheivedTarget(totalRegisteredCount);
+									returnVO.setSubmittedCount(registerdBooths);
+									returnVO.setNotSubmittedCount(notRegisteredBooths);
+									returnVO.setPendingCount(below10Booths);
+									returnVO.setBelow10CountLocations(below10count.length()>0?below10count.substring(1):"");
+									returnVO.setNotSumbittedLocations(notSubmitted.length()>0?notSubmitted.substring(1):"");	
+									returnVO.setSurveyTransactionVOList(reportVOList);
+									
+									finalVO.getSurveyTransactionVOList().add(returnVO);
+									
+									StringBuilder assemblyMessage = new StringBuilder();
+									
+									String value = returnVO.getName();								
+									StringBuilder finalName = new StringBuilder(value);
+									for (int index = 0; index < finalName.length(); index++)
 									{
-										notSubmitted = notSubmitted+mandalsVO.getNotSumbittedLocations();
-									}
-									if(mandalsVO.getSubmittedCount() != null)
-									{
-										registerdBooths = registerdBooths + mandalsVO.getSubmittedCount();
-									}
-								
-									if(mandalsVO.getNotSubmittedCount() != null)
-									{
-										notRegisteredBooths = notRegisteredBooths + mandalsVO.getNotSubmittedCount();
-									}
-									if(mandalsVO.getPendingCount() != null)
-									{
-										below10Booths = below10Booths + mandalsVO.getPendingCount();
-									}
-								}
-								
-								SurveyTransactionVO returnVO = new SurveyTransactionVO();
-								returnVO.setId(reportVO.getId());
-								returnVO.setName(reportVO.getName());
-								returnVO.setDayWiseTarget(daywiseTarget);
-								returnVO.setArcheivedTarget(totalRegisteredCount);
-								returnVO.setSubmittedCount(registerdBooths);
-								returnVO.setNotSubmittedCount(notRegisteredBooths);
-								returnVO.setPendingCount(below10Booths);
-								returnVO.setBelow10CountLocations(below10count.length()>0?below10count.substring(1):"");
-								returnVO.setNotSumbittedLocations(notSubmitted.length()>0?notSubmitted.substring(1):"");	
-								returnVO.setSurveyTransactionVOList(reportVOList);
-								
-								finalVO.getSurveyTransactionVOList().add(returnVO);
-								
-								StringBuilder assemblyMessage = new StringBuilder();
-								
-								String value = returnVO.getName();								
-								StringBuilder finalName = new StringBuilder(value);
-								for (int index = 0; index < finalName.length(); index++)
-								{
-								    char c = finalName.charAt(index);
-								    if(index >0)
-								    {
-								    	if (Character.isLowerCase(c))
+									    char c = finalName.charAt(index);
+									    if(index >0)
 									    {
-								    		finalName.setCharAt(index, Character.toUpperCase(c));
-									    } else
-									    {
-									    	finalName.setCharAt(index, Character.toLowerCase(c));
+									    	if (Character.isLowerCase(c))
+										    {
+									    		finalName.setCharAt(index, Character.toUpperCase(c));
+										    } else
+										    {
+										    	finalName.setCharAt(index, Character.toLowerCase(c));
+										    }
 									    }
-								    }
-								}
-							
-								assemblyMessage.append("Date : "+new SimpleDateFormat("dd-MM-yyyy").format(yesterDay));
-								assemblyMessage.append( "\n"+finalName.toString() +" Constituency Cadre Enrollment Update");								
-								assemblyMessage.append("\nTarget : "+ daywiseTarget);
-								assemblyMessage.append(",\nAchieved : "+returnVO.getArcheivedTarget());
+									}
 								
-								if(constituency.getDistrict().getDistrictId()>10)
-								{
-									if(returnVO.getBelow10CountLocations() != null)
+									assemblyMessage.append("Date : "+new SimpleDateFormat("dd-MM-yyyy").format(yesterDay));
+									assemblyMessage.append( "\n"+finalName.toString() +" Constituency Cadre Enrollment Update");								
+									assemblyMessage.append("\nTarget : "+ daywiseTarget);
+									assemblyMessage.append(",\nAchieved : "+returnVO.getArcheivedTarget());
+									
+									if(constituency.getDistrict().getDistrictId()>10)
 									{
-										assemblyMessage.append(",\nBelow 10 Registrations Booths ("+below10Booths+"): "+returnVO.getBelow10CountLocations().substring(1));
-									}
-									if(returnVO.getNotSubmittedCount() != null)
-									{
-										assemblyMessage.append(",\n Registration not started Booths  ("+notRegisteredBooths+"): "+returnVO.getNotSumbittedLocations().substring(1));
-									}
-								}
-								else
-								{
-									Long remainingTarget = daywiseTarget - totalRegisteredCount.longValue();
-									if(remainingTarget>0)
-									{
-										remainingTarget = daywiseTarget + ( remainingTarget );
+										if(returnVO.getBelow10CountLocations() != null)
+										{
+											assemblyMessage.append(",\nBelow 10 Registrations Booths ("+below10Booths+"): "+returnVO.getBelow10CountLocations());
+										}
+										if(returnVO.getNotSubmittedCount() != null)
+										{
+											assemblyMessage.append(",\n Registration not started Booths  ("+notRegisteredBooths+"): "+returnVO.getNotSumbittedLocations());
+										}
 									}
 									else
 									{
-										remainingTarget = daywiseTarget ;
-									}
-									assemblyMessage.append(",\nToday Target : "+remainingTarget);
-									
-									int mandalCount=0;
-									for (SurveyTransactionVO mandalsVO : reportVOList)
-									{
-										mandalCount = mandalCount+1;
-										assemblyMessage.append("\n");
-										assemblyMessage.append(mandalCount+") "+mandalsVO.getName());
-										assemblyMessage.append(",\nTarget : "+ mandalsVO.getArcheivedTarget());
-										assemblyMessage.append(",\nAchieved : "+mandalsVO.getTotalCount());
-										
-										Long mandalTarget = mandalsVO.getArcheivedTarget() - mandalsVO.getTotalCount();
-										if(mandalTarget>0)
+										Long remainingTarget = daywiseTarget - totalRegisteredCount.longValue();
+										if(remainingTarget>0)
 										{
-											mandalTarget = mandalsVO.getArcheivedTarget() + ( mandalTarget );
+											remainingTarget = daywiseTarget + ( remainingTarget );
 										}
 										else
 										{
-											mandalTarget = mandalsVO.getArcheivedTarget() ;
+											remainingTarget = daywiseTarget ;
 										}
-										assemblyMessage.append(",\nToday Target : "+mandalTarget);										
+										assemblyMessage.append(",\nToday Target : "+remainingTarget);
+										
+										int mandalCount=0;
+										for (SurveyTransactionVO mandalsVO : reportVOList)
+										{
+											mandalCount = mandalCount+1;
+											assemblyMessage.append("\n");
+											assemblyMessage.append(mandalCount+") "+mandalsVO.getName());
+											assemblyMessage.append(",\nTarget : "+ mandalsVO.getArcheivedTarget());
+											assemblyMessage.append(",\nAchieved : "+mandalsVO.getTotalCount());
+											
+											Long mandalTarget = mandalsVO.getArcheivedTarget() - mandalsVO.getTotalCount();
+											if(mandalTarget>0)
+											{
+												mandalTarget = mandalsVO.getArcheivedTarget() + ( mandalTarget );
+											}
+											else
+											{
+												mandalTarget = mandalsVO.getArcheivedTarget() ;
+											}
+											assemblyMessage.append(",\nToday Target : "+mandalTarget);										
+										}
 									}
-								}
-								List<Long> mobileNumbers = partyPresidentsDAO.getMobileNumebrsBylocation(constituency.getConstituencyId(), 0L, IConstants.CONSTITUENCY);
-								
-								if(mobileNumbers != null && mobileNumbers.size()>0)
-								{
-									String phoneNumbersStr = "";
-									for (int i = 0; i < mobileNumbers.size(); i++) {
-										phoneNumbersStr = phoneNumbersStr + ", "+mobileNumbers.get(i).toString().trim();
-									}
-									
-									if(constituencyId.longValue() == 69L || constituencyId.longValue() == 232L )
+																		
+									if(mobileNumbers != null && mobileNumbers.size()>0)
 									{
-										phoneNumbersStr = phoneNumbersStr+",9581434970, 919581434970 ";
+										String phoneNumbersStr = "";
+										for (int i = 0; i < mobileNumbers.size(); i++) {
+											phoneNumbersStr = phoneNumbersStr + ", "+mobileNumbers.get(i).toString().trim();
+										}
+										
+										if(constituencyId.longValue() == 69L || constituencyId.longValue() == 232L )
+										{
+											phoneNumbersStr = phoneNumbersStr+",9581434970, 919581434970 ";
+										}
+										//phoneNumbersStr = phoneNumbersStr+",9581434970, 919581434970 ";
+										String[] phoneNumbersArr = phoneNumbersStr.substring(1).split(",");
+										
+										/* Sending SMS for Mandal wise managers*/
+										try {
+											//String[] phoneNumbersArr = {"919959796608,9581434970,919581434970".toString()};								
+											ResultStatus status = smsCountrySmsService.sendSmsFromAdmin(assemblyMessage.toString(), true, phoneNumbersArr);
+											
+											LOG.info("\n"+constituency.getName()+",  mobileNOs :  "+phoneNumbersStr+", Assembly Message: "+assemblyMessage.toString());
+											System.out.println("\n"+constituency.getName()+",  mobileNOs :  "+phoneNumbersStr+", Assembly Message: "+assemblyMessage.toString());
+										} catch (Exception e) {
+										}
+										/* Sending SMS for Mandal wise managers*/
 									}
-									//phoneNumbersStr = phoneNumbersStr+",9581434970, 919581434970 ";
-									String[] phoneNumbersArr = phoneNumbersStr.substring(1).split(",");
 									
-									/* Sending SMS for Mandal wise managers*/
-									try {
-										//String[] phoneNumbersArr = {"919959796608,9581434970,919581434970".toString()};								
-										ResultStatus status = smsCountrySmsService.sendSmsFromAdmin(assemblyMessage.toString(), true, phoneNumbersArr);
-									} catch (Exception e) {
-									}
-									/* Sending SMS for Mandal wise managers*/
 								}
-								
 							}
+							LOG.info("\n\n total constituency sms sent : "+totalConstituencyCount+"\n\n");
+							LOG.info("\n"+constituency.getName()+" Constituency  SMS Sent Successfully... \n\n\n\n");
+							
+							//System.out.println("\n\n total constituency sms sent : "+totalConstituencyCount+"\n\n");
+							//System.out.println("\n"+constituency.getName()+" Constituency  SMS Sent Successfully... \n\n\n\n");
+
+							smsSuccessConstiIds.add(constituency.getConstituencyId());
 						}
-						System.out.println("\n\n total constituency sms sent : "+totalConstituencyCount+"\n\n");
-						System.out.println(constituency.getName()+" Constituency  SMS Sent Successfully... \n\n\n\n");
 					}
 				}
+				
+				
 			}
 			System.out.println("\n\n\n total constituency sms sent : "+totalConstituencyCount);
+		
 		} catch (Exception e) {
 			LOG.error(" exception occured at sendTargetBasedSMSforLocationWiseManagers() in CadreSurveyTransactionService service class. ", e);
+		}
+		finally{
+			//System.out.println(" success consttiuency List :"+smsSuccessConstiIds);
+			LOG.info(" success consttiuency List :"+smsSuccessConstiIds);
 		}
 	}
 	
 	private List<SurveyTransactionVO> getLocationWiseRegistereDetailsByDates( List<SurveyTransactionVO> boothsBasicList, Constituency constituency,Date fromDate, Date toDate,Long noOfDays)
 	{
 		List<SurveyTransactionVO> finalList = null;
+		
+		String tehsilIds = constituency.getConstituencyId()+"_"+constituency.getName()+"_ ";
 		try {
 			List<SurveyTransactionVO> returnList = new ArrayList<SurveyTransactionVO>();
 			List<Object[]> overAllboothWiseCountList = tdpCadreDAO.getTotalRecordsBoothWise(constituency.getConstituencyId(),null,null);
@@ -1414,198 +1441,222 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 					finalList = new ArrayList<SurveyTransactionVO>();
 					List<SurveyTransactionVO> tehslList = new ArrayList<SurveyTransactionVO>();
 					for (Long tehsilId : tehsilMap.keySet()) 
-					{
-						List<SurveyTransactionVO> tehsiVOList = tehsilMap.get(tehsilId);
-						
-						if(tehsiVOList != null && tehsiVOList.size()>0)
 						{
-							SurveyTransactionVO tehsilVO = tehsiVOList.get(0);
-						
-							String teshilWiseRegisteredBooths = tehsilWiseRegisteredBoothsMap.get(tehsilId);
-							String[] registeredBooths = teshilWiseRegisteredBooths.split(",");
-							Set<Long> boothIdsList = new HashSet<Long>();
-							List<Long> boothsList = new ArrayList<Long>();
-							Long boothID= 0L;
-							if(registeredBooths != null && registeredBooths.length>0)
+
+							List<SurveyTransactionVO> tehsiVOList = tehsilMap.get(tehsilId);
+							
+							if(tehsiVOList != null && tehsiVOList.size()>0)
 							{
-								for (String boothId : registeredBooths) 
+								SurveyTransactionVO tehsilVO = tehsiVOList.get(0);
+							
+								String teshilWiseRegisteredBooths = tehsilWiseRegisteredBoothsMap.get(tehsilId);
+								String[] registeredBooths = teshilWiseRegisteredBooths.split(",");
+								Set<Long> boothIdsList = new HashSet<Long>();
+								List<Long> boothsList = new ArrayList<Long>();
+								Long boothID= 0L;
+								if(registeredBooths != null && registeredBooths.length>0)
 								{
-									if(boothId != null && boothId.toString().trim().length()>0)
+									for (String boothId : registeredBooths) 
 									{
-										boothID = Long.valueOf(boothId.toString().trim());
-										boothIdsList.add(Long.valueOf(boothId.toString().trim()));
-									}
-								}
-							}
-							
-							if(boothWiseTotalCountMap != null && boothWiseTotalCountMap.size()>0)
-							{
-								boothIdsList.addAll(boothWiseTotalCountMap.keySet());
-							}
-							
-							if(boothIdsList != null && boothIdsList.size()>0)
-							{
-								boothsList.addAll(boothIdsList);
-							}
-							
-							String notRegisteredBoothsStr = "";
-							Long mandalVoters = 0L;
-							List<String> notRegisteredBooths = null;
-							String localName="";
-							if(boothsList != null && boothsList.size()>0)
-							{								
-								Booth booth = boothDAO.get(boothID);
-								if(booth.getLocalBody() != null)
-								{
-									notRegisteredBooths = boothDAO.getUnregisteredBoothsByBooths(boothsList,constituency.getConstituencyId(),IConstants.VOTER_DATA_PUBLICATION_ID,tehsilId,"notRural");
-									mandalVoters = boothPublicationVoterDAO.findVotersCountByPublicationIdInALocation("localElectionBody", tehsilId, IConstants.VOTER_DATA_PUBLICATION_ID);
-									
-									if(localName != null && localName.trim().length() == 0)
-									{
-										String value = booth.getLocalBody().getElectionType().getElectionType();								
-										StringBuilder finalName = new StringBuilder(value);
-										for (int index = 0; index < finalName.length(); index++)
+										if(boothId != null && boothId.toString().trim().length()>0)
 										{
-										    char c = finalName.charAt(index);
-										    if(index >0)
-										    {
-										    	if (Character.isLowerCase(c))
-											    {
-										    		finalName.setCharAt(index, Character.toUpperCase(c));
-											    } else
-											    {
-											    	finalName.setCharAt(index, Character.toLowerCase(c));
-											    }
-										    }
+											boothID = Long.valueOf(boothId.toString().trim());
+											boothIdsList.add(Long.valueOf(boothId.toString().trim()));
 										}
-										
-										localName = booth.getLocalBody().getName()+" "+finalName;
 									}
-								}
-								else
-								{
-									notRegisteredBooths = boothDAO.getUnregisteredBoothsByBooths(boothsList,constituency.getConstituencyId(),IConstants.VOTER_DATA_PUBLICATION_ID,tehsilId,"rural");
-									mandalVoters = boothPublicationVoterDAO.findVotersCountByPublicationIdInALocation("mandal", tehsilId, IConstants.VOTER_DATA_PUBLICATION_ID);
 								}
 								
+								if(boothWiseTotalCountMap != null && boothWiseTotalCountMap.size()>0)
+								{
+									boothIdsList.addAll(boothWiseTotalCountMap.keySet());
+								}
+								
+								if(boothIdsList != null && boothIdsList.size()>0)
+								{
+									boothsList.addAll(boothIdsList);
+								}
+								
+								String notRegisteredBoothsStr = "";
+								Long mandalVoters = 0L;
+								List<String> notRegisteredBooths = null;
+								String localName="";
+								if(boothsList != null && boothsList.size()>0)
+								{								
+									Booth booth = boothDAO.get(boothID);
+									if(booth.getLocalBody() != null)
+									{
+										notRegisteredBooths = boothDAO.getUnregisteredBoothsByBooths(boothsList,constituency.getConstituencyId(),IConstants.VOTER_DATA_PUBLICATION_ID,tehsilId,"notRural");
+										mandalVoters = boothPublicationVoterDAO.findVotersCountByPublicationIdInALocation("localElectionBody", tehsilId, IConstants.VOTER_DATA_PUBLICATION_ID);
+										
+										if(localName != null && localName.trim().length() == 0)
+										{
+											String value = booth.getLocalBody().getElectionType().getElectionType();								
+											StringBuilder finalName = new StringBuilder(value);
+											for (int index = 0; index < finalName.length(); index++)
+											{
+											    char c = finalName.charAt(index);
+											    if(index >0)
+											    {
+											    	if (Character.isLowerCase(c))
+												    {
+											    		finalName.setCharAt(index, Character.toUpperCase(c));
+												    } else
+												    {
+												    	finalName.setCharAt(index, Character.toLowerCase(c));
+												    }
+											    }
+											}
+											
+											localName = booth.getLocalBody().getName()+" "+finalName;
+										}
+									}
+									else
+									{
+										notRegisteredBooths = boothDAO.getUnregisteredBoothsByBooths(boothsList,constituency.getConstituencyId(),IConstants.VOTER_DATA_PUBLICATION_ID,tehsilId,"rural");
+										mandalVoters = boothPublicationVoterDAO.findVotersCountByPublicationIdInALocation("mandal", tehsilId, IConstants.VOTER_DATA_PUBLICATION_ID);
+									}
+									
+									if(notRegisteredBooths != null && notRegisteredBooths.size()>0)
+									{
+										for (String boothNo : notRegisteredBooths) 
+										{
+											notRegisteredBoothsStr = notRegisteredBoothsStr+", "+boothNo.trim();
+										}
+									}
+								}
+	
+								double mandalVotersCount = Double.valueOf(mandalVoters.toString());
+								Double targetCount ;
+								 if(constituency.getDistrict().getDistrictId() > 10)
+								 {
+									 Double apConstPerc =   ( mandalVotersCount / Double.valueOf(String.valueOf(IConstants.AP_VOTERS_2014)));
+									 int apTarget = IConstants.TARGET_CADRE_AP;
+									 
+									 targetCount =  (double) (apConstPerc * apTarget);
+								 }
+								 else
+								 {
+									 Double tgConstPerc =   ( mandalVotersCount / Double.valueOf(String.valueOf(IConstants.TG_VOTERS_2014)));
+									 int tgTarget = IConstants.TARGET_CADRE_TG;
+									 
+									 targetCount =  (double) (tgConstPerc * tgTarget);
+								 }
+								 
+								SurveyTransactionVO finalTehsilVO = new SurveyTransactionVO();
+								if(boothIdsList != null && boothIdsList.size()>0)
+								{
+									finalTehsilVO.setSubmittedCount(Long.valueOf(String.valueOf(boothIdsList.size())));
+								}							
 								if(notRegisteredBooths != null && notRegisteredBooths.size()>0)
 								{
-									for (String boothNo : notRegisteredBooths) 
-									{
-										notRegisteredBoothsStr = notRegisteredBoothsStr+", "+boothNo.trim();
-									}
+									finalTehsilVO.setNotSubmittedCount(Long.valueOf(String.valueOf(notRegisteredBooths.size())));
 								}
-							}
-
-							double mandalVotersCount = Double.valueOf(mandalVoters.toString());
-							Double targetCount ;
-							 if(constituency.getDistrict().getDistrictId() > 10)
-							 {
-								 Double apConstPerc =   ( mandalVotersCount / Double.valueOf(String.valueOf(IConstants.AP_VOTERS_2014)));
-								 int apTarget = IConstants.TARGET_CADRE_AP;
-								 
-								 targetCount =  (double) (apConstPerc * apTarget);
-							 }
-							 else
-							 {
-								 Double tgConstPerc =   ( mandalVotersCount / Double.valueOf(String.valueOf(IConstants.TG_VOTERS_2014)));
-								 int tgTarget = IConstants.TARGET_CADRE_TG;
-								 
-								 targetCount =  (double) (tgConstPerc * tgTarget);
-							 }
-							 
-							SurveyTransactionVO finalTehsilVO = new SurveyTransactionVO();
-							if(boothIdsList != null && boothIdsList.size()>0)
-							{
-								finalTehsilVO.setSubmittedCount(Long.valueOf(String.valueOf(boothIdsList.size())));
-							}							
-							if(notRegisteredBooths != null && notRegisteredBooths.size()>0)
-							{
-								finalTehsilVO.setNotSubmittedCount(Long.valueOf(String.valueOf(notRegisteredBooths.size())));
-							}
-							if(tehsilBelow10CountBoothsMap != null && tehsilBelow10CountBoothsMap.size()>0)
-							{
-								finalTehsilVO.setBelow10CountLocations(tehsilBelow10CountBoothsMap.get(tehsilVO.getLocationId())); // below 10 count booths List
-							}
-							if(finalTehsilVO.getBelow10CountLocations() != null)
-							{
-								finalTehsilVO.setPendingCount(Long.valueOf(String.valueOf(finalTehsilVO.getBelow10CountLocations().split(",").length - 1)));
-							}
-							
-							finalTehsilVO.setId(tehsilVO.getLocationId());
-							finalTehsilVO.setName(tehsilVO.getLocationName());																	
-							finalTehsilVO.setTotalCount(tehsilWiseTotalCount.get(tehsilId));							
-							finalTehsilVO.setNotSumbittedLocations(notRegisteredBoothsStr.length()>0? notRegisteredBoothsStr:null);
-							finalTehsilVO.setSurveyTransactionVOList(tehsiVOList);
-							finalTehsilVO.setArcheivedTarget(Math.round(targetCount/noOfDays)); // daywise target
-							finalTehsilVO.setLocationName(localName);
-							tehslList.add(finalTehsilVO);
-							
-							StringBuilder mandalMessage = new StringBuilder();
-							mandalMessage.append("\nDate : "+new SimpleDateFormat("dd-MM-yyyy").format(fromDate));
-							if(localName != null && localName.length()>0)
-							{
-								mandalMessage.append( localName +" Cadre Enrollment Update   ");
-							}
-							else
-							{
-								mandalMessage.append( tehsilVO.getLocationType() +" Cadre Enrollment Update  ");
-							}
-							mandalMessage.append("\nTarget : "+ finalTehsilVO.getArcheivedTarget());
-							mandalMessage.append(",\nAchieved : "+finalTehsilVO.getTotalCount());
-							
-							if(constituency.getDistrict().getDistrictId()>10)
-							{
+								if(tehsilBelow10CountBoothsMap != null && tehsilBelow10CountBoothsMap.size()>0)
+								{
+									finalTehsilVO.setBelow10CountLocations(tehsilBelow10CountBoothsMap.get(tehsilVO.getLocationId())); // below 10 count booths List
+								}
 								if(finalTehsilVO.getBelow10CountLocations() != null)
 								{
-									mandalMessage.append(",\nBelow 10 Registrations Booths  ("+finalTehsilVO.getPendingCount()+"): "+finalTehsilVO.getBelow10CountLocations().substring(1));
+									finalTehsilVO.setPendingCount(Long.valueOf(String.valueOf(finalTehsilVO.getBelow10CountLocations().split(",").length - 1)));
 								}
 								
-								if(finalTehsilVO.getNotSubmittedCount() != null)
+								finalTehsilVO.setId(tehsilVO.getLocationId());
+																									
+								finalTehsilVO.setTotalCount(tehsilWiseTotalCount.get(tehsilId));							
+								finalTehsilVO.setNotSumbittedLocations(notRegisteredBoothsStr.length()>0? notRegisteredBoothsStr:null);
+								finalTehsilVO.setSurveyTransactionVOList(tehsiVOList);
+								finalTehsilVO.setArcheivedTarget(Math.round(targetCount/noOfDays)); // daywise target
+								finalTehsilVO.setLocationName(localName);
+								tehslList.add(finalTehsilVO);
+								
+								StringBuilder mandalMessage = new StringBuilder();
+								mandalMessage.append("\nDate : "+new SimpleDateFormat("dd-MM-yyyy").format(fromDate));
+								if(localName != null && localName.length()>0)
 								{
-									mandalMessage.append(",\nRegistration not started Booths ("+finalTehsilVO.getNotSubmittedCount()+"): "+finalTehsilVO.getNotSumbittedLocations().substring(1));
-								}
-							}
-							else
-							{
-								Long remainingTarget = Math.round(targetCount/noOfDays) - finalTehsilVO.getTotalCount().longValue();
-								if(remainingTarget >0)
-								{
-									remainingTarget = Math.round(targetCount/noOfDays) + ( remainingTarget );
+									mandalMessage.append("\n"+ localName +" Cadre Enrollment Update   ");
+									finalTehsilVO.setName(localName);
 								}
 								else
 								{
-									remainingTarget = Math.round(targetCount/noOfDays);
+									mandalMessage.append("\n"+ tehsilVO.getLocationType() +" Cadre Enrollment Update  ");
+									finalTehsilVO.setName(tehsilVO.getLocationType());
 								}
-								mandalMessage.append(",\nToday Target : "+remainingTarget);
-							}
-							
-							List<Long> mobileNumbers = partyPresidentsDAO.getMobileNumebrsBylocation(constituency.getConstituencyId(), tehsilId, IConstants.TEHSIL);
-							
-							if(mobileNumbers != null && mobileNumbers.size()>0)
-							{
-								String phoneNumbersStr = "";
-								for (int i = 0; i < mobileNumbers.size(); i++) {
-									phoneNumbersStr = phoneNumbersStr + ","+mobileNumbers.get(i).toString().trim();
-								}	
-								if(constituency.getConstituencyId().longValue() == 69L || constituency.getConstituencyId().longValue() == 232L )
+								mandalMessage.append("\nTarget : "+ finalTehsilVO.getArcheivedTarget());
+								mandalMessage.append(",\nAchieved : "+finalTehsilVO.getTotalCount());
+								
+								if(constituency.getDistrict().getDistrictId()>10)
 								{
-									phoneNumbersStr = phoneNumbersStr+", 9581434970, 919581434970 ";
+									if(finalTehsilVO.getBelow10CountLocations() != null)
+									{
+										mandalMessage.append(",\nBelow 10 Registrations Booths  ("+finalTehsilVO.getPendingCount()+"): "+finalTehsilVO.getBelow10CountLocations());
+									}
+									
+									if(finalTehsilVO.getNotSubmittedCount() != null)
+									{
+										mandalMessage.append(",\nRegistration not started Booths ("+finalTehsilVO.getNotSubmittedCount()+"): "+finalTehsilVO.getNotSumbittedLocations());
+									}
 								}
-								//phoneNumbersStr = phoneNumbersStr+",9581434970, 919581434970 ";
-								String[] phoneNumbersArr = phoneNumbersStr.split(",");
-							
-								/* Sending SMS for Mandal wise managers*/
-								try {
-									//String[] phoneNumbersArr = {"919959796608,9581434970,919581434970".toString()};									
-									ResultStatus status = smsCountrySmsService.sendSmsFromAdmin(mandalMessage.toString(), true, phoneNumbersArr);
-								} catch (Exception e) {
+								else
+								{
+									Long remainingTarget = Math.round(targetCount/noOfDays) - finalTehsilVO.getTotalCount().longValue();
+									if(remainingTarget >0)
+									{
+										remainingTarget = Math.round(targetCount/noOfDays) + ( remainingTarget );
+									}
+									else
+									{
+										remainingTarget = Math.round(targetCount/noOfDays);
+									}
+									mandalMessage.append(",\nToday Target : "+remainingTarget);
 								}
-								/* Sending SMS for Mandal wise managers*/
+								
+								List<Long> mobileNumbers = partyPresidentsDAO.getMobileNumebrsBylocation(constituency.getConstituencyId(), tehsilId, IConstants.TEHSIL);
+								
+								if(mobileNumbers != null && mobileNumbers.size()>0)
+								{
+									String phoneNumbersStr = "";
+									for (int i = 0; i < mobileNumbers.size(); i++) {
+										phoneNumbersStr = phoneNumbersStr + ","+mobileNumbers.get(i).toString().trim();
+									}	
+									if(constituency.getConstituencyId().longValue() == 69L || constituency.getConstituencyId().longValue() == 232L )
+									{
+										phoneNumbersStr = phoneNumbersStr+", 9581434970, 919581434970 ";
+									}
+									//phoneNumbersStr = phoneNumbersStr+",9581434970, 919581434970 ";
+									String[] phoneNumbersArr = phoneNumbersStr.split(",");
+								
+									/* Sending SMS for Mandal wise managers*/
+									try {
+										//String[] phoneNumbersArr = {"919959796608,9581434970,919581434970".toString()};									
+										ResultStatus status = smsCountrySmsService.sendSmsFromAdmin(mandalMessage.toString(), true, phoneNumbersArr);
+										
+										if(localName != null && localName.length()>0)
+										{
+											LOG.info("\n"+constituency.getName()+"_"+localName+" ,  mobileNOs :  "+phoneNumbersArr+", Mandal Message: "+mandalMessage.toString());
+											System.out.println("\n"+constituency.getName()+"_"+localName+" ,  mobileNOs :  "+phoneNumbersArr+", Mandal Message: "+mandalMessage.toString());
+										}
+										else
+										{
+											LOG.info("\n"+constituency.getName()+"_"+tehsilVO.getLocationType()+" ,  mobileNOs :  "+phoneNumbersStr+", Mandal Message: "+mandalMessage.toString());
+											System.out.println("\n"+constituency.getName()+"_"+tehsilVO.getLocationType()+" ,  mobileNOs :  "+phoneNumbersStr+", Mandal Message: "+mandalMessage.toString());
+										}
+										
+									
+												
+										tehsilIds=tehsilIds+", "+tehsilId;
+										
+										//System.out.println("tehsilIds:  "+tehsilIds+", "+tehsilId);
+										LOG.info("tehsilIds:  "+tehsilIds+", "+tehsilId);
+										
+									} catch (Exception e) {
+										//System.out.println("exception in tehsil sms: "+tehsilIds+", "+tehsilId);
+										LOG.info("exception in tehsil sms: "+tehsilIds+", "+tehsilId);
+									}
+									/* Sending SMS for Mandal wise managers*/
+								}
+								
 							}
 							
-						}
-						
 					}
 					SurveyTransactionVO finalVO = new SurveyTransactionVO();
 					finalVO.setId(constituency.getConstituencyId());
@@ -1620,7 +1671,10 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 		} catch (Exception e) {
 			LOG.error(" exception occured at getLocationWiseRegistereDetailsByDates() in CadreSurveyTransactionService service class. ", e);
 		}
-		
+		finally{
+			System.out.println(" in exception block success tehsilIds with constituencyId:  "+tehsilIds);
+			LOG.info("success tehsilIds with constituencyId:  "+tehsilIds);
+		}
 		return finalList;
 	}
 	
