@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 
 import com.itgrids.partyanalyst.dao.ITdpCadreCallCenterCommentDAO;
@@ -14,5 +15,11 @@ public class TdpCadreCallCenterCommentDAO  extends GenericDaoHibernate<TdpCadreC
 	public TdpCadreCallCenterCommentDAO() {
 		super(TdpCadreCallCenterComment.class);		
 	}
+	
+	 public Integer updateComments(Long feedbackId){
+			Query query = getSession().createQuery("update TdpCadreCallCenterComment model set model.isDelete = 'Y' where model.tdpCadreCallCenterFeedbackId = :feedbackId");
+			query.setParameter("feedbackId", feedbackId);
+			return query.executeUpdate();
+		}
 	
 }

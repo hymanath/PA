@@ -2999,7 +2999,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 				}
 			}
 			
-			//List<Object[]> resultList = tdpCadreDAO.getCadreDetails(id,searchtype);	
+				
 			StringBuilder queryStr = new StringBuilder();
 			queryStr.append(" select model.tdpCadreId,model.image,model.userAddress.userAddressId,model.memberShipNo,model.mobileNo,model.firstname,model.cardNumber,model.constituencyId " +
 					"   from  TdpCadre model where model.isDeleted='N' and model.enrollmentYear = 2014 ");
@@ -3092,19 +3092,29 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			public Object doInTransaction(TransactionStatus status) {
 				ResultStatus rs = new ResultStatus();
 				try
-				{				
-					TdpCadreCallCenterFeedback tdpCadreCallCenterFeedback = new TdpCadreCallCenterFeedback();
+				{	
+					TdpCadreCallCenterFeedback tdpCadreCallCenterFeedback = null;
+					Long feedbackId = tdpCadreCallCenterFeedbackDAO.getFeebackIdByTdpCadre(vo.getId());
+					if(feedbackId != null){
+						tdpCadreCallCenterFeedback = tdpCadreCallCenterFeedbackDAO.get(feedbackId);
+						int status1 = tdpCadreCallCenterCommentDAO.updateComments(feedbackId);
+					}
+					
+					if(feedbackId == null){
+					tdpCadreCallCenterFeedback = new TdpCadreCallCenterFeedback();
 					tdpCadreCallCenterFeedback.setTdpCadreId(vo.getId());
 					tdpCadreCallCenterFeedback.setRemarks(vo.getRemarks());
 					tdpCadreCallCenterFeedback.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 					tdpCadreCallCenterFeedback.setUserName(vo.getName());			
 					tdpCadreCallCenterFeedback = tdpCadreCallCenterFeedbackDAO.save(tdpCadreCallCenterFeedback);
+					}
 							
 					if(vo.getComments().size()>0){
 						for(Long comment : vo.getComments()){
 							if(comment != null){
 									TdpCadreCallCenterComment tdpCadreCallCenterComment = new TdpCadreCallCenterComment();
-									tdpCadreCallCenterComment.setCallCenterFeedbackId(comment);			
+									tdpCadreCallCenterComment.setCallCenterFeedbackId(comment);
+									tdpCadreCallCenterComment.setIsDelete("N");
 									tdpCadreCallCenterComment.setTdpCadreCallCenterFeedbackId(tdpCadreCallCenterFeedback.getTdpCadreCallCenterFeedbackId());
 									tdpCadreCallCenterComment = tdpCadreCallCenterCommentDAO.save(tdpCadreCallCenterComment);
 								}
