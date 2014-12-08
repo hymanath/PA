@@ -663,10 +663,10 @@ public class SchedulerService implements ISchedulerService{
 		
 	}
 	
-	public void runSchuduler()
+	public void runSchuduler(List<Long> districtIds)
 	{
 		try {
-			cadreSurveyTransactionService.sendTargetBasedSMSforLocationWiseManagers();
+			cadreSurveyTransactionService.sendTargetBasedSMSforLocationWiseManagers(districtIds);
 		} catch (Exception e) {
 			LOG.error("Exception Raised in runSchuduler()",e); 
 		}
