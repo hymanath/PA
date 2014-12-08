@@ -1001,10 +1001,35 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 		return returnVO;
 	}
 	
-	public void sendTargetBasedSMSforLocationWiseManagers()
+	public void sendTargetBasedSMSforLocationWiseManagers(List<Long> districtIds)
+	{
+		  List<Object[]> constiteuncyList = constituencyDAO.getConstituencysByLsitDistrictIds(districtIds);
+		  if(constiteuncyList != null && constiteuncyList.size()>0)
+		  {
+			  List<Long> constituencyIdsList = new ArrayList<Long>();
+			  
+			  for (Object[] constituency : constiteuncyList) {
+				  if(constituency[0] != null)
+				  {
+					  constituencyIdsList.add(Long.valueOf(constituency[0].toString().trim()));
+				  }
+			  }
+			  
+			  if(constituencyIdsList != null && constituencyIdsList.size()>0)
+			  {
+				  districtWiseSendTargetBasedSMSforLocationWiseManagers(constituencyIdsList);     
+			  }
+			  
+		  }
+		  
+	}
+	
+	public void districtWiseSendTargetBasedSMSforLocationWiseManagers(List<Long> constituencyIdsList)
 	{
 		SurveyTransactionVO finalVO = new SurveyTransactionVO();
-		List<Long> smsSuccessConstiIds = new ArrayList<Long>();
+
+		String smsSuccessConstiIds ="";
+				
 		try {
 			
 			if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
@@ -1012,12 +1037,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			}
 
 			List<SurveyTransactionVO> finalList = new ArrayList<SurveyTransactionVO>();
-			List<Long> constituencyIdsList = constituencyDAO.getAllAssemblyConstituencyIdsByStateId(0L);
-			
-			//List<Long> constituencyIdsList = new ArrayList<Long>();
-			//constituencyIdsList.add(282L);
-			//constituencyIdsList.add(237L);
-			//constituencyIdsList.add(69L);
+			//List<Long> constituencyIdsList = constituencyDAO.getAllAssemblyConstituencyIdsByStateId(0L);
 			
 			Long noOfDays = dateService.noOfDayBetweenDates(IConstants.CADRE_2014_START_DATE, IConstants.CADRE_2014_LAST_DATE);
 			Long totalConstituencyCount = 0L;
@@ -1033,13 +1053,16 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			{
 				Long daywiseTarget = 0L;
 				
-				for (Long constituencyId : constituencyIdsList)
+			for (Long constituencyId : constituencyIdsList)
 				{
+				
 					totalConstituencyCount = totalConstituencyCount+1;
-					Constituency constituency = constituencyDAO.get(constituencyId);				
+					Constituency constituency = constituencyDAO.get(constituencyId);
 					Long constiteuncyVotersCount =boothPublicationVoterDAO.findVotersCountByPublicationIdInALocation("constituency", constituencyId, IConstants.VOTER_DATA_PUBLICATION_ID);
+					
 					//System.out.println(constituency.getName()+" Constituency Start sending SMS... ");
-					LOG.info(" \n \n"+constituency.getName()+" Constituency Start sending SMS... \n\n");
+					LOG.error(" \n \n"+constituency.getName()+" Constituency Start sending SMS... \n\n");
+					
 					double consituencyVoters = Double.valueOf(constiteuncyVotersCount.toString());
 					Double targetCount ;
 					 if(constituency.getDistrict().getDistrictId() > 10)
@@ -1091,7 +1114,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 					
 					List<Long> mobileNumbers = partyPresidentsDAO.getMobileNumebrsBylocation(constituency.getConstituencyId(), 0L, IConstants.CONSTITUENCY);
 					
-					if(mobileNumbers != null)
+					if(mobileNumbers != null && mobileNumbers.size()>0)
 					{
 						if(finalList != null && finalList.size()>0)
 						{
@@ -1101,7 +1124,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 							Long below10Booths = 0L;
 							String below10count ="";
 							String notSubmitted = "";
-							
+							//System.out.println("FINAL LIST SIZE " +  finalList.size());
 							for (SurveyTransactionVO reportVO : finalList) 
 							{
 								List<SurveyTransactionVO> reportVOList = reportVO.getSurveyTransactionVOList();
@@ -1171,14 +1194,11 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 								
 									assemblyMessage.append("Date : "+new SimpleDateFormat("dd-MM-yyyy").format(yesterDay));
 									assemblyMessage.append( "\n"+finalName.toString() +" Constituency Cadre Enrollment Update");								
-									assemblyMessage.append("\nTarget : "+ daywiseTarget);
-									assemblyMessage.append(",\nAchieved : "+returnVO.getArcheivedTarget());
-									
-									if(constituency.getDistrict().getDistrictId()>10)
+									if(constituency.getDistrict().getDistrictId()>10) // AP
 									{
 										if(returnVO.getBelow10CountLocations() != null)
 										{
-											assemblyMessage.append(",\nBelow 10 Registrations Booths ("+below10Booths+"): "+returnVO.getBelow10CountLocations());
+											assemblyMessage.append("\nBelow 10 Registrations Booths ("+below10Booths+"): "+returnVO.getBelow10CountLocations());
 										}
 										if(returnVO.getNotSubmittedCount() != null)
 										{
@@ -1186,8 +1206,11 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 										}
 									}
 									else
-									{
-										Long remainingTarget = daywiseTarget - totalRegisteredCount.longValue();
+									{ 	//TS
+										assemblyMessage.append("\nTarget : "+ daywiseTarget);
+										assemblyMessage.append(",\nAchieved : "+returnVO.getArcheivedTarget());
+										
+										/*Long remainingTarget = daywiseTarget - totalRegisteredCount.longValue();
 										if(remainingTarget>0)
 										{
 											remainingTarget = daywiseTarget + ( remainingTarget );
@@ -1197,6 +1220,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 											remainingTarget = daywiseTarget ;
 										}
 										assemblyMessage.append(",\nToday Target : "+remainingTarget);
+										*/
 										
 										int mandalCount=0;
 										for (SurveyTransactionVO mandalsVO : reportVOList)
@@ -1204,10 +1228,10 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 											mandalCount = mandalCount+1;
 											assemblyMessage.append("\n");
 											assemblyMessage.append(mandalCount+") "+mandalsVO.getName());
-											assemblyMessage.append(",\nTarget : "+ mandalsVO.getArcheivedTarget());
+											assemblyMessage.append("\nTarget : "+ mandalsVO.getArcheivedTarget());
 											assemblyMessage.append(",\nAchieved : "+mandalsVO.getTotalCount());
 											
-											Long mandalTarget = mandalsVO.getArcheivedTarget() - mandalsVO.getTotalCount();
+											/*Long mandalTarget = mandalsVO.getArcheivedTarget() - mandalsVO.getTotalCount();
 											if(mandalTarget>0)
 											{
 												mandalTarget = mandalsVO.getArcheivedTarget() + ( mandalTarget );
@@ -1216,7 +1240,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 											{
 												mandalTarget = mandalsVO.getArcheivedTarget() ;
 											}
-											assemblyMessage.append(",\nToday Target : "+mandalTarget);										
+											assemblyMessage.append(",\nToday Target : "+mandalTarget);	*/									
 										}
 									}
 																		
@@ -1229,7 +1253,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 										
 										if(constituencyId.longValue() == 69L || constituencyId.longValue() == 232L )
 										{
-											phoneNumbersStr = phoneNumbersStr+",9581434970, 919581434970 ";
+											phoneNumbersStr = phoneNumbersStr+",9581434970, 9676696760 ";
 										}
 										//phoneNumbersStr = phoneNumbersStr+",9581434970, 919581434970 ";
 										String[] phoneNumbersArr = phoneNumbersStr.substring(1).split(",");
@@ -1239,8 +1263,8 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 											//String[] phoneNumbersArr = {"919959796608,9581434970,919581434970".toString()};								
 											ResultStatus status = smsCountrySmsService.sendSmsFromAdmin(assemblyMessage.toString(), true, phoneNumbersArr);
 											
-											LOG.info("\n"+constituency.getName()+",  mobileNOs :  "+phoneNumbersStr+", Assembly Message: "+assemblyMessage.toString());
-											System.out.println("\n"+constituency.getName()+",  mobileNOs :  "+phoneNumbersStr+", Assembly Message: "+assemblyMessage.toString());
+											LOG.error("\n"+constituency.getName()+",  mobileNOs :  "+phoneNumbersStr+", Assembly Message: "+assemblyMessage.toString());
+											//System.out.println("\n"+constituency.getName()+",  mobileNOs :  "+phoneNumbersStr+", Assembly Message: "+assemblyMessage.toString());
 										} catch (Exception e) {
 										}
 										/* Sending SMS for Mandal wise managers*/
@@ -1248,27 +1272,25 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 									
 								}
 							}
-							LOG.info("\n\n total constituency sms sent : "+totalConstituencyCount+"\n\n");
-							LOG.info("\n"+constituency.getName()+" Constituency  SMS Sent Successfully... \n\n\n\n");
+							LOG.error("\n\n total constituency sms sent : "+totalConstituencyCount+"\n\n");
+							LOG.error("\n"+constituency.getName()+" Constituency  SMS Sent Successfully... \n\n\n\n");
 							
 							//System.out.println("\n\n total constituency sms sent : "+totalConstituencyCount+"\n\n");
 							//System.out.println("\n"+constituency.getName()+" Constituency  SMS Sent Successfully... \n\n\n\n");
-
-							smsSuccessConstiIds.add(constituency.getConstituencyId());
+							smsSuccessConstiIds = smsSuccessConstiIds+", "+smsSuccessConstiIds;
 						}
 					}
 				}
 				
-				
 			}
-			System.out.println("\n\n\n total constituency sms sent : "+totalConstituencyCount);
+			//System.out.println("\n\n\n total constituency sms sent : "+totalConstituencyCount);
 		
 		} catch (Exception e) {
 			LOG.error(" exception occured at sendTargetBasedSMSforLocationWiseManagers() in CadreSurveyTransactionService service class. ", e);
 		}
 		finally{
-			//System.out.println(" success consttiuency List :"+smsSuccessConstiIds);
-			LOG.info(" success consttiuency List :"+smsSuccessConstiIds);
+			//System.out.println(" success consttiuency List :"+smsSuccessConstiIds.toString());
+			LOG.error(" success consttiuency List :"+smsSuccessConstiIds.toString());
 		}
 	}
 	
@@ -1581,14 +1603,12 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 									mandalMessage.append("\n"+ tehsilVO.getLocationType() +" Cadre Enrollment Update  ");
 									finalTehsilVO.setName(tehsilVO.getLocationType());
 								}
-								mandalMessage.append("\nTarget : "+ finalTehsilVO.getArcheivedTarget());
-								mandalMessage.append(",\nAchieved : "+finalTehsilVO.getTotalCount());
 								
-								if(constituency.getDistrict().getDistrictId()>10)
+								if(constituency.getDistrict().getDistrictId()>10) // AP
 								{
 									if(finalTehsilVO.getBelow10CountLocations() != null)
 									{
-										mandalMessage.append(",\nBelow 10 Registrations Booths  ("+finalTehsilVO.getPendingCount()+"): "+finalTehsilVO.getBelow10CountLocations());
+										mandalMessage.append("\nBelow 10 Registrations Booths  ("+finalTehsilVO.getPendingCount()+"): "+finalTehsilVO.getBelow10CountLocations());
 									}
 									
 									if(finalTehsilVO.getNotSubmittedCount() != null)
@@ -1597,7 +1617,10 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 									}
 								}
 								else
-								{
+								{	//TS										
+									mandalMessage.append("\nTarget : "+ finalTehsilVO.getArcheivedTarget());
+									mandalMessage.append(",\nAchieved : "+finalTehsilVO.getTotalCount());
+									
 									Long remainingTarget = Math.round(targetCount/noOfDays) - finalTehsilVO.getTotalCount().longValue();
 									if(remainingTarget >0)
 									{
@@ -1607,10 +1630,15 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 									{
 										remainingTarget = Math.round(targetCount/noOfDays);
 									}
-									mandalMessage.append(",\nToday Target : "+remainingTarget);
+									//mandalMessage.append(",\nToday Target : "+remainingTarget);
 								}
 								
 								List<Long> mobileNumbers = partyPresidentsDAO.getMobileNumebrsBylocation(constituency.getConstituencyId(), tehsilId, IConstants.TEHSIL);
+								
+								tehsilIds=tehsilIds+", "+tehsilId;
+								
+								//System.out.println("tehsilIds:  "+tehsilIds+", "+tehsilId);
+								LOG.error("tehsilIds:  "+tehsilIds+", "+tehsilId);
 								
 								if(mobileNumbers != null && mobileNumbers.size()>0)
 								{
@@ -1620,8 +1648,9 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 									}	
 									if(constituency.getConstituencyId().longValue() == 69L || constituency.getConstituencyId().longValue() == 232L )
 									{
-										phoneNumbersStr = phoneNumbersStr+", 9581434970, 919581434970 ";
+										phoneNumbersStr = phoneNumbersStr+",9581434970, 9676696760 ";
 									}
+									
 									//phoneNumbersStr = phoneNumbersStr+",9581434970, 919581434970 ";
 									String[] phoneNumbersArr = phoneNumbersStr.split(",");
 								
@@ -1632,31 +1661,23 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 										
 										if(localName != null && localName.length()>0)
 										{
-											LOG.info("\n"+constituency.getName()+"_"+localName+" ,  mobileNOs :  "+phoneNumbersArr+", Mandal Message: "+mandalMessage.toString());
+											LOG.error("\n"+constituency.getName()+"_"+localName+" ,  mobileNOs :  "+phoneNumbersArr+", Mandal Message: "+mandalMessage.toString());
 											System.out.println("\n"+constituency.getName()+"_"+localName+" ,  mobileNOs :  "+phoneNumbersArr+", Mandal Message: "+mandalMessage.toString());
 										}
 										else
 										{
-											LOG.info("\n"+constituency.getName()+"_"+tehsilVO.getLocationType()+" ,  mobileNOs :  "+phoneNumbersStr+", Mandal Message: "+mandalMessage.toString());
+											LOG.error("\n"+constituency.getName()+"_"+tehsilVO.getLocationType()+" ,  mobileNOs :  "+phoneNumbersStr+", Mandal Message: "+mandalMessage.toString());
 											System.out.println("\n"+constituency.getName()+"_"+tehsilVO.getLocationType()+" ,  mobileNOs :  "+phoneNumbersStr+", Mandal Message: "+mandalMessage.toString());
 										}
 										
-									
-												
-										tehsilIds=tehsilIds+", "+tehsilId;
-										
-										//System.out.println("tehsilIds:  "+tehsilIds+", "+tehsilId);
-										LOG.info("tehsilIds:  "+tehsilIds+", "+tehsilId);
-										
 									} catch (Exception e) {
 										//System.out.println("exception in tehsil sms: "+tehsilIds+", "+tehsilId);
-										LOG.info("exception in tehsil sms: "+tehsilIds+", "+tehsilId);
+										LOG.error("exception in tehsil sms: "+tehsilIds+", "+tehsilId);
 									}
 									/* Sending SMS for Mandal wise managers*/
 								}
 								
 							}
-							
 					}
 					SurveyTransactionVO finalVO = new SurveyTransactionVO();
 					finalVO.setId(constituency.getConstituencyId());
@@ -1672,8 +1693,8 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			LOG.error(" exception occured at getLocationWiseRegistereDetailsByDates() in CadreSurveyTransactionService service class. ", e);
 		}
 		finally{
-			System.out.println(" in exception block success tehsilIds with constituencyId:  "+tehsilIds);
-			LOG.info("success tehsilIds with constituencyId:  "+tehsilIds);
+			//System.out.println(" success tehsilIds with constituencyId:  "+tehsilIds);
+			LOG.error("success tehsilIds with constituencyId:  "+tehsilIds);
 		}
 		return finalList;
 	}
