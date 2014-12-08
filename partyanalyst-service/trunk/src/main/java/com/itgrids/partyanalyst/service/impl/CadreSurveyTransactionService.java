@@ -1124,7 +1124,6 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 							Long below10Booths = 0L;
 							String below10count ="";
 							String notSubmitted = "";
-							//System.out.println("FINAL LIST SIZE " +  finalList.size());
 							for (SurveyTransactionVO reportVO : finalList) 
 							{
 								List<SurveyTransactionVO> reportVOList = reportVO.getSurveyTransactionVOList();
@@ -1286,11 +1285,11 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			//System.out.println("\n\n\n total constituency sms sent : "+totalConstituencyCount);
 		
 		} catch (Exception e) {
-			LOG.error(" exception occured at sendTargetBasedSMSforLocationWiseManagers() in CadreSurveyTransactionService service class. ", e);
+			LOG.error(" \n exception occured at sendTargetBasedSMSforLocationWiseManagers() in CadreSurveyTransactionService service class. ", e);
 		}
 		finally{
 			//System.out.println(" success consttiuency List :"+smsSuccessConstiIds.toString());
-			LOG.error(" success consttiuency List :"+smsSuccessConstiIds.toString());
+			LOG.error(" \n success consttiuency List :"+smsSuccessConstiIds.toString());
 		}
 	}
 	
@@ -1608,12 +1607,12 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 								{
 									if(finalTehsilVO.getBelow10CountLocations() != null)
 									{
-										mandalMessage.append("\nBelow 10 Registrations Booths  ("+finalTehsilVO.getPendingCount()+"): "+finalTehsilVO.getBelow10CountLocations());
+										mandalMessage.append("\nBelow 10 Registrations Booths  ("+finalTehsilVO.getPendingCount()+"): "+finalTehsilVO.getBelow10CountLocations()+", ");
 									}
 									
 									if(finalTehsilVO.getNotSubmittedCount() != null)
 									{
-										mandalMessage.append(",\nRegistration not started Booths ("+finalTehsilVO.getNotSubmittedCount()+"): "+finalTehsilVO.getNotSumbittedLocations());
+										mandalMessage.append("\nRegistration not started Booths ("+finalTehsilVO.getNotSubmittedCount()+"): "+finalTehsilVO.getNotSumbittedLocations());
 									}
 								}
 								else
@@ -1638,7 +1637,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 								tehsilIds=tehsilIds+", "+tehsilId;
 								
 								//System.out.println("tehsilIds:  "+tehsilIds+", "+tehsilId);
-								LOG.error("tehsilIds:  "+tehsilIds+", "+tehsilId);
+								LOG.error("\n tehsilIds:  "+tehsilIds+", "+tehsilId);
 								
 								if(mobileNumbers != null && mobileNumbers.size()>0)
 								{
@@ -1672,7 +1671,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 										
 									} catch (Exception e) {
 										//System.out.println("exception in tehsil sms: "+tehsilIds+", "+tehsilId);
-										LOG.error("exception in tehsil sms: "+tehsilIds+", "+tehsilId);
+										LOG.error("\n exception in sms sending tehsil sms: "+tehsilIds+", "+tehsilId);
 									}
 									/* Sending SMS for Mandal wise managers*/
 								}
@@ -1690,11 +1689,11 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			}
 			
 		} catch (Exception e) {
-			LOG.error(" exception occured at getLocationWiseRegistereDetailsByDates() in CadreSurveyTransactionService service class. ", e);
+			LOG.error(" \nexception occured at getLocationWiseRegistereDetailsByDates() in CadreSurveyTransactionService service class. ", e);
 		}
 		finally{
 			//System.out.println(" success tehsilIds with constituencyId:  "+tehsilIds);
-			LOG.error("success tehsilIds with constituencyId:  "+tehsilIds);
+			LOG.error("\n\nsuccess tehsilIds with constituencyId:  "+tehsilIds);
 		}
 		return finalList;
 	}
