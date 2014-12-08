@@ -433,7 +433,7 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 			registrationVOList = tdpCadreReportService.getMembershipCardDetailsForCallCenter(mobileNo,trNumber,membershipNo);
 			
 		} catch (Exception e) {
-			LOG.error("Exception raised in printingDashBoard method in CadreRegistrationAction Action",e);
+			LOG.info("Exception raised in getCadreDetailsForCallCenter ",e);
 		}
 		return Action.SUCCESS;
 	}
