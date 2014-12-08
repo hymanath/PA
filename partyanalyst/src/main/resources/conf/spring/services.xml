@@ -2414,9 +2414,22 @@
           <property name="localNameConstantDAO" ref="localNameConstantDAO" />
           <property name="userAddressDAO" ref="userAddressDAO" />
           <property name="tdpCadreCallCenterFeedbackDAO" ref="tdpCadreCallCenterFeedbackDAO" />
-          <property name="tdpCadreCallCenterRemarksDAO" ref="tdpCadreCallCenterRemarksDAO" />
+          <property name="tdpCadreCallCenterCommentDAO" ref="tdpCadreCallCenterCommentDAO" />
           <property name="transactionTemplate" ref="transactionTemplate" />
           <property name="tdpCadreTeluguNamesDAO" ref="tdpCadreTeluguNamesDAO" />
+          <property name="callCenterFeedbackDAO" ref="callCenterFeedbackDAO" />
+     </bean>
+     
+     <bean name="cadreRegistrationForOtherStatesService"  class="com.itgrids.partyanalyst.service.impl.CadreRegistrationForOtherStatesService">
+       	 <property name="tdpCadreDAO" ref="tdpCadreDAO" />
+	     <property name="transactionTemplate" ref="transactionTemplate" />
+	     <property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
+         <property name="userAddressDAO" ref="userAddressDAO" />
+         <property name="voterDAO" ref="voterDAO" />
+         <property name="constituencyDAO" ref="constituencyDAO" />
+          <property name="tdpCadreFamilyDetailsDAO" ref="tdpCadreFamilyDetailsDAO" />
+          <property name="smsJobStatusDAO" ref="smsJobStatusDAO" />
+         
      </bean>
 </beans>		
 	
