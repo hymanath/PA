@@ -1,10 +1,10 @@
 package com.itgrids.partyanalyst.notification.service.impl;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IUserDAO;
-import com.itgrids.partyanalyst.dto.EmailDetailsVO;
-import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
-import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.notification.service.ISchedulerService;
 import com.itgrids.partyanalyst.service.IMailService;
@@ -12,7 +12,6 @@ import com.itgrids.partyanalyst.service.IMailsSendingService;
 import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.IPartyCandidateSpecialPageScheduleService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
-import com.itgrids.partyanalyst.service.impl.MobileService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -192,11 +191,72 @@ public class Scheduler {
 	public void runSriSch()
 	{
 		try {
-			schedulerService.runSchuduler();
+			List<Long> districtIds = new ArrayList<Long>();
+			districtIds.add(1L);
+			districtIds.add(2L);
+			districtIds.add(3L);
+			districtIds.add(4L);
+			districtIds.add(5L);
+			schedulerService.runSchuduler(districtIds);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 	}
 	
+	public void runSriSch1()
+	{
+		try {
+			List<Long> districtIds = new ArrayList<Long>();
+			districtIds.add(6L);
+			districtIds.add(7L);
+			districtIds.add(8L);
+			districtIds.add(9L);
+			districtIds.add(10L);
+			schedulerService.runSchuduler(districtIds);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	public void runSriSch2()
+	{
+		try {
+			List<Long> districtIds = new ArrayList<Long>();
+			districtIds.add(11L);
+			districtIds.add(12L);
+			districtIds.add(13L);
+			districtIds.add(14L);
+			districtIds.add(15L);
+			schedulerService.runSchuduler(districtIds);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 	
+	public void runSriSch3()
+	{
+		try {
+			List<Long> districtIds = new ArrayList<Long>();
+			districtIds.add(16L);
+			districtIds.add(17L);
+			districtIds.add(18L);
+			districtIds.add(19L);
+			districtIds.add(20L);			
+			schedulerService.runSchuduler(districtIds);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
+	public void runSriSch4()
+	{
+		try {
+			List<Long> districtIds = new ArrayList<Long>();
+			districtIds.add(21L);
+			districtIds.add(22L);
+			districtIds.add(23L);
+			schedulerService.runSchuduler(districtIds);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 }
