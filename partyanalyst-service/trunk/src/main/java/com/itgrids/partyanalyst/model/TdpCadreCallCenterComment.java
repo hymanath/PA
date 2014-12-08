@@ -28,7 +28,7 @@ public class TdpCadreCallCenterComment {
 	private Long tdpCadreCallCenterFeedbackId;
 	private CallCenterFeedback callCenterFeedback;
 	private Long callCenterFeedbackId;
-	
+	private String isDelete;
 	
 	
 	@Id
@@ -78,7 +78,12 @@ public class TdpCadreCallCenterComment {
 		this.callCenterFeedback = callCenterFeedback;
 	}
 	
-	
-	
-	
+	@Column(name="is_delete")
+	public String getIsDelete() {
+		return isDelete;
+	}
+	public void setIsDelete(String isDelete) {
+		this.isDelete = isDelete;
+	}
+
 }
