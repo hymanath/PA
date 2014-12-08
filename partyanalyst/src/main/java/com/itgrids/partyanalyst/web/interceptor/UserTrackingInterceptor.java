@@ -81,7 +81,7 @@ public class UserTrackingInterceptor extends AbstractInterceptor implements Serv
 		request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();
 		RegistrationVO registrationVO = (RegistrationVO)session.getAttribute(IWebConstants.USER);
-		if( request.getRequestURL().indexOf("loginPopUpsAction") == -1 && IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
+		if( request.getRequestURL().indexOf("loginPopUpsAction") == -1 && checkRequestNeedAuthentication(request.getRequestURL())  && IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
 		{
 			String[] arr = request.getRequestURL().toString().split("/");
 			if(registrationVO == null && request.getRequestURL().indexOf("login") == -1)
@@ -136,5 +136,15 @@ public class UserTrackingInterceptor extends AbstractInterceptor implements Serv
 		this.response = response;
 	}
 
-	
+	public boolean checkRequestNeedAuthentication(StringBuffer requestUrl){
+		boolean needAuth = true;
+		
+		for(String url:IConstants.excludeUrl){
+			if(!(requestUrl.indexOf(url) == -1)){
+				needAuth = false;
+			}
+		}
+		
+		return needAuth;
+	}
 }

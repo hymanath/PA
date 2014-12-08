@@ -134,6 +134,7 @@
         <pattern>/tdpCadreIdCardDetailsAction*</pattern>
 		 <pattern>/callCenterMembershipCardStatusAction*</pattern>
         <pattern>/partyDashBoardAction*</pattern>
+        <pattern>/cadreEnrollment*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">

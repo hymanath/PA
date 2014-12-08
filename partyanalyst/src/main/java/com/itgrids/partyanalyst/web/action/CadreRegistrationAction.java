@@ -31,8 +31,10 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.service.ICadreRegistrationForOtherStatesService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICandidateUpdationDetailsService;
+import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.itgrids.partyanalyst.util.IWebConstants;
@@ -91,8 +93,8 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private String								DoneTime;
 	private String								messagepart;
 	private String								sentStatus;
-	
-
+	private ICadreRegistrationForOtherStatesService cadreRegistrationForOtherStatesService;
+    private ICrossVotingEstimationService crossVotingEstimationService;
 	
 	public String getSentStatus() {
 		return sentStatus;
@@ -471,6 +473,24 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 
 	public void setMessagepart(String messagepart) {
 		this.messagepart = messagepart;
+	}
+
+	public ICadreRegistrationForOtherStatesService getCadreRegistrationForOtherStatesService() {
+		return cadreRegistrationForOtherStatesService;
+	}
+
+	public void setCadreRegistrationForOtherStatesService(
+			ICadreRegistrationForOtherStatesService cadreRegistrationForOtherStatesService) {
+		this.cadreRegistrationForOtherStatesService = cadreRegistrationForOtherStatesService;
+	}
+
+	public ICrossVotingEstimationService getCrossVotingEstimationService() {
+		return crossVotingEstimationService;
+	}
+
+	public void setCrossVotingEstimationService(
+			ICrossVotingEstimationService crossVotingEstimationService) {
+		this.crossVotingEstimationService = crossVotingEstimationService;
 	}
 
 	public String execute()
@@ -1319,4 +1339,85 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		return Action.SUCCESS;
 	}
 	
+	public String saveCadreDetailsForOtherStates()
+	{
+		try {
+			LOG.info("Entered into saveCadreDetailsForOtherStates method in CadreRegistrationAction Action");
+			if(cadreRegistrationVO != null)
+			{
+				session = request.getSession();
+				RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+				if(user == null)
+				{
+					inputStream = new StringBufferInputStream("notlogged");
+					return Action.SUCCESS;
+				}
+				cadreRegistrationVO.setCreatedUserId(user.getRegistrationID());
+				if(cadreRegistrationVO.getPanchayatId() != null &&  Long.valueOf(cadreRegistrationVO.getPanchayatId().trim()).longValue() > 0){
+					if(cadreRegistrationVO.getPanchayatId().substring(0,1).trim().equalsIgnoreCase("1")){
+					  cadreRegistrationVO.setPanchayatId(cadreRegistrationVO.getPanchayatId().substring(1));
+					}else if(cadreRegistrationVO.getPanchayatId().substring(0,1).trim().equalsIgnoreCase("2")){
+						cadreRegistrationVO.setMuncipalityId(cadreRegistrationVO.getPanchayatId().substring(1));
+						cadreRegistrationVO.setPanchayatId(null);
+					}else{
+						cadreRegistrationVO.setPanchayatId(null);
+					}
+				}
+				if(cadreRegistrationVO.getDobStr() != null && cadreRegistrationVO.getDobStr().trim().length() > 0)
+				cadreRegistrationVO.setDob(convertToDateFormet(cadreRegistrationVO.getDobStr()));
+				if(cadreRegistrationVO.getPartyMemberSinceStr() != null && cadreRegistrationVO.getPartyMemberSinceStr().trim().length() > 0)
+				cadreRegistrationVO.setPartyMemberSinceStr(cadreRegistrationVO.getPartyMemberSinceStr());
+				if(relativeTypeChecked != null){
+					cadreRegistrationVO.setRelative(true);
+					cadreRegistrationVO.setRelationTypeId(relativeTypeId);
+					if(relativeVoterCardNo != null && relativeVoterCardNo.trim().length() > 0){
+						cadreRegistrationVO.setRelativeVoterId(relativeVoterCardNo);
+						List<Long> ids = cadreRegistrationService.getVoterIdByVoterCard(relativeVoterCardNo.trim());
+						if(ids.size() > 0 && ids.get(0)!= null){
+							cadreRegistrationVO.setFamilyVoterId(ids.get(0));
+						}
+					}
+					
+				}
+				if(cadreUploadImgCadreType != null){
+					cadreRegistrationVO.setPhotoType("cadre");
+				}else if(cadreUploadImgVoterType != null){
+					cadreRegistrationVO.setPhotoType("voter");
+				}else{
+					cadreRegistrationVO.setPhotoType("new");
+				}
+				
+				List<CadreRegistrationVO> cadreRegistrationVOList = new ArrayList<CadreRegistrationVO>();
+				cadreRegistrationVO.setPath(IWebConstants.STATIC_CONTENT_FOLDER_URL);
+				surveyCadreResponceVO = new SurveyCadreResponceVO();
+				  cadreRegistrationForOtherStatesService.tdpCadreSavingLogic(cadreRegistrationVO,surveyCadreResponceVO,"new",true);
+				  surveyCadreResponceVO.setResultCode(ResultCodeMapper.SUCCESS);
+				if(surveyCadreResponceVO.getResultCode() == ResultCodeMapper.SUCCESS){
+					LOG.debug("fileuploades is sucess Method");
+					if(surveyCadreResponceVO.getEnrollmentNumber() != null && surveyCadreResponceVO.getEnrollmentNumber().trim().length() > 0 ){
+						inputStream = new StringBufferInputStream("SUCCESS" +"," +surveyCadreResponceVO.getEnrollmentNumber()  +",");
+					}
+				}
+				else
+					inputStream = new StringBufferInputStream("fail");
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in saveCadreDetailsForOtherStates method in CadreRegistrationAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String cadreEnrollment(){
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		Long userID = user.getRegistrationID();
+		Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
+		Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+		constituencyesList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
+		
+		genericVOList = candidateUpdationDetailsService.gettingEducationDetails();
+		selectOptionVOList = staticDataService.getAllOccupations();
+		voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria("voter",0l,IWebConstants.STATIC_CONTENT_FOLDER_URL,null);
+		return Action.SUCCESS;
+	}
 }
