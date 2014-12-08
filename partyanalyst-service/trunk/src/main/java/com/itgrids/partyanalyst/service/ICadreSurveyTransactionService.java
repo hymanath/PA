@@ -25,5 +25,5 @@ public interface ICadreSurveyTransactionService {
 	
 	public CadreTransactionVO getTdpCadreDetailsBySearchCriteria(String refNo, String mobileNo);
 
-	public void sendTargetBasedSMSforLocationWiseManagers();
+	public void sendTargetBasedSMSforLocationWiseManagers(List<Long> districtIds);
 }
