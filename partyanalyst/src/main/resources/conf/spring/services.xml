@@ -1394,7 +1394,7 @@
 	  	<property name="targetMethod" value="schedularForCardPrintDataFilling" /> 
 	</bean>-->
 	
-	 
+	<!-- 
 	<bean name="schForSri" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="schForSri1" />
     	<property name="cronExpression" value="0 30 0 * * ?" />
@@ -1403,7 +1403,52 @@
   		<property name="targetObject" ref="scheduler" />
 	  	<property name="targetMethod" value="runSriSch" /> 
 	</bean>	
-	 	 	
+	
+	 -->
+	 <bean name="schForSri" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="schForSriScheduler" />
+    	<property name="cronExpression" value="0 30 0 * * ?" />
+	</bean>	
+	<bean name="schForSriScheduler" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="runSriSch" /> 
+	</bean>	
+	
+	<bean name="schForSri1" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="schForSriScheduler1" />
+    	<property name="cronExpression" value="0 35 0 * * ?" />
+	</bean>	
+	<bean name="schForSriScheduler1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="runSriSch1" /> 
+	</bean>		 	 	
+	 <bean name="schForSri2" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="schForSriScheduler2" />
+    	<property name="cronExpression" value="0 40 0 * * ?" />
+	</bean>	
+	<bean name="schForSriScheduler2" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="runSriSch2" /> 
+	</bean>	
+	
+	<bean name="schForSri3" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="schForSriScheduler3" />
+    	<property name="cronExpression" value="0 45 0 * * ?" />
+	</bean>	
+	<bean name="schForSriScheduler3" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="runSriSch3" /> 
+	</bean>	
+	
+	<bean name="schForSri4" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="schForSriScheduler4" />
+    	<property name="cronExpression" value="0 50 0 * * ?" />
+	</bean>	
+	<bean name="schForSriScheduler4" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="runSriSch4" /> 
+	</bean>		
+	
 	<bean name="everyDayBatchJobForInsertCaste" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
 	  	<property name="targetMethod" value="runTheBatchJobForInsertCasteForEveryDay" />
@@ -1464,6 +1509,10 @@
 			<ref bean="cronTriggerForeveryDayBatchJobForPopulateVoterData" />
 			<ref bean="insertTriggerForEveryDayMobiles" />
 			<ref bean="schForSri" /> 
+			<ref bean="schForSri1" />
+			<ref bean="schForSri2" />
+			<ref bean="schForSri3" />
+			<ref bean="schForSri4" />
 			<!--<ref bean="schedularForCardPrintDataFilling" />
 			<ref bean="runTheBatchJobForEveryDayCardDataInsertForMax" />
 			<ref bean="runTheBatchJobForEveryDayCardDataInsertForZebra" />
@@ -2365,22 +2414,9 @@
           <property name="localNameConstantDAO" ref="localNameConstantDAO" />
           <property name="userAddressDAO" ref="userAddressDAO" />
           <property name="tdpCadreCallCenterFeedbackDAO" ref="tdpCadreCallCenterFeedbackDAO" />
-          <property name="tdpCadreCallCenterCommentDAO" ref="tdpCadreCallCenterCommentDAO" />
+          <property name="tdpCadreCallCenterRemarksDAO" ref="tdpCadreCallCenterRemarksDAO" />
           <property name="transactionTemplate" ref="transactionTemplate" />
           <property name="tdpCadreTeluguNamesDAO" ref="tdpCadreTeluguNamesDAO" />
-          <property name="callCenterFeedbackDAO" ref="callCenterFeedbackDAO" />
-     </bean>
-     
-     <bean name="cadreRegistrationForOtherStatesService"  class="com.itgrids.partyanalyst.service.impl.CadreRegistrationForOtherStatesService">
-       	 <property name="tdpCadreDAO" ref="tdpCadreDAO" />
-	     <property name="transactionTemplate" ref="transactionTemplate" />
-	     <property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
-         <property name="userAddressDAO" ref="userAddressDAO" />
-         <property name="voterDAO" ref="voterDAO" />
-         <property name="constituencyDAO" ref="constituencyDAO" />
-          <property name="tdpCadreFamilyDetailsDAO" ref="tdpCadreFamilyDetailsDAO" />
-          <property name="smsJobStatusDAO" ref="smsJobStatusDAO" />
-         
      </bean>
 </beans>		
 	
