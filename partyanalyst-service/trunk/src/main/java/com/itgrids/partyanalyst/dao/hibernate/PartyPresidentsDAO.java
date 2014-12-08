@@ -27,6 +27,7 @@ public class PartyPresidentsDAO extends GenericDaoHibernate<PartyPresidents, Lon
 		{
 			queryStr.append(" and model.regionScopes.regionScopesId = 4  ");
 		}
+		queryStr.append(" and model.mobileNo is not null and model.mobileNo !='' ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("constituencyId", constituencyId);
