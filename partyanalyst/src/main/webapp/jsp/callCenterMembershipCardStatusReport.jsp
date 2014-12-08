@@ -298,7 +298,6 @@
 		for(var i in selectedValues){
 			comments = comments+""+selectedValues[i]+",";
 		}
-		console.log(comments);
 
 		var jsObj = {
 			tdpCadreId:cadreId,
@@ -332,7 +331,10 @@
 	}
 	
 	function getCadreDetailsBySearchCriteria1()
-	{		
+	{
+		if(mobileNumber == '' && membership == '' && trNo == ''){
+			return false;
+		}	
 		$("#ajaxImage").show();
 		var jsObj = {
 			mobileNo:mobileNumber,
@@ -370,7 +372,10 @@
 	getCadreDetailsBySearchCriteria1();
 	
 	function getfeedbackDetails()
-	{		
+	{
+		if(mobileNumber == '' && membership == '' && trNo == ''){
+			return false;
+		}	
 		var jsObj = {		
 			task:"feedbackDetails"            
 		}
