@@ -515,6 +515,7 @@
 				<value>com.itgrids.partyanalyst.model.TdpCadreTeluguNames</value>
 				<value>com.itgrids.partyanalyst.model.LocalNameConstant</value>
 				<value>com.itgrids.partyanalyst.model.PartyPresidents</value>
+				<value>com.itgrids.partyanalyst.model.TdpCadreSmsStatus</value>
 			</list>
 		</property>
 	</bean>
@@ -2694,4 +2695,7 @@
 	<bean id="partyPresidentsDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyPresidentsDAO" >
 			<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="tdpCadreSmsStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreSmsStatusDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
 </beans>
