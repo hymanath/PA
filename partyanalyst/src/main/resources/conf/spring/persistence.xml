@@ -518,6 +518,7 @@
 				<value>com.itgrids.partyanalyst.model.TdpCadreCallCenterComment</value>
 				<value>com.itgrids.partyanalyst.model.TdpCadreCallCenterFeedback</value>				
 				<value>com.itgrids.partyanalyst.model.CallCenterFeedback</value>
+				<value>com.itgrids.partyanalyst.model.TdpCadreSmsStatus</value>
 				</list>
 			
 		</property>

@@ -1,16 +1,22 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.io.File;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CadreRegAmountUploadVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -19,7 +25,9 @@ import com.itgrids.partyanalyst.dto.TdpCadreLocationWiseReportVO;
 import com.itgrids.partyanalyst.dto.ZebraPrintDetailsVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ITdpCadreReportService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.RandomGenaration;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -45,10 +53,18 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 	private String membership;
 	private List<String> jobCodes;
 	private List<BasicVO> resultList;
+	private File file;
 	
 	
 	
-	
+	public File getFile() {
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
+	}
+
 	public String getMobileNumber() {
 		return mobileNumber;
 	}
@@ -494,4 +510,35 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 		}
 		return Action.SUCCESS;
 	}
+	public String tdpCadreSmsStatusExe()
+	{
+		try{
+			
+		}
+		catch(Exception e)
+		{
+			
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String uploadCadreSMSFile()
+	{
+	try{
+		HttpSession session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		RandomGenaration random = new RandomGenaration();
+		String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+		String fileName = Integer.valueOf(random.randomGenerator(10)).toString()+".xls";
+		String path = IWebConstants.STATIC_CONTENT_FOLDER_URL+IConstants.CADRE_SMS_STATUS_FILES+pathSeperator+fileName;
+		FileUtils.copyFile(file,new File(path));
+		ResultStatus resultStatus = tdpCadreReportService.insertTdpCadreSmsStatusFromExcel(path);
+		return Action.SUCCESS;
+	}catch (Exception e) {
+		LOG.error(e);
+		return Action.ERROR;
+	}
+	}
+	
+	
 }

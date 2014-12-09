@@ -9155,6 +9155,19 @@
 		<action name="cadreEnrollment" class="cadreRegistrationAction" method="cadreEnrollment">
 			<result name="success">/jsp/cadreEnrollment.jsp</result>
 		</action>
+		<action name="tdpcadresmsstatusAction" class="tdpCadreReportAction" method="tdpCadreSmsStatusExe">
+			<result name="success">/jsp/tdpcadresmsstatus.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
+		</action>
+		<action name="cadreSMSFileUpload" class="tdpCadreReportAction" method="uploadCadreSMSFile">
+			<interceptor-ref name="fileUpload">
+				<param name="maximumSize">2097152</param>
+				<param name="allowedExtensions">.png,.gif,.jpeg,.pjpeg,.html,.txt,.xls,.pdf,.zip,.xlsx,.doc,.docx,.jpg</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<result name="success">/jsp/tdpcadresmsstatus.jsp</result>
+		</action>	
+		
 </package>
 
 </struts>      
