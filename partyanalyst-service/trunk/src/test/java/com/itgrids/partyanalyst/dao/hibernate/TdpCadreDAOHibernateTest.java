@@ -1,28 +1,66 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
+import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegAmountDetailsDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IPartyPresidentsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
-import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
+import com.itgrids.partyanalyst.service.ICadreSurveyTransactionService;
 import com.itgrids.partyanalyst.service.impl.CadreDashBoardService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class TdpCadreDAOHibernateTest extends BaseDaoTestCase {
 	private ITdpCadreDAO tdpCadreDAO;
 	private CadreDashBoardService cadreDashBoardService;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private ICadreRegAmountDetailsDAO cadreRegAmountDetailsDAO;
+	private IBoothDAO boothDAO;
+	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
+	private DateUtilService dateService = new DateUtilService();
+	private IConstituencyDAO constituencyDAO;
+	private ILocalElectionBodyDAO localElectionBodyDAO;
+	private IPartyPresidentsDAO partyPresidentsDAO;
+	private ICadreSurveyTransactionService cadreSurveyTransactionService;
 	
 	
+	public void setCadreSurveyTransactionService(
+			ICadreSurveyTransactionService cadreSurveyTransactionService) {
+		this.cadreSurveyTransactionService = cadreSurveyTransactionService;
+	}
+
+	public void setPartyPresidentsDAO(IPartyPresidentsDAO partyPresidentsDAO) {
+		this.partyPresidentsDAO = partyPresidentsDAO;
+	}
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
+	public void setBoothPublicationVoterDAO(
+			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
+		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
+	}
+
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
+
 	public void setCadreRegAmountDetailsDAO(
 			ICadreRegAmountDetailsDAO cadreRegAmountDetailsDAO) {
 		this.cadreRegAmountDetailsDAO = cadreRegAmountDetailsDAO;
@@ -768,22 +806,25 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 		
 		
 	}*/
-	
-	public void testgetTotalRegisteredCadreCountByLocation()
+
+	public void testDetails()
 	{
 		try {
-			
-			List<Long> locationIds = new ArrayList<Long>();
-			locationIds.add(489L);
-			List<Object[]> list =  tdpCadreDAO.gettingRegisteredVotersForParliaments(locationIds);
-			System.out.println(list.size());
-			
+			List<Long> districtIds = new ArrayList<Long>();
+			districtIds.add(1L);
+			districtIds.add(2L);
+			districtIds.add(3L);
+			districtIds.add(4L);
+			districtIds.add(5L);
+			//districtIds.add(6L);
+			//districtIds.add(7L);
+			//districtIds.add(8L);
+			//districtIds.add(9L);
+			//districtIds.add(10L);
+			cadreSurveyTransactionService.sendTargetBasedSMSforLocationWiseManagers(districtIds);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-
-		
-		
+	
 	}
 }
