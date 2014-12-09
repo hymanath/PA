@@ -362,6 +362,8 @@
 			<pattern>/sitemapAction*</pattern>
 			<pattern>/newsZoneAction*</pattern>
 			<pattern>/partyPerformanceJasper*</pattern>
+			<pattern>/tdpcadresmsstatusAction*</pattern>
+			
 			
 	  </decorator>
 </decorators>
