@@ -34,7 +34,8 @@
 		.widget h2 {border-bottom: none !important;}
 		.height-auto{height:auto !important;}
 		.height-0{height:0px !important;}
-		
+		#districtList,#parlConstiList{width:124px;}
+		#DistSeacrhId,#ParlSeacrhId{width:129px;}
 	</style>
 	 
 	 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -99,7 +100,7 @@
 						<table class="table table-bordered" style="margin-top:10px;">
 							<tbody>
 								<tr>
-									<th class="alert-success" > Registrations </th> <td class="alert-success"> ${zebraPrintDetailsVO.rowCount}<span class="pull-right label label-info">${zebraPrintDetailsVO.registeredPerc} %</span></td>
+									<th class="alert-success" > Registrations </th> <td class="alert-success"> ${zebraPrintDetailsVO.rowCount}</td>
 								</tr>
 								<tr>
 									<th class="alert-info"> Sent to print </th><td class="alert-info"> ${zebraPrintDetailsVO.totalPushCount} <span class="pull-right label label-info">${zebraPrintDetailsVO.sentPerc} %</span></td>
@@ -132,9 +133,9 @@
 					<div class="widget-body scrollable_div" style="width:97%; height:481px;overflow:auto;">	
 					<span id="constiErrMsg"></span>
 					<div class="form-inine">
-					<input class="input-medium myTooltip" type="text"  min="1" max="100" placeholder="Enter Number" style="margin-top: -4px;" id="constipercSearch" onkeypress="return isNumberKey(event);" title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Enter numbers" />
+					<input class="input-medium myTooltip" type="text"  min="1" max="100" placeholder="Enter Percentage" style="margin-top: -4px;" id="constipercSearch" onkeypress="return isNumberKey(event);" title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Enter Percentage" /><button class="btn" type="button" style="margin: -14px 1px 1px -20px" onClick="getConstiPercWiseSearch();">Search</button>
 					<select class="input-medium" id="constituencyList" style="margin-top:-5px;" onChange="searchByStatus('CONSTITUENCY')"><option value="0"> All </option></select>
-						<select class="input-medium" id="ConstiSeacrhId" style="margin-top:-5px;" onChange="searchByStatus('CONSTITUENCY',0)"><option value="0"> All</option><option value="SENT"> SENT TO PRINT </option>
+						<select class="input-medium" id="ConstiSeacrhId" style=" margin-top:-5px;" onChange="searchByStatus('CONSTITUENCY',0)"><option value="0"> All</option><option value="SENT"> SENT TO PRINT </option>
 						<option value="PRINTED"> PRINTED </option>
 						<option value="ERROR"> ERROR </option>
 						<option value="PENDING"> PENDING </option></select>
@@ -171,9 +172,9 @@
 						<div class="widget-body" style="width:95%;height:230px;overflow:auto;">
 						<span id="distErrMsg"></span>
 						<div class="form-inine">	
-						<input class="input-small myTooltip" type="text" min="1" max="100" placeholder="Enter Number" style="margin-top: -4px;" id="distpercSearch" onkeypress="return isNumberKey(event);" title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Enter numbers"/>
+						<input class="input-small myTooltip" type="text" min="1" max="100" placeholder="Percentage" style="margin-top: -4px;" id="distpercSearch" onkeypress="return isNumberKey(event);" title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Enter Percentage"/><button class="btn" style="margin: -14px 1px 1px -20px" type="button" onClick="getDistrictPercWiseSearch();">Search</button>
 						<select class="input-medium" id="districtList" style="margin-top:-5px;" onChange="searchByStatus('DISTRICT',0)"><option value="0"> All </option></select>
-					<select class="input-medium" id="DistSeacrhId" style="margin-top:-5px;" onChange="searchByStatus('DISTRICT',0)"><option value="0"> All</option><option value="SENT"> SENT TO PRINT </option>
+					<select class="input-medium"  id="DistSeacrhId" style="margin-top:-5px;" onChange="searchByStatus('DISTRICT',0)"><option value="0"> All</option><option value="SENT"> SENT TO PRINT </option>
 						<option value="PRINTED"> PRINTED </option>
 						<option value="ERROR"> ERROR </option><option value="PENDING"> PENDING </option></select>
 						
@@ -192,7 +193,7 @@
 						<div class="widget-body"  style="width:95%;height:230px;overflow:auto;">
 						<span id="parlErrMsg"></span>
 						<div class="form-inine">
-						<input class="input-small myTooltip" type="text" placeholder="Enter Number" style="margin-top: -4px;" id="parlpercSearch" onkeypress="return isNumberKey(event);" title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Enter numbers"/>
+						<input class="input-small myTooltip" type="text" placeholder="Percentage" style="margin-top: -4px;" id="parlpercSearch" onkeypress="return isNumberKey(event);" title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Enter Percentage"/><button class="btn" style="margin: -14px 1px 1px -20px" type="button" onClick="getParliamentPercWiseSearch();">Search</button>
 					<select class="input-medium" id="parlConstiList" style="margin-top:-5px;" onChange="searchByStatus('MP',0)"><option value="0"> All </option></select>
 					<select class="input-medium " id="ParlSeacrhId" style="margin-top:-5px;" onChange="searchByStatus('MP',0)"><option value="0"> All</option><option value="SENT"> SENT TO PRINT </option>
 						<option value="PRINTED"> PRINTED </option>
@@ -308,7 +309,8 @@
 			 str+=' <li>Error<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'&nbsp;</span></li>';
 			 str+=' <li>Pending<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].remainingCount+'&nbsp;</span></li>';
 			  str+=' <li>Printed<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].printPerc+'%&nbsp;</span></li>';
-			 
+			  var notPrinted = result.zebraPrintDetailsVOList[i].rowCount-result.zebraPrintDetailsVOList[i].totalPushCount;
+			  str+=' <li>Not Sent to Print<br/><span class="label" style="width:50px;">'+notPrinted+'&nbsp;</span></li>';
 			str+='</ul>';
 			str+=' </div>';
 			str+=' <div class="accordion-body collapse toggleCls" id="collapse'+i+'" style="height: 0px;">';
@@ -359,10 +361,10 @@
 			str+='</div>';
 			str+=' </div>';
 			str+=' </div>';
-	}
+
 		var details = [result.zebraPrintDetailsVOList[i].printStatusCount,result.zebraPrintDetailsVOList[i].remainingCount,result.zebraPrintDetailsVOList[i].errorStatusCount];
 		constiteuncyInfoArr.push(details);
-	
+		}
 	}
 	
 	function buildPercentageWise(result,type,percentage)
@@ -385,7 +387,8 @@
 			 str+=' <li>Error<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'&nbsp;</span></li>';
 			 str+=' <li>Pending<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].remainingCount+'&nbsp;</span></li>';
 			  str+=' <li>Printed<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].printPerc+'%&nbsp;</span></li>';
-			 
+			  var notPrinted= result.zebraPrintDetailsVOList[i].rowCount-result.zebraPrintDetailsVOList[i].totalPushCount
+			  str+=' <li>Not Sent To Print<br/><span class="label" style="width:50px;">'+notPrinted+'&nbsp;</span></li>'; 
 			str+='</ul>';
 			str+=' </div>';
 			str+=' <div class="accordion-body collapse toggleCls" id="collapse'+i+'" style="height: 0px;">';
@@ -508,7 +511,8 @@
 		 str+=' <li>Error<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'&nbsp;</span></li>';
 		 str+=' <li>Pending<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].remainingCount+'&nbsp;</span></li>';
 		  str+=' <li>Printed<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].printPerc+'%&nbsp;</span></li>';
-		 
+		  var notPrinted = result.zebraPrintDetailsVOList[i].rowCount-result.zebraPrintDetailsVOList[i].totalPushCount;
+			  str+=' <li>Not Sent to Print<br/><span class="label" style="width:50px;">'+notPrinted+'&nbsp;</span></li>';
 		str+='</ul>';
 			str+=' </div>';
 			str+=' <div class="accordion-body collapse toggleCls" id="collapseDistrict'+i+'" style="height: 0px;">';
@@ -558,9 +562,10 @@
 			str+='</div>';
 			str+=' </div>';
 			str+=' </div>';
-		}
+		
 			var details = [result.zebraPrintDetailsVOList[i].printStatusCount,result.zebraPrintDetailsVOList[i].remainingCount,result.zebraPrintDetailsVOList[i].errorStatusCount];
 			districtInfoArr.push(details);
+			}
 		}
 function buildDistctwisePercentageSearch(result,type,percentage)
 	  {
@@ -583,7 +588,8 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 		 str+=' <li>Error<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'&nbsp;</span></li>';
 		 str+=' <li>Pending<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].remainingCount+'&nbsp;</span></li>';
 		  str+=' <li>Printed<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].printPerc+'%&nbsp;</span></li>';
-		 
+		  var notPrinted = result.zebraPrintDetailsVOList[i].rowCount-result.zebraPrintDetailsVOList[i].totalPushCount;
+			  str+=' <li>Not Sent to Print<br/><span class="label" style="width:50px;">'+notPrinted+'&nbsp;</span></li>';
 		str+='</ul>';
 			str+=' </div>';
 			str+=' <div class="accordion-body collapse toggleCls" id="collapseDistrict'+i+'" style="height: 0px;">';
@@ -646,7 +652,8 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 		 str+=' <li>Error<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'&nbsp;</span></li>';
 		 str+=' <li>Pending<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].remainingCount+'&nbsp;</span></li>';
 		  str+=' <li>Printed<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].printPerc+'%&nbsp;</span></li>';
-		 
+		  var notPrinted = result.zebraPrintDetailsVOList[i].rowCount-result.zebraPrintDetailsVOList[i].totalPushCount;
+			  str+=' <li>Not Sent to Print<br/><span class="label" style="width:50px;">'+notPrinted+'&nbsp;</span></li>';
 		str+='</ul>';
 
 			str+=' </div>';
@@ -697,9 +704,10 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 			str+='</div>';
 			str+=' </div>';
 			str+=' </div>';
-		}
+		
 			var details = [result.zebraPrintDetailsVOList[i].printStatusCount,result.zebraPrintDetailsVOList[i].remainingCount,result.zebraPrintDetailsVOList[i].errorStatusCount];
 			parliamentInfoArr.push(details);
+			}
 		}
 		function buildParlmentPercentageSearch(result,type,percentage)
 	  {
@@ -720,7 +728,8 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 		 str+=' <li>Error<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].errorStatusCount+'&nbsp;</span></li>';
 		 str+=' <li>Pending<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].remainingCount+'&nbsp;</span></li>';
 		  str+=' <li>Printed<br/><span class="label" style="width:50px;">'+result.zebraPrintDetailsVOList[i].printPerc+'%&nbsp;</span></li>';
-		 
+		  var notPrinted = result.zebraPrintDetailsVOList[i].rowCount-result.zebraPrintDetailsVOList[i].totalPushCount;
+			  str+=' <li>Not Sent to Print<br/><span class="label" style="width:50px;">'+notPrinted+'&nbsp;</span></li>';
 		str+='</ul>';
 
 			str+=' </div>';
@@ -888,12 +897,11 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 		$("#mainChartDiv").html("");
 		
 		var str="";
-	
 		str+='<canvas id="myChart" style="margin-bottom: 28px; height: 175px; width: 339px; margin-left: -61px; margin-top: 29px;" height="190" width="380"></canvas>';
 		str+='<table class="table table-bordered" style="margin-top:10px;">';
 		str+=' <tbody>';
 		str+='<tr>';
-		str+='<th class="alert-success">Registrations  </th><td class="alert-success">'+result.rowCount+'<span class="pull-right label label-info">'+result.registeredPerc+'%</span></td>';		
+		str+='<th class="alert-success">Registrations  </th><td class="alert-success">'+result.rowCount+'</td>';		
 		str+=' </tr>';
 		str+='<tr>';
 		str+=' <th class="alert-info" > Sent to print  </th><td class="alert-info">'+result.totalPushCount+'<span class="pull-right label label-info">'+result.sentPerc+'%</span></td>';
@@ -1100,7 +1108,7 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 			str+='<table class="table table-striped table-bordered table-condensed border-radius-0">';
 			str+='<thead>';
 			str+='<tr class="">';
-			str+='<th colspan="5" class="alert-success border-radius-0 text-center"><center>Day Wise Card Printed Status</center></th>';												
+			str+='<th colspan="6" class="alert-success border-radius-0 text-center"><center>Day Wise Card Printed Status</center></th>';												
 			str+='</tr>';
 			str+='<tr class="alert-info">';
 			str+='<th>Batch NO</th>';
@@ -1108,8 +1116,10 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 			{
 				str+='<th>Sent to Print</th>';
 				str+='<th>Error in Print</th>';
+				str+='<th>Pending</th>';
 				str+='<th>Printed Date</th>';
 				str+='<th>Printed</th>';
+			
 				
 			}
 			
@@ -1134,9 +1144,15 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 				str+='<td rowspan='+rspan+'>'+result[i].errorStatusCount+'</td>';
 				else
 				str+='<td rowspan='+rspan+'>0</td>';
-
+				
+				if(result[i].remainingCount != null)
+					str+='<td rowspan='+rspan+'>'+result[i].remainingCount+'</td>';
+				else
+					str+='<td rowspan='+rspan+'>0</td>';
+				
 				if(result[i].dataPushDetailsList != null && result[i].dataPushDetailsList.length > 0)
 				{
+				
 					for(var j=0;j<result[i].dataPushDetailsList.length;j++)
 					{
 						if(j!=0)
@@ -1210,12 +1226,12 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 				
 			}
 		}
-
-		$("#constipercSearch").blur(function(){
+	function getConstiPercWiseSearch(){
 		$("#constiErrMsg").html('');
 		var flag = true;
 		var	percSearch = $.trim($("#constipercSearch").val());
 		$("#ConstiSeacrhId").val(0);
+		$("#constituencyList").val(0);
 		 if(percSearch == ""){
 				percSearch=0;
 			}
@@ -1227,12 +1243,14 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 		 if(flag == true)
 		 searchByStatus('CONSTITUENCY',percSearch);
 			
-		});
-		$("#distpercSearch").blur(function(){
+		}
+		
+		function getDistrictPercWiseSearch(){
 		var flag = true;
 		$("#distErrMsg").html('');
 		var	percSearch1 = $.trim($("#distpercSearch").val());
 		$("#DistSeacrhId").val(0);
+		$("#districtList").val(0);
 		 if(percSearch1 == ""){
 				percSearch1=0;
 			 }
@@ -1244,12 +1262,14 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 		 if(flag == true)
 		 searchByStatus('DISTRICT',percSearch1);
 			
-		});
-		$("#parlpercSearch").blur(function(){
+		}
+		
+		function getParliamentPercWiseSearch(){
 		var flag = true;
 		$("#parlErrMsg").html('');
 		var	percSearch2 = $.trim($("#parlpercSearch").val());
 		$("#ParlSeacrhId").val(0);
+		$("#parlConstiList").val(0);
 		 if(percSearch2 == ""){
 				percSearch2=0;
 			 }
@@ -1261,7 +1281,7 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 		 if(flag == true)
 		 searchByStatus('MP',percSearch2);
 		
-		});
+		}
 	$("#ConstiSeacrhId").change(function() {
 		$("#constipercSearch").val('');
 	});
