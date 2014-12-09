@@ -46,9 +46,10 @@
 				<h2>CADRE CARD STATUS OVERVIEW</h2>
 					<h4><span style="background:#f9f9f9; padding:0px 10px;">SEARCH BY</h4>
 					<div style="border-top:1px solid #ccc; margin:-20px 100px 20px 100px; "></div>
+					<div id="errorDiv" style=""></div>
 					<form class="bs-docs-example form-inline">	
 						<label class="radio">
-							<input type="radio" class="radioCls" name="searchType" value="membership"> Membership Number &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /or/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" class="radioCls" name="searchType" value="membership" checked> Membership Number &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /or/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						</label>					
 						<label class="radio">
 							<input type="radio" class="radioCls" name="searchType" value="mobile">Mobile Number &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /or/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -108,6 +109,12 @@
 		var trNumber = "";
 		var membershipNo ="";
 		
+		var value = $('#searchedValue').val();		
+		if(value == null || value.trim().length == 0)
+		{
+				$('#errorDiv').html('Please Enter the Number').css("color","red");	
+				return false;
+		}
 		if(searchTypeValue == "mobile")
 		{
 		  mobileNo = $('#searchedValue').val();
@@ -120,13 +127,8 @@
 		{
 		  trNumber = $('#searchedValue').val();
 		}
-		//var value = $('#searchedValue').val();
 		
-		/*if((value == null || value.trim().length == 0))
-		{
-				$('#errorDiv').html('Please Enter the Number');	
-				return ;
-		}*/
+		$('#errorDiv').html('');	
 		$("#ajaxImage").show();
 		var jsObj = {
 			mobileNo:mobileNo,
@@ -162,7 +164,7 @@
 		});
 		getfeedbackDetails();
 	}
-	var cadreId = "";	
+	var cadreId = 0;	
 	function buildCadreInfo(result)
 	{
 		$('#cardDisplayId').html('');
@@ -276,15 +278,14 @@
 	
 	
 	function saveFeedbackDetials(){
-		 
-		 var checkCount = $( "input:checked" ).length - 1;
+		
+		 var checkCount = $('input[name=feedbackCheck]:checked').length  	
 		 var remarks=  $.trim($('#remarksId').val());
-	
-		 if(cadreId.length == 0){
+		 if(cadreId == 0){
 			$('#errorDiv1').html('No Cadre Selected').css("color","red");
 			return false;
 		 }		 
-		 else if(checkCount < 0){
+		 else if(checkCount == 0){
 			if(remarks == ''){
 				$('#errorDiv1').html('Enter The Feedback').css("color","red");
 				return false ;
@@ -332,9 +333,6 @@
 	
 	function getCadreDetailsBySearchCriteria1()
 	{
-		if(mobileNumber == '' && membership == '' && trNo == ''){
-			return false;
-		}	
 		$("#ajaxImage").show();
 		var jsObj = {
 			mobileNo:mobileNumber,
@@ -369,13 +367,10 @@
 		
 		});
 	}
-	getCadreDetailsBySearchCriteria1();
+	
 	
 	function getfeedbackDetails()
-	{
-		if(mobileNumber == '' && membership == '' && trNo == ''){
-			return false;
-		}	
+	{	
 		var jsObj = {		
 			task:"feedbackDetails"            
 		}
@@ -393,7 +388,10 @@
 			$("#feedbackId").html(str);
 		});
 	}
-	getfeedbackDetails();
+	if(mobileNumber != '' || membership != '' || trNo != ''){
+		getCadreDetailsBySearchCriteria1();
+		getfeedbackDetails();
+	}
 	</script>
 	
   </body>
