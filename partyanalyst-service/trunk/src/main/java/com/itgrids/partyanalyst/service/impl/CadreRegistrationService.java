@@ -639,6 +639,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 													tdpCadre.setSurveyTime(voterIdsList.get(0).getSurveyTime());
 													tdpCadre.setInsertedTime(voterIdsList.get(0).getInsertedTime());
 													tdpCadre.setCardNumber(voterIdsList.get(0).getCardNumber());
+													tdpCadre.setInsertedUserId(voterIdsList.get(0).getInsertedUserId());
+													tdpCadre.setInsertedWebUserId(voterIdsList.get(0).getInsertedWebUserId());
+													tdpCadre.setUniqueKey(voterIdsList.get(0).getUniqueKey());
+													tdpCadre.setDataSourceType(voterIdsList.get(0).getDataSourceType());
 												}
 												tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"new",false);
 											
@@ -708,6 +712,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 															tdpCadre.setSurveyTime(voterIdsList.get(0).getSurveyTime());
 															tdpCadre.setInsertedTime(voterIdsList.get(0).getInsertedTime());
 															tdpCadre.setCardNumber(voterIdsList.get(0).getCardNumber());
+															tdpCadre.setInsertedUserId(voterIdsList.get(0).getInsertedUserId());
+															tdpCadre.setInsertedWebUserId(voterIdsList.get(0).getInsertedWebUserId());
+															tdpCadre.setUniqueKey(voterIdsList.get(0).getUniqueKey());
+															tdpCadre.setDataSourceType(voterIdsList.get(0).getDataSourceType());
 														}
 														tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"new",false);
 														
@@ -745,6 +753,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 												tdpCadre.setSurveyTime(cadre.getSurveyTime());
 												tdpCadre.setInsertedTime(cadre.getInsertedTime());
 												tdpCadre.setCardNumber(cadre.getCardNumber());
+												tdpCadre.setInsertedUserId(cadre.getInsertedUserId());
+												tdpCadre.setInsertedWebUserId(cadre.getInsertedWebUserId());
+												tdpCadre.setUniqueKey(cadre.getUniqueKey());
+												tdpCadre.setDataSourceType(cadre.getDataSourceType());
 												tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"new",false);
 											}else{
 												TdpCadre tdpCadre = new TdpCadre();
@@ -925,7 +937,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					
 					if(registrationType != null && !registrationType.equalsIgnoreCase("null") && registrationType.trim().length() > 0 && !insertType.equalsIgnoreCase("update"))
 					{
-						tdpCadre.setDataSourceType(registrationType.trim().toUpperCase());
+						if(tdpCadre.getDataSourceType() == null){
+						  tdpCadre.setDataSourceType(registrationType.trim().toUpperCase());
+						}
 					}
 					if(cadreRegistrationVO.getVoterName() != null && !cadreRegistrationVO.getVoterName().equalsIgnoreCase("null") && cadreRegistrationVO.getVoterName().trim().length() > 0)
 					{
@@ -1067,9 +1081,17 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					{
 					  if(!insertType.equalsIgnoreCase("update")){
 						if(registrationType.equalsIgnoreCase("TAB")){
-						    tdpCadre.setInsertedUserId(cadreRegistrationVO.getCreatedUserId().longValue());
+						  if(tdpCadre.getInsertedUserId() == null && tdpCadre.getInsertedWebUserId() == null){
+						      tdpCadre.setInsertedUserId(cadreRegistrationVO.getCreatedUserId().longValue());
+						  }else{
+							  tdpCadre.setUpdatedUserId(cadreRegistrationVO.getCreatedUserId().longValue());
+						  }
 						}else{
-							tdpCadre.setInsertedWebUserId(cadreRegistrationVO.getCreatedUserId().longValue());
+							if(tdpCadre.getInsertedUserId() == null && tdpCadre.getInsertedWebUserId() == null){
+							    tdpCadre.setInsertedWebUserId(cadreRegistrationVO.getCreatedUserId().longValue());
+							}else{
+								tdpCadre.setUpdatedWebUserId(cadreRegistrationVO.getCreatedUserId().longValue());
+							}
 						}
 					  }else{
 					    if(registrationType.equalsIgnoreCase("TAB")){
