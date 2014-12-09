@@ -2,13 +2,17 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +25,7 @@ import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -45,23 +50,27 @@ import com.itgrids.partyanalyst.dao.ILocalNameConstantDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCallCenterFeedbackDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCallCenterCommentDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreSmsStatusDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTeluguNamesDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IZebraPrintDetailsDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CadreRegAmountUploadVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationWiseReportVO;
+import com.itgrids.partyanalyst.dto.TdpCadreSmsStatusVO;
 import com.itgrids.partyanalyst.dto.ZebraPrintDetailsVO;
 import com.itgrids.partyanalyst.model.LocalNameConstant;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.TdpCadreCallCenterFeedback;
 import com.itgrids.partyanalyst.model.TdpCadreCallCenterComment;
+import com.itgrids.partyanalyst.model.TdpCadreSmsStatus;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.ZebraPrintDetails;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
@@ -91,7 +100,15 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	private TransactionTemplate transactionTemplate = null;
 	private ITdpCadreCallCenterCommentDAO tdpCadreCallCenterCommentDAO;
 	private ICallCenterFeedbackDAO callCenterFeedbackDAO;
+	private ITdpCadreSmsStatusDAO tdpCadreSmsStatusDAO;
 	
+	
+	public ITdpCadreSmsStatusDAO getTdpCadreSmsStatusDAO() {
+		return tdpCadreSmsStatusDAO;
+	}
+	public void setTdpCadreSmsStatusDAO(ITdpCadreSmsStatusDAO tdpCadreSmsStatusDAO) {
+		this.tdpCadreSmsStatusDAO = tdpCadreSmsStatusDAO;
+	}
 	public void setLocalNameConstantDAO(ILocalNameConstantDAO localNameConstantDAO) {
 		this.localNameConstantDAO = localNameConstantDAO;
 	}
@@ -3167,4 +3184,103 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	}
 
 	
+	public ResultStatus insertTdpCadreSmsStatusFromExcel(String filePath)
+	{
+		ResultStatus result = new ResultStatus();
+		try{
+			
+			FileInputStream fileInputStream = new FileInputStream(filePath);
+			HSSFWorkbook wb = new HSSFWorkbook(fileInputStream);
+			HSSFSheet sheet=wb.getSheetAt(0);
+			int totalRows = sheet.getLastRowNum();
+			TdpCadreSmsStatusVO tdpCadreSmsStatusVO = null;
+			List<TdpCadreSmsStatusVO> resultList = new ArrayList<TdpCadreSmsStatusVO>();
+			
+			for(int index = 1;index<=totalRows;index++)
+			{
+				try{
+					tdpCadreSmsStatusVO = new TdpCadreSmsStatusVO();
+					HSSFRow row = sheet.getRow(index);
+					String message = row.getCell(0).toString();
+					tdpCadreSmsStatusVO.setTrNo(message.substring(message.lastIndexOf("TR-")));
+					String mobileNo = row.getCell(2).toString().replace(".", "").replace("E11", "");
+
+					if(mobileNo.length() == 9)
+					{
+					mobileNo = mobileNo+0;
+					}
+					if(mobileNo.length() == 8)
+					{
+					mobileNo = mobileNo+0+0;
+					}
+					if(mobileNo.length() == 7)
+					{
+					mobileNo = mobileNo+0+0+0;
+					}
+					if(mobileNo.length() == 6)
+					{
+					mobileNo = mobileNo+0+0+0+0;
+					}
+					if(mobileNo.length() == 5)
+					{
+					mobileNo = mobileNo+0+0+0+0+0;
+					}
+					String mobile = mobileNo;
+
+					tdpCadreSmsStatusVO.setMobileNo(mobileNo);
+					
+					tdpCadreSmsStatusVO.setStatus(row.getCell(4).toString());
+					resultList.add(tdpCadreSmsStatusVO);
+					
+				}
+				catch(Exception e)
+				{
+					LOG.error(e);
+				}
+			}
+			if(resultList != null && resultList.size() > 0)
+			result = saveTdpCadreSMSStatus(resultList);
+			
+		}catch(Exception e)
+		{
+			LOG.error("Exception Occured in insertTdpCadreSmsStatusFromExcel Method - ",e);
+			
+		}
+		return result;
+	}
+	public ResultStatus saveTdpCadreSMSStatus(final List<TdpCadreSmsStatusVO> resultList)
+	{
+		  ResultStatus rs = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
+			public Object doInTransaction(TransactionStatus status) {
+				ResultStatus rs = new ResultStatus();
+				try
+				{	
+				for(TdpCadreSmsStatusVO vo : resultList)
+				{
+					TdpCadreSmsStatus tdpCadreSmsStatus = new TdpCadreSmsStatus();
+					tdpCadreSmsStatus.setMobileNo(vo.getMobileNo());
+					tdpCadreSmsStatus.setSmsStatus(vo.getStatus());
+					tdpCadreSmsStatus.setTrNumber(vo.getTrNo());
+					tdpCadreSmsStatusDAO.save(tdpCadreSmsStatus);
+					rs.setResultCode(ResultCodeMapper.SUCCESS);
+				}
+				}
+		
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in saveTdpCadreSMSStatus Method - ",e);
+			rs.setResultCode(ResultCodeMapper.FAILURE);
+		}
+				return rs;
+			} });
+		 List<Object[]> list = tdpCadreSmsStatusDAO.getTdpCadreIds();
+		if(list != null && list.size() > 0)
+			 {
+				 for(Object[] params : list)
+				 {
+					 tdpCadreSmsStatusDAO.updateTdpCadre((Long)params[0],(Long)params[1]);
+				 }
+		}
+		return rs;
+	}
 }
