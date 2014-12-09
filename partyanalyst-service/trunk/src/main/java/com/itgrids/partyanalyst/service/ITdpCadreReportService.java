@@ -29,4 +29,5 @@ public interface ITdpCadreReportService {
 	public List<CadreRegistrationVO> getMembershipCardDetailsForCallCenter(String mobileNo,String trNumber,String membership);
 	public ResultStatus saveCallCenterFeedbackForCardStatus(TdpCadreLocationWiseReportVO vo);
 	public List<BasicVO> getfeedbackDetails();
+	public ResultStatus insertTdpCadreSmsStatusFromExcel(String filePath);
 }
