@@ -2418,6 +2418,8 @@
           <property name="transactionTemplate" ref="transactionTemplate" />
           <property name="tdpCadreTeluguNamesDAO" ref="tdpCadreTeluguNamesDAO" />
           <property name="callCenterFeedbackDAO" ref="callCenterFeedbackDAO" />
+           <property name="tdpCadreSmsStatusDAO" ref="tdpCadreSmsStatusDAO" />
+          
      </bean>
      
      <bean name="cadreRegistrationForOtherStatesService"  class="com.itgrids.partyanalyst.service.impl.CadreRegistrationForOtherStatesService">
