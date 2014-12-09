@@ -2930,6 +2930,17 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					}
 				}
 			}
+			
+			for(ZebraPrintDetailsVO vo : resultList)
+			{
+				Long pendingCount=0L;
+				for(ZebraPrintDetailsVO vo1 : vo.getDataPushDetailsList())
+				{
+					pendingCount= pendingCount+vo1.getPrintStatusCount();
+				}
+				vo.setRemainingCount(vo.getTotalPushCount() - pendingCount);
+				
+			}
 		}
 		catch(Exception e)
 		{
