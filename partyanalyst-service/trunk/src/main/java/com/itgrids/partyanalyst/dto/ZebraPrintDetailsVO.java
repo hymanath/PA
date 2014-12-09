@@ -19,7 +19,7 @@ public class ZebraPrintDetailsVO implements java.io.Serializable{
 	
 	private String errorStatus;
 	private Long errorStatusCount;
-	private Long remainingCount;
+	private Long remainingCount = 0l;
 	
 	private Long rowCount;
 	private Double erroPerc;
