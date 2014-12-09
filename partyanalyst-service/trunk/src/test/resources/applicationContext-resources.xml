@@ -2608,6 +2608,15 @@
 	<property name="sessionFactory" ref="sessionFactory" />
 </bean>
  
+ <bean id="smsCountrySmsService" class="com.itgrids.partyanalyst.service.impl.SmsCountrySmsService" >
+    	<!-- property name="partyAnalystPropertyService" ref="partyAnalystPropertyService" /-->
+    	<property name="smsTrackDAO" ref="smsTrackDAO"/>
+    	<property name="smsModuleDAO" ref="smsModuleDAO"/>
+    	<property name="smsHistoryDAO" ref="smsHistoryDAO"/>
+    	<property name="transactionTemplate" ref="transactionTemplate" />
+    	<property name="userDAO" ref="userDAO" />		
+	</bean>
+	
  <bean name="cadreSurveyTransactionService"  class="com.itgrids.partyanalyst.service.impl.CadreSurveyTransactionService">
    	 <property name="cadreTxnUserDAO" ref="cadreTxnUserDAO" />
      <property name="cadreTxnDetailsDAO" ref="cadreTxnDetailsDAO" />
@@ -2615,10 +2624,16 @@
      <property name="constituencyDAO" ref="constituencyDAO" />
      <property name="transactionTemplate" ref="transactionTemplate" />
      <property name="cadreOtpDetailsDAO" ref="cadreOtpDetailsDAO" />
- 	 <property name="smsCountrySmsService" ref="smsCountrySmsService" />
- 	 <property name="tdpCadreReportService" ref="tdpCadreReportService" />
+ 	 <property name="smsCountrySmsService" ref="smsCountrySmsService" /> 	 
+	 <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
+	 <property name="districtDAO" ref="districtDAO" />
+	 <property name="tdpCadreDAO" ref="tdpCadreDAO" />
+	 <property name="boothDAO" ref="boothDAO" />
+	 <property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
+	 <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+	 <property name="partyPresidentsDAO" ref="partyPresidentsDAO" />
   </bean>
-  
+
   <bean id="smsJobStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsJobStatusDAO" >
 	<property name="sessionFactory" ref="sessionFactory" />
   </bean>
