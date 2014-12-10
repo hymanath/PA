@@ -833,5 +833,6 @@ public interface IConstants {
     public static final Long CADREPERCENTAGE = 30l;
     public static final String[] excludeUrl ={"callCenterMembershipCardStatusAction","getCadreDetailsForCallCenterAction","saveCallCenterFeedbackAction","getFeedbackDataAction"};
     public static final String CADRE_SMS_STATUS_FILES = "cadre_sms_status_files";
+    public static final String EMPTY_STRING = "";
     		
 }
