@@ -441,7 +441,7 @@
 		var NAge = $('#nomineeAgeId').val();
 		var Nrelation = $('#voterRelationId').val();
 		$('#imageErr').html('');
-		
+		$('#familyVtrCrdIdErr').html("");
 		$('#NaadharErr,#NnameErr,#NgenderErr,#NageErr,#dobErr,#NrelationErr,#gendReqErr').html('');
 		$('#casteErr,#mobileErr,#ageErr,#cardErr,#dobErr,#nameErr').html('');
 		 if(!$("#maleGenderRId").is(':checked') && !$("#femaleGenderRId").is(':checked')){
@@ -495,7 +495,14 @@
 			if(!cbck){
 				isErrorStr = " error";
 				$('#cardErr').html(' Voter Card No is required.');
+			}else{
+				var familyVoterId = $('#familyVtrCrdId').val();
+				if(familyVoterId == null || $.trim(familyVoterId).length == 0){
+					isErrorStr = " error";
+					$('#familyVtrCrdIdErr').html('Family  Voter CardId Required');
+				}
 			}
+			
 		}
 		/*if(dateOfbirth != null && dateOfbirth.trim().length == 0)
 		{
@@ -1348,7 +1355,7 @@
 											<div style="width:150px;float:left;">
 											<h5 class="text-align1">VOTER ID <span class="mandatory">*</span></h5>
 												<input type="text" class="form-control border-radius-0 text-align2 " placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"   id="cardNumber" value="${voterInfoVOList[0].voterCardNo}" readonly style="width:135px;"></input>
-												 <span id="cardErr" style="color:red;font-size:12px;"></span>
+												 <div id="cardErr" style="color:red;font-size:12px;"></div>
 												<!--<input type="hidden" id="cardNo" class="form-control border-radius-0 input-block-level" placeholder="Text input" value="${voterInfoVOList[0].voterCardNo}" style="width:260px;" ></input>-->
 											</div>
 											
@@ -1365,7 +1372,7 @@
 											<div class="span6">
 											<h5 class="text-align1">VOTER ID <span class="mandatory">*</span></h5>
 												<input type="text" class="form-control border-radius-0 text-align2 " placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"   id="cardNumber" value="${voterInfoVOList[0].voterCardNo}" readonly ></input>
-												 <span id="cardErr" style="color:red;font-size:12px;"></span>
+												 <div id="cardErr" style="color:red;font-size:12px;"></div>
 											</div>
 											
 											<div class="span6">
@@ -1379,7 +1386,8 @@
 													</div>
 													<div  class="span6" id="showHideFammemberType" style="display:block; margin-left: 165px;margin-top: -33px;">
 														<span style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</span><select name="relativeTypeId" id="relativeTypeId"> </select>
-														<span style="color: #9a9a9a;font-weight: bold;">Voter Card &nbsp;</span><input type="text" readonly="readonly" id="familyVtrCrdId" style="width: 190px;" name="relativeVoterCardNo" value="${voterInfoVOList[0].fmlyVCardNo}"><span class="icon-remove" style="cursor: pointer;" title="Click Here To Clear Voter Card No" onclick="clearSelDiv('familyVtrCrdId');"></span>
+														<span style="color: #9a9a9a;font-weight: bold;">Voter Card <span class="mandatory">*</span>&nbsp;</span><input type="text" readonly="readonly" id="familyVtrCrdId" style="width: 190px;" name="relativeVoterCardNo" value="${voterInfoVOList[0].fmlyVCardNo}"><span class="icon-remove" style="cursor: pointer;" title="Click Here To Clear Voter Card No" onclick="clearSelDiv('familyVtrCrdId');"></span>
+														 <span id="familyVtrCrdIdErr" style="color:red;font-size:12px;"></span>
 														<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByfName();}" style="margin-top:10px;"> LookUp </a>
 													</div>
 												</c:if>
@@ -1389,7 +1397,8 @@
 													</div>
 													<div  class="span6" id="showHideFammemberType" style="display:none ; margin-left: 165px;margin-top: -33px;">
 														<span style="color: #9a9a9a;font-weight: bold;">Relation &nbsp;</span><select name="relativeTypeId" id="relativeTypeId"> </select>
-														<span style="color: #9a9a9a;font-weight: bold;">Voter Card &nbsp;</span><input type="text" readonly="readonly" id="familyVtrCrdId" style="width: 190px;" name="relativeVoterCardNo" value="${voterInfoVOList[0].fmlyVCardNo}"><span class="icon-remove" style="cursor: pointer;" title="Click Here To Clear Voter Card No" onclick="clearSelDiv('familyVtrCrdId');"></span>
+														<span style="color: #9a9a9a;font-weight: bold;">Voter Card <span class="mandatory">*</span>&nbsp;</span><input type="text" readonly="readonly" id="familyVtrCrdId" style="width: 190px;" name="relativeVoterCardNo" value="${voterInfoVOList[0].fmlyVCardNo}"><span class="icon-remove" style="cursor: pointer;" title="Click Here To Clear Voter Card No" onclick="clearSelDiv('familyVtrCrdId');"></span>
+														<span id="familyVtrCrdIdErr" style="color:red;font-size:12px;"></span>
 														<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByfName();}" style="margin-top:10px;"> LookUp </a>
 													</div>
 												</c:if>
@@ -2335,7 +2344,7 @@ function buildCandidateDetails(result,nominationId)
 	}
 }
 function showHideFamRelatinoSts(){
-  
+   $("#cardErr").html("");
    if($('#relativeTypeChecked').prop('checked')==true){
      $('#showHideFammemberType').show();
    }else{
