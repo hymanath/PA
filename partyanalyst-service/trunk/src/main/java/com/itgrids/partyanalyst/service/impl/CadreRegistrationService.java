@@ -17,6 +17,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -5226,12 +5227,27 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				sb.append(" and model.userAddress.constituency.constituencyId =:constituencyId");
 			}
 			
+			Set<String> voterMemberCards = new HashSet<String>();
+			Set<String> nonVoterMemberCards = new HashSet<String>();
 			
 			List<String> memberCards = tdpCadreDAO.getCardNumbers(sb.toString(), constiNo, mobileNo, trNo, srvyDt);
 			List<String> memberCardsForNonVoters = tdpCadreDAO.getCardNumbersForNonVoters(sb.toString(), constiNo, mobileNo, trNo, srvyDt);
+			List<String> memberCardsOnline = tdpCadreDAO.getCardNumbersForOnlineCadre(sb.toString(), constiNo, mobileNo, trNo, srvyDt);
+			List<String> memberCardsForNonVotersOnline = tdpCadreDAO.getCardNumbersForNonVotersForOnlineCadre(sb.toString(), constiNo, mobileNo, trNo, srvyDt);
 			
-			if(memberCards!=null && memberCards.size()>0){
-				List<Object[]> vtrDetails = tdpCadreDAO.getCadreDetailsByMemberShipId(memberCards);
+			if(memberCards!=null && memberCards.size()>0)
+				voterMemberCards.addAll(memberCards);
+			if(memberCardsOnline!=null && memberCardsOnline.size()>0)
+				voterMemberCards.addAll(memberCardsOnline);
+			
+			if(memberCardsForNonVoters!=null && memberCardsForNonVoters.size()>0)
+				nonVoterMemberCards.addAll(memberCardsForNonVoters);
+			if(memberCardsForNonVotersOnline !=null && memberCardsForNonVotersOnline.size()>0)
+				nonVoterMemberCards.addAll(memberCardsForNonVotersOnline);
+			
+			if(voterMemberCards!=null && voterMemberCards.size()>0){
+				List<String> voterMemberCardsList = new ArrayList<String>(voterMemberCards);
+				List<Object[]> vtrDetails = tdpCadreDAO.getCadreDetailsByMemberShipId(voterMemberCardsList);
 				if(vtrDetails != null && vtrDetails.size() > 0){
 					for(Object[] obj:vtrDetails){
 						Long voterId = Long.valueOf(obj[1].toString());
@@ -5302,8 +5318,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				}
 			}
 			
-			if(memberCardsForNonVoters!=null && memberCardsForNonVoters.size()>0){
-				List<Object[]> vtrDetails = tdpCadreDAO.getCadreDetailsByMemberShipIdForNonVoters(memberCardsForNonVoters);
+			if(nonVoterMemberCards !=null && nonVoterMemberCards.size()>0){
+				List<String> nonVoterMemberCardsList = new ArrayList<String>(nonVoterMemberCards);
+				List<Object[]> vtrDetails = tdpCadreDAO.getCadreDetailsByMemberShipIdForNonVoters(nonVoterMemberCardsList);
 				if(vtrDetails != null && vtrDetails.size() > 0){
 					for(Object[] obj:vtrDetails){
 						//Long voterId = Long.valueOf(obj[1].toString());
