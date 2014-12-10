@@ -533,10 +533,13 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 		String path = IWebConstants.STATIC_CONTENT_FOLDER_URL+IConstants.CADRE_SMS_STATUS_FILES+pathSeperator+fileName;
 		FileUtils.copyFile(file,new File(path));
 		ResultStatus resultStatus = tdpCadreReportService.insertTdpCadreSmsStatusFromExcel(path);
-		return Action.SUCCESS;
+		 addActionMessage("Upload successfully completed");
+		return SUCCESS;
 	}catch (Exception e) {
 		LOG.error(e);
-		return Action.ERROR;
+		 addActionError("Error while uploading: " + e.getMessage());
+         return ERROR;
+		
 	}
 	}
 	

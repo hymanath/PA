@@ -32,7 +32,12 @@ $('document').ready(function(){
 	
 
 	<div class="container">
-	
+	 <s:if test="hasActionErrors()">
+        <s:actionerror />
+    </s:if>
+    <s:if test="hasActionMessages()">
+        <s:actionmessage />    
+    </s:if>
 	<div class="span12 well well-small border-radius-0 mb-0 " style="background:#ffffff;"">
 		<h3 class="text-center text-uppercase">Cadre SMS Status Upload</h3>
 	</div>	
