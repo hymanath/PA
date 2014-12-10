@@ -641,4 +641,21 @@ public class WebServiceHandler2 {
 			return "{\"status\":\"Failure\"}";
 		}
 	}
+	
+	@POST
+	@Path("/searchTdpCadreDetailsBySearchCriteria")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object searchTdpCadreDetailsBySearchCriteria(Long constituencyId,String name,String memberShipCardNo, String voterCardNo, String refNo, String mobileNo)
+	{
+		try{			
+			return webServiceHandlerService1.searchTdpCadreDetailsBySearchCriteria(constituencyId,name,memberShipCardNo,voterCardNo,refNo,mobileNo);			
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in searchTdpCadreDetailsBySearchCriteria() Method, Exception is ",e);
+			return "{\"status\":\"Failure\"}";
+		}
+	}
+	
 }
