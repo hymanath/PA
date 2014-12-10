@@ -24,6 +24,8 @@ $('document').ready(function(){
 .background {
     background: none repeat scroll 0 0 #e5e5e5;
 	}
+	.errors{color:red; margin-left: 200px;}
+	.success{color:green; margin-left: 200px;}
 </style>
 
 </head>
@@ -32,18 +34,23 @@ $('document').ready(function(){
 	
 
 	<div class="container">
-	 <s:if test="hasActionErrors()">
-        <s:actionerror />
-    </s:if>
-    <s:if test="hasActionMessages()">
-        <s:actionmessage />    
-    </s:if>
+	
 	<div class="span12 well well-small border-radius-0 mb-0 " style="background:#ffffff;"">
 		<h3 class="text-center text-uppercase">Cadre SMS Status Upload</h3>
 	</div>	
 	
 			
 		<div class="span12 well well-small" style="min-height:300px;background:#ffffff;">
+		 <div class="errors">
+	 <s:if test="hasActionErrors()">
+        <s:actionerror />
+    </s:if>
+	</div>
+	 <div class="success">
+    <s:if test="hasActionMessages()">
+        <s:actionmessage />    
+    </s:if>
+	</div>
 		<div id="errorDiv" style="margin-bottom:10px;margin-left:215px;color:red" > </div>
 			
 			<div id="contentDivId" align="center" style="margin-bottom:100px;">
@@ -83,8 +90,8 @@ $('document').ready(function(){
 function validatefields(){   
 
 	var flag = true;
-	
-	 
+	$(".errors").html('');
+	 $(".success").html('');
 	  var fileName = $("#file").val().trim();
 	  if(fileName == 0){
 		$("#errorDiv").text("Please Select file to Upload");

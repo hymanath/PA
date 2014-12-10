@@ -135,6 +135,7 @@
 		 <pattern>/callCenterMembershipCardStatusAction*</pattern>
         <pattern>/partyDashBoardAction*</pattern>
         <pattern>/cadreEnrollment*</pattern>
+
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
@@ -363,6 +364,8 @@
 			<pattern>/newsZoneAction*</pattern>
 			<pattern>/partyPerformanceJasper*</pattern>
 			<pattern>/tdpcadresmsstatusAction*</pattern>
+			<pattern>/cadreSMSFileUpload*</pattern>
+			
 			
 			
 	  </decorator>
