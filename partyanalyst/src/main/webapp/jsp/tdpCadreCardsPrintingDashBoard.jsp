@@ -402,6 +402,8 @@
 			str+='</div>';
 			str+=' </div>';
 			str+=' </div>';
+			var details = [result.zebraPrintDetailsVOList[i].printStatusCount,result.zebraPrintDetailsVOList[i].remainingCount,result.zebraPrintDetailsVOList[i].errorStatusCount];
+			constiteuncyInfoArr.push(details);
 			}
 		}
 	  }
@@ -603,6 +605,8 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 			str+='</div>';
 			str+=' </div>';
 			str+=' </div>';
+			var details = [result.zebraPrintDetailsVOList[i].printStatusCount,result.zebraPrintDetailsVOList[i].remainingCount,result.zebraPrintDetailsVOList[i].errorStatusCount];
+			districtInfoArr.push(details);
 			}
 		}
 	 }
@@ -744,6 +748,8 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 			str+='</div>';
 			str+=' </div>';
 			str+=' </div>';
+			var details = [result.zebraPrintDetailsVOList[i].printStatusCount,result.zebraPrintDetailsVOList[i].remainingCount,result.zebraPrintDetailsVOList[i].errorStatusCount];
+			parliamentInfoArr.push(details);
 			}
 		}
 	  }
@@ -871,17 +877,35 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 					url : "getPrintDetailsInfoByConstituencyAction.action",
 					data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
+
+				if(loctype == "CONSTITUENCY"){
+					 $("#constituencyList").removeAttr('disabled');
+					 $("#ConstiSeacrhId").removeAttr('disabled');
+				}
+				else if(loctype == "DISTRICT"){
+					 $("#districtList").removeAttr('disabled');
+					 $("#DistSeacrhId").removeAttr('disabled');
+				}
+				else if(loctype == "MP"){
+					$("#parlConstiList").removeAttr('disabled');
+					$("#ParlSeacrhId").removeAttr('disabled');
+				}
 				if(result != null)
 				{
+
 					if(loctype == "CONSTITUENCY"){
 					$('#searchDataImg').hide();
 					buildConstituencyWiseResults(result,0,percentage);
+					
 					}else if(loctype == "DISTRICT"){
 					$('#ajaxImg').hide();
 					buildDistrictWiseResults(result,0,percentage);
+					
 					}else if(loctype == "MP"){
+						
 					$('#ajaxImg1').hide();
 					buildParliamentWiseResults(result,0,percentage);
+					
 					}
 				}
 			  });			  		
@@ -889,7 +913,11 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 	$(".stType").change(function(){		
 		getTotalPrintingStatusCount("CONSTITUENCY",1);
 		getTotalPrintingStatusCount("DISTRICT",1);
-		getTotalPrintingStatusCount("MP",1);	
+		getTotalPrintingStatusCount("MP",1);
+		$("#ConstiSeacrhId").val(0);
+		$("#DistSeacrhId").val(0);
+		$("#ParlSeacrhId").val(0);
+		
    });
    
    function buildMainChart(result){
@@ -1005,19 +1033,7 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 		   }
 		str+='</ul>';
 		str+='<div id="'+type+'misDiv" class="misDialogue"> <div id="'+type+'InnerdivId" class="popupcont"></div>';
-		/*str+='<div class="modal-header">';
-		str+='<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		str+='<h3 id="myModalLabel">Modal header</h3>';
-		str+='</div>';
-		<img style="width:70px;height:60px;display:none;" src="images/Loading-data.gif" class="misImg">
-		str+='<div class="modal-body">';
-		str+='<p>One fine body…</p>';
-		str+='</div>';
-		str+='<div class="modal-footer">';
-		str+='<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>';
-		str+='<button class="btn btn-primary">Save changes</button>';
-		str+='</div>';
-		str+='</div>';*/
+		
 	   }
 	   $('#'+divId).html(str);
 
@@ -1060,22 +1076,7 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 				}
 			$(".misImg").hide();
 			 $.unblockUI();	
-		/*str+='<div id="myModal" class="modal" aria-labelledby="myModalLabel">';
-		str+='<div class="modal-header">';
-		str+='<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>';
-		str+='<h3 id="myModalLabel">Modal header</h3>';
-		str+='</div>';
-		str+='<div class="modal-body">';
-		str+='<p>One fine body…</p>';
-		str+='</div>';
-		str+='<div class="modal-footer">';
-		str+='<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>';
-		str+='<button class="btn btn-primary">Save changes</button>';
-		str+='</div>';
-		str+='</div>';*/
-		 // $('#'+InnerdivId).html(str);
-		  
-		//  $('#myModal').modal('show');
+	
 		});
    }
   
@@ -1192,23 +1193,7 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 		{
 		$(".ParlremoveCls").html('');
 		}
-		/*var showflag=true;
-		function toggleDiv(id)
-		{
-			alert(showflag)
-			$(".toggleCls").removeClass("heightCls");
-			if(showflag) {
-				alert('a');
-			showflag=false;
-			$("#"+id).addClass("heightCls");
-			}
-			else {
-				alert('b');
-				$("#"+id).removeClass("heightCls");
-				$("#"+id).addClass("heightCls1");
-				showflag = true;
-			}
-		}*/
+		
 		function toggleDiv(id)
 		{
 			var height = $("#"+id).css('height').match(/\d+/);
@@ -1234,6 +1219,8 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 		$("#constituencyList").val(0);
 		 if(percSearch == ""){
 				percSearch=0;
+				$("#constiErrMsg").html('Enter No').css("color","red");
+				flag = false;
 			}
 		if(percSearch > 100)
 			{
@@ -1241,7 +1228,11 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 		flag = false;
 			}
 		 if(flag == true)
+		{
 		 searchByStatus('CONSTITUENCY',percSearch);
+		  $("#constituencyList").attr('disabled', 'disabled');
+		  $("#ConstiSeacrhId").attr('disabled', 'disabled');
+		}
 			
 		}
 		
@@ -1253,14 +1244,20 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 		$("#districtList").val(0);
 		 if(percSearch1 == ""){
 				percSearch1=0;
+			$("#distErrMsg").html('Enter No ').css("color","red");
+			flag = false;
 			 }
-		if(percSearch1 > 100)
+		else if(percSearch1 > 100)
 			{
 		$("#distErrMsg").html('Enter No lessthan 100').css("color","red");
 		flag = false;
 			}
 		 if(flag == true)
+			{
 		 searchByStatus('DISTRICT',percSearch1);
+		  $("#districtList").attr('disabled', 'disabled');
+		   $("#DistSeacrhId").attr('disabled', 'disabled');
+			}
 			
 		}
 		
@@ -1271,15 +1268,20 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 		$("#ParlSeacrhId").val(0);
 		$("#parlConstiList").val(0);
 		 if(percSearch2 == ""){
-				percSearch2=0;
+				$("#parlErrMsg").html('Enter No').css("color","red");
+				flag = false;
 			 }
-		if(percSearch2 > 100)
+		else if(percSearch2 > 100)
 			{
 		$("#parlErrMsg").html('Enter No lessthan 100').css("color","red");
 		flag = false;
 			}
 		 if(flag == true)
+			{
 		 searchByStatus('MP',percSearch2);
+		   $("#parlConstiList").attr('disabled', 'disabled');
+		    $("#ParlSeacrhId").attr('disabled', 'disabled');
+			}
 		
 		}
 	$("#ConstiSeacrhId").change(function() {
