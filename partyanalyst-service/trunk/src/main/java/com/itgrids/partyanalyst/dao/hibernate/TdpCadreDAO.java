@@ -3469,4 +3469,60 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return query.list();
 		}
 	  
+
+	  
+	  
+	  public List<String> getCardNumbersForOnlineCadre(String query,Long constiId,String mobileNo,String trNo,Date surveyDate){
+			StringBuilder str = new StringBuilder();
+			
+			str.append(" select model.memberShipNo from TdpCadre model,TdpCadreOnline model1 " +
+					" where model.isDeleted = 'N' and model.enrollmentYear = 2014 and model.voterId is not null ");
+			str.append( "  and model.cardNumber is  null  and model.tdpCadreOnline.tdpCadreOnlineId = model1.tdpCadreOnlineId and model.dataSourceType = 'ONLINE' and model1.deliveryMode = 1 " );
+			str.append(query);
+			str.append( " order by date(model.surveyTime)" );
+			
+			Query qry = getSession().createQuery(str.toString());
+			
+			if(constiId!=null){
+				qry.setParameter("constituencyId", constiId);
+			}
+			if(mobileNo!=null && mobileNo.trim().length()>0){
+				qry.setParameter("mobileNo", mobileNo);
+			}
+			if(trNo!=null && trNo.trim().length()>0){
+				qry.setParameter("trNo", trNo);
+			}
+			if(surveyDate!=null){
+				qry.setDate("surveyDate", surveyDate);
+			}
+			
+			return qry.list();
+		}
+		
+		public List<String> getCardNumbersForNonVotersForOnlineCadre(String query,Long constiId,String mobileNo,String trNo,Date surveyDate){
+			StringBuilder str = new StringBuilder();
+			
+			str.append(" select model.memberShipNo from TdpCadre model,TdpCadreOnline model1  " +
+					" where model.isDeleted = 'N' and model.enrollmentYear = 2014 and model.voterId is null ");
+			str.append( " and model.cardNumber is  null and model.tdpCadreOnline.tdpCadreOnlineId = model1.tdpCadreOnlineId and model.dataSourceType = 'ONLINE' and model1.deliveryMode = 1 " );
+			str.append(query);
+			str.append( " order by date(model.surveyTime)" );
+			
+			Query qry = getSession().createQuery(str.toString());
+			
+			if(constiId!=null){
+				qry.setParameter("constituencyId", constiId);
+			}
+			if(mobileNo!=null && mobileNo.trim().length()>0){
+				qry.setParameter("mobileNo", mobileNo);
+			}
+			if(trNo!=null && trNo.trim().length()>0){
+				qry.setParameter("trNo", trNo);
+			}
+			if(surveyDate!=null){
+				qry.setDate("surveyDate", surveyDate);
+			}
+			
+			return qry.list();
+		}
 }
