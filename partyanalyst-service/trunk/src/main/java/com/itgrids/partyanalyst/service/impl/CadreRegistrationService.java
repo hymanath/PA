@@ -102,6 +102,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SinkVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
+import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
 import com.itgrids.partyanalyst.model.BloodGroup;
 import com.itgrids.partyanalyst.model.Booth;
@@ -5672,5 +5673,107 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			LOG.error("Exception Raised in saveTabUsersLoginKeyDetails "+e);
 		}
 		return status;
+	}
+	
+	public TdpCadreVO searchTdpCadreDetailsBySearchCriteria(Long constituencyId,String searchName,String memberShipCardNo, String voterCardNo, String trNumber, String mobileNo)
+	{
+		TdpCadreVO returnVO = new TdpCadreVO();
+    	try {
+			
+				StringBuilder queryStr = new StringBuilder();			
+				
+				if(searchName != null && searchName.trim().length()>0)
+				{
+					queryStr.append(" and model.firstname like '%"+searchName+"%' ");
+					
+					if(constituencyId != null && constituencyId.longValue() != 0L)
+					{
+						queryStr.append(" and model.userAddress.constituency.constituencyId =:constituencyId ");
+					}
+					else
+					{
+						returnVO.setErrorStr(" Constituency is Required.");
+						return returnVO;
+					}
+				}
+				if(mobileNo != null && mobileNo.trim().length()>0)
+				{							
+					queryStr.append(" and model.mobileNo like '%"+mobileNo+"%' ");
+				}
+				if(memberShipCardNo != null && memberShipCardNo.trim().length()>0)
+				{
+					queryStr.append(" and model.memberShipNo like '%"+memberShipCardNo+"%' ");
+				}
+				if(voterCardNo != null && voterCardNo.trim().length()>0)
+				{
+					queryStr.append(" and model.voter.voterIDCardNo like '%"+voterCardNo+"%' ");
+				}
+				if(trNumber != null && trNumber.trim().length()>0)
+				{
+					queryStr.append(" and model.refNo like '%"+trNumber+"%' ");
+				}
+				
+				List<Object[]> cadreList = tdpCadreDAO.getTdpCadreDetailsBySearchCriteriaForCallCenter(constituencyId, queryStr.toString());
+				
+				List<TdpCadreVO> returnLsit = new ArrayList<TdpCadreVO>();
+				if(cadreList != null && cadreList.size()>0)
+				{
+					SimpleDateFormat format  = new SimpleDateFormat("yy-MM-dd");
+					for (Object[] cadre : cadreList) 
+					{
+						TdpCadreVO cadreVO = new TdpCadreVO();
+
+						cadreVO.setId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
+						cadreVO.setCadreName(cadre[1] != null ? cadre[1].toString():"");
+						cadreVO.setRelativeName(cadre[2] != null ? cadre[2].toString():"");
+						cadreVO.setGender(cadre[3] != null ? cadre[3].toString():"");
+						cadreVO.setMemberShipNo(cadre[4] != null ? cadre[4].toString():"");
+						cadreVO.setTrNo(cadre[5] != null ? cadre[5].toString():"");
+						cadreVO.setMobileNo(cadre[6] != null ? cadre[6].toString():"");
+						cadreVO.setImageURL(cadre[7] != null ? cadre[7].toString():"");
+						cadreVO.setVoterCardNo(cadre[8] != null ? cadre[8].toString():"");
+						
+						if(cadre[9] != null)
+						{
+							cadreVO.setAge(cadre[9] != null ? Long.valueOf(cadre[9].toString().trim()):0L);
+						}
+						else 
+						{
+							Voter voter = voterDAO.get(cadre[11] != null ? Long.valueOf(cadre[11].toString().trim()):0L);
+							if(voter != null)
+							{
+								cadreVO.setAge(voter.getAge());
+							}						
+							else if(cadre[10]  != null)
+							{
+								String dateOfBirth = 	cadre[10] != null ? cadre[10].toString().substring(0,10):" "	;
+								
+								if(dateOfBirth != null && dateOfBirth.trim().length()>0)
+								{
+									Calendar startDate = new GregorianCalendar();
+									Calendar endDate = new GregorianCalendar();
+									
+									startDate.setTime(format.parse(dateOfBirth.trim()));
+									
+									endDate.setTime(new Date());
+
+									int diffYear = endDate.get(Calendar.YEAR) - startDate.get(Calendar.YEAR);
+									
+									cadreVO.setAge(Long.valueOf(String.valueOf(diffYear)));
+								}
+							}
+						}
+						
+						returnLsit.add(cadreVO);
+					}
+					
+					returnVO.setTdpCadreDetailsList(returnLsit);
+				}
+				
+		} catch (Exception e) {
+			LOG.error("Exception raised in searchTdpCadreDetailsBySearchCriteria  method in WebServiceHandlerService",e);
+		}
+    	
+    	return returnVO;
 	}
 }
