@@ -271,7 +271,7 @@ public class SchedulerService implements ISchedulerService{
 		try
 		{
 			String tableName = "";
-			Long limit = 50000l;
+			Long limit = 100000l;
 			Long insertType = 0l ;
 			if(type.equalsIgnoreCase("MAX"))
 			{
@@ -283,129 +283,14 @@ public class SchedulerService implements ISchedulerService{
 				tableName = "zebra_print_details";
 				insertType = 2l;
 			}
-			
-			
-			
-			/*List<Long> firstList = new ArrayList<Long>();
-			firstList.add(8L);
-			firstList.add(4L);
-			firstList.add(295L);
-			firstList.add(296L);
-			firstList.add(2L);
-			firstList.add(5L);
-			firstList.add(1L);
-			firstList.add(3L);
-			firstList.add(7L);
-			firstList.add(6L);
-			firstList.add(10L);
-			firstList.add(13L);
-			firstList.add(15L);
-			firstList.add(12L);
-			firstList.add(18L);
-			firstList.add(16L);
-			firstList.add(342L);
-			firstList.add(343L);
-			firstList.add(11L);
-			firstList.add(321L);
-			firstList.add(23L);
-			firstList.add(322L);
-			firstList.add(318L);
-			firstList.add(26L);
-			firstList.add(30L);
-			firstList.add(24L);
-			firstList.add(20L);
-			firstList.add(323L);
-			firstList.add(31L);
-			firstList.add(319L);
-			firstList.add(21L);
-			firstList.add(320L);
-			firstList.add(40L);
-			firstList.add(35L);
-			
-			List<Long> secondList = new ArrayList<Long>();
-			secondList.add(36L);
-			secondList.add(32L);
-			secondList.add(37L);
-			secondList.add(41L);
-			secondList.add(39L);
-			secondList.add(337L);
-			secondList.add(336L);
-			secondList.add(34L);
-			secondList.add(57L);
-			secondList.add(367L);
-			secondList.add(345L);
-			secondList.add(346L);
-			secondList.add(347L);
-			secondList.add(56L);
-			secondList.add(348L);
-			secondList.add(349L);
-			secondList.add(351L);
-			secondList.add(350L);
-			secondList.add(55L);
-			secondList.add(58L);
-			secondList.add(60L);
-			secondList.add(59L);
-			secondList.add(50L);
-			secondList.add(49L);
-			secondList.add(315L);
-			secondList.add(47L);
-			secondList.add(314L);
-			secondList.add(51L);
-			secondList.add(316L);
-			secondList.add(46L);
-			secondList.add(317L);
-			secondList.add(44L);
-			secondList.add(43L);
-			secondList.add(54L);
-			secondList.add(313L);
-			secondList.add(52L);
-			secondList.add(53L);
-			secondList.add(66L);
-			secondList.add(335L);
-			secondList.add(68L);
-			secondList.add(64L);
-			secondList.add(369L);
-			secondList.add(69L);
-			secondList.add(73L);
-			secondList.add(63L);
-			secondList.add(62L);
-			secondList.add(70L);
-			secondList.add(61L);
-			secondList.add(65L);
-			secondList.add(71L);
-			secondList.add(67L);
-			secondList.add(77L);
-			secondList.add(338L);
-			secondList.add(79L);
-			secondList.add(339L);
-			secondList.add(78L);
-			secondList.add(84L);
-			secondList.add(82L);
-			secondList.add(80L);
-			secondList.add(75L);
-			secondList.add(81L);
-			secondList.add(85L);
-			secondList.add(74L);
-			secondList.add(89L);*/
-			
+		
 			List<Long> thirdList = new ArrayList<Long>();
 			
-			thirdList.add(100l);
-			thirdList.add(101l);
-			thirdList.add(102l);
-			thirdList.add(103l);
-			thirdList.add(104l);
-			thirdList.add(105l);
-			thirdList.add(107l);
-			thirdList.add(324l);
-			thirdList.add(325l);
-			thirdList.add(326l);
-
-
-
-
-
-
+			thirdList.add(6l);
+			thirdList.add(8l);
+			thirdList.add(9l);
+			thirdList.add(10l);
+			thirdList.add(17l);
 
 
 			
@@ -429,7 +314,7 @@ public class SchedulerService implements ISchedulerService{
 				List<Long> ids = detailsMap.get(id);
 				//List<Long> ids = new ArrayList<Long>();
 				//ids.add(id);
-				if(totalCount >= 50000)
+				if(totalCount >= 100000)
 				{
 					break ;
 				}
@@ -439,7 +324,7 @@ public class SchedulerService implements ISchedulerService{
 					//PREPARE DATA FOR RURAL BY USING RURAL CONSTITUECYES
 					Integer r1Count =   saveRuralConstituencysDataType1(prevDate,tableName,ids,limit);
 					totalCount = totalCount + r1Count;
-					if(totalCount >= 50000)
+					if(totalCount >= 100000)
 					{
 						break;
 					}
@@ -449,7 +334,7 @@ public class SchedulerService implements ISchedulerService{
 						//PREPARE DATA FOR RURAL BY USING RURAL-URBAN CONSTITUECYES
 						Integer r2Count =   saveRuralConstituencysDataType2(prevDate,tableName,ids,limit);
 						totalCount = totalCount + r2Count;
-						if(totalCount >= 50000)
+						if(totalCount >= 100000)
 						{
 							break;
 						}
@@ -460,7 +345,7 @@ public class SchedulerService implements ISchedulerService{
 							//PREPARE DATA FOR RURAL-URBAN BY USING RURAL-URBAN CONSTITUECYES
 							Integer ruCount =   saveRuralUrbanConstituencysDataType(prevDate,tableName,ids,limit);
 							totalCount = totalCount+ ruCount;
-							if(totalCount >= 50000)
+							if(totalCount >= 100000)
 							{
 								break;
 							}

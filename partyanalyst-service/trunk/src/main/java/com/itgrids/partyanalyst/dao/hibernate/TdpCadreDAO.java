@@ -2044,15 +2044,15 @@ public List<Long> getCadreSurveyUsersStartedByLocation(List<Long> assignedUsersL
 public Integer saveRuralConstituencyDataType1(String prevDate,String table,List<Long> constIds,Long limit)
 {
 	StringBuffer queryString = new StringBuffer();
-	queryString.append(" insert into "+table+" (voter_name,voter_id_card_number,panchayat_name,mandal_name,constituency_name,district_name,tdp_cadre_id,member_ship_member,photo_type,ref_number,image,constituency_type,voter_image_path,inserted_time,part_no,area_covered,house_no) " );
-	queryString.append(" select   distinct concat(V.firstname,' ',V.lastname)  as VOTERNAME, VV.voter_id_card_no,P.name_local as VILLAGE,T.name_local as MANDAl ,C.name_local as CONSTITYENCY,D.name_local as DISTRICT,TDP.tdp_cadre_id as UNIQUEID,SUBSTRING(membership_id FROM 5) AS MEMBERSHIPID,TDP.photo_type AS PHOTOTYPE ,TDP.ref_no,concat('www.mytdp.com/images/cadre_images/',TDP.image) as MEMBER_IMAGE ,'R' , concat(B.constituency_id,'/','Part',B.part_no,'/',VV.voter_id_card_no ,'.jpg' ),DATE_ADD(now(),INTERVAL 330 MINUTE),B.part_no,B.village_covered,TDP.house_no ");
+	queryString.append(" insert into "+table+" (voter_name,voter_id_card_number,panchayat_name,mandal_name,constituency_name,district_name,tdp_cadre_id,member_ship_member,photo_type,ref_number,image,constituency_type,voter_image_path,inserted_time,part_no,area_covered,house_no,mobile_no) " );
+	queryString.append(" select   distinct concat(V.firstname,' ',V.lastname)  as VOTERNAME, VV.voter_id_card_no,P.name_local as VILLAGE,T.name_local as MANDAl ,C.name_local as CONSTITYENCY,D.name_local as DISTRICT,TDP.tdp_cadre_id as UNIQUEID,SUBSTRING(membership_id FROM 5) AS MEMBERSHIPID,TDP.photo_type AS PHOTOTYPE ,TDP.ref_no,concat('www.mytdp.com/images/cadre_images/',TDP.image) as MEMBER_IMAGE ,'R' , concat(B.constituency_id,'/','Part',B.part_no,'/',VV.voter_id_card_no ,'.jpg' ),DATE_ADD(now(),INTERVAL 330 MINUTE),B.part_no,B.village_covered,TDP.house_no,TDP.mobile_no ");
 	queryString.append(" from   tdp_cadre TDP,   panchayat P,   constituency C,   tehsil T,   district D,   user_address UA,		voter_names V,voter VV  ,booth_publication_voter BPV , booth B	where  TDP.address_id = UA.user_address_id and UA.constituency_id = C.constituency_id  and UA.panchayat_id = P.panchayat_id  and UA.district_id = D.district_id  and UA.tehsil_id = T.tehsil_id and TDP.voter_id = V.voter_id ");
-	queryString.append(" and TDP.voter_id = VV.voter_id and TDP.enrollment_year = 2014 and TDP.is_deleted = 'N' and C.area_type = 'RURAL'  and BPV.voter_id = VV.voter_id 	and BPV.booth_id = B.booth_id and B.publication_date_id = 11 and TDP.constituency_id is null and TDP.image is not null and TDP.voter_id is not null and concat(V.firstname,' ',V.lastname) is not null and TDP.family_voterId is null and (TDP.inserted_web_user_id != 3930 or TDP.inserted_web_user_id is null ) and TDP.data_source_type != 'ONLINE' and date(TDP.inserted_time) <= '2014-11-16' ");
+	queryString.append(" and TDP.voter_id = VV.voter_id and TDP.enrollment_year = 2014 and TDP.is_deleted = 'N' and C.area_type = 'RURAL'  and BPV.voter_id = VV.voter_id 	and BPV.booth_id = B.booth_id and B.publication_date_id = 11 and TDP.constituency_id is null and TDP.image is not null and TDP.voter_id is not null and concat(V.firstname,' ',V.lastname) is not null and TDP.family_voterId is null and (TDP.inserted_web_user_id != 3930 or TDP.inserted_web_user_id is null ) and TDP.data_source_type != 'ONLINE'  ");
 	//queryString.append(" and  date(TDP.inserted_time) = :prevDate " );
 	
 	if(constIds != null)
 	{
-		queryString.append("  and C.constituency_id in (:constIds) " );
+		queryString.append("  and C.district_id in (:constIds) " );
 	}
 	queryString.append(" LIMIT 0, "+limit+" " );
 	Query query = getSession().createSQLQuery(queryString.toString());
@@ -2068,15 +2068,15 @@ public Integer saveRuralConstituencyDataType1(String prevDate,String table,List<
 public Integer saveRuralUrbanConstituencyDataType2(String prevDate,String table,List<Long> constIds,Long limit)
 {
 	StringBuffer queryString = new StringBuffer();
-	queryString.append(" insert into "+table+"  (voter_name,voter_id_card_number,panchayat_name,mandal_name,constituency_name,district_name,tdp_cadre_id,member_ship_member,photo_type,ref_number,image,constituency_type,voter_image_path,inserted_time,part_no,area_covered,house_no) " );
-	queryString.append(" select   distinct concat(V.firstname,' ',V.lastname)  as VOTERNAME, VV.voter_id_card_no,P.name_local as VILLAGE,T.name_local as MANDAl ,C.name_local as CONSTITYENCY,D.name_local as DISTRICT,TDP.tdp_cadre_id as UNIQUEID,SUBSTRING(membership_id FROM 5) AS MEMBERSHIPID,TDP.photo_type AS PHOTOTYPE ,TDP.ref_no,concat('www.mytdp.com/images/cadre_images/',TDP.image) as MEMBER_IMAGE ,'R' , concat(B.constituency_id,'/','Part',B.part_no,'/',VV.voter_id_card_no ,'.jpg' ) ,DATE_ADD(now(),INTERVAL 330 MINUTE),B.part_no,B.village_covered,TDP.house_no  ");
+	queryString.append(" insert into "+table+"  (voter_name,voter_id_card_number,panchayat_name,mandal_name,constituency_name,district_name,tdp_cadre_id,member_ship_member,photo_type,ref_number,image,constituency_type,voter_image_path,inserted_time,part_no,area_covered,house_no,mobile_no) " );
+	queryString.append(" select   distinct concat(V.firstname,' ',V.lastname)  as VOTERNAME, VV.voter_id_card_no,P.name_local as VILLAGE,T.name_local as MANDAl ,C.name_local as CONSTITYENCY,D.name_local as DISTRICT,TDP.tdp_cadre_id as UNIQUEID,SUBSTRING(membership_id FROM 5) AS MEMBERSHIPID,TDP.photo_type AS PHOTOTYPE ,TDP.ref_no,concat('www.mytdp.com/images/cadre_images/',TDP.image) as MEMBER_IMAGE ,'R' , concat(B.constituency_id,'/','Part',B.part_no,'/',VV.voter_id_card_no ,'.jpg' ) ,DATE_ADD(now(),INTERVAL 330 MINUTE),B.part_no,B.village_covered,TDP.house_no,TDP.mobile_no  ");
 	queryString.append(" from   tdp_cadre TDP,   panchayat P,   constituency C,   tehsil T,   district D, user_address UA,voter_names V,voter VV   ,booth_publication_voter BPV , booth B 	where  TDP.address_id = UA.user_address_id and UA.constituency_id = C.constituency_id  and UA.panchayat_id = P.panchayat_id  and UA.district_id = D.district_id  and UA.tehsil_id = T.tehsil_id and TDP.voter_id = V.voter_id ");
-	queryString.append(" and TDP.voter_id = VV.voter_id and TDP.enrollment_year = 2014 and TDP.is_deleted = 'N' and C.area_type = 'RURAL-URBAN' and BPV.voter_id = VV.voter_id 	and BPV.booth_id = B.booth_id and B.publication_date_id = 11   and TDP.constituency_id is null  and TDP.image is not null and TDP.voter_id is not null and concat(V.firstname,' ',V.lastname) is not null and TDP.family_voterId is null and (TDP.inserted_web_user_id != 3930 or TDP.inserted_web_user_id is null ) and TDP.data_source_type != 'ONLINE' and date(TDP.inserted_time) <= '2014-11-16' ");
+	queryString.append(" and TDP.voter_id = VV.voter_id and TDP.enrollment_year = 2014 and TDP.is_deleted = 'N' and C.area_type = 'RURAL-URBAN' and BPV.voter_id = VV.voter_id 	and BPV.booth_id = B.booth_id and B.publication_date_id = 11   and TDP.constituency_id is null  and TDP.image is not null and TDP.voter_id is not null and concat(V.firstname,' ',V.lastname) is not null and TDP.family_voterId is null and (TDP.inserted_web_user_id != 3930 or TDP.inserted_web_user_id is null ) and TDP.data_source_type != 'ONLINE'  ");
 	//queryString.append(" and  date(TDP.inserted_time) = :prevDate " );
 	
 	if(constIds != null)
 	{
-		queryString.append("  and C.constituency_id in (:constIds) " );
+		queryString.append("  and C.district_id in (:constIds) " );
 	}
 	queryString.append(" LIMIT 0, "+limit+" " );
 	Query query = getSession().createSQLQuery(queryString.toString());
@@ -2092,15 +2092,15 @@ public Integer saveRuralUrbanConstituencyDataType2(String prevDate,String table,
 public Integer saveRuralUrbanConstituencyDataType(String prevDate,String table,List<Long> constIds,Long limit)
 {
 	StringBuffer queryString = new StringBuffer();
-	queryString.append("  insert into "+table+"  (voter_name,voter_id_card_number,muncipality_name,constituency_name,district_name,tdp_cadre_id,member_ship_member,photo_type,ref_number,image,constituency_type,voter_image_path,inserted_time,part_no,area_covered,house_no) ");
-	queryString.append("  select   distinct concat(V.firstname,' ',V.lastname)  as VOTERNAME, VV.voter_id_card_no, LEB.name_local as MUNCIPALITYNAME ,C.name_local as CONSTITYENCY,D.name_local as DISTRICT,TDP.tdp_cadre_id as UNIQUEID,SUBSTRING(membership_id FROM 5) AS MEMBERSHIPID,TDP.photo_type AS PHOTOTYPE ,TDP.ref_no,concat('www.mytdp.com/images/cadre_images/',TDP.image) as MEMBER_IMAGE ,'RU' , concat(B.constituency_id,'/','Part',B.part_no,'/',VV.voter_id_card_no ,'.jpg'),DATE_ADD(now(),INTERVAL 330 MINUTE),B.part_no,B.village_covered,TDP.house_no  ");
+	queryString.append("  insert into "+table+"  (voter_name,voter_id_card_number,muncipality_name,constituency_name,district_name,tdp_cadre_id,member_ship_member,photo_type,ref_number,image,constituency_type,voter_image_path,inserted_time,part_no,area_covered,house_no,mobile_no) ");
+	queryString.append("  select   distinct concat(V.firstname,' ',V.lastname)  as VOTERNAME, VV.voter_id_card_no, LEB.name_local as MUNCIPALITYNAME ,C.name_local as CONSTITYENCY,D.name_local as DISTRICT,TDP.tdp_cadre_id as UNIQUEID,SUBSTRING(membership_id FROM 5) AS MEMBERSHIPID,TDP.photo_type AS PHOTOTYPE ,TDP.ref_no,concat('www.mytdp.com/images/cadre_images/',TDP.image) as MEMBER_IMAGE ,'RU' , concat(B.constituency_id,'/','Part',B.part_no,'/',VV.voter_id_card_no ,'.jpg'),DATE_ADD(now(),INTERVAL 330 MINUTE),B.part_no,B.village_covered,TDP.house_no,TDP.mobile_no  ");
 	queryString.append("  from     tdp_cadre TDP, local_election_body LEB,   voter_names V,  voter VV,  constituency C,  district D, user_address UA   ,booth_publication_voter BPV , booth B	where TDP.address_id = UA.user_address_id and UA.local_election_body = LEB.local_election_body_id  and UA.constituency_id = C.constituency_id   and UA.district_id = D.district_id " );
-	queryString.append("  and TDP.voter_id = V.voter_id  and TDP.voter_id = VV.voter_id and TDP.enrollment_year = 2014 and TDP.is_deleted = 'N' and C.area_type = 'RURAL-URBAN' and BPV.voter_id = VV.voter_id 	and BPV.booth_id = B.booth_id and B.publication_date_id = 11 and TDP.constituency_id is null and TDP.image is not null and TDP.voter_id is not null and concat(V.firstname,' ',V.lastname) is not null and TDP.family_voterId is null and (TDP.inserted_web_user_id != 3930 or TDP.inserted_web_user_id is null ) and TDP.data_source_type != 'ONLINE' and date(TDP.inserted_time) <= '2014-11-16' ");
+	queryString.append("  and TDP.voter_id = V.voter_id  and TDP.voter_id = VV.voter_id and TDP.enrollment_year = 2014 and TDP.is_deleted = 'N' and C.area_type = 'RURAL-URBAN' and BPV.voter_id = VV.voter_id 	and BPV.booth_id = B.booth_id and B.publication_date_id = 11 and TDP.constituency_id is null and TDP.image is not null and TDP.voter_id is not null and concat(V.firstname,' ',V.lastname) is not null and TDP.family_voterId is null and (TDP.inserted_web_user_id != 3930 or TDP.inserted_web_user_id is null ) and TDP.data_source_type != 'ONLINE'  ");
 	//queryString.append(" and  date(TDP.inserted_time) = :prevDate " );
 	
 	if(constIds != null)
 	{
-		queryString.append("  and C.constituency_id in (:constIds) " );
+		queryString.append("  and C.district_id  in (:constIds) " );
 	}
 	queryString.append(" LIMIT 0, "+limit+" " );
 	Query query = getSession().createSQLQuery(queryString.toString());
@@ -2117,15 +2117,15 @@ public Integer saveRuralUrbanConstituencyDataType(String prevDate,String table,L
 public Integer saveUrbanConstituencyDataType1(String prevDate,String table,List<Long> constIds,Long limit)
 {
 	StringBuffer queryString = new StringBuffer();
-	queryString.append("  insert into "+table+"  (voter_name,voter_id_card_number,muncipality_name,constituency_name,district_name,tdp_cadre_id,member_ship_member,photo_type,ref_number,image,constituency_type,voter_image_path,inserted_time,part_no,area_covered,house_no) ");
-	queryString.append("  select   distinct concat(V.firstname,' ',V.lastname)  as VOTERNAME, VV.voter_id_card_no, LEB.name_local as MUNCIPALITYNAME ,C.name_local as CONSTITYENCY,D.name_local as DISTRICT,TDP.tdp_cadre_id as UNIQUEID,SUBSTRING(membership_id FROM 5) AS MEMBERSHIPID,TDP.photo_type AS PHOTOTYPE ,TDP.ref_no,concat('www.mytdp.com/images/cadre_images/',TDP.image) as MEMBER_IMAGE ,'U' , concat(B.constituency_id,'/','Part',B.part_no,'/',VV.voter_id_card_no ,'.jpg'),DATE_ADD(now(),INTERVAL 330 MINUTE) ,B.part_no,B.village_covered,TDP.house_no ");
+	queryString.append("  insert into "+table+"  (voter_name,voter_id_card_number,muncipality_name,constituency_name,district_name,tdp_cadre_id,member_ship_member,photo_type,ref_number,image,constituency_type,voter_image_path,inserted_time,part_no,area_covered,house_no,mobile_no) ");
+	queryString.append("  select   distinct concat(V.firstname,' ',V.lastname)  as VOTERNAME, VV.voter_id_card_no, LEB.name_local as MUNCIPALITYNAME ,C.name_local as CONSTITYENCY,D.name_local as DISTRICT,TDP.tdp_cadre_id as UNIQUEID,SUBSTRING(membership_id FROM 5) AS MEMBERSHIPID,TDP.photo_type AS PHOTOTYPE ,TDP.ref_no,concat('www.mytdp.com/images/cadre_images/',TDP.image) as MEMBER_IMAGE ,'U' , concat(B.constituency_id,'/','Part',B.part_no,'/',VV.voter_id_card_no ,'.jpg'),DATE_ADD(now(),INTERVAL 330 MINUTE) ,B.part_no,B.village_covered,TDP.house_no ,TDP.mobile_no");
 	queryString.append("  from     tdp_cadre TDP, local_election_body LEB,   voter_names V,  voter VV,  constituency C,  district D, user_address UA  ,booth_publication_voter BPV , booth B	where TDP.address_id = UA.user_address_id and UA.local_election_body = LEB.local_election_body_id  and UA.constituency_id = C.constituency_id   and UA.district_id = D.district_id " );
-	queryString.append("  and TDP.voter_id = V.voter_id  and TDP.voter_id = VV.voter_id and TDP.enrollment_year = 2014 and TDP.is_deleted = 'N' and C.area_type = 'URBAN'  and   BPV.voter_id = VV.voter_id 	and BPV.booth_id = B.booth_id and B.publication_date_id = 11 and TDP.constituency_id is null and TDP.image is not null and TDP.voter_id is not null and concat(V.firstname,' ',V.lastname) is not null and TDP.family_voterId is null and (TDP.inserted_web_user_id != 3930 or TDP.inserted_web_user_id is null ) and TDP.data_source_type != 'ONLINE' and date(TDP.inserted_time) <= '2014-11-16' ");
+	queryString.append("  and TDP.voter_id = V.voter_id  and TDP.voter_id = VV.voter_id and TDP.enrollment_year = 2014 and TDP.is_deleted = 'N' and C.area_type = 'URBAN'  and   BPV.voter_id = VV.voter_id 	and BPV.booth_id = B.booth_id and B.publication_date_id = 11 and TDP.constituency_id is null and TDP.image is not null and TDP.voter_id is not null and concat(V.firstname,' ',V.lastname) is not null and TDP.family_voterId is null and (TDP.inserted_web_user_id != 3930 or TDP.inserted_web_user_id is null ) and TDP.data_source_type != 'ONLINE'  ");
 	//queryString.append(" and  date(TDP.inserted_time) = :prevDate " );
 	
 	if(constIds != null)
 	{
-		queryString.append("  and C.constituency_id in (:constIds) " );
+		queryString.append("  and C.district_id in (:constIds) " );
 	}
 	queryString.append(" LIMIT 0, "+limit+" " );
 	Query query = getSession().createSQLQuery(queryString.toString());
@@ -3087,6 +3087,32 @@ public void flushAndclearSession(){
 		query.setParameter("uniqueKey", uniqueKey);
 		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
 		Long count = (Long)query.uniqueResult();
+		return count;
+	}
+	
+	
+	public Integer updateFamilyDetailsWithHistory(List<String> uniqueIds)
+	{
+		Query query = getSession().createQuery("update TdpCadre model set model.isDeleted = 'H'   where model.uniqueKey in (:uniqueIds) and model.enrollmentYear = :enrollmentYear and model.familyVoterId is not null  ");
+		query.setParameterList("uniqueIds", uniqueIds);
+		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
+		Integer count = query.executeUpdate();
+		return count;
+	}
+	
+	public List<Object[]> getFamilyDetails(List<String> uniqueIds)
+	{
+		Query query = getSession().createQuery("select model.familyVoterId,model.firstname,model.relativename,model.houseNo,model.mobileNo,model.uniqueKey from TdpCadre model where model.uniqueKey in (:uniqueIds)  group by model.uniqueKey  ");
+		query.setParameterList("uniqueIds", uniqueIds);
+		return query.list();
+	}
+	
+	public Integer updateDetailsToDuplicate(List<String> uniqueKeys)
+	{
+		Query query = getSession().createQuery("update TdpCadre model set model.isDeleted = 'NA'   where model.uniqueKey in (:uniqueKeys) and model.enrollmentYear = :enrollmentYear and model.familyVoterId is not null  ");
+		query.setParameterList("uniqueKeys", uniqueKeys);
+		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
+		Integer count = query.executeUpdate();
 		return count;
 	}
 	
