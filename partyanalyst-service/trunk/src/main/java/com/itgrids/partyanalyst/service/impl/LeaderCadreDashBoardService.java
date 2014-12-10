@@ -2148,6 +2148,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 	public  TabRecordsStatusVO getMISReport(String batchCode,Long Id,String type) {
 		TabRecordsStatusVO status = new TabRecordsStatusVO();
 		try {
+			
 			List<Object[]> cadreInfo = null;
 			String key = UUID.randomUUID().toString();
 			String url = IConstants.STATIC_CONTENT_FOLDER_URL+"VMR/MIS/"+key+".xls";
@@ -2159,14 +2160,19 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 			 cadreInfo = zebraPrintDetailsDAO.getAllCadreDetailsByBatchCode(batchCode);
 			else
 			{
+				/* based on update date*/
+				Date updatedDate = null;
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+				updatedDate = formatter.parse(batchCode);
+				
 				if(type.equalsIgnoreCase("Parliament"))
 				{
 				List<Long> assemblyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesByParliament(Id);
 				if(assemblyIds != null && assemblyIds.size() > 0)
-				cadreInfo = zebraPrintDetailsDAO.getAllCadreDetailsByParliament(batchCode,type,assemblyIds);	
+				cadreInfo = zebraPrintDetailsDAO.getAllCadreDetailsByParliament(updatedDate,type,assemblyIds);	
 				}
 				else
-				 cadreInfo = zebraPrintDetailsDAO.getAllCadreDetailsByBatchCodeandLocation(batchCode,type,Id);
+				 cadreInfo = zebraPrintDetailsDAO.getAllCadreDetailsByBatchCodeandLocation(updatedDate,type,Id);
 			}
 			if(cadreInfo.size() == 0){
 				status.setName("noData");
