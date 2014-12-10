@@ -99,6 +99,7 @@ import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SinkFamilyVO;
 import com.itgrids.partyanalyst.dto.SinkVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
@@ -5419,7 +5420,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	 * @param inputs
 	 * @return returnVO
 	 */
-	public List<SinkVO> sinkMissingData(List<SinkVO> inputs)
+	/*public List<SinkVO> sinkMissingData(List<SinkVO> inputs)
 	{
 		
 		LOG.error("IN SINK SERVICE");
@@ -5453,7 +5454,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				{
 					familyCount = familyCount + 1;
 					familyStr = familyStr + "," + sinkVO.getUid();
-					/*List<Object[]> result = tdpCadreDAO.checkForExists(sinkVO.getUid());
+					List<Object[]> result = tdpCadreDAO.checkForExists(sinkVO.getUid());
 					if(result != null && result.size() > 0)
 					{
 						for (Object[] objects : result)
@@ -5487,7 +5488,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						sinkVO.setStatus("false");
 						sinkVO.setVid(0l);
 						returnList.add(sinkVO);
-					}*/
+					}
 					Long count = tdpCadreDAO.checkForExists(sinkVO.getUid());
 					if(count > 0)
 					{
@@ -5609,8 +5610,341 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			LOG.error("Exception Raised in updatePrintedCardDetails",e);
 		}
 		return returnList;
+	}*/
+	
+	
+	public List<SinkVO> sinkMissingData(List<SinkVO> inputs)
+	{
+		
+		LOG.error("IN SINK SERVICE");
+		Long familyCount = 0l;
+		String familyStr = "";
+		Long newFamilyVoters = 0l;
+		Set<Long> familyVoterIds = new java.util.HashSet<Long>();
+		Map<Long,Set<String>> familyUniqueKeysMap = new HashMap<Long, Set<String>>();
+		Map<String,Set<String>> uniqueDupMap = null;
+		Set<String> dupList   = null;
+		Set<String> falseList = null;
+		List<SinkVO> returnList = new ArrayList<SinkVO>();
+		if(inputs != null && inputs.size() > 0)
+		{
+			LOG.error(inputs.toArray());
+		}
+		else
+		{
+			LOG.error("Empty");
+			return null;
+		}
+		
+		try 
+		{
+			Map<Long,List<String>> voterUidMap = new HashMap<Long, List<String>>();// HERE WE ARE 
+			Set<Long> usIds = new java.util.HashSet<Long>();
+			Set<String> uniqueids = new java.util.HashSet<String>();
+			
+			for(SinkVO sinkVO : inputs)
+			{
+				if(sinkVO.getUsId() != null)
+				{
+					usIds.add(sinkVO.getUsId());
+				}
+				
+				
+				if(sinkVO.getFid() != null && sinkVO.getFid().toString().trim().length() > 0 && !sinkVO.getFid().toString().trim().equalsIgnoreCase("null") && sinkVO.getFid().longValue() > 0)
+				{
+					Set<String> uniqueKetSet = familyUniqueKeysMap.get(sinkVO.getFid());
+					if(uniqueKetSet == null)
+					{
+						uniqueKetSet = new java.util.HashSet<String>();
+						familyUniqueKeysMap.put(sinkVO.getFid(), uniqueKetSet);
+					}
+					uniqueKetSet.add(sinkVO.getUid());
+					familyVoterIds.add(sinkVO.getFid());
+					uniqueids.add(sinkVO.getUid());
+					familyCount = familyCount + 1;
+					familyStr = familyStr + "," + sinkVO.getUid();
+				}
+				else if(sinkVO.getVid() != null && sinkVO.getVid().toString().trim().length() > 0 && !sinkVO.getVid().toString().trim().equalsIgnoreCase("null")  && sinkVO.getVid().longValue() > 0)
+				{
+					List<String> uidsList = voterUidMap.get(sinkVO.getVid());
+					if(uidsList == null)
+					{
+						uidsList = new ArrayList<String>();
+						voterUidMap.put(sinkVO.getVid(), uidsList);
+					}
+					uidsList.add(sinkVO.getUid());
+				}
+			}
+			
+			Set<Long> voterIds = voterUidMap.keySet();
+			
+			LOG.error("TOTAL RECORDS : " + inputs.size());
+			
+			// updating all family details into History.
+			if(uniqueids != null && uniqueids.size() > 0)
+			{
+				Integer count1 =  tdpCadreDAO.updateFamilyDetailsWithHistory(new ArrayList<String>(uniqueids));
+			}
+			
+			
+			
+			if(familyUniqueKeysMap != null && familyUniqueKeysMap.size() > 0)
+			{
+					List<Object[]> result = tdpCadreDAO.getFamilyDetails(new ArrayList<String>(uniqueids));
+					
+					if(result != null && result.size() > 0)
+					{
+						uniqueDupMap = new HashMap<String, Set<String>>();
+						for (Object[] objects : result)
+						{
+								String familyVoterId = objects[0] != null ? objects[0].toString().trim().toLowerCase() : IConstants.EMPTY_STRING;
+								String voterName = objects[1] != null ? objects[1].toString().trim().toLowerCase() : IConstants.EMPTY_STRING;
+								String relativeName = objects[2] != null ? objects[2].toString().trim().toLowerCase() : IConstants.EMPTY_STRING;
+								String houseNo = objects[3] != null ? objects[3].toString().trim().toLowerCase() : IConstants.EMPTY_STRING;
+								String mobileNo = objects[4] != null ? objects[4].toString().trim().toLowerCase() : IConstants.EMPTY_STRING;
+								
+								String key = familyVoterId +"-"+ voterName +"-"+ relativeName +"-"+ houseNo +"-"+ mobileNo;
+								//'PRASAD-THAGIBHATHINA-HOUSENUM-9885675456-089786567' HFT-098789-098 
+								//'PRASAD-THAGIBHATHINA-HOUSENUM-9885675456-089786567' HFT-098789-099 
+								Set<String> unikeys =  uniqueDupMap.get(key);
+								if(unikeys == null)
+								{
+									unikeys = new java.util.HashSet<String>();
+								}
+								unikeys.add(objects[5].toString());
+								uniqueDupMap.put(key, unikeys);
+						}
+						
+					}
+				}			
+				if(uniqueDupMap != null && uniqueDupMap.size() > 0)
+				{
+					falseList = new java.util.HashSet<String>();
+					dupList = new java.util.HashSet<String>();
+					for (Map.Entry<String, Set<String>> entry  : uniqueDupMap.entrySet())
+					{
+						Set<String> result = entry.getValue();
+						if(result.size() == 1)
+						{
+							falseList.add(new ArrayList<String>(result).get(0));
+						}
+						else
+						{
+							for (int index = 0; index < result.size(); index++) 
+							{
+								if(index == result.size()-1)
+								{
+									falseList.add(new ArrayList<String>(result).get(index));
+								}
+								else
+								{
+									dupList.add(new ArrayList<String>(result).get(index));
+								}
+							}
+						}
+					}
+					if(dupList != null && dupList.size() > 0)
+					{
+						Integer updatedNARecords = 	tdpCadreDAO.updateDetailsToDuplicate(new ArrayList<String>(dupList));
+					}
+					
+					
+					
+				}
+			
+			Integer matchedCount = 0;
+			Integer missingCount = 0;
+			String str = "";
+			if(voterIds != null && voterIds.size() > 0)
+			{
+				List<Object[]> matchedVoters = tdpCadreDAO.getMissingDetails(voterIds);
+				if(matchedVoters != null && matchedVoters.size() > 0)
+				{
+					LOG.error("MATCHED RECORDS : " + matchedVoters.size());
+					LOG.error("MISSING RECORDS : " + (voterIds.size() - matchedVoters.size()));
+					matchedCount = matchedVoters.size();
+					missingCount = voterIds.size() - matchedVoters.size();
+					for(Object[] obj : matchedVoters)
+					{
+						if(obj[0] != null)
+						{
+							voterUidMap.remove((Long)obj[0]);
+						}
+						
+					}
+				}
+			}
+			
+			if(inputs != null && inputs.size() > 0)
+			{
+				for (SinkVO vo : inputs) 
+				{
+					if(vo.getFid() != null && vo.getFid().toString().trim().length() > 0 && !vo.getFid().toString().trim().equalsIgnoreCase("null") && vo.getFid().longValue() > 0)
+					{
+						if(dupList.contains(vo.getUid()))
+						{
+							vo.setStatus("duplicate");
+						}
+						else
+						{
+							vo.setStatus("false");
+						}
+						returnList.add(vo);
+					}
+					
+					newFamilyVoters = (familyCount) - (dupList.size() + falseList.size());
+					
+				}
+			}
+			
+			if(voterUidMap != null && voterUidMap.size() > 0)
+			{
+				for (Long voterId : voterUidMap.keySet())
+				{
+					List<String> uids = voterUidMap.get(voterId);
+					if(uids != null)
+					{
+						SinkVO returnVO = new SinkVO();
+						returnVO.setStatus("false");
+						returnVO.setVid(voterId);
+						returnVO.setUid(uids.get(0));
+						returnVO.setFid(0l);
+						returnList.add(returnVO);
+						
+						str = str + "," +returnVO.getUid();
+					}
+				}
+			}
+			
+			//SAVING REQUESTED AND RESPONCE DATA FOR BACKUP PURPOSE
+			
+			
+					try 
+					{
+						String usrStr = "";
+						if(usIds != null)
+						{
+							for (Long usId : usIds)
+							{
+								usrStr = usrStr + "::"  +  usId;
+							}
+						}
+						TdpCadreVerfiedData tdpCadreVerfiedData = new TdpCadreVerfiedData();
+						Gson gson = new Gson();
+						tdpCadreVerfiedData.setRequestData(gson.toJson(inputs));
+						tdpCadreVerfiedData.setResponceData(gson.toJson(returnList));
+						tdpCadreVerfiedData.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+						tdpCadreVerfiedData.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						tdpCadreVerfiedData.setReqSize(Long.valueOf(inputs.size()));
+						tdpCadreVerfiedData.setResSize(Long.valueOf(returnList.size()));
+						tdpCadreVerfiedData.setMatchedCount(Long.valueOf(matchedCount));
+						tdpCadreVerfiedData.setMissingData(Long.valueOf(missingCount));
+						tdpCadreVerfiedData.setFamilyCount(familyCount);
+						tdpCadreVerfiedData.setNewFamilyCount(newFamilyVoters);
+						tdpCadreVerfiedData.setFamilySinkUids(familyStr);
+						tdpCadreVerfiedData.setMissingIds(str);
+						tdpCadreVerfiedData.setUserId(usrStr);
+						tdpCadreVerfiedDataDAO.save(tdpCadreVerfiedData);
+					}
+					catch (Exception e) 
+					{
+						LOG.error("Exception Raised in updatePrintedCardDetails Back up saving",e);
+					}
+			
+		} 
+		catch (Exception e) 
+		{
+			returnList = null;
+			LOG.error("Exception Raised in updatePrintedCardDetails",e);
+		}
+		return returnList;
 	}
 	
+	/*public void buildDuplicateLogic(Map<Long,List<SinkFamilyVO>> sinkFamilyMap,List<SinkVO> returnList)
+	{
+		try {
+			Map<String,List<SinkFamilyVO>> duplicateVotersMap = new HashMap<String, List<SinkFamilyVO>>();
+			Set<String> uniqueKeys = new java.util.HashSet<String>();
+			for(Long familyVoterId : sinkFamilyMap.keySet())
+			{
+				
+				List<SinkFamilyVO> familyList = sinkFamilyMap.get(familyVoterId);
+				
+				if(familyList != null && familyList.size() == 1)
+				{
+					SinkFamilyVO sinkFamilyVO = familyList.get(0);
+					SinkVO returnVO = new SinkVO();
+					returnVO.setStatus("false");
+					returnVO.setUid(sinkFamilyVO.getUniqueKey());
+					returnVO.setFid(sinkFamilyVO.getFamilyVoterId());
+					returnVO.setVid(0l);
+					returnList.add(returnVO);
+				
+				}
+				else
+				{
+					for(SinkFamilyVO vo : familyList)
+					{
+						
+						String key = vo.getFamilyVoterId() +"-"+ vo.getFirstName() +"-"+ vo.getRelativeName() +"-"+ vo.getHouseNo() +"-"+ vo.getMobileNo(); 
+						List<SinkFamilyVO> duplicateNameList = duplicateVotersMap.get(key);
+						if(duplicateNameList == null)
+						{
+							duplicateNameList = new ArrayList<SinkFamilyVO>();
+							duplicateVotersMap.put(key, duplicateNameList);
+						}
+						SinkFamilyVO dupVO = new SinkFamilyVO();
+						dupVO.setFamilyVoterId(vo.getFamilyVoterId());
+						dupVO.setFirstName(vo.getFirstName());
+						dupVO.setRelativeName(vo.getRelativeName());
+						dupVO.setHouseNo(vo.getHouseNo());
+						dupVO.setMobileNo(vo.getMobileNo());
+						dupVO.setUniqueKey(vo.getUniqueKey());
+						duplicateNameList.add(dupVO);
+						uniqueKeys.add(vo.getUniqueKey());
+					}
+				}
+			}
+			
+		   
+		    
+		    
+			if(duplicateVotersMap != null && duplicateVotersMap.size() > 0)
+			{
+				if(uniqueKeys != null && uniqueKeys.size() > 0)
+				{
+					Integer updatedNARecords = 	tdpCadreDAO.updateDetailsToDuplicate(new ArrayList<String>(uniqueKeys));
+				}
+				 
+				for(String key : duplicateVotersMap.keySet())
+				{
+					List<SinkFamilyVO> list = duplicateVotersMap.get(key);
+					if(list != null && list.size() > 0)
+					{
+						for (int index = 0; index < list.size(); index++)
+						{
+							SinkFamilyVO vo = list.get(index);
+							SinkVO returnVO = new SinkVO();
+							if(index == list.size()-1)
+							{
+								returnVO.setStatus("false");
+							}
+							else
+							{
+								returnVO.setStatus("duplicate");
+							}
+							returnVO.setUid(vo.getUniqueKey());
+							returnVO.setFid(vo.getFamilyVoterId());
+							returnVO.setVid(0l);
+						}
+						
+					}
+				}
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}*/
 	/**
 	 * @author Sasi
 	 * @date 26-11-2014

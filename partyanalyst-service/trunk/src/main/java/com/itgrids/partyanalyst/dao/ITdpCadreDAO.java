@@ -258,4 +258,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	 
 	 public List<Object[]> getTdpCadreDetailsBySearchCriteriaForCallCenter(Long constituencyId,String queryString);
 	 
+	public Integer updateFamilyDetailsWithHistory(List<String> familyVoterIds);
+	public Integer updateDetailsToDuplicate(List<String> uniqueKeys);
+	public List<Object[]> getFamilyDetails(List<String> uniqueKeys);
 }
