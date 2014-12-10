@@ -134,7 +134,7 @@
 					<span id="constiErrMsg"></span>
 					<div class="form-inine">
 					<input class="input-medium myTooltip" type="text"  min="1" max="100" placeholder="Enter Percentage" style="margin-top: -4px;" id="constipercSearch" onkeypress="return isNumberKey(event);" title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Enter Percentage" /><button class="btn" type="button" style="margin: -14px 1px 1px -20px" onClick="getConstiPercWiseSearch();">Search</button>
-					<select class="input-medium" id="constituencyList" style="margin-top:-5px;" onChange="searchByStatus('CONSTITUENCY')"><option value="0"> All </option></select>
+					<select class="input-medium" id="constituencyList" style="margin-top:-5px;" onChange="searchByStatus('CONSTITUENCY',0)"><option value="0"> All </option></select>
 						<select class="input-medium" id="ConstiSeacrhId" style=" margin-top:-5px;" onChange="searchByStatus('CONSTITUENCY',0)"><option value="0"> All</option><option value="SENT"> SENT TO PRINT </option>
 						<option value="PRINTED"> PRINTED </option>
 						<option value="ERROR"> ERROR </option>
@@ -842,6 +842,8 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 		else if(stateTypeId == "ts")
 			stateId = 2;
 		if(loctype == "CONSTITUENCY"){
+			if(percentage == 0)
+		$("#constiErrMsg").html('');
 		$('#accordion2').html('');
 		$('#searchDataImg').show();
 		id = $("#constituencyList").val();
@@ -849,6 +851,8 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 		if(ConstiSeacrhId != 0)
 		statusType =ConstiSeacrhId;
 		}else if(loctype == "DISTRICT"){
+			if(percentage == 0)
+		$("#distErrMsg").html('');
 			id = $("#districtList").val();
 			var DistSeacrhId = $("#DistSeacrhId").val();
 			if(DistSeacrhId != 0)
@@ -856,6 +860,8 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 		$('#districtAccordion').html('');
 		$('#ajaxImg').show();
 		}else if(loctype == "MP"){
+			if(percentage == 0)
+		$("#parlErrMsg").html('');
 			id = $("#parlConstiList").val();
 			var ParlSeacrhId = $("#ParlSeacrhId").val();
 			if(ParlSeacrhId != 0)
