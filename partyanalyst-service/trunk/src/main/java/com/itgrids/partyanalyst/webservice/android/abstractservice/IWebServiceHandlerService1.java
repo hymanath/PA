@@ -10,6 +10,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SinkVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
+import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VoterWebServiceDataVO;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLoginUtils;
@@ -49,4 +50,7 @@ public interface IWebServiceHandlerService1 {
 	public List<SinkVO> sinkMissingData(List<SinkVO> inputs);
 	
 	public String getTabUsersLoginKeyDetails(TabRecordsStatusVO inputVo);
+	
+	public TdpCadreVO searchTdpCadreDetailsBySearchCriteria(Long constituencyId,String name,String memberShipCardNo, String voterCardNo, String refNo, String mobileNo);
+	
 }
