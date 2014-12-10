@@ -1780,5 +1780,8 @@
 <bean id="tdpCadreSmsStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreSmsStatusDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
+<bean id="zebraPrintOnlineShipDAO" class="com.itgrids.partyanalyst.dao.hibernate.ZebraPrintOnlineShipDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
 	<!--  end -->
 </beans>		

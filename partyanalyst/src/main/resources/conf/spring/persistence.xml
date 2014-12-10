@@ -519,6 +519,7 @@
 				<value>com.itgrids.partyanalyst.model.TdpCadreCallCenterFeedback</value>				
 				<value>com.itgrids.partyanalyst.model.CallCenterFeedback</value>
 				<value>com.itgrids.partyanalyst.model.TdpCadreSmsStatus</value>
+				<value>com.itgrids.partyanalyst.model.ZebraPrintOnlineShip</value>
 				</list>
 			
 		</property>
