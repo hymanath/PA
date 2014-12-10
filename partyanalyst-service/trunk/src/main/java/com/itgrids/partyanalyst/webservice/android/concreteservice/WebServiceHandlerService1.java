@@ -46,6 +46,7 @@ import com.itgrids.partyanalyst.dto.SinkVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
 import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
+import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
 import com.itgrids.partyanalyst.dto.VoterWebServiceDataVO;
 import com.itgrids.partyanalyst.model.CadreSurveyUser;
@@ -1143,5 +1144,23 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		return  cadreRegistrationService.saveTabUsersLoginKeyDetails(inputVo);
 		
 	}
+    
+    /**
+     * THIS SERVICE IS USED FOR Search TdpCadreDetails By SearchCriteria
+     * @param tdpCadreVO
+     * @return TdpCadreVO
+     */
+   
+    public TdpCadreVO searchTdpCadreDetailsBySearchCriteria(Long constituencyId,String name,String memberShipCardNo, String voterCardNo, String refNo, String mobileNo)
+    {
+    	TdpCadreVO returnVO = new TdpCadreVO(); // TdpCadreVO
+    	try {
+    		returnVO = cadreRegistrationService.searchTdpCadreDetailsBySearchCriteria(constituencyId,name,memberShipCardNo, voterCardNo, refNo, mobileNo);
+		} catch (Exception e) {
+			LOG.error("Exception raised in searchTdpCadreDetailsBySearchCriteria  method in WebServiceHandlerService",e);
+		}
+    	
+    	return returnVO;
+    }
 }
 
