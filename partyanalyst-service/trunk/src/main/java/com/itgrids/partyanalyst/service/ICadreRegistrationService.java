@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SinkVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
+import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
 import com.itgrids.partyanalyst.model.TdpCadreBackupDetails;
 
@@ -117,4 +118,7 @@ public interface ICadreRegistrationService {
 	public List<SinkVO> sinkMissingData(List<SinkVO> inputs);
 	
 	public String  saveTabUsersLoginKeyDetails(TabRecordsStatusVO recordsStatusVO);
+	
+	public TdpCadreVO searchTdpCadreDetailsBySearchCriteria(Long constituencyId,String name,String memberShipCardNo, String voterCardNo, String refNo, String mobileNo);
+	
 }
