@@ -32,7 +32,7 @@ public class ZebraPrintOnlineShip extends BaseModel implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 5991972740188764985L;
-	private Long zebraPrintDetailsId;
+	private Long zebraPrintOnlineShipId;
 	private String voterName;
 	private String panchayatName;
 	private String mandalName;
@@ -74,12 +74,12 @@ public class ZebraPrintOnlineShip extends BaseModel implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "zebra_print_details_id", nullable = false, unique = true)
-	public Long getZebraPrintDetailsId() {
-		return zebraPrintDetailsId;
+	@Column(name = "zebra_print_online_ship_id", nullable = false, unique = true)
+	public Long getZebraPrintOnlineShipId() {
+		return zebraPrintOnlineShipId;
 	}
-	public void setZebraPrintDetailsId(Long zebraPrintDetailsId) {
-		this.zebraPrintDetailsId = zebraPrintDetailsId;
+	public void setZebraPrintOnlineShipId(Long zebraPrintOnlineShipId) {
+		this.zebraPrintOnlineShipId = zebraPrintOnlineShipId;
 	}
 	
 	@Column(name="voter_name")
@@ -380,6 +380,7 @@ public class ZebraPrintOnlineShip extends BaseModel implements Serializable{
 	public void setPermanentAddress(String permanentAddress) {
 		this.permanentAddress = permanentAddress;
 	}
+	
 	
 	
 	
