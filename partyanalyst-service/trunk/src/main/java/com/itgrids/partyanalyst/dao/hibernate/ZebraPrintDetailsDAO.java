@@ -407,9 +407,9 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 	public List<Object[]> getJobCodesByLocationWise(Long locationId, String searchType)
 	{
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select distinct model.jobCode,model.tdpCadre.userAddress.constituency.name"); 
+		queryStr.append(" select distinct date(model.updatedTime),model.tdpCadre.userAddress.constituency.name"); 
 			
-		queryStr.append(" from ZebraPrintDetails model where model.jobCode is not null ");
+		queryStr.append(" from ZebraPrintDetails model where model.updatedTime is not null ");
 		queryStr.append(" and model.printStatus ='Y' and (model.errorStatus is null or model.errorStatus='0')");
 		if(searchType.equalsIgnoreCase(IConstants.CONSTITUENCY))
 		{
@@ -417,7 +417,7 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 		}
 		else if(searchType.equalsIgnoreCase(IConstants.DISTRICT))
 		{
-			queryStr.append(" and model.tdpCadre.userAddress.district.districtId =:locationId  group by  model.jobCode, model.tdpCadre.userAddress.constituency.constituencyId");
+			queryStr.append(" and model.tdpCadre.userAddress.district.districtId =:locationId  group by  date(model.updatedTime), model.tdpCadre.userAddress.constituency.constituencyId");
 		}
 		
 		Query query = getSession().createQuery(queryStr.toString()); 
@@ -428,29 +428,29 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 	public List<Object[]> getJobCodesByParliament(Long parliamentId, String dataType)
 	{
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select distinct ZPD.jobCode,DCA.constituency.name"); 
+		queryStr.append(" select distinct date(ZPD.updatedTime),DCA.constituency.name"); 
 		queryStr.append(" from ZebraPrintDetails ZPD, DelimitationConstituencyAssemblyDetails DCA ,DelimitationConstituency DC  " +
 				" where DC.year = 2009 and " +
 				" DCA.delimitationConstituency.delimitationConstituencyID = DC.delimitationConstituencyID and " +
 				" ZPD.tdpCadre.userAddress.constituency.constituencyId = DCA.constituency.constituencyId and " +
 				" DCA.delimitationConstituency.constituency.constituencyId =:parliamentId and " +
 				" ZPD.tdpCadre.isDeleted = 'N' and " +
-				" ZPD.tdpCadre.enrollmentYear = 2014 and ZPD.jobCode is not null");
-		queryStr.append(" and ZPD.printStatus ='Y' and (ZPD.errorStatus is null or ZPD.errorStatus='0') group by ZPD.jobCode,DCA.constituency.constituencyId");
+				" ZPD.tdpCadre.enrollmentYear = 2014 and ZPD.updatedTime is not null");
+		queryStr.append(" and ZPD.printStatus ='Y' and (ZPD.errorStatus is null or ZPD.errorStatus='0') group by date(ZPD.updatedTime),DCA.constituency.constituencyId");
 		Query query = getSession().createQuery(queryStr.toString()); 
 		query.setParameter("parliamentId", parliamentId);
 		return query.list();
 	}
 	
 	
-	public List<Object[]> getAllCadreDetailsByBatchCodeandLocation(String batchCode,String searchType,Long Id){
+	public List<Object[]> getAllCadreDetailsByBatchCodeandLocation(Date batchCode,String searchType,Long Id){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("select model.member_ship_member,model.voter_name,model.mobile_no,model.district_name,model.constituency_name,model.mandal_name,model.muncipality_name," +
 				"model.panchayat_name,model.part_no,model.house_no,model.zebra_print_details_id,tca.location,tca.town from zebra_print_details " +
 				" model LEFT JOIN tdp_cadre_address tca on model.tdp_cadre_id = tca.tdp_cadre_id ");
 		queryStr.append(" LEFT JOIN tdp_cadre tc ON model.tdp_cadre_id = tc.tdp_cadre_id");
 		queryStr.append(" LEFT JOIN user_address ua ON tc.address_id = ua.user_address_id");
-		queryStr.append(" where model.job_code =:batchCode and model.print_status ='Y' and (model.error_Status is null or model.error_Status='0') "); 
+		queryStr.append(" where date(model.update_time) =:batchCode and model.print_status ='Y' and (model.error_Status is null or model.error_Status='0') "); 
 		if(searchType.equalsIgnoreCase(IConstants.CONSTITUENCY))
 		{
 			queryStr.append(" and ua.constituency_id = :Id");	
@@ -460,23 +460,23 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 			queryStr.append(" and ua.district_id = :Id");	
 		}
 		Query query = getSession().createSQLQuery(queryStr.toString()); 
-		query.setParameter("batchCode", batchCode);
+		query.setDate("batchCode", batchCode);
 		query.setParameter("Id", Id);
 		return query.list();
 	}
 	
-	public List<Object[]> getAllCadreDetailsByParliament(String batchCode,String searchType,List<Long> Ids){
+	public List<Object[]> getAllCadreDetailsByParliament(Date batchCode,String searchType,List<Long> Ids){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("select model.member_ship_member,model.voter_name,model.mobile_no,model.district_name,model.constituency_name,model.mandal_name,model.muncipality_name," +
 				"model.panchayat_name,model.part_no,model.house_no,model.zebra_print_details_id,tca.location,tca.town from zebra_print_details " +
 				" model LEFT JOIN tdp_cadre_address tca on model.tdp_cadre_id = tca.tdp_cadre_id ");
 		queryStr.append(" LEFT JOIN tdp_cadre tc ON model.tdp_cadre_id = tc.tdp_cadre_id ");
 		queryStr.append(" LEFT JOIN user_address ua ON tc.address_id = ua.user_address_id ");
-		queryStr.append(" where model.job_code =:batchCode and model.print_status ='Y' and (model.error_Status is null or model.error_Status='0') "); 
+		queryStr.append(" where date(model.update_time) =:batchCode and model.print_status ='Y' and (model.error_Status is null or model.error_Status='0') "); 
 		queryStr.append(" and ua.constituency_id in(:Ids) ");	
 		
 		Query query = getSession().createSQLQuery(queryStr.toString()); 
-		query.setParameter("batchCode", batchCode);
+		query.setDate("batchCode", batchCode);
 		query.setParameterList("Ids", Ids);
 		return query.list();
 	}
