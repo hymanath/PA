@@ -1225,7 +1225,7 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 		$("#constituencyList").val(0);
 		 if(percSearch == ""){
 				percSearch=0;
-				$("#constiErrMsg").html('Enter No').css("color","red");
+				$("#constiErrMsg").html('Percentage  is required').css("color","red");
 				flag = false;
 			}
 		if(percSearch > 100)
@@ -1250,7 +1250,7 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 		$("#districtList").val(0);
 		 if(percSearch1 == ""){
 				percSearch1=0;
-			$("#distErrMsg").html('Enter No ').css("color","red");
+			$("#distErrMsg").html('Percentage  is required').css("color","red");
 			flag = false;
 			 }
 		else if(percSearch1 > 100)
@@ -1274,7 +1274,7 @@ function buildDistctwisePercentageSearch(result,type,percentage)
 		$("#ParlSeacrhId").val(0);
 		$("#parlConstiList").val(0);
 		 if(percSearch2 == ""){
-				$("#parlErrMsg").html('Enter No').css("color","red");
+				$("#parlErrMsg").html('Percentage  is required').css("color","red");
 				flag = false;
 			 }
 		else if(percSearch2 > 100)
