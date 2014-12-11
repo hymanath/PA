@@ -18,18 +18,24 @@ public class ZebraPrintOnlineShipDAO extends GenericDaoHibernate<ZebraPrintOnlin
 	}
 	
 	
-	public List<Object[]> getCadreShippingAddressDetials(Long constituencyId)
+	public List<Object[]> getCadreShippingAddressDetials(String searchType,Long locationId)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append(" select model.zebraPrintOnlineShipId,model.tdpCadreId, model.voterName, model.image, model.shipAddress,model.memberShipMember  " +
-				" from ZebraPrintOnlineShip model  where model.tdpCadre.enrollmentYear = 2014 and model.tdpCadre.isDeleted = 'N' ");		
-		if(constituencyId.longValue() != 0L){
-			str.append(" and model.tdpCadre.userAddress.constituency.constituencyId = :constituencyId ");
+		str.append(" select model.tdpCadre.firstname, model.tdpCadre.relativename,model.memberShipMember, model.shipAddress , model.mobileNo, model.tdpCadre.userAddress.district.districtName, model.tdpCadre.userAddress.constituency.name " +
+				" from ZebraPrintOnlineShip model  where model.tdpCadre.enrollmentYear = 2014 and model.tdpCadre.isDeleted = 'N' and model.shipAddress is not null ");
+		
+			
+		if(searchType != null && searchType.equalsIgnoreCase(IConstants.DISTRICT))
+		{
+			if(locationId.longValue() != 0L){
+				str.append(" and model.tdpCadre.userAddress.district.districtId = :locationId ");
+			}
 		}
+		
 		Query query = getSession().createQuery(str.toString()); 
 		
-		if(constituencyId.longValue() != 0L){
-			query.setParameter("constituencyId", constituencyId);
+		if(locationId.longValue() != 0L){
+			query.setParameter("locationId", locationId);
 		}
 		
 	
