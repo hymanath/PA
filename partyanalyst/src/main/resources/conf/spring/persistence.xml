@@ -516,6 +516,7 @@
 				<value>com.itgrids.partyanalyst.model.PartyPresidents</value>
 				<value>com.itgrids.partyanalyst.model.LocalNameConstant</value>
 				<value>com.itgrids.partyanalyst.model.TdpCadreCallCenterComment</value>
+				<value>com.itgrids.partyanalyst.model.ZebraPrintOnlineShip</value>
 				<value>com.itgrids.partyanalyst.model.TdpCadreCallCenterFeedback</value>				
 				<value>com.itgrids.partyanalyst.model.CallCenterFeedback</value>
 				<value>com.itgrids.partyanalyst.model.TdpCadreSmsStatus</value>
