@@ -516,6 +516,7 @@
 				<value>com.itgrids.partyanalyst.model.LocalNameConstant</value>
 				<value>com.itgrids.partyanalyst.model.PartyPresidents</value>
 				<value>com.itgrids.partyanalyst.model.TdpCadreSmsStatus</value>
+				<value>com.itgrids.partyanalyst.model.ZebraPrintOnlineShip</value>
 			</list>
 		</property>
 	</bean>
@@ -2696,6 +2697,9 @@
 			<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="tdpCadreSmsStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreSmsStatusDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+<bean id="zebraPrintOnlineShipDAO" class="com.itgrids.partyanalyst.dao.hibernate.ZebraPrintOnlineShipDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
 </beans>
