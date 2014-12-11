@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.FileOutputStream;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -9,6 +11,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -16,6 +19,17 @@ import java.util.TreeSet;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICadreOtpDetailsDAO;
@@ -28,6 +42,7 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPartyPresidentsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.IZebraPrintOnlineShipDAO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreTransactionVO;
 import com.itgrids.partyanalyst.dto.ReconciliationVO;
@@ -81,7 +96,24 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 	
 	private IPartyPresidentsDAO partyPresidentsDAO;
 	
+	private IZebraPrintOnlineShipDAO zebraPrintOnlineShipDAO;
 	
+	  private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 10,
+		      Font.BOLD);
+	  private static Font normalFont = new Font(Font.FontFamily.TIMES_ROMAN, 8,
+		      Font.NORMAL);
+	  private static Font redFont = new Font(Font.FontFamily.TIMES_ROMAN, 8,
+	      Font.BOLD, BaseColor.RED);
+	  private static Font subFont = new Font(Font.FontFamily.TIMES_ROMAN, 8,
+	      Font.BOLD);
+	  private static Font smallFont = new Font(Font.FontFamily.TIMES_ROMAN, 7);
+	  
+	
+	public void setZebraPrintOnlineShipDAO(
+			IZebraPrintOnlineShipDAO zebraPrintOnlineShipDAO) {
+		this.zebraPrintOnlineShipDAO = zebraPrintOnlineShipDAO;
+	}
+
 	public void setPartyPresidentsDAO(IPartyPresidentsDAO partyPresidentsDAO) {
 		this.partyPresidentsDAO = partyPresidentsDAO;
 	}
@@ -1256,9 +1288,9 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 											phoneNumbersStr = phoneNumbersStr + ", "+mobileNumbers.get(i).toString().trim();
 										}
 										
-										if(constituencyId.longValue() == 69L || constituencyId.longValue() == 232L )
+										if(constituencyId.longValue() == 232L )
 										{
-											phoneNumbersStr = phoneNumbersStr+",9581434970 ";
+											phoneNumbersStr = phoneNumbersStr+",9581434970,9676696760 ";
 										}
 										//phoneNumbersStr = phoneNumbersStr+",9581434970, 919581434970 ";
 										String[] phoneNumbersArr = phoneNumbersStr.substring(1).split(",");
@@ -1732,5 +1764,235 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 			LOG.error(" exception occured at getMatchedVOById() in CadreSurveyTransactionService service class. ", e);
 		}
 		return returnVO;
+	}
+	
+	public String generatePdfForPrintedCardsDetails(List<Long> districtIds)
+	{
+		try {
+			if(districtIds != null && districtIds.size()>0)
+			{
+				for (Long districtId : districtIds) 
+				{
+					 List<Object[]> cadreList = zebraPrintOnlineShipDAO.getCadreShippingAddressDetials(IConstants.DISTRICT,districtId);
+					 SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+					 Date today = new DateUtilService().getCurrentDateAndTime();
+					 Random random = new Random();
+					 int randomNumber = -1;
+					 
+					 while(randomNumber<1)
+					 {
+						 randomNumber = random.nextInt() * 10000;
+					 }
+					 
+					 	Document document = new Document();
+						PdfPTable table = new PdfPTable(5);
+						
+					    if(cadreList != null && cadreList.size()>0)
+						{
+					    	Object[] cadreInfo = cadreList.get(0);
+					    	
+						      PdfWriter.getInstance(document, new FileOutputStream("D:/pdfs/cardsAddress_"+(cadreInfo[5] != null? cadreInfo[5].toString():"")+"_"+format.format(today)+"_"+randomNumber+".pdf"));
+						      document.open();
+						    
+						      document.addHeader((cadreInfo[5] != null? cadreInfo[5].toString():"") +" District ","District1");  
+						      
+						      document.add(new Paragraph("                                                                   CARDS SHIPPING ADDRESS DETAILS \n\n",catFont));
+						      document.add(new Chunk());
+						      document.add(new Chunk());
+						      
+						      PdfPCell c1 = new PdfPCell(new Phrase(" Photo ",subFont));
+							    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+							    c1.setBackgroundColor(BaseColor.YELLOW);
+							    table.addCell(c1);
+							    
+							    
+							    c1 =  new PdfPCell(new Phrase("Name" ,subFont));
+							    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+							    c1.setBackgroundColor(BaseColor.YELLOW);
+							    table.addCell(c1);
+							    
+							   
+
+							    c1 = new PdfPCell(new Phrase(" Relative Name ",subFont));
+							    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+							    c1.setBackgroundColor(BaseColor.YELLOW);
+							    table.addCell(c1);
+							  
+							    c1 = new PdfPCell(new Phrase(" Membership Card No ",subFont));
+							    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+							    c1.setBackgroundColor(BaseColor.YELLOW);
+							    table.addCell(c1);
+							    
+							    c1 = new PdfPCell(new Phrase(" Shipping Address ",subFont));
+							    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+							    c1.setBackgroundColor(BaseColor.YELLOW);
+							    table.addCell(c1);
+							    
+							    table.setHeaderRows(1);
+							for (Object[] cadre : cadreList) 
+							{
+								
+								 Image image = Image.getInstance(new URL(cadre[3] != null ? "http://"+cadre[3].toString():""));
+								 image.setAbsolutePosition(0, 0);
+								 image.setAlignment(10);
+					             image.scaleToFit(50, 50);
+					             
+					             PdfPCell c2 = new PdfPCell(image);	
+					             c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+					             c2.setPadding(1);
+					             c2.setFixedHeight(60);
+					             table.addCell(c2);
+								
+								c2 = new PdfPCell(new Phrase(cadre[0] != null ? cadre[0].toString().trim():"",smallFont));
+								c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+								table.addCell(c2);
+
+								c2 = new PdfPCell(new Phrase(cadre[1] != null ? cadre[1].toString().trim():"",smallFont));
+								c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+								table.addCell(c2);
+								c2 = new PdfPCell(new Phrase(cadre[2] != null ? cadre[2].toString():"",smallFont));
+								c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+								table.addCell(c2);
+								c2 = new PdfPCell(new Phrase(cadre[4] != null ? cadre[4].toString():"",smallFont));
+								c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+								table.addCell(c2);
+							}
+						}
+					    document.add(table);
+					    
+					document.close();
+					}
+			}
+			 
+			} catch (Exception e) {
+			LOG.error(" exception occured at generatePdfForPrintedCardsDetails() in CadreSurveyTransactionService service class. ", e);
+		}
+		
+		return null;
+	}
+	
+	public void buildShippingAddressDetailsForPrintedCards(List<Long> districtIds)
+	{
+		try {
+			if(districtIds != null && districtIds.size()>0)
+			{
+				for (Long districtId : districtIds) 
+				{
+					List<Object[]> cadreList = zebraPrintOnlineShipDAO.getCadreShippingAddressDetials(IConstants.DISTRICT,districtId);
+					 SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+					 Date today = new DateUtilService().getCurrentDateAndTime();
+					 Random random = new Random();
+					 int randomNumber = -1;
+					 
+					 while(randomNumber<1)
+					 {
+						 randomNumber = random.nextInt() * 10000;
+					 }
+					 
+					 	Document document = new Document();
+						PdfPTable table = new PdfPTable(2);
+						
+					    if(cadreList != null && cadreList.size()>0)
+						{
+					    	
+					    	Object[] cadreInfo = cadreList.get(0);
+						    PdfWriter.getInstance(document, new FileOutputStream(IConstants.STATIC_CONTENT_FOLDER_URL+"shippingAddress_"+(cadreInfo[5] != null? cadreInfo[5].toString():"")+"_"+format.format(today)+"_"+randomNumber+".pdf"));
+						   
+						    document.open();
+						    
+						    int length  = cadreList.size();
+							for (int i =0;i<length;) 
+							{
+								 Object[] cadre = cadreList.get(i);					
+								 Paragraph paragraph = new Paragraph();
+
+								 Chunk chunk1 = new Chunk("Name : ",subFont);
+								 Chunk chunk2 = new Chunk(cadre[0] != null ? cadre[0].toString().trim():"", normalFont);
+								 Chunk chunk3 = new Chunk("\nC/O  : ",subFont);
+								 Chunk chunk4 = new Chunk(cadre[1] != null ? cadre[1].toString().trim()+"\n":"\n", normalFont);
+								 Chunk chunk5 = new Chunk("Address : \n",subFont);
+								 Chunk chunk6 = new Chunk(cadre[3] != null ? cadre[3].toString().trim():"", normalFont);
+								 Chunk chunk7 = new Chunk("\n\nMobile No : ",subFont);
+								 Chunk chunk8 = new Chunk(cadre[4] != null ? cadre[4].toString().trim():"", normalFont);
+								 Chunk chunk9 = new Chunk("     Membership Id  : ",subFont);
+								 Chunk chunk10 = new Chunk(cadre[2] != null ? cadre[2].toString().trim():"", redFont);
+								 
+								 paragraph.add(chunk1);
+								 paragraph.add(chunk2);
+								 paragraph.add(chunk3);
+								 paragraph.add(chunk4);
+								 paragraph.add(chunk5);
+								 paragraph.add(chunk6);
+								 paragraph.add(chunk7);
+								 paragraph.add(chunk8);
+								 paragraph.add(chunk9);
+								 paragraph.add(chunk10);
+								 
+								 Phrase phrase = new Phrase();
+								 phrase.add(paragraph);
+								 
+					             PdfPCell c2 = new PdfPCell(phrase);	
+					             c2.setHorizontalAlignment(Element.ALIGN_LEFT);
+					             c2.setPadding(5);
+					             table.addCell(c2);
+					             i++;
+					             if(i< length-1)
+					             {		            	 	
+					            	 	Object[] cadre1 = cadreList.get(i);
+					            	 	Paragraph paragraph1 = new Paragraph();
+
+										 Chunk chunk11 = new Chunk("Name : ",subFont);
+										 Chunk chunk21 = new Chunk(cadre1[0] != null ? cadre1[0].toString().trim():"", normalFont);
+										 Chunk chunk31 = new Chunk("\nC/O  : ",subFont);
+										 Chunk chunk41 = new Chunk(cadre1[1] != null ? cadre1[1].toString().trim()+"\n":"\n", normalFont);
+										 Chunk chunk51 = new Chunk("Address : \n",subFont);
+										 Chunk chunk61 = new Chunk(cadre1[3] != null ? cadre1[3].toString().trim():"", normalFont);
+										 Chunk chunk71 = new Chunk("\n\nMobile No : ",subFont);
+										 Chunk chunk81 = new Chunk(cadre1[4] != null ? cadre1[4].toString().trim():"", normalFont);
+										 Chunk chunk91 = new Chunk("     Membership Id  : ",subFont);
+										 Chunk chunk101 = new Chunk(cadre1[2] != null ? cadre1[2].toString().trim():"", redFont);
+										 
+										 paragraph1.add(chunk11);
+										 paragraph1.add(chunk21);
+										 paragraph1.add(chunk31);
+										 paragraph1.add(chunk41);
+										 paragraph1.add(chunk51);
+										 paragraph1.add(chunk61);
+										 paragraph1.add(chunk71);
+										 paragraph1.add(chunk81);
+										 paragraph1.add(chunk91);
+										 paragraph1.add(chunk101);
+										 
+										 Phrase phrase1 = new Phrase();
+										 phrase1.add(paragraph1);
+										 
+										 c2 = new PdfPCell(phrase1);
+							             c2.setHorizontalAlignment(Element.ALIGN_LEFT);
+							             c2.setPadding(5);
+							             table.addCell(c2);
+					            	 	
+							             i++;
+					             }
+					             else
+					             {
+					            	 c2 = new PdfPCell(new Phrase(""));
+						             c2.setHorizontalAlignment(Element.ALIGN_LEFT);
+						             c2.setPadding(5);
+						             table.addCell(c2);
+				            	 	
+					             }
+
+							}
+						}
+					    document.add(table);
+					    
+					document.close();
+				}
+			}
+			 
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 }
