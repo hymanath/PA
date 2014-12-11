@@ -8,5 +8,5 @@ import com.itgrids.partyanalyst.model.ZebraPrintOnlineShip;
 
 
 public interface IZebraPrintOnlineShipDAO extends GenericDao<ZebraPrintOnlineShip, Long>{
-	public List<Object[]> getCadreShippingAddressDetials(Long constituencyId);
+	public List<Object[]> getCadreShippingAddressDetials(String searchType,Long locationId);
 }
