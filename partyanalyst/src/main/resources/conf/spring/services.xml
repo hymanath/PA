@@ -2431,7 +2431,8 @@
          <property name="constituencyDAO" ref="constituencyDAO" />
           <property name="tdpCadreFamilyDetailsDAO" ref="tdpCadreFamilyDetailsDAO" />
           <property name="smsJobStatusDAO" ref="smsJobStatusDAO" />
-         
-     </bean>
+ 	 </bean>
+ 	 <bean name="tdpCallCenterService"  class="com.itgrids.partyanalyst.service.impl.TdpCallCenterService">
+ 	 </bean>
 </beans>		
 	

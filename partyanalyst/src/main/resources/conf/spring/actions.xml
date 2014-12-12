@@ -1521,7 +1521,7 @@
 	<bean id="cadreMap" class="com.itgrids.partyanalyst.web.action.CadreMapAction" singleton="false">
 		
 	</bean>
-	
+	<bean id="tdpCallCenterAction" class="com.itgrids.partyanalyst.web.action.TdpCallCenterAction" singleton="false"></bean>
 	<!-- <bean id="userDetailsAction" class="com.itgrids.partyanalyst.web.action.UserDetailsAction" singleton="false">
 		<property name="dashBoardElectionResultsService" ref="dashBoardElectionResultsService" />
 	</bean> -->

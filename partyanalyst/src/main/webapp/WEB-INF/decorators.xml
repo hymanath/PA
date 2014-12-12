@@ -303,7 +303,8 @@
 			  <pattern>/cadreBoothAnalysisAction*</pattern>
 			 <pattern>/misReportAction*</pattern>
 			 <pattern>/tdpCadreCardsPrintingDashBoardAction*</pattern>
-       </decorator>
+			 <pattern>/tdpCallCenterAction*</pattern>
+		  </decorator>
        
        <decorator name="tdpHome_old" page="tdplayout_old.jsp">
        		<pattern>/candidateElectionResultsAction*</pattern>
@@ -365,8 +366,5 @@
 			<pattern>/partyPerformanceJasper*</pattern>
 			<pattern>/tdpcadresmsstatusAction*</pattern>
 			<pattern>/cadreSMSFileUpload*</pattern>
-			
-			
-			
-	  </decorator>
+	 </decorator>
 </decorators>
