@@ -9167,6 +9167,11 @@
 			<interceptor-ref name="defaultStack"></interceptor-ref>
 			<result name="success">/jsp/tdpcadresmsstatus.jsp</result>
 		</action>	
+		 <action name="tdpCallCenterAction" class="tdpCallCenterAction" method="partyDashBoard">
+			<result name="success">/jsp/tdpCallCenter.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=tdpCallCenterAction</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
+		</action>
 		
 </package>
 
