@@ -827,6 +827,9 @@ public interface IConstants {
     public static final String CADRE_2014_START_DATE = "2014-11-03";
     public static final String CADRE_2014_LAST_DATE = "2014-12-02";
     
+    public static final String AP_CADRE_2014_END_DATE = "2014-12-18 23:59:59";
+    public static final String TG_CADRE_2014_END_DATE = "2014-12-23 23:59:59";
+    
     public static final String MINORITY_CASTE_IDS = "292,301,430";
     public static final boolean ENABLE_CADRE_LOGS = false;
     public static final boolean ENABLE_LOGS_SAVE = true;
