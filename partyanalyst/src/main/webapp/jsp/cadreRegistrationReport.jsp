@@ -1665,7 +1665,7 @@ if(result.length > 0){
 	       var str='';
 	       if(result.length > 0){
 		        str+='<input type="button"  style="margin-bottom:15px;margin-left: 375px;"  class="btn" onclick="generateExcel(\'locationWiseReportTab\');" value="Click Here To Generate Excel"/>';
-		        str+='<div id="resultTableDiv"><table class="table table-bordered table-striped table-hover" id="locationWiseReportTab"><thead>';
+		        str+='<div id="resultTableDiv" style="overflow-x:scroll;"><table class="table table-bordered table-striped table-hover" id="locationWiseReportTab"><thead>';
 				str+='<tr>';
 				if(locationId == 2){
 				    str+='<th>STATE</th>';
@@ -1684,6 +1684,10 @@ if(result.length > 0){
 				    str+='<th>VIEW DETAILS</th>';
 			    }else if(locationId == 9){
 				    str+='<th>BOOTH</th>';
+					str+='<th>PANCHAYAT</th>';
+					str+='<th>LOCATION</th>';
+					str+='<th>VILLAGES COVERED</th>';
+					
 			    }
 			    str+='<th>2014 CADRE COUNT</th>';
 			    str+='<th>2012 CADRE COUNT</th>';
@@ -1697,6 +1701,11 @@ if(result.length > 0){
 				for(var i in result){
 				  str+='<tr>';
 				  str+='  <td>'+result[i].location+'</td>';
+				  if(locationId == 9){
+				    str+='<th>'+result[i].fromDate+'</th>';
+					str+='<th>'+result[i].parliament+'</th>';
+					str+='<th>'+result[i].state+'</th>';
+				  }
 				  if(locationId != 9){
 				    if(result[i].apCount == null || result[i].id == null){
 					  str+='<td></td>';
