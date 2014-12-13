@@ -1780,6 +1780,19 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	public List<CadreRegisterInfo> getPanchayatsInConstituencies(Long constituencyId){
 		List<CadreRegisterInfo> returnList = new ArrayList<CadreRegisterInfo>();
 		try{
+			/*CadreRegisterInfo vo = null;
+			List<Long> constiIds = new ArrayList<Long>();
+			constiIds.add(constituencyId);
+			List<Long> mandalIds = boothDAO.getTehsilsByConstituencyIds(constiIds, 11l);
+			if(mandalIds.size() > 0){
+				List<Object[]> constituenciesList = panchayatDAO.getAllPanchaytesInAConstituency(mandalIds);
+				for(Object[] constituency:constituenciesList){
+					vo = new CadreRegisterInfo();
+					vo.setId((Long)constituency[0]);
+					vo.setName(constituency[1].toString());
+					returnList.add(vo);
+				}
+			}*/
 			CadreRegisterInfo vo = null;
 			List<Object[]> constituenciesList = boothDAO.getPanchayatsByConstituencyAndPublication(constituencyId,11l);
 			for(Object[] constituency:constituenciesList){
@@ -2296,7 +2309,9 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 						vtrMap.put(Long.valueOf(obj[0].toString()), Long.valueOf(obj[2].toString()));
 					}
 				}
-				
+				if(districtId == null && constituencyId != null){
+					districtId = constituencyDAO.get(constituencyId).getDistrict().getDistrictId();
+				}
 				if(totRegList!=null && totRegList.size()>0){
 					for(Object[] obj:totRegList){
 						cdrCountMap.put(Long.valueOf(obj[1].toString()), Long.valueOf(obj[0].toString()));
@@ -2317,7 +2332,9 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 						vtrMap.put(Long.valueOf(obj[0].toString()), Long.valueOf(obj[2].toString()));
 					}
 				}
-				
+				if(districtId == null && constituencyId != null){
+					districtId = constituencyDAO.get(constituencyId).getDistrict().getDistrictId();
+				}
 				List<Object[]> totRegList = tdpCadreDAO.getCadreInfoBoothWise(ids,null,null,2014l);
 				if(totRegList!=null && totRegList.size()>0){
 					for(Object[] obj:totRegList){
@@ -2325,7 +2342,7 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 					}
 				}
 				
-				namesList = boothDAO.getBoothNamesByIds(ids);
+				namesList = boothDAO.getBoothNames(ids);
 			}else if(type.equals("mandal")){
 				List<Long> mandalIds = new ArrayList<Long>();
 				List<Long> localBodyIds = new ArrayList<Long>();
@@ -2353,7 +2370,9 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 						vtrMap.put(Long.valueOf(obj[0].toString()), Long.valueOf(obj[2].toString()));
 					}
 				}
-				
+				if(districtId == null && constituencyId != null){
+					districtId = constituencyDAO.get(constituencyId).getDistrict().getDistrictId();
+				}
 				List<Object[]> totRegList = tdpCadreDAO.getCadreInfoMandalWise(mandalIds,null,null,2014l);
 				if(totRegList!=null && totRegList.size()>0){
 					for(Object[] obj:totRegList){
@@ -2378,7 +2397,9 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 								vtrMap.put(Long.valueOf(obj[0].toString()), Long.valueOf(obj[2].toString()));
 							}
 						}
-						
+						if(districtId == null && constituencyId != null){
+							districtId = constituencyDAO.get(constituencyId).getDistrict().getDistrictId();
+						}
 						List<Object[]> totRegList = tdpCadreDAO.getCadreInfoLocalBodyWise(assmblyLclIds,null,null,2014l);
 						if(totRegList!=null && totRegList.size()>0){
 							for(Object[] obj:totRegList){
@@ -2483,6 +2504,23 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 						  }
 						  
 						  infoVo.setRegPercent(percentage);
+						  if(type.equalsIgnoreCase("booth")){
+							  if(name[2] != null){
+							    infoVo.setParliament(name[2].toString());
+							  }else{
+								infoVo.setParliament("");
+							  }
+							  if(name[3] != null){
+							    infoVo.setState(name[3].toString());
+							  }else{
+								infoVo.setState("");
+							  }
+							  if(name[4] != null){
+							    infoVo.setFromDate(name[4].toString());
+							  }else{
+								infoVo.setFromDate("");
+							  }
+						  }
 					}
 					
 					if(yearMap != null)	{
@@ -2558,6 +2596,11 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		}
 
 		infoVo = new CadreRegisterInfo();
+		 
+		infoVo.setParliament("");
+		infoVo.setState("");
+		infoVo.setFromDate("");
+			  
 		infoVo.setLocation(" Others ");
 		Long count2014 = totalCount2014 - actualCount2014;
 		Long count2012 = totalCount2012 - actualCount2012;
