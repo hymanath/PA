@@ -1478,6 +1478,7 @@
 	 	<property name="entitlementsHelper" ref="entitlementsHelper" />	
 	 	<property name="cadreRegistrationForOtherStatesService" ref="cadreRegistrationForOtherStatesService" />
 	 	<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />		
+	 	<property name="constituencyDAO" ref="constituencyDAO" />	
 	  </bean>
 	 
 	 <bean id="cadreDashBoardAction" class="com.itgrids.partyanalyst.web.action.CadreDashBoardAction" singleton="false">
