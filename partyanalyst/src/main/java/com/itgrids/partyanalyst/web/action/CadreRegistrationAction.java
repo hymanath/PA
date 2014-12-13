@@ -17,6 +17,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
@@ -31,6 +32,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.service.ICadreRegistrationForOtherStatesService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICandidateUpdationDetailsService;
@@ -38,6 +40,7 @@ import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.itgrids.partyanalyst.util.IWebConstants;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -93,9 +96,24 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private String								DoneTime;
 	private String								messagepart;
 	private String								sentStatus;
+	private Long 								countDownTime;
 	private ICadreRegistrationForOtherStatesService cadreRegistrationForOtherStatesService;
     private ICrossVotingEstimationService crossVotingEstimationService;
+	private IConstituencyDAO constituencyDAO;
+    
 	
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
+	public Long getCountDownTime() {
+		return countDownTime;
+	}
+
+	public void setCountDownTime(Long countDownTime) {
+		this.countDownTime = countDownTime;
+	}
+
 	public String getSentStatus() {
 		return sentStatus;
 	}
@@ -682,6 +700,46 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 					selectOptionVOList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(stateTypeId,stateId);
 				}
 				
+			
+	    		
+	    		if(user.getRegistrationID().longValue() != 3930L) // party office userId
+	    		{
+	    			SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT_24HRS); 
+		    		Date now = new DateUtilService().getCurrentDateAndTime();
+		    		Date endDate = null;
+		    		
+	    			if(user.getAccessType().trim().equalsIgnoreCase(IConstants.STATE))
+		    		{
+		    			endDate = format.parse(IConstants.TG_CADRE_2014_END_DATE);
+		    		}
+		    		else if(user.getAccessType().trim().equalsIgnoreCase(IConstants.MLA))
+		    		{
+		    			Constituency constituency = constituencyDAO.get(Long.valueOf(user.getAccessValue()));
+		    			if(constituency.getDistrict().getDistrictId() < 11L)
+		    			{
+		    				endDate = format.parse(IConstants.TG_CADRE_2014_END_DATE);
+		    			}
+		    			else
+		    			{
+		    				endDate = format.parse(IConstants.AP_CADRE_2014_END_DATE);
+		    			}
+		    			
+		    			DoneTime = new SimpleDateFormat("dd-MM-yyyy").format(endDate);
+		    		}
+	    			
+					Long diffInDates = endDate.getTime() - now.getTime() ;
+				    Long remaingSeconds = diffInDates / 1000; // remaining seconds
+				    
+				    if(remaingSeconds >=0)
+				    {
+				    	countDownTime = remaingSeconds;
+				    }
+				    else
+				    {
+				    	countDownTime = 0L;
+				    }
+	    		}
+	    		
 			}
 			
 		} catch (Exception e) {
@@ -711,6 +769,43 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				cadreRolesVOList = cadreRegistrationService.getCadreLevelsForCadreSearch();
 				voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria(searchType,Long.valueOf(candidateId),IWebConstants.STATIC_CONTENT_FOLDER_URL,constiteucnyId);
 							
+				if(user.getRegistrationID().longValue() != 3930L) // party office userId
+	    		{
+	    			SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_AND_TIME_FORMAT_24HRS); 
+		    		Date now = new DateUtilService().getCurrentDateAndTime();
+		    		Date endDate = null;
+		    		
+	    			if(user.getAccessType().trim().equalsIgnoreCase(IConstants.STATE))
+		    		{
+		    			endDate = format.parse(IConstants.TG_CADRE_2014_END_DATE);
+		    		}
+		    		else if(user.getAccessType().trim().equalsIgnoreCase(IConstants.MLA))
+		    		{
+		    			Constituency constituency = constituencyDAO.get(Long.valueOf(user.getAccessValue()));
+		    			if(constituency.getDistrict().getDistrictId() < 11L)
+		    			{
+		    				endDate = format.parse(IConstants.TG_CADRE_2014_END_DATE);
+		    			}
+		    			else
+		    			{
+		    				endDate = format.parse(IConstants.AP_CADRE_2014_END_DATE);
+		    			}	
+		    			DoneTime = new SimpleDateFormat("dd-MM-yyyy").format(endDate);
+		    		}
+	    			
+					Long diffInDates = endDate.getTime() - now.getTime() ;
+				    Long remaingSeconds = diffInDates / 1000; // remaining seconds
+				    
+				    if(remaingSeconds >=0)
+				    {
+				    	countDownTime = remaingSeconds;
+				    }
+				    else
+				    {
+				    	countDownTime = 0L;
+				    }
+	    		}
+				
 				return Action.SUCCESS;
 			}
 			
