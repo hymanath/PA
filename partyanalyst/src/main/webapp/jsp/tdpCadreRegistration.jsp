@@ -57,6 +57,8 @@
 		<script type="text/javascript" src="js/photobooth/website/js/cadre.js"></script>
 		
 		<link type="text/css" rel="stylesheet" media="screen" href="js/photobooth/website/css/page.css" />
+		<link rel="stylesheet" href="js/flipclock/flipclock.css">		
+		<script src="js/flipclock/flipclock.js"></script>
   <style>
 	<!-- YUI Dependency files (End) -->
 	
@@ -69,6 +71,19 @@
 
 
 	<style>
+	body{margin-bottom:120px;}
+	.footerFixedStrip{
+		bottom:0px; 
+		left:0px; 
+		position:fixed; 
+		background:#ff3333; 
+		width:100%;
+		height:100px;
+		padding:20px 10px 5px 10px; 
+		z-index:999;
+		display:none;
+	}
+	.flip{transform:none !important;}
 	.show-grid:hover .block-hover-addBtn{display:table-cell; margin-right:-22px; top:-10px;}/*visibility: visible;*/
 	.block-hover-addBtn{display:none; position: relative;}/*visibility: hidden;*/
 	.border-none{border:none;}
@@ -105,11 +120,37 @@
 	
 		
 	<script>
-		$(document).ready(function(){
+	var remainingTime = '${countDownTime}';
+
+	$(document).ready(function(){
 			$("#toggleButtonId").click(function(){
 				$(".fadeInUpClass").toggle();
 			});
+			
+			var clock;
+				    
+			if(remainingTime.trim().length >0)
+			{
+				clock = $('.clock').FlipClock({
+		        clockFace: 'DailyCounter',
+		        autoStart: false,
+		        callbacks: {
+		        	stop: function() {
+							$('.message').html('Registrations stopped!');
+							$('.clock').hide();
+						}
+					}
+				});
+			
+				$('.footerFixedStrip').show();
+				clock.setTime(parseInt(remainingTime));
+				clock.setCountdown(true);
+				clock.start();			
+			}
+			
 		});
+		
+		
 		var constituencyArray = new Array();
 			<c:forEach var="constituency" items="${constituencyesList}">
 				var constituencys ={
@@ -2146,6 +2187,20 @@
 <div id="wrapper">
 			<div id="example"></div>
 		</div>
+	<!-- start FlipClock -->
+<div class="footerFixedStrip" >		
+		<div class="" style="width:44%; float:left;">
+			<h1 style="margin-top:0px;float:right;color:#cccccc; text-shadow:0 1px 2px rgb(0, 0, 0);font-size:28px">2014 Cadre Registrations <br> Will be Closed By ${DoneTime}</h2>
+		</div>		
+		<div class="" style="width:56%;float:left;">
+			<div class="message"  style="font-size: 25px;margin-top:30px;margin-left: 125px;"></div>
+			<div class="clock"></div>
+		</div>
+		
+	</div>
+
+<!-- end FlipClock -->
+
 	<!-- Footer Row -->
 		<div class="row-fluid">
 			<div class="span12 text-center m_top5 color-white">
