@@ -2187,7 +2187,17 @@
 <div id="wrapper">
 			<div id="example"></div>
 		</div>
-	<!-- start FlipClock -->
+
+
+	<!-- Footer Row -->
+		<div class="row-fluid" style="margin-bottom: 120px;">
+			<div class="span12 text-center m_top5 color-white">
+					TDP Cadre Registration Drive
+				<p>Copyright &copy; 2014,  All Rights Reserved</p>
+			</div>
+		</div>
+	<!-- Footer Row End-->
+		<!-- start FlipClock -->
 <div class="footerFixedStrip" >		
 		<div class="" style="width:44%; float:left;">
 			<h1 style="margin-top:0px;float:right;color:#cccccc; text-shadow:0 1px 2px rgb(0, 0, 0);font-size:28px">2014 Cadre Registrations <br> Will be Closed By ${DoneTime}</h2>
@@ -2199,17 +2209,7 @@
 		
 	</div>
 
-<!-- end FlipClock -->
-
-	<!-- Footer Row -->
-		<div class="row-fluid">
-			<div class="span12 text-center m_top5 color-white">
-					TDP Cadre Registration Drive
-				<p>Copyright &copy; 2014,  All Rights Reserved</p>
-			</div>
-		</div>
-	<!-- Footer Row End-->
-		
+<!-- end FlipClock -->	
 </body>
 <script type="text/javascript">
 var existingCadreArr = [];
