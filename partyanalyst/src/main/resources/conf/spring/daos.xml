@@ -1783,5 +1783,19 @@
 <bean id="zebraPrintOnlineShipDAO" class="com.itgrids.partyanalyst.dao.hibernate.ZebraPrintOnlineShipDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
+
+
+<bean id="tdpCadreVolunteerConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreVolunteerConstituencyDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+
+<bean id="tdpCadreVolunteerDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreVolunteerDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="tdpCadreVolunteerDateDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreVolunteerDateDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
 	<!--  end -->
 </beans>		

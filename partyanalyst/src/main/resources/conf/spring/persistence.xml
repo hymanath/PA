@@ -520,7 +520,10 @@
 				<value>com.itgrids.partyanalyst.model.TdpCadreCallCenterFeedback</value>				
 				<value>com.itgrids.partyanalyst.model.CallCenterFeedback</value>
 				<value>com.itgrids.partyanalyst.model.TdpCadreSmsStatus</value>
-				<value>com.itgrids.partyanalyst.model.ZebraPrintOnlineShip</value>
+				<value>com.itgrids.partyanalyst.model.ZebraPrintOnlineShip</value>			
+				<value>com.itgrids.partyanalyst.model.TdpCadreVolunteer</value>
+				<value>com.itgrids.partyanalyst.model.TdpCadreVolunteerConstituency</value>
+				<value>com.itgrids.partyanalyst.model.TdpCadreVolunteerDate</value>
 				</list>
 			
 		</property>
