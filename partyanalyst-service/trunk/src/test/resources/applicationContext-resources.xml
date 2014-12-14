@@ -517,6 +517,9 @@
 				<value>com.itgrids.partyanalyst.model.PartyPresidents</value>
 				<value>com.itgrids.partyanalyst.model.TdpCadreSmsStatus</value>
 				<value>com.itgrids.partyanalyst.model.ZebraPrintOnlineShip</value>
+				<value>com.itgrids.partyanalyst.model.TdpCadreVolunteer</value>
+				<value>com.itgrids.partyanalyst.model.TdpCadreVolunteerConstituency</value>
+				<value>com.itgrids.partyanalyst.model.TdpCadreVolunteerDate</value>
 			</list>
 		</property>
 	</bean>
@@ -2700,6 +2703,19 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
 <bean id="zebraPrintOnlineShipDAO" class="com.itgrids.partyanalyst.dao.hibernate.ZebraPrintOnlineShipDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="tdpCadreVolunteerConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreVolunteerConstituencyDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+
+<bean id="tdpCadreVolunteerDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreVolunteerDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="tdpCadreVolunteerDateDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreVolunteerDateDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
 </beans>
