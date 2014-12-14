@@ -10,6 +10,23 @@ private String internet;
 private String tablet;
 private String smartPhone3G;
 private String smartPhone2G;
+private String 	constituencyId;
+private String date;
+
+
+
+public String getDate() {
+	return date;
+}
+public void setDate(String date) {
+	this.date = date;
+}
+public String getConstituencyId() {
+	return constituencyId;
+}
+public void setConstituencyId(String constituencyId) {
+	this.constituencyId = constituencyId;
+}
 public String getName() {
 	return name;
 }
