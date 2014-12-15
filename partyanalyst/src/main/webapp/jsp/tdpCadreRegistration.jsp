@@ -75,12 +75,10 @@
 	.footerFixedStrip{
 		bottom:0px; 
 		left:0px; 
-		position:fixed; 
 		background:#ff3333; 
 		width:100%;
 		height:100px;
 		padding:20px 10px 5px 10px; 
-		z-index:999;
 		display:none;
 	}
 	.flip{transform:none !important;}
@@ -2189,7 +2187,7 @@
 
 
 	<!-- Footer Row -->
-		<div class="row-fluid" style="margin-bottom: 120px;">
+		<div class="row-fluid">
 			<div class="span12 text-center m_top5 color-white">
 					TDP Cadre Registration Drive
 				<p>Copyright &copy; 2014,  All Rights Reserved</p>
