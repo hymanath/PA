@@ -9,27 +9,39 @@ private String email;
 private String address;
 private String lapTop;
 private String internet;
-private String tablet2G;
-private String tablet3G;
-private String smartPhone3G;
-private String smartPhone2G;
+private String tablet;
+private String smartPhone;
 private String 	constituencyId;
 private String date;
 private List<Long> constituencyIds;
+private String ipod;
+private String noTab;
 
 
 
-public String getTablet2G() {
-	return tablet2G;
+public String getTablet() {
+	return tablet;
 }
-public void setTablet2G(String tablet2g) {
-	tablet2G = tablet2g;
+public void setTablet(String tablet) {
+	this.tablet = tablet;
 }
-public String getTablet3G() {
-	return tablet3G;
+public String getSmartPhone() {
+	return smartPhone;
 }
-public void setTablet3G(String tablet3g) {
-	tablet3G = tablet3g;
+public void setSmartPhone(String smartPhone) {
+	this.smartPhone = smartPhone;
+}
+public String getIpod() {
+	return ipod;
+}
+public void setIpod(String ipod) {
+	this.ipod = ipod;
+}
+public String getNoTab() {
+	return noTab;
+}
+public void setNoTab(String noTab) {
+	this.noTab = noTab;
 }
 public List<Long> getConstituencyIds() {
 	return constituencyIds;
@@ -86,18 +98,6 @@ public void setInternet(String internet) {
 	this.internet = internet;
 }
 
-public String getSmartPhone3G() {
-	return smartPhone3G;
-}
-public void setSmartPhone3G(String smartPhone3G) {
-	this.smartPhone3G = smartPhone3G;
-}
-public String getSmartPhone2G() {
-	return smartPhone2G;
-}
-public void setSmartPhone2G(String smartPhone2G) {
-	this.smartPhone2G = smartPhone2G;
-}
 
 
 }

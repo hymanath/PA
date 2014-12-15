@@ -32,6 +32,6 @@ public interface ITdpCadreReportService {
 	public ResultStatus saveCallCenterFeedbackForCardStatus(TdpCadreLocationWiseReportVO vo);
 	public List<BasicVO> getfeedbackDetails();
 	public ResultStatus insertTdpCadreSmsStatusFromExcel(String filePath);
-	public ResultStatus saveCadreRegistration(TdpCadreVolunteerVO inputVO);
+	public ResultStatus saveCadreRegistration(final TdpCadreVolunteerVO inputVO);
 	public List<GenericVO> getGHMCConstituencies();
 }
