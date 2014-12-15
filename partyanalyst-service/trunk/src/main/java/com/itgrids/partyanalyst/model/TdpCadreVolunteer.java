@@ -29,8 +29,8 @@ public class TdpCadreVolunteer extends BaseModel implements java.io.Serializable
 	private String internet;
 	private String tablet3G;
 	private String tablet2G;
-	private String ipod2G;
-	private String ipod3G;
+	private String ipad2G;
+	private String ipad3G;
 	private String smartPhone3G;
 	private String smartPhone2G;
 	private Date insertedTime;
@@ -109,19 +109,19 @@ public class TdpCadreVolunteer extends BaseModel implements java.io.Serializable
 	public void setTablet2G(String tablet2g) {
 		tablet2G = tablet2g;
 	}
-	@Column(name="ipod_2G")
-	public String getIpod2G() {
-		return ipod2G;
+	@Column(name="ipad_2G")
+	public String getIpad2G() {
+		return ipad2G;
 	}
-	public void setIpod2G(String ipod2g) {
-		ipod2G = ipod2g;
+	public void setIpad2G(String ipad2g) {
+		ipad2G = ipad2g;
 	}
 	@Column(name="ipod_3G")
-	public String getIpod3G() {
-		return ipod3G;
+	public String getIpad3G() {
+		return ipad3G;
 	}
-	public void setIpod3G(String ipod3g) {
-		ipod3G = ipod3g;
+	public void setIpad3G(String ipad3g) {
+		ipad3G = ipad3g;
 	}
 	@Column(name="smart_phone_3G")
 	public String getSmartPhone3G() {
