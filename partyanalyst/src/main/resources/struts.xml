@@ -9172,7 +9172,16 @@
 			<result name="input">/jsp/loginForm.jsp?src=tdpCallCenterAction</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
 		</action>
+		<action name="tdpCadreVolunteerAction" class="tdpCadreVolunteerAction">
+			<result name="success">/jsp/tdpCadreVolunteer.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=tdpCadreSearchAction</result>
+		</action>
 		
+		<action name="tdpCadreVolunteerRegistrationAction" class="tdpCadreVolunteerAction" method="saveCadreInfo">
+			 <result name="success" type="stream">			   
+			    <param name="inputName">inputStream</param>
+		  </result>	
+		</action>
 </package>
 
 </struts>      
