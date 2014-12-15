@@ -135,6 +135,8 @@
 		 <pattern>/callCenterMembershipCardStatusAction*</pattern>
         <pattern>/partyDashBoardAction*</pattern>
         <pattern>/cadreEnrollment*</pattern>
+        <pattern>/tdpCadreVolunteerAction*</pattern>
+        
 
 	</excludes>  
 	
