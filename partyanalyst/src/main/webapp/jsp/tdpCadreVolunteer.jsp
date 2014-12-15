@@ -140,19 +140,19 @@ font-size:18px;
 					<!----TAB with 2G/3G Internet Connection---->
 					<h4>Do you have TAB/i-Pad with 2G/3G Internet Connection?<font class="requiredFont">*</font></h4>
 					<label class="radio inline">
-						<input id="tabradioId" type="radio" name="tdpCadreVolunteerVO.tablet" value="2G" class="tabipod tabipodcheck " checked>Yes, I have TAB with 2G.
+						<input id="tabradioId" type="radio" name="tdpCadreVolunteerVO.tablet" value="tab2G" class="tabipad tabipadcheck " checked>Yes, I have TAB with 2G.
 					</label>
 					<label class="radio inline">
-						<input type="radio" name="tdpCadreVolunteerVO.tablet" value="3G" class="tabipod tabipodcheck ">Yes, I have TAB with 3G.
+						<input type="radio" name="tdpCadreVolunteerVO.tablet" value="tab3G" class="tabipad tabipadcheck ">Yes, I have TAB with 3G.
 					</label>
 					<label class="radio inline"  style="margin-left:0px;">
-						<input id="ipodradioId" type="radio" name="tdpCadreVolunteerVO.ipod" value="2G" class="tabipod tabipodcheck " checked> Yes, I have i-Pad with 2G.
+						<input id="ipadradioId" type="radio" name="tdpCadreVolunteerVO.tablet" value="ipad2G" class="tabipad tabipadcheck " checked> Yes, I have i-Pad with 2G.
 					</label>
 					<label class="radio inline">
-						<input type="radio" name="tdpCadreVolunteerVO.ipod" value="3G" class="tabipod tabipodcheck ">Yes, I have i-Pad with 3G.
+						<input type="radio" name="tdpCadreVolunteerVO.tablet" value="ipad3G" class="tabipad tabipadcheck ">Yes, I have i-Pad with 3G.
 					</label>					
 					<label class="radio inline"  style="margin-left:0px;">
-						<input type="radio" id="notabipod" name="tdpCadreVolunteerVO.noTab" value="no" class = "tabipodcheck " onclick="clearRadioGrp();">No, I don't have TAB/i-Pad.
+						<input type="radio" id="notabipad" name="tdpCadreVolunteerVO.tablet" value="no" class = "tabipadcheck" >No, I don't have TAB/i-Pad.
 					</label><!----/Smart-phone with 2G/3G Internet Connection---->
 					
 					<h4>Your Address<font class="requiredFont">*</font></h4>
@@ -308,17 +308,17 @@ return false;
 		$("#netradioId").prop('checked', true);
 		$("#samrtPhoneradioId").prop('checked', true);
 		$("#tabradioId").prop('checked', true);
-		$("#ipodradioId").prop('checked', true);;
-		$("#notabipod").attr('checked', false);
+		$("#ipadradioId").prop('checked', true);;
+		$("#notabipad").attr('checked', false);
 		
 	}
-	function clearRadioGrp()
+	/*function clearRadioGrp()
 	{
-	$(".tabipod").attr('checked', false);
+	$(".tabipad").attr('checked', false);
 	}
-	$(".tabipod").click(function() {
-	$("#notabipod").attr('checked', false);
-	});
+	$(".tabipad").click(function() {
+	$("#notabipad").attr('checked', false);
+	});*/
 
 	</script>
   </body>
