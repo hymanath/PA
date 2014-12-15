@@ -132,6 +132,10 @@ public class TdpCadreVolunteerAction extends ActionSupport implements ServletReq
 			LOG.info("Entered into saveCadreDetails method in CadreRegistrationAction Action");
 			session = request.getSession();
 			resultStatus = tdpCadreReportService.saveCadreRegistration(tdpCadreVolunteerVO);
+			if(resultStatus.getResultCode() == 0)
+				inputStream = new StringBufferInputStream("success");
+			else
+			inputStream = new StringBufferInputStream("fail");
 		
 		} catch (Exception e) {
 			LOG.error("Exception raised in saveCadreDetails method in CadreRegistrationAction Action",e);
