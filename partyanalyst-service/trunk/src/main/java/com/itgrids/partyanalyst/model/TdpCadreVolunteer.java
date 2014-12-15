@@ -116,7 +116,7 @@ public class TdpCadreVolunteer extends BaseModel implements java.io.Serializable
 	public void setIpad2G(String ipad2g) {
 		ipad2G = ipad2g;
 	}
-	@Column(name="ipod_3G")
+	@Column(name="ipad_3G")
 	public String getIpad3G() {
 		return ipad3G;
 	}
