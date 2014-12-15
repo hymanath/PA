@@ -2421,7 +2421,9 @@
           <property name="tdpCadreSmsStatusDAO" ref="tdpCadreSmsStatusDAO" />
           <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"></property>
           <property name="tdpCadreVolunteerDAO" ref="tdpCadreVolunteerDAO"></property>
-           
+          <property name="tdpCadreVolunteerConstituencyDAO" ref="tdpCadreVolunteerConstituencyDAO"></property>
+          <property name="tdpCadreVolunteerDateDAO" ref="tdpCadreVolunteerDateDAO"></property>
+          
           
      </bean>
      
@@ -2436,7 +2438,7 @@
           <property name="smsJobStatusDAO" ref="smsJobStatusDAO" />
  	 </bean>
  	 <bean name="tdpCallCenterService"  class="com.itgrids.partyanalyst.service.impl.TdpCallCenterService">
- 	 
+ 	 <!-- <property name="cadreCallerDetailsDAO" ref="cadreCallerDetailsDAO" />-->
 	</bean>
 </beans>		
 	
