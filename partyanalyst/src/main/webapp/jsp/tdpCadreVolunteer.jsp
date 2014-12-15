@@ -48,8 +48,14 @@
 		<script src="js/flipclock/flipclock.js"></script>
 
 	<!-- YUI Dependency files (End) -->
-	
+	  <style>
+  .requiredFont {
+color:red;
+font-size:18px;
+}
+  </style>
   </head>
+
   <body>
   <script>
 
@@ -61,25 +67,26 @@
 		<div class="row">
 			<div class="span6 offset3">
 				<div class="well well-small border-radius-0" style="margin-top:8%;">
-				 <div id="errorDiv" class="offset1" style="color:red;"></div>
+				
 				<h4 class="text-center">VOLUNTEER ENROLLMENT FORM</h4>
 				<hr>
-					<label> Your Name
+				 <div id="errorDiv" class="offset1" style="color:red;"></div>
+					<label> Your Name<font class="requiredFont">*</font>
 						<input class="input-block-level border-radius-0" type="text" placeholder="Enter Your Name"  id="nameId" name="tdpCadreVolunteerVO.name">	
 					</label>
-					<label>Your Email ID
+					<label>Your Email ID<font class="requiredFont">*</font>
 						<input class="input-block-level border-radius-0" type="text" placeholder="Enter Email ID"  id="emailId" name="tdpCadreVolunteerVO.email">
 					</label>
-					<label>Your Contact Number
+					<label>Your Contact Number<font class="requiredFont">*</font>
 						<input  class="input-block-level border-radius-0" type="text" placeholder="Enter Mobile Number"  id="mobileId" name="tdpCadreVolunteerVO.mobileNo">
 					</label>
-					<label>Select Your Constituency Name
+					<label>Select Your Constituency Name<font class="requiredFont">*</font>
 					<s:select multiple="true" theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyId" list="constituencyList" listKey="id" listValue="name" headerKey="0" style="width:220px;" name="tdpCadreVolunteerVO.constituencyId" />
 					
 					</label>
 					
 					<!----Availability Times---->
-					<h4>Select Your Availability Times</h4>
+					<h4>Select Your Availability Times<font class="requiredFont">*</font></h4>
 					<label class="checkbox">
 						Date: 17-Dec-2014 &nbsp; [Wednesday]<input type="checkbox"  class="dateCheck" name="tdpCadreVolunteerVO.date" value="17-12-2014">
 					</label>
@@ -100,7 +107,7 @@
 					</label><!----/Availability Times---->
 					
 					<!----Laptop---->
-					<h4>Do you have Laptop?</h4>
+					<h4>Do you have Laptop?<font class="requiredFont">*</font></h4>
 					<label class="radio inline">
 						<input id="lapradioId" type="radio" name="tdpCadreVolunteerVO.lapTop" value="Y" class="unchek" checked>Yes, I have Laptop.
 					</label>
@@ -110,7 +117,7 @@
 					</label><!----/Laptop---->
 					
 					<!----Internet Connection---->
-					<h4>Do you have Internet Connection?</h4>
+					<h4>Do you have Internet Connection?<font class="requiredFont">*</font></h4>
 					<label class="radio inline">
 						<input id="netradioId" type="radio" name="tdpCadreVolunteerVO.internet" value="Y" checked>Yes, I have.
 					</label>					
@@ -119,7 +126,7 @@
 					</label><!----/Internet Connection---->
 					
 					<!----Smart-phone with 2G/3G Internet Connection---->
-					<h4>Do you have Smart-phone with 2G/3G Internet Connection?</h4>
+					<h4>Do you have Smart-phone with 2G/3G Internet Connection?<font class="requiredFont">*</font></h4>
 					<label class="radio inline">
 						<input id="samrtPhoneradioId"  type="radio" name="tdpCadreVolunteerVO.smartPhone" value="2G" checked>Yes, I have Smart-phone with 2G.
 					</label>
@@ -131,7 +138,7 @@
 					</label><!----/Smart-phone with 2G/3G Internet Connection---->
 					
 					<!----TAB with 2G/3G Internet Connection---->
-					<h4>Do you have TAB/i-Pad with 2G/3G Internet Connection?</h4>
+					<h4>Do you have TAB/i-Pad with 2G/3G Internet Connection?<font class="requiredFont">*</font></h4>
 					<label class="radio inline">
 						<input id="tabradioId" type="radio" name="tdpCadreVolunteerVO.tablet" value="2G" class="tabipod tabipodcheck " checked>Yes, I have TAB with 2G.
 					</label>
@@ -148,7 +155,7 @@
 						<input type="radio" id="notabipod" name="tdpCadreVolunteerVO.noTab" value="no" class = "tabipodcheck " onclick="clearRadioGrp();">No, I don't have TAB/i-Pad.
 					</label><!----/Smart-phone with 2G/3G Internet Connection---->
 					
-					<h4>Your Address</h4>
+					<h4>Your Address<font class="requiredFont">*</font></h4>
 					<textarea rows="3" class="input-block-level border-radius-0" id="addressId" name="tdpCadreVolunteerVO.address">
 					</textarea>
 					
@@ -259,21 +266,34 @@ return false;
 	}
 	function showUploadStatus(myResult)
 	{
-		$("#errorDiv").html('');
+	
+		$('#mainDiv').html('');
 		var result = (String)(myResult);
+		var errorDivEle = document.getElementById('errorMsgDiv');
 		var str = '';
-		if(result.indexOf('success'))
+		var resultArr = result.split(',');
+		if(result.search('success') != -1)
 		{
-		$("#errorDiv").html('Successfully registered').css("color","green");
+			str+= '<div class="container m_top10" id="yourElement">';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<p class="text-align">Thank You For Your Registration</p>';
+			str+= '<h3 class="text-align">Successfully Registration Completed</h3>';
+			str+= '</div>';
+			
+			str+= '</div>';
+			
 		}
-		else
+		else if(result.search('fail') != -1)
 		{
-		$("#errorDiv").html('Exception Occured,Please Try again').css("color","red");
+			str+= '<div class="container m_top10" id="yourElement">';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<h3 class="text-align">Error raised while cadre registration</h3>';
+			str+= '</div>';
+			str+= '</div>';
+			
 		}
-		$('html,body').animate({
-			scrollTop:  $("#errorDiv").offset().top 
-			});
-			clearDataFields();
+		
+		$('#statusDiv').html(str);
 	}
 	function clearDataFields()
 	{
