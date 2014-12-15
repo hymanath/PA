@@ -3866,6 +3866,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	}
 	
 	private String getMemberShipNo(Long districtId,Long id){
+		if(id.longValue() > 9999999l){
+			id = id-7000000l;
+		}
 		String memberShipNo ="AP14";
 		if(districtId != null && districtId.longValue() < 11l){
 			memberShipNo = "TS14";
