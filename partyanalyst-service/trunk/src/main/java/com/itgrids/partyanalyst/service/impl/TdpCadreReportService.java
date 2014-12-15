@@ -53,7 +53,9 @@ import com.itgrids.partyanalyst.dao.ITdpCadreCallCenterCommentDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreSmsStatusDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTeluguNamesDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreVolunteerConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreVolunteerDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreVolunteerDateDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
@@ -76,6 +78,8 @@ import com.itgrids.partyanalyst.model.TdpCadreCallCenterFeedback;
 import com.itgrids.partyanalyst.model.TdpCadreCallCenterComment;
 import com.itgrids.partyanalyst.model.TdpCadreSmsStatus;
 import com.itgrids.partyanalyst.model.TdpCadreVolunteer;
+import com.itgrids.partyanalyst.model.TdpCadreVolunteerConstituency;
+import com.itgrids.partyanalyst.model.TdpCadreVolunteerDate;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.ZebraPrintDetails;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
@@ -108,8 +112,23 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	private ITdpCadreSmsStatusDAO tdpCadreSmsStatusDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private ITdpCadreVolunteerDAO tdpCadreVolunteerDAO;
+	private ITdpCadreVolunteerConstituencyDAO tdpCadreVolunteerConstituencyDAO;
+	private ITdpCadreVolunteerDateDAO tdpCadreVolunteerDateDAO;
 	
-	
+	public ITdpCadreVolunteerConstituencyDAO getTdpCadreVolunteerConstituencyDAO() {
+		return tdpCadreVolunteerConstituencyDAO;
+	}
+	public void setTdpCadreVolunteerConstituencyDAO(
+			ITdpCadreVolunteerConstituencyDAO tdpCadreVolunteerConstituencyDAO) {
+		this.tdpCadreVolunteerConstituencyDAO = tdpCadreVolunteerConstituencyDAO;
+	}
+	public ITdpCadreVolunteerDateDAO getTdpCadreVolunteerDateDAO() {
+		return tdpCadreVolunteerDateDAO;
+	}
+	public void setTdpCadreVolunteerDateDAO(
+			ITdpCadreVolunteerDateDAO tdpCadreVolunteerDateDAO) {
+		this.tdpCadreVolunteerDateDAO = tdpCadreVolunteerDateDAO;
+	}
 	public ITdpCadreVolunteerDAO getTdpCadreVolunteerDAO() {
 		return tdpCadreVolunteerDAO;
 	}
@@ -3346,21 +3365,90 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		}
 		return resulList;
 	}
-	public ResultStatus saveCadreRegistration(TdpCadreVolunteerVO inputVO)
+	public ResultStatus saveCadreRegistration(final TdpCadreVolunteerVO inputVO)
 	{
-		try{
+		
+		
+		 ResultStatus rs = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus status) {
+					ResultStatus rs = new ResultStatus();
+					try
+					{
+			DateUtilService dateService = new DateUtilService();
+			String[] constituencyIds = inputVO.getConstituencyId().toString().split(",");
+			String[] dates = inputVO.getDate().toString().split(",");
 			TdpCadreVolunteer tdpCadreVolunteer = new TdpCadreVolunteer();
 			tdpCadreVolunteer.setName(inputVO.getName());
 			tdpCadreVolunteer.setMobileNo(inputVO.getMobileNo());
 			tdpCadreVolunteer.setEmail(inputVO.getEmail());
 			tdpCadreVolunteer.setAddress(inputVO.getAddress());
-			tdpCadreVolunteerDAO.save(tdpCadreVolunteer);
-			
-		}
-		catch(Exception e)
-		{
-			LOG.error("Exception Occured in saveCadreRegistration()", e);
-		}
-		return null;
-	}
+			tdpCadreVolunteer.setLaptop(inputVO.getLapTop());
+			tdpCadreVolunteer.setInternet(inputVO.getInternet());
+			if(inputVO.getSmartPhone() != null)
+			{
+				if(inputVO.getSmartPhone().equalsIgnoreCase("2G"))
+				tdpCadreVolunteer.setSmartPhone2G("Y");
+				if(inputVO.getSmartPhone().equalsIgnoreCase("3G"))
+				tdpCadreVolunteer.setSmartPhone3G("Y");
+				if(inputVO.getSmartPhone().equalsIgnoreCase("no"))
+				{
+				tdpCadreVolunteer.setSmartPhone2G("N");
+				tdpCadreVolunteer.setSmartPhone3G("N");
+				}
+			}
+			if(inputVO.getIpod() != null)
+			{
+				if(inputVO.getIpod().equalsIgnoreCase("2G"))
+				tdpCadreVolunteer.setIpod2G("Y");
+				if(inputVO.getIpod().equalsIgnoreCase("3G"))
+				tdpCadreVolunteer.setIpod3G("Y");
+			}
+			if(inputVO.getTablet() != null)
+			{
+				if(inputVO.getTablet().equalsIgnoreCase("2G"))
+				tdpCadreVolunteer.setTablet2G("Y");
+				if(inputVO.getTablet().equalsIgnoreCase("3G") )
+				tdpCadreVolunteer.setTablet3G("Y");
+			}
+			if(inputVO.getNoTab() != null && inputVO.getNoTab().equalsIgnoreCase("no"))
+			{
+				tdpCadreVolunteer.setIpod2G("N");
+				tdpCadreVolunteer.setIpod3G("N");
+				tdpCadreVolunteer.setTablet2G("N");
+				tdpCadreVolunteer.setTablet3G("N");
+				
+			}
+			tdpCadreVolunteer.setInsertedTime(dateService.getCurrentDateAndTime());
+			tdpCadreVolunteer.setUpdateTime(dateService.getCurrentDateAndTime());
+			tdpCadreVolunteer = tdpCadreVolunteerDAO.save(tdpCadreVolunteer);
+			TdpCadreVolunteerConstituency tdpCadreVolunteerConstituency = null;
+			for(String constituency : constituencyIds)
+			{
+				tdpCadreVolunteerConstituency = new TdpCadreVolunteerConstituency();
+				tdpCadreVolunteerConstituency.setConstituencyId(Long.parseLong(constituency.trim().toString()));
+				tdpCadreVolunteerConstituency.setTdpCadreVolunteerId(tdpCadreVolunteer.getTdpCadreVolunteerId());
+				tdpCadreVolunteerConstituencyDAO.save(tdpCadreVolunteerConstituency);
+			}
+			 TdpCadreVolunteerDate tdpCadreVolunteerDate = null;
+			 SimpleDateFormat format = new SimpleDateFormat("dd-mm-yyyy");
+			for(String date : dates)
+			{
+				
+				tdpCadreVolunteerDate = new TdpCadreVolunteerDate();
+				tdpCadreVolunteerDate.setDate(format.parse(date));
+				tdpCadreVolunteerDate.setTdpCadreVolunteerId(tdpCadreVolunteer.getTdpCadreVolunteerId());
+				tdpCadreVolunteerDateDAO.save(tdpCadreVolunteerDate);
+			}
+			rs.setResultCode(ResultCodeMapper.SUCCESS);
+					}
+					catch(Exception e)
+					{
+						rs.setResultCode(ResultCodeMapper.FAILURE);
+						e.printStackTrace();
+						LOG.debug(e);
+					}
+						return rs;
+					} });
+				return rs;
+			}
 }
