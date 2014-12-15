@@ -1764,10 +1764,9 @@
 			</div>
 		</div>
 	</div>
-	
-	<div id="toggleButtonDiv" style="margin-left:685px;">
-		<a id="toggleButtonId" class="btn btn-success text-align3 m_top10 m_bottom10 border-radius-0">Click To See/Hide  Previous Roles And Previously Participated In Elections</a>
-	</div>
+	<div class="container"><div class="row"><div  id="toggleButtonDiv" class="span8 offset3">
+		<a class="btn btn-success  m_top10 m_bottom10 border-radius-0" id="toggleButtonId">Click To See/Hide  Previous Roles And Previously Participated In Elections</a>
+  </div></div></div>
 	<div id="fadeInUp" class="fadeInUpClass">
 		<div class="container m_top10">
 			<div class="span12 show-grid" style="position: relative;">
