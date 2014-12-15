@@ -796,7 +796,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 			if(IConstants.ENABLE_CADRE_LOGS)
 			for (CadreRegistrationVO inputResponse : inputResponseList)
 			{
-				LOG.debug(inputResponse.toString());
+				LOG.error(inputResponse.toString());
 				
 				LOG.error("Voter Name  " + "-" + inputResponse.getVoterName() + "-" +"Date Of Birth "+  "-" + inputResponse.getDob() +"-"+ "Gender " +inputResponse.getGender()+  "-" +"Relative Name"+ inputResponse.getRelativeName() +"-" +"VoterCardNumber"+  inputResponse.getVoterCardNo() + "-" + "H.NO" + inputResponse.getHouseNo() + "-" +"Party Member Since" +inputResponse.getPartyMemberSince()  + "-" + "Blood Group " + inputResponse.getBloodGroupId() + "-" + "Street/hamle" +inputResponse.getStreet() +"-" +"Caste" + inputResponse.getCasteId() + "-" + "Mobile No" + inputResponse.getMobileNumber() + "-" + "Education" +inputResponse.getEducationId() + "-" + "Occupation " +inputResponse.getOccupationId() + "-" + "Previous Enroll Ment No " + inputResponse.getPreviousEnrollmentNumber());
 				if(inputResponse.getPreviousParicaptedElectionsList() != null && inputResponse.getPreviousParicaptedElectionsList().size() > 0)
