@@ -4,9 +4,11 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationWiseReportVO;
+import com.itgrids.partyanalyst.dto.TdpCadreVolunteerVO;
 import com.itgrids.partyanalyst.dto.ZebraPrintDetailsVO;
 
 public interface ITdpCadreReportService {
@@ -30,4 +32,6 @@ public interface ITdpCadreReportService {
 	public ResultStatus saveCallCenterFeedbackForCardStatus(TdpCadreLocationWiseReportVO vo);
 	public List<BasicVO> getfeedbackDetails();
 	public ResultStatus insertTdpCadreSmsStatusFromExcel(String filePath);
+	public ResultStatus saveCadreRegistration(TdpCadreVolunteerVO inputVO);
+	public List<GenericVO> getGHMCConstituencies();
 }
