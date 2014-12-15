@@ -1551,22 +1551,29 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 										{
 											String value = booth.getLocalBody().getElectionType().getElectionType();								
 											StringBuilder finalName = new StringBuilder(value);
-											for (int index = 0; index < finalName.length(); index++)
+											if(tehsilId != 20L)
 											{
-											    char c = finalName.charAt(index);
-											    if(index >0)
-											    {
-											    	if (Character.isLowerCase(c))
+												for (int index = 0; index < finalName.length(); index++)
+												{
+												    char c = finalName.charAt(index);
+												    if(index >0)
 												    {
-											    		finalName.setCharAt(index, Character.toUpperCase(c));
-												    } else
-												    {
-												    	finalName.setCharAt(index, Character.toLowerCase(c));
+												    	if (Character.isLowerCase(c))
+													    {
+												    		finalName.setCharAt(index, Character.toUpperCase(c));
+													    } else
+													    {
+													    	finalName.setCharAt(index, Character.toLowerCase(c));
+													    }
 												    }
-											    }
+												}
+												
+												localName = booth.getLocalBody().getName()+" "+finalName;
 											}
-											
-											localName = booth.getLocalBody().getName()+" "+finalName;
+											else
+											{
+												localName = booth.getLocalBody().getName()+" "+booth.getLocalBody().getElectionType().getElectionType();
+											}
 										}
 									}
 									else
