@@ -14,7 +14,7 @@ private String smartPhone;
 private String 	constituencyId;
 private String date;
 private List<Long> constituencyIds;
-private String ipod;
+private String ipad;
 private String noTab;
 
 
@@ -31,12 +31,7 @@ public String getSmartPhone() {
 public void setSmartPhone(String smartPhone) {
 	this.smartPhone = smartPhone;
 }
-public String getIpod() {
-	return ipod;
-}
-public void setIpod(String ipod) {
-	this.ipod = ipod;
-}
+
 public String getNoTab() {
 	return noTab;
 }
@@ -96,6 +91,12 @@ public String getInternet() {
 }
 public void setInternet(String internet) {
 	this.internet = internet;
+}
+public String getIpad() {
+	return ipad;
+}
+public void setIpad(String ipad) {
+	this.ipad = ipad;
 }
 
 
