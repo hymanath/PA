@@ -56,11 +56,12 @@
   </script>
 	<div class="container">
 	<div id="mainDiv">
-	<div id="errorDiv"></div>
-	<form action="tdpCadreVolunteerRegistrationAction.action" method="POST" enctype="multipart/form-data" name="uploadCadreForm">	
+
+	<form action="tdpCadreVolunteerRegistrationAction.action" method="POST" enctype="multipart/form-data" name="uploadCadreForm" >	
 		<div class="row">
 			<div class="span6 offset3">
 				<div class="well well-small border-radius-0" style="margin-top:8%;">
+				 <div id="errorDiv" class="offset1" style="color:red;"></div>
 				<h4 class="text-center">VOLUNTEER ENROLLMENT FORM</h4>
 				<hr>
 					<label> Your Name
@@ -73,7 +74,7 @@
 						<input  class="input-block-level border-radius-0" type="text" placeholder="Enter Mobile Number"  id="mobileId" name="tdpCadreVolunteerVO.mobileNo">
 					</label>
 					<label>Select Your Constituency Name
-					<s:select multiple="true" theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyId" list="constituencyList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" style="width:220px;" name="tdpCadreVolunteerVO.constituencyId" />
+					<s:select multiple="true" theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyId" list="constituencyList" listKey="id" listValue="name" headerKey="0" style="width:220px;" name="tdpCadreVolunteerVO.constituencyId" />
 					
 					</label>
 					
@@ -101,7 +102,7 @@
 					<!----Laptop---->
 					<h4>Do you have Laptop?</h4>
 					<label class="radio inline">
-						<input type="radio" name="tdpCadreVolunteerVO.lapTop" value="Y" checked>Yes, I have Laptop.
+						<input id="lapradioId" type="radio" name="tdpCadreVolunteerVO.lapTop" value="Y" class="unchek" checked>Yes, I have Laptop.
 					</label>
 					
 					<label class="radio inline">
@@ -111,47 +112,47 @@
 					<!----Internet Connection---->
 					<h4>Do you have Internet Connection?</h4>
 					<label class="radio inline">
-						<input class="" type="radio" name="tdpCadreVolunteerVO.internet" value="Y" checked>Yes, I have.
+						<input id="netradioId" type="radio" name="tdpCadreVolunteerVO.internet" value="Y" checked>Yes, I have.
 					</label>					
 					<label class="radio inline">
-						<input type="radio" name="tdpCadreVolunteerVO.internet" value="N">No, I don't have.
+						<input type="radio"   name="tdpCadreVolunteerVO.internet" value="N">No, I don't have.
 					</label><!----/Internet Connection---->
 					
 					<!----Smart-phone with 2G/3G Internet Connection---->
 					<h4>Do you have Smart-phone with 2G/3G Internet Connection?</h4>
 					<label class="radio inline">
-						<input type="radio" name="tdpCadreVolunteerVO.smartPhone" value="2G" checked>Yes, I have Smart-phone with 2G.
+						<input id="samrtPhoneradioId"  type="radio" name="tdpCadreVolunteerVO.smartPhone" value="2G" checked>Yes, I have Smart-phone with 2G.
 					</label>
-					<label class="radio inline">
+					<label class="radio inline"  style="margin-left:0px;">
 						<input type="radio" name="tdpCadreVolunteerVO.smartPhone" value="3G">Yes, I have Smart-phone with 3G.
 					</label>
-					<label class="radio inline">
-						<input type="radio" name="tdpCadreVolunteerVO.smartPhone" value="no">No, I don't have Smart-phone.
+					<label class="radio inline"  style="margin-left:0px;">
+						<input type="radio"  name="tdpCadreVolunteerVO.smartPhone" value="no">No, I don't have Smart-phone.
 					</label><!----/Smart-phone with 2G/3G Internet Connection---->
 					
 					<!----TAB with 2G/3G Internet Connection---->
 					<h4>Do you have TAB/i-Pad with 2G/3G Internet Connection?</h4>
 					<label class="radio inline">
-						<input type="radio" name="tdpCadreVolunteerVO.tablet" value="2G" class="tabipod tabipodcheck">Yes, I have TAB with 2G.
+						<input id="tabradioId" type="radio" name="tdpCadreVolunteerVO.tablet" value="2G" class="tabipod tabipodcheck " checked>Yes, I have TAB with 2G.
 					</label>
 					<label class="radio inline">
-						<input type="radio" name="tdpCadreVolunteerVO.tablet" value="3G" class="tabipod tabipodcheck">Yes, I have TAB with 3G.
+						<input type="radio" name="tdpCadreVolunteerVO.tablet" value="3G" class="tabipod tabipodcheck ">Yes, I have TAB with 3G.
+					</label>
+					<label class="radio inline"  style="margin-left:0px;">
+						<input id="ipodradioId" type="radio" name="tdpCadreVolunteerVO.ipod" value="2G" class="tabipod tabipodcheck " checked> Yes, I have i-Pad with 2G.
 					</label>
 					<label class="radio inline">
-						<input type="radio" name="tdpCadreVolunteerVO.ipod" value="2G" class="tabipod tabipodcheck"> Yes, I have i-Pad with 2G.
-					</label>
-					<label class="radio inline">
-						<input type="radio" name="tdpCadreVolunteerVO.ipod" value="3G" class="tabipod tabipodcheck">Yes, I have i-Pad with 3G.
+						<input type="radio" name="tdpCadreVolunteerVO.ipod" value="3G" class="tabipod tabipodcheck ">Yes, I have i-Pad with 3G.
 					</label>					
-					<label class="radio inline">
-						<input type="radio" name="tdpCadreVolunteerVO.noTab" value="no"class = "tabipodcheck" onclick="clearRadioGrp();">No, I don't have TAB/i-Pad.
+					<label class="radio inline"  style="margin-left:0px;">
+						<input type="radio" id="notabipod" name="tdpCadreVolunteerVO.noTab" value="no" class = "tabipodcheck " onclick="clearRadioGrp();">No, I don't have TAB/i-Pad.
 					</label><!----/Smart-phone with 2G/3G Internet Connection---->
 					
 					<h4>Your Address</h4>
-					<textarea rows="3" class="input-block-level border-radius-0" name="tdpCadreVolunteerVO.address">
+					<textarea rows="3" class="input-block-level border-radius-0" id="addressId" name="tdpCadreVolunteerVO.address">
 					</textarea>
 					
-					<input type="button" id="submitCadreFormBtnReqId" class="btn btn-success btn-large btn-block border-radius-0" value="SUBMIT DETAILS"/>
+					<input type="button" id="submitCadreFormBtnReqId" class="btn btn-success btn-large btn-block border-radius-0" value="SUBMIT DETAILS" onclick="submitCadreForm();"/>
 				</div>
 			</div>
 		</div>
@@ -163,7 +164,7 @@
 	<script>
 	function submitCadreForm()
 	{	
-alert('a');
+
 if(validateDetails())
 {
 				var uploadHandler = {
@@ -177,97 +178,127 @@ if(validateDetails())
 				YAHOO.util.Connect.setForm('uploadCadreForm',true);
 				YAHOO.util.Connect.asyncRequest('POST','tdpCadreVolunteerRegistrationAction.action',uploadHandler);
 		}	
-else return;		
+else 
+return false;		
 	}
 	function validateDetails()
 	{
-	alert('aa');
+	
 	$("#errorDiv").html('');
 	var flag = true;
 	var errorstr = '';
 	var name = $.trim($("#nameId").val());
 	var emailId = $.trim($("#emailId").val());
 	var mobileId = $.trim($("#mobileId").val());
-	var constituencyId = $.trim($("#constituencyId").val());
+	var constituencyId = $("#constituencyId").val();
+	var addressId = $.trim($("#addressId").val());
+	var emailreg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+
+	var datearr = [];
 	 if(name == '')
 	{
 	 errorstr +='Name is required</br>';
 	 flag = false;
 	 }
-	  if(emailId == '')
+	  if(emailId .length == 0)
 	{
 	 errorstr +='email is required</br>';
 	 flag = false;
 	 }
-	   if(mobileId == '')
+	if(emailId .length > 0 && emailreg.test(emailId) == false)
+	 {
+		errorstr +='Invalid Email</br>';
+		 flag = false;
+	}
+	   if(mobileId.length == 0)
 	{
 	 errorstr +='mobile is required</br>';
 	 flag = false;
 	 }
+	if(mobileId.length != 0){
+			if(isNaN(mobileId) || mobileId.length<10 || mobileId.length>10 || !(mobileId.charAt(0)=="9" || mobileId.charAt(0)=="8" || mobileId.charAt(0)=="7")){
+			errorstr +='Invalid Mobile</br>';
+			flag=false;
+			}
+		}
+	
 	if(constituencyId == null)
 	{
-	 errorstr +='Constituency is required<br/>';
+	 errorstr +='Select Constituency<br/>';
 	 flag = false;
 	 }
 	
 	$(".dateCheck").each(function()
 	{
-		 if($(this).is(':checked') == false)
+		 if($(this).is(':checked'))
 		 {
-		 errorstr +='Date is required';
-		 flag = false;
-		 return ;
+			datearr.push("true");
 		 }
+		 
 	});
-	
+	if(datearr.length  == 0)
+	{
+	 errorstr +='Select Date<br/>';
+	 flag = false;
+	}
+	if(addressId == '')
+	{
+	 errorstr +='Address is required<br/>';
+	 flag = false;
+	}
+	if(errorstr.trim().length >0)
+		{
+	$('html,body').animate({
+			scrollTop:  $("#errorDiv").offset().top 
+			});
+		}	
 	$("#errorDiv").html(errorstr);
-	alert(flag)
+	
      return flag;
 	
 	}
 	function showUploadStatus(myResult)
 	{
-		$('#mainDiv').html('');
+		$("#errorDiv").html('');
 		var result = (String)(myResult);
-	//var errorDivEle = document.getElementById('errorMsgDiv');
 		var str = '';
-		var resultArr = result.split(',');
-		if(result.search('SUCCESS') != -1)
+		if(result.indexOf('success'))
 		{
-			str+= '<div class="container m_top10" id="yourElement">';
-			str+= '<div class="span12  show-grid" style="position: relative;">';
-			str+= '<p class="text-align">Thank You For Your Registration</p>';
-			str+= '<h3 class="text-align">Successfully Registration Completed</h3>';
-			str+= '</div>';
-			str+= '<div class="span12  show-grid" style="position: relative;">';
-			str+= '<p class="text-align">Your Enrollment No :'+resultArr[1]+' </p>';
-			str+= '</div>';
-			str+= '</div>';
-			str+= '<div class="container m_top10" id="yourElement">';
-			str+= '<div class="span12  show-grid" style="position: relative;">';
-			str+= '<a href="tdpCadreVolunteerAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
-			str+= '</div>';
-			str+= '</div>';
+		$("#errorDiv").html('Successfully registered').css("color","green");
 		}
-		else if(result.search('FAILURE') != -1)
+		else
 		{
-			str+= '<div class="container m_top10" id="yourElement">';
-			str+= '<div class="span12  show-grid" style="position: relative;">';
-			str+= '<h3 class="text-align">Error raised while cadre registration</h3>';
-			str+= '</div>';
-			str+= '</div>';
-			str+= '<div class="container m_top10" id="yourElement">';
-			str+= '<div class="span12  show-grid" style="position: relative;">';
-			str+= '<a href="tdpCadreVolunteerAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
-			str+= '</div>';
-			str+= '</div>';
+		$("#errorDiv").html('Exception Occured,Please Try again').css("color","red");
 		}
+		$('html,body').animate({
+			scrollTop:  $("#errorDiv").offset().top 
+			});
+			clearDataFields();
+	}
+	function clearDataFields()
+	{
 		
-		$('#statusDiv').html(str);
+		$("#nameId").val('');
+		$("#emailId").val('');
+		$("#mobileId").val('');
+		$("#constituencyId option").removeAttr("selected", false);
+		$("#addressId").val('');
+		$(".dateCheck").attr('checked', false); 
+		$("#lapradioId").prop('checked', true);;
+		$("#netradioId").prop('checked', true);
+		$("#samrtPhoneradioId").prop('checked', true);
+		$("#tabradioId").prop('checked', true);
+		$("#ipodradioId").prop('checked', true);;
+		$("#notabipod").attr('checked', false);
+		
 	}
 	function clearRadioGrp()
 	{
 	$(".tabipod").attr('checked', false);
 	}
+	$(".tabipod").click(function() {
+	$("#notabipod").attr('checked', false);
+	});
+
 	</script>
   </body>
