@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TdpCallCenterVO {
 private Long id;
 private String name;
@@ -9,6 +12,28 @@ private String purpose;
 private String suggestions;
 private Long executiveId;
 private String executiveName;
+private Long total=0l;
+private Long todayTotal =0l;
+private List<TdpCallCenterVO> subList = new ArrayList<TdpCallCenterVO>();
+
+public List<TdpCallCenterVO> getSubList() {
+	return subList;
+}
+public void setSubList(List<TdpCallCenterVO> subList) {
+	this.subList = subList;
+}
+public Long getTotal() {
+	return total;
+}
+public void setTotal(Long total) {
+	this.total = total;
+}
+public Long getTodayTotal() {
+	return todayTotal;
+}
+public void setTodayTotal(Long todayTotal) {
+	this.todayTotal = todayTotal;
+}
 public Long getId() {
 	return id;
 }
