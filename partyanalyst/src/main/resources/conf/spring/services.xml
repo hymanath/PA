@@ -2418,7 +2418,10 @@
           <property name="transactionTemplate" ref="transactionTemplate" />
           <property name="tdpCadreTeluguNamesDAO" ref="tdpCadreTeluguNamesDAO" />
           <property name="callCenterFeedbackDAO" ref="callCenterFeedbackDAO" />
-           <property name="tdpCadreSmsStatusDAO" ref="tdpCadreSmsStatusDAO" />
+          <property name="tdpCadreSmsStatusDAO" ref="tdpCadreSmsStatusDAO" />
+          <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"></property>
+          <property name="tdpCadreVolunteerDAO" ref="tdpCadreVolunteerDAO"></property>
+           
           
      </bean>
      
@@ -2433,6 +2436,7 @@
           <property name="smsJobStatusDAO" ref="smsJobStatusDAO" />
  	 </bean>
  	 <bean name="tdpCallCenterService"  class="com.itgrids.partyanalyst.service.impl.TdpCallCenterService">
- 	 </bean>
+ 	 
+	</bean>
 </beans>		
 	
