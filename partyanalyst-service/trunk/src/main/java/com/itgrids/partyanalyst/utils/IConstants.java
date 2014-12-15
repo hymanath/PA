@@ -834,7 +834,7 @@ public interface IConstants {
     public static final boolean ENABLE_CADRE_LOGS = false;
     public static final boolean ENABLE_LOGS_SAVE = true;
     public static final Long CADREPERCENTAGE = 30l;
-    public static final String[] excludeUrl ={"callCenterMembershipCardStatusAction","getCadreDetailsForCallCenterAction","saveCallCenterFeedbackAction","getFeedbackDataAction"};
+    public static final String[] excludeUrl ={"callCenterMembershipCardStatusAction","getCadreDetailsForCallCenterAction","saveCallCenterFeedbackAction","getFeedbackDataAction","tdpCadreVolunteerAction"};
     public static final String CADRE_SMS_STATUS_FILES = "cadre_sms_status_files";
     public static final String EMPTY_STRING = "";
     		
