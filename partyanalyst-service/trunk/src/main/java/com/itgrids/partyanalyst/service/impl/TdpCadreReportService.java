@@ -3388,36 +3388,49 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			{
 				if(inputVO.getSmartPhone().equalsIgnoreCase("2G"))
 				tdpCadreVolunteer.setSmartPhone2G("Y");
+				else
+					tdpCadreVolunteer.setSmartPhone2G("N");	
 				if(inputVO.getSmartPhone().equalsIgnoreCase("3G"))
 				tdpCadreVolunteer.setSmartPhone3G("Y");
+				else
+				tdpCadreVolunteer.setSmartPhone3G("N");	
 				if(inputVO.getSmartPhone().equalsIgnoreCase("no"))
 				{
 				tdpCadreVolunteer.setSmartPhone2G("N");
 				tdpCadreVolunteer.setSmartPhone3G("N");
 				}
 			}
-			if(inputVO.getIpod() != null)
-			{
-				if(inputVO.getIpod().equalsIgnoreCase("2G"))
-				tdpCadreVolunteer.setIpod2G("Y");
-				if(inputVO.getIpod().equalsIgnoreCase("3G"))
-				tdpCadreVolunteer.setIpod3G("Y");
-			}
+			
 			if(inputVO.getTablet() != null)
 			{
-				if(inputVO.getTablet().equalsIgnoreCase("2G"))
+				if(inputVO.getTablet().equalsIgnoreCase("tab2G"))
 				tdpCadreVolunteer.setTablet2G("Y");
-				if(inputVO.getTablet().equalsIgnoreCase("3G") )
+				else
+					tdpCadreVolunteer.setTablet2G("N");
+				if(inputVO.getTablet().equalsIgnoreCase("tab3G") )
 				tdpCadreVolunteer.setTablet3G("Y");
-			}
-			if(inputVO.getNoTab() != null && inputVO.getNoTab().equalsIgnoreCase("no"))
-			{
-				tdpCadreVolunteer.setIpod2G("N");
-				tdpCadreVolunteer.setIpod3G("N");
+				else
+				tdpCadreVolunteer.setTablet3G("N");
+				if(inputVO.getTablet().equalsIgnoreCase("ipad2G"))
+				tdpCadreVolunteer.setIpad2G("Y");
+				else
+		        tdpCadreVolunteer.setIpad2G("N");	
+			     if(inputVO.getTablet().equalsIgnoreCase("ipad3G"))
+			     tdpCadreVolunteer.setIpad3G("Y");
+			     else
+				tdpCadreVolunteer.setIpad3G("N");	
+				if(inputVO.getTablet().equalsIgnoreCase("no") )
+				{
+				tdpCadreVolunteer.setIpad2G("N");
+				tdpCadreVolunteer.setIpad3G("N");
 				tdpCadreVolunteer.setTablet2G("N");
 				tdpCadreVolunteer.setTablet3G("N");
-				
+				}
 			}
+			
+			
+				
+			
 			tdpCadreVolunteer.setInsertedTime(dateService.getCurrentDateAndTime());
 			tdpCadreVolunteer.setUpdateTime(dateService.getCurrentDateAndTime());
 			tdpCadreVolunteer = tdpCadreVolunteerDAO.save(tdpCadreVolunteer);
