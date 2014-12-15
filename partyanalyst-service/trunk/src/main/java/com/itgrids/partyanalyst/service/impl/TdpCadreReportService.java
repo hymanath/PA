@@ -40,6 +40,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICallCenterFeedbackDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -52,6 +53,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreCallCenterCommentDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreSmsStatusDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTeluguNamesDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreVolunteerDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
@@ -60,17 +62,20 @@ import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreRegAmountUploadVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationWiseReportVO;
 import com.itgrids.partyanalyst.dto.TdpCadreSmsStatusVO;
+import com.itgrids.partyanalyst.dto.TdpCadreVolunteerVO;
 import com.itgrids.partyanalyst.dto.ZebraPrintDetailsVO;
 import com.itgrids.partyanalyst.model.LocalNameConstant;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.TdpCadreCallCenterFeedback;
 import com.itgrids.partyanalyst.model.TdpCadreCallCenterComment;
 import com.itgrids.partyanalyst.model.TdpCadreSmsStatus;
+import com.itgrids.partyanalyst.model.TdpCadreVolunteer;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.ZebraPrintDetails;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
@@ -101,8 +106,23 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	private ITdpCadreCallCenterCommentDAO tdpCadreCallCenterCommentDAO;
 	private ICallCenterFeedbackDAO callCenterFeedbackDAO;
 	private ITdpCadreSmsStatusDAO tdpCadreSmsStatusDAO;
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	private ITdpCadreVolunteerDAO tdpCadreVolunteerDAO;
 	
 	
+	public ITdpCadreVolunteerDAO getTdpCadreVolunteerDAO() {
+		return tdpCadreVolunteerDAO;
+	}
+	public void setTdpCadreVolunteerDAO(ITdpCadreVolunteerDAO tdpCadreVolunteerDAO) {
+		this.tdpCadreVolunteerDAO = tdpCadreVolunteerDAO;
+	}
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
 	public ITdpCadreSmsStatusDAO getTdpCadreSmsStatusDAO() {
 		return tdpCadreSmsStatusDAO;
 	}
@@ -2341,10 +2361,20 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			}
 			else if(searchType.equalsIgnoreCase(IConstants.MP))
 			{
-				 registeredCountList    = tdpCadreDAO.gettingRegisteredVotersForParliaments(statusSeacrhLoctaionIds);
-				 printedCountList 		= zebraPrintDetailsDAO.getParliamentWiseResults(statusSeacrhLoctaionIds,"printStatus");
-				 errorCountList			= zebraPrintDetailsDAO.getParliamentWiseResults(statusSeacrhLoctaionIds,"errorStatus");
-				 totalPushedCountList 	= zebraPrintDetailsDAO.getParliamentWiseResults(statusSeacrhLoctaionIds,"totalCount"); 
+				 if(accessType.equalsIgnoreCase("STATE"))
+				 {
+					 registeredCountList    = tdpCadreDAO.gettingRegisteredVotersForParliaments(statusSeacrhLoctaionIds);
+					 printedCountList 		= zebraPrintDetailsDAO.getParliamentWiseResults(statusSeacrhLoctaionIds,"printStatus");
+					 errorCountList			= zebraPrintDetailsDAO.getParliamentWiseResults(statusSeacrhLoctaionIds,"errorStatus");
+					 totalPushedCountList 	= zebraPrintDetailsDAO.getParliamentWiseResults(statusSeacrhLoctaionIds,"totalCount");
+				 }
+				 else
+				 {
+					 registeredCountList    = tdpCadreDAO.gettingRegisteredVotersForParliaments(statusSeacrhLoctaionIds);
+					 printedCountList 		= zebraPrintDetailsDAO.getParliamentWiseResults(statusSeacrhLoctaionIds,"printStatus");
+					 errorCountList			= zebraPrintDetailsDAO.getParliamentWiseResults(statusSeacrhLoctaionIds,"errorStatus");
+					 totalPushedCountList 	= zebraPrintDetailsDAO.getParliamentWiseResults(statusSeacrhLoctaionIds,"totalCount");
+				 }
 			}
 			
 			
@@ -3293,5 +3323,44 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 				 }
 		}
 		return rs;
+	}
+	public List<GenericVO> getGHMCConstituencies()
+	{
+		List<GenericVO> resulList = new ArrayList<GenericVO>();
+		try{
+			List<Object[]> list = assemblyLocalElectionBodyDAO.getGHMCConstituencies();
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					GenericVO vo =new GenericVO();
+					vo.setId((Long)params[0]);
+					vo.setName(params[1].toString());
+					resulList.add(vo);
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getGHMCConstituencies()", e);
+		}
+		return resulList;
+	}
+	public ResultStatus saveCadreRegistration(TdpCadreVolunteerVO inputVO)
+	{
+		try{
+			TdpCadreVolunteer tdpCadreVolunteer = new TdpCadreVolunteer();
+			tdpCadreVolunteer.setName(inputVO.getName());
+			tdpCadreVolunteer.setMobileNo(inputVO.getMobileNo());
+			tdpCadreVolunteer.setEmail(inputVO.getEmail());
+			tdpCadreVolunteer.setAddress(inputVO.getAddress());
+			tdpCadreVolunteerDAO.save(tdpCadreVolunteer);
+			
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in saveCadreRegistration()", e);
+		}
+		return null;
 	}
 }
