@@ -3367,104 +3367,129 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	}
 	public ResultStatus saveCadreRegistration(final TdpCadreVolunteerVO inputVO)
 	{
-		
-		
-		 ResultStatus rs = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
-				public Object doInTransaction(TransactionStatus status) {
-					ResultStatus rs = new ResultStatus();
-					try
-					{
-			DateUtilService dateService = new DateUtilService();
-			String[] constituencyIds = inputVO.getConstituencyId().toString().split(",");
-			String[] dates = inputVO.getDate().toString().split(",");
-			TdpCadreVolunteer tdpCadreVolunteer = new TdpCadreVolunteer();
-			tdpCadreVolunteer.setName(inputVO.getName());
-			tdpCadreVolunteer.setMobileNo(inputVO.getMobileNo());
-			tdpCadreVolunteer.setEmail(inputVO.getEmail());
-			tdpCadreVolunteer.setAddress(inputVO.getAddress());
-			tdpCadreVolunteer.setLaptop(inputVO.getLapTop());
-			tdpCadreVolunteer.setInternet(inputVO.getInternet());
-			if(inputVO.getSmartPhone() != null)
-			{
-				if(inputVO.getSmartPhone().equalsIgnoreCase("2G"))
-				tdpCadreVolunteer.setSmartPhone2G("Y");
-				else
-					tdpCadreVolunteer.setSmartPhone2G("N");	
-				if(inputVO.getSmartPhone().equalsIgnoreCase("3G"))
-				tdpCadreVolunteer.setSmartPhone3G("Y");
-				else
-				tdpCadreVolunteer.setSmartPhone3G("N");	
-				if(inputVO.getSmartPhone().equalsIgnoreCase("no"))
+		ResultStatus rs = new ResultStatus();
+		try {
+				if(isExistUSerByMobileAndEmail(inputVO.getMobileNo(),inputVO.getEmail()))
 				{
-				tdpCadreVolunteer.setSmartPhone2G("N");
-				tdpCadreVolunteer.setSmartPhone3G("N");
+					rs.setResultCode(ResultCodeMapper.FAILURE);
+					return rs;
 				}
-			}
-			
-			if(inputVO.getTablet() != null)
-			{
-				if(inputVO.getTablet().equalsIgnoreCase("tab2G"))
-				tdpCadreVolunteer.setTablet2G("Y");
 				else
-					tdpCadreVolunteer.setTablet2G("N");
-				if(inputVO.getTablet().equalsIgnoreCase("tab3G") )
-				tdpCadreVolunteer.setTablet3G("Y");
-				else
-				tdpCadreVolunteer.setTablet3G("N");
-				if(inputVO.getTablet().equalsIgnoreCase("ipad2G"))
-				tdpCadreVolunteer.setIpad2G("Y");
-				else
-		        tdpCadreVolunteer.setIpad2G("N");	
-			     if(inputVO.getTablet().equalsIgnoreCase("ipad3G"))
-			     tdpCadreVolunteer.setIpad3G("Y");
-			     else
-				tdpCadreVolunteer.setIpad3G("N");	
-				if(inputVO.getTablet().equalsIgnoreCase("no") )
 				{
-				tdpCadreVolunteer.setIpad2G("N");
-				tdpCadreVolunteer.setIpad3G("N");
-				tdpCadreVolunteer.setTablet2G("N");
-				tdpCadreVolunteer.setTablet3G("N");
-				}
-			}
-			
-			
-				
-			tdpCadreVolunteer.setIsDeleted("N");
-			tdpCadreVolunteer.setInsertedTime(dateService.getCurrentDateAndTime());
-			tdpCadreVolunteer.setUpdateTime(dateService.getCurrentDateAndTime());
-			tdpCadreVolunteer = tdpCadreVolunteerDAO.save(tdpCadreVolunteer);
-			TdpCadreVolunteerConstituency tdpCadreVolunteerConstituency = null;
-			for(String constituency : constituencyIds)
-			{
-				tdpCadreVolunteerConstituency = new TdpCadreVolunteerConstituency();
-				tdpCadreVolunteerConstituency.setConstituencyId(Long.parseLong(constituency.trim().toString()));
-				tdpCadreVolunteerConstituency.setTdpCadreVolunteerId(tdpCadreVolunteer.getTdpCadreVolunteerId());
-				tdpCadreVolunteerConstituencyDAO.save(tdpCadreVolunteerConstituency);
-			}
-			 TdpCadreVolunteerDate tdpCadreVolunteerDate = null;
-			 SimpleDateFormat format = new SimpleDateFormat("dd-mm-yyyy");
-			for(String date : dates)
-			{
-				
-				tdpCadreVolunteerDate = new TdpCadreVolunteerDate();
-				tdpCadreVolunteerDate.setDate(format.parse(date));
-				tdpCadreVolunteerDate.setTdpCadreVolunteerId(tdpCadreVolunteer.getTdpCadreVolunteerId());
-				tdpCadreVolunteerDateDAO.save(tdpCadreVolunteerDate);
-			}
-			rs.setResultCode(ResultCodeMapper.SUCCESS);
-					}
-					catch(Exception e)
-					{
-						rs.setResultCode(ResultCodeMapper.FAILURE);
-						e.printStackTrace();
-						LOG.debug(e);
-					}
-						return rs;
-					} });
-				return rs;
-			}
+					 rs = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
 	
+							public Object doInTransaction(TransactionStatus status)
+							{
+								ResultStatus rs = new ResultStatus();
+								try
+								{
+									DateUtilService dateService = new DateUtilService();
+									String[] constituencyIds = inputVO.getConstituencyId().toString().split(",");
+									String[] dates = inputVO.getDate().toString().split(",");
+									TdpCadreVolunteer tdpCadreVolunteer = new TdpCadreVolunteer();
+									tdpCadreVolunteer.setName(inputVO.getName());
+									tdpCadreVolunteer.setMobileNo(inputVO.getMobileNo());
+									tdpCadreVolunteer.setEmail(inputVO.getEmail());
+									tdpCadreVolunteer.setAddress(inputVO.getAddress());
+									tdpCadreVolunteer.setLaptop(inputVO.getLapTop());
+									tdpCadreVolunteer.setInternet(inputVO.getInternet());
+									if(inputVO.getSmartPhone() != null)
+									{
+										if(inputVO.getSmartPhone().equalsIgnoreCase("2G"))
+										tdpCadreVolunteer.setSmartPhone2G("Y");
+										else
+											tdpCadreVolunteer.setSmartPhone2G("N");	
+										if(inputVO.getSmartPhone().equalsIgnoreCase("3G"))
+										tdpCadreVolunteer.setSmartPhone3G("Y");
+										else
+										tdpCadreVolunteer.setSmartPhone3G("N");	
+										if(inputVO.getSmartPhone().equalsIgnoreCase("no"))
+										{
+										tdpCadreVolunteer.setSmartPhone2G("N");
+										tdpCadreVolunteer.setSmartPhone3G("N");
+										}
+									}
+									
+									if(inputVO.getTablet() != null)
+									{
+										if(inputVO.getTablet().equalsIgnoreCase("tab2G"))
+										tdpCadreVolunteer.setTablet2G("Y");
+										else
+											tdpCadreVolunteer.setTablet2G("N");
+										if(inputVO.getTablet().equalsIgnoreCase("tab3G") )
+										tdpCadreVolunteer.setTablet3G("Y");
+										else
+										tdpCadreVolunteer.setTablet3G("N");
+										if(inputVO.getTablet().equalsIgnoreCase("ipad2G"))
+										tdpCadreVolunteer.setIpad2G("Y");
+										else
+								        tdpCadreVolunteer.setIpad2G("N");	
+									     if(inputVO.getTablet().equalsIgnoreCase("ipad3G"))
+									     tdpCadreVolunteer.setIpad3G("Y");
+									     else
+										tdpCadreVolunteer.setIpad3G("N");	
+										if(inputVO.getTablet().equalsIgnoreCase("no") )
+										{
+											tdpCadreVolunteer.setIpad2G("N");
+											tdpCadreVolunteer.setIpad3G("N");
+											tdpCadreVolunteer.setTablet2G("N");
+											tdpCadreVolunteer.setTablet3G("N");
+										}
+									}
+						
+								tdpCadreVolunteer.setIsDeleted("N");
+								tdpCadreVolunteer.setInsertedTime(dateService.getCurrentDateAndTime());
+								tdpCadreVolunteer.setUpdateTime(dateService.getCurrentDateAndTime());
+								tdpCadreVolunteer = tdpCadreVolunteerDAO.save(tdpCadreVolunteer);
+								TdpCadreVolunteerConstituency tdpCadreVolunteerConstituency = null;
+								for(String constituency : constituencyIds)
+								{
+									tdpCadreVolunteerConstituency = new TdpCadreVolunteerConstituency();
+									tdpCadreVolunteerConstituency.setConstituencyId(Long.parseLong(constituency.trim().toString()));
+									tdpCadreVolunteerConstituency.setTdpCadreVolunteerId(tdpCadreVolunteer.getTdpCadreVolunteerId());
+									tdpCadreVolunteerConstituencyDAO.save(tdpCadreVolunteerConstituency);
+								}
+								 TdpCadreVolunteerDate tdpCadreVolunteerDate = null;
+								 SimpleDateFormat format = new SimpleDateFormat("dd-mm-yyyy");
+								for(String date : dates)
+								{
+									
+									tdpCadreVolunteerDate = new TdpCadreVolunteerDate();
+									tdpCadreVolunteerDate.setDate(format.parse(date));
+									tdpCadreVolunteerDate.setTdpCadreVolunteerId(tdpCadreVolunteer.getTdpCadreVolunteerId());
+									tdpCadreVolunteerDateDAO.save(tdpCadreVolunteerDate);
+								}
+								rs.setResultCode(ResultCodeMapper.SUCCESS);
+							}catch(Exception e){
+									rs.setResultCode(ResultCodeMapper.FAILURE);
+									e.printStackTrace();
+									LOG.debug(e);
+							}
+									return rs;
+					} 
+					 });
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return rs;
+	}
+	
+	public Boolean isExistUSerByMobileAndEmail(String mobileNo, String emailId)
+	{
+		Boolean isExist = false;
+		try {
+			List<Long> existingIds = tdpCadreVolunteerDAO.checkVolunteerByMobileOrEmail(mobileNo,emailId);
+			if(existingIds != null && existingIds.size()>0)
+			{
+				isExist = true;
+			}
+		} catch (Exception e) {
+			LOG.error(" exception occured at isExistUSerByMobileAndEmail() in TdpCadreReportService service class. ", e);
+		}
+		return isExist ;
+	}
 	public TdpCadreVolunteerVO getConstituencyWiseVolunteerInfo(Long constituencyId, String searchType)
 	{
 		TdpCadreVolunteerVO returnVO = new	TdpCadreVolunteerVO();
@@ -3502,13 +3527,13 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 						{
 							if(volunteer[6].toString().trim().equalsIgnoreCase("Y"))
 							{
-								volunteerVO.setTablet("TAB with 2G ");
+								volunteerVO.setTablet("TAB with 2G");
 							}							
 							else if(volunteer[7] != null)
 							{
 								if(volunteer[7].toString().trim().equalsIgnoreCase("Y"))
 								{
-									volunteerVO.setTablet(" TAB with 3G");
+									volunteerVO.setTablet("TAB with 3G");
 								}
 								else
 								{
@@ -3521,13 +3546,13 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 						{
 							if(volunteer[8].toString().trim().equalsIgnoreCase("Y"))
 							{
-								volunteerVO.setTablet("i-Pad with 2G");
+								volunteerVO.setTablet("iPad with 2G");
 							}
 							else if(volunteer[9] != null)
 							{
 								if(volunteer[9].toString().trim().equalsIgnoreCase("Y"))
 								{
-									volunteerVO.setTablet(" i-Pad with 3G ");
+									volunteerVO.setTablet("iPad with 3G");
 								}
 							}
 						}
@@ -3626,6 +3651,19 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 				{
 					returnVO.setTdpCadreVolunteerVOList(returnList);
 				}
+				
+				returnVO.setNoTab(tdpCadreVolunteerDAO.getDeviceTotalCount("All",constituencyId,searchType).toString());
+				returnVO.setLapTop(tdpCadreVolunteerDAO.getDeviceTotalCount("laptop",constituencyId,searchType).toString());
+				returnVO.setInternet(tdpCadreVolunteerDAO.getDeviceTotalCount("internet",constituencyId,searchType).toString());
+				
+				returnVO.setTablet(tdpCadreVolunteerDAO.getDeviceTotalCount("tablet2G",constituencyId,searchType).toString());
+				returnVO.setTablet3G(tdpCadreVolunteerDAO.getDeviceTotalCount("tablet3G",constituencyId,searchType).toString());
+				
+				returnVO.setSmartPhone(tdpCadreVolunteerDAO.getDeviceTotalCount("smartPhone2G",constituencyId,searchType).toString());
+				returnVO.setSmartPhone3G(tdpCadreVolunteerDAO.getDeviceTotalCount("smartPhone3G",constituencyId,searchType).toString());
+				
+				returnVO.setIpad(tdpCadreVolunteerDAO.getDeviceTotalCount("ipad2G",constituencyId,searchType).toString());
+				returnVO.setIpad3G(tdpCadreVolunteerDAO.getDeviceTotalCount("ipad3G",constituencyId,searchType).toString());
 			}
 			
 		} catch (Exception e) {
