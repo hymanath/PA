@@ -43,16 +43,27 @@ public class TdpCadreVolunteerConstituencyDAO extends GenericDaoHibernate<TdpCad
 		if(searchType.equalsIgnoreCase("Available"))
 		{
 			queryStr.append(" and model.tdpCadreVolunteer.assignedConstituencyId is null ");
+			if(constituencyId != null && constituencyId.longValue() != 0L)
+			{
+				queryStr.append(" and model.constituency.constituencyId = :constituencyId ");
+			}
 		}
 		else if(searchType.equalsIgnoreCase("Assigned"))
 		{
 			queryStr.append(" and model.tdpCadreVolunteer.assignedConstituencyId is not null ");
+			if(constituencyId != null && constituencyId.longValue() != 0L)
+			{
+				queryStr.append(" and model.tdpCadreVolunteer.assignedConstituency.constituencyId = :constituencyId ");
+			}
+		}
+		else if(searchType.equalsIgnoreCase("All"))
+		{			
+			if(constituencyId != null && constituencyId.longValue() != 0L)
+			{
+				queryStr.append(" and model.constituency.constituencyId = :constituencyId ");
+			}
 		}
 		
-		if(constituencyId != null && constituencyId.longValue() != 0L)
-		{
-			queryStr.append(" and model.constituency.constituencyId = :constituencyId ");
-		}
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		
