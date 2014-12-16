@@ -34,4 +34,8 @@ public interface ITdpCadreReportService {
 	public ResultStatus insertTdpCadreSmsStatusFromExcel(String filePath);
 	public ResultStatus saveCadreRegistration(final TdpCadreVolunteerVO inputVO);
 	public List<GenericVO> getGHMCConstituencies();
+	
+	public TdpCadreVolunteerVO getConstituencyWiseVolunteerInfo(Long constituencyId, String searchType);
+	
+	public ResultStatus assignConstiteuncyForValeenteer(Long consituencyId, Long valeenteerId);
 }
