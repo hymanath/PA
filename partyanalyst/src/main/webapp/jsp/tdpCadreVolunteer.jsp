@@ -141,8 +141,7 @@ font-size:18px;
 					</label><!----/Smart-phone with 2G/3G Internet Connection---->
 					
 					<h4>Your Address<font class="requiredFont">*</font></h4>
-					<textarea rows="3" class="input-block-level border-radius-0" id="addressId" name="tdpCadreVolunteerVO.address">
-					</textarea>
+					<textarea rows="3" class="input-block-level border-radius-0" id="addressId" name="tdpCadreVolunteerVO.address"></textarea>
 					
 					<input type="button" id="submitCadreFormBtnReqId" class="btn btn-success btn-large btn-block border-radius-0" value="SUBMIT DETAILS" onclick="submitCadreForm();"/>
 				</div>
