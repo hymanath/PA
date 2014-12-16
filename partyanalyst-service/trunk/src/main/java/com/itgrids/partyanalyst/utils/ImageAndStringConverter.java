@@ -5,8 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.log4j.Logger;
 
 public class ImageAndStringConverter {
+	
+	private static final Logger LOG = Logger.getLogger(ImageAndStringConverter.class);
 	
 	public String convertImageToBase64String(String imagePath)
 	 {
@@ -19,7 +22,7 @@ public class ImageAndStringConverter {
 	         return Base64.encodeBase64URLSafeString(imageData);
 		 }catch(Exception e)
 		 {
-			 e.printStackTrace();
+			 LOG.error(e);
 			 return null;
 		 }
 	 }
@@ -34,7 +37,7 @@ public class ImageAndStringConverter {
 			 return true;
 		 }catch(Exception e)
 		 {
-			 e.printStackTrace();
+			 LOG.error(e);
 			 return false;
 		 }
 	 }
