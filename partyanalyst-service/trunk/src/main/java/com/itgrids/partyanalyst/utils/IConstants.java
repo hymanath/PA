@@ -816,8 +816,10 @@ public interface IConstants {
     
     public static final String CADRE_MEMBERSHIPCARD_DISPATCHER = "CADRE_MEMBERSHIPCARD_DISPATCHER";
     public static final String CADRE_MEMBERSHIPCARD_DISPATCHER_GROUP = "CADRE_MEMBERSHIPCARD_DISPATCHER_GROUP";
-    
-    
+    public static final String GHMC_CADRE_MEGA_DRIVE_USER = "GHMC_CADRE_MEGA_DRIVE_USER";
+    public static final String GHMC_CADRE_MEGA_DRIVE_USER_GROUP = "GHMC_CADRE_MEGA_DRIVE_USER_GROUP";
+ 
+
     public static final int AP_VOTERS_2014 = 36669181;
     public static final int TG_VOTERS_2014 = 28145591;
     
