@@ -71,7 +71,7 @@ font-size:18px;
 					</label>
 					
 					<!----Availability Times---->
-					<h4>Select Your Availability Times<font class="requiredFont">*</font></h4>
+					<h4>Select Your Availability Dates<font class="requiredFont">*</font></h4>
 					
 					<input type="checkbox" style="margin-top:-3px;margin-right:12px;" class="dateCheck" name="tdpCadreVolunteerVO.date" value="17-12-2014">Date: 17-Dec-2014 &nbsp; [Wednesday]
 					<br/>
@@ -194,7 +194,7 @@ return false;
 	 }
 	  if(emailId .length == 0)
 	{
-	 errorstr +='email is required</br>';
+	 errorstr +='Email is required</br>';
 	 flag = false;
 	 }
 	if(emailId .length > 0 && emailreg.test(emailId) == false)
@@ -204,7 +204,7 @@ return false;
 	}
 	   if(mobileId.length == 0)
 	{
-	 errorstr +='mobile is required</br>';
+	 errorstr +='Mobile is required</br>';
 	 flag = false;
 	 }
 	if(mobileId.length != 0){
