@@ -558,6 +558,9 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),IConstants.CADRE_MEMBERSHIPCARD_DISPATCHER)){
 			return "cadreMemberShipCardDispatcher";
 		}
+		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),IConstants.GHMC_CADRE_MEGA_DRIVE_USER)){
+			return "ghmcMegaDriveUser";
+		}
 		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"CADRE_2014_CARD_SAMPLE")){
 			return "cadre2014CardSample";
 		}

@@ -2,7 +2,6 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,15 +11,13 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
-import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
-import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TdpCadreVolunteerVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ITdpCadreReportService;
-import com.itgrids.partyanalyst.util.IWebConstants;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -38,8 +35,13 @@ public class TdpCadreVolunteerAction extends ActionSupport implements ServletReq
 	private HttpSession session;
 	private ResultStatus resultStatus;
 	private List<GenericVO> constituencyList;
+	private EntitlementsHelper 					entitlementsHelper;
 	
 	
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public List<GenericVO> getConstituencyList() {
 		return constituencyList;
 	}
@@ -143,4 +145,76 @@ public class TdpCadreVolunteerAction extends ActionSupport implements ServletReq
 		return Action.SUCCESS;
 	}
 	
+	public String volunteersDetailsPage()
+	{
+		try {
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			if(regVO != null)
+			{
+				constituencyList = tdpCadreReportService.getGHMCConstituencies();
+			}
+			else
+			{
+				return Action.ERROR;
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in volunteersDetailsPage method in CadreRegistrationAction Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getValunteersInfoByLocation()
+	{
+		try {
+			LOG.info("Entered into getValunteersInfoByLocation method in CadreRegistrationAction Action");
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			if(regVO != null)
+			{
+				if(entitlementsHelper.checkForEntitlementToViewReport(regVO,IConstants.GHMC_CADRE_MEGA_DRIVE_USER) || 
+						 entitlementsHelper.checkForEntitlementToViewReport(regVO,IConstants.GHMC_CADRE_MEGA_DRIVE_USER_GROUP))
+				{
+					jobj = new JSONObject(getTask());
+					Long consituencyId = jobj.getLong("consituencyId");
+					String searchType = jobj.getString("searchType");
+					
+					tdpCadreVolunteerVO = tdpCadreReportService.getConstituencyWiseVolunteerInfo(consituencyId,searchType);
+					return Action.SUCCESS;
+				}
+				else
+				{
+					return Action.ERROR;
+				}
+			}
+			else
+			{
+				return Action.INPUT;
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in saveCadreDetails method in CadreRegistrationAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String assignConstiteuncyForValeenteer()
+	{
+		try {
+			LOG.info("Entered into assignConstiteuncyForValeenteer method in CadreRegistrationAction Action");
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			if(regVO != null)
+			{
+				jobj = new JSONObject(getTask());
+				Long consituencyId = jobj.getLong("consituencyId");
+				Long valunteerId = jobj.getLong("valunteerId");
+				
+				resultStatus = tdpCadreReportService.assignConstiteuncyForValeenteer(consituencyId,valunteerId);
+			}
+		
+		} catch (Exception e) {
+			LOG.error("Exception raised in saveCadreDetails method in CadreRegistrationAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
 }
