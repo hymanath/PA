@@ -3430,7 +3430,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			
 			
 				
-			
+			tdpCadreVolunteer.setIsDeleted("N");
 			tdpCadreVolunteer.setInsertedTime(dateService.getCurrentDateAndTime());
 			tdpCadreVolunteer.setUpdateTime(dateService.getCurrentDateAndTime());
 			tdpCadreVolunteer = tdpCadreVolunteerDAO.save(tdpCadreVolunteer);
@@ -3504,20 +3504,16 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 							{
 								volunteerVO.setTablet("TAB with 2G ");
 							}							
-							else
+							else if(volunteer[7] != null)
 							{
-								volunteerVO.setTablet(" - ");
-							}
-						}
-						if(volunteer[7] != null)
-						{
-							if(volunteer[7].toString().trim().equalsIgnoreCase("Y"))
-							{
-								volunteerVO.setTablet(" TAB with 3G");
-							}
-							else
-							{
-								volunteerVO.setTablet(" - ");
+								if(volunteer[7].toString().trim().equalsIgnoreCase("Y"))
+								{
+									volunteerVO.setTablet(" TAB with 3G");
+								}
+								else
+								{
+									volunteerVO.setTablet(" - ");
+								}
 							}
 						}
 								
@@ -3525,22 +3521,14 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 						{
 							if(volunteer[8].toString().trim().equalsIgnoreCase("Y"))
 							{
-								volunteerVO.setIpad("i-Pad with 2G");
+								volunteerVO.setTablet("i-Pad with 2G");
 							}
-							else
+							else if(volunteer[9] != null)
 							{
-								volunteerVO.setIpad(" - ");
-							}
-						}
-						if(volunteer[9] != null)
-						{
-							if(volunteer[9].toString().trim().equalsIgnoreCase("Y"))
-							{
-								volunteerVO.setIpad(" i-Pad with 3G ");
-							}
-							else
-							{
-								volunteerVO.setIpad(" - ");
+								if(volunteer[9].toString().trim().equalsIgnoreCase("Y"))
+								{
+									volunteerVO.setTablet(" i-Pad with 3G ");
+								}
 							}
 						}
 						
@@ -3550,21 +3538,18 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 							{
 								volunteerVO.setSmartPhone("3G");
 							}
-							else
+							else if(volunteer[11] != null)
 							{
-								volunteerVO.setSmartPhone(" - ");
+								if(volunteer[11].toString().trim().equalsIgnoreCase("Y"))
+								{
+									volunteerVO.setSmartPhone("2G");
+								}
+								else
+								{
+									volunteerVO.setSmartPhone(" - ");
+								}
 							}
-						}
-						if(volunteer[11] != null)
-						{
-							if(volunteer[11].toString().trim().equalsIgnoreCase("Y"))
-							{
-								volunteerVO.setSmartPhone("2G");
-							}
-							else
-							{
-								volunteerVO.setSmartPhone(" - ");
-							}
+							
 						}
 						
 						volunteerVO.setConstituencyId(volunteer[12] != null ? volunteer[12].toString().trim():"");
