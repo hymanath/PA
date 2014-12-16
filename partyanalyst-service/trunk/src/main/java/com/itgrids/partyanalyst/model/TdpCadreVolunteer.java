@@ -4,13 +4,18 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 
 
 @Entity
@@ -35,6 +40,9 @@ public class TdpCadreVolunteer extends BaseModel implements java.io.Serializable
 	private String smartPhone2G;
 	private Date insertedTime;
 	private Date updateTime;
+	private String isDeleted;
+	private Constituency assignedConstituency;
+	private Long assignedConstituencyId;
 	
 	
 	
@@ -156,7 +164,27 @@ public class TdpCadreVolunteer extends BaseModel implements java.io.Serializable
 		this.updateTime = updateTime;
 	}
 	
-	
-	
-	
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "assigned_constituency_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	public Constituency getAssignedConstituency() {
+		return assignedConstituency;
+	}
+	public void setAssignedConstituency(Constituency assignedConstituency) {
+		this.assignedConstituency = assignedConstituency;
+	}	
+	@Column(name="assigned_constituency_id")
+	public Long getAssignedConstituencyId() {
+		return assignedConstituencyId;
+	}
+	public void setAssignedConstituencyId(Long assignedConstituencyId) {
+		this.assignedConstituencyId = assignedConstituencyId;
+	}	
 }
