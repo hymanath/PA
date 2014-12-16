@@ -1527,6 +1527,7 @@
 	</bean>
 	<bean id="tdpCadreVolunteerAction" class="com.itgrids.partyanalyst.web.action.TdpCadreVolunteerAction" singleton="false">
 	<property name="tdpCadreReportService" ref="tdpCadreReportService" />
+	<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 	
 	<!-- <bean id="userDetailsAction" class="com.itgrids.partyanalyst.web.action.UserDetailsAction" singleton="false">
