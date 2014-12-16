@@ -203,6 +203,7 @@
 			<result type="redirect" name="tabAllocationDetailsAction">tabAllocationDetailsAction.action</result>
 		    <result type="redirect" name="memberShipCardPrintStatusAction">memberShipCardPrintStatusAction.action</result>
 			<result type="redirect" name="memberShipCardSamplePrint">memberShipCardSamplePrint.action</result>
+			<result type="redirect" name="tdpCadreVolunteersDetailsAction">tdpCadreVolunteersDetailsAction.action</result>
 			
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
@@ -5620,7 +5621,8 @@
 		    <result name="cadreTransactionsDashBoard" type="redirect">cadreSurveyTransactionsDashboardAction.action</result>
 		    <result name="cadreMemberShipCardDispatcher" type="redirect">cadreMemberShipCardDispatcherAction.action</result>
 		    <result name="tabAllocationDetailsAction" type="redirect">tabAllocationDetailsAction.action</result> 
-		    <result name="cadre2014CardSample" type="redirect">memberShipCardSamplePrint.action</result>		    
+		    <result name="cadre2014CardSample" type="redirect">memberShipCardSamplePrint.action</result>
+		     <result name="ghmcMegaDriveUser" type="redirect">tdpCadreVolunteersDetailsAction.action</result>		    
 		</action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
@@ -9182,6 +9184,25 @@
 			    <param name="inputName">inputStream</param>
 		  </result>	
 		</action>
+		
+		<action name="tdpCadreVolunteersDetailsAction" class="tdpCadreVolunteerAction" method="execute">
+			<result name="success">/jsp/tdpCadreVolunteersDetails.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=tdpCadreVolunteersDetailsAction</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
+		</action>
+		
+		<action name="getVolunteerInfoByLocationAction" class="tdpCadreVolunteerAction" method="getValunteersInfoByLocation">
+			<result type="json" name="success">
+				<param name="root">tdpCadreVolunteerVO</param>
+			</result>
+		</action>
+		
+		<action name="assignConstiteuncyForValeenteerAction" class="tdpCadreVolunteerAction" method="assignConstiteuncyForValeenteer">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>
+			</result>
+		</action>
+		
 </package>
 
 </struts>      
