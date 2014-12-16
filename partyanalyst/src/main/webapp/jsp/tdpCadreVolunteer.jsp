@@ -72,24 +72,24 @@ font-size:18px;
 					
 					<!----Availability Times---->
 					<h4>Select Your Availability Times<font class="requiredFont">*</font></h4>
-					<label class="checkbox">
-						Date: 17-Dec-2014 &nbsp; [Wednesday]<input type="checkbox"  class="dateCheck" name="tdpCadreVolunteerVO.date" value="17-12-2014">
-					</label>
-					<label class="checkbox">
-						Date: 18-Dec-2014 &nbsp; [Thursday]<input type="checkbox" class="dateCheck" name="tdpCadreVolunteerVO.date" value="18-12-2014">
-					</label>
-					<label class="checkbox" name="tdpCadreVolunteerVO.date">
-						Date: 19-Dec-2014 &nbsp; [Friday]<input type="checkbox" class="dateCheck" name="tdpCadreVolunteerVO.date" value="19-12-2014">
-					</label>
-					<label class="checkbox">
-						Date: 20-Dec-2014 &nbsp; [Saturday]<input type="checkbox"  class="dateCheck" name="tdpCadreVolunteerVO.date" value="20-12-2014">
-					</label>
-					<label class="checkbox">
-						Date: 21-Dec-2014 &nbsp; [Sunday]<input type="checkbox" class="dateCheck" name="tdpCadreVolunteerVO.date" value="21-12-2014">
-					</label>
-					<label class="checkbox">
-						Date: 22-Dec-2014 &nbsp; [Monday]<input type="checkbox" class="dateCheck" name="tdpCadreVolunteerVO.date" value="22-12-2014">
-					</label><!----/Availability Times---->
+					
+					<input type="checkbox" style="margin-top:-3px;margin-right:12px;" class="dateCheck" name="tdpCadreVolunteerVO.date" value="17-12-2014">Date: 17-Dec-2014 &nbsp; [Wednesday]
+					<br/>
+					
+						<input type="checkbox" style="margin-top:-3px;margin-right:12px;" class="dateCheck" name="tdpCadreVolunteerVO.date" value="18-12-2014">Date: 18-Dec-2014 &nbsp; [Thursday]
+				<br/>
+					
+						<input type="checkbox" style="margin-top:-3px;margin-right:12px;" class="dateCheck" name="tdpCadreVolunteerVO.date" value="19-12-2014">Date: 19-Dec-2014 &nbsp; [Friday]
+					<br/>
+					
+						<input type="checkbox" style="margin-top:-3px;margin-right:12px;"  class="dateCheck" name="tdpCadreVolunteerVO.date" value="20-12-2014">Date: 20-Dec-2014 &nbsp; [Saturday]
+					<br/>
+					
+						<input type="checkbox" style="margin-top:-3px;margin-right:12px;" class="dateCheck" name="tdpCadreVolunteerVO.date" value="21-12-2014">Date: 21-Dec-2014 &nbsp; [Sunday]
+					<br/>
+					
+						<input type="checkbox" style="margin-top:-3px;margin-right:12px;" class="dateCheck" name="tdpCadreVolunteerVO.date" value="22-12-2014">Date: 22-Dec-2014 &nbsp; [Monday]
+					<br/><!----/Availability Times---->
 					
 					<!----Laptop---->
 					<h4>Do you have Laptop?<font class="requiredFont">*</font></h4>
