@@ -1,8 +1,10 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class TdpCadreVolunteerVO {
+public class TdpCadreVolunteerVO  implements java.io.Serializable{
+private Long id;
 private String name;
 private String mobileNo;
 private String email;
@@ -18,7 +20,15 @@ private String ipad;
 private String noTab;
 
 
+private List<TdpCadreVolunteerVO> tdpCadreVolunteerVOList = new ArrayList<TdpCadreVolunteerVO>(0);
+private List<String> datesList = new ArrayList<String>(0);
 
+public List<String> getDatesList() {
+	return datesList;
+}
+public void setDatesList(List<String> datesList) {
+	this.datesList = datesList;
+}
 public String getTablet() {
 	return tablet;
 }
@@ -100,5 +110,18 @@ public void setIpad(String ipad) {
 }
 
 
+public List<TdpCadreVolunteerVO> getTdpCadreVolunteerVOList() {
+	return tdpCadreVolunteerVOList;
+}
+public void setTdpCadreVolunteerVOList(
+		List<TdpCadreVolunteerVO> tdpCadreVolunteerVOList) {
+	this.tdpCadreVolunteerVOList = tdpCadreVolunteerVOList;
+}
+public Long getId() {
+	return id;
+}
+public void setId(Long id) {
+	this.id = id;
+}
 
 }
