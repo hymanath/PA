@@ -77,7 +77,7 @@
 						<button type="submit" class="btn btn-success " style="margin-left: 10px;" onclick="getVolunteerDetails();" >Search</button>
 					</div>	
 					<img src='images/Loading-data.gif' id="loadingImg" style="display:none;margin-top: 100px; height: 70px; width: 90px;"/>
-					<div id="volunteerTabelDiv" class="pull-left " style="height:600px;display:none;padding:10px;"></div>								
+					<div id="volunteerTabelDiv" class="pull-left " style="height:600px;display:none;padding:10px;display: table;"></div>								
 					
 				</div>
 			</div>
@@ -130,7 +130,7 @@
 			if(results != null && results.length>0)
 			{
 				var str = '<h4 align="center"> VOLUNTEERS DETAILS </h4>';
-					str+='<br><div id="detailsDiv" style=""></div><div style="overflow-x:scroll;width:1000px;">';
+					str+='<br><div id="detailsDiv" style=""></div><div style="width:1000px;">';
 					str+='<table class="table table-bordered" id="volunteersTab" >';
 					str+='<thead class="alert alert-success">';
 					str+='<tr>';

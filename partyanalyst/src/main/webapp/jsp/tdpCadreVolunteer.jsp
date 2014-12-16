@@ -2,6 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="s" uri="/struts-tags"%>
 <html lang="en">
+<title>  Volunteers Enrollment For TDP Cadre Registration in GHMC</title>
   <head>
 	 <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet"/>	
@@ -62,9 +63,9 @@ font-size:18px;
 						<input class="input-block-level border-radius-0" type="text" placeholder="Enter Email ID"  id="emailId" name="tdpCadreVolunteerVO.email">
 					</label>
 					<label>Your Contact Number<font class="requiredFont">*</font>
-						<input  class="input-block-level border-radius-0" type="text" placeholder="Enter Mobile Number"  id="mobileId" name="tdpCadreVolunteerVO.mobileNo">
+						<input  class="input-block-level border-radius-0" type="text" placeholder="Enter Mobile Number"  id="mobileId" name="tdpCadreVolunteerVO.mobileNo" onBlur="checkUserAvailableOrNot();">
 					</label>
-					<input type="button" onclick="checkUserAvailableOrNot();" class="btn btn-info" value="check user Available Status"/> 
+					<!-- <input type="button" onclick="checkUserAvailableOrNot();" class="btn btn-info" value="check user Available Status"/>  -->
 					<label>Select Your Constituency Name<font class="requiredFont">*</font>
 					<br/>
 					<s:select multiple="true" theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyId" list="constituencyList" listKey="id" listValue="name" headerKey="0" style="width:220px;" name="tdpCadreVolunteerVO.constituencyId" />
@@ -179,6 +180,7 @@ return false;
 	function checkUserAvailableOrNot()
 	{
 	var errorstr = '';
+	$("#errorDiv").html('');
 		var emailId = $.trim($("#emailId").val());
 		var mobileId = $.trim($("#mobileId").val());
 		var emailreg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
@@ -225,12 +227,9 @@ return false;
 			{
 				if(result == true)
 				{
-					$("#errorDiv").html(" <span style='margin-left:-50px'>Volunteer Already Available with this details...</span> ");
+					$("#errorDiv").html(" <span style='margin-left:-50px'>Volunteer Already Registered with this details...</span> ");
 				}
-				else
-				{
-					 $("#errorDiv").html(" <span style='margin-left:-50px;color:green;'> Volunteer not Available with this details.you can proceed. </span> ");
-				}
+				
 			}
 		});	
 	}
