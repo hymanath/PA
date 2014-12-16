@@ -76,7 +76,8 @@
 						</select>
 						<button type="submit" class="btn btn-success " style="margin-left: 10px;" onclick="getVolunteerDetails();" >Search</button>
 					</div>	
-					<div id="volunteerTabelDiv" class="pull-left " style="height:600px;display:none;"></div>								
+					<img src='images/Loading-data.gif' id="loadingImg" style="display:none;margin-top: 100px; height: 70px; width: 90px;"/>
+					<div id="volunteerTabelDiv" class="pull-left " style="height:600px;display:none;padding:10px;"></div>								
 					
 				</div>
 			</div>
@@ -85,15 +86,26 @@
 
 	</div>
 	<script>
-	$('document').ready(function(){
-		
-	});
+	var constituencyArr = new Array();
 	
+	<c:forEach var="constiuency" items="${constituencyList}" >
+	var constiObj = 
+		{
+		id: '${constiuency.id}',
+		value: '${constiuency.name}'
+		}
+		constituencyArr.push(constiObj);
+	</c:forEach>
+	
+	//console.log(constituencyArr);
+	</script>
+	<script>
 	function getVolunteerDetails()
 	{
 		var constiuencyId = $('#constituencyId').val();
 		var searchType = $('#searchTypeId').val();
-		
+		$('#volunteerTabelDiv').html('');
+		$('#loadingImg').show();
 				var jsObj = 
 			   {
 				  consituencyId:constiuencyId,
@@ -103,6 +115,7 @@
 					url : "getVolunteerInfoByLocationAction.action",
 					data : {task:JSON.stringify(jsObj)}
 				}).done(function(result){
+				$('#loadingImg').hide();
 					buildVolunteerDetails(result);					
 				});
 	}
@@ -116,13 +129,15 @@
 			$('#volunteerTabelDiv').show();			
 			if(results != null && results.length>0)
 			{
-				var str = '<div style="overflow:scroll;">';
-					str+='<table class="table table-striped table-hover table-condensed table-bordered">';
+				var str = '<h4 align="center"> VOLUNTEERS DETAILS </h4>';
+					str+='<br><div id="detailsDiv" style=""></div><div style="overflow-x:scroll;width:1000px;">';
+					str+='<table class="table table-bordered" id="volunteersTab" >';
 					str+='<thead class="alert alert-success">';
 					str+='<tr>';
+					str+='<th> S.No </th>';
 					str+='<th> Name </th>';
 					str+='<th> Mobile No </th>';
-					str+='<th> Address </th>';
+					str+='<th style="width:150px;"> Address </th>';
 					str+='<th> Net Connection </th>';
 					str+='<th> Laptop </th>';					
 					str+='<th style="width: 125px;"> TAB/i-Pad with 2G/3G </th>';
@@ -134,12 +149,14 @@
 					str+='</tr>		';				
 					str+='</thead>';
 					str+='<tbody>';	
+					
 					for(var i in  results)
-					{
+					{						
 						str+='<tr>';
+						str+='<td>'+(parseInt(i)+1)+'</td>';
 						str+='<td>'+results[i].name+'</td>';
 						str+='<td style="text-align:center;">'+results[i].mobileNo+'</td>';
-						str+='<td>'+results[i].address+'</td>';
+						str+='<td  style="width:150px;">'+results[i].address+'</td>';
 						str+='<td style="text-align:center;">'+results[i].internet+'</td>';
 						str+='<td style="text-align:center;">'+results[i].lapTop+'</td>';						
 						//str+='<td style="text-align:center;">'+results[i].tablet+'</td>';
@@ -174,17 +191,17 @@
 						
 						str+='<td  style="text-align:center;">';
 						str+='<select id="assignConstiList'+i+'" >';
-						if(results[i].tdpCadreVolunteerVOList != null && results[i].tdpCadreVolunteerVOList.length>0)
+						if(constituencyArr != null && constituencyArr.length>0)
 						{
 							str+='<option value="0"> Allocate Constituency </option>';
-							for(var j in  results[i].tdpCadreVolunteerVOList)
+							for(var j in  constituencyArr)
 							{
-							if(results[i].constituencyId != null && (results[i].constituencyId == results[i].tdpCadreVolunteerVOList[j].id))
+							if(results[i].constituencyId != null && (results[i].constituencyId == constituencyArr[j].id))
 							{
-								str+='<option value="'+results[i].tdpCadreVolunteerVOList[j].id+'" selected="selected">'+results[i].tdpCadreVolunteerVOList[j].name+'</option>';
+								str+='<option value="'+constituencyArr[j].id+'" selected="selected">'+constituencyArr[j].value+'</option>';
 							}
 							else{
-								str+='<option value="'+results[i].tdpCadreVolunteerVOList[j].id+'">'+results[i].tdpCadreVolunteerVOList[j].name+'</option>';
+								str+='<option value="'+constituencyArr[j].id+'" >'+constituencyArr[j].value+'</option>';
 							}
 								
 							}
@@ -199,7 +216,38 @@
 					str+='</table> </div>';
 
 					$('#volunteerTabelDiv').html(str);
+					$('#volunteersTab').dataTable();
 				
+				var str1 ='';
+					str1+='<table class="table table-bordered">';
+					str1+='<thead>';
+					str1+='<tr>';
+					str1+='<th style="background-color:#EEEEEE;"> Total Volunteers </th><td>'+results.length+'</td>';					
+					str1+='</tr>';
+					str1+='<tr>';
+					str1+='<th style="background-color:#EEEEEE;" > Loptop-Users  </th> <td>'+result.lapTop+'</td>';
+					str1+='<th style="background-color:#EEEEEE;"> Internet-Users  </th> <td>'+result.internet+'</td>';
+					str1+='<th style="background-color:#EEEEEE;"> Laptop & Internet-Users  </th> <td>'+result.noTab+'</td>';
+					str1+='</tr>';
+					str1+='<tr>';
+					str1+='<th style="background-color:#EEEEEE;" >  Tablet With 2G  </th> <td>'+result.tablet+'</td>';
+					str1+='<th style="background-color:#EEEEEE;"> Tablet With 3G  </th> <td>'+result.tablet3G+'</td>';
+					str1+='<th style="background-color:#EEEEEE;"> </th> <td></td>';
+					str1+='</tr>';
+					str1+='<tr>';
+					str1+='<tr>';
+					str1+='<th style="background-color:#EEEEEE;"> SmartPhone With 2G  </th> <td>'+result.smartPhone+'</td>';
+					str1+='<th style="background-color:#EEEEEE;" >  SmartPhone With 3G  </th> <td>'+result.smartPhone3G+'</td>';
+					str1+='<th style="background-color:#EEEEEE;"></th> <td></td>';
+					str1+='</tr>';					
+					str1+='<th style="background-color:#EEEEEE;" >  i-Pad With 2G  </th> <td>'+result.ipad+'</td>';
+					str1+='<th style="background-color:#EEEEEE;"> i-Pad With 3G  </th> <td>'+result.ipad3G+'</td>';
+					str1+='<th style="background-color:#EEEEEE;"> </th> <td></td>';
+					str1+='</tr>';
+					str1+='</thead>';
+					str1+='</table>';
+					
+					$('#detailsDiv').html(str1);
 			}
 			else
 			{
@@ -240,6 +288,5 @@
 				}
 			});
 	}
-	
 	</script>
   </body>
