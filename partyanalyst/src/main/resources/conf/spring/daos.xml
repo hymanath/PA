@@ -1750,6 +1750,14 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
 
+<bean id="verifyAccessUsersDAO" class="com.itgrids.partyanalyst.dao.hibernate.VerifyAccessUsersDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
+<bean id="dynamicKeysDAO" class="com.itgrids.partyanalyst.dao.hibernate.DynamicKeysDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+
 <bean id="tdpCadreVerfiedDataDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreVerfiedDataDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
