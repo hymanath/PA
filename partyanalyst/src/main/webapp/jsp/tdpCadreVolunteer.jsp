@@ -64,6 +64,7 @@ font-size:18px;
 					<label>Your Contact Number<font class="requiredFont">*</font>
 						<input  class="input-block-level border-radius-0" type="text" placeholder="Enter Mobile Number"  id="mobileId" name="tdpCadreVolunteerVO.mobileNo">
 					</label>
+					<input type="button" onclick="checkUserAvailableOrNot();" class="btn btn-info" value="check user Available Status"/> 
 					<label>Select Your Constituency Name<font class="requiredFont">*</font>
 					<br/>
 					<s:select multiple="true" theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyId" list="constituencyList" listKey="id" listValue="name" headerKey="0" style="width:220px;" name="tdpCadreVolunteerVO.constituencyId" />
@@ -172,6 +173,69 @@ if(validateDetails())
 		}	
 else 
 return false;		
+	}
+	
+	
+	function checkUserAvailableOrNot()
+	{
+	var errorstr = '';
+		var emailId = $.trim($("#emailId").val());
+		var mobileId = $.trim($("#mobileId").val());
+		var emailreg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+		if(emailId .length == 0)
+		{
+		 errorstr +='Email is required</br>';
+		 flag = false;
+		 }
+		if(emailId .length > 0 && emailreg.test(emailId) == false)
+		 {
+			errorstr +='Invalid Email</br>';
+			 flag = false;
+		}
+		   if(mobileId.length == 0)
+		{
+		 errorstr +='Mobile is required</br>';
+		 flag = false;
+		 }
+		if(mobileId.length != 0){
+				if(isNaN(mobileId) || mobileId.length<10 || mobileId.length>10 || !(mobileId.charAt(0)=="9" || mobileId.charAt(0)=="8" || mobileId.charAt(0)=="7")){
+				errorstr +='Invalid Mobile</br>';
+				flag=false;
+				}
+			}
+	
+	if(errorstr.trim().length >0)
+		{
+	$('html,body').animate({
+			scrollTop:  $("#errorDiv").offset().top 
+			});
+			$("#errorDiv").html(errorstr);
+		}	
+	else{
+	var jsObj = 
+		   {
+			  emailId:emailId,
+			  mobileNo:mobileId
+		   }	
+			$.ajax({
+				url : "isExistUSerByMobileAndEmailAction.action",
+				data : {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				if(result != null)
+			{
+				if(result == true)
+				{
+					$("#errorDiv").html(" <span style='margin-left:-50px'>Volunteer Already Available with this details...</span> ");
+				}
+				else
+				{
+					 $("#errorDiv").html(" <span style='margin-left:-50px;color:green;'> Volunteer not Available with this details.you can proceed. </span> ");
+				}
+			}
+		});	
+	}
+		
+	
 	}
 	function validateDetails()
 	{
