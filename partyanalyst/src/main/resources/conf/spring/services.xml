@@ -2329,6 +2329,8 @@
 		<property name="tdpCadreTeluguNamesDAO" ref="tdpCadreTeluguNamesDAO" />
 		<property name="tdpCadreVerfiedDataDAO" ref="tdpCadreVerfiedDataDAO" />
 		<property name="tabUserKeysDAO" ref="tabUserKeysDAO" />	
+		<property name="dynamicKeysDAO" ref="dynamicKeysDAO" />	
+		<property name="verifyAccessUsersDAO" ref="verifyAccessUsersDAO" />	
      </bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
