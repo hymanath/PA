@@ -7,7 +7,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet"/>	
     <link href="css/style.css" rel="stylesheet"/>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-		 
+	
 	<!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -22,32 +22,16 @@
 	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
 	<script type="text/javascript" src="js/json/json-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
+
 	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
-	<!-- Skin CSS files resize.css must load before layout.css --> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
- 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
-	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css">      
 
-	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
-	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
-	<script type="text/javascript" src="js/photobooth/photobooth_min.js"></script>
-		<script type="text/javascript" src="js/photobooth/website/js/cadre.js"></script>
-		
-		<link type="text/css" rel="stylesheet" media="screen" href="js/photobooth/website/css/page.css" />
-		<link rel="stylesheet" href="js/flipclock/flipclock.css">		
-		<script src="js/flipclock/flipclock.js"></script>
-
+	
 	<!-- YUI Dependency files (End) -->
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+
+<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
+<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
 	  <style>
   .requiredFont {
 color:red;
@@ -81,6 +65,7 @@ font-size:18px;
 						<input  class="input-block-level border-radius-0" type="text" placeholder="Enter Mobile Number"  id="mobileId" name="tdpCadreVolunteerVO.mobileNo">
 					</label>
 					<label>Select Your Constituency Name<font class="requiredFont">*</font>
+					<br/>
 					<s:select multiple="true" theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="constituencyId" list="constituencyList" listKey="id" listValue="name" headerKey="0" style="width:220px;" name="tdpCadreVolunteerVO.constituencyId" />
 					
 					</label>
@@ -146,7 +131,7 @@ font-size:18px;
 						<input type="radio" name="tdpCadreVolunteerVO.tablet" value="tab3G" class="tabipad tabipadcheck ">Yes, I have TAB with 3G.
 					</label>
 					<label class="radio inline"  style="margin-left:0px;">
-						<input id="ipadradioId" type="radio" name="tdpCadreVolunteerVO.tablet" value="ipad2G" class="tabipad tabipadcheck " checked> Yes, I have i-Pad with 2G.
+						<input id="ipadradioId" type="radio" name="tdpCadreVolunteerVO.tablet" value="ipad2G" class="tabipad tabipadcheck " > Yes, I have i-Pad with 2G.
 					</label>
 					<label class="radio inline">
 						<input type="radio" name="tdpCadreVolunteerVO.tablet" value="ipad3G" class="tabipad tabipadcheck ">Yes, I have i-Pad with 3G.
@@ -312,6 +297,12 @@ return false;
 		$("#notabipad").attr('checked', false);
 		
 	}
+	$(document).ready(function() {
+
+$('#constituencyId').multiselect({
+			  noneSelectedText:"Select Constituency"});	
+			  
+	});
 	/*function clearRadioGrp()
 	{
 	$(".tabipad").attr('checked', false);
@@ -319,6 +310,6 @@ return false;
 	$(".tabipad").click(function() {
 	$("#notabipad").attr('checked', false);
 	});*/
-
-	</script>
+</script>
+	
   </body>
