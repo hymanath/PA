@@ -60,18 +60,18 @@
 			<div class="row">
 			<div class="span12 ">
 				<div class="well well-small border-radius-0 span12 " style="display:table;">
-					<h4 class="text-center">CONSTITUENCY ALLOCATION TO VOLUNTEER</h4>
+					<h4 class="offset3">CONSTITUENCY ALLOCATION TO VOLUNTEER</h4>
 					<hr>
 			
-					<div class="input-prepend input-append  pull-left" style="margin-left:210px">
+					<div class="input-prepend input-append  pull-left" style="margin-left:250px">
 						<span class="add-on">Select Constituency : </span>
 							<s:select theme="simple" cssClass="border-radius-0 input-xlarge selectBoxWidth " id="constituencyId" list="constituencyList" listKey="id" listValue="name" headerKey="0" headerValue=" All" style="width:220px;" name="tdpCadreVolunteerVO.constituencyId" />
 					</div>
-					<div class="input-prepend input-append  pull-left" style="margin-left:210px">
+					<div class="input-prepend input-append  pull-left" style="margin-left:250px">
 						<span class="add-on">Search Level : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 						<select id="searchTypeId">
 						<option value="All" > All </option>
-						<option value="Available" > Available </option>
+						<option value="Available" > Not Allocated </option>
 						<option value="Assigned" > Allocated </option>
 						</select>
 						<button type="submit" class="btn btn-success " style="margin-left: 10px;" onclick="getVolunteerDetails();" >Search</button>
@@ -82,7 +82,7 @@
 			</div>
 		</div>			
 	</div>
-	<div id="statusDiv"></div>
+
 	</div>
 	<script>
 	$('document').ready(function(){
@@ -119,17 +119,17 @@
 					str+='<table class="table table-striped table-hover table-condensed table-bordered">';
 					str+='<thead class="alert alert-success">';
 					str+='<tr>';
-					str+='<th>Name</th>';
-					str+='<th>Mobile No</th>';
-					str+='<th>Address</th>';
-					str+='<th>Net Connection</th>';
-					str+='<th>Laptop</th>';					
-					str+='<th style="width: 125px;">TAB/i-Pad with 2G/3G </th>';
+					str+='<th> Name </th>';
+					str+='<th> Mobile No </th>';
+					str+='<th> Address </th>';
+					str+='<th> Net Connection </th>';
+					str+='<th> Laptop </th>';					
+					str+='<th style="width: 125px;"> TAB/i-Pad with 2G/3G </th>';
 					//str+='<th>i-Phone With 2G/3G</th>';
-					str+='<th>Smart-Phone With 2G/3G</th>';
-					str+='<th>Available Dates </th>';
-					str+='<th>Selected Constituency</th>';
-					str+='<th>Assigned Constituency </th>';
+					str+='<th> Smart-Phone With 2G/3G </th>';
+					str+='<th> Available Dates </th>';
+					str+='<th> Available Constituencies </th>';
+					str+='<th> Allocated Constituency </th>';
 					str+='</tr>		';				
 					str+='</thead>';
 					str+='<tbody>';	
@@ -142,20 +142,8 @@
 						str+='<td style="text-align:center;">'+results[i].internet+'</td>';
 						str+='<td style="text-align:center;">'+results[i].lapTop+'</td>';						
 						//str+='<td style="text-align:center;">'+results[i].tablet+'</td>';
-						str+='<td style="text-align:center;width: 125px;">'+results[i].tablet+' <br> '+results[i].ipad+'</td>';
+						str+='<td style="text-align:center;width: 125px;">'+results[i].tablet+'</td>';
 						str+='<td style="text-align:center;">'+results[i].smartPhone+'</td>';
-						str+='<td>';
-						if(results[i].tdpCadreVolunteerVOList != null && results[i].tdpCadreVolunteerVOList.length>0)
-						{
-							for(var j in  results[i].tdpCadreVolunteerVOList)
-							{
-								str+=''+results[i].tdpCadreVolunteerVOList[j].name+'';
-								
-								if(j< results[i].tdpCadreVolunteerVOList.length -1)
-									str+=', <br>';
-							}
-						}
-						str+='</td>';
 						str+='<td>';
 						
 						if(results[i].datesList != null && results[i].datesList.length>0)
@@ -170,8 +158,21 @@
 						}
 						
 						str+='</td>';
+						str+='<td>';
+						if(results[i].tdpCadreVolunteerVOList != null && results[i].tdpCadreVolunteerVOList.length>0)
+						{
+							for(var j in  results[i].tdpCadreVolunteerVOList)
+							{
+								str+=''+results[i].tdpCadreVolunteerVOList[j].name+'';
+								
+								if(j< results[i].tdpCadreVolunteerVOList.length -1)
+									str+=', <br>';
+							}
+						}
+						str+='</td>';
+						
 						str+='<td  style="text-align:center;">';
-						str+='<select id="assignConstiList" onchange="assignConstiteuncyForValeenteer('+results[i].id+',this.value);">';
+						str+='<select id="assignConstiList'+i+'" >';
 						if(results[i].tdpCadreVolunteerVOList != null && results[i].tdpCadreVolunteerVOList.length>0)
 						{
 							str+='<option value="0"> Allocate Constituency </option>';
@@ -182,12 +183,13 @@
 								str+='<option value="'+results[i].tdpCadreVolunteerVOList[j].id+'" selected="selected">'+results[i].tdpCadreVolunteerVOList[j].name+'</option>';
 							}
 							else{
-							str+='<option value="'+results[i].tdpCadreVolunteerVOList[j].id+'">'+results[i].tdpCadreVolunteerVOList[j].name+'</option>';
+								str+='<option value="'+results[i].tdpCadreVolunteerVOList[j].id+'">'+results[i].tdpCadreVolunteerVOList[j].name+'</option>';
 							}
 								
 							}
 						}
-						str+='</select>';
+						str+='</select><i class="icon-ok pull-right" title="Allocate Constituency" style="cursor:pointer" onclick="assignConstiteuncyForValeenteer('+results[i].id+',\'statusMsg'+i+'\',\'assignConstiList'+i+'\');" ></i>';
+						str+='<br><span id="statusMsg'+i+'"></span>';
 						str+='</td>';
 						str+='</tr>';
 					}
@@ -204,19 +206,37 @@
 			}
 		}
 	}
-	function assignConstiteuncyForValeenteer(valunteerId,constiuencyId)
+	function assignConstiteuncyForValeenteer(valunteerId,statusDiv,constiuencyDivId)
 	{
-				var jsObj = 
-			   {
-				  consituencyId:constiuencyId,
-				  valunteerId:valunteerId
-			   }	
-		 $.ajax({
-					url : "assignConstiteuncyForValeenteerAction.action",
-					data : {task:JSON.stringify(jsObj)}
-				}).done(function(result){
-					console.log(result);					
-				});
+		var constiuencyId = $('#'+constiuencyDivId+'').val();
+		if(constiuencyId ==0)
+		{
+			$('#'+statusDiv+'').html("<span style='font-weight:bold;color:red;'> Please Select Constituency.</span>");
+			return;
+		}
+		var jsObj = 
+	   {
+		  consituencyId:constiuencyId,
+		  valunteerId:valunteerId
+	   }	
+	 $.ajax({
+				url : "assignConstiteuncyForValeenteerAction.action",
+				data : {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+
+				if(result != null)					
+				{					
+					if(result.resultCode == 0)
+					{
+						$('#'+statusDiv+'').html("<span style='font-weight:bold;color:green;'>Constituency Allocated .</span>");
+					}
+					else if(result.resultCode == 1)
+					{
+						$('#'+statusDiv+'').html("<span style='font-weight:bold;color:red;'>Constituency Allocation Failed.</span>");
+					}
+					
+				}
+			});
 	}
 	
 	</script>
