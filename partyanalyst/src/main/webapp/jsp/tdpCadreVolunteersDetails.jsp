@@ -76,7 +76,7 @@
 						</select>
 						<button type="submit" class="btn btn-success " style="margin-left: 10px;" onclick="getVolunteerDetails();" >Search</button>
 					</div>	
-					<div id="volunteerTabelDiv" class="pull-left "></div>								
+					<div id="volunteerTabelDiv" class="pull-left " style="height:600px;display:none;"></div>								
 					
 				</div>
 			</div>
@@ -113,9 +113,10 @@
 		{
 			$('#volunteerTabelDiv').html('');
 			var results = result.tdpCadreVolunteerVOList;
+			$('#volunteerTabelDiv').show();			
 			if(results != null && results.length>0)
 			{
-				var str = '<div>';
+				var str = '<div style="overflow:scroll;">';
 					str+='<table class="table table-striped table-hover table-condensed table-bordered">';
 					str+='<thead class="alert alert-success">';
 					str+='<tr>';
@@ -202,6 +203,7 @@
 			}
 			else
 			{
+				$('#volunteerTabelDiv').css("overflow","none");
 				$('#volunteerTabelDiv').html('<div style="font-weight: bold; margin-top: 50px;text-align:center;margin-left: -350px;">No data Available ... </div>');
 			}
 		}
