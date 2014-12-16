@@ -152,11 +152,20 @@ public class TdpCadreVolunteerAction extends ActionSupport implements ServletReq
 			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 			if(regVO != null)
 			{
-				constituencyList = tdpCadreReportService.getGHMCConstituencies();
+				if(entitlementsHelper.checkForEntitlementToViewReport(regVO,IConstants.GHMC_CADRE_MEGA_DRIVE_USER) || 
+						 entitlementsHelper.checkForEntitlementToViewReport(regVO,IConstants.GHMC_CADRE_MEGA_DRIVE_USER_GROUP))
+				{
+					constituencyList = tdpCadreReportService.getGHMCConstituencies();
+					return Action.SUCCESS;
+				}
+				else
+				{
+					return Action.ERROR;
+				}
 			}
 			else
 			{
-				return Action.ERROR;
+				return Action.INPUT;
 			}
 		} catch (Exception e) {
 			LOG.error("Exception raised in volunteersDetailsPage method in CadreRegistrationAction Action",e);
@@ -172,20 +181,12 @@ public class TdpCadreVolunteerAction extends ActionSupport implements ServletReq
 			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 			if(regVO != null)
 			{
-				if(entitlementsHelper.checkForEntitlementToViewReport(regVO,IConstants.GHMC_CADRE_MEGA_DRIVE_USER) || 
-						 entitlementsHelper.checkForEntitlementToViewReport(regVO,IConstants.GHMC_CADRE_MEGA_DRIVE_USER_GROUP))
-				{
-					jobj = new JSONObject(getTask());
-					Long consituencyId = jobj.getLong("consituencyId");
-					String searchType = jobj.getString("searchType");
-					
-					tdpCadreVolunteerVO = tdpCadreReportService.getConstituencyWiseVolunteerInfo(consituencyId,searchType);
-					return Action.SUCCESS;
-				}
-				else
-				{
-					return Action.ERROR;
-				}
+				jobj = new JSONObject(getTask());
+				Long consituencyId = jobj.getLong("consituencyId");
+				String searchType = jobj.getString("searchType");
+				
+				tdpCadreVolunteerVO = tdpCadreReportService.getConstituencyWiseVolunteerInfo(consituencyId,searchType);
+				return Action.SUCCESS;
 			}
 			else
 			{
