@@ -36,8 +36,18 @@ public class TdpCadreVolunteerAction extends ActionSupport implements ServletReq
 	private ResultStatus resultStatus;
 	private List<GenericVO> constituencyList;
 	private EntitlementsHelper 					entitlementsHelper;
+	private Boolean 							isExist;
 	
 	
+	
+	public Boolean getIsExist() {
+		return isExist;
+	}
+
+	public void setIsExist(Boolean isExist) {
+		this.isExist = isExist;
+	}
+
 	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
 		this.entitlementsHelper = entitlementsHelper;
 	}
@@ -215,6 +225,23 @@ public class TdpCadreVolunteerAction extends ActionSupport implements ServletReq
 		
 		} catch (Exception e) {
 			LOG.error("Exception raised in saveCadreDetails method in CadreRegistrationAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String isExistUSerByMobileAndEmail()
+	{
+		try {
+			LOG.info("Entered into isExistUSerByMobileAndEmail method in CadreRegistrationAction Action");
+			
+				jobj = new JSONObject(getTask());
+				String mobileNo = jobj.getString("mobileNo");
+				String emailId = jobj.getString("emailId");
+				
+				isExist = tdpCadreReportService.isExistUSerByMobileAndEmail(mobileNo,emailId);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in isExistUSerByMobileAndEmail method in CadreRegistrationAction Action",e);
 		}
 		return Action.SUCCESS;
 	}
