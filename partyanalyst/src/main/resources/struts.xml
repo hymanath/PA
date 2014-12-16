@@ -9185,7 +9185,7 @@
 		  </result>	
 		</action>
 		
-		<action name="tdpCadreVolunteersDetailsAction" class="tdpCadreVolunteerAction" method="execute">
+		<action name="tdpCadreVolunteersDetailsAction" class="tdpCadreVolunteerAction" method="volunteersDetailsPage">
 			<result name="success">/jsp/tdpCadreVolunteersDetails.jsp</result>
 			<result name="input">/jsp/loginForm.jsp?src=tdpCadreVolunteersDetailsAction</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
