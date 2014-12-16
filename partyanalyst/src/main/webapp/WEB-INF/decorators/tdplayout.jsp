@@ -317,6 +317,9 @@ margin-top:10px;
 						<li><a href="tdpCadreCardsPrintingDashBoardAction.action"><span>Cards Printing Dashboard</span></a></li>
 					</c:if>
 					<c:if test="${sessionScope.USER.isAdmin == 'true'}">
+						<li><a href="tdpCadreVolunteersDetailsAction.action"><span>GHMC Cadre Mega Drive </span></a></li>
+					</c:if>
+					<c:if test="${sessionScope.USER.isAdmin == 'true'}">
 						<li><a onmousedown="return false;" class="parent"><span>2014 Cadre Reports</span></a>
 							<div>
 								<ul>
@@ -382,9 +385,12 @@ margin-top:10px;
 	
 			<c:if test="${sessionScope.loginStatus == 'out'}">  
 			 <c:if test="${not fn:contains(sessionScope.USER.entitlements, 'PARTY_CADRE_SEARCH' ) }">
+			 <c:if test="${not fn:contains(sessionScope.USER.entitlements, 'GHMC_CADRE_MEGA_DRIVE_USER' ) }">
 		<li id="dashBoardBtn">
 			<a href="dashBoardAction.action"><span>DASHBOARD</span></a> 
 		</li>
+		
+		</c:if>
 		</c:if>
 		</c:if>		
 		<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">   
