@@ -17,7 +17,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -62,6 +61,7 @@ import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IDynamicKeysDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
@@ -83,6 +83,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreVerfiedDataDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
+import com.itgrids.partyanalyst.dao.IVerifyAccessUsersDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterNamesDAO;
 import com.itgrids.partyanalyst.dao.IVoterRelationDAO;
@@ -100,7 +101,6 @@ import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.dto.SinkFamilyVO;
 import com.itgrids.partyanalyst.dto.SinkVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
@@ -202,6 +202,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ITdpCadreTeluguNamesDAO				tdpCadreTeluguNamesDAO;
 	private ITdpCadreVerfiedDataDAO             tdpCadreVerfiedDataDAO;
 	private ITabUserKeysDAO tabUserKeysDAO;
+	private IDynamicKeysDAO 				dynamicKeysDAO;
+	private IVerifyAccessUsersDAO 			verifyAccessUsersDAO;
 	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
@@ -220,6 +222,14 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	
 	public ITdpCadreTeluguNamesDAO getTdpCadreTeluguNamesDAO() {
 		return tdpCadreTeluguNamesDAO;
+	}
+
+	public void setDynamicKeysDAO(IDynamicKeysDAO dynamicKeysDAO) {
+		this.dynamicKeysDAO = dynamicKeysDAO;
+	}
+
+	public void setVerifyAccessUsersDAO(IVerifyAccessUsersDAO verifyAccessUsersDAO) {
+		this.verifyAccessUsersDAO = verifyAccessUsersDAO;
 	}
 
 	public void setTdpCadreVerfiedDataDAO(
@@ -6129,5 +6139,53 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}
     	
     	return returnVO;
+	}
+	
+	/**
+	 * This Service is user for getting user details for verify cadre data details
+	 * @param userId
+	 * @return
+	 */
+	public String getVerifyUserDetails(Long userId)
+	{
+		String status = "";
+		try {
+			List<String> result = verifyAccessUsersDAO.getUserStatus(userId);
+			if(result != null && result.size() > 0)
+			{
+				status = result.get(0);
+			}
+			else
+			{
+				status = null;
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getVerifyUserDetails ",e);
+		}
+		return status;
+	}
+	
+	/**
+	 * This Service is user for getting dynamic key value
+	 * @param userId
+	 * @return
+	 */
+	public String getDynamicKeyStatus(String key)
+	{
+		String status = "";
+		try {
+			List<String> result = dynamicKeysDAO.getDynamicKeyValue(key);
+			if(result != null && result.size() > 0)
+			{
+				status = result.get(0);
+			}
+			else
+			{
+				status = null;
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getVerifyUserDetails ",e);
+		}
+		return status;
 	}
 }
