@@ -524,6 +524,8 @@
 				<value>com.itgrids.partyanalyst.model.TdpCadreVolunteer</value>
 				<value>com.itgrids.partyanalyst.model.TdpCadreVolunteerConstituency</value>
 				<value>com.itgrids.partyanalyst.model.TdpCadreVolunteerDate</value>
+				<value>com.itgrids.partyanalyst.model.VerifyAccessUsers</value>
+				<value>com.itgrids.partyanalyst.model.DynamicKeys</value>
 				</list>
 			
 		</property>
