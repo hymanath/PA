@@ -1233,13 +1233,13 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 									assemblyMessage.append( "\n"+finalName.toString() +" Constituency Cadre Enrollment Update");								
 									if(constituency.getDistrict().getDistrictId()>10) // AP
 									{
-										if(returnVO.getBelow10CountLocations() != null)
+										if(returnVO.getBelow10CountLocations() != null && below10Booths.longValue() != 0L)
 										{
-											assemblyMessage.append("\nBelow 10 Registrations Booths ("+below10Booths+"): "+returnVO.getBelow10CountLocations());
+											assemblyMessage.append("\nBelow 10 Registrations Booths ("+below10Booths+"): "+returnVO.getBelow10CountLocations()+" ,");
 										}
-										if(returnVO.getNotSubmittedCount() != null)
+										if(returnVO.getNotSubmittedCount() != null && notRegisteredBooths.longValue() != 0L)
 										{
-											assemblyMessage.append(",\n Registration not started Booths  ("+notRegisteredBooths+"): "+returnVO.getNotSumbittedLocations());
+											assemblyMessage.append("\n Registration not started Booths  ("+notRegisteredBooths+"): "+returnVO.getNotSumbittedLocations());
 										}
 									}
 									else
@@ -1259,29 +1259,32 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 										assemblyMessage.append(",\nToday Target : "+remainingTarget);
 										*/
 										
-										int mandalCount=0;
-										for (SurveyTransactionVO mandalsVO : reportVOList)
+										if(!constituency.getAreaType().trim().equalsIgnoreCase(IConstants.URBAN))
 										{
-											mandalCount = mandalCount+1;
-											assemblyMessage.append("\n");
-											assemblyMessage.append(mandalCount+") "+mandalsVO.getName());
-											assemblyMessage.append("\nTarget : "+ mandalsVO.getArcheivedTarget());
-											assemblyMessage.append(",\nAchieved : "+mandalsVO.getTotalCount());
-											
-											/*Long mandalTarget = mandalsVO.getArcheivedTarget() - mandalsVO.getTotalCount();
-											if(mandalTarget>0)
+											int mandalCount=0;
+											for (SurveyTransactionVO mandalsVO : reportVOList)
 											{
-												mandalTarget = mandalsVO.getArcheivedTarget() + ( mandalTarget );
+												mandalCount = mandalCount+1;
+												assemblyMessage.append("\n");
+												assemblyMessage.append(mandalCount+") "+mandalsVO.getName());
+												assemblyMessage.append("\nTarget : "+ mandalsVO.getArcheivedTarget());
+												assemblyMessage.append(",\nAchieved : "+mandalsVO.getTotalCount());
+												
+												/*Long mandalTarget = mandalsVO.getArcheivedTarget() - mandalsVO.getTotalCount();
+												if(mandalTarget>0)
+												{
+													mandalTarget = mandalsVO.getArcheivedTarget() + ( mandalTarget );
+												}
+												else
+												{
+													mandalTarget = mandalsVO.getArcheivedTarget() ;
+												}
+												assemblyMessage.append(",\nToday Target : "+mandalTarget);	*/									
 											}
-											else
-											{
-												mandalTarget = mandalsVO.getArcheivedTarget() ;
-											}
-											assemblyMessage.append(",\nToday Target : "+mandalTarget);	*/									
 										}
 									}
 																		
-									if(mobileNumbers != null && mobileNumbers.size()>0)
+									if((mobileNumbers != null && mobileNumbers.size()>0) && (assemblyMessage.toString().trim().length()>0))
 									{
 										String phoneNumbersStr = "";
 										for (int i = 0; i < mobileNumbers.size(); i++) {
@@ -1346,7 +1349,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 				for (Object[] booth : overAllboothWiseCountList) 
 				{
 					Long boothId = booth[1] != null ? Long.valueOf(booth[1].toString().trim()):0L;
-					Long count =  booth[1] != null ? Long.valueOf(booth[1].toString().trim()):0L;
+					Long count =  booth[0] != null ? Long.valueOf(booth[0].toString().trim()):0L;
 					Long registrationCount = 0L;
 					if(boothWiseTotalCountMap.get(boothId) != null)
 					{
@@ -1443,7 +1446,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 							reportVo.setLocationName(reportVo.getLocationName());
 							/* Start Below 10  registered booth Info  */ 
 							
-							if(count < 10)
+							if(boothWiseTotalCountMap.get(boothId) < 10)
 							{
 								String below10BoothsInTehsil = "";
 								if(tehsilBelow10CountBoothsMap.get(reportVo.getLocationId())!= null)
@@ -1535,6 +1538,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 									boothsList.addAll(boothIdsList);
 								}
 								
+								SurveyTransactionVO finalTehsilVO = new SurveyTransactionVO();
 								String notRegisteredBoothsStr = "";
 								Long mandalVoters = 0L;
 								List<String> notRegisteredBooths = null;
@@ -1572,6 +1576,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 											}
 											else
 											{
+												finalTehsilVO.setLocationType(booth.getLocalBody().getName());
 												localName = booth.getLocalBody().getName()+" "+booth.getLocalBody().getElectionType().getElectionType();
 											}
 										}
@@ -1614,7 +1619,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 									 targetCount =  (double) (tgConstPerc * tgTarget);
 								 }
 								 
-								SurveyTransactionVO finalTehsilVO = new SurveyTransactionVO();
+								
 								if(boothIdsList != null && boothIdsList.size()>0)
 								{
 									finalTehsilVO.setSubmittedCount(Long.valueOf(String.valueOf(boothIdsList.size())));
@@ -1693,7 +1698,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 									//System.out.println("tehsilIds:  "+tehsilIds+", "+tehsilId);
 									LOG.error("\n tehsilIds:  "+tehsilIds+", "+tehsilId);
 									
-									if(mobileNumbers != null && mobileNumbers.size()>0)
+									if((mobileNumbers != null && mobileNumbers.size()>0) && (mandalMessage.toString().trim().length()>0))
 									{
 										String phoneNumbersStr = "";
 										for (int i = 0; i < mobileNumbers.size(); i++) {
