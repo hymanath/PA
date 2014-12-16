@@ -306,6 +306,7 @@
 			 <pattern>/misReportAction*</pattern>
 			 <pattern>/tdpCadreCardsPrintingDashBoardAction*</pattern>
 			 <pattern>/tdpCallCenterAction*</pattern>
+			 <pattern>/tdpCadreVolunteersDetailsAction*</pattern>
 		  </decorator>
        
        <decorator name="tdpHome_old" page="tdplayout_old.jsp">
