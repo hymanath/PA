@@ -8,5 +8,5 @@ import com.itgrids.partyanalyst.model.VerifyAccessUsers;
 
 public interface IVerifyAccessUsersDAO extends GenericDao<VerifyAccessUsers, Long> {
 
-	public List<String> getUserStatus(Long userId);
+	public List<String> getUserStatus(List<Long> userIds);
 }
