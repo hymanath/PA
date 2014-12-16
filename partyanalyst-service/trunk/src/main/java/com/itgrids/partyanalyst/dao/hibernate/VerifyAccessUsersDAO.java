@@ -15,10 +15,10 @@ public class VerifyAccessUsersDAO extends GenericDaoHibernate<VerifyAccessUsers,
 	}
 
 	
-	public List<String> getUserStatus(Long userId)
+	public List<String> getUserStatus(List<Long> userIds)
 	{
-		Query query = getSession().createQuery("select model.status from VerifyAccessUsers model where model.userId = :userId");
-		query.setParameter("userId", userId);
+		Query query = getSession().createQuery("select model.status from VerifyAccessUsers model where model.userId in(:userIds)");
+		query.setParameterList("userIds", userIds);
 		return query.list();
 	}
 }
