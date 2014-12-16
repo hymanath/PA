@@ -20,9 +20,32 @@ private String ipad;
 private String noTab;
 
 
+private String tablet3G;
+private String smartPhone3G;
+private String ipad3G;
+
 private List<TdpCadreVolunteerVO> tdpCadreVolunteerVOList = new ArrayList<TdpCadreVolunteerVO>(0);
 private List<String> datesList = new ArrayList<String>(0);
 
+
+public String getTablet3G() {
+	return tablet3G;
+}
+public void setTablet3G(String tablet3g) {
+	tablet3G = tablet3g;
+}
+public String getSmartPhone3G() {
+	return smartPhone3G;
+}
+public void setSmartPhone3G(String smartPhone3G) {
+	this.smartPhone3G = smartPhone3G;
+}
+public String getIpad3G() {
+	return ipad3G;
+}
+public void setIpad3G(String ipad3g) {
+	ipad3G = ipad3g;
+}
 public List<String> getDatesList() {
 	return datesList;
 }
