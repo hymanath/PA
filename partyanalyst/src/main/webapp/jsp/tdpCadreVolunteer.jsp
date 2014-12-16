@@ -159,6 +159,7 @@ font-size:18px;
 
 if(validateDetails())
 {
+ $("#submitCadreFormBtnReqId").attr("disabled","disabled");
 				var uploadHandler = {
 						upload: function(o) {
 							uploadResult = o.responseText;
@@ -251,7 +252,7 @@ return false;
 	}
 	function showUploadStatus(myResult)
 	{
-	
+	    $("#submitCadreFormBtnReqId").removeAttr("disabled");
 		$('#mainDiv').html('');
 		var result = (String)(myResult);
 		var errorDivEle = document.getElementById('errorMsgDiv');
