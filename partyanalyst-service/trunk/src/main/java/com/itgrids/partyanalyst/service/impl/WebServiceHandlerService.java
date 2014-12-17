@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dto.FlagVO;
 import com.itgrids.partyanalyst.dto.PanchayatCountVo;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.model.Booth;
@@ -1127,6 +1128,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		return status;
 	}
 	
+	public Object getCadreSurveyUserDetails(List<UserDetailsVO> cadreSurveyUserIds){
+		List<UserDetailsVO> details = cadreRegistrationService.getCadreSurveyUserDetails(cadreSurveyUserIds);
+		return details;
+	}
 	
 	
 }

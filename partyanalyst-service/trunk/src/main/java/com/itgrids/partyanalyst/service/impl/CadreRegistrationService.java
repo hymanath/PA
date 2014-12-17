@@ -83,6 +83,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreTeluguNamesDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreVerfiedDataDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVerifyAccessUsersDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
@@ -106,6 +107,7 @@ import com.itgrids.partyanalyst.dto.SinkVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
+import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
 import com.itgrids.partyanalyst.model.BloodGroup;
 import com.itgrids.partyanalyst.model.Booth;
@@ -205,7 +207,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ITabUserKeysDAO tabUserKeysDAO;
 	private IDynamicKeysDAO 				dynamicKeysDAO;
 	private IVerifyAccessUsersDAO 			verifyAccessUsersDAO;
-	
+	private IUserDAO userDAO ;
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
 	
@@ -223,6 +225,14 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	
 	public ITdpCadreTeluguNamesDAO getTdpCadreTeluguNamesDAO() {
 		return tdpCadreTeluguNamesDAO;
+	}
+
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
 	}
 
 	public void setDynamicKeysDAO(IDynamicKeysDAO dynamicKeysDAO) {
@@ -6214,5 +6224,56 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			LOG.error("Exception raised in getVerifyUserDetails ",e);
 		}
 		return status;
+	}
+	
+	
+	public List<UserDetailsVO> getCadreSurveyUserDetails(List<UserDetailsVO> cadreSurveyUserIds){
+		List<UserDetailsVO> result = new ArrayList<UserDetailsVO>();
+		
+		try{
+			List<Long> tabUserIds = new ArrayList<Long>();
+			List<Long> webUserIds = new ArrayList<Long>();
+			for(UserDetailsVO vo :cadreSurveyUserIds){
+				if(vo.getName().equalsIgnoreCase("tab"))
+				{
+					if(!tabUserIds.contains(vo.getId()))
+						tabUserIds.add(vo.getId());
+				}
+				else
+				{
+					if(!webUserIds.contains(vo.getId()))
+						webUserIds.add(vo.getId());
+				}
+			}
+			List<Object[]> cadreSurveyUserDetails  = new ArrayList<Object[]>();
+			List<Object[]> webUsers = new ArrayList<Object[]>();
+			if(tabUserIds != null && tabUserIds.size() > 0){
+				 cadreSurveyUserDetails = cadreSurveyUserDAO.getCadreSurveyUserList(tabUserIds);
+			}
+			if(webUserIds != null && webUserIds.size() > 0){
+				 webUsers = userDAO.getUserNames(webUserIds);
+			}
+			if(cadreSurveyUserDetails != null && cadreSurveyUserDetails.size() > 0){
+				for(Object[] details:cadreSurveyUserDetails){
+					UserDetailsVO vo1 = new UserDetailsVO();
+					vo1.setId((Long)details[0]);
+					vo1.setName(details[1]!= null ? details[1].toString() :"");
+					result.add(vo1);
+				}
+			}
+			if(webUsers != null && webUsers.size() > 0){
+				for(Object[] user:webUsers){
+					UserDetailsVO vo2 = new UserDetailsVO();
+					vo2.setId((Long)user[0]);
+					String fname = user[1]!= null ? user[1].toString() :"";
+					String lname = user[2]!= null ? user[2].toString() :"";
+					vo2.setName(fname +" " + lname);
+					result.add(vo2);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception rised in getcadreSurveyUserDetails", e);
+		}
+		return result;
 	}
 }
