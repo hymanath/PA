@@ -3091,10 +3091,11 @@ public void flushAndclearSession(){
 	}
 	
 	
-	public Integer updateFamilyDetailsWithHistory(List<String> uniqueIds)
+	public Integer updateFamilyDetailsWithHistory(List<String> uniqueIds,List<Long> usersIds)
 	{
-		Query query = getSession().createQuery("update TdpCadre model set model.isDeleted = 'H'   where model.uniqueKey in (:uniqueIds) and model.enrollmentYear = :enrollmentYear and model.familyVoterId is not null  ");
+		Query query = getSession().createQuery("update TdpCadre model set model.isDeleted = 'H'   where model.uniqueKey in (:uniqueIds) and model.enrollmentYear = :enrollmentYear and model.insertedBy.cadreSurveyUserId in(:usersIds) and model.familyVoterId is not null  ");
 		query.setParameterList("uniqueIds", uniqueIds);
+		query.setParameterList("usersIds", usersIds);
 		query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
 		Integer count = query.executeUpdate();
 		return count;
@@ -3524,5 +3525,13 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			}
 			
 			return qry.list();
+		}
+		
+		public List<String> getExistingRecordsInfo(List<String> uniqueKeys,List<Long> userIds){
+			Query query = getSession().createQuery("select distinct model.uniqueKey from TdpCadre model where model.enrollmentYear ='2014' and model.isDeleted='N' and " +
+					" model.uniqueKey in(:uniqueKeys) and model.insertedBy.cadreSurveyUserId in(:userIds)");
+			query.setParameterList("uniqueKeys", uniqueKeys);
+			query.setParameterList("userIds", userIds);
+			return query.list();
 		}
 }
