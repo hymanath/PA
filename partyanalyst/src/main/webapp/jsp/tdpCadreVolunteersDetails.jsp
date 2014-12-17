@@ -106,7 +106,7 @@
 		var searchType = $('#searchTypeId').val();
 		$('#volunteerTabelDiv').html('');
 		$('#loadingImg').show();
-		$('#excelBtn').hide();
+		
 				var jsObj = 
 			   {
 				  consituencyId:constiuencyId,
@@ -123,6 +123,7 @@
 	
 	function buildVolunteerDetails(result)
 	{
+		
 		if(result != null)
 		{
 			$('#volunteerTabelDiv').html('');
@@ -258,6 +259,8 @@
 			else
 			{
 				$('#volunteerTabelDiv').css("overflow","none");
+				$('#excelBtn').css('display','none');
+				$('#excelBtn').hide();
 				$('#volunteerTabelDiv').html('<div style="font-weight: bold; margin-top: 50px;text-align:center;margin-left: -350px;">No data Available ... </div>');
 			}
 		}
