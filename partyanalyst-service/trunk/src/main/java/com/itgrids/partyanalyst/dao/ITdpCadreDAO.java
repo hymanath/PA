@@ -260,7 +260,8 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	 
 	 public List<String> getCardNumbersForOnlineCadre(String query,Long constiId,String mobileNo,String trNo,Date surveyDate);
 	 public List<String> getCardNumbersForNonVotersForOnlineCadre(String query,Long constiId,String mobileNo,String trNo,Date surveyDate);
-	public Integer updateFamilyDetailsWithHistory(List<String> familyVoterIds);
+	public Integer updateFamilyDetailsWithHistory(List<String> familyVoterIds,List<Long> usersIds);
 	public Integer updateDetailsToDuplicate(List<String> uniqueKeys);
 	public List<Object[]> getFamilyDetails(List<String> uniqueKeys);
+	public List<String> getExistingRecordsInfo(List<String> uniqueKeys,List<Long> userIds);
 }
