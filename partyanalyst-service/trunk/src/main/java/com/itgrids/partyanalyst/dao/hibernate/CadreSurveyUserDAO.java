@@ -140,4 +140,23 @@ public class CadreSurveyUserDAO extends GenericDaoHibernate<CadreSurveyUser, Lon
 		
 	}
 	
+	public List<Long> getCadreSurveyUserDetailsByType(){
+		
+		Query query = getSession().createQuery("select model.cadreSurveyUserId from CadreSurveyUser model where model.isDeleted = 'N' and model.userType = 'GHMC'");
+
+		return query.list();
+		
+	}
+	
+	public List<Object[]> getCadreSurveyUserList(List<Long> assignedCadreSurveyUsers)
+	{
+		Query query = getSession().createQuery("select model.cadreSurveyUserId, model.userName from CadreSurveyUser model where " +
+				" model.isDeleted = 'N' and model.cadreSurveyUserId in (:assignedCadreSurveyUsers) order by model.userName ");
+		
+		query.setParameterList("assignedCadreSurveyUsers", assignedCadreSurveyUsers);
+		
+		return query.list();
+		
+	}
+	
 }
