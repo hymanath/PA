@@ -31,7 +31,9 @@ public class CadreSurveyUser implements Serializable {
 	private String 				isDeleted;
 	private String               name;
 	private String              isExcluded;
-	 
+	private String 				userType; 
+	
+	
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
 	 @Column(name = "cadre_survey_user_id", unique = true, nullable = false)
@@ -104,5 +106,15 @@ public class CadreSurveyUser implements Serializable {
 	public void setIsExcluded(String isExcluded) {
 		this.isExcluded = isExcluded;
 	}
+	
+	@Column(name="user_type")
+	public String getUserType() {
+		return userType;
+	}
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+	
+	
 	
 }
