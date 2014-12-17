@@ -1806,8 +1806,17 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
 
-<bean id="verifiedDataStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.VerifiedDataStatusDAO" >
+	<bean id="verifiedDataStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.VerifiedDataStatusDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
-</bean>
+	</bean>
+	
+	<bean id="verifiedDataRequestDAO" class="com.itgrids.partyanalyst.dao.hibernate.VerifiedDataRequestDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="verifiedDataResponseDAO" class="com.itgrids.partyanalyst.dao.hibernate.VerifiedDataResponseDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
 	<!--  end -->
 </beans>		
