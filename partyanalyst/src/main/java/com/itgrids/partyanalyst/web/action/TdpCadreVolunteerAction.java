@@ -192,10 +192,20 @@ public class TdpCadreVolunteerAction extends ActionSupport implements ServletReq
 			if(regVO != null)
 			{
 				jobj = new JSONObject(getTask());
+				if(jobj.getString("task").equalsIgnoreCase("basicInfo"))
+				{
 				Long consituencyId = jobj.getLong("consituencyId");
 				String searchType = jobj.getString("searchType");
-				
 				tdpCadreVolunteerVO = tdpCadreReportService.getConstituencyWiseVolunteerInfo(consituencyId,searchType);
+				}
+				if(jobj.getString("task").equalsIgnoreCase("getVolunteerInfoByDevice"))
+				{
+				Long consituencyId = jobj.getLong("consituencyId");
+				String searchType = jobj.getString("searchType");
+				String deviceType = jobj.getString("deviceType");
+				tdpCadreVolunteerVO = tdpCadreReportService.getConstituencyWiseVolunteerInfoByDevice(deviceType,consituencyId,searchType);
+				}
+				
 				return Action.SUCCESS;
 			}
 			else
