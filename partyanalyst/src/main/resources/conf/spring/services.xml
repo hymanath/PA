@@ -2331,6 +2331,7 @@
 		<property name="tabUserKeysDAO" ref="tabUserKeysDAO" />	
 		<property name="dynamicKeysDAO" ref="dynamicKeysDAO" />	
 		<property name="verifyAccessUsersDAO" ref="verifyAccessUsersDAO" />	
+		<property name="verifiedDataStatusDAO" ref="verifiedDataStatusDAO" />		
 		<property name="userDAO" ref="userDAO" />	
 		
      </bean>
