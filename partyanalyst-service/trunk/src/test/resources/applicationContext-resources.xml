@@ -520,6 +520,9 @@
 				<value>com.itgrids.partyanalyst.model.TdpCadreVolunteer</value>
 				<value>com.itgrids.partyanalyst.model.TdpCadreVolunteerConstituency</value>
 				<value>com.itgrids.partyanalyst.model.TdpCadreVolunteerDate</value>
+				<value>com.itgrids.partyanalyst.model.TdpCadreVerfiedData</value>
+				<value>com.itgrids.partyanalyst.model.VerifiedDataRequest</value>
+				<value>com.itgrids.partyanalyst.model.VerifiedDataResponse</value>
 			</list>
 		</property>
 	</bean>
@@ -569,7 +572,7 @@
 <!--  Survey DATABASE End -->
 
 <!-- Add new DAOs For Survey DATABASE here -->
-<bean id="constiCasteGroupPercDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstiCasteGroupPercDAO">
+	<bean id="constiCasteGroupPercDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstiCasteGroupPercDAO">
 		<property name="sessionFactory" ref="sessionFactory2" />
 	</bean>
 			
@@ -582,6 +585,14 @@
 
 
 	<!-- Add new DAOs PARTY ANALYST DATABASE here -->
+	
+	<bean id="verifiedDataResponseDAO" class="com.itgrids.partyanalyst.dao.hibernate.VerifiedDataResponseDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="verifiedDataRequestDAO" class="com.itgrids.partyanalyst.dao.hibernate.VerifiedDataRequestDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="voterBoothActivitiesDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterBoothActivitiesDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
