@@ -96,5 +96,99 @@ public class TdpCadreVolunteerConstituencyDAO extends GenericDaoHibernate<TdpCad
 		
 		return query.list();
 	}
+	public List<Object[]> getDeviceInfo(String deviceType,Long constituencyId,String searchType)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select model.tdpCadreVolunteer.tdpCadreVolunteerId ," +
+				" model.tdpCadreVolunteer.name," +
+				" model.tdpCadreVolunteer.mobileNo," +
+				" model.tdpCadreVolunteer.address," +
+				" model.tdpCadreVolunteer.laptop, " +
+				" model.tdpCadreVolunteer.internet , " +
+				
+				" model.tdpCadreVolunteer.tablet2G, " +
+				" model.tdpCadreVolunteer.tablet3G, " +
+				
+				" model.tdpCadreVolunteer.ipad2G," +
+				" model.tdpCadreVolunteer.ipad3G,  " +
+				
+				" model.tdpCadreVolunteer.smartPhone3G, " +
+				" model.tdpCadreVolunteer.smartPhone2G, " +
+				
+				" model.tdpCadreVolunteer.assignedConstituencyId " +				
+
+				" from TdpCadreVolunteerConstituency model where model.tdpCadreVolunteer.isDeleted = 'N' ");
+		if(deviceType != null && deviceType.trim().equalsIgnoreCase("laptop"))
+		{
+			queryStr.append("  and model.tdpCadreVolunteer.laptop = 'Y' ");
+		}
+		else if(deviceType != null && deviceType.trim().equalsIgnoreCase("internet"))
+		{
+			queryStr.append("  and model.tdpCadreVolunteer.internet = 'Y' ");
+		}
+		else if(deviceType != null && deviceType.trim().equalsIgnoreCase("lapinternet"))
+		{
+			queryStr.append("  and model.tdpCadreVolunteer.internet = 'Y' and model.tdpCadreVolunteer.laptop = 'Y' ");
+		}
+		else if(deviceType != null && deviceType.trim().equalsIgnoreCase("tablet3G"))
+		{
+			queryStr.append("  and model.tdpCadreVolunteer.tablet3G = 'Y' ");
+		}
+		else if(deviceType != null && deviceType.trim().equalsIgnoreCase("tablet2G"))
+		{
+			queryStr.append("  and model.tdpCadreVolunteer.tablet2G = 'Y' ");
+		}
+		else if(deviceType != null && deviceType.trim().equalsIgnoreCase("ipad2G"))
+		{
+			queryStr.append("  and model.tdpCadreVolunteer.ipad2G = 'Y' ");
+		}
+		else if(deviceType != null && deviceType.trim().equalsIgnoreCase("ipad3G"))
+		{
+			queryStr.append("  and model.tdpCadreVolunteer.ipad3G = 'Y' ");
+		}
+		else if(deviceType != null && deviceType.trim().equalsIgnoreCase("smartPhone3G"))
+		{
+			queryStr.append("  and model.tdpCadreVolunteer.smartPhone3G = 'Y' ");
+		}
+		else if(deviceType != null && deviceType.trim().equalsIgnoreCase("smartPhone2G"))
+		{
+			queryStr.append("  and model.tdpCadreVolunteer.smartPhone2G = 'Y' ");
+		}
+		
+		if(searchType.equalsIgnoreCase("Available"))
+		{
+			queryStr.append(" and model.tdpCadreVolunteer.assignedConstituencyId is null ");
+			if(constituencyId != null && constituencyId.longValue() != 0L)
+			{
+				queryStr.append(" and model.constituency.constituencyId = :constituencyId ");
+			}
+		}
+		else if(searchType.equalsIgnoreCase("Assigned"))
+		{
+			queryStr.append(" and model.tdpCadreVolunteer.assignedConstituencyId is not null ");
+			if(constituencyId != null && constituencyId.longValue() != 0L)
+			{
+				queryStr.append(" and model.tdpCadreVolunteer.assignedConstituency.constituencyId = :constituencyId ");
+			}
+		}
+		else if(searchType.equalsIgnoreCase("All"))
+		{			
+			if(constituencyId != null && constituencyId.longValue() != 0L)
+			{
+				queryStr.append(" and model.constituency.constituencyId = :constituencyId ");
+			}
+		}
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(constituencyId != null && constituencyId.longValue() != 0L)
+		{
+			query.setParameter("constituencyId", constituencyId);
+		}
+		
+		
+		return query.list();
+	}
 	
 }
