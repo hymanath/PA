@@ -3450,7 +3450,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 									tdpCadreVolunteerConstituencyDAO.save(tdpCadreVolunteerConstituency);
 								}
 								 TdpCadreVolunteerDate tdpCadreVolunteerDate = null;
-								 SimpleDateFormat format = new SimpleDateFormat("dd-mm-yyyy");
+								 SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 								for(String date : dates)
 								{
 									
@@ -3672,7 +3672,186 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		
 		return returnVO;
 	}
-	
+	public TdpCadreVolunteerVO getConstituencyWiseVolunteerInfoByDevice(String deviceType,Long constituencyId, String searchType)
+	{
+		TdpCadreVolunteerVO returnVO = new	TdpCadreVolunteerVO();
+		SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			
+			//List<Object[]> volunteerInfoList = tdpCadreVolunteerConstituencyDAO.getVolunteerInfoByLocation(constituencyId,searchType);
+			List<Object[]> volunteerInfoList =  tdpCadreVolunteerConstituencyDAO.getDeviceInfo(deviceType,constituencyId,searchType);
+			Map<Long,TdpCadreVolunteerVO> volunteersMap = new HashMap<Long,TdpCadreVolunteerVO>();
+			
+			List<TdpCadreVolunteerVO> returnList = null;
+			if(volunteerInfoList != null && volunteerInfoList.size()>0)
+			{
+				for (Object[] volunteer: volunteerInfoList) 
+				{
+					TdpCadreVolunteerVO volunteerVO = new TdpCadreVolunteerVO();					
+					Long volunteerId = volunteer[0] != null ? Long.valueOf(volunteer[0].toString().trim()):0L;
+					if(volunteersMap.get(volunteerId) != null)
+					{
+						volunteerVO = volunteersMap.get(volunteerId);
+					}
+					else
+					{
+						volunteerVO.setId(volunteerId);
+						volunteerVO.setName(volunteer[1] != null ? volunteer[1].toString().trim():"");
+						volunteerVO.setMobileNo(volunteer[2] != null ? volunteer[2].toString().trim():"");
+						volunteerVO.setAddress(volunteer[3] != null ? volunteer[3].toString().trim():"");
+						volunteerVO.setLapTop(volunteer[4] != null ? volunteer[4].toString().trim():"");
+						volunteerVO.setInternet(volunteer[5] != null ? volunteer[5].toString().trim():"");
+						
+						if(volunteer[6] != null)
+						{
+							if(volunteer[6].toString().trim().equalsIgnoreCase("Y"))
+							{
+								volunteerVO.setTablet("TAB with 2G");
+							}							
+							else if(volunteer[7] != null)
+							{
+								if(volunteer[7].toString().trim().equalsIgnoreCase("Y"))
+								{
+									volunteerVO.setTablet("TAB with 3G");
+								}
+								else
+								{
+									volunteerVO.setTablet(" - ");
+								}
+							}
+						}
+								
+						if(volunteer[8] != null)
+						{
+							if(volunteer[8].toString().trim().equalsIgnoreCase("Y"))
+							{
+								volunteerVO.setTablet("iPad with 2G");
+							}
+							else if(volunteer[9] != null)
+							{
+								if(volunteer[9].toString().trim().equalsIgnoreCase("Y"))
+								{
+									volunteerVO.setTablet("iPad with 3G");
+								}
+							}
+						}
+						
+						if(volunteer[10] != null)
+						{
+							if(volunteer[10].toString().trim().equalsIgnoreCase("Y"))
+							{
+								volunteerVO.setSmartPhone("3G");
+							}
+							else if(volunteer[11] != null)
+							{
+								if(volunteer[11].toString().trim().equalsIgnoreCase("Y"))
+								{
+									volunteerVO.setSmartPhone("2G");
+								}
+								else
+								{
+									volunteerVO.setSmartPhone(" - ");
+								}
+							}
+							
+						}
+						
+						volunteerVO.setConstituencyId(volunteer[12] != null ? volunteer[12].toString().trim():"");
+					}
+					
+					volunteersMap.put(volunteerId, volunteerVO);
+				}
+			}
+			
+			if(volunteersMap != null && volunteersMap.size()>0)
+			{
+				Set<Long> volunteersIds = volunteersMap.keySet();
+				List<Long> valenteriesIdList = new ArrayList<Long>();
+				valenteriesIdList.addAll(volunteersIds);
+				
+				List<Object[]> constituencyList = tdpCadreVolunteerConstituencyDAO.getconsituencyListById(valenteriesIdList);
+				Map<Long, List<TdpCadreVolunteerVO>> consituencyMap = new HashMap<Long, List<TdpCadreVolunteerVO>>(0);
+				
+				if(constituencyList != null && constituencyList.size()>0)
+				{
+					for (Object[] volenteer : constituencyList) 
+					{
+						List<TdpCadreVolunteerVO>  valenteerConstituencyList = new ArrayList<TdpCadreVolunteerVO>();
+						Long volunteerId = volenteer[0] != null ? Long.valueOf(volenteer[0].toString().trim()):0L;
+						
+						if(consituencyMap.get(volunteerId) != null)
+						{
+							valenteerConstituencyList = consituencyMap.get(volunteerId);
+						}
+						
+						TdpCadreVolunteerVO constituencyVO = new TdpCadreVolunteerVO();
+						constituencyVO.setId( volenteer[1] != null ? Long.valueOf(volenteer[1].toString().trim()):0L);
+						constituencyVO.setName(volenteer[2] != null ? volenteer[2].toString().trim():"");
+						valenteerConstituencyList.add(constituencyVO);
+						
+						consituencyMap.put(volunteerId, valenteerConstituencyList);
+					}
+				}
+				
+				List<Object[]> avaibleDatesList = tdpCadreVolunteerDateDAO.getAvailableDatesForVolunteers(valenteriesIdList);
+				Map<Long, List<String>> datesListMap = new HashMap<Long, List<String>>(0);
+				
+				if(avaibleDatesList != null && avaibleDatesList.size()>0)
+				{
+					for (Object[] volenteer : avaibleDatesList) 
+					{
+						List<String>  datesList = new ArrayList<String>();
+						Long volunteerId = volenteer[0] != null ? Long.valueOf(volenteer[0].toString().trim()):0L;
+						
+						if(datesListMap.get(volunteerId) != null)
+						{
+							datesList = datesListMap.get(volunteerId);
+						}
+						
+						datesList.add(volenteer[1] != null ? format.format(dbFormat.parse(volenteer[1].toString().trim())):"");						
+						datesListMap.put(volunteerId, datesList);
+					}
+				}
+				
+				returnList = new ArrayList<TdpCadreVolunteerVO>(0);
+				for (Long volunteerId : volunteersMap.keySet()) 
+				{
+					TdpCadreVolunteerVO finalVO = volunteersMap.get(volunteerId);
+					if(finalVO != null)
+					{
+						finalVO.setTdpCadreVolunteerVOList(consituencyMap.get(volunteerId));
+						finalVO.setDatesList(datesListMap.get(volunteerId));
+						
+						returnList.add(finalVO);
+					}
+				}
+				
+				if(returnList != null && returnList.size()>0)
+				{
+					returnVO.setTdpCadreVolunteerVOList(returnList);
+				}
+				
+				/*returnVO.setNoTab(tdpCadreVolunteerDAO.getDeviceTotalCount("All",constituencyId,searchType).toString());
+				returnVO.setLapTop(tdpCadreVolunteerDAO.getDeviceTotalCount("laptop",constituencyId,searchType).toString());
+				returnVO.setInternet(tdpCadreVolunteerDAO.getDeviceTotalCount("internet",constituencyId,searchType).toString());
+				
+				returnVO.setTablet(tdpCadreVolunteerDAO.getDeviceTotalCount("tablet2G",constituencyId,searchType).toString());
+				returnVO.setTablet3G(tdpCadreVolunteerDAO.getDeviceTotalCount("tablet3G",constituencyId,searchType).toString());
+				
+				returnVO.setSmartPhone(tdpCadreVolunteerDAO.getDeviceTotalCount("smartPhone2G",constituencyId,searchType).toString());
+				returnVO.setSmartPhone3G(tdpCadreVolunteerDAO.getDeviceTotalCount("smartPhone3G",constituencyId,searchType).toString());
+				
+				returnVO.setIpad(tdpCadreVolunteerDAO.getDeviceTotalCount("ipad2G",constituencyId,searchType).toString());
+				returnVO.setIpad3G(tdpCadreVolunteerDAO.getDeviceTotalCount("ipad3G",constituencyId,searchType).toString());*/
+			}
+			
+		} catch (Exception e) {
+			LOG.error(" exception occured at getConstituencyWiseVolunteerInfoByDevice() in TdpCadreReportService service class. ", e);
+		}
+		
+		return returnVO;
+	}
 	public ResultStatus assignConstiteuncyForValeenteer(Long consituencyId, Long valeenteerId)
 	{
 		ResultStatus status = new ResultStatus();
