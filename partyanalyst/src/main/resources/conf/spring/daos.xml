@@ -1805,5 +1805,9 @@
 <bean id="tdpCadreVolunteerDateDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreVolunteerDateDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
+
+<bean id="verifiedDataStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.VerifiedDataStatusDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+</bean>
 	<!--  end -->
 </beans>		
