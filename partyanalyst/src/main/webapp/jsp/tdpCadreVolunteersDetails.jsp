@@ -42,7 +42,6 @@
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 	<script type="text/javascript" src="js/photobooth/photobooth_min.js"></script>
 		<script type="text/javascript" src="js/photobooth/website/js/cadre.js"></script>
-		
 		<link type="text/css" rel="stylesheet" media="screen" href="js/photobooth/website/css/page.css" />
 		<link rel="stylesheet" href="js/flipclock/flipclock.css">		
 		<script src="js/flipclock/flipclock.js"></script>
@@ -74,7 +73,8 @@
 						<option value="Available" > Not Allocated </option>
 						<option value="Assigned" > Allocated </option>
 						</select>
-						<button type="submit" class="btn btn-success " style="margin-left: 10px;" onclick="getVolunteerDetails();" >Search</button>
+						<button type="button" class="btn btn-success " style="margin-left: 10px;" onclick="getVolunteerDetails();" >Search</button>
+						<button type="button" class="btn btn-success " style="margin-left: 10px;display:none;" onclick="generateExcel('volunteerTabelDiv');" id="excelBtn">Export Excel</button>
 					</div>	
 					<img src='images/Loading-data.gif' id="loadingImg" style="display:none;margin-top: 100px; height: 70px; width: 90px;"/>
 					<div id="volunteerTabelDiv" class="pull-left " style="height:600px;display:none;padding:10px;display: table;"></div>								
@@ -106,6 +106,7 @@
 		var searchType = $('#searchTypeId').val();
 		$('#volunteerTabelDiv').html('');
 		$('#loadingImg').show();
+		$('#excelBtn').hide();
 				var jsObj = 
 			   {
 				  consituencyId:constiuencyId,
@@ -127,6 +128,7 @@
 			$('#volunteerTabelDiv').html('');
 			var results = result.tdpCadreVolunteerVOList;
 			$('#volunteerTabelDiv').show();			
+			$('#excelBtn').show();			
 			if(results != null && results.length>0)
 			{
 				var str = '<h4 align="center"> VOLUNTEERS DETAILS </h4>';
@@ -216,7 +218,11 @@
 					str+='</table> </div>';
 
 					$('#volunteerTabelDiv').html(str);
-					$('#volunteersTab').dataTable();
+					$('#volunteersTab').dataTable({
+						"iDisplayLength": 50,
+						"aLengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]]
+						});
+		
 				
 				var str1 ='';
 					str1+='<table class="table table-bordered">';
@@ -288,5 +294,23 @@
 				}
 			});
 	}
+	
+	function generateExcel(divId)
+	{
+		tableToExcel(divId, 'GHMC Volunteers Report');
+	}
+	
+	var tableToExcel = (function() {
+  var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+  return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})();
+	
 	</script>
   </body>
