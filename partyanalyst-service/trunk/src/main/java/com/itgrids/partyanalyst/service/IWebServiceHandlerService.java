@@ -9,6 +9,7 @@ import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
+import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
@@ -73,6 +74,7 @@ public interface IWebServiceHandlerService {
 	
 	public Object getTDPCadreDetailsBySearch(CadrePrintInputVO input);
 	public Object updatePrintedCardDetails(List<CardNFCDetailsVO> inputVOList);
-
+	
+	public Object getCadreSurveyUserDetails(List<UserDetailsVO> cadreSurveyUserIds);
 	
 }
