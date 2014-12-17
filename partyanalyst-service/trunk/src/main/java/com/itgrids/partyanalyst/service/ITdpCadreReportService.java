@@ -40,4 +40,5 @@ public interface ITdpCadreReportService {
 	public ResultStatus assignConstiteuncyForValeenteer(Long consituencyId, Long valeenteerId);
 	
 	public Boolean isExistUSerByMobileAndEmail(String mobileNo, String emailId);
+	public TdpCadreVolunteerVO getConstituencyWiseVolunteerInfoByDevice(String deviceType,Long constituencyId, String searchType);
 }
