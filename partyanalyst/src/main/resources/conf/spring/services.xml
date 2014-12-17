@@ -2331,6 +2331,8 @@
 		<property name="tabUserKeysDAO" ref="tabUserKeysDAO" />	
 		<property name="dynamicKeysDAO" ref="dynamicKeysDAO" />	
 		<property name="verifyAccessUsersDAO" ref="verifyAccessUsersDAO" />	
+		<property name="userDAO" ref="userDAO" />	
+		
      </bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
