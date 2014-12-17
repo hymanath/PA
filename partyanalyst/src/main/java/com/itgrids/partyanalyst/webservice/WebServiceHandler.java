@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
@@ -767,6 +768,25 @@ public class WebServiceHandler {
 		try{
 			Object object = null;
 			object = webServiceHandlerService.updatePrintedCardDetails(inputVOList);
+			return object;
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in requestForAuthorisationForAccessKey() Method, Exception is ",e);
+			return "Fail";
+		}
+	}
+	
+	
+	@POST
+	@Path("/cadreSurveyUserDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object getCadreSurveyUserDetails(List<UserDetailsVO> id){
+		
+		try{
+			Object object = null;
+			object = webServiceHandlerService.getCadreSurveyUserDetails(id);
 			return object;
 		}
 		catch(Exception e)
