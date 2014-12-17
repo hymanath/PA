@@ -86,6 +86,7 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVerifyAccessUsersDAO;
+import com.itgrids.partyanalyst.dao.IVerifiedDataStatusDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterNamesDAO;
 import com.itgrids.partyanalyst.dao.IVoterRelationDAO;
@@ -135,6 +136,7 @@ import com.itgrids.partyanalyst.model.TdpCadreTeluguNames;
 import com.itgrids.partyanalyst.model.TdpCadreVerfiedData;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
+import com.itgrids.partyanalyst.model.VerifiedDataStatus;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterNames;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
@@ -208,6 +210,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IDynamicKeysDAO 				dynamicKeysDAO;
 	private IVerifyAccessUsersDAO 			verifyAccessUsersDAO;
 	private IUserDAO userDAO ;
+	private IVerifiedDataStatusDAO  verifiedDataStatusDAO;
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
 	
@@ -503,6 +506,13 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 
 	public void setTabUserKeysDAO(ITabUserKeysDAO tabUserKeysDAO) {
 		this.tabUserKeysDAO = tabUserKeysDAO;
+	}
+
+	
+
+	public void setVerifiedDataStatusDAO(
+			IVerifiedDataStatusDAO verifiedDataStatusDAO) {
+		this.verifiedDataStatusDAO = verifiedDataStatusDAO;
 	}
 
 	public Date convertToDateFormet(String dateStr)
@@ -5658,15 +5668,13 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	{
 		
 		LOG.error("IN SINK SERVICE");
-		Long familyCount = 0l;
-		String familyStr = "";
-		Long newFamilyVoters = 0l;
-		Set<Long> familyVoterIds = new java.util.HashSet<Long>();
-		Map<Long,Set<String>> familyUniqueKeysMap = new HashMap<Long, Set<String>>();
+		
 		Map<String,Set<String>> uniqueDupMap = null;
 		Set<String> dupList   = null;
 		Set<String> falseList = null;
 		List<SinkVO> returnList = new ArrayList<SinkVO>();
+		Set<Long> userIds = new HashSet<Long>();
+		Map<String,SinkVO> allData = new HashMap<String,SinkVO>();
 		if(inputs != null && inputs.size() > 0)
 		{
 			LOG.error(inputs.toArray());
@@ -5677,236 +5685,332 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			return null;
 		}
 		
-		
-	
-		
 		try 
 		{
 			Map<Long,List<String>> voterUidMap = new HashMap<Long, List<String>>();// HERE WE ARE 
 			Set<Long> usIds = new java.util.HashSet<Long>();
-			Set<Long> chkusIds = new java.util.HashSet<Long>();
 			Set<String> uniqueids = new java.util.HashSet<String>();
+			Set<String> newUniqueids = new java.util.HashSet<String>();
 			for(SinkVO sinkVO : inputs)
 			{
 				if(sinkVO.getUsId() != null)
 				{
-					chkusIds.add(sinkVO.getUsId());
+					usIds.add(sinkVO.getUsId());
 				}
 			}	
-			String status = getVerifyUserDetails(new ArrayList<Long>(chkusIds));
-			if(status.equalsIgnoreCase("ALLOW"))
+			String access = getVerifyUserDetails(new ArrayList<Long>(usIds));
+		if(access.equalsIgnoreCase("ALLOW"))
+		{
+			for(SinkVO sinkVO : inputs)
 			{
-				for(SinkVO sinkVO : inputs)
+			
+				allData.put(sinkVO.getUid(), sinkVO);
+				
+				if(sinkVO.getFid() != null && sinkVO.getFid().toString().trim().length() > 0 && !sinkVO.getFid().toString().trim().equalsIgnoreCase("null") && sinkVO.getFid().longValue() > 0)
 				{
-					if(sinkVO.getUsId() != null)
-					{
-						usIds.add(sinkVO.getUsId());
-					}
 					
-					
-					if(sinkVO.getFid() != null && sinkVO.getFid().toString().trim().length() > 0 && !sinkVO.getFid().toString().trim().equalsIgnoreCase("null") && sinkVO.getFid().longValue() > 0)
-					{
-						Set<String> uniqueKetSet = familyUniqueKeysMap.get(sinkVO.getFid());
-						if(uniqueKetSet == null)
-						{
-							uniqueKetSet = new java.util.HashSet<String>();
-							familyUniqueKeysMap.put(sinkVO.getFid(), uniqueKetSet);
-						}
-						uniqueKetSet.add(sinkVO.getUid());
-						familyVoterIds.add(sinkVO.getFid());
-						uniqueids.add(sinkVO.getUid());
-						familyCount = familyCount + 1;
-						familyStr = familyStr + "," + sinkVO.getUid();
-					}
-					else if(sinkVO.getVid() != null && sinkVO.getVid().toString().trim().length() > 0 && !sinkVO.getVid().toString().trim().equalsIgnoreCase("null")  && sinkVO.getVid().longValue() > 0)
-					{
-						List<String> uidsList = voterUidMap.get(sinkVO.getVid());
-						if(uidsList == null)
-						{
-							uidsList = new ArrayList<String>();
-							voterUidMap.put(sinkVO.getVid(), uidsList);
-						}
-						uidsList.add(sinkVO.getUid());
-					}
+					uniqueids.add(sinkVO.getUid());
+					newUniqueids.add(sinkVO.getUid());
+					userIds.add(sinkVO.getUsId());
 				}
-				
-				Set<Long> voterIds = voterUidMap.keySet();
-				
-				LOG.error("TOTAL RECORDS : " + inputs.size());
-				
-				// updating all family details into History.
-				if(uniqueids != null && uniqueids.size() > 0)
+				else if(sinkVO.getVid() != null && sinkVO.getVid().toString().trim().length() > 0 && !sinkVO.getVid().toString().trim().equalsIgnoreCase("null")  && sinkVO.getVid().longValue() > 0)
 				{
-					Integer count1 =  tdpCadreDAO.updateFamilyDetailsWithHistory(new ArrayList<String>(uniqueids));
-				}
-				
-				
-				
-				if(familyUniqueKeysMap != null && familyUniqueKeysMap.size() > 0)
-				{
-						List<Object[]> result = tdpCadreDAO.getFamilyDetails(new ArrayList<String>(uniqueids));
-						
-						if(result != null && result.size() > 0)
-						{
-							uniqueDupMap = new HashMap<String, Set<String>>();
-							for (Object[] objects : result)
-							{
-									String familyVoterId = objects[0] != null ? objects[0].toString().trim().toLowerCase() : IConstants.EMPTY_STRING;
-									String voterName = objects[1] != null ? objects[1].toString().trim().toLowerCase() : IConstants.EMPTY_STRING;
-									String relativeName = objects[2] != null ? objects[2].toString().trim().toLowerCase() : IConstants.EMPTY_STRING;
-									String houseNo = objects[3] != null ? objects[3].toString().trim().toLowerCase() : IConstants.EMPTY_STRING;
-									String mobileNo = objects[4] != null ? objects[4].toString().trim().toLowerCase() : IConstants.EMPTY_STRING;
-									
-									String key = familyVoterId +"-"+ voterName +"-"+ relativeName +"-"+ houseNo +"-"+ mobileNo;
-									//'PRASAD-THAGIBHATHINA-HOUSENUM-9885675456-089786567' HFT-098789-098 
-									//'PRASAD-THAGIBHATHINA-HOUSENUM-9885675456-089786567' HFT-098789-099 
-									Set<String> unikeys =  uniqueDupMap.get(key);
-									if(unikeys == null)
-									{
-										unikeys = new java.util.HashSet<String>();
-									}
-									unikeys.add(objects[5].toString());
-									uniqueDupMap.put(key, unikeys);
-							}
-							
-						}
-					}			
-					if(uniqueDupMap != null && uniqueDupMap.size() > 0)
+					List<String> uidsList = voterUidMap.get(sinkVO.getVid());
+					if(uidsList == null)
 					{
-						falseList = new java.util.HashSet<String>();
-						dupList = new java.util.HashSet<String>();
-						for (Map.Entry<String, Set<String>> entry  : uniqueDupMap.entrySet())
-						{
-							Set<String> result = entry.getValue();
-							if(result.size() == 1)
-							{
-								falseList.add(new ArrayList<String>(result).get(0));
-							}
-							else
-							{
-								for (int index = 0; index < result.size(); index++) 
-								{
-									if(index == result.size()-1)
-									{
-										falseList.add(new ArrayList<String>(result).get(index));
-									}
-									else
-									{
-										dupList.add(new ArrayList<String>(result).get(index));
-									}
-								}
-							}
-						}
-						if(dupList != null && dupList.size() > 0)
-						{
-							Integer updatedNARecords = 	tdpCadreDAO.updateDetailsToDuplicate(new ArrayList<String>(dupList));
-						}
-						
-						
-						
+						uidsList = new ArrayList<String>();
+						voterUidMap.put(sinkVO.getVid(), uidsList);
 					}
-				
-				Integer matchedCount = 0;
-				Integer missingCount = 0;
-				String str = "";
-				if(voterIds != null && voterIds.size() > 0)
-				{
-					List<Object[]> matchedVoters = tdpCadreDAO.getMissingDetails(voterIds);
-					if(matchedVoters != null && matchedVoters.size() > 0)
-					{
-						LOG.error("MATCHED RECORDS : " + matchedVoters.size());
-						LOG.error("MISSING RECORDS : " + (voterIds.size() - matchedVoters.size()));
-						matchedCount = matchedVoters.size();
-						missingCount = voterIds.size() - matchedVoters.size();
-						for(Object[] obj : matchedVoters)
-						{
-							if(obj[0] != null)
-							{
-								voterUidMap.remove((Long)obj[0]);
-							}
-							
-						}
-					}
+					uidsList.add(sinkVO.getUid());
 				}
-				
-				if(inputs != null && inputs.size() > 0)
-				{
-					for (SinkVO vo : inputs) 
-					{
-						if(vo.getFid() != null && vo.getFid().toString().trim().length() > 0 && !vo.getFid().toString().trim().equalsIgnoreCase("null") && vo.getFid().longValue() > 0)
-						{
-							if(dupList.contains(vo.getUid()))
-							{
-								vo.setStatus("duplicate");
-							}
-							else
-							{
-								vo.setStatus("false");
-							}
-							returnList.add(vo);
-						}
-						
-						newFamilyVoters = (familyCount) - (dupList.size() + falseList.size());
-						
-					}
-				}
-				
-				if(voterUidMap != null && voterUidMap.size() > 0)
-				{
-					for (Long voterId : voterUidMap.keySet())
-					{
-						List<String> uids = voterUidMap.get(voterId);
-						if(uids != null)
-						{
-							SinkVO returnVO = new SinkVO();
-							returnVO.setStatus("false");
-							returnVO.setVid(voterId);
-							returnVO.setUid(uids.get(0));
-							returnVO.setFid(0l);
-							returnList.add(returnVO);
-							
-							str = str + "," +returnVO.getUid();
-						}
-					}
-				}
-				
-				//SAVING REQUESTED AND RESPONCE DATA FOR BACKUP PURPOSE
-				
-				
-						try 
-						{
-							String usrStr = "";
-							if(usIds != null)
-							{
-								for (Long usId : usIds)
-								{
-									usrStr = usrStr + "::"  +  usId;
-								}
-							}
-							TdpCadreVerfiedData tdpCadreVerfiedData = new TdpCadreVerfiedData();
-							Gson gson = new Gson();
-							tdpCadreVerfiedData.setRequestData(gson.toJson(inputs));
-							tdpCadreVerfiedData.setResponceData(gson.toJson(returnList));
-							tdpCadreVerfiedData.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-							tdpCadreVerfiedData.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-							tdpCadreVerfiedData.setReqSize(Long.valueOf(inputs.size()));
-							tdpCadreVerfiedData.setResSize(Long.valueOf(returnList.size()));
-							tdpCadreVerfiedData.setMatchedCount(Long.valueOf(matchedCount));
-							tdpCadreVerfiedData.setMissingData(Long.valueOf(missingCount));
-							tdpCadreVerfiedData.setFamilyCount(familyCount);
-							tdpCadreVerfiedData.setNewFamilyCount(newFamilyVoters);
-							tdpCadreVerfiedData.setFamilySinkUids(familyStr);
-							tdpCadreVerfiedData.setMissingIds(str);
-							tdpCadreVerfiedData.setUserId(usrStr);
-							tdpCadreVerfiedDataDAO.save(tdpCadreVerfiedData);
-						}
-						catch (Exception e) 
-						{
-							LOG.error("Exception Raised in updatePrintedCardDetails Back up saving",e);
-						}
+			}
+			Map<String,String> existingRecordsMap = new HashMap<String,String>();
+			Set<String> nonDuplicateKeys = new HashSet<String>();
+			if(uniqueids.size() > 0){
+			      existingRecordsMap = getExistingFamilyRecordStatus(new ArrayList<String>(uniqueids),userIds);
+			      for(String uniqueKey:existingRecordsMap.keySet()){
+			    	  String status = existingRecordsMap.get(uniqueKey);
+			    	  if(status!= null && status.equalsIgnoreCase("duplicate")){
+			    	      uniqueids.remove(uniqueKey);//removing all keys contain status duplicate
+			    	      newUniqueids.remove(uniqueKey);//removing all keys contain status duplicate
+			    	  }else{
+			    		  newUniqueids.remove(uniqueKey);//removing all existing keys in db
+			    		  nonDuplicateKeys.add(uniqueKey);//adding all non pending status keys
+			    	  }
+			    	  
+			      }
+			}
+			Set<Long> voterIds = voterUidMap.keySet();
+			
+			LOG.error("TOTAL RECORDS : " + inputs.size());
+			
+			// updating all new keys family details into History.
+			if(newUniqueids != null && newUniqueids.size() > 0)
+			{
+				Integer count1 =  tdpCadreDAO.updateFamilyDetailsWithHistory(new ArrayList<String>(newUniqueids), new ArrayList<Long>(userIds));
 			}
 			
 			
+			
+			if(uniqueids != null && uniqueids.size() > 0)
+			{
+					List<Object[]> result = tdpCadreDAO.getFamilyDetails(new ArrayList<String>(uniqueids));
+					
+					if(result != null && result.size() > 0)
+					{
+						uniqueDupMap = new HashMap<String, Set<String>>();
+						for (Object[] objects : result)
+						{
+								String familyVoterId = objects[0] != null ? objects[0].toString().trim().toLowerCase() : IConstants.EMPTY_STRING;
+								String voterName = objects[1] != null ? objects[1].toString().trim().toLowerCase() : IConstants.EMPTY_STRING;
+								String relativeName = objects[2] != null ? objects[2].toString().trim().toLowerCase() : IConstants.EMPTY_STRING;
+								String houseNo = objects[3] != null ? objects[3].toString().trim().toLowerCase() : IConstants.EMPTY_STRING;
+								String mobileNo = objects[4] != null ? objects[4].toString().trim().toLowerCase() : IConstants.EMPTY_STRING;
+								
+								String key = familyVoterId +"-"+ voterName +"-"+ relativeName +"-"+ houseNo +"-"+ mobileNo;
+								//'PRASAD-THAGIBHATHINA-HOUSENUM-9885675456-089786567' HFT-098789-098 
+								//'PRASAD-THAGIBHATHINA-HOUSENUM-9885675456-089786567' HFT-098789-099 
+								Set<String> unikeys =  uniqueDupMap.get(key);
+								if(unikeys == null)
+								{
+									unikeys = new java.util.HashSet<String>();
+								}
+								unikeys.add(objects[5].toString());
+								uniqueDupMap.put(key, unikeys);
+						}
+						
+					}
+				}			
+				if(uniqueDupMap != null && uniqueDupMap.size() > 0)
+				{
+					falseList = new java.util.HashSet<String>();
+					dupList = new java.util.HashSet<String>();
+					for (Map.Entry<String, Set<String>> entry  : uniqueDupMap.entrySet())
+					{
+						Set<String> result = entry.getValue();
+						if(result.size() == 1)
+						{
+							falseList.add(new ArrayList<String>(result).get(0));
+						}
+						else
+						{
+							String reqKey = "";
+							for (String key:result) 
+							{
+								if(reqKey.length() == 0 && nonDuplicateKeys.contains(key)){
+									reqKey = key;
+								}else{
+									dupList.add(key);
+								}
+								/*if(index == result.size()-1)
+								{
+									falseList.add(new ArrayList<String>(result).get(index));
+								}
+								else
+								{
+									dupList.add(new ArrayList<String>(result).get(index));
+								}*/
+							}
+							if(reqKey.length() == 0){
+								String rKey = new ArrayList<String>(result).get(result.size()-1);
+								falseList.add(rKey);
+								dupList.remove(rKey);
+							}else{
+								falseList.add(reqKey);
+							}
+						}
+					}
+					if(dupList != null && dupList.size() > 0)
+					{
+						Integer updatedNARecords = 	tdpCadreDAO.updateDetailsToDuplicate(new ArrayList<String>(dupList));
+					}
+					
+					
+					
+				}
+			if(dupList.size() > 0){
+				//contains duplicate record keys already inserted in db
+				List<String> dupExistingList = new ArrayList<String>();
+				//contains duplicate record keys not present in db
+				List<String> dupNewList = new ArrayList<String>();
+				for(String key:dupList){
+					if(nonDuplicateKeys.contains(key)){
+						dupExistingList.add(key);
+					}else{
+						dupNewList.add(key);
+					}
+					SinkVO vo = allData.get(key);
+					vo.setStatus("duplicate");
+					returnList.add(vo);
+				}
+				if(dupExistingList.size() > 0){
+					//updating status as duplicate to existing records
+					verifiedDataStatusDAO.updateStatus(dupExistingList, new ArrayList<Long>(userIds),dateUtilService.getCurrentDateAndTime(),"duplicate");
+				}
+				if(dupNewList.size() > 0){
+					//adding new records with duplicate status
+					for(String duplicateKey:dupNewList){
+						SinkVO duplicateRecord = allData.get(duplicateKey);
+						if(duplicateRecord != null){
+							VerifiedDataStatus verifiedDataResponse = new VerifiedDataStatus();
+							verifiedDataResponse.setFamilyVoterId(duplicateRecord.getFid());
+							verifiedDataResponse.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							verifiedDataResponse.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							verifiedDataResponse.setStatus("duplicate");
+							verifiedDataResponse.setUniqueKey(duplicateKey);
+							verifiedDataResponse.setUserId(duplicateRecord.getUsId());
+							
+							verifiedDataStatusDAO.save(verifiedDataResponse);
+						}
+					}
+				}
+			}
+			if(falseList.size() > 0){
+				//here we are adding existing records in db with false state
+				List<String> falseExistingList = new ArrayList<String>();
+				//here we are adding new records 
+				List<String> falseNewList = new ArrayList<String>();
+				for(String key:falseList){
+					if(nonDuplicateKeys.contains(key)){
+						String status = existingRecordsMap.get(key);
+						if( status == null ||  status.equalsIgnoreCase("false")){
+						   falseExistingList.add(key);
+						}
+					}else{
+						falseNewList.add(key);
+					}
+				}
+				if(falseExistingList.size() > 0){
+					List<String> existingKeys = tdpCadreDAO.getExistingRecordsInfo(falseExistingList,new ArrayList<Long>(userIds));
+					verifiedDataStatusDAO.updateStatus(existingKeys, new ArrayList<Long>(userIds),dateUtilService.getCurrentDateAndTime(),"true");
+					falseExistingList.removeAll(existingKeys);
+					if(falseExistingList.size() > 0){
+					  for(String duplicateKey:falseExistingList){
+						  SinkVO vo = allData.get(duplicateKey);
+							vo.setStatus("false");
+							returnList.add(vo);
+					  }
+					}
+				}
+				if(falseNewList.size() > 0){
+					for(String duplicateKey:falseNewList){
+						SinkVO duplicateRecord = allData.get(duplicateKey);
+						if(duplicateRecord != null){
+							VerifiedDataStatus verifiedDataResponse = new VerifiedDataStatus();
+							verifiedDataResponse.setFamilyVoterId(duplicateRecord.getFid());
+							verifiedDataResponse.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+							verifiedDataResponse.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							verifiedDataResponse.setStatus("false");
+							verifiedDataResponse.setUniqueKey(duplicateKey);
+							verifiedDataResponse.setUserId(duplicateRecord.getUsId());
+							
+							verifiedDataStatusDAO.save(verifiedDataResponse);
+							SinkVO vo = allData.get(duplicateKey);
+							vo.setStatus("false");
+							returnList.add(vo);
+						}
+					}
+			   }
+			}
+			Integer matchedCount = 0;
+			Integer missingCount = 0;
+			String str = "";
+			if(voterIds != null && voterIds.size() > 0)
+			{
+				List<Object[]> matchedVoters = tdpCadreDAO.getMissingDetails(voterIds);
+				if(matchedVoters != null && matchedVoters.size() > 0)
+				{
+					LOG.error("MATCHED RECORDS : " + matchedVoters.size());
+					LOG.error("MISSING RECORDS : " + (voterIds.size() - matchedVoters.size()));
+					matchedCount = matchedVoters.size();
+					missingCount = voterIds.size() - matchedVoters.size();
+					for(Object[] obj : matchedVoters)
+					{
+						if(obj[0] != null)
+						{
+							voterUidMap.remove((Long)obj[0]);
+						}
+						
+					}
+				}
+			}
+			
+			/*if(inputs != null && inputs.size() > 0)
+			{
+				for (SinkVO vo : inputs) 
+				{
+					if(vo.getFid() != null && vo.getFid().toString().trim().length() > 0 && !vo.getFid().toString().trim().equalsIgnoreCase("null") && vo.getFid().longValue() > 0)
+					{
+						if(dupList.contains(vo.getUid()))
+						{
+							vo.setStatus("duplicate");
+						}
+						else
+						{
+							vo.setStatus("false");
+						}
+						returnList.add(vo);
+					}
+					
+					//newFamilyVoters = (familyCount) - (dupList.size() + falseList.size());
+					
+				}
+			}*/
+			
+			if(voterUidMap != null && voterUidMap.size() > 0)
+			{
+				for (Long voterId : voterUidMap.keySet())
+				{
+					List<String> uids = voterUidMap.get(voterId);
+					if(uids != null)
+					{
+						SinkVO returnVO = new SinkVO();
+						returnVO.setStatus("false");
+						returnVO.setVid(voterId);
+						returnVO.setUid(uids.get(0));
+						returnVO.setFid(0l);
+						returnList.add(returnVO);
+						
+						str = str + "," +returnVO.getUid();
+					}
+				}
+			}
+			
+			//SAVING REQUESTED AND RESPONCE DATA FOR BACKUP PURPOSE
+			
+			
+					try 
+					{
+						String usrStr = "";
+						if(usIds != null)
+						{
+							for (Long usId : usIds)
+							{
+								usrStr = usrStr + "::"  +  usId;
+							}
+						}
+						TdpCadreVerfiedData tdpCadreVerfiedData = new TdpCadreVerfiedData();
+						Gson gson = new Gson();
+						tdpCadreVerfiedData.setRequestData(gson.toJson(inputs));
+						tdpCadreVerfiedData.setResponceData(gson.toJson(returnList));
+						tdpCadreVerfiedData.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+						tdpCadreVerfiedData.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						tdpCadreVerfiedData.setReqSize(Long.valueOf(inputs.size()));
+						tdpCadreVerfiedData.setResSize(Long.valueOf(returnList.size()));
+						tdpCadreVerfiedData.setMatchedCount(Long.valueOf(matchedCount));
+						tdpCadreVerfiedData.setMissingData(Long.valueOf(missingCount));
+						//tdpCadreVerfiedData.setFamilyCount(familyCount);
+						//tdpCadreVerfiedData.setNewFamilyCount(newFamilyVoters);
+						//tdpCadreVerfiedData.setFamilySinkUids(familyStr);
+						tdpCadreVerfiedData.setMissingIds(str);
+						tdpCadreVerfiedData.setUserId(usrStr);
+						tdpCadreVerfiedDataDAO.save(tdpCadreVerfiedData);
+					}
+					catch (Exception e) 
+					{
+						LOG.error("Exception Raised in updatePrintedCardDetails Back up saving",e);
+					}
+		   }
 		} 
 		catch (Exception e) 
 		{
@@ -6275,5 +6379,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			LOG.error("Exception rised in getcadreSurveyUserDetails", e);
 		}
 		return result;
+	}
+
+	public Map<String,String> getExistingFamilyRecordStatus(List<String> uniqueKeys,Set<Long> userIds){
+		Map<String,String> existingRecordsMap = new HashMap<String,String>();
+		//0 uniqueKey,1 status
+		List<Object[]> existingRecordsList = verifiedDataStatusDAO.getExistingFamilyRecordStatus(uniqueKeys, new ArrayList<Long>(userIds));
+		for(Object[] existingRecord:existingRecordsList){
+			existingRecordsMap.put(existingRecord[0].toString(),existingRecord[1].toString());
+		}
+	    return existingRecordsMap;
 	}
 }
