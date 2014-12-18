@@ -66,6 +66,7 @@ import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.itgrids.partyanalyst.service.ISurveyDetailsService;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
+import com.itgrids.partyanalyst.utils.CommonUtilsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
@@ -151,6 +152,8 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	@Autowired ICadreDashBoardService cadreDashBoardService;
     
 	@Autowired ITabLogInAuthDAO tabLogInAuthDAO;
+	
+	@Autowired CommonUtilsService commonUtilsService;
 	
 	public IVoterBoothActivitiesDAO getVoterBoothActivitiesDAO() {
 		return voterBoothActivitiesDAO;
@@ -1161,6 +1164,16 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		}
     	
     	return returnVO;
+    }
+    
+    public String getDynamicValueOfAKey()
+	{
+
+		return commonUtilsService.getDynamicValueOfAKey(IConstants.RESTRICT_TAB_DATA_SYNC);
+
+	}
+    public boolean checkHasAccess(Long userId){
+    	return cadreRegistrationService.checkHasAccess(userId);
     }
 }
 
