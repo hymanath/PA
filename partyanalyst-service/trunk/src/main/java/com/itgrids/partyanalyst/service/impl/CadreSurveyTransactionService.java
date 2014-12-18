@@ -42,6 +42,7 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPartyPresidentsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IZebraPrintOnlineShipDAO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreTransactionVO;
@@ -55,6 +56,7 @@ import com.itgrids.partyanalyst.model.CadreOtpDetails;
 import com.itgrids.partyanalyst.model.CadreTxnDetails;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
+import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.ICadreSurveyTransactionService;
 import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -98,6 +100,8 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 	
 	private IZebraPrintOnlineShipDAO zebraPrintOnlineShipDAO;
 	
+	private IVoterDAO voterDAO;
+	
 	  private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 10,
 		      Font.BOLD);
 	  private static Font normalFont = new Font(Font.FontFamily.TIMES_ROMAN, 8,
@@ -109,6 +113,10 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 	  private static Font smallFont = new Font(Font.FontFamily.TIMES_ROMAN, 7);
 	  
 	
+	public void setVoterDAO(IVoterDAO voterDAO) {
+		this.voterDAO = voterDAO;
+	}
+
 	public void setZebraPrintOnlineShipDAO(
 			IZebraPrintOnlineShipDAO zebraPrintOnlineShipDAO) {
 		this.zebraPrintOnlineShipDAO = zebraPrintOnlineShipDAO;
@@ -1018,7 +1026,17 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 					cadreRegistrationVO.setMobileNumber(tdpCadre[7] != null ?tdpCadre[7].toString():" -- ");
 					cadreRegistrationVO.setUploadImageFileName(tdpCadre[8] != null ?tdpCadre[8].toString():" -- ");					
 					cadreRegistrationVO.setCasteName(tdpCadre[9] != null ? " Dispatched ":" Pending "); //dispatch status
-					cadreRegistrationVO.setCadreType(tdpCadre[11] != null ?tdpCadre[11].toString():" -- "); // voterIdcard No
+					
+					if(tdpCadre[11] != null && tdpCadre[11].toString().trim().length()>0 && Long.valueOf(tdpCadre[11].toString().trim())>0)
+					{
+						Long voterId = Long.valueOf(tdpCadre[11].toString().trim());
+						Voter voter = voterDAO.get(voterId);
+						cadreRegistrationVO.setCadreType(voter != null ? voter.getVoterIDCardNo().trim():" -- "); // voterIdcard No
+					}
+					else
+					{
+						cadreRegistrationVO.setCadreType(" -- "); // voterIdcard No
+					}
 					tdpCadreList.add(cadreRegistrationVO);
 				}
 			
