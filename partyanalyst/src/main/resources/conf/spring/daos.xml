@@ -1793,6 +1793,7 @@
 </bean>
 
 
+
 <bean id="tdpCadreVolunteerConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreVolunteerConstituencyDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
@@ -1815,6 +1816,9 @@
 	</bean>
 	
 	<bean id="verifiedDataResponseDAO" class="com.itgrids.partyanalyst.dao.hibernate.VerifiedDataResponseDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cadreIvrResponseDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreIvrResponseDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
