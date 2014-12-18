@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -3519,6 +3520,10 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		}
 
 		public List<Object[]> getRegisterCadreInfoForVolunteerUserBetweenDates(Date fromDate,Date toDate,List<Long> tabUserIds,List<Long> webUserIds){
+			Calendar cal = Calendar.getInstance();
+			cal.set(cal.YEAR, 2014);
+			cal.set(cal.MONTH, 11);
+			cal.set(cal.DATE, 18);
 			StringBuilder queryStr = new StringBuilder();
 			queryStr.append("select count(model.tdpCadreId),model.dataSourceType  from TdpCadre model where " +
 					" model.isDeleted = 'N' and  model.userAddress.state.stateId = 1 and model.enrollmentYear = 2014 ");
@@ -3531,17 +3536,16 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				queryStr.append(" and date(model.surveyTime) <=:toDate ");
 			}
 			
-			
-			if((tabUserIds != null && tabUserIds.size() > 0) && (webUserIds == null || webUserIds.size() == 0 ))
+		    if(tabUserIds.size() > 0  &&  webUserIds.size() > 0){
+				queryStr.append(" and (model.insertedBy.cadreSurveyUserId in (:tabUserIds) or model.insertedWebUser.userId  in (:webUserIds))");
+		    }else if(tabUserIds.size() > 0){
 				queryStr.append(" and model.insertedBy.cadreSurveyUserId in (:tabUserIds) ");
-			
-			else if((tabUserIds == null || tabUserIds.size() == 0) && (webUserIds != null && webUserIds.size() > 0 ))
+		    }else{
 				queryStr.append(" and model.insertedWebUser.userId  in (:webUserIds) ");
+		    }
 			
-			else if((tabUserIds != null && tabUserIds.size() > 0 ) && (webUserIds != null && webUserIds.size() > 0))
-				queryStr.append(" and model.insertedBy.cadreSurveyUserId in (:tabUserIds) or model.insertedWebUser.userId  in (:webUserIds) ");
 			
-			queryStr.append(" group by model.dataSourceType ");	
+			queryStr.append(" and date(model.surveyTime) >:startDate group by model.dataSourceType ");	
 			Query query = getSession().createQuery(queryStr.toString());
 			
 			if(fromDate != null){
@@ -3551,10 +3555,11 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			  query.setDate("toDate", toDate);
 			}
 		
-			if(tabUserIds != null && tabUserIds.size() > 0 )
+			if( tabUserIds.size() > 0 )
 				query.setParameterList("tabUserIds", tabUserIds);
-			if(webUserIds != null && webUserIds.size() > 0 )
+			if(webUserIds.size() > 0 )
 				query.setParameterList("webUserIds", webUserIds);
+			query.setParameter("startDate",cal.getTime());
 			return query.list();
 		}
 		
