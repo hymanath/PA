@@ -25,6 +25,7 @@ import org.apache.poi.ss.usermodel.Row;
 import com.itgrids.partyanalyst.dao.IAppDbUpdateDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.ICadreGhmcDriveUsersDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegAmountDetailsDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
@@ -87,8 +88,18 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 	private IRegionServiceData regionServiceDataImp;
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	private ICadreGhmcDriveUsersDAO cadreGhmcDriveUsersDAO;
+
 	
-	
+	public ICadreGhmcDriveUsersDAO getCadreGhmcDriveUsersDAO() {
+		return cadreGhmcDriveUsersDAO;
+	}
+
+	public void setCadreGhmcDriveUsersDAO(
+			ICadreGhmcDriveUsersDAO cadreGhmcDriveUsersDAO) {
+		this.cadreGhmcDriveUsersDAO = cadreGhmcDriveUsersDAO;
+	}
+
 	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
 		return assemblyLocalElectionBodyDAO;
 	}
@@ -6020,6 +6031,64 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			}
 			info.setApCount(apCount);
 			info.setTgCount(tgCount);
+			return info;
+		}
+
+		public List<CadreRegisterInfo> getGHMCRegisteredCountDetails(String type){
+			
+			List<CadreRegisterInfo> returnResult = new ArrayList<CadreRegisterInfo>();
+			
+			Date currentDate = dateService.getCurrentDateAndTime();
+			CadreRegisterInfo todayInfo = new CadreRegisterInfo();
+			
+			if(type.equalsIgnoreCase("today"))
+				todayInfo = getGHMCRegisterCount(currentDate,currentDate);
+			else if(type.equalsIgnoreCase("total"))
+				todayInfo = getGHMCRegisterCount(null,null);	
+		     
+		    returnResult.add(todayInfo);
+		
+		  
+
+		    return returnResult;
+		}
+		
+		
+		 public CadreRegisterInfo getGHMCRegisterCount(Date fromDate,Date toDate){
+			CadreRegisterInfo info = new CadreRegisterInfo();
+		
+			Long ghmcTabCount = 0l;
+			Long ghmcWebCount = 0l;
+		
+			List<Object[]> districtWiseGHMCCount = null;
+			try{
+				
+				List<Long> tabInsertedUsers = cadreSurveyUserDAO.getCadreSurveyUserDetailsByType();
+				List<Long> webInsertedUsers = cadreGhmcDriveUsersDAO.getGHMCDriveUsers();
+				//List<Long> tabInsertedUsers = new ArrayList<Long>();
+				//tabInsertedUsers.add(3l);
+				//List<Long> webInsertedUsers = new ArrayList<Long>();
+				//webInsertedUsers.add(1l);
+				//webInsertedUsers.add(2l);
+			
+				if(tabInsertedUsers.size() > 0 || webInsertedUsers.size() > 0)
+					districtWiseGHMCCount = tdpCadreDAO.getRegisterCadreInfoForVolunteerUserBetweenDates(fromDate, toDate,tabInsertedUsers,webInsertedUsers);
+
+				if(districtWiseGHMCCount != null && districtWiseGHMCCount.size() > 0){
+				    for(Object[] districtGHMCCnt:districtWiseGHMCCount){			    	
+							if(districtGHMCCnt[1] != null && districtGHMCCnt[1].toString().trim().equalsIgnoreCase("TAB"))
+								ghmcTabCount = ghmcTabCount +  (Long)districtGHMCCnt[0];
+							else if(districtGHMCCnt[1] != null && districtGHMCCnt[1].toString().trim().equalsIgnoreCase("WEB"))
+								ghmcWebCount = ghmcWebCount + 	 (Long)districtGHMCCnt[0];					
+					
+				   }
+				}
+				
+			}catch(Exception e){
+				LOG.error("Exception rised in getRegisterCount",e);
+			}
+			info.setGhmcTabCount(ghmcTabCount);
+			info.setGhmcWebCount(ghmcWebCount);
 			return info;
 		}
 }
