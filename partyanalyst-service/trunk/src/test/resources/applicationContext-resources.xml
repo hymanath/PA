@@ -523,6 +523,7 @@
 				<value>com.itgrids.partyanalyst.model.TdpCadreVerfiedData</value>
 				<value>com.itgrids.partyanalyst.model.VerifiedDataRequest</value>
 				<value>com.itgrids.partyanalyst.model.VerifiedDataResponse</value>
+				<value>com.itgrids.partyanalyst.model.DynamicKeys</value>
 			</list>
 		</property>
 	</bean>
@@ -585,6 +586,10 @@
 
 
 	<!-- Add new DAOs PARTY ANALYST DATABASE here -->
+	
+	<bean id="dynamicKeysDAO" class="com.itgrids.partyanalyst.dao.hibernate.DynamicKeysDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="verifiedDataResponseDAO" class="com.itgrids.partyanalyst.dao.hibernate.VerifiedDataResponseDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
