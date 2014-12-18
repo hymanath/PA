@@ -20,4 +20,12 @@ public class DynamicKeysDAO extends GenericDaoHibernate<DynamicKeys, Long> imple
 		query.setParameter("key", key);
 		return query.list();
 	}
+	
+	public String getValueByKey(String key)
+	{
+		Query query = getSession().createQuery("SELECT model.value from DynamicKeys model where model.key = :key");
+		query.setParameter("key",key);
+		return (String)query.uniqueResult();
+	}
+	
 }
