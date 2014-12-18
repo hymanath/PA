@@ -202,6 +202,20 @@ public class WebServiceHandler2 {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Object saveFieldDataForCadre (List<CadreRegistrationVO> inputs)
 	{
+		String isCheckReq = webServiceHandlerService1.getDynamicValueOfAKey();
+		try{
+		  if(inputs != null && inputs.size() > 0){
+			if(isCheckReq != null && isCheckReq.trim().equalsIgnoreCase("ON")){
+				boolean status = webServiceHandlerService1.checkHasAccess(inputs.get(0).getCreatedUserId());
+				if(!status){
+					return "{\"status\":\"Failure\"}";
+				}
+			}
+		  }
+		}catch(Exception e){
+			LOG.error("Exception rised in tab record sync ",e);
+		}
+		LOG.error("returnd user:");
 		LOG.debug("inside save field data for cadre");
 		LOG.debug(inputs.toString());
 		SurveyCadreResponceVO out=null;

@@ -53,4 +53,7 @@ public interface IWebServiceHandlerService1 {
 	
 	public TdpCadreVO searchTdpCadreDetailsBySearchCriteria(Long constituencyId,String name,String memberShipCardNo, String voterCardNo, String refNo, String mobileNo);
 	
+	public String getDynamicValueOfAKey();
+	
+	public boolean checkHasAccess(Long userId);
 }
