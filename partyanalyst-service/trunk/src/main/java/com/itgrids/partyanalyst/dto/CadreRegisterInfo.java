@@ -63,7 +63,8 @@ public class CadreRegisterInfo implements Serializable{
 	private String regPercent;
 	private String colorStatus;
 	private Long overAllRegCount;
-	
+	private Long ghmcTabCount;
+	private Long ghmcWebCount;
 	
 	
 	
@@ -491,5 +492,21 @@ public class CadreRegisterInfo implements Serializable{
 		this.ageRangeVoterValues = ageRangeVoterValues;
 	}
 
+	public Long getGhmcTabCount() {
+		return ghmcTabCount;
+	}
 
+	public void setGhmcTabCount(Long ghmcTabCount) {
+		this.ghmcTabCount = ghmcTabCount;
+	}
+
+	public Long getGhmcWebCount() {
+		return ghmcWebCount;
+	}
+
+	public void setGhmcWebCount(Long ghmcWebCount) {
+		this.ghmcWebCount = ghmcWebCount;
+	}
+
+	
 }

@@ -103,4 +103,6 @@ public interface ICadreDashBoardService {
 	public List<CadreRegisterInfo> getDistrictWiseCastCadreCountByAccess(Long districtId,String accessType,String accessValue);
 	
 	public CadreRegisterInfo getTotalRegisterCadreInfo();
+	
+	public List<CadreRegisterInfo> getGHMCRegisteredCountDetails(String type);
 }

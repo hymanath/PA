@@ -3427,16 +3427,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 
 	  public List<Object[]> getCadreDetails(String queryStr)
 		{
-			/*StringBuilder queryStr = new StringBuilder();
-			queryStr.append(" select model.tdpCadreId,model.image,model.userAddress.userAddressId,model.memberShipNo,model.mobileNo,model.firstname,model.cardNumber,model.constituencyId " +
-					"   from  TdpCadre model ");
-			if(searchType.equalsIgnoreCase("membership"))
-				queryStr.append("where substring(model.memberShipNo,5) = :value " );
-			else if(searchType.equalsIgnoreCase("mobile"))
-				queryStr.append("where model.mobileNo = :value ");
-			else if(searchType.equalsIgnoreCase("tr"))
-				queryStr.append("where model.refNo = :value ");
-			queryStr.append("and  model.isDeleted='N' and model.enrollmentYear = 2014" );	*/
+			
 			Query query = getSession().createQuery(queryStr.toString()); 
 		
 			return query.list();
@@ -3526,6 +3517,47 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			return qry.list();
 		}
+
+		public List<Object[]> getRegisterCadreInfoForVolunteerUserBetweenDates(Date fromDate,Date toDate,List<Long> tabUserIds,List<Long> webUserIds){
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append("select count(model.tdpCadreId),model.dataSourceType  from TdpCadre model where " +
+					" model.isDeleted = 'N' and  model.userAddress.state.stateId = 1 and model.enrollmentYear = 2014 ");
+			
+			if(fromDate != null){
+				queryStr.append(" and date(model.surveyTime) >=:fromDate ");
+			}
+			
+			if(toDate != null){
+				queryStr.append(" and date(model.surveyTime) <=:toDate ");
+			}
+			
+			
+			if((tabUserIds != null && tabUserIds.size() > 0) && (webUserIds == null || webUserIds.size() == 0 ))
+				queryStr.append(" and model.insertedBy.cadreSurveyUserId in (:tabUserIds) ");
+			
+			else if((tabUserIds == null || tabUserIds.size() == 0) && (webUserIds != null && webUserIds.size() > 0 ))
+				queryStr.append(" and model.insertedWebUser.userId  in (:webUserIds) ");
+			
+			else if((tabUserIds != null && tabUserIds.size() > 0 ) && (webUserIds != null && webUserIds.size() > 0))
+				queryStr.append(" and model.insertedBy.cadreSurveyUserId in (:tabUserIds) or model.insertedWebUser.userId  in (:webUserIds) ");
+			
+			queryStr.append(" group by model.dataSourceType ");	
+			Query query = getSession().createQuery(queryStr.toString());
+			
+			if(fromDate != null){
+			   query.setDate("fromDate", fromDate);
+			}
+			if(toDate != null){
+			  query.setDate("toDate", toDate);
+			}
+		
+			if(tabUserIds != null && tabUserIds.size() > 0 )
+				query.setParameterList("tabUserIds", tabUserIds);
+			if(webUserIds != null && webUserIds.size() > 0 )
+				query.setParameterList("webUserIds", webUserIds);
+			return query.list();
+		}
+		
 		
 		public List<String> getExistingRecordsInfo(List<String> uniqueKeys,List<Long> userIds){
 			Query query = getSession().createQuery("select distinct model.uniqueKey from TdpCadre model where model.enrollmentYear ='2014' and model.isDeleted='N' and " +
