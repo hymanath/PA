@@ -764,4 +764,17 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		}
 		return Action.SUCCESS;
 	}
+	
+	
+
+	public String getGHMCRegisteredCountsDetails(){
+		try{
+			jObj = new JSONObject(getTask());			
+			String countType= jObj.getString("type");
+			result = cadreDashBoardService.getGHMCRegisteredCountDetails(countType);
+		}catch(Exception e){
+			LOG.error("Exception raised in getGHMCRegisteredCountsDetails ",e);
+		}
+		return Action.SUCCESS;
+	}
 }
