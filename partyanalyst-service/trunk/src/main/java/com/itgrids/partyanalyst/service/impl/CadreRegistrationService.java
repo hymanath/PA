@@ -85,6 +85,8 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
+import com.itgrids.partyanalyst.dao.IVerifiedDataRequestDAO;
+import com.itgrids.partyanalyst.dao.IVerifiedDataResponseDAO;
 import com.itgrids.partyanalyst.dao.IVerifyAccessUsersDAO;
 import com.itgrids.partyanalyst.dao.IVerifiedDataStatusDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
@@ -136,11 +138,14 @@ import com.itgrids.partyanalyst.model.TdpCadreTeluguNames;
 import com.itgrids.partyanalyst.model.TdpCadreVerfiedData;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
+import com.itgrids.partyanalyst.model.VerifiedDataRequest;
+import com.itgrids.partyanalyst.model.VerifiedDataResponse;
 import com.itgrids.partyanalyst.model.VerifiedDataStatus;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterNames;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
+import com.itgrids.partyanalyst.utils.CommonUtilsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ImageAndStringConverter;
@@ -211,10 +216,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IVerifyAccessUsersDAO 			verifyAccessUsersDAO;
 	private IUserDAO userDAO ;
 	private IVerifiedDataStatusDAO  verifiedDataStatusDAO;
+	private IVerifiedDataRequestDAO verifiedDataRequestDAO;
+	private IVerifiedDataResponseDAO verifiedDataResponseDAO;
+	private CommonUtilsService commonUtilsService;
+	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
-	
-	
-	
 	
 	public IPrintedCardDetailsDAO getPrintedCardDetailsDAO() {
 		return printedCardDetailsDAO;
@@ -226,6 +232,20 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	}*/
 
 	
+	public void setCommonUtilsService(CommonUtilsService commonUtilsService) {
+		this.commonUtilsService = commonUtilsService;
+	}
+
+	public void setVerifiedDataRequestDAO(
+			IVerifiedDataRequestDAO verifiedDataRequestDAO) {
+		this.verifiedDataRequestDAO = verifiedDataRequestDAO;
+	}
+
+	public void setVerifiedDataResponseDAO(
+			IVerifiedDataResponseDAO verifiedDataResponseDAO) {
+		this.verifiedDataResponseDAO = verifiedDataResponseDAO;
+	}
+
 	public ITdpCadreTeluguNamesDAO getTdpCadreTeluguNamesDAO() {
 		return tdpCadreTeluguNamesDAO;
 	}
@@ -5675,6 +5695,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		List<SinkVO> returnList = new ArrayList<SinkVO>();
 		Set<Long> userIds = new HashSet<Long>();
 		Map<String,SinkVO> allData = new HashMap<String,SinkVO>();
+		Long tdpCadreVerfiedDataId = null;
 		if(inputs != null && inputs.size() > 0)
 		{
 			LOG.error(inputs.toArray());
@@ -5978,7 +5999,6 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			
 			//SAVING REQUESTED AND RESPONCE DATA FOR BACKUP PURPOSE
 			
-			
 					try 
 					{
 						String usrStr = "";
@@ -6004,7 +6024,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						//tdpCadreVerfiedData.setFamilySinkUids(familyStr);
 						tdpCadreVerfiedData.setMissingIds(str);
 						tdpCadreVerfiedData.setUserId(usrStr);
-						tdpCadreVerfiedDataDAO.save(tdpCadreVerfiedData);
+						tdpCadreVerfiedData = tdpCadreVerfiedDataDAO.save(tdpCadreVerfiedData);
+						tdpCadreVerfiedDataId = tdpCadreVerfiedData.getTdpCadreVerfiedDataId();
 					}
 					catch (Exception e) 
 					{
@@ -6017,7 +6038,82 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			returnList = null;
 			LOG.error("Exception Raised in updatePrintedCardDetails",e);
 		}
+		String saveKey = commonUtilsService.getDynamicValueOfAKey(IConstants.SAVE_VERIFY_DATA);
+		if(saveKey != null && saveKey.equalsIgnoreCase(IConstants.ON))
+		{
+			saveVerifyRequestData(inputs,tdpCadreVerfiedDataId);
+			saveVerifyResponceData(returnList, tdpCadreVerfiedDataId);
+		}
 		return returnList;
+	}
+	
+	public ResultStatus saveVerifyRequestData(List<SinkVO> list,Long tdpCadreVerfiedDataId)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			if(list != null && list.size() > 0)
+			{
+				for(SinkVO sinkVO : list)
+				{
+					try{
+						VerifiedDataRequest verifiedDataRequest = new VerifiedDataRequest();
+						verifiedDataRequest.setTdpCadreVerfiedDataId(tdpCadreVerfiedDataId);
+						verifiedDataRequest.setCadreSurveyUserId(sinkVO.getUsId());
+						verifiedDataRequest.setFamilyVoterId(sinkVO.getFid());
+						verifiedDataRequest.setVoterId(sinkVO.getVid());
+						verifiedDataRequest.setUniqueKey(sinkVO.getUid());
+						verifiedDataRequest.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+						verifiedDataRequest.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						verifiedDataRequestDAO.save(verifiedDataRequest);
+					}catch(Exception e)
+					{
+						LOG.error(e);
+					}
+				}
+			}
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		}catch(Exception e)
+		{
+			LOG.error("Exception occured in saveVerifyRequestData Method");
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setExceptionEncountered(e);
+		}
+		return resultStatus;
+	}
+	
+	public ResultStatus saveVerifyResponceData(List<SinkVO> list,Long tdpCadreVerfiedDataId)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			if(list != null && list.size() > 0)
+			{
+				for(SinkVO sinkVO : list)
+				{
+					try{
+						VerifiedDataResponse verifiedDataResponse = new VerifiedDataResponse();
+						verifiedDataResponse.setTdpCadreVerfiedDataId(tdpCadreVerfiedDataId);
+						verifiedDataResponse.setCadreSurveyUserId(sinkVO.getUsId());
+						verifiedDataResponse.setFamilyVoterId(sinkVO.getFid());
+						verifiedDataResponse.setVoterId(sinkVO.getVid());
+						verifiedDataResponse.setUniqueKey(sinkVO.getUid());
+						verifiedDataResponse.setStatus(sinkVO.getStatus());
+						verifiedDataResponse.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+						verifiedDataResponse.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						verifiedDataResponseDAO.save(verifiedDataResponse);
+					}catch(Exception e)
+					{
+						LOG.error(e);
+					}
+				}
+			}
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		}catch(Exception e)
+		{
+			LOG.error("Exception occured in saveVerifyResponceData Method");
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setExceptionEncountered(e);
+		}
+		return resultStatus;
 	}
 	
 	/*public void buildDuplicateLogic(Map<Long,List<SinkFamilyVO>> sinkFamilyMap,List<SinkVO> returnList)
