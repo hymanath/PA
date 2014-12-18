@@ -2331,9 +2331,11 @@
 		<property name="tabUserKeysDAO" ref="tabUserKeysDAO" />	
 		<property name="dynamicKeysDAO" ref="dynamicKeysDAO" />	
 		<property name="verifyAccessUsersDAO" ref="verifyAccessUsersDAO" />	
-		<property name="verifiedDataStatusDAO" ref="verifiedDataStatusDAO" />		
-		<property name="userDAO" ref="userDAO" />	
-		
+		<property name="verifiedDataStatusDAO" ref="verifiedDataStatusDAO" />
+		<property name="verifiedDataRequestDAO" ref="verifiedDataRequestDAO" />
+		<property name="verifiedDataResponseDAO" ref="verifiedDataResponseDAO" />
+		<property name="userDAO" ref="userDAO" />
+		<property name="commonUtilsService" ref="commonUtilsService" />
      </bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
@@ -2444,6 +2446,10 @@
  	 </bean>
  	 <bean name="tdpCallCenterService"  class="com.itgrids.partyanalyst.service.impl.TdpCallCenterService">
  	 <!-- <property name="cadreCallerDetailsDAO" ref="cadreCallerDetailsDAO" />-->
+	</bean>
+	
+	<bean name="commonUtilsService"  class="com.itgrids.partyanalyst.utils.CommonUtilsService">
+		<property name="dynamicKeysDAO" ref="dynamicKeysDAO"/>
 	</bean>
 </beans>		
 	
