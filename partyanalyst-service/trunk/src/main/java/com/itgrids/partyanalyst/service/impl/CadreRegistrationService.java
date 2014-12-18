@@ -5690,8 +5690,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		LOG.error("IN SINK SERVICE");
 		
 		Map<String,Set<String>> uniqueDupMap = null;
-		Set<String> dupList   = null;
-		Set<String> falseList = null;
+		Set<String> falseList = new java.util.HashSet<String>();
+		Set<String>  dupList = new java.util.HashSet<String>();
 		List<SinkVO> returnList = new ArrayList<SinkVO>();
 		Set<Long> userIds = new HashSet<Long>();
 		Map<String,SinkVO> allData = new HashMap<String,SinkVO>();
@@ -5804,8 +5804,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				}			
 				if(uniqueDupMap != null && uniqueDupMap.size() > 0)
 				{
-					falseList = new java.util.HashSet<String>();
-					dupList = new java.util.HashSet<String>();
+					
 					for (Map.Entry<String, Set<String>> entry  : uniqueDupMap.entrySet())
 					{
 						Set<String> result = entry.getValue();
