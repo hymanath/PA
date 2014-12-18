@@ -1032,6 +1032,10 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 						Long voterId = Long.valueOf(tdpCadre[11].toString().trim());
 						Voter voter = voterDAO.get(voterId);
 						cadreRegistrationVO.setCadreType(voter != null ? voter.getVoterIDCardNo().trim():" -- "); // voterIdcard No
+						if(cadreRegistrationVO.getGender() == null)
+						{
+							cadreRegistrationVO.setGender(voter.getGender() != null ?voter.getGender():" -- ");
+						}
 					}
 					else
 					{
