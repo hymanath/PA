@@ -55,8 +55,15 @@ public class VoterInfoVO implements java.io.Serializable
 	private String candidateAadharNo;
 	private String nameType;
 	private Long count;
-		
+	private String emailId;
 	
+	
+	public String getEmailId() {
+		return emailId;
+	}
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
 	public String getTeluguRelativeName() {
 		return TeluguRelativeName;
 	}
