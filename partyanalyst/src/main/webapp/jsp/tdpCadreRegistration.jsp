@@ -219,6 +219,8 @@
 	 <s:if test="voterInfoVOList[0].image != null">
 		alreadyImgPresent = true;
 	 </s:if>
+	 </script>
+	 <script>
 	$(document).ready(function(){
 	    $('.datePickerCls').datepicker({
 		dateFormat: 'yy-mm-dd',
@@ -478,7 +480,10 @@
 		var Nname = $('#nomineNameId').val();
 		var Ngender = $('#nomineeGenderId').val();
 		var NAge = $('#nomineeAgeId').val();
-		var Nrelation = $('#voterRelationId').val();
+		var Nrelation = $('#voterRelationId').val();		
+		var emailId = $.trim($("#emailId").val());
+		var emailreg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+		
 		$('#imageErr').html('');
 		$('#familyVtrCrdIdErr').html("");
 		$('#NaadharErr,#NnameErr,#NgenderErr,#NageErr,#dobErr,#NrelationErr,#gendReqErr').html('');
@@ -521,6 +526,11 @@
 		{
 			isErrorStr = " error";
 			$('#mobileErr').html(' Mobile No is required.');
+		}
+		if(emailId != null && emailId.trim().length > 0 && emailreg.test(emailId) == false)
+		{
+			isErrorStr = " error";
+			$("#emailErr").html('Invalid Email Id.');
 		}
 		if(cadreAge != null && cadreAge.trim().length == 0)
 		{
@@ -1495,6 +1505,11 @@
 										<input type="hidden" class="form-control border-radius-0  input-block-level" id="casteId" placeholder="Enter Caste" name="cadreRegistrationVO.casteId"  value="${voterInfoVOList[0].casteId}" style="width:260px;"></input>
 										-->
 							</div>
+							<div class=" m_top20" >
+										<h5 class="text-align1"> Email Id : <span id="emailErr" style="color:red;font-size:12px;"></span> </h5>
+										<input type="text" id="emailId" class="form-control border-radius-0 input-block-level" placeholder=" Enter Email Id "  name="cadreRegistrationVO.emailId"  value="${voterInfoVOList[0].emailId}" style="width:260px;"  onKeyup="isValidMailId()"></input>
+							</div>
+							
 							<div class=" m_top20" >
 										<h5 class="text-align1">MOBILE NUMBER <span class="mandatory">*</span> <span id="mobileErr" style="color:red;font-size:12px;"></span> </h5>
 										<input type="text" id="mobileNumberId" class="form-control border-radius-0 input-block-level" placeholder=" Mobile Number "  name="cadreRegistrationVO.mobileNumber"  value="${voterInfoVOList[0].mobileNo}" style="width:260px;" maxlength="10" onKeyup="isNumber()"></input>
@@ -3120,11 +3135,21 @@ $(document).ready(function(){
 			var id = $(this).attr('id');
 			if ($('#'+id+'').is(':checked')) 
 			 {
-				console.log(id);
 				$('.'+id+'').remove();
 			 }
 		});
 
+	}
+	
+	function isValidMailId()
+	{
+		var emailId = $.trim($("#emailId").val());
+		var emailreg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+		$("#emailErr").html('');
+		if(emailId != null && emailId.trim().length > 0 && emailreg.test(emailId) == false)
+		{
+			$("#emailErr").html('Invalid Email Id.');
+		}
 	}
 </script>
 </html>
