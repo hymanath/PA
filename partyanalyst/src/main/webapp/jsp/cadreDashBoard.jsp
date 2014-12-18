@@ -340,7 +340,7 @@ table.dataTable tr.odd {
 		</div>
 		</c:if>
 		<div class="row-fluid fadeInUp">
-			<div class="span5 show-grid well well-small border-radius-0 mb-10" style=" min-height: 345px;">
+			<div class="span12 show-grid well well-small border-radius-0 mb-10" >
 				<!--<iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d3929013.1516925395!2d79.7399875!3d15.912899799999996!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1412166071097" width="580" height="300" frameborder="0" style="border:0"></iframe>-->
 				<table class="table table-bordered border-radius-0" style="margin-top: 5px; margin-bottom: 0px;">
 					<tbody >
@@ -361,8 +361,6 @@ table.dataTable tr.odd {
 									<img style=" margin-top: 36px;padding-left: 110px;" src="images/icons/search.gif"/>
 								</div>
 							</td>
-							</tr>
-							<tr>
 							<c:if test="${sessionScope.USER.isAdmin == 'true' || sessionScope.USER.accessType != 'DISTRICT'}">
 							  <td style="width:50%;text-align:center;"><div><a href="javascript:{}" onclick="openDialogToTrack();">Click Here To View</br> Users Working Status </br> & </br> Location Wise Cadre Registration Info</a></br>
 							   <c:if test="${fn:contains(sessionScope.USER.entitlements, 'Leader_Cadre_DashBoard' ) }">
@@ -374,13 +372,14 @@ table.dataTable tr.odd {
 						 <c:if test="${sessionScope.USER.accessType == 'DISTRICT'}">
 							<td style="width:50%;text-align:center;"><div></div></b></td>
 						  </c:if>
-						</tr>
+							</tr>
+							
 						
 					</tbody>
 				</table>
 			</div>
 			
-			<!-- ReCently Registered Block -->
+			<!-- ReCently Registered Block 
 			<div class="span7 show-grid well well-small border-radius-0 pad-0" style="margin-left:20px;min-height:370px;">
 				<h4 style="padding :10px"><i class="icon-user" style="margin-top: 4px;"></i> &nbsp;Recently Registered <i class="icon-refresh" style="margin-top: 4px;margin-left:10px;cursor:pointer;" onclick="getRecentlyRegisteredCadresInfo(0,true);"></i> </h4>
 				<div id="recentRegisterCadresDiv" style="margin-top:15px;"><img style="margin-top:180px;margin-left: 124px;" src="images/icons/loading.gif"/></div>
@@ -1388,14 +1387,14 @@ $('#membersCount').addClass('animated fadeInX');
 			
 		strIndex = strIndex + 6;
 		
-		getRecentlyRegisteredCadresInfo(strIndex,false);
+		//getRecentlyRegisteredCadresInfo(strIndex,false);
 		
 		});
 		$("#previousId").live("click",function(){
 			if(strIndex > 0)
 			strIndex = strIndex - 6;
 			
-			getRecentlyRegisteredCadresInfo(strIndex,false);
+			//getRecentlyRegisteredCadresInfo(strIndex,false);
 			
 		});		
 		function getCadreDetails(locationId,type){
@@ -1450,7 +1449,7 @@ $('#membersCount').addClass('animated fadeInX');
 		
 		}
        //getWorkStartedConstituencyCount();
-	   getRecentlyRegisteredCadresInfo(strIndex,false);
+	 //  getRecentlyRegisteredCadresInfo(strIndex,false);
 	   getDashBoardBasicInfo();
 	   getWorkingMembersInfo();
 	   //setInterval(function(){getWorkStartedConstituencyCount()},1800000);
