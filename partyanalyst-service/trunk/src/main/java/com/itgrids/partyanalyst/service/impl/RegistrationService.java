@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -323,7 +324,7 @@ public class RegistrationService implements IRegistrationService{
 	public void changepassword(){
 		List<String> usersList = new ArrayList<String>();
 		MD5Encrypt encrypt = new MD5Encrypt();
-		usersList.add("107_w_002");
+		usersList.add("cadre_registration_003");
 		for(String usname:usersList){
 			String pasword =RegistrationService.randomGenerator(7)+"";
 			 System.out.println("UserName:"+usname+" Password:"+pasword);
@@ -573,6 +574,8 @@ public class RegistrationService implements IRegistrationService{
 	}
 	public String registerAllUsers(RegistrationVO user){
 		try{
+			PrintWriter writer = new PrintWriter("D:/users.txt", "UTF-8");
+			
 			RegistrationVO regVO = new RegistrationVO();
 		MD5Encrypt encrypt = new MD5Encrypt();
 		FileInputStream file = new FileInputStream(new File("D:\\users.xls"));
@@ -642,8 +645,11 @@ public class RegistrationService implements IRegistrationService{
 			
 		 saveRegistration(regVO,IConstants.PARTY_ANALYST_USER);
 		 System.out.println("UserName:"+usname+" Password:"+pasword);
+		 writer.println("UserName:"+usname+" Password:"+pasword);
 		}
 		file.close();
+		writer.close();
+		System.out.println("success");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
