@@ -1108,6 +1108,14 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						tdpCadre.setMobileNo(null);
 					}
 					
+					if(cadreRegistrationVO.getEmailId() != null && !cadreRegistrationVO.getEmailId().equalsIgnoreCase("null") && cadreRegistrationVO.getEmailId().trim().length()>0)
+					{
+						tdpCadre.setEmailId(cadreRegistrationVO.getEmailId().trim());
+					}
+					else{
+						tdpCadre.setEmailId(null);
+					}
+					
 					if(cadreRegistrationVO.getEducationId() != null && cadreRegistrationVO.getEducationId().longValue() > 0)
 					{
 						tdpCadre.setEducationId(cadreRegistrationVO.getEducationId());
@@ -2181,6 +2189,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								vo.setCandidateAadharNo(tdpCadre.getCadreAadherNo() != null ? tdpCadre.getCadreAadherNo() :"");
 								vo.setFmlyVtrId(tdpCadre.getFamilyVoterId() != null ? tdpCadre.getFamilyVoterId():0L);
 								vo.setNameType(tdpCadre.getNameType());
+								vo.setEmailId(tdpCadre.getEmailId() != null ? tdpCadre.getEmailId():"");
+								
 								List<Object[]> familyVoterInfo = voterDAO.getVoterInfoByVoterId(tdpCadre.getFamilyVoterId());
 								
 								if(familyVoterInfo != null && familyVoterInfo.size()>0)
@@ -2292,6 +2302,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							vo.setName(tdpCadre.getFirstname() != null ? tdpCadre.getFirstname():"");
 							vo.setRelativeName(tdpCadre.getRelativename() != null ? tdpCadre.getRelativename():"");
 							vo.setRelationType(tdpCadre.getRelativeType() != null ? tdpCadre.getRelativeType():"");
+							vo.setEmailId(tdpCadre.getEmailId() != null ? tdpCadre.getEmailId():"");
 							
 							if(tdpCadre.getGender() != null)
 							{
@@ -2561,6 +2572,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				vo.setEducation("0");						
 				vo.setLocation("");
 				vo.setMobileNo("");
+				vo.setEmailId("");
 				vo.setMemberShipId("");
 				vo.setActiveDate("");
 				vo.setAadharNo("");
