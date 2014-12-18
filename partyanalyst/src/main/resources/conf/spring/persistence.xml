@@ -529,6 +529,7 @@
 				<value>com.itgrids.partyanalyst.model.VerifiedDataStatus</value>
 				<value>com.itgrids.partyanalyst.model.VerifiedDataRequest</value>
 				<value>com.itgrids.partyanalyst.model.VerifiedDataResponse</value>
+				<value>com.itgrids.partyanalyst.model.CadreIvrResponse</value>
 				</list>
 			
 		</property>
