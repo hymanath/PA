@@ -297,7 +297,7 @@
 					str1+='</tr>';
 					str1+='</thead>';
 					str1+='</table>';
-					str1+='<img src="images/Loading-data.gif" id="loadingImg1" style="display:none;margin-top: 100px; height: 70px; width: 90px;"/>';
+					str1+='<img src="images/Loading-data.gif" id="loadingImg1" style="display:none;margin-top: 30px;margin-left:440px; height: 70px; width: 90px;"/>';
 					$('#detailsDiv').html(str1);
 			}
 			else
@@ -323,8 +323,8 @@
 			if(results != null && results.length>0)
 			{
 			
-				var str = '<h4 style="margin-left:410px;"> VOLUNTEERS DETAILS </h4>';
-					str+='<br><div style="width:1200px;margin-left:-170px;">';
+				var str = '<h4 style="margin-left:575px;"> VOLUNTEERS DETAILS </h4>';
+					str+='<br><div style="width:1200px;margin-left:24px;">';
 					str+='<table class="table table-bordered" style="table-layout: fixed;" id="volunteersTab1">';
 				    str+='<thead class="alert alert-success">';
 					str+='<tr>';
@@ -384,7 +384,7 @@
 						str+='</td>';
 						
 						str+='<td  style="text-align:center;">';
-						str+='<select id="assignConstiList'+i+'" >';
+						str+='<select style="width:170px;" id="assignConstiList'+i+'" >';
 						if(constituencyArr != null && constituencyArr.length>0)
 						{
 							str+='<option value="0"> Allocate Constituency </option>';
