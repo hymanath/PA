@@ -2336,6 +2336,7 @@
 		<property name="verifiedDataResponseDAO" ref="verifiedDataResponseDAO" />
 		<property name="userDAO" ref="userDAO" />
 		<property name="commonUtilsService" ref="commonUtilsService" />
+		<property name="cadreRegSyncAccessUsersDAO" ref="cadreRegSyncAccessUsersDAO" />		
      </bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
