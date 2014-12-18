@@ -1825,5 +1825,8 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
+    <bean id="cadreRegSyncAccessUsersDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRegSyncAccessUsersDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		
