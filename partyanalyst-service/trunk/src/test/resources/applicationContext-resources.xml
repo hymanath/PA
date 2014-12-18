@@ -524,6 +524,7 @@
 				<value>com.itgrids.partyanalyst.model.VerifiedDataRequest</value>
 				<value>com.itgrids.partyanalyst.model.VerifiedDataResponse</value>
 				<value>com.itgrids.partyanalyst.model.DynamicKeys</value>
+				<value>com.itgrids.partyanalyst.model.CadreIvrResponse</value>
 			</list>
 		</property>
 	</bean>
@@ -2722,6 +2723,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
 
+
 <bean id="tdpCadreVolunteerConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreVolunteerConstituencyDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
@@ -2734,4 +2736,7 @@
 <bean id="tdpCadreVolunteerDateDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreVolunteerDateDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
+<bean id="cadreIvrResponseDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreIvrResponseDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>
