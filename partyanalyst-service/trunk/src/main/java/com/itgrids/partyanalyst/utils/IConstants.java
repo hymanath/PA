@@ -839,5 +839,10 @@ public interface IConstants {
     public static final String[] excludeUrl ={"callCenterMembershipCardStatusAction","getCadreDetailsForCallCenterAction","saveCallCenterFeedbackAction","getFeedbackDataAction","tdpCadreVolunteerAction","tdpCadreVolunteerRegistrationAction"};
     public static final String CADRE_SMS_STATUS_FILES = "cadre_sms_status_files";
     public static final String EMPTY_STRING = "";
-    		
+    
+    //Dynamic Keys
+    
+    public static final String ON = "ON";
+    public static final String OFF = "OFF";
+    public static final String SAVE_VERIFY_DATA = "SAVE_VERIFY_DATA";
 }
