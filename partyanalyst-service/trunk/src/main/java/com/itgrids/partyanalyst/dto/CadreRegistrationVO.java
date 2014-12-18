@@ -28,6 +28,7 @@ public class CadreRegistrationVO implements Serializable{
 	private Long 			 casteId;
 	private String 			 casteName;
 	private String 			 mobileNumber;
+	private String 		     emailId;
 	private Long 			 educationId;
 	private Long 			 occupationId;
 	private String 			 houseNo;
@@ -552,8 +553,12 @@ public class CadreRegistrationVO implements Serializable{
 	public void setCadreId(Long cadreId) {
 		this.cadreId = cadreId;
 	}
-
 	
-	
+	public String getEmailId() {
+		return emailId;
+	}
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
 	
 }
