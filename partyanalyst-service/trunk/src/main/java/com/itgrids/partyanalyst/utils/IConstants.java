@@ -845,4 +845,5 @@ public interface IConstants {
     public static final String ON = "ON";
     public static final String OFF = "OFF";
     public static final String SAVE_VERIFY_DATA = "SAVE_VERIFY_DATA";
+    public static final String RESTRICT_TAB_DATA_SYNC = "RESTRICT_TAB_DATA_SYNC";
 }
