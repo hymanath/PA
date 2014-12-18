@@ -49,6 +49,7 @@ import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICadreLevelDAO;
 import com.itgrids.partyanalyst.dao.ICadreParticipatedElectionDAO;
 import com.itgrids.partyanalyst.dao.ICadrePreviousRolesDAO;
+import com.itgrids.partyanalyst.dao.ICadreRegSyncAccessUsersDAO;
 import com.itgrids.partyanalyst.dao.ICadreRolesDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserAssignDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreSurveyUserDAO;
@@ -219,6 +220,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IVerifiedDataRequestDAO verifiedDataRequestDAO;
 	private IVerifiedDataResponseDAO verifiedDataResponseDAO;
 	private CommonUtilsService commonUtilsService;
+	private ICadreRegSyncAccessUsersDAO cadreRegSyncAccessUsersDAO;
 	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
@@ -234,6 +236,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	
 	public void setCommonUtilsService(CommonUtilsService commonUtilsService) {
 		this.commonUtilsService = commonUtilsService;
+	}
+
+	public void setCadreRegSyncAccessUsersDAO(
+			ICadreRegSyncAccessUsersDAO cadreRegSyncAccessUsersDAO) {
+		this.cadreRegSyncAccessUsersDAO = cadreRegSyncAccessUsersDAO;
 	}
 
 	public void setVerifiedDataRequestDAO(
@@ -6496,5 +6503,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			existingRecordsMap.put(existingRecord[0].toString(),existingRecord[1].toString());
 		}
 	    return existingRecordsMap;
+	}
+	
+	public boolean checkHasAccess(Long userId){
+		Long count = cadreRegSyncAccessUsersDAO.checkHasAccess(userId);
+		if(count.longValue() > 0){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 }

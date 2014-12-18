@@ -123,4 +123,6 @@ public interface ICadreRegistrationService {
 	public TdpCadreVO searchTdpCadreDetailsBySearchCriteria(Long constituencyId,String name,String memberShipCardNo, String voterCardNo, String refNo, String mobileNo);
 		
 	public List<UserDetailsVO> getCadreSurveyUserDetails(List<UserDetailsVO> cadreSurveyUserIds);
+	
+	public boolean checkHasAccess(Long userId);
 }

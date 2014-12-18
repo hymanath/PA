@@ -109,7 +109,7 @@ public class TdpCadre {
 	private String 						nameLocal;
 	private TdpCadreOnline              tdpCadreOnline;
 	private Long 						constituencyId;
-	//private String 						emailId;
+	private String 						emailId;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "tdp_cadre_id", unique = true, nullable = false)
@@ -711,12 +711,12 @@ public class TdpCadre {
 		this.constituencyId = constituencyId;
 	}
 	
-	/*@Column(name="email_id")	
+	@Column(name="email_id")	
 	public String getEmailId() {
 		return emailId;
 	}
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
-	}*/
+	}
 	
 }
