@@ -229,7 +229,7 @@
 				str +='<td>'+result.cadreRegistrationVOList[i].constituencyId+'</td>';
 				str +='<td>'+result.cadreRegistrationVOList[i].previousEnrollmentNumber+'</td>';
 				str +='<td style="text-align:center;">'+result.cadreRegistrationVOList[i].refNo+'</td>';
-				str +='<td> <img id="'+result.cadreRegistrationVOList[i].enrollmentNumber+'" src="images/cadre_images/'+result.cadreRegistrationVOList[i].uploadImageFileName+'" width="50px"/></td>';
+				str +='<td> <img id="'+result.cadreRegistrationVOList[i].enrollmentNumber+'" src="http://www.mytdp.com/images/cadre_images/'+result.cadreRegistrationVOList[i].uploadImageFileName+'" width="50px"/></td>';
 				str +='<td>'+result.cadreRegistrationVOList[i].casteName+'</td>';  // dispatch Status
 				
 				str +='</tr>';
@@ -269,7 +269,7 @@
 				strs +='<td>'+result.cadreRegistrationVOList[i].constituencyId+'</td>';
 				strs +='<td>'+result.cadreRegistrationVOList[i].previousEnrollmentNumber+'</td>';
 				strs +='<td style="text-align:center;">'+result.cadreRegistrationVOList[i].refNo+'</td>';
-				strs +='<td> <img id="'+result.cadreRegistrationVOList[i].enrollmentNumber+'" src="images/cadre_images/'+result.cadreRegistrationVOList[i].uploadImageFileName+'" width="50px"/></td>';
+				strs +='<td> <img id="'+result.cadreRegistrationVOList[i].enrollmentNumber+'" src="http://www.mytdp.com/images/cadre_images/'+result.cadreRegistrationVOList[i].uploadImageFileName+'" width="50px"/></td>';
 				strs +='<td>'+result.cadreRegistrationVOList[i].casteName+'</td>';  // dispatch Status
 				
 				strs +='</tr>';
