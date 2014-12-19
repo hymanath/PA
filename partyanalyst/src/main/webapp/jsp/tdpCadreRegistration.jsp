@@ -77,7 +77,7 @@
 		left:0px; 
 		background:#ff3333; 
 		width:100%;
-		height:100px;
+		height:115px;
 		padding:20px 10px 5px 10px; 
 		display:none;
 	}
@@ -2212,7 +2212,7 @@
 		<!-- start FlipClock -->
 <div class="footerFixedStrip" >		
 		<div class="" style="width:44%; float:left;">
-			<h1 style="margin-top:0px;float:right;color:#cccccc; text-shadow:0 1px 2px rgb(0, 0, 0);font-size:28px">2014 Cadre Registrations <br> Will be Closed By By 2014-12-23 12:00PM</h2>
+			<h1 style="margin-right:-100px;float:right;color:#cccccc; text-shadow:0 1px 2px rgb(0, 0, 0);font-size:18px">2014 Cadre Registrations Will be Closed <br>By 2014-12-23 After Noon 12:00PM</h2>
 		</div>		
 		<div class="" style="width:56%;float:left;">
 			<div class="message"  style="font-size: 25px;margin-top:30px;margin-left: 125px;"></div>
