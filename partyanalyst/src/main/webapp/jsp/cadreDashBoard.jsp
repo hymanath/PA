@@ -225,7 +225,7 @@ table.dataTable tr.odd {
 							<tr>
 								<td class="indiEle">
 									<div id="todayApTgRegisCount" class="row-fluid ">
-										<img class="ajaxImgStyle" style="margin-left:10px;" src="images/icons/search.gif"/>
+										<img class="ajaxImgStyle" style="margin-left:130px;" src="images/icons/search.gif"/>
 									</div>
 								</td>
 								<!--<td class="indiEle">
@@ -240,7 +240,7 @@ table.dataTable tr.odd {
 								</td>-->
 								<td class="indiEle">
 									<div id="totalApTgRegisCount" class="row-fluid">
-										<img class="ajaxImgStyle" src="images/icons/search.gif"/>
+										<img class="ajaxImgStyle" style="margin-left:134px;" src="images/icons/search.gif"/>
 									</div>
 								</td>
 							</tr>
@@ -500,19 +500,19 @@ $('#membersCount').addClass('animated fadeInX');
     		
 			$("#totalRegisCount").html('<div class="span6"><ul class="unstyled"> <li><p class="label" style="width: 100%;">Tab - '+TotalTab+'</p></li> <li><p class="label" style="width:100%;">Web -'+TotalWeb+'</p></li><li><p class="label" style="width: 100%;">Party Office -'+TotalWeb1+'</p></li><li><p class="label" style="width: 100%;">Online - '+TotalOnline+'</p></li></ul></div><div class="span1"><img src="images/icons/brace.png" style="margin-top: 10px; margin-left: 5px;"></div><div><h2>'+result[3].totalCount+'</h2><p>Members In<br/><span style="font-weight:bold;"  class="text-green">Total</span></p></div></div></td>');
 			
-			<c:if test="${sessionScope.USER.isAdmin == 'true'}">
+			<c:if test="${sessionScope.USER.isAdmin == 'true' || sessionScope.USER.accessType != 'DISTRICT'}">
 			$("#todayApTgRegisCount").html('<div style="cursor:pointer;background-color:#EAEAEA;" class="span4 mytooltip text-center" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[0].apTabCount+'] [Web -'+result[0].apWebCount+'] <br> [PartyOffice -'+result[0].apPartyWebCount+'] [Online - '+result[0].apOnlineCount+']"><strong><span style="margin-left:10px;">  AP </span></strong><br><span style="margin-left:10px;"> '+result[0].apCount+'</span></div><div style="cursor:pointer;background-color:#EAEAEA;" class="span4 text-center mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[0].tgTabCount+'] [Web -'+result[0].tgWebCount+'] <br>[PartyOffice -'+result[0].tgPartyWebCount+'] [Online - '+result[0].tgOnlineCount+']"><strong><span style="margin-right:15px;"> TELANGANA </span></strong><br/><span style="margin-right:15px;"> '+result[0].tgCount+'</span></div><div id="ghmcTodayDiv" class="span4"><a id="todayId" class="btn btn-block border-radius-0" onclick="getGHMCDetails(\'today\');" style="font-size: 13px;margin-top:5px;">Get GHMC Drive Details</a></div>');
 			</c:if>
-			<c:if test="${sessionScope.USER.isAdmin != 'true'}">		
+			<c:if test="${sessionScope.USER.accessType == 'DISTRICT'}">		
 			$("#todayApTgRegisCount").html('<div style="cursor:pointer;background-color:#EAEAEA;" class="span6 mytooltip text-center" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[0].apTabCount+'] [Web -'+result[0].apWebCount+'] <br> [PartyOffice -'+result[0].apPartyWebCount+'] [Online - '+result[0].apOnlineCount+']"><strong><span style="margin-left:10px;">  AP </span></strong><br><span style="margin-left:10px;"> '+result[0].apCount+'</span></div><div style="cursor:pointer;background-color:#EAEAEA;" class="span6 text-center mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[0].tgTabCount+'] [Web -'+result[0].tgWebCount+'] <br>[PartyOffice -'+result[0].tgPartyWebCount+'] [Online - '+result[0].tgOnlineCount+']"><strong><span style="margin-right:15px;"> TELANGANA </span></strong><br/><span style="margin-right:15px;"> '+result[0].tgCount+'</span></div>');
     		</c:if>	
     		<!--$("#thisWeekApTgRegisCount").html('<div style="cursor:pointer;background-color:#fdedd6" class="span6 mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[1].apTabCount+'] [Web -'+result[1].apWebCount+']<br>[PartyOffice -'+result[1].apPartyWebCount+'] [Online - '+result[1].apOnlineCount+']"><strong><span style="margin-left:10px;"> AP</span></strong> <br/><span style="margin-left:10px;">'+result[1].apCount+'</span></div><div style="cursor:pointer;background-color:#fdedd6" class="span6 text-right mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[1].tgTabCount+'] [Web -'+result[1].tgWebCount+'] <br> [PartyOffice -'+result[1].tgPartyWebCount+'] [Online - '+result[1].tgOnlineCount+']"><strong><span style="margin-right:15px;"> TS </span></strong><br/> <span style="margin-right:15px;">'+result[1].tgCount+'</span></div>');					
     		<!--$("#monthApTgRegisCount").html('<div style="cursor:pointer;background-color:#DBEEF4" class="span6 mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[2].apTabCount+'] [Web -'+result[2].apWebCount+'] <br> [PartyOffice -'+result[2].apPartyWebCount+'] [Online - '+result[2].apOnlineCount+']"><strong><span style="margin-left:10px;"> AP</span></strong> <br/><span style="margin-left:10px;">'+result[2].apCount+'</span></div><div style="cursor:pointer;background-color:#DBEEF4" class="span6 text-right mytooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[2].tgTabCount+'] [Web -'+result[2].tgWebCount+'] <br> [PartyOffice -'+result[2].tgPartyWebCount+'] [Online - '+result[2].tgOnlineCount+']"><strong><span style="margin-right:15px;"> TS</span></strong><br/><span style="margin-right:15px;">'+result[2].tgCount+'</span></div>');-->
-    		<c:if test="${sessionScope.USER.isAdmin == 'true'}">				
-			$("#totalApTgRegisCount").html('<div style="cursor:pointer;background-color:#DBF1E4" class="span4 mytooltip text-center" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[3].apTabCount+'] [Web -'+result[3].apWebCount+'] <br> [PartyOffice -'+result[3].apPartyWebCount+'] [Online - '+result[3].apOnlineCount+']"><strong><span style="margin-left:10px;">AP  </span></strong><br><span >'+result[3].apCount+'</span><span class="text-skyblue"></span></div><div style="cursor:pointer;background-color:#DBF1E4;margin-top:2px;" class="span4 mytooltip text-center" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[3].tgTabCount+'] [Web -'+result[3].tgWebCount+'] <br> [PartyOffice -'+result[3].tgPartyWebCount+'][Online - '+result[3].tgOnlineCount+']"><strong><span style="margin-left:10px;">TELANGANA </span></strong> <br><span >'+result[3].tgCount+'</span><span class="text-skyblue"> </span></div><div id="ghmcTotalDiv" class="span4"  style="background-color:#DBF1E4"><a style="background-color:#DBF1E4;background-image:none;font-size: 13px;margin-top:5px;" class="btn btn-block border-radius-0" id="totalId" onclick="getGHMCDetails(\'total\');">Get GHMC Drive Details</a></div>');
+    		<c:if test="${sessionScope.USER.isAdmin == 'true' || sessionScope.USER.accessType != 'DISTRICT'}">				
+			$("#totalApTgRegisCount").html('<div style="cursor:pointer;background-color:#DBF1E4" class="span4 mytooltip text-center" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[3].apTabCount+'] [Web -'+result[3].apWebCount+'] <br> [PartyOffice -'+result[3].apPartyWebCount+'] [Online - '+result[3].apOnlineCount+']"><strong><span style="margin-left:10px;">AP  </span></strong><br><span >'+result[3].apCount+'</span><span class="text-skyblue"></span></div><div style="cursor:pointer;background-color:#DBF1E4;" class="span4 mytooltip text-center" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[3].tgTabCount+'] [Web -'+result[3].tgWebCount+'] <br> [PartyOffice -'+result[3].tgPartyWebCount+'][Online - '+result[3].tgOnlineCount+']"><strong><span style="margin-left:10px;">TELANGANA </span></strong> <br><span >'+result[3].tgCount+'</span><span class="text-skyblue"> </span></div><div id="ghmcTotalDiv" class="span4"  style="margin-top: 5px;background-color:#DBF1E4"><a style="background-color:#DBF1E4;background-image:none;font-size: 13px;" class="btn btn-block border-radius-0" id="totalId" onclick="getGHMCDetails(\'total\');">Get GHMC Drive Details</a></div>');
 			</c:if>
-			<c:if test="${sessionScope.USER.isAdmin != 'true'}">	
-			$("#totalApTgRegisCount").html('<div style="cursor:pointer;background-color:#DBF1E4" class="span4 mytooltip text-center" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[3].apTabCount+'] [Web -'+result[3].apWebCount+'] <br> [PartyOffice -'+result[3].apPartyWebCount+'] [Online - '+result[3].apOnlineCount+']"><strong><span style="margin-left:10px;">AP  </span></strong><br><span >'+result[3].apCount+'</span><span class="text-skyblue"></span></div><div style="cursor:pointer;background-color:#DBF1E4;margin-top:2px;" class="span4 mytooltip text-center" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[3].tgTabCount+'] [Web -'+result[3].tgWebCount+'] <br> [PartyOffice -'+result[3].tgPartyWebCount+'][Online - '+result[3].tgOnlineCount+']"><strong><span style="margin-left:10px;">TELANGANA </span></strong> <br><span >'+result[3].tgCount+'</span><span class="text-skyblue"> </span></div>');
+			<c:if test="${sessionScope.USER.accessType == 'DISTRICT'}">		
+			$("#totalApTgRegisCount").html('<div style="cursor:pointer;background-color:#DBF1E4" class="span6 mytooltip text-center" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[3].apTabCount+'] [Web -'+result[3].apWebCount+'] <br> [PartyOffice -'+result[3].apPartyWebCount+'] [Online - '+result[3].apOnlineCount+']"><strong><span style="margin-left:10px;">AP  </span></strong><br><span >'+result[3].apCount+'</span><span class="text-skyblue"></span></div><div style="cursor:pointer;background-color:#DBF1E4;" class="span6 mytooltip text-center" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="[Tab - '+result[3].tgTabCount+'] [Web -'+result[3].tgWebCount+'] <br> [PartyOffice -'+result[3].tgPartyWebCount+'][Online - '+result[3].tgOnlineCount+']"><strong><span style="margin-left:10px;">TELANGANA </span></strong> <br><span >'+result[3].tgCount+'</span><span class="text-skyblue"> </span></div>');
 			</c:if>
 	
 			$('.mytooltip').tooltip();
@@ -2432,10 +2432,10 @@ function SortByName(a, b){
 	
 	function getGHMCDetails(typeId){
 		if(typeId == 'today'){
-			$("#todayId").click( function(e){ e.preventDefault(); } ); 
+			$("#ghmcTodayDiv").html('<img src="images/icons/search.gif" style="margin-left:60px;margin-top:12px;" />'); 
 		}
 		else if(typeId == 'total'){
-			$("#totalId").click( function(e){ e.preventDefault(); } ); 
+			$("#ghmcTotalDiv").html('<img src="images/icons/search.gif" style="margin-left:60px;margin-top:12px;" />'); 
 		}		
 			var jObj = {
 				type:typeId
