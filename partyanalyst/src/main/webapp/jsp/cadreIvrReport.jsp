@@ -305,7 +305,7 @@ $("#constituencyId").css("display","block");
 			{
 			str+='<tr>';
 			str+='<td>'+result[i].constituencyName+'</td>';	
-			if(result[i].panchayatName != '')
+			if(result[i].locationName != '')
 			str+='<td>'+result[i].locationName+'</td>';	
 			else
 			str+='<td>'+result[i].localbodyName+'</td>';
@@ -364,7 +364,7 @@ $("#constituencyId").css("display","block");
 		if(result.notRegistered > 0)
 		$("#notregisteredCalls").html('<a onclick="getIvrCadreDetails(\'NotRegistered\',\''+result.notRegistered+'\',\''+Id+'\',\''+date+'\',0)" style="cursor:pointer" >'+result.notRegistered+'</a>');
 		else
-			$("#notregisteredCalls").html(''+result.notRegistered+'');
+		$("#notregisteredCalls").html(''+result.notRegistered+'');
 	}
 </script>
 <script>
