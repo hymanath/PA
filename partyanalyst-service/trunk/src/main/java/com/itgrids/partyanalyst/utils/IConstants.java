@@ -846,4 +846,9 @@ public interface IConstants {
     public static final String OFF = "OFF";
     public static final String SAVE_VERIFY_DATA = "SAVE_VERIFY_DATA";
     public static final String RESTRICT_TAB_DATA_SYNC = "RESTRICT_TAB_DATA_SYNC";
+    
+    public static final String Received = "Received";
+    public static final String NotReceived = "NotReceived";
+    public static final String NotRegistered = "NotRegistered";
+    public static final String Response = "Response";
 }
