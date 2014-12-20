@@ -1250,7 +1250,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 										    }
 									    }
 									}
-								
+									
 									assemblyMessage.append("Date : "+new SimpleDateFormat("dd-MM-yyyy").format(yesterDay));
 									assemblyMessage.append( "\n"+finalName.toString() +" Constituency Cadre Enrollment Update");								
 									if(constituency.getDistrict().getDistrictId()>10) // AP
@@ -1313,7 +1313,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 											phoneNumbersStr = phoneNumbersStr + ", "+mobileNumbers.get(i).toString().trim();
 										}
 										
-										if(constituencyId.longValue() == 232L )
+										if(constituencyId.longValue() == 314L || constituencyId.longValue() == 232L )
 										{
 											phoneNumbersStr = phoneNumbersStr+",9581434970,9676696760 ";
 										}
@@ -1322,9 +1322,18 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 										
 										/* Sending SMS for Mandal wise managers*/
 										try {
-											//String[] phoneNumbersArr = {"919959796608,9581434970,919581434970".toString()};								
-											ResultStatus status = smsCountrySmsService.sendSmsFromAdmin(assemblyMessage.toString(), true, phoneNumbersArr);
-											
+											//String[] phoneNumbersArr = {"919959796608,9581434970,919581434970".toString()};
+											if(constituency.getDistrict().getDistrictId()>10) // AP
+											{
+												if((returnVO.getBelow10CountLocations() != null && below10Booths.longValue() != 0L) ||( returnVO.getNotSubmittedCount() != null && notRegisteredBooths.longValue()!= 0L))
+												{
+													ResultStatus status = smsCountrySmsService.sendSmsFromAdmin(assemblyMessage.toString(), true, phoneNumbersArr);
+												}												
+											}
+											else
+											{
+												ResultStatus status = smsCountrySmsService.sendSmsFromAdmin(assemblyMessage.toString(), true, phoneNumbersArr);
+											}
 											LOG.error("\n"+constituency.getName()+",  mobileNOs :  "+phoneNumbersStr+", Assembly Message: "+assemblyMessage.toString());
 											//System.out.println("\n"+constituency.getName()+",  mobileNOs :  "+phoneNumbersStr+", Assembly Message: "+assemblyMessage.toString());
 										} catch (Exception e) {
@@ -1736,9 +1745,19 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 									
 										/* Sending SMS for Mandal wise managers*/
 										try {
-											//String[] phoneNumbersArr = {"919959796608,9581434970,919581434970".toString()};									
-											ResultStatus status = smsCountrySmsService.sendSmsFromAdmin(mandalMessage.toString(), true, phoneNumbersArr);
-											
+											//String[] phoneNumbersArr = {"919959796608,9581434970,919581434970".toString()};	
+											if(constituency.getDistrict().getDistrictId()>10)
+											{
+												if(( notRegisteredBoothsStr != null && notRegisteredBoothsStr.trim().length() > 0 )|| (finalTehsilVO.getBelow10CountLocations() != null && finalTehsilVO.getBelow10CountLocations().trim().length()>0))
+												{
+													ResultStatus status = smsCountrySmsService.sendSmsFromAdmin(mandalMessage.toString(), true, phoneNumbersArr);
+												}
+											}
+											else
+											{
+												ResultStatus status = smsCountrySmsService.sendSmsFromAdmin(mandalMessage.toString(), true, phoneNumbersArr);
+											}
+
 											if(localName != null && localName.length()>0)
 											{
 												LOG.error("\n"+constituency.getName()+"_"+localName+" ,  mobileNOs :  "+phoneNumbersArr+", Mandal Message: "+mandalMessage.toString());
