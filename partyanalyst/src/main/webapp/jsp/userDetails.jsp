@@ -63,7 +63,9 @@
 		
 		$("#changePWDButton").live("click",function(){	
 			var uName=$("#usersListId option:selected").text();
-			var userName = uName.trim();
+			var userName_opt = uName.trim();
+			var arr = userName_opt.split('--');
+			var userName = arr[0].trim();
 			
 			var id=$("#usersListId option:selected").val();
 			if(id==0){
