@@ -346,23 +346,23 @@ $("#constituencyId").css("display","block");
 		else
 		$("#IvrHeading").html("Constituency Wise IVR Status");
 		if(result.total > 0)
-		$("#totalCnt").html('<a onclick="getIvrCadreDetails(\'total\',\''+result.total+'\',\''+Id+'\',\''+date+'\',0);" style="cursor:pointor" >'+result.total+'</a>');
+		$("#totalCnt").html('<a onclick="getIvrCadreDetails(\'total\',\''+result.total+'\',\''+Id+'\',\''+date+'\',0);" style="cursor:pointer" >'+result.total+'</a>');
 		else
 		$("#totalCnt").html(''+result.total+'');
 		if(result.responseCnt > 0)
-		$("#totalreceivedCalls").html('<a onclick="getIvrCadreDetails(\'Response\',\''+result.responseCnt+'\',\''+Id+'\',\''+date+'\',0);" style="cursor:pointor" >'+result.responseCnt+'</a>');
+		$("#totalreceivedCalls").html('<a onclick="getIvrCadreDetails(\'Response\',\''+result.responseCnt+'\',\''+Id+'\',\''+date+'\',0);" style="cursor:pointer" >'+result.responseCnt+'</a>');
 		else
 		$("#totalreceivedCalls").html(''+result.responseCnt+'');
 		if(result.received > 0)
-		$("#receivedCalls").html('<a onclick="getIvrCadreDetails(\'Received\',\''+result.received+'\',\''+Id+'\',\''+date+'\',0);" style="cursor:pointor" >'+result.received+'</a>');
+		$("#receivedCalls").html('<a onclick="getIvrCadreDetails(\'Received\',\''+result.received+'\',\''+Id+'\',\''+date+'\',0);" style="cursor:pointer" >'+result.received+'</a>');
 		else
 		$("#receivedCalls").html(''+result.received+'');
 		if(result.notReceived > 0)
-		$("#notreceivedCalls").html('<a onclick="getIvrCadreDetails(\'NotReceived\',\''+result.notReceived+'\',\''+Id+'\',\''+date+'\',0)" style="cursor:pointor" >'+result.notReceived+'</a>');
+		$("#notreceivedCalls").html('<a onclick="getIvrCadreDetails(\'NotReceived\',\''+result.notReceived+'\',\''+Id+'\',\''+date+'\',0)" style="cursor:pointer" >'+result.notReceived+'</a>');
 		else
 			$("#notreceivedCalls").html(''+result.notReceived+'');
 		if(result.notRegistered > 0)
-		$("#notregisteredCalls").html('<a onclick="getIvrCadreDetails(\'NotRegistered\',\''+result.notRegistered+'\',\''+Id+'\',\''+date+'\',0)" style="cursor:pointor" >'+result.notRegistered+'</a>');
+		$("#notregisteredCalls").html('<a onclick="getIvrCadreDetails(\'NotRegistered\',\''+result.notRegistered+'\',\''+Id+'\',\''+date+'\',0)" style="cursor:pointer" >'+result.notRegistered+'</a>');
 		else
 			$("#notregisteredCalls").html(''+result.notRegistered+'');
 	}
