@@ -16,14 +16,17 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CadreIVRVO;
 import com.itgrids.partyanalyst.dto.CadreRegAmountUploadVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationWiseReportVO;
 import com.itgrids.partyanalyst.dto.ZebraPrintDetailsVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ITdpCadreReportService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -54,9 +57,35 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 	private List<String> jobCodes;
 	private List<BasicVO> resultList;
 	private File file;
+	private CadreIVRVO cadreIVRVO;
+	private List<SelectOptionVO> constituenciesList;
+	private IStaticDataService staticDataService;
 	
 	
-	
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+
+	public List<SelectOptionVO> getConstituenciesList() {
+		return constituenciesList;
+	}
+
+	public void setConstituenciesList(List<SelectOptionVO> constituenciesList) {
+		this.constituenciesList = constituenciesList;
+	}
+
+	public CadreIVRVO getCadreIVRVO() {
+		return cadreIVRVO;
+	}
+
+	public void setCadreIVRVO(CadreIVRVO cadreIVRVO) {
+		this.cadreIVRVO = cadreIVRVO;
+	}
+
 	public File getFile() {
 		return file;
 	}
@@ -542,6 +571,40 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 		
 	}
 	}
-	
-	
+	public String cadreIvrReportExe()
+	{
+		try{
+			jobCodes = tdpCadreReportService.getIvrDates();
+			Long electionTypeId = 2l;
+			Long stateId = 1l;
+			constituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId(electionTypeId,stateId).getConstituencies();
+			if(constituenciesList!=null && constituenciesList.size()>1){
+				SelectOptionVO selectOptionVO = new SelectOptionVO();
+				selectOptionVO.setId(0l);
+				selectOptionVO.setName("Select Constituency");
+				constituenciesList.add(0,selectOptionVO);
+			}
+		}
+		catch(Exception e)
+		{
+			
+		}
+		return Action.SUCCESS;
+	}
+	public String getCadreIvrReport()
+	{
+		try{
+			jobj = new JSONObject(getTask());
+			String date = jobj.getString("date");
+			Long Id = jobj.getLong("Id");
+			if(jobj.getString("task").equalsIgnoreCase("count"))
+				cadreIVRVO = tdpCadreReportService.getCadreIvrCount(date,Id);
+			else
+				cadreIVRVO = tdpCadreReportService.getCadreIvrReport(date,Id,jobj.getInt("strIndex"),jobj.getInt("maxIndex"),jobj.getString("searchType"));			
+		}
+		catch(Exception e){
+			LOG.info("Entered into getCadreIvrReport()");	
+		}
+		return Action.SUCCESS;
+	}
 }

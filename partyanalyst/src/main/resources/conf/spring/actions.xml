@@ -1513,6 +1513,7 @@
 	<bean id="tdpCadreReportAction" class="com.itgrids.partyanalyst.web.action.TdpCadreReportAction" singleton="false">
 		<property name="tdpCadreReportService" ref="tdpCadreReportService" />
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
+		<property name="staticDataService" ref="staticDataService" />
 	</bean>
 	
 	<bean id="cadreAgeGenderAnalysisAction" class="com.itgrids.partyanalyst.web.action.CadreAgeGenderAnalysisAction" singleton="false">
@@ -1523,6 +1524,7 @@
 		
 	</bean>
 	<bean id="tdpCallCenterAction" class="com.itgrids.partyanalyst.web.action.TdpCallCenterAction" singleton="false">
+	
 	
 	</bean>
 	<bean id="tdpCadreVolunteerAction" class="com.itgrids.partyanalyst.web.action.TdpCadreVolunteerAction" singleton="false">
