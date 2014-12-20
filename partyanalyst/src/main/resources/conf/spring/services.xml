@@ -2434,7 +2434,7 @@
           <property name="tdpCadreVolunteerDAO" ref="tdpCadreVolunteerDAO"></property>
           <property name="tdpCadreVolunteerConstituencyDAO" ref="tdpCadreVolunteerConstituencyDAO"></property>
           <property name="tdpCadreVolunteerDateDAO" ref="tdpCadreVolunteerDateDAO"></property>
-          
+          <property name="cadreIvrResponseDAO" ref="cadreIvrResponseDAO" />
           
      </bean>
      
@@ -2450,10 +2450,13 @@
  	 </bean>
  	 <bean name="tdpCallCenterService"  class="com.itgrids.partyanalyst.service.impl.TdpCallCenterService">
  	 <!-- <property name="cadreCallerDetailsDAO" ref="cadreCallerDetailsDAO" />-->
+ 	
+ 	  	
 	</bean>
 	
 	<bean name="commonUtilsService"  class="com.itgrids.partyanalyst.utils.CommonUtilsService">
 		<property name="dynamicKeysDAO" ref="dynamicKeysDAO"/>
+	
 	</bean>
 </beans>		
 	
