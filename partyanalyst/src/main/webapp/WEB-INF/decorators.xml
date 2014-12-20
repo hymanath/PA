@@ -307,7 +307,8 @@
 			 <pattern>/tdpCadreCardsPrintingDashBoardAction*</pattern>
 			 <pattern>/tdpCallCenterAction*</pattern>
 			 <pattern>/tdpCadreVolunteersDetailsAction*</pattern>
-		  </decorator>
+			 <pattern>/cadreIvrReportAction*</pattern>
+		 </decorator>
        
        <decorator name="tdpHome_old" page="tdplayout_old.jsp">
        		<pattern>/candidateElectionResultsAction*</pattern>
