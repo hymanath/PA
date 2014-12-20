@@ -9208,13 +9208,21 @@
 				<param name="root">isExist</param>
 			</result>
 		</action>
-		
 		<action name="getGHMCRegisteredCountsDetailsAction" class="cadreDashBoardAction" method="getGHMCRegisteredCountsDetails">
 			<result type="json" name="success">
 				<param name="root">result</param>
 			</result>
 		</action>
+		<action name="cadreIvrReportAction" class="tdpCadreReportAction" method="cadreIvrReportExe">
+			<result name="success">/jsp/cadreIvrReport.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
+		</action>
+		
+		<action name="getcadreIvrReportAction" class="tdpCadreReportAction" method="getCadreIvrReport">
+			<result type="json" name="success">
+				<param name="root">cadreIVRVO</param>
+			</result>
+		</action>
 		
 </package>
-
 </struts>      
