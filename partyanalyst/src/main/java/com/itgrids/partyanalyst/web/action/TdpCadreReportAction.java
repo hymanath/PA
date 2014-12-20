@@ -574,6 +574,10 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 	public String cadreIvrReportExe()
 	{
 		try{
+			 HttpSession session=request.getSession();
+			  RegistrationVO regVO=(RegistrationVO)session.getAttribute("USER");
+			  if(regVO==null)
+				return Action.INPUT;
 			jobCodes = tdpCadreReportService.getIvrDates();
 			Long electionTypeId = 2l;
 			Long stateId = 1l;
