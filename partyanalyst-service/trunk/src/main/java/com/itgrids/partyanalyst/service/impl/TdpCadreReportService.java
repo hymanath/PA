@@ -42,6 +42,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.ICadreIvrResponseDAO;
 import com.itgrids.partyanalyst.dao.ICallCenterFeedbackDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
@@ -57,10 +58,13 @@ import com.itgrids.partyanalyst.dao.ITdpCadreVolunteerConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreVolunteerDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreVolunteerDateDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IZebraPrintDetailsDAO;
+import com.itgrids.partyanalyst.dao.hibernate.UserDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CadreIVRVO;
 import com.itgrids.partyanalyst.dto.CadreRegAmountUploadVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
@@ -114,7 +118,15 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	private ITdpCadreVolunteerDAO tdpCadreVolunteerDAO;
 	private ITdpCadreVolunteerConstituencyDAO tdpCadreVolunteerConstituencyDAO;
 	private ITdpCadreVolunteerDateDAO tdpCadreVolunteerDateDAO;
+	private ICadreIvrResponseDAO cadreIvrResponseDAO;
 	
+	
+	public ICadreIvrResponseDAO getCadreIvrResponseDAO() {
+		return cadreIvrResponseDAO;
+	}
+	public void setCadreIvrResponseDAO(ICadreIvrResponseDAO cadreIvrResponseDAO) {
+		this.cadreIvrResponseDAO = cadreIvrResponseDAO;
+	}
 	public ITdpCadreVolunteerConstituencyDAO getTdpCadreVolunteerConstituencyDAO() {
 		return tdpCadreVolunteerConstituencyDAO;
 	}
@@ -3881,5 +3893,97 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		
 		return status;
 	}
-	
+	public List<String> getIvrDates()
+	{
+		List<String> datesArr = new ArrayList<String>();
+		try{
+			List<Date> dates = cadreIvrResponseDAO.getDates();
+			if(dates != null && dates.size() > 0)
+		 for(Date str:dates)
+			 datesArr.add(str.toString());
+		}
+		catch(Exception e)
+		{
+			LOG.error(" exception occured at getDates() in TdpCadreReportService service class. ", e);	
+		}
+		return datesArr;
+	}
+	public CadreIVRVO getCadreIvrCount(String date,Long Id)
+	{
+		CadreIVRVO returnVo = new CadreIVRVO();
+		Date convertedDate = null;
+		
+		try{
+			if(!date.equalsIgnoreCase(""))
+			{
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			convertedDate = sdf.parse(date);
+			Id = null;
+			}
+			else
+			{
+				convertedDate = null;	
+			}
+			
+			Long totalCnt = cadreIvrResponseDAO.getIvrStatusCount(convertedDate,Id,"total");
+			Long receivedCnt = cadreIvrResponseDAO.getIvrStatusCount(convertedDate,Id,IConstants.Received);
+			Long notReceived = cadreIvrResponseDAO.getIvrStatusCount(convertedDate,Id,IConstants.NotReceived);
+			Long notRegistred = cadreIvrResponseDAO.getIvrStatusCount(convertedDate,Id,IConstants.NotRegistered);
+			
+			returnVo.setTotal(totalCnt != null ? totalCnt : 0l);
+			returnVo.setReceived(receivedCnt != null ? receivedCnt : 0l);
+			returnVo.setNotReceived(notReceived != null ? notReceived : 0l);
+			returnVo.setNotRegistered(notRegistred != null ? notRegistred : 0l);
+			returnVo.setResponseCnt(returnVo.getReceived() + returnVo.getNotReceived() + returnVo.getNotRegistered());
+			
+		}
+		catch(Exception e)
+		{
+			LOG.error(" exception occured at getCadreIvrCount() in TdpCadreReportService service class. ", e);	
+		}
+		return returnVo;
+	}
+	public CadreIVRVO getCadreIvrReport(String date,Long Id,Integer startIndex,Integer maxIndex,String searchType)
+	{
+		CadreIVRVO returnVo = new CadreIVRVO();
+		Date convertedDate = null;
+		List<CadreIVRVO> resultList = new ArrayList<CadreIVRVO>();
+		List<Object[]> list = null;
+		try{
+			if(!date.equalsIgnoreCase(""))
+			{
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			convertedDate = sdf.parse(date);
+			Id = null;
+			}
+			else
+			{
+				convertedDate = null;	
+			}
+			List<Object[]> list1 = null;
+			list = cadreIvrResponseDAO.getIvrCadreDetails(convertedDate,Id,searchType,startIndex,maxIndex);
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					CadreIVRVO cadreIVRVO = new CadreIVRVO();
+					cadreIVRVO.setName(params[0].toString());
+				
+					cadreIVRVO.setMobileNo(params[1].toString());
+					cadreIVRVO.setCurrentStatus(params[2] != null ? params[2].toString() : "");
+					cadreIVRVO.setConstituencyName(params[3] != null ? params[3].toString() : "");
+					cadreIVRVO.setLocationName(params[4] != null ? params[4].toString() : "");
+					cadreIVRVO.setPanchayatName(params[5] != null ? params[5].toString() : "");
+					cadreIVRVO.setLocalbodyName(params[6] != null ? params[6].toString()+" Muncipality" : "");
+					resultList.add(cadreIVRVO);
+				}
+			}
+			returnVo.setSubList(resultList); 
+		}
+		catch(Exception e)
+		{
+			LOG.error(" exception occured at getCadreIvrCount() in TdpCadreReportService service class. ", e);	
+		}
+		return returnVo;
+	}
 }

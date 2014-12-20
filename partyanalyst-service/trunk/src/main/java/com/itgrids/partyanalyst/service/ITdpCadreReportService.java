@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CadreIVRVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -41,4 +42,7 @@ public interface ITdpCadreReportService {
 	
 	public Boolean isExistUSerByMobileAndEmail(String mobileNo, String emailId);
 	public TdpCadreVolunteerVO getConstituencyWiseVolunteerInfoByDevice(String deviceType,Long constituencyId, String searchType);
+	public CadreIVRVO getCadreIvrCount(String date,Long Id);
+	public CadreIVRVO getCadreIvrReport(String date,Long Id,Integer startIndex,Integer maxIndex,String searchType);
+	public List<String> getIvrDates();
 }

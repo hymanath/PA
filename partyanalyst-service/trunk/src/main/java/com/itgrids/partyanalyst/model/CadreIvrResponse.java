@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -35,6 +36,7 @@ public class CadreIvrResponse {
 	private Date date;
 	private String currentStatus;
 	private String isDeleted;
+	private UserAddress userAddress;
 	public CadreIvrResponse()
 	{
 		
@@ -134,6 +136,16 @@ public class CadreIvrResponse {
 	}
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "user_address_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserAddress getUserAddress() {
+		return userAddress;
+	}
+	public void setUserAddress(UserAddress userAddress) {
+		this.userAddress = userAddress;
 	}
 	
 	
