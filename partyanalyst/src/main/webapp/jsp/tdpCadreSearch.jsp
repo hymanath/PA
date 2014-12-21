@@ -175,6 +175,7 @@
 						</div>
 					</div>
 					<a href="javascript:{searchCandidatesDetailsBySearchCriteria(0);}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
+					<a href="javascript:{getDetailsForUser(0)}" title="If Candidate did not have VoterCard or not a Cadre Click Here" class="btn btn-default active col-xs-1 m_top20 pull-right border-radius-0 ">Skip<span class="glyphicon glyphicon-chevron-right"></span></a>
 		</div>
 		
 		
