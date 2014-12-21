@@ -110,6 +110,8 @@ public class TdpCadre {
 	private TdpCadreOnline              tdpCadreOnline;
 	private Long 						constituencyId;
 	private String 						emailId;
+	private String						isPrintReady;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "tdp_cadre_id", unique = true, nullable = false)
@@ -718,5 +720,15 @@ public class TdpCadre {
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
 	}
+	
+	@Column(name="is_print_ready")
+	public String getIsPrintReady() {
+		return isPrintReady;
+	}
+	public void setIsPrintReady(String isPrintReady) {
+		this.isPrintReady = isPrintReady;
+	}
+	
+	
 	
 }
