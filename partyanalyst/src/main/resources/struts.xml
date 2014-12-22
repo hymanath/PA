@@ -9223,6 +9223,11 @@
 				<param name="root">cadreIVRVO</param>
 			</result>
 		</action>
+		<action name="getCadreIVRBasicInfoAction" class="tdpCadreReportAction" method="getCadreIVRBasicInfo">
+			<result type="json" name="success">
+				<param name="root">ivrVOList</param>
+			</result>
+		</action>
 		
 </package>
 </struts>      
