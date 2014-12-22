@@ -12,11 +12,12 @@ public class CadreIVRVO {
 	private Long constituencyId;
 	private String constituencyName;
 	private Long total = 0l;
+	private Long tgtotal = 0l;
 	private Long received = 0l;
 	private Long notReceived = 0l;
 	private Long notRegistered = 0l;
-	private String currentStatus;
 	private Long responseCnt = 0l;
+	private String currentStatus;
 	private String strDate;
 	private String endDate;
 	private Long locationId;
@@ -26,9 +27,84 @@ public class CadreIVRVO {
 	private Long localbody;
 	private String localbodyName;
 	private List<CadreIVRVO> subList = new ArrayList<CadreIVRVO>();
+	private Long apCount =0l;
+	private Long tgCount = 0l;
+	private Long printingCompleted = 0l;
+	private Long ivrReady = 0l;
+	private Long tgprintingCompleted = 0l;
+	private Long tgivrReady = 0l;
+	private Long tgReceived = 0l;
+	private Long tgnotReceived = 0l;
+	private Long tgnotRegistered = 0l;
+	private Long tgResponseCnt = 0l;
 	
 	
-	
+	public Long getTgtotal() {
+		return tgtotal;
+	}
+	public void setTgtotal(Long tgtotal) {
+		this.tgtotal = tgtotal;
+	}
+	public Long getTgprintingCompleted() {
+		return tgprintingCompleted;
+	}
+	public void setTgprintingCompleted(Long tgprintingCompleted) {
+		this.tgprintingCompleted = tgprintingCompleted;
+	}
+	public Long getTgivrReady() {
+		return tgivrReady;
+	}
+	public void setTgivrReady(Long tgivrReady) {
+		this.tgivrReady = tgivrReady;
+	}
+	public Long getTgResponseCnt() {
+		return tgResponseCnt;
+	}
+	public void setTgResponseCnt(Long tgResponseCnt) {
+		this.tgResponseCnt = tgResponseCnt;
+	}
+	public Long getTgReceived() {
+		return tgReceived;
+	}
+	public void setTgReceived(Long tgReceived) {
+		this.tgReceived = tgReceived;
+	}
+	public Long getTgnotReceived() {
+		return tgnotReceived;
+	}
+	public void setTgnotReceived(Long tgnotReceived) {
+		this.tgnotReceived = tgnotReceived;
+	}
+	public Long getTgnotRegistered() {
+		return tgnotRegistered;
+	}
+	public void setTgnotRegistered(Long tgnotRegistered) {
+		this.tgnotRegistered = tgnotRegistered;
+	}
+	public Long getPrintingCompleted() {
+		return printingCompleted;
+	}
+	public void setPrintingCompleted(Long printingCompleted) {
+		this.printingCompleted = printingCompleted;
+	}
+	public Long getIvrReady() {
+		return ivrReady;
+	}
+	public void setIvrReady(Long ivrReady) {
+		this.ivrReady = ivrReady;
+	}
+	public Long getApCount() {
+		return apCount;
+	}
+	public void setApCount(Long apCount) {
+		this.apCount = apCount;
+	}
+	public Long getTgCount() {
+		return tgCount;
+	}
+	public void setTgCount(Long tgCount) {
+		this.tgCount = tgCount;
+	}
 	public Long getLocalbody() {
 		return localbody;
 	}
