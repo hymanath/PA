@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreIVRVO;
 import com.itgrids.partyanalyst.dto.CadreRegAmountUploadVO;
+import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -26,8 +27,10 @@ import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationWiseReportVO;
 import com.itgrids.partyanalyst.dto.ZebraPrintDetailsVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ITdpCadreReportService;
+import com.itgrids.partyanalyst.service.impl.CadreDashBoardService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.RandomGenaration;
@@ -60,8 +63,18 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 	private CadreIVRVO cadreIVRVO;
 	private List<SelectOptionVO> constituenciesList;
 	private IStaticDataService staticDataService;
+	private List<CadreIVRVO> ivrVOList;
 	
 	
+	
+	public List<CadreIVRVO> getIvrVOList() {
+		return ivrVOList;
+	}
+
+	public void setIvrVOList(List<CadreIVRVO> ivrVOList) {
+		this.ivrVOList = ivrVOList;
+	}
+
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
 	}
@@ -605,6 +618,18 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 				cadreIVRVO = tdpCadreReportService.getCadreIvrCount(date,Id);
 			else
 				cadreIVRVO = tdpCadreReportService.getCadreIvrReport(date,Id,jobj.getInt("strIndex"),jobj.getInt("maxIndex"),jobj.getString("searchType"));			
+		}
+		catch(Exception e){
+			LOG.info("Entered into getCadreIvrReport()");	
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getCadreIVRBasicInfo()
+	{
+		try{
+			jobj = new JSONObject(getTask());
+			ivrVOList = tdpCadreReportService.getIvrDashBoardCounts();			
 		}
 		catch(Exception e){
 			LOG.info("Entered into getCadreIvrReport()");	
