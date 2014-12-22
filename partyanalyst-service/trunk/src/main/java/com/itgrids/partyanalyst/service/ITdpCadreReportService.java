@@ -45,4 +45,6 @@ public interface ITdpCadreReportService {
 	public CadreIVRVO getCadreIvrCount(String date,Long Id);
 	public CadreIVRVO getCadreIvrReport(String date,Long Id,Integer startIndex,Integer maxIndex,String searchType);
 	public List<String> getIvrDates();
+	public CadreIVRVO getIvrDashBoardBasicInfo();
+	public List<CadreIVRVO> getIvrDashBoardCounts();
 }
