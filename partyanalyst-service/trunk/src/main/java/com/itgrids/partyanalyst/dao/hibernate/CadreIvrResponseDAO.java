@@ -80,4 +80,24 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 		query.setMaxResults(maxIndex);
 		return query.list();
 	}
+	public  Long  getTotalIvrCount()
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select count(model.cadreIvrResponseId) from CadreIvrResponse model where model.isDeleted = 'N' ");
+		
+		Query query = getSession().createQuery(str.toString());
+		return (Long) query.uniqueResult();
+	}
+	public List<Object[]> getIvrCountByDate(Date date)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select count(model.cadreIvrResponseId),model.userAddress.district.districtId,model.responseKey from CadreIvrResponse model where model.isDeleted = 'N' ");
+		if(date != null)
+		str.append(" and date(model.startTime) =:date");
+		str.append(" group by model.userAddress.district.districtId,model.responseKey");
+		Query query = getSession().createQuery(str.toString());
+		if(date != null)
+			query.setDate("date", date);
+		return query.list();
+	}
 }
