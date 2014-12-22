@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -3986,4 +3987,186 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		}
 		return returnVo;
 	}
+	/*public CadreIVRVO getIvrDashBoardBasicInfo(){
+		CadreIVRVO returnVo  = new CadreIVRVO();
+		try{
+		DateUtilService date = new DateUtilService();
+	    Calendar calender = Calendar.getInstance();
+	    calender.setTime(date.getCurrentDateAndTime());
+	    calender.set(Calendar.DAY_OF_MONTH,  calender.get(Calendar.DAY_OF_MONTH)-7);
+	    
+		CadreRegisterInfo info =  cadreDashBoardService.getTotalRegisterCadreInfo();
+		returnVo.setApCount(info.getApCount());
+		returnVo.setTgCount(info.getTgCount());
+		
+		List<Object[]> ivrCompleted = cadreIvrResponseDAO.getTotalIvrCount();
+		getPrintingInfo(ivrCompleted,"ivrComplete",returnVo);
+		
+		List<Object[]> printingCompletedCnt = zebraPrintDetailsDAO.getPrintingCompletedCount();
+		getPrintingInfo(printingCompletedCnt,"printComplete",returnVo);
+		
+		List<Object[]> IvrReadyCount = zebraPrintDetailsDAO.getIvrReadyCount(calender.getTime()) ;
+		getPrintingInfo(IvrReadyCount,"ivrReady",returnVo);
+		 // IVR Ready count calculation
+		returnVo.setIvrReady(returnVo.getIvrReady() - returnVo.getTotal());
+		returnVo.setTgivrReady(returnVo.getTgivrReady()  - returnVo.getTgtotal());
+		 
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception rised in getIvrDashBoardBasicInfo", e);
+		}
+		return returnVo;
+		 
+	}
+	public void getPrintingInfo(List<Object[]>list,String type,CadreIVRVO returnVo){
+	
+		Long tgCount = 0l;
+		Long apCount = 0l;
+		try{
+			if(list != null && list.size() > 0)
+			for(Object[] districtCount:list){
+				if(((Long)districtCount[1]).longValue() > 10l){
+					apCount = apCount+(Long)districtCount[0];
+				}else{
+					tgCount = tgCount+(Long)districtCount[0];
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception rised in getPrintingInfo", e);
+		}
+		if(type.equalsIgnoreCase("ivrComplete"))
+		{
+			returnVo.setTotal(apCount);
+			returnVo.setTgtotal(tgCount);
+		}
+		else if(type.equalsIgnoreCase("printComplete"))
+		{
+			returnVo.setPrintingCompleted(apCount);
+			returnVo.setTgprintingCompleted(tgCount);	
+		}
+		else if(type.equalsIgnoreCase("ivrReady"))
+		{
+			returnVo.setIvrReady(apCount);
+			returnVo.setTgivrReady(tgCount);	
+		}
+		
+		
+	}*/
+	
+	public CadreIVRVO getIvrDashBoardBasicInfo(){
+		CadreIVRVO returnVo  = new CadreIVRVO();
+		try{
+		DateUtilService date = new DateUtilService();
+	    Calendar calender = Calendar.getInstance();
+	    calender.setTime(date.getCurrentDateAndTime());
+	    calender.set(Calendar.DAY_OF_MONTH,  calender.get(Calendar.DAY_OF_MONTH)-7);
+	    
+		CadreRegisterInfo info =  cadreDashBoardService.getTotalRegisterCadreInfo();
+		returnVo.setApCount(info.getApCount());
+		returnVo.setTgCount(info.getTgCount());
+		
+		Long ivrCompleted = cadreIvrResponseDAO.getTotalIvrCount();
+		returnVo.setTotal(ivrCompleted != null ? ivrCompleted : 0l);
+		
+		Long printingCompletedCnt = zebraPrintDetailsDAO.getPrintingCompletedCount();
+		returnVo.setPrintingCompleted(printingCompletedCnt != null ? printingCompletedCnt :0l);
+		
+		Long IvrReadyCount = zebraPrintDetailsDAO.getIvrReadyCount(calender.getTime()) ;
+		returnVo.setIvrReady(IvrReadyCount != null ? IvrReadyCount : 0l);
+		 // IVR Ready count calculation
+		returnVo.setIvrReady(returnVo.getIvrReady() - returnVo.getTotal());
+		 
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception rised in getIvrDashBoardBasicInfo", e);
+		}
+		return returnVo;
+		 
+	}
+	public List<CadreIVRVO> getIvrDashBoardCounts(){
+	
+			List<CadreIVRVO> returnResult = new ArrayList<CadreIVRVO>();
+			try{
+			DateUtilService dateService = new DateUtilService();
+			
+			Date currentDate = dateService.getCurrentDateAndTime();
+			CadreIVRVO basicInfo = getIvrDashBoardBasicInfo();
+			
+			CadreIVRVO todayInfo = setIVRBasicInfo(currentDate);
+			
+			CadreIVRVO totalCadreInfo = setIVRBasicInfo(null);
+		     returnResult.add(basicInfo);
+		     returnResult.add(todayInfo);
+		     returnResult.add(totalCadreInfo);
+			}
+			catch(Exception e)
+			{
+				LOG.error("Exception rised in getIvrDashBoardCounts", e);	
+			}
+		     return returnResult;
+		}
+		
+	public CadreIVRVO setIVRBasicInfo(Date searchDate)
+	{
+		CadreIVRVO returnVo = new CadreIVRVO();
+		Long apIvrCount = 0l;
+		Long tgIvrCount = 0l;
+		Long apReceivedCount = 0l;
+		Long tgReceivedCount = 0l;
+		Long apNotReceivedWebCount = 0l;
+		Long tgNotReceivedCount = 0l;
+		Long apNotregisteredCount = 0l;
+		Long tgNotregisteredCount = 0l;
+		Long apAnsweredCount = 0l;
+		Long tgAnsweredCount = 0l;
+		
+		try{
+			List<Object[]> districtWiseCount = cadreIvrResponseDAO.getIvrCountByDate(searchDate);
+			if(districtWiseCount != null && districtWiseCount.size() > 0)
+			{
+				for(Object[] districtCount:districtWiseCount){
+					if(((Long)districtCount[1]).longValue() > 10l){
+						apIvrCount = apIvrCount+(Long)districtCount[0];
+						
+						if(districtCount[2] != null && districtCount[2].toString().equalsIgnoreCase("1")) // response key is 1 //received
+							apReceivedCount = apReceivedCount +  (Long)districtCount[0];
+						else if(districtCount[2] != null && districtCount[2].toString().equalsIgnoreCase("2"))
+							apNotReceivedWebCount = apNotReceivedWebCount + 	 (Long)districtCount[0];
+						else if(districtCount[2] != null && districtCount[2].toString().equalsIgnoreCase("3"))
+							apNotregisteredCount = apNotregisteredCount + 	 (Long)districtCount[0];	
+						
+					}else{
+						tgIvrCount = tgIvrCount+(Long)districtCount[0];	
+						if(districtCount[2] != null &&districtCount[2].toString().equalsIgnoreCase("1"))
+							tgReceivedCount = tgReceivedCount +  (Long)districtCount[0];
+							else if(districtCount[2] != null && districtCount[2].toString().equalsIgnoreCase("2"))
+								tgNotReceivedCount = tgNotReceivedCount + 	 (Long)districtCount[0];
+							else if(districtCount[2] != null &&districtCount[2].toString().equalsIgnoreCase("3"))
+								tgNotregisteredCount = tgNotregisteredCount + (Long)districtCount[0];	
+					}
+				  }
+			}
+			
+			
+		    returnVo.setApCount(apIvrCount);
+		    returnVo.setTgCount(tgIvrCount);
+			returnVo.setReceived(apReceivedCount);
+			returnVo.setNotReceived(apNotReceivedWebCount);
+			returnVo.setNotRegistered(apNotregisteredCount);
+			returnVo.setResponseCnt(returnVo.getReceived() + returnVo.getNotReceived() + returnVo.getNotRegistered());
+			returnVo.setTgReceived(tgReceivedCount);
+			returnVo.setTgnotReceived(tgNotReceivedCount);
+			returnVo.setTgnotRegistered(tgNotregisteredCount);
+			returnVo.setTgResponseCnt(returnVo.getTgReceived() + returnVo.getTgnotReceived() + returnVo.getTgnotRegistered());
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception rised in setIVRBasicInfo", e);	
+		}
+		return returnVo;
+	}
+
+	
 }
