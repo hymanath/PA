@@ -636,4 +636,16 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getConstituencyWiseIVR()
+	{
+		try{
+			jobj = new JSONObject(getTask());
+			ivrVOList = tdpCadreReportService.getConstituencyWiseIVR();			
+		}
+		catch(Exception e){
+			LOG.info("Entered into getConstituencyWiseIVR()");	
+		}
+		return Action.SUCCESS;
+	}
 }
