@@ -138,6 +138,8 @@ public class User extends BaseModel implements Serializable{
 	private Set<FieldVoterData> fieldVoterData = new HashSet<FieldVoterData>(0);
 	private Set<UserSurveyBooths> userSurveyBooths = new HashSet<UserSurveyBooths>(0);
 	private String uniqueCode;
+	private String isEnabled;
+	
 	public User(){}
 	 
 	 public User(String firstName, String middleName, String lastName, String gender,
@@ -1121,6 +1123,15 @@ public class User extends BaseModel implements Serializable{
 
 	public void setUniqueCode(String uniqueCode) {
 		this.uniqueCode = uniqueCode;
+	}
+
+	@Column(name = "is_enabled")
+	public String getIsEnabled() {
+		return isEnabled;
+	}
+
+	public void setIsEnabled(String isEnabled) {
+		this.isEnabled = isEnabled;
 	}
 
 	
