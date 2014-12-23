@@ -531,7 +531,9 @@
 				<value>com.itgrids.partyanalyst.model.VerifiedDataRequest</value>
 				<value>com.itgrids.partyanalyst.model.VerifiedDataResponse</value>
 				<value>com.itgrids.partyanalyst.model.CadreRegSyncAccessUsers</value>
-				<value>com.itgrids.partyanalyst.model.CadreIvrResponse</value>				
+				<value>com.itgrids.partyanalyst.model.CadreIvrResponse</value>	
+				<value>com.itgrids.partyanalyst.model.CadreRegistrationInfo</value>	
+							
 				</list>
 			
 		</property>

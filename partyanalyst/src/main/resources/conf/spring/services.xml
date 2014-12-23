@@ -2435,6 +2435,8 @@
           <property name="tdpCadreVolunteerConstituencyDAO" ref="tdpCadreVolunteerConstituencyDAO"></property>
           <property name="tdpCadreVolunteerDateDAO" ref="tdpCadreVolunteerDateDAO"></property>
           <property name="cadreIvrResponseDAO" ref="cadreIvrResponseDAO" />
+		  <property name="cadreRegistrationInfoDAO" ref="cadreRegistrationInfoDAO" />
+		  
           
      </bean>
      
