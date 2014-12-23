@@ -100,4 +100,14 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 			query.setDate("date", date);
 		return query.list();
 	}
+	
+	public List<Object[]> getConstituencyWiseIvrCount()
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select count(model.cadreIvrResponseId),model.tdpCadre.userAddress.constituency.constituencyId,model.tdpCadre.userAddress.constituency.name,model.userAddress.district.districtId,model.userAddress.district.districtName,model.responseKey from CadreIvrResponse model where ");
+		str.append(" model.tdpCadre.userAddress.constituency.constituencyId is not null and model.isDeleted = 'N' ");
+		str.append(" group by model.tdpCadre.userAddress.constituency.constituencyId,model.responseKey");
+		Query query = getSession().createQuery(str.toString());
+		return query.list();
+	}
 }
