@@ -1,9 +1,10 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CadreIVRVO {
+public class CadreIVRVO implements Serializable, Comparable<CadreIVRVO>{
 	
 	private Long id;
 	private String name;
@@ -37,8 +38,10 @@ public class CadreIVRVO {
 	private Long tgnotReceived = 0l;
 	private Long tgnotRegistered = 0l;
 	private Long tgResponseCnt = 0l;
-	
-	
+	public CadreIVRVO()
+	{
+		
+	}
 	public Long getTgtotal() {
 		return tgtotal;
 	}
@@ -230,6 +233,16 @@ public class CadreIVRVO {
 	}
 	public void setResponseCnt(Long responseCnt) {
 		this.responseCnt = responseCnt;
+	}
+	@Override
+	public int compareTo(CadreIVRVO o) {
+		CadreIVRVO obj = null;
+		if(obj instanceof CadreIVRVO){
+			CadreIVRVO vo = (CadreIVRVO) obj;
+			return name.compareToIgnoreCase(vo.getName());
+		}
+		else
+			return 0;
 	}
 	
 			
