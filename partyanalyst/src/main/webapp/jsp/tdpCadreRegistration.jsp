@@ -134,7 +134,7 @@
 		        autoStart: false,
 		        callbacks: {
 		        	stop: function() {
-							$('.message').html('Registrations stopped!');
+							$('.message').html('Registrations Closed By 4:00PM!');
 							$('.clock').hide();
 						}
 					}
@@ -2212,7 +2212,7 @@
 		<!-- start FlipClock -->
 <div class="footerFixedStrip" >		
 		<div class="" style="width:44%; float:left;">
-			<h1 style="margin-right:-100px;float:right;color:#cccccc; text-shadow:0 1px 2px rgb(0, 0, 0);font-size:18px">2014 Cadre Registrations Will be Closed <br>By 2014-12-23 After Noon 12:00PM</h2>
+			<h1 style="margin-right:-100px;float:right;color:#cccccc; text-shadow:0 1px 2px rgb(0, 0, 0);font-size:18px">2014 Cadre Registrations Will be Closed <br>By 2014-12-23 After Noon 04:00PM</h2>
 		</div>		
 		<div class="" style="width:56%;float:left;">
 			<div class="message"  style="font-size: 25px;margin-top:30px;margin-left: 125px;"></div>
