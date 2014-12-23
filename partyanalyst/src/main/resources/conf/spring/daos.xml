@@ -1792,8 +1792,6 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
 
-
-
 <bean id="tdpCadreVolunteerConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreVolunteerConstituencyDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 </bean>
@@ -1828,5 +1826,9 @@
     <bean id="cadreRegSyncAccessUsersDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRegSyncAccessUsersDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	 <bean id="cadreRegistrationInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreRegistrationInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!--  end -->
 </beans>		
