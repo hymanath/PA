@@ -4242,6 +4242,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 						 constiRegCntMap.put((Long)params[0], params[1] != null ? (Long)params[1] : 0) ;
 				 }
 			}
+			if(districtMap != null && !districtMap.isEmpty())
 			for(Long districtId : districtMap.keySet())
 			{
 				CadreIVRVO districtVo = new CadreIVRVO();
@@ -4250,6 +4251,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 				districtVo.setApCount(districtRegCntMap.get(districtId));
 				Map<Long,CadreIVRVO> constituencyMap = districtMap.get(districtId);
 				List<CadreIVRVO> constituencyList = new ArrayList<CadreIVRVO>();
+				if(constituencyMap != null && !constituencyMap.isEmpty())
 					for(Long id : constituencyMap.keySet())
 					{
 						CadreIVRVO vo = constituencyMap.get(id);
