@@ -46,60 +46,38 @@
 		<div class="row">
 			<!-----Total In AP & TS ----->
 			<div class="span12" id="APandTsDiv">
-				<img style="width:70px;" src="./images/Loading-data.gif" id="ajaxImg"/>
+				<img style="width:20px;" src="./images/icons/search.gif" id="ajaxImg"/>
 			</div>	
 			<!----- /Total In AP & TS ----->
 			
 			<!-----Today In AP ----->
 			<div class="span6 m_top20" id="todayApDiv">
-			<img style="width:70px;" src="./images/Loading-data.gif" id="todayAPajaxImg"/>
+			<img style="width:20px;" src="./images/icons/search.gif" id="todayAPajaxImg"/>
 						
 			</div>
 			<!----- /Today In AP ----->
 						
 			<!-----Today In TS ----->
 			<div class="span6 m_top20" id="todayTGDiv">
-				<img style="width:70px;" src="./images/Loading-data.gif" id="todayTGajaxImg"/>			
+				<img style="width:20px;" src="./images/icons/search.gif" id="todayTGajaxImg"/>			
 			</div>
 			<!----- /Today In TS ----->
 			
 			<!------ Total in AP ------->
 			<div class="span6 m_top20" style="outline:6px solid rgb(223, 240, 216);" id="ApDataDiv">
 			<div id="ApTotalDiv">
-				<img style="width:70px;" src="./images/Loading-data.gif" id="apTotalajaxImg"/>
+				<img style="width:20px;" src="./images/icons/search.gif" id="apTotalajaxImg"/>
 				</div>
 				<!-----TS Constituency wise ------>
 				<h4 class="alert alert-info text-center border-radius-0 m-0">CONSTITUENCY WISE DETAILS</h4>
-				<div style="overflow: auto;">
-					<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 ">
-						<thead class="alert-info">
-							<tr>
-								<th>Constituency Name</th>
-								<th>No of members registered</th>
-								<th>IVR Calls </th>
-								<th>Cards Received </th>
-								<th>Cards Not Received </th>
-								<th>Not Registered Members </th>
-							</tr>
-						</thead>
-						<tbody>
-						<tr><td>Constituency</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						<tr><td>Constituency</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						<tr><td>Constituency</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						<tr><td>Constituency</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						<tr><td>Constituency</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						<tr><td>Constituency</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						<tr><td>Constituency</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						<tr><td>Constituency</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						<tr><td>Constituency</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						</tbody>
-					</table>
+				<div style="overflow: auto; min-height: 250px ! important;" id="APconstituencyTableDiv">
+					
 				</div>
 				<!----- /AP Constituency wise ------>
 				
 				<!------AP District wise -------->
 				<h4 class="alert alert-info text-center border-radius-0 m-0">DISTRICT WISE DETAILS</h4>
-				<div style="overflow: auto;">
+				<div style="overflow: auto; min-height: 250px ! important;" id="APdistrictableDiv">
 					<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 ">
 						<thead class="alert-info">
 							<tr>
@@ -127,40 +105,18 @@
 			<!-------Total in TS------>
 			<div class="span6 m_top20" style="outline:6px solid rgb(223, 240, 216);" id="TGDataDiv">
 				<div id="TGTotalDiv">
-				<img style="width:70px;" src="./images/Loading-data.gif" id="TGTotalajaxImg"/>
+				<img style="width:20px;" src="./images/icons/search.gif" id="TGTotalajaxImg"/>
 				</div>
 				<!-----TS Constituency wise ------>
 				<h4 class="alert alert-info text-center border-radius-0 m-0">CONSTITUENCY WISE DETAILS</h4>
-				<div style="overflow: auto;">
-					<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 ">
-						<thead class="alert-info">
-							<tr>
-								<th>Constituency Name</th>
-								<th>No of members registered</th>
-								<th>IVR Calls </th>
-								<th>Cards Received </th>
-								<th>Cards Not Received </th>
-								<th>Not Registered Members </th>
-							</tr>
-						</thead>
-						<tbody>
-						<tr><td>Constituency</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						<tr><td>Constituency</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						<tr><td>Constituency</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						<tr><td>Constituency</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						<tr><td>Constituency</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						<tr><td>Constituency</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						<tr><td>Constituency</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						<tr><td>Constituency</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						<tr><td>Constituency</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						</tbody>
-					</table>
+				<div style="overflow: auto; min-height: 250px ! important;" id="TGconstituencyTableDiv">
+					
 				</div>
 				<!-----/TS Constituency wise ------>
 				
 				<!------TS District wise -------->
 				<h4 class="alert alert-info text-center border-radius-0 m-0">DISTRICT WISE DETAILS</h4>
-				<div style="overflow: auto;">
+				<div style="overflow: auto; min-height: 250px ! important;" id="TGdistrictableDiv">
 					<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 ">
 						<thead class="alert-info">
 							<tr>
@@ -453,7 +409,7 @@ $("#constituencyId").css("display","block");
 		str3+='<table class="table table-bordered border-radius-0 mb-0 table-condensed">';
 		str3+='<tr class="alert alert-success">';
 		str3+='<td rowspan="4" style="text-align: center;">';
-		str3+='<img style="width:70px" src="images/AP.png">';
+		str3+='<img style="width:70px" src="./images/AP.png">';
 		str3+='<h4 >Total In AP <br>'+ basicInfo.apCount+'  <br><small>Members Registered </small> <hr style="margin-top: 5px; margin-bottom: 5px;">IVR Calls<br>'+totalInfo.responseCnt +' <br><small>Answered</small>	</h4>';
 		str3+='</td>';
 		str3+='</tr>';
@@ -471,7 +427,7 @@ $("#constituencyId").css("display","block");
 		str4+='<table class="table table-bordered border-radius-0 mb-0 table-condensed">';
 		str4+='<tr class="alert alert-success">';
 		str4+='<td rowspan="4" style="text-align: center;">';
-		str4+='<img style="width:70px" src="images/TS.png">';
+		str4+='<img style="width:70px" src="./images/TS.png">';
 		str4+='<h4 >Total In TG <br>'+basicInfo.tgCount+' <br><small>Members Registered </small> <hr style="margin-top: 5px; margin-bottom: 5px;">IVR Calls<br>'+totalInfo.tgResponseCnt+'  <br><small>Answered</small>	</h4>';
 		str4+='</td>';
 		str4+='</tr>';
@@ -491,10 +447,145 @@ $("#constituencyId").css("display","block");
 		$("#ApTotalDiv").html(str3);
 		$("#TGTotalDiv").html(str4);
 	}
+	
+	function getConstituencyWiseIVRCount()
+	{
+		var jsObj = {	
+		task:""             
+		}
+			   
+		$.ajax({
+			type : "POST",
+			url : "getConstituencyWiseIVRAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			
+			buildConstCount(result);
+			buildDistrictCount(result);
+		});
+	}
+	
+	function buildConstCount(result)
+	{
+
+		var str ='';
+		str+='<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 ">';
+		str+='<thead class="alert-info">';
+		str+='<tr>';
+		str+='<th>Constituency Name</th>';
+		str+='<th>No of members registered</th>';
+		str+='<th>IVR Calls </th>';
+		str+='<th>Cards Received </th>';
+		str+='<th>Cards Not Received </th>';
+		str+='<th>Not Registered Members </th>';
+		str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+	for(var i in result)
+	{
+		if(result[i].id > 10)
+			{
+			for(var j in result[i].subList)
+			{
+			str+='<tr><td>'+result[i].subList[j].name+'</td><td>'+result[i].subList[j].apCount+'</td><td>'+result[i].subList[j].responseCnt+'</td><td>'+result[i].subList[j].received+'</td><td>'+result[i].subList[j].notReceived+'</td><td>'+result[i].subList[j].notRegistered+'</td></tr>';
+			}
+		}
+	}
+ str+='</tbody>';
+ str+='</table>';
+ $("#APconstituencyTableDiv").html(str);
+ 	var str1 ='';
+		str1+='<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 ">';
+		str1+='<thead class="alert-info">';
+		str1+='<tr>';
+		str1+='<th>Constituency Name</th>';
+		str1+='<th>No of members registered</th>';
+		str1+='<th>IVR Calls </th>';
+		str1+='<th>Cards Received </th>';
+		str1+='<th>Cards Not Received </th>';
+		str1+='<th>Not Registered Members </th>';
+		str1+='</tr>';
+		str1+='</thead>';
+		str1+='<tbody>';
+			for(var i in result)
+		{
+		if(result[i].id <= 10)
+			{
+			for(var j in result[i].subList)
+			{
+			str1+='<tr><td>'+result[i].subList[j].name+'</td><td>'+result[i].subList[j].apCount+'</td><td>'+result[i].subList[j].responseCnt+'</td><td>'+result[i].subList[j].received+'</td><td>'+result[i].subList[j].notReceived+'</td><td>'+result[i].subList[j].notRegistered+'</td></tr>';
+			}
+		}
+		}
+		str1+='</tbody>';
+		str1+='</table>';
+		 $("#TGconstituencyTableDiv").html(str1);
+		
+	
+	}
+	
+	function buildDistrictCount(result)
+	{
+
+		var str ='';
+		str+='<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 ">';
+		str+='<thead class="alert-info">';
+		str+='<tr>';
+		str+='<th>District Name</th>';
+		str+='<th>No of members registered</th>';
+		str+='<th>IVR Calls </th>';
+		str+='<th>Cards Received </th>';
+		str+='<th>Cards Not Received </th>';
+		str+='<th>Not Registered Members </th>';
+		str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+	for(var i in result)
+	{
+		if(result[i].id > 10)
+			{
+			
+			str+='<tr><td>'+result[i].name+'</td><td>'+result[i].apCount+'</td><td>'+result[i].responseCnt+'</td><td>'+result[i].received+'</td><td>'+result[i].notReceived+'</td><td>'+result[i].notRegistered+'</td></tr>';
+			
+		}
+	}
+ str+='</tbody>';
+ str+='</table>';
+ $("#APdistrictableDiv").html(str);
+ 	var str1 ='';
+		str1+='<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 ">';
+		str1+='<thead class="alert-info">';
+		str1+='<tr>';
+		str1+='<th>District Name</th>';
+		str1+='<th>No of members registered</th>';
+		str1+='<th>IVR Calls </th>';
+		str1+='<th>Cards Received </th>';
+		str1+='<th>Cards Not Received </th>';
+		str1+='<th>Not Registered Members </th>';
+		str1+='</tr>';
+		str1+='</thead>';
+		str1+='<tbody>';
+			for(var i in result)
+		{
+		if(result[i].id <= 10)
+			{
+			for(var j in result[i].subList)
+			{
+			str1+='<tr><td>'+result[i].name+'</td><td>'+result[i].apCount+'</td><td>'+result[i].responseCnt+'</td><td>'+result[i].received+'</td><td>'+result[i].notReceived+'</td><td>'+result[i].notRegistered+'</td></tr>';
+			}
+		}
+		}
+		str1+='</tbody>';
+		str1+='</table>';
+		 $("#TGdistrictableDiv").html(str1);
+		
+	
+	}
 </script>
 <script>
-showHide();
+
 getIvrBasicCount();
+getConstituencyWiseIVRCount();
 </script>
 </body>
 </html>
