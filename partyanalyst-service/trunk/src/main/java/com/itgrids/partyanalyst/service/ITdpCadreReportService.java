@@ -47,4 +47,5 @@ public interface ITdpCadreReportService {
 	public List<String> getIvrDates();
 	public CadreIVRVO getIvrDashBoardBasicInfo();
 	public List<CadreIVRVO> getIvrDashBoardCounts();
+	public List<CadreIVRVO> getConstituencyWiseIVR();
 }

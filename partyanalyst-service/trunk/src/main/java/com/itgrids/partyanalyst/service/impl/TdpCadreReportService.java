@@ -10,6 +10,8 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,6 +46,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICadreIvrResponseDAO;
+import com.itgrids.partyanalyst.dao.ICadreRegistrationInfoDAO;
 import com.itgrids.partyanalyst.dao.ICallCenterFeedbackDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
@@ -69,7 +72,9 @@ import com.itgrids.partyanalyst.dto.CadreIVRVO;
 import com.itgrids.partyanalyst.dto.CadreRegAmountUploadVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
@@ -120,8 +125,16 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	private ITdpCadreVolunteerConstituencyDAO tdpCadreVolunteerConstituencyDAO;
 	private ITdpCadreVolunteerDateDAO tdpCadreVolunteerDateDAO;
 	private ICadreIvrResponseDAO cadreIvrResponseDAO;
+	private ICadreRegistrationInfoDAO cadreRegistrationInfoDAO ;
 	
 	
+	public ICadreRegistrationInfoDAO getCadreRegistrationInfoDAO() {
+		return cadreRegistrationInfoDAO;
+	}
+	public void setCadreRegistrationInfoDAO(
+			ICadreRegistrationInfoDAO cadreRegistrationInfoDAO) {
+		this.cadreRegistrationInfoDAO = cadreRegistrationInfoDAO;
+	}
 	public ICadreIvrResponseDAO getCadreIvrResponseDAO() {
 		return cadreIvrResponseDAO;
 	}
@@ -4169,4 +4182,99 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	}
 
 	
+	public List<CadreIVRVO> getConstituencyWiseIVR()
+	{
+		List<CadreIVRVO> returnList = new ArrayList<CadreIVRVO>();
+		Map<Long,Map<Long,CadreIVRVO>> districtMap = new HashMap<Long, Map<Long,CadreIVRVO>>();
+		Map<Long,String> districtName = new HashMap<Long, String>();
+		List<Long> constituencyIds = new ArrayList<Long>();
+		List<Long> districtIds = new ArrayList<Long>();
+		try{
+			List<Object[]> list = cadreIvrResponseDAO.getConstituencyWiseIvrCount();
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+					{
+						Map<Long,CadreIVRVO> constituencyMap = districtMap.get((Long)params[3]);
+						if(constituencyMap == null)
+						{
+							constituencyMap = new HashMap<Long, CadreIVRVO>();
+							districtMap.put((Long)params[3], constituencyMap);
+							districtName.put((Long)params[3], params[4].toString());
+							districtIds.add((Long)params[3]);
+						}
+						CadreIVRVO vo = constituencyMap.get((Long)params[1]);
+							if(vo == null)
+							{
+								vo = new CadreIVRVO();
+								vo.setId((Long)params[1]);
+								vo.setName(params[2].toString());
+								constituencyMap.put((Long)params[1], vo);
+								constituencyIds.add((Long)params[1]);
+							}
+						vo.setTotal((Long)params[0] + vo.getTotal());
+						if(params[5] != null &&params[5].toString().equalsIgnoreCase("1"))
+						vo.setReceived((Long)params[0] + vo.getReceived());
+						else if(params[5] != null &&params[5].toString().equalsIgnoreCase("2"))
+						vo.setNotReceived((Long)params[0] + vo.getNotReceived());
+						else if(params[5] != null &&params[5].toString().equalsIgnoreCase("3"))
+						vo.setNotRegistered((Long)params[0] + vo.getNotRegistered());
+						
+					}
+			}
+			Map<Long,Long> districtRegCntMap = new HashMap<Long, Long>();
+			Map<Long,Long> constiRegCntMap = new HashMap<Long, Long>();
+			if(districtIds != null &&  districtIds.size() > 0)
+			{
+				 List<Object[]> distCnt = cadreRegistrationInfoDAO.getCountByReportLevel(3l);
+				 if(distCnt != null && distCnt.size() > 0)
+				 {
+					 for(Object[] params : distCnt)
+						 districtRegCntMap.put((Long)params[0], params[1] != null ? (Long)params[1] : 0) ;
+				 }
+			}
+			if(constituencyIds != null &&  constituencyIds.size() > 0)
+			{
+				 List<Object[]> constCnt = cadreRegistrationInfoDAO.getCountByReportLevel(4l);
+				 if(constCnt != null && constCnt.size() > 0)
+				 {
+					 for(Object[] params : constCnt)
+						 constiRegCntMap.put((Long)params[0], params[1] != null ? (Long)params[1] : 0) ;
+				 }
+			}
+			for(Long districtId : districtMap.keySet())
+			{
+				CadreIVRVO districtVo = new CadreIVRVO();
+				districtVo.setId(districtId);
+				districtVo.setName(districtName.get(districtId));
+				districtVo.setApCount(districtRegCntMap.get(districtId));
+				Map<Long,CadreIVRVO> constituencyMap = districtMap.get(districtId);
+				List<CadreIVRVO> constituencyList = new ArrayList<CadreIVRVO>();
+					for(Long id : constituencyMap.keySet())
+					{
+						CadreIVRVO vo = constituencyMap.get(id);
+						vo.setResponseCnt(vo.getReceived() + vo.getNotRegistered() + vo.getNotReceived());
+						vo.setApCount(constiRegCntMap.get(id));
+						districtVo.setTotal(districtVo.getTotal() + vo.getTotal());
+						districtVo.setReceived(districtVo.getReceived() + vo.getReceived());
+						districtVo.setNotReceived(districtVo.getNotReceived() + vo.getNotReceived());
+						districtVo.setNotRegistered(districtVo.getNotRegistered() + vo.getNotRegistered());
+						constituencyList.add(vo);
+					}
+					
+					districtVo.setSubList(constituencyList);
+					districtVo.setResponseCnt(districtVo.getReceived() + districtVo.getNotRegistered() + districtVo.getNotReceived());
+				returnList.add(districtVo);
+			}
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception rised in getConstituencyWiseIVR", e);		
+		}
+		
+		return returnList;
+	}
+
+	
+		    
 }
