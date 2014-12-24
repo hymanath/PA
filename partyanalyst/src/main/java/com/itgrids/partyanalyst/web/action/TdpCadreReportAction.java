@@ -36,6 +36,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.RandomGenaration;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+import com.itgrids.partyanalyst.dto.CadreIVRResponseVO;
 
 public class TdpCadreReportAction extends ActionSupport implements ServletRequestAware{
 
@@ -64,7 +65,7 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 	private List<SelectOptionVO> constituenciesList;
 	private IStaticDataService staticDataService;
 	private List<CadreIVRVO> ivrVOList;
-	
+	private CadreIVRResponseVO cadreIVRResponseVO;
 	
 	
 	public List<CadreIVRVO> getIvrVOList() {
@@ -231,6 +232,14 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 
 	public void setResultList(List<BasicVO> resultList) {
 		this.resultList = resultList;
+	}
+
+	public CadreIVRResponseVO getCadreIVRResponseVO() {
+		return cadreIVRResponseVO;
+	}
+
+	public void setCadreIVRResponseVO(CadreIVRResponseVO cadreIVRResponseVO) {
+		this.cadreIVRResponseVO = cadreIVRResponseVO;
 	}
 
 	public String execute()
@@ -620,7 +629,7 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 				cadreIVRVO = tdpCadreReportService.getCadreIvrReport(date,Id,jobj.getInt("strIndex"),jobj.getInt("maxIndex"),jobj.getString("searchType"));			
 		}
 		catch(Exception e){
-			LOG.info("Entered into getCadreIvrReport()");	
+			LOG.info("Entered into getCadreIvrReport()",e);	
 		}
 		return Action.SUCCESS;
 	}
@@ -632,7 +641,7 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 			ivrVOList = tdpCadreReportService.getIvrDashBoardCounts();			
 		}
 		catch(Exception e){
-			LOG.info("Entered into getCadreIvrReport()");	
+			LOG.info("Entered into getCadreIvrReport()",e);	
 		}
 		return Action.SUCCESS;
 	}
@@ -644,8 +653,33 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 			ivrVOList = tdpCadreReportService.getConstituencyWiseIVR();			
 		}
 		catch(Exception e){
-			LOG.info("Entered into getConstituencyWiseIVR()");	
+			LOG.info("Entered into getConstituencyWiseIVR()",e);	
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getPanchayatWiseIVR()
+	{
+		try{
+			jobj = new JSONObject(getTask());
+			cadreIVRResponseVO = tdpCadreReportService.getPanchayatWiseCadreDispatchStatus(jobj.getLong("range"), jobj.getString("state"));			
+		}
+		catch(Exception e){
+			LOG.info("Entered into getPanchayatWiseIVR()",e);	
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getTehsilWiseIVR()
+	{
+		try{
+			jobj = new JSONObject(getTask());
+			cadreIVRResponseVO = tdpCadreReportService.getTehsilWiseCadreDispatchStatus(jobj.getLong("range"));			
+		}
+		catch(Exception e){
+			LOG.info("Entered into getTehsilWiseIVR()",e);	
+		}
+		return Action.SUCCESS;
+	}
+	
 }
