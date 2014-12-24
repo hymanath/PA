@@ -9233,6 +9233,15 @@
 				<param name="root">ivrVOList</param>
 			</result>
 		</action>
-			
+		<action name="getTehsilWiseIVRAction" class="tdpCadreReportAction" method="getTehsilWiseIVR">
+			<result type="json" name="success">
+				<param name="root">cadreIVRResponseVO</param>
+			</result>
+		</action>
+		<action name="getPanchayatWiseIVRAction" class="tdpCadreReportAction" method="getPanchayatWiseIVR">
+			<result type="json" name="success">
+				<param name="root">cadreIVRResponseVO</param>
+			</result>
+		</action>
 </package>
 </struts>      
