@@ -109,5 +109,68 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 		str.append(" group by model.tdpCadre.userAddress.constituency.constituencyId,model.responseKey");
 		Query query = getSession().createQuery(str.toString());
 		return query.list();
+	}	
+	public List<Object[]> getTehsilWiseIVRInfo(){
+		//0 districtId,1constituencyId,2constituencyName,3tehsilId,4tehsilName,5count,6response key,7districtName
+		Query query = getSession().createQuery("select model.userAddress.district.districtId,model.userAddress.constituency.constituencyId,model.userAddress.constituency.name,model.userAddress.tehsil.tehsilId,concat(model.userAddress.tehsil.tehsilName,' Mandal')," +
+				" count(*),model.responseKey,model.userAddress.district.districtName from  CadreIvrResponse model where model.isDeleted = 'N' and model.userAddress.localElectionBody.localElectionBodyId is null and " +
+				" model.userAddress.tehsil.tehsilId is not null and model.responseKey is not null group by model.userAddress.tehsil.tehsilId,model.responseKey ");
+		
+		return query.list();
+	}
+	public List<Object[]> getTehsilWiseIVRTotalCountInfo(){
+		//0 id,1count
+		Query query = getSession().createQuery("select model.userAddress.tehsil.tehsilId,count(*) " +
+				"  from  CadreIvrResponse model where model.isDeleted = 'N' and model.userAddress.localElectionBody.localElectionBodyId is null and " +
+				" model.userAddress.tehsil.tehsilId is not null group by model.userAddress.tehsil.tehsilId ");
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getLocalBodyWiseIVRInfo(){
+		//0 districtId,1constituencyId,2constituencyName,localElectionBodyId,4localElectionBodyName,5count,6response key,7districtName
+		Query query = getSession().createQuery("select model.userAddress.district.districtId,model.userAddress.constituency.constituencyId,model.userAddress.constituency.name,model.userAddress.localElectionBody.localElectionBodyId," +
+				" concat(model.userAddress.localElectionBody.name,' model.userAddress.localElectionBody.electionType.electionType'),count(*),model.responseKey,model.userAddress.district.districtName from  CadreIvrResponse model where model.isDeleted = 'N' and " +
+				" model.userAddress.localElectionBody.localElectionBodyId is not null and model.responseKey is not null group by model.userAddress.constituency.constituencyId,model.userAddress.localElectionBody.localElectionBodyId,model.responseKey ");
+		
+		return query.list();
+	}
+	public List<Object[]> getLocalBodyWiseIVRTotalCountInfo(){
+		//0 constituencyId,1 localBodyId,2 count
+		Query query = getSession().createQuery("select model.userAddress.constituency.constituencyId,model.userAddress.localElectionBody.localElectionBodyId,count(*) from CadreIvrResponse model where model.isDeleted = 'N' " +
+				"  and model.userAddress.localElectionBody.localElectionBodyId is not null group by model.userAddress.constituency.constituencyId,model.userAddress.localElectionBody.localElectionBodyId ");
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getPanchayatWiseIVRInfo(String state){
+		StringBuilder queryStr = new StringBuilder();
+		//0panchayatId,1panchayatName,2districtName,3constituencyName,4count,5responseKey
+		queryStr.append("select model.userAddress.panchayat.panchayatId,model.userAddress.panchayat.panchayatName,model.userAddress.district.districtName,model.userAddress.constituency.name,count(*),model.responseKey from " +
+				" CadreIvrResponse model where model.isDeleted = 'N' and model.responseKey is not null ");
+		if(state.equalsIgnoreCase("AP")){
+			queryStr.append(" and model.userAddress.district.districtId > 10");
+		}else{
+			queryStr.append(" and model.userAddress.district.districtId < 11");
+		}
+		queryStr.append(" and model.userAddress.panchayat.panchayatId is not null group by model.userAddress.panchayat.panchayatId,model.responseKey");
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getPanchayatWiseIVRCountInfo(String state){
+		StringBuilder queryStr = new StringBuilder();
+		//0panchayatId,1count
+		queryStr.append("select model.userAddress.panchayat.panchayatId,count(*) from " +
+				" CadreIvrResponse model  where model.isDeleted = 'N' ");
+		if(state.equalsIgnoreCase("AP")){
+			queryStr.append(" and model.userAddress.district.districtId > 10");
+		}else{
+			queryStr.append(" and model.userAddress.district.districtId < 11");
+		}
+		queryStr.append("and model.userAddress.panchayat.panchayatId is not null group by model.userAddress.panchayat.panchayatId");
+		Query query = getSession().createQuery(queryStr.toString());
+		return query.list();
 	}
 }

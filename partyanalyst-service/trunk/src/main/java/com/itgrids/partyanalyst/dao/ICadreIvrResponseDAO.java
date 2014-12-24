@@ -14,4 +14,10 @@ public interface ICadreIvrResponseDAO extends GenericDao<CadreIvrResponse, Long>
 	public Long getTotalIvrCount();
 	public List<Object[]> getIvrCountByDate(Date date);
 	public List<Object[]> getConstituencyWiseIvrCount();
+	public List<Object[]> getTehsilWiseIVRInfo();
+	public List<Object[]> getTehsilWiseIVRTotalCountInfo();
+	public List<Object[]> getLocalBodyWiseIVRInfo();
+	public List<Object[]> getLocalBodyWiseIVRTotalCountInfo();
+	public List<Object[]> getPanchayatWiseIVRInfo(String state);
+	public List<Object[]> getPanchayatWiseIVRCountInfo(String state);
 }
