@@ -11,10 +11,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">	
-	
+ <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
  <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
  <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
+ <script type="text/javascript" src="js/jquery.dataTables.js"></script>
+ <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 <title>IVR Report</title>
 <style>
 	.border-radius-0{border-radius:0px;}
@@ -31,6 +35,10 @@
 	.Constituency-name-nav>li a:hover{color:#333333; background:#fff !important; border:1px solid #ffcc00;box-shadow:0px 20px 30px #222; background-color:rgb(204,204,204);}
 	.accordion-group {border: medium none;}
 	.table-condensed td{padding:0px 10px; line-height: 14px;}
+	.dataTables_filter label{margin-left: 20px !important;
+    margin-top: 10px !important; }
+	.dataTables_length select {width:100px !important;margin-top:10px !important;}
+	.dataTables_filter input{width:100px !important;}
 	</style>
 </head>
 </head>
@@ -46,56 +54,39 @@
 		<div class="row">
 			<!-----Total In AP & TS ----->
 			<div class="span12" id="APandTsDiv">
-				<img style="width:20px;" src="./images/icons/search.gif" id="ajaxImg"/>
+				<img style="width:20px;" src="./images/icons/search.gif" id="ajaxImg" class="offset5"/>
 			</div>	
 			<!----- /Total In AP & TS ----->
 			
 			<!-----Today In AP ----->
 			<div class="span6 m_top20" id="todayApDiv">
-			<img style="width:20px;" src="./images/icons/search.gif" id="todayAPajaxImg"/>
+			
 						
 			</div>
 			<!----- /Today In AP ----->
 						
 			<!-----Today In TS ----->
 			<div class="span6 m_top20" id="todayTGDiv">
-				<img style="width:20px;" src="./images/icons/search.gif" id="todayTGajaxImg"/>			
+						
 			</div>
 			<!----- /Today In TS ----->
 			
 			<!------ Total in AP ------->
 			<div class="span6 m_top20" style="outline:6px solid rgb(223, 240, 216);" id="ApDataDiv">
 			<div id="ApTotalDiv">
-				<img style="width:20px;" src="./images/icons/search.gif" id="apTotalajaxImg"/>
+				
 				</div>
 				<!-----TS Constituency wise ------>
 				<h4 class="alert alert-info text-center border-radius-0 m-0">CONSTITUENCY WISE DETAILS</h4>
-				<div style="overflow: auto; min-height: 250px ! important;" id="APconstituencyTableDiv">
+				<div style="overflow: auto; height: 300px ! important;" id="APconstituencyTableDiv">
 					
 				</div>
 				<!----- /AP Constituency wise ------>
 				
 				<!------AP District wise -------->
 				<h4 class="alert alert-info text-center border-radius-0 m-0">DISTRICT WISE DETAILS</h4>
-				<div style="overflow: auto; min-height: 250px ! important;" id="APdistrictableDiv">
-					<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 ">
-						<thead class="alert-info">
-							<tr>
-								<th>District Name</th>
-								<th>No of members registered</th>
-								<th>IVR Calls </th>
-								<th>Cards Received </th>
-								<th>Cards Not Received </th>
-								<th>Not Registered Members </th>
-							</tr>
-						</thead>
-						<tbody>
-						<tr><td>District Name</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						<tr><td>District Name</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						<tr><td>District Name</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						<tr><td>District Name</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						</tbody>
-					</table>
+				<div style="overflow: auto; height: 300px ! important;" id="APdistrictableDiv">
+					
 				</div>
 				<!------/AP District wise -------->
 			</div>
@@ -105,36 +96,19 @@
 			<!-------Total in TS------>
 			<div class="span6 m_top20" style="outline:6px solid rgb(223, 240, 216);" id="TGDataDiv">
 				<div id="TGTotalDiv">
-				<img style="width:20px;" src="./images/icons/search.gif" id="TGTotalajaxImg"/>
+				
 				</div>
 				<!-----TS Constituency wise ------>
 				<h4 class="alert alert-info text-center border-radius-0 m-0">CONSTITUENCY WISE DETAILS</h4>
-				<div style="overflow: auto; min-height: 250px ! important;" id="TGconstituencyTableDiv">
+				<div style="overflow: auto;height: 300px ! important;" id="TGconstituencyTableDiv">
 					
 				</div>
 				<!-----/TS Constituency wise ------>
 				
 				<!------TS District wise -------->
 				<h4 class="alert alert-info text-center border-radius-0 m-0">DISTRICT WISE DETAILS</h4>
-				<div style="overflow: auto; min-height: 250px ! important;" id="TGdistrictableDiv">
-					<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 ">
-						<thead class="alert-info">
-							<tr>
-								<th>District Name</th>
-								<th>No of members registered</th>
-								<th>IVR Calls </th>
-								<th>Cards Received </th>
-								<th>Cards Not Received </th>
-								<th>Not Registered Members </th>
-							</tr>
-						</thead>
-						<tbody>
-						<tr><td>District Name</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						<tr><td>District Name</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						<tr><td>District Name</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						<tr><td>District Name</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td><td>4545555</td></tr>
-						</tbody>
-					</table>
+				<div style="overflow: auto; height: 300px ! important;" id="TGdistrictableDiv">
+					
 				</div>
 				<!------/TS District wise -------->
 			</div>
@@ -143,14 +117,6 @@
 		
 		
 	</div>
-	
-	
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-
-	
 <script>
 function showHide()
 {
@@ -216,12 +182,10 @@ $("#constituencyId").css("display","block");
 			 buildCount(result,Id,date);
 		});
 		}
-
-
 		function getIvrCadreDetails(searchType,totRecords,Id,date,strIndex)
 		{
 			$("#ajaxImage1").show();
-			 $("#cadreDetailsDiv").html('');
+			$("#cadreDetailsDiv").html('');
 			var jsObj = {	
 			date:date,
 			Id:Id,
@@ -327,10 +291,7 @@ $("#constituencyId").css("display","block");
 	function getIvrBasicCount()
 	{
 		 $("#ajaxImg").show();
-		 $("#todayAPajaxImg").show();
-		 $("#todayTGajaxImg").show();
-		  $("#apTotalajaxImg").show();
-		  $("#TGTotalajaxImg").show();
+		
 			var jsObj = {	
 			task:""             
 		}
@@ -341,10 +302,7 @@ $("#constituencyId").css("display","block");
 			data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
 			 $("#ajaxImg").hide();
-			 $("#todayAPajaxImg").hide();
-			 $("#todayTGajaxImg").hide();
-			 $("#apTotalajaxImg").hide();
-			 $("#TGTotalajaxImg").hide();
+			
 			buildIvrCount(result);
 		});
 	}
@@ -395,7 +353,7 @@ $("#constituencyId").css("display","block");
 		str2+='<table class="table table-bordered border-radius-0 mb-0 table-striped">';
 		str2+='<tr class="alert alert-success">';
 		str2+='<td colspan="4">';
-		str2+='<h4 >Today AP IVR Calls Answered <span class="pull-right">'+todayInfo.tgResponseCnt +'</span></h4>';	
+		str2+='<h4 >Today TG IVR Calls Answered <span class="pull-right">'+todayInfo.tgResponseCnt +'</span></h4>';	
 		str2+='</td>';
 		str2+='</tr>';
 		str2+='<tr>';
@@ -467,9 +425,33 @@ $("#constituencyId").css("display","block");
 	
 	function buildConstCount(result)
 	{
-
+		var ApArr= new Array();
+		var TGArr = new Array();
+		for(var i in result)
+		{
+			if(result[i].id > 10)
+				{
+					for(var j in result[i].subList)
+					{
+						ApArr.push(result[i].subList[j]);
+					}
+				}
+		}
+		for(var i in result)
+		{
+			if(result[i].id <= 10)
+				{
+					for(var j in result[i].subList)
+					{
+						TGArr.push(result[i].subList[j]);
+					}
+				}
+		}
+		ApArr.sort(dynamicSort("notReceived"));
+		TGArr.sort(dynamicSort("notReceived"));
+		
 		var str ='';
-		str+='<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 ">';
+		str+='<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 " id="apConstTable">';
 		str+='<thead class="alert-info">';
 		str+='<tr>';
 		str+='<th>Constituency Name</th>';
@@ -481,21 +463,20 @@ $("#constituencyId").css("display","block");
 		str+='</tr>';
 		str+='</thead>';
 		str+='<tbody>';
-	for(var i in result)
-	{
-		if(result[i].id > 10)
+	
+			for(var j in ApArr)
 			{
-			for(var j in result[i].subList)
-			{
-			str+='<tr><td>'+result[i].subList[j].name+'</td><td>'+result[i].subList[j].apCount+'</td><td>'+result[i].subList[j].responseCnt+'</td><td>'+result[i].subList[j].received+'</td><td>'+result[i].subList[j].notReceived+'</td><td>'+result[i].subList[j].notRegistered+'</td></tr>';
+				if(ApArr[j].apCount == null)
+					ApArr[j].apCount =0;
+			str+='<tr><td>'+ApArr[j].name+'</td><td>'+ApArr[j].apCount+'</td><td>'+ApArr[j].responseCnt+'</td><td>'+ApArr[j].received+'</td><td>'+ApArr[j].notReceived+'</td><td>'+ApArr[j].notRegistered+'</td></tr>';
 			}
-		}
-	}
+	
  str+='</tbody>';
  str+='</table>';
  $("#APconstituencyTableDiv").html(str);
+$("#apConstTable").dataTable();
  	var str1 ='';
-		str1+='<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 ">';
+		str1+='<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 " id="tgConstTable">';
 		str1+='<thead class="alert-info">';
 		str1+='<tr>';
 		str1+='<th>Constituency Name</th>';
@@ -507,28 +488,41 @@ $("#constituencyId").css("display","block");
 		str1+='</tr>';
 		str1+='</thead>';
 		str1+='<tbody>';
-			for(var i in result)
-		{
-		if(result[i].id <= 10)
+		
+			for(var j in TGArr)
 			{
-			for(var j in result[i].subList)
-			{
-			str1+='<tr><td>'+result[i].subList[j].name+'</td><td>'+result[i].subList[j].apCount+'</td><td>'+result[i].subList[j].responseCnt+'</td><td>'+result[i].subList[j].received+'</td><td>'+result[i].subList[j].notReceived+'</td><td>'+result[i].subList[j].notRegistered+'</td></tr>';
+				if(TGArr[j].apCount == null)
+					TGArr[j].apCount =0;
+			str1+='<tr><td>'+TGArr[j].name+'</td><td>'+TGArr[j].apCount+'</td><td>'+TGArr[j].responseCnt+'</td><td>'+TGArr[j].received+'</td><td>'+TGArr[j].notReceived+'</td><td>'+TGArr[j].notRegistered+'</td></tr>';
 			}
-		}
-		}
+
 		str1+='</tbody>';
 		str1+='</table>';
 		 $("#TGconstituencyTableDiv").html(str1);
-		
-	
+	 $("#tgConstTable").dataTable();
 	}
-	
+
 	function buildDistrictCount(result)
 	{
 
+		var ApArr= new Array();
+		var TGArr = new Array();
+		for(var i in result)
+		{
+			if(result[i].id > 10)
+				{
+				ApArr.push(result[i]);
+				}
+				else
+				{
+				TGArr.push(result[i]);
+				}
+		}
+		
+		ApArr.sort(dynamicSort("notReceived"));
+		TGArr.sort(dynamicSort("notReceived"));
 		var str ='';
-		str+='<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 ">';
+		str+='<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 " id="apDistTable">';
 		str+='<thead class="alert-info">';
 		str+='<tr>';
 		str+='<th>District Name</th>';
@@ -540,20 +534,20 @@ $("#constituencyId").css("display","block");
 		str+='</tr>';
 		str+='</thead>';
 		str+='<tbody>';
-	for(var i in result)
-	{
-		if(result[i].id > 10)
-			{
-			
-			str+='<tr><td>'+result[i].name+'</td><td>'+result[i].apCount+'</td><td>'+result[i].responseCnt+'</td><td>'+result[i].received+'</td><td>'+result[i].notReceived+'</td><td>'+result[i].notRegistered+'</td></tr>';
-			
+		for(var i in ApArr)
+		{
+			if(ApArr[i].apCount == null)
+				ApArr[i].apCount =0;
+			str+='<tr><td>'+ApArr[i].name+'</td><td>'+ApArr[i].apCount+'</td><td>'+ApArr[i].responseCnt+'</td><td>'+ApArr[i].received+'</td><td>'+ApArr[i].notReceived+'</td><td>'+ApArr[i].notRegistered+'</td></tr>';
+		
 		}
-	}
  str+='</tbody>';
  str+='</table>';
  $("#APdistrictableDiv").html(str);
+ $("#apDistTable").dataTable();
+		
  	var str1 ='';
-		str1+='<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 ">';
+		str1+='<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 " id="tgDistTable">';
 		str1+='<thead class="alert-info">';
 		str1+='<tr>';
 		str1+='<th>District Name</th>';
@@ -565,21 +559,30 @@ $("#constituencyId").css("display","block");
 		str1+='</tr>';
 		str1+='</thead>';
 		str1+='<tbody>';
-			for(var i in result)
+		for(var i in TGArr)
 		{
-		if(result[i].id <= 10)
-			{
-			for(var j in result[i].subList)
-			{
-			str1+='<tr><td>'+result[i].name+'</td><td>'+result[i].apCount+'</td><td>'+result[i].responseCnt+'</td><td>'+result[i].received+'</td><td>'+result[i].notReceived+'</td><td>'+result[i].notRegistered+'</td></tr>';
-			}
-		}
+			if(TGArr[i].apCount == null)
+				TGArr[i].apCount =0;
+		str1+='<tr><td>'+TGArr[i].name+'</td><td>'+TGArr[i].apCount+'</td><td>'+TGArr[i].responseCnt+'</td><td>'+TGArr[i].received+'</td><td>'+TGArr[i].notReceived+'</td><td>'+TGArr[i].notRegistered+'</td></tr>';
 		}
 		str1+='</tbody>';
 		str1+='</table>';
 		 $("#TGdistrictableDiv").html(str1);
+	$("#tgDistTable").dataTable();
 		
 	
+	}
+		
+function dynamicSort(property){
+    var sortOrder = 1;
+		if(property[0] === "-"){
+			sortOrder = -1;
+			property = property.substr(1);
+		}
+		return function (a,b) {
+			var result = (a[property] > b[property]) ? -1 : (a[property] < b[property]) ? 1 : 0;
+			return result * sortOrder;
+		}
 	}
 </script>
 <script>
