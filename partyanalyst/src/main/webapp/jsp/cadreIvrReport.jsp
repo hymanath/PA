@@ -11,14 +11,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">	
- <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
  <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
  <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
  <script type="text/javascript" src="js/jquery.dataTables.js"></script>
  <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
+  
+   <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <title>IVR Report</title>
 <style>
 	.border-radius-0{border-radius:0px;}
@@ -39,11 +40,43 @@
     margin-top: 10px !important; }
 	.dataTables_length select {width:100px !important;margin-top:10px !important;}
 	.dataTables_filter input{width:100px !important;}
+	  #slider{height:0.4em !important;}
+	  .ui-slider .ui-slider-handle {width:0.5em !important;}
+	
 	</style>
 </head>
 </head>
 <body>
+<!--<script>
+var range;
+ $(function() {
+$( "#slider" ).slider({
+value:1,
+min: 0,
+max: 100,
+step: 1,
+slide: function( event, ui ) {
+	console.log(ui.value)
+$( "#amount" ).val( "Percentage : " + ui.value +" %");
+},
+change: function( event, ui ) {
+$( "#amount" ).val( "Percentage  : " + ui.value +" %");
+range=ui.value;
+
+callFun(range);
+}
+});
+range=$( "#amount" ).val( "Percentage : " + $( "#slider" ).slider( "value" ) +" %");
+range=$( "#slider" ).slider( "value" );
+         });
+		 function callFun(range)
+		 {
+			 alert(range);
+		 }
+</script>-->
 <div class="container ">	
+
+
 		<!-- Title Row -->
 		<div class="row-fluid" id="fadeInDown">
 			<div class="span12 well well-small  border-radius-0 mb-10 ">
@@ -77,16 +110,16 @@
 				
 				</div>
 				<!-----TS Constituency wise ------>
-				<h4 class="alert alert-info text-center border-radius-0 m-0">AP CONSTITUENCY WISE DETAILS</h4>
-				<div style="overflow: auto; height: 300px ! important;" id="APconstituencyTableDiv">
-					
+				<h4 class="alert alert-info text-center border-radius-0 m-0">AP DISTRICTWISE DETAILS</h4>
+				<div style="overflow: auto; height: 300px ! important;" id="APdistrictableDiv" >
+					<img style="width:20px;" src="./images/icons/search.gif" id="apDistImg" class="offset3"/>
 				</div>
 				<!----- /AP Constituency wise ------>
 				
 				<!------AP District wise -------->
-				<h4 class="alert alert-info text-center border-radius-0 m-0">AP DISTRICT WISE DETAILS</h4>
-				<div style="overflow: auto; height: 300px ! important;" id="APdistrictableDiv">
-					
+				<h4 class="alert alert-info text-center border-radius-0 m-0">AP CONSTITUENCY WISE DETAILS</h4>
+				<div style="overflow: auto; height: 300px ! important;" id="APconstituencyTableDiv">
+					<img style="width:20px;" src="./images/icons/search.gif" id="apConstImg" class="offset3"/>
 				</div>
 				<!------/AP District wise -------->
 			</div>
@@ -99,16 +132,16 @@
 				
 				</div>
 				<!-----TS Constituency wise ------>
-				<h4 class="alert alert-info text-center border-radius-0 m-0">TG CONSTITUENCY WISE DETAILS</h4>
-				<div style="overflow: auto;height: 300px ! important;" id="TGconstituencyTableDiv">
-					
+				<h4 class="alert alert-info text-center border-radius-0 m-0">TG DISTRICT WISE DETAILS</h4>
+				<div style="overflow: auto;height: 300px ! important;" id="TGdistrictableDiv" >
+				<img style="width:20px;" src="./images/icons/search.gif" id="tgDistImg" class="offset3"/>
 				</div>
 				<!-----/TS Constituency wise ------>
 				
 				<!------TS District wise -------->
-				<h4 class="alert alert-info text-center border-radius-0 m-0">TG DISTRICT WISE DETAILS</h4>
-				<div style="overflow: auto; height: 300px ! important;" id="TGdistrictableDiv">
-					
+				<h4 class="alert alert-info text-center border-radius-0 m-0">TG CONSTITUENCY WISE DETAILS</h4>
+				<div style="overflow: auto; height: 300px ! important;" id="TGconstituencyTableDiv">
+				<img style="width:20px;" src="./images/icons/search.gif"  id="tgConstImg" class="offset3"/>
 				</div>
 				<!------/TS District wise -------->
 			</div>
@@ -408,6 +441,10 @@ $("#constituencyId").css("display","block");
 	
 	function getConstituencyWiseIVRCount()
 	{
+		$("#tgConstImg").show();
+		$("#apConstImg").show();
+		$("#tgDistImg").show();
+		$("#apDistImg").show();
 		var jsObj = {	
 		task:""             
 		}
@@ -425,27 +462,19 @@ $("#constituencyId").css("display","block");
 	
 	function buildConstCount(result)
 	{
+		$("#tgConstImg").hide();
+		$("#apConstImg").hide();
 		var ApArr= new Array();
 		var TGArr = new Array();
 		for(var i in result)
 		{
-			if(result[i].id > 10)
-				{
-					for(var j in result[i].subList)
+			for(var j in result[i].subList)
 					{
+						if(result[i].id > 10)
 						ApArr.push(result[i].subList[j]);
-					}
-				}
-		}
-		for(var i in result)
-		{
-			if(result[i].id <= 10)
-				{
-					for(var j in result[i].subList)
-					{
-						TGArr.push(result[i].subList[j]);
-					}
-				}
+						else
+						TGArr.push(result[i].subList[j]);	
+				    }
 		}
 		ApArr.sort(dynamicSort("notReceived"));
 		TGArr.sort(dynamicSort("notReceived"));
@@ -504,7 +533,8 @@ $("#apConstTable").dataTable();
 
 	function buildDistrictCount(result)
 	{
-
+		$("#tgDistImg").hide();
+		$("#apDistImg").hide();
 		var ApArr= new Array();
 		var TGArr = new Array();
 		for(var i in result)
