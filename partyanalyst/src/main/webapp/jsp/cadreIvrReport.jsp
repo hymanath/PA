@@ -112,14 +112,14 @@ range=$( "#slider" ).slider( "value" );
 				<!-----TS Constituency wise ------>
 				<h4 class="alert alert-info text-center border-radius-0 m-0">AP DISTRICTWISE DETAILS</h4>
 				<div style="overflow: auto; height: 300px ! important;" id="APdistrictableDiv" >
-					<img style="width:20px;" src="./images/icons/search.gif" id="apDistImg" class="offset3"/>
+					<img style="width:20px;margin-top:124px;" src="./images/icons/search.gif" id="apDistImg" class="offset2"/>
 				</div>
 				<!----- /AP Constituency wise ------>
 				
 				<!------AP District wise -------->
 				<h4 class="alert alert-info text-center border-radius-0 m-0">AP CONSTITUENCY WISE DETAILS</h4>
 				<div style="overflow: auto; height: 300px ! important;" id="APconstituencyTableDiv">
-					<img style="width:20px;" src="./images/icons/search.gif" id="apConstImg" class="offset3"/>
+					<img style="width:20px;margin-top:124px;" src="./images/icons/search.gif" id="apConstImg" class="offset2"/>
 				</div>
 				<!------/AP District wise -------->
 			</div>
@@ -134,14 +134,14 @@ range=$( "#slider" ).slider( "value" );
 				<!-----TS Constituency wise ------>
 				<h4 class="alert alert-info text-center border-radius-0 m-0">TG DISTRICT WISE DETAILS</h4>
 				<div style="overflow: auto;height: 300px ! important;" id="TGdistrictableDiv" >
-				<img style="width:20px;" src="./images/icons/search.gif" id="tgDistImg" class="offset3"/>
+				<img style="width:20px;margin-top:124px;" src="./images/icons/search.gif" id="tgDistImg" class="offset2"/>
 				</div>
 				<!-----/TS Constituency wise ------>
 				
 				<!------TS District wise -------->
 				<h4 class="alert alert-info text-center border-radius-0 m-0">TG CONSTITUENCY WISE DETAILS</h4>
 				<div style="overflow: auto; height: 300px ! important;" id="TGconstituencyTableDiv">
-				<img style="width:20px;" src="./images/icons/search.gif"  id="tgConstImg" class="offset3"/>
+				<img style="width:20px;margin-top:124px;" src="./images/icons/search.gif"  id="tgConstImg" class="offset2"/>
 				</div>
 				<!------/TS District wise -------->
 			</div>
