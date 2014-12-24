@@ -68,6 +68,7 @@ import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IZebraPrintDetailsDAO;
 import com.itgrids.partyanalyst.dao.hibernate.UserDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CadreIVRResponseVO;
 import com.itgrids.partyanalyst.dto.CadreIVRVO;
 import com.itgrids.partyanalyst.dto.CadreRegAmountUploadVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
@@ -4277,6 +4278,233 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		return returnList;
 	}
 
+		
+	public CadreIVRResponseVO getTehsilWiseCadreDispatchStatus(Long range){
+		
+		CadreIVRResponseVO responseVo = new CadreIVRResponseVO();
+		try{
+			//0 districtId,1constituencyId,2constituencyName,3tehsilId,4tehsilName,5count,6response key,7districtName
+			List<Object[]> tehsilWiseOptionsCountList = cadreIvrResponseDAO.getTehsilWiseIVRInfo();
+			
+			//0 id,1count
+			List<Object[]> tehsilWiseCountList = cadreIvrResponseDAO.getTehsilWiseIVRTotalCountInfo();
+			
+			//0 districtId,1constituencyId,2constituencyName,localElectionBodyId,4localElectionBodyName,5count,6response key,7districtName
+			List<Object[]> localBdyWiseOptionsCountList = cadreIvrResponseDAO.getLocalBodyWiseIVRInfo();
+			
+			//0 constituencyId,1 localBodyId,2 count
+			List<Object[]> localBdyWiseCountList = cadreIvrResponseDAO.getLocalBodyWiseIVRTotalCountInfo();
+			
+			Map<Long,Long> tehsilWiseCountMap = new HashMap<Long,Long>();//Map<tehsilId,totalCount>
+			Map<Long,Map<Long,Long>> localBdyWiseCountMap = new HashMap<Long,Map<Long,Long>>();//Map<Long,Map<Long,Long>>
+			
+			Map<Long,CadreIVRResponseVO> tehsilWiseAPOptionsCountMap = new HashMap<Long,CadreIVRResponseVO>();
+			Map<Long,Map<Long,CadreIVRResponseVO>> localBdyWiseAPOptionsCountMap = new HashMap<Long,Map<Long,CadreIVRResponseVO>>();
+			
+			Map<Long,CadreIVRResponseVO> tehsilWiseTGOptionsCountMap = new HashMap<Long,CadreIVRResponseVO>();
+			Map<Long,Map<Long,CadreIVRResponseVO>> localBdyWiseTGOptionsCountMap = new HashMap<Long,Map<Long,CadreIVRResponseVO>>();
+			
+			List<CadreIVRResponseVO> apList =new ArrayList<CadreIVRResponseVO>();
+			List<CadreIVRResponseVO> tgList =new ArrayList<CadreIVRResponseVO>();
+			
+			List<CadreIVRResponseVO> apListNew =new ArrayList<CadreIVRResponseVO>();
+			List<CadreIVRResponseVO> tgListNew =new ArrayList<CadreIVRResponseVO>();
+			
+			for(Object[] count:tehsilWiseCountList){
+				tehsilWiseCountMap.put((Long)count[0], (Long)count[1]);
+			}
+			
+			for(Object[] count:localBdyWiseCountList){
+				Map<Long,Long> constituencyMap = localBdyWiseCountMap.get((Long)count[0]);
+				if(constituencyMap == null){
+					constituencyMap = new HashMap<Long,Long>();
+					localBdyWiseCountMap.put((Long)count[0], constituencyMap);
+				}
+				constituencyMap.put((Long)count[1], (Long)count[2]);
+			}
+			
+			populateTehsilData(tehsilWiseOptionsCountList,tehsilWiseAPOptionsCountMap,tehsilWiseTGOptionsCountMap,apList,tgList,tehsilWiseCountMap);
+			
+			populateLocalBdyData(localBdyWiseOptionsCountList,localBdyWiseAPOptionsCountMap,localBdyWiseTGOptionsCountMap,apList,tgList,localBdyWiseCountMap);
+			
+			calculatePerc(apList,range,apListNew);
+			
+			calculatePerc(tgList,range,tgListNew);
+			Collections.sort(apListNew, sort);
+			Collections.sort(tgListNew, sort);
+			responseVo.setApList(apListNew);
+			responseVo.setTgList(tgListNew);
+		}catch(Exception e){
+			LOG.error("Exception rised in getTehsilWiseCadreDispatchStatus() ",e);
+		}
+		return responseVo;
+	}
 	
-		    
+	public void populateTehsilData(List<Object[]> tehsilWiseOptionsCountList,Map<Long,CadreIVRResponseVO> tehsilWiseAPOptionsCountMap,
+			Map<Long,CadreIVRResponseVO> tehsilWiseTGOptionsCountMap,List<CadreIVRResponseVO> apList,List<CadreIVRResponseVO> tgList,
+			Map<Long,Long> tehsilWiseCountMap){
+		for(Object[] count:tehsilWiseOptionsCountList){
+			Map<Long,CadreIVRResponseVO> reqMap = null;
+			List<CadreIVRResponseVO> reqList = null;
+			if(((Long)count[0]).longValue() >10){
+				reqMap = tehsilWiseAPOptionsCountMap;
+				reqList = apList;
+			}else{
+				reqMap = tehsilWiseTGOptionsCountMap;
+				reqList = tgList;
+			}
+			CadreIVRResponseVO tehsilResponseVo = reqMap.get((Long)count[3]);
+			if(tehsilResponseVo == null){
+				tehsilResponseVo = new CadreIVRResponseVO();
+				reqMap.put((Long)count[3],tehsilResponseVo);
+				reqList.add(tehsilResponseVo);
+				tehsilResponseVo.setReceived(0l);
+				tehsilResponseVo.setReceivedPerc(0l);
+				tehsilResponseVo.setNotReceived(0l);
+				tehsilResponseVo.setNotReceivedPerc(0l);
+				tehsilResponseVo.setNotMember(0l);
+				tehsilResponseVo.setNotMemberPerc(0l);
+				tehsilResponseVo.setName(count[4].toString());
+				tehsilResponseVo.setLocationName(count[2].toString());
+				tehsilResponseVo.setAreaName(count[7].toString());
+				tehsilResponseVo.setTotalCalls(tehsilWiseCountMap.get((Long)count[3]));
+			}
+			if(count[6].toString().trim().equalsIgnoreCase("1")){
+				tehsilResponseVo.setReceived((Long)count[5]);
+			}else if(count[6].toString().trim().equalsIgnoreCase("2")){
+				tehsilResponseVo.setNotReceived((Long)count[5]);
+			}else if(count[6].toString().trim().equalsIgnoreCase("3")){
+				tehsilResponseVo.setNotMember((Long)count[5]);
+			}
+		}
+	}
+	
+	public void populateLocalBdyData(List<Object[]> localBdyWiseOptionsCountList,Map<Long,Map<Long,CadreIVRResponseVO>> localBdyWiseAPOptionsCountMap,
+			Map<Long,Map<Long,CadreIVRResponseVO>> localBdyWiseTGOptionsCountMap,List<CadreIVRResponseVO> apList,List<CadreIVRResponseVO> tgList,
+			Map<Long,Map<Long,Long>> localBdyWiseCountMap){
+		for(Object[] count:localBdyWiseOptionsCountList){
+			Map<Long,Map<Long,CadreIVRResponseVO>> reqMap = null;
+			List<CadreIVRResponseVO> reqList = null;
+			if(((Long)count[0]).longValue() >10){
+				reqMap = localBdyWiseAPOptionsCountMap;
+				reqList = apList;
+			}else{
+				reqMap = localBdyWiseTGOptionsCountMap;
+				reqList = tgList;
+			}
+			Map<Long,CadreIVRResponseVO> localBdyResponseMap = reqMap.get((Long)count[1]);
+			if(localBdyResponseMap == null){
+				localBdyResponseMap = new HashMap<Long,CadreIVRResponseVO>();
+				reqMap.put((Long)count[1],localBdyResponseMap);
+			}
+			CadreIVRResponseVO localBdyResponseVo = localBdyResponseMap.get((Long)count[3]);
+			if(localBdyResponseVo == null){
+				localBdyResponseVo = new CadreIVRResponseVO();
+				localBdyResponseMap.put((Long)count[3],localBdyResponseVo);
+				reqList.add(localBdyResponseVo);
+				localBdyResponseVo.setReceived(0l);
+				localBdyResponseVo.setReceivedPerc(0l);
+				localBdyResponseVo.setNotReceived(0l);
+				localBdyResponseVo.setNotReceivedPerc(0l);
+				localBdyResponseVo.setNotMember(0l);
+				localBdyResponseVo.setNotMemberPerc(0l);
+				localBdyResponseVo.setName(count[4].toString());
+				localBdyResponseVo.setLocationName(count[2].toString());
+				localBdyResponseVo.setAreaName(count[7].toString());
+				Map<Long,Long> localBdyWiseCount = localBdyWiseCountMap.get((Long)count[1]);
+				if(localBdyWiseCount != null){
+				   localBdyResponseVo.setTotalCalls(localBdyWiseCount.get((Long)count[3]));
+				}
+			}
+			if(count[6].toString().trim().equalsIgnoreCase("1")){
+				localBdyResponseVo.setReceived((Long)count[5]);
+			}else if(count[6].toString().trim().equalsIgnoreCase("2")){
+				localBdyResponseVo.setNotReceived((Long)count[5]);
+			}else if(count[6].toString().trim().equalsIgnoreCase("3")){
+				localBdyResponseVo.setNotMember((Long)count[5]);
+			}
+		}
+	}
+	
+	public void calculatePerc(List<CadreIVRResponseVO> responseList,Long perc,List<CadreIVRResponseVO> newList){
+		for(CadreIVRResponseVO responseVO:responseList){
+			Long total = responseVO.getReceived()+responseVO.getNotReceived()+responseVO.getNotMember();
+			
+			if(total.longValue() > 0){
+				responseVO.setReceivedPerc((responseVO.getReceived()*100)/total);
+				responseVO.setNotReceivedPerc((responseVO.getNotReceived()*100)/total);
+				responseVO.setNotMemberPerc((responseVO.getNotMember()*100)/total);
+			}
+			if(perc != null){
+				if(responseVO.getNotReceivedPerc().longValue() >= perc.longValue()){
+					newList.add(responseVO);
+				}
+			}else{
+				newList.add(responseVO);
+			}
+		}
+	}
+	
+	public CadreIVRResponseVO getPanchayatWiseCadreDispatchStatus(Long range,String state){
+		CadreIVRResponseVO responseVo = new CadreIVRResponseVO();
+		try{
+			//0panchayatId,1panchayatName,2districtName,3constituencyName,4count,5responseKey
+			List<Object[]> panchayatWiseOptionsCountList = cadreIvrResponseDAO.getPanchayatWiseIVRInfo(state);
+			
+			////0panchayatId,1count
+			List<Object[]> panchayatWiseCountList = cadreIvrResponseDAO.getPanchayatWiseIVRCountInfo(state);
+			
+			Map<Long,CadreIVRResponseVO> panchayatOptionsCountMap = new HashMap<Long,CadreIVRResponseVO>();
+			Map<Long,Long> panchayatWiseCountMap = new HashMap<Long,Long>();
+			List<CadreIVRResponseVO> responseList = new ArrayList<CadreIVRResponseVO>();
+			List<CadreIVRResponseVO> newList = new ArrayList<CadreIVRResponseVO>();
+			
+			for(Object[] count:panchayatWiseCountList){
+				panchayatWiseCountMap.put((Long)count[0], (Long)count[1]);
+			}
+			
+			for(Object[] count:panchayatWiseOptionsCountList){
+				
+				CadreIVRResponseVO panchayatResponseVo = panchayatOptionsCountMap.get((Long)count[0]);
+				if(panchayatResponseVo == null){
+					panchayatResponseVo = new CadreIVRResponseVO();
+					panchayatOptionsCountMap.put((Long)count[0],panchayatResponseVo);
+					responseList.add(panchayatResponseVo);
+					panchayatResponseVo.setReceived(0l);
+					panchayatResponseVo.setReceivedPerc(0l);
+					panchayatResponseVo.setNotReceived(0l);
+					panchayatResponseVo.setNotReceivedPerc(0l);
+					panchayatResponseVo.setNotMember(0l);
+					panchayatResponseVo.setNotMemberPerc(0l);
+					panchayatResponseVo.setName(count[1].toString());
+					panchayatResponseVo.setLocationName(count[3].toString());
+					panchayatResponseVo.setAreaName(count[2].toString());
+					panchayatResponseVo.setTotalCalls(panchayatWiseCountMap.get((Long)count[0]));
+				}
+				if(count[5].toString().trim().equalsIgnoreCase("1")){
+					panchayatResponseVo.setReceived((Long)count[4]);
+				}else if(count[5].toString().trim().equalsIgnoreCase("2")){
+					panchayatResponseVo.setNotReceived((Long)count[4]);
+				}else if(count[5].toString().trim().equalsIgnoreCase("3")){
+					panchayatResponseVo.setNotMember((Long)count[4]);
+				}
+			}
+			
+			calculatePerc(responseList,range,newList);
+			responseVo.setApList(newList);
+			Collections.sort(newList, sort);
+		}catch(Exception e){
+			LOG.error("Exception rised in getPanchayatWiseCadreDispatchStatus() ",e);
+		}
+		return responseVo;
+	}
+	
+	public  Comparator<CadreIVRResponseVO> sort = new Comparator<CadreIVRResponseVO>()
+			 {
+					  
+				  public int compare(CadreIVRResponseVO loc1, CadreIVRResponseVO loc2)
+					{
+					   return (loc2.getNotReceivedPerc().compareTo(loc1.getNotReceivedPerc()));
+					}
+			 };
 }

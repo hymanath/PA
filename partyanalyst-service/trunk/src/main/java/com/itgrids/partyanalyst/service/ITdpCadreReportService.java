@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CadreIVRResponseVO;
 import com.itgrids.partyanalyst.dto.CadreIVRVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
@@ -48,4 +49,7 @@ public interface ITdpCadreReportService {
 	public CadreIVRVO getIvrDashBoardBasicInfo();
 	public List<CadreIVRVO> getIvrDashBoardCounts();
 	public List<CadreIVRVO> getConstituencyWiseIVR();
+	public CadreIVRResponseVO getPanchayatWiseCadreDispatchStatus(Long range,String state);
+	
+	public CadreIVRResponseVO getTehsilWiseCadreDispatchStatus(Long range);
 }
