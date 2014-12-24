@@ -54,7 +54,7 @@
 		<div class="row">
 			<!-----Total In AP & TS ----->
 			<div class="span12" id="APandTsDiv">
-				<img style="width:20px;" src="./images/icons/search.gif" id="ajaxImg" class="offset5"/>
+				<img style="height:77px;width:90px;" src="./images/Loading-data.gif" id="ajaxImg" class="offset5"/>
 			</div>	
 			<!----- /Total In AP & TS ----->
 			
@@ -77,14 +77,14 @@
 				
 				</div>
 				<!-----TS Constituency wise ------>
-				<h4 class="alert alert-info text-center border-radius-0 m-0">CONSTITUENCY WISE DETAILS</h4>
+				<h4 class="alert alert-info text-center border-radius-0 m-0">AP CONSTITUENCY WISE DETAILS</h4>
 				<div style="overflow: auto; height: 300px ! important;" id="APconstituencyTableDiv">
 					
 				</div>
 				<!----- /AP Constituency wise ------>
 				
 				<!------AP District wise -------->
-				<h4 class="alert alert-info text-center border-radius-0 m-0">DISTRICT WISE DETAILS</h4>
+				<h4 class="alert alert-info text-center border-radius-0 m-0">AP DISTRICT WISE DETAILS</h4>
 				<div style="overflow: auto; height: 300px ! important;" id="APdistrictableDiv">
 					
 				</div>
@@ -99,14 +99,14 @@
 				
 				</div>
 				<!-----TS Constituency wise ------>
-				<h4 class="alert alert-info text-center border-radius-0 m-0">CONSTITUENCY WISE DETAILS</h4>
+				<h4 class="alert alert-info text-center border-radius-0 m-0">TG CONSTITUENCY WISE DETAILS</h4>
 				<div style="overflow: auto;height: 300px ! important;" id="TGconstituencyTableDiv">
 					
 				</div>
 				<!-----/TS Constituency wise ------>
 				
 				<!------TS District wise -------->
-				<h4 class="alert alert-info text-center border-radius-0 m-0">DISTRICT WISE DETAILS</h4>
+				<h4 class="alert alert-info text-center border-radius-0 m-0">TG DISTRICT WISE DETAILS</h4>
 				<div style="overflow: auto; height: 300px ! important;" id="TGdistrictableDiv">
 					
 				</div>
