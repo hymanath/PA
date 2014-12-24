@@ -42,7 +42,9 @@
 	.dataTables_filter input{width:100px !important;}
 	  #slider{height:0.4em !important;}
 	  .ui-slider .ui-slider-handle {width:0.5em !important;}
-	
+	.rangeSliderDiv{
+	  margin-top: 10px;
+	}
 	</style>
 </head>
 </head>
@@ -124,14 +126,22 @@ range=$( "#slider" ).slider( "value" );
 				<!------/AP District wise -------->
 				<!------AP Tehsil wise -------->
 				<h4 class="alert alert-info text-center border-radius-0 m-0">AP MANDAL WISE DETAILS</h4>
-				<div style="overflow: auto; height: 300px ! important;" id="APmandalDiv">
-					
+				<div style="overflow: auto; height: 300px ! important;" id="APmandalDiv1">
+					 <div class="rangeSliderDiv" style=" margin-left: 35px;width:400px;">       
+			          <table><tr><td><div id="slider1" style="width:300px;" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a></div></td><td><input type="button"  class="btn btn-success" onclick="getCandidateDataCollectionInfo('amount1','mandal','AP');" value="Get"/></td></tr></table>
+			          <span  id="amount1" key="0" readonly style="border: 0; color: #f6931f; font-weight: bold;background-color:#ffffff;" />
+		             </div>
+					 <div id="APmandalDiv"></div>
 				</div>
 				<!------/AP Tehsil wise -------->
 				<!------AP Panchayat wise -------->
 				<h4 class="alert alert-info text-center border-radius-0 m-0">AP PANCHAYAT WISE DETAILS</h4>
-				<div style="overflow: auto; height: 300px ! important;" id="APpanchayatDiv">
-					
+				<div style="overflow: auto; height: 300px ! important;" id="APpanchayatDiv1">
+					<div class="rangeSliderDiv" style=" margin-left: 35px;width:400px;">       
+			          <table><tr><td><div id="slider2" style="width:300px;" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a></div></td><td><input type="button"  class="btn btn-success" onclick="getCandidateDataCollectionInfo('amount2','panchayat','AP');" value="Get"/></td></tr></table>
+			          <span id="amount2" key="0" readonly style="border: 0; color: #f6931f; font-weight: bold;background-color:#ffffff;" />
+		             </div>
+					 <div id="APpanchayatDiv"></div>
 				</div>
 				<!------/AP Panchayat wise -------->
 			</div>
@@ -158,15 +168,23 @@ range=$( "#slider" ).slider( "value" );
 				<!------/TS District wise -------->
 				<!-----TS Constituency wise ------>
 				<h4 class="alert alert-info text-center border-radius-0 m-0">TG MANDAL WISE DETAILS</h4>
-				<div style="overflow: auto;height: 300px ! important;" id="TGmandalTableDiv">
-					
+				<div style="overflow: auto;height: 300px ! important;" id="TGmandalTableDiv1">
+					<div class="rangeSliderDiv" style=" margin-left: 35px;width:400px;">       
+			          <table><tr><td><div id="slider3" style="width:300px;" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a></div></td><td><input type="button"  class="btn btn-success" onclick="getCandidateDataCollectionInfo('amount3','mandal','TG');" value="Get"/></td></tr></table>
+			          <span id="amount3" key="0" readonly style="border: 0; color: #f6931f; font-weight: bold;background-color:#ffffff;" />
+		             </div>
+					 <div id="TGmandalTableDiv"></div>
 				</div>
 				<!-----/TS Constituency wise ------>
 				
 				<!------TS District wise -------->
 				<h4 class="alert alert-info text-center border-radius-0 m-0">TG PANCHAYAT WISE DETAILS</h4>
-				<div style="overflow: auto; height: 300px ! important;" id="TGpanchayattableDiv">
-					
+				<div style="overflow: auto; height: 300px ! important;" id="TGpanchayattableDiv1">
+					<div class="rangeSliderDiv" style=" margin-left: 35px;width:400px;">       
+			          <table><tr><td><div id="slider4" style="width:300px;" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a></div></td><td><input type="button"  class="btn btn-success" onclick="getCandidateDataCollectionInfo('amount4','panchayat','TG');" value="Get"/></td></tr></table>
+			          <span id="amount4" key="0" readonly style="border: 0; color: #f6931f; font-weight: bold;background-color:#ffffff;" />
+		             </div>
+					 <div id="TGpanchayattableDiv"></div>
 				</div>
 				<!------/TS District wise -------->
 			</div>
@@ -661,11 +679,14 @@ function dynamicSort(property){
 		});
 	}
 	
-	function getTehsilWiseIVRCount(range)
+	function getTehsilWiseIVRCount(range,reqtype)
 	{
-	  $("#APmandalDiv").html('<img style="width:20px;" src="./images/icons/search.gif" class="offset3"/>');
-	  $("#TGmandalTableDiv").html('<img style="width:20px;" src="./images/icons/search.gif" class="offset3"/>');
-	  
+	  if(reqtype == "AP" || reqtype == "both"){
+	     $("#APmandalDiv").html('<img style="width:20px;" src="./images/icons/search.gif" class="offset3"/>');
+	  }
+	  if(reqtype == "TG" || reqtype == "both"){
+	    $("#TGmandalTableDiv").html('<img style="width:20px;" src="./images/icons/search.gif" class="offset3"/>');
+	  }
 		var jsObj = {	
 		range:range             
 		}
@@ -676,11 +697,11 @@ function dynamicSort(property){
 			data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
 			
-			buildTehsilWiseIVRCount(result);
+			buildTehsilWiseIVRCount(result,reqtype);
 		});
 	}
 	
-	function buildTehsilWiseIVRCount(result)
+	function buildTehsilWiseIVRCount(result,reqtype)
 	{
 		var ApArr = result.apList;
 		var TGArr = result.tgList;
@@ -714,14 +735,16 @@ function dynamicSort(property){
 	
 		 str+='</tbody>';
 		 str+='</table>';
-		 $("#APmandalDiv").html(str);
-		$("#APmandalTable").dataTable({
+		 if(reqtype == "AP" || reqtype == "both"){
+		   $("#APmandalDiv").html(str);
+		   $("#APmandalTable").dataTable({
 					aLengthMenu: [
 						[25, 50, 100, 200, -1],
 						[25, 50, 100, 200, "All"]
 					],
 					iDisplayLength: -1
 				});
+		}
  	var str1 ='';
 		str1+='<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 " id="TGmandalTable">';
 		str1+='<thead class="alert-info">';
@@ -752,6 +775,7 @@ function dynamicSort(property){
 
 		str1+='</tbody>';
 		str1+='</table>';
+		if(reqtype == "TG" || reqtype == "both"){
 		 $("#TGmandalTableDiv").html(str1);
 	     $("#TGmandalTable").dataTable({
 					aLengthMenu: [
@@ -760,6 +784,7 @@ function dynamicSort(property){
 					],
 					iDisplayLength: -1
 				});
+		}
 	}
 	function buildPanchayatWiseIVRCount(result,state)
 	{
@@ -818,6 +843,27 @@ function dynamicSort(property){
 				});
 		 }
 	}
+	function getCandidateDataCollectionInfo(id,type,state){
+	var perc = $("#"+id).attr("key");
+      var reqid="APmandalDiv";	
+	if(id == "amount1"){
+	   reqid="APmandalDiv";
+	}else if(id == "amount2"){
+	  reqid="APpanchayatDiv";
+	}else if(id == "amount3"){
+	  reqid="TGmandalTableDiv";
+	}else if(id == "amount4"){
+	  reqid="TGpanchayattableDiv";
+	}
+ 
+     if(type == "panchayat"){
+	     getPanchayatWiseIVRCount(perc,state);
+	 }else{
+	    getTehsilWiseIVRCount(perc,state);
+	 }
+ 
+ 
+	}
 </script>
 <script>
 
@@ -825,7 +871,68 @@ getIvrBasicCount();
 getConstituencyWiseIVRCount();
 getPanchayatWiseIVRCount(0,"AP");
 getPanchayatWiseIVRCount(0,"TG");
-getTehsilWiseIVRCount(0);
+getTehsilWiseIVRCount(0,"both");
 </script>
+<script>
+var range;
+
+$( "#slider1" ).slider({
+value:1,
+min: 0,
+max: 100,
+step: 1,
+slide: function( event, ui ) {
+$( "#amount1" ).html( "Percentage : " + ui.value +" %");
+$( "#amount1").attr("key",ui.value);
+},
+change: function( event, ui ) {
+
+}
+});
+$( "#slider2" ).slider({
+value:1,
+min: 0,
+max: 100,
+step: 1,
+slide: function( event, ui ) {
+$( "#amount2" ).html( "Percentage : " + ui.value +" %");
+$( "#amount2").attr("key",ui.value);
+},
+change: function( event, ui ) {
+
+}
+});
+$( "#slider3" ).slider({
+value:1,
+min: 0,
+max: 100,
+step: 1,
+slide: function( event, ui ) {
+$( "#amount3" ).html( "Percentage : " + ui.value +" %");
+$( "#amount3").attr("key",ui.value);
+},
+change: function( event, ui ) {
+
+}
+});
+$( "#slider4" ).slider({
+value:1,
+min: 0,
+max: 100,
+step: 1,
+slide: function( event, ui ) {
+$( "#amount4").html( "Percentage : " + ui.value +" %");
+$( "#amount4").attr("key",ui.value);
+},
+change: function( event, ui ) {
+
+}
+});
+$( "#amount1" ).html( "Percentage : 0 %");
+$( "#amount2" ).html( "Percentage : 0 %");
+$( "#amount3" ).html( "Percentage : 0 %");
+$( "#amount4" ).html( "Percentage : 0 %");
+</script>
+
 </body>
 </html>
