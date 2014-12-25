@@ -527,12 +527,20 @@ $("#constituencyId").css("display","block");
 		str+='<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 " id="apConstTable">';
 		str+='<thead class="alert-info">';
 		str+='<tr>';
-		str+='<th>Constituency Name</th>';
-		str+='<th>No of members registered</th>';
-		str+='<th>IVR Calls </th>';
-		str+='<th>Cards Received </th>';
-		str+='<th>Cards Not Received </th>';
-		str+='<th>Not Registered Members </th>';
+		str+='<th rowspan="2">Constituency Name</th>';
+		str+='<th rowspan="2">No of members registered</th>';
+		str+='<th rowspan="2">IVR Calls </th>';
+		str+='<th colspan="2">Cards Received </th>';
+		str+='<th colspan="2">Cards Not Received </th>';
+		str+='<th colspan="2">Not Registered Members </th>';
+		str+='</tr>';
+		str+='<tr>';
+		str+='<th>Count</th>';
+		str+='<th>%</th>';
+		str+='<th>Count</th>';
+		str+='<th>%</th>';
+		str+='<th>Count</th>';
+		str+='<th>%</th>';
 		str+='</tr>';
 		str+='</thead>';
 		str+='<tbody>';
@@ -541,7 +549,13 @@ $("#constituencyId").css("display","block");
 			{
 				if(ApArr[j].apCount == null)
 					ApArr[j].apCount =0;
-			str+='<tr><td>'+ApArr[j].name+'</td><td>'+ApArr[j].apCount+'</td><td>'+ApArr[j].responseCnt+'</td><td>'+ApArr[j].received+'</td><td>'+ApArr[j].notReceived+'</td><td>'+ApArr[j].notRegistered+'</td></tr>';
+				if(ApArr[j].receivedPerc == null)
+				ApArr[j].receivedPerc = 0.0;
+				if(ApArr[j].notReceived == null)
+				ApArr[j].notReceived = 0.0;
+				if(ApArr[j].notMemberPerc == null)
+				ApArr[j].notMemberPerc = 0.0;
+			str+='<tr><td>'+ApArr[j].name+'</td><td>'+ApArr[j].apCount+'</td><td>'+ApArr[j].responseCnt+'</td><td>'+ApArr[j].received+'</td><td>'+ApArr[j].receivedPerc+'</td><td>'+ApArr[j].notReceived+'</td><td>'+ApArr[j].notReceivedPerc+'</td><td>'+ApArr[j].notRegistered+'</td><td>'+ApArr[j].notMemberPerc+'</td></tr>';
 			}
 	
  str+='</tbody>';
@@ -552,12 +566,20 @@ $("#apConstTable").dataTable();
 		str1+='<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 " id="tgConstTable">';
 		str1+='<thead class="alert-info">';
 		str1+='<tr>';
-		str1+='<th>Constituency Name</th>';
-		str1+='<th>No of members registered</th>';
-		str1+='<th>IVR Calls </th>';
-		str1+='<th>Cards Received </th>';
-		str1+='<th>Cards Not Received </th>';
-		str1+='<th>Not Registered Members </th>';
+		str1+='<th rowspan="2">Constituency Name</th>';
+		str1+='<th rowspan="2">No of members registered</th>';
+		str1+='<th rowspan="2">IVR Calls </th>';
+		str1+='<th colspan="2">Cards Received </th>';
+		str1+='<th colspan="2">Cards Not Received </th>';
+		str1+='<th colspan="2">Not Registered Members </th>';
+		str1+='</tr>';
+		str1+='<tr>';
+		str1+='<th>Count</th>';
+		str1+='<th>%</th>';
+		str1+='<th>Count</th>';
+		str1+='<th>%</th>';
+		str1+='<th>Count</th>';
+		str1+='<th>%</th>';
 		str1+='</tr>';
 		str1+='</thead>';
 		str1+='<tbody>';
@@ -566,7 +588,13 @@ $("#apConstTable").dataTable();
 			{
 				if(TGArr[j].apCount == null)
 					TGArr[j].apCount =0;
-			str1+='<tr><td>'+TGArr[j].name+'</td><td>'+TGArr[j].apCount+'</td><td>'+TGArr[j].responseCnt+'</td><td>'+TGArr[j].received+'</td><td>'+TGArr[j].notReceived+'</td><td>'+TGArr[j].notRegistered+'</td></tr>';
+				if(TGArr[j].receivedPerc == null)
+				TGArr[j].receivedPerc = 0.0;
+				if(TGArr[j].notReceived == null)
+				TGArr[j].notReceived = 0.0;
+				if(TGArr[j].notMemberPerc == null)
+				TGArr[j].notMemberPerc = 0.0;
+			str1+='<tr><td>'+TGArr[j].name+'</td><td>'+TGArr[j].apCount+'</td><td>'+TGArr[j].responseCnt+'</td><td>'+TGArr[j].received+'</td><td>'+TGArr[j].receivedPerc+'</td><td>'+TGArr[j].notReceived+'</td><td>'+TGArr[j].notReceivedPerc+'</td><td>'+TGArr[j].notRegistered+'</td><td>'+TGArr[j].notMemberPerc+'</td></tr>';
 			}
 
 		str1+='</tbody>';
@@ -599,20 +627,34 @@ $("#apConstTable").dataTable();
 		str+='<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 " id="apDistTable">';
 		str+='<thead class="alert-info">';
 		str+='<tr>';
-		str+='<th>District Name</th>';
-		str+='<th>No of members registered</th>';
-		str+='<th>IVR Calls </th>';
-		str+='<th>Cards Received </th>';
-		str+='<th>Cards Not Received </th>';
-		str+='<th>Not Registered Members </th>';
+		str+='<th rowspan="2">District Name</th>';
+		str+='<th rowspan="2">No of members registered</th>';
+		str+='<th rowspan="2">IVR Calls </th>';
+		str+='<th colspan="2">Cards Received </th>';
+		str+='<th colspan="2">Cards Not Received </th>';
+		str+='<th colspan="2">Not Registered Members </th>';
+		str+='</tr>';
+		str+='<tr>';
+		str+='<th>Count</th>';
+		str+='<th>%</th>';
+		str+='<th>Count</th>';
+		str+='<th>%</th>';
+		str+='<th>Count</th>';
+		str+='<th>%</th>';
 		str+='</tr>';
 		str+='</thead>';
 		str+='<tbody>';
-		for(var i in ApArr)
+		for(var j in ApArr)
 		{
-			if(ApArr[i].apCount == null)
-				ApArr[i].apCount =0;
-			str+='<tr><td>'+ApArr[i].name+'</td><td>'+ApArr[i].apCount+'</td><td>'+ApArr[i].responseCnt+'</td><td>'+ApArr[i].received+'</td><td>'+ApArr[i].notReceived+'</td><td>'+ApArr[i].notRegistered+'</td></tr>';
+			if(ApArr[j].apCount == null)
+					ApArr[j].apCount =0;
+				if(ApArr[j].receivedPerc == null)
+				ApArr[j].receivedPerc = 0.0;
+				if(ApArr[j].notReceived == null)
+				ApArr[j].notReceived = 0.0;
+				if(ApArr[j].notMemberPerc == null)
+				ApArr[j].notMemberPerc = 0.0;
+			str+='<tr><td>'+ApArr[j].name+'</td><td>'+ApArr[j].apCount+'</td><td>'+ApArr[j].responseCnt+'</td><td>'+ApArr[j].received+'</td><td>'+ApArr[j].receivedPerc+'</td><td>'+ApArr[j].notReceived+'</td><td>'+ApArr[j].notReceivedPerc+'</td><td>'+ApArr[j].notRegistered+'</td><td>'+ApArr[j].notMemberPerc+'</td></tr>';
 		
 		}
  str+='</tbody>';
@@ -624,20 +666,34 @@ $("#apConstTable").dataTable();
 		str1+='<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 " id="tgDistTable">';
 		str1+='<thead class="alert-info">';
 		str1+='<tr>';
-		str1+='<th>District Name</th>';
-		str1+='<th>No of members registered</th>';
-		str1+='<th>IVR Calls </th>';
-		str1+='<th>Cards Received </th>';
-		str1+='<th>Cards Not Received </th>';
-		str1+='<th>Not Registered Members </th>';
+		str1+='<th rowspan="2">District Name</th>';
+		str1+='<th rowspan="2">No of members registered</th>';
+		str1+='<th rowspan="2">IVR Calls </th>';
+		str1+='<th colspan="2">Cards Received </th>';
+		str1+='<th colspan="2">Cards Not Received </th>';
+		str1+='<th colspan="2">Not Registered Members </th>';
+		str1+='</tr>';
+		str1+='<tr>';
+		str1+='<th>Count</th>';
+		str1+='<th>%</th>';
+		str1+='<th>Count</th>';
+		str1+='<th>%</th>';
+		str1+='<th>Count</th>';
+		str1+='<th>%</th>';
 		str1+='</tr>';
 		str1+='</thead>';
 		str1+='<tbody>';
-		for(var i in TGArr)
+		for(var j in TGArr)
 		{
-			if(TGArr[i].apCount == null)
-				TGArr[i].apCount =0;
-		str1+='<tr><td>'+TGArr[i].name+'</td><td>'+TGArr[i].apCount+'</td><td>'+TGArr[i].responseCnt+'</td><td>'+TGArr[i].received+'</td><td>'+TGArr[i].notReceived+'</td><td>'+TGArr[i].notRegistered+'</td></tr>';
+			if(TGArr[j].apCount == null)
+					TGArr[j].apCount =0;
+				if(TGArr[j].receivedPerc == null)
+				TGArr[j].receivedPerc = 0.0;
+				if(TGArr[j].notReceived == null)
+				TGArr[j].notReceived = 0.0;
+				if(TGArr[j].notMemberPerc == null)
+				TGArr[j].notMemberPerc = 0.0;
+			str1+='<tr><td>'+TGArr[j].name+'</td><td>'+TGArr[j].apCount+'</td><td>'+TGArr[j].responseCnt+'</td><td>'+TGArr[j].received+'</td><td>'+TGArr[j].receivedPerc+'</td><td>'+TGArr[j].notReceived+'</td><td>'+TGArr[j].notReceivedPerc+'</td><td>'+TGArr[j].notRegistered+'</td><td>'+TGArr[j].notMemberPerc+'</td></tr>';
 		}
 		str1+='</tbody>';
 		str1+='</table>';
