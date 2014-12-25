@@ -112,7 +112,7 @@ range=$( "#slider" ).slider( "value" );
 				
 				</div>
 				<!-----TS Constituency wise ------>
-				<h4 class="alert alert-info text-center border-radius-0 m-0">AP DISTRICTWISE DETAILS</h4>
+				<h4 class="alert alert-info text-center border-radius-0 m-0">AP DISTRICT WISE DETAILS</h4>
 				<div style="overflow: auto; height: 300px ! important;" id="APdistrictableDiv" >
 					<img style="width:20px;" src="./images/icons/search.gif" id="apDistImg" class="offset3"/>
 				</div>
@@ -154,20 +154,20 @@ range=$( "#slider" ).slider( "value" );
 				
 				</div>
 				<!-----TS Constituency wise ------>
-				<h4 class="alert alert-info text-center border-radius-0 m-0">TG DISTRICT WISE DETAILS</h4>
+				<h4 class="alert alert-info text-center border-radius-0 m-0">TS DISTRICT WISE DETAILS</h4>
 				<div style="overflow: auto;height: 300px ! important;" id="TGdistrictableDiv" >
 				<img style="width:20px;" src="./images/icons/search.gif" id="tgDistImg" class="offset3"/>
 				</div>
 				<!-----/TS Constituency wise ------>
 				
 				<!------TS District wise -------->
-				<h4 class="alert alert-info text-center border-radius-0 m-0">TG CONSTITUENCY WISE DETAILS</h4>
+				<h4 class="alert alert-info text-center border-radius-0 m-0">TS CONSTITUENCY WISE DETAILS</h4>
 				<div style="overflow: auto; height: 300px ! important;" id="TGconstituencyTableDiv">
 				<img style="width:20px;" src="./images/icons/search.gif"  id="tgConstImg" class="offset3"/>
 				</div>
 				<!------/TS District wise -------->
 				<!-----TS Constituency wise ------>
-				<h4 class="alert alert-info text-center border-radius-0 m-0">TG MANDAL WISE DETAILS</h4>
+				<h4 class="alert alert-info text-center border-radius-0 m-0">TS MANDAL WISE DETAILS</h4>
 				<div style="overflow: auto;height: 300px ! important;" id="TGmandalTableDiv1">
 					<div class="rangeSliderDiv" style=" margin-left: 35px;width:400px;">       
 			          <table><tr><td><div id="slider3" style="width:300px;" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a></div></td><td><input type="button"  class="btn btn-success" onclick="getCandidateDataCollectionInfo('amount3','mandal','TG');" value="Get"/></td></tr></table>
@@ -178,7 +178,7 @@ range=$( "#slider" ).slider( "value" );
 				<!-----/TS Constituency wise ------>
 				
 				<!------TS District wise -------->
-				<h4 class="alert alert-info text-center border-radius-0 m-0">TG PANCHAYAT WISE DETAILS</h4>
+				<h4 class="alert alert-info text-center border-radius-0 m-0">TS PANCHAYAT WISE DETAILS</h4>
 				<div style="overflow: auto; height: 300px ! important;" id="TGpanchayattableDiv1">
 					<div class="rangeSliderDiv" style=" margin-left: 35px;width:400px;">       
 			          <table><tr><td><div id="slider4" style="width:300px;" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a></div></td><td><input type="button"  class="btn btn-success" onclick="getCandidateDataCollectionInfo('amount4','panchayat','TG');" value="Get"/></td></tr></table>
@@ -395,6 +395,7 @@ $("#constituencyId").css("display","block");
 		var totalInfo = result[2];
 		var totalRegistered = basicInfo.apCount + basicInfo.tgCount;
 		var pending  = totalRegistered - basicInfo.printingCompleted;
+		var ivrError = (totalInfo.apCount + totalInfo.tgCount) - (totalInfo.responseCnt + totalInfo.tgResponseCnt);
 		str+='<table class="table table-bordered border-radius-0 mb-0 table-hover">';
 		str+='<tr>';
 		str+='<td>';
@@ -404,7 +405,7 @@ $("#constituencyId").css("display","block");
 		str+='<td><h2 id="printedId">'+basicInfo.printingCompleted+'</h2><p>Cards <b>Printed</b> <br><span class="text-red" id="pendingId">'+pending+'</span> Pending</p>';
 		str+='<hr style="margin-top: 0px; margin-bottom: 0px;" id="readyIvrId"> Ready For IVR calls '+basicInfo.ivrReady+'</td>';
 		str+='<td><h5 class="mb-0" id="totalIvrId"> '+(totalInfo.apCount + totalInfo.tgCount)+'<br><small>Dialed IVR Calls</small></h5>';
-		str+='<hr style="margin-top: 0px; margin-bottom: 0px;"><h2 class="m-0" id="answerIvrId">'+(totalInfo.responseCnt + totalInfo.tgResponseCnt)+'</h2><p class="mb-0"><b>IVR</b> Calls<span class="text-success"> Answered </span></p><hr style="margin-top: 0px; margin-bottom: 0px;"> <span class="text-error">IVR Errors- </span><p></p></td>';
+		str+='<hr style="margin-top: 0px; margin-bottom: 0px;"><h2 class="m-0" id="answerIvrId">'+(totalInfo.responseCnt + totalInfo.tgResponseCnt)+'</h2><p class="mb-0"><b>IVR</b> Calls<span class="text-success"> Answered </span></p><hr style="margin-top: 0px; margin-bottom: 0px;"> <span class="text-error">IVR Errors- </span><p>'+ivrError+'</p></td>';
 		str+='<td><h2 id="receivedId">'+(totalInfo.received + totalInfo.tgReceived)+'</h2><p>Cards  <span class="text-orange">Received</span></p></td>	';
 		str+='<td><h2 id="notreceivedId">'+(totalInfo.notReceived + totalInfo.tgnotReceived)+'</h2><p>Cards  <span class="text-orange">Not Received</span></p></td>';	
 		str+='<td><h2 id="notRegisteredId">'+(totalInfo.notRegistered + totalInfo.tgnotRegistered)+'</h2><p>Not Registered Member Phone Numbers</p></td>	';
@@ -429,7 +430,7 @@ $("#constituencyId").css("display","block");
 		str2+='<table class="table table-bordered border-radius-0 mb-0 table-striped">';
 		str2+='<tr class="alert alert-success">';
 		str2+='<td colspan="4">';
-		str2+='<h4 >Today TG IVR Calls Answered <span class="pull-right">'+todayInfo.tgResponseCnt +'</span></h4>';	
+		str2+='<h4 >Today TS IVR Calls Answered <span class="pull-right">'+todayInfo.tgResponseCnt +'</span></h4>';	
 		str2+='</td>';
 		str2+='</tr>';
 		str2+='<tr>';
@@ -462,7 +463,7 @@ $("#constituencyId").css("display","block");
 		str4+='<tr class="alert alert-success">';
 		str4+='<td rowspan="4" style="text-align: center;">';
 		str4+='<img style="width:70px" src="./images/TS.png">';
-		str4+='<h4 >Total In TG <br>'+basicInfo.tgCount+' <br><small>Members Registered </small> <hr style="margin-top: 5px; margin-bottom: 5px;">IVR Calls<br>'+totalInfo.tgResponseCnt+'  <br><small>Answered</small>	</h4>';
+		str4+='<h4 >Total In TS <br>'+basicInfo.tgCount+' <br><small>Members Registered </small> <hr style="margin-top: 5px; margin-bottom: 5px;">IVR Calls<br>'+totalInfo.tgResponseCnt+'  <br><small>Answered</small>	</h4>';
 		str4+='</td>';
 		str4+='</tr>';
 		str4+='<tr>';
