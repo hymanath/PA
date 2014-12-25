@@ -130,7 +130,7 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 	public List<Object[]> getLocalBodyWiseIVRInfo(){
 		//0 districtId,1constituencyId,2constituencyName,localElectionBodyId,4localElectionBodyName,5count,6response key,7districtName
 		Query query = getSession().createQuery("select model.userAddress.district.districtId,model.userAddress.constituency.constituencyId,model.userAddress.constituency.name,model.userAddress.localElectionBody.localElectionBodyId," +
-				" concat(model.userAddress.localElectionBody.name,' model.userAddress.localElectionBody.electionType.electionType'),count(*),model.responseKey,model.userAddress.district.districtName from  CadreIvrResponse model where model.isDeleted = 'N' and " +
+				" concat(model.userAddress.localElectionBody.name, model.userAddress.localElectionBody.electionType.electionType),count(*),model.responseKey,model.userAddress.district.districtName from  CadreIvrResponse model where model.isDeleted = 'N' and " +
 				" model.userAddress.localElectionBody.localElectionBodyId is not null and model.responseKey is not null group by model.userAddress.constituency.constituencyId,model.userAddress.localElectionBody.localElectionBodyId,model.responseKey ");
 		
 		return query.list();
