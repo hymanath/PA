@@ -38,11 +38,52 @@ public class CadreIVRVO implements Serializable, Comparable<CadreIVRVO>{
 	private Long tgnotReceived = 0l;
 	private Long tgnotRegistered = 0l;
 	private Long tgResponseCnt = 0l;
+	private Double receivedPerc;
+	private Double notReceivedPerc;
+	private Double notMemberPerc;
+	private Double reponsePerc;
+	
+	
 	public CadreIVRVO()
 	{
 		
 	}
-	public Long getTgtotal() {
+	
+	
+	public Double getReponsePerc() {
+		return reponsePerc;
+	}
+
+
+	public void setReponsePerc(Double reponsePerc) {
+		this.reponsePerc = reponsePerc;
+	}
+
+
+	public Double getReceivedPerc() {
+		return receivedPerc;
+	}
+
+   public void setReceivedPerc(Double receivedPerc) {
+		this.receivedPerc = receivedPerc;
+	}
+
+   public Double getNotReceivedPerc() {
+		return notReceivedPerc;
+	}
+
+   public void setNotReceivedPerc(Double notReceivedPerc) {
+		this.notReceivedPerc = notReceivedPerc;
+	}
+
+   public Double getNotMemberPerc() {
+		return notMemberPerc;
+	}
+
+   public void setNotMemberPerc(Double notMemberPerc) {
+		this.notMemberPerc = notMemberPerc;
+	}
+   public Long getTgtotal() {
 		return tgtotal;
 	}
 	public void setTgtotal(Long tgtotal) {

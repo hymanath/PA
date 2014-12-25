@@ -4256,17 +4256,35 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					for(Long id : constituencyMap.keySet())
 					{
 						CadreIVRVO vo = constituencyMap.get(id);
+						
 						vo.setResponseCnt(vo.getReceived() + vo.getNotRegistered() + vo.getNotReceived());
 						vo.setApCount(constiRegCntMap.get(id));
+						if(vo.getResponseCnt() > 0)
+						{
+							vo.setReceivedPerc(new BigDecimal((vo.getReceived()*100/vo.getResponseCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							vo.setNotReceivedPerc(new BigDecimal((vo.getNotReceived()*100/vo.getResponseCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							vo.setNotMemberPerc(new BigDecimal((vo.getNotRegistered()*100/vo.getResponseCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						}
+						if(vo.getTotal() > 0)
+						vo.setReponsePerc(new BigDecimal((vo.getResponseCnt()*100/vo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 						districtVo.setTotal(districtVo.getTotal() + vo.getTotal());
 						districtVo.setReceived(districtVo.getReceived() + vo.getReceived());
 						districtVo.setNotReceived(districtVo.getNotReceived() + vo.getNotReceived());
 						districtVo.setNotRegistered(districtVo.getNotRegistered() + vo.getNotRegistered());
 						constituencyList.add(vo);
 					}
-					
+				
+				
 					districtVo.setSubList(constituencyList);
 					districtVo.setResponseCnt(districtVo.getReceived() + districtVo.getNotRegistered() + districtVo.getNotReceived());
+					if(districtVo.getResponseCnt() > 0)
+					{
+						districtVo.setReceivedPerc(new BigDecimal((districtVo.getReceived()*100/districtVo.getResponseCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						districtVo.setNotReceivedPerc(new BigDecimal((districtVo.getNotReceived()*100/districtVo.getResponseCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						districtVo.setNotMemberPerc(new BigDecimal((districtVo.getNotRegistered()*100/districtVo.getResponseCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+					}
+					if(districtVo.getTotal() > 0)
+					districtVo.setReponsePerc(new BigDecimal((districtVo.getResponseCnt()*100/districtVo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 				returnList.add(districtVo);
 			}
 		}
