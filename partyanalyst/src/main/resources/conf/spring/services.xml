@@ -1404,7 +1404,7 @@
 	  	<property name="targetMethod" value="runSriSch" /> 
 	</bean>	
 	
-	 -->
+	
 	 <bean name="schForSri" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="schForSriScheduler" />
     	<property name="cronExpression" value="0 30 0 * * ?" />
@@ -1448,7 +1448,7 @@
   		<property name="targetObject" ref="scheduler" />
 	  	<property name="targetMethod" value="runSriSch4" /> 
 	</bean>		
-	
+	 -->
 	<bean name="everyDayBatchJobForInsertCaste" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
 	  	<property name="targetMethod" value="runTheBatchJobForInsertCasteForEveryDay" />
@@ -1508,11 +1508,11 @@
 			<ref bean="cronTriggerForEveryDayJobTosendSmsToMobileAppUsers" />
 			<ref bean="cronTriggerForeveryDayBatchJobForPopulateVoterData" />
 			<ref bean="insertTriggerForEveryDayMobiles" />
-			<ref bean="schForSri" /> 
+			<!--<ref bean="schForSri" /> 
 			<ref bean="schForSri1" />
 			<ref bean="schForSri2" />
 			<ref bean="schForSri3" />
-			<ref bean="schForSri4" />
+			<ref bean="schForSri4" />-->
 			<!--<ref bean="schedularForCardPrintDataFilling" />
 			<ref bean="runTheBatchJobForEveryDayCardDataInsertForMax" />
 			<ref bean="runTheBatchJobForEveryDayCardDataInsertForZebra" />
