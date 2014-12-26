@@ -657,10 +657,11 @@ public class WebServiceHandler2 {
 	}
 	
 	@POST
-	@Path("/searchTdpCadreDetailsBySearchCriteria")
+	@Path("/searchTdpCadreDetailsBySearchCriteria/{constituencyId}/{name}/{memberShipCardNo}/{voterCardNo}/{refNo}/{mobileNo}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Object searchTdpCadreDetailsBySearchCriteria(Long constituencyId,String name,String memberShipCardNo, String voterCardNo, String refNo, String mobileNo)
+	public Object searchTdpCadreDetailsBySearchCriteria(@PathParam("constituencyId") String constituencyId,@PathParam("name") String name,
+			@PathParam("memberShipCardNo") String memberShipCardNo,@PathParam("voterCardNo") String voterCardNo, @PathParam("refNo")String refNo,@PathParam("mobileNo") String mobileNo)
 	{
 		try{			
 			return webServiceHandlerService1.searchTdpCadreDetailsBySearchCriteria(constituencyId,name,memberShipCardNo,voterCardNo,refNo,mobileNo);			
