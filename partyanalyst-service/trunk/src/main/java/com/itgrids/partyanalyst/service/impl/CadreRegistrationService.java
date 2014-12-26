@@ -88,8 +88,8 @@ import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVerifiedDataRequestDAO;
 import com.itgrids.partyanalyst.dao.IVerifiedDataResponseDAO;
-import com.itgrids.partyanalyst.dao.IVerifyAccessUsersDAO;
 import com.itgrids.partyanalyst.dao.IVerifiedDataStatusDAO;
+import com.itgrids.partyanalyst.dao.IVerifyAccessUsersDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterNamesDAO;
 import com.itgrids.partyanalyst.dao.IVoterRelationDAO;
@@ -127,6 +127,7 @@ import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Hamlet;
+import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.SmsJobStatus;
 import com.itgrids.partyanalyst.model.TabRecordsStatus;
 import com.itgrids.partyanalyst.model.TabUserKeys;
@@ -6339,36 +6340,46 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						cadreVO.setTrNo(cadre[5] != null ? cadre[5].toString():"");
 						cadreVO.setMobileNo(cadre[6] != null ? cadre[6].toString():"");
 						cadreVO.setImageURL(cadre[7] != null ? cadre[7].toString():"");
-						cadreVO.setVoterCardNo(cadre[8] != null ? cadre[8].toString():"");
+						//cadreVO.setVoterCardNo(cadre[8] != null ? cadre[8].toString():"");
+
+						if(cadre[12] != null && cadre[12].toString().trim().length()>0) 
+						{
+							Voter voter = voterDAO.get(cadre[12] != null ? Long.valueOf(cadre[12].toString().trim()):0L);
+							if(voter != null)
+							{
+								cadreVO.setAge(voter.getAge());
+								cadreVO.setVoterCardNo(voter.getVoterIDCardNo() != null ? voter.getVoterIDCardNo().toString():"");
+							}						
+						}
+						if(cadre[13] != null && cadre[13].toString().trim().length()>0) 
+						{
+							Occupation occupation = occupationDAO.get(cadre[13] != null ? Long.valueOf(cadre[13].toString().trim()):0L);
+							if(occupation != null)
+							{
+								cadreVO.setOccupation(occupation.getOccupation());
+							}						
+						}
 						
 						if(cadre[9] != null)
 						{
 							cadreVO.setAge(cadre[9] != null ? Long.valueOf(cadre[9].toString().trim()):0L);
 						}
-						else 
+						else if((cadreVO.getAge() == null || cadreVO.getAge().toString().trim().length()<=0) && cadre[10]  != null)
 						{
-							Voter voter = voterDAO.get(cadre[11] != null ? Long.valueOf(cadre[11].toString().trim()):0L);
-							if(voter != null)
+							String dateOfBirth = 	cadre[10] != null ? cadre[10].toString().substring(0,10):" "	;
+							
+							if(dateOfBirth != null && dateOfBirth.trim().length()>0)
 							{
-								cadreVO.setAge(voter.getAge());
-							}						
-							else if(cadre[10]  != null)
-							{
-								String dateOfBirth = 	cadre[10] != null ? cadre[10].toString().substring(0,10):" "	;
+								Calendar startDate = new GregorianCalendar();
+								Calendar endDate = new GregorianCalendar();
 								
-								if(dateOfBirth != null && dateOfBirth.trim().length()>0)
-								{
-									Calendar startDate = new GregorianCalendar();
-									Calendar endDate = new GregorianCalendar();
-									
-									startDate.setTime(format.parse(dateOfBirth.trim()));
-									
-									endDate.setTime(new Date());
+								startDate.setTime(format.parse(dateOfBirth.trim()));
+								
+								endDate.setTime(new Date());
 
-									int diffYear = endDate.get(Calendar.YEAR) - startDate.get(Calendar.YEAR);
-									
-									cadreVO.setAge(Long.valueOf(String.valueOf(diffYear)));
-								}
+								int diffYear = endDate.get(Calendar.YEAR) - startDate.get(Calendar.YEAR);
+								
+								cadreVO.setAge(Long.valueOf(String.valueOf(diffYear)));
 							}
 						}
 						
