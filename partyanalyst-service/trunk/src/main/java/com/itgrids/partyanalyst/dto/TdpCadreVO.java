@@ -18,6 +18,7 @@ public class TdpCadreVO implements java.io.Serializable
 	private Long consituencyId;
 	private String imageURL;
 	private String errorStr;
+	private String occupation;
 	
 	private List<TdpCadreVO> tdpCadreDetailsList = new ArrayList<TdpCadreVO>();
 	
@@ -105,6 +106,12 @@ public class TdpCadreVO implements java.io.Serializable
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public String getOccupation() {
+		return occupation;
+	}
+	public void setOccupation(String occupation) {
+		this.occupation = occupation;
 	}
 	
 }
