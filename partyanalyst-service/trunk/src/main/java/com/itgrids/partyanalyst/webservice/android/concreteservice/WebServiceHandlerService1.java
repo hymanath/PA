@@ -1154,11 +1154,11 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
      * @return TdpCadreVO
      */
    
-    public TdpCadreVO searchTdpCadreDetailsBySearchCriteria(Long constituencyId,String name,String memberShipCardNo, String voterCardNo, String refNo, String mobileNo)
+    public TdpCadreVO searchTdpCadreDetailsBySearchCriteria(String constituencyId,String name,String memberShipCardNo, String voterCardNo, String refNo, String mobileNo)
     {
     	TdpCadreVO returnVO = new TdpCadreVO(); // TdpCadreVO
     	try {
-    		returnVO = cadreRegistrationService.searchTdpCadreDetailsBySearchCriteria(constituencyId,name,memberShipCardNo, voterCardNo, refNo, mobileNo);
+    		returnVO = cadreRegistrationService.searchTdpCadreDetailsBySearchCriteria(Long.valueOf(constituencyId),name,memberShipCardNo, voterCardNo, refNo, mobileNo);
 		} catch (Exception e) {
 			LOG.error("Exception raised in searchTdpCadreDetailsBySearchCriteria  method in WebServiceHandlerService",e);
 		}
