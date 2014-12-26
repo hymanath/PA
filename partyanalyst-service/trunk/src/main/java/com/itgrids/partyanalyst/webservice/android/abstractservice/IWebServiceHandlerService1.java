@@ -51,7 +51,7 @@ public interface IWebServiceHandlerService1 {
 	
 	public String getTabUsersLoginKeyDetails(TabRecordsStatusVO inputVo);
 	
-	public TdpCadreVO searchTdpCadreDetailsBySearchCriteria(Long constituencyId,String name,String memberShipCardNo, String voterCardNo, String refNo, String mobileNo);
+	public TdpCadreVO searchTdpCadreDetailsBySearchCriteria(String constituencyId,String name,String memberShipCardNo, String voterCardNo, String refNo, String mobileNo);
 	
 	public String getDynamicValueOfAKey();
 	
