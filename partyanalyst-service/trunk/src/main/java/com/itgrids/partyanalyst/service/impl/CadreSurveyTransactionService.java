@@ -1173,7 +1173,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 					finalList = getLocationWiseRegistereDetailsByDates(boothsBasicList,constituency,yesterDay,yesterDay,noOfDays);
 					
 					List<Long> mobileNumbers = partyPresidentsDAO.getMobileNumebrsBylocation(constituency.getConstituencyId(), 0L, IConstants.CONSTITUENCY);
-					
+					Long totalRegistrationCount = tdpCadreDAO.getCadreInfoDetailsCount(constituency.getConstituencyId(), IConstants.CONSTITUENCY);
 					if(mobileNumbers != null && mobileNumbers.size()>0)
 					{
 						if(finalList != null && finalList.size()>0)
@@ -1222,7 +1222,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 									returnVO.setId(reportVO.getId());
 									returnVO.setName(reportVO.getName());
 									returnVO.setDayWiseTarget(daywiseTarget);
-									returnVO.setArcheivedTarget(totalRegisteredCount);
+									returnVO.setArcheivedTarget(totalRegistrationCount);
 									returnVO.setSubmittedCount(registerdBooths);
 									returnVO.setNotSubmittedCount(notRegisteredBooths);
 									returnVO.setPendingCount(below10Booths);
