@@ -5282,13 +5282,13 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
 			
 			Date srvyDt = null;
-			if(date!=null){
+			/*if(date!=null){
 				srvyDt = originalFormat.parse(date);
-			}
+			}*/
 			
-			if(date!=null && date.trim().length()>0){
+			/*if(date!=null && date.trim().length()>0){
 				sb.append(" and date(model.surveyTime) =:surveyDate");
-			}
+			}*/
 			if(trNo!=null && trNo.trim().length()>0){
 				sb.append(" and model.refNo =:trNo");
 			}
