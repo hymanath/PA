@@ -3949,7 +3949,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			returnVo.setReceived(receivedCnt != null ? receivedCnt : 0l);
 			returnVo.setNotReceived(notReceived != null ? notReceived : 0l);
 			returnVo.setNotRegistered(notRegistred != null ? notRegistred : 0l);
-			returnVo.setResponseCnt(returnVo.getReceived() + returnVo.getNotReceived() + returnVo.getNotRegistered());
+			returnVo.setAnsweredCnt(returnVo.getReceived() + returnVo.getNotReceived() + returnVo.getNotRegistered());
 			
 		}
 		catch(Exception e)
@@ -4077,7 +4077,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	    calender.set(Calendar.DAY_OF_MONTH,  calender.get(Calendar.DAY_OF_MONTH)-7);
 	    
 		CadreRegisterInfo info =  cadreDashBoardService.getTotalRegisterCadreInfo();
-		returnVo.setApCount(info.getApCount());
+		returnVo.setCount(info.getApCount());
 		returnVo.setTgCount(info.getTgCount());
 		
 		Long ivrCompleted = cadreIvrResponseDAO.getTotalIvrCount();
@@ -4104,16 +4104,32 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			List<CadreIVRVO> returnResult = new ArrayList<CadreIVRVO>();
 			try{
 			DateUtilService dateService = new DateUtilService();
-			
 			Date currentDate = dateService.getCurrentDateAndTime();
 			CadreIVRVO basicInfo = getIvrDashBoardBasicInfo();
-			
-			CadreIVRVO todayInfo = setIVRBasicInfo(currentDate);
-			
-			CadreIVRVO totalCadreInfo = setIVRBasicInfo(null);
-		     returnResult.add(basicInfo);
-		     returnResult.add(todayInfo);
-		     returnResult.add(totalCadreInfo);
+			CadreIVRVO ivrInfo = new CadreIVRVO();
+			List<Object[]> list = cadreIvrResponseDAO.getIvrCountForAPAndTS();
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+				ivrInfo.setTotal(ivrInfo.getTotal() + (Long)params[0]);
+				if(params[1] != null && params[1].toString().equalsIgnoreCase("1")) // response key is 1 //received
+					ivrInfo.setReceived((Long)params[0]);
+				else if(params[1] != null && params[1].toString().toString().equalsIgnoreCase("2"))
+					ivrInfo.setNotReceived((Long)params[0]);
+				else if(params[1] != null && params[1].toString().toString().equalsIgnoreCase("3"))
+					ivrInfo.setNotRegistered((Long)params[0]);
+					ivrInfo.setAnsweredCnt(ivrInfo.getReceived() + ivrInfo.getNotReceived() + ivrInfo.getNotRegistered());
+					if(ivrInfo.getAnsweredCnt() > 0)
+					{
+						ivrInfo.setReceivedPerc(new BigDecimal((ivrInfo.getReceived()*100/ivrInfo.getAnsweredCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						ivrInfo.setNotReceivedPerc(new BigDecimal((ivrInfo.getNotReceived()*100/ivrInfo.getAnsweredCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						ivrInfo.setNotMemberPerc(new BigDecimal((ivrInfo.getNotRegistered()*100/ivrInfo.getAnsweredCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+					}
+				}
+			}
+			returnResult.add(basicInfo);
+		    returnResult.add(ivrInfo);
 			}
 			catch(Exception e)
 			{
@@ -4122,58 +4138,39 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		     return returnResult;
 		}
 		
-	public CadreIVRVO setIVRBasicInfo(Date searchDate)
+	public CadreIVRVO setIVRBasicInfo(Date fromDate,Date toDate,String state)
 	{
 		CadreIVRVO returnVo = new CadreIVRVO();
-		Long apIvrCount = 0l;
-		Long tgIvrCount = 0l;
-		Long apReceivedCount = 0l;
-		Long tgReceivedCount = 0l;
-		Long apNotReceivedWebCount = 0l;
-		Long tgNotReceivedCount = 0l;
-		Long apNotregisteredCount = 0l;
-		Long tgNotregisteredCount = 0l;
-		Long apAnsweredCount = 0l;
-		Long tgAnsweredCount = 0l;
-		
+		Long ivrCount = 0l;
+		Long receivedCount = 0l;
+		Long notReceivedCount = 0l;
+		Long notregisteredCount = 0l;
 		try{
-			List<Object[]> districtWiseCount = cadreIvrResponseDAO.getIvrCountByDate(searchDate);
+			
+			List<Object[]> districtWiseCount = cadreIvrResponseDAO.getIvrCountByDate(fromDate,toDate,state);
 			if(districtWiseCount != null && districtWiseCount.size() > 0)
 			{
 				for(Object[] districtCount:districtWiseCount){
-					if(((Long)districtCount[1]).longValue() > 10l){
-						apIvrCount = apIvrCount+(Long)districtCount[0];
-						
+					ivrCount = ivrCount+(Long)districtCount[0];
 						if(districtCount[2] != null && districtCount[2].toString().equalsIgnoreCase("1")) // response key is 1 //received
-							apReceivedCount = apReceivedCount +  (Long)districtCount[0];
+							receivedCount = receivedCount +  (Long)districtCount[0];
 						else if(districtCount[2] != null && districtCount[2].toString().equalsIgnoreCase("2"))
-							apNotReceivedWebCount = apNotReceivedWebCount + 	 (Long)districtCount[0];
+							notReceivedCount = notReceivedCount + 	 (Long)districtCount[0];
 						else if(districtCount[2] != null && districtCount[2].toString().equalsIgnoreCase("3"))
-							apNotregisteredCount = apNotregisteredCount + 	 (Long)districtCount[0];	
-						
-					}else{
-						tgIvrCount = tgIvrCount+(Long)districtCount[0];	
-						if(districtCount[2] != null &&districtCount[2].toString().equalsIgnoreCase("1"))
-							tgReceivedCount = tgReceivedCount +  (Long)districtCount[0];
-							else if(districtCount[2] != null && districtCount[2].toString().equalsIgnoreCase("2"))
-								tgNotReceivedCount = tgNotReceivedCount + 	 (Long)districtCount[0];
-							else if(districtCount[2] != null &&districtCount[2].toString().equalsIgnoreCase("3"))
-								tgNotregisteredCount = tgNotregisteredCount + (Long)districtCount[0];	
-					}
-				  }
+							notregisteredCount = notregisteredCount + 	 (Long)districtCount[0];	
+				}
 			}
-			
-			
-		    returnVo.setApCount(apIvrCount);
-		    returnVo.setTgCount(tgIvrCount);
-			returnVo.setReceived(apReceivedCount);
-			returnVo.setNotReceived(apNotReceivedWebCount);
-			returnVo.setNotRegistered(apNotregisteredCount);
-			returnVo.setResponseCnt(returnVo.getReceived() + returnVo.getNotReceived() + returnVo.getNotRegistered());
-			returnVo.setTgReceived(tgReceivedCount);
-			returnVo.setTgnotReceived(tgNotReceivedCount);
-			returnVo.setTgnotRegistered(tgNotregisteredCount);
-			returnVo.setTgResponseCnt(returnVo.getTgReceived() + returnVo.getTgnotReceived() + returnVo.getTgnotRegistered());
+			returnVo.setTotal(ivrCount);
+			returnVo.setReceived(receivedCount);
+			returnVo.setNotReceived(notReceivedCount);
+			returnVo.setNotRegistered(notregisteredCount);
+			returnVo.setAnsweredCnt(returnVo.getReceived() + returnVo.getNotReceived() + returnVo.getNotRegistered());
+			if(returnVo.getAnsweredCnt() > 0)
+			{
+				returnVo.setReceivedPerc(new BigDecimal((returnVo.getReceived()*100/returnVo.getAnsweredCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+				returnVo.setNotReceivedPerc(new BigDecimal((returnVo.getNotReceived()*100/returnVo.getAnsweredCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+				returnVo.setNotMemberPerc(new BigDecimal((returnVo.getNotRegistered()*100/returnVo.getAnsweredCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+			}
 		}
 		catch(Exception e)
 		{
@@ -4249,7 +4246,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 				CadreIVRVO districtVo = new CadreIVRVO();
 				districtVo.setId(districtId);
 				districtVo.setName(districtName.get(districtId));
-				districtVo.setApCount(districtRegCntMap.get(districtId));
+				districtVo.setCount(districtRegCntMap.get(districtId));
 				Map<Long,CadreIVRVO> constituencyMap = districtMap.get(districtId);
 				List<CadreIVRVO> constituencyList = new ArrayList<CadreIVRVO>();
 				if(constituencyMap != null && !constituencyMap.isEmpty())
@@ -4257,16 +4254,16 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					{
 						CadreIVRVO vo = constituencyMap.get(id);
 						
-						vo.setResponseCnt(vo.getReceived() + vo.getNotRegistered() + vo.getNotReceived());
-						vo.setApCount(constiRegCntMap.get(id));
-						if(vo.getResponseCnt() > 0)
+						vo.setAnsweredCnt(vo.getReceived() + vo.getNotRegistered() + vo.getNotReceived());
+						vo.setCount(constiRegCntMap.get(id));
+						if(vo.getAnsweredCnt() > 0)
 						{
-							vo.setReceivedPerc(new BigDecimal((vo.getReceived()*100/vo.getResponseCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-							vo.setNotReceivedPerc(new BigDecimal((vo.getNotReceived()*100/vo.getResponseCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-							vo.setNotMemberPerc(new BigDecimal((vo.getNotRegistered()*100/vo.getResponseCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							vo.setReceivedPerc(new BigDecimal((vo.getReceived()*100/vo.getAnsweredCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							vo.setNotReceivedPerc(new BigDecimal((vo.getNotReceived()*100/vo.getAnsweredCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							vo.setNotMemberPerc(new BigDecimal((vo.getNotRegistered()*100/vo.getAnsweredCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 						}
 						if(vo.getTotal() > 0)
-						vo.setReponsePerc(new BigDecimal((vo.getResponseCnt()*100/vo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						vo.setAnsweredPerc(new BigDecimal((vo.getAnsweredCnt()*100/vo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 						districtVo.setTotal(districtVo.getTotal() + vo.getTotal());
 						districtVo.setReceived(districtVo.getReceived() + vo.getReceived());
 						districtVo.setNotReceived(districtVo.getNotReceived() + vo.getNotReceived());
@@ -4276,15 +4273,15 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 				
 				
 					districtVo.setSubList(constituencyList);
-					districtVo.setResponseCnt(districtVo.getReceived() + districtVo.getNotRegistered() + districtVo.getNotReceived());
-					if(districtVo.getResponseCnt() > 0)
+					districtVo.setAnsweredCnt(districtVo.getReceived() + districtVo.getNotRegistered() + districtVo.getNotReceived());
+					if(districtVo.getAnsweredCnt() > 0)
 					{
-						districtVo.setReceivedPerc(new BigDecimal((districtVo.getReceived()*100/districtVo.getResponseCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-						districtVo.setNotReceivedPerc(new BigDecimal((districtVo.getNotReceived()*100/districtVo.getResponseCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-						districtVo.setNotMemberPerc(new BigDecimal((districtVo.getNotRegistered()*100/districtVo.getResponseCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						districtVo.setReceivedPerc(new BigDecimal((districtVo.getReceived()*100/districtVo.getAnsweredCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						districtVo.setNotReceivedPerc(new BigDecimal((districtVo.getNotReceived()*100/districtVo.getAnsweredCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						districtVo.setNotMemberPerc(new BigDecimal((districtVo.getNotRegistered()*100/districtVo.getAnsweredCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 					}
 					if(districtVo.getTotal() > 0)
-					districtVo.setReponsePerc(new BigDecimal((districtVo.getResponseCnt()*100/districtVo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+					districtVo.setAnsweredPerc(new BigDecimal((districtVo.getAnsweredCnt()*100/districtVo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 				returnList.add(districtVo);
 			}
 		}
@@ -4525,4 +4522,28 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					   return (loc2.getNotReceivedPerc().compareTo(loc1.getNotReceivedPerc()));
 					}
 			 };
+			 public List<CadreIVRVO> getIvrDashBoardCountsByDate(String fromDate,String toDate,String state)
+			 {
+				 List<CadreIVRVO> returnList = new  ArrayList<CadreIVRVO>();
+				 CadreIVRVO cadreInfo = new CadreIVRVO();
+				 Date strDate = null;
+				 Date endDate = null;
+				 try{
+					 SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy");
+					 if(!fromDate.isEmpty())
+					 strDate = format.parse(fromDate.trim());
+					 if(!toDate.isEmpty())
+					 endDate = format.parse(toDate.trim());
+					 cadreInfo = setIVRBasicInfo(strDate,endDate,state); 
+					 CadreRegisterInfo info =  cadreDashBoardService.getTotalRegisterCadreInfo();
+					 cadreInfo.setCount(info.getApCount());
+					 cadreInfo.setTgCount(info.getTgCount());
+					 returnList.add(cadreInfo);
+				 }
+				 catch(Exception e)
+				 {
+					 LOG.error("Exception rised in getIvrDashBoardCountsByDate() ",e);	 
+				 }
+				return returnList;
+			 }
 }

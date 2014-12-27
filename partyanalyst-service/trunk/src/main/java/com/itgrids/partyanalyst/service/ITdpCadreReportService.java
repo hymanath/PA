@@ -52,4 +52,5 @@ public interface ITdpCadreReportService {
 	public CadreIVRResponseVO getPanchayatWiseCadreDispatchStatus(Long range,String state);
 	
 	public CadreIVRResponseVO getTehsilWiseCadreDispatchStatus(Long range);
+	 public List<CadreIVRVO> getIvrDashBoardCountsByDate(String fromDate,String toDate,String state);
 }

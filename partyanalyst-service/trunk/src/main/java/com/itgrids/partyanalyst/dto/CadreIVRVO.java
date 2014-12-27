@@ -13,11 +13,10 @@ public class CadreIVRVO implements Serializable, Comparable<CadreIVRVO>{
 	private Long constituencyId;
 	private String constituencyName;
 	private Long total = 0l;
-	private Long tgtotal = 0l;
 	private Long received = 0l;
 	private Long notReceived = 0l;
 	private Long notRegistered = 0l;
-	private Long responseCnt = 0l;
+	private Long answeredCnt = 0l;
 	private String currentStatus;
 	private String strDate;
 	private String endDate;
@@ -28,21 +27,15 @@ public class CadreIVRVO implements Serializable, Comparable<CadreIVRVO>{
 	private Long localbody;
 	private String localbodyName;
 	private List<CadreIVRVO> subList = new ArrayList<CadreIVRVO>();
-	private Long apCount =0l;
-	private Long tgCount = 0l;
+	private Long count =0l;
 	private Long printingCompleted = 0l;
 	private Long ivrReady = 0l;
-	private Long tgprintingCompleted = 0l;
-	private Long tgivrReady = 0l;
-	private Long tgReceived = 0l;
-	private Long tgnotReceived = 0l;
-	private Long tgnotRegistered = 0l;
-	private Long tgResponseCnt = 0l;
+	
 	private Double receivedPerc;
 	private Double notReceivedPerc;
 	private Double notMemberPerc;
-	private Double reponsePerc;
-	
+	private Double answeredPerc;
+	private Long tgCount =0l;
 	
 	public CadreIVRVO()
 	{
@@ -50,15 +43,39 @@ public class CadreIVRVO implements Serializable, Comparable<CadreIVRVO>{
 	}
 	
 	
-	public Double getReponsePerc() {
-		return reponsePerc;
+	public Long getTgCount() {
+		return tgCount;
 	}
 
 
-	public void setReponsePerc(Double reponsePerc) {
-		this.reponsePerc = reponsePerc;
+	public void setTgCount(Long tgCount) {
+		this.tgCount = tgCount;
 	}
 
+
+	public Long getAnsweredCnt() {
+		return answeredCnt;
+	}
+
+	public void setAnsweredCnt(Long answeredCnt) {
+		this.answeredCnt = answeredCnt;
+	}
+
+	public Long getCount() {
+		return count;
+	}
+
+	public void setCount(Long count) {
+		this.count = count;
+	}
+
+	public Double getAnsweredPerc() {
+		return answeredPerc;
+	}
+
+	public void setAnsweredPerc(Double answeredPerc) {
+		this.answeredPerc = answeredPerc;
+	}
 
 	public Double getReceivedPerc() {
 		return receivedPerc;
@@ -83,48 +100,8 @@ public class CadreIVRVO implements Serializable, Comparable<CadreIVRVO>{
    public void setNotMemberPerc(Double notMemberPerc) {
 		this.notMemberPerc = notMemberPerc;
 	}
-   public Long getTgtotal() {
-		return tgtotal;
-	}
-	public void setTgtotal(Long tgtotal) {
-		this.tgtotal = tgtotal;
-	}
-	public Long getTgprintingCompleted() {
-		return tgprintingCompleted;
-	}
-	public void setTgprintingCompleted(Long tgprintingCompleted) {
-		this.tgprintingCompleted = tgprintingCompleted;
-	}
-	public Long getTgivrReady() {
-		return tgivrReady;
-	}
-	public void setTgivrReady(Long tgivrReady) {
-		this.tgivrReady = tgivrReady;
-	}
-	public Long getTgResponseCnt() {
-		return tgResponseCnt;
-	}
-	public void setTgResponseCnt(Long tgResponseCnt) {
-		this.tgResponseCnt = tgResponseCnt;
-	}
-	public Long getTgReceived() {
-		return tgReceived;
-	}
-	public void setTgReceived(Long tgReceived) {
-		this.tgReceived = tgReceived;
-	}
-	public Long getTgnotReceived() {
-		return tgnotReceived;
-	}
-	public void setTgnotReceived(Long tgnotReceived) {
-		this.tgnotReceived = tgnotReceived;
-	}
-	public Long getTgnotRegistered() {
-		return tgnotRegistered;
-	}
-	public void setTgnotRegistered(Long tgnotRegistered) {
-		this.tgnotRegistered = tgnotRegistered;
-	}
+  
+	
 	public Long getPrintingCompleted() {
 		return printingCompleted;
 	}
@@ -137,18 +114,7 @@ public class CadreIVRVO implements Serializable, Comparable<CadreIVRVO>{
 	public void setIvrReady(Long ivrReady) {
 		this.ivrReady = ivrReady;
 	}
-	public Long getApCount() {
-		return apCount;
-	}
-	public void setApCount(Long apCount) {
-		this.apCount = apCount;
-	}
-	public Long getTgCount() {
-		return tgCount;
-	}
-	public void setTgCount(Long tgCount) {
-		this.tgCount = tgCount;
-	}
+	
 	public Long getLocalbody() {
 		return localbody;
 	}
@@ -269,12 +235,7 @@ public class CadreIVRVO implements Serializable, Comparable<CadreIVRVO>{
 	public void setCurrentStatus(String currentStatus) {
 		this.currentStatus = currentStatus;
 	}
-	public Long getResponseCnt() {
-		return responseCnt;
-	}
-	public void setResponseCnt(Long responseCnt) {
-		this.responseCnt = responseCnt;
-	}
+
 	@Override
 	public int compareTo(CadreIVRVO o) {
 		CadreIVRVO obj = null;
