@@ -3471,7 +3471,9 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			str.append(" select model.memberShipNo from TdpCadre model,TdpCadreOnline model1 " +
 					" where model.isDeleted = 'N' and model.enrollmentYear = 2014 and model.voterId is not null ");
 			str.append( "  and model.cardNumber is  null  and model.tdpCadreOnline.tdpCadreOnlineId = model1.tdpCadreOnlineId and model.dataSourceType = 'ONLINE' " +
-					" and model1.deliveryMode = 1 and model.isPrintReady = 'Y'" );
+					" and model1.deliveryMode = 1 " );
+			
+			//str.append( " and model.isPrintReady = 'Y' ");
 			str.append(query);
 			str.append( " order by date(model.surveyTime)" );
 			
@@ -3499,7 +3501,8 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			str.append(" select model.memberShipNo from TdpCadre model,TdpCadreOnline model1  " +
 					" where model.isDeleted = 'N' and model.enrollmentYear = 2014 and model.voterId is null ");
 			str.append( " and model.cardNumber is  null and model.tdpCadreOnline.tdpCadreOnlineId = model1.tdpCadreOnlineId and model.dataSourceType = 'ONLINE' " +
-					" and model1.deliveryMode = 1 and model.isPrintReady = 'Y' " );
+					" and model1.deliveryMode = 1   " );
+			//str.append( " and model.isPrintReady = 'Y' ");
 			str.append(query);
 			str.append( " order by date(model.surveyTime)" );
 			
