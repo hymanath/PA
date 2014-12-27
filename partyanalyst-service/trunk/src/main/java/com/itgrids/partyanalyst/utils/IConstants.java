@@ -851,4 +851,10 @@ public interface IConstants {
     public static final String NotReceived = "NotReceived";
     public static final String NotRegistered = "NotRegistered";
     public static final String Response = "Response";
+    public static final String IVR_SUCCESS_GROUP = "NORMAL_CLEARING";
+    public static final String IVR_ERROR_GROUP = "USER_BUSY,NO_ANSWER";
+    
+    
+    
+    
 }
