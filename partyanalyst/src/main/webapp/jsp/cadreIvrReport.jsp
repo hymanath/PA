@@ -18,8 +18,12 @@
  <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
  <script type="text/javascript" src="js/jquery.dataTables.js"></script>
  <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
-  
-   <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script type="text/javascript" src="js/bootStrapDateRange/moment.js"></script>
+<script type="text/javascript" src="js/bootStrapDateRange/daterangepicker.js"></script>
+ <link rel="stylesheet" type="text/css" href="css/daterangepicker-bs2.css"/>
+
+
 <title>IVR Report</title>
 <style>
 	.border-radius-0{border-radius:0px;}
@@ -47,38 +51,11 @@
 	}
 	</style>
 </head>
-</head>
+
 <body>
-<!--<script>
-var range;
- $(function() {
-$( "#slider" ).slider({
-value:1,
-min: 0,
-max: 100,
-step: 1,
-slide: function( event, ui ) {
-	console.log(ui.value)
-$( "#amount" ).val( "Percentage : " + ui.value +" %");
-},
-change: function( event, ui ) {
-$( "#amount" ).val( "Percentage  : " + ui.value +" %");
-range=ui.value;
 
-callFun(range);
-}
-});
-range=$( "#amount" ).val( "Percentage : " + $( "#slider" ).slider( "value" ) +" %");
-range=$( "#slider" ).slider( "value" );
-         });
-		 function callFun(range)
-		 {
-			 alert(range);
-		 }
-</script>-->
 <div class="container ">	
-
-
+   
 		<!-- Title Row -->
 		<div class="row-fluid" id="fadeInDown">
 			<div class="span12 well well-small  border-radius-0 mb-10 ">
@@ -93,23 +70,44 @@ range=$( "#slider" ).slider( "value" );
 			</div>	
 			<!----- /Total In AP & TS ----->
 			
-			<!-----Today In AP ----->
+			<!-----Today In AP
 			<div class="span6 m_top20" id="todayApDiv">
 			
 						
 			</div>
-			<!----- /Today In AP ----->
+		/Today In AP
 						
-			<!-----Today In TS ----->
+			Today In TS
 			<div class="span6 m_top20" id="todayTGDiv">
 						
 			</div>
 			<!----- /Today In TS ----->
 			
 			<!------ Total in AP ------->
-			<div class="span6 m_top20" style="outline:6px solid rgb(223, 240, 216);" id="ApDataDiv">
-			<div id="ApTotalDiv">
+			<!-- date range
+		 <div style="overflow: auto" class="well">
+
+				 <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+				    <i class="icon-calendar pull-right"></i>
+                <span id="selectedDate"></span> 
+               </div>
+
+
+            </div>	
+           
+		date range end-->
+			<div class="span6 m_top20" style="outline:6px solid rgb(223, 240, 216);clear:both;" id="ApDataDiv">
+			 
+				 <div id="APreportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                <!--  <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>-->
+				   <i class="icon-calendar pull-left"></i>
+                <span id="APselectedDate"></span> 
 				
+		 </div>	
+           
+			<div id="ApTotalDiv" style="clear:both;">
+				<img style="width:20px;" src="./images/icons/search.gif" id="apcntImg" class="offset3"/>
 				</div>
 				<!-----TS Constituency wise ------>
 				<h4 class="alert alert-info text-center border-radius-0 m-0">AP DISTRICT WISE DETAILS</h4>
@@ -150,8 +148,15 @@ range=$( "#slider" ).slider( "value" );
 			
 			<!-------Total in TS------>
 			<div class="span6 m_top20" style="outline:6px solid rgb(223, 240, 216);" id="TGDataDiv">
-				<div id="TGTotalDiv">
+			 <div id="TSreportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                <!--  <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>-->
+				   <i class="icon-calendar pull-left"></i>
+                <span id="TSselectedDate"></span> 
 				
+		 </div>	
+           
+				<div id="TGTotalDiv" style="clear:both;">
+					<img style="width:20px;" src="./images/icons/search.gif" id="tgcntImg" class="offset3"/>
 				</div>
 				<!-----TS Constituency wise ------>
 				<h4 class="alert alert-info text-center border-radius-0 m-0">TS DISTRICT WISE DETAILS</h4>
@@ -194,23 +199,179 @@ range=$( "#slider" ).slider( "value" );
 		
 	</div>
 <script>
-function showHide()
-{
-    var value =$('input:radio[name=searchType]:checked').val();
-	$("#countDiv").hide();
-	if(value == 1)
+
+	 $(document).ready(function() {
+			 	 
+				   var cb = function(start, end, label) {
+                   console.log(start.toISOString(), end.toISOString(), label);
+                    $('#APreportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+					 $('#TSreportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+				  }
+
+                  var optionSet1 = {
+					
+                    showDropdowns: true,
+                    showWeekNumbers: true,
+					ranges: {
+                       'Today': [moment(), moment()],
+                       'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')]
+                       
+                    },
+                    opens: 'right',
+					format: 'MM/DD/YYYY',
+                    separator: ' to ',
+                    locale: {
+                        applyLabel: 'Submit',
+                        cancelLabel: 'Clear',
+                        fromLabel: 'From',
+                        toLabel: 'To',
+                        customRangeLabel: 'Custom',
+                        daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+                        monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                        firstDay: 1
+                    }
+                  };
+				  $('#APreportrange').daterangepicker(optionSet1, cb);
+				  $('#TSreportrange').daterangepicker(optionSet1, cb);
+					 $('#APreportrange').on('show.daterangepicker', function() { 
+					   $('#APreportrange span').html(moment().format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+					 
+					  console.log("show event fired"); });
+					   $('#TSreportrange').on('show.daterangepicker', function() { 
+					   $('#TSreportrange span').html(moment().format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+					 
+					  console.log("show event fired"); });
+
+                  $('#APreportrange').on('hide.daterangepicker', function() { 
+					    getDateWiseIVRCount('AP');
+					  console.log("hide event fired"); });
+				   $('#TSreportrange').on('hide.daterangepicker', function() { 
+					    getDateWiseIVRCount('TS');
+					   console.log("hide event fired"); });
+                  $('#APreportrange').on('apply.daterangepicker', function(ev, picker) { 
+					   
+                    console.log("apply event fired, start/end dates are " 
+                      + picker.startDate.format('MMMM D, YYYY') 
+                      + " to " 
+                      + picker.endDate.format('MMMM D, YYYY')
+                    ); 
+                  });
+				   $('#TSreportrange').on('apply.daterangepicker', function(ev, picker) { 
+                    console.log("apply event fired, start/end dates are " 
+                      + picker.startDate.format('MMMM D, YYYY') 
+                      + " to " 
+                      + picker.endDate.format('MMMM D, YYYY')
+                    ); 
+                  });
+                  $('#APreportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
+				   $('#TSreportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
+				$("#APselectedDate").html(''); 
+				$("#TSselectedDate").html(''); 
+			 });
+	function getDateWiseIVRCount(state)
 	{
-		$("#dateId").css("display","block");
-		$("#constituencyId").val(0);
-		$("#constituencyId").css("display","none");
+
+		var selectedDate ;
+		if(state == 'AP')
+		{
+		
+		selectedDate = $("#APselectedDate").text().split('-'); 
+		$("#apcntImg").show();
+		}
+		else
+		{
+	
+		selectedDate = $("#TSselectedDate").text().split('-'); 
+		$("#tgcntImg").show();
+		}
+		var fromDate = selectedDate[0];
+		var toDate = selectedDate[1];
+		var jsObj = {
+			state:state,
+			fromdate:fromDate,
+			todate:toDate,
+			task:"datewiseBasicCnt"             
+		}
+			   
+		$.ajax({
+			type : "POST",
+			url : "getCadreIVRBasicInfoAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			
+			buildIvrCountByDate(result,state);
+		});
 	}
-	else
+	function getDateWiseIVRCountLoad(state)
 	{
-$("#dateId").css("display","none");
-$("#dateId").val(0);
-$("#constituencyId").css("display","block");
+		if(state=="AP")
+		$("#apcntImg").show();
+		if(state=="TS")
+		$("#tgcntImg").show();
+		var fromDate ="";
+		var toDate = "";
+		var jsObj = {
+			state:state,
+			fromdate:fromDate,
+			todate:toDate,
+			task:"datewiseBasicCnt"             
+		}
+			   
+		$.ajax({
+			type : "POST",
+			url : "getCadreIVRBasicInfoAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			
+			buildIvrCountByDate(result,state);
+		});
 	}
-	}	
+
+function buildIvrCountByDate(result,state)
+	{
+		if(state=="AP")
+		{
+		$("#apcntImg").hide();
+		$("#ApTotalDiv").html('');
+		}
+		if(state=="TS")
+		{
+		$("#tgcntImg").hide();
+		$("#TGTotalDiv").html('');
+		}
+		
+		var str ='';
+		var totalInfo = result[0];
+		var str = '';
+		str+='<table class="table table-bordered border-radius-0 mb-0 table-condensed">';
+		str+='<tr class="alert alert-success">';
+		str+='<td rowspan="4" style="text-align: center;">';
+		if(state == 'AP' )
+		str+='<img style="width:70px" src="./images/AP.png">';
+		else
+		str+='<img style="width:70px" src="./images/TS.png">';
+		if(state == 'AP' )
+		str+='<h4 >Total In AP <br>'+ totalInfo.count+'  <br><small>Members Registered </small> <hr style="margin-top: 5px; margin-bottom: 5px;">IVR Calls<br>'+totalInfo.answeredCnt +' <br><small>Answered</small>	</h4>';
+		else
+		str+='<h4 >Total In TS <br>'+ totalInfo.tgCount+'  <br><small>Members Registered </small> <hr style="margin-top: 5px; margin-bottom: 5px;">IVR Calls<br>'+totalInfo.answeredCnt +' <br><small>Answered</small>	</h4>';
+		str+='</td>';
+		str+='</tr>';
+		str+='<tr>';
+		str+='<td><h5>'+totalInfo.received+'</h5><p>Cards  <span class="text-orange">Received</span></p></td>';
+		str+='</tr>';
+		str+='<tr>';
+		str+='<td><h5>'+totalInfo.notReceived+'</h5><p>Cards  <span class="text-orange">Not Received</span></p></td>	';
+		str+='</tr>';
+		str+='<tr>';
+		str+='<td><h5>'+totalInfo.notRegistered+'</h5><p>Not Registered Member Phone Numbers</p></td>';	
+		str+='</tr>';
+		str+='</table>';
+		if(state == 'AP' )
+		$("#ApTotalDiv").html(str);
+		if(state == 'TS')
+		$("#TGTotalDiv").html(str);
+	}
+	
 		function getIvrCount()
 		{
 			
@@ -369,7 +530,7 @@ $("#constituencyId").css("display","block");
 		 $("#ajaxImg").show();
 		
 			var jsObj = {	
-			task:""             
+			task:"basicCnt"             
 		}
 			   
 		$.ajax({
@@ -385,17 +546,12 @@ $("#constituencyId").css("display","block");
 	function buildIvrCount(result)
 	{
 		$("#APandTsDiv").html('');
-		$("#todayApDiv").html('');
-		$("#todayTGDiv").html('');
-		$("#ApTotalDiv").html('');
-		$("#TGTotalDiv").html('');
 		var str ='';
 		var basicInfo = result[0] ;
-		var todayInfo = result[1];
-		var totalInfo = result[2];
-		var totalRegistered = basicInfo.apCount + basicInfo.tgCount;
+		var totalInfo = result[1];
+		var totalRegistered = basicInfo.count + basicInfo.tgCount;
 		var pending  = totalRegistered - basicInfo.printingCompleted;
-		var ivrError = (totalInfo.apCount + totalInfo.tgCount) - (totalInfo.responseCnt + totalInfo.tgResponseCnt);
+		var ivrError = totalInfo.total - totalInfo.answeredCnt;
 		str+='<table class="table table-bordered border-radius-0 mb-0 table-hover">';
 		str+='<tr>';
 		str+='<td>';
@@ -404,83 +560,15 @@ $("#constituencyId").css("display","block");
 		str+='<td><h2 id="totalRegCntId"> '+totalRegistered +'</h2><p>Total Members Registered </p></td>';
 		str+='<td><h2 id="printedId">'+basicInfo.printingCompleted+'</h2><p>Cards <b>Printed</b> <br><span class="text-red" id="pendingId">'+pending+'</span> Pending</p>';
 		str+='<hr style="margin-top: 0px; margin-bottom: 0px;" id="readyIvrId"> Ready For IVR calls '+basicInfo.ivrReady+'</td>';
-		str+='<td><h5 class="mb-0" id="totalIvrId"> '+(totalInfo.apCount + totalInfo.tgCount)+'<br><small>Dialed IVR Calls</small></h5>';
-		str+='<hr style="margin-top: 0px; margin-bottom: 0px;"><h2 class="m-0" id="answerIvrId">'+(totalInfo.responseCnt + totalInfo.tgResponseCnt)+'</h2><p class="mb-0"><b>IVR</b> Calls<span class="text-success"> Answered </span></p><hr style="margin-top: 0px; margin-bottom: 0px;"> <span class="text-error">IVR Errors- </span><p>'+ivrError+'</p></td>';
-		str+='<td><h2 id="receivedId">'+(totalInfo.received + totalInfo.tgReceived)+'</h2><p>Cards  <span class="text-orange">Received</span></p></td>	';
-		str+='<td><h2 id="notreceivedId">'+(totalInfo.notReceived + totalInfo.tgnotReceived)+'</h2><p>Cards  <span class="text-orange">Not Received</span></p></td>';	
-		str+='<td><h2 id="notRegisteredId">'+(totalInfo.notRegistered + totalInfo.tgnotRegistered)+'</h2><p>Not Registered Member Phone Numbers</p></td>	';
+		str+='<td><h5 class="mb-0" id="totalIvrId"> '+totalInfo.total+'<br><small>Dialed IVR Calls</small></h5>';
+		str+='<hr style="margin-top: 0px; margin-bottom: 0px;"><h2 class="m-0" id="answerIvrId">'+totalInfo.answeredCnt+'</h2><p class="mb-0"><b>IVR</b> Calls<span class="text-success"> Answered </span></p><hr style="margin-top: 0px; margin-bottom: 0px;"> <span class="text-error">IVR Errors- </span><p>'+ivrError+'</p></td>';
+		str+='<td><h2 id="receivedId">'+totalInfo.received+'</h2><p>Cards  <span class="text-orange">Received</span></p></td>	';
+		str+='<td><h2 id="notreceivedId">'+totalInfo.notReceived+'</h2><p>Cards  <span class="text-orange">Not Received</span></p></td>';	
+		str+='<td><h2 id="notRegisteredId">'+totalInfo.notRegistered +'</h2><p>Not Registered Member Phone Numbers</p></td>	';
 		str+='</tr>';
 		str+='</table>';
-		
-		var str1=''
-		str1+='<table class="table table-bordered border-radius-0 mb-0 table-striped">';
-		str1+='<tr class="alert alert-success">';
-		str1+='<td colspan="4">';
-		str1+='<h4>Today AP IVR Calls Answered <span class="pull-right">'+todayInfo.responseCnt +'</span></h4>';	
-		str1+='</td>';
-		str1+='</tr>';
-		str1+='<tr>';
-		str1+='<td><h2>'+todayInfo.received+'</h2><p>Cards  <span class="text-orange">Received</span></p></td>';	
-		str1+='<td><h2>'+todayInfo.notReceived+'</h2><p>Cards  <span class="text-orange">Not Received</span></p></td>';	
-		str1+='<td><h2>'+todayInfo.notRegistered+'</h2><p>Not Registered Member Phone Numbers</p></td>	';
-		str1+='</tr>';
-		str1+='</table>';
 
-		var str2=''
-		str2+='<table class="table table-bordered border-radius-0 mb-0 table-striped">';
-		str2+='<tr class="alert alert-success">';
-		str2+='<td colspan="4">';
-		str2+='<h4 >Today TS IVR Calls Answered <span class="pull-right">'+todayInfo.tgResponseCnt +'</span></h4>';	
-		str2+='</td>';
-		str2+='</tr>';
-		str2+='<tr>';
-		str2+='<td><h2>'+todayInfo.tgReceived+'</h2><p>Cards  <span class="text-orange">Received</span></p></td>';	
-		str2+='<td><h2>'+todayInfo.tgnotReceived+'</h2><p>Cards  <span class="text-orange">Not Received</span></p></td>';	
-		str2+='<td><h2>'+todayInfo.tgnotRegistered+'</h2><p>Not Registered Member Phone Numbers</p></td>	';
-		str2+='</tr>';
-		str2+='</table>';
-
-		var str3 = '';
-		str3+='<table class="table table-bordered border-radius-0 mb-0 table-condensed">';
-		str3+='<tr class="alert alert-success">';
-		str3+='<td rowspan="4" style="text-align: center;">';
-		str3+='<img style="width:70px" src="./images/AP.png">';
-		str3+='<h4 >Total In AP <br>'+ basicInfo.apCount+'  <br><small>Members Registered </small> <hr style="margin-top: 5px; margin-bottom: 5px;">IVR Calls<br>'+totalInfo.responseCnt +' <br><small>Answered</small>	</h4>';
-		str3+='</td>';
-		str3+='</tr>';
-		str3+='<tr>';
-		str3+='<td><h5>'+totalInfo.received+'</h5><p>Cards  <span class="text-orange">Received</span></p></td>';
-		str3+='</tr>';
-		str3+='<tr>';
-		str3+='<td><h5>'+totalInfo.notReceived+'</h5><p>Cards  <span class="text-orange">Not Received</span></p></td>	';
-		str3+='</tr>';
-		str3+='<tr>';
-		str3+='<td><h5>'+totalInfo.notRegistered+'</h5><p>Not Registered Member Phone Numbers</p></td>';	
-		str3+='</tr>';
-		str3+='</table>';
-		var str4 = '';
-		str4+='<table class="table table-bordered border-radius-0 mb-0 table-condensed">';
-		str4+='<tr class="alert alert-success">';
-		str4+='<td rowspan="4" style="text-align: center;">';
-		str4+='<img style="width:70px" src="./images/TS.png">';
-		str4+='<h4 >Total In TS <br>'+basicInfo.tgCount+' <br><small>Members Registered </small> <hr style="margin-top: 5px; margin-bottom: 5px;">IVR Calls<br>'+totalInfo.tgResponseCnt+'  <br><small>Answered</small>	</h4>';
-		str4+='</td>';
-		str4+='</tr>';
-		str4+='<tr>';
-		str4+='<td><h5>'+totalInfo.tgReceived+'</h5><p>Cards  <span class="text-orange">Received</span></p></td>';
-		str4+='</tr>';
-		str4+='<tr>';
-		str4+='<td><h5>'+totalInfo.tgnotReceived+'</h5><p>Cards  <span class="text-orange">Not Received</span></p></td>	';
-		str4+='</tr>';
-		str4+='<tr>';
-		str4+='<td><h5>'+totalInfo.tgnotRegistered+'</h5><p>Not Registered Member Phone Numbers</p></td>';	
-		str4+='</tr>';
-		str4+='</table>';
 		$("#APandTsDiv").html(str);
-		$("#todayApDiv").html(str1);
-		$("#todayTGDiv").html(str2);
-		$("#ApTotalDiv").html(str3);
-		$("#TGTotalDiv").html(str4);
 	}
 	
 	function getConstituencyWiseIVRCount()
@@ -547,15 +635,15 @@ $("#constituencyId").css("display","block");
 	
 			for(var j in ApArr)
 			{
-				if(ApArr[j].apCount == null)
-					ApArr[j].apCount =0;
+				if(ApArr[j].total == null)
+					ApArr[j].total =0;
 				if(ApArr[j].receivedPerc == null)
 				ApArr[j].receivedPerc = 0.0;
 				if(ApArr[j].notReceived == null)
 				ApArr[j].notReceived = 0.0;
 				if(ApArr[j].notMemberPerc == null)
 				ApArr[j].notMemberPerc = 0.0;
-			str+='<tr><td>'+ApArr[j].name+'</td><td>'+ApArr[j].apCount+'</td><td>'+ApArr[j].responseCnt+'</td><td>'+ApArr[j].received+'</td><td>'+ApArr[j].receivedPerc+'</td><td>'+ApArr[j].notReceived+'</td><td>'+ApArr[j].notReceivedPerc+'</td><td>'+ApArr[j].notRegistered+'</td><td>'+ApArr[j].notMemberPerc+'</td></tr>';
+			str+='<tr><td>'+ApArr[j].name+'</td><td>'+ApArr[j].total+'</td><td>'+ApArr[j].answeredCnt+'</td><td>'+ApArr[j].received+'</td><td>'+ApArr[j].receivedPerc+'</td><td>'+ApArr[j].notReceived+'</td><td>'+ApArr[j].notReceivedPerc+'</td><td>'+ApArr[j].notRegistered+'</td><td>'+ApArr[j].notMemberPerc+'</td></tr>';
 			}
 	
  str+='</tbody>';
@@ -586,15 +674,15 @@ $("#apConstTable").dataTable();
 		
 			for(var j in TGArr)
 			{
-				if(TGArr[j].apCount == null)
-					TGArr[j].apCount =0;
+				if(TGArr[j].total == null)
+					TGArr[j].total =0;
 				if(TGArr[j].receivedPerc == null)
 				TGArr[j].receivedPerc = 0.0;
 				if(TGArr[j].notReceived == null)
 				TGArr[j].notReceived = 0.0;
 				if(TGArr[j].notMemberPerc == null)
 				TGArr[j].notMemberPerc = 0.0;
-			str1+='<tr><td>'+TGArr[j].name+'</td><td>'+TGArr[j].apCount+'</td><td>'+TGArr[j].responseCnt+'</td><td>'+TGArr[j].received+'</td><td>'+TGArr[j].receivedPerc+'</td><td>'+TGArr[j].notReceived+'</td><td>'+TGArr[j].notReceivedPerc+'</td><td>'+TGArr[j].notRegistered+'</td><td>'+TGArr[j].notMemberPerc+'</td></tr>';
+			str1+='<tr><td>'+TGArr[j].name+'</td><td>'+TGArr[j].total+'</td><td>'+TGArr[j].answeredCnt+'</td><td>'+TGArr[j].received+'</td><td>'+TGArr[j].receivedPerc+'</td><td>'+TGArr[j].notReceived+'</td><td>'+TGArr[j].notReceivedPerc+'</td><td>'+TGArr[j].notRegistered+'</td><td>'+TGArr[j].notMemberPerc+'</td></tr>';
 			}
 
 		str1+='</tbody>';
@@ -646,15 +734,15 @@ $("#apConstTable").dataTable();
 		str+='<tbody>';
 		for(var j in ApArr)
 		{
-			if(ApArr[j].apCount == null)
-					ApArr[j].apCount =0;
+			if(ApArr[j].total == null)
+					ApArr[j].total =0;
 				if(ApArr[j].receivedPerc == null)
 				ApArr[j].receivedPerc = 0.0;
 				if(ApArr[j].notReceived == null)
 				ApArr[j].notReceived = 0.0;
 				if(ApArr[j].notMemberPerc == null)
 				ApArr[j].notMemberPerc = 0.0;
-			str+='<tr><td>'+ApArr[j].name+'</td><td>'+ApArr[j].apCount+'</td><td>'+ApArr[j].responseCnt+'</td><td>'+ApArr[j].received+'</td><td>'+ApArr[j].receivedPerc+'</td><td>'+ApArr[j].notReceived+'</td><td>'+ApArr[j].notReceivedPerc+'</td><td>'+ApArr[j].notRegistered+'</td><td>'+ApArr[j].notMemberPerc+'</td></tr>';
+			str+='<tr><td>'+ApArr[j].name+'</td><td>'+ApArr[j].total+'</td><td>'+ApArr[j].answeredCnt+'</td><td>'+ApArr[j].received+'</td><td>'+ApArr[j].receivedPerc+'</td><td>'+ApArr[j].notReceived+'</td><td>'+ApArr[j].notReceivedPerc+'</td><td>'+ApArr[j].notRegistered+'</td><td>'+ApArr[j].notMemberPerc+'</td></tr>';
 		
 		}
  str+='</tbody>';
@@ -685,15 +773,15 @@ $("#apConstTable").dataTable();
 		str1+='<tbody>';
 		for(var j in TGArr)
 		{
-			if(TGArr[j].apCount == null)
-					TGArr[j].apCount =0;
+			if(TGArr[j].total == null)
+					TGArr[j].total =0;
 				if(TGArr[j].receivedPerc == null)
 				TGArr[j].receivedPerc = 0.0;
 				if(TGArr[j].notReceived == null)
 				TGArr[j].notReceived = 0.0;
 				if(TGArr[j].notMemberPerc == null)
 				TGArr[j].notMemberPerc = 0.0;
-			str1+='<tr><td>'+TGArr[j].name+'</td><td>'+TGArr[j].apCount+'</td><td>'+TGArr[j].responseCnt+'</td><td>'+TGArr[j].received+'</td><td>'+TGArr[j].receivedPerc+'</td><td>'+TGArr[j].notReceived+'</td><td>'+TGArr[j].notReceivedPerc+'</td><td>'+TGArr[j].notRegistered+'</td><td>'+TGArr[j].notMemberPerc+'</td></tr>';
+			str1+='<tr><td>'+TGArr[j].name+'</td><td>'+TGArr[j].total+'</td><td>'+TGArr[j].answeredCnt+'</td><td>'+TGArr[j].received+'</td><td>'+TGArr[j].receivedPerc+'</td><td>'+TGArr[j].notReceived+'</td><td>'+TGArr[j].notReceivedPerc+'</td><td>'+TGArr[j].notRegistered+'</td><td>'+TGArr[j].notMemberPerc+'</td></tr>';
 		}
 		str1+='</tbody>';
 		str1+='</table>';
@@ -921,10 +1009,13 @@ function dynamicSort(property){
  
  
 	}
+
+	
 </script>
 <script>
-
 getIvrBasicCount();
+getDateWiseIVRCountLoad("AP");
+getDateWiseIVRCountLoad("TS");
 getConstituencyWiseIVRCount();
 getPanchayatWiseIVRCount(0,"AP");
 getPanchayatWiseIVRCount(0,"TG");
@@ -990,6 +1081,10 @@ $( "#amount2" ).html( "Percentage : 0 %");
 $( "#amount3" ).html( "Percentage : 0 %");
 $( "#amount4" ).html( "Percentage : 0 %");
 </script>
-
+<script type="text/javascript">
+$(document).ready(function() {
+  $('input[name="daterange"]').daterangepicker();
+});
+</script>
 </body>
 </html>
