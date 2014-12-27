@@ -1519,7 +1519,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						tdpCadre.setIsRelative("Y");
 						 tdpCadre.setRelationTypeId(cadreRegistrationVO.getRelationTypeId());
 					}
-					
+					boolean noSms = false;
 					if(registrationType != null && (registrationType.equalsIgnoreCase("WEB") || registrationType.equalsIgnoreCase("ONLINE")) && insertType.equalsIgnoreCase("new")){
 						String userId = "0000";
 						if(cadreRegistrationVO.getCreatedUserId() != null){
@@ -1545,7 +1545,18 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					  if(insertType.equalsIgnoreCase("new")){
 							 							 
 						     tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
-						     
+						     if(registrationType.equalsIgnoreCase("TAB")){
+						    	 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+						    	 try{
+						    	 Date lastDate = sdf.parse("2014-12-26");
+						    	 if(tdpCadre.getSurveyTime().compareTo(lastDate) >0){
+						    		 noSms = true;
+						    		 tdpCadre.setIsDeleted("AR");
+						    	 }
+						    	 }catch(Exception e){
+						    		LOG.error(e);
+						    	 }
+						     }
 						       
 								surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
 								//uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
@@ -1757,7 +1768,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					}
 					surveyCadreResponceVO.setStatus("SUCCESS");
 					surveyCadreResponceVO.setResultCode(ResultCodeMapper.SUCCESS);
-					if(insertType.equalsIgnoreCase("new") && cadreRegistrationVO.getMobileNumber() != null && cadreRegistrationVO.getMobileNumber().trim().length() > 0 && cadreRegistrationVO.getRefNo() != null){
+					if(insertType.equalsIgnoreCase("new") && cadreRegistrationVO.getMobileNumber() != null && cadreRegistrationVO.getMobileNumber().trim().length() > 0 && cadreRegistrationVO.getRefNo() != null && !noSms){
 					   //sendSMS(cadreRegistrationVO.getMobileNumber().trim(), "Thank You for registering as TDP cadre.For further queries use Ref No "+cadreRegistrationVO.getRefNo());
 						if(!statusVar){
 								Boolean flag = true;
