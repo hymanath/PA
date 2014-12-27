@@ -88,16 +88,38 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 		Query query = getSession().createQuery(str.toString());
 		return (Long) query.uniqueResult();
 	}
-	public List<Object[]> getIvrCountByDate(Date date)
+	public List<Object[]> getIvrCountForAPAndTS()
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select count(model.cadreIvrResponseId),model.responseKey from CadreIvrResponse model where model.isDeleted = 'N' ");
+		str.append(" group by model.responseKey");
+		Query query = getSession().createQuery(str.toString());
+			
+		return query.list();
+	}
+	public List<Object[]> getIvrCountByDate(Date fromDate,Date toDate,String state)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select count(model.cadreIvrResponseId),model.userAddress.district.districtId,model.responseKey from CadreIvrResponse model where model.isDeleted = 'N' ");
-		if(date != null)
-		str.append(" and date(model.startTime) =:date");
+		if(state.equalsIgnoreCase("AP")){
+			str.append(" and model.userAddress.district.districtId > 10");
+		}else if(state.equalsIgnoreCase("TS")){
+			str
+			.append(" and model.userAddress.district.districtId < 11");
+		}
+		if((fromDate != null && toDate != null) && !fromDate.equals(toDate))
+		str.append(" and date(model.date) >=:fromDate and date(model.date) <=:toDate");
+		else if((fromDate != null && toDate != null) && fromDate.equals(toDate))
+		str.append(" and date(model.date) =:fromDate");
 		str.append(" group by model.userAddress.district.districtId,model.responseKey");
 		Query query = getSession().createQuery(str.toString());
-		if(date != null)
-			query.setDate("date", date);
+		if((fromDate != null && toDate != null) && !fromDate.equals(toDate))
+		{
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+		}
+		if((fromDate != null && toDate != null) && fromDate.equals(toDate))
+		query.setDate("fromDate", fromDate);	
 		return query.list();
 	}
 	
