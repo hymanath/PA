@@ -853,8 +853,15 @@ public interface IConstants {
     public static final String Response = "Response";
     public static final String IVR_SUCCESS_GROUP = "NORMAL_CLEARING";
     public static final String IVR_ERROR_GROUP = "USER_BUSY,NO_ANSWER";
+    public static final Long  received =1l;
+    public static final Long  notReceived = 2l;
+    public static final Long notMember = 3l;
+    public static final String USER_BUSY = "USER_BUSY";
+    public static final String NO_ANSWER = "NO_ANSWER";
+    public static final String NORMAL_CLEARING = "NORMAL_CLEARING";
+    public static final String SWITCH_CONGESTION = "SWITCH_CONGESTION";
     
     
-    
+   
     
 }
