@@ -16,7 +16,14 @@ public class CadreIVRVO implements Serializable, Comparable<CadreIVRVO>{
 	private Long received = 0l;
 	private Long notReceived = 0l;
 	private Long notRegistered = 0l;
+	
 	private Long answeredCnt = 0l;
+	private Long noOption = 0l;
+	private Long wrongOption =0l;
+	private Long userBusy =0l;
+	private Long noAnswer =0l;
+	private Long otherError =0l;
+	private Long switchCongestion =0l;
 	private String currentStatus;
 	private String strDate;
 	private String endDate;
@@ -36,13 +43,179 @@ public class CadreIVRVO implements Serializable, Comparable<CadreIVRVO>{
 	private Double notMemberPerc;
 	private Double answeredPerc;
 	private Long tgCount =0l;
-	
+	private Double noOptionPerc; 
+	private Double wrongOptionPerc;
+	private Double userBusyPerc;
+	private Double noAnswerPerc;
+	private Double switchCongestionPerc;
+	private Double otherErrorPerc;
+	private Long totalError=0l;
+	private Double errorPerc;
 	public CadreIVRVO()
 	{
 		
 	}
 	
+	public Long getSwitchCongestion() {
+		return switchCongestion;
+	}
+
+
+
+
+	public void setSwitchCongestion(Long switchCongestion) {
+		this.switchCongestion = switchCongestion;
+	}
+
+
+
+
+	public Double getSwitchCongestionPerc() {
+		return switchCongestionPerc;
+	}
+
+
+
+
+	public void setSwitchCongestionPerc(Double switchCongestionPerc) {
+		this.switchCongestionPerc = switchCongestionPerc;
+	}
+
+
+
+
+	public Long getTotalError() {
+		return totalError;
+	}
+
+
+
+
+	public void setTotalError(Long totalError) {
+		this.totalError = totalError;
+	}
+
+
+
+
+	public Double getErrorPerc() {
+		return errorPerc;
+	}
+
+
+	public void setErrorPerc(Double errorPerc) {
+		this.errorPerc = errorPerc;
+	}
+
+
+	public Long getNoOption() {
+		return noOption;
+	}
+
+
+	public void setNoOption(Long noOption) {
+		this.noOption = noOption;
+	}
+
+
+	public Long getWrongOption() {
+		return wrongOption;
+	}
+
+
+	public void setWrongOption(Long wrongOption) {
+		this.wrongOption = wrongOption;
+	}
+
+
+	public Long getUserBusy() {
+		return userBusy;
+	}
+
+
+	public void setUserBusy(Long userBusy) {
+		this.userBusy = userBusy;
+	}
+
+
+	public Long getNoAnswer() {
+		return noAnswer;
+	}
+
+
+	public void setNoAnswer(Long noAnswer) {
+		this.noAnswer = noAnswer;
+	}
+
+
 	
+	public Long getOtherError() {
+		return otherError;
+	}
+
+
+
+
+	public void setOtherError(Long otherError) {
+		this.otherError = otherError;
+	}
+
+
+
+
+	public Double getOtherErrorPerc() {
+		return otherErrorPerc;
+	}
+
+
+
+
+	public void setOtherErrorPerc(Double otherErrorPerc) {
+		this.otherErrorPerc = otherErrorPerc;
+	}
+
+
+
+
+	public Double getNoOptionPerc() {
+		return noOptionPerc;
+	}
+
+
+	public void setNoOptionPerc(Double noOptionPerc) {
+		this.noOptionPerc = noOptionPerc;
+	}
+
+
+	public Double getWrongOptionPerc() {
+		return wrongOptionPerc;
+	}
+
+
+	public void setWrongOptionPerc(Double wrongOptionPerc) {
+		this.wrongOptionPerc = wrongOptionPerc;
+	}
+
+
+	public Double getUserBusyPerc() {
+		return userBusyPerc;
+	}
+
+
+	public void setUserBusyPerc(Double userBusyPerc) {
+		this.userBusyPerc = userBusyPerc;
+	}
+
+
+	public Double getNoAnswerPerc() {
+		return noAnswerPerc;
+	}
+
+
+	public void setNoAnswerPerc(Double noAnswerPerc) {
+		this.noAnswerPerc = noAnswerPerc;
+	}
+
 	public Long getTgCount() {
 		return tgCount;
 	}
