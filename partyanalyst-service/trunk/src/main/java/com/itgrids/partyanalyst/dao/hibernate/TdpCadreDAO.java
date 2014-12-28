@@ -3576,4 +3576,16 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			query.setParameterList("userIds", userIds);
 			return query.list();
 		}
+		public Long getTotalRegisterCadreInfoByState(String state){
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append("select count(model.tdpCadreId) from TdpCadre model where model.isDeleted = 'N'  and model.enrollmentYear = 2014 ");
+			queryStr.append(" and  model.userAddress.state.stateId = 1  ");	
+			if(state.equalsIgnoreCase("AP"))
+			queryStr.append(" and model.userAddress.district.districtId > 10");
+			else if(state.equalsIgnoreCase("TS"))
+			queryStr.append(" and model.userAddress.district.districtId < 11");
+			Query query = getSession().createQuery(queryStr.toString());
+			return (Long) query.uniqueResult();
+		}
+		
 }
