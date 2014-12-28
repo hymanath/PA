@@ -22,10 +22,23 @@
 <script type="text/javascript" src="js/bootStrapDateRange/moment.js"></script>
 <script type="text/javascript" src="js/bootStrapDateRange/daterangepicker.js"></script>
  <link rel="stylesheet" type="text/css" href="css/daterangepicker-bs2.css"/>
+ <script src="js/cardsDashBoard/js2.3.2/Chart.js"></script>
+	<script src="js/cardsDashBoard/js2.3.2/Chart.min.js"></script>
 
 
 <title>IVR Report</title>
 <style>
+	.border-none{border:none;}
+	.text-lowercase{text-transform:lowercase;}
+	.text-uppercase{text-transform:uppercase;}
+	.text-capitalize{text-transform:capitalize;}
+	.text-red{color:#dc504a;}
+	.text-green{color:#4dbd74;}
+	.text-orange{color:#f9a834;}
+	.text-skyblue{color:#46acca;}
+	
+	.width25p{width:25% !important;}
+	
 	.border-radius-0{border-radius:0px;}
 	.pad-0{padding:0px;}
 	.m-0{margin:0px;}
@@ -33,8 +46,6 @@
 	.mb-10{margin-bottom:10px}
 	.m_top10{margin-top:10px;}
 	.m_top20{margin-top:20px;}
-	.widgetservey{background:#fafafa; display:block; border:1px solid #cccccc; width:100%; padding:0px 20px 20px 20px;}
-	.widgetservey h4{font-size:26px; font-weight: normal; color:#333; line-height:30px; border-bottom: 1px solid #cccccc;text-align:center; text-transform:uppercase; text-shadow: 0px 1px #4f4f4f;}
 	.Constituency-name-nav>li{padding:0px !important;}
 	.Constituency-name-nav>li a{width:270px;height:80px;color:#333333;display:block; background:#eee;padding:10px !important; border:1px solid #ccc;text-align:center; font-weight:bold; text-transform:uppercase; margin: 5px 0px 0px 0px;text-decoration:none; font-size:14px; display: inline-table;}
 	.Constituency-name-nav>li a:hover{color:#333333; background:#fff !important; border:1px solid #ffcc00;box-shadow:0px 20px 30px #222; background-color:rgb(204,204,204);}
@@ -53,62 +64,83 @@
 </head>
 
 <body>
-
-<div class="container ">	
-   
-		<!-- Title Row -->
+	<div class="container ">	
+	<!-- Title Row -->
 		<div class="row-fluid" id="fadeInDown">
-			<div class="span12 well well-small  border-radius-0 mb-10 ">
+			<div class="span12 well well-small  border-radius-0 mb-0 ">
 				<h3 class="text-center text-uppercase">IVR  STATUS REPORTS DASHBOARD</h3>
 			</div>
 		</div><!-- Title Row End-->
 		
-		<div class="row">
+		<!-- Filters Row -->
+		<div id="fadeInDown" class="row-fluid">
+			<div class="span12 well well-small  border-radius-0 mb-10 ">
+				
+		<ul class="inline" style="margin-bottom: 0px;"><li>
+		<input type="radio" class="radioCls" style="margin-top: -2px;" name="stateradio" value="All" checked> </li>All
+			<li><input type="radio" class="radioCls"  value="AP" name="stateradio" style="margin-top: -2px;"> Andhra Pradesh  </li>
+			
+			<li><input type="radio" class="radioCls"  value="TS" name="stateradio" style="margin-top: -2px;"> Telangana  </li>
+			
+			</ul>
+				<!-----date picker----->
+				<div style="background: none repeat scroll 0% 0% rgb(255, 255, 255); cursor: pointer; padding: 5px 10px; border: 1px solid rgb(204, 204, 204); margin-top: -25px;" class="pull-right" id="daterange">
+                  <i class="icon icon-calendar"></i>
+                  <span id="selectedDate"></span> <b class="caret m_top10"></b>
+               </div><!-----/date picker----->
+			   
+			</div>
+		</div><!-- /Filters Row End-->
+		
+		<!-- Top -->
+		
+			
+		<div class="row" style="clear:both;">
 			<!-----Total In AP & TS ----->
-			<div class="span12" id="APandTsDiv">
-				<img style="height:77px;width:90px;" src="./images/Loading-data.gif" id="ajaxImg" class="offset5"/>
+			<div class="span12">
+			
+				<table class="table table-bordered border-radius-0 mb-0">
+					<tr>
+						<td class="width25p">
+						<img style="height:18px;width:16px;margin-top:80px;" src="./images/icons/search.gif" id="ajaxImg" class="offset1"/>
+						<div id="registrationTD">
+						</div>
+						</td>
+						<td class="width25p " rowspan="2" id="totalIvrTD">
+							
+						</td>
+						<td class="width25p" rowspan="2"  id="successIvrTD">
+							
+						</td>
+						<td class="width25p" rowspan="2" style="230px !important;"  id="errorIvrTD">
+							
+						</td>	
+							
+					</tr>
+					<tr>
+						<td class="width25p" id="printingTD">
+							
+						</td>
+						
+					</tr>
+					
+				</table>
 			</div>	
 			<!----- /Total In AP & TS ----->
 			
-			<!-----Today In AP
-			<div class="span6 m_top20" id="todayApDiv">
-			
-						
-			</div>
-		/Today In AP
-						
-			Today In TS
-			<div class="span6 m_top20" id="todayTGDiv">
-						
-			</div>
-			<!----- /Today In TS ----->
-			
-			<!------ Total in AP ------->
-			<!-- date range
-		 <div style="overflow: auto" class="well">
-
-				 <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-				    <i class="icon-calendar pull-right"></i>
-                <span id="selectedDate"></span> 
-               </div>
-
-
-            </div>	
-           
-		date range end-->
-			<div class="span6 m_top20" style="outline:6px solid rgb(223, 240, 216);clear:both;" id="ApDataDiv">
-			 
-				 <div id="APreportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                <!--  <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>-->
-				   <i class="icon-calendar pull-left"></i>
-                <span id="APselectedDate"></span> 
+		</div>	
+		
+		<!-- Top Div End -->
+		<div class="row">
+			<!-----Total In AP & TS ----->
+			<div class="span12" id="APandTsDiv">
 				
-		 </div>	
-           
-			<div id="ApTotalDiv" style="clear:both;">
-				<img style="width:20px;" src="./images/icons/search.gif" id="apcntImg" class="offset3"/>
-				</div>
+			</div>	
+			<!----- /Total In AP & TS ----->
+			
+	
+			<div class="span6 m_top20" style="outline:6px solid rgb(223, 240, 216);clear:both;" id="ApDataDiv">
+		
 				<!-----TS Constituency wise ------>
 				<h4 class="alert alert-info text-center border-radius-0 m-0">AP DISTRICT WISE DETAILS</h4>
 				<div style="overflow: auto; height: 300px ! important;" id="APdistrictableDiv" >
@@ -148,16 +180,7 @@
 			
 			<!-------Total in TS------>
 			<div class="span6 m_top20" style="outline:6px solid rgb(223, 240, 216);" id="TGDataDiv">
-			 <div id="TSreportrange" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                <!--  <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>-->
-				   <i class="icon-calendar pull-left"></i>
-                <span id="TSselectedDate"></span> 
-				
-		 </div>	
-           
-				<div id="TGTotalDiv" style="clear:both;">
-					<img style="width:20px;" src="./images/icons/search.gif" id="tgcntImg" class="offset3"/>
-				</div>
+			
 				<!-----TS Constituency wise ------>
 				<h4 class="alert alert-info text-center border-radius-0 m-0">TS DISTRICT WISE DETAILS</h4>
 				<div style="overflow: auto;height: 300px ! important;" id="TGdistrictableDiv" >
@@ -201,11 +224,14 @@
 <script>
 
 	 $(document).ready(function() {
-			 	 
-				   var cb = function(start, end, label) {
+			 dateRange();	 
+	 });
+	function dateRange()
+	{
+		 var cb = function(start, end, label) {
                    console.log(start.toISOString(), end.toISOString(), label);
-                    $('#APreportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-					 $('#TSreportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                    $('#daterange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+					
 				  }
 
                   var optionSet1 = {
@@ -217,7 +243,7 @@
                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')]
                        
                     },
-                    opens: 'right',
+                    opens: 'left',
 					format: 'MM/DD/YYYY',
                     separator: ' to ',
                     locale: {
@@ -231,24 +257,19 @@
                         firstDay: 1
                     }
                   };
-				  $('#APreportrange').daterangepicker(optionSet1, cb);
-				  $('#TSreportrange').daterangepicker(optionSet1, cb);
-					 $('#APreportrange').on('show.daterangepicker', function() { 
-					   $('#APreportrange span').html(moment().format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+				  $('#daterange').daterangepicker(optionSet1, cb);
+				 
+					 $('#daterange').on('show.daterangepicker', function() { 
+					   $('#daterange span').html(moment().format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
 					 
 					  console.log("show event fired"); });
-					   $('#TSreportrange').on('show.daterangepicker', function() { 
-					   $('#TSreportrange span').html(moment().format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
-					 
-					  console.log("show event fired"); });
+					   
 
-                  $('#APreportrange').on('hide.daterangepicker', function() { 
-					    getDateWiseIVRCount('AP');
+                  $('#daterange').on('hide.daterangepicker', function() { 
+					    getDateWiseIVRCount();
 					  console.log("hide event fired"); });
-				   $('#TSreportrange').on('hide.daterangepicker', function() { 
-					    getDateWiseIVRCount('TS');
-					   console.log("hide event fired"); });
-                  $('#APreportrange').on('apply.daterangepicker', function(ev, picker) { 
+				
+                  $('#daterange').on('apply.daterangepicker', function(ev, picker) { 
 					   
                     console.log("apply event fired, start/end dates are " 
                       + picker.startDate.format('MMMM D, YYYY') 
@@ -256,122 +277,19 @@
                       + picker.endDate.format('MMMM D, YYYY')
                     ); 
                   });
-				   $('#TSreportrange').on('apply.daterangepicker', function(ev, picker) { 
-                    console.log("apply event fired, start/end dates are " 
-                      + picker.startDate.format('MMMM D, YYYY') 
-                      + " to " 
-                      + picker.endDate.format('MMMM D, YYYY')
-                    ); 
-                  });
-                  $('#APreportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
-				   $('#TSreportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
-				$("#APselectedDate").html(''); 
-				$("#TSselectedDate").html(''); 
-			 });
-	function getDateWiseIVRCount(state)
-	{
-
-		var selectedDate ;
-		if(state == 'AP')
-		{
-		
-		selectedDate = $("#APselectedDate").text().split('-'); 
-		$("#apcntImg").show();
-		}
-		else
-		{
-	
-		selectedDate = $("#TSselectedDate").text().split('-'); 
-		$("#tgcntImg").show();
-		}
-		var fromDate = selectedDate[0];
-		var toDate = selectedDate[1];
-		var jsObj = {
-			state:state,
-			fromdate:fromDate,
-			todate:toDate,
-			task:"datewiseBasicCnt"             
-		}
-			   
-		$.ajax({
-			type : "POST",
-			url : "getCadreIVRBasicInfoAction.action",
-			data : {task:JSON.stringify(jsObj)} ,
-		}).done(function(result){
-			
-			buildIvrCountByDate(result,state);
-		});
-	}
-	function getDateWiseIVRCountLoad(state)
-	{
-		if(state=="AP")
-		$("#apcntImg").show();
-		if(state=="TS")
-		$("#tgcntImg").show();
-		var fromDate ="";
-		var toDate = "";
-		var jsObj = {
-			state:state,
-			fromdate:fromDate,
-			todate:toDate,
-			task:"datewiseBasicCnt"             
-		}
-			   
-		$.ajax({
-			type : "POST",
-			url : "getCadreIVRBasicInfoAction.action",
-			data : {task:JSON.stringify(jsObj)} ,
-		}).done(function(result){
-			
-			buildIvrCountByDate(result,state);
-		});
+				 
+                  $('#daterange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
+			$("#selectedDate").html(''); 
+				
 	}
 
-function buildIvrCountByDate(result,state)
-	{
-		if(state=="AP")
-		{
-		$("#apcntImg").hide();
-		$("#ApTotalDiv").html('');
-		}
-		if(state=="TS")
-		{
-		$("#tgcntImg").hide();
-		$("#TGTotalDiv").html('');
-		}
+		$(".radioCls").click(function() {
 		
-		var str ='';
-		var totalInfo = result[0];
-		var str = '';
-		str+='<table class="table table-bordered border-radius-0 mb-0 table-condensed">';
-		str+='<tr class="alert alert-success">';
-		str+='<td rowspan="4" style="text-align: center;">';
-		if(state == 'AP' )
-		str+='<img style="width:70px" src="./images/AP.png">';
-		else
-		str+='<img style="width:70px" src="./images/TS.png">';
-		if(state == 'AP' )
-		str+='<h4 >Total In AP <br>'+ totalInfo.count+'  <br><small>Members Registered </small> <hr style="margin-top: 5px; margin-bottom: 5px;">IVR Calls<br>'+totalInfo.answeredCnt +' <br><small>Answered</small>	</h4>';
-		else
-		str+='<h4 >Total In TS <br>'+ totalInfo.tgCount+'  <br><small>Members Registered </small> <hr style="margin-top: 5px; margin-bottom: 5px;">IVR Calls<br>'+totalInfo.answeredCnt +' <br><small>Answered</small>	</h4>';
-		str+='</td>';
-		str+='</tr>';
-		str+='<tr>';
-		str+='<td><h5>'+totalInfo.received+'</h5><p>Cards  <span class="text-orange">Received</span></p></td>';
-		str+='</tr>';
-		str+='<tr>';
-		str+='<td><h5>'+totalInfo.notReceived+'</h5><p>Cards  <span class="text-orange">Not Received</span></p></td>	';
-		str+='</tr>';
-		str+='<tr>';
-		str+='<td><h5>'+totalInfo.notRegistered+'</h5><p>Not Registered Member Phone Numbers</p></td>';	
-		str+='</tr>';
-		str+='</table>';
-		if(state == 'AP' )
-		$("#ApTotalDiv").html(str);
-		if(state == 'TS')
-		$("#TGTotalDiv").html(str);
-	}
-	
+			 dateRange();
+			getIvrBasicCount();
+			getDateWiseIVRCount();
+			$("#selectedDate").html('');
+		});
 		function getIvrCount()
 		{
 			
@@ -527,9 +445,13 @@ function buildIvrCountByDate(result,state)
 	}
 	function getIvrBasicCount()
 	{
-		 $("#ajaxImg").show();
+		$("#ajaxImg").show();
+		$("#printingTD").html('');
+		$("#registrationTD").html('');
+		var radioVal = $('input[name=stateradio]:checked').val();
 		
 			var jsObj = {	
+			state:radioVal,
 			task:"basicCnt"             
 		}
 			   
@@ -538,39 +460,296 @@ function buildIvrCountByDate(result,state)
 			url : "getCadreIVRBasicInfoAction.action",
 			data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
-			 $("#ajaxImg").hide();
-			
-			buildIvrCount(result);
+		buildIvrCount(result,radioVal);
 		});
 	}
-	function buildIvrCount(result)
+	function buildIvrCount(result,state)
 	{
-		$("#APandTsDiv").html('');
+	$("#ajaxImg").hide();
+	
 		var str ='';
-		var basicInfo = result[0] ;
-		var totalInfo = result[1];
-		var totalRegistered = basicInfo.count + basicInfo.tgCount;
-		var pending  = totalRegistered - basicInfo.printingCompleted;
-		var ivrError = totalInfo.total - totalInfo.answeredCnt;
-		str+='<table class="table table-bordered border-radius-0 mb-0 table-hover">';
-		str+='<tr>';
-		str+='<td>';
-		str+='<h2 >AP &nbsp;& TS</h2>';
-		str+='</td>';
-		str+='<td><h2 id="totalRegCntId"> '+totalRegistered +'</h2><p>Total Members Registered </p></td>';
-		str+='<td><h2 id="printedId">'+basicInfo.printingCompleted+'</h2><p>Cards <b>Printed</b> <br><span class="text-red" id="pendingId">'+pending+'</span> Pending</p>';
-		str+='<hr style="margin-top: 0px; margin-bottom: 0px;" id="readyIvrId"> Ready For IVR calls '+basicInfo.ivrReady+'</td>';
-		str+='<td><h5 class="mb-0" id="totalIvrId"> '+totalInfo.total+'<br><small>Dialed IVR Calls</small></h5>';
-		str+='<hr style="margin-top: 0px; margin-bottom: 0px;"><h2 class="m-0" id="answerIvrId">'+totalInfo.answeredCnt+'</h2><p class="mb-0"><b>IVR</b> Calls<span class="text-success"> Answered </span></p><hr style="margin-top: 0px; margin-bottom: 0px;"> <span class="text-error">IVR Errors- </span><p>'+ivrError+'</p></td>';
-		str+='<td><h2 id="receivedId">'+totalInfo.received+'</h2><p>Cards  <span class="text-orange">Received</span></p></td>	';
-		str+='<td><h2 id="notreceivedId">'+totalInfo.notReceived+'</h2><p>Cards  <span class="text-orange">Not Received</span></p></td>';	
-		str+='<td><h2 id="notRegisteredId">'+totalInfo.notRegistered +'</h2><p>Not Registered Member Phone Numbers</p></td>	';
-		str+='</tr>';
-		str+='</table>';
+		
+		str+='<canvas id="printPercChart" style=" float:left;margin-top: 20px;" width="120px"; height=" 120px"; ></canvas>';
+		str+='<div  style="float:right; margin-top: 0px;">';
+		str+='<h4 class="m-0">'+result.count+'</h4>';
+		if(state == "All")
+		str+='<p class="m-0" >Members Registered in <br> Andhra Pradesh And <br>Telangana</p>';
+		else if(state == "AP")
+		str+='<p class="m-0" >Members Registered in <br> Andhra Pradesh </p>';
+		else if(state == "TS")
+		str+='<p class="m-0" >Members Registered in <br> Telangana</p>';
+		str+='</div>';
+		$("#registrationTD").html(str);
+		var str1='';
+		str1+='<canvas id="piep" style="float:left;margin-top: 20px;" height="120px" width="120px"></canvas>';
+		str1+='<div  style="float:right; margin-top: 0px;">';
+		str1+='<h4 class="m-0">'+result.printingCompleted+'</h4>';
+		if(state == "All")
+		str1+='<p class="m-0" >Cards Printed in <br> Andhra Pradesh And <br>Telangana</p>';
+		else if(state == "AP")
+		str1+='<p class="m-0" >Cards Printed in <br> Andhra Pradesh </p>';
+		else if(state == "TS")
+		str1+='<p class="m-0" >Cards Printed in <br> Telangana</p>';
+		str1+='</div>';
+		$("#printingTD").html(str1);
+		
+		
+		showPieChart1(result);
+	}
+	function showPieChart1(result){
+		var ivrReadyPerc = (result.ivrReady / result.printingCompleted * 100);
+		var totalIvrPerc = (result.total / result.printingCompleted * 100);
+		var printingPerc = (result.printingCompleted / result.count * 100);
+		
+		options = {
+		
+        animateRotate : false,
+        animateScale : false,
+			   
+		 onAnimationProgress: function()
+        {
+            this.showTooltip(this.segments, true);			
+        },
+        tooltipEvents: [],
+		tooltipYPadding:2,
+		tooltipXPadding: 2,
+		tooltipXOffset: 1000,
+		tooltipYOffset: 1000,   
+		tooltipFillColor: "rgba(0,0,0,0.5)",
+		tooltipCaretSize: 8,
+		tooltipCornerRadius:0,
+		tooltipFontSize: 12,
+		tooltipFontStyle: "normal",
+        showTooltips: true
+  
+        };
+		
 
-		$("#APandTsDiv").html(str);
+		
+		var data = [
+		{
+        value: ivrReadyPerc,
+        color:"#D14741",
+        //highlight: "#D7C482",
+        label: "Send To IVR",
+		labelFontSize: '8'
+		},
+		{
+        value: totalIvrPerc,
+        color: "#5CB65C",
+        //highlight: "#FF5A5E",
+        label: "Avail for IVR",
+		labelFontSize: '8'
+		},
+		/*{
+        value: 20,
+        color: "#0B3B0B",
+        //highlight: "#859D85",
+        label: "printed",
+		labelFontSize: '8'
+		}*/
+		
+	]
+
+	var data1=[ 
+	{value: printingPerc,
+        color:"#5CB65C",
+        //highlight: "#D7C482",
+        label: "Cards Printed",
+		labelFontSize: '8'
+		}
+		
+		]
+		
+		
+	  ctx = $("#piep").get(0).getContext("2d");
+	  myNewChart = new Chart(ctx).Doughnut(data,options);
+	   ctx = $("#printPercChart").get(0).getContext("2d");
+	  myNewChart = new Chart(ctx).Doughnut(data1,options);
+	  
+	  }
+	  
+	  function getDateWiseIVRCount()
+	{
+		$("#successIvrTD").html('');
+		$("#errorIvrTD").html('');
+		$("#totalIvrTD").html('');
+		var radioVal = $('input[name=stateradio]:checked').val();
+		var fromDate ='';
+		var toDate ='';
+		var selectedDate = $("#selectedDate").text().split('-');
+		if(selectedDate != '')
+		{
+		 fromDate = selectedDate[0];
+		 toDate = selectedDate[1];
+		}
+		var jsObj = {
+			state:radioVal,
+			fromdate:fromDate,
+			todate:toDate,
+			task:"datewiseBasicCnt"             
+		}
+			   
+		$.ajax({
+			type : "POST",
+			url : "getCadreIVRCountByDateAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			
+			buildIvrCountByDate(result,state);
+		});
 	}
 	
+
+function buildIvrCountByDate(result,state)
+	{
+		var answerPerc = result[0].answeredPerc ;
+		var errorPerc = (result[0].totalError / result[0].total * 100);
+		
+		var str ='';
+		str+='<canvas id="answerErrorChart" style="width: 180px; height: 180px; margin-left:20px;"></canvas>';
+		str+='<div class="text-center">';
+		str+='<h2 class="m-0">'+result[0].total+'</h2>';
+		str+='<p>Calls IVR Total <br>Dailled</p>';
+		str+='</div>';
+		$("#totalIvrTD").html(str);
+		options = {
+		
+        animateRotate : false,
+        animateScale : false,
+			   
+		 onAnimationProgress: function()
+        {
+            this.showTooltip(this.segments, true);			
+        },
+        tooltipEvents: [],
+		tooltipYPadding:2,
+		tooltipXPadding: 2,
+		tooltipXOffset: 1000,
+		tooltipYOffset: 1000,   
+		tooltipFillColor: "rgba(0,0,0,0.5)",
+		tooltipCaretSize: 8,
+		tooltipCornerRadius:0,
+		tooltipFontSize: 12,
+		tooltipFontStyle: "normal",
+        showTooltips: true
+  
+        };
+	  var data =[
+		{
+		value: answerPerc,
+        color:"#5CB65C",
+        //highlight: "#D7C482",
+        label: "IVR Answered",
+		labelFontSize: '8'
+		},
+			{
+		value: errorPerc,
+        color:"#D14741",
+        //highlight: "#D7C482",
+        label: "IVR Error",
+		labelFontSize: '8'
+		},
+		
+		]
+		
+		 ctx = $("#answerErrorChart").get(0).getContext("2d");
+	     myNewChart = new Chart(ctx).Doughnut(data,options);
+		buildProgressBarIVR(result);
+	}
+	function buildProgressBarIVR(result)
+	{
+		
+	if(result[0].receivedPerc == null)
+		result[0].receivedPerc =0;
+	if(result[0].notReceivedPerc == null)
+		result[0].notReceivedPerc =0;
+	if(result[0].notMemberPerc == null)
+		result[0].notMemberPerc =0;
+	if(result[0].wrongOptionPerc == null)
+		result[0].wrongOptionPerc =0;
+	if(result[0].noOptionPerc == null)
+		result[0].noOptionPerc =0;
+	if(result[0].otherErrorPerc == null)
+		result[0].otherErrorPerc =0;
+	if(result[0].noAnswerPerc== null)
+		result[0].noAnswerPerc=0;
+	if(result[0].userBusyPerc == null)
+		result[0].userBusyPerc = 0;
+	if(result[0].switchCongestionPerc == null)
+		result[0].switchCongestionPerc = 0;
+	var selectedOptPerc = 100 - result[0].noOptionPerc;
+	var str='';
+	str+='<div class="row-fluid">';
+	str+='<h4 class="m-0" style="border-bottom: 1px solid rgb(204, 204, 204); padding-bottom: 10px;color:#5cb55c;">ANSWERED CALLS</h4>';
+	str+='<h6>Selected Any Option : '+selectedOptPerc+' %</h6>';
+	str+='<ul class="unstyled">';
+	str+='<li>';
+	str+='<b>Cards Received <span>&nbsp;&nbsp;'+result[0].receivedPerc+'%</span></b>';
+	str+='<div style="height:5px;" class="progress progress-success mb-10">';
+	str+='<div class="bar" style="width: '+result[0].receivedPerc+'%"></div>';
+	str+='</div>';
+	str+='</li>';
+	str+='<li>';
+	str+='<b>Cards Not Received<span>&nbsp;&nbsp;'+result[0].notReceivedPerc+'%</span></b>';
+	str+='<div style="height:5px;" class="progress progress-danger mb-10">';
+	str+='<div class="bar" style="width: '+result[0].notReceivedPerc+'%"></div>';
+	str+='</div>';
+	str+='</li>';
+	str+='<li>';
+	str+='<b>Not Registered Member Phone Numbers<span>&nbsp;&nbsp;'+result[0].notMemberPerc+'%</span></b>';
+	str+='<div style="height:5px;" class="progress progress-info mb-10">';
+	str+='<div class="bar" style="width: '+result[0].notMemberPerc+'%"></div>';
+	str+='</div>';
+	str+='</li>';
+	str+='<li>';
+	str+='<b>Wrong option selected <span>&nbsp;&nbsp;'+result[0].wrongOptionPerc+'%</span></b>';
+	str+='<div style="height:5px;" class="progress progress-warning mb-10">';
+	str+='<div class="bar" style="width: '+result[0].wrongOptionPerc+'%"></div>';
+	str+='</div>';
+	str+='</li>';
+	str+='<hr style="border:2px;">';
+	str+='<li>';
+	str+='<b>Not selected any option<span>&nbsp;&nbsp;'+result[0].noOptionPerc+'%</span></b>';
+	str+='<div style="height:5px;" class="progress progress-muted mb-10">';
+	str+='<div class="bar" style="width: '+result[0].noOptionPerc+'%"></div>';
+	str+='</div>';
+	str+='</li>';
+	str+='</ul>';
+	str+='</div>';
+	$("#successIvrTD").html(str);
+	var str1='';
+	str1+='<div class="row-fluid">';
+	str1+='<h4 class="m-0" style="border-bottom: 1px solid rgb(204, 204, 204); padding-bottom: 10px;color:#d54a45;">IVR ERROR CALLS</h4>';
+	str1+='<ul class="unstyled">';
+	str1+='<li>';
+	str1+='<b>User Busy  <span>&nbsp;&nbsp;'+result[0].userBusyPerc+'%</span></b>';
+	str1+='<div style="height:5px;" class="progress progress-success mb-10">';
+	str1+='<div class="bar" style="width: '+result[0].userBusyPerc+'%"></div>';
+	str1+='</div>';
+	str1+='</li>';
+	str1+='<li>';
+	str1+='<b>No Answer<span>&nbsp;&nbsp;'+result[0].noAnswerPerc+'%</span></b>';
+	str1+='<div style="height:5px;" class="progress progress-warning mb-10">';
+	str1+='<div class="bar" style="width: '+result[0].noAnswerPerc+'%"></div>';
+	str1+='</div>';
+	str1+='</li>';
+	str1+='<li>';
+	str1+='<b>Switch Congestion <span>&nbsp;&nbsp;'+result[0].switchCongestionPerc+'%</span></b>';
+	str1+='<div style="height:5px;" class="progress progress-danger mb-10">';
+	str1+='<div class="bar" style="width: '+result[0].switchCongestionPerc+'%"></div>';
+	str1+='</div>';
+	str1+='</li>';
+	str1+='<li>';
+	str1+='<b>Other <span>&nbsp;&nbsp;'+result[0].otherErrorPerc+'%</span></b>';
+	str1+='<div style="height:5px;" class="progress progress-danger mb-10">';
+	str1+='<div class="bar" style="width: '+result[0].otherErrorPerc+'%"></div>';
+	str1+='</div>';
+	str1+='</li>';
+	str1+='</ul>';
+	str1+='</div>';
+	$("#errorIvrTD").html(str1);
+	}
 	function getConstituencyWiseIVRCount()
 	{
 		$("#tgConstImg").show();
@@ -1010,12 +1189,12 @@ function dynamicSort(property){
  
 	}
 
+
 	
 </script>
 <script>
 getIvrBasicCount();
-getDateWiseIVRCountLoad("AP");
-getDateWiseIVRCountLoad("TS");
+getDateWiseIVRCount();
 getConstituencyWiseIVRCount();
 getPanchayatWiseIVRCount(0,"AP");
 getPanchayatWiseIVRCount(0,"TG");
@@ -1081,10 +1260,7 @@ $( "#amount2" ).html( "Percentage : 0 %");
 $( "#amount3" ).html( "Percentage : 0 %");
 $( "#amount4" ).html( "Percentage : 0 %");
 </script>
-<script type="text/javascript">
-$(document).ready(function() {
-  $('input[name="daterange"]').daterangepicker();
-});
-</script>
+
+
 </body>
 </html>

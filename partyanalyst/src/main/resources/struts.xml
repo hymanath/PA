@@ -9225,7 +9225,7 @@
 		</action>
 		<action name="getCadreIVRBasicInfoAction" class="tdpCadreReportAction" method="getCadreIVRBasicInfo">
 			<result type="json" name="success">
-				<param name="root">ivrVOList</param>
+				<param name="root">cadreIVRVO</param>
 			</result>
 		</action>
 		<action name="getConstituencyWiseIVRAction" class="tdpCadreReportAction" method="getConstituencyWiseIVR">
@@ -9241,6 +9241,11 @@
 		<action name="getPanchayatWiseIVRAction" class="tdpCadreReportAction" method="getPanchayatWiseIVR">
 			<result type="json" name="success">
 				<param name="root">cadreIVRResponseVO</param>
+			</result>
+		</action>
+				<action name="getCadreIVRCountByDateAction" class="tdpCadreReportAction" method="getCadreIVRCount">
+			<result type="json" name="success">
+				<param name="root">ivrVOList</param>
 			</result>
 		</action>
 </package>
