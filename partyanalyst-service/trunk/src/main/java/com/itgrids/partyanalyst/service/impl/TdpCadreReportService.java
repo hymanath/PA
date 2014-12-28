@@ -4068,25 +4068,23 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		
 	}*/
 	
-	public CadreIVRVO getIvrDashBoardBasicInfo(){
+	public CadreIVRVO getIvrDashBoardBasicInfo(String state){
 		CadreIVRVO returnVo  = new CadreIVRVO();
 		try{
 		DateUtilService date = new DateUtilService();
 	    Calendar calender = Calendar.getInstance();
 	    calender.setTime(date.getCurrentDateAndTime());
 	    calender.set(Calendar.DAY_OF_MONTH,  calender.get(Calendar.DAY_OF_MONTH)-7);
-	    
-		CadreRegisterInfo info =  cadreDashBoardService.getTotalRegisterCadreInfo();
-		returnVo.setCount(info.getApCount());
-		returnVo.setTgCount(info.getTgCount());
+	    Long count =  getTotalRegisterCadreInfoByState(state);
+		returnVo.setCount(count != null ? count : 0l);
 		
-		Long ivrCompleted = cadreIvrResponseDAO.getTotalIvrCount();
+		Long ivrCompleted = cadreIvrResponseDAO.getTotalIvrCount(state);
 		returnVo.setTotal(ivrCompleted != null ? ivrCompleted : 0l);
 		
-		Long printingCompletedCnt = zebraPrintDetailsDAO.getPrintingCompletedCount();
+		Long printingCompletedCnt = zebraPrintDetailsDAO.getPrintingCompletedCount(state);
 		returnVo.setPrintingCompleted(printingCompletedCnt != null ? printingCompletedCnt :0l);
 		
-		Long IvrReadyCount = zebraPrintDetailsDAO.getIvrReadyCount(calender.getTime()) ;
+		Long IvrReadyCount = zebraPrintDetailsDAO.getIvrReadyCount(calender.getTime(),state) ;
 		returnVo.setIvrReady(IvrReadyCount != null ? IvrReadyCount : 0l);
 		 // IVR Ready count calculation
 		returnVo.setIvrReady(returnVo.getIvrReady() - returnVo.getTotal());
@@ -4099,85 +4097,9 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		return returnVo;
 		 
 	}
-	public List<CadreIVRVO> getIvrDashBoardCounts(){
-	
-			List<CadreIVRVO> returnResult = new ArrayList<CadreIVRVO>();
-			try{
-			DateUtilService dateService = new DateUtilService();
-			Date currentDate = dateService.getCurrentDateAndTime();
-			CadreIVRVO basicInfo = getIvrDashBoardBasicInfo();
-			CadreIVRVO ivrInfo = new CadreIVRVO();
-			List<Object[]> list = cadreIvrResponseDAO.getIvrCountForAPAndTS();
-			if(list != null && list.size() > 0)
-			{
-				for(Object[] params : list)
-				{
-				ivrInfo.setTotal(ivrInfo.getTotal() + (Long)params[0]);
-				if(params[1] != null && params[1].toString().equalsIgnoreCase("1")) // response key is 1 //received
-					ivrInfo.setReceived((Long)params[0]);
-				else if(params[1] != null && params[1].toString().toString().equalsIgnoreCase("2"))
-					ivrInfo.setNotReceived((Long)params[0]);
-				else if(params[1] != null && params[1].toString().toString().equalsIgnoreCase("3"))
-					ivrInfo.setNotRegistered((Long)params[0]);
-					ivrInfo.setAnsweredCnt(ivrInfo.getReceived() + ivrInfo.getNotReceived() + ivrInfo.getNotRegistered());
-					if(ivrInfo.getAnsweredCnt() > 0)
-					{
-						ivrInfo.setReceivedPerc(new BigDecimal((ivrInfo.getReceived()*100/ivrInfo.getAnsweredCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-						ivrInfo.setNotReceivedPerc(new BigDecimal((ivrInfo.getNotReceived()*100/ivrInfo.getAnsweredCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-						ivrInfo.setNotMemberPerc(new BigDecimal((ivrInfo.getNotRegistered()*100/ivrInfo.getAnsweredCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-					}
-				}
-			}
-			returnResult.add(basicInfo);
-		    returnResult.add(ivrInfo);
-			}
-			catch(Exception e)
-			{
-				LOG.error("Exception rised in getIvrDashBoardCounts", e);	
-			}
-		     return returnResult;
-		}
+
 		
-	public CadreIVRVO setIVRBasicInfo(Date fromDate,Date toDate,String state)
-	{
-		CadreIVRVO returnVo = new CadreIVRVO();
-		Long ivrCount = 0l;
-		Long receivedCount = 0l;
-		Long notReceivedCount = 0l;
-		Long notregisteredCount = 0l;
-		try{
-			
-			List<Object[]> districtWiseCount = cadreIvrResponseDAO.getIvrCountByDate(fromDate,toDate,state);
-			if(districtWiseCount != null && districtWiseCount.size() > 0)
-			{
-				for(Object[] districtCount:districtWiseCount){
-					ivrCount = ivrCount+(Long)districtCount[0];
-						if(districtCount[2] != null && districtCount[2].toString().equalsIgnoreCase("1")) // response key is 1 //received
-							receivedCount = receivedCount +  (Long)districtCount[0];
-						else if(districtCount[2] != null && districtCount[2].toString().equalsIgnoreCase("2"))
-							notReceivedCount = notReceivedCount + 	 (Long)districtCount[0];
-						else if(districtCount[2] != null && districtCount[2].toString().equalsIgnoreCase("3"))
-							notregisteredCount = notregisteredCount + 	 (Long)districtCount[0];	
-				}
-			}
-			returnVo.setTotal(ivrCount);
-			returnVo.setReceived(receivedCount);
-			returnVo.setNotReceived(notReceivedCount);
-			returnVo.setNotRegistered(notregisteredCount);
-			returnVo.setAnsweredCnt(returnVo.getReceived() + returnVo.getNotReceived() + returnVo.getNotRegistered());
-			if(returnVo.getAnsweredCnt() > 0)
-			{
-				returnVo.setReceivedPerc(new BigDecimal((returnVo.getReceived()*100/returnVo.getAnsweredCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-				returnVo.setNotReceivedPerc(new BigDecimal((returnVo.getNotReceived()*100/returnVo.getAnsweredCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-				returnVo.setNotMemberPerc(new BigDecimal((returnVo.getNotRegistered()*100/returnVo.getAnsweredCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-			}
-		}
-		catch(Exception e)
-		{
-			LOG.error("Exception rised in setIVRBasicInfo", e);	
-		}
-		return returnVo;
-	}
+	
 
 	
 	public List<CadreIVRVO> getConstituencyWiseIVR()
@@ -4522,28 +4444,168 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					   return (loc2.getNotReceivedPerc().compareTo(loc1.getNotReceivedPerc()));
 					}
 			 };
-			 public List<CadreIVRVO> getIvrDashBoardCountsByDate(String fromDate,String toDate,String state)
-			 {
-				 List<CadreIVRVO> returnList = new  ArrayList<CadreIVRVO>();
-				 CadreIVRVO cadreInfo = new CadreIVRVO();
-				 Date strDate = null;
-				 Date endDate = null;
-				 try{
-					 SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy");
-					 if(!fromDate.isEmpty())
-					 strDate = format.parse(fromDate.trim());
-					 if(!toDate.isEmpty())
-					 endDate = format.parse(toDate.trim());
-					 cadreInfo = setIVRBasicInfo(strDate,endDate,state); 
-					 CadreRegisterInfo info =  cadreDashBoardService.getTotalRegisterCadreInfo();
-					 cadreInfo.setCount(info.getApCount());
-					 cadreInfo.setTgCount(info.getTgCount());
-					 returnList.add(cadreInfo);
-				 }
-				 catch(Exception e)
+			
+			 
+			 public Long getTotalRegisterCadreInfoByState(String state){
+				
+				 Long count =0l;
+					try{
+					count = tdpCadreDAO.getTotalRegisterCadreInfoByState(state);
+				
+					}catch(Exception e){
+						LOG.error("Exception rised in getTotalRegisterCadreInfo", e);
+					}
+					
+					return count;
+				}
+			 
+			 	public List<CadreIVRVO> getIvrCountForDashBoard(){
+				
+						List<CadreIVRVO> returnResult = new ArrayList<CadreIVRVO>();
+						try{
+						DateUtilService dateService = new DateUtilService();
+						Date currentDate = dateService.getCurrentDateAndTime();
+						CadreIVRVO ivrInfo = new CadreIVRVO();
+						List<Object[]> list = cadreIvrResponseDAO.getIvrCountForAPAndTS();
+						if(list != null && list.size() > 0)
+						{
+							for(Object[] params : list)
+							{
+							ivrInfo.setTotal(ivrInfo.getTotal() + (Long)params[0]);
+							if(params[1] != null && params[1].toString().equalsIgnoreCase("1")) // response key is 1 //received
+								ivrInfo.setReceived((Long)params[0]);
+							else if(params[1] != null && params[1].toString().toString().equalsIgnoreCase("2"))
+								ivrInfo.setNotReceived((Long)params[0]);
+							else if(params[1] != null && params[1].toString().toString().equalsIgnoreCase("3"))
+								ivrInfo.setNotRegistered((Long)params[0]);
+								ivrInfo.setAnsweredCnt(ivrInfo.getReceived() + ivrInfo.getNotReceived() + ivrInfo.getNotRegistered());
+								if(ivrInfo.getAnsweredCnt() > 0)
+								{
+									ivrInfo.setReceivedPerc(new BigDecimal((ivrInfo.getReceived()*100/ivrInfo.getAnsweredCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+									ivrInfo.setNotReceivedPerc(new BigDecimal((ivrInfo.getNotReceived()*100/ivrInfo.getAnsweredCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+									ivrInfo.setNotMemberPerc(new BigDecimal((ivrInfo.getNotRegistered()*100/ivrInfo.getAnsweredCnt())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+								}
+							}
+						}
+						returnResult.add(ivrInfo);
+						}
+						catch(Exception e)
+						{
+							LOG.error("Exception rised in getIvrDashBoardCounts", e);	
+						}
+					     return returnResult;
+					}
+				
+			 	public List<CadreIVRVO> getIvrDashBoardCountsByDate(String fromDate,String toDate,String state)
 				 {
-					 LOG.error("Exception rised in getIvrDashBoardCountsByDate() ",e);	 
+					 List<CadreIVRVO> returnList = new  ArrayList<CadreIVRVO>();
+					 CadreIVRVO cadreInfo = new CadreIVRVO();
+					 Date strDate = null;
+					 Date endDate = null;
+					 try{
+						 SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy");
+						 if(!fromDate.isEmpty())
+						 strDate = format.parse(fromDate.trim());
+						 if(!toDate.isEmpty())
+						 endDate = format.parse(toDate.trim());
+						 cadreInfo = setIVRBasicInfo(strDate,endDate,state); 
+						 returnList.add(cadreInfo);
+					 }
+					 catch(Exception e)
+					 {
+						 LOG.error("Exception rised in getIvrDashBoardCountsByDate() ",e);	 
+					 }
+					return returnList;
 				 }
-				return returnList;
-			 }
-}
+			 	public CadreIVRVO setIVRBasicInfo(Date fromDate,Date toDate,String state)
+				{
+					CadreIVRVO returnVo = new CadreIVRVO();
+					Long ivrCount = 0l;
+					Long receivedCount = 0l;
+					Long notReceivedCount = 0l;
+					Long notregisteredCount = 0l;
+					Long wrongOptionCount =0l;
+					Long noOptionCount =0l;
+					Long userBusyCount =0l;
+					Long noAnswerCount =0l;
+					Long switchCongestion = 0l;
+					Long otherError = 0l;
+					List<String> successNos =new ArrayList<String>();
+					successNos.add("1");successNos.add("2");successNos.add("3");
+					try{
+						List<Object[]> list = cadreIvrResponseDAO.getIvrCountByDate(fromDate,toDate,state);
+						if(list != null && list.size() > 0)
+						{
+							for(Object[] ivrCountInfo:list){
+								ivrCount = ivrCount+(Long)ivrCountInfo[0];
+								/* IVR Success Calls Group*/
+								if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.NORMAL_CLEARING))
+								{
+									if(ivrCountInfo[1] !=null && ivrCountInfo[1].toString().equalsIgnoreCase("1")) // response key is 1 //received
+										receivedCount = receivedCount +  (Long)ivrCountInfo[0];
+									else if(ivrCountInfo[1] !=null && ivrCountInfo[1].toString().equalsIgnoreCase("2"))
+										notReceivedCount = notReceivedCount + 	 (Long)ivrCountInfo[0];
+									else if(ivrCountInfo[1] !=null && ivrCountInfo[1].toString().equalsIgnoreCase("3"))
+										notregisteredCount = notregisteredCount + (Long)ivrCountInfo[0];
+									else if(ivrCountInfo[1] !=null && !successNos.contains(ivrCountInfo[1].toString()))
+										wrongOptionCount = wrongOptionCount + (Long)ivrCountInfo[0];
+									else if(ivrCountInfo[1] == null)
+										   noOptionCount = noOptionCount +  (Long)ivrCountInfo[0];
+								}
+									else
+									{
+													if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.USER_BUSY))
+														 userBusyCount = userBusyCount + (Long)ivrCountInfo[0];
+													else if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.NO_ANSWER))
+														 noAnswerCount = noAnswerCount + (Long)ivrCountInfo[0];
+													else if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.SWITCH_CONGESTION))
+														switchCongestion = switchCongestion + (Long)ivrCountInfo[0];
+													else if(!ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.USER_BUSY) && !ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.NO_ANSWER)
+															&& !ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.SWITCH_CONGESTION))
+														otherError = otherError + (Long)ivrCountInfo[0];
+										}	
+								}
+						}
+						returnVo.setTotal(ivrCount);
+						returnVo.setReceived(receivedCount);
+						returnVo.setNotReceived(notReceivedCount);
+						returnVo.setNotRegistered(notregisteredCount);
+						returnVo.setWrongOption(wrongOptionCount);
+						returnVo.setNoOption(noOptionCount);
+						Long selectedOptionCnt = returnVo.getReceived() + returnVo.getNotReceived() + returnVo.getNotRegistered() + returnVo.getWrongOption();
+						
+						if(selectedOptionCnt > 0)
+						{
+							returnVo.setReceivedPerc(new BigDecimal((returnVo.getReceived()*100/selectedOptionCnt)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setNotReceivedPerc(new BigDecimal((returnVo.getNotReceived()*100/selectedOptionCnt)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setNotMemberPerc(new BigDecimal((returnVo.getNotRegistered()*100/selectedOptionCnt)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setWrongOptionPerc(new BigDecimal((returnVo.getWrongOption()*100/selectedOptionCnt)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						}
+						Long answerTotal= selectedOptionCnt + returnVo.getNoOption();
+						if(answerTotal > 0)
+						{
+						returnVo.setNoOptionPerc(new BigDecimal((returnVo.getNoOption()*100/answerTotal)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						returnVo.setAnsweredCnt(answerTotal);
+						returnVo.setAnsweredPerc(new BigDecimal((returnVo.getAnsweredCnt()*100/returnVo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						}
+						returnVo.setUserBusy(userBusyCount);
+						returnVo.setNoAnswer(noAnswerCount);
+						returnVo.setSwitchCongestion(switchCongestion);
+						returnVo.setOtherError(otherError);
+						returnVo.setTotalError(userBusyCount + noAnswerCount +switchCongestion+otherError );
+						if(returnVo.getTotalError() > 0)
+						{
+							returnVo.setUserBusyPerc(new BigDecimal((returnVo.getUserBusy()*100/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());;
+							returnVo.setNoAnswerPerc(new BigDecimal((returnVo.getNoAnswer()*100/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setSwitchCongestionPerc(new BigDecimal((returnVo.getSwitchCongestion()*100/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());;
+							returnVo.setOtherErrorPerc(new BigDecimal((otherError*100/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());;
+						}
+						
+					}
+					catch(Exception e)
+					{
+						LOG.error("Exception rised in setIVRBasicInfo", e);	
+					}
+					return returnVo;
+				}
+	}

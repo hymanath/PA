@@ -46,11 +46,13 @@ public interface ITdpCadreReportService {
 	public CadreIVRVO getCadreIvrCount(String date,Long Id);
 	public CadreIVRVO getCadreIvrReport(String date,Long Id,Integer startIndex,Integer maxIndex,String searchType);
 	public List<String> getIvrDates();
-	public CadreIVRVO getIvrDashBoardBasicInfo();
-	public List<CadreIVRVO> getIvrDashBoardCounts();
+
+	
 	public List<CadreIVRVO> getConstituencyWiseIVR();
 	public CadreIVRResponseVO getPanchayatWiseCadreDispatchStatus(Long range,String state);
 	
 	public CadreIVRResponseVO getTehsilWiseCadreDispatchStatus(Long range);
 	 public List<CadreIVRVO> getIvrDashBoardCountsByDate(String fromDate,String toDate,String state);
+	public CadreIVRVO getIvrDashBoardBasicInfo(String state);
+	
 }
