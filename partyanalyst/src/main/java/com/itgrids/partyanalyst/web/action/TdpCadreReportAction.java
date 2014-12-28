@@ -639,8 +639,19 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 		try{
 			jobj = new JSONObject(getTask());
 			if(jobj.getString("task").equalsIgnoreCase("basicCnt"))
-			ivrVOList = tdpCadreReportService.getIvrDashBoardCounts();
-			else if(jobj.getString("task").equalsIgnoreCase("datewiseBasicCnt"))
+				cadreIVRVO = tdpCadreReportService.getIvrDashBoardBasicInfo(jobj.getString("state"));
+			
+		}
+		catch(Exception e){
+			LOG.info("Entered into getCadreIvrReport()",e);	
+		}
+		return Action.SUCCESS;
+	}
+	public String getCadreIVRCount()
+	{
+		try{
+			jobj = new JSONObject(getTask());
+			if(jobj.getString("task").equalsIgnoreCase("datewiseBasicCnt"))
 				ivrVOList = tdpCadreReportService.getIvrDashBoardCountsByDate(jobj.getString("fromdate"),jobj.getString("todate"),jobj.getString("state"));
 		}
 		catch(Exception e){
