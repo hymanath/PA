@@ -80,10 +80,15 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 		query.setMaxResults(maxIndex);
 		return query.list();
 	}
-	public  Long  getTotalIvrCount()
+	public  Long  getTotalIvrCount(String state)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select count(model.cadreIvrResponseId) from CadreIvrResponse model where model.isDeleted = 'N' ");
+		if(state.equalsIgnoreCase("AP")){
+			str.append(" and model.userAddress.district.districtId > 10");
+		}else if(state.equalsIgnoreCase("TS")){
+			str.append(" and model.userAddress.district.districtId < 11");
+		}
 		
 		Query query = getSession().createQuery(str.toString());
 		return (Long) query.uniqueResult();
@@ -100,18 +105,17 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 	public List<Object[]> getIvrCountByDate(Date fromDate,Date toDate,String state)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("select count(model.cadreIvrResponseId),model.userAddress.district.districtId,model.responseKey from CadreIvrResponse model where model.isDeleted = 'N' ");
+		str.append("select count(model.cadreIvrResponseId),model.responseKey,model.callStatus from CadreIvrResponse model where model.isDeleted = 'N' ");
 		if(state.equalsIgnoreCase("AP")){
 			str.append(" and model.userAddress.district.districtId > 10");
 		}else if(state.equalsIgnoreCase("TS")){
-			str
-			.append(" and model.userAddress.district.districtId < 11");
+			str.append(" and model.userAddress.district.districtId < 11");
 		}
 		if((fromDate != null && toDate != null) && !fromDate.equals(toDate))
 		str.append(" and date(model.date) >=:fromDate and date(model.date) <=:toDate");
 		else if((fromDate != null && toDate != null) && fromDate.equals(toDate))
 		str.append(" and date(model.date) =:fromDate");
-		str.append(" group by model.userAddress.district.districtId,model.responseKey");
+		str.append(" group by model.callStatus,model.responseKey");
 		Query query = getSession().createQuery(str.toString());
 		if((fromDate != null && toDate != null) && !fromDate.equals(toDate))
 		{
@@ -195,4 +199,6 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 		Query query = getSession().createQuery(queryStr.toString());
 		return query.list();
 	}
+	
+	
 }
