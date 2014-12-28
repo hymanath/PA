@@ -552,21 +552,31 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 		return query.list();
 	}
 	
-	public Long getPrintingCompletedCount() 
+	public Long getPrintingCompletedCount(String state) 
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select count(model.zebraPrintDetailsId) from ZebraPrintDetails model where ((model.printStatus = 'Y' or model.printStatus ='y') " +
 				" and (model.errorStatus is null or model.errorStatus ='0' or  model.errorStatus  = '' or  model.errorStatus = 'null')) and model.serialNo is not null ");
+		if(state.equalsIgnoreCase("AP")){
+			str.append(" and model.tdpCadre.userAddress.district.districtId > 10");
+		}else if(state.equalsIgnoreCase("TS")){
+			str.append(" and model.tdpCadre.userAddress.district.districtId < 11");
+		}
+		
 		Query query = getSession().createQuery(str.toString());
 		return (Long) query.uniqueResult();
 	}
-	public Long getIvrReadyCount(Date date) 
+	public Long getIvrReadyCount(Date date,String state) 
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select count(model.zebraPrintDetailsId) from ZebraPrintDetails model where ((model.printStatus = 'Y' or model.printStatus ='y') " +
 				" and (model.errorStatus is null or model.errorStatus ='0' or  model.errorStatus  = '' or  model.errorStatus = 'null')) and model.serialNo is not null ");
 		str.append(" and model.mobileNo is not null and model.updatedTime is not null and date(updatedTime) < :date ");
-		
+		if(state.equalsIgnoreCase("AP")){
+			str.append(" and model.tdpCadre.userAddress.district.districtId > 10");
+		}else if(state.equalsIgnoreCase("TS")){
+			str.append(" and model.tdpCadre.userAddress.district.districtId < 11");
+		}
 		Query query = getSession().createQuery(str.toString());
 		query.setDate("date", date);
 		return (Long) query.uniqueResult();
