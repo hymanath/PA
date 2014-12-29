@@ -481,8 +481,8 @@
 	
 		var str ='';
 		
-		str+='<canvas id="printPercChart" style=" float:left;margin-top: 20px;" width="120px"; height=" 120px"; ></canvas>';
-		str+='<div  style="float:right; margin-top: 45px;">';
+		str+='<canvas id="printPercChart" style=" float:left;margin-top: 20px;" width="150px"; height=" 120px"; ></canvas>';
+		str+='<div  style="float:right;margin-top: -97px; margin-right: -9px;">';
 		str+='<h4 class="m-0">'+result.count+'</h4>';
 		if(state == "All")
 		str+='<p class="m-0" >Members Registered in <br> Andhra Pradesh And <br>Telangana</p>';
@@ -493,8 +493,8 @@
 		str+='</div>';
 		$("#registrationTD").html(str);
 		var str1='';
-		str1+='<canvas id="piep" style="float:left;margin-top: 20px;" height="120px" width="120px"></canvas>';
-		str1+='<div  style="float:right; margin-top: 33px;">';
+		str1+='<canvas id="piep" style="float:left;margin-top: 20px;" height="120px" width="150px"></canvas>';
+		str1+='<div  style="float:right; margin-top: -97px;">';
 		str1+='<h4 class="m-0">'+result.printingCompleted+'</h4>';
 		if(state == "All")
 		str1+='<p class="m-0" >Cards Printed in <br> Andhra Pradesh And <br>Telangana</p>';
@@ -710,7 +710,7 @@ function buildIvrCountByDate(result,state)
 	var str='';
 	str+='<div class="row-fluid">';
 	str+='<h4 class="m-0" style="border-bottom: 1px solid rgb(204, 204, 204); padding-bottom: 10px;color:#5cb55c;">ANSWERED CALLS</h4>';
-	str+='<h6>Selected Any Option : '+selectedOptPerc+' %</h6>';
+	str+='<h6 class="label" style="width: 180px; margin-left: 2px; margin-right: -55px;">Selected Any Option : '+selectedOptPerc+' %</h6>';
 	str+='<ul class="unstyled">';
 	str+='<li>';
 	str+='<b>Cards Received <span>&nbsp;&nbsp;'+result[0].receivedPerc+'%</span></b>';
@@ -736,11 +736,11 @@ function buildIvrCountByDate(result,state)
 	str+='<div class="bar" style="width: '+result[0].wrongOptionPerc+'%"></div>';
 	str+='</div>';
 	str+='</li>';
-	
-	str+='<li>';
-	str+='<b>Not selected any option<span>&nbsp;&nbsp;'+result[0].noOptionPerc+'%</span></b>';
-	str+='<div style="height:5px;" class="progress progress-muted mb-10">';
-	str+='<div class="bar" style="width: '+result[0].noOptionPerc+'%"></div>';
+	str+='<h6 class="label" style="width: 180px; margin-left: 2px; margin-right: -55px;">Not Selected Any Option<span>&nbsp;&nbsp;'+result[0].noOptionPerc+'%</h6>';
+	//str+='<li>';
+	//str+='<b>Not selected any option<span>&nbsp;&nbsp;'+result[0].noOptionPerc+'%</span></b>';
+	//str+='<div style="height:5px;" class="progress progress-muted mb-10">';
+	//str+='<div class="bar" style="width: '+result[0].noOptionPerc+'%"></div>';
 	str+='</div>';
 	str+='</li>';
 	str+='</ul>';
