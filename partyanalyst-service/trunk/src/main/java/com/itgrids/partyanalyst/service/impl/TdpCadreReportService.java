@@ -4081,9 +4081,12 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		Long ivrCompleted = cadreIvrResponseDAO.getTotalIvrCount(state);
 		returnVo.setTotal(ivrCompleted != null ? ivrCompleted : 0l);
 		
-		Long printingCompletedCnt = zebraPrintDetailsDAO.getPrintingCompletedCount(state);
+		Long totalPushCnt = zebraPrintDetailsDAO.getPrintingCompletedCount(state,"totalCount");
+		Long printingCompletedCnt = zebraPrintDetailsDAO.getPrintingCompletedCount(state,"printStatus");
 		returnVo.setPrintingCompleted(printingCompletedCnt != null ? printingCompletedCnt :0l);
-		
+		Long errorCnt = zebraPrintDetailsDAO.getPrintingCompletedCount(state,"errorStatus");
+		returnVo.setTotalError(errorCnt != null ? errorCnt : 0l);
+		returnVo.setTgCount(totalPushCnt != null ? totalPushCnt : 0l);
 		Long IvrReadyCount = zebraPrintDetailsDAO.getIvrReadyCount(calender.getTime(),state) ;
 		returnVo.setIvrReady(IvrReadyCount != null ? IvrReadyCount : 0l);
 		 // IVR Ready count calculation
