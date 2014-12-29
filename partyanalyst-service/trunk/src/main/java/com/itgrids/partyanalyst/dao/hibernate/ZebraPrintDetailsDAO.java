@@ -552,17 +552,24 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 		return query.list();
 	}
 	
-	public Long getPrintingCompletedCount(String state) 
+	public Long getPrintingCompletedCount(String state,String dataType) 
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("select count(model.zebraPrintDetailsId) from ZebraPrintDetails model where ((model.printStatus = 'Y' or model.printStatus ='y') " +
+		str.append("select count(model.zebraPrintDetailsId) from ZebraPrintDetails model where ");
+		str.append(" model.tdpCadre.isDeleted = 'N' and  model.tdpCadre.enrollmentYear = 2014 ");
+		if(dataType.equalsIgnoreCase("printStatus")){
+			str.append(" and ((model.printStatus = 'Y' or model.printStatus ='y') " +
 				" and (model.errorStatus is null or model.errorStatus ='0' or  model.errorStatus  = '' or  model.errorStatus = 'null')) and model.serialNo is not null ");
+		}
+		else if(dataType.equalsIgnoreCase("errorStatus")){
+			str.append(" and (model.errorStatus is not null and model.errorStatus !='0' ) ");
+		}
+		
 		if(state.equalsIgnoreCase("AP")){
 			str.append(" and model.tdpCadre.userAddress.district.districtId > 10");
 		}else if(state.equalsIgnoreCase("TS")){
 			str.append(" and model.tdpCadre.userAddress.district.districtId < 11");
 		}
-		
 		Query query = getSession().createQuery(str.toString());
 		return (Long) query.uniqueResult();
 	}
