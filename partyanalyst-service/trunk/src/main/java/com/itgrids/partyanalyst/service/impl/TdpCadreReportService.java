@@ -4579,17 +4579,17 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 						
 						if(selectedOptionCnt > 0)
 						{
-							returnVo.setReceivedPerc(new BigDecimal((returnVo.getReceived()*100/selectedOptionCnt)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-							returnVo.setNotReceivedPerc(new BigDecimal((returnVo.getNotReceived()*100/selectedOptionCnt)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-							returnVo.setNotMemberPerc(new BigDecimal((returnVo.getNotRegistered()*100/selectedOptionCnt)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-							returnVo.setWrongOptionPerc(new BigDecimal((returnVo.getWrongOption()*100/selectedOptionCnt)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setReceivedPerc(new BigDecimal((returnVo.getReceived()*100.0/selectedOptionCnt)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setNotReceivedPerc(new BigDecimal((returnVo.getNotReceived()*100.0/selectedOptionCnt)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setNotMemberPerc(new BigDecimal((returnVo.getNotRegistered()*100.0/selectedOptionCnt)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setWrongOptionPerc(new BigDecimal((returnVo.getWrongOption()*100.0/selectedOptionCnt)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 						}
 						Long answerTotal= selectedOptionCnt + returnVo.getNoOption();
 						if(answerTotal > 0)
 						{
-						returnVo.setNoOptionPerc(new BigDecimal((returnVo.getNoOption()*100/answerTotal)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						returnVo.setNoOptionPerc(new BigDecimal((returnVo.getNoOption()*100.0/answerTotal)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 						returnVo.setAnsweredCnt(answerTotal);
-						returnVo.setAnsweredPerc(new BigDecimal((returnVo.getAnsweredCnt()*100/returnVo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						returnVo.setAnsweredPerc(new BigDecimal((returnVo.getAnsweredCnt()*100.0/returnVo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 						}
 						returnVo.setUserBusy(userBusyCount);
 						returnVo.setNoAnswer(noAnswerCount);
@@ -4598,10 +4598,10 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 						returnVo.setTotalError(userBusyCount + noAnswerCount +switchCongestion+otherError );
 						if(returnVo.getTotalError() > 0)
 						{
-							returnVo.setUserBusyPerc(new BigDecimal((returnVo.getUserBusy()*100/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());;
-							returnVo.setNoAnswerPerc(new BigDecimal((returnVo.getNoAnswer()*100/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-							returnVo.setSwitchCongestionPerc(new BigDecimal((returnVo.getSwitchCongestion()*100/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());;
-							returnVo.setOtherErrorPerc(new BigDecimal((otherError*100/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());;
+							returnVo.setUserBusyPerc(new BigDecimal((returnVo.getUserBusy()*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());;
+							returnVo.setNoAnswerPerc(new BigDecimal((returnVo.getNoAnswer()*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setSwitchCongestionPerc(new BigDecimal((returnVo.getSwitchCongestion()*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());;
+							returnVo.setOtherErrorPerc(new BigDecimal((otherError*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());;
 						}
 						
 					}
