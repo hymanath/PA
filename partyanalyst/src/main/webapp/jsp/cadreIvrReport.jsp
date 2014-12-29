@@ -248,6 +248,7 @@
                   var optionSet1 = {
 					
                     showDropdowns: true,
+                  
 					ranges: {
                        'Today': [moment(), moment()],
                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')]
@@ -271,12 +272,12 @@
 				 
 					 $('#daterange').on('show.daterangepicker', function() { 
 					   $('#daterange span').html(moment().format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
-					 
+					
 					  console.log("show event fired"); });
 					   
 
                   $('#daterange').on('hide.daterangepicker', function() { 
-					    getDateWiseIVRCount();
+					   
 					  console.log("hide event fired"); });
 				
                   $('#daterange').on('apply.daterangepicker', function(ev, picker) { 
@@ -286,6 +287,7 @@
                       + " to " 
                       + picker.endDate.format('MMMM D, YYYY')
                     ); 
+					  getDateWiseIVRCount();
                   });
 				 
                   $('#daterange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
@@ -632,7 +634,7 @@ function buildIvrCountByDate(result,state)
 		var errorPerc = (result[0].totalError / result[0].total * 100);
 		
 		var str ='';
-		str+='<canvas id="answerErrorChart" style="width: 180px; height: 180px; margin-left:0px; padding-left: 29px; margin-right: -42px;" width="180px" height="180px"></canvas>';
+		str+='<canvas id="answerErrorChart" style="width: 180px; height: 180px; margin-left:0px; padding-left: 29px; margin-right: -42px; margin-top: 35px;" width="180px" height="180px"></canvas>';
 		str+='<div class="text-center">';
 		str+='<h2 class="m-0">'+result[0].total+'</h2>';
 		str+='<p>Calls IVR Total <br>Dailled</p>';
