@@ -21,6 +21,7 @@
 <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script type="text/javascript" src="js/bootStrapDateRange/moment.js"></script>
 <script type="text/javascript" src="js/bootStrapDateRange/daterangepicker.js"></script>
+
  <link rel="stylesheet" type="text/css" href="css/daterangepicker-bs2.css"/>
  <script src="js/cardsDashBoard/js2.3.2/Chart.js"></script>
 	<script src="js/cardsDashBoard/js2.3.2/Chart.min.js"></script>
@@ -60,6 +61,15 @@
 	  .ui-slider .ui-slider-handle {width:0.5em !important;}
 	.rangeSliderDiv{
 	  margin-top: 10px;
+	}
+	.prev ,.next{
+    background: none !important;
+	}
+	.daterangepicker .calendar-date {
+	 margin-right: -10px !important;
+	 }
+.daterangepicker.opensleft .calendar {
+	margin-left: 10px !important;
 	}
 	</style>
 </head>
@@ -238,8 +248,7 @@
                   var optionSet1 = {
 					
                     showDropdowns: true,
-                    showWeekNumbers: true,
-					ranges: {
+     				ranges: {
                        'Today': [moment(), moment()],
                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')]
                        
