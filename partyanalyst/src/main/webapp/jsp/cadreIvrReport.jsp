@@ -500,7 +500,10 @@
 	function showPieChart1(result){
 		var ivrReadyPerc = (result.ivrReady / result.printingCompleted * 100);
 		var totalIvrPerc = (result.total / result.printingCompleted * 100);
-		var printingPerc = (result.printingCompleted / result.count * 100);
+		var printingPerc = (result.printingCompleted / result.tgCount * 100);
+		var errorPerc = (result.totalError / result.tgCount * 100); //tgCount - total push count in zebra
+		var pendingCount = result.tgCount - result.printingCompleted;
+		var pendingPerc = (pendingCount / result.tgCount * 100);
 		
 		options = {
 		
@@ -557,6 +560,18 @@
         color:"#5CB65C",
         //highlight: "#D7C482",
         label: "Cards Printed",
+		labelFontSize: '8'
+		},
+		{value: errorPerc,
+        color:"#D14741",
+        //highlight: "#D7C482",
+        label: "Errors",
+		labelFontSize: '8'
+		},
+		{value: pendingPerc,
+        color:"#005580",
+        //highlight: "#D7C482",
+        label: "Pending",
 		labelFontSize: '8'
 		}
 		
