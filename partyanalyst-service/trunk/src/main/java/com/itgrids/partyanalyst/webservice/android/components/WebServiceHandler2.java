@@ -673,4 +673,20 @@ public class WebServiceHandler2 {
 		}
 	}
 	
+	@POST
+	@Path("/searchTdpCadreDetailsBySearchCriteriaForCallCenter/{constituencyId}/{memberShipCardNo}/{mobileNo}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object searchTdpCadreDetailsBySearchCriteriaForCallCenter(@PathParam("constituencyId") String constituencyId,@PathParam("memberShipCardNo") String memberShipCardNo,@PathParam("mobileNo") String mobileNo)
+	{
+		try{			
+			return webServiceHandlerService1.searchTdpCadreDetailsBySearchCriteria(constituencyId,"",memberShipCardNo,"","",mobileNo);			
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in searchTdpCadreDetailsBySearchCriteria() Method, Exception is ",e);
+			return "{\"status\":\"Failure\"}";
+		}
+	}
+	
 }
