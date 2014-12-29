@@ -6302,11 +6302,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			
 				StringBuilder queryStr = new StringBuilder();			
 				
-				if(searchName != null && searchName.trim().length()>0)
+			/*	if(searchName != null && searchName.trim().length()>0 && !searchName.trim().equalsIgnoreCase("0") && !searchName.equalsIgnoreCase("null"))
 				{
 					queryStr.append(" and model.firstname like '%"+searchName+"%' ");
 					
-					if(constituencyId != null && constituencyId.longValue() != 0L)
+					if(constituencyId != null && constituencyId.longValue() != 0L && !constituencyId.toString().equalsIgnoreCase("null"))
 					{
 						queryStr.append(" and model.userAddress.constituency.constituencyId =:constituencyId ");
 					}
@@ -6315,20 +6315,31 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						returnVO.setErrorStr(" Constituency is Required.");
 						return returnVO;
 					}
+					
+				}*/
+				
+				if(constituencyId != null && constituencyId.longValue() != 0L && !constituencyId.toString().equalsIgnoreCase("null"))
+				{
+					queryStr.append(" and model.userAddress.constituency.constituencyId =:constituencyId ");
 				}
-				if(mobileNo != null && mobileNo.trim().length()>0)
+				else
+				{
+					returnVO.setErrorStr(" Constituency is Required.");
+					return returnVO;
+				}
+				if(mobileNo != null && mobileNo.trim().length()>0  && !mobileNo.trim().equalsIgnoreCase("0") && !mobileNo.equalsIgnoreCase("null"))
 				{							
 					queryStr.append(" and model.mobileNo like '%"+mobileNo+"%' ");
 				}
-				if(memberShipCardNo != null && memberShipCardNo.trim().length()>0)
+				if(memberShipCardNo != null && memberShipCardNo.trim().length()>0  && !memberShipCardNo.trim().equalsIgnoreCase("0") && !memberShipCardNo.equalsIgnoreCase("null"))
 				{
 					queryStr.append(" and model.memberShipNo like '%"+memberShipCardNo+"%' ");
 				}
-				if(voterCardNo != null && voterCardNo.trim().length()>0)
+				if(voterCardNo != null && voterCardNo.trim().length()>0  && !voterCardNo.trim().equalsIgnoreCase("0") && !voterCardNo.equalsIgnoreCase("null"))
 				{
 					queryStr.append(" and model.voter.voterIDCardNo like '%"+voterCardNo+"%' ");
 				}
-				if(trNumber != null && trNumber.trim().length()>0)
+				if(trNumber != null && trNumber.trim().length()>0 && !trNumber.trim().equalsIgnoreCase("0") && !trNumber.equalsIgnoreCase("null"))
 				{
 					queryStr.append(" and model.refNo like '%"+trNumber+"%' ");
 				}
