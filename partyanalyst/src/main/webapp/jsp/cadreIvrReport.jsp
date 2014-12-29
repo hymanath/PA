@@ -248,7 +248,7 @@
                   var optionSet1 = {
 					
                     showDropdowns: true,
-     				ranges: {
+					ranges: {
                        'Today': [moment(), moment()],
                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')]
                        
@@ -684,7 +684,7 @@ function buildIvrCountByDate(result,state)
 	}
 	function buildProgressBarIVR(result)
 	{
-		
+	var selectedOptPerc = 0;
 	if(result[0].receivedPerc == null)
 		result[0].receivedPerc =0;
 	if(result[0].notReceivedPerc == null)
@@ -703,7 +703,8 @@ function buildIvrCountByDate(result,state)
 		result[0].userBusyPerc = 0;
 	if(result[0].switchCongestionPerc == null)
 		result[0].switchCongestionPerc = 0;
-	var selectedOptPerc = 100 - result[0].noOptionPerc;
+		if(result[0].answeredCnt > 0)
+	selectedOptPerc = 100 - result[0].noOptionPerc;
 	var str='';
 	str+='<div class="row-fluid">';
 	str+='<h4 class="m-0" style="border-bottom: 1px solid rgb(204, 204, 204); padding-bottom: 10px;color:#5cb55c;">ANSWERED CALLS</h4>';
