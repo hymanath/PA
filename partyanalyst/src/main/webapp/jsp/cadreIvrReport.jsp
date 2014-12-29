@@ -272,7 +272,7 @@
 				 
 					 $('#daterange').on('show.daterangepicker', function() { 
 					   $('#daterange span').html(moment().format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
-					
+					getDateWiseIVRCount();
 					  console.log("show event fired"); });
 					   
 
