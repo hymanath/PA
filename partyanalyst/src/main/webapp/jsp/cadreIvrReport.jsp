@@ -37,8 +37,9 @@
 	.text-orange{color:#f9a834;}
 	.text-skyblue{color:#46acca;}
 	
-	.width25p{width:25% !important;}
-	
+	.width35p{width:185px !important;}
+	.width25p{width:125px !important;}
+	.width15p{width:150px !important;}
 	.border-radius-0{border-radius:0px;}
 	.pad-0{padding:0px;}
 	.m-0{margin:0px;}
@@ -101,12 +102,12 @@
 			
 				<table class="table table-bordered border-radius-0 mb-0">
 					<tr>
-						<td class="width25p">
+						<td class="width35p">
 						<img style="height:18px;width:16px;margin-top:80px;" src="./images/icons/search.gif" id="ajaxImg" class="offset1"/>
 						<div id="registrationTD">
 						</div>
 						</td>
-						<td class="width25p " rowspan="2" id="totalIvrTD">
+						<td class="width15p " rowspan="2" id="totalIvrTD">
 							
 						</td>
 						<td class="width25p" rowspan="2"  id="successIvrTD">
@@ -470,7 +471,7 @@
 		var str ='';
 		
 		str+='<canvas id="printPercChart" style=" float:left;margin-top: 20px;" width="120px"; height=" 120px"; ></canvas>';
-		str+='<div  style="float:right; margin-top: 0px;">';
+		str+='<div  style="float:right; margin-top: 45px;">';
 		str+='<h4 class="m-0">'+result.count+'</h4>';
 		if(state == "All")
 		str+='<p class="m-0" >Members Registered in <br> Andhra Pradesh And <br>Telangana</p>';
@@ -482,7 +483,7 @@
 		$("#registrationTD").html(str);
 		var str1='';
 		str1+='<canvas id="piep" style="float:left;margin-top: 20px;" height="120px" width="120px"></canvas>';
-		str1+='<div  style="float:right; margin-top: 0px;">';
+		str1+='<div  style="float:right; margin-top: 33px;">';
 		str1+='<h4 class="m-0">'+result.printingCompleted+'</h4>';
 		if(state == "All")
 		str1+='<p class="m-0" >Cards Printed in <br> Andhra Pradesh And <br>Telangana</p>';
@@ -607,7 +608,7 @@ function buildIvrCountByDate(result,state)
 		var errorPerc = (result[0].totalError / result[0].total * 100);
 		
 		var str ='';
-		str+='<canvas id="answerErrorChart" style="width: 180px; height: 180px; margin-left:20px;"></canvas>';
+		str+='<canvas id="answerErrorChart" style="width: 180px; height: 180px; margin-left:0px; padding-left: 29px; margin-right: -42px;" width="180px" height="180px"></canvas>';
 		str+='<div class="text-center">';
 		str+='<h2 class="m-0">'+result[0].total+'</h2>';
 		str+='<p>Calls IVR Total <br>Dailled</p>';
@@ -702,13 +703,13 @@ function buildIvrCountByDate(result,state)
 	str+='<div class="bar" style="width: '+result[0].notMemberPerc+'%"></div>';
 	str+='</div>';
 	str+='</li>';
-	str+='<li>';
+	str+='<li  style="border-bottom: 1px solid rgb(204, 204, 204); padding-bottom: 10px;">';
 	str+='<b>Wrong option selected <span>&nbsp;&nbsp;'+result[0].wrongOptionPerc+'%</span></b>';
 	str+='<div style="height:5px;" class="progress progress-warning mb-10">';
 	str+='<div class="bar" style="width: '+result[0].wrongOptionPerc+'%"></div>';
 	str+='</div>';
 	str+='</li>';
-	str+='<hr style="border:2px;">';
+	
 	str+='<li>';
 	str+='<b>Not selected any option<span>&nbsp;&nbsp;'+result[0].noOptionPerc+'%</span></b>';
 	str+='<div style="height:5px;" class="progress progress-muted mb-10">';
