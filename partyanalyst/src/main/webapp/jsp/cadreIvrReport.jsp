@@ -112,12 +112,12 @@
 			
 				<table class="table table-bordered border-radius-0 mb-0">
 					<tr>
-						<td class="width35p">
+						<td style="width:173px;">
 						<img style="height:18px;width:16px;margin-top:80px;" src="./images/icons/search.gif" id="ajaxImg" class="offset1"/>
 						<div id="registrationTD">
 						</div>
 						</td>
-						<td class="width15p " rowspan="2" id="totalIvrTD">
+						<td style="width:100px;" rowspan="2" id="totalIvrTD">
 							
 						</td>
 						<td class="width25p" rowspan="2"  id="successIvrTD">
@@ -634,7 +634,7 @@ function buildIvrCountByDate(result,state)
 		var errorPerc = (result[0].totalError / result[0].total * 100);
 		
 		var str ='';
-		str+='<canvas id="answerErrorChart" style="width: 180px; height: 180px; margin-left:0px; padding-left: 29px; margin-right: -42px; margin-top: 35px;" width="180px" height="180px"></canvas>';
+		str+='<canvas id="answerErrorChart" style="width: 140px; height: 180px; margin-left:0px; padding-left: 29px; margin-right: -42px; margin-top: 35px;" width="140px" height="180px"></canvas>';
 		str+='<div class="text-center">';
 		str+='<h2 class="m-0">'+result[0].total+'</h2>';
 		str+='<p>Calls IVR Total <br>Dailled</p>';
