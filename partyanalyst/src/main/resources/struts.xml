@@ -9248,5 +9248,15 @@
 				<param name="root">ivrVOList</param>
 			</result>
 		</action>
+		<action name="getLocationWisePercInfo" class="tdpCadreReportAction" method="getLocationWisePercInfo">
+			<result type="json" name="success">
+				<param name="root">cadreIVRResponseVO</param>
+			</result>
+		</action>
+		<action name="getLocationWisePercErrorInfo" class="tdpCadreReportAction" method="getLocationWisePercInfoErrorInfo">
+			<result type="json" name="success">
+				<param name="root">cadreIVRResponseVO</param>
+			</result>
+		</action>
 </package>
 </struts>      

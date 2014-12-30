@@ -71,6 +71,9 @@
 .daterangepicker.opensleft .calendar {
 	margin-left: 10px !important;
 	}
+	.table-condensed th, .table-condensed td {
+    padding: 4px 5px;
+}
 	</style>
 </head>
 
@@ -141,94 +144,53 @@
 			
 		</div>	
 		
-		<!-- Top Div End -->
-		<div class="row">
-			<!-----Total In AP & TS ----->
-			<div class="span12" id="APandTsDiv">
+		<div class="row-fluid m_top10">
+			<div class="span12 well well-small border-radius-0 mb-0 ">
+				<h4 class="m-0" style=" display: inline;"><span id="districtConstituencyHeading">District Wise Card Not Received Response</span></h4> 			
 				
-			</div>	
-			<!----- /Total In AP & TS ----->
-			
-	
-			<div class="span6 m_top20" style="outline:6px solid rgb(223, 240, 216);clear:both;" id="ApDataDiv">
-		
-				<!-----TS Constituency wise ------>
-				<h4 class="alert alert-info text-center border-radius-0 m-0">AP DISTRICT WISE DETAILS</h4>
-				<div style="overflow: auto; height: 300px ! important;" id="APdistrictableDiv" >
-					<img style="width:20px;" src="./images/icons/search.gif" id="apDistImg" class="offset3"/>
-				</div>
-				<!----- /AP Constituency wise ------>
-				
-				<!------AP District wise -------->
-				<h4 class="alert alert-info text-center border-radius-0 m-0">AP CONSTITUENCY WISE DETAILS</h4>
-				<div style="overflow: auto; height: 300px ! important;" id="APconstituencyTableDiv">
-					<img style="width:20px;" src="./images/icons/search.gif" id="apConstImg" class="offset3"/>
-				</div>
-				<!------/AP District wise -------->
-				<!------AP Tehsil wise -------->
-				<h4 class="alert alert-info text-center border-radius-0 m-0">AP MANDAL WISE DETAILS</h4>
-				<div style="overflow: auto; height: 300px ! important;" id="APmandalDiv1">
-					 <div class="rangeSliderDiv" style=" margin-left: 35px;width:400px;">       
-			          <table><tr><td><div id="slider1" style="width:300px;" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a></div></td><td><input type="button"  class="btn btn-success" onclick="getCandidateDataCollectionInfo('amount1','mandal','AP');" value="Get"/></td></tr></table>
-			          <span  id="amount1" key="0" readonly style="border: 0; color: #f6931f; font-weight: bold;background-color:#ffffff;" />
-		             </div>
-					 <div id="APmandalDiv"></div>
-				</div>
-				<!------/AP Tehsil wise -------->
-				<!------AP Panchayat wise -------->
-				<h4 class="alert alert-info text-center border-radius-0 m-0">AP PANCHAYAT WISE DETAILS</h4>
-				<div style="overflow: auto; height: 300px ! important;" id="APpanchayatDiv1">
-					<div class="rangeSliderDiv" style=" margin-left: 35px;width:400px;">       
-			          <table><tr><td><div id="slider2" style="width:300px;" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a></div></td><td><input type="button"  class="btn btn-success" onclick="getCandidateDataCollectionInfo('amount2','panchayat','AP');" value="Get"/></td></tr></table>
-			          <span id="amount2" key="0" readonly style="border: 0; color: #f6931f; font-weight: bold;background-color:#ffffff;" />
-		             </div>
-					 <div id="APpanchayatDiv"></div>
-				</div>
-				<!------/AP Panchayat wise -------->
+				<input type="button" id="constiDistMainDiv" onclick="getOtherLocationsInfo();" class="btn btn-medium btn-success border-radius-0 pull-right " style="margin-right: 10px; margin-top: -5px; margin-bottom: -5px;" value="Click to view Constituency Wise" />&nbsp; &nbsp; 
 			</div>
-			
-			<!----- /Total in AP ----->
-			
-			<!-------Total in TS------>
-			<div class="span6 m_top20" style="outline:6px solid rgb(223, 240, 216);" id="TGDataDiv">
-			
-				<!-----TS Constituency wise ------>
-				<h4 class="alert alert-info text-center border-radius-0 m-0">TS DISTRICT WISE DETAILS</h4>
-				<div style="overflow: auto;height: 300px ! important;" id="TGdistrictableDiv" >
-				<img style="width:20px;" src="./images/icons/search.gif" id="tgDistImg" class="offset3"/>
-				</div>
-				<!-----/TS Constituency wise ------>
+			<table class="table table-bordered table-condensed border-radius-0 mb-0 "  style=" box-shadow: inset 0 0 5px 4px rgba(0,0,0,0.1);">
+				<tr>
+					<td><span style="width: 5px; height: 5px; background-color: #55A855; display: inline-block; padding-top: 6px; padding-right: 0px; margin-right: 5px;"></span>VERY GOOD</td>
+					<td><span style="width: 5px; height: 5px; background-color: #419FBB; display: inline-block; padding-top: 6px; padding-right: 0px; margin-right: 5px;"></span>GOOD</td>
+					<td><span style="width: 5px; height: 5px; background-color: #0B82BE; display: inline-block; padding-top: 6px; padding-right: 0px; margin-right: 5px;"></span>OK</td>
+					<td><span style="width: 5px; height: 5px; background-color: #FAAE43; display: inline-block; padding-top: 6px; padding-right: 0px; margin-right: 5px;"></span>POOR</td>
+					<td><span style="width: 5px; height: 5px; background-color: #BD3C37; display: inline-block; padding-top: 6px; padding-right: 0px; margin-right: 5px;"></span>VERY POOR</td>					
+				</tr>
+				<tr>
+					<td><div id="veryGoodPercDiv" /></td>
+					<td><div id="goodPercDiv" /></td>
+					<td><div id="okPercDiv" /></td>
+					<td><div id="poorPercDiv" /></td>
+					<td><div id="veryPoorPercDiv" /></td>					
+				</tr>
+			</table>
+			<div id="locationWiseAllPercDiv" style="max-height: 400px;overflow-y: scroll;"></div>
+		</div>	
+		
+		<div  id="allErrorsInfoLocationWiseOuter" class="row-fluid" style="outline:6px solid #DDEFD7;margin-top:20px;">			
+		  <div class="span12">
+			<h4 class="text-center text-uppercase alert-success m-0 border-radius-0"> Constituency Wise Info<button onclick="closeDIV('allErrorsInfoLocationWiseOuter');" class="close" type="button" style="margin-top: 1px;">x</button></h4>
+			<!--<span class="text-center well well-small m-0 border-radius-0" style="width:98%;display:inline-block;">
+				<label class="radio inline">
+				 View Details by 
+				</label>
+				<label class="radio inline">
+				  <input type="radio" checked="checked" name="locationSelRdo" value="mandal" > Mandal
+				</label>				
+				<label class="radio inline">
+				  /or/ &nbsp; &nbsp;
+				</label>
+				<label class="radio inline">
+				  <input type="radio" name="locationSelRdo" value="panchayat"> Panchayat
+				</label>
 				
-				<!------TS District wise -------->
-				<h4 class="alert alert-info text-center border-radius-0 m-0">TS CONSTITUENCY WISE DETAILS</h4>
-				<div style="overflow: auto; height: 300px ! important;" id="TGconstituencyTableDiv">
-				<img style="width:20px;" src="./images/icons/search.gif"  id="tgConstImg" class="offset3"/>
-				</div>
-				<!------/TS District wise -------->
-				<!-----TS Constituency wise ------>
-				<h4 class="alert alert-info text-center border-radius-0 m-0">TS MANDAL WISE DETAILS</h4>
-				<div style="overflow: auto;height: 300px ! important;" id="TGmandalTableDiv1">
-					<div class="rangeSliderDiv" style=" margin-left: 35px;width:400px;">       
-			          <table><tr><td><div id="slider3" style="width:300px;" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a></div></td><td><input type="button"  class="btn btn-success" onclick="getCandidateDataCollectionInfo('amount3','mandal','TG');" value="Get"/></td></tr></table>
-			          <span id="amount3" key="0" readonly style="border: 0; color: #f6931f; font-weight: bold;background-color:#ffffff;" />
-		             </div>
-					 <div id="TGmandalTableDiv"></div>
-				</div>
-				<!-----/TS Constituency wise ------>
-				
-				<!------TS District wise -------->
-				<h4 class="alert alert-info text-center border-radius-0 m-0">TS PANCHAYAT WISE DETAILS</h4>
-				<div style="overflow: auto; height: 300px ! important;" id="TGpanchayattableDiv1">
-					<div class="rangeSliderDiv" style=" margin-left: 35px;width:400px;">       
-			          <table><tr><td><div id="slider4" style="width:300px;" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a></div></td><td><input type="button"  class="btn btn-success" onclick="getCandidateDataCollectionInfo('amount4','panchayat','TG');" value="Get"/></td></tr></table>
-			          <span id="amount4" key="0" readonly style="border: 0; color: #f6931f; font-weight: bold;background-color:#ffffff;" />
-		             </div>
-					 <div id="TGpanchayattableDiv"></div>
-				</div>
-				<!------/TS District wise -------->
+			</span>-->
+			   <div id="allErrorsInfoLocationWise" />
+		
 			</div>
 		</div>
-		
 		
 		
 	</div>
@@ -240,9 +202,7 @@
 	function dateRange()
 	{
 		 var cb = function(start, end, label) {
-                   console.log(start.toISOString(), end.toISOString(), label);
                     $('#daterange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-					
 				  }
 
                   var optionSet1 = {
@@ -273,24 +233,26 @@
 					 $('#daterange').on('show.daterangepicker', function() { 
 					   $('#daterange span').html(moment().format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
 					getDateWiseIVRCount();
-					  console.log("show event fired"); });
+                    });
 					   
 
                   $('#daterange').on('hide.daterangepicker', function() { 
 					   
-					  console.log("hide event fired"); });
+						selectedLocation ="district";
+						$("#constiDistMainDiv").attr("value","Click to view Constituency Wise");
+						$("#districtConstituencyHeading").html("District Wise Card Not Received Response");
+						getDistrictConstiWisePerformance("district","");
+						getLocationWisePerformance(232,$('input[name=stateradio]:checked').val());
+						$("#allErrorsInfoLocationWiseOuter").html("");
+					   });
 				
                   $('#daterange').on('apply.daterangepicker', function(ev, picker) { 
 					   
-                    console.log("apply event fired, start/end dates are " 
-                      + picker.startDate.format('MMMM D, YYYY') 
-                      + " to " 
-                      + picker.endDate.format('MMMM D, YYYY')
-                    ); 
+                  
 					  getDateWiseIVRCount();
                   });
 				 
-                  $('#daterange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
+                  $('#daterange').on('cancel.daterangepicker', function(ev, picker) {  });
 			$("#selectedDate").html(''); 
 				
 	}
@@ -300,6 +262,11 @@
 			 dateRange();
 			getIvrBasicCount();
 			getDateWiseIVRCount();
+			selectedLocation ="district";
+			$("#constiDistMainDiv").attr("value","Click to view Constituency Wise");
+			$("#districtConstituencyHeading").html("District Wise Card Not Received Response");
+			getDistrictConstiWisePerformance("district","");
+			getLocationWisePerformance(232,$('input[name=stateradio]:checked').val());
 			$("#selectedDate").html('');
 		});
 		function getIvrCount()
@@ -778,225 +745,7 @@ function buildIvrCountByDate(result,state)
 	str1+='</div>';
 	$("#errorIvrTD").html(str1);
 	}
-	function getConstituencyWiseIVRCount()
-	{
-		$("#tgConstImg").show();
-		$("#apConstImg").show();
-		$("#tgDistImg").show();
-		$("#apDistImg").show();
-		var jsObj = {	
-		task:""             
-		}
-			   
-		$.ajax({
-			type : "POST",
-			url : "getConstituencyWiseIVRAction.action",
-			data : {task:JSON.stringify(jsObj)} ,
-		}).done(function(result){
-			
-			buildConstCount(result);
-			buildDistrictCount(result);
-		});
-	}
 	
-	function buildConstCount(result)
-	{
-		$("#tgConstImg").hide();
-		$("#apConstImg").hide();
-		var ApArr= new Array();
-		var TGArr = new Array();
-		for(var i in result)
-		{
-			for(var j in result[i].subList)
-					{
-						if(result[i].id > 10)
-						ApArr.push(result[i].subList[j]);
-						else
-						TGArr.push(result[i].subList[j]);	
-				    }
-		}
-		ApArr.sort(dynamicSort("notReceived"));
-		TGArr.sort(dynamicSort("notReceived"));
-		
-		var str ='';
-		str+='<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 " id="apConstTable">';
-		str+='<thead class="alert-info">';
-		str+='<tr>';
-		str+='<th rowspan="2">Constituency Name</th>';
-		str+='<th rowspan="2">No of members registered</th>';
-		str+='<th rowspan="2">IVR Calls </th>';
-		str+='<th colspan="2">Cards Received </th>';
-		str+='<th colspan="2">Cards Not Received </th>';
-		str+='<th colspan="2">Not Registered Members </th>';
-		str+='</tr>';
-		str+='<tr>';
-		str+='<th>Count</th>';
-		str+='<th>%</th>';
-		str+='<th>Count</th>';
-		str+='<th>%</th>';
-		str+='<th>Count</th>';
-		str+='<th>%</th>';
-		str+='</tr>';
-		str+='</thead>';
-		str+='<tbody>';
-	
-			for(var j in ApArr)
-			{
-				if(ApArr[j].total == null)
-					ApArr[j].total =0;
-				if(ApArr[j].receivedPerc == null)
-				ApArr[j].receivedPerc = 0.0;
-				if(ApArr[j].notReceived == null)
-				ApArr[j].notReceived = 0.0;
-				if(ApArr[j].notMemberPerc == null)
-				ApArr[j].notMemberPerc = 0.0;
-			str+='<tr><td>'+ApArr[j].name+'</td><td>'+ApArr[j].total+'</td><td>'+ApArr[j].answeredCnt+'</td><td>'+ApArr[j].received+'</td><td>'+ApArr[j].receivedPerc+'</td><td>'+ApArr[j].notReceived+'</td><td>'+ApArr[j].notReceivedPerc+'</td><td>'+ApArr[j].notRegistered+'</td><td>'+ApArr[j].notMemberPerc+'</td></tr>';
-			}
-	
- str+='</tbody>';
- str+='</table>';
- $("#APconstituencyTableDiv").html(str);
-$("#apConstTable").dataTable();
- 	var str1 ='';
-		str1+='<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 " id="tgConstTable">';
-		str1+='<thead class="alert-info">';
-		str1+='<tr>';
-		str1+='<th rowspan="2">Constituency Name</th>';
-		str1+='<th rowspan="2">No of members registered</th>';
-		str1+='<th rowspan="2">IVR Calls </th>';
-		str1+='<th colspan="2">Cards Received </th>';
-		str1+='<th colspan="2">Cards Not Received </th>';
-		str1+='<th colspan="2">Not Registered Members </th>';
-		str1+='</tr>';
-		str1+='<tr>';
-		str1+='<th>Count</th>';
-		str1+='<th>%</th>';
-		str1+='<th>Count</th>';
-		str1+='<th>%</th>';
-		str1+='<th>Count</th>';
-		str1+='<th>%</th>';
-		str1+='</tr>';
-		str1+='</thead>';
-		str1+='<tbody>';
-		
-			for(var j in TGArr)
-			{
-				if(TGArr[j].total == null)
-					TGArr[j].total =0;
-				if(TGArr[j].receivedPerc == null)
-				TGArr[j].receivedPerc = 0.0;
-				if(TGArr[j].notReceived == null)
-				TGArr[j].notReceived = 0.0;
-				if(TGArr[j].notMemberPerc == null)
-				TGArr[j].notMemberPerc = 0.0;
-			str1+='<tr><td>'+TGArr[j].name+'</td><td>'+TGArr[j].total+'</td><td>'+TGArr[j].answeredCnt+'</td><td>'+TGArr[j].received+'</td><td>'+TGArr[j].receivedPerc+'</td><td>'+TGArr[j].notReceived+'</td><td>'+TGArr[j].notReceivedPerc+'</td><td>'+TGArr[j].notRegistered+'</td><td>'+TGArr[j].notMemberPerc+'</td></tr>';
-			}
-
-		str1+='</tbody>';
-		str1+='</table>';
-		 $("#TGconstituencyTableDiv").html(str1);
-	 $("#tgConstTable").dataTable();
-	}
-
-	function buildDistrictCount(result)
-	{
-		$("#tgDistImg").hide();
-		$("#apDistImg").hide();
-		var ApArr= new Array();
-		var TGArr = new Array();
-		for(var i in result)
-		{
-			if(result[i].id > 10)
-				{
-				ApArr.push(result[i]);
-				}
-				else
-				{
-				TGArr.push(result[i]);
-				}
-		}
-		
-		ApArr.sort(dynamicSort("notReceived"));
-		TGArr.sort(dynamicSort("notReceived"));
-		var str ='';
-		str+='<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 " id="apDistTable">';
-		str+='<thead class="alert-info">';
-		str+='<tr>';
-		str+='<th rowspan="2">District Name</th>';
-		str+='<th rowspan="2">No of members registered</th>';
-		str+='<th rowspan="2">IVR Calls </th>';
-		str+='<th colspan="2">Cards Received </th>';
-		str+='<th colspan="2">Cards Not Received </th>';
-		str+='<th colspan="2">Not Registered Members </th>';
-		str+='</tr>';
-		str+='<tr>';
-		str+='<th>Count</th>';
-		str+='<th>%</th>';
-		str+='<th>Count</th>';
-		str+='<th>%</th>';
-		str+='<th>Count</th>';
-		str+='<th>%</th>';
-		str+='</tr>';
-		str+='</thead>';
-		str+='<tbody>';
-		for(var j in ApArr)
-		{
-			if(ApArr[j].total == null)
-					ApArr[j].total =0;
-				if(ApArr[j].receivedPerc == null)
-				ApArr[j].receivedPerc = 0.0;
-				if(ApArr[j].notReceived == null)
-				ApArr[j].notReceived = 0.0;
-				if(ApArr[j].notMemberPerc == null)
-				ApArr[j].notMemberPerc = 0.0;
-			str+='<tr><td>'+ApArr[j].name+'</td><td>'+ApArr[j].total+'</td><td>'+ApArr[j].answeredCnt+'</td><td>'+ApArr[j].received+'</td><td>'+ApArr[j].receivedPerc+'</td><td>'+ApArr[j].notReceived+'</td><td>'+ApArr[j].notReceivedPerc+'</td><td>'+ApArr[j].notRegistered+'</td><td>'+ApArr[j].notMemberPerc+'</td></tr>';
-		
-		}
- str+='</tbody>';
- str+='</table>';
- $("#APdistrictableDiv").html(str);
- $("#apDistTable").dataTable();
-		
- 	var str1 ='';
-		str1+='<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 " id="tgDistTable">';
-		str1+='<thead class="alert-info">';
-		str1+='<tr>';
-		str1+='<th rowspan="2">District Name</th>';
-		str1+='<th rowspan="2">No of members registered</th>';
-		str1+='<th rowspan="2">IVR Calls </th>';
-		str1+='<th colspan="2">Cards Received </th>';
-		str1+='<th colspan="2">Cards Not Received </th>';
-		str1+='<th colspan="2">Not Registered Members </th>';
-		str1+='</tr>';
-		str1+='<tr>';
-		str1+='<th>Count</th>';
-		str1+='<th>%</th>';
-		str1+='<th>Count</th>';
-		str1+='<th>%</th>';
-		str1+='<th>Count</th>';
-		str1+='<th>%</th>';
-		str1+='</tr>';
-		str1+='</thead>';
-		str1+='<tbody>';
-		for(var j in TGArr)
-		{
-			if(TGArr[j].total == null)
-					TGArr[j].total =0;
-				if(TGArr[j].receivedPerc == null)
-				TGArr[j].receivedPerc = 0.0;
-				if(TGArr[j].notReceived == null)
-				TGArr[j].notReceived = 0.0;
-				if(TGArr[j].notMemberPerc == null)
-				TGArr[j].notMemberPerc = 0.0;
-			str1+='<tr><td>'+TGArr[j].name+'</td><td>'+TGArr[j].total+'</td><td>'+TGArr[j].answeredCnt+'</td><td>'+TGArr[j].received+'</td><td>'+TGArr[j].receivedPerc+'</td><td>'+TGArr[j].notReceived+'</td><td>'+TGArr[j].notReceivedPerc+'</td><td>'+TGArr[j].notRegistered+'</td><td>'+TGArr[j].notMemberPerc+'</td></tr>';
-		}
-		str1+='</tbody>';
-		str1+='</table>';
-		 $("#TGdistrictableDiv").html(str1);
-	$("#tgDistTable").dataTable();
-		
-	
-	}
 		
 function dynamicSort(property){
     var sortOrder = 1;
@@ -1009,192 +758,11 @@ function dynamicSort(property){
 			return result * sortOrder;
 		}
 	}
-	function getPanchayatWiseIVRCount(range,state)
-	{
-	   if(state == "AP"){
-	     $("#APpanchayatDiv").html('<img style="width:20px;" src="./images/icons/search.gif" class="offset3"/>');
-	   }else{
-	     $("#TGpanchayattableDiv").html('<img style="width:20px;" src="./images/icons/search.gif" class="offset3"/>');
-	   }
-		var jsObj = {	
-		state:state,
-        range:range		
-		}
-			   
-		$.ajax({
-			type : "POST",
-			url : "getPanchayatWiseIVRAction.action",
-			data : {task:JSON.stringify(jsObj)} ,
-		}).done(function(result){
-			
-			buildPanchayatWiseIVRCount(result,state);
-		});
-	}
 	
-	function getTehsilWiseIVRCount(range,reqtype)
-	{
-	  if(reqtype == "AP" || reqtype == "both"){
-	     $("#APmandalDiv").html('<img style="width:20px;" src="./images/icons/search.gif" class="offset3"/>');
-	  }
-	  if(reqtype == "TG" || reqtype == "both"){
-	    $("#TGmandalTableDiv").html('<img style="width:20px;" src="./images/icons/search.gif" class="offset3"/>');
-	  }
-		var jsObj = {	
-		range:range             
-		}
-			   
-		$.ajax({
-			type : "POST",
-			url : "getTehsilWiseIVRAction.action",
-			data : {task:JSON.stringify(jsObj)} ,
-		}).done(function(result){
-			
-			buildTehsilWiseIVRCount(result,reqtype);
-		});
-	}
 	
-	function buildTehsilWiseIVRCount(result,reqtype)
-	{
-		var ApArr = result.apList;
-		var TGArr = result.tgList;
-		var str ='';
-		str+='<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 " id="APmandalTable">';
-		str+='<thead class="alert-info">';
-		str+='<tr>';
-		str+='<th rowspan="2">District</th>';
-		str+='<th rowspan="2">Constituency</th>';
-		str+='<th rowspan="2">Mandal</th>';
-		str+='<th rowspan="2">IVR Calls </th>';
-		str+='<th colspan="2">Cards Received </th>';
-		str+='<th colspan="2">Cards Not Received </th>';
-		str+='<th colspan="2">Not Registered Members </th>';
-		str+='</tr>';
-		str+='<tr>';
-		str+='<th>Count</th>';
-		str+='<th>%</th>';
-		str+='<th>Count</th>';
-		str+='<th>%</th>';
-		str+='<th>Count</th>';
-		str+='<th>%</th>';
-		str+='</tr>';
-		str+='</thead>';
-		str+='<tbody>';
 	
-			for(var j in ApArr)
-			{
-			  str+='<tr><td>'+ApArr[j].areaName+'</td><td>'+ApArr[j].locationName+'</td><td>'+ApArr[j].name+'</td><td>'+ApArr[j].totalCalls+'</td><td>'+ApArr[j].received+'</td><td>'+ApArr[j].receivedPerc+'</td><td>'+ApArr[j].notReceived+'</td><td>'+ApArr[j].notReceivedPerc+'</td><td>'+ApArr[j].notMember+'</td><td>'+ApArr[j].notMemberPerc+'</td></tr>';
-			}
 	
-		 str+='</tbody>';
-		 str+='</table>';
-		 if(reqtype == "AP" || reqtype == "both"){
-		   $("#APmandalDiv").html(str);
-		   $("#APmandalTable").dataTable({
-					aLengthMenu: [
-						[25, 50, 100, 200, -1],
-						[25, 50, 100, 200, "All"]
-					],
-					iDisplayLength: -1
-				});
-		}
- 	var str1 ='';
-		str1+='<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 " id="TGmandalTable">';
-		str1+='<thead class="alert-info">';
-		str1+='<tr>';
-		str1+='<th rowspan="2">District</th>';
-		str1+='<th rowspan="2">Constituency</th>';
-		str1+='<th rowspan="2">Mandal</th>';
-		str1+='<th rowspan="2">IVR Calls </th>';
-		str1+='<th colspan="2">Cards Received </th>';
-		str1+='<th colspan="2">Cards Not Received </th>';
-		str1+='<th colspan="2">Not Registered Members </th>';
-		str1+='</tr>';
-		str1+='<tr>';
-		str1+='<th>Count</th>';
-		str1+='<th>%</th>';
-		str1+='<th>Count</th>';
-		str1+='<th>%</th>';
-		str1+='<th>Count</th>';
-		str1+='<th>%</th>';
-		str1+='</tr>';
-		str1+='</thead>';
-		str1+='<tbody>';
-		
-		  for(var j in TGArr)
-			{
-			  str1+='<tr><td>'+TGArr[j].areaName+'</td><td>'+TGArr[j].locationName+'</td><td>'+TGArr[j].name+'</td><td>'+TGArr[j].totalCalls+'</td><td>'+TGArr[j].received+'</td><td>'+TGArr[j].receivedPerc+'</td><td>'+TGArr[j].notReceived+'</td><td>'+TGArr[j].notReceivedPerc+'</td><td>'+TGArr[j].notMember+'</td><td>'+TGArr[j].notMemberPerc+'</td></tr>';
-			}
-
-		str1+='</tbody>';
-		str1+='</table>';
-		if(reqtype == "TG" || reqtype == "both"){
-		 $("#TGmandalTableDiv").html(str1);
-	     $("#TGmandalTable").dataTable({
-					aLengthMenu: [
-						[25, 50, 100, 200, -1],
-						[25, 50, 100, 200, "All"]
-					],
-					iDisplayLength: -1
-				});
-		}
-	}
-	function buildPanchayatWiseIVRCount(result,state)
-	{
-		var ApArr = result.apList;
-		var str ='';
-		if(state =="AP"){
-		   str+='<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 " id="APpanchayatTable">';
-		}else{
-		   str+='<table class="table table-bordered border-radius-0 table-condensed table-hover mb-0 " id="TGpanchayattable">';
-		}
-		str+='<thead class="alert-info">';
-		str+='<tr>';
-		str+='<th rowspan="2">District</th>';
-		str+='<th rowspan="2">Constituency</th>';
-		str+='<th rowspan="2">Panchayat</th>';
-		str+='<th rowspan="2">IVR Calls </th>';
-		str+='<th colspan="2">Cards Received </th>';
-		str+='<th colspan="2">Cards Not Received </th>';
-		str+='<th colspan="2">Not Registered Members </th>';
-		str+='</tr>';
-		str+='<tr>';
-		str+='<th>Count</th>';
-		str+='<th>%</th>';
-		str+='<th>Count</th>';
-		str+='<th>%</th>';
-		str+='<th>Count</th>';
-		str+='<th>%</th>';
-		str+='</tr>';
-		str+='</thead>';
-		str+='<tbody>';
 	
-			for(var j in ApArr)
-			{
-			  str+='<tr><td>'+ApArr[j].areaName+'</td><td>'+ApArr[j].locationName+'</td><td>'+ApArr[j].name+'</td><td>'+ApArr[j].totalCalls+'</td><td>'+ApArr[j].received+'</td><td>'+ApArr[j].receivedPerc+'</td><td>'+ApArr[j].notReceived+'</td><td>'+ApArr[j].notReceivedPerc+'</td><td>'+ApArr[j].notMember+'</td><td>'+ApArr[j].notMemberPerc+'</td></tr>';
-			}
-	
-		 str+='</tbody>';
-		 str+='</table>';
-		 if(state =="AP"){
-		     $("#APpanchayatDiv").html(str);
-		     $("#APpanchayatTable").dataTable({
-					aLengthMenu: [
-						[25, 50, 100, 200, -1],
-						[25, 50, 100, 200, "All"]
-					],
-					iDisplayLength: -1
-				});
-		 }else{
-		     $("#TGpanchayattableDiv").html(str);
-		     $("#TGpanchayattable").dataTable({
-					aLengthMenu: [
-						[25, 50, 100, 200, -1],
-						[25, 50, 100, 200, "All"]
-					],
-					iDisplayLength: -1
-				});
-		 }
-	}
 	function getCandidateDataCollectionInfo(id,type,state){
 	var perc = $("#"+id).attr("key");
       var reqid="APmandalDiv";	
@@ -1216,78 +784,254 @@ function dynamicSort(property){
  
  
 	}
+function getDistrictConstiWisePerformance(locationType,locations){
+            var radioVal = $('input[name=stateradio]:checked').val();
+			if(radioVal =="TS"){
+			    radioVal ="TG";
+			}
+			var fromDate ='';
+			var toDate ='';
+			var selectedDate = $("#selectedDate").text().split('-');
+			if(selectedDate != '')
+			{
+			 fromDate = selectedDate[0];
+			 toDate = selectedDate[1];
+			}
+            $("#veryGoodPercDiv").html('<img src="images/icons/search.gif" style="margin-left:70px;"/>');
+			$("#goodPercDiv").html('<img src="images/icons/search.gif" style="margin-left:35px;"/>');
+			$("#okPercDiv").html('<img src="images/icons/search.gif" style="margin-left:12px;"/>');
+			$("#poorPercDiv").html('<img src="images/icons/search.gif" style="margin-left:30px;"/>');
+			$("#veryPoorPercDiv").html('<img src="images/icons/search.gif" style="margin-left:75px;"/>');
+			$("#locationWiseAllPercDiv").html('<div class="table table-bordered table-hover border-radius-0" style=" box-shadow: inset 0 0 5px 4px rgba(0,0,0,0.1);"><img src="images/icons/loading.gif" style="margin-bottom: 20px;margin-left: 424px;margin-top: 20px;"/></div>');
+			
+      var jsObj = {	
+			locationType:locationType,
+			state:radioVal,
+			locations:locations,
+			fromDate : fromDate,
+			toDate : toDate             
+		}
+     $.ajax({
+			type : "POST",
+			url : "getLocationWisePercInfo.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+		    $("#constiDistMainDiv").removeAttr("disabled");
+			$("#veryGoodPercDiv").html(result.totalCalls);
+			$("#goodPercDiv").html(result.totalCallsPerc);
+			$("#okPercDiv").html(result.received);
+			$("#poorPercDiv").html(result.receivedPerc);
+			$("#veryPoorPercDiv").html(result.notReceived);
+			var str='';
+			if(result.apList != null && result.apList.length > 0){
+				str+='<table class="table table-bordered table-hover border-radius-0" style=" box-shadow: inset 0 0 5px 4px rgba(0,0,0,0.1);">';
+				  for(var i in result.apList){		
+						str+='<tr>';
+						str+='	<td>';
+						str+='		<b>'+result.apList[i].name+' <span>&nbsp;&nbsp;'+result.apList[i].notReceivedPerc+'%</span></b>';
+						if(locationType=="constituency"){
+						   str+='<i class=" icon-eye-open" title="Click here to view Mandal,Panchayat and Booth wise details" onclick="getSubLocationInfo('+result.apList[i].id+',\''+result.apList[i].name+'\')" style="cursor:pointer;"></i>';
+						}
+						if(result.apList[i].notReceivedPerc <= 10){
+							  str+='<div class="progress progress-success mb-10" style="height:3px; box-shadow: none;">';
+						}else if(result.apList[i].notReceivedPerc > 10 && result.apList[i].notReceivedPerc <= 20 ){
+							  str+='<div class="progress progress-info mb-10" style="height:3px; box-shadow: none;">';
+						}else if(result.apList[i].notReceivedPerc > 20 && result.apList[i].notReceivedPerc <= 40 ){
+							  str+='<div class="progress progress-primary mb-10" style="height:3px; box-shadow: none;">';
+						}else if(result.apList[i].notReceivedPerc > 40 && result.apList[i].notReceivedPerc <= 60 ){
+							  str+='<div class="progress progress-warning mb-10" style="height:3px; box-shadow: none;">';
+						}else if(result.apList[i].notReceivedPerc > 60){
+							  str+='<div class="progress progress-danger mb-10" style="height:3px; box-shadow: none;">';
+						}
+						str+='			<div style="width: '+result.apList[i].notReceivedPerc+'%" class="bar"></div>';
+						str+='		</div>';
+						str+='	</td>';					
+						str+='</tr>';
+					}
+				str+='<table>';	
+			}else{
+			   str+='<div class="table table-bordered table-hover border-radius-0" style=" box-shadow: inset 0 0 5px 4px rgba(0,0,0,0.1);"><div style="font-weight:bold;padding:20px;margin-left:375px;">No Data Available</div></div>';
+			}
+					$("#locationWiseAllPercDiv").html(str);
+		});
 
+}
+function getLocationWisePerformance(constituencyId,locationType,name){
 
-	
+    if(locationType == "mandal" || locationType == "panchayat" || locationType == "booth"){
+	 var strn ='';
+      strn+='<div class="span12">';
+	  strn+='		<h4 class="text-center text-uppercase alert-success m-0 border-radius-0"> '+locationType+' Wise Info For '+name+' Constituency<button onclick="closeDIV(\'allErrorsInfoLocationWiseOuter\');" class="close" type="button" style="margin-top: 1px;">x</button></h4>';
+	  strn+='		<span class="text-center well well-small m-0 border-radius-0" style="width:98%;display:inline-block;">';
+	  strn+='		<label class="radio inline">';
+	  strn+='		 View Details by ';
+	  strn+='		</label>';
+	  strn+='			<label class="radio inline">';
+				 if(locationType == "mandal"){
+	  strn+='			    <input type="radio" onclick="getLocationWisePerformance('+constituencyId+',\'mandal\',\''+name+'\');" checked="checked" name="locationSelRdo" value="mandal" > Mandal';
+				 }else{
+	 strn+='		   <input type="radio" onclick="getLocationWisePerformance('+constituencyId+',\'mandal\',\''+name+'\');"  name="locationSelRdo" value="mandal" > Mandal';
+				 }
+	strn+='			</label>	';			
+
+	strn+='			<label class="radio inline">';
+				 if(locationType == "panchayat"){
+	strn+='			   <input type="radio" onclick="getLocationWisePerformance('+constituencyId+',\'panchayat\',\''+name+'\');" checked="checked" name="locationSelRdo" value="panchayat"> Panchayat';
+				  }else{
+	strn+='			   <input type="radio" onclick="getLocationWisePerformance('+constituencyId+',\'panchayat\',\''+name+'\');" name="locationSelRdo" value="panchayat"> Panchayat';
+				  }
+	strn+='			</label>';
+	strn+='			<label class="radio inline">';
+				if(locationType == "booth"){
+	strn+='			   <input type="radio" onclick="getLocationWisePerformance('+constituencyId+',\'booth\',\''+name+'\');" checked="checked" name="locationSelRdo" value="booth"> Booth';
+				 }else{
+	strn+='			   <input type="radio" onclick="getLocationWisePerformance('+constituencyId+',\'booth\',\''+name+'\');" name="locationSelRdo" value="booth"> Booth';
+				  }
+	strn+='			</label>';
+	strn+='		</span>';
+	strn+='		   <div id="allErrorsInfoLocationWise" />';
+	strn+='	</div>';
+		$("#allErrorsInfoLocationWiseOuter").html(strn);
+	}else{
+	   $("#allErrorsInfoLocationWiseOuter").html('<div class="span12"><h4 class="text-center text-uppercase alert-success m-0 border-radius-0"> Constituency Wise <button onclick="closeDIV(\'allErrorsInfoLocationWiseOuter\');" class="close" type="button" style="margin-top: 1px;">x</button></h4><div id="allErrorsInfoLocationWise" /></div>');
+	}
+		
+     var fromDate ='';
+	 var toDate ='';
+	 var selectedDate = $("#selectedDate").text().split('-');
+	 if(selectedDate != '')
+	  {
+		 fromDate = selectedDate[0];
+		 toDate = selectedDate[1];
+	 }
+     $("#allErrorsInfoLocationWise").html('<div class="table table-bordered border-radius-0 table-condensed" style="font-size:10px;"><img src="images/icons/loading.gif" style="margin-bottom: 20px;margin-left: 424px;margin-top: 20px;"/></div>');
+      var jsObj = {	
+			locationType:locationType,
+			constituencyId:constituencyId,
+			fromDate : fromDate,
+			toDate : toDate          
+		}
+     $.ajax({
+			type : "POST",
+			url : "getLocationWisePercErrorInfo.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+		    var str ="";
+			if(result.apList != null && result.apList.length > 0){
+				str+='<div style="max-height: 400px;overflow-y: scroll;">';
+				str+='<table class="table table-bordered border-radius-0 table-condensed" style="font-size:10px;">';
+				str+='  <thead>';
+				str+='	   <tr class="well">';
+				if(locationType =="All" || locationType =="AP" || locationType =="TS"){
+				   str+='				<th rowspan="2">Constituency</th>';
+				}else{
+				  str+='				<th rowspan="2">'+locationType+'</th>';
+				}
+				str+='				<th rowspan="2">Registred Count</th>';
+				str+='				<th rowspan="2">Cards Printed Count</th>';
+				str+="				<th rowspan='2'>Job ID's</th>";
+				str+='				<th rowspan="2">IVR Calls Dailed</th>';
+				str+='				<th colspan="2">Answered Calls</th>';
+				str+='				<th colspan="2">Not Selected Any option</th>';
+				str+='				<th colspan="2">Error Calls</th>';
+				str+='				<th colspan="2">Card Received</th>';
+				str+='				<th colspan="2">Card Not Received</th>';
+				str+='				<th colspan="2">Member NOT Registered</th>';
+				str+='				<th colspan="2">Wrong option Selected</th>';
+				str+='		</tr>';
+				str+='	    <tr class="well">';
+				str+='				<th>Count</th>';
+				str+='				<th>%</th>';
+				str+='				<th>Count</th>';
+				str+='				<th>%</th>';
+				str+='				<th>Count</th>';
+				str+='				<th>%</th>';
+				str+='				<th>Count</th>';
+				str+='				<th>%</th>';
+				str+='				<th>Count</th>';
+				str+='				<th>%</th>';
+				str+='				<th>Count</th>';
+				str+='				<th>%</th>';
+				str+='				<th>Count</th>';
+				str+='				<th>%</th>';
+				str+='		</tr>';
+				str+='	</thead>';
+				str+='	<tbody>';
+				for(var i in result.apList){
+				  str+='<tr>';
+				  str+='  <td>'+result.apList[i].name+'</td>';
+				  str+='  <td>'+result.apList[i].registeredCount+'</td>';
+				  str+='  <td>'+result.apList[i].printedCount+'</td>';
+				  str+='  <td>'+result.apList[i].jobCode+'</td>';
+				  str+='  <td>'+result.apList[i].totalIvrCalls+'</td>';
+				  str+='  <td>'+result.apList[i].totalAnswerdCalls+'</td>';
+				  str+='  <td>'+result.apList[i].totalAnswerdPerc+'</td>';
+				  str+='  <td>'+result.apList[i].noOptionSel+'</td>';
+				  str+='  <td>'+result.apList[i].noOptionSelPerc+'</td>';
+				  str+='  <td>'+result.apList[i].errorCalls+'</td>';
+				  str+='  <td>'+result.apList[i].errorCallsPerc+'</td>';
+				  str+='  <td>'+result.apList[i].received+'</td>';
+				  str+='  <td>'+result.apList[i].receivedPerc+'</td>';
+				  str+='  <td>'+result.apList[i].notReceived+'</td>';
+				  str+='  <td>'+result.apList[i].notReceivedPerc+'</td>';
+				  str+='  <td>'+result.apList[i].notMember+'</td>';
+				  str+='  <td>'+result.apList[i].notMemberPerc+'</td>';
+				  str+='  <td>'+result.apList[i].wrongOptionSel+'</td>';
+				  str+='  <td>'+result.apList[i].wrongOptionSelPerc+'</td>';
+				  str+='</tr>';
+				}
+				str+='	</tbody>';
+				str+='</table></div>';
+			}else{
+			   str+='<div class="table table-bordered table-hover border-radius-0" style=" box-shadow: inset 0 0 5px 4px rgba(0,0,0,0.1);"><div style="font-weight:bold;padding:20px;margin-left:375px;">No Data Available</div></div>';
+			}
+					$("#allErrorsInfoLocationWise").html(str);
+		});
+
+}
+function closeDIV(id){
+   $("#"+id).html("");
+}
+var selectedLocation ="district";
+var tgIds ="8,4,295,296,2,5,1,3,7,6,10,13,15,12,18,16,342,343,11,321,23,322,318,26,30,24,20,323,31,319,21,320,40,35,36,32,37,41,39,337,336,34,57,367,345,346,347,56,348,349,351,350,55,58,60,59,50,49,315,47,314,51,316,46,317,44,43,54,313,52,53,66,335,68,64,369,69,73,63,62,70,61,65,71,67,77,338,79,339,78,84,82,75,81,85,74,89,87,362,86,91,93,94,363,364,97,365,92,324,107,101,104,103,325,105,102,326,100,80";
+var apIds ="111,352,117,114,116,108,109,112,353,113,360,124,125,122,120,121,361,129,127,368,354,355,356,357,358,134,136,359,138,133,141,135,140,137,163,157,156,307,155,147,308,159,153,146,160,310,152,309,303,304,305,149,306,172,366,181,174,173,167,179,178,177,180,169,170,171,176,168,194,193,184,185,187,327,328,182,329,330,196,331,195,191,192,186,210,215,206,211,217,213,216,209,212,312,311,199,208,214,207,203,205,344,221,228,218,219,229,227,223,225,226,222,224,232,241,233,340,341,236,231,237,239,238,242,252,243,246,248,251,245,244,250,249,254,332,261,260,263,262,333,257,264,258,265,334,253,255,276,279,297,278,277,298,272,299,273,270,275,300,267,271,290,285,294,286,280,291,289,288,283,301,281,302,284,282";
+function getOtherLocationsInfo(){
+  $("#constiDistMainDiv").attr("disabled","disabled");
+ if(selectedLocation == "district"){
+    selectedLocation = "constituency";
+ }else{
+    selectedLocation ="district";
+ }
+ if(selectedLocation == "district"){
+   $("#constiDistMainDiv").attr("value","Click to view Constituency Wise");
+   $("#districtConstituencyHeading").html("District Wise Card Not Received Response");
+   getDistrictConstiWisePerformance("district","");
+ }else{
+   $("#constiDistMainDiv").attr("value","Click to view District Wise");
+   $("#districtConstituencyHeading").html("Constituency Wise Card Not Received Response");
+   var radioVal = $('input[name=stateradio]:checked').val();
+   if(radioVal == "All"){
+     getDistrictConstiWisePerformance("constituency",apIds+","+tgIds);
+   }else if(radioVal == "AP"){
+     getDistrictConstiWisePerformance("constituency",apIds);
+   }else{
+     getDistrictConstiWisePerformance("constituency",tgIds);
+   }
+  } 
+   
+}	
+function getSubLocationInfo(id,name){
+  getLocationWisePerformance(id,"mandal",name);
+
+}
 </script>
 <script>
 getIvrBasicCount();
 getDateWiseIVRCount();
-getConstituencyWiseIVRCount();
-getPanchayatWiseIVRCount(0,"AP");
-getPanchayatWiseIVRCount(0,"TG");
-getTehsilWiseIVRCount(0,"both");
+getDistrictConstiWisePerformance("district","");
+getLocationWisePerformance(232,"All");
 </script>
-<script>
-var range;
 
-$( "#slider1" ).slider({
-value:1,
-min: 0,
-max: 100,
-step: 1,
-slide: function( event, ui ) {
-$( "#amount1" ).html( "Percentage : " + ui.value +" %");
-$( "#amount1").attr("key",ui.value);
-},
-change: function( event, ui ) {
-
-}
-});
-$( "#slider2" ).slider({
-value:1,
-min: 0,
-max: 100,
-step: 1,
-slide: function( event, ui ) {
-$( "#amount2" ).html( "Percentage : " + ui.value +" %");
-$( "#amount2").attr("key",ui.value);
-},
-change: function( event, ui ) {
-
-}
-});
-$( "#slider3" ).slider({
-value:1,
-min: 0,
-max: 100,
-step: 1,
-slide: function( event, ui ) {
-$( "#amount3" ).html( "Percentage : " + ui.value +" %");
-$( "#amount3").attr("key",ui.value);
-},
-change: function( event, ui ) {
-
-}
-});
-$( "#slider4" ).slider({
-value:1,
-min: 0,
-max: 100,
-step: 1,
-slide: function( event, ui ) {
-$( "#amount4").html( "Percentage : " + ui.value +" %");
-$( "#amount4").attr("key",ui.value);
-},
-change: function( event, ui ) {
-
-}
-});
-$( "#amount1" ).html( "Percentage : 0 %");
-$( "#amount2" ).html( "Percentage : 0 %");
-$( "#amount3" ).html( "Percentage : 0 %");
-$( "#amount4" ).html( "Percentage : 0 %");
-</script>
 
 
 </body>
