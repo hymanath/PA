@@ -696,4 +696,84 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 		return Action.SUCCESS;
 	}
 	
+	public String getLocationWisePercInfo(){
+		try{
+			jobj = new JSONObject(getTask());
+			String location = jobj.getString("locationType");
+			List<Long> locationIds = new ArrayList<Long>();
+			if(location.equalsIgnoreCase("district")){
+				String state =  jobj.getString("state");
+				if(state.equalsIgnoreCase("AP")){
+					for(long i=11l;i<=23l;i++){
+						locationIds.add(i);
+					}
+				}else if(state.equalsIgnoreCase("TG")){
+					for(long i=1l;i<=10l;i++){
+						locationIds.add(i);
+					}
+				}else{
+					for(long i=1l;i<=23l;i++){
+						locationIds.add(i);
+					}
+				}
+			}else{
+				String[] locationArray = jobj.getString("locations").split(",");
+				for(String loc:locationArray){
+					locationIds.add(Long.valueOf(loc.trim()));
+				}
+			}
+			 Date startDate = null;
+			 Date endDate = null;
+			 String fromDate = jobj.getString("fromDate");
+			 String toDate = jobj.getString("toDate");
+			 try{
+				 SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy");
+				 if(fromDate.trim().length() > 0){
+					 startDate = format.parse(fromDate.trim());
+				 }
+				 if(toDate.trim().length() > 0){
+				     endDate = format.parse(toDate.trim());
+				 }
+			 }
+			 catch(Exception e)
+			 {
+				 LOG.error("Exception rised in date convert()  ",e);	 
+			 }
+			cadreIVRResponseVO = tdpCadreReportService.getLocationWisePercInfo(location,locationIds,startDate,endDate);			
+		}
+		catch(Exception e){
+			LOG.info("Entered into getLocationWisePercInfo()",e);	
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getLocationWisePercInfoErrorInfo(){
+		try{
+			jobj = new JSONObject(getTask());
+			String location = jobj.getString("locationType");
+			
+			 Date startDate = null;
+			 Date endDate = null;
+			 String fromDate = jobj.getString("fromDate");
+			 String toDate = jobj.getString("toDate");
+			 try{
+				 SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy");
+				 if(fromDate.trim().length() > 0){
+					 startDate = format.parse(fromDate.trim());
+				 }
+				 if(toDate.trim().length() > 0){
+				     endDate = format.parse(toDate.trim());
+				 }
+			 }
+			 catch(Exception e)
+			 {
+				 LOG.error("Exception rised in date convert1() ",e);	 
+			 }
+			cadreIVRResponseVO = tdpCadreReportService.getLocationWisePercInfoErrorInfo(location, jobj.getLong("constituencyId"),startDate,endDate);			
+		}
+		catch(Exception e){
+			LOG.info("Entered into getLocationWisePercInfoErrorInfo()",e);	
+		}
+		return Action.SUCCESS;
+	}
 }
