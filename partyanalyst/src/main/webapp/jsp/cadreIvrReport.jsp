@@ -233,23 +233,30 @@
 					 $('#daterange').on('show.daterangepicker', function() { 
 					   $('#daterange span').html(moment().format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
 					getDateWiseIVRCount();
-                    });
-					   
-
-                  $('#daterange').on('hide.daterangepicker', function() { 
-					   
-						selectedLocation ="district";
+					selectedLocation ="district";
 						$("#constiDistMainDiv").attr("value","Click to view Constituency Wise");
 						$("#districtConstituencyHeading").html("District Wise Card Not Received Response");
 						getDistrictConstiWisePerformance("district","");
 						getLocationWisePerformance(232,$('input[name=stateradio]:checked').val());
 						$("#allErrorsInfoLocationWiseOuter").html("");
+                    });
+					   
+
+                  $('#daterange').on('hide.daterangepicker', function() { 
+					   
+						
 					   });
 				
                   $('#daterange').on('apply.daterangepicker', function(ev, picker) { 
 					   
                   
 					  getDateWiseIVRCount();
+					  selectedLocation ="district";
+						$("#constiDistMainDiv").attr("value","Click to view Constituency Wise");
+						$("#districtConstituencyHeading").html("District Wise Card Not Received Response");
+						getDistrictConstiWisePerformance("district","");
+						getLocationWisePerformance(232,$('input[name=stateradio]:checked').val());
+						$("#allErrorsInfoLocationWiseOuter").html("");
                   });
 				 
                   $('#daterange').on('cancel.daterangepicker', function(ev, picker) {  });
