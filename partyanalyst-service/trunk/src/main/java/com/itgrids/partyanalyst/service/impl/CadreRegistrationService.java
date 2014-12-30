@@ -6318,30 +6318,29 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					
 				}*/
 				
-				if(constituencyId != null && constituencyId.longValue() != 0L && !constituencyId.toString().equalsIgnoreCase("null"))
-				{
-					queryStr.append(" and model.userAddress.constituency.constituencyId =:constituencyId ");
-				}
-				else
-				{
-					returnVO.setErrorStr(" Constituency is Required.");
-					return returnVO;
-				}
-				if(mobileNo != null && mobileNo.trim().length()>0  && !mobileNo.trim().equalsIgnoreCase("0") && !mobileNo.equalsIgnoreCase("null"))
+				
+				if((memberShipCardNo == null || memberShipCardNo.trim().length()==0  || memberShipCardNo.trim().equalsIgnoreCase("0") || memberShipCardNo.equalsIgnoreCase("null"))
+						&& (mobileNo != null && mobileNo.trim().length()>0  && !mobileNo.trim().equalsIgnoreCase("0") && !mobileNo.equalsIgnoreCase("null")))
 				{							
-					queryStr.append(" and model.mobileNo like '%"+mobileNo+"%' ");
+					queryStr.append(" and (model.mobileNo like '%"+mobileNo+"%') ");
 				}
 				if(memberShipCardNo != null && memberShipCardNo.trim().length()>0  && !memberShipCardNo.trim().equalsIgnoreCase("0") && !memberShipCardNo.equalsIgnoreCase("null"))
 				{
-					queryStr.append(" and model.memberShipNo like '%"+memberShipCardNo+"%' ");
+					queryStr.append(" and (model.memberShipNo like '%"+memberShipCardNo+"%') ");
+					
+					if(mobileNo != null && mobileNo.trim().length()>0  && !mobileNo.trim().equalsIgnoreCase("0") && !mobileNo.equalsIgnoreCase("null"))
+					{							
+						queryStr.append(" or (model.mobileNo like '%"+mobileNo+"%') ");
+					}
 				}
+				
 				if(voterCardNo != null && voterCardNo.trim().length()>0  && !voterCardNo.trim().equalsIgnoreCase("0") && !voterCardNo.equalsIgnoreCase("null"))
 				{
-					queryStr.append(" and model.voter.voterIDCardNo like '%"+voterCardNo+"%' ");
+					queryStr.append(" and (model.voter.voterIDCardNo like '%"+voterCardNo+"%') ");
 				}
 				if(trNumber != null && trNumber.trim().length()>0 && !trNumber.trim().equalsIgnoreCase("0") && !trNumber.equalsIgnoreCase("null"))
 				{
-					queryStr.append(" and model.refNo like '%"+trNumber+"%' ");
+					queryStr.append(" and (model.refNo like '%"+trNumber+"%') ");
 				}
 				
 				List<Object[]> cadreList = tdpCadreDAO.getTdpCadreDetailsBySearchCriteriaForCallCenter(constituencyId, queryStr.toString());
@@ -6408,11 +6407,18 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						returnLsit.add(cadreVO);
 					}
 					
+					returnVO.setErrorStr("success");
+					returnVO.setTotalCount(Long.valueOf(String.valueOf(returnLsit.size())));
 					returnVO.setTdpCadreDetailsList(returnLsit);
+				}
+				else
+				{
+					returnVO.setErrorStr(mobileNo+" Mobile Number is not Registered for any Cadre...");
 				}
 				
 		} catch (Exception e) {
 			LOG.error("Exception raised in searchTdpCadreDetailsBySearchCriteria  method in WebServiceHandlerService",e);
+			returnVO.setErrorStr("failure");
 		}
     	
     	return returnVO;
