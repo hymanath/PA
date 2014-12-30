@@ -19,10 +19,16 @@ public class TdpCadreVO implements java.io.Serializable
 	private String imageURL;
 	private String errorStr;
 	private String occupation;
+	private Long totalCount;
 	
 	private List<TdpCadreVO> tdpCadreDetailsList = new ArrayList<TdpCadreVO>();
 	
-	
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
 	public String getErrorStr() {
 		return errorStr;
 	}
