@@ -6322,25 +6322,25 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				if((memberShipCardNo == null || memberShipCardNo.trim().length()==0  || memberShipCardNo.trim().equalsIgnoreCase("0") || memberShipCardNo.equalsIgnoreCase("null"))
 						&& (mobileNo != null && mobileNo.trim().length()>0  && !mobileNo.trim().equalsIgnoreCase("0") && !mobileNo.equalsIgnoreCase("null")))
 				{							
-					queryStr.append(" and (model.mobileNo like '%"+mobileNo+"%') ");
+					queryStr.append(" and (model.mobileNo like '"+mobileNo.trim()+"') ");
 				}
 				if(memberShipCardNo != null && memberShipCardNo.trim().length()>0  && !memberShipCardNo.trim().equalsIgnoreCase("0") && !memberShipCardNo.equalsIgnoreCase("null"))
 				{
-					queryStr.append(" and (model.memberShipNo like '%"+memberShipCardNo+"%') ");
+					queryStr.append(" and (model.memberShipNo like '"+memberShipCardNo.trim()+"') ");
 					
 					if(mobileNo != null && mobileNo.trim().length()>0  && !mobileNo.trim().equalsIgnoreCase("0") && !mobileNo.equalsIgnoreCase("null"))
 					{							
-						queryStr.append(" or (model.mobileNo like '%"+mobileNo+"%') ");
+						queryStr.append(" or (model.mobileNo like '"+mobileNo.trim()+"') ");
 					}
 				}
 				
 				if(voterCardNo != null && voterCardNo.trim().length()>0  && !voterCardNo.trim().equalsIgnoreCase("0") && !voterCardNo.equalsIgnoreCase("null"))
 				{
-					queryStr.append(" and (model.voter.voterIDCardNo like '%"+voterCardNo+"%') ");
+					queryStr.append(" and (model.voter.voterIDCardNo like '"+voterCardNo.trim()+"') ");
 				}
 				if(trNumber != null && trNumber.trim().length()>0 && !trNumber.trim().equalsIgnoreCase("0") && !trNumber.equalsIgnoreCase("null"))
 				{
-					queryStr.append(" and (model.refNo like '%"+trNumber+"%') ");
+					queryStr.append(" and (model.refNo like '"+trNumber.trim()+"') ");
 				}
 				
 				List<Object[]> cadreList = tdpCadreDAO.getTdpCadreDetailsBySearchCriteriaForCallCenter(constituencyId, queryStr.toString());
@@ -6363,6 +6363,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						cadreVO.setImageURL(cadre[7] != null ? cadre[7].toString():"");
 						//cadreVO.setVoterCardNo(cadre[8] != null ? cadre[8].toString():"");
 
+						if(cadre[11] != null && cadre[11].toString().trim().length()>0) 
+						{
+							cadreVO.setConstituency(cadre[11] != null ? cadre[11].toString().trim():"");					
+						}
+						
 						if(cadre[12] != null && cadre[12].toString().trim().length()>0) 
 						{
 							Voter voter = voterDAO.get(cadre[12] != null ? Long.valueOf(cadre[12].toString().trim()):0L);
@@ -6407,7 +6412,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						returnLsit.add(cadreVO);
 					}
 					
-					returnVO.setErrorStr("success");
+					returnVO.setResponseStatus("SUCCESS");					
 					returnVO.setTotalCount(Long.valueOf(String.valueOf(returnLsit.size())));
 					returnVO.setTdpCadreDetailsList(returnLsit);
 				}
@@ -6415,18 +6420,25 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				{
 					if(memberShipCardNo != null && memberShipCardNo.trim().length()>0  && !memberShipCardNo.trim().equalsIgnoreCase("0") && !memberShipCardNo.equalsIgnoreCase("null"))
 					{
-						returnVO.setErrorStr(memberShipCardNo+" MemberShip Card Number is not Registered for any Cadre...");
-					}
+						if(mobileNo != null && mobileNo.trim().length()>0  && !mobileNo.trim().equalsIgnoreCase("0") && !mobileNo.equalsIgnoreCase("null"))
+						{
+							returnVO.setResponseStatus(" No Cadre information is available with this Search details...");
+						}
+						else
+						{
+							returnVO.setResponseStatus(memberShipCardNo+" MemberShip Card Number is not Registered for any Cadre...");
+						}
+					}					
 					else if(mobileNo != null && mobileNo.trim().length()>0  && !mobileNo.trim().equalsIgnoreCase("0") && !mobileNo.equalsIgnoreCase("null"))
 					{	
-						returnVO.setErrorStr(mobileNo+" Mobile Number is not Registered for any Cadre...");
+						returnVO.setResponseStatus(mobileNo+" Mobile Number is not Registered for any Cadre...");
 					}
-					
 				}
-				
+				returnVO.setResponseCode("");
 		} catch (Exception e) {
 			LOG.error("Exception raised in searchTdpCadreDetailsBySearchCriteria  method in WebServiceHandlerService",e);
-			returnVO.setErrorStr("failure");
+			returnVO.setResponseStatus("FAILURE");
+			returnVO.setResponseCode("SERVER ISSUE");			
 		}
     	
     	return returnVO;
