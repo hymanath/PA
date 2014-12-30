@@ -673,14 +673,14 @@ public class WebServiceHandler2 {
 		}
 	}
 	
-	@POST
-	@Path("/searchTdpCadreDetailsBySearchCriteriaForCallCenter/{constituencyId}/{memberShipCardNo}/{mobileNo}")
+	@GET
+	@Path("/searchTdpCadreDetailsBySearchCriteriaForCallCenter/{memberShipCardNo}/{mobileNo}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Object searchTdpCadreDetailsBySearchCriteriaForCallCenter(@PathParam("constituencyId") String constituencyId,@PathParam("memberShipCardNo") String memberShipCardNo,@PathParam("mobileNo") String mobileNo)
+	public Object searchTdpCadreDetailsBySearchCriteriaForCallCenter(@PathParam("memberShipCardNo") String memberShipCardNo,@PathParam("mobileNo") String mobileNo)
 	{
 		try{			
-			return webServiceHandlerService1.searchTdpCadreDetailsBySearchCriteria(constituencyId,"",memberShipCardNo,"","",mobileNo);			
+			return webServiceHandlerService1.searchTdpCadreDetailsBySearchCriteria("0","",memberShipCardNo,"","",mobileNo);			
 		}
 		catch(Exception e)
 		{
