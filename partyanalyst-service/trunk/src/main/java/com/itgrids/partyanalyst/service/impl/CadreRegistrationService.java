@@ -6413,7 +6413,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				}
 				else
 				{
-					returnVO.setErrorStr(mobileNo+" Mobile Number is not Registered for any Cadre...");
+					if(memberShipCardNo != null && memberShipCardNo.trim().length()>0  && !memberShipCardNo.trim().equalsIgnoreCase("0") && !memberShipCardNo.equalsIgnoreCase("null"))
+					{
+						returnVO.setErrorStr(memberShipCardNo+" MemberShip Card Number is not Registered for any Cadre...");
+					}
+					else if(mobileNo != null && mobileNo.trim().length()>0  && !mobileNo.trim().equalsIgnoreCase("0") && !mobileNo.equalsIgnoreCase("null"))
+					{	
+						returnVO.setErrorStr(mobileNo+" Mobile Number is not Registered for any Cadre...");
+					}
+					
 				}
 				
 		} catch (Exception e) {
