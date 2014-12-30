@@ -4692,15 +4692,15 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					}
 			 }
 			 
-          public CadreIVRResponseVO getLocationWiseIVRDetailedInfo(Map<Long,String> locationNames,String locationType,Date startDate,Date endDate){
+          public CadreIVRResponseVO getLocationWiseIVRDetailedInfo(Map<Long,String> locationNames,String locationType,Date startDate,Date endDate,Long constituencyId){
 				 
 				 CadreIVRResponseVO responseVO = new CadreIVRResponseVO();
 				 try{
 					 Map<Long,CadreIVRResponseVO> responseMap = new HashMap<Long,CadreIVRResponseVO>();
 					 
-					 getNoOfMembersRegInfo(locationNames,locationType,responseMap);
-					 getNoOfCardsPrintedAndJobInfo(locationType,responseMap);
-					 getResponseInfo(locationType,responseMap,startDate,endDate);
+					 getNoOfMembersRegInfo(locationNames,locationType,responseMap,constituencyId);
+					 getNoOfCardsPrintedAndJobInfo(locationType,responseMap,constituencyId);
+					 getResponseInfo(locationType,responseMap,startDate,endDate,constituencyId);
 					 responseVO.setApList(new ArrayList<CadreIVRResponseVO>(responseMap.values()));
 					 calculateAllPercs(responseVO.getApList());
 					 Collections.sort(responseVO.getApList(), sort);
@@ -4710,9 +4710,9 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 				 return responseVO;
 			 }
           
-          public void getNoOfMembersRegInfo(Map<Long,String> locationNames,String locationType,Map<Long,CadreIVRResponseVO> responseMap){
+          public void getNoOfMembersRegInfo(Map<Long,String> locationNames,String locationType,Map<Long,CadreIVRResponseVO> responseMap,Long constituencyId){
         	//0locationId,1count
-        	  List<Object[]> registeredCountList = tdpCadreDAO.getLocationWiseCadreRegisterInfo(locationNames.keySet(), locationType);
+        	  List<Object[]> registeredCountList = tdpCadreDAO.getLocationWiseCadreRegisterInfo(locationNames.keySet(), locationType,constituencyId);
         	  for(Object[] registeredCount:registeredCountList){
         		  CadreIVRResponseVO response = responseMap.get((Long)registeredCount[0]);
         		  if(response == null){
@@ -4744,10 +4744,10 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         	  }
           }
           
-          public void getNoOfCardsPrintedAndJobInfo(String locationType,Map<Long,CadreIVRResponseVO> responseMap){
+          public void getNoOfCardsPrintedAndJobInfo(String locationType,Map<Long,CadreIVRResponseVO> responseMap,Long constituencyId){
         	   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         	   //0locationId,1count,2jobids
-        	   List<Object[]> cardsPrintedAndJobInfo = zebraPrintDetailsDAO.getLocationWiseCadreRegisterInfo(responseMap.keySet(),locationType);
+        	   List<Object[]> cardsPrintedAndJobInfo = zebraPrintDetailsDAO.getLocationWiseCadreRegisterInfo(responseMap.keySet(),locationType,constituencyId);
         	   for(Object[] cardsPrintedInfo:cardsPrintedAndJobInfo){
          		  CadreIVRResponseVO response = responseMap.get((Long)cardsPrintedInfo[0]);
          		  if(response != null){
@@ -4762,9 +4762,9 @@ public class TdpCadreReportService implements ITdpCadreReportService{
          	  }
           }
           
-          public void getResponseInfo(String locationType,Map<Long,CadreIVRResponseVO> responseMap,Date startDate,Date endDate){
+          public void getResponseInfo(String locationType,Map<Long,CadreIVRResponseVO> responseMap,Date startDate,Date endDate,Long constituencyId){
         	//0locationId,1count,2callStatus,3responseKey
-        	  List<Object[]> responseInfoList = cadreIvrResponseDAO.getLocationWiseIVRCountsInfo(responseMap.keySet(), locationType, startDate, endDate);
+        	  List<Object[]> responseInfoList = cadreIvrResponseDAO.getLocationWiseIVRCountsInfo(responseMap.keySet(), locationType, startDate, endDate,constituencyId);
         	  for(Object[] response:responseInfoList){
         		  CadreIVRResponseVO locationResponseVo = responseMap.get((Long)response[0]);
         		  if(locationResponseVo != null){
@@ -4841,7 +4841,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         		  for(Object[] location:assemblyList){
             		  locationNames.put((Long)location[0], location[1].toString());
             	  }
-        		  return getLocationWiseIVRDetailedInfo(locationNames,"constituency",startDate,endDate);
+        		  return getLocationWiseIVRDetailedInfo(locationNames,"constituency",startDate,endDate,null);
         	  }else if(locationType.equalsIgnoreCase("mandal")){
         		  List<CadreIVRResponseVO> infoList = new ArrayList<CadreIVRResponseVO>();
         		  Map<Long,String> localBodyNames = new HashMap<Long,String>();
@@ -4850,7 +4850,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         			  localBodyNames.put((Long)location[0], location[1].toString());
             	  }
         		  if(localBodyIds.size() > 0){
-        			  CadreIVRResponseVO localBodyVO =  getLocationWiseIVRDetailedInfo(localBodyNames,"localBody",startDate,endDate);
+        			  CadreIVRResponseVO localBodyVO =  getLocationWiseIVRDetailedInfo(localBodyNames,"localBody",startDate,endDate,constituencyId);
 	        		  if(localBodyVO != null && localBodyVO.getApList() != null ){
 	        		      infoList.addAll(localBodyVO.getApList());
 	        		  }
@@ -4860,7 +4860,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         			  locationNames.put((Long)location[0], location[1].toString());
             	  }
         		  if(locationNames.size() > 0){
-        			  CadreIVRResponseVO mandalVO =  getLocationWiseIVRDetailedInfo(locationNames,"mandal",startDate,endDate);
+        			  CadreIVRResponseVO mandalVO =  getLocationWiseIVRDetailedInfo(locationNames,"mandal",startDate,endDate,constituencyId);
 	        		  if(mandalVO != null && mandalVO.getApList() != null ){
 	        		      infoList.addAll(mandalVO.getApList());
 	        		  }
@@ -4874,13 +4874,13 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         		  for(Object[] location:panchayatList){
             		  locationNames.put((Long)location[0], location[1].toString());
             	  }
-        		  return getLocationWiseIVRDetailedInfo(locationNames,"panchayat",startDate,endDate);
+        		  return getLocationWiseIVRDetailedInfo(locationNames,"panchayat",startDate,endDate,null);
         	  }else{
         		  List<Object[]> boothsList = boothDAO.getBoothsInAConstituency(constituencyId,11l);
         		  for(Object[] location:boothsList){
             		  locationNames.put((Long)location[0], location[1].toString());
             	  }
-        		  return getLocationWiseIVRDetailedInfo(locationNames,"booth",startDate,endDate);
+        		  return getLocationWiseIVRDetailedInfo(locationNames,"booth",startDate,endDate,null);
         	  }
           }
 }
