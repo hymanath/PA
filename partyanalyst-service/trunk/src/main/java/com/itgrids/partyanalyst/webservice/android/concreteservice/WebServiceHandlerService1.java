@@ -1158,10 +1158,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
     {
     	TdpCadreVO returnVO = new TdpCadreVO(); // TdpCadreVO
     	try {
-    		Long Id = 0l;
-    		if(!constituencyId.equalsIgnoreCase("null") && !constituencyId.isEmpty())
-    			Id	= Long.valueOf(constituencyId);
-    		returnVO = cadreRegistrationService.searchTdpCadreDetailsBySearchCriteria(Id,name,memberShipCardNo, voterCardNo, refNo, mobileNo);
+    		returnVO = cadreRegistrationService.searchTdpCadreDetailsBySearchCriteria(Long.valueOf(constituencyId),name,memberShipCardNo, voterCardNo, refNo, mobileNo);
 		} catch (Exception e) {
 			LOG.error("Exception raised in searchTdpCadreDetailsBySearchCriteria  method in WebServiceHandlerService",e);
 		}
