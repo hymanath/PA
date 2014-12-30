@@ -8,6 +8,7 @@ public class CadreIVRResponseVO {
 	private List<CadreIVRResponseVO> tgList;
 	
 	private String name;
+	private Long id;
 	private String locationName;
 	private String areaName;
 	private Long totalCalls;
@@ -18,7 +19,18 @@ public class CadreIVRResponseVO {
 	private Long notReceivedPerc;
 	private Long notMember;
 	private Long notMemberPerc;
-	
+	private Long registeredCount;
+	private Long printedCount;
+	private String jobCode;
+	private Long totalIvrCalls;
+	private Long totalAnswerdCalls;
+	private Long totalAnswerdPerc;
+	private Long errorCalls;
+	private Long errorCallsPerc;
+	private Long wrongOptionSel;
+	private Long wrongOptionSelPerc;
+	private Long noOptionSel;
+	private Long noOptionSelPerc;
 	
 	public List<CadreIVRResponseVO> getApList() {
 		return apList;
@@ -123,5 +135,110 @@ public class CadreIVRResponseVO {
 	public void setNotMemberPerc(Long notMemberPerc) {
 		this.notMemberPerc = notMemberPerc;
 	}
-		
+
+	public Long getRegisteredCount() {
+		return registeredCount;
+	}
+
+	public void setRegisteredCount(Long registeredCount) {
+		this.registeredCount = registeredCount;
+	}
+
+	public Long getPrintedCount() {
+		return printedCount;
+	}
+
+	public void setPrintedCount(Long printedCount) {
+		this.printedCount = printedCount;
+	}
+
+	public String getJobCode() {
+		return jobCode;
+	}
+
+	public void setJobCode(String jobCode) {
+		this.jobCode = jobCode;
+	}
+
+	public Long getTotalIvrCalls() {
+		return totalIvrCalls;
+	}
+
+	public void setTotalIvrCalls(Long totalIvrCalls) {
+		this.totalIvrCalls = totalIvrCalls;
+	}
+
+	public Long getTotalAnswerdCalls() {
+		return totalAnswerdCalls;
+	}
+
+	public void setTotalAnswerdCalls(Long totalAnswerdCalls) {
+		this.totalAnswerdCalls = totalAnswerdCalls;
+	}
+
+	public Long getTotalAnswerdPerc() {
+		return totalAnswerdPerc;
+	}
+
+	public void setTotalAnswerdPerc(Long totalAnswerdPerc) {
+		this.totalAnswerdPerc = totalAnswerdPerc;
+	}
+
+	public Long getErrorCalls() {
+		return errorCalls;
+	}
+
+	public void setErrorCalls(Long errorCalls) {
+		this.errorCalls = errorCalls;
+	}
+
+	public Long getErrorCallsPerc() {
+		return errorCallsPerc;
+	}
+
+	public void setErrorCallsPerc(Long errorCallsPerc) {
+		this.errorCallsPerc = errorCallsPerc;
+	}
+
+	public Long getWrongOptionSel() {
+		return wrongOptionSel;
+	}
+
+	public void setWrongOptionSel(Long wrongOptionSel) {
+		this.wrongOptionSel = wrongOptionSel;
+	}
+
+	public Long getWrongOptionSelPerc() {
+		return wrongOptionSelPerc;
+	}
+
+	public void setWrongOptionSelPerc(Long wrongOptionSelPerc) {
+		this.wrongOptionSelPerc = wrongOptionSelPerc;
+	}
+
+	public Long getNoOptionSel() {
+		return noOptionSel;
+	}
+
+	public void setNoOptionSel(Long noOptionSel) {
+		this.noOptionSel = noOptionSel;
+	}
+
+	public Long getNoOptionSelPerc() {
+		return noOptionSelPerc;
+	}
+
+	public void setNoOptionSelPerc(Long noOptionSelPerc) {
+		this.noOptionSelPerc = noOptionSelPerc;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	
 }

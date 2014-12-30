@@ -903,7 +903,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List getParliamentConstituencyInfoByConstituencyIds(List<Long> constituencyIds) {
+	public List<Object[]> getParliamentConstituencyInfoByConstituencyIds(List<Long> constituencyIds) {
 
 		Query query = getSession().createQuery(" select distinct model.constituencyId, model.name " +
 					" from Constituency model where model.constituencyId  in (:constituencyIds) ");			

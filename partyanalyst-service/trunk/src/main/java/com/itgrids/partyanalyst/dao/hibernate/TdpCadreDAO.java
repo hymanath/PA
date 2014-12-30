@@ -3587,5 +3587,35 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			Query query = getSession().createQuery(queryStr.toString());
 			return (Long) query.uniqueResult();
 		}
+				
+		public List<Object[]> getLocationWiseCadreRegisterInfo(Set<Long> locationIds,String locationType){
+			StringBuilder queryStr = new StringBuilder();
+			//0locationId,1count
+			queryStr.append("select "+getLocation(locationType));
+			
+			queryStr.append(",count(model.tdpCadreId) from TdpCadre model where "+getLocation(locationType)+"" +
+					" in(:locationIds) and model.enrollmentYear ='2014' and model.isDeleted = 'N'  and "+getLocation(locationType)+" is not null ");
+			
+			queryStr.append(" group by "+getLocation(locationType) );
+			Query query = getSession().createQuery(queryStr.toString());
+			query.setParameterList("locationIds", locationIds);
+			
+			return query.list();
+		}
 		
+		public String getLocation(String location){
+			if(location.equalsIgnoreCase("district")){
+				return " model.userAddress.district.districtId ";
+			}else if(location.equalsIgnoreCase("constituency")){
+				return " model.userAddress.constituency.constituencyId ";
+			}else if(location.equalsIgnoreCase("mandal")){
+				return " model.userAddress.tehsil.tehsilId ";
+			}else if(location.equalsIgnoreCase("localBody")){
+				return " model.userAddress.localElectionBody.localElectionBodyId ";
+			}else if(location.equalsIgnoreCase("panchayat")){
+				return " model.userAddress.panchayat.panchayatId ";
+			}else{
+				return " model.userAddress.booth.boothId ";
+			}
+		}
 }

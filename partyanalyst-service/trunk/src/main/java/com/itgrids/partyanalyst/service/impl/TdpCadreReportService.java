@@ -4611,4 +4611,276 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					}
 					return returnVo;
 				}
-	}
+			 
+			 public CadreIVRResponseVO getLocationWiseIVRInfo(Map<Long,String> locationNames,String locationType,Date startDate,Date endDate){
+				 
+				 CadreIVRResponseVO responseVO = new CadreIVRResponseVO();
+				 responseVO.setTotalCalls(0l);//setting very good count  <=10%
+				 responseVO.setTotalCallsPerc(0l);//setting good count   >10 <=20%
+				 responseVO.setReceived(0l);//setting ok count           >20 <=40
+				 responseVO.setReceivedPerc(0l);//setting  poor count    >40 <=60
+				 responseVO.setNotReceived(0l);//setting very poor count >60
+				 Map<Long,CadreIVRResponseVO> locationOptionsCountMap = new HashMap<Long,CadreIVRResponseVO>();//Map<locationId,LocationInfo>
+				 
+				//0locationId,1count,2responseKey
+				 List<Object[]> locationWiseCountsInfoList = new ArrayList<Object[]>();
+				 
+				 if(locationNames.size() > 0){
+				   locationWiseCountsInfoList = cadreIvrResponseDAO.getLocationWiseIVRInfo(locationNames.keySet(),locationType,startDate,endDate);
+				 }
+				 
+				 populateLocationCounts(locationNames,locationWiseCountsInfoList,locationOptionsCountMap);
+				 
+				 responseVO.setApList(new ArrayList<CadreIVRResponseVO>(locationOptionsCountMap.values()));
+				 
+				 if(responseVO.getApList().size() > 0){
+				    calculateNotReceivedPercentages(responseVO);
+				 
+				    Collections.sort(responseVO.getApList(), sort);
+				 }
+				 return responseVO;
+			 }
+			 
+			 public void populateLocationCounts(Map<Long,String> locationNames,List<Object[]> locationWiseCountsInfoList, 
+					 Map<Long,CadreIVRResponseVO> locationOptionsCountMap){
+				 
+				//0locationId,1count,2responseKey
+				 for(Object[] count:locationWiseCountsInfoList){
+						
+						CadreIVRResponseVO locationResponseVo = locationOptionsCountMap.get((Long)count[0]);
+						if(locationResponseVo == null){
+							locationResponseVo = new CadreIVRResponseVO();
+							locationOptionsCountMap.put((Long)count[0],locationResponseVo);
+							locationResponseVo.setName(locationNames.get((Long)count[0]));
+							locationResponseVo.setId((Long)count[0]);
+							locationResponseVo.setReceived(0l);
+							locationResponseVo.setNotReceived(0l);
+							locationResponseVo.setNotReceivedPerc(0l);
+							locationResponseVo.setNotMember(0l);
+						}
+						if(count[2].toString().trim().equalsIgnoreCase("1")){
+							locationResponseVo.setReceived((Long)count[1]);
+						}else if(count[2].toString().trim().equalsIgnoreCase("2")){
+							locationResponseVo.setNotReceived((Long)count[1]);
+						}else if(count[2].toString().trim().equalsIgnoreCase("3")){
+							locationResponseVo.setNotMember((Long)count[1]);
+						}
+					}
+			 }
+			 
+			 public void calculateNotReceivedPercentages(CadreIVRResponseVO resVO){				 
+				 
+				 
+				 for(CadreIVRResponseVO responseVO:resVO.getApList()){
+						Long total = responseVO.getReceived()+responseVO.getNotReceived()+responseVO.getNotMember();
+						
+						if(total.longValue() > 0){
+							responseVO.setNotReceivedPerc((responseVO.getNotReceived()*100)/total);
+						}
+						Long perc = responseVO.getNotReceivedPerc();
+						if(perc.longValue() <= 10l){
+							  resVO.setTotalCalls(resVO.getTotalCalls()+1);
+						}else if(perc.longValue() > 10l && perc.longValue() <= 20l ){
+							  resVO.setTotalCallsPerc(resVO.getTotalCallsPerc()+1);
+						}else if(perc.longValue() > 20l && perc.longValue() <= 40l ){
+							  resVO.setReceived(resVO.getReceived()+1);
+						}else if(perc.longValue() > 40l && perc.longValue() <= 60l ){
+							  resVO.setReceivedPerc(resVO.getReceivedPerc()+1);
+						}else if(perc.longValue() > 60l){
+							  resVO.setNotReceived(resVO.getNotReceived()+1);
+						}
+					}
+			 }
+			 
+          public CadreIVRResponseVO getLocationWiseIVRDetailedInfo(Map<Long,String> locationNames,String locationType,Date startDate,Date endDate){
+				 
+				 CadreIVRResponseVO responseVO = new CadreIVRResponseVO();
+				 try{
+					 Map<Long,CadreIVRResponseVO> responseMap = new HashMap<Long,CadreIVRResponseVO>();
+					 
+					 getNoOfMembersRegInfo(locationNames,locationType,responseMap);
+					 getNoOfCardsPrintedAndJobInfo(locationType,responseMap);
+					 getResponseInfo(locationType,responseMap,startDate,endDate);
+					 responseVO.setApList(new ArrayList<CadreIVRResponseVO>(responseMap.values()));
+					 calculateAllPercs(responseVO.getApList());
+					 Collections.sort(responseVO.getApList(), sort);
+				 }catch(Exception e){
+					 LOG.error("Exception rised in getLocationWiseIVRDetailedInfo ",e);
+				 }
+				 return responseVO;
+			 }
+          
+          public void getNoOfMembersRegInfo(Map<Long,String> locationNames,String locationType,Map<Long,CadreIVRResponseVO> responseMap){
+        	//0locationId,1count
+        	  List<Object[]> registeredCountList = tdpCadreDAO.getLocationWiseCadreRegisterInfo(locationNames.keySet(), locationType);
+        	  for(Object[] registeredCount:registeredCountList){
+        		  CadreIVRResponseVO response = responseMap.get((Long)registeredCount[0]);
+        		  if(response == null){
+        			  response = new CadreIVRResponseVO();
+        			  response.setName(locationNames.get((Long)registeredCount[0]));
+        			  response.setTotalCalls(0l);
+        			  response.setTotalCallsPerc(0l);
+        			  response.setReceived(0l);
+        			  response.setReceivedPerc(0l);
+        			  response.setNotReceived(0l);
+        			  response.setNotReceivedPerc(0l);
+        			  response.setNotMember(0l);
+        			  response.setNotMemberPerc(0l);
+        			  response.setRegisteredCount(0l);
+        			  response.setPrintedCount(0l);
+        			  response.setJobCode("");
+        			  response.setTotalIvrCalls(0l);
+        			  response.setTotalAnswerdCalls(0l);
+        			  response.setTotalAnswerdPerc(0l);
+        			  response.setErrorCalls(0l);
+        			  response.setErrorCallsPerc(0l);
+        			  response.setWrongOptionSel(0l);
+        			  response.setWrongOptionSelPerc(0l);
+        			  response.setNoOptionSel(0l);
+        			  response.setNoOptionSelPerc(0l);
+        			  responseMap.put((Long)registeredCount[0],response);
+        		  }
+        		  response.setRegisteredCount((Long)registeredCount[1]);
+        	  }
+          }
+          
+          public void getNoOfCardsPrintedAndJobInfo(String locationType,Map<Long,CadreIVRResponseVO> responseMap){
+        	   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        	   //0locationId,1count,2jobids
+        	   List<Object[]> cardsPrintedAndJobInfo = zebraPrintDetailsDAO.getLocationWiseCadreRegisterInfo(responseMap.keySet(),locationType);
+        	   for(Object[] cardsPrintedInfo:cardsPrintedAndJobInfo){
+         		  CadreIVRResponseVO response = responseMap.get((Long)cardsPrintedInfo[0]);
+         		  if(response != null){
+         			 response.setPrintedCount(response.getPrintedCount()+(Long)cardsPrintedInfo[1]);
+         			 if(response.getJobCode().length() > 0){
+         			    response.setJobCode(response.getJobCode()+" , "+sdf.format((Date)cardsPrintedInfo[2]));
+         			 }else{
+         				response.setJobCode(sdf.format((Date)cardsPrintedInfo[2]));
+         			 }
+         		  }
+         		 
+         	  }
+          }
+          
+          public void getResponseInfo(String locationType,Map<Long,CadreIVRResponseVO> responseMap,Date startDate,Date endDate){
+        	//0locationId,1count,2callStatus,3responseKey
+        	  List<Object[]> responseInfoList = cadreIvrResponseDAO.getLocationWiseIVRCountsInfo(responseMap.keySet(), locationType, startDate, endDate);
+        	  for(Object[] response:responseInfoList){
+        		  CadreIVRResponseVO locationResponseVo = responseMap.get((Long)response[0]);
+        		  if(locationResponseVo != null){
+        			    locationResponseVo.setTotalIvrCalls(locationResponseVo.getTotalIvrCalls()+(Long)response[1]);
+        			    if(response[2] != null && response[2].toString().trim().equalsIgnoreCase("NORMAL_CLEARING")){
+						    locationResponseVo.setTotalAnswerdCalls(locationResponseVo.getTotalAnswerdCalls()+(Long)response[1]);
+						   if(response[3] == null){ 
+						     locationResponseVo.setNoOptionSel(locationResponseVo.getNoOptionSel()+(Long)response[1]);
+						   }
+        			    }else{
+        			    	locationResponseVo.setErrorCalls(locationResponseVo.getErrorCalls()+(Long)response[1]);
+        			    }
+        			    if(response[3] != null){
+	        			    if(response[3].toString().trim().equalsIgnoreCase("1")){
+								locationResponseVo.setReceived(locationResponseVo.getReceived()+(Long)response[1]);
+							}else if(response[3].toString().trim().equalsIgnoreCase("2")){
+								locationResponseVo.setNotReceived(locationResponseVo.getNotReceived()+(Long)response[1]);
+							}else if(response[3].toString().trim().equalsIgnoreCase("3")){
+								locationResponseVo.setNotMember(locationResponseVo.getNotMember()+(Long)response[1]);
+							}else{
+								locationResponseVo.setWrongOptionSel(locationResponseVo.getWrongOptionSel()+(Long)response[1]);
+							}
+        			    }
+        		  }
+        	  }
+          }
+          
+          public void calculateAllPercs(List<CadreIVRResponseVO> responseList){
+        	  for(CadreIVRResponseVO responseVO:responseList){
+        		  
+        		  if(responseVO.getTotalIvrCalls().longValue() > 0){
+						responseVO.setErrorCallsPerc((responseVO.getErrorCalls()*100)/responseVO.getTotalIvrCalls());
+						responseVO.setTotalAnswerdPerc((responseVO.getTotalAnswerdCalls()*100)/responseVO.getTotalIvrCalls());
+					}
+        		  if(responseVO.getTotalAnswerdCalls().longValue() > 0){
+        		        responseVO.setNoOptionSelPerc((responseVO.getNoOptionSel()*100)/responseVO.getTotalAnswerdCalls());
+        		  }
+        		  Long total = responseVO.getReceived()+responseVO.getNotReceived()+responseVO.getNotMember()+responseVO.getWrongOptionSel();
+      			
+      			if(total.longValue() > 0){
+      				responseVO.setReceivedPerc((responseVO.getReceived()*100)/total);
+      				responseVO.setNotReceivedPerc((responseVO.getNotReceived()*100)/total);
+      				responseVO.setNotMemberPerc((responseVO.getNotMember()*100)/total);
+      				responseVO.setWrongOptionSelPerc((responseVO.getWrongOptionSel()*100)/total);
+      			}
+        	  }
+          }
+          
+          public CadreIVRResponseVO getLocationWisePercInfo(String locationType,List<Long> locationIds,Date startDate,Date endDate){
+        	  List<Object[]> locations = new ArrayList<Object[]>();
+        	  if(locationType.equalsIgnoreCase("district")){
+        	      locations = districtDAO.getDistrictDetailsByDistrictIds(locationIds);
+        	  }else{
+        		  locations = constituencyDAO.getParliamentConstituencyInfoByConstituencyIds(locationIds);
+        	  }
+        	  Map<Long,String> locationNames = new HashMap<Long,String>();
+        	  for(Object[] location:locations){
+        		  locationNames.put((Long)location[0], location[1].toString());
+        	  }
+        	  return getLocationWiseIVRInfo(locationNames,locationType,startDate,endDate);
+          }
+          
+          public CadreIVRResponseVO  getLocationWisePercInfoErrorInfo(String locationType,Long constituencyId,Date startDate,Date endDate){
+        	  Map<Long,String> locationNames = new HashMap<Long,String>();
+        	  if(locationType.equalsIgnoreCase("all") || locationType.equalsIgnoreCase("AP") || locationType.equalsIgnoreCase("TS")){
+        		  List<Object[]> assemblyList = new ArrayList<Object[]>();
+        		  if(locationType.equalsIgnoreCase("all")){
+        			  assemblyList = constituencyDAO.getConstituenciesForRegion("");
+        		  }else if(locationType.equalsIgnoreCase("AP")){
+        			  assemblyList = constituencyDAO.getConstituenciesForRegion("Andhra Pradesh");
+          		  }else{
+          			assemblyList = constituencyDAO.getConstituenciesForRegion("Telangana");
+          		  }
+        		  for(Object[] location:assemblyList){
+            		  locationNames.put((Long)location[0], location[1].toString());
+            	  }
+        		  return getLocationWiseIVRDetailedInfo(locationNames,"constituency",startDate,endDate);
+        	  }else if(locationType.equalsIgnoreCase("mandal")){
+        		  List<CadreIVRResponseVO> infoList = new ArrayList<CadreIVRResponseVO>();
+        		  Map<Long,String> localBodyNames = new HashMap<Long,String>();
+        		  List<Object[]> localBodyIds = boothDAO.getAllLocalBodies(constituencyId, 11l);
+        		  for(Object[] location:localBodyIds){
+        			  localBodyNames.put((Long)location[0], location[1].toString());
+            	  }
+        		  if(localBodyIds.size() > 0){
+        			  CadreIVRResponseVO localBodyVO =  getLocationWiseIVRDetailedInfo(localBodyNames,"localBody",startDate,endDate);
+	        		  if(localBodyVO != null && localBodyVO.getApList() != null ){
+	        		      infoList.addAll(localBodyVO.getApList());
+	        		  }
+        		  }
+        		  List<Object[]> tehsilIds =  boothDAO.getAllTehsilsDetailsInAConstituency(constituencyId, 11l);
+        		  for(Object[] location:tehsilIds){
+        			  locationNames.put((Long)location[0], location[1].toString());
+            	  }
+        		  if(locationNames.size() > 0){
+        			  CadreIVRResponseVO mandalVO =  getLocationWiseIVRDetailedInfo(locationNames,"mandal",startDate,endDate);
+	        		  if(mandalVO != null && mandalVO.getApList() != null ){
+	        		      infoList.addAll(mandalVO.getApList());
+	        		  }
+        		  }
+        		  Collections.sort(infoList, sort);
+        		  CadreIVRResponseVO returnVo = new CadreIVRResponseVO();
+        		  returnVo.setApList(infoList);
+        		  return returnVo;
+        	  }else if(locationType.equalsIgnoreCase("panchayat")){
+        		  List<Object[]> panchayatList = boothDAO.getPanchayatsByConstituencyAndPublication(constituencyId,11l);
+        		  for(Object[] location:panchayatList){
+            		  locationNames.put((Long)location[0], location[1].toString());
+            	  }
+        		  return getLocationWiseIVRDetailedInfo(locationNames,"panchayat",startDate,endDate);
+        	  }else{
+        		  List<Object[]> boothsList = boothDAO.getBoothsInAConstituency(constituencyId,11l);
+        		  for(Object[] location:boothsList){
+            		  locationNames.put((Long)location[0], location[1].toString());
+            	  }
+        		  return getLocationWiseIVRDetailedInfo(locationNames,"booth",startDate,endDate);
+        	  }
+          }
+}
