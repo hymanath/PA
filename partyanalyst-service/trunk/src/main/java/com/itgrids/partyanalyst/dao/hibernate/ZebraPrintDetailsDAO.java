@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -589,4 +590,43 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 		return (Long) query.uniqueResult();
 	}
 	
+	public Long getLocationWisePrintingCompletedCount(Set<Long> locationIds,String locationType) 
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select count(model.zebraPrintDetailsId), from ZebraPrintDetails model where ((model.printStatus = 'Y' or model.printStatus ='y') " +
+				" and (model.errorStatus is null or model.errorStatus ='0' or  model.errorStatus  = '' or  model.errorStatus = 'null')) and model.serialNo is not null ");
+		Query query = getSession().createQuery(str.toString());
+		return (Long) query.uniqueResult();
+	}
+	
+	public List<Object[]> getLocationWiseCadreRegisterInfo(Set<Long> locationIds,String locationType){
+		StringBuilder queryStr = new StringBuilder();
+		//0locationId,1count,2jobids
+		queryStr.append("select "+getLocation(locationType));
+		
+		queryStr.append(",count(model.zebraPrintDetailsId),date(updatedTime) from ZebraPrintDetails model where "+getLocation(locationType)+"" +
+				" in(:locationIds) and model.tdpCadre.enrollmentYear ='2014' and  "+getLocation(locationType)+" is not null and ((model.printStatus = 'Y' or model.printStatus ='y') " +
+						" and (model.errorStatus is null or model.errorStatus ='0' or  model.errorStatus  = '' or  model.errorStatus = 'null')) and model.serialNo is not null and model.updatedTime is not null ");
+		
+		queryStr.append(" group by "+getLocation(locationType)+",date(updatedTime) ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("locationIds", locationIds);
+		
+		return query.list();
+	}
+	public String getLocation(String location){
+		if(location.equalsIgnoreCase("district")){
+			return " model.tdpCadre.userAddress.district.districtId ";
+		}else if(location.equalsIgnoreCase("constituency")){
+			return " model.tdpCadre.userAddress.constituency.constituencyId ";
+		}else if(location.equalsIgnoreCase("mandal")){
+			return " model.tdpCadre.userAddress.tehsil.tehsilId ";
+		}else if(location.equalsIgnoreCase("localBody")){
+			return " model.tdpCadre.userAddress.localElectionBody.localElectionBodyId ";
+		}else if(location.equalsIgnoreCase("panchayat")){
+			return " model.tdpCadre.userAddress.panchayat.panchayatId ";
+		}else{
+			return " model.tdpCadre.userAddress.booth.boothId ";
+		}
+	}
 }

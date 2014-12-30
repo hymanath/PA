@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -44,4 +45,5 @@ public interface IZebraPrintDetailsDAO extends GenericDao<ZebraPrintDetails, Lon
 	public List<Object[]> getParliamentWiseResultsByStatusType(List<Long> parliamentIdsList, String dataType);
 	public Long getPrintingCompletedCount(String state,String dataType) ;
 	public Long getIvrReadyCount(Date date,String state) ;
+	public List<Object[]> getLocationWiseCadreRegisterInfo(Set<Long> locationIds,String locationType);
 }

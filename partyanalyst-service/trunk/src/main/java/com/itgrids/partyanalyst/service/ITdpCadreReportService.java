@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
@@ -54,5 +55,6 @@ public interface ITdpCadreReportService {
 	public CadreIVRResponseVO getTehsilWiseCadreDispatchStatus(Long range);
 	 public List<CadreIVRVO> getIvrDashBoardCountsByDate(String fromDate,String toDate,String state);
 	public CadreIVRVO getIvrDashBoardBasicInfo(String state);
-	
+	 public CadreIVRResponseVO getLocationWisePercInfo(String locationType,List<Long> locationIds,Date startDate,Date endDate);
+	 public CadreIVRResponseVO  getLocationWisePercInfoErrorInfo(String locationType,Long constituencyId,Date startDate,Date endDate);
 }

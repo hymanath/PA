@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
+import java.util.Set;
 
 import java.util.List;
 
@@ -200,5 +201,69 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 		return query.list();
 	}
 	
+	public List<Object[]> getLocationWiseIVRInfo(Set<Long> locationIds,String locationType,Date startDate,Date endDate){
+		StringBuilder queryStr = new StringBuilder();
+		//0locationId,1count,2responseKey
+		queryStr.append("select "+getLocation(locationType));
+		
+		queryStr.append(",count(model.userAddress.userAddressId),model.responseKey from CadreIvrResponse model where "+getLocation(locationType)+"" +
+				" in(:locationIds) and model.isDeleted = 'N' and model.responseKey is not null and "+getLocation(locationType)+" is not null ");
+		if(startDate != null){
+			queryStr.append(" and date(model.date) >= :startDate ");
+		}
+		if(endDate != null){
+			queryStr.append(" and date(model.date) <= :endDate ");
+		}
+		queryStr.append(" group by "+getLocation(locationType)+",model.responseKey");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("locationIds", locationIds);
+		if(startDate != null){
+		  query.setParameter("startDate", startDate);
+		}
+		if(endDate != null){
+		  query.setParameter("endDate", endDate);
+		}
+		return query.list();
+	}
 	
+	public String getLocation(String location){
+		if(location.equalsIgnoreCase("district")){
+			return " model.userAddress.district.districtId ";
+		}else if(location.equalsIgnoreCase("constituency")){
+			return " model.userAddress.constituency.constituencyId ";
+		}else if(location.equalsIgnoreCase("mandal")){
+			return " model.userAddress.tehsil.tehsilId ";
+		}else if(location.equalsIgnoreCase("localBody")){
+			return " model.userAddress.localElectionBody.localElectionBodyId ";
+		}else if(location.equalsIgnoreCase("panchayat")){
+			return " model.userAddress.panchayat.panchayatId ";
+		}else{
+			return " model.userAddress.booth.boothId ";
+		}
+	}
+	
+	public List<Object[]> getLocationWiseIVRCountsInfo(Set<Long> locationIds,String locationType,Date startDate,Date endDate){
+		StringBuilder queryStr = new StringBuilder();
+		//0locationId,1count,2callStatus,3responseKey
+		queryStr.append("select "+getLocation(locationType));
+		
+		queryStr.append(",count(model.userAddress.userAddressId),model.callStatus,model.responseKey from CadreIvrResponse model where "+getLocation(locationType)+"" +
+				" in(:locationIds) and model.isDeleted = 'N'  and "+getLocation(locationType)+" is not null ");
+		if(startDate != null){
+			queryStr.append(" and date(model.date) >= :startDate ");
+		}
+		if(endDate != null){
+			queryStr.append(" and date(model.date) <= :endDate ");
+		}
+		queryStr.append(" group by "+getLocation(locationType)+",model.callStatus,model.responseKey");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("locationIds", locationIds);
+		if(startDate != null){
+		  query.setParameter("startDate", startDate);
+		}
+		if(endDate != null){
+		  query.setParameter("endDate", endDate);
+		}
+		return query.list();
+	}
 }
