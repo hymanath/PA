@@ -242,7 +242,7 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 		}
 	}
 	
-	public List<Object[]> getLocationWiseIVRCountsInfo(Set<Long> locationIds,String locationType,Date startDate,Date endDate){
+	public List<Object[]> getLocationWiseIVRCountsInfo(Set<Long> locationIds,String locationType,Date startDate,Date endDate,Long constituencyId){
 		StringBuilder queryStr = new StringBuilder();
 		//0locationId,1count,2callStatus,3responseKey
 		queryStr.append("select "+getLocation(locationType));
@@ -255,6 +255,9 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 		if(endDate != null){
 			queryStr.append(" and date(model.date) <= :endDate ");
 		}
+		if(constituencyId != null){
+			queryStr.append(" and model.userAddress.constituency.constituencyId =:constituencyId ");
+		}
 		queryStr.append(" group by "+getLocation(locationType)+",model.callStatus,model.responseKey");
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("locationIds", locationIds);
@@ -264,6 +267,9 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 		if(endDate != null){
 		  query.setParameter("endDate", endDate);
 		}
+		if(constituencyId != null){
+			  query.setParameter("constituencyId", constituencyId);
+			}
 		return query.list();
 	}
 }

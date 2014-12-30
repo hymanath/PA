@@ -267,5 +267,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public List<Object[]> getRegisterCadreInfoForVolunteerUserBetweenDates(Date fromDate,Date toDate,List<Long> tabUserIds,List<Long> webUserIds);
 	public Long getTotalRegisterCadreInfoByState(String state);
-	public List<Object[]> getLocationWiseCadreRegisterInfo(Set<Long> locationIds,String locationType);
+	public List<Object[]> getLocationWiseCadreRegisterInfo(Set<Long> locationIds,String locationType,Long constituencyId);
 }

@@ -599,7 +599,7 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 		return (Long) query.uniqueResult();
 	}
 	
-	public List<Object[]> getLocationWiseCadreRegisterInfo(Set<Long> locationIds,String locationType){
+	public List<Object[]> getLocationWiseCadreRegisterInfo(Set<Long> locationIds,String locationType,Long constituencyId){
 		StringBuilder queryStr = new StringBuilder();
 		//0locationId,1count,2jobids
 		queryStr.append("select "+getLocation(locationType));
@@ -607,11 +607,15 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 		queryStr.append(",count(model.zebraPrintDetailsId),date(updatedTime) from ZebraPrintDetails model where "+getLocation(locationType)+"" +
 				" in(:locationIds) and model.tdpCadre.enrollmentYear ='2014' and  "+getLocation(locationType)+" is not null and ((model.printStatus = 'Y' or model.printStatus ='y') " +
 						" and (model.errorStatus is null or model.errorStatus ='0' or  model.errorStatus  = '' or  model.errorStatus = 'null')) and model.serialNo is not null and model.updatedTime is not null ");
-		
+		if(constituencyId != null){
+			queryStr.append(" and model.tdpCadre.userAddress.constituency.constituencyId =:constituencyId ");
+		}
 		queryStr.append(" group by "+getLocation(locationType)+",date(updatedTime) ");
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("locationIds", locationIds);
-		
+		if(constituencyId != null){
+			  query.setParameter("constituencyId", constituencyId);
+			}
 		return query.list();
 	}
 	public String getLocation(String location){

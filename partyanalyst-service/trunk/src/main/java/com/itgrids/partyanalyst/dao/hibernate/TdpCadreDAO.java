@@ -3588,18 +3588,22 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return (Long) query.uniqueResult();
 		}
 				
-		public List<Object[]> getLocationWiseCadreRegisterInfo(Set<Long> locationIds,String locationType){
+		public List<Object[]> getLocationWiseCadreRegisterInfo(Set<Long> locationIds,String locationType,Long constituencyId){
 			StringBuilder queryStr = new StringBuilder();
 			//0locationId,1count
 			queryStr.append("select "+getLocation(locationType));
 			
 			queryStr.append(",count(model.tdpCadreId) from TdpCadre model where "+getLocation(locationType)+"" +
 					" in(:locationIds) and model.enrollmentYear ='2014' and model.isDeleted = 'N'  and "+getLocation(locationType)+" is not null ");
-			
+			if(constituencyId != null){
+				queryStr.append(" and model.userAddress.constituency.constituencyId =:constituencyId ");
+			}
 			queryStr.append(" group by "+getLocation(locationType) );
 			Query query = getSession().createQuery(queryStr.toString());
 			query.setParameterList("locationIds", locationIds);
-			
+			if(constituencyId != null){
+			  query.setParameter("constituencyId", constituencyId);
+			}
 			return query.list();
 		}
 		
