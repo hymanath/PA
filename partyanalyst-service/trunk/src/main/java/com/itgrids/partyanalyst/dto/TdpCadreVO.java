@@ -20,9 +20,30 @@ public class TdpCadreVO implements java.io.Serializable
 	private String errorStr;
 	private String occupation;
 	private Long totalCount;
+	private String constituency;
+	private String responseStatus;
+	private String responseCode;
 	
 	private List<TdpCadreVO> tdpCadreDetailsList = new ArrayList<TdpCadreVO>();
 	
+	public String getResponseCode() {
+		return responseCode;
+	}
+	public void setResponseCode(String responseCode) {
+		this.responseCode = responseCode;
+	}
+	public String getResponseStatus() {
+		return responseStatus;
+	}
+	public void setResponseStatus(String responseStatus) {
+		this.responseStatus = responseStatus;
+	}
+	public String getConstituency() {
+		return constituency;
+	}
+	public void setConstituency(String constituency) {
+		this.constituency = constituency;
+	}
 	public Long getTotalCount() {
 		return totalCount;
 	}
