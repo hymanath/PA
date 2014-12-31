@@ -161,6 +161,7 @@ public class RegistrationService implements IRegistrationService{
 			user.setIsPwdChanged("true");
 			user.set_loginRestriction("false");
 			user.setMultipleAccessRestriction("false");
+			user.setIsEnabled("Y");
 			user = userDAO.save(user);
 			
 			saveDataInToUserRolesTable(user,values);
@@ -324,9 +325,9 @@ public class RegistrationService implements IRegistrationService{
 	public void changepassword(){
 		List<String> usersList = new ArrayList<String>();
 		MD5Encrypt encrypt = new MD5Encrypt();
-		usersList.add("cadre_registration_003");
+		usersList.add("276_2015w_001");
 		for(String usname:usersList){
-			String pasword =RegistrationService.randomGenerator(7)+"";
+			String pasword ="200090";//RegistrationService.randomGenerator(7)+"";
 			 System.out.println("UserName:"+usname+" Password:"+pasword);
 		String enKey = encrypt.MD5(usname)+encrypt.MD5(pasword);
 		String md5Key = encrypt.MD5(enKey);
