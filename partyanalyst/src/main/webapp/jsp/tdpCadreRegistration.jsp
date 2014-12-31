@@ -140,7 +140,7 @@
 					}
 				});
 			
-				$('.footerFixedStrip').show();
+				$('.footerFixedStrip').hide();
 				clock.setTime(parseInt(remainingTime));
 				clock.setCountdown(true);
 				clock.start();			
