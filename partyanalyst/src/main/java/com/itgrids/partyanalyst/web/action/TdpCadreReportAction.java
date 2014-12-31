@@ -596,10 +596,19 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 	public String cadreIvrReportExe()
 	{
 		try{
-			 HttpSession session=request.getSession();
-			  RegistrationVO regVO=(RegistrationVO)session.getAttribute("USER");
-			  if(regVO==null)
-				return Action.INPUT;
+				RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+				boolean noaccess = false;
+				if(regVO==null){
+					return "input";
+				}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREIVRDASHBOARD")){
+					noaccess = true ;
+				}
+				if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+					noaccess = false;
+				}
+				if(noaccess){
+					return "error";
+				}
 			jobCodes = tdpCadreReportService.getIvrDates();
 			Long electionTypeId = 2l;
 			Long stateId = 1l;
