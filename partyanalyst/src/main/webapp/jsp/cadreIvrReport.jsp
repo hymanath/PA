@@ -25,7 +25,7 @@
  <link rel="stylesheet" type="text/css" href="css/daterangepicker-bs2.css"/>
  <script src="js/cardsDashBoard/js2.3.2/Chart.js"></script>
 	<script src="js/cardsDashBoard/js2.3.2/Chart.min.js"></script>
-
+<script type="text/javascript" src="js/exportexcel.js"></script>
 
 <title>IVR Report</title>
 <style>
@@ -115,8 +115,8 @@
 			
 				<table class="table table-bordered border-radius-0 mb-0">
 					<tr>
-						<td style="width:173px;">
-						<img style="height:18px;width:16px;margin-top:80px;" src="./images/icons/search.gif" id="ajaxImg" class="offset1"/>
+						<td style="width:173px;text-align:center;">
+						<img style="height:18px;width:16px;margin-top:80px;margin-left:1px;" src="./images/icons/search.gif" id="ajaxImg" class="offset1"/>
 						<div id="registrationTD">
 						</div>
 						</td>
@@ -132,7 +132,7 @@
 							
 					</tr>
 					<tr>
-						<td class="width25p" id="printingTD">
+						<td class="width25p" id="printingTD" style="text-align:center;">
 							
 						</td>
 						
@@ -455,27 +455,27 @@
 	
 		var str ='';
 		
-		str+='<canvas id="printPercChart" style=" float:left;margin-top: 20px;" width="150px"; height=" 120px"; ></canvas>';
-		str+='<div  style="float:right;margin-top: -97px; margin-right: -9px;">';
+		str+='<canvas id="printPercChart" style="margin-top: 20px;" width="160px"; height=" 125px"; ></canvas>';
+		str+='<div style="margin-top: 8px;">';
 		str+='<h4 class="m-0">'+result.count+'</h4>';
 		if(state == "All")
-		str+='<p class="m-0" >Members Registered in <br> Andhra Pradesh And <br>Telangana</p>';
+		str+='<p class="m-0" >Members Registered in Andhra Pradesh And Telangana</p>';
 		else if(state == "AP")
-		str+='<p class="m-0" >Members Registered in <br> Andhra Pradesh </p>';
+		str+='<p class="m-0" >Members Registered in Andhra Pradesh </p>';
 		else if(state == "TS")
-		str+='<p class="m-0" >Members Registered in <br> Telangana</p>';
+		str+='<p class="m-0" >Members Registered in Telangana</p>';
 		str+='</div>';
 		$("#registrationTD").html(str);
 		var str1='';
-		str1+='<canvas id="piep" style="float:left;margin-top: 20px;" height="120px" width="150px"></canvas>';
-		str1+='<div  style="float:right; margin-top: -97px;">';
+		str1+='<canvas id="piep" style="margin-top: 20px;" height="125px" width="160px"></canvas>';
+		str1+='<div  style="margin-top: 8px;">';
 		str1+='<h4 class="m-0">'+result.printingCompleted+'</h4>';
 		if(state == "All")
-		str1+='<p class="m-0" >Cards Printed in <br> Andhra Pradesh And <br>Telangana</p>';
+		str1+='<p class="m-0" >Cards Printed in Andhra Pradesh And Telangana</p>';
 		else if(state == "AP")
-		str1+='<p class="m-0" >Cards Printed in <br> Andhra Pradesh </p>';
+		str1+='<p class="m-0" >Cards Printed in Andhra Pradesh </p>';
 		else if(state == "TS")
-		str1+='<p class="m-0" >Cards Printed in <br> Telangana</p>';
+		str1+='<p class="m-0" >Cards Printed in Telangana</p>';
 		str1+='</div>';
 		$("#printingTD").html(str1);
 		
@@ -925,8 +925,9 @@ function getLocationWisePerformance(constituencyId,locationType,name){
 		}).done(function(result){
 		    var str ="";
 			if(result.apList != null && result.apList.length > 0){
+			    str+='<input type="button"  style="margin-bottom: 10px;margin-top: 10px;margin-left: 375px;"  class="btn" onclick="generateExcel(\'ivrStatusReportTab\');" value="Click Here To Generate Excel"/>';
 				str+='<div style="max-height: 400px;overflow-y: scroll;">';
-				str+='<table class="table table-bordered border-radius-0 table-condensed" style="font-size:10px;">';
+				str+='<table class="table table-bordered border-radius-0 table-condensed" id="ivrStatusReportTab" style="font-size:10px;">';
 				str+='  <thead>';
 				str+='	   <tr class="well">';
 				if(locationType =="All" || locationType =="AP" || locationType =="TS"){
@@ -989,10 +990,18 @@ function getLocationWisePerformance(constituencyId,locationType,name){
 				}
 				str+='	</tbody>';
 				str+='</table></div>';
+				$("#allErrorsInfoLocationWise").html(str);
+				/*$("#ivrStatusReportTab").dataTable({
+					aLengthMenu: [
+						[25, 50, 100, 200, -1],
+						[25, 50, 100, 200, "All"]
+					],
+					iDisplayLength: -1
+				});*/
 			}else{
-			   str+='<div class="table table-bordered table-hover border-radius-0" style=" box-shadow: inset 0 0 5px 4px rgba(0,0,0,0.1);"><div style="font-weight:bold;padding:20px;margin-left:375px;">No Data Available</div></div>';
+			   $("#allErrorsInfoLocationWise").html('<div class="table table-bordered table-hover border-radius-0" style=" box-shadow: inset 0 0 5px 4px rgba(0,0,0,0.1);"><div style="font-weight:bold;padding:20px;margin-left:375px;">No Data Available</div></div>');
 			}
-					$("#allErrorsInfoLocationWise").html(str);
+					
 		});
 
 }
@@ -1031,6 +1040,9 @@ function getSubLocationInfo(id,name){
   getLocationWisePerformance(id,"mandal",name);
 
 }
+function generateExcel(reqId){
+     tableToExcel(reqId, 'IVR Status');
+ }
 </script>
 <script>
 getIvrBasicCount();

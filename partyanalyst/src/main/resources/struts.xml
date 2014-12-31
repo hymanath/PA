@@ -5615,7 +5615,8 @@
 		    <result name="surveyUser" type="redirect">surveyDataDetailsAction.action</result>
 		    <result name="partyCadre" type="redirect">partyCadreSearchAction.action</result>
 		    <result name="cadreDashBoard" type="redirect">cadreDashBoardAction.action</result>
-		    <result name="partyDashBoard" type="redirect">partyDashBoardAction.action</result>  
+		    <result name="partyDashBoard" type="redirect">partyDashBoardAction.action</result>
+		    <result name="cadreIVrDashBoard" type="redirect">cadreIvrReportAction.action</result>		      
 		    <result type="redirect" name="misReportAction">misReportAction.action</result>
 		    <result name="cadreRegistration" type="redirect">tdpCadreSearchAction.action</result>
 		    <result name="cadreTransactionsDashBoard" type="redirect">cadreSurveyTransactionsDashboardAction.action</result>
@@ -9216,6 +9217,7 @@
 		<action name="cadreIvrReportAction" class="tdpCadreReportAction" method="cadreIvrReportExe">
 			<result name="success">/jsp/cadreIvrReport.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
+			<result name="input">/jsp/loginForm.jsp</result>
 		</action>
 		
 		<action name="getcadreIvrReportAction" class="tdpCadreReportAction" method="getCadreIvrReport">
