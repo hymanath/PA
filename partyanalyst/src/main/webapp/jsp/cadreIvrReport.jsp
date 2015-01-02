@@ -120,7 +120,7 @@
 						<div id="registrationTD">
 						</div>
 						</td>
-						<td style="width:100px;" rowspan="2" id="totalIvrTD">
+						<td style="width:100px;text-align:center;" rowspan="2" id="totalIvrTD">
 							
 						</td>
 						<td class="width25p" rowspan="2"  id="successIvrTD">
@@ -455,7 +455,7 @@
 	
 		var str ='';
 		
-		str+='<canvas id="printPercChart" style="margin-top: 20px;" width="160px"; height=" 125px"; ></canvas>';
+		str+='<canvas id="printPercChart" style="margin-top: 5px;" width="170px"; height=" 130px"; ></canvas>';
 		str+='<div style="margin-top: 8px;">';
 		str+='<h4 class="m-0">'+result.count+'</h4>';
 		if(state == "All")
@@ -467,7 +467,7 @@
 		str+='</div>';
 		$("#registrationTD").html(str);
 		var str1='';
-		str1+='<canvas id="piep" style="margin-top: 20px;" height="125px" width="160px"></canvas>';
+		str1+='<canvas id="piep" style="margin-top: 5px;" height="130px" width="170px"></canvas>';
 		str1+='<div  style="margin-top: 8px;">';
 		str1+='<h4 class="m-0">'+result.printingCompleted+'</h4>';
 		if(state == "All")
@@ -608,7 +608,7 @@ function buildIvrCountByDate(result,state)
 		var errorPerc = (result[0].totalError / result[0].total * 100);
 		
 		var str ='';
-		str+='<canvas id="answerErrorChart" style="width: 140px; height: 180px; margin-left:0px; padding-left: 29px; margin-right: -42px; margin-top: 35px;" width="140px" height="180px"></canvas>';
+		str+='<canvas id="answerErrorChart" style="margin-left:0px; margin-right:5px; margin-top: 35px;" width="170px" height="180px"></canvas>';
 		str+='<div class="text-center">';
 		str+='<h2 class="m-0">'+result[0].total+'</h2>';
 		str+='<p>Calls IVR Total <br>Dailled</p>';
