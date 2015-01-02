@@ -450,7 +450,7 @@
 	
 		var str ='';
 		
-		str+='<canvas id="printPercChart" style="margin-top: 5px;" width="170px"; height=" 130px"; ></canvas>';
+		str+='<canvas id="printPercChart" style="margin-top: 5px;" width="185px" height=" 150px" ></canvas>';
 		str+='<div style="margin-top: 8px;">';
 		str+='<h4 class="m-0">'+result.count+'</h4>';
 		if(state == "All")
@@ -462,7 +462,7 @@
 		str+='</div>';
 		$("#registrationTD").html(str);
 		var str1='';
-		str1+='<canvas id="piep" style="margin-top: 5px;" height="130px" width="170px"></canvas>';
+		str1+='<canvas id="piep" style="margin-top: 5px;" height="140px" width="185px"></canvas>';
 		str1+='<div  style="margin-top: 8px;">';
 		str1+='<h4 class="m-0">'+result.printingCompleted+'</h4>';
 		if(state == "All")
