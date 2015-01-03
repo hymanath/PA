@@ -81,7 +81,7 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 		query.setMaxResults(maxIndex);
 		return query.list();
 	}
-	public  Long  getTotalIvrCount(String state)
+	public  Long  getTotalIvrCount(String state,List<Long> accessLocationIds)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select count(model.cadreIvrResponseId) from CadreIvrResponse model where model.isDeleted = 'N' ");
@@ -90,8 +90,13 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 		}else if(state.equalsIgnoreCase("TS")){
 			str.append(" and model.userAddress.district.districtId < 11");
 		}
-		
+		if(accessLocationIds.size() > 0){
+			str.append(" and model.userAddress.constituency.constituencyId in(:accessLocationIds)");
+		}
 		Query query = getSession().createQuery(str.toString());
+		if(accessLocationIds.size() > 0){
+			query.setParameterList("accessLocationIds", accessLocationIds);
+		}
 		return (Long) query.uniqueResult();
 	}
 	public List<Object[]> getIvrCountForAPAndTS()
@@ -103,7 +108,7 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 			
 		return query.list();
 	}
-	public List<Object[]> getIvrCountByDate(Date fromDate,Date toDate,String state)
+	public List<Object[]> getIvrCountByDate(Date fromDate,Date toDate,String state,List<Long> accessLocationIds)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select count(model.cadreIvrResponseId),model.responseKey,model.callStatus from CadreIvrResponse model where model.isDeleted = 'N' ");
@@ -111,6 +116,9 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 			str.append(" and model.userAddress.district.districtId > 10");
 		}else if(state.equalsIgnoreCase("TS")){
 			str.append(" and model.userAddress.district.districtId < 11");
+		}
+		if(accessLocationIds.size() > 0){
+			str.append(" and model.userAddress.constituency.constituencyId in(:accessLocationIds)");
 		}
 		if((fromDate != null && toDate != null) && !fromDate.equals(toDate))
 		str.append(" and date(model.date) >=:fromDate and date(model.date) <=:toDate");
@@ -125,6 +133,9 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 		}
 		if((fromDate != null && toDate != null) && fromDate.equals(toDate))
 		query.setDate("fromDate", fromDate);	
+		if(accessLocationIds.size() > 0){
+			query.setParameterList("accessLocationIds", accessLocationIds);
+		}
 		return query.list();
 	}
 	
@@ -201,7 +212,7 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 		return query.list();
 	}
 	
-	public List<Object[]> getLocationWiseIVRInfo(Set<Long> locationIds,String locationType,Date startDate,Date endDate){
+	public List<Object[]> getLocationWiseIVRInfo(Set<Long> locationIds,String locationType,Date startDate,Date endDate,List<Long> accessLocationIds){
 		StringBuilder queryStr = new StringBuilder();
 		//0locationId,1count,2responseKey
 		queryStr.append("select "+getLocation(locationType));
@@ -214,9 +225,15 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 		if(endDate != null){
 			queryStr.append(" and date(model.date) <= :endDate ");
 		}
+		if(accessLocationIds.size() > 0){
+			queryStr.append(" and model.userAddress.constituency.constituencyId in(:accessLocationIds)");
+		}
 		queryStr.append(" group by "+getLocation(locationType)+",model.responseKey");
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameterList("locationIds", locationIds);
+		if(accessLocationIds.size() > 0){
+			query.setParameterList("accessLocationIds", accessLocationIds);
+		}
 		if(startDate != null){
 		  query.setParameter("startDate", startDate);
 		}

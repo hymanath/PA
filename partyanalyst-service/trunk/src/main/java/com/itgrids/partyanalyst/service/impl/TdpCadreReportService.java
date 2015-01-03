@@ -4068,26 +4068,28 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		
 	}*/
 	
-	public CadreIVRVO getIvrDashBoardBasicInfo(String state){
+	public CadreIVRVO getIvrDashBoardBasicInfo(String state,String accessType,Long accessValue){
 		CadreIVRVO returnVo  = new CadreIVRVO();
 		try{
+			List<Long> accessLocationIds = new ArrayList<Long>();
 		DateUtilService date = new DateUtilService();
 	    Calendar calender = Calendar.getInstance();
 	    calender.setTime(date.getCurrentDateAndTime());
 	    calender.set(Calendar.DAY_OF_MONTH,  calender.get(Calendar.DAY_OF_MONTH)-7);
-	    Long count =  getTotalRegisterCadreInfoByState(state);
+	    getAccessLocationValues(accessLocationIds,accessType,accessValue);
+	    Long count =  getTotalRegisterCadreInfoByState(state,accessLocationIds);
 		returnVo.setCount(count != null ? count : 0l);
 		
-		Long ivrCompleted = cadreIvrResponseDAO.getTotalIvrCount(state);
+		Long ivrCompleted = cadreIvrResponseDAO.getTotalIvrCount(state,accessLocationIds);
 		returnVo.setTotal(ivrCompleted != null ? ivrCompleted : 0l);
 		
-		Long totalPushCnt = zebraPrintDetailsDAO.getPrintingCompletedCount(state,"totalCount");
-		Long printingCompletedCnt = zebraPrintDetailsDAO.getPrintingCompletedCount(state,"printStatus");
+		Long totalPushCnt = zebraPrintDetailsDAO.getPrintingCompletedCount(state,"totalCount",accessLocationIds);
+		Long printingCompletedCnt = zebraPrintDetailsDAO.getPrintingCompletedCount(state,"printStatus",accessLocationIds);
 		returnVo.setPrintingCompleted(printingCompletedCnt != null ? printingCompletedCnt :0l);
-		Long errorCnt = zebraPrintDetailsDAO.getPrintingCompletedCount(state,"errorStatus");
+		Long errorCnt = zebraPrintDetailsDAO.getPrintingCompletedCount(state,"errorStatus",accessLocationIds);
 		returnVo.setTotalError(errorCnt != null ? errorCnt : 0l);
 		returnVo.setTgCount(totalPushCnt != null ? totalPushCnt : 0l);
-		Long IvrReadyCount = zebraPrintDetailsDAO.getIvrReadyCount(calender.getTime(),state) ;
+		Long IvrReadyCount = zebraPrintDetailsDAO.getIvrReadyCount(calender.getTime(),state,accessLocationIds) ;
 		returnVo.setIvrReady(IvrReadyCount != null ? IvrReadyCount : 0l);
 		 // IVR Ready count calculation
 		returnVo.setIvrReady(returnVo.getIvrReady() - returnVo.getTotal());
@@ -4449,11 +4451,11 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			 };
 			
 			 
-			 public Long getTotalRegisterCadreInfoByState(String state){
+			 public Long getTotalRegisterCadreInfoByState(String state,List<Long> accessLocationIds){
 				
 				 Long count =0l;
 					try{
-					count = tdpCadreDAO.getTotalRegisterCadreInfoByState(state);
+					count = tdpCadreDAO.getTotalRegisterCadreInfoByState(state,accessLocationIds);
 				
 					}catch(Exception e){
 						LOG.error("Exception rised in getTotalRegisterCadreInfo", e);
@@ -4499,7 +4501,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					     return returnResult;
 					}
 				
-			 	public List<CadreIVRVO> getIvrDashBoardCountsByDate(String fromDate,String toDate,String state)
+			 	public List<CadreIVRVO> getIvrDashBoardCountsByDate(String fromDate,String toDate,String state,String accessType,Long accessValue)
 				 {
 					 List<CadreIVRVO> returnList = new  ArrayList<CadreIVRVO>();
 					 CadreIVRVO cadreInfo = new CadreIVRVO();
@@ -4511,7 +4513,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 						 strDate = format.parse(fromDate.trim());
 						 if(!toDate.isEmpty())
 						 endDate = format.parse(toDate.trim());
-						 cadreInfo = setIVRBasicInfo(strDate,endDate,state); 
+						 cadreInfo = setIVRBasicInfo(strDate,endDate,state,accessType,accessValue); 
 						 returnList.add(cadreInfo);
 					 }
 					 catch(Exception e)
@@ -4520,9 +4522,10 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					 }
 					return returnList;
 				 }
-			 	public CadreIVRVO setIVRBasicInfo(Date fromDate,Date toDate,String state)
+			 	public CadreIVRVO setIVRBasicInfo(Date fromDate,Date toDate,String state,String accessType,Long accessValue)
 				{
 					CadreIVRVO returnVo = new CadreIVRVO();
+					List<Long> accessLocationIds = new ArrayList<Long>();
 					Long ivrCount = 0l;
 					Long receivedCount = 0l;
 					Long notReceivedCount = 0l;
@@ -4536,7 +4539,8 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					List<String> successNos =new ArrayList<String>();
 					successNos.add("1");successNos.add("2");successNos.add("3");
 					try{
-						List<Object[]> list = cadreIvrResponseDAO.getIvrCountByDate(fromDate,toDate,state);
+						getAccessLocationValues(accessLocationIds,accessType,accessValue);
+						List<Object[]> list = cadreIvrResponseDAO.getIvrCountByDate(fromDate,toDate,state,accessLocationIds);
 						if(list != null && list.size() > 0)
 						{
 							for(Object[] ivrCountInfo:list){
@@ -4612,21 +4616,22 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					return returnVo;
 				}
 			 
-			 public CadreIVRResponseVO getLocationWiseIVRInfo(Map<Long,String> locationNames,String locationType,Date startDate,Date endDate){
+			 public CadreIVRResponseVO getLocationWiseIVRInfo(Map<Long,String> locationNames,String locationType,Date startDate,Date endDate,String accessType,Long accessValue){
 				 
 				 CadreIVRResponseVO responseVO = new CadreIVRResponseVO();
+				 List<Long> accessLocationIds = new ArrayList<Long>();
 				 responseVO.setTotalCalls(0l);//setting very good count  <=10%
 				 responseVO.setTotalCallsPerc(0l);//setting good count   >10 <=20%
 				 responseVO.setReceived(0l);//setting ok count           >20 <=40
 				 responseVO.setReceivedPerc(0l);//setting  poor count    >40 <=60
 				 responseVO.setNotReceived(0l);//setting very poor count >60
 				 Map<Long,CadreIVRResponseVO> locationOptionsCountMap = new HashMap<Long,CadreIVRResponseVO>();//Map<locationId,LocationInfo>
-				 
+				 getAccessLocationValues(accessLocationIds,accessType,accessValue);				 
 				//0locationId,1count,2responseKey
 				 List<Object[]> locationWiseCountsInfoList = new ArrayList<Object[]>();
 				 
 				 if(locationNames.size() > 0){
-				   locationWiseCountsInfoList = cadreIvrResponseDAO.getLocationWiseIVRInfo(locationNames.keySet(),locationType,startDate,endDate);
+				   locationWiseCountsInfoList = cadreIvrResponseDAO.getLocationWiseIVRInfo(locationNames.keySet(),locationType,startDate,endDate,accessLocationIds);
 				 }
 				 
 				 populateLocationCounts(locationNames,locationWiseCountsInfoList,locationOptionsCountMap);
@@ -4813,7 +4818,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         	  }
           }
           
-          public CadreIVRResponseVO getLocationWisePercInfo(String locationType,List<Long> locationIds,Date startDate,Date endDate){
+          public CadreIVRResponseVO getLocationWisePercInfo(String locationType,List<Long> locationIds,Date startDate,Date endDate,String accessType,Long accessValue){
         	  List<Object[]> locations = new ArrayList<Object[]>();
         	  if(locationType.equalsIgnoreCase("district")){
         	      locations = districtDAO.getDistrictDetailsByDistrictIds(locationIds);
@@ -4824,14 +4829,18 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         	  for(Object[] location:locations){
         		  locationNames.put((Long)location[0], location[1].toString());
         	  }
-        	  return getLocationWiseIVRInfo(locationNames,locationType,startDate,endDate);
+        	  return getLocationWiseIVRInfo(locationNames,locationType,startDate,endDate,accessType,accessValue);
           }
           
-          public CadreIVRResponseVO  getLocationWisePercInfoErrorInfo(String locationType,Long constituencyId,Date startDate,Date endDate){
+          public CadreIVRResponseVO  getLocationWisePercInfoErrorInfo(String locationType,Long constituencyId,Date startDate,Date endDate,String accessType,Long accessValue){
         	  Map<Long,String> locationNames = new HashMap<Long,String>();
         	  if(locationType.equalsIgnoreCase("all") || locationType.equalsIgnoreCase("AP") || locationType.equalsIgnoreCase("TS")){
         		  List<Object[]> assemblyList = new ArrayList<Object[]>();
-        		  if(locationType.equalsIgnoreCase("all")){
+        		  List<Long> accessLocationIds = new ArrayList<Long>();
+        		  getAccessLocationValues(accessLocationIds,accessType,accessValue);
+        		  if(accessLocationIds.size() > 0){
+        			  assemblyList = constituencyDAO.getParliamentConstituencyInfoByConstituencyIds(accessLocationIds);
+        		  }else if(locationType.equalsIgnoreCase("all")){
         			  assemblyList = constituencyDAO.getConstituenciesForRegion("");
         		  }else if(locationType.equalsIgnoreCase("AP")){
         			  assemblyList = constituencyDAO.getConstituenciesForRegion("Andhra Pradesh");
@@ -4882,5 +4891,21 @@ public class TdpCadreReportService implements ITdpCadreReportService{
             	  }
         		  return getLocationWiseIVRDetailedInfo(locationNames,"booth",startDate,endDate,null);
         	  }
+          }
+          
+          public void getAccessLocationValues(List<Long> accessLocationIds,String accessType,Long accessValue){
+        	  if(accessType.equalsIgnoreCase("MLA")){
+        		   accessLocationIds.add(accessValue);
+        	  }else if(accessType.equalsIgnoreCase("MP")){
+        		  List<Long> parlmentIds = new ArrayList<Long>();
+        		  parlmentIds.add(accessValue);
+        		  accessLocationIds.addAll(delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesByParliamentList(parlmentIds));
+        	  }else if(accessType.equalsIgnoreCase("DISTRICT")){
+        		  List<Object[]> assemblies = constituencyDAO.getDistrictConstituencies(accessValue);
+        		  for(Object[] assembly:assemblies){
+        			  accessLocationIds.add((Long)assembly[0]);
+        		  }
+        	  }
+        	  
           }
 }

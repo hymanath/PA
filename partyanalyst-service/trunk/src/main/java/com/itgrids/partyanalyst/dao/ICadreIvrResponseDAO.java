@@ -12,9 +12,9 @@ public interface ICadreIvrResponseDAO extends GenericDao<CadreIvrResponse, Long>
 	public List<Date> getDates();
 	public Long getIvrStatusCount(Date date,Long Id,String searchType);
 	public List<Object[]> getIvrCadreDetails(Date date,Long Id,String searchType,Integer startIndex,Integer maxIndex);
-	public  Long  getTotalIvrCount(String state);
+	public  Long  getTotalIvrCount(String state,List<Long> accessLocationIds);
 	
-	public List<Object[]> getIvrCountByDate(Date fromDate,Date toDate,String state);
+	public List<Object[]> getIvrCountByDate(Date fromDate,Date toDate,String state,List<Long> accessLocationIds);
 	public List<Object[]> getConstituencyWiseIvrCount();
 	public List<Object[]> getTehsilWiseIVRInfo();
 	public List<Object[]> getTehsilWiseIVRTotalCountInfo();
@@ -23,6 +23,6 @@ public interface ICadreIvrResponseDAO extends GenericDao<CadreIvrResponse, Long>
 	public List<Object[]> getPanchayatWiseIVRInfo(String state);
 	public List<Object[]> getPanchayatWiseIVRCountInfo(String state);
 	public List<Object[]> getIvrCountForAPAndTS();
-	public List<Object[]> getLocationWiseIVRInfo(Set<Long> locationIds,String locationType,Date startDate,Date endDate);
+	public List<Object[]> getLocationWiseIVRInfo(Set<Long> locationIds,String locationType,Date startDate,Date endDate,List<Long> accessLocationIds);
 	public List<Object[]> getLocationWiseIVRCountsInfo(Set<Long> locationIds,String locationType,Date startDate,Date endDate,Long constituencyId);
 }

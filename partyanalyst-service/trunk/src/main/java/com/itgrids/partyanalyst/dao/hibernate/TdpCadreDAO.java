@@ -3576,7 +3576,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			query.setParameterList("userIds", userIds);
 			return query.list();
 		}
-		public Long getTotalRegisterCadreInfoByState(String state){
+		public Long getTotalRegisterCadreInfoByState(String state,List<Long> accessLocationIds){
 			StringBuilder queryStr = new StringBuilder();
 			queryStr.append("select count(model.tdpCadreId) from TdpCadre model where model.isDeleted = 'N'  and model.enrollmentYear = 2014 ");
 			queryStr.append(" and  model.userAddress.state.stateId = 1  ");	
@@ -3584,7 +3584,13 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			queryStr.append(" and model.userAddress.district.districtId > 10");
 			else if(state.equalsIgnoreCase("TS"))
 			queryStr.append(" and model.userAddress.district.districtId < 11");
+			if(accessLocationIds.size() > 0){
+				queryStr.append(" and model.userAddress.constituency.constituencyId in(:accessLocationIds)");
+			}
 			Query query = getSession().createQuery(queryStr.toString());
+			if(accessLocationIds.size() > 0){
+				query.setParameterList("accessLocationIds", accessLocationIds);
+			}
 			return (Long) query.uniqueResult();
 		}
 				

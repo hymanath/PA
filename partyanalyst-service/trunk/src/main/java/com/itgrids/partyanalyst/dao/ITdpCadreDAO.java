@@ -266,7 +266,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<String> getExistingRecordsInfo(List<String> uniqueKeys,List<Long> userIds);
 	
 	public List<Object[]> getRegisterCadreInfoForVolunteerUserBetweenDates(Date fromDate,Date toDate,List<Long> tabUserIds,List<Long> webUserIds);
-	public Long getTotalRegisterCadreInfoByState(String state);
+	public Long getTotalRegisterCadreInfoByState(String state,List<Long> accessLocationIds);
 	public List<Object[]> getLocationWiseCadreRegisterInfo(Set<Long> locationIds,String locationType,Long constituencyId);
 	public Long checkMemberExists(String memberShipNo);
 	public String getMobileNoByMemberShipNo(String memberShipNo);
