@@ -81,6 +81,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreFamilyDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreOnlineDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTeluguNamesDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreTravelInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreVerfiedDataDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
@@ -100,6 +101,7 @@ import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.CadreTravelsVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
@@ -137,6 +139,7 @@ import com.itgrids.partyanalyst.model.TdpCadreBackupDetails;
 import com.itgrids.partyanalyst.model.TdpCadreFamilyDetails;
 import com.itgrids.partyanalyst.model.TdpCadreOnline;
 import com.itgrids.partyanalyst.model.TdpCadreTeluguNames;
+import com.itgrids.partyanalyst.model.TdpCadreTravelInfo;
 import com.itgrids.partyanalyst.model.TdpCadreVerfiedData;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
@@ -222,6 +225,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IVerifiedDataResponseDAO verifiedDataResponseDAO;
 	private CommonUtilsService commonUtilsService;
 	private ICadreRegSyncAccessUsersDAO cadreRegSyncAccessUsersDAO;
+	private ITdpCadreTravelInfoDAO tdpCadreTravelInfoDAO;
 	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
@@ -233,7 +237,14 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			IPrintedCardDetailsDAO printedCardDetailsDAO) {
 		this.printedCardDetailsDAO = printedCardDetailsDAO;
 	}*/
+	public ITdpCadreTravelInfoDAO getTdpCadreTravelInfoDAO() {
+		return tdpCadreTravelInfoDAO;
+	}
 
+	public void setTdpCadreTravelInfoDAO(
+			ITdpCadreTravelInfoDAO tdpCadreTravelInfoDAO) {
+		this.tdpCadreTravelInfoDAO = tdpCadreTravelInfoDAO;
+	}
 	
 	public void setCommonUtilsService(CommonUtilsService commonUtilsService) {
 		this.commonUtilsService = commonUtilsService;
@@ -6572,5 +6583,127 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		else{
 			return false;
 		}
+	}
+	
+	
+	
+	public String updateCadreTravelDiscountDetails(final CadreTravelsVO input){
+		LOG.debug("Entered Into updateCadreTravelDiscountDetails");
+		String returnMsg = "";
+		try {
+			if(input != null ){
+				try{
+					returnMsg = (String) transactionTemplate.execute(new TransactionCallback() {
+						 public Object doInTransaction(TransactionStatus status) {
+							String status1 = "";							
+							Boolean membershipCheck = commonUtilsService.checkValidMember(input.getMembershipNo());
+							
+							if(membershipCheck){
+								TdpCadreTravelInfo tdpCadreTravelInfo  = new TdpCadreTravelInfo();
+								tdpCadreTravelInfo.setCustId(Long.valueOf(input.getCustomerId()));
+								tdpCadreTravelInfo.setMembershipNo(input.getMembershipNo());
+								tdpCadreTravelInfo.setTicketsCount(Long.valueOf(input.getTicketsCount()));
+								tdpCadreTravelInfo.setTicketCost(Double.valueOf(input.getTicketCost()));
+								tdpCadreTravelInfo.setTotalAmount(Double.valueOf(input.getTicketCost()) * tdpCadreTravelInfo.getTicketsCount());
+								tdpCadreTravelInfo.setDiscountPerc(Double.valueOf(input.getDiscountPerc()));
+								tdpCadreTravelInfo.setDiscountAmount((tdpCadreTravelInfo.getTotalAmount() * tdpCadreTravelInfo.getDiscountPerc())/100);
+								tdpCadreTravelInfo.setAmountAfterDiscount(tdpCadreTravelInfo.getTotalAmount() - tdpCadreTravelInfo.getDiscountAmount());
+								tdpCadreTravelInfo.setTdpCadreTravelsId(1L);
+								tdpCadreTravelInfo.setTdpCadreId(tdpCadreDAO.checkMemberExists(input.getMembershipNo()));
+								tdpCadreTravelInfo.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+								tdpCadreTravelInfo.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+								tdpCadreTravelInfo.setDateOfJourney(convertToDateFormat(input.getDateOfJourney()));
+								tdpCadreTravelInfo.setIsDeleted("N");
+								tdpCadreTravelInfo = tdpCadreTravelInfoDAO.save(tdpCadreTravelInfo);
+								status1 = "SUCCESS";
+							}
+							else{
+								status1 = "MemberShip Card Number is not Registered for any Cadre...";
+							}
+							return status1;
+						 }});
+				}catch (Exception e) {
+					LOG.error("Exception Raised in updateCadreTravelDiscountDetails" + e);
+					returnMsg = "FAIL";
+				}
+			}else{
+				returnMsg = "FAIL";
+			}
+			
+		} catch (Exception e) {
+			returnMsg = "EXCEPTION";
+			LOG.error("Exception Raised in updatePrintedCardDetails",e);
+		}		
+		return returnMsg;
+	}
+	
+	
+	
+	public String cancellationOfTicketDetails(final CadreTravelsVO input){
+		LOG.debug("Entered Into cancellationOfTicketDetails");
+		String returnMsg = "";
+		try {
+			if(input != null ){
+				try{
+					returnMsg = (String) transactionTemplate.execute(new TransactionCallback() {
+						public Object doInTransaction(TransactionStatus status) {
+							
+						String status1 = "";
+						List<TdpCadreTravelInfo> info = tdpCadreTravelInfoDAO.checkCustomerId(Long.valueOf(input.getCustomerId()));
+						
+						if(info != null && info.size() > 0){
+							for(TdpCadreTravelInfo tdpCadreTravelInfo :info){
+								if(Long.valueOf(input.getTicketsCount()) <= tdpCadreTravelInfo.getTicketsCount()){
+									tdpCadreTravelInfo.setTicketsCount(tdpCadreTravelInfo.getTicketsCount() - Long.valueOf(input.getTicketsCount()));
+									tdpCadreTravelInfo.setTotalAmount(tdpCadreTravelInfo.getTicketCost() * tdpCadreTravelInfo.getTicketsCount());
+									if(tdpCadreTravelInfo.getCancelledTicketsCount()  == null)
+									tdpCadreTravelInfo.setCancelledTicketsCount(0 + Long.valueOf(input.getTicketsCount()));
+									else 
+									tdpCadreTravelInfo.setCancelledTicketsCount( tdpCadreTravelInfo.getCancelledTicketsCount()  + Long.valueOf(input.getTicketsCount()));
+									tdpCadreTravelInfo.setAmountAfterDiscount(tdpCadreTravelInfo.getTotalAmount() - tdpCadreTravelInfo.getDiscountAmount());
+									tdpCadreTravelInfo.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+									tdpCadreTravelInfo.setIsDeleted("N");
+									tdpCadreTravelInfo = tdpCadreTravelInfoDAO.save(tdpCadreTravelInfo);
+									status1 = "SUCCESS";
+								}
+								else{
+									status1 = "Enter Cancel Tickets Count Correctly";
+								}
+							}
+						}
+						else{
+							status1  = "Enter Valid Customer Id";
+						}
+						return status1;
+					}});
+				}catch (Exception e) {
+					LOG.error("Exception Raised in updatePrintedCardDetails" + e);
+					returnMsg = "FAIL";
+				}
+			}else{
+				returnMsg = "FAIL";
+			}
+			
+		} catch (Exception e) {
+			returnMsg = "EXCEPTION";
+			LOG.error("Exception Raised in cancellationOfTicketDetails",e);
+		}		
+		return returnMsg;
+	}
+	
+	public Date convertToDateFormat(String dateStr)
+	{
+		Date date = null;
+		try {
+			SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			date = originalFormat.parse(dateStr);
+		} catch (Exception e) {
+			LOG.error("Exception raised in convertToDateFormet method in CadreRegistrationAction Action",e);
+			
+			
+			SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		}
+		return date;
+		
 	}
 }
