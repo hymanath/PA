@@ -553,7 +553,7 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 		return query.list();
 	}
 	
-	public Long getPrintingCompletedCount(String state,String dataType) 
+	public Long getPrintingCompletedCount(String state,String dataType,List<Long> accessLocationIds) 
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select count(model.zebraPrintDetailsId) from ZebraPrintDetails model where ");
@@ -571,10 +571,16 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 		}else if(state.equalsIgnoreCase("TS")){
 			str.append(" and model.tdpCadre.userAddress.district.districtId < 11");
 		}
+		if(accessLocationIds.size() > 0){
+			str.append(" and model.tdpCadre.userAddress.constituency.constituencyId in(:accessLocationIds)");
+		}
 		Query query = getSession().createQuery(str.toString());
+		if(accessLocationIds.size() > 0){
+			query.setParameterList("accessLocationIds", accessLocationIds);
+		}
 		return (Long) query.uniqueResult();
 	}
-	public Long getIvrReadyCount(Date date,String state) 
+	public Long getIvrReadyCount(Date date,String state,List<Long> accessLocationIds) 
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select count(model.zebraPrintDetailsId) from ZebraPrintDetails model where ((model.printStatus = 'Y' or model.printStatus ='y') " +
@@ -585,8 +591,14 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 		}else if(state.equalsIgnoreCase("TS")){
 			str.append(" and model.tdpCadre.userAddress.district.districtId < 11");
 		}
+		if(accessLocationIds.size() > 0){
+			str.append(" and model.tdpCadre.userAddress.constituency.constituencyId in(:accessLocationIds)");
+		}
 		Query query = getSession().createQuery(str.toString());
 		query.setDate("date", date);
+		if(accessLocationIds.size() > 0){
+			query.setParameterList("accessLocationIds", accessLocationIds);
+		}
 		return (Long) query.uniqueResult();
 	}
 	

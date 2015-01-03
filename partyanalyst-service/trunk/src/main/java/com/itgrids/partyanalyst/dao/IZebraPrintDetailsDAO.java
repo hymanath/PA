@@ -43,7 +43,7 @@ public interface IZebraPrintDetailsDAO extends GenericDao<ZebraPrintDetails, Lon
 	public List<Object[]> getAllCadreDetailsByParliament(Date batchCode,String searchType,List<Long> Ids);
 	public List<Object[]> getPrintedCountDetailsByStatusTypeSeacrh(List<Long> locationIdsList, String searchType,String dataType);
 	public List<Object[]> getParliamentWiseResultsByStatusType(List<Long> parliamentIdsList, String dataType);
-	public Long getPrintingCompletedCount(String state,String dataType) ;
-	public Long getIvrReadyCount(Date date,String state) ;
+	public Long getPrintingCompletedCount(String state,String dataType,List<Long> accessLocationIds) ;
+	public Long getIvrReadyCount(Date date,String state,List<Long> accessLocationIds) ;
 	public List<Object[]> getLocationWiseCadreRegisterInfo(Set<Long> locationIds,String locationType,Long constituencyId);
 }
