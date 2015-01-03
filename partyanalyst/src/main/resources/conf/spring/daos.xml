@@ -1830,5 +1830,13 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	 <bean id="tdpCadreTravelInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreTravelInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	 <bean id="tdpCadreTravelsDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreTravelsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!--  end -->
 </beans>		
