@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CastVO;
@@ -76,5 +77,7 @@ public interface IWebServiceHandlerService {
 	public Object updatePrintedCardDetails(List<CardNFCDetailsVO> inputVOList);
 	
 	public Object getCadreSurveyUserDetails(List<UserDetailsVO> cadreSurveyUserIds);
+    public Object getMobileNoByMemberShip(String memberShipNo);
+	public CadreAddressVO getMemberDataByMemberShip(String memberShipNo,String address);
 	
 }

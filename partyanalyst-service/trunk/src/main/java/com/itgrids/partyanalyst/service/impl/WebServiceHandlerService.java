@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dao.IMobileAppUserAccessKeyDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserProfileDAO;
 import com.itgrids.partyanalyst.dao.IPingingTypeDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserSurveyBoothsDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
@@ -21,6 +22,7 @@ import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterBoothActivitiesDAO;
 import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
+import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
@@ -94,6 +96,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	@Autowired IStrategyModelTargetingService strategyModelTargetingService;
     @Autowired IUserSurveyBoothsDAO userSurveyBoothsDAO ;
     @Autowired ICadreRegistrationService cadreRegistrationService;
+    @Autowired ITdpCadreDAO tdpCadreDAO;
 	public IVoterBoothActivitiesDAO getVoterBoothActivitiesDAO() {
 		return voterBoothActivitiesDAO;
 	}
@@ -1132,7 +1135,85 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		List<UserDetailsVO> details = cadreRegistrationService.getCadreSurveyUserDetails(cadreSurveyUserIds);
 		return details;
 	}
+	public Object getMobileNoByMemberShip(String memberShipNo)
+	{
+		String returnStr ="";
+		try{
+			String mobile = tdpCadreDAO.getMobileNoByMemberShipNo(memberShipNo);
+			if(mobile!= null)
+				returnStr = mobile;
+			else
+				returnStr = "Mobile No not available";
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return returnStr;
+		
+	}
 	
+	public CadreAddressVO getMemberDataByMemberShip(String memberShipNo,String address)
+	{
+		
+		CadreAddressVO cadreAddressVO = new CadreAddressVO();
+		List<Object[]> list = null;
+		try{
+			if(address.equalsIgnoreCase("true"))
+				list = tdpCadreDAO.getMemberAddressByMembershipNo(memberShipNo);
+			else if(address.equalsIgnoreCase("false"))
+				list = tdpCadreDAO.getMemberDataByMembershipNo(memberShipNo);
+			cadreAddressVO = setMemberData(list,address);
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return cadreAddressVO;
+		
+	}
+	public CadreAddressVO setMemberData(List<Object[]> list,String address)
+	{
+		CadreAddressVO cadreAddressVO = new CadreAddressVO();
+		try{
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+			{
+				cadreAddressVO.setName(params[0] != null ? params[0].toString() : "");
+				cadreAddressVO.setMobileNo(params[1] != null ? params[1].toString() : "");
+				cadreAddressVO.setAge(params[2] != null ? (Long)params[2] : 0);
+				cadreAddressVO.setGender(params[3] != null ? params[3].toString() : "");
+				if(address.equalsIgnoreCase("true"))
+				{
+					StringBuilder str = new StringBuilder();
+					String district =  params[4] != null ? params[4].toString() +" District" : "";
+					String constituency =  params[5] != null ? params[5].toString() +" Constituency" : "";
+					String tehsil =  params[6] != null ? params[6].toString() +" Mandal" : "";
+					String panchayat =  params[7] != null ? params[7].toString() +" Panchayat": "";
+					String localbody =  params[8] != null ? params[8].toString(): "";
+					String localbodyName = localbody + params[9] != null ? params[9].toString() : "";
+					str.append(district +"<br/>" + constituency +"<br/>");
+					if(!tehsil.isEmpty())
+					str.append(tehsil);
+					else if(!localbodyName.isEmpty())
+					str.append(localbodyName);	
+					if(!panchayat.isEmpty())
+					str.append(panchayat);	
+					cadreAddressVO.setAddress(panchayat.toString());
+				}
+					
+			}
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return cadreAddressVO;
+		
+	}
 	
 }
 
