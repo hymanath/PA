@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
+import com.itgrids.partyanalyst.dto.CadreTravelsVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
@@ -79,5 +80,9 @@ public interface IWebServiceHandlerService {
 	public Object getCadreSurveyUserDetails(List<UserDetailsVO> cadreSurveyUserIds);
     public Object getMobileNoByMemberShip(String memberShipNo);
 	public CadreAddressVO getMemberDataByMemberShip(String memberShipNo,String address);
+	
+	public Object updateCadreTravelDiscountDetails(CadreTravelsVO inputVO);
+	
+	public Object cancellationOfTicketDetails(CadreTravelsVO inputVO);
 	
 }
