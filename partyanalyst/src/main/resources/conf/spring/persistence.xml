@@ -533,6 +533,8 @@
 				<value>com.itgrids.partyanalyst.model.CadreRegSyncAccessUsers</value>
 				<value>com.itgrids.partyanalyst.model.CadreIvrResponse</value>	
 				<value>com.itgrids.partyanalyst.model.CadreRegistrationInfo</value>	
+				<value>com.itgrids.partyanalyst.model.TdpCadreTravels</value>	
+				<value>com.itgrids.partyanalyst.model.TdpCadreTravelInfo</value>	
 							
 				</list>
 			
