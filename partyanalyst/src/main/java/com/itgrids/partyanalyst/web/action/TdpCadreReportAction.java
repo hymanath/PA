@@ -647,8 +647,9 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 	{
 		try{
 			jobj = new JSONObject(getTask());
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 			if(jobj.getString("task").equalsIgnoreCase("basicCnt"))
-				cadreIVRVO = tdpCadreReportService.getIvrDashBoardBasicInfo(jobj.getString("state"));
+				cadreIVRVO = tdpCadreReportService.getIvrDashBoardBasicInfo(jobj.getString("state"),regVO.getAccessType(),Long.valueOf(regVO.getAccessValue().trim()));
 			
 		}
 		catch(Exception e){
@@ -660,8 +661,9 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 	{
 		try{
 			jobj = new JSONObject(getTask());
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 			if(jobj.getString("task").equalsIgnoreCase("datewiseBasicCnt"))
-				ivrVOList = tdpCadreReportService.getIvrDashBoardCountsByDate(jobj.getString("fromdate"),jobj.getString("todate"),jobj.getString("state"));
+				ivrVOList = tdpCadreReportService.getIvrDashBoardCountsByDate(jobj.getString("fromdate"),jobj.getString("todate"),jobj.getString("state"),regVO.getAccessType(),Long.valueOf(regVO.getAccessValue().trim()));
 		}
 		catch(Exception e){
 			LOG.info("Entered into getCadreIvrReport()",e);	
@@ -708,6 +710,7 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 	public String getLocationWisePercInfo(){
 		try{
 			jobj = new JSONObject(getTask());
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 			String location = jobj.getString("locationType");
 			List<Long> locationIds = new ArrayList<Long>();
 			if(location.equalsIgnoreCase("district")){
@@ -748,7 +751,7 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 			 {
 				 LOG.error("Exception rised in date convert()  ",e);	 
 			 }
-			cadreIVRResponseVO = tdpCadreReportService.getLocationWisePercInfo(location,locationIds,startDate,endDate);			
+			cadreIVRResponseVO = tdpCadreReportService.getLocationWisePercInfo(location,locationIds,startDate,endDate,regVO.getAccessType(),Long.valueOf(regVO.getAccessValue().trim()));			
 		}
 		catch(Exception e){
 			LOG.info("Entered into getLocationWisePercInfo()",e);	
@@ -759,6 +762,7 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 	public String getLocationWisePercInfoErrorInfo(){
 		try{
 			jobj = new JSONObject(getTask());
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 			String location = jobj.getString("locationType");
 			
 			 Date startDate = null;
@@ -778,7 +782,7 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 			 {
 				 LOG.error("Exception rised in date convert1() ",e);	 
 			 }
-			cadreIVRResponseVO = tdpCadreReportService.getLocationWisePercInfoErrorInfo(location, jobj.getLong("constituencyId"),startDate,endDate);			
+			cadreIVRResponseVO = tdpCadreReportService.getLocationWisePercInfoErrorInfo(location, jobj.getLong("constituencyId"),startDate,endDate,regVO.getAccessType(),Long.valueOf(regVO.getAccessValue().trim()));			
 		}
 		catch(Exception e){
 			LOG.info("Entered into getLocationWisePercInfoErrorInfo()",e);	
