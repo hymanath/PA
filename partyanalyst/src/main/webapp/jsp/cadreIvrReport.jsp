@@ -89,7 +89,7 @@
 		<!-- Filters Row -->
 		<div id="fadeInDown" class="row-fluid">
 			<div class="span12 well well-small  border-radius-0 mb-10 ">
-				
+		<c:if test="${sessionScope.USER.accessType == 'STATE'}">		
 		<ul class="inline" style="margin-bottom: 0px;"><li>
 		<input type="radio" class="radioCls" style="margin-top: -2px;" name="stateradio" value="All" checked> </li>All
 			<li><input type="radio" class="radioCls"  value="AP" name="stateradio" style="margin-top: -2px;"> Andhra Pradesh  </li>
@@ -97,9 +97,18 @@
 			<li><input type="radio" class="radioCls"  value="TS" name="stateradio" style="margin-top: -2px;"> Telangana  </li>
 			
 			</ul>
+			</c:if>
+			<c:if test="${sessionScope.USER.accessType != 'STATE'}">
+			<input type="radio" class="radioCls" style="display:none;" name="stateradio" value="All" checked="checked">
+			</c:if>
 				<!-----date picker----->
+				<c:if test="${sessionScope.USER.accessType == 'STATE'}">
 				<div style="background: none repeat scroll 0% 0% rgb(255, 255, 255); cursor: pointer; padding: 5px 10px; border: 1px solid rgb(204, 204, 204); margin-top: -25px;" class="pull-right" id="daterange">
-                  <i class="icon icon-calendar"></i>
+                 </c:if> 
+				 <c:if test="${sessionScope.USER.accessType != 'STATE'}">
+				   <div style="background: none repeat scroll 0% 0% rgb(255, 255, 255); cursor: pointer; padding: 5px 10px; border: 1px solid rgb(204, 204, 204);" class="pull-right" id="daterange">
+                 </c:if>
+				  <i class="icon icon-calendar"></i>
                   <span id="selectedDate"></span> <b class="caret m_top10"></b>
                </div><!-----/date picker----->
 			   
@@ -148,7 +157,7 @@
 			<div class="span12 well well-small border-radius-0 mb-0 ">
 				<h4 class="m-0" style=" display: inline;"><span id="districtConstituencyHeading">District Wise Card Not Received Response</span></h4> 			
 				
-				<input type="button" id="constiDistMainDiv" onclick="getOtherLocationsInfo();" class="btn btn-medium btn-success border-radius-0 pull-right " style="margin-right: 10px; margin-top: -5px; margin-bottom: -5px;" value="Click to view Constituency Wise" />&nbsp; &nbsp; 
+				<span id="constiDistMainOutDiv"><input type="button" id="constiDistMainDiv" onclick="getOtherLocationsInfo();" class="btn btn-medium btn-success border-radius-0 pull-right " style="margin-right: 10px; margin-top: -5px; margin-bottom: -5px;" value="Click to view Constituency Wise" /></span>&nbsp; &nbsp; 
 			</div>
 			<table class="table table-bordered table-condensed border-radius-0 mb-0 "  style=" box-shadow: inset 0 0 5px 4px rgba(0,0,0,0.1);">
 				<tr>
@@ -195,7 +204,13 @@
 		
 	</div>
 <script>
-
+var isDistrictRequired = false;
+var selectedLocation ="district";
+var tgIds ="8,4,295,296,2,5,1,3,7,6,10,13,15,12,18,16,342,343,11,321,23,322,318,26,30,24,20,323,31,319,21,320,40,35,36,32,37,41,39,337,336,34,57,367,345,346,347,56,348,349,351,350,55,58,60,59,50,49,315,47,314,51,316,46,317,44,43,54,313,52,53,66,335,68,64,369,69,73,63,62,70,61,65,71,67,77,338,79,339,78,84,82,75,81,85,74,89,87,362,86,91,93,94,363,364,97,365,92,324,107,101,104,103,325,105,102,326,100,80";
+var apIds ="111,352,117,114,116,108,109,112,353,113,360,124,125,122,120,121,361,129,127,368,354,355,356,357,358,134,136,359,138,133,141,135,140,137,163,157,156,307,155,147,308,159,153,146,160,310,152,309,303,304,305,149,306,172,366,181,174,173,167,179,178,177,180,169,170,171,176,168,194,193,184,185,187,327,328,182,329,330,196,331,195,191,192,186,210,215,206,211,217,213,216,209,212,312,311,199,208,214,207,203,205,344,221,228,218,219,229,227,223,225,226,222,224,232,241,233,340,341,236,231,237,239,238,242,252,243,246,248,251,245,244,250,249,254,332,261,260,263,262,333,257,264,258,265,334,253,255,276,279,297,278,277,298,272,299,273,270,275,300,267,271,290,285,294,286,280,291,289,288,283,301,281,302,284,282";
+<c:if test="${sessionScope.USER.accessType == 'STATE' || sessionScope.USER.accessType == 'DISTRICT'}">
+ isDistrictRequired = true;
+</c:if>
 	 $(document).ready(function() {
 			 dateRange();	 
 	 });
@@ -248,7 +263,12 @@
 					  selectedLocation ="district";
 						$("#constiDistMainDiv").attr("value","Click to view Constituency Wise");
 						$("#districtConstituencyHeading").html("District Wise Card Not Received Response");
-						getDistrictConstiWisePerformance("district","");
+						if(isDistrictRequired){
+						  getDistrictConstiWisePerformance("district","");
+						}else{
+						  $("#constiDistMainOutDiv").hide();
+						  getDistrictConstiWisePerformance("constituency",apIds+","+tgIds);
+						}
 						$("#allErrorsInfoLocationWiseOuter").html("");
 						getLocationWisePerformance(232,$('input[name=stateradio]:checked').val());
 						
@@ -453,9 +473,14 @@
 		str+='<canvas id="printPercChart" style="margin-top: 5px;" width="185px" height=" 150px" ></canvas>';
 		str+='<div style="margin-top: 8px;">';
 		str+='<h4 class="m-0">'+result.count+'</h4>';
-		if(state == "All")
-		str+='<p class="m-0" >Members Registered in Andhra Pradesh And Telangana</p>';
-		else if(state == "AP")
+		if(state == "All"){
+		<c:if test="${sessionScope.USER.accessType == 'STATE'}">
+		   str+='<p class="m-0" >Members Registered in Andhra Pradesh And Telangana</p>';
+		</c:if>
+		<c:if test="${sessionScope.USER.accessType != 'STATE'}">
+		   str+='<p class="m-0" >Members Registered</p>';
+		</c:if>
+		}else if(state == "AP")
 		str+='<p class="m-0" >Members Registered in Andhra Pradesh </p>';
 		else if(state == "TS")
 		str+='<p class="m-0" >Members Registered in Telangana</p>';
@@ -465,9 +490,15 @@
 		str1+='<canvas id="piep" style="margin-top: 5px;" height="140px" width="185px"></canvas>';
 		str1+='<div  style="margin-top: 8px;">';
 		str1+='<h4 class="m-0">'+result.printingCompleted+'</h4>';
-		if(state == "All")
-		str1+='<p class="m-0" >Cards Printed in Andhra Pradesh And Telangana</p>';
-		else if(state == "AP")
+		if(state == "All"){
+		<c:if test="${sessionScope.USER.accessType == 'STATE'}">
+		   str1+='<p class="m-0" >Cards Printed in Andhra Pradesh And Telangana</p>';
+		</c:if>
+		<c:if test="${sessionScope.USER.accessType != 'STATE'}">
+		   str1+='<p class="m-0" >Cards Printed</p>';
+		</c:if>
+		
+		}else if(state == "AP")
 		str1+='<p class="m-0" >Cards Printed in Andhra Pradesh </p>';
 		else if(state == "TS")
 		str1+='<p class="m-0" >Cards Printed in Telangana</p>';
@@ -1003,9 +1034,6 @@ function getLocationWisePerformance(constituencyId,locationType,name){
 function closeDIV(id){
    $("#"+id).html("");
 }
-var selectedLocation ="district";
-var tgIds ="8,4,295,296,2,5,1,3,7,6,10,13,15,12,18,16,342,343,11,321,23,322,318,26,30,24,20,323,31,319,21,320,40,35,36,32,37,41,39,337,336,34,57,367,345,346,347,56,348,349,351,350,55,58,60,59,50,49,315,47,314,51,316,46,317,44,43,54,313,52,53,66,335,68,64,369,69,73,63,62,70,61,65,71,67,77,338,79,339,78,84,82,75,81,85,74,89,87,362,86,91,93,94,363,364,97,365,92,324,107,101,104,103,325,105,102,326,100,80";
-var apIds ="111,352,117,114,116,108,109,112,353,113,360,124,125,122,120,121,361,129,127,368,354,355,356,357,358,134,136,359,138,133,141,135,140,137,163,157,156,307,155,147,308,159,153,146,160,310,152,309,303,304,305,149,306,172,366,181,174,173,167,179,178,177,180,169,170,171,176,168,194,193,184,185,187,327,328,182,329,330,196,331,195,191,192,186,210,215,206,211,217,213,216,209,212,312,311,199,208,214,207,203,205,344,221,228,218,219,229,227,223,225,226,222,224,232,241,233,340,341,236,231,237,239,238,242,252,243,246,248,251,245,244,250,249,254,332,261,260,263,262,333,257,264,258,265,334,253,255,276,279,297,278,277,298,272,299,273,270,275,300,267,271,290,285,294,286,280,291,289,288,283,301,281,302,284,282";
 function getOtherLocationsInfo(){
   $("#constiDistMainDiv").attr("disabled","disabled");
  if(selectedLocation == "district"){
@@ -1042,7 +1070,13 @@ function generateExcel(reqId){
 <script>
 getIvrBasicCount();
 getDateWiseIVRCount();
-getDistrictConstiWisePerformance("district","");
+if(isDistrictRequired){
+  getDistrictConstiWisePerformance("district","");
+}else{
+  $("#constiDistMainOutDiv").hide();
+  $("#districtConstituencyHeading").html("Constituency Wise Card Not Received Response");
+  getDistrictConstiWisePerformance("constituency",apIds+","+tgIds);
+}
 getLocationWisePerformance(232,"All");
 </script>
 
