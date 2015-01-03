@@ -2458,7 +2458,9 @@
 	
 	<bean name="commonUtilsService"  class="com.itgrids.partyanalyst.utils.CommonUtilsService">
 		<property name="dynamicKeysDAO" ref="dynamicKeysDAO"/>
+		<property name="tdpCadreDAO" ref="tdpCadreDAO"/>
 	
 	</bean>
+	
 </beans>		
 	
