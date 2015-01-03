@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.webservice;
 
 import java.util.List;
 
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CastVO;
@@ -25,7 +27,10 @@ import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
+import com.itgrids.partyanalyst.utils.CommonUtilsService;
+
 import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
+import com.opensymphony.xwork2.Action;
 
 @Component
 @Path("/")
@@ -38,7 +43,26 @@ public class WebServiceHandler {
 	private WSResultVO wSResult;
 	private final static Logger LOG = Logger.getLogger(WebServiceHandler.class);
 	private List<CasteDetailsVO> casteDetailsVO;
+	private CadreAddressVO cadreAddressVO;
+	@Autowired
+	private CommonUtilsService commonUtilsService;
 	
+
+	public CommonUtilsService getCommonUtilsService() {
+		return commonUtilsService;
+	}
+
+	public void setCommonUtilsService(CommonUtilsService commonUtilsService) {
+		this.commonUtilsService = commonUtilsService;
+	}
+
+	public CadreAddressVO getCadreAddressVO() {
+		return cadreAddressVO;
+	}
+
+	public void setCadreAddressVO(CadreAddressVO cadreAddressVO) {
+		this.cadreAddressVO = cadreAddressVO;
+	}
 
 	public List<CasteDetailsVO> getCasteDetailsVO() {
 		return casteDetailsVO;
@@ -795,5 +819,61 @@ public class WebServiceHandler {
 			return "Fail";
 		}
 	}
+	
+	@GET
+	@Path("/validateMembership/{memberShipNo}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Boolean checkMembershipExists(@PathParam("memberShipNo") String memberShipNo){
+		
+		try{
+			
+			return commonUtilsService.checkValidMember(memberShipNo);
+			
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in checkMembershipExists() Method, Exception is ",e);
+			return false;
+		}
+	}
+	
+	@GET
+	@Path("/getMobileNo/{memberShipNo}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object getMobileNoByMemberShip(@PathParam("memberShipNo")  String memberShipNo){
+		
+		try{
+			Object object = null;
+			object = webServiceHandlerService.getMobileNoByMemberShip(memberShipNo);
+			return object;
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getMobileNoByMemberShip() Method, Exception is ",e);
+			return "false";
+		}
+	}
+	
+	@GET
+	@Path("/getMemberData/{memberShipNo}/{address}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public CadreAddressVO getMemberDataByMemberShip(@PathParam("memberShipNo") String memberShipNo,@PathParam("address") String address){
+		
+		try{
+			
+			cadreAddressVO = webServiceHandlerService.getMemberDataByMemberShip(memberShipNo,address);
+		
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getMobileNoByMemberShip() Method, Exception is ",e);
+			e.printStackTrace();
+		}
+		return cadreAddressVO;
+	}
+
 
 }
