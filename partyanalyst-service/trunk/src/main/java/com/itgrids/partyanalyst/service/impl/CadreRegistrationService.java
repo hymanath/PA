@@ -6699,9 +6699,6 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			date = originalFormat.parse(dateStr);
 		} catch (Exception e) {
 			LOG.error("Exception raised in convertToDateFormet method in CadreRegistrationAction Action",e);
-			
-			
-			SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		}
 		return date;
 		
