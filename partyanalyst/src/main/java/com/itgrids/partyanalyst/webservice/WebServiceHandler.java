@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
+import com.itgrids.partyanalyst.dto.CadreTravelsVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
@@ -875,5 +876,37 @@ public class WebServiceHandler {
 		return cadreAddressVO;
 	}
 
-
+	@POST
+	@Path("/updateCadreTravelDiscountDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object updateCadreTravelDiscountDetails(CadreTravelsVO inputVO)
+	{		
+		try{
+			Object object = null;
+			object = webServiceHandlerService.updateCadreTravelDiscountDetails(inputVO);
+			return object;
+		}
+		catch(Exception e){
+			LOG.error("Exception Occured in requestForAuthorisationForAccessKey() Method, Exception is ",e);
+			return "Fail";
+		}
+	}
+	
+	@POST
+	@Path("/cancellationOfTicketDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object cancellationOfTicketDetails(CadreTravelsVO inputVO)
+	{		
+		try{
+			Object object = null;
+			object = webServiceHandlerService.cancellationOfTicketDetails(inputVO);
+			return object;
+		}
+		catch(Exception e){
+			LOG.error("Exception Occured in requestForAuthorisationForAccessKey() Method, Exception is ",e);
+			return "Fail";
+		}
+	}
 }
