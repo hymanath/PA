@@ -3625,34 +3625,36 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		
 		public Long checkMemberExists(String memberShipNo)
 		{
-			Query query = getSession().createQuery("select model.tdpCadreId from TdpCadre model where model.memberShipNo = :memberShipNo and model.isDeleted = 'N'");
+			Query query = getSession().createQuery("select distinct model.tdpCadreId from TdpCadre model where model.memberShipNo = :memberShipNo and model.isDeleted = 'N' order by model.tdpCadreId desc ");
 			query.setParameter("memberShipNo", memberShipNo);
+			query.setMaxResults(1);
 			return (Long) query.uniqueResult();
 		}
 		public String getMobileNoByMemberShipNo(String memberShipNo)
 		{
-			Query query = getSession().createQuery("select model.mobileNo from TdpCadre model where model.memberShipNo = :memberShipNo and model.isDeleted = 'N' ");
+			Query query = getSession().createQuery("select distinct model.mobileNo from TdpCadre model where model.memberShipNo = :memberShipNo and model.isDeleted = 'N' order by model.tdpCadreId desc ");
 			query.setParameter("memberShipNo", memberShipNo);
+			query.setMaxResults(1);
 			return (String) query.uniqueResult();
 		}
 		public List<Object[]> getMemberDataByMembershipNo(String memberShipNo)
 		{
 		StringBuilder str = new StringBuilder();
-		str.append("select model.firstname,model.mobileNo,model.age,model.gender");
+		str.append("select distinct model.firstname,model.mobileNo,model.age,model.gender");
 		str.append(" from TdpCadre model where model.memberShipNo = :memberShipNo and model.isDeleted = 'N' ");
 		Query query = getSession().createQuery(str.toString());
+		query.setParameter("memberShipNo", memberShipNo);
 		return query.list();
 		}
 		public List<Object[]> getMemberAddressByMembershipNo(String memberShipNo)
 		{
 		StringBuilder str = new StringBuilder();
-		str.append("select model.firstname,model.mobileNo,model.age,model.gender");
+		str.append("select distinct model.firstname,model.mobileNo,model.age,model.gender");
 		str.append(" ,district.districtName");
 		str.append(" ,constituency.name");	
 		str.append(" ,tehsil.tehsilName");
 		str.append(" ,panc.panchayatName");
 		str.append(" ,localElectionBody.name");
-		str.append(" ,localElectionBody.electionType.electionType");
 		str.append(" from TdpCadre model left join model.userAddress.panchayat panc ");
 		str.append(" left join model.userAddress.tehsil tehsil ");
 	    str.append(" left join model.userAddress.constituency constituency ");
@@ -3660,6 +3662,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		str.append(" left join model.userAddress.district district ");
 		str.append(" where model.memberShipNo = :memberShipNo and model.isDeleted = 'N' ");
 		Query query = getSession().createQuery(str.toString());
+		query.setParameter("memberShipNo", memberShipNo);
 		return query.list();
 		}
 }
