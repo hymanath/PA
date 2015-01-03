@@ -1183,25 +1183,29 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			{
 				cadreAddressVO.setName(params[0] != null ? params[0].toString() : "");
 				cadreAddressVO.setMobileNo(params[1] != null ? params[1].toString() : "");
-				cadreAddressVO.setAge(params[2] != null ? (Long)params[2] : 0);
+				cadreAddressVO.setAge(params[2] != null ? (Long)params[2] : null);
 				cadreAddressVO.setGender(params[3] != null ? params[3].toString() : "");
 				if(address.equalsIgnoreCase("true"))
 				{
-					StringBuilder str = new StringBuilder();
-					String district =  params[4] != null ? params[4].toString() +" District" : "";
-					String constituency =  params[5] != null ? params[5].toString() +" Constituency" : "";
-					String tehsil =  params[6] != null ? params[6].toString() +" Mandal" : "";
-					String panchayat =  params[7] != null ? params[7].toString() +" Panchayat": "";
+					
+					String str = "";
+					String district =  params[4] != null ? params[4].toString()  : "";
+					String constituency =  params[5] != null ? params[5].toString() : "";
+					String tehsil =  params[6] != null ? params[6].toString() : "";
+					String panchayat =  params[7] != null ? params[7].toString() : "";
 					String localbody =  params[8] != null ? params[8].toString(): "";
-					String localbodyName = localbody + params[9] != null ? params[9].toString() : "";
-					str.append(district +"<br/>" + constituency +"<br/>");
-					if(!tehsil.isEmpty())
-					str.append(tehsil);
-					else if(!localbodyName.isEmpty())
-					str.append(localbodyName);	
-					if(!panchayat.isEmpty())
-					str.append(panchayat);	
-					cadreAddressVO.setAddress(panchayat.toString());
+					if(!district.isEmpty())
+					str += "District : " + district;
+					if(!constituency.isEmpty())
+		            str += " , Constituency : " +constituency;
+		            if(!tehsil.isEmpty())
+		            str+=" , Mandal : " +tehsil;
+					else if(!localbody.isEmpty())
+		            str+=" , Muncipality : " +localbody;
+		            if(!panchayat.isEmpty())
+		            str+=" , Panchayat : " +panchayat;
+		          
+					cadreAddressVO.setAddress(str.toString());
 				}
 					
 			}
