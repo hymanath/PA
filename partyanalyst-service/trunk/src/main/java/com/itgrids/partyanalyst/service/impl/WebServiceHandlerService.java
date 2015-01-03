@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
+import com.itgrids.partyanalyst.dto.CadreTravelsVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
@@ -1218,6 +1219,14 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		return cadreAddressVO;
 		
 	}
+	public Object updateCadreTravelDiscountDetails(CadreTravelsVO inputVO){
+		String status = cadreRegistrationService.updateCadreTravelDiscountDetails(inputVO);
+		return status;
+	}
 	
+	public Object cancellationOfTicketDetails(CadreTravelsVO inputVO){
+		String status = cadreRegistrationService.cancellationOfTicketDetails(inputVO);
+		return status;
+	}
 }
 
