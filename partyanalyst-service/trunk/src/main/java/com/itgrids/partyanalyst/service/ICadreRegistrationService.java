@@ -7,6 +7,7 @@ import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.CadreTravelsVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.CastVO;
@@ -125,4 +126,8 @@ public interface ICadreRegistrationService {
 	public List<UserDetailsVO> getCadreSurveyUserDetails(List<UserDetailsVO> cadreSurveyUserIds);
 	
 	public boolean checkHasAccess(Long userId);
+	
+	public String updateCadreTravelDiscountDetails(final CadreTravelsVO input);
+	
+	public String cancellationOfTicketDetails(final CadreTravelsVO input);
 }
