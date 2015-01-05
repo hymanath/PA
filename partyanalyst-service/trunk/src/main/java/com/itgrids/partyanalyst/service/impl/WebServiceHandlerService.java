@@ -1162,7 +1162,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		try{
 			if(address.equalsIgnoreCase("true"))
 				list = tdpCadreDAO.getMemberAddressByMembershipNo(memberShipNo);
-			else if(address.equalsIgnoreCase("false"))
+			else if(address.equals(null) || address.equalsIgnoreCase("false") )
 				list = tdpCadreDAO.getMemberDataByMembershipNo(memberShipNo);
 			cadreAddressVO = setMemberData(list,address);
 			
