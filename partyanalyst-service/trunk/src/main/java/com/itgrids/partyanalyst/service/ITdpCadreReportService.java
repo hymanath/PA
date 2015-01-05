@@ -58,4 +58,6 @@ public interface ITdpCadreReportService {
 	 public CadreIVRResponseVO getLocationWisePercInfo(String locationType,List<Long> locationIds,Date startDate,Date endDate,String accessType,Long accessValue);
 	 public CadreIVRResponseVO  getLocationWisePercInfoErrorInfo(String locationType,Long constituencyId,Date startDate,Date endDate,String accessType,Long accessValue);
 	 public String  saveEnquiryInfo(CadreIVRResponseVO status);
+	 
+	 public CadreIVRResponseVO getLocationWiseEnquiryInfo(String locationLvl,Long locationValue,Long userId);
 }

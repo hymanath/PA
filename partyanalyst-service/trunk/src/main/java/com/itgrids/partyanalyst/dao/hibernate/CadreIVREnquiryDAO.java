@@ -14,6 +14,7 @@ public class CadreIVREnquiryDAO  extends GenericDaoHibernate<CadreIVREnquiry, Lo
 		super(CadreIVREnquiry.class);
 	}
 	public List<Object[]> getLocationWiseEnquiryInfo(String locationLvl,Long locationValue,Long userId){
+		//0 locationTypeId,1locationValue,2details,3mobile,4received,5delivered,6 insertedDate,7callStatus
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("select model.locationTypeId,model.locationValue,model.details,model.mobile,model.received,model.delivered,model.insertedDate," +
 				" model.callStatus from CadreIVREnquiry model where model.isDeleted ='N' and ");

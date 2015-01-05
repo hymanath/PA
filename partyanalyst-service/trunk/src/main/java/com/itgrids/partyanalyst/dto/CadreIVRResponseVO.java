@@ -31,6 +31,7 @@ public class CadreIVRResponseVO {
 	private Long wrongOptionSelPerc;
 	private Long noOptionSel;
 	private Long noOptionSelPerc;
+	private String date;
 	
 	public List<CadreIVRResponseVO> getApList() {
 		return apList;
@@ -238,6 +239,14 @@ public class CadreIVRResponseVO {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 	
 	
