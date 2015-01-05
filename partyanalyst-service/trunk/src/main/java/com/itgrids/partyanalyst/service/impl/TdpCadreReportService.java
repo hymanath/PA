@@ -4954,9 +4954,9 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         	  	return "error";
           }
           
-          public CadreIVRResponseVO getLocationWiseEnquiryInfo(String locationLvl,Long locationValue){
+          public CadreIVRResponseVO getLocationWiseEnquiryInfo(String locationLvl,Long locationValue,Long userId){
         	  CadreIVRResponseVO returnVo = new CadreIVRResponseVO();
-        	  
+        	  cadreIVREnquiryDAO.getLocationWiseEnquiryInfo(locationLvl, locationValue, userId);
         	  return returnVo;
           }
 }
