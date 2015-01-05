@@ -821,15 +821,15 @@ public class WebServiceHandler {
 		}
 	}
 	
-	@GET
-	@Path("/validateMembership/{memberShipNo}")
+	@POST
+	@Path("/validateMembership")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Boolean checkMembershipExists(@PathParam("memberShipNo") String memberShipNo){
+	public Boolean checkMembershipExists(CadreTravelsVO inputVO){
 		
 		try{
 			
-			return commonUtilsService.checkValidMember(memberShipNo);
+			return commonUtilsService.checkValidMember(inputVO.getMembershipNo());
 			
 		}
 		catch(Exception e)
@@ -839,15 +839,15 @@ public class WebServiceHandler {
 		}
 	}
 	
-	@GET
-	@Path("/getMobileNo/{memberShipNo}")
+	@POST
+	@Path("/getMobileNo}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Object getMobileNoByMemberShip(@PathParam("memberShipNo")  String memberShipNo){
+	public Object getMobileNoByMemberShip(CadreTravelsVO inputVO){
 		
 		try{
 			Object object = null;
-			object = webServiceHandlerService.getMobileNoByMemberShip(memberShipNo);
+			object = webServiceHandlerService.getMobileNoByMemberShip(inputVO.getMembershipNo());
 			return object;
 		}
 		catch(Exception e)
@@ -857,15 +857,15 @@ public class WebServiceHandler {
 		}
 	}
 	
-	@GET
-	@Path("/getMemberData/{memberShipNo}/{address}")
+	@POST
+	@Path("/getMemberData")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public CadreAddressVO getMemberDataByMemberShip(@PathParam("memberShipNo") String memberShipNo,@PathParam("address") String address){
+	public CadreAddressVO getMemberDataByMemberShip(CadreTravelsVO inputVO){
 		
 		try{
 			
-			cadreAddressVO = webServiceHandlerService.getMemberDataByMemberShip(memberShipNo,address);
+			cadreAddressVO = webServiceHandlerService.getMemberDataByMemberShip(inputVO.getMembershipNo(),inputVO.getIsAddress());
 		
 		}
 		catch(Exception e)
