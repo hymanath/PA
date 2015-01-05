@@ -10,9 +10,16 @@ public class CadreTravelsVO {
 	private String ticketCost;				
 	private String	discountPerc;
 	private String dateOfJourney;
+	private String isAddress;
 	
 	
 	
+	public String getIsAddress() {
+		return isAddress;
+	}
+	public void setIsAddress(String isAddress) {
+		this.isAddress = isAddress;
+	}
 	public String getMembershipNo() {
 		return membershipNo;
 	}
