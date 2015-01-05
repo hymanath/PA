@@ -273,4 +273,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getMemberDataByMembershipNo(String memberShipNo);
 	public List<Object[]> getMemberAddressByMembershipNo(String memberShipNo);
 	
+	public String getMembershipNoByTdpCadreId(Long tdpCadreId);
 }
