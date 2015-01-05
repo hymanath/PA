@@ -45,6 +45,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.ICadreIVREnquiryDAO;
 import com.itgrids.partyanalyst.dao.ICadreIvrResponseDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegistrationInfoDAO;
 import com.itgrids.partyanalyst.dao.ICallCenterFeedbackDAO;
@@ -83,6 +84,7 @@ import com.itgrids.partyanalyst.dto.TdpCadreLocationWiseReportVO;
 import com.itgrids.partyanalyst.dto.TdpCadreSmsStatusVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVolunteerVO;
 import com.itgrids.partyanalyst.dto.ZebraPrintDetailsVO;
+import com.itgrids.partyanalyst.model.CadreIVREnquiry;
 import com.itgrids.partyanalyst.model.LocalNameConstant;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.TdpCadreCallCenterFeedback;
@@ -127,7 +129,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	private ITdpCadreVolunteerDateDAO tdpCadreVolunteerDateDAO;
 	private ICadreIvrResponseDAO cadreIvrResponseDAO;
 	private ICadreRegistrationInfoDAO cadreRegistrationInfoDAO ;
-	
+	private ICadreIVREnquiryDAO cadreIVREnquiryDAO;
 	
 	public ICadreRegistrationInfoDAO getCadreRegistrationInfoDAO() {
 		return cadreRegistrationInfoDAO;
@@ -289,6 +291,12 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		this.tdpCadreCallCenterCommentDAO = tdpCadreCallCenterCommentDAO;
 	}
 	
+	public ICadreIVREnquiryDAO getCadreIVREnquiryDAO() {
+		return cadreIVREnquiryDAO;
+	}
+	public void setCadreIVREnquiryDAO(ICadreIVREnquiryDAO cadreIVREnquiryDAO) {
+		this.cadreIVREnquiryDAO = cadreIVREnquiryDAO;
+	}
 	public TdpCadreLocationWiseReportVO generateExcelReportForTdpCadre(List<Long> constituencyIdsList)
 	{
 		TdpCadreLocationWiseReportVO returnVO = new TdpCadreLocationWiseReportVO();
@@ -4907,5 +4915,48 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         		  }
         	  }
         	  
+          }
+          
+          public String  saveEnquiryInfo(CadreIVRResponseVO status){
+        	  try{
+	        	  CadreIVREnquiry cadreIVREnquiry = new CadreIVREnquiry();
+	 
+	        	  cadreIVREnquiry.setUserId(status.getTotalCalls());
+	        	  
+	        	  if(status.getLocationName().equalsIgnoreCase("constituency")){
+	        		  cadreIVREnquiry.setLocationTypeId(1l);
+	        		  cadreIVREnquiry.setLocationValue(status.getId());
+	        	  }else if(status.getLocationName().equalsIgnoreCase("mandal")){
+	        		  if(status.getId().toString().substring(0,1).trim().equalsIgnoreCase("1")){
+	        			  cadreIVREnquiry.setLocationTypeId(5l);
+	            		  cadreIVREnquiry.setLocationValue(new Long(status.getId().toString().substring(1)));
+	        		  }else{
+	        			  cadreIVREnquiry.setLocationTypeId(2l);
+	            		  cadreIVREnquiry.setLocationValue(new Long(status.getId().toString().substring(1)));
+	        		  }
+	        	  }else if(status.getLocationName().equalsIgnoreCase("ward")){
+	        		  cadreIVREnquiry.setLocationTypeId(6l);
+	        		  cadreIVREnquiry.setLocationValue(status.getId());
+	        	  }
+	        	  cadreIVREnquiry.setDetails(status.getName());
+	        	  cadreIVREnquiry.setMobile(status.getJobCode());
+	        	  cadreIVREnquiry.setReceived(status.getReceived());
+	        	  cadreIVREnquiry.setDelivered(status.getNotReceived());
+	        	  cadreIVREnquiry.setInsertedDate(dateUtilService.getCurrentDateAndTime());
+	        	  cadreIVREnquiry.setCallStatus(status.getAreaName());
+	        	  cadreIVREnquiry.setIsDeleted("N");
+	        	  cadreIVREnquiry.setConstituencyId(status.getRegisteredCount());
+	        	  cadreIVREnquiryDAO.save(cadreIVREnquiry);
+	        	  return "success";
+        	  }catch(Exception e){
+        		  LOG.error("Exception rised in saveEnquiryInfo ",e);
+        	  }
+        	  	return "error";
+          }
+          
+          public CadreIVRResponseVO getLocationWiseEnquiryInfo(String locationLvl,Long locationValue){
+        	  CadreIVRResponseVO returnVo = new CadreIVRResponseVO();
+        	  
+        	  return returnVo;
           }
 }
