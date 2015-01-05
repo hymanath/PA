@@ -807,7 +807,7 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 		
 	}*/
 
-	public void testDetails()
+	/*public void testDetails()
 	{
 		try {
 			List<Long> districtIds = new ArrayList<Long>();
@@ -826,5 +826,10 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 			e.printStackTrace();
 		}
 	
+	}*/
+	
+	public void testGetMembershipNoByTdpCadreId()
+	{
+		System.out.println(tdpCadreDAO.getMembershipNoByTdpCadreId(1610965l));
 	}
 }
