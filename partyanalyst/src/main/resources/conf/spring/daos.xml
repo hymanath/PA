@@ -1837,6 +1837,9 @@
 	 <bean id="tdpCadreTravelsDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreTravelsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+		
+	 <bean id="cadreIVREnquiryDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreIVREnquiryDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		
