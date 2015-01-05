@@ -2,9 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -14,8 +12,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +24,6 @@ import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -53,30 +48,28 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ILocalNameConstantDAO;
-import com.itgrids.partyanalyst.dao.ITdpCadreCallCenterFeedbackDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCallCenterCommentDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreCallCenterFeedbackDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreSmsStatusDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTeluguNamesDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreVolunteerConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreVolunteerDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreVolunteerDateDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
-import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IZebraPrintDetailsDAO;
-import com.itgrids.partyanalyst.dao.hibernate.UserDAO;
+import com.itgrids.partyanalyst.dao.hibernate.LocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreIVRResponseVO;
 import com.itgrids.partyanalyst.dto.CadreIVRVO;
-import com.itgrids.partyanalyst.dto.CadreRegAmountUploadVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
-import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
-import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
@@ -87,8 +80,8 @@ import com.itgrids.partyanalyst.dto.ZebraPrintDetailsVO;
 import com.itgrids.partyanalyst.model.CadreIVREnquiry;
 import com.itgrids.partyanalyst.model.LocalNameConstant;
 import com.itgrids.partyanalyst.model.TdpCadre;
-import com.itgrids.partyanalyst.model.TdpCadreCallCenterFeedback;
 import com.itgrids.partyanalyst.model.TdpCadreCallCenterComment;
+import com.itgrids.partyanalyst.model.TdpCadreCallCenterFeedback;
 import com.itgrids.partyanalyst.model.TdpCadreSmsStatus;
 import com.itgrids.partyanalyst.model.TdpCadreVolunteer;
 import com.itgrids.partyanalyst.model.TdpCadreVolunteerConstituency;
@@ -130,6 +123,8 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	private ICadreIvrResponseDAO cadreIvrResponseDAO;
 	private ICadreRegistrationInfoDAO cadreRegistrationInfoDAO ;
 	private ICadreIVREnquiryDAO cadreIVREnquiryDAO;
+	private ITehsilDAO tehsilDAO;
+	private ILocalElectionBodyDAO localElectionBodyDAO;
 	
 	public ICadreRegistrationInfoDAO getCadreRegistrationInfoDAO() {
 		return cadreRegistrationInfoDAO;
@@ -296,6 +291,20 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	}
 	public void setCadreIVREnquiryDAO(ICadreIVREnquiryDAO cadreIVREnquiryDAO) {
 		this.cadreIVREnquiryDAO = cadreIVREnquiryDAO;
+	}
+	
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+	
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
 	}
 	public TdpCadreLocationWiseReportVO generateExcelReportForTdpCadre(List<Long> constituencyIdsList)
 	{
@@ -4956,7 +4965,76 @@ public class TdpCadreReportService implements ITdpCadreReportService{
           
           public CadreIVRResponseVO getLocationWiseEnquiryInfo(String locationLvl,Long locationValue,Long userId){
         	  CadreIVRResponseVO returnVo = new CadreIVRResponseVO();
-        	  cadreIVREnquiryDAO.getLocationWiseEnquiryInfo(locationLvl, locationValue, userId);
+        	  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+        	  List<CadreIVRResponseVO> allResults = new ArrayList<CadreIVRResponseVO>();
+        	  returnVo.setApList(allResults);
+        	  try{
+	        	  CadreIVRResponseVO vo = null;
+	        	  Map<Long,Map<Long,String>> locationNames = new HashMap<Long,Map<Long,String>>();
+	        	//0 locationTypeId,1locationValue,2details,3mobile,4received,5delivered,6 insertedDate,7callStatus
+	        	  List<Object[]> locationInfoList = cadreIVREnquiryDAO.getLocationWiseEnquiryInfo(locationLvl, locationValue, userId);
+	        	  for(Object[] locationInfo:locationInfoList){
+	        		  Map<Long,String> locationDetails = locationNames.get((Long)locationInfo[0]);
+	        		  if(locationDetails == null){
+	        			  locationDetails = new HashMap<Long,String>();
+	        			  locationNames.put((Long)locationInfo[0],locationDetails);
+	        		  }
+	        		  locationDetails.put((Long)locationInfo[1], "");
+	        		   vo = new CadreIVRResponseVO();
+	        		   vo.setTotalIvrCalls((Long)locationInfo[0]);//0 locationTypeId
+	        		   vo.setId((Long)locationInfo[1]);  //1locationValue      		   
+	        		   if(locationInfo[2] != null){
+	        		       vo.setName(locationInfo[2].toString());//2details
+	        		   }else{
+	        			   vo.setName("");
+	        		   }
+	        		   if(locationInfo[3] != null){
+	        		       vo.setJobCode(locationInfo[3].toString());//3mobile
+	        		   }else{
+	        			   vo.setJobCode("");
+	        		   }
+	        		   vo.setReceived((Long)locationInfo[4]);//4received
+	        		   vo.setNotReceived((Long)locationInfo[5]);//5delivered
+	        		   vo.setDate(sdf.format((Date)locationInfo[6]));//6 insertedDate
+	        		   if(locationInfo[7] != null){
+	        		       vo.setAreaName(locationInfo[7].toString());//7callStatus
+	        		   }else{
+	        			   vo.setAreaName("");
+	        		   }
+	        		  
+	        		   allResults.add(vo);
+	        	  }
+	        	  getLocationNames(locationNames);
+	        	  for(CadreIVRResponseVO location:allResults){
+	        		  Map<Long,String> locationDetails = locationNames.get(location.getTotalIvrCalls());
+	        		  if(locationDetails != null){
+	        			  location.setLocationName(locationDetails.get(location.getId()));
+	        		  }
+	        	  }
+        	  }catch(Exception e){
+        		  LOG.error("Exception rised in getLocationWiseEnquiryInfo ",e);
+        	  }
         	  return returnVo;
+          }
+          
+          public void getLocationNames( Map<Long,Map<Long,String>> locationNames){ 
+        	  
+        	  for(Long locationLevelId:locationNames.keySet()){
+        		  List<Object[]> locations = new ArrayList<Object[]>();
+        		  Set<Long> locationIds = locationNames.get(locationLevelId).keySet();
+        		  Map<Long,String> locationMap = locationNames.get(locationLevelId);
+        		  if(locationLevelId.longValue() == 1){
+        			  locations = constituencyDAO.getParliamentConstituencyInfoByConstituencyIds(new ArrayList<Long>(locationIds));
+        		  }else if(locationLevelId.longValue() == 2){
+        			  locations = tehsilDAO.getTehsilNameByTehsilIdsList(new ArrayList<Long>(locationIds));
+        		  }else if(locationLevelId.longValue() == 5){
+        			  locations =localElectionBodyDAO.getLocalElectionBodyNames(new ArrayList<Long>(locationIds));
+        		  }else if(locationLevelId.longValue() == 6){
+        			  locations = constituencyDAO.getParliamentConstituencyInfoByConstituencyIds(new ArrayList<Long>(locationIds));
+        		  }
+        		  for(Object[] location:locations){
+        			  locationMap.put((Long)location[0], location[1].toString());
+        		  }
+        	  }
           }
 }
