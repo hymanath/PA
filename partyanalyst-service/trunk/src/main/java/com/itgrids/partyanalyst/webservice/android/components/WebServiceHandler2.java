@@ -16,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+import com.itgrids.partyanalyst.dto.CadreImageVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreTransactionVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
@@ -629,6 +630,27 @@ public class WebServiceHandler2 {
 		}
 		return obj;
 		
+	}
+	
+	@POST
+	@Path("/sinkImageMissingData")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public CadreImageVO sinkImageMissingData(CadreImageVO cadreImageVO)
+	{
+		CadreImageVO result = new CadreImageVO();
+		try
+		{
+			result = webServiceHandlerService1.sinkImageMissingData(cadreImageVO);
+		} 
+		catch (Exception e) 
+		{
+			result = cadreImageVO;
+			result.setImageStr("");
+			result.setStatus("FAILURE");
+			LOG.error("Exception Occured in sinkImageMissingData() Method, Exception is ",e);
+		}
+		return result;
 	}
 	
 	@POST
