@@ -2438,7 +2438,8 @@
           <property name="cadreIvrResponseDAO" ref="cadreIvrResponseDAO" />
 		  <property name="cadreRegistrationInfoDAO" ref="cadreRegistrationInfoDAO" />
 		  <property name="cadreIVREnquiryDAO" ref="cadreIVREnquiryDAO" />
-          
+		  <property name="tehsilDAO" ref="tehsilDAO" />
+          <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
      </bean>
      
      <bean name="cadreRegistrationForOtherStatesService"  class="com.itgrids.partyanalyst.service.impl.CadreRegistrationForOtherStatesService">
