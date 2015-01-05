@@ -31,7 +31,7 @@ public class CadreIVREnquiryDAO  extends GenericDaoHibernate<CadreIVREnquiry, Lo
 		}else if(locationLvl.equalsIgnoreCase("ward")){
 			 queryStr.append(" model.locationValue =:locationValue and model.locationTypeId ='6'"); 
 		}
-		
+		 queryStr.append(" order by model.locationTypeId,model.insertedDate");
 		Query query = getSession().createQuery(queryStr.toString());
 		if(userId != null){
 			query.setParameter("userId", userId);
