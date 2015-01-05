@@ -3,8 +3,8 @@ package com.itgrids.partyanalyst.webservice.android.abstractservice;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.AppDbDataVO;
+import com.itgrids.partyanalyst.dto.CadreImageVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
-import com.itgrids.partyanalyst.dto.LoginDetailsByTabVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SinkVO;
@@ -56,4 +56,6 @@ public interface IWebServiceHandlerService1 {
 	public String getDynamicValueOfAKey();
 	
 	public boolean checkHasAccess(Long userId);
+	
+	public CadreImageVO sinkImageMissingData(CadreImageVO cadreImageVO);
 }
