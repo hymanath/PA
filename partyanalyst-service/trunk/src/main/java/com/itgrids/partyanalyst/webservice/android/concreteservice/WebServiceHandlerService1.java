@@ -29,13 +29,16 @@ import com.itgrids.partyanalyst.dao.IPingingTypeDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserBoothAssignDAO;
 import com.itgrids.partyanalyst.dao.ITabLogInAuthDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.IUserSurveyBoothsDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterBoothActivitiesDAO;
 import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
+import com.itgrids.partyanalyst.dao.hibernate.TdpCadreDAO;
 import com.itgrids.partyanalyst.dto.AppDbDataVO;
+import com.itgrids.partyanalyst.dto.CadreImageVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
@@ -53,6 +56,7 @@ import com.itgrids.partyanalyst.model.CadreSurveyUser;
 import com.itgrids.partyanalyst.model.CadreSurveyUserAssignDetails;
 import com.itgrids.partyanalyst.model.LoginDetailsByTab;
 import com.itgrids.partyanalyst.model.TabLogInAuth;
+import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
@@ -69,6 +73,7 @@ import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.utils.CommonUtilsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.ImageAndStringConverter;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.BoothVoterVO;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
@@ -120,6 +125,10 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	private IVoterTagDAO voterTagDAO;
 	private IVoterBoothActivitiesDAO voterBoothActivitiesDAO;
 	
+	@Autowired
+	private ITdpCadreDAO tdpCadreDAO;
+	private ImageAndStringConverter imageAndStringConverter = new ImageAndStringConverter();
+	
 	@Autowired private IStrategyModelTargetingService strategyModelTargetingService;
     @Autowired private IUserSurveyBoothsDAO userSurveyBoothsDAO ;
     @Autowired private ISurveyDataDetailsService surveyDataDetailsService;
@@ -162,6 +171,10 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	public void setVoterBoothActivitiesDAO(
 			IVoterBoothActivitiesDAO voterBoothActivitiesDAO) {
 		this.voterBoothActivitiesDAO = voterBoothActivitiesDAO;
+	}
+
+	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
+		this.tdpCadreDAO = tdpCadreDAO;
 	}
 
 	public IVoterTagDAO getVoterTagDAO() {
@@ -1140,6 +1153,39 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 			LOG.error("Exception raised in sinkPendingData  method in WebServiceHandlerService",e);
 		}
     	return returnList;
+    }
+    
+    public CadreImageVO sinkImageMissingData(CadreImageVO cadreImageVO)
+    {
+    	CadreImageVO result = new CadreImageVO();
+    	try{
+    		result.setTdpCadreId(cadreImageVO.getTdpCadreId());
+    		TdpCadre tdpCadre = tdpCadreDAO.get(cadreImageVO.getTdpCadreId());
+    		String membershipId = tdpCadre.getMemberShipNo();
+    		if(membershipId != null && membershipId.length() > 0)
+    		{
+    			String pathSeparator = System.getProperty(IConstants.FILE_SEPARATOR);
+    			boolean flag = imageAndStringConverter.convertBase64StringToImage(cadreImageVO.getImageStr(),
+    					IConstants.STATIC_CONTENT_FOLDER_URL+"images"+pathSeparator+"cadre_images"+pathSeparator+membershipId+".jpg");
+    			if(flag)
+    			{
+    				tdpCadre.setImage(membershipId+".jpg");
+    				tdpCadre.setUpdatedUserId(cadreImageVO.getUserId());
+    				tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+    				tdpCadreDAO.save(tdpCadre);
+    				result.setStatus("SUCCESS");
+    			}
+    			else
+    				result.setStatus("FAILURE");
+    		}
+    		else
+    			result.setStatus("FAILURE");
+    	}catch(Exception e)
+    	{
+    		LOG.error("Exception raised in sinkImageMissingData() method",e);
+    		result.setStatus("FAILURE");
+    	}
+    	return result;
     }
     
     public String getTabUsersLoginKeyDetails(TabRecordsStatusVO inputVo)
