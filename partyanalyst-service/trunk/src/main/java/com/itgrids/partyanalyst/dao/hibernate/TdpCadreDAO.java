@@ -3671,4 +3671,11 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		query.setParameter("memberShipNo", memberShipNo);
 		return query.list();
 		}
+		
+		public String getMembershipNoByTdpCadreId(Long tdpCadreId)
+		{
+			Query query = getSession().createQuery("select model.memberShipNo from TdpCadre model where model.tdpCadreId = :tdpCadreId");
+			query.setParameter("tdpCadreId",tdpCadreId);
+			return (String)query.uniqueResult();
+		}
 }
