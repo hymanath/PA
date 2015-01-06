@@ -60,4 +60,5 @@ public interface ITdpCadreReportService {
 	 public String  saveEnquiryInfo(CadreIVRResponseVO status);
 	 
 	 public CadreIVRResponseVO getLocationWiseEnquiryInfo(String locationLvl,Long locationValue,Long userId);
+	 public List<BasicVO> getAccessLocationValues(String accessType,Long accessValue);
 }
