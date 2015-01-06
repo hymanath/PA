@@ -1129,7 +1129,7 @@ function generateExcel(reqId){
 	{
 		width : 850,
 		height:550,
-		title : "Call Details"
+		title : " Previous Calls Info"
 	});
  if(locationLvl == "tehsil"){
     if(locationValue.charAt(0) =="1"){
@@ -1200,7 +1200,7 @@ function generateExcel(reqId){
 			{
 				width : 850,
 				height:550,
-				title : " Previous Calls Info"
+				title : "Call Details"
 			});
 			var str="<div style='color:red;' id='errorMesDiv'/>";
 			str +="<div style='color:green;' id='successMesDiv'/>";
