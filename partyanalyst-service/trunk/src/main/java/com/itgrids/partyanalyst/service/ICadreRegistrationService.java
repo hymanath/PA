@@ -130,4 +130,5 @@ public interface ICadreRegistrationService {
 	public String updateCadreTravelDiscountDetails(final CadreTravelsVO input);
 	
 	public String cancellationOfTicketDetails(final CadreTravelsVO input);
+	public TdpCadreVO searchTdpCadreDetailsByVoterCardNo(String voterCardNo, String isFamilyVoter);
 }
