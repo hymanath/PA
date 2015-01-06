@@ -4664,14 +4664,27 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 				 if(locationType.equalsIgnoreCase("constituency")){
 				    	for(Long id:locationNames.keySet()){
 				    		if(locationOptionsCountMap.get(id) == null){
-				    			CadreIVRResponseVO vo = new CadreIVRResponseVO();
-				    			vo.setName(locationNames.get(id));
-				    			vo.setId(id);
-				    			vo.setReceived(0l);
-				    			vo.setNotReceived(0l);
-				    			vo.setNotReceivedPerc(0l);
-				    			vo.setNotMember(0l);
-				    			responseVO.getApList().add(vo);
+				    			if(accessLocationIds.size() > 0){
+				    			 if(accessLocationIds.contains(id)){
+					    			CadreIVRResponseVO vo = new CadreIVRResponseVO();
+					    			vo.setName(locationNames.get(id));
+					    			vo.setId(id);
+					    			vo.setReceived(0l);
+					    			vo.setNotReceived(0l);
+					    			vo.setNotReceivedPerc(0l);
+					    			vo.setNotMember(0l);
+					    			responseVO.getApList().add(vo);
+				    			 }
+				    			}else{
+				    				CadreIVRResponseVO vo = new CadreIVRResponseVO();
+					    			vo.setName(locationNames.get(id));
+					    			vo.setId(id);
+					    			vo.setReceived(0l);
+					    			vo.setNotReceived(0l);
+					    			vo.setNotReceivedPerc(0l);
+					    			vo.setNotMember(0l);
+					    			responseVO.getApList().add(vo);
+				    			}
 				    		}
 				    	}
 				    }
