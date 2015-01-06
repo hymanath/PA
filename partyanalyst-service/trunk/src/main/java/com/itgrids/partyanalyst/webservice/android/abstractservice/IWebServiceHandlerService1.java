@@ -58,4 +58,5 @@ public interface IWebServiceHandlerService1 {
 	public boolean checkHasAccess(Long userId);
 	
 	public CadreImageVO sinkImageMissingData(CadreImageVO cadreImageVO);
+	 public TdpCadreVO searchTdpCadreDetailsBySVoterIdCardNo(String voterCardNo, String isFamilyVoter);
 }

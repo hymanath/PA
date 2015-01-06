@@ -710,5 +710,20 @@ public class WebServiceHandler2 {
 			return "{\"status\":\"Failure\"}";
 		}
 	}
-	
+	@GET
+	@Path("/searchTdpCadreDetailsByVoterCardNoForCallCenter/{voterIdCardNo}/{isFamilyVoter}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object searchTdpCadreDetailsByVoterCardNoForCallCenter(@PathParam("voterIdCardNo") String voterIdCardNo,@PathParam("isFamilyVoter") String isFamilyVoter)
+	{
+		try{			
+			return webServiceHandlerService1.searchTdpCadreDetailsBySVoterIdCardNo(voterIdCardNo,isFamilyVoter);
+			
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in searchTdpCadreDetailsByVoterCardNoForCallCenter() Method, Exception is ",e);
+			return "{\"status\":\"Failure\"}";
+		}
+	}
 }

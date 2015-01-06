@@ -1221,5 +1221,22 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
     public boolean checkHasAccess(Long userId){
     	return cadreRegistrationService.checkHasAccess(userId);
     }
+    /**
+     * THIS SERVICE IS USED FOR Search TdpCadreDetails By VoterIDCardNo
+     * @param tdpCadreVO
+     * @return TdpCadreVO
+     */
+   
+    public TdpCadreVO searchTdpCadreDetailsBySVoterIdCardNo(String voterCardNo, String isFamilyVoter)
+    {
+    	TdpCadreVO returnVO = new TdpCadreVO(); // TdpCadreVO
+    	try {
+    		returnVO = cadreRegistrationService.searchTdpCadreDetailsByVoterCardNo(voterCardNo, isFamilyVoter);
+		} catch (Exception e) {
+			LOG.error("Exception raised in searchTdpCadreDetailsBySVoterIdCardNo  method in WebServiceHandlerService",e);
+		}
+    	
+    	return returnVO;
+    }
 }
 
