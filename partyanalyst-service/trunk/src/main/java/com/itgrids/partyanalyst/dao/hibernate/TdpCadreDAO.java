@@ -3678,4 +3678,22 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			query.setParameter("tdpCadreId",tdpCadreId);
 			return (String)query.uniqueResult();
 		}
+		
+		  public List<Object[]> getTdpCadreDetailsByVoterCardNoForCallCenter(String queryString)
+			{
+				StringBuilder queryStr = new StringBuilder();
+				
+				queryStr.append(" select distinct model.tdpCadreId, model.firstname, model.relativename,  ");
+				queryStr.append(" model.gender ,model.memberShipNo, model.refNo , model.mobileNo, model.image, model.cardNumber,model.age,date(model.dateOfBirth), model.userAddress.constituency.name,model.voterId,model.occupationId ");
+				queryStr.append(" from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = 2014 ");
+				queryStr.append(" "+queryString+" ");
+				queryStr.append(" order by model.firstname ");
+				
+				Query query = getSession().createQuery(queryStr.toString());
+				
+				
+				return query.list();
+			}
+		  
+
 }
