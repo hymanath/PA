@@ -99,6 +99,7 @@ public class TdpCadre {
 	private String						nameType;
 	
 	private String						cadreAadherNo;
+	private Voter 						familyVoter;
 	private Long						familyVoterId;
 	private String						previousMembershipYear;
 	private String						dispatchStatus;
@@ -729,6 +730,15 @@ public class TdpCadre {
 		this.isPrintReady = isPrintReady;
 	}
 	
-	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "family_voterId" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Voter getFamilyVoter() {
+		return familyVoter;
+	}
+	public void setFamilyVoter(Voter familyVoter) {
+		this.familyVoter = familyVoter;
+	}
 	
 }
