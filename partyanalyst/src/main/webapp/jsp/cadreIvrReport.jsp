@@ -81,7 +81,8 @@
 </head>
 
 <body>
-	<div class="container ">	
+	<div class="container ">
+    <div id="prevCallDetailsShowOuter" style="display:none;"><div id="prevCallDetailsShowInner"></div></div>	
 	<!-- Title Row -->
 		<div class="row-fluid" id="fadeInDown">
 			<div class="span12 well well-small  border-radius-0 mb-0 ">
@@ -90,7 +91,7 @@
 		</div><!-- Title Row End-->
 		
 		<!-- Filters Row -->
-		<button type="button" value="" style="margin-top: -31px; margin-left: 0px;" class="btn btn-medium btn-success border-radius-0 pull-right" onclick="openPopupWindow();">Click to view Previous Calls Info</button>
+		<div><button type="button" value="" style="margin-top: -31px; margin-left: 0px;" class="btn btn-medium btn-success border-radius-0 pull-right" onclick="openPopupWindow();">Click to view Previous Calls Info</button></div>
 		<div id="fadeInDown" class="row-fluid">
 		
 			<div class="span12 well well-small  border-radius-0 mb-10 ">
@@ -158,7 +159,7 @@
 			<!----- /Total In AP & TS ----->
 			
 		</div>	
-		<div id="prevCallDetailsShowOuter" style="display:none;"><div id="prevCallDetailsShowInner"></div></div>
+		
 		<div class="row-fluid m_top10">
 			<div class="span12 well well-small border-radius-0 mb-0 ">
 				<h4 class="m-0" style=" display: inline;"><span id="districtConstituencyHeading">District Wise Card Not Received Response</span></h4> 			
