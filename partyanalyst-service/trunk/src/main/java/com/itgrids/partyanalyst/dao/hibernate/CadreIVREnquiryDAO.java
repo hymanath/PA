@@ -19,7 +19,7 @@ public class CadreIVREnquiryDAO  extends GenericDaoHibernate<CadreIVREnquiry, Lo
 		queryStr.append("select model.locationTypeId,model.locationValue,model.details,model.mobile,model.received,model.delivered,model.insertedDate," +
 				" model.callStatus from CadreIVREnquiry model where model.isDeleted ='N'  ");
 		if(userId != null){
-			queryStr.append(" and model.userId =:userId and ");
+			queryStr.append(" and model.userId =:userId  ");
 		}
 		if(locationLvl.equalsIgnoreCase("all")){
 		   queryStr.append(" and model.constituencyId =:locationValue");
