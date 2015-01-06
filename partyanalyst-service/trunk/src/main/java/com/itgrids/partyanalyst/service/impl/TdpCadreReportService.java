@@ -4659,7 +4659,22 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 				    calculateNotReceivedPercentages(responseVO);
 				 
 				    Collections.sort(responseVO.getApList(), sort);
+				    
 				 }
+				 if(locationType.equalsIgnoreCase("constituency")){
+				    	for(Long id:locationNames.keySet()){
+				    		if(locationOptionsCountMap.get(id) == null){
+				    			CadreIVRResponseVO vo = new CadreIVRResponseVO();
+				    			vo.setName(locationNames.get(id));
+				    			vo.setId(id);
+				    			vo.setReceived(0l);
+				    			vo.setNotReceived(0l);
+				    			vo.setNotReceivedPerc(0l);
+				    			vo.setNotMember(0l);
+				    			responseVO.getApList().add(vo);
+				    		}
+				    	}
+				    }
 				 return responseVO;
 			 }
 			 
@@ -4760,6 +4775,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         			  response.setWrongOptionSelPerc(0l);
         			  response.setNoOptionSel(0l);
         			  response.setNoOptionSelPerc(0l);
+        			  response.setId((Long)registeredCount[0]);
         			  responseMap.put((Long)registeredCount[0],response);
         		  }
         		  response.setRegisteredCount((Long)registeredCount[1]);
@@ -4878,6 +4894,9 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         		  if(localBodyIds.size() > 0){
         			  CadreIVRResponseVO localBodyVO =  getLocationWiseIVRDetailedInfo(localBodyNames,"localBody",startDate,endDate,constituencyId);
 	        		  if(localBodyVO != null && localBodyVO.getApList() != null ){
+	        			  for(CadreIVRResponseVO info:localBodyVO.getApList()){
+	        				  info.setId(Long.valueOf("1"+info.getId()));
+	        			  }
 	        		      infoList.addAll(localBodyVO.getApList());
 	        		  }
         		  }
@@ -4888,6 +4907,9 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         		  if(locationNames.size() > 0){
         			  CadreIVRResponseVO mandalVO =  getLocationWiseIVRDetailedInfo(locationNames,"mandal",startDate,endDate,constituencyId);
 	        		  if(mandalVO != null && mandalVO.getApList() != null ){
+	        			  for(CadreIVRResponseVO info:mandalVO.getApList()){
+	        				  info.setId(Long.valueOf("2"+info.getId()));
+	        			  }
 	        		      infoList.addAll(mandalVO.getApList());
 	        		  }
         		  }
@@ -4963,7 +4985,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         	  	return "error";
           }
           
-          public CadreIVRResponseVO getLocationWiseEnquiryInfo(String locationLvl,Long locationValue,Long userId){
+          public CadreIVRResponseVO getLocationWiseEnquiryInfo(String locationLvl,Long locationValue,Long userId,String resultType){
         	  CadreIVRResponseVO returnVo = new CadreIVRResponseVO();
         	  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
         	  List<CadreIVRResponseVO> allResults = new ArrayList<CadreIVRResponseVO>();
@@ -4972,7 +4994,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	        	  CadreIVRResponseVO vo = null;
 	        	  Map<Long,Map<Long,String>> locationNames = new HashMap<Long,Map<Long,String>>();
 	        	//0 locationTypeId,1locationValue,2details,3mobile,4received,5delivered,6 insertedDate,7callStatus
-	        	  List<Object[]> locationInfoList = cadreIVREnquiryDAO.getLocationWiseEnquiryInfo(locationLvl, locationValue, userId);
+	        	  List<Object[]> locationInfoList = cadreIVREnquiryDAO.getLocationWiseEnquiryInfo(locationLvl, locationValue, userId,resultType);
 	        	  for(Object[] locationInfo:locationInfoList){
 	        		  Map<Long,String> locationDetails = locationNames.get((Long)locationInfo[0]);
 	        		  if(locationDetails == null){
@@ -5025,16 +5047,26 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         		  Map<Long,String> locationMap = locationNames.get(locationLevelId);
         		  if(locationLevelId.longValue() == 1){
         			  locations = constituencyDAO.getParliamentConstituencyInfoByConstituencyIds(new ArrayList<Long>(locationIds));
+        			  for(Object[] location:locations){
+            			  locationMap.put((Long)location[0], location[1].toString()+" Assembly");
+            		  }
         		  }else if(locationLevelId.longValue() == 2){
         			  locations = tehsilDAO.getTehsilNameByTehsilIdsList(new ArrayList<Long>(locationIds));
+        			  for(Object[] location:locations){
+            			  locationMap.put((Long)location[0], location[1].toString()+" Mandal");
+            		  }
         		  }else if(locationLevelId.longValue() == 5){
         			  locations =localElectionBodyDAO.getLocalElectionBodyNames(new ArrayList<Long>(locationIds));
+        			  for(Object[] location:locations){
+            			  locationMap.put((Long)location[0], location[1].toString());
+            		  }
         		  }else if(locationLevelId.longValue() == 6){
         			  locations = constituencyDAO.getParliamentConstituencyInfoByConstituencyIds(new ArrayList<Long>(locationIds));
+        			  for(Object[] location:locations){
+            			  locationMap.put((Long)location[0], location[1].toString());
+            		  }
         		  }
-        		  for(Object[] location:locations){
-        			  locationMap.put((Long)location[0], location[1].toString());
-        		  }
+        		  
         	  }
           }
           
