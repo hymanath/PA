@@ -789,4 +789,49 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String cadreIvrEnquiryExecute()
+	{
+		return Action.SUCCESS;
+	}
+	public String getUserAccessConstituencies()
+	{
+		try{
+			Long userId = null;
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO==null){
+				return "input";
+			}
+			userId = regVO.getRegistrationID();
+			
+			resultList = tdpCadreReportService.getAccessLocationValues(regVO.getAccessType(),new Long(regVO.getAccessValue()));
+		}
+		catch(Exception e)
+		{
+			LOG.info("Entered into getCadreIvrEnquiryInfo()",e);	
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getCadreIvrEnquiryInfo()
+	{
+		try{
+			Long userId = null;
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO==null){
+				return "input";
+			}
+			userId = regVO.getRegistrationID();
+			if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+				userId = null;
+			}
+			jobj = new JSONObject(getTask());
+			cadreIVRResponseVO = tdpCadreReportService.getLocationWiseEnquiryInfo(jobj.getString("locationLvl"),jobj.getLong("locationValue"),userId);	
+		}
+		catch(Exception e)
+		{
+			LOG.info("Entered into getCadreIvrEnquiryInfo()",e);	
+		}
+		return Action.SUCCESS;
+	}
 }
