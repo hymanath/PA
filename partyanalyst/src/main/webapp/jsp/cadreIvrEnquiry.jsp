@@ -54,8 +54,8 @@
 		<select id="selLctnType">	
 		<option value="0">all</option>		
 		<option value="1">constituency</option>	
-		<option value="2">tehsil</option>	
-		<option value="6">ward</option>
+		<option value="2">tehsil/municipality</option>	
+		
 		</select>
 		</td>
 		</tr>
