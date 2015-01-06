@@ -74,6 +74,9 @@
 	.table-condensed th, .table-condensed td {
     padding: 4px 5px;
 }
+.mandatory {
+    color: #ff0000;
+}
 	</style>
 </head>
 
@@ -87,7 +90,7 @@
 		</div><!-- Title Row End-->
 		
 		<!-- Filters Row -->
-		<button type="button" value="" style="margin-top: -31px; margin-left: 0px;" class="btn btn-medium btn-success border-radius-0 pull-right" onclick="openPopupWindow();">Click to view IVR Enquiry</button>
+		<button type="button" value="" style="margin-top: -31px; margin-left: 0px;" class="btn btn-medium btn-success border-radius-0 pull-right" onclick="openPopupWindow();">Click to view Previous Calls Info</button>
 		<div id="fadeInDown" class="row-fluid">
 		
 			<div class="span12 well well-small  border-radius-0 mb-10 ">
@@ -155,7 +158,7 @@
 			<!----- /Total In AP & TS ----->
 			
 		</div>	
-		
+		<div id="prevCallDetailsShowOuter" style="display:none;"><div id="prevCallDetailsShowInner"></div></div>
 		<div class="row-fluid m_top10">
 			<div class="span12 well well-small border-radius-0 mb-0 ">
 				<h4 class="m-0" style=" display: inline;"><span id="districtConstituencyHeading">District Wise Card Not Received Response</span></h4> 			
@@ -996,7 +999,13 @@ function getLocationWisePerformance(constituencyId,locationType,name){
 				str+='	<tbody>';
 				for(var i in result.apList){
 				  str+='<tr>';
-				  str+='  <td>'+result.apList[i].name+'</td>';
+				  if(locationType =="All" || locationType =="AP" || locationType =="TS"){
+				    str+='  <td><a href="javascript:{}" title="Click Here To View Previous Calls Info" onclick="getEnquiryInfo(\'constituency\',\''+result.apList[i].id+'\')">'+result.apList[i].name+'</a><span style="cursor:pointer;" title="Click Here To Add Call Details" onclick="openSaveEnquiryInfo(\'constituency\','+result.apList[i].id+','+result.apList[i].id+')"><i class="icon-list-alt"></i></span></td>';
+				  }else if(locationType == "mandal"){
+				    str+='  <td><a href="javascript:{}" title="Click Here To View Previous Calls Info" onclick="getEnquiryInfo(\'tehsil\',\''+result.apList[i].id+'\')">'+result.apList[i].name+'</a><span style="cursor:pointer;" title="Click Here To Add Call Details" onclick="openSaveEnquiryInfo(\'mandal\','+result.apList[i].id+','+constituencyId+')"><i class="icon-list-alt"></i></span></td>';
+				  }else{
+				    str+='  <td>'+result.apList[i].name+'</td>';
+				  }
 				  str+='  <td>'+result.apList[i].registeredCount+'</td>';
 				  str+='  <td>'+result.apList[i].printedCount+'</td>';
 				  str+='  <td>'+result.apList[i].jobCode+'</td>';
@@ -1074,6 +1083,178 @@ function generateExcel(reqId){
 	 var urlstr = "cadreIvrEnquiryAction.action";
 	var browser1 = window.open(urlstr,"Ivr Details","scrollbars=yes,height=600,width=1050,left=200,top=200");	
 	browser1.focus();
+ } 
+ function saveEnquiryInfo(locationName,locationId,details,mobile,received,delivered,callStatus,constituencyId){
+      $("#successMesDiv").html("");
+	  $("#errorMesDiv").html("");
+	  
+      var jsObj = {	
+			locationName:locationName,
+			locationId:locationId,
+			details : details,
+			mobile : mobile,
+            received:received,
+            delivered:delivered,
+            callStatus:callStatus,
+            constituencyId:constituencyId
+			 
+		}
+     $.ajax({
+			type : "POST",
+			url : "saveInchargeEnquiryInfo.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+		   $("#ajaxImgStyle").hide();
+		    $("#submitDataForEnquiryInfoId").removeAttr("disabled");
+			if(result == "success"){
+				$("#detailsRId").val("");
+				$("#mobileRId").val("");
+				$("#receivedRId").val("");
+				$("#deliveredRId").val("");
+				$("#callStatusRId").val("");
+				$("#successMesDiv").html("Call Details Saved SuccessFully");
+			}else{
+			  if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+			    $("#errorMesDiv").html("Your Session Expired.Please login.");
+			  }else{
+			    $("#errorMesDiv").html("Error Occured.Please try again later.");
+			  }
+			}
+        });
+ }
+ function getEnquiryInfo(locationLvl,locationValue){
+ 
+ $('#prevCallDetailsShowInner').html('<img src="images/Loading-data.gif" style="margin-left: 380px;margin-top: 78px;width:70px;height:60px;">');
+  $('#prevCallDetailsShowOuter').dialog(
+	{
+		width : 850,
+		height:550,
+		title : "Call Details"
+	});
+ if(locationLvl == "tehsil"){
+    if(locationValue.charAt(0) =="1"){
+	  locationLvl = "localElecBody";
+	}
+	locationValue = locationValue.slice(1, locationValue.length);
+ }
+      var jsObj = {	
+			locationLvl:locationLvl,
+			locationValue:locationValue
+		}
+     $.ajax({
+			type : "POST",
+			url : "getInchargeEnquiryInfo.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+		   buildDetailsForLocation(result)
+        });
+ }
+ 
+ function buildDetailsForLocation(result) {
+       if(result.apList != null && result.apList.length >0){
+			var str = '';
+			str += '<table class="table table-bordered m_top20 "  style="width:850px;">';
+			str += '<thead>';
+			str += '<tr>';
+			str += '<th> Location  </th>';
+			str += '<th> Date  </th>';
+			str += '<th> Name  </th>';
+			str += '<th> Mobile  </th>';
+			str += '<th> Received  </th>';
+			str += '<th> Distributed  </th>';
+			str += '<th> Call Status  </th>';
+			str += '</tr>';
+			str += '</thead>';
+
+			str += '<tbody>';
+             var reqRes =result.apList;
+					for ( var i in reqRes) {
+							str += '<tr>';
+							str += '  <td>' +reqRes[i].locationName+ '</td>';
+							str += '  <td>' +reqRes[i].date+ '</td>';
+							str += '  <td>'+ reqRes[i].name+ '</td>';
+							str += '  <td>'+ reqRes[i].jobCode+ '</td>';
+							if(reqRes[i].received != null){
+							   str += '  <td>' +reqRes[i].received+ '</td>';
+							}else{
+							  str += '  <td></td>';
+							}
+							if(reqRes[i].notReceived != null){
+							  str += '  <td>' +reqRes[i].notReceived+ '</td>';
+							 }else{
+							  str += '  <td></td>';
+							}
+							str += '  <td>' +reqRes[i].areaName+ '</td>';
+							str += '</tr>';
+					}
+			str += '</tbody>';
+			str += '</table>';
+
+			   $('#prevCallDetailsShowInner').html(str);
+		}else{
+              $('#prevCallDetailsShowInner').html('<div style="font-weight:bold;padding:20px;margin-left:375px;">No Data Available</div>');
+        }		
+}
+ function openSaveEnquiryInfo(locationType,locationId,constituencyId){
+         $('#prevCallDetailsShowOuter').dialog(
+			{
+				width : 850,
+				height:550,
+				title : " Previous Calls Info"
+			});
+			var str="<div style='color:red;' id='errorMesDiv'/>";
+			str +="<div style='color:green;' id='successMesDiv'/>";
+			str += '<table class="table table-bordered m_top20 "  style="width:850px;">';
+			str += '<tr><th> Name/Designation<span class="mandatory">*</span> </th><td><input type="text" id="detailsRId"></td></tr>';
+			str += '<tr><th> Mobile<span class="mandatory">*</span>  </th><td><input type="text" id="mobileRId"></td></tr>';
+			str += '<tr><th> Cards Received Count<span class="mandatory">*</span> </th><td><input type="text" id="receivedRId"></td></tr>';
+			str += '<tr><th> Cards Delivered Count<span class="mandatory">*</span>  </th><td><input type="text" id="deliveredRId"></td></tr>';
+			str += '<tr><th> Call Status  </th><td><input type="text" id="callStatusRId"></td></tr>';
+			str += '<tr><th>   </th><td><input type="button" id="submitDataForEnquiryInfoId" class="btn btn-success" onclick="submitDataForEnquiryInfo(\''+locationType+'\','+locationId+','+constituencyId+');" value="Submit"/><img id="ajaxImgStyle" style="display:none;margin-left: 10px;" src="images/icons/search.gif"/></td></tr>';
+			str += '</table>';
+			
+    $('#prevCallDetailsShowInner').html(str);
+ }
+ function submitDataForEnquiryInfo(locationType,locationId,constituencyId){
+  $("#errorMesDiv").html("");
+  $("#successMesDiv").html("");
+  var isError = false;
+  var details = $.trim($("#detailsRId").val());
+  var mobile = $.trim($("#mobileRId").val());
+  var received = $.trim($("#receivedRId").val());
+  var delivered = $.trim($("#deliveredRId").val());
+  var rStr="";
+  if(details.length == 0){
+    isError = true;
+	rStr+="<div>Name/Designation is required.</div>";
+  }
+  if(mobile.length == 0){
+    isError = true;
+	rStr+="<div>Mobile is required.</div>";
+  }
+  if(received.length == 0){
+    isError = true;
+	rStr+="<div>Cards Received Count is required.</div>";
+  }else if(isNaN(received)){
+    isError = true;
+	rStr+="<div>Cards Received Count must be number.</div>";
+  }
+  if(delivered.length == 0){
+    isError = true;
+	rStr+="<div>Cards Delivered Count is required.</div>";
+  }else if(isNaN(delivered)){
+    isError = true;
+	rStr+="<div>Cards Delivered Count must be number.</div>";
+  }
+ if(isError){
+    $("#errorMesDiv").html(rStr);
+   return;
+ }
+  
+  $("#submitDataForEnquiryInfoId").attr("disabled","disabled");
+  $("#ajaxImgStyle").show();
+ saveEnquiryInfo(locationType,locationId,details,mobile,received,delivered,$("#callStatusRId").val(),constituencyId);
+ 
  }
 </script>
 <script>
