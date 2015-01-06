@@ -87,7 +87,9 @@
 		</div><!-- Title Row End-->
 		
 		<!-- Filters Row -->
+		<button type="button" value="" style="margin-top: -31px; margin-left: 0px;" class="btn btn-medium btn-success border-radius-0 pull-right" onclick="openPopupWindow();">Click to view IVR Enquiry</button>
 		<div id="fadeInDown" class="row-fluid">
+		
 			<div class="span12 well well-small  border-radius-0 mb-10 ">
 		<c:if test="${sessionScope.USER.accessType == 'STATE'}">		
 		<ul class="inline" style="margin-bottom: 0px;"><li>
@@ -102,6 +104,7 @@
 			<input type="radio" class="radioCls" style="display:none;" name="stateradio" value="All" checked="checked">
 			</c:if>
 				<!-----date picker----->
+				
 				<c:if test="${sessionScope.USER.accessType == 'STATE'}">
 				<div style="background: none repeat scroll 0% 0% rgb(255, 255, 255); cursor: pointer; padding: 5px 10px; border: 1px solid rgb(204, 204, 204); margin-top: -25px;" class="pull-right" id="daterange">
                  </c:if> 
@@ -1065,6 +1068,12 @@ function getSubLocationInfo(id,name){
 }
 function generateExcel(reqId){
      tableToExcel(reqId, 'IVR Status');
+ }
+ function openPopupWindow()
+ {
+	 var urlstr = "cadreIvrEnquiryAction.action";
+	var browser1 = window.open(urlstr,"Ivr Details","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+	browser1.focus();
  }
 </script>
 <script>

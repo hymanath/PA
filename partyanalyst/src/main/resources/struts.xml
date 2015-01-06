@@ -9260,5 +9260,21 @@
 				<param name="root">cadreIVRResponseVO</param>
 			</result>
 		</action>
+			<action name="cadreIvrEnquiryAction" class="tdpCadreReportAction">
+			<result name="success">/jsp/cadreIvrEnquiry.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
+			<result name="input">/jsp/loginForm.jsp</result>
+		</action>
+		<action name="cadreIvrEnquiryInfoAction" class="tdpCadreReportAction" method="getCadreIvrEnquiryInfo">
+			<result type="json" name="success">
+				<param name="root">cadreIVRResponseVO</param>
+			</result>
+		</action>
+		<action name="getUserAccessConstituencyAction" class="tdpCadreReportAction" method="getUserAccessConstituencies">
+			<result type="json" name="success">
+				<param name="root">resultList</param>
+			</result>
+		</action>
+		
 </package>
 </struts>      
