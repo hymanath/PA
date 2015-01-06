@@ -6703,4 +6703,102 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return date;
 		
 	}
+	
+	public TdpCadreVO searchTdpCadreDetailsByVoterCardNo(String voterCardNo, String isFamilyVoter)
+	{
+		TdpCadreVO returnVO = new TdpCadreVO();
+    	try {
+    			StringBuilder queryStr = new StringBuilder();			
+				if(voterCardNo != null && voterCardNo.trim().length()>0  && !voterCardNo.trim().equalsIgnoreCase("0") && !voterCardNo.equalsIgnoreCase("null"))
+				{
+					if(isFamilyVoter.equalsIgnoreCase("true"))
+						queryStr.append(" and (model.familyVoter.voterIDCardNo like '"+voterCardNo.trim()+"') ");
+					else
+						queryStr.append(" and (model.voter.voterIDCardNo like '"+voterCardNo.trim()+"') ");
+							
+				}
+				List<Object[]> cadreList = tdpCadreDAO.getTdpCadreDetailsByVoterCardNoForCallCenter(queryStr.toString());
+				
+				List<TdpCadreVO> returnLsit = new ArrayList<TdpCadreVO>();
+				if(cadreList != null && cadreList.size()>0)
+				{
+					SimpleDateFormat format  = new SimpleDateFormat("yy-MM-dd");
+					for (Object[] cadre : cadreList) 
+					{
+						TdpCadreVO cadreVO = new TdpCadreVO();
+
+						cadreVO.setId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
+						cadreVO.setCadreName(cadre[1] != null ? cadre[1].toString():"");
+						cadreVO.setRelativeName(cadre[2] != null ? cadre[2].toString():"");
+						cadreVO.setGender(cadre[3] != null ? cadre[3].toString():"");
+						cadreVO.setMemberShipNo(cadre[4] != null ? cadre[4].toString():"");
+						cadreVO.setTrNo(cadre[5] != null ? cadre[5].toString():"");
+						cadreVO.setMobileNo(cadre[6] != null ? cadre[6].toString():"");
+						cadreVO.setImageURL(cadre[7] != null ? cadre[7].toString():"");
+						//cadreVO.setVoterCardNo(cadre[8] != null ? cadre[8].toString():"");
+
+						if(cadre[11] != null && cadre[11].toString().trim().length()>0) 
+						{
+							cadreVO.setConstituency(cadre[11] != null ? cadre[11].toString().trim():"");					
+						}
+						
+						if(cadre[12] != null && cadre[12].toString().trim().length()>0) 
+						{
+							Voter voter = voterDAO.get(cadre[12] != null ? Long.valueOf(cadre[12].toString().trim()):0L);
+							if(voter != null)
+							{
+								cadreVO.setAge(voter.getAge());
+								cadreVO.setVoterCardNo(voter.getVoterIDCardNo() != null ? voter.getVoterIDCardNo().toString():"");
+							}						
+						}
+						if(cadre[13] != null && cadre[13].toString().trim().length()>0) 
+						{
+							Occupation occupation = occupationDAO.get(cadre[13] != null ? Long.valueOf(cadre[13].toString().trim()):0L);
+							if(occupation != null)
+							{
+								cadreVO.setOccupation(occupation.getOccupation());
+							}						
+						}
+						
+						if(cadre[9] != null)
+						{
+							cadreVO.setAge(cadre[9] != null ? Long.valueOf(cadre[9].toString().trim()):0L);
+						}
+						else if((cadreVO.getAge() == null || cadreVO.getAge().toString().trim().length()<=0) && cadre[10]  != null)
+						{
+							String dateOfBirth = 	cadre[10] != null ? cadre[10].toString().substring(0,10):" "	;
+							
+							if(dateOfBirth != null && dateOfBirth.trim().length()>0)
+							{
+								Calendar startDate = new GregorianCalendar();
+								Calendar endDate = new GregorianCalendar();
+								
+								startDate.setTime(format.parse(dateOfBirth.trim()));
+								
+								endDate.setTime(new Date());
+
+								int diffYear = endDate.get(Calendar.YEAR) - startDate.get(Calendar.YEAR);
+								
+								cadreVO.setAge(Long.valueOf(String.valueOf(diffYear)));
+							}
+						}
+						
+						returnLsit.add(cadreVO);
+					}
+					
+					returnVO.setResponseStatus("SUCCESS");					
+					returnVO.setTotalCount(Long.valueOf(String.valueOf(returnLsit.size())));
+					returnVO.setTdpCadreDetailsList(returnLsit);
+				}
+				
+				returnVO.setResponseCode("");
+		} catch (Exception e) {
+			LOG.error("Exception raised in searchTdpCadreDetailsBySearchCriteria  method in WebServiceHandlerService",e);
+			returnVO.setResponseStatus("FAILURE");
+			returnVO.setResponseCode("SERVER ISSUE");			
+		}
+    	
+    	return returnVO;
+	}
+	
 }
