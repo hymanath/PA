@@ -136,9 +136,8 @@
         <pattern>/partyDashBoardAction*</pattern>
         <pattern>/cadreEnrollment*</pattern>
         <pattern>/tdpCadreVolunteerAction*</pattern>
-        
-
-	</excludes>  
+        <pattern>/cadreIvrEnquiryAction*</pattern>
+ 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
         <pattern>/*</pattern>
