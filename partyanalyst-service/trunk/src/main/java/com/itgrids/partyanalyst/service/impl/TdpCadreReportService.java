@@ -4911,7 +4911,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
           }
           
           public void getAccessLocationValues(List<Long> accessLocationIds,String accessType,Long accessValue){
-        	  if(accessType.equalsIgnoreCase("MLA")){
+        	 if(accessType.equalsIgnoreCase("MLA")){
         		   accessLocationIds.add(accessValue);
         	  }else if(accessType.equalsIgnoreCase("MP")){
         		  List<Long> parlmentIds = new ArrayList<Long>();
@@ -5037,4 +5037,46 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         		  }
         	  }
           }
+          
+          public List<BasicVO> getAccessLocationValues(String accessType,Long accessValue){
+        	  List<BasicVO> resultList = new ArrayList<BasicVO>();
+        	 
+        	  try{
+        		  List<Long> accessLocationIds = new ArrayList<Long>();
+        		  if(accessType.equalsIgnoreCase("STATE"))
+            		  accessLocationIds = constituencyDAO.getAllAssemblyConstituencyIdsByStateId(1l);
+            	  else if(accessType.equalsIgnoreCase("MLA")){
+            		   accessLocationIds.add(accessValue);
+            	  }else if(accessType.equalsIgnoreCase("MP")){
+            		  List<Long> parlmentIds = new ArrayList<Long>();
+            		  parlmentIds.add(accessValue);
+            		  accessLocationIds.addAll(delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesByParliamentList(parlmentIds));
+            	  }else if(accessType.equalsIgnoreCase("DISTRICT")){
+            		  List<Object[]> assemblies = constituencyDAO.getDistrictConstituencies(accessValue);
+            		  for(Object[] assembly:assemblies){
+            			  accessLocationIds.add((Long)assembly[0]);
+            		  }
+            	  }
+        		  if(accessLocationIds != null && accessLocationIds.size() > 0)
+        		  {
+	        	  List<Object[]> list = constituencyDAO.getConstituencyNameByConstituencyIdsList(accessLocationIds);
+		        	  if(list != null && list.size() > 0)
+		        	  {
+		        		  for(Object[] params : list)
+		        		  {
+		        			  BasicVO vo = new BasicVO();
+		        			  vo.setId((Long)params[0]);
+		        			  vo.setName(params[1].toString());
+		        			  resultList.add(vo);
+		        		  }
+		        	  }
+        		  }
+        	 }
+        	  catch(Exception e)
+        	  {
+        		  e.printStackTrace();
+        	  }
+			return resultList;
+          }
+          
 }
