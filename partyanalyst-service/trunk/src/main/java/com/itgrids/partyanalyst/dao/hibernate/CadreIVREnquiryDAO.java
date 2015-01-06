@@ -13,24 +13,33 @@ public class CadreIVREnquiryDAO  extends GenericDaoHibernate<CadreIVREnquiry, Lo
 	public CadreIVREnquiryDAO() {
 		super(CadreIVREnquiry.class);
 	}
-	public List<Object[]> getLocationWiseEnquiryInfo(String locationLvl,Long locationValue,Long userId){
+	public List<Object[]> getLocationWiseEnquiryInfo(String locationLvl,Long locationValue,Long userId,String resultType){
 		//0 locationTypeId,1locationValue,2details,3mobile,4received,5delivered,6 insertedDate,7callStatus
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("select model.locationTypeId,model.locationValue,model.details,model.mobile,model.received,model.delivered,model.insertedDate," +
-				" model.callStatus from CadreIVREnquiry model where model.isDeleted ='N' and ");
+				" model.callStatus from CadreIVREnquiry model where model.isDeleted ='N'  ");
 		if(userId != null){
-			queryStr.append(" model.userId =:userId and ");
+			queryStr.append(" and model.userId =:userId and ");
 		}
 		if(locationLvl.equalsIgnoreCase("all")){
-		   queryStr.append(" model.constituencyId =:locationValue");
+		   queryStr.append(" and model.constituencyId =:locationValue");
 		}else if(locationLvl.equalsIgnoreCase("constituency")){
-			 queryStr.append(" model.locationValue =:locationValue and model.locationTypeId ='1'");
+			 queryStr.append(" and model.locationTypeId ='1'");
 		}else if(locationLvl.equalsIgnoreCase("tehsil")){
-			 queryStr.append(" model.locationValue =:locationValue and model.locationTypeId ='2'"); 
+			if(resultType.equalsIgnoreCase("complete")){
+				queryStr.append("  and ( model.locationTypeId ='2' or model.locationTypeId ='5' ) "); 
+			}else{
+			 queryStr.append(" and model.locationTypeId ='2'"); 
+			}
 		}else if(locationLvl.equalsIgnoreCase("localElecBody")){
-			 queryStr.append(" model.locationValue =:locationValue and model.locationTypeId ='5'"); 
+			 queryStr.append("  and model.locationTypeId ='5'"); 
 		}else if(locationLvl.equalsIgnoreCase("ward")){
-			 queryStr.append(" model.locationValue =:locationValue and model.locationTypeId ='6'"); 
+			 queryStr.append("  and model.locationTypeId ='6'"); 
+		}
+		if(resultType.equalsIgnoreCase("complete")){
+			queryStr.append(" and model.constituencyId =:locationValue ");
+		}else{
+			queryStr.append(" and model.locationValue =:locationValue ");
 		}
 		 queryStr.append(" order by model.locationTypeId,model.insertedDate");
 		Query query = getSession().createQuery(queryStr.toString());
