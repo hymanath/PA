@@ -9274,7 +9274,16 @@
 			<result type="json" name="success">
 				<param name="root">resultList</param>
 			</result>
+		</action>		
+		<action name="saveInchargeEnquiryInfo" class="tdpCadreReportAction" method="saveEnquiryInfo">
+			<result type="json" name="success">
+				<param name="root">trNo</param>
+			</result>
 		</action>
-		
+		<action name="getInchargeEnquiryInfo" class="tdpCadreReportAction" method="getEnquiryInfo">
+			<result type="json" name="success">
+				<param name="root">cadreIVRResponseVO</param>
+			</result>
+		</action>
 </package>
 </struts>      

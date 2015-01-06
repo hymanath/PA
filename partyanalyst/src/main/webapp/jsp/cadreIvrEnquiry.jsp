@@ -34,7 +34,7 @@
 	<!-- Title Row -->
 		<div class="row-fluid" id="fadeInDown">
 			<div class="span12 well well-small  border-radius-0 mb-0 ">
-				<h3 class="text-center text-uppercase">IVR Enquiry Details</h3>
+				<h3 class="text-center text-uppercase">Previous Calls Details</h3>
 			</div>
 		</div><!-- Title Row End-->
 		<div id="enquiryDiv"  class="offset3">
@@ -55,7 +55,6 @@
 		<option value="0">all</option>		
 		<option value="1">constituency</option>	
 		<option value="2">tehsil</option>	
-		<option value="5">localElecBody</option>
 		<option value="6">ward</option>
 		</select>
 		</td>
@@ -143,8 +142,18 @@ function buildEnquiryData(resultList)
 	 str+='<td>'+result[i].jobCode+'</td>';
 	 str+='<td>'+result[i].name+'</td>';
 	 str+='<td>'+result[i].areaName+'</td>';
-	 str+='<td>'+result[i].received+'</td>';
-	 str+='<td>'+result[i].notReceived+'</td>';
+	 //str+='<td>'+result[i].received+'</td>';
+	// str+='<td>'+result[i].notReceived+'</td>';
+	 if(result[i].received != null){
+		   str += '  <td>' +result[i].received+ '</td>';
+		}else{
+		  str += '  <td></td>';
+		}
+		if(result[i].notReceived != null){
+		  str += '  <td>' +result[i].notReceived+ '</td>';
+		 }else{
+		  str += '  <td></td>';
+		}
 	 str+='</tr>';
 	 }
 	 str+='</tbody>';

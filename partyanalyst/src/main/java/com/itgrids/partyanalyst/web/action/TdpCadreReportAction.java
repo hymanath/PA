@@ -790,6 +790,53 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 		return Action.SUCCESS;
 	}
 	
+	public String saveEnquiryInfo(){
+		try{
+			CadreIVRResponseVO status = new CadreIVRResponseVO();
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			status.setTotalCalls(regVO.getRegistrationID());
+			jobj = new JSONObject(getTask());
+			status.setLocationName(jobj.getString("locationName"));
+			status.setId(jobj.getLong("locationId"));
+			status.setName(jobj.getString("details"));
+			status.setJobCode(jobj.getString("mobile"));
+			try{
+			status.setReceived(jobj.getLong("received"));
+			}catch(Exception e){
+				
+			}
+			try{
+				status.setNotReceived(jobj.getLong("delivered"));
+			}catch(Exception e){
+				
+			}
+			
+			status.setAreaName(jobj.getString("callStatus"));
+			status.setRegisteredCount(jobj.getLong("constituencyId"));  
+			trNo = tdpCadreReportService.saveEnquiryInfo(status);
+		}catch(Exception e)
+		 {
+			 LOG.error("Exception rised in saveEnquiryInfo() ",e);	 
+		 }
+		return Action.SUCCESS;
+	}
+	
+	public String getEnquiryInfo(){
+		try{
+			jobj = new JSONObject(getTask());
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			Long userId = null;
+			if(!(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true"))){
+				userId = regVO.getRegistrationID();
+			}
+			cadreIVRResponseVO = tdpCadreReportService.getLocationWiseEnquiryInfo(jobj.getString("locationLvl"),jobj.getLong("locationValue"), userId,"exact");
+		}catch(Exception e)
+		 {
+			 LOG.error("Exception rised in getEnquiryInfo() ",e);	 
+		 }
+		return Action.SUCCESS;
+	}
+	
 	public String cadreIvrEnquiryExecute()
 	{
 		return Action.SUCCESS;
@@ -826,7 +873,7 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 				userId = null;
 			}
 			jobj = new JSONObject(getTask());
-			cadreIVRResponseVO = tdpCadreReportService.getLocationWiseEnquiryInfo(jobj.getString("locationLvl"),jobj.getLong("locationValue"),userId);	
+			cadreIVRResponseVO = tdpCadreReportService.getLocationWiseEnquiryInfo(jobj.getString("locationLvl"),jobj.getLong("locationValue"),userId,"complete");	
 		}
 		catch(Exception e)
 		{
