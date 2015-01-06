@@ -6337,7 +6337,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				}
 				if(memberShipCardNo != null && memberShipCardNo.trim().length()>0  && !memberShipCardNo.trim().equalsIgnoreCase("0") && !memberShipCardNo.equalsIgnoreCase("null"))
 				{
-					queryStr.append(" and (model.memberShipNo like '"+memberShipCardNo.trim()+"') ");
+					queryStr.append(" and (model.memberShipNo like '%"+memberShipCardNo.trim()+"') ");
 					
 					if(mobileNo != null && mobileNo.trim().length()>0  && !mobileNo.trim().equalsIgnoreCase("0") && !mobileNo.equalsIgnoreCase("null"))
 					{							
