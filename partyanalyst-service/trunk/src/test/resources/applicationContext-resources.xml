@@ -528,6 +528,7 @@
 				<value>com.itgrids.partyanalyst.model.CadreIvrResponse</value>
 				<value>com.itgrids.partyanalyst.model.CadreRegistrationInfo</value>
 				<value>com.itgrids.partyanalyst.model.CadreIVREnquiry</value>
+				<value>com.itgrids.partyanalyst.model.TdpCadreImageSinkData</value>	
 			</list>
 		</property>
 	</bean>
@@ -2744,6 +2745,9 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 <bean id="cadreIVREnquiryDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreIVREnquiryDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	 <bean id="tdpCadreImageSinkDataDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreImageSinkDataDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>
