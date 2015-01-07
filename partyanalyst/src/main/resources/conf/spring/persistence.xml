@@ -535,7 +535,9 @@
 				<value>com.itgrids.partyanalyst.model.CadreRegistrationInfo</value>	
 				<value>com.itgrids.partyanalyst.model.TdpCadreTravels</value>	
 				<value>com.itgrids.partyanalyst.model.TdpCadreTravelInfo</value>					
-				<value>com.itgrids.partyanalyst.model.CadreIVREnquiry</value>				
+				<value>com.itgrids.partyanalyst.model.CadreIVREnquiry</value>	
+				<value>com.itgrids.partyanalyst.model.TdpCadreImageSinkData</value>	
+							
 				</list>
 			
 		</property>
