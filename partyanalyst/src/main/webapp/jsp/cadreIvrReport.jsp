@@ -77,6 +77,9 @@
 .mandatory {
     color: #ff0000;
 }
+textarea {
+    border: 1px solid #ddd !important;
+}
 	</style>
 </head>
 
@@ -1163,7 +1166,7 @@ function generateExcel(reqId){
 			str += '<th> Mobile  </th>';
 			str += '<th> Received  </th>';
 			str += '<th> Distributed  </th>';
-			str += '<th> Call Status  </th>';
+			str += '<th> Comment  </th>';
 			str += '</tr>';
 			str += '</thead>';
 
@@ -1210,7 +1213,7 @@ function generateExcel(reqId){
 			str += '<tr><th> Mobile<span class="mandatory">*</span>  </th><td><input type="text" id="mobileRId"></td></tr>';
 			str += '<tr><th> Cards Received Count<span class="mandatory">*</span> </th><td><input type="text" id="receivedRId"></td></tr>';
 			str += '<tr><th> Cards Delivered Count<span class="mandatory">*</span>  </th><td><input type="text" id="deliveredRId"></td></tr>';
-			str += '<tr><th> Call Status  </th><td><input type="text" id="callStatusRId"></td></tr>';
+			str += '<tr><th> Comment  </th><td><textarea id="callStatusRId"/></td></tr>';
 			str += '<tr><th>   </th><td><input type="button" id="submitDataForEnquiryInfoId" class="btn btn-success" onclick="submitDataForEnquiryInfo(\''+locationType+'\','+locationId+','+constituencyId+');" value="Submit"/><img id="ajaxImgStyle" style="display:none;margin-left: 10px;" src="images/icons/search.gif"/></td></tr>';
 			str += '</table>';
 			
@@ -1232,6 +1235,12 @@ function generateExcel(reqId){
   if(mobile.length == 0){
     isError = true;
 	rStr+="<div>Mobile is required.</div>";
+  }else if(isNaN(mobile)){
+    isError = true;
+	rStr+="<div>Mobile must be number.</div>";
+  }else if(mobile.length != 10){
+    isError = true;
+	rStr+="<div>Mobile must be 10 digits.</div>";
   }
   if(received.length == 0){
     isError = true;
