@@ -1216,8 +1216,10 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
     				tdpCadreImageSinkData.setStatus("SUCCESS");
     			}
     			else
+    			{
     				result.setStatus("FAILURE");
     			tdpCadreImageSinkData.setStatus("FAILURE");
+    			}
     		}
     		else
     			result.setStatus("FAILURE");
@@ -1225,7 +1227,8 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
     	{
     		LOG.error("Exception raised in sinkImageMissingData() method",e);
     		result.setStatus("FAILURE");
-    		tdpCadreImageSinkData.setStatus("FAILURE"+e);
+    		tdpCadreImageSinkData.setStatus("FAILURE");
+    		tdpCadreImageSinkData.setExceptionStatus(e.toString());
     	}
     	tdpCadreImageSinkDataDAO.save(tdpCadreImageSinkData);
     	return result;
