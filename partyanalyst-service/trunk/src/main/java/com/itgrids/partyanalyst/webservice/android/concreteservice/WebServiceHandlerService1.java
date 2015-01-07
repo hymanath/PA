@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserBoothAssignDAO;
 import com.itgrids.partyanalyst.dao.ITabLogInAuthDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreImageSinkDataDAO;
 import com.itgrids.partyanalyst.dao.IUserSurveyBoothsDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
@@ -57,6 +58,7 @@ import com.itgrids.partyanalyst.model.CadreSurveyUserAssignDetails;
 import com.itgrids.partyanalyst.model.LoginDetailsByTab;
 import com.itgrids.partyanalyst.model.TabLogInAuth;
 import com.itgrids.partyanalyst.model.TdpCadre;
+import com.itgrids.partyanalyst.model.TdpCadreImageSinkData;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
@@ -164,6 +166,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	
 	@Autowired CommonUtilsService commonUtilsService;
 	
+	@Autowired ITdpCadreImageSinkDataDAO tdpCadreImageSinkDataDAO;
 	public IVoterBoothActivitiesDAO getVoterBoothActivitiesDAO() {
 		return voterBoothActivitiesDAO;
 	}
@@ -753,7 +756,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 			}
 			
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return returnVO;
 	}
@@ -1154,13 +1157,49 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		}
     	return returnList;
     }
-    
+    public TdpCadreImageSinkData SaveImageSinkData(CadreImageVO cadreImageVO)
+    {
+    	TdpCadreImageSinkData tdpCadreImageSinkData = new TdpCadreImageSinkData() ;
+    try{
+    	
+    	TdpCadre tdpCadre = tdpCadreDAO.get(cadreImageVO.getTdpCadreId());
+		String membershipId = tdpCadre.getMemberShipNo();
+		tdpCadreImageSinkData = new TdpCadreImageSinkData();
+		tdpCadreImageSinkData.setUuid(cadreImageVO.getUuid());
+		if(membershipId != null && membershipId.length() > 0)
+		{
+			String pathSeparator = System.getProperty(IConstants.FILE_SEPARATOR);
+			boolean flag = imageAndStringConverter.convertBase64StringToImage(cadreImageVO.getImageStr(),
+					IConstants.STATIC_CONTENT_FOLDER_URL+"images"+pathSeparator+"cadre_images"+pathSeparator+membershipId+".jpg");
+			if(flag)
+			{
+				tdpCadreImageSinkData.setImageStr(membershipId+".jpg");
+			}
+		}
+		tdpCadreImageSinkData.setImeiNo(cadreImageVO.getImeiNo());
+		tdpCadreImageSinkData.setTdpCadreId(cadreImageVO.getTdpCadreId());
+		tdpCadreImageSinkData.setUserId(cadreImageVO.getUserId());
+		tdpCadreImageSinkData.setStatus("Success");
+		tdpCadreImageSinkData = tdpCadreImageSinkDataDAO.save(tdpCadreImageSinkData);
+		
+		
+    }
+    catch(Exception e)
+    {
+    	
+    }
+
+	return tdpCadreImageSinkData;
+	
+    }
     public CadreImageVO sinkImageMissingData(CadreImageVO cadreImageVO)
     {
     	CadreImageVO result = new CadreImageVO();
+    	TdpCadreImageSinkData tdpCadreImageSinkData = null;
     	try{
-    		result.setTdpCadreId(cadreImageVO.getTdpCadreId());
+    		tdpCadreImageSinkData = SaveImageSinkData(cadreImageVO);
     		TdpCadre tdpCadre = tdpCadreDAO.get(cadreImageVO.getTdpCadreId());
+    		result.setTdpCadreId(cadreImageVO.getTdpCadreId());
     		String membershipId = tdpCadre.getMemberShipNo();
     		if(membershipId != null && membershipId.length() > 0)
     		{
@@ -1174,9 +1213,11 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
     				tdpCadre.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
     				tdpCadreDAO.save(tdpCadre);
     				result.setStatus("SUCCESS");
+    				tdpCadreImageSinkData.setStatus("SUCCESS");
     			}
     			else
     				result.setStatus("FAILURE");
+    			tdpCadreImageSinkData.setStatus("FAILURE");
     		}
     		else
     			result.setStatus("FAILURE");
@@ -1184,7 +1225,9 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
     	{
     		LOG.error("Exception raised in sinkImageMissingData() method",e);
     		result.setStatus("FAILURE");
+    		tdpCadreImageSinkData.setStatus("FAILURE"+e);
     	}
+    	tdpCadreImageSinkDataDAO.save(tdpCadreImageSinkData);
     	return result;
     }
     
