@@ -21,6 +21,7 @@ private Long tdpCadreId;
 private String status;
 private Long userId;
 private String imeiNo;
+private String exceptionStatus;
 @Id
 @GeneratedValue (strategy = GenerationType.AUTO)
 @Column(name = "tdp_cadre_image_sink_data_id", nullable = false, unique = true)
@@ -71,6 +72,13 @@ public String getImeiNo() {
 }
 public void setImeiNo(String imeiNo) {
 	this.imeiNo = imeiNo;
+}
+@Column(name = "exceptionStatus")
+public String getExceptionStatus() {
+	return exceptionStatus;
+}
+public void setExceptionStatus(String exceptionStatus) {
+	this.exceptionStatus = exceptionStatus;
 }
 
 
