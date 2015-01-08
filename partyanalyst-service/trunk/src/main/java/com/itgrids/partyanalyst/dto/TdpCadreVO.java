@@ -23,11 +23,25 @@ public class TdpCadreVO implements java.io.Serializable
 	private String constituency;
 	private String tehsil;
 	private String panchayat;
+	private String district;
+	private String casteName;
 	private String responseStatus;
 	private String responseCode;
 	
 	private List<TdpCadreVO> tdpCadreDetailsList = new ArrayList<TdpCadreVO>();
 	
+	public String getDistrict() {
+		return district;
+	}
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+	public String getCasteName() {
+		return casteName;
+	}
+	public void setCasteName(String casteName) {
+		this.casteName = casteName;
+	}
 	public String getTehsil() {
 		return tehsil;
 	}
