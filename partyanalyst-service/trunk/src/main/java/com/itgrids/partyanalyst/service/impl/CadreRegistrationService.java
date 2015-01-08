@@ -6602,20 +6602,44 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								TdpCadreTravelInfo tdpCadreTravelInfo  = new TdpCadreTravelInfo();
 								tdpCadreTravelInfo.setCustId(Long.valueOf(input.getCustomerId()));
 								tdpCadreTravelInfo.setMembershipNo(input.getMembershipNo());
-								tdpCadreTravelInfo.setTicketsCount(Long.valueOf(input.getTicketsCount()));
-								tdpCadreTravelInfo.setTicketCost(Double.valueOf(input.getTicketCost()));
-								tdpCadreTravelInfo.setTotalAmount(Double.valueOf(input.getTicketCost()) * tdpCadreTravelInfo.getTicketsCount());
-								tdpCadreTravelInfo.setDiscountPerc(Double.valueOf(input.getDiscountPerc()));
-								tdpCadreTravelInfo.setDiscountAmount((tdpCadreTravelInfo.getTotalAmount() * tdpCadreTravelInfo.getDiscountPerc())/100);
-								tdpCadreTravelInfo.setAmountAfterDiscount(tdpCadreTravelInfo.getTotalAmount() - tdpCadreTravelInfo.getDiscountAmount());
-								tdpCadreTravelInfo.setTdpCadreTravelsId(1L);
-								tdpCadreTravelInfo.setTdpCadreId(tdpCadreDAO.checkMemberExists(input.getMembershipNo()));
-								tdpCadreTravelInfo.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
-								tdpCadreTravelInfo.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
-								tdpCadreTravelInfo.setDateOfJourney(convertToDateFormat(input.getDateOfJourney()));
-								tdpCadreTravelInfo.setIsDeleted("N");
-								tdpCadreTravelInfo = tdpCadreTravelInfoDAO.save(tdpCadreTravelInfo);
-								status1 = "SUCCESS";
+										if(input.getTicketsCount() == null || input.getTicketsCount().isEmpty() || input.getTicketsCount().equals("0"))
+										{
+											status1 = "No of Ticketes Required";
+											return status1; 
+										}
+										if(input.getDateOfJourney() == null || input.getDateOfJourney().isEmpty())
+										{
+											status1 = "Date Of Journey Required";
+											return status1;
+										}
+										
+									    tdpCadreTravelInfo.setTicketsCount(Long.valueOf(input.getTicketsCount()));
+										if(input.getTicketCost() != null && !input.getTicketCost().isEmpty())
+										{
+										tdpCadreTravelInfo.setTicketCost(Double.valueOf(input.getTicketCost()));
+										tdpCadreTravelInfo.setTotalAmount(Double.valueOf(input.getTicketCost()) * tdpCadreTravelInfo.getTicketsCount());
+										}
+										if(input.getDiscountPerc() != null && !input.getDiscountPerc().isEmpty() && !input.getDiscountPerc().equals("0"))
+										{
+											tdpCadreTravelInfo.setDiscountPerc(Double.valueOf(input.getDiscountPerc()));
+											tdpCadreTravelInfo.setDiscountAmount((tdpCadreTravelInfo.getTotalAmount() * tdpCadreTravelInfo.getDiscountPerc())/100);
+										}
+										if(tdpCadreTravelInfo.getDiscountAmount() != 0.0 )
+											tdpCadreTravelInfo.setAmountAfterDiscount(tdpCadreTravelInfo.getTotalAmount() - tdpCadreTravelInfo.getDiscountAmount());
+										else
+											tdpCadreTravelInfo.setAmountAfterDiscount(tdpCadreTravelInfo.getTotalAmount());
+										
+									tdpCadreTravelInfo.setTdpCadreTravelsId(1L);
+									tdpCadreTravelInfo.setTdpCadreId(tdpCadreDAO.checkMemberExists(input.getMembershipNo()));
+									tdpCadreTravelInfo.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+									tdpCadreTravelInfo.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+									
+									tdpCadreTravelInfo.setDateOfJourney(convertToDateFormat(input.getDateOfJourney()));
+									tdpCadreTravelInfo.setIsDeleted("N");
+									tdpCadreTravelInfo = tdpCadreTravelInfoDAO.save(tdpCadreTravelInfo);
+									status1 = "SUCCESS";
+									
+									
 							}
 							else{
 								status1 = "MemberShip Card Number is not Registered for any Cadre...";
