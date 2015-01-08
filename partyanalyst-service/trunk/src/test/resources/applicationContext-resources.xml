@@ -2665,9 +2665,11 @@
 		 <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 		 <property name="voterDAO" ref="voterDAO" />
 		 <property name="tehsilDAO" ref="tehsilDAO" />
-		 <property name="panchayatDAO" ref="panchayatDAO"></property>
+		  <property name="panchayatDAO" ref="panchayatDAO"></property>
+		 <property name="districtDAO" ref="districtDAO" />
+		 <property name="casteStateDAO" ref="casteStateDAO"></property>
 		 <property name="occupationDAO" ref="occupationDAO" />	
-		  <property name="tdpCadreDAO" ref="tdpCadreDAO" />
+		 <property name="tdpCadreDAO" ref="tdpCadreDAO"/>
 	</bean>
 	
   <bean id="smsJobStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsJobStatusDAO" >
