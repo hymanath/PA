@@ -58,7 +58,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 		this.panchayatDAO = panchayatDAO;
 	}
 
-	public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo, String voterCardNo, String trNumber, String mobileNo,String casteStateId,String casteCategory)
+	public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo, String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory)
 	{
 		TdpCadreVO returnVO = new TdpCadreVO();
     	try {
@@ -105,7 +105,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 			{
 				queryStr.append(" and (model.refNo like '%"+trNumber.trim()+"%') ");
 			}
-			if(casteStateId != null && casteStateId.trim().length()>0 && !casteStateId.trim().equalsIgnoreCase("0") && !casteStateId.equalsIgnoreCase("null"))
+			if(casteStateId != null && casteStateId.toString().trim().length()>0 && !casteStateId.toString().trim().equalsIgnoreCase("0") && !casteStateId.toString().equalsIgnoreCase("null"))
 			{
 				queryStr.append(" and  model.casteState.casteStateId = :casteStateId ");
 			}
