@@ -3462,8 +3462,28 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return query.list();
 		}
 	  
-
 	  
+	  public List<Object[]> searchTdpCadreDetailsBySearchCriteriaForCommitte(Long constituencyId,Long casteStateId,String queryString)
+		{
+			StringBuilder queryStr = new StringBuilder();
+			
+			queryStr.append(" select distinct model.tdpCadreId, model.firstname, model.relativename,  ");
+			queryStr.append(" model.gender ,model.memberShipNo, model.refNo , model.mobileNo, model.image, model.cardNumber,model.age,date(model.dateOfBirth), model.userAddress.constituency.name,model.voterId,model.occupationId, ");
+			queryStr.append(" model.userAddress.tehsil.tehsilId , model.userAddress.panchayat.panchayatId,model.userAddress.localElectionBody.localElectionBodyId from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = 2014 ");
+			queryStr.append(" "+queryString+" ");
+			queryStr.append(" order by model.firstname ");
+			
+			Query query = getSession().createQuery(queryStr.toString());
+			if(constituencyId != null && constituencyId != 0L)
+			{
+				query.setParameter("locationValue", constituencyId);
+			}
+			if(casteStateId != null && casteStateId != 0L)
+			{
+				query.setParameter("casteStateId", casteStateId);
+			}
+			return query.list();
+		}
 	  
 	  public List<String> getCardNumbersForOnlineCadre(String query,Long constiId,String mobileNo,String trNo,Date surveyDate){
 			StringBuilder str = new StringBuilder();
