@@ -3469,7 +3469,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			queryStr.append(" select distinct model.tdpCadreId, model.firstname, model.relativename,  ");
 			queryStr.append(" model.gender ,model.memberShipNo, model.refNo , model.mobileNo, model.image, model.cardNumber,model.age,date(model.dateOfBirth), model.userAddress.constituency.name,model.voterId,model.occupationId, ");
-			queryStr.append(" model.userAddress.tehsil.tehsilId , model.userAddress.panchayat.panchayatId,model.userAddress.localElectionBody.localElectionBodyId from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = 2014 ");
+			queryStr.append(" model.userAddress.tehsil.tehsilId , model.userAddress.panchayat.panchayatId,model.userAddress.localElectionBody.localElectionBodyId,model.userAddress.district.districtId,model.casteState.casteStateId from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = 2014 ");
 			queryStr.append(" "+queryString+" ");
 			queryStr.append(" order by model.firstname ");
 			
