@@ -10,6 +10,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.ICasteStateDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
@@ -17,6 +19,8 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
+import com.itgrids.partyanalyst.model.CasteState;
+import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.Panchayat;
@@ -33,7 +37,18 @@ public class CadreDetailsService implements ICadreDetailsService{
 	public ITehsilDAO tehsilDAO;
 	public ILocalElectionBodyDAO localElectionBodyDAO;
 	public IPanchayatDAO panchayatDAO;
+	public ICasteStateDAO casteStateDAO;
+	public IDistrictDAO districtDAO;
 	
+	
+	public void setCasteStateDAO(ICasteStateDAO casteStateDAO) {
+		this.casteStateDAO = casteStateDAO;
+	}
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+
 	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
 		this.tdpCadreDAO = tdpCadreDAO;
 	}
@@ -180,6 +195,22 @@ public class CadreDetailsService implements ICadreDetailsService{
 							if(localElectionBody != null)
 							{
 								cadreVO.setTehsil(localElectionBody.getName()+" "+localElectionBody.getElectionType().getElectionType());
+							}						
+						}
+						if(cadre[17] != null && cadre[17].toString().trim().length()>0) 
+						{
+							District district = districtDAO.get(cadre[17] != null ? Long.valueOf(cadre[17].toString().trim()):0L);
+							if(district != null)
+							{
+								cadreVO.setDistrict(district.getDistrictName());
+							}						
+						}
+						if(cadre[18] != null && cadre[18].toString().trim().length()>0) 
+						{
+							CasteState casteState = casteStateDAO.get(cadre[18] != null ? Long.valueOf(cadre[18].toString().trim()):0L);
+							if(casteState != null)
+							{
+								cadreVO.setCasteName(casteState.getCaste().getCasteName());
 							}						
 						}
 						if(cadre[9] != null)
