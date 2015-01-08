@@ -537,7 +537,7 @@
 				<value>com.itgrids.partyanalyst.model.TdpCadreTravelInfo</value>					
 				<value>com.itgrids.partyanalyst.model.CadreIVREnquiry</value>	
 				<value>com.itgrids.partyanalyst.model.TdpCadreImageSinkData</value>	
-							
+				<value>com.itgrids.partyanalyst.model.TdpCadreHistory</value>			
 				</list>
 			
 		</property>

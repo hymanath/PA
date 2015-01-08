@@ -1844,5 +1844,8 @@
 	 <bean id="tdpCadreImageSinkDataDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreImageSinkDataDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="tdpCadreHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreHistoryDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		

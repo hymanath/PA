@@ -2338,6 +2338,7 @@
 		<property name="commonUtilsService" ref="commonUtilsService" />
 		<property name="cadreRegSyncAccessUsersDAO" ref="cadreRegSyncAccessUsersDAO" />	
 		<property name="tdpCadreTravelInfoDAO" ref="tdpCadreTravelInfoDAO" />		
+		<property name="tdpCadreHistoryDAO" ref="tdpCadreHistoryDAO" />	
      </bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
