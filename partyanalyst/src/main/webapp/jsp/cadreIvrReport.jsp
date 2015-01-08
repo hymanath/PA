@@ -973,31 +973,41 @@ function getLocationWisePerformance(constituencyId,locationType,name){
 				}
 				str+='				<th rowspan="2">Registred Count</th>';
 				str+='				<th rowspan="2">Cards Printed Count</th>';
-				str+="				<th rowspan='2'>Job ID's</th>";
+				<c:if test="${sessionScope.USER.accessType == 'STATE'}">
+				   str+="				<th rowspan='2'>Job ID's</th>";
+				</c:if>
 				str+='				<th rowspan="2">IVR Calls Dailed</th>';
-				str+='				<th colspan="2">Answered Calls</th>';
-				str+='				<th colspan="2">Not Selected Any option</th>';
-				str+='				<th colspan="2">Error Calls</th>';
+				<c:if test="${sessionScope.USER.accessType == 'STATE'}">
+					str+='				<th colspan="2">Answered Calls</th>';
+					str+='				<th colspan="2">Not Selected Any option</th>';
+					str+='				<th colspan="2">Error Calls</th>';
+				</c:if>
 				str+='				<th colspan="2">Card Received</th>';
 				str+='				<th colspan="2">Card Not Received</th>';
 				str+='				<th colspan="2">Member NOT Registered</th>';
-				str+='				<th colspan="2">Wrong option Selected</th>';
+				<c:if test="${sessionScope.USER.accessType == 'STATE'}">
+					str+='				<th colspan="2">Wrong option Selected</th>';
+				</c:if>
 				str+='		</tr>';
 				str+='	    <tr class="well">';
+				<c:if test="${sessionScope.USER.accessType == 'STATE'}">
+					str+='				<th>Count</th>';
+					str+='				<th>%</th>';
+					str+='				<th>Count</th>';
+					str+='				<th>%</th>';
+					str+='				<th>Count</th>';
+					str+='				<th>%</th>';
+				</c:if>
 				str+='				<th>Count</th>';
 				str+='				<th>%</th>';
 				str+='				<th>Count</th>';
 				str+='				<th>%</th>';
 				str+='				<th>Count</th>';
 				str+='				<th>%</th>';
-				str+='				<th>Count</th>';
-				str+='				<th>%</th>';
-				str+='				<th>Count</th>';
-				str+='				<th>%</th>';
-				str+='				<th>Count</th>';
-				str+='				<th>%</th>';
-				str+='				<th>Count</th>';
-				str+='				<th>%</th>';
+				<c:if test="${sessionScope.USER.accessType == 'STATE'}">
+					str+='				<th>Count</th>';
+					str+='				<th>%</th>';
+				</c:if>
 				str+='		</tr>';
 				str+='	</thead>';
 				str+='	<tbody>';
@@ -1012,22 +1022,28 @@ function getLocationWisePerformance(constituencyId,locationType,name){
 				  }
 				  str+='  <td>'+result.apList[i].registeredCount+'</td>';
 				  str+='  <td>'+result.apList[i].printedCount+'</td>';
-				  str+='  <td>'+result.apList[i].jobCode+'</td>';
+				  <c:if test="${sessionScope.USER.accessType == 'STATE'}">
+				     str+='  <td>'+result.apList[i].jobCode+'</td>';
+				  </c:if>
 				  str+='  <td>'+result.apList[i].totalIvrCalls+'</td>';
-				  str+='  <td>'+result.apList[i].totalAnswerdCalls+'</td>';
-				  str+='  <td>'+result.apList[i].totalAnswerdPerc+'</td>';
-				  str+='  <td>'+result.apList[i].noOptionSel+'</td>';
-				  str+='  <td>'+result.apList[i].noOptionSelPerc+'</td>';
-				  str+='  <td>'+result.apList[i].errorCalls+'</td>';
-				  str+='  <td>'+result.apList[i].errorCallsPerc+'</td>';
+				  <c:if test="${sessionScope.USER.accessType == 'STATE'}">
+					  str+='  <td>'+result.apList[i].totalAnswerdCalls+'</td>';
+					  str+='  <td>'+result.apList[i].totalAnswerdPerc+'</td>';
+					  str+='  <td>'+result.apList[i].noOptionSel+'</td>';
+					  str+='  <td>'+result.apList[i].noOptionSelPerc+'</td>';
+					  str+='  <td>'+result.apList[i].errorCalls+'</td>';
+					  str+='  <td>'+result.apList[i].errorCallsPerc+'</td>';
+				  </c:if>
 				  str+='  <td>'+result.apList[i].received+'</td>';
 				  str+='  <td>'+result.apList[i].receivedPerc+'</td>';
 				  str+='  <td>'+result.apList[i].notReceived+'</td>';
 				  str+='  <td>'+result.apList[i].notReceivedPerc+'</td>';
 				  str+='  <td>'+result.apList[i].notMember+'</td>';
 				  str+='  <td>'+result.apList[i].notMemberPerc+'</td>';
-				  str+='  <td>'+result.apList[i].wrongOptionSel+'</td>';
-				  str+='  <td>'+result.apList[i].wrongOptionSelPerc+'</td>';
+				  <c:if test="${sessionScope.USER.accessType == 'STATE'}">
+					str+='  <td>'+result.apList[i].wrongOptionSel+'</td>';
+					str+='  <td>'+result.apList[i].wrongOptionSelPerc+'</td>';
+				  </c:if>
 				  str+='</tr>';
 				}
 				str+='	</tbody>';
