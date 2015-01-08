@@ -1144,7 +1144,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			if(mobile!= null)
 				returnStr = mobile;
 			else
-				returnStr = "Mobile No not available";
+				returnStr = "MobileNo not available";
 		}
 		catch(Exception e)
 		{
