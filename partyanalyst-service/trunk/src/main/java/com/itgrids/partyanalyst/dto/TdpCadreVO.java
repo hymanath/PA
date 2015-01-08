@@ -21,11 +21,25 @@ public class TdpCadreVO implements java.io.Serializable
 	private String occupation;
 	private Long totalCount;
 	private String constituency;
+	private String tehsil;
+	private String panchayat;
 	private String responseStatus;
 	private String responseCode;
 	
 	private List<TdpCadreVO> tdpCadreDetailsList = new ArrayList<TdpCadreVO>();
 	
+	public String getTehsil() {
+		return tehsil;
+	}
+	public void setTehsil(String tehsil) {
+		this.tehsil = tehsil;
+	}
+	public String getPanchayat() {
+		return panchayat;
+	}
+	public void setPanchayat(String panchayat) {
+		this.panchayat = panchayat;
+	}
 	public String getResponseCode() {
 		return responseCode;
 	}
