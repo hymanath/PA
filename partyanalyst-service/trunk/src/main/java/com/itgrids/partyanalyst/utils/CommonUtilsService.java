@@ -42,7 +42,8 @@ public class CommonUtilsService {
 		
 		Boolean valid = false;
 		try{
-			
+			if(memberShipNo == null || memberShipNo.isEmpty() || memberShipNo.toString().trim().length() <= 7)
+				return false; 
 			Long tdpCadreId = tdpCadreDAO.checkMemberExists(memberShipNo);
 			if(tdpCadreId != null)
 				valid  = true;
