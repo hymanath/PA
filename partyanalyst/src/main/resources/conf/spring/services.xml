@@ -2464,7 +2464,7 @@
 	
 	</bean>
 	
-		<bean name="cadreDetailsService"  class="com.itgrids.partyanalyst.utils.CadreDetailsService">
+	<bean name="cadreDetailsService"  class="com.itgrids.partyanalyst.service.impl.CadreDetailsService">
 		 <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 		 <property name="voterDAO" ref="voterDAO" />
 		 <property name="tehsilDAO" ref="tehsilDAO" />
