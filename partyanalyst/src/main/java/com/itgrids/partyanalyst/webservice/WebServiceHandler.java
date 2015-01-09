@@ -2,7 +2,6 @@ package com.itgrids.partyanalyst.webservice;
 
 import java.util.List;
 
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -20,7 +19,6 @@ import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CadreTravelsVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
-import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -29,9 +27,8 @@ import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 import com.itgrids.partyanalyst.utils.CommonUtilsService;
-
+import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
 import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
-import com.opensymphony.xwork2.Action;
 
 @Component
 @Path("/")
@@ -47,7 +44,8 @@ public class WebServiceHandler {
 	private CadreAddressVO cadreAddressVO;
 	@Autowired
 	private CommonUtilsService commonUtilsService;
-	
+	@Autowired 
+	private IWebServiceHandlerService1 webServiceHandlerService1;
 
 	public CommonUtilsService getCommonUtilsService() {
 		return commonUtilsService;
@@ -822,7 +820,7 @@ public class WebServiceHandler {
 	}
 	
 	@POST
-	@Path("/validateMembership")
+	@Path("/Auth/validateMembership")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Boolean checkMembershipExists(CadreTravelsVO inputVO){
@@ -840,7 +838,7 @@ public class WebServiceHandler {
 	}
 	
 	@POST
-	@Path("/getMobileNo}")
+	@Path("/Auth/getMobileNo")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Object getMobileNoByMemberShip(CadreTravelsVO inputVO){
@@ -858,7 +856,7 @@ public class WebServiceHandler {
 	}
 	
 	@POST
-	@Path("/getMemberData")
+	@Path("/Auth/getMemberData")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public CadreAddressVO getMemberDataByMemberShip(CadreTravelsVO inputVO){
@@ -909,4 +907,22 @@ public class WebServiceHandler {
 			return "Fail";
 		}
 	}
+
+	@POST
+	@Path("/Auth/searchTdpCadreDetailsBySearchCriteriaForCallCenter/{memberShipCardNo}/{mobileNo}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object searchTdpCadreDetailsBySearchCriteriaForCallCenter(@PathParam("memberShipCardNo") String memberShipCardNo,@PathParam("mobileNo") String mobileNo)
+	{
+		try{			
+			return webServiceHandlerService1.searchTdpCadreDetailsBySearchCriteria("0","",memberShipCardNo,"","",mobileNo);			
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in searchTdpCadreDetailsBySearchCriteria() Method, Exception is ",e);
+			return "{\"status\":\"Failure\"}";
+		}
+	}
+	
+	
 }
