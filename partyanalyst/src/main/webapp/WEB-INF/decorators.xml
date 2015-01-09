@@ -137,6 +137,7 @@
         <pattern>/cadreEnrollment*</pattern>
         <pattern>/tdpCadreVolunteerAction*</pattern>
         <pattern>/cadreIvrEnquiryAction*</pattern>
+        <pattern>/publicMembershipCardStatusAction*</pattern>
  	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
