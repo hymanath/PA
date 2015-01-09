@@ -5238,7 +5238,10 @@ public class TdpCadreReportService implements ITdpCadreReportService{
  								vo.setId((Long)params[2]);
  								vo.setName(params[3].toString());
  								vo.setJobCode(params[4] != null ? params[4].toString() : "");//DistrictId/Constituency Id based on level
- 								vo.setLocationName(params[5] != null ? params[5].toString() : "");//District/Constituency based on level
+ 								if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+ 								vo.setLocationName(params[5] != null ? params[5].toString() +" Muncipality" : "");//District/Constituency based on level
+ 								else
+ 									vo.setLocationName(params[5] != null ? params[5].toString() : "");	
  								resultMap.put((Long)params[2], vo);
  								 							}
  						vo.setTotalCalls((Long)params[0] + vo.getTotalCalls());
