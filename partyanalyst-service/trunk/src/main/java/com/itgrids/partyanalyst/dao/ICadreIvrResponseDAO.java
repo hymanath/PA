@@ -25,4 +25,5 @@ public interface ICadreIvrResponseDAO extends GenericDao<CadreIvrResponse, Long>
 	public List<Object[]> getIvrCountForAPAndTS();
 	public List<Object[]> getLocationWiseIVRInfo(Set<Long> locationIds,String locationType,Date startDate,Date endDate,List<Long> accessLocationIds);
 	public List<Object[]> getLocationWiseIVRCountsInfo(Set<Long> locationIds,String locationType,Date startDate,Date endDate,Long constituencyId);
+	public List<Object[]> getIvrCountByLocationIdsAndType(List<Long> locationIds,String type);
 }

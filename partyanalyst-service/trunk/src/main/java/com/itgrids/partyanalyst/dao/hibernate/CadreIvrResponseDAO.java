@@ -289,4 +289,47 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 			}
 		return query.list();
 	}
+	
+	public List<Object[]> getIvrCountByLocationIdsAndType(List<Long> locationIds,String type)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select count(model.cadreIvrResponseId)" +
+				   " ,model.responseKey");
+		if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+		{
+			str.append(" ,model.tdpCadre.userAddress.constituency.constituencyId,model.tdpCadre.userAddress.constituency.name,district.districtId,district.districtName");
+		}
+		if(type.equalsIgnoreCase(IConstants.TEHSIL))
+		{
+			str.append(" ,model.tdpCadre.userAddress.tehsil.tehsilId,model.tdpCadre.userAddress.tehsil.tehsilName,constituency.constituencyId,constituency.name");	
+		}
+		 if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+		{
+			str.append(" , model.tdpCadre.userAddress.localElectionBody.localElectionBodyId, model.tdpCadre.userAddress.localElectionBody.name,constituency.constituencyId,constituency.name");	
+		}
+		str.append(" from CadreIvrResponse model");
+		
+		if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+		{
+			
+		str.append(" left join model.userAddress.district district where model.isDeleted = 'N' ");
+		str.append(" and model.tdpCadre.userAddress.constituency.constituencyId in(:locationIds)  ");
+		str.append("  group by model.tdpCadre.userAddress.constituency.constituencyId,model.responseKey");
+		}
+		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+		{
+			 str.append(" left join model.userAddress.constituency constituency where model.isDeleted = 'N' ");
+			str.append(" and model.tdpCadre.userAddress.tehsil.tehsilId in(:locationIds)  ");
+			str.append(" group by model.tdpCadre.userAddress.tehsil.tehsilId,model.responseKey");	
+		}
+		else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+		{
+			str.append(" left join model.userAddress.constituency constituency where model.isDeleted = 'N' ");
+			str.append(" and model.tdpCadre.userAddress.localElectionBody.localElectionBodyId in(:locationIds)  ");
+			str.append(" group by model.tdpCadre.userAddress.localElectionBody.localElectionBodyId,model.responseKey");	
+		}
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("locationIds", locationIds);
+		return query.list();
+	}	
 }
