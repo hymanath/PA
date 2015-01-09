@@ -7,7 +7,7 @@
 
 <html>
 <head>
-
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">	
@@ -37,7 +37,30 @@
 				<h3 class="text-center text-uppercase">Previous Calls Details</h3>
 			</div>
 		</div><!-- Title Row End-->
-		<div id="enquiryDiv"  class="offset3">
+		<!--<div class = "row" style="margin-top:20px;">
+				<table  style="margin-left: 270px;">
+					<tr><td><label>From Date :</label>&nbsp;</td><td>&nbsp;&nbsp;<input type="text" readonly="readonly" id="fromDate"/></td></tr>
+				   <tr><td><label>To Date   :</label>&nbsp;</td><td>&nbsp;&nbsp;<input type="text" readonly="readonly" id="toDate" /></td></tr>		
+				</table>
+				<input type="button"  class="btn btn-success offset5"  value="Submit" onclick="getIvrPreviousCallsBasicInfo();"/>
+				</div>-->
+
+				
+		<div class="row">
+	<div class="span10 offset1 form-inline">
+    <label>From Date: &nbsp; </label><input type="text" readonly="readonly" id="fromDate"/><label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To Date: &nbsp; </label>
+       <input type="text" readonly="readonly" id="toDate" />
+    <button class="btn btn-success" onclick="getIvrPreviousCallsBasicInfo();">submit</button>
+  </div>
+</div>
+				
+<img style="height:18px;width:16px;margin-left:1px;display:none;" src="./images/icons/search.gif" id="basicajaxImg" class="offset1"/>
+<div class="row-fluid" style="margin-top: 20px;">
+<div class="span4 border-radius-0 mb-10" id="basicCountDiv"></div>
+<div id="previousCntDiv" class="span8 border-radius-0 mb-10"></div>
+</div>
+	<div id="enquiryDataDiv" style="clear:both;"></div>		
+		<!--<div id="enquiryDiv"  class="offset3">
 		<div id="errorDiv"></div>
 		<table>
 		
@@ -63,9 +86,44 @@
 		<input type="button" value="Submit" style="margin-top:10px;" class="btn btn-medium btn-success border-radius-0 offset2" onclick="getCadreIvrEnquiryDetails();" />
 		<img style="height:18px;width:16px;margin-left:1px;display:none;" src="./images/icons/search.gif" id="ajaxImg" class="offset1"/>
 		</div>
-	    <div id="ivrEnquiryDetailsDiv"  style="margin-top:23px;"></div>
+	    <div id="ivrEnquiryDetailsDiv"  style="margin-top:23px;"></div>-->
 		</div>
 		<script>
+
+		function getDates()
+		{
+			var jObj ={
+			task:"getDates"             
+		}	
+		$.ajax({
+			type : "POST",
+			url : "getAvailableDatesAction.action",
+			data : {task:JSON.stringify(jObj)} ,
+		}).done(function(result){
+			$("#fromDate").datepicker({
+			dateFormat: "yy-mm-dd",
+			changeMonth: true,
+	        changeYear: true,
+			minDate:result[0],
+			maxDate: result.length - 1
+		});
+			var minDate =result[0];
+		$("#fromDate").datepicker("setDate", minDate);
+		$("#toDate").datepicker({
+			dateFormat: "yy-mm-dd",
+			changeMonth: true,
+	        changeYear: true,
+			minDate: result[0],
+			maxDate:result.length - 1
+		});
+			var maxDate = result.length - 1;
+		$("#toDate").datepicker("setDate", maxDate);
+		getIvrPreviousCallsBasicInfo();
+		});
+	
+		
+		}
+			
 		function getConstituencies(){
 		
 		$("#displayconstbox").html("");
@@ -161,10 +219,156 @@ function buildEnquiryData(resultList)
 	 $("#ivrEnquiryDetailsDiv").html(str);
 
  }
- 
+ function getIvrBasicCount()
+	{
+		$("#basicajaxImg").show();
+		$("#basicCountDiv").html('');
+		var jsObj = {	
+			state:0,
+			task:"basicCnt"             
+		}
+			   
+		$.ajax({
+			type : "POST",
+			url : "getCadreIVRBasicInfoAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+				$("#basicajaxImg").hide();
+		buildIvrCount(result);
+		});
+	}
+	function getIvrPreviousCallsBasicInfo()
+	{
+		
+		$("#previousCntDiv").html('');
+		var fromDate = $("#fromDate").val();
+		var toDate =  $("#toDate").val();
+		var jsObj = {	
+			fromDate:fromDate,
+			toDate:toDate,
+			task:"previousCallsCnt"             
+		}
+			   
+		$.ajax({
+			type : "POST",
+			url : "getIvrPreviousCallBasicInfoAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+				
+		buildPreviousCount(result,fromDate,toDate);
+		});
+	}
+	function buildIvrCount(result)
+	{
+		var str='';
+	str+='<table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover">';
+	str+='<tbody>';
+	str+=' <tr>';
+								
+	str+='<td><div><h2>'+result.printingCompleted+'</h2><p>Dispatch Count</p></div></td>';
+	str+='<td><div ><h2>'+result.total+'</h2><p>Total Ivr Calls</p></div></td>';
+	str+='<td><div ><h2>'+result.totalError+'</h2><p>Error Count</p></div></td>';
+	
+	str+='</tr>';
+	str+='</tbody>';
+	str+='</table>';
+	$("#basicCountDiv").html(str);
+	}
+	function buildPreviousCount(result,fromDate,toDate)
+	{
+			var str='';
+	str+='<table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover">';
+	str+='<tbody>';
+	str+=' <tr>';
+		if(result.totalCalls!= null && result.totalCalls > 0)						
+	str+='<td><div><h2><a onclick="getIvrDataByType(\'Constituency\',\''+fromDate+'\',\''+toDate+'\')">'+result.totalCalls+'</a></h2><p>No Of Constituencies</p></div></td>';
+		else
+	str+='<td><div><h2>'+result.totalCalls+'</h2><p>No Of Constituencies</p></div></td>';
+	if(result.totalIvrCalls!= null && result.totalIvrCalls > 0)					
+	str+='<td><div ><h2><a onclick="getIvrDataByType(\'Mandal\',\''+fromDate+'\',\''+toDate+'\')">'+result.totalIvrCalls+'</a></h2><p>No Of mandals</p></div></td>';
+	else
+	str+='<td><div ><h2>'+result.totalIvrCalls+'</h2><p>No Of mandals</p></div></td>';
+	str+='<td><div ><h2>'+result.received+'</h2><p>Received in Constituencies</p></div></td>';
+	str+='<td><div ><h2>'+result.notReceived+'</h2><p>Delivered in Constituencies</p></div></td>';
+	str+='<td><div ><h2>'+result.totalAnswerdCalls+'</h2><p>Received in mandals</p></div></td>';
+	str+='<td><div ><h2>'+result.notMember+'</h2><p>Delivered in mandals</p></div></td>';
+	str+='</tr>';
+	str+='</tbody>';
+	str+='</table>';
+	$("#previousCntDiv").html(str);
+	}
+
+	function getIvrDataByType(type,fromDate,toDate)
+	{
+		
+		var jsObj = {	
+			fromDate:fromDate,
+			toDate:toDate,
+			locationType:type,
+			task:"previousCallsData"             
+		}
+			   
+		$.ajax({
+			type : "POST",
+			url : "getIvrPreviousCallBasicInfoAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+				
+		buildPreviousCallsData(result,type);
+		});
+	}
+
+	function buildPreviousCallsData(resultList,type)
+	{
+	 var result = resultList.apList;
+	 var str ='';
+	 if(result == null || result.length == 0)
+	 {
+		str+='<span style="color:red">No Data Available...</span>';
+		$("#enquiryDataDiv").html(str);
+		return;
+	 }
+	 str+='<table class="table table-bordered">';
+	 str+='<thead class="alert-success">';
+	 if(type =="Constituency")
+		{
+	 str+='<th>District</th>';
+	 str+='<th>Constituency</th>';
+		}
+	 else if(type =="Mandal")
+		{
+	 str+='<th>Constituency</th>';
+	 str+='<th>Mandal</th>';
+		}
+	 str+='<th>Total Ivr Calls</th>';
+	 str+='<th>Cards Received</th>';
+	 str+='<th>Cards Not Received</th>';
+	 str+='<th>Not Member</th>';
+	 str+='<th>Error</th>';
+	 str+='</thead>';
+	 str+='<tbody>';
+	 for(var i in result)
+	 {
+	 var error = (result[i].totalCalls) - (result[i].received +result[i].notReceived+result[i].notMember) 
+	 str+='<tr>';
+	 str+='<td>'+result[i].locationName+'</td>';
+	 str+='<td>'+result[i].name+'</td>';
+	 str+='<td>'+result[i].totalCalls+'</td>';
+	 str+='<td>'+result[i].received+'</td>';
+	 str+='<td>'+result[i].notReceived+'</td>';
+	 str+='<td>'+result[i].notMember+'</td>';
+	 str+='<td>'+error+'</td>';
+	 str+='</tr>';
+	 }
+	 str+='</tbody>';
+	 str+='</table>';
+	 $("#enquiryDataDiv").html(str);
+	}
 		</script>
 <script>
+getDates();
 getConstituencies();
+getIvrBasicCount();
 
 </script>
 </body>
