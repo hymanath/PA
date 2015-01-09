@@ -10,68 +10,25 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.itgrids.partyanalyst.dao.ICasteStateDAO;
-import com.itgrids.partyanalyst.dao.IDistrictDAO;
-import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
-import com.itgrids.partyanalyst.dao.IOccupationDAO;
-import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
-import com.itgrids.partyanalyst.dao.ITehsilDAO;
-import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
-import com.itgrids.partyanalyst.model.CasteState;
-import com.itgrids.partyanalyst.model.District;
-import com.itgrids.partyanalyst.model.LocalElectionBody;
-import com.itgrids.partyanalyst.model.Occupation;
-import com.itgrids.partyanalyst.model.Panchayat;
-import com.itgrids.partyanalyst.model.Tehsil;
-import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 
 public class CadreDetailsService implements ICadreDetailsService{
 
 	private final static Logger LOG =  Logger.getLogger(CadreDetailsService.class);
 	public ITdpCadreDAO tdpCadreDAO;
-	public IOccupationDAO occupationDAO;
-	public IVoterDAO voterDAO;
-	public ITehsilDAO tehsilDAO;
-	public ILocalElectionBodyDAO localElectionBodyDAO;
-	public IPanchayatDAO panchayatDAO;
-	public ICasteStateDAO casteStateDAO;
-	public IDistrictDAO districtDAO;
-	
-	
-	public void setCasteStateDAO(ICasteStateDAO casteStateDAO) {
-		this.casteStateDAO = casteStateDAO;
+
+
+	public ITdpCadreDAO getTdpCadreDAO() {
+		return tdpCadreDAO;
 	}
 
-	public void setDistrictDAO(IDistrictDAO districtDAO) {
-		this.districtDAO = districtDAO;
-	}
 
 	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
 		this.tdpCadreDAO = tdpCadreDAO;
 	}
 
-	public void setOccupationDAO(IOccupationDAO occupationDAO) {
-		this.occupationDAO = occupationDAO;
-	}
-	
-	public void setVoterDAO(IVoterDAO voterDAO) {
-		this.voterDAO = voterDAO;
-	}
-
-	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
-		this.tehsilDAO = tehsilDAO;
-	}
-
-	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
-		this.localElectionBodyDAO = localElectionBodyDAO;
-	}
-
-	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
-		this.panchayatDAO = panchayatDAO;
-	}
 
 	public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo, String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory)
 	{
@@ -80,7 +37,7 @@ public class CadreDetailsService implements ICadreDetailsService{
     		
     		StringBuilder queryStr = new StringBuilder();
     		
-    		if(locationLevel != null && locationLevel.longValue() != 0L)
+    		if(locationLevel != null && locationLevel.longValue() != 0L && locationValue != null && locationValue.longValue() != 0L)
     		{
     			if(locationLevel.longValue() == 4L)
     			{
@@ -140,7 +97,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					{
 						TdpCadreVO cadreVO = new TdpCadreVO();
 
-						cadreVO.setId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
+						//cadreVO.setId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
 						cadreVO.setCadreName(cadre[1] != null ? cadre[1].toString():"");
 						cadreVO.setRelativeName(cadre[2] != null ? cadre[2].toString():"");
 						cadreVO.setGender(cadre[3] != null ? cadre[3].toString():"");
@@ -148,71 +105,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 						cadreVO.setTrNo(cadre[5] != null ? cadre[5].toString():"");
 						cadreVO.setMobileNo(cadre[6] != null ? cadre[6].toString():"");
 						cadreVO.setImageURL(cadre[7] != null ? cadre[7].toString():"");
-						//cadreVO.setVoterCardNo(cadre[8] != null ? cadre[8].toString():"");
-
-						if(cadre[11] != null && cadre[11].toString().trim().length()>0) 
-						{
-							cadreVO.setConstituency(cadre[11] != null ? cadre[11].toString().trim():"");					
-						}
 						
-						if(cadre[12] != null && cadre[12].toString().trim().length()>0) 
-						{
-							Voter voter = voterDAO.get(cadre[12] != null ? Long.valueOf(cadre[12].toString().trim()):0L);
-							if(voter != null)
-							{
-								cadreVO.setAge(voter.getAge());
-								cadreVO.setVoterCardNo(voter.getVoterIDCardNo() != null ? voter.getVoterIDCardNo().toString():"");
-							}						
-						}
-						if(cadre[13] != null && cadre[13].toString().trim().length()>0) 
-						{
-							Occupation occupation = occupationDAO.get(cadre[13] != null ? Long.valueOf(cadre[13].toString().trim()):0L);
-							if(occupation != null)
-							{
-								cadreVO.setOccupation(occupation.getOccupation());
-							}						
-						}
-						
-						if(cadre[14] != null && cadre[14].toString().trim().length()>0) 
-						{
-							Tehsil tehsil = tehsilDAO.get(cadre[14] != null ? Long.valueOf(cadre[14].toString().trim()):0L);
-							if(tehsil != null)
-							{
-								cadreVO.setTehsil(tehsil.getTehsilName()+" Mandal");
-							}						
-						}
-						if(cadre[15] != null && cadre[15].toString().trim().length()>0) 
-						{
-							Panchayat panchayat = panchayatDAO.get(cadre[15] != null ? Long.valueOf(cadre[15].toString().trim()):0L);
-							if(panchayat != null)
-							{
-								cadreVO.setPanchayat(panchayat.getPanchayatName());
-							}						
-						}
-						if(cadre[16] != null && cadre[16].toString().trim().length()>0) 
-						{
-							LocalElectionBody localElectionBody = localElectionBodyDAO.get(cadre[16] != null ? Long.valueOf(cadre[16].toString().trim()):0L);
-							if(localElectionBody != null)
-							{
-								cadreVO.setTehsil(localElectionBody.getName()+" "+localElectionBody.getElectionType().getElectionType());
-							}						
-						}
-						if(cadre[17] != null && cadre[17].toString().trim().length()>0) 
-						{
-							District district = districtDAO.get(cadre[17] != null ? Long.valueOf(cadre[17].toString().trim()):0L);
-							if(district != null)
-							{
-								cadreVO.setDistrict(district.getDistrictName());
-							}						
-						}
-						if(cadre[18] != null && cadre[18].toString().trim().length()>0) 
-						{
-							CasteState casteState = casteStateDAO.get(cadre[18] != null ? Long.valueOf(cadre[18].toString().trim()):0L);
-							if(casteState != null)
-							{
-								cadreVO.setCasteName(casteState.getCaste().getCasteName());
-							}						
-						}
 						if(cadre[9] != null)
 						{
 							cadreVO.setAge(cadre[9] != null ? Long.valueOf(cadre[9].toString().trim()):0L);
@@ -220,7 +113,6 @@ public class CadreDetailsService implements ICadreDetailsService{
 						else if((cadreVO.getAge() == null || cadreVO.getAge().toString().trim().length()<=0) && cadre[10]  != null)
 						{
 							String dateOfBirth = 	cadre[10] != null ? cadre[10].toString().substring(0,10):" "	;
-							
 							if(dateOfBirth != null && dateOfBirth.trim().length()>0)
 							{
 								Calendar startDate = new GregorianCalendar();
@@ -235,6 +127,31 @@ public class CadreDetailsService implements ICadreDetailsService{
 								cadreVO.setAge(Long.valueOf(String.valueOf(diffYear)));
 							}
 						}
+						
+						cadreVO.setConstituency(cadre[11] != null ? cadre[11].toString().trim():"");
+						
+						if(cadreVO.getAge() != null && cadreVO.getAge().toString().trim().length()==0)
+						{
+							cadreVO.setAge(cadre[12] != null ? Long.valueOf(cadre[12].toString().trim()):0L);
+						}
+						
+						cadreVO.setOccupation(cadre[13] != null ? cadre[13].toString().trim():"");
+						cadreVO.setTehsil(cadre[14] != null ? cadre[14].toString().trim()+" Mandal":"");
+						cadreVO.setPanchayat(cadre[15] != null ? cadre[15].toString().trim():"");
+						
+						String electionType = cadre[20] != null ? cadre[20].toString().trim():""; // municipality/corporation/ghmc....
+						cadreVO.setLocalElectionBody(cadre[16] != null ? cadre[16].toString().trim()+" "+electionType:"");
+						
+						cadreVO.setDistrict(cadre[17] != null ? cadre[17].toString().trim():"");
+						cadreVO.setCasteName(cadre[18] != null ? cadre[18].toString().trim():"");
+						cadreVO.setVoterCardNo(cadre[19] != null ? cadre[19].toString().trim():"");
+						
+						cadreVO.setHouseNo(cadre[21] != null ? cadre[21].toString().trim():"");
+						cadreVO.setConstituencyId(cadre[22] != null ? Long.valueOf(cadre[22].toString().trim()):0L);
+						cadreVO.setTehsilId(cadre[23] != null ? Long.valueOf(cadre[23].toString().trim()):0L);
+						cadreVO.setPanchayatId(cadre[24] != null ? Long.valueOf(cadre[24].toString().trim()):0L);
+						cadreVO.setLocalElectionBodyId(cadre[25] != null ? Long.valueOf(cadre[25].toString().trim()):0L);				
+						cadreVO.setDistrictId(cadre[26] != null ? Long.valueOf(cadre[26].toString().trim()):0L);		
 						
 						returnLsit.add(cadreVO);
 					}
