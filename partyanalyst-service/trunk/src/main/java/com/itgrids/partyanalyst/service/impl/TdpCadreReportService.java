@@ -5209,8 +5209,8 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         			 setIvrData(constituencyIds,IConstants.CONSTITUENCY,resultList);
         		if(type.equalsIgnoreCase("Mandal"))
         		{
-        		setIvrData(constituencyIds,IConstants.MANDAL,resultList);
-        		setIvrData(constituencyIds,IConstants.LOCAL_ELECTION_BODY,resultList);
+        		setIvrData(mandalIds,IConstants.TEHSIL,resultList);
+        		setIvrData(localbodyIds,IConstants.LOCAL_ELECTION_BODY,resultList);
         		}
         		
         		 returnVo.setApList(resultList); 
