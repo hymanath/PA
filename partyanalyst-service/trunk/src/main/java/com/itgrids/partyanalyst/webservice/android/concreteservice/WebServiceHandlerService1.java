@@ -60,6 +60,7 @@ import com.itgrids.partyanalyst.model.TabLogInAuth;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.TdpCadreImageSinkData;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
+import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.ILoginService;
@@ -167,6 +168,10 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 	@Autowired CommonUtilsService commonUtilsService;
 	
 	@Autowired ITdpCadreImageSinkDataDAO tdpCadreImageSinkDataDAO;
+	@Autowired
+	private ICadreDetailsService cadreDetailsService;
+	
+	
 	public IVoterBoothActivitiesDAO getVoterBoothActivitiesDAO() {
 		return voterBoothActivitiesDAO;
 	}
@@ -1250,7 +1255,8 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
     {
     	TdpCadreVO returnVO = new TdpCadreVO(); // TdpCadreVO
     	try {
-    		returnVO = cadreRegistrationService.searchTdpCadreDetailsBySearchCriteria(Long.valueOf(constituencyId),name,memberShipCardNo, voterCardNo, refNo, mobileNo);
+    		//returnVO = cadreRegistrationService.searchTdpCadreDetailsBySearchCriteria(Long.valueOf(constituencyId),name,memberShipCardNo, voterCardNo, refNo, mobileNo);
+    		  returnVO = cadreDetailsService.searchTdpCadreDetailsBySearchCriteriaForCommitte(0L,Long.valueOf(constituencyId),name,memberShipCardNo, voterCardNo, refNo, mobileNo,0L,"");
 		} catch (Exception e) {
 			LOG.error("Exception raised in searchTdpCadreDetailsBySearchCriteria  method in WebServiceHandlerService",e);
 		}
