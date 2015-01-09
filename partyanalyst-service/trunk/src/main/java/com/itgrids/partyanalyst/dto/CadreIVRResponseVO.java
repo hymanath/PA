@@ -11,13 +11,13 @@ public class CadreIVRResponseVO {
 	private Long id;
 	private String locationName;
 	private String areaName;
-	private Long totalCalls;
+	private Long totalCalls =0l;
 	private Long totalCallsPerc;
-	private Long received;
+	private Long received = 0l;
 	private Long receivedPerc;
-	private Long notReceived;
+	private Long notReceived =0l;
 	private Long notReceivedPerc;
-	private Long notMember;
+	private Long notMember =0l;
 	private Long notMemberPerc;
 	private Long registeredCount;
 	private Long printedCount;
