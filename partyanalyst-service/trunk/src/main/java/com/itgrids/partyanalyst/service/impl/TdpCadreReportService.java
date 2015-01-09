@@ -5124,4 +5124,144 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			return resultList;
           }
           
+          public CadreIVRResponseVO getIvrPreviousCallBasicInfo(Date startDate,Date endDate)
+          {
+        	  CadreIVRResponseVO returnVo = new CadreIVRResponseVO();
+        	  try{
+        		  List<Long> locationTypeIds = new ArrayList<Long>();
+        		  locationTypeIds.add(1l);
+        		  List<Long> mandalTypeIds = new ArrayList<Long>();
+        		  mandalTypeIds.add(2l);
+        		  mandalTypeIds.add(5l);
+        		  
+        		Long constituencyCnt =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(locationTypeIds,startDate,endDate);
+        		Long mandalCnt =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(mandalTypeIds,startDate,endDate);
+        	    BigDecimal constituencyReceivedCount = cadreIVREnquiryDAO.getTotalReceivedCount(startDate,endDate,locationTypeIds);
+        		returnVo.setReceived(constituencyReceivedCount != null ? constituencyReceivedCount.longValue() : 0l);
+        		BigDecimal constituencyDeliveredCount = cadreIVREnquiryDAO.getTotalDeliveredCount(startDate,endDate,locationTypeIds);
+        		returnVo.setNotReceived(constituencyDeliveredCount != null ? constituencyDeliveredCount.longValue() : 0l);
+        		
+        		BigDecimal mandalReceivedCount = cadreIVREnquiryDAO.getTotalReceivedCount(startDate,endDate,mandalTypeIds);
+         		returnVo.setTotalAnswerdCalls(mandalReceivedCount != null ? mandalReceivedCount.longValue() : 0l);
+         		BigDecimal mandalDeliveredCount = cadreIVREnquiryDAO.getTotalDeliveredCount(startDate,endDate,mandalTypeIds);
+         		returnVo.setNotMember(mandalDeliveredCount != null ? mandalDeliveredCount.longValue() : 0l);
+         		
+        		returnVo.setTotalCalls(constituencyCnt != null ? constituencyCnt : 0);
+        		returnVo.setTotalIvrCalls(mandalCnt != null ? mandalCnt : 0);
+        	  }
+        	  catch(Exception e)
+        	  {
+        		 e.printStackTrace(); 
+        	  }
+			return returnVo;
+          }
+         public List<String> getPreviousPollsAvailableDates()
+         {
+        	 List<String> dates = new ArrayList<String>();
+        	 try{
+        	  List<Date> list = cadreIVREnquiryDAO.getAvailableDates();
+        	  if(list != null && list.size() > 0)
+        	  {
+        		  for(Date date : list)
+        		  dates.add(date.toString()); 
+        	  }
+        	 
+        	 }
+        	 catch(Exception e)
+        	 {
+        		 e.printStackTrace();
+        	 }
+			return dates;
+        	 
+         }
+         
+         public CadreIVRResponseVO getIvrPreviousCallInfo(String type,Date startDate,Date toDate)
+         {
+        	 CadreIVRResponseVO returnVo = new CadreIVRResponseVO(); 
+        	 List<CadreIVRResponseVO> resultList = new ArrayList<CadreIVRResponseVO>();
+        	 try{
+        		 List<Long> constituencyIds = new ArrayList<Long>();
+        		 List<Long> mandalIds = new ArrayList<Long>();
+        		 List<Long> localbodyIds = new ArrayList<Long>();
+	        	 List<Long> locationTypeIds = new ArrayList<Long>();
+	        	  if(type.equalsIgnoreCase("Constituency"))
+	       		  locationTypeIds.add(1l);
+	        	  else if(type.equalsIgnoreCase("Mandal"))
+	        	  {
+	        		  locationTypeIds.add(2l);
+	        		  locationTypeIds.add(5l);
+	        	  }
+        		 List<Object[]> list = cadreIVREnquiryDAO.getLocationIdsByTypeId(locationTypeIds,startDate,toDate);
+        		 if(list != null && list.size() > 0)
+        		 {
+        			 for(Object[] params : list)
+        			 {
+        				 if((Long)params[1] == 1) 
+        					 constituencyIds.add((Long)params[0]);
+        				 else if((Long)params[1] == 2)
+        					 mandalIds.add((Long)params[0]);
+        				 else if((Long)params[1] == 2)
+        					 localbodyIds.add((Long)params[0]);
+        			 }
+        		 }
+        		
+        		 if(type.equalsIgnoreCase("Constituency"))
+        			 setIvrData(constituencyIds,IConstants.CONSTITUENCY,resultList);
+        		if(type.equalsIgnoreCase("Mandal"))
+        		{
+        		setIvrData(constituencyIds,IConstants.MANDAL,resultList);
+        		setIvrData(constituencyIds,IConstants.LOCAL_ELECTION_BODY,resultList);
+        		}
+        		
+        		 returnVo.setApList(resultList); 
+        	 }
+        	 catch(Exception e)
+        	 {
+        		 e.printStackTrace(); 
+        	 }
+			return returnVo;
+         }
+         
+         public void setIvrData(List<Long> locationIds,String type,List<CadreIVRResponseVO> resultList)
+         {
+        	 try{
+        		 Map<Long,CadreIVRResponseVO> resultMap = new HashMap<Long, CadreIVRResponseVO>();
+        		 List<Object[]> list = cadreIvrResponseDAO.getIvrCountByLocationIdsAndType(locationIds,type);
+	        	 if(list != null && list.size() > 0)
+	 			{
+ 				for(Object[] params : list)
+ 					{
+ 					CadreIVRResponseVO vo = resultMap.get((Long)params[2]);
+ 							if(vo == null)
+ 							{
+ 								vo = new CadreIVRResponseVO();
+ 								vo.setId((Long)params[2]);
+ 								vo.setName(params[3].toString());
+ 								vo.setJobCode(params[4] != null ? params[4].toString() : "");//DistrictId/Constituency Id based on level
+ 								vo.setLocationName(params[5] != null ? params[5].toString() : "");//District/Constituency based on level
+ 								resultMap.put((Long)params[2], vo);
+ 								 							}
+ 						vo.setTotalCalls((Long)params[0] + vo.getTotalCalls());
+ 						if(params[1] != null &&params[1].toString().equalsIgnoreCase("1"))
+ 						vo.setReceived((Long)params[0] + vo.getReceived());
+ 						else if(params[1] != null &&params[1].toString().equalsIgnoreCase("2"))
+ 						vo.setNotReceived((Long)params[0] + vo.getNotReceived());
+ 						else if(params[1] != null &&params[1].toString().equalsIgnoreCase("3"))
+ 						vo.setNotMember((Long)params[0] + vo.getNotMember());
+ 						
+ 					}
+	 				for(Long key : resultMap.keySet())
+	 				{
+	 					CadreIVRResponseVO vo = resultMap.get(key);
+	 					resultList.add(vo);
+	 				} 
+	 			}
+        	 }
+        	 catch(Exception e)
+        	 {
+        		 
+        	 }
+			
+         }
+          
 }
