@@ -5262,7 +5262,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         	 }
         	 catch(Exception e)
         	 {
-        		 
+        		 e.printStackTrace();
         	 }
 			
          }
