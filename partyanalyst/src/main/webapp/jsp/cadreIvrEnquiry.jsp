@@ -281,11 +281,11 @@ function buildEnquiryData(resultList)
 	str+='<tbody>';
 	str+=' <tr>';
 		if(result.totalCalls!= null && result.totalCalls > 0)						
-	str+='<td><div><h2><a onclick="getIvrDataByType(\'Constituency\',\''+fromDate+'\',\''+toDate+'\')">'+result.totalCalls+'</a></h2><p>No Of Constituencies</p></div></td>';
+	str+='<td><div><h2><a style="cursor:pointer;" onclick="getIvrDataByType(\'Constituency\',\''+fromDate+'\',\''+toDate+'\')">'+result.totalCalls+'</a></h2><p>No Of Constituencies</p></div></td>';
 		else
 	str+='<td><div><h2>'+result.totalCalls+'</h2><p>No Of Constituencies</p></div></td>';
 	if(result.totalIvrCalls!= null && result.totalIvrCalls > 0)					
-	str+='<td><div ><h2><a onclick="getIvrDataByType(\'Mandal\',\''+fromDate+'\',\''+toDate+'\')">'+result.totalIvrCalls+'</a></h2><p>No Of mandals</p></div></td>';
+	str+='<td><div ><h2><a style="cursor:pointer;" onclick="getIvrDataByType(\'Mandal\',\''+fromDate+'\',\''+toDate+'\')">'+result.totalIvrCalls+'</a></h2><p>No Of mandals</p></div></td>';
 	else
 	str+='<td><div ><h2>'+result.totalIvrCalls+'</h2><p>No Of mandals</p></div></td>';
 	str+='<td><div ><h2>'+result.received+'</h2><p>Received in Constituencies</p></div></td>';
