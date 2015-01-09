@@ -4,13 +4,20 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IDynamicKeysDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dto.TdpCadreVO;
+import com.itgrids.partyanalyst.service.ICadreDetailsService;
 
 public class CommonUtilsService {
 
 	private static final Logger LOG = Logger.getLogger(CommonUtilsService.class);
 	private IDynamicKeysDAO dynamicKeysDAO;
 	private ITdpCadreDAO tdpCadreDAO;
+	private ICadreDetailsService cadreDetailsService;
 	
+	
+	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
+		this.cadreDetailsService = cadreDetailsService;
+	}
 	
 	public ITdpCadreDAO getTdpCadreDAO() {
 		return tdpCadreDAO;
@@ -42,13 +49,31 @@ public class CommonUtilsService {
 		
 		Boolean valid = false;
 		try{
+			/*
 			if(memberShipNo == null || memberShipNo.isEmpty() || memberShipNo.toString().trim().length() <= 7)
-				return false; 
-			Long tdpCadreId = tdpCadreDAO.checkMemberExists(memberShipNo);
+				return false;
+		    Long tdpCadreId = tdpCadreDAO.checkMemberExists(memberShipNo);
 			if(tdpCadreId != null)
 				valid  = true;
 			else
 				valid = false;	
+			 */
+			if(memberShipNo == null || memberShipNo.trim().isEmpty() || memberShipNo.toString().trim().length() <= 7)
+				return false; 
+			
+			TdpCadreVO tdpCadreVO = cadreDetailsService.searchTdpCadreDetailsBySearchCriteriaForCommitte(0L, 0L, "", memberShipNo, "", "", "", 0L, "");
+			if(tdpCadreVO != null)
+			{
+				if(tdpCadreVO.getTdpCadreDetailsList() != null && tdpCadreVO.getTdpCadreDetailsList().size()>0)
+				{
+					valid  = true;
+				}
+				else
+				{
+					valid = false;	
+				}
+			}
+		
 		}
 		catch(Exception e)
 		{
