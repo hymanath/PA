@@ -678,6 +678,7 @@ public class WebServiceHandler2 {
 		}
 	}
 	
+	/*
 	@POST
 	@Path("/searchTdpCadreDetailsBySearchCriteria/{constituencyId}/{name}/{memberShipCardNo}/{voterCardNo}/{refNo}/{mobileNo}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -695,7 +696,7 @@ public class WebServiceHandler2 {
 		}
 	}
 	
-	@GET
+	@POST
 	@Path("/searchTdpCadreDetailsBySearchCriteriaForCallCenter/{memberShipCardNo}/{mobileNo}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -709,8 +710,9 @@ public class WebServiceHandler2 {
 			LOG.error("Exception Occured in searchTdpCadreDetailsBySearchCriteria() Method, Exception is ",e);
 			return "{\"status\":\"Failure\"}";
 		}
-	}
-	/*@GET
+	}*/
+	
+	/*@POST
 	@Path("/searchTdpCadreDetailsByVoterCardNoForCallCenter/{voterIdCardNo}/{isFamilyVoter}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
