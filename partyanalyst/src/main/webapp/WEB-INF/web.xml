@@ -134,6 +134,21 @@
             <role-name>ITG@ANDROID@SMS</role-name>
         </auth-constraint>
     </security-constraint>
+    <security-constraint>
+        <display-name>authenticate</display-name>
+         <web-resource-collection>
+            <web-resource-name>All Auth WebServices</web-resource-name>
+            <description/>
+            <url-pattern>/WebService/Auth/*</url-pattern>
+             <http-method>POST</http-method>
+             <http-method>GET</http-method>
+         </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>webserviceauth</role-name>
+        </auth-constraint>
+    </security-constraint>
+    
     <login-config>
        <!--<auth-method>FORM</auth-method>
         <realm-name>file</realm-name>
@@ -147,5 +162,9 @@
     <security-role>
         <description/>
         <role-name>ITG@ANDROID@SMS</role-name>
+    </security-role> 
+    <security-role>
+        <description/>
+        <role-name>webserviceauth</role-name>
     </security-role> 
 </web-app>
