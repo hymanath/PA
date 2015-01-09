@@ -196,13 +196,21 @@
 			</div>
 			<div class="row-fluid " >
 			   <div style="min-height: 300px;background:#ffffff;" class="span12 show-grid well well-small border-radius-0 mb-10 form-inline">
+			  
+			   <div class="span12" style="color:#FF0000;display:none;" id="hintDiv">
+			    <p class="text-success" style="padding: 10px; background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);"><span class="offset1" style="margin-left:50px"><b>Hint : </b> a) If Registered in <b>Tab </b>then TR No. Format :  TR-T-xxxx-xxxxx...</span> <br>  <span class="offset1"> b) If Registered in <b>Web</b> then TR No. Format :  TR-W-xxxx-xxxxx...  </span><br> <span  class="offset1"> c) If Registered in <b>Online</b> then TR No. Format :  TR-O-xxxx-xxxxx... </span></p>
+			   </div>
+			   
 				  <div id="ErrorLDiv" align="center" style="color:#FF0000;" class="span12"></div>
-				  <table  style="margin-left: 270px;margin-top:20px;">
+				  <table  style="margin-left: 270px;margin-top:15px;">
 				    
 				     <tr>
 						 <td> <b> TR NO : </b></td>
 						 <td>  
-						   <input type="text" id="trNumberId" class="levelDtCls form-control border-radius-0 border-right-0 datePickerCls " placeholder="Enter TR No."  ></input>
+						   <input type="text" id="trNumberId" class="levelDtCls form-control border-radius-0 border-right-0 datePickerCls " placeholder="Enter TR No."  ></input> 
+						 </td> 
+						 <td>  
+							<span class="span2" id="hideShowSpanId"> <a href="javascript:{showHideButton(1)}" > <i class="icon-eye-open offset10"  title="Click here for Help ?"></i></a></span>
 						 </td>
 					 </tr>
 					<!-- <tr>
@@ -218,6 +226,7 @@
 					 <td  style="text-align:center"> <input style="margin-top:10px;" type="button" id="locationSubmitBtn" class="btn btn-success" onclick="getTdpCadreDetailsBySearchCriteria();" value="Search Details"/>
 					  <br>
 					 <img id="ajaxImgStyleNew2" style="display:none;margin-left:10px; margin-top:10px;height: 60px;" src="images/Loading-data.gif"/></td>
+					 <td></td>
 					 </tr>
 				  </table>
 				<div id="searchCadreInfoDiv" style="display:none;margin-top:15px;"></div>
@@ -599,7 +608,7 @@ function callScrollingMethod(rsId){
 				str +='<td>'+result.cadreRegistrationVOList[i].previousEnrollmentNumber+'</td>';
 				str +='<td>'+result.cadreRegistrationVOList[i].refNo+'</td>';
 				//str +='<td> <img id="'+result.cadreRegistrationVOList[i].enrollmentNumber+'" src="images/cadre_images/'+result.cadreRegistrationVOList[i].uploadImageFileName+'" width="50px"/></td>';
-				str +='<td>'+result.cadreRegistrationVOList[i].casteName+'</td>';  // dispatch Status
+				str +='<td style="font-weight:bold;">'+result.cadreRegistrationVOList[i].casteName+'</td>';  // dispatch Status
 				
 				str +='</tr>';
 			}			
@@ -613,6 +622,20 @@ function callScrollingMethod(rsId){
 			"aLengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]]
 		});
 		*/
+	}
+	
+	function showHideButton(optionId)
+	{
+		if(optionId ==1)
+		{
+			$('#hintDiv').show();
+			$('#hideShowSpanId').html('<a href="javascript:{showHideButton(0)}" > <i class="icon-eye-close offset10" title="Click here to Close Help ?"></i></a>');
+		}
+		else
+		{
+			$('#hintDiv').hide();
+			$('#hideShowSpanId').html('<a href="javascript:{showHideButton(1)}" > <i class="icon-eye-open offset10" title="Click here for Help ?"></i></a>');
+		}
 	}
 	</script>
 </body>
