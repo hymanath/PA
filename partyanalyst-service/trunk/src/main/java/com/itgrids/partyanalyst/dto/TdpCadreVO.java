@@ -15,14 +15,20 @@ public class TdpCadreVO implements java.io.Serializable
 	private String voterCardNo;
 	private Long voterId;
 	private String mobileNo;
-	private Long consituencyId;
+	private String houseNo;
 	private String imageURL;
 	private String errorStr;
 	private String occupation;
 	private Long totalCount;
+	private Long constituencyId;
 	private String constituency;
+	private Long tehsilId;
 	private String tehsil;
+	private Long localElectionBodyId;
+	private String localElectionBody;
+	private Long panchayatId;
 	private String panchayat;
+	private Long districtId;
 	private String district;
 	private String casteName;
 	private String responseStatus;
@@ -30,6 +36,43 @@ public class TdpCadreVO implements java.io.Serializable
 	
 	private List<TdpCadreVO> tdpCadreDetailsList = new ArrayList<TdpCadreVO>();
 	
+	
+	public Long getLocalElectionBodyId() {
+		return localElectionBodyId;
+	}
+	public void setLocalElectionBodyId(Long localElectionBodyId) {
+		this.localElectionBodyId = localElectionBodyId;
+	}
+	public String getLocalElectionBody() {
+		return localElectionBody;
+	}
+	public void setLocalElectionBody(String localElectionBody) {
+		this.localElectionBody = localElectionBody;
+	}
+	public String getHouseNo() {
+		return houseNo;
+	}
+	public void setHouseNo(String houseNo) {
+		this.houseNo = houseNo;
+	}
+	public Long getTehsilId() {
+		return tehsilId;
+	}
+	public void setTehsilId(Long tehsilId) {
+		this.tehsilId = tehsilId;
+	}
+	public Long getPanchayatId() {
+		return panchayatId;
+	}
+	public void setPanchayatId(Long panchayatId) {
+		this.panchayatId = panchayatId;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
 	public String getDistrict() {
 		return district;
 	}
@@ -150,11 +193,12 @@ public class TdpCadreVO implements java.io.Serializable
 	public void setImageURL(String imageURL) {
 		this.imageURL = imageURL;
 	}
-	public Long getConsituencyId() {
-		return consituencyId;
+	
+	public Long getConstituencyId() {
+		return constituencyId;
 	}
-	public void setConsituencyId(Long consituencyId) {
-		this.consituencyId = consituencyId;
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
 	}
 	public Long getId() {
 		return id;
