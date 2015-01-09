@@ -9280,6 +9280,11 @@
 				<param name="root">trNo</param>
 			</result>
 		</action>
+		
+		<action name="publicMembershipCardStatusAction" class="tdpCadreVolunteerAction">
+			<result name="success">/jsp/publicMembershipCardStatus.jsp</result>
+		</action>
+		
 		<action name="getInchargeEnquiryInfo" class="tdpCadreReportAction" method="getEnquiryInfo">
 			<result type="json" name="success">
 				<param name="root">cadreIVRResponseVO</param>
