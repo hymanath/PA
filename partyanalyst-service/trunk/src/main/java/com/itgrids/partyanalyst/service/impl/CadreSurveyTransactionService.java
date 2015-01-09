@@ -1012,7 +1012,7 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 					
 					cadreRegistrationVO.setEnrollmentNumber(tdpCadre[10] != null ?Long.valueOf(tdpCadre[10].toString().trim()):0L); // tdpcadreId
 					
-					cadreRegistrationVO.setPreviousEnrollmentNumber(tdpCadre[0] != null ?tdpCadre[0].toString():"");					
+					cadreRegistrationVO.setPreviousEnrollmentNumber(tdpCadre[0] != null ?tdpCadre[0].toString().trim().substring(4):"");					
 					cadreRegistrationVO.setRefNo(tdpCadre[1] != null ?tdpCadre[1].toString():" -- ");	
 					
 					String firstName = tdpCadre[2] != null ? tdpCadre[2].toString().trim() :"";
