@@ -61,4 +61,8 @@ public interface ITdpCadreReportService {
 	 
 	 public CadreIVRResponseVO getLocationWiseEnquiryInfo(String locationLvl,Long locationValue,Long userId,String resultType);
 	 public List<BasicVO> getAccessLocationValues(String accessType,Long accessValue);
+     public CadreIVRResponseVO getIvrPreviousCallBasicInfo(Date startDate,Date endDate);
+     public List<String> getPreviousPollsAvailableDates();
+     public CadreIVRResponseVO getIvrPreviousCallInfo(String type,Date startDate,Date toDate);
+     
 }
