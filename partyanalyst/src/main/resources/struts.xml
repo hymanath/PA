@@ -9285,5 +9285,15 @@
 				<param name="root">cadreIVRResponseVO</param>
 			</result>
 		</action>
+		<action name="getIvrPreviousCallBasicInfoAction" class="tdpCadreReportAction" method="getIvrPreviousCallBasicInfo">
+			<result type="json" name="success">
+				<param name="root">cadreIVRResponseVO</param>
+			</result>
+		</action>
+		<action name="getAvailableDatesAction" class="tdpCadreReportAction" method="getAvailableDates">
+			<result type="json" name="success">
+				<param name="root">jobCodes</param>
+			</result>
+		</action>
 </package>
 </struts>      

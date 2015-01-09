@@ -881,4 +881,46 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getIvrPreviousCallBasicInfo()
+	{
+		try{
+			jobj = new JSONObject(getTask());
+			Date startDate = null;
+			 Date endDate = null;
+			 String fromDate = jobj.getString("fromDate");
+			 String toDate = jobj.getString("toDate");
+			 
+				 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				 if(fromDate.trim().length() > 0){
+					 startDate = format.parse(fromDate.trim());
+				 }
+				 if(toDate.trim().length() > 0){
+				     endDate = format.parse(toDate.trim());
+				 }
+				 if(jobj.getString("task").equalsIgnoreCase("previousCallsCnt"))
+				 cadreIVRResponseVO = tdpCadreReportService.getIvrPreviousCallBasicInfo(startDate,endDate);
+				 else if(jobj.getString("task").equalsIgnoreCase("previousCallsData"))
+				 {
+					 cadreIVRResponseVO = tdpCadreReportService.getIvrPreviousCallInfo(jobj.getString("locationType"),startDate,endDate);
+				 }
+					 
+			}
+		catch(Exception e)
+		{
+			LOG.info("Entered into getIvrPreviousCallBasicInfo()",e);	
+		}
+		return Action.SUCCESS;
+	}
+	public String getAvailableDates()
+	{
+		try{
+			jobCodes = tdpCadreReportService.getPreviousPollsAvailableDates();
+		}
+		catch(Exception e)
+		{
+			LOG.info("Entered into getAvailableDates()",e);	
+		}
+		return Action.SUCCESS;
+	}
 }
