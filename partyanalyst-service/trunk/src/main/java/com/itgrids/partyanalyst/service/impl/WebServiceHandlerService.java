@@ -28,13 +28,13 @@ import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreTravelsVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
-import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.FlagVO;
 import com.itgrids.partyanalyst.dto.PanchayatCountVo;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
@@ -47,6 +47,7 @@ import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.VoterBoothActivities;
 import com.itgrids.partyanalyst.model.VoterTag;
 import com.itgrids.partyanalyst.security.PBKDF2;
+import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.ILoginService;
@@ -98,6 +99,13 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     @Autowired IUserSurveyBoothsDAO userSurveyBoothsDAO ;
     @Autowired ICadreRegistrationService cadreRegistrationService;
     @Autowired ITdpCadreDAO tdpCadreDAO;
+    private ICadreDetailsService cadreDetailsService;
+    
+    
+	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
+		this.cadreDetailsService = cadreDetailsService;
+	}
+
 	public IVoterBoothActivitiesDAO getVoterBoothActivitiesDAO() {
 		return voterBoothActivitiesDAO;
 	}
@@ -1140,11 +1148,33 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	{
 		String returnStr ="";
 		try{
+			/*
 			String mobile = tdpCadreDAO.getMobileNoByMemberShipNo(memberShipNo);
 			if(mobile!= null)
 				returnStr = mobile;
 			else
 				returnStr = "MobileNo not available";
+			*/
+			String mobileNo = "";
+			TdpCadreVO tdpCadreVO = cadreDetailsService.searchTdpCadreDetailsBySearchCriteriaForCommitte(0L, 0L, "", memberShipNo, "", "", "", 0L, "");;
+			if(tdpCadreVO != null)
+			{
+				if(tdpCadreVO.getTdpCadreDetailsList() != null && tdpCadreVO.getTdpCadreDetailsList().size()>0)
+				{
+					TdpCadreVO cadreVO = tdpCadreVO.getTdpCadreDetailsList().get(0);
+					if(cadreVO != null)
+					{
+						mobileNo = cadreVO.getMobileNo();
+					}					
+				}				
+			}
+			
+			if(mobileNo!= null && mobileNo.trim().length()>0)
+				returnStr = mobileNo;
+			else
+				returnStr = "MobileNo not available";
+			
+			
 		}
 		catch(Exception e)
 		{
@@ -1158,14 +1188,56 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	{
 		
 		CadreAddressVO cadreAddressVO = new CadreAddressVO();
-		List<Object[]> list = null;
+		//List<Object[]> list = null;
 		try{
+			/*
 			if(address.equalsIgnoreCase("true"))
 				list = tdpCadreDAO.getMemberAddressByMembershipNo(memberShipNo);
 			else if(address.equals(null) || address.equalsIgnoreCase("false") )
 				list = tdpCadreDAO.getMemberDataByMembershipNo(memberShipNo);
 			cadreAddressVO = setMemberData(list,address);
 			
+			 */			
+			TdpCadreVO tdpCadreVO = cadreDetailsService.searchTdpCadreDetailsBySearchCriteriaForCommitte(0L, 0L, "", memberShipNo, "", "", "", 0L, "");
+			if(address != null && memberShipNo != null)
+			{
+				if(address.equalsIgnoreCase("true"))
+				{
+					if(tdpCadreVO != null && tdpCadreVO.getTdpCadreDetailsList() != null && tdpCadreVO.getTdpCadreDetailsList().size()>0)
+					{
+						for (TdpCadreVO cadreVO : tdpCadreVO.getTdpCadreDetailsList()) 
+						{
+							cadreAddressVO.setName(cadreVO.getCadreName());
+							cadreAddressVO.setMobileNo(cadreVO.getMobileNo());
+							cadreAddressVO.setAge(cadreVO.getAge());
+							cadreAddressVO.setGender(cadreVO.getGender());
+							if(address.equalsIgnoreCase("true"))
+							{
+								
+								String str = "";
+								String district =  cadreVO.getDistrict().trim();
+								String constituency =  cadreVO.getConstituency().trim();
+								String tehsil =  cadreVO.getTehsil().trim();
+								String panchayat =  cadreVO.getPanchayat().trim();
+								String localbody =  cadreVO.getLocalElectionBody().trim();
+								
+								if(!district.isEmpty())
+									str += "District : " + district;
+								if(!constituency.isEmpty())
+									str += " , Constituency : " +constituency;
+					            if(!tehsil.isEmpty())
+					            	str+=" , Mandal : " +tehsil;
+								else if(!localbody.isEmpty())
+									str+=" , Muncipality : " +localbody;
+					            if(!panchayat.isEmpty())
+					            	str+=" , Panchayat : " +panchayat;
+					          
+								cadreAddressVO.setAddress(str.toString());
+							}
+						}
+					}
+				}
+			}
 		}
 		catch(Exception e)
 		{
