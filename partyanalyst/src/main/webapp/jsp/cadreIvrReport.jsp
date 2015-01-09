@@ -94,7 +94,7 @@ textarea {
 		</div><!-- Title Row End-->
 		
 		<!-- Filters Row -->
-		<div><button type="button" value="" style="margin-top: -31px; margin-left: 0px;" class="btn btn-medium btn-success border-radius-0 pull-right" onclick="openPopupWindow();">Click to view Previous Calls Info</button></div>
+		<div><button type="button" value="" style="margin-top: -31px; margin-left: 0px;display:none;" class="btn btn-medium btn-success border-radius-0 pull-right" onclick="openPopupWindow();">Click to view Previous Calls Info</button></div>
 		<div id="fadeInDown" class="row-fluid">
 		
 			<div class="span12 well well-small  border-radius-0 mb-10 ">
