@@ -1958,24 +1958,25 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 							{
 								 Object[] cadre = cadreList.get(i);					
 								 Paragraph paragraph = new Paragraph();
-
-								 Chunk chunk1 = new Chunk("Name : ",subFont);
+								 
+								 Chunk chunk5 = new Chunk("To , \n",subFont);
+								 Chunk chunk6 = new Chunk(cadre[3] != null ? cadre[3].toString().trim():"", normalFont);
+								 Chunk chunk1 = new Chunk("\nName : ",subFont);
 								 Chunk chunk2 = new Chunk(cadre[0] != null ? cadre[0].toString().trim():"", normalFont);
 								 Chunk chunk3 = new Chunk("\nC/O  : ",subFont);
 								 Chunk chunk4 = new Chunk(cadre[1] != null ? cadre[1].toString().trim()+"\n":"\n", normalFont);
-								 Chunk chunk5 = new Chunk("Address : \n",subFont);
-								 Chunk chunk6 = new Chunk(cadre[3] != null ? cadre[3].toString().trim():"", normalFont);
+								
 								 Chunk chunk7 = new Chunk("\n\nMobile No : ",subFont);
 								 Chunk chunk8 = new Chunk(cadre[4] != null ? cadre[4].toString().trim():"", normalFont);
-								 Chunk chunk9 = new Chunk("     Membership Id  : ",subFont);
+								 Chunk chunk9 = new Chunk("    Ref No  : ",subFont);
 								 Chunk chunk10 = new Chunk(cadre[2] != null ? cadre[2].toString().trim():"", redFont);
 								 
+								 paragraph.add(chunk5);
+								 paragraph.add(chunk6);
 								 paragraph.add(chunk1);
 								 paragraph.add(chunk2);
 								 paragraph.add(chunk3);
-								 paragraph.add(chunk4);
-								 paragraph.add(chunk5);
-								 paragraph.add(chunk6);
+								 paragraph.add(chunk4);								
 								 paragraph.add(chunk7);
 								 paragraph.add(chunk8);
 								 paragraph.add(chunk9);
@@ -1994,23 +1995,25 @@ public class CadreSurveyTransactionService implements ICadreSurveyTransactionSer
 					            	 	Object[] cadre1 = cadreList.get(i);
 					            	 	Paragraph paragraph1 = new Paragraph();
 
-										 Chunk chunk11 = new Chunk("Name : ",subFont);
+					            	 	 Chunk chunk51 = new Chunk("To, \n",subFont);
+										 Chunk chunk61 = new Chunk(cadre1[3] != null ? cadre1[3].toString().trim():"", normalFont);
+										 Chunk chunk11 = new Chunk("\nName : ",subFont);
 										 Chunk chunk21 = new Chunk(cadre1[0] != null ? cadre1[0].toString().trim():"", normalFont);
 										 Chunk chunk31 = new Chunk("\nC/O  : ",subFont);
 										 Chunk chunk41 = new Chunk(cadre1[1] != null ? cadre1[1].toString().trim()+"\n":"\n", normalFont);
-										 Chunk chunk51 = new Chunk("Address : \n",subFont);
-										 Chunk chunk61 = new Chunk(cadre1[3] != null ? cadre1[3].toString().trim():"", normalFont);
+										
 										 Chunk chunk71 = new Chunk("\n\nMobile No : ",subFont);
 										 Chunk chunk81 = new Chunk(cadre1[4] != null ? cadre1[4].toString().trim():"", normalFont);
-										 Chunk chunk91 = new Chunk("     Membership Id  : ",subFont);
+										 Chunk chunk91 = new Chunk("     Ref No  : ",subFont);
 										 Chunk chunk101 = new Chunk(cadre1[2] != null ? cadre1[2].toString().trim():"", redFont);
 										 
+										 paragraph1.add(chunk51);
+										 paragraph1.add(chunk61);
 										 paragraph1.add(chunk11);
 										 paragraph1.add(chunk21);
 										 paragraph1.add(chunk31);
 										 paragraph1.add(chunk41);
-										 paragraph1.add(chunk51);
-										 paragraph1.add(chunk61);
+										 
 										 paragraph1.add(chunk71);
 										 paragraph1.add(chunk81);
 										 paragraph1.add(chunk91);
