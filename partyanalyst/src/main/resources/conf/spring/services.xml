@@ -2471,5 +2471,12 @@
 		 <property name="tdpCadreDAO" ref="tdpCadreDAO"/>
 	</bean>
 	
+	<bean name="cadreCommitteeService"  class="com.itgrids.partyanalyst.service.impl.CadreCommitteeService">
+		 <property name="tdpCadreDAO" ref="tdpCadreDAO"/>
+		 <property name="constituencyDAO" ref="constituencyDAO"/>
+		 <property name="tehsilDAO" ref="tehsilDAO"/>
+		 <property name="localElectionBodyDAO" ref="localElectionBodyDAO"/>
+		 <property name="panchayatDAO" ref="panchayatDAO"/>
+	</bean>
 </beans>		
 	
