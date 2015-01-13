@@ -9300,5 +9300,10 @@
 				<param name="root">jobCodes</param>
 			</result>
 		</action>
+		
+		<action name="cadreCommitteeAction" class="cadreCommitteeAction">
+			<result name="success">/jsp/cadreCommittee.jsp</result>
+		</action>
+		
 </package>
 </struts>      

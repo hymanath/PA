@@ -18,7 +18,17 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private HttpSession 						session;
 	private ICadreCommitteeService   		 	cadreCommitteeService;
 	private CadreCommitteeVO 					cadreCommitteeVO;
+	private Long 								tdpCadreId;
 	
+	
+	public Long getTdpCadreId() {
+		return tdpCadreId;
+	}
+
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
+
 	public CadreCommitteeVO getCadreCommitteeVO() {
 		return cadreCommitteeVO;
 	}
@@ -43,8 +53,10 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 			this.cadreCommitteeService = cadreCommitteeService;
 	}
 	
+	
 	public String execute()
 	{
+		//cadreCommitteeVO = cadreCommitteeService.getCadreDetailsByTdpCadreId(tdpCadreId);
 		return Action.SUCCESS;
 	}
 }
