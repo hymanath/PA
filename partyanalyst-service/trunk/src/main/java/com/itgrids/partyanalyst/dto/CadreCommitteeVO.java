@@ -33,6 +33,7 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private Long committeeTypeId;
 	private Long committeeId;
 	private Long roleId;
+	private String role;
 	
 	private Long electionTypeId;
 	private Long electioinYearId;
@@ -42,6 +43,14 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private String imageURL;
 	List<CadreCommitteeVO> previousRoles = new ArrayList<CadreCommitteeVO>();
 	List<CadreCommitteeVO> previousElections = new ArrayList<CadreCommitteeVO>();
+	
+	
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
 	public Long getTdpCadreId() {
 		return tdpCadreId;
 	}
