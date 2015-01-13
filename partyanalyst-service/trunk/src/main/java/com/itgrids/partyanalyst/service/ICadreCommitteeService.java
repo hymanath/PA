@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.service;
 
-public interface ICadreCommitteeService {
+import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 
+public interface ICadreCommitteeService {
+	public CadreCommitteeVO getCadreDetailsByTdpCadreId(Long tdpCadreId);
 }

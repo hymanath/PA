@@ -33,4 +33,14 @@ public class CadrePreviousRolesDAO extends GenericDaoHibernate<CadrePreviousRole
 				
 		return query.list();		
 	}
+	
+	public List<Object[]> getexistingRolesForTdpCadreByTdpCadreIdForCommittee(Long tdpCadreId)
+	{
+		
+		Query query = getSession().createQuery(" select model.cadreCommitteeRole.cadreRolesId, date(model.fromDate), date(model.toDate) ,model.cadreCommitteeRole.cadreRoles.role  from CadrePreviousRoles model  where " +
+				"  model.tdpCadreId = :tdpCadreId and model.isDeleted = 'N' order by  model.cadrePreviousRolesId ");
+		query.setParameter("tdpCadreId", tdpCadreId);
+				
+		return query.list();		
+	}
 }

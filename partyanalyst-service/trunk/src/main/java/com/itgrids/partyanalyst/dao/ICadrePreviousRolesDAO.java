@@ -12,4 +12,5 @@ public interface ICadrePreviousRolesDAO extends GenericDao<CadrePreviousRoles, L
 	
 	public List<Object[]> getexistingRolesForTdpCadreByTdpCadreId(Long tdpCadreId);
 	
+	public List<Object[]> getexistingRolesForTdpCadreByTdpCadreIdForCommittee(Long tdpCadreId);
 }
