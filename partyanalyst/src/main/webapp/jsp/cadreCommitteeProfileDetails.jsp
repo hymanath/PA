@@ -80,18 +80,38 @@
 					<input type="text" id="disabledInput" class="form-control  editClass"  value="${cadreCommitteeVO.mobileType}" placeholder="Mobile Type: Smart Mobile" disabled>
 				</div>
 				-->
+				
+				<!--
 				<div class="col-md-4   col-sm-6 col-xs-6 form-group">
-					<input type="text" id="disabledInput" class="form-control  editClass" value="${cadreCommitteeVO.casteName}" placeholder="Caste: BC -caste Name" disabled>
+					<input type="text" id="disabledInput" class="form-control" value="${cadreCommitteeVO.casteName}" placeholder="Caste: BC -caste Name" disabled>
 				</div>
+				-->
+				
+				<div class="col-md-4   col-sm-6 col-xs-6 form-group">
+					<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level editClass" id="casteId" list="cadreCommitteeVO.casteList" listKey="casteStateId" listValue="casteName" headerKey="0" headerValue=" Select Caste " style="width:420px;height:35px;" name="cadreRegistrationVO.casteId"   value="%{cadreCommitteeVO.casteStateId}" disabled="true"/>	
+				</div>
+				
 				<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group">
 					<input type="text" id="disabledInput" class="form-control editClass"  value="${cadreCommitteeVO.address}" placeholder="Address: " disabled>
 				</div>
+								
+				<!--
 				<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 form-group">
-					<input type="text" id="disabledInput" class="form-control  editClass"  value="${cadreCommitteeVO.education}" placeholder="Education: " disabled>
+					<input type="text" id="disabledInput" class="form-control" value="${cadreCommitteeVO.education}" placeholder="Education: " disabled>
 				</div>
+				-->
+				<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 form-group">
+					<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level editClass" id="educationId" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Education " style="width:420px;height:35px;" name="cadreRegistrationVO.educationId" value="%{cadreCommitteeVO.educationId}" disabled="true"/>
+				</div>
+				<!--
 				<div class="col-md-4   col-sm-6 col-xs-6 form-group">
-					<input type="text" id="disabledInput" class="form-control  editClass" value="${cadreCommitteeVO.occupation}"  placeholder="Occupation:" disabled>
+					<input type="text" id="disabledInput" class="form-control" value="${cadreCommitteeVO.occupation}"  placeholder="Occupation:" disabled>
 				</div>
+				-->
+				<div class="col-md-4 col-sm-6 col-xs-6 form-group">
+					<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level editClass" id="educationId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Occupation " style="width:420px;height:35px;" name="cadreRegistrationVO.occupationId" value="%{cadreCommitteeVO.occupationId}" disabled="true"/>
+				</div>
+				
 				<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group">
 					<input type="text" id="disabledInput" class="form-control  editClass" value="${cadreCommitteeVO.emailId}"  placeholder="E-Mail ID: " disabled>
 				</div>
@@ -206,7 +226,7 @@
 		
 		$('document').ready(function(){
 			 $('#dateOfBirth').datepicker({
-					dateFormat: 'dd-mm-yy',
+				dateFormat: 'yy-mm-dd',
 				maxDate: new Date(),
 				changeMonth: true,
 				changeYear: true,
