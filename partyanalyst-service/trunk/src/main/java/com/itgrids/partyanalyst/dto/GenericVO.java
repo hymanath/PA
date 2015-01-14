@@ -38,9 +38,15 @@ public class GenericVO implements Serializable, Comparable<GenericVO>{
    private Long voterRelationType;
    private Long aadhireNo;
    private String referenceNo;
+   private List<String> ageRangeList = new ArrayList<String>();
    
    
-   
+	public List<String> getAgeRangeList() {
+	return ageRangeList;
+	}
+	public void setAgeRangeList(List<String> ageRangeList) {
+		this.ageRangeList = ageRangeList;
+	}
 	public String getReferenceNo() {
 		return referenceNo;
 	}

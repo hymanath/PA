@@ -33,10 +33,16 @@ public class TdpCadreVO implements java.io.Serializable
 	private String casteName;
 	private String responseStatus;
 	private String responseCode;
-	
+	private String aadharNo;
 	private List<TdpCadreVO> tdpCadreDetailsList = new ArrayList<TdpCadreVO>();
 	
 	
+	public String getAadharNo() {
+		return aadharNo;
+	}
+	public void setAadharNo(String aadharNo) {
+		this.aadharNo = aadharNo;
+	}
 	public Long getLocalElectionBodyId() {
 		return localElectionBodyId;
 	}
