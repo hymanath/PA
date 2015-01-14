@@ -129,7 +129,11 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				cadreCommitteeVO.setMemberShipCardId(tdpCadre.getMemberShipNo().substring(4));
 				cadreCommitteeVO.setAge(tdpCadre.getAge().toString());
 				cadreCommitteeVO.setGender(tdpCadre.getGender());
-				cadreCommitteeVO.setDOB(format.format(new SimpleDateFormat("yyyy-dd-MM").parse(tdpCadre.getDateOfBirth().toString().substring(0, 10))));
+				try {
+					cadreCommitteeVO.setDOB(format.format(new SimpleDateFormat("yyyy-dd-MM").parse(tdpCadre.getDateOfBirth().toString().substring(0, 10))));
+				} catch (Exception e) {
+					cadreCommitteeVO.setDOB(format.format(tdpCadre.getDateOfBirth()));
+				}
 				cadreCommitteeVO.setMobileType("");
 				cadreCommitteeVO.setMobileNo(tdpCadre.getMobileNo());
 				cadreCommitteeVO.setAdhaarNo(tdpCadre.getAadheerNo());
@@ -197,7 +201,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						{
 							vo.setConstituency(constituencyDAO.get(participation[1] != null ? Long.valueOf(participation[1].toString()):0L).getName());
 						}
-						
+						vo.setConstituencyId(participation[1] != null ? Long.valueOf(participation[1].toString()):0L);
 						returnList.add(vo);
 					}
 				}
