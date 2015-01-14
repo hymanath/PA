@@ -38,7 +38,7 @@ public class VoterAgeRangeDAO extends GenericDaoHibernate<VoterAgeRange, Long> i
 	@SuppressWarnings("unchecked")
 	public List<VoterAgeRange> getVoterAgeRangeList()
 	{
-		return getHibernateTemplate().find("from VoterAgeRange model ");
+		return getHibernateTemplate().find("from VoterAgeRange model order by model.minValue asc ");
 	}
 	
 }
