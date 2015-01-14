@@ -61,7 +61,7 @@ public class CommonUtilsService {
 			if(memberShipNo == null || memberShipNo.trim().isEmpty() || memberShipNo.toString().trim().length() <= 7)
 				return false; 
 			
-			TdpCadreVO tdpCadreVO = cadreDetailsService.searchTdpCadreDetailsBySearchCriteriaForCommitte(0L, 0L, "", memberShipNo, "", "", "", 0L, "");
+			TdpCadreVO tdpCadreVO = cadreDetailsService.searchTdpCadreDetailsBySearchCriteriaForCommitte(0L, 0L, "", memberShipNo, "", "", "", 0L, "",null,null,null,null);
 			if(tdpCadreVO != null)
 			{
 				if(tdpCadreVO.getTdpCadreDetailsList() != null && tdpCadreVO.getTdpCadreDetailsList().size()>0)
