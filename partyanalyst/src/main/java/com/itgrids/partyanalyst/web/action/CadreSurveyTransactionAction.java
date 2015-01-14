@@ -128,7 +128,7 @@ public class CadreSurveyTransactionAction extends ActionSupport implements Servl
 				return Action.INPUT;
 			
 			
-			surveyTransactionVO = cadreSurveyTransactionService.getCadreSurveyTransactionDetails(null);
+		//	surveyTransactionVO = cadreSurveyTransactionService.getCadreSurveyTransactionDetails(null);
 			//surveyTransactionReportVO = cadreSurveyTransactionService.getBasicTransactionDetails();
 			
 		} catch (Exception e) {
@@ -180,7 +180,7 @@ public class CadreSurveyTransactionAction extends ActionSupport implements Servl
 			
 			jObj = new JSONObject(getTask());
 			String searchDate = jObj.getString("searchDate");			
-			surveyTransactionVO = cadreSurveyTransactionService.getCadreSurveyTransactionDetails(searchDate);	
+			//surveyTransactionVO = cadreSurveyTransactionService.getCadreSurveyTransactionDetails(searchDate);	
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getDateWiseDashboardReport() in CadreSurveyTransactionAction class.", e);
@@ -208,7 +208,7 @@ public class CadreSurveyTransactionAction extends ActionSupport implements Servl
 			jObj = new JSONObject(getTask());
 			String fromDate = jObj.getString("fromDate");
 			String toDate = jObj.getString("toDate");
-			surveyTransactionVO = cadreSurveyTransactionService.getDayWiseReportByDates(fromDate,toDate);
+			//surveyTransactionVO = cadreSurveyTransactionService.getDayWiseReportByDates(fromDate,toDate);
 		} catch (Exception e) {
 			LOG.error("Exception occured in getDayWiseReportByDates() in CadreSurveyTransactionAction class.", e);
 		}
@@ -230,7 +230,7 @@ public class CadreSurveyTransactionAction extends ActionSupport implements Servl
 					locationIdList.add(Long.valueOf(locationIdsArr.get(i).toString()));
 				}
 			}
-			surveyTransactionVO = cadreSurveyTransactionService.getLocationWiseTransactionDetails(fromDate,toDate,searchType,locationIdList);
+			//surveyTransactionVO = cadreSurveyTransactionService.getLocationWiseTransactionDetails(fromDate,toDate,searchType,locationIdList);
 		} catch (Exception e) {
 			LOG.error("Exception occured in getLocationWiseTransactionReport() in CadreSurveyTransactionAction class.", e);
 		}
