@@ -183,3 +183,139 @@
 		str+='</div>';
 		$('#addMoreRolesDiv').append(str);
 	}
+	
+	function getCadreCommitteDetails(levelId,divId)
+	{
+		$('#'+divId+'').find('option').remove();
+		$('#'+divId+'').append('<option value="0"> Select Committee </option>');
+		
+		var jsObj = 
+		   {
+				levelId : levelId,
+				task:"getCadreCommitteDetails"             
+		   }				   
+		   $.ajax({
+				type : "POST",
+				url : "getCadreCommitteDetailsAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				for(var i in result)
+				{
+					$('#'+divId+'').append('<option value="'+result[i].id+'"> '+result[i].name+' </option>');
+				}
+			});
+	}
+
+	function getCadreCommitteRoles(committeeId,buildDivId,divId)
+	{
+		var levelId = $('#'+divId+'').val();
+		
+		$('#'+buildDivId+'').find('option').remove();
+		$('#'+buildDivId+'').append('<option value="0"> Select Role </option>');
+		
+		
+		var jsObj = 
+		   {
+				levelId : levelId,
+				committeeId : committeeId,
+				task:"getCadreCommitteRoles"             
+		   }				   
+		   $.ajax({
+				type : "POST",
+				url : "getCadreCommitteRolesAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				for(var i in result)
+				{
+					$('#'+buildDivId+'').append('<option value="'+result[i].id+'"> '+result[i].name+' </option>');
+				}
+			});
+	}
+	
+	function getElectionYears(id,divId)
+	{
+		var jsObj = 
+			   {			
+				  eletionTypeId : id,
+				  task          : "getConstituncyWiseDetails"             
+			   }				   
+			   $.ajax({
+					type : "POST",
+					url : "getElectionYearsByElectionType.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+						$('#'+divId+'').html('');
+						$('#'+divId+'').append('<option value="0"> Select Election </option>');
+						if(result != null && result.length >0)
+						{
+							for(var i in result)
+							{
+								$('#'+divId+'').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');		
+							}
+						}
+				});
+	}
+
+	function getConstiteuncyListForElection(eletionId,constiListId)
+	{
+			$('#loadingImg').show();
+			
+			$('#'+constiListId+'').find('option').remove();
+			$('#'+constiListId+'').append('<option value="0"> Select Location </option>');
+			
+			var jsObj = 
+			   {			
+				  electionId : eletionId,
+				  constituencyId : 282,
+				  task       : "getConstiteuncyListForElection"             
+			   }				   
+			   $.ajax({
+					type : "POST",
+					url : "getConstiteuncyListForElectionAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+
+					$('#loadingImg').hide();
+					if(result != null)
+					{
+						for(var i in result)
+						{
+							$('#'+constiListId+'').append('<option value="'+result[i].id+'"> '+result[i].name+' </option>');
+						}
+					}					
+				});
+	}
+	
+	function clearDiv(divId)
+	{
+		 var where_to= confirm("Are you want remove it?");
+		 if (where_to== true)
+			 $('#'+divId+'').html('');		
+	}
+	function submitCadreForm()
+	{	
+	    $("#submitCadreFormBtnReqId").removeAttr("onclick");
+	   $("#submitCadreFormBtnReqId").attr("disabled","disabled");
+		//if(validateDetails())
+		//{
+			/*	if(!isNumber()){
+				
+					$('html,body').animate({
+					scrollTop:  $("#casteIdValue").offset().top 
+					});
+					return false;
+				}*/
+
+				var uploadHandler = {
+						upload: function(o) {
+							uploadResult = o.responseText;
+							console.log(uploadResult);
+							//showUploadStatus(uploadResult);	
+						}
+					};
+
+				YAHOO.util.Connect.setForm('uploadCadreForm',true);
+				YAHOO.util.Connect.asyncRequest('POST','tdpCadreSaveRegistrationAction.action',uploadHandler);
+		//}		
+	}
+	
