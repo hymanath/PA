@@ -139,6 +139,7 @@
         <pattern>/cadreIvrEnquiryAction*</pattern>
         <pattern>/publicMembershipCardStatusAction*</pattern>
 		 <pattern>/cadreCommitteeAction*</pattern>
+		 <pattern>/cadreProfileDetailsAction*</pattern>
  	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
