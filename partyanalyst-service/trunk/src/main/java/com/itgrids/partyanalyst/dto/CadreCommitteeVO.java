@@ -24,6 +24,7 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private String casteCategory;
 	private Long casteStateId;
 	private String casteName;
+	private Long constituencyId;
 	private String constituency;
 	private String tehsil;
 	private String localElectionBody;
@@ -49,7 +50,12 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	List<CadreCommitteeVO> previousElections = new ArrayList<CadreCommitteeVO>();
 	List<CadreCommitteeVO> casteList = new ArrayList<CadreCommitteeVO>();
 	
-	
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
 	public List<CadreCommitteeVO> getCasteList() {
 		return casteList;
 	}
