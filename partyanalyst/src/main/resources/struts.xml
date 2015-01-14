@@ -9305,5 +9305,10 @@
 			<result name="success">/jsp/cadreCommittee.jsp</result>
 		</action>
 		
+		<action name="getCommitteLocationsAction" class="cadreCommitteeAction" method="getCommitteLocations">
+			<result type="json" name="success">
+				<param name="root">locations</param>
+			</result>
+		</action>
 </package>
 </struts>      

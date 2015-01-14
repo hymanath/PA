@@ -1841,11 +1841,58 @@
 	 <bean id="cadreIVREnquiryDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreIVREnquiryDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
 	 <bean id="tdpCadreImageSinkDataDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreImageSinkDataDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
 	<bean id="tdpCadreHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreHistoryDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="tdpCommitteeTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCommitteeTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="tdpCommitteeLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCommitteeLevelDAO" >
+	    <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="tdpBasicCommitteeDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpBasicCommitteeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="tdpCommitteeDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCommitteeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="tdpRolesDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpRolesDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="tdpCommitteeRoleDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCommitteeRoleDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="tdpCommitteeEnrollmentDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCommitteeEnrollmentDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="tdpCommitteeMemberDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCommitteeMemberDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
+			
+	<bean id="tdpCommitteeDesignationDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCommitteeDesignationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="tdpCommitteeElectrolsDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCommitteeElectrolsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="tdpCommitteeElectrolRolesDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCommitteeElectrolRolesDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!--  end -->
 </beans>		
