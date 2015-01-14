@@ -286,7 +286,7 @@ public class WebServiceHandler2 {
 		return cadreSurveyTransactionService.saveReconciliationData(inputVo);
 		
 	}
-	@POST
+	/*@POST
 	@Path("/generateOTPCadreTxn")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -310,7 +310,7 @@ public class WebServiceHandler2 {
 	{
 		return cadreSurveyTransactionService.validateOTPForMobile(inputVo);
 	}
-	
+	*/
 		
 	/*@POST
 	@Path("/storeReconciliationFailureData")
