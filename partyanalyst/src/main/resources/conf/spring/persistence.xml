@@ -537,7 +537,19 @@
 				<value>com.itgrids.partyanalyst.model.TdpCadreTravelInfo</value>					
 				<value>com.itgrids.partyanalyst.model.CadreIVREnquiry</value>	
 				<value>com.itgrids.partyanalyst.model.TdpCadreImageSinkData</value>	
-				<value>com.itgrids.partyanalyst.model.TdpCadreHistory</value>			
+				<value>com.itgrids.partyanalyst.model.TdpCadreHistory</value>
+				
+				<value>com.itgrids.partyanalyst.model.TdpCommitteeType</value>
+				<value>com.itgrids.partyanalyst.model.TdpCommitteeLevel</value>
+				<value>com.itgrids.partyanalyst.model.TdpBasicCommittee</value>
+				<value>com.itgrids.partyanalyst.model.TdpCommittee</value>
+				<value>com.itgrids.partyanalyst.model.TdpRoles</value>
+				<value>com.itgrids.partyanalyst.model.TdpCommitteeRole</value>
+				<value>com.itgrids.partyanalyst.model.TdpCommitteeEnrollment</value>
+				<value>com.itgrids.partyanalyst.model.TdpCommitteeMember</value>			
+				<value>com.itgrids.partyanalyst.model.TdpCommitteeDesignation</value>
+				<value>com.itgrids.partyanalyst.model.TdpCommitteeElectrols</value>
+				<value>com.itgrids.partyanalyst.model.TdpCommitteeElectrolRoles</value>						
 				</list>
 			
 		</property>

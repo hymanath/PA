@@ -2477,6 +2477,7 @@
 		 <property name="tehsilDAO" ref="tehsilDAO"/>
 		 <property name="localElectionBodyDAO" ref="localElectionBodyDAO"/>
 		 <property name="panchayatDAO" ref="panchayatDAO"/>
+		 <property name="regionServiceDataImp" ref="regionServiceDataImp"/>
 	</bean>
 </beans>		
 	
