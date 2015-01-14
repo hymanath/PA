@@ -7,32 +7,142 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
+import com.itgrids.partyanalyst.dto.CasteDetailsVO;
+import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
+import com.itgrids.partyanalyst.service.ICadreDetailsService;
+import com.itgrids.partyanalyst.service.ICadreRegistrationService;
+import com.itgrids.partyanalyst.service.ICandidateUpdationDetailsService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ITdpCadreReportService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class CadreCommitteeAction   extends ActionSupport implements ServletRequestAware{
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1333940914727615961L;
 	private static final Logger         		LOG = Logger.getLogger(CadreCommitteeAction.class);
 	private HttpServletRequest         			request;
 	private HttpSession 						session;
 	private ICadreCommitteeService   		 	cadreCommitteeService;
+	private ICadreDetailsService 				cadreDetailsService;
+	private IStaticDataService					staticDataService;
+	private ICandidateUpdationDetailsService 	candidateUpdationDetailsService;
+	private ICadreRegistrationService			cadreRegistrationService;
 	private CadreCommitteeVO 					cadreCommitteeVO;
+	private TdpCadreVO							tdpCadreVO;
 	private Long 								tdpCadreId;
+	private JSONObject							jObj;
+	private String 								task;
+	private List<String>						ageRangeList;
+	private List<GenericVO>						genericVOList;
+	private List<SelectOptionVO>				selectOptionVOList;
+	private List<SelectOptionVO>				eletionTypesList;
+	private List<SelectOptionVO>				cadreRolesVOList;
+	private List<CasteDetailsVO>				casteDetailsVo;	
+	
 	private ITdpCadreReportService              tdpCadreReportService;
 	private List<LocationWiseBoothDetailsVO>    locations;
 	private List<BasicVO>                       constituencies;
 	
+	
+	public List<CasteDetailsVO> getCasteDetailsVo() {
+		return casteDetailsVo;
+	}
+
+	public void setCasteDetailsVo(List<CasteDetailsVO> casteDetailsVo) {
+		this.casteDetailsVo = casteDetailsVo;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+
+	public void setCandidateUpdationDetailsService(
+			ICandidateUpdationDetailsService candidateUpdationDetailsService) {
+		this.candidateUpdationDetailsService = candidateUpdationDetailsService;
+	}
+
+	public void setCadreRegistrationService(
+			ICadreRegistrationService cadreRegistrationService) {
+		this.cadreRegistrationService = cadreRegistrationService;
+	}
+
+	public List<GenericVO> getGenericVOList() {
+		return genericVOList;
+	}
+
+	public void setGenericVOList(List<GenericVO> genericVOList) {
+		this.genericVOList = genericVOList;
+	}
+
+	public List<SelectOptionVO> getSelectOptionVOList() {
+		return selectOptionVOList;
+	}
+
+	public void setSelectOptionVOList(List<SelectOptionVO> selectOptionVOList) {
+		this.selectOptionVOList = selectOptionVOList;
+	}
+
+	public List<SelectOptionVO> getEletionTypesList() {
+		return eletionTypesList;
+	}
+
+	public void setEletionTypesList(List<SelectOptionVO> eletionTypesList) {
+		this.eletionTypesList = eletionTypesList;
+	}
+
+	public List<SelectOptionVO> getCadreRolesVOList() {
+		return cadreRolesVOList;
+	}
+
+	public void setCadreRolesVOList(List<SelectOptionVO> cadreRolesVOList) {
+		this.cadreRolesVOList = cadreRolesVOList;
+	}
+
+	public List<String> getAgeRangeList() {
+		return ageRangeList;
+	}
+
+	public void setAgeRangeList(List<String> ageRangeList) {
+		this.ageRangeList = ageRangeList;
+	}
+	public JSONObject getjObj() {
+		return jObj;
+	}
+
+	public void setjObj(JSONObject jObj) {
+		this.jObj = jObj;
+	}
+
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+
+	public TdpCadreVO getTdpCadreVO() {
+		return tdpCadreVO;
+	}
+
+	public void setTdpCadreVO(TdpCadreVO tdpCadreVO) {
+		this.tdpCadreVO = tdpCadreVO;
+	}
+
+	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
+		this.cadreDetailsService = cadreDetailsService;
+	}
+
 	public Long getTdpCadreId() {
 		return tdpCadreId;
 	}
@@ -86,10 +196,11 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		this.constituencies = constituencies;
 	}
 
+	
 	public String execute()
-	{
-		//cadreCommitteeVO = cadreCommitteeService.getCadreDetailsByTdpCadreId(tdpCadreId);
-		
+	{	
+		ageRangeList = cadreCommitteeService.getAgeRangeDetailsForCadre();
+		casteDetailsVo = cadreRegistrationService.getAllCastes();
 		return Action.SUCCESS;
 	}
 	
@@ -111,5 +222,103 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		}
 			return Action.SUCCESS;
 		
+	}
+	
+	public String getCadreProfileDetails()
+	{
+		try {
+			session = request.getSession();
+			RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+			if (registrationVO != null) 
+			{
+				genericVOList = candidateUpdationDetailsService.gettingEducationDetails();
+				selectOptionVOList = staticDataService.getAllOccupations();
+				eletionTypesList = cadreRegistrationService.getElectionOptionDetailsForCadre();
+				cadreRolesVOList = cadreRegistrationService.getCadreLevelsForCadreSearch();
+				casteDetailsVo = cadreRegistrationService.getAllCastes();
+				cadreCommitteeVO = cadreCommitteeService.getCadreDetailsByTdpCadreId(Long.valueOf(request.getParameter("tdpCadreId")));
+			} 
+			else{
+				return ERROR;
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getCadreProfileDetails() At CadreCommitteeAction ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getSearchDetails()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+			Long locationLevel = jObj.getLong("locationLevel");
+			Long locationValue = jObj.getLong("locationValue");
+			String searchName = jObj.getString("searchName");
+			String mobileNo = jObj.getString("mobileNo");
+			
+			Long casteStateId = jObj.getLong("casteStateId");
+			String casteCategory = jObj.getString("casteCategory");
+			Long fromAge = jObj.getLong("fromAge");
+			Long toAge = jObj.getLong("toAge");
+			String houseNo = jObj.getString("houseNo");
+			String memberShipCardNo = jObj.getString("memberShipCardNo");
+			String trNumber = jObj.getString("trNumber");
+			String voterCardNo = jObj.getString("voterCardNo");
+			String gender = jObj.getString("gender");
+			
+			tdpCadreVO = cadreDetailsService.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationLevel,locationValue, searchName,memberShipCardNo, 
+					voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender);
+		} catch (Exception e) {
+			LOG.error("Exception occured in getSearchDetails() At CadreCommitteeAction ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String generateOTP()
+	{
+		try {
+			session = request.getSession();
+			RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+			if (registrationVO != null) 
+			{
+				jObj = new JSONObject(getTask());
+				Long mobileNo = jObj.getLong("mobileNo");
+				task = cadreCommitteeService.genarateOTP(registrationVO.getRegistrationID(),mobileNo);
+			} 
+			else{
+				return ERROR;
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getSearchDetails() At CadreCommitteeAction ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String validateOTPForMobile()
+	{
+		try {
+			session = request.getSession();
+			RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+			if (registrationVO != null) 
+			{
+				jObj = new JSONObject(getTask());
+				Long mobileNo = jObj.getLong("mobileNo");
+				Long refNo = jObj.getLong("refNo");
+				Long otpNo = jObj.getLong("otpNo");
+				task = cadreCommitteeService.validateOTPForUser(registrationVO.getRegistrationID(),mobileNo,refNo,otpNo);
+			} 
+			else{
+				return ERROR;
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getSearchDetails() At CadreCommitteeAction ",e);
+		}
+		
+		return Action.SUCCESS;
 	}
 }
