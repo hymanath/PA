@@ -1156,7 +1156,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				returnStr = "MobileNo not available";
 			*/
 			String mobileNo = "";
-			TdpCadreVO tdpCadreVO = cadreDetailsService.searchTdpCadreDetailsBySearchCriteriaForCommitte(0L, 0L, "", memberShipNo, "", "", "", 0L, "");;
+			TdpCadreVO tdpCadreVO = cadreDetailsService.searchTdpCadreDetailsBySearchCriteriaForCommitte(0L, 0L, "", memberShipNo, "", "", "", 0L, "",null,null,null,null);
 			if(tdpCadreVO != null)
 			{
 				if(tdpCadreVO.getTdpCadreDetailsList() != null && tdpCadreVO.getTdpCadreDetailsList().size()>0)
@@ -1198,7 +1198,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			cadreAddressVO = setMemberData(list,address);
 			
 			 */			
-			TdpCadreVO tdpCadreVO = cadreDetailsService.searchTdpCadreDetailsBySearchCriteriaForCommitte(0L, 0L, "", memberShipNo, "", "", "", 0L, "");
+			TdpCadreVO tdpCadreVO = cadreDetailsService.searchTdpCadreDetailsBySearchCriteriaForCommitte(0L, 0L, "", memberShipNo, "", "", "", 0L, "",null,null,null,null);
 			if(address != null && memberShipNo != null)
 			{
 				if(address.equalsIgnoreCase("true"))
