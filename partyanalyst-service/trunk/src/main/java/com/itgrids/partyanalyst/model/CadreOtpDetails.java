@@ -33,13 +33,12 @@ public class CadreOtpDetails  extends BaseModel{
 	private Long cadreOtpDetailsId;
 	private String otpReferenceId;
 	private String otpNo;
-	private CadreSurveyUser cadreSurveyUser;
 	private String isDeleted;
 	private Date insertedTime;
 	private Date updatedTime;
-	private String txnNumber;
 	private String mobileNo;
-	private Long cadreSurveyUserId;
+	private Long userId;
+	private User user;
 	
 	public CadreOtpDetails() {
 		
@@ -107,16 +106,6 @@ public class CadreOtpDetails  extends BaseModel{
 		this.updatedTime = updatedTime;
 	}
 
-	@Column(name = "txn_number", length =15)
-	public String getTxnNumber() {
-		return txnNumber;
-	}
-
-
-	public void setTxnNumber(String txnNumber) {
-		this.txnNumber = txnNumber;
-	}
-
 	@Column(name = "mobile_no", length =15)
 	public String getMobileNo() {
 		return mobileNo;
@@ -125,24 +114,26 @@ public class CadreOtpDetails  extends BaseModel{
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
 	}
+	
+	@Column(name="user_id")
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="cadre_survey_user_id",updatable = false, insertable = false)
+	@JoinColumn(name="user_id",updatable = false, insertable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public CadreSurveyUser getCadreSurveyUser() {
-		return cadreSurveyUser;
+	public User getUser() {
+		return user;
 	}
 
-	public void setCadreSurveyUser(CadreSurveyUser cadreSurveyUser) {
-		this.cadreSurveyUser = cadreSurveyUser;
-	}
-	@Column(name="cadre_survey_user_id")
-	public Long getCadreSurveyUserId() {
-		return cadreSurveyUserId;
-	}
-
-	public void setCadreSurveyUserId(Long cadreSurveyUserId) {
-		this.cadreSurveyUserId = cadreSurveyUserId;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	
