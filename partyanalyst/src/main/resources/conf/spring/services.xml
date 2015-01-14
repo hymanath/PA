@@ -2477,7 +2477,14 @@
 		 <property name="tehsilDAO" ref="tehsilDAO"/>
 		 <property name="localElectionBodyDAO" ref="localElectionBodyDAO"/>
 		 <property name="panchayatDAO" ref="panchayatDAO"/>
-		 <property name="regionServiceDataImp" ref="regionServiceDataImp"/>
+		  <property name="regionServiceDataImp" ref="regionServiceDataImp"/>
+		 <property name="casteStateDAO" ref="casteStateDAO"/>
+		 <property name="voterAgeRangeDAO" ref="voterAgeRangeDAO"/>
+		 <property name="smsCountrySmsService" ref="smsCountrySmsService"/>
+		 <property name="cadreOtpDetailsDAO" ref="cadreOtpDetailsDAO"/>
+		 <property name="cadreParticipatedElectionDAO" ref="cadreParticipatedElectionDAO"/>
+		 <property name="cadreCommitteeRoleDAO" ref="cadreCommitteeRoleDAO"/>
+		 <property name="cadrePreviousRolesDAO" ref="cadrePreviousRolesDAO"/>
 	</bean>
 </beans>		
 	
