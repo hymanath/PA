@@ -32,6 +32,7 @@ public class BasicVO implements Serializable{
 	private BasicVO beforeDelimationDetails;
 	private Long totalVoters;
 	private String aliancedWith;
+	private List<String> ageRanges = new ArrayList<String>();
 	
 	public BasicVO(){}
 	
@@ -41,6 +42,15 @@ public class BasicVO implements Serializable{
 		name = this.name;
 		
 	}
+	
+	public List<String> getAgeRanges() {
+		return ageRanges;
+	}
+
+	public void setAgeRanges(List<String> ageRanges) {
+		this.ageRanges = ageRanges;
+	}
+
 	public String getAliancedWith() {
 		return aliancedWith;
 	}

@@ -14,11 +14,15 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private String mobileNo;
 	private String adhaarNo;
 	private String voterCardNo;
+	private Long educationId;
 	private String education;
+	private Long occupationId;
 	private String occupation;
 	private String emailId;
 	private String mobileType;
+	private Long casteCategoryId;
 	private String casteCategory;
+	private Long casteStateId;
 	private String casteName;
 	private String constituency;
 	private String tehsil;
@@ -43,8 +47,40 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private String imageURL;
 	List<CadreCommitteeVO> previousRoles = new ArrayList<CadreCommitteeVO>();
 	List<CadreCommitteeVO> previousElections = new ArrayList<CadreCommitteeVO>();
+	List<CadreCommitteeVO> casteList = new ArrayList<CadreCommitteeVO>();
 	
 	
+	public List<CadreCommitteeVO> getCasteList() {
+		return casteList;
+	}
+	public void setCasteList(List<CadreCommitteeVO> casteList) {
+		this.casteList = casteList;
+	}
+	public Long getEducationId() {
+		return educationId;
+	}
+	public void setEducationId(Long educationId) {
+		this.educationId = educationId;
+	}
+	public Long getOccupationId() {
+		return occupationId;
+	}
+	public void setOccupationId(Long occupationId) {
+		this.occupationId = occupationId;
+	}
+	
+	public Long getCasteCategoryId() {
+		return casteCategoryId;
+	}
+	public void setCasteCategoryId(Long casteCategoryId) {
+		this.casteCategoryId = casteCategoryId;
+	}
+	public Long getCasteStateId() {
+		return casteStateId;
+	}
+	public void setCasteStateId(Long casteStateId) {
+		this.casteStateId = casteStateId;
+	}
 	public String getRole() {
 		return role;
 	}
