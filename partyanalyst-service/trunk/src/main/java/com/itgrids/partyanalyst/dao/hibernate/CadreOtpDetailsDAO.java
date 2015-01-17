@@ -20,19 +20,20 @@ public class CadreOtpDetailsDAO extends GenericDaoHibernate<CadreOtpDetails, Lon
 	{
 	 
 		Query query = getSession().createQuery("update CadreOtpDetails model set model.isDeleted = 'Y' where model.isDeleted = 'N'" +
-				" and model.mobileNo = :mobileNo");
-		query.setParameter("mobileNo", mobileNo);
-		return query.executeUpdate();
+				" and model.mobileNo like '"+mobileNo+"'");
+		//query.setParameter("mobileNo", mobileNo);
+		int count = query.executeUpdate();
+		return count;
 	}
 	
 	public Long checkOTPValid(Long mobileNo,Long refNo,Long  userId)
 	{
 		Query query = getSession().createQuery("select model.otpNo from CadreOtpDetails model where " +
-				" model.mobileNo =:mobileNo  and model.user.userId = :userId and model.otpReferenceId =:refNo  and model.isDeleted = 'N' ");
-		query.setParameter("mobileNo", mobileNo);
-		query.setParameter("userId", userId);
-		query.setParameter("refNo", refNo);
-		return (Long) query.uniqueResult();
+				" model.mobileNo like '"+mobileNo+"'  and model.user.userId like '"+userId+"' and model.otpReferenceId like '"+refNo+"'  and model.isDeleted = 'N' ");
+		//query.setParameter("mobileNo", mobileNo);
+		//query.setParameter("userId", userId);
+		//query.setParameter("refNo", refNo);
+		return Long.valueOf(query.uniqueResult().toString());
 	}
 	
 	public List<String> checkOTP(String otp)
