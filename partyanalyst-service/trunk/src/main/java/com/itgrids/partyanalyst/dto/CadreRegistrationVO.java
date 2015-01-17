@@ -11,7 +11,7 @@ public class CadreRegistrationVO implements Serializable{
 	
 	private static final long serialVersionUID = 1951217282876724276L;
 	
-	
+	private Long 			 tdpCadreId;
 	private String 			 voterName;
 	private Date		 	 dob;
 	private String		 	 dobStr;
@@ -103,6 +103,13 @@ public class CadreRegistrationVO implements Serializable{
 	
 	private Long 		familyRelationId;
 	
+	
+	public Long getTdpCadreId() {
+		return tdpCadreId;
+	}
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
 	public String getRelativeVoterId() {
 		return relativeVoterId;
 	}

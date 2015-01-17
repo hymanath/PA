@@ -49,7 +49,14 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	List<CadreCommitteeVO> previousRoles = new ArrayList<CadreCommitteeVO>();
 	List<CadreCommitteeVO> previousElections = new ArrayList<CadreCommitteeVO>();
 	List<CadreCommitteeVO> casteList = new ArrayList<CadreCommitteeVO>();
+	private Long voterId;
 	
+	public Long getVoterId() {
+		return voterId;
+	}
+	public void setVoterId(Long voterId) {
+		this.voterId = voterId;
+	}
 	public Long getConstituencyId() {
 		return constituencyId;
 	}
