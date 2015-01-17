@@ -63,6 +63,7 @@
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 		
 	<style>
+		.requiredFields{color:red;}
 		.form-control[disabled] {color:#333 !important;background-color: rgba(0, 0, 0, 0.1) !important;border: medium none rgba(0, 0, 0, 0) !important;
 		}	
 		#assignCommitteeDiv{
@@ -200,7 +201,7 @@
 							<input type="text" class="form-control editClass datesCls" id="dateOfBirth" value="${cadreCommitteeVO.DOB}" readOnly="true" style="cursor:text;" name="cadreRegistrationVO.dobStr" disabled>
 						</div>
 						<div class="col-md-4  col-sm-4 col-xs-4 form-group">
-							<input type="text" id="disabledInput" class="form-control  editClass" value="${cadreCommitteeVO.age}" placeholder="Age: 33 years old" name="cadreRegistrationVO.age" disabled>
+							<input type="number" id="ageId" class="form-control  editClass" value="${cadreCommitteeVO.age}" placeholder="Age: 33" name="cadreRegistrationVO.age" disabled>
 						</div>
 						<div class="col-md-4 col-sm-4 col-xs-4 form-group">
 							<select id="genderDetailsId" class="form-control  editClass"  name="cadreRegistrationVO.gender" disabled> 
@@ -210,37 +211,61 @@
 							</select>
 						</div>
 					</div>
+					<div class="row">
+						<div id="dateOfBirthErrorDiv" class="col-md-4 col-sm-4 col-xs-4 form-group requiredFields">
+						</div>
+						<div id="ageIdErrorDiv" class="col-md-4 col-sm-4 col-xs-4 form-group requiredFields">
+						</div>
+						<div id="genderIdErrorDiv" class="col-md-4 col-sm-4 col-xs-4 form-group requiredFields">
+						</div>
+					</div>
 				</div>
 				
 				<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 form-group">
-					<input type="text" id="disabledInput" class="form-control  editClass"  value="${cadreCommitteeVO.voterCardNo}" placeholder="Voter ID:96325874" name="cadreRegistrationVO.voterCardNumber" disabled>				
+					<input type="text" id="voterCardNoId" class="form-control  editClass"  value="${cadreCommitteeVO.voterCardNo}" placeholder="Voter ID:96325874" name="cadreRegistrationVO.voterCardNumber" disabled>				
 				</div>
 				<div class="col-md-4   col-sm-6 col-xs-6 form-group">
-					<input type="text" id="disabledInput" class="form-control  editClass"  value="${cadreCommitteeVO.adhaarNo}" placeholder="Aadhar No:258963147"  name="cadreRegistrationVO.candidateAadherNo" disabled>
+					<input type="text" id="adhaarNoId" class="form-control  editClass"  value="${cadreCommitteeVO.adhaarNo}" placeholder="Aadhar No:258963147"  name="cadreRegistrationVO.candidateAadherNo" disabled>
+				</div>
+				<div class="row">
+					<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 form-group requiredFields" id="voterCardNoIdError" style="left:11px;">
+					</div>
+					<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 form-group requiredFields" id="adhaarNoIdError" style="right:228px;">
+					</div>
 				</div>
 				<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 form-group">
-					<input type="text" id="disabledInput" class="form-control editClass mobileNumber"  value="${cadreCommitteeVO.mobileNo}" placeholder="Mobile No:9632587410" name="cadreRegistrationVO.mobileNumber" disabled>
+					<input type="number" id="mobileNoId" class="form-control editClass mobileNumber"  value="${cadreCommitteeVO.mobileNo}" placeholder="Mobile No:9632587410" name="cadreRegistrationVO.mobileNumber" disabled>
 				</div>
 								
 				<div class="col-md-4   col-sm-6 col-xs-6 form-group">
 					<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level editClass" id="casteId" list="cadreCommitteeVO.casteList" listKey="casteStateId" listValue="casteName" headerKey="0" headerValue=" Select Caste " style="width:420px;height:35px;" name="cadreRegistrationVO.casteId"   value="%{cadreCommitteeVO.casteStateId}" disabled="true"/>	
 				</div>
-				
-				<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group">
-					<input type="text" id="disabledInput" class="form-control editClass"  value="${cadreCommitteeVO.address}" placeholder="Address: "  name="cadreRegistrationVO.street" disabled>
+				<div class="row">
+					<div class="col-md-4   col-sm-6 col-xs-6 form-group requiredFields" id="mobileNOErrorId" style="left:240px;" >
+					</div>
+					<div class="col-md-4   col-sm-6 col-xs-6 form-group requiredFields" id="casteIdErrorDiv" style="left:232px;">
+					</div>
 				</div>
+				<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group">
+					<input type="text" id="addressId" class="form-control editClass"  value="${cadreCommitteeVO.address}" placeholder="Address: "  name="cadreRegistrationVO.street" disabled>
+				</div>
+				<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group requiredFields" id="addressIdError"></div>
 				
 				<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 form-group">
 					<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level editClass" id="educationId" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Education " style="width:420px;height:35px;" name="cadreRegistrationVO.educationId" value="%{cadreCommitteeVO.educationId}" disabled="true"/>
 				</div>
 				<div class="col-md-4 col-sm-6 col-xs-6 form-group">
-					<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level editClass" id="educationId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Occupation " style="width:420px;height:35px;" name="cadreRegistrationVO.occupationId" value="%{cadreCommitteeVO.occupationId}" disabled="true"/>
+					<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level editClass" id="occupationId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Occupation " style="width:420px;height:35px;" name="cadreRegistrationVO.occupationId" value="%{cadreCommitteeVO.occupationId}" disabled="true"/>
+				</div>
+				<div class="row">
+					<div class="col-md-4 col-sm-6 col-xs-6 form-group requiredFields" id="educationIdError" style="left:240px;"></div>
+					<div class="col-md-4 col-sm-6 col-xs-6 form-group requiredFields" id="occupationIdError" style="left:232px;"></div>
 				</div>
 				
 				<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group">
-					<input type="text" id="disabledInput" class="form-control  editClass" value="${cadreCommitteeVO.emailId}"  placeholder="E-Mail ID: " name="cadreRegistrationVO.emailId" disabled>
+					<input type="text" id="emailIdDiv" class="form-control  editClass" value="${cadreCommitteeVO.emailId}"  placeholder="E-Mail ID: " name="cadreRegistrationVO.emailId" disabled>
 				</div>
-			
+				<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group requiredFields" id="emailIdDivError"></div>
 		</div>
 		
 		<div class="row m_top20">
