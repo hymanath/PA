@@ -551,10 +551,15 @@
 		}).done(function(result){
 			$("#committeeLocationId  option").remove();
 			$("#committeeLocationId").append('<option value="0">Select Location</option>');
-			for(var i in result){
-			   $("#committeeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+			var reqNewLocationType ="";
+			if($("#mndlLvlCommittSelec").is(':checked')){
+			  reqNewLocationType ="mandal";
 			}
-				
+			if(reqNewLocationType == reqLocationType){
+				for(var i in result){
+				   $("#committeeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+				}
+			}
 		});
 	}
 	function getAffiliatedCommitsForALoc(){
