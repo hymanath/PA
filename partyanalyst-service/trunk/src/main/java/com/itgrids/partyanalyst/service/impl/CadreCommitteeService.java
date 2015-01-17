@@ -319,11 +319,11 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			{
 				if(otpNumber.longValue() == otpNumberForRefNo.longValue())
 				{
-					status = " Cadre Details are Successfully updated.";
+					status = "success";
 				}
 				else
 				{
-					status = " Invalid OTP. Regenerate OTP then submit data.";
+					status = "failure";
 				}
 			}
 		}
