@@ -74,7 +74,7 @@
 			<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 ">
 				<div class="form-group col-xs-12 pull-right">
 					<label for="exampleInputEmail1">SELECT LOCATION</label>
-					<select  class="form-control" id="locationId" ><option value="0">Select Location</option></select >
+					<select  class="form-control" id="committeeLocationId" ><option value="0">Select Location</option></select >
 				 </div>
 			</div>
 			<div class="col-md-4 col-sm-6 col-xs-6">
@@ -187,31 +187,31 @@
 					<tbody>
 						<tr>
 							<td>President</td>
-							<td><img src="Images/Member_thamb_image.png" /></td>
+							<td><img src="images/cadreCommitee/Member_thamb_image.png" /></td>
 							<td>Member Name</td>
 							<td>Membership Number</td>
 						</tr>
 						<tr>
 							<td>Vice president</td>
-							<td><img src="Images/Member_thamb_image.png" /></td>
+							<td><img src="images/cadreCommitee/Member_thamb_image.png" /></td>
 							<td>Member Name</td>
 							<td>Membership Number</td>
 						</tr>
 						<tr>
 							<td>General secretary</td>
-							<td><img src="Images/Member_thamb_image.png" /></td>
+							<td><img src="images/cadreCommitee/Member_thamb_image.png" /></td>
 							<td>Member Name</td>
 							<td>Membership Number</td>
 						</tr>
 						<tr>
 							<td>Working committee</td>
-							<td><img src="Images/Member_thamb_image.png" /></td>
+							<td><img src="images/cadreCommitee/Member_thamb_image.png" /></td>
 							<td>Member Name</td>
 							<td>Membership Number</td>
 						</tr>
 						<tr>
 							<td>Organising  Committee</td>
-							<td><img src="Images/Member_thamb_image.png" /></td>
+							<td><img src="images/cadreCommitee/Member_thamb_image.png" /></td>
 							<td>Member Name</td>
 							<td>Membership Number</td>
 						</tr>						
@@ -365,7 +365,7 @@
 				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;">
 					<div class="media">
 					  <a href="#" class="media-left">
-						<img style="width: 64px; height: 64px;" src="Images/search_details_member_imahe.png" />
+						<img style="width: 64px; height: 64px;" src="images/cadreCommitee/search_details_member_imahe.png" />
 					  </a>
 					  <div class="media-body">
 						<h4 class="media-heading">Member Name</h4>
@@ -387,7 +387,7 @@
 				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;">
 					<div class="media">
 					  <a href="#" class="media-left">
-						<img style="width: 64px; height: 64px;" src="Images/search_details_member_imahe.png" />
+						<img style="width: 64px; height: 64px;" src="images/cadreCommitee/search_details_member_imahe.png" />
 					  </a>
 					  <div class="media-body">
 						<h4 class="media-heading">Member Name</h4>
@@ -409,7 +409,7 @@
 				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;">
 					<div class="media">
 					  <a href="#" class="media-left">
-						<img style="width: 64px; height: 64px;" src="Images/search_details_member_imahe.png" />
+						<img style="width: 64px; height: 64px;" src="images/cadreCommitee/search_details_member_imahe.png" />
 					  </a>
 					  <div class="media-body">
 						<h4 class="media-heading">Member Name</h4>
@@ -525,7 +525,7 @@
 				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;">
 					<div class="media">
 					  <a href="#" class="media-left">
-						<img style="width: 64px; height: 64px;" src="Images/search_details_member_imahe.png" />
+						<img style="width: 64px; height: 64px;" src="images/cadreCommitee/search_details_member_imahe.png" />
 					  </a>
 					  <div class="media-body">
 						<h4 class="media-heading">Member Name</h4>
@@ -547,7 +547,7 @@
 				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;">
 					<div class="media">
 					  <a href="#" class="media-left">
-						<img style="width: 64px; height: 64px;" src="Images/search_details_member_imahe.png" />
+						<img style="width: 64px; height: 64px;" src="images/cadreCommitee/search_details_member_imahe.png" />
 					  </a>
 					  <div class="media-body">
 						<h4 class="media-heading">Member Name</h4>
@@ -569,7 +569,7 @@
 				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;">
 					<div class="media">
 					  <a href="#" class="media-left">
-						<img style="width: 64px; height: 64px;" src="Images/search_details_member_imahe.png" />
+						<img style="width: 64px; height: 64px;" src="images/cadreCommitee/search_details_member_imahe.png" />
 					  </a>
 					  <div class="media-body">
 						<h4 class="media-heading">Member Name</h4>
@@ -636,7 +636,18 @@
 				$('#cadreSearchType').val('advancedSearch');
 			}
 		});
-		
+		$.ajax({
+			type : "POST",
+			url : "getCommitteLocationsAction.action",
+			data : {locationType:""} ,
+		}).done(function(result){
+			$("#committeeLocationId  option").remove();
+			$("#committeeLocationId").append('<option value="0">Select Location</option>');
+			for(var i in result){
+			   $("#committeeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+			}
+				
+		});
 	</script>
   </body>
 </html>
