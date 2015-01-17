@@ -56,14 +56,14 @@
 			<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 ">
 				<div class="radio pull-right">
 				  <label>
-				    <input type="radio" name="committeeType" onclick="validateSearchType('1')" checked="true"> Village / Ward / Division
+				    <input type="radio" name="committeeType" onclick="validateSearchType('1');getCommitteeLocations();" checked="true"> Village / Ward / Division
 				  </label>
 			    </div>
 			</div>
 			<div class="col-md-4 col-sm-6 col-xs-6">
 				<div class="radio">
 				  <label>
-				    <input type="radio" name="committeeType" onclick="validateSearchType('2')"> Mandal / Town / GHMC 
+				    <input type="radio" id="mndlLvlCommittSelec" name="committeeType" onclick="validateSearchType('2');getCommitteeLocations();"> Mandal / Town / GHMC 
 				  </label>
 			    </div>
 			</div>
@@ -73,23 +73,23 @@
 		<div class="row m_top20">
 			<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 ">
 				<div class="form-group col-xs-12 pull-right">
-					<label for="exampleInputEmail1">SELECT LOCATION</label>
+					<label for="committeeLocationId">SELECT LOCATION</label>
 					<select  class="form-control" id="committeeLocationId" ><option value="0">Select Location</option></select >
 				 </div>
 			</div>
 			<div class="col-md-4 col-sm-6 col-xs-6">
 				<div class="form-group col-xs-12">
-					<label for="exampleInputEmail1">COMMITTEE TYPE</label>
-					<select class="form-control" id="committeeTypeId" ><option value="1">Main Committee</option><option value="2">Affiliated Committee</option></select >
+					<label for="committeeTypeId">COMMITTEE TYPE</label>
+					<select class="form-control" id="committeeTypeId" onchange="getAffiliatedCommitsForALoc();" ><option value="0">Select Committee Type</option><option value="1">Main Committee</option><option value="2">Affiliated Committee</option></select >
 				 </div>
 			</div>
 		</div>
 		
-		<div class="row">	
+		<div id="committeeMainId" class="row">	
 			<div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-2 col-xs-12 ">
 				<div class="form-group col-xs-12">
-					<label for="exampleInputEmail1">COMMITTEE TYPE</label>
-					<select class="form-control" id="committeeId"><option>Affiliated Committee #1</option></select >
+					<label for="committeeId">AFFILIATED COMMITTEE</label>
+					<select class="form-control" id="afflitCommitteeId"><option>Select Affiliated Committee</option></select >
 				 </div>
 			</div>			
 		</div> 
@@ -97,7 +97,7 @@
 		<div class="row">	
 			<div class="col-md-12 col-sm-12 col-xs-12 text-center">
 					<ul class="list-inline">
-						<li><a class="btn btn-success" href="">VIEW</a></li>
+						<li><a class="btn btn-success" onclick="getCommitteMembersInfo();" href="javascript:{}">VIEW</a></li>
 						<li><a class="btn btn-success" href="">ADD</a></li>
 					</ul>
 			</div> 
@@ -636,10 +636,15 @@
 				$('#cadreSearchType').val('advancedSearch');
 			}
 		});
+	function getCommitteeLocations(){
+		var reqLocationType ="";
+		if($("#mndlLvlCommittSelec").is(':checked')){
+		  reqLocationType ="mandal";
+		}
 		$.ajax({
 			type : "POST",
 			url : "getCommitteLocationsAction.action",
-			data : {locationType:""} ,
+			data : {locationType:reqLocationType} ,
 		}).done(function(result){
 			$("#committeeLocationId  option").remove();
 			$("#committeeLocationId").append('<option value="0">Select Location</option>');
@@ -648,6 +653,55 @@
 			}
 				
 		});
+	}
+	function getAffiliatedCommitsForALoc(){
+		if($("#committeeTypeId").val() == 2){
+			$("#committeeMainId").show();
+			var reqLocationType = "";
+			var reqLocationValue = "";
+			if($("#mndlLvlCommittSelec").is(':checked')){
+			  reqLocationType ="mandal";
+			}
+			reqLocationValue=$("#committeeLocationId").val();
+			$.ajax({
+				type : "POST",
+				url : "getAllAffiliatedCommittiesAction.action",
+				data : {locationType:reqLocationType,locationValue:reqLocationValue} ,
+			}).done(function(result){
+				$("#afflitCommitteeId  option").remove();
+				$("#afflitCommitteeId").append('<option value="0">Select Affiliated Committee</option>');
+				for(var i in result){
+				   $("#afflitCommitteeId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+				}	
+			});
+		}else{
+			$("#committeeMainId").hide();
+		}
+		
+	}
+	function getCommitteMembersInfo(){
+		 var reqCommitteeType = "main";
+		 var reqLocationType = "";
+		 if($("#committeeTypeId").val() == 2){
+			 reqCommitteeType = "affiliated";
+		 }
+		 if(reqCommitteeType == "main"){
+		   if($("#mndlLvlCommittSelec").is(':checked')){
+		     reqLocationType ="mandal";
+		   }
+		   reqLocationValue=$("#committeeLocationId").val();
+		 }else{
+			 reqLocationValue=$("#afflitCommitteeId").val();
+		 }
+		  $.ajax({
+				type : "POST",
+				url : "getCommitteMembersInfoAction.action",
+				data : {locationType:reqLocationType,locationValue:reqLocationValue,committeeType:reqCommitteeType} ,
+			}).done(function(result){
+				
+			});
+	}
+	getCommitteeLocations();
 	</script>
   </body>
 </html>

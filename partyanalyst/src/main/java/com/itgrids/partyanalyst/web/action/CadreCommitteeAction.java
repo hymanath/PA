@@ -51,6 +51,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	
 	private ITdpCadreReportService              tdpCadreReportService;
 	private List<LocationWiseBoothDetailsVO>    locations;
+	private LocationWiseBoothDetailsVO          membersInfo;
 	private List<BasicVO>                       constituencies;
 	
 	
@@ -195,8 +196,15 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	public void setConstituencies(List<BasicVO> constituencies) {
 		this.constituencies = constituencies;
 	}
-
 	
+	public LocationWiseBoothDetailsVO getMembersInfo() {
+		return membersInfo;
+	}
+
+	public void setMembersInfo(LocationWiseBoothDetailsVO membersInfo) {
+		this.membersInfo = membersInfo;
+	}
+
 	public String execute()
 	{	
 		ageRangeList = cadreCommitteeService.getAgeRangeDetailsForCadre();
@@ -319,6 +327,61 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 			LOG.error("Exception occured in getSearchDetails() At CadreCommitteeAction ",e);
 		}
 		
+		return Action.SUCCESS;
+	}
+	
+	public String getAllAffiliatedCommitties(){
+		try {
+			 String locationType = request.getParameter("locationType").trim();
+			 String locationValue = request.getParameter("locationValue").trim();
+			 Long locationLvl = null;
+			 if(locationType.equalsIgnoreCase("mandal")){
+				 if(locationValue.substring(0,1).trim().equalsIgnoreCase("1")){
+					 locationLvl = 5l;
+				 }else{
+					 locationLvl = 2l;
+				 }
+			 }else{
+				 if(locationValue.substring(0,1).trim().equalsIgnoreCase("1")){
+					 locationLvl = 3l;
+				 }else{
+					 locationLvl = 6l;
+				 }
+			 }
+			locations = cadreCommitteeService.getAllAffiliatedCommittiesInALocation(locationLvl,Long.valueOf(locationValue.substring(1)));
+		} catch (Exception e) {
+			LOG.error("Exception occured in getAllAffiliatedCommitties() At CadreCommitteeAction ",e);
+		}		
+		return Action.SUCCESS;
+	}
+	
+	public String getCommitteMembersInfo(){
+		try {
+			String committeeType = request.getParameter("committeeType").trim();
+			if(committeeType.equalsIgnoreCase("main")){
+				 String locationType = request.getParameter("locationType").trim();
+				 String locationValue = request.getParameter("locationValue").trim();
+				 Long locationLvl = null;
+				 if(locationType.equalsIgnoreCase("mandal")){
+					 if(locationValue.substring(0,1).trim().equalsIgnoreCase("1")){
+						 locationLvl = 5l;
+					 }else{
+						 locationLvl = 2l;
+					 }
+				 }else{
+					 if(locationValue.substring(0,1).trim().equalsIgnoreCase("1")){
+						 locationLvl = 3l;
+					 }else{
+						 locationLvl = 6l;
+					 }
+				 }
+				 membersInfo = cadreCommitteeService.getMainCommitteeMembersInfo(locationLvl,Long.valueOf(locationValue.substring(1)));
+			}else{
+				membersInfo = cadreCommitteeService.getCommitteeMembersInfo(Long.valueOf(request.getParameter("locationValue")));
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured in getCommitteMembersInfo() At CadreCommitteeAction ",e);
+		}		
 		return Action.SUCCESS;
 	}
 }

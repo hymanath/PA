@@ -9319,5 +9319,15 @@
 				<param name="root">locations</param>
 			</result>
 		</action>
+		<action name="getAllAffiliatedCommittiesAction" class="cadreCommitteeAction" method="getAllAffiliatedCommitties">
+			<result type="json" name="success">
+				<param name="root">locations</param>
+			</result>
+		</action>
+		<action name="getCommitteMembersInfoAction" class="cadreCommitteeAction" method="getCommitteMembersInfo">
+			<result type="json" name="success">
+				<param name="root">membersInfo</param>
+			</result>
+		</action>
 </package>
 </struts>      
