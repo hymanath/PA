@@ -2,7 +2,9 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -18,6 +20,9 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeRoleDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
@@ -56,6 +61,9 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IOccupationDAO occupationDAO;
 	private IElectionTypeDAO electionTypeDAO;
 	private IRegionServiceData regionServiceDataImp;
+	private ITdpCommitteeDAO tdpCommitteeDAO;
+	private ITdpCommitteeRoleDAO tdpCommitteeRoleDAO;
+	private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
 	
 	public void setElectionTypeDAO(IElectionTypeDAO electionTypeDAO) {
 		this.electionTypeDAO = electionTypeDAO;
@@ -112,6 +120,19 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	
 	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
 		this.regionServiceDataImp = regionServiceDataImp;
+	}
+	
+	public void setTdpCommitteeDAO(ITdpCommitteeDAO tdpCommitteeDAO) {
+		this.tdpCommitteeDAO = tdpCommitteeDAO;
+	}
+	
+	public void setTdpCommitteeRoleDAO(ITdpCommitteeRoleDAO tdpCommitteeRoleDAO) {
+		this.tdpCommitteeRoleDAO = tdpCommitteeRoleDAO;
+	}
+	
+	public void setTdpCommitteeMemberDAO(
+			ITdpCommitteeMemberDAO tdpCommitteeMemberDAO) {
+		this.tdpCommitteeMemberDAO = tdpCommitteeMemberDAO;
 	}
 	
 	public CadreCommitteeVO getCadreDetailsByTdpCadreId(Long tdpCadreId)
@@ -480,4 +501,86 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	        }
 	        return locationsList;
 	} 
+	
+	public  List<LocationWiseBoothDetailsVO> getAllAffiliatedCommittiesInALocation(Long levelId,Long levelValue){
+		List<LocationWiseBoothDetailsVO> affiliatedCommittiesList = new ArrayList<LocationWiseBoothDetailsVO>();
+		try{
+			LocationWiseBoothDetailsVO vo = null;
+			List<Object[]> commitiesList = tdpCommitteeDAO.getAllAffiliatedCommittiesInALocation(levelId, levelValue);
+			for(Object[] committee:commitiesList){
+				vo = new LocationWiseBoothDetailsVO();
+				vo.setLocationId((Long)committee[0]);
+				vo.setLocationName(committee[1].toString());
+				affiliatedCommittiesList.add(vo);
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised in getAllAffiliatedCommittiesInALocation", e);
+		}
+		return affiliatedCommittiesList;
+	}
+	
+	public LocationWiseBoothDetailsVO getCommitteeMembersInfo(Long committeeId){
+		LocationWiseBoothDetailsVO returnVo = new LocationWiseBoothDetailsVO();
+		List<LocationWiseBoothDetailsVO> committeeMembersInfoList = new ArrayList<LocationWiseBoothDetailsVO>();
+		List<SelectOptionVO> committeeMembersList = new ArrayList<SelectOptionVO>();
+		
+		returnVo.setResult(committeeMembersInfoList);
+		returnVo.setHamletsOfTownship(committeeMembersList);
+		try{
+			Map<Long,LocationWiseBoothDetailsVO> committeeMembersMap = new HashMap<Long,LocationWiseBoothDetailsVO>();
+			LocationWiseBoothDetailsVO vo = null;
+			SelectOptionVO memberVo = null;
+			//0committeeRoleid,1role name,2max nos
+			List<Object[]> totalCommitteRolesList = tdpCommitteeRoleDAO.getAllCommitteeRoles(committeeId);
+			for(Object[] totalCommitteRole:totalCommitteRolesList){
+				vo = new LocationWiseBoothDetailsVO();
+				vo.setLocationName(totalCommitteRole[1].toString());
+				vo.setLocationId((Long)totalCommitteRole[0]);
+				vo.setPopulation((Long)totalCommitteRole[2]);//total positions
+				vo.setTotal(0l);//total positions left
+				vo.setVotesPolled(0l);//total positions filled
+				committeeMembersMap.put((Long)totalCommitteRole[0], vo);
+				committeeMembersInfoList.add(vo);
+			}
+			if(committeeMembersMap.size() > 0){
+				//0 count,1 id
+				List<Object[]>  electedPersonsList = tdpCommitteeMemberDAO.getRoleWiseAllocatedMembersCount(committeeMembersMap.keySet());
+				for(Object[] electedPersons:electedPersonsList){
+					LocationWiseBoothDetailsVO roleInfo = committeeMembersMap.get((Long)electedPersons[1]);
+					roleInfo.setVotesPolled((Long)electedPersons[0]);
+					roleInfo.setTotal(roleInfo.getPopulation() - (Long)electedPersons[0]);
+				}
+				
+				//0 role,1 image,2name,3membership
+				List<Object[]>  electedMembersInfoList = tdpCommitteeMemberDAO.getMembersInfo(committeeMembersMap.keySet());
+				
+				for(Object[] electedMembersInfo:electedMembersInfoList){
+					memberVo = new SelectOptionVO();
+					memberVo.setValue(electedMembersInfo[0].toString());//role
+					if(electedMembersInfo[1] != null){
+					   memberVo.setUrl(electedMembersInfo[1].toString());//image
+					}
+					memberVo.setName(electedMembersInfo[2].toString());//name
+					memberVo.setType(electedMembersInfo[3].toString());//membership
+					committeeMembersList.add(memberVo);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised in getCommitteeMembersInfo", e);
+		}
+		return returnVo;
+	}
+	
+	public Long getMainCommitteeIdInALocation(Long levelId,Long levelValue){
+		Long committeeId = null;
+		try{
+			List<Long> committeeIds = tdpCommitteeDAO.getMainCommittiesInALocation(levelId, levelValue);
+			if(committeeIds.size() > 0){
+				committeeId = committeeIds.get(0);
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised in getMainCommitteeIdInALocation", e);
+		}
+		return committeeId;
+	}
 }

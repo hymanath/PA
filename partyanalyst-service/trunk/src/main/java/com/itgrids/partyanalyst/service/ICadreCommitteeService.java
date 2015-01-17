@@ -13,4 +13,5 @@ public interface ICadreCommitteeService {
 	public List<GenericVO> getAllCasteDetailsForState();
 	public CadreCommitteeVO getCadreDetailsByTdpCadreId(Long tdpCadreId);
 	public List<LocationWiseBoothDetailsVO> getLocationsList(Long constituencyId,String level);
+	public  List<LocationWiseBoothDetailsVO> getAllAffiliatedCommittiesInALocation(Long levelId,Long levelValue);
 }
