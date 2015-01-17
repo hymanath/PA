@@ -348,7 +348,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 					 locationLvl = 6l;
 				 }
 			 }
-			locations = cadreCommitteeService.getAllAffiliatedCommittiesInALocation(locationLvl,Long.valueOf(locationValue.substring(1)));
+			locations = cadreCommitteeService.getAllAffiliatedCommittiesInALocation(locationLvl,locationValue != null && locationValue.trim().length()>0 ?Long.valueOf(locationValue.substring(1)):0L);
 		} catch (Exception e) {
 			LOG.error("Exception occured in getAllAffiliatedCommitties() At CadreCommitteeAction ",e);
 		}		
