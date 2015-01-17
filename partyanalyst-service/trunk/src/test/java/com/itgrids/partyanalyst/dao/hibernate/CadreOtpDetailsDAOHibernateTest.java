@@ -79,7 +79,7 @@ public class CadreOtpDetailsDAOHibernateTest extends BaseDaoTestCase {
 		String qstr = " and C.constituency_id in (:locationIdList) ";
 		
 			//System.out.println(format1.parse("2014-10-29 15:37:05"));
-			List<Object[]> list = cadreOtpDetailsDAO.getLocationWiseTransactionsByDates(yesterDay,yesterDay,locationIds,qstr);
+			/*List<Object[]> list = cadreOtpDetailsDAO.getLocationWiseTransactionsByDates(yesterDay,yesterDay,locationIds,qstr);
 			System.out.println(list);
 			
 			for(Object[] params : list)
@@ -87,7 +87,7 @@ public class CadreOtpDetailsDAOHibernateTest extends BaseDaoTestCase {
 				System.out.println();
 				for(Object obj : params)
 					System.out.print("\t"+obj.toString());
-			}
+			}*/
 		
 
 	}
