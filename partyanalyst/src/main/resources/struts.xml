@@ -9329,5 +9329,18 @@
 				<param name="root">membersInfo</param>
 			</result>
 		</action>
+		
+		<action name="generateOTPForEditAction" class="cadreCommitteeAction" method="generateOTP">
+			<result type="json" name="success">
+				<param name="root">task</param>
+			</result>
+		</action>
+		
+		<action name="checkValidOTPAction" class="cadreCommitteeAction" method="validateOTPForMobile">
+			<result type="json" name="success">
+				<param name="root">task</param>
+			</result>
+		</action>
+		
 </package>
 </struts>      
