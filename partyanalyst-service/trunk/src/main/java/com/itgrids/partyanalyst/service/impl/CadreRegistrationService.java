@@ -733,6 +733,39 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 										}
 										
 									}
+									else if(cadreRegistrationVO.getTdpCadreId() != null && cadreRegistrationVO.getTdpCadreId().toString().trim().length()>0 && cadreRegistrationVO.getTdpCadreId().longValue() > 0 ) 
+									{
+										// for cadre committee details updations
+										flag = false;
+										TdpCadre existingTdpCadre = tdpCadreDAO.get(cadreRegistrationVO.getTdpCadreId());
+										
+										List<TdpCadre> voterIdsList = new ArrayList<TdpCadre>();
+										voterIdsList.add(existingTdpCadre);
+										if(voterIdsList.size()  == 0)
+										{
+											TdpCadre tdpCadre = new TdpCadre();
+											tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"new",false);
+										}
+										else
+										{
+											if(voterIdsList.size() > 0)
+											{
+												List<Long> existingVoters = new ArrayList<Long>();
+												
+												for (TdpCadre tdpCadre : voterIdsList) 
+												{
+													existingVoters.add(tdpCadre.getTdpCadreId());
+												}
+												
+												cadrePreviousRolesDAO.inActiveCadreRollesDetailsById(existingVoters);
+												cadreParticipatedElectionDAO.inActiveCadreElectionDetailsById(existingVoters);
+												tdpCadreFamilyDetailsDAO.inActiveCadreFamilyDetailsById(existingVoters);													
+											}
+										}
+											
+												
+									}
+										
 									/*else
 									{
 										TdpCadre tdpCadre = new TdpCadre();
@@ -2714,6 +2747,14 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				}
 			}
 			
+			Collections.sort(returnList, new Comparator<BasicVO>() {
+				public int compare(BasicVO o1, BasicVO o2)
+				{
+				return o1.getName().compareTo(o2.getName());
+				}
+
+				
+				}); 
 		} catch (Exception e) {
 			LOG.error("Exception raised in constituencyListForElection in CadreRegistrationService service", e);
 		}

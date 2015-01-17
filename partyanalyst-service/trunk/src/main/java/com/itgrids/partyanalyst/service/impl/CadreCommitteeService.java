@@ -155,14 +155,15 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				} catch (Exception e) {
 					cadreCommitteeVO.setDOB(format.format(tdpCadre.getDateOfBirth()));
 				}
+				cadreCommitteeVO.setVoterId(tdpCadre.getVoterId() != null ? tdpCadre.getVoterId():0L);
 				cadreCommitteeVO.setMobileType("");
 				cadreCommitteeVO.setMobileNo(tdpCadre.getMobileNo());
-				cadreCommitteeVO.setAdhaarNo(tdpCadre.getAadheerNo());
+				cadreCommitteeVO.setAdhaarNo(tdpCadre.getCadreAadherNo());
 				cadreCommitteeVO.setAddress(tdpCadre.getUserAddress().getStreet() != null ? tdpCadre.getUserAddress().getStreet():"");
 				cadreCommitteeVO.setCasteStateId(tdpCadre.getCasteState() != null?tdpCadre.getCasteState().getCasteStateId():0L);
 				cadreCommitteeVO.setCasteName(tdpCadre.getCasteState() != null? tdpCadre.getCasteState().getCaste().getCasteName():"");
 				cadreCommitteeVO.setCasteCategoryId(tdpCadre.getCasteState() != null?tdpCadre.getCasteState().getCasteCategoryGroup().getCasteCategory().getCasteCategoryId():0L);
-				cadreCommitteeVO.setCasteCategory(tdpCadre.getCasteState().getCasteCategoryGroup().getCasteCategory().getCategoryName());
+				cadreCommitteeVO.setCasteCategory(tdpCadre.getCasteState() != null? tdpCadre.getCasteState().getCasteCategoryGroup().getCasteCategory().getCategoryName():"");
 				cadreCommitteeVO.setVoterCardNo(tdpCadre.getVoter() != null ? tdpCadre.getVoter().getVoterIDCardNo():"");
 				cadreCommitteeVO.setEducationId(tdpCadre.getEducationalQualifications() != null ? tdpCadre.getEducationalQualifications().getEduQualificationId():0L);
 				cadreCommitteeVO.setEducation(tdpCadre.getEducationalQualifications() != null ? tdpCadre.getEducationalQualifications().getQualification():"");
@@ -215,6 +216,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					if(participation[0] != null)
 					{
 						Election eleciton = (Election) participation[0];
+						vo.setElectioinYearId(eleciton.getElectionId());
 						vo.setElectionTypeId(eleciton.getElectionScope().getElectionScopeId());
 						vo.setElectionType(eleciton.getElectionScope().getElectionType().getElectionType());
 						vo.setElectionYear(eleciton.getElectionYear()+" ("+eleciton.getElecSubtype()+" )");
@@ -250,8 +252,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				
 				for (Object[] participation : participationInfo)
 				{
-					CadreCommitteeVO vo = new CadreCommitteeVO();		
-					vo.setRoleId(participation[0] != null ? Long.valueOf(participation[0].toString().trim()):0L);
+					CadreCommitteeVO vo = new CadreCommitteeVO();	
+					vo.setCommitteeLevelId(participation[4] != null ? Long.valueOf(participation[4].toString().trim()):0L);
+					vo.setCommitteeId(participation[5] != null ? Long.valueOf(participation[5].toString().trim()):0L);
+					vo.setRoleId(participation[0] != null ? Long.valueOf(participation[0].toString().trim()):0L);// role id
 					vo.setFromDate(participation[1] != null ?ddMMyyyyFT.format(format1.parse(participation[1].toString())):"");		// from date
 					vo.setToDate(participation[2] != null ? ddMMyyyyFT.format(format1.parse(participation[2].toString())):"");		// to date 
 					vo.setRole(participation[3] != null ? participation[3].toString().trim():"");	
