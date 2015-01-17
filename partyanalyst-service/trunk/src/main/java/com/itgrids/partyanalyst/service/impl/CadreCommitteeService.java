@@ -583,4 +583,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return committeeId;
 	}
+	
+	public LocationWiseBoothDetailsVO getMainCommitteeMembersInfo(Long levelId,Long levelValue){
+		Long committeeId = getMainCommitteeIdInALocation(levelId,levelValue);
+		if(committeeId != null){
+			return getCommitteeMembersInfo(committeeId);
+		}else{
+			return new LocationWiseBoothDetailsVO();
+		}
+	}
 }
