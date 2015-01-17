@@ -294,28 +294,19 @@
 	}
 	function submitCadreForm()
 	{	
-	    $("#submitCadreFormBtnReqId").removeAttr("onclick");
+	   $("#submitCadreFormBtnReqId").removeAttr("onclick");
 	   $("#submitCadreFormBtnReqId").attr("disabled","disabled");
-		//if(validateDetails())
-		//{
-			/*	if(!isNumber()){
+		var uploadHandler = {
+				upload: function(o) {
+					uploadResult = o.responseText;
+					console.log(uploadResult);
+					//showUploadStatus(uploadResult);	
+				}
+			};
+
+		YAHOO.util.Connect.setForm('uploadCadreForm',true);
+		YAHOO.util.Connect.asyncRequest('POST','tdpCadreSaveRegistrationAction.action',uploadHandler);
 				
-					$('html,body').animate({
-					scrollTop:  $("#casteIdValue").offset().top 
-					});
-					return false;
-				}*/
-
-				var uploadHandler = {
-						upload: function(o) {
-							uploadResult = o.responseText;
-							console.log(uploadResult);
-							//showUploadStatus(uploadResult);	
-						}
-					};
-
-				YAHOO.util.Connect.setForm('uploadCadreForm',true);
-				YAHOO.util.Connect.asyncRequest('POST','tdpCadreSaveRegistrationAction.action',uploadHandler);
-		//}		
 	}
+	
 	
