@@ -21,9 +21,16 @@
 	<script type="text/javascript" src="js/cadreCommittee/cadreCommittee.js"></script>
    	
 	<style>
-	#publicrepresantative,#mandalaffiliated,#advancedSearchDiv,#committeeDetailsDiv
+	#publicrepresantative,#mandalaffiliated,#advancedSearchDiv,#committeeDetailsDiv,#searchcadrenewDiv
 	{
 		display:none;
+	}
+	#noMembersErr{
+	  font-weight:bold;	  
+	}
+	#committeeLocationIdErr,#committeeTypeIdErr,#afflitCommitteeIdErr{
+		font-weight:bold;
+		color:red;
 	}
 	</style>
   </head>
@@ -74,13 +81,15 @@
 			<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 ">
 				<div class="form-group col-xs-12 pull-right">
 					<label for="committeeLocationId">SELECT LOCATION</label>
-					<select  class="form-control" id="committeeLocationId" ><option value="0">Select Location</option></select >
+					<select onchange="populateDefaultValue(1);" class="form-control" id="committeeLocationId" ><option value="0">Select Location</option></select >
+					<div id="committeeLocationIdErr"></div>
 				 </div>
 			</div>
 			<div class="col-md-4 col-sm-6 col-xs-6">
 				<div class="form-group col-xs-12">
 					<label for="committeeTypeId">COMMITTEE TYPE</label>
-					<select class="form-control" id="committeeTypeId" onchange="getAffiliatedCommitsForALoc();" ><option value="0">Select Committee Type</option><option value="1">Main Committee</option><option value="2">Affiliated Committee</option></select >
+					<select class="form-control" id="committeeTypeId" onchange="getAffiliatedCommitsForALoc();populateDefaultValue(2);" ><option value="0">Select Committee Type</option><option value="1">Main Committee</option><option value="2">Affiliated Committee</option></select >
+					<div id="committeeTypeIdErr"></div>
 				 </div>
 			</div>
 		</div>
@@ -89,7 +98,8 @@
 			<div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-2 col-xs-12 ">
 				<div class="form-group col-xs-12">
 					<label for="committeeId">AFFILIATED COMMITTEE</label>
-					<select class="form-control" id="afflitCommitteeId"><option>Select Affiliated Committee</option></select >
+					<select class="form-control" onchange="hideMembers();" id="afflitCommitteeId"><option>Select Affiliated Committee</option></select >
+					<div id="afflitCommitteeIdErr"></div>
 				 </div>
 			</div>			
 		</div> 
@@ -97,7 +107,7 @@
 		<div class="row">	
 			<div class="col-md-12 col-sm-12 col-xs-12 text-center">
 					<ul class="list-inline">
-						<li><a class="btn btn-success" onclick="getCommitteMembersInfo();" href="javascript:{}">VIEW</a></li>
+						<li><input type="button" id="viewMembrsBtn" class="btn btn-success" onclick="getCommitteMembersInfo();" value="VIEW" /></li>
 						<li><a class="btn btn-success" href="">ADD</a></li>
 					</ul>
 			</div> 
@@ -106,7 +116,7 @@
 		<!-------VIEW BLOCK------>
 		<div class="row" id="committeeDetailsDiv">	
 			<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 text-center">
-				<h4>AFFILIATED COMMITTEE NAME</h4>
+				<h4><span id="affComitteeMainTitle"></span></h4>
 				<hr style="margin: 0px;">
 				<ul class="list-inline pull-right ">
 					<li><span style="color:#fff;font-weight:bold;">TOTAL </span></li>
@@ -117,112 +127,15 @@
 			</div>			
 			
 			<div class="col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1 ">
-				<div class="variable-width">
-				  <div class="slick_widget">
-					<h5>PRESIDENT</h5>
-					<ul class="list-inline text-center" >
-						<li class="btn btn-xs btn-default" disabled="disabled">2</li>
-						<li class="btn btn-xs btn-danger" disabled="disabled">0</li>
-						<li class="btn btn-xs btn-success" disabled="disabled">2</li>
-					</ul>
-				  </div>
-				  
-				   <div class="slick_widget">
-					<h5>VICE PRESIDENT</h5>
-					<ul class="list-inline text-center" >
-						<li class="btn btn-xs btn-default" disabled="disabled">1</li>
-						<li class="btn btn-xs btn-danger" disabled="disabled">0</li>
-						<li class="btn btn-xs btn-success" disabled="disabled">1</li>
-					</ul>
-				  </div>
-				   <div class="slick_widget">
-					<h5>GENERAL SECRETARY</h5>
-					<ul class="list-inline text-center" >
-						<li class="btn btn-xs btn-default" disabled="disabled">2</li>
-						<li class="btn btn-xs btn-danger" disabled="disabled">1</li>
-						<li class="btn btn-xs btn-success" disabled="disabled">1</li>
-					</ul>
-				  </div>
-				  <div class="slick_widget">
-					<h5>WROKING COMMITTEE</h5>
-					<ul class="list-inline text-center" >
-						<li class="btn btn-xs btn-default" disabled="disabled">2</li>
-						<li class="btn btn-xs btn-danger" disabled="disabled">2</li>
-						<li class="btn btn-xs btn-success" disabled="disabled">0</li>
-					</ul>
-				  </div>
-				  
-				   <div class="slick_widget">
-					<h5>ORGANISING COMMITTEE</h5>
-					<ul class="list-inline text-center" >
-						<li class="btn btn-xs btn-default" disabled="disabled">1</li>
-						<li class="btn btn-xs btn-danger" disabled="disabled">0</li>
-						<li class="btn btn-xs btn-success" disabled="disabled">1</li>
-					</ul>
-				  </div>
-				  <div class="slick_widget">
-					<h5>ORGANISING COMMITTEE</h5>
-					<ul class="list-inline text-center" >
-						<li class="btn btn-xs btn-default" disabled="disabled">1</li>
-						<li class="btn btn-xs btn-danger" disabled="disabled">0</li>
-						<li class="btn btn-xs btn-success" disabled="disabled">1</li>
-					</ul>
-				  </div>
-				  <div class="slick_widget">
-					<h5>ORGANISING COMMITTEE</h5>
-					<ul class="list-inline text-center" >
-						<li class="btn btn-xs btn-default" disabled="disabled">1</li>
-						<li class="btn btn-xs btn-danger" disabled="disabled">0</li>
-						<li class="btn btn-xs btn-success" disabled="disabled">1</li>
-					</ul>
-				  </div>
-				   
-				   
-				 
-				</div>
+				<div class="variable-width" id="commitMembrsCountDiv"></div>
 			</div>
 		
-			<div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12 col-xs-offset-0 text-center">
-				<table class="table table-bordered text-left" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); color:#fff;">
-					<tbody>
-						<tr>
-							<td>President</td>
-							<td><img src="images/cadreCommitee/Member_thamb_image.png" /></td>
-							<td>Member Name</td>
-							<td>Membership Number</td>
-						</tr>
-						<tr>
-							<td>Vice president</td>
-							<td><img src="images/cadreCommitee/Member_thamb_image.png" /></td>
-							<td>Member Name</td>
-							<td>Membership Number</td>
-						</tr>
-						<tr>
-							<td>General secretary</td>
-							<td><img src="images/cadreCommitee/Member_thamb_image.png" /></td>
-							<td>Member Name</td>
-							<td>Membership Number</td>
-						</tr>
-						<tr>
-							<td>Working committee</td>
-							<td><img src="images/cadreCommitee/Member_thamb_image.png" /></td>
-							<td>Member Name</td>
-							<td>Membership Number</td>
-						</tr>
-						<tr>
-							<td>Organising  Committee</td>
-							<td><img src="images/cadreCommitee/Member_thamb_image.png" /></td>
-							<td>Member Name</td>
-							<td>Membership Number</td>
-						</tr>						
-					</tbody>
-				</table>
-			</div>
+			<div id="committeeMmbrsMainDiv" class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12 col-xs-offset-0 text-center"></div>
 		</div>
 		<!-------/VIEW BLOCK END------>
 		
 		<!-------ADD BLOCK------>
-		<div class="row">	
+		<div class="row" id="searchcadrenewDiv">	
 			<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 text-center">
 				<h4>SEARCH BASED ON</h4>
 				<hr style="margin: 0px;">
@@ -598,19 +511,8 @@
 		
 	</div>
 
-	<script>		
-		$('.variable-width').slick({
-		  dots: false,
-		  infinite: false,
-		  speed: 300,
-		  //slidesToShow: 4,
-		  //slidesToScroll: 3,
-		  autoplay: true,
-		  autoplaySpeed: 2000,
-		  //centerMode: true,
-		  variableWidth: true
-		});  
-
+	<script>	
+        var slickCount = 0;	
 		$('.searchTypeCls').click(function(){
 			var id = $(this).attr('id');
 			$('#advancedSearchDiv').hide();
@@ -655,6 +557,19 @@
 		});
 	}
 	function getAffiliatedCommitsForALoc(){
+		$("#committeeDetailsDiv").hide();
+		$("#committeeLocationIdErr").html("");
+		$("#committeeTypeIdErr").html("");
+		$("#afflitCommitteeIdErr").html("");
+		var locId = $("#committeeLocationId").val();
+		if(locId == null || locId == 0){
+			$("#committeeLocationIdErr").html("Please Select Location");
+			return;
+		}
+		if($("#committeeTypeId").val() == 0){
+			$("#committeeTypeIdErr").html("Please Select Committee Type");
+			return;
+		}
 		if($("#committeeTypeId").val() == 2){
 			$("#committeeMainId").show();
 			var reqLocationType = "";
@@ -680,11 +595,37 @@
 		
 	}
 	function getCommitteMembersInfo(){
+		$("#committeeLocationIdErr").html("");
+		$("#committeeTypeIdErr").html("");
+		$("#afflitCommitteeIdErr").html("");
+		var locId = $("#committeeLocationId").val();
+		var locVal = $("#afflitCommitteeId").val();
+		if(locId == null || locId == 0){
+			$("#committeeLocationIdErr").html("Please Select Location");
+			return;
+		}
+		if($("#committeeTypeId").val() == 0){
+			$("#committeeTypeIdErr").html("Please Select Committee Type");
+			return;
+		}
+		if($("#committeeTypeId").val() == 2){
+			 if(locVal == null || locVal == 0){
+				$("#afflitCommitteeIdErr").html("Please Select Affiliated Committee");
+				return;
+			}
+		 }
+		 $("#committeeDetailsDiv").show();
+		 $("#searchcadrenewDiv").hide();
+		 $("#commitMembrsCountDiv").html('<center><img src="images/icons/loading.gif"  /></center>');
+		 $("#committeeMmbrsMainDiv").html("");
 		 var reqCommitteeType = "main";
 		 var reqLocationType = "";
+		 var title ="MAIN COMMITTEE";
 		 if($("#committeeTypeId").val() == 2){
 			 reqCommitteeType = "affiliated";
+			 title =$.trim($("#afflitCommitteeId option:selected").text())+" COMMITTEE";
 		 }
+		 $("#affComitteeMainTitle").html(title.toUpperCase());
 		 if(reqCommitteeType == "main"){
 		   if($("#mndlLvlCommittSelec").is(':checked')){
 		     reqLocationType ="mandal";
@@ -693,13 +634,72 @@
 		 }else{
 			 reqLocationValue=$("#afflitCommitteeId").val();
 		 }
+		 $("#viewMembrsBtn").attr("disabled","disabled");
 		  $.ajax({
 				type : "POST",
 				url : "getCommitteMembersInfoAction.action",
 				data : {locationType:reqLocationType,locationValue:reqLocationValue,committeeType:reqCommitteeType} ,
 			}).done(function(result){
-				
-			});
+				$("#viewMembrsBtn").removeAttr("disabled");
+				slickCount = slickCount+1;
+				var counts = result.result;
+				var members = result.hamletsOfTownship;
+				var str ='<div id="variable-width'+slickCount+'">';
+			   for(var i in  counts){
+				str+='<div class="slick_widget">';
+				str+='	<h5>'+counts[i].locationName+'</h5>';
+				str+='	<ul class="list-inline text-center" >';
+				str+='		<li class="btn btn-xs btn-default" disabled="disabled">'+counts[i].population+'</li>';
+				str+='		<li class="btn btn-xs btn-danger" disabled="disabled">'+counts[i].votesPolled+'</li>';
+				str+='		<li class="btn btn-xs btn-success" disabled="disabled">'+counts[i].total+'</li>';
+				str+='	</ul>';
+				str+='</div>';
+			   }
+			   $("#commitMembrsCountDiv").html(str);
+			   str ="";
+			   if(members != null && members.length > 0){
+				   str+='<table class="table table-bordered text-left" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); color:#fff;">';
+				   str+='	<tbody>';
+				   for(var i in members){
+					  str+=' <tr>';
+					  str+=' 	<td>'+members[i].value+'</td>';
+					  str+=' 	<td><img width="32" id="imagecdr'+i+'" height="32" src="images/cadre_images/'+members[i].url+'" onerror="setDefaultImage(this);"/></td>';
+					  str+=' 	<td>'+members[i].name+'</td>';
+					  str+=' 	<td>'+members[i].type+'</td>';
+					  str+=' </tr>';
+				   }
+				   str+='	</tbody>';
+				   str+='</table>';
+			   }else{
+				   str+='<span id="noMembersErr">No Members Added To This Committee</span>';
+			   }
+			   $("#committeeMmbrsMainDiv").html(str);
+			   
+			   $('#variable-width'+slickCount).slick({
+					  dots: false,
+					  infinite: false,
+					  speed: 300,
+					  autoplay: true,
+					  autoplaySpeed: 2000,
+					  variableWidth: true
+					});  
+		    });
+	}
+	function setDefaultImage(img)
+	{
+		img.src = "images/cadreCommitee/Member_thamb_image.png";
+	}
+	function populateDefaultValue(level){
+		if(level == 1){
+		  $("#committeeLocationIdErr").html("");
+		  $("#committeeTypeId").val(0);
+		  $("#committeeDetailsDiv").hide();
+		}
+		$("#afflitCommitteeId  option").remove();
+		$("#afflitCommitteeId").append('<option value="0">Select Affiliated Committee</option>');
+	}
+	function hideMembers(){
+		$("#committeeDetailsDiv").hide();
 	}
 	getCommitteeLocations();
 	</script>
