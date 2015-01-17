@@ -25,8 +25,8 @@ public class CadreParticipatedElectionDAO extends GenericDaoHibernate<CadreParti
 	
 	public List<Object[]> getPreviousParticipationInfoByTdpCadreId(Long tdpCadreId)
 	{
-		Query query = getSession().createQuery("select model.election, model.constituencyId, model.candidate  from  " +
-				" CadreParticipatedElection model  where model.tdpCadreId = :tdpCadreId and model.isDeleted = 'N' and model.candidate is not null and  model.election is not null ");
+		Query query = getSession().createQuery("select model.election, model.constituencyId, model.candidateId  from  " +
+				" CadreParticipatedElection model  where model.tdpCadreId = :tdpCadreId and model.isDeleted = 'N' and model.election is not null ");
 		query.setParameter("tdpCadreId", tdpCadreId);
 		return query.list();
 	}	
