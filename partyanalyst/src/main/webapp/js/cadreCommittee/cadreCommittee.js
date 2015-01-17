@@ -294,19 +294,86 @@
 	}
 	function submitCadreForm()
 	{	
-	   $("#submitCadreFormBtnReqId").removeAttr("onclick");
-	   $("#submitCadreFormBtnReqId").attr("disabled","disabled");
-		var uploadHandler = {
-				upload: function(o) {
-					uploadResult = o.responseText;
-					console.log(uploadResult);
-					//showUploadStatus(uploadResult);	
-				}
-			};
-
-		YAHOO.util.Connect.setForm('uploadCadreForm',true);
-		YAHOO.util.Connect.asyncRequest('POST','tdpCadreSaveRegistrationAction.action',uploadHandler);
+		$(".requiredFields").html('');
+		
+	   //$("#submitCadreFormBtnReqId").removeAttr("onclick");
+	   //$("#submitCadreFormBtnReqId").attr("disabled","disabled");
+	   
+	   var errString="";
+				var ageId=$("#ageId").val();
+				var genderId=$("#genderDetailsId").val();
+				var voterCardNoId=$("#voterCardNoId").val();
+				var adhaarNoId =$("#adhaarNoId").val();
+				//var mobileNumber = document.getElementById('mobileNoId');
+				var castId = document.getElementById('casteId');
+				var emailId = document.getElementById('emailIdDiv');
 				
+			if($("#ageId").val().trim().length  == 0 ){
+					$("#ageIdErrorDiv").html("please enter age details.");
+					errString="error";
+				}
+				if($("#genderDetailsId").val()== 0){
+					$("#genderIdErrorDiv").html("please enter Gender Details.");
+					errString="error";
+				}
+				if($("#voterCardNoId").val().trim().length == 0){
+					$("#voterCardNoIdError").html("please enter Voter Card Number.");
+					errString="error";
+				}
+				if($("#adhaarNoId").val().trim().length != 12){
+					$("#adhaarNoIdError").html("please enter valid Aadhar id Number.");
+					errString="error";
+				}
+				if($("#mobileNoId").val().trim().length != 10){
+					$("#mobileNOErrorId").html("Mobile No doesn't exist.please check it once.");
+					errString="error";
+				}
+				if($("#casteId").val()== 0){
+					$("#casteIdErrorDiv").html("caste Needs to be Select");
+					errString="error";
+				}
+				if($("#addressId").val().trim().length==0){
+					$("#addressIdError").html("address Field need to be Required.");
+				}
+				if($("#educationId").val()==0){
+					$("#educationIdError").html("education Field need to be Select");
+					errString="error";
+				}
+				if($("#occupationId").val()==0){
+					$("#occupationIdError").html("Occupation field Need to be Select");
+					errString="error";
+				}
+				
+		/*		if(emailId.length == 0){
+					 $('#emailIdDivError').html('email id is Required.');
+					 errString="error";
+					} 
+					else if( emailId != null && !validateEmail(emailId)) {  	  
+					  $('#emailIdDivError').html('Invalid email.');
+					 errString="error";
+				}	*/
+				if(errString.trim().length >0){
+					return;
+				}
+				else{	
+					var uploadHandler = {
+						upload: function(o) {
+							uploadResult = o.responseText;
+							console.log(uploadResult);
+							//showUploadStatus(uploadResult);	
+						}
+					};
+
+				YAHOO.util.Connect.setForm('uploadCadreForm',true);
+				YAHOO.util.Connect.asyncRequest('POST','tdpCadreSaveRegistrationAction.action',uploadHandler);	
+			}	
 	}
 	
-	
+	function validateEmail($email) {
+	  var emailReg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+	  if( !emailReg.test( $email ) ) {
+		return false;
+	  } else {
+		return true;
+	  }
+	}
