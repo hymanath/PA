@@ -73,7 +73,7 @@
 					<input type="text" id="disabledInput" class="form-control  editClass"  value="${cadreCommitteeVO.adhaarNo}" placeholder="Aadhar No:258963147" disabled>
 				</div>
 				<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 form-group">
-					<input type="text" id="disabledInput" class="form-control editClass"  value="${cadreCommitteeVO.mobileNo}" placeholder="Mobile No:9632587410" disabled>
+					<input type="text" id="disabledInput" class="form-control editClass mobileNumber"  value="${cadreCommitteeVO.mobileNo}" placeholder="Mobile No:9632587410" disabled>
 				</div>
 				<!--
 				<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 form-group">
@@ -198,20 +198,21 @@
 				</div>
 			</div>
 			
-			<div class="col-md-10 col-md-offset-2  col-sm-12 col-xs-12 m_top20 text-center ">
-				<div  class="row">	
+			<div class="col-md-10 col-md-offset-2  col-sm-12 col-xs-12 m_top20 text-center generateotpdiv">
+				<div  class="row">		
+					<div class="referencediv"></div>
 					<div class="col-md-2 col-md-offset-0  col-sm-3 col-xs-3">
-						<button class="btn btn-primary" type="submit">Generate OTP</button>
+						<button class="btn btn-primary" type="submit" onclick="generateOTP();">Generate OTP</button>
 					</div>
 					<div class="col-md-2 col-md-offset-0  col-sm-4 col-xs-4">
-							<input type="text" class="form-control" placeholder="ENTER OTP NUMBER" >						
+							<input type="text" class="form-control otptextbox" placeholder="ENTER OTP NUMBER" >						
 					</div>
 					<div class="col-md-2 col-md-offset-0  col-sm-3 col-xs-3">
-						<button class="btn btn-success" type="submit">Validate OTP</button>
+						<button class="btn btn-success" type="submit" onclick="checkOTPValid();">Validate OTP</button>
 					</div>	
 				</div>
 			</div>
-			<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 m_top20 text-center">
+			<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 m_top20 text-center updateProfileDivId">
 				<button class="btn btn-success btn-block btn-lg m_top20" type="submit">UPDATE PROFILE  &  ADD to MANDAL Affliated Electoral</button>
 			</div>			
 		</div> 
@@ -223,7 +224,7 @@
 
    
 	<script>		
-		
+		var mobnum,refid;
 		$('document').ready(function(){
 			 $('#dateOfBirth').datepicker({
 				dateFormat: 'yy-mm-dd',
@@ -237,7 +238,63 @@
 			 $('.editClass').removeProp('disabled');
 			 
 			 });
-		});		
+			 $('.generateotpdiv').hide();
+			 mobnum = $(".mobileNumber").val();
+		});	
+		
+		$("#casteId").change(function(){
+			$('.generateotpdiv').show();
+			$('.updateProfileDivId').hide();			
+		});
+			
+		$(".mobileNumber").blur(function(){
+			if(mobnum!=$(".mobileNumber").val()){
+				$('.generateotpdiv').show();
+				$('.updateProfileDivId').hide();
+			}
+		});
+			
+		function generateOTP(){
+			var mobileNo=$(".mobileNumber").val();
+			var jsObj =	{
+				mobileNo : mobileNo
+			}
+		
+			$.ajax(
+			  {
+					type: "POST",
+					url:"generateOTPForEditAction.action",
+					data:{task :JSON.stringify(jsObj)}
+			  }
+			  ).done(function(result){
+					if(result!=null){
+						refid=result;
+						var str='';
+							str+='<span style="margin-left:-560px; color:red"><b>Reference Id : '+result+'</b></span>';
+							$(".referencediv").html(str);
+					}
+			  });
+		}
+		
+		function checkOTPValid(){
+			var mobileNo=$(".mobileNumber").val();
+			var otpNo=$(".otptextbox").val();
+			var jsObj =	{
+				mobileNo : mobileNo,
+				refNo : refid,
+				otpNo : otpNo
+			}
+		
+			$.ajax(
+			  {
+					type: "POST",
+					url:"checkValidOTPAction.action",
+					data:{task :JSON.stringify(jsObj)}
+			  }
+			  ).done(function(result){
+					$('.updateProfileDivId').show();
+			  });
+		}
 	</script>
   </body>
 </html>
