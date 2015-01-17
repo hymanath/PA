@@ -13,8 +13,10 @@ public class LocationWiseBoothDetailsVO {
 	private Set<SelectOptionVO> booths;
 	private Set<SelectOptionVO> subLocations;
 	private List<SelectOptionVO> hamletsOfTownship;
+	private List<LocationWiseBoothDetailsVO> result;
 	private Long population;
 	private Long votesPolled;
+	private Long total;
 	private String electionYear;
 	
 	public String getElectionYear() {
@@ -93,6 +95,22 @@ public class LocationWiseBoothDetailsVO {
 	@Override
 	public int hashCode(){
 		return new HashCodeBuilder(17, 37).append(locationId).toHashCode();
+	}
+
+	public Long getTotal() {
+		return total;
+	}
+
+	public void setTotal(Long total) {
+		this.total = total;
+	}
+
+	public List<LocationWiseBoothDetailsVO> getResult() {
+		return result;
+	}
+
+	public void setResult(List<LocationWiseBoothDetailsVO> result) {
+		this.result = result;
 	}
 
 	

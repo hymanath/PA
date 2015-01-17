@@ -1,12 +1,34 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+import java.util.Set;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 
-public class TdpCommitteeMemberDAO extends GenericDaoHibernate<TdpCommitteeMember, Long>  implements ITdpCommitteeMemberDAO {
+  public class TdpCommitteeMemberDAO extends GenericDaoHibernate<TdpCommitteeMember, Long>  implements ITdpCommitteeMemberDAO {
 	public TdpCommitteeMemberDAO() {
 		super(TdpCommitteeMember.class);
+	}
+	
+	public List<Object[]> getRoleWiseAllocatedMembersCount(Set<Long> committeeRoleIds){
+		//0 count,1 id
+		Query query = getSession().createQuery("select count(*),model.tdpCommitteeRole.tdpCommitteeRoleId from TdpCommitteeMember model where " +
+				"model.tdpCommitteeRole.tdpCommitteeRoleId in(:committeeRoleIds) group by model.tdpCommitteeRole.tdpCommitteeRoleId ");
+		query.setParameterList("committeeRoleIds", committeeRoleIds);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getMembersInfo(Set<Long> committeeRoleIds){
+		//0 role,1 image,2name,3membership
+		Query query = getSession().createQuery("select model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.image,model.tdpCadre.firstname,model.tdpCadre.memberShipNo " +
+				" from TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommitteeRoleId in(:committeeRoleIds) order by model.tdpCommitteeRole.tdpRoles.order ");
+		query.setParameterList("committeeRoleIds", committeeRoleIds);
+		
+		return query.list();
 	}
 }
