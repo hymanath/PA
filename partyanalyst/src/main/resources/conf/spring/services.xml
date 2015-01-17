@@ -2487,7 +2487,7 @@
 		 <property name="cadrePreviousRolesDAO" ref="cadrePreviousRolesDAO"/>
 		 <property name="tdpCommitteeDAO" ref="tdpCommitteeDAO"/>
 		 <property name="tdpCommitteeRoleDAO" ref="tdpCommitteeRoleDAO"/>
-		 
+		 <property name="tdpCommitteeMemberDAO" ref="tdpCommitteeMemberDAO"/>
 	</bean>
 </beans>		
 	
