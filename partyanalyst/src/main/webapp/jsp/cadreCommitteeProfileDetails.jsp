@@ -399,6 +399,8 @@
 					</div>
 					<div class="col-md-2 col-md-offset-0  col-sm-3 col-xs-3">
 						<button class="btn btn-success" type="button" onclick="checkOTPValid();">Validate OTP</button>
+						<img id="right" style="width:35px; height:32px; margin-left:5px;" src="images/right.jpg">
+						<img id="wrong" style="width:35px; height:32px; margin-right:5px;" src="images/wrong.jpg">
 					</div>	
 				</div>
 			</div>
@@ -470,6 +472,8 @@
 			 prepopulateOptions();
 			 
 			 $('.generateotpdiv').hide();
+			 $('#right').hide();
+			 $('#wrong').hide();
 			 mobnum = $(".mobileNumber").val();
 		});	
 		
@@ -523,7 +527,16 @@
 					data:{task :JSON.stringify(jsObj)}
 			  }
 			  ).done(function(result){
-					$('.updateProfileDivId').show();
+					if(result=="success"){
+						$('#right').show();
+						$('#wrong').hide();
+						$('.updateProfileDivId').show();
+					}
+					else{
+						$('#right').hide();
+						$('#wrong').show();
+						$('.updateProfileDivId').hide();
+					}
 			  });
 		}
 		
