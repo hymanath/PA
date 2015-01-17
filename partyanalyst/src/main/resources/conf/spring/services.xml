@@ -2485,6 +2485,9 @@
 		 <property name="cadreParticipatedElectionDAO" ref="cadreParticipatedElectionDAO"/>
 		 <property name="cadreCommitteeRoleDAO" ref="cadreCommitteeRoleDAO"/>
 		 <property name="cadrePreviousRolesDAO" ref="cadrePreviousRolesDAO"/>
+		 <property name="tdpCommitteeDAO" ref="tdpCommitteeDAO"/>
+		 <property name="tdpCommitteeRoleDAO" ref="tdpCommitteeRoleDAO"/>
+		 
 	</bean>
 </beans>		
 	

@@ -398,7 +398,7 @@
 				<div class="col-md-3 col-md-offset-3  col-sm-6 col-sm-offset-0 col-xs-6 col-xs-offset-0 m_top20" >
 					<div class="form-group">
 						<label for="exampleInputEmail1">SELECT LOCATION</label>
-						<select  class="form-control"><option>Location Name #1</option></select >
+						<select  class="form-control" id="committeeLocationId" ><option value="0">Select Location</option></select >
 					 </div>
 				</div>
 				<div class="col-md-3  col-sm-6 col-sm-offset-0 col-xs-6 col-xs-offset-0 m_top20">
@@ -552,6 +552,18 @@
 				yearRange: "-100:+0"
 			  });
 	}
+	$.ajax({
+		type : "POST",
+		url : "getCommitteLocationsAction.action",
+		data : {locationType:""} ,
+	}).done(function(result){
+		$("#committeeLocationId  option").remove();
+		$("#committeeLocationId").append('<option value="0">Select Location</option>');
+		for(var i in result){
+		   $("#committeeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+		}
+			
+	});
 	</script>
   </body>
 </html>
