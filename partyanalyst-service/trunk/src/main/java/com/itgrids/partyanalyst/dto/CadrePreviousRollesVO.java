@@ -27,8 +27,22 @@ public class CadrePreviousRollesVO implements Serializable {
 	private Long 				cadreRoleId;
 	
 	private String				candidateId;
+	private Long 				cadreCommitteeLevelValue;
+	private Long 				cadreCommitteeTypeId;
 	
 	
+	public Long getCadreCommitteeTypeId() {
+		return cadreCommitteeTypeId;
+	}
+	public void setCadreCommitteeTypeId(Long cadreCommitteeTypeId) {
+		this.cadreCommitteeTypeId = cadreCommitteeTypeId;
+	}
+	public Long getCadreCommitteeLevelValue() {
+		return cadreCommitteeLevelValue;
+	}
+	public void setCadreCommitteeLevelValue(Long cadreCommitteeLevelValue) {
+		this.cadreCommitteeLevelValue = cadreCommitteeLevelValue;
+	}
 	public Long getDesignationLevelId() {
 		return designationLevelId;
 	}
