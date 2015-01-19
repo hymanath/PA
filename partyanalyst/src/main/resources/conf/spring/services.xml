@@ -2488,6 +2488,8 @@
 		 <property name="tdpCommitteeDAO" ref="tdpCommitteeDAO"/>
 		 <property name="tdpCommitteeRoleDAO" ref="tdpCommitteeRoleDAO"/>
 		 <property name="tdpCommitteeMemberDAO" ref="tdpCommitteeMemberDAO"/>
+		 <property name="tdpCommitteeElectrolsDAO" ref="tdpCommitteeElectrolsDAO"/>
+		 <property name="tdpCommitteeElectrolRolesDAO" ref="tdpCommitteeElectrolRolesDAO"/>
 	</bean>
 </beans>		
 	
