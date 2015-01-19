@@ -192,7 +192,7 @@
 				str+='</div>';
 				str+='<div class="form-inline ">';
 				str+='<label><input type="radio" name="searchedDetails"> &nbsp;&nbsp;</label>';
-				str+='<a target="_blank" href="cadreProfileDetailsAction.action?tdpCadreId=9335312" class="btn btn-success btn-medium">UPDATE PROFILE</a>';
+				str+='<a target="_blank" href="cadreProfileDetailsAction.action?tdpCadreId='+result[i].id+'&task='+$('#areaTypeId').val()+'&committeeMngtType='+$('#committeeMngtType').val()+;" class="btn btn-success btn-medium">UPDATE PROFILE</a>';
 				str+='</div>	';
 			}
 		}
@@ -427,3 +427,67 @@
 		return true;
 	  }
 	}
+
+	function getCommitteCadreMembersInfo(type){
+		$("#committeeLocationIdErr").html("");
+		$("#committeeTypeIdErr").html("");
+		$("#afflitCommitteeIdErr").html("");
+		var locId = $("#committeeLocationId").val();
+		var locVal = $("#afflitCommitteeId").val();
+		if(locId == null || locId == 0){
+			$("#committeeLocationIdErr").html("Please Select Location");
+			return;
+		}
+		if($("#committeeTypeId").val() == 0){
+			$("#committeeTypeIdErr").html("Please Select Committee Type");
+			return;
+		}
+		if(type == 2)
+		{		
+			if($("#committeeTypeId").val() == 2){
+				 if(locVal == null || locVal == 0){
+					$("#afflitCommitteeIdErr").html("Please Select Affiliated Committee");
+					return;
+				}
+			}
+		}
+		
+		 $("#committeeDetailsDiv").show();
+		 //$("#searchcadrenewDiv").hide();
+		 $("#commitMembrsCountDiv").html('<center><img src="images/icons/loading.gif"  /></center>');
+		 $("#committeeMmbrsMainDiv").html("");
+		 var reqCommitteeType = "main";
+		 var reqLocationType = "";
+		 var title ="MAIN COMMITTEE";
+		 if($("#committeeTypeId").val() == 2){
+			 reqCommitteeType = "affiliated";
+			 title =$.trim($("#afflitCommitteeId option:selected").text())+" COMMITTEE";
+		 }
+		 $("#affComitteeMainTitle").html(title.toUpperCase());
+		 if(reqCommitteeType == "main"){
+		   if(areaType == 2){
+		     reqLocationType ="mandal";
+		   }
+		   reqLocationValue=$("#committeeLocationId").val();
+		 }else{
+			 reqLocationValue=$("#afflitCommitteeId").val();
+		 }
+		 $("#committeePositionId  option").remove();
+		 $("#committeePositionId").append('<option value="0">Select Position</option>');
+		  $.ajax({
+				type : "POST",
+				url : "getCommitteMembersInfoAction.action",
+				data : {locationType:reqLocationType,locationValue:reqLocationValue,committeeType:reqCommitteeType} ,
+			}).done(function(result){
+				
+				if(result != null)				
+				{
+					if(result.result != null && result.result.length>0)
+					{
+						for(var i in result.result)
+							$("#committeePositionId").append('<option value="'+result.result[i].locationId+'">'+result.result[i].locationName+'</option>');
+					}
+				}
+		    });
+	}
+	
