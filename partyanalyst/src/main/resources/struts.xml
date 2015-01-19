@@ -9341,7 +9341,11 @@
 				<param name="root">task</param>
 			</result>
 		</action>
-		
+		<action name="getTdpCommitteeDesignations" class="cadreCommitteeAction" method="getTdpCommitteeDesignations">
+			<result type="json" name="success">
+				<param name="root">locations</param>
+			</result>
+		</action>
 		<action name="gettingExistingCadreInfoAction" class="cadreRegistrationAction" method="getExistingCadreInfo">
 			<result type="json" name="success">
 			<param name="root">genericVOList</param>

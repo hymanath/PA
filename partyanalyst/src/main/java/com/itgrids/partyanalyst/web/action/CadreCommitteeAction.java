@@ -384,4 +384,13 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		}		
 		return Action.SUCCESS;
 	}
+	
+	public String getTdpCommitteeDesignations(){
+		try {
+			locations = cadreCommitteeService.getAllTdpCommitteeDesignations();
+		}catch (Exception e) {
+			LOG.error("Exception occured in getTdpCommitteeDesignations() At CadreCommitteeAction ",e);
+		}
+		return Action.SUCCESS;
+	}
 }
