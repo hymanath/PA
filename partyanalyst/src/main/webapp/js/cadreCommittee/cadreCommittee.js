@@ -415,7 +415,7 @@
 					};
 
 				YAHOO.util.Connect.setForm('uploadCadreForm',true);
-				YAHOO.util.Connect.asyncRequest('POST','tdpCadreSaveRegistrationAction.action',uploadHandler);	
+				YAHOO.util.Connect.asyncRequest('POST','committeTdpCadreSaveRegistrationAction.action',uploadHandler);	
 			}	
 	}
 	
