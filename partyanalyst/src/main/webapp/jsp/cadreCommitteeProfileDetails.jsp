@@ -66,9 +66,7 @@
 		.requiredFields{color:red;}
 		.form-control[disabled] {color:#333 !important;background-color: rgba(0, 0, 0, 0.1) !important;border: medium none rgba(0, 0, 0, 0) !important;
 		}	
-		#assignCommitteeDiv{
-			display:none !important;
-		}
+		
 	</style>
 	
 	<script>
@@ -198,13 +196,13 @@
 		<div class="row m_top20">
 			<div class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center" style="border-bottom:1px solid #FD2A34;">
 				<button href="#" class="btn btn-xs btn-warning pull-right" id="editFieldsId">EDIT</button>
-				<img src="http://www.mytdp.com/images/cadre_images/${cadreCommitteeVO.imageURL}"  class="img-circle" style="border:4px solid rgb(255, 231, 0);"/>
+				<img src="http://www.mytdp.com/images/cadre_images/${cadreCommitteeVO.imageURL}"  class="img-circle" style="border:4px solid rgb(255, 231, 0);width:70px;height:70px;"/>
 				<h3>${cadreCommitteeVO.cadreName}</h3>
 				<h4>Cadre Number : ${cadreCommitteeVO.memberShipCardId}</h4>				
 			</div>			
 		</div> 
 		
-		<form action="committeTdpCadreSaveRegistrationAction.action" method="POST" enctype="multipart/form-data" name="uploadCadreForm">
+		<form action="tdpCadreSaveRegistrationAction.action" method="POST" enctype="multipart/form-data" name="uploadCadreForm">
 			<input type="hidden" value="${cadreCommitteeVO.voterId}" name="cadreRegistrationVO.voterId" >
 				<input type="hidden" value="${cadreCommitteeVO.tdpCadreId}" name="cadreRegistrationVO.tdpCadreId" >
 		<div class="row m_top20">
@@ -279,29 +277,6 @@
 					<input type="text" id="emailIdDiv" class="form-control  editClass" value="${cadreCommitteeVO.emailId}"  placeholder="E-Mail ID: " name="cadreRegistrationVO.emailId" disabled>
 				</div>
 				<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group requiredFields" id="emailIdDivError"></div>
-				<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group" > 
-					<!--<h4> PREVIOUSLY ENROLLED  ? </h4>
-					<input type="text" id="preEnrollNoValue" class="form-control border-radius-0 input-block-level" placeholder="Previous Enrollment No."  value="${voterInfoVOList[0].memberShipId}" style="width:260px;"  onkeyup="getExistingCadreInfo2();" name="cadreRegistrationVO.previousEnrollmentNumber" readonly></input>&nbsp;<span onclick="clearPreviousEnrol();" title="Click Here To Clear Previous Enrollment Number" style="cursor: pointer;" class="icon-remove"></span>
-					<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByName();}" > LookUp For EnrollmentNo</a>
-					<input type="hidden" id="preEnrollNo" class="form-control border-radius-0 input-block-level" placeholder="Text input"  value="${voterInfoVOList[0].memberShipId}" style="width:260px;" ></input>-->
-					<div style="border-bottom:1px solid #FD2A34;margin-bottom:20px;" class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center">
-						<h4>PREVIOUSLY ENROLLED  ?</h4>				
-					</div>
-					<div class="col-md-4 col-sm-6 col-xs-6 form-group">
-						<div class="input-group">
-							<input type="text" readonly="" name="cadreRegistrationVO.previousEnrollmentNumber" onkeyup="getExistingCadreInfo2();" style="width:260px;" value="" placeholder="Previous Enrollment No." class="form-control border-radius-0 input-block-level" id="preEnrollNoValue">
-							<div class="input-group-addon" style="cursor: pointer;" onclick="clearPreviousEnrol();"><span class="glyphicon glyphicon-remove" style="cursor: pointer; font-size:15px;" title="Click Here To Clear Previous Enrollment Number" onclick="clearPreviousEnrol();"></span></div>
-						</div>
-					</div>
-
-					<div class="col-md-3 col-xs-offset-1 col-sm-5 col-xs-5 form-group">
-						<a href="javascript:{enableSearchByName();}" class="btn btn-success" id="searchByNameId"> LookUp For EnrollmentNo</a>
-					</div>
-
-					<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 form-group">
-						<input id="preEnrollNo" class="form-control border-radius-0 input-block-level" type="hidden" style="width:260px;" value="" placeholder="Text input">
-					</div>
-				</div>
 		</div>
 		
 		<div class="row m_top20">
@@ -516,84 +491,62 @@
 					</div>	
 				</div>
 			</div>
-			<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 m_top20 text-center updateProfileDivId">
-				<button class="btn btn-success btn-block btn-lg m_top20" id="submitCadreFormBtnReqId" type="button" onClick="submitCadreForm();">UPDATE PROFILE  &  ADD to MANDAL Affliated Electoral</button>
-			</div>			
-		</div> 
-	</form>
-	</div>
+	
+	
 	<div id="assignCommitteeDiv" >
-	<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center m_top20 alert alert-success">
-				<b>PROFILE UPDATED SUCCESSFULLY..</b>
-			</div>	
-    		
 			<div class="row " >
 				<div class="col-md-3 col-md-offset-3  col-sm-6 col-sm-offset-0 col-xs-6 col-xs-offset-0 m_top20" >
 					<div class="form-group">
 						<label for="exampleInputEmail1">SELECT LOCATION</label>
-						<select  class="form-control"><option>Location Name #1</option></select >
+						<select  class="form-control" id="committeeLocationId" name="eligibleRoles[0].cadreCommitteeLevelValue"><option>Location </option></select >
+						<input type="hidden" value="${task}" name="eligibleRoles[0].cadreCommitteeLevelId"/>
+						<div id="committeeLocationIdErr"></div>
 					 </div>
 				</div>
 				<div class="col-md-3  col-sm-6 col-sm-offset-0 col-xs-6 col-xs-offset-0 m_top20">
 					<div class="form-group">
 						<label for="exampleInputEmail1">COMMITTEE TYPE</label>
-						<select class="form-control"><option>Main Committee</option><option>Affiliated Committee</option></select >
+						<select class="form-control" id="committeeTypeId" onchange="getAffiliatedCommitsForALoc();populateDefaultValue(2);getCommitteCadreMembersInfo(1)" name="eligibleRoles[0].cadreCommitteeTypeId"><option value="0">Select Committee Type</option><option value="1">Main Committee</option><option value="2">Affiliated Committee</option></select >
+					<div id="committeeTypeIdErr"></div>
 					 </div>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-3 col-md-offset-3  col-sm-6 col-sm-offset-0 col-xs-6 col-xs-offset-0 ">
+				<div class="col-md-3 col-md-offset-3  col-sm-6 col-sm-offset-0 col-xs-6 col-xs-offset-0 " id="committeeDetailsDiv">
 					<label for="exampleInputEmail1">AFFILIATED COMMITTEE NAME</label>
-					<select  class="form-control"><option>COMMITTEE NAME</option></select >
+					<select class="form-control" id="afflitCommitteeId" onchange="getCommitteCadreMembersInfo(2)" name="eligibleRoles[0].cadreCommitteeId"><option>Select Affiliated Committee</option></select >
+					<div id="afflitCommitteeIdErr"></div>
 				 </div>
 		
 				<div class="col-md-3   col-sm-6 col-sm-offset-0 col-xs-6 col-xs-offset-0">
 					<label for="exampleInputEmail1">COMMITTEE POSITION</label>
-					<select  class="form-control"><option>POSITION Name #1</option></select >
-				</div>
-			</div>
-		
-			<div class="row">
-				<div class="col-md-6 col-md-offset-3  col-sm-6 col-sm-offset-3   col-xs-6 col-xs-offset-3 m_top20 ">
-					<button class="btn btn-success btn-block btn-lg m_top20">SUBMIT</button>
+					<select  class="form-control" id="committeePositionId"  name="eligibleRoles[0].cadreRoleId"><option>POSITION </option></select >
 				</div>
 			</div>
 		</div>
+		
+		
+			<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 m_top20 text-center updateProfileDivId">
+				<button class="btn btn-success btn-block btn-lg m_top20" id="submitCadreFormBtnReqId" type="button" onClick="submitCadreForm();">UPDATE PROFILE  &  ADD to MANDAL Affliated Electoral</button>
+			</div>			
+		</div> 
+	</form>
+	
+	
 	</div>
 	
-	<div id="myModal1" style="display:none;">
-					<div style="border:1px solid lightgray;">
-						<div class="pad-10b">
-								<h5 class="text-align1">CANDIDATE NAME</h5>
-								<input type="text" class="form-control border-radius-0" placeholder="Enter Name" id="candiNameId" name="searchName1" style="width:425px;" onkeyUp="getExistingCadreInfo1();">
-						</div>
-						<div class=" m_top10 pad-10b">
-							<div class="row-fluid">
-								<h5 class="text-align1">PREVIOUS ENROLLMENT NUMBER</h5>
-								<input type="text" class="form-control border-radius-0" placeholder="Enter Enrollment Number"  id="enrollmentNoId"  name="searchVoterCard" onkeyUp="getExistingCadreInfo1();">
-							</div>
-						</div>
-						
-						<a href="javascript:{getExistingCadreInfo1();}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
-						<div align="center"><img style="width:70px;height:60px;display:none;" id="searchDataImg1" class="" src="images/Loading-data.gif"></div>
-					</div>
-					<div id="errorDiv1"  class="mandatory"></div>
-					<div class="show-grid pad-5 m-bottom-10">
-						<div class="container" id="tableElement1" style="margin-top:25px;display:none;">
-							<h3 class="text-align" style="color:red;">SEARCH DETAILS</h3>
-							<div class="table-responsive" id="searchDetailsDiv1" ></div>
-						</div>
-					</div>
-				</div>
-				
+	</div>
 	<footer class="text-center m_top20">
 			&copy; 2015
 	</footer>
-	
+
    
 	<script>		
 		var mobnum,refid;
+		var areaType = '${task}';
+		
 		$('document').ready(function(){
+		getCommitteeLocations();
 			 $('.datesCls').datepicker({
 				dateFormat: 'yy-mm-dd',
 				maxDate: new Date(),
@@ -829,129 +782,124 @@
 			  });
 	}
 	
-	function enableSearchByName(){
-		//$('#preEnrollNoValue').removeAttr('readOnly');
-		$('#searchNameId,#searchVoterCardId,#searchHNoId').val("")
-		$('#searchDetailsDiv').html("");
-		$('#tableElement').hide();
-		var errDivId = "#errorDiv1";
-		$('#searchDetailsDiv1').html('');
-		$('#tableElement1').hide();
-		$('#preEnrollNo').val('');
-		$(errDivId).html('');
-		$( "#myModal1" ).dialog({title: "Search For Enrollment Number", width: "auto",
-            height: "auto", position: { my: 'right', at: 'top+10' }});
-	}
-	
-	function getExistingCadreInfo1(){
-		var errDivId = "#errorDiv1";
-	$('#searchDetailsDiv1').html('');
-	$('#tableElement1').hide();
-	$('#preEnrollNo').val('');
-	$(errDivId).html('');
-	
-	var candidateName = $('#candiNameId').val();
-	var enrollmentNo = $('#enrollmentNoId').val();
-	var constituencyId = 181;
-	var panchayatId = 18842;  // panchayat Id 
-	var boothId = 0;  // boothId Id 
-	var isPresentCadre = '${panchayatId}';  // ispresentCader checked ot not 
-	
-	var isError = false;
-	if((candidateName == null || candidateName.length == 0) && (enrollmentNo == null || enrollmentNo.length == 0))
-		{
-			$(errDivId).html('Enter any search criteria for details.');
-			 isError = true ;
+	function getCommitteeLocations(){
+		$("#committeeTypeId").val(0);
+		$("#committeeLocationIdErr").html("");
+		$("#committeeTypeIdErr").html("");
+		$("#afflitCommitteeIdErr").html("");
+		$("#committeeMainId").hide();
+		var reqLocationType ="";
+		if($("#mndlLvlCommittSelec").is(':checked')){
+		  reqLocationType ="mandal";
 		}
-		
-		if(candidateName == null || candidateName.length <=2)
-		{	
-			if(enrollmentNo != null && enrollmentNo.length  >=3 )
-			{
-				 isError = false ;
-			}
-			else 
-			{
-				$(errDivId).html('Atleast 3 Characters required for Candidate Name.');
-				isError = true ;	
-			}		
-		}
-		else
-		{
-			 isError = false ;
-		}
-	if(!isError){
-	$('#searchDataImg1').show();
-		var jsObj = {	
-			name : candidateName,
-			constituencyId : constituencyId,
-			panchayatId : panchayatId,
-			boothId : boothId,
-			isPresentCadre:isPresentCadre,
-			enrollmentNumber : enrollmentNo,
-			task:"getExistingCadreInfo"              
-		}
-			   
 		$.ajax({
 			type : "POST",
-			url : "gettingExistingCadreInfoAction.action",
-			data : {task:JSON.stringify(jsObj)} ,
+			url : "getCommitteLocationsAction.action",
+			data : {locationType:reqLocationType} ,
 		}).done(function(result){
-		$('#searchDataImg1').hide();
-			buildExistingCadres(result);
+			$("#committeeLocationId  option").remove();
+			$("#committeeLocationId").append('<option value="0">Select Location</option>');
+			
+			if(result != null)
+			{
+				for(var i in result){
+				   $("#committeeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+				}
+			}
+				
+			
+			/*var reqNewLocationType ="";
+			if($("#mndlLvlCommittSelec").is(':checked')){
+			  reqNewLocationType ="mandal";
+			}
+			if(reqNewLocationType == reqLocationType){
+				for(var i in result){
+				   $("#committeeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+				}
+			}
+			*/
 		});
 	}
-	}
 	
-	function buildExistingCadres(results){
-			$('#searchDetailsDiv1').html("");
-			$('#tableElement1').show();
-		if(results==null){
+	function getCommitteeLocations(){
 
-			$('#searchDetailsDiv1').html("<h4 style='text-align:center;'> No Data Available </h4>");	
+		$("#committeeTypeId").val(0);
+		$("#committeeLocationIdErr").html("");
+		$("#committeeTypeIdErr").html("");
+		$("#afflitCommitteeIdErr").html("");
+		$("#committeeMainId").hide();
+		var reqLocationType ="";
+		/*if($("#mndlLvlCommittSelec").is(':checked')){
+		  reqLocationType ="mandal";
+		}*/
+		if(areaType == 2){
+		  reqLocationType ="mandal";
+		}
+		$.ajax({
+			type : "POST",
+			url : "getCommitteLocationsAction.action",
+			data : {locationType:reqLocationType} ,
+		}).done(function(result){
+			$("#committeeLocationId  option").remove();
+			$("#committeeLocationId").append('<option value="0">Select Location</option>');
+			var reqNewLocationType ="";
+			if(areaType == 2){
+			  reqNewLocationType ="mandal";
+			}
+			if(reqNewLocationType == reqLocationType){
+				for(var i in result){
+				   $("#committeeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+				}
+			}
+		});
+	}
+	function populateDefaultValue(level){
+		if(level == 1){
+		  $("#committeeLocationIdErr").html("");
+		  $("#committeeTypeId").val(0);
+		  $("#committeeDetailsDiv").hide();
+		}
+		$("#afflitCommitteeId  option").remove();
+		$("#afflitCommitteeId").append('<option value="0">Select Affiliated Committee</option>');
+	}
+	function getAffiliatedCommitsForALoc(){
+		$("#committeeLocationIdErr").html("");
+		$("#committeeTypeIdErr").html("");
+		$("#afflitCommitteeIdErr").html("");
+		var locId = $("#committeeLocationId").val();
+		if(locId == null || locId == 0){
+			$("#committeeLocationIdErr").html("Please Select Location");
 			return;
 		}
-		var str = '';
-			str +='<table class="table table-bordered m_top20 table-hover table-striped"  id="seachDetalsTab1">';
-				str +='<thead>';
-					str +='<tr>';
-						str +='<th class="text-align1"></th>';
-						str +='<th class="text-align1">NAME</th>';
-						str +='<th class="text-align1">GUARDIAN NAME</th>';
-						str +='<th class="text-align1">ENROLLMENT NO</th>';
-					str +='</tr>';
-				str +='</thead>';
-				str +='<tbody>';
-				for(var i in results){
-					str +='<tr>';
-						str +='<td class="text-align1"><input type="checkbox" name="voters" onclick="updateEnrollmentNo(\''+results[i].caste+'\')"></th>';
-						str +='<td>'+results[i].name+'</td>';
-						str +='<td>'+results[i].desc+'</td>';
-						str +='<td>'+results[i].caste+'</td>';
-					str +='</tr>';
-				}
-				str +='</tbody>';
-			str +='</table>';
-			
-			$('#searchDetailsDiv1').html(str);
-			
-		 
-			$('#seachDetalsTab').dataTable({
-				"iDisplayLength": 100,
-				"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
+		if($("#committeeTypeId").val() == 0){
+			$("#committeeTypeIdErr").html("Please Select Committee Type");
+			return;
+		}
+		if($("#committeeTypeId").val() == 2){
+			$("#committeeMainId").show();
+			var reqLocationType = "";
+			var reqLocationValue = "";
+			if(areaType == 2){
+			  reqLocationType ="mandal";
+			}
+			reqLocationValue=$("#committeeLocationId").val();
+			$.ajax({
+				type : "POST",
+				url : "getAllAffiliatedCommittiesAction.action",
+				data : {locationType:reqLocationType,locationValue:reqLocationValue} ,
+			}).done(function(result){
+				$("#afflitCommitteeId  option").remove();
+				$("#afflitCommitteeId").append('<option value="0">Select Affiliated Committee</option>');
+				for(var i in result){
+				   $("#afflitCommitteeId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+				}	
 			});
-	
-	
+		}else{
+			$("#committeeMainId").hide();
+		}
+		
 	}
 	
-	function updateEnrollmentNo(enrollmentNo){
-		$('#myModal1').dialog('close');
-		$("#preEnrollNoValue").val(enrollmentNo);
-		$('#preEnrollNo').val(enrollmentNo);
-	}
-	function clearPreviousEnrol(){
-		$("#preEnrollNoValue").val("");
-	}
 	</script>
   </body>
 </html>
