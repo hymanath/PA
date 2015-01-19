@@ -66,10 +66,12 @@
 	
 	function getCadreDetailsBySearchCriteria()
 	{
+		var areaTypeId  =  $('#areaTypeId').val();
+		var committeeLocationId =$("#committeeLocationId").val();
 
-		var locationLevel = 6;
-		var locationValue = 12192;
-		var searchName = 'VASKULA';
+		var locationLevel = 0;
+		var locationValue = '';
+		var searchName = '';
 		var mobileNo = '';
 		var casteCategory = '';
 		var casteStateId = 0;
@@ -78,9 +80,60 @@
 		var memberShipCardNo = '';
 		var trNumber = '';
 		var voterCardNo = '';
-		var gender = 'M';
+		var gender = '';
 		var houseNo = '';
 		$('#cadreDetailsDiv').html('');
+		if(areaTypeId ==1)
+		{
+			if(committeeLocationId.substr(0,1) == 1){
+				  locationLevel = 6;
+			}
+			else if(committeeLocationId.substr(0,1) == 2){
+				 locationLevel = 8;
+			}
+		}
+		if(areaTypeId ==2)
+		{
+			if(committeeLocationId.substr(0,1) == 1){
+				 locationLevel = 7;
+			}
+			else if(committeeLocationId.substr(0,1) == 2){
+				 locationLevel = 5;
+			}					
+		}
+		var locationValue = committeeLocationId.substr(1);
+		
+		var searchRadioType = $('#cadreSearchType').val();
+		
+		if(searchRadioType == 'membershipId')
+		{
+			memberShipCardNo = $('#searchBy').val().trim();
+		}			
+		if(searchRadioType == 'voterId')
+		{
+			voterCardNo = $('#searchBy').val().trim();
+		}
+		if(searchRadioType == 'mobileNo')
+		{
+			mobileNo = $('#searchBy').val().trim();
+		}
+		if(searchRadioType == 'name')
+		{
+			searchName = $('#searchBy').val().trim();
+		}
+		if(searchRadioType == 'advancedSearch')
+		{
+			gender = $('#gender option:selected').text().trim();
+			var ageRange = $('#ageRange option:selected').text();
+			var ageRange = ageRange.split('-');
+			fromAge = ageRange[0].trim();
+			toAge = ageRange[1].trim();		
+			casteCategory = $('#casteCategory option:selected').text().trim();
+			casteStateId = $('#casteList').val().trim();
+			
+		}
+		
+		
 		var jsObj =
 		{
 			locationLevel :locationLevel,
@@ -97,8 +150,6 @@
 			gender:gender,
 			houseNo:houseNo
 		}
-		console.log(jsObj);
-		
 		 $.ajax({
 				type : "POST",
 				url : "getCadreSearchDetailsAction.action",
@@ -112,8 +163,7 @@
 				{
 					console.log("no data available...");
 				}
-			});
-			
+			});	
 	}
 	
 	function buildCadreDetails(result)
