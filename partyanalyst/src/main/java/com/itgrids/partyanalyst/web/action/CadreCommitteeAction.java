@@ -53,6 +53,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private List<LocationWiseBoothDetailsVO>    locations;
 	private LocationWiseBoothDetailsVO          membersInfo;
 	private List<BasicVO>                       constituencies;
+	private Long                                committeeMngtType;
 	
 	
 	public List<CasteDetailsVO> getCasteDetailsVo() {
@@ -205,6 +206,14 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		this.membersInfo = membersInfo;
 	}
 
+	public Long getCommitteeMngtType() {
+		return committeeMngtType;
+	}
+
+	public void setCommitteeMngtType(Long committeeMngtType) {
+		this.committeeMngtType = committeeMngtType;
+	}
+
 	public String execute()
 	{	
 		ageRangeList = cadreCommitteeService.getAgeRangeDetailsForCadre();
@@ -245,6 +254,10 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 				cadreRolesVOList = cadreRegistrationService.getCadreLevelsForCadreSearch();
 				casteDetailsVo = cadreRegistrationService.getAllCastes();
 				cadreCommitteeVO = cadreCommitteeService.getCadreDetailsByTdpCadreId(Long.valueOf(request.getParameter("tdpCadreId")));
+				if(committeeMngtType != null && committeeMngtType.longValue() == 1l){
+				   cadreCommitteeVO.setEligibleRoles(cadreCommitteeService.getCadreEligiableRoles(Long.valueOf(request.getParameter("tdpCadreId"))));
+				   locations = cadreCommitteeService.getAllTdpCommitteeDesignations();
+				}
 			} 
 			else{
 				return ERROR;
