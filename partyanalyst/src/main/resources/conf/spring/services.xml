@@ -2340,6 +2340,7 @@
 		<property name="cadreRegSyncAccessUsersDAO" ref="cadreRegSyncAccessUsersDAO" />	
 		<property name="tdpCadreTravelInfoDAO" ref="tdpCadreTravelInfoDAO" />		
 		<property name="tdpCadreHistoryDAO" ref="tdpCadreHistoryDAO" />	
+		<property name="cadreCommitteeService" ref="cadreCommitteeService" />	
      </bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
@@ -2491,6 +2492,7 @@
 		 <property name="tdpCommitteeElectrolsDAO" ref="tdpCommitteeElectrolsDAO"/>
 		 <property name="tdpCommitteeElectrolRolesDAO" ref="tdpCommitteeElectrolRolesDAO"/>
 		 <property name="tdpCommitteeDesignationDAO" ref="tdpCommitteeDesignationDAO"/>
+		  <property name="transactionTemplate" ref="transactionTemplate"/>
 	</bean>
 </beans>		
 	
