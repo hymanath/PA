@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.io.File;
+
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.text.SimpleDateFormat;
@@ -8,40 +9,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.dao.IConstituencyDAO;
-import com.itgrids.partyanalyst.dto.BasicVO;
-import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
-import com.itgrids.partyanalyst.dto.CadrePrintVO;
-import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
-import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
-import com.itgrids.partyanalyst.dto.CardSenderVO;
-import com.itgrids.partyanalyst.dto.GenericVO;
-import com.itgrids.partyanalyst.dto.RegistrationVO;
-import com.itgrids.partyanalyst.dto.ResultCodeMapper;
-import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
-import com.itgrids.partyanalyst.dto.VoterInfoVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
-import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.service.ICadreRegistrationForOtherStatesService;
-import com.itgrids.partyanalyst.service.ICadreRegistrationService;
-import com.itgrids.partyanalyst.service.ICandidateUpdationDetailsService;
-import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
-import com.itgrids.partyanalyst.service.IStaticDataService;
-import com.itgrids.partyanalyst.service.ISurveyDataDetailsService;
 import com.itgrids.partyanalyst.util.IWebConstants;
-import com.itgrids.partyanalyst.utils.DateUtilService;
-import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -100,7 +75,16 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private ICadreRegistrationForOtherStatesService cadreRegistrationForOtherStatesService;
     private ICrossVotingEstimationService crossVotingEstimationService;
 	private IConstituencyDAO constituencyDAO;
-    
+	private List<CadrePreviousRollesVO> eligibleRoles;
+
+
+	public List<CadrePreviousRollesVO> getEligibleRoles() {
+	return eligibleRoles;
+	}
+
+	public void setEligibleRoles(List<CadrePreviousRollesVO> eligibleRoles) {
+	this.eligibleRoles = eligibleRoles;
+	}
 	
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
@@ -1513,6 +1497,95 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		genericVOList = candidateUpdationDetailsService.gettingEducationDetails();
 		selectOptionVOList = staticDataService.getAllOccupations();
 		voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria("voter",0l,IWebConstants.STATIC_CONTENT_FOLDER_URL,null);
+		return Action.SUCCESS;
+	}
+	
+	public String saveCommitteCadreDetails()
+	{
+		try {
+			LOG.info("Entered into saveCadreDetails method in CadreRegistrationAction Action");
+			if(cadreRegistrationVO != null)
+			{
+				session = request.getSession();
+				RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+				if(user == null)
+				{
+					inputStream = new StringBufferInputStream("notlogged");
+					return Action.SUCCESS;
+				}
+				cadreRegistrationVO.setCreatedUserId(user.getRegistrationID());
+				if(cadreRegistrationVO.getPanchayatId() != null &&  Long.valueOf(cadreRegistrationVO.getPanchayatId().trim()).longValue() > 0){
+					if(cadreRegistrationVO.getPanchayatId().substring(0,1).trim().equalsIgnoreCase("1")){
+					  cadreRegistrationVO.setPanchayatId(cadreRegistrationVO.getPanchayatId().substring(1));
+					}else if(cadreRegistrationVO.getPanchayatId().substring(0,1).trim().equalsIgnoreCase("2")){
+						cadreRegistrationVO.setMuncipalityId(cadreRegistrationVO.getPanchayatId().substring(1));
+						cadreRegistrationVO.setPanchayatId(null);
+					}else{
+						cadreRegistrationVO.setPanchayatId(null);
+					}
+				}
+				if(cadreRegistrationVO.getDobStr() != null && cadreRegistrationVO.getDobStr().trim().length() > 0)
+				cadreRegistrationVO.setDob(convertToDateFormet(cadreRegistrationVO.getDobStr()));
+				if(cadreRegistrationVO.getPartyMemberSinceStr() != null && cadreRegistrationVO.getPartyMemberSinceStr().trim().length() > 0)
+				cadreRegistrationVO.setPartyMemberSinceStr(cadreRegistrationVO.getPartyMemberSinceStr());
+				if(relativeTypeChecked != null){
+					cadreRegistrationVO.setRelative(true);
+					cadreRegistrationVO.setRelationTypeId(relativeTypeId);
+					if(relativeVoterCardNo != null && relativeVoterCardNo.trim().length() > 0){
+						cadreRegistrationVO.setRelativeVoterId(relativeVoterCardNo);
+						List<Long> ids = cadreRegistrationService.getVoterIdByVoterCard(relativeVoterCardNo.trim());
+						if(ids.size() > 0 && ids.get(0)!= null){
+							cadreRegistrationVO.setFamilyVoterId(ids.get(0));
+						}
+					}
+					
+				}
+				if(cadreUploadImgCadreType != null){
+					cadreRegistrationVO.setPhotoType("cadre");
+				}else if(cadreUploadImgVoterType != null){
+					cadreRegistrationVO.setPhotoType("voter");
+				}else{
+					cadreRegistrationVO.setPhotoType("new");
+				}
+				List<CadrePreviousRollesVO> rolesVOList = cadreRegistrationVO.getPreviousRollesList();
+				if(rolesVOList != null && rolesVOList.size() > 0)
+				{
+					List<CadrePreviousRollesVO> rolesList = new ArrayList<CadrePreviousRollesVO>();
+					for (CadrePreviousRollesVO cadrePreviousRollesVO : rolesVOList) 
+					{
+						CadrePreviousRollesVO rolesVO = new CadrePreviousRollesVO();
+						
+						if(cadrePreviousRollesVO!=null){
+							//if(cadrePreviousRollesVO.getFromDateStr() != null && cadrePreviousRollesVO.getFromDateStr().trim().length() > 0)
+							rolesVO.setFromDateStr(cadrePreviousRollesVO.getFromDateStr());
+							//if(cadrePreviousRollesVO.getToDateStr() != null && cadrePreviousRollesVO.getToDateStr().trim().length() > 0)
+							rolesVO.setToDateStr(cadrePreviousRollesVO.getToDateStr());
+							rolesVO.setCadreCommitteeId(cadrePreviousRollesVO.getCadreCommitteeId());
+							rolesVO.setCadreCommitteeLevelId(cadrePreviousRollesVO.getCadreCommitteeLevelId());
+							rolesVO.setCadreRoleId(cadrePreviousRollesVO.getCadreRoleId());
+							rolesList.add(rolesVO);
+							
+							cadreRegistrationVO.setPreviousRollesList(rolesList);
+						}
+					}
+					
+				}
+				List<CadreRegistrationVO> cadreRegistrationVOList = new ArrayList<CadreRegistrationVO>();
+				cadreRegistrationVO.setPath(IWebConstants.STATIC_CONTENT_FOLDER_URL);
+				cadreRegistrationVOList.add(cadreRegistrationVO);
+				surveyCadreResponceVO = cadreRegistrationService.saveCommitteCadreRegistration(cadreRegistrationVOList,eligibleRoles,"WEB");
+				if(surveyCadreResponceVO.getResultCode() == ResultCodeMapper.SUCCESS){
+					LOG.debug("fileuploades is sucess Method");
+					if(surveyCadreResponceVO.getEnrollmentNumber() != null && surveyCadreResponceVO.getEnrollmentNumber().trim().length() > 0 ){
+						inputStream = new StringBufferInputStream("SUCCESS" +"," +surveyCadreResponceVO.getEnrollmentNumber()  +",");
+					}
+				}
+				else
+					inputStream = new StringBufferInputStream("fail");
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in saveCadreDetails method in CadreRegistrationAction Action",e);
+		}
 		return Action.SUCCESS;
 	}
 }
