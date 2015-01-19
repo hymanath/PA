@@ -275,12 +275,10 @@
 						<h4>PREVIOUSLY ENROLLED  ?</h4>				
 					</div>
 					<div class="col-md-4 col-sm-6 col-xs-6 form-group">
-						<input type="text" readonly="" name="cadreRegistrationVO.previousEnrollmentNumber" onkeyup="getExistingCadreInfo2();" style="width:260px;" value="" placeholder="Previous Enrollment No." class="form-control border-radius-0 input-block-level" id="preEnrollNoValue">
-					</div>
-
-					<div class="col-md-1 col-sm-1 col-xs-1 form-group">
-					  <!--<button class="btn btn-success" onclick="clearPreviousEnrol();" type="button"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></button>-->
-					  <img src="images/close.png" onclick="clearPreviousEnrol();" style="height:25px; width:25px; margin-left:-53px;margin-top:-3px;">
+						<div class="input-group">
+							<input type="text" readonly="" name="cadreRegistrationVO.previousEnrollmentNumber" onkeyup="getExistingCadreInfo2();" style="width:260px;" value="" placeholder="Previous Enrollment No." class="form-control border-radius-0 input-block-level" id="preEnrollNoValue">
+							<div class="input-group-addon"><span onclick="clearPreviousEnrol();" title="Click Here To Clear Previous Enrollment Number" style="cursor: pointer;" class="glyphicon glyphicon-remove"></span></div>
+						</div>
 					</div>
 
 					<div class="col-md-3 col-sm-5 col-xs-5 form-group">
