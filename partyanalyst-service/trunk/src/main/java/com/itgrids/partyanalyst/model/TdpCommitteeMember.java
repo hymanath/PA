@@ -27,9 +27,9 @@ public class TdpCommitteeMember {
 	private TdpCommitteeRole tdpCommitteeRole;
 	private Long tdpCadreId;
 	private TdpCadre tdpCadre;
-	private String startDate;
+	private Date startDate;
 	private Date endDate;
-	private Date isActive;
+	private String isActive;
 	private Long tdpCommitteeEnrollmentId;
 	private TdpCommitteeEnrollment tdpCommitteeEnrollment;
 	
@@ -85,15 +85,16 @@ public class TdpCommitteeMember {
 	public void setTdpCadre(TdpCadre tdpCadre) {
 		this.tdpCadre = tdpCadre;
 	}
-	
+
 	@Column(name = "start_date")
-	public String getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
-	
-	public void setStartDate(String startDate) {
+
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
+
 	
 	@Column(name = "end_date")
 	public Date getEndDate() {
@@ -103,16 +104,16 @@ public class TdpCommitteeMember {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	
+
 	@Column(name = "is_active")
-	public Date getIsActive() {
+	public String getIsActive() {
 		return isActive;
 	}
-	
-	public void setIsActive(Date isActive) {
+
+	public void setIsActive(String isActive) {
 		this.isActive = isActive;
 	}
-	
+
 	@Column(name = "tdp_committee_enrollment_id")
 	public Long getTdpCommitteeEnrollmentId() {
 		return tdpCommitteeEnrollmentId;
