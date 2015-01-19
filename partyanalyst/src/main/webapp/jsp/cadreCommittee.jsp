@@ -540,6 +540,11 @@
 		});
 	function getCommitteeLocations(){
 		hideMembers();
+		$("#committeeTypeId").val(0);
+		$("#committeeLocationIdErr").html("");
+		$("#committeeTypeIdErr").html("");
+		$("#afflitCommitteeIdErr").html("");
+		$("#committeeMainId").hide();
 		var reqLocationType ="";
 		if($("#mndlLvlCommittSelec").is(':checked')){
 		  reqLocationType ="mandal";
