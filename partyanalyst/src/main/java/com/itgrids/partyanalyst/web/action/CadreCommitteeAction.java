@@ -260,7 +260,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 				selectOptionVOList = staticDataService.getAllOccupations();
 				eletionTypesList = cadreRegistrationService.getElectionOptionDetailsForCadre();
 				cadreRolesVOList = cadreRegistrationService.getCadreLevelsForCadreSearch();
-				educationList = cadreCommitteeService.getAllCasteDetailsForState();
+				genericVOList = cadreCommitteeService.getAllCasteDetailsForState();
 				cadreCommitteeVO = cadreCommitteeService.getCadreDetailsByTdpCadreId(Long.valueOf(request.getParameter("tdpCadreId")));
 				if(committeeMngtType != null && committeeMngtType.longValue() == 1l){
 				   cadreCommitteeVO.setEligibleRoles(cadreCommitteeService.getCadreEligiableRoles(Long.valueOf(request.getParameter("tdpCadreId"))));
@@ -412,6 +412,17 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		}catch (Exception e) {
 			LOG.error("Exception occured in getTdpCommitteeDesignations() At CadreCommitteeAction ",e);
 		}
+		return Action.SUCCESS;
+	}
+	public String getCasteDetailsBygroupId(){
+		try{
+			jObj = new JSONObject(getTask());
+			genericVOList = cadreCommitteeService.getCadsteDetailsByGroupId(jObj.getLong("casteGroupId"));
+		}
+		catch(Exception e){	
+			LOG.error("Exception occured in getCasteDetailsBygroupId() At CadreCommitteeAction ",e);
+		}
+		
 		return Action.SUCCESS;
 	}
 }

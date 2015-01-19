@@ -163,7 +163,7 @@
 				{
 					console.log("no data available...");
 				}
-			});	
+			});  
 	}
 	
 	function buildCadreDetails(result)
@@ -417,6 +417,28 @@
 				YAHOO.util.Connect.setForm('uploadCadreForm',true);
 				YAHOO.util.Connect.asyncRequest('POST','committeTdpCadreSaveRegistrationAction.action',uploadHandler);	
 			}	
+	}
+	function casteDetailsByGroupId(){
+		var casteGroupId = $("#casteCategory").val();
+		$('#casteList').find('option').remove();
+		$('#casteList').append('<option value="0"> Select Caste </option>');
+		var jsObj={			
+				  casteGroupId : casteGroupId       
+			   }
+			 $.ajax({
+					type : "POST",
+					url : "getCasteDetailsBygroupIdAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+				
+				if(result != null)
+					{
+						for(var i in result)
+						{
+							$('#casteList').append('<option value="'+result[i].id+'"> '+result[i].name+' </option>');
+						}
+					}	
+			});
 	}
 	
 	function validateEmail($email) {
