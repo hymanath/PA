@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -660,5 +661,31 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			LOG.error("Exception raised in getAllTdpCommitteeDesignations", e);
 		}
 		return designationsList;
+	}
+	
+	public List<CadrePreviousRollesVO> getCadreEligiableRoles(Long tdpCadreId){
+		List<CadrePreviousRollesVO> rolesList = new ArrayList<CadrePreviousRollesVO>();
+			try{
+			CadrePreviousRollesVO vo = null;
+			SimpleDateFormat sdf = new  SimpleDateFormat("yyyy-MM-dd");
+			//0 id,1 name,2 startDate,3endDate
+			List<Object[]> cadreRoles = tdpCommitteeElectrolRolesDAO.getAllRolesForACadre(tdpCadreId);
+			for(Object[] role:cadreRoles){
+				vo = new CadrePreviousRollesVO();
+				vo.setDesignationLevelId((Long)role[0]);
+				vo.setCandidateId(role[1].toString());
+				vo.setFromDateStr("");
+				vo.setToDateStr("");
+				if(role[2] != null){
+					vo.setFromDateStr(sdf.format((Date)role[2]));
+				}
+	            if(role[3] != null){
+	            	vo.setToDateStr(sdf.format((Date)role[3]));
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised in getCadreEligiableRoles", e);
+		}
+		return rolesList;
 	}
 }

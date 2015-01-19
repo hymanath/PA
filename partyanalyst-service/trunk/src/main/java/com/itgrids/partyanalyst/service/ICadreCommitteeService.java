@@ -19,4 +19,5 @@ public interface ICadreCommitteeService {
 	public LocationWiseBoothDetailsVO getMainCommitteeMembersInfo(Long levelId,Long levelValue);
 	public List<LocationWiseBoothDetailsVO> getAllTdpCommitteeDesignations();
 	public void saveElectrolInfo(Long tdpCadreId,Long tdpCommitteeLevelId,Long levelValue,Long tdpCommitteeTypeId,List<CadrePreviousRollesVO> eligibleRoles);
+	public List<CadrePreviousRollesVO> getCadreEligiableRoles(Long tdpCadreId);
 }
