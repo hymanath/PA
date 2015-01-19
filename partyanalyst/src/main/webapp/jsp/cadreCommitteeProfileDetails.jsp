@@ -266,6 +266,31 @@
 					<input type="text" id="emailIdDiv" class="form-control  editClass" value="${cadreCommitteeVO.emailId}"  placeholder="E-Mail ID: " name="cadreRegistrationVO.emailId" disabled>
 				</div>
 				<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group requiredFields" id="emailIdDivError"></div>
+				<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group" > 
+					<!--<h4> PREVIOUSLY ENROLLED  ? </h4>
+					<input type="text" id="preEnrollNoValue" class="form-control border-radius-0 input-block-level" placeholder="Previous Enrollment No."  value="${voterInfoVOList[0].memberShipId}" style="width:260px;"  onkeyup="getExistingCadreInfo2();" name="cadreRegistrationVO.previousEnrollmentNumber" readonly></input>&nbsp;<span onclick="clearPreviousEnrol();" title="Click Here To Clear Previous Enrollment Number" style="cursor: pointer;" class="icon-remove"></span>
+					<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByName();}" > LookUp For EnrollmentNo</a>
+					<input type="hidden" id="preEnrollNo" class="form-control border-radius-0 input-block-level" placeholder="Text input"  value="${voterInfoVOList[0].memberShipId}" style="width:260px;" ></input>-->
+					<div style="border-bottom:1px solid #FD2A34;margin-bottom:20px;" class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center">
+						<h4>PREVIOUSLY ENROLLED  ?</h4>				
+					</div>
+					<div class="col-md-4 col-sm-6 col-xs-6 form-group">
+						<input type="text" readonly="" name="cadreRegistrationVO.previousEnrollmentNumber" onkeyup="getExistingCadreInfo2();" style="width:260px;" value="" placeholder="Previous Enrollment No." class="form-control border-radius-0 input-block-level" id="preEnrollNoValue">
+					</div>
+
+					<div class="col-md-1 col-sm-1 col-xs-1 form-group">
+					  <!--<button class="btn btn-success" onclick="clearPreviousEnrol();" type="button"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></button>-->
+					  <img src="images/close.png" onclick="clearPreviousEnrol();" style="height:25px; width:25px; margin-left:-53px;margin-top:-3px;">
+					</div>
+
+					<div class="col-md-3 col-sm-5 col-xs-5 form-group">
+						<a href="javascript:{enableSearchByName();}" class="btn btn-success" id="searchByNameId"> LookUp For EnrollmentNo</a>
+					</div>
+
+					<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 form-group">
+						<input id="preEnrollNo" class="form-control border-radius-0 input-block-level" type="hidden" style="width:260px;" value="" placeholder="Text input">
+					</div>
+				</div>
 		</div>
 		
 		<div class="row m_top20">
@@ -473,10 +498,36 @@
 			</div>
 		</div>
 	</div>
+	
+	<div id="myModal1" style="display:none;">
+					<div style="border:1px solid lightgray;">
+						<div class="pad-10b">
+								<h5 class="text-align1">CANDIDATE NAME</h5>
+								<input type="text" class="form-control border-radius-0" placeholder="Enter Name" id="candiNameId" name="searchName1" style="width:425px;" onkeyUp="getExistingCadreInfo1();">
+						</div>
+						<div class=" m_top10 pad-10b">
+							<div class="row-fluid">
+								<h5 class="text-align1">PREVIOUS ENROLLMENT NUMBER</h5>
+								<input type="text" class="form-control border-radius-0" placeholder="Enter Enrollment Number"  id="enrollmentNoId"  name="searchVoterCard" onkeyUp="getExistingCadreInfo1();">
+							</div>
+						</div>
+						
+						<a href="javascript:{getExistingCadreInfo1();}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
+						<div align="center"><img style="width:70px;height:60px;display:none;" id="searchDataImg1" class="" src="images/Loading-data.gif"></div>
+					</div>
+					<div id="errorDiv1"  class="mandatory"></div>
+					<div class="show-grid pad-5 m-bottom-10">
+						<div class="container" id="tableElement1" style="margin-top:25px;display:none;">
+							<h3 class="text-align" style="color:red;">SEARCH DETAILS</h3>
+							<div class="table-responsive" id="searchDetailsDiv1" ></div>
+						</div>
+					</div>
+				</div>
+				
 	<footer class="text-center m_top20">
 			&copy; 2015
 	</footer>
-
+	
    
 	<script>		
 		var mobnum,refid;
@@ -669,6 +720,130 @@
 				changeYear: true,
 				yearRange: "-100:+0"
 			  });
+	}
+	
+	function enableSearchByName(){
+		//$('#preEnrollNoValue').removeAttr('readOnly');
+		$('#searchNameId,#searchVoterCardId,#searchHNoId').val("")
+		$('#searchDetailsDiv').html("");
+		$('#tableElement').hide();
+		var errDivId = "#errorDiv1";
+		$('#searchDetailsDiv1').html('');
+		$('#tableElement1').hide();
+		$('#preEnrollNo').val('');
+		$(errDivId).html('');
+		$( "#myModal1" ).dialog({title: "Search For Enrollment Number", width: "auto",
+            height: "auto", position: { my: 'right', at: 'top+10' }});
+	}
+	
+	function getExistingCadreInfo1(){
+		var errDivId = "#errorDiv1";
+	$('#searchDetailsDiv1').html('');
+	$('#tableElement1').hide();
+	$('#preEnrollNo').val('');
+	$(errDivId).html('');
+	
+	var candidateName = $('#candiNameId').val();
+	var enrollmentNo = $('#enrollmentNoId').val();
+	var constituencyId = 181;
+	var panchayatId = 18842;  // panchayat Id 
+	var boothId = 0;  // boothId Id 
+	var isPresentCadre = '${panchayatId}';  // ispresentCader checked ot not 
+	
+	var isError = false;
+	if((candidateName == null || candidateName.length == 0) && (enrollmentNo == null || enrollmentNo.length == 0))
+		{
+			$(errDivId).html('Enter any search criteria for details.');
+			 isError = true ;
+		}
+		
+		if(candidateName == null || candidateName.length <=2)
+		{	
+			if(enrollmentNo != null && enrollmentNo.length  >=3 )
+			{
+				 isError = false ;
+			}
+			else 
+			{
+				$(errDivId).html('Atleast 3 Characters required for Candidate Name.');
+				isError = true ;	
+			}		
+		}
+		else
+		{
+			 isError = false ;
+		}
+	if(!isError){
+	$('#searchDataImg1').show();
+		var jsObj = {	
+			name : candidateName,
+			constituencyId : constituencyId,
+			panchayatId : panchayatId,
+			boothId : boothId,
+			isPresentCadre:isPresentCadre,
+			enrollmentNumber : enrollmentNo,
+			task:"getExistingCadreInfo"              
+		}
+			   
+		$.ajax({
+			type : "POST",
+			url : "gettingExistingCadreInfoAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+		$('#searchDataImg1').hide();
+			buildExistingCadres(result);
+		});
+	}
+	}
+	
+	function buildExistingCadres(results){
+			$('#searchDetailsDiv1').html("");
+			$('#tableElement1').show();
+		if(results==null){
+
+			$('#searchDetailsDiv1').html("<h4 style='text-align:center;'> No Data Available </h4>");	
+			return;
+		}
+		var str = '';
+			str +='<table class="table table-bordered m_top20 table-hover table-striped"  id="seachDetalsTab1">';
+				str +='<thead>';
+					str +='<tr>';
+						str +='<th class="text-align1"></th>';
+						str +='<th class="text-align1">NAME</th>';
+						str +='<th class="text-align1">GUARDIAN NAME</th>';
+						str +='<th class="text-align1">ENROLLMENT NO</th>';
+					str +='</tr>';
+				str +='</thead>';
+				str +='<tbody>';
+				for(var i in results){
+					str +='<tr>';
+						str +='<td class="text-align1"><input type="checkbox" name="voters" onclick="updateEnrollmentNo(\''+results[i].caste+'\')"></th>';
+						str +='<td>'+results[i].name+'</td>';
+						str +='<td>'+results[i].desc+'</td>';
+						str +='<td>'+results[i].caste+'</td>';
+					str +='</tr>';
+				}
+				str +='</tbody>';
+			str +='</table>';
+			
+			$('#searchDetailsDiv1').html(str);
+			
+		 
+			$('#seachDetalsTab').dataTable({
+				"iDisplayLength": 100,
+				"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
+			});
+	
+	
+	}
+	
+	function updateEnrollmentNo(enrollmentNo){
+		$('#myModal1').dialog('close');
+		$("#preEnrollNoValue").val(enrollmentNo);
+		$('#preEnrollNo').val(enrollmentNo);
+	}
+	function clearPreviousEnrol(){
+		$("#preEnrollNoValue").val("");
 	}
 	</script>
   </body>
