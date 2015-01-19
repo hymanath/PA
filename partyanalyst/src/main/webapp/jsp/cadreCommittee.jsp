@@ -25,7 +25,7 @@
 	<script type="text/javascript" src="js/cadreCommittee/cadreCommittee.js"></script>
    	
 	<style>
-	#publicrepresantative,#mandalaffiliated,#advancedSearchDiv,#committeeDetailsDiv
+	#publicrepresantative,#mandalaffiliated,#advancedSearchDiv,#committeeDetailsDiv,#searchcadrenewDiv
 	{
 		display:none;
 	}
@@ -121,7 +121,7 @@
 			<div class="col-md-12 col-sm-12 col-xs-12 text-center">
 					<ul class="list-inline">
 						<li><input type="button" id="viewMembrsBtn" class="btn btn-success" onclick="getCommitteMembersInfo();" value="VIEW" /></li>
-						<li><a class="btn btn-success" href="">ADD</a></li>
+						<li><input type="button"  class="btn btn-success" onclick="showSearchInfo();" value="ADD" /></li>
 					</ul>
 			</div> 
 		</div> 
@@ -636,6 +636,10 @@
 		}
 		
 	}
+	function showSearchInfo(){
+		$("#committeeDetailsDiv").hide();
+		 $("#searchcadrenewDiv").show();
+	}
 	function getCommitteMembersInfo(){
 		$("#committeeLocationIdErr").html("");
 		$("#committeeTypeIdErr").html("");
@@ -657,7 +661,7 @@
 			}
 		 }
 		 $("#committeeDetailsDiv").show();
-		 //$("#searchcadrenewDiv").hide();
+		 $("#searchcadrenewDiv").hide();
 		 $("#commitMembrsCountDiv").html('<center><img src="images/icons/loading.gif"  /></center>');
 		 $("#committeeMmbrsMainDiv").html("");
 		 var reqCommitteeType = "main";
