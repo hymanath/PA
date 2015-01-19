@@ -318,6 +318,7 @@ margin-top:10px;
 					</c:if>
 					<c:if test="${sessionScope.USER.isAdmin == 'true'}">
 						<li><a href="cadreIvrReportAction.action"><span>  IVR Status Report  </span></a></li>
+						<li><a href="cadreCommitteeAction.action"><span>  TDP Committees Management  </span></a></li>
 					</c:if>
 					<c:if test="${sessionScope.USER.isAdmin == 'true'}">
 						<li><a onmousedown="return false;" class="parent"><span>2014 Cadre Reports</span></a>
