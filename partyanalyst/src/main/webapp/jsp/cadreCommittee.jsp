@@ -188,18 +188,19 @@
 					<div class="row">					
 						<div class="col-md-2 col-sm-2 col-xs-2 ">
 							<label>Caste-Group
-								<select class="form-control" id="casteCategory">
-								<option>BC</option>
-								<option>OC</option>
-								<option>SC</option>
-								<option>ST</option>
+								<select class="form-control" id="casteCategory" onchange="casteDetailsByGroupId();">
+								<option value="0">All</option>
+								<option value="1">OC</option>
+								<option value="2">BC</option>
+								<option value="3">SC</option>
+								<option value="4">ST</option>
 								</select>
 							</label>
 						</div>
 						<div class="col-md-4 col-sm-4 col-xs-4 ">
 							<label>Caste Name
 								
-								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level editClass" id="casteList" list="casteDetailsVo" listKey="castStateId" listValue="castName" headerKey="0" headerValue=" Select Caste "/>
+								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level editClass" id="casteList" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Caste "/>
 							</label>
 						</div>
 						<div class="col-md-3 col-sm-3 col-xs-3 ">
@@ -213,7 +214,7 @@
 							</label>
 						</div>
 						<div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4 m_top10">
-							<button type="submit" class="btn btn-success btn-block">SEARCH</button>
+							<button type="submit" class="btn btn-success btn-block" onclick="getCadreDetailsBySearchCriteria()">SEARCH</button>
 						</div>
 					</div>			
 				</div>			
