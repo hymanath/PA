@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeDesignationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeElectrolRolesDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeElectrolsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
@@ -38,6 +39,7 @@ import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.TdpCadre;
+import com.itgrids.partyanalyst.model.TdpCommitteeDesignation;
 import com.itgrids.partyanalyst.model.TdpCommitteeElectrolRoles;
 import com.itgrids.partyanalyst.model.TdpCommitteeElectrols;
 import com.itgrids.partyanalyst.model.VoterAgeRange;
@@ -71,6 +73,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
 	private ITdpCommitteeElectrolsDAO tdpCommitteeElectrolsDAO;
 	private ITdpCommitteeElectrolRolesDAO tdpCommitteeElectrolRolesDAO;
+	private ITdpCommitteeDesignationDAO tdpCommitteeDesignationDAO;
 	
 	public void setElectionTypeDAO(IElectionTypeDAO electionTypeDAO) {
 		this.electionTypeDAO = electionTypeDAO;
@@ -152,6 +155,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		this.tdpCommitteeElectrolRolesDAO = tdpCommitteeElectrolRolesDAO;
 	}
 	
+	public void setTdpCommitteeDesignationDAO(
+			ITdpCommitteeDesignationDAO tdpCommitteeDesignationDAO) {
+		this.tdpCommitteeDesignationDAO = tdpCommitteeDesignationDAO;
+	}
 	public CadreCommitteeVO getCadreDetailsByTdpCadreId(Long tdpCadreId)
 	{
 		CadreCommitteeVO cadreCommitteeVO = null;
@@ -636,5 +643,22 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				}
 			}
 		}
+	}
+	
+	public List<LocationWiseBoothDetailsVO> getAllTdpCommitteeDesignations(){
+		List<LocationWiseBoothDetailsVO> designationsList = new ArrayList<LocationWiseBoothDetailsVO>();
+		LocationWiseBoothDetailsVO designation = null;
+		try{
+			List<TdpCommitteeDesignation> tdpCommitteeDesignationList = tdpCommitteeDesignationDAO.getAll();
+			for(TdpCommitteeDesignation tdpCommitteeDesignation:tdpCommitteeDesignationList){
+				designation = new LocationWiseBoothDetailsVO();
+				designation.setLocationId(tdpCommitteeDesignation.getTdpCommitteeDesignationId());
+				designation.setLocationName(tdpCommitteeDesignation.getDesignation());
+				designationsList.add(designation);
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised in getAllTdpCommitteeDesignations", e);
+		}
+		return designationsList;
 	}
 }
