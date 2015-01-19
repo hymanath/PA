@@ -191,7 +191,7 @@
 			</div>			
 		</div> 
 		
-		<form action="tdpCadreSaveRegistrationAction.action" method="POST" enctype="multipart/form-data" name="uploadCadreForm">
+		<form action="committeTdpCadreSaveRegistrationAction.action" method="POST" enctype="multipart/form-data" name="uploadCadreForm">
 			<input type="hidden" value="${cadreCommitteeVO.voterId}" name="cadreRegistrationVO.voterId" >
 				<input type="hidden" value="${cadreCommitteeVO.tdpCadreId}" name="cadreRegistrationVO.tdpCadreId" >
 		<div class="row m_top20">
@@ -277,11 +277,11 @@
 					<div class="col-md-4 col-sm-6 col-xs-6 form-group">
 						<div class="input-group">
 							<input type="text" readonly="" name="cadreRegistrationVO.previousEnrollmentNumber" onkeyup="getExistingCadreInfo2();" style="width:260px;" value="" placeholder="Previous Enrollment No." class="form-control border-radius-0 input-block-level" id="preEnrollNoValue">
-							<div class="input-group-addon"><span onclick="clearPreviousEnrol();" title="Click Here To Clear Previous Enrollment Number" style="cursor: pointer;" class="glyphicon glyphicon-remove"></span></div>
+							<div class="input-group-addon" style="cursor: pointer;" onclick="clearPreviousEnrol();"><span class="glyphicon glyphicon-remove" style="cursor: pointer; font-size:15px;" title="Click Here To Clear Previous Enrollment Number" onclick="clearPreviousEnrol();"></span></div>
 						</div>
 					</div>
 
-					<div class="col-md-3 col-sm-5 col-xs-5 form-group">
+					<div class="col-md-3 col-xs-offset-1 col-sm-5 col-xs-5 form-group">
 						<a href="javascript:{enableSearchByName();}" class="btn btn-success" id="searchByNameId"> LookUp For EnrollmentNo</a>
 					</div>
 
