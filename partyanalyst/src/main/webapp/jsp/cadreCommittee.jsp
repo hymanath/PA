@@ -1,4 +1,8 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="s" uri="/struts-tags"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -21,7 +25,7 @@
 	<script type="text/javascript" src="js/cadreCommittee/cadreCommittee.js"></script>
    	
 	<style>
-	#publicrepresantative,#mandalaffiliated,#advancedSearchDiv,#committeeDetailsDiv,#searchcadrenewDiv
+	#publicrepresantative,#mandalaffiliated,#advancedSearchDiv,#committeeDetailsDiv
 	{
 		display:none;
 	}
@@ -33,6 +37,15 @@
 		color:red;
 	}
 	</style>
+	<script>
+		var ageRangeArr = new Array();	
+			<c:forEach var="election" items="${ageRangeList}">
+				var elections ={
+				name:'${election}'
+				}
+				ageRangeArr.push(elections);
+			</c:forEach>
+	</script>
   </head>
   <body>
 	<div class="container-fluid">
@@ -63,14 +76,14 @@
 			<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 ">
 				<div class="radio pull-right">
 				  <label>
-				    <input type="radio" name="committeeType" onclick="validateSearchType('1');getCommitteeLocations();" checked="true"> Village / Ward / Division
+				    <input type="radio" name="committeeType" onclick="validateSearchType('1');getCommitteeLocations();" checked="true" value="1" id="villageId"> Village / Ward / Division
 				  </label>
 			    </div>
 			</div>
 			<div class="col-md-4 col-sm-6 col-xs-6">
 				<div class="radio">
 				  <label>
-				    <input type="radio" id="mndlLvlCommittSelec" name="committeeType" onclick="validateSearchType('2');getCommitteeLocations();"> Mandal / Town / GHMC 
+				    <input type="radio" id="mndlLvlCommittSelec" name="committeeType" onclick="validateSearchType('2');getCommitteeLocations();" value="2"> Mandal / Town / GHMC 
 				  </label>
 			    </div>
 			</div>
@@ -161,7 +174,7 @@
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20">	
 				<div class="row">      
 					<div class="col-md-9 col-sm-9 col-xs-9 ">
-						<input type="text" placeholder="ENTER NO / NAME"  class="form-control" >
+						<input type="text" placeholder="ENTER NO / NAME"  class="form-control" id="searchBy">
 					</div>	
 					<div class="col-md-3 col-sm-3 col-xs-3 ">
 						<button class="btn btn-success btn-block" type="button" onclick="getCadreDetailsBySearchCriteria()">SEARCH</button>
@@ -175,22 +188,28 @@
 					<div class="row">					
 						<div class="col-md-2 col-sm-2 col-xs-2 ">
 							<label>Caste-Group
-								<select class="form-control"><option>SC</option></select>
+								<select class="form-control" id="casteCategory">
+								<option>BC</option>
+								<option>OC</option>
+								<option>SC</option>
+								<option>ST</option>
+								</select>
 							</label>
 						</div>
 						<div class="col-md-4 col-sm-4 col-xs-4 ">
 							<label>Caste Name
-								<select class="form-control"><option>SC- Caste Name #1</option></select>
+								
+								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level editClass" id="casteList" list="casteDetailsVo" listKey="castStateId" listValue="castName" headerKey="0" headerValue=" Select Caste "/>
 							</label>
 						</div>
 						<div class="col-md-3 col-sm-3 col-xs-3 ">
 							<label>Age
-								<select class="form-control"><option>B/W 20 - 40</option></select>
+								<select class="form-control"  id="ageRange"><option>select</option></select>
 							</label>
 						</div>
 						<div class="col-md-3 col-sm-3 col-xs-3 ">
 							<label>Gender
-								<select class="form-control"><option>Male</option></select>
+								<select class="form-control"  id="gender"><option>Male</option><option>FeMale</option></select>
 							</label>
 						</div>
 						<div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4 m_top10">
@@ -260,6 +279,7 @@
 						<div class="col-md-3 col-sm-3 col-xs-3 ">
 							<label>Age
 								<select class="form-control"><option>B/W 20 - 40</option></select>
+								
 							</label>
 						</div>
 						<div class="col-md-3 col-sm-3 col-xs-3 ">
@@ -536,6 +556,16 @@
 			{
 				$('#advancedSearchDiv').show();
 				$('#cadreSearchType').val('advancedSearch');
+				$('#ageRange').find('option').remove();
+				$('#ageRange').append('<option  value="0"> Select Age </option>');
+				if(ageRangeArr != null && ageRangeArr.length>0)
+				{
+
+					for(var i in ageRangeArr)
+					{
+						$('#ageRange').append('<option  value="'+ageRangeArr[i].name+'">'+ageRangeArr[i].name+'</option>');
+					}
+				}
 			}
 		});
 	function getCommitteeLocations(){
@@ -626,7 +656,7 @@
 			}
 		 }
 		 $("#committeeDetailsDiv").show();
-		 $("#searchcadrenewDiv").hide();
+		 //$("#searchcadrenewDiv").hide();
 		 $("#commitMembrsCountDiv").html('<center><img src="images/icons/loading.gif"  /></center>');
 		 $("#committeeMmbrsMainDiv").html("");
 		 var reqCommitteeType = "main";
