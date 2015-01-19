@@ -229,6 +229,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ICadreRegSyncAccessUsersDAO cadreRegSyncAccessUsersDAO;
 	private ITdpCadreTravelInfoDAO tdpCadreTravelInfoDAO;
 	private ITdpCadreHistoryDAO tdpCadreHistoryDAO;
+	private CadreCommitteeService cadreCommitteeService;
 	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
@@ -732,40 +733,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 											
 										}
 										
-									}
-									else if(cadreRegistrationVO.getTdpCadreId() != null && cadreRegistrationVO.getTdpCadreId().toString().trim().length()>0 && cadreRegistrationVO.getTdpCadreId().longValue() > 0 ) 
-									{
-										// for cadre committee details updations
-										flag = false;
-										TdpCadre existingTdpCadre = tdpCadreDAO.get(cadreRegistrationVO.getTdpCadreId());
-										
-										List<TdpCadre> voterIdsList = new ArrayList<TdpCadre>();
-										voterIdsList.add(existingTdpCadre);
-										if(voterIdsList.size()  == 0)
-										{
-											TdpCadre tdpCadre = new TdpCadre();
-											tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"new",false);
-										}
-										else
-										{
-											if(voterIdsList.size() > 0)
-											{
-												List<Long> existingVoters = new ArrayList<Long>();
-												
-												for (TdpCadre tdpCadre : voterIdsList) 
-												{
-													existingVoters.add(tdpCadre.getTdpCadreId());
-												}
-												
-												cadrePreviousRolesDAO.inActiveCadreRollesDetailsById(existingVoters);
-												cadreParticipatedElectionDAO.inActiveCadreElectionDetailsById(existingVoters);
-												tdpCadreFamilyDetailsDAO.inActiveCadreFamilyDetailsById(existingVoters);													
-											}
-										}
-											
-												
-									}
-										
+									}										
 									/*else
 									{
 										TdpCadre tdpCadre = new TdpCadre();
@@ -6923,5 +6891,80 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		  history.setTdpCadreOnlineId(tdpCadre.getTdpCadreOnline().getTdpCadreOnlineId());
 		}
 		tdpCadreHistoryDAO.save(history);
+	}
+	
+	public SurveyCadreResponceVO saveCommitteCadreRegistration(final List<CadreRegistrationVO> cadreRegistrationVOList,List<CadrePreviousRollesVO> eligibleRoles,final String registrationType){
+		final SurveyCadreResponceVO surveyCadreResponceVO = new SurveyCadreResponceVO();
+		
+		TdpCadreBackupDetails tdpCadreBackupDetails= null;
+		if(IConstants.ENABLE_LOGS_SAVE)
+		{
+			Date d1 = new Date();
+			tdpCadreBackupDetails = updateRequestDetailsForBackup(cadreRegistrationVOList,registrationType);
+			Date d2 = new Date();
+			LOG.error(d2.getTime()-d1.getTime() + "IN MILLI SECONDS");
+		}
+		
+		try {
+				if(cadreRegistrationVOList != null && cadreRegistrationVOList.size() >0)
+				{
+					for (CadreRegistrationVO cadreRegistrationVO : cadreRegistrationVOList)
+					{
+						Boolean flag = true;
+						if(cadreRegistrationVO != null)
+						{
+							if(cadreRegistrationVO.getTdpCadreId() != null && cadreRegistrationVO.getTdpCadreId().toString().trim().length()>0 && cadreRegistrationVO.getTdpCadreId().longValue() > 0 ) 
+							{
+								// for cadre committee details updations
+								flag = false;
+								TdpCadre existingTdpCadre = tdpCadreDAO.get(cadreRegistrationVO.getTdpCadreId());
+								
+								List<TdpCadre> voterIdsList = new ArrayList<TdpCadre>();
+								voterIdsList.add(existingTdpCadre);
+								if(voterIdsList.size()  == 0)
+								{
+									TdpCadre tdpCadre = new TdpCadre();
+									tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"new",false);
+								}
+								else
+								{
+									if(voterIdsList.size() > 0)
+									{
+										List<Long> existingVoters = new ArrayList<Long>();
+										
+										for (TdpCadre tdpCadre : voterIdsList) 
+										{
+											existingVoters.add(tdpCadre.getTdpCadreId());
+										}
+										
+										cadrePreviousRolesDAO.inActiveCadreRollesDetailsById(existingVoters);
+										cadreParticipatedElectionDAO.inActiveCadreElectionDetailsById(existingVoters);
+										tdpCadreFamilyDetailsDAO.inActiveCadreFamilyDetailsById(existingVoters);
+										
+										TdpCadre tdpCadre = voterIdsList.get(0);
+										saveDataToHistoryTable(tdpCadre);
+										tdpCadreSavingLogic(registrationType,cadreRegistrationVOList,cadreRegistrationVO,surveyCadreResponceVO,tdpCadre,"update",false);
+										
+										Long tdpCommitteeLevelId =0L;
+										Long levelValue =0L;
+										Long tdpCommitteeTypeId =0L;
+										//cadreCommitteeService.saveElectrolInfo(cadreRegistrationVO.getTdpCadreId(),tdpCommitteeLevelId,levelValue,tdpCommitteeTypeId,eligibleRoles);
+									}
+								}
+									
+										
+							}
+							
+						}
+					}
+				}
+				
+		} catch (Exception e) {
+			surveyCadreResponceVO.setResultCode(ResultCodeMapper.FAILURE);
+			surveyCadreResponceVO.setStatus("EXCEPTION");
+			LOG.error("Exception raised in saveCommitteCadreRegistration in CadreRegistrationService service", e);
+		}
+		
+		return surveyCadreResponceVO;
 	}
 }
