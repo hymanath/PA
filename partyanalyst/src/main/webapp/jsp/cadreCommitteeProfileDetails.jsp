@@ -67,6 +67,9 @@
 		.form-control[disabled] {color:#333 !important;background-color: rgba(0, 0, 0, 0.1) !important;border: medium none rgba(0, 0, 0, 0) !important;
 		}	
 		
+		#successDiv{
+		display:none !important;
+		}
 	</style>
 	
 	<script>
@@ -263,7 +266,7 @@
 				<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group requiredFields" id="addressIdError"></div>
 				
 				<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 form-group">
-					<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level editClass" id="educationId" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Education " style="width:420px;height:35px;" name="cadreRegistrationVO.educationId" value="%{cadreCommitteeVO.educationId}" disabled="true"/>
+					<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level editClass" id="educationId" list="educationList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Education " style="width:420px;height:35px;" name="cadreRegistrationVO.educationId" value="%{cadreCommitteeVO.educationId}" disabled="true"/>
 				</div>
 				<div class="col-md-4 col-sm-6 col-xs-6 form-group">
 					<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level editClass" id="occupationId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Occupation " style="width:420px;height:35px;" name="cadreRegistrationVO.occupationId" value="%{cadreCommitteeVO.occupationId}" disabled="true"/>
@@ -531,7 +534,9 @@
 			</div>			
 		</div> 
 	</form>
-	
+	<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center m_top20 alert alert-success" id="successDiv">
+				<b>PROFILE UPDATED SUCCESSFULLY..</b>
+			</div>
 	
 	</div>
 	
