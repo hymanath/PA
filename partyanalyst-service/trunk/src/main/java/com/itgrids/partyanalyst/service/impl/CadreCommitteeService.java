@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
+import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -733,4 +734,25 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return rolesList;
 	}
+	public List<GenericVO> getCadsteDetailsByGroupId(Long casteGroupId){
+		
+		List<GenericVO> casteDetail=new ArrayList<GenericVO>();
+		List<Object[]> casteDetailsVO = casteStateDAO.getStatewiseCastNamesByGroupId(casteGroupId,1L);
+		
+		if(casteDetailsVO !=null){
+			
+			for (Object[] caste : casteDetailsVO) {
+				GenericVO casteDetails = new GenericVO();
+				casteDetails.setId(caste[0] != null ? Long.valueOf(caste[0].toString().trim()):0L);
+				casteDetails.setName(caste[1] != null ? caste[1].toString().trim():"");
+				casteDetail.add(casteDetails);
+			}
+		}
+		if(casteGroupId == 0){
+			casteDetail=getAllCasteDetailsForState();
+		}
+		
+		return casteDetail;
+	}
+	
 }

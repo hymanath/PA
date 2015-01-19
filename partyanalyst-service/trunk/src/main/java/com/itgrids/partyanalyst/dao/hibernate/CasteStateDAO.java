@@ -139,6 +139,13 @@ public List<Object[]> getAllCasteInfoDetails(){
 		return query.list();	
 	}
 	
-	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getStatewiseCastNamesByGroupId(Long casteCategoryGroupId,Long stateId){
+		
+		Query query = getSession().createQuery("select distinct model.casteStateId,model.caste.casteName from CasteState model where model.state.stateId = :stateId and model.casteCategoryGroup.casteCategory.casteCategoryId =:casteCategoryGroupId");
+		query.setParameter("casteCategoryGroupId",casteCategoryGroupId);
+		query.setParameter("stateId", stateId);	
+		return query.list();
+	}
 
 }
