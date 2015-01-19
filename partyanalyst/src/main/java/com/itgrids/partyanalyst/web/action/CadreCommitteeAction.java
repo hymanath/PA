@@ -43,7 +43,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private JSONObject							jObj;
 	private String 								task;
 	private List<String>						ageRangeList;
-	private List<GenericVO>						genericVOList;
+	private List<GenericVO>						genericVOList,educationList;
 	private List<SelectOptionVO>				selectOptionVOList;
 	private List<SelectOptionVO>				eletionTypesList;
 	private List<SelectOptionVO>				cadreRolesVOList;
@@ -56,6 +56,14 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private Long                                committeeMngtType;
 	
 	
+	public List<GenericVO> getEducationList() {
+		return educationList;
+	}
+
+	public void setEducationList(List<GenericVO> educationList) {
+		this.educationList = educationList;
+	}
+
 	public List<CasteDetailsVO> getCasteDetailsVo() {
 		return casteDetailsVo;
 	}
@@ -217,7 +225,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	public String execute()
 	{	
 		ageRangeList = cadreCommitteeService.getAgeRangeDetailsForCadre();
-		casteDetailsVo = cadreRegistrationService.getAllCastes();
+		genericVOList = cadreCommitteeService.getAllCasteDetailsForState();
 		return Action.SUCCESS;
 	}
 	
@@ -252,7 +260,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 				selectOptionVOList = staticDataService.getAllOccupations();
 				eletionTypesList = cadreRegistrationService.getElectionOptionDetailsForCadre();
 				cadreRolesVOList = cadreRegistrationService.getCadreLevelsForCadreSearch();
-				casteDetailsVo = cadreRegistrationService.getAllCastes();
+				educationList = cadreCommitteeService.getAllCasteDetailsForState();
 				cadreCommitteeVO = cadreCommitteeService.getCadreDetailsByTdpCadreId(Long.valueOf(request.getParameter("tdpCadreId")));
 				if(committeeMngtType != null && committeeMngtType.longValue() == 1l){
 				   cadreCommitteeVO.setEligibleRoles(cadreCommitteeService.getCadreEligiableRoles(Long.valueOf(request.getParameter("tdpCadreId"))));
