@@ -326,6 +326,7 @@ a.tdp-text-error:hover {
 					</c:if>
 					<c:if test="${sessionScope.USER.isAdmin == 'true'}">
 						<li><a href="cadreRegistrationAmountReportAction"><span>2014 Cadre Reports</span></a></li>
+						<li><a href="cadreCommitteeAction.action"><span>  TDP Committees Management  </span></a></li>
 					</c:if>
 					</c:if>
 					
