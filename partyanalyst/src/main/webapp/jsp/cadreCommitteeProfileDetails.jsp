@@ -72,7 +72,8 @@
 	</style>
 	
 	<script>
-	
+	var elegRolCnt = 0;
+	var allRolesList = new Array();	
 	function prepopulateOptions(){
 	
 		
@@ -147,6 +148,7 @@
 	}
 	
 	var participationCount = 0;
+	
 	var isRolesCount = 0 ;
 	
 	<s:if test="%{cadreCommitteeVO.previousElections != null && cadreCommitteeVO.previousElections.size() > 0}">
@@ -154,7 +156,11 @@
 			participationCount = participationCount + 1;
 		</c:forEach>
 	</s:if>
-  
+    <s:if test="%{cadreCommitteeVO.eligibleRoles != null && cadreCommitteeVO.eligibleRoles.size() > 0}">
+		<c:forEach var="reqRole" items="${cadreCommitteeVO.eligibleRoles}" varStatus="indexv">
+			elegRolCnt = elegRolCnt + 1;
+		</c:forEach>
+	</s:if>
 	
 	<s:if test="%{cadreCommitteeVO.previousRoles != null && cadreCommitteeVO.previousRoles.size() > 0}">
 		<c:forEach var="rolesVO" items="${cadreCommitteeVO.previousRoles}" varStatus="indexValue">
@@ -170,7 +176,14 @@
 		}
 		electionArray.push(elections);
 	</c:forEach>
-			
+		
+    <c:forEach var="rol" items="${locations}">
+		var rols ={
+		id:"${rol.locationId}",
+		name:"${rol.locationName}"
+		}
+		allRolesList.push(rols);
+	</c:forEach>		
 	</script>
   </head>
   <body>
@@ -435,7 +448,58 @@
 					<a href="javascript:{addMoreElectionDetails();}" class="btn btn-danger btn-xs ">Tap to Add+ Details</a>	
 			</div>
 			</s:else>
+			<s:if test="%{committeeMngtType != null && committeeMngtType == 1}">
+			<div class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center" style="border-bottom:1px solid #FD2A34;margin-bottom:20px;">
+				<h4>ELIGIBLE ROLES FOR PUBLIC REPRESENTATIVE</h4>				
+			</div>			
 			
+			<s:if test="%{cadreCommitteeVO.eligibleRoles != null && cadreCommitteeVO.eligibleRoles.size() > 0}">
+				<c:forEach var="reqRole" items="${cadreCommitteeVO.eligibleRoles}" varStatus="indexValue">
+				<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group">
+						<input type="text" id="disabledInputElgRol" class="form-control" placeholder="" value="${reqRole.candidateId} - ${reqRole.fromDateStr} - ${reqRole.toDateStr}" disabled>
+					    <input type="hidden" value="${reqRole.designationLevelId}" name="eligibleRoles[${indexValue.index}].designationLevelId"/>				
+				        <input type="hidden" value="${reqRole.fromDateStr}" name="eligibleRoles[${indexValue.index}].fromDateStr"/>
+				        <input type="hidden" value="${reqRole.toDateStr}" name="eligibleRoles[${indexValue.index}].toDateStr"/>				
+	
+				</div>	
+			
+				</c:forEach>
+				
+				<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group">
+				   <div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;" id="eligibleRolesDiv"></div>				
+				</div>
+				<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group ">
+					<a href="javascript:{addMoreEligibleRoles();}" class="btn btn-danger btn-xs ">Click to Add+ Details</a>	
+				</div>
+			</s:if>
+			
+			<s:else>
+			  <div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group  m_top20">
+				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;"  id="eligibleRolesDiv">
+					<div class="row">
+					  <div class="form-group col-md-4 col-sm-4 col-xs-4 ">
+						<label >Role</label>
+						<select class="form-control " name="eligibleRoles[0].designationLevelId">
+						   <option value="0"> Select Role</option>
+						   <c:forEach var="eligibleRes" items="${locations}" >																														
+								<option value="${eligibleRes.locationId}">${eligibleRes.locationName}</option>
+							</c:forEach>
+						</select>
+					  </div>
+					   <div class="form-group col-md-4 col-sm-4 col-xs-4">
+							<label >From Date</label>
+							<input type="text" class="form-control datesCls" name="eligibleRoles[0].fromDateStr">
+					   </div>
+					   <div class="form-group col-md-4 col-sm-4 col-xs-4">
+							<label >To Date</label>
+							<input type="text" class="form-control datesCls" name="eligibleRoles[0].toDateStr">
+						</div>		  
+					</div>
+				</div><!-- add more details electionsDiv Ending -->	
+					<a href="javascript:{addMoreEligibleRoles();}" class="btn btn-danger btn-xs ">Click to Add+ Details</a>	
+			</div>
+			</s:else>
+			</s:if>
 			<div class="col-md-10 col-md-offset-2  col-sm-12 col-xs-12 m_top20 text-center generateotpdiv">
 				<div  class="row">		
 					<div class="referencediv"></div>
@@ -613,7 +677,52 @@
 					}
 			  });
 		}
-		
+	function addMoreEligibleRoles(){
+		elegRolCnt=elegRolCnt+1;
+       var str='';
+        str+='<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;"  id="eligibleRolesDivs'+elegRolCnt+'">';
+		str+='	<div class="row">';
+		str+='	  <div class="form-group col-md-4 col-sm-4 col-xs-4 ">';
+		str+='		<label >Role</label>';
+		str+='		<select class="form-control "  name="eligibleRoles['+elegRolCnt+'].designationLevelId">';
+		str+='		   <option value="0"> Select Role</option>';
+		    for(var i in allRolesList){
+		      str+='<option value="'+allRolesList[i].id+'">'+allRolesList[i].name+'</option>';
+			}
+		str+='		</select>';
+		str+='	  </div>';
+		str+='	   <div class="form-group col-md-4 col-sm-4 col-xs-4">';
+		str+='			<label >From Date</label>';
+		str+='			<input type="text" id="fromDtR'+elegRolCnt+'" class="form-control" name="eligibleRoles['+elegRolCnt+'].fromDateStr">';
+		str+='	   </div>';
+		str+='	   <div class="form-group col-md-4 col-sm-4 col-xs-4">';
+		str+='			<label >To Date</label>';
+		str+='			<input type="text" id="toDtR'+elegRolCnt+'" class="form-control" name="eligibleRoles['+elegRolCnt+'].toDateStr">';
+		str+='		</div>	';	  
+		str+='	</div>';
+		str+='<a style="margin-left: 17px;" class="btn btn-danger btn-xs " href="javascript:{removeselDiv(\'eligibleRolesDivs'+elegRolCnt+'\');}"> Remove </a>';
+		str+='</div>';
+		$('#eligibleRolesDiv').append(str);
+		$('#fromDtR'+elegRolCnt).datepicker({
+				dateFormat: 'yy-mm-dd',
+				maxDate: new Date(),
+				changeMonth: true,
+				changeYear: true,
+				yearRange: "-100:+0"
+			  });
+		$('#toDtR'+elegRolCnt).datepicker({
+				dateFormat: 'yy-mm-dd',
+				maxDate: new Date(),
+				changeMonth: true,
+				changeYear: true,
+				yearRange: "-100:+0"
+			  });
+	}	
+	function removeselDiv(eqId){
+		if(confirm("Do you want to remove?")){
+		  $("#"+eqId).remove();
+		}
+	}
 	var electionsCount = 1;
 	var isElectionsSet = true;
 	function addMoreElectionDetails()
