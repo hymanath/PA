@@ -31,4 +31,16 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getMemberInfo(Long tdpCadreId){
+
+		Query query = getSession().createQuery("select model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId, " +
+				" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,  " +
+				" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeTypeId,  " +
+				" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId, model.tdpCommitteeRole.tdpCommitteeRoleId    " +
+				" from TdpCommitteeMember model where model.tdpCadreId =:tdpCadreId ");
+		query.setParameter("tdpCadreId", tdpCadreId);
+	//	query.setParameter("tdpCadreId", tdpCadreId);
+		return query.list();
+	}
 }
