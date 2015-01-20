@@ -25,14 +25,14 @@
 	<script type="text/javascript" src="js/cadreCommittee/cadreCommittee.js"></script>
    	
 	<style>
-	#publicrepresantative,#mandalaffiliated,#advancedSearchDiv,#committeeDetailsDiv,#searchcadrenewDiv
+	#publicrepresantative,#mandalaffiliated,#advancedSearchDiv,#committeeDetailsDiv,#searchcadrenewDiv,#committeLocationDiv
 	{
 		display:none;
 	}
 	#noMembersErr{
 	  font-weight:bold;	  
 	}
-	#committeeLocationIdErr,#committeeTypeIdErr,#afflitCommitteeIdErr,#searchErrDiv{
+	#committeeLocationIdErr,#committeeTypeIdErr,#afflitCommitteeIdErr,#searchErrDiv,#committeLocationIdErr{
 		font-weight:bold;
 		color:red;
 	}
@@ -172,21 +172,7 @@
 				<h3 class="text-success text-uppercase">Process to add NOT affiliated committee member <br>as mandal affiliated electoral</h3>
 			</div>
 		</div>
-			
-		<div class="row m_top20">
-			<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 ">
-				<div class="form-group col-xs-12 pull-right">
-					<label for="exampleInputEmail1">SELECT LOCATION</label>
-					<select  class="form-control"><option>Location Name #1</option></select >
-				 </div>
-			</div>
-			<div class="col-md-4 col-sm-6 col-xs-6">
-				<div class="form-group col-xs-12">
-					<label for="exampleInputEmail1">COMMITTEE TYPE</label>
-					<select class="form-control"><option>Main Committee</option><option>Affiliated Committee</option></select >
-				 </div>
-			</div>
-		</div>
+	
 
 	</div>
 	<div class="row" id="searchcadrenewDiv">	
@@ -194,7 +180,15 @@
 				<h4>SEARCH BASED ON</h4>
 				<hr style="margin: 0px;">
 			</div>
-			
+			<div class="row m_top20" id="committeLocationDiv" >
+			<div class="col-md-4 col-md-offset-4  col-sm-6 col-xs-6  m_top20">
+				<div class="form-group col-xs-12 pull-right">
+					<label for="committeLocationId">SELECT LOCATION</label>
+					<select class="form-control" id="committeLocationId" ><option value="0">Select Location</option></select >
+					<div id="committeLocationIdErr"></div>
+				 </div>
+			</div>			
+		</div>
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center">
 				<div class="form-inline m_top20">
 					<div class="radio">
@@ -300,7 +294,7 @@
 				$('#advancedSearchDiv').show();
 				$('#cadreSearchType').val('advancedSearch');
 				$('#ageRange').find('option').remove();
-				$('#ageRange').append('<option  value="0"> Select Age </option>');
+				//$('#ageRange').append('<option  value="0"> Select Age </option>');
 				if(ageRangeArr != null && ageRangeArr.length>0)
 				{
 
@@ -329,6 +323,10 @@
 		}).done(function(result){
 			$("#committeeLocationId  option").remove();
 			$("#committeeLocationId").append('<option value="0">Select Location</option>');
+			
+			$("#committeLocationId  option").remove();
+			$("#committeLocationId").append('<option value="0">Select Location</option>');
+			
 			var reqNewLocationType ="";
 			if($("#mndlLvlCommittSelec").is(':checked')){
 			  reqNewLocationType ="mandal";
@@ -336,6 +334,7 @@
 			if(reqNewLocationType == reqLocationType){
 				for(var i in result){
 				   $("#committeeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+				   $("#committeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
 				}
 			}
 		});
