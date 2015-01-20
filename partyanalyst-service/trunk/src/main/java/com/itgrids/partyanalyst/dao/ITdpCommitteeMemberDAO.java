@@ -10,4 +10,5 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 public interface ITdpCommitteeMemberDAO  extends GenericDao<TdpCommitteeMember, Long>{
 	public List<Object[]> getRoleWiseAllocatedMembersCount(Set<Long> committeeRoleIds);
 	public List<Object[]> getMembersInfo(Set<Long> committeeRoleIds);
+	public List<Object[]> getMemberInfo(Long tdpCadreId);
 }
