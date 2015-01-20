@@ -32,7 +32,7 @@
 	#noMembersErr{
 	  font-weight:bold;	  
 	}
-	#committeeLocationIdErr,#committeeTypeIdErr,#afflitCommitteeIdErr{
+	#committeeLocationIdErr,#committeeTypeIdErr,#afflitCommitteeIdErr,#searchErrDiv{
 		font-weight:bold;
 		color:red;
 	}
@@ -147,83 +147,7 @@
 		</div>
 		<!-------/VIEW BLOCK END------>
 		
-		<!-------ADD BLOCK------>
-		<div class="row" id="searchcadrenewDiv">	
-			<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 text-center">
-				<h4>SEARCH BASED ON</h4>
-				<hr style="margin: 0px;">
-			</div>
-			
-			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center">
-				<div class="form-inline m_top20">
-					<div class="radio">
-						<label><input type="radio" name="searchBasedOn" checked="true" class="searchTypeCls" id="membershipId" value="1"> Membership ID &nbsp;&nbsp;</label>
-					
-						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="voterId"  value="2" > Voter ID &nbsp;&nbsp;</label>
-					
-						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="mobileNo"  value="3"> Mobile No &nbsp;&nbsp;</label>
-					
-						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="name"  value="4"> Name &nbsp;&nbsp;</label>
-					
-						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="advancedSearch"  value="5"> Advanced Search &nbsp;&nbsp;</label>
-						<input type="hidden" id="cadreSearchType" value="membershipId" />
-					</div>				  
-				</div>
-			</div>
-			
-			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20">	
-				<div class="row">      
-					<div class="col-md-9 col-sm-9 col-xs-9 ">
-						<input type="text" placeholder="ENTER NO / NAME"  class="form-control" id="searchBy">
-					</div>	
-					<div class="col-md-3 col-sm-3 col-xs-3 ">
-						<button class="btn btn-success btn-block" type="button" onclick="getCadreDetailsBySearchCriteria()">SEARCH</button>
-					</div>			
-				</div>			
-			</div>
-			
-			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20" id="advancedSearchDiv">	
-				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;"> 					
-					<h6>Advanced Search</h6>
-					<div class="row">					
-						<div class="col-md-2 col-sm-2 col-xs-2 ">
-							<label>Caste-Group
-								<select class="form-control" id="casteCategory" onchange="casteDetailsByGroupId();">
-								<option value="0">All</option>
-								<option value="1">OC</option>
-								<option value="2">BC</option>
-								<option value="3">SC</option>
-								<option value="4">ST</option>
-								</select>
-							</label>
-						</div>
-						<div class="col-md-4 col-sm-4 col-xs-4 ">
-							<label>Caste Name
-								
-								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level editClass" id="casteList" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Caste "/>
-							</label>
-						</div>
-						<div class="col-md-3 col-sm-3 col-xs-3 ">
-							<label>Age
-								<select class="form-control"  id="ageRange"><option>select</option></select>
-							</label>
-						</div>
-						<div class="col-md-3 col-sm-3 col-xs-3 ">
-							<label>Gender
-								<select class="form-control"  id="gender"><option>Male</option><option>FeMale</option></select>
-							</label>
-						</div>
-						<div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4 m_top10">
-							<button type="submit" class="btn btn-success btn-block" onclick="getCadreDetailsBySearchCriteria()">SEARCH</button>
-						</div>
-					</div>			
-				</div>			
-			</div>	
-			
-			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20">
-				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;" id="cadreDetailsDiv"></div>			
-			</div>
-		</div>	
+		<!-------ADD BLOCK------>		
 	</div>		
 		<!-------/ADD BLOCK END------>
 		
@@ -232,137 +156,10 @@
 		<div class="row" id="publicrepresantative" >	
 			<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1  m_top20 text-center">
 				<h3 class="text-success text-uppercase" >Process to update <br> public representatives as mandal Electoral</h3>
-				<h4 class=" m_top20">SEARCH BASED ON</h4>
+				
 				<hr style="margin: 0px;">
 			</div>
-			
-			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center">
-				<div class="form-inline m_top20">
-					<div class="radio">
-						<label><input type="radio" name="searchBasedOn"> Membership ID &nbsp;&nbsp;</label>
-					
-						<label><input type="radio" name="searchBasedOn"> Voter ID &nbsp;&nbsp;</label>
-					
-						<label><input type="radio" name="searchBasedOn"> Mobile No &nbsp;&nbsp;</label>
-					
-						<label><input type="radio" name="searchBasedOn"> Name &nbsp;&nbsp;</label>
-					
-						<label><input type="radio" name="searchBasedOn"> Advanced Search &nbsp;&nbsp;</label>
-					</div>				  
-				</div>
-			</div>
-			
-			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20">	
-				<div class="row">      
-					<div class="col-md-9 col-sm-9 col-xs-9 ">
-						<input type="text" placeholder="ENTER NO / NAME"  class="form-control" >
-					</div>	
-					<div class="col-md-3 col-sm-3 col-xs-3 ">
-						<button class="btn btn-success btn-block" type="submit">SEARCH</button>
-					</div>			
-				</div>			
-			</div>
-			
-			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20">	
-				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;"> 					
-					<h6>Advanced Search</h6>
-					<div class="row">					
-						<div class="col-md-2 col-sm-2 col-xs-2 ">
-							<label>Caste-Group
-								<select class="form-control"><option>SC</option></select>
-							</label>
-						</div>
-						<div class="col-md-4 col-sm-4 col-xs-4 ">
-							<label>Caste Name
-								<select class="form-control"><option>SC- Caste Name #1</option></select>
-							</label>
-						</div>
-						<div class="col-md-3 col-sm-3 col-xs-3 ">
-							<label>Age
-								<select class="form-control"><option>B/W 20 - 40</option></select>
-								
-							</label>
-						</div>
-						<div class="col-md-3 col-sm-3 col-xs-3 ">
-							<label>Gender
-								<select class="form-control"><option>Male</option></select>
-							</label>
-						</div>
-						<div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4 m_top10">
-							<button type="submit" class="btn btn-success btn-block">SEARCH</button>
-						</div>
-					</div>			
-				</div>			
-			</div>	
-			
-			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20">
-				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;">
-					<div class="media">
-					  <a href="#" class="media-left">
-						<img style="width: 64px; height: 64px;" src="images/cadreCommitee/search_details_member_imahe.png" />
-					  </a>
-					  <div class="media-body">
-						<h4 class="media-heading">Member Name</h4>
-						<ul class="list-inline">
-							<li>Age:33;</i>
-							<li>Gender: Male;</i>
-							<li>Mobile No: 96325871;</i>
-							<li>Caste: Caste Name;</i>
-							<li>Voter ID: 12365478;</i>
-							<li>Aadhar: 12365478</i>
-						</ul>
-					  </div>
-					</div>
-					<div class="form-inline ">
-							<label><input type="radio" name="searchedDetails"> &nbsp;&nbsp;</label>
-						<a href="#" class="btn btn-success btn-medium">UPDATE PROFILE</a>
-					</div>	
-				</div>
-				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;">
-					<div class="media">
-					  <a href="#" class="media-left">
-						<img style="width: 64px; height: 64px;" src="images/cadreCommitee/search_details_member_imahe.png" />
-					  </a>
-					  <div class="media-body">
-						<h4 class="media-heading">Member Name</h4>
-						<ul class="list-inline">
-							<li>Age:33;</i>
-							<li>Gender: Male;</i>
-							<li>Mobile No: 96325871;</i>
-							<li>Caste: Caste Name;</i>
-							<li>Voter ID: 12365478;</i>
-							<li>Aadhar: 12365478</i>
-						</ul>
-					  </div>
-					</div>
-					<div class="form-inline ">
-						<label><input type="radio" name="searchedDetails"> &nbsp;&nbsp;</label>
-						<a href="#" class="btn btn-success btn-medium">UPDATE PROFILE</a>
-					</div>	
-				</div>
-				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;">
-					<div class="media">
-					  <a href="#" class="media-left">
-						<img style="width: 64px; height: 64px;" src="images/cadreCommitee/search_details_member_imahe.png" />
-					  </a>
-					  <div class="media-body">
-						<h4 class="media-heading">Member Name</h4>
-						<ul class="list-inline">
-							<li>Age:33;</i>
-							<li>Gender: Male;</i>
-							<li>Mobile No: 96325871;</i>
-							<li>Caste: Caste Name;</i>
-							<li>Voter ID: 12365478;</i>
-							<li>Aadhar: 12365478</i>
-						</ul>
-					  </div>
-					</div>
-					<div class="form-inline ">						
-							<label><input type="radio" name="searchedDetails"> &nbsp;&nbsp;</label>					
-						<a href="#" class="btn btn-success btn-medium">UPDATE PROFILE</a>
-					</div>	
-				</div>				
-			</div>
+
 		</div>	
 		<!-- end public Representatives Block  -->
 		
@@ -390,8 +187,9 @@
 				 </div>
 			</div>
 		</div>
-		
-		<div class="row">	
+
+	</div>
+	<div class="row" id="searchcadrenewDiv">	
 			<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 text-center">
 				<h4>SEARCH BASED ON</h4>
 				<hr style="margin: 0px;">
@@ -400,133 +198,75 @@
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center">
 				<div class="form-inline m_top20">
 					<div class="radio">
-						<label><input type="radio" name="searchBasedOn"> Membership ID &nbsp;&nbsp;</label>
+						<label><input type="radio" name="searchBasedOn" checked="true" class="searchTypeCls" id="membershipId" value="1"> Membership ID &nbsp;&nbsp;</label>
 					
-						<label><input type="radio" name="searchBasedOn"> Voter ID &nbsp;&nbsp;</label>
+						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="voterId"  value="2" > Voter ID &nbsp;&nbsp;</label>
 					
-						<label><input type="radio" name="searchBasedOn"> Mobile No &nbsp;&nbsp;</label>
+						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="mobileNo"  value="3"> Mobile No &nbsp;&nbsp;</label>
 					
-						<label><input type="radio" name="searchBasedOn"> Name &nbsp;&nbsp;</label>
+						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="name"  value="4"> Name &nbsp;&nbsp;</label>
 					
-						<label><input type="radio" name="searchBasedOn"> Advanced Search &nbsp;&nbsp;</label>
+						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="advancedSearch"  value="5"> Advanced Search &nbsp;&nbsp;</label>
+						<input type="hidden" id="cadreSearchType" value="membershipId" />
 					</div>				  
 				</div>
 			</div>
 			
-			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20">	
+			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20"  id="basicSearchDiv">	
 				<div class="row">      
 					<div class="col-md-9 col-sm-9 col-xs-9 ">
-						<input type="text" placeholder="ENTER NO / NAME"  class="form-control" >
+						<input type="text" placeholder="ENTER NO / NAME"  class="form-control" id="searchBy">
+						<div id="searchErrDiv"></div>
 					</div>	
 					<div class="col-md-3 col-sm-3 col-xs-3 ">
-						<button class="btn btn-success btn-block" type="submit">SEARCH</button>
+						<button class="btn btn-success btn-block" type="button" onclick="getCadreDetailsBySearchCriteria()">SEARCH</button>
 					</div>			
 				</div>			
 			</div>
 			
-			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20">	
+			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20" id="advancedSearchDiv">	
 				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;"> 					
 					<h6>Advanced Search</h6>
 					<div class="row">					
 						<div class="col-md-2 col-sm-2 col-xs-2 ">
 							<label>Caste-Group
-								<select class="form-control"><option>SC</option></select>
+								<select class="form-control" id="casteCategory" onchange="casteDetailsByGroupId();">
+								<option value="0">All</option>
+								<option value="1">OC</option>
+								<option value="2">BC</option>
+								<option value="3">SC</option>
+								<option value="4">ST</option>
+								</select>
 							</label>
 						</div>
 						<div class="col-md-4 col-sm-4 col-xs-4 ">
 							<label>Caste Name
-								<select class="form-control"><option>SC- Caste Name #1</option></select>
+								
+								<s:select theme="simple" cssClass="form-control editClass" id="casteList" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Caste " style="width: 210px;"/>
 							</label>
 						</div>
 						<div class="col-md-3 col-sm-3 col-xs-3 ">
 							<label>Age
-								<select class="form-control"><option>B/W 20 - 40</option></select>
+								<select class="form-control"  id="ageRange"><option>select</option></select>
 							</label>
 						</div>
 						<div class="col-md-3 col-sm-3 col-xs-3 ">
 							<label>Gender
-								<select class="form-control"><option>Male</option></select>
+								<select class="form-control"  id="gender"><option>Male</option><option>FeMale</option></select>
 							</label>
 						</div>
 						<div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4 m_top10">
-							<button type="submit" class="btn btn-success btn-block">SEARCH</button>
-						</div>
+							<button type="submit" class="btn btn-success btn-block" onclick="getCadreDetailsBySearchCriteria()">SEARCH</button>
+						</div>				
 					</div>			
 				</div>			
 			</div>	
 			
+			<img src='images/Loading-data.gif' class="offset7"  id="searchDataImg" style=" margin-left: 660px;margin-top: 20px;width:70px;height:60px;display:none;"/>
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20">
-				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;">
-					<div class="media">
-					  <a href="#" class="media-left">
-						<img style="width: 64px; height: 64px;" src="images/cadreCommitee/search_details_member_imahe.png" />
-					  </a>
-					  <div class="media-body">
-						<h4 class="media-heading">Member Name</h4>
-						<ul class="list-inline">
-							<li>Age:33;</i>
-							<li>Gender: Male;</i>
-							<li>Mobile No: 96325871;</i>
-							<li>Caste: Caste Name;</i>
-							<li>Voter ID: 12365478;</i>
-							<li>Aadhar: 12365478</i>
-						</ul>
-					  </div>
-					</div>
-					<div class="form-inline ">
-							<label><input type="radio" name="searchedDetails"> &nbsp;&nbsp;</label>
-						<a href="#" class="btn btn-success btn-medium">UPDATE PROFILE</a>
-					</div>	
-				</div>
-				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;">
-					<div class="media">
-					  <a href="#" class="media-left">
-						<img style="width: 64px; height: 64px;" src="images/cadreCommitee/search_details_member_imahe.png" />
-					  </a>
-					  <div class="media-body">
-						<h4 class="media-heading">Member Name</h4>
-						<ul class="list-inline">
-							<li>Age:33;</i>
-							<li>Gender: Male;</i>
-							<li>Mobile No: 96325871;</i>
-							<li>Caste: Caste Name;</i>
-							<li>Voter ID: 12365478;</i>
-							<li>Aadhar: 12365478</i>
-						</ul>
-					  </div>
-					</div>
-					<div class="form-inline ">
-						<label><input type="radio" name="searchedDetails"> &nbsp;&nbsp;</label>
-						<a href="#" class="btn btn-success btn-medium">UPDATE PROFILE</a>
-					</div>	
-				</div>
-				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;">
-					<div class="media">
-					  <a href="#" class="media-left">
-						<img style="width: 64px; height: 64px;" src="images/cadreCommitee/search_details_member_imahe.png" />
-					  </a>
-					  <div class="media-body">
-						<h4 class="media-heading">Member Name</h4>
-						<ul class="list-inline">
-							<li>Age:33;</i>
-							<li>Gender: Male;</i>
-							<li>Mobile No: 96325871;</i>
-							<li>Caste: Caste Name;</i>
-							<li>Voter ID: 12365478;</i>
-							<li>Aadhar: 12365478</i>
-						</ul>
-					  </div>
-					</div>
-					<div class="form-inline ">						
-							<label><input type="radio" name="searchedDetails"> &nbsp;&nbsp;</label>					
-						<a href="#" class="btn btn-success btn-medium">UPDATE PROFILE</a>
-					</div>	
-				</div>				
+				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;" id="cadreDetailsDiv"></div>			
 			</div>
-		</div>		
-		
-		
-	</div>
+		</div>	
 		<!-- end mandal committee Block  -->
 
 		
@@ -537,6 +277,7 @@
 		$('.searchTypeCls').click(function(){
 			var id = $(this).attr('id');
 			$('#advancedSearchDiv').hide();
+			$('#basicSearchDiv').show();
 			if(id.trim() == 'membershipId')
 			{
 				$('#cadreSearchType').val('membershipId');
@@ -555,6 +296,7 @@
 			}
 			if(id.trim() == 'advancedSearch')
 			{
+				$('#basicSearchDiv').hide();
 				$('#advancedSearchDiv').show();
 				$('#cadreSearchType').val('advancedSearch');
 				$('#ageRange').find('option').remove();
@@ -637,7 +379,7 @@
 		
 	}
 	function showSearchInfo(){
-		$("#committeeDetailsDiv").hide();
+		 $("#committeeDetailsDiv").hide();
 		 $("#searchcadrenewDiv").show();
 	}
 	function getCommitteMembersInfo(){
