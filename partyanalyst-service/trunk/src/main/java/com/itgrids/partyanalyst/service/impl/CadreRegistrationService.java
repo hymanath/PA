@@ -2281,7 +2281,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 								
 								vo.setLocation(tdpCadre.getUserAddress() != null ? (tdpCadre.getUserAddress().getStreet() != null ?tdpCadre.getUserAddress().getStreet().toString():""):"");
 								vo.setMobileNo(tdpCadre.getMobileNo() != null ? tdpCadre.getMobileNo():"");
-								vo.setMemberShipId(tdpCadre.getPreviousEnrollmentNo() != null ? tdpCadre.getPreviousEnrollmentNo().toString():"");
+								vo.setMemberShipId(tdpCadre.getPreviousEnrollmentNo() != null && tdpCadre.getPreviousEnrollmentNo().length()>4 ? tdpCadre.getPreviousEnrollmentNo().toString().substring(4):"");
 								vo.setActiveDate(tdpCadre.getPartyMemberSince() != null ? new SimpleDateFormat("yyyy-MM-dd").format(tdpCadre.getPartyMemberSince()):"");
 								if(tdpCadre.getIsRelative() != null && tdpCadre.getIsRelative().equalsIgnoreCase("Y")){
 								  vo.setRelative("true");
@@ -2397,7 +2397,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							
 							vo.setLocation(tdpCadre.getUserAddress() != null ? (tdpCadre.getUserAddress().getStreet() != null ?tdpCadre.getUserAddress().getStreet().toString():""):"");
 							vo.setMobileNo(tdpCadre.getMobileNo() != null ? tdpCadre.getMobileNo():"");
-							vo.setMemberShipId(tdpCadre.getPreviousEnrollmentNo() != null ? tdpCadre.getPreviousEnrollmentNo().toString():"");
+							vo.setMemberShipId(tdpCadre.getPreviousEnrollmentNo() != null  && tdpCadre.getPreviousEnrollmentNo().length()>4 ? tdpCadre.getPreviousEnrollmentNo().toString().substring(4):"");
 							vo.setActiveDate(tdpCadre.getPartyMemberSince() != null ? new SimpleDateFormat("yyyy-MM-dd").format(tdpCadre.getPartyMemberSince()):"");
 							if(tdpCadre.getIsRelative() != null && tdpCadre.getIsRelative().equalsIgnoreCase("Y")){
 							  vo.setRelative("true");
@@ -6376,7 +6376,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						cadreVO.setCadreName(cadre[1] != null ? cadre[1].toString():"");
 						cadreVO.setRelativeName(cadre[2] != null ? cadre[2].toString():"");
 						cadreVO.setGender(cadre[3] != null ? cadre[3].toString():"");
-						cadreVO.setMemberShipNo(cadre[4] != null ? cadre[4].toString():"");
+						cadreVO.setMemberShipNo(cadre[4] != null  && cadre[4].toString().trim().length()>4  ? cadre[4].toString().substring(4):"");
 						cadreVO.setTrNo(cadre[5] != null ? cadre[5].toString():"");
 						cadreVO.setMobileNo(cadre[6] != null ? cadre[6].toString():"");
 						cadreVO.setImageURL(cadre[7] != null ? cadre[7].toString():"");
@@ -6609,7 +6609,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 							if(membershipCheck){
 								TdpCadreTravelInfo tdpCadreTravelInfo  = new TdpCadreTravelInfo();
 								tdpCadreTravelInfo.setCustId(Long.valueOf(input.getCustomerId()));
-								tdpCadreTravelInfo.setMembershipNo(input.getMembershipNo());
+								tdpCadreTravelInfo.setMembershipNo(input.getMembershipNo() != null && input.getMembershipNo().toString().trim().length()>4  ? input.getMembershipNo().substring(4):"");
 										if(input.getTicketsCount() == null || input.getTicketsCount().isEmpty() || input.getTicketsCount().equals("0"))
 										{
 											status1 = "No of Ticketes Required";
@@ -6763,7 +6763,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						cadreVO.setCadreName(cadre[1] != null ? cadre[1].toString():"");
 						cadreVO.setRelativeName(cadre[2] != null ? cadre[2].toString():"");
 						cadreVO.setGender(cadre[3] != null ? cadre[3].toString():"");
-						cadreVO.setMemberShipNo(cadre[4] != null ? cadre[4].toString():"");
+						cadreVO.setMemberShipNo(cadre[4] != null  && cadre[4].toString().trim().length()>4 ? cadre[4].toString().substring(4):"");
 						cadreVO.setTrNo(cadre[5] != null ? cadre[5].toString():"");
 						cadreVO.setMobileNo(cadre[6] != null ? cadre[6].toString():"");
 						cadreVO.setImageURL(cadre[7] != null ? cadre[7].toString():"");
