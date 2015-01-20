@@ -28,6 +28,10 @@
 <script type="text/javascript" src="js/exportexcel.js"></script>
 
 <title>IVR Report</title>
+<style>
+	.marginCss{margin-top: 0px; margin-bottom: 0px;}
+	
+</style>
 </head>
 <body>
 <div class="container ">	
@@ -54,11 +58,28 @@
   </div>
 </div>
 				
-<img style="height:18px;width:16px;margin-left:1px;display:none;" src="./images/icons/search.gif" id="basicajaxImg" class="offset1"/>
-<div class="row-fluid" style="margin-top: 20px;">
-<div class="span4 border-radius-0 mb-10" id="basicCountDiv"></div>
-<div id="previousCntDiv" class="span8 border-radius-0 mb-10"></div>
+<!--<img style="height:18px;width:16px;margin-left:1px;display:none;" src="./images/icons/search.gif" id="basicajaxImg" class="offset1"/>-->
+<div class="row-fluid" style="margin-top: 20px;">			
+				<table class="table border-radius-0 mb-0"  style="outline: 1px solid rgb(204, 204, 204);margin-bottom:10px;">
+					<tr>
+						<td style="width:250px;text-align:center; border-right: 2px solid rgb(204, 204, 204);" id="totalIvrTD">
+						<img style="height:18px;width:16px;margin-top:60px;margin-left:1px;" src="./images/icons/search.gif" id="basicajaxImg" class="offset1"/></td>
+						<!--<td style="width:100px;text-align:center;" ></td>-->
+						<td id="constiIvrTD"></td>
+						<!--<td class="width25p"style="230px !important;"  id="mandalIvrTD">-->
+							
+						</td>	
+							
+					</tr>
+
+					
+				</table>
+
+
+<!--<div class="span4 border-radius-0 mb-10" id="basicCountDiv"></div>
+<div id="previousCntDiv" class="span8 border-radius-0 mb-10"></div>-->
 </div>
+<img style="height:18px;width:16px;display:none;" src="./images/icons/search.gif" id="ajaxImg" class="offset5"/>
 	<div id="enquiryDataDiv" style="clear:both;"></div>		
 		<!--<div id="enquiryDiv"  class="offset3">
 		<div id="errorDiv"></div>
@@ -258,49 +279,76 @@ function buildEnquiryData(resultList)
 		buildPreviousCount(result,fromDate,toDate);
 		});
 	}
+	
 	function buildIvrCount(result)
 	{
 		var str='';
-	str+='<table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover">';
+	str+='<table class="table table-bordered border-radius-0 mb-0 Previousmembercount" style="margin-top: 22px;">';
+	str+='<thead>';
+	str+=' <tr>';	
+	str += '<th  style="text-align:center;"> Dispatch Count  </th>';
+	str += '<th style="text-align:center;"> Total Ivr Calls  </th>';
+	str+=' </tr>';
+	str+=' </thead>';
+	
 	str+='<tbody>';
 	str+=' <tr>';
 								
-	str+='<td><div><h2>'+result.printingCompleted+'</h2><p>Dispatch Count</p></div></td>';
-	str+='<td><div ><h2>'+result.total+'</h2><p>Total Ivr Calls</p></div></td>';
-	str+='<td><div ><h2>'+result.totalError+'</h2><p>Error Count</p></div></td>';
+	str+='<td><div><h2 class="marginCss">'+result.printingCompleted+'</h2></div></td>';
+	str+='<td><div ><h2 class="marginCss">'+result.total+'</h2></div></td>';
+	<!--str+='<td><div ><h2>'+result.totalError+'</h2><p>Error Count</p></div></td>';-->
 	
 	str+='</tr>';
 	str+='</tbody>';
 	str+='</table>';
-	$("#basicCountDiv").html(str);
+	
+	$("#totalIvrTD").html(str);
 	}
 	function buildPreviousCount(result,fromDate,toDate)
 	{
 			var str='';
-	str+='<table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover">';
+	str+='<table class="table table-bordered border-radius-0 mb-0 Previousmembercount"  style="margin-bottom: 10px;">';
+	str+='<thead>';
+	str+=' <tr>';	
+	str += '<th  style="text-align:center;" COLSPAN=3> Constituency  </th>';
+	str += '<th style="text-align:center;" COLSPAN=3> Mandal  </th>';
+	str+=' </tr>';
+	str+=' </thead>';
 	str+='<tbody>';
 	str+=' <tr>';
+	str+='<td>No Of Constituencies</td>';
+	str+='<td>Received</td>';
+	str+='<td>Delivered</td>';
+	str+='<td>No Of Mandals</td>';
+	str+='<td>Received</td>';
+	str+='<td>Delivered</td>';
+	str+=' </tr>';
+	str+=' <tr>';
 		if(result.totalCalls!= null && result.totalCalls > 0)						
-	str+='<td><div><h2><a style="cursor:pointer;" onclick="getIvrDataByType(\'Constituency\',\''+fromDate+'\',\''+toDate+'\')">'+result.totalCalls+'</a></h2><p>No Of Constituencies</p></div></td>';
+	str+='<td><div><h2 class="marginCss"><a style="cursor:pointer;" onclick="getIvrDataByType(\'Constituency\',\''+fromDate+'\',\''+toDate+'\')">'+result.totalCalls+'</a></h2></div></td>';
 		else
-	str+='<td><div><h2>'+result.totalCalls+'</h2><p>No Of Constituencies</p></div></td>';
+	str+='<td><div><h2 class="marginCss">'+result.totalCalls+'</h2></div></td>';
+	str+='<td><div ><h2 class="marginCss">'+result.received+'</h2></div></td>';
+	str+='<td><div ><h2 class="marginCss">'+result.notReceived+'</h2></div></td>';
+	
 	if(result.totalIvrCalls!= null && result.totalIvrCalls > 0)					
-	str+='<td><div ><h2><a style="cursor:pointer;" onclick="getIvrDataByType(\'Mandal\',\''+fromDate+'\',\''+toDate+'\')">'+result.totalIvrCalls+'</a></h2><p>No Of mandals</p></div></td>';
+	str+='<td><div ><h2 class="marginCss"><a style="cursor:pointer;" onclick="getIvrDataByType(\'Mandal\',\''+fromDate+'\',\''+toDate+'\')">'+result.totalIvrCalls+'</a></h2></div></td>';
 	else
-	str+='<td><div ><h2>'+result.totalIvrCalls+'</h2><p>No Of mandals</p></div></td>';
-	str+='<td><div ><h2>'+result.received+'</h2><p>Received in Constituencies</p></div></td>';
-	str+='<td><div ><h2>'+result.notReceived+'</h2><p>Delivered in Constituencies</p></div></td>';
-	str+='<td><div ><h2>'+result.totalAnswerdCalls+'</h2><p>Received in mandals</p></div></td>';
-	str+='<td><div ><h2>'+result.notMember+'</h2><p>Delivered in mandals</p></div></td>';
+	str+='<td><div ><h2 class="marginCss">'+result.totalIvrCalls+'</h2></div></td>';
+	
+	
+	str+='<td><div ><h2 class="marginCss">'+result.totalAnswerdCalls+'</h2></div></td>';
+	str+='<td><div ><h2 class="marginCss">'+result.notMember+'</h2></div></td>';
 	str+='</tr>';
 	str+='</tbody>';
 	str+='</table>';
-	$("#previousCntDiv").html(str);
+	$("#constiIvrTD").html(str);
 	}
 
 	function getIvrDataByType(type,fromDate,toDate)
 	{
-		
+		$("#ajaxImg").show();
+		 $("#enquiryDataDiv").html("");
 		var jsObj = {	
 			fromDate:fromDate,
 			toDate:toDate,
@@ -313,7 +361,7 @@ function buildEnquiryData(resultList)
 			url : "getIvrPreviousCallBasicInfoAction.action",
 			data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
-				
+				$("#ajaxImg").hide();
 		buildPreviousCallsData(result,type);
 		});
 	}
@@ -328,7 +376,7 @@ function buildEnquiryData(resultList)
 		$("#enquiryDataDiv").html(str);
 		return;
 	 }
-	 str+='<table class="table table-bordered">';
+	 str+='<table class="table table-bordered" style="margin-top: 29px;">';
 	 str+='<thead class="alert-success">';
 	 if(type =="Constituency")
 		{
@@ -343,8 +391,8 @@ function buildEnquiryData(resultList)
 	 str+='<th>Total Ivr Calls</th>';
 	 str+='<th>Cards Received</th>';
 	 str+='<th>Cards Not Received</th>';
-	 str+='<th>Not Member</th>';
-	 str+='<th>Error</th>';
+	 str+='<th>Received</th>';
+	 str+='<th>Delivered</th>';
 	 str+='</thead>';
 	 str+='<tbody>';
 	 for(var i in result)
@@ -356,8 +404,8 @@ function buildEnquiryData(resultList)
 	 str+='<td>'+result[i].totalCalls+'</td>';
 	 str+='<td>'+result[i].received+'</td>';
 	 str+='<td>'+result[i].notReceived+'</td>';
-	 str+='<td>'+result[i].notMember+'</td>';
-	 str+='<td>'+error+'</td>';
+	 str+='<td>'+result[i].ivrEnqReceived+'</td>';
+	 str+='<td>'+result[i].ivrEnqDelivered+'</td>';
 	 str+='</tr>';
 	 }
 	 str+='</tbody>';
