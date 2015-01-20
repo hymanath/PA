@@ -6944,16 +6944,24 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									saveDataToHistoryTable(tdpCadre);
 									
 									surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getMemberShipNo());
-									
-									tdpCadre.setDateOfBirth(convertToDateFormet(cadreRegistrationVO.getDobStr()));
-									tdpCadre.setAge(cadreRegistrationVO.getAge());
-									tdpCadre.setAadheerNo(cadreRegistrationVO.getAadheerNo());
-									tdpCadre.setGender(cadreRegistrationVO.getGender());
-									tdpCadre.setMobileNo(cadreRegistrationVO.getMobileNumber());
-									tdpCadre.setCasteStateId(cadreRegistrationVO.getCasteId());
-									tdpCadre.setEducationId(cadreRegistrationVO.getEducationId());
-									tdpCadre.setOccupationId(cadreRegistrationVO.getOccupationId());
-									tdpCadre.setEmailId(cadreRegistrationVO.getEmailId());
+									if(cadreRegistrationVO.getDobStr() != null)
+										tdpCadre.setDateOfBirth(convertToDateFormet(cadreRegistrationVO.getDobStr()));
+									if(cadreRegistrationVO.getAge() != null)
+										tdpCadre.setAge(cadreRegistrationVO.getAge());
+									if(cadreRegistrationVO.getCandidateAadherNo() != null)
+										tdpCadre.setAadheerNo(cadreRegistrationVO.getCandidateAadherNo());
+									if(cadreRegistrationVO.getGender() != null)
+										tdpCadre.setGender(cadreRegistrationVO.getGender());
+									if(cadreRegistrationVO.getMobileNumber() != null)
+										tdpCadre.setMobileNo(cadreRegistrationVO.getMobileNumber());
+									if(cadreRegistrationVO.getCasteId() != null)
+										tdpCadre.setCasteStateId(cadreRegistrationVO.getCasteId());
+									if(cadreRegistrationVO.getEducationId() != null)
+										tdpCadre.setEducationId(cadreRegistrationVO.getEducationId());
+									if(cadreRegistrationVO.getOccupationId() != null)
+										tdpCadre.setOccupationId(cadreRegistrationVO.getOccupationId());
+									if(cadreRegistrationVO.getEmailId() != null)
+										tdpCadre.setEmailId(cadreRegistrationVO.getEmailId());
 									
 									tdpCadreDAO.save(tdpCadre);
 									
@@ -6962,7 +6970,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									
 									if(userAddress != null)
 									{
-										userAddress.setStreet(cadreRegistrationVO.getAddress());
+										if(cadreRegistrationVO.getStreet() != null)
+											userAddress.setStreet(cadreRegistrationVO.getStreet());
 										userAddressDAO.save(userAddress);
 									}
 									
