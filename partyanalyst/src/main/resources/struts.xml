@@ -5623,7 +5623,8 @@
 		    <result name="cadreMemberShipCardDispatcher" type="redirect">cadreMemberShipCardDispatcherAction.action</result>
 		    <result name="tabAllocationDetailsAction" type="redirect">tabAllocationDetailsAction.action</result> 
 		    <result name="cadre2014CardSample" type="redirect">memberShipCardSamplePrint.action</result>
-		     <result name="ghmcMegaDriveUser" type="redirect">tdpCadreVolunteersDetailsAction.action</result>		    
+		    <result name="ghmcMegaDriveUser" type="redirect">tdpCadreVolunteersDetailsAction.action</result>
+		    <result name="CADRE_COMMITTEE_MANAGEMENT" type="redirect">cadreCommitteeAction.action</result>		     		    
 		</action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
@@ -9303,6 +9304,8 @@
 		
 		<action name="cadreCommitteeAction" class="cadreCommitteeAction">
 			<result name="success">/jsp/cadreCommittee.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=cadreCommitteeAction</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
 		
 		<action name="getCadreSearchDetailsAction" class="cadreCommitteeAction" method="getSearchDetails">

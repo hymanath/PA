@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
@@ -54,6 +55,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private LocationWiseBoothDetailsVO          membersInfo;
 	private List<BasicVO>                       constituencies;
 	private Long                                committeeMngtType;
+	private EntitlementsHelper entitlementsHelper;
 	
 	
 	public List<GenericVO> getEducationList() {
@@ -222,8 +224,26 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		this.committeeMngtType = committeeMngtType;
 	}
 
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
 	public String execute()
 	{	
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		boolean noaccess = false;
+		if(regVO==null){
+			return "input";
+		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_COMMITTEE_MANAGEMENT")){
+			noaccess = true ;
+		}
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		
+		if(noaccess){
+			return "error";
+		}
 		ageRangeList = cadreCommitteeService.getAgeRangeDetailsForCadre();
 		genericVOList = cadreCommitteeService.getAllCasteDetailsForState();
 		return Action.SUCCESS;

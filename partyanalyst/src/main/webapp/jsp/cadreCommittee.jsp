@@ -58,7 +58,7 @@
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12" >
 				<div class="row" >
 					<div class="col-md-4 col-md-offset-0 col-sm-4 col-xs-4" >
-						<a class="btn btn-success btn-block arrow_selected" id="basicCommitteeTab" href="javascript:{showAndHideTabs('basicCommitteeDiv');}">Committee <br>Management</a>
+						<a class="btn btn-success btn-block arrow_selected" id="basicCommitteeTab" href="javascript:{showAndHideTabs('basicCommitteeDiv');getCommitteeLocations();}">Committee <br>Management</a>
 					</div>
 					<div class="col-md-4 col-sm-4 col-xs-4">
 						<a class="btn btn-success btn-block "   id="publicrepresantativeTab" href="javascript:{showAndHideTabs('publicrepresantative');}">Public represantative <br>Electoral Management</a>
