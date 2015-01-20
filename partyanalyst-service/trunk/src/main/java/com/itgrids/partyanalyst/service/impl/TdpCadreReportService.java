@@ -5204,16 +5204,19 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         					 localbodyIds.add((Long)params[0]);
         			 }
         		 }
-        		
+        		 List<Object[]> list1 = cadreIVREnquiryDAO.getDeliveredAndReceivedCount(locationTypeIds,startDate,toDate);
+	        	  
         		 if(type.equalsIgnoreCase("Constituency"))
-        			 setIvrData(constituencyIds,IConstants.CONSTITUENCY,resultList);
+        			 setIvrData(constituencyIds,IConstants.CONSTITUENCY,resultList,list1);
         		if(type.equalsIgnoreCase("Mandal"))
         		{
-        		setIvrData(mandalIds,IConstants.TEHSIL,resultList);
-        		setIvrData(localbodyIds,IConstants.LOCAL_ELECTION_BODY,resultList);
+        		setIvrData(mandalIds,IConstants.TEHSIL,resultList,list1);
+        		setIvrData(localbodyIds,IConstants.LOCAL_ELECTION_BODY,resultList,list1);
         		}
         		
-        		 returnVo.setApList(resultList); 
+        		 returnVo.setApList(resultList);
+        		
+        		 
         	 }
         	 catch(Exception e)
         	 {
@@ -5222,7 +5225,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			return returnVo;
          }
          
-         public void setIvrData(List<Long> locationIds,String type,List<CadreIVRResponseVO> resultList)
+         public void setIvrData(List<Long> locationIds,String type,List<CadreIVRResponseVO> resultList,List<Object[]> list1)
          {
         	 try{
         		 Map<Long,CadreIVRResponseVO> resultMap = new HashMap<Long, CadreIVRResponseVO>();
@@ -5253,6 +5256,25 @@ public class TdpCadreReportService implements ITdpCadreReportService{
  						vo.setNotMember((Long)params[0] + vo.getNotMember());
  						
  					}
+	 				 if(list1 != null && list1.size() > 0)
+	        		 {
+	        			 for(Object[] params : list1)
+	        			 {
+	        				 if(resultMap.get(Long.valueOf(params[2].toString())) != null){
+	        				 if(Long.valueOf(params[2].toString()).longValue() == resultMap.get(Long.valueOf(params[2].toString())).getId().longValue()){
+	        					 resultMap.get(Long.valueOf(params[2].toString())).setIvrEnqReceived(Long.valueOf(params[1].toString()));
+	        					 resultMap.get(Long.valueOf(params[2].toString())).setIvrEnqDelivered(Long.valueOf(params[0].toString()));
+	        				 }
+	        				 else{
+	        					 CadreIVRResponseVO  vo1 = new CadreIVRResponseVO();
+	        					 vo1.setIvrEnqReceived(Long.valueOf(params[1].toString()));
+	        					 vo1.setIvrEnqDelivered(Long.valueOf(params[0].toString()));	        					 
+	 							 resultMap.put(Long.valueOf(params[2].toString()), vo1);
+	        				 }
+	        				 }
+	        			 }
+	        		 }
+	 				
 	 				for(Long key : resultMap.keySet())
 	 				{
 	 					CadreIVRResponseVO vo = resultMap.get(key);
