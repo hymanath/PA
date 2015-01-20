@@ -2,9 +2,11 @@
 	function showAndHideTabs(searchType)
 	{
 		$('#basicCommitteeTab, #publicrepresantativeTab, #mandalaffiliatedTab').removeClass('arrow_selected');
-		 $("#cadreDetailsDiv").html('');
+		 $("#cadreDetailsDiv,#committeLocationIdErr,#committeeLocationIdErr").html('');
 		 $("#basicSearchDiv").show();
 		 $("#searchBy").val('');
+		 $("#committeLocationId").val(0);
+		 $("#committeeLocationId").val(0);
 		 $("#membershipId").prop("checked","checked");
 		if(searchType == 'basicCommitteeDiv')
 		{
@@ -14,6 +16,7 @@
 			$('#mandalaffiliated').hide();			
 			$('#basicCommitteeTab').addClass('arrow_selected');			
 			$("#searchcadrenewDiv").hide();
+			 $("#committeLocationDiv").hide();
 		}
 		
 		else if(searchType == 'publicrepresantative')
@@ -24,6 +27,7 @@
 			$('#mandalaffiliated').hide();
 			$('#publicrepresantativeTab').addClass('arrow_selected');			
 			 $("#searchcadrenewDiv").show();
+			 $("#committeLocationDiv").show();
 			 $("#advancedSearchDiv").hide();
 		}
 		else if(searchType == 'mandalaffiliated')
@@ -34,6 +38,7 @@
 			$('#'+searchType+'').show();
 			$('#mandalaffiliatedTab').addClass('arrow_selected');
 			 $("#searchcadrenewDiv").show();
+			  $("#committeLocationDiv").show();
 			 $("#advancedSearchDiv").hide();
 		}
 		
@@ -91,10 +96,36 @@
 		var voterCardNo = '';
 		var gender = '';
 		var houseNo = '';
-		$('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr').html('');
+		$('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr').html('');
 		
 		var searchBy = $('#searchBy').val().trim();
-		
+		var committeTypeID = $('#committeeMngtType').val();
+		if(committeTypeID ==1)
+		{
+			if(committeeLocationId == null || committeeLocationId == 0)
+			{
+				$('#committeeLocationIdErr').html('Please Select Location');
+				return;
+			}
+		}
+		else if(committeTypeID ==2)
+		{
+			committeeLocationId = $('#committeLocationId').val();
+			if(committeeLocationId == null || committeeLocationId == 0)
+			{
+				$('#committeLocationIdErr').html('Please Select Location');
+				return;
+			}	
+		}
+		else if(committeTypeID ==3)
+		{
+			committeeLocationId = $('#committeLocationId').val();
+			if(committeeLocationId == null || committeeLocationId == 0)
+			{
+				$('#committeLocationIdErr').html('Please Select Location');
+				return;
+			}		
+		}	
 		if(areaTypeId ==1)
 		{
 			if(committeeLocationId.substr(0,1) == 1){
@@ -146,6 +177,11 @@
 				$('#searchErrDiv').html('Please enter Mobile No.');
 				return;
 			}
+			else if(mobileNo.trim().length != 10)
+			{
+				$('#searchErrDiv').html('Invalid Mobile No.');
+				return;				
+			}
 		}
 		if(searchRadioType == 'name')
 		{
@@ -156,35 +192,30 @@
 				$('#searchErrDiv').html('Please enter Name.');
 				return;
 			}
-			if(searchName.trim().length > 0 && (committeeLocationId == null || committeeLocationId == 0))
-			{
-				$('#committeeLocationIdErr').html('Please Select Location');
-				return;
-			}
-			locationValue = committeeLocationId.substr(1);
 		}
 		if(searchRadioType == 'advancedSearch')
 		{
 			gender = $('#gender option:selected').text().trim();
-			var ageRange = $('#ageRange option:selected').text();
-			var ageRange = ageRange.split('-');
-			fromAge = ageRange[0].trim();
-			toAge = ageRange[1].trim();		
+			if($('#ageRange').val() != 0)
+			{
+				var ageRange = $('#ageRange option:selected').text();
+				var ageRange = ageRange.split('-');
+				fromAge = ageRange[0].trim();
+				toAge = ageRange[1].trim();
+			}
+				
 			casteCategory = $('#casteCategory option:selected').text().trim();
 			casteStateId = $('#casteList').val().trim();
 			
 			if(casteCategory == 'All')
 			{
 				casteCategory = "";				
-			}
-			if(committeeLocationId == null || committeeLocationId == 0)
-			{
-				$('#committeeLocationIdErr').html('Please Select Location');
-				return;
-			}
-			locationValue = committeeLocationId.substr(1);
+			}			
 		}
 		
+		
+		
+		locationValue = committeeLocationId.substr(1);		
 		$("#searchDataImg").show();
 		var jsObj =
 		{
@@ -234,7 +265,7 @@
 				str+='<div class="media-body">';
 				str+='<h4 class="media-heading">'+result[i].cadreName+'</h4>';
 				str+='<ul class="list-inline">';
-				str+='<li>Age:33;</i>';
+				str+='<li>Age:'+result[i].age+';</i>';
 				str+='<li>Gender: '+result[i].gender+'</i>';
 				str+='<li>Mobile No: '+result[i].mobileNo+'</i>';
 				str+='<li>Caste: '+result[i].casteName+'</i>';
@@ -423,10 +454,10 @@
 					$("#voterCardNoIdError").html("Please Enter Voter Card Number.");
 					errString="error";
 				}
-				if($("#adhaarNoId").val().trim().length != 12){
+				/*if($("#adhaarNoId").val().trim().length != 12){
 					$("#adhaarNoIdError").html("Please Enter valid Aadhar id Number.");
 					errString="error";
-				}
+				}*/
 				if($("#mobileNoId").val().trim().length != 10){
 					$("#mobileNOErrorId").html("Invalid Mobile No.");
 					errString="error";
@@ -435,10 +466,10 @@
 					$("#casteIdErrorDiv").html("Please Select Caste");
 					errString="error";
 				}
-				if($("#addressId").val().trim().length==0){
+				/*if($("#addressId").val().trim().length==0){
 					$("#addressIdError").html("Please Enter Address.");
-				}
-				if($("#educationId").val()==0){
+				}*/
+				/*if($("#educationId").val()==0){
 					$("#educationIdError").html(" Please Select Education. ");
 					errString="error";
 				}
@@ -456,6 +487,7 @@
 					  $('#emailIdDivError').html('Invalid email.');
 					 errString="error";
 				}
+				*/
 				if(errString.trim().length >0){
 					return;
 				}
@@ -464,7 +496,7 @@
 						upload: function(o) {
 							uploadResult = o.responseText;
 							console.log(uploadResult);
-							//showUploadStatus(uploadResult);	
+							showUploadStatus(uploadResult);	
 						}
 					};
 
@@ -473,6 +505,29 @@
 			}	
 	}
 	
+	function showUploadStatus(uploadResult)
+	{
+		uploadResult = uploadResult.replace("<pre>","");
+		uploadResult = uploadResult.replace("</pre>","");
+		var result = JSON.parse(uploadResult);
+		console.log(result.errorCode);	
+		
+		$('#profileDiv').hide();
+		$('.successDiv').show();
+		
+		if(result.errorCode == 0)
+		{			
+			$('.successDiv').html('PROFILE UPDATED SUCCESSFULLY.. ');
+		}
+		else if(result.errorCode == 1)
+		{			
+			$('.successDiv').html('ERROR OCCURED WHILE PROFILE UPDATION.CHECK ONCE AND SUBMIT AGAIN... ');
+		}
+		else if(result.errorCode == 2)
+		{			
+			$('.successDiv').html('<b> Max Members are already added for this Position. Wait until You get Confirmation from Party Office...</b>');
+		}
+	}
 	function validateEmail($email) {
 	  var emailReg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 	  if( !emailReg.test( $email ) ) {
