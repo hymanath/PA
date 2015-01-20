@@ -32,6 +32,8 @@ public class CadreIVRResponseVO {
 	private Long noOptionSel;
 	private Long noOptionSelPerc;
 	private String date;
+	private Long ivrEnqReceived;
+	private Long ivrEnqDelivered;
 	
 	public List<CadreIVRResponseVO> getApList() {
 		return apList;
@@ -247,6 +249,22 @@ public class CadreIVRResponseVO {
 
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	public Long getIvrEnqReceived() {
+		return ivrEnqReceived;
+	}
+
+	public void setIvrEnqReceived(Long ivrEnqReceived) {
+		this.ivrEnqReceived = ivrEnqReceived;
+	}
+
+	public Long getIvrEnqDelivered() {
+		return ivrEnqDelivered;
+	}
+
+	public void setIvrEnqDelivered(Long ivrEnqDelivered) {
+		this.ivrEnqDelivered = ivrEnqDelivered;
 	}
 	
 	
