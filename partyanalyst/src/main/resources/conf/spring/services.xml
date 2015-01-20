@@ -2493,6 +2493,7 @@
 		 <property name="tdpCommitteeElectrolRolesDAO" ref="tdpCommitteeElectrolRolesDAO"/>
 		 <property name="tdpCommitteeDesignationDAO" ref="tdpCommitteeDesignationDAO"/>
 		  <property name="transactionTemplate" ref="transactionTemplate"/>
+		  <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/>
 	</bean>
 </beans>		
 	
