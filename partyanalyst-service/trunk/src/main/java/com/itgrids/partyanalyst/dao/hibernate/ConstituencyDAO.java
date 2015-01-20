@@ -1113,7 +1113,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	
 	public List<Object[]> getWardsInLocalElectionBody(List<Long> localBodyIds){
 		Query query = getSession().createQuery("select distinct model.constituencyId,model.name,concat(model.localElectionBody.name,' ',model.localElectionBody.electionType.electionType) from " +
-				" Constituency model where model.localElectionBody.localElectionBodyId in(:localBodyIds)  ");
+				" Constituency model where model.localElectionBody.localElectionBodyId in(:localBodyIds) order by model.localElectionBody.name,constituencyId ");
 		query.setParameterList("localBodyIds",localBodyIds);
 
 		return query.list();
