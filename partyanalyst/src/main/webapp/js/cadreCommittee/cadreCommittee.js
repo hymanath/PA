@@ -2,13 +2,18 @@
 	function showAndHideTabs(searchType)
 	{
 		$('#basicCommitteeTab, #publicrepresantativeTab, #mandalaffiliatedTab').removeClass('arrow_selected');
+		 $("#cadreDetailsDiv").html('');
+		 $("#basicSearchDiv").show();
+		 $("#searchBy").val('');
+		 $("#membershipId").prop("checked","checked");
 		if(searchType == 'basicCommitteeDiv')
 		{
 			$('#'+searchType+'').show();
 			$('#committeeMngtType').val(1);
 			$('#publicrepresantative').hide();
 			$('#mandalaffiliated').hide();			
-			$('#basicCommitteeTab').addClass('arrow_selected');
+			$('#basicCommitteeTab').addClass('arrow_selected');			
+			$("#searchcadrenewDiv").hide();
 		}
 		
 		else if(searchType == 'publicrepresantative')
@@ -17,7 +22,9 @@
 			$('#committeeMngtType').val(2);
 			$('#'+searchType+'').show();
 			$('#mandalaffiliated').hide();
-			$('#publicrepresantativeTab').addClass('arrow_selected');
+			$('#publicrepresantativeTab').addClass('arrow_selected');			
+			 $("#searchcadrenewDiv").show();
+			 $("#advancedSearchDiv").hide();
 		}
 		else if(searchType == 'mandalaffiliated')
 		{				
@@ -26,6 +33,8 @@
 			$('#basicCommitteeDiv').hide();
 			$('#'+searchType+'').show();
 			$('#mandalaffiliatedTab').addClass('arrow_selected');
+			 $("#searchcadrenewDiv").show();
+			 $("#advancedSearchDiv").hide();
 		}
 		
 	}
@@ -68,9 +77,9 @@
 	{
 		var areaTypeId  =  $('#areaTypeId').val();
 		var committeeLocationId =$("#committeeLocationId").val();
-
+		
 		var locationLevel = 0;
-		var locationValue = '';
+		var locationValue = 0;
 		var searchName = '';
 		var mobileNo = '';
 		var casteCategory = '';
@@ -82,7 +91,10 @@
 		var voterCardNo = '';
 		var gender = '';
 		var houseNo = '';
-		$('#cadreDetailsDiv').html('');
+		$('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr').html('');
+		
+		var searchBy = $('#searchBy').val().trim();
+		
 		if(areaTypeId ==1)
 		{
 			if(committeeLocationId.substr(0,1) == 1){
@@ -101,25 +113,55 @@
 				 locationLevel = 5;
 			}					
 		}
-		var locationValue = committeeLocationId.substr(1);
+		//var locationValue = committeeLocationId.substr(1);
 		
 		var searchRadioType = $('#cadreSearchType').val();
 		
 		if(searchRadioType == 'membershipId')
 		{
 			memberShipCardNo = $('#searchBy').val().trim();
+			
+			if(searchBy.trim().length == 0 )
+			{
+				$('#searchErrDiv').html('Please enter Membership Card No.');
+				return;
+			}
 		}			
 		if(searchRadioType == 'voterId')
 		{
 			voterCardNo = $('#searchBy').val().trim();
+			
+			if(searchBy.trim().length == 0 )
+			{
+				$('#searchErrDiv').html('Please enter Voter Card No.');
+				return;
+			}
 		}
 		if(searchRadioType == 'mobileNo')
 		{
 			mobileNo = $('#searchBy').val().trim();
+			
+			if(searchBy.trim().length == 0 )
+			{
+				$('#searchErrDiv').html('Please enter Mobile No.');
+				return;
+			}
 		}
 		if(searchRadioType == 'name')
 		{
 			searchName = $('#searchBy').val().trim();
+			
+			if(searchBy.trim().length == 0 )
+			{
+				$('#searchErrDiv').html('Please enter Name.');
+				return;
+			}
+			if(searchName.trim().length > 0 && (committeeLocationId == null || committeeLocationId == 0))
+			{
+				$('#committeeLocationIdErr').html('Please Select Location');
+				return;
+			}
+			locationValue = committeeLocationId.substr(1);
 		}
 		if(searchRadioType == 'advancedSearch')
 		{
@@ -131,9 +173,19 @@
 			casteCategory = $('#casteCategory option:selected').text().trim();
 			casteStateId = $('#casteList').val().trim();
 			
+			if(casteCategory == 'All')
+			{
+				casteCategory = "";				
+			}
+			if(committeeLocationId == null || committeeLocationId == 0)
+			{
+				$('#committeeLocationIdErr').html('Please Select Location');
+				return;
+			}
+			locationValue = committeeLocationId.substr(1);
 		}
 		
-		
+		$("#searchDataImg").show();
 		var jsObj =
 		{
 			locationLevel :locationLevel,
@@ -155,13 +207,14 @@
 				url : "getCadreSearchDetailsAction.action",
 				data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
+				$("#searchDataImg").hide();
 				if(result != null && result.tdpCadreDetailsList != null && result.tdpCadreDetailsList.length>0)
 				{
 					buildCadreDetails(result.tdpCadreDetailsList);
 				}
 				else
 				{
-					console.log("no data available...");
+					$('#cadreDetailsDiv').html("<span style='font-weight:bold;text-align:center;'> No Data Available...</span>");
 				}
 			});  
 	}
@@ -192,7 +245,7 @@
 				str+='</div>';
 				str+='<div class="form-inline ">';
 				str+='<label><input type="radio" name="searchedDetails"> &nbsp;&nbsp;</label>';
-				str+='<a target="_blank" href="cadreProfileDetailsAction.action?tdpCadreId='+result[i].id+'&task='+$('#areaTypeId').val()+'&committeeMngtType='+$('#committeeMngtType').val()+;" class="btn btn-success btn-medium">UPDATE PROFILE</a>';
+				str+='<a target="_blank" href="cadreProfileDetailsAction.action?tdpCadreId='+result[i].id+'&task='+$('#areaTypeId').val()+'&committeeMngtType='+$('#committeeMngtType').val()+'" class="btn btn-success btn-medium">UPDATE PROFILE</a>';
 				str+='</div>	';
 			}
 		}
@@ -355,57 +408,58 @@
 				var voterCardNoId=$("#voterCardNoId").val();
 				var adhaarNoId =$("#adhaarNoId").val();
 				//var mobileNumber = document.getElementById('mobileNoId');
-				var castId = document.getElementById('casteId');
-				var emailId = document.getElementById('emailIdDiv');
+				var castId =  $("#casteId").val();
+				var emailId =  $("#emailIdDiv").val();
 				
 			if($("#ageId").val().trim().length  == 0 ){
-					$("#ageIdErrorDiv").html("please enter age details.");
+					$("#ageIdErrorDiv").html("Please Enter Age Details.");
 					errString="error";
 				}
 				if($("#genderDetailsId").val()== 0){
-					$("#genderIdErrorDiv").html("please enter Gender Details.");
+					$("#genderIdErrorDiv").html("Please Enter Gender Details.");
 					errString="error";
 				}
 				if($("#voterCardNoId").val().trim().length == 0){
-					$("#voterCardNoIdError").html("please enter Voter Card Number.");
+					$("#voterCardNoIdError").html("Please Enter Voter Card Number.");
 					errString="error";
 				}
 				if($("#adhaarNoId").val().trim().length != 12){
-					$("#adhaarNoIdError").html("please enter valid Aadhar id Number.");
+					$("#adhaarNoIdError").html("Please Enter valid Aadhar id Number.");
 					errString="error";
 				}
 				if($("#mobileNoId").val().trim().length != 10){
-					$("#mobileNOErrorId").html("Mobile No doesn't exist.please check it once.");
+					$("#mobileNOErrorId").html("Invalid Mobile No.");
 					errString="error";
 				}
 				if($("#casteId").val()== 0){
-					$("#casteIdErrorDiv").html("caste Needs to be Select");
+					$("#casteIdErrorDiv").html("Please Select Caste");
 					errString="error";
 				}
 				if($("#addressId").val().trim().length==0){
-					$("#addressIdError").html("address Field need to be Required.");
+					$("#addressIdError").html("Please Enter Address.");
 				}
 				if($("#educationId").val()==0){
-					$("#educationIdError").html("education Field need to be Select");
+					$("#educationIdError").html(" Please Select Education. ");
 					errString="error";
 				}
 				if($("#occupationId").val()==0){
-					$("#occupationIdError").html("Occupation field Need to be Select");
+					$("#occupationIdError").html("Please Select  Occupation.");
 					errString="error";
 				}
 				
-		/*		if(emailId.length == 0){
-					 $('#emailIdDivError').html('email id is Required.');
+				if(emailId.length == 0){
+					 $('#emailIdDivError').html('Please Enter Email id .');
 					 errString="error";
+					 return;
 					} 
 					else if( emailId != null && !validateEmail(emailId)) {  	  
 					  $('#emailIdDivError').html('Invalid email.');
 					 errString="error";
-				}	*/
+				}
 				if(errString.trim().length >0){
 					return;
 				}
-				else{	
+				else{
 					var uploadHandler = {
 						upload: function(o) {
 							uploadResult = o.responseText;
@@ -415,9 +469,19 @@
 					};
 
 				YAHOO.util.Connect.setForm('uploadCadreForm',true);
-				YAHOO.util.Connect.asyncRequest('POST','committeTdpCadreSaveRegistrationAction.action',uploadHandler);	
+				YAHOO.util.Connect.asyncRequest('POST','committeTdpCadreSaveRegistrationAction.action',uploadHandler);
 			}	
 	}
+	
+	function validateEmail($email) {
+	  var emailReg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+	  if( !emailReg.test( $email ) ) {
+		return false;
+	  } else {
+		return true;
+	  }
+	}
+	
 	function casteDetailsByGroupId(){
 		var casteGroupId = $("#casteCategory").val();
 		$('#casteList').find('option').remove();
@@ -441,14 +505,7 @@
 			});
 	}
 	
-	function validateEmail($email) {
-	  var emailReg = /^([A-Za-z0-9_\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-	  if( !emailReg.test( $email ) ) {
-		return false;
-	  } else {
-		return true;
-	  }
-	}
+	
 
 	function getCommitteCadreMembersInfo(type){
 		$("#committeeLocationIdErr").html("");
