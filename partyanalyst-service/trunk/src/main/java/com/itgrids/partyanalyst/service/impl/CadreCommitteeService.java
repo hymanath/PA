@@ -193,13 +193,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				cadreCommitteeVO.setMemberShipCardId(tdpCadre.getMemberShipNo().substring(4));
 				cadreCommitteeVO.setAge(tdpCadre.getAge().toString());
 				cadreCommitteeVO.setGender(tdpCadre.getGender());
-				try {
-					cadreCommitteeVO.setDOB(tdpCadre.getDateOfBirth().toString().substring(0, 10));
-				} catch (Exception e) {
-					cadreCommitteeVO.setDOB(format.format(tdpCadre.getDateOfBirth()));
-				}
+				cadreCommitteeVO.setDOB(tdpCadre.getDateOfBirth() != null ? tdpCadre.getDateOfBirth().toString().substring(0, 10):"");
 				cadreCommitteeVO.setVoterId(tdpCadre.getVoterId() != null ? tdpCadre.getVoterId():0L);
-				
 				cadreCommitteeVO.setMobileType("");
 				cadreCommitteeVO.setMobileNo(tdpCadre.getMobileNo());
 				cadreCommitteeVO.setAdhaarNo(tdpCadre.getCadreAadherNo());
@@ -667,33 +662,37 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	
 	//Hint Please call this method in transaction only
 	public void saveElectrolInfo(final Long tdpCadreId,final Long tdpCommitteeLevelId,final Long levelValue,final Long tdpCommitteeTypeId,final Long committeeId,final Long cadreRoleId,final List<CadrePreviousRollesVO> eligibleRoles){
-		
-		try {
 
-			TdpCommitteeElectrols tdpCommitteeElectrols = new TdpCommitteeElectrols();
-			tdpCommitteeElectrols.setTdpCadreId(tdpCadreId);
-			tdpCommitteeElectrols.setTdpCommitteeLevelId(tdpCommitteeLevelId);
-			tdpCommitteeElectrols.setLevelValue(levelValue);
-			tdpCommitteeElectrols.setTdpCommitteeEnrollmentId(IConstants.CURRENT_ENROLLMENT_ID);
-			tdpCommitteeElectrols.setTdpCommitteeTypeId(tdpCommitteeTypeId);
-			tdpCommitteeElectrols = tdpCommitteeElectrolsDAO.save(tdpCommitteeElectrols);
-			if(eligibleRoles != null && eligibleRoles.size() > 0){
-				for(CadrePreviousRollesVO eligibleRole:eligibleRoles){
-					if(eligibleRole != null){
-						TdpCommitteeElectrolRoles tdpCommitteeElectrolRoles = new TdpCommitteeElectrolRoles();
-						tdpCommitteeElectrolRoles.setIsDeleted("N");
-						tdpCommitteeElectrolRoles.setTdpCommitteeDesignationId(eligibleRole.getDesignationLevelId());
-						tdpCommitteeElectrolRoles.setTdpCommitteeElectrolsId(tdpCommitteeElectrols.getTdpCommitteeElectrolsId());
-						tdpCommitteeElectrolRoles.setStartDate(eligibleRole.getFromDate());
-						tdpCommitteeElectrolRoles.setEndDate(eligibleRole.getToDate());
-						tdpCommitteeElectrolRolesDAO.save(tdpCommitteeElectrolRoles);
+			if(eligibleRoles != null && eligibleRoles.size() > 0)
+			{
+				CadrePreviousRollesVO eligibleRole1 = eligibleRoles.get(0);
+				if(eligibleRole1 != null && eligibleRole1.getDesignationLevelId() != null && eligibleRole1.getFromDateStr() != null)
+				{
+					TdpCommitteeElectrols tdpCommitteeElectrols = new TdpCommitteeElectrols();
+					tdpCommitteeElectrols.setTdpCadreId(tdpCadreId);
+					tdpCommitteeElectrols.setTdpCommitteeLevelId(tdpCommitteeLevelId);
+					tdpCommitteeElectrols.setLevelValue(levelValue);
+					tdpCommitteeElectrols.setTdpCommitteeEnrollmentId(IConstants.CURRENT_ENROLLMENT_ID);
+					tdpCommitteeElectrols.setTdpCommitteeTypeId(tdpCommitteeTypeId);
+					tdpCommitteeElectrols = tdpCommitteeElectrolsDAO.save(tdpCommitteeElectrols);
+					
+						for(CadrePreviousRollesVO eligibleRole:eligibleRoles){
+							if(eligibleRole != null && eligibleRole.getDesignationLevelId() != null && eligibleRole.getFromDateStr() != null){
+								TdpCommitteeElectrolRoles tdpCommitteeElectrolRoles = new TdpCommitteeElectrolRoles();
+								tdpCommitteeElectrolRoles.setIsDeleted("N");
+								tdpCommitteeElectrolRoles.setTdpCommitteeDesignationId(eligibleRole.getDesignationLevelId());
+								tdpCommitteeElectrolRoles.setTdpCommitteeElectrolsId(tdpCommitteeElectrols.getTdpCommitteeElectrolsId());
+								
+								try {
+									tdpCommitteeElectrolRoles.setStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(eligibleRole.getFromDateStr()));
+									tdpCommitteeElectrolRoles.setEndDate(new SimpleDateFormat("yyyy-MM-dd").parse(eligibleRole.getToDateStr()));
+								} catch (Exception e) {}
+								
+								tdpCommitteeElectrolRolesDAO.save(tdpCommitteeElectrolRoles);
+							}
+						}
 					}
-				}
 			}
-		} catch (Exception e) {
-			LOG.error("Exception raised in saveElectrolInfo", e);
-		}
-		
 		
 	}
 	
@@ -726,7 +725,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			Set<Long> committeeRoleIds = new HashSet<Long>();
 			committeeRoleIds.add(tdpCommitteeRoleId);
 			
-			List<Object[]> existringDtails = tdpCommitteeMemberDAO.getMembersInfo(committeeRoleIds);
+			List<Object[]> existringDtails = tdpCommitteeMemberDAO.getRoleWiseAllocatedMembersCount(committeeRoleIds);
 		
 			if(existringDtails != null && existringDtails.size()>0)
 			{
