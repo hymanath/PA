@@ -358,15 +358,15 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 			 Long locationLvl = null;
 			 if(locationType.equalsIgnoreCase("mandal")){
 				 if(locationValue.substring(0,1).trim().equalsIgnoreCase("1")){
-					 locationLvl = 5l;
+					 locationLvl = 7l;
 				 }else{
-					 locationLvl = 2l;
+					 locationLvl = 5l;
 				 }
 			 }else{
 				 if(locationValue.substring(0,1).trim().equalsIgnoreCase("1")){
-					 locationLvl = 3l;
-				 }else{
 					 locationLvl = 6l;
+				 }else{
+					 locationLvl = 8l;
 				 }
 			 }
 			locations = cadreCommitteeService.getAllAffiliatedCommittiesInALocation(locationLvl,locationValue != null && locationValue.trim().length()>0 ?Long.valueOf(locationValue.substring(1)):0L);
