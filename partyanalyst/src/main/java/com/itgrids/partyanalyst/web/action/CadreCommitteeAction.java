@@ -262,7 +262,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 				cadreRolesVOList = cadreRegistrationService.getCadreLevelsForCadreSearch();
 				educationList = cadreCommitteeService.getAllCasteDetailsForState();
 				cadreCommitteeVO = cadreCommitteeService.getCadreDetailsByTdpCadreId(Long.valueOf(request.getParameter("tdpCadreId")));
-				if(committeeMngtType != null && committeeMngtType.longValue() == 1l){
+				if(committeeMngtType != null && committeeMngtType.longValue() == 2l){
 				   cadreCommitteeVO.setEligibleRoles(cadreCommitteeService.getCadreEligiableRoles(Long.valueOf(request.getParameter("tdpCadreId"))));
 				   locations = cadreCommitteeService.getAllTdpCommitteeDesignations();
 				}
