@@ -143,4 +143,27 @@ public class CadreIVREnquiryDAO  extends GenericDaoHibernate<CadreIVREnquiry, Lo
 		return getHibernateTemplate().find("select distinct Date(model.insertedDate) from CadreIVREnquiry model where model.isDeleted ='N' ");
 		
 	}
+	
+	public List<Object[]> getDeliveredAndReceivedCount(List<Long> locationTypeIds,Date startDate, Date endDate)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("SELECT t1.delivered,t1.received,t1.location_value FROM cadre_ivr_enquiry t1 JOIN " +
+				" (SELECT MAX(cadre_ivr_enquiry_id) cadre_ivr_enquiry_id FROM cadre_ivr_enquiry  where is_deleted = 'N' "); 
+		if(startDate != null && endDate != null && !startDate.equals(endDate))
+		str.append(" and inserted_date >=:startDate and inserted_date <=:endDate");
+		else if(startDate != null && endDate != null && startDate.equals(endDate))
+		str.append(" and inserted_date >=:startDate");
+		
+		str.append(" and location_type_id in (:locationTypeIds) GROUP BY location_value ) t2 ON t1.cadre_ivr_enquiry_id = t2.cadre_ivr_enquiry_id ORDER BY inserted_date desc ");
+		Query query = getSession().createSQLQuery(str.toString());
+		if(startDate != null && endDate != null && !startDate.equals(endDate))
+		{
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+		}
+		else if(startDate != null && endDate != null && startDate.equals(endDate))
+		query.setDate("startDate", startDate);
+		query.setParameterList("locationTypeIds", locationTypeIds);
+		return  query.list();
+	}
 }
