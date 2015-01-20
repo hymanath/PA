@@ -9353,7 +9353,7 @@
 		</action>
 		<action name="committeTdpCadreSaveRegistrationAction" class="cadreRegistrationAction" method="saveCommitteCadreDetails">
 			 <result name="success" type="stream">			   
-			    <param name="inputName">inputStream</param>
+			    <param name="inputName">surveyCadreResponceVO</param>
 		  </result>	
 		</action>
 		<action name="getCasteDetailsBygroupIdAction" class="cadreCommitteeAction" method="getCasteDetailsBygroupId">
