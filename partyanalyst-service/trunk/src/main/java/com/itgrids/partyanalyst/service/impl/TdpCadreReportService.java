@@ -5196,11 +5196,11 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         		 {
         			 for(Object[] params : list)
         			 {
-        				 if((Long)params[1] == 1) 
+        				 if(((Long)params[1]).longValue() == 1l) 
         					 constituencyIds.add((Long)params[0]);
-        				 else if((Long)params[1] == 2)
+        				 else if(((Long)params[1]).longValue() == 2l)
         					 mandalIds.add((Long)params[0]);
-        				 else if((Long)params[1] == 2)
+        				 else if(((Long)params[1]).longValue() == 5l)
         					 localbodyIds.add((Long)params[0]);
         			 }
         		 }
