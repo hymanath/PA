@@ -553,7 +553,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	        }
 	        if(mandalIds.size() > 0){
 	        	//0panchayatId,1panchayatName,2tehsilName
-	        	List<Object[]> panchayatsList = panchayatDAO.getAllPanchayatsInAListOfMandals(mandalIds);
+	        	List<Object[]> panchayatsList = panchayatDAO.getAllPanchayatsInMandals(mandalIds);
 	        	for(Object[] panchayat:panchayatsList){
 	        		vo = new LocationWiseBoothDetailsVO();
 		        	vo.setLocationId(Long.valueOf("1"+(Long)panchayat[0]));

@@ -60,4 +60,6 @@ public interface IPanchayatDAO extends GenericDao<Panchayat,Long>{
 	public List<Object[]> getPanchayatsAndMandalsForPanchayatIdsList(List<Long> panchayatIdsList);
 	
 	public List<Object[]> getPanchayatNamesByIds(List<Long> panchayatIds);
+	
+	public List<Object[]> getAllPanchayatsInMandals(List<Long> ids);
 }
