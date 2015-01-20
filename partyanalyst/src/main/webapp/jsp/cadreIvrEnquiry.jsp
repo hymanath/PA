@@ -302,6 +302,9 @@ function buildEnquiryData(resultList)
 	str+='</tbody>';
 	str+='</table>';
 	
+	
+	
+	
 	$("#totalIvrTD").html(str);
 	}
 	function buildPreviousCount(result,fromDate,toDate)
@@ -399,15 +402,38 @@ function buildEnquiryData(resultList)
 	 {
 	 var error = (result[i].totalCalls) - (result[i].received +result[i].notReceived+result[i].notMember) 
 	 str+='<tr>';
-	 str+='<td>'+result[i].locationName+'</td>';
-	 str+='<td>'+result[i].name+'</td>';
-	 str+='<td>'+result[i].totalCalls+'</td>';
-	 str+='<td>'+result[i].received+'</td>';
-	 str+='<td>'+result[i].notReceived+'</td>';
-	 str+='<td>'+result[i].ivrEnqReceived+'</td>';
-	 str+='<td>'+result[i].ivrEnqDelivered+'</td>';
-	 str+='</tr>';
+	 if(result[i].locationName != null)
+		str+='<td>'+result[i].locationName+'</td>';
+	 else
+	 	str+='<td>-</td>';
+	 if(result[i].name != null)
+		str+='<td>'+result[i].name+'</td>';
+	 else
+	 	str+='<td>-</td>';
+	 if(result[i].totalCalls != null)	
+		str+='<td>'+result[i].totalCalls+'</td>';
+	 else
+	 	str+='<td>-</td>';
+	 if(result[i].received != null)		
+		str+='<td>'+result[i].received+'</td>';
+	 else
+	 	str+='<td>-</td>';
+	 if(result[i].notReceived != null)	
+		str+='<td>'+result[i].notReceived+'</td>';
+	 else
+	 	str+='<td>-</td>';
+	 if(result[i].ivrEnqReceived != null)		
+		str+='<td>'+result[i].ivrEnqReceived+'</td>';
+	 else
+	 	str+='<td>-</td>';
+	 if(result[i].ivrEnqDelivered != null)	
+		str+='<td>'+result[i].ivrEnqDelivered+'</td>';
+	 else
+	 	str+='<td>-</td>';
+	
+		str+='</tr>';
 	 }
+	 
 	 str+='</tbody>';
 	 str+='</table>';
 	 $("#enquiryDataDiv").html(str);
