@@ -12,6 +12,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeRoleDAO;
 import com.itgrids.partyanalyst.dao.ICadreOtpDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreParticipatedElectionDAO;
@@ -82,7 +83,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private ITdpCommitteeElectrolRolesDAO tdpCommitteeElectrolRolesDAO;
 	private ITdpCommitteeDesignationDAO tdpCommitteeDesignationDAO;
 	private TransactionTemplate             transactionTemplate;
-	
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
@@ -171,6 +172,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			ITdpCommitteeDesignationDAO tdpCommitteeDesignationDAO) {
 		this.tdpCommitteeDesignationDAO = tdpCommitteeDesignationDAO;
 	}
+	
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
+	
 	public CadreCommitteeVO getCadreDetailsByTdpCadreId(Long tdpCadreId)
 	{
 		CadreCommitteeVO cadreCommitteeVO = null;
@@ -514,11 +521,18 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetails(Long constituencyId){
 		List<LocationWiseBoothDetailsVO> locationsList = new ArrayList<LocationWiseBoothDetailsVO>();
 		LocationWiseBoothDetailsVO vo = null;
-		List<SelectOptionVO> locations = regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, "");
+		List<SelectOptionVO> locations = regionServiceDataImp.getTehsilsInConstituency(constituencyId);
+		List<Object[]> localBodies = assemblyLocalElectionBodyDAO.getAllLocalBodiesInAConstituency(constituencyId);
 	        for(SelectOptionVO location:locations){
 	        	vo = new LocationWiseBoothDetailsVO();
 	        	vo.setLocationId(location.getId());
 	        	vo.setLocationName(location.getName());
+	        	locationsList.add(vo);
+	        }
+	        for(Object[] localBodi:localBodies){
+	        	vo = new LocationWiseBoothDetailsVO();
+	        	vo.setLocationId(Long.valueOf("1"+localBodi[0].toString()));
+	        	vo.setLocationName(localBodi[1].toString());
 	        	locationsList.add(vo);
 	        }
 	        return locationsList;
