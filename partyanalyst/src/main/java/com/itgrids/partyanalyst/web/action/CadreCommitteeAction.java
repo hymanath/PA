@@ -59,9 +59,18 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private EntitlementsHelper 					entitlementsHelper;
 	private String 								panchayatId;
 	private ResultStatus 						status;
-	private Long assemblyId;
+	private String 								panchayatName;				
+	private Long 								assemblyId;
 	
 	
+	public String getPanchayatName() {
+		return panchayatName;
+	}
+
+	public void setPanchayatName(String panchayatName) {
+		this.panchayatName = panchayatName;
+	}
+
 	public ResultStatus getStatus() {
 		return status;
 	}
