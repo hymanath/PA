@@ -2,7 +2,7 @@
 	function showAndHideTabs(searchType)
 	{
 		$('#basicCommitteeTab, #publicrepresantativeTab, #mandalaffiliatedTab').removeClass('arrow_selected');
-		 $("#cadreDetailsDiv,#committeLocationIdErr,#committeeLocationIdErr").html('');
+		 $("#cadreDetailsDiv,#committeLocationIdErr,#committeeLocationIdErr,#searchErrDiv").html('');
 		 $("#basicSearchDiv").show();
 		 $("#searchBy").val('');
 		 $("#committeLocationId").val(0);
@@ -26,9 +26,10 @@
 			$('#'+searchType+'').show();
 			$('#mandalaffiliated').hide();
 			$('#publicrepresantativeTab').addClass('arrow_selected');			
-			 $("#searchcadrenewDiv").show();
-			 $("#committeLocationDiv").show();
-			 $("#advancedSearchDiv").hide();
+			$("#searchcadrenewDiv").show();
+			//$("#committeLocationDiv").show();
+			$("#committeLocationDiv").hide();
+			$("#advancedSearchDiv").hide();
 		}
 		else if(searchType == 'mandalaffiliated')
 		{				
@@ -37,9 +38,10 @@
 			$('#basicCommitteeDiv').hide();
 			$('#'+searchType+'').show();
 			$('#mandalaffiliatedTab').addClass('arrow_selected');
-			 $("#searchcadrenewDiv").show();
-			  $("#committeLocationDiv").show();
-			 $("#advancedSearchDiv").hide();
+			$("#searchcadrenewDiv").show();
+			//$("#committeLocationDiv").show();
+			$("#committeLocationDiv").hide();
+			$("#advancedSearchDiv").hide();
 		}
 		
 	}
@@ -80,6 +82,7 @@
 	
 	function getCadreDetailsBySearchCriteria()
 	{
+		
 		var areaTypeId  =  $('#areaTypeId').val();
 		var committeeLocationId =$("#committeeLocationId").val();
 		
@@ -96,9 +99,11 @@
 		var voterCardNo = '';
 		var gender = '';
 		var houseNo = '';
-		$('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr').html('');
+		var locationValue = 0;
+		$('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv').html('');
 		
 		var searchBy = $('#searchBy').val().trim();
+		var searchRadioType = $('#cadreSearchType').val();		
 		var committeTypeID = $('#committeeMngtType').val();
 		if(committeTypeID ==1)
 		{
@@ -109,44 +114,77 @@
 			}
 		}
 		else if(committeTypeID ==2)
-		{
-			committeeLocationId = $('#committeLocationId').val();
-			if(committeeLocationId == null || committeeLocationId == 0)
-			{
-				$('#committeLocationIdErr').html('Please Select Location');
-				return;
-			}	
+		{		
+			if(searchRadioType == 'name' || searchRadioType == 'advancedSearch'){
+				committeeLocationId = $('#committeLocationId').val();
+				if(committeeLocationId == null || committeeLocationId == 0)
+				{
+					$('#committeLocationIdErr').html('Please Select Location');
+					return;
+				}
+			}			
 		}
 		else if(committeTypeID ==3)
 		{
-			committeeLocationId = $('#committeLocationId').val();
-			if(committeeLocationId == null || committeeLocationId == 0)
-			{
-				$('#committeLocationIdErr').html('Please Select Location');
-				return;
-			}		
-		}	
-		if(areaTypeId ==1)
-		{
-			if(committeeLocationId.substr(0,1) == 1){
-				  locationLevel = 6;
-			}
-			else if(committeeLocationId.substr(0,1) == 2){
-				 locationLevel = 8;
-			}
+			if(searchRadioType == 'name' || searchRadioType == 'advancedSearch'){
+				committeeLocationId = $('#committeLocationId').val();
+				if(committeeLocationId == null || committeeLocationId == 0)
+				{
+					$('#committeLocationIdErr').html('Please Select Location');
+					return;
+				}	
+			}			
 		}
-		if(areaTypeId ==2)
-		{
-			if(committeeLocationId.substr(0,1) == 1){
-				 locationLevel = 7;
-			}
-			else if(committeeLocationId.substr(0,1) == 2){
-				 locationLevel = 5;
-			}					
-		}
-		//var locationValue = committeeLocationId.substr(1);
 		
-		var searchRadioType = $('#cadreSearchType').val();
+		
+		if(searchRadioType == 'mobileNo' || searchRadioType == 'voterId' || searchRadioType == 'membershipId'){
+		
+				if(committeTypeID == 2 ){
+					getUserLocation();	
+					committeeLocationId = userLocation;					
+					if(committeeLocationId == null || committeeLocationId == 0)
+					{
+						$('#committeLocationIdErr').html('Please Select Location');
+						return;
+					}
+					locationLevel= 4;
+					locationValue = committeeLocationId;
+				}
+				else if(committeTypeID == 3) {
+					getUserLocation();	
+					committeeLocationId = userLocation;				
+					if(committeeLocationId == null || committeeLocationId == 0)
+					{
+						$('#committeLocationIdErr').html('Please Select Location');
+						return;
+					}
+					locationLevel= 4;
+					locationValue = committeeLocationId;
+				}
+		}
+		else
+		{
+			if(areaTypeId ==1)
+			{
+				if(committeeLocationId.substr(0,1) == 1){
+					  locationLevel = 6;
+				}
+				else if(committeeLocationId.substr(0,1) == 2){
+					 locationLevel = 8;
+				}
+			}
+			if(areaTypeId ==2)
+			{
+				if(committeeLocationId.substr(0,1) == 1){
+					 locationLevel = 7;
+				}
+				else if(committeeLocationId.substr(0,1) == 2){
+					 locationLevel = 5;
+				}					
+			}
+			locationValue = committeeLocationId.substr(1);
+		}	
+		
 		
 		if(searchRadioType == 'membershipId')
 		{
@@ -192,10 +230,28 @@
 				$('#searchErrDiv').html('Please enter Name.');
 				return;
 			}
+			else if(searchBy.trim().length < 3)
+			{
+				$('#searchErrDiv').html('Please enter Minimum 3 Characters.');
+				return;
+			}
 		}
 		if(searchRadioType == 'advancedSearch')
 		{
+			if(committeTypeID ==3)
+			{
+				 $("#committeLocationDiv").hide();			
+			}
 			gender = $('#gender option:selected').text().trim();
+			var casteGroup = $('#casteCategory').val();
+			var casteName  = $('#casteList').val();
+			var age = $('#ageRange').val();
+			
+			if(casteGroup == 0 && casteName == 0 && age == 0 && gender == 'All')
+			{
+				$('#advancedSearchErrDiv').html('Please Select Any of Search Criteria');
+				return;			
+			}			
 			if($('#ageRange').val() != 0)
 			{
 				var ageRange = $('#ageRange option:selected').text();
@@ -214,8 +270,7 @@
 		}
 		
 		
-		
-		locationValue = committeeLocationId.substr(1);		
+		//locationValue = committeeLocationId.substr(1);		
 		$("#searchDataImg").show();
 		var jsObj =
 		{
@@ -622,5 +677,25 @@
 					}
 				}
 		    });
+	}
+	
+	
+	var userLocation = "";
+	function getUserLocation(){
+		
+			var jObj ={
+			task:"getConstituency"             
+		}	
+		$.ajax({
+			type : "POST",
+			url : "getUserAccessConstituencyAction.action",
+			data : {task:JSON.stringify(jObj)} ,
+		}).done(function(result){
+			if(result != null){
+				for(var i in result){				
+				userLocation = result[i].id;
+				}
+				}
+		});
 	}
 	

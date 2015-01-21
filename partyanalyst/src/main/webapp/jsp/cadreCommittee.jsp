@@ -32,7 +32,7 @@
 	#noMembersErr{
 	  font-weight:bold;	  
 	}
-	#committeeLocationIdErr,#committeeTypeIdErr,#afflitCommitteeIdErr,#searchErrDiv,#committeLocationIdErr{
+	#committeeLocationIdErr,#committeeTypeIdErr,#afflitCommitteeIdErr,#searchErrDiv,#committeLocationIdErr,#advancedSearchErrDiv{
 		font-weight:bold;
 		color:red;
 	}
@@ -221,6 +221,7 @@
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20" id="advancedSearchDiv">	
 				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;"> 					
 					<h6>Advanced Search</h6>
+					<div id="advancedSearchErrDiv"></div>
 					<div class="row">					
 						<div class="col-md-2 col-sm-2 col-xs-2 ">
 							<label>Caste-Group
@@ -246,7 +247,7 @@
 						</div>
 						<div class="col-md-3 col-sm-3 col-xs-3 ">
 							<label>Gender
-								<select class="form-control"  id="gender"><option>Male</option><option>FeMale</option></select>
+								<select class="form-control"  id="gender"><option>All</option><option>Male</option><option>Female</option></select>
 							</label>
 						</div>
 						<div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4 m_top10">
@@ -254,7 +255,9 @@
 						</div>				
 					</div>			
 				</div>			
-			</div>	
+			</div>
+
+	
 			
 			<img src='images/Loading-data.gif' class="offset7"  id="searchDataImg" style=" margin-left: 660px;margin-top: 20px;width:70px;height:60px;display:none;"/>
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20">
@@ -269,6 +272,9 @@
 	<script>	
         var slickCount = 0;	
 		$('.searchTypeCls').click(function(){
+			
+			var highlightCls = $('#basicCommitteeTab').attr('class');
+			
 			var id = $(this).attr('id');
 			$('#advancedSearchDiv').hide();
 			$('#basicSearchDiv').show();
@@ -284,17 +290,33 @@
 			{
 				$('#cadreSearchType').val('mobileNo');
 			}
+			
 			if(id.trim() == 'name')
 			{
+				if($('#basicCommitteeTab').attr('class') != 'btn btn-success btn-block arrow_selected')
+				{
+					//$('#basicCommitteeDiv1').show();
+				}
+				else{
+					//$('#basicCommitteeDiv1').hide();
+				}
 				$('#cadreSearchType').val('name');
 			}
 			if(id.trim() == 'advancedSearch')
-			{
+			{			
+				if($('#basicCommitteeTab').attr('class') != 'btn btn-success btn-block arrow_selected')
+				{
+					//$('#basicCommitteeDiv1').show();
+				}
+				else{
+					//$('#basicCommitteeDiv1').hide();
+				}
+			
 				$('#basicSearchDiv').hide();
 				$('#advancedSearchDiv').show();
 				$('#cadreSearchType').val('advancedSearch');
 				$('#ageRange').find('option').remove();
-				//$('#ageRange').append('<option  value="0"> Select Age </option>');
+				$('#ageRange').append('<option  value="0"> All </option>');
 				if(ageRangeArr != null && ageRangeArr.length>0)
 				{
 
