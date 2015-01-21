@@ -101,7 +101,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
     private ICrossVotingEstimationService crossVotingEstimationService;
 	private IConstituencyDAO constituencyDAO;
 	private List<CadrePreviousRollesVO> eligibleRoles;
-
+	
 
 	public List<CadrePreviousRollesVO> getEligibleRoles() {
 	return eligibleRoles;
@@ -1602,6 +1602,23 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			}
 		} catch (Exception e) {
 			LOG.error("Exception raised in saveCadreDetails method in CadreRegistrationAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getExistingCadreInfoForCommittee(){
+		LOG.info("Entered into getExistingCadreInfoForCommittee method in CadreRegistrationAction Action");
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		Long constId=Long.parseLong(user.getAccessValue());
+		try {		
+			jobj = new JSONObject(getTask());
+			Long panchayatId=jobj.getLong("panchayatId");
+			Long areaType=jobj.getLong("areaType");
+			genericVOList = cadreRegistrationService.getExistingCadreInfoForCommittee(jobj.getString("name"),constId,panchayatId,jobj.getLong("boothId"),jobj.getString("isPresentCadre"), jobj.getString("enrollmentNumber"),areaType);	
+		}
+		catch(Exception e){
+			LOG.error("Exception raised in getExistingCadreInfoForCommittee method in CadreRegistrationAction action", e);
 		}
 		return Action.SUCCESS;
 	}
