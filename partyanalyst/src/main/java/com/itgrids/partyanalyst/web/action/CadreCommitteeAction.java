@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
@@ -55,10 +56,19 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private LocationWiseBoothDetailsVO          membersInfo;
 	private List<BasicVO>                       constituencies;
 	private Long                                committeeMngtType;
-	private EntitlementsHelper entitlementsHelper;
-	private String panchayatId;
+	private EntitlementsHelper 					entitlementsHelper;
+	private String 								panchayatId;
+	private ResultStatus 						status;
 	
 	
+	public ResultStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(ResultStatus status) {
+		this.status = status;
+	}
+
 	public String getpanchayatId() {
 		return panchayatId;
 	}
@@ -451,6 +461,21 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		}
 		catch(Exception e){	
 			LOG.error("Exception occured in getCasteDetailsBygroupId() At CadreCommitteeAction ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	
+	public String saveCadreCommitteDetails()
+	{
+		
+		try{
+			jObj = new JSONObject(getTask());
+			status = cadreCommitteeService.saveCadreCommitteDetails(jObj.getLong("tdpCadreId"),jObj.getLong("roleId"));
+		}
+		catch(Exception e){	
+			LOG.error("Exception occured in saveCadreCommitteDetails() At CadreCommitteeAction ",e);
 		}
 		
 		return Action.SUCCESS;
