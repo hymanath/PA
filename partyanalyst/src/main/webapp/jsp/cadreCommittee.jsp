@@ -270,7 +270,7 @@
 	</div>
 
 	<script>	
-        var slickCount = 0;	
+        var slickCount = 0;
 		$('.searchTypeCls').click(function(){
 			
 			var highlightCls = $('#basicCommitteeTab').attr('class');
@@ -511,6 +511,7 @@
 		$("#committeeDetailsDiv").hide();
 	}
 	getCommitteeLocations();
+	getUserLocation();
 	</script>
   </body>
 </html>
