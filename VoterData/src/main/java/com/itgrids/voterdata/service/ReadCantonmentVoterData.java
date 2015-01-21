@@ -21,9 +21,9 @@ import com.itgrids.voterdata.VO.VoterInfo;
 public class ReadCantonmentVoterData {
 	
 		static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-		static final String DB_URL = "jdbc:mysql://localhost:3372/dakavara_pa";
+		static final String DB_URL = "jdbc:mysql://192.168.11.61:3306/dakavara_pa";
 		static final String USER = "root";
-		static final String PASS = "root";
+		static final String PASS = "kamalaakar";
 		
 		static Connection conn = null;
 		static Statement stmt = null;
@@ -102,7 +102,13 @@ public class ReadCantonmentVoterData {
                     	try{
                     		String[] rowArr = row.trim().split(" ");
                     		if(rowArr.length > 2 && isNumber(rowArr[0]) && isNumber(rowArr[rowArr.length-1]))
-                    			dataList.add(rowArr);
+                    		{
+                    			List<String> list = new ArrayList<String>(0);
+                    			for(String tempStr : rowArr)
+                    			if(tempStr != null && tempStr.trim().length() > 0)
+                    				list.add(tempStr);
+                    			dataList.add((String[])list.toArray(new String[list.size()]));
+                    		}
                     		
                     	}catch(Exception e)
                     	{
@@ -137,9 +143,9 @@ public class ReadCantonmentVoterData {
                     				voterName = voterName + " "+arr[index];
                     			voter.setVoterName(voterName.trim());
                     		}
-                    		else if(arr[arr.length-4].trim().length() == 1)
+                    		else if((arr[arr.length-4].trim().length() == 1) && arr.length >= 7)
                     		{
-                    			voter.setGuardianName(arr[arr.length-3].trim()+" "+arr[arr.length-3].trim()+" "+arr[arr.length-2].trim());
+                    			voter.setGuardianName(arr[arr.length-4].trim()+" "+arr[arr.length-3].trim()+" "+arr[arr.length-2].trim());
                     			String voterName = "";
                     			int max = arr.length-5;
                     			for(int index=2;index<=max;index++)
@@ -249,7 +255,6 @@ public class ReadCantonmentVoterData {
     		return false;
     	}catch(Exception e)
     	{
-    		e.printStackTrace();
     		return false;
     	}
     }
