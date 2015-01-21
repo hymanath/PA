@@ -15,6 +15,7 @@ public class VoterInfo {
     private String constituencyId;
     private Long sNo;
     private String dupVoterId;
+    private String uid;
     
     public String getDupVoterId() {
 		return dupVoterId;
@@ -184,5 +185,13 @@ public class VoterInfo {
 
 	public void setsNo(Long sNo) {
 		this.sNo = sNo;
+	}
+
+	public String getUid() {
+		return uid;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
 	}
 }
