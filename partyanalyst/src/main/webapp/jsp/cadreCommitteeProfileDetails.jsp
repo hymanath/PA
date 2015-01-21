@@ -384,6 +384,7 @@
 		</s:else>
 		</div> 
 		<div class="row m_top20">
+		   <s:if test="%{committeeMngtType == 3 || committeeMngtType == 2}">
 			<div class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center" style="border-bottom:1px solid #FD2A34;margin-bottom:20px;">
 				<h4>PREVIOUSLY PARTICIPATED IN ELECTION</h4>				
 			</div>			
@@ -453,6 +454,7 @@
 					<a href="javascript:{addMoreElectionDetails();}" class="btn btn-danger btn-xs ">Tap to Add+ Details</a>	
 			</div>
 			</s:else>
+			</s:if>
 			<s:if test="%{committeeMngtType != null && committeeMngtType == 2}">
 			<div class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center" style="border-bottom:1px solid #FD2A34;margin-bottom:20px;">
 				<h4>ELIGIBLE ROLES FOR PUBLIC REPRESENTATIVE</h4>				
