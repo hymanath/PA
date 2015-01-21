@@ -564,20 +564,20 @@
 		uploadResult = uploadResult.replace("<pre>","");
 		uploadResult = uploadResult.replace("</pre>","");
 		var result = JSON.parse(uploadResult);
-		console.log(result.errorCode);	
-		
-		$('#profileDiv').hide();
-		$('.successDiv').show();
-		
-		if(result.errorCode == 0)
+		//console.log(result.resultCode);	
+	
+		if(result.resultCode == 0)
 		{			
-			$('.successDiv').html('PROFILE UPDATED SUCCESSFULLY.. ');
+		var tdpCadreId = $('#cadreId').val();
+		var committeeMngtType = $('#committeeMngtTypeId').val();
+		
+		window.location.href='assignCadreToCommittee.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&panchayatId='+panchayatId+'';
 		}
-		else if(result.errorCode == 1)
+		else if(result.resultCode == 1)
 		{			
-			$('.successDiv').html('ERROR OCCURED WHILE PROFILE UPDATION.CHECK ONCE AND SUBMIT AGAIN... ');
+			$('.successDiv').html('<span style="color:red;">ERROR OCCURED WHILE PROFILE UPDATION.CHECK ONCE AND SUBMIT AGAIN... </span>');
 		}
-		else if(result.errorCode == 2)
+		else if(result.resultCode == 2)
 		{			
 			$('.successDiv').html('<b> Max Members are already added for this Position. Wait until You get Confirmation from Party Office...</b>');
 		}
@@ -612,71 +612,6 @@
 						}
 					}	
 			});
-	}
-	
-	
-
-	function getCommitteCadreMembersInfo(type){
-		$("#committeeLocationIdErr").html("");
-		$("#committeeTypeIdErr").html("");
-		$("#afflitCommitteeIdErr").html("");
-		var locId = $("#committeeLocationId").val();
-		var locVal = $("#afflitCommitteeId").val();
-		if(locId == null || locId == 0){
-			$("#committeeLocationIdErr").html("Please Select Location");
-			return;
-		}
-		if($("#committeeTypeId").val() == 0){
-			$("#committeeTypeIdErr").html("Please Select Committee Type");
-			return;
-		}
-		if(type == 2)
-		{		
-			if($("#committeeTypeId").val() == 2){
-				 if(locVal == null || locVal == 0){
-					$("#afflitCommitteeIdErr").html("Please Select Affiliated Committee");
-					return;
-				}
-			}
-		}
-		
-		 $("#committeeDetailsDiv").show();
-		 //$("#searchcadrenewDiv").hide();
-		 $("#commitMembrsCountDiv").html('<center><img src="images/icons/loading.gif"  /></center>');
-		 $("#committeeMmbrsMainDiv").html("");
-		 var reqCommitteeType = "main";
-		 var reqLocationType = "";
-		 var title ="MAIN COMMITTEE";
-		 if($("#committeeTypeId").val() == 2){
-			 reqCommitteeType = "affiliated";
-			 title =$.trim($("#afflitCommitteeId option:selected").text())+" COMMITTEE";
-		 }
-		 $("#affComitteeMainTitle").html(title.toUpperCase());
-		 if(reqCommitteeType == "main"){
-		   if(areaType == 2){
-		     reqLocationType ="mandal";
-		   }
-		   reqLocationValue=$("#committeeLocationId").val();
-		 }else{
-			 reqLocationValue=$("#afflitCommitteeId").val();
-		 }
-		 $("#committeePositionId  option").remove();
-		 $("#committeePositionId").append('<option value="0">Select Position</option>');
-		  $.ajax({
-				type : "POST",
-				url : "getCommitteMembersInfoAction.action",
-				data : {locationType:reqLocationType,locationValue:reqLocationValue,committeeType:reqCommitteeType} ,
-			}).done(function(result){
-				
-				if(result != null)				
-				{
-					if(result.result != null && result.result.length>0)
-					{
-						for(var i in result.result)
-							$("#committeePositionId").append('<option value="'+result.result[i].locationId+'">'+result.result[i].locationName+'</option>');
-					}
-				}
-		    });
 	}
 	
 	
