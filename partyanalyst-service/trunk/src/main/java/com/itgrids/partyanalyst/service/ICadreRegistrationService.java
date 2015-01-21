@@ -132,4 +132,5 @@ public interface ICadreRegistrationService {
 	public String cancellationOfTicketDetails(final CadreTravelsVO input);
 	public TdpCadreVO searchTdpCadreDetailsByVoterCardNo(String voterCardNo, String isFamilyVoter);
 	public SurveyCadreResponceVO saveCommitteCadreRegistration(final List<CadreRegistrationVO> cadreRegistrationVO,List<CadrePreviousRollesVO> cadreRoles , String registrationType);
+	public List<GenericVO> getExistingCadreInfoForCommittee(String candidateName,Long constituencyId,Long panchayatId,Long boothId,String isPresentCadre,String enrollmentNo,Long areaId);
 }
