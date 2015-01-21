@@ -287,6 +287,27 @@
 		
 		<div class="row m_top20">
 			<div class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center" style="border-bottom:1px solid #FD2A34;margin-bottom:20px;">
+				<h4>PREVIOUSLY ENROLLED  ?</h4>
+			</div>
+			<div class="col-md-3 col-md-offset-2  col-sm-6 col-xs-6 form-group">
+				<div class="input-group">
+				  <div><input type="text" id="preEnrollNoValue" class="form-control border-radius-0 input-block-level" placeholder="Previous Enrollment No."  value="${voterInfoVOList[0].memberShipId}" style=""  onkeyup="getExistingCadreInfo2();" name="cadreRegistrationVO.previousEnrollmentNumber" readonly></input></div>
+				  <div class="input-group-addon">
+					<span onclick="clearPreviousEnrol();" title="Click Here To Clear Previous Enrollment Number" style="cursor: pointer;" class="glyphicon glyphicon-remove"></span>
+				  </div>
+				</div>
+			</div>
+			<div class="col-md-4 col-sm-6 col-xs-6 form-group">
+				<!--<a id="searchByNameId" class="btn btn-success" href="javascript:{enableSearchByName();}" > LookUp For EnrollmentNo</a>-->
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">LookUp For EnrollmentNo</button>
+			</div>
+			<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 form-group">
+				<input type="hidden" id="preEnrollNo" class="form-control border-radius-0 input-block-level" placeholder="Text input"  value="${voterInfoVOList[0].memberShipId}" style="width:260px;" ></input>
+			</div>						
+		</div>			
+		
+		<div class="row m_top20">
+			<div class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center" style="border-bottom:1px solid #FD2A34;margin-bottom:20px;">
 				<h4>PREVIOUS ROLES IN PARTY</h4>				
 			</div>			
 		
@@ -538,6 +559,57 @@
 		</div> 
 	</form>
 	
+	<!--popup box-->
+			<div id="myModal1" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+					  <div class="modal-dialog modal-lg">
+						<div class="modal-content">
+						  <div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="myModalLabel">Search For Enrollment Number</h4>
+						  </div>
+						   <div class="modal-body">
+							<form>
+							  <div class="form-group">
+								<label for="candidateno" class="control-label">Candidate Name</label>
+								<!--<input type="text" class="form-control" id="candidateno">-->
+								<input type="text" class="form-control border-radius-0" placeholder="Enter Name" id="candiNameId" name="searchName1" style="" onkeyUp="getExistingCadreInfo1();">
+							  </div>
+							  <div class="form-group">
+								<label for="prevno" class="control-label">Previous Enrollment Number</label>
+								<!--<input type="text" class="form-control" id="prevno">-->
+								<input type="text" class="form-control border-radius-0" placeholder="Enter Enrollment Number"  id="enrollmentNoId"  name="searchVoterCard" onkeyUp="getExistingCadreInfo1();">
+							  </div>
+							  <div class="form-group">
+								<!--<button class="btn btn-success col-xs-offset-5 col-sm-offset-5">Search</button>-->
+								<a href="javascript:{getExistingCadreInfo1();}" class="btn btn-success m_top20 col-xs-offset-4 border-radius-0 offset2"> Search  <span class="glyphicon glyphicon-chevron-right"></span></a>
+							  </div>
+							</form><br/>
+							<div id="errorDiv1"  class="mandatory"></div>
+							
+							<!--<h4 class="modal-header">Heading</h4>
+							<table class="table table-bordered">
+							<thead><th>#</th><th>Name</th><th>Guardian Name</th><th>Enrollment Number</th></thead>
+							<tr><td><div class="checkbox"><input type="checkbox"/></div></td><td>Koram Prashnath</td><td>Salman Raju</td><td>17505787</td></tr>
+							<tr><td><div class="checkbox"><input type="checkbox"/></div></td><td>Sankruratri Satyanarayana</td><td>Appa Rao</td><td>17505787</td></tr>
+							<tr><td><div class="checkbox"><input type="checkbox"/></div></td><td>Sankruratri Satyanarayana</td><td>Appa Rao</td><td>17505787</td></tr>
+							<tr><td><div class="checkbox"><input type="checkbox"/></div></td><td>Sankruratri Satyanarayana</td><td>Appa Rao</td><td>17505787</td></tr>
+							</table>-->
+							<div class="show-grid pad-5 m-bottom-10">
+								<div class="container" id="tableElement1" style="margin-top:25px;display:none;">
+									<h3 class="text-align" style="color:red;">SEARCH DETAILS</h3>
+									<div class="table-responsive" id="searchDetailsDiv1" ></div>
+								</div>
+							</div>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					  </div>
+					</div>
+				  </div>
+				</div>
+				<!--popup box closing-->
+				
+	
 	
 	</div>
 	
@@ -551,7 +623,8 @@
 	<script>		
 		var mobnum,refid;
 		var areaType = '${task}';
-		
+		var panchayatId = '${panchayatId}';
+		//alert(panchayatId);
 		$('document').ready(function(){
 		getCommitteeLocations();
 			 $('.datesCls').datepicker({
@@ -907,6 +980,138 @@
 		
 	}
 	
+	function enableSearchByName(){
+		//$('#preEnrollNoValue').removeAttr('readOnly');
+		$('#searchNameId,#searchVoterCardId,#searchHNoId').val("")
+		$('#searchDetailsDiv').html("");
+		$('#tableElement').hide();
+		var errDivId = "#errorDiv1";
+		$('#searchDetailsDiv1').html('');
+		$('#tableElement1').hide();
+		$('#preEnrollNo').val('');
+		$(errDivId).html('');
+	}
+	
+	function getExistingCadreInfo1(){
+    var errDivId = "#errorDiv1";
+	$('#searchDetailsDiv1').html('');
+	$('#tableElement1').hide();
+	$('#preEnrollNo').val('');
+	$(errDivId).html('');
+	
+	var candidateName = $('#candiNameId').val();
+	var enrollmentNo = $('#enrollmentNoId').val();
+	var constituencyId = '${constiteucnyId}';
+	var panchayatId = '${houseNo}';  // panchayat Id 
+	var boothId = '${boothId}';  // boothId Id 
+	var isPresentCadre = '${panchayatId}';  // ispresentCader checked ot not 
+	
+	var isError = false;
+	if((candidateName == null || candidateName.length == 0) && (enrollmentNo == null || enrollmentNo.length == 0))
+		{
+			$(errDivId).html('Enter any search criteria for details.');
+			 isError = true ;
+		}
+		
+		if(candidateName == null || candidateName.length <=2)
+		{	
+			if(enrollmentNo != null && enrollmentNo.length  >=3 )
+			{
+				 isError = false ;
+			}
+			else 
+			{
+				$(errDivId).html('Atleast 3 Characters required for Candidate Name.');
+				isError = true ;	
+			}		
+		}
+		else
+		{
+			 isError = false ;
+		}
+	if(!isError){
+	$('#searchDataImg1').show();
+		var jsObj = {	
+			name : candidateName,
+			constituencyId : 0,
+			panchayatId : '${panchayatId}',
+			boothId : 0,
+			isPresentCadre:isPresentCadre,
+			enrollmentNumber : enrollmentNo,
+			areaType : areaType,
+			task:"getExistingCadreInfo"             
+		}
+			   
+		$.ajax({
+			type : "POST",
+			url : "getExistingCadreInfoActionForCommittee.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+		$('#searchDataImg1').hide();
+			buildExistingCadres(result);
+		});
+	}
+}
+	function buildExistingCadres(results){
+		$('#searchDetailsDiv1').html("");
+		$('#tableElement1').show();
+	if(results==null){
+
+		$('#searchDetailsDiv1').html("<h4 style='text-align:center;'> No Data Available </h4>");	
+		return;
+	}
+		
+	/*var str = '';
+		str +='<table class="table table-bordered">';
+			str +='<thead>';
+				str +='<tr>';
+					str +='<th></th>';
+					str +='<th>NAME</th>';
+					str +='<th>GUARDIAN NAME</th>';
+					str +='<th>ENROLLMENT NO</th>';
+				str +='</tr>';
+			str +='</thead>';
+			str +='<tbody>';
+			for(var i in results){
+				str +='<tr>';
+					str +='<td class="text-align1"><input type="checkbox" name="voters" data-dismiss="modal" onclick="updateEnrollmentNo(\''+results[i].caste+'\')"></td></th>';
+					str +='<td>'+results[i].name+'</td>';
+					str +='<td>'+results[i].desc+'</td>';
+					str +='<td>'+results[i].caste+'</td>';
+				str +='</tr>';
+			}
+			str +='</tbody>';
+		str +='</table>';*/
+		var str='';
+		str+='<table class="table table-bordered" style="width:70%">';
+		str+='<thead><tr><th></th><th>NAME</th><th>GUARDIAN NAME</th><th>ENROLLMENT NO</th></tr></thead>';
+		str+='<tbody>';
+			for(var i in results){
+				str+='<tr><td><input type="checkbox" name="voters" data-dismiss="modal" onclick="updateEnrollmentNo(\''+results[i].caste+'\')"></td>';
+				str+='<td>'+results[i].name+'</td><td>'+results[i].desc+'</td><td>'+results[i].caste+'</td><tr>';
+			}
+		str+='</tbody>';
+		str+='</table>';
+		
+		$('#searchDetailsDiv1').html(str);
+		
+	 
+		$('#seachDetalsTab').dataTable({
+			"iDisplayLength": 100,
+			"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
+		});
+
+
+	}
+		
+	function updateEnrollmentNo(enrollmentNo){
+		$("#preEnrollNoValue").val(enrollmentNo);
+		$('#preEnrollNo').val(enrollmentNo);
+	}
+	
+	function clearPreviousEnrol(){
+		$("#preEnrollNoValue").val("");
+	}
 	</script>
   </body>
 </html>
