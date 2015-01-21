@@ -3725,5 +3725,93 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				return query.list();
 			}
 		  
+		  public List<Object[]> getexistringCadreInfoByLocationForCommittee(String candidateName, Long constid, Long panchayatId,Long boothId,String isPresentCadre, String enrollmentNo,Long areaId)
+			{
+				
+				StringBuilder queryStr = new StringBuilder();
+				queryStr.append(" select model.firstname, model.relativename, model.memberShipNo, model.tdpCadreId from TdpCadre model where ");
+				boolean candiNameExist = false;
+				if(candidateName.length()>2){
+					candiNameExist = true;
+					queryStr.append(" model.firstname like '%"+candidateName+"%' ");
+				}
+				
+				if(enrollmentNo.length()>2){
+					if(candiNameExist){
+						queryStr.append(" and ");
+					}
+					queryStr.append(" model.memberShipNo like '%"+enrollmentNo+"%' ");
+				}
+				
+				
+				if(constid != null && constid.longValue() != 0L)
+				{
+					queryStr.append(" and model.userAddress.constituency.constituencyId = :constid ");
+				}
+				
+				if(areaId==1){
+					if(panchayatId != null && panchayatId.longValue() != 0L)
+					{
+						//queryStr.append(" and model.userAddress.panchayatId = :panchayatId ");
+						if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+							queryStr.append(" and model.userAddress.panchayat.panchayatId = :id ");
+						}else if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+							queryStr.append(" and model.userAddress.ward.constituencyId = :id ");
+						}
+					}
+				}else if(areaId==2){
+					if(panchayatId != null && panchayatId.longValue() != 0L)
+					{
+						//queryStr.append(" and model.userAddress.panchayatId = :panchayatId ");
+						if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+							queryStr.append(" and model.userAddress.localElectionBody.localElectionBodyId = :id ");
+						}else if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+							queryStr.append(" and model.userAddress.tehsil.tehsilId = :id ");
+						}
+					}
+					
+				}
+				
+				/*if(boothId != null && boothId.longValue() != 0L)
+				{
+					queryStr.append(" and model.userAddress.booth.boothId = :boothId");
+				}*/
+				if(isPresentCadre != null && isPresentCadre.trim().length()>0 && !isPresentCadre.equalsIgnoreCase("0"))
+				{
+					queryStr.append(" and model.enrollmentYear in (:year) ");
+				}
+				
+				else
+				{
+					queryStr.append(" and model.enrollmentYear not in (:year) ");
+				}
+				
+				queryStr.append(" and model.memberShipNo is not null and model.memberShipNo != '' and model.isDeleted = 'N' order by model.firstname ");
+				
+				Query query = getSession().createQuery(queryStr.toString());
+				
+				if(constid != null && constid.longValue() != 0L)
+				{
+					query.setParameter("constid", constid);
+				}
+				
+				if(panchayatId != null && panchayatId.longValue() != 0L)
+				{
+					//if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+						query.setParameter("id", Long.valueOf(panchayatId.toString().substring(1)));
+					//}else if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+					//	query.setParameter("id", Long.valueOf(panchayatId.toString().substring(1)));
+					//}
+				}
+				/*if(boothId != null && boothId.longValue() != 0L)
+				{
+					query.setParameter("boothId", boothId);
+				}*/
+				
+					query.setParameter("year", IConstants.CADRE_ENROLLMENT_NUMBER);
+
+				return query.list();
+				
+			}
 
 }
