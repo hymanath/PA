@@ -145,7 +145,7 @@
          </web-resource-collection>
         <auth-constraint>
             <description/>
-            <role-name>webserviceauth</role-name>
+            <role-name>ITG@ANDROID@SMS</role-name>
         </auth-constraint>
     </security-constraint>
     
