@@ -661,10 +661,23 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	}
 	
 	//Hint Please call this method in transaction only
-	public void saveElectrolInfo(final Long tdpCadreId,final Long tdpCommitteeLevelId,final Long levelValue,final Long tdpCommitteeTypeId,final Long committeeId,final Long cadreRoleId,final List<CadrePreviousRollesVO> eligibleRoles){
+	public void saveElectrolInfo(Long tdpCadreId,Long tdpCommitteeLevelId,Long levelValue,Long tdpCommitteeTypeId,Long committeeMngtType,Long committeeId,List<CadrePreviousRollesVO> eligibleRoles){
 
 			if(eligibleRoles != null && eligibleRoles.size() > 0)
 			{
+				
+				if(committeeMngtType != null)
+				{
+					if(committeeMngtType.longValue() == 2L)
+					{
+						tdpCommitteeTypeId = 1L;
+					}
+					if(committeeMngtType.longValue() == 3L)
+					{
+						tdpCommitteeTypeId = 2L;
+					}
+				}
+				
 				CadrePreviousRollesVO eligibleRole1 = eligibleRoles.get(0);
 				if(eligibleRole1 != null && eligibleRole1.getDesignationLevelId() != null && eligibleRole1.getFromDateStr() != null)
 				{
@@ -755,17 +768,18 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			}
 			else
 			{
-				status.setMessage("Max Members are already Added.");
+				status.setMessage("Max Members are already Added for This Position .");
 				status.setResultCode(2);
 			}
 			
 		} catch (Exception e) {
 			status.setMessage("FAILURE");
 			status.setResultCode(1);
-			LOG.error("Exception raised in getAllTdpCommitteeDesignations", e);
+			LOG.error("Exception raised in saveCadreCommitteDetails", e);
 		}
 		return status;
 	}
+	
 	public List<CadrePreviousRollesVO> getCadreEligiableRoles(Long tdpCadreId){
 		List<CadrePreviousRollesVO> rolesList = new ArrayList<CadrePreviousRollesVO>();
 			try{
