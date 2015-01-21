@@ -161,30 +161,30 @@
 					locationLevel= 4;
 					locationValue = committeeLocationId;
 				}
-		}
-		else
-		{
-			if(areaTypeId ==1)
-			{
-				if(committeeLocationId.substr(0,1) == 1){
-					  locationLevel = 6;
-				}
-				else if(committeeLocationId.substr(0,1) == 2){
-					 locationLevel = 8;
-				}
-			}
-			if(areaTypeId ==2)
-			{
-				if(committeeLocationId.substr(0,1) == 1){
-					 locationLevel = 7;
-				}
-				else if(committeeLocationId.substr(0,1) == 2){
-					 locationLevel = 5;
-				}					
-			}
-			locationValue = committeeLocationId.substr(1);
-		}	
 		
+				else
+				{
+					if(areaTypeId ==1)
+					{
+						if(committeeLocationId.substr(0,1) == 1){
+							  locationLevel = 6;
+						}
+						else if(committeeLocationId.substr(0,1) == 2){
+							 locationLevel = 8;
+						}
+					}
+					if(areaTypeId ==2)
+					{
+						if(committeeLocationId.substr(0,1) == 1){
+							 locationLevel = 7;
+						}
+						else if(committeeLocationId.substr(0,1) == 2){
+							 locationLevel = 5;
+						}					
+					}
+					locationValue = committeeLocationId.substr(1);
+				}	
+		}
 		
 		if(searchRadioType == 'membershipId')
 		{
