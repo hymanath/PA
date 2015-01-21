@@ -5134,8 +5134,21 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         		  mandalTypeIds.add(2l);
         		  mandalTypeIds.add(5l);
         		  
-        		Long constituencyCnt =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(locationTypeIds,startDate,endDate);
-        		Long mandalCnt =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(mandalTypeIds,startDate,endDate);
+        		List<Long> constituencyCnts =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(locationTypeIds,startDate,endDate);
+        		Long constituencyCnt = 0l;
+        		Long mandalCnt = 0l;
+        		for(Long ids :constituencyCnts){
+        			 constituencyCnt = constituencyCnt + ids;
+        		}
+        		
+        		
+        		List<Long> mandalCnts =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(mandalTypeIds,startDate,endDate);
+        		for(Long ids :mandalCnts){
+        			mandalCnt = mandalCnt + ids;
+        		}
+          		//Long constituencyCnt =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(locationTypeIds,startDate,endDate);
+          		//Long mandalCnt =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(mandalTypeIds,startDate,endDate);
+        		
         	    BigDecimal constituencyReceivedCount = cadreIVREnquiryDAO.getTotalReceivedCount(startDate,endDate,locationTypeIds);
         		returnVo.setReceived(constituencyReceivedCount != null ? constituencyReceivedCount.longValue() : 0l);
         		BigDecimal constituencyDeliveredCount = cadreIVREnquiryDAO.getTotalDeliveredCount(startDate,endDate,locationTypeIds);
@@ -5146,8 +5159,8 @@ public class TdpCadreReportService implements ITdpCadreReportService{
          		BigDecimal mandalDeliveredCount = cadreIVREnquiryDAO.getTotalDeliveredCount(startDate,endDate,mandalTypeIds);
          		returnVo.setNotMember(mandalDeliveredCount != null ? mandalDeliveredCount.longValue() : 0l);
          		
-        		returnVo.setTotalCalls(constituencyCnt != null ? constituencyCnt : 0);
-        		returnVo.setTotalIvrCalls(mandalCnt != null ? mandalCnt : 0);
+        		returnVo.setTotalCalls(constituencyCnt);
+        		returnVo.setTotalIvrCalls(mandalCnt);
         	  }
         	  catch(Exception e)
         	  {
@@ -5230,6 +5243,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         	 try{
         		 Map<Long,CadreIVRResponseVO> resultMap = new HashMap<Long, CadreIVRResponseVO>();
         		 List<Object[]> list = cadreIvrResponseDAO.getIvrCountByLocationIdsAndType(locationIds,type);
+        		 Long locationId = 0l;
 	        	 if(list != null && list.size() > 0)
 	 			{
  				for(Object[] params : list)
@@ -5256,21 +5270,26 @@ public class TdpCadreReportService implements ITdpCadreReportService{
  						vo.setNotMember((Long)params[0] + vo.getNotMember());
  						
  					}
+ 					 if(type.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+ 						locationId = 1l;
+	 				 }else if(type.equalsIgnoreCase(IConstants.TEHSIL)){
+	 					locationId = 2l;
+	 				 }else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY)){
+	 					locationId = 5l;
+	 				 }
+ 				
+ 				
 	 				 if(list1 != null && list1.size() > 0)
 	        		 {
 	        			 for(Object[] params : list1)
 	        			 {
 	        				 if(resultMap.get(Long.valueOf(params[2].toString())) != null){
-	        				 if(Long.valueOf(params[2].toString()).longValue() == resultMap.get(Long.valueOf(params[2].toString())).getId().longValue()){
+	        				  if(Long.valueOf(params[2].toString()).longValue() == resultMap.get(Long.valueOf(params[2].toString())).getId().longValue()){ 
+	        					if(Long.valueOf(params[3].toString()).longValue() ==  locationId){
 	        					 resultMap.get(Long.valueOf(params[2].toString())).setIvrEnqReceived(Long.valueOf(params[1].toString()));
 	        					 resultMap.get(Long.valueOf(params[2].toString())).setIvrEnqDelivered(Long.valueOf(params[0].toString()));
-	        				 }
-	        				 else{
-	        					 CadreIVRResponseVO  vo1 = new CadreIVRResponseVO();
-	        					 vo1.setIvrEnqReceived(Long.valueOf(params[1].toString()));
-	        					 vo1.setIvrEnqDelivered(Long.valueOf(params[0].toString()));	        					 
-	 							 resultMap.put(Long.valueOf(params[2].toString()), vo1);
-	        				 }
+	        					}
+	        				  }	        			
 	        				 }
 	        			 }
 	        		 }
