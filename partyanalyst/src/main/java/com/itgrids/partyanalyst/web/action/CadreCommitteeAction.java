@@ -59,6 +59,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private EntitlementsHelper 					entitlementsHelper;
 	private String 								panchayatId;
 	private ResultStatus 						status;
+	private Long assemblyId;
 	
 	
 	public ResultStatus getStatus() {
@@ -248,6 +249,14 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		this.entitlementsHelper = entitlementsHelper;
 	}
 
+	public Long getAssemblyId() {
+		return assemblyId;
+	}
+
+	public void setAssemblyId(Long assemblyId) {
+		this.assemblyId = assemblyId;
+	}
+
 	public String execute()
 	{	
 		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
@@ -306,6 +315,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 				   cadreCommitteeVO.setEligibleRoles(cadreCommitteeService.getCadreEligiableRoles(Long.valueOf(request.getParameter("tdpCadreId"))));
 				   locations = cadreCommitteeService.getAllTdpCommitteeDesignations();
 				}
+				assemblyId = getUserAccessConstituencies().get(0).getId();
 			} 
 			else{
 				return ERROR;
