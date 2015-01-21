@@ -56,6 +56,16 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private List<BasicVO>                       constituencies;
 	private Long                                committeeMngtType;
 	private EntitlementsHelper entitlementsHelper;
+	private String panchayatId;
+	
+	
+	public String getpanchayatId() {
+		return panchayatId;
+	}
+
+	public void setpanchayatId(String panchayatId) {
+		this.panchayatId = panchayatId;
+	}
 	
 	
 	public List<GenericVO> getEducationList() {
