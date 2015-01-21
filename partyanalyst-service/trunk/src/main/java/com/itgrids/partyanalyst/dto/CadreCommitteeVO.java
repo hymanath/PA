@@ -30,6 +30,7 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private String localElectionBody;
 	private String panchayat;
 	private String address;
+	private String familyVoterCardNo;
 	
 	private String fromDate;
 	private String toDate;
@@ -305,6 +306,12 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	}
 	public void setEligibleRoles(List<CadrePreviousRollesVO> eligibleRoles) {
 		this.eligibleRoles = eligibleRoles;
+	}
+	public String getFamilyVoterCardNo() {
+		return familyVoterCardNo;
+	}
+	public void setFamilyVoterCardNo(String familyVoterCardNo) {
+		this.familyVoterCardNo = familyVoterCardNo;
 	}
 	
 }
