@@ -7119,4 +7119,34 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		
 		return surveyCadreResponceVO;
 	}
+	
+	public List<GenericVO> getExistingCadreInfoForCommittee(String candidateName,Long constituencyId,Long panchayatId,Long boothId,String isPresentCadre,String enrollmentNo,Long areaId){
+ 		LOG.info("Entered into getExistingCadreInfoForCommittee method in CadreRegistrationService class");
+ 		List<GenericVO>  returnList = null;
+ 		try {
+			
+ 			List<Object[]> cadreInfo = tdpCadreDAO.getexistringCadreInfoByLocationForCommittee(candidateName,constituencyId,panchayatId,boothId,isPresentCadre,enrollmentNo,areaId);
+				if(cadreInfo != null && cadreInfo.size()>0)
+				{
+					returnList = new ArrayList<GenericVO>();
+					for (Object[] param : cadreInfo)
+					{
+						GenericVO vo = new GenericVO();
+						
+						vo.setName(param[0] != null ? param[0].toString().trim():"");
+						vo.setDesc(param[1] != null ? param[1].toString().trim():"");
+						vo.setCaste(param[2] != null ? param[2].toString().trim():"");
+						
+						vo.setId(param[3] != null ? Long.valueOf(param[3].toString().trim()):0L);
+						
+						returnList.add(vo);
+					}
+				}
+				
+		} catch (Exception e) {
+			LOG.error("Entered into getExistingCadreInfoForCommittee method in CadreRegistrationService class",e);
+		}
+ 		
+ 		return returnList;
+ 	}
 }
