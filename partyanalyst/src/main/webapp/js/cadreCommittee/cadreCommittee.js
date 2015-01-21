@@ -276,7 +276,7 @@
 				str+='</div>';
 				str+='<div class="form-inline ">';
 				str+='<label><input type="radio" name="searchedDetails"> &nbsp;&nbsp;</label>';
-				str+='<a target="_blank" href="cadreProfileDetailsAction.action?tdpCadreId='+result[i].id+'&task='+$('#areaTypeId').val()+'&committeeMngtType='+$('#committeeMngtType').val()+'" class="btn btn-success btn-medium">UPDATE PROFILE</a>';
+				str+='<a target="_blank" href="cadreProfileDetailsAction.action?tdpCadreId='+result[i].id+'&task='+$('#areaTypeId').val()+'&committeeMngtType='+$('#committeeMngtType').val()+'&panchayatId='+$('#committeeLocationId').val()+'" class="btn btn-success btn-medium">UPDATE PROFILE</a>';
 				str+='</div>	';
 			}
 		}
