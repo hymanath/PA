@@ -202,7 +202,7 @@
 		<div class="row m_top20">
 			<div class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center" style="border-bottom:1px solid #FD2A34;">
 				<button href="#" class="btn btn-xs btn-warning pull-right" id="editFieldsId">EDIT</button>
-				<img src="http://www.mytdp.com/images/cadre_images/${cadreCommitteeVO.imageURL}"  class="img-circle" style="border:4px solid rgb(255, 231, 0);width:70px;height:70px;"/>
+				<img src="http://www.mytdp.com/images/cadre_images/${cadreCommitteeVO.imageURL}" onerror="setDefaultImage(this);"  id="cadreLiveimg" class="img-circle" style="border:4px solid rgb(255, 231, 0);width:70px;height:70px;"/>
 				<h3>${cadreCommitteeVO.cadreName}</h3>
 				<h4>Cadre Number : ${cadreCommitteeVO.memberShipCardId}</h4>				
 			</div>			
@@ -239,10 +239,10 @@
 				</div>
 				
 				<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 form-group">
-					<input type="text" id="voterCardNoId" class="form-control  editClass"  value="${cadreCommitteeVO.voterCardNo}" placeholder="Voter ID:96325874" name="cadreRegistrationVO.voterCardNumber" disabled>				
+					<input type="text" id="voterCardNoId" class="form-control "  value="${cadreCommitteeVO.voterCardNo}" placeholder="Voter ID:" name="cadreRegistrationVO.voterCardNumber" disabled>				
 				</div>
 				<div class="col-md-4   col-sm-6 col-xs-6 form-group">
-					<input type="text" id="adhaarNoId" class="form-control  editClass"  value="${cadreCommitteeVO.adhaarNo}" placeholder="Aadhar No:258963147"  name="cadreRegistrationVO.candidateAadherNo" disabled>
+					<input type="text" id="adhaarNoId" class="form-control  editClass"  value="${cadreCommitteeVO.adhaarNo}" placeholder="Aadhar No:"  name="cadreRegistrationVO.candidateAadherNo" disabled>
 				</div>
 				<div class="row">
 					<span class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 form-group requiredFields" id="voterCardNoIdError" style="left:11px;">
@@ -251,11 +251,11 @@
 					</span>
 				</div>
 				<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 form-group">
-					<input type="number" id="mobileNoId" class="form-control editClass mobileNumber"  value="${cadreCommitteeVO.mobileNo}" placeholder="Mobile No:9632587410" name="cadreRegistrationVO.mobileNumber" disabled>
+					<input type="text" id="mobileNoId" class="form-control editClass mobileNumber"  value="${cadreCommitteeVO.mobileNo}" placeholder="Mobile No:9632587410" name="cadreRegistrationVO.mobileNumber" disabled>
 				</div>
 								
 				<div class="col-md-4   col-sm-6 col-xs-6 form-group">
-					<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level editClass" id="casteId" list="cadreCommitteeVO.casteList" listKey="casteStateId" listValue="casteName" headerKey="0" headerValue=" Select Caste " style="width:420px;height:35px;" name="cadreRegistrationVO.casteId"   value="%{cadreCommitteeVO.casteStateId}" disabled="true"/>	
+					<s:select theme="simple" cssClass="form-control selectBoxWidth span12 input-block-level editClass" id="casteId" list="cadreCommitteeVO.casteList" listKey="casteStateId" listValue="casteName" headerKey="0" headerValue=" Select Caste " style="width:420px;height:35px;" name="cadreRegistrationVO.casteId"   value="%{cadreCommitteeVO.casteStateId}" disabled="true"/>	
 				</div>
 				<div class="row">
 					<span class="col-md-4   col-sm-6 col-xs-6 form-group requiredFields" id="mobileNOErrorId" style="left:240px;" >
@@ -269,10 +269,10 @@
 				<span class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group requiredFields" id="addressIdError"></span>
 				
 				<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 form-group">
-					<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level editClass" id="educationId" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Education " style="width:420px;height:35px;" name="cadreRegistrationVO.educationId" value="%{cadreCommitteeVO.educationId}" disabled="true"/>
+					<s:select theme="simple" cssClass="form-control selectBoxWidth span12 input-block-level editClass" id="educationId" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Education " style="width:420px;height:35px;" name="cadreRegistrationVO.educationId" value="%{cadreCommitteeVO.educationId}" disabled="true"/>
 				</div>
 				<div class="col-md-4 col-sm-6 col-xs-6 form-group">
-					<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level editClass" id="occupationId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Occupation " style="width:420px;height:35px;" name="cadreRegistrationVO.occupationId" value="%{cadreCommitteeVO.occupationId}" disabled="true"/>
+					<s:select theme="simple" cssClass="form-control selectBoxWidth span12 input-block-level editClass" id="occupationId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Occupation " style="width:420px;height:35px;" name="cadreRegistrationVO.occupationId" value="%{cadreCommitteeVO.occupationId}" disabled="true"/>
 				</div>
 				<div class="row">
 					<span class="col-md-4 col-sm-6 col-xs-6 form-group requiredFields" id="educationIdError" style="left:240px;"></span>
@@ -974,10 +974,18 @@
 		}
 	if(!isError){
 	$('#searchDataImg1').show();
+	var panchayatId = '${panchayatId}';
+	var constituencyId = '${assemblyId}';
+	if(panchayatId =="" || panchayatId =='null' || panchayatId == null){
+		panchayatId =0;
+	}
+	if(constituencyId =="" || constituencyId =='null' || constituencyId == null){
+		constituencyId =0;
+	}
 		var jsObj = {	
 			name : candidateName,
-			constituencyId : 0,
-			panchayatId : '${panchayatId}',
+			constituencyId : constituencyId,
+			panchayatId : panchayatId,
 			boothId : 0,
 			isPresentCadre:isPresentCadre,
 			enrollmentNumber : enrollmentNo,
@@ -1032,6 +1040,10 @@
 	
 	function clearPreviousEnrol(){
 		$("#preEnrollNoValue").val("");
+	}
+	function setDefaultImage(img)
+	{
+		img.src = "images/cadreCommitee/Member_thamb_image.png";
 	}
 	</script>
   </body>
