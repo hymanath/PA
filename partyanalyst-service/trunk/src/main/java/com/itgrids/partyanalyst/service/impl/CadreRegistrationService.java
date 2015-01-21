@@ -6945,11 +6945,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									
 									surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getMemberShipNo());
 									if(cadreRegistrationVO.getDobStr() != null)
-										tdpCadre.setDateOfBirth(convertToDateFormet(cadreRegistrationVO.getDobStr()));
+										tdpCadre.setDateOfBirth(convertToDateFormet( cadreRegistrationVO.getDobStr()));
 									if(cadreRegistrationVO.getAge() != null)
 										tdpCadre.setAge(cadreRegistrationVO.getAge());
 									if(cadreRegistrationVO.getCandidateAadherNo() != null)
-										tdpCadre.setAadheerNo(cadreRegistrationVO.getCandidateAadherNo());
+										tdpCadre.setCadreAadherNo(cadreRegistrationVO.getCandidateAadherNo());
 									if(cadreRegistrationVO.getGender() != null)
 										tdpCadre.setGender(cadreRegistrationVO.getGender());
 									if(cadreRegistrationVO.getMobileNumber() != null)
@@ -6962,7 +6962,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 										tdpCadre.setOccupationId(cadreRegistrationVO.getOccupationId());
 									if(cadreRegistrationVO.getEmailId() != null)
 										tdpCadre.setEmailId(cadreRegistrationVO.getEmailId());
-									
+									if(cadreRegistrationVO.getPreviousEnrollmentNumber() != null)
+										tdpCadre.setPreviousEnrollmentNo(cadreRegistrationVO.getPreviousEnrollmentNumber());
 									tdpCadreDAO.save(tdpCadre);
 									
 									
@@ -7068,7 +7069,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 											
 											Long tdpCommitteeTypeId =roleVO.getCadreCommitteeTypeId();
 											Long tdpCommitteeId = roleVO.getCadreCommitteeId();
-											Long cadreRoleId = roleVO.getCadreRoleId();
+											Long committeeMngtType = roleVO.getCommitteeMngtType();
 											
 											if(tdpCommitteeLevelId.longValue() == 1L)
 											{
@@ -7097,9 +7098,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 												}
 											}
 											
-											cadreCommitteeService.saveElectrolInfo(cadreRegistrationVO.getTdpCadreId(),tdpCommitteeLevelId,levelValue,tdpCommitteeTypeId,cadreRoleId,tdpCommitteeId,eligibleRoles);
-											ResultStatus resultStatus = cadreCommitteeService.saveCadreCommitteDetails(cadreRegistrationVO.getTdpCadreId(),cadreRoleId);
-											surveyCadreResponceVO.setErrorCode(String.valueOf(resultStatus.getResultCode()));
+											cadreCommitteeService.saveElectrolInfo(cadreRegistrationVO.getTdpCadreId(),tdpCommitteeLevelId,levelValue,tdpCommitteeTypeId,committeeMngtType,tdpCommitteeId,eligibleRoles);
+											//ResultStatus resultStatus = cadreCommitteeService.saveCadreCommitteDetails(cadreRegistrationVO.getTdpCadreId(),cadreRoleId);
+											//surveyCadreResponceVO.setErrorCode(String.valueOf(resultStatus.getResultCode()));
 									}
 								}
 								
