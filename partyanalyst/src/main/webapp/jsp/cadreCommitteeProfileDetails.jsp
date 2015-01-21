@@ -196,7 +196,13 @@
 	
 		</div>
 	
-	<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center m_top20 alert alert-success successDiv" style="display:none;">
+	<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center m_top20 alert alert-success successDiv" >
+	<s:if test="%{committeeMngtType == 2}">
+	<b> ADDING ${cadreCommitteeVO.cadreName} AS PUBLIC REPRESANTATIVE  ELECTORAL  TO ${panchayatName}</b>
+	</s:if>
+	<s:if test="%{committeeMngtType == 3}">
+	<b> ADDING ${cadreCommitteeVO.cadreName} AS MANDAL AFFILIATED ELECTORAL  TO ${panchayatName}</b>
+	</s:if>
 	</div>
 		<div id="profileDiv">
 		<div class="row m_top20">
@@ -629,6 +635,7 @@
 		var mobnum,refid;
 		var areaType = '${task}';
 		var panchayatId = '${panchayatId}';
+		var committeeMngtTypeId = '${committeeMngtType}';
 		//alert(panchayatId);
 		$('document').ready(function(){
 		getCommitteeLocations();
@@ -651,6 +658,11 @@
 			 $('#right').hide();
 			 $('#wrong').hide();
 			 mobnum = $(".mobileNumber").val();
+			 
+			 if(committeeMngtTypeId == 1)
+			 {				 
+				 $('.successDiv').hide();
+			 }
 		});	
 		
 		$("#casteId").change(function(){
