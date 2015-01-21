@@ -33,6 +33,7 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeRoleDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
+import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
@@ -84,6 +85,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private ITdpCommitteeDesignationDAO tdpCommitteeDesignationDAO;
 	private TransactionTemplate             transactionTemplate;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	private IVoterDAO voterDAO;
 	
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
@@ -178,6 +180,9 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
 	}
 	
+	public void setVoterDAO(IVoterDAO voterDAO) {
+		this.voterDAO = voterDAO;
+	}
 	public CadreCommitteeVO getCadreDetailsByTdpCadreId(Long tdpCadreId)
 	{
 		CadreCommitteeVO cadreCommitteeVO = null;
@@ -191,9 +196,15 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				cadreCommitteeVO.setCadreName(tdpCadre.getFirstname());
 				cadreCommitteeVO.setTdpCadreId(tdpCadre.getTdpCadreId());
 				cadreCommitteeVO.setMemberShipCardId(tdpCadre.getMemberShipNo().substring(4));
-				cadreCommitteeVO.setAge(tdpCadre.getAge().toString());
-				cadreCommitteeVO.setGender(tdpCadre.getGender());
-				cadreCommitteeVO.setDOB(tdpCadre.getDateOfBirth() != null ? tdpCadre.getDateOfBirth().toString().substring(0, 10):"");
+				if(tdpCadre.getAge() != null){
+				    cadreCommitteeVO.setAge(tdpCadre.getAge().toString());
+				}else{
+					cadreCommitteeVO.setAge("");
+				}
+				if(tdpCadre.getGender() != null){
+				  cadreCommitteeVO.setGender(tdpCadre.getGender());
+				}
+				cadreCommitteeVO.setDOB(tdpCadre.getDateOfBirth() != null ? format.format(tdpCadre.getDateOfBirth()):"");
 				cadreCommitteeVO.setVoterId(tdpCadre.getVoterId() != null ? tdpCadre.getVoterId():0L);
 				cadreCommitteeVO.setMobileType("");
 				cadreCommitteeVO.setMobileNo(tdpCadre.getMobileNo());
@@ -203,19 +214,29 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				cadreCommitteeVO.setCasteName(tdpCadre.getCasteState() != null? tdpCadre.getCasteState().getCaste().getCasteName():"");
 				cadreCommitteeVO.setCasteCategoryId(tdpCadre.getCasteState() != null?tdpCadre.getCasteState().getCasteCategoryGroup().getCasteCategory().getCasteCategoryId():0L);
 				cadreCommitteeVO.setCasteCategory(tdpCadre.getCasteState() != null? tdpCadre.getCasteState().getCasteCategoryGroup().getCasteCategory().getCategoryName():"");
-				cadreCommitteeVO.setVoterCardNo(tdpCadre.getVoter() != null ? tdpCadre.getVoter().getVoterIDCardNo():"");
-				
+				if(tdpCadre.getVoterId()  != null && tdpCadre.getVoterId().longValue() > 0){
+				    cadreCommitteeVO.setVoterCardNo( voterDAO.get(tdpCadre.getVoterId()).getVoterIDCardNo());
+				}else{
+					cadreCommitteeVO.setVoterCardNo("");
+				}
 				if(cadreCommitteeVO.getVoterCardNo() != null && cadreCommitteeVO.getVoterCardNo().trim().length()<=0)
 				{
-					cadreCommitteeVO.setVoterCardNo(tdpCadre.getFamilyVoter().getVoterIDCardNo() != null ? tdpCadre.getFamilyVoter().getVoterIDCardNo():"");
+					if(tdpCadre.getFamilyVoterId()  != null && tdpCadre.getFamilyVoterId().longValue() > 0){
+					  cadreCommitteeVO.setFamilyVoterCardNo(voterDAO.get(tdpCadre.getFamilyVoterId()).getVoterIDCardNo());
+					}else{
+						cadreCommitteeVO.setFamilyVoterCardNo("");
+					}
 				}
 				cadreCommitteeVO.setEducationId(tdpCadre.getEducationalQualifications() != null ? tdpCadre.getEducationalQualifications().getEduQualificationId():0L);
 				cadreCommitteeVO.setEducation(tdpCadre.getEducationalQualifications() != null ? tdpCadre.getEducationalQualifications().getQualification():"");
 				cadreCommitteeVO.setOccupationId(tdpCadre.getOccupation() != null ? tdpCadre.getOccupation().getOccupationId():0L);
 				cadreCommitteeVO.setOccupation(tdpCadre.getOccupation() != null ? tdpCadre.getOccupation().getOccupation():"");
-				
-				cadreCommitteeVO.setEmailId(tdpCadre.getEmailId());
-				cadreCommitteeVO.setImageURL(tdpCadre.getImage() != null ? tdpCadre.getImage():"");
+				if(tdpCadre.getEmailId() != null){
+				   cadreCommitteeVO.setEmailId(tdpCadre.getEmailId());
+				}else{
+					cadreCommitteeVO.setEmailId("");
+				}
+				cadreCommitteeVO.setImageURL(tdpCadre.getImage() != null ? tdpCadre.getImage():"null");
 				
 				cadreCommitteeVO.setPreviousRoles(getExistingRollsInfo(tdpCadreId));
 				cadreCommitteeVO.setPreviousElections(getExistingCadreParticipationInfo(tdpCadreId));
@@ -295,8 +316,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	public List<CadreCommitteeVO> getExistingRollsInfo(Long tdpCadreId)
 	{
 		List<CadreCommitteeVO> returnList = null;
-		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat ddMMyyyyFT = new SimpleDateFormat("dd-MM-yyyy");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		
 		try {
 			
@@ -312,8 +332,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					vo.setCommitteeLevelId(participation[4] != null ? Long.valueOf(participation[4].toString().trim()):0L);
 					vo.setCommitteeId(participation[5] != null ? Long.valueOf(participation[5].toString().trim()):0L);
 					vo.setRoleId(participation[0] != null ? Long.valueOf(participation[0].toString().trim()):0L);// role id
-					vo.setFromDate(participation[1] != null ?ddMMyyyyFT.format(format1.parse(participation[1].toString())):"");		// from date
-					vo.setToDate(participation[2] != null ? ddMMyyyyFT.format(format1.parse(participation[2].toString())):"");		// to date 
+					vo.setFromDate(participation[1] != null ?format.format((Date)participation[1]):"");		// from date
+					vo.setToDate(participation[2] != null ? format.format((Date)participation[2]):"");		// to date 
 					vo.setRole(participation[3] != null ? participation[3].toString().trim():"");	
 					
 					returnList.add(vo);
@@ -690,15 +710,20 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					tdpCommitteeElectrols = tdpCommitteeElectrolsDAO.save(tdpCommitteeElectrols);
 					
 						for(CadrePreviousRollesVO eligibleRole:eligibleRoles){
-							if(eligibleRole != null && eligibleRole.getDesignationLevelId() != null && eligibleRole.getFromDateStr() != null){
+							if(eligibleRole != null && eligibleRole.getDesignationLevelId() != null && eligibleRole.getDesignationLevelId().longValue() > 0){
 								TdpCommitteeElectrolRoles tdpCommitteeElectrolRoles = new TdpCommitteeElectrolRoles();
 								tdpCommitteeElectrolRoles.setIsDeleted("N");
 								tdpCommitteeElectrolRoles.setTdpCommitteeDesignationId(eligibleRole.getDesignationLevelId());
 								tdpCommitteeElectrolRoles.setTdpCommitteeElectrolsId(tdpCommitteeElectrols.getTdpCommitteeElectrolsId());
 								
 								try {
-									tdpCommitteeElectrolRoles.setStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(eligibleRole.getFromDateStr()));
-									tdpCommitteeElectrolRoles.setEndDate(new SimpleDateFormat("yyyy-MM-dd").parse(eligibleRole.getToDateStr()));
+									if(eligibleRole.getFromDateStr() != null && eligibleRole.getFromDateStr().trim().length() > 0){
+									   tdpCommitteeElectrolRoles.setStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(eligibleRole.getFromDateStr()));
+									}
+									if(eligibleRole.getToDateStr() != null && eligibleRole.getToDateStr().trim().length() > 0){
+										tdpCommitteeElectrolRoles.setEndDate(new SimpleDateFormat("yyyy-MM-dd").parse(eligibleRole.getToDateStr()));
+									}
+									
 								} catch (Exception e) {}
 								
 								tdpCommitteeElectrolRolesDAO.save(tdpCommitteeElectrolRoles);
