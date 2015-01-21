@@ -140,6 +140,7 @@
         <pattern>/publicMembershipCardStatusAction*</pattern>
 		 <pattern>/cadreCommitteeAction*</pattern>
 		 <pattern>/cadreProfileDetailsAction*</pattern>
+		 <pattern>/assignCadreToCommittee*</pattern>
  	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
