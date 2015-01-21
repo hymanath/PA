@@ -624,7 +624,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				vo.setLocationName(totalCommitteRole[1].toString());
 				vo.setLocationId((Long)totalCommitteRole[0]);
 				vo.setPopulation((Long)totalCommitteRole[2]);//total positions
-				vo.setTotal(0l);//total positions left
+				vo.setTotal((Long)totalCommitteRole[2]);//total positions left
 				vo.setVotesPolled(0l);//total positions filled
 				committeeMembersMap.put((Long)totalCommitteRole[0], vo);
 				committeeMembersInfoList.add(vo);
