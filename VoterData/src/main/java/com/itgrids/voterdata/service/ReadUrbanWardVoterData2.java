@@ -67,7 +67,7 @@ public class ReadUrbanWardVoterData2 {
         int totalVotersCount = 0;
         int i = 0;
         
-        Pattern p = Pattern.compile("\\r\\n([A-Z\\d]*)\\r\\n");
+        Pattern p = Pattern.compile("([A-Z\\d]*)\\r\\n");
         
         try {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(new File(args[0] + "/" + "VotersList.txt")));
@@ -94,7 +94,7 @@ public class ReadUrbanWardVoterData2 {
                     
                     sb = formatText(sb);
                     
-                   // outwriter.write(sb.toString());                   
+                    outwriter.write(sb.toString());                   
                     String [] fileName = input.getName().split("-");
                     
                    /* int strLen = sb.toString().length();
@@ -131,7 +131,7 @@ public class ReadUrbanWardVoterData2 {
                         }
                     }
                     
-                    saveVotersData(voterInfoList);
+                    //saveVotersData(voterInfoList);
                     if (pd != null) {
                         pd.close();
                     }
@@ -164,7 +164,8 @@ public class ReadUrbanWardVoterData2 {
     	try{
     		if(voterId.trim().length() < 8)
     			return false;
-    		else if(Character.isLetter(voterId.charAt(0)) && Character.isLetter(voterId.charAt(1)))
+    		else if(Character.isLetter(voterId.charAt(0)) && Character.isLetter(voterId.charAt(1))
+    				&& Character.isDigit(voterId.charAt(voterId.trim().length()-1)))
     			return true;
     		else
     			return false;
