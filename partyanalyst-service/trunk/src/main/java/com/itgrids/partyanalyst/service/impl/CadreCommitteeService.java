@@ -12,6 +12,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeRoleDAO;
 import com.itgrids.partyanalyst.dao.ICadreOtpDetailsDAO;
@@ -87,7 +88,15 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private TransactionTemplate             transactionTemplate;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private IVoterDAO voterDAO;
+	private IBoothDAO                       boothDAO;
 	
+	
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
 	}
@@ -860,5 +869,45 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		
 		return casteDetail;
 	}
-	
+	public List<GenericVO> getPanchayatDetailsByMandalId(Long tehsilId){
+		
+		List<GenericVO> panachatiesList = new ArrayList<GenericVO>();
+		List<Object[]> panchayties=null;
+		if(tehsilId !=null ){
+			if(Long.valueOf(tehsilId.toString().substring(0, 1))==2){
+				 panchayties = panchayatDAO.getPanchayatsByTehsilId(Long.valueOf(tehsilId.toString().substring(1)));
+			}
+			if(Long.valueOf(tehsilId.toString().substring(0, 1))==1){
+				 panchayties = constituencyDAO.getWardIdAndName(Long.valueOf(tehsilId.toString().substring(1)));
+			}
+			if(panchayties !=null ){
+				for (Object[] list : panchayties) {
+					GenericVO panchayaties = new GenericVO();
+					panchayaties.setId(Long.valueOf(list[0].toString()));
+					panchayaties.setName(list[1].toString());
+					
+					panachatiesList.add(panchayaties);
+				}
+				return panachatiesList;
+			}
+			else{	
+				return null;
+			}
+		}
+		return panachatiesList;
+	}
+	public List<Long> getBoothsInPanchayatId(Long panchayatId){
+		List<Long> booth=new ArrayList<Long>();
+		List<Object[]> boothsList = boothDAO.getBoothsInAPanchayat(
+				panchayatId, new Long(IConstants.VOTER_DATA_PUBLICATION_ID));
+		if(boothsList !=null){
+			for (Object[] objects : boothsList) {
+				booth.add((Long)objects[0]);
+			}
+			return booth;
+		}else{
+			return null;	
+		}
+	}
+
 }

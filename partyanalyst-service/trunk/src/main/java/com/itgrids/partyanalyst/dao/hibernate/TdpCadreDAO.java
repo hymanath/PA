@@ -3480,6 +3480,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			queryStr.append(" left join model.occupation occupatn ");
 			queryStr.append(" left join model.voter voter ");
 			queryStr.append(" left join model.casteState.caste caste ");
+			queryStr.append(" left join model.familyVoter familyVoter ");
 			queryStr.append(" where model.isDeleted = 'N' and model.enrollmentYear = 2014 ");
 			queryStr.append(" "+queryString+" ");
 			queryStr.append(" order by model.firstname ");
