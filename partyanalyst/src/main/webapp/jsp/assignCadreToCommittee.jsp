@@ -85,7 +85,8 @@
 	<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center m_top20 alert alert-success successDiv" >
 	<b>  PROFILE UPDATED SUCCESSFULLY... </b>
 	</div>
-		
+		<s:if test="%{committeeMngtType == 1}">
+	
 		<div id="assignCommitteeDiv" >
 			<div class="row " >
 				<div class="col-md-3 col-md-offset-3  col-sm-6 col-sm-offset-0 col-xs-6 col-xs-offset-0 m_top20" >
@@ -121,7 +122,8 @@
 				<button class="btn btn-success btn-block btn-lg m_top20" id="assignCommitte" type="button" onClick="assignCommitte();"> ASSIGN COMMITTEE </button>
 			</div>		
 			
-		</div>
+		</div>		
+	</s:if>
 	</div> 
 	
 	<footer class="text-center m_top20">
