@@ -92,12 +92,12 @@ public class ReadUrbanWardVoterData {
                     sb.append(stripper.getText(pd));
                     //System.out.println("File text:"+stripper.getText(pd));
                     
-                    outwriter.write(sb.toString());                   
+                    //outwriter.write(sb.toString());                   
                     String [] fileName = input.getName().split("-");
                     
                     int strLen = sb.toString().length();
                     String lstr = sb.toString().substring(strLen-100,strLen);
-                    System.out.println(lstr);
+                    //System.out.println(lstr);
                     saveCounts(fileName[0].trim(),fileName[2].trim().replaceAll(".pdf",""),lstr);
 
                     Matcher m = p.matcher(sb);
@@ -123,7 +123,7 @@ public class ReadUrbanWardVoterData {
 	                        voter.setBoothNo(fileName[2].replaceAll(".pdf","").trim());
 	                        totalVotersCount++;
 	                        voterInfoList.add(voter);
-	                        voterInfo = i +"\tMuncipality -- " + voter.getConstituency() + "\tWard No -- " + voter.getBoothNo().replaceAll(".pdf","") + "\t Serial No -- "+voter.getsNo()+"\tvoter ID -- " + voter.getVoterId()+"";
+	                        voterInfo = i +"\tMuncipality -- " + voter.getConstituency() + "\tWard No -- " + voter.getBoothNo().replaceAll(".pdf","") + "\t Serial No -- "+voter.getsNo()+"\tvoter ID -- " + voter.getVoterId()+"\tUUID -- " + voter.getUid()+"";
 	                        System.out.println(voterInfo);
 	                        writer.write(voterInfo+"\n");
                         }
@@ -140,7 +140,7 @@ public class ReadUrbanWardVoterData {
                       
             }
             System.out.println("Total No of Voters:" + totalVotersCount);
-            System.out.println("Total Time Taken in Minutes -"+((new Date().getTime())-startTime)/1000*60);
+            System.out.println("Total Time Taken in Minutes -"+((new Date().getTime())-startTime)/1000*60*60);
             writer.close();
             outwriter.close();
         } catch (Exception e) {
@@ -174,13 +174,13 @@ public class ReadUrbanWardVoterData {
     public static void saveCounts(String muncipality,String wardNo,String lstr)
     {
     	try{
-    		System.out.println(lstr);
+    		//System.out.println(lstr);
     		int mcount = 0;
     		int fcount = 0;
     		int tcount = 0;
             lstr = lstr.replaceAll(",", "");
             String[] lsArr = lstr.split("\\r\\n");
-            System.out.println(lsArr[lsArr.length-2]);
+            //System.out.println(lsArr[lsArr.length-2]);
             String[] cArr = lsArr[lsArr.length-2].split(" ");
             mcount = Integer.valueOf(cArr[1].trim());
             fcount = Integer.valueOf(cArr[2].trim());
