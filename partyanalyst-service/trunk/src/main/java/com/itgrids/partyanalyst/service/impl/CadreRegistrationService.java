@@ -6938,7 +6938,12 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									}
 									
 									cadrePreviousRolesDAO.inActiveCadreRollesDetailsById(existingVoters);
-									cadreParticipatedElectionDAO.inActiveCadreElectionDetailsById(existingVoters);
+									if(eligibleRoles != null && eligibleRoles.size()>0){
+										Long committeeMngtType = eligibleRoles.get(0).getCommitteeMngtType(); 
+										if(committeeMngtType != null && committeeMngtType.longValue() > 1){
+									       cadreParticipatedElectionDAO.inActiveCadreElectionDetailsById(existingVoters);
+										}
+									}
 									
 									TdpCadre tdpCadre = voterIdsList.get(0);
 									saveDataToHistoryTable(tdpCadre);
