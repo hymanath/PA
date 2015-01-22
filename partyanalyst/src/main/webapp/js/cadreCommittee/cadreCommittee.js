@@ -525,8 +525,7 @@
 	{	
 		$(".requiredFields").html('');
 		
-	   //$("#submitCadreFormBtnReqId").removeAttr("onclick");
-	   //$("#submitCadreFormBtnReqId").attr("disabled","disabled");
+	   $("#submitCadreFormBtnReqId").hide();
 	   
 	   var errString="";
 				var ageId=$("#ageId").val();
@@ -614,13 +613,15 @@
 		
 		window.location.href='assignCadreToCommittee.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&panchayatId='+panchayatId+'';
 		}
-		else if(result.resultCode == 1)
+		else if(result.resultCode == 121)
 		{			
-			$('.successDiv').html('<span style="color:red;">ERROR OCCURED WHILE PROFILE UPDATION.CHECK ONCE AND SUBMIT AGAIN... </span>');
+		$("#submitCadreFormBtnReqId").show();
+			$('html,body').animate({scrollTop: $('.successDiv').offset().top}, 800);
+			$('.successDiv').html('<span style="color:red;"> CADRE LOCATION IS NOT AVAILABLE ... </span>');
 		}
 		else if(result.resultCode == 2)
 		{			
-			$('.successDiv').html('<b> Max Members are already added for this Position. Wait until You get Confirmation from Party Office...</b>');
+			$('.successDiv').html('<b> Max Members are already added for this Position.</b>');
 		}
 	}
 	function validateEmail($email) {
