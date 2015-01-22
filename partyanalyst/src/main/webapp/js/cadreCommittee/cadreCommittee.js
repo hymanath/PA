@@ -589,7 +589,6 @@
 					var uploadHandler = {
 						upload: function(o) {
 							uploadResult = o.responseText;
-							console.log(uploadResult);
 							showUploadStatus(uploadResult);	
 						}
 					};
@@ -601,6 +600,14 @@
 	
 	function showUploadStatus(uploadResult)
 	{
+		var res = uploadResult.split('{');
+		if(res.length >0){
+			uploadResult = uploadResult.replace(res[0],"");
+		}
+		res = uploadResult.split('}');
+		if(res.length >1){
+			uploadResult = uploadResult.replace(res[res.length-1],"");
+		}
 		uploadResult = uploadResult.replace("<pre>","");
 		uploadResult = uploadResult.replace("</pre>","");
 		var result = JSON.parse(uploadResult);
