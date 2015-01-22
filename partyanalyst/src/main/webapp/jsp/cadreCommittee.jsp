@@ -25,7 +25,7 @@
 	<script type="text/javascript" src="js/cadreCommittee/cadreCommittee.js"></script>
    	
 	<style>
-	#publicrepresantative,#mandalaffiliated,#advancedSearchDiv,#committeeDetailsDiv,#searchcadrenewDiv,#committeLocationDiv
+	#publicrepresantative,#mandalaffiliated,#advancedSearchDiv,#committeeDetailsDiv,#searchcadrenewDiv,#committeLocationsDiv
 	{
 		display:none;
 	}
@@ -180,8 +180,8 @@
 				<h4>SEARCH BASED ON</h4>
 				<hr style="margin: 0px;">
 			</div>
-			<div class="row m_top20" id="committeLocationDiv" >
-			<div class="col-md-4 col-md-offset-4  col-sm-6 col-xs-6  m_top20">
+			<div class="row m_top20" id="committeLocationsDiv" >
+			<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6  m_top20">
 				<div class="form-group col-xs-12 pull-right">
 					<label for="committeLocationId">SELECT LOCATION</label>
 					<select class="form-control" id="committeLocationId" ><option value="0">Select Location</option></select >
@@ -220,7 +220,7 @@
 			
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20" id="advancedSearchDiv">	
 				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;"> 					
-					<h6>Advanced Search</h6>
+					<!--<h6>Advanced Search</h6>-->
 					<div id="advancedSearchErrDiv"></div>
 					<div class="row">					
 						<div class="col-md-2 col-sm-2 col-xs-2 ">
@@ -234,16 +234,22 @@
 								</select>
 							</label>
 						</div>
-						<div class="col-md-4 col-sm-4 col-xs-4 ">
+						<div class="col-md-3 col-sm-4 col-xs-4 ">
 							<label>Caste Name
 								
-								<s:select theme="simple" cssClass="form-control editClass" id="casteList" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Caste " style="width: 210px;"/>
+								<s:select theme="simple" cssClass="form-control editClass" id="casteList" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Caste " style="width: 200px;"/>
 							</label>
 						</div>
-						<div class="col-md-3 col-sm-3 col-xs-3 ">
-							<label>Age
-								<select class="form-control"  id="ageRange"><option>select</option></select>
+						
+						<div class="col-md-2 col-sm-3 col-xs-3 ">
+							<label>Age Range
+								<select class="form-control"  id="ageRange" onchange="clearbetwbAgeFields()" ><option>select</option></select>
 							</label>
+						</div>
+						<div class="col-md-2 col-sm-3 col-xs-3 ">
+							<label> Between Age</label>
+								<input type="text" id="fromAgeId" style="width: 50px;" class="ageRangeCls" placeholder=" From "/> - <input type="text" id="toAgeId" style="width: 50px;" class="ageRangeCls" placeholder=" To  "/> 
+							
 						</div>
 						<div class="col-md-3 col-sm-3 col-xs-3 ">
 							<label>Gender
@@ -271,13 +277,29 @@
 
 	<script>	
         var slickCount = 0;
-		$('.searchTypeCls').click(function(){
+		
+		$('document').ready(function(){			
+		
+			$('.ageRangeCls').click(function(){
+				//alert($(this).attr('id'));
+				$('#ageRange').val(0);
+			});
+			
+			$('.searchTypeCls').click(function(){
 			
 			var highlightCls = $('#basicCommitteeTab').attr('class');
 			
 			var id = $(this).attr('id');
-			$('#advancedSearchDiv').hide();
+			$('#advancedSearchDiv').hide();			
 			$('#basicSearchDiv').show();
+			var committeTypeID = $('#committeeMngtType').val();
+			if(committeTypeID != 1){
+				$('#committeLocationsDiv').show();				
+			}
+			else
+			{
+				$('#committeLocationsDiv').hide();
+			}
 			if(id.trim() == 'membershipId')
 			{
 				$('#cadreSearchType').val('membershipId');
@@ -327,6 +349,9 @@
 				}
 			}
 		});
+		
+		});
+		
 	function getCommitteeLocations(){
 		hideMembers();
 		$("#committeeTypeId").val(0);
@@ -509,6 +534,12 @@
 	}
 	function hideMembers(){
 		$("#committeeDetailsDiv").hide();
+	}
+	
+	function clearbetwbAgeFields()
+	{
+		$('.ageRangeCls').val('');
+		
 	}
 	getCommitteeLocations();
 	getUserLocation();
