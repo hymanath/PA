@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
+import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
@@ -20,6 +21,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
+import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICandidateUpdationDetailsService;
@@ -61,8 +63,22 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private ResultStatus 						status;
 	private String 								panchayatName;				
 	private Long 								assemblyId;
+	private List<CadreRegisterInfo>             result;
+	private ICadreDashBoardService              cadreDashBoardService;
+	private List<Long>  						wardResult;
+	private List<LocationWiseBoothDetailsVO>    locationWiseBoothDetailsVO;
 	
 	
+	
+	public List<LocationWiseBoothDetailsVO> getLocationWiseBoothDetailsVO() {
+		return locationWiseBoothDetailsVO;
+	}
+
+	public void setLocationWiseBoothDetailsVO(
+			List<LocationWiseBoothDetailsVO> locationWiseBoothDetailsVO) {
+		this.locationWiseBoothDetailsVO = locationWiseBoothDetailsVO;
+	}
+
 	public String getPanchayatName() {
 		return panchayatName;
 	}
@@ -88,6 +104,32 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	}
 	
 	
+	
+	public List<Long> getWardResult() {
+		return wardResult;
+	}
+
+	public void setWardResult(List<Long> wardResult) {
+		this.wardResult = wardResult;
+	}
+
+	public ICadreDashBoardService getCadreDashBoardService() {
+		return cadreDashBoardService;
+	}
+
+	public void setCadreDashBoardService(
+			ICadreDashBoardService cadreDashBoardService) {
+		this.cadreDashBoardService = cadreDashBoardService;
+	}
+
+	public List<CadreRegisterInfo> getResult() {
+		return result;
+	}
+
+	public void setResult(List<CadreRegisterInfo> result) {
+		this.result = result;
+	}
+
 	public List<GenericVO> getEducationList() {
 		return educationList;
 	}
@@ -486,7 +528,6 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		return Action.SUCCESS;
 	}
 	
-	
 	public String saveCadreCommitteDetails()
 	{
 		
@@ -497,6 +538,60 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		catch(Exception e){	
 			LOG.error("Exception occured in saveCadreCommitteDetails() At CadreCommitteeAction ",e);
 		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String allConstituencys(){
+		try{
+			if(task.equalsIgnoreCase("assemblyNames")){
+				result = cadreDashBoardService.getAssemblyConstituencies(request.getParameter("type"));
+				}
+		}catch(Exception e){
+				LOG.error("Exception rised in allConstituencys method ",e);
+		}
+		return Action.SUCCESS;
+		}
+	public String getPanchayatiesByMandalOrMuncipality(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+			genericVOList = cadreCommitteeService.getPanchayatDetailsByMandalId(jObj.getLong("mandalId"));
+		}
+		catch(Exception e){	
+			LOG.error("Exception occured in getPanchayatiesByMandalOrMuncipality() At CadreCommitteeAction ",e);
+		}
+		
+		return Action.SUCCESS;	
+	}
+	public String getBoothsInPanchayat(){
+		try{
+			jObj = new JSONObject(getTask());
+			wardResult=cadreCommitteeService.getBoothsInPanchayatId(jObj.getLong("panchayatId"));
+		}catch(Exception e){
+			LOG.error("Exception occured in getPanchayatiesByMandalOrMuncipality() At CadreCommitteeAction ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getMandalMunicCorpDetails(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+			locationWiseBoothDetailsVO=cadreCommitteeService.getMandalMunicCorpDetails(jObj.getLong("constituencyId"));
+		}catch(Exception e){
+			LOG.error("Exception occured in getMandalMunicCorpDetails() At CadreCommitteeAction ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String sessionChecking(){
+		
+		session = request.getSession();	
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+			return ERROR;
+		
 		
 		return Action.SUCCESS;
 	}

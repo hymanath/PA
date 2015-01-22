@@ -1539,6 +1539,7 @@
 		<property name="candidateUpdationDetailsService" ref="candidateUpdationDetailsService" />
 		<property name="cadreRegistrationService" ref="cadreRegistrationService" />
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
+	    <property name="cadreDashBoardService" ref="cadreDashBoardService" />
 	</bean>
 	<!-- <bean id="userDetailsAction" class="com.itgrids.partyanalyst.web.action.UserDetailsAction" singleton="false">
 		<property name="dashBoardElectionResultsService" ref="dashBoardElectionResultsService" />

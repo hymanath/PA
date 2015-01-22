@@ -9382,5 +9382,32 @@
 			</result>
 		</action>
 		
+		<action name="cadreCommitteeSearchAction" class="cadreCommitteeAction" method="sessionChecking">
+			<result name="success">/jsp/cadreCommitteeSearch.jsp</result>
+		</action>
+		<action name="getLocationWiseRegistrationInformation" class="cadreCommitteeAction" method="allConstituencys">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+			<result type="json" name="input">
+				<param name="root">"noAccess"</param>
+			</result>
+		</action>
+		<action name="getPanchayatDetailsAction" class="cadreCommitteeAction" method="getPanchayatiesByMandalOrMuncipality">
+			<result type="json" name="success">
+				<param name="root">genericVOList</param>
+			</result>
+		</action>
+		<action name="getBoothDetailsAction" class="cadreCommitteeAction" method="getBoothsInPanchayat">
+			<result type="json" name="success">
+				<param name="root">wardResult</param>
+			</result>
+		</action>
+		<action name="gettingTehsilsByConstituencyAction" class="cadreCommitteeAction" method="getMandalMunicCorpDetails">
+			<result type="json" name="success">
+				<param name="root">locationWiseBoothDetailsVO</param>
+			</result>
+		</action>
+		
 </package>
 </struts>      
