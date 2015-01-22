@@ -312,7 +312,7 @@
 		
 		<div class="row m_top20">
 			<div class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center" style="border-bottom:1px solid #FD2A34;margin-bottom:20px;">
-				<h4>PREVIOUS ROLES IN PARTY</h4>				
+				<h4>PREVIOUS DESIGNATIONS IN PARTY</h4>				
 			</div>			
 		
 			<s:if test="%{cadreCommitteeVO.previousRoles != null && cadreCommitteeVO.previousRoles.size() > 0}">
@@ -367,9 +367,9 @@
 						
 						<div class="row">
 						  <div class="form-group col-md-4 col-sm-4 col-xs-4 ">
-							<label for="exampleInputEmail2" >Committee Role</label>
+							<label for="exampleInputEmail2" >Committee Designation</label>
 							<select class="form-control " id="cadreRolesId" name="cadreRegistrationVO.previousRollesList[0].cadreRoleId">
-							<option value="0"> Select Role </option>
+							<option value="0"> Select Designation </option>
 							</select>
 						  </div>
 						  <div class="form-group col-md-4 col-sm-4 col-xs-4">
@@ -463,7 +463,7 @@
 			</s:if>
 			<s:if test="%{committeeMngtType != null && committeeMngtType == 2}">
 			<div class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center" style="border-bottom:1px solid #FD2A34;margin-bottom:20px;">
-				<h4>ELIGIBLE ROLES FOR PUBLIC REPRESENTATIVE</h4>				
+				<h4>ELIGIBLE DESIGNATIONS FOR PUBLIC REPRESENTATIVE</h4>				
 			</div>			
 			
 			<s:if test="%{cadreCommitteeVO.eligibleRoles != null && cadreCommitteeVO.eligibleRoles.size() > 0}">
@@ -494,9 +494,9 @@
 				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;"  id="eligibleRolesDiv">
 					<div class="row">
 					  <div class="form-group col-md-4 col-sm-4 col-xs-4 ">
-						<label >Role</label>
+						<label >Designation</label>
 						<select class="form-control " name="eligibleRoles[0].designationLevelId">
-						   <option value="0"> Select Role</option>
+						   <option value="0"> Select Designation</option>
 						   <c:forEach var="eligibleRes" items="${locations}" >																														
 								<option value="${eligibleRes.locationId}">${eligibleRes.locationName}</option>
 							</c:forEach>
@@ -572,13 +572,13 @@
 		<s:if test="%{cadreCommitteeVO.eligibleRoles == null || cadreCommitteeVO.eligibleRoles.size() == 0}">
 			<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 m_top20 text-center updateProfileDivId">
 			  <s:if test="%{committeeMngtType == 1}">
-				<button class="btn btn-success btn-block btn-lg m_top20" id="submitCadreFormBtnReqId" type="button" onClick="submitCadreForm();"> UPDATE PROFILE </button>
+				<button class="btn btn-success btn-block btn-lg m_top20" id="submitCadreFormBtnReqId" type="button" onClick="submitCadreForm();"> UPDATE PROFILE & PROCEED TO ADD AS COMMITTEE MEMBER</button>
 			  </s:if>
 			  <s:if test="%{committeeMngtType == 2}">
-				<button class="btn btn-success btn-block btn-lg m_top20" id="submitCadreFormBtnReqId" type="button" onClick="submitCadreForm();">UPDATE PROFILE  &  ADD to MANDAL ELECTORAL</button>
+				<button class="btn btn-success btn-block btn-lg m_top20" id="submitCadreFormBtnReqId" type="button" onClick="submitCadreForm();">UPDATE PROFILE  &  ADD TO MANDAL ELECTORAL</button>
 			  </s:if>
 			  <s:if test="%{committeeMngtType == 3}">
-				<button class="btn btn-success btn-block btn-lg m_top20" id="submitCadreFormBtnReqId" type="button" onClick="submitCadreForm();">UPDATE PROFILE  &  ADD to MANDAL AFFILIATED ELECTORAL</button>
+				<button class="btn btn-success btn-block btn-lg m_top20" id="submitCadreFormBtnReqId" type="button" onClick="submitCadreForm();">UPDATE PROFILE  &  ADD TO MANDAL AFFILIATED ELECTORAL</button>
 			  </s:if>
 			</div>	
 		</s:if>	
@@ -741,9 +741,9 @@
         str+='<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;"  id="eligibleRolesDivs'+elegRolCnt+'">';
 		str+='	<div class="row">';
 		str+='	  <div class="form-group col-md-4 col-sm-4 col-xs-4 ">';
-		str+='		<label >Role</label>';
+		str+='		<label >Designation</label>';
 		str+='		<select class="form-control "  name="eligibleRoles['+elegRolCnt+'].designationLevelId">';
-		str+='		   <option value="0"> Select Role</option>';
+		str+='		   <option value="0"> Select Designation</option>';
 		    for(var i in allRolesList){
 		      str+='<option value="'+allRolesList[i].id+'">'+allRolesList[i].name+'</option>';
 			}
@@ -859,9 +859,9 @@
 
 		str+='<div class="row">';
 		str+='<div class="form-group col-md-4 col-sm-4 col-xs-4 ">';
-		str+='<label for="exampleInputEmail2" >Committee Role</label>';
+		str+='<label for="exampleInputEmail2" >Committee Designation</label>';
 		str+='<select class="form-control " id="cadreRolesId'+rolesCount+'" name="cadreRegistrationVO.previousRollesList['+rolesCount+'].cadreRoleId">';
-		str+='<option value="0"> Select Role </option>';
+		str+='<option value="0"> Select Designation </option>';
 		str+='</select>';
 		str+='</div>';
 		str+='<div class="form-group col-md-4 col-sm-4 col-xs-4">';
