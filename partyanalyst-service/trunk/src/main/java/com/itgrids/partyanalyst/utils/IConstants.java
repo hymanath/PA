@@ -861,6 +861,16 @@ public interface IConstants {
     public static final String NO_ANSWER = "NO_ANSWER";
     public static final String NORMAL_CLEARING = "NORMAL_CLEARING";
     public static final String SWITCH_CONGESTION = "SWITCH_CONGESTION";
+    public static final String NO_USER_RESPONSE = "NO_USER_RESPONSE";
+    public static final String CALL_REJECTED = "CALL_REJECTED";
+    public static final String NORMAL_CIRCUIT_CONGESTION = "NORMAL_CIRCUIT_CONGESTION";   
+    public static final String NETWORK_OUT_OF_ORDER = "NETWORK_OUT_OF_ORDER";
+    public static final String DESTINATION_OUT_OF_ORDER = "DESTINATION_OUT_OF_ORDER";
+    public static final String NORMAL_TEMPORARY_FAILURE = "NORMAL_TEMPORARY_FAILURE";
+    public static final String UNALLOCATED_NUMBER = "UNALLOCATED_NUMBER";
+    public static final String SUBSCRIBER_ABSENT = "SUBSCRIBER_ABSENT";
+    public static final String INTERWORKING = "INTERWORKING";
+    
     public static final Long  CURRENT_ENROLLMENT_ID =1l;
     
    

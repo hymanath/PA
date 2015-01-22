@@ -24,6 +24,12 @@ public class CadreIVRVO implements Serializable, Comparable<CadreIVRVO>{
 	private Long noAnswer =0l;
 	private Long otherError =0l;
 	private Long switchCongestion =0l;
+		
+	private Long callRejectedCount = 0l;
+	private Long newtworkError = 0l;
+	private Long unallocatedNumbers = 0l;
+	private Long interworkingCount = 0l;
+
 	private String currentStatus;
 	private String strDate;
 	private String endDate;
@@ -49,6 +55,13 @@ public class CadreIVRVO implements Serializable, Comparable<CadreIVRVO>{
 	private Double noAnswerPerc;
 	private Double switchCongestionPerc;
 	private Double otherErrorPerc;
+	
+	private Double callRejectedPerc ;
+	private Double newtworkErrorPerc;
+	private Double unallocatedNumbersPerc ;
+	private Double interworkingCountPerc ;
+	
+	
 	private Long totalError=0l;
 	private Double errorPerc;
 	public CadreIVRVO()
@@ -419,9 +432,69 @@ public class CadreIVRVO implements Serializable, Comparable<CadreIVRVO>{
 		else
 			return 0;
 	}
-	
-			
-			
-	
+
+	public Long getCallRejectedCount() {
+		return callRejectedCount;
+	}
+
+	public void setCallRejectedCount(Long callRejectedCount) {
+		this.callRejectedCount = callRejectedCount;
+	}
+
+	public Long getNewtworkError() {
+		return newtworkError;
+	}
+
+	public void setNewtworkError(Long newtworkError) {
+		this.newtworkError = newtworkError;
+	}
+
+	public Long getUnallocatedNumbers() {
+		return unallocatedNumbers;
+	}
+
+	public void setUnallocatedNumbers(Long unallocatedNumbers) {
+		this.unallocatedNumbers = unallocatedNumbers;
+	}
+
+	public Long getInterworkingCount() {
+		return interworkingCount;
+	}
+
+	public void setInterworkingCount(Long interworkingCount) {
+		this.interworkingCount = interworkingCount;
+	}
+
+	public Double getCallRejectedPerc() {
+		return callRejectedPerc;
+	}
+
+	public void setCallRejectedPerc(Double callRejectedPerc) {
+		this.callRejectedPerc = callRejectedPerc;
+	}
+
+	public Double getNewtworkErrorPerc() {
+		return newtworkErrorPerc;
+	}
+
+	public void setNewtworkErrorPerc(Double newtworkErrorPerc) {
+		this.newtworkErrorPerc = newtworkErrorPerc;
+	}
+
+	public Double getUnallocatedNumbersPerc() {
+		return unallocatedNumbersPerc;
+	}
+
+	public void setUnallocatedNumbersPerc(Double unallocatedNumbersPerc) {
+		this.unallocatedNumbersPerc = unallocatedNumbersPerc;
+	}
+
+	public Double getInterworkingCountPerc() {
+		return interworkingCountPerc;
+	}
+
+	public void setInterworkingCountPerc(Double interworkingCountPerc) {
+		this.interworkingCountPerc = interworkingCountPerc;
+	}
 
 }

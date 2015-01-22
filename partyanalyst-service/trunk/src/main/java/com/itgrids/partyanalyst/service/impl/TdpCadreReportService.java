@@ -4553,6 +4553,11 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					Long noAnswerCount =0l;
 					Long switchCongestion = 0l;
 					Long otherError = 0l;
+					Long callRejectedCount = 0l;
+					Long newtworkError = 0l;
+					Long unallocatedNumbers = 0l;
+					Long interworkingCount = 0l;
+					
 					List<String> successNos =new ArrayList<String>();
 					successNos.add("1");successNos.add("2");successNos.add("3");
 					try{
@@ -4576,19 +4581,27 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 									else if(ivrCountInfo[1] == null)
 										   noOptionCount = noOptionCount +  (Long)ivrCountInfo[0];
 								}
-									else
-									{
-													if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.USER_BUSY))
-														 userBusyCount = userBusyCount + (Long)ivrCountInfo[0];
-													else if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.NO_ANSWER))
-														 noAnswerCount = noAnswerCount + (Long)ivrCountInfo[0];
-													else if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.SWITCH_CONGESTION))
-														switchCongestion = switchCongestion + (Long)ivrCountInfo[0];
-													else if(!ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.USER_BUSY) && !ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.NO_ANSWER)
-															&& !ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.SWITCH_CONGESTION))
-														otherError = otherError + (Long)ivrCountInfo[0];
-										}	
-								}
+								else
+								{
+									if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.USER_BUSY))
+										 userBusyCount = userBusyCount + (Long)ivrCountInfo[0];
+									else if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.CALL_REJECTED))
+										 callRejectedCount = callRejectedCount + (Long)ivrCountInfo[0];
+									else if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.NO_ANSWER) || ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.NO_USER_RESPONSE))
+										 noAnswerCount = noAnswerCount + (Long)ivrCountInfo[0];
+									else if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.SWITCH_CONGESTION) || ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.NORMAL_CIRCUIT_CONGESTION))
+										switchCongestion = switchCongestion + (Long)ivrCountInfo[0];
+									else if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.NORMAL_TEMPORARY_FAILURE) || ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.DESTINATION_OUT_OF_ORDER) 
+											 || ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.NETWORK_OUT_OF_ORDER) || ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.SUBSCRIBER_ABSENT))
+										newtworkError = newtworkError + (Long)ivrCountInfo[0];
+									else if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.UNALLOCATED_NUMBER))
+										unallocatedNumbers = unallocatedNumbers + (Long)ivrCountInfo[0];	
+									else if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.INTERWORKING))
+										interworkingCount = interworkingCount + (Long)ivrCountInfo[0];	
+									else 
+										otherError = otherError + (Long)ivrCountInfo[0];
+								}	
+							}
 						}
 						returnVo.setTotal(ivrCount);
 						returnVo.setReceived(receivedCount);
@@ -4616,13 +4629,22 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 						returnVo.setNoAnswer(noAnswerCount);
 						returnVo.setSwitchCongestion(switchCongestion);
 						returnVo.setOtherError(otherError);
-						returnVo.setTotalError(userBusyCount + noAnswerCount +switchCongestion+otherError );
+						returnVo.setCallRejectedCount(callRejectedCount);
+						returnVo.setNewtworkError(newtworkError);
+						returnVo.setUnallocatedNumbers(unallocatedNumbers);
+						returnVo.setInterworkingCount(interworkingCount);					
+						returnVo.setTotalError(userBusyCount + noAnswerCount +switchCongestion+otherError+callRejectedCount+newtworkError+unallocatedNumbers+interworkingCount );
 						if(returnVo.getTotalError() > 0)
 						{
-							returnVo.setUserBusyPerc(new BigDecimal((returnVo.getUserBusy()*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());;
+							returnVo.setUserBusyPerc(new BigDecimal((returnVo.getUserBusy()*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 							returnVo.setNoAnswerPerc(new BigDecimal((returnVo.getNoAnswer()*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-							returnVo.setSwitchCongestionPerc(new BigDecimal((returnVo.getSwitchCongestion()*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());;
-							returnVo.setOtherErrorPerc(new BigDecimal((otherError*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());;
+							returnVo.setSwitchCongestionPerc(new BigDecimal((returnVo.getSwitchCongestion()*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setOtherErrorPerc(new BigDecimal((otherError*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							
+							returnVo.setCallRejectedPerc(new BigDecimal((returnVo.getCallRejectedCount()*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setNewtworkErrorPerc(new BigDecimal((returnVo.getNewtworkError()*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setUnallocatedNumbersPerc(new BigDecimal((returnVo.getUnallocatedNumbers()*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setInterworkingCountPerc(new BigDecimal((returnVo.getInterworkingCount()*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 						}
 						
 					}
