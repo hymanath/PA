@@ -52,6 +52,7 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	List<CadreCommitteeVO> casteList = new ArrayList<CadreCommitteeVO>();
 	List<CadrePreviousRollesVO>  eligibleRoles;
 	private String electrolLocation;
+	private String preEnrollNo;
 			
 	private Long voterId;
 	
@@ -319,6 +320,12 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	}
 	public void setElectrolLocation(String electrolLocation) {
 		this.electrolLocation = electrolLocation;
+	}
+	public String getPreEnrollNo() {
+		return preEnrollNo;
+	}
+	public void setPreEnrollNo(String preEnrollNo) {
+		this.preEnrollNo = preEnrollNo;
 	}
 	
 }

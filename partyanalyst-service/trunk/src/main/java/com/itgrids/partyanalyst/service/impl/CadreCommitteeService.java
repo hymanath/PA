@@ -217,6 +217,11 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				cadreCommitteeVO.setDOB(tdpCadre.getDateOfBirth() != null ? format.format(tdpCadre.getDateOfBirth()):"");
 				cadreCommitteeVO.setVoterId(tdpCadre.getVoterId() != null ? tdpCadre.getVoterId():0L);
 				cadreCommitteeVO.setMobileType("");
+				if(tdpCadre.getPreviousEnrollmentNo() != null){
+				  cadreCommitteeVO.setPreEnrollNo(tdpCadre.getPreviousEnrollmentNo());
+				}else{
+					cadreCommitteeVO.setPreEnrollNo("");
+				}
 				cadreCommitteeVO.setMobileNo(tdpCadre.getMobileNo());
 				cadreCommitteeVO.setAdhaarNo(tdpCadre.getCadreAadherNo());
 				cadreCommitteeVO.setAddress(tdpCadre.getUserAddress().getStreet() != null ? tdpCadre.getUserAddress().getStreet():"");
