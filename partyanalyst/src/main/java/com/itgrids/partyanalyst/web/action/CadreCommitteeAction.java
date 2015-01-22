@@ -63,12 +63,30 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private ResultStatus 						status;
 	private String 								panchayatName;				
 	private Long 								assemblyId;
+	private Long 								committeeTypeId;
+	private Long 								committeeId;
 	private List<CadreRegisterInfo>             result;
 	private ICadreDashBoardService              cadreDashBoardService;
 	private List<Long>  						wardResult;
 	private List<LocationWiseBoothDetailsVO>    locationWiseBoothDetailsVO;
 	
 	
+	public Long getCommitteeTypeId() {
+		return committeeTypeId;
+	}
+
+	public void setCommitteeTypeId(Long committeeTypeId) {
+		this.committeeTypeId = committeeTypeId;
+	}
+
+	public Long getCommitteeId() {
+		return committeeId;
+	}
+
+	public void setCommitteeId(Long committeeId) {
+		this.committeeId = committeeId;
+	}
+
 	
 	public List<LocationWiseBoothDetailsVO> getLocationWiseBoothDetailsVO() {
 		return locationWiseBoothDetailsVO;
