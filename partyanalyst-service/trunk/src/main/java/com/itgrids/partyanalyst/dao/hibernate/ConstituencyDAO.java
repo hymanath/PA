@@ -1118,4 +1118,10 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 
 		return query.list();
 	}
+	public List<Object[]> getWardIdAndName(Long localElectionBodyId){
+		Query query=getSession().createQuery("select model.constituencyId,model.name from Constituency model where model.localElectionBody.localElectionBodyId=:localElectionBodyId order by model.localElectionBody.name,model.constituencyId ");
+		
+		query.setParameter("localElectionBodyId", localElectionBodyId);
+		return query.list();
+	}
 }

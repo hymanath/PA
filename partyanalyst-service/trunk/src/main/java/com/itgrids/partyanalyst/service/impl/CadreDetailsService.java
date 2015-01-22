@@ -60,6 +60,10 @@ public class CadreDetailsService implements ICadreDetailsService{
     			{
     				queryStr.append(" and model.userAddress.ward.constituencyId =:locationValue ");
     			}
+    			else if(locationLevel.longValue() == 9L)
+    			{
+    				queryStr.append(" and model.userAddress.booth.boothId =:locationValue ");
+    			}
     		}
     		
     		if(searchName != null && searchName.trim().length()>0 && !searchName.trim().equalsIgnoreCase("0") && !searchName.equalsIgnoreCase("null"))
@@ -76,7 +80,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 			}
 			if(voterCardNo != null && voterCardNo.trim().length()>0  && !voterCardNo.trim().equalsIgnoreCase("0") && !voterCardNo.equalsIgnoreCase("null"))
 			{
-				queryStr.append(" and (model.voter.voterIDCardNo like '%"+voterCardNo.trim()+"%' or  model.familyVoter.voterIDCardNo like '%"+voterCardNo.trim()+"%' )  ");
+				queryStr.append(" and (model.voter.voterIDCardNo like '%"+voterCardNo.trim()+"%' or (familyVoter.voterId is not null and familyVoter.voterIDCardNo like '%"+voterCardNo.trim()+"%'))  ");
 			}
 			if(trNumber != null && trNumber.trim().length()>0 && !trNumber.trim().equalsIgnoreCase("0") && !trNumber.equalsIgnoreCase("null"))
 			{

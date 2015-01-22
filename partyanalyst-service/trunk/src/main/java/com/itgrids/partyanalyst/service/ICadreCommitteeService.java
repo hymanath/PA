@@ -24,4 +24,7 @@ public interface ICadreCommitteeService {
 	public ResultStatus saveCadreCommitteDetails(Long tdpCadreId,Long tdpCommitteeRoleId);
 	public List<CadrePreviousRollesVO> getCadreEligiableRoles(Long tdpCadreId);
 	public List<GenericVO> getCadsteDetailsByGroupId(Long casteGroupId);
+	public List<GenericVO> getPanchayatDetailsByMandalId(Long MandalId);
+	public List<Long> getBoothsInPanchayatId(Long panchayatId);
+	public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetails(Long constituencyId);
 }
