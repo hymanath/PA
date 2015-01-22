@@ -105,7 +105,7 @@
 		var searchBy = $('#searchBy').val().trim();
 		var searchRadioType = $('#cadreSearchType').val();		
 		var committeTypeID = $('#committeeMngtType').val();
-		if(committeTypeID ==1)
+		if(committeTypeID ==1 && searchRadioType == 'mobileNo' || searchRadioType == 'voterId' || searchRadioType == 'membershipId')
 		{
 			if(committeeLocationId == null || committeeLocationId == 0)
 			{
@@ -137,8 +137,8 @@
 		}
 		*/
 		
-		if(searchRadioType == 'mobileNo' || searchRadioType == 'voterId' || searchRadioType == 'membershipId'){
-		
+		if(searchRadioType == 'mobileNo' || searchRadioType == 'voterId' || searchRadioType == 'membershipId')
+		{		
 				if(committeTypeID == 2 ){
 					getUserLocation();	
 					committeeLocationId = userLocation;					
@@ -189,7 +189,7 @@
 		{
 			
 			committeeLocationId = userLocation;
-			if(committeTypeID == 2 ){
+				if(committeTypeID == 2 ){
 					locationLevel= 4;
 					locationValue = committeeLocationId;
 				}
@@ -199,6 +199,8 @@
 				}		
 				else
 				{
+					/*
+					committeeLocationId = $('#committeeLocationId').val();
 					if(areaTypeId ==1)
 					{
 						if(committeeLocationId.substr(0,1) == 1){
@@ -218,6 +220,10 @@
 						}					
 					}
 					locationValue = committeeLocationId.substr(1);
+					*/
+					
+					locationLevel= 4;
+					locationValue = committeeLocationId;
 				}	
 			
 		}
