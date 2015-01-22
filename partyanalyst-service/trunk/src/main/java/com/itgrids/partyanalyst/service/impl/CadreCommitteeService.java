@@ -688,8 +688,9 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	}
 	
 	//Hint Please call this method in transaction only
-	public void saveElectrolInfo(Long tdpCadreId,Long tdpCommitteeLevelId,Long levelValue,Long tdpCommitteeTypeId,Long committeeMngtType,Long committeeId,List<CadrePreviousRollesVO> eligibleRoles){
+	public void saveElectrolInfo(Long tdpCadreId,Long tdpCommitteeLevelId,Long levelValue,Long committeeMngtType,List<CadrePreviousRollesVO> eligibleRoles){
 
+			Long tdpCommitteeTypeId = 0L;
 			if(eligibleRoles != null && eligibleRoles.size() > 0)
 			{
 				
