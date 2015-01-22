@@ -294,7 +294,7 @@
 			
 					<div class="col-md-3 col-md-offset-2  col-sm-6 col-xs-6 form-group">
 						<div class="input-group">
-						  <div><input type="text" id="preEnrollNoValue" class="form-control border-radius-0 input-block-level" placeholder="Previous Enrollment No."  value="${voterInfoVOList[0].memberShipId}" style=""  onkeyup="getExistingCadreInfo2();" name="cadreRegistrationVO.previousEnrollmentNumber" readonly></input></div>
+						  <div><input type="text" id="preEnrollNoValue" class="form-control border-radius-0 input-block-level" placeholder="Previous Enrollment No."  value="${cadreCommitteeVO.preEnrollNo}" style=""  onkeyup="getExistingCadreInfo2();" name="cadreRegistrationVO.previousEnrollmentNumber" readonly></input></div>
 						  <div class="input-group-addon">
 							<span onclick="clearPreviousEnrol();" title="Click Here To Clear Previous Enrollment Number" style="cursor: pointer;" class="glyphicon glyphicon-remove"></span>
 						  </div>
@@ -305,7 +305,7 @@
 						<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">LookUp For EnrollmentNo</button>
 					</div>
 					<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 form-group">
-						<input type="hidden" id="preEnrollNo" class="form-control border-radius-0 input-block-level" placeholder="Text input"  value="${voterInfoVOList[0].memberShipId}" style="width:260px;" ></input>
+						<input type="hidden" id="preEnrollNo" class="form-control border-radius-0 input-block-level" placeholder="Text input"  value="${cadreCommitteeVO.preEnrollNo}" style="width:260px;" ></input>
 					</div>						
 				</div>	
 		</div>
@@ -424,7 +424,7 @@
 			
 			<s:else>
 				<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group  m_top20">
-				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;"  id="electionsDiv">
+				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;">
 					<div class="row">
 					  <div class="form-group col-md-4 col-sm-4 col-xs-4 ">
 						<label for="exampleInputEmail2" >Election Type</label>
