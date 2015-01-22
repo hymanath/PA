@@ -535,6 +535,8 @@
 	<input type="hidden" value="${task}" name="eligibleRoles[0].cadreCommitteeLevelId"/>
 	<input type="hidden" value="${panchayatId}" name="eligibleRoles[0].cadreCommitteeLevelValue"/>
 	<input type="hidden" value="${committeeMngtType}" name="eligibleRoles[0].committeeMngtType" id="committeeMngtTypeId"/>
+	<input type="hidden" value="${committeeId}" name="eligibleRoles[0].cadreCommitteeId" id="cadreCommitteeId"/>
+	<input type="hidden" value="${committeeTypeId}" name="eligibleRoles[0].cadreCommitteeTypeId" id="cadreCommitteeTypeId"/>
 	
 	<!--
 	<div id="assignCommitteeDiv" >
