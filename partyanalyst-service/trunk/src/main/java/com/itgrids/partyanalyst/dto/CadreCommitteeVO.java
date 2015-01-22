@@ -51,6 +51,7 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	List<CadreCommitteeVO> previousElections = new ArrayList<CadreCommitteeVO>();
 	List<CadreCommitteeVO> casteList = new ArrayList<CadreCommitteeVO>();
 	List<CadrePreviousRollesVO>  eligibleRoles;
+	private String electrolLocation;
 			
 	private Long voterId;
 	
@@ -312,6 +313,12 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	}
 	public void setFamilyVoterCardNo(String familyVoterCardNo) {
 		this.familyVoterCardNo = familyVoterCardNo;
+	}
+	public String getElectrolLocation() {
+		return electrolLocation;
+	}
+	public void setElectrolLocation(String electrolLocation) {
+		this.electrolLocation = electrolLocation;
 	}
 	
 }

@@ -51,6 +51,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeElectrolRoles;
 import com.itgrids.partyanalyst.model.TdpCommitteeElectrols;
 import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 import com.itgrids.partyanalyst.model.TdpCommitteeRole;
+import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.VoterAgeRange;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
@@ -214,6 +215,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				cadreCommitteeVO.setCasteName(tdpCadre.getCasteState() != null? tdpCadre.getCasteState().getCaste().getCasteName():"");
 				cadreCommitteeVO.setCasteCategoryId(tdpCadre.getCasteState() != null?tdpCadre.getCasteState().getCasteCategoryGroup().getCasteCategory().getCasteCategoryId():0L);
 				cadreCommitteeVO.setCasteCategory(tdpCadre.getCasteState() != null? tdpCadre.getCasteState().getCasteCategoryGroup().getCasteCategory().getCategoryName():"");
+				UserAddress address = tdpCadre.getUserAddress();
+				if(address.getLocalElectionBody() != null){
+					cadreCommitteeVO.setElectrolLocation(address.getLocalElectionBody().getName()+" "+address.getLocalElectionBody().getElectionType().getElectionType() );
+				}else if(address.getTehsil() != null){
+					cadreCommitteeVO.setElectrolLocation(address.getTehsil().getTehsilName()+" Mandal");
+				}
 				if(tdpCadre.getVoterId()  != null && tdpCadre.getVoterId().longValue() > 0){
 				    cadreCommitteeVO.setVoterCardNo( voterDAO.get(tdpCadre.getVoterId()).getVoterIDCardNo());
 				}else{
