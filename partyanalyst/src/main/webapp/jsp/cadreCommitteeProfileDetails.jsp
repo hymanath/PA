@@ -969,7 +969,7 @@
 	var constituencyId = '${constiteucnyId}';
 	var panchayatId = '${houseNo}';  // panchayat Id 
 	var boothId = '${boothId}';  // boothId Id 
-	var isPresentCadre = '${panchayatId}';  // ispresentCader checked ot not 
+	var isPresentCadre = '';  // ispresentCader checked ot not 
 	
 	var isError = false;
 	if((candidateName == null || candidateName.length == 0) && (enrollmentNo == null || enrollmentNo.length == 0))
