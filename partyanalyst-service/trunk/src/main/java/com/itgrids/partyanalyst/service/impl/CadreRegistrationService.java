@@ -6944,6 +6944,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									saveDataToHistoryTable(tdpCadre);
 									
 									surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getMemberShipNo());
+									if(cadreRegistrationVO.getGender() != null)
+										tdpCadre.setGender(cadreRegistrationVO.getGender());
 									if(cadreRegistrationVO.getDobStr() != null)
 										tdpCadre.setDateOfBirth(convertToDateFormet( cadreRegistrationVO.getDobStr()));
 									if(cadreRegistrationVO.getAge() != null)
@@ -7064,48 +7066,36 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									if(eligibleRoles != null && eligibleRoles.size()>0)
 									{
 											CadrePreviousRollesVO roleVO = eligibleRoles.get(0); 
-											Long tdpCommitteeLevelId = roleVO.getCadreCommitteeLevelId();
-											Long levelValue =roleVO.getCadreCommitteeLevelValue();
-											
-											Long tdpCommitteeTypeId =roleVO.getCadreCommitteeTypeId();
-											Long tdpCommitteeId = roleVO.getCadreCommitteeId();
+											Long tdpCommitteeLevelId = 0L;
+											Long levelValue = 0L;
 											Long committeeMngtType = roleVO.getCommitteeMngtType();
+										
 											
-											if(tdpCommitteeLevelId.longValue() == 1L)
+											if(userAddress != null)
 											{
-												if(roleVO.getCadreCommitteeLevelValue().toString().substring(0,1).equalsIgnoreCase("1"))
-												{
-													tdpCommitteeLevelId = 6L; //panchayat
-													levelValue = Long.valueOf(roleVO.getCadreCommitteeLevelValue().toString().substring(1));
-												}
-												if(roleVO.getCadreCommitteeLevelValue().toString().substring(0,1).equalsIgnoreCase("2"))
-												{
-													tdpCommitteeLevelId = 8L;//ward
-													levelValue = Long.valueOf(roleVO.getCadreCommitteeLevelValue().toString().substring(1));
-												}
-											}
-											else if(tdpCommitteeLevelId.longValue() == 2L)
-											{
-												if(roleVO.getCadreCommitteeLevelValue().toString().substring(0,1).equalsIgnoreCase("1"))
+												if(userAddress.getLocalElectionBody() != null)
 												{
 													tdpCommitteeLevelId = 7L;
-													levelValue = Long.valueOf(roleVO.getCadreCommitteeLevelValue().toString().substring(1));
+													levelValue = userAddress.getLocalElectionBody().getLocalElectionBodyId();
 												}
-												if(roleVO.getCadreCommitteeLevelValue().toString().substring(0,1).equalsIgnoreCase("2"))
+												else if(userAddress.getTehsil() != null)
 												{
 													tdpCommitteeLevelId = 5L;
-													levelValue = Long.valueOf(roleVO.getCadreCommitteeLevelValue().toString().substring(1));
+													levelValue = userAddress.getTehsil().getTehsilId();
 												}
+												else
+												{
+													surveyCadreResponceVO.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+													surveyCadreResponceVO.setStatus(" Corrosponding Location is not available... ");
+													break;
+												}
+												
+												cadreCommitteeService.saveElectrolInfo(cadreRegistrationVO.getTdpCadreId(),tdpCommitteeLevelId,levelValue,committeeMngtType,eligibleRoles);
 											}
-											
-											cadreCommitteeService.saveElectrolInfo(cadreRegistrationVO.getTdpCadreId(),tdpCommitteeLevelId,levelValue,tdpCommitteeTypeId,committeeMngtType,tdpCommitteeId,eligibleRoles);
-											//ResultStatus resultStatus = cadreCommitteeService.saveCadreCommitteDetails(cadreRegistrationVO.getTdpCadreId(),cadreRoleId);
-											//surveyCadreResponceVO.setErrorCode(String.valueOf(resultStatus.getResultCode()));
 									}
 								}
 								
 							}
-							
 						}
 					}
 				}
