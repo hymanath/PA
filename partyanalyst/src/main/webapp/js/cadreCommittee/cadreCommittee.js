@@ -517,7 +517,7 @@
 	
 	function clearDiv(divId)
 	{
-		 var where_to= confirm("Are you want remove it?");
+		 var where_to= confirm("Do you want to remove this information from profile?");
 		 if (where_to== true)
 			 $('#'+divId+'').html('');		
 	}
