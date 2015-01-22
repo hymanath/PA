@@ -23,9 +23,9 @@ import com.itgrids.voterdata.VO.VoterInfo;
 public class ReadUrbanWardVoterData2 {
 	
 		static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-		static final String DB_URL = "jdbc:mysql://localhost:3372/dakavara_pa";
+		static final String DB_URL = "jdbc:mysql://192.168.11.61:3306/dakavara_pa";
 		static final String USER = "root";
-		static final String PASS = "root";
+		static final String PASS = "kamalaakar";
 		
 		static Connection conn = null;
 		static Statement stmt = null;
