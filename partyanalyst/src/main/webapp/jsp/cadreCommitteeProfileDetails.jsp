@@ -571,7 +571,15 @@
 		-->
 		<s:if test="%{cadreCommitteeVO.eligibleRoles == null || cadreCommitteeVO.eligibleRoles.size() == 0}">
 			<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 m_top20 text-center updateProfileDivId">
-				<button class="btn btn-success btn-block btn-lg m_top20" id="submitCadreFormBtnReqId" type="button" onClick="submitCadreForm();">UPDATE PROFILE  &  ADD to MANDAL Affliated Electoral</button>
+			  <s:if test="%{committeeMngtType == 1}">
+				<button class="btn btn-success btn-block btn-lg m_top20" id="submitCadreFormBtnReqId" type="button" onClick="submitCadreForm();"> UPDATE PROFILE </button>
+			  </s:if>
+			  <s:if test="%{committeeMngtType == 2}">
+				<button class="btn btn-success btn-block btn-lg m_top20" id="submitCadreFormBtnReqId" type="button" onClick="submitCadreForm();">UPDATE PROFILE  &  ADD to MANDAL ELECTORAL</button>
+			  </s:if>
+			  <s:if test="%{committeeMngtType == 3}">
+				<button class="btn btn-success btn-block btn-lg m_top20" id="submitCadreFormBtnReqId" type="button" onClick="submitCadreForm();">UPDATE PROFILE  &  ADD to MANDAL AFFILIATED ELECTORAL</button>
+			  </s:if>
 			</div>	
 		</s:if>	
 	
