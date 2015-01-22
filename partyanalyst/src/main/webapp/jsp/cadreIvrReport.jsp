@@ -26,7 +26,6 @@
  <script src="js/cardsDashBoard/js2.3.2/Chart.js"></script>
 	<script src="js/cardsDashBoard/js2.3.2/Chart.min.js"></script>
 <script type="text/javascript" src="js/exportexcel.js"></script>
-
 <title>IVR Report</title>
 <style>
 	.border-none{border:none;}
@@ -39,7 +38,7 @@
 	.text-skyblue{color:#46acca;}
 	
 	.width35p{width:185px !important;}
-	.width25p{width:125px !important;}
+	.width25p{width:150px !important;}
 	.width15p{width:150px !important;}
 	.border-radius-0{border-radius:0px;}
 	.pad-0{padding:0px;}
@@ -483,8 +482,16 @@ var apIds ="111,352,117,114,116,108,109,112,353,113,360,124,125,122,120,121,361,
 	
 		var str ='';
 		
-		str+='<canvas id="printPercChart" style="margin-top: 5px;" width="185px" height=" 150px" ></canvas>';
-		str+='<div style="margin-top: 8px;">';
+		str+='<canvas id="printPercChart" style="margin-top: 5px; width: 300px; height: 150px; margin-left: -97px;" height="150" width="300"></canvas>';
+		str+='<div  style="margin-top: -103px; margin-left: 82px; margin-right: -32px">';
+		str+='<ul class="doughnut-legend">';
+		str+='<li><span style="background-color: #5CB65C; width: 10px; height: 10px; display: block; margin-left: 73px; margin-bottom: -12px;"></span><p style="margin: 0px 0px 0px 61px; padding-bottom: 14px;">Cards Printed</p></li>';
+		str+='<li><span style="background-color: #005580; width: 10px; height: 10px; display: block; margin-left: 72px; margin-top: 0px;"></span><p style="margin-top: -14px; margin-right: 0px; margin-left: 34px;">Pending</p></li>';
+		str+='</ul>';
+		str+='<li><span style="background-color: rgb(209, 71, 65); width: 10px; height: 10px; display: block; margin-left: 97px; margin-top: -12px;"></span><p style="margin-left: 39px; margin-top: -13px; margin-bottom: 0px;">Error</p></li>';
+		str+='</ul>';
+		str+='</div>';
+		str+='<div style="margin-top: 26px;">';
 		str+='<h4 class="m-0">'+result.count+'</h4>';
 		if(state == "All"){
 		<c:if test="${sessionScope.USER.accessType == 'STATE'}">
@@ -500,8 +507,14 @@ var apIds ="111,352,117,114,116,108,109,112,353,113,360,124,125,122,120,121,361,
 		str+='</div>';
 		$("#registrationTD").html(str);
 		var str1='';
-		str1+='<canvas id="piep" style="margin-top: 5px;" height="140px" width="185px"></canvas>';
-		str1+='<div  style="margin-top: 8px;">';
+		str1+='<canvas id="piep"  style="margin-top: 5px; width: 300px; height: 150px; margin-left: -99px;" height="150" width="300"></canvas>';
+		str1+='<div  style="margin-top: -103px; margin-left: 82px; margin-right: -32px">';
+		str1+='<ul class="doughnut-legend">';
+		str1+='<li><span style="background-color: #5CB65C; width: 10px; height: 10px; display: block; margin-left: 73px; margin-bottom: -12px;"></span><p style="margin: 0px 0px 0px 61px; padding-bottom: 14px;">Avail for IVR</p></li>';
+		str1+='<li><span style="background-color: #D14741; width: 10px; height: 10px; display: block; margin-left: 72px; margin-top: 0px;"></span><p style="margin-top: -14px; margin-right: 0px; margin-left:54px;">Send to IVR</p></li>';
+		str1+='</ul>';
+		str1+='</div>';
+		str1+='<div  style="margin-top: 48px;">';
 		str1+='<h4 class="m-0">'+result.printingCompleted+'</h4>';
 		if(state == "All"){
 		<c:if test="${sessionScope.USER.accessType == 'STATE'}">
@@ -529,27 +542,9 @@ var apIds ="111,352,117,114,116,108,109,112,353,113,360,124,125,122,120,121,361,
 		var pendingCount = result.tgCount - result.printingCompleted;
 		var pendingPerc = (pendingCount / result.tgCount * 100);
 		
-		options = {
-		
+		options = {		
         animateRotate : false,
-        animateScale : false,
-			   
-		 onAnimationProgress: function()
-        {
-            this.showTooltip(this.segments, true);			
-        },
-        tooltipEvents: [],
-		tooltipYPadding:2,
-		tooltipXPadding: 2,
-		tooltipXOffset: 1000,
-		tooltipYOffset: 1000,   
-		tooltipFillColor: "rgba(0,0,0,0.5)",
-		tooltipCaretSize: 8,
-		tooltipCornerRadius:0,
-		tooltipFontSize: 12,
-		tooltipFontStyle: "normal",
-        showTooltips: true
-  
+        animateScale : false
         };
 		
 
@@ -599,9 +594,7 @@ var apIds ="111,352,117,114,116,108,109,112,353,113,360,124,125,122,120,121,361,
 		labelFontSize: '8'
 		}
 		
-		]
-		
-		
+		]		
 	  ctx = $("#piep").get(0).getContext("2d");
 	  myNewChart = new Chart(ctx).Doughnut(data,options);
 	   ctx = $("#printPercChart").get(0).getContext("2d");
@@ -648,32 +641,20 @@ function buildIvrCountByDate(result,state)
 		
 		var str ='';
 		str+='<canvas id="answerErrorChart" style="margin-left:0px; margin-right:5px; margin-top: 35px;" width="170px" height="180px"></canvas>';
-		str+='<div class="text-center">';
+		str+='<div id="legend" style="margin-top:0px;margin-left:0px;">';
+		str+='<ul class="doughnut-legend">';
+		str+='<li><span style="background-color: rgb(92, 182, 92); width: 10px; height: 10px; display: block; margin-left: 50px; margin-top: 11px;"></span><p style="margin-top: -13px; margin-right: 0px; margin-bottom: -8px;">IVR Answered</p></li>';
+		str+='<li><span style="background-color: rgb(209, 71, 65); width: 10px; height: 10px; display: block; margin-left: 50px; margin-top: 0px;"></span><p style="margin-top: -13px; margin-right: 29px; margin-left: 0px;">IVR Error</p></li>';
+		str+='</ul>';
+		str+='</div>';
+		str+='<div class="text-center" style="margin-top:0px;">';	
 		str+='<h2 class="m-0">'+result[0].total+'</h2>';
 		str+='<p>Calls IVR Total <br>Dailled</p>';
 		str+='</div>';
 		$("#totalIvrTD").html(str);
-		options = {
-		
+		options = {		
         animateRotate : false,
-        animateScale : false,
-			   
-		 onAnimationProgress: function()
-        {
-            this.showTooltip(this.segments, true);			
-        },
-        tooltipEvents: [],
-		tooltipYPadding:2,
-		tooltipXPadding: 2,
-		tooltipXOffset: 1000,
-		tooltipYOffset: 1000,   
-		tooltipFillColor: "rgba(0,0,0,0.5)",
-		tooltipCaretSize: 8,
-		tooltipCornerRadius:0,
-		tooltipFontSize: 12,
-		tooltipFontStyle: "normal",
-        showTooltips: true
-  
+        animateScale : false		
         };
 	  var data =[
 		{
@@ -695,6 +676,8 @@ function buildIvrCountByDate(result,state)
 		
 		 ctx = $("#answerErrorChart").get(0).getContext("2d");
 	     myNewChart = new Chart(ctx).Doughnut(data,options);
+		 // var legend = myNewChart.generateLegend();
+//$("#legend").html(legend);
 		buildProgressBarIVR(result);
 	}
 	function buildProgressBarIVR(result)
@@ -737,6 +720,7 @@ function buildIvrCountByDate(result,state)
 	str+='<div class="bar" style="width: '+result[0].notReceivedPerc+'%"></div>';
 	str+='</div>';
 	str+='</li>';
+	
 	str+='<li>';
 	str+='<b>Not Registered Member Phone Numbers<span>&nbsp;&nbsp;'+result[0].notMemberPerc+'%</span></b>';
 	str+='<div style="height:5px;" class="progress progress-info mb-10">';
@@ -764,24 +748,49 @@ function buildIvrCountByDate(result,state)
 	str1+='<h4 class="m-0" style="border-bottom: 1px solid rgb(204, 204, 204); padding-bottom: 10px;color:#d54a45;">IVR ERROR CALLS</h4>';
 	str1+='<ul class="unstyled">';
 	str1+='<li>';
+	str1+='<b>Rejected Calls  <span>&nbsp;&nbsp;'+result[0].callRejectedPerc+'%</span></b>';
+	str1+='<div style="height:5px;" class="progress progress-success mb-10">';
+	str1+='<div class="bar" style="width: '+result[0].callRejectedPerc+'%"></div>';
+	str1+='</div>';
+	str1+='</li>';
+	
+	str1+='<li>';
 	str1+='<b>User Busy  <span>&nbsp;&nbsp;'+result[0].userBusyPerc+'%</span></b>';
 	str1+='<div style="height:5px;" class="progress progress-success mb-10">';
 	str1+='<div class="bar" style="width: '+result[0].userBusyPerc+'%"></div>';
 	str1+='</div>';
 	str1+='</li>';
+	//str1+='<li style="border-bottom: 2px solid rgb(204, 204, 204); padding-bottom: 20px;">';
 	str1+='<li>';
 	str1+='<b>No Answer<span>&nbsp;&nbsp;'+result[0].noAnswerPerc+'%</span></b>';
 	str1+='<div style="height:5px;" class="progress progress-warning mb-10">';
 	str1+='<div class="bar" style="width: '+result[0].noAnswerPerc+'%"></div>';
 	str1+='</div>';
 	str1+='</li>';
-	str1+='<li>';
-	str1+='<b>Switch Congestion <span>&nbsp;&nbsp;'+result[0].switchCongestionPerc+'%</span></b>';
+	str1+='<li>';	
+	str1+='<b>Network Error <span>&nbsp;&nbsp;'+result[0].newtworkErrorPerc+'%</span></b>';
+	str1+='<div style="height:5px;" class="progress progress-success mb-10">';
+	str1+='<div class="bar" style="width: '+result[0].newtworkErrorPerc+'%"></div>';
+	str1+='</div>';
+	str1+='</li>';	
+	str1+='<b>Congestion Error<span>&nbsp;&nbsp;'+result[0].switchCongestionPerc+'%</span></b>';
 	str1+='<div style="height:5px;" class="progress progress-danger mb-10">';
 	str1+='<div class="bar" style="width: '+result[0].switchCongestionPerc+'%"></div>';
 	str1+='</div>';
 	str1+='</li>';
-	str1+='<li>';
+	str1+='<li>';	
+	str1+='<b>Unallocated Numbers<span>&nbsp;&nbsp;'+result[0].unallocatedNumbersPerc+'%</span></b>';
+	str1+='<div style="height:5px;" class="progress progress-danger mb-10">';
+	str1+='<div class="bar" style="width: '+result[0].unallocatedNumbersPerc+'%"></div>';
+	str1+='</div>';
+	str1+='</li>';
+	str1+='<li>';	
+	str1+='<b>Interworking Error<span>&nbsp;&nbsp;'+result[0].interworkingCountPerc+'%</span></b>';
+	str1+='<div style="height:5px;" class="progress progress-danger mb-10">';
+	str1+='<div class="bar" style="width: '+result[0].interworkingCountPerc+'%"></div>';
+	str1+='</div>';
+	str1+='</li>';
+	str1+='<li>';	
 	str1+='<b>Other <span>&nbsp;&nbsp;'+result[0].otherErrorPerc+'%</span></b>';
 	str1+='<div style="height:5px;" class="progress progress-danger mb-10">';
 	str1+='<div class="bar" style="width: '+result[0].otherErrorPerc+'%"></div>';
