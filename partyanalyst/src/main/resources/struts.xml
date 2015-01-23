@@ -9302,6 +9302,28 @@
 			</result>
 		</action>
 		
+		<action name="getImageDetailsForCheckingAction" class="tdpCadreReportAction" method="getImageDetailsForChecking">
+			<result type="json" name="success">
+				<param name="root">imageChekList</param>
+			</result>
+		</action>
+		
+		<action name="getValidOrInValidImagesAction" class="tdpCadreReportAction" method="getValidOrInValidImages">
+			<result type="json" name="success">
+				<param name="root">imageChekList</param>
+			</result>
+		</action>
+		
+		<action name="saveCheckedImagesAction" class="tdpCadreReportAction" method="saveCheckedImages">
+			<result type="json" name="success">
+				<param name="root">status</param>
+			</result>
+		</action>
+		
+		<action name="tdpCadreImagesVerification" class="tdpCadreImagesVerification">
+			<result name="success">/jsp/tdpCadreImagesVerification.jsp</result>
+		</action>
+		
 		<action name="cadreCommitteeAction" class="cadreCommitteeAction">
 			<result name="success">/jsp/cadreCommittee.jsp</result>
 			<result name="input">/jsp/loginForm.jsp?src=cadreCommitteeAction</result>

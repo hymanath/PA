@@ -1894,5 +1894,10 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="tdpCadreImagesValidDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreImagesValidDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
 	<!--  end -->
 </beans>		

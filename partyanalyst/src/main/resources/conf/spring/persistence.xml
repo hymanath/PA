@@ -549,7 +549,9 @@
 				<value>com.itgrids.partyanalyst.model.TdpCommitteeMember</value>			
 				<value>com.itgrids.partyanalyst.model.TdpCommitteeDesignation</value>
 				<value>com.itgrids.partyanalyst.model.TdpCommitteeElectrols</value>
-				<value>com.itgrids.partyanalyst.model.TdpCommitteeElectrolRoles</value>						
+				<value>com.itgrids.partyanalyst.model.TdpCommitteeElectrolRoles</value>	
+				<value>com.itgrids.partyanalyst.model.TdpCadreImagesValid</value>	
+									
 				</list>
 			
 		</property>

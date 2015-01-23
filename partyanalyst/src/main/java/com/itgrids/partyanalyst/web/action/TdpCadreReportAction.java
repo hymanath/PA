@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.io.File;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,10 +15,10 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CadreIVRResponseVO;
 import com.itgrids.partyanalyst.dto.CadreIVRVO;
-import com.itgrids.partyanalyst.dto.CadreRegAmountUploadVO;
-import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
+import com.itgrids.partyanalyst.dto.ImageCheckVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -27,16 +26,13 @@ import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationWiseReportVO;
 import com.itgrids.partyanalyst.dto.ZebraPrintDetailsVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
-import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ITdpCadreReportService;
-import com.itgrids.partyanalyst.service.impl.CadreDashBoardService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.RandomGenaration;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import com.itgrids.partyanalyst.dto.CadreIVRResponseVO;
 
 public class TdpCadreReportAction extends ActionSupport implements ServletRequestAware{
 
@@ -66,8 +62,28 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 	private IStaticDataService staticDataService;
 	private List<CadreIVRVO> ivrVOList;
 	private CadreIVRResponseVO cadreIVRResponseVO;
+	private List<ImageCheckVO> imageChekList;
+	private String status;
 	
 	
+	
+	public List<ImageCheckVO> getImageChekList() {
+		return imageChekList;
+	}
+
+	public void setImageChekList(List<ImageCheckVO> imageChekList) {
+		this.imageChekList = imageChekList;
+	}
+
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public List<CadreIVRVO> getIvrVOList() {
 		return ivrVOList;
 	}
@@ -920,6 +936,88 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 		catch(Exception e)
 		{
 			LOG.info("Entered into getAvailableDates()",e);	
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getImageDetailsForChecking()
+	{
+		LOG.info("Entered into getImageDetailsForChecking()");	
+		try 
+		{
+			jobj = new JSONObject(getTask());
+			
+			imageChekList= tdpCadreReportService.getAllNewImagesForChecking(jobj.getLong("districtId"),jobj.getLong("constituencyId"));
+			
+		} 
+		catch (Exception e) 
+		{
+			LOG.error("Exception Raised in getImageDetailsForChecking()",e);	
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String saveCheckedImages()
+	{
+		LOG.info("Entered into saveCheckedImages()");
+		try 
+		{
+			jobj = new JSONObject(getTask());
+			/*List<ImageCheckVO> inpusList = new ArrayList<ImageCheckVO>();
+			String validImages = jobj.getString("validImages");
+			if(validImages != null && validImages.length() > 0)
+			{
+	    		  String[] commentValues = validImages.split(",");
+	    		  for(String value:commentValues)
+	    		  {
+	    			  ImageCheckVO vo = new ImageCheckVO();
+	    			  vo.setTdpCadreId(Long.valueOf(value.toString()));
+	    			  vo.setName("VALID");
+	    			  inpusList.add(vo);
+	    		  }
+	    		  
+	    	 }
+			
+			String inValidImages = jobj.getString("inValidImages");
+			if(inValidImages != null && inValidImages.length() > 0)
+			{
+	    		  String[] commentValues = inValidImages.split(",");
+	    		  for(String value:commentValues)
+	    		  {
+	    			  ImageCheckVO vo = new ImageCheckVO();
+	    			  vo.setTdpCadreId(Long.valueOf(value.toString()));
+	    			  vo.setName("INVALID");
+	    			  inpusList.add(vo);
+	    		  }
+	    		  
+	    	 }*/
+			List<ImageCheckVO> inpusList = new ArrayList<ImageCheckVO>();
+			ImageCheckVO vo = new ImageCheckVO();
+			vo.setTdpCadreId(jobj.getLong("tdpCadreId"));
+			vo.setName(jobj.getString("status"));
+			inpusList.add(vo);
+			status = tdpCadreReportService.saveCheckedImages(inpusList);
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception Raised in saveCheckedImages()",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getValidOrInValidImages()
+	{
+		LOG.info("Entered into getImageDetailsForChecking()");	
+		try 
+		{
+			jobj = new JSONObject(getTask());
+			
+			imageChekList= tdpCadreReportService.getValidOrInValidImages(jobj.getLong("districtId"),jobj.getLong("constituencyId"),jobj.getString("type"));
+			
+		} 
+		catch (Exception e) 
+		{
+			LOG.error("Exception Raised in getImageDetailsForChecking()",e);	
 		}
 		return Action.SUCCESS;
 	}
