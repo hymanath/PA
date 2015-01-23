@@ -92,6 +92,14 @@
 			}).done(function(result){
 				if(result.length>0){
 					buildSelectBoxes(result);
+					if(participationCount >0)
+					{
+						addMoreElectionDetails();
+					}
+					if(isRolesCount >0)
+					{
+						addMoreRoles();
+					}
 				}
 			});
 			
@@ -140,7 +148,6 @@
 						cadreRolesArr.push(cadreCmmtObj);
 					}
 			}
-			
 			
 		}
 	}
@@ -195,14 +202,24 @@
 			
 	
 		</div>
-	
+	<s:if test="%{cadreCommitteeVO.committeePosition != null}">
+	<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center m_top20 alert alert-info existingDiv" >
+	<span style="font-weight:bold;text-transform: uppercase;"> Already  ${cadreCommitteeVO.cadreName} Added as ${cadreCommitteeVO.committeePosition} for ${cadreCommitteeVO.committeeName} in ${cadreCommitteeVO.committeeLocation} </span>
+	<input type="hidden" value="Already  ${cadreCommitteeVO.cadreName} Added as ${cadreCommitteeVO.committeePosition} for ${cadreCommitteeVO.committeeName} in ${cadreCommitteeVO.committeeLocation}. Do You want to Change his Designation  AS  ${result1} for ${result2} in ${result4} " id="existingMsg"/>
+	</div>
+	</s:if>
 	<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center m_top20 alert alert-success successDiv" >
+	<s:if test="%{committeeMngtType == 1}">
+	<span style="font-weight:bold;text-transform: uppercase;"> ADDING <span style="color:#FD2A34"> ${cadreCommitteeVO.cadreName} </span> AS <span style="color:#FD2A34"> ${result1} </span> FOR <span style="color:#FD2A34"> ${result2} </span> IN ${result4} <br> <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action?panchayatId=${panchayatId}&committeeTypeId=${committeeTypeId}&committeeId=${committeeId}&result3=${result3}">  click here If  you want CHANGE designation </a> <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 4px;"> <i class="glyphicon glyphicon-home"></i> </a> </span>
+	</s:if>
 	<s:if test="%{committeeMngtType == 2}">
 	<b> ADDING ${cadreCommitteeVO.cadreName} AS PUBLIC REPRESANTATIVE  ELECTORAL  TO ${panchayatName}</b>
 	</s:if>
 	<s:if test="%{committeeMngtType == 3}">
 	<b> ADDING ${cadreCommitteeVO.cadreName} AS MANDAL AFFILIATED ELECTORAL  TO ${panchayatName}</b>
 	</s:if>
+	
+	
 	</div>
 		<div id="profileDiv">
 		<div class="row m_top20">
@@ -214,9 +231,7 @@
 			</div>			
 		</div> 
 		
-		<form action="tdpCadreSaveRegistrationAction.action" method="POST" enctype="multipart/form-data" name="uploadCadreForm">
-			<input type="hidden" value="${cadreCommitteeVO.voterId}" name="cadreRegistrationVO.voterId" >
-				<input type="hidden" value="${cadreCommitteeVO.tdpCadreId}" name="cadreRegistrationVO.tdpCadreId" id="cadreId" >
+		<form action="tdpCadreSaveRegistrationAction.action" method="POST" enctype="multipart/form-data" name="uploadCadreForm">			
 		<div class="row m_top20">
 				<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12">
 					<div class="row">
@@ -389,8 +404,7 @@
 		
 		</s:else>
 		</div> 
-		<div class="row m_top20">
-		   <s:if test="%{committeeMngtType == 3 || committeeMngtType == 2}">
+		<div class="row m_top20">		  
 			<div class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center" style="border-bottom:1px solid #FD2A34;margin-bottom:20px;">
 				<h4>PREVIOUSLY PARTICIPATED IN ELECTION</h4>				
 			</div>			
@@ -460,7 +474,7 @@
 					<a href="javascript:{addMoreElectionDetails();}" class="btn btn-danger btn-xs ">Tap to Add+ Details</a>	
 			</div>
 			</s:else>
-			</s:if>
+			
 			<s:if test="%{committeeMngtType != null && committeeMngtType == 2}">
 			<div class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center" style="border-bottom:1px solid #FD2A34;margin-bottom:20px;">
 				<h4>ELIGIBLE DESIGNATIONS FOR PUBLIC REPRESENTATIVE</h4>				
@@ -520,23 +534,28 @@
 				<div  class="row">		
 					<div class="referencediv"></div>
 					<div class="col-md-2 col-md-offset-0  col-sm-3 col-xs-3">
-						<button class="btn btn-primary" type="button" onclick="generateOTP();">Generate OTP</button>
+						<button class="btn btn-primary" type="button" onclick="generateOTP();" id="otpButtonId">Generate OTP</button>
 					</div>
 					<div class="col-md-2 col-md-offset-0  col-sm-4 col-xs-4">
 							<input type="text" class="form-control otptextbox" placeholder="ENTER OTP NUMBER" >						
 					</div>
+					<div class="successOtpDiv"></div>
 					<div class="col-md-2 col-md-offset-0  col-sm-3 col-xs-3">
-						<button class="btn btn-success" type="button" onclick="checkOTPValid();">Validate OTP</button>
+						<button class="btn btn-success" type="button" onclick="checkOTPValid();" id="validateOTPBtnId" style="display:none;">Validate OTP</button>
 						<img id="right" style="width:35px; height:32px; margin-left:5px;" src="images/right.jpg">
 						<img id="wrong" style="width:35px; height:32px; margin-right:5px;" src="images/wrong.jpg">
 					</div>	
 				</div>
 			</div>
+	<input type="hidden" value="${cadreCommitteeVO.voterId}" name="cadreRegistrationVO.voterId" >
+	<input type="hidden" value="${cadreCommitteeVO.tdpCadreId}" name="cadreRegistrationVO.tdpCadreId" id="cadreId" >
 	<input type="hidden" value="${task}" name="eligibleRoles[0].cadreCommitteeLevelId"/>
 	<input type="hidden" value="${panchayatId}" name="eligibleRoles[0].cadreCommitteeLevelValue"/>
 	<input type="hidden" value="${committeeMngtType}" name="eligibleRoles[0].committeeMngtType" id="committeeMngtTypeId"/>
-	<input type="hidden" value="${committeeId}" name="eligibleRoles[0].cadreCommitteeId" id="cadreCommitteeId"/>
 	<input type="hidden" value="${committeeTypeId}" name="eligibleRoles[0].cadreCommitteeTypeId" id="cadreCommitteeTypeId"/>
+	<input type="hidden" value="${committeeId}" id="cadreCommitteId"/>
+	<input type="hidden" value="${result3}" name="eligibleRoles[0].cadreRoleId" id="cadrePositionId"/>
+	<input type="hidden" value="${cadreCommitteeVO.committeePosition}" id="exitingPositionId"/>
 	
 	<!--
 	<div id="assignCommitteeDiv" >
@@ -646,6 +665,7 @@
 		var areaType = '${task}';
 		var panchayatId = '${panchayatId}';
 		var committeeMngtTypeId = '${committeeMngtType}';
+		var positinId = '${result3}';
 		//alert(panchayatId);
 		$('document').ready(function(){
 		getCommitteeLocations();
@@ -668,11 +688,12 @@
 			 $('#right').hide();
 			 $('#wrong').hide();
 			 mobnum = $(".mobileNumber").val();
-			 
+			/* 
 			 if(committeeMngtTypeId == 1)
 			 {				 
 				 $('.successDiv').hide();
 			 }
+			 */
 		});	
 		
 		$("#casteId").change(function(){
@@ -688,6 +709,8 @@
 		});
 			
 		function generateOTP(){
+			$('#otpButtonId').hide();
+			$('#validateOTPBtnId').hide();
 			var mobileNo=mobnum;
 			var jsObj =	{
 				mobileNo : mobileNo
@@ -700,6 +723,8 @@
 					data:{task :JSON.stringify(jsObj)}
 			  }
 			  ).done(function(result){
+				  $('#otpButtonId').show();
+				  $('#validateOTPBtnId').show();
 					if(result!=null){
 						refid=result;
 						var str='';
@@ -707,9 +732,11 @@
 							$(".referencediv").html(str);
 					}
 			  });
+			  
 		}
 		
 		function checkOTPValid(){
+			
 			var mobileNo=$(".mobileNumber").val();
 			var otpNo=$(".otptextbox").val();
 			var jsObj =	{
@@ -731,6 +758,7 @@
 						$('.updateProfileDivId').show();
 					}
 					else{
+						$('#successOtpDiv').html(" Invalid OTP. ");
 						$('#right').hide();
 						$('#wrong').show();
 						$('.updateProfileDivId').hide();

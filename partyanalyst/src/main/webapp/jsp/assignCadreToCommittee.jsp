@@ -133,7 +133,19 @@
    
 	<script>	
 	var areaType = 1;
+	var pancayatId = '';
+	var commityTypeId = '';
+	var commityId = '';
+	var cadreRoleId = '0';
+	var isFirstPancayatSettingValues = true;
+	var isFirstCommityIdSettingValues = true;
+	var isFirstCadreRoleIdSettingValues = true;
 	
+	 pancayatId = ${panchayatId};
+	 commityTypeId = ${committeeTypeId};
+	 commityId = ${committeeId};
+	 cadreRoleId = ${result3};
+		 
 	$('document').ready(function(){
 		
 		getCommitteeLocations();
@@ -161,11 +173,21 @@
 				for(var i in result){
 				   $("#committeeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
 				}
+				if(isFirstPancayatSettingValues)
+				{
+					isFirstPancayatSettingValues = false;
+					$("#committeeLocationId").val(parseInt(${panchayatId}));
+					 $("#committeeTypeId").val(parseInt(${committeeTypeId}));
+					 getAffiliatedCadreCommitsForALoc();
+					 populateDefaultValue(2);
+					 getCommitteMembersInfo(1);
+				}
+				 
 			}
 		})
 	}
 	
-	function getAffiliatedCommitsForALoc(){
+	function getAffiliatedCadreCommitsForALoc(){
 		$("#committeeLocationIdErr").html("");
 		$("#committeeTypeIdErr").html("");
 		$("#afflitCommitteeIdErr").html("");
@@ -196,6 +218,13 @@
 				for(var i in result){
 				   $("#afflitCommitteeId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
 				}	
+				
+				if(isFirstCommityIdSettingValues)
+				{
+					isFirstCommityIdSettingValues = false;
+					$('#afflitCommitteeId').val(commityId);
+					getCommitteMembersInfo(2);
+				}
 			});
 		}else{
 			$("#committeeMainId").hide();
@@ -212,7 +241,7 @@
 		$("#afflitCommitteeId").append('<option value="0">Select Affiliated Committee</option>');
 	}
 	
-	function getCommitteCadreMembersInfo(type){
+	function getCommitteMembersInfo(type){
 		$("#committeeLocationIdErr").html("");
 		$("#committeeTypeIdErr").html("");
 		$("#afflitCommitteeIdErr").html("");
@@ -270,6 +299,12 @@
 					{
 						for(var i in result.result)
 							$("#committeePositionId").append('<option value="'+result.result[i].locationId+'">'+result.result[i].locationName+'</option>');
+						
+						if(isFirstCadreRoleIdSettingValues)
+						{
+							isFirstCadreRoleIdSettingValues = false;							
+							$("#committeePositionId").val(cadreRoleId)
+						}
 					}
 				}
 		    });
@@ -296,6 +331,7 @@
 				  if( result != null)
 				  {
 					$('.successDiv').html('<b> '+result.message+'</b>');
+					$('#assignCommitteeDiv').hide();
 				  }
 			  });
 		

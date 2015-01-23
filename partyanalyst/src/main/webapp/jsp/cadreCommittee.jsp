@@ -32,9 +32,13 @@
 	#noMembersErr{
 	  font-weight:bold;	  
 	}
-	#committeeLocationIdErr,#committeeTypeIdErr,#afflitCommitteeIdErr,#searchErrDiv,#committeLocationIdErr,#advancedSearchErrDiv{
+	#committeeLocationIdErr,#committeeTypeIdErr,#afflitCommitteeIdErr,#searchErrDiv,#committeLocationIdErr,#advancedSearchErrDiv,
+	#committeePositionIdErr{
 		font-weight:bold;
 		color:red;
+	}
+	.m_top5{
+		margin-top:5px;		
 	}
 	</style>
 	<script>
@@ -101,22 +105,27 @@
 			<div class="col-md-4 col-sm-6 col-xs-6">
 				<div class="form-group col-xs-12">
 					<label for="committeeTypeId">COMMITTEE TYPE</label>
-					<select class="form-control" id="committeeTypeId" onchange="getAffiliatedCommitsForALoc();populateDefaultValue(2);" ><option value="0">Select Committee Type</option><option value="1">Main Committee</option><option value="2">Affiliated Committee</option></select >
+					<select class="form-control" id="committeeTypeId" onchange="getAffiliatedCommitsForALoc();populateDefaultValue(2);getCommitteCadreMembersInfo(1)" ><option value="0">Select Committee Type</option><option value="1">Main Committee</option><option value="2">Affiliated Committee</option></select >
 					<div id="committeeTypeIdErr"></div>
 				 </div>
 			</div>
 		</div>
-		
-		<div id="committeeMainId" class="row">	
-			<div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-2 col-xs-12 ">
-				<div class="form-group col-xs-12">
+		<div class="row m_top20">
+			<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 " >
+				<div class="form-group col-xs-12 pull-right" id="afflitCommitteeIdDiv">
 					<label for="committeeId">AFFILIATED COMMITTEE</label>
-					<select class="form-control" onchange="hideMembers();" id="afflitCommitteeId"><option>Select Affiliated Committee</option></select >
+					<select class="form-control" onchange="hideMembers();getCommitteCadreMembersInfo(2)" id="afflitCommitteeId"><option>Select Affiliated Committee</option></select >
 					<div id="afflitCommitteeIdErr"></div>
 				 </div>
-			</div>			
-		</div> 
-		
+			</div>
+			<div class="col-md-4 col-sm-6 col-xs-6">
+				<div class="form-group col-xs-12">
+					<label for="exampleInputEmail1">COMMITTEE POSITION</label>
+					<select  class="form-control" id="committeePositionId"  name="eligibleRoles[0].cadreRoleId"><option>POSITION </option></select >
+					<div id="committeePositionIdErr"></div>
+				 </div>
+			</div>
+		</div>
 		<div class="row">	
 			<div class="col-md-12 col-sm-12 col-xs-12 text-center">
 					<ul class="list-inline">
@@ -180,15 +189,7 @@
 				<h4>SEARCH BASED ON</h4>
 				<hr style="margin: 0px;">
 			</div>
-			<div class="row m_top20" id="committeLocationsDiv" >
-			<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6  m_top20">
-				<div class="form-group col-xs-12 pull-right">
-					<label for="committeLocationId">SELECT LOCATION</label>
-					<select class="form-control" id="committeLocationId" ><option value="0">Select Location</option></select >
-					<div id="committeLocationIdErr"></div>
-				 </div>
-			</div>			
-		</div>
+			
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center">
 				<div class="form-inline m_top20">
 					<div class="radio">
@@ -205,7 +206,15 @@
 					</div>				  
 				</div>
 			</div>
-			
+			<div class="row m_top20" id="committeLocationsDiv" >
+				<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6  m_top20">
+					<div class="form-group col-xs-12 pull-right">
+						<label for="committeLocationId">SELECT LOCATION</label>
+						<select class="form-control" id="committeLocationId" ><option value="0">Select Location</option></select >
+						<div id="committeLocationIdErr"></div>
+					 </div>
+				</div>			
+			</div>
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20"  id="basicSearchDiv">	
 				<div class="row">      
 					<div class="col-md-9 col-sm-9 col-xs-9 ">
@@ -276,7 +285,31 @@
 	</div>
 
 	<script>	
-        var slickCount = 0;
+	
+	    var slickCount = 0;
+		
+		var pancayatId = '';
+		var commityTypeId = '';
+		var commityId = '';
+		var cadreRoleId = '';
+		var isFirstPancayatSettingValues = true;
+		var isFirstCommityIdSettingValues = true;
+		var isFirstCadreRoleIdSettingValues = true;
+		
+		 pancayatId = ${panchayatId};
+		 commityTypeId = ${committeeTypeId};
+		 commityId = ${committeeId};
+		 cadreRoleId = ${result3};
+		
+		$('document').ready(function(){
+			$('#committeeTypeId').val(commityTypeId);
+			if(commityTypeId ==1)
+			{
+				getAffiliatedCommitsForALoc();
+			}
+
+		});
+	
 		
 		$('document').ready(function(){			
 		
@@ -292,14 +325,10 @@
 			var id = $(this).attr('id');
 			$('#advancedSearchDiv').hide();			
 			$('#basicSearchDiv').show();
+			$('#committeLocationsDiv').hide();
 			var committeTypeID = $('#committeeMngtType').val();
-			if(committeTypeID != 1){
-				$('#committeLocationsDiv').show();				
-			}
-			else
-			{
-				$('#committeLocationsDiv').hide();
-			}
+			
+			
 			if(id.trim() == 'membershipId')
 			{
 				$('#cadreSearchType').val('membershipId');
@@ -315,6 +344,9 @@
 			
 			if(id.trim() == 'name')
 			{
+				if(committeTypeID != 1){
+					$('#committeLocationsDiv').show();				
+				}
 				if($('#basicCommitteeTab').attr('class') != 'btn btn-success btn-block arrow_selected')
 				{
 					//$('#basicCommitteeDiv1').show();
@@ -326,6 +358,9 @@
 			}
 			if(id.trim() == 'advancedSearch')
 			{			
+				if(committeTypeID != 1){
+					$('#committeLocationsDiv').show();				
+				}
 				if($('#basicCommitteeTab').attr('class') != 'btn btn-success btn-block arrow_selected')
 				{
 					//$('#basicCommitteeDiv1').show();
@@ -383,6 +418,12 @@
 				   $("#committeeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
 				   $("#committeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
 				}
+				if(pancayatId != 0 && isFirstPancayatSettingValues)
+				{
+					isFirstPancayatSettingValues = false;
+					$("#committeeLocationId,#committeLocationId").val(pancayatId);
+					getAffiliatedCommitsForALoc();
+				}
 			}
 		});
 	}
@@ -400,7 +441,12 @@
 			$("#committeeTypeIdErr").html("Please Select Committee Type");
 			return;
 		}
+		$("#afflitCommitteeId  option").remove();
+		$("#afflitCommitteeId").append('<option value="0">Select Affiliated Committee</option>');
 		if($("#committeeTypeId").val() == 2){
+			$("#afflitCommitteeId").show();
+			$("#afflitCommitteeIdDiv").show();
+			$("#committeeMainId").prop("disabled");
 			$("#committeeMainId").show();
 			var reqLocationType = "";
 			var reqLocationValue = "";
@@ -412,15 +458,33 @@
 				type : "POST",
 				url : "getAllAffiliatedCommittiesAction.action",
 				data : {locationType:reqLocationType,locationValue:reqLocationValue} ,
-			}).done(function(result){
-				$("#afflitCommitteeId  option").remove();
-				$("#afflitCommitteeId").append('<option value="0">Select Affiliated Committee</option>');
-				for(var i in result){
-				   $("#afflitCommitteeId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
-				}	
+			}).done(function(result){	
+				if(result != null)
+				{
+					for(var i in result){
+					   $("#afflitCommitteeId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+					}
+				}
+				if(isFirstCommityIdSettingValues)
+				{
+					isFirstCommityIdSettingValues = false;
+					$("#afflitCommitteeId").val(commityId);
+					hideMembers();
+					getCommitteCadreMembersInfo(2);
+				}
 			});
+					
 		}else{
-			$("#committeeMainId").hide();
+
+			$("#afflitCommitteeIdDiv").hide();
+			$("#afflitCommitteeId").hide();
+			if(isFirstCommityIdSettingValues)
+				{
+					isFirstCommityIdSettingValues = false;
+					$("#afflitCommitteeId").val(commityId);
+					hideMembers();
+					getCommitteCadreMembersInfo(2);
+				}
 		}
 		
 	}
@@ -513,7 +577,7 @@
 					  dots: false,
 					  infinite: false,
 					  speed: 300,
-					  autoplay: true,
+					  autoplay: false,
 					  autoplaySpeed: 2000,
 					  variableWidth: true
 					});  
@@ -532,6 +596,76 @@
 		$("#afflitCommitteeId  option").remove();
 		$("#afflitCommitteeId").append('<option value="0">Select Affiliated Committee</option>');
 	}
+	function getCommitteCadreMembersInfo(type){
+		
+		var areaType = $('#areaTypeId').val();
+		$("#committeeLocationIdErr").html("");
+		$("#committeeTypeIdErr").html("");
+		$("#afflitCommitteeIdErr").html("");
+		var locId = $("#committeeLocationId").val();
+		var locVal = $("#afflitCommitteeId").val();
+		if(locId == null || locId == 0){
+			$("#committeeLocationIdErr").html("Please Select Location");
+			return;
+		}
+		if($("#committeeTypeId").val() == 0){
+			$("#committeeTypeIdErr").html("Please Select Committee Type");
+			return;
+		}
+		if(type == 2)
+		{		
+			if($("#committeeTypeId").val() == 2){
+				 if(locVal == null || locVal == 0){
+					$("#afflitCommitteeIdErr").html("Please Select Affiliated Committee");
+					return;
+				}
+			}
+		}
+				
+		 $("#committeeMmbrsMainDiv").html("");
+		 var reqCommitteeType = "main";
+		 var reqLocationType = "";
+		 var title ="MAIN COMMITTEE";
+		 if($("#committeeTypeId").val() == 2){
+			 reqCommitteeType = "affiliated";
+			 title =$.trim($("#afflitCommitteeId option:selected").text())+" COMMITTEE";
+		 }
+		 $("#affComitteeMainTitle").html(title.toUpperCase());
+		 if(reqCommitteeType == "main"){
+		   if(areaType == 2){
+		     reqLocationType ="mandal";
+		   }
+		   reqLocationValue=$("#committeeLocationId").val();
+		 }else{
+			 reqLocationValue=$("#afflitCommitteeId").val();
+		 }
+		 $("#committeePositionId  option").remove();
+		 $("#committeePositionId").append('<option value="0">Select Position</option>');
+		  $.ajax({
+				type : "POST",
+				url : "getCommitteMembersInfoAction.action",
+				data : {locationType:reqLocationType,locationValue:reqLocationValue,committeeType:reqCommitteeType} ,
+			}).done(function(result){
+
+				if(result != null)				
+				{
+					if(result.result != null && result.result.length>0)
+					{
+						for(var i in result.result)
+						{
+							$("#committeePositionId").append('<option value="'+result.result[i].locationId+'">'+result.result[i].locationName+'</option>');
+						}
+						if(cadreRoleId != 0 && isFirstCadreRoleIdSettingValues)
+						{
+							isFirstCadreRoleIdSettingValues = false;
+							$("#committeePositionId").val(cadreRoleId);
+							showSearchInfo();
+						}
+					}
+				}
+		    });
+	}
+	
 	function hideMembers(){
 		$("#committeeDetailsDiv").hide();
 	}
