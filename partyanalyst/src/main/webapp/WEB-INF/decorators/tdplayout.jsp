@@ -311,28 +311,35 @@ margin-top:10px;
 					<li><a href="callCenterAction.action"><span>Call Center</span></a></li>
 					<li><a href="dailyVerificationReportsAction.action"><span>CTP Project</span></a></li>
 					<c:if test="${sessionScope.USER.isAdmin == 'true'}">
-						<li><a href="cadreDashBoardAction.action"><span>2014 Cadre Dashboard</span></a></li>
-					</c:if>
-					<c:if test="${sessionScope.USER.isAdmin == 'true'}">
-						<li><a href="tdpCadreCardsPrintingDashBoardAction.action"><span>Cards Printing Dashboard</span></a></li>
-					</c:if>
-					<c:if test="${sessionScope.USER.isAdmin == 'true'}">
-						<li><a href="cadreIvrReportAction.action"><span>  IVR Status Report  </span></a></li>
-						<li><a href="cadreCommitteeAction.action"><span>  TDP Committees Management  </span></a></li>
+						<li><a onmousedown="return false;" class="parent"><span>2014 Cadre</span></a>
+							<div>
+								<ul>
+									<li><a href="cadreDashBoardAction.action"><span>Cadre Dashboard</span></a>
+									<li><a href="tdpCadreCardsPrintingDashBoardAction.action"><span>Cadre Cards Printing Dashboard</span></a></li>
+									<li><a href="cadreIvrReportAction.action"><span> Cadre IVR Status Report DashBoard  </span></a></li>
+									<li><a href="cadreMemberShipCardDispatcherAction.action"><span>Cadre Membership Card Status </span></a></li>
+								
+								</ul>
+							</div>					
+						</li>
+						
 					</c:if>
 					<c:if test="${sessionScope.USER.isAdmin == 'true'}">
 						<li><a onmousedown="return false;" class="parent"><span>2014 Cadre Reports</span></a>
 							<div>
 								<ul>
 									<li><a href="cadreRegistrationAmountReportAction.action"><span>2014 Cadre Reconciliation Report</span></a></li>
-									<li><a href="leaderCadreDashBoardAction.action"><span>Leader Cadre DashBoard</span></a></li>
-									<li><a href="cadreMemberShipCardDispatcherAction.action"><span> Membership Card Status </span></a></li>
+									<li><a href="leaderCadreDashBoardAction.action"><span>Leader Cadre DashBoard</span></a></li>									
 									<li><a href="cadreReportsAction.action"><span> Cadre Reports - 2014 </span></a></li>
 									<li><a href="misReportAction.action"><span> MIS Reports </span></a></li>
 								</ul>
 							</div>
 						</li>
 					</c:if>
+					<c:if test="${sessionScope.USER.isAdmin == 'true'}">						
+						<li><a href="cadreCommitteeAction.action"><span>  TDP Committees Management  </span></a></li>
+					</c:if>
+					
 					</c:if>
 					
 				</ul>
