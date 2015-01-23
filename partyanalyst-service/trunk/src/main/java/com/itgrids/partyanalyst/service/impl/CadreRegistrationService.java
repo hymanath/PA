@@ -6899,7 +6899,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		tdpCadreHistoryDAO.save(history);
 	}
 	
-	public SurveyCadreResponceVO saveCommitteCadreRegistration(final List<CadreRegistrationVO> cadreRegistrationVOList,final List<CadrePreviousRollesVO> eligibleRoles,final String registrationType){
+	public SurveyCadreResponceVO saveCommitteCadreRegistration(final Long userId,final List<CadreRegistrationVO> cadreRegistrationVOList,final List<CadrePreviousRollesVO> eligibleRoles,final String registrationType){
 		final SurveyCadreResponceVO surveyCadreResponceVO = new SurveyCadreResponceVO();
 		
 		if(IConstants.ENABLE_LOGS_SAVE)
@@ -6938,13 +6938,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									}
 									
 									cadrePreviousRolesDAO.inActiveCadreRollesDetailsById(existingVoters);
-									if(eligibleRoles != null && eligibleRoles.size()>0){
-										Long committeeMngtType = eligibleRoles.get(0).getCommitteeMngtType(); 
-										if(committeeMngtType != null && committeeMngtType.longValue() > 1){
-									       cadreParticipatedElectionDAO.inActiveCadreElectionDetailsById(existingVoters);
-										}
-									}
-									
+									cadreParticipatedElectionDAO.inActiveCadreElectionDetailsById(existingVoters);
+										
 									TdpCadre tdpCadre = voterIdsList.get(0);
 									saveDataToHistoryTable(tdpCadre);
 									
@@ -7074,8 +7069,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 											Long tdpCommitteeLevelId = 0L;
 											Long levelValue = 0L;
 											Long committeeMngtType = roleVO.getCommitteeMngtType();
-										
-											
+											Long committeeTypeId = roleVO.getCadreCommitteeTypeId();
+											Long cadreRoleId = roleVO.getCadreRoleId();
 											if(userAddress != null)
 											{
 												if(userAddress.getLocalElectionBody() != null)
@@ -7095,7 +7090,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 													break;
 												}
 												
-												cadreCommitteeService.saveElectrolInfo(cadreRegistrationVO.getTdpCadreId(),tdpCommitteeLevelId,levelValue,committeeMngtType,eligibleRoles);
+												cadreCommitteeService.saveElectrolInfo(cadreRegistrationVO.getTdpCadreId(),tdpCommitteeLevelId,levelValue,committeeMngtType,eligibleRoles,committeeTypeId);
+												ResultStatus resultStatus = cadreCommitteeService.saveCadreCommitteDetails(userId, cadreRegistrationVO.getTdpCadreId(), cadreRoleId);
+												surveyCadreResponceVO.setResultCode(resultStatus.getResultCode());
+												surveyCadreResponceVO.setStatus(resultStatus.getMessage());
 											}
 									}
 								}
@@ -7106,10 +7104,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				}
 			}
 		});
-			surveyCadreResponceVO.setResultCode(ResultCodeMapper.SUCCESS);
+			//surveyCadreResponceVO.setResultCode(ResultCodeMapper.SUCCESS);
 		} catch (Exception e) {
 			surveyCadreResponceVO.setResultCode(ResultCodeMapper.FAILURE);
-			surveyCadreResponceVO.setStatus("EXCEPTION");
+			surveyCadreResponceVO.setStatus("Error Occured While Updating Details...");
 			LOG.error("Exception raised in saveCommitteCadreRegistration in CadreRegistrationService service", e);
 		}
 		

@@ -45,6 +45,7 @@ import com.itgrids.partyanalyst.model.CadreOtpDetails;
 import com.itgrids.partyanalyst.model.EducationalQualifications;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
+import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.TdpCommitteeDesignation;
@@ -278,18 +279,40 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					cadreCommitteeVO.setCasteList(stateCasteList);			
 				}
 				
-				List<Object[]> cadreCommitteeInfo = tdpCommitteeMemberDAO.getMemberInfo(tdpCadreId);
+				TdpCommitteeMember tdpCommitteeMember = tdpCommitteeMemberDAO.getTdpCommitteeMemberByTdpCadreId(tdpCadreId);
 				
-				if(cadreCommitteeInfo != null && cadreCommitteeInfo.size()>0)
+				if(tdpCommitteeMember != null)
 				{
-					for (Object[] cadreCommittee : cadreCommitteeInfo)
+					String LocationType = tdpCommitteeMember.getTdpCommitteeRole().getTdpCommittee().getTdpCommitteeLevel().getTdpCommitteeLevel();
+					String location = null;
+					Long locationValue = tdpCommitteeMember.getTdpCommitteeRole().getTdpCommittee().getTdpCommitteeLevelValue();
+					if(LocationType.equalsIgnoreCase(IConstants.PANCHAYAT))
 					{
-						cadreCommitteeVO.setCommitteeLevelId(cadreCommittee[1] != null ? Long.valueOf(cadreCommittee[1].toString()):0L);
-						cadreCommitteeVO.setCommitteeTypeId(cadreCommittee[2] != null ? Long.valueOf(cadreCommittee[2].toString()):0L);
-						cadreCommitteeVO.setCommitteeId(cadreCommittee[3] != null ? Long.valueOf(cadreCommittee[3].toString()):0L);
-						cadreCommitteeVO.setRoleId(cadreCommittee[4] != null ? Long.valueOf(cadreCommittee[4].toString()):0L);						
+						location = panchayatDAO.get(locationValue).getPanchayatName()+" Panchayat";
 					}
+					else if(LocationType.equalsIgnoreCase(IConstants.WARD))
+					{
+						location = constituencyDAO.get(locationValue).getName();
+					}
+					else if(LocationType.equalsIgnoreCase(IConstants.MANDAL))
+					{
+						location = tehsilDAO.get(locationValue).getTehsilName()+" Mandal";
+					}	
+					else if(LocationType.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION))
+					{
+						LocalElectionBody localElectionBody = localElectionBodyDAO.get(locationValue);						
+						location = localElectionBody.getName() +" "+localElectionBody.getElectionType().getElectionType();
+					}	
+					
+					String positionName = tdpCommitteeMember.getTdpCommitteeRole().getTdpRoles().getRole();
+					String committeeName = tdpCommitteeMember.getTdpCommitteeRole().getTdpCommittee().getTdpBasicCommittee().getName();
+					
+					cadreCommitteeVO.setCommitteeLocation(location);
+					cadreCommitteeVO.setCommitteePosition(positionName);
+					cadreCommitteeVO.setCommitteeName(committeeName);
+					
 				}
+				
 			}
 		} catch (Exception e) {
 			cadreCommitteeVO = null;
@@ -411,18 +434,24 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		String status = "";
 		try
 		{
-			Long otpNumberForRefNo = cadreOtpDetailsDAO.checkOTPValid(mobileNo,refNo,userId);
-			if(otpNumberForRefNo != null && otpNumberForRefNo.longValue() != 0L)
+			CadreOtpDetails cadreOtpDetails = cadreOtpDetailsDAO.checkOTPValid(mobileNo,refNo,userId);
+			if(cadreOtpDetails != null)
 			{
-				if(otpNumber.longValue() == otpNumberForRefNo.longValue())
+				if(cadreOtpDetails.getOtpNo() != null && Long.valueOf(cadreOtpDetails.getOtpNo().toString()).longValue() != 0L)
 				{
-					status = "success";
-				}
-				else
-				{
-					status = "failure";
+					if(otpNumber.longValue() == Long.valueOf(cadreOtpDetails.getOtpNo().toString()).longValue())
+					{
+						status = "success";
+						cadreOtpDetails.setIsDeleted("Y");
+						cadreOtpDetailsDAO.save(cadreOtpDetails);
+					}
+					else
+					{
+						status = "failure";
+					}
 				}
 			}
+			
 		}
 		catch (Exception e) {
 			status = null;
@@ -702,9 +731,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	}
 	
 	//Hint Please call this method in transaction only
-	public void saveElectrolInfo(Long tdpCadreId,Long tdpCommitteeLevelId,Long levelValue,Long committeeMngtType,List<CadrePreviousRollesVO> eligibleRoles){
+	public void saveElectrolInfo(Long tdpCadreId,Long tdpCommitteeLevelId,Long levelValue,Long committeeMngtType,List<CadrePreviousRollesVO> eligibleRoles,Long tdpCommitteeTypeId){
 
-			Long tdpCommitteeTypeId = 0L;
 			if(eligibleRoles != null && eligibleRoles.size() > 0)
 			{
 				
@@ -714,7 +742,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					{
 						tdpCommitteeTypeId = 1L;
 					}
-					if(committeeMngtType.longValue() == 3L)
+					else if(committeeMngtType.longValue() == 3L)
 					{
 						tdpCommitteeTypeId = 2L;
 					}
@@ -773,12 +801,19 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return designationsList;
 	}
 	
-	public ResultStatus saveCadreCommitteDetails(final Long tdpCadreId,final Long tdpCommitteeRoleId)
+	public ResultStatus saveCadreCommitteDetails(final Long userId, final Long tdpCadreId,final Long tdpCommitteeRoleId)
 	{
 		ResultStatus status = new ResultStatus();
 	
-		try {
+	//	try {
 			boolean isEligible = true;
+			boolean isExist = false;
+			List<Object[]> cadreCommitteeInfo = tdpCommitteeMemberDAO.getMemberInfo(tdpCadreId);
+			if(cadreCommitteeInfo != null && cadreCommitteeInfo.size()>0)
+			{
+				isExist = true;
+			}
+			
 			TdpCommitteeRole tdpCommitteeRole = tdpCommitteeRoleDAO.get(tdpCommitteeRoleId);
 			
 			Long maxMembers = tdpCommitteeRole.getMaxMembers();
@@ -801,29 +836,49 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			
 			if(isEligible)				
 			{
-
-				TdpCommitteeMember tdpCommitteeMember = new TdpCommitteeMember(); 
+				DateUtilService dateUtilService = new DateUtilService();
+				
+				TdpCommitteeMember tdpCommitteeMember = null;
+				if(isExist)
+				{
+					tdpCommitteeMember = tdpCommitteeMemberDAO.getTdpCommitteeMemberByTdpCadreId(tdpCadreId);
+				}
+				else
+				{
+					tdpCommitteeMember = new TdpCommitteeMember(); 
+				}
 				
 				tdpCommitteeMember.setTdpCommitteeRoleId(tdpCommitteeRoleId);
 				tdpCommitteeMember.setTdpCadreId(tdpCadreId);
 				tdpCommitteeMember.setIsActive("Y");
 				tdpCommitteeMember.setTdpCommitteeEnrollmentId(IConstants.CURRENT_ENROLLMENT_ID);
+				tdpCommitteeMember.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				tdpCommitteeMember.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				if(isExist)
+				{
+					tdpCommitteeMember.setUpdatedUserId(userId);
+				}
+				else
+				{
+					tdpCommitteeMember.setInsertedUserId(userId);
+				}
+				
 				tdpCommitteeMemberDAO.save(tdpCommitteeMember);
 					
-				status.setMessage(IConstants.SUCCESS);
+				status.setMessage(" Cadre Assigned Successfully... ");
 				status.setResultCode(0);
 			}
 			else
 			{
-				status.setMessage("Max Members are already Added for This Position .");
+				status.setMessage(" Max Members are already Added for This Position . ");
 				status.setResultCode(2);
 			}
 			
-		} catch (Exception e) {
-			status.setMessage("FAILURE");
+		/*} catch (Exception e) {
+			status.setMessage(" Error Occured While Updating Details... ");
 			status.setResultCode(1);
 			LOG.error("Exception raised in saveCadreCommitteDetails", e);
-		}
+		}*/
 		return status;
 	}
 	
