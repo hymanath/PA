@@ -8,6 +8,7 @@ import com.itgrids.partyanalyst.dto.CadreIVRResponseVO;
 import com.itgrids.partyanalyst.dto.CadreIVRVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.ImageCheckVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationWiseReportVO;
@@ -64,5 +65,8 @@ public interface ITdpCadreReportService {
      public CadreIVRResponseVO getIvrPreviousCallBasicInfo(Date startDate,Date endDate);
      public List<String> getPreviousPollsAvailableDates();
      public CadreIVRResponseVO getIvrPreviousCallInfo(String type,Date startDate,Date toDate);
+     public String saveCheckedImages(List<ImageCheckVO> inputsList);
+     public List<ImageCheckVO> getAllNewImagesForChecking(Long dId,Long cId);
+     public List<ImageCheckVO> getValidOrInValidImages(Long dId,Long cId,String type);
      
 }
