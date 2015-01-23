@@ -745,7 +745,7 @@ function buildIvrCountByDate(result,state)
 	$("#successIvrTD").html(str);
 	var str1='';
 	str1+='<div class="row-fluid">';
-	str1+='<h4 class="m-0" style="border-bottom: 1px solid rgb(204, 204, 204); padding-bottom: 10px;color:#d54a45;">IVR ERROR CALLS</h4>';
+	str1+='<h4 class="m-0" style="border-bottom: 1px solid rgb(204, 204, 204); padding-bottom: 10px;color:#D14741;">UNANSWERED CALLS</h4>';
 	str1+='<ul class="unstyled">';
 	str1+='<li>';
 	str1+='<b>Rejected Calls  <span>&nbsp;&nbsp;'+result[0].callRejectedPerc+'%</span></b>';
@@ -766,7 +766,8 @@ function buildIvrCountByDate(result,state)
 	str1+='<div style="height:5px;" class="progress progress-warning mb-10">';
 	str1+='<div class="bar" style="width: '+result[0].noAnswerPerc+'%"></div>';
 	str1+='</div>';
-	str1+='</li>';
+	str1+='</li><br>';
+	str1+='<h4 class="m-0" style="border-bottom: 1px solid rgb(204, 204, 204); padding-bottom: 10px;color:#d54a45;">IVR ERROR CALLS</h4>';
 	str1+='<li>';	
 	str1+='<b>Network Error <span>&nbsp;&nbsp;'+result[0].newtworkErrorPerc+'%</span></b>';
 	str1+='<div style="height:5px;" class="progress progress-success mb-10">';
