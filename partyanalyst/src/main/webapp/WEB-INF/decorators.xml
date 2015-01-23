@@ -311,7 +311,8 @@
 			 <pattern>/tdpCallCenterAction*</pattern>
 			 <pattern>/tdpCadreVolunteersDetailsAction*</pattern>
 			 <pattern>/cadreIvrReportAction*</pattern>		
-			 <pattern>/cadreCommitteeSearchAction*</pattern>	
+			 <pattern>/cadreCommitteeSearchAction*</pattern>			
+			 <pattern>/tdpCadreImagesVerification*</pattern>	
 		 </decorator>
        
        <decorator name="tdpHome_old" page="tdplayout_old.jsp">

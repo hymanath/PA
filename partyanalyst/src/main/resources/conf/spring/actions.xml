@@ -1523,10 +1523,10 @@
 	<bean id="cadreMap" class="com.itgrids.partyanalyst.web.action.CadreMapAction" singleton="false">
 		
 	</bean>
-	<bean id="tdpCallCenterAction" class="com.itgrids.partyanalyst.web.action.TdpCallCenterAction" singleton="false">
+	<bean id="tdpCallCenterAction" class="com.itgrids.partyanalyst.web.action.TdpCallCenterAction" singleton="false"></bean>
 	
+	<bean id="tdpCadreImagesVerification" class="com.itgrids.partyanalyst.web.action.TdpCadreImagesVerificationAction" singleton="false"></bean>
 	
-	</bean>
 	<bean id="tdpCadreVolunteerAction" class="com.itgrids.partyanalyst.web.action.TdpCadreVolunteerAction" singleton="false">
 	<property name="tdpCadreReportService" ref="tdpCadreReportService" />
 	<property name="entitlementsHelper" ref="entitlementsHelper" />

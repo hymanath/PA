@@ -2443,6 +2443,7 @@
 		  <property name="cadreIVREnquiryDAO" ref="cadreIVREnquiryDAO" />
 		  <property name="tehsilDAO" ref="tehsilDAO" />
           <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+          <property name="tdpCadreImagesValidDAO" ref="tdpCadreImagesValidDAO" />
      </bean>
      
      <bean name="cadreRegistrationForOtherStatesService"  class="com.itgrids.partyanalyst.service.impl.CadreRegistrationForOtherStatesService">
