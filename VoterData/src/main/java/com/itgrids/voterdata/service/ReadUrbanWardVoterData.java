@@ -92,7 +92,7 @@ public class ReadUrbanWardVoterData {
                     sb.append(stripper.getText(pd));
                     //System.out.println("File text:"+stripper.getText(pd));
                     
-                    //outwriter.write(sb.toString());                   
+                    outwriter.write(sb.toString());                   
                     String [] fileName = input.getName().split("-");
                     
                     int strLen = sb.toString().length();
@@ -133,7 +133,7 @@ public class ReadUrbanWardVoterData {
                         }
                     }
                     
-                    saveVotersData(voterInfoList);
+                    //saveVotersData(voterInfoList);
                     if (pd != null) {
                         pd.close();
                     }

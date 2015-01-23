@@ -20,7 +20,7 @@ import org.apache.pdfbox.util.PDFTextStripper;
 
 import com.itgrids.voterdata.VO.VoterInfo;
 
-public class ReadUrbanWardVoterData2 {
+public class ReadCorporationWardData {
 	
 		static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
 		static final String DB_URL = "jdbc:mysql://192.168.11.61:3306/dakavara_pa";
@@ -40,7 +40,7 @@ public class ReadUrbanWardVoterData2 {
     		for(VoterInfo info : votersInfoList)
     		{
     			try{
-    			String insertQuery = "INSERT INTO ward_voter(muncipality, ward_no, voter_id) VALUES ('"+info.getConstituency()+"','"+info.getBoothNo()+"','"+info.getVoterId()+"')";
+    			String insertQuery = "INSERT INTO ward_voter(muncipality, ward_no, voter_id, uid,serial_no) VALUES ('"+info.getConstituency()+"','"+info.getBoothNo()+"','"+info.getVoterId()+"','"+info.getUid()+"','"+info.getsNo()+"')";
     			stmt.executeUpdate(insertQuery);
     			}catch(Exception e)
     			{
@@ -67,7 +67,7 @@ public class ReadUrbanWardVoterData2 {
         int totalVotersCount = 0;
         int i = 0;
         
-        Pattern p = Pattern.compile("([A-Z\\d]*)\\r\\n");
+        Pattern p = Pattern.compile("([0-9\\-_/A-Za-z\\.\\?\\+\\=\\`\\/\\*\\&\\,\\:\\;\\(\\)\\\\]*)\\s([0-9]*)");
         
         try {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(new File(args[0] + "/" + "VotersList.txt")));
@@ -92,36 +92,38 @@ public class ReadUrbanWardVoterData2 {
                     sb.append(stripper.getText(pd));
                     //System.out.println("File text:"+stripper.getText(pd));
                     
-                    sb = formatText(sb);
-                    
-                    //outwriter.write(sb.toString());                   
+                    outwriter.write(sb.toString());                   
                     String [] fileName = input.getName().split("-");
                     
                    /* int strLen = sb.toString().length();
-                    String lstr = sb.toString().substring(strLen-100,strLen);
+                    String lstr = sb.toString().substring(strLen-100,strLen);*/
                     //System.out.println(lstr);
                     //saveCounts(fileName[0].trim(),fileName[2].trim().replaceAll(".pdf",""),lstr);
-*/
+
                     Matcher m = p.matcher(sb);
                     
                     VoterInfo voter = null;
                     List<VoterInfo> voterInfoList = new ArrayList<VoterInfo>(10);
+                    List<String> list = null;
                     
                     while (m.find()) 
                     {
                         try{
-                        String voterId = m.group(1).replaceAll("\\r\\n","").trim();
-                        if(validateVoterId(voterId))
+                        String str = m.group(1).replaceAll("\\r\\n","").trim();
+                        if(str.contains("-") && str.contains("/"))
                         {
+	                        list = splitString(str);
 	                    	i++;
 	                        voter = new VoterInfo();
-	                        voter.setVoterId(voterId.trim());
+	                        voter.setUid(list.get(0));
+	                        voter.setVoterId(list.get(1));
+	                        voter.setsNo(Long.valueOf(m.group(2).replaceAll("\\r\\n","").trim()));
 	                        
 	                        voter.setConstituency(fileName[0].trim());
 	                        voter.setBoothNo(fileName[2].replaceAll(".pdf","").trim());
 	                        totalVotersCount++;
 	                        voterInfoList.add(voter);
-	                        voterInfo = i +"\tMuncipality -- " + voter.getConstituency() + "\tWard No -- " + voter.getBoothNo().replaceAll(".pdf","") + "\tvoter ID -- " + voter.getVoterId();
+	                        voterInfo = i +"\tMuncipality -- " + voter.getConstituency() + "\tWard No -- " + voter.getBoothNo().replaceAll(".pdf","") + "\t Serial No -- "+voter.getsNo()+"\tvoter ID -- " + voter.getVoterId()+"\tUUID -- " + voter.getUid()+"";
 	                        System.out.println(voterInfo);
 	                        writer.write(voterInfo+"\n");
                         }
@@ -131,7 +133,7 @@ public class ReadUrbanWardVoterData2 {
                         }
                     }
                     
-                    saveVotersData(voterInfoList);
+                    //saveVotersData(voterInfoList);
                     if (pd != null) {
                         pd.close();
                     }
@@ -145,34 +147,62 @@ public class ReadUrbanWardVoterData2 {
             e.printStackTrace();
         }
     }
-
-    public static StringBuilder formatText(StringBuilder builder)
+    public static List<String> splitString(String str)
+    {
+    	List<String> list = new ArrayList<String>();
+    	try{
+    	int index = str.indexOf("/");
+    	
+    	for(int i=index;i<str.length();i++)
+    	{
+    		if(Character.isLetter(str.charAt(i)))
+    		{
+    			String str1 = str.substring(0,i);
+    			String str2 = str.substring(i);
+    			list.add(str1);
+    			list.add(str2);
+    			return list;
+    		}
+    	}
+    	}catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
+    	return list;
+    }
+    
+    public static void saveCounts(String muncipality,String wardNo,String lstr)
     {
     	try{
-    		String str = builder.toString();
-    		str = str.replaceAll("\t", "");
+    		//System.out.println(lstr);
+    		int mcount = 0;
+    		int fcount = 0;
+    		int tcount = 0;
+            lstr = lstr.replaceAll(",", "");
+            String[] lsArr = lstr.split("\\r\\n");
+            //System.out.println(lsArr[lsArr.length-2]);
+            String[] cArr = lsArr[lsArr.length-2].split(" ");
+            mcount = Integer.valueOf(cArr[1].trim());
+            fcount = Integer.valueOf(cArr[2].trim());
+            tcount = Integer.valueOf(cArr[3].trim());
+            
+            Class.forName("com.mysql.jdbc.Driver");
+    		conn = DriverManager.getConnection(DB_URL,USER,PASS);
+    		stmt = conn.createStatement();
     		
-    		return new StringBuilder(str);
-    	}catch (Exception e) {
+    		try{
+    			String insertQuery = "INSERT INTO ward_voter_count(muncipality, ward_no, male, female, total) VALUES ('"+muncipality+"','"+wardNo+"','"+mcount+
+    				"','"+fcount+"','"+tcount+"')";
+    			stmt.executeUpdate(insertQuery);
+    			}catch(Exception e)
+    			{
+    				System.out.println("Exception is -"+e);
+    			}
+    		
+    	}catch(Exception e)
+    	{
     		e.printStackTrace();
-    		return builder;
     	}
     }
     
-    public static boolean validateVoterId(String voterId)
-    {
-    	try{
-    		if(voterId.trim().length() < 8)
-    			return false;
-    		else if(Character.isLetter(voterId.charAt(0)) && Character.isLetter(voterId.charAt(1))
-    				&& Character.isDigit(voterId.charAt(voterId.trim().length()-1)))
-    			return true;
-    		else
-    			return false;
-    		
-    	}catch (Exception e) {
-    		e.printStackTrace();
-    		return false;
-    	}
-    }
 }
