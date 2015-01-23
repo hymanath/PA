@@ -55,7 +55,28 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private String preEnrollNo;
 			
 	private Long voterId;
+	private String committeeLocation;
+	private String committeePosition;
+	private String committeeName;
 	
+	public String getCommitteeLocation() {
+		return committeeLocation;
+	}
+	public void setCommitteeLocation(String committeeLocation) {
+		this.committeeLocation = committeeLocation;
+	}
+	public String getCommitteePosition() {
+		return committeePosition;
+	}
+	public void setCommitteePosition(String committeePosition) {
+		this.committeePosition = committeePosition;
+	}
+	public String getCommitteeName() {
+		return committeeName;
+	}
+	public void setCommitteeName(String committeeName) {
+		this.committeeName = committeeName;
+	}
 	public Long getVoterId() {
 		return voterId;
 	}
