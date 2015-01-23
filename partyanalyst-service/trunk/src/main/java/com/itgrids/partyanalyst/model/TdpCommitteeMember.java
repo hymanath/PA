@@ -32,6 +32,13 @@ public class TdpCommitteeMember {
 	private String isActive;
 	private Long tdpCommitteeEnrollmentId;
 	private TdpCommitteeEnrollment tdpCommitteeEnrollment;
+	private User insertedUser;
+	private User updatedUser;
+	private Long insertedUserId;
+	private Long updatedUserId;	
+	private Date insertedTime;
+	private Date updatedTime;
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -135,6 +142,65 @@ public class TdpCommitteeMember {
 			TdpCommitteeEnrollment tdpCommitteeEnrollment) {
 		this.tdpCommitteeEnrollment = tdpCommitteeEnrollment;
 	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="inserted_user_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getInsertedUser() {
+		return insertedUser;
+	}
+
+	public void setInsertedUser(User insertedUser) {
+		this.insertedUser = insertedUser;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="updated_user_id",updatable = false, insertable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUpdatedUser() {
+		return updatedUser;
+	}
+
+	public void setUpdatedUser(User updatedUser) {
+		this.updatedUser = updatedUser;
+	}
+
+	@Column(name="inserted_user_id")
+	public Long getInsertedUserId() {
+		return insertedUserId;
+	}
+
+	public void setInsertedUserId(Long insertedUserId) {
+		this.insertedUserId = insertedUserId;
+	}
 	
+	@Column(name="updated_user_id")
+	public Long getUpdatedUserId() {
+		return updatedUserId;
+	}
+
+	public void setUpdatedUserId(Long updatedUserId) {
+		this.updatedUserId = updatedUserId;
+	}
+
+	@Column(name = "inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
+	}
+
+	@Column(name = "updated_time")
+	public Date getUpdatedTime() {
+		return updatedTime;
+	}
+
+	public void setUpdatedTime(Date updatedTime) {
+		this.updatedTime = updatedTime;
+	}
 	
 }
