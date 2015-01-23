@@ -3709,7 +3709,6 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			query.setParameter("tdpCadreId",tdpCadreId);
 			return (String)query.uniqueResult();
 		}
-		
 		  public List<Object[]> getTdpCadreDetailsByVoterCardNoForCallCenter(String queryString)
 			{
 				StringBuilder queryStr = new StringBuilder();
@@ -3814,5 +3813,40 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				return query.list();
 				
 			}
+		  
+		  public List<TdpCadre> getTdpCadreDetails(String uuid)
+		  {
+			  Query query = getSession().createQuery("select model from TdpCadre model where model.uniqueKey = :uuid and model.isDeleted = 'N' and model.enrollmentYear= 2014");
+			  query.setParameter("uuid",uuid);
+			  return query.list();
+			  
+		  }
+		  
+		  public List<Object[]> getReqDetailsForIMageChecking(Long districtId,Long constituencyId)
+		  {
+			  StringBuffer queryString = new StringBuffer();
+			  queryString.append("select model.tdpCadreId,model.image,model.firstname from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear= 2014 and model.image is not null and model.photoType = 'NEW' and model.cardNumber is null ");
+			  if(districtId != null && districtId > 0)
+			  {
+				  queryString.append(" and model.userAddress.district.districtId = :districtId");
+			  }
+			  if(constituencyId != null && constituencyId > 0)
+			  {
+				  queryString.append(" and model.userAddress.constituency.constituencyId = :constituencyId");
+			  }
+			  queryString.append(" and model.tdpCadreId not in (select model1.tdpCadreId from TdpCadreImagesValid model1)");
+			 // queryString.append(" limit 0 ,100");
+			  Query query = getSession().createQuery(queryString.toString());
+			  if(districtId != null && districtId > 0)
+			  {
+				  query.setParameter("districtId", districtId);
+			  }
+			  if(constituencyId != null && constituencyId > 0)
+			  {
+				  query.setParameter("constituencyId", constituencyId);
+			  }
+			  return query.list();
+					  
+		  }
 
 }

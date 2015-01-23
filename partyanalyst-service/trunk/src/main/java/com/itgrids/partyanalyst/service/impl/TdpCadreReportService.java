@@ -53,6 +53,7 @@ import com.itgrids.partyanalyst.dao.ILocalNameConstantDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCallCenterCommentDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCallCenterFeedbackDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreImagesValidDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreSmsStatusDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTeluguNamesDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreVolunteerConstituencyDAO;
@@ -63,13 +64,13 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IZebraPrintDetailsDAO;
-import com.itgrids.partyanalyst.dao.hibernate.LocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreIVRResponseVO;
 import com.itgrids.partyanalyst.dto.CadreIVRVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.ImageCheckVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
@@ -82,6 +83,7 @@ import com.itgrids.partyanalyst.model.LocalNameConstant;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.TdpCadreCallCenterComment;
 import com.itgrids.partyanalyst.model.TdpCadreCallCenterFeedback;
+import com.itgrids.partyanalyst.model.TdpCadreImagesValid;
 import com.itgrids.partyanalyst.model.TdpCadreSmsStatus;
 import com.itgrids.partyanalyst.model.TdpCadreVolunteer;
 import com.itgrids.partyanalyst.model.TdpCadreVolunteerConstituency;
@@ -125,7 +127,13 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	private ICadreIVREnquiryDAO cadreIVREnquiryDAO;
 	private ITehsilDAO tehsilDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
+	private ITdpCadreImagesValidDAO tdpCadreImagesValidDAO;
 	
+	
+	public void setTdpCadreImagesValidDAO(
+			ITdpCadreImagesValidDAO tdpCadreImagesValidDAO) {
+		this.tdpCadreImagesValidDAO = tdpCadreImagesValidDAO;
+	}
 	public ICadreRegistrationInfoDAO getCadreRegistrationInfoDAO() {
 		return cadreRegistrationInfoDAO;
 	}
@@ -5328,6 +5336,136 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         		 e.printStackTrace();
         	 }
 			
+         }
+         
+         /**
+          * This Service is used for checking the images is weater good are not for card printing
+          * @author Prasad Thiragabathina
+          * @param dId  DistrictId
+          * @param cId  ConstituencyId
+          * @return List<ImageCheckVO>
+          */
+         public List<ImageCheckVO> getAllNewImagesForChecking(Long dId,Long cId)
+         {
+        	 LOG.info("Entered into getAllNewImagesForChecking service in TdpCadreReportService");
+        	 List<ImageCheckVO> returnList = null;
+        	 try 
+        	 {
+				if(dId != null && dId > 0)
+				{
+					List<Object[]> reqValues = tdpCadreDAO.getReqDetailsForIMageChecking(dId,cId);
+					if(reqValues != null && reqValues.size() > 0)
+					{
+						returnList = new ArrayList<ImageCheckVO>();
+						for (Object[] parms : reqValues) 
+						{
+							ImageCheckVO imageCheckVO = new ImageCheckVO();
+							if(parms[0] != null)
+							{
+								imageCheckVO.setTdpCadreId((Long)parms[0]);
+								imageCheckVO.setImage(parms[1].toString());
+								imageCheckVO.setName(parms[2] != null ? parms[2].toString():"");
+								returnList.add(imageCheckVO);
+							}
+							
+						}
+					}
+				}
+			 }
+        	 catch (Exception e) 
+        	 {
+				LOG.error("Exception Raised in getAllNewImagesForChecking service in TdpCadreReportService", e);
+			 }
+        	 return returnList;
+         }
+         
+         /**
+          * This Service is used for getting Valid or In Valid images 
+          * @author Prasad Thiragabathina
+          * @param dId
+          * @param cId
+          * @param type
+          * @return List<ImageCheckVO>
+          */
+         public List<ImageCheckVO> getValidOrInValidImages(Long dId,Long cId,String type)
+         {
+        	 LOG.info("Entered into getAllNewImagesForChecking service in TdpCadreReportService");
+        	 List<ImageCheckVO> returnList = null;
+        	 try 
+        	 {
+				if(dId != null && dId > 0)
+				{
+					List<Object[]> reqValues = tdpCadreImagesValidDAO.getValidOrInValidDetails(dId,cId,type);
+					if(reqValues != null && reqValues.size() > 0)
+					{
+						returnList = new ArrayList<ImageCheckVO>();
+						for (Object[] parms : reqValues) 
+						{
+							ImageCheckVO imageCheckVO = new ImageCheckVO();
+							if(parms[0] != null)
+							{
+								imageCheckVO.setTdpCadreId((Long)parms[0]);
+								imageCheckVO.setImage(parms[1].toString());
+								imageCheckVO.setName(parms[2] != null ? parms[2].toString():"");
+								returnList.add(imageCheckVO);
+							}
+							
+						}
+					}
+				}
+			 }
+        	 catch (Exception e) 
+        	 {
+				LOG.error("Exception Raised in getAllNewImagesForChecking service in TdpCadreReportService", e);
+			 }
+        	 return returnList;
+         }
+         /**
+          * This Service is used for saving checkg images weather valied or not
+          * @author Prasad Thiragabathina
+          * @param inputsList
+          * @return String
+          */
+         public String saveCheckedImages(List<ImageCheckVO> inputsList)
+         {
+        	 LOG.info("Entered into saveCheckedImages service in TdpCadreReportService");
+        	 String status = null;
+        	 try 
+        	 {
+				if(inputsList != null && inputsList.size() > 0)
+				{
+					for (ImageCheckVO imageCheckVO : inputsList) 
+					{
+						if(imageCheckVO.getTdpCadreId() != null && imageCheckVO.getName() != null)
+						{
+							 List<TdpCadreImagesValid> tdpCadreImagesValidList = tdpCadreImagesValidDAO.checkForExists(imageCheckVO.getTdpCadreId());
+							if(tdpCadreImagesValidList != null && tdpCadreImagesValidList.size() > 0)
+							{
+								TdpCadreImagesValid tdpCadreImagesValid = tdpCadreImagesValidList.get(0);
+								tdpCadreImagesValid.setStatus(imageCheckVO.getName());
+								tdpCadreImagesValidDAO.save(tdpCadreImagesValid);
+							}
+							else
+							{
+								TdpCadreImagesValid tdpCadreImagesValid = new TdpCadreImagesValid();
+								tdpCadreImagesValid.setTdpCadreId(imageCheckVO.getTdpCadreId());
+								tdpCadreImagesValid.setStatus(imageCheckVO.getName());
+								tdpCadreImagesValidDAO.save(tdpCadreImagesValid);
+							}
+								
+							
+							
+						}
+						status = "SUCCESS";
+					}
+				}
+			 } 
+        	 catch (Exception e)
+        	 {
+        		 status = "EXCEPTION";
+        		 LOG.error("Exception Raised in saveCheckedImages service in TdpCadreReportService", e);
+			 }
+        	 return status;
          }
           
 }
