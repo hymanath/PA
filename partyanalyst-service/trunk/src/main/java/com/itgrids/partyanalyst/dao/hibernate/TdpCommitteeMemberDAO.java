@@ -43,4 +43,9 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 	//	query.setParameter("tdpCadreId", tdpCadreId);
 		return query.list();
 	}
+	public TdpCommitteeMember getTdpCommitteeMemberByTdpCadreId(Long tdpCadreId){
+		Query query = getSession().createQuery("select model from TdpCommitteeMember model where model.tdpCadreId =:tdpCadreId ");
+		query.setParameter("tdpCadreId", tdpCadreId);
+		return (TdpCommitteeMember) query.uniqueResult();
+	}
 }

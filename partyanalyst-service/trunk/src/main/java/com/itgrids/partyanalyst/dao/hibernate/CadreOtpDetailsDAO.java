@@ -26,14 +26,14 @@ public class CadreOtpDetailsDAO extends GenericDaoHibernate<CadreOtpDetails, Lon
 		return count;
 	}
 	
-	public Long checkOTPValid(Long mobileNo,Long refNo,Long  userId)
+	public CadreOtpDetails checkOTPValid(Long mobileNo,Long refNo,Long  userId)
 	{
-		Query query = getSession().createQuery("select model.otpNo from CadreOtpDetails model where " +
-				" model.mobileNo like '"+mobileNo+"'  and model.user.userId like '"+userId+"' and model.otpReferenceId like '"+refNo+"'  and model.isDeleted = 'N' ");
+		Query query = getSession().createQuery("select model from CadreOtpDetails model where " +
+				" model.mobileNo like '"+mobileNo+"'  and model.user.userId =:userId and model.otpReferenceId =:refNo and model.isDeleted = 'N' ");
 		//query.setParameter("mobileNo", mobileNo);
-		//query.setParameter("userId", userId);
-		//query.setParameter("refNo", refNo);
-		return Long.valueOf(query.uniqueResult().toString());
+		query.setParameter("userId", userId);
+		query.setParameter("refNo", refNo);
+		return (CadreOtpDetails) query.uniqueResult();
 	}
 	
 	public List<String> checkOTP(String otp)
