@@ -102,8 +102,15 @@ public class CadreRegistrationVO implements Serializable{
 	private String    absolutePath;
 	
 	private Long 		familyRelationId;
+	private String 		isSmartPhone;
 	
 	
+	public String getIsSmartPhone() {
+		return isSmartPhone;
+	}
+	public void setIsSmartPhone(String isSmartPhone) {
+		this.isSmartPhone = isSmartPhone;
+	}
 	public Long getTdpCadreId() {
 		return tdpCadreId;
 	}
