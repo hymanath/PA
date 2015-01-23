@@ -1598,7 +1598,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				List<CadreRegistrationVO> cadreRegistrationVOList = new ArrayList<CadreRegistrationVO>();
 				cadreRegistrationVO.setPath(IWebConstants.STATIC_CONTENT_FOLDER_URL);
 				cadreRegistrationVOList.add(cadreRegistrationVO);
-				surveyCadreResponceVO = cadreRegistrationService.saveCommitteCadreRegistration(cadreRegistrationVOList,eligibleRoles,"WEB");
+				surveyCadreResponceVO = cadreRegistrationService.saveCommitteCadreRegistration(user.getRegistrationID(),cadreRegistrationVOList,eligibleRoles,"WEB");
 			}
 		} catch (Exception e) {
 			LOG.error("Exception raised in saveCadreDetails method in CadreRegistrationAction Action",e);

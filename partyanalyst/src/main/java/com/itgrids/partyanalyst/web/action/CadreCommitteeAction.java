@@ -65,12 +65,61 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private Long 								assemblyId;
 	private Long 								committeeTypeId;
 	private Long 								committeeId;
+	private String 								result1,result2,result3,result4,result5,result6;
 	private List<CadreRegisterInfo>             result;
 	private ICadreDashBoardService              cadreDashBoardService;
 	private List<Long>  						wardResult;
 	private List<LocationWiseBoothDetailsVO>    locationWiseBoothDetailsVO;
 	
 	
+	public String getResult4() {
+		return result4;
+	}
+
+	public void setResult4(String result4) {
+		this.result4 = result4;
+	}
+
+	public String getResult5() {
+		return result5;
+	}
+
+	public void setResult5(String result5) {
+		this.result5 = result5;
+	}
+
+	public String getResult6() {
+		return result6;
+	}
+
+	public void setResult6(String result6) {
+		this.result6 = result6;
+	}
+
+	public String getResult1() {
+		return result1;
+	}
+
+	public void setResult1(String result1) {
+		this.result1 = result1;
+	}
+
+	public String getResult2() {
+		return result2;
+	}
+
+	public void setResult2(String result2) {
+		this.result2 = result2;
+	}
+
+	public String getResult3() {
+		return result3;
+	}
+
+	public void setResult3(String result3) {
+		this.result3 = result3;
+	}
+
 	public Long getCommitteeTypeId() {
 		return committeeTypeId;
 	}
@@ -344,6 +393,16 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		}
 		ageRangeList = cadreCommitteeService.getAgeRangeDetailsForCadre();
 		genericVOList = cadreCommitteeService.getAllCasteDetailsForState();
+		
+		
+		if(panchayatId == null) //default values for prepopulate fields
+		{
+			panchayatId = "0";
+			committeeTypeId = 0L;
+			committeeId = 0L;
+			result3 = "0";
+		}
+		
 		return Action.SUCCESS;
 	}
 	
@@ -550,8 +609,15 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	{
 		
 		try{
+			session = request.getSession();
+			RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+			if(registrationVO == null)
+			{
+				return Action.ERROR;
+			}
+			
 			jObj = new JSONObject(getTask());
-			status = cadreCommitteeService.saveCadreCommitteDetails(jObj.getLong("tdpCadreId"),jObj.getLong("roleId"));
+			status = cadreCommitteeService.saveCadreCommitteDetails(registrationVO.getRegistrationID(),jObj.getLong("tdpCadreId"),jObj.getLong("roleId"));
 		}
 		catch(Exception e){	
 			LOG.error("Exception occured in saveCadreCommitteDetails() At CadreCommitteeAction ",e);
@@ -610,6 +676,26 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		if(user == null)
 			return ERROR;
 		
+		
+		return Action.SUCCESS;
+	}
+	
+	public String assignCadreToCommitee()
+	{	
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		boolean noaccess = false;
+		if(regVO==null){
+			return "input";
+		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_COMMITTEE_MANAGEMENT")){
+			noaccess = true ;
+		}
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		
+		if(noaccess){
+			return "error";
+		}
 		
 		return Action.SUCCESS;
 	}
