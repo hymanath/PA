@@ -20,8 +20,8 @@ public interface ICadreCommitteeService {
 	public LocationWiseBoothDetailsVO getCommitteeMembersInfo(Long committeeId);
 	public LocationWiseBoothDetailsVO getMainCommitteeMembersInfo(Long levelId,Long levelValue);
 	public List<LocationWiseBoothDetailsVO> getAllTdpCommitteeDesignations();
-	public void saveElectrolInfo(Long tdpCadreId,Long tdpCommitteeLevelId,Long levelValue,Long committeeMngtType,List<CadrePreviousRollesVO> eligibleRoles);
-	public ResultStatus saveCadreCommitteDetails(Long tdpCadreId,Long tdpCommitteeRoleId);
+	public void saveElectrolInfo(Long tdpCadreId,Long tdpCommitteeLevelId,Long levelValue,Long committeeMngtType,List<CadrePreviousRollesVO> eligibleRoles,Long tdpCommitteeTypeId);
+	public ResultStatus saveCadreCommitteDetails(Long userId,Long tdpCadreId,Long tdpCommitteeRoleId);
 	public List<CadrePreviousRollesVO> getCadreEligiableRoles(Long tdpCadreId);
 	public List<GenericVO> getCadsteDetailsByGroupId(Long casteGroupId);
 	public List<GenericVO> getPanchayatDetailsByMandalId(Long MandalId);
