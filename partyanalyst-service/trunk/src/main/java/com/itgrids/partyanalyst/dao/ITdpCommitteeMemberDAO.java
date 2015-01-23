@@ -11,4 +11,5 @@ public interface ITdpCommitteeMemberDAO  extends GenericDao<TdpCommitteeMember, 
 	public List<Object[]> getRoleWiseAllocatedMembersCount(Set<Long> committeeRoleIds);
 	public List<Object[]> getMembersInfo(Set<Long> committeeRoleIds);
 	public List<Object[]> getMemberInfo(Long tdpCadreId);
+	public TdpCommitteeMember getTdpCommitteeMemberByTdpCadreId(Long tdpCadreId);
 }
