@@ -9340,7 +9340,7 @@
 			<result name="success">/jsp/cadreCommitteeProfileDetails.jsp</result>
 		</action>
 		
-		<action name="assignCadreToCommittee" class="cadreCommitteeAction" method="execute">
+		<action name="assignCadreToCommittee" class="cadreCommitteeAction" method="assignCadreToCommitee">
 			<result name="success">/jsp/assignCadreToCommittee.jsp</result>
 		</action>
 		
