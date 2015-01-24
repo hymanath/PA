@@ -365,7 +365,7 @@
 				</div>				
 				</div>
 			<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group ">
-				<a href="javascript:{addMoreRoles();}" class="btn btn-danger btn-xs ">Tap to Add+ Details</a>	
+				<a href="javascript:{addMoreRoles();}" class="btn btn-danger btn-xs ">Click here to Add+ Details</a>	
 			</div> 
 		</s:if>
 		<s:else>	
@@ -412,7 +412,7 @@
 						</div>
 									
 					</div>
-					<a href="javascript:{addMoreRoles();}" class="btn btn-danger btn-xs ">Tap to Add+ Details</a>	
+					<a href="javascript:{addMoreRoles();}" class="btn btn-danger btn-xs ">Click here to Add+ Details</a>	
 				</div>
 			
 		
@@ -446,7 +446,7 @@
 				</div>				
 				</div>
 				<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group ">
-					<a href="javascript:{addMoreElectionDetails();}" class="btn btn-danger btn-xs ">Tap to Add+ Details</a>	
+					<a href="javascript:{addMoreElectionDetails();}" class="btn btn-danger btn-xs ">Click here to Add+ Details</a>	
 				</div>
 			</s:if>
 			
@@ -485,7 +485,7 @@
 					 				  
 					</div>
 				</div><!-- add more details electionsDiv Ending -->	
-					<a href="javascript:{addMoreElectionDetails();}" class="btn btn-danger btn-xs ">Tap to Add+ Details</a>	
+					<a href="javascript:{addMoreElectionDetails();}" class="btn btn-danger btn-xs ">Click here to Add+ Details</a>	
 			</div>
 			</s:else>
 			
@@ -513,7 +513,7 @@
 				   <div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;" id="eligibleRolesDiv"></div>				
 				</div>
 				<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group ">
-					<a href="javascript:{addMoreEligibleRoles();}" class="btn btn-danger btn-xs ">Click to Add+ Details</a>	
+					<a href="javascript:{addMoreEligibleRoles();}" class="btn btn-danger btn-xs ">Click here to Add+ Details</a>	
 				</div>
 			</s:if>
 			
@@ -540,7 +540,7 @@
 						</div>		  
 					</div>
 				</div><!-- add more details electionsDiv Ending -->	
-					<a href="javascript:{addMoreEligibleRoles();}" class="btn btn-danger btn-xs ">Click to Add+ Details</a>	
+					<a href="javascript:{addMoreEligibleRoles();}" class="btn btn-danger btn-xs ">Click here to Add+ Details</a>	
 			</div>
 			</s:else>
 			</s:if>
