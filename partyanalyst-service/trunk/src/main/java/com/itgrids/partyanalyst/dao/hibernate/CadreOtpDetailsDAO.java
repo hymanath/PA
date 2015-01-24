@@ -29,10 +29,10 @@ public class CadreOtpDetailsDAO extends GenericDaoHibernate<CadreOtpDetails, Lon
 	public CadreOtpDetails checkOTPValid(Long mobileNo,Long refNo,Long  userId)
 	{
 		Query query = getSession().createQuery("select model from CadreOtpDetails model where " +
-				" model.mobileNo like '"+mobileNo+"'  and model.user.userId =:userId and model.otpReferenceId =:refNo and model.isDeleted = 'N' ");
+				" model.mobileNo like '"+mobileNo+"'  and model.user.userId like '"+userId+"' and model.otpReferenceId like '"+refNo+"' and model.isDeleted = 'N' ");
 		//query.setParameter("mobileNo", mobileNo);
-		query.setParameter("userId", userId);
-		query.setParameter("refNo", refNo);
+		//query.setParameter("userId", userId);
+		//query.setParameter("refNo", refNo);
 		return (CadreOtpDetails) query.uniqueResult();
 	}
 	
