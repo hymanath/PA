@@ -43,6 +43,7 @@ import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.CadreOtpDetails;
+import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.model.EducationalQualifications;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
@@ -234,8 +235,15 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				//cadreCommitteeVO.setIsSmartPhone(tdpCadre.getIsSmartPhone());
 				cadreCommitteeVO.setAdhaarNo(tdpCadre.getCadreAadherNo());
 				cadreCommitteeVO.setAddress(tdpCadre.getUserAddress().getStreet() != null ? tdpCadre.getUserAddress().getStreet():"");
-				cadreCommitteeVO.setCasteStateId(tdpCadre.getCasteState() != null?tdpCadre.getCasteState().getCasteStateId():0L);
-				cadreCommitteeVO.setCasteName(tdpCadre.getCasteState() != null? tdpCadre.getCasteState().getCaste().getCasteName():"");
+				if(tdpCadre.getCasteStateId() != null && tdpCadre.getCasteStateId().longValue() > 0){
+					CasteState casteState = casteStateDAO.get(tdpCadre.getCasteStateId());
+					cadreCommitteeVO.setCasteStateId(casteState.getCasteStateId());
+					cadreCommitteeVO.setCasteName(casteState.getCaste().getCasteName());
+				}else{
+					cadreCommitteeVO.setCasteStateId(0L);
+					cadreCommitteeVO.setCasteName("");
+				}
+				
 				cadreCommitteeVO.setCasteCategoryId(tdpCadre.getCasteState() != null?tdpCadre.getCasteState().getCasteCategoryGroup().getCasteCategory().getCasteCategoryId():0L);
 				cadreCommitteeVO.setCasteCategory(tdpCadre.getCasteState() != null? tdpCadre.getCasteState().getCasteCategoryGroup().getCasteCategory().getCategoryName():"");
 				UserAddress address = tdpCadre.getUserAddress();
@@ -257,10 +265,22 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						cadreCommitteeVO.setFamilyVoterCardNo("");
 					}
 				}
-				cadreCommitteeVO.setEducationId(tdpCadre.getEducationalQualifications() != null ? tdpCadre.getEducationalQualifications().getEduQualificationId():0L);
-				cadreCommitteeVO.setEducation(tdpCadre.getEducationalQualifications() != null ? tdpCadre.getEducationalQualifications().getQualification():"");
-				cadreCommitteeVO.setOccupationId(tdpCadre.getOccupation() != null ? tdpCadre.getOccupation().getOccupationId():0L);
-				cadreCommitteeVO.setOccupation(tdpCadre.getOccupation() != null ? tdpCadre.getOccupation().getOccupation():"");
+				if(tdpCadre.getEducationId() != null &&  tdpCadre.getEducationId().longValue() > 0){
+					EducationalQualifications eq = educationalQualificationsDAO.get(tdpCadre.getEducationId());
+					cadreCommitteeVO.setEducationId(eq.getEduQualificationId());
+					cadreCommitteeVO.setEducation(eq.getQualification());
+				}else{
+				    cadreCommitteeVO.setEducationId(0L);
+				    cadreCommitteeVO.setEducation("");
+				}
+				if(tdpCadre.getOccupationId() != null &&  tdpCadre.getOccupationId().longValue() > 0){
+					Occupation occupation = occupationDAO.get(tdpCadre.getOccupationId());
+					cadreCommitteeVO.setOccupationId(occupation.getOccupationId());
+					cadreCommitteeVO.setOccupation(occupation.getOccupation());
+				}else{
+				    cadreCommitteeVO.setOccupationId(0L);
+				    cadreCommitteeVO.setOccupation("");
+				}
 				if(tdpCadre.getEmailId() != null){
 				   cadreCommitteeVO.setEmailId(tdpCadre.getEmailId());
 				}else{
