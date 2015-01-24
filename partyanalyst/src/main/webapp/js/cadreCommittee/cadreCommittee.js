@@ -11,6 +11,7 @@
 		 $('#cadreSearchType').val('membershipId');
 		 $('#committeLocationsDiv').hide();
 		 $('#advancedSearchDiv').hide();
+		 $("#headingDiv").html("");
 		if(searchType == 'basicCommitteeDiv')
 		{
 			$('#'+searchType+'').show();
@@ -19,6 +20,7 @@
 			$('#mandalaffiliated').hide();			
 			$('#basicCommitteeTab').addClass('arrow_selected');			
 			$("#searchcadrenewDiv").hide();
+			$("#headingDiv").html("Select Candidate for a Designation");
 		}
 		
 		else if(searchType == 'publicrepresantative')
@@ -29,7 +31,8 @@
 			$('#mandalaffiliated').hide();
 			$('#publicrepresantativeTab').addClass('arrow_selected');			
 			$("#searchcadrenewDiv").show();
-			$("#advancedSearchDiv").hide();			
+			$("#advancedSearchDiv").hide();	
+			$("#headingDiv").html("Select Candidate for a Public Representative ");			
 		}
 		else if(searchType == 'mandalaffiliated')
 		{				
@@ -39,7 +42,8 @@
 			$('#'+searchType+'').show();
 			$('#mandalaffiliatedTab').addClass('arrow_selected');
 			$("#searchcadrenewDiv").show();
-			$("#advancedSearchDiv").hide();			
+			$("#advancedSearchDiv").hide();	
+			$("#headingDiv").html("Select Candidate for a non-affiliated Committee Member ");			
 	}
 		
 	}
@@ -132,7 +136,10 @@
 						}
 						else if(committeeLocationId.substr(0,1) == 2){
 							 locationLevel = 5;
-						}					
+						}
+						else if(committeeLocationId.substr(0,1) == 3){
+							 locationLevel = 8;
+						}						
 					}
 					locationValue = committeeLocationId.substr(1);
 			}			
@@ -185,7 +192,10 @@
 						}
 						else if(committeeLocationId.substr(0,1) == 2){
 							 locationLevel = 5;
-						}					
+						}	
+						else if(committeeLocationId.substr(0,1) == 3){
+							 locationLevel = 8;
+						}						
 					}
 					locationValue = committeeLocationId.substr(1);
 				}	
@@ -211,7 +221,10 @@
 					}
 					else if(committeeLocationId.substr(0,1) == 2){
 						 locationLevel = 5;
-					}					
+					}
+					else if(committeeLocationId.substr(0,1) == 3){
+						 locationLevel = 8;
+					}
 				}
 				locationValue = committeeLocationId.substr(1);
 			}
@@ -234,6 +247,9 @@
 					}
 					else if(committeeLocationId.substr(0,1) == 2){
 						 locationLevel = 5;
+					}
+					else if(committeeLocationId.substr(0,1) == 3){
+							 locationLevel = 8;
 					}					
 				}
 				locationValue = committeeLocationId.substr(1);
@@ -469,6 +485,7 @@
 			} 
 			if(isError.trim().length >0)
 			{
+				$('html,body').animate({scrollTop: $('#committeeLocationIdErr').offset().top}, 800);
 				return;
 			}
 			else{
