@@ -25,7 +25,7 @@
 	<script type="text/javascript" src="js/cadreCommittee/cadreCommittee.js"></script>
    	
 	<style>
-	#publicrepresantative,#mandalaffiliated,#advancedSearchDiv,#committeeDetailsDiv,#searchcadrenewDiv,#committeLocationsDiv
+	#publicrepresantative,#mandalaffiliated,#advancedSearchDiv,#committeeDetailsDiv,#searchcadrenewDiv,#committeLocationsDiv,#designationDivId
 	{
 		display:none;
 	}
@@ -80,14 +80,14 @@
 			<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 ">
 				<div class="radio pull-right">
 				  <label>
-				    <input type="radio" name="committeeType" onclick="validateSearchType('1');getCommitteeLocations();" checked="true" value="1" id="villageId"> Village / Ward / Division
+				    <input type="radio" name="committeeType" onclick="validateSearchType('1');getCommitteeLocations();" checked="true" value="1" id="villageId"> Village / Ward
 				  </label>
 			    </div>
 			</div>
 			<div class="col-md-4 col-sm-6 col-xs-6">
 				<div class="radio">
 				  <label>
-				    <input type="radio" id="mndlLvlCommittSelec" name="committeeType" onclick="validateSearchType('2');getCommitteeLocations();" value="2"> Mandal / Town / GHMC 
+				    <input type="radio" id="mndlLvlCommittSelec" name="committeeType" onclick="validateSearchType('2');getCommitteeLocations();" value="2"/> Mandal / Town / Division 
 				  </label>
 			    </div>
 			</div>
@@ -110,22 +110,33 @@
 				 </div>
 			</div>
 		</div>
-		<div class="row m_top20">
-			<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 " >
+		<div id="committeeMainId" class="row">	
+			<div class="col-md-6 col-md-offset-2 col-sm-6 col-sm-offset-2 col-xs-12 ">
+				<div class="form-group col-xs-12">
+					<label for="committeeId">AFFILIATED COMMITTEE</label>
+					<select class="form-control" onchange="hideMembers();getCommitteCadreMembersInfo(2)" id="afflitCommitteeId"><option>Select Affiliated Committee</option></select >
+					<div id="afflitCommitteeIdErr"></div>
+				 </div>
+			</div>			
+		</div> 
+		<!--<div class="row m_top20">
+			<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 "  >
 				<div class="form-group col-xs-12 pull-right" >
 					<label for="committeeId">AFFILIATED COMMITTEE</label>
 					<select class="form-control" onchange="hideMembers();getCommitteCadreMembersInfo(2)" id="afflitCommitteeId"><option>Select Affiliated Committee</option></select >
 					<div id="afflitCommitteeIdErr"></div>
 				 </div>
 			</div>
-			<div class="col-md-4 col-sm-6 col-xs-6">
+			<!--
+			<div class="col-md-4 col-sm-6 col-xs-6" id="designationDivId">
 				<div class="form-group col-xs-12">
 					<label for="exampleInputEmail1">COMMITTEE DESIGNATION</label>
 					<select  class="form-control" id="committeePositionId"  name="eligibleRoles[0].cadreRoleId"><option value="0">Select Designation </option></select >
 					<div id="committeePositionIdErr"></div>
 				 </div>
 			</div>
-		</div>
+			
+		</div>-->
 		<div class="row">	
 			<div class="col-md-12 col-sm-12 col-xs-12 text-center">
 					<ul class="list-inline">
@@ -142,8 +153,8 @@
 				<hr style="margin: 0px;">
 				<ul class="list-inline pull-right ">
 					<li><span style="color:#fff;font-weight:bold;">TOTAL </span></li>
-					<li><span style="color:#C9302C;font-weight:bold;">APPLIED </span></li>
-					<li><span style="color:#449D44;font-weight:bold;">AVAIL</span></li>
+					<li><span style="color:#C9302C;font-weight:bold;">FILLED </span></li>
+					<li><span style="color:#449D44;font-weight:bold;">VACANCY</span></li>
 				</ul>
 				
 			</div>			
@@ -155,6 +166,16 @@
 			<div id="committeeMmbrsMainDiv" class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12 col-xs-offset-0 text-center"></div>
 		</div>
 		<!-------/VIEW BLOCK END------>
+		
+		<div id="designationDivId" class="row">	
+			<div class="col-md-6 col-md-offset-2 col-sm-6 col-sm-offset-2 col-xs-12 ">
+				<div class="form-group col-xs-12">
+					<label for="exampleInputEmail1">COMMITTEE DESIGNATION</label>
+					<select  class="form-control" id="committeePositionId"  name="eligibleRoles[0].cadreRoleId"><option value="0">Select Designation </option></select >
+					<div id="committeePositionIdErr"></div>
+				 </div>
+			</div>			
+		</div> 
 		
 		<!-------ADD BLOCK------>		
 	</div>		
@@ -178,7 +199,7 @@
 				
 		<div class="row m_top20">
 			<div class="com-md-8 col-sm-12 col-xs-12 text-center">
-				<h3 class="text-success text-uppercase">Process to add NOT affiliated committee member <br>as mandal affiliated electoral</h3>
+				<h3 class="text-success text-uppercase">Process to add NON affiliated committee member <br>as mandal affiliated electoral</h3>
 			</div>
 		</div>
 	
@@ -186,7 +207,7 @@
 	</div>
 	<div class="row" id="searchcadrenewDiv">	
 			<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 text-center">
-				<h4>SEARCH BASED ON</h4>
+				<h4 id="headingDiv"> Select Candidate For A Designation </h4>
 				<hr style="margin: 0px;">
 			</div>
 			
@@ -449,11 +470,11 @@
 		$("#afflitCommitteeId  option").remove();
 		$("#afflitCommitteeId").append('<option value="0">Select Affiliated Committee</option>');
 		if($("#committeeTypeId").val() == 2){
-			$("#afflitCommitteeId").removeAttr("disabled","disabled");
+			//$("#afflitCommitteeId").removeAttr("disabled","disabled");
 			//$("#afflitCommitteeId").show();
-			//$("#afflitCommitteeIdDiv").show();
-			$("#committeeMainId").prop("disabled");
 			$("#committeeMainId").show();
+			//$("#committeeMainId").prop("disabled");
+			//$("#committeeMainId").show();
 			var reqLocationType = "";
 			var reqLocationValue = "";
 			if($("#mndlLvlCommittSelec").is(':checked')){
@@ -482,9 +503,9 @@
 					
 		}else{
 
-			//$("#afflitCommitteeIdDiv").hide();
+			$("#committeeMainId").hide();
 			//$("#afflitCommitteeId").hide();
-			$("#afflitCommitteeId").attr("disabled","disabled");
+			//$("#afflitCommitteeId").attr("disabled","disabled");
 			if(cadreRoleId !=0 &&  isFirstCommityIdSettingValues)
 				{
 					isFirstCommityIdSettingValues = false;
@@ -498,8 +519,10 @@
 	function showSearchInfo(){
 		 $("#committeeDetailsDiv").hide();
 		 $("#searchcadrenewDiv").show();
+		 $("#designationDivId").show();
 	}
 	function getCommitteMembersInfo(){
+		$("#designationDivId").hide();
 		$("#committeeLocationIdErr").html("");
 		$("#committeeTypeIdErr").html("");
 		$("#afflitCommitteeIdErr").html("");
@@ -513,7 +536,7 @@
 			$("#committeeTypeIdErr").html("Please Select Committee Type");
 			return;
 		}
-		alert(111);
+		
 		if($("#committeeTypeId").val() == 2){
 			 if(locVal == null || locVal == 0){
 				$("#afflitCommitteeIdErr").html("Please Select Affiliated Committee");
@@ -669,10 +692,14 @@
 							$("#committeePositionId").val(cadreRoleId);							
 							$('#searchBy').val(defaultName);
 							showSearchInfo();
-							
-							 setTimeout(function(){ 
-								getCadreDetailsBySearchCriteria();}, 2000);
+							var committeTypeID = $('#committeeMngtType').val();
+							if(committeTypeID == 1)
+							{
+								 setTimeout(function(){ 
+								getCadreDetailsBySearchCriteria();}, 1000);
+							}
 						}
+							
 					}
 				}
 		    });
