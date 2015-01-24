@@ -429,6 +429,7 @@
 	
 	function getCadreProfileInfo(tdpCadreId)
 	{
+		var committeTypeID = $('#committeeMngtType').val();		
 		var committeeLocationId = $('#committeeLocationId').val();
 		var committeeTypeId = $('#committeeTypeId').val();
 		var committeeId = $('#afflitCommitteeId').val();
@@ -436,40 +437,46 @@
 		var areaType = $('#areaTypeId').val();
 		var committeeMngtType = $('#committeeMngtType').val();
 		var committeePosition = $('#committeePositionId').val();
-		
-		$('#afflitCommitteeIdErr,#committeeTypeIdErr,#committeeLocationIdErr,#committeePositionIdErr').html('');
-		if(committeeLocationId == 0)
+			
+		if(committeTypeID ==1)
+		{			
+			$('#afflitCommitteeIdErr,#committeeTypeIdErr,#committeeLocationIdErr,#committeePositionIdErr').html('');
+			if(committeeLocationId == 0)
+			{
+				$('#committeeLocationIdErr').html('Please Select Location.');
+				isError = "true";
+			}
+			if(committeeTypeId == 0)
+			{
+				$('#committeeTypeIdErr').html('Please Select Committee Type.');
+				isError = "true";
+			}
+			if(committeeTypeId ==2 && committeeId == 0)
+			{
+				$('#afflitCommitteeIdErr').html('Please Select Committee.');
+				isError = "true";
+			} 
+			if(committeePosition == 0)
+			{
+				$('#committeePositionIdErr').html('Please Select Position.');
+				isError = "true";
+			} 
+			
+			var committeeType = $('#committeeTypeId option:selected').text().trim();
+			if(committeeTypeId ==2 )
+			{
+				committeeType = $('#afflitCommitteeId option:selected').text().trim();
+			} 
+			if(isError.trim().length >0)
+			{
+				return;
+			}
+			else{
+				window.location.href = 'cadreProfileDetailsAction.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&panchayatId='+committeeLocationId+'&committeeTypeId='+committeeTypeId+'&committeeId='+committeeId+'&result1='+$('#committeePositionId option:selected').text().trim()+'&result2='+committeeType+'&result3='+committeePosition+'&result4='+$('#committeeLocationId option:selected').text()+'';
+			}
+		}else
 		{
-			$('#committeeLocationIdErr').html('Please Select Location.');
-			isError = "true";
-		}
-		if(committeeTypeId == 0)
-		{
-			$('#committeeTypeIdErr').html('Please Select Committee Type.');
-			isError = "true";
-		}
-		if(committeeTypeId ==2 && committeeId == 0)
-		{
-			$('#afflitCommitteeIdErr').html('Please Select Committee.');
-			isError = "true";
-		} 
-		if(committeePosition == 0)
-		{
-			$('#committeePositionIdErr').html('Please Select Position.');
-			isError = "true";
-		} 
-		
-		var committeeType = $('#committeeTypeId option:selected').text().trim();
-		if(committeeTypeId ==2 )
-		{
-			committeeType = $('#afflitCommitteeId option:selected').text().trim();
-		} 
-		if(isError.trim().length >0)
-		{
-			return;
-		}
-		else{
-			window.location.href = 'cadreProfileDetailsAction.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&panchayatId='+committeeLocationId+'&committeeTypeId='+committeeTypeId+'&committeeId='+committeeId+'&result1='+$('#committeePositionId option:selected').text().trim()+'&result2='+committeeType+'&result3='+committeePosition+'&result4='+$('#committeeLocationId option:selected').text()+'';
+			window.location.href = 'cadreProfileDetailsAction.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'';
 		}
 	}
 	
@@ -594,6 +601,7 @@
 		}		
 		else if(result.resultCode == 2)
 		{			
+			$('#profileDiv').hide();
 			$('.existingDiv').hide();
 			$('html,body').animate({scrollTop: $('.successDiv').offset().top}, 800);
 			$('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;"> '+result.status+'</span> <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 10px;margin-left:250px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"></i> </a>');
