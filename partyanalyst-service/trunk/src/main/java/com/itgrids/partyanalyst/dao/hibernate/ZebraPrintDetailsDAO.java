@@ -645,4 +645,84 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 			return " model.tdpCadre.userAddress.booth.boothId ";
 		}
 	}
+	
+	
+	
+	public Long getPrintedCount(List<Long> locationIdsList, String type)
+	{
+		StringBuilder str = new StringBuilder();
+		
+		if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+		{			
+			str.append("select count(model.zebraPrintDetailsId) from ZebraPrintDetails model where ");
+			str.append(" model.tdpCadre.isDeleted = 'N' and  model.tdpCadre.enrollmentYear = 2014 ");
+			str.append(" and ((model.printStatus = 'Y' or model.printStatus ='y') " +
+					" and (model.errorStatus is null or model.errorStatus ='0' or  model.errorStatus  = '' or  model.errorStatus = 'null')) and model.serialNo is not null ");
+			str.append("and model.tdpCadre.userAddress.constituency.constituencyId in (:locationIdsList) ");
+			
+		}
+		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+		{
+			str.append("select count(model.zebraPrintDetailsId) from ZebraPrintDetails model where ");
+			str.append(" model.tdpCadre.isDeleted = 'N' and  model.tdpCadre.enrollmentYear = 2014 ");
+			str.append(" and ((model.printStatus = 'Y' or model.printStatus ='y') " +
+					" and (model.errorStatus is null or model.errorStatus ='0' or  model.errorStatus  = '' or  model.errorStatus = 'null')) and model.serialNo is not null ");
+			str.append(" and model.tdpCadre.userAddress.tehsil.tehsilId in (:locationIdsList) ");		
+			
+		}
+		else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+		{
+			str.append("select count(model.zebraPrintDetailsId) from ZebraPrintDetails model where ");
+			str.append(" model.tdpCadre.isDeleted = 'N' and  model.tdpCadre.enrollmentYear = 2014 ");
+			str.append(" and ((model.printStatus = 'Y' or model.printStatus ='y') " +
+					" and (model.errorStatus is null or model.errorStatus ='0' or  model.errorStatus  = '' or  model.errorStatus = 'null')) and model.serialNo is not null ");
+			str.append(" and model.tdpCadre.userAddress.localElectionBody.localElectionBodyId in (:locationIdsList) ");		
+			
+		}
+		
+		Query query = getSession().createQuery(str.toString()); 
+		query.setParameterList("locationIdsList", locationIdsList);
+		
+		return (Long)query.uniqueResult();
+	}
+	
+	
+	public List<Object[]> getLocationWisePrintedCountDetails(List<Long> locationIdsList, String type)
+	{
+		StringBuilder str = new StringBuilder();
+		
+		if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+		{			
+			str.append("select count(model.zebraPrintDetailsId),model.tdpCadre.userAddress.constituency.constituencyId from ZebraPrintDetails model where ");
+			str.append(" model.tdpCadre.isDeleted = 'N' and  model.tdpCadre.enrollmentYear = 2014 ");
+			str.append(" and ((model.printStatus = 'Y' or model.printStatus ='y') " +
+					" and (model.errorStatus is null or model.errorStatus ='0' or  model.errorStatus  = '' or  model.errorStatus = 'null')) and model.serialNo is not null ");
+			str.append("and model.tdpCadre.userAddress.constituency.constituencyId in (:locationIdsList) ");
+			str.append("group by model.tdpCadre.userAddress.constituency.constituencyId ");
+		}
+		else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+		{
+			str.append("select count(model.zebraPrintDetailsId),model.tdpCadre.userAddress.tehsil.tehsilId from ZebraPrintDetails model where ");
+			str.append(" model.tdpCadre.isDeleted = 'N' and  model.tdpCadre.enrollmentYear = 2014 ");
+			str.append(" and ((model.printStatus = 'Y' or model.printStatus ='y') " +
+					" and (model.errorStatus is null or model.errorStatus ='0' or  model.errorStatus  = '' or  model.errorStatus = 'null')) and model.serialNo is not null ");
+			str.append(" and model.tdpCadre.userAddress.tehsil.tehsilId in (:locationIdsList) ");	
+			str.append(" group by model.tdpCadre.userAddress.tehsil.tehsilId ");	
+			
+		}
+		else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+		{
+			str.append("select count(model.zebraPrintDetailsId),model.tdpCadre.userAddress.localElectionBody.localElectionBodyId from ZebraPrintDetails model where ");
+			str.append(" model.tdpCadre.isDeleted = 'N' and  model.tdpCadre.enrollmentYear = 2014 ");
+			str.append(" and ((model.printStatus = 'Y' or model.printStatus ='y') " +
+					" and (model.errorStatus is null or model.errorStatus ='0' or  model.errorStatus  = '' or  model.errorStatus = 'null')) and model.serialNo is not null ");
+			str.append(" and model.tdpCadre.userAddress.localElectionBody.localElectionBodyId in (:locationIdsList) ");
+			str.append(" group by model.tdpCadre.userAddress.localElectionBody.localElectionBodyId ");			
+		}
+		
+		Query query = getSession().createQuery(str.toString()); 
+		query.setParameterList("locationIdsList", locationIdsList);
+		
+		return query.list();
+	}
 }

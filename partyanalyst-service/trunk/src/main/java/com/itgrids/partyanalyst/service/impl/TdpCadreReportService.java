@@ -5159,23 +5159,49 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         	  CadreIVRResponseVO returnVo = new CadreIVRResponseVO();
         	  try{
         		  List<Long> locationTypeIds = new ArrayList<Long>();
+        		
+        		 
         		  locationTypeIds.add(1l);
         		  List<Long> mandalTypeIds = new ArrayList<Long>();
         		  mandalTypeIds.add(2l);
         		  mandalTypeIds.add(5l);
         		  
-        		List<Long> constituencyCnts =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(locationTypeIds,startDate,endDate);
-        		Long constituencyCnt = 0l;
-        		Long mandalCnt = 0l;
-        		for(Long ids :constituencyCnts){
-        			 constituencyCnt = constituencyCnt + ids;
+        		  List<Long> constiIds = new ArrayList<Long>();
+        		  List<Long> mandalIds = new ArrayList<Long>();
+        		  List<Long> localbodyIds = new ArrayList<Long>();
+        		  Long mandalPrintedCnt = 0l;
+        		  Long LocalbodyPrintedCnt = 0l;
+        		  
+        		List<Object[]> constituencyCnts =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(locationTypeIds,startDate,endDate);
+        		//Long constituencyCnt = 0l;
+        		//Long mandalCnt = 0l;
+        		for(Object[] ids :constituencyCnts){
+        			 //constituencyCnt = constituencyCnt + (Long)ids[0];
+        			 if(!constiIds.contains((Long)ids[1]));
+        			 	constiIds.add((Long)ids[1]);
         		}
         		
         		
-        		List<Long> mandalCnts =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(mandalTypeIds,startDate,endDate);
-        		for(Long ids :mandalCnts){
-        			mandalCnt = mandalCnt + ids;
+        		List<Object[]> mandalCnts =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(mandalTypeIds,startDate,endDate);
+        		for(Object[] ids :mandalCnts){
+        			//mandalCnt = mandalCnt + (Long)ids[0];
+        			
+        			if(Long.valueOf(ids[2].toString()).longValue() == 2L){
+        				if(!mandalIds.contains((Long)ids[1])){
+     			 			mandalIds.add((Long)ids[1]);
+        				}
+        			}else if(Long.valueOf(ids[2].toString()).longValue() == 5L){
+        				if(!localbodyIds.contains((Long)ids[1])){
+        					localbodyIds.add((Long)ids[1]);
+        				}
+        			}
+        			
         		}
+        		
+        		Long constiPrintedCnt = zebraPrintDetailsDAO.getPrintedCount(constiIds,IConstants.CONSTITUENCY);
+          		mandalPrintedCnt = zebraPrintDetailsDAO.getPrintedCount(mandalIds,IConstants.TEHSIL);
+          		LocalbodyPrintedCnt = zebraPrintDetailsDAO.getPrintedCount(localbodyIds,IConstants.LOCAL_ELECTION_BODY);
+        		
           		//Long constituencyCnt =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(locationTypeIds,startDate,endDate);
           		//Long mandalCnt =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(mandalTypeIds,startDate,endDate);
         		
@@ -5189,8 +5215,12 @@ public class TdpCadreReportService implements ITdpCadreReportService{
          		BigDecimal mandalDeliveredCount = cadreIVREnquiryDAO.getTotalDeliveredCount(startDate,endDate,mandalTypeIds);
          		returnVo.setNotMember(mandalDeliveredCount != null ? mandalDeliveredCount.longValue() : 0l);
          		
-        		returnVo.setTotalCalls(constituencyCnt);
-        		returnVo.setTotalIvrCalls(mandalCnt);
+        		returnVo.setTotalCalls(Long.valueOf(constituencyCnts.size()));
+        		returnVo.setTotalIvrCalls(Long.valueOf( mandalCnts.size()));
+        		
+        		returnVo.setPrintedCount(constiPrintedCnt);
+        		returnVo.setMandalPrintedCnt(mandalPrintedCnt+ LocalbodyPrintedCnt);
+        	 
         	  }
         	  catch(Exception e)
         	  {
@@ -5273,44 +5303,45 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         	 try{
         		 Map<Long,CadreIVRResponseVO> resultMap = new HashMap<Long, CadreIVRResponseVO>();
         		 List<Object[]> list = cadreIvrResponseDAO.getIvrCountByLocationIdsAndType(locationIds,type);
+        		 
+        		 List<Object[]> printedCountDetails = zebraPrintDetailsDAO.getLocationWisePrintedCountDetails(locationIds, type);
+        		 
         		 Long locationId = 0l;
 	        	 if(list != null && list.size() > 0)
-	 			{
- 				for(Object[] params : list)
- 					{
- 					CadreIVRResponseVO vo = resultMap.get((Long)params[2]);
- 							if(vo == null)
- 							{
- 								vo = new CadreIVRResponseVO();
- 								vo.setId((Long)params[2]);
- 								vo.setName(params[3].toString());
- 								vo.setJobCode(params[4] != null ? params[4].toString() : "");//DistrictId/Constituency Id based on level
- 								if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
- 								vo.setLocationName(params[5] != null ? params[5].toString() +" Muncipality" : "");//District/Constituency based on level
- 								else
- 									vo.setLocationName(params[5] != null ? params[5].toString() : "");	
- 								resultMap.put((Long)params[2], vo);
- 								 							}
+	 			 {
+	 				for(Object[] params : list)
+	 				{
+	 					CadreIVRResponseVO vo = resultMap.get((Long)params[2]);
+						if(vo == null)
+						{
+							vo = new CadreIVRResponseVO();
+							vo.setId((Long)params[2]);
+							vo.setName(params[3].toString());
+							vo.setJobCode(params[4] != null ? params[4].toString() : "");//DistrictId/Constituency Id based on level
+							if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+							vo.setLocationName(params[5] != null ? params[5].toString() +" Muncipality" : "");//District/Constituency based on level
+							else
+								vo.setLocationName(params[5] != null ? params[5].toString() : "");	
+							resultMap.put((Long)params[2], vo);
+						}
  						vo.setTotalCalls((Long)params[0] + vo.getTotalCalls());
  						if(params[1] != null &&params[1].toString().equalsIgnoreCase("1"))
  						vo.setReceived((Long)params[0] + vo.getReceived());
  						else if(params[1] != null &&params[1].toString().equalsIgnoreCase("2"))
  						vo.setNotReceived((Long)params[0] + vo.getNotReceived());
  						else if(params[1] != null &&params[1].toString().equalsIgnoreCase("3"))
- 						vo.setNotMember((Long)params[0] + vo.getNotMember());
- 						
- 					}
- 					 if(type.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+ 						vo.setNotMember((Long)params[0] + vo.getNotMember());	 						
+	 				}
+ 					if(type.equalsIgnoreCase(IConstants.CONSTITUENCY)){
  						locationId = 1l;
-	 				 }else if(type.equalsIgnoreCase(IConstants.TEHSIL)){
+	 				}else if(type.equalsIgnoreCase(IConstants.TEHSIL)){
 	 					locationId = 2l;
-	 				 }else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY)){
+	 				}else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY)){
 	 					locationId = 5l;
-	 				 }
+	 				}				
  				
- 				
-	 				 if(list1 != null && list1.size() > 0)
-	        		 {
+	 				if(list1 != null && list1.size() > 0)
+	        		{
 	        			 for(Object[] params : list1)
 	        			 {
 	        				 if(resultMap.get(Long.valueOf(params[2].toString())) != null){
@@ -5322,7 +5353,23 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	        				  }	        			
 	        				 }
 	        			 }
-	        		 }
+	        		}	
+	 				
+	 				if(printedCountDetails != null && printedCountDetails.size() > 0)
+	        		{
+	        			 for(Object[] params : printedCountDetails)
+	        			 {
+	        				 if(resultMap.get(Long.valueOf(params[1].toString())) != null){
+	        				  if(Long.valueOf(params[1].toString()).longValue() == resultMap.get(Long.valueOf(params[1].toString())).getId().longValue()){ 
+	        					
+	        					 resultMap.get(Long.valueOf(params[1].toString())).setPrintedCount(Long.valueOf(params[0].toString()));
+	        				
+	        					
+	        				  }	        			
+	        				 }
+	        			 }
+	        		}	
+	 				
 	 				
 	 				for(Long key : resultMap.keySet())
 	 				{
@@ -5466,6 +5513,100 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         		 LOG.error("Exception Raised in saveCheckedImages service in TdpCadreReportService", e);
 			 }
         	 return status;
+         }         
+         
+         
+         public CadreIVRResponseVO getTotalIvrPreviousCallBasicInfo()
+         {
+       	  CadreIVRResponseVO returnVo = new CadreIVRResponseVO();
+       	  try{
+       		  List<Long> locationTypeIds = new ArrayList<Long>();
+            		 
+       		  locationTypeIds.add(1l);
+       		  List<Long> mandalTypeIds = new ArrayList<Long>();
+       		  mandalTypeIds.add(2l);
+       		  mandalTypeIds.add(5l);
+       		 
+       		  List<Long> localTypeIdsTemp = new ArrayList<Long>();
+       		  localTypeIdsTemp.add(5l);
+       		  List<Long> mandalIdsTemp = new ArrayList<Long>();
+       		  mandalIdsTemp.add(5l);
+       		  
+       		 
+       		  
+       		  List<Long> constiIds = new ArrayList<Long>();
+       		  List<Long> mandalIds = new ArrayList<Long>();
+       		  List<Long> localbodyIds = new ArrayList<Long>();
+       		
+       		  
+       		List<Object[]> constituencyCnts =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(locationTypeIds,null,null);
+       		//Long constituencyCnt = 0l;
+       		//Long mandalCnt = 0l;
+       		for(Object[] ids :constituencyCnts){
+       			 //constituencyCnt = constituencyCnt + (Long)ids[0];
+       			 if(!constiIds.contains((Long)ids[1]));
+       			 	constiIds.add((Long)ids[1]);
+       		}
+       		
+       		
+       		List<Object[]> mandalCnts =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(mandalTypeIds,null,null);
+       		for(Object[] ids :mandalCnts){
+       			//mandalCnt = mandalCnt + (Long)ids[0];
+       			
+       			if(Long.valueOf(ids[2].toString()).longValue() == 2L){
+       				if(!mandalIds.contains((Long)ids[1])){
+    			 			mandalIds.add((Long)ids[1]);
+       				}
+       			}else if(Long.valueOf(ids[2].toString()).longValue() == 5L){
+       				if(!localbodyIds.contains((Long)ids[1])){
+       					localbodyIds.add((Long)ids[1]);
+       				}
+       			}
+       			
+       		}
+       		
+       		
+       		List<Long> districtIds = new ArrayList<Long>();
+       		for(int i=0 ;i<=23;i++){
+       			districtIds.add(Long.valueOf(i));
+       		}
+       		List<Object[]> totalPrintDtls= zebraPrintDetailsDAO.getPrintedCountDetailsByStatusTypeSeacrh(districtIds,IConstants.DISTRICT,"printStatus");
+       
+       		for(Object[] count :totalPrintDtls){
+       			returnVo.setPrintedCount((Long)count[1]+ returnVo.getPrintedCount());       			
+       		}
+       	
+       		
+       	    BigDecimal constituencyReceivedCount = cadreIVREnquiryDAO.getTotalReceivedCount(null,null,locationTypeIds);
+       		returnVo.setReceived(constituencyReceivedCount != null ? constituencyReceivedCount.longValue() : 0l);
+       		BigDecimal constituencyDeliveredCount = cadreIVREnquiryDAO.getTotalDeliveredCount(null,null,locationTypeIds);
+       		returnVo.setNotReceived(constituencyDeliveredCount != null ? constituencyDeliveredCount.longValue() : 0l);
+       		
+       		BigDecimal mandalReceivedCount = cadreIVREnquiryDAO.getTotalReceivedCount(null,null,mandalIdsTemp);
+        	returnVo.setTotalAnswerdCalls(mandalReceivedCount != null ? mandalReceivedCount.longValue() : 0l);
+        	BigDecimal mandalDeliveredCount = cadreIVREnquiryDAO.getTotalDeliveredCount(null,null,mandalTypeIds);
+        	returnVo.setNotMember(mandalDeliveredCount != null ? mandalDeliveredCount.longValue() : 0l);
+        	
+        	BigDecimal localbodyReceivedCount = cadreIVREnquiryDAO.getTotalReceivedCount(null,null,localTypeIdsTemp);
+        	returnVo.setLocalbodyReceivedCount(localbodyReceivedCount != null ? localbodyReceivedCount.longValue() : 0l);
+        	
+        		
+       		returnVo.setTotalCalls(Long.valueOf(constituencyCnts.size()));
+       		returnVo.setTotalIvrCalls(Long.valueOf( mandalCnts.size()));
+       		
+       		returnVo.setConstiReceivedPerc(new BigDecimal((returnVo.getReceived()*100.0/returnVo.getPrintedCount())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+			returnVo.setConstiDeliveredPerc(new BigDecimal((returnVo.getNotReceived()*100.0/returnVo.getPrintedCount())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+			returnVo.setUrbanPerc(new BigDecimal((returnVo.getLocalbodyReceivedCount()*100.0/returnVo.getPrintedCount())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+			returnVo.setMandalPerc(new BigDecimal((returnVo.getTotalAnswerdCalls()*100.0/returnVo.getPrintedCount())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+			returnVo.setDeliveredPerc(new BigDecimal((returnVo.getNotMember()*100.0/returnVo.getPrintedCount())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+		
+       	 
+       	  }
+       	  catch(Exception e)
+       	  {
+       		 e.printStackTrace(); 
+       	  }
+			return returnVo;
          }
           
 }
