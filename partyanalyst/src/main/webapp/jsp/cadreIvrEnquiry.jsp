@@ -94,7 +94,7 @@ input[type="text"]
 	
         <td width="15%"><div class="text-center"><h2  class="text-center"><span id="printsId1" ></span><img class="imgStyle printData" src="images/icons/search.gif"></img></h2>Total Printed Cards</div></td>
         <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId2" ></span></a></h2>Total cards received by constituency incharge</div></td>
-        <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId3" ></span></a></h2>Total Cards Urban area constituency incharge</div></td>
+        <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId3" ></span></a></h2>Total Cards received by Urban area constituency incharge</div></td>
         <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId4" ></span></a></h2>Total Cards dispatched to mandal constituency incharge</div></td>
         <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId5" ></span></a></h2>Total Cards received by mandal constituency incharge</div></td>
         <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId6" ></span></a></h2>Total Cards delviered to cadre mandal constituency incharge</div></td>
@@ -135,7 +135,7 @@ input[type="text"]
     	
     </div>
 </div>
-<p style="display:none;" id="noteId">NOTE: Click on mandal or contituency <u>COUNT</u> to get detailed details</p>
+<p style="display:none;" id="noteId">NOTE: Click on mandal or contituency <u>COUNT</u> to get details</p>
 
 <img style="height:18px;width:16px;display:none;" src="./images/icons/search.gif" id="ajaxImg" class="offset5"/>
 	<div class="row">
@@ -255,11 +255,11 @@ input[type="text"]
 		str+='<table class="table table-bordered table-condensed">';
 		if(type =="Constituency")
 		{		
-			str+='<td colspan="6" class="well"><h5 style="display:inline;">CONSTITUENCY LEVEL DETAILED DETAILS</h5></td>';
+			str+='<td colspan="6" class="well"><h5 style="display:inline;">CONSTITUENCY LEVEL  DETAILS</h5></td>';
 		}
 		else if(type =="Mandal")
 		{
-			str+='<td colspan="6" class="well"><h5 style="display:inline;">MANDAL LEVEL DETAILED DETAILS</h5> </td>';
+			str+='<td colspan="6" class="well"><h5 style="display:inline;">MANDAL LEVEL DETAILS</h5> </td>';
 		}
 		str+='</tr>';
 		str+='<tr>';
@@ -275,9 +275,9 @@ input[type="text"]
 		}
 		
 		str+=' <td><h6>TOTAL CARDS PRINTED</h6></td>';
-        str+='<td><h6>Total Cards Received By Contituency Incharge</h6></td>';
-        str+='<td><h6>DISTRIBUTED CARDS<br/>(Conformed By infomanagers)</h6></td>';
-        str+='<td><h6>CADRE MEMBERS RECEIVED CARDS<br/>(conformed by IVR)</h6></td>';
+		str+='<td><h6>TOTAL CARDS RECEIVED BY CONSTITUENCY INCHARGE</h6></td>';
+        str+='<td><h6>DISTRIBUTED CARDS<br/>(CONFORMED BY INFOMANAGERS)</h6></td>';
+        str+='<td><h6>CADRE MEMBERS RECEIVED CARDS<br/>(CONFORMED BY IVR)</h6></td>';
         str+='</tr>';
 		for(var i in result)
 		{
