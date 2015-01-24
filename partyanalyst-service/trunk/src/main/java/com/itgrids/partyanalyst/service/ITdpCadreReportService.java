@@ -68,5 +68,6 @@ public interface ITdpCadreReportService {
      public String saveCheckedImages(List<ImageCheckVO> inputsList);
      public List<ImageCheckVO> getAllNewImagesForChecking(Long dId,Long cId);
      public List<ImageCheckVO> getValidOrInValidImages(Long dId,Long cId,String type);
+     public CadreIVRResponseVO getTotalIvrPreviousCallBasicInfo();
      
 }

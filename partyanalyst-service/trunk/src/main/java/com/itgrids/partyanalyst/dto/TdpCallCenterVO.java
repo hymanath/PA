@@ -12,6 +12,16 @@ private String purpose;
 private String suggestions;
 private Long executiveId;
 private String executiveName;
+private String image;
+private Long userAddressId;
+private String constituency;
+private String mandal;
+private String district;
+private String panchayat;
+private String municipality;
+private String membership;
+private String mobile;
+private String status;
 private Long total=0l;
 private Long todayTotal =0l;
 private List<TdpCallCenterVO> subList = new ArrayList<TdpCallCenterVO>();
@@ -34,6 +44,7 @@ public Long getTodayTotal() {
 public void setTodayTotal(Long todayTotal) {
 	this.todayTotal = todayTotal;
 }
+
 public Long getId() {
 	return id;
 }
@@ -81,6 +92,66 @@ public String getExecutiveName() {
 }
 public void setExecutiveName(String executiveName) {
 	this.executiveName = executiveName;
+}
+public String getImage() {
+	return image;
+}
+public void setImage(String image) {
+	this.image = image;
+}
+public Long getUserAddressId() {
+	return userAddressId;
+}
+public void setUserAddressId(Long userAddressId) {
+	this.userAddressId = userAddressId;
+}
+public String getConstituency() {
+	return constituency;
+}
+public void setConstituency(String constituency) {
+	this.constituency = constituency;
+}
+public String getMandal() {
+	return mandal;
+}
+public void setMandal(String mandal) {
+	this.mandal = mandal;
+}
+public String getDistrict() {
+	return district;
+}
+public void setDistrict(String district) {
+	this.district = district;
+}
+public String getPanchayat() {
+	return panchayat;
+}
+public void setPanchayat(String panchayat) {
+	this.panchayat = panchayat;
+}
+public String getMunicipality() {
+	return municipality;
+}
+public void setMunicipality(String municipality) {
+	this.municipality = municipality;
+}
+public String getMembership() {
+	return membership;
+}
+public void setMembership(String membership) {
+	this.membership = membership;
+}
+public String getMobile() {
+	return mobile;
+}
+public void setMobile(String mobile) {
+	this.mobile = mobile;
+}
+public String getStatus() {
+	return status;
+}
+public void setStatus(String status) {
+	this.status = status;
 }
 
 

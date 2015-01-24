@@ -20,7 +20,7 @@ public class CadreIVRResponseVO {
 	private Long notMember =0l;
 	private Long notMemberPerc;
 	private Long registeredCount;
-	private Long printedCount;
+	private Long printedCount = 0l;
 	private String jobCode;
 	private Long totalIvrCalls;
 	private Long totalAnswerdCalls;
@@ -34,6 +34,17 @@ public class CadreIVRResponseVO {
 	private String date;
 	private Long ivrEnqReceived;
 	private Long ivrEnqDelivered;
+	private Long localbodyPrintedCnt;
+	private Long mandalPrintedCnt;
+	private Long localbodyReceivedCount;
+	
+	private Double constiReceivedPerc;
+	private Double constiDeliveredPerc;
+	private Double urbanPerc;
+	private Double mandalPerc;
+	private Double deliveredPerc;
+	
+	
 	
 	public List<CadreIVRResponseVO> getApList() {
 		return apList;
@@ -266,6 +277,72 @@ public class CadreIVRResponseVO {
 	public void setIvrEnqDelivered(Long ivrEnqDelivered) {
 		this.ivrEnqDelivered = ivrEnqDelivered;
 	}
+
+	public Long getMandalPrintedCnt() {
+		return mandalPrintedCnt;
+	}
+
+	public void setMandalPrintedCnt(Long mandalPrintedCnt) {
+		this.mandalPrintedCnt = mandalPrintedCnt;
+	}
+
+	public Long getLocalbodyPrintedCnt() {
+		return localbodyPrintedCnt;
+	}
+
+	public void setLocalbodyPrintedCnt(Long localbodyPrintedCnt) {
+		this.localbodyPrintedCnt = localbodyPrintedCnt;
+	}
+
+	public Long getLocalbodyReceivedCount() {
+		return localbodyReceivedCount;
+	}
+
+	public void setLocalbodyReceivedCount(Long localbodyReceivedCount) {
+		this.localbodyReceivedCount = localbodyReceivedCount;
+	}
+
+	public Double getConstiReceivedPerc() {
+		return constiReceivedPerc;
+	}
+
+	public void setConstiReceivedPerc(Double constiReceivedPerc) {
+		this.constiReceivedPerc = constiReceivedPerc;
+	}
+
+	public Double getConstiDeliveredPerc() {
+		return constiDeliveredPerc;
+	}
+
+	public void setConstiDeliveredPerc(Double constiDeliveredPerc) {
+		this.constiDeliveredPerc = constiDeliveredPerc;
+	}
+
+	public Double getUrbanPerc() {
+		return urbanPerc;
+	}
+
+	public void setUrbanPerc(Double urbanPerc) {
+		this.urbanPerc = urbanPerc;
+	}
+
+	public Double getMandalPerc() {
+		return mandalPerc;
+	}
+
+	public void setMandalPerc(Double mandalPerc) {
+		this.mandalPerc = mandalPerc;
+	}
+
+	public Double getDeliveredPerc() {
+		return deliveredPerc;
+	}
+
+	public void setDeliveredPerc(Double deliveredPerc) {
+		this.deliveredPerc = deliveredPerc;
+	}
+
+	
 	
 	
 }

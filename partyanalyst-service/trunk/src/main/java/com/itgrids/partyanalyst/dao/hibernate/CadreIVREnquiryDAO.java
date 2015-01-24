@@ -96,16 +96,16 @@ public class CadreIVREnquiryDAO  extends GenericDaoHibernate<CadreIVREnquiry, Lo
 		query.setParameterList("locationTypeIds", locationTypeIds);
 		return  (BigDecimal) query.uniqueResult();
 	}
-	public List<Long> getNoOfLocationCountByTypeId(List<Long> locationTypeIds,Date startDate, Date endDate)
+	public List<Object[]> getNoOfLocationCountByTypeId(List<Long> locationTypeIds,Date startDate, Date endDate)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("select count(distinct model.locationValue) from CadreIVREnquiry model where model.locationTypeId in( :locationTypeIds) and " +
+		str.append("select count(distinct model.locationValue),model.locationValue,model.locationTypeId from CadreIVREnquiry model where model.locationTypeId in( :locationTypeIds) and " +
 				" model.isDeleted ='N' ");
 		if(startDate != null && endDate != null && !startDate.equals(endDate))
 		str.append(" and model.insertedDate >=:startDate and  model.insertedDate <=:endDate"); 
 		else if(startDate != null && endDate != null && startDate.equals(endDate))
 			str.append(" and model.insertedDate =:startDate");
-		str.append("  GROUP BY model.locationTypeId " ); 
+		str.append("  GROUP BY model.locationTypeId,model.locationValue " ); 
 		Query query = getSession().createQuery(str.toString());
 		query.setParameterList("locationTypeIds", locationTypeIds);
 		if(startDate != null && endDate != null && !startDate.equals(endDate))
