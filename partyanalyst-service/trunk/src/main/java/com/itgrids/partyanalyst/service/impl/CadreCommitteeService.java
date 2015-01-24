@@ -605,6 +605,31 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	        return locationsList;
 	}
 	
+	public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetailsNew(Long constituencyId){
+		List<LocationWiseBoothDetailsVO> locationsList = new ArrayList<LocationWiseBoothDetailsVO>();
+		LocationWiseBoothDetailsVO vo = null;
+		List<SelectOptionVO> locations = regionServiceDataImp.getTehsilsInConstituency(constituencyId);
+		List<Object[]> localBodies = assemblyLocalElectionBodyDAO.getAllLocalBodiesInAConstituency(constituencyId);
+	        for(SelectOptionVO location:locations){
+	        	vo = new LocationWiseBoothDetailsVO();
+	        	vo.setLocationId(location.getId());
+	        	vo.setLocationName(location.getName());
+	        	locationsList.add(vo);
+	        }
+	        for(Object[] localBodi:localBodies){
+	        	Long localBdyId = (Long)localBodi[0];
+	        	if(!(localBdyId.longValue() == 20l ||  localBdyId.longValue() == 124l || localBdyId.longValue() == 119l)){
+	        		vo = new LocationWiseBoothDetailsVO();
+		        	vo.setLocationId(Long.valueOf("1"+localBodi[0].toString()));
+		        	vo.setLocationName(localBodi[1].toString());
+		        	locationsList.add(vo);
+	        	}else{
+	        		
+	        	}
+	        	
+	        }
+	        return locationsList;
+	}
 	public List<LocationWiseBoothDetailsVO> getPanchayatWardDivisionDetails(Long constituencyId){
 		List<LocationWiseBoothDetailsVO> locationsList = new ArrayList<LocationWiseBoothDetailsVO>();
 		LocationWiseBoothDetailsVO vo = null;
@@ -640,6 +665,44 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	        }
 	        return locationsList;
 	} 
+	/*public List<LocationWiseBoothDetailsVO> getPanchayatWardDivisionDetails(Long constituencyId){
+		List<LocationWiseBoothDetailsVO> locationsList = new ArrayList<LocationWiseBoothDetailsVO>();
+		LocationWiseBoothDetailsVO vo = null;
+		List<LocationWiseBoothDetailsVO> mandalsList = getMandalMunicCorpDetails(constituencyId);
+		List<Long> mandalIds = new ArrayList<Long>();
+		List<Long> localBodyIds = new ArrayList<Long>();
+	        for(LocationWiseBoothDetailsVO location:mandalsList){        	
+	        	if(location.getLocationId().toString().substring(0,1).trim().equalsIgnoreCase("1")){
+	        		Long localBdyId = Long.valueOf(location.getLocationId().toString().substring(1));
+	        		if(!(localBdyId.longValue() == 20l ||  localBdyId.longValue() == 124l || localBdyId.longValue() == 119l)){
+	        		   localBodyIds.add(localBdyId);
+	        		}
+	        	}else{
+	        		mandalIds.add(Long.valueOf(location.getLocationId().toString().substring(1)));
+	        	}
+	        }
+	        if(mandalIds.size() > 0){
+	        	//0panchayatId,1panchayatName,2tehsilName
+	        	List<Object[]> panchayatsList = panchayatDAO.getAllPanchayatsInMandals(mandalIds);
+	        	for(Object[] panchayat:panchayatsList){
+	        		vo = new LocationWiseBoothDetailsVO();
+		        	vo.setLocationId(Long.valueOf("1"+(Long)panchayat[0]));
+		        	vo.setLocationName(panchayat[1].toString()+"("+panchayat[2].toString()+")");
+		        	locationsList.add(vo);
+	        	}
+	        }
+	        if(localBodyIds.size() > 0){
+	        	//0wardId,1pwardName,2localBdyName
+	        	List<Object[]> localBodyList = constituencyDAO.getWardsInLocalElectionBody(localBodyIds);
+	        	for(Object[] localBody:localBodyList){
+	        		vo = new LocationWiseBoothDetailsVO();
+		        	vo.setLocationId(Long.valueOf("2"+(Long)localBody[0]));
+		        	vo.setLocationName(localBody[1].toString()+"("+localBody[2].toString()+")");
+		        	locationsList.add(vo);
+	        	}
+	        }
+	        return locationsList;
+	} */
 	
 	public  List<LocationWiseBoothDetailsVO> getAllAffiliatedCommittiesInALocation(Long levelId,Long levelValue){
 		List<LocationWiseBoothDetailsVO> affiliatedCommittiesList = new ArrayList<LocationWiseBoothDetailsVO>();
