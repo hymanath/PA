@@ -618,10 +618,11 @@
 		}		
 		else if(result.resultCode == 2)
 		{			
+			var redirectURL = $('#redirectURLId').val();
 			$('#profileDiv').hide();
 			$('.existingDiv').hide();
 			$('html,body').animate({scrollTop: $('.successDiv').offset().top}, 800);
-			$('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;"> '+result.status+'</span> <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 10px;margin-left:250px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"></i> </a>');
+			$('#redirectURLId').html('<span style="font-weight: bold;text-transform: uppercase;"> '+result.status+'</span> <br> <a class="btn btn-success btn-xs" href="'+redirectURL+'">  CLICK HERE IF YOU WANT DESIGNATION </a><a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 4px;margin-left:10px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"></i> </a>');
 		}
 		
 	}
