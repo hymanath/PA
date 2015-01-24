@@ -903,7 +903,7 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 		try{
 			jobj = new JSONObject(getTask());
 			Date startDate = null;
-			 Date endDate = null;
+			Date endDate = null;
 			 String fromDate = jobj.getString("fromDate");
 			 String toDate = jobj.getString("toDate");
 			 
@@ -1018,6 +1018,20 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 		catch (Exception e) 
 		{
 			LOG.error("Exception Raised in getImageDetailsForChecking()",e);	
+		}
+		return Action.SUCCESS;
+	}	
+	
+	public String getTotalIvrPreviousCallBasicInfo()
+	{
+		try{
+			jobj = new JSONObject(getTask());
+								
+			cadreIVRResponseVO = tdpCadreReportService.getTotalIvrPreviousCallBasicInfo();				
+					 
+		}catch(Exception e)
+		{
+			LOG.info("Entered into getTotalIvrPreviousCallBasicInfo()",e);	
 		}
 		return Action.SUCCESS;
 	}
