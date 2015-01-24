@@ -50,6 +50,8 @@
 	
 	function validateSearchType(areaTypeId)
 	{
+		$("#designationDivId").hide();	
+		$("#searchcadrenewDiv").hide();	
 		if(areaTypeId == 1) //  Village / Ward / Division
 		{
 			$('#areaTypeId').val(areaTypeId);
@@ -410,20 +412,8 @@
 				str+='<img style="width: 64px; height: 64px;" src="http://www.mytdp.com/images/cadre_images/'+result[i].imageURL+'" />';
 				str+='</span>';
 				str+='<div class="media-body">';
-				str+='<h4 class="media-heading">'+result[i].cadreName+'';
-				if(result[i].gender != null && result[i].gender.trim().length > 0)
-				{
-					if(result[i].gender == 'F')
-					{
-						str+='  D/O';
-					}
-					if(result[i].gender == 'M')
-					{
-						str+='  S/O';
-					}
-					
-				}
-				str+=' '+result[i].relativeName+' </h4>';
+				str+='<h5 class="media-heading"> <span style="font-weight:bold;"> Name:</span> '+result[i].cadreName+' ; ';				
+				str+=' <span style="font-weight:bold;"> Relative Name: </span>'+result[i].relativeName+' </h5>';
 				str+='<ul class="list-inline">';
 				str+='<li>Age:'+result[i].age+';</i>';
 				str+='<li>Gender: '+result[i].gender+'</i>';
