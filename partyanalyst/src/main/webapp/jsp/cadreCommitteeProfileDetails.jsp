@@ -210,13 +210,13 @@
 	</s:if>
 	<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center m_top20 alert alert-success successDiv" >
 	<s:if test="%{committeeMngtType == 1}">
-	<span style="font-weight:bold;text-transform: uppercase;"> ADDING <span style="color:#FD2A34"> ${cadreCommitteeVO.cadreName} </span> AS <span style="color:#FD2A34"> ${result1} </span> FOR <span style="color:#FD2A34"> ${result2} </span> IN ${result4} <br> <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action?panchayatId=${panchayatId}&committeeTypeId=${committeeTypeId}&committeeId=${committeeId}&result3=${result3}">  click here If  you want CHANGE designation </a> <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 4px;"> <i class="glyphicon glyphicon-home"></i> </a> </span>
+	<span style="font-weight:bold;text-transform: uppercase;"> ADDING <span style="color:#FD2A34"> ${cadreCommitteeVO.cadreName} </span> AS <span style="color:#FD2A34"> ${result1} </span> FOR <span style="color:#FD2A34"> ${result2} </span> IN ${result4} <br> <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action?panchayatId=${panchayatId}&committeeTypeId=${committeeTypeId}&committeeId=${committeeId}&result3=${result3}&task=${task}&result4=${cadreCommitteeVO.memberShipCardId}">  click here If  you want CHANGE designation </a> <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 4px;"> <i class="glyphicon glyphicon-home"></i> </a> </span>
 	</s:if>
 	<s:if test="%{committeeMngtType == 2}">
-	<b> ADDING ${cadreCommitteeVO.cadreName} AS PUBLIC REPRESANTATIVE  ELECTORAL  TO ${panchayatName}</b>
+	<b> ADDING ${cadreCommitteeVO.cadreName} AS PUBLIC REPRESANTATIVE  ELECTORAL  TO ${panchayatName}  <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 4px;"> <i class="glyphicon glyphicon-home"></i> </a> </b>
 	</s:if>
 	<s:if test="%{committeeMngtType == 3}">
-	<b> ADDING ${cadreCommitteeVO.cadreName} AS MANDAL AFFILIATED ELECTORAL  TO ${panchayatName}</b>
+	<b> ADDING ${cadreCommitteeVO.cadreName} AS MANDAL AFFILIATED ELECTORAL  TO ${panchayatName} <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 4px;"> <i class="glyphicon glyphicon-home"></i> </a> </b>
 	</s:if>
 	
 	
@@ -265,19 +265,33 @@
 				<div class="col-md-4   col-sm-6 col-xs-6 form-group">
 					<input type="text" id="adhaarNoId" class="form-control  editClass"  value="${cadreCommitteeVO.adhaarNo}" placeholder="Aadhar No:"  name="cadreRegistrationVO.candidateAadherNo" disabled>
 				</div>
+
 				<div class="row">
 					<span class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 form-group requiredFields" id="voterCardNoIdError" style="left:11px;">
 					</span>
 					<span class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 form-group requiredFields" id="adhaarNoIdError" style="right:228px;">
 					</span>
 				</div>
-				<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 form-group">
-					<input type="text" id="mobileNoId" class="form-control editClass mobileNumber"  value="${cadreCommitteeVO.mobileNo}" placeholder="Mobile No:9632587410" name="cadreRegistrationVO.mobileNumber" disabled>
+				
+				<div class="row">
+					<div class="col-md-8 col-md-offset-2  col-sm-12 col-xs-12 form-group">
+						<div class="col-md-6   col-sm-4 col-xs-4 form-group">
+							<input type="text" id="mobileNoId" class="form-control editClass mobileNumber"  value="${cadreCommitteeVO.mobileNo}" placeholder="Mobile No:9632587410" name="cadreRegistrationVO.mobileNumber" disabled>
+						</div>				
+				<!--
+						<div class="col-md-4  col-sm-4 col-xs-4 form-group" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); text-transform: uppercase; line-height: 11px; border-radius: 4px; font-size: 11px; padding: 4px 8px;">
+							Is your mobile a smart Phone? 
+							<a class="btn btn-success btn-xs" onclick="javascript:{changeSmartPhoneStatus(1);}"><input type="radio" name="smartPhone" onclick="changeSmartPhoneStatus(1)" id="yesRadioId">yes</a>  
+							<a class="btn btn-danger btn-xs" onclick="javascript:{changeSmartPhoneStatus(2);}" ><input type="radio" name="smartPhone" onclick="changeSmartPhoneStatus(2)"  id="noRadioId" checked="checked">No</a> 
+							<input type="hidden" id="smartPhoneId" class="form-control editClass mobileNumber"  value="N" name="cadreRegistrationVO.isSmartPhone" disabled>
+						</div>	
+					-->	
+						<div class="col-md-6   col-sm-4 col-xs-4 form-group">
+							<s:select theme="simple" cssClass="form-control selectBoxWidth span12 input-block-level editClass" id="casteId" list="cadreCommitteeVO.casteList" listKey="casteStateId" listValue="casteName" headerKey="0" headerValue=" Select Caste " style="width:100%;height:35px;" name="cadreRegistrationVO.casteId"   value="%{cadreCommitteeVO.casteStateId}" disabled="true"/>	
+						</div>
+					</div>
 				</div>
-								
-				<div class="col-md-4   col-sm-6 col-xs-6 form-group">
-					<s:select theme="simple" cssClass="form-control selectBoxWidth span12 input-block-level editClass" id="casteId" list="cadreCommitteeVO.casteList" listKey="casteStateId" listValue="casteName" headerKey="0" headerValue=" Select Caste " style="width:420px;height:35px;" name="cadreRegistrationVO.casteId"   value="%{cadreCommitteeVO.casteStateId}" disabled="true"/>	
-				</div>
+				
 				<div class="row">
 					<span class="col-md-4   col-sm-6 col-xs-6 form-group requiredFields" id="mobileNOErrorId" style="left:240px;" >
 					</span>
@@ -737,7 +751,7 @@
 		
 		function checkOTPValid(){
 			
-			var mobileNo=$(".mobileNumber").val();
+			var mobileNo=mobnum;
 			var otpNo=$(".otptextbox").val();
 			var jsObj =	{
 				mobileNo : mobileNo,
@@ -1096,6 +1110,22 @@
 	function setDefaultImage(img)
 	{
 		img.src = "images/cadreCommitee/Member_thamb_image.png";
+	}
+	function changeSmartPhoneStatus(status)
+	{
+		if(status == 1)
+		{
+			$('#noRadioId').prop('checked',false);
+			$('#yesRadioId').prop('checked',true);
+			$('#smartPhoneId').val('Y');
+		}
+		else if(status == 2)
+		{
+			$('#noRadioId').prop('checked',true);
+			$('#yesRadioId').prop('checked',false);
+			$('#smartPhoneId').val('N');
+		}
+		
 	}
 	</script>
   </body>

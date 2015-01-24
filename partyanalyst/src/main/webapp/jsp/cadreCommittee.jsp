@@ -112,7 +112,7 @@
 		</div>
 		<div class="row m_top20">
 			<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 " >
-				<div class="form-group col-xs-12 pull-right" id="afflitCommitteeIdDiv">
+				<div class="form-group col-xs-12 pull-right" >
 					<label for="committeeId">AFFILIATED COMMITTEE</label>
 					<select class="form-control" onchange="hideMembers();getCommitteCadreMembersInfo(2)" id="afflitCommitteeId"><option>Select Affiliated Committee</option></select >
 					<div id="afflitCommitteeIdErr"></div>
@@ -120,8 +120,8 @@
 			</div>
 			<div class="col-md-4 col-sm-6 col-xs-6">
 				<div class="form-group col-xs-12">
-					<label for="exampleInputEmail1">COMMITTEE POSITION</label>
-					<select  class="form-control" id="committeePositionId"  name="eligibleRoles[0].cadreRoleId"><option>POSITION </option></select >
+					<label for="exampleInputEmail1">COMMITTEE DESIGNATION</label>
+					<select  class="form-control" id="committeePositionId"  name="eligibleRoles[0].cadreRoleId"><option value="0">Select Designation </option></select >
 					<div id="committeePositionIdErr"></div>
 				 </div>
 			</div>
@@ -292,27 +292,30 @@
 		var commityTypeId = '';
 		var commityId = '';
 		var cadreRoleId = '';
+		var task = '';
+		var defaultName = '';
 		var isFirstPancayatSettingValues = true;
 		var isFirstCommityIdSettingValues = true;
 		var isFirstCadreRoleIdSettingValues = true;
 		
-		 pancayatId = ${panchayatId};
-		 commityTypeId = ${committeeTypeId};
-		 commityId = ${committeeId};
-		 cadreRoleId = ${result3};
-		
+		 pancayatId = '${panchayatId}';
+		 commityTypeId = '${committeeTypeId}';
+		 commityId = '${committeeId}';
+		 cadreRoleId = '${result3}';
+		 task = '${task}';
+		 defaultName = '${result4}';
+			
 		$('document').ready(function(){
 			$('#committeeTypeId').val(commityTypeId);
 			if(commityTypeId ==1)
 			{
 				getAffiliatedCommitsForALoc();
 			}
-
-		});
-	
-		
-		$('document').ready(function(){			
-		
+			if(task.trim() == 2)
+			{		
+				$('#areaTypeId').val(task);
+				$("#mndlLvlCommittSelec").prop("checked","checked");
+			}
 			$('.ageRangeCls').click(function(){
 				//alert($(this).attr('id'));
 				$('#ageRange').val(0);
@@ -395,7 +398,8 @@
 		$("#afflitCommitteeIdErr").html("");
 		$("#committeeMainId").hide();
 		var reqLocationType ="";
-		if($("#mndlLvlCommittSelec").is(':checked')){
+		
+		if(task==2 || $("#mndlLvlCommittSelec").is(':checked')){
 		  reqLocationType ="mandal";
 		}
 		$.ajax({
@@ -420,6 +424,7 @@
 				}
 				if(pancayatId != 0 && isFirstPancayatSettingValues)
 				{
+					task="";
 					isFirstPancayatSettingValues = false;
 					$("#committeeLocationId,#committeLocationId").val(pancayatId);
 					getAffiliatedCommitsForALoc();
@@ -433,7 +438,7 @@
 		$("#committeeTypeIdErr").html("");
 		$("#afflitCommitteeIdErr").html("");
 		var locId = $("#committeeLocationId").val();
-		if(locId == null || locId == 0){
+		if( locId == null || locId == 0){
 			$("#committeeLocationIdErr").html("Please Select Location");
 			return;
 		}
@@ -444,8 +449,9 @@
 		$("#afflitCommitteeId  option").remove();
 		$("#afflitCommitteeId").append('<option value="0">Select Affiliated Committee</option>');
 		if($("#committeeTypeId").val() == 2){
-			$("#afflitCommitteeId").show();
-			$("#afflitCommitteeIdDiv").show();
+			$("#afflitCommitteeId").removeAttr("disabled","disabled");
+			//$("#afflitCommitteeId").show();
+			//$("#afflitCommitteeIdDiv").show();
 			$("#committeeMainId").prop("disabled");
 			$("#committeeMainId").show();
 			var reqLocationType = "";
@@ -465,7 +471,7 @@
 					   $("#afflitCommitteeId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
 					}
 				}
-				if(isFirstCommityIdSettingValues)
+				if(cadreRoleId !=0 && isFirstCommityIdSettingValues)
 				{
 					isFirstCommityIdSettingValues = false;
 					$("#afflitCommitteeId").val(commityId);
@@ -476,9 +482,10 @@
 					
 		}else{
 
-			$("#afflitCommitteeIdDiv").hide();
-			$("#afflitCommitteeId").hide();
-			if(isFirstCommityIdSettingValues)
+			//$("#afflitCommitteeIdDiv").hide();
+			//$("#afflitCommitteeId").hide();
+			$("#afflitCommitteeId").attr("disabled","disabled");
+			if(cadreRoleId !=0 &&  isFirstCommityIdSettingValues)
 				{
 					isFirstCommityIdSettingValues = false;
 					$("#afflitCommitteeId").val(commityId);
@@ -506,6 +513,7 @@
 			$("#committeeTypeIdErr").html("Please Select Committee Type");
 			return;
 		}
+		alert(111);
 		if($("#committeeTypeId").val() == 2){
 			 if(locVal == null || locVal == 0){
 				$("#afflitCommitteeIdErr").html("Please Select Affiliated Committee");
@@ -612,8 +620,8 @@
 			$("#committeeTypeIdErr").html("Please Select Committee Type");
 			return;
 		}
-		if(type == 2)
-		{		
+		/*if(type == 2)
+		{		alert(2222);
 			if($("#committeeTypeId").val() == 2){
 				 if(locVal == null || locVal == 0){
 					$("#afflitCommitteeIdErr").html("Please Select Affiliated Committee");
@@ -621,7 +629,7 @@
 				}
 			}
 		}
-				
+			*/	
 		 $("#committeeMmbrsMainDiv").html("");
 		 var reqCommitteeType = "main";
 		 var reqLocationType = "";
@@ -640,7 +648,7 @@
 			 reqLocationValue=$("#afflitCommitteeId").val();
 		 }
 		 $("#committeePositionId  option").remove();
-		 $("#committeePositionId").append('<option value="0">Select Position</option>');
+		 $("#committeePositionId").append('<option value="0">Select Designation</option>');
 		  $.ajax({
 				type : "POST",
 				url : "getCommitteMembersInfoAction.action",
@@ -658,8 +666,12 @@
 						if(cadreRoleId != 0 && isFirstCadreRoleIdSettingValues)
 						{
 							isFirstCadreRoleIdSettingValues = false;
-							$("#committeePositionId").val(cadreRoleId);
+							$("#committeePositionId").val(cadreRoleId);							
+							$('#searchBy').val(defaultName);
 							showSearchInfo();
+							
+							 setTimeout(function(){ 
+								getCadreDetailsBySearchCriteria();}, 2000);
 						}
 					}
 				}
