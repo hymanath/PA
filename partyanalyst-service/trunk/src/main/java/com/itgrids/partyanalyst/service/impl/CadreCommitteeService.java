@@ -278,9 +278,11 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					
 					cadreCommitteeVO.setCasteList(stateCasteList);			
 				}
-				
-				TdpCommitteeMember tdpCommitteeMember = tdpCommitteeMemberDAO.getTdpCommitteeMemberByTdpCadreId(tdpCadreId);
-				
+				TdpCommitteeMember tdpCommitteeMember = null;
+				List<TdpCommitteeMember> tdpCommitteeMemberList = tdpCommitteeMemberDAO.getTdpCommitteeMemberByTdpCadreId(tdpCadreId);
+				if(tdpCommitteeMemberList.size() > 0){
+					tdpCommitteeMember = tdpCommitteeMemberList.get(0);
+				}
 				if(tdpCommitteeMember != null)
 				{
 					String LocationType = tdpCommitteeMember.getTdpCommitteeRole().getTdpCommittee().getTdpCommitteeLevel().getTdpCommitteeLevel();
@@ -841,7 +843,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				TdpCommitteeMember tdpCommitteeMember = null;
 				if(isExist)
 				{
-					tdpCommitteeMember = tdpCommitteeMemberDAO.getTdpCommitteeMemberByTdpCadreId(tdpCadreId);
+					List<TdpCommitteeMember> tdpCommitteeMemberList = tdpCommitteeMemberDAO.getTdpCommitteeMemberByTdpCadreId(tdpCadreId);
+					if(tdpCommitteeMemberList.size() > 0){
+						tdpCommitteeMember = tdpCommitteeMemberList.get(0);
+					}
 				}
 				else
 				{
