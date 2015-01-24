@@ -551,7 +551,8 @@
 				<value>com.itgrids.partyanalyst.model.TdpCommitteeElectrols</value>
 				<value>com.itgrids.partyanalyst.model.TdpCommitteeElectrolRoles</value>	
 				<value>com.itgrids.partyanalyst.model.TdpCadreImagesValid</value>	
-									
+				<value>com.itgrids.partyanalyst.model.TdpCommitteeMemberHistory</value>		
+							
 				</list>
 			
 		</property>
