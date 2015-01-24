@@ -12,8 +12,8 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeRoleDAO;
 import com.itgrids.partyanalyst.dao.ICadreOtpDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreParticipatedElectionDAO;
@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeDesignationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeElectrolRolesDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeElectrolsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberHistoryDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeRoleDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
@@ -52,6 +53,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeDesignation;
 import com.itgrids.partyanalyst.model.TdpCommitteeElectrolRoles;
 import com.itgrids.partyanalyst.model.TdpCommitteeElectrols;
 import com.itgrids.partyanalyst.model.TdpCommitteeMember;
+import com.itgrids.partyanalyst.model.TdpCommitteeMemberHistory;
 import com.itgrids.partyanalyst.model.TdpCommitteeRole;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.VoterAgeRange;
@@ -90,8 +92,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private IVoterDAO voterDAO;
 	private IBoothDAO                       boothDAO;
+	private ITdpCommitteeMemberHistoryDAO tdpCommitteeMemberHistoryDAO;
 	
 	
+	public void setTdpCommitteeMemberHistoryDAO(
+			ITdpCommitteeMemberHistoryDAO tdpCommitteeMemberHistoryDAO) {
+		this.tdpCommitteeMemberHistoryDAO = tdpCommitteeMemberHistoryDAO;
+	}
 	public IBoothDAO getBoothDAO() {
 		return boothDAO;
 	}
@@ -224,6 +231,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					cadreCommitteeVO.setPreEnrollNo("");
 				}
 				cadreCommitteeVO.setMobileNo(tdpCadre.getMobileNo());
+				//cadreCommitteeVO.setIsSmartPhone(tdpCadre.getIsSmartPhone());
 				cadreCommitteeVO.setAdhaarNo(tdpCadre.getCadreAadherNo());
 				cadreCommitteeVO.setAddress(tdpCadre.getUserAddress().getStreet() != null ? tdpCadre.getUserAddress().getStreet():"");
 				cadreCommitteeVO.setCasteStateId(tdpCadre.getCasteState() != null?tdpCadre.getCasteState().getCasteStateId():0L);
@@ -304,6 +312,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					{
 						LocalElectionBody localElectionBody = localElectionBodyDAO.get(locationValue);						
 						location = localElectionBody.getName() +" "+localElectionBody.getElectionType().getElectionType();
+						
+						if(locationValue.longValue() == 20L || locationValue.longValue() == 124L || locationValue.longValue() == 119L)
+						{
+							String wardName = constituencyDAO.get(locationValue).getName();
+							location = location+" - "+wardName;
+						}
+						
 					}	
 					
 					String positionName = tdpCommitteeMember.getTdpCommitteeRole().getTdpRoles().getRole();
@@ -910,6 +925,30 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					if(tdpCommitteeMemberList.size() > 0){
 						tdpCommitteeMember = tdpCommitteeMemberList.get(0);
 					}
+					
+					try {
+						TdpCommitteeMemberHistory tdpCommitteeMemberHistory = new TdpCommitteeMemberHistory();
+						
+						tdpCommitteeMemberHistory.setTdpCommitteeMemberId(tdpCommitteeMember.getTdpCommitteeMemberId());
+						tdpCommitteeMemberHistory.setTdpCadreId(tdpCommitteeMember.getTdpCadreId());
+						tdpCommitteeMemberHistory.setTdpCommitteeRoleId(tdpCommitteeMember.getTdpCommitteeRoleId());
+						tdpCommitteeMemberHistory.setTdpCommitteeEnrollmentId(tdpCommitteeMember.getTdpCommitteeEnrollmentId());
+						tdpCommitteeMemberHistory.setStartDate(tdpCommitteeMember.getStartDate());
+						tdpCommitteeMemberHistory.setEndDate(tdpCommitteeMember.getEndDate());
+						tdpCommitteeMemberHistory.setInsertedUserId(tdpCommitteeMember.getInsertedUserId());
+						tdpCommitteeMemberHistory.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+						tdpCommitteeMemberHistory.setUpdatedUserId(tdpCommitteeMember.getUpdatedUserId());
+						tdpCommitteeMemberHistory.setUpdatedTime(tdpCommitteeMember.getUpdatedTime());					
+						tdpCommitteeMemberHistory.setIsActive(tdpCommitteeMember.getIsActive());
+						
+						tdpCommitteeMemberHistory.setUserId(tdpCommitteeMember.getInsertedUserId());
+						tdpCommitteeMemberHistory.setInsertedUserId(userId);
+						
+						tdpCommitteeMemberHistoryDAO.save(tdpCommitteeMemberHistory);
+					} catch (Exception e) {
+						LOG.error("Exception raised in saveCadreCommitteDetails when inserting in history table ", e);
+					}
+					
 				}
 				else
 				{
