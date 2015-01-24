@@ -74,15 +74,16 @@
 	var allRolesList = new Array();	
 	function prepopulateOptions(){
 	
-		
+	/*	
 	if(participationCount >0)
 	{
-		$('#rolesDiv').hide();
+		$('#rolesDiv').show();
 	}
 	if(isRolesCount >0)
 	{
-		$('#electionsDiv').hide();
+		$('#electionsDiv').show();
 	}
+	*/
 	$('#genderDetailsId').val('${cadreCommitteeVO.gender}');
 		var jsObj ={}				   
 			$.ajax({
@@ -453,7 +454,7 @@
 			
 			<s:else>
 				<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group  m_top20">
-				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;">
+				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;"  id="electionsDiv">
 					<div class="row">
 					  <div class="form-group col-md-4 col-sm-4 col-xs-4 ">
 						<label for="exampleInputEmail2" >Election Type</label>
@@ -838,7 +839,8 @@
 		}
 		
 		var str='';
-		str+='<div class="row" id="detailsId'+electionsCount+'">';
+		str+='<div id="detailsId'+electionsCount+'" class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent; margin-bottom: 2px;">';
+		str+='<div class="row" >';
 		str+='<div class="form-group col-md-4 col-sm-4 col-xs-4 ">';
 		str+='<label for="exampleInputEmail2" >Election Type</label>';
 		str+='<select class="form-control " onChange="getElectionYears(this.value,\'electionYearId'+electionsCount+'\')" id="electionsTypeID">';
@@ -863,7 +865,9 @@
 		str+='</select>';
 		str+='<input type="hidden" value="0" name="cadreRegistrationVO.previousParicaptedElectionsList['+electionsCount+'].candidateId"/>';
 		str+='</div>';
-		str+='<a href="javascript:{clearDiv(\'detailsId'+electionsCount+'\');}" class="btn btn-danger btn-xs " style="margin-left: 17px;"> Remove </a>	';
+		str+='</div>';
+		str+='</div>';
+		str+='<a href="javascript:{clearDiv(\'detailsId'+electionsCount+'\');}" class="btn btn-danger btn-xs " style="margin-left: 17px;margin-bottom:15px;"> Remove </a>	';
 		$('#electionsDiv').append(str);
 		
 		electionsCount = electionsCount+1;
@@ -880,7 +884,7 @@
 			isRoleSet = false;
 		}
 		var str='';
-		str+='<span id="roleDiv'+rolesCount+'">';
+		str+='<div id="roleDiv'+rolesCount+'" class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent; margin-bottom: 2px;">';
 		str+='<div class="row" >';
 		str+='<div class="form-group col-md-6 col-sm-6 col-xs-6 ">';
 		str+='<label for="exampleInputEmail2" >Committee Level</label>';
@@ -919,7 +923,7 @@
 		str+='</div>	';				  
 		str+='</div>';
 		str+='<a href="javascript:{clearDiv(\'roleDiv'+rolesCount+'\');}" class="btn btn-danger btn-xs " style="margin-left: 17px;"> Remove </a>	';
-		str+='</span>';
+		str+='</div>';
 		$('#rolesDiv').append(str);
 		
 		rolesCount = rolesCount+1;
