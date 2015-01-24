@@ -3758,6 +3758,9 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 						}else if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
 							queryStr.append(" and model.userAddress.ward.constituencyId = :id ");
 						}
+						else if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("3")){
+							queryStr.append(" and model.userAddress.ward.constituencyId = :id ");
+						}
 					}
 				}else if(areaId==2){
 					if(panchayatId != null && panchayatId.longValue() != 0L)
@@ -3767,6 +3770,9 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 							queryStr.append(" and model.userAddress.localElectionBody.localElectionBodyId = :id ");
 						}else if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
 							queryStr.append(" and model.userAddress.tehsil.tehsilId = :id ");
+						}
+						else if(panchayatId.toString().substring(0,1).trim().equalsIgnoreCase("3")){
+							queryStr.append(" and model.userAddress.ward.constituencyId = :id ");
 						}
 					}
 					
