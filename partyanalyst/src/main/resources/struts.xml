@@ -9431,5 +9431,11 @@
 			</result>
 		</action>
 		
+		<action name="getTotalIvrPreviousCallBasicInfo" class="tdpCadreReportAction" method="getTotalIvrPreviousCallBasicInfo">
+			<result type="json" name="success">
+				<param name="root">cadreIVRResponseVO</param>
+			</result>
+		</action>
+		
 </package>
 </struts>      

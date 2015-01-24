@@ -136,7 +136,7 @@
         <pattern>/partyDashBoardAction*</pattern>
         <pattern>/cadreEnrollment*</pattern>
         <pattern>/tdpCadreVolunteerAction*</pattern>
-        <pattern>/cadreIvrEnquiryAction*</pattern>
+		<pattern>/cadreIvrEnquiryAction*</pattern>        
         <pattern>/publicMembershipCardStatusAction*</pattern>
 		 <pattern>/cadreCommitteeAction*</pattern>
 		 <pattern>/cadreProfileDetailsAction*</pattern>

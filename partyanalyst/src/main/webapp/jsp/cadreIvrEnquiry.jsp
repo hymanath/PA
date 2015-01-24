@@ -1,120 +1,359 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="s" uri="/struts-tags"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">	
-<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
- <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
- <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
- <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
- <script type="text/javascript" src="js/jquery.dataTables.js"></script>
- <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
-<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-<script type="text/javascript" src="js/bootStrapDateRange/moment.js"></script>
-<script type="text/javascript" src="js/bootStrapDateRange/daterangepicker.js"></script>
-
- <link rel="stylesheet" type="text/css" href="css/daterangepicker-bs2.css"/>
- <script src="js/cardsDashBoard/js2.3.2/Chart.js"></script>
-	<script src="js/cardsDashBoard/js2.3.2/Chart.min.js"></script>
-<script type="text/javascript" src="js/exportexcel.js"></script>
-
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>IVR Report</title>
+<link href="css/Bootstrap2.2.1.css" rel="stylesheet" type="text/css" />
+<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+ <!-- Load jQuery from Google's CDN -->
+    <!-- Load jQuery UI CSS  -->
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+    
+    <!-- Load jQuery JS -->
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <!-- Load jQuery UI Main JS  -->
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
+
 <style>
-	.marginCss{margin-top: 0px; margin-bottom: 0px;}
-	
+body{
+	font-family: 'Roboto', sans-serif;
+}
+a
+{
+	color:#000
+}
+
+a:hover
+{
+	color:#000
+}
+.text-center
+{
+	text-align:center;
+	alignment-adjust:central;
+	alignment-baseline:middle;
+}
+
+.table-bordered
+{
+	border-radius:0px;
+	border-collapse:collapse;
+}
+
+.table-condensed
+{
+	border-radius:0px;
+}
+
+.well
+{
+	border-radius:0px;
+}
+
+input[type="text"]
+{
+	border-radius:0px;
+}
+
+.btn-success
+{
+	border-radius:0px;
+}
+.border-radius-0{border-radius:0px;}
 </style>
 </head>
+
 <body>
-<div class="container ">	
-	<!-- Title Row -->
-		<div class="row-fluid" id="fadeInDown">
-			<div class="span12 well well-small  border-radius-0 mb-0 ">
-				<h3 class="text-center text-uppercase">Previous Calls Details</h3>
-			</div>
-		</div><!-- Title Row End-->
-		<!--<div class = "row" style="margin-top:20px;">
-				<table  style="margin-left: 270px;">
-					<tr><td><label>From Date :</label>&nbsp;</td><td>&nbsp;&nbsp;<input type="text" readonly="readonly" id="fromDate"/></td></tr>
-				   <tr><td><label>To Date   :</label>&nbsp;</td><td>&nbsp;&nbsp;<input type="text" readonly="readonly" id="toDate" /></td></tr>		
-				</table>
-				<input type="button"  class="btn btn-success offset5"  value="Submit" onclick="getIvrPreviousCallsBasicInfo();"/>
-				</div>-->
+<div class="container">
+<div class="row"><div class="span12 text-center" >
 
-				
-		<div class="row">
-	<div class="span10 offset1 form-inline">
-    <label>From Date: &nbsp; </label><input type="text" readonly="readonly" id="fromDate"/><label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To Date: &nbsp; </label>
-       <input type="text" readonly="readonly" id="toDate" />
-    <button class="btn btn-success" onclick="getIvrPreviousCallsBasicInfo();">submit</button>
-  </div>
+<table width="100%" class="table table-condensed table-bordered" style="margin-top:30px;">
+    <tr class="well">
+        <td colspan="6">
+        <div class="span11"><h4 class="text-success" align="center">CARDS DISTRIBUTION CONFORMATION STATUS BY INFO MANAGER</h4>
+             <a class="btn btn-small btn-default pull-right border-radius-0">
+				 <label class="radio">
+				  <input type="radio">AP
+				</label>
+			</a>
+            <a class="btn btn-small btn-default pull-right border-radius-0">
+				<label class="radio ">
+				  <input type="radio">TS
+				</label>
+            </a>
+             <a class="btn btn-small btn-success pull-right border-radius-0">            
+				<label class="radio">
+				  <input type="radio"> ALL
+				</label>
+            </a>
+    	</div>
+        </td>
+    </tr>
+    <tr>
+	
+        <td width="15%"><div class="text-center"><h2  class="text-center"><span id="printsId1" ></span><img class="imgStyle printData" src="images/icons/search.gif"></img></h2>Total Printed Cards</div></td>
+        <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId2" ></span></a></h2>Total cards received by constituency incharge</div></td>
+        <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId3" ></span></a></h2>Total Cards Urban area constituency incharge</div></td>
+        <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId4" ></span></a></h2>Total Cards dispatched to mandal constituency incharge</div></td>
+        <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId5" ></span></a></h2>Total Cards received by mandal constituency incharge</div></td>
+        <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId6" ></span></a></h2>Total Cards delviered to cadre mandal constituency incharge</div></td>
+    </tr>
+</table>
+
+<table class="table table-bordered table-condensed">
+    <tr>
+		<td ><span class="add-on" style="background-color:#CCC;padding:6px;margin-left:-5px;"><i class="icon-calendar"></i></span><h6 style="display:inline"> &nbsp; Select Date to view the infomanagers conformed distributed cards status Constituency and mandal wise by area incharges</h6></td>
+    </tr>
+    <tr>
+    	<td>
+        	<div class="form-inline" style="margin-top:15px;">
+            	From Date<input type="text" id="fromDate" class="dateClass"/>&nbsp; To Date <input type="text" id="toDate" class="dateClass" /> &nbsp;&nbsp;
+                <button class="btn btn-success" value="Submit"  onclick="getCardsDistributedInfo();">Get Details</button>
+            </div>
+        </td>
+    </tr>
+</table>
+<!--<table width="100%" class="table table-condensed table-bordered">
+    <tr class="well">
+        <td colspan="4"><h5 style="display:inline;padding:5px;">DISTRICT LEVEL INFO</h5>(selected date range)</td>
+    </tr>
+    <tr>
+        <td width="25%"><h4 >5</h4>Districts</td>
+        <td width="25%"><h4>50000</h4>Total cards printed</td>
+        <td width="25%"><h4>30000</h4>Total Cards dispatched to mandal incharge</td>
+        <td width="25%"><h4>30000</h4>Total Cards received constituency incharge</td>
+    </tr>
+</table>-->
+</div></div>
+<center><img class="offset6" id="basicajaxImg" src="./images/icons/search.gif" style="display:none;height: 18px; width: 16px; margin-top: 0px; margin-left: 0px;"></center>
+<div class="row">
+	<div class="span6" id="constiTD">
+    	
+    </div>
+    <div class="span6" id="mandalTD">
+    	
+    </div>
 </div>
-				
-<!--<img style="height:18px;width:16px;margin-left:1px;display:none;" src="./images/icons/search.gif" id="basicajaxImg" class="offset1"/>-->
-<div class="row-fluid" style="margin-top: 20px;">			
-				<table class="table border-radius-0 mb-0"  style="outline: 1px solid rgb(204, 204, 204);margin-bottom:10px;">
-					<tr>
-						<td style="width:250px;text-align:center; border-right: 2px solid rgb(204, 204, 204);" id="totalIvrTD">
-						<img style="height:18px;width:16px;margin-top:60px;margin-left:1px;" src="./images/icons/search.gif" id="basicajaxImg" class="offset1"/></td>
-						<!--<td style="width:100px;text-align:center;" ></td>-->
-						<td id="constiIvrTD"></td>
-						<!--<td class="width25p"style="230px !important;"  id="mandalIvrTD">-->
-							
-						</td>	
-							
-					</tr>
+<p style="display:none;" id="noteId">NOTE: Click on mandal or contituency <u>COUNT</u> to get detailed details</p>
 
-					
-				</table>
-
-
-<!--<div class="span4 border-radius-0 mb-10" id="basicCountDiv"></div>
-<div id="previousCntDiv" class="span8 border-radius-0 mb-10"></div>-->
-</div>
 <img style="height:18px;width:16px;display:none;" src="./images/icons/search.gif" id="ajaxImg" class="offset5"/>
-	<div id="enquiryDataDiv" style="clear:both;"></div>		
-		<!--<div id="enquiryDiv"  class="offset3">
-		<div id="errorDiv"></div>
-		<table>
-		
-		<tr>
-		<tr id="constdisplaydivid" style="display: table-row;">
-		<td><b>Select Constituency</b></td>
-		<td>
-		<select id="displayconstbox"></select>
-		</td>
-		</tr>
-		<tr>
-		<td><b>Select Location Type</b></td>
-		<td>
-		<select id="selLctnType">	
-		<option value="0">all</option>		
-		<option value="1">constituency</option>	
-		<option value="2">tehsil/municipality</option>	
-		
-		</select>
-		</td>
-		</tr>
-		</table>
-		<input type="button" value="Submit" style="margin-top:10px;" class="btn btn-medium btn-success border-radius-0 offset2" onclick="getCadreIvrEnquiryDetails();" />
-		<img style="height:18px;width:16px;margin-left:1px;display:none;" src="./images/icons/search.gif" id="ajaxImg" class="offset1"/>
-		</div>
-	    <div id="ivrEnquiryDetailsDiv"  style="margin-top:23px;"></div>-->
-		</div>
-		<script>
+	<div class="row">
+    	<div class="span12" id="resultDivByLocation">
+        	
+        </div>
+    </div>
+	
+</div>
 
-		function getDates()
+<script src="js/bootstrap3/bootstrap.min.js"></script>
+<script>
+
+	$( document ).ready(function() {
+		
+		$('.dateClass').datepicker({dateFormat: 'yy-mm-dd'}); 
+		//$(".toDatepicker").datepicker("setDate", new Date());
+	});
+	function getCardsDistributedInfo()
+	{
+		$("#basicajaxImg").show();
+		$("#mandalTD").html('');
+		$("#noteId").hide();
+		var fromDate = $("#fromDate").val();
+		var toDate =  $("#toDate").val();
+		var jsObj = {	
+			fromDate:fromDate,
+			toDate:toDate,
+			//fromDate:"2015-01-05",
+			//toDate:"2015-01-26",
+			task:"previousCallsCnt"             
+		}
+			   
+		$.ajax({
+			type : "POST",
+			url : "getIvrPreviousCallBasicInfoAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			$("#basicajaxImg").hide();	
+			buildCardsDistributedDetails(result,fromDate,toDate);
+		});
+	}
+	
+	
+	function buildCardsDistributedDetails(result,fromDate,toDate)
+	{
+		var str='';
+		
+		str+='<table width="100%" class="table table-condensed table-bordered">';
+        str+='<tr><td colspan="4" class="well"><h5 style="display:inline;padding:5px;">CONSTITUENCY LEVEL INFO</h5>(selected date range)</td></tr>';
+        str+='<tr>';
+		
+		if(result.totalCalls!= null && result.totalCalls > 0)	
+		  str+='<td width="20%"><h4><a style="cursor:pointer;" onclick="getCardsDispatchedDataByType(\'Constituency\',\''+fromDate+'\',\''+toDate+'\')">'+result.totalCalls+'</a></h4><span style="font-size:11px; line-height:14px">Constituencies</span></td>';
+        else
+		  str+='<td width="20%"><h4>'+result.totalCalls+'</h4><span style="font-size:11px; line-height:14px">Constituencies</span></td>';
+		str+='<td width="20%"><h4>'+result.printedCount+'</h4><span style="font-size:11px; line-height:14px">Total Cards Printed</span></td>';
+        str+='<td width="30%"><h4>'+result.received+'</h4><span style="font-size:11px; line-height:14px">Total Cards Received By Constituency Incharge</span></td>';
+        str+='<td width="30%"><h4>'+result.notReceived+'</h4><span style="font-size:11px; line-height:14px">Total Cards Dispatched To Mandal Incharge</span></td>';
+        str+='</tr>';
+		str+='</table>';
+	
+		$("#constiTD").html(str);
+		
+		var str1='';
+		str1+='<table width="100%" class="table table-condensed table-bordered">';
+        str1+='<tr><td colspan="4" class="well"><h5 style="display:inline;padding:5px;">MANDAL LEVEL INFO</h5>(selected date range)</td></tr>';
+        str1+='<tr>';
+		if(result.totalIvrCalls!= null && result.totalIvrCalls > 0)	
+			str1+='<td width="15%"><h4><a style="cursor:pointer;" onclick="getCardsDispatchedDataByType(\'Mandal\',\''+fromDate+'\',\''+toDate+'\')">'+result.totalIvrCalls+'</a></h4><span style="font-size:11px; line-height:14px">Mandals</span></td>';
+		else
+			str1+='<td width="15%"><h4>'+result.totalIvrCalls+'</h4><span style="font-size:11px; line-height:14px">Mandals</span></td>';
+        
+		str1+='<td width="20%"><h4>'+result.mandalPrintedCnt+'</h4><span style="font-size:11px; line-height:14px">Total Cards Printed</span></td>';
+        str1+='<td width="30%"><h4>'+result.totalAnswerdCalls+'</h4><span style="font-size:11px; line-height:14px">Total Cards Received By Mandal Incharge</span></td>';
+        str1+='<td width="35%"><h4>'+result.notMember+'</h4><span style="font-size:11px; line-height:14px">Total Cards Delivered To Cadre By Mandal Incharge</span></td>';
+        str1+='</tr>';
+		str1+='</table>';
+		$("#mandalTD").html(str1);
+		
+		$("#noteId").show();
+	}
+	
+	function getCardsDispatchedDataByType(type,fromDate,toDate)
+	{
+		$("#ajaxImg").show();
+		$("#resultDivByLocation").html("");
+
+		var jsObj = {	
+			fromDate:fromDate,
+			toDate:toDate,
+			locationType:type,
+			task:"previousCallsData"             
+		}
+			   
+		$.ajax({
+			type : "POST",
+			url : "getIvrPreviousCallBasicInfoAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+				$("#ajaxImg").hide();
+				buildCardsDispatchedDataByType(result,type);
+		});
+	}
+	
+	
+	function buildCardsDispatchedDataByType(resultList,type)
+	{
+		var result = resultList.apList;
+		var str ='';
+		if(result == null || result.length == 0)
 		{
-			var jObj ={
-			task:"getDates"             
+			str+='<span style="color:red">No Data Available...</span>';
+			$("#resultDivByLocation").html(str);
+			return;
+		}		
+		str+='<table class="table table-bordered table-condensed">';
+		if(type =="Constituency")
+		{		
+			str+='<td colspan="6" class="well"><h5 style="display:inline;">CONSTITUENCY LEVEL DETAILED DETAILS</h5></td>';
+		}
+		else if(type =="Mandal")
+		{
+			str+='<td colspan="6" class="well"><h5 style="display:inline;">MANDAL LEVEL DETAILED DETAILS</h5> </td>';
+		}
+		str+='</tr>';
+		str+='<tr>';
+		if(type =="Constituency")
+		{
+			 str+='<td><h6>DISTRICT NAME</h6></td>';
+			 str+='<td><h6>CONSTITUENCY NAME</h6></td>';
+		}
+		else if(type =="Mandal")
+		{
+			str+=' <td><h6>CONSTITUENCY NAME</h6></td>';
+			str+='<td><h6>MANDAL NAME</h6></td>';
+		}
+		
+		str+=' <td><h6>TOTAL CARDS PRINTED</h6></td>';
+        str+='<td><h6>Total Cards Received By Contituency Incharge</h6></td>';
+        str+='<td><h6>DISTRIBUTED CARDS<br/>(Conformed By infomanagers)</h6></td>';
+        str+='<td><h6>CADRE MEMBERS RECEIVED CARDS<br/>(conformed by IVR)</h6></td>';
+        str+='</tr>';
+		for(var i in result)
+		{
+			 str+='<tr>';
+			 if(result[i].locationName != null)
+				str+='<td>'+result[i].locationName+'</td>';
+			 else
+				str+='<td>-</td>';
+				
+			 if(result[i].name != null)
+				str+='<td>'+result[i].name+'</td>';
+			 else
+				str+='<td>-</td>';
+				
+			 if(result[i].printedCount != null)	
+				str+='<td>'+result[i].printedCount+'</td>';
+			 else
+				str+='<td>-</td>';
+			
+			if(result[i].ivrEnqReceived != null)		
+				str+='<td>'+result[i].ivrEnqReceived+'</td>';
+			else
+				str+='<td>-</td>';
+			 
+			 if(result[i].ivrEnqDelivered != null)	
+				str+='<td>'+result[i].ivrEnqDelivered+'</td>';
+			 else
+				str+='<td>-</td>';
+						 
+			 if(result[i].received != null)		
+				str+='<td>'+result[i].received+'</td>';
+			 else
+				str+='<td>-</td>';
+			 
+			
+			 
+			
+				str+='</tr>';
+		 }		 
+		 str+='</tbody>';
+		 str+='</table>';
+		 $("#resultDivByLocation").html(str);
+         
+	}
+	
+	function getTotalCardsDispatchedPerc()
+	{
+		var jsObj = {	
+			task:"totalData"             
+		}
+			   
+		$.ajax({
+			type : "POST",
+			url : "getTotalIvrPreviousCallBasicInfo.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			if(result != null)
+			{
+				$('.printData').hide();
+				console.log(result.printedCount);
+				$('#printsId1').html(result.printedCount);
+				$('#printId2').html(result.constiReceivedPerc+'%');
+				$('#printId3').html(result.urbanPerc+'%');
+				$('#printId4').html(result.constiDeliveredPerc+'%');
+				$('#printId5').html(result.mandalPerc+'%');
+				$('#printId6').html(result.deliveredPerc+'%');
+			}
+		});
+	}
+	
+	
+	
+	function getDates()
+	{
+		var jObj ={
+		task:"getDates"             
 		}	
 		$.ajax({
 			type : "POST",
@@ -140,310 +379,13 @@
 			var maxDate = result.length - 1;
 		$("#toDate").datepicker("setDate", maxDate);
 		getIvrPreviousCallsBasicInfo();
-		});
-	
-		
-		}
-			
-		function getConstituencies(){
-		
-		$("#displayconstbox").html("");
-		
-		var jObj ={
-			task:"getConstituenciesForUWS"             
-		}	
-		$.ajax({
-			type : "POST",
-			url : "getUserAccessConstituencyAction.action",
-			data : {task:JSON.stringify(jObj)} ,
-		}).done(function(result){
-			var str = "<option value='0'>Select Constituency</option>";
-		   for(var i in result){
-				str +='<option value='+result[i].id+'>'+result[i].name+'</option>';
-			}
-			$("#displayconstbox").html(str);
-			//getCadreIvrEnquiryDetails();
-		});
-		
-	}
-
-	function getCadreIvrEnquiryDetails()
- {
-	 $("#errorDiv").html('').css("color","red");
-	 var constituencyId = $("#displayconstbox").val();
-	 var locationLvl =  $("#selLctnType option:selected").text();
-
-	if(constituencyId == 0)
-	 {
-	$("#errorDiv").html('Select Constituency');
-	return;
-	 }
-	$("#ajaxImg").show();
-	 $("#ivrEnquiryDetailsDiv").html("");
-	   var jsObj = {	
-			locationLvl:locationLvl,
-			locationValue:constituencyId
-			}
-     $.ajax({
-			type : "POST",
-			url : "cadreIvrEnquiryInfoAction.action",
-			data : {task:JSON.stringify(jsObj)} ,
-		}).done(function(result){
-		 $("#ajaxImg").hide();
-		 buildEnquiryData(result);
-		});
- }
-function buildEnquiryData(resultList)
- {
-	 var result = resultList.apList;
-	  var str ='';
-	 if(result == null || result.length == 0)
-	 {
-		str+='<span style="color:red">No Data Available...</span>';
-		$("#ivrEnquiryDetailsDiv").html(str);
-		return;
-	 }
-	
-	 str+='<table class="table table-bordered">';
-	 str+='<thead class="alert-success">';
-	 str+='<th>Location</th>';
-	 str+='<th>MobileNo</th>';
-	 str+='<th>Details</th>';
-	 str+='<th>Status</th>';
-	 str+='<th>Received</th>';
-	 str+='<th>Delivered</th>';
-	 str+='</thead>';
-	 str+='<tbody>';
-	 for(var i in result)
-	 {
-	 str+='<tr>';
-	 str+='<td>'+result[i].locationName+'</td>';
-	 str+='<td>'+result[i].jobCode+'</td>';
-	 str+='<td>'+result[i].name+'</td>';
-	 str+='<td>'+result[i].areaName+'</td>';
-	 //str+='<td>'+result[i].received+'</td>';
-	// str+='<td>'+result[i].notReceived+'</td>';
-	 if(result[i].received != null){
-		   str += '  <td>' +result[i].received+ '</td>';
-		}else{
-		  str += '  <td></td>';
-		}
-		if(result[i].notReceived != null){
-		  str += '  <td>' +result[i].notReceived+ '</td>';
-		 }else{
-		  str += '  <td></td>';
-		}
-	 str+='</tr>';
-	 }
-	 str+='</tbody>';
-	 str+='</table>';
-	 $("#ivrEnquiryDetailsDiv").html(str);
-
- }
- function getIvrBasicCount()
-	{
-		$("#basicajaxImg").show();
-		$("#basicCountDiv").html('');
-		var jsObj = {	
-			state:0,
-			task:"basicCnt"             
-		}
-			   
-		$.ajax({
-			type : "POST",
-			url : "getCadreIVRBasicInfoAction.action",
-			data : {task:JSON.stringify(jsObj)} ,
-		}).done(function(result){
-				$("#basicajaxImg").hide();
-		buildIvrCount(result);
-		});
-	}
-	function getIvrPreviousCallsBasicInfo()
-	{
-		
-		$("#previousCntDiv").html('');
-		var fromDate = $("#fromDate").val();
-		var toDate =  $("#toDate").val();
-		var jsObj = {	
-			fromDate:fromDate,
-			toDate:toDate,
-			task:"previousCallsCnt"             
-		}
-			   
-		$.ajax({
-			type : "POST",
-			url : "getIvrPreviousCallBasicInfoAction.action",
-			data : {task:JSON.stringify(jsObj)} ,
-		}).done(function(result){
-				
-		buildPreviousCount(result,fromDate,toDate);
-		});
+		});		
 	}
 	
-	function buildIvrCount(result)
-	{
-		var str='';
-	str+='<table class="table table-bordered border-radius-0 mb-0 Previousmembercount" style="margin-top: 22px;">';
-	str+='<thead>';
-	str+=' <tr>';	
-	str += '<th  style="text-align:center;"> Dispatch Count  </th>';
-	str += '<th style="text-align:center;"> Total Ivr Calls  </th>';
-	str+=' </tr>';
-	str+=' </thead>';
-	
-	str+='<tbody>';
-	str+=' <tr>';
-								
-	str+='<td><div><h2 class="marginCss">'+result.printingCompleted+'</h2></div></td>';
-	str+='<td><div ><h2 class="marginCss">'+result.total+'</h2></div></td>';
-	<!--str+='<td><div ><h2>'+result.totalError+'</h2><p>Error Count</p></div></td>';-->
-	
-	str+='</tr>';
-	str+='</tbody>';
-	str+='</table>';
-	
-	
-	
-	
-	$("#totalIvrTD").html(str);
-	}
-	function buildPreviousCount(result,fromDate,toDate)
-	{
-			var str='';
-	str+='<table class="table table-bordered border-radius-0 mb-0 Previousmembercount"  style="margin-bottom: 10px;">';
-	str+='<thead>';
-	str+=' <tr>';	
-	str += '<th  style="text-align:center;" COLSPAN=3> Constituency  </th>';
-	str += '<th style="text-align:center;" COLSPAN=3> Mandal  </th>';
-	str+=' </tr>';
-	str+=' </thead>';
-	str+='<tbody>';
-	str+=' <tr>';
-	str+='<td>No Of Constituencies</td>';
-	str+='<td>Received</td>';
-	str+='<td>Delivered</td>';
-	str+='<td>No Of Mandals</td>';
-	str+='<td>Received</td>';
-	str+='<td>Delivered</td>';
-	str+=' </tr>';
-	str+=' <tr>';
-		if(result.totalCalls!= null && result.totalCalls > 0)						
-	str+='<td><div><h2 class="marginCss"><a style="cursor:pointer;" onclick="getIvrDataByType(\'Constituency\',\''+fromDate+'\',\''+toDate+'\')">'+result.totalCalls+'</a></h2></div></td>';
-		else
-	str+='<td><div><h2 class="marginCss">'+result.totalCalls+'</h2></div></td>';
-	str+='<td><div ><h2 class="marginCss">'+result.received+'</h2></div></td>';
-	str+='<td><div ><h2 class="marginCss">'+result.notReceived+'</h2></div></td>';
-	
-	if(result.totalIvrCalls!= null && result.totalIvrCalls > 0)					
-	str+='<td><div ><h2 class="marginCss"><a style="cursor:pointer;" onclick="getIvrDataByType(\'Mandal\',\''+fromDate+'\',\''+toDate+'\')">'+result.totalIvrCalls+'</a></h2></div></td>';
-	else
-	str+='<td><div ><h2 class="marginCss">'+result.totalIvrCalls+'</h2></div></td>';
-	
-	
-	str+='<td><div ><h2 class="marginCss">'+result.totalAnswerdCalls+'</h2></div></td>';
-	str+='<td><div ><h2 class="marginCss">'+result.notMember+'</h2></div></td>';
-	str+='</tr>';
-	str+='</tbody>';
-	str+='</table>';
-	$("#constiIvrTD").html(str);
-	}
-
-	function getIvrDataByType(type,fromDate,toDate)
-	{
-		$("#ajaxImg").show();
-		 $("#enquiryDataDiv").html("");
-		var jsObj = {	
-			fromDate:fromDate,
-			toDate:toDate,
-			locationType:type,
-			task:"previousCallsData"             
-		}
-			   
-		$.ajax({
-			type : "POST",
-			url : "getIvrPreviousCallBasicInfoAction.action",
-			data : {task:JSON.stringify(jsObj)} ,
-		}).done(function(result){
-				$("#ajaxImg").hide();
-		buildPreviousCallsData(result,type);
-		});
-	}
-
-	function buildPreviousCallsData(resultList,type)
-	{
-	 var result = resultList.apList;
-	 var str ='';
-	 if(result == null || result.length == 0)
-	 {
-		str+='<span style="color:red">No Data Available...</span>';
-		$("#enquiryDataDiv").html(str);
-		return;
-	 }
-	 str+='<table class="table table-bordered" style="margin-top: 29px;">';
-	 str+='<thead class="alert-success">';
-	 if(type =="Constituency")
-		{
-	 str+='<th>District</th>';
-	 str+='<th>Constituency</th>';
-		}
-	 else if(type =="Mandal")
-		{
-	 str+='<th>Constituency</th>';
-	 str+='<th>Mandal</th>';
-		}
-	 str+='<th>Total Ivr Calls</th>';
-	 str+='<th>Cards Received</th>';
-	 str+='<th>Cards Not Received</th>';
-	 str+='<th>Received</th>';
-	 str+='<th>Delivered</th>';
-	 str+='</thead>';
-	 str+='<tbody>';
-	 for(var i in result)
-	 {
-	 var error = (result[i].totalCalls) - (result[i].received +result[i].notReceived+result[i].notMember) 
-	 str+='<tr>';
-	 if(result[i].locationName != null)
-		str+='<td>'+result[i].locationName+'</td>';
-	 else
-	 	str+='<td>-</td>';
-	 if(result[i].name != null)
-		str+='<td>'+result[i].name+'</td>';
-	 else
-	 	str+='<td>-</td>';
-	 if(result[i].totalCalls != null)	
-		str+='<td>'+result[i].totalCalls+'</td>';
-	 else
-	 	str+='<td>-</td>';
-	 if(result[i].received != null)		
-		str+='<td>'+result[i].received+'</td>';
-	 else
-	 	str+='<td>-</td>';
-	 if(result[i].notReceived != null)	
-		str+='<td>'+result[i].notReceived+'</td>';
-	 else
-	 	str+='<td>-</td>';
-	 if(result[i].ivrEnqReceived != null)		
-		str+='<td>'+result[i].ivrEnqReceived+'</td>';
-	 else
-	 	str+='<td>-</td>';
-	 if(result[i].ivrEnqDelivered != null)	
-		str+='<td>'+result[i].ivrEnqDelivered+'</td>';
-	 else
-	 	str+='<td>-</td>';
-	
-		str+='</tr>';
-	 }
-	 
-	 str+='</tbody>';
-	 str+='</table>';
-	 $("#enquiryDataDiv").html(str);
-	}
-		</script>
-<script>
-getDates();
-getConstituencies();
-getIvrBasicCount();
-
+	getTotalCardsDispatchedPerc();
+//$('.tooltipIVR').tooltip('toggle');
+//getDates();
 </script>
+
 </body>
 </html>
