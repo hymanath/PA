@@ -6966,8 +6966,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 										tdpCadre.setEmailId(cadreRegistrationVO.getEmailId());
 									if(cadreRegistrationVO.getPreviousEnrollmentNumber() != null)
 										tdpCadre.setPreviousEnrollmentNo(cadreRegistrationVO.getPreviousEnrollmentNumber());
+									//if(cadreRegistrationVO.getIsSmartPhone() != null)
+									//	tdpCadre.setIsSmartPhone(cadreRegistrationVO.getIsSmartPhone());
 									tdpCadreDAO.save(tdpCadre);
-									
 									
 									UserAddress userAddress = tdpCadre.getUserAddress();
 									
@@ -7058,8 +7059,6 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 													
 												}
 											}
-											
-											
 										}
 									}
 									
@@ -7077,6 +7076,12 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 												{
 													tdpCommitteeLevelId = 7L;
 													levelValue = userAddress.getLocalElectionBody().getLocalElectionBodyId();
+													
+													if(levelValue.longValue() == 20L || levelValue.longValue() == 124L || levelValue.longValue() == 119L)
+													{
+														tdpCommitteeLevelId = 9L;
+														levelValue = userAddress.getWard().getConstituencyId();
+													}
 												}
 												else if(userAddress.getTehsil() != null)
 												{
@@ -7091,9 +7096,17 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 												}
 												
 												cadreCommitteeService.saveElectrolInfo(cadreRegistrationVO.getTdpCadreId(),tdpCommitteeLevelId,levelValue,committeeMngtType,eligibleRoles,committeeTypeId);
-												ResultStatus resultStatus = cadreCommitteeService.saveCadreCommitteDetails(userId, cadreRegistrationVO.getTdpCadreId(), cadreRoleId);
-												surveyCadreResponceVO.setResultCode(resultStatus.getResultCode());
-												surveyCadreResponceVO.setStatus(resultStatus.getMessage());
+												if(cadreRoleId != null)
+												{
+													ResultStatus resultStatus = cadreCommitteeService.saveCadreCommitteDetails(userId, cadreRegistrationVO.getTdpCadreId(), cadreRoleId);
+													surveyCadreResponceVO.setResultCode(resultStatus.getResultCode());
+													surveyCadreResponceVO.setStatus(resultStatus.getMessage());
+												}
+												else
+												{
+													surveyCadreResponceVO.setResultCode(0);
+													surveyCadreResponceVO.setStatus("Cadre Details Updated Successfully");
+												}
 											}
 									}
 								}
