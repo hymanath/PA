@@ -196,12 +196,14 @@
   
 	<div class="container-fluid">
 		<div class="row" style="align:center;padding:10px;background:rgba(255,0,51,0.8); border-top:12px solid rgba(19,167,81,0.8);border-bottom:12px solid rgba(19,167,81,0.8);display:flex">
-		 	<div class="col-md-12 col-sm-12 col-xs-12 text-center">
+			<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12 text-center">
 				<img src="images/cadreCommitee/committee_logo.png" title="Committee Logo" alt="committee" />
 			</div>
-			
-			
-	
+			<div class="span4">
+			  <span>
+			     <a href="newlogoutAction.action" class="btn btn-xs btn-default pull-left m_top20">Logout</a>	
+			  </span>	
+			</div>
 		</div>
 	<s:if test="%{cadreCommitteeVO.committeePosition != null}">
 	<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center m_top20 alert alert-info existingDiv" >
@@ -405,11 +407,13 @@
 						  </div>
 						  <div class="form-group col-md-4 col-sm-4 col-xs-4">
 							<label >From Date</label>
-							<input type="text" class="form-control datesCls" name="cadreRegistrationVO.previousRollesList[0].fromDateStr">
+							<input type="text" class="form-control datesCls fromDateCls" id="fromDateId0"  key ="0" name="cadreRegistrationVO.previousRollesList[0].fromDateStr">
+							<br><span id="fromDateErr0" style="color:red;font-size:12px;"></span> 
 						  </div>
 						  <div class="form-group col-md-4 col-sm-4 col-xs-4">
 							<label >To Date</label>
-							<input type="text" class="form-control datesCls" name="cadreRegistrationVO.previousRollesList[0].toDateStr">
+							<input type="text" id="toDateId0" class="form-control datesCls" name="cadreRegistrationVO.previousRollesList[0].toDateStr">
+							<br><span id="toDateErr0" style="color:red;font-size:12px;"></span> 
 						  </div>					  
 						</div>
 									
@@ -534,11 +538,13 @@
 					  </div>
 					   <div class="form-group col-md-4 col-sm-4 col-xs-4">
 							<label >From Date</label>
-							<input type="text" class="form-control datesCls" name="eligibleRoles[0].fromDateStr">
+							<input type="text" class="form-control datesCls fromDateCls" id="fromDateIda0" key ="a0" name="eligibleRoles[0].fromDateStr">
+							<br><span id="fromDateErra0" style="color:red;font-size:12px;"></span> 
 					   </div>
 					   <div class="form-group col-md-4 col-sm-4 col-xs-4">
 							<label >To Date</label>
-							<input type="text" class="form-control datesCls" name="eligibleRoles[0].toDateStr">
+							<input type="text" id="toDateIda0" class="form-control datesCls" name="eligibleRoles[0].toDateStr">
+							<br><span id="toDateErra0" style="color:red;font-size:12px;"></span> 
 						</div>		  
 					</div>
 				</div><!-- add more details electionsDiv Ending -->	
@@ -783,6 +789,7 @@
 		}
 	function addMoreEligibleRoles(){
 		elegRolCnt=elegRolCnt+1;
+		dtCnt = dtCnt+1;
        var str='';
         str+='<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;"  id="eligibleRolesDivs'+elegRolCnt+'">';
 		str+='	<div class="row">';
@@ -797,24 +804,26 @@
 		str+='	  </div>';
 		str+='	   <div class="form-group col-md-4 col-sm-4 col-xs-4">';
 		str+='			<label >From Date</label>';
-		str+='			<input type="text" id="fromDtR'+elegRolCnt+'" class="form-control" name="eligibleRoles['+elegRolCnt+'].fromDateStr">';
+		str+='			<input type="text"  id="fromDateIda'+dtCnt+'" key ="a'+dtCnt+'"  class="form-control fromDateCls" name="eligibleRoles['+elegRolCnt+'].fromDateStr">';
+		str+='          <br><span id="fromDateErra'+dtCnt+'" style="color:red;font-size:12px;"></span>'; 
 		str+='	   </div>';
 		str+='	   <div class="form-group col-md-4 col-sm-4 col-xs-4">';
 		str+='			<label >To Date</label>';
-		str+='			<input type="text" id="toDtR'+elegRolCnt+'" class="form-control" name="eligibleRoles['+elegRolCnt+'].toDateStr">';
+		str+='			<input type="text"  id="toDateIda'+dtCnt+'"  class="form-control" name="eligibleRoles['+elegRolCnt+'].toDateStr">';
+		str+='          <br><span id="toDateErra'+dtCnt+'" style="color:red;font-size:12px;"></span>';
 		str+='		</div>	';	  
 		str+='	</div>';
 		str+='<a style="margin-left: 17px;" class="btn btn-danger btn-xs " href="javascript:{removeselDiv(\'eligibleRolesDivs'+elegRolCnt+'\');}"> Remove </a>';
 		str+='</div>';
 		$('#eligibleRolesDiv').append(str);
-		$('#fromDtR'+elegRolCnt).datepicker({
+		$('#fromDateIda'+dtCnt).datepicker({
 				dateFormat: 'yy-mm-dd',
 				maxDate: new Date(),
 				changeMonth: true,
 				changeYear: true,
 				yearRange: "-100:+0"
 			  });
-		$('#toDtR'+elegRolCnt).datepicker({
+		$('#toDateIda'+dtCnt).datepicker({
 				dateFormat: 'yy-mm-dd',
 				maxDate: new Date(),
 				changeMonth: true,
@@ -875,8 +884,10 @@
 
 	var isRoleSet = true;
 	var rolesCount = 1 ;
+	var dtCnt = 0;
 	function addMoreRoles()
 		{
+			dtCnt = dtCnt+1;
 		$('#rolesDiv').show();
 		if(isRolesCount >0 && isRoleSet)
 		{
@@ -915,11 +926,13 @@
 		str+='</div>';
 		str+='<div class="form-group col-md-4 col-sm-4 col-xs-4">';
 		str+='<label >From Date</label>';
-		str+='<input type="text" class="form-control datesCls" name="cadreRegistrationVO.previousRollesList['+rolesCount+'].fromDateStr">';
+		str+='<input type="text" class="form-control datesCls fromDateCls" id="fromDateId'+dtCnt+'"  key ="'+dtCnt+'" name="cadreRegistrationVO.previousRollesList['+rolesCount+'].fromDateStr">';
+		str+='<br><span id="fromDateErr'+dtCnt+'" style="color:red;font-size:12px;"></span>';
 		str+='</div>';
 		str+='<div class="form-group col-md-4 col-sm-4 col-xs-4">';
 		str+='<label >To Date</label>';
-		str+='<input type="text" class="form-control datesCls" name="cadreRegistrationVO.previousRollesList['+rolesCount+'].toDateStr">';
+		str+='<input type="text" class="form-control datesCls" id="toDateId'+dtCnt+'" name="cadreRegistrationVO.previousRollesList['+rolesCount+'].toDateStr">';
+		str+='<br><span id="toDateErr'+dtCnt+'" style="color:red;font-size:12px;"></span> ';
 		str+='</div>	';				  
 		str+='</div>';
 		str+='<a href="javascript:{clearDiv(\'roleDiv'+rolesCount+'\');}" class="btn btn-danger btn-xs " style="margin-left: 17px;"> Remove </a>	';
