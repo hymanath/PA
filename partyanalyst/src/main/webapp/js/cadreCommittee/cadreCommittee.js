@@ -406,9 +406,9 @@
 			for(var i in result)
 			{			
 				str+='<div class="media">';
-				str+='<a href="#" class="media-left">';
+				str+='<span href="#" class="media-left">';
 				str+='<img style="width: 64px; height: 64px;" src="http://www.mytdp.com/images/cadre_images/'+result[i].imageURL+'" />';
-				str+='</a>';
+				str+='</span>';
 				str+='<div class="media-body">';
 				str+='<h4 class="media-heading">'+result[i].cadreName+'';
 				if(result[i].gender != null && result[i].gender.trim().length > 0)
@@ -503,17 +503,11 @@
 	var isexisting = $('#exitingPositionId').val();
 	var existingMsg = $('#existingMsg').val();
 
-	if(isexisting.trim().length>0)
-	{
-		if(!confirm(existingMsg+" ? "))
-		{
-			return;
-		}
-	}
+	
 	
 		$(".requiredFields").html('');
 		
-	   $("#submitCadreFormBtnReqId").hide();
+	   
 	   
 	   var errString="";
 				var ageId=$("#ageId").val();
@@ -570,10 +564,60 @@
 					 errString="error";
 				}
 				*/
+				
+				$('.fromDateCls').each(function(){
+		
+						var keyId = $(this).attr('key');
+						$('#fromDateErr'+keyId+'').html('')	;		
+						$('#toDateErr'+keyId+'').html('');
+						
+						var startDate = $('#fromDateId'+keyId+'').val();
+						var endDate = $('#toDateId'+keyId+'').val();	
+						
+						if((startDate != null && startDate.trim().length >0) && (endDate != null && endDate.trim().length >0))
+						{
+							var arrr = startDate.split("-");
+								var fromyear=arrr[0];
+								var frommonth=arrr[1];
+								var fromDat=arrr[2];
+						   var arr = endDate.split("-");
+								var toyear=arr[0];
+								var tomonth=arr[1];
+								var toDat=arr[2];
+								
+								if(fromyear>toyear){
+									$('#fromDateErr'+keyId+'').html('<font style="color:red;">From Date should not greater than To Date </font>');
+									  errString = " error";
+								}
+								 if(frommonth>tomonth){
+									   if(fromyear == toyear){
+										$('#fromDateErr'+keyId+'').html('<font style="color:red;">From Date should not greater than To Date </font>');
+										errString = " error";
+									}
+									
+								}
+								
+								if(fromDat>toDat){	
+									if(frommonth == tomonth && fromyear == toyear){			
+										$('#fromDateErr'+keyId+'').html('<font style="color:red;">From Date should not greater than To Date </font>');
+										errString = " error";		
+									   }
+								}
+						}
+			
+		         });
 				if(errString.trim().length >0){
 					return;
 				}
-				else{
+				if(isexisting.trim().length>0)
+				{
+					if(!confirm(existingMsg+" ? "))
+					{
+						return;
+					}
+				}
+				$("#submitCadreFormBtnReqId").hide();
+			
 					var uploadHandler = {
 						upload: function(o) {
 							uploadResult = o.responseText;
@@ -583,7 +627,7 @@
 
 				YAHOO.util.Connect.setForm('uploadCadreForm',true);
 				YAHOO.util.Connect.asyncRequest('POST','committeTdpCadreSaveRegistrationAction.action',uploadHandler);
-			}	
+			
 			
 	}
 	

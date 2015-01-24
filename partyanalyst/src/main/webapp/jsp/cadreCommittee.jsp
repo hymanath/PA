@@ -54,8 +54,13 @@
   <body>
 	<div class="container-fluid">
 		<div class="row" style="align:center;padding:10px;background:rgba(255,0,51,0.8); border-top:12px solid rgba(19,167,81,0.8);border-bottom:12px solid rgba(19,167,81,0.8);display:flex">
-		 	<div class="col-md-12 col-sm-12 col-xs-12 text-center">
+		 	<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12 text-center">
 				<img src="images/cadreCommitee/committee_logo.png" title="Committee Logo" alt="committee" />
+			</div>
+			<div class="span4">
+			  <span>
+			     <a href="newlogoutAction.action" class="btn btn-xs btn-default pull-left m_top20">Logout</a>	
+			  </span>	
 			</div>
 		</div>
 		<div class="row m_top20">
@@ -65,7 +70,7 @@
 						<a class="btn btn-success btn-block arrow_selected" id="basicCommitteeTab" href="javascript:{showAndHideTabs('basicCommitteeDiv');getCommitteeLocations();}">Committee <br>Management</a>
 					</div>
 					<div class="col-md-4 col-sm-4 col-xs-4">
-						<a class="btn btn-success btn-block "   id="publicrepresantativeTab" href="javascript:{showAndHideTabs('publicrepresantative');}">Public represantative <br>Electoral Management</a>
+						<a class="btn btn-success btn-block "   id="publicrepresantativeTab" href="javascript:{showAndHideTabs('publicrepresantative');}">Public representative <br>Electoral Management</a>
 					</div>
 					<div class="col-md-4 col-sm-4 col-xs-4">
 						<a class="btn btn-success btn-block "  id="mandalaffiliatedTab" href="javascript:{showAndHideTabs('mandalaffiliated');}" >Mandal affiliated <br>Electoral Management</a>				
@@ -185,7 +190,7 @@
 		
 		<div class="row" id="publicrepresantative" >	
 			<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1  m_top20 text-center">
-				<h3 class="text-success text-uppercase" >Process to update <br> public representatives as mandal Electoral</h3>
+				<h3 class="text-success text-uppercase" >Process to Add <br> public representatives as mandal Electoral</h3>
 				
 				<hr style="margin: 0px;">
 			</div>
@@ -214,15 +219,15 @@
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center">
 				<div class="form-inline m_top20">
 					<div class="radio">
-						<label><input type="radio" name="searchBasedOn" checked="true" class="searchTypeCls" id="membershipId" value="1"> Membership ID &nbsp;&nbsp;</label>
+						<label><input type="radio" name="searchBasedOn" checked="true" class="searchTypeCls" onclick="refreshExistingDetails();" id="membershipId" value="1"> Membership ID &nbsp;&nbsp;</label>
 					
-						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="voterId"  value="2" > Voter ID &nbsp;&nbsp;</label>
+						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="voterId"  onclick="refreshExistingDetails();"  value="2" > Voter ID &nbsp;&nbsp;</label>
 					
-						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="mobileNo"  value="3"> Mobile No &nbsp;&nbsp;</label>
+						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="mobileNo"  onclick="refreshExistingDetails();"  value="3"> Mobile No &nbsp;&nbsp;</label>
 					
-						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="name"  value="4"> Name &nbsp;&nbsp;</label>
+						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="name"  onclick="refreshExistingDetails();"  value="4"> Name &nbsp;&nbsp;</label>
 					
-						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="advancedSearch"  value="5"> Advanced Search &nbsp;&nbsp;</label>
+						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="advancedSearch"  onclick="refreshExistingDetails();"  value="5"> Advanced Search &nbsp;&nbsp;</label>
 						<input type="hidden" id="cadreSearchType" value="membershipId" />
 					</div>				  
 				</div>
@@ -536,7 +541,6 @@
 			$("#committeeTypeIdErr").html("Please Select Committee Type");
 			return;
 		}
-		
 		if($("#committeeTypeId").val() == 2){
 			 if(locVal == null || locVal == 0){
 				$("#afflitCommitteeIdErr").html("Please Select Affiliated Committee");
@@ -592,7 +596,7 @@
 				   for(var i in members){
 					  str+=' <tr>';
 					  str+=' 	<td>'+members[i].value+'</td>';
-					  str+=' 	<td><img width="32" id="imagecdr'+i+'" height="32" src="images/cadre_images/'+members[i].url+'" onerror="setDefaultImage(this);"/></td>';
+					  str+=' 	<td><img width="32" id="imagecdr'+i+'" height="32" src="http://www.mytdp.com/images/cadre_images/'+members[i].url+'" onerror="setDefaultImage(this);"/></td>';
 					  str+=' 	<td>'+members[i].name+'</td>';
 					  str+=' 	<td>'+members[i].type+'</td>';
 					  str+=' </tr>';
@@ -713,6 +717,10 @@
 	{
 		$('.ageRangeCls').val('');
 		
+	}
+	function refreshExistingDetails(){
+		$("#searchBy").val("");
+		$("#cadreDetailsDiv").html("");
 	}
 	getCommitteeLocations();
 	getUserLocation();
