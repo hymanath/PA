@@ -1901,7 +1901,12 @@
 	<bean id="tdpCommitteeMemberHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCommitteeMemberHistoryDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<bean id="cadreCommitteeIncreasedPositionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreCommitteeIncreasedPositionsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="cadreCommitteeChangeDesignationsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreCommitteeChangeDesignationsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<!--  end -->
 </beans>		
