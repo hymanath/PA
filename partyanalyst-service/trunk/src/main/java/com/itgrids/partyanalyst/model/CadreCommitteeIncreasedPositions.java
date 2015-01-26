@@ -36,7 +36,7 @@ public class CadreCommitteeIncreasedPositions extends BaseModel implements Seria
 	private Date insertedTime; 
 	private Date updatedTime;
 	private String type;
-	
+	private String userComments;
 	
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.AUTO)
@@ -138,5 +138,16 @@ public class CadreCommitteeIncreasedPositions extends BaseModel implements Seria
 	public void setType(String type) {
 		this.type = type;
 	}
-
+	
+	@Column(name = "user_comments")
+	public String getUserComments() {
+		return userComments;
+	}
+	public void setUserComments(String userComments) {
+		this.userComments = userComments;
+	}
+	
+	
+    
+	
 }
