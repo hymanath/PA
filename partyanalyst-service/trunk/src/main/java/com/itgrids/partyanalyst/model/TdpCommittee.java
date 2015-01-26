@@ -27,7 +27,7 @@ public class TdpCommittee {
 	private TdpCommitteeLevel tdpCommitteeLevel;
 	private Long tdpCommitteeLevelId;
 	private Long tdpCommitteeLevelValue;
-	
+	private String isCommitteeConfirmed;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "tdp_committee_id", unique = true, nullable = false)
@@ -97,6 +97,15 @@ public class TdpCommittee {
 	
 	public void setTdpCommitteeLevelValue(Long tdpCommitteeLevelValue) {
 		this.tdpCommitteeLevelValue = tdpCommitteeLevelValue;
+	}
+	
+	@Column(name = "is_committee_confirmed")
+	public String getIsCommitteeConfirmed() {
+		return isCommitteeConfirmed;
+	}
+
+	public void setIsCommitteeConfirmed(String isCommitteeConfirmed) {
+		this.isCommitteeConfirmed = isCommitteeConfirmed;
 	}
 	
 	
