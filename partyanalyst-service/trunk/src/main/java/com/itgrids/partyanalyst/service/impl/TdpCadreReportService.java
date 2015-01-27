@@ -5215,8 +5215,8 @@ public class TdpCadreReportService implements ITdpCadreReportService{
          		BigDecimal mandalDeliveredCount = cadreIVREnquiryDAO.getTotalDeliveredCount(startDate,endDate,mandalTypeIds);
          		returnVo.setNotMember(mandalDeliveredCount != null ? mandalDeliveredCount.longValue() : 0l);
          		
-        		returnVo.setTotalCalls(Long.valueOf(constituencyCnts.size()));
-        		returnVo.setTotalIvrCalls(Long.valueOf( mandalCnts.size()));
+        		returnVo.setTotalCalls(mandalCnts != null ? Long.valueOf(constituencyCnts.size()) : 0l);
+        		returnVo.setTotalIvrCalls(mandalCnts != null ? Long.valueOf(mandalCnts.size()) : 0l);
         		
         		returnVo.setPrintedCount(constiPrintedCnt);
         		returnVo.setMandalPrintedCnt(mandalPrintedCnt+ LocalbodyPrintedCnt);
