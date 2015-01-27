@@ -7,6 +7,7 @@ import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface ICadreCommitteeService {
 	public String genarateOTP(Long userId, Long mobileNo);
@@ -28,4 +29,5 @@ public interface ICadreCommitteeService {
 	public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetails(Long constituencyId);
 	public CadreCommitteeVO searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo,
 			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategoryId,Long fromAge,Long toAge,String houseNo,String gender);
+	public List<SelectOptionVO> getBasicCadreCommitteesDetails();
 }
