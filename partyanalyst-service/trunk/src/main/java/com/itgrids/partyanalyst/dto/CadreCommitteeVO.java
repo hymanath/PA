@@ -7,6 +7,7 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	
 	private Long tdpCadreId;
 	private String cadreName;
+	private String relativeName;
 	private String memberShipCardId;
 	private String DOB;
 	private String age;
@@ -61,6 +62,12 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private String isSmartPhone;
 	
 	
+	public String getRelativeName() {
+		return relativeName;
+	}
+	public void setRelativeName(String relativeName) {
+		this.relativeName = relativeName;
+	}
 	public String getIsSmartPhone() {
 		return isSmartPhone;
 	}
