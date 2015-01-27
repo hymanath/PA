@@ -2,7 +2,7 @@
 	function showAndHideTabs(searchType)
 	{
 		$('#basicCommitteeTab, #publicrepresantativeTab, #mandalaffiliatedTab').removeClass('arrow_selected');
-		 $("#cadreDetailsDiv,#committeLocationIdErr,#committeeLocationIdErr,#searchErrDiv,#searchLevelErrDiv").html('');
+		 $("#cadreDetailsDiv,#committeLocationIdErr,#committeeLocationIdErr,#searchErrDiv,#searchLevelErrDiv,#nonAfflitCommitteeIdErr").html('');
 		 $("#basicSearchDiv").show();
 		 $("#searchBy").val('');
 		 $("#committeLocationId").val(0);
@@ -114,12 +114,21 @@
 		var gender = '';
 		var houseNo = '';
 		$('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv').html('');
-		$('#searchLevelErrDiv,#committeePositionIdErr').html('');
+		$('#searchLevelErrDiv,#committeePositionIdErr,#nonAfflitCommitteeIdErr').html('');
 		var searchBy = $('#searchBy').val().trim();
 		var searchRadioType = $('#cadreSearchType').val();		
 		var committeTypeID = $('#committeeMngtType').val();
 		var committeePosition = $('#committeePositionId').val();
 		$("#step3Id").hide();
+		if(committeTypeID ==3)
+		{
+			var afiliatedCommitteeId = $("#nonafiliatedCommitteeId").val();
+			if(afiliatedCommitteeId == null ||  afiliatedCommitteeId ==0)
+			{
+				$('#nonAfflitCommitteeIdErr').html('Please Select Affiliated Committee.');
+				return;
+			}			
+		}
 		if(committeTypeID ==1)
 		{
 			if(committeeLocationId == null || committeeLocationId == 0)
@@ -422,11 +431,14 @@
 	function buildCadreDetails(result)
 	{
 		var str ='';
-		
+		var committeeMngntTypeId = $('#committeeMngtType').val();
+		var elegRolCnt=0;
+		var dtCnt = 0;
 		if(result != null)
 		{
 			for(var i in result)
-			{			
+			{
+				
 				str+='<div class="media">';
 				str+='<span href="#" class="media-left">';
 				str+='<img style="width: 64px; height: 64px;" src="http://www.mytdp.com/images/cadre_images/'+result[i].imageURL+'" />';
@@ -446,31 +458,92 @@
 				if(result[i].committeePosition != null && result[i].committeePosition.trim().length > 0)
 				{
 					str+='<ul class="list-inline">';
-					str+='<li style="font-weight:bold;">Existing Designation : '+result[i].committeePosition+' for '+result[i].committeeName+' in '+result[i].committeeLocation+'</i>';	
-					str+='<input type="hidden" id="existingRole'+i+'" value=" Aleady  '+result[i].cadreName+' added as '+result[i].committeePosition+' for '+result[i].committeeName+' in '+result[i].committeeLocation+'"/>';
+					str+='<li style="font-weight:bold;">Existing Designation : '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'</i>';	
+					str+='<input type="hidden" id="existingRole'+i+'" value=" Aleady  '+result[i].cadreName+' added as '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'"/>';
 					str+='</ul>';	
 					str+='</div>';
 					str+='</div>';
-					str+='<div class="form-inline ">';
-					str+='<a onclick="jacascript:{getCadreProfileInfo('+result[i].tdpCadreId+',\'existingRole'+i+'\')}" class="btn btn-success btn-medium m_top5" > SELECT & UPDATE PROFILE</a>';
-					str+='</div>	';					
+					if(committeeMngntTypeId == 1)
+					{
+						str+='<div class="form-inline ">';
+						str+='<a onclick="jacascript:{getCadreProfileInfo('+result[i].tdpCadreId+',\'existingRole'+i+'\')}" class="btn btn-success btn-medium m_top5" > SELECT & UPDATE PROFILE</a>';
+						str+='</div>	';	
+					}
+					else if(committeeMngntTypeId == 2)
+					{
+
+						str+='<div class="form-inline  m_top5" id="elecroleDiv'+result[i].tdpCadreId+'" ">';
+						str+='</div>	';					
+						
+						str+='<div class="row">	';
+						str+='<div class="col-md-8 col-sm-12 col-xs-12 form-group" id="updateBtnId'+result[i].tdpCadreId+'">';
+						str+='<a href="javascript:{addMoreEligibleRoles(\'elecroleDiv'+result[i].tdpCadreId+'\',0,\'updateBtnId'+result[i].tdpCadreId+'\','+result[i].tdpCadreId+');}" class="btn btn-success  btn-xs addmoreId'+result[i].tdpCadreId+'">Click here to Add+ Details</a>';	
+						str+='</div>';
+						str+='</div>';						
+						
+						str+='<div class="form-inline ">';
+						str+='<a onclick="jacascript:{addAsElectrole('+result[i].tdpCadreId+',\'elecroleDiv'+result[i].tdpCadreId+'\',\'addmoreId'+result[i].tdpCadreId+'\')}" class="btn btn-success btn-medium m_top5 elecroleDiv'+result[i].tdpCadreId+'" style="display:none;" > UPDATE  ELECROLE DETAILS </a>';
+						str+='</div>	';
+					}	
+					else if(committeeMngntTypeId == 3)
+					{
+						str+='<div class="form-inline ">';
+						str+='<a onclick="jacascript:{addAsAfiliatedElectrole('+result[i].tdpCadreId+',\'elecroleDiv'+result[i].tdpCadreId+'\')}" class="btn btn-success btn-medium m_top5 elecroleDiv'+result[i].tdpCadreId+'" > ADD AS AFFILIATED ELECROLE </a>';
+						str+='</div>	';
+					}								
 				}
 				else{
 					
 					str+='</div>';
 					str+='</div>';
-					str+='<div class="form-inline ">';
-					str+='<a onclick="jacascript:{getCadreProfileInfo('+result[i].tdpCadreId+' ,0)}" class="btn btn-success btn-medium m_top5" > SELECT & UPDATE PROFILE</a>';
-					str+='</div>	';
-				
+					
+					if(committeeMngntTypeId == 1)
+					{
+						str+='<div class="form-inline ">';
+						str+='<a onclick="jacascript:{getCadreProfileInfo('+result[i].tdpCadreId+' ,0)}" class="btn btn-success btn-medium m_top5" > SELECT & UPDATE PROFILE</a>';
+						str+='</div>	';	
+					}
+					else if(committeeMngntTypeId == 2)
+					{
+
+						str+='<div class="form-inline m_top5" id="elecroleDiv'+result[i].tdpCadreId+'" >';						
+						str+='</div>	';
+						str+='<div class="row">	';
+						str+='<div class="col-md-8 col-sm-12 col-xs-12 form-group " id="updateBtnId'+result[i].tdpCadreId+'">';
+						str+='<a href="javascript:{addMoreEligibleRoles(\'elecroleDiv'+result[i].tdpCadreId+'\',0,\'updateBtnId'+result[i].tdpCadreId+'\','+result[i].tdpCadreId+');}" class="btn btn-success  btn-xs addmoreId'+result[i].tdpCadreId+'">Click here to Add+ Details</a>';	
+						str+='</div>';
+						str+='</div>';
+						
+						str+='<div class="form-inline " >';
+						str+='<a onclick="jacascript:{addAsElectrole('+result[i].tdpCadreId+',\'elecroleDiv'+result[i].tdpCadreId+'\',\'addmoreId'+result[i].tdpCadreId+'\')}" class="btn btn-success btn-medium m_top5 elecroleDiv'+result[i].tdpCadreId+'"  style="display:none;"> UPDATE  ELECROLE DETAILS </a>';
+						str+='</div>	';
+					}	
+					else if(committeeMngntTypeId == 3)
+					{
+						str+='<div class="form-inline ">';
+						str+='<a onclick="jacascript:{addAsAfiliatedElectrole('+result[i].tdpCadreId+',\'elecroleDiv'+result[i].tdpCadreId+'\')}" class="btn btn-success btn-medium m_top5 elecroleDiv'+result[i].tdpCadreId+'" > ADD AS AFFILIATED ELECROLE </a>';
+						str+='</div>	';
+					}	
 				}
-				
+				elegRolCnt++;
+				dtCnt++;
 			}
 		}
 		
 		$('#cadreDetailsDiv').html(str);
 	}
 	
+	
+	function showElectroleDiv(divId)
+	{
+			$('#'+divId+'').show();
+			$('.'+divId+'').show();
+	}
+	function removeselDiv(eqId){
+		if(confirm("Do you want to remove?")){
+		  $("#"+eqId).remove();
+		}
+	}
 	function getCadreProfileInfo(tdpCadreId,existingRole)
 	{
 		var committeTypeID = $('#committeeMngtType').val();		
@@ -940,3 +1013,74 @@
 		});
 	}
 	
+	function addAsElectrole(cadreId,btnId,addmoreId)
+	{
+		var designationArr = new Array();
+		var fromDatArr = new Array();
+		var toDatArr = new Array();
+		$('.'+btnId+'').hide();
+		$('.'+addmoreId+'').hide();
+		$('.designationCls'+cadreId+'').each(function(){
+			var id= $(this).attr('id');
+			var designationId = $('#'+id+'').val();
+			designationArr.push(designationId);
+		});
+		
+		$('.fromDateCls'+cadreId+'').each(function(){
+			var id= $(this).attr('id');
+			var fromdateId = $('#'+id+'').val();
+			fromDatArr.push(fromdateId);
+		});
+		
+		$('.toDateCls'+cadreId+'').each(function(){
+			var id= $(this).attr('id');
+			var todateId = $('#'+id+'').val();
+			toDatArr.push(todateId);
+		});
+		
+		var jsObj = 
+		   {
+			   tdpCadreId :cadreId,
+			   designationArr : designationArr,
+			   fromDatArr : fromDatArr,
+			   toDatArr : toDatArr,
+			   task:"updateElectrolsDetails"             
+		   }
+		   
+		   $.ajax({
+				type : "POST",
+				url : "updateElectrolsDetails.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+					if(result != null)
+						alert(result.message);
+			});
+			
+	}
+	
+	function addAsAfiliatedElectrole(cadreId,btnId)
+	{
+		var afiliatedCommitteeId = $("#nonafiliatedCommitteeId").val();
+		$('#nonAfflitCommitteeIdErr').html('');
+		if(afiliatedCommitteeId == null && afiliatedCommitteeId ==0)
+		{
+			$('#nonAfflitCommitteeIdErr').html('Please Select Affiliated Committee.');
+			return;
+		}
+		$('.'+btnId+'').hide();
+		var jsObj = 
+		   {
+			   tdpCadreId :cadreId,
+			   afiliatedCommitteeId:afiliatedCommitteeId
+		   }
+		   
+		   $.ajax({
+				type : "POST",
+				url : "updateMandalAfiliatedElectrolsDetails.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				if(result != null)
+					alert(result.message);
+			});
+			
+	}
