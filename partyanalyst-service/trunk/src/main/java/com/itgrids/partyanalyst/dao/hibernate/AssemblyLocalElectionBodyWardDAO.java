@@ -107,4 +107,6 @@ public class AssemblyLocalElectionBodyWardDAO  extends GenericDaoHibernate<Assem
 					" and model1.constituency.constituencyId = model.constituency.constituencyId ", params);
 		}
 	}
+	
+	
 }

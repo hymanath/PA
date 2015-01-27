@@ -7010,6 +7010,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 														cadrePreviousRoles.setInsertedDate(dateUtilService.getCurrentDateAndTime());
 														cadrePreviousRoles.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
 														cadrePreviousRoles.setIsDeleted("N");
+														cadrePreviousRoles.setCommitteeLocationId(rolesVO.getCommitteeLocationId());
 														cadrePreviousRolesDAO.save(cadrePreviousRoles);
 												}
 											}

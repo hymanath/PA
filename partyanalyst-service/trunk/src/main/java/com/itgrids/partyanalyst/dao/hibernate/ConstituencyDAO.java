@@ -1124,4 +1124,28 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		query.setParameter("localElectionBodyId", localElectionBodyId);
 		return query.list();
 	}
+	
+	public List<Object[]> getConstituencyByStateAndAreaType(Long stateId,Long level){
+		// STATE - 1, DISTRICT - 2, MANDAL - 5, PANCHAYAT - 7,  MUNCIPAL-CORP-GHMC - 6, WARD - 9, INCHARGE - 10, DIVISION - 11
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.constituencyId," +
+				" model.name " +
+				" from Constituency model " +
+				" where model.state.stateId =:stateId " +
+				" and model.deformDate is null " +
+				" and model.electionScope.electionType.electionTypeId =2 ");
+		if(level.equals(5l)||level.equals(7l)){
+			sb.append( " and model.areaType !='URBAN'");
+		}
+		if(level.equals(6l)||level.equals(9l)){
+			sb.append( " and model.areaType !='RURAL'");
+		}
+				
+		sb.append(" order by model.name ");
+				
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("stateId", stateId);
+		return query.list();
+	}
 }

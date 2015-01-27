@@ -22,6 +22,7 @@ public class CadreCommitteeLevel implements Serializable{
 	private static final long serialVersionUID = -1560141681788248417L;
 	private Long   cadreCommitteeLevel;
 	private String level;
+	private String isDeleted;
 	
 	
 	 @Id
@@ -40,6 +41,14 @@ public class CadreCommitteeLevel implements Serializable{
 	}
 	public void setLevel(String level) {
 		this.level = level;
+	}
+	
+	@Column(name="is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 	
 	

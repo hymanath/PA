@@ -43,6 +43,7 @@ public class CadrePreviousRoles {
 	
 	private TdpCadre 			tdpCadre;
 	private CadreCommitteeRole  cadreCommitteeRole;
+	private Long				committeeLocationId;
 /*	private CadreLevel 			cadreLevel;
 	private PartyDesignation    partyDesignation;*/
 	
@@ -174,6 +175,15 @@ public class CadrePreviousRoles {
 	public void setCadreCommitteeRole(CadreCommitteeRole cadreCommitteeRole) {
 		this.cadreCommitteeRole = cadreCommitteeRole;
 	}
+	
+	@Column(name="committee_location_id")
+	public Long getCommitteeLocationId() {
+		return committeeLocationId;
+	}
+	public void setCommitteeLocationId(Long committeeLocationId) {
+		this.committeeLocationId = committeeLocationId;
+	}
+	
 	
 	
 	
