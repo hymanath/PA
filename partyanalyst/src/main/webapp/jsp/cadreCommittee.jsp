@@ -24,6 +24,14 @@
 	<script type="text/javascript" src="js/cadreCommittee/slick/slick.min.js"></script>
 	<script type="text/javascript" src="js/cadreCommittee/cadreCommittee.js"></script>
    	
+    <script src="js/cadreCommittee/bootstrap.min.js"></script>
+	<!----slick Js----->
+	<script type="text/javascript" src="js/cadreCommittee/slick/slick.min.js"></script>
+	<script type="text/javascript" src="js/cadreCommittee/cadreCommittee.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+
 	<style>
 	#publicrepresantative,#mandalaffiliated,#advancedSearchDiv,#committeeDetailsDiv,#searchcadrenewDiv,#committeLocationsDiv,
 	#designationDivId,#step1Id,#step2Id,#step3Id,#cadreDetailsDiv
@@ -34,7 +42,7 @@
 	  font-weight:bold;	  
 	}
 	#committeeLocationIdErr,#committeeTypeIdErr,#afflitCommitteeIdErr,#searchErrDiv,#committeLocationIdErr,#advancedSearchErrDiv,
-	#committeePositionIdErr,#searchLevelErrDiv{
+	#committeePositionIdErr,#searchLevelErrDiv,#nonAfflitCommitteeIdErr{
 		font-weight:bold;
 		color:red;
 	}
@@ -44,6 +52,7 @@
 	
 	</style>
 	<script>
+		var allRolesList = new Array();
 		var ageRangeArr = new Array();	
 			<c:forEach var="election" items="${ageRangeList}">
 				var elections ={
@@ -51,6 +60,15 @@
 				}
 				ageRangeArr.push(elections);
 			</c:forEach>
+			
+			<c:forEach var="rol" items="${locations}">
+				var rols ={
+				id:"${rol.locationId}",
+				name:"${rol.locationName}"
+				}
+				allRolesList.push(rols);
+			</c:forEach>	
+	
 	</script>
   </head>
   <body>
@@ -213,7 +231,15 @@
 				<h3 class="text-success text-uppercase">Process to add NON affiliated committee member <br>as mandal affiliated electoral</h3>
 			</div>
 		</div>
-	
+		<div id="nonafiliatedCommitteeDivId" class="row">	
+			<div class="col-md-6 col-md-offset-2 col-sm-6 col-sm-offset-2 col-xs-12 ">
+				<div class="form-group col-xs-12">
+					<label for="committeeId">AFFILIATED COMMITTEE</label>
+						<s:select theme="simple" cssClass="form-control selectBoxWidth span12 input-block-level editClass" id="nonafiliatedCommitteeId" list="cadreRolesVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Affiliated Committee  " style="width:100%;height:35px;" />	
+					<div id="nonAfflitCommitteeIdErr"></div>
+				 </div>
+			</div>			
+		</div> 
 
 	</div>
 	
@@ -390,6 +416,7 @@
 			var highlightCls = $('#basicCommitteeTab').attr('class');
 			
 			var id = $(this).attr('id');
+			$('#nonAfflitCommitteeIdErr').html('');			
 			$('#advancedSearchDiv').hide();			
 			$('#basicSearchDiv').show();
 			$('#committeLocationsDiv').hide();
@@ -814,6 +841,62 @@
 			$('#areaTypeId').val(levelId);
 		}
 	}
+	
+	var elegbleRolCnt=0;
+	var dttCnt = 0;
+	
+	function addMoreEligibleRoles(divId,index,btnDivId,cadreId){
+		elegbleRolCnt=elegbleRolCnt+1;
+		dttCnt = dttCnt+1;
+		var generatedId=index+''+cadreId;
+       var str='';
+        str+='<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;"  id="eligibleRolesDivs'+elegbleRolCnt+'">';
+		str+='	<div class="row">';
+		str+='	  <div class="form-group col-md-4 col-sm-4 col-xs-4 ">';
+		str+='		<label >Designation</label>';
+		str+='		<select class="form-control designationCls'+cadreId+'"  id="designation'+generatedId+'" name="eligibleRoles['+elegbleRolCnt+'].designationLevelId">';
+		str+='		   <option value="0"> Select Designation</option>';
+		    for(var i in allRolesList){
+		      str+='<option value="'+allRolesList[i].id+'">'+allRolesList[i].name+'</option>';
+			}
+		str+='		</select>';
+		str+='	  </div>';
+		str+='	   <div class="form-group col-md-4 col-sm-4 col-xs-4">';
+		str+='			<label >From Date</label>';
+		str+='			<input type="text"  id="fromDateIda'+generatedId+'" key ="a'+dttCnt+'"  class="form-control fromDateCls'+cadreId+'" name="eligibleRoles['+elegbleRolCnt+'].fromDateStr">';
+		str+='          <br><span id="fromDateErra'+dttCnt+'" style="color:red;font-size:12px;"></span>'; 
+		str+='	   </div>';
+		str+='	   <div class="form-group col-md-4 col-sm-4 col-xs-4">';
+		str+='			<label >To Date</label>';
+		str+='			<input type="text"  id="toDateIda'+generatedId+'"  class="form-control toDateCls'+cadreId+'" name="eligibleRoles['+elegbleRolCnt+'].toDateStr">';
+		str+='          <br><span id="toDateErra'+dttCnt+'" style="color:red;font-size:12px;"></span>';
+		str+='		</div>	';	  
+		str+='	</div>';
+		if(index != 0)
+			str+='<a style="margin-left: 17px;" class="btn btn-danger btn-xs " href="javascript:{removeselDiv(\'eligibleRolesDivs'+elegbleRolCnt+'\','+index+');}"> Remove </a>';
+		str+='</div>';
+		$('#'+divId+'').append(str);
+		$('#'+divId+'').show();
+		$('.'+divId+'').show();
+		$('#fromDateIda'+generatedId).datepicker({
+				dateFormat: 'yy-mm-dd',
+				maxDate: new Date(),
+				changeMonth: true,
+				changeYear: true,
+				yearRange: "-100:+0"
+			  });
+		$('#toDateIda'+generatedId).datepicker({
+				dateFormat: 'yy-mm-dd',
+				maxDate: new Date(),
+				changeMonth: true,
+				changeYear: true,
+				yearRange: "-100:+0"
+			  });
+			  index = index+1;
+			  var str1 = '';
+			  str1+='<a href="javascript:{addMoreEligibleRoles(\''+divId+'\','+index+',\''+btnDivId+'\','+cadreId+');}" class="btn btn-danger btn-xs ">Click here to Add+ Details</a>';	
+			  $('#'+btnDivId+'').html(str1);
+	}	
 	getCommitteeLocations();
 	getUserLocation();
 	</script>
