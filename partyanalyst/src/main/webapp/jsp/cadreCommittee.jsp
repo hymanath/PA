@@ -25,7 +25,8 @@
 	<script type="text/javascript" src="js/cadreCommittee/cadreCommittee.js"></script>
    	
 	<style>
-	#publicrepresantative,#mandalaffiliated,#advancedSearchDiv,#committeeDetailsDiv,#searchcadrenewDiv,#committeLocationsDiv,#designationDivId
+	#publicrepresantative,#mandalaffiliated,#advancedSearchDiv,#committeeDetailsDiv,#searchcadrenewDiv,#committeLocationsDiv,
+	#designationDivId,#step1Id,#step2Id,#step3Id,#cadreDetailsDiv
 	{
 		display:none;
 	}
@@ -33,13 +34,14 @@
 	  font-weight:bold;	  
 	}
 	#committeeLocationIdErr,#committeeTypeIdErr,#afflitCommitteeIdErr,#searchErrDiv,#committeLocationIdErr,#advancedSearchErrDiv,
-	#committeePositionIdErr{
+	#committeePositionIdErr,#searchLevelErrDiv{
 		font-weight:bold;
 		color:red;
 	}
-	.m_top5{
-		margin-top:5px;		
-	}
+	.m_top5{margin-top:5px;}
+	.m_top30{margin-top:30px;}
+	
+	
 	</style>
 	<script>
 		var ageRangeArr = new Array();	
@@ -67,7 +69,7 @@
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12" >
 				<div class="row" >
 					<div class="col-md-4 col-md-offset-0 col-sm-4 col-xs-4" >
-						<a class="btn btn-success btn-block arrow_selected" id="basicCommitteeTab" href="javascript:{showAndHideTabs('basicCommitteeDiv');getCommitteeLocations();}">Committee <br>Management</a>
+						<a class="btn btn-success btn-block arrow_selected" id="basicCommitteeTab" href="javascript:{showAndHideTabs('basicCommitteeDiv');}">Committee <br>Management</a>
 					</div>
 					<div class="col-md-4 col-sm-4 col-xs-4">
 						<a class="btn btn-success btn-block "   id="publicrepresantativeTab" href="javascript:{showAndHideTabs('publicrepresantative');}">Public representative <br>Electoral Management</a>
@@ -102,7 +104,7 @@
 		<div class="row m_top20">
 			<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 ">
 				<div class="form-group col-xs-12 pull-right">
-					<label for="committeeLocationId">SELECT LOCATION</label>
+					<label for="committeeLocationId">SELECT LOCATION<img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
 					<select onchange="populateDefaultValue(1);" class="form-control" id="committeeLocationId" ><option value="0">Select Location</option></select >
 					<div id="committeeLocationIdErr"></div>
 				 </div>
@@ -171,7 +173,11 @@
 			<div id="committeeMmbrsMainDiv" class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12 col-xs-offset-0 text-center"></div>
 		</div>
 		<!-------/VIEW BLOCK END------>
-		
+		<div style="border-top:1px solid #fff;" class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2 text-center m_top20"  id="step1Id">
+			<span class="badge" style="z-index: 2; margin-top: -10px;">STEP-1</span>
+		   
+		  </div>
+  
 		<div id="designationDivId" class="row">	
 			<div class="col-md-6 col-md-offset-2 col-sm-6 col-sm-offset-2 col-xs-12 ">
 				<div class="form-group col-xs-12">
@@ -210,14 +216,22 @@
 	
 
 	</div>
+	
+	<div class="row">
+		<div style="border-top:1px solid #fff;" class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2 text-center m_top20" id="step2Id">
+			<span class="badge" style="z-index: 2; margin-top: -10px;">STEP- 2</span>
+	   
+		</div>
+	</div>
+  
 	<div class="row" id="searchcadrenewDiv">	
 			<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 text-center">
-				<h4 id="headingDiv"> Select Candidate For A Designation </h4>
-				<hr style="margin: 0px;">
+				<h4 id="headingDiv" class="text-uppercase"> Select Candidate For A Designation </h4>
+			
 			</div>
 			
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center">
-				<div class="form-inline m_top20">
+				<div class="form-inline ">
 					<div class="radio">
 						<label><input type="radio" name="searchBasedOn" checked="true" class="searchTypeCls" onclick="refreshExistingDetails();" id="membershipId" value="1"> Membership ID &nbsp;&nbsp;</label>
 					
@@ -235,13 +249,24 @@
 			<div class="row m_top20" id="committeLocationsDiv" >
 				<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6  m_top20">
 					<div class="form-group col-xs-12 pull-right">
-						<label for="committeLocationId">SELECT LOCATION</label>
+						<label for="searchLevel">SEARCH LEVEL <img id="dataLoadingsImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/></label>
+						<select class="form-control" id="searchLevelId" onchange="updateSearchType(this.value)">
+						<option value="0">Select Location</option>
+						<option value="1">Panchayat/Ward</option>
+						<option value="2">Mandal/Town/Division</option>
+						</select >
+						<div id="searchLevelErrDiv"></div>
+					 </div>
+				</div>	
+				<div class="col-md-4  col-sm-6 col-xs-6  m_top20">
+					<div class="form-group col-xs-12 pull-right">
+						<label for="committeLocationId">SELECT LOCATION </label>
 						<select class="form-control" id="committeLocationId" ><option value="0">Select Location</option></select >
 						<div id="committeLocationIdErr"></div>
 					 </div>
 				</div>			
 			</div>
-			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20"  id="basicSearchDiv">	
+			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0"  id="basicSearchDiv">	
 				<div class="row">      
 					<div class="col-md-9 col-sm-9 col-xs-9 ">
 						<input type="text" placeholder="ENTER NO / NAME"  class="form-control" id="searchBy">
@@ -297,12 +322,21 @@
 					</div>			
 				</div>			
 			</div>
+			</div>
 
+	<div class="row">
+			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20">
+				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;overflow:scroll:900px;" id="step3Id">
+				 <span style="font-weight:bold;">Hint (Step - 3): </span> <span> CLICK  SELECT & UPDATE PROFILE FOR ADD A CADRE TO COMMITTEE. </span>
+				</div>			
+			</div>	
+	</div>
+	<div class="row">
 	
 			
 			<img src='images/Loading-data.gif' class="offset7"  id="searchDataImg" style=" margin-left: 660px;margin-top: 20px;width:70px;height:60px;display:none;"/>
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20">
-				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;" id="cadreDetailsDiv"></div>			
+				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;overflow:scroll:900px;" id="cadreDetailsDiv"></div>			
 			</div>
 		</div>	
 		<!-- end mandal committee Block  -->
@@ -347,6 +381,10 @@
 				$('#ageRange').val(0);
 			});
 			
+			$('#committeePositionId').on('change',function(){
+				$('#cadreDetailsDiv').html('');
+				$('#cadreDetailsDiv,#step3Id').hide();
+			});
 			$('.searchTypeCls').click(function(){
 			
 			var highlightCls = $('#basicCommitteeTab').attr('class');
@@ -423,9 +461,14 @@
 		$("#committeeTypeIdErr").html("");
 		$("#afflitCommitteeIdErr").html("");
 		$("#committeeMainId").hide();
+		$("#dataLoadingsImg").show();
+		$("#dataLoadingImg").show();
 		var reqLocationType ="";
-		
-		if(task==2 || $("#mndlLvlCommittSelec").is(':checked')){
+		var committeTypesID = $('#committeeMngtType').val();
+		var searchLevelId = 0;
+		if(committeTypesID != 1)
+			searchLevelId = $('#searchLevelId').val();
+		if(task == 2 || searchLevelId == 2 || $("#mndlLvlCommittSelec").is(':checked')){
 		  reqLocationType ="mandal";
 		}
 		$.ajax({
@@ -433,20 +476,30 @@
 			url : "getCommitteLocationsAction.action",
 			data : {locationType:reqLocationType} ,
 		}).done(function(result){
-			$("#committeeLocationId  option").remove();
-			$("#committeeLocationId").append('<option value="0">Select Location</option>');
+		$("#dataLoadingsImg").hide();
+		$("#dataLoadingImg").hide();
+			if(committeTypesID == 1)
+			{
+				$("#committeeLocationId  option").remove();
+				$("#committeeLocationId").append('<option value="0">Select Location</option>');
+			}
 			
 			$("#committeLocationId  option").remove();
 			$("#committeLocationId").append('<option value="0">Select Location</option>');
 			
 			var reqNewLocationType ="";
-			if($("#mndlLvlCommittSelec").is(':checked')){
+			if(task == 2 ||  searchLevelId == 2 || $("#mndlLvlCommittSelec").is(':checked')){
 			  reqNewLocationType ="mandal";
 			}
 			if(reqNewLocationType == reqLocationType){
-				for(var i in result){
-				   $("#committeeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
-				   $("#committeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+				 if(committeTypesID == 1)
+					for(var i in result){
+						$("#committeeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+					}
+				
+				 if(committeTypesID != 1)
+					 for(var i in result){
+						$("#committeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
 				}
 				if(pancayatId != 0 && isFirstPancayatSettingValues)
 				{
@@ -463,6 +516,7 @@
 		$("#committeeLocationIdErr").html("");
 		$("#committeeTypeIdErr").html("");
 		$("#afflitCommitteeIdErr").html("");
+		$("#committeeMainId").hide();
 		var locId = $("#committeeLocationId").val();
 		if( locId == null || locId == 0){
 			$("#committeeLocationIdErr").html("Please Select Location");
@@ -474,12 +528,9 @@
 		}
 		$("#afflitCommitteeId  option").remove();
 		$("#afflitCommitteeId").append('<option value="0">Select Affiliated Committee</option>');
+		
 		if($("#committeeTypeId").val() == 2){
-			//$("#afflitCommitteeId").removeAttr("disabled","disabled");
-			//$("#afflitCommitteeId").show();
 			$("#committeeMainId").show();
-			//$("#committeeMainId").prop("disabled");
-			//$("#committeeMainId").show();
 			var reqLocationType = "";
 			var reqLocationValue = "";
 			if($("#mndlLvlCommittSelec").is(':checked')){
@@ -521,16 +572,13 @@
 		}
 		
 	}
-	function showSearchInfo(){
-		 $("#committeeDetailsDiv").hide();
-		 $("#searchcadrenewDiv").show();
-		 $("#designationDivId").show();
-	}
+	
 	function getCommitteMembersInfo(){
-		$("#designationDivId").hide();
+		$("#designationDivId,#step1Id,#step2Id,#step3Id").hide();
 		$("#committeeLocationIdErr").html("");
 		$("#committeeTypeIdErr").html("");
 		$("#afflitCommitteeIdErr").html("");
+		$("#searchcadrenewDiv").hide();
 		var locId = $("#committeeLocationId").val();
 		var locVal = $("#afflitCommitteeId").val();
 		if(locId == null || locId == 0){
@@ -647,6 +695,11 @@
 			$("#committeeTypeIdErr").html("Please Select Committee Type");
 			return;
 		}
+		if(locVal == 0)
+		{
+			$("#designationDivId,#step1Id,#step2Id,#step3Id").hide();
+			$("#searchcadrenewDiv").hide();
+		}
 		/*if(type == 2)
 		{		alert(2222);
 			if($("#committeeTypeId").val() == 2){
@@ -721,6 +774,45 @@
 	function refreshExistingDetails(){
 		$("#searchBy").val("");
 		$("#cadreDetailsDiv").html("");
+	}
+	function showSearchInfo(){
+		 $("#committeeDetailsDiv").hide();
+		 $("#searchcadrenewDiv").hide();
+		 
+		var locId = $("#committeeLocationId").val();
+		var locVal = $("#afflitCommitteeId").val();
+		if(locId == null || locId == 0){
+			$("#committeeLocationIdErr").html("Please Select Location");
+			return;
+		}
+		if($("#committeeTypeId").val() == 0){
+			$("#committeeTypeIdErr").html("Please Select Committee Type");
+			return;
+		}
+		if($("#committeeTypeId").val() == 2){
+			 if(locVal == null || locVal == 0){
+				$("#afflitCommitteeIdErr").html("Please Select Affiliated Committee");
+				return;
+			}
+		 }
+		 $("#searchcadrenewDiv").show();
+		 var committeTypeID = $('#committeeMngtType').val();
+				if(committeTypeID == 1)
+				{
+					$("#designationDivId,#step1Id,#step2Id").show();
+				}
+	}
+	function updateSearchType(levelId)
+	{
+		getCommitteeLocations();
+		if(levelId==1)
+		{
+			$('#areaTypeId').val(levelId);
+		}
+		else if(levelId==2)
+		{
+			$('#areaTypeId').val(levelId);
+		}
 	}
 	getCommitteeLocations();
 	getUserLocation();

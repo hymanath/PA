@@ -205,6 +205,12 @@
 			  </span>	
 			</div>
 		</div>
+		<div class="row">
+		<div style="border-top:1px solid #fff;" class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2 text-center m_top20" id="step2Id">
+			<span class="badge" style="z-index: 2; margin-top: -10px;">STEP- 3</span>
+	   
+		</div>
+	</div>
 	<s:if test="%{cadreCommitteeVO.committeePosition != null}">
 	<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center m_top20 alert alert-info existingDiv" >
 	<span style="font-weight:bold;text-transform: uppercase;"> Already  ${cadreCommitteeVO.cadreName} Added as ${cadreCommitteeVO.committeePosition} for ${cadreCommitteeVO.committeeName} in ${cadreCommitteeVO.committeeLocation} </span>
