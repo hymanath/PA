@@ -48,4 +48,15 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		query.setParameter("tdpCadreId", tdpCadreId);
 		return query.list();
 	}
+	
+	public List<Object[]> getTdpCommitteeMemberForTdpCadreIdList(List<Long> tdpCadreIdsList)
+	{
+		String queryStr = " select distinct model.tdpCadreId ,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name," +
+				" model.tdpCommitteeRole.tdpRoles.role, model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId, " +
+				" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue " +
+				" from TdpCommitteeMember model where model.tdpCadreId in (:tdpCadreIdsList) group by model.tdpCadreId ";
+		Query query = getSession().createQuery(queryStr);
+		query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
+		return query.list();
+	}
 }
