@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
-import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -27,4 +26,6 @@ public interface ICadreCommitteeService {
 	public List<GenericVO> getPanchayatDetailsByMandalId(Long MandalId);
 	public List<Long> getBoothsInPanchayatId(Long panchayatId);
 	public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetails(Long constituencyId);
+	public CadreCommitteeVO searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo,
+			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategoryId,Long fromAge,Long toAge,String houseNo,String gender);
 }
