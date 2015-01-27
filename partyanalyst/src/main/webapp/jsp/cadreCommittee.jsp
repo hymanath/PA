@@ -845,7 +845,7 @@
        var str='';
         str+='<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;"  id="eligibleRolesDivs'+elegbleRolCnt+'">';
 		str+='	<div class="row">';
-		str+='	  <div class="form-group col-md-4 col-sm-4 col-xs-4 ">';
+		str+='	  <div class="form-group col-md-5 col-sm-4 col-xs-4 ">';
 		str+='		<label >Designation</label>';
 		str+='		<select class="form-control designationCls'+cadreId+'"  id="designation'+generatedId+'" name="eligibleRoles['+elegbleRolCnt+'].designationLevelId">';
 		str+='		   <option value="0"> Select Designation</option>';
@@ -855,7 +855,7 @@
 		str+='		</select>';
 		str+='<br><span id="designation'+generatedId+'Err" class="validErrCls" style="color:red;font-size:12px;"></span>';
 		str+='	  </div>';
-		str+='	   <div class="form-group col-md-4 col-sm-4 col-xs-4">';
+		str+='	   <div class="form-group col-md-3 col-sm-4 col-xs-4">';
 		str+='			<label >From Date</label>';
 		str+='			<input type="text"  id="fromDateIda'+generatedId+'" key ="a'+dttCnt+'"  class="form-control fromDateCls'+cadreId+'" name="eligibleRoles['+elegbleRolCnt+'].fromDateStr">';
 		str+='          <br><span id="fromDateIda'+generatedId+'Err" class="validErrCls" style="color:red;font-size:12px;"></span>'; 
