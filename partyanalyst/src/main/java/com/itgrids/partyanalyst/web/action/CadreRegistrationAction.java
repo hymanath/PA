@@ -1588,6 +1588,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 							rolesVO.setCadreCommitteeId(cadrePreviousRollesVO.getCadreCommitteeId());
 							rolesVO.setCadreCommitteeLevelId(cadrePreviousRollesVO.getCadreCommitteeLevelId());
 							rolesVO.setCadreRoleId(cadrePreviousRollesVO.getCadreRoleId());
+							rolesVO.setCommitteeLocationId(cadrePreviousRollesVO.getCommitteeLocationId());
 							rolesList.add(rolesVO);
 							
 							cadreRegistrationVO.setPreviousRollesList(rolesList);

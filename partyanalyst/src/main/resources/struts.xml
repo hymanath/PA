@@ -9441,5 +9441,17 @@
 			<result name="input">/jsp/loginForm.jsp?src=cadreCommitteeSummaryAction</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
+		<action name="getLocationsForCommitteeLevelAction" class="cadreCommitteeAction" method="getLocationsForCommitteeLevel">
+			<result type="json" name="success">
+				<param name="root">idNameVOList</param>
+			</result>
+		</action>
+		
+		<action name="getConstituenciesForCommitteeLevel" class="cadreCommitteeAction" method="getConstituenciesByLocationLevel">
+			<result type="json" name="success">
+				<param name="root">idNameVOList</param>
+			</result>
+		</action>
+		
 </package>
 </struts>      
