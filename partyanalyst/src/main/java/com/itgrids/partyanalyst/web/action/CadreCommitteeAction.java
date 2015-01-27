@@ -540,10 +540,13 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 			 String locationValue = request.getParameter("locationValue").trim();
 			 Long locationLvl = null;
 			 if(locationType.equalsIgnoreCase("mandal")){
-				 if(locationValue.substring(0,1).trim().equalsIgnoreCase("1")){
+				 String type =locationValue.substring(0,1).trim();
+				 if(type.equalsIgnoreCase("1")){
 					 locationLvl = 7l;
-				 }else{
+				 }else if(type.equalsIgnoreCase("2")){
 					 locationLvl = 5l;
+				 }else{
+					 locationLvl = 9l;
 				 }
 			 }else{
 				 if(locationValue.substring(0,1).trim().equalsIgnoreCase("1")){
@@ -567,10 +570,13 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 				 String locationValue = request.getParameter("locationValue").trim();
 				 Long locationLvl = null;
 				 if(locationType.equalsIgnoreCase("mandal")){
-					 if(locationValue.substring(0,1).trim().equalsIgnoreCase("1")){
+					 String type =locationValue.substring(0,1).trim();
+					 if(type.equalsIgnoreCase("1")){
 						 locationLvl = 7l;
-					 }else{
+					 }else if(type.equalsIgnoreCase("2")){
 						 locationLvl = 5l;
+					 }else{
+						 locationLvl = 9l;
 					 }
 				 }else{
 					 if(locationValue.substring(0,1).trim().equalsIgnoreCase("1")){
@@ -666,7 +672,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		
 		try{
 			jObj = new JSONObject(getTask());
-			locationWiseBoothDetailsVO=cadreCommitteeService.getMandalMunicCorpDetails(jObj.getLong("constituencyId"));
+			locationWiseBoothDetailsVO=cadreCommitteeService.getMandalMunicCorpDetails1(jObj.getLong("constituencyId"));
 		}catch(Exception e){
 			LOG.error("Exception occured in getMandalMunicCorpDetails() At CadreCommitteeAction ",e);
 		}
