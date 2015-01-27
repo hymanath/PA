@@ -498,7 +498,7 @@
 						str+='</div>';	
 						
 						str+='<div class="form-inline elecroleDiv'+result[i].tdpCadreId+'">';
-						str+='<a onclick="jacascript:{addAsAfiliatedElectrole('+result[i].tdpCadreId+',\'elecroleDiv'+result[i].tdpCadreId+'\',\'statusDiv'+result[i].tdpCadreId+'\')}" class="btn btn-success btn-medium m_top5 " > ADD AS AFFILIATED ELECROLE </a>';
+						str+='<a onclick="jacascript:{addAsAfiliatedElectrole('+result[i].tdpCadreId+',\'elecroleDiv'+result[i].tdpCadreId+'\',\'statusDiv'+result[i].tdpCadreId+'\')}" class="btn btn-success btn-medium m_top5 " > ADD AS AFFILIATED ELECTROLE </a>';
 						str+='</div>	';
 					}								
 				}
@@ -540,7 +540,7 @@
 						str+='</div>';	
 						
 						str+='<div class="form-inline elecroleDiv'+result[i].tdpCadreId+'">';
-						str+='<a onclick="jacascript:{addAsAfiliatedElectrole('+result[i].tdpCadreId+',\'elecroleDiv'+result[i].tdpCadreId+'\',\'statusDiv'+result[i].tdpCadreId+'\')}" class="btn btn-success btn-medium m_top5 " > ADD AS AFFILIATED ELECROLE </a>';
+						str+='<a onclick="jacascript:{addAsAfiliatedElectrole('+result[i].tdpCadreId+',\'elecroleDiv'+result[i].tdpCadreId+'\',\'statusDiv'+result[i].tdpCadreId+'\')}" class="btn btn-success btn-medium m_top5 " > ADD AS AFFILIATED ELECTROLE </a>';
 						str+='</div>	';
 					}	
 				}
