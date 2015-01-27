@@ -45,6 +45,7 @@ import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
@@ -58,6 +59,7 @@ import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.TdpBasicCommittee;
 import com.itgrids.partyanalyst.model.TdpCadre;
+import com.itgrids.partyanalyst.model.TdpCommittee;
 import com.itgrids.partyanalyst.model.TdpCommitteeDesignation;
 import com.itgrids.partyanalyst.model.TdpCommitteeElectrolRoles;
 import com.itgrids.partyanalyst.model.TdpCommitteeElectrols;
@@ -894,21 +896,35 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	}
 	
 	//Hint Please call this method in transaction only
-	public void saveElectrolInfo(Long tdpCadreId,Long tdpCommitteeLevelId,Long levelValue,Long committeeMngtType,List<CadrePreviousRollesVO> eligibleRoles,Long tdpCommitteeTypeId){
+	public String saveMandalLevelElectrolInfo(Long tdpCadreId,List<CadrePreviousRollesVO> eligibleRoles){
 
 			if(eligibleRoles != null && eligibleRoles.size() > 0)
 			{
 				
-				if(committeeMngtType != null)
+				Long tdpCommitteeLevelId= null;
+				Long levelValue = null;
+				UserAddress userAddress = tdpCadreDAO.get(tdpCadreId).getUserAddress();
+				if(userAddress.getLocalElectionBody() != null)
 				{
-					if(committeeMngtType.longValue() == 2L)
+					tdpCommitteeLevelId = 7L;
+					levelValue = userAddress.getLocalElectionBody().getLocalElectionBodyId();
+					
+					if(levelValue.longValue() == 20L || levelValue.longValue() == 124L || levelValue.longValue() == 119L)
 					{
-						tdpCommitteeTypeId = 1L;
+						tdpCommitteeLevelId = 9L;
+						if( userAddress.getWard() != null){
+						     levelValue = userAddress.getWard().getConstituencyId();
+						}
 					}
-					else if(committeeMngtType.longValue() == 3L)
-					{
-						tdpCommitteeTypeId = 2L;
-					}
+				}
+				else if(userAddress.getTehsil() != null)
+				{
+					tdpCommitteeLevelId = 5L;
+					levelValue = userAddress.getTehsil().getTehsilId();
+				}
+				else
+				{
+					return "No Location";
 				}
 				
 				CadrePreviousRollesVO eligibleRole1 = eligibleRoles.get(0);
@@ -919,7 +935,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					tdpCommitteeElectrols.setTdpCommitteeLevelId(tdpCommitteeLevelId);
 					tdpCommitteeElectrols.setLevelValue(levelValue);
 					tdpCommitteeElectrols.setTdpCommitteeEnrollmentId(IConstants.CURRENT_ENROLLMENT_ID);
-					tdpCommitteeElectrols.setTdpCommitteeTypeId(tdpCommitteeTypeId);
+					tdpCommitteeElectrols.setTdpCommitteeTypeId(1l);
 					tdpCommitteeElectrols = tdpCommitteeElectrolsDAO.save(tdpCommitteeElectrols);
 					
 						for(CadrePreviousRollesVO eligibleRole:eligibleRoles){
@@ -943,10 +959,60 @@ public class CadreCommitteeService implements ICadreCommitteeService
 							}
 						}
 					}
+			}else{
+				return "No Eligible Roles";
 			}
-		
+		return "Success";
 	}
 	
+	//Hint Please call this method in transaction only
+	public String saveMandalLevelAffliactedElectrolInfo(Long tdpCadreId,Long tdpBasicCommitteeId){
+		Long tdpCommitteeLevelId= null;
+		Long levelValue = null;
+		UserAddress userAddress = tdpCadreDAO.get(tdpCadreId).getUserAddress();
+		if(userAddress.getLocalElectionBody() != null)
+		{
+			tdpCommitteeLevelId = 7L;
+			levelValue = userAddress.getLocalElectionBody().getLocalElectionBodyId();
+			
+			if(levelValue.longValue() == 20L || levelValue.longValue() == 124L || levelValue.longValue() == 119L)
+			{
+				tdpCommitteeLevelId = 9L;
+				if( userAddress.getWard() != null){
+				     levelValue = userAddress.getWard().getConstituencyId();
+				}
+			}
+		}
+		else if(userAddress.getTehsil() != null)
+		{
+			tdpCommitteeLevelId = 5L;
+			levelValue = userAddress.getTehsil().getTehsilId();
+		}
+		else
+		{
+			return "No Location";
+		}
+		
+		TdpCommitteeElectrols tdpCommitteeElectrols = new TdpCommitteeElectrols();
+		tdpCommitteeElectrols.setTdpCadreId(tdpCadreId);
+		tdpCommitteeElectrols.setTdpCommitteeLevelId(tdpCommitteeLevelId);
+		tdpCommitteeElectrols.setLevelValue(levelValue);
+		tdpCommitteeElectrols.setTdpCommitteeEnrollmentId(IConstants.CURRENT_ENROLLMENT_ID);
+		tdpCommitteeElectrols.setTdpCommitteeTypeId(2L);
+		tdpCommitteeElectrols.setTdpCommitteeId(getTdpCommittee(tdpBasicCommitteeId,tdpCommitteeLevelId,levelValue));
+		tdpCommitteeElectrols = tdpCommitteeElectrolsDAO.save(tdpCommitteeElectrols);
+		
+		return "Success";
+    }
+	
+	public Long getTdpCommittee(Long tdpBasicCommitteeId,Long tdpCommitteeLevelId,Long tdpCommitteeLevelValue){
+		Long tdpCommitteeId = null;
+		List<Long> ids = tdpCommitteeDAO.getTdpCommittee(tdpBasicCommitteeId,tdpCommitteeLevelId,tdpCommitteeLevelValue);
+		if(ids.size() > 0 && ids.get(0) != null){
+			tdpCommitteeId = ids.get(0);
+		}
+		return tdpCommitteeId;
+	}
 	public List<LocationWiseBoothDetailsVO> getAllTdpCommitteeDesignations(){
 		List<LocationWiseBoothDetailsVO> designationsList = new ArrayList<LocationWiseBoothDetailsVO>();
 		LocationWiseBoothDetailsVO designation = null;
