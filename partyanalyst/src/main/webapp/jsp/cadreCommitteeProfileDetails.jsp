@@ -1393,7 +1393,7 @@
 			
 			for(var i in result)
 			{
-				str+='<tr id="removeId'+i+'" >';
+				str+='<tr id="'+prvEleCount+'removeId'+i+'" >';
 					str += '<input type="hidden" value=""></input>';
 					str += '<input type="hidden" value='+result[i].orderId+' name="cadreRegistrationVO.previousParicaptedElectionsList['+prvEleCount+'].electionTypeId"></input>';
 					str += '<input type="hidden" value='+result[i].mainAccountId+' name="cadreRegistrationVO.previousParicaptedElectionsList['+prvEleCount+'].constituencyId"></input>';
@@ -1401,7 +1401,7 @@
 					str +='<td>'+result[i].name+'</td>';
 					str +='<td>'+result[i].location+'</td>';
 					str +='<td>'+result[i].panchayatName+' ('+result[i].partno+')</td>';
-					str +='<td> <a class="glyphicon glyphicon-remove" href="javascript:{clearDiv(\'removeId'+i+'\')}"></a></td>';
+					str +='<td> <a class="glyphicon glyphicon-remove" href="javascript:{clearDiv(\''+prvEleCount+'removeId'+i+'\')}"></a></td>';
 				str+='</tr>';
 				prvEleCount++;
 				electionsCount++;
