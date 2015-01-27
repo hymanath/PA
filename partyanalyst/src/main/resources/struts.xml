@@ -9430,7 +9430,16 @@
 				<param name="root">locationWiseBoothDetailsVO</param>
 			</result>
 		</action>
-		
+		<action name="updateElectrolsDetails" class="cadreCommitteeAction" method="updateElectrolsDetails">
+			<result type="json" name="success">
+				<param name="root">status</param>
+			</result>
+		</action>
+		<action name="updateMandalAfiliatedElectrolsDetails" class="cadreCommitteeAction" method="updatenonAfilaiatedElectrols">
+			<result type="json" name="success">
+				<param name="root">status</param>
+			</result>
+		</action>
 		<action name="getTotalIvrPreviousCallBasicInfo" class="tdpCadreReportAction" method="getTotalIvrPreviousCallBasicInfo">
 			<result type="json" name="success">
 				<param name="root">cadreIVRResponseVO</param>
