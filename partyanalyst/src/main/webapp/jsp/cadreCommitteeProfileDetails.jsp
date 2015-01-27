@@ -466,7 +466,7 @@
 				<div class="col-md-8 col-md-offset-2   col-sm-12 col-xs-12 form-group  m_top20">
 				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;"  id="electionsDiv">
 					<div class="row">
-					  <div class="form-group col-md-4 col-sm-4 col-xs-4 ">
+					  <div class="form-group col-md-3 col-sm-4 col-xs-4 ">
 						<label for="exampleInputEmail2" >Election Type</label>
 						<select class="form-control " onChange="getElectionYears(this.value,'electionYearId')" id="electionsTypeID">
 						<option value="0"> Select Election Type</option>
@@ -482,20 +482,33 @@
 						</select>
 						
 					  </div>
-					   <div class="form-group col-md-4 col-sm-4 col-xs-4">
+					   <div class="form-group col-md-3 col-sm-4 col-xs-4">
 						<label >Election Year</label> <img src='images/icons/search.gif' id="loadingImg" style="display:none;margin-left:5px;"/>
 						<select class="form-control " id="electionYearId" onchange="getConstiteuncyListForElection(this.value,'constituencyList')" name="cadreRegistrationVO.previousParicaptedElectionsList[0].electionTypeId">
 						<option value="0"> Select Election </option>
 						</select>
 					  </div>	
-					  <div class="form-group col-md-4 col-sm-4 col-xs-4">
+					  <div class="form-group col-md-3 col-sm-4 col-xs-4">
 						<label > Location </label>
-						<select class="form-control " id="constituencyList" name="cadreRegistrationVO.previousParicaptedElectionsList[0].constituencyId">
+						<select class="form-control " id="constituencyList" name="cadreRegistrationVO.previousParicaptedElectionsList[0].constituencyId" onchange="getCandidateDetailsForElection(this.value,'candidateListId','electionYearId',
+							'electionsTypeID');">
 						<option value="0"> Select Location </option>
 						</select>
 					  </div>
-					 				  
+					 		
+					 <div class="form-group col-md-3 col-sm-4 col-xs-4">
+						<label > Candidate </label>
+						<select class="form-control " id="candidateListId" name="cadreRegistrationVO.previousParicaptedElectionsList[0].candidateId" onchange="getCandidateDetailsById('candidateDivTab','electionYearId',this.value,0);">
+						<option value="0"> Select Candidate </option>
+						</select>
+					  </div>
+					  
 					</div>
+					<div class="row">
+						  <div class="form-group col-md-12 col-sm-4 col-xs-4 " id="candidateDivTab">
+						  </div>
+					  </div>
+
 				</div><!-- add more details electionsDiv Ending -->	
 					<a href="javascript:{addMoreElectionDetails();}" class="btn btn-danger btn-xs ">Click here to Add+ Details</a>	
 			</div>
@@ -852,13 +865,13 @@
 			electionsCount = participationCount;
 			isElectionsSet = false;
 		}
-		
+		console.log("electionsCount  :"+electionsCount);
 		var str='';
 		str+='<div id="detailsId'+electionsCount+'" class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent; margin-bottom: 2px;">';
 		str+='<div class="row" >';
-		str+='<div class="form-group col-md-4 col-sm-4 col-xs-4 ">';
+		str+='<div class="form-group col-md-3 col-sm-4 col-xs-4 ">';
 		str+='<label for="exampleInputEmail2" >Election Type</label>';
-		str+='<select class="form-control " onChange="getElectionYears(this.value,\'electionYearId'+electionsCount+'\')" id="electionsTypeID">';
+		str+='<select class="form-control " onChange="getElectionYears(this.value,\'electionYearId'+electionsCount+'\')" id="electionsTypeID'+electionsCount+'">';
 		str+='<option value="0"> Select Election Type</option>';
 		if(electionArray != null && electionArray.length>0)
 		{
@@ -867,20 +880,30 @@
 		}
 		str+='</select>';
 		str+='</div>';
-		str+='<div class="form-group col-md-4 col-sm-4 col-xs-4">';
+		str+='<div class="form-group col-md-3 col-sm-4 col-xs-4">';
 		str+='<label >Election Year</label> ';
 		str+='<select class="form-control " id="electionYearId'+electionsCount+'" onchange="getConstiteuncyListForElection(this.value,\'constituencyList'+electionsCount+'\')" name="cadreRegistrationVO.previousParicaptedElectionsList['+electionsCount+'].electionTypeId">';
 		str+='<option value="0"> Select Election </option>';
 		str+='</select>';
 		str+='</div>	';
-		str+='<div class="form-group col-md-4 col-sm-4 col-xs-4">';
+		str+='<div class="form-group col-md-3 col-sm-4 col-xs-4">';
 		str+='<label > Location </label>';
-		str+='<select class="form-control " id="constituencyList'+electionsCount+'" name="cadreRegistrationVO.previousParicaptedElectionsList['+electionsCount+'].constituencyId">';
+		str+='<select class="form-control " id="constituencyList'+electionsCount+'" name="cadreRegistrationVO.previousParicaptedElectionsList['+electionsCount+'].constituencyId" onchange="getCandidateDetailsForElection(this.value,\'candidateListId'+electionsCount+'\',\'electionYearId'+electionsCount+'\',\'electionsTypeID'+electionsCount+'\');">';
 		str+='<option value="0"> Select Location </option>';
 		str+='</select>';
-		str+='<input type="hidden" value="0" name="cadreRegistrationVO.previousParicaptedElectionsList['+electionsCount+'].candidateId"/>';
+		//str+='<input type="hidden" value="0" name="cadreRegistrationVO.previousParicaptedElectionsList['+electionsCount+'].candidateId"/>';
+		str+='</div>';
+		str+='<div class="form-group col-md-3 col-sm-4 col-xs-4">';
+		str+='<label > Candidate </label>';
+		str+='<select class="form-control " id="candidateListId'+electionsCount+'" name="cadreRegistrationVO.previousParicaptedElectionsList['+electionsCount+'].candidateId"  onchange="getCandidateDetailsById(\'candidateDivTab'+electionsCount+'\',\'electionYearId'+electionsCount+'\',this.value,'+electionsCount+');">';
+		str+='<option value="0"> Select Candidate </option>';
+		str+='</select>';
 		str+='</div>';
 		str+='</div>';
+		str+='<div class="row">';
+		str+=' <div class="form-group col-md-12 col-sm-4 col-xs-4 " id="candidateDivTab'+electionsCount+'">';
+		str+='  </div>';
+	    str+=' </div>';
 		str+='</div>';
 		str+='<a href="javascript:{clearDiv(\'detailsId'+electionsCount+'\');}" class="btn btn-danger btn-xs " style="margin-left: 17px;margin-bottom:15px;"> Remove </a>	';
 		$('#electionsDiv').append(str);
@@ -1151,6 +1174,93 @@
 		}
 		
 	}
+	
+	function getCandidateDetailsForElection(constituencyId,candidateId,electionId,electionTypeId)
+	{
+		var electionValue = $('#'+electionId+'').val();
+		var electionTypeId = $('#'+electionTypeId+'').val();
+		var candidate = $('#'+candidateId+'').val();
+
+		$('#'+candidateId+'').find('option').remove();
+		$('#'+candidateId+'').append('<option value="0"> Select Candidate </option>');
+		
+			var jsObj = 
+			   {	
+				  electionTypeId : electionTypeId,
+				  electionId : electionValue,
+				  constituencyId : constituencyId,
+				  task         : "getCandidateDetailsForElection"             
+			   }				   
+			   $.ajax({
+					type : "POST",
+					url : "getCandidateDetailsForElectionAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					if(result != null)
+					{					
+						for(var i in result)
+						{
+							$('#'+candidateId+'').append('<option value="'+result[i].id+'"> '+result[i].name+' </option>');
+						}
+					}		
+					
+				});
+				
+	}
+	
+	function getCandidateDetailsById(buildDivId,electionId,nominationId,indexValue )
+	{
+	var electionsId = $('#'+electionId+'').val();
+		$('#'+buildDivId+'').html('');
+		var jsObj = 
+		   {
+				electionId : electionsId,
+				nominationId : nominationId,
+				task:"getCandidateDetailsById"             
+		   }				   
+		   $.ajax({
+				type : "POST",
+				url : "getCandidateInfoByNominationAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				buildCandidateDetails(result,nominationId,buildDivId,indexValue);
+			});
+	}
+
+
+	function buildCandidateDetails(result,nominationId,buildDivId,prvEleCount)
+	{
+		prvEleCount = parseInt(prvEleCount)+1;
+		
+		var str ='';
+		if(result != null)
+		{
+			str +='<table class="table table-bordered m_top20 table-hover"  id="seachDetalsTab1" style="width:850px;">';
+			str+='<tbody>';
+			
+			for(var i in result)
+			{
+				str+='<tr id="removeId'+i+'" >';
+					str += '<input type="hidden" value=""></input>';
+					str += '<input type="hidden" value='+result[i].orderId+' name="cadreRegistrationVO.previousParicaptedElectionsList['+prvEleCount+'].electionTypeId"></input>';
+					str += '<input type="hidden" value='+result[i].mainAccountId+' name="cadreRegistrationVO.previousParicaptedElectionsList['+prvEleCount+'].constituencyId"></input>';
+					str += '<input type="hidden" value='+nominationId+' name="cadreRegistrationVO.previousParicaptedElectionsList['+prvEleCount+'].candidateId"></input>';
+					str +='<td>'+result[i].name+'</td>';
+					str +='<td>'+result[i].location+'</td>';
+					str +='<td>'+result[i].panchayatName+' ('+result[i].partno+')</td>';
+					str +='<td> <a class="glyphicon glyphicon-remove" href="javascript:{clearDiv(\'removeId'+i+'\')}"></a></td>';
+				str+='</tr>';
+				prvEleCount++;
+				electionsCount++;
+			}
+			
+			str+='</tbody>';
+			str +='</table>';
+			
+			$('#'+buildDivId+'').html(str);
+		}
+	}
+	getUserLocation();
 	</script>
   </body>
 </html>
