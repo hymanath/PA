@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeRoleDAO;
 import com.itgrids.partyanalyst.dao.ICadreOtpDetailsDAO;
@@ -98,6 +99,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IVoterDAO voterDAO;
 	private IBoothDAO                       boothDAO;
 	private ITdpCommitteeMemberHistoryDAO tdpCommitteeMemberHistoryDAO;
+	private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
 	private ICadreDetailsService cadreDetailsService;
 	private ITdpBasicCommitteeDAO tdpBasicCommitteeDAO;
 	
@@ -213,6 +215,11 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	
 	public void setVoterDAO(IVoterDAO voterDAO) {
 		this.voterDAO = voterDAO;
+	}
+	
+	public void setAssemblyLocalElectionBodyWardDAO(
+			IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO) {
+		this.assemblyLocalElectionBodyWardDAO = assemblyLocalElectionBodyWardDAO;
 	}
 	public CadreCommitteeVO getCadreDetailsByTdpCadreId(Long tdpCadreId)
 	{
@@ -622,9 +629,9 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	public List<LocationWiseBoothDetailsVO> getLocationsList(Long constituencyId,String level){
 		try{
 			if(level.equalsIgnoreCase("mandal")){
-				return getMandalMunicCorpDetails(constituencyId);
+				return getMandalMunicCorpDetailsNew(constituencyId);
 			}else{
-				return getPanchayatWardDivisionDetails(constituencyId);
+				return getPanchayatWardDivisionDetailsNew(constituencyId);
 			}
 		}catch(Exception e){
 			LOG.error("Exception raised in getLocationsList", e);
@@ -632,14 +639,14 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 	}
 	
-	public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetails(Long constituencyId){
+	public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetails1(Long constituencyId){
 		List<LocationWiseBoothDetailsVO> locationsList = new ArrayList<LocationWiseBoothDetailsVO>();
 		LocationWiseBoothDetailsVO vo = null;
-		List<SelectOptionVO> locations = regionServiceDataImp.getTehsilsInConstituency(constituencyId);
+		List<SelectOptionVO> locations = regionServiceDataImp.getAllMandalsByConstituencyID(constituencyId);
 		List<Object[]> localBodies = assemblyLocalElectionBodyDAO.getAllLocalBodiesInAConstituency(constituencyId);
 	        for(SelectOptionVO location:locations){
 	        	vo = new LocationWiseBoothDetailsVO();
-	        	vo.setLocationId(location.getId());
+	        	vo.setLocationId(Long.valueOf("2"+location.getId()));
 	        	vo.setLocationName(location.getName());
 	        	locationsList.add(vo);
 	        }
@@ -655,11 +662,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetailsNew(Long constituencyId){
 		List<LocationWiseBoothDetailsVO> locationsList = new ArrayList<LocationWiseBoothDetailsVO>();
 		LocationWiseBoothDetailsVO vo = null;
-		List<SelectOptionVO> locations = regionServiceDataImp.getTehsilsInConstituency(constituencyId);
+		List<Long> greaterCorpIds = new ArrayList<Long>();
+		List<SelectOptionVO> locations = regionServiceDataImp.getAllMandalsByConstituencyID(constituencyId);
 		List<Object[]> localBodies = assemblyLocalElectionBodyDAO.getAllLocalBodiesInAConstituency(constituencyId);
 	        for(SelectOptionVO location:locations){
 	        	vo = new LocationWiseBoothDetailsVO();
-	        	vo.setLocationId(location.getId());
+	        	vo.setLocationId(Long.valueOf("2"+location.getId()));
 	        	vo.setLocationName(location.getName());
 	        	locationsList.add(vo);
 	        }
@@ -671,16 +679,26 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		        	vo.setLocationName(localBodi[1].toString());
 		        	locationsList.add(vo);
 	        	}else{
-	        		
+	        		greaterCorpIds.add(localBdyId);
 	        	}
-	        	
+	        }
+	        if(greaterCorpIds.size() > 0){
+        	  for(Long id:greaterCorpIds){
+        		  List<Object[]>  wards = assemblyLocalElectionBodyWardDAO.findWardsByLocalBodyConstiId(id, constituencyId);
+        		  for(Object[] location:wards){
+        			  vo = new LocationWiseBoothDetailsVO();
+  		        	vo.setLocationId(Long.valueOf("3"+location[0].toString()));
+  		        	vo.setLocationName(location[1].toString());
+  		        	locationsList.add(vo);
+        		  }
+        	  }
 	        }
 	        return locationsList;
 	}
-	public List<LocationWiseBoothDetailsVO> getPanchayatWardDivisionDetails(Long constituencyId){
+	public List<LocationWiseBoothDetailsVO> getPanchayatWardDivisionDetails1(Long constituencyId){
 		List<LocationWiseBoothDetailsVO> locationsList = new ArrayList<LocationWiseBoothDetailsVO>();
 		LocationWiseBoothDetailsVO vo = null;
-		List<LocationWiseBoothDetailsVO> mandalsList = getMandalMunicCorpDetails(constituencyId);
+		List<LocationWiseBoothDetailsVO> mandalsList = getMandalMunicCorpDetails1(constituencyId);
 		List<Long> mandalIds = new ArrayList<Long>();
 		List<Long> localBodyIds = new ArrayList<Long>();
 	        for(LocationWiseBoothDetailsVO location:mandalsList){        	
@@ -712,10 +730,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	        }
 	        return locationsList;
 	} 
-	/*public List<LocationWiseBoothDetailsVO> getPanchayatWardDivisionDetails(Long constituencyId){
+	public List<LocationWiseBoothDetailsVO> getPanchayatWardDivisionDetailsNew(Long constituencyId){
 		List<LocationWiseBoothDetailsVO> locationsList = new ArrayList<LocationWiseBoothDetailsVO>();
 		LocationWiseBoothDetailsVO vo = null;
-		List<LocationWiseBoothDetailsVO> mandalsList = getMandalMunicCorpDetails(constituencyId);
+		List<LocationWiseBoothDetailsVO> mandalsList = getMandalMunicCorpDetails1(constituencyId);
 		List<Long> mandalIds = new ArrayList<Long>();
 		List<Long> localBodyIds = new ArrayList<Long>();
 	        for(LocationWiseBoothDetailsVO location:mandalsList){        	
@@ -749,7 +767,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	        	}
 	        }
 	        return locationsList;
-	} */
+	}
 	
 	public  List<LocationWiseBoothDetailsVO> getAllAffiliatedCommittiesInALocation(Long levelId,Long levelValue){
 		List<LocationWiseBoothDetailsVO> affiliatedCommittiesList = new ArrayList<LocationWiseBoothDetailsVO>();

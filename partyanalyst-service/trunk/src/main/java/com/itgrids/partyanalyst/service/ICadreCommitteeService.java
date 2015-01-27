@@ -26,7 +26,7 @@ public interface ICadreCommitteeService {
 	public List<GenericVO> getCadsteDetailsByGroupId(Long casteGroupId);
 	public List<GenericVO> getPanchayatDetailsByMandalId(Long MandalId);
 	public List<Long> getBoothsInPanchayatId(Long panchayatId);
-	public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetails(Long constituencyId);
+	public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetails1(Long constituencyId);
 	public CadreCommitteeVO searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo,
 			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategoryId,Long fromAge,Long toAge,String houseNo,String gender);
 	public List<SelectOptionVO> getBasicCadreCommitteesDetails();
