@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -70,8 +71,27 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private ICadreDashBoardService              cadreDashBoardService;
 	private List<Long>  						wardResult;
 	private List<LocationWiseBoothDetailsVO>    locationWiseBoothDetailsVO;
+	private List<IdNameVO>						idNameVOList;
+	private List<IdNameVO>						constituenciesList;
 	
 	
+	
+	public List<IdNameVO> getConstituenciesList() {
+		return constituenciesList;
+	}
+
+	public void setConstituenciesList(List<IdNameVO> constituenciesList) {
+		this.constituenciesList = constituenciesList;
+	}
+
+	public List<IdNameVO> getIdNameVOList() {
+		return idNameVOList;
+	}
+
+	public void setIdNameVOList(List<IdNameVO> idNameVOList) {
+		this.idNameVOList = idNameVOList;
+	}
+
 	public String getResult4() {
 		return result4;
 	}
@@ -444,6 +464,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 				   cadreCommitteeVO.setEligibleRoles(cadreCommitteeService.getCadreEligiableRoles(Long.valueOf(request.getParameter("tdpCadreId"))));
 				   locations = cadreCommitteeService.getAllTdpCommitteeDesignations();
 				}
+				//constituenciesList = cadreCommitteeService.getConstituenciesOfState();
 				assemblyId = getUserAccessConstituencies().get(0).getId();
 			} 
 			else{
@@ -709,4 +730,45 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		
 		return Action.SUCCESS;
 	}
+	
+	public String getLocationsForCommitteeLevel(){
+		session = request.getSession();	
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+			return ERROR;
+		
+		try{
+			jObj = new JSONObject(getTask());
+			Long locLevel =  jObj.getLong("level");
+			Long constiId = jObj.getLong("constiId");
+			idNameVOList = cadreCommitteeService.getLocationsOfCommitteeLevel(locLevel, constiId);
+		}catch(Exception e){
+			LOG.error("Exception occured in getPanchayatiesByMandalOrMuncipality() At CadreCommitteeAction ",e);
+		}
+		
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getConstituenciesByLocationLevel(){
+		session = request.getSession();	
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+			return ERROR;
+		
+		try{
+			jObj = new JSONObject(getTask());
+			Long locLevel =  jObj.getLong("level");
+			
+			
+			idNameVOList = cadreCommitteeService.getConstituenciesOfState(locLevel);
+		}catch(Exception e){
+			LOG.error("Exception occured in getPanchayatiesByMandalOrMuncipality() At CadreCommitteeAction ",e);
+		}
+		
+		
+		return Action.SUCCESS;
+	}
+	
+	
 }

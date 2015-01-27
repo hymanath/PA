@@ -111,6 +111,7 @@
 	var cadreCmmittLvlArr = [];
 	var cadreRolesArr = [];
 	
+	
 	function buildSelectBoxes(results){
 		
 		
@@ -364,9 +365,12 @@
 			<div class="hiddenDivCls" style="display:none;">
 				<input type="hidden" value="${rolesVO.committeeLevelId}" name="cadreRegistrationVO.previousRollesList[${indexValue.index}].cadreCommitteeLevelId"/>				
 				<input type="hidden" value="${rolesVO.committeeId}" name="cadreRegistrationVO.previousRollesList[${indexValue.index}].cadreCommitteeId"/>				
+				
+				<input type="hidden" value="${rolesVO.toDate}" name="cadreRegistrationVO.previousRollesList[${indexValue.index}].toDateStr"/>
+				
 				<input type="hidden" value="${rolesVO.roleId}" name="cadreRegistrationVO.previousRollesList[${indexValue.index}].cadreRoleId"/>				
 				<input type="hidden" value="${rolesVO.fromDate}" name="cadreRegistrationVO.previousRollesList[${indexValue.index}].fromDateStr"/>				
-				<input type="hidden" value="${rolesVO.toDate}" name="cadreRegistrationVO.previousRollesList[${indexValue.index}].toDateStr"/>				
+				<!--<input type="hidden" value="${rolesVO.committeeLocationId}" name="cadreRegistrationVO.previousRollesList[${indexValue.index}].committeeLocationId"/>	-->
 			</div>
 			</div>
 			</c:forEach>
@@ -384,7 +388,7 @@
 						<div class="row">
 						  <div class="form-group col-md-6 col-sm-6 col-xs-6 ">
 							<label for="exampleInputEmail2" >Committee Level</label>
-							<select class="form-control " id="cadreCommitteeLevelsId" onchange="getCadreCommitteDetails(this.value,'cadreCommitteeId')" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeLevelId">
+							<select class="form-control cadreCommitteeLevelsCls" data_attrNo=0 id="cadreCommitteeLevelsId0" onchange="getCadreCommitteDetails(this.value,'cadreCommitteeId')" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeLevelId">
 							<c:forEach var="educationList" items="${cadreRolesVOList[1].selectOptionsList}" >		
 										<c:if test="${educationList.id == role.id }">																
 											<option value="${educationList.id}" selected="selected">${educationList.name}</option>
@@ -396,12 +400,27 @@
 							
 							</select>
 						  </div>
+						 
 						  <div class="form-group col-md-6 col-sm-6 col-xs-6">
 							<label >Committee Name</label>
-							<select class="form-control " id="cadreCommitteeId" onchange="getCadreCommitteRoles(this.value,'cadreRolesId','cadreCommitteeLevelsId')" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeId">
+							<select class="form-control " id="cadreCommitteeId" onchange="getCadreCommitteRoles(this.value,'cadreRolesId','cadreCommitteeLevelsId0')" name="cadreRegistrationVO.previousRollesList[0].cadreCommitteeId">
 							<option value="0"> Select Committee </option>
 							</select>
-						  </div>					  
+						  </div>
+						  
+						  <div class="form-group col-md-6 col-sm-6 col-xs-6" id="constituencyIdSelDiv0" style="display:none;">
+							<label >Constituency</label>
+							<select class="form-control constituencyCls" data_attrNo=0 id="constituencyIdSel0" >
+								
+							</select>
+						  </div>
+
+						  <div class="form-group col-md-6 col-sm-6 col-xs-6" id="committeeLocationIdDiv0">
+							<label >Location</label>
+							<select class="form-control locationCls" name="cadreRegistrationVO.previousRollesList[0].committeeLocationId" id="LocationId0">
+								<option value="0"> Select Location </option>
+							</select>
+						  </div>
 						</div>
 						
 						<div class="row">
@@ -700,7 +719,18 @@
 			&copy; 2015
 	</footer>
 
-   
+   <script>
+	/*var cmmtyConstituencies = [];
+	var consti = '${constituenciesList}';
+	<c:forEach var="ex" items="${constituenciesList}">
+                           
+                            var tempObj={
+                                    id:'${ex.id}',
+                                    name:'${ex.name}'
+                                };
+                                cmmtyConstituencies.push(tempObj);
+                            </c:forEach>*/
+   </script>
 	<script>		
 		var mobnum,refid;
 		var areaType = '${task}';
@@ -928,7 +958,7 @@
 		str+='<div class="row" >';
 		str+='<div class="form-group col-md-6 col-sm-6 col-xs-6 ">';
 		str+='<label for="exampleInputEmail2" >Committee Level</label>';
-		str+='<select class="form-control " id="cadreCommitteeLevelsId'+rolesCount+'" onchange="getCadreCommitteDetails(this.value,\'cadreCommitteeId'+rolesCount+'\')" name="cadreRegistrationVO.previousRollesList['+rolesCount+'].cadreCommitteeLevelId">';
+		str+='<select class="form-control cadreCommitteeLevelsCls" data_attrNo="'+rolesCount+'" id="cadreCommitteeLevelsId'+rolesCount+'" onchange="getCadreCommitteDetails(this.value,\'cadreCommitteeId'+rolesCount+'\')" name="cadreRegistrationVO.previousRollesList['+rolesCount+'].cadreCommitteeLevelId">';
 		if(cadreCmmittLvlArr != null && cadreCmmittLvlArr.length>0)
 		{
 			for(var i in cadreCmmittLvlArr)
@@ -938,14 +968,41 @@
 		}
 		str+='</select>';
 		str+='</div>';
+		
 		str+='<div class="form-group col-md-6 col-sm-6 col-xs-6">';
 		str+='<label >Committee Name</label>';
 		str+='<select class="form-control " id="cadreCommitteeId'+rolesCount+'" onchange="getCadreCommitteRoles(this.value,\'cadreRolesId'+rolesCount+'\',\'cadreCommitteeLevelsId'+rolesCount+'\')" name="cadreRegistrationVO.previousRollesList['+rolesCount+'].cadreCommitteeId">';
 		str+='<option value="0"> Select Committee </option>';
 		str+='</select>';
+		str+='</div>	';
+		
+		
+		str+='<div class="form-group col-md-6 col-sm-6 col-xs-6" id="constituencyIdSelDiv'+rolesCount+'" style="display:none;">';
+		str+='<label >Constituency</label>';
+		str+='<select class="form-control constituencyCls" data_attrNo="'+rolesCount+'"  id="constituencyIdSel'+rolesCount+'">';
+		/*if(cmmtyConstituencies != null && cmmtyConstituencies.length>0)
+		{
+			for(var i in cmmtyConstituencies)
+			{
+				str+='<option value="'+cmmtyConstituencies[i].id+'">'+cmmtyConstituencies[i].name+'</option>';
+			}
+		}*/
+		str+='</select>';
+		str+='</div>';
+		
+		
+		str+='<div class="form-group col-md-6 col-sm-6 col-xs-6" id="committeeLocationIdDiv'+rolesCount+'">';
+		str+='<label >Location</label>';
+		str+='<select class="form-control locationCls" name="cadreRegistrationVO.previousRollesList['+rolesCount+'].committeeLocationId" id="LocationId'+rolesCount+'">';
+		str+='<option value="0"> Select Location </option>';
+		str+='</select>';
 		str+='</div>	';				  
 		str+='</div>';
-
+		
+		
+						  
+	
+		
 		str+='<div class="row">';
 		str+='<div class="form-group col-md-4 col-sm-4 col-xs-4 ">';
 		str+='<label for="exampleInputEmail2" >Committee Designation</label>';
@@ -1175,6 +1232,98 @@
 		
 	}
 	
+	$(document).on('change',".cadreCommitteeLevelsCls",function(){
+		var attrId = $(this).attr("id");
+		var selLevel = $('#'+attrId+' option:selected').val();	
+		var attrNo = $(this).attr("data_attrNo");
+		
+		$("#LocationId"+attrNo).html("");
+		
+		var str="";
+		if(selLevel==1){
+			$("#constituencyIdSelDiv"+attrNo).css("display","none");
+			str+="<option value='1'> AndhraPradesh </option>";
+			str+="<option value='2'> Telangana </option>";
+			
+			$("#LocationId"+attrNo).html(str);
+		}else if(selLevel == 2){
+			$("#constituencyIdSelDiv"+attrNo).css("display","none");
+			getLocationValuesForLevels(selLevel, 0, attrNo);
+		}else if(selLevel == 10){
+			$("#constituencyIdSelDiv"+attrNo).css("display","none");
+			$("#committeeLocationIdDiv"+attrNo).css("display","none");
+		}else{
+			buildConstituencies(attrNo,selLevel);
+			
+			$("#constituencyIdSelDiv"+attrNo).css("display","block");
+			$("#committeeLocationIdDiv"+attrNo).css("display","block");
+		}
+		
+	});
+	
+	function buildConstituencies(attrNo,selLevel){
+	
+		var str="";
+		$("#constituencyIdSel"+attrNo).html("");
+		
+		var jsObj = {	
+				level : selLevel,
+			}
+				   
+			$.ajax({
+				type : "POST",
+				url : "getConstituenciesForCommitteeLevel.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				if(result != null && result.length>0){
+					for(var i in result){
+						str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+					}
+				}
+				$("#constituencyIdSel"+attrNo).html(str);
+			});
+	
+		
+		$("#constituencyIdSelDiv"+attrNo).css("display","block");
+	}
+	
+	$(document).on('change',".constituencyCls",function(){
+		
+		var attrNo = $(this).attr("data_attrNo");
+		var selLevel = $('#cadreCommitteeLevelsId'+attrNo+' option:selected').val();	
+		var constiId = $('#constituencyIdSel'+attrNo).val();
+		
+		getLocationValuesForLevels(selLevel, constiId, attrNo);
+		
+		//$("#LocationId"+attrNo).html("");
+	});
+	
+	function getLocationValuesForLevels(selLevel,constiId,attrNo){
+		var jsObj = {	
+				level : selLevel,
+				constiId : constiId
+			}
+				   
+			$.ajax({
+				type : "POST",
+				url : "getLocationsForCommitteeLevelAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				buildLocationLevels(attrNo,result);
+			});
+	}
+	
+	
+	
+
+	
+	function buildLocationLevels(attrNo,result){	
+		var str = "";
+		for(var i in result){
+			str+="<option value='"+result[i].id+"'>"+result[i].name+"</option>";
+		}
+		$("#LocationId"+attrNo).html(str);
+	}
 	function getCandidateDetailsForElection(constituencyId,candidateId,electionId,electionTypeId)
 	{
 		var electionValue = $('#'+electionId+'').val();
