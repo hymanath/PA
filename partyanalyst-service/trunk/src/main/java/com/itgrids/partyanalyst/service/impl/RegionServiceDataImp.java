@@ -1703,6 +1703,21 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return localElectionBodiesList;
 	}
 	
+	public List<SelectOptionVO> getAllMandalsByConstituencyID(Long constituencyID){
+		List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(constituencyID);
+		Long delimitationConstituencyID = delimitationConstituency.get(0).getDelimitationConstituencyID();
+		List<Tehsil> mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(delimitationConstituencyID);
+		
+		List<SelectOptionVO> mandalNames=new ArrayList<SelectOptionVO>();
+		
+		for(Tehsil tehsil : mandals){
+			SelectOptionVO objVO = new SelectOptionVO();
+			objVO.setId(tehsil.getTehsilId());
+			objVO.setName(tehsil.getTehsilName());
+			mandalNames.add(objVO);
+		}
+		return mandalNames;
+	}
 }
 	
  
