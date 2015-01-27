@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,10 +9,12 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
+import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
@@ -23,7 +27,6 @@ import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
-import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICandidateUpdationDetailsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -38,7 +41,6 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private HttpServletRequest         			request;
 	private HttpSession 						session;
 	private ICadreCommitteeService   		 	cadreCommitteeService;
-	private ICadreDetailsService 				cadreDetailsService;
 	private IStaticDataService					staticDataService;
 	private ICandidateUpdationDetailsService 	candidateUpdationDetailsService;
 	private ICadreRegistrationService			cadreRegistrationService;
@@ -309,11 +311,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	public void setTdpCadreVO(TdpCadreVO tdpCadreVO) {
 		this.tdpCadreVO = tdpCadreVO;
 	}
-
-	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
-		this.cadreDetailsService = cadreDetailsService;
-	}
-
+	
 	public Long getTdpCadreId() {
 		return tdpCadreId;
 	}
@@ -413,7 +411,8 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		}
 		ageRangeList = cadreCommitteeService.getAgeRangeDetailsForCadre();
 		genericVOList = cadreCommitteeService.getAllCasteDetailsForState();
-		
+		cadreRolesVOList = cadreCommitteeService.getBasicCadreCommitteesDetails();
+		locations = cadreCommitteeService.getAllTdpCommitteeDesignations();
 		
 		if(panchayatId == null) //default values for prepopulate fields
 		{
@@ -462,7 +461,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 				panchayatName = cadreCommitteeVO.getElectrolLocation();
 				if(committeeMngtType != null && committeeMngtType.longValue() == 2l){
 				   cadreCommitteeVO.setEligibleRoles(cadreCommitteeService.getCadreEligiableRoles(Long.valueOf(request.getParameter("tdpCadreId"))));
-				   locations = cadreCommitteeService.getAllTdpCommitteeDesignations();
+				  // locations = cadreCommitteeService.getAllTdpCommitteeDesignations();
 				}
 				//constituenciesList = cadreCommitteeService.getConstituenciesOfState();
 				assemblyId = getUserAccessConstituencies().get(0).getId();
@@ -710,7 +709,88 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		
 		return Action.SUCCESS;
 	}
-	
+
+	public String updateElectrolsDetails()
+	{
+		try {
+			session = request.getSession();	
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			if(user == null)
+				return ERROR;
+			jObj = new JSONObject(getTask());
+			
+			Long tdpCadreId = jObj.getLong("tdpCadreId");
+			JSONArray designationArr = jObj.getJSONArray("designationArr");
+			JSONArray fromDatArr = jObj.getJSONArray("fromDatArr");
+			JSONArray toDatArr = jObj.getJSONArray("toDatArr");
+			
+			List<Long> designationIds = new LinkedList<Long>();
+			List<String> fromDateStrList = new LinkedList<String>();
+			List<String> toDateStrList = new LinkedList<String>();
+			
+			if(designationArr != null && designationArr.length()>0)
+			{
+				for (int i = 0; i < designationArr.length(); i++)
+				{
+					designationIds.add(Long.valueOf(designationArr.get(i).toString().trim()));
+				}
+			}
+			
+			if(fromDatArr != null && fromDatArr.length()>0)
+			{
+				for (int i = 0; i < fromDatArr.length(); i++)
+				{
+					fromDateStrList.add(fromDatArr.get(i).toString().trim());
+				}
+			}
+			
+			if(toDatArr != null && toDatArr.length()>0)
+			{
+				for (int i = 0; i < toDatArr.length(); i++)
+				{
+					toDateStrList.add(toDatArr.get(i).toString().trim());
+				}
+			}
+			
+			List<CadrePreviousRollesVO> eligibleRoles = new ArrayList<CadrePreviousRollesVO>();
+			if(designationIds != null && designationIds.size()>0)
+			{
+				for (int i = 0; i < designationIds.size(); i++)
+				{
+					CadrePreviousRollesVO eligibleRoleVO = new CadrePreviousRollesVO();
+					eligibleRoleVO.setDesignationLevelId(designationIds.get(i));
+					eligibleRoleVO.setFromDateStr(fromDateStrList.get(i));
+					eligibleRoleVO.setToDateStr(toDateStrList.get(i));
+					eligibleRoles.add(eligibleRoleVO);
+				}
+			}
+			
+			status = cadreCommitteeService.saveMandalLevelElectrolInfo(tdpCadreId,eligibleRoles);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in updateElectrolsDetails() At CadreCommitteeAction ",e);
+		}
+		return Action.SUCCESS;
+	}	
+	public String updatenonAfilaiatedElectrols()
+	{
+		try {
+			session = request.getSession();	
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			if(user == null)
+				return ERROR;
+			jObj = new JSONObject(getTask());
+			
+			Long tdpCadreId = jObj.getLong("tdpCadreId");
+			Long afiliatedCommitteeId = jObj.getLong("afiliatedCommitteeId");
+			
+			status = cadreCommitteeService.saveMandalLevelAffliactedElectrolInfo(tdpCadreId,afiliatedCommitteeId);
+		}catch(Exception e)
+		{
+			LOG.error("Exception occured in updateElectrolsDetails() At CadreCommitteeAction ",e);
+		}
+		return Action.SUCCESS;
+	}
 	public String assignCadreToCommitee()
 	{	
 		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
