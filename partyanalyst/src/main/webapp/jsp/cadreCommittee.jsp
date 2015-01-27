@@ -23,15 +23,8 @@
 	<!----slick Js----->
 	<script type="text/javascript" src="js/cadreCommittee/slick/slick.min.js"></script>
 	<script type="text/javascript" src="js/cadreCommittee/cadreCommittee.js"></script>
-   	
-    <script src="js/cadreCommittee/bootstrap.min.js"></script>
-	<!----slick Js----->
-	<script type="text/javascript" src="js/cadreCommittee/slick/slick.min.js"></script>
-	<script type="text/javascript" src="js/cadreCommittee/cadreCommittee.js"></script>
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
-	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-	<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
-
+   	<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+			<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 	<style>
 	#publicrepresantative,#mandalaffiliated,#advancedSearchDiv,#committeeDetailsDiv,#searchcadrenewDiv,#committeLocationsDiv,
 	#designationDivId,#step1Id,#step2Id,#step3Id,#cadreDetailsDiv
@@ -860,16 +853,17 @@
 		      str+='<option value="'+allRolesList[i].id+'">'+allRolesList[i].name+'</option>';
 			}
 		str+='		</select>';
+		str+='<br><span id="designation'+generatedId+'Err" class="validErrCls" style="color:red;font-size:12px;"></span>';
 		str+='	  </div>';
 		str+='	   <div class="form-group col-md-4 col-sm-4 col-xs-4">';
 		str+='			<label >From Date</label>';
 		str+='			<input type="text"  id="fromDateIda'+generatedId+'" key ="a'+dttCnt+'"  class="form-control fromDateCls'+cadreId+'" name="eligibleRoles['+elegbleRolCnt+'].fromDateStr">';
-		str+='          <br><span id="fromDateErra'+dttCnt+'" style="color:red;font-size:12px;"></span>'; 
+		str+='          <br><span id="fromDateIda'+generatedId+'Err" class="validErrCls" style="color:red;font-size:12px;"></span>'; 
 		str+='	   </div>';
 		str+='	   <div class="form-group col-md-4 col-sm-4 col-xs-4">';
 		str+='			<label >To Date</label>';
 		str+='			<input type="text"  id="toDateIda'+generatedId+'"  class="form-control toDateCls'+cadreId+'" name="eligibleRoles['+elegbleRolCnt+'].toDateStr">';
-		str+='          <br><span id="toDateErra'+dttCnt+'" style="color:red;font-size:12px;"></span>';
+		str+='          <br><span id="toDateIda'+generatedId+'Err" class="validErrCls" style="color:red;font-size:12px;"></span>';
 		str+='		</div>	';	  
 		str+='	</div>';
 		if(index != 0)
