@@ -72,7 +72,7 @@ input[type="text"]
     <tr class="well">
         <td colspan="6">
         <div class="span11"><h4 class="text-success" align="center">CARDS DISTRIBUTION CONFORMATION STATUS BY INFO MANAGER</h4>
-             <a class="btn btn-small btn-default pull-right border-radius-0">
+            <!-- <a class="btn btn-small btn-default pull-right border-radius-0">
 				 <label class="radio">
 				  <input type="radio">AP
 				</label>
@@ -86,7 +86,7 @@ input[type="text"]
 				<label class="radio">
 				  <input type="radio"> ALL
 				</label>
-            </a>
+            </a>-->
     	</div>
         </td>
     </tr>
@@ -192,6 +192,7 @@ input[type="text"]
 		  str+='<td width="20%"><h4><a style="cursor:pointer;" onclick="getCardsDispatchedDataByType(\'Constituency\',\''+fromDate+'\',\''+toDate+'\')">'+result.totalCalls+'</a></h4><span style="font-size:11px; line-height:14px">Constituencies</span></td>';
         else
 		  str+='<td width="20%"><h4>'+result.totalCalls+'</h4><span style="font-size:11px; line-height:14px">Constituencies</span></td>';
+		
 		str+='<td width="20%"><h4>'+result.printedCount+'</h4><span style="font-size:11px; line-height:14px">Total Cards Printed</span></td>';
         str+='<td width="30%"><h4>'+result.received+'</h4><span style="font-size:11px; line-height:14px">Total Cards Received By Constituency Incharge</span></td>';
         str+='<td width="30%"><h4>'+result.notReceived+'</h4><span style="font-size:11px; line-height:14px">Total Cards Dispatched To Mandal Incharge</span></td>';
@@ -204,13 +205,19 @@ input[type="text"]
 		str1+='<table width="100%" class="table table-condensed table-bordered">';
         str1+='<tr><td colspan="4" class="well"><h5 style="display:inline;padding:5px;">MANDAL LEVEL INFO</h5>(selected date range)</td></tr>';
         str1+='<tr>';
-		if(result.totalIvrCalls!= null && result.totalIvrCalls > 0)	
+		if(result.totalIvrCalls != null && result.totalIvrCalls > 0)	
 			str1+='<td width="15%"><h4><a style="cursor:pointer;" onclick="getCardsDispatchedDataByType(\'Mandal\',\''+fromDate+'\',\''+toDate+'\')">'+result.totalIvrCalls+'</a></h4><span style="font-size:11px; line-height:14px">Mandals</span></td>';
 		else
 			str1+='<td width="15%"><h4>'+result.totalIvrCalls+'</h4><span style="font-size:11px; line-height:14px">Mandals</span></td>';
-        
+        if(result.mandalPrintedCnt != null)
 		str1+='<td width="20%"><h4>'+result.mandalPrintedCnt+'</h4><span style="font-size:11px; line-height:14px">Total Cards Printed</span></td>';
-        str1+='<td width="30%"><h4>'+result.totalAnswerdCalls+'</h4><span style="font-size:11px; line-height:14px">Total Cards Received By Mandal Incharge</span></td>';
+		else
+		str1+='<td width="20%"><h4>0</h4><span style="font-size:11px; line-height:14px">Total Cards Printed</span></td>';
+        if(result.totalAnswerdCalls != null)
+		str1+='<td width="30%"><h4>'+result.totalAnswerdCalls+'</h4><span style="font-size:11px; line-height:14px">Total Cards Received By Mandal Incharge</span></td>';
+		else
+		str1+='<td width="30%"><h4>0</h4><span style="font-size:11px; line-height:14px">Total Cards Received By Mandal Incharge</span></td>';
+		
         str1+='<td width="35%"><h4>'+result.notMember+'</h4><span style="font-size:11px; line-height:14px">Total Cards Delivered To Cadre By Mandal Incharge</span></td>';
         str1+='</tr>';
 		str1+='</table>';
@@ -311,10 +318,7 @@ input[type="text"]
 				str+='<td>'+result[i].received+'</td>';
 			 else
 				str+='<td>-</td>';
-			 
-			
-			 
-			
+
 				str+='</tr>';
 		 }		 
 		 str+='</tbody>';
