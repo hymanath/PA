@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.ITdpBasicCommitteeDAO;
@@ -49,6 +50,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.model.CadreOtpDetails;
 import com.itgrids.partyanalyst.model.CasteState;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.EducationalQualifications;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
@@ -105,6 +107,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
 	private ICadreDetailsService cadreDetailsService;
 	private ITdpBasicCommitteeDAO tdpBasicCommitteeDAO;
+	private ILocalElectionBodyWardDAO localElectionBodyWardDAO;
 	
 	public void setTdpBasicCommitteeDAO(ITdpBasicCommitteeDAO tdpBasicCommitteeDAO) {
 		this.tdpBasicCommitteeDAO = tdpBasicCommitteeDAO;
@@ -230,6 +233,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO) {
 		this.assemblyLocalElectionBodyWardDAO = assemblyLocalElectionBodyWardDAO;
 	}
+	
+	
+	public void setLocalElectionBodyWardDAO(
+			ILocalElectionBodyWardDAO localElectionBodyWardDAO) {
+		this.localElectionBodyWardDAO = localElectionBodyWardDAO;
+	}
+	
 	public CadreCommitteeVO getCadreDetailsByTdpCadreId(Long tdpCadreId)
 	{
 		CadreCommitteeVO cadreCommitteeVO = null;
@@ -356,7 +366,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					{
 						location = tehsilDAO.get(locationValue).getTehsilName()+" Mandal";
 					}	
-					else if(LocationType.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION))
+					else if(LocationType.equalsIgnoreCase("Local Election Body"))
 					{
 						LocalElectionBody localElectionBody = localElectionBodyDAO.get(locationValue);						
 						location = localElectionBody.getName() +" "+localElectionBody.getElectionType().getElectionType();
@@ -367,7 +377,21 @@ public class CadreCommitteeService implements ICadreCommitteeService
 							location = location+" - "+wardName;
 						}
 						
-					}	
+					}else if(LocationType.equalsIgnoreCase("Division"))
+					{
+						 Constituency constituency = constituencyDAO.get(locationValue);
+						LocalElectionBody localElectionBody =  constituency.getLocalElectionBody();						
+						location = localElectionBody.getName() +" "+localElectionBody.getElectionType().getElectionType();
+							String wardName =constituency.getName();
+							List name = localElectionBodyWardDAO.findWardName(locationValue);
+							if(name != null && name.size() > 0 && name.get(0) != null){
+								location = location+" - "+wardName+"("+name.get(0).toString()+")";
+							}else{
+							    location = location+" - "+wardName;
+							}
+						
+						
+					}		
 					
 					String positionName = tdpCommitteeMember.getTdpCommitteeRole().getTdpRoles().getRole();
 					String committeeName = tdpCommitteeMember.getTdpCommitteeRole().getTdpCommittee().getTdpBasicCommittee().getName();
@@ -1362,8 +1386,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 									else 	if(LocationTypeId.longValue() == 5L)
 									{
 										location = tehsilDAO.get(locationValue).getTehsilName()+" Mandal";
-									}	
-									else 	if(LocationTypeId.longValue() == 7L)
+									}else if(LocationTypeId.longValue() == 7L)
 									{
 										LocalElectionBody localElectionBody = localElectionBodyDAO.get(locationValue);						
 										location = localElectionBody.getName() +" "+localElectionBody.getElectionType().getElectionType();
@@ -1374,7 +1397,21 @@ public class CadreCommitteeService implements ICadreCommitteeService
 											location = location+" - "+wardName;
 										}
 										
-									}	
+									}else if(LocationTypeId.longValue() == 9L)
+									{
+										 Constituency constituency = constituencyDAO.get(locationValue);
+										LocalElectionBody localElectionBody =  constituency.getLocalElectionBody();						
+										location = localElectionBody.getName() +" "+localElectionBody.getElectionType().getElectionType();
+											String wardName =constituency.getName();
+											List name = localElectionBodyWardDAO.findWardName(locationValue);
+											if(name != null && name.size() > 0 && name.get(0) != null){
+												location = location+" - "+wardName+"("+name.get(0).toString()+")";
+											}else{
+											    location = location+" - "+wardName;
+											}
+										
+										
+									}		
 									
 									cadreVO.setCommitteeLocation(location);
 									cadreVO.setCommitteePosition(positionName);
