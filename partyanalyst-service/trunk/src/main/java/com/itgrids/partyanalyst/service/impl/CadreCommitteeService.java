@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.ITdpBasicCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDesignationDAO;
@@ -50,6 +51,7 @@ import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Occupation;
+import com.itgrids.partyanalyst.model.TdpBasicCommittee;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.TdpCommitteeDesignation;
 import com.itgrids.partyanalyst.model.TdpCommitteeElectrolRoles;
@@ -97,8 +99,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IBoothDAO                       boothDAO;
 	private ITdpCommitteeMemberHistoryDAO tdpCommitteeMemberHistoryDAO;
 	private ICadreDetailsService cadreDetailsService;
+	private ITdpBasicCommitteeDAO tdpBasicCommitteeDAO;
 	
 	
+	public void setTdpBasicCommitteeDAO(ITdpBasicCommitteeDAO tdpBasicCommitteeDAO) {
+		this.tdpBasicCommitteeDAO = tdpBasicCommitteeDAO;
+	}
 	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
 		this.cadreDetailsService = cadreDetailsService;
 	}
@@ -1223,5 +1229,28 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			LOG.error("Exception raised in getMatchedVOById", e);
 		}
 		return returnVO;
+	}
+	
+	public List<SelectOptionVO> getBasicCadreCommitteesDetails()
+	{
+		List<SelectOptionVO> committeesList = null;
+		try {
+			List<TdpBasicCommittee> tdpbasicCommitteDetls = tdpBasicCommitteeDAO.getAll();
+			if(tdpbasicCommitteDetls != null && tdpbasicCommitteDetls.size()>0)
+			{
+				committeesList = new ArrayList<SelectOptionVO>();
+				for (TdpBasicCommittee tdpBasicCommittee : tdpbasicCommitteDetls) 
+				{
+					SelectOptionVO vo = new SelectOptionVO();
+					vo.setId(tdpBasicCommittee.getTdpBasicCommitteeId());
+					vo.setName(tdpBasicCommittee.getName());
+					
+					committeesList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getBasicCadreCommitteesDetails", e);
+		}
+		return committeesList;
 	}
 }
