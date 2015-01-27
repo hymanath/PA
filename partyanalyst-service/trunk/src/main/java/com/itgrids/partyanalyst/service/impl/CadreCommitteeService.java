@@ -42,6 +42,7 @@ import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.model.CadreOtpDetails;
 import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.model.EducationalQualifications;
@@ -59,6 +60,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeRole;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.VoterAgeRange;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
+import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -94,8 +96,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IVoterDAO voterDAO;
 	private IBoothDAO                       boothDAO;
 	private ITdpCommitteeMemberHistoryDAO tdpCommitteeMemberHistoryDAO;
+	private ICadreDetailsService cadreDetailsService;
 	
 	
+	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
+		this.cadreDetailsService = cadreDetailsService;
+	}
 	public void setTdpCommitteeMemberHistoryDAO(
 			ITdpCommitteeMemberHistoryDAO tdpCommitteeMemberHistoryDAO) {
 		this.tdpCommitteeMemberHistoryDAO = tdpCommitteeMemberHistoryDAO;
@@ -1097,4 +1103,125 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 	}
 
+	public CadreCommitteeVO searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(Long locationLevel,Long locationId, String searchName,String memberShipCardNo,
+			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender)
+	{
+		CadreCommitteeVO cadreCommitteeVO = new CadreCommitteeVO();
+		try {
+			
+			TdpCadreVO tdpCadreVO = cadreDetailsService.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationLevel,locationId, searchName,memberShipCardNo, 
+					voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender);
+			List<CadreCommitteeVO> cadreCommitteeList = null;
+			if(tdpCadreVO != null)
+			{
+				List<TdpCadreVO> tdpCadreVOList = tdpCadreVO.getTdpCadreDetailsList();
+				List<Long> tdpCadreIdsList = new ArrayList<Long>();
+			
+				if(tdpCadreVOList != null && tdpCadreVOList.size()>0)
+				{
+					cadreCommitteeList = new ArrayList<CadreCommitteeVO>();
+					
+					for (TdpCadreVO tdpCadre : tdpCadreVOList)
+					{
+						tdpCadreIdsList.add(tdpCadre.getId());
+						
+						CadreCommitteeVO committeeVO = new CadreCommitteeVO();
+						committeeVO.setTdpCadreId(tdpCadre.getId());
+						committeeVO.setCadreName(tdpCadre.getCadreName());
+						committeeVO.setRelativeName(tdpCadre.getRelativeName());
+						committeeVO.setAge(tdpCadre.getAge().toString());
+						committeeVO.setMobileNo(tdpCadre.getMobileNo());
+						committeeVO.setCasteName(tdpCadre.getCasteName());
+						committeeVO.setGender(tdpCadre.getGender());
+						committeeVO.setVoterCardNo(tdpCadre.getVoterCardNo());
+						committeeVO.setImageURL(tdpCadre.getImageURL());
+						cadreCommitteeList.add(committeeVO);
+					}
+				}
+				
+				if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
+				{
+					List<Object[]> tdpCommitteeMemberList = tdpCommitteeMemberDAO.getTdpCommitteeMemberForTdpCadreIdList(tdpCadreIdsList);
+					
+					if(tdpCommitteeMemberList != null && tdpCommitteeMemberList.size()>0)
+					{
+						
+						for (Object[] tdpCadre : tdpCommitteeMemberList) 
+						{
+							Long id = tdpCadre[0] != null ? Long.valueOf(tdpCadre[0].toString()):0L;
+							String committeeName = tdpCadre[1] != null ? tdpCadre[1].toString():"";
+							String positionName =  tdpCadre[2] != null ? tdpCadre[2].toString():"";
+							Long LocationTypeId = tdpCadre[3] != null ? Long.valueOf(tdpCadre[3].toString()):0L;
+							Long locationValue = tdpCadre[4] != null ? Long.valueOf(tdpCadre[4].toString()):0L;
+							
+							CadreCommitteeVO cadreVO = getMatchedVOById(cadreCommitteeList,id);
+							if(cadreVO != null)
+							{								
+								String location = null;
+								
+								if(locationValue != 0L)
+								{
+									if(LocationTypeId.longValue() == 6L)
+									{
+										location = panchayatDAO.get(locationValue).getPanchayatName()+" Panchayat";
+									}
+									else 	if(LocationTypeId.longValue() == 8L)
+									{
+										location = constituencyDAO.get(locationValue).getName();
+									}
+									else 	if(LocationTypeId.longValue() == 5L)
+									{
+										location = tehsilDAO.get(locationValue).getTehsilName()+" Mandal";
+									}	
+									else 	if(LocationTypeId.longValue() == 7L)
+									{
+										LocalElectionBody localElectionBody = localElectionBodyDAO.get(locationValue);						
+										location = localElectionBody.getName() +" "+localElectionBody.getElectionType().getElectionType();
+										
+										if(locationValue.longValue() == 20L || locationValue.longValue() == 124L || locationValue.longValue() == 119L)
+										{
+											String wardName = constituencyDAO.get(locationValue).getName();
+											location = location+" - "+wardName;
+										}
+										
+									}	
+									
+									cadreVO.setCommitteeLocation(location);
+									cadreVO.setCommitteePosition(positionName);
+									cadreVO.setCommitteeName(committeeName);
+								}
+								
+							}
+						}
+					}
+				}
+				cadreCommitteeVO.setPreviousRoles(cadreCommitteeList);
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in searchTdpCadreDetailsBySearchCriteriaForCadreCommitte", e);
+		}
+		return cadreCommitteeVO;
+	}
+	
+	public CadreCommitteeVO getMatchedVOById(List<CadreCommitteeVO> tdpCadreVOList,Long id)
+	{
+		CadreCommitteeVO returnVO = null;
+		try {
+			
+			if(tdpCadreVOList != null && tdpCadreVOList.size()>0)
+			{
+				for (CadreCommitteeVO tdpCadre : tdpCadreVOList)
+				{
+					if(tdpCadre.getTdpCadreId().longValue() == id.longValue())
+					{
+						return tdpCadre;
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getMatchedVOById", e);
+		}
+		return returnVO;
+	}
 }
