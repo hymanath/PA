@@ -61,12 +61,21 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private String committeeName;
 	private String isSmartPhone;
 	
+	private Long committeeLocationId;
+	
 	
 	public String getRelativeName() {
 		return relativeName;
 	}
 	public void setRelativeName(String relativeName) {
 		this.relativeName = relativeName;
+	}
+	
+	public Long getCommitteeLocationId() {
+		return committeeLocationId;
+	}
+	public void setCommitteeLocationId(Long committeeLocationId) {
+		this.committeeLocationId = committeeLocationId;
 	}
 	public String getIsSmartPhone() {
 		return isSmartPhone;

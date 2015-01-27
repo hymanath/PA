@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dao.ICadreParticipatedElectionDAO;
 import com.itgrids.partyanalyst.dao.ICadrePreviousRolesDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
@@ -41,6 +42,7 @@ import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -99,16 +101,23 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IVoterDAO voterDAO;
 	private IBoothDAO                       boothDAO;
 	private ITdpCommitteeMemberHistoryDAO tdpCommitteeMemberHistoryDAO;
+	private IDistrictDAO districtDAO;
 	private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
 	private ICadreDetailsService cadreDetailsService;
 	private ITdpBasicCommitteeDAO tdpBasicCommitteeDAO;
-	
 	
 	public void setTdpBasicCommitteeDAO(ITdpBasicCommitteeDAO tdpBasicCommitteeDAO) {
 		this.tdpBasicCommitteeDAO = tdpBasicCommitteeDAO;
 	}
 	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
 		this.cadreDetailsService = cadreDetailsService;
+	}
+	
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
 	}
 	public void setTdpCommitteeMemberHistoryDAO(
 			ITdpCommitteeMemberHistoryDAO tdpCommitteeMemberHistoryDAO) {
@@ -1125,6 +1134,163 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}else{
 			return null;	
 		}
+	}
+	
+	public List<IdNameVO> getLocationsOfCommitteeLevel(Long levelId,Long constiId){
+		// STATE - 1, DISTRICT - 2, MANDAL - 5, PANCHAYAT - 7,  MUNCIPAL-CORP-GHMC - 6, WARD - 9, INCHARGE - 10, DIVISION - 11
+		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+			
+		List<Long> mandalIds =new ArrayList<Long>();
+		
+		if(levelId==2){//DISTRICT
+			
+			IdNameVO iv = new IdNameVO(0l, "Select District");
+			finalList.add(iv);
+			
+			List<Object[]> list = districtDAO.getAllDistrictDetails(1l);
+			if(list!=null && list.size()>0){
+				for(Object[] obj:list){
+					IdNameVO temp = new IdNameVO();
+					temp.setId(Long.valueOf(obj[0].toString()));
+					temp.setName(obj[1].toString());
+					
+					finalList.add(temp);
+				}
+			}
+			
+		}
+		
+		if(levelId==5){
+			
+			IdNameVO iv = new IdNameVO(0l, "Select Mandal");
+			finalList.add(iv);
+			
+			List<SelectOptionVO> locations = regionServiceDataImp.getTehsilsInAConstituency(constiId);
+			if(locations!=null && locations.size()>0){
+				for(SelectOptionVO sv:locations){
+					IdNameVO temp = new IdNameVO();
+					temp.setId(sv.getId());
+					temp.setName(sv.getName());
+					
+					finalList.add(temp);
+				}
+			}
+		}
+		
+		if(levelId==7){
+			List<SelectOptionVO> locations = regionServiceDataImp.getTehsilsInAConstituency(constiId);
+				if(locations!=null && locations.size()>0){
+					for(SelectOptionVO sv:locations){
+						mandalIds.add(sv.getId());
+					}
+				}
+				
+				IdNameVO iv = new IdNameVO(0l, "Select Panchayat");
+				finalList.add(iv);
+				
+			if(mandalIds!=null && mandalIds.size()>0){
+				List<Object[]> panchayatsList = panchayatDAO.getAllPanchayatsInMandals(mandalIds);
+		       	
+		       	if(panchayatsList!=null && panchayatsList.size()>0){
+		       		for(Object[] panchayat:panchayatsList){
+			       		IdNameVO temp = new IdNameVO();
+						temp.setId(Long.valueOf(panchayat[0].toString()));
+						temp.setName(panchayat[1].toString()+"("+panchayat[2].toString()+")");
+						
+						finalList.add(temp);
+					}
+		       	}
+		     }
+	        	
+	     }
+		
+		if(levelId == 6){
+			List<Object[]> localBodies = assemblyLocalElectionBodyDAO.getAllLocalBodiesInAConstituency(constiId);
+			
+			for(Object[] localBodi:localBodies){
+				IdNameVO temp = new IdNameVO();
+				temp.setId(Long.valueOf(localBodi[0].toString()));
+				temp.setName(localBodi[1].toString());
+				finalList.add(temp);
+	        }
+		}
+		
+		if(levelId ==9){
+			
+			List<Object[]> localBodies = assemblyLocalElectionBodyDAO.getAllLocalBodiesInAConstituency(constiId);
+			List<Long> localBodyIds = new ArrayList<Long>();
+			for(Object[] localBodi:localBodies){
+				localBodyIds.add(Long.valueOf(localBodi[0].toString()));
+		    }
+				
+			 if(localBodyIds.size() > 0){
+		        	List<Object[]> localBodyList = constituencyDAO.getWardsInLocalElectionBody(localBodyIds);
+		        	if(localBodyList!=null && localBodyList.size()>0){
+		        		for(Object[] localBody:localBodyList){
+			        		IdNameVO temp = new IdNameVO();
+							temp.setId(Long.valueOf((Long)localBody[0]));
+							temp.setName(localBody[1].toString()+"("+localBody[2].toString()+")");
+							finalList.add(temp);
+				    	}
+		        	}
+		        	
+		        }
+			
+		}
+		
+		if(levelId ==11){
+			
+			List<Object[]> localBodies = assemblyLocalElectionBodyDAO.getAllLocalBodiesInAConstituency(constiId);
+			List<Long> localBodyIds = new ArrayList<Long>();
+			for(Object[] localBodi:localBodies){
+				localBodyIds.add(Long.valueOf(localBodi[0].toString()));
+		    }
+			
+			if(localBodyIds.size()>0){
+				List<Object[]>  wards = assemblyLocalElectionBodyWardDAO.findWardsByLocalBodyConstiId(localBodyIds.get(0), constiId);
+	    		  for(Object[] location:wards){
+	    			  
+	    			  IdNameVO temp = new IdNameVO();
+						temp.setId(Long.valueOf(location[0].toString()));
+						temp.setName(location[1].toString());
+						finalList.add(temp);
+				  }
+			}
+			
+		}
+		
+		return finalList;
+	}
+	
+	public List<IdNameVO> getConstituenciesOfState(Long levelId){
+		
+		// STATE - 1, DISTRICT - 2, MANDAL - 5, PANCHAYAT - 7,  MUNCIPAL-CORP-GHMC - 6, WARD - 9, INCHARGE - 10, DIVISION - 11
+		
+		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+		IdNameVO iv = new IdNameVO(0l, "Select Constituency");
+		finalList.add(iv);
+		
+		if(levelId!=11){
+			List<Object[]> asslyList = constituencyDAO.getConstituencyByStateAndAreaType(1l,levelId);
+			if(asslyList!=null && asslyList.size()>0){
+				for(Object[] obj:asslyList){
+					IdNameVO vo = new IdNameVO(Long.valueOf(obj[0].toString()), obj[1].toString());
+					
+					finalList.add(vo);
+				}
+			}
+		}else{
+			List<Object[]> asslyList = assemblyLocalElectionBodyDAO.getGreaterCitiesConstituencies();
+			if(asslyList!=null && asslyList.size()>0){
+				for(Object[] obj:asslyList){
+					IdNameVO vo = new IdNameVO(Long.valueOf(obj[0].toString()), obj[1].toString());
+					finalList.add(vo);
+				}
+			}
+			
+		}
+		
+		return finalList;
 	}
 
 	public CadreCommitteeVO searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(Long locationLevel,Long locationId, String searchName,String memberShipCardNo,

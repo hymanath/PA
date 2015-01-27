@@ -300,4 +300,12 @@ public class AssemblyLocalElectionBodyDAO extends GenericDaoHibernate<AssemblyLo
 		return getHibernateTemplate().find("select model.localElectionBody.localElectionBodyId,concat(model.localElectionBody.name,' ',model.localElectionBody.electionType.electionType)  from AssemblyLocalElectionBody model " +
 				"where model.constituency.constituencyId = ? and model.year = (select max(model2.year) from AssemblyLocalElectionBody model2)",params);
 	}
+	
+	public List<Object[]> getGreaterCitiesConstituencies(){ //GHMC, GVMC, BZA
+		Query query = getSession().createQuery("select distinct model.constituency.constituencyId,model.constituency.name from AssemblyLocalElectionBody model " +
+				" where model.localElectionBody.localElectionBodyId in(20,124,119) order by model.constituency.name ");
+		
+		return query.list();
+	
+	}
 }

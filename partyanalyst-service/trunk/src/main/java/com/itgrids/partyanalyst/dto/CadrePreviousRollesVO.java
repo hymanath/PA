@@ -31,7 +31,16 @@ public class CadrePreviousRollesVO implements Serializable {
 	private Long 				cadreCommitteeTypeId;
 	private Long 				committeeMngtType;
 	
+	private Long				committeeLocationId;
 	
+	
+	
+	public Long getCommitteeLocationId() {
+		return committeeLocationId;
+	}
+	public void setCommitteeLocationId(Long committeeLocationId) {
+		this.committeeLocationId = committeeLocationId;
+	}
 	public Long getCommitteeMngtType() {
 		return committeeMngtType;
 	}
