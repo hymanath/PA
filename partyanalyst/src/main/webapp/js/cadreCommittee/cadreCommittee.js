@@ -10,7 +10,7 @@
 		 $("#membershipId").prop("checked","checked");
 		 $('#cadreSearchType').val('membershipId');
 		 $('#committeLocationsDiv').hide();
-		 $('#advancedSearchDiv').hide();
+		 $('#advancedSearchDiv,#cadreDetailsDiv').hide();
 		 $("#headingDiv").html("");
 		 $("#villageId").prop("checked","checked");
 		 $('#areaTypeId').val(1);
@@ -113,7 +113,8 @@
 		var voterCardNo = '';
 		var gender = '';
 		var houseNo = '';
-		$('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv,#committeePositionIdErr').html('');
+		$('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv').html('');
+		$('#searchLevelErrDiv,#committeePositionIdErr').html('');
 		var searchBy = $('#searchBy').val().trim();
 		var searchRadioType = $('#cadreSearchType').val();		
 		var committeTypeID = $('#committeeMngtType').val();
@@ -459,7 +460,7 @@
 					str+='</div>';
 					str+='</div>';
 					str+='<div class="form-inline ">';
-					str+='<a onclick="jacascript:{getCadreProfileInfo('+result[i].tdpCadreId+'),""}" class="btn btn-success btn-medium m_top5" > SELECT & UPDATE PROFILE</a>';
+					str+='<a onclick="jacascript:{getCadreProfileInfo('+result[i].tdpCadreId+' ,0)}" class="btn btn-success btn-medium m_top5" > SELECT & UPDATE PROFILE</a>';
 					str+='</div>	';
 				
 				}
@@ -483,8 +484,8 @@
 		
 		var existingDesignation = '';
 		var committeePositionStr = $('#committeePositionId option:selected').text().trim();
-		var locationTypeStr= " Panchayat" ;
-		if(existingRole != null && existingRole.trim().length>0)
+		var locationTypeStr= " Mandal " ;
+		if(existingRole != null && existingRole != 0 && existingRole.trim().length>0)
 		{
 			existingDesignation = $('#'+existingRole+'').val();
 		}
@@ -549,12 +550,19 @@
 			}
 			else{
 				
-				if(!confirm(""+existingDesignation+". Are you sure want to change his Designation as "+committeePositionStr+" for "+committeeType+" in "+ $('#committeeLocationId option:selected').text() +" "+locationTypeStr+".?" ))
+				if(existingDesignation != null && existingDesignation.trim().length>0)
 				{
-					return;
+					if(!confirm(""+existingDesignation+". Are you sure want to change his Designation as "+committeePositionStr+" for "+committeeType+" in "+ $('#committeeLocationId option:selected').text() +" "+locationTypeStr+".?" ))
+					{
+						return;
+					}
+					window.location.href = 'cadreProfileDetailsAction.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&panchayatId='+committeeLocationId+'&committeeTypeId='+committeeTypeId+'&committeeId='+committeeId+'&result1='+$('#committeePositionId option:selected').text().trim()+'&result2='+committeeType+'&result3='+committeePosition+'&result4='+$('#committeeLocationId option:selected').text()+''+locationTypeStr+'';
+				}
+				else{
+					window.location.href = 'cadreProfileDetailsAction.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&panchayatId='+committeeLocationId+'&committeeTypeId='+committeeTypeId+'&committeeId='+committeeId+'&result1='+$('#committeePositionId option:selected').text().trim()+'&result2='+committeeType+'&result3='+committeePosition+'&result4='+$('#committeeLocationId option:selected').text()+''+locationTypeStr+'';
 				}
 				
-				window.location.href = 'cadreProfileDetailsAction.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&panchayatId='+committeeLocationId+'&committeeTypeId='+committeeTypeId+'&committeeId='+committeeId+'&result1='+$('#committeePositionId option:selected').text().trim()+'&result2='+committeeType+'&result3='+committeePosition+'&result4='+$('#committeeLocationId option:selected').text()+''+locationTypeStr+'';
+				
 			}
 		}else
 		{
