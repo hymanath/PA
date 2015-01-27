@@ -2502,6 +2502,7 @@
 	     <property name="educationalQualificationsDAO" ref="educationalQualificationsDAO"/>
 	     <property name="cadreDetailsService" ref="cadreDetailsService"/>
 	     <property name="tdpBasicCommitteeDAO" ref="tdpBasicCommitteeDAO"/>	     
+	     <property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO"/>	     
 	</bean>
 </beans>		
 	
