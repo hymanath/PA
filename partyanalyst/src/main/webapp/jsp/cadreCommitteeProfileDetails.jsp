@@ -1242,12 +1242,16 @@
 		var str="";
 		if(selLevel==1){
 			$("#constituencyIdSelDiv"+attrNo).css("display","none");
+			$("#committeeLocationIdDiv"+attrNo).css("display","block");
+			
 			str+="<option value='1'> AndhraPradesh </option>";
 			str+="<option value='2'> Telangana </option>";
 			
 			$("#LocationId"+attrNo).html(str);
 		}else if(selLevel == 2){
 			$("#constituencyIdSelDiv"+attrNo).css("display","none");
+			$("#committeeLocationIdDiv"+attrNo).css("display","block");
+			
 			getLocationValuesForLevels(selLevel, 0, attrNo);
 		}else if(selLevel == 10){
 			$("#constituencyIdSelDiv"+attrNo).css("display","none");
