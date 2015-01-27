@@ -727,6 +727,7 @@
 		var cadreCommitteeTypeId = $('#cadreCommitteeTypeId').val();
 		*/
 		$('.existingDiv').hide();
+		$('#step2Id').hide();
 		$('html,body').animate({scrollTop: $('.successDiv').offset().top}, 800);
 		$('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;"> '+result.status+'</span> <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 10px;margin-left:250px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"></i> </a>');
 		$('#profileDiv').html('');
@@ -737,6 +738,7 @@
 		{			
 			var redirectURL = $('#redirectURLId').val();
 			$('#profileDiv').hide();
+			$('#step2Id').hide();
 			$('.existingDiv').hide();
 			$('html,body').animate({scrollTop: $('.successDiv').offset().top}, 800);
 			$('#redirectURLId').html('<span style="font-weight: bold;text-transform: uppercase;"> '+result.status+'</span> <br> <a class="btn btn-success btn-xs" href="'+redirectURL+'">  CLICK HERE IF YOU WANT DESIGNATION </a><a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 4px;margin-left:10px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"></i> </a>');
@@ -859,7 +861,7 @@
 			var jsObj = 
 			   {			
 				  electionId : eletionId,
-				  constituencyId : 282,
+				  constituencyId : userLocation,
 				  task       : "getConstiteuncyListForElection"             
 			   }				   
 			   $.ajax({
@@ -881,7 +883,7 @@
 	
 	function clearDiv(divId)
 	{
-		 var where_to= confirm("Do you want to remove this information from profile?");
+		 var where_to= confirm("Do you want to remove this information?");
 		 if (where_to== true)
 			 $('#'+divId+'').html('');		
 	}
