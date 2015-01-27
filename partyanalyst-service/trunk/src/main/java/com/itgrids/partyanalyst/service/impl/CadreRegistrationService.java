@@ -7065,50 +7065,19 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 									
 									if(eligibleRoles != null && eligibleRoles.size()>0)
 									{
-											CadrePreviousRollesVO roleVO = eligibleRoles.get(0); 
-											Long tdpCommitteeLevelId = 0L;
-											Long levelValue = 0L;
-											Long committeeMngtType = roleVO.getCommitteeMngtType();
-											Long committeeTypeId = roleVO.getCadreCommitteeTypeId();
-											Long cadreRoleId = roleVO.getCadreRoleId();
-											if(userAddress != null)
-											{
-												if(userAddress.getLocalElectionBody() != null)
-												{
-													tdpCommitteeLevelId = 7L;
-													levelValue = userAddress.getLocalElectionBody().getLocalElectionBodyId();
-													
-													if(levelValue.longValue() == 20L || levelValue.longValue() == 124L || levelValue.longValue() == 119L)
-													{
-														tdpCommitteeLevelId = 9L;
-														levelValue = userAddress.getWard().getConstituencyId();
-													}
-												}
-												else if(userAddress.getTehsil() != null)
-												{
-													tdpCommitteeLevelId = 5L;
-													levelValue = userAddress.getTehsil().getTehsilId();
-												}
-												else
-												{
-													surveyCadreResponceVO.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
-													surveyCadreResponceVO.setStatus(" Corrosponding Location is not available... ");
-													break;
-												}
-												
-												cadreCommitteeService.saveElectrolInfo(cadreRegistrationVO.getTdpCadreId(),tdpCommitteeLevelId,levelValue,committeeMngtType,eligibleRoles,committeeTypeId);
-												if(cadreRoleId != null)
-												{
-													ResultStatus resultStatus = cadreCommitteeService.saveCadreCommitteDetails(userId, cadreRegistrationVO.getTdpCadreId(), cadreRoleId);
-													surveyCadreResponceVO.setResultCode(resultStatus.getResultCode());
-													surveyCadreResponceVO.setStatus(resultStatus.getMessage());
-												}
-												else
-												{
-													surveyCadreResponceVO.setResultCode(0);
-													surveyCadreResponceVO.setStatus("Cadre Details Updated Successfully");
-												}
-											}
+										CadrePreviousRollesVO roleVO = eligibleRoles.get(0); 
+										Long cadreRoleId = roleVO.getCadreRoleId();
+										if(cadreRoleId != null)
+										{
+											ResultStatus resultStatus = cadreCommitteeService.saveCadreCommitteDetails(userId, cadreRegistrationVO.getTdpCadreId(), cadreRoleId);
+											surveyCadreResponceVO.setResultCode(resultStatus.getResultCode());
+											surveyCadreResponceVO.setStatus(resultStatus.getMessage());
+										}
+										else
+										{
+											surveyCadreResponceVO.setResultCode(0);
+											surveyCadreResponceVO.setStatus("Cadre Details Updated Successfully");
+										}
 									}
 								}
 								

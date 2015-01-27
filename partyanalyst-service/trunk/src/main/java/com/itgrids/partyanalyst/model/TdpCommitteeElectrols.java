@@ -30,6 +30,8 @@ public class TdpCommitteeElectrols {
 	private TdpCommitteeEnrollment tdpCommitteeEnrollment;
 	private Long tdpCommitteeTypeId;
 	private TdpCommitteeType tdpCommitteeType;
+	private TdpCommittee tdpCommittee;
+	private Long tdpCommitteeId;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -134,6 +136,27 @@ public class TdpCommitteeElectrols {
 
 	public void setTdpCommitteeType(TdpCommitteeType tdpCommitteeType) {
 		this.tdpCommitteeType = tdpCommitteeType;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "tdp_committee_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TdpCommittee getTdpCommittee() {
+		return tdpCommittee;
+	}
+
+	public void setTdpCommittee(TdpCommittee tdpCommittee) {
+		this.tdpCommittee = tdpCommittee;
+	}
+
+	@Column(name = "tdp_committee_id")
+	public Long getTdpCommitteeId() {
+		return tdpCommitteeId;
+	}
+
+	public void setTdpCommitteeId(Long tdpCommitteeId) {
+		this.tdpCommitteeId = tdpCommitteeId;
 	}
 	
 	
