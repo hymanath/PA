@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
@@ -45,7 +47,6 @@ import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
-import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
@@ -59,7 +60,6 @@ import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.TdpBasicCommittee;
 import com.itgrids.partyanalyst.model.TdpCadre;
-import com.itgrids.partyanalyst.model.TdpCommittee;
 import com.itgrids.partyanalyst.model.TdpCommitteeDesignation;
 import com.itgrids.partyanalyst.model.TdpCommitteeElectrolRoles;
 import com.itgrids.partyanalyst.model.TdpCommitteeElectrols;
@@ -896,113 +896,159 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	}
 	
 	//Hint Please call this method in transaction only
-	public String saveMandalLevelElectrolInfo(Long tdpCadreId,List<CadrePreviousRollesVO> eligibleRoles){
-
-			if(eligibleRoles != null && eligibleRoles.size() > 0)
-			{
-				
-				Long tdpCommitteeLevelId= null;
-				Long levelValue = null;
-				UserAddress userAddress = tdpCadreDAO.get(tdpCadreId).getUserAddress();
-				if(userAddress.getLocalElectionBody() != null)
-				{
-					tdpCommitteeLevelId = 7L;
-					levelValue = userAddress.getLocalElectionBody().getLocalElectionBodyId();
-					
-					if(levelValue.longValue() == 20L || levelValue.longValue() == 124L || levelValue.longValue() == 119L)
+	public ResultStatus saveMandalLevelElectrolInfo(final Long tdpCadreId,final  List<CadrePreviousRollesVO> eligibleRoles)
+	{
+		ResultStatus status = new ResultStatus();
+		try {
+			status = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
+				 public Object doInTransaction(TransactionStatus status) {
+					 ResultStatus resultStatus = new ResultStatus();
+					 
+					 if(eligibleRoles != null && eligibleRoles.size() > 0)
+						{
+							
+							Long tdpCommitteeLevelId= null;
+							Long levelValue = null;
+							UserAddress userAddress = tdpCadreDAO.get(tdpCadreId).getUserAddress();
+							if(userAddress.getLocalElectionBody() != null)
+							{
+								tdpCommitteeLevelId = 7L;
+								levelValue = userAddress.getLocalElectionBody().getLocalElectionBodyId();
+								
+								if(levelValue.longValue() == 20L || levelValue.longValue() == 124L || levelValue.longValue() == 119L)
+								{
+									tdpCommitteeLevelId = 9L;
+									if( userAddress.getWard() != null){
+									     levelValue = userAddress.getWard().getConstituencyId();
+									}
+								}
+							}
+							else if(userAddress.getTehsil() != null)
+							{
+								tdpCommitteeLevelId = 5L;
+								levelValue = userAddress.getTehsil().getTehsilId();
+							}
+							else
+							{
+								resultStatus.setResultCode(3);
+								resultStatus.setMessage("Location Not Mapped for this Cadre...");
+								
+								return resultStatus;
+							}
+							
+							CadrePreviousRollesVO eligibleRole1 = eligibleRoles.get(0);
+							if(eligibleRole1 != null && eligibleRole1.getDesignationLevelId() != null && eligibleRole1.getFromDateStr() != null)
+							{
+								TdpCommitteeElectrols tdpCommitteeElectrols = new TdpCommitteeElectrols();
+								tdpCommitteeElectrols.setTdpCadreId(tdpCadreId);
+								tdpCommitteeElectrols.setTdpCommitteeLevelId(tdpCommitteeLevelId);
+								tdpCommitteeElectrols.setLevelValue(levelValue);
+								tdpCommitteeElectrols.setTdpCommitteeEnrollmentId(IConstants.CURRENT_ENROLLMENT_ID);
+								tdpCommitteeElectrols.setTdpCommitteeTypeId(1l);
+								tdpCommitteeElectrols = tdpCommitteeElectrolsDAO.save(tdpCommitteeElectrols);
+								
+									for(CadrePreviousRollesVO eligibleRole:eligibleRoles){
+										if(eligibleRole != null && eligibleRole.getDesignationLevelId() != null && eligibleRole.getDesignationLevelId().longValue() > 0){
+											TdpCommitteeElectrolRoles tdpCommitteeElectrolRoles = new TdpCommitteeElectrolRoles();
+											tdpCommitteeElectrolRoles.setIsDeleted("N");
+											tdpCommitteeElectrolRoles.setTdpCommitteeDesignationId(eligibleRole.getDesignationLevelId());
+											tdpCommitteeElectrolRoles.setTdpCommitteeElectrolsId(tdpCommitteeElectrols.getTdpCommitteeElectrolsId());
+											
+											try {
+												if(eligibleRole.getFromDateStr() != null && eligibleRole.getFromDateStr().trim().length() > 0){
+												   tdpCommitteeElectrolRoles.setStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(eligibleRole.getFromDateStr()));
+												}
+												if(eligibleRole.getToDateStr() != null && eligibleRole.getToDateStr().trim().length() > 0){
+													tdpCommitteeElectrolRoles.setEndDate(new SimpleDateFormat("yyyy-MM-dd").parse(eligibleRole.getToDateStr()));
+												}
+												
+											} catch (Exception e) {}
+											
+											tdpCommitteeElectrolRolesDAO.save(tdpCommitteeElectrolRoles);
+										}
+									}
+								}
+						}else{
+							resultStatus.setResultCode(2);
+							resultStatus.setMessage(" Not Eligible to add as a Electrol...");
+							return resultStatus;
+						}
+					 
+					 resultStatus.setResultCode(0);
+					 resultStatus.setMessage("Electrol Added Successfully... ");
+					return resultStatus;
+					 
+				 }
+			});
+			
+		} catch (Exception e) {
+			status.setResultCode(1);
+			status.setMessage("Error occured while updating details...");
+			LOG.error("Exception raised in saveMandalLevelElectrolInfo", e);
+		}
+		return status;	
+	}
+	
+	//Hint Please call this method in transaction only
+	public ResultStatus saveMandalLevelAffliactedElectrolInfo(final Long tdpCadreId,final  Long tdpBasicCommitteeId){
+		
+		ResultStatus status = new ResultStatus();
+		try {
+				status = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
+				 public Object doInTransaction(TransactionStatus status) {
+					 ResultStatus resultStatus = new ResultStatus();
+					Long tdpCommitteeLevelId= null;
+					Long levelValue = null;
+					UserAddress userAddress = tdpCadreDAO.get(tdpCadreId).getUserAddress();
+					if(userAddress.getLocalElectionBody() != null)
 					{
-						tdpCommitteeLevelId = 9L;
-						if( userAddress.getWard() != null){
-						     levelValue = userAddress.getWard().getConstituencyId();
+						tdpCommitteeLevelId = 7L;
+						levelValue = userAddress.getLocalElectionBody().getLocalElectionBodyId();
+						
+						if(levelValue.longValue() == 20L || levelValue.longValue() == 124L || levelValue.longValue() == 119L)
+						{
+							tdpCommitteeLevelId = 9L;
+							if( userAddress.getWard() != null){
+							     levelValue = userAddress.getWard().getConstituencyId();
+							}
 						}
 					}
-				}
-				else if(userAddress.getTehsil() != null)
-				{
-					tdpCommitteeLevelId = 5L;
-					levelValue = userAddress.getTehsil().getTehsilId();
-				}
-				else
-				{
-					return "No Location";
-				}
-				
-				CadrePreviousRollesVO eligibleRole1 = eligibleRoles.get(0);
-				if(eligibleRole1 != null && eligibleRole1.getDesignationLevelId() != null && eligibleRole1.getFromDateStr() != null)
-				{
+					else if(userAddress.getTehsil() != null)
+					{
+						tdpCommitteeLevelId = 5L;
+						levelValue = userAddress.getTehsil().getTehsilId();
+					}
+					else
+					{
+						resultStatus.setResultCode(3);
+						resultStatus.setMessage("Location Not Mapped for this Cadre...");
+						return resultStatus;
+					}
+					
 					TdpCommitteeElectrols tdpCommitteeElectrols = new TdpCommitteeElectrols();
 					tdpCommitteeElectrols.setTdpCadreId(tdpCadreId);
 					tdpCommitteeElectrols.setTdpCommitteeLevelId(tdpCommitteeLevelId);
 					tdpCommitteeElectrols.setLevelValue(levelValue);
 					tdpCommitteeElectrols.setTdpCommitteeEnrollmentId(IConstants.CURRENT_ENROLLMENT_ID);
-					tdpCommitteeElectrols.setTdpCommitteeTypeId(1l);
+					tdpCommitteeElectrols.setTdpCommitteeTypeId(2L);
+					tdpCommitteeElectrols.setTdpCommitteeId(getTdpCommittee(tdpBasicCommitteeId,tdpCommitteeLevelId,levelValue));
 					tdpCommitteeElectrols = tdpCommitteeElectrolsDAO.save(tdpCommitteeElectrols);
 					
-						for(CadrePreviousRollesVO eligibleRole:eligibleRoles){
-							if(eligibleRole != null && eligibleRole.getDesignationLevelId() != null && eligibleRole.getDesignationLevelId().longValue() > 0){
-								TdpCommitteeElectrolRoles tdpCommitteeElectrolRoles = new TdpCommitteeElectrolRoles();
-								tdpCommitteeElectrolRoles.setIsDeleted("N");
-								tdpCommitteeElectrolRoles.setTdpCommitteeDesignationId(eligibleRole.getDesignationLevelId());
-								tdpCommitteeElectrolRoles.setTdpCommitteeElectrolsId(tdpCommitteeElectrols.getTdpCommitteeElectrolsId());
-								
-								try {
-									if(eligibleRole.getFromDateStr() != null && eligibleRole.getFromDateStr().trim().length() > 0){
-									   tdpCommitteeElectrolRoles.setStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(eligibleRole.getFromDateStr()));
-									}
-									if(eligibleRole.getToDateStr() != null && eligibleRole.getToDateStr().trim().length() > 0){
-										tdpCommitteeElectrolRoles.setEndDate(new SimpleDateFormat("yyyy-MM-dd").parse(eligibleRole.getToDateStr()));
-									}
-									
-								} catch (Exception e) {}
-								
-								tdpCommitteeElectrolRolesDAO.save(tdpCommitteeElectrolRoles);
-							}
-						}
-					}
-			}else{
-				return "No Eligible Roles";
-			}
-		return "Success";
-	}
-	
-	//Hint Please call this method in transaction only
-	public String saveMandalLevelAffliactedElectrolInfo(Long tdpCadreId,Long tdpBasicCommitteeId){
-		Long tdpCommitteeLevelId= null;
-		Long levelValue = null;
-		UserAddress userAddress = tdpCadreDAO.get(tdpCadreId).getUserAddress();
-		if(userAddress.getLocalElectionBody() != null)
-		{
-			tdpCommitteeLevelId = 7L;
-			levelValue = userAddress.getLocalElectionBody().getLocalElectionBodyId();
-			
-			if(levelValue.longValue() == 20L || levelValue.longValue() == 124L || levelValue.longValue() == 119L)
-			{
-				tdpCommitteeLevelId = 9L;
-				if( userAddress.getWard() != null){
-				     levelValue = userAddress.getWard().getConstituencyId();
-				}
-			}
+					resultStatus.setResultCode(0);
+					resultStatus.setMessage(" Electrol Added Successfully... ");
+					
+					return resultStatus;
+				 }
+			});
 		}
-		else if(userAddress.getTehsil() != null)
+		catch(Exception e)
 		{
-			tdpCommitteeLevelId = 5L;
-			levelValue = userAddress.getTehsil().getTehsilId();
-		}
-		else
-		{
-			return "No Location";
+			status.setResultCode(1);
+			status.setMessage("Error occured while updating details... ");
+			LOG.error("Exception raised in saveMandalLevelAffliactedElectrolInfo", e);
 		}
 		
-		TdpCommitteeElectrols tdpCommitteeElectrols = new TdpCommitteeElectrols();
-		tdpCommitteeElectrols.setTdpCadreId(tdpCadreId);
-		tdpCommitteeElectrols.setTdpCommitteeLevelId(tdpCommitteeLevelId);
-		tdpCommitteeElectrols.setLevelValue(levelValue);
-		tdpCommitteeElectrols.setTdpCommitteeEnrollmentId(IConstants.CURRENT_ENROLLMENT_ID);
-		tdpCommitteeElectrols.setTdpCommitteeTypeId(2L);
-		tdpCommitteeElectrols.setTdpCommitteeId(getTdpCommittee(tdpBasicCommitteeId,tdpCommitteeLevelId,levelValue));
-		tdpCommitteeElectrols = tdpCommitteeElectrolsDAO.save(tdpCommitteeElectrols);
-		
-		return "Success";
+		return status;
     }
 	
 	public Long getTdpCommittee(Long tdpBasicCommitteeId,Long tdpCommitteeLevelId,Long tdpCommitteeLevelValue){
@@ -1528,11 +1574,14 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				committeesList = new ArrayList<SelectOptionVO>();
 				for (TdpBasicCommittee tdpBasicCommittee : tdpbasicCommitteDetls) 
 				{
-					SelectOptionVO vo = new SelectOptionVO();
-					vo.setId(tdpBasicCommittee.getTdpBasicCommitteeId());
-					vo.setName(tdpBasicCommittee.getName());
-					
-					committeesList.add(vo);
+					if(tdpBasicCommittee.getTdpBasicCommitteeId() != 1)
+					{
+						SelectOptionVO vo = new SelectOptionVO();
+						vo.setId(tdpBasicCommittee.getTdpBasicCommitteeId());
+						vo.setName(tdpBasicCommittee.getName());
+						
+						committeesList.add(vo);
+					}
 				}
 			}
 		} catch (Exception e) {

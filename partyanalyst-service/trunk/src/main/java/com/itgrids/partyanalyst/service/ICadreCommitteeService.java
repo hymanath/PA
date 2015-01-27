@@ -33,6 +33,6 @@ public interface ICadreCommitteeService {
 	
 	public List<IdNameVO> getLocationsOfCommitteeLevel(Long levelId,Long constiId);
 	public List<IdNameVO> getConstituenciesOfState(Long levelId);
-	public String saveMandalLevelAffliactedElectrolInfo(Long tdpCadreId,Long tdpBasicCommitteeId);
-	public String saveMandalLevelElectrolInfo(Long tdpCadreId,List<CadrePreviousRollesVO> eligibleRoles);
+	public ResultStatus saveMandalLevelAffliactedElectrolInfo(Long tdpCadreId,Long tdpBasicCommitteeId);
+	public ResultStatus saveMandalLevelElectrolInfo(Long tdpCadreId,List<CadrePreviousRollesVO> eligibleRoles);
 }
