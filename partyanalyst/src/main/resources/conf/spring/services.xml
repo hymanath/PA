@@ -2500,6 +2500,7 @@
 	     <property name="tdpCommitteeMemberHistoryDAO" ref="tdpCommitteeMemberHistoryDAO"/>
 	     <property name="occupationDAO" ref="occupationDAO"/>
 	     <property name="educationalQualificationsDAO" ref="educationalQualificationsDAO"/>
+	     <property name="cadreDetailsService" ref="cadreDetailsService"/>	     
 	</bean>
 </beans>		
 	
