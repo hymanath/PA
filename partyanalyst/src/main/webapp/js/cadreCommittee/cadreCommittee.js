@@ -476,19 +476,29 @@
 						str+='</div>	';					
 						
 						str+='<div class="row">	';
-						str+='<div class="col-md-8 col-sm-12 col-xs-12 form-group" id="updateBtnId'+result[i].tdpCadreId+'">';
-						str+='<a href="javascript:{addMoreEligibleRoles(\'elecroleDiv'+result[i].tdpCadreId+'\',0,\'updateBtnId'+result[i].tdpCadreId+'\','+result[i].tdpCadreId+');}" class="btn btn-success  btn-xs addmoreId'+result[i].tdpCadreId+'">Click here to Add+ Details</a>';	
+						str+='<div class="col-md-8 col-sm-12 col-xs-12 form-group addmoreId'+result[i].tdpCadreId+'" id="updateBtnId'+result[i].tdpCadreId+'">';
+						str+='<a href="javascript:{addMoreEligibleRoles(\'elecroleDiv'+result[i].tdpCadreId+'\',0,\'updateBtnId'+result[i].tdpCadreId+'\','+result[i].tdpCadreId+');}" class="btn btn-success  btn-xs ">Click here to Add+ Details</a>';	
 						str+='</div>';
-						str+='</div>';						
+						str+='</div>';	
+						
+						str+='<div class="row">	';
+							str+='<div class="col-md-8 col-sm-12 col-xs-12 form-group" id="statusDiv'+result[i].tdpCadreId+'">';
+							str+='</div>';
+						str+='</div>';	
 						
 						str+='<div class="form-inline ">';
-						str+='<a onclick="jacascript:{addAsElectrole('+result[i].tdpCadreId+',\'elecroleDiv'+result[i].tdpCadreId+'\',\'addmoreId'+result[i].tdpCadreId+'\')}" class="btn btn-success btn-medium m_top5 elecroleDiv'+result[i].tdpCadreId+'" style="display:none;" > UPDATE  ELECROLE DETAILS </a>';
+						str+='<a onclick="jacascript:{addAsElectrole('+result[i].tdpCadreId+',\'elecroleDiv'+result[i].tdpCadreId+'\',\'addmoreId'+result[i].tdpCadreId+'\',\'statusDiv'+result[i].tdpCadreId+'\')}" class="btn btn-success btn-medium m_top5 elecroleDiv'+result[i].tdpCadreId+'" style="display:none;" > UPDATE  ELECROLE DETAILS </a>';
 						str+='</div>	';
 					}	
 					else if(committeeMngntTypeId == 3)
 					{
-						str+='<div class="form-inline ">';
-						str+='<a onclick="jacascript:{addAsAfiliatedElectrole('+result[i].tdpCadreId+',\'elecroleDiv'+result[i].tdpCadreId+'\')}" class="btn btn-success btn-medium m_top5 elecroleDiv'+result[i].tdpCadreId+'" > ADD AS AFFILIATED ELECROLE </a>';
+						str+='<div class="row">	';
+							str+='<div class="col-md-8 col-sm-12 col-xs-12 form-group" id="statusDiv'+result[i].tdpCadreId+'">';
+							str+='</div>';
+						str+='</div>';	
+						
+						str+='<div class="form-inline elecroleDiv'+result[i].tdpCadreId+'">';
+						str+='<a onclick="jacascript:{addAsAfiliatedElectrole('+result[i].tdpCadreId+',\'elecroleDiv'+result[i].tdpCadreId+'\',\'statusDiv'+result[i].tdpCadreId+'\')}" class="btn btn-success btn-medium m_top5 " > ADD AS AFFILIATED ELECROLE </a>';
 						str+='</div>	';
 					}								
 				}
@@ -509,19 +519,28 @@
 						str+='<div class="form-inline m_top5" id="elecroleDiv'+result[i].tdpCadreId+'" >';						
 						str+='</div>	';
 						str+='<div class="row">	';
-						str+='<div class="col-md-8 col-sm-12 col-xs-12 form-group " id="updateBtnId'+result[i].tdpCadreId+'">';
-						str+='<a href="javascript:{addMoreEligibleRoles(\'elecroleDiv'+result[i].tdpCadreId+'\',0,\'updateBtnId'+result[i].tdpCadreId+'\','+result[i].tdpCadreId+');}" class="btn btn-success  btn-xs addmoreId'+result[i].tdpCadreId+'">Click here to Add+ Details</a>';	
+						str+='<div class="col-md-8 col-sm-12 col-xs-12 form-group addmoreId'+result[i].tdpCadreId+'" id="updateBtnId'+result[i].tdpCadreId+'">';
+						str+='<a href="javascript:{addMoreEligibleRoles(\'elecroleDiv'+result[i].tdpCadreId+'\',0,\'updateBtnId'+result[i].tdpCadreId+'\','+result[i].tdpCadreId+');}" class="btn btn-success  btn-xs ">Click here to Add+ Details</a>';	
 						str+='</div>';
 						str+='</div>';
+						str+='<div class="row">	';
+							str+='<div class="col-md-8 col-sm-12 col-xs-12 form-group" id="statusDiv'+result[i].tdpCadreId+'">';
+							str+='</div>';
+						str+='</div>';	
 						
 						str+='<div class="form-inline " >';
-						str+='<a onclick="jacascript:{addAsElectrole('+result[i].tdpCadreId+',\'elecroleDiv'+result[i].tdpCadreId+'\',\'addmoreId'+result[i].tdpCadreId+'\')}" class="btn btn-success btn-medium m_top5 elecroleDiv'+result[i].tdpCadreId+'"  style="display:none;"> UPDATE  ELECROLE DETAILS </a>';
+						str+='<a onclick="jacascript:{addAsElectrole('+result[i].tdpCadreId+',\'elecroleDiv'+result[i].tdpCadreId+'\',\'addmoreId'+result[i].tdpCadreId+'\',\'statusDiv'+result[i].tdpCadreId+'\')}" class="btn btn-success btn-medium m_top5 elecroleDiv'+result[i].tdpCadreId+'"  style="display:none;"> UPDATE  ELECROLE DETAILS </a>';
 						str+='</div>	';
 					}	
 					else if(committeeMngntTypeId == 3)
 					{
-						str+='<div class="form-inline ">';
-						str+='<a onclick="jacascript:{addAsAfiliatedElectrole('+result[i].tdpCadreId+',\'elecroleDiv'+result[i].tdpCadreId+'\')}" class="btn btn-success btn-medium m_top5 elecroleDiv'+result[i].tdpCadreId+'" > ADD AS AFFILIATED ELECROLE </a>';
+						str+='<div class="row">	';
+							str+='<div class="col-md-8 col-sm-12 col-xs-12 form-group" id="statusDiv'+result[i].tdpCadreId+'">';
+							str+='</div>';
+						str+='</div>';	
+						
+						str+='<div class="form-inline elecroleDiv'+result[i].tdpCadreId+'">';
+						str+='<a onclick="jacascript:{addAsAfiliatedElectrole('+result[i].tdpCadreId+',\'elecroleDiv'+result[i].tdpCadreId+'\',\'statusDiv'+result[i].tdpCadreId+'\')}" class="btn btn-success btn-medium m_top5 " > ADD AS AFFILIATED ELECROLE </a>';
 						str+='</div>	';
 					}	
 				}
@@ -1013,55 +1032,96 @@
 		});
 	}
 	
-	function addAsElectrole(cadreId,btnId,addmoreId)
+	function addAsElectrole(cadreId,btnId,addmoreId,resultDiv)
 	{
 		var designationArr = new Array();
 		var fromDatArr = new Array();
 		var toDatArr = new Array();
-		$('.'+btnId+'').hide();
-		$('.'+addmoreId+'').hide();
+		var isError = "";
+		$('.validErrCls').html('');
+		$('#'+resultDiv+'').html('');
+			$('#'+resultDiv+'').hide();
 		$('.designationCls'+cadreId+'').each(function(){
 			var id= $(this).attr('id');
 			var designationId = $('#'+id+'').val();
+			
+			if(designationId == null || designationId == 0)
+			{
+				$('#'+id+'Err').html('Please Select Designation.');
+				isError = "true";
+				return;
+			}
+			
 			designationArr.push(designationId);
 		});
 		
 		$('.fromDateCls'+cadreId+'').each(function(){
 			var id= $(this).attr('id');
 			var fromdateId = $('#'+id+'').val();
+			if(fromdateId == null || fromdateId.trim().length == 0)
+			{
+				$('#'+id+'Err').html('From Date is required.');
+				isError = "true";
+				return;
+			}
 			fromDatArr.push(fromdateId);
 		});
 		
 		$('.toDateCls'+cadreId+'').each(function(){
 			var id= $(this).attr('id');
 			var todateId = $('#'+id+'').val();
+			if(todateId == null || todateId.trim().length == 0)
+			{
+				$('#'+id+'Err').html('To Date is required.');
+				isError = "true";
+				return;
+			}			
 			toDatArr.push(todateId);
 		});
 		
-		var jsObj = 
-		   {
-			   tdpCadreId :cadreId,
-			   designationArr : designationArr,
-			   fromDatArr : fromDatArr,
-			   toDatArr : toDatArr,
-			   task:"updateElectrolsDetails"             
-		   }
-		   
-		   $.ajax({
-				type : "POST",
-				url : "updateElectrolsDetails.action",
-				data : {task:JSON.stringify(jsObj)} ,
-			}).done(function(result){
-					if(result != null)
-						alert(result.message);
-			});
+		if(isError.trim().length == 0)
+		{
+				$('.'+btnId+'').hide();
+				$('.'+addmoreId+'').hide();
+				var jsObj = 
+				   {
+					   tdpCadreId :cadreId,
+					   designationArr : designationArr,
+					   fromDatArr : fromDatArr,
+					   toDatArr : toDatArr,
+					   task:"updateElectrolsDetails"             
+				   }
+
+				   $.ajax({
+						type : "POST",
+						url : "updateElectrolsDetails.action",
+						data : {task:JSON.stringify(jsObj)} ,
+					}).done(function(result){
+						$('#'+resultDiv+'').show();
+							if(result != null)
+							{
+								if(result.statusCode == 0)
+								{
+									$('#'+resultDiv+'').html('<span style="color:green;font-weight:bold;"> '+result.message+'</span>');
+								}
+								else 
+								{
+									$('#'+resultDiv+'').html('<span style="color:red;font-weight:bold;"> '+result.message+'</span>');
+								}
+								
+							}
+					});
+					
+		}
+		
 			
 	}
 	
-	function addAsAfiliatedElectrole(cadreId,btnId)
+	function addAsAfiliatedElectrole(cadreId,btnId,resultDiv)
 	{
 		var afiliatedCommitteeId = $("#nonafiliatedCommitteeId").val();
 		$('#nonAfflitCommitteeIdErr').html('');
+		$('#'+resultDiv+'').html('');
 		if(afiliatedCommitteeId == null && afiliatedCommitteeId ==0)
 		{
 			$('#nonAfflitCommitteeIdErr').html('Please Select Affiliated Committee.');
@@ -1080,7 +1140,17 @@
 				data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
 				if(result != null)
-					alert(result.message);
+				{
+					if(result.statusCode == 0)
+					{
+						$('#'+resultDiv+'').html('<span style="color:green;font-weight:bold;"> '+result.message+'</span>');
+					}
+					else 
+					{
+						$('#'+resultDiv+'').html('<span style="color:red;font-weight:bold;"> '+result.message+'</span>');
+					}
+					
+				}
 			});
 			
 	}
