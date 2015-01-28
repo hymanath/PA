@@ -9462,5 +9462,10 @@
 			</result>
 		</action>
 		
+		<action name="getCommitteeDashBoardAction" class="committeeDashBoardAction">
+			<result name="success">/jsp/cadreCommitteeDashBoard.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=cadreCommitteeAction</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
 </package>
 </struts>      
