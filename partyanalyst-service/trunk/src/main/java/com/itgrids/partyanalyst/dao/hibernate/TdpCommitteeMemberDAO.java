@@ -123,5 +123,13 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		query.setParameterList("levelIds",levelIds);
         return query.list();
     }
-	
+	public List<Object[]> getMembersInfoForRequest(Set<Long> committeeRoleIds){
+		//0 role,1 image,2name,3membership
+		Query query = getSession().createQuery("select model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.image,model.tdpCadre.firstname,model.tdpCadre.memberShipNo," +
+				" model.tdpCadre.tdpCadreId, model.tdpCommitteeRole.tdpCommitteeRoleId " +
+				" from TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommitteeRoleId in(:committeeRoleIds) order by model.tdpCommitteeRole.tdpRoles.order ");
+		query.setParameterList("committeeRoleIds", committeeRoleIds);
+		
+		return query.list();
+	}
 }
