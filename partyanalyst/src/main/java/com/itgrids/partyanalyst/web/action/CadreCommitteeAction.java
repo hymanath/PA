@@ -993,7 +993,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 			jObj = new JSONObject(getTask());
 			Long startNo =  jObj.getLong("startNo");
 			Long endNo = jObj.getLong("endNo");
-			approvalRecordsList = cadreCommitteeService.getCommitteesForApproval(startNo, endNo);
+			approvalRecordsList = cadreCommitteeService.getCommitteesForApproval(startNo, endNo,null);
 		}catch (Exception e) {
 			LOG.error(" Exception Raised in getCommitteesForApproval " + e);
 		}
@@ -1014,6 +1014,33 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		} catch (Exception e) {
 			LOG.error("Exception occured in checkIsVacancyForDesignation() At CadreCommitteeAction ",e);
 		}
+		return Action.SUCCESS;
+	}
+	
+	public String gettingRequestsDetailsForAUser(){
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		boolean noaccess = false;
+		if(regVO==null){
+			return "input";
+		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_COMMITTEE_MANAGEMENT")){
+			noaccess = true ;
+		}
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		
+		if(noaccess){
+			return "error";
+		}
+		
+		try{
+			
+			Long requestUserId=regVO.getRegistrationID(); 
+			approvalRecordsList = cadreCommitteeService.getCommitteesForApproval(null, null,requestUserId);
+		}catch (Exception e) {
+			LOG.error(" Exception Raised in getCommitteesForApproval " + e);
+		}
+	
 		return Action.SUCCESS;
 	}
 }
