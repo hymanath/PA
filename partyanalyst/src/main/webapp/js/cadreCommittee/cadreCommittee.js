@@ -467,11 +467,11 @@
 				
 				if(result[i].committeePosition != null && result[i].committeePosition.trim().length > 0)
 				{
-					str+='<ul class="list-inline">';
+					str+='<ul>';
 					str+='<li style="font-weight:bold;">Existing Designation : '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'</i>';	
 					if(result[i].previousRoles != null && result[i].previousRoles.length > 0){
 						for(var j in result[i].previousRoles){
-							str+='<li style="font-weight:bold;">Electrol for '+result[i].previousRoles[j].committeeName+' Committee in '+result[i].previousRoles[j].committeeLocation+'</i>';
+							str+='<li style="font-weight:bold;">Electoral for '+result[i].previousRoles[j].committeeName+' Committee in '+result[i].previousRoles[j].committeeLocation+'</i>';
 						}
 					}
 					str+='<input type="hidden" id="existingRole'+i+'" value=" Aleady  '+result[i].cadreName+' added as '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'"/>';
@@ -519,9 +519,9 @@
 				}
 				else{
 					if(result[i].previousRoles != null && result[i].previousRoles.length > 0){
-					    str+='<ul class="list-inline">';
+					    str+='<ul>';
 						for(var j in result[i].previousRoles){
-							str+='<li style="font-weight:bold;">Electrol for '+result[i].previousRoles[j].committeeName+' Committee in '+result[i].previousRoles[j].committeeLocation+'</i>';
+							str+='<li style="font-weight:bold;">Electoral for '+result[i].previousRoles[j].committeeName+' Committee in '+result[i].previousRoles[j].committeeLocation+'</i>';
 						}
 					    str+='</ul>';
 					}
