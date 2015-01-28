@@ -2505,6 +2505,9 @@
 	     <property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO"/>	
 	     <property name="districtDAO" ref="districtDAO"/> 
 	     <property name="localElectionBodyWardDAO" ref="localElectionBodyWardDAO"/>	    
+	     <property name="userDAO" ref="userDAO"/>
+	     <property name="cadreCommitteeIncreasedPositionsDAO" ref="cadreCommitteeIncreasedPositionsDAO"/>
+	     <property name="cadreCommitteeChangeDesignationsDAO" ref="cadreCommitteeChangeDesignationsDAO"/>
 	</bean>
 </beans>		
 	
