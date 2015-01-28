@@ -5,12 +5,16 @@ public class CadreCommitteeReportVO {
 	
 	private Long committeesCount;
 	private Long startedCommittees;
+	private Long mainCommittees;
 	private Long afflCommittees;
 	private Long completedCommittees;
 	private Long membersCount;
 	private Long totalMembers;
 	private Long totalCommittees;
-	private Long mainCommittees;
+	private Long totalCompleted;
+	private Double totalCntPerc;
+	private Double startedCommitteePerc;
+	private Double completedCommitteePerc;
 	
 	
 	public Long getCommitteesCount() {
@@ -61,7 +65,30 @@ public class CadreCommitteeReportVO {
 	public void setMainCommittees(Long mainCommittees) {
 		this.mainCommittees = mainCommittees;
 	}
-	
-	
+	public Long getTotalCompleted() {
+		return totalCompleted;
+	}
+	public void setTotalCompleted(Long totalCompleted) {
+		this.totalCompleted = totalCompleted;
+	}
+	public Double getTotalCntPerc() {
+		return totalCntPerc;
+	}
+	public void setTotalCntPerc(Double totalCntPerc) {
+		this.totalCntPerc = totalCntPerc;
+	}
+	public Double getStartedCommitteePerc() {
+		return startedCommitteePerc;
+	}
+	public void setStartedCommitteePerc(Double startedCommitteePerc) {
+		this.startedCommitteePerc = startedCommitteePerc;
+	}
+	public Double getCompletedCommitteePerc() {
+		return completedCommitteePerc;
+	}
+	public void setCompletedCommitteePerc(Double completedCommitteePerc) {
+		this.completedCommitteePerc = completedCommitteePerc;
+	}
+
 	
 }
