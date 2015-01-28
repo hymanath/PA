@@ -13,7 +13,7 @@
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/cadreCommittee/bootstrap.min.js"></script>
+
 	<!----slick Js----->
 	<script type="text/javascript" src="js/cadreCommittee/slick/slick.min.js"></script>
 	<script type="text/javascript" src="js/cadreCommitteeRequest/cadreCommitteeRequest.js"></script>
@@ -28,9 +28,21 @@
 
 <body>
 		<header style="align:center;padding:10px;background:rgba(255,0,51,0.8); border-bottom:6px solid rgba(19,167,81,0.8);display:flex">
-		 	<div class="col-md-12 text-center">
+		 	<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12 text-center">
 				<img src="images/cadreCommitee/committee_logo.png" title="Committee Logo" alt="committee" />
 			</div>
+			<div class="col-md-3  col-xs-3 col-sm-3">
+				<a href="#" class="dropdown-toggle btn btn-default btn-xs m_top20" data-toggle="dropdown" aria-expanded="false" style="margin-top: 60px;">
+				Menu <img src="images/menu_icon.png" />
+				</a>
+				<ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);top: 91px;">
+				  <li><a tabindex="-1" href="cadreCommitteeAction.action">Home</a></li>
+				  <li><a tabindex="-1" href="cadreCommitteeSummaryAction.action">Summary Report</a></li>
+				  <li><a tabindex="-1" href="cadreCommitteeRequestAction.action">Request For Positions Increase</a></li>
+				  <li role="presentation" class="divider" style="background-color: rgba(229, 229, 229,0.6);"></li>
+				  <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
+				</ul>
+            </div>
 		</header>
         <div class="container">
         	<!--Content Start-->
