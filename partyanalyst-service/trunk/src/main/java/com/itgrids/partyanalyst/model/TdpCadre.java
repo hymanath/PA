@@ -112,6 +112,7 @@ public class TdpCadre {
 	private Long 						constituencyId;
 	private String 						emailId;
 	private String						isPrintReady;
+	private String 						mobileType;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -739,6 +740,14 @@ public class TdpCadre {
 	}
 	public void setFamilyVoter(Voter familyVoter) {
 		this.familyVoter = familyVoter;
+	}
+	
+	@Column(name="mobile_type")
+	public String getMobileType() {
+		return mobileType;
+	}
+	public void setMobileType(String mobileType) {
+		this.mobileType = mobileType;
 	}
 	
 }
