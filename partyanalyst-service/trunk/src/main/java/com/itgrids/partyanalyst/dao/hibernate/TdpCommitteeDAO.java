@@ -42,24 +42,33 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 	}
 
-	public List<Object[]> getTotalCommitteesLocationLevelByState(String state,List<Long> levelIds){
+	public List<Object[]> getTotalCommitteesCountByLocation(String state,List<Long> levelIds){
 		//0count ,1 isCommitteeConfirmed,2.tdpCommitteeLevelId,3.tdpBasicCommitteeId
 
 		StringBuilder str = new StringBuilder();
 
 		str.append("select count(model.tdpCommitteeId),model.isCommitteeConfirmed,model.tdpCommitteeLevel.tdpCommitteeLevelId," +
 				" model.tdpBasicCommittee.tdpBasicCommitteeId " +
-				" from TdpCommittee model where ");
+				" from TdpCommittee model where model.tdpBasicCommittee.tdpBasicCommitteeId = 1 ");
 		if(state != null)
 		{
-		str.append(" model.state= :state ");
+			str.append(" model.state= :state ");
 		}
-		str.append(" and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) and model.tdpBasicCommittee.tdpBasicCommitteeId = 1  " +
-				" group by model.tdpCommitteeLevel.tdpCommitteeLevelId,model.isCommitteeConfirmed ");
+		if(levelIds != null && levelIds.size() > 0)
+		{
+			str.append(" and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) ");
+		}		
+		str.append(" group by model.tdpCommitteeLevel.tdpCommitteeLevelId,model.isCommitteeConfirmed ");
 
 		Query query = getSession().createQuery(str.toString());
-		query.setParameter("state", state);
-		query.setParameterList("levelIds", levelIds);
+		if(state != null)
+		{
+			query.setParameter("state", state);
+		}
+		if(levelIds != null && levelIds.size() > 0)
+		{
+			query.setParameterList("levelIds", levelIds);
+		}
 		return query.list();
 	}
 	

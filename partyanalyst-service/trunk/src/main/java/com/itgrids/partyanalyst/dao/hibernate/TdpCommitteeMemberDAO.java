@@ -63,14 +63,12 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 
 		StringBuilder str = new StringBuilder();
 
-		//0.count,1.tdpBasicCommitteeId,2.tdpCommitteeTypeId
-		
 		str.append("select count(distinct model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId), " +
 		" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId " +
 		" from TdpCommitteeMember model where ");
 		str.append(" model.state= :state ");
 		str.append("and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) and model.isActive ='Y' group by " +
-		"model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
+		" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("state", state);
 		
@@ -98,5 +96,32 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		query.setParameterList("levelIds",levelIds);
 		return (Long) query.uniqueResult();
 	}
+	
+	
+	
+	public List<Object[]> getMembersCountInCommitteeByLocation(String state,List<Long> levelIds){
+		
+		StringBuilder str = new StringBuilder();
+		
+		str.append("select count(distinct model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId," +
+				" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name,model.tdpCommitteeRole.tdpCommitteeRoleId " +				
+				" from TdpCommitteeMember model where ");
+		if(state != null)
+		{
+			str.append(" model.state= :state ");
+		}
+		
+		str.append("and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) " +
+				" and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'Y'  and model.isActive = 'Y' " +
+				" group by model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId ");		
+       			
+		Query query = getSession().createQuery(str.toString());
+		if(state != null)
+		{
+			query.setParameter("state", state);
+		}
+		query.setParameterList("levelIds",levelIds);
+        return query.list();
+    }
 	
 }

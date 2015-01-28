@@ -10,5 +10,5 @@ public interface ITdpCommitteeDAO  extends GenericDao<TdpCommittee, Long>{
 	public List<Object[]> getAllAffiliatedCommittiesInALocation(Long levelId,Long levelValue);
 	public List<Long> getMainCommittiesInALocation(Long levelId,Long levelValue);
 	public List<Long> getTdpCommittee(Long tdpBasicCommitteeId,Long tdpCommitteeLevelId,Long tdpCommitteeLevelValue);
-	public List<Object[]> getTotalCommitteesLocationLevelByState(String state,List<Long> levelIds);
+	public List<Object[]> getTotalCommitteesCountByLocation(String state,List<Long> levelIds);
 }

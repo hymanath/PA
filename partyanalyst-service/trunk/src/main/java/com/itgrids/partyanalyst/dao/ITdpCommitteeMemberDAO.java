@@ -15,4 +15,5 @@ public interface ITdpCommitteeMemberDAO  extends GenericDao<TdpCommitteeMember, 
 	public List<Object[]> getTdpCommitteeMemberForTdpCadreIdList(List<Long> tdpCadreIdsList);
 	public List<Object[]> getStartedCommitteesCountByLocation(String state,List<Long> levelIds);
 	public Long getMembersCountByLocation(String state,List<Long> levelIds);
+	public List<Object[]> getMembersCountInCommitteeByLocation(String state,List<Long> levelIds);
 }

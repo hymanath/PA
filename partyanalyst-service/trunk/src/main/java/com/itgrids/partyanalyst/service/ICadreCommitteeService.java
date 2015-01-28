@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
@@ -36,7 +37,5 @@ public interface ICadreCommitteeService {
 	public ResultStatus saveMandalLevelAffliactedElectrolInfo(Long tdpCadreId,Long tdpBasicCommitteeId);
 	public ResultStatus saveMandalLevelElectrolInfo(Long tdpCadreId,List<CadrePreviousRollesVO> eligibleRoles);
 
-	public LocationWiseBoothDetailsVO getTotalCommitteesPanchayatLevelByState(String state,List<Long> levelIds);
-	public LocationWiseBoothDetailsVO getMembersCountByLocation(String state,List<Long> levelIds);
-	public LocationWiseBoothDetailsVO getStartedCommitteesCountByLocation(String state,List<Long> levelIds);
+	public CadreCommitteeReportVO getCommitteeDetailsByLocation(String state,List<Long> levelIds);
 }

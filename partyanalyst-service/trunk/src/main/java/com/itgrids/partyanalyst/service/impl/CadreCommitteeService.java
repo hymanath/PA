@@ -42,6 +42,7 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeRoleDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
@@ -110,6 +111,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private ICadreDetailsService cadreDetailsService;
 	private ITdpBasicCommitteeDAO tdpBasicCommitteeDAO;
 	private ILocalElectionBodyWardDAO localElectionBodyWardDAO;
+	
+	
 	
 	public void setTdpBasicCommitteeDAO(ITdpBasicCommitteeDAO tdpBasicCommitteeDAO) {
 		this.tdpBasicCommitteeDAO = tdpBasicCommitteeDAO;
@@ -1590,68 +1593,51 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return committeesList;
 	}
 	
-	public LocationWiseBoothDetailsVO getTotalCommitteesPanchayatLevelByState(String state,List<Long> levelIds){
+	public CadreCommitteeReportVO getCommitteeDetailsByLocation(String state,List<Long> levelIds){
 
-		Long poscount=0l;
-		Long negCount=0l;
-		Long totalCount=0l;
-		LocationWiseBoothDetailsVO totalLocationInfo=new LocationWiseBoothDetailsVO();
+		Long completedCommittees=0l;
+		Long startedCommittees=0l;
+		Long totalCommittees=0l;
+		CadreCommitteeReportVO cadreCommitteeReportVO =new CadreCommitteeReportVO();
 		try{
 			//0count ,1 isCommitteeConfirmed,2.tdpCommitteeLevelId,3.tdpBasicCommitteeId
-			List<Object[]> TotallocationDetails=tdpCommitteeDAO.getTotalCommitteesLocationLevelByState(state,levelIds);
-			if(TotallocationDetails !=null ){
-				
-				for (Object[] objects : TotallocationDetails) {
-					totalCount=totalCount+(Long)objects[0];
-					
+			List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,levelIds);
+			
+			if(committeeCntDtls !=null ){				
+				for (Object[] objects : committeeCntDtls) {
+									
 					if(objects[1].toString().equalsIgnoreCase("Y"))
-						poscount=poscount+(Long)objects[1];
+						completedCommittees = completedCommittees+(Long)objects[0];
 					else if(objects[1].toString().equalsIgnoreCase("N"))
-						negCount=negCount+(Long)objects[1];	
+						startedCommittees=startedCommittees+(Long)objects[0];	
 				}
-				totalLocationInfo.setTotal(totalCount);//Total count.
-				totalLocationInfo.setLocationId(poscount);//completedCount.
-		  }
-			return totalLocationInfo;
+			}
+				 
+			 List<Object[]> startedCount=tdpCommitteeMemberDAO.getStartedCommitteesCountByLocation(state, levelIds);
+				if(startedCount != null){
+					for (Object[] objects : startedCount) {
+						if(Long.valueOf(objects[1].toString())==1l){
+							cadreCommitteeReportVO.setMainCommittees(Long.valueOf(objects[0].toString()));//startedCount in Main type
+						}
+						if(Long.valueOf(objects[1].toString()) == 2l){
+							cadreCommitteeReportVO.setAfflCommittees(Long.valueOf(objects[0].toString()));//startedCount in Affliated Type
+						}
+					}
+				}
+				
+				Long memberscount= tdpCommitteeMemberDAO.getMembersCountByLocation(state, levelIds);				
+				
+				cadreCommitteeReportVO.setMembersCount(memberscount != null ? memberscount : 0l);//totalMembers				
+				cadreCommitteeReportVO.setCommitteesCount(completedCommittees + startedCommittees);//Total Committes count.
+				cadreCommitteeReportVO.setCompletedCommittees(completedCommittees);//completedCount.
+		 
+			return cadreCommitteeReportVO;
 		}
 		catch(Exception e){
 			LOG.error("Exception raised in getTotalCommitteesPanchayatLevelByState method"+e);
 		}
-		return totalLocationInfo;
+		return cadreCommitteeReportVO;
 	}
-	public LocationWiseBoothDetailsVO getMembersCountByLocation(String state,List<Long> levelIds){
-	 
-		 LocationWiseBoothDetailsVO memCount = new LocationWiseBoothDetailsVO();
-		 try{
-			 Long memberscount= tdpCommitteeMemberDAO.getMembersCountByLocation(state, levelIds);
-			 
-			 if(memberscount !=null){
-				 memCount.setCount(memberscount);//totalMembersCount
-			 } 
-		 }catch(Exception e){ 
-			 LOG.error("Exception raised in getTotalCommitteesPanchayatLevelByState method"+e);
-		 }
-    	 return memCount;
-	}
-	public LocationWiseBoothDetailsVO getStartedCommitteesCountByLocation(String state,List<Long> levelIds){
-
-		LocationWiseBoothDetailsVO  totalstartedCount = new LocationWiseBoothDetailsVO();
-		try{
-			List<Object[]> startedCount=tdpCommitteeMemberDAO.getStartedCommitteesCountByLocation(state, levelIds);
-			if(startedCount != null){
-				for (Object[] objects : startedCount) {
-					if(Long.valueOf(objects[1].toString())==1l){
-						totalstartedCount.setPopulation(Long.valueOf(objects[0].toString()));//startedCount in Main type
-					}
-					if(Long.valueOf(objects[1].toString())==2l){
-						totalstartedCount.setVotesPolled(Long.valueOf(objects[0].toString()));//startedCount in Affliated Type
-					}
-				}
-			}
-		}catch(Exception e){
-			LOG.error("Exception raised in getStartedCommitteesCountByLocation method"+e);
-		}
-		
-		return totalstartedCount;
-	}
+	
+	
 }
