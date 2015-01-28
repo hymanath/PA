@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeApprovalVO;
+import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
@@ -77,8 +78,8 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private List<IdNameVO>						idNameVOList;
 	private List<IdNameVO>						constituenciesList;
 	private List<CommitteeApprovalVO>			approvalRecordsList;
-	
-	
+	private List<LocationWiseBoothDetailsVO> committeesCountsInfo;
+	private List<CommitteeSummaryVO> returnList;
 	
 
 	public List<CommitteeApprovalVO> getApprovalRecordsList() {
@@ -104,7 +105,23 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	public void setIdNameVOList(List<IdNameVO> idNameVOList) {
 		this.idNameVOList = idNameVOList;
 	}
+	
+	public List<CommitteeSummaryVO> getReturnList() {
+		return returnList;
+	}
 
+	public void setReturnList(List<CommitteeSummaryVO> returnList) {
+		this.returnList = returnList;
+	}
+	
+	public List<LocationWiseBoothDetailsVO> getCommitteesCountsInfo() {
+		return committeesCountsInfo;
+	}
+
+	public void setCommitteesCountsInfo(
+			List<LocationWiseBoothDetailsVO> committeesCountsInfo) {
+		this.committeesCountsInfo = committeesCountsInfo;
+	}
 	public String getResult4() {
 		return result4;
 	}
@@ -1043,4 +1060,52 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	
 		return Action.SUCCESS;
 	}
+	
+public String getSummaryDetails(){
+		
+		session = request.getSession();	
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user != null){
+			returnList = cadreCommitteeService.getSummaryDetails(user.getAccessValue());
+		}else{
+			return ERROR;
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getStartedCommitteesCountInALocation(){
+		
+		session = request.getSession();	
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user != null){
+			committeesCountsInfo= cadreCommitteeService.getStartedCommitteesCountInALocation(user.getAccessValue());
+		}else{
+			return ERROR;
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String gettingMandalAndMuncipalAndDivisonSummary(){
+		
+		session = request.getSession();	
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user != null){
+			returnList= cadreCommitteeService.gettingMandalAndMuncipalAndDivisonSummary(user.getAccessValue());
+		}else{
+			return ERROR;
+		}
+		return Action.SUCCESS;
+	}
+
+	/*public String getMandalMuncipalDivisonTotalCommittees(){
+		session = request.getSession();	
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user != null){
+			locations = cadreCommitteeService.getMandalMuncipalDivisonTotalCommittees(user.getAccessValue());
+		}else{
+			return ERROR;
+		}
+		return Action.SUCCESS;
+	}*/
 }
