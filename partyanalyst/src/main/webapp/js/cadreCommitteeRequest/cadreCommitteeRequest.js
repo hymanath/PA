@@ -1,23 +1,35 @@
+//changing requests.
 function hideDetails(val){
 if(val=='1'){
 getCommitteeLocations();
 $('#posIncreasedId').hide();
 $('#changeDesgId').hide();
 $("#committeePositionId").val("0");
+$("#locationsDivId").show(); 
+$("#committeesId").show(); 
+$("#reqSubmitId").show(); 
+$("#resultStatusId").hide();
 }
 if(val=='2'){
 getCommitteeLocations();
+$("#locationsDivId").show(); 
+$("#committeesId").show(); 
+$("#reqSubmitId").show(); 
+
 $('#posIncreasedId').hide();
 $('#changeDesgId').hide();
 $("#committeePositionId").val("0");
+$("#resultStatusId").hide();
 }
 if(val=='3'){
+  $("#resultStatusId").show();
+  
   $("#posIncreasedId").hide(); 
   $("#changeDesgId").hide(); 
   $("#locationsDivId").hide(); 
   $("#committeesId").hide(); 
   $("#reqSubmitId").hide(); 
-
+  gettingRequestsDetailsForAUser();
 }
 }
 
@@ -413,7 +425,7 @@ function getCommitteeLocations(){
 			      $('#maxPositionsErrId').html("<span style='color:green'>Sending Request Failed.</span>");
 			});
 	}
-	
+	  //desg on change validation.
 	  function checkDesgValidation(){
 		    var committeePositionId= $("#committeePositionId").val();
 			if(committeePositionId == null || committeePositionId == 0){
@@ -426,3 +438,50 @@ function getCommitteeLocations(){
 		   }
 		  $("#committeePositionIdErr").html("");
 	 }
+	 
+
+
+	function  gettingRequestsDetailsForAUser(){
+	 var jsObj =new Object();
+	 $.ajax({
+				type : "GET",
+				url : "gettingRequestsDetailsForAUserAction.action",
+				data: {}
+			}).done(function(result){
+			   if(result!=null){
+			     var str='';
+			     str+='<div class="col-md-10 col-md-offset-1 m_top20" style="background-color:rgba(0,0,0,0.1);overflow:scroll;height:600px;">';
+                	str+='<table class="table table-yellow-bordered table-condensed">';
+						str+='<caption class="text-success"><h4>INCREASE POSITION REQUEST STATUS</h4></caption>';
+                        str+='<thead>';
+                        	str+='<th width="15%">LOCATION</th>';
+                            str+='<th width="20%">COMMITTEE NAME</th>';
+                            str+='<th width="18%">POSITION NAME</th>';
+                            str+='<th width="15%"><small>CURRENT MAX POSITONS</small></th>';
+                            str+='<th width="15%"><small>REQUESTED MAX POSITIONS</small></th>';
+                            str+='<th width="12%">STATUS</th>';
+                            str+='<th width="13%">Ref-No</th>';
+                        str+='</thead>';
+                         str+='<tbody>';
+						   for(var i in result){//loc comm pre cur req sta
+						     str+='<tr>';
+                        	 str+='<td>'+result[i].location+' '+result[i].locationType+'</td>';
+                             str+='<td>'+result[i].committeeName+'</td>';
+                             str+='<td>'+result[i].role+'</td>';
+                             str+='<td>'+result[i].currentPosCount+'</td>';
+                             str+='<td>'+result[i].requestdPosCount+'</td>';
+                             str+='<td>'+result[i].status+'</td>';
+                             str+='<td>'+result[i].refNo+'</td>';
+							 str+='</tr>';
+							}
+                        str+='</tbody>';
+                    str+='</table>';
+                str+='</div>';
+				
+				
+				
+			  $('#resultStatusId').html(str);
+			   }
+			});
+
+	}
