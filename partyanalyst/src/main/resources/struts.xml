@@ -9480,6 +9480,22 @@
 			<result name="input">/jsp/loginForm.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
+		<!--  cadreCommitteeRequest -->
+		<action name="cadreCommitteeRequestAction" class="cadreCommitteeAction" method="cadreCommitteeRequest">
+			<result name="success">/jsp/cadreCommitteeRequest.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=cadreCommitteeAction</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
 		
+		<action name="getCommitteMembersInfoRequestAction" class="cadreCommitteeAction" method="getCommitteMembersInfoRequest">
+			<result type="json" name="success">
+				<param name="root">membersInfo</param>
+			</result>
+		</action>
+		<action name="cadreCommitteeIncPositionsOrChangeDesgAction" class="cadreCommitteeAction" method="cadreCommitteeIncreasedPositionsOrChangeDesignations">
+			<result type="json" name="success">
+				<param name="root">status</param>
+			</result>
+		</action>
 </package>
 </struts>      
