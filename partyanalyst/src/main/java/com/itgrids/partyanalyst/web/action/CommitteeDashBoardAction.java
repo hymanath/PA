@@ -65,12 +65,6 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 		this.request = request;
 	}
 	
-	public HttpSession getSession() {
-		return session;
-	}
-	public void setSession(HttpSession session) {
-		this.session = session;
-	}
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
 	}
@@ -108,18 +102,31 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	public String getDashBoardLocationWiseDetailsAction(){
 		try{
 			jObj = new JSONObject(getTask());
-			JSONArray levelIdss = jObj.getJSONArray("designationArr");
-			
+			JSONArray levelIdsArr = jObj.getJSONArray("levelIdsArr");			
 			List<Long> levelIds = new ArrayList<Long>();
-			String state =jObj.getString("state");
-			
-			if(levelIdss !=null && levelIdss.length() >0){
-				for(int i=0; i<levelIdss.length(); i++ ){
-					levelIds.add((long) levelIdss.length());
+				
+			if(levelIdsArr !=null && levelIdsArr.length() >0){
+				for(int i=0; i<levelIdsArr.length(); i++ ){
+					levelIds.add(Long.valueOf(levelIdsArr.get(i).toString().trim()));
 				}
 			}
-			
+			String state =jObj.getString("state");
 			cadreCommitteeReportVO = cadreCommitteeService.getCommitteeDetailsByLocation(state,levelIds);
+		
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured In getDashBoardLocationWiseDetailsAction method "+e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
+	public String getTotalCommitteeCntsByState(){
+		try{
+			jObj = new JSONObject(getTask());
+			
+			String state =jObj.getString("state");
+			cadreCommitteeReportVO = cadreCommitteeService.getTotalCommitteeDetailsByLocation(state);
 		
 			
 		}catch(Exception e){
