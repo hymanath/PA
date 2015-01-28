@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
@@ -31,12 +32,10 @@ public interface ICadreCommitteeService {
 	public CadreCommitteeVO searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo,
 			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategoryId,Long fromAge,Long toAge,String houseNo,String gender);
 	public List<SelectOptionVO> getBasicCadreCommitteesDetails();
-	
 	public List<IdNameVO> getLocationsOfCommitteeLevel(Long levelId,Long constiId);
 	public List<IdNameVO> getConstituenciesOfState(Long levelId);
 	public ResultStatus saveMandalLevelAffliactedElectrolInfo(Long tdpCadreId,Long tdpBasicCommitteeId);
 	public ResultStatus saveMandalLevelElectrolInfo(Long tdpCadreId,List<CadrePreviousRollesVO> eligibleRoles);
-
 	public CadreCommitteeReportVO getCommitteeDetailsByLocation(String state,List<Long> levelIds);
 	
 	public String checkIsVacancyForDesignation(Long tdpCommitteeRoleId);
@@ -46,4 +45,8 @@ public interface ICadreCommitteeService {
 	public LocationWiseBoothDetailsVO getCommitteeMembersInfoRequest(Long committeeId,Long designation);
 
 	public CadreCommitteeReportVO getTotalCommitteeDetailsByLocation(String state);
+	public List<CadreCommitteeMemberVO> getCommitteeDetailsByStatus(Long basicCommitteeTypeId,String status,Long levelId);
+	public List<CadreCommitteeMemberVO> getCommitteeMemberDetails(Long basicCommitteeTypeId,Long locationId,Long levelId);
+	public List<CadreCommitteeMemberVO> setCommitteConfirmation(Long basicCommitteeTypeId,Long locationId,Long levelId);
+	public List<CadreCommitteeMemberVO> updateCadreRole(Long tdpCommitteeMemberId);
 }
