@@ -412,11 +412,32 @@
 					url : "statusCountOfApprovalAction.action",
 					data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
-					console.log(result);
-					$("#totalCount").html(result.totalCount);
-					$("#pendingCount").html(result.pendingCount);
-					$("#approvedCount").html(result.approvedCount);
-					$("#rejectedCount").html(result.rejectedCount);
+					if(result.totalCount!=null){
+						$("#totalCount").html(result.totalCount);
+					}else{
+						$("#totalCount").html(0);
+					}
+					
+					if(result.pendingCount!=null){
+						$("#pendingCount").html(result.pendingCount);
+					}else{
+						$("#pendingCount").html(0);
+					}
+					
+					if(result.approvedCount!=null){
+						$("#approvedCount").html(result.approvedCount);
+					}else{
+						$("#approvedCount").html(0);
+					}
+					
+					if(result.rejectedCount!=null){
+						$("#rejectedCount").html(result.rejectedCount);
+					}else{
+						$("#rejectedCount").html(0);
+					}
+					
+					
+					
 				});
 		}
 	</script>
