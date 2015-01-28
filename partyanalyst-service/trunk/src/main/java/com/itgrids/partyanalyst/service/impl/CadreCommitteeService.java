@@ -1785,7 +1785,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	}*/
 	
 	public CadreCommitteeReportVO getCommitteeDetailsByLocation(String state,List<Long> levelIds){
-
+		
 		Long completedCommittees=0l;
 		Long startedCommittees=0l;
 		
@@ -1816,7 +1816,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						}
 					}
 				}
-				
+				else{
+					cadreCommitteeReportVO.setMainCommittees(0l);
+					cadreCommitteeReportVO.setAfflCommittees(0l);
+				}
 				Long memberscount= tdpCommitteeMemberDAO.getMembersCountByLocation(state, levelIds);				
 				
 				cadreCommitteeReportVO.setMembersCount(memberscount != null ? memberscount : 0l);//totalMembers				
