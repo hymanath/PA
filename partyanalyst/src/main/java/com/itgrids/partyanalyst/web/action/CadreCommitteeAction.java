@@ -850,5 +850,24 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		return Action.SUCCESS;
 	}
 	
+	public String committeeUpdateApproveAction(){
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		boolean noaccess = false;
+		if(regVO==null){
+			return "input";
+		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"TDP_COMMITTEE_ADMIN")){
+			noaccess = true ;
+		}
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		
+		if(noaccess){
+			return "error";
+		}
+		
+		return Action.SUCCESS;
+	}
+	
 	
 }
