@@ -118,10 +118,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private ICadreDetailsService cadreDetailsService;
 	private ITdpBasicCommitteeDAO tdpBasicCommitteeDAO;
 	private ILocalElectionBodyWardDAO localElectionBodyWardDAO;
+	private DateUtilService dateUtilService = new DateUtilService();
 	private IUserDAO userDAO;
 	private ICadreCommitteeIncreasedPositionsDAO cadreCommitteeIncreasedPositionsDAO;
 	private ICadreCommitteeChangeDesignationsDAO cadreCommitteeChangeDesignationsDAO;
-	
 	
 	public void setTdpBasicCommitteeDAO(ITdpBasicCommitteeDAO tdpBasicCommitteeDAO) {
 		this.tdpBasicCommitteeDAO = tdpBasicCommitteeDAO;
@@ -962,6 +962,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 								return resultStatus;
 							}
 							
+							Long tdpCommitteeId = getTdpCommittee(1l,tdpCommitteeLevelId,levelValue);
+							if(tdpCommitteeId == null){
+								resultStatus.setResultCode(3);
+								resultStatus.setMessage("Committee Didn't Exist For This Location...");
+								return resultStatus;
+							}
 							CadrePreviousRollesVO eligibleRole1 = eligibleRoles.get(0);
 							if(eligibleRole1 != null && eligibleRole1.getDesignationLevelId() != null && eligibleRole1.getFromDateStr() != null)
 							{
@@ -971,6 +977,9 @@ public class CadreCommitteeService implements ICadreCommitteeService
 								tdpCommitteeElectrols.setLevelValue(levelValue);
 								tdpCommitteeElectrols.setTdpCommitteeEnrollmentId(IConstants.CURRENT_ENROLLMENT_ID);
 								tdpCommitteeElectrols.setTdpCommitteeTypeId(1l);
+								tdpCommitteeElectrols.setTdpCommitteeId(tdpCommitteeId);
+								tdpCommitteeElectrols.setIsDeleted("N");
+								tdpCommitteeElectrols.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 								tdpCommitteeElectrols = tdpCommitteeElectrolsDAO.save(tdpCommitteeElectrols);
 								
 									for(CadrePreviousRollesVO eligibleRole:eligibleRoles){
@@ -1050,14 +1059,21 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						resultStatus.setMessage("Location Not Mapped for this Cadre...");
 						return resultStatus;
 					}
-					
+					Long tdpCommitteeId = getTdpCommittee(tdpBasicCommitteeId,tdpCommitteeLevelId,levelValue);
+					if(tdpCommitteeId == null){
+						resultStatus.setResultCode(3);
+						resultStatus.setMessage("Committee Didn't Exist For This Location...");
+						return resultStatus;
+					}
 					TdpCommitteeElectrols tdpCommitteeElectrols = new TdpCommitteeElectrols();
 					tdpCommitteeElectrols.setTdpCadreId(tdpCadreId);
 					tdpCommitteeElectrols.setTdpCommitteeLevelId(tdpCommitteeLevelId);
 					tdpCommitteeElectrols.setLevelValue(levelValue);
 					tdpCommitteeElectrols.setTdpCommitteeEnrollmentId(IConstants.CURRENT_ENROLLMENT_ID);
 					tdpCommitteeElectrols.setTdpCommitteeTypeId(2L);
-					tdpCommitteeElectrols.setTdpCommitteeId(getTdpCommittee(tdpBasicCommitteeId,tdpCommitteeLevelId,levelValue));
+					tdpCommitteeElectrols.setTdpCommitteeId(tdpCommitteeId);
+					tdpCommitteeElectrols.setIsDeleted("N");
+					tdpCommitteeElectrols.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 					tdpCommitteeElectrols = tdpCommitteeElectrolsDAO.save(tdpCommitteeElectrols);
 					
 					resultStatus.setResultCode(0);
@@ -1493,72 +1509,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				
 				if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
 				{
-					List<Object[]> tdpCommitteeMemberList = tdpCommitteeMemberDAO.getTdpCommitteeMemberForTdpCadreIdList(tdpCadreIdsList);
-					
-					if(tdpCommitteeMemberList != null && tdpCommitteeMemberList.size()>0)
-					{
-						
-						for (Object[] tdpCadre : tdpCommitteeMemberList) 
-						{
-							Long id = tdpCadre[0] != null ? Long.valueOf(tdpCadre[0].toString()):0L;
-							String committeeName = tdpCadre[1] != null ? tdpCadre[1].toString():"";
-							String positionName =  tdpCadre[2] != null ? tdpCadre[2].toString():"";
-							Long LocationTypeId = tdpCadre[3] != null ? Long.valueOf(tdpCadre[3].toString()):0L;
-							Long locationValue = tdpCadre[4] != null ? Long.valueOf(tdpCadre[4].toString()):0L;
-							
-							CadreCommitteeVO cadreVO = getMatchedVOById(cadreCommitteeList,id);
-							if(cadreVO != null)
-							{								
-								String location = null;
-								
-								if(locationValue != 0L)
-								{
-									if(LocationTypeId.longValue() == 6L)
-									{
-										location = panchayatDAO.get(locationValue).getPanchayatName()+" Panchayat";
-									}
-									else 	if(LocationTypeId.longValue() == 8L)
-									{
-										location = constituencyDAO.get(locationValue).getName();
-									}
-									else 	if(LocationTypeId.longValue() == 5L)
-									{
-										location = tehsilDAO.get(locationValue).getTehsilName()+" Mandal";
-									}else if(LocationTypeId.longValue() == 7L)
-									{
-										LocalElectionBody localElectionBody = localElectionBodyDAO.get(locationValue);						
-										location = localElectionBody.getName() +" "+localElectionBody.getElectionType().getElectionType();
-										
-										if(locationValue.longValue() == 20L || locationValue.longValue() == 124L || locationValue.longValue() == 119L)
-										{
-											String wardName = constituencyDAO.get(locationValue).getName();
-											location = location+" - "+wardName;
-										}
-										
-									}else if(LocationTypeId.longValue() == 9L)
-									{
-										 Constituency constituency = constituencyDAO.get(locationValue);
-										LocalElectionBody localElectionBody =  constituency.getLocalElectionBody();						
-										location = localElectionBody.getName() +" "+localElectionBody.getElectionType().getElectionType();
-											String wardName =constituency.getName();
-											List name = localElectionBodyWardDAO.findWardName(locationValue);
-											if(name != null && name.size() > 0 && name.get(0) != null){
-												location = location+" - "+wardName+"("+name.get(0).toString()+")";
-											}else{
-											    location = location+" - "+wardName;
-											}
-										
-										
-									}		
-									
-									cadreVO.setCommitteeLocation(location);
-									cadreVO.setCommitteePosition(positionName);
-									cadreVO.setCommitteeName(committeeName);
-								}
-								
-							}
-						}
-					}
+					setCurrentDesignation(cadreCommitteeList,tdpCadreIdsList);
+					setCurrentElectrolInfo(cadreCommitteeList,tdpCadreIdsList);
 				}
 				cadreCommitteeVO.setPreviousRoles(cadreCommitteeList);
 			}
@@ -1569,6 +1521,96 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return cadreCommitteeVO;
 	}
 	
+	public void setCurrentDesignation(List<CadreCommitteeVO> cadreCommitteeList,List<Long> tdpCadreIdsList){
+		List<Object[]> tdpCommitteeMemberList = tdpCommitteeMemberDAO.getTdpCommitteeMemberForTdpCadreIdList(tdpCadreIdsList);
+		
+		if(tdpCommitteeMemberList != null && tdpCommitteeMemberList.size()>0)
+		{
+			for (Object[] tdpCadre : tdpCommitteeMemberList) 
+			{
+				Long id = tdpCadre[0] != null ? Long.valueOf(tdpCadre[0].toString()):0L;
+				String committeeName = tdpCadre[1] != null ? tdpCadre[1].toString():"";
+				String positionName =  tdpCadre[2] != null ? tdpCadre[2].toString():"";
+				Long LocationTypeId = tdpCadre[3] != null ? Long.valueOf(tdpCadre[3].toString()):0L;
+				Long locationValue = tdpCadre[4] != null ? Long.valueOf(tdpCadre[4].toString()):0L;
+				
+				CadreCommitteeVO cadreVO = getMatchedVOById(cadreCommitteeList,id);
+				if(cadreVO != null)
+				{
+					String location = null;
+					if(locationValue.longValue() > 0L){
+						location = getLocationName(LocationTypeId,locationValue);
+						cadreVO.setCommitteeLocation(location);
+					    cadreVO.setCommitteePosition(positionName);
+					    cadreVO.setCommitteeName(committeeName);
+				    }
+			   }
+		    }
+			
+		}
+	}
+	public void setCurrentElectrolInfo(List<CadreCommitteeVO> cadreCommitteeList,List<Long> tdpCadreIdsList){
+		List<Object[]> tdpCommitteeMemberList = tdpCommitteeElectrolsDAO.getTdpCommitteeElectrolsForTdpCadreIdList(tdpCadreIdsList);
+		
+		if(tdpCommitteeMemberList != null && tdpCommitteeMemberList.size()>0)
+		{
+			for (Object[] tdpCadre : tdpCommitteeMemberList) 
+			{
+				Long id = tdpCadre[0] != null ? Long.valueOf(tdpCadre[0].toString()):0L;
+				String committeeName = tdpCadre[1] != null ? tdpCadre[1].toString():"";
+				String positionName =  tdpCadre[2] != null ? tdpCadre[2].toString():"";
+				Long LocationTypeId = tdpCadre[3] != null ? Long.valueOf(tdpCadre[3].toString()):0L;
+				Long locationValue = tdpCadre[4] != null ? Long.valueOf(tdpCadre[4].toString()):0L;
+				
+				CadreCommitteeVO cadreVO = getMatchedVOById(cadreCommitteeList,id);
+				if(cadreVO != null)
+				{
+					CadreCommitteeVO vo = new CadreCommitteeVO();
+					String location = null;
+					if(locationValue.longValue() > 0L){
+						location = getLocationName(LocationTypeId,locationValue);
+						vo.setCommitteeLocation(location);
+						vo.setCommitteePosition(positionName);
+						vo.setCommitteeName(committeeName);
+						cadreVO.getPreviousRoles().add(vo);
+				    }
+			   }
+		    }
+			
+		}
+
+	}
+	public String getLocationName(Long LocationTypeId,Long locationValue){
+		String location ="";
+		if(LocationTypeId.longValue() == 6L){
+			location = panchayatDAO.get(locationValue).getPanchayatName()+" Panchayat";
+		}
+		else if(LocationTypeId.longValue() == 8L){
+			location = constituencyDAO.get(locationValue).getName();
+		}
+		else if(LocationTypeId.longValue() == 5L){
+			location = tehsilDAO.get(locationValue).getTehsilName()+" Mandal";
+		}else if(LocationTypeId.longValue() == 7L){
+			LocalElectionBody localElectionBody = localElectionBodyDAO.get(locationValue);						
+			location = localElectionBody.getName() +" "+localElectionBody.getElectionType().getElectionType();
+			if(locationValue.longValue() == 20L || locationValue.longValue() == 124L || locationValue.longValue() == 119L){
+				String wardName = constituencyDAO.get(locationValue).getName();
+				location = location+" - "+wardName;
+			}
+		}else if(LocationTypeId.longValue() == 9L){
+			Constituency constituency = constituencyDAO.get(locationValue);
+			LocalElectionBody localElectionBody =  constituency.getLocalElectionBody();						
+			location = localElectionBody.getName() +" "+localElectionBody.getElectionType().getElectionType();
+			String wardName =constituency.getName();
+			List name = localElectionBodyWardDAO.findWardName(locationValue);
+			if(name != null && name.size() > 0 && name.get(0) != null){
+				location = location+" - "+wardName+"("+name.get(0).toString()+")";
+			}else{
+			    location = location+" - "+wardName;
+			}
+		}
+		return location;
+	}
 	public CadreCommitteeVO getMatchedVOById(List<CadreCommitteeVO> tdpCadreVOList,Long id)
 	{
 		CadreCommitteeVO returnVO = null;

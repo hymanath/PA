@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,6 +34,8 @@ public class TdpCommitteeElectrols {
 	private TdpCommitteeType tdpCommitteeType;
 	private TdpCommittee tdpCommittee;
 	private Long tdpCommitteeId;
+	private Date insertedTime;
+	private String isDeleted;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -157,6 +161,24 @@ public class TdpCommitteeElectrols {
 
 	public void setTdpCommitteeId(Long tdpCommitteeId) {
 		this.tdpCommitteeId = tdpCommitteeId;
+	}
+
+	@Column(name = "is_deleted")
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	@Column(name = "inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
 	}
 	
 	
