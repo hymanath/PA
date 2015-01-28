@@ -49,10 +49,10 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 
 		str.append("select count(model.tdpCommitteeId),model.isCommitteeConfirmed,model.tdpCommitteeLevel.tdpCommitteeLevelId," +
 				" model.tdpBasicCommittee.tdpBasicCommitteeId " +
-				" from TdpCommittee model where model.tdpBasicCommittee.tdpBasicCommitteeId = 1 ");
+				" from TdpCommittee model where model.tdpBasicCommittee.tdpBasicCommitteeId = 1  ");
 		if(state != null)
 		{
-			str.append(" model.state= :state ");
+			str.append(" and model.state= :state ");
 		}
 		if(levelIds != null && levelIds.size() > 0)
 		{

@@ -66,7 +66,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		str.append("select count(distinct model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId), " +
 		" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId " +
 		" from TdpCommitteeMember model where ");
-		str.append(" model.state= :state ");
+		str.append(" model.tdpCommitteeRole.tdpCommittee.state= :state ");
 		str.append("and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) and model.isActive ='Y' group by " +
 		" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
 		Query query = getSession().createQuery(str.toString());
@@ -84,7 +84,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		" from TdpCommitteeMember model where ");
 		if(state != null)
 		{
-		str.append(" model.state= :state ");
+		str.append(" model.tdpCommitteeRole.tdpCommittee.state= :state ");
 		}
 		str.append("and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) and model.isActive ='Y' ");
 
@@ -103,15 +103,16 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		
 		StringBuilder str = new StringBuilder();
 		
-		str.append("select count(distinct model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId," +
+		str.append("select count(model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId," +
 				" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name,model.tdpCommitteeRole.tdpCommitteeRoleId " +				
 				" from TdpCommitteeMember model where ");
 		if(state != null)
 		{
-			str.append(" model.state= :state ");
+			str.append(" model.tdpCommitteeRole.tdpCommittee.state= :state ");
 		}
 		
 		str.append("and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) " +
+				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId = 1" +
 				" and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'Y'  and model.isActive = 'Y' " +
 				" group by model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId ");		
        			
