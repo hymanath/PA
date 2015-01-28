@@ -142,6 +142,7 @@
 		 <pattern>/cadreProfileDetailsAction*</pattern>
 		 <pattern>/assignCadreToCommittee*</pattern>
 		  <pattern>/cadreCommitteeSummaryAction*</pattern>
+		 <pattern>/getCommitteeDashBoardAction*</pattern> 
  	</excludes>  
 	
 	<decorator name="main" page="main.jsp">

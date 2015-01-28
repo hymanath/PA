@@ -1547,5 +1547,9 @@
 	<!-- <bean id="userDetailsAction" class="com.itgrids.partyanalyst.web.action.UserDetailsAction" singleton="false">
 		<property name="dashBoardElectionResultsService" ref="dashBoardElectionResultsService" />
 	</bean> -->
+	<bean id="committeeDashBoardAction" class="com.itgrids.partyanalyst.web.action.CommitteeDashBoardAction" singleton="false">
+		<property name="cadreCommitteeService" ref="cadreCommitteeService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />
+	</bean>
 </beans>	
 	
