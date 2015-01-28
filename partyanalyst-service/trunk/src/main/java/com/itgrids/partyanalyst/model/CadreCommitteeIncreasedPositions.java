@@ -37,7 +37,7 @@ public class CadreCommitteeIncreasedPositions extends BaseModel implements Seria
 	private Date updatedTime;
 	private String type;
 	private String userComments;
-	
+	private String refNo;
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.AUTO)
 	 @Column(name="cadre_committee_increased_positions_id", unique=true, nullable=false) 
@@ -145,6 +145,14 @@ public class CadreCommitteeIncreasedPositions extends BaseModel implements Seria
 	}
 	public void setUserComments(String userComments) {
 		this.userComments = userComments;
+	}
+	
+	@Column(name = "ref_no")
+	public String getRefNo() {
+		return refNo;
+	}
+	public void setRefNo(String refNo) {
+		this.refNo = refNo;
 	}
 	
 	
