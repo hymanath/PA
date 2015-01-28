@@ -83,10 +83,10 @@
 						<a class="btn btn-success btn-block arrow_selected" id="basicCommitteeTab" href="javascript:{showAndHideTabs('basicCommitteeDiv');}">Committee <br>Management</a>
 					</div>
 					<div class="col-md-4 col-sm-4 col-xs-4">
-						<a class="btn btn-success btn-block "   id="publicrepresantativeTab" href="javascript:{showAndHideTabs('publicrepresantative');}">Public representative <br>Electoral Management</a>
+						<a class="btn btn-success btn-block "   id="publicrepresantativeTab" href="javascript:{showAndHideTabs('publicrepresantative');}">Mandal/Muncipality Main <br> Committee Electoral Management</a>
 					</div>
 					<div class="col-md-4 col-sm-4 col-xs-4">
-						<a class="btn btn-success btn-block "  id="mandalaffiliatedTab" href="javascript:{showAndHideTabs('mandalaffiliated');}" >Mandal affiliated <br>Electoral Management</a>				
+						<a class="btn btn-success btn-block "  id="mandalaffiliatedTab" href="javascript:{showAndHideTabs('mandalaffiliated');}" >Mandal/Muncipality Affiliated   <br>Committee Electoral Management</a>				
 					</div>
 				</div> 		
 			</div> 		
@@ -359,9 +359,10 @@
 			</div>
 		</div>	
 		<!-- end mandal committee Block  -->
-
+		
 		
 	</div>
+	
 
 	<script>	
 	
