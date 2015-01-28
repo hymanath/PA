@@ -989,6 +989,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 								resultStatus.setMessage("Committee Didn't Exist For This Location...");
 								return resultStatus;
 							}
+							Long count = tdpCommitteeElectrolsDAO.checkUserAlreadyAddedToThisCommittee(tdpCadreId,tdpCommitteeLevelId,levelValue,IConstants.CURRENT_ENROLLMENT_ID,1l,tdpCommitteeId);
+							if(count != null && count.longValue() > 0l){
+								resultStatus.setResultCode(3);
+								resultStatus.setMessage("Candidate Already Added As Electrol To This Committee...");
+								return resultStatus;
+							}
 							CadrePreviousRollesVO eligibleRole1 = eligibleRoles.get(0);
 							if(eligibleRole1 != null && eligibleRole1.getDesignationLevelId() != null && eligibleRole1.getFromDateStr() != null)
 							{
@@ -1084,6 +1090,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					if(tdpCommitteeId == null){
 						resultStatus.setResultCode(3);
 						resultStatus.setMessage("Committee Didn't Exist For This Location...");
+						return resultStatus;
+					}
+					Long count = tdpCommitteeElectrolsDAO.checkUserAlreadyAddedToThisCommittee(tdpCadreId,tdpCommitteeLevelId,levelValue,IConstants.CURRENT_ENROLLMENT_ID,2l,tdpCommitteeId);
+					if(count != null && count.longValue() > 0l){
+						resultStatus.setResultCode(3);
+						resultStatus.setMessage("Candidate Already Added As Electrol To This Committee...");
 						return resultStatus;
 					}
 					TdpCommitteeElectrols tdpCommitteeElectrols = new TdpCommitteeElectrols();
