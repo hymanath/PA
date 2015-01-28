@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.CadreCommitteeIncreasedPositions;
 public interface ICadreCommitteeIncreasedPositionsDAO extends GenericDao<CadreCommitteeIncreasedPositions, Long>{
 	public Long getAllRecordsCount();
 	public List<Object[]> getAllRecordsCount(int stIndex, int endIndex);
+	public List<Object[]> getRequestDetailsForAUser(Long requestUserId);
 }
