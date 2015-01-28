@@ -9337,6 +9337,12 @@
 			</result>
 		</action>
 		
+		<action name="checkIsVacancyForDesignation" class="cadreCommitteeAction" method="checkIsVacancyForDesignation">
+			<result type="json" name="success">
+				<param name="root">task</param>
+			</result>
+		</action>
+			
 		<action name="cadreProfileDetailsAction" class="cadreCommitteeAction" method="getCadreProfileDetails">
 			<result name="success">/jsp/cadreCommitteeProfileDetails.jsp</result>
 		</action>
