@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.Column;
+
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 import org.springframework.transaction.TransactionStatus;
@@ -1949,8 +1951,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 									cadreCommitteeIncreasedPositions.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 									cadreCommitteeIncreasedPositions.setType(type); 
 									 
-									cadreCommitteeIncreasedPositionsDAO.save(cadreCommitteeIncreasedPositions);  
-								  
+									CadreCommitteeIncreasedPositions output = cadreCommitteeIncreasedPositionsDAO.save(cadreCommitteeIncreasedPositions); 
+								    Long id = output.getCadreCommitteeIncreasedPositionsId();
+									String refNo=gettingReferenceNumber(id);
+									if(refNo!=null){
+										output.setRefNo(refNo);
+									}
+									cadreCommitteeIncreasedPositionsDAO.save(output);
 							  }
 					       });
 						   resultStatus.setResultCode(1);
@@ -2421,4 +2428,30 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return resultList;
 	}
+}
+public String gettingReferenceNumber(Long id){
+	String output=null;
+	try{
+	    String refNo=id.toString();
+		int refLength=refNo.trim().length();
+		if(refLength==1)
+		 output="#0000000"+refNo;
+		else if(refLength==2)
+		  output="#000000"+refNo;
+		else if(refLength==3)
+		  output="#00000"+refNo;
+		else if(refLength==4)
+		  output="#0000"+refNo;
+		else if(refLength==5)
+		  output="#000"+refNo;
+		else if(refLength==6)
+		  output="#00"+refNo;
+		else if(refLength==7)
+		  output="#0"+refNo;
+		else
+		  output="#"+refNo;
+	}catch (Exception e) {
+		 LOG.error("Exception raised in gettingReferenceNumber", e);
+	}
+	return output;
 }
