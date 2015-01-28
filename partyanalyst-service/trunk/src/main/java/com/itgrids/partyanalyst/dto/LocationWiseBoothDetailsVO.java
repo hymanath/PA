@@ -18,6 +18,7 @@ public class LocationWiseBoothDetailsVO {
 	private Long votesPolled;
 	private Long total;
 	private String electionYear;
+	private Long count;
 	
 	public String getElectionYear() {
 		return electionYear;
@@ -112,7 +113,13 @@ public class LocationWiseBoothDetailsVO {
 	public void setResult(List<LocationWiseBoothDetailsVO> result) {
 		this.result = result;
 	}
+	public Long getCount() {
+		return count;
+	}
 
+	public void setCount(Long count) {
+		this.count = count;
+	}
 	
 	
 }
