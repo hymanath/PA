@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 
 import org.apache.log4j.Logger;
+import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -20,7 +21,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class CommitteeDashBoardAction extends ActionSupport {
+public class CommitteeDashBoardAction extends ActionSupport implements ServletRequestAware{
 	
 	private HttpServletRequest         			request;
 	private HttpSession 						session;
@@ -91,18 +92,15 @@ public class CommitteeDashBoardAction extends ActionSupport {
 		boolean noaccess = false;
 		if(regVO==null){
 			return "input";
-		}
-		/*if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_COMMITTEE_MANAGEMENT")){
+		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"TDP_COMMITTEE_ADMIN")){
 			noaccess = true ;
 		}
-*/		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 			noaccess = false;
 		}
-		
 		if(noaccess){
 			return "error";
 		}
-		
 		return Action.SUCCESS;
 	}
 	
