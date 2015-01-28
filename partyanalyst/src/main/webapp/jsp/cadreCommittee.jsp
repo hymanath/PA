@@ -221,7 +221,7 @@
 				
 		<div class="row m_top20">
 			<div class="com-md-8 col-sm-12 col-xs-12 text-center">
-				<h3 class="text-success text-uppercase">Process to add NON affiliated committee member <br>as mandal affiliated electoral</h3>
+				<h3 class="text-success text-uppercase">Process to add Cadre as Mandal/Municipality Affiliated Electoral</h3>
 			</div>
 		</div>
 		<div id="nonafiliatedCommitteeDivId" class="row">	
@@ -236,16 +236,18 @@
 
 	</div>
 	
+	
+  
+	<div class="row" id="searchcadrenewDiv">	
+	
 	<div class="row">
 		<div style="border-top:1px solid #fff;" class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2 text-center m_top20" id="step2Id">
 			<span class="badge" style="z-index: 2; margin-top: -10px;">STEP- 2</span>
 	   
 		</div>
 	</div>
-  
-	<div class="row" id="searchcadrenewDiv">	
 			<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 text-center">
-				<h4 id="headingDiv" class="text-uppercase"> Select Candidate For A Designation </h4>
+				<h4 id="headingDiv" class="text-uppercase"> Select Candidate For selected Designation </h4>
 			
 			</div>
 			
@@ -406,6 +408,44 @@
 			$('#committeePositionId').on('change',function(){
 				$('#cadreDetailsDiv').html('');
 				$('#cadreDetailsDiv,#step3Id').hide();
+			});
+
+			$('#committeePositionId').on('change',function(){
+				var roleId = $('#committeePositionId').val();
+				$('#committeePositionIdErr').html('');
+				$('#searchBy').val('');
+				$("#membershipId").prop("checked","checked");
+				$('#cadreSearchType').val('membershipId');
+				$("#searchcadrenewDiv").hide();
+				if(roleId == null || roleId ==0)
+				{
+					$('#committeePositionIdErr').html('Please Select Designation.');
+					return;
+				}
+
+				var jsObj={					
+					designationId : roleId
+				}
+				$.ajax({
+					type : "POST",
+					url : "checkIsVacancyForDesignation.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					if(result != null)
+					{
+						if(result.trim().length>0)
+						{
+							$('#committeePositionIdErr').html(''+result.trim()+'');	
+						}
+						else
+						{
+							$("#searchcadrenewDiv").show();
+							$('#cadreDetailsDiv').html('');
+							$('#cadreDetailsDiv,#step3Id').hide();
+						}
+					}						
+				});
+				
 			});
 			$('.searchTypeCls').click(function(){
 			
@@ -573,10 +613,10 @@
 				}
 				if(cadreRoleId !=0 && isFirstCommityIdSettingValues)
 				{
-					isFirstCommityIdSettingValues = false;
+					
 					$("#afflitCommitteeId").val(commityId);
 					hideMembers();
-					getCommitteCadreMembersInfo(2);
+					getCommitteCadreMembersInfo(2);  
 				}
 			});
 					
@@ -597,8 +637,9 @@
 	}
 	
 	function getCommitteMembersInfo(){
-		$("#designationDivId,#step1Id,#step2Id,#step3Id").hide();
+		$("#designationDivId,#step1Id,#step2Id,#step3Id,#cadreDetailsDiv").hide();
 		$("#committeeLocationIdErr").html("");
+		$('#cadreDetailsDiv').html("");
 		$("#committeeTypeIdErr").html("");
 		$("#afflitCommitteeIdErr").html("");
 		$("#searchcadrenewDiv").hide();
@@ -694,10 +735,20 @@
 		img.src = "images/cadreCommitee/Member_thamb_image.png";
 	}
 	function populateDefaultValue(level){
+		 $("#cadreDetailsDiv,#step3Id,#searchcadrenewDiv,#designationDivId,#step1Id,#committeeMainId").hide();
+		 $("#cadreDetailsDiv").html("");
+		 if(level == 1)
+			$('#committeeTypeId').val(0)
+		var committeeTypeId = $('#committeeTypeId').val();
+
 		if(level == 1){
 		  $("#committeeLocationIdErr").html("");
 		  $("#committeeTypeId").val(0);
 		  $("#committeeDetailsDiv").hide();
+		}
+		if(committeeTypeId != null && committeeTypeId == 2) 
+		{
+			$("#committeeMainId").show();
 		}
 		$("#afflitCommitteeId  option").remove();
 		$("#afflitCommitteeId").append('<option value="0">Select Affiliated Committee</option>');
@@ -768,6 +819,8 @@
 						}
 						if(cadreRoleId != 0 && isFirstCadreRoleIdSettingValues)
 						{
+							console.log("srishailam : "+cadreRoleId);
+							
 							isFirstCadreRoleIdSettingValues = false;
 							$("#committeePositionId").val(cadreRoleId);							
 							$('#searchBy').val(defaultName);
@@ -799,8 +852,20 @@
 		$("#cadreDetailsDiv").html("");
 	}
 	function showSearchInfo(){
-		 $("#committeeDetailsDiv").hide();
-		 $("#searchcadrenewDiv").hide();
+		$('#committeePositionIdErr').html('');
+		$("#cadreDetailsDiv").hide();
+		$('#cadreDetailsDiv').html("");
+		
+		if(cadreRoleId !=0 && isFirstCommityIdSettingValues)
+		{			
+			isFirstCommityIdSettingValues = false;
+			$("#searchcadrenewDiv").show();
+		}
+		else{
+			$("#committeeDetailsDiv").hide();
+			$("#searchcadrenewDiv").hide();
+			$("#committeePositionId").val(0);
+		}
 		 
 		var locId = $("#committeeLocationId").val();
 		var locVal = $("#afflitCommitteeId").val();
@@ -818,7 +883,8 @@
 				return;
 			}
 		 }
-		 $("#searchcadrenewDiv").show();
+		 
+		 //$("#searchcadrenewDiv").show();
 		 var committeTypeID = $('#committeeMngtType').val();
 				if(committeTypeID == 1)
 				{
@@ -848,7 +914,7 @@
        var str='';
         str+='<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;"  id="eligibleRolesDivs'+elegbleRolCnt+'">';
 		str+='	<div class="row">';
-		str+='	  <div class="form-group col-md-5 col-sm-4 col-xs-4 ">';
+		str+='	  <div class="form-group col-md-3 col-md-offset-0 col-sm-4 col-xs-4 ">';
 		str+='		<label >Designation</label>';
 		str+='		<select class="form-control designationCls'+cadreId+'"  id="designation'+generatedId+'" name="eligibleRoles['+elegbleRolCnt+'].designationLevelId">';
 		str+='		   <option value="0"> Select Designation</option>';
@@ -858,12 +924,12 @@
 		str+='		</select>';
 		str+='<br><span id="designation'+generatedId+'Err" class="validErrCls" style="color:red;font-size:12px;"></span>';
 		str+='	  </div>';
-		str+='	   <div class="form-group col-md-3 col-sm-4 col-xs-4">';
+		str+='	   <div class="form-group col-md-3 col-md-offset-0 col-sm-4 col-xs-4">';
 		str+='			<label >From Date</label>';
 		str+='			<input type="text"  id="fromDateIda'+generatedId+'" key ="a'+dttCnt+'"  class="form-control fromDateCls'+cadreId+'" name="eligibleRoles['+elegbleRolCnt+'].fromDateStr">';
 		str+='          <br><span id="fromDateIda'+generatedId+'Err" class="validErrCls" style="color:red;font-size:12px;"></span>'; 
 		str+='	   </div>';
-		str+='	   <div class="form-group col-md-4 col-sm-4 col-xs-4">';
+		str+='	   <div class="form-group col-md-2 col-md-offset-0 col-sm-4 col-xs-4">';
 		str+='			<label >To Date</label>';
 		str+='			<input type="text"  id="toDateIda'+generatedId+'"  class="form-control toDateCls'+cadreId+'" name="eligibleRoles['+elegbleRolCnt+'].toDateStr">';
 		str+='          <br><span id="toDateIda'+generatedId+'Err" class="validErrCls" style="color:red;font-size:12px;"></span>';
