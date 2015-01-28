@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -1619,13 +1620,14 @@ public class CadreCommitteeService implements ICadreCommitteeService
 
 		Long completedCommittees=0l;
 		Long startedCommittees=0l;
-		Long totalCommittees=0l;
+		
+		
 		CadreCommitteeReportVO cadreCommitteeReportVO =new CadreCommitteeReportVO();
 		try{
 			//0count ,1 isCommitteeConfirmed,2.tdpCommitteeLevelId,3.tdpBasicCommitteeId
 			List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,levelIds);
 			
-			if(committeeCntDtls !=null ){				
+			if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
 				for (Object[] objects : committeeCntDtls) {
 									
 					if(objects[1].toString().equalsIgnoreCase("Y"))
@@ -1636,7 +1638,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			}
 				 
 			 List<Object[]> startedCount=tdpCommitteeMemberDAO.getStartedCommitteesCountByLocation(state, levelIds);
-				if(startedCount != null){
+				if(startedCount != null && startedCount.size() > 0){
 					for (Object[] objects : startedCount) {
 						if(Long.valueOf(objects[1].toString())==1l){
 							cadreCommitteeReportVO.setMainCommittees(Long.valueOf(objects[0].toString()));//startedCount in Main type
@@ -1652,11 +1654,22 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				cadreCommitteeReportVO.setMembersCount(memberscount != null ? memberscount : 0l);//totalMembers				
 				cadreCommitteeReportVO.setCommitteesCount(completedCommittees + startedCommittees);//Total Committes count.
 				cadreCommitteeReportVO.setCompletedCommittees(completedCommittees);//completedCount.
+				
+				if(cadreCommitteeReportVO.getCommitteesCount()  > 0){				
+					cadreCommitteeReportVO.setStartedCommitteePerc(new BigDecimal(startedCommittees*100.0/cadreCommitteeReportVO.getCommitteesCount()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+					cadreCommitteeReportVO.setCompletedCommitteePerc(new BigDecimal(cadreCommitteeReportVO.getCompletedCommittees() * 100.0/cadreCommitteeReportVO.getCommitteesCount()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+				}
+				else{
+					cadreCommitteeReportVO.setStartedCommitteePerc(0.0);
+					cadreCommitteeReportVO.setCompletedCommitteePerc(0.0);
+				}
+				
+				
 		 
 			return cadreCommitteeReportVO;
 		}
 		catch(Exception e){
-			LOG.error("Exception raised in getTotalCommitteesPanchayatLevelByState method"+e);
+			LOG.error("Exception raised in getCommitteeDetailsByLocation method"+e);
 		}
 		return cadreCommitteeReportVO;
 	}
@@ -1825,4 +1838,34 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				   return resultStatus;
 			}
 	
+	public CadreCommitteeReportVO getTotalCommitteeDetailsByLocation(String state){
+		
+		Long totalCompletedCommittees=0l;
+		Long totalStartedCommittees=0l;
+		CadreCommitteeReportVO cadreCommitteeReportVO =new CadreCommitteeReportVO();
+		try{
+		List<Object[]> totalCommitteeCntDtls =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,null);
+		
+		if(totalCommitteeCntDtls !=null && totalCommitteeCntDtls.size()  >0){				
+			for (Object[] objects : totalCommitteeCntDtls) {
+								
+				if(objects[1].toString().equalsIgnoreCase("Y"))
+					totalCompletedCommittees = totalCompletedCommittees+(Long)objects[0];
+				else if(objects[1].toString().equalsIgnoreCase("N"))
+					totalStartedCommittees=totalStartedCommittees+(Long)objects[0];	
+			}
+		}
+		cadreCommitteeReportVO.setTotalCommittees(totalStartedCommittees + totalCompletedCommittees);
+		cadreCommitteeReportVO.setTotalCompleted(totalCompletedCommittees);
+		if(cadreCommitteeReportVO.getTotalCommittees()  > 0)
+			cadreCommitteeReportVO.setTotalCntPerc(new BigDecimal(cadreCommitteeReportVO.getTotalCompleted() * 100.0/cadreCommitteeReportVO.getTotalCommittees()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+		else
+			cadreCommitteeReportVO.setTotalCntPerc(0.0);
+		return cadreCommitteeReportVO;
+		}
+		catch(Exception e){
+			LOG.error("Exception raised in getTotalCommitteeDetailsByLocation method"+e);
+		}
+		return cadreCommitteeReportVO;
+	}
 }
