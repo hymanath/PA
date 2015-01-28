@@ -248,7 +248,9 @@
         
         </div>
 
-
+		<footer class="text-center m_top20">
+			&copy; 2015 Telugu Desam Party
+		</footer>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

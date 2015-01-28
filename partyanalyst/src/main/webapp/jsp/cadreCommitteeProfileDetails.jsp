@@ -716,7 +716,7 @@
 	</div>
 	
 	<footer class="text-center m_top20">
-			&copy; 2015
+			&copy; 2015 Telugu Desam Party
 	</footer>
 
    <script>
