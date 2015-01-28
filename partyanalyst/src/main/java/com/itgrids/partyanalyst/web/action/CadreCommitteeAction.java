@@ -868,6 +868,98 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		
 		return Action.SUCCESS;
 	}
-	
+	//---cadreCommitteeRequest---
+			public String cadreCommitteeRequest()
+			{
+				RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+				boolean noaccess = false;
+				if(regVO==null){
+					return "input";
+				}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_COMMITTEE_MANAGEMENT")){
+					noaccess = true ;
+				}
+				if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+					noaccess = false;
+				}
+				
+				if(noaccess){
+					return "error";
+				}
+				
+				return Action.SUCCESS;
+			}
+			public String getCommitteMembersInfoRequest()
+			{
+				try {
+					String committeeType = request.getParameter("committeeType").trim();
+					Long designation=Long.parseLong(request.getParameter("designation").trim());
+					if(committeeType.equalsIgnoreCase("main")){
+						 String locationType = request.getParameter("locationType").trim();
+						 String locationValue = request.getParameter("locationValue").trim();
+						 Long locationLvl = null;
+						 if(locationType.equalsIgnoreCase("mandal")){
+							 if(locationValue.substring(0,1).trim().equalsIgnoreCase("1")){
+								 locationLvl = 7l;
+							 }else{
+								 locationLvl = 5l;
+							 }
+						 }else{
+							 if(locationValue.substring(0,1).trim().equalsIgnoreCase("1")){
+								 locationLvl = 6l;
+							 }else{
+								 locationLvl = 8l;
+							 }
+						 }
+						
+						 
+						 membersInfo = cadreCommitteeService.getMainCommitteeMembersInfoRequest(locationLvl,Long.valueOf(locationValue.substring(1)),designation);
+					}else{
+						membersInfo = cadreCommitteeService.getCommitteeMembersInfoRequest(Long.valueOf(request.getParameter("locationValue")),designation);
+					}
+				} catch (Exception e) {
+					LOG.error("Exception occured in getCommitteMembersInfo() At CadreCommitteeAction ",e);
+				}		
+				return Action.SUCCESS;
+				
+				
+				
+			}
+			public String cadreCommitteeIncreasedPositionsOrChangeDesignations()
+			{
+				try {
+					session = request.getSession();
+					RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+					List<LocationWiseBoothDetailsVO> changeDesignationsList=new ArrayList<LocationWiseBoothDetailsVO>();
+					if (registrationVO != null) 
+					{
+						jObj = new JSONObject(getTask());
+						Long requestUserId=registrationVO.getRegistrationID(); 
+						if(jObj.getString("type").equalsIgnoreCase("positionsIncreased"))
+							status = cadreCommitteeService.cadreCommitteeIncreasedPositionsOrChangeDesignations(jObj.getLong("tdpCommitteeRoleId"),requestUserId,jObj.getLong("currentmaxPositions"),jObj.getLong("requestedMaxPositions"),jObj.getString("type"),null);
+						else if(jObj.getString("type").equalsIgnoreCase("changeDesignations")){
+							
+							 JSONArray jArray = jObj.getJSONArray("requestArray");
+							 for (int i = 0; i < jArray.length(); i++) 
+							 {
+								JSONObject obj = jArray.getJSONObject(i);
+								LocationWiseBoothDetailsVO changeDesignationsVO=new LocationWiseBoothDetailsVO();
+								changeDesignationsVO.setLocationId(obj.getLong("tdpCommitteeMemberId"));//memberId
+								changeDesignationsVO.setPopulation(obj.getLong("currentRole"));//currentRole
+								changeDesignationsVO.setVotesPolled(obj.getLong("newRole"));//newRole
+								changeDesignationsList.add(changeDesignationsVO);
+							 }
+							status=cadreCommitteeService.cadreCommitteeIncreasedPositionsOrChangeDesignations(jObj.getLong("tdpCommitteeRoleId"),requestUserId,jObj.getLong("currentmaxPositions"),jObj.getLong("requestedMaxPositions"),jObj.getString("type"),null);   
+						}
+					} 
+					else{
+						return ERROR;
+					}
+					
+				} catch (Exception e) {
+					LOG.error("Exception occured in cadreCommitteeInsertedPositions() At CadreCommitteeAction ",e);
+				}
+				
+				return Action.SUCCESS;
+			}
 	
 }
