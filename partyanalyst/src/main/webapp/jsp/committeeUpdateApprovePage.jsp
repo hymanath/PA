@@ -89,12 +89,16 @@
             </div>
             <!-- First Block Start-->
     		<div class="row">
-            	<div class="col-md-offset-3 col-md-3"  style="background-color:rgba(0,0,0,0.1);"><h1 style="display:inline">
-                <u>100</u></h1><small>REQUEST <BR/>FOR INCREASE POSITION</small></div>
-                <div class="col-md-3"  style="background-color:rgba(0,0,0,0.1);margin-left:1px;"><h1 style="display:inline">
-                <u>40</u></h1><small>REQUEST <BR/>FOR CHANGE MEMBER POSITION</small></div>
+            	<div class="col-md-offset-2 col-md-2"  style="background-color:rgba(0,0,0,0.1);"><h1 style="display:inline">
+                <u id="totalCount">100</u></h1><small>REQUEST <BR/>FOR INCREASE POSITION</small></div>
+                <div class="col-md-2"  style="background-color:rgba(0,0,0,0.1);margin-left:1px;"><h1 style="display:inline">
+                <u id="pendingCount">40</u></h1><small>REQUESTS <BR/> PENDING</small></div>
+				<div class="col-md-2"  style="background-color:rgba(0,0,0,0.1);"><h1 style="display:inline">
+                <u id="approvedCount">100</u></h1><small>REQUESTS <BR/> APPROVED</small></div>
+                <div class="col-md-2"  style="background-color:rgba(0,0,0,0.1);margin-left:1px;"><h1 style="display:inline">
+                <u id="rejectedCount">40</u></h1><small>REQUESTS <BR/> REJECTED</small></div>
             </div>
-            <div class="text-center m_top20">Note: Click on the <u>count</u> to view request details</div>
+           <!-- <div class="text-center m_top20">Note: Click on the <u>count</u> to view request details</div> -->
             <div class="row">
             	<div class="col-md-10 col-md-offset-1 m_top20" id="posTable">
                 	<!--<table class="table table-condensed" style="background-color:rgba(0,0,0,0.1);">
@@ -295,7 +299,7 @@
 					url : "getCommitteesForApprovalAction.action",
 					data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
-					console.log(result);
+					//console.log(result);
 					buildRequests(result);
 				});
 		}
@@ -323,21 +327,31 @@
                          str+='<tbody>';
 							for(var i in result){
 								str+='<tr>';
-                                str+='<td> #'+result[i].committeeId+'</td>';
-                                str+='<td> '+result[i].location+' '+result[i].locationType+'</td>';
-                                str+='<td>'+result[i].committeeName+'</td>';
+                                str+='<td> #'+result[i].requestNo+'</td>';
+								
+								if(result[i].locationType=="Local Election Body" || result[i].locationType=="Ward"){
+									str+='<td> '+result[i].location+'</td>';
+								}else{
+									str+='<td> '+result[i].location+' '+result[i].locationType+'</td>';
+								}
+							    str+='<td>'+result[i].committeeName+'</td>';
                                 str+='<td>'+result[i].role+'</td>';
-                                str+='<td>'+result[i].currentPosCount+'</td>';
-                                str+='<td>'+result[i].requestdPosCount+'</td>';
-								str+='<td>';
-								if(result[i].status="pending"){
-									str+='<select class="form-control input-sm">';
-									str+='<option selected="selected"> Pending </option>';
-									str+='<option> Approved </option>';
-									str+='<option> Rejected </option>';
+                                str+='<td class="crrntPos">'+result[i].currentPosCount+'</td>';
+                                str+='<td class="rqstdPos">'+result[i].requestdPosCount+'</td>';
+								str+='<td class="cls'+result[i].cadreCommitteeIncreasedPosId+'" data_attr='+result[i].tdpCommitteeRoleId+' data_attr_pk='+result[i].cadreCommitteeIncreasedPosId+' data_attr_maxPos='+result[i].requestdPosCount+'>';
+								if(result[i].status=="pending"){
+									str+='<select class="form-control input-sm updateStatusCls">';
+									str+='<option selected="selected" value="Pending"> Pending </option>';
+									str+='<option value="Approved"> Approved </option>';
+									str+='<option value="Rejected"> Rejected </option>';
 									str+='</select>';
 								}else{
-									str+=''+result[i].status+'';
+									if(result[i].status!="Rejected"){
+										str+='<span style="color:green">'+result[i].status+'</span>';
+									}else{
+										str+='<span style="color:red">'+result[i].status+'</span>';
+									}
+									
 								}
                                 str+='</td>';
 								str+='</tr>';
@@ -347,6 +361,63 @@
                     str+='</table>';
 					
 		$("#posTable").html(str);
+		}
+		
+		//updatePosCount();
+		function updatePosCount(roleId, increasedPosId, maxCount, type){
+			var jsObj = {
+						tdpCommitteeRoleId : roleId,
+						maxCount : maxCount,
+						type : type,
+						increasedPosId : increasedPosId
+				}				   
+				$.ajax({
+					type : "POST",
+					url : "updateCommitteePosCountAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					if(result!="failed"){
+					   if(type!="Rejected"){
+							$(".cls"+increasedPosId).html('<span style="color:green">'+type+'</span>');
+					   }else{
+							$(".cls"+increasedPosId).html('<span style="color:red">'+type+'</span>');
+					   }
+					   getStatusForApproval();
+					}else{
+						$(this).val("pending");
+						alert(" Unable To Update .. Please Try Again");
+					}
+				});
+		}
+		$(document).on("change",".updateStatusCls",function(){
+			if (confirm('Do you wan\'t to Continue?')) {
+				var increasedPosId = $(this).parent().attr("data_attr_pk");
+				var roleId = $(this).parent().attr("data_attr");
+				var maxCount = $(this).parent().attr("data_attr_maxPos");
+				var type = $(this).val();
+			
+				if(type!="pending"){
+					updatePosCount(roleId, increasedPosId, maxCount, type);
+				}
+			}else{
+				$(this).val("pending");
+			}
+		});
+		
+		getStatusForApproval();
+		function getStatusForApproval(){
+			var jsObj = {}				   
+				$.ajax({
+					type : "POST",
+					url : "statusCountOfApprovalAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					console.log(result);
+					$("#totalCount").html(result.totalCount);
+					$("#pendingCount").html(result.pendingCount);
+					$("#approvedCount").html(result.approvedCount);
+					$("#rejectedCount").html(result.rejectedCount);
+				});
 		}
 	</script>
   </body>

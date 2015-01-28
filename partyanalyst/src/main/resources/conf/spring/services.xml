@@ -2506,8 +2506,10 @@
 	     <property name="districtDAO" ref="districtDAO"/> 
 	     <property name="localElectionBodyWardDAO" ref="localElectionBodyWardDAO"/>
 	     <property name="tdpCommitteeLevelDAO" ref="tdpCommitteeLevelDAO"/>	    
-	     <property name="userDAO" ref="userDAO"/>
 	     <property name="cadreCommitteeIncreasedPositionsDAO" ref="cadreCommitteeIncreasedPositionsDAO"/>
+	     <property name="tdpCommitteeRoleHistoryDAO" ref="tdpCommitteeRoleHistoryDAO"/>
+	     
+	     <property name="userDAO" ref="userDAO"/>
 	     <property name="cadreCommitteeChangeDesignationsDAO" ref="cadreCommitteeChangeDesignationsDAO"/>
 	</bean>
 </beans>		
