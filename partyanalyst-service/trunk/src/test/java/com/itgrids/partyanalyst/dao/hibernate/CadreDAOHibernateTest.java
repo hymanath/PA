@@ -682,7 +682,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		/*Long searchList = cadreCommitteeIncreasedPositionsDAO.getAllRecordsCount();
 		System.out.println(searchList);*/
 		
-		List<Object[]> list = cadreCommitteeIncreasedPositionsDAO.getAllRecordsCount(1,1);
+		List<Object[]> list = cadreCommitteeIncreasedPositionsDAO.getAllRecordsCountStatusWise();
 		System.out.println(list.size());
 		
 	}

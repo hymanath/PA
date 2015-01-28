@@ -26,7 +26,49 @@ public class CommitteeApprovalVO implements Serializable{
 	private List<Long> locationIds;
 	private String refNo;
 	
+	private Long tdpCommitteeRoleId;
+	private Long cadreCommitteeIncreasedPosId;
 	
+	private Long pendingCount;
+	private Long rejectedCount;
+	private Long approvedCount;
+	private Long totalCount;
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
+	public Long getPendingCount() {
+		return pendingCount;
+	}
+	public void setPendingCount(Long pendingCount) {
+		this.pendingCount = pendingCount;
+	}
+	public Long getRejectedCount() {
+		return rejectedCount;
+	}
+	public void setRejectedCount(Long rejectedCount) {
+		this.rejectedCount = rejectedCount;
+	}
+	public Long getApprovedCount() {
+		return approvedCount;
+	}
+	public void setApprovedCount(Long approvedCount) {
+		this.approvedCount = approvedCount;
+	}
+	public Long getCadreCommitteeIncreasedPosId() {
+		return cadreCommitteeIncreasedPosId;
+	}
+	public void setCadreCommitteeIncreasedPosId(Long cadreCommitteeIncreasedPosId) {
+		this.cadreCommitteeIncreasedPosId = cadreCommitteeIncreasedPosId;
+	}
+	public Long getTdpCommitteeRoleId() {
+		return tdpCommitteeRoleId;
+	}
+	public void setTdpCommitteeRoleId(Long tdpCommitteeRoleId) {
+		this.tdpCommitteeRoleId = tdpCommitteeRoleId;
+	}
 	public Long getRoleId() {
 		return roleId;
 	}

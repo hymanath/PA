@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -30,5 +31,30 @@ public class TdpCommitteeRoleDAO extends GenericDaoHibernate<TdpCommitteeRole, L
 		query.setParameter("tdpCommitteeRoleId", tdpCommitteeRoleId);
 		query.setParameter("tdpCommitteeId", tdpCommitteeId);
 		return (String)query.uniqueResult();
+	}
+	
+	public List<Object[]> getDetailsForTdpCommitteRoleId(Long roleId){
+		Query query = getSession().createQuery(" select model.tdpCommitteeRoleId," +
+				" model.tdpCommitteeId," +
+				" model.tdpRolesId," +
+				" model.maxMembers," +
+				" model.updatedTime" +
+				" from TdpCommitteeRole model" +
+				" where model.tdpCommitteeRoleId =:roleId ");
+		
+		query.setParameter("roleId", roleId);
+		return query.list();
+	}
+	
+	public int updateMaxPosForCommitteeRoleId(Long roleId, Long maxPos, Date updatedTime){
+		Query query = getSession().createQuery(" update TdpCommitteeRole model set model.maxMembers = :maxPos, " +
+				" model.updatedTime=:updatedTime" +
+				" where model.tdpCommitteeRoleId = :roleId ");
+		
+		query.setParameter("maxPos", maxPos);
+		query.setParameter("roleId", roleId);
+		query.setDate("updatedTime", updatedTime);
+		
+		return query.executeUpdate();
 	}
 }

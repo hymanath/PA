@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -53,6 +54,9 @@ public interface ICadreCommitteeService {
 	public List<CadreCommitteeMemberVO> setCommitteConfirmation(Long basicCommitteeTypeId,Long locationId,Long levelId);
 	public List<CadreCommitteeMemberVO> updateCadreRole(Long tdpCommitteeMemberId);
 	public List<CommitteeApprovalVO> getCommitteesForApproval(Long startNo, Long endNo,Long requestUserId);
+	public String updateCommitteePosCount(Long roleId, Long maxCount, String type, Long increasedPosId);
+	public CommitteeApprovalVO getStatusCountsOfApproval();
+	
 	
 	public List<CommitteeSummaryVO> getSummaryDetails(String accessValue);
 	public List<LocationWiseBoothDetailsVO> getStartedCommitteesCountInALocation(String accessValue);
