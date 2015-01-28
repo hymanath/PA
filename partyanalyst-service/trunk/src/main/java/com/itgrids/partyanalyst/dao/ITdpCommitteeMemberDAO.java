@@ -22,5 +22,11 @@ public interface ITdpCommitteeMemberDAO  extends GenericDao<TdpCommitteeMember, 
 	public List<Long> getTdpCommitteIds(Long levelId,Long locationVal,Long committeeTypeId);
 	public Integer updateTdpComitte(List<Long> tdpCommitteeIds);
 	public Integer updateCadreRole(Long Id);
-	
+	public List<Object[]> getStartedCommitteesCountInALocation(Long constituencyId);
+/*	public List<Object[]> getMandalTotalCommittees(Long constituencyId,List mandalIds);
+	public List<Object[]> getMuncipalTotalCommittees(Long constituencyId,List muncipalIds);
+	public List<Object[]> getDivisonTotalCommittees(Long constituencyId,List divisionIds);*/
+	public List<Object[]> getLocationWiseStartedCount(List<Long> locationIds,Long locationTypeId);
+	public List<Object[]> basicCommitteeDetails();
+	public List<Object[]> getVillageStartedCount(Long constituencyId);
 }
