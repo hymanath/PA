@@ -553,7 +553,8 @@
 				<value>com.itgrids.partyanalyst.model.TdpCadreImagesValid</value>	
 				<value>com.itgrids.partyanalyst.model.TdpCommitteeMemberHistory</value>		
 				<value>com.itgrids.partyanalyst.model.CadreCommitteeIncreasedPositions</value>
-	            <value>com.itgrids.partyanalyst.model.CadreCommitteeChangeDesignations</value>										
+	            <value>com.itgrids.partyanalyst.model.CadreCommitteeChangeDesignations</value>
+	            <value>com.itgrids.partyanalyst.model.TdpCommitteeRoleHistory</value>										
 				</list>
 			
 		</property>

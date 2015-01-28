@@ -78,9 +78,29 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private List<IdNameVO>						idNameVOList;
 	private List<IdNameVO>						constituenciesList;
 	private List<CommitteeApprovalVO>			approvalRecordsList;
+	private String								finalStatus;
+	private CommitteeApprovalVO					statusFinalVO;
 	private List<LocationWiseBoothDetailsVO> committeesCountsInfo;
 	private List<CommitteeSummaryVO> returnList;
 	
+
+	
+	
+	public CommitteeApprovalVO getStatusFinalVO() {
+		return statusFinalVO;
+	}
+
+	public void setStatusFinalVO(CommitteeApprovalVO statusFinalVO) {
+		this.statusFinalVO = statusFinalVO;
+	}
+
+	public String getFinalStatus() {
+		return finalStatus;
+	}
+
+	public void setFinalStatus(String finalStatus) {
+		this.finalStatus = finalStatus;
+	}
 
 	public List<CommitteeApprovalVO> getApprovalRecordsList() {
 		return approvalRecordsList;
@@ -1033,6 +1053,34 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String updateCommitteePosCount(){
+		try {
+			jObj = new JSONObject(getTask());
+			Long roleId =  jObj.getLong("tdpCommitteeRoleId");
+			Long maxCount =  jObj.getLong("maxCount");
+			String type =  jObj.getString("type");
+			Long increasedPosId = jObj.getLong("increasedPosId");
+			
+			finalStatus = cadreCommitteeService.updateCommitteePosCount(roleId,maxCount,type,increasedPosId);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in updateCommitteePosCount() At CadreCommitteeAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String statusCountOfApproval(){
+		try {
+			statusFinalVO = cadreCommitteeService.getStatusCountsOfApproval();
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in updateCommitteePosCount() At statusCountOfApproval ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
 	
 	public String gettingRequestsDetailsForAUser(){
 		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
