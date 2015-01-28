@@ -57,6 +57,7 @@ import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CommitteeApprovalVO;
+import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
@@ -2444,31 +2445,493 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return resultList;
 	}
 
-public String gettingReferenceNumber(Long id){
-	String output=null;
-	try{
-	    String refNo=id.toString();
-		int refLength=refNo.trim().length();
-		if(refLength==1)
-		 output="#0000000"+refNo;
-		else if(refLength==2)
-		  output="#000000"+refNo;
-		else if(refLength==3)
-		  output="#00000"+refNo;
-		else if(refLength==4)
-		  output="#0000"+refNo;
-		else if(refLength==5)
-		  output="#000"+refNo;
-		else if(refLength==6)
-		  output="#00"+refNo;
-		else if(refLength==7)
-		  output="#0"+refNo;
-		else
-		  output="#"+refNo;
-	}catch (Exception e) {
-		 LOG.error("Exception raised in gettingReferenceNumber", e);
+	public String gettingReferenceNumber(Long id){
+		String output=null;
+		try{
+		    String refNo=id.toString();
+			int refLength=refNo.trim().length();
+			if(refLength==1)
+			 output="#0000000"+refNo;
+			else if(refLength==2)
+			  output="#000000"+refNo;
+			else if(refLength==3)
+			  output="#00000"+refNo;
+			else if(refLength==4)
+			  output="#0000"+refNo;
+			else if(refLength==5)
+			  output="#000"+refNo;
+			else if(refLength==6)
+			  output="#00"+refNo;
+			else if(refLength==7)
+			  output="#0"+refNo;
+			else
+			  output="#"+refNo;
+		}catch (Exception e) {
+			 LOG.error("Exception raised in gettingReferenceNumber", e);
+		}
+		return output;
 	}
-	return output;
-}
+	
+	public List<CommitteeSummaryVO> getSummaryDetails(String accessValue)
+	{
+		List<CommitteeSummaryVO> returnList = null;
+		try {
+			
+			Long constituencyId=Long.parseLong(accessValue);
+			
+			
+			//List<Object[]> committeesCountsList = tdpCommitteeDAO.getTotalCommitteesPanchayatLevel(constituencyId);
+			List<Object[]> valuesList = tdpCommitteeDAO. getLocationWiseVillageDetails(constituencyId);
+			Long mainCommitteConformed = 0l;
+			Long mainCommitteNotConformed = 0l;
+			Long startedCount = 0l;
+			Map<Long,CommitteeSummaryVO> affilatedMap = new HashMap<Long, CommitteeSummaryVO>();
+			if(valuesList != null && valuesList.size() > 0)
+			{
+				returnList = new ArrayList<CommitteeSummaryVO>();
+				CommitteeSummaryVO mainCommitteeVo = new CommitteeSummaryVO();
+				fillCommitteeSummaryVO(valuesList,mainCommitteConformed,mainCommitteNotConformed,affilatedMap,mainCommitteeVo);
+				List<LocationWiseBoothDetailsVO> startedList = getVillageTotalCommittees(accessValue,affilatedMap);
+				fillResultDetails(startedList,returnList,startedCount,affilatedMap,mainCommitteeVo);
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getSummaryDetails", e);
+		}
+		
+		return returnList;
+		
+	}
+	/*if(((Long)committeesCount[1]).longValue() == 1l){
+		if(((Long)committeesCount[2]).longValue() == 6l || ((Long)committeesCount[2]).longValue() == 8l){
+			mainVillageVo.setLocationId((Long)committeesCount[0]);
+		}else{
+			mainMandalVo.setLocationId((Long)committeesCount[0]);
+		}
+	}else{
+		if(((Long)committeesCount[2]).longValue() == 6l || ((Long)committeesCount[2]).longValue() == 8l){
+			affVillageVo.setLocationId((Long)committeesCount[0]);
+		}else{
+			affMandalVo.setLocationId((Long)committeesCount[0]);
+		}
+	}*/
+		//0count ,1 basic committeeId,2basic committee name,3committeeType
+	
+	public List<LocationWiseBoothDetailsVO> getStartedCommitteesCountInALocation(String accessValue){
+		Long constituencyId=Long.parseLong(accessValue);
+		//getting started committees in a constituency
+		
+		/*List<LocationWiseBoothDetailsVO> committeesCountsInfo = new ArrayList<LocationWiseBoothDetailsVO>();
+		try{
+			//0count ,1 basic committeeId,2basic committee name,3committeeType
+			List<Object[]> committeesStartedList = tdpCommitteeMemberDAO.getStartedCommitteesCountInALocation(constituencyId);	
+			for(Object[] committeesCount:committeesStartedList){
+				LocationWiseBoothDetailsVO committeesStartedCountVillageMain   = new LocationWiseBoothDetailsVO();
+				List<LocationWiseBoothDetailsVO> committeesStartedCountVillageAffliated   = new ArrayList<LocationWiseBoothDetailsVO>();
+				
+				if(Long.valueOf(committeesCount[3].toString()) ==1){
+					committeesStartedCountVillageMain.setTotal(Long.valueOf(committeesCount[0].toString()));//count
+					committeesStartedCountVillageMain.setLocationId(Long.valueOf(committeesCount[1].toString()));//basic committeeId
+					committeesStartedCountVillageMain.setLocationName(committeesCount[2].toString());//basic committee name
+					committeesStartedCountVillageMain.setPopulation(Long.valueOf(committeesCount[3].toString()));//tdpCommitteeTypeId
+					
+					committeesCountsInfo.add(committeesStartedCountVillageMain);
+					
+				}if(Long.valueOf(committeesCount[3].toString()) ==2){
+					LocationWiseBoothDetailsVO committeesStartedCountVillageAffli=new LocationWiseBoothDetailsVO();
+					
+					committeesStartedCountVillageAffli.setTotal(Long.valueOf(committeesCount[0].toString()));//count
+					committeesStartedCountVillageAffli.setLocationId(Long.valueOf(committeesCount[1].toString()));//basic committeeId
+					committeesStartedCountVillageAffli.setLocationName(committeesCount[2].toString());//basic committee name
+					committeesStartedCountVillageAffli.setPopulation(Long.valueOf(committeesCount[3].toString()));//tdpCommitteeTypeId
+					
+					committeesStartedCountVillageAffliated.add(committeesStartedCountVillageAffli);
+				}
+				committeesStartedCountVillageMain.setResult(committeesStartedCountVillageAffliated);
+				committeesCountsInfo.add(committeesStartedCountVillageMain);
 
+				return committeesCountsInfo;
+				
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised in getStartedCommitteesCountInALocation()"+e);
+			return null;
+			
+		}*/
+		List<LocationWiseBoothDetailsVO> committeesCountsInfo = new ArrayList<LocationWiseBoothDetailsVO>();
+		
+		LocationWiseBoothDetailsVO villageLevelStartedCommVo   = new LocationWiseBoothDetailsVO();
+		List<LocationWiseBoothDetailsVO> villageLevelStartedAffComm = new ArrayList<LocationWiseBoothDetailsVO>();
+		villageLevelStartedCommVo.setResult(villageLevelStartedAffComm);
+		
+		List<Object[]> committeesStartedList = tdpCommitteeMemberDAO.getStartedCommitteesCountInALocation(constituencyId);
+		
+		for(Object[] committeesCount:committeesStartedList){
+			if(((Long)committeesCount[3]).longValue() == 1l){
+				villageLevelStartedCommVo.setTotal(Long.parseLong(committeesCount[0].toString()));//count
+				villageLevelStartedCommVo.setLocationId(Long.parseLong(committeesCount[1].toString()));//basic committeeId
+				villageLevelStartedCommVo.setLocationName(committeesCount[2].toString());//basic committee name
+				villageLevelStartedCommVo.setPopulation(Long.parseLong(committeesCount[3].toString()));//3committeeType
+			}
+			else if(((Long)committeesCount[3]).longValue() == 2l){
+				LocationWiseBoothDetailsVO tempVo=new LocationWiseBoothDetailsVO();
+				tempVo.setTotal(Long.parseLong(committeesCount[0].toString()));
+				tempVo.setLocationId(Long.parseLong(committeesCount[1].toString()));
+				tempVo.setLocationName(committeesCount[2].toString());
+				tempVo.setPopulation(Long.parseLong(committeesCount[3].toString()));//3committeeType
+				villageLevelStartedAffComm.add(tempVo);
+			}
+		}
+		
+		committeesCountsInfo.add(villageLevelStartedCommVo);
+		
+			return committeesCountsInfo;
+	}
+	
+	private void populateDefaultValues(LocationWiseBoothDetailsVO vo){
+		vo.setLocationId(0l);
+		vo.setPopulation(0l);
+		vo.setVotesPolled(0l);
+		vo.setTotal(0l);
+	}
+	
+	
+	@SuppressWarnings("unused")
+	public List<CommitteeSummaryVO> gettingMandalAndMuncipalAndDivisonSummary(String accessValue)
+	{	
+		List<CommitteeSummaryVO> returnList = null;
+		try{
+		Long constituencyId=Long.parseLong(accessValue);
+		
+		List<LocationWiseBoothDetailsVO> resultList = getMandalMunicCorpDetailsNew(constituencyId);
+		
+		//Map<Long,List<Long>> mandalOrMuncipalMap = null;
+		
+		if(resultList != null && resultList.size() > 0)
+		{
+			//mandalOrMuncipalMap = new HashMap<Long, List<Long>>();
+			List<Long> mandalIds = new ArrayList<Long>();
+			List<Long> muncipalIds = new ArrayList<Long>();
+			List<Long> divisionIds = new ArrayList<Long>();
+			for (LocationWiseBoothDetailsVO locationWiseBoothDetailsVO : resultList)
+			{	
+				char ch=(locationWiseBoothDetailsVO.getLocationId().toString().charAt(0));
+				Long val=Long.parseLong(Character.toString(ch));
+			
+				if(val == 1l)
+				{
+					//muncipalIds.add(locationWiseBoothDetailsVO.getLocationId());
+					muncipalIds.add(Long.parseLong(locationWiseBoothDetailsVO.getLocationId().toString().substring(1)));
+					//muncipalIds.add(val);
+					//mandalOrMuncipalMap.put(1l, muncipalIds);
+				}
+				else if (val == 2l)
+				{
+					mandalIds.add(Long.parseLong(locationWiseBoothDetailsVO.getLocationId().toString().substring(1)));
+					//mandalOrMuncipalMap.put(2l, mandalIds);
+				}
+				else
+				{
+					divisionIds.add(Long.parseLong(locationWiseBoothDetailsVO.getLocationId().toString().substring(1)));
+					//mandalOrMuncipalMap.put(3l, divisionIds);
+				}
+			}
+			
+			// MANDAL WISE DETAILS
+			List<Object[]> mandalWiseList = tdpCommitteeDAO.getLocationWiseDetails(mandalIds,5l);
+			// muncipal WISE DETAILS
+			List<Object[]> muncipalList  = tdpCommitteeDAO.getLocationWiseDetails(muncipalIds,7l);
+			// divisions WISE DETAILS
+			//List<Object[]> divisionsList  = tdpCommitteeDAO.getLocationWiseDetails(divisionIds,9l);//open
+			
+			List<Object[]> valuesList = new ArrayList<Object[]>();
+			
+			valuesList.addAll(mandalWiseList);
+			valuesList.addAll(muncipalList);
+			//valuesList.addAll(divisionsList);//open
+			Long mainCommitteConformed = 0l;
+			Long mainCommitteNotConformed = 0l;
+			Long startedCount = 0l;
+			Map<Long,CommitteeSummaryVO> affilatedMap = new HashMap<Long, CommitteeSummaryVO>();
+			if(valuesList != null && valuesList.size() > 0)
+			{
+				CommitteeSummaryVO mainCommitteesVO = new CommitteeSummaryVO();
+				returnList = new ArrayList<CommitteeSummaryVO>();
+				fillCommitteeSummaryVO(valuesList,mainCommitteConformed,mainCommitteNotConformed,affilatedMap,mainCommitteesVO);
+				List<LocationWiseBoothDetailsVO> startedList = getMandalMuncipalDivisonTotalCommittees(accessValue,affilatedMap);
+				fillResultDetails(startedList,returnList,startedCount,affilatedMap,mainCommitteesVO);
+				
+			}
+			
+			
+		}
+		}catch (Exception e) {
+			LOG.error("Exception raised gettingMandalAndMuncipalAndDivisonSummary()"+e);
+		}
+		
+		return returnList;
+	}
+	
+	
+	public void fillResultDetails(List<LocationWiseBoothDetailsVO> startedList,List<CommitteeSummaryVO> returnList,Long startedCount,Map<Long,CommitteeSummaryVO> affilatedMap,CommitteeSummaryVO mainCommitteesVO)
+	{
+		try {
+			if(startedList != null && startedList.size() > 0)
+			{
+				for (LocationWiseBoothDetailsVO locationWiseBoothDetailsVO : startedList)
+				{
+					if(locationWiseBoothDetailsVO.getLocationId() == 1)
+					{
+						startedCount = locationWiseBoothDetailsVO.getTotal();
+					}
+					else
+					{
+						CommitteeSummaryVO affVO = affilatedMap.get(locationWiseBoothDetailsVO.getLocationId());
+						if(affVO != null)
+						{
+							affVO.setAffilatedStartedCount(locationWiseBoothDetailsVO.getTotal());
+							returnList.add(affVO);
+						}
+					}
+					
+					
+				}
+				
+				if(returnList != null && returnList.size() > 0)
+				{
+					returnList.get(0).setMainComitteesConformed(mainCommitteesVO.getMainComitteesConformed());
+					returnList.get(0).setMainComitteesNotConformed(mainCommitteesVO.getMainComitteesNotConformed());
+					returnList.get(0).setStartedCount(startedCount);
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised fillResultDetails()", e);
+		}
+	}
+	public void fillCommitteeSummaryVO(List<Object[]> valuesList,Long mainCommitteConformed,Long mainCommitteNotConformed,Map<Long,CommitteeSummaryVO> affilatedMap,CommitteeSummaryVO mainCommitteesVO)
+	{
+		try
+		{
+			for (Object[] objects : valuesList)
+			{
+				if(objects[0] != null)
+				{
+					if((Long)objects[0] == 1)
+					{
+						if(objects[3] != null)
+						{
+							if(objects[3].toString().equalsIgnoreCase("Y"))
+							{
+								 mainCommitteConformed = mainCommitteConformed + (Long)objects[4];
+								 mainCommitteesVO.setMainComitteesConformed(mainCommitteConformed);
+							}
+							else
+							{
+								 mainCommitteNotConformed = mainCommitteNotConformed + (Long)objects[4];
+								 mainCommitteesVO.setMainComitteesNotConformed(mainCommitteNotConformed);
+							}
+							
+						}
+					}
+					else
+					{
+						if(objects[2] != null)
+						{
+							CommitteeSummaryVO affVO = affilatedMap.get((Long)objects[2]);
+							if(affVO == null)
+							{
+								affVO = new CommitteeSummaryVO();
+								affVO.setAffilatedCommitteeName(objects[1].toString());
+								affilatedMap.put((Long)objects[2], affVO);
+							}
+							
+							if(objects[3].toString().equalsIgnoreCase("Y"))
+							{
+								affVO.setAffComitteesConformed((Long)objects[4]);
+							}
+							else
+							{
+								affVO.setAffComitteesNotConformed((Long)objects[4]);
+							}
+							
+						}
+					}
+				}
+			}
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Exception raised fillCommitteeSummaryVO()",e);
+		}
+	}
+	public List<LocationWiseBoothDetailsVO> getMandalMuncipalDivisonTotalCommittees(String accessValue,Map<Long,CommitteeSummaryVO> affilatedMap){
+		List<LocationWiseBoothDetailsVO> finalCounts= null;
+		try{
+			Long constituencyId=Long.parseLong(accessValue);
+			List<LocationWiseBoothDetailsVO> resultList = getMandalMunicCorpDetailsNew(constituencyId);
+			
+			//Map<Long,List<Long>> mandalOrMuncipalMap = null;
+			
+			if(resultList != null && resultList.size() > 0)
+			{
+				//mandalOrMuncipalMap = new HashMap<Long, List<Long>>();
+				List<Long> mandalIds = new ArrayList<Long>();
+				List<Long> muncipalIds = new ArrayList<Long>();
+				List<Long> divisionIds = new ArrayList<Long>();
+				for (LocationWiseBoothDetailsVO locationWiseBoothDetailsVO : resultList)
+				{	
+					char ch=(locationWiseBoothDetailsVO.getLocationId().toString().charAt(0));
+					Long val=Long.parseLong(Character.toString(ch));
+				
+					if(val == 1l)
+					{
+						//muncipalIds.add(locationWiseBoothDetailsVO.getLocationId());
+						muncipalIds.add(Long.parseLong(locationWiseBoothDetailsVO.getLocationId().toString().substring(1)));
+						//muncipalIds.add(val);
+						//mandalOrMuncipalMap.put(1l, muncipalIds);
+					}
+					else if (val == 2l)
+					{
+						mandalIds.add(Long.parseLong(locationWiseBoothDetailsVO.getLocationId().toString().substring(1)));
+						//mandalOrMuncipalMap.put(2l, mandalIds);
+					}
+					else
+					{
+						divisionIds.add(Long.parseLong(locationWiseBoothDetailsVO.getLocationId().toString().substring(1)));
+						//mandalOrMuncipalMap.put(3l, divisionIds);
+					}
+				}
+				
+				// MANDAL WISE DETAILS
+				List<Object[]> mandalWiseList = tdpCommitteeMemberDAO.getLocationWiseStartedCount(mandalIds,5l);
+				// muncipal WISE DETAILS
+				List<Object[]> muncipalList  = tdpCommitteeMemberDAO.getLocationWiseStartedCount(muncipalIds,7l);
+				// divisions WISE DETAILS
+				//List<Object[]> divisionsList  = tdpCommitteeMemberDAO.getLocationWiseStartedCount(divisionIds,9l);//open
+				
+				Map<Long, Long> counts = new HashMap<Long, Long>();
+				for(Long i=1l;i<10l;i++)/*number committeess in tdp_basic_committee table*/{
+					counts.put(i, 0l);
+				}
+				
+				List<Object[]> valuesList = new ArrayList<Object[]>();
+				
+				valuesList.addAll(mandalWiseList);
+				valuesList.addAll(muncipalList);
+				//valuesList.addAll(divisionsList);
+				Map<Long,LocationWiseBoothDetailsVO> resultMap = new HashMap<Long, LocationWiseBoothDetailsVO>();
+				for(Object[] objects : valuesList)
+				{
+					if(objects[0] != null)
+					{
+						LocationWiseBoothDetailsVO vo = resultMap.get((Long)objects[0]);
+						if(vo == null)
+						{
+							vo = new LocationWiseBoothDetailsVO();
+							vo.setLocationId((Long)objects[0]);
+							vo.setLocationName(objects[1] != null ? objects[0].toString() : "");
+							resultMap.put((Long)objects[0], vo);
+						}
+						vo.setTotal(vo.getTotal() + (Long)objects[2]);
+						
+					}
+					
+				}
+				
+				if(affilatedMap != null && affilatedMap.size() > 0)
+				{
+					finalCounts = new ArrayList<LocationWiseBoothDetailsVO>();
+					Set<Long> committeeIds = affilatedMap.keySet();
+					for (Long committeeId : committeeIds) 
+					{
+						CommitteeSummaryVO vo = affilatedMap.get(committeeId);
+						LocationWiseBoothDetailsVO subVO = resultMap.get(committeeId);
+						if(subVO == null)
+						{
+							subVO = new LocationWiseBoothDetailsVO();
+							subVO.setLocationId(committeeId);
+							subVO.setLocationName(vo.getAffilatedCommitteeName());
+							subVO.setTotal(0l);
+						}
+						
+						finalCounts.add(subVO);
+					}
+					LocationWiseBoothDetailsVO subVO = resultMap.get(1l);
+					if(subVO != null)
+					{
+						finalCounts.add(subVO);
+					}
+				}
+			}
+			
+			
+		}catch (Exception e) {
+			LOG.error("Exception raised in getMandalMuncipalDivisonTotalCommittees()"+e);
+		}
+		return finalCounts;
+	}
+	
+	public List<LocationWiseBoothDetailsVO> getVillageTotalCommittees(String accessValue,Map<Long,CommitteeSummaryVO> affilatedMap){
+		List<LocationWiseBoothDetailsVO> finalCounts= null;
+		try{
+			Long constituencyId=Long.parseLong(accessValue);
+			
+			
+				Map<Long, Long> counts = new HashMap<Long, Long>();
+				for(Long i=1l;i<10l;i++)/*number committeess in tdp_basic_committee table*/{
+					counts.put(i, 0l);
+				}
+				
+				List<Object[]> valuesList = tdpCommitteeMemberDAO.getVillageStartedCount(constituencyId);
+
+				Map<Long,LocationWiseBoothDetailsVO> resultMap = new HashMap<Long, LocationWiseBoothDetailsVO>();
+				for(Object[] objects : valuesList)
+				{
+					if(objects[0] != null)
+					{
+						LocationWiseBoothDetailsVO vo = resultMap.get((Long)objects[0]);
+						if(vo == null)
+						{
+							vo = new LocationWiseBoothDetailsVO();
+							vo.setLocationId((Long)objects[0]);
+							vo.setLocationName(objects[1] != null ? objects[0].toString() : "");
+							resultMap.put((Long)objects[0], vo);
+						}
+						vo.setTotal(vo.getTotal() + (Long)objects[2]);
+						
+					}
+					
+				}
+				
+				if(affilatedMap != null && affilatedMap.size() > 0)
+				{
+					finalCounts = new ArrayList<LocationWiseBoothDetailsVO>();
+					Set<Long> committeeIds = affilatedMap.keySet();
+					for (Long committeeId : committeeIds) 
+					{
+						CommitteeSummaryVO vo = affilatedMap.get(committeeId);
+						LocationWiseBoothDetailsVO subVO = resultMap.get(committeeId);
+						if(subVO == null)
+						{
+							subVO = new LocationWiseBoothDetailsVO();
+							subVO.setLocationId(committeeId);
+							subVO.setLocationName(vo.getAffilatedCommitteeName());
+							subVO.setTotal(0l);
+						}
+						
+						finalCounts.add(subVO);
+					}
+					LocationWiseBoothDetailsVO subVO = resultMap.get(1l);
+					if(subVO != null)
+					{
+						finalCounts.add(subVO);
+					}
+				}
+
+		}catch (Exception e) {
+			LOG.error("Exception raised in getVillageTotalCommittees()"+e);
+		}
+		return finalCounts;
+	}
+	
 }
