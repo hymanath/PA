@@ -20,4 +20,15 @@ public class TdpCommitteeRoleDAO extends GenericDaoHibernate<TdpCommitteeRole, L
 		query.setParameter("committeeId", committeeId);
 		return query.list();
 	}
+	public String gettingConfirmedCommittee(Long tdpCommitteeId,Long tdpCommitteeRoleId)
+	{
+		
+		Query query = getSession().createQuery("select model.tdpCommittee.isCommitteeConfirmed " +
+				" from TdpCommitteeRole model " +
+				" where model.tdpCommitteeRoleId=:tdpCommitteeRoleId and " +
+				"       model.tdpCommittee.tdpCommitteeId =:tdpCommitteeId ");
+		query.setParameter("tdpCommitteeRoleId", tdpCommitteeRoleId);
+		query.setParameter("tdpCommitteeId", tdpCommitteeId);
+		return (String)query.uniqueResult();
+	}
 }
