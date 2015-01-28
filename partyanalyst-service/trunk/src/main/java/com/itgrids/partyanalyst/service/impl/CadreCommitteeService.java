@@ -2047,13 +2047,19 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return cadreCommitteeReportVO;
 	}
 	
-	public List<CommitteeApprovalVO> getCommitteesForApproval(Long startNo, Long endNo){
+	public List<CommitteeApprovalVO> getCommitteesForApproval(Long startNo, Long endNo,Long requestUserId){
 		
 		LOG.debug(" Entered into getCommitteesForApproval ");
 		List<CommitteeApprovalVO> finalList = new ArrayList<CommitteeApprovalVO>();
 		try{
 			List<Object[]> list = tdpCommitteeLevelDAO.getAllLevels();
-			List<Object[]> list1 = cadreCommitteeIncreasedPositionsDAO.getAllRecordsCount(startNo.intValue(), endNo.intValue()); 
+			List<Object[]> list1=null;
+			if(requestUserId==null){
+			  list1 = cadreCommitteeIncreasedPositionsDAO.getAllRecordsCount(startNo.intValue(), endNo.intValue()); 
+			}
+			else{
+			  list1 = cadreCommitteeIncreasedPositionsDAO.getRequestDetailsForAUser(requestUserId); 
+			}
 			
 			Map<Long, String> pancMap = new HashMap<Long, String>();
 			Map<Long, String> tehsilMap = new HashMap<Long, String>();
@@ -2121,16 +2127,16 @@ public class CadreCommitteeService implements ICadreCommitteeService
 							List<Object[]> wards =  constituencyDAO.getConstityencyByConstituencyids(tmp.getLocationIds());
 							if(wards!=null && wards.size()>0){
 								for(Object[] obj:wards){
-									wardMap.put(Long.valueOf(obj[0].toString()), obj[1].toString()+" "+obj[2].toString());
+									wardMap.put(Long.valueOf(obj[0].toString()), obj[1].toString());
 								}
 							}
 						}
 						
-						if(tmp.getLocationTypeId().equals(8l)){
+						if(tmp.getLocationTypeId().equals(9l)){
 							List<Object[]> divis =  constituencyDAO.getConstityencyByConstituencyids(tmp.getLocationIds());
 							if(divis!=null && divis.size()>0){
 								for(Object[] obj:divis){
-									divisMap.put(Long.valueOf(obj[0].toString()), obj[1].toString()+" "+obj[2].toString());
+									divisMap.put(Long.valueOf(obj[0].toString()), obj[1].toString());
 								}
 							}
 						}
@@ -2143,7 +2149,11 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			if(list1!=null && list1.size()>0){
 				for(Object[] obj:list1){
 					CommitteeApprovalVO cv = new CommitteeApprovalVO();
-					cv.setRequestNo(""+Long.valueOf(obj[0].toString()));
+					if(requestUserId==null)
+					   cv.setRequestNo(""+Long.valueOf(obj[0].toString()));
+					else
+					  cv.setRefNo(obj[0]!=null?obj[0].toString():"");
+					
 					cv.setLocationTypeId(Long.valueOf(obj[1].toString()));
 					cv.setLocationType(obj[2].toString());
 					cv.setLocationId(Long.valueOf(obj[3].toString()));
@@ -2460,4 +2470,5 @@ public String gettingReferenceNumber(Long id){
 	}
 	return output;
 }
+
 }
