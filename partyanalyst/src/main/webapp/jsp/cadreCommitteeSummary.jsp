@@ -49,18 +49,20 @@
             </div>
             <div class="row">
  				<div class="col-md-12">
-                	<table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">
+					<div id="mandalMainCommitteDivId"></div>
+                	<!--<table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">
                     	<tr>
                         	<td colspan="4" style="background-color:#669934"><h4>MAIN COMMITTEE</h4></td>
                         </tr>
                         <tr>
-                        	<td width="25%"><h2 style="display:inline;">40</h2>TOTAL</td>
-                            <td width="25%"><h2 style="display:inline;">20</h2>STARTED</td>
+                        	<td width="25%"><h2 style="display:inline;"></h2>TOTAL</td>
+                            <td width="25%"><h2 style="display:inline;"><div id="mandalTotalDivId"></div></h2>STARTED</td>
                             <td width="25%"><h2 style="display:inline;">10</h2>CONFORMED</td>
                             <td width="25%"><h2 style="display:inline;">10</h2>NOT YET STARTED</td>
                         </tr>
-                    </table>
-                    <table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">
+                    </table>-->
+					<div id="mandalAffliCommitteDivId"></div>
+                    <!--<table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">
                     	<thead>
                         	<th colspan="5" style="background-color:#669934"><h4>AFFLIATED COMMITTEE</h4></th>
                         </thead>
@@ -100,7 +102,7 @@
                             <td width="20%">2</td>
                         </tr>
 
-                    </table>
+                    </table>-->
                 </div>           
             </div>
             <!--FIrst Block END-->
@@ -112,18 +114,22 @@
             </div>
             <div class="row">
  				<div class="col-md-12">
-                	<table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">
+					<div id="villageMainTableDivId"></div>
+                	<!--<table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">
                     	<tr>
                         	<td colspan="4" style="background-color:#669934"><h4>MAIN COMMITTEE</h4></td>
                         </tr>
                         <tr>
-                        	<td width="25%"><h2 style="display:inline;">40</h2>TOTAL</td>
+                        	<td width="25%"><h2 style="display:inline;"><div class=""></div>20</h2>TOTAL</td>
                             <td width="25%"><h2 style="display:inline;">20</h2>STARTED</td>
                             <td width="25%"><h2 style="display:inline;">10</h2>CONFORMED</td>
                             <td width="25%"><h2 style="display:inline;">10</h2>NOT YET STARTED</td>
                         </tr>
-                    </table>
-                    <table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);border-radius:2px;">
+                    </table>-->
+					
+					<div id="villageAfflicatedTableDivId"></div>
+					
+                    <!--<table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);border-radius:2px;">
                     	<thead>
                         	<th colspan="5" style="background-color:#669934"><h4>AFFLIATED COMMITTEE</h4></th>
                         </thead>
@@ -163,7 +169,7 @@
                             <td width="20%">2</td>
                         </tr>
 
-                    </table>
+                    </table>-->
                     <table class="table table-condensed" style="border:5px solid #669934;background-color:rgba(0,0,0,0.1);border-radius:2px;">
                 	<tr>
                     	<td colspan="7" style="background-color:#669934">[MANDAL/TOWN/DIVISION] WISE TELUGU RYTHU COMMITTEE STARTED DETAILS<div class="pull-right"><i class="glyphicon glyphicon-remove"></i></div></td>
@@ -273,6 +279,11 @@
     <script src="js/jquery.classyloader.min.js"></script>
     <script>
 	$(document).ready(function() {
+		getSummary();
+		//getStartedCommittees();
+		getMandalMuncipalDivisonStartedCommittees();
+		//getMandalMuncipalDivisonTotalCommittees();
+		
 		$('.loader5').ClassyLoader({
 			speed: 10,
 			diameter: 80,
@@ -298,6 +309,109 @@
 			
 		});
 	});
+	</script>
+	<script>
+		function getSummary(){
+		$.ajax({
+				type : "POST",
+				url : "getSummaryAction.action",
+				data : {} ,
+			}).done(function(result){
+				if(result!=null){
+					var temp=result[0].mainComitteesConformed+result[0].mainComitteesNotConformed;
+					var str='';
+					str+='<table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
+						str+='<tr><td colspan="4" style="background-color:#669934"><h4>MAIN COMMITTEE</h4></td></tr>';
+								str+='<tr><td width="25%"><h2 style="display:inline;">'+temp+'</h2> TOTAL</td>';
+							   str+='<td width="25%"><h2 style="display:inline;">'+result[0].startedCount+'</h2> STARTED</td>';
+							   str+='<td width="25%"><h2 style="display:inline;">'+result[0].mainComitteesConformed+'</h2> CONFORMED</td>';
+							   str+='<td width="25%"><h2 style="display:inline;">'+result[0].mainComitteesNotConformed+'</h2> NOT YET CONFORMED</td></tr>';
+					 str+='</table>';
+					 $("#villageMainTableDivId").html(str);
+			
+					var str1='';
+						str1+='<table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
+							str1+='<thead><th colspan="5" style="background-color:#669934"><h4>AFFLIATED COMMITTEE</h4></th></thead>';
+							str1+='<thead><th width="20%">COMMITTEE TYPE</th><th width="20%">TOTAL</th><th width="20%">STARTED</th>';
+							str1+='<th width="20%">CONFORMED</th><th width="20%">NOT YET CONFORMED</th></thead>';
+					 for(var i in result){
+						var temp1=result[i].affComitteesConformed+result[i].affComitteesNotConformed; 	
+						str1+='<tr><td width="20%">'+result[i].affilatedCommitteeName+'</td><td width="20%">'+temp1+'</td>';
+						str1+='<td width="20%">'+result[i].affilatedStartedCount+'</td>';
+						str1+='<td width="20%">'+result[i].affComitteesConformed+'</td>';
+						str1+='<td width="20%">'+result[i].affComitteesNotConformed+'</td></tr>';
+					 }
+					 
+					 str1+='</table>';
+					  $("#villageAfflicatedTableDivId").html(str1);
+				}
+			});
+		}
+		
+		function getStartedCommittees(){
+			$.ajax({
+					type : "POST",
+					url : "getStartedCommitteesAction.action",
+					data : {} ,
+				}).done(function(result){
+					console.log(result);
+				});
+		}
+		
+		function getMandalMuncipalDivisonStartedCommittees(){
+			$.ajax({
+				type : "POST",
+				url : "gettingMandalMuncipalDivisonSummaryAction.action",
+				data : {} ,
+			}).done(function(result){
+				if(result!=null){
+					var temp=result[0].mainComitteesConformed+result[0].mainComitteesNotConformed;
+					var str='';
+					str+='<table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
+						str+='<tr><td colspan="4" style="background-color:#669934"><h4>MAIN COMMITTEE</h4></td></tr>';
+								str+='<tr><td width="25%"><h2 style="display:inline;">'+temp+'</h2> TOTAL</td>';
+							   str+='<td width="25%"><h2 style="display:inline;">'+result[0].startedCount+'</h2> STARTED</td>';
+							   str+='<td width="25%"><h2 style="display:inline;">'+result[0].mainComitteesConformed+'</h2> CONFORMED</td>';
+							   str+='<td width="25%"><h2 style="display:inline;">'+result[0].mainComitteesNotConformed+'</h2> NOT YET CONFORMED</td></tr>';
+					 str+='</table>';
+					 $("#mandalMainCommitteDivId").html(str);
+			
+				var str1='';
+						str1+='<table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
+							str1+='<thead><th colspan="5" style="background-color:#669934"><h4>AFFLIATED COMMITTEE</h4></th></thead>';
+							str1+='<thead><th width="20%">COMMITTEE TYPE</th><th width="20%">TOTAL</th><th width="20%">STARTED</th>';
+							str1+='<th width="20%">CONFORMED</th><th width="20%">NOT YET CONFORMED</th></thead>';
+					 for(var i in result){
+						var temp1=result[i].affComitteesConformed+result[i].affComitteesNotConformed; 	
+						str1+='<tr><td width="20%">'+result[i].affilatedCommitteeName+'</td><td width="20%">'+temp1+'</td>';
+						str1+='<td width="20%">'+result[i].affilatedStartedCount+'</td>';
+						str1+='<td width="20%">'+result[i].affComitteesConformed+'</td>';
+						str1+='<td width="20%">'+result[i].affComitteesNotConformed+'</td></tr>';
+					 }
+					 
+					 str1+='</table>';
+					  $("#mandalAffliCommitteDivId").html(str1);
+				}
+			});
+			
+		}
+		
+		function getMandalMuncipalDivisonTotalCommittees(){
+			$.ajax({
+				type : "POST",
+				url : "getMandalMuncipalDivisonTotalCommitteesAction.action",
+				data : {} ,
+			}).done(function(result){
+				if(result!=null){
+					var str='';
+					str+='';
+					mandalMainCommitteDivId
+					
+				}
+			
+				console.log(result);
+			});
+		}
 	</script>
     		<!--Circle JS END-->
 </body>
