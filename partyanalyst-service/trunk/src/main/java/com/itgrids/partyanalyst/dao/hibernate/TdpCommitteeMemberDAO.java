@@ -183,4 +183,64 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		return query.executeUpdate();	
 	}
 	
+	public List<Object[]> getStartedCommitteesCountInALocation(Long constituencyId){
+		//0count ,1 basic committeeId,2basic committee name,3committeeType
+		Query query = getSession().createQuery("select count(distinct model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId),model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId," +
+				"model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId from TdpCommitteeMember model " +
+				" where  model.tdpCommitteeRole.tdpCommittee.constituency.constituencyId=:constituencyId and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in(6,8) and model.isActive ='Y' group by " +
+				"model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId,model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId ");
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	
+	
+	public List<Object[]> getLocationWiseStartedCount(List<Long> locationIds,Long locationTypeId){
+		Query query = getSession().createQuery("select TB.tdpBasicCommitteeId,TB.name,count(*) from TdpCommitteeMember TM, " +
+				"TdpCommitteeRole TR, TdpCommittee TC, TdpBasicCommittee TB where TM.tdpCommitteeRoleId = TR.tdpCommitteeRoleId " +
+				"and TR.tdpCommitteeId = TC.tdpCommitteeId and TB.tdpBasicCommitteeId = TC.tdpBasicCommitteeId and " +
+				"TC.tdpCommitteeLevelId = :locationTypeId and TC.tdpCommitteeLevelValue in (:locationIds) group by TB.tdpBasicCommitteeId ");
+		query.setParameterList("locationIds", locationIds);
+		query.setParameter("locationTypeId", locationTypeId);
+		return query.list();
+	}
+	
+	public List<Object[]> getVillageStartedCount(Long constituencyId){
+		Query query = getSession().createQuery("select TB.tdpBasicCommitteeId,TB.name,count(*) from TdpCommitteeMember TM, " +
+				"TdpCommitteeRole TR, TdpCommittee TC, TdpBasicCommittee TB where TM.tdpCommitteeRoleId = TR.tdpCommitteeRoleId " +
+				"and TR.tdpCommitteeId = TC.tdpCommitteeId and TB.tdpBasicCommitteeId = TC.tdpBasicCommitteeId and " +
+				"TC.tdpCommitteeLevelId in (6,8) and TC.constituency.constituencyId = :constituencyId group by TB.tdpBasicCommitteeId ");
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	/*public List<Object[]> getMandalTotalCommittees(Long constituencyId,List mandalIds){
+		Query query = getSession().createQuery("select TB.tdpBasicCommitteeId,TB.name,count(*) from TdpCommitteeMember TM, " +
+				"TdpCommitteeRole TR, TdpCommittee TC, TdpBasicCommittee TB where TM.tdpCommitteeRoleId = TR.tdpCommitteeRoleId " +
+				"and TR.tdpCommitteeId = TC.tdpCommitteeId and TB.tdpBasicCommitteeId = TC.tdpBasicCommitteeId and " +
+				"TC.tdpCommitteeLevelId = 5 and TC.tdpCommitteeLevelValue in (:ids) group by TB.tdpBasicCommitteeId ");
+		query.setParameterList("ids", mandalIds);
+		return query.list();
+	}
+	
+	public List<Object[]> getMuncipalTotalCommittees(Long constituencyId,List muncipalIds){
+		Query query = getSession().createQuery("select TB.tdpBasicCommitteeId,TB.name,count(*) from TdpCommitteeMember TM, " +
+				"TdpCommitteeRole TR, TdpCommittee TC, TdpBasicCommittee TB where TM.tdpCommitteeRoleId = TR.tdpCommitteeRoleId " +
+				"and TR.tdpCommitteeId = TC.tdpCommitteeId and TB.tdpBasicCommitteeId = TC.tdpBasicCommitteeId and " +
+				"TC.tdpCommitteeLevelId = 7 and TC.tdpCommitteeLevelValue in (:ids) group by TB.tdpBasicCommitteeId ");
+		query.setParameterList("ids", muncipalIds);
+		return query.list();
+	}
+	
+	public List<Object[]> getDivisonTotalCommittees(Long constituencyId,List divisionIds){
+		Query query = getSession().createQuery("select TB.tdpBasicCommitteeId,TB.name,count(*) from TdpCommitteeMember TM, " +
+				"TdpCommitteeRole TR, TdpCommittee TC, TdpBasicCommittee TB where TM.tdpCommitteeRoleId = TR.tdpCommitteeRoleId " +
+				"and TR.tdpCommitteeId = TC.tdpCommitteeId and TB.tdpBasicCommitteeId = TC.tdpBasicCommitteeId and " +
+				"TC.tdpCommitteeLevelId = 9 and TC.tdpCommitteeLevelValue in (:ids) group by TB.tdpBasicCommitteeId ");
+		query.setParameterList("ids", divisionIds);
+		return query.list();
+	}*/
+	
+	public List<Object[]> basicCommitteeDetails(){
+		Query query = getSession().createQuery("select model.tdpBasicCommitteeId,model.name from TdpBasicCommittee model");
+		return query.list();
+	}
 }
