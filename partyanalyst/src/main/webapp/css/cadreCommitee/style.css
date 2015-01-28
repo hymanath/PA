@@ -66,3 +66,10 @@ th
 {
 	  border-left:1px solid rgba(255,255,255,0.4);
 }
+ .pad1
+{
+	padding-top:20px;
+	padding-left:15px;
+	padding-right:10px;
+	padding-bottom:20px;
+}
