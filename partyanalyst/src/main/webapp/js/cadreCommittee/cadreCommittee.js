@@ -806,25 +806,18 @@
 		if(res.length >1){
 			uploadResult = uploadResult.replace(res[res.length-1],"");
 		}
-		//uploadResult = uploadResult.replace("<pre>","");
-		//uploadResult = uploadResult.replace("</pre>","");
+
 		var result = JSON.parse(uploadResult);
-		
+
 		if(result.resultCode == 0)
 		{			
-		/*
-		var tdpCadreId = $('#cadreId').val();
-		var committeeMngtType = $('#committeeMngtTypeId').val();		
-		var cadreCommitteeId = $('#cadreCommitteId').val();
-		var cadreCommitteeTypeId = $('#cadreCommitteeTypeId').val();
-		*/
+
 		$('.existingDiv').hide();
 		$('#step2Id').hide();
 		$('html,body').animate({scrollTop: $('.successDiv').offset().top}, 800);
 		$('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;"> '+result.status+'</span> <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 10px;margin-left:250px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"></i> </a>');
 		$('#profileDiv').html('');
-		//window.location.href='assignCadreToCommittee.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&panchayatId='+panchayatId+'&committeeTypeId='+cadreCommitteeTypeId+'&committeeId='+cadreCommitteeId+'&result3='+positinId+'';
-		
+
 		}		
 		else if(result.resultCode == 2)
 		{			
@@ -834,7 +827,14 @@
 			$('.existingDiv').hide();
 			$('html,body').animate({scrollTop: $('.successDiv').offset().top}, 800);
 			$('#redirectURLId').html('<span style="font-weight: bold;text-transform: uppercase;"> '+result.status+'</span> <br> <a class="btn btn-success btn-xs" href="'+redirectURL+'">  CLICK HERE IF YOU WANT DESIGNATION </a><a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 4px;margin-left:10px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"></i> </a>');
+			$('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;color:red;"> '+result.status+'</span> <br> <a class="btn btn-success btn-xs" href="'+redirectURL+'">  CLICK HERE IF YOU WANT DESIGNATION </a><a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 4px;margin-left:10px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"></i> </a>');
 		}
+		else{
+			$("#submitCadreFormBtnReqId").show();
+			$('html,body').animate({scrollTop: $('.successDiv').offset().top}, 800);
+			$('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;color:red;"> '+result.status+'</span> <br><a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 4px;margin-left:10px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"></i> </a>');
+		}
+		
 		
 	}
 	function addMoreRolesForCadre()
@@ -1100,7 +1100,7 @@
 						$('#'+resultDiv+'').show();
 							if(result != null)
 							{
-								if(result.statusCode == 0)
+								if(result.resultCode == 0)
 								{
 									$('#'+resultDiv+'').html('<span style="color:green;font-weight:bold;"> '+result.message+'</span>');
 								}
@@ -1141,7 +1141,7 @@
 			}).done(function(result){
 				if(result != null)
 				{
-					if(result.statusCode == 0)
+					if(result.resultCode == 0)
 					{
 						$('#'+resultDiv+'').html('<span style="color:green;font-weight:bold;"> '+result.message+'</span>');
 					}
