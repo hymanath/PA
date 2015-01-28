@@ -962,4 +962,17 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 				return Action.SUCCESS;
 			}
 	
+	public String checkIsVacancyForDesignation()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+			Long designationId =  jObj.getLong("designationId");
+			
+			task = cadreCommitteeService.checkIsVacancyForDesignation(designationId);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in checkIsVacancyForDesignation() At CadreCommitteeAction ",e);
+		}
+		return Action.SUCCESS;
+	}
 }
