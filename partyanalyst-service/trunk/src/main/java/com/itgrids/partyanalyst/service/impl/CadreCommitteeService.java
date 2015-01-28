@@ -275,7 +275,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					cadreCommitteeVO.setPreEnrollNo("");
 				}
 				cadreCommitteeVO.setMobileNo(tdpCadre.getMobileNo());
-				//cadreCommitteeVO.setIsSmartPhone(tdpCadre.getIsSmartPhone());
+				cadreCommitteeVO.setIsSmartPhone(tdpCadre.getMobileType());
 				cadreCommitteeVO.setAdhaarNo(tdpCadre.getCadreAadherNo());
 				cadreCommitteeVO.setAddress(tdpCadre.getUserAddress().getStreet() != null ? tdpCadre.getUserAddress().getStreet():"");
 				if(tdpCadre.getCasteStateId() != null && tdpCadre.getCasteStateId().longValue() > 0){

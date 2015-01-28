@@ -6966,8 +6966,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 										tdpCadre.setEmailId(cadreRegistrationVO.getEmailId());
 									if(cadreRegistrationVO.getPreviousEnrollmentNumber() != null)
 										tdpCadre.setPreviousEnrollmentNo(cadreRegistrationVO.getPreviousEnrollmentNumber());
-									//if(cadreRegistrationVO.getIsSmartPhone() != null)
-									//	tdpCadre.setIsSmartPhone(cadreRegistrationVO.getIsSmartPhone());
+									if(cadreRegistrationVO.getIsSmartPhone() != null)
+										tdpCadre.setMobileType(cadreRegistrationVO.getIsSmartPhone());
 									tdpCadreDAO.save(tdpCadre);
 									
 									UserAddress userAddress = tdpCadre.getUserAddress();
