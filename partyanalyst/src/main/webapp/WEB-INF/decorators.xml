@@ -144,6 +144,7 @@
 		  <pattern>/cadreCommitteeSummaryAction*</pattern>
 		   <pattern>/committeeUpdateApproveAction*</pattern>
 		   <pattern>/committeeDashBoardAction*</pattern> 
+		  <pattern>/cadreCommitteeRequestAction*</pattern>
  	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
