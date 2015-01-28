@@ -51,6 +51,7 @@ import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
+import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CommitteeApprovalVO;
@@ -123,13 +124,20 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private ITdpBasicCommitteeDAO tdpBasicCommitteeDAO;
 	private ILocalElectionBodyWardDAO localElectionBodyWardDAO;
 	private ITdpCommitteeLevelDAO tdpCommitteeLevelDAO;
-	private ICadreCommitteeIncreasedPositionsDAO cadreCommitteeIncreasedPositionsDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
 	private IUserDAO userDAO;
 	private ICadreCommitteeIncreasedPositionsDAO cadreCommitteeIncreasedPositionsDAO;
+	private ICadreCommitteeChangeDesignationsDAO cadreCommitteeChangeDesignationsDAO;
 	
 	
 	
+	public ICadreCommitteeChangeDesignationsDAO getCadreCommitteeChangeDesignationsDAO() {
+		return cadreCommitteeChangeDesignationsDAO;
+	}
+	public void setCadreCommitteeChangeDesignationsDAO(
+			ICadreCommitteeChangeDesignationsDAO cadreCommitteeChangeDesignationsDAO) {
+		this.cadreCommitteeChangeDesignationsDAO = cadreCommitteeChangeDesignationsDAO;
+	}
 	public ITdpCommitteeLevelDAO getTdpCommitteeLevelDAO() {
 		return tdpCommitteeLevelDAO;
 	}
@@ -280,14 +288,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		this.userDAO = userDAO;
 	}
 	
-	public void setCadreCommitteeIncreasedPositionsDAO(
-			ICadreCommitteeIncreasedPositionsDAO cadreCommitteeIncreasedPositionsDAO) {
-		this.cadreCommitteeIncreasedPositionsDAO = cadreCommitteeIncreasedPositionsDAO;
-	}
-	public void setCadreCommitteeChangeDesignationsDAO(
-			ICadreCommitteeChangeDesignationsDAO cadreCommitteeChangeDesignationsDAO) {
-		this.cadreCommitteeChangeDesignationsDAO = cadreCommitteeChangeDesignationsDAO;
-	}
+	
 	public CadreCommitteeVO getCadreDetailsByTdpCadreId(Long tdpCadreId)
 	{
 		CadreCommitteeVO cadreCommitteeVO = null;
@@ -2291,7 +2292,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return null;
 	}
-	public String getLocationName(Long LocationTypeId,Long locationValue)
+	/*public String getLocationName(Long LocationTypeId,Long locationValue)
 	{
 		String location = "";
 		if(locationValue != 0L)
@@ -2334,7 +2335,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			}	
 		}
 		return location;
-	}
+	}*/
 	public List<CadreCommitteeMemberVO> getCommitteeMemberDetails(Long basicCommitteeTypeId,Long locationId,Long levelId)
 	{
 		List<CadreCommitteeMemberVO> resultList = new ArrayList<CadreCommitteeMemberVO>();
