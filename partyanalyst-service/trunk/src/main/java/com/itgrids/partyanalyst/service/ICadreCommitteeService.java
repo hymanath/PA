@@ -1,12 +1,14 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CommitteeApprovalVO;
+import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
@@ -52,4 +54,8 @@ public interface ICadreCommitteeService {
 	public List<CadreCommitteeMemberVO> updateCadreRole(Long tdpCommitteeMemberId);
 	public List<CommitteeApprovalVO> getCommitteesForApproval(Long startNo, Long endNo,Long requestUserId);
 	
+	public List<CommitteeSummaryVO> getSummaryDetails(String accessValue);
+	public List<LocationWiseBoothDetailsVO> getStartedCommitteesCountInALocation(String accessValue);
+	public List<CommitteeSummaryVO> gettingMandalAndMuncipalAndDivisonSummary(String constituencyId);
+	public List<LocationWiseBoothDetailsVO> getMandalMuncipalDivisonTotalCommittees(String accessValue,Map<Long,CommitteeSummaryVO> affilatedMap);
 }
