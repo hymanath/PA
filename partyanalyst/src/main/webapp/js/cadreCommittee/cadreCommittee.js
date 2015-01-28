@@ -1,8 +1,9 @@
 
 	function showAndHideTabs(searchType)
 	{
-		$('#basicCommitteeTab, #publicrepresantativeTab, #mandalaffiliatedTab').removeClass('arrow_selected');
-		 $("#cadreDetailsDiv,#committeLocationIdErr,#committeeLocationIdErr,#searchErrDiv,#searchLevelErrDiv,#nonAfflitCommitteeIdErr").html('');
+		 $('#basicCommitteeTab, #publicrepresantativeTab, #mandalaffiliatedTab').removeClass('arrow_selected');
+		 $("#cadreDetailsDiv,#committeLocationIdErr,#committeeLocationIdErr,#searchErrDiv,#searchLevelErrDiv").html('');
+		 $('#nonAfflitCommitteeIdErr').html('');
 		 $("#basicSearchDiv").show();
 		 $("#searchBy").val('');
 		 $("#committeLocationId").val(0);
@@ -21,6 +22,10 @@
 		$("#committeLocationId").append('<option value="0">Select Location</option>');
 		$("#committeeLocationId  option").remove();
 		$("#committeeLocationId").append('<option value="0">Select Location</option>');	
+		
+		 $("#cadreDetailsDiv,#step3Id,#searchcadrenewDiv,#designationDivId,#step1Id,#committeeMainId").hide();
+		 $("#cadreDetailsDiv").html("");
+		 
 		if(searchType == 'basicCommitteeDiv')
 		{
 			$('#'+searchType+'').show();
@@ -29,7 +34,7 @@
 			$('#mandalaffiliated').hide();			
 			$('#basicCommitteeTab').addClass('arrow_selected');			
 			$("#searchcadrenewDiv").hide();
-			$("#headingDiv").html("Select Candidate for a Designation");
+			$("#headingDiv").html("Select Candidate for Selected Designation");
 			getCommitteeLocations();
 		}
 		
@@ -60,6 +65,8 @@
 	
 	function validateSearchType(areaTypeId)
 	{
+		$("#cadreDetailsDiv").hide();
+		$('#cadreDetailsDiv').html("");
 		$("#designationDivId,#step1Id,#step2Id,#step3Id").hide();	
 		$("#searchcadrenewDiv").hide();	
 		if(areaTypeId == 1) //  Village / Ward / Division
@@ -115,6 +122,7 @@
 		var houseNo = '';
 		$('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv').html('');
 		$('#searchLevelErrDiv,#committeePositionIdErr,#nonAfflitCommitteeIdErr').html('');
+		$("#cadreDetailsDiv").hide();
 		var searchBy = $('#searchBy').val().trim();
 		var searchRadioType = $('#cadreSearchType').val();		
 		var committeTypeID = $('#committeeMngtType').val();
@@ -412,12 +420,14 @@
 				$("#searchDataImg").hide();
 				$('#cadreDetailsDiv').show();
 				var committeTypesId = $('#committeeMngtType').val();
-				if(committeTypesId == 1)
-				{
-					$("#step3Id").show();
-				}
+				
 				if(result != null && result.previousRoles != null && result.previousRoles.length>0)
 				{
+					if(committeTypesId == 1)
+					{
+						$("#step3Id").show();
+					}
+				
 					buildCadreDetails(result.previousRoles);
 				}
 				else
@@ -487,7 +497,7 @@
 						str+='</div>';	
 						
 						str+='<div class="form-inline ">';
-						str+='<a onclick="jacascript:{addAsElectrole('+result[i].tdpCadreId+',\'elecroleDiv'+result[i].tdpCadreId+'\',\'addmoreId'+result[i].tdpCadreId+'\',\'statusDiv'+result[i].tdpCadreId+'\')}" class="btn btn-success btn-medium m_top5 elecroleDiv'+result[i].tdpCadreId+'" style="display:none;" > UPDATE  ELECROLE DETAILS </a>';
+						str+='<a onclick="jacascript:{addAsElectrole('+result[i].tdpCadreId+',\'elecroleDiv'+result[i].tdpCadreId+'\',\'addmoreId'+result[i].tdpCadreId+'\',\'statusDiv'+result[i].tdpCadreId+'\')}" class="btn btn-success btn-medium m_top5 elecroleDiv'+result[i].tdpCadreId+'" style="display:none;" > UPDATE ELECTORAL DETAILS </a>';
 						str+='</div>	';
 					}	
 					else if(committeeMngntTypeId == 3)
