@@ -286,18 +286,19 @@
 				
 				<div class="row">
 					<div class="col-md-8 col-md-offset-2  col-sm-12 col-xs-12 form-group">
-						<div class="col-md-6   col-sm-4 col-xs-4 form-group">
+						<div class="col-md-4   col-sm-4 col-xs-4 form-group">
 							<input type="text" id="mobileNoId" class="form-control editClass mobileNumber"  value="${cadreCommitteeVO.mobileNo}" placeholder="Mobile No:9632587410" name="cadreRegistrationVO.mobileNumber" disabled>
 						</div>				
-				<!--
+				
 						<div class="col-md-4  col-sm-4 col-xs-4 form-group" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); text-transform: uppercase; line-height: 11px; border-radius: 4px; font-size: 11px; padding: 4px 8px;">
 							Is your mobile a smart Phone? 
-							<a class="btn btn-success btn-xs" onclick="javascript:{changeSmartPhoneStatus(1);}"><input type="radio" name="smartPhone" onclick="changeSmartPhoneStatus(1)" id="yesRadioId">yes</a>  
-							<a class="btn btn-danger btn-xs" onclick="javascript:{changeSmartPhoneStatus(2);}" ><input type="radio" name="smartPhone" onclick="changeSmartPhoneStatus(2)"  id="noRadioId" checked="checked">No</a> 
-							<input type="hidden" id="smartPhoneId" class="form-control editClass mobileNumber"  value="N" name="cadreRegistrationVO.isSmartPhone" disabled>
+								<a class="btn btn-success btn-xs" onclick="javascript:{changeSmartPhoneStatus(1);}"><input type="radio" name="smartPhone" onclick="changeSmartPhoneStatus(1)" id="yesRadioId"  checked="checked">yes</a>  
+								<a class="btn btn-danger btn-xs" onclick="javascript:{changeSmartPhoneStatus(2);}" ><input type="radio" name="smartPhone" onclick="changeSmartPhoneStatus(2)"  id="noRadioId">No</a> 
+								<input type="hidden" id="smartPhoneId" class="form-control editClass mobileType"  value="${cadreCommitteeVO.isSmartPhone}" name="cadreRegistrationVO.isSmartPhone" >
+							
 						</div>	
-					-->	
-						<div class="col-md-6   col-sm-4 col-xs-4 form-group">
+						
+						<div class="col-md-4   col-sm-4 col-xs-4 form-group">
 							<s:select theme="simple" cssClass="form-control selectBoxWidth span12 input-block-level editClass" id="casteId" list="cadreCommitteeVO.casteList" listKey="casteStateId" listValue="casteName" headerKey="0" headerValue=" Select Caste " style="width:100%;height:35px;" name="cadreRegistrationVO.casteId"   value="%{cadreCommitteeVO.casteStateId}" disabled="true"/>	
 						</div>
 					</div>
@@ -732,6 +733,7 @@
                             </c:forEach>*/
    </script>
 	<script>		
+		var isSmartPhone = '${cadreCommitteeVO.isSmartPhone}';
 		var mobnum,refid;
 		var areaType = '${task}';
 		var panchayatId = '${panchayatId}';
@@ -1036,34 +1038,26 @@
 	}
 	
 	function getCommitteeLocations(){
-		$("#committeeTypeId").val(0);
-		$("#committeeLocationIdErr").html("");
-		$("#committeeTypeIdErr").html("");
-		$("#afflitCommitteeIdErr").html("");
-		$("#committeeMainId").hide();
-		var reqLocationType ="";
-		if($("#mndlLvlCommittSelec").is(':checked')){
-		  reqLocationType ="mandal";
-		}
-		$.ajax({
-			type : "POST",
-			url : "getCommitteLocationsAction.action",
-			data : {locationType:reqLocationType} ,
-		}).done(function(result){
-			$("#committeeLocationId  option").remove();
-			$("#committeeLocationId").append('<option value="0">Select Location</option>');
-			
-			if(result != null)
-			{
-				for(var i in result){
-				   $("#committeeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
-				}
-			}
-		});
-	}
-	
-	function getCommitteeLocations(){
 
+		if(isSmartPhone != null && isSmartPhone.trim().length>0)
+		{
+			if(isSmartPhone == 'Y')
+			{
+				$('#yesRadioId').prop("checked",true);
+				$('#mobileType').val("Y");
+			}
+			else if(isSmartPhone == 'N')
+			{
+				$('#noRadioId').prop("checked",true);
+				$('#mobileType').val("N");
+			}
+		}
+		else
+		{
+			$('#noRadioId').prop("checked",true);
+			$('#mobileType').val("N");
+		}
+		
 		$("#committeeTypeId").val(0);
 		$("#committeeLocationIdErr").html("");
 		$("#committeeTypeIdErr").html("");
