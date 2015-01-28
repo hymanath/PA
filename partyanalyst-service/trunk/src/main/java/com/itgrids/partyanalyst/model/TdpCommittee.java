@@ -29,6 +29,7 @@ public class TdpCommittee {
 	private Long tdpCommitteeLevelValue;
 	private String isCommitteeConfirmed;
 	private String state;
+	private Constituency constituency;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -119,5 +120,16 @@ public class TdpCommittee {
 		this.state = state;
 	}
 	
-	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "constituency_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Constituency getConstituency() {
+		return constituency;
+	}
+
+	public void setConstituency(Constituency constituency) {
+		this.constituency = constituency;
+	}
 }
+
