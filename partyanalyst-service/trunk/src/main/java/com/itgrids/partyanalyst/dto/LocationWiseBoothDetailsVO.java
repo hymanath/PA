@@ -16,7 +16,7 @@ public class LocationWiseBoothDetailsVO {
 	private List<LocationWiseBoothDetailsVO> result;
 	private Long population;
 	private Long votesPolled;
-	private Long total;
+	private Long total = 0l;;
 	private String electionYear;
 	private Long count;
 	
