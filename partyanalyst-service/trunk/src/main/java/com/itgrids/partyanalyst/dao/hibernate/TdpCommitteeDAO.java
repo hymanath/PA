@@ -37,7 +37,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 				" model.tdpCommitteeLevel.tdpCommitteeLevelId =:tdpCommitteeLevelId and  " +
 				" model.tdpCommitteeLevelValue =:tdpCommitteeLevelValue and model.tdpBasicCommittee.tdpBasicCommitteeId = :tdpBasicCommitteeId");
 		query.setParameter("tdpBasicCommitteeId", tdpBasicCommitteeId);
-		query.setParameter("tdpCommitteeLevelId", tdpCommitteeLevelValue);
+		query.setParameter("tdpCommitteeLevelId", tdpCommitteeLevelId);
 		query.setParameter("tdpCommitteeLevelValue", tdpCommitteeLevelValue);
 		return query.list();
 	}
