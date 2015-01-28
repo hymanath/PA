@@ -17,4 +17,10 @@ public interface ITdpCommitteeMemberDAO  extends GenericDao<TdpCommitteeMember, 
 	public Long getMembersCountByLocation(String state,List<Long> levelIds);
 	public List<Object[]> getMembersCountInCommitteeByLocation(String state,List<Long> levelIds);
 	public List<Object[]> getMembersInfoForRequest(Set<Long> committeeRoleIds);
+	public List<Object[]> getComitteeMembersByCommiteTypeAndLocation(List<Long> levelIds,List<Long> locationVals,Long committeeTypeId);
+	public List<Object[]> getComitteeMembersInfoByCommiteTypeAndLocation(Long levelId,Long locationVal,Long committeeTypeId);
+	public List<Long> getTdpCommitteIds(Long levelId,Long locationVal,Long committeeTypeId);
+	public Integer updateTdpComitte(List<Long> tdpCommitteeIds);
+	public Integer updateCadreRole(Long Id);
+	
 }
