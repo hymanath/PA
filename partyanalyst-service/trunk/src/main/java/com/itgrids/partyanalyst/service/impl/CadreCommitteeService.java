@@ -2002,7 +2002,9 @@ public class CadreCommitteeService implements ICadreCommitteeService
 									
 							  }
 					       }); 
+					  
 						   resultStatus.setResultCode(1); 
+					  
 					   }
 				   } catch (Exception e){
 					   LOG.error("Exception raised in cadreCommitteeIncreasedPositionsOrChangeDesignations", e);
@@ -2428,7 +2430,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return resultList;
 	}
-}
+
 public String gettingReferenceNumber(Long id){
 	String output=null;
 	try{
@@ -2454,4 +2456,5 @@ public String gettingReferenceNumber(Long id){
 		 LOG.error("Exception raised in gettingReferenceNumber", e);
 	}
 	return output;
+}
 }
