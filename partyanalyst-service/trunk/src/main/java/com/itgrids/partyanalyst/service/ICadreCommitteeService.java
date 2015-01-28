@@ -50,6 +50,6 @@ public interface ICadreCommitteeService {
 	public List<CadreCommitteeMemberVO> getCommitteeMemberDetails(Long basicCommitteeTypeId,Long locationId,Long levelId);
 	public List<CadreCommitteeMemberVO> setCommitteConfirmation(Long basicCommitteeTypeId,Long locationId,Long levelId);
 	public List<CadreCommitteeMemberVO> updateCadreRole(Long tdpCommitteeMemberId);
-	public List<CommitteeApprovalVO> getCommitteesForApproval(Long startNo, Long endNo);
+	public List<CommitteeApprovalVO> getCommitteesForApproval(Long startNo, Long endNo,Long requestUserId);
 	
 }
