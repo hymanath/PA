@@ -1061,7 +1061,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					tdpCommitteeElectrols = tdpCommitteeElectrolsDAO.save(tdpCommitteeElectrols);
 					
 					resultStatus.setResultCode(0);
-					resultStatus.setMessage(" Electrol Added Successfully... ");
+					resultStatus.setMessage(" Electoral Added Successfully... ");
 					
 					return resultStatus;
 				 }
@@ -1867,5 +1867,37 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			LOG.error("Exception raised in getTotalCommitteeDetailsByLocation method"+e);
 		}
 		return cadreCommitteeReportVO;
+	}
+	
+	public String checkIsVacancyForDesignation(Long tdpCommitteeRoleId)
+	{
+		String isEligible ="";
+		try {			
+			
+			TdpCommitteeRole tdpCommitteeRole = tdpCommitteeRoleDAO.get(tdpCommitteeRoleId);
+			
+			Long maxMembers = tdpCommitteeRole.getMaxMembers();
+			Set<Long> committeeRoleIds = new HashSet<Long>();
+			committeeRoleIds.add(tdpCommitteeRoleId);
+			
+			List<Object[]> existringDtails = tdpCommitteeMemberDAO.getRoleWiseAllocatedMembersCount(committeeRoleIds);
+		
+			if(existringDtails != null && existringDtails.size()>0)
+			{
+				for (Object[] role : existringDtails) 
+				{
+					Long count = role[0] != null ? Long.valueOf(role[0].toString()):0L;
+					if(count.longValue() >= maxMembers.longValue() )
+					{
+						isEligible = " Max Members Already Added for this designation... ";
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in checkIsVacancyForDesignation method"+e);
+			return " ";
+		}
+		
+		return isEligible;
 	}
 }
