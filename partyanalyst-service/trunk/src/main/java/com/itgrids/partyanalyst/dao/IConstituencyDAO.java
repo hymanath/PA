@@ -253,4 +253,6 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	public List<Object[]> getWardIdAndName(Long localElectionBodyId);
 	
 	public List<Object[]> getConstituencyByStateAndAreaType(Long stateId,Long level);
+	
+	public List<Object[]> getWardsNameInLocalElectionBodyByWardIds(List<Long> wardIds);
 }

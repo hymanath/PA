@@ -19,21 +19,28 @@ import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
-@Table(name = "tdp_committee_role")
+@Table(name = "tdp_committee_role_history")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class TdpCommitteeRole {
+public class TdpCommitteeRoleHistory {
+	private Long tdpCommitteeRoleHistoryId;
 	private Long tdpCommitteeRoleId;
-	private TdpCommittee tdpCommittee;
 	private Long tdpCommitteeId;
-	private TdpRoles tdpRoles;
 	private Long tdpRolesId;
 	private Long maxMembers;
 	private Date updatedTime;
 	
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "tdp_committee_role_id", unique = true, nullable = false)
+	@Column(name = "tdp_committee_role_history_id", unique = true, nullable = false)
+	public Long getTdpCommitteeRoleHistoryId() {
+		return tdpCommitteeRoleHistoryId;
+	}
+
+	public void setTdpCommitteeRoleHistoryId(Long tdpCommitteeRoleHistoryId) {
+		this.tdpCommitteeRoleHistoryId = tdpCommitteeRoleHistoryId;
+	}
+
+	@Column(name = "tdp_committee_role_id")
 	public Long getTdpCommitteeRoleId() {
 		return tdpCommitteeRoleId;
 	}
@@ -42,17 +49,6 @@ public class TdpCommitteeRole {
 		this.tdpCommitteeRoleId = tdpCommitteeRoleId;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY )
-	@JoinColumn(name = "tdp_committee_id" , insertable = false, updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public TdpCommittee getTdpCommittee() {
-		return tdpCommittee;
-	}
-	
-	public void setTdpCommittee(TdpCommittee tdpCommittee) {
-		this.tdpCommittee = tdpCommittee;
-	}
 	
 	@Column(name = "tdp_committee_id")
 	public Long getTdpCommitteeId() {
@@ -63,17 +59,7 @@ public class TdpCommitteeRole {
 		this.tdpCommitteeId = tdpCommitteeId;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY )
-	@JoinColumn(name = "tdp_roles_id" , insertable = false, updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public TdpRoles getTdpRoles() {
-		return tdpRoles;
-	}
 	
-	public void setTdpRoles(TdpRoles tdpRoles) {
-		this.tdpRoles = tdpRoles;
-	}
 	
 	@Column(name = "tdp_roles_id")
 	public Long getTdpRolesId() {
@@ -92,7 +78,7 @@ public class TdpCommitteeRole {
 	public void setMaxMembers(Long maxMembers) {
 		this.maxMembers = maxMembers;
 	}
-	
+
 	@Column(name = "updated_time")
 	public Date getUpdatedTime() {
 		return updatedTime;
@@ -101,5 +87,8 @@ public class TdpCommitteeRole {
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
 	}
+	
+	
+	
 	
 }

@@ -13,7 +13,6 @@ import java.util.Set;
 import javax.persistence.Column;
 
 import org.apache.log4j.Logger;
-import org.jfree.util.Log;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -21,7 +20,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
-import com.itgrids.partyanalyst.dao.IBasicCommitteeDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeChangeDesignationsDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeIncreasedPositionsDAO;
@@ -48,10 +46,12 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberHistoryDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeRoleDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeRoleHistoryDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dao.hibernate.TdpCommitteeMemberHistoryDAO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
@@ -82,6 +82,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeElectrols;
 import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 import com.itgrids.partyanalyst.model.TdpCommitteeMemberHistory;
 import com.itgrids.partyanalyst.model.TdpCommitteeRole;
+import com.itgrids.partyanalyst.model.TdpCommitteeRoleHistory;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.VoterAgeRange;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
@@ -131,9 +132,16 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IUserDAO userDAO;
 	private ICadreCommitteeIncreasedPositionsDAO cadreCommitteeIncreasedPositionsDAO;
 	private ICadreCommitteeChangeDesignationsDAO cadreCommitteeChangeDesignationsDAO;
+	private ITdpCommitteeRoleHistoryDAO tdpCommitteeRoleHistoryDAO;
 	
 	
-	
+	public ITdpCommitteeRoleHistoryDAO getTdpCommitteeRoleHistoryDAO() {
+		return tdpCommitteeRoleHistoryDAO;
+	}
+	public void setTdpCommitteeRoleHistoryDAO(
+			ITdpCommitteeRoleHistoryDAO tdpCommitteeRoleHistoryDAO) {
+		this.tdpCommitteeRoleHistoryDAO = tdpCommitteeRoleHistoryDAO;
+	}
 	public ICadreCommitteeChangeDesignationsDAO getCadreCommitteeChangeDesignationsDAO() {
 		return cadreCommitteeChangeDesignationsDAO;
 	}
@@ -2056,12 +2064,11 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			List<Object[]> list = tdpCommitteeLevelDAO.getAllLevels();
 			List<Object[]> list1=null;
 			if(requestUserId==null){
-			  list1 = cadreCommitteeIncreasedPositionsDAO.getAllRecordsCount(startNo.intValue(), endNo.intValue()); 
+			  list1 = cadreCommitteeIncreasedPositionsDAO.getAllRecordsForApproval(startNo.intValue(), endNo.intValue()); 
 			}
 			else{
 			  list1 = cadreCommitteeIncreasedPositionsDAO.getRequestDetailsForAUser(requestUserId); 
 			}
-			
 			Map<Long, String> pancMap = new HashMap<Long, String>();
 			Map<Long, String> tehsilMap = new HashMap<Long, String>();
 			Map<Long, String> lebMap = new HashMap<Long, String>();
@@ -2125,19 +2132,19 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						}
 						
 						if(tmp.getLocationTypeId().equals(8l)){
-							List<Object[]> wards =  constituencyDAO.getConstityencyByConstituencyids(tmp.getLocationIds());
+							List<Object[]> wards =  constituencyDAO.getWardsNameInLocalElectionBodyByWardIds(tmp.getLocationIds());
 							if(wards!=null && wards.size()>0){
 								for(Object[] obj:wards){
-									wardMap.put(Long.valueOf(obj[0].toString()), obj[1].toString());
+									wardMap.put(Long.valueOf(obj[0].toString()), obj[1].toString()+" ("+obj[2].toString()+")");
 								}
 							}
 						}
 						
 						if(tmp.getLocationTypeId().equals(9l)){
-							List<Object[]> divis =  constituencyDAO.getConstityencyByConstituencyids(tmp.getLocationIds());
+							List<Object[]> divis =  constituencyDAO.getWardsNameInLocalElectionBodyByWardIds(tmp.getLocationIds());
 							if(divis!=null && divis.size()>0){
 								for(Object[] obj:divis){
-									divisMap.put(Long.valueOf(obj[0].toString()), obj[1].toString());
+									divisMap.put(Long.valueOf(obj[0].toString()), obj[1].toString()+" ("+obj[2].toString()+")");
 								}
 							}
 						}
@@ -2165,6 +2172,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					cv.setCurrentPosCount(Long.valueOf(obj[8].toString()));
 					cv.setRequestdPosCount(Long.valueOf(obj[9].toString()));
 					cv.setStatus(obj[10].toString());
+					cv.setTdpCommitteeRoleId(Long.valueOf(obj[11].toString())); // FOR UPDATING THE MAX POSITIONS IN TDP_COMMITTEE_ROLE 
+					cv.setCadreCommitteeIncreasedPosId(Long.valueOf(obj[12].toString()));
 					
 					String location = "";
 					if(cv.getLocationTypeId().equals(5l)){
@@ -2444,7 +2453,92 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return resultList;
 	}
-
+	
+	public String updateCommitteePosCount(final Long roleId, final Long maxCount, final String type, final Long increasedPosId){
+		LOG.debug("Entered Into updateCommitteePosCount ");
+		String finalStatus ="failed";
+		ResultStatus status = new ResultStatus();
+		try {
+				status = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
+				 public Object doInTransaction(TransactionStatus status) {
+					 ResultStatus resultStatus = new ResultStatus();
+					 resultStatus.setResultCode(1);
+					 
+					if(type.equalsIgnoreCase("Approved")){
+						List<Object[]> list = tdpCommitteeRoleDAO.getDetailsForTdpCommitteRoleId(roleId);
+						if(list!=null && list.size()>0){
+							TdpCommitteeRoleHistory histroy = new TdpCommitteeRoleHistory();
+							Object[] tmp = list.get(0);
+							histroy.setTdpCommitteeRoleId(Long.valueOf(tmp[0].toString()));
+							histroy.setTdpCommitteeId(Long.valueOf(tmp[1].toString()));
+							histroy.setTdpRolesId(Long.valueOf(tmp[2].toString()));
+							histroy.setMaxMembers(Long.valueOf(tmp[3].toString()));
+							histroy.setUpdatedTime((Date) tmp[4]);
+							
+							
+							Date updatedTime = dateUtilService.getCurrentDateAndTime();
+							
+							int updatedCount = tdpCommitteeRoleDAO.updateMaxPosForCommitteeRoleId(roleId, maxCount, updatedTime);
+							
+							if(updatedCount>0){
+								TdpCommitteeRoleHistory savHistory = tdpCommitteeRoleHistoryDAO.save(histroy);
+								
+								int statusUpdate = cadreCommitteeIncreasedPositionsDAO.updateStatus(type, updatedTime, increasedPosId);
+								if(statusUpdate>0){
+									resultStatus.setResultCode(0);
+								}
+							}
+						}
+						
+					}
+					if(type.equalsIgnoreCase("Rejected")){
+						Date updatedTime = dateUtilService.getCurrentDateAndTime();
+						int statusUpdate = cadreCommitteeIncreasedPositionsDAO.updateStatus(type, updatedTime, increasedPosId);
+						if(statusUpdate>0){
+							resultStatus.setResultCode(0);
+						}
+					}
+					
+					return resultStatus;
+				 }
+				});
+			
+			if(status.getResultCode()==0){
+				finalStatus ="success";
+			}
+		}catch (Exception e) {
+			LOG.error("Exception Raised in updateCommitteePosCount " + e);
+			return finalStatus;
+		}
+		return finalStatus;
+	}
+	
+	public CommitteeApprovalVO getStatusCountsOfApproval(){
+			LOG.debug(" In getStatusCountsOfApproval() ");
+			CommitteeApprovalVO cv = new CommitteeApprovalVO();
+			try{
+				List<Object[]> list = cadreCommitteeIncreasedPositionsDAO.getAllRecordsCountStatusWise();
+				Long totalCount = 0l;
+				if(list!=null && list.size()>0){
+					for(Object[] obj:list){
+						if(obj[1].toString().equalsIgnoreCase("Approved")){
+							cv.setApprovedCount(Long.valueOf(obj[0].toString()));
+						}else if(obj[1].toString().equalsIgnoreCase("Rejected")){
+							cv.setRejectedCount(Long.valueOf(obj[0].toString()));
+						}else{
+							cv.setPendingCount(Long.valueOf(obj[0].toString()));
+						}
+						totalCount = totalCount + Long.valueOf(obj[0].toString());
+					}
+					cv.setTotalCount(totalCount);
+				}
+			}catch (Exception e) {
+				LOG.error("Exception Raised in getStatusCountsOfApproval() ");
+			}
+			return cv;
+		
+	}
+	
 	public String gettingReferenceNumber(Long id){
 		String output=null;
 		try{
@@ -2933,5 +3027,4 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return finalCounts;
 	}
-	
 }
