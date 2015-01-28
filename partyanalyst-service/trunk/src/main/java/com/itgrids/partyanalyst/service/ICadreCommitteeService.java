@@ -38,4 +38,7 @@ public interface ICadreCommitteeService {
 	public ResultStatus saveMandalLevelElectrolInfo(Long tdpCadreId,List<CadrePreviousRollesVO> eligibleRoles);
 
 	public CadreCommitteeReportVO getCommitteeDetailsByLocation(String state,List<Long> levelIds);
+	public ResultStatus cadreCommitteeIncreasedPositionsOrChangeDesignations(final Long tdpCommitteeRoleId,final Long requestUserId,final Long currentmaxPositions,final Long requestedMaxPositions,final String type,final List<LocationWiseBoothDetailsVO> changeDesignationsList);
+	public LocationWiseBoothDetailsVO getMainCommitteeMembersInfoRequest(Long levelId,Long levelValue,Long designation);
+	public LocationWiseBoothDetailsVO getCommitteeMembersInfoRequest(Long committeeId,Long designation);
 }
