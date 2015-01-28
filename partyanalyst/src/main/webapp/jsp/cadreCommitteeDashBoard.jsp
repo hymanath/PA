@@ -75,17 +75,17 @@
 						<table width="100%" class="table table-bordered" style="background-color:transparent; margin-bottom:0px;"  >
 							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 								<td colspan="6">
-									<button id="mandal" class="btn btn-xs btn-success" onclick="getCommitteeDetails('AP',this.value)">Mandal</button> | 
-									<button id="town" class="btn btn-xs btn-success" onclick="getCommitteeDetails('AP',this.id)">Town</button> |	
-									<button id="division" class="btn btn-xs btn-success" onclick="getCommitteeDetails('AP',this.id)">Division</button> |									
-									<button id="mandalAll" class="btn btn-xs btn-default" onclick="getCommitteeDetails('AP',$(this.id))">All</button>
+									<button id="mandal" class="btn btn-xs btn-success" onclick="getCommitteeDetails('AP','mandal')">Mandal</button> | 
+									<button id="town" class="btn btn-xs btn-success" onclick="getCommitteeDetails('AP','town')">Town</button> |	
+									<button id="division" class="btn btn-xs btn-success" onclick="getCommitteeDetails('AP','division')">Division</button> |									
+									<button id="mandalAll" class="btn btn-xs btn-default" onclick="getCommitteeDetails('AP','mandalAll')">All</button>
 								</td>
 							</tr>
 							<tr>
-								<!--<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0">2000</h4></td>
-								<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><h4 style="display:inline">10%</h4>[100]</td>
-								<td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0">50%</h4></td><td  class="row-table"><ul class="nav navbar-nav">
-                              <li><a>[1000]</a>
+								<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div1"></div></h4></td>
+								<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><h4 style="display:inline"><div id="div2"></div></h4></td>
+								<td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div3"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
+                              <li><a><div id="div4"></div></a>
                                     <ul class="list-group dropdown-menu arrow_box">
 										  <li class="list-group-item">
 											<span class="badge">14</span>
@@ -103,12 +103,12 @@
 									
 									
 								</li></td></tr></table></td>
-								<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started Areas</span><br/><h4 class="m_top0">100</h4></td>
+								<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started Areas</span><br/><h4 class="m_top0"><div id="div5"></div></h4></td>
 								<td style="padding:10px;" width="20%"><span class="text-success">Total Started</span><br/>Affliated Committees<br/>
                                 <h4 class="m_top0">
 								<ul class="nav navbar-nav">
                               <li>
-								<a>100</a>
+								<a><div id="div6"></div></a>
                                 <ul class="dropdown-menu arrow_box list-group">
                                 <div class="panel panel-default m_bottom0">
                                 <div class="panel-heading m_top0">COMMITTEE TYPE<span class="pull-right">TOTAL</span></div></div>
@@ -135,23 +135,23 @@
                                 </ul>
                               </li>
                             </ul></h4></td>
-								<td style="padding:10px;" width="28%">TOTAL <b>MEMBERS</b><h4 class="m_top0">2000</h4></td>-->
+								<td style="padding:10px;" width="28%">TOTAL <b>MEMBERS</b><h4 class="m_top0"><div id="div7"></div></h4></td>
+							<div id="apMandalDiv"></div>
 							</tr>
 							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 								<td colspan="6">
-										<button class="btn btn-xs btn-success">Village</button> | 
-										<button class="btn btn-xs btn-success">Ward</button> |
-										<button class="btn btn-xs btn-success">Division</button> |
-										<button class="btn btn-xs btn-default">All</button>
+										<button id="village"  class="btn btn-xs btn-success" onclick="getCommitteeDetails('AP','village')">Village</button> | 
+										<button id="ward" class="btn btn-xs btn-success" onclick="getCommitteeDetails('AP','ward')">Ward</button> |										
+										<button id="villageAll" class="btn btn-xs btn-default" onclick="getCommitteeDetails('AP','villageAll')">All</button>
 								</td>
 							</tr>
 							<tr>
-								<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0">2000</h4></td>
-								<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><h4 style="display:inline">10%</h4>[100]</td>
-							   <td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0">50%</h4></td><td  class="row-table">
+								<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div8"></div></h4></td>
+								<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><h4 style="display:inline"><div id="div9"></div></h4></td>
+							   <td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div10"></div></h4></td><td  class="row-table">
 							   <ul class="nav navbar-nav">
 								<li>
-									<a>[1000]</a>
+									<a><div id="div11"></div></a>
                                     <ul class="list-group dropdown-menu arrow_box">
 										  <li class="list-group-item">
 											<span class="badge">14</span>
@@ -169,9 +169,9 @@
 								</li>	
 									
 									</td></tr></table></td>
-								<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started Areas</span><br/><h4 class="m_top0">100</h4></td>
+								<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started Areas</span><br/><h4 class="m_top0"><div id="div12"></div></h4></td> 
 								<td style="padding:10px;" width="20%"><span class="text-success">Total Started</span><br/>Affliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
-                              <li><a>100</a>
+                              <li><a><div id="div13"></div></a>
                                 <ul class="dropdown-menu arrow_box list-group" style="width:1200px !important">
                                 <div class="panel panel-default m_bottom0">
                                 <div class="panel-heading">COMMITTEE TYPE<span class="pull-right">TOTAL</span></div></div>
@@ -198,7 +198,8 @@
                                 </ul>
                               </li>
                             </ul></h4></td>
-								<td style="padding:10px;" width="28%">TOTAL <b>MEMBERS</b><h4 class="m_top0">2000</h4></td>
+								<td style="padding:10px;" width="28%">TOTAL <b>MEMBERS</b><h4 class="m_top0"><div id="div14"></div></h4></td>
+								<div id="apVillageDiv"></div>
 							</tr>
 						</table>
 					</td>
@@ -227,17 +228,17 @@
 					<table width="100%" class="table table-bordered" style="background-color:transparent; margin-bottom:0px;"  >
 						<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 							<td colspan="6">
-								<button class="btn btn-xs btn-success">Mandal</button> | 
-								<button class="btn btn-xs btn-success">Town</button> |
-								<button class="btn btn-xs btn-success">GVMC</button> |
-								<button class="btn btn-xs btn-default">All</button>
+								<button id="tsMandal" class="btn btn-xs btn-success" onclick="getCommitteeDetails('TS','mandal')";>Mandal</button> | 
+								<button id="tsTown" class="btn btn-xs btn-success" onclick="getCommitteeDetails('TS','town')";>Town</button> |
+								<button id="tsDivision" class="btn btn-xs btn-success" onclick="getCommitteeDetails('TS','division')";>Division</button> |
+								<button id="tsMandalAll" class="btn btn-xs btn-default" onclick="getCommitteeDetails('TS','mandalAll')";>All</button>
 							</td>
 						</tr>
 						<tr>
-							<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0">2000</h4></td>
-							<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><h4 style="display:inline">10%</h4>[100]</td>
-						   <td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0">50%</h4></td><td  class="row-table"><ul class="nav navbar-nav">
-                              <li><a>[1000]</a>
+							<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div15"></div></h4></td>
+							<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><h4 style="display:inline"><div id="div16"></div></h4></td>
+						   <td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div17"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
+                              <li><a><div id="div18"></div></a>
                                    <ul class="list-group dropdown-menu arrow_box">
 										  <li class="list-group-item">
 											<span class="badge">14</span>
@@ -255,9 +256,9 @@
 									
 									
 								</li></td></tr></table></td>
-							<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started Areas</span><br/><h4 class="m_top0">100</h4></td>
+							<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started Areas</span><br/><h4 class="m_top0"><div id="div19"></div></h4></td>
 							<td style="padding:10px;" width="20%"><span class="text-success">Total Started</span><br/>Affliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
-                              <li><a>100</a>
+                              <li><a><div id="div20"></div></a>
                                 <ul class="dropdown-menu arrow_box list-group" style="width:1200px !important">
                                 <div class="panel panel-default m_bottom0">
                                 <div class="panel-heading">COMMITTEE TYPE<span class="pull-right">TOTAL</span></div></div>
@@ -284,22 +285,23 @@
                                 </ul>
                               </li>
                             </ul></h4></td>
-							<td style="padding:10px;" width="28%">TOTAL <b>MEMBERS</b><h4 class="m_top0">2000</h4></td>
+							<td style="padding:10px;" width="28%">TOTAL <b>MEMBERS</b><h4 class="m_top0"><div id="div21"></div></h4></td>
+							<div id="tsMandalDiv"></div>
 						</tr>
 						<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 							<td colspan="6">
-								<button class="btn btn-xs btn-success">Village</button> | 
-								<button class="btn btn-xs btn-success">Ward</button> |
-								<button class="btn btn-xs btn-success">Division</button> |
-								<button class="btn btn-xs btn-default">All</button>
+								<button id="tsVillage" class="btn btn-xs btn-success" onclick="getCommitteeDetails('TS','village')";>Village</button> | 
+								<button id="tsWard" class="btn btn-xs btn-success" onclick="getCommitteeDetails('TS','ward')";>Ward</button> |
+								
+								<button id="tsVillageAll" class="btn btn-xs btn-default" onclick="getCommitteeDetails('TS','villageAll')";>All</button>
 							</td>
 						</tr>
 						<tr>
-							<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0">2000</h4></td>
-							<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><h4 style="display:inline">10%</h4>[100]</td>
-						   <td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0">50%</h4></td><td  class="row-table">
+							<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div22"></div></h4></td>
+							<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><h4 style="display:inline"><div id="div23"></div></h4></td>
+						   <td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div24"></div></h4></td><td  class="row-table">
 						   <ul class="nav navbar-nav">
-                              <li><a>[1000]</a>
+                              <li><a><div id="div25"></div></a>
                                    
 									<ul class="list-group dropdown-menu arrow_box">
 										  <li class="list-group-item">
@@ -318,9 +320,9 @@
 									
 								</li>
 									</td></tr></table></td>
-							<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started Areas</span><br/><h4 class="m_top0">100</h4></td>
+							<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started Areas</span><br/><h4 class="m_top0"><div id="div26"></div></h4></td>
 							<td style="padding:10px;" width="20%"><span class="text-success">Total Started</span><br/>Affliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
-                              <li><a>100</a>
+                              <li><a><div id="div27"></div></a>
                                 <ul class="dropdown-menu arrow_box list-group" style="width:1200px !important">
                                 <div class="panel panel-default m_bottom0">
                                 <div class="panel-heading">COMMITTEE TYPE<span class="pull-right">TOTAL</span></div></div>
@@ -353,7 +355,8 @@
                                 </ul>
                               </li>
                             </ul></h4></td>
-							<td style="padding:10px;" width="28%">TOTAL <b>MEMBERS</b><h4 class="m_top0">2000</h4></td>
+							<td style="padding:10px;" width="28%">TOTAL <b>MEMBERS</b><h4 class="m_top0"><div id="div28"></div></h4></td> 
+							<div id="tsVillageDiv"></div>
 						</tr>
 					</table>
 				</td>
@@ -361,7 +364,7 @@
       	  </table>
         </div>
 		
-        <!--<div class="row m_top20">        	 
+        <div class="row m_top20">        	 
             <div class="row">
                 <div class="col-md-10 col-xs-12 col-sm-12">
                     <h4 class="text-success" style="display:inline-block">DISTRICT WISE COMMITTEES
@@ -543,7 +546,7 @@
                     </table>                    
                 </div>
             </div>
-        </div>-->
+        </div>
     </div>
 
 
@@ -666,6 +669,15 @@
 			   
 			   		
 	<script>
+	
+	getCommitteeCountByState("AP");
+	getCommitteeCountByState("TS");
+	getCommitteeDetails("AP","mandalAll");
+	getCommitteeDetails("AP","villageAll");	
+	getCommitteeDetails("TS","mandalAll");	
+	getCommitteeDetails("TS","villageAll");
+
+	
 	function getCommitteeDetails(state,level){
 		var levelIdsArr = new Array();
 		var state = state; 
@@ -700,32 +712,107 @@
 			state:state,
 			task:"committeeDetails"
 		}
-		
-		
 		$.ajax({
           type:'GET',
           url: 'getDashBoardLocationWiseDetails.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
 			var str='';
-			str+='<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><h4 style="display:inline">10%</h4>[100]</td>';
-			str+='<td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0">50%</h4></td><td  class="row-table"><ul class="nav navbar-nav">';
-			str+='<a>[1000]</a>';
-			str+='</td></tr></table></td>';
-			str+='<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started Areas</span><br/><h4 class="m_top0">100</h4></td>';
-			str+='<td style="padding:10px;" width="20%"><span class="text-success">Total Started</span><br/>Affliated Committees<br/><h4 class="m_top0"><a>100</a>';
-			str+='<td style="padding:10px;" width="28%">TOTAL <b>MEMBERS</b><h4 class="m_top0">2000</h4></td>';
-			if(state == "AP"){
-			if(level == 'mandal' || level == 'town' || level == 'division' || level == 'mandalAll')
-			{
-				
+			var str1='';
+			var str2='';
+			var str3='';
+			if(result != null){
+				if(state == "AP"){
+					if(level == 'mandal' || level == 'town' || level == 'division' || level == 'mandalAll')
+					{
+					/*	str+='<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0">'+result.committeesCount+'</h4></td>'
+						str+='<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><h4 style="display:inline">'+result.mainCommittees+'</h4></td>';
+						str+='<td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0">'+result.completedCommitteePerc+'%</h4></td><td  class="row-table"><ul class="nav navbar-nav">';
+						str+='<a>'+result.completedCommittees+'</a>';
+						str+='</td></tr></table></td>';
+						str+='<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started Areas</span><br/><h4 class="m_top0">'+result.afflCommittees+'</h4></td>';
+						str+='<td style="padding:10px;" width="20%"><span class="text-success">Total Started</span><br/>Affliated Committees<br/><h4 class="m_top0"><a>'+result.afflCommittees+'</a>';
+					str+='<td style="padding:10px;" width="28%">TOTAL <b>MEMBERS</b><h4 class="m_top0">'+result.membersCount+'</h4></td>';
+						*/
+					$("#div1").html(result.committeesCount);
+					$("#div2").html(result.mainCommittees);
+					$("#div3").html(result.completedCommitteePerc);
+					$("#div4").html(result.completedCommittees);
+					$("#div5").html(result.afflCommittees);
+					$("#div6").html(result.afflCommittees);
+					$("#div7").html(result.membersCount);
+					}
+					
+					if(level == 'village' || level == 'ward' || level == 'villageAll')
+					{
+					/*	str1+='<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0">'+result.committeesCount+'</h4></td>'
+						str1+='<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><h4 style="display:inline">'+result.mainCommittees+'</h4></td>';
+						str1+='<td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0">'+result.completedCommitteePerc+'%</h4></td><td  class="row-table"><ul class="nav navbar-nav">';
+						str1+='<a>'+result.completedCommittees+'</a>';
+						str1+='</td></tr></table></td>';
+						str1+='<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started Areas</span><br/><h4 class="m_top0">'+result.afflCommittees+'</h4></td>';
+						str1+='<td style="padding:10px;" width="20%"><span class="text-success">Total Started</span><br/>Affliated Committees<br/><h4 class="m_top0"><a>'+result.afflCommittees+'</a>';
+					str1+='<td style="padding:10px;" width="28%">TOTAL <b>MEMBERS</b><h4 class="m_top0">'+result.membersCount+'</h4></td>';
+					*/
+						$("#div8").html(result.committeesCount);
+						$("#div9").html(result.mainCommittees);
+						$("#div10").html(result.completedCommitteePerc);
+						$("#div11").html(result.completedCommittees);
+						$("#div12").html(result.afflCommittees);
+						$("#div13").html(result.afflCommittees);
+						$("#div14").html(result.membersCount);
+					}
+					
+					/*$("#apMandalDiv").html(str);
+					$("#apVillageDiv").html(str1); */
+				}
+				if(state == "TS"){
+					if(level == 'mandal' || level == 'town' || level == 'division' || level == 'mandalAll')
+					{
+					/*	str2+='<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0">'+result.committeesCount+'</h4></td>'
+						str2+='<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><h4 style="display:inline">'+result.mainCommittees+'</h4></td>';
+						str2+='<td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0">'+result.completedCommitteePerc+'%</h4></td><td  class="row-table"><ul class="nav navbar-nav">';
+						str2+='<a>'+result.completedCommittees+'</a>';
+						str2+='</td></tr></table></td>';
+						str2+='<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started Areas</span><br/><h4 class="m_top0">'+result.afflCommittees+'</h4></td>';
+						str2+='<td style="padding:10px;" width="20%"><span class="text-success">Total Started</span><br/>Affliated Committees<br/><h4 class="m_top0"><a>'+result.afflCommittees+'</a>';
+					str2+='<td style="padding:10px;" width="28%">TOTAL <b>MEMBERS</b><h4 class="m_top0">'+result.membersCount+'</h4></td>';
+					*/
+						$("#div15").html(result.committeesCount);
+						$("#div16").html(result.mainCommittees);
+						$("#div17").html(result.completedCommitteePerc);
+						$("#div18").html(result.completedCommittees);
+						$("#div19").html(result.afflCommittees);
+						$("#div20").html(result.afflCommittees);
+						$("#div21").html(result.membersCount);
+					}
+					
+				 if(level == 'village' || level == 'ward' || level == 'villageAll')
+					{
+					/*	str3+='<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0">'+result.committeesCount+'</h4></td>'
+						str3+='<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><h4 style="display:inline">'+result.mainCommittees+'</h4></td>';
+						str3+='<td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0">'+result.completedCommitteePerc+'%</h4></td><td  class="row-table"><ul class="nav navbar-nav">';
+						str3+='<a>'+result.completedCommittees+'</a>';
+						str3+='</td></tr></table></td>';
+						str3+='<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started Areas</span><br/><h4 class="m_top0">'+result.afflCommittees+'</h4></td>';
+						str3+='<td style="padding:10px;" width="20%"><span class="text-success">Total Started</span><br/>Affliated Committees<br/><h4 class="m_top0"><a>'+result.afflCommittees+'</a>';
+					str3+='<td style="padding:10px;" width="28%">TOTAL <b>MEMBERS</b><h4 class="m_top0">'+result.membersCount+'</h4></td>';	
+					*/
+						$("#div22").html(result.committeesCount);
+						$("#div23").html(result.mainCommittees);
+						$("#div24").html(result.completedCommitteePerc);
+						$("#div25").html(result.completedCommittees);
+						$("#div26").html(result.afflCommittees);
+						$("#div27").html(result.afflCommittees);
+						$("#div28").html(result.membersCount);
+					}
+					
+					/*$("#tsMandalDiv").html(str2);
+					$("#tsVillageDiv").html(str3);*/
+				}
+
 			}
-			
-			else if(level == 'village' || level == 'ward' || level == 'villageAll')
-			{
-				
-			}
-			}
+		
 		});
 	}
 	function getCommitteeCountByState(state){
@@ -754,13 +841,7 @@
 		});
 	}
 	
-	getCommitteeCountByState("AP");
-	getCommitteeCountByState("TS");
-	//getCommitteeDetails("AP","mandalAll");
-	//getCommitteeDetails("AP","villageAll");	
-	//getCommitteeDetails("TS","mandalAll");	
-	//getCommitteeDetails("TS","villageAll");
-
+	
 	function buildData(result,state){
 	var str='';
 	str+='<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><h4 style="display:inline">10%</h4>[100]</td>';
