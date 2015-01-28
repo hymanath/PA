@@ -9471,7 +9471,7 @@
 		
 		<action name="getDashBoardLocationWiseDetails" class="committeeDashBoardAction" method="getDashBoardLocationWiseDetailsAction">
 			<result type="json" name="success">
-				<param name="root">idNameVOList</param>
+				<param name="root">cadreCommitteeReportVO</param>
 			</result>
 		</action>
 		
