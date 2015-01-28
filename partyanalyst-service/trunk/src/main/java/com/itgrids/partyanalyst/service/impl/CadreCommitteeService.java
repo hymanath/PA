@@ -12,11 +12,14 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.ICadreCommitteeChangeDesignationsDAO;
+import com.itgrids.partyanalyst.dao.ICadreCommitteeIncreasedPositionsDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeRoleDAO;
 import com.itgrids.partyanalyst.dao.ICadreOtpDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreParticipatedElectionDAO;
@@ -40,6 +43,7 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberHistoryDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeRoleDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
@@ -51,6 +55,8 @@ import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
+import com.itgrids.partyanalyst.model.CadreCommitteeChangeDesignations;
+import com.itgrids.partyanalyst.model.CadreCommitteeIncreasedPositions;
 import com.itgrids.partyanalyst.model.CadreOtpDetails;
 import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -111,7 +117,9 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private ICadreDetailsService cadreDetailsService;
 	private ITdpBasicCommitteeDAO tdpBasicCommitteeDAO;
 	private ILocalElectionBodyWardDAO localElectionBodyWardDAO;
-	
+	private IUserDAO userDAO;
+	private ICadreCommitteeIncreasedPositionsDAO cadreCommitteeIncreasedPositionsDAO;
+	private ICadreCommitteeChangeDesignationsDAO cadreCommitteeChangeDesignationsDAO;
 	
 	
 	public void setTdpBasicCommitteeDAO(ITdpBasicCommitteeDAO tdpBasicCommitteeDAO) {
@@ -244,7 +252,21 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			ILocalElectionBodyWardDAO localElectionBodyWardDAO) {
 		this.localElectionBodyWardDAO = localElectionBodyWardDAO;
 	}
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
 	
+	public void setCadreCommitteeIncreasedPositionsDAO(
+			ICadreCommitteeIncreasedPositionsDAO cadreCommitteeIncreasedPositionsDAO) {
+		this.cadreCommitteeIncreasedPositionsDAO = cadreCommitteeIncreasedPositionsDAO;
+	}
+	public void setCadreCommitteeChangeDesignationsDAO(
+			ICadreCommitteeChangeDesignationsDAO cadreCommitteeChangeDesignationsDAO) {
+		this.cadreCommitteeChangeDesignationsDAO = cadreCommitteeChangeDesignationsDAO;
+	}
 	public CadreCommitteeVO getCadreDetailsByTdpCadreId(Long tdpCadreId)
 	{
 		CadreCommitteeVO cadreCommitteeVO = null;
@@ -1638,6 +1660,169 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return cadreCommitteeReportVO;
 	}
-	
+
+
+	//--cadreCommitteeRequest-
+			public LocationWiseBoothDetailsVO getMainCommitteeMembersInfoRequest(Long levelId,Long levelValue,Long designation){
+				Long committeeId = getMainCommitteeIdInALocationRequest(levelId,levelValue);
+				if(committeeId != null){
+					return getCommitteeMembersInfoRequest(committeeId,designation);
+				}else{
+					return new LocationWiseBoothDetailsVO();
+				}
+			}
+			public Long getMainCommitteeIdInALocationRequest(Long levelId,Long levelValue){
+				Long committeeId = null;
+				try{
+					List<Long> committeeIds = tdpCommitteeDAO.getMainCommittiesInALocation(levelId, levelValue);
+					if(committeeIds.size() > 0){
+						committeeId = committeeIds.get(0);
+					}
+				}catch(Exception e){
+					LOG.error("Exception raised in getMainCommitteeIdInALocationRequest", e);
+				}
+				return committeeId;
+			}
+			public LocationWiseBoothDetailsVO getCommitteeMembersInfoRequest(Long committeeId,Long designation){
+				LocationWiseBoothDetailsVO returnVo=null;
+			try{
+				 String confirmedCommittee=tdpCommitteeRoleDAO.gettingConfirmedCommittee(committeeId, designation);
+				
+					returnVo = new LocationWiseBoothDetailsVO();
+					returnVo.setElectionYear(confirmedCommittee);
+					List<LocationWiseBoothDetailsVO> committeeMembersInfoList = new ArrayList<LocationWiseBoothDetailsVO>();
+					List<SelectOptionVO> committeeMembersList = new ArrayList<SelectOptionVO>();
+					
+					returnVo.setResult(committeeMembersInfoList);
+					returnVo.setHamletsOfTownship(committeeMembersList);
+					
+						Map<Long,LocationWiseBoothDetailsVO> committeeMembersMap = new HashMap<Long,LocationWiseBoothDetailsVO>();
+						LocationWiseBoothDetailsVO vo = null;
+						SelectOptionVO memberVo = null;
+						//0committeeRoleid,1role name,2max nos
+						List<Object[]> totalCommitteRolesList = tdpCommitteeRoleDAO.getAllCommitteeRoles(committeeId);
+						for(Object[] totalCommitteRole:totalCommitteRolesList){
+						         vo = new LocationWiseBoothDetailsVO();
+								 vo.setLocationName(totalCommitteRole[1].toString());
+								 vo.setLocationId((Long)totalCommitteRole[0]);
+								 vo.setPopulation((Long)totalCommitteRole[2]);//total positions
+								 vo.setTotal((Long)totalCommitteRole[2]);//total positions left
+								 vo.setVotesPolled(0l);//total positions filled
+								 committeeMembersMap.put((Long)totalCommitteRole[0], vo);
+								 committeeMembersInfoList.add(vo);
+							   
+						 }
+						if(committeeMembersMap.size() > 0){
+							//0 count,1 id
+							List<Object[]>  electedPersonsList = tdpCommitteeMemberDAO.getRoleWiseAllocatedMembersCount(committeeMembersMap.keySet());
+							for(Object[] electedPersons:electedPersonsList){
+								LocationWiseBoothDetailsVO roleInfo = committeeMembersMap.get((Long)electedPersons[1]);
+								roleInfo.setVotesPolled((Long)electedPersons[0]);
+								roleInfo.setTotal(roleInfo.getPopulation() - (Long)electedPersons[0]);
+							}
+							
+							//0 role(designation),1 image,2name,3membership,4 cadreId(commiteememeberid),5 designation ids(role id).
+							List<Object[]>  electedMembersInfoList = tdpCommitteeMemberDAO.getMembersInfoForRequest(committeeMembersMap.keySet());
+							
+							for(Object[] electedMembersInfo:electedMembersInfoList){
+								memberVo = new SelectOptionVO();
+								memberVo.setValue(electedMembersInfo[0].toString());//role
+								memberVo.setId((Long)electedMembersInfo[5]);//designation ids(role id)
+								
+								if(electedMembersInfo[1] != null){
+								   memberVo.setUrl(electedMembersInfo[1].toString());//image
+								}
+								memberVo.setName(electedMembersInfo[2].toString());//name
+								memberVo.setOrderId((Long)electedMembersInfo[4]);//commiteememeberid
+								memberVo.setType(electedMembersInfo[3].toString());//membership
+								
+								
+								committeeMembersList.add(memberVo);
+							}
+					  }
+				
+				}catch(Exception e){
+					LOG.error("Exception raised in getCommitteeMembersInfo", e);
+				}
+				return returnVo;
+			}
+			
+			public ResultStatus cadreCommitteeIncreasedPositionsOrChangeDesignations(final Long tdpCommitteeRoleId,final Long requestUserId,final Long currentmaxPositions,final Long requestedMaxPositions,final String type,final List<LocationWiseBoothDetailsVO> changeDesignationsList)
+			{
+				   ResultStatus resultStatus=new ResultStatus();
+				   try {
+					
+					   if(type.equalsIgnoreCase("positionsIncreased")){
+						   transactionTemplate.execute(new TransactionCallbackWithoutResult() 
+					       {
+							  public void doInTransactionWithoutResult(TransactionStatus status) 
+							  {
+									CadreCommitteeIncreasedPositions cadreCommitteeIncreasedPositions=new CadreCommitteeIncreasedPositions();
+									
+									cadreCommitteeIncreasedPositions.setTdpCommitteeRole(tdpCommitteeRoleDAO.get(tdpCommitteeRoleId));
+									cadreCommitteeIncreasedPositions.setUserIdRequest(userDAO.get(requestUserId));
+									cadreCommitteeIncreasedPositions.setApprovedUser(null);
+									cadreCommitteeIncreasedPositions.setCurrentCount(currentmaxPositions);
+									cadreCommitteeIncreasedPositions.setRequestCount(requestedMaxPositions);
+									cadreCommitteeIncreasedPositions.setStatus("pending");
+									cadreCommitteeIncreasedPositions.setApprovedCount(null);
+									cadreCommitteeIncreasedPositions.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+									cadreCommitteeIncreasedPositions.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+									cadreCommitteeIncreasedPositions.setType(type); 
+									 
+									cadreCommitteeIncreasedPositionsDAO.save(cadreCommitteeIncreasedPositions);  
+								  
+							  }
+					       });
+						   resultStatus.setResultCode(1);
+					   }
+					   else  if(type.equalsIgnoreCase("changeDesignations")){
+						   transactionTemplate.execute(new TransactionCallbackWithoutResult() 
+					       {
+							  public void doInTransactionWithoutResult(TransactionStatus status) 
+							  {
+								    //inserting parent.
+								    CadreCommitteeIncreasedPositions cadreCommitteeIncreasedPositions=new CadreCommitteeIncreasedPositions();
+									
+									cadreCommitteeIncreasedPositions.setTdpCommitteeRole(tdpCommitteeRoleDAO.get(tdpCommitteeRoleId));
+									cadreCommitteeIncreasedPositions.setUserIdRequest(userDAO.get(requestUserId));
+									cadreCommitteeIncreasedPositions.setApprovedUser(null);
+									cadreCommitteeIncreasedPositions.setCurrentCount(currentmaxPositions);
+									cadreCommitteeIncreasedPositions.setRequestCount(requestedMaxPositions);
+									cadreCommitteeIncreasedPositions.setStatus("pending");
+									cadreCommitteeIncreasedPositions.setApprovedCount(null);
+									cadreCommitteeIncreasedPositions.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+									cadreCommitteeIncreasedPositions.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+									cadreCommitteeIncreasedPositions.setType(type); 
+									 
+									CadreCommitteeIncreasedPositions output=cadreCommitteeIncreasedPositionsDAO.save(cadreCommitteeIncreasedPositions);
+									//inserting childs.
+									
+									if(changeDesignationsList!=null && changeDesignationsList.size()>0){
+										
+										for(LocationWiseBoothDetailsVO locationWiseBoothDetailsVO : changeDesignationsList){
+											CadreCommitteeChangeDesignations cadreCommitteeChangeDesignations=new CadreCommitteeChangeDesignations();
+											cadreCommitteeChangeDesignations.setTdpCommitteeMember(tdpCommitteeMemberDAO.get(locationWiseBoothDetailsVO.getLocationId()));
+											cadreCommitteeChangeDesignations.setCurrentRole(tdpCommitteeRoleDAO.get(locationWiseBoothDetailsVO.getPopulation()));
+											cadreCommitteeChangeDesignations.setNewRole(tdpCommitteeRoleDAO.get(locationWiseBoothDetailsVO.getVotesPolled()));
+											cadreCommitteeChangeDesignations.setCadreCommitteeIncreasedPositions(output);
+											 cadreCommitteeChangeDesignationsDAO.save(cadreCommitteeChangeDesignations);
+										}
+										
+									}
+									
+									
+									
+									
+							  }
+					       }); 
+						   resultStatus.setResultCode(1); 
+					   }
+				   } catch (Exception e){
+					   LOG.error("Exception raised in cadreCommitteeIncreasedPositionsOrChangeDesignations", e);
+					   resultStatus.setResultCode(0);
+				   }
+				   return resultStatus;
+			}
 	
 }
