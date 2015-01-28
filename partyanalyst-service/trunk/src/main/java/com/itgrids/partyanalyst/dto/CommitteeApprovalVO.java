@@ -24,7 +24,7 @@ public class CommitteeApprovalVO implements Serializable{
 	private List<CommitteeApprovalVO> committeesList;
 	private List<CommitteeApprovalVO> locationsList;
 	private List<Long> locationIds;
-	
+	private String refNo;
 	
 	
 	public Long getRoleId() {
@@ -132,6 +132,12 @@ public class CommitteeApprovalVO implements Serializable{
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public String getRefNo() {
+		return refNo;
+	}
+	public void setRefNo(String refNo) {
+		this.refNo = refNo;
 	}
 	
 	
