@@ -9505,6 +9505,12 @@
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
 		
+		<action name="getCommitteesForApprovalAction" class="cadreCommitteeAction" method="getCommitteesForApproval">
+			<result type="json" name="success">
+				<param name="root">approvalRecordsList</param>
+			</result>
+		</action>
+		
 		<action name="getCommitteMembersInfoRequestAction" class="cadreCommitteeAction" method="getCommitteMembersInfoRequest">
 			<result type="json" name="success">
 				<param name="root">membersInfo</param>

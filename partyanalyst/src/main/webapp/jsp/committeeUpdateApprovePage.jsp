@@ -96,8 +96,8 @@
             </div>
             <div class="text-center m_top20">Note: Click on the <u>count</u> to view request details</div>
             <div class="row">
-            	<div class="col-md-10 col-md-offset-1 m_top20" >
-                	<table class="table table-condensed" style="background-color:rgba(0,0,0,0.1);">
+            	<div class="col-md-10 col-md-offset-1 m_top20" id="posTable">
+                	<!--<table class="table table-condensed" style="background-color:rgba(0,0,0,0.1);">
 						<thead>
                         	<th colspan="5"><h4 class="text-success" style="display:inline">CHANGE POSITION REQUEST STATUS</h4></th>
                             <th colspan="2"><div class="input-group pull-right">
@@ -162,11 +162,11 @@
                             </tr>
 
                         </tbody>
-                    </table>
+                    </table>-->
                 </div>
                 </div>
-                 <div class="row">
-            	<div class="col-md-10 col-md-offset-1 m_top20" >
+                 <!--<div class="row">
+            	<div class="col-md-10 col-md-offset-1 m_top20"  >
                 	<table class="table table-condensed" style="background-color:rgba(0,0,0,0.1);">
 						</caption>		
 						<thead>
@@ -276,13 +276,78 @@
                         </tbody>
                     </table>
                 </div>
-                </div>
+                </div>-->
             <!--Content END-->
         
         </div>
 	<footer class="text-center m_top20">
 			&copy; 2015 Telugu Desam Party
 	</footer>
-
+	<script>
+		getCandidateDetailsById();
+		function getCandidateDetailsById(){
+				var jsObj = {
+						startNo : 0,
+						endNo : 0
+				}				   
+				$.ajax({
+					type : "POST",
+					url : "getCommitteesForApprovalAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					console.log(result);
+					buildRequests(result);
+				});
+		}
+		
+		function buildRequests(result){
+			var str = '';
+			$("#posTable").html("");
+			str+='<table class="table table-condensed" style="background-color:rgba(0,0,0,0.1);">';
+						str+='<thead>';
+                        str+='	<th colspan="5"><h4 class="text-success" style="display:inline">CHANGE POSITION REQUEST STATUS</h4></th>';
+                        str+='    <th colspan="2"><div class="input-group pull-right">';
+						//str+='<input type="text" class="form-control input-sm pull-right" placeholder="Search" aria-describedby="basic-addon2">';
+						//str+='<span class="input-group-addon" id="basic-addon2"><i class="glyphicon glyphicon-search"></i></span>';
+						str+='</div></th>';
+						str+='</thead>';
+						str+='<thead>';
+						str+='<th width="13%">REQUEST NO</th>';
+                        str+='<th width="12%">LOCATION</th>';
+                            str+='<th width="18%">COMMITTEE NAME</th>';
+                            str+='<th width="17%">POSITION NAME</th>';
+                            str+='<th width="12%"><small>CURRENT MAX POSITONS</small></th>';
+                            str+='<th width="13%"><small>REQUESTED MAX POSITIONS</small></th>';
+                            str+='<th width="18%"><small>UPDATE STATUS</small></th>';
+                        str+='</thead>';
+                         str+='<tbody>';
+							for(var i in result){
+								str+='<tr>';
+                                str+='<td> #'+result[i].committeeId+'</td>';
+                                str+='<td> '+result[i].location+' '+result[i].locationType+'</td>';
+                                str+='<td>'+result[i].committeeName+'</td>';
+                                str+='<td>'+result[i].role+'</td>';
+                                str+='<td>'+result[i].currentPosCount+'</td>';
+                                str+='<td>'+result[i].requestdPosCount+'</td>';
+								str+='<td>';
+								if(result[i].status="pending"){
+									str+='<select class="form-control input-sm">';
+									str+='<option selected="selected"> Pending </option>';
+									str+='<option> Approved </option>';
+									str+='<option> Rejected </option>';
+									str+='</select>';
+								}else{
+									str+=''+result[i].status+'';
+								}
+                                str+='</td>';
+								str+='</tr>';
+							}
+                        	
+                        str+='</tbody>';
+                    str+='</table>';
+					
+		$("#posTable").html(str);
+		}
+	</script>
   </body>
 </html>
