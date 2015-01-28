@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
+import com.itgrids.partyanalyst.dto.CommitteeApprovalVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
@@ -75,9 +76,19 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private List<LocationWiseBoothDetailsVO>    locationWiseBoothDetailsVO;
 	private List<IdNameVO>						idNameVOList;
 	private List<IdNameVO>						constituenciesList;
+	private List<CommitteeApprovalVO>			approvalRecordsList;
 	
 	
 	
+
+	public List<CommitteeApprovalVO> getApprovalRecordsList() {
+		return approvalRecordsList;
+	}
+
+	public void setApprovalRecordsList(List<CommitteeApprovalVO> approvalRecordsList) {
+		this.approvalRecordsList = approvalRecordsList;
+	}
+
 	public List<IdNameVO> getConstituenciesList() {
 		return constituenciesList;
 	}
@@ -961,6 +972,36 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 				
 				return Action.SUCCESS;
 			}
+	
+	public String getCommitteesForApproval(){
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		boolean noaccess = false;
+		if(regVO==null){
+			return "input";
+		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"TDP_COMMITTEE_ADMIN")){
+			noaccess = true ;
+		}
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		
+		if(noaccess){
+			return "error";
+		}
+		
+		try{
+			jObj = new JSONObject(getTask());
+			Long startNo =  jObj.getLong("startNo");
+			Long endNo = jObj.getLong("endNo");
+			approvalRecordsList = cadreCommitteeService.getCommitteesForApproval(startNo, endNo);
+		}catch (Exception e) {
+			LOG.error(" Exception Raised in getCommitteesForApproval " + e);
+		}
+		
+		
+		
+		return Action.SUCCESS;
+	}
 	
 	public String checkIsVacancyForDesignation()
 	{

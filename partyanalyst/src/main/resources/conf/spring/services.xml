@@ -2504,7 +2504,10 @@
 	     <property name="tdpBasicCommitteeDAO" ref="tdpBasicCommitteeDAO"/>	     
 	     <property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO"/>	
 	     <property name="districtDAO" ref="districtDAO"/> 
-	     <property name="localElectionBodyWardDAO" ref="localElectionBodyWardDAO"/>	    
+	     <property name="localElectionBodyWardDAO" ref="localElectionBodyWardDAO"/>
+	     <property name="tdpCommitteeLevelDAO" ref="tdpCommitteeLevelDAO"/>	    
+	     <property name="cadreCommitteeIncreasedPositionsDAO" ref="cadreCommitteeIncreasedPositionsDAO"/>
+	     
 	     <property name="userDAO" ref="userDAO"/>
 	     <property name="cadreCommitteeIncreasedPositionsDAO" ref="cadreCommitteeIncreasedPositionsDAO"/>
 	     <property name="cadreCommitteeChangeDesignationsDAO" ref="cadreCommitteeChangeDesignationsDAO"/>
