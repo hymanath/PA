@@ -59,4 +59,44 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
 		return query.list();
 	}
+	public List<Object[]> getStartedCommitteesCountByLocation(String state,List<Long> levelIds){
+
+		StringBuilder str = new StringBuilder();
+
+		//0.count,1.tdpBasicCommitteeId,2.tdpCommitteeTypeId
+		
+		str.append("select count(distinct model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId), " +
+		" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId " +
+		" from TdpCommitteeMember model where ");
+		str.append(" model.state= :state ");
+		str.append("and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) and model.isActive ='Y' group by " +
+		"model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("state", state);
+		
+		query.setParameterList("levelIds", levelIds);
+		return query.list();
+	}
+
+	public Long getMembersCountByLocation(String state,List<Long> levelIds){
+
+		StringBuilder str = new StringBuilder();
+
+		str.append(" select count(distinct model.tdpCommitteeMemberId) " +
+		" from TdpCommitteeMember model where ");
+		if(state != null)
+		{
+		str.append(" model.state= :state ");
+		}
+		str.append("and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) and model.isActive ='Y' ");
+
+		Query query = getSession().createQuery(str.toString());
+		if(state != null)
+		{
+		query.setParameter("state", state);
+		}
+		query.setParameterList("levelIds",levelIds);
+		return (Long) query.uniqueResult();
+	}
+	
 }
