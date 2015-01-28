@@ -71,5 +71,14 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		}
 		return query.list();
 	}
+	public List<Object[]> getLocationByTypeIdAndLevel(List<Long> levelIds,Long committeTypeId)
+	{
+		Query query = getSession().createQuery("select model.tdpCommitteeLevelValue,model.isCommitteeConfirmed,model.tdpCommitteeLevelId from TdpCommittee model where " +
+				" model.tdpCommitteeLevel.tdpCommitteeLevelId in(:levelIds) and " +
+				" model.tdpBasicCommittee.tdpBasicCommitteeId =:committeTypeId");
+		query.setParameterList("levelIds", levelIds);
+		query.setParameter("committeTypeId", committeTypeId);
+		return query.list();
+	}
 	
 }
