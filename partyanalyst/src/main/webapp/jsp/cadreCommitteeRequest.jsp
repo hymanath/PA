@@ -57,7 +57,7 @@
            <div class="row">
            		<div class="col-md-offset-2 col-md-10">
 						<label class="radio-inline"><input type="radio" name="requestType" value="1" id="reqIncPosId" checked="true" onClick="hideDetails('1')"/>Request for committee member new position</label>
-                        <label class="radio-inline"><input type="radio" name="requestType" value="2" id="reqChangeDesgId" onClick="hideDetails('2')"/>Request for committee members change position</label>
+                      <!--  <label class="radio-inline"><input type="radio" name="requestType" value="2" id="reqChangeDesgId" onClick="hideDetails('2')"/>Request for committee members change position</label>-->
 						<label class="radio-inline"><input type="radio" name="requestType" value="3" id="viewRequestId" onClick="hideDetails('3')" />View Request Status</label> 
                 </div>
             </div>
