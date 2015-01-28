@@ -8,4 +8,5 @@ import com.itgrids.partyanalyst.model.TdpCommitteeRole;
 
 public interface ITdpCommitteeRoleDAO  extends GenericDao<TdpCommitteeRole, Long>{
 	public List<Object[]> getAllCommitteeRoles(Long committeeId);
+	public String gettingConfirmedCommittee(Long tdpCommitteeId,Long tdpCommitteeRoleId);
 }
