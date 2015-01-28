@@ -28,6 +28,8 @@ public class TdpCommittee {
 	private Long tdpCommitteeLevelId;
 	private Long tdpCommitteeLevelValue;
 	private String isCommitteeConfirmed;
+	private String state;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "tdp_committee_id", unique = true, nullable = false)
@@ -106,6 +108,15 @@ public class TdpCommittee {
 
 	public void setIsCommitteeConfirmed(String isCommitteeConfirmed) {
 		this.isCommitteeConfirmed = isCommitteeConfirmed;
+	}
+
+	@Column(name = "state")
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
 	}
 	
 	

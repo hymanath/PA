@@ -35,4 +35,8 @@ public interface ICadreCommitteeService {
 	public List<IdNameVO> getConstituenciesOfState(Long levelId);
 	public ResultStatus saveMandalLevelAffliactedElectrolInfo(Long tdpCadreId,Long tdpBasicCommitteeId);
 	public ResultStatus saveMandalLevelElectrolInfo(Long tdpCadreId,List<CadrePreviousRollesVO> eligibleRoles);
+
+	public LocationWiseBoothDetailsVO getTotalCommitteesPanchayatLevelByState(String state,List<Long> levelIds);
+	public LocationWiseBoothDetailsVO getMembersCountByLocation(String state,List<Long> levelIds);
+	public LocationWiseBoothDetailsVO getStartedCommitteesCountByLocation(String state,List<Long> levelIds);
 }
