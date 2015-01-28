@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.jfree.util.Log;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -41,6 +42,7 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDesignationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeElectrolRolesDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeElectrolsDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberHistoryDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeRoleDAO;
@@ -51,6 +53,7 @@ import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
+import com.itgrids.partyanalyst.dto.CommitteeApprovalVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
@@ -119,11 +122,27 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private ICadreDetailsService cadreDetailsService;
 	private ITdpBasicCommitteeDAO tdpBasicCommitteeDAO;
 	private ILocalElectionBodyWardDAO localElectionBodyWardDAO;
+	private ITdpCommitteeLevelDAO tdpCommitteeLevelDAO;
+	private ICadreCommitteeIncreasedPositionsDAO cadreCommitteeIncreasedPositionsDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
 	private IUserDAO userDAO;
 	private ICadreCommitteeIncreasedPositionsDAO cadreCommitteeIncreasedPositionsDAO;
-	private ICadreCommitteeChangeDesignationsDAO cadreCommitteeChangeDesignationsDAO;
 	
+	
+	
+	public ITdpCommitteeLevelDAO getTdpCommitteeLevelDAO() {
+		return tdpCommitteeLevelDAO;
+	}
+	public void setTdpCommitteeLevelDAO(ITdpCommitteeLevelDAO tdpCommitteeLevelDAO) {
+		this.tdpCommitteeLevelDAO = tdpCommitteeLevelDAO;
+	}
+	public ICadreCommitteeIncreasedPositionsDAO getCadreCommitteeIncreasedPositionsDAO() {
+		return cadreCommitteeIncreasedPositionsDAO;
+	}
+	public void setCadreCommitteeIncreasedPositionsDAO(
+			ICadreCommitteeIncreasedPositionsDAO cadreCommitteeIncreasedPositionsDAO) {
+		this.cadreCommitteeIncreasedPositionsDAO = cadreCommitteeIncreasedPositionsDAO;
+	}
 	public void setTdpBasicCommitteeDAO(ITdpBasicCommitteeDAO tdpBasicCommitteeDAO) {
 		this.tdpBasicCommitteeDAO = tdpBasicCommitteeDAO;
 	}
@@ -2003,6 +2022,156 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return cadreCommitteeReportVO;
 	}
 	
+	public List<CommitteeApprovalVO> getCommitteesForApproval(Long startNo, Long endNo){
+		
+		LOG.debug(" Entered into getCommitteesForApproval ");
+		List<CommitteeApprovalVO> finalList = new ArrayList<CommitteeApprovalVO>();
+		try{
+			List<Object[]> list = tdpCommitteeLevelDAO.getAllLevels();
+			List<Object[]> list1 = cadreCommitteeIncreasedPositionsDAO.getAllRecordsCount(startNo.intValue(), endNo.intValue()); 
+			
+			Map<Long, String> pancMap = new HashMap<Long, String>();
+			Map<Long, String> tehsilMap = new HashMap<Long, String>();
+			Map<Long, String> lebMap = new HashMap<Long, String>();
+			Map<Long, String> wardMap = new HashMap<Long, String>();
+			Map<Long, String> divisMap = new HashMap<Long, String>();
+			
+			List<CommitteeApprovalVO> locations = new ArrayList<CommitteeApprovalVO>();
+			
+			if(list!=null && list.size()>0){
+				for(Object[] obj:list){
+					CommitteeApprovalVO tmp = new CommitteeApprovalVO();
+					tmp.setLocationTypeId(Long.valueOf(obj[0].toString()));
+					tmp.setLocationType(obj[1].toString());
+					locations.add(tmp);
+				}
+			}
+			
+			if(list1!=null && list1.size()>0){
+				for(Object[] obj:list1){
+					CommitteeApprovalVO tmp = getMatchedLocation(Long.valueOf(obj[1].toString()),locations);
+					if(tmp!=null){
+						List<Long> lctnIds = tmp.getLocationIds();
+						if(lctnIds==null){
+							lctnIds = new ArrayList<Long>();
+						}
+						lctnIds.add(Long.valueOf(obj[3].toString()));
+						
+						tmp.setLocationIds(lctnIds);
+					}
+				}
+			}
+			
+			if(locations.size()>0){
+				for(CommitteeApprovalVO tmp:locations){
+					if(tmp.getLocationIds()!=null && tmp.getLocationIds().size()>0){
+						if(tmp.getLocationTypeId().equals(6l)){
+							List<Object[]> panchayats =  panchayatDAO.getPanchayatsByPanchayatIdsListAlongMandal(tmp.getLocationIds());
+							if(panchayats!=null && panchayats.size()>0){
+								for(Object[] obj:panchayats){
+									pancMap.put(Long.valueOf(obj[0].toString()), obj[1].toString());
+								}
+							}
+						}
+						
+						if(tmp.getLocationTypeId().equals(5l)){
+							List<Object[]> tehsils =  tehsilDAO.getTehsilNameByTehsilIdsList(tmp.getLocationIds());
+							if(tehsils!=null && tehsils.size()>0){
+								for(Object[] obj:tehsils){
+									tehsilMap.put(Long.valueOf(obj[0].toString()), obj[1].toString());
+								}
+							}
+						}
+						
+						if(tmp.getLocationTypeId().equals(7l)){
+							List<Object[]> lebs =  localElectionBodyDAO.findByLocalElecBodyIds(tmp.getLocationIds());
+							if(lebs!=null && lebs.size()>0){
+								for(Object[] obj:lebs){
+									lebMap.put(Long.valueOf(obj[0].toString()), obj[1].toString()+" "+obj[2].toString());
+								}
+							}
+						}
+						
+						if(tmp.getLocationTypeId().equals(8l)){
+							List<Object[]> wards =  constituencyDAO.getConstityencyByConstituencyids(tmp.getLocationIds());
+							if(wards!=null && wards.size()>0){
+								for(Object[] obj:wards){
+									wardMap.put(Long.valueOf(obj[0].toString()), obj[1].toString()+" "+obj[2].toString());
+								}
+							}
+						}
+						
+						if(tmp.getLocationTypeId().equals(8l)){
+							List<Object[]> divis =  constituencyDAO.getConstityencyByConstituencyids(tmp.getLocationIds());
+							if(divis!=null && divis.size()>0){
+								for(Object[] obj:divis){
+									divisMap.put(Long.valueOf(obj[0].toString()), obj[1].toString()+" "+obj[2].toString());
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			
+			
+			if(list1!=null && list1.size()>0){
+				for(Object[] obj:list1){
+					CommitteeApprovalVO cv = new CommitteeApprovalVO();
+					cv.setRequestNo(""+Long.valueOf(obj[0].toString()));
+					cv.setLocationTypeId(Long.valueOf(obj[1].toString()));
+					cv.setLocationType(obj[2].toString());
+					cv.setLocationId(Long.valueOf(obj[3].toString()));
+					cv.setCommitteeId(Long.valueOf(obj[4].toString()));
+					cv.setCommitteeName(obj[5].toString());
+					cv.setRoleId(Long.valueOf(obj[6].toString()));
+					cv.setRole(obj[7].toString());
+					cv.setCurrentPosCount(Long.valueOf(obj[8].toString()));
+					cv.setRequestdPosCount(Long.valueOf(obj[9].toString()));
+					cv.setStatus(obj[10].toString());
+					
+					String location = "";
+					if(cv.getLocationTypeId().equals(5l)){
+						location = tehsilMap.get(cv.getLocationId());
+					}
+					if(cv.getLocationTypeId().equals(6l)){
+						location = pancMap.get(cv.getLocationId());					
+					}
+					if(cv.getLocationTypeId().equals(7l)){
+						location = lebMap.get(cv.getLocationId());
+					}
+					if(cv.getLocationTypeId().equals(8l)){
+						location = wardMap.get(cv.getLocationId());					
+					}
+					if(cv.getLocationTypeId().equals(9l)){
+						location = divisMap.get(cv.getLocationId());
+					}
+					
+					cv.setLocation(location);
+					
+					finalList.add(cv);
+				}
+			}
+			
+			
+		}catch (Exception e) {
+			LOG.error(" Exception Raised in getCommitteesForApproval " + e);
+		}
+		
+		return finalList;
+		
+	}
+	
+	public CommitteeApprovalVO getMatchedLocation(Long id, List<CommitteeApprovalVO> list){
+		if(id!=null && list!=null && list.size()>0){
+			for(CommitteeApprovalVO temp:list){
+				if(temp.getLocationTypeId().equals(id)){
+					return temp;
+				}
+			}
+		}
+		return null;
+	}
 	public String checkIsVacancyForDesignation(Long tdpCommitteeRoleId)
 	{
 		String isEligible ="";
@@ -2239,5 +2408,4 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return resultList;
 	}
-	
 }

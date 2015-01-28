@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
+import com.itgrids.partyanalyst.dao.ICadreCommitteeIncreasedPositionsDAO;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
@@ -15,6 +16,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 	ICadreDAO cadreDAO;
 	IUserAddressDAO userAddressDAO;
 	ILocalElectionBodyDAO localElectionBodyDAO;
+	ICadreCommitteeIncreasedPositionsDAO cadreCommitteeIncreasedPositionsDAO;
 	
 	SimpleDateFormat format  = new SimpleDateFormat("yy-MM-dd");
 	
@@ -38,6 +40,14 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		this.cadreDAO = cadreDAO;
 	}
 
+	public ICadreCommitteeIncreasedPositionsDAO getCadreCommitteeIncreasedPositionsDAO() {
+		return cadreCommitteeIncreasedPositionsDAO;
+	}
+
+	public void setCadreCommitteeIncreasedPositionsDAO(
+			ICadreCommitteeIncreasedPositionsDAO cadreCommitteeIncreasedPositionsDAO) {
+		this.cadreCommitteeIncreasedPositionsDAO = cadreCommitteeIncreasedPositionsDAO;
+	}
 	
 	/*public void testFindCadresByLevels()
 	{
@@ -645,7 +655,9 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 	
 	
 	
-	public void testDtails()
+	
+
+	/*public void testDtails()
 	{
 		List<Long> ids = new ArrayList<Long>();
 		ids.add(601L);
@@ -664,6 +676,15 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		
 		System.out.println(new Date());
 		System.out.println(searchList.size());
+	}*/
+	
+	public void test(){
+		/*Long searchList = cadreCommitteeIncreasedPositionsDAO.getAllRecordsCount();
+		System.out.println(searchList);*/
+		
+		List<Object[]> list = cadreCommitteeIncreasedPositionsDAO.getAllRecordsCount(1,1);
+		System.out.println(list.size());
+		
 	}
 	
 }
