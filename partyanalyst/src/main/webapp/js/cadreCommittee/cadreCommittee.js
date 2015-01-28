@@ -469,6 +469,11 @@
 				{
 					str+='<ul class="list-inline">';
 					str+='<li style="font-weight:bold;">Existing Designation : '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'</i>';	
+					if(result[i].previousRoles != null && result[i].previousRoles.length > 0){
+						for(var j in result[i].previousRoles){
+							str+='<li style="font-weight:bold;">Electrol for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'</i>';
+						}
+					}
 					str+='<input type="hidden" id="existingRole'+i+'" value=" Aleady  '+result[i].cadreName+' added as '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'"/>';
 					str+='</ul>';	
 					str+='</div>';
@@ -513,7 +518,13 @@
 					}								
 				}
 				else{
-					
+					if(result[i].previousRoles != null && result[i].previousRoles.length > 0){
+					    str+='<ul class="list-inline">';
+						for(var j in result[i].previousRoles){
+							str+='<li style="font-weight:bold;">Electrol for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'</i>';
+						}
+					    str+='</ul>';
+					}
 					str+='</div>';
 					str+='</div>';
 					
