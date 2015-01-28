@@ -1,11 +1,15 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.List;
+
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -16,10 +20,18 @@ public class CadreCommitteeSummaryAction extends ActionSupport implements Servle
 	
 	private HttpServletRequest         			request;
 	private HttpSession 						session;
-	private JSONObject							jObj;
+	JSONObject jObj;
 	private String 								task;
 	private ICadreCommitteeService   		 	cadreCommitteeService;
+	private List<CadreCommitteeMemberVO> cadreCommitteeMemberVOList;
 	
+	public List<CadreCommitteeMemberVO> getCadreCommitteeMemberVOList() {
+		return cadreCommitteeMemberVOList;
+	}
+	public void setCadreCommitteeMemberVOList(
+			List<CadreCommitteeMemberVO> cadreCommitteeMemberVOList) {
+		this.cadreCommitteeMemberVOList = cadreCommitteeMemberVOList;
+	}
 	public HttpServletRequest getRequest() {
 		return request;
 	}
@@ -66,7 +78,22 @@ public class CadreCommitteeSummaryAction extends ActionSupport implements Servle
 		return Action.SUCCESS;
 	}
 
-
+	public String getCommitteeDetailsByStatus(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+			if(jObj.getString("task").equalsIgnoreCase("memberCnt"))
+			cadreCommitteeMemberVOList = cadreCommitteeService.getCommitteeDetailsByStatus(jObj.getLong("basicCommitteetypeId"),jObj.getString("status"),jObj.getLong("levelId"));
+			else if(jObj.getString("task").equalsIgnoreCase("memberInfo"))
+				cadreCommitteeMemberVOList = cadreCommitteeService.getCommitteeMemberDetails(jObj.getLong("basicCommitteetypeId"),jObj.getLong("locationId"),jObj.getLong("levelId"));
+			else if(jObj.getString("task").equalsIgnoreCase("committeComplete"))
+				cadreCommitteeMemberVOList = cadreCommitteeService.setCommitteConfirmation(jObj.getLong("basicCommitteetypeId"),jObj.getLong("locationId"),jObj.getLong("levelId"));
+		}catch(Exception e){
+			LOG.error("Exception occured in getCommitteeDetailsByStatus() At CadreCommitteeAction ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
 	
 
 }
