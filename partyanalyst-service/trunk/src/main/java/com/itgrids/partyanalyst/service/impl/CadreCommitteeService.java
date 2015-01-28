@@ -18,6 +18,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
+import com.itgrids.partyanalyst.dao.IBasicCommitteeDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeChangeDesignationsDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeIncreasedPositionsDAO;
@@ -47,7 +48,7 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
-import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
+import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
@@ -1658,6 +1659,97 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return committeesList;
 	}
 	
+	/*public List<CadreCommitteeMemberVO> getCommitteeDetailsByStatus(Long basicCommitteeTypeId,String status,Long levelId)
+	{
+		List<CadreCommitteeMemberVO> resultList = new ArrayList<CadreCommitteeMemberVO>();
+		List<Long> levelIds = new ArrayList<Long>();
+		List<CadreCommitteeMemberVO> toRemove = new ArrayList<CadreCommitteeMemberVO>();
+		try{
+			if(levelId == 1) // MANDAL / TOWN / DIVISION
+			{
+				levelIds.add(5l);
+				levelIds.add(7l);
+				levelIds.add(9l);
+			}
+			if(levelId == 2) // Village/Ward
+			{
+				levelIds.add(6l);
+				levelIds.add(8l);
+			}
+			List<Object[]> list = tdpCommitteeDAO.getLocationByTypeIdAndLevel(levelIds,basicCommitteeTypeId);
+			if(list != null && list.size() > 0)
+			{
+				List<Long> locationValues = new ArrayList<Long>();
+				for(Object[] params : list)
+				{
+					CadreCommitteeMemberVO locationVo = new CadreCommitteeMemberVO();
+					String locationName = getLocationName((Long)params[2],(Long)params[0]);
+					locationVo.setId((Long)params[0]);
+					locationVo.setName(locationName);
+					locationVo.setStatus(params[1].toString());
+					locationVo.setLevel((Long)params[2]);
+					locationValues.add((Long)params[0]);
+					resultList.add(locationVo);
+				}
+				
+				List<Object[]> membersList = tdpCommitteeMemberDAO.getComitteeMembersByCommiteTypeAndLocation(levelIds,locationValues,basicCommitteeTypeId);
+				if(membersList != null && membersList.size() > 0)
+				{
+					for(Object[] params : membersList)
+					{
+						CadreCommitteeMemberVO vo = getMatchedLocation((Long)params[1],(Long)params[2],resultList);
+						if(vo != null)
+						{
+							 for Not Started 
+								if(status.equalsIgnoreCase("NotStarted"))
+									{
+									toRemove.add(vo);
+									}
+									else
+									{
+											   vo.setTotal((Long)params[0]);
+											   if(vo.getStatus().equalsIgnoreCase("Y"))
+												   vo.setStatus("Completed");
+											   else
+											   {
+												   if(vo.getTotal() != null && vo.getTotal() > 0)
+													   vo.setStatus("Started"); 
+												   else
+													   vo.setStatus("NotStarted");  
+													   
+											   }
+									}
+								}		
+							   }
+							}
+				         }
+			
+			if(!status.equalsIgnoreCase("Total"))
+			{
+				 for Started 
+				if(status.equalsIgnoreCase("Started") || status.equalsIgnoreCase("Completed"))
+				{
+					for(CadreCommitteeMemberVO vo : resultList)
+					{
+						if(!status.equalsIgnoreCase(vo.getStatus()))
+						  toRemove.add(vo);
+					}
+				}
+				
+				resultList.removeAll(toRemove);
+			}
+			if(resultList != null && resultList.size() > 0)
+			resultList.get(0).setCommitte(tdpBasicCommitteeDAO.get(basicCommitteeTypeId).getName());
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception raised in getCommitteeDetailsByStatus", e);	
+		}
+		
+		return resultList;
+		
+	}*/
+	
 	public CadreCommitteeReportVO getCommitteeDetailsByLocation(String state,List<Long> levelIds){
 
 		Long completedCommittees=0l;
@@ -1942,4 +2034,210 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		
 		return isEligible;
 	}
+	public List<CadreCommitteeMemberVO> getCommitteeDetailsByStatus(Long basicCommitteeTypeId,String status,Long levelId)
+	{
+		List<CadreCommitteeMemberVO> resultList = new ArrayList<CadreCommitteeMemberVO>();
+		List<Long> levelIds = new ArrayList<Long>();
+		List<CadreCommitteeMemberVO> toRemove = new ArrayList<CadreCommitteeMemberVO>();
+		try{
+			if(levelId == 1) // MANDAL / TOWN / DIVISION
+			{
+				levelIds.add(5l);
+				levelIds.add(7l);
+				levelIds.add(9l);
+			}
+			if(levelId == 2) // Village/Ward
+			{
+				levelIds.add(6l);
+				levelIds.add(8l);
+			}
+			List<Object[]> list = tdpCommitteeDAO.getLocationByTypeIdAndLevel(levelIds,basicCommitteeTypeId);
+			if(list != null && list.size() > 0)
+			{
+				List<Long> locationValues = new ArrayList<Long>();
+				for(Object[] params : list)
+				{
+					CadreCommitteeMemberVO locationVo = new CadreCommitteeMemberVO();
+					String locationName = getLocationName((Long)params[2],(Long)params[0]);
+					locationVo.setId((Long)params[0]);
+					locationVo.setName(locationName);
+					locationVo.setStatus(params[1].toString());
+					locationVo.setLevel((Long)params[2]);
+					locationValues.add((Long)params[0]);
+					resultList.add(locationVo);
+				}
+				
+				List<Object[]> membersList = tdpCommitteeMemberDAO.getComitteeMembersByCommiteTypeAndLocation(levelIds,locationValues,basicCommitteeTypeId);
+				if(membersList != null && membersList.size() > 0)
+				{
+					for(Object[] params : membersList)
+					{
+						CadreCommitteeMemberVO vo = getMatchedLocation((Long)params[1],(Long)params[2],resultList);
+						if(vo != null)
+							vo.setTotal((Long)params[0]);
+						}
+					}
+				  }
+					for(CadreCommitteeMemberVO vo : resultList)
+					{
+						// Started
+						if(status.equalsIgnoreCase("NotConform"))
+						{
+						  if(vo.getStatus().equalsIgnoreCase("Y"))
+						  toRemove.add(vo);
+						}
+						else if(status.equalsIgnoreCase("Conform"))
+						{
+							 if(vo.getStatus().equalsIgnoreCase("N"))
+								  toRemove.add(vo);	
+						}
+					}
+				if(toRemove != null && toRemove.size() > 0)
+				resultList.removeAll(toRemove);
+			if(resultList != null && resultList.size() > 0)
+			resultList.get(0).setCommitte(tdpBasicCommitteeDAO.get(basicCommitteeTypeId).getName());
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception raised in getCommitteeDetailsByStatus", e);	
+		}
+		
+		return resultList;
+		
+	}
+	public CadreCommitteeMemberVO getMatchedLocation(Long levelId,Long levelValue,List<CadreCommitteeMemberVO>resultList)
+	{
+		try{
+			if(resultList == null || resultList.size() == 0)
+				return null;
+			for(CadreCommitteeMemberVO vo : resultList)
+			{
+				if(vo.getLevel().longValue() == levelId && vo.getId().longValue() == levelValue)
+					return vo;
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public String getLocationName(Long LocationTypeId,Long locationValue)
+	{
+		String location = "";
+		if(locationValue != 0L)
+		{
+			if(LocationTypeId.longValue() == 6L)
+			{
+				location = panchayatDAO.get(locationValue).getPanchayatName()+" Panchayat";
+			}
+			else 	if(LocationTypeId.longValue() == 8L)
+			{
+				location = constituencyDAO.get(locationValue).getName();
+			}
+			else 	if(LocationTypeId.longValue() == 5L)
+			{
+				location = tehsilDAO.get(locationValue).getTehsilName()+" Mandal";
+			}	
+			else if(LocationTypeId.longValue() == 7L)
+			{
+				LocalElectionBody localElectionBody = localElectionBodyDAO.get(locationValue);						
+				location = localElectionBody.getName() +" "+localElectionBody.getElectionType().getElectionType();
+				
+				if(locationValue.longValue() == 20L || locationValue.longValue() == 124L || locationValue.longValue() == 119L)
+				{
+					String wardName = constituencyDAO.get(locationValue).getName();
+					location = location+" - "+wardName;
+				}
+				
+			}
+			
+			else if(LocationTypeId.longValue() == 9L)
+			{
+				String wardName = constituencyDAO.get(locationValue).getName();
+
+				List ward = localElectionBodyWardDAO.findWardName(locationValue);
+				if(ward != null && ward.size() > 0)
+				location = wardName +"("+ward.get(0)+")";	
+				else
+				location = wardName;
+				
+			}	
+		}
+		return location;
+	}
+	public List<CadreCommitteeMemberVO> getCommitteeMemberDetails(Long basicCommitteeTypeId,Long locationId,Long levelId)
+	{
+		List<CadreCommitteeMemberVO> resultList = new ArrayList<CadreCommitteeMemberVO>();
+		List<Long> levelIds = new ArrayList<Long>();
+		try{
+			List<Object[]> membersList = tdpCommitteeMemberDAO.getComitteeMembersInfoByCommiteTypeAndLocation(levelId,locationId,basicCommitteeTypeId);
+			if(membersList != null && membersList.size() > 0)
+			{
+				String locationName = getLocationName(levelId,locationId);
+				for(Object[] params : membersList)
+				{
+					CadreCommitteeMemberVO vo = new CadreCommitteeMemberVO();
+					vo.setImagePath(params[4] != null ? params[4].toString() : "");
+					vo.setId((Long)params[2]);
+					vo.setName(params[3].toString());
+					vo.setStatus(params[5].toString());
+					vo.setLevel((Long)params[0]); //roleId
+					vo.setRole(params[1].toString());//role
+					vo.setTotal((Long)params[6]);
+					resultList.add(vo);	
+				}
+				if(resultList != null && resultList.size() > 0)
+				{
+				resultList.get(0).setLocationName(locationName);
+				resultList.get(0).setCommitte(tdpBasicCommitteeDAO.get(basicCommitteeTypeId).getName());
+				}
+			}
+			
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception raised in getCommitteeMemberDetails", e);	
+		}
+		return resultList;
+	}
+	public List<CadreCommitteeMemberVO> setCommitteConfirmation(Long basicCommitteeTypeId,Long locationId,Long levelId)
+	{
+		List<CadreCommitteeMemberVO> resultList = new ArrayList<CadreCommitteeMemberVO>();
+		try{
+			List<Long> tdpcommitteIds = tdpCommitteeMemberDAO.getTdpCommitteIds(levelId,locationId,basicCommitteeTypeId);
+			Integer val = tdpCommitteeMemberDAO.updateTdpComitte(tdpcommitteIds);
+			if(val != null && val > 0)
+			{
+			CadreCommitteeMemberVO vo = new CadreCommitteeMemberVO();
+			vo.setStatus("Updated");
+			resultList.add(vo);	
+			}
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception raised in setCommitteConfirmation", e);	
+		}
+		return resultList;
+	}
+	public List<CadreCommitteeMemberVO> updateCadreRole(Long tdpCommitteeMemberId)
+	{
+		List<CadreCommitteeMemberVO> resultList = new ArrayList<CadreCommitteeMemberVO>();
+		try{
+			
+			Integer val = tdpCommitteeMemberDAO.updateCadreRole(tdpCommitteeMemberId);
+			if(val != null && val > 0)
+			{
+			CadreCommitteeMemberVO vo = new CadreCommitteeMemberVO();
+			vo.setStatus("Updated");
+			resultList.add(vo);	
+			}
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception raised in setCommitteConfirmation", e);	
+		}
+		return resultList;
+	}
+	
 }
