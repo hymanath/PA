@@ -1793,28 +1793,34 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		
 	}*/
 	
-	public CadreCommitteeReportVO getCommitteeDetailsByLocation(String state,List<Long> levelIds){
+	public CadreCommitteeReportVO getCommitteeDetailsByLocation(String state,List<Long> levelIds,String startDateString,String endDateString ){
 		
-		Long completedCommittees=0l;
-		Long startedCommittees=0l;
+		Long completedMainCommittees=0l;
+		Long completedAfflCommittees=0l;
 		
 		
 		CadreCommitteeReportVO cadreCommitteeReportVO =new CadreCommitteeReportVO();
 		try{
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			Date startDate = sdf.parse(startDateString);
+			Date endDate=sdf.parse(endDateString);
+			
+			Long committeeCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,levelIds);
 			//0count ,1 isCommitteeConfirmed,2.tdpCommitteeLevelId,3.tdpBasicCommitteeId
-			List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,levelIds);
+			List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,levelIds,startDate,endDate);
 			
 			if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
 				for (Object[] objects : committeeCntDtls) {
 									
-					if(objects[1].toString().equalsIgnoreCase("Y"))
-						completedCommittees = completedCommittees+(Long)objects[0];
-					else if(objects[1].toString().equalsIgnoreCase("N"))
-						startedCommittees=startedCommittees+(Long)objects[0];	
+					if(Long.valueOf(objects[1].toString())==1l)
+						completedMainCommittees = completedMainCommittees+(Long)objects[0];
+					else if(Long.valueOf(objects[1].toString()) == 2l)
+						completedAfflCommittees=completedAfflCommittees+(Long)objects[0];	
 				}
 			}
 				 
-			 List<Object[]> startedCount=tdpCommitteeMemberDAO.getStartedCommitteesCountByLocation(state, levelIds);
+			 List<Object[]> startedCount=tdpCommitteeMemberDAO.getStartedCommitteesCountByLocation(state, levelIds,startDate,endDate);
 				if(startedCount != null && startedCount.size() > 0){
 					for (Object[] objects : startedCount) {
 						if(Long.valueOf(objects[1].toString())==1l){
@@ -1832,8 +1838,9 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				Long memberscount= tdpCommitteeMemberDAO.getMembersCountByLocation(state, levelIds);				
 				
 				cadreCommitteeReportVO.setMembersCount(memberscount != null ? memberscount : 0l);//totalMembers				
-				cadreCommitteeReportVO.setCommitteesCount(completedCommittees + startedCommittees);//Total Committes count.
-				cadreCommitteeReportVO.setCompletedCommittees(completedCommittees);//completedCount.
+				
+				cadreCommitteeReportVO.setCommitteesCount(committeeCnt);//Total Committes count.
+				cadreCommitteeReportVO.setCompletedCommittees(completedMainCommittees);//completedCount.
 				
 				if(cadreCommitteeReportVO.getCommitteesCount()  > 0){				
 					cadreCommitteeReportVO.setStartedCommitteePerc(new BigDecimal(cadreCommitteeReportVO.getMainCommittees() *100.0/cadreCommitteeReportVO.getCommitteesCount()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
@@ -2031,18 +2038,20 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		Long totalStartedCommittees=0l;
 		CadreCommitteeReportVO cadreCommitteeReportVO =new CadreCommitteeReportVO();
 		try{
-		List<Object[]> totalCommitteeCntDtls =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,null);
+		Long totalCommitteeCntDtls =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,null);		
+		cadreCommitteeReportVO.setTotalCommittees(totalCommitteeCntDtls);
 		
-		if(totalCommitteeCntDtls !=null && totalCommitteeCntDtls.size()  >0){				
-			for (Object[] objects : totalCommitteeCntDtls) {
+		List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,null);
+		
+		if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
+			for (Object[] objects : committeeCntDtls) {
 								
-				if(objects[1].toString().equalsIgnoreCase("Y"))
+				if(Long.valueOf(objects[1].toString())== 1l)
 					totalCompletedCommittees = totalCompletedCommittees+(Long)objects[0];
-				else if(objects[1].toString().equalsIgnoreCase("N"))
-					totalStartedCommittees=totalStartedCommittees+(Long)objects[0];	
+					
 			}
 		}
-		cadreCommitteeReportVO.setTotalCommittees(totalStartedCommittees + totalCompletedCommittees);
+			
 		cadreCommitteeReportVO.setTotalCompleted(totalCompletedCommittees);
 		if(cadreCommitteeReportVO.getTotalCommittees()  > 0)
 			cadreCommitteeReportVO.setTotalCntPerc(new BigDecimal(cadreCommitteeReportVO.getTotalCompleted() * 100.0/cadreCommitteeReportVO.getTotalCommittees()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
