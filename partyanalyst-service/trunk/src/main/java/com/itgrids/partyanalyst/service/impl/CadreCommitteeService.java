@@ -76,6 +76,7 @@ import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.TdpBasicCommittee;
 import com.itgrids.partyanalyst.model.TdpCadre;
+import com.itgrids.partyanalyst.model.TdpCommittee;
 import com.itgrids.partyanalyst.model.TdpCommitteeDesignation;
 import com.itgrids.partyanalyst.model.TdpCommitteeElectrolRoles;
 import com.itgrids.partyanalyst.model.TdpCommitteeElectrols;
@@ -957,6 +958,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	public ResultStatus saveMandalLevelElectrolInfo(final Long tdpCadreId,final  List<CadrePreviousRollesVO> eligibleRoles)
 	{
 		ResultStatus status = new ResultStatus();
+	  synchronized("CADRECOMMITTEEMANDALLVLELECTROL"){
 		try {
 			status = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
 				 public Object doInTransaction(TransactionStatus status) {
@@ -1060,12 +1062,14 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			LOG.error("Exception raised in saveMandalLevelElectrolInfo", e);
 		}
 		return status;	
+	  }
 	}
 	
 	//Hint Please call this method in transaction only
 	public ResultStatus saveMandalLevelAffliactedElectrolInfo(final Long tdpCadreId,final  Long tdpBasicCommitteeId){
 		
 		ResultStatus status = new ResultStatus();
+		synchronized("CADRECOMMITTEEMANDALLVLAFFELECTROL"){
 		try {
 				status = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
 				 public Object doInTransaction(TransactionStatus status) {
@@ -1135,6 +1139,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		
 		return status;
+	  }
     }
 	
 	public Long getTdpCommittee(Long tdpBasicCommitteeId,Long tdpCommitteeLevelId,Long tdpCommitteeLevelValue){
@@ -1188,7 +1193,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				for (Object[] role : existringDtails) 
 				{
 					Long count = role[0] != null ? Long.valueOf(role[0].toString()):0L;
-					if(count.longValue() >= maxMembers.longValue() )
+					if(maxMembers.longValue() > 0 && (count.longValue() >= maxMembers.longValue()) )
 					{
 						isEligible = false;
 					}
@@ -1234,13 +1239,14 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				else
 				{
 					tdpCommitteeMember = new TdpCommitteeMember(); 
+					tdpCommitteeMember.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 				}
 				
 				tdpCommitteeMember.setTdpCommitteeRoleId(tdpCommitteeRoleId);
 				tdpCommitteeMember.setTdpCadreId(tdpCadreId);
 				tdpCommitteeMember.setIsActive("Y");
 				tdpCommitteeMember.setTdpCommitteeEnrollmentId(IConstants.CURRENT_ENROLLMENT_ID);
-				tdpCommitteeMember.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				
 				tdpCommitteeMember.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 				if(isExist)
 				{
@@ -1251,14 +1257,18 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					tdpCommitteeMember.setInsertedUserId(userId);
 				}
 				
-				tdpCommitteeMemberDAO.save(tdpCommitteeMember);
-					
-				status.setMessage(" Cadre Assigned Successfully... ");
+				tdpCommitteeMember = tdpCommitteeMemberDAO.save(tdpCommitteeMember);
+				TdpCommittee tdpCommittee = tdpCommitteeMember.getTdpCommitteeRole().getTdpCommittee();
+				if(tdpCommittee.getStartedDate() == null){
+					tdpCommittee.setStartedDate(dateUtilService.getCurrentDateAndTime());
+					tdpCommitteeDAO.save(tdpCommittee);
+				}
+				status.setMessage(" Cadre Added To Committee Successfully... ");
 				status.setResultCode(0);
 			}
 			else
 			{
-				status.setMessage(" Max Members are already Added for This Position . ");
+				status.setMessage(" Max Members are already Added for This Position... ");
 				status.setResultCode(2);
 			}
 			
@@ -2234,7 +2244,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	{
 		String isEligible ="";
 		try {			
-			
+			String status = tdpCommitteeRoleDAO.getCommitteeStatus(tdpCommitteeRoleId);
+			if(status.equalsIgnoreCase("Y")){
+				return " This Committee Is Already Conformed, You Cannot Add Or Update Committee Members Info ";
+			}
 			TdpCommitteeRole tdpCommitteeRole = tdpCommitteeRoleDAO.get(tdpCommitteeRoleId);
 			
 			Long maxMembers = tdpCommitteeRole.getMaxMembers();
@@ -2248,7 +2261,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				for (Object[] role : existringDtails) 
 				{
 					Long count = role[0] != null ? Long.valueOf(role[0].toString()):0L;
-					if(count.longValue() >= maxMembers.longValue() )
+					if( maxMembers.longValue() > 0 && (count.longValue() >= maxMembers.longValue()) )
 					{
 						isEligible = " Max Members Already Added for this designation... ";
 					}
