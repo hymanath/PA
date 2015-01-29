@@ -63,12 +63,14 @@
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 		
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/> 
-	<script type="text/javascript" src="js/simplePagination/simplePagination1.js" ></script>
+	<script type="text/javascript" src="js/simplePagination/simplePagination2.js" ></script>
 	
 
   </head>
   <body>
-  
+	<style>
+		.light-theme a, .light-theme span{min-width:45px;}
+	</style>
 	<div class="row" style="align:center;padding:10px;background:rgba(255,0,51,0.8); border-top:12px solid rgba(19,167,81,0.8);border-bottom:12px solid rgba(19,167,81,0.8);display:flex">
 		 	<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12 text-center">
 				<img src="images/cadreCommitee/committee_logo.png" title="Committee Logo" alt="committee" />
@@ -168,6 +170,11 @@
                         </tbody>
                     </table>-->
                 </div>
+				<div class="row">
+					<div class="col-md-10 col-md-offset-1 m_top20">
+						<div id="paginationId"></div>
+					</div>
+				</div>
                 </div>
                  <!--<div class="row">
             	<div class="col-md-10 col-md-offset-1 m_top20"  >
@@ -288,11 +295,11 @@
 			&copy; 2015 Telugu Desam Party
 	</footer>
 	<script>
-		getCandidateDetailsById();
-		function getCandidateDetailsById(){
+		getCandidateDetailsById(0);
+		function getCandidateDetailsById(stNO){
 				var jsObj = {
-						startNo : 0,
-						endNo : 0
+						startNo : stNO,
+						endNo : 20
 				}				   
 				$.ajax({
 					type : "POST",
@@ -300,11 +307,50 @@
 					data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
 					//console.log(result);
-					buildRequests(result);
+					buildRequests(result,stNO);
 				});
 		}
 		
-		function buildRequests(result){
+		var ttlCnt = 0;
+		getStatusForApproval();
+		function getStatusForApproval(){
+			var jsObj = {}				   
+				$.ajax({
+					type : "POST",
+					url : "statusCountOfApprovalAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					if(result.totalCount!=null){
+						$("#totalCount").html(result.totalCount);
+						ttlCnt=result.totalCount;
+					}else{
+						$("#totalCount").html(0);
+					}
+					
+					if(result.pendingCount!=null){
+						$("#pendingCount").html(result.pendingCount);
+					}else{
+						$("#pendingCount").html(0);
+					}
+					
+					if(result.approvedCount!=null){
+						$("#approvedCount").html(result.approvedCount);
+					}else{
+						$("#approvedCount").html(0);
+					}
+					
+					if(result.rejectedCount!=null){
+						$("#rejectedCount").html(result.rejectedCount);
+					}else{
+						$("#rejectedCount").html(0);
+					}
+					
+					
+					
+				});
+		}
+		
+		function buildRequests(result,stNO){
 			var str = '';
 			$("#posTable").html("");
 			str+='<table class="table table-condensed" style="background-color:rgba(0,0,0,0.1);">';
@@ -361,6 +407,15 @@
                     str+='</table>';
 					
 		$("#posTable").html(str);
+		
+		if(stNO == 0 && result.length > 0){
+			$("#paginationId").pagination({
+				items: ttlCnt,
+				itemsOnPage: 20,
+				cssStyle: 'light-theme'
+			});
+		}
+		
 		}
 		
 		//updatePosCount();
@@ -404,42 +459,7 @@
 			}
 		});
 		
-		getStatusForApproval();
-		function getStatusForApproval(){
-			var jsObj = {}				   
-				$.ajax({
-					type : "POST",
-					url : "statusCountOfApprovalAction.action",
-					data : {task:JSON.stringify(jsObj)} ,
-				}).done(function(result){
-					if(result.totalCount!=null){
-						$("#totalCount").html(result.totalCount);
-					}else{
-						$("#totalCount").html(0);
-					}
-					
-					if(result.pendingCount!=null){
-						$("#pendingCount").html(result.pendingCount);
-					}else{
-						$("#pendingCount").html(0);
-					}
-					
-					if(result.approvedCount!=null){
-						$("#approvedCount").html(result.approvedCount);
-					}else{
-						$("#approvedCount").html(0);
-					}
-					
-					if(result.rejectedCount!=null){
-						$("#rejectedCount").html(result.rejectedCount);
-					}else{
-						$("#rejectedCount").html(0);
-					}
-					
-					
-					
-				});
-		}
+		
 	</script>
   </body>
 </html>
