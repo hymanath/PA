@@ -318,14 +318,14 @@
 				data : {} ,
 			}).done(function(result){
 				if(result!=null){
-					var temp=result[0].mainComitteesConformed+result[0].mainComitteesNotConformed;
+					var notStarted=result[0].mainComittees-(result[0].startedCount+result[0].mainComitteesConformed);
 					var str='';
 					str+='<table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
 						str+='<tr><td colspan="4" style="background-color:#669934"><h4>MAIN COMMITTEE</h4></td></tr>';
-								str+='<tr><td width="25%"><h2 style="display:inline;">'+temp+'</h2> TOTAL</td>';
+								str+='<tr><td width="25%"><h2 style="display:inline;">'+result[0].mainComittees+'</h2> TOTAL</td>';
 							   str+='<td width="25%"><h2 style="display:inline;">'+result[0].startedCount+'</h2> STARTED</td>';
 							   str+='<td width="25%"><h2 style="display:inline;">'+result[0].mainComitteesConformed+'</h2> CONFORMED</td>';
-							   str+='<td width="25%"><h2 style="display:inline;">'+result[0].mainComitteesNotConformed+'</h2> NOT YET CONFORMED</td></tr>';
+							   str+='<td width="25%"><h2 style="display:inline;">'+notStarted+'</h2> NOT YET STARTED</td></tr>';
 					 str+='</table>';
 					 $("#villageMainTableDivId").html(str);
 			
@@ -333,13 +333,14 @@
 						str1+='<table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
 							str1+='<thead><th colspan="5" style="background-color:#669934"><h4>AFFLIATED COMMITTEE</h4></th></thead>';
 							str1+='<thead><th width="20%">COMMITTEE TYPE</th><th width="20%">TOTAL</th><th width="20%">STARTED</th>';
-							str1+='<th width="20%">CONFORMED</th><th width="20%">NOT YET CONFORMED</th></thead>';
+							str1+='<th width="20%">CONFORMED</th><th width="20%">NOT YET STARTED</th></thead>';
 					 for(var i in result){
-						var temp1=result[i].affComitteesConformed+result[i].affComitteesNotConformed; 	
-						str1+='<tr><td width="20%">'+result[i].affilatedCommitteeName+'</td><td width="20%">'+temp1+'</td>';
+						var notConformed=result[i].totalAffilatedCommittees-(result[i].affilatedStartedCount+result[i].affComitteesConformed); 	
+						str1+='<tr><td width="20%">'+result[i].affilatedCommitteeName+'</td>';
+						str1+='<td width="20%">'+result[i].totalAffilatedCommittees+'</td>';
 						str1+='<td width="20%">'+result[i].affilatedStartedCount+'</td>';
 						str1+='<td width="20%">'+result[i].affComitteesConformed+'</td>';
-						str1+='<td width="20%">'+result[i].affComitteesNotConformed+'</td></tr>';
+						str1+='<td width="20%">'+notConformed+'</td></tr>';
 					 }
 					 
 					 str1+='</table>';
@@ -365,14 +366,14 @@
 				data : {} ,
 			}).done(function(result){
 				if(result!=null){
-					var temp=result[0].mainComitteesConformed+result[0].mainComitteesNotConformed;
+					var notStarted=result[0].mainComittees-(result[0].startedCount+result[0].mainComitteesConformed);
 					var str='';
 					str+='<table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
 						str+='<tr><td colspan="4" style="background-color:#669934"><h4>MAIN COMMITTEE</h4></td></tr>';
-								str+='<tr><td width="25%"><h2 style="display:inline;">'+temp+'</h2> TOTAL</td>';
+								str+='<tr><td width="25%"><h2 style="display:inline;">'+result[0].mainComittees+'</h2> TOTAL</td>';
 							   str+='<td width="25%"><h2 style="display:inline;">'+result[0].startedCount+'</h2> STARTED</td>';
 							   str+='<td width="25%"><h2 style="display:inline;">'+result[0].mainComitteesConformed+'</h2> CONFORMED</td>';
-							   str+='<td width="25%"><h2 style="display:inline;">'+result[0].mainComitteesNotConformed+'</h2> NOT YET CONFORMED</td></tr>';
+							   str+='<td width="25%"><h2 style="display:inline;">'+notStarted+'</h2> NOT YET STARTED</td></tr>';
 					 str+='</table>';
 					 $("#mandalMainCommitteDivId").html(str);
 			
@@ -380,13 +381,14 @@
 						str1+='<table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
 							str1+='<thead><th colspan="5" style="background-color:#669934"><h4>AFFLIATED COMMITTEE</h4></th></thead>';
 							str1+='<thead><th width="20%">COMMITTEE TYPE</th><th width="20%">TOTAL</th><th width="20%">STARTED</th>';
-							str1+='<th width="20%">CONFORMED</th><th width="20%">NOT YET CONFORMED</th></thead>';
+							str1+='<th width="20%">CONFORMED</th><th width="20%">NOT YET STARTED</th></thead>';
 					 for(var i in result){
-						var temp1=result[i].affComitteesConformed+result[i].affComitteesNotConformed; 	
-						str1+='<tr><td width="20%">'+result[i].affilatedCommitteeName+'</td><td width="20%">'+temp1+'</td>';
+						var notConformed=result[i].totalAffilatedCommittees-(result[i].affilatedStartedCount+result[i].affComitteesConformed); 	
+						str1+='<tr><td width="20%">'+result[i].affilatedCommitteeName+'</td>';
+						str1+='<td width="20%">'+result[i].totalAffilatedCommittees+'</td>';
 						str1+='<td width="20%">'+result[i].affilatedStartedCount+'</td>';
 						str1+='<td width="20%">'+result[i].affComitteesConformed+'</td>';
-						str1+='<td width="20%">'+result[i].affComitteesNotConformed+'</td></tr>';
+						str1+='<td width="20%">'+notConformed+'</td></tr>';
 					 }
 					 
 					 str1+='</table>';
