@@ -40,7 +40,7 @@ public interface ICadreCommitteeService {
 	public List<IdNameVO> getConstituenciesOfState(Long levelId);
 	public ResultStatus saveMandalLevelAffliactedElectrolInfo(Long tdpCadreId,Long tdpBasicCommitteeId);
 	public ResultStatus saveMandalLevelElectrolInfo(Long tdpCadreId,List<CadrePreviousRollesVO> eligibleRoles);
-	public CadreCommitteeReportVO getCommitteeDetailsByLocation(String state,List<Long> levelIds);
+	public CadreCommitteeReportVO getCommitteeDetailsByLocation(String state,List<Long> levelIds,String startDateStr,String endDateStr);
 	
 	public String checkIsVacancyForDesignation(Long tdpCommitteeRoleId);
 	
