@@ -90,7 +90,7 @@
 							</tr>
 							<tr>
 								<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div1"></div></h4></td>
-								<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><h4 style="display:inline"><div id="div2"></div></h4></td>
+								<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><div id="div29"></div><h4 style="display:inline"><div id="div2"></div></h4></td>
 								<td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div3"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
                               <li><a><div id="div4"></div></a>
                                     <ul class="list-group dropdown-menu arrow_box">
@@ -110,8 +110,8 @@
 									
 									
 								</li></td></tr></table></td>
-								<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started Areas</span><br/><h4 class="m_top0"><div id="div5"></div></h4></td>
-								<td style="padding:10px;" width="20%"><span class="text-success">Total Started</span><br/>Affliated Committees<br/>
+								<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started</span><br/><h4 class="m_top0"><div id="div5"></div></h4></td>
+								<td style="padding:10px;" width="20%"><span class="text-success">Completed </span><br/>Affliated Committees<br/>
                                 <h4 class="m_top0">
 								<ul class="nav navbar-nav">
                               <li>
@@ -154,7 +154,7 @@
 							</tr>
 							<tr>
 								<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div8"></div></h4></td>
-								<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><h4 style="display:inline"><div id="div9"></div></h4></td>
+								<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><div id="div32"></div><h4 style="display:inline"><div id="div9"></div></h4></td>
 							   <td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div10"></div></h4></td><td  class="row-table">
 							   <ul class="nav navbar-nav">
 								<li>
@@ -176,8 +176,8 @@
 								</li>	
 									
 									</td></tr></table></td>
-								<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started Areas</span><br/><h4 class="m_top0"><div id="div12"></div></h4></td> 
-								<td style="padding:10px;" width="20%"><span class="text-success">Total Started</span><br/>Affliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
+								<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started</span><br/><h4 class="m_top0"><div id="div12"></div></h4></td> 
+								<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
                               <li><a><div id="div13"></div></a>
                                 <ul class="dropdown-menu arrow_box list-group" style="width:1200px !important">
                                 <div class="panel panel-default m_bottom0">
@@ -243,7 +243,7 @@
 						</tr>
 						<tr>
 							<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div15"></div></h4></td>
-							<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><h4 style="display:inline"><div id="div16"></div></h4></td>
+							<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><div id="div35"></div><h4 style="display:inline"><div id="div16"></div></h4></td>
 						   <td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div17"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
                               <li><a><div id="div18"></div></a>
                                    <ul class="list-group dropdown-menu arrow_box">
@@ -263,8 +263,8 @@
 									
 									
 								</li></td></tr></table></td>
-							<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started Areas</span><br/><h4 class="m_top0"><div id="div19"></div></h4></td>
-							<td style="padding:10px;" width="20%"><span class="text-success">Total Started</span><br/>Affliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
+							<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started</span><br/><h4 class="m_top0"><div id="div19"></div></h4></td>
+							<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
                               <li><a><div id="div20"></div></a>
                                 <ul class="dropdown-menu arrow_box list-group" style="width:1200px !important">
                                 <div class="panel panel-default m_bottom0">
@@ -305,7 +305,7 @@
 						</tr>
 						<tr>
 							<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div22"></div></h4></td>
-							<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><h4 style="display:inline"><div id="div23"></div></h4></td>
+							<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><div id="div38"></div><h4 style="display:inline"><div id="div23"></div></h4></td>
 						   <td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div24"></div></h4></td><td  class="row-table">
 						   <ul class="nav navbar-nav">
                               <li><a><div id="div25"></div></a>
@@ -327,8 +327,8 @@
 									
 								</li>
 									</td></tr></table></td>
-							<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started Areas</span><br/><h4 class="m_top0"><div id="div26"></div></h4></td>
-							<td style="padding:10px;" width="20%"><span class="text-success">Total Started</span><br/>Affliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
+							<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started</span><br/><h4 class="m_top0"><div id="div26"></div></h4></td>
+							<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
                               <li><a><div id="div27"></div></a>
                                 <ul class="dropdown-menu arrow_box list-group" style="width:1200px !important">
                                 <div class="panel panel-default m_bottom0">
@@ -580,7 +580,7 @@
 	</script>
 	
 	<!----Bootstrap Date Range Picker Script---->
-		 <script type="text/javascript">
+		<script type="text/javascript">
                $(document).ready(function() {
 
                   var cb = function(start, end, label) {
@@ -593,24 +593,24 @@
                     startDate: moment().subtract(29, 'days'),
                     endDate: moment(),
                     minDate: '01/01/2012',
-                    maxDate: '12/31/2014',
+                    maxDate: '12/31/2015',
                     dateLimit: { days: 60 },
                     showDropdowns: true,
                     showWeekNumbers: true,
                     timePicker: false,
                     timePickerIncrement: 1,
                     timePicker12Hour: true,
-                    ranges: {
+                   /* ranges: {
                        'Today': [moment(), moment()],
                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
                        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
                        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
                        'This Month': [moment().startOf('month'), moment().endOf('month')],
                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                    },
+                    }, */
                     opens: 'left',
                     buttonClasses: ['btn btn-default'],
-                    applyClass: 'btn-small btn-primary',
+                    applyClass: 'btn-small btn-success',
                     cancelClass: 'btn-small',
                     format: 'MM/DD/YYYY',
                     separator: ' to ',
@@ -655,33 +655,31 @@
                   });
                   $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
 
-                  $('#options1').click(function() {
-                    $('#reportrange').data('daterangepicker').setOptions(optionSet1, cb);
-                  });
-
-                  $('#options2').click(function() {
-                    $('#reportrange').data('daterangepicker').setOptions(optionSet2, cb);
-                  });
-
-                  $('#destroy').click(function() {
-                    $('#reportrange').data('daterangepicker').remove();
-                  });
-
+                
+					getCommitteeCountByState("AP");
+					getCommitteeCountByState("TS");
+					getCommitteeDetails("AP","mandalAll");
+					getCommitteeDetails("AP","villageAll");	
+					getCommitteeDetails("TS","mandalAll");	
+					getCommitteeDetails("TS","villageAll");
                });
+			   
                </script>
+	<!----/Bootstrap Date Range Picker Script END---->
 			   
 			   		
 	<script>
 	
-	getCommitteeCountByState("AP");
-	getCommitteeCountByState("TS");
-	getCommitteeDetails("AP","mandalAll");
-	getCommitteeDetails("AP","villageAll");	
-	getCommitteeDetails("TS","mandalAll");	
-	getCommitteeDetails("TS","villageAll");
-
+	
+		
+		
+	
 	
 	function getCommitteeDetails(state,level){
+	
+	var startDate=$(".dp_startDate").val();
+	var endDate=$(".dp_endDate").val();
+	
 		var levelIdsArr = new Array();
 		var state = state; 
 		if(level == 'mandal')
@@ -713,6 +711,8 @@
 		var jObj = {
 			levelIdsArr : levelIdsArr,
 			state:state,
+			startDate:startDate,
+			endDate:endDate,
 			task:"committeeDetails"
 		}
 		$.ajax({
@@ -729,46 +729,84 @@
 					if(level == 'mandal' || level == 'town' || level == 'division' || level == 'mandalAll')
 					{
 						$("#div1").html(result.committeesCount);
-						$("#div2").html(result.mainCommittees);
-						$("#div3").html(result.completedCommitteePerc);
+						
+						$("#div29").html(result.startedCommitteePerc+"%");
+						$("#div2").html(result.mainCommittees);						
+						
+						$("#div3").html(result.completedCommitteePerc+"%");
 						$("#div4").html(result.completedCommittees);
+						
+						//$("#div30").html(result.afflCommitteesPerc);
 						$("#div5").html(result.afflCommittees);
-						$("#div6").html(result.afflCommittees);
+						
+						$("#div6").html(result.affliatedCompleted);
+						//$("#div31").html(result.affliatedCompletedPerc);
+												
 						$("#div7").html(result.membersCount);
 					}
 					
 					if(level == 'village' || level == 'ward' || level == 'villageAll')
 					{
 						$("#div8").html(result.committeesCount);
-						$("#div9").html(result.mainCommittees);
+						
+						$("#div32").html(result.startedCommitteePerc+"%");
+						$("#div9").html(result.mainCommittees);						
+						
 						$("#div10").html(result.completedCommitteePerc+"%");
-						$("#div11").html('['+result.completedCommittees+']');
+						$("#div11").html(result.completedCommittees);
+						
+						//$("#div33").html(result.afflCommitteesPerc);
 						$("#div12").html(result.afflCommittees);
-						$("#div13").html(result.afflCommittees);
+						
+						$("#div13").html(result.affliatedCompleted);
+						//$("#div34").html(result.affliatedCompletedPerc);
+												
 						$("#div14").html(result.membersCount);
+					
 					}
 				}
 				if(state == "TS"){
 					if(level == 'mandal' || level == 'town' || level == 'division' || level == 'mandalAll')
 					{
+					
 						$("#div15").html(result.committeesCount);
-						$("#div16").html(result.mainCommittees);
+						
+						$("#div35").html(result.startedCommitteePerc+"%");
+						$("#div16").html(result.mainCommittees);						
+						
 						$("#div17").html(result.completedCommitteePerc+"%");
-						$("#div18").html('['+result.completedCommittees+']');
+						$("#div18").html(result.completedCommittees);
+						
+						//$("#div36").html(result.afflCommitteesPerc);
 						$("#div19").html(result.afflCommittees);
-						$("#div20").html(result.afflCommittees);
+						
+						//$("#div37").html(result.affliatedCompletedPerc);
+						$("#div20").html(result.affliatedCompleted);
+						
+												
 						$("#div21").html(result.membersCount);
+					
+					
 					}
 					
 				 if(level == 'village' || level == 'ward' || level == 'villageAll')
 					{
+					
 						$("#div22").html(result.committeesCount);
-						$("#div23").html(result.mainCommittees);
+						
+						$("#div38").html(result.startedCommitteePerc+"%");
+						$("#div23").html(result.mainCommittees);						
+						
 						$("#div24").html(result.completedCommitteePerc+"%");
-						$("#div25").html('['+result.completedCommittees+']');
+						$("#div25").html(result.completedCommittees);
+						
+						//$("#div39").html(result.afflCommitteesPerc);
 						$("#div26").html(result.afflCommittees);
-						$("#div27").html(result.afflCommittees);
-						$("#div28").html(result.membersCount);
+						
+						//$("#div40").html(result.affliatedCompletedPerc);
+						$("#div27").html(result.affliatedCompleted);
+																	
+						$("#div28").html(result.membersCount);	
 					}
 				}
 
