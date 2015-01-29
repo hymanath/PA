@@ -45,6 +45,9 @@ public class CadreCommitteeIncreasedPositionsDAO extends GenericDaoHibernate<Cad
 				" from CadreCommitteeIncreasedPositions model" +
 				" where model.type ='positionsIncreased'" +
 				" order by model.insertedTime desc ");
+		
+		query.setFirstResult(stIndex);
+		query.setMaxResults(endIndex);
 		return query.list();
 	}
 	
