@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,6 +32,8 @@ public class TdpCommittee {
 	private String isCommitteeConfirmed;
 	private String state;
 	private Constituency constituency;
+	private Date startedDate;
+	private Date completedDate;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -131,5 +135,25 @@ public class TdpCommittee {
 	public void setConstituency(Constituency constituency) {
 		this.constituency = constituency;
 	}
+
+	@Column(name = "started_date")
+	public Date getStartedDate() {
+		return startedDate;
+	}
+
+	public void setStartedDate(Date startedDate) {
+		this.startedDate = startedDate;
+	}
+
+	@Column(name = "completed_date")
+	public Date getCompletedDate() {
+		return completedDate;
+	}
+
+	public void setCompletedDate(Date completedDate) {
+		this.completedDate = completedDate;
+	}
+	
+	
 }
 
