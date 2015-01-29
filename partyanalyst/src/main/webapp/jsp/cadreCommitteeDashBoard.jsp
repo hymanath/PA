@@ -12,7 +12,7 @@
 	 <!-- Custom Styles -->
     <link href="css/cadreCommitee/css/style.css" rel="stylesheet"/>
     	<!--Bootstrap DatePicker-->
-    <!--<link href="bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" />-->
+    <link href="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker-bs3.css" rel="stylesheet" />
 		<!--Hover Menu-->
     <link href="css/cadreCommitee/css/jquery.smartmenus.bootstrap.css" rel="stylesheet" />
     	<!--Circle-->
@@ -57,12 +57,12 @@
         </div>
 		
 		<div class="row">
-               <!-- <div class="col-md-12 col-xs-12  col-sm-12" style="padding-right:0px; padding-bottom:5px;">
-					<div id="reportrange" class="pull-right active" style="background:rgba(0,0,0,0.1); cursor: pointer; padding: 5px 10px; border: 1px solid rgba(0,0,0,0.1);">
+               <div class="col-md-12 col-xs-12  col-sm-12" style="padding-right:0px; padding-bottom:5px;">
+					<div id="reportrange" class="pull-right" style="background:rgba(0,0,0,0.1); cursor: pointer; padding: 5px 10px; border: 1px solid rgba(0,0,0,0.1);">
 					  <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
 					  <span></span> <b class="caret"></b>
 					</div>
-                </div>-->
+                </div>
         </div>
 		
     	<div class="row">
@@ -565,8 +565,8 @@
 	
     <script src="js/cadreCommittee/dist/js/jquery.circliful.min.js"></script>
     <!--Bootstrap Date Picker-->
-    <!--<script src="bootstrap-daterangepicker/daterangepicker.js" type="text/javascript"></script>   
-	<script src="bootstrap-daterangepicker/moment.min.js" type="text/javascript"></script>  --> 
+   <script src="js/cadreCommittee/bootstrapDaterangepicker/moment.min.js" type="text/javascript"></script> 
+	<script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>   
     <!--Jquery Sparkline-->
     <script src="js/cadreCommittee/js/jquery.sparkline.js" type="text/javascript"></script>
     <!-- Custom JS File-->
@@ -583,7 +583,7 @@
 		 <script type="text/javascript">
                $(document).ready(function() {
 
-                  /*var cb = function(start, end, label) {
+                  var cb = function(start, end, label) {
                     console.log(start.toISOString(), end.toISOString(), label);
                     $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
                     //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
@@ -665,7 +665,7 @@
 
                   $('#destroy').click(function() {
                     $('#reportrange').data('daterangepicker').remove();
-                  });*/
+                  });
 
                });
                </script>
@@ -728,35 +728,17 @@
 				if(state == "AP"){
 					if(level == 'mandal' || level == 'town' || level == 'division' || level == 'mandalAll')
 					{
-					/*	str+='<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0">'+result.committeesCount+'</h4></td>'
-						str+='<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><h4 style="display:inline">'+result.mainCommittees+'</h4></td>';
-						str+='<td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0">'+result.completedCommitteePerc+'%</h4></td><td  class="row-table"><ul class="nav navbar-nav">';
-						str+='<a>'+result.completedCommittees+'</a>';
-						str+='</td></tr></table></td>';
-						str+='<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started Areas</span><br/><h4 class="m_top0">'+result.afflCommittees+'</h4></td>';
-						str+='<td style="padding:10px;" width="20%"><span class="text-success">Total Started</span><br/>Affliated Committees<br/><h4 class="m_top0"><a>'+result.afflCommittees+'</a>';
-					str+='<td style="padding:10px;" width="28%">TOTAL <b>MEMBERS</b><h4 class="m_top0">'+result.membersCount+'</h4></td>';
-						*/
-					$("#div1").html(result.committeesCount);
-					$("#div2").html(result.mainCommittees);
-					$("#div3").html(result.completedCommitteePerc+"%");
-					$("#div4").html('['+result.completedCommittees+']');
-					$("#div5").html(result.afflCommittees);
-					$("#div6").html(result.afflCommittees);
-					$("#div7").html(result.membersCount);
+						$("#div1").html(result.committeesCount);
+						$("#div2").html(result.mainCommittees);
+						$("#div3").html(result.completedCommitteePerc);
+						$("#div4").html(result.completedCommittees);
+						$("#div5").html(result.afflCommittees);
+						$("#div6").html(result.afflCommittees);
+						$("#div7").html(result.membersCount);
 					}
 					
 					if(level == 'village' || level == 'ward' || level == 'villageAll')
 					{
-					/*	str1+='<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0">'+result.committeesCount+'</h4></td>'
-						str1+='<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><h4 style="display:inline">'+result.mainCommittees+'</h4></td>';
-						str1+='<td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0">'+result.completedCommitteePerc+'%</h4></td><td  class="row-table"><ul class="nav navbar-nav">';
-						str1+='<a>'+result.completedCommittees+'</a>';
-						str1+='</td></tr></table></td>';
-						str1+='<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started Areas</span><br/><h4 class="m_top0">'+result.afflCommittees+'</h4></td>';
-						str1+='<td style="padding:10px;" width="20%"><span class="text-success">Total Started</span><br/>Affliated Committees<br/><h4 class="m_top0"><a>'+result.afflCommittees+'</a>';
-					str1+='<td style="padding:10px;" width="28%">TOTAL <b>MEMBERS</b><h4 class="m_top0">'+result.membersCount+'</h4></td>';
-					*/
 						$("#div8").html(result.committeesCount);
 						$("#div9").html(result.mainCommittees);
 						$("#div10").html(result.completedCommitteePerc+"%");
@@ -765,22 +747,10 @@
 						$("#div13").html(result.afflCommittees);
 						$("#div14").html(result.membersCount);
 					}
-					
-					/*$("#apMandalDiv").html(str);
-					$("#apVillageDiv").html(str1); */
 				}
 				if(state == "TS"){
 					if(level == 'mandal' || level == 'town' || level == 'division' || level == 'mandalAll')
 					{
-					/*	str2+='<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0">'+result.committeesCount+'</h4></td>'
-						str2+='<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><h4 style="display:inline">'+result.mainCommittees+'</h4></td>';
-						str2+='<td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0">'+result.completedCommitteePerc+'%</h4></td><td  class="row-table"><ul class="nav navbar-nav">';
-						str2+='<a>'+result.completedCommittees+'</a>';
-						str2+='</td></tr></table></td>';
-						str2+='<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started Areas</span><br/><h4 class="m_top0">'+result.afflCommittees+'</h4></td>';
-						str2+='<td style="padding:10px;" width="20%"><span class="text-success">Total Started</span><br/>Affliated Committees<br/><h4 class="m_top0"><a>'+result.afflCommittees+'</a>';
-					str2+='<td style="padding:10px;" width="28%">TOTAL <b>MEMBERS</b><h4 class="m_top0">'+result.membersCount+'</h4></td>';
-					*/
 						$("#div15").html(result.committeesCount);
 						$("#div16").html(result.mainCommittees);
 						$("#div17").html(result.completedCommitteePerc+"%");
@@ -792,15 +762,6 @@
 					
 				 if(level == 'village' || level == 'ward' || level == 'villageAll')
 					{
-					/*	str3+='<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0">'+result.committeesCount+'</h4></td>'
-						str3+='<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><h4 style="display:inline">'+result.mainCommittees+'</h4></td>';
-						str3+='<td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0">'+result.completedCommitteePerc+'%</h4></td><td  class="row-table"><ul class="nav navbar-nav">';
-						str3+='<a>'+result.completedCommittees+'</a>';
-						str3+='</td></tr></table></td>';
-						str3+='<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started Areas</span><br/><h4 class="m_top0">'+result.afflCommittees+'</h4></td>';
-						str3+='<td style="padding:10px;" width="20%"><span class="text-success">Total Started</span><br/>Affliated Committees<br/><h4 class="m_top0"><a>'+result.afflCommittees+'</a>';
-					str3+='<td style="padding:10px;" width="28%">TOTAL <b>MEMBERS</b><h4 class="m_top0">'+result.membersCount+'</h4></td>';	
-					*/
 						$("#div22").html(result.committeesCount);
 						$("#div23").html(result.mainCommittees);
 						$("#div24").html(result.completedCommitteePerc+"%");
@@ -809,9 +770,6 @@
 						$("#div27").html(result.afflCommittees);
 						$("#div28").html(result.membersCount);
 					}
-					
-					/*$("#tsMandalDiv").html(str2);
-					$("#tsVillageDiv").html(str3);*/
 				}
 
 			}
