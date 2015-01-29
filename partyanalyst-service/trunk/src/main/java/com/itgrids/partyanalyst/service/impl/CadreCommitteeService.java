@@ -2041,7 +2041,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		Long totalCommitteeCntDtls =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,null);		
 		cadreCommitteeReportVO.setTotalCommittees(totalCommitteeCntDtls);
 		
-		List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,null);
+		List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,null,null,null);
 		
 		if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
 			for (Object[] objects : committeeCntDtls) {
