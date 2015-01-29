@@ -113,7 +113,10 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 				}
 			}
 			String state =jObj.getString("state");
-			cadreCommitteeReportVO = cadreCommitteeService.getCommitteeDetailsByLocation(state,levelIds);
+			String startDate=jObj.getString("startDate");
+			String endDate=jObj.getString("endDate");
+			
+			cadreCommitteeReportVO = cadreCommitteeService.getCommitteeDetailsByLocation(state,levelIds,startDate,endDate);
 		
 			
 		}catch(Exception e){
