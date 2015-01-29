@@ -175,7 +175,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 
 		str.append("select count(model.tdpCommitteeId),model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId " +
 				" from TdpCommittee model where  " +
-				" and model.isCommitteeConfirmed= 'Y' ");
+				"  model.isCommitteeConfirmed= 'Y' ");
 		if(state != null)
 		{
 			str.append(" and model.state= :state ");
@@ -184,7 +184,9 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		{
 			str.append(" and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) ");
 		}
-		str.append(" ( date(model.completedDate)>=:startDate and date(model.completedDate)<=:endDate )  ");
+		if(startDate != null && endDate !=null){
+			str.append(" and ( date(model.completedDate)>=:startDate and date(model.completedDate)<=:endDate )  ");
+		}
 		str.append(" group by model.isCommitteeConfirmed,model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
 
 		Query query = getSession().createQuery(str.toString());
@@ -196,8 +198,11 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		{
 			query.setParameterList("levelIds", levelIds);
 		}
-		query.setParameter("startDate", startDate);
-		query.setParameter("endDate", endDate);
+		if(startDate != null && endDate !=null ){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);	
+		}
+		
 		return query.list();
 	}
 }

@@ -1836,29 +1836,43 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						if(Long.valueOf(objects[1].toString())==1l){
 							cadreCommitteeReportVO.setMainCommittees(Long.valueOf(objects[0].toString()));//startedCount in Main type
 						}
+						else{
+							
+							cadreCommitteeReportVO.setMainCommittees(0l);
+						}
 						if(Long.valueOf(objects[1].toString()) == 2l){
 							cadreCommitteeReportVO.setAfflCommittees(Long.valueOf(objects[0].toString()));//startedCount in Affliated Type
 						}
+						else{
+							
+							cadreCommitteeReportVO.setAfflCommittees(0l);
+						}
+
 					}
 				}
-				else{
-					cadreCommitteeReportVO.setMainCommittees(0l);
-					cadreCommitteeReportVO.setAfflCommittees(0l);
-				}
-				Long memberscount= tdpCommitteeMemberDAO.getMembersCountByLocation(state, levelIds);				
+					else{
+						cadreCommitteeReportVO.setMainCommittees(0l);
+						cadreCommitteeReportVO.setAfflCommittees(0l);
+					}
+				
+				Long memberscount= tdpCommitteeMemberDAO.getMembersCountByLocation(state, levelIds,startDate,endDate);				
 				
 				cadreCommitteeReportVO.setMembersCount(memberscount != null ? memberscount : 0l);//totalMembers				
 				
 				cadreCommitteeReportVO.setCommitteesCount(committeeCnt);//Total Committes count.
-				cadreCommitteeReportVO.setCompletedCommittees(completedMainCommittees);//completedCount.
+				cadreCommitteeReportVO.setCompletedCommittees(completedMainCommittees);//completedCount for Main
+				cadreCommitteeReportVO.setAffliatedCompleted(completedAfflCommittees);//completedCount for Affliated
 				
 				if(cadreCommitteeReportVO.getCommitteesCount()  > 0){				
-					cadreCommitteeReportVO.setStartedCommitteePerc(new BigDecimal(cadreCommitteeReportVO.getMainCommittees() *100.0/cadreCommitteeReportVO.getCommitteesCount()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+					cadreCommitteeReportVO.setStartedCommitteePerc(new BigDecimal(cadreCommitteeReportVO.getMainCommittees() * 100.0/cadreCommitteeReportVO.getCommitteesCount()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 					cadreCommitteeReportVO.setCompletedCommitteePerc(new BigDecimal(cadreCommitteeReportVO.getCompletedCommittees() * 100.0/cadreCommitteeReportVO.getCommitteesCount()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+					//cadreCommitteeReportVO.setAffliatedCompletedPerc(new BigDecimal(cadreCommitteeReportVO.getAffliatedCompleted() * 100.0/cadreCommitteeReportVO.getCommitteesCount()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+					//cadreCommitteeReportVO.setAfflCommitteesPerc(new BigDecimal(cadreCommitteeReportVO.getAfflCommittees() * 100.0/cadreCommitteeReportVO.getCommitteesCount()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 				}
 				else{
 					cadreCommitteeReportVO.setStartedCommitteePerc(0.0);
 					cadreCommitteeReportVO.setCompletedCommitteePerc(0.0);
+					cadreCommitteeReportVO.setAffliatedCompletedPerc(0.0);//percentage for completed Affliated
 				}
 				
 				

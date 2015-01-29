@@ -68,7 +68,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId " +
 		" from TdpCommitteeMember model where ");
 		str.append(" model.tdpCommitteeRole.tdpCommittee.state= :state ");
-		str.append("and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) and model.isActive ='Y' " +
+		str.append("and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) and model.isActive ='Y' and " +
 				" ( date(model.tdpCommitteeRole.tdpCommittee.startedDate)>=:startDate and date(model.tdpCommitteeRole.tdpCommittee.startedDate)<=:endDate ) " +
 				" group by " +
 		        " model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
@@ -80,7 +80,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		return query.list();
 	}
 
-	public Long getMembersCountByLocation(String state,List<Long> levelIds){
+	public Long getMembersCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate){
 
 		StringBuilder str = new StringBuilder();
 
@@ -90,12 +90,20 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		{
 		str.append(" model.tdpCommitteeRole.tdpCommittee.state= :state ");
 		}
+		if(startDate !=null && endDate !=null){
+			
+			str.append(" and ( date(model.insertedTime)>=:startDate and date(model.insertedTime)<=:endDate ) ");
+		}
 		str.append("and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) and model.isActive ='Y' ");
 
 		Query query = getSession().createQuery(str.toString());
 		if(state != null)
 		{
 		query.setParameter("state", state);
+		}
+		if(startDate !=null && endDate !=null){
+		 query.setParameter("startDate", startDate);
+		 query.setParameter("endDate", endDate);
 		}
 		query.setParameterList("levelIds",levelIds);
 		return (Long) query.uniqueResult();

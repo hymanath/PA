@@ -12,9 +12,11 @@ public class CadreCommitteeReportVO {
 	private Long totalMembers;
 	private Long totalCommittees;
 	private Long totalCompleted;
+	private Long affliatedCompleted;
 	private Double totalCntPerc;
 	private Double startedCommitteePerc;
 	private Double completedCommitteePerc;
+	private Double affliatedCompletedPerc;
 	
 	
 	public Long getCommitteesCount() {
@@ -89,6 +91,18 @@ public class CadreCommitteeReportVO {
 	public void setCompletedCommitteePerc(Double completedCommitteePerc) {
 		this.completedCommitteePerc = completedCommitteePerc;
 	}
-
+	public Long getAffliatedCompleted() {
+		return affliatedCompleted;
+	}
+	public void setAffliatedCompleted(Long affliatedCompleted) {
+		this.affliatedCompleted = affliatedCompleted;
+	}
+	public Double getAffliatedCompletedPerc() {
+		return affliatedCompletedPerc;
+	}
+	public void setAffliatedCompletedPerc(Double affliatedCompletedPerc) {
+		this.affliatedCompletedPerc = affliatedCompletedPerc;
+	}
+	
 	
 }
