@@ -2158,7 +2158,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				for(Object[] obj:list1){
 					CommitteeApprovalVO cv = new CommitteeApprovalVO();
 					if(requestUserId==null)
-					   cv.setRequestNo(""+Long.valueOf(obj[0].toString()));
+					{
+						cv.setRequestNo(""+Long.valueOf(obj[0].toString()));
+						cv.setTdpCommitteeRoleId(Long.valueOf(obj[11].toString())); // FOR UPDATING THE MAX POSITIONS IN TDP_COMMITTEE_ROLE 
+						cv.setCadreCommitteeIncreasedPosId(Long.valueOf(obj[12].toString()));
+					}
+					   
 					else
 					  cv.setRefNo(obj[0]!=null?obj[0].toString():"");
 					
@@ -2172,8 +2177,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					cv.setCurrentPosCount(Long.valueOf(obj[8].toString()));
 					cv.setRequestdPosCount(Long.valueOf(obj[9].toString()));
 					cv.setStatus(obj[10].toString());
-					cv.setTdpCommitteeRoleId(Long.valueOf(obj[11].toString())); // FOR UPDATING THE MAX POSITIONS IN TDP_COMMITTEE_ROLE 
-					cv.setCadreCommitteeIncreasedPosId(Long.valueOf(obj[12].toString()));
+					
 					
 					String location = "";
 					if(cv.getLocationTypeId().equals(5l)){
