@@ -16,8 +16,15 @@
 		<!--Hover Menu-->
     <link href="css/cadreCommitee/css/jquery.smartmenus.bootstrap.css" rel="stylesheet" />
     	<!--Circle-->
-   <!-- <link href="js/cadreCommittee/dist/css/jquery.circliful.css" rel="stylesheet" />-->
-		
+    <link href="js/cadreCommittee/dist/css/jquery.circliful.css" rel="stylesheet" />
+	<style>
+	.circle-text{
+		line-height: 180px; font-size: 34px; top: 32px;  left: 0px; !important
+	}
+	.circle-info-half{
+		line-height: 225px; left: 0px;  top: 34px;!important
+	}
+	</style>	
 </head>
 <body>
 	<header style="align:center;background-color:#ef4036; display:flex;border-bottom:4px solid #13a751;">
@@ -67,8 +74,7 @@
 							<div class="row" id="totalAPCount">
 								
 							</div>
-							<!--
-							<div class="myStat2" data-dimension="180" data-text="35%" data-info="COMPLETED" data-width="10" data-fontsize="34" data-percent="35" data-fgcolor="#349866" data-bgcolor="#6D6024"></div>-->
+						
 				
 						</div>
 					</td>
@@ -570,10 +576,6 @@
     <script src="js/cadreCommittee/js/jquery.smartmenus.bootstrap.min.js" type="text/javascript"></script>
     
 	<script>
-	$( document ).ready(function() {
-		//$('.myStat2').circliful();
-		//$('.myStat3').circliful();
-    });
 	
 	</script>
 	
@@ -737,8 +739,8 @@
 						*/
 					$("#div1").html(result.committeesCount);
 					$("#div2").html(result.mainCommittees);
-					$("#div3").html(result.completedCommitteePerc);
-					$("#div4").html(result.completedCommittees);
+					$("#div3").html(result.completedCommitteePerc+"%");
+					$("#div4").html('['+result.completedCommittees+']');
 					$("#div5").html(result.afflCommittees);
 					$("#div6").html(result.afflCommittees);
 					$("#div7").html(result.membersCount);
@@ -757,8 +759,8 @@
 					*/
 						$("#div8").html(result.committeesCount);
 						$("#div9").html(result.mainCommittees);
-						$("#div10").html(result.completedCommitteePerc);
-						$("#div11").html(result.completedCommittees);
+						$("#div10").html(result.completedCommitteePerc+"%");
+						$("#div11").html('['+result.completedCommittees+']');
 						$("#div12").html(result.afflCommittees);
 						$("#div13").html(result.afflCommittees);
 						$("#div14").html(result.membersCount);
@@ -781,8 +783,8 @@
 					*/
 						$("#div15").html(result.committeesCount);
 						$("#div16").html(result.mainCommittees);
-						$("#div17").html(result.completedCommitteePerc);
-						$("#div18").html(result.completedCommittees);
+						$("#div17").html(result.completedCommitteePerc+"%");
+						$("#div18").html('['+result.completedCommittees+']');
 						$("#div19").html(result.afflCommittees);
 						$("#div20").html(result.afflCommittees);
 						$("#div21").html(result.membersCount);
@@ -801,8 +803,8 @@
 					*/
 						$("#div22").html(result.committeesCount);
 						$("#div23").html(result.mainCommittees);
-						$("#div24").html(result.completedCommitteePerc);
-						$("#div25").html(result.completedCommittees);
+						$("#div24").html(result.completedCommitteePerc+"%");
+						$("#div25").html('['+result.completedCommittees+']');
 						$("#div26").html(result.afflCommittees);
 						$("#div27").html(result.afflCommittees);
 						$("#div28").html(result.membersCount);
@@ -832,26 +834,19 @@
 				var str='';
 				str+='<div class="col-md-5 col-md-offset-1 col-xs-3"><span style="font-size:2em;">'+result.totalCommittees+'</span></div>';
 				str+='<div style="" class="col-md-6 col-xs-3 text-left"><small>TOTAL MAIN COMMITTEES</small></div>';
-				if(state == "AP"){					
+				
+				if(state == "AP"){	
+					str+='<div class="myStatAP" data-dimension="180" data-text="'+result.totalCntPerc+'%" data-info="COMPLETED" data-width="10" data-fontsize="34" data-percent="35" data-fgcolor="#349866" data-bgcolor="#6D6024" style="margin-left: 40px;"></div>';				
 					$("#totalAPCount").html(str);
+					$('.myStatAP').circliful();
 				}
 				if(state == "TS"){
+					str+='<div class="myStatTS" data-dimension="180" data-text="'+result.totalCntPerc+'%" data-info="COMPLETED" data-width="10" data-fontsize="34" data-percent="35" data-fgcolor="#349866" data-bgcolor="#6D6024" style="margin-left: 40px;"></div>';
 					$("#totalTSCount").html(str);
+					$('.myStatTS').circliful();					
 				}
 		
 		});
-	}
-	
-	
-	function buildData(result,state){
-	var str='';
-	str+='<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><h4 style="display:inline">10%</h4>[100]</td>';
-	str+='<td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0">50%</h4></td><td  class="row-table"><ul class="nav navbar-nav">';
-    str+='<a>[1000]</a>';
-    str+='</td></tr></table></td>';
-	str+='<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started Areas</span><br/><h4 class="m_top0">100</h4></td>';
-	str+='<td style="padding:10px;" width="20%"><span class="text-success">Total Started</span><br/>Affliated Committees<br/><h4 class="m_top0"><a>100</a>';
-    str+='<td style="padding:10px;" width="28%">TOTAL <b>MEMBERS</b><h4 class="m_top0">2000</h4></td>';
 	}
 	</script>
 			   
