@@ -18,7 +18,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 	public List<Object[]> getRoleWiseAllocatedMembersCount(Set<Long> committeeRoleIds){
 		//0 count,1 id
 		Query query = getSession().createQuery("select count(*),model.tdpCommitteeRole.tdpCommitteeRoleId from TdpCommitteeMember model where " +
-				"model.tdpCommitteeRole.tdpCommitteeRoleId in(:committeeRoleIds) group by model.tdpCommitteeRole.tdpCommitteeRoleId ");
+				"model.tdpCommitteeRole.tdpCommitteeRoleId in(:committeeRoleIds) and model.isActive ='Y' group by model.tdpCommitteeRole.tdpCommitteeRoleId ");
 		query.setParameterList("committeeRoleIds", committeeRoleIds);
 		
 		return query.list();
@@ -27,7 +27,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 	public List<Object[]> getMembersInfo(Set<Long> committeeRoleIds){
 		//0 role,1 image,2name,3membership
 		Query query = getSession().createQuery("select model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.image,model.tdpCadre.firstname,model.tdpCadre.memberShipNo " +
-				" from TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommitteeRoleId in(:committeeRoleIds) order by model.tdpCommitteeRole.tdpRoles.order ");
+				" from TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommitteeRoleId in(:committeeRoleIds)  and model.isActive ='Y'  order by model.tdpCommitteeRole.tdpRoles.order ");
 		query.setParameterList("committeeRoleIds", committeeRoleIds);
 		
 		return query.list();
