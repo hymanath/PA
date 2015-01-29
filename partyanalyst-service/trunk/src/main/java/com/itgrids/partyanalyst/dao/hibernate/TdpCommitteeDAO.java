@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -42,13 +43,12 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 	}
 
-	public List<Object[]> getTotalCommitteesCountByLocation(String state,List<Long> levelIds){
+	public Long getTotalCommitteesCountByLocation(String state,List<Long> levelIds){
 		//0count ,1 isCommitteeConfirmed,2.tdpCommitteeLevelId,3.tdpBasicCommitteeId
 
 		StringBuilder str = new StringBuilder();
 
-		str.append("select count(model.tdpCommitteeId),model.isCommitteeConfirmed,model.tdpCommitteeLevel.tdpCommitteeLevelId," +
-				" model.tdpBasicCommittee.tdpBasicCommitteeId " +
+		str.append("select count(model.tdpCommitteeId) " +
 				" from TdpCommittee model where model.tdpBasicCommittee.tdpBasicCommitteeId = 1  ");
 		if(state != null)
 		{
@@ -58,7 +58,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		{
 			str.append(" and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) ");
 		}		
-		str.append(" group by model.tdpCommitteeLevel.tdpCommitteeLevelId,model.isCommitteeConfirmed ");
+		//str.append(" group by model.tdpCommitteeLevel.tdpCommitteeLevelId ");
 
 		Query query = getSession().createQuery(str.toString());
 		if(state != null)
@@ -69,7 +69,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		{
 			query.setParameterList("levelIds", levelIds);
 		}
-		return query.list();
+		return (Long)query.uniqueResult();
 	}
 	public List<Object[]> getLocationByTypeIdAndLevel(List<Long> levelIds,Long committeTypeId)
 	{
@@ -125,4 +125,37 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		query.setParameterList("ids", divisionIds);
 		return query.list();
 	}*/
+	
+	public List<Object[]> getTotalCompletedCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate){
+		//0count ,1 isCommitteeConfirmed,2.tdpCommitteeLevelId,3.tdpBasicCommitteeId
+
+		StringBuilder str = new StringBuilder();
+
+		str.append("select count(model.tdpCommitteeId),model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId " +
+				" from TdpCommittee model where  " +
+				" and model.isCommitteeConfirmed= 'Y' ");
+		if(state != null)
+		{
+			str.append(" and model.state= :state ");
+		}
+		if(levelIds != null && levelIds.size() > 0)
+		{
+			str.append(" and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) ");
+		}
+		str.append(" ( date(model.completedDate)>=:startDate and date(model.completedDate)<=:endDate )  ");
+		str.append(" group by model.isCommitteeConfirmed,model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
+
+		Query query = getSession().createQuery(str.toString());
+		if(state != null)
+		{
+			query.setParameter("state", state);
+		}
+		if(levelIds != null && levelIds.size() > 0)
+		{
+			query.setParameterList("levelIds", levelIds);
+		}
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
+		return query.list();
+	}
 }

@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -13,7 +14,7 @@ public interface ITdpCommitteeMemberDAO  extends GenericDao<TdpCommitteeMember, 
 	public List<Object[]> getMemberInfo(Long tdpCadreId);
 	public List<TdpCommitteeMember> getTdpCommitteeMemberByTdpCadreId(Long tdpCadreId);
 	public List<Object[]> getTdpCommitteeMemberForTdpCadreIdList(List<Long> tdpCadreIdsList);
-	public List<Object[]> getStartedCommitteesCountByLocation(String state,List<Long> levelIds);
+	public List<Object[]> getStartedCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate);
 	public Long getMembersCountByLocation(String state,List<Long> levelIds);
 	public List<Object[]> getMembersCountInCommitteeByLocation(String state,List<Long> levelIds);
 	public List<Object[]> getMembersInfoForRequest(Set<Long> committeeRoleIds);
