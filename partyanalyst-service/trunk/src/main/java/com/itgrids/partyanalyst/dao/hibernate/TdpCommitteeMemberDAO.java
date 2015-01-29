@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -59,7 +60,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
 		return query.list();
 	}
-	public List<Object[]> getStartedCommitteesCountByLocation(String state,List<Long> levelIds){
+	public List<Object[]> getStartedCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate){
 
 		StringBuilder str = new StringBuilder();
 
@@ -67,12 +68,15 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId " +
 		" from TdpCommitteeMember model where ");
 		str.append(" model.tdpCommitteeRole.tdpCommittee.state= :state ");
-		str.append("and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) and model.isActive ='Y' group by " +
-		" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
+		str.append("and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) and model.isActive ='Y' " +
+				" ( date(model.tdpCommitteeRole.tdpCommittee.startedDate)>=:startDate and date(model.tdpCommitteeRole.tdpCommittee.startedDate)<=:endDate ) " +
+				" group by " +
+		        " model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("state", state);
-		
 		query.setParameterList("levelIds", levelIds);
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
 		return query.list();
 	}
 
