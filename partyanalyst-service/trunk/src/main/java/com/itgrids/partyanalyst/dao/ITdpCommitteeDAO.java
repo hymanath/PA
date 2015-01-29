@@ -20,4 +20,7 @@ public interface ITdpCommitteeDAO  extends GenericDao<TdpCommittee, Long>{
 	public List<Object[]> getLocationWiseDetails(List<Long> locationValues,Long locationTypeId);
 	public List<Object[]> getLocationWiseVillageDetails(Long constituencyId);
 	public List<Object[]> getTotalCompletedCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate);
+	public List<Object[]> getLocationWiseVillageStartedDetails(Long constituencyId);
+	public List<Object[]> getLocationWiseMandalDetails(List<Long> locationIds,Long levelId);
+	public List<Object[]> getLocationWiseMandalStartedDetails(List<Long> locationIds,Long levelId);
 }
