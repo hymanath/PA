@@ -100,14 +100,56 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 	}
 	
-	public List<Object[]> getLocationWiseVillageDetails(Long constituencyId){
+	/*public List<Object[]> getLocationWiseVillageDetails(Long constituencyId){
+		//0 CommitteeTypeId,1 name,2 basiccommId,3confirmd,4 count
 		Query query = getSession().createQuery("select TBC.tdpCommitteeType.tdpCommitteeTypeId ,TBC.name,TBC.tdpBasicCommitteeId,TC.isCommitteeConfirmed,count(*) " +
 				" from TdpCommittee TC , TdpBasicCommittee TBC where TC.tdpBasicCommitteeId = TBC.tdpBasicCommitteeId and TC.tdpCommitteeLevelId in (6,8) " +
 				" and  TC.constituency.constituencyId = :constituencyId group by TBC.tdpCommitteeTypeId ,TBC.tdpBasicCommitteeId,TC.isCommitteeConfirmed");
 		query.setParameter("constituencyId", constituencyId);
 		return query.list();
+	}*/
+    //getting total and confirmed counts
+	public List<Object[]> getLocationWiseVillageDetails(Long constituencyId){
+		//0 basiccommId,1 name,2confirmd,3count
+		Query query = getSession().createQuery("select TBC.tdpBasicCommitteeId,TBC.name,TC.isCommitteeConfirmed,count(*) " +
+				" from TdpCommittee TC , TdpBasicCommittee TBC where TC.tdpBasicCommitteeId = TBC.tdpBasicCommitteeId and TC.tdpCommitteeLevelId in (6,8) " +
+				" and  TC.constituency.constituencyId = :constituencyId group by TBC.tdpBasicCommitteeId,TC.isCommitteeConfirmed");
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
 	}
-	
+	 //getting started 
+	public List<Object[]> getLocationWiseVillageStartedDetails(Long constituencyId){
+		//0 basiccommId,3count
+		Query query = getSession().createQuery("select TBC.tdpBasicCommitteeId,count(*) " +
+				" from TdpCommittee TC , TdpBasicCommittee TBC where TC.tdpBasicCommitteeId = TBC.tdpBasicCommitteeId and TC.tdpCommitteeLevelId in (6,8) " +
+				" and  TC.constituency.constituencyId = :constituencyId and TC.startedDate is not null and TC.isCommitteeConfirmed ='N'  and " +
+				" TC.completedDate is null group by TBC.tdpBasicCommitteeId");
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	//getting total and confirmed counts for mandal lvl
+		public List<Object[]> getLocationWiseMandalDetails(List<Long> locationIds,Long levelId){
+			//0 basiccommId,1 name,2confirmd,3count
+			Query query = getSession().createQuery("select TBC.tdpBasicCommitteeId,TBC.name,TC.isCommitteeConfirmed,count(*) " +
+					" from TdpCommittee TC , TdpBasicCommittee TBC where TC.tdpBasicCommitteeId = TBC.tdpBasicCommitteeId  " +
+					" and  TC.tdpCommitteeLevel.tdpCommitteeLevelId = :levelId and TC.tdpCommitteeLevelValue in(:locationIds) " +
+					" group by TBC.tdpBasicCommitteeId,TC.isCommitteeConfirmed");
+			query.setParameter("levelId", levelId);
+			query.setParameterList("locationIds", locationIds);
+			return query.list();
+		}
+		 //getting started  for mandal lvl
+		public List<Object[]> getLocationWiseMandalStartedDetails(List<Long> locationIds,Long levelId){
+			//0 basiccommId,3count
+			Query query = getSession().createQuery("select TBC.tdpBasicCommitteeId,count(*) " +
+					" from TdpCommittee TC , TdpBasicCommittee TBC where TC.tdpBasicCommitteeId = TBC.tdpBasicCommitteeId  " +
+					" and   TC.tdpCommitteeLevel.tdpCommitteeLevelId = :levelId and TC.tdpCommitteeLevelValue in(:locationIds) " +
+					" and TC.startedDate is not null and TC.isCommitteeConfirmed ='N'  and " +
+					" TC.completedDate is null group by TBC.tdpBasicCommitteeId");
+			query.setParameter("levelId", levelId);
+			query.setParameterList("locationIds", locationIds);
+			return query.list();
+		}
 	/*public List<Object[]> muncipalList(Long constituencyId,List muncipalIds){
 		Query query = getSession().createQuery("select TBC.tdpCommitteeType.tdpCommitteeTypeId ,TBC.name,TBC.tdpBasicCommitteeId,TC.isCommitteeConfirmed,count(*) " +
 				"from TdpCommittee TC , TdpBasicCommittee TBC where TC.tdpBasicCommitteeId = TBC.tdpBasicCommitteeId and TC.tdpCommitteeLevelId = 7 " +
