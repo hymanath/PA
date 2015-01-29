@@ -84,6 +84,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreOnlineDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTeluguNamesDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTravelInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreVerfiedDataDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeRoleDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
@@ -143,6 +144,8 @@ import com.itgrids.partyanalyst.model.TdpCadreOnline;
 import com.itgrids.partyanalyst.model.TdpCadreTeluguNames;
 import com.itgrids.partyanalyst.model.TdpCadreTravelInfo;
 import com.itgrids.partyanalyst.model.TdpCadreVerfiedData;
+import com.itgrids.partyanalyst.model.TdpCommittee;
+import com.itgrids.partyanalyst.model.TdpCommitteeRole;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.VerifiedDataRequest;
@@ -230,6 +233,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ITdpCadreTravelInfoDAO tdpCadreTravelInfoDAO;
 	private ITdpCadreHistoryDAO tdpCadreHistoryDAO;
 	private CadreCommitteeService cadreCommitteeService;
+	private ITdpCommitteeRoleDAO tdpCommitteeRoleDAO;
 	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
@@ -566,6 +570,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 
 	public void setTdpCadreHistoryDAO(ITdpCadreHistoryDAO tdpCadreHistoryDAO) {
 		this.tdpCadreHistoryDAO = tdpCadreHistoryDAO;
+	}
+
+	public void setTdpCommitteeRoleDAO(ITdpCommitteeRoleDAO tdpCommitteeRoleDAO) {
+		this.tdpCommitteeRoleDAO = tdpCommitteeRoleDAO;
 	}
 
 	public Date convertToDateFormet(String dateStr)
@@ -6901,7 +6909,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	
 	public SurveyCadreResponceVO saveCommitteCadreRegistration(final Long userId,final List<CadreRegistrationVO> cadreRegistrationVOList,final List<CadrePreviousRollesVO> eligibleRoles,final String registrationType){
 		final SurveyCadreResponceVO surveyCadreResponceVO = new SurveyCadreResponceVO();
-		
+	  synchronized("CADRECOMMITTEEADDCANDIDATE"){
 		if(IConstants.ENABLE_LOGS_SAVE)
 		{
 			Date d1 = new Date();
@@ -6910,6 +6918,22 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			LOG.error(d2.getTime()-d1.getTime() + "IN MILLI SECONDS");
 		}
 		
+		if(eligibleRoles != null && eligibleRoles.size()>0)
+		{
+			CadrePreviousRollesVO roleVO = eligibleRoles.get(0); 
+			Long cadreRoleId = roleVO.getCadreRoleId();
+			if(cadreRoleId != null)
+			{
+				String status = tdpCommitteeRoleDAO.getCommitteeStatus(cadreRoleId);
+				if(status.equalsIgnoreCase("Y")){
+					surveyCadreResponceVO.setStatus(" This Committee Is Already Conformed, You Cannot Add Or Update Committee Members Info ");
+					surveyCadreResponceVO.setResultCode(2);
+					return surveyCadreResponceVO;
+				}
+				
+				
+			}
+		}
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				public void doInTransactionWithoutResult(TransactionStatus status) 
@@ -7095,6 +7119,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}
 		
 		return surveyCadreResponceVO;
+	 }
 	}
 	
 	public List<GenericVO> getExistingCadreInfoForCommittee(String candidateName,Long constituencyId,Long panchayatId,Long boothId,String isPresentCadre,String enrollmentNo,Long areaId){
