@@ -1836,7 +1836,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				cadreCommitteeReportVO.setCompletedCommittees(completedCommittees);//completedCount.
 				
 				if(cadreCommitteeReportVO.getCommitteesCount()  > 0){				
-					cadreCommitteeReportVO.setStartedCommitteePerc(new BigDecimal(startedCommittees*100.0/cadreCommitteeReportVO.getCommitteesCount()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+					cadreCommitteeReportVO.setStartedCommitteePerc(new BigDecimal(cadreCommitteeReportVO.getMainCommittees() *100.0/cadreCommitteeReportVO.getCommitteesCount()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 					cadreCommitteeReportVO.setCompletedCommitteePerc(new BigDecimal(cadreCommitteeReportVO.getCompletedCommittees() * 100.0/cadreCommitteeReportVO.getCommitteesCount()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 				}
 				else{
