@@ -875,7 +875,7 @@ public class WebServiceHandler {
 	}
 
 	@POST
-	@Path("/updateCadreTravelDiscountDetails")
+	@Path("/Auth/updateCadreTravelDiscountDetails")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Object updateCadreTravelDiscountDetails(CadreTravelsVO inputVO)
@@ -892,7 +892,7 @@ public class WebServiceHandler {
 	}
 	
 	@POST
-	@Path("/cancellationOfTicketDetails")
+	@Path("/Auth/cancellationOfTicketDetails")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Object cancellationOfTicketDetails(CadreTravelsVO inputVO)
