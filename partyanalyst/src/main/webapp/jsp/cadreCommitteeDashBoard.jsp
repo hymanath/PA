@@ -873,7 +873,7 @@
 		console.log(result);
 				
 					var str1='';
-					str1+='<ul style="padding-left:0px; width:272px;margin-left:-14px;">';	
+					str1+='<ul style="padding-left:0px; width:272px;margin-left:-14px; font-size: 11px; ">';	
 					//str1+='<ul class="dropdown-menu arrow_box list-group"><div class="panel panel-default m_bottom0"><div class="panel-heading m_top0">COMMITTEE TYPE<span class="pull-right">TOTAL</span></div></div>';
 					for(var i in result){  
 					str1+='<li class=""><a onClick="getAfflCommitteeMembersCount(\''+state+'\',\''+level+'\',\'affl\',\''+result[i].id+'\')" id="\''+level+'IdAffl'+state+'">'+result[i].name+'<span class="pull-right">'+result[i].afflCommittees+'</span></a></li></li>';
