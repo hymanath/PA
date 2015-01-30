@@ -9561,5 +9561,17 @@
 				<param name="root">locations</param>
 			</result>
 		</action>
+		
+		<action name="getStartedAffliCommitteesCountByLocation" class="committeeDashBoardAction" method="getStartedAffliCommitteesCountByLocation">
+			<result type="json" name="success">
+				<param name="root">cadreCommitteeReportVOList</param>
+			</result>
+		</action>
+		
+		<action name="getMembersRangeCountByLocationAction" class="committeeDashBoardAction" method="getMembersRangeCountByLocation">
+			<result type="json" name="success">
+				<param name="root">cadreCommitteeReportVOList</param>
+			</result>
+		</action>
 </package>
 </struts>      

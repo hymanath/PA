@@ -33,7 +33,17 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private static final Logger         		LOG = Logger.getLogger(CommitteeDashBoardAction.class);
 	
 	private CadreCommitteeReportVO          cadreCommitteeReportVO;
+	private List<CadreCommitteeReportVO> cadreCommitteeReportVOList;
 	
+	
+	
+	public List<CadreCommitteeReportVO> getCadreCommitteeReportVOList() {
+		return cadreCommitteeReportVOList;
+	}
+	public void setCadreCommitteeReportVOList(
+			List<CadreCommitteeReportVO> cadreCommitteeReportVOList) {
+		this.cadreCommitteeReportVOList = cadreCommitteeReportVOList;
+	}
 	public LocationWiseBoothDetailsVO getLocationWiseBoothDetailsVO() {
 		return locationWiseBoothDetailsVO;
 	}
@@ -139,4 +149,56 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 		}
 		return Action.SUCCESS;
 	}
+	
+	
+	public String getStartedAffliCommitteesCountByLocation(){
+		try{
+			jObj = new JSONObject(getTask());
+			JSONArray levelIdsArr = jObj.getJSONArray("levelIdsArr");			
+			List<Long> levelIds = new ArrayList<Long>();
+				
+			if(levelIdsArr !=null && levelIdsArr.length() >0){
+				for(int i=0; i<levelIdsArr.length(); i++ ){
+					levelIds.add(Long.valueOf(levelIdsArr.get(i).toString().trim()));
+				}
+			}
+			String state =jObj.getString("state");
+			String startdate=jObj.getString("startDate");
+			String endDate=jObj.getString("endDate");
+			
+			cadreCommitteeReportVOList = cadreCommitteeService.getStartedAffliCommitteesCountByLocation(state,levelIds,startdate,endDate);
+		
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured In getDashBoardLocationWiseDetailsAction method "+e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getMembersRangeCountByLocation(){
+		try{
+			jObj = new JSONObject(getTask());
+			JSONArray levelIdsArr = jObj.getJSONArray("levelIdsArr");			
+			List<Long> levelIds = new ArrayList<Long>();
+				
+			if(levelIdsArr !=null && levelIdsArr.length() >0){
+				for(int i=0; i<levelIdsArr.length(); i++ ){
+					levelIds.add(Long.valueOf(levelIdsArr.get(i).toString().trim()));
+				}
+			}
+			String state =jObj.getString("state");
+			Long committeeId = jObj.getLong("committeeId");
+			String startdate=jObj.getString("startDate");
+			String endDate=jObj.getString("endDate");
+			cadreCommitteeReportVOList = cadreCommitteeService.getMembersRangeCountByLocation(state,levelIds,committeeId,startdate,endDate);
+		
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured In getDashBoardLocationWiseDetailsAction method "+e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
+	
 }
