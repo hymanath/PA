@@ -54,7 +54,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 	{
 		String queryStr = " select distinct model.tdpCadreId ,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name," +
 				" model.tdpCommitteeRole.tdpRoles.role, model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId, " +
-				" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue " +
+				" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,model.tdpCommitteeRole.tdpCommitteeRoleId " +
 				" from TdpCommitteeMember model where model.tdpCadreId in (:tdpCadreIdsList) group by model.tdpCadreId ";
 		Query query = getSession().createQuery(queryStr);
 		query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
