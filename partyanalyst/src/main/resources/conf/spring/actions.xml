@@ -1542,6 +1542,7 @@
 	</bean>
 	<bean id="cadreCommitteeSummaryAction" class="com.itgrids.partyanalyst.web.action.CadreCommitteeSummaryAction" singleton="false">
 	<property name="cadreCommitteeService" ref="cadreCommitteeService" />
+	<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 	
 	<!-- <bean id="userDetailsAction" class="com.itgrids.partyanalyst.web.action.UserDetailsAction" singleton="false">

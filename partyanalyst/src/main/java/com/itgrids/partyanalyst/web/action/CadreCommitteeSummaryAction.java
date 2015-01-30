@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -24,6 +25,7 @@ public class CadreCommitteeSummaryAction extends ActionSupport implements Servle
 	private String 								task;
 	private ICadreCommitteeService   		 	cadreCommitteeService;
 	private List<CadreCommitteeMemberVO> cadreCommitteeMemberVOList;
+	private EntitlementsHelper 					entitlementsHelper;
 	
 	public List<CadreCommitteeMemberVO> getCadreCommitteeMemberVOList() {
 		return cadreCommitteeMemberVOList;
@@ -68,13 +70,31 @@ public class CadreCommitteeSummaryAction extends ActionSupport implements Servle
 			ICadreCommitteeService cadreCommitteeService) {
 		this.cadreCommitteeService = cadreCommitteeService;
 	}
+	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
 	public String execute()
 	{
+
 		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 		boolean noaccess = false;
 		if(regVO==null){
 			return "input";
+		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_COMMITTEE_MANAGEMENT")){
+			noaccess = true ;
 		}
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		
+		if(noaccess){
+			return "error";
+		}
+		
 		return Action.SUCCESS;
 	}
 

@@ -84,9 +84,11 @@
 				</ul>
             </div>
 		</div>
-		<div class="row m_top20">
+		<div class="row ">
+		<h3 class="text-center">${finalStatus} &nbsp;CONSTITUENCY	</h3>
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12" >
 				<div class="row" >
+				     
 					<div class="col-md-4 col-md-offset-0 col-sm-4 col-xs-4" >
 						<a class="btn btn-success btn-block arrow_selected" id="basicCommitteeTab" href="javascript:{showAndHideTabs('basicCommitteeDiv');}">Committee <br>Management</a>
 					</div>
@@ -312,9 +314,9 @@
 					<!--<h6>Advanced Search</h6>-->
 					<div id="advancedSearchErrDiv"></div>
 					<div class="row">					
-						<div class="col-md-2 col-sm-2 col-xs-2 ">
+						<div class="col-md-2 col-sm-6 col-xs-6 ">
 							<label>Caste-Group
-								<select class="form-control" id="casteCategory" onchange="casteDetailsByGroupId();">
+								<select class="form-control col-md-12 col-sm-12 col-xs-12 " id="casteCategory" onchange="casteDetailsByGroupId();">
 								<option value="0">All</option>
 								<option value="1">OC</option>
 								<option value="2">BC</option>
@@ -323,26 +325,26 @@
 								</select>
 							</label>
 						</div>
-						<div class="col-md-3 col-sm-4 col-xs-4 ">
+						<div class="col-md-3 col-sm-6 col-xs-6 ">
 							<label>Caste Name
 								
-								<s:select theme="simple" cssClass="form-control editClass" id="casteList" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Caste " style="width: 200px;"/>
+								<s:select theme="simple" cssClass="form-control editClass col-md-12 col-sm-12 col-xs-12" id="casteList" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Caste " style="width: 200px;"/>
 							</label>
 						</div>
 						
-						<div class="col-md-2 col-sm-3 col-xs-3 ">
+						<div class="col-md-2 col-sm-4 col-xs-4 ">
 							<label>Age Range
-								<select class="form-control"  id="ageRange" onchange="clearbetwbAgeFields()" ><option>select</option></select>
+								<select class="form-control col-md-12 col-sm-12 col-xs-12"  id="ageRange" onchange="clearbetwbAgeFields()" ><option>select</option></select>
 							</label>
 						</div>
-						<div class="col-md-2 col-sm-3 col-xs-3 ">
-							<label> Between Age</label>
+						<div class="col-md-2 col-sm-4 col-xs-4 ">
+							<label> Between Age<br>
 								<input type="text" id="fromAgeId" style="width: 50px;" class="ageRangeCls" placeholder=" From "/> - <input type="text" id="toAgeId" style="width: 50px;" class="ageRangeCls" placeholder=" To  "/> 
-							
+							</label>
 						</div>
-						<div class="col-md-3 col-sm-3 col-xs-3 ">
+						<div class="col-md-3 col-sm-4 col-xs-4 ">
 							<label>Gender
-								<select class="form-control"  id="gender"><option>All</option><option>Male</option><option>Female</option></select>
+								<select class="form-control col-md-12 col-sm-12 col-xs-12"  id="gender"><option>All</option><option>Male</option><option>Female</option></select>
 							</label>
 						</div>
 						<div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4 m_top10">
@@ -377,7 +379,9 @@
 	</footer>
 
 	<script>	
-	
+	 $("#nonafiliatedCommitteeId").append($("#nonafiliatedCommitteeId option:gt(0)").sort(function (a, b) {
+              return a.text == b.text ? 0 : a.text < b.text ? -1 : 1;
+          }));
 	    var slickCount = 0;
 		
 		var pancayatId = '';
@@ -439,8 +443,14 @@
 					url : "checkIsVacancyForDesignation.action",
 					data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
+					         
 					if(result != null)
 					{
+						  if(typeof result == "string"){
+								if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+								  location.reload(); 
+								}
+			                  }
 						if(result.trim().length>0)
 						{
 							$('#committeePositionIdErr').html(''+result.trim()+'');	
@@ -522,7 +532,7 @@
 				}
 			}
 		});
-		
+		 
 		});
 		
 	function getCommitteeLocations(){
@@ -582,6 +592,11 @@
 			}
 		});
 	}
+	function SortByName(a, b){
+		  var aName = a.locationName.toLowerCase();
+		  var bName = b.locationName.toLowerCase(); 
+		  return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+		}
 	function getAffiliatedCommitsForALoc(){
 		$("#committeeDetailsDiv").hide();
 		$("#committeeLocationIdErr").html("");
@@ -613,8 +628,14 @@
 				url : "getAllAffiliatedCommittiesAction.action",
 				data : {locationType:reqLocationType,locationValue:reqLocationValue} ,
 			}).done(function(result){	
+			if(typeof result == "string"){
+				if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+    		      location.reload(); 
+    	        }
+			}
 				if(result != null)
 				{
+					result.sort(SortByName);
 					for(var i in result){
 					   $("#afflitCommitteeId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
 					}
@@ -693,6 +714,11 @@
 				url : "getCommitteMembersInfoAction.action",
 				data : {locationType:reqLocationType,locationValue:reqLocationValue,committeeType:reqCommitteeType} ,
 			}).done(function(result){
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+			    }
 				$("#viewMembrsBtn").removeAttr("disabled");
 				slickCount = slickCount+1;
 				var counts = result.result;

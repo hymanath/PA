@@ -5625,7 +5625,7 @@
 		    <result name="cadre2014CardSample" type="redirect">memberShipCardSamplePrint.action</result>
 		    <result name="ghmcMegaDriveUser" type="redirect">tdpCadreVolunteersDetailsAction.action</result>
 		    <result name="CADRE_COMMITTEE_MANAGEMENT" type="redirect">cadreCommitteeAction.action</result>	
-		    <result name="tdpCommitteeAdmin" type="redirect">committeeUpdateApproveAction.action</result>	     		    
+		    <result name="tdpCommitteeAdmin" type="redirect">committeeDashBoardAction.action</result>	     		    
 		</action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
