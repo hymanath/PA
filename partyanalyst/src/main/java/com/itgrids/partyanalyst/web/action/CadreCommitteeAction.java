@@ -940,7 +940,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 			{
 				try {
 					String committeeType = request.getParameter("committeeType").trim();
-					Long designation=Long.parseLong(request.getParameter("designation").trim());
+					
 					if(committeeType.equalsIgnoreCase("main")){
 						 String locationType = request.getParameter("locationType").trim();
 						 String locationValue = request.getParameter("locationValue").trim();
@@ -960,9 +960,9 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 						 }
 						
 						 
-						 membersInfo = cadreCommitteeService.getMainCommitteeMembersInfoRequest(locationLvl,Long.valueOf(locationValue.substring(1)),designation);
+						 membersInfo = cadreCommitteeService.getMainCommitteeMembersInfoRequest(locationLvl,Long.valueOf(locationValue.substring(1)));
 					}else{
-						membersInfo = cadreCommitteeService.getCommitteeMembersInfoRequest(Long.valueOf(request.getParameter("locationValue")),designation);
+						membersInfo = cadreCommitteeService.getCommitteeMembersInfoRequest(Long.valueOf(request.getParameter("locationValue")));
 					}
 				} catch (Exception e) {
 					LOG.error("Exception occured in getCommitteMembersInfo() At CadreCommitteeAction ",e);
@@ -983,20 +983,50 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 						jObj = new JSONObject(getTask());
 						Long requestUserId=registrationVO.getRegistrationID(); 
 						if(jObj.getString("type").equalsIgnoreCase("positionsIncreased"))
-							status = cadreCommitteeService.cadreCommitteeIncreasedPositionsOrChangeDesignations(jObj.getLong("tdpCommitteeRoleId"),requestUserId,jObj.getLong("currentmaxPositions"),jObj.getLong("requestedMaxPositions"),jObj.getString("type"),null);
+							status = cadreCommitteeService.cadreCommitteeIncreasedPositionsOrChangeDesignations(jObj.getLong("tdpCommitteeRoleId"),requestUserId,jObj.getLong("currentmaxPositions"),jObj.getLong("requestedMaxPositions"),jObj.getString("type"),null,null);
 						else if(jObj.getString("type").equalsIgnoreCase("changeDesignations")){
-							
+							 Long committeeId=0l;
 							 JSONArray jArray = jObj.getJSONArray("requestArray");
 							 for (int i = 0; i < jArray.length(); i++) 
 							 {
 								JSONObject obj = jArray.getJSONObject(i);
 								LocationWiseBoothDetailsVO changeDesignationsVO=new LocationWiseBoothDetailsVO();
-								changeDesignationsVO.setLocationId(obj.getLong("tdpCommitteeMemberId"));//memberId
+								changeDesignationsVO.setLocationId(obj.getLong("tdpCommitteeMemberId"));//tdpCommitteeMemberId
+								changeDesignationsVO.setTotal(obj.getLong("tdpCadreId"));
 								changeDesignationsVO.setPopulation(obj.getLong("currentRole"));//currentRole
 								changeDesignationsVO.setVotesPolled(obj.getLong("newRole"));//newRole
 								changeDesignationsList.add(changeDesignationsVO);
 							 }
-							status=cadreCommitteeService.cadreCommitteeIncreasedPositionsOrChangeDesignations(jObj.getLong("tdpCommitteeRoleId"),requestUserId,jObj.getLong("currentmaxPositions"),jObj.getLong("requestedMaxPositions"),jObj.getString("type"),null);   
+							 String committeeType=jObj.getString("globalReqCommitteeType");
+							 if(committeeType.equalsIgnoreCase("main")){
+								 String locationType=jObj.getString("globalReqLocationType").trim();
+							     String locationValue=jObj.getString("globalReqLocationValue").trim();
+								
+								 Long locationLvl = null;
+								 if(locationType.equalsIgnoreCase("mandal")){
+									 String type =locationValue.substring(0,1).trim();
+									 if(type.equalsIgnoreCase("1")){
+										 locationLvl = 7l;
+									 }else if(type.equalsIgnoreCase("2")){
+										 locationLvl = 5l;
+									 }else{
+										 locationLvl = 9l;
+									 }
+								 }else{
+									 if(locationValue.substring(0,1).trim().equalsIgnoreCase("1")){
+										 locationLvl = 6l;
+									 }else{
+										 locationLvl = 8l;
+									 }
+								 }
+								 committeeId= cadreCommitteeService.gettingCommitteeIdForMainCommittee(locationLvl,Long.valueOf(locationValue.substring(1)));
+							}else{
+								    
+								committeeId =Long.valueOf(request.getParameter("globalReqLocationValue"));
+							}
+							 
+							 
+							status=cadreCommitteeService.cadreCommitteeIncreasedPositionsOrChangeDesignations(null,requestUserId,null,null,jObj.getString("type"),changeDesignationsList,committeeId);   
 						}
 					} 
 					else{
@@ -1052,7 +1082,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 			LOG.error("Exception occured in checkIsVacancyForDesignation() At CadreCommitteeAction ",e);
 		}
 		return Action.SUCCESS;
-	}
+}
 	
 	public String updateCommitteePosCount(){
 		try {
@@ -1156,4 +1186,30 @@ public String getSummaryDetails(){
 		}
 		return Action.SUCCESS;
 	}*/
+	public String gettingRequestsDetailsForAUser(){
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		boolean noaccess = false;
+		if(regVO==null){
+			return "input";
+		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_COMMITTEE_MANAGEMENT")){
+			noaccess = true ;
+		}
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		
+		if(noaccess){
+			return "error";
+		}
+		
+		try{
+			
+			Long requestUserId=regVO.getRegistrationID(); 
+			approvalRecordsList = cadreCommitteeService.getCommitteesForApproval(null, null,requestUserId);
+		}catch (Exception e) {
+			LOG.error(" Exception Raised in getCommitteesForApproval " + e);
+		}
+	
+		return Action.SUCCESS;
+	}
 }
