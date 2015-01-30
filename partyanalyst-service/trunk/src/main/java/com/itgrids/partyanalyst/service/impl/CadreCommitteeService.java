@@ -1258,7 +1258,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				}
 				
 				tdpCommitteeMember = tdpCommitteeMemberDAO.save(tdpCommitteeMember);
-				TdpCommittee tdpCommittee = tdpCommitteeMember.getTdpCommitteeRole().getTdpCommittee();
+				TdpCommittee tdpCommittee = tdpCommitteeRoleDAO.get(tdpCommitteeRoleId).getTdpCommittee();
 				if(tdpCommittee.getStartedDate() == null){
 					tdpCommittee.setStartedDate(dateUtilService.getCurrentDateAndTime());
 					tdpCommitteeDAO.save(tdpCommittee);
