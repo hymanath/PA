@@ -2519,13 +2519,31 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	{
 		List<CadreCommitteeMemberVO> resultList = new ArrayList<CadreCommitteeMemberVO>();
 		try{
-			
-			Integer val = tdpCommitteeMemberDAO.deleteCadreRole(tdpCommitteeMemberId);
-			if(val != null && val > 0)
-			{
 			CadreCommitteeMemberVO vo = new CadreCommitteeMemberVO();
-			vo.setStatus("Updated");
-			resultList.add(vo);	
+		
+			List<Object[]> list = tdpCommitteeMemberDAO.getCommitteStatusAndId(tdpCommitteeMemberId);
+			if(list != null)
+			{
+				Object[] params = list.get(0);
+				String status = params[0].toString();
+				Long tdpCommitteId = new Long(params[1].toString());
+				if(!status.equalsIgnoreCase("Y"))
+				{
+					Integer val = tdpCommitteeMemberDAO.deleteCadreRole(tdpCommitteeMemberId);
+					if(val != null && val > 0)
+					{
+					vo.setStatus("Removed");
+					resultList.add(vo);	
+					}
+					TdpCommittee tdpCommittee = tdpCommitteeDAO.get(tdpCommitteId);
+					tdpCommittee.setStartedDate(null);
+					tdpCommitteeDAO.save(tdpCommittee);
+				}
+				else 
+				{
+					vo.setStatus("Confirmed");
+					resultList.add(vo);		
+				}
 			}
 		}
 		catch(Exception e)
