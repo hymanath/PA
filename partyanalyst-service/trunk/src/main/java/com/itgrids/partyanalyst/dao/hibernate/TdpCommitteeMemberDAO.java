@@ -69,9 +69,8 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		" from TdpCommitteeMember model where ");
 		str.append(" model.tdpCommitteeRole.tdpCommittee.state= :state ");
 		str.append("and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) and model.isActive ='Y' and " +
-				" ( date(model.tdpCommitteeRole.tdpCommittee.startedDate)>=:startDate and date(model.tdpCommitteeRole.tdpCommittee.startedDate)<=:endDate ) " +
-				" group by " +
-		        " model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
+				" model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'N' and date(model.tdpCommitteeRole.tdpCommittee.startedDate)>=:startDate and date(model.tdpCommitteeRole.tdpCommittee.startedDate)<=:endDate ) group by " +
+		" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("state", state);
 		query.setParameterList("levelIds", levelIds);
