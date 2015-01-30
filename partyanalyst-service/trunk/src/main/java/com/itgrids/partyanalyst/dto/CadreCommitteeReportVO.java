@@ -8,14 +8,19 @@ public class CadreCommitteeReportVO {
 	private Long mainCommittees;
 	private Long afflCommittees;
 	private Long completedCommittees;
-	private Long membersCount;
+	private Long membersCount = 0L;
 	private Long totalMembers;
-	private Long totalCommittees;
+	private Long totalCommittees ;
 	private Long totalCompleted;
 	private Long affliatedCompleted;
 	private Double totalCntPerc;
 	private Double startedCommitteePerc;
 	private Double completedCommitteePerc;
+	private String name;
+	private Long id;
+	private Long membersCount1 = 0L;
+	private Long membersCount2 = 0L;
+	private Long membersCount3 = 0L;
 	private Double affliatedCompletedPerc;
 	
 	
@@ -91,6 +96,37 @@ public class CadreCommitteeReportVO {
 	public void setCompletedCommitteePerc(Double completedCommitteePerc) {
 		this.completedCommitteePerc = completedCommitteePerc;
 	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Long getMembersCount1() {
+		return membersCount1;
+	}
+	public void setMembersCount1(Long membersCount1) {
+		this.membersCount1 = membersCount1;
+	}
+	public Long getMembersCount2() {
+		return membersCount2;
+	}
+	public void setMembersCount2(Long membersCount2) {
+		this.membersCount2 = membersCount2;
+	}
+	public Long getMembersCount3() {
+		return membersCount3;
+	}
+	public void setMembersCount3(Long membersCount3) {
+		this.membersCount3 = membersCount3;
+	}
+	
 	public Long getAffliatedCompleted() {
 		return affliatedCompleted;
 	}
