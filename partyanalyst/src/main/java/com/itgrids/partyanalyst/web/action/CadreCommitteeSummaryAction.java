@@ -79,6 +79,7 @@ public class CadreCommitteeSummaryAction extends ActionSupport implements Servle
 	}
 
 	public String getCommitteeDetailsByStatus(){
+
 		
 		try{
 			session = request.getSession();	
@@ -91,6 +92,9 @@ public class CadreCommitteeSummaryAction extends ActionSupport implements Servle
 				cadreCommitteeMemberVOList = cadreCommitteeService.getCommitteeMemberDetails(jObj.getLong("basicCommitteetypeId"),jObj.getLong("locationId"),jObj.getLong("levelId"),jObj.getString("status"));
 			else if(jObj.getString("task").equalsIgnoreCase("committeComplete"))
 				cadreCommitteeMemberVOList = cadreCommitteeService.setCommitteConfirmation(jObj.getLong("basicCommitteetypeId"),jObj.getLong("locationId"),jObj.getLong("levelId"));
+			else if(jObj.getString("task").equalsIgnoreCase("deleterole"))
+				cadreCommitteeMemberVOList = cadreCommitteeService.deleteCadreRole(jObj.getLong("tdpcommitteeMemberId"));
+			
 			}
 		}catch(Exception e){
 			LOG.error("Exception occured in getCommitteeDetailsByStatus() At CadreCommitteeAction ",e);
