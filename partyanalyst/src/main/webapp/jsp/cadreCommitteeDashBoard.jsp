@@ -628,8 +628,12 @@
 						$("#div2").html('['+result.mainCommittees+']');						
 						
 						$("#div3").html(result.completedCommitteePerc+"%");
-						//$("#div4").html(result.completedCommittees);
+						if(result.completedCommittees > 0 && result.completedCommittees != null)
+						
 						$("#div4").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
+						else
+						
+						$("#div4").html('['+result.completedCommittees+']');
 					
 						//$("#div30").html(result.afflCommitteesPerc);
 						$("#div5").html(result.afflCommittees);
@@ -650,13 +654,17 @@
 						$("#div9").html('['+result.mainCommittees+']');						
 						
 						$("#div10").html(result.completedCommitteePerc+"%");
-						//$("#div11").html(result.completedCommittees);
+				
+						if(result.completedCommittees > 0 && result.completedCommittees != null)
 						$("#div11").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
-					
+						
+						else
+						$("#div11").html('['+result.completedCommittees+']');
 						//$("#div33").html(result.afflCommitteesPerc);
 						$("#div12").html(result.afflCommittees);
 						
 						$("#div13").html(result.affliatedCompleted);
+						if(result.completedCommittees > 0 && result.completedCommittees != null)
 						//$("#div13").html('<a id=\''+level+'IdAPAffl\' class="btn" onClick="getAflCommitteeCount(\'AP\',\''+level+'\')">'+result.affliatedCompleted+'</a>');
 						
 						//$("#div34").html(result.affliatedCompletedPerc);
@@ -676,9 +684,13 @@
 						$("#div16").html('['+result.mainCommittees+']');						
 						
 						$("#div17").html(result.completedCommitteePerc+"%");
-						//$("#div18").html(result.completedCommittees);
+						
+						if(result.completedCommittees > 0 && result.completedCommittees != null)
+						
 						$("#div18").html('<a id=\''+level+'IdTS\' class="btn" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
-	
+						
+						else
+						$("#div18").html('['+result.completedCommittees+']');
 						//$("#div36").html(result.afflCommitteesPerc);
 						$("#div19").html(result.afflCommittees);
 						
@@ -701,14 +713,18 @@
 						
 						$("#div24").html(result.completedCommitteePerc+"%");
 						
+						if(result.completedCommittees > 0 && result.completedCommittees != null)
+						
 						$("#div25").html('<a id=\''+level+'IdTS\' class="btn" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
-						//$("#div25").html(result.completedCommittees);
+						else
+						
+						$("#div25").html('['+result.completedCommittees+']');
 						
 						//$("#div39").html(result.afflCommitteesPerc);
 						$("#div26").html(result.afflCommittees);
 						
 						//$("#div40").html(result.affliatedCompletedPerc);
-						$("#div27").html(result.affliatedCompleted+);
+						$("#div27").html(result.affliatedCompleted);
 						//$("#div27").html('<a id=\''+level+'IdTSAffl\' class="btn" onClick="getAflCommitteeCount(\'TS\',\''+level+'\')">['+result.affliatedCompleted+']</a>');											
 						$("#div28").html(result.membersCount);	
 					}
