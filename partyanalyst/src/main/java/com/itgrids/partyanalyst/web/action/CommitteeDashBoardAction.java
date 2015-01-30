@@ -13,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
+import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
@@ -33,10 +34,19 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private static final Logger         		LOG = Logger.getLogger(CommitteeDashBoardAction.class);
 	
 	private CadreCommitteeReportVO          cadreCommitteeReportVO;
+	private List<CommitteeSummaryVO>    districtWiseSummaryList;
 	private List<CadreCommitteeReportVO> cadreCommitteeReportVOList;
 	
 	
 	
+	
+	public List<CommitteeSummaryVO> getDistrictWiseSummaryList() {
+		return districtWiseSummaryList;
+	}
+	public void setDistrictWiseSummaryList(
+			List<CommitteeSummaryVO> districtWiseSummaryList) {
+		this.districtWiseSummaryList = districtWiseSummaryList;
+	}
 	public List<CadreCommitteeReportVO> getCadreCommitteeReportVOList() {
 		return cadreCommitteeReportVOList;
 	}
@@ -150,6 +160,21 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 		return Action.SUCCESS;
 	}
 	
+	public String getDistrictWiseCommittesSummary(){
+		LOG.debug(" Entered Into getDistrictWiseCommittesSummary");
+		try{
+			jObj = new JSONObject(getTask());
+			String state =jObj.getString("state");
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate");
+			
+			districtWiseSummaryList = cadreCommitteeService.getDistrictWiseCommittesSummary(state, startDate, endDate);
+		}catch (Exception e) {
+			LOG.error(" Exception Raised In getDistrictWiseCommittesSummary" +e);
+		}
+		
+		return Action.SUCCESS;
+	}
 	
 	public String getStartedAffliCommitteesCountByLocation(){
 		try{
@@ -198,7 +223,4 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 		}
 		return Action.SUCCESS;
 	}
-	
-	
-	
 }
