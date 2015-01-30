@@ -21,17 +21,7 @@ public class TdpCommitteeRoleDAO extends GenericDaoHibernate<TdpCommitteeRole, L
 		query.setParameter("committeeId", committeeId);
 		return query.list();
 	}
-	public String gettingConfirmedCommittee(Long tdpCommitteeId,Long tdpCommitteeRoleId)
-	{
-		
-		Query query = getSession().createQuery("select model.tdpCommittee.isCommitteeConfirmed " +
-				" from TdpCommitteeRole model " +
-				" where model.tdpCommitteeRoleId=:tdpCommitteeRoleId and " +
-				"       model.tdpCommittee.tdpCommitteeId =:tdpCommitteeId ");
-		query.setParameter("tdpCommitteeRoleId", tdpCommitteeRoleId);
-		query.setParameter("tdpCommitteeId", tdpCommitteeId);
-		return (String)query.uniqueResult();
-	}
+	
 	
 	public List<Object[]> getDetailsForTdpCommitteRoleId(Long roleId){
 		Query query = getSession().createQuery(" select model.tdpCommitteeRoleId," +
@@ -64,5 +54,11 @@ public class TdpCommitteeRoleDAO extends GenericDaoHibernate<TdpCommitteeRole, L
 		query.setParameter("tdpCommitteeRole", tdpCommitteeRole);
 		
 		return (String)query.uniqueResult();
+	}
+	public List<Object[]> getMaxCountsForACommittee(Long committeeId){
+		 /*select tdp_committee_role_id,max_members from tdp_committee_role where tdp_committee_id=281;*/
+		Query query = getSession().createQuery("select model.tdpCommitteeRoleId,model.maxMembers,model.tdpRoles.role from TdpCommitteeRole model where model.tdpCommittee.tdpCommitteeId =:tdpCommitteeId");
+		query.setParameter("tdpCommitteeId", committeeId);
+		return query.list();
 	}
 }
