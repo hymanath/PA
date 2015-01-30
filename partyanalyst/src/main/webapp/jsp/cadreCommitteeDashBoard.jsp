@@ -90,7 +90,21 @@
 							</tr>
 							<tr>
 								<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div1"></div></h4></td>
-								<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><div id="div29"></div><h4 style="display:inline"><div id="div2"></div></h4></td>
+								
+								<td style="padding:10px;" width="10%">
+									<span class="text-success">Started</span> Committees<br/>
+									<table>
+										<tr>
+											<td class="row-table">
+												<h4 class="m_top0"><div id="div29"></div></h4>
+											</td>
+											<td class="row-table">
+												<h5 class="m_top0"><div id="div2"></div></h5>
+											</td>
+										</tr>
+									</table>
+								</td>
+								
 								<td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div3"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
                               <li><a><div id="div4"></div></a>
                                     <ul class="list-group dropdown-menu arrow_box">
@@ -142,7 +156,7 @@
                                 </ul>
                               </li>
                             </ul></h4></td>
-								<td style="padding:10px;" width="28%">TOTAL <b>MEMBERS</b><h4 class="m_top0"><div id="div7"></div></h4></td>
+								<td style="padding:10px;" width="28%">TOTAL<br/> <b>MEMBERS</b><h4 class="m_top0"><div id="div7"></div></h4></td>
 							<div id="apMandalDiv"></div>
 							</tr>
 							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
@@ -154,7 +168,19 @@
 							</tr>
 							<tr>
 								<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div8"></div></h4></td>
-								<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><div id="div32"></div><h4 style="display:inline"><div id="div9"></div></h4></td>
+								<td style="padding:10px;" width="10%">
+									<span class="text-success">Started</span> Committees<br/>
+									<table>
+										<tr>
+											<td class="row-table">
+												<h4 class="m_top0"><div id="div32"></div></h4>
+											</td>
+											<td class="row-table">
+												<h5 class="m_top0"><div id="div9"></div></h5>
+											</td>
+										</tr>
+									</table>
+								</td>
 							   <td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div10"></div></h4></td><td  class="row-table">
 							   <ul class="nav navbar-nav">
 								<li>
@@ -205,7 +231,7 @@
                                 </ul>
                               </li>
                             </ul></h4></td>
-								<td style="padding:10px;" width="28%">TOTAL <b>MEMBERS</b><h4 class="m_top0"><div id="div14"></div></h4></td>
+								<td style="padding:10px;" width="28%">TOTAL <br/><b>MEMBERS</b><h4 class="m_top0"><div id="div14"></div></h4></td>
 								<div id="apVillageDiv"></div>
 							</tr>
 						</table>
@@ -243,7 +269,19 @@
 						</tr>
 						<tr>
 							<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div15"></div></h4></td>
-							<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><div id="div35"></div><h4 style="display:inline"><div id="div16"></div></h4></td>
+							<td style="padding:10px;" width="10%">
+									<span class="text-success">Started</span> Committees<br/>
+									<table>
+										<tr>
+											<td class="row-table">
+												<h4 class="m_top0"><div id="div35"></div></h4>
+											</td>
+											<td class="row-table">
+												<h5 class="m_top0"><div id="div16"></div></h5>
+											</td>
+										</tr>
+									</table>
+								</td>
 						   <td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div17"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
                               <li><a><div id="div18"></div></a>
                                    <ul class="list-group dropdown-menu arrow_box">
@@ -292,7 +330,7 @@
                                 </ul>
                               </li>
                             </ul></h4></td>
-							<td style="padding:10px;" width="28%">TOTAL <b>MEMBERS</b><h4 class="m_top0"><div id="div21"></div></h4></td>
+							<td style="padding:10px;" width="28%">TOTAL<br/> <b>MEMBERS</b><h4 class="m_top0"><div id="div21"></div></h4></td>
 							<div id="tsMandalDiv"></div>
 						</tr>
 						<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
@@ -305,7 +343,19 @@
 						</tr>
 						<tr>
 							<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div22"></div></h4></td>
-							<td style="padding:10px;" width="10%"><span class="text-success">Started</span> Committees<br/><div id="div38"></div><h4 style="display:inline"><div id="div23"></div></h4></td>
+							<td style="padding:10px;" width="10%">
+									<span class="text-success">Started</span> Committees<br/>
+									<table>
+										<tr>
+											<td class="row-table">
+												<h4 class="m_top0"><div id="div38"></div></h4>
+											</td>
+											<td class="row-table">
+												<h5 class="m_top0"><div id="div23"></div></h5>
+											</td>
+										</tr>
+									</table>
+								</td>
 						   <td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div24"></div></h4></td><td  class="row-table">
 						   <ul class="nav navbar-nav">
                               <li><a><div id="div25"></div></a>
@@ -362,7 +412,7 @@
                                 </ul>
                               </li>
                             </ul></h4></td>
-							<td style="padding:10px;" width="28%">TOTAL <b>MEMBERS</b><h4 class="m_top0"><div id="div28"></div></h4></td> 
+							<td style="padding:10px;" width="28%">TOTAL<br/> <b>MEMBERS</b><h4 class="m_top0"><div id="div28"></div></h4></td> 
 							<div id="tsVillageDiv"></div>
 						</tr>
 					</table>
