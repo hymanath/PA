@@ -123,14 +123,14 @@
 		<div class="row m_top20">
 			<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 ">
 				<div class="form-group col-xs-12 pull-right">
-					<label for="committeeLocationId">SELECT LOCATION<img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
+					<label for="committeeLocationId">SELECT LOCATION <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
 					<select onchange="populateDefaultValue(1);" class="form-control" id="committeeLocationId" ><option value="0">Select Location</option></select >
 					<div id="committeeLocationIdErr"></div>
 				 </div>
 			</div>
 			<div class="col-md-4 col-sm-6 col-xs-6">
 				<div class="form-group col-xs-12">
-					<label for="committeeTypeId">COMMITTEE TYPE</label>
+					<label for="committeeTypeId">COMMITTEE TYPE <span style="color:red">*</span></label>
 					<select class="form-control" id="committeeTypeId" onchange="getAffiliatedCommitsForALoc();populateDefaultValue(2);getCommitteCadreMembersInfo(1)" ><option value="0">Select Committee Type</option><option value="1">Main Committee</option><option value="2">Affiliated Committee</option></select >
 					<div id="committeeTypeIdErr"></div>
 				 </div>
@@ -139,7 +139,7 @@
 		<div id="committeeMainId" class="row">	
 			<div class="col-md-6 col-md-offset-2 col-sm-6 col-sm-offset-2 col-xs-12 ">
 				<div class="form-group col-xs-12">
-					<label for="committeeId">AFFILIATED COMMITTEE</label>
+					<label for="committeeId">AFFILIATED COMMITTEE <span style="color:red">*</span></label>
 					<select class="form-control" onchange="hideMembers();getCommitteCadreMembersInfo(2)" id="afflitCommitteeId"><option>Select Affiliated Committee</option></select >
 					<div id="afflitCommitteeIdErr"></div>
 				 </div>
@@ -298,7 +298,7 @@
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0"  id="basicSearchDiv">	
 				<div class="row">      
 					<div class="col-md-9 col-sm-9 col-xs-9 ">
-						<input type="text" placeholder="ENTER NO / NAME"  class="form-control" id="searchBy">
+						<input type="text" placeholder="ENTER MEMBERSHIP ID / VOTER ID / MOBILE NO / NAME"  class="form-control" id="searchBy">
 						<div id="searchErrDiv"></div>
 					</div>	
 					<div class="col-md-3 col-sm-3 col-xs-3 ">
@@ -702,9 +702,17 @@
 				str+='<div class="slick_widget">';
 				str+='	<h5>'+counts[i].locationName+'</h5>';
 				str+='	<ul class="list-inline text-center" >';
-				str+='		<li class="btn btn-xs btn-default" disabled="disabled">'+counts[i].population+'</li>';
+				if(counts[i].population!=0){
+					str+='		<li class="btn btn-xs btn-default" disabled="disabled">'+counts[i].population+'</li>';
+				}else{
+					str+='		<li class="btn btn-xs btn-default" disabled="disabled">N/A</li>';
+				}
 				str+='		<li class="btn btn-xs btn-danger" disabled="disabled">'+counts[i].votesPolled+'</li>';
-				str+='		<li class="btn btn-xs btn-success" disabled="disabled">'+counts[i].total+'</li>';
+				if(counts[i].population!=0){
+					str+='		<li class="btn btn-xs btn-success" disabled="disabled">'+counts[i].total+'</li>';
+				}else{
+					str+='		<li class="btn btn-xs btn-success" disabled="disabled">N/A</li>';
+				}
 				str+='	</ul>';
 				str+='</div>';
 			   }

@@ -943,8 +943,9 @@
 		str+=' <div class="form-group col-md-12 col-sm-4 col-xs-4 " id="candidateDivTab'+electionsCount+'">';
 		str+='  </div>';
 	    str+=' </div>';
-		str+='</div>';
 		str+='<a href="javascript:{clearDiv(\'detailsId'+electionsCount+'\');}" class="btn btn-danger btn-xs " style="margin-left: 17px;margin-bottom:15px;"> Remove </a>	';
+		str+='</div>';
+		
 		$('#electionsDiv').append(str);
 		
 		electionsCount = electionsCount+1;
