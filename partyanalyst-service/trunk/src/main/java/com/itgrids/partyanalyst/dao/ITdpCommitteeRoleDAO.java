@@ -13,4 +13,5 @@ public interface ITdpCommitteeRoleDAO  extends GenericDao<TdpCommitteeRole, Long
 	public List<Object[]> getDetailsForTdpCommitteRoleId(Long roleId);
 	public int updateMaxPosForCommitteeRoleId(Long roleId, Long maxPos, Date updatedTime);
 	public String getCommitteeStatus(Long tdpCommitteeRole);
+	public List<Object[]> getMaxCountsForACommittee(Long committeeId);
 }
