@@ -557,8 +557,8 @@
 						
 						if(result.completedCommittees > 0 && result.completedCommittees != null)
 						
-						$("#div4").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
-						//$("#div4").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
+						//$("#div4").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
+						$("#div4").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
 						else
 						$("#div4").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
 					
@@ -586,8 +586,8 @@
 				
 						if(result.completedCommittees > 0 && result.completedCommittees != null)
 						
-						$("#div11").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
-						//$("#div11").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
+						//$("#div11").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
+						$("#div11").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
 						
 						else
 						$("#div11").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
@@ -619,8 +619,8 @@
 						
 						if(result.completedCommittees > 0 && result.completedCommittees != null)
 						
-						$("#div18").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
-						//$("#div18").html('<a id=\''+level+'IdTS\' class="btn" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
+						//$("#div18").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
+						$("#div18").html('<a id=\''+level+'IdTS\' class="btn" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
 						
 						else
 						$("#div18").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
@@ -649,8 +649,8 @@
 						
 						if(result.completedCommittees > 0 && result.completedCommittees != null)
 						
-						$("#div25").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
-						//$("#div25").html('<a id=\''+level+'IdTS\' class="btn" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
+						//$("#div25").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
+						$("#div25").html('<a id=\''+level+'IdTS\' class="btn" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
 						else
 						
 						$("#div25").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
