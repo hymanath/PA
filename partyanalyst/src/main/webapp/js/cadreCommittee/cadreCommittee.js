@@ -432,6 +432,11 @@
 				url : "getCadreSearchDetailsAction.action",
 				data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
+				         if(typeof result == "string"){
+							if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+							  location.reload(); 
+							}
+						}
 				$("#searchDataImg").hide();
 				$('#cadreDetailsDiv').show();
 				var committeTypesId = $('#committeeMngtType').val();
@@ -496,7 +501,7 @@
 					if(committeeMngntTypeId == 1)
 					{
 						str+='<div class="form-inline ">';
-						str+='<a onclick="jacascript:{getCadreProfileInfo('+result[i].tdpCadreId+',\'existingRole'+i+'\')}" class="btn btn-success btn-medium m_top5" > SELECT & UPDATE PROFILE</a>';
+						str+='<a onclick="jacascript:{getCadreProfileInfo('+result[i].tdpCadreId+',\'existingRole'+i+'\','+result[i].voterId+')}" class="btn btn-success btn-medium m_top5" > SELECT & UPDATE PROFILE</a>';
 						str+='</div>	';	
 					}
 					else if(committeeMngntTypeId == 2)
@@ -599,7 +604,7 @@
 		  $("#"+eqId).remove();
 		}
 	}
-	function getCadreProfileInfo(tdpCadreId,existingRole)
+	function getCadreProfileInfo(tdpCadreId,existingRole,existingId)
 	{
 		var committeTypeID = $('#committeeMngtType').val();		
 		var committeeLocationId = $('#committeeLocationId').val();
@@ -677,7 +682,12 @@
 				return;
 			}
 			else{
-				
+				if(existingId != undefined && existingId != null && existingId != 'null'){
+					if(existingId == committeePosition){
+						alert("Candidate Already Added To This Designation");
+						return;
+					}
+				}
 				if(existingDesignation != null && existingDesignation.trim().length>0)
 				{
 					if(!confirm(""+existingDesignation+". Are you sure want to change his Designation as "+committeePositionStr+" for "+committeeType+" in "+ $('#committeeLocationId option:selected').text() +" "+locationTypeStr+".?" ))

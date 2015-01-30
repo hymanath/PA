@@ -461,7 +461,8 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		genericVOList = cadreCommitteeService.getAllCasteDetailsForState();
 		cadreRolesVOList = cadreCommitteeService.getBasicCadreCommitteesDetails();
 		locations = cadreCommitteeService.getAllTdpCommitteeDesignations();
-		
+		List<BasicVO> accLoc = getUserAccessConstituencies();
+		finalStatus = accLoc.get(0).getName();
 		if(panchayatId == null) //default values for prepopulate fields
 		{
 			panchayatId = "0";

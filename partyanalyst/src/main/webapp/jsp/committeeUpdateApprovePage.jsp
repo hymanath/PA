@@ -75,11 +75,18 @@
 		 	<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12 text-center">
 				<img src="images/cadreCommitee/committee_logo.png" title="Committee Logo" alt="committee" />
 			</div>
-			<div class="span4">
-			  <span>
-			     <a href="newlogoutAction.action" class="btn btn-xs btn-default pull-left m_top20">Logout</a>	
-			  </span>	
-			</div>
+			<div class="col-md-3  col-xs-3 col-sm-3">
+               
+                    <a href="#" class="dropdown-toggle btn btn-default btn-xs m_top20" data-toggle="dropdown" aria-expanded="false" style="margin-top: 60px;">
+                    Menu <img src="images/cadreCommitee/menu_icon.png" />
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);top: 91px;">
+				  	  <li><a tabindex="-1" href="committeeDashBoardAction.action">Home</a></li>
+                      <li role="presentation" class="divider" style="background-color: rgba(229, 229, 229,0.6);"></li>
+                     <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
+                    </ul>
+                 
+            </div>
 		</div>
         <div class="container">
         	<!--Content Start-->

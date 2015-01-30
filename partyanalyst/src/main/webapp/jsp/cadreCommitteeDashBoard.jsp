@@ -42,10 +42,7 @@
                     Menu <img src="images/cadreCommitee/menu_icon.png" />
                     </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);top: 91px;">
-                      <li><a tabindex="-1" href="cadreCommitteeAction.action">Home</a></li>
-				  	  <li><a tabindex="-1" href="cadreCommitteeSummaryAction.action">Summary Report</a></li>
-				      <li><a tabindex="-1" href="cadreCommitteeRequestAction.action">Request For Positions Increase</a></li>
-				      <li><a tabindex="-1" href="committeeDashBoardAction.action">Committee DashBoard</a></li>
+				  	  <li><a tabindex="-1" href="committeeUpdateApproveAction.action">Approval Requests</a></li>
                       <li role="presentation" class="divider" style="background-color: rgba(229, 229, 229,0.6);"></li>
                      <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
                     </ul>
