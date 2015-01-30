@@ -501,7 +501,7 @@
                     }, */
                     opens: 'left',
                     buttonClasses: ['btn btn-default'],
-                    applyClass: 'btn-small btn-success',
+                    applyClass: 'btn-small btn-success rangeButton',
                     cancelClass: 'btn-small',
                     format: 'MM/DD/YYYY',
                     separator: ' to ',
@@ -560,12 +560,15 @@
 			   
 			   		
 	<script>
-	
-	
-		
-		
-	
-	
+
+	$(document).on('click','.rangeButton',function(){
+			
+					getCommitteeDetails("AP","mandalAll");
+					getCommitteeDetails("AP","villageAll");	
+					getCommitteeDetails("TS","mandalAll");	
+					getCommitteeDetails("TS","villageAll");
+	});
+
 	function getCommitteeDetails(state,level){
 	
 	var startDate=$(".dp_startDate").val();
