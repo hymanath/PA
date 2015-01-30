@@ -1811,10 +1811,15 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		
 		CadreCommitteeReportVO cadreCommitteeReportVO =new CadreCommitteeReportVO();
 		try{
+			Date startDate=null;
+			Date endDate=null;
 			
-			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-			Date startDate = sdf.parse(startDateString);
-			Date endDate=sdf.parse(endDateString);
+			if(startDateString !=null && endDateString !=null){
+				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+				 startDate = sdf.parse(startDateString);
+				 endDate=sdf.parse(endDateString);
+			}
+			
 			
 			Long committeeCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,levelIds);
 			//0count ,1 isCommitteeConfirmed,2.tdpCommitteeLevelId,3.tdpBasicCommitteeId
@@ -2071,7 +2076,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
 			for (Object[] objects : committeeCntDtls) {
 								
-				if(Long.valueOf(objects[1].toString())== 1l)
+				if(Long.valueOf(objects[1].toString()).longValue() == 1l)
 					totalCompletedCommittees = totalCompletedCommittees+(Long)objects[0];
 					
 			}
@@ -2085,7 +2090,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return cadreCommitteeReportVO;
 		}
 		catch(Exception e){
-			LOG.error("Exception raised in getTotalCommitteeDetailsByLocation method"+e);
+			LOG.error("Exception raised in getTotalCommitteeDetailsByLocation method",e);
 		}
 		return cadreCommitteeReportVO;
 	}
