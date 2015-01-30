@@ -9,7 +9,19 @@ $("#locationsDivId").show();
 $("#committeesId").show(); 
 $("#reqSubmitId").show(); 
 $("#resultStatusId").hide();
-}
+$("#designationDivId").show();
+$("#changeDesgnationsErrId").hide();
+
+
+$('#incId').css({"background":"#DBBD2B"});
+$('#desgId').css({"background":"#FF9966"});
+$('#viewId').css({"background":"#FF9966"});
+
+ $('#selLocId').removeClass('col-md-4').addClass('col-md-3');
+  $('#selCommId').removeClass('col-md-4').addClass('col-md-3');
+  $('#committeeMainId').removeClass('col-md-4').addClass('col-md-3');
+   $('#designationDivId').removeClass('col-md-4').addClass('col-md-3');
+ }
 if(val=='2'){
 getCommitteeLocations();
 $("#locationsDivId").show(); 
@@ -20,6 +32,15 @@ $('#posIncreasedId').hide();
 $('#changeDesgId').hide();
 $("#committeePositionId").val("0");
 $("#resultStatusId").hide();
+$("#designationDivId").hide();
+    $('#selLocId').removeClass('col-md-3').addClass('col-md-4');
+  $('#selCommId').removeClass('col-md-3').addClass('col-md-4');
+  $('#committeeMainId').removeClass('col-md-3').addClass('col-md-4');
+   $('#designationDivId').removeClass('col-md-3').addClass('col-md-4');
+   
+$('#incId').css({"background":"#FF9966"});
+$('#desgId').css({"background":"#DBBD2B"});
+$('#viewId').css({"background":"#FF9966"});
 }
 if(val=='3'){
   $("#resultStatusId").show();
@@ -29,13 +50,22 @@ if(val=='3'){
   $("#locationsDivId").hide(); 
   $("#committeesId").hide(); 
   $("#reqSubmitId").hide(); 
+  $("#changeDesgnationsErrId").hide();
+  
+ $('#incId').css({"background":"#FF9966"});
+$('#desgId').css({"background":"#FF9966"});
+$('#viewId').css({"background":"#DBBD2B"});
+
+
   gettingRequestsDetailsForAUser();
 }
 }
 
 //(getting locations on load,on change of locations radio buttons)allur,nellore...
 function getCommitteeLocations(){
-		
+		$('#incId').css({"background":"#DBBD2B"});
+        $('#desgId').css({"background":"#FF9966"});
+        $('#viewId').css({"background":"#FF9966"});
 		$("#committeeTypeId").val(0);
 		//$("#committeeMainId").hide();
 		$("#afflitCommitteeId").prop("disabled", true);
@@ -208,9 +238,14 @@ function getCommitteeLocations(){
 				}
 		   });
 	}
-	
+	//global variables used in change designations.
+	  var globalReqLocationType="";
+	  var globalReqLocationValue="";
+      var globalReqCommitteeType="";
+	  
 	//By click submit button for 1st task.
 	function getCommitteMembersInfoRequest(){
+	     $("#changeDesgnationsErrId").hide();
 	     $('#posIncreasedId').hide();
 		 var committeeLocation= $("#committeeLocationId option:selected").text();
 		 var committeeType=$("#committeeTypeId option:selected").text();
@@ -223,7 +258,9 @@ function getCommitteeLocations(){
 		var locId = $("#committeeLocationId").val();
 		var locVal = $("#afflitCommitteeId").val();
 		var designationId=$("#committeePositionId").val();
-		var reqType=$('input[name="requestType"]:radio:checked').val();
+		
+		
+		   var reqType=$('input[name="requestType"]:radio:checked').val();
 		
 	
 		if(locId == null || locId == 0){
@@ -240,10 +277,14 @@ function getCommitteeLocations(){
 				return;
 			}
 		 }
-		 if(designationId== 0){
-			$("#committeePositionIdErr").html("Please Select Designation");
-			return;
-		}
+		 
+		 if(reqType=='1'){
+		    if(designationId== 0){
+			  $("#committeePositionIdErr").html("Please Select Designation");
+			  return;
+		    }
+		  }
+		
 		 $("#committeeLocationIdErr").html("");
 		$("#committeeTypeIdErr").html("");
 		$("#afflitCommitteeIdErr").html("");
@@ -270,10 +311,14 @@ function getCommitteeLocations(){
 			 reqLocationValue=$("#afflitCommitteeId").val();
 		 }
 		// $("#viewMembrsBtn").attr("disabled","disabled");
+		
+		globalReqLocationType= reqLocationType;
+		globalReqLocationValue =reqLocationValue;
+		globalReqCommitteeType=reqCommitteeType;
 		  $.ajax({
 				type : "POST",
 				url : "getCommitteMembersInfoRequestAction.action",
-				data : {locationType:reqLocationType,locationValue:reqLocationValue,committeeType:reqCommitteeType,designation:designationId} ,
+				data : {locationType:reqLocationType,locationValue:reqLocationValue,committeeType:reqCommitteeType} ,
 			}).done(function(result){
 			   if(result!=null){
 			     if(reqType=='1'){
@@ -281,7 +326,7 @@ function getCommitteeLocations(){
 					 $('#posIncreasedId').show();
 				      var str="";
 					    str+='<div class="col-md-offset-2 col-md-8 pad1" style="background-color:rgba(0,0,0,0.1);">';
-						str+= '<span style="font-weight: bold;">'+committeeLocation+ ' &nbsp'+committeeType+ '&nbsp '+committeePosition+' Designation</style>';
+						str+= '<span style="font-weight: bold;"><span style="color:green">'+committeeLocation+ '</span> &nbsp'+committeeType+ '&nbsp '+committeePosition+' Designation</style>';
 					    str+='</div>';
 						str+='<div class="col-md-offset-2 col-md-8 pad1 alert alert-danger"><div style="">This Commitee is Already Confirmed.You Cannot Increase Designations..</div></div>';
 				      $("#posIncreasedId").html(str);
@@ -312,33 +357,53 @@ function getCommitteeLocations(){
 			     }//inc pos.
 				 else if(reqType=='2'){
 				   if(result.electionYear=='Y'){
+				      
+				      $('#changeDesgId').show(); 
+					
 				      var str='';
 					  str+='<div class="col-md-offset-1 col-md-10 pad1" style="background-color:rgba(0,0,0,0.1);">';
-					  str+='Kavali mandal Main Committee <u>current vice president</u> postion';
+					  str+='<span style="font-weight: bold;"><span style="color:green">'+committeeLocation+ '</span> &nbsp'+committeeType+ '&nbsp '+committeePosition+' Designation</style>';
+					  str+='<span style="font-weight: bold;color:red; margin-left: 116px;" id="errorChangeDesg"></span>';
 					  str+='</div>';
-					  str+='<div class="col-md-offset-1 col-md-10" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); color:#fff;margin-top:2px;" >';
+					  
+					   str+='<div class="col-md-offset-1 col-md-10" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); color:#fff;margin-top:2px;padding:0px; " >';
 					  str+='<table class="table table-bordered text-left" >';
 					  str+='<thead style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.2); color:#000">';
-					  str+='<th width="20%">Committee Member Position</th>';
-                      str+='<th width="9%">Member Image</th>';
+					 
+                      str+='<th width="10%">Member Image</th>';
                       str+='<th width="20%">Committee Member Name</th>';
-                      str+='<th width="20%">Membership No</th>';
-                      str+='<th>Select Change Position</th>';
+                      str+='<th width="18%">Membership No</th>';
+					  str+='<th width="20%">Committee Member Current Position</th>';
+                      str+='<th width="15%">Select Change Position</th>';
 					  str+='</thead>';
 					  str+='<tbody style="color:#000">';
 					  if(result.hamletsOfTownship.length>0 && result.hamletsOfTownship!=null){
 					    for(var i=0;i<result.hamletsOfTownship.length;i++){
 						  str+='<tr>';
-						  str+='<td id="currPosition'+i+'" data-attr="'+result.hamletsOfTownship[i].id+'" >'+result.hamletsOfTownship[i].value+'</td>';
-						  str+='<td>'+result.hamletsOfTownship[i].value+'</td>';
-						  str+='<td id="CommMember'+i+'" data-attr="'+result.hamletsOfTownship[i].orderId+'">'+result.hamletsOfTownship[i].name+'</td>';
+						  str+='<td><img width="32"  height="32" src="http://www.mytdp.com/images/cadre_images/'+result.hamletsOfTownship[i].url+'" onerror="setDefaultImage(this);"/></td>';
+
+						  //str+='<td>'+result.hamletsOfTownship[i].value+'</td>';
+						  str+='<td id="CommMember'+i+'" data-attr="'+result.hamletsOfTownship[i].orderId+'" data-attr-tdpCadreId="'+result.hamletsOfTownship[i].mainAccountId+'" >'+result.hamletsOfTownship[i].name+'</td>';
 						  str+='<td>'+result.hamletsOfTownship[i].type+'</td>';
+						   str+='<td id="currPosition'+i+'" data-attr="'+result.hamletsOfTownship[i].id+'" >'+result.hamletsOfTownship[i].value+'</td>';
 						  str+='<td>';
 						     str+='<form class="form-inline form-group-sm">';
-							   str+='<input type="checkbox" class="changeDesgCheck" id='+i+' />';
-						       str+='<select class="form-control" id="reqPosition'+i+'">';
+							   str+='<input type="checkbox" class="changeDesgCheck" id='+i+' onClick="activatePositions(this)"/>';
+							  
+							 
+						       str+='<select class="form-control" id="reqPosition'+i+'" disabled="true">';
                                  str+='<option value="0">Select Position</option>';
 								 
+								 if(committeePositionaArray != null && committeePositionaArray.length>0)
+								 {
+									for(var k in committeePositionaArray)									
+									{  
+									    if(result.hamletsOfTownship[i].id==committeePositionaArray[k].id)
+										  str+='<option value="'+committeePositionaArray[k].id+'" selected="selected" >'+committeePositionaArray[k].name+'</option>';
+										else
+										 str+='<option value="'+committeePositionaArray[k].id+'" >'+committeePositionaArray[k].name+'</option>';
+									}
+								 }
                                str+='</select>';
 							 str+='</form>';
 						  str+='</td>';
@@ -347,19 +412,49 @@ function getCommitteeLocations(){
 					  }
 					  str+='</tbody ';
 					  str+='</table>';
-					  str+='<button class="btn btn-success col-md-offset-4" onClick="cadreCommitteeIncPositionsOrChangeDesg(\'changeDesignations\')">Submit Request For Change Position</button>';
+					
 					  str+='</div>'; 
-					  $("#changeDesgId").html(str);
+					  
+					
+					  var str1="";
+					  str1+='<div class="col-md-offset-1 col-md-10" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); color:#fff;" >';
+					  str1+='<button class="btn btn-success col-md-offset-4" onClick="cadreCommitteeIncPositionsOrChangeDesg(\'changeDesignations\')">Submit Request For Change Position</button>';
+					  str1+='</div>';
+					  
+					  $("#desgReqTableDiv").html(str);
+					  $("#desgReqDiv").html(str1);
+					  
 				     }
+					 else{
+					     					  
+
+					    $("#changeDesgId").html("");
+					    $('#posIncreasedId').show();
+				        var str="";
+					    str+='<div class="col-md-offset-2 col-md-8 pad1" style="background-color:rgba(0,0,0,0.1);">';
+						str+= '<span style="font-weight: bold;"><span style="color:green">'+committeeLocation+ '</span> &nbsp'+committeeType+ '&nbsp '+committeePosition+' Designation</style>';
+					    str+='</div>';
+						str+='<div class="col-md-offset-2 col-md-8 pad1 alert alert-danger"><div style="">This Commitee is Not Confirmed.Use The Following Link To ADD OR UPDATE Details <a href="cadreCommitteeSummaryAction.action">COMMITTEE SUMMARY</a></div></div>';
+				      $("#posIncreasedId").html(str);
+					 }
 				 
 				 }//chan desg.
 			   }
 		    });
 	}
 	
+	 function activatePositions(type){
+		 var id=$(type).attr('id');
+		 if($(type).is(':checked'))
+		   $('#reqPosition'+id).prop("disabled", false);
+		 else
+		   $('#reqPosition'+id).prop("disabled", true);
+	 }
+							   
 	function cadreCommitteeIncPositionsOrChangeDesg(type)
 	{
-	 
+	  $("#changeDesgnationsErrId").html("");
+	  $("#errorChangeDesg").html("");
 	  var jsObj =new Object();
 	  
 	  if(type=="positionsIncreased"){
@@ -394,7 +489,9 @@ function getCommitteeLocations(){
 	
 	  
      var requestArray=[];
+	 var sameRoleId=false;
 	 if(type=="changeDesignations"){
+	   
 	   $('.changeDesgCheck').each(function()
        {
 		   if($(this).is(':checked'))
@@ -404,14 +501,37 @@ function getCommitteeLocations(){
 				
 				
 				jsobj.tdpCommitteeMemberId=$('#CommMember'+id).attr("data-attr");
+				jsobj.tdpCadreId=$('#CommMember'+id).attr("data-attr-tdpCadreId");
 				jsobj.currentRole=$('#currPosition'+id).attr("data-attr");
 				jsobj.newRole=$('#reqPosition'+id+' option:selected').val();
-				requestArray.push(jsobj);
+				if(jsobj.newRole!='0'){
+				  if(jsobj.currentRole==jsobj.newRole){
+				     sameRoleId=true;
+				  }
+				  else
+				   requestArray.push(jsobj);
+				}
+				
 			}
        });
+	   if(sameRoleId==true){
+	    $("#errorChangeDesg").html("Requested Position Is Not As Same As Current Position.");
+		sameRoleId=false;
+	    return;
+	   }
+	   if(requestArray.length==0){
+	    $("#errorChangeDesg").html("Please Check Atleast One Change Position");
+	    return;
+	   }
+	   
 	   
 	   jsObj.type=type;
 	   jsObj.requestArray=requestArray;
+	   
+	   //extra parameters
+	    jsObj.globalReqLocationType= globalReqLocationType;
+		jsObj.globalReqLocationValue =globalReqLocationValue;
+		jsObj.globalReqCommitteeType=globalReqCommitteeType;
 	 }
 	
 	   $.ajax({
@@ -419,10 +539,47 @@ function getCommitteeLocations(){
 				url : "cadreCommitteeIncPositionsOrChangeDesgAction.action",
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
-			   if(result.resultCode=='1')
+			   if(type=="positionsIncreased"){
+			     if(result.resultCode=='1')
 			       $('#maxPositionsErrId').html("<span style='color:green;margin-left: 204px;font-size: 20px'>Request Sent Successfully.</span>");
-			   else
-			      $('#maxPositionsErrId').html("<span style='color:green'>Sending Request Failed.</span>");
+			     else
+			      $('#maxPositionsErrId').html("<span style='color:red;margin-left: 204px;font-size: 20px'>Sending Request Failed.</span>");
+				}
+				else if(type="changeDesignations"){
+				$("#changeDesgnationsErrId").show();
+				  if(result.resultCode=='2'){
+				    
+					 var msgArray=[];
+					 var msgStr="";
+					 var desgMsg="";
+					 
+					 var message=result.message; 
+					 msgArray = message.split(","); 
+					
+			         if(msgArray!=null && msgArray.length>0){
+					   if(msgArray.length==1){
+					     msgStr=msgArray[0];
+						 desgMsg="Designation";
+					   }
+					   else{
+					      for(var i in msgArray){
+					        if(msgStr!="")
+					         msgStr=msgStr+","+msgArray[i];
+						    else
+						     msgStr=msgStr;
+					      }
+						  desgMsg="Designations";
+					    } 
+					 }
+					 
+					
+				     $('#changeDesgnationsErrId').html("<span style='color:red;margin-left: 221px;;font-size:17px'>Request Failed. The "+desgMsg+" "+msgStr+"  Is Exceeding Max Count.</span>");
+				   }
+				  else if(result.resultCode=='1')
+				    $('#changeDesgnationsErrId').html("<span style='color:green;margin-left: 423px;;font-size: 20px'>Request Sent Successfully.</span>");
+				  else if(result.resultCode=='0')
+				   $('#changeDesgnationsErrId').html("<span style='color:green;margin-left: 204px;font-size: 20px'>Sending Request Failed.</span>");
+				}
 			});
 	}
 	  //desg on change validation.
@@ -484,4 +641,8 @@ function getCommitteeLocations(){
 			   }
 			});
 
+	}
+	function setDefaultImage(img)
+	{
+		img.src = "images/cadreCommitee/Member_thamb_image.png";
 	}
