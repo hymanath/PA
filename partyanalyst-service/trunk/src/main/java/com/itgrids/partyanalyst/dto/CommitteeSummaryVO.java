@@ -14,7 +14,21 @@ public class CommitteeSummaryVO implements Serializable{
 	
 	private Long startedCount = 0l;
 	private Long affilatedStartedCount = 0l;
+	private Long mainCommitteId;
+	private Long affilatedCommitteId;
 	
+	public Long getMainCommitteId() {
+		return mainCommitteId;
+	}
+	public void setMainCommitteId(Long mainCommitteId) {
+		this.mainCommitteId = mainCommitteId;
+	}
+	public Long getAffilatedCommitteId() {
+		return affilatedCommitteId;
+	}
+	public void setAffilatedCommitteId(Long affilatedCommitteId) {
+		this.affilatedCommitteId = affilatedCommitteId;
+	}
 	public Long getMainComittees() {
 		return mainComittees;
 	}

@@ -12,9 +12,16 @@ public class CadreCommitteeMemberVO {
 	private String role;
 	private String locationName;
 	private String committe;
+	private String membershipNo;
 	
 	
 	
+	public String getMembershipNo() {
+		return membershipNo;
+	}
+	public void setMembershipNo(String membershipNo) {
+		this.membershipNo = membershipNo;
+	}
 	public String getCommitte() {
 		return committe;
 	}

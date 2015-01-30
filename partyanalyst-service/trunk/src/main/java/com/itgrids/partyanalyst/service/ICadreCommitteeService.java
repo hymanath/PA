@@ -49,10 +49,10 @@ public interface ICadreCommitteeService {
 	public LocationWiseBoothDetailsVO getCommitteeMembersInfoRequest(Long committeeId,Long designation);
 
 	public CadreCommitteeReportVO getTotalCommitteeDetailsByLocation(String state);
-	public List<CadreCommitteeMemberVO> getCommitteeDetailsByStatus(Long basicCommitteeTypeId,String status,Long levelId);
+	
 	public List<CadreCommitteeMemberVO> getCommitteeMemberDetails(Long basicCommitteeTypeId,Long locationId,Long levelId);
 	public List<CadreCommitteeMemberVO> setCommitteConfirmation(Long basicCommitteeTypeId,Long locationId,Long levelId);
-	public List<CadreCommitteeMemberVO> updateCadreRole(Long tdpCommitteeMemberId);
+	public List<CadreCommitteeMemberVO> deleteCadreRole(Long tdpCommitteeMemberId);
 	public List<CommitteeApprovalVO> getCommitteesForApproval(Long startNo, Long endNo,Long requestUserId);
 	public String updateCommitteePosCount(Long roleId, Long maxCount, String type, Long increasedPosId);
 	public CommitteeApprovalVO getStatusCountsOfApproval();
@@ -62,4 +62,6 @@ public interface ICadreCommitteeService {
 	public List<LocationWiseBoothDetailsVO> getStartedCommitteesCountInALocation(String accessValue);
 	public List<CommitteeSummaryVO> gettingMandalAndMuncipalAndDivisonSummary(String constituencyId);
 	public List<LocationWiseBoothDetailsVO> getMandalMuncipalDivisonTotalCommittees(String accessValue,Map<Long,CommitteeSummaryVO> affilatedMap);
+	public List<CadreCommitteeMemberVO> getCommitteeDetailsByStatus(Long basicCommitteeTypeId,String status,Long levelId,String accessValue);
+	
 }

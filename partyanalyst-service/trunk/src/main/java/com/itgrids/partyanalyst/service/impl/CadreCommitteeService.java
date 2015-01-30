@@ -1973,6 +1973,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			
 			public ResultStatus cadreCommitteeIncreasedPositionsOrChangeDesignations(final Long tdpCommitteeRoleId,final Long requestUserId,final Long currentmaxPositions,final Long requestedMaxPositions,final String type,final List<LocationWiseBoothDetailsVO> changeDesignationsList)
 			{
+				
 				   ResultStatus resultStatus=new ResultStatus();
 				   try {
 					
@@ -2288,24 +2289,69 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		
 		return isEligible;
 	}
-	public List<CadreCommitteeMemberVO> getCommitteeDetailsByStatus(Long basicCommitteeTypeId,String status,Long levelId)
+	public List<CadreCommitteeMemberVO> getCommitteeDetailsByStatus(Long basicCommitteeTypeId,String status,Long levelId,String accessValue)
 	{
 		List<CadreCommitteeMemberVO> resultList = new ArrayList<CadreCommitteeMemberVO>();
 		List<Long> levelIds = new ArrayList<Long>();
-		List<CadreCommitteeMemberVO> toRemove = new ArrayList<CadreCommitteeMemberVO>();
+		//List<CadreCommitteeMemberVO> toRemove = new ArrayList<CadreCommitteeMemberVO>();
+		Long constituencyId=Long.parseLong(accessValue);
+		List<Object[]> list = null;
 		try{
-			if(levelId == 1) // MANDAL / TOWN / DIVISION
+			
+			if(levelId == 2)
+			{
+				levelIds.add(6l);// Village/Ward
+				levelIds.add(8l);
+			list = tdpCommitteeDAO.getLocationByTypeIdAndLevel(levelIds,basicCommitteeTypeId,constituencyId,status);
+			}
+			else
 			{
 				levelIds.add(5l);
 				levelIds.add(7l);
-				levelIds.add(9l);
+				levelIds.add(9l);// MANDAL / TOWN / DIVISION
+				List<LocationWiseBoothDetailsVO> locationsList = getMandalMunicCorpDetailsNew(constituencyId);
+				
+				//Map<Long,List<Long>> mandalOrMuncipalMap = null;
+				
+				if(locationsList != null && locationsList.size() > 0)
+				{
+					Set<Long> locationValues =new HashSet<Long>();
+					List<Long> locations = null;
+					//mandalOrMuncipalMap = new HashMap<Long, List<Long>>();
+					List<Long> mandalIds = new ArrayList<Long>();
+					List<Long> muncipalIds = new ArrayList<Long>();
+					List<Long> divisionIds = new ArrayList<Long>();
+					for (LocationWiseBoothDetailsVO locationWiseBoothDetailsVO : locationsList)
+					{	
+						char ch=(locationWiseBoothDetailsVO.getLocationId().toString().charAt(0));
+						Long val=Long.parseLong(Character.toString(ch));
+					
+						if(val == 1l)
+						{
+							//muncipalIds.add(locationWiseBoothDetailsVO.getLocationId());
+							muncipalIds.add(Long.parseLong(locationWiseBoothDetailsVO.getLocationId().toString().substring(1)));
+							//muncipalIds.add(val);
+							//mandalOrMuncipalMap.put(1l, muncipalIds);
+						}
+						else if (val == 2l)
+						{
+							mandalIds.add(Long.parseLong(locationWiseBoothDetailsVO.getLocationId().toString().substring(1)));
+							//mandalOrMuncipalMap.put(2l, mandalIds);
+						}
+						else
+						{
+							divisionIds.add(Long.parseLong(locationWiseBoothDetailsVO.getLocationId().toString().substring(1)));
+							//mandalOrMuncipalMap.put(3l, divisionIds);
+						}
+						locationValues.addAll(muncipalIds);
+						locationValues.addAll(mandalIds);
+						locationValues.addAll(divisionIds);
+						locations = new ArrayList<Long>(locationValues);		
+					}
+					list = tdpCommitteeDAO.getLocationsByTypeIdAndLevel(levelIds,basicCommitteeTypeId,locations,status);
+				}
+					
 			}
-			if(levelId == 2) // Village/Ward
-			{
-				levelIds.add(6l);
-				levelIds.add(8l);
-			}
-			List<Object[]> list = tdpCommitteeDAO.getLocationByTypeIdAndLevel(levelIds,basicCommitteeTypeId);
 			if(list != null && list.size() > 0)
 			{
 				List<Long> locationValues = new ArrayList<Long>();
@@ -2321,35 +2367,23 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					resultList.add(locationVo);
 				}
 				
-				List<Object[]> membersList = tdpCommitteeMemberDAO.getComitteeMembersByCommiteTypeAndLocation(levelIds,locationValues,basicCommitteeTypeId);
-				if(membersList != null && membersList.size() > 0)
+				if(!status.equalsIgnoreCase("NotStarted"))
 				{
-					for(Object[] params : membersList)
+					List<Object[]> membersList = tdpCommitteeMemberDAO.getComitteeMembersByCommiteTypeAndLocation(levelIds,locationValues,basicCommitteeTypeId,status);
+					if(membersList != null && membersList.size() > 0)
 					{
-						CadreCommitteeMemberVO vo = getMatchedLocation((Long)params[1],(Long)params[2],resultList);
-						if(vo != null)
-							vo.setTotal((Long)params[0]);
+						for(Object[] params : membersList)
+						{
+							CadreCommitteeMemberVO vo = getMatchedLocation((Long)params[1],(Long)params[2],resultList);
+							if(vo != null)
+								vo.setTotal((Long)params[0]);
 						}
 					}
-				  }
-					for(CadreCommitteeMemberVO vo : resultList)
-					{
-						// Started
-						if(status.equalsIgnoreCase("NotConform"))
-						{
-						  if(vo.getStatus().equalsIgnoreCase("Y"))
-						  toRemove.add(vo);
-						}
-						else if(status.equalsIgnoreCase("Conform"))
-						{
-							 if(vo.getStatus().equalsIgnoreCase("N"))
-								  toRemove.add(vo);	
-						}
-					}
-				if(toRemove != null && toRemove.size() > 0)
-				resultList.removeAll(toRemove);
+				}
+			
 			if(resultList != null && resultList.size() > 0)
 			resultList.get(0).setCommitte(tdpBasicCommitteeDAO.get(basicCommitteeTypeId).getName());
+		}
 		}
 		catch(Exception e)
 		{
@@ -2435,10 +2469,11 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					vo.setImagePath(params[4] != null ? params[4].toString() : "");
 					vo.setId((Long)params[2]);
 					vo.setName(params[3].toString());
-					vo.setStatus(params[5].toString());
+					vo.setMembershipNo(params[5].toString());
 					vo.setLevel((Long)params[0]); //roleId
 					vo.setRole(params[1].toString());//role
 					vo.setTotal((Long)params[6]);
+					vo.setStatus(params[7].toString());
 					resultList.add(vo);	
 				}
 				if(resultList != null && resultList.size() > 0)
@@ -2459,14 +2494,20 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	{
 		List<CadreCommitteeMemberVO> resultList = new ArrayList<CadreCommitteeMemberVO>();
 		try{
+			DateUtilService date = new DateUtilService();
+			
 			List<Long> tdpcommitteIds = tdpCommitteeMemberDAO.getTdpCommitteIds(levelId,locationId,basicCommitteeTypeId);
-			Integer val = tdpCommitteeMemberDAO.updateTdpComitte(tdpcommitteIds);
-			if(val != null && val > 0)
+			for(Long id : tdpcommitteIds)
 			{
 			CadreCommitteeMemberVO vo = new CadreCommitteeMemberVO();
+			TdpCommittee tdpCommittee = tdpCommitteeDAO.get(id);
+			tdpCommittee.setCompletedDate(date.getCurrentDateAndTime());
+			tdpCommittee.setIsCommitteeConfirmed("Y");
+			tdpCommitteeDAO.save(tdpCommittee);
 			vo.setStatus("Updated");
 			resultList.add(vo);	
 			}
+		
 		}
 		catch(Exception e)
 		{
@@ -2474,12 +2515,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return resultList;
 	}
-	public List<CadreCommitteeMemberVO> updateCadreRole(Long tdpCommitteeMemberId)
+	public List<CadreCommitteeMemberVO> deleteCadreRole(Long tdpCommitteeMemberId)
 	{
 		List<CadreCommitteeMemberVO> resultList = new ArrayList<CadreCommitteeMemberVO>();
 		try{
 			
-			Integer val = tdpCommitteeMemberDAO.updateCadreRole(tdpCommitteeMemberId);
+			Integer val = tdpCommitteeMemberDAO.deleteCadreRole(tdpCommitteeMemberId);
 			if(val != null && val > 0)
 			{
 			CadreCommitteeMemberVO vo = new CadreCommitteeMemberVO();
@@ -2650,6 +2691,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			     CommitteeSummaryVO vo = returnMap.get((Long)count[0]);
 			     if(vo == null){
 				   vo = new  CommitteeSummaryVO();
+				   vo.setAffilatedCommitteId((Long)count[0]);
 				   vo.setAffilatedCommitteeName(count[1].toString());
 				   returnMap.put((Long)count[0],vo);
 			     }
@@ -2870,6 +2912,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 							if(affVO == null)
 							{
 								affVO = new CommitteeSummaryVO();
+								affVO.setAffilatedCommitteId((Long)objects[2]);
 								affVO.setAffilatedCommitteeName(objects[1].toString());
 								affilatedMap.put((Long)objects[2], affVO);
 							}
