@@ -11,11 +11,15 @@
     <link href="css/cadreCommitee/bootstrap.min.css" rel="stylesheet">
 	 <!-- Custom Styles -->
     <link href="css/cadreCommitee/style.css" rel="stylesheet">
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
+			<!--Circle js file-->
+    <script src="js/jquery.classyloader.min.js"></script>
 </head>
 
 <body>
-		<header style="align:center;padding:10px;background:rgba(255,0,51,0.8); border-bottom:6px solid rgba(19,167,81,0.8);display:flex">
+		<!--<header style="align:center;padding:10px;background:rgba(255,0,51,0.8); border-bottom:6px solid rgba(19,167,81,0.8);display:flex">
 		 	<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12 text-center">
 				<img src="images/committee_logo.png" title="Committee Logo" alt="committee" />
 			</div>
@@ -32,7 +36,7 @@
 				  <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
 				</ul>
             </div>
-		</header>
+		</header>-->
         <div class="container">
         	<!--Content Start-->
             <div class="row" style="text-align:center;">
@@ -272,16 +276,11 @@
         </div>
 
 
-		<footer class="text-center m_top20">
+		<!--<footer class="text-center m_top20">
 			&copy; 2015 Telugu Desam Party
-		</footer>
+		</footer>-->
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="dist/js/bootstrap.min.js"></script>
-			<!--Circle js file-->
-    <script src="js/jquery.classyloader.min.js"></script>
+
     <script>
 	$(document).ready(function() {
 		getSummary();
@@ -641,7 +640,7 @@
 		str+='<td>'+result[i].role+'';
 		if(result[i].status != "Y")
 			{
-		str+='<div class="pull-right" ><i style="cursor:pointer;" class="glyphicon glyphicon-trash" onclick="deleteCadreRole(\''+result[i].total+'\');"></i></div>';
+		str+='<div class="pull-right  btn btn-default btn-sm" ><i style="cursor:pointer;" class="glyphicon glyphicon-trash " onclick="deleteCadreRole(\''+result[i].total+'\');"></i></div>';
 			}
 		str+='</td>';
 		str+='</tr>';//total - tdpCommitteMemberID
