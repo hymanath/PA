@@ -27,6 +27,8 @@
 	.highlight{background-color: #fff !important;
 	border-color: #ccc !important;
 	color: #333 !important;}
+	.navbar-nav > li > a {text-decoration:none;}
+		a:hover {text-decoration:none;}
 	</style>	
 </head>
 <body>
@@ -117,7 +119,7 @@
 									
 									
 								</li></td></tr></table></td>
-								<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affliated Committees<br/><h4 class="m_top0"><div id="div5"></div></h4></td>
+								<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affiliated Committees<br/><h4 class="m_top0"><div id="div5"></div></h4></td>
 								<td style="padding:10px;" width="20%"><span class="text-success">Completed </span><br/>Affliated Committees<br/>
                                 <h4 class="m_top0">
 								<ul class="nav navbar-nav">
@@ -160,8 +162,8 @@
 								</li>	
 									
 									</td></tr></table></td>
-								<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affliated Committees<br/><h4 class="m_top0"><div id="div12"></div></h4></td> 
-								<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
+								<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affiliated Committees<br/><h4 class="m_top0"><div id="div12"></div></h4></td> 
+								<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affiliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
                               <li><a><div id="div13"></div></a>
                                </h4></td>
 								<td style="padding:10px;" width="28%">TOTAL <br/><b>MEMBERS</b><h4 class="m_top0"><div id="div14"></div></h4></td>
@@ -223,8 +225,8 @@
                                  
 									
 								</li></td></tr></table></td>
-							<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affliated Committees<br/><h4 class="m_top0"><div id="div19"></div></h4></td>
-							<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
+							<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affiliated Committees<br/><h4 class="m_top0"><div id="div19"></div></h4></td>
+							<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affiliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
                               <li><a><div id="div20"></div></a>
                                
                                 </h4></td>
@@ -265,8 +267,8 @@
 									
 								</li>
 									</td></tr></table></td>
-							<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affliated Committees<br/><h4 class="m_top0"><div id="div26"></div></h4></td>
-							<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
+							<td style="padding:10px;" width="20%">Affiliated Committees<br/><span class="text-success">Started</span><br/><h4 class="m_top0"><div id="div26"></div></h4></td>
+							<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affiliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
                               <li><a><div id="div27"></div></a>
                              </h4></td>
 							<td style="padding:10px;" width="28%">TOTAL<br/> <b>MEMBERS</b><h4 class="m_top0"><div id="div28"></div></h4></td> 
@@ -297,8 +299,8 @@
                         <thead> 
 							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 								<th style="text-align:center">DISTRICT</th>
-								<th style="text-align:center" colspan="6">TOWN/MANDAL/GVMC</th>
-								<th style="text-align:center" colspan="6">VILLAGE/WARD/DIVISION</th>
+								<th style="text-align:center" colspan="6">TOWN / MANDAL / DIVISION</th>
+								<th style="text-align:center" colspan="6">VILLAGE / WARD</th>
 							</tr>
 						
 							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
@@ -307,30 +309,30 @@
 								<th>Started</th>                            
 								<th>Completed</th>
 								<th>Members</th>
-								<th width="15%" colspan="2" style="padding:0px;">Affliated Committe
+								<th width="15%" colspan="2" style="padding:0px;"><span style="margin-left:20px;">Affiliated Committe</span>
 									<table class="table table-yellow-bordered" style="margin-bottom:0px; background:transparent;">
 										<tr>
-											<td style="padding:0px 0px 0px 2px;">
-												<small style="font-size:10px;">STARTED AREAS</small>
+											<td style="padding:0px 0px 0px 24px;">
+												<small style="font-size:10px;"> Started </small>
 											</td>
 											<td style="padding:0px 0px 0px 6px;">
-												<small style="font-size:10px;">TOTAL STARTED</small>
+												<small style="font-size:10px;"> Completed </small>
 											</td>
 										</tr>
 									</table>
 								</th>
 								<th>Total</th>
-								<th><small>Started</small></th>
-								<th><small>Completed</small></th>
-								<th><small>Members</small></th>
-								<th width="15%" colspan="2" style="padding:0px;">Affliated Committe
+								<th>Started</th>
+								<th>Completed</th>
+								<th>Members</th>
+								<th width="15%" colspan="2" style="padding:0px;"><span style="margin-left:20px;">Affiliated Committe</span>
 									<table class="table table-yellow-bordered" style="margin-bottom:0px; background:transparent;">
 										<tr>
-											<td style="padding:0px 0px 0px 2px;">
-												<small style="font-size:10px;">STARTED AREAS</small>
+											<td style="padding:0px 0px 0px 24px;">
+												<small style="font-size:10px;">Started</small>
 											</td>
 											<td style="padding:0px 0px 0px 6px;">
-												<small style="font-size:10px;">TOTAL STARTED</small>
+												<small style="font-size:10px;">Completed</small>
 											</td>
 										</tr>
 									</table>
@@ -482,6 +484,7 @@
 					getCommitteeDetails("AP","villageAll");	
 					getCommitteeDetails("TS","mandalAll");	
 					getCommitteeDetails("TS","villageAll");
+					getDistrictWiseCommittesSummary();
 	});
 
 	function getCommitteeDetails(state,level){
@@ -555,12 +558,12 @@
 						
 						$("#div3").html(result.completedCommitteePerc+"%");
 						
-						if(result.completedCommittees > 0 && result.completedCommittees != null)
-						
-						//$("#div4").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
-						$("#div4").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
-						else
-						$("#div4").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
+						if(result.completedCommittees > 0 && result.completedCommittees != null){
+							$("#div4").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
+						}
+						else{						
+							$("#div4").html('<a>['+result.completedCommittees+']</a>');
+						}
 					
 						//$("#div30").html(result.afflCommitteesPerc);
 						$("#div5").html(result.afflCommittees);
@@ -589,8 +592,9 @@
 						//$("#div11").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
 						$("#div11").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
 						
-						else
-						$("#div11").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
+						else{
+						$("#div11").html('<a>['+result.completedCommittees+']</a>');
+						}
 						//$("#div33").html(result.afflCommitteesPerc);
 						$("#div12").html(result.afflCommittees);
 						
@@ -622,8 +626,9 @@
 						//$("#div18").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
 						$("#div18").html('<a id=\''+level+'IdTS\' class="btn" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
 						
-						else
-						$("#div18").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
+						else{
+						$("#div18").html('<a>['+result.completedCommittees+']</a>');
+						}
 						//$("#div36").html(result.afflCommitteesPerc);
 						$("#div19").html(result.afflCommittees);
 						
@@ -651,9 +656,9 @@
 						
 						//$("#div25").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
 						$("#div25").html('<a id=\''+level+'IdTS\' class="btn" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
-						else
-						
-						$("#div25").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
+						else{						
+							$("#div25").html('<a>['+result.completedCommittees+']</a>');
+						}
 						
 						//$("#div39").html(result.afflCommitteesPerc);
 						$("#div26").html(result.afflCommittees);
@@ -731,6 +736,8 @@
 		});
 	}
 	
+	var districtInfoArr = [];
+	var villageInfoArr = [];
 	function buildResultDistrictSummary(result){
 		var str = '';
 		$("#distSummaryBody").html("");
@@ -745,7 +752,7 @@
 				}
 				
 				if(result[i].townMandalDivisionVO.mainStarted!=null){
-					str += '<td>'+result[i].townMandalDivisionVO.mainStarted+'<span class="sparkline"></span></td>';
+					str += '<td>'+result[i].townMandalDivisionVO.mainStarted+'<span id="mini-pie-chart-district'+i+'" class="pull-right mini-pie-chart-district"></span></td>';
 				}else{
 					str += '<td> - </td>';
 				}
@@ -757,7 +764,7 @@
 				}
 				
 				if(result[i].townMandalDivisionVO.membersCount!=null){
-					str += '<td>'+result[i].townMandalDivisionVO.membersCount+' </td>';
+					str += '<td>'+result[i].townMandalDivisionVO.membersCount+'</td>';
 				}else{
 					str += '<td> - </td>';
 				}
@@ -790,7 +797,7 @@
 				}
 				
 				if(result[i].villageWardVO.mainStarted!=null){
-					str += '<td>'+result[i].villageWardVO.mainStarted+' <span class="sparkline"></span></td>';
+					str += '<td>'+result[i].villageWardVO.mainStarted+'<span id="mini-pie-chart-village'+i+'" class="pull-right mini-pie-chart-village"></span></td>';
 				}else{
 					str += '<td> - </td>';
 				}
@@ -827,8 +834,54 @@
 				str += '<td>  </td>';
 			}
 			str += '</tr>';
+			
+			if(result[i].townMandalDivisionVO != null){
+				var details = [result[i].townMandalDivisionVO.startPerc, 100-parseInt(result[i].townMandalDivisionVO.startPerc,10)];
+				districtInfoArr.push(details);
+			}else{
+				var details = [0, 100];
+				districtInfoArr.push(details);
+			}
+			
+			
+			if(result[i].villageWardVO != null){
+				var villageDetails = [result[i].villageWardVO.startPerc, 100-parseInt(result[i].villageWardVO.startPerc,10)];
+				villageInfoArr.push(villageDetails);
+			}else{
+				var villageDetails = [0, 100];
+				villageInfoArr.push(villageDetails);
+			}
+			
+			
 		}
 		$("#distSummaryBody").html(str);
+		
+		if( $('.mini-pie-chart-village').length > 0 ) {
+			var visitData2 = villageInfoArr;
+			var params = {
+				type: "pie",
+				 sliceColors: ["#0B3B0B", "#B18904"]
+
+			}
+			for(var e in result){
+				$('#mini-pie-chart-village'+e+'').sparkline(visitData2[e], params);
+			}
+		}
+		
+		
+		if($('.mini-pie-chart-district').length > 0 ) {
+			var visitData = districtInfoArr;
+			var params = {
+				type: "pie",
+				 sliceColors: ["#0B3B0B", "#B18904"]
+
+			}
+			for(var t in result){
+			
+				$('#mini-pie-chart-district'+t+'').sparkline(visitData[t], params);
+			}
+		}
+			
 	}
 	function getMainCommitteeMembersCount(state,level,type,committeeId){
 		
