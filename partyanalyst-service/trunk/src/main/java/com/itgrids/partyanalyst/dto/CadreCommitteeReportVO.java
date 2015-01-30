@@ -3,17 +3,17 @@ package com.itgrids.partyanalyst.dto;
 public class CadreCommitteeReportVO {
 
 	
-	private Long committeesCount;
-	private Long startedCommittees;
-	private Long mainCommittees;
-	private Long afflCommittees;
-	private Long completedCommittees;
+	private Long committeesCount =0l;
+	private Long startedCommittees  =0l;
+	private Long mainCommittees  =0l;
+	private Long afflCommittees  =0l;
+	private Long completedCommittees  =0l;
 	private Long membersCount = 0L;
-	private Long totalMembers;
-	private Long totalCommittees ;
-	private Long totalCompleted;
-	private Long affliatedCompleted;
-	private Double totalCntPerc;
+	private Long totalMembers  =0l;
+	private Long totalCommittees  =0l;
+	private Long totalCompleted  =0l;
+	private Long affliatedCompleted  =0l;
+	private Double totalCntPerc ;
 	private Double startedCommitteePerc;
 	private Double completedCommitteePerc;
 	private String name;
