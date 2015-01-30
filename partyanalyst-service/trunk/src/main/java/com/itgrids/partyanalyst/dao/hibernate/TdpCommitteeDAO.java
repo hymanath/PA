@@ -274,4 +274,14 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		
 		return query.list();
 	}
+	public String gettingConfirmedCommittee(Long tdpCommitteeId)
+	{
+		
+		Query query = getSession().createQuery("select model.isCommitteeConfirmed " +
+				" from TdpCommittee model " +
+				" where model.tdpCommitteeId =:tdpCommitteeId and " +
+				" model.isCommitteeConfirmed is not null ");
+		query.setParameter("tdpCommitteeId", tdpCommitteeId);
+		return (String)query.uniqueResult();
+	}
 }
