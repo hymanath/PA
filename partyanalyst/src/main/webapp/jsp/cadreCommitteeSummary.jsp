@@ -64,7 +64,7 @@
 					<div id="mandalAffliCommitteDivId"></div>
                     <!--<table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">
                     	<thead>
-                        	<th colspan="5" style="background-color:#669934"><h4>AFFLIATED COMMITTEE</h4></th>
+                        	<th colspan="5" style="background-color:#669934"><h4>AFFILIATED COMMITTEE</h4></th>
                         </thead>
                         <thead>
                         	<th width="20%">COMMITTEE TYPE</th>
@@ -131,7 +131,7 @@
 					
                     <!--<table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);border-radius:2px;">
                     	<thead>
-                        	<th colspan="5" style="background-color:#669934"><h4>AFFLIATED COMMITTEE</h4></th>
+                        	<th colspan="5" style="background-color:#669934"><h4>AFFILIATED COMMITTEE</h4></th>
                         </thead>
                         <thead>
                         	<th width="20%">COMMITTEE TYPE</th>
@@ -356,9 +356,9 @@
 			
 					var str1='';
 						str1+='<table class="table table-condensed table-yellow-bordered" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
-							str1+='<thead><th colspan="5" style="background-color:#669934"><h4>AFFLIATED COMMITTEE</h4></th></thead>';
+							str1+='<thead><th colspan="5" style="background-color:#669934"><h4>AFFILIATED COMMITTEE</h4></th></thead>';
 							str1+='<thead><th width="20%">COMMITTEE TYPE</th><th width="20%">TOTAL</th><th width="20%">STARTED</th>';
-							str1+='<th width="20%">CONFIRMED</th><th width="20%">NOT YET STARTED</th></thead>';
+							str1+='<th width="20%">CONFIRMED/COMPLETED</th><th width="20%">NOT YET STARTED</th></thead>';
 					 for(var i in result){
 						var notConformed=result[i].totalAffilatedCommittees-(result[i].affilatedStartedCount+result[i].affComitteesConformed); 	
 						str1+='<tr><td width="20%">'+result[i].affilatedCommitteeName+'</td>';
@@ -452,9 +452,9 @@
 			
 				var str1='';
 						str1+='<table class="table table-condensed table-yellow-bordered" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
-							str1+='<thead><th colspan="5" style="background-color:#669934"><h4>AFFLIATED COMMITTEE</h4></th></thead>';
+							str1+='<thead><th colspan="5" style="background-color:#669934"><h4>AFFILIATED COMMITTEE</h4></th></thead>';
 							str1+='<thead><th width="20%">COMMITTEE TYPE</th><th width="20%">TOTAL</th><th width="20%">STARTED</th>';
-							str1+='<th width="20%">CONFIRMED</th><th width="20%">NOT YET STARTED</th></thead>';
+							str1+='<th width="20%">CONFIRMED/COMPLETED</th><th width="20%">NOT YET STARTED</th></thead>';
 					 for(var i in result){
 						var notConformed=result[i].totalAffilatedCommittees-(result[i].affilatedStartedCount+result[i].affComitteesConformed); 	
 						str1+='<tr><td width="20%">'+result[i].affilatedCommitteeName+'</td>';
@@ -547,6 +547,8 @@
 		var status = "";
 		if(jsObj.status == "NotStarted")
 		status = "Not Started";
+		else if(jsObj.status == "Conform")
+		status = "CONFIRMED/COMPLETED";
 		else
 		status = jsObj.status;
 		var title = '';
@@ -555,7 +557,7 @@
 		if(jsObj.levelId == 1)
 		title = "[MANDAL/TOWN/DIVISION]";
 		str+='<tr>';
-        str+='<td colspan="7" style="background-color:#669934" class="text-uppercase">'+title+' WISE <b>'+result[0].committe+' COMMITTEE <i>'+status+'</i></b> DETAILS <div class="pull-right" ><i class="glyphicon glyphicon-remove" id="closeMemberId" onclick="removeDiv();"></i></div></td>';
+        str+='<td colspan="7" style="background-color:#669934" class="text-uppercase">'+title+' WISE <b>'+result[0].committe+' COMMITTEE <i style="color:#EF4036;">'+status+'</i></b> DETAILS <div class="pull-right" ><i class="glyphicon glyphicon-remove" style="cursor:pointer;" id="closeMemberId" onclick="removeDiv();"></i></div></td>';
         str+=' </tr>';
         str+='<tr>';
         str+='<td>Location NAME</td>';
@@ -639,7 +641,7 @@
 		str+='<td>'+result[i].role+'';
 		if(result[i].status != "Y")
 			{
-		str+='<div class="pull-right" ><i class="glyphicon glyphicon-remove" onclick="deleteCadreRole(\''+result[i].total+'\');"></i></div>';
+		str+='<div class="pull-right" ><i style="cursor:pointer;" class="glyphicon glyphicon-trash" onclick="deleteCadreRole(\''+result[i].total+'\');"></i></div>';
 			}
 		str+='</td>';
 		str+='</tr>';//total - tdpCommitteMemberID
