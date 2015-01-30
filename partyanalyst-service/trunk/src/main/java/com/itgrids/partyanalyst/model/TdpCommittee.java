@@ -34,6 +34,8 @@ public class TdpCommittee {
 	private Constituency constituency;
 	private Date startedDate;
 	private Date completedDate;
+	private Long districtId;
+	private District district;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -153,6 +155,29 @@ public class TdpCommittee {
 	public void setCompletedDate(Date completedDate) {
 		this.completedDate = completedDate;
 	}
+
+	@Column(name = "district_id")
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "district_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public District getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(District district) {
+		this.district = district;
+	}
+	
+	
 	
 	
 }

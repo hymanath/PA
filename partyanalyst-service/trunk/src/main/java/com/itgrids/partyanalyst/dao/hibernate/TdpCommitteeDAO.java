@@ -237,4 +237,41 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 	}
 	
+	public List<Object[]> committeesCountByDistrict(List<Long> levelIds,Date startDate,Date endDate,String type,List<Long> districtIds){
+		StringBuilder str = new StringBuilder();
+
+		str.append("select count(model.tdpCommitteeId)," + // COMMITTEES COUNT
+				" model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId," + // COMMITTEE TYPE (MAIN/AFFLIATED)
+				" model.district.districtId " +// DISTRICT
+				" from TdpCommittee model where  " +
+				" model.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) " +
+				" and model.district.districtId in(:districtIds) ");
+		
+		if(type.equalsIgnoreCase("started")){
+			if(startDate != null && endDate !=null){
+				str.append(" and ( date(model.startedDate)>=:startDate and date(model.startedDate)<=:endDate) " +
+						" and model.completedDate is null ");
+			}
+		}else if(type.equalsIgnoreCase("completed")){
+			if(startDate != null && endDate !=null){
+				str.append(" and ( date(model.completedDate)>=:startDate and date(model.completedDate)<=:endDate )  ");
+			}
+		}
+		
+		str.append(" group by model.district.districtId,model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
+
+		Query query = getSession().createQuery(str.toString());
+		
+		if(levelIds != null && levelIds.size() > 0)
+		{
+			query.setParameterList("levelIds", levelIds);
+		}
+		if(startDate != null && endDate !=null ){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);	
+		}
+		query.setParameterList("districtIds", districtIds);
+		
+		return query.list();
+	}
 }
