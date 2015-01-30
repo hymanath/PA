@@ -2454,12 +2454,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return location;
 	}*/
-	public List<CadreCommitteeMemberVO> getCommitteeMemberDetails(Long basicCommitteeTypeId,Long locationId,Long levelId)
+	public List<CadreCommitteeMemberVO> getCommitteeMemberDetails(Long basicCommitteeTypeId,Long locationId,Long levelId,String status)
 	{
 		List<CadreCommitteeMemberVO> resultList = new ArrayList<CadreCommitteeMemberVO>();
 		List<Long> levelIds = new ArrayList<Long>();
 		try{
-			List<Object[]> membersList = tdpCommitteeMemberDAO.getComitteeMembersInfoByCommiteTypeAndLocation(levelId,locationId,basicCommitteeTypeId);
+			List<Object[]> membersList = tdpCommitteeMemberDAO.getComitteeMembersInfoByCommiteTypeAndLocation(levelId,locationId,basicCommitteeTypeId,status);
 			if(membersList != null && membersList.size() > 0)
 			{
 				String locationName = getLocationName(levelId,locationId);
