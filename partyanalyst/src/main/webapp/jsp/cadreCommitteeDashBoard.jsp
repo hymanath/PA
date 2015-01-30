@@ -107,20 +107,7 @@
 								
 								<td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div3"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
                               <li><a><div id="div4"></div></a>
-                                    <ul class="list-group dropdown-menu arrow_box">
-										  <li class="list-group-item">
-											<span class="badge">14</span>
-											Cras justo odio
-										  </li>
-										  <li class="list-group-item">
-											<span class="badge">2</span>
-											Dapibus ac facilisis in
-										  </li>
-										  <li class="list-group-item">
-											<span class="badge">1</span>
-											Morbi leo risus
-										  </li>
-									</ul>
+                                  
 									
 									
 								</li></td></tr></table></td>
@@ -130,32 +117,7 @@
 								<ul class="nav navbar-nav">
                               <li>
 								<a><div id="div6"></div></a>
-                                <ul class="dropdown-menu arrow_box list-group">
-                                <div class="panel panel-default m_bottom0">
-                                <div class="panel-heading m_top0">COMMITTEE TYPE<span class="pull-right">TOTAL</span></div></div>
-                                  <li class="list-group m_bottom0"><a>TELUGU RYTHU COMMITTEE<span class="pull-right">10</span></a></li>
-                                  <li class="list-group m_bottom0"><a>SC CELL COMMITTEE<span class="pull-right">10</span></a></li>
-                                  <li class="list-group m_bottom0"><a>BC CELL COMMITTEE<span class="pull-right">10</span></a>
-                                    <ul class="list-group dropdown-menu-border">
-										  <li class="list-group-item">
-											<span class="badge">14</span>
-											Cras justo odio
-										  </li>
-										  <li class="list-group-item">
-											<span class="badge">2</span>
-											Dapibus ac facilisis in
-										  </li>
-										  <li class="list-group-item">
-											<span class="badge">1</span>
-											Morbi leo risus
-										  </li>
-									</ul>	
-                                  </li>
-                                  <li class="list-group m_bottom0"><a>TELUGU MAHILA COMMITTEE<span class="pull-right">10</span></a></li>                                 
-                                  <li><a>TELUGU YUVATHA COMMITTEE<span class="pull-right">10</span></a></li>
-                                </ul>
-                              </li>
-                            </ul></h4></td>
+                              </h4></td>
 								<td style="padding:10px;" width="28%">TOTAL<br/> <b>MEMBERS</b><h4 class="m_top0"><div id="div7"></div></h4></td>
 							<div id="apMandalDiv"></div>
 							</tr>
@@ -185,52 +147,14 @@
 							   <ul class="nav navbar-nav">
 								<li>
 									<a><div id="div11"></div></a>
-                                    <ul class="list-group dropdown-menu arrow_box">
-										  <li class="list-group-item">
-											<span class="badge">14</span>
-											Cras justo odio
-										  </li>
-										  <li class="list-group-item">
-											<span class="badge">2</span>
-											Dapibus ac facilisis in
-										  </li>
-										  <li class="list-group-item">
-											<span class="badge">1</span>
-											Morbi leo risus
-										  </li>
-									</ul>
+                                   
 								</li>	
 									
 									</td></tr></table></td>
 								<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started</span><br/><h4 class="m_top0"><div id="div12"></div></h4></td> 
 								<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
                               <li><a><div id="div13"></div></a>
-                                <ul class="dropdown-menu arrow_box list-group" style="width:1200px !important">
-                                <div class="panel panel-default m_bottom0">
-                                <div class="panel-heading">COMMITTEE TYPE<span class="pull-right">TOTAL</span></div></div>
-                                  <li class="list-group m_bottom0"><a>TELUGU RYTHU COMMITTEE<span class="pull-right">10</span></a></li>
-                                  <li class="list-group m_bottom0"><a>SC CELL COMMITTEE<span class="pull-right">10</span></a></li>
-                                  <li class="list-group m_bottom0"><a>BC CELL COMMITTEE<span class="pull-right">10</span></a>
-                                    <ul class="list-group dropdown-menu-border">
-										  <li class="list-group-item">
-											<span class="badge">14</span>
-											Cras justo odio
-										  </li>
-										  <li class="list-group-item">
-											<span class="badge">2</span>
-											Dapibus ac facilisis in
-										  </li>
-										  <li class="list-group-item">
-											<span class="badge">1</span>
-											Morbi leo risus
-										  </li>
-									</ul>
-                                  </li>
-                                  <li class="list-group m_bottom0"><a>TELUGU MAHILA COMMITTEE<span class="pull-right">10</span></a></li>                                 
-                                  <li><a>TELUGU YUVATHA COMMITTEE<span class="pull-right">10</span></a></li>
-                                </ul>
-                              </li>
-                            </ul></h4></td>
+                               </h4></td>
 								<td style="padding:10px;" width="28%">TOTAL <br/><b>MEMBERS</b><h4 class="m_top0"><div id="div14"></div></h4></td>
 								<div id="apVillageDiv"></div>
 							</tr>
@@ -284,52 +208,14 @@
 								</td>
 						   <td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div17"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
                               <li><a><div id="div18"></div></a>
-                                   <ul class="list-group dropdown-menu arrow_box">
-										  <li class="list-group-item">
-											<span class="badge">14</span>
-											Cras justo odio
-										  </li>
-										  <li class="list-group-item">
-											<span class="badge">2</span>
-											Dapibus ac facilisis in
-										  </li>
-										  <li class="list-group-item">
-											<span class="badge">1</span>
-											Morbi leo risus
-										  </li>
-									</ul>
-									
+                                 
 									
 								</li></td></tr></table></td>
 							<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started</span><br/><h4 class="m_top0"><div id="div19"></div></h4></td>
 							<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
                               <li><a><div id="div20"></div></a>
-                                <ul class="dropdown-menu arrow_box list-group" style="width:1200px !important">
-                                <div class="panel panel-default m_bottom0">
-                                <div class="panel-heading">COMMITTEE TYPE<span class="pull-right">TOTAL</span></div></div>
-                                  <li class="list-group m_bottom0"><a>TELUGU RYTHU COMMITTEE<span class="pull-right">10</span></a></li>
-                                  <li class="list-group m_bottom0"><a>SC CELL COMMITTEE<span class="pull-right">10</span></a></li>
-                                  <li class="list-group m_bottom0"><a>BC CELL COMMITTEE<span class="pull-right">10</span></a>
-                                    <ul class="list-group dropdown-menu-border">
-										  <li class="list-group-item">
-											<span class="badge">14</span>
-											Cras justo odio
-										  </li>
-										  <li class="list-group-item">
-											<span class="badge">2</span>
-											Dapibus ac facilisis in
-										  </li>
-										  <li class="list-group-item">
-											<span class="badge">1</span>
-											Morbi leo risus
-										  </li>
-									</ul>
-                                  </li>
-                                  <li class="list-group m_bottom0"><a>TELUGU MAHILA COMMITTEE<span class="pull-right">10</span></a></li>                                 
-                                  <li><a>TELUGU YUVATHA COMMITTEE<span class="pull-right">10</span></a></li>
-                                </ul>
-                              </li>
-                            </ul></h4></td>
+                               
+                                </h4></td>
 							<td style="padding:10px;" width="28%">TOTAL<br/> <b>MEMBERS</b><h4 class="m_top0"><div id="div21"></div></h4></td>
 							<div id="tsMandalDiv"></div>
 						</tr>
@@ -360,58 +246,13 @@
 						   <ul class="nav navbar-nav">
                               <li><a><div id="div25"></div></a>
                                    
-									<ul class="list-group dropdown-menu arrow_box">
-										  <li class="list-group-item">
-											<span class="badge">14</span>
-											Cras justo odio
-										  </li>
-										  <li class="list-group-item">
-											<span class="badge">2</span>
-											Dapibus ac facilisis in
-										  </li>
-										  <li class="list-group-item">
-											<span class="badge">1</span>
-											Morbi leo risus
-										  </li>
-									</ul>
 									
 								</li>
 									</td></tr></table></td>
 							<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started</span><br/><h4 class="m_top0"><div id="div26"></div></h4></td>
 							<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
                               <li><a><div id="div27"></div></a>
-                                <ul class="dropdown-menu arrow_box list-group" style="width:1200px !important">
-                                <div class="panel panel-default m_bottom0">
-                                <div class="panel-heading">COMMITTEE TYPE<span class="pull-right">TOTAL</span></div></div>
-                                  <li class="list-group m_bottom0"><a>TELUGU RYTHU COMMITTEE<span class="pull-right">10</span></a></li>
-                                  <li class="list-group m_bottom0"><a>SC CELL COMMITTEE<span class="pull-right">10</span></a></li>
-                                  <li class="list-group m_bottom0"><a>BC CELL COMMITTEE<span class="pull-right">10</span></a>
-                                   <ul class="list-group dropdown-menu-border">
-										  <li class="list-group-item">
-											<span class="badge">14</span>
-											Cras justo odio
-										  </li>
-										  <li class="list-group-item">
-											<span class="badge">2</span>
-											Dapibus ac facilisis in
-										  </li>
-										  <li class="list-group-item">
-											<span class="badge">1</span>
-											Morbi leo risus
-										  </li>
-									</ul>
-                                  </li>
-                                  <li class="list-group m_bottom0"><a>TELUGU MAHILA COMMITTEE<span class="pull-right">10</span></a></li>                                 
-                                  <li><a>TELUGU YUVATHA COMMITTEE<span class="pull-right">10</span></a></li>
-                                  <li><a>TELUGU YUVATHA COMMITTEE<span class="pull-right">10</span></a></li>
-                                  <li><a>TELUGU YUVATHA COMMITTEE<span class="pull-right">10</span></a></li>
-                                  <li><a>TELUGU YUVATHA COMMITTEE<span class="pull-right">10</span></a></li><li><a>TELUGU YUVATHA COMMITTEE<span class="pull-right">10</span></a></li>
-                                  <li><a>TELUGU YUVATHA COMMITTEE<span class="pull-right">10</span></a></li>
-                                  <li><a>TELUGU YUVATHA COMMITTEE<span class="pull-right">10</span></a></li>
-                                  
-                                </ul>
-                              </li>
-                            </ul></h4></td>
+                             </h4></td>
 							<td style="padding:10px;" width="28%">TOTAL<br/> <b>MEMBERS</b><h4 class="m_top0"><div id="div28"></div></h4></td> 
 							<div id="tsVillageDiv"></div>
 						</tr>
@@ -882,12 +723,12 @@
 				str+='<div style="" class="col-md-6 col-xs-3 text-left"><small>TOTAL MAIN COMMITTEES</small></div>';
 				
 				if(state == "AP"){	
-					str+='<div class="myStatAP" data-dimension="180" data-text="'+result.totalCntPerc+'%" data-info="COMPLETED" data-width="10" data-fontsize="34" data-percent="35" data-fgcolor="#349866" data-bgcolor="#6D6024" style="margin-left: 40px;"></div>';				
+					str+='<div class="myStatAP" data-dimension="180" data-text="'+result.totalCntPerc+'%" data-info="COMPLETED" data-width="10" data-fontsize="34" data-percent="'+result.totalCntPerc+'" data-fgcolor="#349866" data-bgcolor="#6D6024" style="margin-left: 40px;"></div>';				
 					$("#totalAPCount").html(str);
 					$('.myStatAP').circliful();
 				}
 				if(state == "TS"){
-					str+='<div class="myStatTS" data-dimension="180" data-text="'+result.totalCntPerc+'%" data-info="COMPLETED" data-width="10" data-fontsize="34" data-percent="35" data-fgcolor="#349866" data-bgcolor="#6D6024" style="margin-left: 40px;"></div>';
+					str+='<div class="myStatTS" data-dimension="180" data-text="'+result.totalCntPerc+'%" data-info="COMPLETED" data-width="10" data-fontsize="34" data-percent="'+result.totalCntPerc+'" data-fgcolor="#349866" data-bgcolor="#6D6024" style="margin-left: 40px;"></div>';
 					$("#totalTSCount").html(str);
 					$('.myStatTS').circliful();					
 				}
