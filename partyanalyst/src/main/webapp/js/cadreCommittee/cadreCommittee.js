@@ -124,10 +124,11 @@
 		$('#searchLevelErrDiv,#committeePositionIdErr,#nonAfflitCommitteeIdErr').html('');
 		$("#cadreDetailsDiv").hide();
 		var searchBy = $('#searchBy').val().trim();
-		var searchRadioType = $('#cadreSearchType').val();		
+		var searchRadioType = $('#cadreSearchType').val();
 		var committeTypeID = $('#committeeMngtType').val();
 		var committeePosition = $('#committeePositionId').val();
 		$("#step3Id").hide();
+		
 		if(committeTypeID ==3)
 		{
 			var afiliatedCommitteeId = $("#nonafiliatedCommitteeId").val();
@@ -137,6 +138,7 @@
 				return;
 			}			
 		}
+		
 		if(committeTypeID ==1)
 		{
 			if(committeeLocationId == null || committeeLocationId == 0)
@@ -201,7 +203,7 @@
 		
 
 		if(searchRadioType == 'mobileNo' || searchRadioType == 'voterId' || searchRadioType == 'membershipId')
-		{		
+		{				
 				if(committeTypeID != 1 )
 				{
 					 locationLevel = 4;
@@ -310,19 +312,32 @@
 			}
 		}
 		if(searchRadioType == 'mobileNo')
-		{
+		{	
 			mobileNo = $('#searchBy').val().trim();
+			
+			if(searchRadioType=="mobileNo"){
+					var letters = /^[A-Za-z]+$/;   
+				  if($('#searchBy').val().match(letters))  
+				  {  
+					$('#searchErrDiv').html('Enter Numerics Only.');
+					return;  
+				  }  
+			}	
 			
 			if(searchBy.trim().length == 0 )
 			{
 				$('#searchErrDiv').html('Please enter Mobile No.');
 				return;
 			}
+			
 			else if(mobileNo.trim().length != 10)
 			{
 				$('#searchErrDiv').html('Invalid Mobile No.');
 				return;				
 			}
+			
+			
+			
 		}
 		if(searchRadioType == 'name')
 		{
@@ -998,7 +1013,8 @@
 	{
 		 var where_to= confirm("Do you want to remove this information?");
 		 if (where_to== true)
-			 $('#'+divId+'').html('');		
+			 //$('#'+divId+'').html('');		
+			 $('#'+divId+'').remove();		
 	}
 	
 	function validateEmail($email) {
@@ -1054,11 +1070,13 @@
 	}
 	
 	function addAsElectrole(cadreId,btnId,addmoreId,resultDiv)
-	{
+	{	
 		var designationArr = new Array();
 		var fromDatArr = new Array();
 		var toDatArr = new Array();
 		var isError = "";
+		var fromdateidarr= new Array();
+		var todateidarr=new Array();
 		$('.validErrCls').html('');
 		$('#'+resultDiv+'').html('');
 			$('#'+resultDiv+'').hide();
@@ -1085,9 +1103,10 @@
 				isError = "true";
 				return;
 			}
+			fromdateidarr.push(id);
 			fromDatArr.push(fromdateId);
 		});
-		
+	
 		$('.toDateCls'+cadreId+'').each(function(){
 			var id= $(this).attr('id');
 			var todateId = $('#'+id+'').val();
@@ -1096,12 +1115,27 @@
 				$('#'+id+'Err').html('To Date is required.');
 				isError = "true";
 				return;
-			}			
+			}	
+			todateidarr.push(id);
 			toDatArr.push(todateId);
+			
 		});
+		var flag="false";
+		for(var i=0;i<todateidarr.length;i++){
+				
+				var fromdate = $('#'+fromdateidarr[i]+'').val();
+				var todate = $('#'+todateidarr[i]+'').val();
+				if($('#'+fromdateidarr[i]+'').val()>$('#'+todateidarr[i]+'').val()){
+					$('#'+fromdateidarr[i]+'Err').html('Fromdate should be lessthan Todate.');
+					flag="true";
+				}
+			}
+			if(flag=="true"){
+				return;
+			}
 		
 		if(isError.trim().length == 0)
-		{
+		{	
 				$('.'+btnId+'').hide();
 				$('.'+addmoreId+'').hide();
 				var jsObj = 
