@@ -23,6 +23,19 @@
 		 font-weight:bold;
 		 color:red;
 	   }
+	   .table-bordered > thead > tr > th,
+	.table-bordered > tbody > tr > th,
+	.table-bordered > tfoot > tr > th,
+	.table-bordered > thead > tr > td,
+	.table-bordered > tbody > tr > td,
+	.table-bordered > tfoot > tr > td {	border: 1px solid #C2A932;}
+	
+.table-yellow-bordered > thead > tr > th,
+	.table-yellow-bordered > tbody > tr > th,
+	.table-yellow-bordered > tfoot > tr > th,
+	.table-yellow-bordered > thead > tr > td,
+	.table-yellow-bordered > tbody > tr > td,
+	.table-yellow-bordered > tfoot > tr > td {	border: 1px solid #ebd621;}
 	</style>
 </head>
 
@@ -39,7 +52,6 @@
 				  <li><a tabindex="-1" href="cadreCommitteeAction.action">Home</a></li>
 				  <li><a tabindex="-1" href="cadreCommitteeSummaryAction.action">Summary Report</a></li>
 				  <li><a tabindex="-1" href="cadreCommitteeRequestAction.action">Request For Positions Increase</a></li>
-				  <li><a tabindex="-1" href="committeeDashBoardAction.action">Committee DashBoard</a></li>
 				  <li role="presentation" class="divider" style="background-color: rgba(229, 229, 229,0.6);"></li>
 				  <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
 				</ul>
@@ -55,10 +67,10 @@
             </div>
             <!-- First Block Start-->
            <div class="row">
-           		<div class="col-md-offset-2 col-md-10">
-						<label class="radio-inline"><input type="radio" name="requestType" value="1" id="reqIncPosId" checked="true" onClick="hideDetails('1')"/>Request for committee member new position</label>
-                      <!--  <label class="radio-inline"><input type="radio" name="requestType" value="2" id="reqChangeDesgId" onClick="hideDetails('2')"/>Request for committee members change position</label>-->
-						<label class="radio-inline"><input type="radio" name="requestType" value="3" id="viewRequestId" onClick="hideDetails('3')" />View Request Status</label> 
+           		<div style="border-bottom: 1px solid rgb(255, 255, 255); padding: 10px;"class="col-md-offset-1 text-center col-md-10">
+					<label id="incId" class="radio-inline" style="padding: 10px 10px 10px 30px; background: none repeat scroll 0% 0% rgb(255, 153, 102); margin-left: -3px;"><input type="radio" name="requestType" value="1" id="reqIncPosId" checked="true" onClick="hideDetails('1')"/>Request for committee member new position</label>
+                    <label id="desgId" class="radio-inline"  style="padding: 10px 10px 10px 30px; background: none repeat scroll 0% 0% rgb(255, 153, 102); margin-left: -3px;"><input type="radio" name="requestType" value="2" id="reqChangeDesgId" onClick="hideDetails('2')"/>Request for committee members change position</label>
+					<label id="viewId" class="radio-inline"  style="padding: 10px 10px 10px 30px; background: none repeat scroll 0% 0% rgb(255, 153, 102); margin-left: -3px;"><input type="radio" name="requestType" value="3" id="viewRequestId" onClick="hideDetails('3')" />View Request Status</label> 
                 </div>
             </div>
 			
@@ -74,14 +86,15 @@
 			    </div>
 			</div> 
 	  </div>
+	     
 		   <!-- locations,commitees,designations drop down boxes list -->
            <div class="row m_top20" id="committeesId">
-                  <div class="col-md-3">Select location<br/>
+                  <div class="col-md-3" id="selLocId">Select location<br/>
                 	<select id="committeeLocationId" class="form-control" onchange="populateDefaultValue(1);"><option value="0">Select Location</option></select>
                     <div id="committeeLocationIdErr"></div>
 				  </div>
 				
-                  <div class="col-md-3">Committee Type<br/>
+                  <div class="col-md-3" id="selCommId">Committee Type<br/>
                     <select id="committeeTypeId" class="form-control" onchange="getAffiliatedCommitsForALoc();populateDefaultValue(2);getCommitteCadreMembersInfo(1)"><option  value="0">Select Committee Type</option><option value="1">Main Committee</option><option value="2">Affiliated Committee</option></select>
                     <div id="committeeTypeIdErr"></div>
 				  </div>
@@ -109,10 +122,14 @@
             </div>
 			
 			 <div class="row m_top20" id="changeDesgId">
+			   <div class="row" id="desgReqTableDiv"></div>
+			   <div class="row" id="desgReqDiv"></div>
              </div>
+			 <div class="row m_top20" id="changeDesgnationsErrId">
+			 
+			 </div>
 			 <div class="row" id="resultStatusId">
-            	
-           </div>
+             </div>
 
 
 
