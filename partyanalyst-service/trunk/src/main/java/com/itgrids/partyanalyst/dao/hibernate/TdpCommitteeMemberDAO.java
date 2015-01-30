@@ -120,7 +120,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 	public List<Object[]> getMembersInfoForRequest(Set<Long> committeeRoleIds){
 		//0 role,1 image,2name,3membership
 		Query query = getSession().createQuery("select model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.image,model.tdpCadre.firstname,model.tdpCadre.memberShipNo," +
-				" model.tdpCadre.tdpCadreId, model.tdpCommitteeRole.tdpCommitteeRoleId " +
+				" model.tdpCadre.tdpCadreId, model.tdpCommitteeRole.tdpCommitteeRoleId,model.tdpCommitteeMemberId " +
 				" from TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommitteeRoleId in(:committeeRoleIds) order by model.tdpCommitteeRole.tdpRoles.order ");
 		query.setParameterList("committeeRoleIds", committeeRoleIds);
 		
@@ -352,5 +352,13 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		Query query = getSession().createQuery("select count(model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId) from  TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId =:tdpCommitteeId and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'N' and model.isActive = 'Y' ");
 		query.setParameter("tdpCommitteeId", tdpCommitteeId);
 		return (Long) query.uniqueResult();	
+	}
+	public List<Object[]> getCommitteeDetails(Long committeeId){
+		Query query = getSession().createQuery("select model.tdpCadreId,model.tdpCommitteeRole.tdpCommitteeRoleId " +
+				" from TdpCommitteeMember model " + 
+				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId=:committeeId ");
+		query.setParameter("committeeId", committeeId);
+		return query.list();
+		
 	}
 }
