@@ -622,15 +622,15 @@
 						$("#div1").html(result.committeesCount);
 						
 						$("#div29").html(result.startedCommitteePerc+"%");
-						$("#div2").html(result.mainCommittees);						
+						$("#div2").html('['+result.mainCommittees+']');						
 						
 						$("#div3").html(result.completedCommitteePerc+"%");
 						$("#div4").html(result.completedCommittees);
 						
 						//$("#div30").html(result.afflCommitteesPerc);
-						$("#div5").html(result.afflCommittees);
+						$("#div5").html('['+result.afflCommittees+']');
 						
-						$("#div6").html(result.affliatedCompleted);
+						$("#div6").html('['+result.affliatedCompleted+']');
 						//$("#div31").html(result.affliatedCompletedPerc);
 												
 						$("#div7").html(result.membersCount);
@@ -641,15 +641,15 @@
 						$("#div8").html(result.committeesCount);
 						
 						$("#div32").html(result.startedCommitteePerc+"%");
-						$("#div9").html(result.mainCommittees);						
+						$("#div9").html('['+result.mainCommittees+']');						
 						
 						$("#div10").html(result.completedCommitteePerc+"%");
 						$("#div11").html(result.completedCommittees);
 						
 						//$("#div33").html(result.afflCommitteesPerc);
-						$("#div12").html(result.afflCommittees);
+						$("#div12").html('['+result.afflCommittees+']');
 						
-						$("#div13").html(result.affliatedCompleted);
+						$("#div13").html('['+result.affliatedCompleted+']');
 						//$("#div34").html(result.affliatedCompletedPerc);
 												
 						$("#div14").html(result.membersCount);
@@ -663,16 +663,16 @@
 						$("#div15").html(result.committeesCount);
 						
 						$("#div35").html(result.startedCommitteePerc+"%");
-						$("#div16").html(result.mainCommittees);						
+						$("#div16").html('['+result.mainCommittees+']');						
 						
 						$("#div17").html(result.completedCommitteePerc+"%");
 						$("#div18").html(result.completedCommittees);
 						
 						//$("#div36").html(result.afflCommitteesPerc);
-						$("#div19").html(result.afflCommittees);
+						$("#div19").html('['+result.afflCommittees+']');
 						
 						//$("#div37").html(result.affliatedCompletedPerc);
-						$("#div20").html(result.affliatedCompleted);
+						$("#div20").html('['+result.affliatedCompleted+']');
 						
 												
 						$("#div21").html(result.membersCount);
@@ -686,16 +686,16 @@
 						$("#div22").html(result.committeesCount);
 						
 						$("#div38").html(result.startedCommitteePerc+"%");
-						$("#div23").html(result.mainCommittees);						
+						$("#div23").html('['+result.mainCommittees+']');						
 						
 						$("#div24").html(result.completedCommitteePerc+"%");
 						$("#div25").html(result.completedCommittees);
 						
 						//$("#div39").html(result.afflCommitteesPerc);
-						$("#div26").html(result.afflCommittees);
+						$("#div26").html('['+result.afflCommittees+']');
 						
 						//$("#div40").html(result.affliatedCompletedPerc);
-						$("#div27").html(result.affliatedCompleted);
+						$("#div27").html('['+result.affliatedCompleted+']');
 																	
 						$("#div28").html(result.membersCount);	
 					}
