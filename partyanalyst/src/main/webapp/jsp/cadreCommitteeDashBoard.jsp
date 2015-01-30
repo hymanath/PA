@@ -629,7 +629,7 @@
 						
 						$("#div3").html(result.completedCommitteePerc+"%");
 						//$("#div4").html(result.completedCommittees);
-						$("#div4").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\')">['+result.completedCommittees+']</a>');
+						$("#div4").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
 					
 						//$("#div30").html(result.afflCommitteesPerc);
 						$("#div5").html(result.afflCommittees);
@@ -651,7 +651,7 @@
 						
 						$("#div10").html(result.completedCommitteePerc+"%");
 						//$("#div11").html(result.completedCommittees);
-						$("#div11").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\')">['+result.completedCommittees+']</a>');
+						$("#div11").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
 					
 						//$("#div33").html(result.afflCommitteesPerc);
 						$("#div12").html(result.afflCommittees);
@@ -677,7 +677,7 @@
 						
 						$("#div17").html(result.completedCommitteePerc+"%");
 						//$("#div18").html(result.completedCommittees);
-						$("#div18").html('<a id=\''+level+'IdTS\' class="btn" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\')">['+result.completedCommittees+']</a>');
+						$("#div18").html('<a id=\''+level+'IdTS\' class="btn" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
 	
 						//$("#div36").html(result.afflCommitteesPerc);
 						$("#div19").html(result.afflCommittees);
@@ -701,7 +701,7 @@
 						
 						$("#div24").html(result.completedCommitteePerc+"%");
 						
-						$("#div25").html('<a id=\''+level+'IdTS\' class="btn" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\')">['+result.completedCommittees+']</a>');
+						$("#div25").html('<a id=\''+level+'IdTS\' class="btn" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
 						//$("#div25").html(result.completedCommittees);
 						
 						//$("#div39").html(result.afflCommitteesPerc);
@@ -750,7 +750,10 @@
 	}
 	
 		
-	function getMainCommitteeMembersCount(state,level,type){
+	function getMainCommitteeMembersCount(state,level,type,committeeId){
+		
+		var startDate=$(".dp_startDate").val();
+		var endDate=$(".dp_endDate").val();
 		
 		var levelIdsArr = new Array();
 		var state = state; 
@@ -782,8 +785,10 @@
 		var state = state; 
 		var jObj = {
 			state:state,
-			type:type,
 			levelIdsArr:levelIdsArr,
+			startDate  :startDate,
+			endDate    :endDate,
+			committeeId:committeeId,
 			task:"mainCommitteeMemberCnt",
 		}
 				
@@ -821,69 +826,8 @@
 	
 	function getAflCommitteeCount(state,level){
 		
-		var levelIdsArr = new Array();
-		var state = state; 
-		if(level == 'mandal')
-		{
-		   levelIdsArr.push(5);
-		}else if(level == 'town')
-		{
-		   levelIdsArr.push(7);
-		}else if(level == 'division')
-		{
-		   levelIdsArr.push(9);
-		}else if(level == 'village')
-		{
-		   levelIdsArr.push(6);
-		}else if(level == 'ward')
-		{
-		   levelIdsArr.push(8);
-		}else if(level == 'mandalAll')
-		{
-		    levelIdsArr.push(5);
-			levelIdsArr.push(7);
-			levelIdsArr.push(9);
-		}else if(level == 'villageAll')
-		{
-		    levelIdsArr.push(6);
-			levelIdsArr.push(8);
-		}
-		var state = state; 
-		var jObj = {
-			state:state,
-			levelIdsArr:levelIdsArr,
-			task:"mainCommitteeMemberCnt",
-		}
-				
-		$.ajax({
-          type:'GET',
-          url: 'getStartedAffliCommitteesCountByLocation.action',
-		  data : {task:JSON.stringify(jObj)} ,
-        }).done(function(result){
-		console.log(result);
-				
-					var str1='';
-					str1+='<ul style="padding-left:0px; width:272px;margin-left:-14px;">';	
-					//str1+='<ul class="dropdown-menu arrow_box list-group"><div class="panel panel-default m_bottom0"><div class="panel-heading m_top0">COMMITTEE TYPE<span class="pull-right">TOTAL</span></div></div>';
-					for(var i in result){  
-					str1+='<li class=""><a onClick="getAfflCommitteeMembersCount(\''+state+'\',\''+level+'\',\'affl\',\''+result[i].id+'\')" id="\''+level+'IdAffl'+state+'">'+result[i].name+'<span class="pull-right">'+result[i].afflCommittees+'</span></a></li></li>';
-					} 
-					str1+='</ul>';
-					$('#'+level+'Id'+state+'Affl').popover({
-						html: true,
-						placement: "bottom",
-						title: '',
-						content: str1
-								
-					});
-						
-					$('#'+level+'Id'+state+'Affl').addClass("clearCls");
-					$('#'+level+'Id'+state+'Affl').popover("show");
-			
-					
-		});
-	}
-	function getAfflCommitteeMembersCount(state,level,type,committeeId){
+		var startDate=$(".dp_startDate").val();
+		var endDate=$(".dp_endDate").val();
 		
 		var levelIdsArr = new Array();
 		var state = state; 
@@ -915,43 +859,40 @@
 		var state = state; 
 		var jObj = {
 			state:state,
-			type:type,
 			levelIdsArr:levelIdsArr,
-			committeeId:committeeId,
-			task:"afflCommitteeMemberCnt",
+			startDate  :startDate,
+			endDate    :endDate,
+			task:"mainCommitteeMemberCnt",
 		}
 				
 		$.ajax({
           type:'GET',
-          url: 'getMembersRangeCountByLocationAction.action',
+          url: 'getStartedAffliCommitteesCountByLocation.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
 		console.log(result);
-			if(result != null && result.length > 0){
-					var str='';
-					str+='<ul style="padding-left:0px; width:272px;margin-left:-14px;">';					
-						for(var i in result){
-							str+='<li class="list-group-item "><span class="badge">'+result[i].membersCount+'</span>1 MEMBER COMMITTEE</li>';
-							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount1+'</span>2-4 MEMBER COMMITTEES</li>';
-							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount2+'</span>5-7 MEMBER COMMITTEES</li>';
-							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount3+'</span>ABOVE 7 MEMBER COMMITTEES</li>';
-						}
-					str+='</ul>';
-					$('#'+level+'IdAffl'+state+'').popover({
+				
+					var str1='';
+					str1+='<ul style="padding-left:0px; width:272px;margin-left:-14px;">';	
+					//str1+='<ul class="dropdown-menu arrow_box list-group"><div class="panel panel-default m_bottom0"><div class="panel-heading m_top0">COMMITTEE TYPE<span class="pull-right">TOTAL</span></div></div>';
+					for(var i in result){  
+					str1+='<li class=""><a onClick="getAfflCommitteeMembersCount(\''+state+'\',\''+level+'\',\'affl\',\''+result[i].id+'\')" id="\''+level+'IdAffl'+state+'">'+result[i].name+'<span class="pull-right">'+result[i].afflCommittees+'</span></a></li></li>';
+					} 
+					str1+='</ul>';
+					$('#'+level+'Id'+state+'Affl').popover({
 						html: true,
 						placement: "bottom",
 						title: '',
-						content: str
+						content: str1
 								
 					});
 						
-					$('#'+level+'IdAffl'+state+'').addClass("clearCls");
-					$('#'+level+'IdAffl'+state+'').popover("show");
-			}
+					$('#'+level+'Id'+state+'Affl').addClass("clearCls");
+					$('#'+level+'Id'+state+'Affl').popover("show");
+			
 					
 		});
 	}
-	
 	
 	$('body').on('click', function (e) {
 		$('.clearCls').each(function () {
