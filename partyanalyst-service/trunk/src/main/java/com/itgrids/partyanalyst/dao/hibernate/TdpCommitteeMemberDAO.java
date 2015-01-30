@@ -153,10 +153,10 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId in(:levelIds)  and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue in(:locationVals)" +
 				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId = :committeeTypeId and model.isActive = 'Y'");
 		if(status.equalsIgnoreCase("Conform"))
-		str.append(" and ((model.tdpCommitteeRole.tdpCommittee.startedDate is not null and model.tdpCommitteeRole.tdpCommittee.startedDate != '') and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'Y') ");
+		str.append(" and model.tdpCommitteeRole.tdpCommittee.startedDate is not null and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'Y' and model.tdpCommitteeRole.tdpCommittee.completedDate is not null ");
 		else if(status.equalsIgnoreCase("Started"))
-		str.append(" and ((model.tdpCommitteeRole.tdpCommittee.startedDate is not null and model.tdpCommitteeRole.tdpCommittee.startedDate != '') and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'N') ");
-		str.append("group by model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId,model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue");
+		str.append(" and model.tdpCommitteeRole.tdpCommittee.startedDate is not null  and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'N' and model.tdpCommitteeRole.tdpCommittee.completedDate is null ");
+		str.append(" group by model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId,model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameterList("levelIds", levelIds);
 		query.setParameterList("locationVals", locationVals);
