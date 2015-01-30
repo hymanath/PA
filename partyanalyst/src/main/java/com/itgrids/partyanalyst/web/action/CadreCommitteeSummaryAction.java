@@ -88,7 +88,7 @@ public class CadreCommitteeSummaryAction extends ActionSupport implements Servle
 			if(jObj.getString("task").equalsIgnoreCase("memberCnt"))
 			cadreCommitteeMemberVOList = cadreCommitteeService.getCommitteeDetailsByStatus(jObj.getLong("basicCommitteetypeId"),jObj.getString("status"),jObj.getLong("levelId"),user.getAccessValue());
 			else if(jObj.getString("task").equalsIgnoreCase("memberInfo"))
-				cadreCommitteeMemberVOList = cadreCommitteeService.getCommitteeMemberDetails(jObj.getLong("basicCommitteetypeId"),jObj.getLong("locationId"),jObj.getLong("levelId"));
+				cadreCommitteeMemberVOList = cadreCommitteeService.getCommitteeMemberDetails(jObj.getLong("basicCommitteetypeId"),jObj.getLong("locationId"),jObj.getLong("levelId"),jObj.getString("status"));
 			else if(jObj.getString("task").equalsIgnoreCase("committeComplete"))
 				cadreCommitteeMemberVOList = cadreCommitteeService.setCommitteConfirmation(jObj.getLong("basicCommitteetypeId"),jObj.getLong("locationId"),jObj.getLong("levelId"));
 			}
