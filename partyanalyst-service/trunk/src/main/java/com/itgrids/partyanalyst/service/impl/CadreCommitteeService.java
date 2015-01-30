@@ -1892,10 +1892,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 
 
 	//--cadreCommitteeRequest-
-			public LocationWiseBoothDetailsVO getMainCommitteeMembersInfoRequest(Long levelId,Long levelValue,Long designation){
+			public LocationWiseBoothDetailsVO getMainCommitteeMembersInfoRequest(Long levelId,Long levelValue){
 				Long committeeId = getMainCommitteeIdInALocationRequest(levelId,levelValue);
 				if(committeeId != null){
-					return getCommitteeMembersInfoRequest(committeeId,designation);
+					return getCommitteeMembersInfoRequest(committeeId);
 				}else{
 					return new LocationWiseBoothDetailsVO();
 				}
@@ -1912,10 +1912,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				}
 				return committeeId;
 			}
-			public LocationWiseBoothDetailsVO getCommitteeMembersInfoRequest(Long committeeId,Long designation){
+			public LocationWiseBoothDetailsVO getCommitteeMembersInfoRequest(Long committeeId){
 				LocationWiseBoothDetailsVO returnVo=null;
 			try{
-				 String confirmedCommittee=tdpCommitteeRoleDAO.gettingConfirmedCommittee(committeeId, designation);
+				 String confirmedCommittee=tdpCommitteeDAO.gettingConfirmedCommittee(committeeId);
 				
 					returnVo = new LocationWiseBoothDetailsVO();
 					returnVo.setElectionYear(confirmedCommittee);
@@ -1962,7 +1962,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 								   memberVo.setUrl(electedMembersInfo[1].toString());//image
 								}
 								memberVo.setName(electedMembersInfo[2].toString());//name
-								memberVo.setOrderId((Long)electedMembersInfo[4]);//commiteememeberid
+								memberVo.setMainAccountId((Long)electedMembersInfo[4]);//tdpCadreId
+								memberVo.setOrderId((Long)electedMembersInfo[6]);//commiteememeberid
 								memberVo.setType(electedMembersInfo[3].toString());//membership
 								
 								
@@ -1975,11 +1976,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				}
 				return returnVo;
 			}
-			
-			public ResultStatus cadreCommitteeIncreasedPositionsOrChangeDesignations(final Long tdpCommitteeRoleId,final Long requestUserId,final Long currentmaxPositions,final Long requestedMaxPositions,final String type,final List<LocationWiseBoothDetailsVO> changeDesignationsList)
+			boolean flagGlobal=false;
+			ResultStatus rs=null;
+			public ResultStatus cadreCommitteeIncreasedPositionsOrChangeDesignations(final Long tdpCommitteeRoleId,final Long requestUserId,final Long currentmaxPositions,final Long requestedMaxPositions,final String type,final List<LocationWiseBoothDetailsVO> changeDesignationsList,final Long committeeId )
 			{
 				
 				   ResultStatus resultStatus=new ResultStatus();
+				  
 				   try {
 					
 					   if(type.equalsIgnoreCase("positionsIncreased")){
@@ -2002,28 +2005,32 @@ public class CadreCommitteeService implements ICadreCommitteeService
 									 
 									CadreCommitteeIncreasedPositions output = cadreCommitteeIncreasedPositionsDAO.save(cadreCommitteeIncreasedPositions); 
 								    Long id = output.getCadreCommitteeIncreasedPositionsId();
-									String refNo=gettingReferenceNumber(id);
-									if(refNo!=null){
-										output.setRefNo(refNo);
-									}
+								     String refNo="REF#"+id.toString().trim();
+									output.setRefNo(refNo);
 									cadreCommitteeIncreasedPositionsDAO.save(output);
 							  }
 					       });
 						   resultStatus.setResultCode(1);
 					   }
+					  
 					   else  if(type.equalsIgnoreCase("changeDesignations")){
+						 
 						   transactionTemplate.execute(new TransactionCallbackWithoutResult() 
 					       {
 							  public void doInTransactionWithoutResult(TransactionStatus status) 
 							  {
+								  rs= gettingStatus(committeeId,changeDesignationsList);
+								  flagGlobal=rs.getIsResultPartial();
+								  if(flagGlobal==false){
+								   
 								    //inserting parent.
 								    CadreCommitteeIncreasedPositions cadreCommitteeIncreasedPositions=new CadreCommitteeIncreasedPositions();
 									
-									cadreCommitteeIncreasedPositions.setTdpCommitteeRole(tdpCommitteeRoleDAO.get(tdpCommitteeRoleId));
+									cadreCommitteeIncreasedPositions.setTdpCommitteeRole(null);
 									cadreCommitteeIncreasedPositions.setUserIdRequest(userDAO.get(requestUserId));
 									cadreCommitteeIncreasedPositions.setApprovedUser(null);
-									cadreCommitteeIncreasedPositions.setCurrentCount(currentmaxPositions);
-									cadreCommitteeIncreasedPositions.setRequestCount(requestedMaxPositions);
+									cadreCommitteeIncreasedPositions.setCurrentCount(null);
+									cadreCommitteeIncreasedPositions.setRequestCount(null);
 									cadreCommitteeIncreasedPositions.setStatus("pending");
 									cadreCommitteeIncreasedPositions.setApprovedCount(null);
 									cadreCommitteeIncreasedPositions.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
@@ -2031,6 +2038,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 									cadreCommitteeIncreasedPositions.setType(type); 
 									 
 									CadreCommitteeIncreasedPositions output=cadreCommitteeIncreasedPositionsDAO.save(cadreCommitteeIncreasedPositions);
+									  Long id = output.getCadreCommitteeIncreasedPositionsId();
+									  String refNo="REF#"+id.toString().trim();
+									  output.setRefNo(refNo);
+									  cadreCommitteeIncreasedPositionsDAO.save(output);
 									//inserting childs.
 									
 									if(changeDesignationsList!=null && changeDesignationsList.size()>0){
@@ -2041,19 +2052,21 @@ public class CadreCommitteeService implements ICadreCommitteeService
 											cadreCommitteeChangeDesignations.setCurrentRole(tdpCommitteeRoleDAO.get(locationWiseBoothDetailsVO.getPopulation()));
 											cadreCommitteeChangeDesignations.setNewRole(tdpCommitteeRoleDAO.get(locationWiseBoothDetailsVO.getVotesPolled()));
 											cadreCommitteeChangeDesignations.setCadreCommitteeIncreasedPositions(output);
-											 cadreCommitteeChangeDesignationsDAO.save(cadreCommitteeChangeDesignations);
+											cadreCommitteeChangeDesignationsDAO.save(cadreCommitteeChangeDesignations);
 										}
-										
-									}
-									
-									
-									
-									
-							  }
-					       }); 
-					  
-						   resultStatus.setResultCode(1); 
-					  
+									  }
+								   }
+	                           }//
+					        }); 
+					       if(flagGlobal==false){
+						    resultStatus.setResultCode(1); 
+						   
+					       }
+					       else{
+					    	   resultStatus.setResultCode(2); 
+					    	   resultStatus.setMessage(rs.getMessage());
+					       }
+				
 					   }
 				   } catch (Exception e){
 					   LOG.error("Exception raised in cadreCommitteeIncreasedPositionsOrChangeDesignations", e);
@@ -2061,7 +2074,79 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				   }
 				   return resultStatus;
 			}
-	
+	public ResultStatus gettingStatus(Long committeeId,List<LocationWiseBoothDetailsVO> changeDesignationsList){
+		//boolean flag=false;
+		ResultStatus rs=new ResultStatus();
+		try{
+		
+			//getting cid,roleids for a committee.
+			List<Object[]> resultList=tdpCommitteeMemberDAO.getCommitteeDetails(committeeId);
+			Map<Long,Long> resultMap=new HashMap<Long, Long>();
+			if(resultList!=null && resultList.size()>0){
+			  for (Object[] objects : resultList){
+				  resultMap.put((Long)objects[0], (Long)objects[1]);
+			  }	
+			}
+			
+			//set New Roles To Candidates From Ui.
+			if(changeDesignationsList!=null && changeDesignationsList.size()>0){
+				for(LocationWiseBoothDetailsVO param : changeDesignationsList) {
+					Long oldRoleId=resultMap.get(param.getTotal());
+					if(oldRoleId==null){
+						resultMap.put(param.getTotal(), param.getVotesPolled());
+					}
+					else
+					  resultMap.put(param.getTotal(), param.getVotesPolled());
+					
+				}
+			}
+			
+			//map for roles and its corresponding counts.
+			Map<Long,Long> rolesMap=new HashMap<Long, Long>();
+			
+			//getting newRoles and its corresponding counts.
+			 for (Map.Entry<Long, Long> entry : resultMap.entrySet())
+			 {
+					Long newRoleId=entry.getValue();
+					Long countVar=rolesMap.get(newRoleId);
+					if(countVar==null){
+						rolesMap.put(newRoleId, 1l);
+					}
+					else{
+						countVar=countVar+1l;
+						rolesMap.put(newRoleId, countVar);
+					}
+			 }
+			 
+			 //getting a role and its maxCount from db for a committee.
+			List<Object[]> maxCountList= tdpCommitteeRoleDAO.getMaxCountsForACommittee(committeeId);
+			
+			if(maxCountList!=null && maxCountList.size()>0){
+				for (Object[] objects : maxCountList){
+					if((Long)objects[1]!=0){
+					  Long roleCount=rolesMap.get((Long)objects[0]);
+					  if(roleCount!=null){
+					     if(roleCount>(Long)objects[1]){
+					      rs.setResultPartial(true);
+					      if(rs.getMessage()==null){
+					    	  rs.setMessage(objects[2].toString());
+					      }
+					      else{
+					    	  rs.setMessage(rs.getMessage()+","+objects[2].toString());
+					      }
+						  objects[2].toString();
+					     }
+					   }
+					 }
+				  }
+			 }
+			 
+
+		} catch (Exception e) {
+			LOG.error("Exception raised in gettingDetailsForACommittee", e);
+		}
+		return rs;
+	}
 	public CadreCommitteeReportVO getTotalCommitteeDetailsByLocation(String state){
 		
 		Long totalCompletedCommittees=0l;
@@ -3365,5 +3450,17 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			LOG.error("Exception raised in getVillageTotalCommittees()"+e);
 		}
 		return resultList;
+	}
+	public Long gettingCommitteeIdForMainCommittee(Long levelId,Long levelValue){
+		Long committeeId = null;
+		try{
+			List<Long> committeeIds = tdpCommitteeDAO.getMainCommittiesInALocation(levelId, levelValue);
+			if(committeeIds.size() > 0){
+				committeeId = committeeIds.get(0);
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised in gettingCommitteeIdForMainCommittee", e);
+		}
+		return committeeId;
 	}
 }
