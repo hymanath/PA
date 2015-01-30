@@ -218,7 +218,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		if(startDate != null && endDate !=null){
 			str.append(" and ( date(model.completedDate)>=:startDate and date(model.completedDate)<=:endDate )  ");
 		}
-		str.append(" group by model.isCommitteeConfirmed,model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
+		str.append(" group by model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
 
 		Query query = getSession().createQuery(str.toString());
 		if(state != null)
