@@ -3123,4 +3123,80 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return finalCounts;
 	}
+	
+	public List<CadreCommitteeReportVO> getStartedAffliCommitteesCountByLocation(String state,List<Long> levelIds,String startDateStr,String endDateStr){
+		List<CadreCommitteeReportVO> resultList= new ArrayList<CadreCommitteeReportVO>();
+		try{
+			
+			 if(startDateStr !=null && endDateStr !=null){
+				 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+					Date startDate = sdf.parse(startDateStr);
+					Date endDate=sdf.parse(endDateStr);
+				 
+			 }
+			
+			List<Object[]> startedCount=tdpCommitteeMemberDAO.getStartedAffliCommitteesCountByLocation(state, levelIds,startDate,endDate);
+			if(startedCount != null && startedCount.size() > 0){
+				for (Object[] objects : startedCount) {		
+						CadreCommitteeReportVO vo = new CadreCommitteeReportVO();
+						vo.setAfflCommittees(Long.valueOf(objects[0].toString()));
+						vo.setName(objects[1].toString());	
+						vo.setId(Long.valueOf(objects[2].toString()));
+						resultList.add(vo);
+				}
+			}
+		}catch (Exception e) {
+			LOG.error("Exception raised in getVillageTotalCommittees()"+e);
+		}
+		return resultList;
+	}
+	
+	
+	public List<CadreCommitteeReportVO> getMembersRangeCountByLocation(String state,List<Long> levelIds,Long committeeId,String startDateStr,String endDateStr){
+		List<CadreCommitteeReportVO> resultList= new ArrayList<CadreCommitteeReportVO>();
+		try{
+			 if(startDateStr !=null && endDateStr !=null){
+				 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+					Date startDate = sdf.parse(startDateStr);
+					Date endDate=sdf.parse(endDateStr);
+				 
+			 }
+			List<Object[]> membersCount  = new ArrayList<Object[]>();
+			
+			membersCount = tdpCommitteeMemberDAO.getMembersCountInCommitteeByLocation(state, levelIds,committeeId,startDate,endDate);
+			
+			CadreCommitteeReportVO vo = new CadreCommitteeReportVO();
+			if(membersCount != null && membersCount.size() > 0){
+				for (Object[] objects : membersCount) {		
+						
+						
+						if(Long.valueOf(objects[0].toString()) == 1L)
+						{
+							vo.setMembersCount(vo.getMembersCount() + 1);
+						}
+						else if(Long.valueOf(objects[0].toString()) > 1L && Long.valueOf(objects[0].toString()) <= 4L)
+						{
+							vo.setMembersCount1(vo.getMembersCount1() + 1);
+						}
+						else if(Long.valueOf(objects[0].toString()) >= 5L && Long.valueOf(objects[0].toString()) <= 6L)
+						{
+							vo.setMembersCount2(vo.getMembersCount2() +1);
+						}
+						else if(Long.valueOf(objects[0].toString()) > 6L )
+						{
+							vo.setMembersCount3(vo.getMembersCount3() + 1);
+						}
+						
+					
+				}
+				resultList.add(vo);
+			}
+		}catch (Exception e) {
+			LOG.error("Exception raised in getVillageTotalCommittees()"+e);
+		}
+		return resultList;
+	}
+	
+	
+	
 }
