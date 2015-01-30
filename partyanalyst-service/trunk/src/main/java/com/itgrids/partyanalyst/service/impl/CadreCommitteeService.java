@@ -3131,11 +3131,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	public List<CadreCommitteeReportVO> getStartedAffliCommitteesCountByLocation(String state,List<Long> levelIds,String startDateStr,String endDateStr){
 		List<CadreCommitteeReportVO> resultList= new ArrayList<CadreCommitteeReportVO>();
 		try{
-			
+			Date startDate = null;
+			Date endDate = null;
 			 if(startDateStr !=null && endDateStr !=null){
 				 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-					Date startDate = sdf.parse(startDateStr);
-					Date endDate=sdf.parse(endDateStr);
+				 startDate = sdf.parse(startDateStr);
+				 endDate =sdf.parse(endDateStr);
 				 
 			 }
 			
@@ -3159,15 +3160,15 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	public List<CadreCommitteeReportVO> getMembersRangeCountByLocation(String state,List<Long> levelIds,Long committeeId,String startDateStr,String endDateStr){
 		List<CadreCommitteeReportVO> resultList= new ArrayList<CadreCommitteeReportVO>();
 		try{
+			Date startDate = null;
+			Date endDate = null;
 			 if(startDateStr !=null && endDateStr !=null){
 				 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-					Date startDate = sdf.parse(startDateStr);
-					Date endDate=sdf.parse(endDateStr);
+				 startDate = sdf.parse(startDateStr);
+				 endDate =sdf.parse(endDateStr);
 				 
 			 }
-			List<Object[]> membersCount  = new ArrayList<Object[]>();
-			
-			membersCount = tdpCommitteeMemberDAO.getMembersCountInCommitteeByLocation(state, levelIds,committeeId,startDate,endDate);
+			List<Object[]> membersCount = tdpCommitteeMemberDAO.getMembersCountInCommitteeByLocation(state, levelIds,committeeId,startDate,endDate);
 			
 			CadreCommitteeReportVO vo = new CadreCommitteeReportVO();
 			if(membersCount != null && membersCount.size() > 0){
