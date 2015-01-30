@@ -141,7 +141,7 @@
 		 <pattern>/cadreCommitteeAction*</pattern>
 		 <pattern>/cadreProfileDetailsAction*</pattern>
 		 <pattern>/assignCadreToCommittee*</pattern>
-		  <pattern>/cadreCommitteeSummaryAction*</pattern>
+		 
 		   <pattern>/committeeUpdateApproveAction*</pattern>
 		   <pattern>/committeeDashBoardAction*</pattern> 
 		  <pattern>/cadreCommitteeRequestAction*</pattern>
@@ -381,4 +381,7 @@
 			<pattern>/tdpcadresmsstatusAction*</pattern>
 			<pattern>/cadreSMSFileUpload*</pattern>
 	 </decorator>
+	  <decorator name="committeelayout" page="committeelayout.jsp">
+		<pattern>/cadreCommitteeSummaryAction*</pattern>
+	  </decorator>
 </decorators>
