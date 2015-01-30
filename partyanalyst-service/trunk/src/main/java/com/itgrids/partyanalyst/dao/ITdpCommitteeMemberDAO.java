@@ -34,5 +34,5 @@ public interface ITdpCommitteeMemberDAO  extends GenericDao<TdpCommitteeMember, 
 	public List<Object[]> membersCountDistrictWise(List<Long> levelIds, Date startDate, Date endDate, List<Long> districtIds);
 	public List<Object[]> getCommitteStatusAndId(Long tdpCommitteMemberId);
 	public Long getCommitteMembers(Long tdpCommitteeId);
-	
+	public List<Object[]> getCommitteeDetails(Long committeeId);
 }
