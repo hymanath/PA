@@ -168,7 +168,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		StringBuilder str = new StringBuilder();
 		str.append("select model.tdpCommitteeRole.tdpRoles.tdpRolesId,model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.tdpCadreId,model.tdpCadre.firstname,model.tdpCadre.image,model.tdpCadre.memberShipNo,model.tdpCommitteeMemberId,model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed" +
 				" from TdpCommitteeMember model" +
-				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId  and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal" +
+				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId  and model.isActive = 'Y' and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal" +
 				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId = :committeeTypeId ");
 		if(status.equalsIgnoreCase("Conform"))
 			str.append(" and model.tdpCommitteeRole.tdpCommittee.startedDate is not null and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'Y' and model.tdpCommitteeRole.tdpCommittee.completedDate is not null ");
@@ -265,5 +265,11 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 	public List<Object[]> basicCommitteeDetails(){
 		Query query = getSession().createQuery("select model.tdpBasicCommitteeId,model.name from TdpBasicCommittee model");
 		return query.list();
+	}
+	public List<Object[]> getCommitteStatusAndId(Long tdpCommitteMemberId)
+	{
+		Query query = getSession().createQuery("select model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed,model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId from  TdpCommitteeMember model where model.tdpCommitteeMemberId =:tdpCommitteMemberId ");
+		query.setParameter("tdpCommitteMemberId", tdpCommitteMemberId);
+		return query.list();	
 	}
 }
