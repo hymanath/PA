@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,6 +11,8 @@ import org.appfuse.dao.BaseDaoTestCase;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeIncreasedPositionsDAO;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 
 public class CadreDAOHibernateTest extends BaseDaoTestCase {
@@ -17,9 +20,21 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 	IUserAddressDAO userAddressDAO;
 	ILocalElectionBodyDAO localElectionBodyDAO;
 	ICadreCommitteeIncreasedPositionsDAO cadreCommitteeIncreasedPositionsDAO;
+	ITdpCommitteeMemberDAO tdpCommitteeMemberDAO;
+	ITdpCommitteeDAO tdpCommitteeDAO;
 	
 	SimpleDateFormat format  = new SimpleDateFormat("yy-MM-dd");
 	
+	
+	public ITdpCommitteeMemberDAO getTdpCommitteeMemberDAO() {
+		return tdpCommitteeMemberDAO;
+	}
+
+	public void setTdpCommitteeMemberDAO(
+			ITdpCommitteeMemberDAO tdpCommitteeMemberDAO) {
+		this.tdpCommitteeMemberDAO = tdpCommitteeMemberDAO;
+	}
+
 	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
 		return localElectionBodyDAO;
 	}
@@ -48,6 +63,7 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 			ICadreCommitteeIncreasedPositionsDAO cadreCommitteeIncreasedPositionsDAO) {
 		this.cadreCommitteeIncreasedPositionsDAO = cadreCommitteeIncreasedPositionsDAO;
 	}
+	
 	
 	/*public void testFindCadresByLevels()
 	{
@@ -678,12 +694,41 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(searchList.size());
 	}*/
 	
+	public ITdpCommitteeDAO getTdpCommitteeDAO() {
+		return tdpCommitteeDAO;
+	}
+
+	public void setTdpCommitteeDAO(ITdpCommitteeDAO tdpCommitteeDAO) {
+		this.tdpCommitteeDAO = tdpCommitteeDAO;
+	}
+
 	public void test(){
+		Date startDate = null;
+		Date endDate = null;
+		SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			startDate = (Date)format.parse("2015-01-28 01:33:43");
+			endDate = (Date)format.parse("2015-01-30 21:35:51");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
 		/*Long searchList = cadreCommitteeIncreasedPositionsDAO.getAllRecordsCount();
 		System.out.println(searchList);*/
 		
-		List<Object[]> list = cadreCommitteeIncreasedPositionsDAO.getAllRecordsCountStatusWise();
-		System.out.println(list.size());
+		/*List<Object[]> list = cadreCommitteeIncreasedPositionsDAO.getAllRecordsCountStatusWise();
+		System.out.println(list.size());*/
+		List<Long> levelIds = new ArrayList<Long>();
+		levelIds.add(6l);
+		 
+		/*List<Object[]> list = tdpCommitteeMemberDAO.membersCountDistrictWise(levelIds, null, null);
+		System.out.println(list.size());*/
+		
+		/*List<Object[]> list = tdpCommitteeDAO.committeesCountByDistrict(levelIds, startDate, endDate, "completed");
+		System.out.println(list.size());*/
 		
 	}
 	
