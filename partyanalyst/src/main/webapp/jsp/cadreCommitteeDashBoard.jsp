@@ -267,8 +267,8 @@
                 <div class="col-md-10 col-xs-12 col-sm-12">
                     <h4 class="text-success" style="display:inline-block">DISTRICT WISE COMMITTEES
 					 <span class="btn btn-success btn-xs form-inline">
-						<label class="radio"><input type="radio" name="selectstate">&nbsp;AP &nbsp;&nbsp;&nbsp;</label>
-						<label class="radio"><input type="radio" name="selectstate">&nbsp;TS &nbsp;&nbsp;&nbsp;</label>
+						<label class="radio"><input type="radio" class="stateRd" value="AP" name="selectstate" checked="true">&nbsp;AP &nbsp;&nbsp;&nbsp;</label>
+						<label class="radio"><input type="radio" class="stateRd" value="TS" name="selectstate">&nbsp;TS &nbsp;&nbsp;&nbsp;</label>
 					</span>
 					</h4>
                 </div>
@@ -321,126 +321,9 @@
 								</th>
 							</tr>
                         </thead>
-                        <tr>
-                            <td>Anantapur</td>
-                            <td>1000</td>
-                            <td>50% <span class="sparkline"></span></td>
-                            <td>500</td>
-                            <td>500</td>
-                            <td>3000</td>
-                            <td>3000</td>
-                            <td>1000</td>
-                            <td>60% <span class="sparkline"></span></td>
-                            <td>16000</td>
-                            <td>500</td>
-                            <td>1000</td>
-                            <td>1000</td>
-                        </tr>
-                        <tr>
-                            <td>Chitoor</td>
-                            <td>1000</td>
-                            <td>50% <span class="sparkline"></span></td>
-                            <td>500</td>
-                            <td>500</td>
-                            <td>3000</td>
-                            <td>3000</td>
-                            <td>1000</td>
-                            <td>60% <span class="sparkline"></span></td>
-                            <td>16000</td>
-                            <td>500</td>
-                            <td>1000</td>
-                            <td>1000</td>
-                        </tr>
-                        <tr>
-                            <td>East Godavari</td>
-                            <td>1000</td>
-                            <td>50% <span class="sparkline"></span></td>
-                            <td>500</td>
-                            <td>500</td>
-                            <td>3000</td>
-                            <td>3000</td>
-                            <td>1000</td>
-                            <td>60% <span class="sparkline"></span></td>
-                            <td>16000</td>
-                            <td>500</td>
-                            <td>1000</td>
-                            <td>1000</td>
-                        </tr>
-                        <tr>
-                            <td>Guntur</td>
-                            <td>1000</td>
-                            <td>50% <span class="sparkline"></span></td>
-                            <td>500</td>
-                            <td>500</td>
-                            <td>3000</td>
-                            <td>3000</td>
-                            <td>1000</td>
-                            <td>60% <span class="sparkline"></span></td>
-                            <td>16000</td>
-                            <td>500</td>
-                            <td>1000</td>
-                            <td>1000</td>
-                        </tr>
-                        <tr>
-                            <td>Nellore</td>
-                            <td>1000</td>
-                            <td>50% <span class="sparkline"></span></td>
-                            <td>500</td>
-                            <td>500</td>
-                            <td>3000</td>
-                            <td>3000</td>
-                            <td>1000</td>
-                            <td>60% <span class="sparkline"></span></td>
-                            <td>16000</td>
-                            <td>500</td>
-                            <td>1000</td>
-                            <td>1000</td>
-                        </tr>
-                        <tr>
-                            <td>Prakasham</td>
-                            <td>1000</td>
-                            <td>50% <span class="sparkline"></span></td>
-                            <td>500</td>
-                            <td>500</td>
-                            <td>3000</td>
-                            <td>3000</td>
-                            <td>1000</td>
-                            <td>60% <span class="sparkline"></span></td>
-                            <td>16000</td>
-                            <td>500</td>
-                            <td>1000</td>
-                            <td>1000</td>
-                        </tr>
-                        <tr>
-                            <td>Krishna</td>
-                            <td>1000</td>
-                            <td>50% <span class="sparkline"></span></td>
-                            <td>500</td>
-                            <td>500</td>
-                            <td>3000</td>
-                            <td>3000</td>
-                            <td>1000</td>
-                            <td>60% <span class="sparkline"></span></td>
-                            <td>16000</td>
-                            <td>500</td>
-                            <td>1000</td>
-                            <td>1000</td>
-                        </tr>
-                        <tr>
-                            <td>Viajayanagarm</td>
-                            <td>1000</td>
-                            <td>50% <span class="sparkline"></span></td>
-                            <td>500</td>
-                            <td>500</td>
-                            <td>3000</td>
-                            <td>3000</td>
-                            <td>1000</td>
-                            <td>60% <span class="sparkline"></span></td>
-                            <td>16000</td>
-                            <td>500</td>
-                            <td>1000</td>
-                            <td>1000</td>
-                        </tr>
+						<tbody id="distSummaryBody">
+							
+                        </tbody>
                     </table>                    
                 </div>
             </div>
@@ -553,6 +436,7 @@
 					getCommitteeDetails("AP","villageAll");	
 					getCommitteeDetails("TS","mandalAll");	
 					getCommitteeDetails("TS","villageAll");
+					getDistrictWiseCommittesSummary("AP");
                });
 			   
                </script>
@@ -736,6 +620,8 @@
 	}
 	function getCommitteeCountByState(state){
 	
+		var selectedVal = "";
+		
 		var state = state; 
 		var jObj = {
 			state:state,
@@ -764,8 +650,135 @@
 		
 		});
 	}
+	$(".stateRd").click(function(){
+		getDistrictWiseCommittesSummary();
+	});
 	
+	function getDistrictWiseCommittesSummary(){
 		
+		var state = state; 
+		
+		var selected = $("input[type='radio'][name='selectstate']:checked");
+		if (selected.length > 0) {
+			state = selected.val();
+		}
+		var startDate=$(".dp_startDate").val();
+		var endDate=$(".dp_endDate").val();
+		
+		var jObj = {
+			startDate:startDate,
+			endDate:endDate,
+			state:state
+		}
+				
+		$.ajax({
+          type:'GET',
+          url: 'getDistrictWiseCommittesSummaryAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			buildResultDistrictSummary(result);		
+		});
+	}
+	
+	function buildResultDistrictSummary(result){
+		var str = '';
+		$("#distSummaryBody").html("");
+		for(var i in result){
+			str += '<tr>';
+			str += '<td>'+result[i].districtName+'</td>';
+			if(result[i].townMandalDivisionVO!=null){
+				if(result[i].townMandalDivisionVO.totalCommittees!=null){
+					str += '<td>'+result[i].townMandalDivisionVO.totalCommittees+'</td>';
+				}else{
+					str += '<td> - </td>';
+				}
+				
+				if(result[i].townMandalDivisionVO.mainStarted!=null){
+					str += '<td>'+result[i].townMandalDivisionVO.mainStarted+'<span class="sparkline"></span></td>';
+				}else{
+					str += '<td> - </td>';
+				}
+				
+				if(result[i].townMandalDivisionVO.mainCompleted!=null){
+					str += '<td>'+result[i].townMandalDivisionVO.mainCompleted+'</td>';
+				}else{
+					str += '<td> - </td>';
+				}
+				
+				if(result[i].townMandalDivisionVO.membersCount!=null){
+					str += '<td>'+result[i].townMandalDivisionVO.membersCount+' </td>';
+				}else{
+					str += '<td> - </td>';
+				}
+				
+				if(result[i].townMandalDivisionVO.afflStarted!=null){
+					str += '<td>'+result[i].townMandalDivisionVO.afflStarted+'</td>';
+				}else{
+					str += '<td> - </td>';
+				}
+				
+				if(result[i].townMandalDivisionVO.afflCompleted!=null){
+					str += '<td>'+result[i].townMandalDivisionVO.afflCompleted+' </td>';
+				}else{
+					str += '<td> - </td>';
+				}
+			}else{
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+			}
+			
+			if(result[i].villageWardVO!=null){
+				if(result[i].villageWardVO.totalCommittees!=null){
+					str += '<td>'+result[i].villageWardVO.totalCommittees+'</td>';
+				}else{
+					str += '<td> - </td>';
+				}
+				
+				if(result[i].villageWardVO.mainStarted!=null){
+					str += '<td>'+result[i].villageWardVO.mainStarted+' <span class="sparkline"></span></td>';
+				}else{
+					str += '<td> - </td>';
+				}
+				
+				if(result[i].villageWardVO.mainCompleted!=null){
+					str += '<td>'+result[i].villageWardVO.mainCompleted+'</td>';
+				}else{
+					str += '<td> - </td>';
+				}
+				
+				if(result[i].villageWardVO.membersCount!=null){
+					str += '<td>'+result[i].villageWardVO.membersCount+' </td>';
+				}else{
+					str += '<td> - </td>';
+				}
+				
+				if(result[i].villageWardVO.afflStarted!=null){
+					str += '<td>'+result[i].villageWardVO.afflStarted+'</td>';
+				}else{
+					str += '<td> - </td>';
+				}
+				
+				if(result[i].villageWardVO.afflCompleted!=null){
+					str += '<td>'+result[i].villageWardVO.afflCompleted+' </td>';
+				}else{
+					str += '<td> - </td>';
+				}
+			}else{
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+			}
+			str += '</tr>';
+		}
+		$("#distSummaryBody").html(str);
+	}
 	function getMainCommitteeMembersCount(state,level,type,committeeId){
 		
 		var startDate=$(".dp_startDate").val();
