@@ -249,8 +249,6 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		query.setParameter("tdpCommitteMemberId", tdpCommitteMemberId);
 		return query.list();	
 	}
-
-
 	public List<Object[]> getStartedAffliCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate ){
 
 		StringBuilder str = new StringBuilder();
@@ -313,4 +311,10 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		query.setParameterList("levelIds",levelIds);
         return query.list();
     }
+	public Long getCommitteMembers(Long tdpCommitteeId)
+	{
+		Query query = getSession().createQuery("select count(model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId) from  TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId =:tdpCommitteeId and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'N' and model.isActive = 'Y' ");
+		query.setParameter("tdpCommitteeId", tdpCommitteeId);
+		return (Long) query.uniqueResult();	
+	}
 }

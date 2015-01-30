@@ -2535,9 +2535,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					vo.setStatus("Removed");
 					resultList.add(vo);	
 					}
-					TdpCommittee tdpCommittee = tdpCommitteeDAO.get(tdpCommitteId);
-					tdpCommittee.setStartedDate(null);
-					tdpCommitteeDAO.save(tdpCommittee);
+					Long membersCnt = tdpCommitteeMemberDAO.getCommitteMembers(tdpCommitteId);
+					if(membersCnt == null || membersCnt == 0)
+					{
+						TdpCommittee tdpCommittee = tdpCommitteeDAO.get(tdpCommitteId);
+						tdpCommittee.setStartedDate(null);
+						tdpCommitteeDAO.save(tdpCommittee);
+					}
 				}
 				else 
 				{
