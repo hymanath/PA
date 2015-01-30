@@ -1,5 +1,5 @@
 
-body{background: #F4D330 url("../images/background_fixed.jpg"); background-size: cover;}
+body{background: #F4D330 url("background_fixed.jpg"); background-size: cover;}
 .m_top20{margin-top:20px;}
 .m_top10{margin-top:10px;}
 .slick_widget{background:rgba(0,0,0,0.1); height:50px; width:auto; border-radius:4px; padding:0px 8px;margin-left:5px;}
@@ -73,3 +73,17 @@ th
 	padding-right:10px;
 	padding-bottom:20px;
 }
+.table-bordered > thead > tr > th,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > tbody > tr > td,
+.table-bordered > tfoot > tr > td { border: 1px solid #C2A932;}
+
+.table-yellow-bordered > thead > tr > th,
+.table-yellow-bordered > tbody > tr > th,
+.table-yellow-bordered > tfoot > tr > th,
+.table-yellow-bordered > thead > tr > td,
+.table-yellow-bordered > tbody > tr > td,
+.table-yellow-bordered > tfoot > tr > td { border: 1px solid #ebd621;}
+

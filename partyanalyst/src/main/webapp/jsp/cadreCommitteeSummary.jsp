@@ -10,7 +10,7 @@
 	 <!-- Bootstrap -->
     <link href="css/cadreCommitee/bootstrap.min.css" rel="stylesheet">
 	 <!-- Custom Styles -->
-    <link href="css/style.css" rel="stylesheet">
+    <link href="css/cadreCommitee/style.css" rel="stylesheet">
 
 </head>
 
@@ -109,7 +109,7 @@
             <!--Second Block Start-->
             <div class="row">
             	<div class="col-md-12">
-                	<h3 style="color:#669934" >VILLAGE / WARD</h2>
+                	<h3 style="color:#090" >VILLAGE / WARD</h2>
                 </div>
             </div>
             <div class="row">
@@ -219,7 +219,7 @@
                     </tr>
                 </table>-->
 				<img id="comitteeCntAjax" src="./images/icons/search.gif" alt="Processing Image" style="display:none;margin-left:400px;"/>
-                    <table class="table table-condensed" style="border:5px solid #669934;background-color:rgba(0,0,0,0.1);border-radius:2px;" id="CommitteeDetails">
+                    <table class="table table-condensed table-yellow-bordered" style="border:5px solid #669934;background-color:rgba(0,0,0,0.1);border-radius:2px;" id="CommitteeDetails">
                 	</table>
                 </div>  
                <!-- <div class="col-md-8 col-md-offset-1">
@@ -325,7 +325,7 @@
 				if(result!=null){
 					var notStarted=result[0].mainComittees-(result[0].startedCount+result[0].mainComitteesConformed);
 					var str='';
-					str+='<table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
+					str+='<table class="table table-condensed table-yellow-bordered" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
 						str+='<tr><td colspan="4" style="background-color:#669934"><h4>MAIN COMMITTEE</h4></td></tr>';
 								str+='<tr><td width="25%"><h2 style="display:inline;">'+result[0].mainComittees+'</h2> TOTAL</td>';
 							  if(result[0].startedCount > 0)
@@ -336,29 +336,29 @@
 								}
 							  if(result[0].mainComitteesConformed > 0)
 							{
-									 str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Conform\',2)">'+result[0].mainComitteesConformed+'</a></h2> CONFORMED</td>';
+									 str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Conform\',2)">'+result[0].mainComitteesConformed+'</a></h2> CONFIRMED</td>';
 							}
 									else
 									{
-							   str+='<td width="25%"><h2 style="display:inline;">'+result[0].mainComitteesConformed+'</h2> CONFORMED</td>';
+							   str+='<td width="25%"><h2 style="display:inline;">'+result[0].mainComitteesConformed+'</h2> CONFIRMED</td>';
 									}
 									if(notStarted > 0)
 									{
-										str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'NotStarted\',2)">'+notStarted+'</a></h2> NOT YET CONFORMED</td>';
+										str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'NotStarted\',2)">'+notStarted+'</a></h2> NOT YET STARTED</td>';
 									}
 										else
 								{
-							   str+='<td width="25%"><h2 style="display:inline;">'+notStarted+'</h2> NOT YET CONFORMED</td>';
+							   str+='<td width="25%"><h2 style="display:inline;">'+notStarted+'</h2> NOT YET STARTED</td>';
 								}
 								str+='</tr>';
 					 str+='</table>';
 					 $("#villageMainTableDivId").html(str);
 			
 					var str1='';
-						str1+='<table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
+						str1+='<table class="table table-condensed table-yellow-bordered" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
 							str1+='<thead><th colspan="5" style="background-color:#669934"><h4>AFFLIATED COMMITTEE</h4></th></thead>';
 							str1+='<thead><th width="20%">COMMITTEE TYPE</th><th width="20%">TOTAL</th><th width="20%">STARTED</th>';
-							str1+='<th width="20%">CONFORMED</th><th width="20%">NOT YET STARTED</th></thead>';
+							str1+='<th width="20%">CONFIRMED</th><th width="20%">NOT YET STARTED</th></thead>';
 					 for(var i in result){
 						var notConformed=result[i].totalAffilatedCommittees-(result[i].affilatedStartedCount+result[i].affComitteesConformed); 	
 						str1+='<tr><td width="20%">'+result[i].affilatedCommitteeName+'</td>';
@@ -416,7 +416,7 @@
 				if(result!=null){
 					var notStarted=result[0].mainComittees-(result[0].startedCount+result[0].mainComitteesConformed);
 					var str='';
-					str+='<table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
+					str+='<table class="table table-condensed table-yellow-bordered" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
 						str+='<tr><td colspan="4" style="background-color:#669934"><h4>MAIN COMMITTEE</h4></td></tr>';
 								str+='<tr><td width="25%"><h2 style="display:inline;">'+result[0].mainComittees+'</h2> TOTAL</td>';
 							   if(result[0].startedCount != null && result[0].startedCount > 0)
@@ -430,20 +430,20 @@
 								}
 								if(result[0].mainComitteesConformed != null && result[0].mainComitteesConformed > 0)
 								{
-									  str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Conform\',1)">'+result[0].mainComitteesConformed+'</a></h2> CONFORMED</td>';
+									  str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Conform\',1)">'+result[0].mainComitteesConformed+'</a></h2> CONFIRMED</td>';
 									
 								}
 								else
 								{
-							   str+='<td width="25%"><h2 style="display:inline;">'+result[0].mainComitteesConformed+'</h2> CONFORMED</td>';
+							   str+='<td width="25%"><h2 style="display:inline;">'+result[0].mainComitteesConformed+'</h2> CONFIRMED</td>';
 								}
 								if(notStarted != null && notStarted > 0)
 								{
-							   str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'NotStarted\',1)">'+notStarted+'</a></h2> NOT YET CONFORMED</td>';
+							   str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'NotStarted\',1)">'+notStarted+'</a></h2> NOT YET STARTED</td>';
 								}
 								else
 								{
-									str+='<td width="25%"><h2 style="display:inline;">'+notStarted+'</h2> NOT YET CONFORMED</td>';
+									str+='<td width="25%"><h2 style="display:inline;">'+notStarted+'</h2> NOT YET STARTED</td>';
 								}
 								str+='</tr>';
 							  
@@ -451,10 +451,10 @@
 					 $("#mandalMainCommitteDivId").html(str);
 			
 				var str1='';
-						str1+='<table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
+						str1+='<table class="table table-condensed table-yellow-bordered" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
 							str1+='<thead><th colspan="5" style="background-color:#669934"><h4>AFFLIATED COMMITTEE</h4></th></thead>';
 							str1+='<thead><th width="20%">COMMITTEE TYPE</th><th width="20%">TOTAL</th><th width="20%">STARTED</th>';
-							str1+='<th width="20%">CONFORMED</th><th width="20%">NOT YET STARTED</th></thead>';
+							str1+='<th width="20%">CONFIRMED</th><th width="20%">NOT YET STARTED</th></thead>';
 					 for(var i in result){
 						var notConformed=result[i].totalAffilatedCommittees-(result[i].affilatedStartedCount+result[i].affComitteesConformed); 	
 						str1+='<tr><td width="20%">'+result[i].affilatedCommitteeName+'</td>';
@@ -512,6 +512,10 @@
 		}
 		function getCommitteeDetailsByStatus(basicCommitteetypeId,status,levelId)
 	{
+		$("html,body").animate({scrollTop: $("#CommitteeDetails").offset().top});
+		$("#CommitteeDetails").show();
+		$("#committeeMemberDiv").show();
+		$("#conformedBtn").show();
 		$("#comitteeCntAjax").show();
 		$("#CommitteeDetails").html('');
 		$("#committeeMemberDiv").html('');
@@ -551,12 +555,12 @@
 		if(jsObj.levelId == 1)
 		title = "[MANDAL/TOWN/DIVISION]";
 		str+='<tr>';
-        str+='<td colspan="7" style="background-color:#669934">'+title+' WISE '+result[0].committe+' COMMITTEE '+status+' DETAILS <div class="pull-right"><i class="glyphicon glyphicon-remove"></i></div></td>';
+        str+='<td colspan="7" style="background-color:#669934" class="text-uppercase">'+title+' WISE <b>'+result[0].committe+' COMMITTEE <i>'+status+'</i></b> DETAILS <div class="pull-right" ><i class="glyphicon glyphicon-remove" id="closeMemberId" onclick="removeDiv();"></i></div></td>';
         str+=' </tr>';
         str+='<tr>';
         str+='<td>Location NAME</td>';
        // str+='<td>COMMITTEE TYPE</td>
-        str+='<td>COMMITTEE MEMBERS</td>';
+        str+='<td>COMMITTEE MEMBERS COUNT</td>';
         str+='<td>STATUS</td>';
         str+='<td>FINAL</td>';
          str+='</tr>';
@@ -590,6 +594,7 @@
 	}
 	function getCommitteeMemberInfo(basicCommitteetypeId,levelId,locationId,status)
 	{
+	
 	$("#committeeMemberDiv").html('');
 	$("#conformedBtn").html('');
 	$("#comitteeMemberAjax").show();
@@ -620,18 +625,24 @@
 		var str='';
 		str+='<table class="table table-bordered text-left" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); color:#fff;">';
 		str+='<thead style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.2);">';
-        str+='<th colspan="4">'+result[0].locationName+'  '+result[0].committe+'  COMMITTEE</th>';
+        str+='<th colspan="4" class="text-uppercase">'+result[0].locationName+'  <b>'+result[0].committe+'  COMMITTEE</b></th>';
         str+='</thead>';
         str+='<tbody>';
 		for(var i in result)
 		{
 
 		str+='<tr>';
-		str+='<td>'+result[i].role+'</td>';
+		
 		str+='<td><img width="32" id="imagecdr'+i+'" height="32" src="http://www.mytdp.com/images/cadre_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);"/></td>';
 		str+='<td>'+result[i].name+'</td>';
 		str+='<td>'+result[i].membershipNo+'</td>';
-		str+='</tr>';
+		str+='<td>'+result[i].role+'';
+		if(result[i].status != "Y")
+			{
+		str+='<div class="pull-right" ><i class="glyphicon glyphicon-remove" onclick="deleteCadreRole(\''+result[i].total+'\');"></i></div>';
+			}
+		str+='</td>';
+		str+='</tr>';//total - tdpCommitteMemberID
 		}
 		str+='</tbody>';
 		str+='</table>';
@@ -639,7 +650,7 @@
 		if(result[0].status != "Y")
 		{
 			var str1='';
-			str1+='<button class="btn btn-success btn-lg" onclick="committeeComplete(\''+jsObj.basicCommitteetypeId+'\',\''+jsObj.levelId+'\',\''+jsObj.locationId+'\')">Conformed Push</button>';
+			str1+='<button class="btn btn-success btn-lg" onclick="committeeComplete(\''+jsObj.basicCommitteetypeId+'\',\''+jsObj.levelId+'\',\''+jsObj.locationId+'\')">Finalize Committee</button>';
 			$("#conformedBtn").html(str1);
 		}
 	}
@@ -668,13 +679,50 @@
      	  }).done(function(result){ 
 			  if(result != null){
 				  {
-				alert("Committee Conformed")
+				alert("Committee Confirmed")
 				$("#conformedBtn").html('');
 				  }
 				
 			}
 	   });
 		}
+	}
+	function deleteCadreRole(tdpCommitteeMemberId)
+	{
+	var r=confirm("Are You Sure To Remove ?");
+		if(r)
+		{
+	var jsObj = 
+	{
+		tdpcommitteeMemberId:tdpCommitteeMemberId,
+		task:"deleterole"
+	}
+	$.ajax({
+          type:'GET',
+          url: 'getCommitteeDetailsByStatusAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(jsObj)},
+     	  }).done(function(result){ 
+			  if(result != null){
+				  {
+					  if(result[0].status == "Removed")
+				alert("Removed Successfully..")
+						  else
+					alert("Committee Already Confirmed")
+				
+				  }
+				
+			}
+	   });
+		}
+	
+	}
+	function removeDiv()
+	{
+		$("#CommitteeDetails").hide();
+		$("#committeeMemberDiv").hide();
+		$("#conformedBtn").hide();
+
 	}
 	</script>
     		<!--Circle JS END-->
