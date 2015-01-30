@@ -145,12 +145,19 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		
 		return query.list();
 	}
-	public List<Object[]> getComitteeMembersByCommiteTypeAndLocation(List<Long> levelIds,List<Long> locationVals,Long committeeTypeId)
+	public List<Object[]> getComitteeMembersByCommiteTypeAndLocation(List<Long> levelIds,List<Long> locationVals,Long committeeTypeId,String status)
 	{
-		Query query = getSession().createQuery("select count(model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId),model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId,model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue" +
+		StringBuilder str = new StringBuilder();
+		str.append("select count(model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId),model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId,model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue" +
 				" from TdpCommitteeMember model" +
 				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId in(:levelIds)  and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue in(:locationVals)" +
-				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId = :committeeTypeId and model.isActive = 'Y' group by model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId,model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue");
+				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId = :committeeTypeId and model.isActive = 'Y'");
+		if(status.equalsIgnoreCase("Conform"))
+		str.append(" and ((model.tdpCommitteeRole.tdpCommittee.startedDate is not null and model.tdpCommitteeRole.tdpCommittee.startedDate != '') and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'Y') ");
+		else if(status.equalsIgnoreCase("Started"))
+		str.append(" and ((model.tdpCommitteeRole.tdpCommittee.startedDate is not null and model.tdpCommitteeRole.tdpCommittee.startedDate != '') and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'N') ");
+		str.append("group by model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId,model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue");
+		Query query = getSession().createQuery(str.toString());
 		query.setParameterList("levelIds", levelIds);
 		query.setParameterList("locationVals", locationVals);
 		query.setParameter("committeeTypeId", committeeTypeId);
@@ -159,10 +166,13 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 	}
 	public List<Object[]> getComitteeMembersInfoByCommiteTypeAndLocation(Long levelId,Long locationVal,Long committeeTypeId)
 	{
-		Query query = getSession().createQuery("select model.tdpCommitteeRole.tdpRoles.tdpRolesId,model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.tdpCadreId,model.tdpCadre.firstname,model.tdpCadre.image,model.tdpCadre.memberShipNo,model.tdpCommitteeMemberId" +
+		StringBuilder str = new StringBuilder();
+		str.append("select model.tdpCommitteeRole.tdpRoles.tdpRolesId,model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.tdpCadreId,model.tdpCadre.firstname,model.tdpCadre.image,model.tdpCadre.memberShipNo,model.tdpCommitteeMemberId,model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed" +
 				" from TdpCommitteeMember model" +
 				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId  and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal" +
 				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId = :committeeTypeId ");
+		
+		Query query = getSession().createQuery(str.toString());
 		query.setParameter("levelId", levelId);
 		query.setParameter("locationVal", locationVal);
 		query.setParameter("committeeTypeId", committeeTypeId);
@@ -185,10 +195,11 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 	{
 		Query query = getSession().createQuery("update TdpCommittee model set model.isCommitteeConfirmed = 'Y' where model.tdpCommitteeId in(:tdpCommitteeIds) ");
 		query.setParameterList("tdpCommitteeIds", tdpCommitteeIds);
+		
 		return query.executeUpdate();	
 	}
 	
-	public Integer updateCadreRole(Long Id)
+	public Integer deleteCadreRole(Long Id)
 	{
 		Query query = getSession().createQuery("update TdpCommitteeMember model set model.isActive = 'N' where model.tdpCommitteeMemberId =:Id ");
 		query.setParameter("Id", Id);
@@ -210,7 +221,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		Query query = getSession().createQuery("select TB.tdpBasicCommitteeId,TB.name,count(*) from TdpCommitteeMember TM, " +
 				"TdpCommitteeRole TR, TdpCommittee TC, TdpBasicCommittee TB where TM.tdpCommitteeRoleId = TR.tdpCommitteeRoleId " +
 				"and TR.tdpCommitteeId = TC.tdpCommitteeId and TB.tdpBasicCommitteeId = TC.tdpBasicCommitteeId and " +
-				"TC.tdpCommitteeLevelId = :locationTypeId and TC.tdpCommitteeLevelValue in (:locationIds) group by TB.tdpBasicCommitteeId ");
+				"TC.tdpCommitteeLevelId = :locationTypeId and TC.tdpCommitteeLevelValue in (:locationIds) and TM.isActive = 'Y' group by TB.tdpBasicCommitteeId ");
 		query.setParameterList("locationIds", locationIds);
 		query.setParameter("locationTypeId", locationTypeId);
 		return query.list();
@@ -220,7 +231,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		Query query = getSession().createQuery("select TB.tdpBasicCommitteeId,TB.name,count(*) from TdpCommitteeMember TM, " +
 				"TdpCommitteeRole TR, TdpCommittee TC, TdpBasicCommittee TB where TM.tdpCommitteeRoleId = TR.tdpCommitteeRoleId " +
 				"and TR.tdpCommitteeId = TC.tdpCommitteeId and TB.tdpBasicCommitteeId = TC.tdpBasicCommitteeId and " +
-				"TC.tdpCommitteeLevelId in (6,8) and TC.constituency.constituencyId = :constituencyId group by TB.tdpBasicCommitteeId ");
+				"TC.tdpCommitteeLevelId in (6,8) and TC.constituency.constituencyId = :constituencyId and TM.isActive = 'Y' group by TB.tdpBasicCommitteeId ");
 		query.setParameter("constituencyId", constituencyId);
 		return query.list();
 	}

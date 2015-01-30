@@ -18,11 +18,8 @@ public interface ITdpCommitteeMemberDAO  extends GenericDao<TdpCommitteeMember, 
 	public Long getMembersCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate);
 	public List<Object[]> getMembersCountInCommitteeByLocation(String state,List<Long> levelIds);
 	public List<Object[]> getMembersInfoForRequest(Set<Long> committeeRoleIds);
-	public List<Object[]> getComitteeMembersByCommiteTypeAndLocation(List<Long> levelIds,List<Long> locationVals,Long committeeTypeId);
-	public List<Object[]> getComitteeMembersInfoByCommiteTypeAndLocation(Long levelId,Long locationVal,Long committeeTypeId);
 	public List<Long> getTdpCommitteIds(Long levelId,Long locationVal,Long committeeTypeId);
-	public Integer updateTdpComitte(List<Long> tdpCommitteeIds);
-	public Integer updateCadreRole(Long Id);
+	public Integer deleteCadreRole(Long Id);
 	public List<Object[]> getStartedCommitteesCountInALocation(Long constituencyId);
 /*	public List<Object[]> getMandalTotalCommittees(Long constituencyId,List mandalIds);
 	public List<Object[]> getMuncipalTotalCommittees(Long constituencyId,List muncipalIds);
@@ -30,4 +27,7 @@ public interface ITdpCommitteeMemberDAO  extends GenericDao<TdpCommitteeMember, 
 	public List<Object[]> getLocationWiseStartedCount(List<Long> locationIds,Long locationTypeId);
 	public List<Object[]> basicCommitteeDetails();
 	public List<Object[]> getVillageStartedCount(Long constituencyId);
+	public List<Object[]> getComitteeMembersByCommiteTypeAndLocation(List<Long> levelIds,List<Long> locationVals,Long committeeTypeId,String status);
+	public List<Object[]> getComitteeMembersInfoByCommiteTypeAndLocation(Long levelId,Long locationVal,Long committeeTypeId);
+	public Integer updateTdpComitte(List<Long> tdpCommitteeIds);
 }
