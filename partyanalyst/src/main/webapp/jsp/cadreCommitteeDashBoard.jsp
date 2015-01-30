@@ -24,6 +24,9 @@
 	.circle-info-half{
 		line-height: 225px; left: 0px;  top: 34px;!important
 	}
+	.highlight{background-color: #fff !important;
+	border-color: #ccc !important;
+	color: #333 !important;}
 	</style>	
 </head>
 <body>
@@ -82,10 +85,13 @@
 						<table width="100%" class="table table-bordered" style="background-color:transparent; margin-bottom:0px;"  >
 							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 								<td colspan="6">
-									<button id="mandal" class="btn btn-xs btn-success" onclick="getCommitteeDetails('AP','mandal')">Mandal</button> | 
-									<button id="town" class="btn btn-xs btn-success" onclick="getCommitteeDetails('AP','town')">Town</button> |	
-									<button id="division" class="btn btn-xs btn-success" onclick="getCommitteeDetails('AP','division')">Division</button> |									
-									<button id="mandalAll" class="btn btn-xs btn-default" onclick="getCommitteeDetails('AP','mandalAll')">All</button>
+									<button id="mandal" class="btn btn-xs btn-success highlightClick" onclick="getCommitteeDetails('AP','mandal')">Mandal</button> | 
+									<button id="town" class="btn btn-xs btn-success highlightClick" onclick="getCommitteeDetails('AP','town')">Town</button> |	
+									<button id="division" class="btn btn-xs btn-success highlightClick" onclick="getCommitteeDetails('AP','division')">Division</button> |									
+									<button id="mandalAll" class="btn btn-xs btn-success highlight highlightClick " onclick="getCommitteeDetails('AP','mandalAll')">All</button>
+									<div class="pull-right">
+										<img width="16" height="16" id="ajaxImageIdAPmandal" src="./images/Loading-data.gif" alt="Processing Image" style="display:none;"/>
+									</div>
 								</td>
 							</tr>
 							<tr>
@@ -106,12 +112,12 @@
 								</td>
 								
 								<td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div3"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
-                              <li><a><div id="div4"></div></a>
+                              <li><div id="div4"></div>
                                   
 									
 									
 								</li></td></tr></table></td>
-								<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started</span><br/><h4 class="m_top0"><div id="div5"></div></h4></td>
+								<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affliated Committees<br/><h4 class="m_top0"><div id="div5"></div></h4></td>
 								<td style="padding:10px;" width="20%"><span class="text-success">Completed </span><br/>Affliated Committees<br/>
                                 <h4 class="m_top0">
 								<ul class="nav navbar-nav">
@@ -123,9 +129,12 @@
 							</tr>
 							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 								<td colspan="6">
-										<button id="village"  class="btn btn-xs btn-success" onclick="getCommitteeDetails('AP','village')">Village</button> | 
-										<button id="ward" class="btn btn-xs btn-success" onclick="getCommitteeDetails('AP','ward')">Ward</button> |										
-										<button id="villageAll" class="btn btn-xs btn-default" onclick="getCommitteeDetails('AP','villageAll')">All</button>
+										<button id="village"  class="btn btn-xs btn-success highlightClick1" onclick="getCommitteeDetails('AP','village')">Village</button> | 
+										<button id="ward" class="btn btn-xs btn-success highlightClick1" onclick="getCommitteeDetails('AP','ward')">Ward</button> |										
+										<button id="villageAll" class="btn btn-xs btn-success highlight highlightClick1 " onclick="getCommitteeDetails('AP','villageAll')">All</button>
+									<div class="pull-right">
+										<img width="16" height="16" id="ajaxImageIdAPvillage" src="./images/Loading-data.gif" alt="Processing Image" style="display:none;"/>
+									</div>
 								</td>
 							</tr>
 							<tr>
@@ -146,12 +155,12 @@
 							   <td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div10"></div></h4></td><td  class="row-table">
 							   <ul class="nav navbar-nav">
 								<li>
-									<a><div id="div11"></div></a>
+									<div id="div11"></div>
                                    
 								</li>	
 									
 									</td></tr></table></td>
-								<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started</span><br/><h4 class="m_top0"><div id="div12"></div></h4></td> 
+								<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affliated Committees<br/><h4 class="m_top0"><div id="div12"></div></h4></td> 
 								<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
                               <li><a><div id="div13"></div></a>
                                </h4></td>
@@ -185,10 +194,13 @@
 					<table width="100%" class="table table-bordered" style="background-color:transparent; margin-bottom:0px;"  >
 						<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 							<td colspan="6">
-								<button id="tsMandal" class="btn btn-xs btn-success" onclick="getCommitteeDetails('TS','mandal')";>Mandal</button> | 
-								<button id="tsTown" class="btn btn-xs btn-success" onclick="getCommitteeDetails('TS','town')";>Town</button> |
-								<button id="tsDivision" class="btn btn-xs btn-success" onclick="getCommitteeDetails('TS','division')";>Division</button> |
-								<button id="tsMandalAll" class="btn btn-xs btn-default" onclick="getCommitteeDetails('TS','mandalAll')";>All</button>
+								<button id="tsMandal" class="btn btn-xs btn-success highlightClick2" onclick="getCommitteeDetails('TS','mandal')";>Mandal</button> | 
+								<button id="tsTown" class="btn btn-xs btn-success highlightClick2" onclick="getCommitteeDetails('TS','town')";>Town</button> |
+								<button id="tsDivision" class="btn btn-xs btn-success highlightClick2" onclick="getCommitteeDetails('TS','division')";>Division</button> |
+								<button id="tsMandalAll" class="btn btn-xs  btn-success highlight highlightClick2 " onclick="getCommitteeDetails('TS','mandalAll')";>All</button>
+								<div class="pull-right">
+										<img width="16" height="16" class="ajaxImageIdTSmandal" src="./images/Loading-data.gif" alt="Processing Image" style="display:none;"/>
+								</div>
 							</td>
 						</tr>
 						<tr>
@@ -207,11 +219,11 @@
 									</table>
 								</td>
 						   <td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div17"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
-                              <li><a><div id="div18"></div></a>
+                              <li><div id="div18"></div>
                                  
 									
 								</li></td></tr></table></td>
-							<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started</span><br/><h4 class="m_top0"><div id="div19"></div></h4></td>
+							<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affliated Committees<br/><h4 class="m_top0"><div id="div19"></div></h4></td>
 							<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
                               <li><a><div id="div20"></div></a>
                                
@@ -221,10 +233,14 @@
 						</tr>
 						<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 							<td colspan="6">
-								<button id="tsVillage" class="btn btn-xs btn-success" onclick="getCommitteeDetails('TS','village')";>Village</button> | 
-								<button id="tsWard" class="btn btn-xs btn-success" onclick="getCommitteeDetails('TS','ward')";>Ward</button> |
+								<button id="tsVillage" class="btn btn-xs btn-success highlightClick3" onclick="getCommitteeDetails('TS','village')";>Village</button> | 
+								<button id="tsWard" class="btn btn-xs btn-success highlightClick3" onclick="getCommitteeDetails('TS','ward')";>Ward</button> |
 								
-								<button id="tsVillageAll" class="btn btn-xs btn-default" onclick="getCommitteeDetails('TS','villageAll')";>All</button>
+								<button id="tsVillageAll" class="btn btn-xs btn-default  btn-success highlight highlightClick3" onclick="getCommitteeDetails('TS','villageAll')";>All</button>
+								
+								<div class="pull-right">
+										<img width="16" height="16" class="ajaxImageIdTSvillage" src="./images/Loading-data.gif" alt="Processing Image" style="display:none;"/>
+								</div>
 							</td>
 						</tr>
 						<tr>
@@ -244,12 +260,12 @@
 								</td>
 						   <td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div24"></div></h4></td><td  class="row-table">
 						   <ul class="nav navbar-nav">
-                              <li><a><div id="div25"></div></a>
+                              <li><div id="div25"></div>
                                    
 									
 								</li>
 									</td></tr></table></td>
-							<td style="padding:10px;" width="20%">Affliated Committees<br/><span class="text-success">Started</span><br/><h4 class="m_top0"><div id="div26"></div></h4></td>
+							<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affliated Committees<br/><h4 class="m_top0"><div id="div26"></div></h4></td>
 							<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
                               <li><a><div id="div27"></div></a>
                              </h4></td>
@@ -429,7 +445,22 @@
                   });
                   $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
 
-                
+					$(".highlightClick").click(function(){
+						$(".highlightClick").removeClass("highlight");
+						$(this).addClass("highlight");
+					});
+					$(".highlightClick1").click(function(){
+						$(".highlightClick1").removeClass("highlight");
+						$(this).addClass("highlight");
+					});
+					$(".highlightClick2").click(function(){
+						$(".highlightClick2").removeClass("highlight");
+						$(this).addClass("highlight");
+					});
+					$(".highlightClick3").click(function(){
+						$(".highlightClick3").removeClass("highlight");
+						$(this).addClass("highlight");
+					});
 					getCommitteeCountByState("AP");
 					getCommitteeCountByState("TS");
 					getCommitteeDetails("AP","mandalAll");
@@ -444,7 +475,7 @@
 			   
 			   		
 	<script>
-
+	
 	$(document).on('click','.rangeButton',function(){
 			
 					getCommitteeDetails("AP","mandalAll");
@@ -454,6 +485,15 @@
 	});
 
 	function getCommitteeDetails(state,level){
+
+	if(level == 'mandal' || level == 'town' || level == 'division' || level == 'mandalAll')
+	{
+		$('#ajaxImageId'+state+'mandal').show();
+	}else if(level == 'village' || level == 'ward' || level == 'villageAll')
+	{
+		//alert('ajaxImageId'+state+'village');
+		$('#ajaxImageId'+state+'village').show();
+	}
 	
 	var startDate=$(".dp_startDate").val();
 	var endDate=$(".dp_endDate").val();
@@ -506,23 +546,26 @@
 				if(state == "AP"){
 					if(level == 'mandal' || level == 'town' || level == 'division' || level == 'mandalAll')
 					{
+						$('#ajaxImageId'+state+'mandal').hide();
+						
 						$("#div1").html(result.committeesCount);
 						
 						$("#div29").html(result.startedCommitteePerc+"%");
 						$("#div2").html('['+result.mainCommittees+']');						
 						
 						$("#div3").html(result.completedCommitteePerc+"%");
+						
 						if(result.completedCommittees > 0 && result.completedCommittees != null)
 						
-						$("#div4").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
+						$("#div4").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
+						//$("#div4").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
 						else
-						
-						$("#div4").html('['+result.completedCommittees+']');
+						$("#div4").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
 					
 						//$("#div30").html(result.afflCommitteesPerc);
 						$("#div5").html(result.afflCommittees);
 						
-						
+
 						//$("#div6").html('<a id=\''+level+'IdAPAffl\' class="btn" onClick="getAflCommitteeCount(\'AP\',\''+level+'\')">'+result.affliatedCompleted+'</a>');
 						$("#div6").html(result.affliatedCompleted);
 						//$("#div31").html(result.affliatedCompletedPerc);
@@ -532,6 +575,8 @@
 					
 					if(level == 'village' || level == 'ward' || level == 'villageAll')
 					{
+						$('#ajaxImageId'+state+'village').hide();
+						
 						$("#div8").html(result.committeesCount);
 						
 						$("#div32").html(result.startedCommitteePerc+"%");
@@ -540,10 +585,12 @@
 						$("#div10").html(result.completedCommitteePerc+"%");
 				
 						if(result.completedCommittees > 0 && result.completedCommittees != null)
-						$("#div11").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
+						
+						$("#div11").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
+						//$("#div11").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
 						
 						else
-						$("#div11").html('['+result.completedCommittees+']');
+						$("#div11").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
 						//$("#div33").html(result.afflCommitteesPerc);
 						$("#div12").html(result.afflCommittees);
 						
@@ -560,7 +607,8 @@
 				if(state == "TS"){
 					if(level == 'mandal' || level == 'town' || level == 'division' || level == 'mandalAll')
 					{
-					
+						$('#ajaxImageId'+state+'mandal').hide();
+						
 						$("#div15").html(result.committeesCount);
 						
 						
@@ -571,10 +619,11 @@
 						
 						if(result.completedCommittees > 0 && result.completedCommittees != null)
 						
-						$("#div18").html('<a id=\''+level+'IdTS\' class="btn" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
+						$("#div18").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
+						//$("#div18").html('<a id=\''+level+'IdTS\' class="btn" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
 						
 						else
-						$("#div18").html('['+result.completedCommittees+']');
+						$("#div18").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
 						//$("#div36").html(result.afflCommitteesPerc);
 						$("#div19").html(result.afflCommittees);
 						
@@ -589,7 +638,8 @@
 					
 				 if(level == 'village' || level == 'ward' || level == 'villageAll')
 					{
-					
+						$('#ajaxImageId'+state+'village').hide();
+						
 						$("#div22").html(result.committeesCount);
 						
 						$("#div38").html(result.startedCommitteePerc+"%");
@@ -599,10 +649,11 @@
 						
 						if(result.completedCommittees > 0 && result.completedCommittees != null)
 						
-						$("#div25").html('<a id=\''+level+'IdTS\' class="btn" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
+						$("#div25").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
+						//$("#div25").html('<a id=\''+level+'IdTS\' class="btn" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
 						else
 						
-						$("#div25").html('['+result.completedCommittees+']');
+						$("#div25").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
 						
 						//$("#div39").html(result.afflCommitteesPerc);
 						$("#div26").html(result.afflCommittees);
