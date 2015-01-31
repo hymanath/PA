@@ -32,7 +32,7 @@
 	</style>	
 </head>
 <body>
-	<header style="align:center;background-color:#ef4036; display:flex;border-bottom:4px solid #13a751;">
+	<!-- <header style="align:center;background-color:#ef4036; display:flex;border-bottom:4px solid #13a751;">
 		 	<div class="col-md-6 col-md-offset-3 col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 text-center">
 				<img src="images/cadreCommitee/Committees_2014_logo.png" class="m_top10" title="Committee Logo" alt="committee" />
 			</div>
@@ -48,7 +48,7 @@
                     </ul>
                  
             </div>
-	</header>
+	</header>-->
 	
 	<div class="container">
     	<div class="row" style="text-align:center;">
@@ -280,12 +280,16 @@
         <div class="row m_top20">        	 
             <div class="row">
                 <div class="col-md-10 col-xs-12 col-sm-12">
-                    <h4 class="text-success" style="display:inline-block">DISTRICT WISE COMMITTEES
+                    <h4 id="headingId" class="text-success" style="display:inline-block">DISTRICT WISE COMMITTEES</h4>
 					 <span class="btn btn-success btn-xs form-inline">
-						<label class="radio"><input type="radio" class="stateRd" value="AP" name="selectstate" checked="true">&nbsp;AP &nbsp;&nbsp;&nbsp;</label>
-						<label class="radio"><input type="radio" class="stateRd" value="TS" name="selectstate">&nbsp;TS &nbsp;&nbsp;&nbsp;</label>
+						<label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="stateRd" value="AP" name="selectstate" checked="true">&nbsp;AP &nbsp;&nbsp;&nbsp;</label>
+						<label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="stateRd" value="TS" name="selectstate">&nbsp;TS &nbsp;&nbsp;&nbsp;</label>
 					</span>
-					</h4>
+					 <span class="btn btn-success btn-xs form-inline">
+						<label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="levelRd" value="district" name="select" checked="true">&nbsp;District &nbsp;&nbsp;&nbsp;</label>
+						<label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="levelRd" value="consti" name="select">&nbsp;Constituency &nbsp;&nbsp;&nbsp;</label>
+					</span>
+					
                 </div>
                
             </div>
@@ -295,7 +299,7 @@
                 	<table class="table table-yellow-bordered table-condensed " style="width:100%; background-color:rgba(0,0,0,0.1);">
                         <thead> 
 							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
-								<th style="text-align:center">DISTRICT</th>
+								<th id="tableHeadingId" style="text-align:center">DISTRICT</th>
 								<th style="text-align:center" colspan="6">TOWN / MANDAL / DIVISION</th>
 								<th style="text-align:center" colspan="6">VILLAGE / WARD</th>
 							</tr>
@@ -466,7 +470,8 @@
 					getCommitteeDetails("AP","villageAll");	
 					getCommitteeDetails("TS","mandalAll");	
 					getCommitteeDetails("TS","villageAll");
-					getDistrictWiseCommittesSummary("AP");
+					getDistrictWiseCommittesSummary();
+					
                });
 			   
                </script>
@@ -482,6 +487,7 @@
 					getCommitteeDetails("TS","mandalAll");	
 					getCommitteeDetails("TS","villageAll");
 					getDistrictWiseCommittesSummary();
+					
 	});
 
 	function getCommitteeDetails(state,level){
@@ -704,9 +710,25 @@
 		});
 	}
 	$(".stateRd").click(function(){
-		getDistrictWiseCommittesSummary();
-	});
 	
+		var levelSelected = $("input[type='radio'][name='select']:checked").val();
+		
+		if(levelSelected == 'district')
+		getDistrictWiseCommittesSummary();
+		else if(levelSelected == 'consti'){
+			getConstituencyWiseCommittesSummary();
+		}
+	});
+	$(".levelRd").click(function(){
+
+		var levelSelected1 = $("input[type='radio'][name='select']:checked").val();
+		
+		if(levelSelected1 == 'district')
+		getDistrictWiseCommittesSummary();
+		else if(levelSelected1 == 'consti'){
+			getConstituencyWiseCommittesSummary();
+		}
+	});
 	function getDistrictWiseCommittesSummary(){
 		
 		var state = state; 
@@ -736,6 +758,8 @@
 	var districtInfoArr = [];
 	var villageInfoArr = [];
 	function buildResultDistrictSummary(result){
+		$("#headingId").html("DISTRICT WISE COMMITTEES");
+		$("#tableHeadingId").html("DISTRICT");
 		var str = '';
 		$("#distSummaryBody").html("");
 		for(var i in result){
@@ -833,24 +857,25 @@
 			str += '</tr>';
 			
 			if(result[i].townMandalDivisionVO != null){
-				var details = [result[i].townMandalDivisionVO.totalCommittees, 100-parseInt(result[i].townMandalDivisionVO.startPerc,10)];
+				var details = [result[i].townMandalDivisionVO.startPerc, 100-parseInt(result[i].townMandalDivisionVO.startPerc,10)];
 				districtInfoArr.push(details);
 			}else{
-				var details = [0, 100];
+				 var details = [0];
 				districtInfoArr.push(details);
 			}
 			
 			
 			if(result[i].villageWardVO != null){
-				var villageDetails = [result[i].villageWardVO.totalCommittees, 100-parseInt(result[i].villageWardVO.startPerc,10)];
+				var villageDetails  = [result[i].villageWardVO.startPerc, 100-parseInt(result[i].villageWardVO.startPerc,10)];
 				villageInfoArr.push(villageDetails);
 			}else{
-				var villageDetails = [0, 100];
+				var villageDetails  = [0, 0];
 				villageInfoArr.push(villageDetails);
 			}
 			
 			
 		}
+	
 		$("#distSummaryBody").html(str);
 		
 		if( $('.mini-pie-chart-village').length > 0 ) {
@@ -1036,6 +1061,188 @@
 			}
 		});
 	});
+	
+	
+	function getConstituencyWiseCommittesSummary(){
+		var state = ''; 
+		
+		var selected = $("input[type='radio'][name='selectstate']:checked");
+		if (selected.length > 0) {
+			state = selected.val();
+		}
+		
+		var startDate = $(".dp_startDate").val();
+		var endDate=$(".dp_endDate").val();
+		
+		var jObj = {
+			startDate:startDate,
+			endDate:endDate,
+			state:state
+		}
+				
+		$.ajax({
+          type:'GET',
+          url: 'getConstituencyWiseCommittesSummaryAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+				buildConstiWiseSummary(result);	
+		});
+	}
+	
+	
+	var constiInfoArr = [];
+	var constiVillageInfoArr = [];
+	function buildConstiWiseSummary(result){
+		$("#headingId").html("CONSTITUENCY WISE COMMITTEES");
+		$("#tableHeadingId").html("CONSTITUENCY");
+		var str = '';
+		$("#distSummaryBody").html("");
+		for(var i in result){
+			str += '<tr>';
+			str += '<td ><a style="cursor:pointer;font-size: 13px;">'+result[i].name+'</a></td>';
+			if(result[i].townMandalDivisionVO!=null){
+				if(result[i].townMandalDivisionVO.totalCommittees!=null){
+					str += '<td>'+result[i].townMandalDivisionVO.totalCommittees+'</td>';
+				}else{
+					str += '<td> - </td>';
+				}
+				
+				if(result[i].townMandalDivisionVO.mainStarted!=null){
+					str += '<td>'+result[i].townMandalDivisionVO.mainStarted+'<span id="mini-pie-chart-constituency'+i+'" class="pull-right mini-pie-chart-district"></span></td>';
+				}else{
+					str += '<td> - </td>';
+				}
+				
+				if(result[i].townMandalDivisionVO.mainCompleted!=null){
+					str += '<td>'+result[i].townMandalDivisionVO.mainCompleted+'</td>';
+				}else{
+					str += '<td> - </td>';
+				}
+				
+				if(result[i].townMandalDivisionVO.membersCount!=null){
+					str += '<td>'+result[i].townMandalDivisionVO.membersCount+'</td>';
+				}else{
+					str += '<td> - </td>';
+				}
+				
+				if(result[i].townMandalDivisionVO.afflStarted!=null){
+					str += '<td>'+result[i].townMandalDivisionVO.afflStarted+'</td>';
+				}else{
+					str += '<td> - </td>';
+				}
+				
+				if(result[i].townMandalDivisionVO.afflCompleted!=null){
+					str += '<td>'+result[i].townMandalDivisionVO.afflCompleted+' </td>';
+				}else{
+					str += '<td> - </td>';
+				}
+			}else{
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+			}
+			
+			if(result[i].villageWardVO!=null){
+				if(result[i].villageWardVO.totalCommittees!=null){
+					str += '<td>'+result[i].villageWardVO.totalCommittees+'</td>';
+				}else{
+					str += '<td> - </td>';
+				}
+				
+				if(result[i].villageWardVO.mainStarted!=null){
+					str += '<td>'+result[i].villageWardVO.mainStarted+'<span id="mini-pie-chart-constiVillage'+i+'" class="pull-right mini-pie-chart-village"></span></td>';
+				}else{
+					str += '<td> - </td>';
+				}
+				
+				if(result[i].villageWardVO.mainCompleted!=null){
+					str += '<td>'+result[i].villageWardVO.mainCompleted+'</td>';
+				}else{
+					str += '<td> - </td>';
+				}
+				
+				if(result[i].villageWardVO.membersCount!=null){
+					str += '<td>'+result[i].villageWardVO.membersCount+' </td>';
+				}else{
+					str += '<td> - </td>';
+				}
+				
+				if(result[i].villageWardVO.afflStarted!=null){
+					str += '<td>'+result[i].villageWardVO.afflStarted+'</td>';
+				}else{
+					str += '<td> - </td>';
+				}
+				
+				if(result[i].villageWardVO.afflCompleted!=null){
+					str += '<td>'+result[i].villageWardVO.afflCompleted+' </td>';
+				}else{
+					str += '<td> - </td>';
+				}
+			}else{
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+			}
+			str += '</tr>';
+			
+			if(result[i].townMandalDivisionVO != null){
+				var details = [result[i].townMandalDivisionVO.startPerc, 100-parseInt(result[i].townMandalDivisionVO.startPerc,10)];
+				constiInfoArr.push(details);
+			}else{
+				 var details = [0];
+				constiInfoArr.push(details);
+			}
+			
+			
+			if(result[i].villageWardVO != null){
+				var villageDetails  = [result[i].villageWardVO.startPerc, 100-parseInt(result[i].villageWardVO.startPerc,10)];
+				constiVillageInfoArr.push(villageDetails);
+			}else{
+				var villageDetails  = [0, 0];
+				constiVillageInfoArr.push(villageDetails);
+			}
+			
+			
+		}
+	
+		$("#distSummaryBody").html(str);
+		
+		if( $('.mini-pie-chart-constiVillage').length > 0 ) {
+			var visitData2 = villageInfoArr;
+			var params = {
+				type: "pie",
+				 sliceColors: ["#0B3B0B", "#B18904"]
+
+			}
+			for(var e in result){
+				$('#mini-pie-chart-constiVillage'+e+'').sparkline(visitData2[e], params);
+			}
+		}
+		
+		
+		if($('.mini-pie-chart-constituency').length > 0 ) {
+			var visitData = constiInfoArr;
+			var params = {
+				type: "pie",
+				 sliceColors: ["#0B3B0B", "#B18904"]
+
+			}
+			for(var t in result){
+			
+				$('#mini-pie-chart-constituency'+t+'').sparkline(visitData[t], params);
+			}
+		}
+			
+	}
+	
+	
+	
 	</script>
 			   
 			   
