@@ -34,12 +34,18 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private static final Logger         		LOG = Logger.getLogger(CommitteeDashBoardAction.class);
 	
 	private CadreCommitteeReportVO          cadreCommitteeReportVO;
-	private List<CommitteeSummaryVO>    districtWiseSummaryList;
+	private List<CommitteeSummaryVO>    districtWiseSummaryList,constiWiseSummaryList;
 	private List<CadreCommitteeReportVO> cadreCommitteeReportVOList;
 	
 	
-	
-	
+
+	public List<CommitteeSummaryVO> getConstiWiseSummaryList() {
+		return constiWiseSummaryList;
+	}
+	public void setConstiWiseSummaryList(
+			List<CommitteeSummaryVO> constiWiseSummaryList) {
+		this.constiWiseSummaryList = constiWiseSummaryList;
+	}
 	public List<CommitteeSummaryVO> getDistrictWiseSummaryList() {
 		return districtWiseSummaryList;
 	}
@@ -219,6 +225,23 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 		}catch(Exception e){
 			LOG.error("Exception Occured In getDashBoardLocationWiseDetailsAction method "+e);
 		}
+		return Action.SUCCESS;
+	}
+	
+	
+	public String getConstituencyWiseCommittesSummary(){
+		LOG.debug(" Entered Into getConstituencyWiseCommittesSummary");
+		try{
+			jObj = new JSONObject(getTask());
+			String state =jObj.getString("state");
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate");
+			
+			constiWiseSummaryList = cadreCommitteeService.getConstituencyWiseCommittesSummary(state, startDate, endDate);
+		}catch (Exception e) {
+			LOG.error(" Exception Raised In getConstituencyWiseCommittesSummary" +e);
+		}
+		
 		return Action.SUCCESS;
 	}
 }
