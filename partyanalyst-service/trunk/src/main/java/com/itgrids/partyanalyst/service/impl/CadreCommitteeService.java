@@ -3510,4 +3510,197 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return committeeId;
 	}
+	
+	
+	
+	
+	public List<CommitteeSummaryVO> getConstituencyWiseCommittesSummary(String state,String startDate, String endDate){
+		LOG.debug("Entered Into getConstituencyWiseCommittesSummary");
+		List<CommitteeSummaryVO> constiLst = new ArrayList<CommitteeSummaryVO>();
+		try{
+			Long stateTypeId = 1l;
+			
+			if(state.equalsIgnoreCase("TS")){
+				stateTypeId = 2l;
+			}
+			
+			List<Object[]> constituencysList = constituencyDAO.getConstituenciesByStateId(1l, stateTypeId);
+			List<Long> constiIds = new ArrayList<Long>();
+			
+			if(constituencysList != null && constituencysList.size()>0){
+				for(Object[] obj:constituencysList){
+					CommitteeSummaryVO cv = new CommitteeSummaryVO();
+					cv.setConstiId(Long.valueOf(obj[0].toString()));
+					cv.setName(obj[1].toString());
+					constiIds.add(Long.valueOf(obj[0].toString()));
+					constiLst.add(cv);
+				}
+			}
+			
+			SimpleDateFormat format =  new SimpleDateFormat("MM/dd/yyyy");
+			
+			Date stDate = (Date)format.parse(startDate);
+			Date edDate = (Date)format.parse(endDate);
+			
+			List<Long> mandalMunciDivisionIds = new ArrayList<Long>();
+			mandalMunciDivisionIds.add(5l);
+			mandalMunciDivisionIds.add(7l);
+			mandalMunciDivisionIds.add(9l);
+			List<Object[]> memResLst = tdpCommitteeMemberDAO.membersCountConstituencyWise(mandalMunciDivisionIds, stDate, edDate, constiIds);
+			pushResultConstituencyWiseMemsCount("munci", memResLst, constiLst);
+			
+			List<Long> villageWardIds = new ArrayList<Long>();
+			villageWardIds.add(6l);
+			villageWardIds.add(8l);
+			List<Object[]> memResLstVill = tdpCommitteeMemberDAO.membersCountConstituencyWise(villageWardIds, stDate, edDate, constiIds);
+			pushResultConstituencyWiseMemsCount("village", memResLstVill, constiLst);
+			
+			
+			List<Object[]> stResLst = tdpCommitteeDAO.committeesCountByConstituency(mandalMunciDivisionIds, stDate, edDate, "started", constiIds);
+			List<Object[]> endResLst = tdpCommitteeDAO.committeesCountByConstituency(mandalMunciDivisionIds, stDate, edDate, "completed", constiIds);
+			pushResultConstiWise("munci", stResLst, constiLst, "start");
+			pushResultConstiWise("munci", endResLst, constiLst, "completed");
+			
+			List<Object[]> stResLstVill = tdpCommitteeDAO.committeesCountByConstituency(villageWardIds, stDate, edDate, "started", constiIds);
+			List<Object[]> endResLstVill = tdpCommitteeDAO.committeesCountByConstituency(villageWardIds, stDate, edDate, "completed", constiIds);
+			pushResultConstiWise("village", stResLstVill, constiLst, "start");
+			pushResultConstiWise("village", endResLstVill, constiLst, "completed");
+			
+			
+			if(constiLst!=null && constiLst.size()>0){
+				for(CommitteeSummaryVO temp:constiLst){
+					
+					if(temp.getTownMandalDivisionVO()!=null){
+						Long strt = temp.getTownMandalDivisionVO().getMainStarted();
+						Long cmpl = temp.getTownMandalDivisionVO().getMainCompleted();
+						
+						if(strt==null){strt = 0l;}
+						if(cmpl==null){cmpl = 0l;}
+						
+						Long total = strt + cmpl;
+						
+						if(total!=0){
+							temp.getTownMandalDivisionVO().setTotalCommittees(total);
+							String percentage = (new BigDecimal(strt*(100.0)/total)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+							temp.getTownMandalDivisionVO().setStartPerc(percentage);
+						}else{
+							temp.getVillageWardVO().setStartPerc("0.0");
+						}
+					}
+					
+					if(temp.getVillageWardVO()!=null){
+						Long strtv = temp.getVillageWardVO().getMainStarted();
+						Long cmplv = temp.getVillageWardVO().getMainCompleted();
+						
+						if(strtv==null){strtv = 0l;}
+						if(cmplv==null){cmplv = 0l;}
+						
+						Long totalv = strtv + cmplv;
+						
+						if(totalv!=0){
+							temp.getVillageWardVO().setTotalCommittees(totalv);
+							String percentage = (new BigDecimal(strtv*(100.0)/totalv)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+							temp.getVillageWardVO().setStartPerc(percentage);
+						}else{
+							temp.getVillageWardVO().setStartPerc("0.0");
+						}
+					}
+					
+				}
+			}
+			
+			
+			
+			
+		}catch (Exception e) {
+			LOG.error("Exception Raised in getConstituencyWiseCommittesSummary");
+		}
+		return constiLst;
+	}
+	
+	
+	public void pushResultConstituencyWiseMemsCount(String type,List<Object[]> memResLst, List<CommitteeSummaryVO> fnlLst){
+		if(memResLst!=null && memResLst.size()>0){
+			for(Object[] obj:memResLst){
+				CommitteeSummaryVO temp = getMatchedConstituency(Long.valueOf(obj[1].toString()), fnlLst);
+				if(temp==null){
+					temp = new CommitteeSummaryVO();
+				}
+				
+				if(type.equalsIgnoreCase("munci")){
+					if(temp.getTownMandalDivisionVO()==null){
+						temp.setTownMandalDivisionVO(new CommitteeSummaryVO());
+					}
+					temp.getTownMandalDivisionVO().setMembersCount(Long.valueOf(obj[0].toString()));
+				}else{
+					if(temp.getVillageWardVO()==null){
+						temp.setVillageWardVO(new CommitteeSummaryVO());
+					}
+					temp.getVillageWardVO().setMembersCount(Long.valueOf(obj[0].toString()));
+				}
+				
+			}
+		}
+	}
+	
+	public void pushResultConstiWise(String type,List<Object[]> memResLst, List<CommitteeSummaryVO> fnlLst, String resType){
+		if(memResLst!=null && memResLst.size()>0){
+			for(Object[] obj:memResLst){
+				CommitteeSummaryVO temp = getMatchedConstituency(Long.valueOf(obj[2].toString()), fnlLst);
+				
+				if(temp==null){
+					temp = new CommitteeSummaryVO();
+				}
+				
+				
+				if(type.equalsIgnoreCase("munci")){
+					if(temp.getTownMandalDivisionVO()==null){
+						temp.setTownMandalDivisionVO(new CommitteeSummaryVO());
+					}
+					if(Long.valueOf(obj[1].toString()).equals(1l)){
+						if(resType.equalsIgnoreCase("start")){	
+							temp.getTownMandalDivisionVO().setMainStarted(Long.valueOf(obj[0].toString()));
+						}else{
+							temp.getTownMandalDivisionVO().setMainCompleted(Long.valueOf(obj[0].toString()));
+						}
+					}else{
+						if(resType.equalsIgnoreCase("start")){
+							temp.getTownMandalDivisionVO().setAfflStarted(Long.valueOf(obj[0].toString()));
+						}else{
+							temp.getTownMandalDivisionVO().setAfflCompleted(Long.valueOf(obj[0].toString()));
+						}
+					}
+				}else{
+					if(temp.getVillageWardVO()==null){
+						temp.setVillageWardVO(new CommitteeSummaryVO());
+					}
+					if(Long.valueOf(obj[1].toString()).equals(1l)){
+						if(resType.equalsIgnoreCase("start")){	
+							temp.getVillageWardVO().setMainStarted(Long.valueOf(obj[0].toString()));
+						}else{
+							temp.getVillageWardVO().setMainCompleted(Long.valueOf(obj[0].toString()));
+						}
+					}else{
+						if(resType.equalsIgnoreCase("start")){	
+							temp.getVillageWardVO().setAfflStarted(Long.valueOf(obj[0].toString()));
+						}else{
+							temp.getVillageWardVO().setAfflCompleted(Long.valueOf(obj[0].toString()));
+						}
+					}
+				}
+				
+			}
+		}
+	}
+	
+	public CommitteeSummaryVO getMatchedConstituency(Long id, List<CommitteeSummaryVO> list){
+		if(id!=null && list!=null && list.size()>0){
+			for(CommitteeSummaryVO obj:list){
+				if(obj.getConstiId().equals(id)){
+					return obj;
+				}
+			}
+		}
+		return null;
+	}
 }
