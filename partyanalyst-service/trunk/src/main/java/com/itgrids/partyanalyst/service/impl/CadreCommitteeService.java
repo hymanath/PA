@@ -3264,13 +3264,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			
 			List<Object[]> stResLst = tdpCommitteeDAO.committeesCountByDistrict(mandalMunciDivisionIds, stDate, edDate, "started", distIds);
 			List<Object[]> endResLst = tdpCommitteeDAO.committeesCountByDistrict(mandalMunciDivisionIds, stDate, edDate, "completed", distIds);
-			pushResultDistrictWise("munci", stResLst, fnlLst);
-			pushResultDistrictWise("munci", endResLst, fnlLst);
+			pushResultDistrictWise("munci", stResLst, fnlLst, "start");
+			pushResultDistrictWise("munci", endResLst, fnlLst, "completed");
 			
 			List<Object[]> stResLstVill = tdpCommitteeDAO.committeesCountByDistrict(villageWardIds, stDate, edDate, "started", distIds);
 			List<Object[]> endResLstVill = tdpCommitteeDAO.committeesCountByDistrict(villageWardIds, stDate, edDate, "completed", distIds);
-			pushResultDistrictWise("village", stResLstVill, fnlLst);
-			pushResultDistrictWise("village", endResLstVill, fnlLst);
+			pushResultDistrictWise("village", stResLstVill, fnlLst, "start");
+			pushResultDistrictWise("village", endResLstVill, fnlLst, "completed");
 			
 			
 			if(fnlLst!=null && fnlLst.size()>0){
@@ -3279,19 +3279,37 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					if(temp.getTownMandalDivisionVO()!=null){
 						Long strt = temp.getTownMandalDivisionVO().getMainStarted();
 						Long cmpl = temp.getTownMandalDivisionVO().getMainCompleted();
+						
+						if(strt==null){strt = 0l;}
+						if(cmpl==null){cmpl = 0l;}
+						
 						Long total = strt + cmpl;
-						temp.getTownMandalDivisionVO().setTotalCommittees(total);
-						String percentage = (new BigDecimal(strt*(100.0)/total)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-						temp.getTownMandalDivisionVO().setStartPerc(percentage);
+						
+						if(total!=0){
+							temp.getTownMandalDivisionVO().setTotalCommittees(total);
+							String percentage = (new BigDecimal(strt*(100.0)/total)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+							temp.getTownMandalDivisionVO().setStartPerc(percentage);
+						}else{
+							temp.getVillageWardVO().setStartPerc("0.0");
+						}
 					}
 					
 					if(temp.getVillageWardVO()!=null){
 						Long strtv = temp.getVillageWardVO().getMainStarted();
 						Long cmplv = temp.getVillageWardVO().getMainCompleted();
+						
+						if(strtv==null){strtv = 0l;}
+						if(cmplv==null){cmplv = 0l;}
+						
 						Long totalv = strtv + cmplv;
-						temp.getVillageWardVO().setTotalCommittees(totalv);
-						String percentage = (new BigDecimal(strtv*(100.0)/totalv)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-						temp.getVillageWardVO().setStartPerc(percentage);
+						
+						if(totalv!=0){
+							temp.getVillageWardVO().setTotalCommittees(totalv);
+							String percentage = (new BigDecimal(strtv*(100.0)/totalv)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+							temp.getVillageWardVO().setStartPerc(percentage);
+						}else{
+							temp.getVillageWardVO().setStartPerc("0.0");
+						}
 					}
 					
 				}
@@ -3330,7 +3348,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 	}
 	
-	public void pushResultDistrictWise(String type,List<Object[]> memResLst, List<CommitteeSummaryVO> fnlLst){
+	public void pushResultDistrictWise(String type,List<Object[]> memResLst, List<CommitteeSummaryVO> fnlLst, String resType){
 		if(memResLst!=null && memResLst.size()>0){
 			for(Object[] obj:memResLst){
 				CommitteeSummaryVO temp = getMatchedDistrict(Long.valueOf(obj[2].toString()), fnlLst);
@@ -3345,22 +3363,34 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						temp.setTownMandalDivisionVO(new CommitteeSummaryVO());
 					}
 					if(Long.valueOf(obj[1].toString()).equals(1l)){
-						temp.getTownMandalDivisionVO().setMainStarted(Long.valueOf(obj[0].toString()));
-						temp.getTownMandalDivisionVO().setMainCompleted(Long.valueOf(obj[0].toString()));
+						if(resType.equalsIgnoreCase("start")){	
+							temp.getTownMandalDivisionVO().setMainStarted(Long.valueOf(obj[0].toString()));
+						}else{
+							temp.getTownMandalDivisionVO().setMainCompleted(Long.valueOf(obj[0].toString()));
+						}
 					}else{
-						temp.getTownMandalDivisionVO().setAfflStarted(Long.valueOf(obj[0].toString()));
-						temp.getTownMandalDivisionVO().setAfflCompleted(Long.valueOf(obj[0].toString()));
+						if(resType.equalsIgnoreCase("start")){
+							temp.getTownMandalDivisionVO().setAfflStarted(Long.valueOf(obj[0].toString()));
+						}else{
+							temp.getTownMandalDivisionVO().setAfflCompleted(Long.valueOf(obj[0].toString()));
+						}
 					}
 				}else{
 					if(temp.getVillageWardVO()==null){
 						temp.setVillageWardVO(new CommitteeSummaryVO());
 					}
 					if(Long.valueOf(obj[1].toString()).equals(1l)){
-						temp.getVillageWardVO().setMainStarted(Long.valueOf(obj[0].toString()));
-						temp.getVillageWardVO().setMainCompleted(Long.valueOf(obj[0].toString()));
+						if(resType.equalsIgnoreCase("start")){	
+							temp.getVillageWardVO().setMainStarted(Long.valueOf(obj[0].toString()));
+						}else{
+							temp.getVillageWardVO().setMainCompleted(Long.valueOf(obj[0].toString()));
+						}
 					}else{
-						temp.getVillageWardVO().setAfflStarted(Long.valueOf(obj[0].toString()));
-						temp.getVillageWardVO().setAfflCompleted(Long.valueOf(obj[0].toString()));
+						if(resType.equalsIgnoreCase("start")){	
+							temp.getVillageWardVO().setAfflStarted(Long.valueOf(obj[0].toString()));
+						}else{
+							temp.getVillageWardVO().setAfflCompleted(Long.valueOf(obj[0].toString()));
+						}
 					}
 				}
 				
