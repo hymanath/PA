@@ -40,7 +40,7 @@
 </head>
 
 <body>
-		<header style="align:center;padding:10px;background:rgba(255,0,51,0.8); border-bottom:6px solid rgba(19,167,81,0.8);display:flex">
+		<!--<header style="align:center;padding:10px;background:rgba(255,0,51,0.8); border-bottom:6px solid rgba(19,167,81,0.8);display:flex">
 		 	<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12 text-center">
 				<img src="images/cadreCommitee/committee_logo.png" title="Committee Logo" alt="committee" />
 			</div>
@@ -55,7 +55,7 @@
 				  <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
 				</ul>
             </div>
-		</header>
+		</header>-->
         <div class="container">
         	<!--Content Start-->
             <div class="row" style="text-align:center;">
@@ -128,6 +128,7 @@
 			 
 			 </div>
 			 <div class="row" id="resultStatusId">
+				
              </div>
 
 
