@@ -354,7 +354,7 @@
 					
 				<!-- Summary Block For POPUP	-->		
 				
-				<div class="container">
+				<div class="container" style="width:881px;">
 					<!--Content Start-->
 					<div class="row" style="text-align:center;">
 						<div class="col-md-6 col-md-offset-3">
