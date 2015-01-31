@@ -17,6 +17,8 @@
 	<!----slick Js----->
 	<script type="text/javascript" src="js/cadreCommittee/slick/slick.min.js"></script>
 	<script type="text/javascript" src="js/cadreCommitteeRequest/cadreCommitteeRequest.js"></script>
+	<script src="js/cadreCommittee/bootstrap.min.js"></script>
+			 <link href="css/cadreCommitee/bootstrap.min.css" rel="stylesheet">
 	<style>
      	#committeeLocationIdErr,#committeeTypeIdErr,#afflitCommitteeIdErr,#committeePositionIdErr,#maxPositionsErrId
 	    {
