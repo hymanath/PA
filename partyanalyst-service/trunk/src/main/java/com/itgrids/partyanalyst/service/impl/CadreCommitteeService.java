@@ -1229,7 +1229,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						
 						tdpCommitteeMemberHistory.setUserId(tdpCommitteeMember.getInsertedUserId());
 						tdpCommitteeMemberHistory.setInsertedUserId(userId);
-						
+						tdpCommitteeMemberHistory.setHistoryInsertedTime(dateUtilService.getCurrentDateAndTime());
 						tdpCommitteeMemberHistoryDAO.save(tdpCommitteeMemberHistory);
 					} catch (Exception e) {
 						LOG.error("Exception raised in saveCadreCommitteDetails when inserting in history table ", e);
