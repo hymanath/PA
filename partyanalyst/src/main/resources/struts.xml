@@ -9579,5 +9579,12 @@
 				<param name="root">cadreCommitteeReportVOList</param>
 			</result>
 		</action>
+		
+		<action name="getConstituencyWiseCommittesSummaryAction" class="committeeDashBoardAction" method="getConstituencyWiseCommittesSummary">
+			<result type="json" name="success">
+				<param name="root">constiWiseSummaryList</param>
+			</result>
+		</action>
+		
 </package>
 </struts>      
