@@ -1131,8 +1131,12 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		
 		try{
 			
-			Long requestUserId=regVO.getRegistrationID(); 
-			approvalRecordsList = cadreCommitteeService.getCommitteesForApproval(null, null,requestUserId);
+			Long requestUserId=regVO.getRegistrationID();
+			String type=request.getParameter("type");
+			if(type.equalsIgnoreCase("positionsIncreased"))
+			  approvalRecordsList = cadreCommitteeService.getCommitteesForApproval(null, null,requestUserId);
+			else if(type.equalsIgnoreCase("changeDesignations"))
+			  approvalRecordsList = cadreCommitteeService.changeDesignationRecordsForAUser(requestUserId);	
 		}catch (Exception e) {
 			LOG.error(" Exception Raised in getCommitteesForApproval " + e);
 		}
@@ -1187,5 +1191,4 @@ public String getSummaryDetails(){
 		}
 		return Action.SUCCESS;
 	}*/
-	
 }
