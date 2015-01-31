@@ -361,4 +361,36 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		return query.list();
 		
 	}
+	
+	
+public List<Object[]> membersCountConstituencyWise(List<Long> levelIds, Date startDate, Date endDate, List<Long> constiIds){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select count(model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.constituency.constituencyId " +
+				" from TdpCommitteeMember model " +
+				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId in (:levelIds)" +
+				" and model.tdpCommitteeRole.tdpCommittee.constituency.constituencyId in (:constiIds)");
+		
+		if(startDate!=null){
+			sb.append(" and date(model.insertedTime) >= :startDate ");
+		}
+		if(endDate!=null){
+			sb.append(" and date(model.insertedTime) <= :endDate");
+		}
+		sb.append(" group by model.tdpCommitteeRole.tdpCommittee.constituency.constituencyId ");
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		query.setParameterList("levelIds", levelIds);
+		if(startDate!=null){
+			query.setParameter("startDate", startDate);
+		}
+		if(endDate!=null){
+			query.setParameter("endDate", endDate);
+		}
+		
+		query.setParameterList("constiIds", constiIds);
+		
+		return query.list();
+	}
 }
