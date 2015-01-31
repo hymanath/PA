@@ -282,11 +282,11 @@
                 <div class="col-md-10 col-xs-12 col-sm-12">
                     <h4 id="headingId" class="text-success" style="display:inline-block">DISTRICT WISE COMMITTEES</h4>
 					 <span class="btn btn-success btn-xs form-inline">
-						<label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="stateRd" value="AP" name="selectstate" checked="true">&nbsp;AP &nbsp;&nbsp;&nbsp;</label>
+						<label class="radio"><input type="radio" id="APId" style="vertical-align: text-bottom;" class="stateRd" value="AP" name="selectstate" checked="true">&nbsp;AP &nbsp;&nbsp;&nbsp;</label>
 						<label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="stateRd" value="TS" name="selectstate">&nbsp;TS &nbsp;&nbsp;&nbsp;</label>
 					</span>
 					 <span class="btn btn-success btn-xs form-inline">
-						<label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="levelRd" value="district" name="select" checked="true">&nbsp;District &nbsp;&nbsp;&nbsp;</label>
+						<label class="radio"><input type="radio" id="districtId" style="vertical-align: text-bottom;" class="levelRd" value="district" name="select" checked="true">&nbsp;District &nbsp;&nbsp;&nbsp;</label>
 						<label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="levelRd" value="consti" name="select">&nbsp;Constituency &nbsp;&nbsp;&nbsp;</label>
 					</span>
 					
@@ -486,6 +486,8 @@
 					getCommitteeDetails("AP","villageAll");	
 					getCommitteeDetails("TS","mandalAll");	
 					getCommitteeDetails("TS","villageAll");
+					$('input:radio[name="selectstate"][id="APId"]').prop('checked', true);
+					$('input:radio[name="select"][id="districtId"]').prop('checked', true);
 					getDistrictWiseCommittesSummary();
 					
 	});
@@ -955,7 +957,7 @@
 		console.log(result);
 				if(type == 'main'){
 					var str='';
-					str+='<ul style="padding-left:0px; width:272px;margin-left:-14px;">';					
+					str+='<ul style="padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;">';					
 						for(var i in result){
 							str+='<li class="list-group-item "><span class="badge">'+result[i].membersCount+'</span>1 MEMBER COMMITTEE</li>';
 							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount1+'</span>2-4 MEMBER COMMITTEES</li>';
