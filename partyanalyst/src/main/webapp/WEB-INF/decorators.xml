@@ -138,7 +138,7 @@
         <pattern>/tdpCadreVolunteerAction*</pattern>
 		<pattern>/cadreIvrEnquiryAction*</pattern>        
         <pattern>/publicMembershipCardStatusAction*</pattern>
-		 <pattern>/cadreCommitteeAction*</pattern>
+		 
 		 <pattern>/cadreProfileDetailsAction*</pattern>
 		 <pattern>/assignCadreToCommittee*</pattern>
 		 
@@ -383,5 +383,7 @@
 	 </decorator>
 	  <decorator name="committeelayout" page="committeelayout.jsp">
 		<pattern>/cadreCommitteeSummaryAction*</pattern>
+		<pattern>/cadreCommitteeAction*</pattern>
+		
 	  </decorator>
 </decorators>
