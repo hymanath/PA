@@ -33,6 +33,11 @@ public class CommitteeApprovalVO implements Serializable{
 	private Long rejectedCount;
 	private Long approvedCount;
 	private Long totalCount;
+	
+	private String dateString;
+	private String currentRole;
+	private String newRole;
+	private String memberShipNo;
 	public Long getTotalCount() {
 		return totalCount;
 	}
@@ -180,6 +185,30 @@ public class CommitteeApprovalVO implements Serializable{
 	}
 	public void setRefNo(String refNo) {
 		this.refNo = refNo;
+	}
+	public String getDateString() {
+		return dateString;
+	}
+	public void setDateString(String dateString) {
+		this.dateString = dateString;
+	}
+	public String getCurrentRole() {
+		return currentRole;
+	}
+	public void setCurrentRole(String currentRole) {
+		this.currentRole = currentRole;
+	}
+	public String getNewRole() {
+		return newRole;
+	}
+	public void setNewRole(String newRole) {
+		this.newRole = newRole;
+	}
+	public String getMemberShipNo() {
+		return memberShipNo;
+	}
+	public void setMemberShipNo(String memberShipNo) {
+		this.memberShipNo = memberShipNo;
 	}
 	
 	
