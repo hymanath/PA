@@ -69,4 +69,6 @@ public interface ICadreCommitteeService {
 	public List<CommitteeSummaryVO> getDistrictWiseCommittesSummary(String state,String startDate, String endDate);
 	public ResultStatus cadreCommitteeIncreasedPositionsOrChangeDesignations(final Long tdpCommitteeRoleId,final Long requestUserId,final Long currentmaxPositions,final Long requestedMaxPositions,final String type,final List<LocationWiseBoothDetailsVO> changeDesignationsList,final Long committeeId );
 	public Long gettingCommitteeIdForMainCommittee(Long levelId,Long levelValue);
+	
+	public List<CommitteeSummaryVO> getConstituencyWiseCommittesSummary(String state,String startDate, String endDate);
 }
