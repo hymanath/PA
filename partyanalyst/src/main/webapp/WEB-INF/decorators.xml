@@ -384,7 +384,8 @@
 	  <decorator name="committeelayout" page="committeelayout.jsp">
 		<pattern>/cadreCommitteeSummaryAction*</pattern>
 		<pattern>/cadreCommitteeAction*</pattern>
-		<pattern>/committeeDashBoardAction*</pattern> 
+		<pattern>/committeeDashBoardAction*</pattern>
+		<pattern>/cadreCommitteeRequestAction*</pattern> 
 		
 	  </decorator>
 </decorators>
