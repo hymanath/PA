@@ -833,7 +833,7 @@
 			str += '</tr>';
 			
 			if(result[i].townMandalDivisionVO != null){
-				var details = [result[i].townMandalDivisionVO.startPerc, 100-parseInt(result[i].townMandalDivisionVO.startPerc,10)];
+				var details = [result[i].townMandalDivisionVO.totalCommittees, 100-parseInt(result[i].townMandalDivisionVO.startPerc,10)];
 				districtInfoArr.push(details);
 			}else{
 				var details = [0, 100];
@@ -842,7 +842,7 @@
 			
 			
 			if(result[i].villageWardVO != null){
-				var villageDetails = [result[i].villageWardVO.startPerc, 100-parseInt(result[i].villageWardVO.startPerc,10)];
+				var villageDetails = [result[i].villageWardVO.totalCommittees, 100-parseInt(result[i].villageWardVO.startPerc,10)];
 				villageInfoArr.push(villageDetails);
 			}else{
 				var villageDetails = [0, 100];
