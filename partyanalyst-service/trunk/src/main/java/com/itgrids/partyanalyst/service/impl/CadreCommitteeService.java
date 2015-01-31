@@ -1174,6 +1174,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	//	try {
 			boolean isEligible = true;
 			boolean isExist = false;
+			Long oldCommitteeId = null;
 			List<Object[]> cadreCommitteeInfo = tdpCommitteeMemberDAO.getMemberInfo(tdpCadreId);
 			if(cadreCommitteeInfo != null && cadreCommitteeInfo.size()>0)
 			{
@@ -1213,6 +1214,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					}
 					
 					try {
+						oldCommitteeId = tdpCommitteeMember.getTdpCommitteeRole().getTdpCommitteeId();
 						TdpCommitteeMemberHistory tdpCommitteeMemberHistory = new TdpCommitteeMemberHistory();
 						
 						tdpCommitteeMemberHistory.setTdpCommitteeMemberId(tdpCommitteeMember.getTdpCommitteeMemberId());
@@ -1263,6 +1265,9 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					tdpCommittee.setStartedDate(dateUtilService.getCurrentDateAndTime());
 					tdpCommitteeDAO.save(tdpCommittee);
 				}
+				if(oldCommitteeId != null && oldCommitteeId.longValue() > 0){
+					updateCommitteeStartedStatus(oldCommitteeId);
+				}
 				status.setMessage(" Cadre Added To Committee Successfully... ");
 				status.setResultCode(0);
 			}
@@ -1280,6 +1285,15 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return status;
 	}
 	
+	public void updateCommitteeStartedStatus(Long tdpCommitteId){
+		Long membersCnt = tdpCommitteeMemberDAO.getCommitteMembers(tdpCommitteId);
+		if(membersCnt == null || membersCnt == 0)
+		{
+			TdpCommittee tdpCommittee = tdpCommitteeDAO.get(tdpCommitteId);
+			tdpCommittee.setStartedDate(null);
+			tdpCommitteeDAO.save(tdpCommittee);
+		}
+	}
 	public List<CadrePreviousRollesVO> getCadreEligiableRoles(Long tdpCadreId){
 		List<CadrePreviousRollesVO> rolesList = new ArrayList<CadrePreviousRollesVO>();
 			try{
@@ -2386,7 +2400,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		List<Long> levelIds = new ArrayList<Long>();
 		//List<CadreCommitteeMemberVO> toRemove = new ArrayList<CadreCommitteeMemberVO>();
 		Long constituencyId=Long.parseLong(accessValue);
-		List<Object[]> list = null;
+		List<Object[]> list = new ArrayList<Object[]>();
 		try{
 			
 			if(levelId == 2)
@@ -2406,12 +2420,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				
 				if(locationsList != null && locationsList.size() > 0)
 				{
-					Set<Long> locationValues =new HashSet<Long>();
-					List<Long> locations = null;
-					//mandalOrMuncipalMap = new HashMap<Long, List<Long>>();
 					List<Long> mandalIds = new ArrayList<Long>();
 					List<Long> muncipalIds = new ArrayList<Long>();
 					List<Long> divisionIds = new ArrayList<Long>();
+					
 					for (LocationWiseBoothDetailsVO locationWiseBoothDetailsVO : locationsList)
 					{	
 						char ch=(locationWiseBoothDetailsVO.getLocationId().toString().charAt(0));
@@ -2433,13 +2445,17 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						{
 							divisionIds.add(Long.parseLong(locationWiseBoothDetailsVO.getLocationId().toString().substring(1)));
 							//mandalOrMuncipalMap.put(3l, divisionIds);
-						}
-						locationValues.addAll(muncipalIds);
-						locationValues.addAll(mandalIds);
-						locationValues.addAll(divisionIds);
-						locations = new ArrayList<Long>(locationValues);		
+						}		
 					}
-					list = tdpCommitteeDAO.getLocationsByTypeIdAndLevel(levelIds,basicCommitteeTypeId,locations,status);
+					if(muncipalIds.size() > 0){
+						list.addAll(tdpCommitteeDAO.getLocationsByTypeIdAndLevel(7l,basicCommitteeTypeId,muncipalIds,status));
+					}
+					if(mandalIds.size() > 0){
+						list.addAll(tdpCommitteeDAO.getLocationsByTypeIdAndLevel(5l,basicCommitteeTypeId,mandalIds,status));
+					}
+					if(divisionIds.size() > 0){
+						list.addAll(tdpCommitteeDAO.getLocationsByTypeIdAndLevel(9l,basicCommitteeTypeId,divisionIds,status));
+					}
 				}
 					
 			}

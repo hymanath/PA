@@ -78,11 +78,11 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 				" model.tdpCommitteeLevel.tdpCommitteeLevelId in(:levelIds) and " +
 				" model.tdpBasicCommittee.tdpBasicCommitteeId =:committeTypeId and model.constituency.constituencyId =:constituencyId");
 		if(status.equalsIgnoreCase("Conform"))
-			str.append(" and model.startedDate is not null and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
+			str.append(" and  model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
 			else if(status.equalsIgnoreCase("Started"))
 			str.append(" and model.startedDate is not null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
 			else if(status.equalsIgnoreCase("NotStarted"))
-			str.append(" and model.startedDate is null");
+			str.append(" and model.startedDate is null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
 		str.append(" group by model.tdpCommitteeLevel.tdpCommitteeLevelId,model.tdpCommitteeLevelValue");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameterList("levelIds", levelIds);
@@ -91,22 +91,22 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 	}
 	
-	public List<Object[]> getLocationsByTypeIdAndLevel(List<Long> levelIds,Long committeTypeId,List<Long> locationValues,String status)
+	public List<Object[]> getLocationsByTypeIdAndLevel(Long levelId,Long committeTypeId,List<Long> locationValues,String status)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select model.tdpCommitteeLevelValue,model.isCommitteeConfirmed,model.tdpCommitteeLevelId from TdpCommittee model where " +
-				" model.tdpCommitteeLevel.tdpCommitteeLevelId in(:levelIds) and " +
+				" model.tdpCommitteeLevel.tdpCommitteeLevelId =:levelId and " +
 				" model.tdpBasicCommittee.tdpBasicCommitteeId =:committeTypeId and model.tdpCommitteeLevelValue in(:locationValues)");
 		
 		if(status.equalsIgnoreCase("Conform"))
-		str.append(" and model.startedDate is not null and model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
+		str.append(" and  model.completedDate is not null and model.isCommitteeConfirmed = 'Y' ");
 		else if(status.equalsIgnoreCase("Started"))
 			str.append(" and model.startedDate is not null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
 		else if(status.equalsIgnoreCase("NotStarted"))
-		str.append(" and model.startedDate is null");
+		str.append(" and model.startedDate is null and model.isCommitteeConfirmed = 'N' and model.completedDate is null");
 		str.append(" group by model.tdpCommitteeLevel.tdpCommitteeLevelId,model.tdpCommitteeLevelValue");
 		Query query = getSession().createQuery(str.toString());
-		query.setParameterList("levelIds", levelIds);
+		query.setParameter("levelId", levelId);
 		query.setParameter("committeTypeId", committeTypeId);
 		query.setParameterList("locationValues", locationValues);
 		return query.list();
