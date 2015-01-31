@@ -2776,4 +2776,10 @@
 	 <bean id="cadreCommitteeIncreasedPositionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreCommitteeIncreasedPositionsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="tdpCommitteeMemberDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCommitteeMemberDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="tdpCommitteeDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCommitteeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>
