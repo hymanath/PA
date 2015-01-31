@@ -35,4 +35,6 @@ public interface ITdpCommitteeMemberDAO  extends GenericDao<TdpCommitteeMember, 
 	public List<Object[]> getCommitteStatusAndId(Long tdpCommitteMemberId);
 	public Long getCommitteMembers(Long tdpCommitteeId);
 	public List<Object[]> getCommitteeDetails(Long committeeId);
+	
+	public List<Object[]> membersCountConstituencyWise(List<Long> levelIds, Date startDate, Date endDate, List<Long> constiIds);
 }
