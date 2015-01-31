@@ -574,8 +574,8 @@
 						$("#div5").html(result.afflCommittees);
 						
 
-						//$("#div6").html('<a id=\''+level+'IdAPAffl\' class="btn" onClick="getAflCommitteeCount(\'AP\',\''+level+'\')">'+result.affliatedCompleted+'</a>');
-						$("#div6").html(result.affliatedCompleted);
+						$("#div6").html('<a id=\''+level+'IdAPAffl\' class="btn" onClick="getAflCommitteeCount(\'AP\',\''+level+'\')">'+result.affliatedCompleted+'</a>');
+						//$("#div6").html(result.affliatedCompleted);
 						//$("#div31").html(result.affliatedCompletedPerc);
 												
 						$("#div7").html(result.membersCount);
@@ -604,8 +604,8 @@
 						$("#div12").html(result.afflCommittees);
 						
 						$("#div13").html(result.affliatedCompleted);
-						if(result.completedCommittees > 0 && result.completedCommittees != null)
-						//$("#div13").html('<a id=\''+level+'IdAPAffl\' class="btn" onClick="getAflCommitteeCount(\'AP\',\''+level+'\')">'+result.affliatedCompleted+'</a>');
+						//if(result.completedCommittees > 0 && result.completedCommittees != null)
+						$("#div13").html('<a id=\''+level+'IdAPAffl\' class="btn" onClick="getAflCommitteeCount(\'AP\',\''+level+'\')">'+result.affliatedCompleted+'</a>');
 						
 						//$("#div34").html(result.affliatedCompletedPerc);
 												
@@ -638,8 +638,8 @@
 						$("#div19").html(result.afflCommittees);
 						
 						//$("#div37").html(result.affliatedCompletedPerc);
-						$("#div20").html(result.affliatedCompleted);
-						//$("#div20").html('<a id=\''+level+'IdTSAffl\' class="btn" onClick="getAflCommitteeCount(\'TS\',\''+level+'\')">['+result.affliatedCompleted+']</a>');
+						//$("#div20").html(result.affliatedCompleted);
+						$("#div20").html('<a id=\''+level+'IdTSAffl\' class="btn" onClick="getAflCommitteeCount(\'TS\',\''+level+'\')">'+result.affliatedCompleted+'</a>');
 												
 						$("#div21").html(result.membersCount);
 					
@@ -669,8 +669,8 @@
 						$("#div26").html(result.afflCommittees);
 						
 						//$("#div40").html(result.affliatedCompletedPerc);
-						$("#div27").html(result.affliatedCompleted);
-						//$("#div27").html('<a id=\''+level+'IdTSAffl\' class="btn" onClick="getAflCommitteeCount(\'TS\',\''+level+'\')">['+result.affliatedCompleted+']</a>');											
+						//$("#div27").html(result.affliatedCompleted);
+						$("#div27").html('<a id=\''+level+'IdTSAffl\' class="btn" onClick="getAflCommitteeCount(\'TS\',\''+level+'\')">'+result.affliatedCompleted+'</a>');											
 						$("#div28").html(result.membersCount);	
 					}
 				}
@@ -862,7 +862,7 @@
 				var details = [result[i].townMandalDivisionVO.startPerc, 100-parseInt(result[i].townMandalDivisionVO.startPerc,10)];
 				districtInfoArr.push(details);
 			}else{
-				 var details = [0];
+				 var details = [0, 0];
 				districtInfoArr.push(details);
 			}
 			
@@ -954,7 +954,7 @@
           url: 'getMembersRangeCountByLocationAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
-		console.log(result);
+		
 				if(type == 'main'){
 					var str='';
 					str+='<ul style="padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;">';					
@@ -972,9 +972,135 @@
 						content: str
 								
 					});
-						
-					$('#'+level+'Id'+state+'').addClass("clearCls");
-					$('#'+level+'Id'+state+'').popover("show");
+					
+					if(!$('#'+level+'Id'+state+'').hasClass("clearCls")){
+						$('#'+level+'Id'+state+'').addClass("clearCls");
+						$('#'+level+'Id'+state+'').popover("show");
+					}else{
+						$('#'+level+'Id'+state+'').removeClass("clearCls");
+					}
+				}
+				else if(type == 'affl'){
+					var str='';
+					str+='<ul style="padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;">';					
+						for(var i in result){
+							str+='<li class="list-group-item "><span class="badge">'+result[i].membersCount+'</span>1 MEMBER COMMITTEE</li>';
+							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount1+'</span>2-4 MEMBER COMMITTEES</li>';
+							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount2+'</span>5-7 MEMBER COMMITTEES</li>';
+							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount3+'</span>ABOVE 7 MEMBER COMMITTEES</li>';
+						}
+					str+='</ul>';
+					var popOverSettings = { 
+						placement: 'left',
+						container: 'body',
+						html: true,
+						title : '',
+						content:"<div style='color:red'>This is your div content</div>"
+						/* content: function () {
+							return $('#popover-content').html();
+						} */
+					}
+					$("#"+id).popover(popOverSettings);
+				}
+				
+					
+		});
+	}
+	
+	function getMainCommitteeMembersCount1(state,level,type,committeeId,id){
+		
+		var startDate=$(".dp_startDate").val();
+		var endDate=$(".dp_endDate").val();
+		
+		var levelIdsArr = new Array();
+		var state = state; 
+		if(level == 'mandal')
+		{
+		   levelIdsArr.push(5);
+		}else if(level == 'town')
+		{
+		   levelIdsArr.push(7);
+		}else if(level == 'division')
+		{
+		   levelIdsArr.push(9);
+		}else if(level == 'village')
+		{
+		   levelIdsArr.push(6);
+		}else if(level == 'ward')
+		{
+		   levelIdsArr.push(8);
+		}else if(level == 'mandalAll')
+		{
+		    levelIdsArr.push(5);
+			levelIdsArr.push(7);
+			levelIdsArr.push(9);
+		}else if(level == 'villageAll')
+		{
+		    levelIdsArr.push(6);
+			levelIdsArr.push(8);
+		}
+		var state = state; 
+		var jObj = {
+			state:state,
+			levelIdsArr:levelIdsArr,
+			startDate  :startDate,
+			endDate    :endDate,
+			committeeId:committeeId,
+			task:"mainCommitteeMemberCnt",
+		}
+				
+		$.ajax({
+          type:'GET',
+          url: 'getMembersRangeCountByLocationAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+		
+				if(type == 'main'){
+					var str='';
+					str+='<ul style="padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;">';					
+						for(var i in result){
+							str+='<li class="list-group-item "><span class="badge">'+result[i].membersCount+'</span>1 MEMBER COMMITTEE</li>';
+							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount1+'</span>2-4 MEMBER COMMITTEES</li>';
+							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount2+'</span>5-7 MEMBER COMMITTEES</li>';
+							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount3+'</span>ABOVE 7 MEMBER COMMITTEES</li>';
+						}
+					str+='</ul>';
+					$('#'+level+'Id'+state+'').popover({
+						html: true,
+						placement: "bottom",
+						title: '',
+						content: str
+								
+					});
+					
+					if(!$('#'+level+'Id'+state+'').hasClass("clearCls")){
+						$('#'+level+'Id'+state+'').addClass("clearCls");
+						$('#'+level+'Id'+state+'').popover("show");
+					}else{
+						$('#'+level+'Id'+state+'').removeClass("clearCls");
+					}
+				}
+				else if(type == 'affl'){
+					var str='';
+					str+='<ul style="padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;">';					
+						for(var i in result){
+							str+='<li class="list-group-item resListLi"><span class="badge">'+result[i].membersCount+'</span>1 MEMBER COMMITTEE</li>';
+							str+='<li class="list-group-item resListLi"><span class="badge">'+result[i].membersCount1+'</span>2-4 MEMBER COMMITTEES</li>';
+							str+='<li class="list-group-item resListLi"><span class="badge">'+result[i].membersCount2+'</span>5-7 MEMBER COMMITTEES</li>';
+							str+='<li class="list-group-item resListLi"><span class="badge">'+result[i].membersCount3+'</span>ABOVE 7 MEMBER COMMITTEES</li>';
+						}
+					str+='</ul>';
+					var popOverSettings = { 
+						placement: 'left',
+						container: 'body',
+						html: true,
+						title : '',
+						content:str
+						/* content: function () {
+							return $('#popover-content').html();
+						} */
+					}
+					$("#"+id).popover(popOverSettings);
 				}
 				
 					
@@ -1027,13 +1153,13 @@
           url: 'getStartedAffliCommitteesCountByLocation.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
-		console.log(result);
-				
 					var str1='';
-					str1+='<ul style="padding-left:0px; width:272px;margin-left:-14px; font-size: 11px; ">';	
+					str1+='<ul multilevelul style="padding-left:0px; width:272px;margin-left:-14px; font-size: 11px; ">';	
 					//str1+='<ul class="dropdown-menu arrow_box list-group"><div class="panel panel-default m_bottom0"><div class="panel-heading m_top0">COMMITTEE TYPE<span class="pull-right">TOTAL</span></div></div>';
 					for(var i in result){  
-					str1+='<li class=""><a onClick="getAfflCommitteeMembersCount(\''+state+'\',\''+level+'\',\'affl\',\''+result[i].id+'\')" id="\''+level+'IdAffl'+state+'">'+result[i].name+'<span class="pull-right">'+result[i].afflCommittees+'</span></a></li></li>';
+					str1+='<li class="list-group-item multiLevelLiA" attr_state='+state+' attr_level='+level+' attr_type="affl" attr_resId='+result[i].id+' id="'+level+'IdAffl'+state+''+result[i].id+'" ><a  class="multiLevelCls multilevelli" >'+result[i].name+'<span class="badge pull-right">'+result[i].afflCommittees+'</span></a></li>';
+					
+					//str1+='<li class="list-group-item multiLevelLiA" attr_state='+state+' attr_level='+level+' attr_type="affl" attr_resId=1 id="'+level+'IdAffl'+state+'1"><a     class="multiLevelCls multilevelli" >'+result[i].name+'<span class="pull-right badge">'+result[i].afflCommittees+'</span></a></li>';
 					} 
 					str1+='</ul>';
 					$('#'+level+'Id'+state+'Affl').popover({
@@ -1041,30 +1167,86 @@
 						placement: "bottom",
 						title: '',
 						content: str1
-								
 					});
-						
-					$('#'+level+'Id'+state+'Affl').addClass("clearCls");
-					$('#'+level+'Id'+state+'Affl').popover("show");
-			
+					
+					if(!$('#'+level+'Id'+state+'Affl').hasClass("clearCls")){
+						$('#'+level+'Id'+state+'Affl').addClass("clearCls");
+						$('#'+level+'Id'+state+'Affl').popover("show");
+					}
 					
 		});
 	}
 	
-	$('body').on('click', function (e) {
-		$('.clearCls').each(function () {
-			var attrId= $(this).attr("id");
-			
-			if(!$(this).is(e.target) && $(this).has(e.target).length === 0 && $(this).has(e.target).length === 0) {
-			
-				$("#"+attrId).popover('hide');
-				$("#"+attrId).removeClass('clearCls');
-			
-			}
-		});
+	$(document).on("click",".multiLevelLiA",function(){
+		//debugger;
+		/* if(!$(this).hasClass("multiLevelCls")){
+			$(this).parent().parent().closest("a").find(".multiLevelCls").removeClass("multiLevelCls");
+			$(this).addClass("multiLevelCls");
+		}else{
+			$(this).removeClass("multiLevelCls");
+		} */
+	
+		var state =  $(this).attr("attr_state");
+		var level =  $(this).attr("attr_level");
+		var type =  $(this).attr("attr_type");
+		var committeeId =  $(this).attr("attr_resId");
+		var id = $(this).attr("id");
+		getMainCommitteeMembersCount1(state,level,type,committeeId,id);
+		
+		//$("#"+id).popover('show');
+		
+		//alert($(this).parent().closest("li").find(".multiLevelCls").html());
+		
 	});
 	
 	
+	 /* $(document).click(function(e) {
+		var target = e.target;
+		if($(target).is(".artclBtn")){
+		$(".articleListCls").toggleClass("open");
+		getImagesOfFolderAction(pgNo,editionDwId);
+		}else if (!$(target).is('#articlesListId') && !$(target).parent().is('#articlesListId') && !$(target).parent().parent().is('#articlesListId') && !$(target).parent().parent().parent().is('#articlesListId') && !$(target).parent().parent().parent().parent().is('#articlesListId') && !$(target).is('.alertClose') && !$(target).is('.alertEmailClose')) {
+		$(".articleListCls").removeClass("open");
+		}
+	}); */
+
+	
+	 $('body').on('click', function (e) {
+		if(!$(e.target).is('.multiLevelLiA') || !$(e.target).has('.multilevelCls') || !$(e.target).has('.multilevelli')){
+			$('.clearCls').each(function () {
+				var attrId= $(this).attr("id");
+				var trgt = e.target;
+				
+				if(!$(this).is(trgt) && $(this).has(trgt).length === 0 && !$(trgt).is('.multiLevelCls') && !$(trgt).is('.multilevelli') && !$(trgt).is('.multiLevelLiA')) {
+					$("#"+attrId).popover('hide');
+					$(".multiLevelLiA").popover('hide');
+					$("#"+attrId).removeClass('clearCls');
+				}
+			});
+		}else{
+			
+		}
+		
+		
+		/* $('.multiLevelCls').each(function () {
+			var attrId= $(this).attr("id");
+			var trgt = e.target;
+			if(!$(this).is(trgt) && $(this).has(trgt).length === 0 && $(this).has(trgt).length === 0) {
+				$("#"+attrId).popover('hide');
+				$("#"+attrId).removeClass('multiLevelCls');
+			}
+		}); */
+		
+		/* $('.multiLevelCls').each(function () {
+			var attrId= $(this).attr("id");
+			var trgt = e.target;
+			alert($(trgt).html());
+			if(!$(this).is(trgt) && $(this).has(trgt).length === 0 && $(this).has(trgt).length === 0) {
+				$("#"+attrId).popover('hide');
+				$("#"+attrId).removeClass('multiLevelCls');
+			}
+		}); */
+	});
 	function getConstituencyWiseCommittesSummary(){
 		var state = ''; 
 		
@@ -1244,6 +1426,8 @@
 	}
 	
 	
+	
+ 
 	
 	</script>
 			   
