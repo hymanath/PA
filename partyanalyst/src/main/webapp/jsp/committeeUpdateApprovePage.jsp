@@ -73,7 +73,7 @@
 	</style>
 	<div class="row" style="align:center;padding:10px;background:rgba(255,0,51,0.8); border-top:12px solid rgba(19,167,81,0.8);border-bottom:12px solid rgba(19,167,81,0.8);display:flex">
 		 	<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12 text-center">
-				<img src="images/cadreCommitee/committee_logo.png" title="Committee Logo" alt="committee" />
+				<img src="images/cadreCommitee/Committees_2014_logo.png" title="Committee Logo" alt="committee" />
 			</div>
 			<div class="col-md-3  col-xs-3 col-sm-3">
                
