@@ -426,7 +426,7 @@
 				var roleId = $('#committeePositionId').val();
 				$('#committeePositionIdErr').html('');
 				$('#searchBy').val('');
-				$("#membershipId").prop("checked","checked");
+				$("#membershipId").trigger("click");
 				$('#cadreSearchType').val('membershipId');
 				$("#searchcadrenewDiv").hide();
 				if(roleId == null || roleId ==0)
@@ -859,20 +859,22 @@
 						{
 							$("#committeePositionId").append('<option value="'+result.result[i].locationId+'">'+result.result[i].locationName+'</option>');
 						}
+						
 						if(cadreRoleId != 0 && isFirstCadreRoleIdSettingValues)
 						{
-							console.log("srishailam : "+cadreRoleId);
 							
 							isFirstCadreRoleIdSettingValues = false;
-							$("#committeePositionId").val(cadreRoleId);							
+														
 							$('#searchBy').val(defaultName);
 							showSearchInfo();
+							$("#committeePositionId").val(cadreRoleId);
 							var committeTypeID = $('#committeeMngtType').val();
 							if(committeTypeID == 1)
 							{
 								 setTimeout(function(){ 
 								getCadreDetailsBySearchCriteria();}, 1000);
 							}
+						
 						}
 							
 					}

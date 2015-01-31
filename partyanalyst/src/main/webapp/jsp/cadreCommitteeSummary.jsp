@@ -505,11 +505,19 @@
 					
 				}
 			
-				console.log(result);
+				
 			});
 		}
+		var plbasicCommitteetypeId;
+		var plstatus;
+		var plevelId;
 		function getCommitteeDetailsByStatus(basicCommitteetypeId,status,levelId)
 	{
+		plbasicCommitteetypeId = basicCommitteetypeId;
+		plstatus =               status;
+		plevelId=               levelId;
+		
+		
 		$("html,body").animate({scrollTop: $("#CommitteeDetails").offset().top});
 		$("#CommitteeDetails").show();
 		$("#committeeMemberDiv").show();
@@ -592,9 +600,16 @@
 		}
 	 $("#CommitteeDetails").html(str);           
 	}
+	var lbasicCommitteetypeId;
+	var llevelId;
+	var llocationId;
+	var lstatus;
 	function getCommitteeMemberInfo(basicCommitteetypeId,levelId,locationId,status)
 	{
-	
+	  lbasicCommitteetypeId=  basicCommitteetypeId;
+	  llevelId=               levelId;
+	  llocationId=          locationId;
+	  lstatus=                status;
 	$("#committeeMemberDiv").html('');
 	$("#conformedBtn").html('');
 	$("#comitteeMemberAjax").show();
@@ -689,7 +704,7 @@
 	}
 	function deleteCadreRole(tdpCommitteeMemberId)
 	{
-	var r=confirm("Are You Sure To Remove ?");
+	var r=confirm("Are You Sure Do You Want To Remove This Candidate From Present Designation?");
 		if(r)
 		{
 	var jsObj = 
@@ -705,10 +720,15 @@
      	  }).done(function(result){ 
 			  if(result != null){
 				  {
-					  if(result[0].status == "Removed")
-				alert("Removed Successfully..")
-						  else
-					alert("Committee Already Confirmed")
+					  if(result[0].status == "Removed"){
+				        alert("Removed Successfully..");
+						getSummary();
+		                getMandalMuncipalDivisonStartedCommittees();
+						getCommitteeDetailsByStatus(plbasicCommitteetypeId,plstatus,plevelId);
+						getCommitteeMemberInfo(lbasicCommitteetypeId,llevelId,llocationId,lstatus);
+					  }else{
+					    alert("Committee Already Confirmed");
+					  }
 				
 				  }
 				
