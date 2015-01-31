@@ -143,8 +143,8 @@
 		 <pattern>/assignCadreToCommittee*</pattern>
 		 
 		   <pattern>/committeeUpdateApproveAction*</pattern>
-		 
-		  <pattern>/cadreCommitteeRequestAction*</pattern>
+		   <pattern>/committeeDashBoardAction*</pattern> 
+		  
  	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
@@ -384,8 +384,6 @@
 	  <decorator name="committeelayout" page="committeelayout.jsp">
 		<pattern>/cadreCommitteeSummaryAction*</pattern>
 		<pattern>/cadreCommitteeAction*</pattern>
-		<pattern>/committeeDashBoardAction*</pattern>
-		<pattern>/cadreCommitteeRequestAction*</pattern> 
-		
+		<pattern>/cadreCommitteeRequestAction*</pattern>
 	  </decorator>
 </decorators>
