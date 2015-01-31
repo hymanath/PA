@@ -6,11 +6,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.persistence.Column;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -51,7 +50,6 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
-import com.itgrids.partyanalyst.dao.hibernate.TdpCommitteeMemberHistoryDAO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
