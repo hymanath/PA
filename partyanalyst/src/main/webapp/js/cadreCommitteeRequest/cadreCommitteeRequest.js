@@ -57,7 +57,7 @@ $('#desgId').css({"background":"#FF9966"});
 $('#viewId').css({"background":"#DBBD2B"});
 
 
-  gettingRequestsDetailsForAUser();
+  gettingRequestsDetailsForAUser("positionsIncreased");
 }
 }
 
@@ -598,19 +598,26 @@ function getCommitteeLocations(){
 	 
 
 
-	function  gettingRequestsDetailsForAUser(){
-	 var jsObj =new Object();
+	function  gettingRequestsDetailsForAUser(type){
+	 
+	
 	 $.ajax({
 				type : "GET",
 				url : "gettingRequestsDetailsForAUserAction.action",
-				data: {}
+				data: {type:type}
 			}).done(function(result){
 			   if(result!=null){
+			  
 			     var str='';
 			     str+='<div class="col-md-10 col-md-offset-1 m_top20" style="background-color:rgba(0,0,0,0.1);overflow:scroll;height:600px;">';
                 	str+='<table class="table table-yellow-bordered table-condensed">';
-						str+='<caption class="text-success"><h4>INCREASE POSITION REQUEST STATUS</h4></caption>';
-                        str+='<thead>';
+					    str+=' <div style="padding:8px;padding-left:2px;padding-right:2px;" class="col-md-offset-0 text-center col-md-10">';
+						str+='<label  class="radio-inline"><input id="requestRadioId1" type="radio" name="requestRadio" value="1"  onClick="gettingRequestsDetailsForAUser(\'positionsIncreased\');"/><span class="text-success" style="font-size:1.2em">INCREASE POSITION REQUEST STATUS</span></label>';
+						str+='<label  class="radio-inline"  style="margin-left: 20px;"><input id="requestRadioId2" type="radio" name="requestRadio" value="2" onClick="gettingRequestsDetailsForAUser(\'changeDesignations\');"/><span class="text-success" style="font-size:1.2em">CHANGE POSITION REQUEST STATUS</span></label>';
+						str+='</div>';
+						
+						if(type=="positionsIncreased"){
+						str+='<thead>';
                         	str+='<th width="15%">LOCATION</th>';
                             str+='<th width="20%">COMMITTEE NAME</th>';
                             str+='<th width="18%">POSITION NAME</th>';
@@ -633,11 +640,59 @@ function getCommitteeLocations(){
 							}
                         str+='</tbody>';
                     str+='</table>';
+					
+				  }
+				  else if(type="changeDesignations"){
+				  str+='<thead>';
+                        str+='<th>DATE</th>';
+                        str+='<th>LOCATION</th>';
+						str+='<th>COMMITTEE NAME</th>';
+		                str+='<th>MEMBER IMAGE</th>';
+						str+='<th>COMMITTEE MEMBER NAME</th>';
+                        str+='<th>MEMBERSHIP NO</th>';
+                        str+='<th>CURRENT ROLE</th>';
+						str+='<th>REQUESTED ROLE</th>';
+                        str+='<th>STATUS</th>';
+                        str+='<th>REF-NO</th>';
+                  str+='</thead>';
+				  str+='<tbody>';
+				  for(var i in result){
+				   var rowcount = result[i].locationsList.length;
+				   str+='<tr>';
+				   str+='<td rowspan="'+result[i].locationsList.length+'">'+result[i].dateString+'</td>';
+				   str+='<td rowspan="'+result[i].locationsList.length+'">'+result[i].location+' '+result[i].locationType+'</td>';
+				   str+='<td rowspan="'+result[i].locationsList.length+'">'+result[i].committeeName+'</td>';
+				   
+				    for(var j in result[i].locationsList)
+					{					
+						 str+='<td><img width="32"  height="32" src="http://www.mytdp.com/images/cadre_images/'+result[i].locationsList[j].positionId+'" onerror="setDefaultImage(this);"/></td>';
+						 str+='<td>'+result[i].locationsList[j].position+'</td>';
+						 str+='<td>'+result[i].locationsList[j].memberShipNo+'</td>';
+						 str+='<td>'+result[i].locationsList[j].currentRole+'</td>';
+						 str+='<td>'+result[i].locationsList[j].newRole+'</td>';
+						 if(j == 0) 
+						 {
+							 str+='<td rowspan="'+result[i].locationsList.length+'">'+result[i].status+'</td>';
+							 str+='<td rowspan="'+result[i].locationsList.length+'">'+result[i].refNo+'</td>';
+						 }
+						 str+='</tr>';
+						 
+				    }
+				  				   
+				  }
+				  str+='</tbody>';
+				  str+='</table>';
+				  }
                 str+='</div>';
 				
-				
-				
-			  $('#resultStatusId').html(str);
+		     $('#resultStatusId').html(str);
+			 
+			  if(type=="positionsIncreased"){
+				$("#requestRadioId1").prop("checked","checked");
+			  }
+				else if(type="changeDesignations"){
+				$("#requestRadioId2").prop("checked","checked");
+				}
 			   }
 			});
 
