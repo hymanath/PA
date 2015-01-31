@@ -71,4 +71,5 @@ public interface ICadreCommitteeService {
 	public Long gettingCommitteeIdForMainCommittee(Long levelId,Long levelValue);
 	
 	public List<CommitteeSummaryVO> getConstituencyWiseCommittesSummary(String state,String startDate, String endDate);
+	public List<CommitteeApprovalVO> changeDesignationRecordsForAUser(Long userId);
 }
