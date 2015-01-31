@@ -31,7 +31,8 @@ public class CommitteeSummaryVO implements Serializable{
 	private CommitteeSummaryVO townMandalDivisionVO;
 	private CommitteeSummaryVO villageWardVO;
 	private String startPerc;
-	
+	private Long constiId;
+	private String name;
 	
 	public String getStartPerc() {
 		return startPerc;
@@ -171,9 +172,17 @@ public class CommitteeSummaryVO implements Serializable{
 	public void setAffilatedStartedCount(Long affilatedStartedCount) {
 		this.affilatedStartedCount = affilatedStartedCount;
 	}
+	public Long getConstiId() {
+		return constiId;
+	}
+	public void setConstiId(Long constiId) {
+		this.constiId = constiId;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 
-	
-	
-	
-	
 }
