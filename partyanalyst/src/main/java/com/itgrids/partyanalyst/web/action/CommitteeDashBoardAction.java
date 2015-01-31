@@ -12,6 +12,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
 import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
@@ -36,9 +37,9 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private CadreCommitteeReportVO          cadreCommitteeReportVO;
 	private List<CommitteeSummaryVO>    districtWiseSummaryList,constiWiseSummaryList;
 	private List<CadreCommitteeReportVO> cadreCommitteeReportVOList;
+	private List<CadreCommitteeMemberVO> cadreCommitteeMemberVOList;
 	
 	
-
 	public List<CommitteeSummaryVO> getConstiWiseSummaryList() {
 		return constiWiseSummaryList;
 	}
@@ -107,6 +108,13 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	}
 	
 	
+	public List<CadreCommitteeMemberVO> getCadreCommitteeMemberVOList() {
+		return cadreCommitteeMemberVOList;
+	}
+	public void setCadreCommitteeMemberVOList(
+			List<CadreCommitteeMemberVO> cadreCommitteeMemberVOList) {
+		this.cadreCommitteeMemberVOList = cadreCommitteeMemberVOList;
+	}
 	public String execute(){
 		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 		boolean noaccess = false;
@@ -228,7 +236,6 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 		return Action.SUCCESS;
 	}
 	
-	
 	public String getConstituencyWiseCommittesSummary(){
 		LOG.debug(" Entered Into getConstituencyWiseCommittesSummary");
 		try{
@@ -244,4 +251,43 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 		
 		return Action.SUCCESS;
 	}
+	
+	public String getSummaryDetailsPopUp(){
+		try{
+			jObj = new JSONObject(getTask());
+			districtWiseSummaryList = cadreCommitteeService.getSummaryDetails(jObj.getString("constituencyId"));
+		}catch(Exception e){
+			LOG.error("Exception Occured In getSummaryDetailsPopUp method "+e);			
+		}
+		return Action.SUCCESS;
+	}
+	public String gettingMandalAndMuncipalAndDivisonSummaryPopUp(){
+		try{
+			jObj = new JSONObject(getTask());
+			districtWiseSummaryList= cadreCommitteeService.gettingMandalAndMuncipalAndDivisonSummary(jObj.getString("constituencyId"));
+		}catch(Exception e){
+			LOG.error("Exception Occured In gettingMandalAndMuncipalAndDivisonSummary method "+e);			
+		}
+		return Action.SUCCESS;
+	}
+public String getCommitteeDetailsByStatusPopUp(){
+
+		
+		try{
+			jObj = new JSONObject(getTask());
+			if(jObj.getString("task").equalsIgnoreCase("memberCnt"))
+			cadreCommitteeMemberVOList = cadreCommitteeService.getCommitteeDetailsByStatus(jObj.getLong("basicCommitteetypeId"),jObj.getString("status"),jObj.getLong("levelId"),jObj.getString("constituencyId"));
+			else if(jObj.getString("task").equalsIgnoreCase("memberInfo"))
+				cadreCommitteeMemberVOList = cadreCommitteeService.getCommitteeMemberDetails(jObj.getLong("basicCommitteetypeId"),jObj.getLong("locationId"),jObj.getLong("levelId"),jObj.getString("status"));
+			else if(jObj.getString("task").equalsIgnoreCase("committeComplete"))
+				cadreCommitteeMemberVOList = cadreCommitteeService.setCommitteConfirmation(jObj.getLong("basicCommitteetypeId"),jObj.getLong("locationId"),jObj.getLong("levelId"));
+			else if(jObj.getString("task").equalsIgnoreCase("deleterole"))
+				cadreCommitteeMemberVOList = cadreCommitteeService.deleteCadreRole(jObj.getLong("tdpcommitteeMemberId"));
+		}catch(Exception e){
+			LOG.error("Exception occured in getCommitteeDetailsByStatus() At CadreCommitteeAction ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
 }
