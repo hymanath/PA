@@ -3703,4 +3703,159 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return null;
 	}
+	public List<CommitteeApprovalVO> changeDesignationRecordsForAUser(Long userId){
+		List<CommitteeApprovalVO> resultList=null;
+		try
+		{
+		   List<Object[]> list1= cadreCommitteeChangeDesignationsDAO.changeDesignationRecordsForAUser(5556l);
+		   
+		   //getting Locations.
+		   List<Object[]> list = tdpCommitteeLevelDAO.getAllLevels();	
+		  
+		    Map<Long, String> pancMap = new HashMap<Long, String>();
+			Map<Long, String> tehsilMap = new HashMap<Long, String>();
+			Map<Long, String> lebMap = new HashMap<Long, String>();
+			Map<Long, String> wardMap = new HashMap<Long, String>();
+			Map<Long, String> divisMap = new HashMap<Long, String>();
+			
+			List<CommitteeApprovalVO> locations = new ArrayList<CommitteeApprovalVO>();
+			if(list!=null && list.size()>0){
+				for(Object[] obj:list){
+					CommitteeApprovalVO tmp = new CommitteeApprovalVO();
+					tmp.setLocationTypeId(Long.valueOf(obj[0].toString()));
+					tmp.setLocationType(obj[1].toString());
+					locations.add(tmp);
+				}
+			}
+			
+			
+			 if(list1!=null && list1.size()>0){
+					for(Object[] obj:list1){
+						CommitteeApprovalVO tmp = getMatchedLocation(Long.valueOf(obj[2].toString()),locations);
+						if(tmp!=null){
+							List<Long> lctnIds = tmp.getLocationIds();
+							if(lctnIds==null){
+								lctnIds = new ArrayList<Long>();
+							}
+							lctnIds.add(Long.valueOf(obj[4].toString()));
+							
+							tmp.setLocationIds(lctnIds);
+						}
+					}
+				}
+			 
+			 if(locations.size()>0){
+					for(CommitteeApprovalVO tmp:locations){
+						if(tmp.getLocationIds()!=null && tmp.getLocationIds().size()>0){
+							if(tmp.getLocationTypeId().equals(6l)){
+								List<Object[]> panchayats =  panchayatDAO.getPanchayatsByPanchayatIdsListAlongMandal(tmp.getLocationIds());
+								if(panchayats!=null && panchayats.size()>0){
+									for(Object[] obj:panchayats){
+										pancMap.put(Long.valueOf(obj[0].toString()), obj[1].toString());
+									}
+								}
+							}
+							
+							if(tmp.getLocationTypeId().equals(5l)){
+								List<Object[]> tehsils =  tehsilDAO.getTehsilNameByTehsilIdsList(tmp.getLocationIds());
+								if(tehsils!=null && tehsils.size()>0){
+									for(Object[] obj:tehsils){
+										tehsilMap.put(Long.valueOf(obj[0].toString()), obj[1].toString());
+									}
+								}
+							}
+							
+							if(tmp.getLocationTypeId().equals(7l)){
+								List<Object[]> lebs =  localElectionBodyDAO.findByLocalElecBodyIds(tmp.getLocationIds());
+								if(lebs!=null && lebs.size()>0){
+									for(Object[] obj:lebs){
+										lebMap.put(Long.valueOf(obj[0].toString()), obj[1].toString()+" "+obj[2].toString());
+									}
+								}
+							}
+							
+							if(tmp.getLocationTypeId().equals(8l)){
+								List<Object[]> wards =  constituencyDAO.getWardsNameInLocalElectionBodyByWardIds(tmp.getLocationIds());
+								if(wards!=null && wards.size()>0){
+									for(Object[] obj:wards){
+										wardMap.put(Long.valueOf(obj[0].toString()), obj[1].toString()+" ("+obj[2].toString()+")");
+									}
+								}
+							}
+							
+							if(tmp.getLocationTypeId().equals(9l)){
+								List<Object[]> divis =  constituencyDAO.getWardsNameInLocalElectionBodyByWardIds(tmp.getLocationIds());
+								if(divis!=null && divis.size()>0){
+									for(Object[] obj:divis){
+										divisMap.put(Long.valueOf(obj[0].toString()), obj[1].toString()+" ("+obj[2].toString()+")");
+									}
+								}
+							}
+						}
+					}
+				}
+		   //locations Complete
+		//Get SAME REQUEST RECORDS.
+			 Map<Long,CommitteeApprovalVO> resultMap=new LinkedHashMap<Long, CommitteeApprovalVO>();
+		    if(list1!=null && list1.size()>0){
+		    	for (Object[] obj : list1){
+		    		  CommitteeApprovalVO	mainVO=resultMap.get((Long)obj[0]);
+		    		  if(mainVO==null){
+		    			CommitteeApprovalVO committeeApprovalvo=new CommitteeApprovalVO();
+		    			committeeApprovalvo.setLocationTypeId(Long.valueOf(obj[2].toString()));
+		    			committeeApprovalvo.setLocationType(obj[3].toString());
+		    			committeeApprovalvo.setLocationId(Long.valueOf(obj[4].toString()));
+			    		String location = "";
+						if(committeeApprovalvo.getLocationTypeId().equals(5l)){
+							location = tehsilMap.get(committeeApprovalvo.getLocationId());
+						}
+						if(committeeApprovalvo.getLocationTypeId().equals(6l)){
+							location = pancMap.get(committeeApprovalvo.getLocationId());					
+						}
+						if(committeeApprovalvo.getLocationTypeId().equals(7l)){
+							location = lebMap.get(committeeApprovalvo.getLocationId());
+						}
+						if(committeeApprovalvo.getLocationTypeId().equals(8l)){
+							location = wardMap.get(committeeApprovalvo.getLocationId());					
+						}
+						if(committeeApprovalvo.getLocationTypeId().equals(9l)){
+							location = divisMap.get(committeeApprovalvo.getLocationId());
+						}
+						committeeApprovalvo.setLocation(location);
+						
+						committeeApprovalvo.setCommitteeId(Long.valueOf(obj[5].toString()));
+						committeeApprovalvo.setCommitteeName(obj[6].toString());
+						committeeApprovalvo.setStatus(obj[14].toString());
+						committeeApprovalvo.setDateString(obj[1].toString());
+						committeeApprovalvo.setRefNo(obj[15].toString());
+		    			resultMap.put((Long)obj[0], committeeApprovalvo);
+		    		}
+		    		CommitteeApprovalVO	mainvo=resultMap.get((Long)obj[0]);
+		    		
+		    		CommitteeApprovalVO subvo=new CommitteeApprovalVO();
+		    		subvo.setCurrentRole(obj[11].toString());
+		    		subvo.setNewRole(obj[13].toString());
+		    		subvo.setPosition(obj[7].toString());
+		    		subvo.setPositionId(obj[8].toString());
+		    		subvo.setMemberShipNo(obj[9].toString());
+		    		if(mainvo.getLocationsList()==null){
+		    		 mainvo.setLocationsList(new ArrayList<CommitteeApprovalVO>());
+		    		 mainvo.getLocationsList().add(subvo);
+		    		}
+		    		else
+		    			 mainvo.getLocationsList().add(subvo);
+		    		
+				}
+		      }
+			 
+		    resultList=new ArrayList<CommitteeApprovalVO>();
+		    resultList.addAll(resultMap.values());
+		    System.out.println(resultList);
+		}catch(Exception e)
+		{
+			LOG.error("Exception raised in changeDesignationRecordsForAUser", e);
+		}
+		return resultList;
+		
+	}
 }
