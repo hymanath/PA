@@ -43,6 +43,7 @@ public class CadreIVRResponseVO {
 	private Double urbanPerc;
 	private Double mandalPerc;
 	private Double deliveredPerc;
+	private String designation;
 	
 	
 	
@@ -340,6 +341,14 @@ public class CadreIVRResponseVO {
 
 	public void setDeliveredPerc(Double deliveredPerc) {
 		this.deliveredPerc = deliveredPerc;
+	}
+
+	public String getDesignation() {
+		return designation;
+	}
+
+	public void setDesignation(String designation) {
+		this.designation = designation;
 	}
 
 	

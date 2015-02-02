@@ -64,6 +64,13 @@ public class CadreIVRVO implements Serializable, Comparable<CadreIVRVO>{
 	
 	private Long totalError=0l;
 	private Double errorPerc;
+	
+	private Long totalUnAnswered=0l;
+	private Double unAnsweredPerc;
+	private Double selectedOptionCntPerc;
+	private Double totalErrorPerc;
+	private Double totalUnAnsweredPerc;
+	
 	public CadreIVRVO()
 	{
 		
@@ -496,5 +503,48 @@ public class CadreIVRVO implements Serializable, Comparable<CadreIVRVO>{
 	public void setInterworkingCountPerc(Double interworkingCountPerc) {
 		this.interworkingCountPerc = interworkingCountPerc;
 	}
+
+	public Long getTotalUnAnswered() {
+		return totalUnAnswered;
+	}
+
+	public void setTotalUnAnswered(Long totalUnAnswered) {
+		this.totalUnAnswered = totalUnAnswered;
+	}
+
+	public Double getUnAnsweredPerc() {
+		return unAnsweredPerc;
+	}
+
+	public void setUnAnsweredPerc(Double unAnsweredPerc) {
+		this.unAnsweredPerc = unAnsweredPerc;
+	}
+
+	public Double getSelectedOptionCntPerc() {
+		return selectedOptionCntPerc;
+	}
+
+	public void setSelectedOptionCntPerc(Double selectedOptionCntPerc) {
+		this.selectedOptionCntPerc = selectedOptionCntPerc;
+	}
+
+	public Double getTotalErrorPerc() {
+		return totalErrorPerc;
+	}
+
+	public void setTotalErrorPerc(Double totalErrorPerc) {
+		this.totalErrorPerc = totalErrorPerc;
+	}
+
+	public Double getTotalUnAnsweredPerc() {
+		return totalUnAnsweredPerc;
+	}
+
+	public void setTotalUnAnsweredPerc(Double totalUnAnsweredPerc) {
+		this.totalUnAnsweredPerc = totalUnAnsweredPerc;
+	}
+	
+	
+	
 
 }
