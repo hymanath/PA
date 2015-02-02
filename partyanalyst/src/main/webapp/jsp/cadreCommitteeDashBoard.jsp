@@ -29,6 +29,7 @@
 	color: #333 !important;}
 	.navbar-nav > li > a {text-decoration:none;}
 		a:hover {text-decoration:none;}
+		.multiLevelLiA a{text-transform: uppercase;color:black;}
 	</style>	
 </head>
 <body>
@@ -361,6 +362,9 @@
 							<h3 class="panel-header">COMMITTEE SUMMARY</h3>
 							<hr style="border-color:#F00;margin-top:10px;" />
 						</div>
+						
+							<span type="button" style="font-size:30px;cursor:pointer;" class="pull-right" data-dismiss="modal" aria-hidden="true">&times;</span>
+						
 					</div>
 					<!-- First Block Start-->
 					<div class="row">
@@ -1169,13 +1173,18 @@
 				}
 				else if(type == 'affl'){
 					var str='';
-					str+='<ul style="padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;">';					
-						for(var i in result){
-							str+='<li class="list-group-item resListLi"><span class="badge">'+result[i].membersCount+'</span>1 MEMBER COMMITTEE</li>';
-							str+='<li class="list-group-item resListLi"><span class="badge">'+result[i].membersCount1+'</span>2-4 MEMBER COMMITTEES</li>';
-							str+='<li class="list-group-item resListLi"><span class="badge">'+result[i].membersCount2+'</span>5-7 MEMBER COMMITTEES</li>';
-							str+='<li class="list-group-item resListLi"><span class="badge">'+result[i].membersCount3+'</span>ABOVE 7 MEMBER COMMITTEES</li>';
+					str+='<ul style="padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;">';
+						if(result.length>0){
+							for(var i in result){
+								str+='<li class="list-group-item resListLi"><span class="badge">'+result[i].membersCount+'</span>1 MEMBER COMMITTEE</li>';
+								str+='<li class="list-group-item resListLi"><span class="badge">'+result[i].membersCount1+'</span>2-4 MEMBER COMMITTEES</li>';
+								str+='<li class="list-group-item resListLi"><span class="badge">'+result[i].membersCount2+'</span>5-7 MEMBER COMMITTEES</li>';
+								str+='<li class="list-group-item resListLi"><span class="badge">'+result[i].membersCount3+'</span>ABOVE 7 MEMBER COMMITTEES</li>';
+							}
+						}else{
+							str+='<li class="list-group-item resListLi"> NO DATA AVAILABLE </li>';
 						}
+						
 					str+='</ul>';
 					$('#'+id).popover({
 						html: true,
@@ -1252,7 +1261,7 @@
 					for(var i in result){  
 					str1+='<li class="list-group-item multiLevelLiA" attr_state='+state+' attr_level='+level+' attr_type="affl" attr_resId='+result[i].id+' id="'+level+'IdAffl'+state+''+result[i].id+'" ><a  class="multilevelli" >'+result[i].name+'<span class="badge pull-right">'+result[i].afflCommittees+'</span></a></li>';
 					
-					str1+='<li class="list-group-item multiLevelLiA" attr_state='+state+' attr_level='+level+' attr_type="affl" attr_resId=1 id="'+level+'IdAffl'+state+'1"><a     class="multilevelli" >'+result[i].name+' 1 <span class="pull-right badge">'+result[i].afflCommittees+'</span></a></li>';
+					//str1+='<li class="list-group-item multiLevelLiA" attr_state='+state+' attr_level='+level+' attr_type="affl" attr_resId=1 id="'+level+'IdAffl'+state+'1"><a     class="multilevelli" >'+result[i].name+' 1 <span class="pull-right badge">'+result[i].afflCommittees+'</span></a></li>';
 					} 
 					str1+='</ul>';
 					$('#'+level+'Id'+state+'Affl').popover({
