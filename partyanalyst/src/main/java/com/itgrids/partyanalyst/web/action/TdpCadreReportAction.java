@@ -816,6 +816,7 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 			status.setId(jobj.getLong("locationId"));
 			status.setName(jobj.getString("details"));
 			status.setJobCode(jobj.getString("mobile"));
+			status.setDesignation(jobj.getString("designation"));
 			try{
 			status.setReceived(jobj.getLong("received"));
 			}catch(Exception e){
