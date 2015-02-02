@@ -4619,7 +4619,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 						returnVo.setNoOption(noOptionCount);
 						Long selectedOptionCnt = returnVo.getReceived() + returnVo.getNotReceived() + returnVo.getNotRegistered() + returnVo.getWrongOption();
 						
-						if(selectedOptionCnt > 0)
+						/*if(selectedOptionCnt > 0)
 						{
 							returnVo.setReceivedPerc(new BigDecimal((returnVo.getReceived()*100.0/selectedOptionCnt)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 							returnVo.setNotReceivedPerc(new BigDecimal((returnVo.getNotReceived()*100.0/selectedOptionCnt)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
@@ -4632,7 +4632,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 						returnVo.setNoOptionPerc(new BigDecimal((returnVo.getNoOption()*100.0/answerTotal)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 						returnVo.setAnsweredCnt(answerTotal);
 						returnVo.setAnsweredPerc(new BigDecimal((returnVo.getAnsweredCnt()*100.0/returnVo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-						}
+						}*/
 						returnVo.setUserBusy(userBusyCount);
 						returnVo.setNoAnswer(noAnswerCount);
 						returnVo.setSwitchCongestion(switchCongestion);
@@ -4641,18 +4641,46 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 						returnVo.setNewtworkError(newtworkError);
 						returnVo.setUnallocatedNumbers(unallocatedNumbers);
 						returnVo.setInterworkingCount(interworkingCount);					
-						returnVo.setTotalError(userBusyCount + noAnswerCount +switchCongestion+otherError+callRejectedCount+newtworkError+unallocatedNumbers+interworkingCount );
+						returnVo.setTotalError(switchCongestion+otherError+newtworkError+unallocatedNumbers+interworkingCount );
+						returnVo.setTotalUnAnswered(userBusyCount+noAnswerCount+callRejectedCount);
+						/*
+						
+						*/
 						if(returnVo.getTotalError() > 0)
 						{
-							returnVo.setUserBusyPerc(new BigDecimal((returnVo.getUserBusy()*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-							returnVo.setNoAnswerPerc(new BigDecimal((returnVo.getNoAnswer()*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-							returnVo.setSwitchCongestionPerc(new BigDecimal((returnVo.getSwitchCongestion()*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-							returnVo.setOtherErrorPerc(new BigDecimal((otherError*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						//	returnVo.setUserBusyPerc(new BigDecimal((returnVo.getUserBusy()*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						//	returnVo.setNoAnswerPerc(new BigDecimal((returnVo.getNoAnswer()*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setSwitchCongestionPerc(new BigDecimal((returnVo.getSwitchCongestion()*100.0/returnVo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setOtherErrorPerc(new BigDecimal((otherError*100.0/returnVo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 							
-							returnVo.setCallRejectedPerc(new BigDecimal((returnVo.getCallRejectedCount()*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-							returnVo.setNewtworkErrorPerc(new BigDecimal((returnVo.getNewtworkError()*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-							returnVo.setUnallocatedNumbersPerc(new BigDecimal((returnVo.getUnallocatedNumbers()*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-							returnVo.setInterworkingCountPerc(new BigDecimal((returnVo.getInterworkingCount()*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						//	returnVo.setCallRejectedPerc(new BigDecimal((returnVo.getCallRejectedCount()*100.0/returnVo.getTotalError())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setNewtworkErrorPerc(new BigDecimal((returnVo.getNewtworkError()*100.0/returnVo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setUnallocatedNumbersPerc(new BigDecimal((returnVo.getUnallocatedNumbers()*100.0/returnVo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setInterworkingCountPerc(new BigDecimal((returnVo.getInterworkingCount()*100.0/returnVo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setTotalErrorPerc(new BigDecimal((returnVo.getTotalError()*100.0/returnVo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						}
+						if(returnVo.getTotalUnAnswered() >0)
+						{
+							returnVo.setUserBusyPerc(new BigDecimal((returnVo.getUserBusy()*100.0/returnVo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setNoAnswerPerc(new BigDecimal((returnVo.getNoAnswer()*100.0/returnVo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setCallRejectedPerc(new BigDecimal((returnVo.getCallRejectedCount()*100.0/returnVo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setTotalUnAnsweredPerc(new BigDecimal((returnVo.getTotalUnAnswered()*100.0/returnVo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						}
+						
+						if(selectedOptionCnt > 0)
+						{
+							returnVo.setReceivedPerc(new BigDecimal((returnVo.getReceived()*100.0/returnVo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setNotReceivedPerc(new BigDecimal((returnVo.getNotReceived()*100.0/returnVo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setNotMemberPerc(new BigDecimal((returnVo.getNotRegistered()*100.0/returnVo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setWrongOptionPerc(new BigDecimal((returnVo.getWrongOption()*100.0/returnVo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							returnVo.setSelectedOptionCntPerc(new BigDecimal((selectedOptionCnt*100.0/returnVo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						}
+						Long answerTotal= selectedOptionCnt + returnVo.getNoOption();
+						if(answerTotal > 0)
+						{
+						returnVo.setNoOptionPerc(new BigDecimal((returnVo.getNoOption()*100.0/returnVo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						returnVo.setAnsweredCnt(answerTotal);
+						returnVo.setAnsweredPerc(new BigDecimal((returnVo.getAnsweredCnt()*100.0/returnVo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 						}
 						
 					}
@@ -5013,6 +5041,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	        		  cadreIVREnquiry.setLocationValue(status.getId());
 	        	  }
 	        	  cadreIVREnquiry.setDetails(status.getName());
+	        	  cadreIVREnquiry.setDesignation(status.getDesignation());
 	        	  cadreIVREnquiry.setMobile(status.getJobCode());
 	        	  cadreIVREnquiry.setReceived(status.getReceived());
 	        	  cadreIVREnquiry.setDelivered(status.getNotReceived());
