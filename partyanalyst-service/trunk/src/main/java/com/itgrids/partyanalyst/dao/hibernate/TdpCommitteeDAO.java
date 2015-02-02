@@ -359,7 +359,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		StringBuilder str = new StringBuilder();
 
 		str.append("select count(distinct model.tdpCommitteeId), " +
-		" model.name,model.tdpBasicCommittee.tdpBasicCommitteeId " +
+		" model.tdpBasicCommittee.name,model.tdpBasicCommittee.tdpBasicCommitteeId " +
 		" from TdpCommittee model where ");
 		str.append(" model.state= :state ");
 		if(startDate !=null && endDate !=null){
