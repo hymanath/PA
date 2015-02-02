@@ -2460,7 +2460,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			}
 			if(list != null && list.size() > 0)
 			{
-				List<Long> locationValues = new ArrayList<Long>();
+				Map<Long,List<Long>> levelValuesMap = new HashMap<Long,List<Long>>();
+				Map<Long,List<CadreCommitteeMemberVO>> levelVosMap = new HashMap<Long,List<CadreCommitteeMemberVO>>();
 				for(Object[] params : list)
 				{
 					CadreCommitteeMemberVO locationVo = new CadreCommitteeMemberVO();
@@ -2469,22 +2470,36 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					locationVo.setName(locationName);
 					locationVo.setStatus(params[1].toString());
 					locationVo.setLevel((Long)params[2]);
-					locationValues.add((Long)params[0]);
 					resultList.add(locationVo);
+					List<Long> levelValuesList = levelValuesMap.get((Long)params[2]);
+					List<CadreCommitteeMemberVO> levelVosList = levelVosMap.get((Long)params[2]);
+					if(levelValuesList == null){
+						 levelValuesList = new ArrayList<Long>();
+						 levelValuesMap.put((Long)params[2],levelValuesList);
+						 levelVosList = new ArrayList<CadreCommitteeMemberVO>();
+						 levelVosMap.put((Long)params[2],levelVosList);
+						 
+					}
+					levelValuesList.add((Long)params[0]);
+					levelVosList.add(locationVo);
 				}
 				
 				if(!status.equalsIgnoreCase("NotStarted"))
 				{
-					List<Object[]> membersList = tdpCommitteeMemberDAO.getComitteeMembersByCommiteTypeAndLocation(levelIds,locationValues,basicCommitteeTypeId,status);
+				  for(Long level : levelValuesMap.keySet()){
+					  
+					  List<CadreCommitteeMemberVO> newResultList = levelVosMap.get(level);
+					List<Object[]> membersList = tdpCommitteeMemberDAO.getComitteeMembersByCommiteTypeAndLocation(level,levelValuesMap.get(level),basicCommitteeTypeId,status);
 					if(membersList != null && membersList.size() > 0)
 					{
 						for(Object[] params : membersList)
 						{
-							CadreCommitteeMemberVO vo = getMatchedLocation((Long)params[1],(Long)params[2],resultList);
+							CadreCommitteeMemberVO vo = getMatchedLocation((Long)params[1],(Long)params[2],newResultList);
 							if(vo != null)
 								vo.setTotal((Long)params[0]);
 						}
 					}
+				  }
 				}
 			
 			if(resultList != null && resultList.size() > 0)
