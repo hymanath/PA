@@ -64,7 +64,7 @@
 	<hr>
 	<div class="row-fluid">
 		<div class="col-md-12 col-sm-12 col-xs-12 text-center">
-			&copy; TDP-2014 Committees Management 
+			&copy; TDP-2015 Committees Management 
 		<div>
 	<div>	
 	</footer>
