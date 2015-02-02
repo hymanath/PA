@@ -2301,9 +2301,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						cv.setCadreCommitteeIncreasedPosId(Long.valueOf(obj[12].toString()));
 					}
 					   
-					else
+					else{
 					  cv.setRefNo(obj[0]!=null?obj[0].toString():"");
-					
+					  cv.setDateString(new SimpleDateFormat("dd-MM-yyyy").format(obj[11]));
+					}
 					cv.setLocationTypeId(Long.valueOf(obj[1].toString()));
 					cv.setLocationType(obj[2].toString());
 					cv.setLocationId(Long.valueOf(obj[3].toString()));
@@ -3824,7 +3825,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						committeeApprovalvo.setCommitteeId(Long.valueOf(obj[5].toString()));
 						committeeApprovalvo.setCommitteeName(obj[6].toString());
 						committeeApprovalvo.setStatus(obj[14].toString());
-						committeeApprovalvo.setDateString(obj[1].toString());
+						committeeApprovalvo.setDateString(new SimpleDateFormat("dd-MM-yyyy").format(obj[1]));
 						committeeApprovalvo.setRefNo(obj[15].toString());
 		    			resultMap.put((Long)obj[0], committeeApprovalvo);
 		    		}
