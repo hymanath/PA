@@ -1049,9 +1049,9 @@ function getLocationWisePerformance(constituencyId,locationType,name){
 				for(var i in result.apList){
 				  str+='<tr>';
 				  if(locationType =="All" || locationType =="AP" || locationType =="TS"){
-				    str+='  <td><a href="javascript:{}" title="Click Here To View Previous Calls Info" onclick="getEnquiryInfo(\'constituency\',\''+result.apList[i].id+'\',\''+result.apList[i].name+'\')">'+result.apList[i].name+'</a><span style="cursor:pointer;" title="Click Here To Add Call Details" onclick="openSaveEnquiryInfo(\'constituency\','+result.apList[i].id+','+result.apList[i].id+')"><i class="icon-list-alt"></i></span></td>';
+				    str+='  <td><a href="javascript:{}" title="Click Here To View Previous Calls Info" onclick="getEnquiryInfo(\'constituency\',\''+result.apList[i].id+'\',\''+result.apList[i].name+'\')">'+result.apList[i].name+'</a><span style="cursor:pointer;" title="Click Here To Add Call Details" onclick="openSaveEnquiryInfo(\'constituency\','+result.apList[i].id+','+result.apList[i].id+','+result.apList[i].name+')"><i class="icon-list-alt"></i></span></td>';
 				  }else if(locationType == "mandal"){
-				    str+='  <td><a href="javascript:{}" title="Click Here To View Previous Calls Info" onclick="getEnquiryInfo(\'tehsil\',\''+result.apList[i].id+'\',\''+result.apList[i].name+'\')">'+result.apList[i].name+'</a><span style="cursor:pointer;" title="Click Here To Add Call Details" onclick="openSaveEnquiryInfo(\'mandal\','+result.apList[i].id+','+constituencyId+')"><i class="icon-list-alt"></i></span></td>';
+				    str+='  <td><a href="javascript:{}" title="Click Here To View Previous Calls Info" onclick="getEnquiryInfo(\'tehsil\',\''+result.apList[i].id+'\',\''+result.apList[i].name+'\')">'+result.apList[i].name+'</a><span style="cursor:pointer;" title="Click Here To Add Call Details" onclick="openSaveEnquiryInfo(\'mandal\','+result.apList[i].id+','+constituencyId+','+result.apList[i].name+')"><i class="icon-list-alt"></i></span></td>';
 				  }else{
 				    str+='  <td>'+result.apList[i].name+'</td>';
 				  }
@@ -1139,7 +1139,7 @@ function generateExcel(reqId){
 	var browser1 = window.open(urlstr,"Ivr Details","scrollbars=yes,height=600,width=1050,left=200,top=200");	
 	browser1.focus();
  } 
- function saveEnquiryInfo(locationName,locationId,details,mobile,received,delivered,callStatus,constituencyId){
+ function saveEnquiryInfo(locationName,locationId,details,mobile,received,delivered,callStatus,constituencyId,designation){
       $("#successMesDiv").html("");
 	  $("#errorMesDiv").html("");
 	  
@@ -1151,8 +1151,8 @@ function generateExcel(reqId){
             received:received,
             delivered:delivered,
             callStatus:callStatus,
-            constituencyId:constituencyId
-			 
+            constituencyId:constituencyId,
+			designation :designation
 		}
      $.ajax({
 			type : "POST",
@@ -1163,6 +1163,7 @@ function generateExcel(reqId){
 		    $("#submitDataForEnquiryInfoId").removeAttr("disabled");
 			if(result == "success"){
 				$("#detailsRId").val("");
+				$("#designationId").val("");
 				$("#mobileRId").val("");
 				$("#receivedRId").val("");
 				$("#deliveredRId").val("");
@@ -1250,17 +1251,18 @@ function generateExcel(reqId){
               $('#prevCallDetailsShowInner').html('<div style="font-weight:bold;padding:20px;margin-left:375px;">No Data Available</div>');
         }		
 }
- function openSaveEnquiryInfo(locationType,locationId,constituencyId){
+ function openSaveEnquiryInfo(locationType,locationId,constituencyId,locationNme){
          $('#prevCallDetailsShowOuter').dialog(
 			{
 				width : 850,
 				height:550,
-				title : "Call Details"
+				title : " "+locationNme+" Call Details"
 			});
 			var str="<div style='color:red;' id='errorMesDiv'/>";
 			str +="<div style='color:green;' id='successMesDiv'/>";
 			str += '<table class="table table-bordered m_top20 "  style="width:850px;">';
-			str += '<tr><th> Name/Designation<span class="mandatory">*</span> </th><td><input type="text" id="detailsRId"></td></tr>';
+			str += '<tr><th> Name<span class="mandatory">*</span> </th><td><input type="text" id="detailsRId"></td></tr>';
+			str += '<tr><th> Designation<span class="mandatory">*</span> </th><td><input type="text" id="designationId"></td></tr>';
 			str += '<tr><th> Mobile<span class="mandatory">*</span>  </th><td><input type="text" id="mobileRId"></td></tr>';
 			str += '<tr><th> Cards Received Count<span class="mandatory">*</span> </th><td><input type="text" id="receivedRId"></td></tr>';
 			str += '<tr><th> Cards Delivered Count<span class="mandatory">*</span>  </th><td><input type="text" id="deliveredRId"></td></tr>';
@@ -1278,10 +1280,15 @@ function generateExcel(reqId){
   var mobile = $.trim($("#mobileRId").val());
   var received = $.trim($("#receivedRId").val());
   var delivered = $.trim($("#deliveredRId").val());
+  var designation=$.trim($("#designationId").val());
   var rStr="";
   if(details.length == 0){
     isError = true;
-	rStr+="<div>Name/Designation is required.</div>";
+	rStr+="<div>Name is required.</div>";
+  }
+  if(designation.length ==0){
+	isError = true;
+	rStr+="<div>Designation is required.</div>";
   }
   if(mobile.length == 0){
     isError = true;
@@ -1314,7 +1321,7 @@ function generateExcel(reqId){
   
   $("#submitDataForEnquiryInfoId").attr("disabled","disabled");
   $("#ajaxImgStyle").show();
- saveEnquiryInfo(locationType,locationId,details,mobile,received,delivered,$("#callStatusRId").val(),constituencyId);
+ saveEnquiryInfo(locationType,locationId,details,mobile,received,delivered,$("#callStatusRId").val(),constituencyId,designation);
  
  }
 </script>
