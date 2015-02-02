@@ -638,6 +638,7 @@ function buildIvrCountByDate(result,state)
 	{
 		var answerPerc = result[0].answeredPerc ;
 		var errorPerc = (result[0].totalError / result[0].total * 100);
+		var unAnswered= (result[0].totalUnAnswered / result[0].total * 100);
 		
 		var str ='';
 		str+='<canvas id="answerErrorChart" style="margin-left:0px; margin-right:5px; margin-top: 35px;" width="170px" height="180px"></canvas>';
@@ -645,6 +646,7 @@ function buildIvrCountByDate(result,state)
 		str+='<ul class="doughnut-legend">';
 		str+='<li><span style="background-color: rgb(92, 182, 92); width: 10px; height: 10px; display: block; margin-left: 50px; margin-top: 11px;"></span><p style="margin-top: -13px; margin-right: 0px; margin-bottom: -8px;">IVR Answered</p></li>';
 		str+='<li><span style="background-color: rgb(209, 71, 65); width: 10px; height: 10px; display: block; margin-left: 50px; margin-top: 0px;"></span><p style="margin-top: -13px; margin-right: 29px; margin-left: 0px;">IVR Error</p></li>';
+		str+='<li><span style="background-color: rgb(0, 85, 128); width: 10px; height: 10px; display: block; margin-left: 50px; margin-top: 0px;"></span><p style="margin-top: -13px; margin-right: 29px; margin-left: 49px;">IVR UnAnswered</p></li>';
 		str+='</ul>';
 		str+='</div>';
 		str+='<div class="text-center" style="margin-top:0px;">';	
@@ -671,6 +673,14 @@ function buildIvrCountByDate(result,state)
         label: "IVR Error",
 		labelFontSize: '8'
 		},
+			{
+		value: unAnswered,
+        color:"#005580",
+        //highlight: "#D7C482",
+        label: "IVR UnAnswered",
+		labelFontSize: '8'
+		},
+		
 		
 		]
 		
@@ -702,18 +712,18 @@ function buildIvrCountByDate(result,state)
 	if(result[0].switchCongestionPerc == null)
 		result[0].switchCongestionPerc = 0;
 		if(result[0].answeredCnt > 0)
-	selectedOptPerc = 100 - result[0].noOptionPerc;
+	<!--selectedOptPerc = 100 - result[0].noOptionPerc;  -->
 	var str='';
 	str+='<div class="row-fluid">';
 	str+='<h4 class="m-0" style="border-bottom: 1px solid rgb(204, 204, 204); padding-bottom: 10px;color:#5cb55c;">ANSWERED CALLS</h4>';
-	str+='<h6 class="label" style="width: 180px; margin-left: 2px; margin-right: -55px;">Selected Any Option : '+selectedOptPerc+' %</h6>';
+	str+='<h6 class="label" style="width: 180px; margin-left: 2px; margin-right: -55px;">Selected Any Option : '+result[0].selectedOptionCntPerc+' %</h6>';
 	str+='<ul class="unstyled">';
 	str+='<li>';
 	str+='<b>Cards Received <span>&nbsp;&nbsp;'+result[0].receivedPerc+'%</span></b>';
 	str+='<div style="height:5px;" class="progress progress-success mb-10">';
 	str+='<div class="bar" style="width: '+result[0].receivedPerc+'%"></div>';
 	str+='</div>';
-	str+='</li>';
+	str+='</li>'; 
 	str+='<li>';
 	str+='<b>Cards Not Received<span>&nbsp;&nbsp;'+result[0].notReceivedPerc+'%</span></b>';
 	str+='<div style="height:5px;" class="progress progress-danger mb-10">';
@@ -746,29 +756,9 @@ function buildIvrCountByDate(result,state)
 	var str1='';
 	str1+='<div class="row-fluid">';
 	str1+='<h4 class="m-0" style="border-bottom: 1px solid rgb(204, 204, 204); padding-bottom: 10px;color:#d54a45;">IVR ERROR CALLS</h4>';
-	str1+='<h6 class="label" style="width: 180px; margin-left: 2px; margin-right: -55px;">Unanswered Calls<span>&nbsp;&nbsp;</h6>';
 	str1+='<ul class="unstyled">';
-	str1+='<li>';
-	str1+='<b>Rejected Calls  <span>&nbsp;&nbsp;'+result[0].callRejectedPerc+'%</span></b>';
-	str1+='<div style="height:5px;" class="progress progress-success mb-10">';
-	str1+='<div class="bar" style="width: '+result[0].callRejectedPerc+'%"></div>';
-	str1+='</div>';
-	str1+='</li>';
 	
-	str1+='<li>';
-	str1+='<b>User Busy  <span>&nbsp;&nbsp;'+result[0].userBusyPerc+'%</span></b>';
-	str1+='<div style="height:5px;" class="progress progress-success mb-10">';
-	str1+='<div class="bar" style="width: '+result[0].userBusyPerc+'%"></div>';
-	str1+='</div>';
-	str1+='</li>';
-	//str1+='<li style="border-bottom: 2px solid rgb(204, 204, 204); padding-bottom: 20px;">';
-	str1+='<li>';
-	str1+='<b>No Answer<span>&nbsp;&nbsp;'+result[0].noAnswerPerc+'%</span></b>';
-	str1+='<div style="height:5px;" class="progress progress-warning mb-10">';
-	str1+='<div class="bar" style="width: '+result[0].noAnswerPerc+'%"></div>';
-	str1+='</div>';
-	str1+='</li>';
-	str1+='<h6 class="label" style="width: 180px; margin-left: 2px; margin-right: -55px;">Error Calls<span>&nbsp;&nbsp;</h6>';
+	str1+='<h6 class="label" style="width: 180px; margin-left: 2px; margin-right: -55px;">Error Calls : '+result[0].totalErrorPerc+' %<span>&nbsp;&nbsp;</h6>';
 	str1+='<li>';	
 	str1+='<b>Network Error <span>&nbsp;&nbsp;'+result[0].newtworkErrorPerc+'%</span></b>';
 	str1+='<div style="height:5px;" class="progress progress-success mb-10">';
@@ -792,13 +782,44 @@ function buildIvrCountByDate(result,state)
 	str1+='<div class="bar" style="width: '+result[0].interworkingCountPerc+'%"></div>';
 	str1+='</div>';
 	str1+='</li>';
-	str1+='<li>';	
+	str1+='<li style="border-bottom: 1px solid rgb(204, 204, 204); padding-bottom: 10px;">';	
 	str1+='<b>Other <span>&nbsp;&nbsp;'+result[0].otherErrorPerc+'%</span></b>';
 	str1+='<div style="height:5px;" class="progress progress-danger mb-10">';
 	str1+='<div class="bar" style="width: '+result[0].otherErrorPerc+'%"></div>';
 	str1+='</div>';
 	str1+='</li>';
 	str1+='</ul>';
+	
+	str1+='</div>'
+	
+	str1+='<div class="row-fluid">';
+	str1+='<h4 class="m-0" style="border-bottom: 1px solid rgb(204, 204, 204); padding-bottom: 10px;color:#005580;">IVR UNANSWERED CALLS</h4>';
+	
+	str1+='<h6 class="label" style="width: 180px; margin-left: 2px; margin-right: -55px;">Unanswered Calls : '+result[0].totalUnAnsweredPerc+' %<span>&nbsp;&nbsp;</h6>';
+	str1+='<ul class="unstyled">';
+	str1+='<li>';
+	str1+='<b>Rejected Calls  <span>&nbsp;&nbsp;'+result[0].callRejectedPerc+'%</span></b>';
+	str1+='<div style="height:5px;" class="progress progress-success mb-10">';
+	str1+='<div class="bar" style="width: '+result[0].callRejectedPerc+'%"></div>';
+	str1+='</div>';
+	str1+='</li>';
+	
+	str1+='<li>';
+	str1+='<b>User Busy  <span>&nbsp;&nbsp;'+result[0].userBusyPerc+'%</span></b>';
+	str1+='<div style="height:5px;" class="progress progress-success mb-10">';
+	str1+='<div class="bar" style="width: '+result[0].userBusyPerc+'%"></div>';
+	str1+='</div>';
+	str1+='</li>';
+	//str1+='<li style="border-bottom: 2px solid rgb(204, 204, 204); padding-bottom: 20px;">';
+	str1+='<li>';
+	str1+='<b>No Answer<span>&nbsp;&nbsp;'+result[0].noAnswerPerc+'%</span></b>';
+	str1+='<div style="height:5px;" class="progress progress-warning mb-10">';
+	str1+='<div class="bar" style="width: '+result[0].noAnswerPerc+'%"></div>';
+	str1+='</div>';
+	str1+='</li>';
+	
+	str+='</ul>';
+	
 	str1+='</div>';
 	$("#errorIvrTD").html(str1);
 	}
@@ -1028,9 +1049,9 @@ function getLocationWisePerformance(constituencyId,locationType,name){
 				for(var i in result.apList){
 				  str+='<tr>';
 				  if(locationType =="All" || locationType =="AP" || locationType =="TS"){
-				    str+='  <td><a href="javascript:{}" title="Click Here To View Previous Calls Info" onclick="getEnquiryInfo(\'constituency\',\''+result.apList[i].id+'\')">'+result.apList[i].name+'</a><span style="cursor:pointer;" title="Click Here To Add Call Details" onclick="openSaveEnquiryInfo(\'constituency\','+result.apList[i].id+','+result.apList[i].id+')"><i class="icon-list-alt"></i></span></td>';
+				    str+='  <td><a href="javascript:{}" title="Click Here To View Previous Calls Info" onclick="getEnquiryInfo(\'constituency\',\''+result.apList[i].id+'\',\''+result.apList[i].name+'\')">'+result.apList[i].name+'</a><span style="cursor:pointer;" title="Click Here To Add Call Details" onclick="openSaveEnquiryInfo(\'constituency\','+result.apList[i].id+','+result.apList[i].id+')"><i class="icon-list-alt"></i></span></td>';
 				  }else if(locationType == "mandal"){
-				    str+='  <td><a href="javascript:{}" title="Click Here To View Previous Calls Info" onclick="getEnquiryInfo(\'tehsil\',\''+result.apList[i].id+'\')">'+result.apList[i].name+'</a><span style="cursor:pointer;" title="Click Here To Add Call Details" onclick="openSaveEnquiryInfo(\'mandal\','+result.apList[i].id+','+constituencyId+')"><i class="icon-list-alt"></i></span></td>';
+				    str+='  <td><a href="javascript:{}" title="Click Here To View Previous Calls Info" onclick="getEnquiryInfo(\'tehsil\',\''+result.apList[i].id+'\',\''+result.apList[i].name+'\')">'+result.apList[i].name+'</a><span style="cursor:pointer;" title="Click Here To Add Call Details" onclick="openSaveEnquiryInfo(\'mandal\','+result.apList[i].id+','+constituencyId+')"><i class="icon-list-alt"></i></span></td>';
 				  }else{
 				    str+='  <td>'+result.apList[i].name+'</td>';
 				  }
@@ -1156,14 +1177,14 @@ function generateExcel(reqId){
 			}
         });
  }
- function getEnquiryInfo(locationLvl,locationValue){
+ function getEnquiryInfo(locationLvl,locationValue,locationName){
  
  $('#prevCallDetailsShowInner').html('<img src="images/Loading-data.gif" style="margin-left: 380px;margin-top: 78px;width:70px;height:60px;">');
   $('#prevCallDetailsShowOuter').dialog(
 	{
 		width : 850,
 		height:550,
-		title : " Previous Calls Info"
+		title : ""+locationName+" Previous Calls Info"
 	});
  if(locationLvl == "tehsil"){
     if(locationValue.charAt(0) =="1"){
