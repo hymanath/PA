@@ -323,4 +323,32 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getCommitteesCountByDistrictIdAndLevel(List<Long> districtIds,List<Long> levelIds){
+		Query query = getSession().createQuery(" select count(model.tdpCommitteeId), model.district.districtId" +
+				" from TdpCommittee model" +
+				" where model.district.districtId in(:districtIds)" +
+				" and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds)" +
+				" and model.district.districtId is not null " +
+				" group by model.district.districtId");
+		
+		query.setParameterList("districtIds", districtIds);
+		query.setParameterList("levelIds", levelIds);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getCommitteesCountByConstituencyIdAndLevel(List<Long> constituencyIds,List<Long> levelIds){
+		Query query = getSession().createQuery(" select count(model.tdpCommitteeId), model.constituency.constituencyId" +
+				" from TdpCommittee model" +
+				" where model.constituency.constituencyId in(:constituencyIds)" +
+				" and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) " +
+				" and model.constituency.constituencyId is not null " +
+				" group by model.constituency.constituencyId");
+		
+		query.setParameterList("constituencyIds", constituencyIds);
+		query.setParameterList("levelIds", levelIds);
+		
+		return query.list();
+	}
 }
