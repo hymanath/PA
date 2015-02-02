@@ -73,7 +73,8 @@ public class CadreCommitteeIncreasedPositionsDAO extends GenericDaoHibernate<Cad
 					" model.tdpCommitteeRole.tdpRoles.role," + // 7 -- ROLE NAME
 					" model.currentCount," + // 8 -- CURRENT COUNT
 					" model.requestCount," + // 9 -- REQUESTED COUNT
-					" model.status  " + // 10 -- STATUS 
+					" model.status," +// 10 -- STATUS 
+					" date(model.insertedTime)  " + //11-date
 					" from CadreCommitteeIncreasedPositions model" +
 					" where model.type ='positionsIncreased' and " +
 					" model.userIdRequest.userId=:requestUserId");
