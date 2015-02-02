@@ -3705,7 +3705,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		List<CommitteeApprovalVO> resultList=null;
 		try
 		{
-		   List<Object[]> list1= cadreCommitteeChangeDesignationsDAO.changeDesignationRecordsForAUser(5556l);
+		   List<Object[]> list1= cadreCommitteeChangeDesignationsDAO.changeDesignationRecordsForAUser(userId);
 		   
 		   //getting Locations.
 		   List<Object[]> list = tdpCommitteeLevelDAO.getAllLevels();	
