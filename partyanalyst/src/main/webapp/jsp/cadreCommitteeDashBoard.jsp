@@ -1503,6 +1503,8 @@
 	function getPopUpForSummary(id){
 		$( "#dialogSummary" ).modal("show");
 		
+		$("#CommitteeDetails").html(""); 
+		
 		getSummary(id);
 		getMandalMuncipalDivisonStartedCommittees(id);
 	
