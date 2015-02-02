@@ -1048,7 +1048,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						}
 					 
 					 resultStatus.setResultCode(0);
-					 resultStatus.setMessage("Electrol Added Successfully... ");
+					 resultStatus.setMessage("Electoral Added Successfully... ");
 					return resultStatus;
 					 
 				 }
