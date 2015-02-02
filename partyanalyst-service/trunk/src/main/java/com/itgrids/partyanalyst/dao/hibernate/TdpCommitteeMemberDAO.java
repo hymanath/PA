@@ -255,7 +255,9 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		sb.append(" select count(model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.district.districtId " +
 				" from TdpCommitteeMember model " +
 				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId in(:levelIds)" +
-				" and model.tdpCommitteeRole.tdpCommittee.district.districtId in(:districtIds)");
+				" and model.tdpCommitteeRole.tdpCommittee.district.districtId in(:districtIds)" +
+				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 1" +
+				" and model.isActive = 'Y' ");
 		if(startDate!=null){
 			sb.append(" and date(model.tdpCommitteeRole.tdpCommittee.startedDate) >= :startDate ");
 		}
@@ -369,8 +371,10 @@ public List<Object[]> membersCountConstituencyWise(List<Long> levelIds, Date sta
 		sb.append(" select count(model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.constituency.constituencyId " +
 				" from TdpCommitteeMember model " +
 				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId in (:levelIds)" +
-				" and model.tdpCommitteeRole.tdpCommittee.constituency.constituencyId in (:constiIds)");
-		
+				" and model.tdpCommitteeRole.tdpCommittee.constituency.constituencyId in (:constiIds)" +
+				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 1" +
+				" and model.isActive = 'Y' ");
+				
 		if(startDate!=null){
 			sb.append(" and date(model.insertedTime) >= :startDate ");
 		}
