@@ -3488,7 +3488,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				 
 			 }
 			
-			List<Object[]> startedCount=tdpCommitteeMemberDAO.getStartedAffliCommitteesCountByLocation(state, levelIds,startDate,endDate);
+			List<Object[]> startedCount=tdpCommitteeDAO.getCompletedAffliCommitteesCountByLocation(state, levelIds,startDate,endDate);
 			if(startedCount != null && startedCount.size() > 0){
 				for (Object[] objects : startedCount) {		
 						CadreCommitteeReportVO vo = new CadreCommitteeReportVO();
