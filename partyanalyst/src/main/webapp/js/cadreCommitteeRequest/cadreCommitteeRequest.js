@@ -347,6 +347,7 @@ function getCommitteeLocations(){
 							  str+=' Request Max Positions';
 							  str+='<input class="form-control" id="requestMaxPositionId" /> ';
 							  str+='<button id="positionIncreased" class="btn btn-success" onClick="cadreCommitteeIncPositionsOrChangeDesg(\'positionsIncreased\')">Send Request</button>';
+							  str+='<div> <img src="images/Loading-data.gif" class="offset7"  id="posIncImageId" style=" margin-left:252px;margin-top: 20px;width:70px;height:60px;display:none;"/></div>';
 							  str+='<div id="maxPositionsErrId"></div>';
 							  str+='</div>';
 							  $("#posIncreasedId").html(str);
@@ -362,7 +363,7 @@ function getCommitteeLocations(){
 					
 				      var str='';
 					  str+='<div class="col-md-offset-1 col-md-10 pad1" style="background-color:rgba(0,0,0,0.1);">';
-					  str+='<span style="font-weight: bold;"><span style="color:green">'+committeeLocation+ '</span> &nbsp'+committeeType+ '&nbsp '+committeePosition+' Designation</style>';
+					  str+='<span style="font-weight: bold;"><span style="color:green">'+committeeLocation+ '</span> &nbsp'+committeeType+'</style>';
 					  str+='<span style="font-weight: bold;color:red; margin-left: 116px;" id="errorChangeDesg"></span>';
 					  str+='</div>';
 					  
@@ -432,7 +433,7 @@ function getCommitteeLocations(){
 					    $('#posIncreasedId').show();
 				        var str="";
 					    str+='<div class="col-md-offset-2 col-md-8 pad1" style="background-color:rgba(0,0,0,0.1);">';
-						str+= '<span style="font-weight: bold;"><span style="color:green">'+committeeLocation+ '</span> &nbsp'+committeeType+ '&nbsp '+committeePosition+' Designation</style>';
+						str+= '<span style="font-weight: bold;"><span style="color:green">'+committeeLocation+ '</span> &nbsp'+committeeType+'</style>';
 					    str+='</div>';
 						str+='<div class="col-md-offset-2 col-md-8 pad1 alert alert-danger"><div style="">This Commitee is Not Confirmed.Use The Following Link To ADD OR UPDATE Details <a href="cadreCommitteeSummaryAction.action">COMMITTEE SUMMARY</a></div></div>';
 				      $("#posIncreasedId").html(str);
@@ -453,6 +454,7 @@ function getCommitteeLocations(){
 							   
 	function cadreCommitteeIncPositionsOrChangeDesg(type)
 	{
+	 
 	  $("#changeDesgnationsErrId").html("");
 	  $("#errorChangeDesg").html("");
 	  var jsObj =new Object();
@@ -533,12 +535,20 @@ function getCommitteeLocations(){
 		jsObj.globalReqLocationValue =globalReqLocationValue;
 		jsObj.globalReqCommitteeType=globalReqCommitteeType;
 	 }
+	  if(type=="positionsIncreased"){
+	   $("#posIncImageId").show();
+	  }
+	 
 	
 	   $.ajax({
 				type : "GET",
 				url : "cadreCommitteeIncPositionsOrChangeDesgAction.action",
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
+			    
+	               $("#posIncImageId").hide();
+	              
+			 
 			   if(type=="positionsIncreased"){
 			     if(result.resultCode=='1')
 			       $('#maxPositionsErrId').html("<span style='color:green;margin-left: 204px;font-size: 20px'>Request Sent Successfully.</span>");
@@ -599,15 +609,17 @@ function getCommitteeLocations(){
 
 
 	function  gettingRequestsDetailsForAUser(type){
-	 
+	 $("#processImgId").show();
 	
 	 $.ajax({
 				type : "GET",
 				url : "gettingRequestsDetailsForAUserAction.action",
 				data: {type:type}
 			}).done(function(result){
+			    $("#processImgId").hide();
+				
 			   if(result!=null){
-			  
+			    
 			     var str='';
 			     str+='<div class="col-md-10 col-md-offset-1 m_top20" style="background-color:rgba(0,0,0,0.1);overflow:scroll;height:600px;">';
                 	str+='<table class="table table-yellow-bordered table-condensed">';
@@ -618,23 +630,25 @@ function getCommitteeLocations(){
 						
 						if(type=="positionsIncreased"){
 						str+='<thead>';
-                        	str+='<th width="15%">LOCATION</th>';
-                            str+='<th width="20%">COMMITTEE NAME</th>';
-                            str+='<th width="18%">POSITION NAME</th>';
-                            str+='<th width="15%"><small>CURRENT MAX POSITONS</small></th>';
-                            str+='<th width="15%"><small>REQUESTED MAX POSITIONS</small></th>';
-                            str+='<th width="12%">STATUS</th>';
-                            str+='<th width="13%">Ref-No</th>';
+						    str+='<th width="10%" style="padding-left: 23px;">DATE</th>';
+                        	str+='<th width="17%"  style="padding-left: 31px;">LOCATION</th>';
+                            str+='<th width="20%" style="padding-left: 10px;">COMMITTEE NAME</th>';
+                            str+='<th width="18%" style="padding-left: 21px;">POSITION NAME</th>';
+                            str+='<th width="13%"><small>CURRENT MAX POSITONS</small></th>';
+                            str+='<th width="11%"><small>REQUESTED MAX POSITIONS</small></th>';
+                            str+='<th width="10%" style="padding-left: 13px;">STATUS</th>';
+                            str+='<th width="13%" style="padding-left: 17px;">Ref-No</th>';
                         str+='</thead>';
                          str+='<tbody>';
 						   for(var i in result){//loc comm pre cur req sta
 						     str+='<tr>';
-                        	 str+='<td>'+result[i].location+' '+result[i].locationType+'</td>';
-                             str+='<td>'+result[i].committeeName+'</td>';
-                             str+='<td>'+result[i].role+'</td>';
-                             str+='<td>'+result[i].currentPosCount+'</td>';
-                             str+='<td>'+result[i].requestdPosCount+'</td>';
-                             str+='<td>'+result[i].status+'</td>';
+							 str+='<td>'+result[i].dateString+'</td>';
+                        	 str+='<td style="padding-left: 14px;">'+result[i].location+' '+result[i].locationType+'</td>';
+                             str+='<td style="padding-left: 25px;">'+result[i].committeeName+'</td>';
+                             str+='<td style="padding-left: 21px;">'+result[i].role+'</td>';
+                             str+='<td style="padding-left: 42px;">'+result[i].currentPosCount+'</td>';
+                             str+='<td style="padding-left: 42px;">'+result[i].requestdPosCount+'</td>';
+                             str+='<td style="padding-left: 12px;">'+result[i].status+'</td>';
                              str+='<td>'+result[i].refNo+'</td>';
 							 str+='</tr>';
 							}
@@ -644,36 +658,38 @@ function getCommitteeLocations(){
 				  }
 				  else if(type="changeDesignations"){
 				  str+='<thead>';
-                        str+='<th>DATE</th>';
+                        str+='<th style="padding-left: 22px;">DATE</th>';
                         str+='<th>LOCATION</th>';
 						str+='<th>COMMITTEE NAME</th>';
 		                str+='<th>MEMBER IMAGE</th>';
-						str+='<th>COMMITTEE MEMBER NAME</th>';
+						str+='<th style="padding-left: 20px;">COMMITTEE MEMBER NAME</th>';
                         str+='<th>MEMBERSHIP NO</th>';
-                        str+='<th>CURRENT ROLE</th>';
-						str+='<th>REQUESTED ROLE</th>';
+                        str+='<th style="padding-left: 18px;">CURRENT ROLE</th>';
+						str+='<th style="padding-left: 17px;">REQUESTED ROLE</th>';
                         str+='<th>STATUS</th>';
-                        str+='<th>REF-NO</th>';
+                        str+='<th style="padding-left: 12px;">REF-NO</th>';
                   str+='</thead>';
 				  str+='<tbody>';
 				  for(var i in result){
 				   var rowcount = result[i].locationsList.length;
+				   var paddingTop=(rowcount*20);
+				  
 				   str+='<tr>';
-				   str+='<td rowspan="'+result[i].locationsList.length+'">'+result[i].dateString+'</td>';
-				   str+='<td rowspan="'+result[i].locationsList.length+'">'+result[i].location+' '+result[i].locationType+'</td>';
-				   str+='<td rowspan="'+result[i].locationsList.length+'">'+result[i].committeeName+'</td>';
+				   str+='<td rowspan="'+result[i].locationsList.length+'" style="text-align: center;padding-top:'+paddingTop+'px;">'+result[i].dateString+'</td>';
+				   str+='<td rowspan="'+result[i].locationsList.length+'" style="text-align: center;padding-top:'+paddingTop+'px;">'+result[i].location+' '+result[i].locationType+'</td>';
+				   str+='<td rowspan="'+result[i].locationsList.length+'" style="text-align: center;padding-top:'+paddingTop+'px;">'+result[i].committeeName+'</td>';
 				   
 				    for(var j in result[i].locationsList)
 					{					
 						 str+='<td><img width="32"  height="32" src="http://www.mytdp.com/images/cadre_images/'+result[i].locationsList[j].positionId+'" onerror="setDefaultImage(this);"/></td>';
 						 str+='<td>'+result[i].locationsList[j].position+'</td>';
 						 str+='<td>'+result[i].locationsList[j].memberShipNo+'</td>';
-						 str+='<td>'+result[i].locationsList[j].currentRole+'</td>';
-						 str+='<td>'+result[i].locationsList[j].newRole+'</td>';
+						 str+='<td style="padding-left: 19px;">'+result[i].locationsList[j].currentRole+'</td>';
+						 str+='<td style="padding-left: 19px;">'+result[i].locationsList[j].newRole+'</td>';
 						 if(j == 0) 
 						 {
-							 str+='<td rowspan="'+result[i].locationsList.length+'">'+result[i].status+'</td>';
-							 str+='<td rowspan="'+result[i].locationsList.length+'">'+result[i].refNo+'</td>';
+							 str+='<td rowspan="'+result[i].locationsList.length+'" style="text-align: center;padding-top:'+paddingTop+'px;">'+result[i].status+'</td>';
+							 str+='<td rowspan="'+result[i].locationsList.length+'" style="text-align: center;padding-top:'+paddingTop+'px;">'+result[i].refNo+'</td>';
 						 }
 						 str+='</tr>';
 						 
@@ -685,7 +701,17 @@ function getCommitteeLocations(){
 				  }
                 str+='</div>';
 				
-		     $('#resultStatusId').html(str);
+		     $('#resultReportId').html(str);
+			}
+			else{
+			     var str='';
+			     str+=' <div style="padding:8px;padding-left:2px;padding-right:2px;" class="col-md-offset-0 text-center col-md-10">';
+				 str+='<label  class="radio-inline"><input id="requestRadioId1" type="radio" name="requestRadio" value="1"  onClick="gettingRequestsDetailsForAUser(\'positionsIncreased\');"/><span class="text-success" style="font-size:1.2em">INCREASE POSITION REQUEST STATUS</span></label>';
+				 str+='<label  class="radio-inline"  style="margin-left: 20px;"><input id="requestRadioId2" type="radio" name="requestRadio" value="2" onClick="gettingRequestsDetailsForAUser(\'changeDesignations\');"/><span class="text-success" style="font-size:1.2em">CHANGE POSITION REQUEST STATUS</span></label>';
+				 str+='</div>';
+				 str+='<span style="font-weight:bold;text-align:center; margin-left: 471px;"> No Data Available...</span>';
+				$('#resultReportId').html(str);
+			}
 			 
 			  if(type=="positionsIncreased"){
 				$("#requestRadioId1").prop("checked","checked");
@@ -693,7 +719,8 @@ function getCommitteeLocations(){
 				else if(type="changeDesignations"){
 				$("#requestRadioId2").prop("checked","checked");
 				}
-			   }
+			  
+			   
 			});
 
 	}
