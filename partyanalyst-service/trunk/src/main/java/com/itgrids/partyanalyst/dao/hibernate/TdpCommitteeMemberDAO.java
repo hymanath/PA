@@ -257,10 +257,10 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId in(:levelIds)" +
 				" and model.tdpCommitteeRole.tdpCommittee.district.districtId in(:districtIds)");
 		if(startDate!=null){
-			sb.append(" and date(model.insertedTime) >= :startDate ");
+			sb.append(" and date(model.tdpCommitteeRole.tdpCommittee.startedDate) >= :startDate ");
 		}
 		if(endDate!=null){
-			sb.append(" and date(model.insertedTime) <= :endDate");
+			sb.append(" and date(model.tdpCommitteeRole.tdpCommittee.completedDate) <= :endDate");
 		}
 		sb.append(" group by model.tdpCommitteeRole.tdpCommittee.district.districtId");
 		
