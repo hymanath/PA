@@ -1504,6 +1504,7 @@
 		$( "#dialogSummary" ).modal("show");
 		
 		$("#CommitteeDetails").html(""); 
+		$("#committeeMemberDiv").html("");
 		
 		getSummary(id);
 		getMandalMuncipalDivisonStartedCommittees(id);
