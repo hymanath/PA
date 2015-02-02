@@ -29,6 +29,7 @@ public class CadreIVREnquiry {
   private String callStatus;
   private String isDeleted;
   private Long constituencyId;
+  private String designation;
   
     @Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -138,6 +139,15 @@ public class CadreIVREnquiry {
 
 	public void setConstituencyId(Long constituencyId) {
 		this.constituencyId = constituencyId;
+	}
+	
+	@Column(name = "designation")
+	public String getDesignation() {
+		return designation;
+	}
+
+	public void setDesignation(String designation) {
+		this.designation = designation;
 	}
   
   
