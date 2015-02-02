@@ -351,4 +351,31 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		
 		return query.list();
 	}
+
+	
+	
+	public List<Object[]> getCompletedAffliCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate ){
+
+		StringBuilder str = new StringBuilder();
+
+		str.append("select count(distinct model.tdpCommitteeId), " +
+		" model.name,model.tdpBasicCommittee.tdpBasicCommitteeId " +
+		" from TdpCommittee model where ");
+		str.append(" model.state= :state ");
+		if(startDate !=null && endDate !=null){
+			str.append(" and ( date(model.completedDate)>=:startDate and date(model.completedDate)<=:endDate ) ");
+		}
+		str.append("and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) " +
+				" and model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 2 and" +
+				"  model.isCommitteeConfirmed = 'Y' " +
+				"group by model.tdpBasicCommittee.tdpBasicCommitteeId ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("state", state);		
+		query.setParameterList("levelIds", levelIds);
+		if(startDate != null && endDate !=null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		return query.list();
+	}
 }
