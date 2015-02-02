@@ -5264,29 +5264,27 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	        		  locationTypeIds.add(2l);
 	        		  locationTypeIds.add(5l);
 	        	  }
- 	
-        		 List<Object[]> list1 = cadreIVREnquiryDAO.getLocationIdsByTypeId(locationTypeIds,startDate,toDate);
-	        	
-        		 if(list1 != null && list1.size() > 0)
+        		 List<Object[]> list = cadreIVREnquiryDAO.getLocationIdsByTypeId(locationTypeIds,startDate,toDate);
+        		 if(list != null && list.size() > 0)
         		 {
-        			 for(Object[] params : list1)
+        			 for(Object[] params : list)
         			 {
-        				 if(Long.valueOf(params[1].toString()).longValue() == 1l) 
-        					 constituencyIds.add(Long.valueOf(params[0].toString()).longValue());
-        				 else  if(Long.valueOf(params[1].toString()).longValue()  == 2l)
-        					 mandalIds.add(Long.valueOf(params[0].toString()).longValue());
-        				 else  if(Long.valueOf(params[1].toString()).longValue() == 5l)
-        					 localbodyIds.add(Long.valueOf(params[0].toString()).longValue());
+        				 if(((Long)params[1]).longValue() == 1l) 
+        					 constituencyIds.add((Long)params[0]);
+        				 else if(((Long)params[1]).longValue() == 2l)
+        					 mandalIds.add((Long)params[0]);
+        				 else if(((Long)params[1]).longValue() == 5l)
+        					 localbodyIds.add((Long)params[0]);
         			 }
         		 }
-        		 
-        		 
+        		 List<Object[]> list1 = cadreIVREnquiryDAO.getDeliveredAndReceivedCount(locationTypeIds,startDate,toDate);
+	        	  
         		 if(type.equalsIgnoreCase("Constituency"))
-        			 setIvrData(constituencyIds,IConstants.CONSTITUENCY,resultList,1L,startDate,toDate);
+        			 setIvrData(constituencyIds,IConstants.CONSTITUENCY,resultList,list1);
         		if(type.equalsIgnoreCase("Mandal"))
         		{
-        		setIvrData(mandalIds,IConstants.TEHSIL,resultList,2L,startDate,toDate);
-        		setIvrData(localbodyIds,IConstants.LOCAL_ELECTION_BODY,resultList,5L,startDate,toDate);
+        		setIvrData(mandalIds,IConstants.TEHSIL,resultList,list1);
+        		setIvrData(localbodyIds,IConstants.LOCAL_ELECTION_BODY,resultList,list1);
         		}
         		
         		 returnVo.setApList(resultList);
@@ -5300,7 +5298,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			return returnVo;
          }
          
-         public void setIvrData(List<Long> locationIds,String type,List<CadreIVRResponseVO> resultList,Long ids,Date startDate,Date toDate)
+         public void setIvrData(List<Long> locationIds,String type,List<CadreIVRResponseVO> resultList,List<Object[]> list1)
          {
         	 try{
         		 Map<Long,CadreIVRResponseVO> resultMap = new HashMap<Long, CadreIVRResponseVO>();
@@ -5308,83 +5306,55 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         		 
         		 List<Object[]> printedCountDetails = zebraPrintDetailsDAO.getLocationWisePrintedCountDetails(locationIds, type);
         		 
-        		 List<Long> locationTypeIds = new ArrayList<Long>();
-        		 locationTypeIds.add(ids);
-        		 List<Object[]> list1 = cadreIVREnquiryDAO.getDeliveredAndReceivedCount(locationTypeIds,startDate,toDate);
-        		 
-        		 
-        		 Map<Long,Long> ivrReceivedMap = new HashMap<Long, Long>();
-        		 if(list != null && list.size() > 0)
+        		 Long locationId = 0l;
+	        	 if(list != null && list.size() > 0)
 	 			 {
-        			 for(Object[] params : list)
- 	 				{
- 	 					Long ivrReceived = ivrReceivedMap.get((Long)params[2]);
- 						if(ivrReceived == null)
- 						{
- 							if(params[1] != null &&params[1].toString().equalsIgnoreCase("1"))
- 							ivrReceivedMap.put((Long)params[2], (Long)params[0]);
- 						}
- 						else
- 						{
- 							if(params[1] != null &&params[1].toString().equalsIgnoreCase("1"))
- 							ivrReceivedMap.put((Long)params[2], (Long)params[0] + ivrReceived);
- 						}
- 	 				}
-        			 
-	 			 }
-        		 
-        			List<Object[]> constiDetails = constituencyDAO.getConstituenciesNameByType(locationIds,type);
-					
-					
-					 Map<Long,String> constiDetailsMap = new HashMap<Long, String>();
-	        		 if(constiDetails != null && constiDetails.size() > 0)
-		 			 {
-	        			 for(Object[] params : constiDetails)
-	 	 				{
-	 	 					String name = constiDetailsMap.get((Long)params[0]);
-	 						if(name == null)
-	 						{
-	 							constiDetailsMap.put((Long)params[0], params[1].toString());
-	 						}
-	 					
-	 	 				}
-	        			 
-		 			 } 
-        		 
-        		 
-        		 
-
-	        	 if(list1 != null && list1.size() > 0)
-	 			 {
-	 				for(Object[] params : list1)
+	 				for(Object[] params : list)
 	 				{
-	 					CadreIVRResponseVO vo = resultMap.get(Long.valueOf(params[2].toString()));
+	 					CadreIVRResponseVO vo = resultMap.get((Long)params[2]);
 						if(vo == null)
 						{
- 						
 							vo = new CadreIVRResponseVO();
-							vo.setId(Long.valueOf(params[2].toString()));
-						
-							if(Long.valueOf(params[3].toString()) == 1l){
-								vo.setName(constituencyDAO.get(Long.valueOf(params[2].toString())).getName());
-								
-							}
-							else if(Long.valueOf(params[3].toString()) == 2l){
-								vo.setName(tehsilDAO.get(Long.valueOf(params[2].toString())).getTehsilName());
-							}
-							else if(Long.valueOf(params[3].toString()) == 5l){
-								vo.setName(localElectionBodyDAO.get(Long.valueOf(params[2].toString())).getName() +" Muncipality" );
-							}
-							resultMap.put(Long.valueOf(params[2].toString()), vo);
+							vo.setId((Long)params[2]);
+							vo.setName(params[3].toString());
+							vo.setJobCode(params[4] != null ? params[4].toString() : "");//DistrictId/Constituency Id based on level
+							if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+							vo.setLocationName(params[5] != null ? params[5].toString() +" Muncipality" : "");//District/Constituency based on level
+							else
+								vo.setLocationName(params[5] != null ? params[5].toString() : "");	
+							resultMap.put((Long)params[2], vo);
 						}
-	
-						vo.setLocationName(constiDetailsMap.get(Long.valueOf(params[2].toString())));
-						vo.setIvrEnqReceived(Long.valueOf(params[1].toString()));
- 						vo.setIvrEnqDelivered(Long.valueOf(params[0].toString()));
- 						vo.setReceived(ivrReceivedMap != null ? ivrReceivedMap.get(Long.valueOf(params[2].toString())) : 0l);
- 						
+ 						vo.setTotalCalls((Long)params[0] + vo.getTotalCalls());
+ 						if(params[1] != null &&params[1].toString().equalsIgnoreCase("1"))
+ 						vo.setReceived((Long)params[0] + vo.getReceived());
+ 						else if(params[1] != null &&params[1].toString().equalsIgnoreCase("2"))
+ 						vo.setNotReceived((Long)params[0] + vo.getNotReceived());
+ 						else if(params[1] != null &&params[1].toString().equalsIgnoreCase("3"))
+ 						vo.setNotMember((Long)params[0] + vo.getNotMember());	 						
 	 				}
- 
+ 					if(type.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+ 						locationId = 1l;
+	 				}else if(type.equalsIgnoreCase(IConstants.TEHSIL)){
+	 					locationId = 2l;
+	 				}else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY)){
+	 					locationId = 5l;
+	 				}				
+ 				
+	 				if(list1 != null && list1.size() > 0)
+	        		{
+	        			 for(Object[] params : list1)
+	        			 {
+	        				 if(resultMap.get(Long.valueOf(params[2].toString())) != null){
+	        				  if(Long.valueOf(params[2].toString()).longValue() == resultMap.get(Long.valueOf(params[2].toString())).getId().longValue()){ 
+	        					if(Long.valueOf(params[3].toString()).longValue() ==  locationId){
+	        					 resultMap.get(Long.valueOf(params[2].toString())).setIvrEnqReceived(Long.valueOf(params[1].toString()));
+	        					 resultMap.get(Long.valueOf(params[2].toString())).setIvrEnqDelivered(Long.valueOf(params[0].toString()));
+	        					}
+	        				  }	        			
+	        				 }
+	        			 }
+	        		}	
+	 				
 	 				if(printedCountDetails != null && printedCountDetails.size() > 0)
 	        		{
 	        			 for(Object[] params : printedCountDetails)
