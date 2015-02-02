@@ -127,10 +127,12 @@
 			   <div class="row" id="desgReqDiv"></div>
              </div>
 			 <div class="row m_top20" id="changeDesgnationsErrId">
-			 
+			  <div> <img src="images/Loading-data.gif" class="offset7"  id="changDesgImageid" style=" margin-left:252px;margin-top: 20px;width:70px;height:60px;display:none;"/></div>;
 			 </div>
 			 <div class="row" id="resultStatusId">
+			    <img src='images/Loading-data.gif' class="offset7"  id="processImgId" style=" margin-left:513px;margin-top: 20px;width:70px;height:60px;display:none;"/>
 				
+				<div id="resultReportId" style="margin-top: 17px;"></div>
              </div>
 
 
