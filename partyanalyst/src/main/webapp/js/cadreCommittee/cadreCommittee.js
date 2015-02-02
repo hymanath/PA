@@ -316,12 +316,12 @@
 			mobileNo = $('#searchBy').val().trim();
 			
 			if(searchRadioType=="mobileNo"){
-					var letters = /^[A-Za-z]+$/;   
-				  if($('#searchBy').val().match(letters))  
-				  {  
-					$('#searchErrDiv').html('Enter Numerics Only.');
-					return;  
-				  }  
+					
+					var numericExpression = /^[0-9]+$/;
+					if(!$('#searchBy').val().match(numericExpression)){
+						$('#searchErrDiv').html('Enter Numerics Only.');
+						return;
+					}
 			}	
 			
 			if(searchBy.trim().length == 0 )
@@ -570,7 +570,7 @@
 						str+='</div>';	
 						
 						str+='<div class="form-inline " >';
-						str+='<a onclick="jacascript:{addAsElectrole('+result[i].tdpCadreId+',\'elecroleDiv'+result[i].tdpCadreId+'\',\'addmoreId'+result[i].tdpCadreId+'\',\'statusDiv'+result[i].tdpCadreId+'\')}" class="btn btn-success btn-medium m_top5 elecroleDiv'+result[i].tdpCadreId+'"  style="display:none;"> UPDATE  ELECROLE DETAILS </a>';
+						str+='<a onclick="jacascript:{addAsElectrole('+result[i].tdpCadreId+',\'elecroleDiv'+result[i].tdpCadreId+'\',\'addmoreId'+result[i].tdpCadreId+'\',\'statusDiv'+result[i].tdpCadreId+'\')}" class="btn btn-success btn-medium m_top5 elecroleDiv'+result[i].tdpCadreId+'"  style="display:none;"> UPDATE  ELECTORAL DETAILS </a>';
 						str+='</div>	';
 					}	
 					else if(committeeMngntTypeId == 3)
