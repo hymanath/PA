@@ -237,7 +237,7 @@
 		<div id="nonafiliatedCommitteeDivId" class="row">	
 			<div class="col-md-6 col-md-offset-2 col-sm-6 col-sm-offset-2 col-xs-12 ">
 				<div class="form-group col-xs-12">
-					<label for="committeeId">AFFILIATED COMMITTEE</label>
+					<label for="committeeId">AFFILIATED COMMITTEE <span style="color:red">*</span></label>
 						<s:select theme="simple" cssClass="form-control selectBoxWidth span12 input-block-level editClass" id="nonafiliatedCommitteeId" list="cadreRolesVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Affiliated Committee  " style="width:100%;height:35px;" />	
 					<div id="nonAfflitCommitteeIdErr"></div>
 				 </div>
@@ -317,7 +317,7 @@
 						<div class="col-md-2 col-sm-6 col-xs-6 ">
 							<label>Caste-Group
 								<select class="form-control col-md-12 col-sm-12 col-xs-12 " id="casteCategory" onchange="casteDetailsByGroupId();">
-								<option value="0">All</option>
+								<option value="0" selected>All</option>
 								<option value="1">OC</option>
 								<option value="2">BC</option>
 								<option value="3">SC</option>
@@ -344,7 +344,7 @@
 						</div>
 						<div class="col-md-3 col-sm-4 col-xs-4 ">
 							<label>Gender
-								<select class="form-control col-md-12 col-sm-12 col-xs-12"  id="gender"><option>All</option><option>Male</option><option>Female</option></select>
+								<select class="form-control col-md-12 col-sm-12 col-xs-12"  id="gender"><option selected>All</option><option>Male</option><option>Female</option></select>
 							</label>
 						</div>
 						<div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4 m_top10">
@@ -417,16 +417,20 @@
 				$('#ageRange').val(0);
 			});
 			
-			$('#committeePositionId').on('change',function(){
+			/*$('#committeePositionId').on('change',function(){
 				$('#cadreDetailsDiv').html('');
 				$('#cadreDetailsDiv,#step3Id').hide();
-			});
+			});*/
 
 			$('#committeePositionId').on('change',function(){
 				var roleId = $('#committeePositionId').val();
 				$('#committeePositionIdErr').html('');
-				$('#searchBy').val('');
-				$("#membershipId").trigger("click");
+				if(defaultName==""){
+					$('#searchBy').val('');
+					$("#membershipId").trigger("click");
+				}else{
+					$("#membershipId").attr("checked","true");
+				}
 				$('#cadreSearchType').val('membershipId');
 				$("#searchcadrenewDiv").hide();
 				if(roleId == null || roleId ==0)
@@ -458,8 +462,10 @@
 						else
 						{
 							$("#searchcadrenewDiv").show();
-							$('#cadreDetailsDiv').html('');
-							$('#cadreDetailsDiv,#step3Id').hide();
+							if(defaultName==""){
+								$('#cadreDetailsDiv').html('');
+								$('#cadreDetailsDiv,#step3Id').hide();
+							}
 						}
 					}						
 				});
@@ -892,6 +898,8 @@
 		
 	}
 	function refreshExistingDetails(){
+		$("#fromAgeId").val("");
+		$("#toAgeId").val("");
 		$("#searchBy").val("");
 		$("#cadreDetailsDiv").html("");
 	}
@@ -970,12 +978,12 @@
 		str+='	  </div>';
 		str+='	   <div class="form-group col-md-3 col-md-offset-0 col-sm-4 col-xs-4">';
 		str+='			<label >From Date</label>';
-		str+='			<input type="text"  id="fromDateIda'+generatedId+'" key ="a'+dttCnt+'"  class="form-control fromDateCls'+cadreId+'" name="eligibleRoles['+elegbleRolCnt+'].fromDateStr">';
+		str+='			<input type="text" placeholder="Select From Date" id="fromDateIda'+generatedId+'" key ="a'+dttCnt+'"  class="form-control fromDateCls'+cadreId+'" name="eligibleRoles['+elegbleRolCnt+'].fromDateStr">';
 		str+='          <br><span id="fromDateIda'+generatedId+'Err" class="validErrCls" style="color:red;font-size:12px;"></span>'; 
 		str+='	   </div>';
-		str+='	   <div class="form-group col-md-2 col-md-offset-0 col-sm-4 col-xs-4">';
+		str+='	   <div class="form-group col-md-2 col-md-offset-1 col-sm-4 col-xs-4">';
 		str+='			<label >To Date</label>';
-		str+='			<input type="text"  id="toDateIda'+generatedId+'"  class="form-control toDateCls'+cadreId+'" name="eligibleRoles['+elegbleRolCnt+'].toDateStr">';
+		str+='			<input type="text" placeholder="Select To Date" id="toDateIda'+generatedId+'"  class="form-control toDateCls'+cadreId+'" name="eligibleRoles['+elegbleRolCnt+'].toDateStr">';
 		str+='          <br><span id="toDateIda'+generatedId+'Err" class="validErrCls" style="color:red;font-size:12px;"></span>';
 		str+='		</div>	';	  
 		str+='	</div>';
