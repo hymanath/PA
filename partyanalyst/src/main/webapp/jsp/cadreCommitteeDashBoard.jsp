@@ -43,6 +43,7 @@
                     Menu <img src="images/cadreCommitee/menu_icon.png" />
                     </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);top: 91px;">
+						<li><a tabindex="-1" href="dashBoardAction.action">Home</a></li>
 				  	  <li><a tabindex="-1" href="committeeUpdateApproveAction.action">Approval Requests</a></li>
                       <li role="presentation" class="divider" style="background-color: rgba(229, 229, 229,0.6);"></li>
                      <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
@@ -848,9 +849,10 @@
 		});
 	}
 	
-	var districtInfoArr = [];
-	var villageInfoArr = [];
+	
 	function buildResultDistrictSummary(result){
+		var districtInfoArr = [];
+		var villageInfoArr = [];
 		$("#headingId").html("DISTRICT WISE COMMITTEES");
 		$("#tableHeadingId").html("DISTRICT");
 		var str = '';
@@ -866,7 +868,8 @@
 				}
 				
 				if(result[i].townMandalDivisionVO.mainStarted!=null){
-					str += '<td>'+result[i].townMandalDivisionVO.mainStarted+'<span id="mini-pie-chart-district'+i+'" class="pull-right mini-pie-chart-district"></span></td>';
+					//str += '<td>'+result[i].townMandalDivisionVO.mainStarted+'<span id="mini-pie-chart-district'+i+'" class="pull-right mini-pie-chart-district"></span></td>';
+					str += '<td>'+result[i].townMandalDivisionVO.mainStarted+'</td>';
 				}else{
 					str += '<td> - </td>';
 				}
@@ -911,7 +914,8 @@
 				}
 				
 				if(result[i].villageWardVO.mainStarted!=null){
-					str += '<td>'+result[i].villageWardVO.mainStarted+'<span id="mini-pie-chart-village'+i+'" class="pull-right mini-pie-chart-village"></span></td>';
+					//str += '<td>'+result[i].villageWardVO.mainStarted+'<span id="mini-pie-chart-village'+i+'" class="pull-right mini-pie-chart-village"></span></td>';
+					str += '<td>'+result[i].villageWardVO.mainStarted+'</td>';
 				}else{
 					str += '<td> - </td>';
 				}
@@ -950,7 +954,13 @@
 			str += '</tr>';
 			
 			if(result[i].townMandalDivisionVO != null){
-				var details = [result[i].townMandalDivisionVO.startPerc, 100-parseInt(result[i].townMandalDivisionVO.startPerc,10)];
+				var details = [];
+				if(result[i].townMandalDivisionVO.mainStarted != null){
+					details = [result[i].townMandalDivisionVO.totalCommittees, result[i].townMandalDivisionVO.mainStarted];
+				}else{
+					details = [result[i].townMandalDivisionVO.totalCommittees, 0];
+				}
+				
 				districtInfoArr.push(details);
 			}else{
 				 var details = [0, 0];
@@ -959,8 +969,14 @@
 			
 			
 			if(result[i].villageWardVO != null){
-				var villageDetails  = [result[i].villageWardVO.startPerc, 100-parseInt(result[i].villageWardVO.startPerc,10)];
-				villageInfoArr.push(villageDetails);
+				var details = [];
+				if(result[i].villageWardVO.mainStarted != null){
+					details = [result[i].villageWardVO.totalCommittees, result[i].villageWardVO.mainStarted];
+				}else{
+					details = [result[i].villageWardVO.totalCommittees, 0];
+				}
+				//var villageDetails  = [result[i].villageWardVO.totalCommittees, result[i].villageWardVO.mainStarted];
+				villageInfoArr.push(details);
 			}else{
 				var villageDetails  = [0, 0];
 				villageInfoArr.push(villageDetails);
@@ -971,18 +987,6 @@
 	
 		$("#distSummaryBody").html(str);
 		
-		if( $('.mini-pie-chart-village').length > 0 ) {
-			var visitData2 = villageInfoArr;
-			var params = {
-				type: "pie",
-				 sliceColors: ["#0B3B0B", "#B18904"]
-
-			}
-			for(var e in result){
-				$('#mini-pie-chart-village'+e+'').sparkline(visitData2[e], params);
-			}
-		}
-		
 		
 		if($('.mini-pie-chart-district').length > 0 ) {
 			var visitData = districtInfoArr;
@@ -991,11 +995,22 @@
 				 sliceColors: ["#0B3B0B", "#B18904"]
 
 			}
-			for(var t in result){
 			
+			var vdata = villageInfoArr;
+			var params1 = {
+				type: "pie",
+				 sliceColors: ["#0B3B0B", "#B18904"]
+
+			}
+			
+			
+			for(var t in result){
 				$('#mini-pie-chart-district'+t+'').sparkline(visitData[t], params);
+				$('#mini-pie-chart-village'+t+'').sparkline(vdata[t], params1);
 			}
 		}
+		
+		
 			
 	}
 	function getMainCommitteeMembersCount(state,level,type,committeeId){
@@ -1182,7 +1197,7 @@
 								str+='<li class="list-group-item resListLi"><span class="badge">'+result[i].membersCount3+'</span>ABOVE 7 MEMBER COMMITTEES</li>';
 							}
 						}else{
-							str+='<li class="list-group-item resListLi"> NO DATA AVAILABLE </li>';
+							str+='<li class="list-group-item resListLi"> MEMBERS UNAVAILABLE </li>';
 						}
 						
 					str+='</ul>';
@@ -1370,9 +1385,11 @@
 	}
 	
 	
-	var constiInfoArr = [];
-	var constiVillageInfoArr = [];
+	
 	function buildConstiWiseSummary(result){
+		var constiInfoArr = [];
+		var constiVillageInfoArr = [];
+	
 		$("#headingId").html("CONSTITUENCY WISE COMMITTEES");
 		$("#tableHeadingId").html("CONSTITUENCY");
 		var str = '';
@@ -1388,7 +1405,8 @@
 				}
 				
 				if(result[i].townMandalDivisionVO.mainStarted!=null){
-					str += '<td>'+result[i].townMandalDivisionVO.mainStarted+'<span id="mini-pie-chart-constituency'+i+'" class="pull-right mini-pie-chart-district"></span></td>';
+					//str += '<td>'+result[i].townMandalDivisionVO.mainStarted+'<span id="mini-pie-chart-constituency'+i+'" class="pull-right mini-pie-chart-district"></span></td>';
+					str += '<td>'+result[i].townMandalDivisionVO.mainStarted+'</td>';
 				}else{
 					str += '<td> - </td>';
 				}
@@ -1433,7 +1451,8 @@
 				}
 				
 				if(result[i].villageWardVO.mainStarted!=null){
-					str += '<td>'+result[i].villageWardVO.mainStarted+'<span id="mini-pie-chart-constiVillage'+i+'" class="pull-right mini-pie-chart-village"></span></td>';
+					//str += '<td>'+result[i].villageWardVO.mainStarted+'<span id="mini-pie-chart-constiVillage'+i+'" class="pull-right mini-pie-chart-village"></span></td>';
+					str += '<td>'+result[i].villageWardVO.mainStarted+'</td>';
 				}else{
 					str += '<td> - </td>';
 				}
@@ -1472,16 +1491,16 @@
 			str += '</tr>';
 			
 			if(result[i].townMandalDivisionVO != null){
-				var details = [result[i].townMandalDivisionVO.startPerc, 100-parseInt(result[i].townMandalDivisionVO.startPerc,10)];
+				var details = [result[i].townMandalDivisionVO.totalCommittees, result[i].townMandalDivisionVO.mainStarted];
 				constiInfoArr.push(details);
 			}else{
-				 var details = [0];
+				 var details = [0, 0];
 				constiInfoArr.push(details);
 			}
 			
 			
 			if(result[i].villageWardVO != null){
-				var villageDetails  = [result[i].villageWardVO.startPerc, 100-parseInt(result[i].villageWardVO.startPerc,10)];
+				var villageDetails  = [result[i].villageWardVO.totalCommittees, result[i].villageWardVO.mainStarted];
 				constiVillageInfoArr.push(villageDetails);
 			}else{
 				var villageDetails  = [0, 0];
@@ -1494,7 +1513,7 @@
 		$("#distSummaryBody").html(str);
 		
 		if( $('.mini-pie-chart-constiVillage').length > 0 ) {
-			var visitData2 = villageInfoArr;
+			var visitData2 = constiVillageInfoArr;
 			var params = {
 				type: "pie",
 				 sliceColors: ["#0B3B0B", "#B18904"]
