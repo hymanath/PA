@@ -5183,7 +5183,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			return resultList;
           }
           
-          public CadreIVRResponseVO getIvrPreviousCallBasicInfo(Date startDate,Date endDate)
+          public CadreIVRResponseVO getIvrPreviousCallBasicInfo(Date startDate,Date endDate,Long stateTypeId)
           {
         	  CadreIVRResponseVO returnVo = new CadreIVRResponseVO();
         	  try{
@@ -5198,23 +5198,27 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         		  List<Long> constiIds = new ArrayList<Long>();
         		  List<Long> mandalIds = new ArrayList<Long>();
         		  List<Long> localbodyIds = new ArrayList<Long>();
-        		  Long mandalPrintedCnt = 0l;
-        		  Long LocalbodyPrintedCnt = 0l;
+        		
         		  
-        		List<Object[]> constituencyCnts =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(locationTypeIds,startDate,endDate);
-        		//Long constituencyCnt = 0l;
-        		//Long mandalCnt = 0l;
+        			 List<Object[]> stateConstiIds = constituencyDAO.getConstituenciesByStateId(1l, stateTypeId);
+        			 List<Long> stateConstituencyIds = new ArrayList<Long>();
+        			 if(stateConstiIds != null && stateConstiIds.size() > 0){
+        				 for(Object[] params : stateConstiIds){					
+        					if(!stateConstituencyIds.contains((Long)params[0])){
+        						stateConstituencyIds.add((Long)params[0]);							
+        					}				
+        				}      			 
+        			} 
+        		  
+        		  
+        		List<Object[]> constituencyCnts =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(locationTypeIds,startDate,endDate,stateConstituencyIds);       		
         		for(Object[] ids :constituencyCnts){
-        			 //constituencyCnt = constituencyCnt + (Long)ids[0];
         			 if(!constiIds.contains((Long)ids[1]));
         			 	constiIds.add((Long)ids[1]);
         		}
-        		
-        		
-        		List<Object[]> mandalCnts =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(mandalTypeIds,startDate,endDate);
-        		for(Object[] ids :mandalCnts){
-        			//mandalCnt = mandalCnt + (Long)ids[0];
-        			
+        		       		
+        		List<Object[]> mandalCnts =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(mandalTypeIds,startDate,endDate,stateConstituencyIds);
+        		for(Object[] ids :mandalCnts){   			
         			if(Long.valueOf(ids[2].toString()).longValue() == 2L){
         				if(!mandalIds.contains((Long)ids[1])){
      			 			mandalIds.add((Long)ids[1]);
@@ -5226,22 +5230,28 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         			}
         			
         		}
+        		Long constiPrintedCnt = 0l;
+        		Long mandalPrintedCnt = 0l;
+        		Long LocalbodyPrintedCnt = 0l;
         		
-        		Long constiPrintedCnt = zebraPrintDetailsDAO.getPrintedCount(constiIds,IConstants.CONSTITUENCY);
-          		mandalPrintedCnt = zebraPrintDetailsDAO.getPrintedCount(mandalIds,IConstants.TEHSIL);
-          		LocalbodyPrintedCnt = zebraPrintDetailsDAO.getPrintedCount(localbodyIds,IConstants.LOCAL_ELECTION_BODY);
+        		if(constiIds != null && constiIds.size()>0)
+        			constiPrintedCnt = zebraPrintDetailsDAO.getPrintedCount(constiIds,IConstants.CONSTITUENCY);
+        		if(mandalIds != null && mandalIds.size()>0)
+          			mandalPrintedCnt = zebraPrintDetailsDAO.getPrintedCount(mandalIds,IConstants.TEHSIL);
+        		if(localbodyIds != null && localbodyIds.size()>0)
+          			LocalbodyPrintedCnt = zebraPrintDetailsDAO.getPrintedCount(localbodyIds,IConstants.LOCAL_ELECTION_BODY);
         		
           		//Long constituencyCnt =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(locationTypeIds,startDate,endDate);
           		//Long mandalCnt =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(mandalTypeIds,startDate,endDate);
         		
-        	    BigDecimal constituencyReceivedCount = cadreIVREnquiryDAO.getTotalReceivedCount(startDate,endDate,locationTypeIds);
+        	    BigDecimal constituencyReceivedCount = cadreIVREnquiryDAO.getTotalReceivedCount(startDate,endDate,locationTypeIds,stateConstituencyIds);
         		returnVo.setReceived(constituencyReceivedCount != null ? constituencyReceivedCount.longValue() : 0l);
-        		BigDecimal constituencyDeliveredCount = cadreIVREnquiryDAO.getTotalDeliveredCount(startDate,endDate,locationTypeIds);
+        		BigDecimal constituencyDeliveredCount = cadreIVREnquiryDAO.getTotalDeliveredCount(startDate,endDate,locationTypeIds,stateConstituencyIds);
         		returnVo.setNotReceived(constituencyDeliveredCount != null ? constituencyDeliveredCount.longValue() : 0l);
         		
-        		BigDecimal mandalReceivedCount = cadreIVREnquiryDAO.getTotalReceivedCount(startDate,endDate,mandalTypeIds);
+        		BigDecimal mandalReceivedCount = cadreIVREnquiryDAO.getTotalReceivedCount(startDate,endDate,mandalTypeIds,stateConstituencyIds);
          		returnVo.setTotalAnswerdCalls(mandalReceivedCount != null ? mandalReceivedCount.longValue() : 0l);
-         		BigDecimal mandalDeliveredCount = cadreIVREnquiryDAO.getTotalDeliveredCount(startDate,endDate,mandalTypeIds);
+         		BigDecimal mandalDeliveredCount = cadreIVREnquiryDAO.getTotalDeliveredCount(startDate,endDate,mandalTypeIds,stateConstituencyIds);
          		returnVo.setNotMember(mandalDeliveredCount != null ? mandalDeliveredCount.longValue() : 0l);
          		
         		returnVo.setTotalCalls(mandalCnts != null ? Long.valueOf(constituencyCnts.size()) : 0l);
@@ -5277,43 +5287,57 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         	 
          }
          
-         public CadreIVRResponseVO getIvrPreviousCallInfo(String type,Date startDate,Date toDate)
+         public CadreIVRResponseVO getIvrPreviousCallInfo(String type,Date startDate,Date toDate,Long stateTypeId)
          {
         	 CadreIVRResponseVO returnVo = new CadreIVRResponseVO(); 
         	 List<CadreIVRResponseVO> resultList = new ArrayList<CadreIVRResponseVO>();
         	 try{
+        		
+        		 List<Object[]> stateConstiIds = constituencyDAO.getConstituenciesByStateId(1l, stateTypeId);
+        		 List<Long> stateConstituencyIds = new ArrayList<Long>();
+        		 if(stateConstiIds != null && stateConstiIds.size() > 0){
+        			 for(Object[] params : stateConstiIds){
+ 	 					
+ 						if(!stateConstituencyIds.contains((Long)params[0])){
+ 							stateConstituencyIds.add((Long)params[0]);							
+ 						}				
+ 	 				}      			 
+	 			 } 
+        		 
         		 List<Long> constituencyIds = new ArrayList<Long>();
         		 List<Long> mandalIds = new ArrayList<Long>();
         		 List<Long> localbodyIds = new ArrayList<Long>();
 	        	 List<Long> locationTypeIds = new ArrayList<Long>();
 	        	  if(type.equalsIgnoreCase("Constituency"))
-	       		  locationTypeIds.add(1l);
+	        		  locationTypeIds.add(1l);
 	        	  else if(type.equalsIgnoreCase("Mandal"))
 	        	  {
 	        		  locationTypeIds.add(2l);
 	        		  locationTypeIds.add(5l);
 	        	  }
-        		 List<Object[]> list = cadreIVREnquiryDAO.getLocationIdsByTypeId(locationTypeIds,startDate,toDate);
-        		 if(list != null && list.size() > 0)
+	        	  
+        		 List<Object[]> list1 = cadreIVREnquiryDAO.getLocationIdsByTypeId(locationTypeIds,startDate,toDate,stateConstituencyIds);
+ 
+        		 if(list1 != null && list1.size() > 0)
         		 {
-        			 for(Object[] params : list)
+        			 for(Object[] params : list1)
         			 {
-        				 if(((Long)params[1]).longValue() == 1l) 
-        					 constituencyIds.add((Long)params[0]);
-        				 else if(((Long)params[1]).longValue() == 2l)
-        					 mandalIds.add((Long)params[0]);
-        				 else if(((Long)params[1]).longValue() == 5l)
-        					 localbodyIds.add((Long)params[0]);
+        				 if(Long.valueOf(params[1].toString()).longValue() == 1l) 
+        					 constituencyIds.add(Long.valueOf(params[0].toString()).longValue());
+        				 else  if(Long.valueOf(params[1].toString()).longValue()  == 2l)
+        					 mandalIds.add(Long.valueOf(params[0].toString()).longValue());
+        				 else  if(Long.valueOf(params[1].toString()).longValue() == 5l)
+        					 localbodyIds.add(Long.valueOf(params[0].toString()).longValue());
         			 }
         		 }
-        		 List<Object[]> list1 = cadreIVREnquiryDAO.getDeliveredAndReceivedCount(locationTypeIds,startDate,toDate);
-	        	  
-        		 if(type.equalsIgnoreCase("Constituency"))
-        			 setIvrData(constituencyIds,IConstants.CONSTITUENCY,resultList,list1);
+        		 
+        		 
+        		if(type.equalsIgnoreCase("Constituency"))
+        			 setIvrData(constituencyIds,IConstants.CONSTITUENCY,resultList,startDate,toDate);
         		if(type.equalsIgnoreCase("Mandal"))
         		{
-        		setIvrData(mandalIds,IConstants.TEHSIL,resultList,list1);
-        		setIvrData(localbodyIds,IConstants.LOCAL_ELECTION_BODY,resultList,list1);
+        		setIvrData(mandalIds,IConstants.TEHSIL,resultList,startDate,toDate);
+        		setIvrData(localbodyIds,IConstants.LOCAL_ELECTION_BODY,resultList,startDate,toDate);
         		}
         		
         		 returnVo.setApList(resultList);
@@ -5327,63 +5351,99 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			return returnVo;
          }
          
-         public void setIvrData(List<Long> locationIds,String type,List<CadreIVRResponseVO> resultList,List<Object[]> list1)
+         public void setIvrData(List<Long> locationIds,String type,List<CadreIVRResponseVO> resultList,Date startDate,Date toDate)
          {
         	 try{
         		 Map<Long,CadreIVRResponseVO> resultMap = new HashMap<Long, CadreIVRResponseVO>();
         		 List<Object[]> list = cadreIvrResponseDAO.getIvrCountByLocationIdsAndType(locationIds,type);
-        		 
+        		
         		 List<Object[]> printedCountDetails = zebraPrintDetailsDAO.getLocationWisePrintedCountDetails(locationIds, type);
         		 
-        		 Long locationId = 0l;
-	        	 if(list != null && list.size() > 0)
+        		 Long locationTypeId  = 0L;
+        		  if(type.equalsIgnoreCase("Constituency"))
+        			  locationTypeId = 1L;
+        		  else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+        		  {
+        			  locationTypeId = 2l;
+    	        		
+        		  }
+        		  else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+        		  {
+        			  locationTypeId = 5l;
+        		  }  
+        		 List<Object[]> list1 = cadreIVREnquiryDAO.getDeliveredAndReceivedCount(locationIds,startDate,toDate,locationTypeId);
+        		 
+        		 
+        		 Map<Long,Long> ivrReceivedMap = new HashMap<Long, Long>();
+        		 if(list != null && list.size() > 0)
 	 			 {
-	 				for(Object[] params : list)
+        			 for(Object[] params : list)
+ 	 				{
+ 	 					Long ivrReceived = ivrReceivedMap.get((Long)params[2]);
+ 						if(ivrReceived == null)
+ 						{
+ 							if(params[1] != null &&params[1].toString().equalsIgnoreCase("1"))
+ 							ivrReceivedMap.put((Long)params[2], (Long)params[0]);
+ 						}
+ 						else
+ 						{
+ 							if(params[1] != null &&params[1].toString().equalsIgnoreCase("1"))
+ 							ivrReceivedMap.put((Long)params[2], (Long)params[0] + ivrReceived);
+ 						}
+ 	 				}
+        			 
+	 			 }
+        		 
+        		List<Object[]> constiDetails = boothDAO.getConstituenciesNameByType(locationIds,type);
+					
+        		 Map<Long,String> constiDetailsMap = new HashMap<Long, String>();
+        		 if(constiDetails != null && constiDetails.size() > 0)
+	 			 {
+        			 for(Object[] params : constiDetails)
+ 	 				{
+ 	 					String name = constiDetailsMap.get((Long)params[0]);
+ 						if(name == null)
+ 						{						
+ 								constiDetailsMap.put((Long)params[0], params[1].toString() );
+ 						}
+ 	 				}
+        			 
+	 			 }	
+
+	        	 if(list1 != null && list1.size() > 0)
+	 			 {
+	 				for(Object[] params : list1)
 	 				{
-	 					CadreIVRResponseVO vo = resultMap.get((Long)params[2]);
+	 					CadreIVRResponseVO vo = resultMap.get(Long.valueOf(params[2].toString()));
 						if(vo == null)
 						{
+ 						
 							vo = new CadreIVRResponseVO();
-							vo.setId((Long)params[2]);
-							vo.setName(params[3].toString());
-							vo.setJobCode(params[4] != null ? params[4].toString() : "");//DistrictId/Constituency Id based on level
-							if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
-							vo.setLocationName(params[5] != null ? params[5].toString() +" Muncipality" : "");//District/Constituency based on level
-							else
-								vo.setLocationName(params[5] != null ? params[5].toString() : "");	
-							resultMap.put((Long)params[2], vo);
+							vo.setId(Long.valueOf(params[2].toString()));
+						
+							if(Long.valueOf(params[3].toString()) == 1l){
+								vo.setName(constituencyDAO.get(Long.valueOf(params[2].toString())).getName());
+								
+							}
+							else if(Long.valueOf(params[3].toString()) == 2l){
+								vo.setName(tehsilDAO.get(Long.valueOf(params[2].toString())).getTehsilName());
+								
+							}
+							else if(Long.valueOf(params[3].toString()) == 5l){
+								vo.setName(localElectionBodyDAO.get(Long.valueOf(params[2].toString())).getName() +" Muncipality" );
+								
+							}
+							resultMap.put(Long.valueOf(params[2].toString()), vo);
 						}
- 						vo.setTotalCalls((Long)params[0] + vo.getTotalCalls());
- 						if(params[1] != null &&params[1].toString().equalsIgnoreCase("1"))
- 						vo.setReceived((Long)params[0] + vo.getReceived());
- 						else if(params[1] != null &&params[1].toString().equalsIgnoreCase("2"))
- 						vo.setNotReceived((Long)params[0] + vo.getNotReceived());
- 						else if(params[1] != null &&params[1].toString().equalsIgnoreCase("3"))
- 						vo.setNotMember((Long)params[0] + vo.getNotMember());	 						
+	
+						vo.setLocationName(constiDetailsMap.get(Long.valueOf(params[2].toString())));
+						vo.setIvrEnqReceived(Long.valueOf(params[1].toString()));
+ 						vo.setIvrEnqDelivered(Long.valueOf(params[0].toString()));
+ 						if(ivrReceivedMap != null)
+ 						vo.setReceived(ivrReceivedMap.get(Long.valueOf(params[2].toString())) != null ? ivrReceivedMap.get(Long.valueOf(params[2].toString())) : 0l);
+ 						
 	 				}
- 					if(type.equalsIgnoreCase(IConstants.CONSTITUENCY)){
- 						locationId = 1l;
-	 				}else if(type.equalsIgnoreCase(IConstants.TEHSIL)){
-	 					locationId = 2l;
-	 				}else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY)){
-	 					locationId = 5l;
-	 				}				
- 				
-	 				if(list1 != null && list1.size() > 0)
-	        		{
-	        			 for(Object[] params : list1)
-	        			 {
-	        				 if(resultMap.get(Long.valueOf(params[2].toString())) != null){
-	        				  if(Long.valueOf(params[2].toString()).longValue() == resultMap.get(Long.valueOf(params[2].toString())).getId().longValue()){ 
-	        					if(Long.valueOf(params[3].toString()).longValue() ==  locationId){
-	        					 resultMap.get(Long.valueOf(params[2].toString())).setIvrEnqReceived(Long.valueOf(params[1].toString()));
-	        					 resultMap.get(Long.valueOf(params[2].toString())).setIvrEnqDelivered(Long.valueOf(params[0].toString()));
-	        					}
-	        				  }	        			
-	        				 }
-	        			 }
-	        		}	
-	 				
+ 
 	 				if(printedCountDetails != null && printedCountDetails.size() > 0)
 	        		{
 	        			 for(Object[] params : printedCountDetails)
@@ -5545,7 +5605,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
          }         
          
          
-         public CadreIVRResponseVO getTotalIvrPreviousCallBasicInfo()
+         public CadreIVRResponseVO getTotalIvrPreviousCallBasicInfo(Long stateTypeId)
          {
        	  CadreIVRResponseVO returnVo = new CadreIVRResponseVO();
        	  try{
@@ -5561,62 +5621,37 @@ public class TdpCadreReportService implements ITdpCadreReportService{
        		  List<Long> mandalIdsTemp = new ArrayList<Long>();
        		  mandalIdsTemp.add(5l);
        		  
-       		 
+       		 List<Object[]> stateConstiIds = constituencyDAO.getConstituenciesByStateId(1l, stateTypeId);
+			 List<Long> stateConstituencyIds = new ArrayList<Long>();
+			 if(stateConstiIds != null && stateConstiIds.size() > 0){
+				 for(Object[] params : stateConstiIds){					
+					if(!stateConstituencyIds.contains((Long)params[0])){
+						stateConstituencyIds.add((Long)params[0]);							
+					}				
+				}      			 
+			} 
+
+       		List<Object[]> constituencyCnts = cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(locationTypeIds,null,null,stateConstituencyIds);
        		  
-       		  List<Long> constiIds = new ArrayList<Long>();
-       		  List<Long> mandalIds = new ArrayList<Long>();
-       		  List<Long> localbodyIds = new ArrayList<Long>();
-       		
-       		  
-       		List<Object[]> constituencyCnts =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(locationTypeIds,null,null);
-       		//Long constituencyCnt = 0l;
-       		//Long mandalCnt = 0l;
-       		for(Object[] ids :constituencyCnts){
-       			 //constituencyCnt = constituencyCnt + (Long)ids[0];
-       			 if(!constiIds.contains((Long)ids[1]));
-       			 	constiIds.add((Long)ids[1]);
-       		}
-       		
-       		
-       		List<Object[]> mandalCnts =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(mandalTypeIds,null,null);
-       		for(Object[] ids :mandalCnts){
-       			//mandalCnt = mandalCnt + (Long)ids[0];
-       			
-       			if(Long.valueOf(ids[2].toString()).longValue() == 2L){
-       				if(!mandalIds.contains((Long)ids[1])){
-    			 			mandalIds.add((Long)ids[1]);
-       				}
-       			}else if(Long.valueOf(ids[2].toString()).longValue() == 5L){
-       				if(!localbodyIds.contains((Long)ids[1])){
-       					localbodyIds.add((Long)ids[1]);
-       				}
-       			}
-       			
-       		}
-       		
-       		
-       		List<Long> districtIds = new ArrayList<Long>();
-       		for(int i=0 ;i<=23;i++){
-       			districtIds.add(Long.valueOf(i));
-       		}
-       		List<Object[]> totalPrintDtls= zebraPrintDetailsDAO.getPrintedCountDetailsByStatusTypeSeacrh(districtIds,IConstants.DISTRICT,"printStatus");
+       		List<Object[]> mandalCnts =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(mandalTypeIds,null,null,stateConstituencyIds);
+	
+ 	
+       		Long totalPrintDtls= zebraPrintDetailsDAO.getTotalPrintingCountByState(stateTypeId);
        
-       		for(Object[] count :totalPrintDtls){
-       			returnVo.setPrintedCount((Long)count[1]+ returnVo.getPrintedCount());       			
-       		}
-       	
        		
-       	    BigDecimal constituencyReceivedCount = cadreIVREnquiryDAO.getTotalReceivedCount(null,null,locationTypeIds);
+       		returnVo.setPrintedCount(totalPrintDtls != null ? totalPrintDtls :0L);       			
+
+       	    BigDecimal constituencyReceivedCount = cadreIVREnquiryDAO.getTotalReceivedCount(null,null,locationTypeIds,stateConstituencyIds);
        		returnVo.setReceived(constituencyReceivedCount != null ? constituencyReceivedCount.longValue() : 0l);
-       		BigDecimal constituencyDeliveredCount = cadreIVREnquiryDAO.getTotalDeliveredCount(null,null,locationTypeIds);
+       		BigDecimal constituencyDeliveredCount = cadreIVREnquiryDAO.getTotalDeliveredCount(null,null,locationTypeIds,stateConstituencyIds);
        		returnVo.setNotReceived(constituencyDeliveredCount != null ? constituencyDeliveredCount.longValue() : 0l);
        		
-       		BigDecimal mandalReceivedCount = cadreIVREnquiryDAO.getTotalReceivedCount(null,null,mandalIdsTemp);
+       		BigDecimal mandalReceivedCount = cadreIVREnquiryDAO.getTotalReceivedCount(null,null,mandalIdsTemp,stateConstituencyIds);
         	returnVo.setTotalAnswerdCalls(mandalReceivedCount != null ? mandalReceivedCount.longValue() : 0l);
-        	BigDecimal mandalDeliveredCount = cadreIVREnquiryDAO.getTotalDeliveredCount(null,null,mandalTypeIds);
+        	BigDecimal mandalDeliveredCount = cadreIVREnquiryDAO.getTotalDeliveredCount(null,null,mandalTypeIds,stateConstituencyIds);
         	returnVo.setNotMember(mandalDeliveredCount != null ? mandalDeliveredCount.longValue() : 0l);
         	
-        	BigDecimal localbodyReceivedCount = cadreIVREnquiryDAO.getTotalReceivedCount(null,null,localTypeIdsTemp);
+        	BigDecimal localbodyReceivedCount = cadreIVREnquiryDAO.getTotalReceivedCount(null,null,localTypeIdsTemp,stateConstituencyIds);
         	returnVo.setLocalbodyReceivedCount(localbodyReceivedCount != null ? localbodyReceivedCount.longValue() : 0l);
         	
         		
@@ -5630,8 +5665,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			returnVo.setDeliveredPerc(new BigDecimal((returnVo.getNotMember()*100.0/returnVo.getPrintedCount())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 		
        	 
-       	  }
-       	  catch(Exception e)
+       	  } catch(Exception e)
        	  {
        		 e.printStackTrace(); 
        	  }
