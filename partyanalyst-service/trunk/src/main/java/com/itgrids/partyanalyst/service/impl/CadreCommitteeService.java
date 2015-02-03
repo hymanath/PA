@@ -3654,7 +3654,9 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			
 			if(constiLst!=null && constiLst.size()>0){
 				for(CommitteeSummaryVO temp:constiLst){
-					
+					if(temp.getTownMandalDivisionVO()==null){
+						temp.setTownMandalDivisionVO(new CommitteeSummaryVO());
+					}
 					if(temp.getTownMandalDivisionVO()!=null){
 						
 						Long constiId = temp.getConstiId();
@@ -4120,7 +4122,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		List<Object[]> localBodyIdsList = assemblyLocalElectionBodyDAO.getAllLocalBodiesInAConstituencyList(constituencyIds);
 		for(Object[] localBody:localBodyIdsList){
 			Long localBdyId = (Long)localBody[0];
-			if(!(localBdyId.longValue() == 20l ||  localBdyId.longValue() == 124l || localBdyId.longValue() == 119l)){
+			if((localBdyId.longValue() == 20l ||  localBdyId.longValue() == 124l || localBdyId.longValue() == 119l)){
 				divisionLclIds.add(localBdyId);
         	}else{
         		List<Long> constiIds = localBodiesMap.get(localBdyId);
