@@ -343,7 +343,7 @@
 							</tr>
                         </thead>
 						<tbody id="distSummaryBody">
-							
+							<td style="text-align:center" colspan="13"><img id="summaryAjax" src="./images/Loading-data.gif" alt="Processing Image"/></td>
                         </tbody>
                     </table>                    
                 </div>
@@ -685,7 +685,7 @@
 						
 						$("#div13").html(result.affliatedCompleted);
 						//if(result.completedCommittees > 0 && result.completedCommittees != null)
-						if(result.affliatedCompletedd!=0){
+						if(result.affliatedCompleted!=0){
 							$("#div13").html('<a id=\''+level+'IdAPAffl\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\')">'+result.affliatedCompleted+'</a>');
 						}else{
 							$("#div13").html('<span> 0 </span>');
@@ -804,21 +804,24 @@
 		});
 	}
 	$(".stateRd").click(function(){
-	
 		var levelSelected = $("input[type='radio'][name='select']:checked").val();
 		
-		if(levelSelected == 'district')
-		getDistrictWiseCommittesSummary();
+		$("#distSummaryBody").html('<td style="text-align:center" colspan="13"><img id="summaryAjax" src="./images/Loading-data.gif" alt="Processing Image"/></td>');
+		
+		if(levelSelected == 'district'){
+			getDistrictWiseCommittesSummary();
+		}
 		else if(levelSelected == 'consti'){
 			getConstituencyWiseCommittesSummary();
 		}
 	});
 	$(".levelRd").click(function(){
-
-		var levelSelected1 = $("input[type='radio'][name='select']:checked").val();
+		$("#distSummaryBody").html('<td style="text-align:center" colspan="13"><img id="summaryAjax" src="./images/Loading-data.gif" alt="Processing Image"/></td>');
 		
-		if(levelSelected1 == 'district')
-		getDistrictWiseCommittesSummary();
+		var levelSelected1 = $("input[type='radio'][name='select']:checked").val();
+		if(levelSelected1 == 'district'){
+			getDistrictWiseCommittesSummary();
+		}
 		else if(levelSelected1 == 'consti'){
 			getConstituencyWiseCommittesSummary();
 		}
@@ -845,7 +848,13 @@
           url: 'getDistrictWiseCommittesSummaryAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
-			buildResultDistrictSummary(result);		
+			if(result == null){
+				$("#distSummaryBody").html("<td style='text-align:center' colspan='13'><h4> NO DATA AVAILABLE </h4></td>");
+				return;
+			}
+			
+			buildResultDistrictSummary(result);	
+						
 		});
 	}
 	
@@ -856,7 +865,11 @@
 		$("#headingId").html("DISTRICT WISE COMMITTEES");
 		$("#tableHeadingId").html("DISTRICT");
 		var str = '';
-		$("#distSummaryBody").html("");
+		
+		
+						
+		
+		
 		for(var i in result){
 			str += '<tr>';
 			str += '<td>'+result[i].districtName+'</td>';
