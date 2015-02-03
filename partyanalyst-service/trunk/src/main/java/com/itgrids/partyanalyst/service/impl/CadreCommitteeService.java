@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,6 +29,8 @@ import com.itgrids.partyanalyst.dao.ICadreParticipatedElectionDAO;
 import com.itgrids.partyanalyst.dao.ICadrePreviousRolesDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
@@ -132,6 +135,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private ICadreCommitteeIncreasedPositionsDAO cadreCommitteeIncreasedPositionsDAO;
 	private ICadreCommitteeChangeDesignationsDAO cadreCommitteeChangeDesignationsDAO;
 	private ITdpCommitteeRoleHistoryDAO tdpCommitteeRoleHistoryDAO;
+	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
+	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	
 	
 	public ITdpCommitteeRoleHistoryDAO getTdpCommitteeRoleHistoryDAO() {
@@ -299,6 +304,14 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	}
 	
 	
+	public void setDelimitationConstituencyMandalDAO(
+			IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO) {
+		this.delimitationConstituencyMandalDAO = delimitationConstituencyMandalDAO;
+	}
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
 	public CadreCommitteeVO getCadreDetailsByTdpCadreId(Long tdpCadreId)
 	{
 		CadreCommitteeVO cadreCommitteeVO = null;
@@ -3589,7 +3602,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			}
 			
 			
-			constiCountForMandalTownDivisions(constiIds);
+			//constiCountForMandalTownDivisions(constiIds);
 			
 			SimpleDateFormat format =  new SimpleDateFormat("MM/dd/yyyy");
 			
@@ -3600,8 +3613,16 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			mandalMunciDivisionIds.add(5l);
 			mandalMunciDivisionIds.add(7l);
 			mandalMunciDivisionIds.add(9l);
-			List<Object[]> memResLst = tdpCommitteeMemberDAO.membersCountConstituencyWise(mandalMunciDivisionIds, stDate, edDate, constiIds);
-			pushResultConstituencyWiseMemsCount("munci", memResLst, constiLst);
+			/*List<Object[]> memResLst = tdpCommitteeMemberDAO.membersCountConstituencyWise(mandalMunciDivisionIds, stDate, edDate, constiIds);
+			pushResultConstituencyWiseMemsCount("munci", memResLst, constiLst);*/
+			 Map<Long,Long> mainMembersCountMap = new HashMap<Long,Long>();
+			 Map<Long,Long> startedCommitteesCountMap = new HashMap<Long,Long>();
+			 Map<Long,Long> completedCommitteesCountMap = new HashMap<Long,Long>();
+			 Map<Long,Long> startedCommitteesAffCountMap = new HashMap<Long,Long>();
+			 Map<Long,Long> completedCommitteesAffCountMap = new HashMap<Long,Long>();
+			 Map<Long,Long> mainCommitteesCountMap = new HashMap<Long,Long>();
+			
+			constiCountForMandalTownDivisions(constiIds, stDate, edDate, mainMembersCountMap, startedCommitteesCountMap, completedCommitteesCountMap, startedCommitteesAffCountMap, completedCommitteesAffCountMap, mainCommitteesCountMap);
 			
 			
 			List<Long> villageWardIds = new ArrayList<Long>();
@@ -3613,10 +3634,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			pushTotalCountsForConstituency("village", ttlV, constiLst);
 			
 			
-			List<Object[]> stResLst = tdpCommitteeDAO.committeesCountByConstituency(mandalMunciDivisionIds, stDate, edDate, "started", constiIds);
+			/*List<Object[]> stResLst = tdpCommitteeDAO.committeesCountByConstituency(mandalMunciDivisionIds, stDate, edDate, "started", constiIds);
 			List<Object[]> endResLst = tdpCommitteeDAO.committeesCountByConstituency(mandalMunciDivisionIds, stDate, edDate, "completed", constiIds);
 			pushResultConstiWise("munci", stResLst, constiLst, "start");
-			pushResultConstiWise("munci", endResLst, constiLst, "completed");
+			pushResultConstiWise("munci", endResLst, constiLst, "completed");*/
 			
 			List<Object[]> stResLstVill = tdpCommitteeDAO.committeesCountByConstituency(villageWardIds, stDate, edDate, "started", constiIds);
 			List<Object[]> endResLstVill = tdpCommitteeDAO.committeesCountByConstituency(villageWardIds, stDate, edDate, "completed", constiIds);
@@ -3628,16 +3649,44 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				for(CommitteeSummaryVO temp:constiLst){
 					
 					if(temp.getTownMandalDivisionVO()!=null){
+						
+						Long constiId = temp.getConstiId();
+						
+						Long membersCount = mainMembersCountMap.get(constiId);
+						if(membersCount==null){membersCount=0l;}
+						
+						Long mainStarted = startedCommitteesCountMap.get(constiId);
+						if(mainStarted==null){mainStarted=0l;}
+						
+						Long mainCompleted = completedCommitteesCountMap.get(constiId);
+						if(mainCompleted==null){mainCompleted=0l;}
+						
+						Long afflStarted = startedCommitteesAffCountMap.get(constiId);
+						if(afflStarted==null){afflStarted=0l;}
+						
+						Long afflCompleted = completedCommitteesAffCountMap.get(constiId);
+						if(afflCompleted==null){afflCompleted=0l;}
+						
+						Long totalCommittees = mainCommitteesCountMap.get(constiId);
+						if(totalCommittees==null){totalCommittees=0l;}
+						
+						temp.getTownMandalDivisionVO().setMainStarted(mainStarted);
+						temp.getTownMandalDivisionVO().setMainCompleted(mainCompleted);
+						temp.getTownMandalDivisionVO().setAfflStarted(afflStarted);
+						temp.getTownMandalDivisionVO().setAfflCompleted(afflCompleted);
+						temp.getTownMandalDivisionVO().setTotalCommittees(totalCommittees);
+						temp.getTownMandalDivisionVO().setMembersCount(membersCount);
+						
 						Long strt = temp.getTownMandalDivisionVO().getMainStarted();
 						Long cmpl = temp.getTownMandalDivisionVO().getMainCompleted();
 						
 						if(strt==null){strt = 0l;}
-						if(cmpl==null){cmpl = 0l;}
+						/*if(cmpl==null){cmpl = 0l;}*/
 						
-						Long total = strt + cmpl;
-						
+						Long total = temp.getTownMandalDivisionVO().getTotalCommittees();
+						if(total==null){total = 0l;}
 						if(total!=0){
-							temp.getTownMandalDivisionVO().setTotalCommittees(total);
+							//temp.getTownMandalDivisionVO().setTotalCommittees(total);
 							String percentage = (new BigDecimal(strt*(100.0)/total)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 							temp.getTownMandalDivisionVO().setStartPerc(percentage);
 						}else{
@@ -3674,7 +3723,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			
 			
 		}catch (Exception e) {
-			LOG.error("Exception Raised in getConstituencyWiseCommittesSummary");
+			LOG.error("Exception Raised in getConstituencyWiseCommittesSummary",e);
 		}
 		return constiLst;
 	}
@@ -3944,21 +3993,226 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		
 	}
 	
-	public void constiCountForMandalTownDivisions(List<Long> constituencyIds){
-			List<Long> mandalIds = new ArrayList<Long>();
-			List<Long> wardIds = new ArrayList<Long>();
-			List<Long> divisionIds = new ArrayList<Long>();
+	public void constiCountForMandalTownDivisions(List<Long> constituencyIds,Date startDate, Date endDate,
+			Map<Long,Long> mainMembersCountMap,Map<Long,Long> startedCommitteesCountMap,Map<Long,Long> completedCommitteesCountMap,
+			Map<Long,Long> startedCommitteesAffCountMap,Map<Long,Long> completedCommitteesAffCountMap,Map<Long,Long> mainCommitteesCountMap){
+			Map<Long,List<Long>> mandalIdsMap = new HashMap<Long,List<Long>>();//Map<id,List<1constituencyId>>
+			Map<Long,List<Long>> localBodiesMap = new HashMap<Long,List<Long>>();//Map<id,List<1constituencyId>>
+			List<Long> divisionLclIds = new ArrayList<Long>();//Map<id,List<1constituencyId>>
+			Map<Long,List<Long>> divisionIdsMap = new HashMap<Long,List<Long>>();//Map<id,List<1constituencyId>>
 			
 		if(constituencyIds!=null && constituencyIds.size()>0){
-			for(Long constiId :constituencyIds){
-				List<LocationWiseBoothDetailsVO> list = getMandalMunicCorpDetailsNew(constiId);
-				if(list!=null && list.size()>0){
-					for(LocationWiseBoothDetailsVO temp:list){
-						String first = temp.getLocationId().toString().substring(0, 1);
-						if(first=="1"){
-							
-						}
-						
+			
+			/* Map<Long,Long> mainMembersCountMap = new HashMap<Long,Long>();
+			 Map<Long,Long> startedCommitteesCountMap = new HashMap<Long,Long>();
+			 Map<Long,Long> completedCommitteesCountMap = new HashMap<Long,Long>();
+			 Map<Long,Long> startedCommitteesAffCountMap = new HashMap<Long,Long>();
+			 Map<Long,Long> completedCommitteesAffCountMap = new HashMap<Long,Long>();
+			 Map<Long,Long> mainCommitteesCountMap = new HashMap<Long,Long>();*/
+			 
+			 getLocationsInfo(constituencyIds, divisionLclIds, localBodiesMap, divisionIdsMap, mandalIdsMap);
+			 
+			 
+			 if(mandalIdsMap.size() > 0){
+				 List<Long> levelValues = new ArrayList<Long>(mandalIdsMap.keySet());
+				 
+				//0 count,1levelId
+				 List<Object[]> totalMandalMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(5l,startDate, endDate,levelValues);
+				//0count,1locationID
+				 List<Object[]> totalMandalCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(5l,levelValues);
+				 
+				//0count,1locationID,2typeId
+				 List<Object[]> totalMandalStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(5l,levelValues,startDate,endDate,"started");
+				//0count,1locationID,2typeId
+				 List<Object[]> totalMandalCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(5l,levelValues,startDate,endDate,"completed");
+				
+				 
+				    populateLocationCounts(
+						 mainMembersCountMap, 
+						 mainCommitteesCountMap,
+						 
+						 startedCommitteesCountMap, 
+						 startedCommitteesAffCountMap,
+						 
+						 completedCommitteesCountMap, 
+						 completedCommitteesAffCountMap, 
+						 
+						 totalMandalMainMembers, 
+						 totalMandalCommittees, 
+						 totalMandalStartedCommittees, 
+						 totalMandalCompletedCommittees, 
+						 mandalIdsMap);
+			 }
+			 if(localBodiesMap.size() > 0){
+				 List<Long> levelValues = new ArrayList<Long>(localBodiesMap.keySet());
+				 
+				//0 count,1levelId
+				 List<Object[]> totalLocalBodMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(7l,startDate, endDate,levelValues);
+				//0count,1locationID
+				 List<Object[]> totalLocalBodCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(7l,levelValues);
+				 
+				//0count,1locationID,2typeId
+				 List<Object[]> totalLocalBodStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(7l,levelValues,startDate,endDate,"started");
+				//0count,1locationID,2typeId
+				 List<Object[]> totalLocalBodCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(7l,levelValues,startDate,endDate,"completed");
+				
+				 
+				 populateLocationCounts(
+						 mainMembersCountMap, 
+						 mainCommitteesCountMap,
+						 
+						 startedCommitteesCountMap, 
+						 startedCommitteesAffCountMap,
+						 
+						 completedCommitteesCountMap, 
+						 completedCommitteesAffCountMap, 
+						 
+						 totalLocalBodMainMembers, 
+						 totalLocalBodCommittees, 
+						 totalLocalBodStartedCommittees, 
+						 totalLocalBodCompletedCommittees, 
+						 localBodiesMap);
+			 }
+			 if(divisionIdsMap.size() > 0){
+				 List<Long> levelValues = new ArrayList<Long>(divisionIdsMap.keySet());
+				 
+				//0 count,1levelId
+				 List<Object[]> totalDivisionMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(9l,startDate, endDate,levelValues);
+				//0count,1locationID
+				 List<Object[]> totalDivisionCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(9l,levelValues);
+				 
+				//0count,1locationID,2typeId
+				 List<Object[]> totalDivisionStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(9l,levelValues,startDate,endDate,"started");
+				//0count,1locationID,2typeId
+				 List<Object[]> totalDivisionCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(9l,levelValues,startDate,endDate,"completed");
+				
+				 
+				 populateLocationCounts(
+						 mainMembersCountMap, 
+						 mainCommitteesCountMap,
+						 
+						 startedCommitteesCountMap, 
+						 startedCommitteesAffCountMap,
+						 
+						 completedCommitteesCountMap, 
+						 completedCommitteesAffCountMap, 
+						 
+						 totalDivisionMainMembers, 
+						 totalDivisionCommittees, 
+						 totalDivisionStartedCommittees, 
+						 totalDivisionCompletedCommittees, 
+						 localBodiesMap);
+			 }
+			 
+		}
+	}
+	
+	private void getLocationsInfo(List<Long> constituencyIds,List<Long> divisionLclIds,
+			Map<Long,List<Long>> localBodiesMap,Map<Long,List<Long>> divisionIdsMap,Map<Long,List<Long>> mandalIdsMap){
+		//0localBodyId,1constituencyId
+		List<Object[]> localBodyIdsList = assemblyLocalElectionBodyDAO.getAllLocalBodiesInAConstituencyList(constituencyIds);
+		for(Object[] localBody:localBodyIdsList){
+			Long localBdyId = (Long)localBody[0];
+			if(!(localBdyId.longValue() == 20l ||  localBdyId.longValue() == 124l || localBdyId.longValue() == 119l)){
+				divisionLclIds.add(localBdyId);
+        	}else{
+        		List<Long> constiIds = localBodiesMap.get(localBdyId);
+        		if(constiIds == null){
+        			constiIds = new ArrayList<Long>();
+        			localBodiesMap.put(localBdyId,constiIds);
+        		}
+        		constiIds.add((Long)localBody[1]);
+        	}
+		}
+		if(divisionLclIds.size() > 0){
+			List<Object[]> divisionIdsList = assemblyLocalElectionBodyWardDAO.findWardsByLocalBodyIds(divisionLclIds);
+			for(Object[] division:divisionIdsList){
+				Long divisionId = (Long)division[0];
+				List<Long> constiIds = divisionIdsMap.get(divisionId);
+        		if(constiIds == null){
+        			constiIds = new ArrayList<Long>();
+        			divisionIdsMap.put(divisionId,constiIds);
+        		}
+        		constiIds.add((Long)division[1]);
+			}
+		}
+		 List<BigInteger> delimitationIds = delimitationConstituencyDAO.getDelimitIds(constituencyIds);
+		 if(delimitationIds.size() > 0){
+			 List<Long> ids = new ArrayList<Long>();
+			 for(BigInteger delimitationId:delimitationIds){
+				 ids.add(delimitationId.longValue());
+			 }
+			 List<Object[]> tehsilIdsList = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyIDs(ids) ;
+			 for(Object[] tehsil:tehsilIdsList){
+					Long tehsilId = (Long)tehsil[0];
+					List<Long> tehsilIds = mandalIdsMap.get(tehsilId);
+	        		if(tehsilIds == null){
+	        			tehsilIds = new ArrayList<Long>();
+	        			mandalIdsMap.put(tehsilId,tehsilIds);
+	        		}
+	        		tehsilIds.add((Long)tehsil[1]);
+				}
+		 }
+	}
+	
+	private void populateLocationCounts(
+			 Map<Long,Long> mainMembersCountMap,
+			 Map<Long,Long> mainCommitteesCountMap,
+			 
+			 Map<Long,Long> startedCommitteesCountMap,
+			 Map<Long,Long> startedCommitteesAffCountMap,
+			 
+			 Map<Long,Long> completedCommitteesCountMap,			 
+			 Map<Long,Long> completedCommitteesAffCountMap,
+			 
+			 List<Object[]> totalMainMembers,
+			 List<Object[]> totalCommittees,
+			 
+			 List<Object[]> totalStartedCommittees,
+			 
+			 List<Object[]> totalCompletedCommittees,
+			 
+			 Map<Long,List<Long>> locationsMap){
+		
+		     populateMainCounts(totalMainMembers,locationsMap,mainMembersCountMap);
+		     populateMainCounts(totalCommittees,locationsMap,mainCommitteesCountMap);
+		     populateMainAndAffCounts(totalStartedCommittees,locationsMap,startedCommitteesCountMap,startedCommitteesAffCountMap);
+		     populateMainAndAffCounts(totalCompletedCommittees,locationsMap,completedCommitteesCountMap,completedCommitteesAffCountMap);
+		
+	}
+	
+	private void populateMainCounts(List<Object[]> mainMembers,Map<Long,List<Long>> locationsMap,Map<Long,Long> countMap){
+		//0 count,1levelId
+		for(Object[] countArr:mainMembers){
+			List<Long> constituenciesIds = locationsMap.get((Long)countArr[1]);
+			if(constituenciesIds != null && constituenciesIds.size() > 0){
+				for(Long constituenciesId:constituenciesIds){
+					Long count = countMap.get(constituenciesId);
+					if(count == null){
+						countMap.put(constituenciesId,(Long)countArr[0]);
+					}else{
+						countMap.put(constituenciesId,count+(Long)countArr[0]);
+					}
+				}
+			}
+		}
+	}
+	
+	private void populateMainAndAffCounts(List<Object[]> mainAffMembers,Map<Long,List<Long>> locationsMap,Map<Long,Long> mainCountMap,Map<Long,Long> affCountMap){
+		//0 count,1levelId,2typeId
+		for(Object[] countArr:mainAffMembers){
+			Map<Long,Long> countMap = mainCountMap;
+			if(((Long)countArr[2]).longValue() == 2l){
+				countMap = affCountMap;
+			}
+			List<Long> constituenciesIds = locationsMap.get((Long)countArr[1]);
+			if(constituenciesIds != null && constituenciesIds.size() > 0){
+				for(Long constituenciesId:constituenciesIds){
+					Long count = countMap.get(constituenciesId);
+					if(count == null){
+						countMap.put(constituenciesId,(Long)countArr[0]);
+					}else{
+						countMap.put(constituenciesId,count+(Long)countArr[0]);
 					}
 				}
 			}

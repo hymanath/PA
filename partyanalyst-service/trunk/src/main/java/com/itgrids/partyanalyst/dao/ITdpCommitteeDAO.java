@@ -32,4 +32,6 @@ public interface ITdpCommitteeDAO  extends GenericDao<TdpCommittee, Long>{
 	public List<Object[]> getCompletedAffliCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate );
 	public List<Object[]> getCommitteesCountByDistrictIdAndLevel(List<Long> districtIds,List<Long> levelIds);
 	public List<Object[]> getCommitteesCountByConstituencyIdAndLevel(List<Long> constituencyIds,List<Long> levelIds);
+	public List<Object[]> committeesCountByLocationIds(Long levelId,List<Long> levelValues,Date startDate,Date endDate,String type);
+	public List<Object[]> totalCommitteesCountByLocationIds(Long levelId,List<Long> levelValues);
 }
