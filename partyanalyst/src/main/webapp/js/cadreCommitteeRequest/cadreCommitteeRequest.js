@@ -358,16 +358,18 @@ function getCommitteeLocations(){
 			     }//inc pos.
 				 else if(reqType=='2'){
 				   if(result.electionYear=='Y'){
-				      
+				    
 				      $('#changeDesgId').show(); 
 					
+					  if(result.hamletsOfTownship.length>0 && result.hamletsOfTownship!=null){
+					   
 				      var str='';
 					  str+='<div class="col-md-offset-1 col-md-10 pad1" style="background-color:rgba(0,0,0,0.1);">';
 					  str+='<span style="font-weight: bold;"><span style="color:green">'+committeeLocation+ '</span> &nbsp'+committeeType+'</style>';
 					  str+='<span style="font-weight: bold;color:red; margin-left: 116px;" id="errorChangeDesg"></span>';
 					  str+='</div>';
-					  
-					   str+='<div class="col-md-offset-1 col-md-10" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); color:#fff;margin-top:2px;padding:0px; " >';
+					    
+					  str+='<div class="col-md-offset-1 col-md-10" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); color:#fff;margin-top:2px;padding:0px; " >';
 					  str+='<table class="table table-bordered text-left" >';
 					  str+='<thead style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.2); color:#000">';
 					 
@@ -378,7 +380,7 @@ function getCommitteeLocations(){
                       str+='<th width="15%">Select Change Position</th>';
 					  str+='</thead>';
 					  str+='<tbody style="color:#000">';
-					  if(result.hamletsOfTownship.length>0 && result.hamletsOfTownship!=null){
+					 
 					    for(var i=0;i<result.hamletsOfTownship.length;i++){
 						  str+='<tr>';
 						  str+='<td><img width="32"  height="32" src="http://www.mytdp.com/images/cadre_images/'+result.hamletsOfTownship[i].url+'" onerror="setDefaultImage(this);"/></td>';
@@ -410,12 +412,12 @@ function getCommitteeLocations(){
 						  str+='</td>';
 						  str+='</tr>';
 						}
-					  }
+					  
 					  str+='</tbody ';
 					  str+='</table>';
 					
 					  str+='</div>'; 
-					  
+					 
 					
 					  var str1="";
 					  str1+='<div class="col-md-offset-1 col-md-10" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); color:#fff;" >';
@@ -424,12 +426,25 @@ function getCommitteeLocations(){
 					  
 					  $("#desgReqTableDiv").html(str);
 					  $("#desgReqDiv").html(str1);
-					  
-				     }
+					 }
+					 else{
+					    var str='';
+					  str+='<div class="col-md-offset-1 col-md-10 pad1" style="background-color:rgba(0,0,0,0.1);">';
+					  str+='<span style="font-weight: bold;"><span style="color:green">'+committeeLocation+ '</span> &nbsp'+committeeType+'</style>';
+					  str+='<span style="font-weight: bold;color:red; margin-left: 116px;" id="errorChangeDesg"></span>';
+					  str+='<div style="font-weight:bold;text-align:center;  margin-left:-183px; margin-top: 8px;"> No Data Available...</div>';
+					  str+='</div>';
+						
+					    $("#desgReqTableDiv").html(str);
+						 $("#desgReqDiv").hide();
+					 
+					 }
+				}
 					 else{
 					     					  
 
-					    $("#changeDesgId").html("");
+					   // $("#changeDesgId").html("");
+					    $("#changeDesgId").hide();
 					    $('#posIncreasedId').show();
 				        var str="";
 					    str+='<div class="col-md-offset-2 col-md-8 pad1" style="background-color:rgba(0,0,0,0.1);">';
@@ -681,11 +696,11 @@ function getCommitteeLocations(){
 				   
 				    for(var j in result[i].locationsList)
 					{					
-						 str+='<td><img width="32"  height="32" src="http://www.mytdp.com/images/cadre_images/'+result[i].locationsList[j].positionId+'" onerror="setDefaultImage(this);"/></td>';
-						 str+='<td>'+result[i].locationsList[j].position+'</td>';
-						 str+='<td>'+result[i].locationsList[j].memberShipNo+'</td>';
-						 str+='<td style="padding-left: 19px;">'+result[i].locationsList[j].currentRole+'</td>';
-						 str+='<td style="padding-left: 19px;">'+result[i].locationsList[j].newRole+'</td>';
+						 str+='<td ><img  style="margin-top: 26px; margin-left: 12px;" width="35"  height="35" src="http://www.mytdp.com/images/cadre_images/'+result[i].locationsList[j].positionId+'" onerror="setDefaultImage(this);"/></td>';
+						 str+='<td style="padding-top:'+paddingTop+'px;">'+result[i].locationsList[j].position+'</td>';
+						 str+='<td style="padding-top:'+paddingTop+'px;">'+result[i].locationsList[j].memberShipNo+'</td>';
+						 str+='<td style="padding-top:'+paddingTop+'px; padding-left: 18px;">'+result[i].locationsList[j].currentRole+'</td>';
+						 str+='<td style="padding-top:'+paddingTop+'px; padding-left: 18px;">'+result[i].locationsList[j].newRole+'</td>';
 						 if(j == 0) 
 						 {
 							 str+='<td rowspan="'+result[i].locationsList.length+'" style="text-align: center;padding-top:'+paddingTop+'px;">'+result[i].status+'</td>';
