@@ -9606,5 +9606,20 @@
 			</result>
 		</action>
 		
+		<action name="constituencyCommitteeSummaryAction" class="committeeDashBoardAction" method="constituencyCommitteeSummaryAction">
+			<result name="success">/jsp/constituencyCommitteeSummary.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=constituencyCommitteeSummaryAction</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
+		<action name="getAllDistrictsAction" class="committeeDashBoardAction" method="getAllDistricts">
+			<result type="json" name="success">
+				<param name="root">idNameVOList</param>
+			</result>
+		</action>
+		<action name="getAllConstituencysForADistrictAction" class="committeeDashBoardAction" method="getAllConstituencysForADistrict">
+			<result type="json" name="success">
+				<param name="root">idNameVOList</param>
+			</result>
+		</action>
 </package>
 </struts>      
