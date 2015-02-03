@@ -696,8 +696,11 @@
      	  }).done(function(result){ 
 			  if(result != null){
 				  {
-				alert("Committee Confirmed")
+				alert("Committee Confirmed");
 				$("#conformedBtn").html('');
+				getSummary();
+				getMandalMuncipalDivisonStartedCommittees();
+				getCommitteeDetailsByStatus(plbasicCommitteetypeId,plstatus,plevelId);
 				  }
 				
 			}
