@@ -5332,12 +5332,16 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         		 }
         		 
         		 
-        		if(type.equalsIgnoreCase("Constituency"))
-        			 setIvrData(constituencyIds,IConstants.CONSTITUENCY,resultList,startDate,toDate);
+        		if(type.equalsIgnoreCase("Constituency")){
+        			if(constituencyIds != null && constituencyIds.size()>0)
+        				setIvrData(constituencyIds,IConstants.CONSTITUENCY,resultList,startDate,toDate);
+        		}
         		if(type.equalsIgnoreCase("Mandal"))
         		{
-        		setIvrData(mandalIds,IConstants.TEHSIL,resultList,startDate,toDate);
-        		setIvrData(localbodyIds,IConstants.LOCAL_ELECTION_BODY,resultList,startDate,toDate);
+        			if(mandalIds != null && mandalIds.size()>0)
+        				setIvrData(mandalIds,IConstants.TEHSIL,resultList,startDate,toDate);
+        			if(localbodyIds != null && localbodyIds.size()>0)
+        				setIvrData(localbodyIds,IConstants.LOCAL_ELECTION_BODY,resultList,startDate,toDate);
         		}
         		
         		 returnVo.setApList(resultList);
