@@ -6,7 +6,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
@@ -15,6 +14,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
 import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
@@ -38,7 +38,7 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private List<CommitteeSummaryVO>    districtWiseSummaryList,constiWiseSummaryList;
 	private List<CadreCommitteeReportVO> cadreCommitteeReportVOList;
 	private List<CadreCommitteeMemberVO> cadreCommitteeMemberVOList;
-	
+	private List<IdNameVO>  idNameVOList;
 	
 	public List<CommitteeSummaryVO> getConstiWiseSummaryList() {
 		return constiWiseSummaryList;
@@ -114,6 +114,14 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	public void setCadreCommitteeMemberVOList(
 			List<CadreCommitteeMemberVO> cadreCommitteeMemberVOList) {
 		this.cadreCommitteeMemberVOList = cadreCommitteeMemberVOList;
+	}
+	
+	
+	public List<IdNameVO> getIdNameVOList() {
+		return idNameVOList;
+	}
+	public void setIdNameVOList(List<IdNameVO> idNameVOList) {
+		this.idNameVOList = idNameVOList;
 	}
 	public String execute(){
 		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
@@ -289,5 +297,45 @@ public String getCommitteeDetailsByStatusPopUp(){
 		
 		return Action.SUCCESS;
 	}
+
+public String constituencyCommitteeSummaryAction()
+{
+	RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+	boolean noaccess = false;
+	if(regVO==null){
+		return "input";
+	}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_COMMITTEE_MANAGEMENT")){
+		noaccess = true ;
+	}
+	if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+		noaccess = false;
+	}
+	
+	if(noaccess){
+		return "error";
+	}
+	
+	return Action.SUCCESS;
+}
+
+public String getAllDistricts(){
+	try{
+		
+		idNameVOList= cadreCommitteeService.getAllDistricts();
+	}catch(Exception e){
+		LOG.error("Exception Occured In getAllDistricts method "+e);			
+	}
+	return Action.SUCCESS;
+}
+public String getAllConstituencysForADistrict(){
+	try{
+		Long districtId=Long.parseLong(request.getParameter("districtId"));
+		idNameVOList= cadreCommitteeService.getAllConstituencysForADistrict(districtId);
+	}catch(Exception e){
+		LOG.error("Exception Occured In getAllConstituencysForADistrict method "+e);			
+	}
+	return Action.SUCCESS;
+}
+
 	
 }
