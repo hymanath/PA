@@ -1049,9 +1049,9 @@ function getLocationWisePerformance(constituencyId,locationType,name){
 				for(var i in result.apList){
 				  str+='<tr>';
 				  if(locationType =="All" || locationType =="AP" || locationType =="TS"){
-				    str+='  <td><a href="javascript:{}" title="Click Here To View Previous Calls Info" onclick="getEnquiryInfo(\'constituency\',\''+result.apList[i].id+'\',\''+result.apList[i].name+'\')">'+result.apList[i].name+'</a><span style="cursor:pointer;" title="Click Here To Add Call Details" onclick="openSaveEnquiryInfo(\'constituency\','+result.apList[i].id+','+result.apList[i].id+','+result.apList[i].name+')"><i class="icon-list-alt"></i></span></td>';
+				    str+='  <td><a href="javascript:{}" title="Click Here To View Previous Calls Info" onclick="getEnquiryInfo(\'constituency\',\''+result.apList[i].id+'\',\''+result.apList[i].name+'\')">'+result.apList[i].name+'</a><span style="cursor:pointer;" title="Click Here To Add Call Details" onclick="openSaveEnquiryInfo(\'constituency\','+result.apList[i].id+','+result.apList[i].id+',\''+result.apList[i].name+'\')"><i class="icon-list-alt"></i></span></td>';
 				  }else if(locationType == "mandal"){
-				    str+='  <td><a href="javascript:{}" title="Click Here To View Previous Calls Info" onclick="getEnquiryInfo(\'tehsil\',\''+result.apList[i].id+'\',\''+result.apList[i].name+'\')">'+result.apList[i].name+'</a><span style="cursor:pointer;" title="Click Here To Add Call Details" onclick="openSaveEnquiryInfo(\'mandal\','+result.apList[i].id+','+constituencyId+','+result.apList[i].name+')"><i class="icon-list-alt"></i></span></td>';
+				    str+='  <td><a href="javascript:{}" title="Click Here To View Previous Calls Info" onclick="getEnquiryInfo(\'tehsil\',\''+result.apList[i].id+'\',\''+result.apList[i].name+'\')">'+result.apList[i].name+'</a><span style="cursor:pointer;" title="Click Here To Add Call Details" onclick="openSaveEnquiryInfo(\'mandal\','+result.apList[i].id+','+constituencyId+',\''+result.apList[i].name+'\')"><i class="icon-list-alt"></i></span></td>';
 				  }else{
 				    str+='  <td>'+result.apList[i].name+'</td>';
 				  }
