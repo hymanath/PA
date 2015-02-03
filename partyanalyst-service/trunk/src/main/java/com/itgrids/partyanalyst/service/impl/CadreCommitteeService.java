@@ -4233,7 +4233,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	  List<IdNameVO> idNameVOList=null;
 	  try
 	 {
-		List<Object[]> districtList=districtDAO.getAllDistrictDetails(1l);
+		List<Object[]> districtList=districtDAO.getAllDistrictDetailsForAState(1l);
 		if(districtList!=null && districtList.size()>0){
 			idNameVOList=new ArrayList<IdNameVO>();
 			for (Object[] objects : districtList){
