@@ -77,7 +77,8 @@ public class CadreCommitteeIncreasedPositionsDAO extends GenericDaoHibernate<Cad
 					" date(model.insertedTime)  " + //11-date
 					" from CadreCommitteeIncreasedPositions model" +
 					" where model.type ='positionsIncreased' and " +
-					" model.userIdRequest.userId=:requestUserId");
+					" model.userIdRequest.userId=:requestUserId " +
+					" order by model.insertedTime desc");
 		    query.setParameter("requestUserId", requestUserId);
 			return query.list(); 
 		 
