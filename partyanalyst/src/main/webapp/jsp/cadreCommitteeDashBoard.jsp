@@ -661,7 +661,7 @@
 						$("#div7").html(result.membersCount);
 					}
 					
-					if(level == 'village' || level == 'ward' || level == 'villageAll')
+					else if(level == 'village' || level == 'ward' || level == 'villageAll')
 					{
 						$('#ajaxImageId'+state+'village').hide();
 						
@@ -697,7 +697,7 @@
 					
 					}
 				}
-				if(state == "TS"){
+				else if(state == "TS"){
 					if(level == 'mandal' || level == 'town' || level == 'division' || level == 'mandalAll')
 					{
 						$('#ajaxImageId'+state+'mandal').hide();
@@ -734,7 +734,7 @@
 					
 					}
 					
-				 if(level == 'village' || level == 'ward' || level == 'villageAll')
+				 else if(level == 'village' || level == 'ward' || level == 'villageAll')
 					{
 						$('#ajaxImageId'+state+'village').hide();
 						
@@ -761,7 +761,7 @@
 						if(result.affliatedCompleted!=0){
 							$("#div27").html('<a id=\''+level+'IdTSAffl\' onClick="getAflCommitteeCount(\'TS\',\''+level+'\')">'+result.affliatedCompleted+'</a>');	
 						}else{
-							$("#div13").html('<span> 0 </span>');
+							$("#div27").html('<span> 0 </span>');
 						}						
 						$("#div28").html(result.membersCount);	
 					}
