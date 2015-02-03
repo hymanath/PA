@@ -725,4 +725,32 @@ public class ZebraPrintDetailsDAO extends GenericDaoHibernate<ZebraPrintDetails,
 		
 		return query.list();
 	}
+	
+	
+	public Long getTotalPrintingCountByState(Long stateTypeId) 
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select count(model.zebraPrintDetailsId) from ZebraPrintDetails model where ");
+		str.append(" model.tdpCadre.isDeleted = 'N' and  model.tdpCadre.enrollmentYear = 2014 ");
+		str.append(" and ((model.printStatus = 'Y' or model.printStatus ='y') " +
+				" and (model.errorStatus is null or model.errorStatus ='0' or  model.errorStatus  = '' or  model.errorStatus = 'null')) and model.serialNo is not null ");
+				
+		if(stateTypeId.longValue() == 0L)
+		{
+			str.append(" and model.tdpCadre.userAddress.district.districtId between 1 and 23 ");
+		}
+		else if(stateTypeId.longValue() == 1L)
+		{
+			str.append(" and model.tdpCadre.userAddress.district.districtId between 11 and 23 ");
+		}
+		else if(stateTypeId.longValue() == 2L)
+		{
+			str.append(" and model.tdpCadre.userAddress.district.districtId between 1 and 10 ");
+		}
+		
+	
+		Query query = getSession().createQuery(str.toString());
+
+		return (Long) query.uniqueResult();
+	}
 }
