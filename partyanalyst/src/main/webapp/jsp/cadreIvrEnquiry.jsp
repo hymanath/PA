@@ -115,6 +115,7 @@ input[type="text"]
         	<div class="form-inline" style="margin-top:15px;">
             	From Date<input type="text" id="fromDate" readonly class="dateClass"/>&nbsp; To Date <input type="text" id="toDate" class="dateClass" readonly /> &nbsp;&nbsp;
                 <button class="btn btn-success" value="Submit"  onclick="getCardsDistributedInfo();">Get Details</button>
+				<span id="errorDiv"></span>
             </div>
         </td>
     </tr>
@@ -174,15 +175,38 @@ input[type="text"]
 		
 	});
 	function getCardsDistributedInfo()
-	{
-		$("#basicajaxImg").show();
+	{	
+		$("#errorDiv").html("");
+		
 		$("#mandalTD").html('');
 		$("#resultDivByLocation").html('');
-		$("#constiTD").html('');
-		
+		$("#constiTD").html('');		
 		$("#noteId").hide();
+		
 		var fromDate = $("#fromDate").val();
 		var toDate =  $("#toDate").val();
+		if(fromDate.length > 0 && toDate.length > 0 )
+		{		    
+		  var yr1  = parseInt(fromDate.substring(0,4),10);
+		 
+		  var mon1 = parseInt(fromDate.substring(5,7),10);
+		  
+		  var dt1  = parseInt(fromDate.substring(8,10),10);
+		 
+		  var yr2  = parseInt(toDate.substring(0,4),10);
+		  var mon2 = parseInt(toDate.substring(5,7),10);
+		  var dt2  = parseInt(toDate.substring(8,10),10);
+		  var date1 = new Date(yr1, mon1, dt1);
+		  var date2 = new Date(yr2, mon2, dt2);
+			
+			if(date2 < date1)
+			{ 
+				$("#errorDiv").html("From Date Should Be Less Than To Date").css("color","red");
+				return false;
+			}
+		}
+	
+		$("#basicajaxImg").show();
 		var selectedState = $("input[type='radio'][name='selectstate']:checked").val();		
 		var jsObj = {	
 			fromDate:fromDate,
