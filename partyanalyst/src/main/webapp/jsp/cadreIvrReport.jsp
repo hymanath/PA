@@ -95,7 +95,7 @@ textarea {
 		<!-- Filters Row -->
 		<div>
 		<c:if test="${sessionScope.USER.accessType == 'STATE'}">
-		<button type="button" value="" style="margin-top: -31px; margin-left: 0px;display:block;" class="btn btn-medium btn-success border-radius-0 pull-right" onclick="openPopupWindow();">Click to view Previous Calls Info</button></div>
+		<button type="button" value="" style="margin-top: -31px; margin-left: 0px;display:block;" class="btn btn-medium btn-success border-radius-0 pull-right" onclick="openPopupWindow();">Click to View Info Managers Calls Details</button></div>
 		</c:if>
 		<div id="fadeInDown" class="row-fluid">
 		
@@ -641,12 +641,12 @@ function buildIvrCountByDate(result,state)
 		var unAnswered= (result[0].totalUnAnswered / result[0].total * 100);
 		
 		var str ='';
-		str+='<canvas id="answerErrorChart" style="margin-left:0px; margin-right:5px; margin-top: 35px;" width="170px" height="180px"></canvas>';
+		str+='<canvas id="answerErrorChart"  height="180" width="220" style="margin-left: -33px; margin-right: -29px; margin-top: 35px; width: 220px; height: 180px;"></canvas>';
 		str+='<div id="legend" style="margin-top:0px;margin-left:0px;">';
 		str+='<ul class="doughnut-legend">';
 		str+='<li><span style="background-color: rgb(92, 182, 92); width: 10px; height: 10px; display: block; margin-left: 50px; margin-top: 11px;"></span><p style="margin-top: -13px; margin-right: 0px; margin-bottom: -8px;">IVR Answered</p></li>';
 		str+='<li><span style="background-color: rgb(209, 71, 65); width: 10px; height: 10px; display: block; margin-left: 50px; margin-top: 0px;"></span><p style="margin-top: -13px; margin-right: 29px; margin-left: 0px;">IVR Error</p></li>';
-		str+='<li><span style="background-color: rgb(0, 85, 128); width: 10px; height: 10px; display: block; margin-left: 50px; margin-top: 0px;"></span><p style="margin-top: -13px; margin-right: 29px; margin-left: 49px;">IVR UnAnswered</p></li>';
+		str+='<li><span style="background-color: rgb(0, 85, 128); width: 10px; height: 10px; display: block; margin-left: 50px; margin-top: -20px;"></span><p style="margin-top: -13px; margin-right: 29px; margin-left: 49px;">IVR UnAnswered</p></li>';
 		str+='</ul>';
 		str+='</div>';
 		str+='<div class="text-center" style="margin-top:0px;">';	
