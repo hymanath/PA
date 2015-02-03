@@ -72,8 +72,7 @@ input[type="text"]
     <tr class="well">
         <td colspan="6">
         <div class="span11"><h4 class="text-success" align="center">CARDS DISTRIBUTION CONFIRMATION STATUS BY INFO MANAGER</h4>
-        	 <span class="btn btn-success btn-xs form-inline pull-right" style="margin-right: -50px;>
-				
+        	 <span class="btn btn-success btn-xs form-inline pull-right" style="margin-right: -50px;">
 				<label class="radio"><input type="radio" id="allId" style="vertical-align: text-bottom;" class="stateRd" value="0" checked="true" name="selectstate">&nbsp;ALL &nbsp;&nbsp;&nbsp;</label>
 				<label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="stateRd" value="1" name="selectstate" >&nbsp;AP &nbsp;&nbsp;&nbsp;</label>
 				<label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="stateRd" value="2" name="selectstate">&nbsp;TS &nbsp;&nbsp;&nbsp;</label>
