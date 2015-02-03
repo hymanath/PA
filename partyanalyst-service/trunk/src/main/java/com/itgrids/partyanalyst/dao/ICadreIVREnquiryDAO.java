@@ -10,10 +10,11 @@ import com.itgrids.partyanalyst.model.CadreIVREnquiry;
 
 public interface ICadreIVREnquiryDAO  extends GenericDao<CadreIVREnquiry, Long>{
 	public List<Object[]> getLocationWiseEnquiryInfo(String locationLvl,Long locationValue,Long userId,String resultType);
-	public BigDecimal getTotalReceivedCount(Date startDate, Date endDate,List<Long> locationTypeIds);
-	public BigDecimal getTotalDeliveredCount(Date startDate, Date endDate,List<Long> locationTypeIds);
-	public List<Object[]> getNoOfLocationCountByTypeId(List<Long> locationTypeIds,Date startDate, Date endDate);
+	public BigDecimal getTotalReceivedCount(Date startDate, Date endDate,List<Long> locationTypeIds,List<Long> constiIds);
+	public BigDecimal getTotalDeliveredCount(Date startDate, Date endDate,List<Long> locationTypeIds,List<Long> constiIds);
+	public List<Object[]> getNoOfLocationCountByTypeId(List<Long> locationTypeIds,Date startDate, Date endDate,List<Long> constiIds);	
 	public List<Date> getAvailableDates();
-	public List<Object[]> getLocationIdsByTypeId(List<Long> locationTypeIds,Date startDate, Date endDate);
-	public List<Object[]> getDeliveredAndReceivedCount(List<Long> locationTypeIds,Date startDate, Date endDate);
+	public List<Object[]> getLocationIdsByTypeId(List<Long> locationTypeIds,Date startDate, Date endDate,List<Long> constiIds);
+	
+	public List<Object[]> getDeliveredAndReceivedCount(List<Long> locationTypeIds,Date startDate, Date endDate,Long locationTypeId);
 }

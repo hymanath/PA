@@ -2324,4 +2324,42 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		query.setParameter("publicationId", publicationId);
 		return query.list();
 	}
+	
+	
+	
+	public List<Object[]> getConstituenciesNameByType(List<Long> ids,String type){
+		
+		
+		StringBuilder str = new StringBuilder();
+		
+		 if(type.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			 str.append("select distinct model.constituency.constituencyId,model.constituency.district.districtName ");
+		 }
+		 else if(type.equalsIgnoreCase(IConstants.TEHSIL)){
+			 str.append("select distinct model.tehsil.tehsilId,model.constituency.name ");
+		 }
+		else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY)){
+				 str.append("select distinct model.localBody.localElectionBodyId,model.constituency.name");
+		}
+		
+		str.append(" from Booth model where " );
+			
+		if(type.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			str.append("  model.constituency.constituencyId  in (:ids) ");
+		}
+		else if(type.equalsIgnoreCase(IConstants.TEHSIL) ){
+			 str.append(" model.tehsil.tehsilId in (:ids)");
+		}
+		else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY)){
+			 str.append("  model.localBody.localElectionBodyId in (:ids) ");
+		}
+		
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("ids", ids);
+		return query.list();
+		
+		
+				
+	}
 }

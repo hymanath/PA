@@ -52,11 +52,11 @@ public class CadreIVREnquiryDAO  extends GenericDaoHibernate<CadreIVREnquiry, Lo
 		return query.list();
 	}
 	//SELECT received,location_value,inserted_date FROM cadre_ivr_enquiry t1 JOIN (SELECT MAX(cadre_ivr_enquiry_id) cadre_ivr_enquiry_id FROM cadre_ivr_enquiry  where location_type_id = 1 and is_deleted = 'N' GROUP BY location_value ) t2 ON t1.cadre_ivr_enquiry_id = t2.cadre_ivr_enquiry_id ORDER BY inserted_date desc ;
-	public BigDecimal getTotalReceivedCount(Date startDate, Date endDate,List<Long> locationTypeIds)
+	public BigDecimal getTotalReceivedCount(Date startDate, Date endDate,List<Long> locationTypeIds,List<Long> constiIds)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("SELECT sum(t1.received) FROM cadre_ivr_enquiry t1 JOIN " +
-				" (SELECT MAX(cadre_ivr_enquiry_id) cadre_ivr_enquiry_id FROM cadre_ivr_enquiry  where is_deleted = 'N' "); 
+				" (SELECT MAX(cadre_ivr_enquiry_id) cadre_ivr_enquiry_id FROM cadre_ivr_enquiry  where is_deleted = 'N' and constituency_id in (:constiIds)"); 
 		if(startDate != null && endDate != null && !startDate.equals(endDate))
 		str.append(" and inserted_date >=:startDate and inserted_date <=:endDate");
 		else if(startDate != null && endDate != null && startDate.equals(endDate))
@@ -72,13 +72,14 @@ public class CadreIVREnquiryDAO  extends GenericDaoHibernate<CadreIVREnquiry, Lo
 		else if(startDate != null && endDate != null && startDate.equals(endDate))
 		query.setDate("startDate", startDate);
 		query.setParameterList("locationTypeIds", locationTypeIds);
+		query.setParameterList("constiIds", constiIds);
 		return  (BigDecimal) query.uniqueResult();
 	}
-	public BigDecimal getTotalDeliveredCount(Date startDate, Date endDate,List<Long> locationTypeIds)
+	public BigDecimal getTotalDeliveredCount(Date startDate, Date endDate,List<Long> locationTypeIds,List<Long> constiIds)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("SELECT sum(t1.delivered) FROM cadre_ivr_enquiry t1 JOIN " +
-				" (SELECT MAX(cadre_ivr_enquiry_id) cadre_ivr_enquiry_id FROM cadre_ivr_enquiry  where is_deleted = 'N' "); 
+				" (SELECT MAX(cadre_ivr_enquiry_id) cadre_ivr_enquiry_id FROM cadre_ivr_enquiry  where is_deleted = 'N' and constituency_id in (:constiIds) "); 
 		if(startDate != null && endDate != null && !startDate.equals(endDate))
 		str.append(" and inserted_date >=:startDate and inserted_date <=:endDate");
 		else if(startDate != null && endDate != null && startDate.equals(endDate))
@@ -94,13 +95,14 @@ public class CadreIVREnquiryDAO  extends GenericDaoHibernate<CadreIVREnquiry, Lo
 		else if(startDate != null && endDate != null && startDate.equals(endDate))
 		query.setDate("startDate", startDate);
 		query.setParameterList("locationTypeIds", locationTypeIds);
+		query.setParameterList("constiIds", constiIds);
 		return  (BigDecimal) query.uniqueResult();
 	}
-	public List<Object[]> getNoOfLocationCountByTypeId(List<Long> locationTypeIds,Date startDate, Date endDate)
+	public List<Object[]> getNoOfLocationCountByTypeId(List<Long> locationTypeIds,Date startDate, Date endDate,List<Long> constiIds)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select count(distinct model.locationValue),model.locationValue,model.locationTypeId from CadreIVREnquiry model where model.locationTypeId in( :locationTypeIds) and " +
-				" model.isDeleted ='N' ");
+				" model.isDeleted ='N' and model.constituencyId in (:constiIds) ");
 		if(startDate != null && endDate != null && !startDate.equals(endDate))
 		str.append(" and model.insertedDate >=:startDate and  model.insertedDate <=:endDate"); 
 		else if(startDate != null && endDate != null && startDate.equals(endDate))
@@ -115,14 +117,14 @@ public class CadreIVREnquiryDAO  extends GenericDaoHibernate<CadreIVREnquiry, Lo
 		}
 		else if(startDate != null && endDate != null && startDate.equals(endDate))
 		query.setDate("startDate", startDate);
-		
+		query.setParameterList("constiIds", constiIds);
 		return  query.list();
 	}
-	public List<Object[]> getLocationIdsByTypeId(List<Long> locationTypeIds,Date startDate, Date endDate)
+	public List<Object[]> getLocationIdsByTypeId(List<Long> locationTypeIds,Date startDate, Date endDate,List<Long> constiIds)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select distinct model.locationValue,model.locationTypeId from CadreIVREnquiry model where model.locationTypeId in( :locationTypeIds) and " +
-				" model.isDeleted ='N' ");
+				" model.isDeleted ='N' and model.constituencyId in (:constiIds) ");
 		if(startDate != null && endDate != null && !startDate.equals(endDate))
 		str.append(" and model.insertedDate >=:startDate and  model.insertedDate <=:endDate"); 
 		else if(startDate != null && endDate != null && startDate.equals(endDate))
@@ -136,7 +138,7 @@ public class CadreIVREnquiryDAO  extends GenericDaoHibernate<CadreIVREnquiry, Lo
 		}
 		else if(startDate != null && endDate != null && startDate.equals(endDate))
 		query.setDate("startDate", startDate);
-		
+		query.setParameterList("constiIds", constiIds);
 		return query.list();
 	}
 	public List<Date> getAvailableDates()
@@ -145,17 +147,17 @@ public class CadreIVREnquiryDAO  extends GenericDaoHibernate<CadreIVREnquiry, Lo
 		
 	}
 	
-	public List<Object[]> getDeliveredAndReceivedCount(List<Long> locationTypeIds,Date startDate, Date endDate)
+	public List<Object[]> getDeliveredAndReceivedCount(List<Long> locationValue,Date startDate, Date endDate,Long locationTypeId)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("SELECT t1.delivered,t1.received,t1.location_value,t1.location_type_id FROM cadre_ivr_enquiry t1 JOIN " +
-				" (SELECT MAX(cadre_ivr_enquiry_id) cadre_ivr_enquiry_id FROM cadre_ivr_enquiry  where is_deleted = 'N' "); 
+				" (SELECT MAX(cadre_ivr_enquiry_id) cadre_ivr_enquiry_id FROM cadre_ivr_enquiry  where is_deleted = 'N' and location_type_id = :locationTypeId  "); 
 		if(startDate != null && endDate != null && !startDate.equals(endDate))
 		str.append(" and inserted_date >=:startDate and inserted_date <=:endDate");
 		else if(startDate != null && endDate != null && startDate.equals(endDate))
 		str.append(" and inserted_date >=:startDate");
 		
-		str.append(" and location_type_id in (:locationTypeIds) GROUP BY location_value,location_type_id ) t2 ON t1.cadre_ivr_enquiry_id = t2.cadre_ivr_enquiry_id ORDER BY inserted_date desc ");
+		str.append(" and location_value in (:locationValue) GROUP BY location_value ) t2 ON t1.cadre_ivr_enquiry_id = t2.cadre_ivr_enquiry_id ORDER BY inserted_date desc ");
 		Query query = getSession().createSQLQuery(str.toString());
 		if(startDate != null && endDate != null && !startDate.equals(endDate))
 		{
@@ -164,7 +166,8 @@ public class CadreIVREnquiryDAO  extends GenericDaoHibernate<CadreIVREnquiry, Lo
 		}
 		else if(startDate != null && endDate != null && startDate.equals(endDate))
 		query.setDate("startDate", startDate);
-		query.setParameterList("locationTypeIds", locationTypeIds);
+		query.setParameterList("locationValue", locationValue);
+		query.setParameter("locationTypeId", locationTypeId);
 		return  query.list();
 	}
 }
