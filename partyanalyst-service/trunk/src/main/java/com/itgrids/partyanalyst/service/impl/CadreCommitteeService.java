@@ -4227,4 +4227,49 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			}
 		}
 	}
+	
+	public List<IdNameVO> getAllDistricts()
+	{
+	  List<IdNameVO> idNameVOList=null;
+	  try
+	 {
+		List<Object[]> districtList=districtDAO.getAllDistrictDetails(1l);
+		if(districtList!=null && districtList.size()>0){
+			idNameVOList=new ArrayList<IdNameVO>();
+			for (Object[] objects : districtList){
+				IdNameVO idNameVO=new IdNameVO();
+				idNameVO.setId((Long)objects[0]);
+				idNameVO.setName(objects[1].toString());
+				idNameVOList.add(idNameVO);
+			}
+		 }
+	 }
+	 catch (Exception e){
+		LOG.error("Exception raised in getAllDistricts", e);
+	 }	
+	 return  idNameVOList;
+	}
+	public List<IdNameVO> getAllConstituencysForADistrict(Long districtId)
+	{
+	  List<IdNameVO> idNameVOList=null;
+	  try
+	 {
+		List<Object[]> constituencyList=constituencyDAO.getAllConstituenciesInADistrict(districtId);
+		if(constituencyList!=null && constituencyList.size()>0){
+			idNameVOList=new ArrayList<IdNameVO>();
+			for (Object[] objects : constituencyList){
+				IdNameVO idNameVO=new IdNameVO();
+				idNameVO.setId((Long)objects[0]);
+				idNameVO.setName(objects[1].toString());
+				idNameVOList.add(idNameVO);
+			}
+		 }
+	 }
+	 catch (Exception e){
+		LOG.error("Exception raised in getAllConstituencysForADistrict", e);
+	 }	
+	 return  idNameVOList;
+	}
+	
+	
 }
