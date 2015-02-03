@@ -314,7 +314,7 @@
 					<!--<h6>Advanced Search</h6>-->
 					<div id="advancedSearchErrDiv"></div>
 					<div class="row">					
-						<div class="col-md-2 col-sm-6 col-xs-6 ">
+						<div class="col-md-4 col-sm-4 col-xs-4 ">
 							<label>Caste-Group
 								<select class="form-control col-md-12 col-sm-12 col-xs-12 " id="casteCategory" onchange="casteDetailsByGroupId();">
 								<option value="0" selected>All</option>
@@ -325,19 +325,19 @@
 								</select>
 							</label>
 						</div>
-						<div class="col-md-3 col-sm-6 col-xs-6 ">
+						<div class="col-md-4 col-sm-4 col-xs-5 ">
 							<label>Caste Name
 								
 								<s:select theme="simple" cssClass="form-control editClass col-md-12 col-sm-12 col-xs-12" id="casteList" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Caste " style="width: 200px;"/>
 							</label>
 						</div>
 						
-						<div class="col-md-2 col-sm-4 col-xs-4 ">
+						<div class="col-md-3 col-sm-3 col-xs-3 ">
 							<label>Age Range
 								<select class="form-control col-md-12 col-sm-12 col-xs-12"  id="ageRange" onchange="clearbetwbAgeFields()" ><option>select</option></select>
 							</label>
 						</div>
-						<div class="col-md-2 col-sm-4 col-xs-4 ">
+						<div class="col-md-4 col-sm-4 col-xs-4 ">
 							<label> Between Age<br>
 								<input type="text" id="fromAgeId" style="width: 50px;" class="ageRangeCls" placeholder=" From "/> - <input type="text" id="toAgeId" style="width: 50px;" class="ageRangeCls" placeholder=" To  "/> 
 							</label>
