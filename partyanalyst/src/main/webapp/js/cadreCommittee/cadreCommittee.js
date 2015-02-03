@@ -517,7 +517,7 @@
 						str+='</div>';	
 						
 						str+='<div class="row">	';
-							str+='<div class="col-md-8 col-sm-12 col-xs-12 form-group" id="statusDiv'+result[i].tdpCadreId+'">';
+							str+='<div class="col-md-12 col-sm-12 col-xs-12 form-group" id="statusDiv'+result[i].tdpCadreId+'">';
 							str+='</div>';
 						str+='</div>';	
 						
