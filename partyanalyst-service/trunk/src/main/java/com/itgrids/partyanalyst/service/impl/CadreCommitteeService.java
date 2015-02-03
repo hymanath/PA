@@ -1124,6 +1124,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						resultStatus.setMessage("Candidate Already Added As Electrol To This Committee...");
 						return resultStatus;
 					}
+					
+					Long affiliatedCount = tdpCommitteeElectrolsDAO.checkUserAlreadyAddedToOtherAffiliatedCommittee(tdpCadreId, tdpCommitteeLevelId, levelValue, IConstants.CURRENT_ENROLLMENT_ID);
+					if(affiliatedCount != null && affiliatedCount.longValue() > 0l){
+						resultStatus.setResultCode(3);
+						resultStatus.setMessage("Candidate Already Added As Electoral For Affiliated Committee.You Cannot Add An Electrol For More Than One Affiliated Committee...");
+						return resultStatus;
+					}
 					TdpCommitteeElectrols tdpCommitteeElectrols = new TdpCommitteeElectrols();
 					tdpCommitteeElectrols.setTdpCadreId(tdpCadreId);
 					tdpCommitteeElectrols.setTdpCommitteeLevelId(tdpCommitteeLevelId);
