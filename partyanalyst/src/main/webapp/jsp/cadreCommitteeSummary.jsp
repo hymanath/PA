@@ -17,8 +17,7 @@
     <script src="dist/js/bootstrap.min.js"></script>
 			<!--Circle js file-->
     <script src="js/jquery.classyloader.min.js"></script>
-    	<script src="js/cadreCommittee/bootstrap.min.js"></script>
-			 <link href="css/cadreCommitee/bootstrap.min.css" rel="stylesheet">
+
     
 </head>
 
