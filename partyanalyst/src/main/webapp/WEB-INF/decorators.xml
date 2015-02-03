@@ -385,5 +385,7 @@
 		<pattern>/cadreCommitteeSummaryAction*</pattern>
 		<pattern>/cadreCommitteeAction*</pattern>
 		<pattern>/cadreCommitteeRequestAction*</pattern>
+		<pattern>/constituencyCommitteeSummaryAction*</pattern>
+		
 	  </decorator>
 </decorators>
