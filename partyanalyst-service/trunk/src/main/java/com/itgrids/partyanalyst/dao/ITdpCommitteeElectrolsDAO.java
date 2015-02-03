@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.TdpCommitteeElectrols;
 public interface ITdpCommitteeElectrolsDAO  extends GenericDao<TdpCommitteeElectrols, Long>{
 	public List<Object[]> getTdpCommitteeElectrolsForTdpCadreIdList(List<Long> tdpCadreIdsList);
 	public Long checkUserAlreadyAddedToThisCommittee(Long tdpCadreId,Long levelId,Long levelValue,Long enrollId,Long commitTypeId,Long tdpCommitId);
+	public Long checkUserAlreadyAddedToOtherAffiliatedCommittee(Long tdpCadreId,Long levelId,Long levelValue,Long enrollId);
 }

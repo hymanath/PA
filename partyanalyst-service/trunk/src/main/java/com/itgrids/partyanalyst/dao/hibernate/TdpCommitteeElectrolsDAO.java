@@ -36,4 +36,16 @@ public class TdpCommitteeElectrolsDAO extends GenericDaoHibernate<TdpCommitteeEl
 		query.setParameter("tdpCommitId", tdpCommitId);
 		return (Long)query.uniqueResult();
 	}
+	
+	public Long checkUserAlreadyAddedToOtherAffiliatedCommittee(Long tdpCadreId,Long levelId,Long levelValue,Long enrollId){
+		String queryStr = " select count(*) from TdpCommitteeElectrols model where model.tdpCadre.tdpCadreId =:tdpCadreId and model.tdpCommitteeLevel.tdpCommitteeLevelId=:levelId" +
+				" and model.levelValue =:levelValue and model.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId =:enrollId and model.tdpCommitteeType.tdpCommitteeTypeId=2" +
+				" and model.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId =2  and model.isDeleted = 'N' ";
+		Query query = getSession().createQuery(queryStr);
+		query.setParameter("tdpCadreId", tdpCadreId);
+		query.setParameter("levelId", levelId);
+		query.setParameter("levelValue", levelValue);
+		query.setParameter("enrollId", enrollId);;
+		return (Long)query.uniqueResult();
+	}
 }
