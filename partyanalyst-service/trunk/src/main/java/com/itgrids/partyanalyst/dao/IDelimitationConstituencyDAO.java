@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -71,4 +72,5 @@ public interface IDelimitationConstituencyDAO extends GenericDao<DelimitationCon
 	public Long getConstituencyIdByNo(Long constituencyNo);
 	public List<Object[]> getConstituencyNosByConstituency(List<Long> constitIds,Long year,Long electionScopeId);
 	
+	public List<BigInteger> getDelimitIds(List<Long> constituencyIds);
 }

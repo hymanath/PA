@@ -351,8 +351,55 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		
 		return query.list();
 	}
-
 	
+	public List<Object[]> committeesCountByLocationIds(Long levelId,List<Long> levelValues,Date startDate,Date endDate,String type){
+		StringBuilder str = new StringBuilder();
+
+
+		str.append("select count(model.tdpCommitteeId),model.tdpCommitteeLevelValue,model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId " + 
+				" from TdpCommittee model where model.tdpCommitteeLevel.tdpCommitteeLevelId =:levelId and model.tdpCommitteeLevelValue in(:levelValues) ");
+		
+		if(type.equalsIgnoreCase("started")){
+			if(startDate != null && endDate !=null){
+				str.append(" and ( date(model.startedDate)>=:startDate and date(model.startedDate)<=:endDate) " +
+						" and model.completedDate is null ");
+			}
+		}else if(type.equalsIgnoreCase("completed")){
+			if(startDate != null && endDate !=null){
+				str.append(" and ( date(model.completedDate)>=:startDate and date(model.completedDate)<=:endDate )  ");
+			}
+		}
+		
+		str.append(" group by model.tdpCommitteeLevelValue,model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
+
+		Query query = getSession().createQuery(str.toString());
+		
+		
+		query.setParameterList("levelValues", levelValues);
+			query.setParameter("levelId", levelId);
+		if(startDate != null && endDate !=null ){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);	
+		}
+		
+		return query.list();
+	}
+	
+	public List<Object[]> totalCommitteesCountByLocationIds(Long levelId,List<Long> levelValues){
+		StringBuilder str = new StringBuilder();
+        //0count,1locationID
+		str.append("select count(model.tdpCommitteeId),model.tdpCommitteeLevelValue from TdpCommittee model where model.tdpCommitteeLevel.tdpCommitteeLevelId =:levelId " + 
+				"  and model.tdpCommitteeLevelValue in(:levelValues) and model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 1l ");	
+		str.append(" group by model.tdpCommitteeLevelValue ");
+
+		Query query = getSession().createQuery(str.toString());
+		
+		
+		query.setParameterList("levelValues", levelValues);
+			query.setParameter("levelId", levelId);
+		
+		return query.list();
+	}
 	
 	public List<Object[]> getCompletedAffliCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate ){
 

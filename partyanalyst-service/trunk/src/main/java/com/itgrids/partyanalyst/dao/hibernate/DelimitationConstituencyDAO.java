@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.math.BigInteger;
 import java.util.List;
 
 
@@ -380,4 +381,12 @@ IDelimitationConstituencyDAO {
 		return query.list();
 	}
 	
+	public List<BigInteger> getDelimitIds(List<Long> constituencyIds){
+		Query query = getSession().createSQLQuery(" select distinct dc.delimitation_constituency_id from delimitation_constituency dc" +
+				" JOIN ( SELECT dc1.constituency_id as constituency_id, MAX(dc1.year) AS year FROM delimitation_constituency dc1 where  dc1.constituency_id in(:constituencyIds) " +
+				"GROUP by dc1.constituency_id) AS dc3  ON dc3.constituency_id = dc.constituency_id AND dc3.year = dc.year  where dc.constituency_id in(:constituencyIds)");
+
+		query.setParameterList("constituencyIds", constituencyIds);
+		return query.list();
+	}
 }

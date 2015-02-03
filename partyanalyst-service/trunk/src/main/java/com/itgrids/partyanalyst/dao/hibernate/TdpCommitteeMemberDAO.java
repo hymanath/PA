@@ -397,4 +397,36 @@ public List<Object[]> membersCountConstituencyWise(List<Long> levelIds, Date sta
 		
 		return query.list();
 	}
+
+public List<Object[]> totalMainMembersCountLocationsWise(Long levelId, Date startDate, Date endDate,List<Long> levelValues){
+	//0 count,1levelId
+	StringBuilder sb = new StringBuilder();
+	sb.append(" select count(model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue " +
+			" from TdpCommitteeMember model " +
+			" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId = :levelId and model.isActive ='Y' " +
+			" and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue in (:levelValues) " +
+			" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 1l ");
+	
+	if(startDate!=null){
+		sb.append(" and date(model.insertedTime) >= :startDate ");
+	}
+	if(endDate!=null){
+		sb.append(" and date(model.insertedTime) <= :endDate");
+	}
+	sb.append(" group by model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue ");
+	
+	Query query = getSession().createQuery(sb.toString());
+	
+	query.setParameter("levelId", levelId);
+	if(startDate!=null){
+		query.setParameter("startDate", startDate);
+	}
+	if(endDate!=null){
+		query.setParameter("endDate", endDate);
+	}
+	
+	query.setParameterList("levelValues",levelValues);
+	
+	return query.list();
+}
 }
