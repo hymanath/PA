@@ -62,12 +62,13 @@ public interface ITdpCadreReportService {
 	 
 	 public CadreIVRResponseVO getLocationWiseEnquiryInfo(String locationLvl,Long locationValue,Long userId,String resultType);
 	 public List<BasicVO> getAccessLocationValues(String accessType,Long accessValue);
-     public CadreIVRResponseVO getIvrPreviousCallBasicInfo(Date startDate,Date endDate);
+     public CadreIVRResponseVO getIvrPreviousCallBasicInfo(Date startDate,Date endDate,Long stateTypeId);
      public List<String> getPreviousPollsAvailableDates();
-     public CadreIVRResponseVO getIvrPreviousCallInfo(String type,Date startDate,Date toDate);
+     public CadreIVRResponseVO getIvrPreviousCallInfo(String type,Date startDate,Date toDate,Long stateTypeId);
+     
      public String saveCheckedImages(List<ImageCheckVO> inputsList);
      public List<ImageCheckVO> getAllNewImagesForChecking(Long dId,Long cId);
      public List<ImageCheckVO> getValidOrInValidImages(Long dId,Long cId,String type);
-     public CadreIVRResponseVO getTotalIvrPreviousCallBasicInfo();
+     public CadreIVRResponseVO getTotalIvrPreviousCallBasicInfo(Long stateTypeId);
      
 }
