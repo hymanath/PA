@@ -71,7 +71,13 @@ input[type="text"]
 <table width="100%" class="table table-condensed table-bordered" style="margin-top:30px;">
     <tr class="well">
         <td colspan="6">
-        <div class="span11"><h4 class="text-success" align="center">CARDS DISTRIBUTION CONFORMATION STATUS BY INFO MANAGER</h4>
+        <div class="span11"><h4 class="text-success" align="center">CARDS DISTRIBUTION CONFIRMATION STATUS BY INFO MANAGER</h4>
+        	 <span class="btn btn-success btn-xs form-inline pull-right" style="margin-right: -50px;>
+				
+				<label class="radio"><input type="radio" id="allId" style="vertical-align: text-bottom;" class="stateRd" value="0" checked="true" name="selectstate">&nbsp;ALL &nbsp;&nbsp;&nbsp;</label>
+				<label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="stateRd" value="1" name="selectstate" >&nbsp;AP &nbsp;&nbsp;&nbsp;</label>
+				<label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="stateRd" value="2" name="selectstate">&nbsp;TS &nbsp;&nbsp;&nbsp;</label>
+			</span>
             <!-- <a class="btn btn-small btn-default pull-right border-radius-0">
 				 <label class="radio">
 				  <input type="radio">AP
@@ -93,11 +99,11 @@ input[type="text"]
     <tr>
 	
         <td width="15%"><div class="text-center"><h2  class="text-center"><span id="printsId1" ></span><img class="imgStyle printData" src="images/icons/search.gif"></img></h2>Total Printed Cards</div></td>
-        <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId2" ></span></a></h2>Total cards received by constituency incharge</div></td>
-        <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId3" ></span></a></h2>Total Cards received by Urban area constituency incharge</div></td>
-        <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId4" ></span></a></h2>Total Cards dispatched to mandal constituency incharge</div></td>
-        <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId5" ></span></a></h2>Total Cards received by mandal constituency incharge</div></td>
-        <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId6" ></span></a></h2>Total Cards delviered to cadre mandal constituency incharge</div></td>
+        <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId2" ></span></a></h2>Total Cards Received By Constituency Incharge</div></td>
+        <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId3" ></span></a></h2>Total Cards Received By Urban Area Constituency Incharge</div></td>
+        <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId4" ></span></a></h2>Total Cards Dispatched To Mandal Constituency Incharge</div></td>
+        <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId5" ></span></a></h2>Total Cards Received By Mandal Constituency Incharge</div></td>
+        <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId6" ></span></a></h2>Total Cards Delivered To Cadre By Mandal Constituency Incharge</div></td>
     </tr>
 </table>
 
@@ -108,7 +114,7 @@ input[type="text"]
     <tr>
     	<td>
         	<div class="form-inline" style="margin-top:15px;">
-            	From Date<input type="text" id="fromDate" class="dateClass"/>&nbsp; To Date <input type="text" id="toDate" class="dateClass" /> &nbsp;&nbsp;
+            	From Date<input type="text" id="fromDate" readonly class="dateClass"/>&nbsp; To Date <input type="text" id="toDate" class="dateClass" readonly /> &nbsp;&nbsp;
                 <button class="btn btn-success" value="Submit"  onclick="getCardsDistributedInfo();">Get Details</button>
             </div>
         </td>
@@ -150,20 +156,39 @@ input[type="text"]
 <script>
 
 	$( document ).ready(function() {
-		
-		$('.dateClass').datepicker({dateFormat: 'yy-mm-dd'}); 
+		  $(".dateClass").datepicker({
+			dateFormat: 'yy-mm-dd',
+			changeMonth: true,
+			changeYear: true,
+			maxDate: new Date()
+		})
+		$(".dateClass").datepicker("setDate", new Date());
+		//$('.dateClass').datepicker({dateFormat: 'yy-mm-dd'}); 
 		//$(".toDatepicker").datepicker("setDate", new Date());
+	});
+	$(".stateRd").click(function(){
+		$("#mandalTD").html('');
+		$("#resultDivByLocation").html('');
+		$("#constiTD").html('');
+		$("#noteId").hide();
+		getTotalCardsDispatchedPerc();
+		
 	});
 	function getCardsDistributedInfo()
 	{
 		$("#basicajaxImg").show();
 		$("#mandalTD").html('');
+		$("#resultDivByLocation").html('');
+		$("#constiTD").html('');
+		
 		$("#noteId").hide();
 		var fromDate = $("#fromDate").val();
 		var toDate =  $("#toDate").val();
+		var selectedState = $("input[type='radio'][name='selectstate']:checked").val();		
 		var jsObj = {	
 			fromDate:fromDate,
 			toDate:toDate,
+			stateTypeId:selectedState,
 			//fromDate:"2015-01-05",
 			//toDate:"2015-01-26",
 			task:"previousCallsCnt"             
@@ -230,11 +255,12 @@ input[type="text"]
 	{
 		$("#ajaxImg").show();
 		$("#resultDivByLocation").html("");
-
+		var selectedState = $("input[type='radio'][name='selectstate']:checked").val();	
 		var jsObj = {	
 			fromDate:fromDate,
 			toDate:toDate,
 			locationType:type,
+			stateTypeId:selectedState,
 			task:"previousCallsData"             
 		}
 			   
@@ -328,8 +354,12 @@ input[type="text"]
 	}
 	
 	function getTotalCardsDispatchedPerc()
-	{
-		var jsObj = {	
+	{	
+		$('#printId2,#printId3,#printId4,#printId5,#printId6,#printsId1').html("");
+		$('.printData').show();
+		var selectedState = $("input[type='radio'][name='selectstate']:checked").val();		
+		var jsObj = {
+			stateTypeId:selectedState,
 			task:"totalData"             
 		}
 			   
@@ -341,7 +371,6 @@ input[type="text"]
 			if(result != null)
 			{
 				$('.printData').hide();
-				console.log(result.printedCount);
 				$('#printsId1').html(result.printedCount);
 				$('#printId2').html(result.constiReceivedPerc+'%');
 				$('#printId3').html(result.urbanPerc+'%');

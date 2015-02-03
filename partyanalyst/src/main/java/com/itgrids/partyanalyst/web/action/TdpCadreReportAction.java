@@ -915,11 +915,12 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 				 if(toDate.trim().length() > 0){
 				     endDate = format.parse(toDate.trim());
 				 }
+				 Long stateTypeId = jobj.getLong("stateTypeId");
 				 if(jobj.getString("task").equalsIgnoreCase("previousCallsCnt"))
-				 cadreIVRResponseVO = tdpCadreReportService.getIvrPreviousCallBasicInfo(startDate,endDate);
+				 cadreIVRResponseVO = tdpCadreReportService.getIvrPreviousCallBasicInfo(startDate,endDate,stateTypeId);
 				 else if(jobj.getString("task").equalsIgnoreCase("previousCallsData"))
 				 {
-					 cadreIVRResponseVO = tdpCadreReportService.getIvrPreviousCallInfo(jobj.getString("locationType"),startDate,endDate);
+					 cadreIVRResponseVO = tdpCadreReportService.getIvrPreviousCallInfo(jobj.getString("locationType"),startDate,endDate,stateTypeId);
 				 }
 					 
 			}
@@ -1027,8 +1028,8 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 	{
 		try{
 			jobj = new JSONObject(getTask());
-								
-			cadreIVRResponseVO = tdpCadreReportService.getTotalIvrPreviousCallBasicInfo();				
+			 Long stateTypeId = jobj.getLong("stateTypeId");					
+			cadreIVRResponseVO = tdpCadreReportService.getTotalIvrPreviousCallBasicInfo(stateTypeId);				
 					 
 		}catch(Exception e)
 		{
