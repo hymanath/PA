@@ -9622,11 +9622,16 @@
 			</result>
 		</action>
 		
+		<action name="getConstituencyCommitteSummary" class="committeeDashBoardAction" method="getConstituencyCommitteeSummary">
+			<result type="json" name="success">
+				<param name="root">constiSummaryVO</param>
+			</result>
+		</action>
+		
 		<action name="getMandalRecievedCountInConstituencyAction" class="tdpCadreReportAction" method="getMandalRecievedCountInConstituency">
 			<result type="json" name="success">
 				<param name="root">cadreIVRResponseVO</param>
 			</result>
 		</action>
-		
 </package>
 </struts>      
