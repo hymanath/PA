@@ -294,7 +294,7 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select count(model.cadreIvrResponseId)" +
-				   " ,model.responseKey");
+				   " ,model.responseKey,model.callStatus");
 		if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
 		{
 			str.append(" ,model.tdpCadre.userAddress.constituency.constituencyId,model.tdpCadre.userAddress.constituency.name,district.districtId,district.districtName");

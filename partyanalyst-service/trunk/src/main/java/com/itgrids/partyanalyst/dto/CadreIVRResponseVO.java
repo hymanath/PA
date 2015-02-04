@@ -27,7 +27,7 @@ public class CadreIVRResponseVO {
 	private Long totalAnswerdPerc;
 	private Long errorCalls;
 	private Long errorCallsPerc;
-	private Long wrongOptionSel;
+	private Long wrongOptionSel = 0l;
 	private Long wrongOptionSelPerc;
 	private Long noOptionSel;
 	private Long noOptionSelPerc;

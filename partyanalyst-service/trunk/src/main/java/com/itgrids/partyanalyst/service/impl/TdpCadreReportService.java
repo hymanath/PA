@@ -5362,7 +5362,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         		 List<Object[]> list = cadreIvrResponseDAO.getIvrCountByLocationIdsAndType(locationIds,type);
         		
         		 List<Object[]> printedCountDetails = zebraPrintDetailsDAO.getLocationWisePrintedCountDetails(locationIds, type);
-        		 
+        		 Map<Long,CadreIVRResponseVO> ivrCntMap = new HashMap<Long, CadreIVRResponseVO>();
         		 Long locationTypeId  = 0L;
         		  if(type.equalsIgnoreCase("Constituency"))
         			  locationTypeId = 1L;
@@ -5378,24 +5378,36 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         		 List<Object[]> list1 = cadreIVREnquiryDAO.getDeliveredAndReceivedCount(locationIds,startDate,toDate,locationTypeId);
         		 
         		 
-        		 Map<Long,Long> ivrReceivedMap = new HashMap<Long, Long>();
-        		 if(list != null && list.size() > 0)
+        		
+        		 List<String> successNos =new ArrayList<String>();
+					 successNos.add("1");successNos.add("2");successNos.add("3");
+				 if(list != null && list.size() > 0)
 	 			 {
-        			 for(Object[] params : list)
+        			 for(Object[] ivrCountInfo : list)
  	 				{
- 	 					Long ivrReceived = ivrReceivedMap.get((Long)params[2]);
- 						if(ivrReceived == null)
+ 	 					
+        				CadreIVRResponseVO vo = ivrCntMap.get((Long)ivrCountInfo[3]);
+ 						if(vo == null)
  						{
- 							if(params[1] != null &&params[1].toString().equalsIgnoreCase("1"))
- 							ivrReceivedMap.put((Long)params[2], (Long)params[0]);
+ 							    vo = new CadreIVRResponseVO();
+ 								ivrCntMap.put((Long)ivrCountInfo[3], vo);
  						}
- 						else
- 						{
- 							if(params[1] != null &&params[1].toString().equalsIgnoreCase("1"))
- 							ivrReceivedMap.put((Long)params[2], (Long)params[0] + ivrReceived);
- 						}
+ 						
+ 						if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.NORMAL_CLEARING))
+						{
+							if(ivrCountInfo[1] !=null && ivrCountInfo[1].toString().equalsIgnoreCase("1")) // response key is 1 //received
+								vo.setReceived(vo.getReceived() + (Long)ivrCountInfo[0]);
+							else if(ivrCountInfo[1] !=null && ivrCountInfo[1].toString().equalsIgnoreCase("2"))
+								vo.setNotReceived(vo.getNotReceived() + (Long)ivrCountInfo[0]);
+							else if(ivrCountInfo[1] !=null && ivrCountInfo[1].toString().equalsIgnoreCase("3"))
+								vo.setNotMember(vo.getNotMember()  + (Long)ivrCountInfo[0]);
+							else if(ivrCountInfo[1] !=null && !successNos.contains(ivrCountInfo[1].toString()))
+								vo.setNoOptionSel(vo.getNoOptionSel() + (Long)ivrCountInfo[0]);
+						}
+ 						
  	 				}
         			 
+        			
 	 			 }
         		 
         		List<Object[]> constiDetails = boothDAO.getConstituenciesNameByType(locationIds,type);
@@ -5443,8 +5455,21 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 						vo.setLocationName(constiDetailsMap.get(Long.valueOf(params[2].toString())));
 						vo.setIvrEnqReceived(Long.valueOf(params[1].toString()));
  						vo.setIvrEnqDelivered(Long.valueOf(params[0].toString()));
- 						if(ivrReceivedMap != null)
- 						vo.setReceived(ivrReceivedMap.get(Long.valueOf(params[2].toString())) != null ? ivrReceivedMap.get(Long.valueOf(params[2].toString())) : 0l);
+ 						if(ivrCntMap != null)
+ 						{
+ 							CadreIVRResponseVO ivrVo = ivrCntMap.get(Long.valueOf(params[2].toString()));
+ 							Long total = ivrVo.getReceived() + ivrVo.getNotReceived();
+ 							if(total  > 0)
+ 							{
+ 								vo.setTotalAnswerdCalls(total);
+ 								vo.setNotReceived(ivrVo.getNotReceived());
+	 							vo.setReceivedPerc((ivrVo.getReceived()*100)/total);
+	 							vo.setReceived(ivrVo.getReceived());
+	 		      				vo.setNotReceivedPerc((ivrVo.getNotReceived()*100)/total);
+ 							}
+ 							
+ 						}
+ 						//vo.setReceived(ivrReceivedMap.get(Long.valueOf(params[2].toString())) != null ? ivrReceivedMap.get(Long.valueOf(params[2].toString())) : 0l);
  						
 	 				}
  
