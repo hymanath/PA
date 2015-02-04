@@ -34,6 +34,96 @@ public class CommitteeSummaryVO implements Serializable{
 	private Long constiId;
 	private String name;
 	
+	private List<CommitteeSummaryVO> resultList;
+	private Long basicCommitteeTypeId;
+	private String basicCommitteeName;
+	private Long electrolsCount;
+	private Long mandalId;
+	private Long panchayatId;
+	
+	private Long locationId;
+	private String locationName;
+	private List<CommitteeSummaryVO> locationsList,localBodiesList, mandalsList, divisionList;
+	
+	
+	
+	
+	
+	
+	public List<CommitteeSummaryVO> getLocalBodiesList() {
+		return localBodiesList;
+	}
+	public void setLocalBodiesList(List<CommitteeSummaryVO> localBodiesList) {
+		this.localBodiesList = localBodiesList;
+	}
+	public List<CommitteeSummaryVO> getMandalsList() {
+		return mandalsList;
+	}
+	public void setMandalsList(List<CommitteeSummaryVO> mandalsList) {
+		this.mandalsList = mandalsList;
+	}
+	public List<CommitteeSummaryVO> getDivisionList() {
+		return divisionList;
+	}
+	public void setDivisionList(List<CommitteeSummaryVO> divisionList) {
+		this.divisionList = divisionList;
+	}
+	public List<CommitteeSummaryVO> getLocationsList() {
+		return locationsList;
+	}
+	public void setLocationsList(List<CommitteeSummaryVO> locationsList) {
+		this.locationsList = locationsList;
+	}
+	public Long getLocationId() {
+		return locationId;
+	}
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+	
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+	public Long getMandalId() {
+		return mandalId;
+	}
+	public void setMandalId(Long mandalId) {
+		this.mandalId = mandalId;
+	}
+	public Long getPanchayatId() {
+		return panchayatId;
+	}
+	public void setPanchayatId(Long panchayatId) {
+		this.panchayatId = panchayatId;
+	}
+	public List<CommitteeSummaryVO> getResultList() {
+		return resultList;
+	}
+	public void setResultList(List<CommitteeSummaryVO> resultList) {
+		this.resultList = resultList;
+	}
+	public Long getBasicCommitteeTypeId() {
+		return basicCommitteeTypeId;
+	}
+	public void setBasicCommitteeTypeId(Long basicCommitteeTypeId) {
+		this.basicCommitteeTypeId = basicCommitteeTypeId;
+	}
+	
+	public String getBasicCommitteeName() {
+		return basicCommitteeName;
+	}
+	public void setBasicCommitteeName(String basicCommitteeName) {
+		this.basicCommitteeName = basicCommitteeName;
+	}
+	public Long getElectrolsCount() {
+		return electrolsCount;
+	}
+	public void setElectrolsCount(Long electrolsCount) {
+		this.electrolsCount = electrolsCount;
+	}
 	public String getStartPerc() {
 		return startPerc;
 	}
