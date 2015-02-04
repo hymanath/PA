@@ -39,7 +39,16 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private List<CadreCommitteeReportVO> cadreCommitteeReportVOList;
 	private List<CadreCommitteeMemberVO> cadreCommitteeMemberVOList;
 	private List<IdNameVO>  idNameVOList;
+	private CommitteeSummaryVO constiSummaryVO;
 	
+	
+	
+	public CommitteeSummaryVO getConstiSummaryVO() {
+		return constiSummaryVO;
+	}
+	public void setConstiSummaryVO(CommitteeSummaryVO constiSummaryVO) {
+		this.constiSummaryVO = constiSummaryVO;
+	}
 	public List<CommitteeSummaryVO> getConstiWiseSummaryList() {
 		return constiWiseSummaryList;
 	}
@@ -336,6 +345,16 @@ public String getAllConstituencysForADistrict(){
 	}
 	return Action.SUCCESS;
 }
+
+	public String getConstituencyCommitteeSummary(){
+		try{
+			jObj = new JSONObject(getTask());
+			constiSummaryVO = cadreCommitteeService.getConstituencySummary(jObj.getLong("reportType"), jObj.getLong("constituencyId"));
+		}catch(Exception e){
+			LOG.error("Exception Occured In getSummaryDetailsPopUp method "+e);			
+		}
+		return Action.SUCCESS;
+	} 
 
 	
 }
