@@ -363,8 +363,11 @@ input[type="text"]
 			 else
 				str+='<td>-</td>';
 						 
-			 if(result[i].received != null)		
-				str+='<td>'+result[i].received+'</td>';
+			 if(result[i].totalAnswerdCalls != null)		
+			 //str+='<td>'+result[i].received+'</td>';
+			 str+='<td>'+result[i].received+'<br/> yes '+result[i].receivedPerc+'% | no '+result[i].notReceivedPerc+'%</td>';
+			
+			/*str+='<td><span class="tooltipIVR" rel="tooltip" title="IVR Received '+result[i].received+' | NOtReceived '+result[i].notReceived+'">'+result[i].totalAnswerdCalls+'</span><br/> yes '+result[i].receivedPerc+'% | no '+result[i].notReceivedPerc+'%</td>';*/
 			 else
 				str+='<td>-</td>';
 
