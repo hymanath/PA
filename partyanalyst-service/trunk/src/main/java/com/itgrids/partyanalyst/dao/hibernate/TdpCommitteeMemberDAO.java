@@ -429,4 +429,28 @@ public List<Object[]> totalMainMembersCountLocationsWise(Long levelId, Date star
 	
 	return query.list();
 }
+
+public List<Object[]> getCommitteeMembersCountByLocationAndCommitteeType(Long levelId,List<Long> locationVals){
+	StringBuilder str = new StringBuilder();
+	str.append("select count(model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId)," +
+			" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId," +
+			" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue," +
+			" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId " +
+			" from TdpCommitteeMember model" +
+			" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId  " +
+			" and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue in(:locationVals)" +
+			//" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId = :committeeTypeId " +
+			" and model.isActive = 'Y'");
+	
+	str.append(" group by model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId," +
+			" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue," +
+			" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId");
+	
+	Query query = getSession().createQuery(str.toString());
+	query.setParameter("levelId", levelId);
+	query.setParameterList("locationVals", locationVals);
+	
+	return query.list();
+		
+}
 }

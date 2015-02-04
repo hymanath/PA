@@ -74,4 +74,5 @@ public interface ICadreCommitteeService {
 	public List<CommitteeApprovalVO> changeDesignationRecordsForAUser(Long userId);
 	public List<IdNameVO> getAllDistricts();
 	public List<IdNameVO> getAllConstituencysForADistrict(Long districtId);
+	public CommitteeSummaryVO getConstituencySummary(Long reprtType, Long constituencyId);
 }
