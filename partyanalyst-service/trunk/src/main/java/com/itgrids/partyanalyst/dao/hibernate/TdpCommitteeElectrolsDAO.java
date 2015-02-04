@@ -48,4 +48,39 @@ public class TdpCommitteeElectrolsDAO extends GenericDaoHibernate<TdpCommitteeEl
 		query.setParameter("enrollId", enrollId);;
 		return (Long)query.uniqueResult();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getElectrolsForPanchayatsWards(List<Long> locationIds, String locationType){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select count(model.tdpCadreId), ");
+		if(locationType.equalsIgnoreCase("panchayat")){
+			sb.append(" model.tdpCadre.userAddress.panchayat.panchayatId, ");
+		}else{
+			sb.append( " model.tdpCadre.userAddress.ward.constituencyId, ");
+		}
+		sb.append(" model.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId from TdpCommitteeElectrols model where");
+		
+		
+		if(locationType.equalsIgnoreCase("panchayat")){
+			sb.append(" model.tdpCadre.userAddress.panchayat.panchayatId in(:locationIds) ");
+		}else{
+			sb.append( " model.tdpCadre.userAddress.ward.constituencyId in(:locationIds) ");
+		}
+		
+		sb.append(" and model.isDeleted = 'N'");
+		
+		if(locationType.equalsIgnoreCase("panchayat")){
+			sb.append(" group by model.tdpCadre.userAddress.panchayat.panchayatId, ");
+		}else{
+			sb.append( " group by model.tdpCadre.userAddress.ward.constituencyId, ");
+		}
+		
+		sb.append(" model.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameterList("locationIds", locationIds);
+		
+		return query.list();
+		
+	}
 }
