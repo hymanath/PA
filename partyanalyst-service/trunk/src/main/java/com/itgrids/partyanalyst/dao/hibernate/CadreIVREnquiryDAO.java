@@ -62,7 +62,7 @@ public class CadreIVREnquiryDAO  extends GenericDaoHibernate<CadreIVREnquiry, Lo
 		else if(startDate != null && endDate != null && startDate.equals(endDate))
 		str.append(" and date(inserted_date) >=:startDate");
 		
-		str.append(" and location_type_id in (:locationTypeIds) GROUP BY location_value ) t2 ON t1.cadre_ivr_enquiry_id = t2.cadre_ivr_enquiry_id ORDER BY inserted_date desc ");
+		str.append(" and location_type_id in (:locationTypeIds) GROUP BY location_value,location_type_id ) t2 ON t1.cadre_ivr_enquiry_id = t2.cadre_ivr_enquiry_id ORDER BY inserted_date desc ");
 		Query query = getSession().createSQLQuery(str.toString());
 		if(startDate != null && endDate != null && !startDate.equals(endDate))
 		{
@@ -85,7 +85,7 @@ public class CadreIVREnquiryDAO  extends GenericDaoHibernate<CadreIVREnquiry, Lo
 		else if(startDate != null && endDate != null && startDate.equals(endDate))
 		str.append(" and date(inserted_date) >=:startDate");
 		
-		str.append(" and location_type_id in(:locationTypeIds) GROUP BY location_value ) t2 ON t1.cadre_ivr_enquiry_id = t2.cadre_ivr_enquiry_id ORDER BY date(inserted_date) desc ");
+		str.append(" and location_type_id in(:locationTypeIds) GROUP BY location_value,location_type_id ) t2 ON t1.cadre_ivr_enquiry_id = t2.cadre_ivr_enquiry_id ORDER BY date(inserted_date) desc ");
 		Query query = getSession().createSQLQuery(str.toString());
 		if(startDate != null && endDate != null && !startDate.equals(endDate))
 		{
@@ -168,6 +168,21 @@ public class CadreIVREnquiryDAO  extends GenericDaoHibernate<CadreIVREnquiry, Lo
 		query.setDate("startDate", startDate);
 		query.setParameterList("locationValue", locationValue);
 		query.setParameter("locationTypeId", locationTypeId);
+		return  query.list();
+	}
+	
+	
+	
+	public List<Object[]> getMandalRecievedCountConstituency(List<Long> constituencyIds)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("SELECT sum(t1.received),constituency_id FROM cadre_ivr_enquiry t1 JOIN " +
+				" (SELECT MAX(cadre_ivr_enquiry_id) cadre_ivr_enquiry_id FROM cadre_ivr_enquiry  where is_deleted = 'N' and constituency_id in (:constituencyIds) "); 
+	
+		str.append(" and location_type_id in (2,5) GROUP BY location_value,location_type_id ) t2 ON t1.cadre_ivr_enquiry_id = t2.cadre_ivr_enquiry_id  GROUP BY constituency_id ORDER BY date(inserted_date) desc ");
+		Query query = getSession().createSQLQuery(str.toString());
+
+		query.setParameterList("constituencyIds", constituencyIds);
 		return  query.list();
 	}
 }

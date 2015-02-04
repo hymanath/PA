@@ -5488,6 +5488,19 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	        			 }
 	        		}	
 	 				
+	 				if(type.equalsIgnoreCase("Constituency")){
+	 				List<Object[]> mandalTotalCount = cadreIVREnquiryDAO.getMandalRecievedCountConstituency(locationIds);
+	 				if(mandalTotalCount != null && mandalTotalCount.size() > 0)
+	        		{
+	        			 for(Object[] params : mandalTotalCount)
+	        			 {
+	        				 if(resultMap.get(Long.valueOf(params[1].toString())) != null){	        				
+	        					 resultMap.get(Long.valueOf(params[1].toString())).setTotal(Long.valueOf(params[0].toString()));
+	        	        					
+	        				  }	        			
+	        			 }
+	        		}	
+	 				}
 	 				
 	 				for(Long key : resultMap.keySet())
 	 				{
@@ -5701,4 +5714,154 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 			return returnVo;
          }
           
+         
+         
+         
+         public CadreIVRResponseVO getMandalInfoManagerRecievedCountByConstituency(Long constituencyId)
+         {
+        	 CadreIVRResponseVO returnVo = new CadreIVRResponseVO(); 
+        	 List<CadreIVRResponseVO> resultList = new ArrayList<CadreIVRResponseVO>();
+        	 try{
+ 
+        		 List<Long> constituencyIds = new ArrayList<Long>();
+	        	 List<Long> locationTypeIds = new ArrayList<Long>();
+	        	 List<Long> mandalIds = new ArrayList<Long>();
+        		 List<Long> localbodyIds = new ArrayList<Long>();
+        		 locationTypeIds.add(2l);
+        		 locationTypeIds.add(5l);
+        		 constituencyIds.add(constituencyId);
+        		
+        		 List<Object[]> list1 = cadreIVREnquiryDAO.getLocationIdsByTypeId(locationTypeIds,null,null,constituencyIds);
+        		 
+        		 if(list1 != null && list1.size() > 0)
+        		 {
+        			 for(Object[] params : list1)
+        			 {
+        				
+        				 if(Long.valueOf(params[1].toString()).longValue()  == 2l)
+        					 mandalIds.add(Long.valueOf(params[0].toString()).longValue());
+        				 else  if(Long.valueOf(params[1].toString()).longValue() == 5l)
+        					 localbodyIds.add(Long.valueOf(params[0].toString()).longValue());
+        			 }
+        		 }
+
+    			if(mandalIds != null && mandalIds.size()>0)
+    				setIvrDataByConstiId(mandalIds,IConstants.TEHSIL,resultList);
+    			if(localbodyIds != null && localbodyIds.size()>0)
+    				setIvrDataByConstiId(localbodyIds,IConstants.LOCAL_ELECTION_BODY,resultList);
+        		
+        		 returnVo.setApList(resultList);
+        		
+        		 
+        	 }
+        	 catch(Exception e)
+        	 {
+        		 e.printStackTrace(); 
+        	 }
+			return returnVo;
+         }
+         
+         public void setIvrDataByConstiId(List<Long> locationIds,String type,List<CadreIVRResponseVO> resultList)
+         {
+        	 try{
+        		 Map<Long,CadreIVRResponseVO> resultMap = new HashMap<Long, CadreIVRResponseVO>();
+        		 List<Object[]> list = cadreIvrResponseDAO.getIvrCountByLocationIdsAndType(locationIds,type);
+        		 Map<Long,CadreIVRResponseVO> ivrCntMap = new HashMap<Long, CadreIVRResponseVO>();
+        		 List<String> successNos =new ArrayList<String>();
+				 successNos.add("1");successNos.add("2");successNos.add("3");
+				 if(list != null && list.size() > 0)
+	 			 {
+	    			 for(Object[] ivrCountInfo : list)
+		 				{
+		 					
+	    				 	CadreIVRResponseVO vo = ivrCntMap.get((Long)ivrCountInfo[3]);
+							if(vo == null)
+							{
+								    vo = new CadreIVRResponseVO();
+									ivrCntMap.put((Long)ivrCountInfo[3], vo);
+							}
+							
+							if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.NORMAL_CLEARING))
+							{
+								if(ivrCountInfo[1] !=null && ivrCountInfo[1].toString().equalsIgnoreCase("1")) // response key is 1 //received
+									vo.setReceived(vo.getReceived() + (Long)ivrCountInfo[0]);
+								else if(ivrCountInfo[1] !=null && ivrCountInfo[1].toString().equalsIgnoreCase("2"))
+									vo.setNotReceived(vo.getNotReceived() + (Long)ivrCountInfo[0]);
+								else if(ivrCountInfo[1] !=null && ivrCountInfo[1].toString().equalsIgnoreCase("3"))
+									vo.setNotMember(vo.getNotMember()  + (Long)ivrCountInfo[0]);
+								else if(ivrCountInfo[1] !=null && !successNos.contains(ivrCountInfo[1].toString()))
+									vo.setNoOptionSel(vo.getNoOptionSel() + (Long)ivrCountInfo[0]);
+							}
+		 				}
+	 			 }
+
+        		 List<Object[]> printedCountDetails = zebraPrintDetailsDAO.getLocationWisePrintedCountDetails(locationIds, type);
+        		 
+        		 Long locationTypeId  = 0L;
+        		 if(type.equalsIgnoreCase(IConstants.TEHSIL)){
+        			  locationTypeId = 2l;        		
+        		 }
+        		 else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY)){
+        			  locationTypeId = 5l;
+        		 }  
+        		
+        		 List<Object[]> list1 = cadreIVREnquiryDAO.getDeliveredAndReceivedCount(locationIds,null,null,locationTypeId);
+		 
+        
+	        	 if(list1 != null && list1.size() > 0) {
+	 				for(Object[] params : list1){
+	 					CadreIVRResponseVO vo = resultMap.get(Long.valueOf(params[2].toString()));
+						if(vo == null){
+ 						
+							vo = new CadreIVRResponseVO();
+							vo.setId(Long.valueOf(params[2].toString()));
+							if(Long.valueOf(params[3].toString()) == 2l){
+								vo.setName(tehsilDAO.get(Long.valueOf(params[2].toString())).getTehsilName());	
+							}
+							else if(Long.valueOf(params[3].toString()) == 5l){
+								vo.setName(localElectionBodyDAO.get(Long.valueOf(params[2].toString())).getName() +" Muncipality" );	
+							}
+							resultMap.put(Long.valueOf(params[2].toString()), vo);
+						}
+
+						vo.setIvrEnqReceived(Long.valueOf(params[1].toString()));
+ 						vo.setIvrEnqDelivered(Long.valueOf(params[0].toString()));
+ 						
+ 						if(ivrCntMap != null)
+ 						{
+ 							CadreIVRResponseVO ivrVo = ivrCntMap.get(Long.valueOf(params[2].toString()));
+ 							Long total = ivrVo.getReceived() + ivrVo.getNotReceived();
+ 							if(total  > 0)
+ 							{
+ 								vo.setTotalAnswerdCalls(total);
+ 								vo.setNotReceived(ivrVo.getNotReceived());
+	 							vo.setReceivedPerc((ivrVo.getReceived()*100)/total);
+	 							vo.setReceived(ivrVo.getReceived());
+	 		      				vo.setNotReceivedPerc((ivrVo.getNotReceived()*100)/total);
+ 							}
+ 						}
+	 				}
+ 
+	 				if(printedCountDetails != null && printedCountDetails.size() > 0){
+	        			 for(Object[] params : printedCountDetails){
+	        				 if(resultMap.get(Long.valueOf(params[1].toString())) != null){
+	        				  if(Long.valueOf(params[1].toString()).longValue() == resultMap.get(Long.valueOf(params[1].toString())).getId().longValue()){ 
+	        					 resultMap.get(Long.valueOf(params[1].toString())).setPrintedCount(Long.valueOf(params[0].toString()));
+	        				  }	        			
+	        				 }
+	        			 }
+	        		}	
+
+	 				for(Long key : resultMap.keySet()){
+	 					CadreIVRResponseVO vo = resultMap.get(key);
+	 					resultList.add(vo);
+	 				} 
+	 			}
+        	 }
+        	 catch(Exception e)
+        	 {
+        		 e.printStackTrace();
+        	 }
+			
+         }
 }

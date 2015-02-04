@@ -70,5 +70,6 @@ public interface ITdpCadreReportService {
      public List<ImageCheckVO> getAllNewImagesForChecking(Long dId,Long cId);
      public List<ImageCheckVO> getValidOrInValidImages(Long dId,Long cId,String type);
      public CadreIVRResponseVO getTotalIvrPreviousCallBasicInfo(Long stateTypeId);
+     public CadreIVRResponseVO getMandalInfoManagerRecievedCountByConstituency(Long constituencyId);
      
 }
