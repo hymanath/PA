@@ -44,6 +44,7 @@ public class CadreIVRResponseVO {
 	private Double mandalPerc;
 	private Double deliveredPerc;
 	private String designation;
+	private Long total;
 	
 	
 	
@@ -351,7 +352,12 @@ public class CadreIVRResponseVO {
 		this.designation = designation;
 	}
 
-	
-	
-	
+	public Long getTotal() {
+		return total;
+	}
+
+	public void setTotal(Long total) {
+		this.total = total;
+	}
+
 }

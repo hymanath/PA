@@ -17,4 +17,6 @@ public interface ICadreIVREnquiryDAO  extends GenericDao<CadreIVREnquiry, Long>{
 	public List<Object[]> getLocationIdsByTypeId(List<Long> locationTypeIds,Date startDate, Date endDate,List<Long> constiIds);
 	
 	public List<Object[]> getDeliveredAndReceivedCount(List<Long> locationTypeIds,Date startDate, Date endDate,Long locationTypeId);
+	
+	public List<Object[]> getMandalRecievedCountConstituency(List<Long> constituencyIds);
 }
