@@ -61,6 +61,8 @@ input[type="text"]
 	border-radius:0px;
 }
 .border-radius-0{border-radius:0px;}
+.selected{background:#DFF0D8 !important;}
+.selectedchild{background:#F5F5F5 !important;}
 </style>
 </head>
 
@@ -98,11 +100,11 @@ input[type="text"]
     <tr>
 	
         <td width="15%"><div class="text-center"><h2  class="text-center"><span id="printsId1" ></span><img class="imgStyle printData" src="images/icons/search.gif"></img></h2>Total Printed Cards</div></td>
-        <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId2" ></span></a></h2>Total Cards Received By Constituency Incharge</div></td>
-        <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId3" ></span></a></h2>Total Cards Received By Urban Area Constituency Incharge</div></td>
-        <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId4" ></span></a></h2>Total Cards Dispatched To Mandal Constituency Incharge</div></td>
-        <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId5" ></span></a></h2>Total Cards Received By Mandal Constituency Incharge</div></td>
-        <td width="15%"><div class="text-center"><h2 id=""><a href="#" class="tooltipIVR" rel="tooltip" title="IVR YES 40% | NO 60%"><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId6" ></span></a></h2>Total Cards Delivered To Cadre By Mandal Constituency Incharge</div></td>
+        <td width="15%"><div class="text-center"><h2 id=""><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId2" ></span></h2>Total Cards Received By Constituency Incharge</div></td>
+        <td width="15%"><div class="text-center"><h2 id=""><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId3" ></span></h2>Total Cards Received By Urban Area Constituency Incharge</div></td>
+        <td width="15%"><div class="text-center"><h2 id=""><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId4" ></span></h2>Total Cards Dispatched To Mandal Constituency Incharge</div></td>
+        <td width="15%"><div class="text-center"><h2 id=""><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId5" ></span></h2>Total Cards Received By Mandal Constituency Incharge</div></td>
+        <td width="15%"><div class="text-center"><h2 id=""><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId6" ></span></h2>Total Cards Delivered To Cadre By Mandal Constituency Incharge</div></td>
     </tr>
 </table>
 
@@ -308,10 +310,10 @@ input[type="text"]
 			$("#resultDivByLocation").html(str);
 			return;
 		}		
-		str+='<table class="table table-bordered table-condensed">';
+		str+='<table class="table table-bordered table-condensed"><tr>';
 		if(type =="Constituency")
 		{		
-			str+='<td colspan="6" class="well"><h5 style="display:inline;">CONSTITUENCY LEVEL  DETAILS</h5></td>';
+			str+='<td colspan="7" class="well"><h5 style="display:inline;">CONSTITUENCY LEVEL  DETAILS</h5></td>';
 		}
 		else if(type =="Mandal")
 		{
@@ -331,20 +333,40 @@ input[type="text"]
 		}
 		
 		str+=' <td><h6>TOTAL CARDS PRINTED</h6></td>';
-		str+='<td><h6>TOTAL CARDS RECEIVED BY CONSTITUENCY INCHARGE</h6></td>';
-        str+='<td><h6>DISTRIBUTED CARDS<br/>(CONFORMED BY INFOMANAGERS)</h6></td>';
-        str+='<td><h6>CADRE MEMBERS RECEIVED CARDS<br/>(CONFORMED BY IVR)</h6></td>';
+		if(type =="Constituency")
+		{
+			str+='<td><h6>TOTAL CARDS RECEIVED BY CONSTITUENCY INCHARGE</h6></td>';
+		}
+		else if(type =="Mandal")
+		{
+			str+='<td><h6>TOTAL CARDS RECEIVED BY MANDAL INCHARGE</h6></td>';
+		}
+		
+        str+='<td><h6>DISTRIBUTED CARDS<br/>(CONFIRMED BY INFOMANAGERS)</h6></td>';
+		if(type =="Constituency")
+		{
+			str+='<td><h6>TOTAL CARDS RECEIVED BY MANDAL INCHARGE <br/>(CONFIRMED BY INFOMANAGERS)</h6></td>';
+		}
+        str+='<td><h6>CADRE MEMBERS RECEIVED CARDS<br/>(CONFIRMED BY IVR)</h6></td>';
         str+='</tr>';
 		for(var i in result)
 		{
-			 str+='<tr>';
+			 str+='<tr class="removeCls clearCls'+result[i].id+'">';
 			 if(result[i].locationName != null)
+			 
 				str+='<td>'+result[i].locationName+'</td>';
+			
 			 else
 				str+='<td>-</td>';
 				
-			 if(result[i].name != null)
-				str+='<td>'+result[i].name+'</td>';
+			 if(result[i].name != null){
+				if(result[i].total != null && result[i].total > 0){
+					str+='<td class="removeCls clearClsTD'+result[i].id+'"><a style="cursor:pointer;" onclick="getMandalDetailsByConstituencyId('+result[i].id+')">'+result[i].name+'</a></td>';
+				}
+				else {
+					str+='<td>'+result[i].name+'</td>';
+				}
+			}
 			 else
 				str+='<td>-</td>';
 				
@@ -357,20 +379,27 @@ input[type="text"]
 				str+='<td>'+result[i].ivrEnqReceived+'</td>';
 			else
 				str+='<td>-</td>';
-			 
+			
 			 if(result[i].ivrEnqDelivered != null)	
 				str+='<td>'+result[i].ivrEnqDelivered+'</td>';
 			 else
 				str+='<td>-</td>';
-						 
-			 if(result[i].totalAnswerdCalls != null)		
+			if(type =="Constituency"){
+				if(result[i].total != null)		
+					str+='<td>'+result[i].total+'</td>';
+				else
+				str+='<td>-</td>';
+					
+			}
+			
+			if(result[i].totalAnswerdCalls != null)		
 			 //str+='<td>'+result[i].received+'</td>';
-			 str+='<td>'+result[i].received+'<br/> yes '+result[i].receivedPerc+'% | no '+result[i].notReceivedPerc+'%</td>';
+			 str+='<td>'+result[i].received+'<br/> yes '+result[i].receivedPerc+'% | no '+result[i].notReceivedPerc+'%<span class="pull-right removeicon"  id="iconDiv'+result[i].id+'" onclick="closeDiv('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span></td>';
 			
 			/*str+='<td><span class="tooltipIVR" rel="tooltip" title="IVR Received '+result[i].received+' | NOtReceived '+result[i].notReceived+'">'+result[i].totalAnswerdCalls+'</span><br/> yes '+result[i].receivedPerc+'% | no '+result[i].notReceivedPerc+'%</td>';*/
 			 else
-				str+='<td>-</td>';
-
+				str+='<td>-<span class="pull-right removeicon"  id="iconDiv'+result[i].id+'" onclick="closeDiv('+result[i].id+');" style="display:none;"><i class="icon-remove"></i></span></td>';
+						 
 				str+='</tr>';
 		 }		 
 		 str+='</tbody>';
@@ -407,6 +436,94 @@ input[type="text"]
 		});
 	}
 	
+	  function closeDiv(trID)
+   {
+	  
+	$(".selectedchild").remove();
+   }
+  
+	function getMandalDetailsByConstituencyId(constituencyId)
+	{	
+		$('.added').remove('');
+		$(".removeicon").hide();
+		$(".removeCls").removeClass("selected");
+		$('.clearCls'+constituencyId).after('<tr class="selectedchild"><td id="subLevelMandal'+constituencyId+'" colspan="7" class="added"><div align="center"><img id="ajaxImgStyle" style="display:block;margin-left: 10px;width:20px;" src="images/icons/search.gif"/></div></td></tr>');;
+		$('.clearCls'+constituencyId).addClass("selected");
+		$('.clearClsTD'+constituencyId).addClass("selected");
+		$("#ajaxImgStyle").show();
+		$("#iconDiv"+constituencyId).show();
+ 
+		var jsObj = {
+			constituencyId:constituencyId,
+			task:"mandalDetails"             
+		}
+			   
+		$.ajax({
+			type : "POST",
+			url : "getMandalRecievedCountInConstituencyAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			buildMandalData(result,"subLevelMandal"+constituencyId);
+		});
+	}
+	function buildMandalData(resultList,divId)
+	{
+		var result = resultList.apList;
+		var str ='';
+		if(result == null || result.length == 0)
+		{
+			str+='<span style="color:red">No Data Available...</span>';
+			$("#"+divId).html(str);
+			return;
+		}		
+		str+='<table class="table table-bordered table-condensed">';
+	
+		str+='<tr>';
+
+		str+='<td><h6>MANDAL NAME</h6></td>';
+		str+=' <td><h6>TOTAL CARDS PRINTED</h6></td>';
+		str+='<td><h6>TOTAL CARDS RECEIVED BY MANDAL INCHARGE</h6></td>';
+        str+='<td><h6>DISTRIBUTED CARDS<br/>(CONFIRMED BY INFOMANAGERS)</h6></td>';
+        str+='<td><h6>CADRE MEMBERS RECEIVED CARDS<br/>(CONFIRMED BY IVR)</h6></td>';
+        str+='</tr>';
+		for(var i in result)
+		{
+			 if(result[i].name != null)
+					str+='<td>'+result[i].name+'</td>';
+			
+			 else
+				str+='<td>-</td>';
+				
+			 if(result[i].printedCount != null)	
+				str+='<td>'+result[i].printedCount+'</td>';
+			 else
+				str+='<td>-</td>';
+			
+			if(result[i].ivrEnqReceived != null)		
+				str+='<td>'+result[i].ivrEnqReceived+'</td>';
+			else
+				str+='<td>-</td>';
+		
+			 if(result[i].ivrEnqDelivered != null)	
+				str+='<td>'+result[i].ivrEnqDelivered+'</td>';
+			 else
+				str+='<td>-</td>';
+						 
+			
+			if(result[i].totalAnswerdCalls != null)		
+			
+			 str+='<td>'+result[i].received+'<br/> yes '+result[i].receivedPerc+'% | no '+result[i].notReceivedPerc+'%</td>';
+			
+			
+			 else
+				str+='<td>-</td>';
+				str+='</tr>';
+		 }		 
+		 str+='</tbody>';
+		 str+='</table>';
+		 $("#"+divId).html(str);
+         
+	}
 	
 	
 	function getDates()

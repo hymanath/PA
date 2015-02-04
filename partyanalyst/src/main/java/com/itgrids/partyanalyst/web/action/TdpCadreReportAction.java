@@ -1037,4 +1037,22 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 		}
 		return Action.SUCCESS;
 	}
+	
+	
+	public String getMandalRecievedCountInConstituency()
+	{
+		try{
+			jobj = new JSONObject(getTask());
+			
+			Long constituencyId = jobj.getLong("constituencyId");
+				
+			cadreIVRResponseVO = tdpCadreReportService.getMandalInfoManagerRecievedCountByConstituency(constituencyId);
+			
+			}
+		catch(Exception e)
+		{
+			LOG.info("Entered into getIvrPreviousCallBasicInfo()",e);	
+		}
+		return Action.SUCCESS;
+	}
 }

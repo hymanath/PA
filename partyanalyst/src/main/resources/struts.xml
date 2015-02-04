@@ -9621,5 +9621,12 @@
 				<param name="root">idNameVOList</param>
 			</result>
 		</action>
+		
+		<action name="getMandalRecievedCountInConstituencyAction" class="tdpCadreReportAction" method="getMandalRecievedCountInConstituency">
+			<result type="json" name="success">
+				<param name="root">cadreIVRResponseVO</param>
+			</result>
+		</action>
+		
 </package>
 </struts>      
