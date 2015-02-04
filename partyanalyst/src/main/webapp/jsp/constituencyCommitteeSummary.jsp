@@ -194,7 +194,7 @@ function buildConstituencySummary(results,jsObj){
 							str+='<td>'+rest.locationName+'</td>';
 							for(var j in rest.resultList){
 								if(rest.resultList[j].membersCount!=null){
-									str+='<td class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="6">'+rest.resultList[j].membersCount+'</td>';
+									str+='<td class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="5">'+rest.resultList[j].membersCount+'</td>';
 								}else{
 									str+='<td> - </td>';
 								}
@@ -224,7 +224,7 @@ function buildConstituencySummary(results,jsObj){
 							str+='<td>'+rest.locationName+'</td>';
 							for(var j in rest.resultList){
 								if(rest.resultList[j].membersCount!=null){
-									str+='<td class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="7">'+rest.resultList[j].membersCount+'</td>';
+									str+='<td class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="11">'+rest.resultList[j].membersCount+'</td>';
 								}else{
 									str+='<td> - </td>';
 								}
