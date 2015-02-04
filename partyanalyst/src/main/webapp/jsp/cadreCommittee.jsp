@@ -284,7 +284,7 @@
 						<select class="form-control" id="searchLevelId" onchange="updateSearchType(this.value)">
 						<option value="0">Select Location</option>
 						<option value="1">Panchayat/Ward</option>
-						<option value="2">Mandal/Town/Division</option>
+						<option value="2">Town/Division</option>
 						</select >
 						<div id="searchLevelErrDiv"></div>
 					 </div>
@@ -485,14 +485,26 @@
 			
 			if(id.trim() == 'membershipId')
 			{
+				
+				if(committeTypeID != 1){
+					$('#committeLocationsDiv').show();				
+				}
 				$('#cadreSearchType').val('membershipId');
 			}
 			if(id.trim() == 'voterId')
 			{
+				
+				if(committeTypeID != 1){
+					$('#committeLocationsDiv').show();				
+				}
 				$('#cadreSearchType').val('voterId');
 			}
 			if(id.trim() == 'mobileNo')
 			{
+				
+				if(committeTypeID != 1){
+					$('#committeLocationsDiv').show();				
+				}
 				$('#cadreSearchType').val('mobileNo');
 			}
 			
@@ -945,7 +957,33 @@
 	}
 	function updateSearchType(levelId)
 	{
-		getCommitteeLocations();
+		var reqLocationType = "";
+		if(levelId==0){
+			$("#committeLocationId  option").remove();
+			$("#committeLocationId").append('<option value="0">Select Location</option>');
+		}
+		if(levelId==2){
+			reqLocationType = "mandal";
+		}
+		$.ajax({
+			type : "POST",
+			url : "getCommitteLocationsAction.action",
+			data : {locationType:reqLocationType} ,
+		}).done(function(result){
+			$("#committeLocationId  option").remove();
+			$("#committeLocationId").append('<option value="0">Select Location</option>');
+			for(var i in result){
+				if(levelId==1)
+				{
+					$("#committeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+				}else{
+					var locId = result[i].locationId+"";
+					if(locId.substr(0,1) == "1"){
+				       $("#committeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+					}
+				}
+			}
+		});
 		if(levelId==1)
 		{
 			$('#areaTypeId').val(levelId);

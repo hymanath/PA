@@ -39,7 +39,7 @@
 		}
 		
 		else if(searchType == 'publicrepresantative')
-		{				
+		{	$('#committeLocationsDiv').show();			
 			$('#basicCommitteeDiv').hide();
 			$('#committeeMngtType').val(2);
 			$('#'+searchType+'').show();
@@ -50,7 +50,7 @@
 			$("#headingDiv").html("Select Candidate for a Public Representative ");			
 		}
 		else if(searchType == 'mandalaffiliated')
-		{				
+		{	$('#committeLocationsDiv').show();				
 			$('#committeeMngtType').val(3);
 			$('#publicrepresantative').hide();
 			$('#basicCommitteeDiv').hide();
@@ -103,7 +103,14 @@
 	
 	function getCadreDetailsBySearchCriteria()
 	{
-		
+		//committeTypeID means 
+			//for committiee management 1
+			//for Mandal/Muncipality Main Committee Electoral Management 2
+			//for Mandal/Muncipality Affiliated Committee Electoral Management 3
+		//areaTypeId means
+		    //for panchayat level 1
+			//for mandal level 2
+			
 		var areaTypeId  =  $('#areaTypeId').val();
 		var committeeLocationId =$("#committeeLocationId").val();
 		
@@ -185,7 +192,7 @@
 		}
 		else if(committeTypeID ==2 || committeTypeID ==3)
 		{		
-			if(searchRadioType == 'name' || searchRadioType == 'advancedSearch'){
+			
 				var searchLevel = $('#searchLevelId').val();
 				committeeLocationId = $('#committeLocationId').val();
 				if(searchLevel == null || searchLevel == 0)
@@ -198,7 +205,7 @@
 					$('#committeLocationIdErr').html('Please Select Location');
 					return;
 				}
-			}			
+			
 		}
 		
 
@@ -206,9 +213,29 @@
 		{				
 				if(committeTypeID != 1 )
 				{
-					 locationLevel = 4;
-					 locationValue = userLocation;
-				}				
+					       committeeLocationId = $('#committeLocationId').val();
+							 if(areaTypeId ==1)
+							{
+								if(committeeLocationId.substr(0,1) == 1){
+									  locationLevel = 6;
+								}
+								else if(committeeLocationId.substr(0,1) == 2){
+									 locationLevel = 8;
+								}
+							}
+							if(areaTypeId ==2)
+							{
+								if(committeeLocationId.substr(0,1) == 1){
+									 locationLevel = 7;
+								}
+								else if(committeeLocationId.substr(0,1) == 2){
+									 locationLevel = 5;
+								}
+								else if(committeeLocationId.substr(0,1) == 3){
+									 locationLevel = 8;
+								}
+							}
+							locationValue = committeeLocationId.substr(1);				}				
 				else
 				{
 					if(areaTypeId ==1)
