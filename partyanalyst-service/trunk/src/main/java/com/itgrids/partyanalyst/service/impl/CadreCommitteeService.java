@@ -4406,10 +4406,17 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					
 					fnlVO.setDivisionList(divisions);
 				}
+				 
 				if(panchIds!=null && panchIds.size()>0){
 					List<Object[]> list = tdpCommitteeMemberDAO.getCommitteeMembersCountByLocationAndCommitteeType(6l, panchIds);
 					List<CommitteeSummaryVO> locsResult =  pushBasicCommitteesToLocations(basicCommitteesRslt, allPanchayats);
 					pushConstSummaryToLocations(list, locsResult);
+					List<Object[]> electrolsRslt = tdpCommitteeElectrolsDAO.getElectrolsForPanchayatsWards(panchIds, "panchayat");
+					List<Object[]> electedMems = tdpCommitteeMemberDAO.getCommitteePresidentAndVicePresidentsCount(panchIds, 6l);
+					
+					pushElectrolsCount(electrolsRslt, locsResult);
+					pushElectrolsCount(electedMems, locsResult);
+					
 					
 					pushPanchayatsAndWards(mandalMap, fnlVO.getMandalsList());
 				}
@@ -4417,6 +4424,11 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					List<Object[]> list = tdpCommitteeMemberDAO.getCommitteeMembersCountByLocationAndCommitteeType(8l, wardIds);
 					List<CommitteeSummaryVO> locsResult =  pushBasicCommitteesToLocations(basicCommitteesRslt, wardsList);
 					pushConstSummaryToLocations(list, locsResult);
+					List<Object[]> electrolsRslt = tdpCommitteeElectrolsDAO.getElectrolsForPanchayatsWards(wardIds, "ward");
+					List<Object[]> electedMems = tdpCommitteeMemberDAO.getCommitteePresidentAndVicePresidentsCount(wardIds, 8l);
+					
+					pushElectrolsCount(electrolsRslt, locsResult);
+					pushElectrolsCount(electedMems, locsResult);
 					
 					pushPanchayatsAndWards(wardMap, fnlVO.getLocalBodiesList());
 				}
@@ -4482,6 +4494,30 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			}
 		}
 	}
+	
+	public void pushElectrolsCount(List<Object[]> resltLst, List<CommitteeSummaryVO> locationsList){
+			
+			if(resltLst!=null && resltLst.size()>0 && locationsList!=null && locationsList.size()>0){
+				for(Object[] obj:resltLst){
+					CommitteeSummaryVO cs = getMatchedLocationForConstSummary(Long.valueOf(obj[1].toString()), locationsList);
+					if(cs!=null){
+						CommitteeSummaryVO basic = getMatchedBasicCommittee(Long.valueOf(obj[2].toString()), cs.getResultList());
+						
+						if(basic!=null){
+							Long memsCount = basic.getElectrolsCount();
+							if(memsCount == null){
+								memsCount = 0l;
+							}
+							
+							if(Long.valueOf(obj[0].toString())!=null){
+								basic.setElectrolsCount(memsCount+Long.valueOf(obj[0].toString()));
+							}
+						}
+					}
+					
+				}
+			}
+		}
 	
 	public CommitteeSummaryVO getMatchedBasicCommittee(Long id, List<CommitteeSummaryVO> list){
 		if(id!=null && list!=null && list.size()>0){

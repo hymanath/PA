@@ -10,4 +10,6 @@ public interface ITdpCommitteeElectrolsDAO  extends GenericDao<TdpCommitteeElect
 	public List<Object[]> getTdpCommitteeElectrolsForTdpCadreIdList(List<Long> tdpCadreIdsList);
 	public Long checkUserAlreadyAddedToThisCommittee(Long tdpCadreId,Long levelId,Long levelValue,Long enrollId,Long commitTypeId,Long tdpCommitId);
 	public Long checkUserAlreadyAddedToOtherAffiliatedCommittee(Long tdpCadreId,Long levelId,Long levelValue,Long enrollId);
+	
+	public List<Object[]> getElectrolsForPanchayatsWards(List<Long> locationIds, String locationType);
 }

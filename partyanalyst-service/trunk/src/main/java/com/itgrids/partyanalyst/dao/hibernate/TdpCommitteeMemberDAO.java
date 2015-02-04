@@ -453,4 +453,27 @@ public List<Object[]> getCommitteeMembersCountByLocationAndCommitteeType(Long le
 	return query.list();
 		
 }
+	public List<Object[]> getCommitteePresidentAndVicePresidentsCount(List<Long> locationIds, Long locationLevel){
+		StringBuilder str = new StringBuilder();
+		str.append("select count(model.tdpCommitteeMemberId)," +
+				//" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId," +
+				" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue," +
+				" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId " +
+				" from TdpCommitteeMember model " +
+				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId  " +
+				" and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue in(:locationVals)" +
+				//" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId = :committeeTypeId " +
+				" and model.isActive = 'Y'" +
+				" and model.tdpCommitteeRole.tdpRoles.tdpRolesId in(1,2)");
+		
+		str.append(" group by " +
+				" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue," +
+				" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("levelId", locationLevel);
+		query.setParameterList("locationVals", locationIds);
+		
+		return query.list();
+	}
 }
