@@ -122,9 +122,16 @@ function buildConstituencySummary(results,jsObj){
 				str+='<table class="table table-yellow-bordered table-condensed " style="width:100%; background-color:rgba(0,0,0,0.1);">';
 				str+='<thead>';
 					str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
-						str+='<th> Location </th>';
+						str+='<th  rowspan=2> Location </th>';
 						for(var k in results.resultList){
-							str+='<th>'+results.resultList[k].basicCommitteeName+'</th>';
+							str+='<th colspan=2>'+results.resultList[k].basicCommitteeName+'</th>';
+						}
+						
+					str+='</tr>';
+					str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
+						for(var k in results.resultList){
+							str+='<th> Members </th>';
+							str+='<th> Electrols </th>';
 						}
 						
 					str+='</tr>';
@@ -135,7 +142,13 @@ function buildConstituencySummary(results,jsObj){
 								str+='<td>'+rest.locationsList[j].locationName+'</td>';
 									for(var k in rest.locationsList[j].resultList){
 										if(rest.locationsList[j].resultList[k].membersCount!=null){
-											str+='<td class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="6">'+rest.locationsList[j].resultList[k].membersCount+'</td>';
+											str+='<td class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="6" attr_memType="members">'+rest.locationsList[j].resultList[k].membersCount+'</td>';
+										}else{
+											str+='<td> </td>';
+										}
+										
+										if(rest.locationsList[j].resultList[k].electrolsCount!=null){
+											str+='<td class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="6" attr_memType="electrols">'+rest.locationsList[j].resultList[k].electrolsCount+'</td>';
 										}else{
 											str+='<td> </td>';
 										}
@@ -152,9 +165,16 @@ function buildConstituencySummary(results,jsObj){
 				str+='<table class="table table-yellow-bordered table-condensed " style="width:100%; background-color:rgba(0,0,0,0.1);">';
 				str+='<thead>';
 					str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
-						str+='<th> Location </th>';
+						str+='<th rowspan=2> Location </th>';
 						for(var k in results.resultList){
-							str+='<th>'+results.resultList[k].basicCommitteeName+'</th>';
+							str+='<th colspan=2>'+results.resultList[k].basicCommitteeName+'</th>';
+						}
+						
+					str+='</tr>';
+					str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
+						for(var k in results.resultList){
+							str+='<th> Members </th>';
+							str+='<th> Electrols </th>';
 						}
 						
 					str+='</tr>';
@@ -165,7 +185,13 @@ function buildConstituencySummary(results,jsObj){
 								str+='<td>'+rest.locationsList[j].locationName+'</td>';
 									for(var k in rest.locationsList[j].resultList){
 										if(rest.locationsList[j].resultList[k].membersCount!=null){
-											str+='<td class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="8">'+rest.locationsList[j].resultList[k].membersCount+'</td>';
+											str+='<td class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="8" attr_memType="members">'+rest.locationsList[j].resultList[k].membersCount+'</td>';
+										}else{
+											str+='<td> </td>';
+										}
+										
+										if(rest.locationsList[j].resultList[k].electrolsCount!=null){
+											str+='<td class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="8" attr_memType="electrols">'+rest.locationsList[j].resultList[k].electrolsCount+'</td>';
 										}else{
 											str+='<td> </td>';
 										}
@@ -247,6 +273,8 @@ function buildConstituencySummary(results,jsObj){
 		var locationType = $(this).attr("attr_locationType");
 		var location = $(this).attr("attr_locationId");
 		var basicCmmtyId = $(this).attr("attr_cmmtyType");
+		
+		var memberType = $(this).attr("attr_memType"); // FOR PANCHAYAT/WARDS MEMBER TYPE - MEMBERS OR ELECTROLS
 	});
 	
 	
