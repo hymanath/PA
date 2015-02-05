@@ -8,6 +8,7 @@
 		 $("#searchBy").val('');
 		 $("#committeLocationId").val(0);
 		 $("#committeeLocationId").val(0);
+		// $("#panchayatWardByMandal").val(0); 
 		 $("#membershipId").prop("checked","checked");
 		 $('#cadreSearchType').val('membershipId');
 		 $('#committeLocationsDiv').hide();
@@ -23,6 +24,10 @@
 		$("#committeeLocationId  option").remove();
 		$("#committeeLocationId").append('<option value="0">Select Location</option>');	
 		
+		$("#panchayatWardByMandal  option").remove();
+		$("#panchayatWardByMandal").append('<option value="0">Select Mandal</option>');
+		
+		
 		 $("#cadreDetailsDiv,#step3Id,#searchcadrenewDiv,#designationDivId,#step1Id,#committeeMainId").hide();
 		 $("#cadreDetailsDiv").html("");
 		 
@@ -35,7 +40,8 @@
 			$('#basicCommitteeTab').addClass('arrow_selected');			
 			$("#searchcadrenewDiv").hide();
 			$("#headingDiv").html("Select Candidate for Selected Designation");
-			getCommitteeLocations();
+			//getCommitteeLocations();
+			getMandalCorporationsByConstituency();
 		}
 		
 		else if(searchType == 'publicrepresantative')
@@ -60,7 +66,6 @@
 			$("#advancedSearchDiv").hide();	
 			$("#headingDiv").html("Select Candidate for a non-affiliated Committee Member ");			
 	}
-		
 	}
 	
 	function validateSearchType(areaTypeId)
@@ -634,6 +639,8 @@
 	}
 	function getCadreProfileInfo(tdpCadreId,existingRole,existingId)
 	{
+		var mandalId=$("#panchayatWardByMandal").val();
+		
 		var committeTypeID = $('#committeeMngtType').val();		
 		var committeeLocationId = $('#committeeLocationId').val();
 		var committeeTypeId = $('#committeeTypeId').val();
@@ -722,17 +729,17 @@
 					{
 						return;
 					}
-					window.location.href = 'cadreProfileDetailsAction.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&panchayatId='+committeeLocationId+'&committeeTypeId='+committeeTypeId+'&committeeId='+committeeId+'&result1='+$('#committeePositionId option:selected').text().trim()+'&result2='+committeeType+'&result3='+committeePosition+'&result4='+$('#committeeLocationId option:selected').text()+''+locationTypeStr+'';
+					window.location.href = 'cadreProfileDetailsAction.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&panchayatId='+committeeLocationId+'&committeeTypeId='+committeeTypeId+'&committeeId='+committeeId+'&result1='+$('#committeePositionId option:selected').text().trim()+'&result2='+committeeType+'&result3='+committeePosition+'&result4='+$('#committeeLocationId option:selected').text()+''+locationTypeStr+'&mandalId='+mandalId+'';
 				}
 				else{
-					window.location.href = 'cadreProfileDetailsAction.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&panchayatId='+committeeLocationId+'&committeeTypeId='+committeeTypeId+'&committeeId='+committeeId+'&result1='+$('#committeePositionId option:selected').text().trim()+'&result2='+committeeType+'&result3='+committeePosition+'&result4='+$('#committeeLocationId option:selected').text()+''+locationTypeStr+'';
+					window.location.href = 'cadreProfileDetailsAction.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&panchayatId='+committeeLocationId+'&committeeTypeId='+committeeTypeId+'&committeeId='+committeeId+'&result1='+$('#committeePositionId option:selected').text().trim()+'&result2='+committeeType+'&result3='+committeePosition+'&result4='+$('#committeeLocationId option:selected').text()+''+locationTypeStr+'&mandalId='+mandalId+'';
 				}
 				
 				
 			}
 		}else
 		{
-			window.location.href = 'cadreProfileDetailsAction.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'';
+			window.location.href = 'cadreProfileDetailsAction.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&mandalId='+mandalId+'';
 		}
 	}
 	

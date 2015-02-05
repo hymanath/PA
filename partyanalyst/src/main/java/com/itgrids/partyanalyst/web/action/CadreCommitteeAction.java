@@ -83,7 +83,8 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private CommitteeApprovalVO					statusFinalVO;
 	private List<LocationWiseBoothDetailsVO> committeesCountsInfo;
 	private List<CommitteeSummaryVO> returnList;
-	private List<AccessedPageLoginTimeVO> returnResult;
+	private List<AccessedPageLoginTimeVO>       returnResult;
+	private Long 								mandalId;
 	
 
 	
@@ -451,6 +452,14 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		this.assemblyId = assemblyId;
 	}
 
+	public Long getMandalId() {
+		return mandalId;
+	}
+
+	public void setMandalId(Long mandalId) {
+		this.mandalId = mandalId;
+	}
+
 	public String execute()
 	{	
 		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
@@ -487,7 +496,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	public List<BasicVO> getUserAccessConstituencies(){
 		HttpSession session = request.getSession();
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
-		return tdpCadreReportService.getAccessLocationValues(user.getAccessType(),Long.valueOf(user.getAccessValue().trim()));
+		return tdpCadreReportService.getAccessLocationValues(user.getAccessType(),Long.valueOf(user.getAccessValue().trim()));	
 	}
 	
 	public String getCommitteLocations(){
@@ -1201,7 +1210,6 @@ public String getSummaryDetails(){
 		}
 		return Action.SUCCESS;
 	}*/
-	
 	public String getAffiliatedCommitteMembersInfo(){
 		try{
 			jObj = new JSONObject(getTask());
@@ -1232,6 +1240,31 @@ public String getSummaryDetails(){
 			LOG.error("Exception raised in getElctoralInfoForALocation()",e);
 		}
 		
+		return Action.SUCCESS;
+	}
+	public String getMandalsByConstituency(){
+		try{
+			HttpSession session = request.getSession();
+			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+			constituencies = tdpCadreReportService.getAccessLocationValues(user.getAccessType(),Long.valueOf(user.getAccessValue().trim()));
+			
+			/*constituencies = getUserAccessConstituencies();*/
+			
+			locations=cadreCommitteeService.getMandalsByConstituency(constituencies.get(0).getId());
+		}catch(Exception e){
+			LOG.error("Exception occured in getMandalsByConstituency() method ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getPanchayatWardByMandal(){
+		try{
+			jObj = new JSONObject(getTask());
+			locations=cadreCommitteeService.getPanchayatWardByMandalId(jObj.getString("mandalId"));
+			
+		}catch(Exception e){	
+			LOG.error("Exception occured in getPanchayatWardByMandal() method ",e);
+		}
 		return Action.SUCCESS;
 	}
 }
