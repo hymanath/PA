@@ -9655,6 +9655,10 @@
 				<param name="root">locations</param>
 			</result>
 		</action>
-		
+		<action name="gettingCadreDetailsAction" class="committeeDashBoardAction" method="gettingCadreDetails">
+			<result type="json" name="success">
+				<param name="root">cadreCommitteeMemberVOList</param>
+			</result>
+		</action>
 </package>
 </struts>      
