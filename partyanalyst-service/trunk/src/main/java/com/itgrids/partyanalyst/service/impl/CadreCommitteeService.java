@@ -896,6 +896,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	
 	public LocationWiseBoothDetailsVO getCommitteeMembersInfo(Long committeeId){
 		LocationWiseBoothDetailsVO returnVo = new LocationWiseBoothDetailsVO();
+		returnVo.setPopulation(committeeId);
+		if(committeeId != null && committeeId.longValue() > 0){
+		   returnVo.setLocationName(tdpCommitteeDAO.get(committeeId).getIsCommitteeConfirmed());
+		}
 		List<LocationWiseBoothDetailsVO> committeeMembersInfoList = new ArrayList<LocationWiseBoothDetailsVO>();
 		List<SelectOptionVO> committeeMembersList = new ArrayList<SelectOptionVO>();
 		
@@ -926,7 +930,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					roleInfo.setTotal(roleInfo.getPopulation() - (Long)electedPersons[0]);
 				}
 				
-				//0 role,1 image,2name,3membership
+				//0 role,1 image,2name,3membership,4tdpCommitteeMemberId,5cadreId,6tdpCommitteeRoleId
 				List<Object[]>  electedMembersInfoList = tdpCommitteeMemberDAO.getMembersInfo(committeeMembersMap.keySet());
 				
 				for(Object[] electedMembersInfo:electedMembersInfoList){
@@ -937,6 +941,9 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					}
 					memberVo.setName(electedMembersInfo[2].toString());//name
 					memberVo.setType(electedMembersInfo[3].toString());//membership
+					memberVo.setId((Long)electedMembersInfo[4]);//tdpCommitteeMemberId
+					memberVo.setOrderId((Long)electedMembersInfo[5]);//tdpCadreId
+					memberVo.setMainAccountId((Long)electedMembersInfo[6]);//tdpCommitteeRoleId
 					committeeMembersList.add(memberVo);
 				}
 			}
@@ -4615,7 +4622,47 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return mandalsList;
 		
 	}
-	
+	public ResultStatus updateCandidateDesignation(final Long committeeId,final List<LocationWiseBoothDetailsVO> changeDesignationsList,final Long userId){
+		ResultStatus status = null;
+		try{
+			TdpCommittee tdpCommittee = tdpCommitteeDAO.get(committeeId);
+			if(tdpCommittee.getIsCommitteeConfirmed().equalsIgnoreCase("Y")){
+				status = new ResultStatus();
+				status.setResultCode(2);
+				status.setMessage("This Committee Is Already Confirmed.You Cannot Update Any Information");
+				return status;
+			}
+			synchronized("UPDATECADREDESIGNATIONNEW"){
+				status = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
+					 public Object doInTransaction(TransactionStatus status) {
+						 ResultStatus rs= gettingStatus(committeeId,changeDesignationsList);
+						  flagGlobal=rs.getIsResultPartial();
+						  if(!flagGlobal){
+							  for(LocationWiseBoothDetailsVO candidate:changeDesignationsList){
+								  Long newRoleId = candidate.getVotesPolled();
+								  Long tdpCommitteeMemberId = candidate.getLocationId();
+								  TdpCommitteeMember tdpCommitteeMember = tdpCommitteeMemberDAO.get(tdpCommitteeMemberId);
+								  tdpCommitteeMember.setTdpCommitteeRoleId(newRoleId);
+								  tdpCommitteeMember.setUpdatedUserId(userId);
+								  tdpCommitteeMember.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								  tdpCommitteeMemberDAO.save(tdpCommitteeMember);
+							  }
+							  rs.setResultCode(1); 
+						  }else{
+						      rs.setResultCode(2);
+						  }
+						  return rs;
+					}	
+			    });
+		  }
+		}catch(Exception e){
+			LOG.error("Exception raised in updateCandidateDesignation", e);
+			status = new ResultStatus();
+			status.setResultCode(0);
+		}
+	     
+	     return status;
+	}
 	public List<LocationWiseBoothDetailsVO> getPanchayatWardByMandalId(String mandalId){
 		List<LocationWiseBoothDetailsVO> locationsList = new ArrayList<LocationWiseBoothDetailsVO>();
 		LocationWiseBoothDetailsVO vo = null;
