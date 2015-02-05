@@ -1266,5 +1266,30 @@ public String getSummaryDetails(){
 			LOG.error("Exception occured in getPanchayatWardByMandal() method ",e);
 		}
 		return Action.SUCCESS;
+	}	
+	public String updateCommitteeMemberDesignation(){
+		try{
+			session = request.getSession();
+			RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+			List<LocationWiseBoothDetailsVO> changeDesignationsList=new ArrayList<LocationWiseBoothDetailsVO>();
+			jObj = new JSONObject(getTask());
+			JSONArray jArray = jObj.getJSONArray("requestArray");
+			 for (int i = 0; i < jArray.length(); i++) 
+			 {
+				JSONObject obj = jArray.getJSONObject(i);
+				LocationWiseBoothDetailsVO changeDesignationsVO=new LocationWiseBoothDetailsVO();
+				changeDesignationsVO.setLocationId(obj.getLong("tdpCommitteeMemberId"));//tdpCommitteeMemberId
+				changeDesignationsVO.setTotal(obj.getLong("tdpCadreId"));
+				//changeDesignationsVO.setPopulation(obj.getLong("currentRole"));//currentRole
+				changeDesignationsVO.setVotesPolled(obj.getLong("newRole"));//newRole
+				changeDesignationsList.add(changeDesignationsVO);
+			 }
+			 status = cadreCommitteeService.updateCandidateDesignation(jObj.getLong("committeeId"),changeDesignationsList,registrationVO.getRegistrationID());
+		}catch(Exception e){
+			LOG.error(" Exception Raised in updateCommitteeMemberDesignation" , e);
+			status = new ResultStatus();
+			status.setResultCode(0);
+		}
+		 return Action.SUCCESS;
 	}
 }
