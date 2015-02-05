@@ -62,7 +62,7 @@ input[type="text"]
 }
 .border-radius-0{border-radius:0px;}
 .selected{background:#DFF0D8 !important;}
-.selectedchild{background:#F5F5F5 !important;}
+.selectedchild{background:#DFF0D8 !important;}
 </style>
 </head>
 
@@ -101,10 +101,10 @@ input[type="text"]
 	
         <td width="15%"><div class="text-center"><h2  class="text-center"><span id="printsId1" ></span><img class="imgStyle printData" src="images/icons/search.gif"></img></h2>Total Printed Cards</div></td>
         <td width="15%"><div class="text-center"><h2 id=""><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId2" ></span></h2>Total Cards Received By Constituency Incharge</div></td>
-        <td width="15%"><div class="text-center"><h2 id=""><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId3" ></span></h2>Total Cards Received By Urban Area Constituency Incharge</div></td>
-        <td width="15%"><div class="text-center"><h2 id=""><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId4" ></span></h2>Total Cards Dispatched To Mandal Constituency Incharge</div></td>
-        <td width="15%"><div class="text-center"><h2 id=""><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId5" ></span></h2>Total Cards Received By Mandal Constituency Incharge</div></td>
-        <td width="15%"><div class="text-center"><h2 id=""><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId6" ></span></h2>Total Cards Delivered To Cadre By Mandal Constituency Incharge</div></td>
+        <td width="15%"><div class="text-center"><h2 id=""><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId3" ></span></h2>Total Cards Received By Urban Area Incharge</div></td>
+        <td width="15%"><div class="text-center"><h2 id=""><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId4" ></span></h2>Total Cards Dispatched To Mandal Incharge</div></td>
+        <td width="15%"><div class="text-center"><h2 id=""><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId5" ></span></h2>Total Cards Received By Mandal Incharge</div></td>
+        <td width="15%"><div class="text-center"><h2 id=""><img class="imgStyle  printData" src="images/icons/search.gif"/><span id="printId6" ></span></h2>Total Cards Delivered To Cadre By Mandal Incharge</div></td>
     </tr>
 </table>
 
@@ -476,7 +476,7 @@ input[type="text"]
 			$("#"+divId).html(str);
 			return;
 		}		
-		str+='<table class="table table-bordered table-condensed">';
+		str+='<table class="table table-bordered table-condensed" style=" background: none repeat scroll 0 0 #F5F5F5; margin-bottom: 2px;">';
 	
 		str+='<tr>';
 
