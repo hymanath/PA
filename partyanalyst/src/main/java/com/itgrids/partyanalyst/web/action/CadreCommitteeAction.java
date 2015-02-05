@@ -12,6 +12,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.AccessedPageLoginTimeVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
@@ -82,10 +83,19 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private CommitteeApprovalVO					statusFinalVO;
 	private List<LocationWiseBoothDetailsVO> committeesCountsInfo;
 	private List<CommitteeSummaryVO> returnList;
+	private List<AccessedPageLoginTimeVO> returnResult;
 	
 
 	
 	
+	public List<AccessedPageLoginTimeVO> getReturnResult() {
+		return returnResult;
+	}
+
+	public void setReturnResult(List<AccessedPageLoginTimeVO> returnResult) {
+		this.returnResult = returnResult;
+	}
+
 	public CommitteeApprovalVO getStatusFinalVO() {
 		return statusFinalVO;
 	}
@@ -1191,4 +1201,37 @@ public String getSummaryDetails(){
 		}
 		return Action.SUCCESS;
 	}*/
+	
+	public String getAffiliatedCommitteMembersInfo(){
+		try{
+			jObj = new JSONObject(getTask());
+			JSONArray ids = jObj.getJSONArray("ids");
+			
+			List<Long> affiliIds = new ArrayList<Long>();
+			
+			if(ids !=null && ids.length() >0){
+				for(int i=0; i<ids.length(); i++ ){
+					affiliIds.add(Long.valueOf(ids.get(i).toString().trim()));
+				}
+			}
+			membersInfo = cadreCommitteeService.getAffiliatedCommitteMembersInfo(affiliIds);
+		}
+		catch (Exception e) {
+			LOG.error("Exception raised in getAffiliatedCommitteMembersInfo()",e);
+		}
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getElctoralInfoForALocation(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long locationValue = jObj.getLong("locationId");
+			returnResult=cadreCommitteeService.getElctoralInfoForALocation(locationValue);
+		}catch (Exception e) {
+			LOG.error("Exception raised in getElctoralInfoForALocation()",e);
+		}
+		
+		return Action.SUCCESS;
+	}
 }
