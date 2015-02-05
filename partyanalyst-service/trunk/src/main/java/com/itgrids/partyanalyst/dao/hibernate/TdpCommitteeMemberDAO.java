@@ -55,7 +55,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		String queryStr = " select distinct model.tdpCadreId ,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name," +
 				" model.tdpCommitteeRole.tdpRoles.role, model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId, " +
 				" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,model.tdpCommitteeRole.tdpCommitteeRoleId " +
-				" from TdpCommitteeMember model where model.tdpCadreId in (:tdpCadreIdsList) group by model.tdpCadreId ";
+				" from TdpCommitteeMember model where model.tdpCadreId in (:tdpCadreIdsList) and model.isActive = 'Y' group by model.tdpCadreId ";
 		Query query = getSession().createQuery(queryStr);
 		query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
 		return query.list();
@@ -121,7 +121,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		//0 role,1 image,2name,3membership
 		Query query = getSession().createQuery("select model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.image,model.tdpCadre.firstname,model.tdpCadre.memberShipNo," +
 				" model.tdpCadre.tdpCadreId, model.tdpCommitteeRole.tdpCommitteeRoleId,model.tdpCommitteeMemberId " +
-				" from TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommitteeRoleId in(:committeeRoleIds) order by model.tdpCommitteeRole.tdpRoles.order ");
+				" from TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommitteeRoleId in(:committeeRoleIds) and model.isActive ='Y'  order by model.tdpCommitteeRole.tdpRoles.order ");
 		query.setParameterList("committeeRoleIds", committeeRoleIds);
 		
 		return query.list();
@@ -166,7 +166,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 	{
 		Query query = getSession().createQuery("select distinct model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId from TdpCommitteeMember model" +
 				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId  and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal" +
-				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId = :committeeTypeId ");
+				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId = :committeeTypeId and model.isActive ='Y'  ");
 		query.setParameter("levelId", levelId);
 		query.setParameter("locationVal", locationVal);
 		query.setParameter("committeeTypeId", committeeTypeId);
