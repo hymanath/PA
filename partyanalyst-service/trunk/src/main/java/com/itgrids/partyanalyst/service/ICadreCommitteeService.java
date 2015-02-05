@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.itgrids.partyanalyst.dto.AccessedPageLoginTimeVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
@@ -75,4 +76,6 @@ public interface ICadreCommitteeService {
 	public List<IdNameVO> getAllDistricts();
 	public List<IdNameVO> getAllConstituencysForADistrict(Long districtId);
 	public CommitteeSummaryVO getConstituencySummary(Long reprtType, Long constituencyId);
+	public LocationWiseBoothDetailsVO getAffiliatedCommitteMembersInfo(List<Long> affiliIds);
+	public List<AccessedPageLoginTimeVO> getElctoralInfoForALocation(Long locationValue);
 }
