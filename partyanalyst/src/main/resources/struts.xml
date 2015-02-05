@@ -9633,5 +9633,18 @@
 				<param name="root">cadreIVRResponseVO</param>
 			</result>
 		</action>
+		
+		<action name="getAffiliatedCommitteMembersInfoAction" class="cadreCommitteeAction" method="getAffiliatedCommitteMembersInfo">
+			<result type="json" name="success">
+				<param name="root">membersInfo</param>
+			</result>
+		</action>
+		
+		<action name="getElctoralInfoForALocationAction" class="cadreCommitteeAction" method="getElctoralInfoForALocation">
+			<result type="json" name="success">
+				<param name="root">returnResult</param>
+			</result>
+		</action>
+		
 </package>
 </struts>      
