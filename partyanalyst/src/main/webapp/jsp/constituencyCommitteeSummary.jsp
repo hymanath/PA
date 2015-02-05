@@ -352,7 +352,12 @@ function buildingResults(result)
 	str+='</thead>';
     for(var i in result){
 	 str+='<tr>';
-	 str+='<td  style="padding-top: 14px; padding-left: 37px;">'+result[i].role+'</td>';
+	 if(result[i].role!=null){
+		str+='<td  style="padding-top: 14px; padding-left: 37px;">'+result[i].role+'</td>';
+	 }else{
+		str+='<td  style="padding-top: 14px; padding-left: 37px;">  </td>';
+	 }
+	 
 	 str+='<td ><img  style="margin-top: 5px; margin-left: 57px; padding-top: 0px;" style="margin-top: 26px; margin-left: 12px;" width="35"  height="35" src="http://www.mytdp.com/images/cadre_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);"/></td>';
 	 str+='<td style="padding-top: 15px; padding-left: 15px;width:281px;">'+result[i].name+'</td>';
 	 str+='<td style="padding-left: 15px; padding-top: 13px;">'+result[i].membershipNo+'</td>';
