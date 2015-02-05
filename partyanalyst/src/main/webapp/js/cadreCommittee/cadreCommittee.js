@@ -77,6 +77,7 @@
 		else if(areaTypeId == 2) // Mandal / Town / GHMC 
 		{				
 			$('#areaTypeId').val(areaTypeId);
+			$("#affiliCommitteeAllInfoDivId").html("");
 		}
 	}
 	
