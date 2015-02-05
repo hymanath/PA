@@ -28,7 +28,7 @@
 	.locationName{text-transform: uppercase;}
 </style>
 <div class="container">
-    <div class="row m_top20">
+    <div class="row m_top20 locationCls">
   	   <div class="col-md-4 col-md-offset-2 col-sm-6 col-xs-6">Select District:<select id="districtsId" class="form-control" onChange="getAllConstituencysForADistrict()"><option value="0">Select District</option></select> </div>
        <div class="col-md-4  col-sm-6 col-xs-6">Select Constituency:<select id="constituencysId" class="form-control"><option value="0">Select Constituency</option></select> </div>
     </div>
@@ -68,8 +68,18 @@
 </div>
 </div>
 <script type="text/javascript">
+var accessConstituency = '${accessConstituency}';
+var accessConstituencyId = '${accessConstituencyId}';
 
-getAllDistricts();
+if(accessConstituencyId!='null' && accessConstituencyId!=""){
+	$(".locationCls").hide();
+	getConstituencySummary();
+	$("#constSummary").show();
+}else{
+	getAllDistricts();
+}
+
+
 function getAllDistricts()
 {
 
@@ -121,7 +131,15 @@ function getAllConstituencysForADistrict()
 }
 
 function getConstituencySummary(){
-	var constiId = $("#constituencysId").val();
+	
+	var constiId = "";
+	if(accessConstituencyId!=null || accessConstituencyId!=""){
+		constiId = accessConstituencyId;
+	}else{
+		constiId = $("#constituencysId").val();
+	}
+
+	 
 	
 	if(constiId==0){
 	  return;	 
