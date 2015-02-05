@@ -187,9 +187,15 @@
 						<li><input type="button" id="addMembrsBtn" class="btn btn-success" onclick="showSearchInfo();" value="ADD" /></li>
 					</ul>
 			</div> 
-		</div> 
-		<div id="affiliCommitteeAllInfoDivId" class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12"></div>
-		<div id="elctarolInfoDivId" class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12"></div>
+		</div>
+		<div id="printDiv">		
+			<div id="affiliCommitteeAllInfoDivId" class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12"></div>
+			<div id="elctarolInfoDivId" class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12"></div>
+			<div id="printBtnDiv" style="display:none" class="col-md-2 col-md-offset-5 col-sm-4 col-xs-4" >
+				<input type="button" value="Print" class="btn btn-success btn-block" onclick="javascript:CallPrint('printDiv')" />
+			</div>
+		</div>
+		
 		
 		<!-------VIEW BLOCK------>
 		<div class="row" id="committeeDetailsDiv">	
@@ -578,7 +584,7 @@
 		if($("#villageId").is(':checked')){
 			return;
 		}
-		
+		$("#printBtnDiv").hide();
 		$("#mandalMainDivId").hide();		
 		hideMembers();
 		$("#affiliCommitteeAllInfoDivId").html("");
@@ -850,9 +856,11 @@
 		  $("#committeeTypeId").val(0);
 		  $("#committeeDetailsDiv").hide();
 		  $("#elctarolInfoDivId").html("");
+		  $("#printBtnDiv").hide();
 		}
 		
 		if(level == 2){
+			$("#printBtnDiv").hide();
 			$("#elctarolInfoDivId").html("");
 		}
 		if(committeeTypeId != null && committeeTypeId == 2) 
@@ -1160,6 +1168,7 @@
 			$("#elctarolInfoDivId").html("");
 			$("#addMembrsBtn").show();
 			$("#viewMembrsBtn").show();
+			$("#printBtnDiv").hide();
 			
 			var mandalId=$("#panchayatWardByMandal").val();
 			hideMembers();
@@ -1280,6 +1289,7 @@
 		// $("#viewMembrsBtn").attr("disabled","disabled");
 		 
 		 if($("#committeeTypeId option:selected" ).val() == "3"){
+			$("#printBtnDiv").show();
 			sendRequestForMainComm("",reqLocationValue,"main");
 			getAffiliatedCommitsIdsForALoc();
 				if($("#villageId").is(':checked')){
@@ -1344,12 +1354,12 @@
 				url : "getAffiliatedCommitteMembersInfoAction.action",
 				data : {task:JSON.stringify(jObj)} ,
 				}).done(function(result){
-				 if(result!=null || finalresult!=null){
-					var members = finalresult.hamletsOfTownship;
 					var str='';
 					str+='<div class="col-md-12 col-md-offset-0" style="text-align:center; font-size:22px;>';
                     str+='<h3 class="panel-header">COMMITTEE MEMBERS INFO</h3>'
                     str+='<hr style="border-color:#F00;margin-top:10px;"></div>';
+				 if(result!=null || finalresult!=null){
+					var members = finalresult.hamletsOfTownship;
 					str+='<table class="table table-bordered" style="borde:1 solid #000;background-color:rgba(0,0,0,0.1);"><thead style="background-color:rgba(0,0,0,0.2);"><tr><th style="width:15%">CommitteeName</th><th style="width:15%">Designation</th><th style="width:5%">Image</th><th style="width:38%">Name</th><th style="width:27%">Enrolement Number</th></tr></thead>';
 					str+='<tbody>';
 					
@@ -1370,8 +1380,10 @@
 						str+='<td>'+result.hamletsOfTownship[i].type+'</td></tr>';
 					}
 					str+='</tbody></table>';
-					$("#affiliCommitteeAllInfoDivId").html(str);
+				 }else{
+					 str+='No Data Available';
 				 }
+				 $("#affiliCommitteeAllInfoDivId").html(str);
 			});
 				
 			
@@ -1391,26 +1403,41 @@
 				}).done(function(result){
 					var str='';
 					str+='<div class="col-md-12 col-md-offset-0" style="text-align:center; font-size:22px;>';
-                    str+='<h3 class="panel-header">ELECTORALS INFO</h3>'
-                    str+='<hr style="border-color:#F00;margin-top:10px;"></div>';
-					str+='<table class="table table-bordered" style="borde:1 solid #000;background-color:rgba(0,0,0,0.1);"><thead style="background-color:rgba(0,0,0,0.2);"><tr><th style="width:20%">CommitteeName</th><th style="width:45%">Name</th><th style="width:10%">Image</th><th style="width:25%">Enrolment Number</th></tr></thead>';
-					str+='<tbody>';
-					
-					for(var i in result){
-					  str+=' <tr>';
-					  str+=' <td>'+result[i].fromTime+'</td>';
-					  str+=' 	<td>'+result[i].toTime+'</td>';
-					  str+='<td><img width="32" id="imagecdr'+i+'" height="32" src="http://www.mytdp.com/images/cadre_images/'+result[i].pageUrl+'" onerror="setDefaultImage(this);"/></td>';
-					  str+='<td>'+result[i].timeSpent+'</td>';
-					  str+='</tr>';
-				   }
-				   str+='</tbody></table>';
-				   $("#elctarolInfoDivId").html(str);
+					str+='<h3 class="panel-header">ELECTORALS INFO</h3>'
+					str+='<hr style="border-color:#F00;margin-top:10px;"></div>';
+					if(result != null){
+						str+='<table class="table table-bordered" style="borde:1 solid #000;background-color:rgba(0,0,0,0.1);"><thead style="background-color:rgba(0,0,0,0.2);"><tr><th style="width:20%">CommitteeName</th><th style="width:45%">Name</th><th style="width:10%">Image</th><th style="width:25%">Enrolment Number</th></tr></thead>';
+						str+='<tbody>';
+						
+						for(var i in result){
+						  str+=' <tr>';
+						  str+=' <td>'+result[i].fromTime+'</td>';
+						  str+=' 	<td>'+result[i].toTime+'</td>';
+						  str+='<td><img width="32" id="imagecdr'+i+'" height="32" src="http://www.mytdp.com/images/cadre_images/'+result[i].pageUrl+'" onerror="setDefaultImage(this);"/></td>';
+						  str+='<td>'+result[i].timeSpent+'</td>';
+						  str+='</tr>';
+					   }
+					   str+='</tbody></table>';
+					 }else{
+						str+='No Data Available';
+					 }
+					  $("#elctarolInfoDivId").html(str);
 				});
 	 }
 	//getCommitteeLocations();
 	getMandalCorporationsByConstituency();
 	getUserLocation();
+	
+	function CallPrint(strid) {
+            var prtContent = document.getElementById(strid);
+            var WinPrint = window.open();
+            WinPrint.document.write(prtContent.innerHTML);
+            WinPrint.document.close();
+            WinPrint.focus();
+            WinPrint.print();
+            //WinPrint.close();
+        }
+        
 	</script>
   </body>
 </html>
