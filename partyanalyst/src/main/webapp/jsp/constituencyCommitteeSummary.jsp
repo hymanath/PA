@@ -32,12 +32,17 @@
 		<div class="col-md-4 col-md-offset-3"><label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="reportTypeCls" value=1 name="reportType" checked="true"> VILLAGE / WARD</label></div>
 		<div class="col-md-4 "><label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="reportTypeCls" value=2 name="reportType">MANDAL / MUNCIPALITY / DIVISON</label></div>
 	</div>
-						
+	
+	<span class="btn btn-info pull-right exportToExcel" onclick="exportToExcel()" style="display:none;"> Export To Excel </span>
+	
 	<div id="constSummary" style="display:none;">
 		<img id="summaryAjax" src="./images/Loading-data.gif" alt="Processing Image"/>
 	</div>
+	
+	
 </div>
 <script type="text/javascript">
+
 getAllDistricts();
 function getAllDistricts()
 {
@@ -59,6 +64,7 @@ function getAllDistricts()
 
 $("#constituencysId").change(function(){
 	$("#constSummary").show();
+	$(".exportToExcel").hide();
 	getConstituencySummary();
 });
 $(".reportTypeCls").click(function(){
@@ -104,6 +110,7 @@ function getConstituencySummary(){
 		url : "getConstituencyCommitteSummary.action",
 		data : {task:JSON.stringify(jsObj)} ,
 	}).done(function(result){
+		$(".exportToExcel").show();
 		buildConstituencySummary(result,jsObj);
 	});
 	
@@ -278,6 +285,25 @@ function buildConstituencySummary(results,jsObj){
 	});
 	
 	
+</script>
+
+<script>
+var tableToExcel = (function() {
+  var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+  return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
+function exportToExcel()
+{
+	  tableToExcel('constSummary', 'Constituency Committee Summary');
+}
+
 </script>
 
 </body>
