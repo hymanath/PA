@@ -142,11 +142,13 @@
 			<div class="col-md-4 col-sm-6 col-xs-6">
 				<div class="form-group col-xs-12">
 					<label for="committeeTypeId">COMMITTEE TYPE <span style="color:red">*</span></label>
-					<select class="form-control" id="committeeTypeId" onchange="getAffiliatedCommitsForALoc();populateDefaultValue(2);getCommitteCadreMembersInfo(1)" >
+					<select class="form-control" id="committeeTypeId" onchange="getAffiliatedCommitsForALoc();populateDefaultValue(2);getCommitteCadreMembersInfo(1);getAllCommInfo();" >
 						<option value="0">Select Committee Type</option>
+						<option value="3">View All Committee Info</option>
 						<option value="1">Main Committee</option>
 						<option value="2">Affiliated Committee</option>
 					</select >
+					
 					<div id="committeeTypeIdErr"></div>
 				 </div>
 			</div>
