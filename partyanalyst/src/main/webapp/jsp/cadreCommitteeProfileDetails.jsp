@@ -227,16 +227,16 @@
 	</s:if>
 	<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center m_top20 alert alert-success successDiv" >
 	<s:if test="%{committeeMngtType == 1}">
-	<span style="font-weight:bold;text-transform: uppercase;"> ADDING <span style="color:#FD2A34"> ${cadreCommitteeVO.cadreName} </span> AS <span style="color:#FD2A34"> ${result1} </span> FOR <span style="color:#FD2A34"> ${result2} </span> IN ${result4} <br> <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action?panchayatId=${panchayatId}&committeeTypeId=${committeeTypeId}&committeeId=${committeeId}&result3=${result3}&task=${task}&result4=${cadreCommitteeVO.memberShipCardId}">  click here If  you want CHANGE designation </a> <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 4px;"> <i class="glyphicon glyphicon-home"></i> </a> </span>
-	<input type="hidden" value="cadreCommitteeAction.action?panchayatId=${panchayatId}&committeeTypeId=${committeeTypeId}&committeeId=${committeeId}&result3=${result3}&task=${task}&result4=${cadreCommitteeVO.memberShipCardId}" id="redirectURLId"/>
+	<span style="font-weight:bold;text-transform: uppercase;"> ADDING <span style="color:#FD2A34"> ${cadreCommitteeVO.cadreName} </span> AS <span style="color:#FD2A34"> ${result1} </span> FOR <span style="color:#FD2A34"> ${result2} </span> IN ${result4} <br> <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action?panchayatId=${panchayatId}&committeeTypeId=${committeeTypeId}&committeeId=${committeeId}&result3=${result3}&task=${task}&result4=${cadreCommitteeVO.memberShipCardId}&mandalId=${mandalId}">  click here If  you want CHANGE designation </a> <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 4px;"> <i class="glyphicon glyphicon-home"></i> </a> </span>
+	<input type="hidden" value="cadreCommitteeAction.action?panchayatId=${panchayatId}&committeeTypeId=${committeeTypeId}&committeeId=${committeeId}&result3=${result3}&task=${task}&result4=${cadreCommitteeVO.memberShipCardId}&mandalId=${mandalId}" id="redirectURLId"/>
 	</s:if>
 	<s:if test="%{committeeMngtType == 2}">
 	<b> ADDING ${cadreCommitteeVO.cadreName} AS PUBLIC REPRESANTATIVE  ELECTORAL  TO ${panchayatName}  <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 4px;"> <i class="glyphicon glyphicon-home"></i> </a> </b>
 	</s:if>
 	<s:if test="%{committeeMngtType == 3}">
-	<b> ADDING ${cadreCommitteeVO.cadreName} AS MANDAL AFFILIATED ELECTORAL  TO ${panchayatName} <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 4px;"> <i class="glyphicon glyphicon-home"></i> </a> </b>
 	</s:if>
-	
+	<br>
+	<b> ADDING ${cadreCommitteeVO.cadreName} AS MANDAL AFFILIATED ELECTORAL  TO ${panchayatName} </b>
 	
 	</div>
 		<div id="profileDiv">
@@ -746,6 +746,7 @@
 		var panchayatId = '${panchayatId}';
 		var committeeMngtTypeId = '${committeeMngtType}';
 		var positinId = '${result3}';
+		var mandalId ='${mandalId}'
 		//alert(panchayatId);
 		$('document').ready(function(){
 		getCommitteeLocations();

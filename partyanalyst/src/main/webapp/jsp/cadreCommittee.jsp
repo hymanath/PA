@@ -35,7 +35,7 @@
 	  font-weight:bold;	  
 	}
 	#committeeLocationIdErr,#committeeTypeIdErr,#afflitCommitteeIdErr,#searchErrDiv,#committeLocationIdErr,#advancedSearchErrDiv,
-	#committeePositionIdErr,#searchLevelErrDiv,#nonAfflitCommitteeIdErr{
+	#committeePositionIdErr,#searchLevelErrDiv,#nonAfflitCommitteeIdErr,#mandalDivIdErr{
 		font-weight:bold;
 		color:red;
 	}
@@ -108,7 +108,7 @@
 			<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 ">
 				<div class="radio pull-right">
 				  <label>
-				    <input type="radio" name="committeeType" onclick="validateSearchType('1');getCommitteeLocations();" checked="true" value="1" id="villageId"> Village / Ward
+				    <input type="radio" name="committeeType" onclick="validateSearchType('1');getMandalCorporationsByConstituency();" checked="true" value="1" id="villageId"> Village / Ward
 				  </label>
 			    </div>
 			</div>
@@ -122,6 +122,15 @@
 			
 		</div> 
 		
+		<div class="row-fluid m_top20" id="mandalMainDivId">
+			<div class="form-group col-md-8 col-md-offset-2  col-sm-6 col-xs-6">
+					<label for="">SELECT MANDAL <span style="color:red">*</span><img style="width: 25px; height: 20px;" src="images/icons/loading.gif" id="dataLoadingImgForMandal"> </label>
+				<!--	<select id="" class="form-control" onchange="(1);"><option value="0">Select Location</option></select>-->
+				<!--	<div id=""></div> -->
+					<div id="mandalDivId"></div>
+					<div id="mandalDivIdErr"></div>
+			</div>
+		</div> 	
 		<div class="row m_top20">
 			<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 ">
 				<div class="form-group col-xs-12 pull-right">
@@ -133,7 +142,11 @@
 			<div class="col-md-4 col-sm-6 col-xs-6">
 				<div class="form-group col-xs-12">
 					<label for="committeeTypeId">COMMITTEE TYPE <span style="color:red">*</span></label>
-					<select class="form-control" id="committeeTypeId" onchange="getAffiliatedCommitsForALoc();populateDefaultValue(2);getCommitteCadreMembersInfo(1);getAllCommInfo();" ><option value="0">Select Committee Type</option><option value="3">View All Committee Info</option><option value="1">Main Committee</option><option value="2">Affiliated Committee</option></select >
+					<select class="form-control" id="committeeTypeId" onchange="getAffiliatedCommitsForALoc();populateDefaultValue(2);getCommitteCadreMembersInfo(1)" >
+						<option value="0">Select Committee Type</option>
+						<option value="1">Main Committee</option>
+						<option value="2">Affiliated Committee</option>
+					</select >
 					<div id="committeeTypeIdErr"></div>
 				 </div>
 			</div>
@@ -392,6 +405,8 @@
 		var cadreRoleId = '';
 		var task = '';
 		var defaultName = '';
+		var mandalNewId='';
+		var isFirstMandalSettingValues = true;
 		var isFirstPancayatSettingValues = true;
 		var isFirstCommityIdSettingValues = true;
 		var isFirstCadreRoleIdSettingValues = true;
@@ -403,7 +418,8 @@
 		 cadreRoleId = '${result3}';
 		 task = '${task}';
 		 defaultName = '${result4}';
-			
+		 mandalNewId ='${mandalId}';
+		
 		$('document').ready(function(){
 			$('#committeeTypeId').val(commityTypeId);
 			if(commityTypeId ==1)
@@ -557,6 +573,11 @@
 		});
 		
 	function getCommitteeLocations(){
+		if($("#villageId").is(':checked')){
+			return;
+		}
+		
+		$("#mandalMainDivId").hide();		
 		hideMembers();
 		$("#affiliCommitteeAllInfoDivId").html("");
 		$("#elctarolInfoDivId").html("");
@@ -629,6 +650,13 @@
 		$("#afflitCommitteeIdErr").html("");
 		$("#committeeMainId").hide();
 		var locId = $("#committeeLocationId").val();
+		
+		var panchayatWardByMandal= $("#panchayatWardByMandal").val();
+		
+	/*	if( panchayatWardByMandal == null || panchayatWardByMandal == 0){
+			$("#mandalDivIdErr").html("Please Select Mandal");
+			//return;
+		}  */
 		if( locId == null || locId == 0){
 			$("#committeeLocationIdErr").html("Please Select Location");
 			return;
@@ -1069,8 +1097,130 @@
 			  str1+='<a href="javascript:{addMoreEligibleRoles(\''+divId+'\','+index+',\''+btnDivId+'\','+cadreId+');}" class="btn btn-danger btn-xs ">Click here to Add+ Details</a>';	
 			  $('#'+btnDivId+'').html(str1);
 	}	
-	getCommitteeLocations();
-	getUserLocation();
+	function getMandalCorporationsByConstituency()
+	{		
+		if(task == 2){
+			$('#mndlLvlCommittSelec').trigger('click');
+			getCommitteeLocations();
+		}else{
+			if($("#mndlLvlCommittSelec").is(':checked')){
+					return;
+				}
+			$("#affiliCommitteeAllInfoDivId").html("");
+			$("#elctarolInfoDivId").html("");
+			$("#addMembrsBtn").show();
+			$("#viewMembrsBtn").show();
+			$("#mandalMainDivId").show();
+			//console.log("mandalNewId  :"+mandalNewId);
+			$("#committeeMainId").hide();
+			
+			$("#committeeLocationId option").remove();
+			$("#committeeLocationId").append('<option value="0">Select Location</option>');
+			
+			$("#panchayatWardByMandal option").remove();
+			$("#panchayatWardByMandal").append('<option value="0">Select Mandal</option>');
+			
+				$("#dataLoadingImgForMandal").show();
+				
+				 $.ajax({
+					type : "POST",
+					url : "getMandalCorporationsByConstituencyAction.action",
+					data : {} 
+				}).done(function(result){
+				$("#dataLoadingImgForMandal").hide();
+				var str='';
+				if(result !=null){
+						str+='<select id="panchayatWardByMandal" class="form-control" onchange="getPanchayatWardByMandal();">';
+						str+='<option value="0">Select Location</option>';
+						for(var i in result)
+						{
+							str+='<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>'
+						}
+						str+='</select>';	
+				}
+					$("#mandalDivId").html(str);
+					if(mandalNewId != 0 && isFirstMandalSettingValues)
+					{
+						task="";
+						isFirstMandalSettingValues = false;
+						$("#panchayatWardByMandal").val(mandalNewId);
+						getPanchayatWardByMandal();
+					}
+				});
+			}
+	
+	}
+	
+	function getPanchayatWardByMandal(){
+	
+			if($("#mndlLvlCommittSelec").is(':checked')){
+				return;
+			}
+			$("#mandalDivIdErr").html('');
+			
+			var mandalId=$("#panchayatWardByMandal").val();
+			hideMembers();
+			//$("#committeeTypeId").val(0);
+			$("#committeeLocationIdErr").html("");
+			$("#committeeTypeIdErr").html("");
+			$("#afflitCommitteeIdErr").html("");
+			$("#committeeMainId").hide();
+			$("#dataLoadingsImg").show();
+			$("#dataLoadingImg").show();
+			var reqLocationType ="";
+			var committeTypesID = $('#committeeMngtType').val();
+			var searchLevelId = 0;
+			if(committeTypesID != 1)
+				searchLevelId = $('#searchLevelId').val();
+			if(task == 2 || searchLevelId == 2 || $("#mndlLvlCommittSelec").is(':checked')){
+			  reqLocationType ="mandal";
+			}
+			var jsObj={
+				mandalId:mandalId
+			}
+			$.ajax({
+				type : "POST",
+				url : "getPanchayatWardByMandalAction.action",
+				data : {task:JSON.stringify(jsObj)} 
+			}).done(function(result){	
+		$("#dataLoadingsImg").hide();
+		$("#dataLoadingImg").hide();
+			if(committeTypesID == 1)
+			{
+				$("#committeeLocationId  option").remove();
+				$("#committeeLocationId").append('<option value="0">Select Location</option>');
+			}
+			
+			$("#committeLocationId  option").remove();
+			$("#committeLocationId").append('<option value="0">Select Location</option>');
+			
+			var reqNewLocationType ="";
+			if(task == 2 ||  searchLevelId == 2 || $("#mndlLvlCommittSelec").is(':checked')){
+			  reqNewLocationType ="mandal";
+			}
+			if(reqNewLocationType == reqLocationType){
+				 if(committeTypesID == 1)
+					for(var i in result){
+						$("#committeeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+					}
+				
+				 if(committeTypesID != 1)
+					 for(var i in result){
+						$("#committeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+				}
+				
+				if(pancayatId != 0 && isFirstPancayatSettingValues)
+				{
+					task="";
+					isFirstPancayatSettingValues = false;
+					$("#committeeLocationId").val(pancayatId);
+					getAffiliatedCommitsForALoc();
+				} 
+			}
+		
+		});	
+			
+	}
 	var finalresult;
 	function getAllCommInfo(){
 		var location=$("#committeeLocationId option:selected" ).text();
@@ -1255,7 +1405,9 @@
 				   $("#elctarolInfoDivId").html(str);
 				});
 	 }
-	
+	//getCommitteeLocations();
+	getMandalCorporationsByConstituency();
+	getUserLocation();
 	</script>
   </body>
 </html>
