@@ -276,8 +276,10 @@ var apIds ="111,352,117,114,116,108,109,112,353,113,360,124,125,122,120,121,361,
 						$("#constiDistMainDiv").attr("value","Click to view Constituency Wise");
 						$("#districtConstituencyHeading").html("District Wise Card Not Received Response");
 						if(isDistrictRequired){
+							alert('ab');
 						  getDistrictConstiWisePerformance("district","");
 						}else{
+							
 						  $("#constiDistMainOutDiv").hide();
 						  getDistrictConstiWisePerformance("constituency",apIds+","+tgIds);
 						}
@@ -908,6 +910,7 @@ function getDistrictConstiWisePerformance(locationType,locations){
 						str+='	<td>';
 						str+='		<b>'+result.apList[i].name+' <span>&nbsp;&nbsp;'+result.apList[i].notReceivedPerc+'%</span></b>';
 						if(locationType=="constituency"){
+
 						   str+='<i class=" icon-eye-open" title="Click here to view Mandal,Panchayat and Booth wise details" onclick="getSubLocationInfo('+result.apList[i].id+',\''+result.apList[i].name+'\')" style="cursor:pointer;"></i>';
 						}
 						if(result.apList[i].notReceivedPerc <= 10){
@@ -1102,6 +1105,7 @@ function closeDIV(id){
    $("#"+id).html("");
 }
 function getOtherLocationsInfo(){
+  $("#allErrorsInfoLocationWiseOuter").html('');
   $("#constiDistMainDiv").attr("disabled","disabled");
  if(selectedLocation == "district"){
     selectedLocation = "constituency";
@@ -1115,6 +1119,7 @@ function getOtherLocationsInfo(){
  }else{
    $("#constiDistMainDiv").attr("value","Click to view District Wise");
    $("#districtConstituencyHeading").html("Constituency Wise Card Not Received Response");
+   getLocationWisePerformance(232,radioVal);
    var radioVal = $('input[name=stateradio]:checked').val();
    if(radioVal == "All"){
      getDistrictConstiWisePerformance("constituency",apIds+","+tgIds);
