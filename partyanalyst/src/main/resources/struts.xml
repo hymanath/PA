@@ -9633,7 +9633,6 @@
 				<param name="root">cadreIVRResponseVO</param>
 			</result>
 		</action>
-		
 		<action name="getAffiliatedCommitteMembersInfoAction" class="cadreCommitteeAction" method="getAffiliatedCommitteMembersInfo">
 			<result type="json" name="success">
 				<param name="root">membersInfo</param>
@@ -9643,6 +9642,17 @@
 		<action name="getElctoralInfoForALocationAction" class="cadreCommitteeAction" method="getElctoralInfoForALocation">
 			<result type="json" name="success">
 				<param name="root">returnResult</param>
+			</result>
+		</action>
+		
+		<action name="getMandalCorporationsByConstituencyAction" class="cadreCommitteeAction" method="getMandalsByConstituency">
+			<result type="json" name="success">
+				<param name="root">locations</param>
+			</result>
+		</action>
+		<action name="getPanchayatWardByMandalAction" class="cadreCommitteeAction" method="getPanchayatWardByMandal">
+			<result type="json" name="success">
+				<param name="root">locations</param>
 			</result>
 		</action>
 		
