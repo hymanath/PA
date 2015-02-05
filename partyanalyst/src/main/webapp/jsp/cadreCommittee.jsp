@@ -133,7 +133,7 @@
 			<div class="col-md-4 col-sm-6 col-xs-6">
 				<div class="form-group col-xs-12">
 					<label for="committeeTypeId">COMMITTEE TYPE <span style="color:red">*</span></label>
-					<select class="form-control" id="committeeTypeId" onchange="getAffiliatedCommitsForALoc();populateDefaultValue(2);getCommitteCadreMembersInfo(1)" ><option value="0">Select Committee Type</option><option value="1">Main Committee</option><option value="2">Affiliated Committee</option></select >
+					<select class="form-control" id="committeeTypeId" onchange="getAffiliatedCommitsForALoc();populateDefaultValue(2);getCommitteCadreMembersInfo(1);getAllCommInfo();" ><option value="0">Select Committee Type</option><option value="3">View All Committee Info</option><option value="1">Main Committee</option><option value="2">Affiliated Committee</option></select >
 					<div id="committeeTypeIdErr"></div>
 				 </div>
 			</div>
@@ -169,10 +169,12 @@
 			<div class="col-md-12 col-sm-12 col-xs-12 text-center">
 					<ul class="list-inline">
 						<li><input type="button" id="viewMembrsBtn" class="btn btn-success" onclick="getCommitteMembersInfo();" value="VIEW" /></li>
-						<li><input type="button"  class="btn btn-success" onclick="showSearchInfo();" value="ADD" /></li>
+						<li><input type="button" id="addMembrsBtn" class="btn btn-success" onclick="showSearchInfo();" value="ADD" /></li>
 					</ul>
 			</div> 
 		</div> 
+		<div id="affiliCommitteeAllInfoDivId" class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12"></div>
+		<div id="elctarolInfoDivId" class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12"></div>
 		
 		<!-------VIEW BLOCK------>
 		<div class="row" id="committeeDetailsDiv">	
@@ -393,6 +395,7 @@
 		var isFirstPancayatSettingValues = true;
 		var isFirstCommityIdSettingValues = true;
 		var isFirstCadreRoleIdSettingValues = true;
+		var afflicatedCommIds=new Array();
 		
 		 pancayatId = '${panchayatId}';
 		 commityTypeId = '${committeeTypeId}';
@@ -555,6 +558,10 @@
 		
 	function getCommitteeLocations(){
 		hideMembers();
+		$("#affiliCommitteeAllInfoDivId").html("");
+		$("#elctarolInfoDivId").html("");
+		$("#addMembrsBtn").show();
+		$("#viewMembrsBtn").show();
 		$("#committeeTypeId").val(0);
 		$("#committeeLocationIdErr").html("");
 		$("#committeeTypeIdErr").html("");
@@ -795,8 +802,15 @@
 		img.src = "images/cadreCommitee/Member_thamb_image.png";
 	}
 	function populateDefaultValue(level){
+		$("#affiliCommitteeAllInfoDivId").html("");
+	
+		$("#addMembrsBtn").show();
+		$("#viewMembrsBtn").show();
 		 $("#cadreDetailsDiv,#step3Id,#searchcadrenewDiv,#designationDivId,#step1Id,#committeeMainId").hide();
 		 $("#cadreDetailsDiv").html("");
+		 $("#affiliCommitteeAllInfoDivId").html("");
+		  $("#viewMembrsBtn").removeAttr("disabled");
+		  
 		 if(level == 1)
 			$('#committeeTypeId').val(0)
 		var committeeTypeId = $('#committeeTypeId').val();
@@ -805,6 +819,11 @@
 		  $("#committeeLocationIdErr").html("");
 		  $("#committeeTypeId").val(0);
 		  $("#committeeDetailsDiv").hide();
+		  $("#elctarolInfoDivId").html("");
+		}
+		
+		if(level == 2){
+			$("#elctarolInfoDivId").html("");
 		}
 		if(committeeTypeId != null && committeeTypeId == 2) 
 		{
@@ -1052,6 +1071,191 @@
 	}	
 	getCommitteeLocations();
 	getUserLocation();
+	var finalresult;
+	function getAllCommInfo(){
+		var location=$("#committeeLocationId option:selected" ).text();
+		if($("#committeeTypeId option:selected" ).val() != "3"){
+			$("#viewMembrsBtn").show();
+			$("#addMembrsBtn").show();
+		}else{
+			$("#viewMembrsBtn").hide();
+			$("#addMembrsBtn").hide();
+		}
+		
+		$("#designationDivId,#step1Id,#step2Id,#step3Id,#cadreDetailsDiv").hide();
+		$("#committeeLocationIdErr").html("");
+		$('#cadreDetailsDiv').html("");
+		$("#committeeTypeIdErr").html("");
+		$("#afflitCommitteeIdErr").html("");
+		$("#searchcadrenewDiv").hide();
+		var locId = $("#committeeLocationId").val();
+		var locVal = $("#afflitCommitteeId").val();
+		if(locId == null || locId == 0){
+			$("#committeeLocationIdErr").html("Please Select Location");
+			return;
+		}
+		if($("#committeeTypeId").val() == 0){
+			$("#committeeTypeIdErr").html("Please Select Committee Type");
+			return;
+		}
+		if($("#committeeTypeId").val() == 2){
+			 if(locVal == null || locVal == 0){
+				$("#afflitCommitteeIdErr").html("Please Select Affiliated Committee");
+				return;
+			}
+		 }
+		 //$("#committeeDetailsDiv").show();
+		 $("#searchcadrenewDiv").hide();
+		 $("#commitMembrsCountDiv").html('<center><img src="images/icons/loading.gif"  /></center>');
+		 $("#committeeMmbrsMainDiv").html("");
+		 var reqCommitteeType = "main";
+		 var reqLocationType = "";
+		 var title ="MAIN COMMITTEE";
+		 if($("#committeeTypeId").val() == 2){
+			 reqCommitteeType = "affiliated";
+			 title =$.trim($("#afflitCommitteeId option:selected").text())+" COMMITTEE";
+		 }
+		 $("#affComitteeMainTitle").html(title.toUpperCase());
+		 if(reqCommitteeType == "main"){
+		   if($("#mndlLvlCommittSelec").is(':checked')){
+		     reqLocationType ="mandal";
+			}
+		   reqLocationValue=$("#committeeLocationId").val();
+		 }else{
+			 reqLocationValue=$("#afflitCommitteeId").val();
+		 }
+		// $("#viewMembrsBtn").attr("disabled","disabled");
+		 
+		 if($("#committeeTypeId option:selected" ).val() == "3"){
+			sendRequestForMainComm("",reqLocationValue,"main");
+			getAffiliatedCommitsIdsForALoc();
+				if($("#villageId").is(':checked')){
+					getElctoralInfoForALocation();
+				}
+		 }
+		}
+		
+		function sendRequestForMainComm(reqLocationType,reqLocationValue,reqCommitteeType){
+			if($("#mndlLvlCommittSelec").is(':checked')){
+		     reqLocationType ="mandal";
+		   }
+			$.ajax({
+				type : "POST",
+				url : "getCommitteMembersInfoAction.action",
+				data : {locationType:reqLocationType,locationValue:reqLocationValue,committeeType:reqCommitteeType} ,
+			}).done(function(result){
+				if(result!=null){
+					finalresult=result;					
+				}
+			});
+	 }
+	 
+	 var ids=new Array();
+	function getAffiliatedCommitsIdsForALoc(){
+	 var reqLocationType = "";
+			var reqLocationValue = "";
+			if($("#mndlLvlCommittSelec").is(':checked')){
+			  reqLocationType ="mandal";
+			}
+			reqLocationValue=$("#committeeLocationId").val();
+			$.ajax({
+				type : "POST",
+				url : "getAllAffiliatedCommittiesAction.action",
+				data : {locationType:reqLocationType,locationValue:reqLocationValue} ,
+			}).done(function(result){	
+			if(typeof result == "string"){
+				if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+    		      location.reload(); 
+    	        }
+			}
+				if(result != null)
+				{	
+					result.sort(SortByName);
+					for(var i in result){
+						ids.push(result[i].locationId);
+					}
+					getAffilicatedMembersInfo();
+				}
+				
+			});
+			
+	 }
+	 
+	 function getAffilicatedMembersInfo(){
+		if(ids.length!=0){
+				var jObj={ids:ids,
+						  task:"getAffiliCommDetails"
+				}
+				$.ajax({
+				type : "POST",
+				url : "getAffiliatedCommitteMembersInfoAction.action",
+				data : {task:JSON.stringify(jObj)} ,
+				}).done(function(result){
+				 if(result!=null || finalresult!=null){
+					var members = finalresult.hamletsOfTownship;
+					var str='';
+					str+='<div class="col-md-12 col-md-offset-0" style="text-align:center; font-size:22px;>';
+                    str+='<h3 class="panel-header">COMMITTEE MEMBERS INFO</h3>'
+                    str+='<hr style="border-color:#F00;margin-top:10px;"></div>';
+					str+='<table class="table table-bordered" style="borde:1 solid #000;background-color:rgba(0,0,0,0.1);"><thead style="background-color:rgba(0,0,0,0.2);"><tr><th style="width:15%">CommitteeName</th><th style="width:15%">Designation</th><th style="width:5%">Image</th><th style="width:38%">Name</th><th style="width:27%">Enrolement Number</th></tr></thead>';
+					str+='<tbody>';
+					
+					for(var i in members){
+					  str+=' <tr>';
+					  str+='<td>Main</td>'
+					  str+=' <td>'+members[i].value+'</td>';
+					  str+='<td><img width="32" id="imagecdr'+i+'" height="32" src="http://www.mytdp.com/images/cadre_images/'+members[i].url+'" onerror="setDefaultImage(this);"/></td>';
+					  str+=' 	<td>'+members[i].name+'</td>';
+					  str+='<td>'+members[i].type+'</td>';
+					  str+='</tr>';
+				   }
+					for(var i in result.hamletsOfTownship){
+						str+='<tr><td>'+result.hamletsOfTownship[i].partno+'</td>';
+						str+='<td>'+result.hamletsOfTownship[i].value+'</td>';
+						str+='<td><img width="32" id="imagecdr'+i+'" height="32" src="http://www.mytdp.com/images/cadre_images/'+result.hamletsOfTownship[i].url+'" onerror="setDefaultImage(this);"/></td>';
+						str+='<td>'+result.hamletsOfTownship[i].name+'</td>';
+						str+='<td>'+result.hamletsOfTownship[i].type+'</td></tr>';
+					}
+					str+='</tbody></table>';
+					$("#affiliCommitteeAllInfoDivId").html(str);
+				 }
+			});
+				
+			
+			}
+	}
+	 
+	 function getElctoralInfoForALocation(){
+		var locationId=$("#committeeLocationId").val();
+		var jObj={
+					locationId:locationId,
+					task:"getElectoralDetails"
+				}
+				$.ajax({
+				type : "POST",
+				url : "getElctoralInfoForALocationAction.action",
+				data : {task:JSON.stringify(jObj)} ,
+				}).done(function(result){
+					var str='';
+					str+='<div class="col-md-12 col-md-offset-0" style="text-align:center; font-size:22px;>';
+                    str+='<h3 class="panel-header">ELECTORALS INFO</h3>'
+                    str+='<hr style="border-color:#F00;margin-top:10px;"></div>';
+					str+='<table class="table table-bordered" style="borde:1 solid #000;background-color:rgba(0,0,0,0.1);"><thead style="background-color:rgba(0,0,0,0.2);"><tr><th style="width:20%">CommitteeName</th><th style="width:45%">Name</th><th style="width:10%">Image</th><th style="width:25%">Enrolment Number</th></tr></thead>';
+					str+='<tbody>';
+					
+					for(var i in result){
+					  str+=' <tr>';
+					  str+=' <td>'+result[i].fromTime+'</td>';
+					  str+=' 	<td>'+result[i].toTime+'</td>';
+					  str+='<td><img width="32" id="imagecdr'+i+'" height="32" src="http://www.mytdp.com/images/cadre_images/'+result[i].pageUrl+'" onerror="setDefaultImage(this);"/></td>';
+					  str+='<td>'+result[i].timeSpent+'</td>';
+					  str+='</tr>';
+				   }
+				   str+='</tbody></table>';
+				   $("#elctarolInfoDivId").html(str);
+				});
+	 }
+	
 	</script>
   </body>
 </html>
