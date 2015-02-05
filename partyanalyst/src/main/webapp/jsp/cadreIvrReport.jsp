@@ -79,6 +79,7 @@
 textarea {
     border: 1px solid #ddd !important;
 }
+.ui-dialog .ui-dialog-titlebar-close span {left: 0px; bottom: 0px; right: 0px; top: 0px;}
 	</style>
 </head>
 
@@ -95,7 +96,7 @@ textarea {
 		<!-- Filters Row -->
 		<div>
 		<c:if test="${sessionScope.USER.accessType == 'STATE'}">
-		<button type="button" value="" style="margin-top: -31px; margin-left: 0px;display:block;" class="btn btn-medium btn-success border-radius-0 pull-right" onclick="openPopupWindow();">Click to View Info Managers Calls Details</button></div>
+		<button type="button" value="" style="margin-top: -29px; margin-left: 0px; display: block; border-left-width: 4px; padding-left: 0px; padding-right: 0px; border-top-width: 0px;" class="btn btn-medium btn-success border-radius-0 pull-right" onclick="openPopupWindow();">Click to View Info Managers Calls Details</button></div>
 		</c:if>
 		<div id="fadeInDown" class="row-fluid">
 		
@@ -276,7 +277,6 @@ var apIds ="111,352,117,114,116,108,109,112,353,113,360,124,125,122,120,121,361,
 						$("#constiDistMainDiv").attr("value","Click to view Constituency Wise");
 						$("#districtConstituencyHeading").html("District Wise Card Not Received Response");
 						if(isDistrictRequired){
-							alert('ab');
 						  getDistrictConstiWisePerformance("district","");
 						}else{
 							
