@@ -25,9 +25,9 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 	}
 	
 	public List<Object[]> getMembersInfo(Set<Long> committeeRoleIds){
-		//0 role,1 image,2name,3membership
-		Query query = getSession().createQuery("select model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.image,model.tdpCadre.firstname,model.tdpCadre.memberShipNo " +
-				" from TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommitteeRoleId in(:committeeRoleIds)  and model.isActive ='Y'  order by model.tdpCommitteeRole.tdpRoles.order ");
+		//0 role,1 image,2name,3membership,4tdpCommitteeMemberId,5cadreId,6tdpCommitteeRoleId
+		Query query = getSession().createQuery("select model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.image,model.tdpCadre.firstname,model.tdpCadre.memberShipNo,model.tdpCommitteeMemberId, " +
+				" model.tdpCadre.tdpCadreId,model.tdpCommitteeRole.tdpCommitteeRoleId from TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommitteeRoleId in(:committeeRoleIds)  and model.isActive ='Y'  order by model.tdpCommitteeRole.tdpRoles.order ");
 		query.setParameterList("committeeRoleIds", committeeRoleIds);
 		
 		return query.list();
@@ -358,7 +358,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 	public List<Object[]> getCommitteeDetails(Long committeeId){
 		Query query = getSession().createQuery("select model.tdpCadreId,model.tdpCommitteeRole.tdpCommitteeRoleId " +
 				" from TdpCommitteeMember model " + 
-				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId=:committeeId ");
+				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId=:committeeId and model.isActive='Y'  ");
 		query.setParameter("committeeId", committeeId);
 		return query.list();
 		
