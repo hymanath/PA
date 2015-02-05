@@ -329,11 +329,13 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 				" from TdpCommittee model" +
 				" where model.district.districtId in(:districtIds)" +
 				" and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds)" +
-				" and model.district.districtId is not null " +
+				" and model.district.districtId is not null" +
+				" and model.tdpBasicCommitteeId = :basicCommty  " +
 				" group by model.district.districtId");
 		
 		query.setParameterList("districtIds", districtIds);
 		query.setParameterList("levelIds", levelIds);
+		query.setParameter("basicCommty", 1l);
 		
 		return query.list();
 	}
@@ -344,10 +346,12 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 				" where model.constituency.constituencyId in(:constituencyIds)" +
 				" and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) " +
 				" and model.constituency.constituencyId is not null " +
+				" and model.tdpBasicCommitteeId = :basicCommty  " +
 				" group by model.constituency.constituencyId");
 		
 		query.setParameterList("constituencyIds", constituencyIds);
 		query.setParameterList("levelIds", levelIds);
+		query.setParameter("basicCommty", 1l);
 		
 		return query.list();
 	}
