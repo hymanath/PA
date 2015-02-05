@@ -4684,12 +4684,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		    	
 		    	for (Object[] objects : electrolsList){
 		    		CadreCommitteeMemberVO cadreCommitteeMemberVO=new CadreCommitteeMemberVO();
-		    		cadreCommitteeMemberVO.setLevel((Long)objects[0]);//tdpCommitteeRoleId
-		    		cadreCommitteeMemberVO.setRole(objects[1].toString());//role
-		    		cadreCommitteeMemberVO.setId((Long)objects[2]);//cadreId
-		    		cadreCommitteeMemberVO.setName(objects[3].toString());//cadreName
-		    		cadreCommitteeMemberVO.setImagePath(objects[4].toString());//image
-		    		cadreCommitteeMemberVO.setMembershipNo(objects[5].toString());//membershipno
+		    		//cadreCommitteeMemberVO.setLevel((Long)objects[0]);//tdpCommitteeRoleId
+		    		//cadreCommitteeMemberVO.setRole(objects[1].toString());//role
+		    		cadreCommitteeMemberVO.setId((Long)objects[0]);//cadreId
+		    		cadreCommitteeMemberVO.setName(objects[1].toString());//cadreName
+		    		cadreCommitteeMemberVO.setImagePath(objects[2].toString());//image
+		    		cadreCommitteeMemberVO.setMembershipNo(objects[3].toString());//membershipno
 		    		cadreCommitteeMemberVOList.add(cadreCommitteeMemberVO);
 				}
 		    	
