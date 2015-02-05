@@ -77,6 +77,10 @@
 		if(areaTypeId == 1) //  Village / Ward / Division
 		{
 			$('#areaTypeId').val(areaTypeId);
+			$("#affiliCommitteeAllInfoDivId").html("");
+			$("#printBtnDiv").hide();
+			$("#addMembrsBtn").show();
+			$("#viewMembrsBtn").show();
 		}
 		
 		else if(areaTypeId == 2) // Mandal / Town / GHMC 
