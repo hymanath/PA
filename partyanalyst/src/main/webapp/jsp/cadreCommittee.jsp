@@ -727,6 +727,7 @@
 	}
 	
 	function getCommitteMembersInfo(){
+		$("#desigChangErrs").html("");
 		$("#designationDivId,#step1Id,#step2Id,#step3Id,#cadreDetailsDiv").hide();
 		$("#committeeLocationIdErr").html("");
 		$('#cadreDetailsDiv').html("");
@@ -828,7 +829,7 @@
 					  }
 					  str+=' 	</select></td>';
 					  if(x == 0){
-					    str+=' 	<td class="hideRowClass" rowspan="'+members.length+'"><div class="hideRowClass"><input type="button" value="UPDATE DESIGNATION" onclick="updateExistingDesig('+result.population+');" class="btn btn-success" /></div></td>';
+					    str+=' 	<td class="hideRowClass" rowspan="'+members.length+'"><div class="hideRowClass"><input type="button" value="UPDATE DESIGNATION" onclick="updateExistingDesig('+result.population+');" class="btn btn-success" /></div><br><div id="desigChangErrs"></div></td>';
 					  }
 					  str+=' </tr>';
 					  x++;
@@ -1125,12 +1126,14 @@
 			  $('#'+btnDivId+'').html(str1);
 	}	
 	function showEditInfo(){
+		$("#desigChangErrs").html("");
 		$(".hideRowClass").each(function(){
 			$(this).show();
 		});
 		
 	}
 	function updateExistingDesig(reqCommitteeId){
+		$("#desigChangErrs").html("");
 		var newRequestArray =  new Array();
 		var changesFound = false;
 		$(".editOldDesig").each(function(){
@@ -1146,9 +1149,10 @@
 			}	
 		 });
 		 if(!changesFound){
-			alert("No Changes Found To Update");
+			$("#desigChangErrs").html("<span style='color:green;'>No Changes Found To Update</span>");
             return;			
 		 }
+		 $("#desigChangErrs").html('<img src="images/icons/search.gif" class="ajaxImgStyle">');
 		var jsObj={					
 					committeeId : reqCommitteeId,
 					requestArray:newRequestArray
@@ -1158,7 +1162,19 @@
 				url : "updateCommitteeMemberDesignation.action",
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
-				
+				$("#desigChangErrs").html('');
+				if(result.resultCode == 1){
+					$("#desigChangErrs").html("<span style='color:green;'>Designations Updated Successfully</span>");
+					getCommitteMembersInfo();
+				}else if(result.resultCode == 0){
+				 $("#desigChangErrs").html("<span style='color:red;'>Error Occured.Please try Again.</span>");
+				}else if(result.resultCode == 2){
+					if(result.message == "This Committee Is Already Confirmed.You Cannot Update Any Information"){
+				        $("#desigChangErrs").html("<span style='color:red;'>"+result.message+"</span>");
+					}else{
+						$("#desigChangErrs").html("<span style='color:red;'>Max Count Exceeded For "+result.message+" Designation</span>");
+					}
+				}
 			});
 	}
 	function getMandalCorporationsByConstituency()
