@@ -14,6 +14,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.codehaus.xfire.service.binding.RPCBinding;
+import org.hibernate.mapping.Array;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -54,6 +55,7 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dto.AccessedPageLoginTimeVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
@@ -4530,5 +4532,81 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return null;
 	}
 	
+	public LocationWiseBoothDetailsVO getAffiliatedCommitteMembersInfo(List<Long> affiliIds){
+		LocationWiseBoothDetailsVO returnVo = new LocationWiseBoothDetailsVO();
+		List<LocationWiseBoothDetailsVO> committeeMembersInfoList = new ArrayList<LocationWiseBoothDetailsVO>();
+		List<SelectOptionVO> committeeMembersList = new ArrayList<SelectOptionVO>();
+		
+		returnVo.setResult(committeeMembersInfoList);
+		returnVo.setHamletsOfTownship(committeeMembersList);
+		try{
+			Map<Long,LocationWiseBoothDetailsVO> committeeMembersMap = new HashMap<Long,LocationWiseBoothDetailsVO>();
+			LocationWiseBoothDetailsVO vo = null;
+			SelectOptionVO memberVo = null;
+			//0committeeRoleid,1role name,2max nos
+			List<Object[]> totalCommitteRolesList = tdpCommitteeRoleDAO.getAllAffiliCommitteeRoles(affiliIds);
+			for(Object[] totalCommitteRole:totalCommitteRolesList){
+				vo = new LocationWiseBoothDetailsVO();
+				vo.setLocationName(totalCommitteRole[1].toString());
+				vo.setLocationId((Long)totalCommitteRole[0]);
+				vo.setPopulation((Long)totalCommitteRole[2]);//total positions
+				vo.setTotal((Long)totalCommitteRole[2]);//total positions left
+				vo.setVotesPolled(0l);//total positions filled
+				committeeMembersMap.put((Long)totalCommitteRole[0], vo);
+				committeeMembersInfoList.add(vo);
+			}
+			if(committeeMembersMap.size() > 0){
+				//0 count,1 id
+				List<Object[]>  electedPersonsList = tdpCommitteeMemberDAO.getRoleWiseAllocatedMembersCount(committeeMembersMap.keySet());
+				for(Object[] electedPersons:electedPersonsList){
+					LocationWiseBoothDetailsVO roleInfo = committeeMembersMap.get((Long)electedPersons[1]);
+					roleInfo.setVotesPolled((Long)electedPersons[0]);
+					roleInfo.setTotal(roleInfo.getPopulation() - (Long)electedPersons[0]);
+				}
+				
+				//0 role,1 image,2name,3membership
+				List<Object[]>  electedMembersInfoList = tdpCommitteeMemberDAO.getAffiliCommMembersInfo(committeeMembersMap.keySet());
+				
+				for(Object[] electedMembersInfo:electedMembersInfoList){
+					memberVo = new SelectOptionVO();
+					memberVo.setValue(electedMembersInfo[0].toString());//role
+					if(electedMembersInfo[1] != null){
+					   memberVo.setUrl(electedMembersInfo[1].toString());//image
+					}
+					memberVo.setName(electedMembersInfo[2].toString());//name
+					memberVo.setType(electedMembersInfo[3].toString());//membership
+					memberVo.setPartno(electedMembersInfo[4].toString());//Affilicated name
+					committeeMembersList.add(memberVo);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised in getCommitteeMembersInfo", e);
+		}
+		return returnVo;
+		
+	}
 	
+	public List<AccessedPageLoginTimeVO> getElctoralInfoForALocation(Long locationValue){
+		List<Object[]> elctoralsList=null;
+		List<AccessedPageLoginTimeVO> returnResult=new ArrayList<AccessedPageLoginTimeVO>();
+		try{
+			elctoralsList=tdpCommitteeElectrolsDAO.getElctoralInfoForALocation(locationValue);
+			for (Object[] object : elctoralsList) {
+				AccessedPageLoginTimeVO result=new AccessedPageLoginTimeVO();
+				result.setFromTime(object[0].toString());//comm type
+				result.setToTime(object[1].toString());//name
+				if(object[2]!=null){
+					result.setPageUrl(object[2].toString());//img url
+				}
+				result.setTimeSpent(object[3].toString());//id
+				
+				returnResult.add(result);
+			}
+			
+		}
+		catch (Exception e) {
+			LOG.error("Exception raised in getElctoralInfoForALocation() in cadreCommitteeService calss",e);
+		}
+		return returnResult;
+	}
 }
