@@ -2050,7 +2050,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					   }
 					  
 					   else  if(type.equalsIgnoreCase("changeDesignations")){
-						 
+						   synchronized("CHANGEDESIGNATIONS"){
 						   transactionTemplate.execute(new TransactionCallbackWithoutResult() 
 					       {
 							  public void doInTransactionWithoutResult(TransactionStatus status) 
@@ -2102,7 +2102,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					    	   resultStatus.setResultCode(2); 
 					    	   resultStatus.setMessage(rs.getMessage());
 					       }
-				
+						 }
 					   }
 				   } catch (Exception e){
 					   LOG.error("Exception raised in cadreCommitteeIncreasedPositionsOrChangeDesignations", e);
@@ -4652,5 +4652,93 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		
 		
 		return locationsList;
+	}
+	public List<CadreCommitteeMemberVO> getElectrolsOfPanchayatAndWards(Long locationId,Long locationType,Long basicCommitteeTypeId)
+	{
+		List<CadreCommitteeMemberVO> cadreCommitteeMemberVOList=null;
+		try
+		{
+		    List<Object[]> electrolsList=tdpCommitteeElectrolsDAO.getElectrolsOfPanchayatAndWards(locationId,locationType,basicCommitteeTypeId);
+		    List<Object[]> rolesList=tdpCommitteeMemberDAO.getPresidentsAndVPInfoForCommittee(locationType,locationId,basicCommitteeTypeId);
+		    
+		    if(rolesList!=null && rolesList.size()>0){
+		    	cadreCommitteeMemberVOList=new ArrayList<CadreCommitteeMemberVO>();
+			      for (Object[] objects : rolesList){
+			    	  CadreCommitteeMemberVO cadreCommitteeMemberVO=new CadreCommitteeMemberVO();
+			    	  cadreCommitteeMemberVO.setRole(objects[1].toString());
+			    	  cadreCommitteeMemberVO.setId((Long)objects[2]);
+			    	  cadreCommitteeMemberVO.setName(objects[3].toString());
+			    	  cadreCommitteeMemberVO.setImagePath(objects[4].toString());
+			    	  cadreCommitteeMemberVO.setMembershipNo(objects[5].toString());
+			    	  cadreCommitteeMemberVOList.add(cadreCommitteeMemberVO);
+				   }
+			    }
+		    
+		    
+
+		    if(electrolsList!=null && electrolsList.size()>0){
+		    	
+		    	String locationName = getLocationName(locationType,locationId);
+		    	if(cadreCommitteeMemberVOList==null)
+		    		cadreCommitteeMemberVOList=new ArrayList<CadreCommitteeMemberVO>();
+		    	
+		    	for (Object[] objects : electrolsList){
+		    		CadreCommitteeMemberVO cadreCommitteeMemberVO=new CadreCommitteeMemberVO();
+		    		cadreCommitteeMemberVO.setLevel((Long)objects[0]);//tdpCommitteeRoleId
+		    		cadreCommitteeMemberVO.setRole(objects[1].toString());//role
+		    		cadreCommitteeMemberVO.setId((Long)objects[2]);//cadreId
+		    		cadreCommitteeMemberVO.setName(objects[3].toString());//cadreName
+		    		cadreCommitteeMemberVO.setImagePath(objects[4].toString());//image
+		    		cadreCommitteeMemberVO.setMembershipNo(objects[5].toString());//membershipno
+		    		cadreCommitteeMemberVOList.add(cadreCommitteeMemberVO);
+				}
+		    	
+		    	if(cadreCommitteeMemberVOList != null && cadreCommitteeMemberVOList.size() > 0)
+				{
+		    	 cadreCommitteeMemberVOList.get(0).setLocationName(locationName);
+		    	 cadreCommitteeMemberVOList.get(0).setCommitte(tdpBasicCommitteeDAO.get(basicCommitteeTypeId).getName());
+				}
+		      }
+   
+		}
+		catch(Exception e){
+			
+			LOG.error("Exception raised in getElectrolsOfPanchayatAndWards", e);
+		}
+		return cadreCommitteeMemberVOList;
+	}
+	public List<CadreCommitteeMemberVO> getComitteeMembersInfoByCommiteTypeAndLocation(Long locationId,Long locationType,Long basicCommitteeTypeId,String status)
+	{
+		List<CadreCommitteeMemberVO> cadreCommitteeMemberVOList=null;
+		try
+		{
+		    List<Object[]> tdpCadresList=tdpCommitteeMemberDAO.getComitteeMembersInfoByCommiteTypeAndLocation(locationType,locationId,basicCommitteeTypeId,status);
+		    if(tdpCadresList!=null && tdpCadresList.size()>0){
+		    	String locationName = getLocationName(locationType,locationId);
+		    	cadreCommitteeMemberVOList=new ArrayList<CadreCommitteeMemberVO>();
+		    	
+		    	for (Object[] objects : tdpCadresList){
+		    		CadreCommitteeMemberVO cadreCommitteeMemberVO=new CadreCommitteeMemberVO();
+		    		cadreCommitteeMemberVO.setLevel((Long)objects[0]);//roleId
+		    		cadreCommitteeMemberVO.setRole(objects[1].toString());//role
+		    		cadreCommitteeMemberVO.setId((Long)objects[2]);//cadreId
+		    		cadreCommitteeMemberVO.setName(objects[3].toString());//cadreName
+		    		cadreCommitteeMemberVO.setImagePath(objects[4].toString());//image
+		    		cadreCommitteeMemberVO.setMembershipNo(objects[5].toString());//membershipno
+		    		cadreCommitteeMemberVOList.add(cadreCommitteeMemberVO);
+				}
+		    	if(cadreCommitteeMemberVOList != null && cadreCommitteeMemberVOList.size() > 0)
+				{
+		    	 cadreCommitteeMemberVOList.get(0).setLocationName(locationName);
+		    	 cadreCommitteeMemberVOList.get(0).setCommitte(tdpBasicCommitteeDAO.get(basicCommitteeTypeId).getName());
+				}
+		    	
+		    }
+		}
+		catch(Exception e){
+			
+			LOG.error("Exception raised in getComitteeMembersInfoByCommiteTypeAndLocation", e);
+		}
+		return cadreCommitteeMemberVOList;
 	}
 }

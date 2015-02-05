@@ -37,7 +37,8 @@ public class CadreCommitteeChangeDesignationsDAO extends GenericDaoHibernate<Cad
 				" from CadreCommitteeChangeDesignations model" +
 				" where model.cadreCommitteeIncreasedPositions.userIdRequest.userId=:requestUserId and " +
 				"       date(model.cadreCommitteeIncreasedPositions.insertedTime) is not null and " +
-				"       model.cadreCommitteeIncreasedPositions.type ='changeDesignations' " +
+				"       model.cadreCommitteeIncreasedPositions.type ='changeDesignations' and " +
+				"       model.tdpCommitteeMember.isActive='Y' " +
 				"order by model.cadreCommitteeIncreasedPositions.insertedTime desc");
 		
 		query.setParameter("requestUserId", requestUserId);
