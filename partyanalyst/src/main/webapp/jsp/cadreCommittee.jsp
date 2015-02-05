@@ -1108,10 +1108,6 @@
 			if($("#mndlLvlCommittSelec").is(':checked')){
 					return;
 				}
-			$("#affiliCommitteeAllInfoDivId").html("");
-			$("#elctarolInfoDivId").html("");
-			$("#addMembrsBtn").show();
-			$("#viewMembrsBtn").show();
 			$("#mandalMainDivId").show();
 			//console.log("mandalNewId  :"+mandalNewId);
 			$("#committeeMainId").hide();
@@ -1159,6 +1155,11 @@
 				return;
 			}
 			$("#mandalDivIdErr").html('');
+			
+			$("#affiliCommitteeAllInfoDivId").html("");
+			$("#elctarolInfoDivId").html("");
+			$("#addMembrsBtn").show();
+			$("#viewMembrsBtn").show();
 			
 			var mandalId=$("#panchayatWardByMandal").val();
 			hideMembers();
