@@ -3,20 +3,24 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title> Constituency Committee Summary </title>
-	
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Bootstrap -->
+	<script src="js/cadreCommittee/dist/js/bootstrap.min.js"></script>
+   <script src="js/cadreCommittee/js/jquery.smartmenus.bootstrap.min.js" type="text/javascript"></script>
+
     <link href="css/cadreCommitee/bootstrap.min.css" rel="stylesheet">
 	 <!-- Custom Styles -->
     <link href="css/cadreCommitee/style.css" rel="stylesheet">
 	<!----slick.css----->
 	<link rel="stylesheet" type="text/css" href="css/cadreCommitee/slick/slick.css"/>
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	
     <!-- Include all compiled plugins (below), or include individual files as needed -->
 
 	<!----slick Js----->
 	<script type="text/javascript" src="js/cadreCommittee/slick/slick.min.js"></script>
 	<script type="text/javascript" src="js/cadreCommitteeRequest/cadreCommitteeRequest.js"></script>
+	
 	
 </head>
 <body>
@@ -40,6 +44,28 @@
 	</div>
 	
 	
+</div>
+
+<div id="dialogSummary" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+    
+	<div class="row" style="text-align:center;">
+<div class="col-md-6 col-md-offset-3">
+<h3 class="panel-header">Constituency Committee Summary</h3>
+<hr style="border-color:#F00;margin-top:10px;" />
+</div>
+
+<span aria-hidden="true" data-dismiss="modal" class="pull-right" style="font-size: 30px; cursor: pointer; margin-left: -18px; margin-right: 24px; margin-top: -2px;" type="button">X</span>
+
+</div>
+
+
+    <div id="cadreDetailsDiv"></div>
+
+
+</div>
+</div>
 </div>
 <script type="text/javascript">
 
@@ -149,13 +175,17 @@ function buildConstituencySummary(results,jsObj){
 								str+='<td>'+rest.locationsList[j].locationName+'</td>';
 									for(var k in rest.locationsList[j].resultList){
 										if(rest.locationsList[j].resultList[k].membersCount!=null){
-											str+='<td class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="6" attr_memType="members">'+rest.locationsList[j].resultList[k].membersCount+'</td>';
+											//str+='<td><a id="location'+rest.locationsList[j].locationId+'" class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="6" attr_memType="members" href="javascript:{gettingCadreDetails(\'location'+rest.locationsList[j].locationId+'\',\'members\',6,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+');}">'+rest.locationsList[j].resultList[k].membersCount+'</a></td>';
+										    str+='<td><a href="javascript:{gettingCadreDetails(\'members\',6,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+');}">'+rest.locationsList[j].resultList[k].membersCount+'</a></td>';
 										}else{
 											str+='<td> </td>';
-										}
+										} 
 										
 										if(rest.locationsList[j].resultList[k].electrolsCount!=null){
-											str+='<td class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="6" attr_memType="electrols">'+rest.locationsList[j].resultList[k].electrolsCount+'</td>';
+										    //str+='<td><a id="location'+rest.locationsList[j].locationId+'" class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="6" attr_memType="electrols" href="javascript:{gettingCadreDetails(\'location'+rest.locationsList[j].locationId+'\',\'electrols\');}">'+rest.locationsList[j].resultList[k].electrolsCount+'</a></td>';
+											//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="6" attr_memType="electrols">'+rest.locationsList[j].resultList[k].electrolsCount+'</td>';
+										     str+='<td><a  href="javascript:{gettingCadreDetails(\'electrols\',6,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+');}">'+rest.locationsList[j].resultList[k].electrolsCount+'</a></td>';
+
 										}else{
 											str+='<td> </td>';
 										}
@@ -192,13 +222,19 @@ function buildConstituencySummary(results,jsObj){
 								str+='<td>'+rest.locationsList[j].locationName+'</td>';
 									for(var k in rest.locationsList[j].resultList){
 										if(rest.locationsList[j].resultList[k].membersCount!=null){
-											str+='<td class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="8" attr_memType="members">'+rest.locationsList[j].resultList[k].membersCount+'</td>';
+											//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="8" attr_memType="members">'+rest.locationsList[j].resultList[k].membersCount+'</td>';
+										     // str+='<td><a class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="8" attr_memType="members" id="location'+rest.locationsList[j].locationId+'" href="javascript:{gettingCadreDetails(\'location'+rest.locationsList[j].locationId+'\');}">'+rest.locationsList[j].resultList[k].membersCount+'</a></td>';
+									        str+='<td><a href="javascript:{gettingCadreDetails(\'members\',8,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+');}">'+rest.locationsList[j].resultList[k].membersCount+'</a></td>';
+
 										}else{
 											str+='<td> </td>';
 										}
 										
 										if(rest.locationsList[j].resultList[k].electrolsCount!=null){
-											str+='<td class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="8" attr_memType="electrols">'+rest.locationsList[j].resultList[k].electrolsCount+'</td>';
+											//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="8" attr_memType="electrols">'+rest.locationsList[j].resultList[k].electrolsCount+'</td>';
+										    //str+='<td><a class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="8" attr_memType="electrols" id="location'+rest.locationsList[j].locationId+'" href="javascript:{gettingCadreDetails(\'location'+rest.locationsList[j].locationId+'\');}">'+rest.locationsList[j].resultList[k].electrolsCount+'</a></td>';
+										    str+='<td><a href="javascript:{gettingCadreDetails(\'electrols\',8,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+');}">'+rest.locationsList[j].resultList[k].electrolsCount+'</a></td>';
+
 										}else{
 											str+='<td> </td>';
 										}
@@ -227,7 +263,10 @@ function buildConstituencySummary(results,jsObj){
 							str+='<td>'+rest.locationName+'</td>';
 							for(var j in rest.resultList){
 								if(rest.resultList[j].membersCount!=null){
-									str+='<td class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="5">'+rest.resultList[j].membersCount+'</td>';
+									//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="5">'+rest.resultList[j].membersCount+'</td>';
+							        //str+='<td><a class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="5"  id="location'+rest.locationId+'" href="javascript:{gettingCadreDetails(\'location'+rest.locationId+'\');}">'+rest.resultList[j].membersCount+'</a></td>';
+                                    str+='<td><a href="javascript:{gettingCadreDetails(\'members\',5,'+rest.locationId+','+rest.resultList[j].basicCommitteeTypeId+');}">'+rest.resultList[j].membersCount+'</a></td>';
+
 								}else{
 									str+='<td> - </td>';
 								}
@@ -242,7 +281,10 @@ function buildConstituencySummary(results,jsObj){
 							str+='<td>'+rest.locationName+'</td>';
 							for(var j in rest.resultList){
 								if(rest.resultList[j].membersCount!=null){
-									str+='<td class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="7">'+rest.resultList[j].membersCount+'</td>';
+									//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="7">'+rest.resultList[j].membersCount+'</td>';
+								   //str+='<td><a class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="7"  id="location'+rest.locationId+'" href="javascript:{gettingCadreDetails(\'location'+rest.locationId+'\');}">'+rest.resultList[j].membersCount+'</a></td>';
+ 								   str+='<td><a href="javascript:{gettingCadreDetails(\'members\',7,'+rest.locationId+','+rest.resultList[j].basicCommitteeTypeId+');}">'+rest.resultList[j].membersCount+'</a></td>';
+
 								}else{
 									str+='<td> - </td>';
 								}
@@ -257,7 +299,10 @@ function buildConstituencySummary(results,jsObj){
 							str+='<td>'+rest.locationName+'</td>';
 							for(var j in rest.resultList){
 								if(rest.resultList[j].membersCount!=null){
-									str+='<td class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="11">'+rest.resultList[j].membersCount+'</td>';
+									//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="11">'+rest.resultList[j].membersCount+'</td>';
+									 //str+='<td><a class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="11"  id="location'+rest.locationId+'" href="javascript:{gettingCadreDetails(\'location'+rest.locationId+'\');}">'+rest.resultList[j].membersCount+'</a></td>';
+									 str+='<td><a href="javascript:{gettingCadreDetails(\'members\',11,'+rest.locationId+','+rest.resultList[j].basicCommitteeTypeId+');}">'+rest.resultList[j].membersCount+'</a></td>';
+
 								}else{
 									str+='<td> - </td>';
 								}
@@ -271,19 +316,59 @@ function buildConstituencySummary(results,jsObj){
 			
 		}
 		
-		
-					
 	$("#constSummary").html(str);
 }
 
-	$(".lctnCmmty").click(function(){
-		var locationType = $(this).attr("attr_locationType");
-		var location = $(this).attr("attr_locationId");
-		var basicCmmtyId = $(this).attr("attr_cmmtyType");
-		
-		var memberType = $(this).attr("attr_memType"); // FOR PANCHAYAT/WARDS MEMBER TYPE - MEMBERS OR ELECTROLS
-	});
+	function gettingCadreDetails(type,locationType,location,basicCmmtyId){
 	
+		
+		 var jsObj={
+		         locationId:location,locationType:locationType,basicCommitteeTypeId:basicCmmtyId,type:type
+		       };
+			   
+		 $.ajax({
+			type : "GET",
+			url : "gettingCadreDetailsAction.action",
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			 buildingResults(result);
+		});
+		
+	}
+function buildingResults(result)
+{
+  if(result!=null)
+  {
+  
+    if(result.length>0){
+    var str='';
+	str+='<table class="table table-yellow-bordered table-condensed">';
+	str+='<thead>';
+	str+='<th  style="width: 178px; padding-left: 34px;">Designation</th>';
+	str+='<th style="padding-left: 23px; width: 204px;">Member Image</th>';
+	str+='<th style="padding-left: 72px;">NAME</th>';
+	str+='<th style="padding-left: 19px;">MemberShipNo</th>';
+	str+='</thead>';
+    for(var i in result){
+	 str+='<tr>';
+	 str+='<td  style="padding-top: 14px; padding-left: 37px;">'+result[i].role+'</td>';
+	 str+='<td ><img  style="margin-top: 5px; margin-left: 57px; padding-top: 0px;" style="margin-top: 26px; margin-left: 12px;" width="35"  height="35" src="http://www.mytdp.com/images/cadre_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);"/></td>';
+	 str+='<td style="padding-top: 15px; padding-left: 15px;width:281px;">'+result[i].name+'</td>';
+	 str+='<td style="padding-left: 15px; padding-top: 13px;">'+result[i].membershipNo+'</td>';
+	 str+='</tr>';
+	}
+   str+='</tbody>';
+   str+='</table>';
+   $("#cadreDetailsDiv").html(str);
+   $("#dialogSummary").modal("show");
+  
+  }
+  else{
+        $("#cadreDetailsDiv").html("No Data Available.");
+	}
+}
+}	
 	
 </script>
 
