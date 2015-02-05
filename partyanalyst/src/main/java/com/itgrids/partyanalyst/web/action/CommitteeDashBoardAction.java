@@ -11,6 +11,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
 import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
@@ -19,6 +20,7 @@ import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
+import com.itgrids.partyanalyst.service.ITdpCadreReportService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -40,9 +42,30 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private List<CadreCommitteeMemberVO> cadreCommitteeMemberVOList;
 	private List<IdNameVO>  idNameVOList;
 	private CommitteeSummaryVO constiSummaryVO;
+	private ITdpCadreReportService tdpCadreReportService;
+	private String accessConstituency;
+	private Long accessConstituencyId;
 	
 	
-	
+	public String getAccessConstituency() {
+		return accessConstituency;
+	}
+	public void setAccessConstituency(String accessConstituency) {
+		this.accessConstituency = accessConstituency;
+	}
+	public Long getAccessConstituencyId() {
+		return accessConstituencyId;
+	}
+	public void setAccessConstituencyId(Long accessConstituencyId) {
+		this.accessConstituencyId = accessConstituencyId;
+	}
+	public ITdpCadreReportService getTdpCadreReportService() {
+		return tdpCadreReportService;
+	}
+	public void setTdpCadreReportService(
+			ITdpCadreReportService tdpCadreReportService) {
+		this.tdpCadreReportService = tdpCadreReportService;
+	}
 	public CommitteeSummaryVO getConstiSummaryVO() {
 		return constiSummaryVO;
 	}
@@ -311,11 +334,21 @@ public String constituencyCommitteeSummaryAction()
 {
 	RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 	boolean noaccess = false;
+	boolean cadreUser = false;
+	
 	if(regVO==null){
 		return "input";
-	}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_COMMITTEE_MANAGEMENT")){
+	}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_COMMITTEE_MANAGEMENT") && !entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"TDP_COMMITTEE_ADMIN")){
 		noaccess = true ;
 	}
+	
+	if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_COMMITTEE_MANAGEMENT")){
+		cadreUser = true;
+		List<BasicVO> accLoc = getUserAccessConstituencies();
+		accessConstituency = accLoc.get(0).getName();
+		accessConstituencyId = accLoc.get(0).getId();
+	}
+	
 	if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 		noaccess = false;
 	}
@@ -324,7 +357,15 @@ public String constituencyCommitteeSummaryAction()
 		return "error";
 	}
 	
+	
+	
 	return Action.SUCCESS;
+}
+
+public List<BasicVO> getUserAccessConstituencies(){
+	HttpSession session = request.getSession();
+	RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+	return tdpCadreReportService.getAccessLocationValues(user.getAccessType(),Long.valueOf(user.getAccessValue().trim()));	
 }
 
 public String getAllDistricts(){
