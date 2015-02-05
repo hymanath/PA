@@ -83,4 +83,46 @@ public class TdpCommitteeElectrolsDAO extends GenericDaoHibernate<TdpCommitteeEl
 		return query.list();
 		
 	}
+	
+	public List<Object[]> getElctoralInfoForALocation(Long locationValue){
+		
+		
+		char locId[]=locationValue.toString().toCharArray();
+		Long type=Long.parseLong(Character.toString(locId[0]));
+		StringBuffer id=new StringBuffer();
+		for(int i=1;i<locId.length;i++){
+			id.append(locId[i]);
+		}
+		Long locationId=Long.parseLong(id.toString());
+		
+		
+		/*select distinct tdp_basic_committee.name, tdp_cadre.first_name,
+		 tdp_cadre.image,tdp_cadre.membership_id 
+		from tdp_committee_electrols,tdp_cadre,user_address,tdp_committee,tdp_basic_committee 
+		where
+		 tdp_committee_electrols.tdp_cadre_id=tdp_cadre.tdp_cadre_id and 
+		tdp_cadre.address_id=user_address.user_address_id and
+		 tdp_committee.tdp_basic_committee_id=tdp_basic_committee.tdp_basic_committee_id
+		and tdp_committee_electrols.is_deleted='N' and 
+		user_address.panchayat_id=1 order by tdp_basic_committee.tdp_basic_committee_id;*/
+		
+		
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.tdpCommittee.tdpBasicCommittee.name,model.tdpCadre.firstname, " +
+				" model.tdpCadre.image,model.tdpCadre.memberShipNo " +
+				" from TdpCommitteeElectrols model " +
+				" where  model.isDeleted='N' and ");
+				if(type==1){
+					str.append(" model.tdpCadre.userAddress.panchayat.panchayatId =:locationId " );
+				}
+				else if(type==2){
+					str.append(" model.tdpCadre.userAddress.ward.constituencyId =:locationId " );
+				}
+				str.append("order by model.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId");
+				
+				Query query = getSession().createQuery(str.toString());
+				query.setParameter("locationId", locationId);
+				
+		return query.list();
+	}
 }
