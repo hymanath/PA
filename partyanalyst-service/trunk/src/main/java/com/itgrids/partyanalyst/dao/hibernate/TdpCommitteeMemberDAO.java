@@ -476,4 +476,15 @@ public List<Object[]> getCommitteeMembersCountByLocationAndCommitteeType(Long le
 		
 		return query.list();
 	}
+
+public List<Object[]> getAffiliCommMembersInfo(Set<Long> committeeRoleIds){
+	//0 role,1 image,2name,3membership
+	Query query = getSession().createQuery("select model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.image,model.tdpCadre.firstname,model.tdpCadre.memberShipNo," +
+	" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name " +
+	" from TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommitteeRoleId in(:committeeRoleIds) and model.isActive ='Y' order by model.tdpCommitteeRole.tdpRoles.order ");
+	query.setParameterList("committeeRoleIds", committeeRoleIds);
+
+	return query.list();
+	}
+
 }
