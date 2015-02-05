@@ -81,4 +81,6 @@ public interface ICadreCommitteeService {
 
 	public List<LocationWiseBoothDetailsVO> getMandalsByConstituency(Long constituencyId );
 	public List<LocationWiseBoothDetailsVO> getPanchayatWardByMandalId(String mandalId);
+	public List<CadreCommitteeMemberVO> getElectrolsOfPanchayatAndWards(Long locationId,Long locationType,Long basicCommitteeTypeId);
+	public List<CadreCommitteeMemberVO> getComitteeMembersInfoByCommiteTypeAndLocation(Long locationId,Long locationType,Long basicCommitteeTypeId,String status);
 }

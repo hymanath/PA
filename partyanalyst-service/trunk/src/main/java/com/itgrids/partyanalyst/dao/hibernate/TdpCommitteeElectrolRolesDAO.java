@@ -22,4 +22,7 @@ public class TdpCommitteeElectrolRolesDAO extends GenericDaoHibernate<TdpCommitt
 		
 		return query.list();
 	}
+	
+	
+	
 }
