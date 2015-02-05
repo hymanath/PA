@@ -355,6 +355,20 @@ public String getAllConstituencysForADistrict(){
 		}
 		return Action.SUCCESS;
 	} 
+	public String gettingCadreDetails(){
 
+		try{
+			jObj = new JSONObject(getTask());
+			if(jObj.getString("type").equalsIgnoreCase("electrols"))
+			cadreCommitteeMemberVOList = cadreCommitteeService.getElectrolsOfPanchayatAndWards(jObj.getLong("locationId"),jObj.getLong("locationType"),jObj.getLong("basicCommitteeTypeId"));
+			else 
+			cadreCommitteeMemberVOList = cadreCommitteeService.getComitteeMembersInfoByCommiteTypeAndLocation(jObj.getLong("locationId"),jObj.getLong("locationType"),jObj.getLong("basicCommitteeTypeId"),"status");
+			
+		}catch(Exception e){
+			LOG.error("Exception occured in getCommitteeDetailsByStatus() At CadreCommitteeAction ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
 	
 }
