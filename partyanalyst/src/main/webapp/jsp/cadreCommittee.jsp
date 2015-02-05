@@ -41,8 +41,8 @@
 	}
 	.m_top5{margin-top:5px;}
 	.m_top30{margin-top:30px;}
-	
-	
+	.editDesignation{margin-bottom: 10px;}
+	.hideRowClass{display:none;}
 	</style>
 	<script>
 		var allRolesList = new Array();
@@ -806,15 +806,32 @@
 			   $("#commitMembrsCountDiv").html(str);
 			   str ="";
 			   if(members != null && members.length > 0){
+				   if(result.locationName != null && result.locationName == "N"){
+				      str+='<div class="text-right editDesignation"><input type="button" value="EDIT DESIGNATION" onclick="showEditInfo();" class="btn btn-success" /></div>';
+				   }
 				   str+='<table class="table table-bordered text-left" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); color:#fff;">';
 				   str+='	<tbody>';
+				   var x = 0;
 				   for(var i in members){
 					  str+=' <tr>';
 					  str+=' 	<td>'+members[i].value+'</td>';
 					  str+=' 	<td><img width="32" id="imagecdr'+i+'" height="32" src="http://www.mytdp.com/images/cadre_images/'+members[i].url+'" onerror="setDefaultImage(this);"/></td>';
 					  str+=' 	<td>'+members[i].name+'</td>';
 					  str+=' 	<td>'+members[i].type+'</td>';
+					  str+=' 	<td class="hideRowClass" style="color:#3d3d3d;"><select currtdpComMembId="'+members[i].mainAccountId+'" reqtdpComMembId="'+members[i].id+'" reqtdpCadreId="'+members[i].orderId+'" class="editOldDesig form-control">';
+					  for(var j in counts){
+						  if(members[i].mainAccountId ==  counts[j].locationId){
+					        str+='  <option value="'+counts[j].locationId+'" selected="selected">'+counts[j].locationName+'</option>';
+						  }else{
+							str+='  <option value="'+counts[j].locationId+'">'+counts[j].locationName+'</option>';  
+						  }
+					  }
+					  str+=' 	</select></td>';
+					  if(x == 0){
+					    str+=' 	<td class="hideRowClass" rowspan="'+members.length+'"><div class="hideRowClass"><input type="button" value="UPDATE DESIGNATION" onclick="updateExistingDesig('+result.population+');" class="btn btn-success" /></div></td>';
+					  }
 					  str+=' </tr>';
+					  x++;
 				   }
 				   str+='	</tbody>';
 				   str+='</table>';
@@ -1107,6 +1124,43 @@
 			  str1+='<a href="javascript:{addMoreEligibleRoles(\''+divId+'\','+index+',\''+btnDivId+'\','+cadreId+');}" class="btn btn-danger btn-xs ">Click here to Add+ Details</a>';	
 			  $('#'+btnDivId+'').html(str1);
 	}	
+	function showEditInfo(){
+		$(".hideRowClass").each(function(){
+			$(this).show();
+		});
+		
+	}
+	function updateExistingDesig(reqCommitteeId){
+		var newRequestArray =  new Array();
+		var changesFound = false;
+		$(".editOldDesig").each(function(){
+			var obj={
+					 tdpCommitteeMemberId:$(this).attr("reqtdpcommembid"),
+					 tdpCadreId:$(this).attr("reqtdpcadreid"),
+					 currentRole:$(this).attr("currtdpcommembid"),
+					 newRole:$(this).val(),
+				   } 
+			newRequestArray.push(obj);
+			if($(this).attr("currtdpcommembid") != $(this).val()){
+			  changesFound = true;
+			}	
+		 });
+		 if(!changesFound){
+			alert("No Changes Found To Update");
+            return;			
+		 }
+		var jsObj={					
+					committeeId : reqCommitteeId,
+					requestArray:newRequestArray
+				}
+		  $.ajax({
+				type : "GET",
+				url : "updateCommitteeMemberDesignation.action",
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				
+			});
+	}
 	function getMandalCorporationsByConstituency()
 	{		
 		if(task == 2){
