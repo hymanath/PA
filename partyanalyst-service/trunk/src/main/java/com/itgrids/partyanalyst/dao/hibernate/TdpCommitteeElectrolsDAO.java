@@ -127,17 +127,21 @@ public class TdpCommitteeElectrolsDAO extends GenericDaoHibernate<TdpCommitteeEl
 	}
 	 public List<Object[]> getElectrolsOfPanchayatAndWards(Long locationId, Long locationType, Long basicCommitteeTypeId){
 			StringBuilder sb = new StringBuilder();
-			sb.append(" select model1.tdpCommitteeRole.tdpCommitteeRoleId,model1.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.tdpCadreId,model.tdpCadre.firstname,model.tdpCadre.image,model.tdpCadre.memberShipNo,model1.tdpCommitteeMemberId,model1.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed " +
-					" from TdpCommitteeElectrols model,TdpCommitteeMember model1 " +
-					" where model.tdpCadre.tdpCadreId=model1.tdpCadre.tdpCadreId  ");
+			sb.append(" select " +
+					" model.tdpCadre.tdpCadreId," +
+					" model.tdpCadre.firstname," +
+					" model.tdpCadre.image," +
+					" model.tdpCadre.memberShipNo" +
+					" from TdpCommitteeElectrols model " +
+					" where  ");
 			if(locationType.equals(6l)){
-				sb.append(" and model.tdpCadre.userAddress.panchayat.panchayatId = :locationId ");
+				sb.append(" model.tdpCadre.userAddress.panchayat.panchayatId = :locationId ");
 			}
-			if(locationType.equals(7l)){
-				sb.append(" and model.tdpCadre.userAddress.ward.constituencyId = :locationId ");
+			if(locationType.equals(8l)){
+				sb.append(" model.tdpCadre.userAddress.ward.constituencyId = :locationId ");
 			}
 			
-			sb.append(" and model.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId= :basicCommitteeTypeId and model1.isActive='Y' ");
+			sb.append(" and model.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId= :basicCommitteeTypeId  ");
 			
 			
 			Query query = getSession().createQuery(sb.toString());
