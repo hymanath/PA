@@ -59,4 +59,5 @@ public interface IWebServiceHandlerService1 {
 	
 	public CadreImageVO sinkImageMissingData(CadreImageVO cadreImageVO);
 	 public TdpCadreVO searchTdpCadreDetailsBySVoterIdCardNo(String voterCardNo, String isFamilyVoter);
+	 public String saveStatus(CadreRegistrationVO inputs);
 }

@@ -418,7 +418,7 @@ public class WebServiceHandler2 {
 		Map<String,String> userDetails= new HashMap<String, String>();
 		userDetails.put("","");
 		try{ 
-			/*CadreRegistrationVO vo = new CadreRegistrationVO();
+			CadreRegistrationVO vo = new CadreRegistrationVO();
 			String[] inputsArray = inputs.split("&");
 			for(String input:inputsArray){
 				String[] parameterArray = input.split("=");
@@ -429,28 +429,28 @@ public class WebServiceHandler2 {
 						}
 					}else if(parameterArray[0].equalsIgnoreCase("message")){
 						if(parameterArray.length > 1){
-							vo.setRegistrationCount(parameterArray[1]);
+							vo.setArea(parameterArray[1]);//vo.setRegistrationCount(parameterArray[1]);
 						}
 					}else if(parameterArray[0].equalsIgnoreCase("receivedon")){
 						if(parameterArray.length > 1){
-							vo.setDate(parameterArray[1]);
+							vo.setDobStr(parameterArray[1]);//vo.setDate(parameterArray[1]);
 						}
 					}
 				}
 			}
-			LOG.error("mobilenumber"+vo.getMobileNumber()+",message"+vo.getRegistrationCount()+",receivedon"+vo.getDate());
-			if((vo.getMobileNumber() != null && vo.getMobileNumber().trim().length() >0) || (vo.getRegistrationCount() != null && vo.getRegistrationCount().trim().length() >0) || (vo.getDate() != null && vo.getDate().trim().length() >0)){
+			LOG.error("mobilenumber"+vo.getMobileNumber()+",message"+vo.getArea()+",receivedon"+vo.getDobStr());
+			if((vo.getMobileNumber() != null && vo.getMobileNumber().trim().length() >0) || (vo.getArea() != null && vo.getArea().trim().length() >0) || (vo.getDobStr() != null && vo.getDobStr().trim().length() >0)){
 			     return webServiceHandlerService1.saveStatus(vo);
 			}else{
 				return "Invalid Inputs !";
-			}*/
+			}
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 			return "Error Occured";
 		}
-		return "success";
+		
 	}
 	
 	public static Map<Long,Long> getMap(){

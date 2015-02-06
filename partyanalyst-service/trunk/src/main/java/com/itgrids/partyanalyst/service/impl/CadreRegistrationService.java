@@ -71,6 +71,7 @@ import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDesignationDAO;
+import com.itgrids.partyanalyst.dao.IRegistrationStatusDAO;
 import com.itgrids.partyanalyst.dao.ISmsJobStatusDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITabRecordsStatusDAO;
@@ -132,6 +133,7 @@ import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.Occupation;
+import com.itgrids.partyanalyst.model.RegistrationStatus;
 import com.itgrids.partyanalyst.model.SmsJobStatus;
 import com.itgrids.partyanalyst.model.TabRecordsStatus;
 import com.itgrids.partyanalyst.model.TabUserKeys;
@@ -234,6 +236,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ITdpCadreHistoryDAO tdpCadreHistoryDAO;
 	private CadreCommitteeService cadreCommitteeService;
 	private ITdpCommitteeRoleDAO tdpCommitteeRoleDAO;
+	private IRegistrationStatusDAO registrationStatusDAO;
 	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
@@ -249,6 +252,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	
 	public ITdpCadreTravelInfoDAO getTdpCadreTravelInfoDAO() {
 		return tdpCadreTravelInfoDAO;
+	}
+
+	public void setRegistrationStatusDAO(
+			IRegistrationStatusDAO registrationStatusDAO) {
+		this.registrationStatusDAO = registrationStatusDAO;
 	}
 
 	public void setCadreCommitteeService(CadreCommitteeService cadreCommitteeService) {
@@ -7151,4 +7159,13 @@ public class CadreRegistrationService implements ICadreRegistrationService {
  		
  		return returnList;
  	}
+	public void saveRegistrationStatus(CadreRegistrationVO vo){
+
+		RegistrationStatus status = new RegistrationStatus();
+		status.setUserId(vo.getMobileNumber());
+		status.setDate(vo.getDobStr());
+		status.setRegistrationCount(vo.getArea());
+		//status.setRegistrationFailedCount(vo.getRegistrationFailedCount());
+		registrationStatusDAO.save(status);
+}
 }
