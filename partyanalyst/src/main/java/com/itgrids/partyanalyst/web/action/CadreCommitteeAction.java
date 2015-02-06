@@ -682,7 +682,33 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		}		
 		return Action.SUCCESS;
 	}
-	
+	public String getAllCommitteeMembersInfoInALoc(){
+		try {
+				 String locationType = request.getParameter("locationType").trim();
+				 String locationValue = request.getParameter("locationValue").trim();
+				 Long locationLvl = null;
+				 if(locationType.equalsIgnoreCase("mandal")){
+					 String type =locationValue.substring(0,1).trim();
+					 if(type.equalsIgnoreCase("1")){
+						 locationLvl = 7l;
+					 }else if(type.equalsIgnoreCase("2")){
+						 locationLvl = 5l;
+					 }else{
+						 locationLvl = 9l;
+					 }
+				 }else{
+					 if(locationValue.substring(0,1).trim().equalsIgnoreCase("1")){
+						 locationLvl = 6l;
+					 }else{
+						 locationLvl = 8l;
+					 }
+				 }
+				 membersInfo = cadreCommitteeService.getAllCommitteeMembersInfoInALoc(locationLvl,Long.valueOf(locationValue.substring(1)));
+		} catch (Exception e) {
+			LOG.error("Exception occured in getCommitteMembersInfo() At CadreCommitteeAction ",e);
+		}		
+		return Action.SUCCESS;
+	}
 	public String getTdpCommitteeDesignations(){
 		try {
 			locations = cadreCommitteeService.getAllTdpCommitteeDesignations();
