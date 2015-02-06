@@ -1910,6 +1910,8 @@
 	<bean id="tdpCommitteeRoleHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCommitteeRoleHistoryDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<bean id="registrationStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.RegistrationStatusDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		

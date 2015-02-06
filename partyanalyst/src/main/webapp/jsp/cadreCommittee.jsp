@@ -124,7 +124,7 @@
 		
 		<div class="row-fluid m_top20" id="mandalMainDivId">
 			<div class="form-group col-md-8 col-md-offset-2  col-sm-6 col-xs-6">
-					<label for="">SELECT MANDAL <span style="color:red">*</span><img style="width: 25px; height: 20px;" src="images/icons/loading.gif" id="dataLoadingImgForMandal"> </label>
+					<label for="">SELECT Mandal/Municipality/Corporation <span style="color:red">*</span><img style="width: 25px; height: 20px;" src="images/icons/loading.gif" id="dataLoadingImgForMandal"> </label>
 				<!--	<select id="" class="form-control" onchange="(1);"><option value="0">Select Location</option></select>-->
 				<!--	<div id=""></div> -->
 					<div id="mandalDivId"></div>
@@ -142,7 +142,7 @@
 			<div class="col-md-4 col-sm-6 col-xs-6">
 				<div class="form-group col-xs-12">
 					<label for="committeeTypeId">COMMITTEE TYPE <span style="color:red">*</span></label>
-					<select class="form-control" id="committeeTypeId" onchange="getAffiliatedCommitsForALoc();populateDefaultValue(2);getCommitteCadreMembersInfo(1);getAllCommInfo();" >
+					<select class="form-control" id="committeeTypeId" onchange="getAffiliatedCommitsForALoc();populateDefaultValue(2);getCommitteCadreMembersInfo(1);" >
 						<option value="0">Select Committee Type</option>
 						<option value="3">View All Committee Info</option>
 						<option value="1">Main Committee</option>
@@ -280,7 +280,7 @@
 		</div>
 	</div>
 			<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 text-center">
-				<h4 id="headingDiv" class="text-uppercase"> Select Candidate For selected Designation </h4>
+				<h4 id="headingDiv" class="text-uppercase"> Search Candidate For selected Designation </h4>
 			
 			</div>
 			
@@ -361,13 +361,13 @@
 							</label>
 						</div>
 						<div class="col-md-4 col-sm-4 col-xs-4 ">
-							<label> Between Age<br>
+							 <b>Between Age<br>
 								<input type="text" id="fromAgeId" style="width: 50px;" class="ageRangeCls" placeholder=" From "/> - <input type="text" id="toAgeId" style="width: 50px;" class="ageRangeCls" placeholder=" To  "/> 
-							</label>
+							</b>
 						</div>
 						<div class="col-md-3 col-sm-4 col-xs-4 ">
 							<label>Gender
-								<select class="form-control col-md-12 col-sm-12 col-xs-12"  id="gender"><option selected>All</option><option>Male</option><option>Female</option></select>
+								<select class="form-control col-md-12 col-sm-12 col-xs-12"  id="gender"><option value="0" selected>All</option><option  value="1" >Male</option><option  value="2" >Female</option></select>
 							</label>
 						</div>
 						<div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4 m_top10">
@@ -710,6 +710,10 @@
 				}
 			});
 					
+		}else if($("#committeeTypeId").val() == 3){
+			
+			getElctoralInfoForALocation();
+			getAllCommitteeMembersInfoInALoc();
 		}else{
 
 			$("#committeeMainId").hide();
@@ -878,6 +882,10 @@
 		}
 		
 		if(level == 2){
+			if($('#committeeTypeId').val() == 3 ){
+			$("#viewMembrsBtn").hide();
+			$("#addMembrsBtn").hide();
+			}
 			$("#printBtnDiv").hide();
 			$("#elctarolInfoDivId").html("");
 		}
@@ -909,16 +917,7 @@
 			$("#designationDivId,#step1Id,#step2Id,#step3Id").hide();
 			$("#searchcadrenewDiv").hide();
 		}
-		/*if(type == 2)
-		{		alert(2222);
-			if($("#committeeTypeId").val() == 2){
-				 if(locVal == null || locVal == 0){
-					$("#afflitCommitteeIdErr").html("Please Select Affiliated Committee");
-					return;
-				}
-			}
-		}
-			*/	
+		
 		 $("#committeeMmbrsMainDiv").html("");
 		 var reqCommitteeType = "main";
 		 var reqLocationType = "";
@@ -989,6 +988,10 @@
 		$("#toAgeId").val("");
 		$("#searchBy").val("");
 		$("#cadreDetailsDiv").html("");
+		$("#casteCategory").val(0);
+		$("#casteList").val(0);
+		$("#ageRange").val(0);
+		$("#gender").val(0);
 	}
 	function showSearchInfo(){
 		$('#committeePositionIdErr').html('');
@@ -1228,7 +1231,6 @@
 	}
 	
 	function getPanchayatWardByMandal(){
-	
 			if($("#mndlLvlCommittSelec").is(':checked')){
 				return;
 			}
@@ -1303,161 +1305,46 @@
 		});	
 			
 	}
-	var finalresult;
-	function getAllCommInfo(){
-		var location=$("#committeeLocationId option:selected" ).text();
-		if($("#committeeTypeId option:selected" ).val() != "3"){
-			$("#viewMembrsBtn").show();
-			$("#addMembrsBtn").show();
-		}else{
-			$("#viewMembrsBtn").hide();
+	
+	 function getAllCommitteeMembersInfoInALoc(){
+		  $("#viewMembrsBtn").hide();
 			$("#addMembrsBtn").hide();
-		}
-		
-		$("#designationDivId,#step1Id,#step2Id,#step3Id,#cadreDetailsDiv").hide();
-		$("#committeeLocationIdErr").html("");
-		$('#cadreDetailsDiv').html("");
-		$("#committeeTypeIdErr").html("");
-		$("#afflitCommitteeIdErr").html("");
-		$("#searchcadrenewDiv").hide();
-		var locId = $("#committeeLocationId").val();
-		var locVal = $("#afflitCommitteeId").val();
-		if(locId == null || locId == 0){
-			$("#committeeLocationIdErr").html("Please Select Location");
-			return;
-		}
-		if($("#committeeTypeId").val() == 0){
-			$("#committeeTypeIdErr").html("Please Select Committee Type");
-			return;
-		}
-		if($("#committeeTypeId").val() == 2){
-			 if(locVal == null || locVal == 0){
-				$("#afflitCommitteeIdErr").html("Please Select Affiliated Committee");
-				return;
-			}
-		 }
-		 //$("#committeeDetailsDiv").show();
-		 $("#searchcadrenewDiv").hide();
-		 $("#commitMembrsCountDiv").html('<center><img src="images/icons/loading.gif"  /></center>');
-		 $("#committeeMmbrsMainDiv").html("");
-		 var reqCommitteeType = "main";
 		 var reqLocationType = "";
-		 var title ="MAIN COMMITTEE";
-		 if($("#committeeTypeId").val() == 2){
-			 reqCommitteeType = "affiliated";
-			 title =$.trim($("#afflitCommitteeId option:selected").text())+" COMMITTEE";
-		 }
-		 $("#affComitteeMainTitle").html(title.toUpperCase());
-		 if(reqCommitteeType == "main"){
-		   if($("#mndlLvlCommittSelec").is(':checked')){
-		     reqLocationType ="mandal";
-			}
-		   reqLocationValue=$("#committeeLocationId").val();
-		 }else{
-			 reqLocationValue=$("#afflitCommitteeId").val();
-		 }
-		// $("#viewMembrsBtn").attr("disabled","disabled");
-		 
-		 if($("#committeeTypeId option:selected" ).val() == "3"){
-			$("#printBtnDiv").show();
-			sendRequestForMainComm("",reqLocationValue,"main");
-			getAffiliatedCommitsIdsForALoc();
-				if($("#villageId").is(':checked')){
-					getElctoralInfoForALocation();
-				}
-		 }
-		}
-		
-		function sendRequestForMainComm(reqLocationType,reqLocationValue,reqCommitteeType){
-			if($("#mndlLvlCommittSelec").is(':checked')){
-		     reqLocationType ="mandal";
-		   }
-			$.ajax({
-				type : "POST",
-				url : "getCommitteMembersInfoAction.action",
-				data : {locationType:reqLocationType,locationValue:reqLocationValue,committeeType:reqCommitteeType} ,
-			}).done(function(result){
-				if(result!=null){
-					finalresult=result;					
-				}
-			});
-	 }
-	 
-	 var ids=new Array();
-	function getAffiliatedCommitsIdsForALoc(){
-	 var reqLocationType = "";
 			var reqLocationValue = "";
 			if($("#mndlLvlCommittSelec").is(':checked')){
 			  reqLocationType ="mandal";
 			}
 			reqLocationValue=$("#committeeLocationId").val();
-			$.ajax({
-				type : "POST",
-				url : "getAllAffiliatedCommittiesAction.action",
-				data : {locationType:reqLocationType,locationValue:reqLocationValue} ,
-			}).done(function(result){	
-			if(typeof result == "string"){
-				if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
-    		      location.reload(); 
-    	        }
-			}
-				if(result != null)
-				{	
-					result.sort(SortByName);
-					for(var i in result){
-						ids.push(result[i].locationId);
-					}
-					getAffilicatedMembersInfo();
-				}
-				
-			});
-			
-	 }
-	 
-	 function getAffilicatedMembersInfo(){
-		if(ids.length!=0){
-				var jObj={ids:ids,
-						  task:"getAffiliCommDetails"
-				}
 				$.ajax({
 				type : "POST",
-				url : "getAffiliatedCommitteMembersInfoAction.action",
-				data : {task:JSON.stringify(jObj)} ,
+				url : "getAllCommitteeMembersInfoInALoc.action",
+				data : {locationType:reqLocationType,locationValue:reqLocationValue} ,
 				}).done(function(result){
 					var str='';
 					str+='<div class="col-md-12 col-md-offset-0" style="text-align:center; font-size:22px;>';
                     str+='<h3 class="panel-header">COMMITTEE MEMBERS INFO</h3>'
                     str+='<hr style="border-color:#F00;margin-top:10px;"></div>';
-				 if(result!=null || finalresult!=null){
-					var members = finalresult.hamletsOfTownship;
-					str+='<table class="table table-bordered" style="borde:1 solid #000;background-color:rgba(0,0,0,0.1);"><thead style="background-color:rgba(0,0,0,0.2);"><tr><th style="width:15%">CommitteeName</th><th style="width:15%">Designation</th><th style="width:5%">Image</th><th style="width:38%">Name</th><th style="width:27%">Enrolement Number</th></tr></thead>';
+				 if(result!=null && result.hamletsOfTownship!=null && result.hamletsOfTownship.length > 0){
+					var members = result.hamletsOfTownship;
+					str+='<table class="table table-bordered" style="borde:1 solid #000;background-color:rgba(0,0,0,0.1);"><thead style="background-color:rgba(0,0,0,0.2);"><tr><th style="width:15%">Committee Name</th><th style="width:15%">Designation</th><th style="width:5%">Image</th><th style="width:38%">Name</th><th style="width:27%">Enrolment Number</th></tr></thead>';
 					str+='<tbody>';
 					
 					for(var i in members){
 					  str+=' <tr>';
-					  str+='<td>Main</td>'
+					  str+='<td>'+members[i].mandalName+'</td>'
 					  str+=' <td>'+members[i].value+'</td>';
 					  str+='<td><img width="32" id="imagecdr'+i+'" height="32" src="http://www.mytdp.com/images/cadre_images/'+members[i].url+'" onerror="setDefaultImage(this);"/></td>';
 					  str+=' 	<td>'+members[i].name+'</td>';
 					  str+='<td>'+members[i].type+'</td>';
 					  str+='</tr>';
 				   }
-					for(var i in result.hamletsOfTownship){
-						str+='<tr><td>'+result.hamletsOfTownship[i].partno+'</td>';
-						str+='<td>'+result.hamletsOfTownship[i].value+'</td>';
-						str+='<td><img width="32" id="imagecdr'+i+'" height="32" src="http://www.mytdp.com/images/cadre_images/'+result.hamletsOfTownship[i].url+'" onerror="setDefaultImage(this);"/></td>';
-						str+='<td>'+result.hamletsOfTownship[i].name+'</td>';
-						str+='<td>'+result.hamletsOfTownship[i].type+'</td></tr>';
-					}
+					
 					str+='</tbody></table>';
 				 }else{
-					 str+='No Data Available';
+					 str+='<center><div style="margin-bottom:10px;"><b>No Data Available</b></div></center>';
 				 }
 				 $("#affiliCommitteeAllInfoDivId").html(str);
 			});
-				
-			
-			}
 	}
 	 
 	 function getElctoralInfoForALocation(){
@@ -1475,7 +1362,7 @@
 					str+='<div class="col-md-12 col-md-offset-0" style="text-align:center; font-size:22px;>';
 					str+='<h3 class="panel-header">ELECTORALS INFO</h3>'
 					str+='<hr style="border-color:#F00;margin-top:10px;"></div>';
-					if(result != null){
+					if(result != null && result.length > 0){
 						str+='<table class="table table-bordered" style="borde:1 solid #000;background-color:rgba(0,0,0,0.1);"><thead style="background-color:rgba(0,0,0,0.2);"><tr><th style="width:20%">CommitteeName</th><th style="width:45%">Name</th><th style="width:10%">Image</th><th style="width:25%">Enrolment Number</th></tr></thead>';
 						str+='<tbody>';
 						
@@ -1489,7 +1376,7 @@
 					   }
 					   str+='</tbody></table>';
 					 }else{
-						str+='No Data Available';
+						str+='<center><b>No Data Available</b></center>';
 					 }
 					  $("#elctarolInfoDivId").html(str);
 				});
