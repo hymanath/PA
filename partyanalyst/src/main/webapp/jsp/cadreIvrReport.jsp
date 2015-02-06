@@ -137,28 +137,28 @@ textarea {
 			
 				<table class="table table-bordered border-radius-0 mb-0">
 					<tr>
-						<td style="width:173px;text-align:center;">
+						<!--<td style="width:173px;text-align:center;">
 						<img style="height:18px;width:16px;margin-top:80px;margin-left:1px;" src="./images/icons/search.gif" id="ajaxImg" class="offset1"/>
 						<div id="registrationTD">
 						</div>
-						</td>
-						<td style="width:100px;text-align:center;" rowspan="2" id="totalIvrTD">
+						</td>-->
+						<td style="text-align:center; width:20%;" rowspan="2" id="totalIvrTD">
 							
 						</td>
-						<td class="width25p" rowspan="2"  id="successIvrTD">
+						<td style="width:40%;" rowspan="2"  id="successIvrTD">
 							
 						</td>
-						<td class="width25p" rowspan="2" style="230px !important;"  id="errorIvrTD">
+						<td style="width:40%;" rowspan="2" style="230px !important;"  id="errorIvrTD">
 							
 						</td>	
 							
 					</tr>
-					<tr>
+					<!--<tr>
 						<td class="width25p" id="printingTD" style="text-align:center;">
 							
 						</td>
 						
-					</tr>
+					</tr>-->
 					
 				</table>
 			</div>	
@@ -296,7 +296,7 @@ var apIds ="111,352,117,114,116,108,109,112,353,113,360,124,125,122,120,121,361,
 		$(".radioCls").click(function() {
 		
 			 dateRange();
-			getIvrBasicCount();
+			//getIvrBasicCount();
 			getDateWiseIVRCount();
 			selectedLocation ="district";
 			$("#constiDistMainDiv").attr("value","Click to view Constituency Wise");
@@ -643,12 +643,12 @@ function buildIvrCountByDate(result,state)
 		var unAnswered= (result[0].totalUnAnswered / result[0].total * 100);
 		
 		var str ='';
-		str+='<canvas id="answerErrorChart"  height="180" width="220" style="margin-left: -33px; margin-right: -29px; margin-top: 35px; width: 220px; height: 180px;"></canvas>';
-		str+='<div id="legend" style="margin-top:0px;margin-left:0px;">';
-		str+='<ul class="doughnut-legend">';
-		str+='<li><span style="background-color: rgb(92, 182, 92); width: 10px; height: 10px; display: block; margin-left: 50px; margin-top: 11px;"></span><p style="margin-top: -13px; margin-right: 0px; margin-bottom: -8px;">IVR Answered</p></li>';
-		str+='<li><span style="background-color: rgb(209, 71, 65); width: 10px; height: 10px; display: block; margin-left: 50px; margin-top: 0px;"></span><p style="margin-top: -13px; margin-right: 29px; margin-left: 0px;">IVR Error</p></li>';
-		str+='<li><span style="background-color: rgb(0, 85, 128); width: 10px; height: 10px; display: block; margin-left: 50px; margin-top: -20px;"></span><p style="margin-top: -13px; margin-right: 29px; margin-left: 49px;">IVR UnAnswered</p></li>';
+		str+='<canvas id="answerErrorChart"  height="180" width="220" style=" margin-top: 35px; width: 220px; height: 180px;"></canvas>';
+		str+='<div id="legend" style="margin-top:10px;margin-left:30px;">';
+		str+='<ul class="doughnut-legend text-left">';
+		str+='<li><span style="background-color: rgb(92, 182, 92); width: 10px; height: 10px; display:inline-block; "></span> IVR Answered</li>';
+		str+='<li><span style="background-color: rgb(209, 71, 65); width: 10px; height: 10px; display: inline-block; "></span> IVR Error</li>';
+		str+='<li><span style="background-color: rgb(0, 85, 128); width: 10px; height: 10px; display: inline-block;"></span> IVR UnAnswered</li>';
 		str+='</ul>';
 		str+='</div>';
 		str+='<div class="text-center" style="margin-top:0px;">';	
@@ -760,7 +760,7 @@ function buildIvrCountByDate(result,state)
 	str1+='<h4 class="m-0" style="border-bottom: 1px solid rgb(204, 204, 204); padding-bottom: 10px;color:#d54a45;">IVR ERROR CALLS</h4>';
 	str1+='<ul class="unstyled">';
 	
-	str1+='<h6 class="label" style="width: 180px; margin-left: 2px; margin-right: -55px;">Error Calls : '+result[0].totalErrorPerc+' %<span>&nbsp;&nbsp;</h6>';
+	//str1+='<h6 class="label" style="width: 180px; margin-left: 2px; margin-right: -55px;">Error Calls : '+result[0].totalErrorPerc+' %<span>&nbsp;&nbsp;</h6>';
 	str1+='<li>';	
 	str1+='<b>Network Error <span>&nbsp;&nbsp;'+result[0].newtworkErrorPerc+'%</span></b>';
 	str1+='<div style="height:5px;" class="progress progress-success mb-10">';
@@ -796,8 +796,7 @@ function buildIvrCountByDate(result,state)
 	
 	str1+='<div class="row-fluid">';
 	str1+='<h4 class="m-0" style="border-bottom: 1px solid rgb(204, 204, 204); padding-bottom: 10px;color:#005580;">IVR UNANSWERED CALLS</h4>';
-	
-	str1+='<h6 class="label" style="width: 180px; margin-left: 2px; margin-right: -55px;">Unanswered Calls : '+result[0].totalUnAnsweredPerc+' %<span>&nbsp;&nbsp;</h6>';
+	//str1+='<h6 class="label" style="width: 180px; margin-left: 2px; margin-right: -55px;">Unanswered Calls : '+result[0].totalUnAnsweredPerc+' %<span>&nbsp;&nbsp;</h6>';
 	str1+='<ul class="unstyled">';
 	str1+='<li>';
 	str1+='<b>Rejected Calls  <span>&nbsp;&nbsp;'+result[0].callRejectedPerc+'%</span></b>';
@@ -1052,9 +1051,9 @@ function getLocationWisePerformance(constituencyId,locationType,name){
 				for(var i in result.apList){
 				  str+='<tr>';
 				  if(locationType =="All" || locationType =="AP" || locationType =="TS"){
-				    str+='  <td><a href="javascript:{}" title="Click Here To View Previous Calls Info" onclick="getEnquiryInfo(\'constituency\',\''+result.apList[i].id+'\',\''+result.apList[i].name+'\')">'+result.apList[i].name+'</a><span style="cursor:pointer;" title="Click Here To Add Call Details" onclick="openSaveEnquiryInfo(\'constituency\','+result.apList[i].id+','+result.apList[i].id+',\''+result.apList[i].name+'\')"><i class="icon-list-alt"></i></span></td>';
+				    str+='  <td><a href="javascript:{}" title="Click Here To View Calls Info" onclick="getEnquiryInfo(\'constituency\',\''+result.apList[i].id+'\',\''+result.apList[i].name+'\')">'+result.apList[i].name+'</a><span style="cursor:pointer;" title="Click Here To Add Call Details" onclick="openSaveEnquiryInfo(\'constituency\','+result.apList[i].id+','+result.apList[i].id+',\''+result.apList[i].name+'\')"><i class="icon-list-alt"></i></span></td>';
 				  }else if(locationType == "mandal"){
-				    str+='  <td><a href="javascript:{}" title="Click Here To View Previous Calls Info" onclick="getEnquiryInfo(\'tehsil\',\''+result.apList[i].id+'\',\''+result.apList[i].name+'\')">'+result.apList[i].name+'</a><span style="cursor:pointer;" title="Click Here To Add Call Details" onclick="openSaveEnquiryInfo(\'mandal\','+result.apList[i].id+','+constituencyId+',\''+result.apList[i].name+'\')"><i class="icon-list-alt"></i></span></td>';
+				    str+='  <td><a href="javascript:{}" title="Click Here To View Calls Info" onclick="getEnquiryInfo(\'tehsil\',\''+result.apList[i].id+'\',\''+result.apList[i].name+'\')">'+result.apList[i].name+'</a><span style="cursor:pointer;" title="Click Here To Add Call Details" onclick="openSaveEnquiryInfo(\'mandal\','+result.apList[i].id+','+constituencyId+',\''+result.apList[i].name+'\')"><i class="icon-list-alt"></i></span></td>';
 				  }else{
 				    str+='  <td>'+result.apList[i].name+'</td>';
 				  }
@@ -1116,10 +1115,12 @@ function getOtherLocationsInfo(){
    $("#constiDistMainDiv").attr("value","Click to view Constituency Wise");
    $("#districtConstituencyHeading").html("District Wise Card Not Received Response");
    getDistrictConstiWisePerformance("district","");
+    //getLocationWisePerformance(232,radioVal);
+	getLocationWisePerformance(232,$('input[name=stateradio]:checked').val());
  }else{
    $("#constiDistMainDiv").attr("value","Click to view District Wise");
    $("#districtConstituencyHeading").html("Constituency Wise Card Not Received Response");
-   getLocationWisePerformance(232,radioVal);
+  
    var radioVal = $('input[name=stateradio]:checked').val();
    if(radioVal == "All"){
      getDistrictConstiWisePerformance("constituency",apIds+","+tgIds);
@@ -1186,11 +1187,18 @@ function generateExcel(reqId){
  function getEnquiryInfo(locationLvl,locationValue,locationName){
  
  $('#prevCallDetailsShowInner').html('<img src="images/Loading-data.gif" style="margin-left: 380px;margin-top: 78px;width:70px;height:60px;">');
+ var name="";
+ if(locationLvl == "constituency"){
+	name = ""+locationName+" Constituency";
+ }else
+ {
+	name = locationName;
+ }
   $('#prevCallDetailsShowOuter').dialog(
 	{
 		width : 850,
 		height:550,
-		title : ""+locationName+" Previous Calls Info"
+		title : ""+name+" Calls Info"
 	});
  if(locationLvl == "tehsil"){
     if(locationValue.charAt(0) =="1"){
@@ -1257,11 +1265,18 @@ function generateExcel(reqId){
         }		
 }
  function openSaveEnquiryInfo(locationType,locationId,constituencyId,locationNme){
+ 
+ var name="";
+ if(locationType =="constituency"){
+ name = " "+locationNme+" Constituency";
+ }else{
+ name=locationNme;
+ }
          $('#prevCallDetailsShowOuter').dialog(
 			{
 				width : 850,
 				height:550,
-				title : " "+locationNme+" Call Details"
+				title : " "+name+" Calls Info"
 			});
 			var str="<div style='color:red;' id='errorMesDiv'/>";
 			str +="<div style='color:green;' id='successMesDiv'/>";
@@ -1331,7 +1346,7 @@ function generateExcel(reqId){
  }
 </script>
 <script>
-getIvrBasicCount();
+//getIvrBasicCount();
 getDateWiseIVRCount();
 if(isDistrictRequired){
   getDistrictConstiWisePerformance("district","");
