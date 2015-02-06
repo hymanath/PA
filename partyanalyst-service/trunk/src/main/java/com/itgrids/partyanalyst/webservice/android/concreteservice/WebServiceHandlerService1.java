@@ -1290,5 +1290,20 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
     	
     	return returnVO;
     }
+    public String saveStatus(CadreRegistrationVO input)
+	{
+		LOG.debug("Entered into the saveStatus  method in WebServiceHandlerService");
+		try
+		{
+			cadreRegistrationService.saveRegistrationStatus(input);
+		
+		}catch(Exception e)
+		{
+			LOG.error("Exception raised in saveStatus  method in WebServiceHandlerService");
+			
+			return "failure";
+		}
+		return "success";
+	}
 }
 

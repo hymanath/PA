@@ -33,6 +33,16 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		return query.list();
 	}
 	
+	public List<Object[]> getAllCommitteeMembersInfoInALoc(Long locationLvl,Long locationVal){
+		//0 role,1 image,2name,3membership,4tdpCommitteeMemberId,5cadreId,6tdpCommitteeRoleId,7committee Name
+		Query query = getSession().createQuery("select model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.image,model.tdpCadre.firstname,model.tdpCadre.memberShipNo,model.tdpCommitteeMemberId, " +
+				" model.tdpCadre.tdpCadreId,model.tdpCommitteeRole.tdpCommitteeRoleId,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name from TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId =:locationLvl " +
+				" and  model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal and model.isActive ='Y'  order by model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId, model.tdpCommitteeRole.tdpRoles.order ");
+		query.setParameter("locationLvl", locationLvl);
+		query.setParameter("locationVal", locationVal);
+		return query.list();
+	}
+	
 	public List<Object[]> getMemberInfo(Long tdpCadreId){
 
 		Query query = getSession().createQuery("select model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId, " +

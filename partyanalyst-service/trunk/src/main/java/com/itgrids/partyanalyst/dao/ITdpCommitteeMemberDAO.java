@@ -43,4 +43,5 @@ public interface ITdpCommitteeMemberDAO  extends GenericDao<TdpCommitteeMember, 
 	public List<Object[]> getCommitteePresidentAndVicePresidentsCount(List<Long> locationIds, Long locationLevel);
 	public List<Object[]> getAffiliCommMembersInfo(Set<Long> committeeRoleIds);
 	public List<Object[]> getPresidentsAndVPInfoForCommittee(Long levelId,Long locationVal,Long committeeTypeId);
+	public List<Object[]> getAllCommitteeMembersInfoInALoc(Long locationLvl,Long locationVal);
 }
