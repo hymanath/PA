@@ -306,7 +306,7 @@
 						<label for="searchLevel">SEARCH LEVEL <img id="dataLoadingsImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/></label>
 						<select class="form-control" id="searchLevelId" onchange="updateSearchType(this.value)">
 						<option value="0">Select Location</option>
-						<option value="1">Panchayat/Ward</option>
+						<option value="1">Village/Ward</option>
 						<option value="2">Town/Division</option>
 						</select >
 						<div id="searchLevelErrDiv"></div>
@@ -1043,11 +1043,13 @@
 		if(levelId==2){
 			reqLocationType = "mandal";
 		}
+		$("#dataLoadingsImg").show();
 		$.ajax({
 			type : "POST",
 			url : "getCommitteLocationsAction.action",
 			data : {locationType:reqLocationType} ,
 		}).done(function(result){
+			$("#dataLoadingsImg").hide();
 			$("#committeLocationId  option").remove();
 			$("#committeLocationId").append('<option value="0">Select Location</option>');
 			for(var i in result){
@@ -1056,7 +1058,7 @@
 					$("#committeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
 				}else{
 					var locId = result[i].locationId+"";
-					if(locId.substr(0,1) == "1"){
+					if(locId.substr(0,1) == "1" || locId.substr(0,1) == "3"){
 				       $("#committeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
 					}
 				}
