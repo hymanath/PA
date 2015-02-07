@@ -1,7 +1,10 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -10,10 +13,12 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
+import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
@@ -22,6 +27,7 @@ import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ITdpCadreReportService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -34,6 +40,8 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private String 								task;
 	private LocationWiseBoothDetailsVO          locationWiseBoothDetailsVO;
 	private ICadreCommitteeService				cadreCommitteeService;
+	@Autowired 
+	private IWebServiceHandlerService1 webServiceHandlerService1;
 	private static final Logger         		LOG = Logger.getLogger(CommitteeDashBoardAction.class);
 	
 	private CadreCommitteeReportVO          cadreCommitteeReportVO;
@@ -412,4 +420,34 @@ public String getAllConstituencysForADistrict(){
 		return Action.SUCCESS;
 	}
 	
+	public String saveFieldMessages(){
+		
+		try{ 
+			CadreRegistrationVO vo = new CadreRegistrationVO();
+			vo.setMobileNumber(request.getParameter("mobilenumber"));
+			vo.setArea(request.getParameter("message"));
+			try{
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+				vo.setDob(sdf.parse(request.getParameter("receivedon")));
+			}catch(Exception e){
+				accessConstituency =  "Invalid Date";
+				return Action.SUCCESS;
+			}
+			LOG.error("mobilenumber"+vo.getMobileNumber()+",message"+vo.getArea()+",receivedon"+vo.getDobStr());
+			if((vo.getMobileNumber() != null && vo.getMobileNumber().trim().length() >0) || (vo.getArea() != null && vo.getArea().trim().length() >0) || (vo.getDobStr() != null && vo.getDobStr().trim().length() >0)){
+				accessConstituency = webServiceHandlerService1.saveStatus(vo);
+				return Action.SUCCESS;
+			}else{
+				accessConstituency =  "Invalid Inputs !";
+				return Action.SUCCESS;
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			accessConstituency =  "Error Occured";
+		}
+	
+	   return Action.SUCCESS;
+	}
 }
