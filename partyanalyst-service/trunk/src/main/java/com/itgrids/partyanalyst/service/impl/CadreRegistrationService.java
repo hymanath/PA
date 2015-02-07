@@ -87,6 +87,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreTravelInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreVerfiedDataDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeRoleDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.ITwoWaySmsMobileDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
@@ -98,6 +99,7 @@ import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterNamesDAO;
 import com.itgrids.partyanalyst.dao.IVoterRelationDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreFamilyVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
@@ -148,6 +150,7 @@ import com.itgrids.partyanalyst.model.TdpCadreTravelInfo;
 import com.itgrids.partyanalyst.model.TdpCadreVerfiedData;
 import com.itgrids.partyanalyst.model.TdpCommittee;
 import com.itgrids.partyanalyst.model.TdpCommitteeRole;
+import com.itgrids.partyanalyst.model.TwoWaySmsMobile;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.VerifiedDataRequest;
@@ -237,6 +240,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private CadreCommitteeService cadreCommitteeService;
 	private ITdpCommitteeRoleDAO tdpCommitteeRoleDAO;
 	private IRegistrationStatusDAO registrationStatusDAO;
+	private ITwoWaySmsMobileDAO twoWaySmsMobileDAO;
 	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
@@ -252,6 +256,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	
 	public ITdpCadreTravelInfoDAO getTdpCadreTravelInfoDAO() {
 		return tdpCadreTravelInfoDAO;
+	}
+
+	public void setTwoWaySmsMobileDAO(ITwoWaySmsMobileDAO twoWaySmsMobileDAO) {
+		this.twoWaySmsMobileDAO = twoWaySmsMobileDAO;
 	}
 
 	public void setRegistrationStatusDAO(
@@ -7162,11 +7170,104 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	public void saveRegistrationStatus(CadreRegistrationVO vo){
 
 		RegistrationStatus status = new RegistrationStatus();
-		status.setUserId(vo.getMobileNumber());
-		status.setDate(vo.getDob());
+		TwoWaySmsMobile twoWaySmsMobile = null;
+		String reqMobileNo = vo.getMobileNumber().trim();
+		if(reqMobileNo.length() > 10){
+			reqMobileNo = reqMobileNo.substring(reqMobileNo.length() - 10);
+		}
+		if(reqMobileNo.length() == 10){
+			List<TwoWaySmsMobile> twoWaySmsMobileList = twoWaySmsMobileDAO.getMobileInfo(reqMobileNo);
+			if(twoWaySmsMobileList.size() > 0 && twoWaySmsMobileList.get(0) != null){
+				twoWaySmsMobile = twoWaySmsMobileList.get(0);
+			}
+		}
 		status.setRegistrationCount(vo.getArea());
+		if(twoWaySmsMobile != null){
+			status.setTwoWaySmsMobile(twoWaySmsMobile);
+			status.setBooth(twoWaySmsMobile.getBooth());
+			if(twoWaySmsMobile.getBooth().getLocalBody() != null){
+				status.setBoothType("Urban");
+			}else{
+				status.setBoothType("Rural");
+			}
+		}
+		status.setMobile(vo.getMobileNumber().trim());
+		status.setIsDeleted("N");
 		status.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-		//status.setRegistrationFailedCount(vo.getRegistrationFailedCount());
+		
 		registrationStatusDAO.save(status);
-}
+    }
+	
+	public CadreCommitteeMemberVO getBoothsCurrentStatus(){
+		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
+		CadreCommitteeMemberVO returnVo = new CadreCommitteeMemberVO();
+		List<CadreCommitteeMemberVO> knownList = new ArrayList<CadreCommitteeMemberVO>();
+		List<CadreCommitteeMemberVO> unKnownList = new ArrayList<CadreCommitteeMemberVO>();
+		returnVo.setKnownList(knownList);
+		returnVo.setUnKnownList(unKnownList);
+		try{
+		CadreCommitteeMemberVO cadreCommitteeMemberVO = null;
+		//0partNo,1totalVoters,2polled count,3boothType,4insertedTime,5mobile
+		List<Object[]> knownBoothsResults = new ArrayList<Object[]>();
+		try{
+		 knownBoothsResults = registrationStatusDAO.getAllKnownBoothsInfo();
+		}catch(Exception e){
+			LOG.error(e);
+		}
+		for(Object[] booth:knownBoothsResults){
+			cadreCommitteeMemberVO = new CadreCommitteeMemberVO();
+			cadreCommitteeMemberVO.setName(booth[0].toString());
+			if(booth[1] != null){
+			   cadreCommitteeMemberVO.setTotal(Long.valueOf(booth[1].toString()));
+			}
+			if(booth[2] != null){
+			    cadreCommitteeMemberVO.setStatus(booth[2].toString());
+			}else{
+				cadreCommitteeMemberVO.setStatus("");
+			}
+			if(booth[3] != null){
+			    cadreCommitteeMemberVO.setRole(booth[3].toString());
+			}else{
+				cadreCommitteeMemberVO.setRole("");
+			}
+			if(booth[4] != null){
+			    cadreCommitteeMemberVO.setLocationName(sdf.format((Date)booth[4]));
+			}else{
+				cadreCommitteeMemberVO.setLocationName("");
+			}
+			if(booth[5] != null){
+			    cadreCommitteeMemberVO.setMembershipNo(booth[5].toString());
+			}else{
+				cadreCommitteeMemberVO.setMembershipNo("");
+			}
+            
+              knownList.add(cadreCommitteeMemberVO);
+		}
+		 //0polled count,1insertedTime,2mobile
+		List<Object[]> unKnownBoothsResults = registrationStatusDAO.getAllUnKnownBoothsInfo();
+		for(Object[] booth:unKnownBoothsResults){
+			cadreCommitteeMemberVO = new CadreCommitteeMemberVO();
+			if(booth[0] != null){
+			    cadreCommitteeMemberVO.setStatus(booth[0].toString());
+			}else{
+				cadreCommitteeMemberVO.setStatus("");
+			}
+			if(booth[1] != null){
+			    cadreCommitteeMemberVO.setLocationName(sdf.format((Date)booth[1]));
+			}else{
+				cadreCommitteeMemberVO.setLocationName("");
+			}
+			if(booth[2] != null){
+			    cadreCommitteeMemberVO.setMembershipNo(booth[2].toString());
+			}else{
+				cadreCommitteeMemberVO.setMembershipNo("");
+			}
+			
+             unKnownList.add(cadreCommitteeMemberVO);
+		}
+		}catch(Exception e){
+			LOG.error("Exception Rised in getBoothsCurrentStatus ",e);
+		}
+		return returnVo;
+	}
 }
