@@ -9674,5 +9674,14 @@
 				<param name="root">accessConstituency</param>
 			</result>
 		</action>
+		<action name="getBoothsCurrentStatus" class="committeeDashBoardAction" method="getBoothsCurrentStatus">
+			<result type="json" name="success">
+				<param name="root">boothsInfo</param>
+			</result>
+		</action>
+		<action name="currentBoothsStatus" class="committeeDashBoardAction" method="currentBoothsStatus">
+			<result name="success">/jsp/currentBoothsStatus.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
 </package>
 </struts>      

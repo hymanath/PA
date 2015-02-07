@@ -1,10 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -25,6 +22,7 @@ import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
+import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ITdpCadreReportService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
@@ -33,8 +31,11 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class CommitteeDashBoardAction extends ActionSupport implements ServletRequestAware{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3145620802823411748L;
 	private HttpServletRequest         			request;
-	private HttpSession 						session;
 	private EntitlementsHelper 					entitlementsHelper;
 	private JSONObject							jObj;
 	private String 								task;
@@ -53,8 +54,14 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private ITdpCadreReportService tdpCadreReportService;
 	private String accessConstituency;
 	private Long accessConstituencyId;
+	private ICadreRegistrationService cadreRegistrationService;
+	private CadreCommitteeMemberVO boothsInfo;
 	
 	
+	public void setCadreRegistrationService(
+			ICadreRegistrationService cadreRegistrationService) {
+		this.cadreRegistrationService = cadreRegistrationService;
+	}
 	public String getAccessConstituency() {
 		return accessConstituency;
 	}
@@ -162,6 +169,13 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	}
 	public void setIdNameVOList(List<IdNameVO> idNameVOList) {
 		this.idNameVOList = idNameVOList;
+	}
+	
+	public CadreCommitteeMemberVO getBoothsInfo() {
+		return boothsInfo;
+	}
+	public void setBoothsInfo(CadreCommitteeMemberVO boothsInfo) {
+		this.boothsInfo = boothsInfo;
 	}
 	public String execute(){
 		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
@@ -420,21 +434,13 @@ public String getAllConstituencysForADistrict(){
 		return Action.SUCCESS;
 	}
 	
-	public String saveFieldMessages(){
-		
+	public String saveFieldMessages(){		
 		try{ 
 			CadreRegistrationVO vo = new CadreRegistrationVO();
 			vo.setMobileNumber(request.getParameter("mobilenumber"));
 			vo.setArea(request.getParameter("message"));
-			try{
-				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-				vo.setDob(sdf.parse(request.getParameter("receivedon")));
-			}catch(Exception e){
-				accessConstituency =  "Invalid Date";
-				return Action.SUCCESS;
-			}
-			LOG.error("mobilenumber"+vo.getMobileNumber()+",message"+vo.getArea()+",receivedon"+vo.getDobStr());
-			if((vo.getMobileNumber() != null && vo.getMobileNumber().trim().length() >0) || (vo.getArea() != null && vo.getArea().trim().length() >0) || (vo.getDobStr() != null && vo.getDobStr().trim().length() >0)){
+			LOG.error("In Action mobilenumber"+vo.getMobileNumber()+",message"+vo.getArea());
+			if((vo.getMobileNumber() != null && vo.getMobileNumber().trim().length() >0) || (vo.getArea() != null && vo.getArea().trim().length() >0)){
 				accessConstituency = webServiceHandlerService1.saveStatus(vo);
 				return Action.SUCCESS;
 			}else{
@@ -442,12 +448,24 @@ public String getAllConstituencysForADistrict(){
 				return Action.SUCCESS;
 			}
 		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
+		catch(Exception e){
+			LOG.error("Exception occured in saveFieldMessages ",e);
 			accessConstituency =  "Error Occured";
 		}
 	
 	   return Action.SUCCESS;
 	}
+	
+	public String getBoothsCurrentStatus(){
+		try{
+		  boothsInfo = cadreRegistrationService.getBoothsCurrentStatus();
+		}catch(Exception e){
+			LOG.error("Exception occured in getBoothsCurrentStatus ",e);
+		}
+	   return Action.SUCCESS;
+	}
+	public String currentBoothsStatus(){
+	   return Action.SUCCESS;
+	}
+	
 }
