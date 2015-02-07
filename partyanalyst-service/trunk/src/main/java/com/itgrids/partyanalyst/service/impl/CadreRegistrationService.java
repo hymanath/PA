@@ -7163,8 +7163,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 
 		RegistrationStatus status = new RegistrationStatus();
 		status.setUserId(vo.getMobileNumber());
-		status.setDate(vo.getDobStr());
+		status.setDate(vo.getDob());
 		status.setRegistrationCount(vo.getArea());
+		status.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 		//status.setRegistrationFailedCount(vo.getRegistrationFailedCount());
 		registrationStatusDAO.save(status);
 }
