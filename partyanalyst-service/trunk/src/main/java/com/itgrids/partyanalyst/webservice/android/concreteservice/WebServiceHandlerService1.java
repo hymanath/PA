@@ -1299,7 +1299,7 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		
 		}catch(Exception e)
 		{
-			LOG.error("Exception raised in saveStatus  method in WebServiceHandlerService");
+			LOG.error("Exception raised in saveStatus  method in WebServiceHandlerService",e);
 			
 			return "failure";
 		}

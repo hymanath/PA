@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.List;
+
 public class CadreCommitteeMemberVO {
 
 	
@@ -13,8 +15,8 @@ public class CadreCommitteeMemberVO {
 	private String locationName;
 	private String committe;
 	private String membershipNo;
-	
-	
+	List<CadreCommitteeMemberVO> knownList;
+	List<CadreCommitteeMemberVO> unKnownList;
 	
 	public String getMembershipNo() {
 		return membershipNo;
@@ -75,6 +77,18 @@ public class CadreCommitteeMemberVO {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public List<CadreCommitteeMemberVO> getKnownList() {
+		return knownList;
+	}
+	public void setKnownList(List<CadreCommitteeMemberVO> knownList) {
+		this.knownList = knownList;
+	}
+	public List<CadreCommitteeMemberVO> getUnKnownList() {
+		return unKnownList;
+	}
+	public void setUnKnownList(List<CadreCommitteeMemberVO> unKnownList) {
+		this.unKnownList = unKnownList;
 	}
 	
 	

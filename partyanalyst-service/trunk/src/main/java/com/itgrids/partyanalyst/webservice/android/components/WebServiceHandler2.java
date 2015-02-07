@@ -430,21 +430,11 @@ public class WebServiceHandler2 {
 						if(parameterArray.length > 1){
 							vo.setArea(parameterArray[1]);//vo.setRegistrationCount(parameterArray[1]);
 						}
-					}else if(parameterArray[0].equalsIgnoreCase("receivedon")){
-						if(parameterArray.length > 1){
-							vo.setDobStr(parameterArray[1]);//vo.setDate(parameterArray[1]);
-							try{
-								SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-								vo.setDob(sdf.parse(vo.getDobStr()));
-							}catch(Exception e){
-								return "Invalid Date";
-							}
-						}
 					}
 				}
 			}
-			LOG.error("mobilenumber"+vo.getMobileNumber()+",message"+vo.getArea()+",receivedon"+vo.getDobStr());
-			if((vo.getMobileNumber() != null && vo.getMobileNumber().trim().length() >0) || (vo.getArea() != null && vo.getArea().trim().length() >0) || (vo.getDobStr() != null && vo.getDobStr().trim().length() >0)){
+			LOG.error("In Web Service mobilenumber"+vo.getMobileNumber()+",message"+vo.getArea());
+			if((vo.getMobileNumber() != null && vo.getMobileNumber().trim().length() >0) || (vo.getArea() != null && vo.getArea().trim().length() >0)){
 			     return webServiceHandlerService1.saveStatus(vo);
 			}else{
 				return "Invalid Inputs !";
@@ -452,7 +442,7 @@ public class WebServiceHandler2 {
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			LOG.error(e);
 			return "Error Occured";
 		}
 		
