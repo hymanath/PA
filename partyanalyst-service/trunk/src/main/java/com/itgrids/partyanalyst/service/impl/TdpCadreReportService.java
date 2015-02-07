@@ -5459,6 +5459,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
  						if(ivrCntMap != null)
  						{
  							CadreIVRResponseVO ivrVo = ivrCntMap.get(Long.valueOf(params[2].toString()));
+ 							if( ivrVo != null){
  							Long total = ivrVo.getReceived() + ivrVo.getNotReceived();
  							if(total  > 0)
  							{
@@ -5468,7 +5469,8 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	 							vo.setReceived(ivrVo.getReceived());
 	 		      				vo.setNotReceivedPerc((ivrVo.getNotReceived()*100)/total);
  							}
- 							
+ 							}
+
  						}
  						//vo.setReceived(ivrReceivedMap.get(Long.valueOf(params[2].toString())) != null ? ivrReceivedMap.get(Long.valueOf(params[2].toString())) : 0l);
  						
@@ -5662,7 +5664,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
        		  List<Long> localTypeIdsTemp = new ArrayList<Long>();
        		  localTypeIdsTemp.add(5l);
        		  List<Long> mandalIdsTemp = new ArrayList<Long>();
-       		  mandalIdsTemp.add(5l);
+       		  mandalIdsTemp.add(2l);
        		  
        		 List<Object[]> stateConstiIds = constituencyDAO.getConstituenciesByStateId(1l, stateTypeId);
 			 List<Long> stateConstituencyIds = new ArrayList<Long>();
@@ -5674,9 +5676,9 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 				}      			 
 			} 
 
-       		List<Object[]> constituencyCnts = cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(locationTypeIds,null,null,stateConstituencyIds);
+       		//List<Object[]> constituencyCnts = cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(locationTypeIds,null,null,stateConstituencyIds);
        		  
-       		List<Object[]> mandalCnts =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(mandalTypeIds,null,null,stateConstituencyIds);
+       		//List<Object[]> mandalCnts =cadreIVREnquiryDAO.getNoOfLocationCountByTypeId(mandalTypeIds,null,null,stateConstituencyIds);
 	
  	
        		Long totalPrintDtls= zebraPrintDetailsDAO.getTotalPrintingCountByState(stateTypeId);
@@ -5698,8 +5700,8 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         	returnVo.setLocalbodyReceivedCount(localbodyReceivedCount != null ? localbodyReceivedCount.longValue() : 0l);
         	
         		
-       		returnVo.setTotalCalls(Long.valueOf(constituencyCnts.size()));
-       		returnVo.setTotalIvrCalls(Long.valueOf( mandalCnts.size()));
+       		//returnVo.setTotalCalls(Long.valueOf(constituencyCnts.size()));
+       		//returnVo.setTotalIvrCalls(Long.valueOf( mandalCnts.size()));
        		
        		returnVo.setConstiReceivedPerc(new BigDecimal((returnVo.getReceived()*100.0/returnVo.getPrintedCount())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 			returnVo.setConstiDeliveredPerc(new BigDecimal((returnVo.getNotReceived()*100.0/returnVo.getPrintedCount())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
@@ -5831,6 +5833,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
  						if(ivrCntMap != null)
  						{
  							CadreIVRResponseVO ivrVo = ivrCntMap.get(Long.valueOf(params[2].toString()));
+ 							if(ivrVo != null){
  							Long total = ivrVo.getReceived() + ivrVo.getNotReceived();
  							if(total  > 0)
  							{
@@ -5839,6 +5842,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	 							vo.setReceivedPerc((ivrVo.getReceived()*100)/total);
 	 							vo.setReceived(ivrVo.getReceived());
 	 		      				vo.setNotReceivedPerc((ivrVo.getNotReceived()*100)/total);
+ 							}
  							}
  						}
 	 				}
