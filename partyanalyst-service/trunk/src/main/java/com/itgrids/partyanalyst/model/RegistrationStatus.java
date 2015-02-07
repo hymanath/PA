@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,11 +21,13 @@ public class RegistrationStatus {
 	
 	private String userId;
 	
-	private String date;
+	private Date date;
 	
 	private String registrationCount;
 	
 	private String registrationFailedCount;
+	
+	private Date insertedTime;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,11 +41,11 @@ public class RegistrationStatus {
 	}
 
 	@Column(name = "date")
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 
@@ -70,6 +74,15 @@ public class RegistrationStatus {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	@Column(name = "inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
 	}
 	
 	

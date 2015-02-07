@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.webservice.android.components;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -406,20 +407,18 @@ public class WebServiceHandler2 {
 			return "{\"status\":\"Failure\",\"orderId\":\""+input.getOrderId()+"\",\"onlineId\":\""+input.getOnlineId()+"\"}";
 		}
 	}
-	
 	@GET
-	@Path("/registrationStatus/{data}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Object saveFieldDataForCadre3(@PathParam("data") String inputs)
+    @Path("/registrationStatus/{data}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Object saveFieldDataForCadre3(@PathParam("data") String data)
 	{
 		LOG.debug("inside save field data for cadre");
-		LOG.debug(inputs.toString());
-		SurveyCadreResponceVO out=null;
+		LOG.debug(data.toString());
 		Map<String,String> userDetails= new HashMap<String, String>();
 		userDetails.put("","");
 		try{ 
 			CadreRegistrationVO vo = new CadreRegistrationVO();
-			String[] inputsArray = inputs.split("&");
+			String[] inputsArray = data.split("&");
 			for(String input:inputsArray){
 				String[] parameterArray = input.split("=");
 				if(parameterArray.length > 0){
@@ -434,6 +433,12 @@ public class WebServiceHandler2 {
 					}else if(parameterArray[0].equalsIgnoreCase("receivedon")){
 						if(parameterArray.length > 1){
 							vo.setDobStr(parameterArray[1]);//vo.setDate(parameterArray[1]);
+							try{
+								SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+								vo.setDob(sdf.parse(vo.getDobStr()));
+							}catch(Exception e){
+								return "Invalid Date";
+							}
 						}
 					}
 				}
