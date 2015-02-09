@@ -22,8 +22,15 @@ public class CadreCommitteeReportVO {
 	private Long membersCount2 = 0L;
 	private Long membersCount3 = 0L;
 	private Double affliatedCompletedPerc;
+	private String accessState;
 	
 	
+	public String getAccessState() {
+		return accessState;
+	}
+	public void setAccessState(String accessState) {
+		this.accessState = accessState;
+	}
 	public Long getCommitteesCount() {
 		return committeesCount;
 	}
