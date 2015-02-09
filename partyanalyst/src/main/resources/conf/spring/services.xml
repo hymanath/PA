@@ -2515,6 +2515,7 @@
 	     <property name="userDAO" ref="userDAO"/>
 	     <property name="cadreCommitteeChangeDesignationsDAO" ref="cadreCommitteeChangeDesignationsDAO"/>
 	     <property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"/>
+	      <property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO"/>
 	     
 	</bean>
 </beans>		
