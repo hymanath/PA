@@ -43,25 +43,36 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 	}
 
-	public Long getTotalCommitteesCountByLocation(String state,List<Long> levelIds){
+	public Long getTotalCommitteesCountByLocation(String state,List<Long> levelIds,List<Long> districtIds){
 		//0count ,1 isCommitteeConfirmed,2.tdpCommitteeLevelId,3.tdpBasicCommitteeId
 
 		StringBuilder str = new StringBuilder();
 
 		str.append("select count(model.tdpCommitteeId) " +
 				" from TdpCommittee model where model.tdpBasicCommittee.tdpBasicCommitteeId = 1  ");
-		if(state != null)
+		
+		if(districtIds != null && districtIds.size()>0)
+		{
+			str.append(" and model.districtId in (:districtIds) ");
+		}
+		else if(state != null)
 		{
 			str.append(" and model.state= :state ");
 		}
+		
 		if(levelIds != null && levelIds.size() > 0)
 		{
 			str.append(" and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) ");
-		}		
+		}	
 		//str.append(" group by model.tdpCommitteeLevel.tdpCommitteeLevelId ");
 
 		Query query = getSession().createQuery(str.toString());
-		if(state != null)
+		
+		if(districtIds != null && districtIds.size()>0)
+		{
+			query.setParameterList("districtIds", districtIds);
+		}
+		else if(state != null)
 		{
 			query.setParameter("state", state);
 		}
@@ -69,6 +80,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		{
 			query.setParameterList("levelIds", levelIds);
 		}
+		
 		return (Long)query.uniqueResult();
 	}
 	public List<Object[]> getLocationByTypeIdAndLevel(List<Long> levelIds,Long committeTypeId,Long constituencyId,String status)
@@ -199,7 +211,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 	}*/
 	
-	public List<Object[]> getTotalCompletedCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate){
+	public List<Object[]> getTotalCompletedCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate,List<Long> districtIds){
 		//0count ,1 isCommitteeConfirmed,2.tdpCommitteeLevelId,3.tdpBasicCommitteeId
 
 		StringBuilder str = new StringBuilder();
@@ -207,7 +219,11 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		str.append("select count(model.tdpCommitteeId),model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId " +
 				" from TdpCommittee model where  " +
 				"  model.isCommitteeConfirmed= 'Y' ");
-		if(state != null)
+		if(districtIds != null && districtIds.size()>0)
+		{
+			str.append(" and model.districtId in (:districtIds) ");
+		}
+		else if(state != null)
 		{
 			str.append(" and model.state= :state ");
 		}
@@ -221,7 +237,11 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		str.append(" group by model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
 
 		Query query = getSession().createQuery(str.toString());
-		if(state != null)
+		if(districtIds != null && districtIds.size()>0)
+		{
+			query.setParameterList("districtIds", districtIds);
+		}
+		else if(state != null)
 		{
 			query.setParameter("state", state);
 		}
