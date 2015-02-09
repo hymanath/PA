@@ -41,7 +41,7 @@ public interface ICadreCommitteeService {
 	public List<IdNameVO> getConstituenciesOfState(Long levelId);
 	public ResultStatus saveMandalLevelAffliactedElectrolInfo(Long tdpCadreId,Long tdpBasicCommitteeId);
 	public ResultStatus saveMandalLevelElectrolInfo(Long tdpCadreId,List<CadrePreviousRollesVO> eligibleRoles);
-	public CadreCommitteeReportVO getCommitteeDetailsByLocation(String state,List<Long> levelIds,String startDateStr,String endDateStr);
+	public CadreCommitteeReportVO getCommitteeDetailsByLocation(String state,List<Long> levelIds,String startDateStr,String endDateStr,Long userId,String locationType,Long locationValue);
 	
 	public String checkIsVacancyForDesignation(Long tdpCommitteeRoleId);
 	
@@ -49,7 +49,7 @@ public interface ICadreCommitteeService {
 	public LocationWiseBoothDetailsVO getMainCommitteeMembersInfoRequest(Long levelId,Long levelValue);
 	public LocationWiseBoothDetailsVO getCommitteeMembersInfoRequest(Long committeeId);
 
-	public CadreCommitteeReportVO getTotalCommitteeDetailsByLocation(String state);
+	public CadreCommitteeReportVO getTotalCommitteeDetailsByLocation(String state,Long userId,String locationType,Long locationValue);
 	
 	public List<CadreCommitteeMemberVO> getCommitteeMemberDetails(Long basicCommitteeTypeId,Long locationId,Long levelId,String status);
 	public List<CadreCommitteeMemberVO> setCommitteConfirmation(Long basicCommitteeTypeId,Long locationId,Long levelId);
@@ -67,7 +67,7 @@ public interface ICadreCommitteeService {
 	public List<CadreCommitteeReportVO> getStartedAffliCommitteesCountByLocation(String state,List<Long> levelIds,String startdateStr,String endDateStr);
 	public List<CadreCommitteeMemberVO> getCommitteeDetailsByStatus(Long basicCommitteeTypeId,String status,Long levelId,String accessValue);
 	
-	public List<CommitteeSummaryVO> getDistrictWiseCommittesSummary(String state,String startDate, String endDate);
+	public List<CommitteeSummaryVO> getDistrictWiseCommittesSummary(String state,String startDate, String endDate,Long userId,String accessType, Long accessValue);
 	public ResultStatus cadreCommitteeIncreasedPositionsOrChangeDesignations(final Long tdpCommitteeRoleId,final Long requestUserId,final Long currentmaxPositions,final Long requestedMaxPositions,final String type,final List<LocationWiseBoothDetailsVO> changeDesignationsList,final Long committeeId );
 	public Long gettingCommitteeIdForMainCommittee(Long levelId,Long levelValue);
 	
