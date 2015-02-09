@@ -44,12 +44,15 @@ public class CommitteeSummaryVO implements Serializable{
 	private Long locationId;
 	private String locationName;
 	private List<CommitteeSummaryVO> locationsList,localBodiesList, mandalsList, divisionList;
+	private String accessState;	
 	
 	
-	
-	
-	
-	
+	public String getAccessState() {
+		return accessState;
+	}
+	public void setAccessState(String accessState) {
+		this.accessState = accessState;
+	}
 	public List<CommitteeSummaryVO> getLocalBodiesList() {
 		return localBodiesList;
 	}
