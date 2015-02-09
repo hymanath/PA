@@ -11,7 +11,7 @@ public interface ITdpCommitteeDAO  extends GenericDao<TdpCommittee, Long>{
 	public List<Object[]> getAllAffiliatedCommittiesInALocation(Long levelId,Long levelValue);
 	public List<Long> getMainCommittiesInALocation(Long levelId,Long levelValue);
 	public List<Long> getTdpCommittee(Long tdpBasicCommitteeId,Long tdpCommitteeLevelId,Long tdpCommitteeLevelValue);
-	public Long getTotalCommitteesCountByLocation(String state,List<Long> levelIds);
+	public Long getTotalCommitteesCountByLocation(String state,List<Long> levelIds,List<Long> districtIds);
 	
 	public List<Object[]> getTotalCommitteesPanchayatLevel(Long constituencyId);
 	/*public List<Object[]> mandalWiseList(Long constituencyId,List mandalIds);
@@ -19,7 +19,7 @@ public interface ITdpCommitteeDAO  extends GenericDao<TdpCommittee, Long>{
 	public List<Object[]> divisionsList(Long constituencyId,List divisionIds);*/
 	public List<Object[]> getLocationWiseDetails(List<Long> locationValues,Long locationTypeId);
 	public List<Object[]> getLocationWiseVillageDetails(Long constituencyId);
-	public List<Object[]> getTotalCompletedCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate);
+	public List<Object[]> getTotalCompletedCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate,List<Long> districtIds);
 	public List<Object[]> getLocationWiseVillageStartedDetails(Long constituencyId);
 	public List<Object[]> getLocationWiseMandalDetails(List<Long> locationIds,Long levelId);
 	public List<Object[]> getLocationWiseMandalStartedDetails(List<Long> locationIds,Long levelId);
