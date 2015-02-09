@@ -197,21 +197,36 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	
 	public String getDashBoardLocationWiseDetailsAction(){
 		try{
-			jObj = new JSONObject(getTask());
-			JSONArray levelIdsArr = jObj.getJSONArray("levelIdsArr");			
-			List<Long> levelIds = new ArrayList<Long>();
-				
-			if(levelIdsArr !=null && levelIdsArr.length() >0){
-				for(int i=0; i<levelIdsArr.length(); i++ ){
-					levelIds.add(Long.valueOf(levelIdsArr.get(i).toString().trim()));
-				}
-			}
-			String state =jObj.getString("state");
-			String startDate=jObj.getString("startDate");
-			String endDate=jObj.getString("endDate");
 			
-			cadreCommitteeReportVO = cadreCommitteeService.getCommitteeDetailsByLocation(state,levelIds,startDate,endDate);
-		
+			boolean noaccess = false;
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO != null)
+			{
+				String accessType = regVO.getAccessType();
+				Long accessValue = Long.valueOf(regVO.getAccessValue());
+				
+				jObj = new JSONObject(getTask());
+				JSONArray levelIdsArr = jObj.getJSONArray("levelIdsArr");			
+				List<Long> levelIds = new ArrayList<Long>();
+					
+				if(levelIdsArr !=null && levelIdsArr.length() >0){
+					for(int i=0; i<levelIdsArr.length(); i++ ){
+						levelIds.add(Long.valueOf(levelIdsArr.get(i).toString().trim()));
+					}
+				}   
+				String state =jObj.getString("state");
+				String startDate=jObj.getString("startDate");
+				String endDate=jObj.getString("endDate");
+				
+				cadreCommitteeReportVO = cadreCommitteeService.getCommitteeDetailsByLocation(state,levelIds,startDate,endDate,regVO.getRegistrationID(),accessType,accessValue);
+			}
+			else
+			{
+				noaccess = true;
+			}
+			
+			if(noaccess)
+					return Action.ERROR;
 			
 		}catch(Exception e){
 			LOG.error("Exception Occured In getDashBoardLocationWiseDetailsAction method "+e);
@@ -222,11 +237,26 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	
 	public String getTotalCommitteeCntsByState(){
 		try{
-			jObj = new JSONObject(getTask());
+			boolean noaccess = false;
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO != null)
+			{
+				String accessType = regVO.getAccessType();
+				Long accessValue = Long.valueOf(regVO.getAccessValue());
+				
+				jObj = new JSONObject(getTask());
+				
+				String state =jObj.getString("state");
+				
+				cadreCommitteeReportVO = cadreCommitteeService.getTotalCommitteeDetailsByLocation(state,regVO.getRegistrationID(),accessType,accessValue);
+			}
+			else{
+				noaccess = true;
+			}
 			
-			String state =jObj.getString("state");
-			cadreCommitteeReportVO = cadreCommitteeService.getTotalCommitteeDetailsByLocation(state);
-		
+			if(noaccess){
+				return "error";
+			}
 			
 		}catch(Exception e){
 			LOG.error("Exception Occured In getDashBoardLocationWiseDetailsAction method "+e);
@@ -237,12 +267,29 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	public String getDistrictWiseCommittesSummary(){
 		LOG.debug(" Entered Into getDistrictWiseCommittesSummary");
 		try{
-			jObj = new JSONObject(getTask());
-			String state =jObj.getString("state");
-			String startDate = jObj.getString("startDate");
-			String endDate = jObj.getString("endDate");
 			
-			districtWiseSummaryList = cadreCommitteeService.getDistrictWiseCommittesSummary(state, startDate, endDate);
+			boolean noaccess = false;
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO != null)
+			{
+				String accessType = regVO.getAccessType();
+				Long accessValue = Long.valueOf(regVO.getAccessValue());
+				
+				jObj = new JSONObject(getTask());
+				String state =jObj.getString("state");
+				String startDate = jObj.getString("startDate");
+				String endDate = jObj.getString("endDate");
+				
+				districtWiseSummaryList = cadreCommitteeService.getDistrictWiseCommittesSummary(state, startDate,endDate,regVO.getRegistrationID(),accessType,accessValue);
+			}
+			else{
+				noaccess = true;
+			}
+			
+			if(noaccess){
+				return Action.ERROR;
+			}
+			
 		}catch (Exception e) {
 			LOG.error(" Exception Raised In getDistrictWiseCommittesSummary" +e);
 		}
