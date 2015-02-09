@@ -53,6 +53,7 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeRoleDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeRoleHistoryDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.AccessedPageLoginTimeVO;
@@ -140,8 +141,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private ITdpCommitteeRoleHistoryDAO tdpCommitteeRoleHistoryDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
+	private IUserDistrictAccessInfoDAO  userDistrictAccessInfoDAO;
 	
 	
+	public void setUserDistrictAccessInfoDAO(
+			IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO) {
+		this.userDistrictAccessInfoDAO = userDistrictAccessInfoDAO;
+	}
 	public ITdpCommitteeRoleHistoryDAO getTdpCommitteeRoleHistoryDAO() {
 		return tdpCommitteeRoleHistoryDAO;
 	}
@@ -1874,14 +1880,33 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		
 	}*/
 	
-	public CadreCommitteeReportVO getCommitteeDetailsByLocation(String state,List<Long> levelIds,String startDateString,String endDateString ){
+	public CadreCommitteeReportVO getCommitteeDetailsByLocation(String state,List<Long> levelIds,String startDateString,String endDateString,Long userId,String accessType,Long accessValue){
 		
 		Long completedMainCommittees=0l;
 		Long completedAfflCommittees=0l;
 		
-		
 		CadreCommitteeReportVO cadreCommitteeReportVO =new CadreCommitteeReportVO();
-		try{
+		try{ 
+			
+			List<Object[]> accessDistrictsList = userDistrictAccessInfoDAO.findByUser(userId);
+			List<Long> districtIds = new ArrayList<Long>();
+			cadreCommitteeReportVO.setAccessState("ALL");
+			if(accessDistrictsList != null && accessDistrictsList.size()>0)
+			{
+				for (Object[] districtId : accessDistrictsList) {
+					districtIds.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
+				}
+				
+				if(districtIds != null && districtIds.size() == 13)
+				{
+					cadreCommitteeReportVO.setAccessState("AP");
+				}
+				if(districtIds != null && districtIds.size() == 10)
+				{
+					cadreCommitteeReportVO.setAccessState("TG");
+				}
+			}
+			
 			Date startDate=null;
 			Date endDate=null;
 			
@@ -1892,9 +1917,9 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			}
 			
 			
-			Long committeeCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,levelIds);
+			Long committeeCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,levelIds,districtIds);
 			//0count ,1 isCommitteeConfirmed,2.tdpCommitteeLevelId,3.tdpBasicCommitteeId
-			List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,levelIds,startDate,endDate);
+			List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,levelIds,startDate,endDate,districtIds);
 			
 			if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
 				for (Object[] objects : committeeCntDtls) {
@@ -1906,7 +1931,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				}
 			}
 				 
-			 List<Object[]> startedCount=tdpCommitteeMemberDAO.getStartedCommitteesCountByLocation(state, levelIds,startDate,endDate);
+			 List<Object[]> startedCount=tdpCommitteeMemberDAO.getStartedCommitteesCountByLocation(state, levelIds,startDate,endDate,districtIds);
 				if(startedCount != null && startedCount.size() > 0){
 					for (Object[] objects : startedCount) {
 						if(Long.valueOf(objects[1].toString())==1l){
@@ -1931,7 +1956,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						cadreCommitteeReportVO.setAfflCommittees(0l);
 					}
 				
-				Long memberscount= tdpCommitteeMemberDAO.getMembersCountByLocation(state, levelIds,startDate,endDate);				
+				Long memberscount= tdpCommitteeMemberDAO.getMembersCountByLocation(state, levelIds,startDate,endDate,districtIds);				
 				
 				cadreCommitteeReportVO.setMembersCount(memberscount != null ? memberscount : 0l);//totalMembers				
 				
@@ -2218,16 +2243,36 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return rs;
 	}
-	public CadreCommitteeReportVO getTotalCommitteeDetailsByLocation(String state){
+	public CadreCommitteeReportVO getTotalCommitteeDetailsByLocation(String state,Long userId,String accessType,Long accessValue){
 		
 		Long totalCompletedCommittees=0l;
 		Long totalStartedCommittees=0l;
 		CadreCommitteeReportVO cadreCommitteeReportVO =new CadreCommitteeReportVO();
 		try{
-		Long totalCommitteeCntDtls =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,null);		
+			
+			List<Object[]> accessDistrictsList = userDistrictAccessInfoDAO.findByUser(userId);
+			List<Long> districtIds = new ArrayList<Long>();
+			cadreCommitteeReportVO.setAccessState("ALL");
+			if(accessDistrictsList != null && accessDistrictsList.size()>0)
+			{
+				for (Object[] districtId : accessDistrictsList) {
+					districtIds.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
+				}
+				
+				if(districtIds != null && districtIds.size() == 13)
+				{
+					cadreCommitteeReportVO.setAccessState("AP");
+				}
+				if(districtIds != null && districtIds.size() == 10)
+				{
+					cadreCommitteeReportVO.setAccessState("TG");
+				}
+			}
+			
+		Long totalCommitteeCntDtls =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,null,districtIds);		
 		cadreCommitteeReportVO.setTotalCommittees(totalCommitteeCntDtls);
 		
-		List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,null,null,null);
+		List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,null,null,null,districtIds);
 		
 		if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
 			for (Object[] objects : committeeCntDtls) {
@@ -3318,27 +3363,60 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return finalCounts;
 	}
 	
-	public List<CommitteeSummaryVO> getDistrictWiseCommittesSummary(String state,String startDate, String endDate){
+	public List<CommitteeSummaryVO> getDistrictWiseCommittesSummary(String state,String startDate, String endDate,Long userId,String accessType, Long accessValue){
 		LOG.debug("Entered Into getDistrictWiseCommittesSummary");
 		List<CommitteeSummaryVO> fnlLst = new ArrayList<CommitteeSummaryVO>();
 		try{
 			Long stateTypeId = 1l;
-			
-			if(state.equalsIgnoreCase("TS")){
-				stateTypeId = 2l;
+			List<Long> distIds = new ArrayList<Long>();
+			if(userId != null && userId.longValue() != 0L)
+			{
+				List<Object[]> accessDistrictsList = userDistrictAccessInfoDAO.findByUser(userId);
+				if(accessDistrictsList != null && accessDistrictsList.size()>0)
+				{
+					for (Object[] districtId : accessDistrictsList) {
+						CommitteeSummaryVO cv = new CommitteeSummaryVO();
+						cv.setDistrictId(Long.valueOf(districtId[0].toString()));
+						cv.setDistrictName(districtId[1].toString());
+						fnlLst.add(cv);
+						
+						distIds.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
+					}
+					
+					if(fnlLst != null && distIds != null && distIds.size() == 13)
+					{
+						CommitteeSummaryVO vo = fnlLst.get(0);
+						vo.setAccessState("AP");
+					}
+					if(fnlLst != null && distIds != null && distIds.size() == 10)
+					{
+						CommitteeSummaryVO vo = fnlLst.get(0);
+						vo.setAccessState("TG");
+					}
+				}
 			}
 			
-			List<Object[]> districtsList = districtDAO.getDistrictIdAndNameByStateForStateTypeId(1l, stateTypeId);
-			List<Long> distIds = new ArrayList<Long>();
-			
-			if(districtsList!=null && districtsList.size()>0){
-				for(Object[] obj:districtsList){
-					CommitteeSummaryVO cv = new CommitteeSummaryVO();
-					cv.setDistrictId(Long.valueOf(obj[0].toString()));
-					cv.setDistrictName(obj[1].toString());
+			if(distIds == null || distIds.size() == 0)
+			{
+				if(state.equalsIgnoreCase("TS")){
+					stateTypeId = 2l;
+				}
+				
+				List<Object[]> districtsList = districtDAO.getDistrictIdAndNameByStateForStateTypeId(1l, stateTypeId);
+				
+				
+				if(districtsList!=null && districtsList.size()>0){
+					for(Object[] obj:districtsList){
+						CommitteeSummaryVO cv = new CommitteeSummaryVO();
+						cv.setDistrictId(Long.valueOf(obj[0].toString()));
+						cv.setDistrictName(obj[1].toString());
+						
+						distIds.add(Long.valueOf(obj[0].toString()));
+						fnlLst.add(cv);
+					}
 					
-					distIds.add(Long.valueOf(obj[0].toString()));
-					fnlLst.add(cv);
+					CommitteeSummaryVO vo = fnlLst.get(0);
+					vo.setAccessState("ALL");
 				}
 			}
 			
