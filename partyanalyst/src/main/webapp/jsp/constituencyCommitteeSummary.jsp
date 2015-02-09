@@ -71,6 +71,7 @@
 var accessConstituency = '${accessConstituency}';
 var accessConstituencyId = '${accessConstituencyId}';
 
+
 if(accessConstituencyId!='null' && accessConstituencyId!=""){
 	$(".locationCls").hide();
 	getConstituencySummary();
@@ -133,13 +134,11 @@ function getAllConstituencysForADistrict()
 function getConstituencySummary(){
 	
 	var constiId = "";
-	if(accessConstituencyId!=null || accessConstituencyId!=""){
+	if(accessConstituencyId!=null && accessConstituencyId!=""){
 		constiId = accessConstituencyId;
 	}else{
 		constiId = $("#constituencysId").val();
 	}
-
-	 
 	
 	if(constiId==0){
 	  return;	 
