@@ -70,7 +70,7 @@
                 </div>
         </div>
 		
-    	<div class="row">
+    	<div class="row" id="APStateDiv" style="display:none;">
 			<table class="table table-bordered" width="100%"  >
 				<tr>
 					<td width="22%" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);text-align:center;padding: 0px;">
@@ -175,7 +175,7 @@
 			</table>
         </div>
 		
-        <div class="row">
+        <div class="row" id="TGStateDiv"  style="display:none;">
 			<table class="table table-bordered" width="100%"  >
         	<tr>
         	    <td width="22%" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);text-align:center;padding: 0px;">
@@ -284,9 +284,10 @@
             <div class="row">
                 <div class="col-md-10 col-xs-12 col-sm-12">
                     <h4 id="headingId" class="text-success" style="display:inline-block">DISTRICT WISE COMMITTEES</h4>
-					 <span class="btn btn-success btn-xs form-inline">
+					
+					 <span class="btn btn-success btn-xs form-inline" id="statesBtnsId" style="display:none;">
 						<label class="radio"><input type="radio" id="APId" style="vertical-align: text-bottom;" class="stateRd" value="AP" name="selectstate" checked="true">&nbsp;AP &nbsp;&nbsp;&nbsp;</label>
-						<label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="stateRd" value="TS" name="selectstate">&nbsp;TS &nbsp;&nbsp;&nbsp;</label>
+						<label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="stateRd" value="TS" name="selectstate" id="TSId">&nbsp;TS &nbsp;&nbsp;&nbsp;</label>
 					</span>
 					 <span class="btn btn-success btn-xs form-inline">
 						<label class="radio"><input type="radio" id="districtId" style="vertical-align: text-bottom;" class="levelRd" value="district" name="select" checked="true">&nbsp;District &nbsp;&nbsp;&nbsp;</label>
@@ -452,7 +453,9 @@
 	<!----Bootstrap Date Range Picker Script---->
 		<script type="text/javascript">
                $(document).ready(function() {
-
+					$('#APStateDiv').hide();
+					$('#TGStateDiv').hide();
+					$('#statesBtnsId').hide();
                   var cb = function(start, end, label) {
                     console.log(start.toISOString(), end.toISOString(), label);
                     $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
@@ -775,7 +778,9 @@
 	function getCommitteeCountByState(state){
 	
 		var selectedVal = "";
-		
+		$('#APStateDiv').hide();
+		$('#TGStateDiv').hide();
+		$('#statesBtnsId').hide();
 		var state = state; 
 		var jObj = {
 			state:state,
@@ -787,20 +792,50 @@
           url: 'getTotalCommitteeCntsByStateAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
+				
 				var str='';
 				str+='<div class="col-md-5 col-md-offset-1 col-xs-3"><span style="font-size:2em;">'+result.totalCommittees+'</span></div>';
 				str+='<div style="" class="col-md-6 col-xs-3 text-left"><small>TOTAL MAIN COMMITTEES</small></div>';
 				
-				if(state == "AP"){	
-					str+='<div class="myStatAP" data-dimension="180" data-text="'+result.totalCntPerc+'%" data-info="COMPLETED" data-width="10" data-fontsize="34" data-percent="'+result.totalCntPerc+'" data-fgcolor="#349866" data-bgcolor="#6D6024" style="margin-left: 40px;"></div>';				
-					$("#totalAPCount").html(str);
-					$('.myStatAP').circliful();
+				if(result.accessState == "TG")
+				{
+					if(state == "TS"){
+						str+='<div class="myStatTS" data-dimension="180" data-text="'+result.totalCntPerc+'%" data-info="COMPLETED" data-width="10" data-fontsize="34" data-percent="'+result.totalCntPerc+'" data-fgcolor="#349866" data-bgcolor="#6D6024" style="margin-left: 40px;"></div>';
+						$("#totalTSCount").html(str);
+						$('.myStatTS').circliful();		
+						$('#TGStateDiv').show();
+						$('#TSId').prop("checked","checked");
+					}
 				}
-				if(state == "TS"){
-					str+='<div class="myStatTS" data-dimension="180" data-text="'+result.totalCntPerc+'%" data-info="COMPLETED" data-width="10" data-fontsize="34" data-percent="'+result.totalCntPerc+'" data-fgcolor="#349866" data-bgcolor="#6D6024" style="margin-left: 40px;"></div>';
-					$("#totalTSCount").html(str);
-					$('.myStatTS').circliful();					
+				else if(result.accessState == "AP")
+				{
+					if(state == "AP"){	
+						str+='<div class="myStatAP" data-dimension="180" data-text="'+result.totalCntPerc+'%" data-info="COMPLETED" data-width="10" data-fontsize="34" data-percent="'+result.totalCntPerc+'" data-fgcolor="#349866" data-bgcolor="#6D6024" style="margin-left: 40px;"></div>';				
+						$("#totalAPCount").html(str);
+						$('.myStatAP').circliful();
+						$('#APStateDiv').show();
+						$('#APId').prop("checked","checked");
+					}
 				}
+				else if(result.accessState == "ALL")
+				{
+					if(state == "TS")
+					{
+						str+='<div class="myStatTS" data-dimension="180" data-text="'+result.totalCntPerc+'%" data-info="COMPLETED" data-width="10" data-fontsize="34" data-percent="'+result.totalCntPerc+'" data-fgcolor="#349866" data-bgcolor="#6D6024" style="margin-left: 40px;"></div>';
+							$("#totalTSCount").html(str);
+							$('.myStatTS').circliful();	
+					}
+					if(state == "AP")
+					{	
+						str+='<div class="myStatAP" data-dimension="180" data-text="'+result.totalCntPerc+'%" data-info="COMPLETED" data-width="10" data-fontsize="34" data-percent="'+result.totalCntPerc+'" data-fgcolor="#349866" data-bgcolor="#6D6024" style="margin-left: 40px;"></div>';				
+							$("#totalAPCount").html(str);
+							$('.myStatAP').circliful();
+					}
+						$('#APStateDiv').show();						
+						$('#TGStateDiv').show();
+						$('#statesBtnsId').show();
+				}
+				
 		
 		});
 	}
