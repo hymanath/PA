@@ -5,9 +5,10 @@ import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
+import com.itgrids.partyanalyst.dao.ITirupatiByelectionDAO;
 import com.itgrids.partyanalyst.model.TirupatiByelection;
 
-public class TirupatiByelectionDAO extends GenericDaoHibernate<TirupatiByelection, Long>{
+public class TirupatiByelectionDAO extends GenericDaoHibernate<TirupatiByelection, Long> implements ITirupatiByelectionDAO{
 
 	public TirupatiByelectionDAO() {
 		super(TirupatiByelection.class);
