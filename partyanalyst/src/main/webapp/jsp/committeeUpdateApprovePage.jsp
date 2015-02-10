@@ -71,6 +71,7 @@
   <body>
 	<style>
 		.light-theme a, .light-theme span{min-width:45px;}
+		.approvedPosTxtCls{color:red;}
 	</style>
 	<div class="row" style="align:center;padding:10px;background:rgba(255,0,51,0.8); border-top:12px solid rgba(19,167,81,0.8);border-bottom:12px solid rgba(19,167,81,0.8);display:flex">
 		 	<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12 text-center">
@@ -376,12 +377,13 @@
 						str+='</div></th>';
 						str+='</thead>';
 						str+='<thead>';
-						str+='<th width="13%">REQUEST NO</th>';
+						str+='<th width="5%">REQUEST NO</th>';
                         str+='<th width="12%">LOCATION</th>';
                             str+='<th width="18%">COMMITTEE NAME</th>';
                             str+='<th width="17%">POSITION NAME</th>';
                             str+='<th width="12%"><small>CURRENT MAX POSITONS</small></th>';
                             str+='<th width="13%"><small>REQUESTED MAX POSITIONS</small></th>';
+							str+='<th width="8%"><small>APPROVED MAX POSITIONS</small></th>';
                             str+='<th width="18%"><small>UPDATE STATUS</small></th>';
                         str+='</thead>';
                          str+='<tbody>';
@@ -398,7 +400,13 @@
                                 str+='<td>'+result[i].role+'</td>';
                                 str+='<td class="crrntPos">'+result[i].currentPosCount+'</td>';
                                 str+='<td class="rqstdPos">'+result[i].requestdPosCount+'</td>';
-								str+='<td class="cls'+result[i].cadreCommitteeIncreasedPosId+'" data_attr='+result[i].tdpCommitteeRoleId+' data_attr_pk='+result[i].cadreCommitteeIncreasedPosId+' data_attr_maxPos='+result[i].requestdPosCount+'>';
+								if(result[i].status=="pending"){
+									str+='<td class="approvedPos"><input class="approvedPosTxt" id="appId'+result[i].cadreCommitteeIncreasedPosId+'" type="text" value='+result[i].requestdPosCount+'><span class="approvedPosTxtCls" id="appId'+result[i].cadreCommitteeIncreasedPosId+'err"+></span></td>';
+								}else{
+									str+='<td class="approvedPos"><input readonly="readonly" id="appId'+result[i].cadreCommitteeIncreasedPosId+'" type="text" value='+result[i].requestdPosCount+'><span class="approvedPosTxtCls" id="appId'+result[i].cadreCommitteeIncreasedPosId+'err"+></span></td>';
+								}
+								
+								str+='<td class="cls'+result[i].cadreCommitteeIncreasedPosId+'" data_attr='+result[i].tdpCommitteeRoleId+' data_attr_crrntCnt='+result[i].currentPosCount+' data_attr_pk='+result[i].cadreCommitteeIncreasedPosId+' data_attr_maxPos='+result[i].requestdPosCount+' >';
 								if(result[i].status=="pending"){
 									str+='<select class="form-control input-sm updateStatusCls">';
 									str+='<option selected="selected" value="Pending"> Pending </option>';
@@ -433,12 +441,13 @@
 		}
 		
 		//updatePosCount();
-		function updatePosCount(roleId, increasedPosId, maxCount, type){
+		function updatePosCount(roleId, increasedPosId, maxCount, type, apprvCount){
 			var jsObj = {
 						tdpCommitteeRoleId : roleId,
 						maxCount : maxCount,
 						type : type,
-						increasedPosId : increasedPosId
+						increasedPosId : increasedPosId,
+						approveCount : apprvCount
 				}				   
 				$.ajax({
 					type : "POST",
@@ -446,6 +455,8 @@
 					data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
 					if(result!="failed"){
+						$("#appId"+increasedPosId).attr('readonly', true);
+						$("#appId"+increasedPosId).removeClass("approvedPosTxt");
 					   if(type!="Rejected"){
 							$(".cls"+increasedPosId).html('<span style="color:green">'+type+'</span>');
 					   }else{
@@ -463,13 +474,42 @@
 				var increasedPosId = $(this).parent().attr("data_attr_pk");
 				var roleId = $(this).parent().attr("data_attr");
 				var maxCount = $(this).parent().attr("data_attr_maxPos");
+				var crrntCount = $(this).parent().attr("data_attr_crrntCnt");
+				
 				var type = $(this).val();
-			
-				if(type!="pending"){
-					updatePosCount(roleId, increasedPosId, maxCount, type);
+				
+				var apprvCount = $("#appId"+increasedPosId).val();
+				if(type=="Approved"){
+					if(apprvCount>maxCount ){
+						alert(" APPROVED MAX POSITIONS <= REQUESTED MAX POSITIONS ");
+						$(this).val("Pending");
+						return ;
+					}
+					
+					if(apprvCount<crrntCount ){
+						alert(" APPROVED MAX POSITIONS >= CURRENT MAX POSITONS ");
+						$(this).val("Pending");
+						return ;
+					}
+				}
+				
+				
+				if(type!="Pending"){
+					updatePosCount(roleId, increasedPosId, maxCount, type, apprvCount);
 				}
 			}else{
-				$(this).val("pending");
+				$(this).val("Pending");
+			}
+		});
+		
+		$(document).on("keypress",".approvedPosTxt",function (e) {
+			var txtId = $(this).attr("id");
+			//if the letter is not digit then display error and don't type anything
+			if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+				//display error message
+				
+			   $("#"+txtId+"err").html("Digits Only").show().fadeOut("slow");
+               return false;
 			}
 		});
 		

@@ -1139,8 +1139,9 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 			Long maxCount =  jObj.getLong("maxCount");
 			String type =  jObj.getString("type");
 			Long increasedPosId = jObj.getLong("increasedPosId");
+			Long apprvCount = jObj.getLong("approveCount");
 			
-			finalStatus = cadreCommitteeService.updateCommitteePosCount(roleId,maxCount,type,increasedPosId);
+			finalStatus = cadreCommitteeService.updateCommitteePosCount(roleId,maxCount,type,increasedPosId,apprvCount);
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in updateCommitteePosCount() At CadreCommitteeAction ",e);
