@@ -341,6 +341,7 @@ margin-top:10px;
 					</c:if>
 					<c:if test="${sessionScope.USER.isAdmin == 'true'}">						
 						<li><a href="committeeDashBoardAction.action"><span>Committee DashBoard</span></a></li>
+						<li><a href="currentBoothsStatus.action"><span>Tirupati Bye Election Poll Management</span></a></li>
 					</c:if>
 					
 					</c:if>
