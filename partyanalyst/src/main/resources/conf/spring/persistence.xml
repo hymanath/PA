@@ -558,7 +558,7 @@
 	            <value>com.itgrids.partyanalyst.model.RegistrationStatus</value>
 	            <value>com.itgrids.partyanalyst.model.TwoWaySmsMobile</value>
 	            <value>com.itgrids.partyanalyst.model.TirupatiByelection</value>
-	            										
+	            <value>com.itgrids.partyanalyst.model.ErrorStatusSms</value>								
 				</list>
 			
 		</property>
