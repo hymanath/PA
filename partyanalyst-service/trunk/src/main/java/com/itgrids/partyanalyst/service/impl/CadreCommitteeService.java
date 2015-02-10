@@ -4754,20 +4754,31 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	}
 	
 	public List<AccessedPageLoginTimeVO> getElctoralInfoForALocation(Long locationValue){
-		List<Object[]> elctoralsList=null;
+		List<Object[]> elctoralsList= new ArrayList<Object[]>();
 		List<AccessedPageLoginTimeVO> returnResult=new ArrayList<AccessedPageLoginTimeVO>();
 		try{
-			elctoralsList=tdpCommitteeElectrolsDAO.getElctoralInfoForALocation(locationValue);
+			Long locationLvl  = null;
+			if(locationValue.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+				 locationLvl = 6l;
+			 }else{
+				 locationLvl = 8l;
+			 }
+			elctoralsList.addAll(tdpCommitteeMemberDAO.getAllMembersInMainCommWithPresidentAndGeneralSecretaryRole(locationLvl, Long.valueOf(locationValue.toString().substring(1))));
+			elctoralsList.addAll(tdpCommitteeElectrolsDAO.getElctoralInfoForALocation(locationValue));
+			Set<Long> cadreIds = new HashSet<Long>();
 			for (Object[] object : elctoralsList) {
-				AccessedPageLoginTimeVO result=new AccessedPageLoginTimeVO();
-				result.setFromTime(object[0].toString());//comm type
-				result.setToTime(object[1].toString());//name
-				if(object[2]!=null){
-					result.setPageUrl(object[2].toString());//img url
+				if(!cadreIds.contains((Long)object[4])){
+					cadreIds.add((Long)object[4]);
+					AccessedPageLoginTimeVO result=new AccessedPageLoginTimeVO();
+					result.setFromTime(object[0].toString());//comm type
+					result.setToTime(object[1].toString());//name
+					if(object[2]!=null){
+						result.setPageUrl(object[2].toString());//img url
+					}
+					result.setTimeSpent(object[3].toString());//id
+					
+					returnResult.add(result);
 				}
-				result.setTimeSpent(object[3].toString());//id
-				
-				returnResult.add(result);
 			}
 			
 		}
