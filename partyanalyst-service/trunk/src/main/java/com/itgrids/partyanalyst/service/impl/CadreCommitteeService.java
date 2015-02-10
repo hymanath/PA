@@ -4526,11 +4526,31 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					List<Object[]> list = tdpCommitteeMemberDAO.getCommitteeMembersCountByLocationAndCommitteeType(6l, panchIds);
 					List<CommitteeSummaryVO> locsResult =  pushBasicCommitteesToLocations(basicCommitteesRslt, allPanchayats);
 					pushConstSummaryToLocations(list, locsResult);
-					List<Object[]> electrolsRslt = tdpCommitteeElectrolsDAO.getElectrolsForPanchayatsWards(panchIds, "panchayat");
+					
 					List<Object[]> electedMems = tdpCommitteeMemberDAO.getCommitteePresidentAndVicePresidentsCount(panchIds, 6l);
 					
-					pushElectrolsCount(electrolsRslt, locsResult);
-					pushElectrolsCount(electedMems, locsResult);
+					List<Object[]> electedUsers = tdpCommitteeMemberDAO.getCommitteePresidentAndGS(panchIds, 6l);
+					List<Long> eletedMemIds = new ArrayList<Long>();
+					if(electedUsers!=null && electedUsers.size()>0){
+						for(Object[] obj:electedUsers){
+							eletedMemIds.add(Long.valueOf(obj[0].toString()));
+						}
+					}
+					
+					List<Object[]> electrolsRslt = new ArrayList<Object[]>();
+					List<Object[]> electrolsRsltAffl = new ArrayList<Object[]>();
+					
+						electrolsRslt = tdpCommitteeElectrolsDAO.getElectrolsForPanchayatsWardsWithOutDuplicates(panchIds, "panchayat", eletedMemIds);
+						electrolsRsltAffl = tdpCommitteeElectrolsDAO.getElectrolsForPanchayatsWards(panchIds, "panchayat");
+						
+						if(electrolsRsltAffl!=null && electrolsRsltAffl.size()>0){
+							electrolsRslt.addAll(electrolsRsltAffl);
+						}
+					
+					
+					
+					pushElectrolsCount(electrolsRslt, locsResult, "");
+					pushElectrolsCount(electedMems, locsResult, "members");
 					
 					
 					pushPanchayatsAndWards(mandalMap, fnlVO.getMandalsList());
@@ -4539,11 +4559,30 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					List<Object[]> list = tdpCommitteeMemberDAO.getCommitteeMembersCountByLocationAndCommitteeType(8l, wardIds);
 					List<CommitteeSummaryVO> locsResult =  pushBasicCommitteesToLocations(basicCommitteesRslt, wardsList);
 					pushConstSummaryToLocations(list, locsResult);
-					List<Object[]> electrolsRslt = tdpCommitteeElectrolsDAO.getElectrolsForPanchayatsWards(wardIds, "ward");
+					
 					List<Object[]> electedMems = tdpCommitteeMemberDAO.getCommitteePresidentAndVicePresidentsCount(wardIds, 8l);
 					
-					pushElectrolsCount(electrolsRslt, locsResult);
-					pushElectrolsCount(electedMems, locsResult);
+					List<Object[]> electedUsers = tdpCommitteeMemberDAO.getCommitteePresidentAndGS(wardIds, 8l);
+					List<Long> eletedMemIds = new ArrayList<Long>();
+					if(electedUsers!=null && electedUsers.size()>0){
+						for(Object[] obj:electedUsers){
+							eletedMemIds.add(Long.valueOf(obj[0].toString()));
+						}
+					}
+					
+					List<Object[]> electrolsRslt = new ArrayList<Object[]>();
+					List<Object[]> electrolsRsltAffl = new ArrayList<Object[]>();
+					
+						electrolsRslt = tdpCommitteeElectrolsDAO.getElectrolsForPanchayatsWardsWithOutDuplicates(wardIds, "ward", eletedMemIds);
+						electrolsRsltAffl = tdpCommitteeElectrolsDAO.getElectrolsForPanchayatsWards(wardIds, "ward");
+						
+						if(electrolsRsltAffl!=null && electrolsRsltAffl.size()>0){
+							electrolsRslt.addAll(electrolsRsltAffl);
+						}
+					
+					
+					pushElectrolsCount(electrolsRslt, locsResult,"");
+					pushElectrolsCount(electedMems, locsResult,"members");
 					
 					pushPanchayatsAndWards(wardMap, fnlVO.getLocalBodiesList());
 				}
@@ -4610,25 +4649,41 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 	}
 	
-	public void pushElectrolsCount(List<Object[]> resltLst, List<CommitteeSummaryVO> locationsList){
+	public void pushElectrolsCount(List<Object[]> resltLst, List<CommitteeSummaryVO> locationsList,String memType){
 			
 			if(resltLst!=null && resltLst.size()>0 && locationsList!=null && locationsList.size()>0){
 				for(Object[] obj:resltLst){
 					CommitteeSummaryVO cs = getMatchedLocationForConstSummary(Long.valueOf(obj[1].toString()), locationsList);
 					if(cs!=null){
-						CommitteeSummaryVO basic = getMatchedBasicCommittee(Long.valueOf(obj[2].toString()), cs.getResultList());
-						
-						if(basic!=null){
-							Long memsCount = basic.getElectrolsCount();
-							if(memsCount == null){
-								memsCount = 0l;
+							CommitteeSummaryVO basic = getMatchedBasicCommittee(Long.valueOf(obj[2].toString()), cs.getResultList());
+							if(memType.equalsIgnoreCase("members")){
+								if(basic!=null){
+									if(basic.getBasicCommitteeTypeId().equals(1l)){
+										Long memsCount = basic.getElectrolsCount();
+										if(memsCount == null){
+											memsCount = 0l;
+										}
+										
+										if(Long.valueOf(obj[0].toString())!=null){
+											basic.setElectrolsCount(memsCount+Long.valueOf(obj[0].toString()));
+										}
+									}
+									
+								}
+							}else{
+								if(basic!=null){
+									Long memsCount = basic.getElectrolsCount();
+									if(memsCount == null){
+										memsCount = 0l;
+									}
+										
+									if(Long.valueOf(obj[0].toString())!=null){
+										basic.setElectrolsCount(memsCount+Long.valueOf(obj[0].toString()));
+									}
+								}
 							}
 							
-							if(Long.valueOf(obj[0].toString())!=null){
-								basic.setElectrolsCount(memsCount+Long.valueOf(obj[0].toString()));
-							}
 						}
-					}
 					
 				}
 			}
@@ -4811,8 +4866,14 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		List<CadreCommitteeMemberVO> cadreCommitteeMemberVOList=null;
 		try
 		{
+			List<Object[]> rolesList= new ArrayList<Object[]>();
+			
+			if(basicCommitteeTypeId.equals(1l)){
+				rolesList=tdpCommitteeMemberDAO.getPresidentsAndVPInfoForCommittee(locationType,locationId,basicCommitteeTypeId);
+			}
+			
 		    List<Object[]> electrolsList=tdpCommitteeElectrolsDAO.getElectrolsOfPanchayatAndWards(locationId,locationType,basicCommitteeTypeId);
-		    List<Object[]> rolesList=tdpCommitteeMemberDAO.getPresidentsAndVPInfoForCommittee(locationType,locationId,basicCommitteeTypeId);
+		    List<Long> mmbrIds = new ArrayList<Long>();
 		    
 		    if(rolesList!=null && rolesList.size()>0){
 		    	cadreCommitteeMemberVOList=new ArrayList<CadreCommitteeMemberVO>();
@@ -4820,6 +4881,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			    	  CadreCommitteeMemberVO cadreCommitteeMemberVO=new CadreCommitteeMemberVO();
 			    	  cadreCommitteeMemberVO.setRole(objects[1].toString());
 			    	  cadreCommitteeMemberVO.setId((Long)objects[2]);
+			    	  mmbrIds.add(Long.valueOf(objects[2].toString()));
+			    	  	
 			    	  cadreCommitteeMemberVO.setName(objects[3].toString());
 			    	  cadreCommitteeMemberVO.setImagePath(objects[4].toString());
 			    	  cadreCommitteeMemberVO.setMembershipNo(objects[5].toString());
@@ -4836,14 +4899,17 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		    		cadreCommitteeMemberVOList=new ArrayList<CadreCommitteeMemberVO>();
 		    	
 		    	for (Object[] objects : electrolsList){
-		    		CadreCommitteeMemberVO cadreCommitteeMemberVO=new CadreCommitteeMemberVO();
-		    		//cadreCommitteeMemberVO.setLevel((Long)objects[0]);//tdpCommitteeRoleId
-		    		//cadreCommitteeMemberVO.setRole(objects[1].toString());//role
-		    		cadreCommitteeMemberVO.setId((Long)objects[0]);//cadreId
-		    		cadreCommitteeMemberVO.setName(objects[1].toString());//cadreName
-		    		cadreCommitteeMemberVO.setImagePath(objects[2].toString());//image
-		    		cadreCommitteeMemberVO.setMembershipNo(objects[3].toString());//membershipno
-		    		cadreCommitteeMemberVOList.add(cadreCommitteeMemberVO);
+		    		if(!mmbrIds.contains(Long.valueOf(objects[0].toString()))){
+		    			CadreCommitteeMemberVO cadreCommitteeMemberVO=new CadreCommitteeMemberVO();
+			    		//cadreCommitteeMemberVO.setLevel((Long)objects[0]);//tdpCommitteeRoleId
+			    		//cadreCommitteeMemberVO.setRole(objects[1].toString());//role
+			    		cadreCommitteeMemberVO.setId((Long)objects[0]);//cadreId
+			    		cadreCommitteeMemberVO.setName(objects[1].toString());//cadreName
+			    		cadreCommitteeMemberVO.setImagePath(objects[2].toString());//image
+			    		cadreCommitteeMemberVO.setMembershipNo(objects[3].toString());//membershipno
+			    		cadreCommitteeMemberVOList.add(cadreCommitteeMemberVO);
+		    		}
+		    		
 				}
 		    	
 		    	if(cadreCommitteeMemberVOList != null && cadreCommitteeMemberVOList.size() > 0)

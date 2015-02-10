@@ -67,7 +67,8 @@ public class TdpCommitteeElectrolsDAO extends GenericDaoHibernate<TdpCommitteeEl
 			sb.append( " model.tdpCadre.userAddress.ward.constituencyId in(:locationIds) ");
 		}
 		
-		sb.append(" and model.isDeleted = 'N'");
+		sb.append(" and model.isDeleted = 'N'" +
+				" and model.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId != 1 ");
 		
 		if(locationType.equalsIgnoreCase("panchayat")){
 			sb.append(" group by model.tdpCadre.userAddress.panchayat.panchayatId, ");
@@ -83,6 +84,50 @@ public class TdpCommitteeElectrolsDAO extends GenericDaoHibernate<TdpCommitteeEl
 		return query.list();
 		
 	}
+	
+	public List<Object[]> getElectrolsForPanchayatsWardsWithOutDuplicates(List<Long> locationIds, String locationType, List<Long> tdpCadreIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select count(model.tdpCadreId), ");
+		if(locationType.equalsIgnoreCase("panchayat")){
+			sb.append(" model.tdpCadre.userAddress.panchayat.panchayatId, ");
+		}else{
+			sb.append( " model.tdpCadre.userAddress.ward.constituencyId, ");
+		}
+		sb.append(" model.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId from TdpCommitteeElectrols model where");
+		
+		
+		if(locationType.equalsIgnoreCase("panchayat")){
+			sb.append(" model.tdpCadre.userAddress.panchayat.panchayatId in(:locationIds) ");
+		}else{
+			sb.append( " model.tdpCadre.userAddress.ward.constituencyId in(:locationIds) ");
+		}
+		
+		if(tdpCadreIds.size()>0){
+			sb.append(" and model.tdpCadre.tdpCadreId not in(:tdpCadreIds)" );
+		}
+		
+		sb.append(" and model.isDeleted = 'N'" +
+				" and model.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId = 1 ");
+		
+		if(locationType.equalsIgnoreCase("panchayat")){
+			sb.append(" group by model.tdpCadre.userAddress.panchayat.panchayatId, ");
+		}else{
+			sb.append( " group by model.tdpCadre.userAddress.ward.constituencyId, ");
+		}
+		
+		sb.append(" model.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(tdpCadreIds.size()>0){
+			query.setParameterList("tdpCadreIds", tdpCadreIds);
+		}
+		query.setParameterList("locationIds", locationIds);
+		
+		return query.list();
+		
+	}
+	
+	
 	
 	public List<Object[]> getElctoralInfoForALocation(Long locationValue){
 		
