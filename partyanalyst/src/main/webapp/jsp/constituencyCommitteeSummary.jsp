@@ -72,7 +72,7 @@
 	<span class="btn btn-info pull-right exportToExcel" onclick="exportToExcel()" style="display:none;"> Export To Excel </span>
 	
 	<div id="constSummary" style="display:none;">
-		<img id="summaryAjax" src="./images/Loading-data.gif" alt="Processing Image"/>
+		<img id="summaryAjax" src="./images/Loading-data.gif" class="col-sm-2 col-sm-offset-4" alt="Processing Image"/>
 	</div>
 	
 	
@@ -143,12 +143,14 @@ $(".reportTypeCls").click(function(){
 	
 function getAllConstituencysForADistrict()
 {
-     var districtId = $("#districtsId").val();
-	 $("#constituencysId  option").remove();
-	 $("#constituencysId").append('<option value="0">Select Constituency</option>');
+    var districtId = $("#districtsId").val();
+	$("#constituencysId  option").remove();
+	$("#constituencysId").append('<option value="0">Select Constituency</option>');
 	if(districtId==0){
 	  return;	 
 	}
+	
+	$("#constSummary").html('');
  
     $.ajax({
 			type : "GET",
@@ -164,7 +166,7 @@ function getAllConstituencysForADistrict()
 }
 
 function getConstituencySummary(){
-	
+	$("#constSummary").html('<img id="summaryAjax" src="./images/Loading-data.gif" class="col-sm-2 col-sm-offset-4" alt="Processing Image"/>');
 	var constiId = "";
 	if(accessConstituencyId!=null && accessConstituencyId!=""){
 		constiId = accessConstituencyId;
@@ -173,7 +175,8 @@ function getConstituencySummary(){
 	}
 	
 	if(constiId==0){
-	  return;	 
+		$("#constSummary").html('');
+		return;	 
 	}
 	var reportType = $("input[type='radio'][name='reportType']:checked").val();
 	
