@@ -31,5 +31,16 @@ public class TirupatiByelectionDAO extends GenericDaoHibernate<TirupatiByelectio
 		
 	}
 	
+	public List<String> getDivisionNames()
+	{
+		Query query = getSession().createQuery("select distinct model.divisionName from TirupatiByelection model");
+		return query.list();
+	}
+	
+	public List<String> getClusterNames()
+	{
+		Query query = getSession().createQuery("select distinct model.clusterName from TirupatiByelection model");
+		return query.list();
+	}
 
 }
