@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPartyPresidentsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeElectrolsDAO;
 import com.itgrids.partyanalyst.service.ICadreSurveyTransactionService;
 import com.itgrids.partyanalyst.service.impl.CadreDashBoardService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -29,8 +30,20 @@ public class TdpCadreDAOHibernateTest extends BaseDaoTestCase {
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IPartyPresidentsDAO partyPresidentsDAO;
 	private ICadreSurveyTransactionService cadreSurveyTransactionService;
+	private ITdpCommitteeElectrolsDAO tdpCommitteeElectrolsDAO;
 	
 	
+	
+	
+	public ITdpCommitteeElectrolsDAO getTdpCommitteeElectrolsDAO() {
+		return tdpCommitteeElectrolsDAO;
+	}
+
+	public void setTdpCommitteeElectrolsDAO(
+			ITdpCommitteeElectrolsDAO tdpCommitteeElectrolsDAO) {
+		this.tdpCommitteeElectrolsDAO = tdpCommitteeElectrolsDAO;
+	}
+
 	public void setCadreSurveyTransactionService(
 			ICadreSurveyTransactionService cadreSurveyTransactionService) {
 		this.cadreSurveyTransactionService = cadreSurveyTransactionService;
@@ -830,6 +843,10 @@ public static void	setAgeWiseRangeCount(List<Object[]> cadre18to25info,List<Obje
 	
 	public void testGetMembershipNoByTdpCadreId()
 	{
-		System.out.println(tdpCadreDAO.getMembershipNoByTdpCadreId(1610965l));
+		//System.out.println(tdpCadreDAO.getMembershipNoByTdpCadreId(1610965l));
+		List<Long> locationIds = new ArrayList<Long>();
+		locationIds.add(1l);
+		List<Object[]> list = tdpCommitteeElectrolsDAO.getElectrolsForPanchayatsWards(locationIds, "panchayat");
+		System.out.println(list.size());
 	}
 }
