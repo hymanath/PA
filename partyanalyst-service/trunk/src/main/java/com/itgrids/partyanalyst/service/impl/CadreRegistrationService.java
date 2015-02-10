@@ -7199,6 +7199,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				twoWaySmsMobile = twoWaySmsMobileList.get(0);
 			}
 		}
+		
 		String message = vo.getArea();
 		if(message.isEmpty() || message == null || !message.contains(" "))
 		{
@@ -7225,14 +7226,25 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}	
 		
 		Booth booth = boothDAO.getBoothByPartNoAndPublicationIdInAConstituency(partNo,291l,12l);
-		status.setBooth(boothDAO.get((Long)booth.getBoothId()));
-		
-		if(status.getBooth().getLocalBody() != null){
-			status.setBoothType("Urban");
-		}else{
-			status.setBoothType("Rural");
+		if(booth == null)
+		{
+			errorStatus.setMessage(message);
+			errorStatus.setMobileNo(reqMobileNo);
+			if(twoWaySmsMobile != null){
+				errorStatus.setTwoWaySmsMobile(twoWaySmsMobile);
+			}
+			errorStatusSmsDAO.save(errorStatus);
 		}
-		
+		else
+		{
+			status.setBooth(boothDAO.get((Long)booth.getBoothId()));
+			
+			if(status.getBooth().getLocalBody() != null){
+				status.setBoothType("Urban");
+			}else{
+				status.setBoothType("Rural");
+			}
+		}
 		status.setMobile(vo.getMobileNumber().trim());
 		status.setIsDeleted("N");
 		status.setInsertedTime(dateUtilService.getCurrentDateAndTime());
