@@ -2797,7 +2797,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return resultList;
 	}
 	
-	public String updateCommitteePosCount(final Long roleId, final Long maxCount, final String type, final Long increasedPosId){
+	public String updateCommitteePosCount(final Long roleId, final Long maxCount, final String type, final Long increasedPosId, final Long approveCount){
 		LOG.debug("Entered Into updateCommitteePosCount ");
 		String finalStatus ="failed";
 		ResultStatus status = new ResultStatus();
@@ -2821,12 +2821,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 							
 							Date updatedTime = dateUtilService.getCurrentDateAndTime();
 							
-							int updatedCount = tdpCommitteeRoleDAO.updateMaxPosForCommitteeRoleId(roleId, maxCount, updatedTime);
+							int updatedCount = tdpCommitteeRoleDAO.updateMaxPosForCommitteeRoleId(roleId, approveCount, updatedTime);
 							
 							if(updatedCount>0){
 								TdpCommitteeRoleHistory savHistory = tdpCommitteeRoleHistoryDAO.save(histroy);
 								
-								int statusUpdate = cadreCommitteeIncreasedPositionsDAO.updateStatus(type, updatedTime, increasedPosId);
+								int statusUpdate = cadreCommitteeIncreasedPositionsDAO.updateStatus(type, updatedTime, increasedPosId, approveCount);
 								if(statusUpdate>0){
 									resultStatus.setResultCode(0);
 								}
@@ -2836,7 +2836,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					}
 					if(type.equalsIgnoreCase("Rejected")){
 						Date updatedTime = dateUtilService.getCurrentDateAndTime();
-						int statusUpdate = cadreCommitteeIncreasedPositionsDAO.updateStatus(type, updatedTime, increasedPosId);
+						int statusUpdate = cadreCommitteeIncreasedPositionsDAO.updateStatus(type, updatedTime, increasedPosId, null);
 						if(statusUpdate>0){
 							resultStatus.setResultCode(0);
 						}

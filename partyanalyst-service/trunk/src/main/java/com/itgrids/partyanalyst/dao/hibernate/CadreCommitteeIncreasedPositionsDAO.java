@@ -51,13 +51,14 @@ public class CadreCommitteeIncreasedPositionsDAO extends GenericDaoHibernate<Cad
 		return query.list();
 	}
 	
-	public int updateStatus(String status,Date updatedTime, Long increasedPosId){
+	public int updateStatus(String status,Date updatedTime, Long increasedPosId, Long approveCount){
 		Query query = getSession().createQuery(" update CadreCommitteeIncreasedPositions model" +
-				" set model.status=:status, model.updatedTime=:updatedTime" +
+				" set model.status=:status, model.approvedCount=:approveCount, model.updatedTime=:updatedTime" +
 				" where model.cadreCommitteeIncreasedPositionsId =:increasedPosId ");
 		
 		query.setParameter("status", status);
 		query.setParameter("increasedPosId", increasedPosId);
+		query.setParameter("approveCount", approveCount);
 		query.setDate("updatedTime", updatedTime);
 		return query.executeUpdate();
 	}
