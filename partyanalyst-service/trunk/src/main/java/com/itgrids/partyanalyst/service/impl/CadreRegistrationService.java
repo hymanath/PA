@@ -66,6 +66,7 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IDynamicKeysDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
+import com.itgrids.partyanalyst.dao.IErrorStatusSmsDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
@@ -134,6 +135,7 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
+import com.itgrids.partyanalyst.model.ErrorStatusSms;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.RegistrationStatus;
@@ -243,7 +245,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IRegistrationStatusDAO registrationStatusDAO;
 	private ITwoWaySmsMobileDAO twoWaySmsMobileDAO;
 	private ITirupatiByelectionDAO tirupatiByelectionDAO;
-	
+	private IErrorStatusSmsDAO errorStatusSmsDAO;
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
 	public IPrintedCardDetailsDAO getPrintedCardDetailsDAO() {
@@ -255,7 +257,14 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		this.printedCardDetailsDAO = printedCardDetailsDAO;
 	}*/
 	
-	
+	public IErrorStatusSmsDAO getErrorStatusSmsDAO() {
+		return errorStatusSmsDAO;
+	}
+
+	public void setErrorStatusSmsDAO(IErrorStatusSmsDAO errorStatusSmsDAO) {
+		this.errorStatusSmsDAO = errorStatusSmsDAO;
+	}
+
 	public ITirupatiByelectionDAO getTirupatiByelectionDAO() {
 		return tirupatiByelectionDAO;
 	}
@@ -7181,32 +7190,55 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	public void saveRegistrationStatus(CadreRegistrationVO vo){
 
 		RegistrationStatus status = new RegistrationStatus();
+		ErrorStatusSms errorStatus = new ErrorStatusSms();
 		TwoWaySmsMobile twoWaySmsMobile = null;
 		String reqMobileNo = vo.getMobileNumber().trim();
-		if(reqMobileNo.length() > 10){
-			reqMobileNo = reqMobileNo.substring(reqMobileNo.length() - 10);
-		}
 		if(reqMobileNo.length() == 10){
 			List<TwoWaySmsMobile> twoWaySmsMobileList = twoWaySmsMobileDAO.getMobileInfo(reqMobileNo);
 			if(twoWaySmsMobileList.size() > 0 && twoWaySmsMobileList.get(0) != null){
 				twoWaySmsMobile = twoWaySmsMobileList.get(0);
 			}
 		}
-		status.setRegistrationCount(vo.getArea());
+		String message = vo.getArea();
+		if(message.isEmpty() || message == null || !message.contains(" "))
+		{
+			errorStatus.setMessage(message);
+			errorStatus.setMobileNo(reqMobileNo);
+			if(twoWaySmsMobile != null){
+				errorStatus.setTwoWaySmsMobile(twoWaySmsMobile);
+			}
+			errorStatusSmsDAO.save(errorStatus);
+		}
+		else
+		{
+		String[] split = message.split(" ");
+		String partNo = split[0];		
+		String count = split[1];
+		
+		if(reqMobileNo.length() > 10){
+			reqMobileNo = reqMobileNo.substring(reqMobileNo.length() - 10);
+		}
+		
+		status.setRegistrationCount(count);
 		if(twoWaySmsMobile != null){
 			status.setTwoWaySmsMobile(twoWaySmsMobile);
-			status.setBooth(twoWaySmsMobile.getBooth());
-			if(twoWaySmsMobile.getBooth().getLocalBody() != null){
-				status.setBoothType("Urban");
-			}else{
-				status.setBoothType("Rural");
-			}
+		}	
+		
+		Booth booth = boothDAO.getBoothByPartNoAndPublicationIdInAConstituency(partNo,291l,12l);
+		status.setBooth(boothDAO.get((Long)booth.getBoothId()));
+		
+		if(status.getBooth().getLocalBody() != null){
+			status.setBoothType("Urban");
+		}else{
+			status.setBoothType("Rural");
 		}
+		
 		status.setMobile(vo.getMobileNumber().trim());
 		status.setIsDeleted("N");
 		status.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 		
 		registrationStatusDAO.save(status);
+		}
     }
 	
 	public CadreCommitteeMemberVO getBoothsCurrentStatus(){
