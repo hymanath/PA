@@ -10,4 +10,5 @@ public interface ITirupatiByelectionDAO extends GenericDao<TirupatiByelection, L
 	public List<TirupatiByelection> getModelByType(Long typeId,String type);
 	public List<String> getDivisionNames();
 	public List<String> getClusterNames();
+	public List<TirupatiByelection> getModelByboothIds(List<Long> boothIds);
 }

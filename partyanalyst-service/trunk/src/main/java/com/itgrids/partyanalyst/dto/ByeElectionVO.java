@@ -22,6 +22,15 @@ public class ByeElectionVO {
 	private String percentage;
 	List<ByeElectionVO> recognizeList;
 	List<ByeElectionVO> unRecognizeList;
+	
+	private String time;
+	
+	public String getTime() {
+		return time;
+	}
+	public void setTime(String time) {
+		this.time = time;
+	}
 	public Long getId() {
 		return id;
 	}
