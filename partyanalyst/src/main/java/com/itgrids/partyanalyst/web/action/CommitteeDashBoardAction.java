@@ -56,7 +56,7 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private Long accessConstituencyId;
 	private ICadreRegistrationService cadreRegistrationService;
 	private CadreCommitteeMemberVO boothsInfo;
-	
+
 	
 	public void setCadreRegistrationService(
 			ICadreRegistrationService cadreRegistrationService) {
@@ -511,8 +511,20 @@ public String getAllConstituencysForADistrict(){
 		}
 	   return Action.SUCCESS;
 	}
+	
 	public String currentBoothsStatus(){
 	   return Action.SUCCESS;
 	}
+	
+	public String getClustesAndDivisionNames(){
+		try{
+			jObj = new JSONObject(getTask());
+			cadreCommitteeMemberVOList = cadreRegistrationService.getClustesAndDivisionNames(jObj.getLong("typeId"));
+		}catch(Exception e){
+			LOG.error("Exception occured in getClustesAndDivisionNames ",e);
+		}
+	   return Action.SUCCESS;
+	}
+	
 	
 }
