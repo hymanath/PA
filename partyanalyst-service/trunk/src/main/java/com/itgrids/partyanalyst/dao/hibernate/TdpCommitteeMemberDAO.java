@@ -566,4 +566,15 @@ public List<Object[]> getCommitteePresidentAndGS(List<Long> locationIds, Long lo
 	return query.list();
 }
 
+public List<Object[]> getAllMembersInMainCommWithPresidentAndGeneralSecretaryRole(Long locationType,Long locationVal){
+	//0 committee name,1 electoral name,2image,3membership,4cadreId
+	Query query = getSession().createQuery("select distinct model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name,model.tdpCadre.firstname,model.tdpCadre.image,model.tdpCadre.memberShipNo, " +
+				"  model.tdpCadre.tdpCadreId from TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId =:locationType " +
+				"   and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal and model.tdpCommitteeRole.tdpRoles.tdpRolesId in(1,3)  and model.isActive ='Y'  " +
+				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId = 1 order by model.tdpCommitteeRole.tdpRoles.order ");
+	query.setParameter("locationType", locationType);
+	query.setParameter("locationVal", locationVal);
+	return query.list();
+}
+
 }

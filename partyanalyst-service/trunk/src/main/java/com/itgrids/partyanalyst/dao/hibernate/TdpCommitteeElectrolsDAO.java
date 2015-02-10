@@ -154,14 +154,14 @@ public class TdpCommitteeElectrolsDAO extends GenericDaoHibernate<TdpCommitteeEl
 		
 		StringBuilder str = new StringBuilder();
 		str.append("select distinct model.tdpCommittee.tdpBasicCommittee.name,model.tdpCadre.firstname, " +
-				" model.tdpCadre.image,model.tdpCadre.memberShipNo " +
+				" model.tdpCadre.image,model.tdpCadre.memberShipNo, model.tdpCadre.tdpCadreId " +
 				" from TdpCommitteeElectrols model " +
-				" where  model.isDeleted='N' and ");
+				" where  model.isDeleted='N'  ");
 				if(type==1){
-					str.append(" model.tdpCadre.userAddress.panchayat.panchayatId =:locationId " );
+					str.append(" and model.tdpCadre.userAddress.panchayat.panchayatId =:locationId " );
 				}
 				else if(type==2){
-					str.append(" model.tdpCadre.userAddress.ward.constituencyId =:locationId " );
+					str.append(" and model.tdpCadre.userAddress.ward.constituencyId =:locationId " );
 				}
 				str.append("order by model.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId");
 				
