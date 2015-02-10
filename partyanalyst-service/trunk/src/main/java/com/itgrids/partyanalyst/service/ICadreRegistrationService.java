@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.ByeElectionVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
@@ -135,7 +136,12 @@ public interface ICadreRegistrationService {
 	public SurveyCadreResponceVO saveCommitteCadreRegistration(final Long userId,final List<CadreRegistrationVO> cadreRegistrationVO,List<CadrePreviousRollesVO> cadreRoles , String registrationType);
 	public List<GenericVO> getExistingCadreInfoForCommittee(String candidateName,Long constituencyId,Long panchayatId,Long boothId,String isPresentCadre,String enrollmentNo,Long areaId);
 	public void saveRegistrationStatus(CadreRegistrationVO vo);
-	public CadreCommitteeMemberVO getBoothsCurrentStatus();
+	public CadreCommitteeMemberVO getBoothsCurrentStatus(Long constituencyId);
+	
+	public ByeElectionVO getByeEleBoothsCurrentStatusSummary(Long accessValue);
+	public ByeElectionVO getByeEleBoothsCurrentStatusReport(Long accessValue,Long typeId,String type);
 	
 	public List<CadreCommitteeMemberVO> getClustesAndDivisionNames(Long typeId);
+	public ByeElectionVO getByeEleBoothsCurrentStatusSummaryInfo(Long accessValue,String status);
+	
 }

@@ -19,17 +19,29 @@ public class TirupatiByelectionDAO extends GenericDaoHibernate<TirupatiByelectio
 	public List<TirupatiByelection> getModelByType(Long typeId,String type)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("select * from model from TirupatiByelection model");
+		str.append("select model from TirupatiByelection model");
 		if(typeId == 1)
 		 str.append(" where model.clusterName = :type");
 		else if(typeId == 2)
 			 str.append(" where model.divisionName = :type");	
 		Query query = getSession().createQuery(str.toString());	
+		if(!type.isEmpty())
 		query.setParameter("type", type);
 		return query.list();
 		
 		
 	}
+	public List<TirupatiByelection> getModelByboothIds(List<Long> boothIds)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select model from TirupatiByelection model where model.boothId2015 in(:boothIds)");
+		Query query = getSession().createQuery(str.toString());	
+		query.setParameterList("boothIds", boothIds);
+		return query.list();
+		
+		
+	}
+	
 	
 	public List<String> getDivisionNames()
 	{
@@ -42,5 +54,6 @@ public class TirupatiByelectionDAO extends GenericDaoHibernate<TirupatiByelectio
 		Query query = getSession().createQuery("select distinct model.clusterName from TirupatiByelection model");
 		return query.list();
 	}
+	
 
 }

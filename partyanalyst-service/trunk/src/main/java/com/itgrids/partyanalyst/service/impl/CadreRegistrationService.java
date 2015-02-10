@@ -5,10 +5,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -101,6 +104,7 @@ import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterNamesDAO;
 import com.itgrids.partyanalyst.dao.IVoterRelationDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.ByeElectionVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreFamilyVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
@@ -153,6 +157,7 @@ import com.itgrids.partyanalyst.model.TdpCadreTravelInfo;
 import com.itgrids.partyanalyst.model.TdpCadreVerfiedData;
 import com.itgrids.partyanalyst.model.TdpCommittee;
 import com.itgrids.partyanalyst.model.TdpCommitteeRole;
+import com.itgrids.partyanalyst.model.TirupatiByelection;
 import com.itgrids.partyanalyst.model.TwoWaySmsMobile;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
@@ -244,7 +249,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ITdpCommitteeRoleDAO tdpCommitteeRoleDAO;
 	private IRegistrationStatusDAO registrationStatusDAO;
 	private ITwoWaySmsMobileDAO twoWaySmsMobileDAO;
+	
 	private ITirupatiByelectionDAO tirupatiByelectionDAO;
+
 	private IErrorStatusSmsDAO errorStatusSmsDAO;
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
@@ -265,6 +272,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		this.errorStatusSmsDAO = errorStatusSmsDAO;
 	}
 
+	public ITdpCadreTravelInfoDAO getTdpCadreTravelInfoDAO() {
+		return tdpCadreTravelInfoDAO;
+	}
+
 	public ITirupatiByelectionDAO getTirupatiByelectionDAO() {
 		return tirupatiByelectionDAO;
 	}
@@ -272,10 +283,6 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	public void setTirupatiByelectionDAO(
 			ITirupatiByelectionDAO tirupatiByelectionDAO) {
 		this.tirupatiByelectionDAO = tirupatiByelectionDAO;
-	}
-
-	public ITdpCadreTravelInfoDAO getTdpCadreTravelInfoDAO() {
-		return tdpCadreTravelInfoDAO;
 	}
 
 	public void setTwoWaySmsMobileDAO(ITwoWaySmsMobileDAO twoWaySmsMobileDAO) {
@@ -7255,8 +7262,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}
     }
 	
-	public CadreCommitteeMemberVO getBoothsCurrentStatus(){
+	public CadreCommitteeMemberVO getBoothsCurrentStatus(Long accessValue){
+		accessValue = 291l;
 		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
+		 DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
 		CadreCommitteeMemberVO returnVo = new CadreCommitteeMemberVO();
 		List<CadreCommitteeMemberVO> knownList = new ArrayList<CadreCommitteeMemberVO>();
 		List<CadreCommitteeMemberVO> unKnownList = new ArrayList<CadreCommitteeMemberVO>();
@@ -7267,7 +7276,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		//0partNo,1totalVoters,2polled count,3boothType,4insertedTime,5mobile
 		List<Object[]> knownBoothsResults = new ArrayList<Object[]>();
 		try{
-		 knownBoothsResults = registrationStatusDAO.getAllKnownBoothsInfo();
+		 knownBoothsResults = registrationStatusDAO.getAllKnownBoothsInfo(accessValue,12l);
 		}catch(Exception e){
 			LOG.error(e);
 		}
@@ -7282,13 +7291,16 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			}else{
 				cadreCommitteeMemberVO.setStatus("");
 			}
-			if(booth[3] != null){
-			    cadreCommitteeMemberVO.setRole(booth[3].toString());
+			if(booth[6] != null){
+			    cadreCommitteeMemberVO.setRole(booth[6].toString());
 			}else{
 				cadreCommitteeMemberVO.setRole("");
 			}
 			if(booth[4] != null){
-			    cadreCommitteeMemberVO.setLocationName(sdf.format((Date)booth[4]));
+				
+			    //cadreCommitteeMemberVO.setLocationName(sdf.format((Date)booth[4]));
+				cadreCommitteeMemberVO.setLocationName(dateFormat.format((Date)booth[4]));
+				
 			}else{
 				cadreCommitteeMemberVO.setLocationName("");
 			}
@@ -7310,7 +7322,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				cadreCommitteeMemberVO.setStatus("");
 			}
 			if(booth[1] != null){
-			    cadreCommitteeMemberVO.setLocationName(sdf.format((Date)booth[1]));
+				
+			    cadreCommitteeMemberVO.setLocationName(dateFormat.format((Date)booth[1]));
 			}else{
 				cadreCommitteeMemberVO.setLocationName("");
 			}
@@ -7328,7 +7341,37 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return returnVo;
 	}
 	
-	
+	public ByeElectionVO getByeEleBoothsCurrentStatusSummary(Long accessValue)
+	{
+		ByeElectionVO returnVo = new ByeElectionVO();
+		accessValue = 291l;
+		
+		Long totalBooths = 0l;
+		Long recognizeBoothCnt = 0l;
+		Long unrecognizeBoothCnt = 0l;
+		try{
+		 List<Long> list = boothDAO.getAllBoothsInAConstituency(accessValue,12l);
+		 if(list != null && list.size() > 0)
+			 totalBooths = new Long(list.size());
+		 List<BigInteger> knownBooths = registrationStatusDAO.getAllKnownBoothsInfoByConstituency(accessValue,12l);
+		 if(knownBooths != null && knownBooths.size() > 0)
+			 recognizeBoothCnt = new Long(knownBooths.size());
+		  List<BigInteger> unknownBooths = registrationStatusDAO.getAllUnRecognizedBoothsInfoByConstituency(accessValue,12l);
+		 returnVo.setTotalVoters(totalBooths);
+		 returnVo.setPolledVotes(recognizeBoothCnt);
+		 if(unknownBooths != null && unknownBooths.size() > 0)
+			 unrecognizeBoothCnt =new Long(unknownBooths.size());
+		 returnVo.setId(unrecognizeBoothCnt);
+		 
+		}		
+		catch(Exception e)
+		{
+			
+		}
+		return returnVo;
+		
+	}
+
 	public List<CadreCommitteeMemberVO> getClustesAndDivisionNames(Long typeId){
 	
 		List<CadreCommitteeMemberVO> returnList = new ArrayList<CadreCommitteeMemberVO>();
@@ -7342,14 +7385,159 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		
 		for(String name:names){
 			CadreCommitteeMemberVO vo = new CadreCommitteeMemberVO();
+			if(name != null)
+			{
 			vo.setName(name.toString());
 			vo.setStatus(name.toString());
 			returnList.add(vo);
+			}
 		}
 
 		}catch(Exception e){
 			LOG.error("Exception Raised in getClustesAndDivisionNames ",e);
 		}
 		return returnList;
+	}
+	
+
+	public ByeElectionVO getByeEleBoothsCurrentStatusSummaryInfo(Long accessValue,String status)
+	{
+		ByeElectionVO returnVo = new ByeElectionVO();
+		accessValue = 291l;
+		List<BigInteger> boothIds = new ArrayList<BigInteger>();
+		List<ByeElectionVO> result = new ArrayList<ByeElectionVO>();
+		returnVo.setRecognizeList(result);
+		try{
+		 if(status.equalsIgnoreCase("recognize"))
+			 boothIds = registrationStatusDAO.getAllKnownBoothsInfoByConstituency(accessValue,12l);
+		 if(status.equalsIgnoreCase("unrecognize"))
+			 boothIds = registrationStatusDAO.getAllUnRecognizedBoothsInfoByConstituency(accessValue,12l);
+		 if(boothIds != null && boothIds.size() > 0)
+		 { 
+			List<Long> booths = new ArrayList<Long>();
+			for(BigInteger val : boothIds)
+			{
+				booths.add(Long.valueOf(val.toString()));
+			}
+			
+		 List<TirupatiByelection> list = tirupatiByelectionDAO.getModelByboothIds(booths);
+		 
+			if(list != null && list.size() > 0)
+			{
+				result = setData(list,result,booths);	
+			}
+		 }
+		 
+		}		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return returnVo;
+		
+	}
+
+
+	public ByeElectionVO getByeEleBoothsCurrentStatusReport(Long accessValue,Long typeId,String type){
+		accessValue = 291l;
+		
+		ByeElectionVO returnVo = new ByeElectionVO();
+		List<ByeElectionVO> recognizeList = new ArrayList<ByeElectionVO>();
+		
+		returnVo.setRecognizeList(recognizeList);
+		
+			try{
+			
+			List<TirupatiByelection> list = tirupatiByelectionDAO.getModelByType(typeId,type);
+			if(list != null && list.size() > 0)
+			recognizeList = setData(list,recognizeList,null);
+		
+		
+		}catch(Exception e){
+			LOG.error("Exception Rised in getByeEleBoothsCurrentStatusReport ",e);
+		}
+		return returnVo;
+	}
+	
+	public List<ByeElectionVO> setData(List<TirupatiByelection> list,List<ByeElectionVO> recognizeList,List<Long> boothIds)
+	{
+		  ByeElectionVO byeElectionVO = null;
+		DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
+		List<Long> presentBoothIds = new ArrayList<Long>();
+		  
+		try{
+		if(list != null && list.size() > 0)
+		{
+			for(TirupatiByelection params : list)
+			{
+				byeElectionVO = new ByeElectionVO();
+				
+				byeElectionVO.setTotalVoters(Long.valueOf(params.getTotalVoters2015().toString()));
+				byeElectionVO.setPreTotalVoters(Long.valueOf(params.getTotalVoters2014().toString()));
+				byeElectionVO.setBoothLocation(params.getBoothLocation().toString());
+				byeElectionVO.setPartNo(params.getPartNo2015().toString());
+				byeElectionVO.setPrevPartNo(params.getPartNo2014().toString());
+				byeElectionVO.setPrevPercentage(params.getPollingPercentage2014());
+				byeElectionVO.setPrevPolledVotes(Long.valueOf(params.getPolledVotes2014().toString()));
+				byeElectionVO.setPreVotersInPresent(Long.valueOf(params.getVoterIn2015From2014().toString()));
+				byeElectionVO.setBoothId(Long.valueOf(params.getBoothId2015().toString()));
+				recognizeList.add(byeElectionVO);
+				presentBoothIds.add(params.getBoothId2015());
+			}
+		}
+		 List<Object[]> booths = null;
+		if(boothIds == null || boothIds.size() == 0)
+			 booths = registrationStatusDAO.getBoothsInfo(presentBoothIds,12l);
+		else
+			
+			 if(booths != null && booths.size() > 0)
+			 {
+				 for(Object[] params : booths)
+				 {
+					ByeElectionVO vo = getMatchedBooth(recognizeList,Long.valueOf(params[0].toString()));
+					if(vo != null)
+					{
+						vo.setPolledVotes(Long.valueOf(params[2].toString()));
+						String percentage = "0.0";
+						if(vo.getTotalVoters() > 0)
+						percentage = (new BigDecimal(vo.getPolledVotes()*(100.0)/vo.getTotalVoters())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+						vo.setPercentage(percentage);
+						if(params[3] != null){
+							
+						    vo.setTime(dateFormat.format((Date)params[3]));
+						}else{
+							vo.setTime("");
+						}
+					}
+					 
+				 }
+			 
+			 
+		}
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception in setData() method in CadreRegistration service");
+		}
+		return recognizeList;
+	
+	}
+	
+	public ByeElectionVO getMatchedBooth(List<ByeElectionVO> resultList,Long boothId)
+	{
+		try{
+			if(resultList == null || resultList.size() == 0)
+				return null;
+			for(ByeElectionVO vo : resultList)
+			{
+				if(vo.getBoothId().longValue() == boothId)
+					return vo;
+			}
+		}
+		catch(Exception e)
+		{
+			
+		}
+		return null;
 	}
 }
