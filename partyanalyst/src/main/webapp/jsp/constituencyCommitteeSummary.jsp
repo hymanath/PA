@@ -353,7 +353,7 @@ function buildConstituencySummary(results,jsObj){
 								if(rest.resultList[j].membersCount!=null){
 									//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="11">'+rest.resultList[j].membersCount+'</td>';
 									 //str+='<td><a class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="11"  id="location'+rest.locationId+'" href="javascript:{gettingCadreDetails(\'location'+rest.locationId+'\');}">'+rest.resultList[j].membersCount+'</a></td>';
-									 str+='<td><a href="javascript:{gettingCadreDetails(\'members\',11,'+rest.locationId+','+rest.resultList[j].basicCommitteeTypeId+');}">'+rest.resultList[j].membersCount+'</a></td>';
+									 str+='<td><a href="javascript:{gettingCadreDetails(\'members\',9,'+rest.locationId+','+rest.resultList[j].basicCommitteeTypeId+');}">'+rest.resultList[j].membersCount+'</a></td>';
 
 								}else{
 									str+='<td> - </td>';
