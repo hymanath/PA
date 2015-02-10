@@ -1,4 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -27,6 +29,36 @@
 <style>
 	.locationName{text-transform: uppercase;}
 </style>
+<header style="align:center;background-color:#ef4036; display:flex;border-bottom:4px solid #13a751;">
+		 	<div class="col-md-6 col-md-offset-3 col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 text-center">
+				<img src="images/cadreCommitee/Committees_2014_logo.png" class="m_top10" title="Committee Logo" alt="committee" />
+			</div>
+			<div class="col-md-3  col-xs-3 col-sm-3">
+               
+                    <a href="#" class="dropdown-toggle btn btn-default btn-xs m_top20" data-toggle="dropdown" aria-expanded="false" style="margin-top: 60px;">
+                    Menu <img src="images/cadreCommitee/menu_icon.png" />
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);top: 91px;">
+                    
+						<c:if test="${sessionScope.USER.isAdmin == 'true'}">
+						   <li><a tabindex="-1" href="committeeDashBoardAction.action">Home</a></li>
+						    <li><a tabindex="-1" href="committeeUpdateApproveAction.action">Approval Requests</a></li>
+					    </c:if>
+						<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_ADMIN' )}">
+							<li><a tabindex="-1" href="committeeDashBoardAction.action">Home</a></li>
+							<li><a tabindex="-1" href="committeeUpdateApproveAction.action">Approval Requests</a></li>
+						</c:if>
+						<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_COMMITTEE_MANAGEMENT' )}">
+							<li><a tabindex="-1" href="cadreCommitteeAction.action">Home</a></li>
+							<li><a tabindex="-1" href="cadreCommitteeSummaryAction.action">Summary Report</a></li>
+				            <li><a tabindex="-1" href="cadreCommitteeRequestAction.action">Request For Positions Increase</a></li>
+						</c:if>
+                      <li role="presentation" class="divider" style="background-color: rgba(229, 229, 229,0.6);"></li>
+                     <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
+                    </ul>
+                 
+            </div>
+	</header>
 <div class="container">
     <div class="row m_top20 locationCls">
   	   <div class="col-md-4 col-md-offset-2 col-sm-6 col-xs-6">Select District:<select id="districtsId" class="form-control" onChange="getAllConstituencysForADistrict()"><option value="0">Select District</option></select> </div>
