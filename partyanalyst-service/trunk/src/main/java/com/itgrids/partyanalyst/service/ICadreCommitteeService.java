@@ -55,7 +55,7 @@ public interface ICadreCommitteeService {
 	public List<CadreCommitteeMemberVO> setCommitteConfirmation(Long basicCommitteeTypeId,Long locationId,Long levelId);
 	public List<CadreCommitteeMemberVO> deleteCadreRole(Long tdpCommitteeMemberId);
 	public List<CommitteeApprovalVO> getCommitteesForApproval(Long startNo, Long endNo,Long requestUserId);
-	public String updateCommitteePosCount(Long roleId, Long maxCount, String type, Long increasedPosId);
+	public String updateCommitteePosCount(final Long roleId, final Long maxCount, final String type, final Long increasedPosId, final Long approveCount);
 	public CommitteeApprovalVO getStatusCountsOfApproval();
 	
 	
@@ -85,4 +85,5 @@ public interface ICadreCommitteeService {
 	public List<CadreCommitteeMemberVO> getComitteeMembersInfoByCommiteTypeAndLocation(Long locationId,Long locationType,Long basicCommitteeTypeId,String status);
 	public ResultStatus updateCandidateDesignation(final Long committeeId,final List<LocationWiseBoothDetailsVO> changeDesignationsList,final Long userId);
 	public LocationWiseBoothDetailsVO getAllCommitteeMembersInfoInALoc(Long locationLvl,Long locationVal);
+	
 }
