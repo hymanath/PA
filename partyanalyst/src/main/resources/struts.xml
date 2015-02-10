@@ -9683,10 +9683,14 @@
 			<result name="success">/jsp/currentBoothsStatus.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
-		
 		<action name="getClustesAndDivisionNamesAction" class="committeeDashBoardAction" method="getClustesAndDivisionNames">
 			<result type="json" name="success">
 				<param name="root">cadreCommitteeMemberVOList</param>
+			</result>
+		</action>
+		<action name="getByeEleBoothsCurrentStatusAction" class="committeeDashBoardAction" method="getByeElectionBoothsCurrentStatus">
+			<result type="json" name="success">
+				<param name="root">byeEleInfo</param>
 			</result>
 		</action>
 </package>
