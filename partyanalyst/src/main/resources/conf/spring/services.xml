@@ -2280,6 +2280,7 @@
        
      <bean name="cadreRegistrationService"  class="com.itgrids.partyanalyst.service.impl.CadreRegistrationService">
      
+	
 		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="cadrePreviousRolesDAO" ref="cadrePreviousRolesDAO" />

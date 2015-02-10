@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.ByeElectionVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
@@ -58,6 +59,15 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private CadreCommitteeMemberVO boothsInfo;
 
 	
+	private ByeElectionVO byeEleInfo;
+	
+	
+	public ByeElectionVO getByeEleInfo() {
+		return byeEleInfo;
+	}
+	public void setByeEleInfo(ByeElectionVO byeEleInfo) {
+		this.byeEleInfo = byeEleInfo;
+	}
 	public void setCadreRegistrationService(
 			ICadreRegistrationService cadreRegistrationService) {
 		this.cadreRegistrationService = cadreRegistrationService;
@@ -505,7 +515,14 @@ public String getAllConstituencysForADistrict(){
 	
 	public String getBoothsCurrentStatus(){
 		try{
-		  boothsInfo = cadreRegistrationService.getBoothsCurrentStatus();
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			boolean noaccess = false;
+			
+			jObj = new JSONObject(getTask());
+			if(jObj.getString("task").equalsIgnoreCase("summary"))
+				 boothsInfo = cadreRegistrationService.getBoothsCurrentStatusSummary(new Long(regVO.getAccessValue()));
+			else
+		  boothsInfo = cadreRegistrationService.getBoothsCurrentStatus(new Long(regVO.getAccessValue()));
 		}catch(Exception e){
 			LOG.error("Exception occured in getBoothsCurrentStatus ",e);
 		}
@@ -513,6 +530,25 @@ public String getAllConstituencysForADistrict(){
 	}
 	
 	public String currentBoothsStatus(){
+		   return Action.SUCCESS;
+		}
+	public String getByeElectionBoothsCurrentStatus(){
+		try{
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			boolean noaccess = false;
+			
+			jObj = new JSONObject(getTask());
+			if(jObj.getString("task").equalsIgnoreCase("ByeElesummary"))
+				 byeEleInfo = cadreRegistrationService.getByeEleBoothsCurrentStatusSummary(new Long(regVO.getAccessValue()));
+			else if(jObj.getString("task").equalsIgnoreCase("ByeEleInfo"))
+				//byeEleInfo = cadreRegistrationService.getByeEleBoothsCurrentStatus(new Long(regVO.getAccessValue()));
+				byeEleInfo= cadreRegistrationService.getByeEleBoothsCurrentStatusReport(new Long(regVO.getAccessValue()),jObj.getLong("typeId"),jObj.getString("type"));
+			else if(jObj.getString("task").equalsIgnoreCase("ByeElesummaryStatusInfo"))
+				byeEleInfo= cadreRegistrationService.getByeEleBoothsCurrentStatusSummaryInfo(new Long(regVO.getAccessValue()),jObj.getString("status"));	
+			
+		}catch(Exception e){
+			LOG.error("Exception occured in getBoothsCurrentStatus ",e);
+		}
 	   return Action.SUCCESS;
 	}
 	

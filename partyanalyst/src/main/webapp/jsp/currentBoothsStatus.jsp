@@ -105,11 +105,16 @@ table.dataTable tr.odd {
 }
 #subCount{
  display:none;
-}	
+}
+
+
 	</style>
+	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+   <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 </head>
 <body>
-<div class="container m_top10">
+<div class="container m_top10" style=" background: none repeat scroll 0 0 #fff;
+    padding: 10px;">
 
 		<!-- Title Row -->
 		<div class="row-fluid" id="fadeInDown">
@@ -117,8 +122,31 @@ table.dataTable tr.odd {
 				<h3 class="text-center text-uppercase">Booth Wise Polling Info</h3>
 			</div>
 		</div><!-- Title Row End-->
+				<div class="row-fluid " id="summaryInfo">
+
+			<div  class="span12 show-grid well well-small border-radius-0 mb-10">
+			</div>
+			</div>
+
+			<div class="row-fluid" style="margin-top: 20px;"><div class="form-inline"><label class="radio">
+			<input type="radio" name="optionsRadios" class="radioCls" value="1" onclick="buildOptions()" checked>
+			Cluster
+			</label>
+			<label class="radio">
+			<input type="radio" name="optionsRadios" class="radioCls" onclick="buildOptions()" value="2">
+			Divison
+			</label>
+			<label class="radio">
+			<input type="radio" name="optionsRadios" class="radioCls" value="0">
+			All
+			</label>
+			<lable id="selectDiv"  style="margin-left: 53px;">Select Cluster</lable><select id="selectType" onchange="getByeEleBoothsCurrentStatus();"></select>
+			</div>
+
+			</div>
+			
 		<div class="row-fluid " id="mainCount">
-			<div id="mainInfo" class="span12 show-grid well well-small border-radius-0 mb-10">
+			<div id="mainInfo" class="span12 show-grid well well-small border-radius-0 mb-10" style="margin-top: 20px; overflow: auto;">
 				    
 			</div>
 		</div>
@@ -129,11 +157,81 @@ table.dataTable tr.odd {
 		</div>
 </div>
 <script type="text/javascript">
+
+function getSummary()
+{
+var jobj = {
+			task : "ByeElesummary",
+
+		  }
+	           $.ajax({
+				    dataType: 'json',
+					type : "POST",
+					data: {task:JSON.stringify(jobj)},
+					url : "getByeEleBoothsCurrentStatusAction.action"
+				}).done(function(result){
+					buildSummary(result);
+				});
+
+}
+
+function getSummaryByStatus(status)
+{
+	var type ="";
+	      $("#mainInfo").html('<center><img style="" id="ajaxImgStyle" src="images/icons/loading.gif"></center>');
+		  $("#mainCount").show(); 
+var jobj = {
+			task : "ByeElesummaryStatusInfo",
+			status : status
+		  }
+	           $.ajax({
+				    dataType: 'json',
+					type : "POST",
+					data: {task:JSON.stringify(jobj)},
+					url : "getByeEleBoothsCurrentStatusAction.action"
+				}).done(function(result){
+					buildReport(result,jobj);
+				});
+
+}
+function buildSummary(result)
+{
+	var str ='';
+	str+='<table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover">';
+	str+='<tr>';
+	str+='<td style="width:35px;"><h2>'+result.totalVoters+'</h2> <p> TotalBooths</p> </td>';
+	if(result.polledVotes > 0)
+	{
+	str+='<td style="width:35px;"><h2><a style="cursor:pointer" onclick="getSummaryByStatus(\'recognize\')">'+result.polledVotes+'</a></h2> <p>Recognize Booths </p> </td>';
+	}
+	else
+	{
+		str+='<td style="width:35px;"><h2>'+result.polledVotes+'</h2> <p>Recognize Booths </p> </td>';
+	}
+	if(result.id > 0)
+	{
+	str+='<td style="width:35px;"><h2><a style="cursor:pointer" onclick="getSummaryByStatus(\'unrecognize\')">'+result.id+'</a></h2> <p>Un Recognize Booths</p> </td>';
+	}
+	else
+	{
+		str+='<td style="width:35px;"><h2>'+result.id+'</h2> <p> Un Recognize Booths </p> </td>';
+	}
+	str+='</tr>';
+	str+='</table>';
+	$("#summaryInfo").html(str);
+
+}
   function getBoothsCurrentStatus(){
 	      $("#mainInfo").html('<center><img style="" id="ajaxImgStyle" src="images/icons/loading.gif"></center>');
 		  $("#mainCount").show(); 
+		  var jobj = {
+			task : "",
+
+		  }
 	           $.ajax({
+				    dataType: 'json',
 					type : "POST",
+					data: {task:JSON.stringify(jobj)},
 					url : "getBoothsCurrentStatus.action"
 				}).done(function(result){
 	                  if((result.knownList != null && result.knownList.length > 0) || (result.unKnownList != null && result.unKnownList.length > 0) ){
@@ -141,14 +239,23 @@ table.dataTable tr.odd {
 							  $("#mainCount").show(); 
 							  var boothData = result.knownList;
 							  var str ='';
-							  str+='<table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" ><tbody>'
-						      str+='  <tr><th>Booth No</th><th>Booth Type</th><th>Total Voters</th><th>Votes Polled</th><th>Time</th><th>Mobile</th></tr>';
+							  str+='<table id="knownTab"class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" ><thead>'
+						      str+='  <tr><th>Booth No</th><th>Booth Type</th><th>Total Voters</th><th>Votes Polled</th><th>% Of Votes Polled</th><th>Time</th><th>Mobile</th></thead></tr>';
+							  str+='<tbody>';
+
 							 for(var i in boothData){
+								 var percentage = "";
+								if(boothData[i].total > 0)
+								var percentage = (boothData[i].status / boothData[i].total * 100).toFixed(2);
+								else
+								percentage = 0.0;
 								str+='  <tr>'; 
 								str+='    <td>'+boothData[i].name+'</td>'; 
 								str+='    <td>'+boothData[i].role+'</td>'; 
-								str+='    <td>'+boothData[i].total+'</td>'; 
+								str+='    <td>'+boothData[i].total+'</td>';
+								
 								str+='    <td>'+boothData[i].status+'</td>'; 
+								str+='    <td>'+percentage+'</td>';
 								str+='    <td>'+boothData[i].locationName+'</td>'; 
 								str+='    <td>'+boothData[i].membershipNo+'</td>'; 
 								str+='  </tr>'; 
@@ -156,7 +263,13 @@ table.dataTable tr.odd {
 							
 						      str+=' </tbody>';
 					          str+='</table>';
+							  
 							  $("#mainInfo").html(str);
+							  $("#knownTab").dataTable({
+				"aaSorting": [[ 1, "asc" ]],
+				"iDisplayLength": 15,
+				"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]
+				});;
 						  }else{
 							$("#mainInfo").html("");
 							$("#mainCount").hide();  
@@ -165,8 +278,9 @@ table.dataTable tr.odd {
 							$("#subCount").show(); 
 							var boothData = result.unKnownList;
 							  var str ='<div style="font-size: 18px;margin-bottom: 5px;text-align: center;"><b>Messages From Un Known Mobile</b></div>';
-							  str+='<table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" ><tbody>'
-						      str+='  <tr><th>Votes Polled</th><th>Time</th><th>Mobile</th></tr>';
+							  str+='<table id="unknownTab" class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" ><thead>'
+						      str+='  <tr><th>Votes Polled</th><th>Time</th><th>Mobile</th></thead></tr>';
+							  str+=' <tbody>';
 							 for(var i in boothData){
 								str+='  <tr>'; 
 								str+='    <td>'+boothData[i].status+'</td>'; 
@@ -177,6 +291,11 @@ table.dataTable tr.odd {
 						      str+=' </tbody>';
 					          str+='</table>';
 							  $("#subInfo").html(str);
+							  $("#unknownTab").dataTable({
+				"aaSorting": [[ 1, "asc" ]],
+				"iDisplayLength": 15,
+				"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]
+				});;
 						  }else{
 							$("#subInfo").html("");
 							$("#subCount").hide();  
@@ -188,7 +307,166 @@ table.dataTable tr.odd {
 					  }
 				});
   }
-getBoothsCurrentStatus();
+
+function getByeEleBoothsCurrentStatus(){
+	var type ="";
+	      $("#mainInfo").html('<center><img style="" id="ajaxImgStyle" src="images/icons/loading.gif"></center>');
+		  $("#mainCount").show(); 
+		   var checkdVal= $("input[name=optionsRadios]:checked").val();
+		   if(checkdVal > 0)
+		    type = $("#selectType").val();
+		  var jobj = {
+			task : "ByeEleInfo",
+			typeId:checkdVal,
+			type:type
+
+		  }
+	           $.ajax({
+				    dataType: 'json',
+					type : "POST",
+					data: {task:JSON.stringify(jobj)},
+					url : "getByeEleBoothsCurrentStatusAction.action"
+				}).done(function(result){
+
+					buildReport(result,jobj);
+	                
+				});
+  }
+
+  function buildReport(result,jobj)
+  {
+	   
+		if(result.recognizeList != null && result.recognizeList.length > 0){
+							  $("#mainCount").show(); 
+							  var boothData = result.recognizeList;
+							  var str ='';
+							  if(jobj.status != null)
+							  str+='<h4 style=" text-transform: uppercase;color:#0062AE; margin-left: 400px;"> '+jobj.status+' Booth Report</h4>';
+								else if (jobj.typeId == 1)
+								{
+									 str+='<h4 style=" text-transform: uppercase;;color:#0062AE; margin-left: 400px;">  Cluster Report</h4>';
+								}
+								else if (jobj.typeId == 2)
+								{
+									 str+='<h4 style=" text-transform: uppercase;;color:#0062AE; margin-left: 400px;">  Divison Report</h4>';
+								}
+							  str+='<table id="knownTab"class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" ><thead>'
+						      str+='<tr>';
+							  str+='<th>2015_PartNO</th>';
+							  str+='<th>BOOTH LOCATION</th>';
+							  str+='<th>2015 TOTAL VOTERS</th>';
+							  str+='<th>2015 POLLED VOTES</th>';
+							  str+='<th>2015 POLLING PERCENTAGE</th>';
+							   str+='<th>Time</th>';
+							  str+='<th>2014_PartNO</th>';
+							  str+='<th>2014 VOTERS IN 2015</th>';
+							  str+='<th>2014 TOTAL VOTERS</th>';
+							  str+='<th>2014 POLLING PERCENTAGE';
+							  str+='<th>2014 POLLED VOTES</th>';
+							  str+=' </thead>';
+							  str+=' </tr>';
+							  str+='<tbody>';
+
+							 for(var i in boothData){
+								 str+='<tr>';
+							  str+='<td>'+boothData[i].partNo+'</td>';
+							  str+='<td>'+boothData[i].boothLocation+'</td>';
+							  str+='<td>'+boothData[i].totalVoters+'</td>';
+							  if(boothData[i].polledVotes == null)
+								 str+='<td> - </td>';
+							  else
+							  str+='<td>'+boothData[i].polledVotes+'</td>';
+							   if(boothData[i].percentage == null)
+								 str+='<td> - </td>';
+							  else
+							  str+='<td>'+boothData[i].percentage+'</td>';
+							   if(boothData[i].time == null)
+								 str+='<td> - </td>';
+							  else
+							 str+='<td>'+boothData[i].time+'</td>';
+							  str+='<td>'+boothData[i].prevPartNo+'</td>';
+							  str+='<td>'+boothData[i].preVotersInPresent+'</td>';
+							  str+='<td>'+boothData[i].preTotalVoters+'</td>';
+							  str+='<td>'+boothData[i].prevPercentage+'</td>';
+							  str+='<td>'+boothData[i].prevPolledVotes+'</td>';
+								str+='  </tr>'; 
+							 }
+							
+						      str+=' </tbody>';
+					          str+='</table>';
+							  
+							  $("#mainInfo").html(str);
+							  $("#knownTab").dataTable({
+				"aaSorting": [[ 1, "asc" ]],
+				"iDisplayLength": 15,
+				"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]
+				});;
+						  }else{
+							$("#mainInfo").html("");
+							$("#mainCount").hide();  
+						  }
+						  
+  }
+
+$(".radioCls").click(function(){
+ var checkdVal= $("input[name=optionsRadios]:checked").val();
+	  if(checkdVal == 2)
+	  {
+		  $("#selectDiv").html("Select Divison");
+		  $("#divisonSelect").show();
+		  $("#clusterSelect").hide();
+	  }
+	  else if(checkdVal == 1)
+	  {
+		  $("#selectDiv").html("Select Cluster");
+		   $("#divisonSelect").hide();
+		   $("#clusterSelect").show();
+	  }
+	  else if(checkdVal == 0)
+	  {
+		  $("#selectDiv").html("");
+		  $("#selectType").html("");
+		   $("#divisonSelect").hide();
+		   $("#clusterSelect").hide();
+		   getByeEleBoothsCurrentStatus();
+	  }
+
+});
+function buildOptions()
+  {
+	  $('#selectType').html('');
+	 
+     var checkdVal= $("input[name=optionsRadios]:checked").val();
+	  var jobj ={
+		typeId:checkdVal,
+		task:""
+	  }
+		 $.ajax({
+				    dataType: 'json',
+					type : "POST",
+					data: {task:JSON.stringify(jobj)},
+					url : "getClustesAndDivisionNamesAction.action"
+				}).done(function(result){
+					
+					if(result != null && result.length > 0)
+					{
+						
+						
+						for(var i in result)
+						{
+							
+							$('#selectType').append('<option value="'+result[i].name+'">'+result[i].name+'</option>');
+					
+						}
+					}
+					getByeEleBoothsCurrentStatus();
+				});
+				
+		
+  }
+buildOptions();
+getSummary();
+
 </script>
 </body>
 </html>
