@@ -7028,6 +7028,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 										tdpCadre.setPreviousEnrollmentNo(cadreRegistrationVO.getPreviousEnrollmentNumber());
 									if(cadreRegistrationVO.getIsSmartPhone() != null)
 										tdpCadre.setMobileType(cadreRegistrationVO.getIsSmartPhone());
+									tdpCadre.setUpdatedWebUserId(cadreRegistrationVO.getCreatedUserId());
+									tdpCadre.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 									tdpCadreDAO.save(tdpCadre);
 									
 									UserAddress userAddress = tdpCadre.getUserAddress();
