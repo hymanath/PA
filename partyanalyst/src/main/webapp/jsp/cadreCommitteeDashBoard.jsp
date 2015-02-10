@@ -1836,7 +1836,8 @@
 		
 	function getCommitteeDetailsByStatus(basicCommitteetypeId,status,levelId,constituencyId)
 	{
-		$("html,body").animate({scrollTop: $("#CommitteeDetails").offset().top});
+		//$("html,body").animate({scrollTop: $("#dialogSummary").offset().top});
+		$('#dialogSummary').animate({ scrollTop: $("#CommitteeDetails").offset().top}, 'slow');
 		$("#CommitteeDetails").show();
 		$("#committeeMemberDiv").show();
 		$("#conformedBtn").show();
