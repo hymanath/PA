@@ -68,9 +68,9 @@
             <!-- First Block Start-->
            <div class="row">
            		<div style="border-bottom: 1px solid rgb(255, 255, 255); padding: 10px;"class="col-md-offset-1 text-center col-md-10">
-					<label id="incId" class="radio-inline" style="padding: 10px 10px 10px 30px; background: none repeat scroll 0% 0% rgb(255, 153, 102); margin-left: -3px;"><input type="radio" name="requestType" value="1" id="reqIncPosId" checked="true" onClick="hideDetails('1')"/>Request for committee member new position</label>
-                    <label id="desgId" class="radio-inline"  style="padding: 10px 10px 10px 30px; background: none repeat scroll 0% 0% rgb(255, 153, 102); margin-left: -3px;"><input type="radio" name="requestType" value="2" id="reqChangeDesgId" onClick="hideDetails('2')"/>Request for committee members change position</label>
-					<label id="viewId" class="radio-inline"  style="padding: 10px 10px 10px 30px; background: none repeat scroll 0% 0% rgb(255, 153, 102); margin-left: -3px;"><input type="radio" name="requestType" value="3" id="viewRequestId" onClick="hideDetails('3')" />View Request Status</label> 
+					<label id="incId" class="radio-inline" style="padding: 10px 10px 10px 30px; background: none repeat scroll 0% 0% rgb(255, 153, 102); margin-left: -3px;"><input type="radio" name="requestType" value="1" id="reqIncPosId" checked="true" onClick="hideDetails('1');clearResult();"/>Request for committee member new position</label>
+                    <label id="desgId" class="radio-inline"  style="padding: 10px 10px 10px 30px; background: none repeat scroll 0% 0% rgb(255, 153, 102); margin-left: -3px;"><input type="radio" name="requestType" value="2" id="reqChangeDesgId" onClick="hideDetails('2');clearResult();"/>Request for committee members change position</label>
+					<label id="viewId" class="radio-inline"  style="padding: 10px 10px 10px 30px; background: none repeat scroll 0% 0% rgb(255, 153, 102); margin-left: -3px;"><input type="radio" name="requestType" value="3" id="viewRequestId" onClick="hideDetails('3');clearResult();" />View Request Status</label> 
                 </div>
             </div>
 			
@@ -79,10 +79,10 @@
 		<div class="row" id="locationsDivId">
 			<div class="row m_top20">
 			    <div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 ">
-				  <div class="radio pull-right"><label><input type="radio" name="committeeType" onclick="validateSearchType('1');getCommitteeLocations();"  value="1" id="villageId" checked="true"> Village / Ward</label></div>
+				  <div class="radio pull-right"><label><input type="radio" name="committeeType" onclick="validateSearchType('1');getCommitteeLocations();clearResult();"  value="1" id="villageId" checked="true"> Village / Ward</label></div>
 			    </div>
 			    <div class="col-md-4 col-sm-6 col-xs-6">
-			      <div class="radio">           <label><input type="radio" name="committeeType" onclick="validateSearchType('2');getCommitteeLocations();" value="2" id="mndlLvlCommittSelec"/> Mandal / Town / Division </label></div>
+			      <div class="radio">           <label><input type="radio" name="committeeType" onclick="validateSearchType('2');getCommitteeLocations();clearResult();" value="2" id="mndlLvlCommittSelec"/> Mandal / Town / Division </label></div>
 			    </div>
 			</div> 
 	  </div>
@@ -90,22 +90,22 @@
 		   <!-- locations,commitees,designations drop down boxes list -->
            <div class="row m_top20" id="committeesId">
                   <div class="col-md-3" id="selLocId">Select location<br/>
-                	<select id="committeeLocationId" class="form-control" onchange="populateDefaultValue(1);"><option value="0">Select Location</option></select>
+                	<select id="committeeLocationId" class="form-control" onchange="populateDefaultValue(1);clearResult();"><option value="0">Select Location</option></select>
                     <div id="committeeLocationIdErr"></div>
 				  </div>
 				
                   <div class="col-md-3" id="selCommId">Committee Type<br/>
-                    <select id="committeeTypeId" class="form-control" onchange="getAffiliatedCommitsForALoc();populateDefaultValue(2);getCommitteCadreMembersInfo(1)"><option  value="0">Select Committee Type</option><option value="1">Main Committee</option><option value="2">Affiliated Committee</option></select>
+                    <select id="committeeTypeId" class="form-control" onchange="getAffiliatedCommitsForALoc();populateDefaultValue(2);getCommitteCadreMembersInfo(1);clearResult();"><option  value="0">Select Committee Type</option><option value="1">Main Committee</option><option value="2">Affiliated Committee</option></select>
                     <div id="committeeTypeIdErr"></div>
 				  </div>
 			    
                  <div id="committeeMainId" class="col-md-3">Affliated Committee<br/>
-                   <select id="afflitCommitteeId" class="form-control" onchange="getCommitteCadreMembersInfo(2)"><option>Select Affiliated Committee</option></select>
+                   <select id="afflitCommitteeId" class="form-control" onchange="getCommitteCadreMembersInfo(2);clearResult();"><option>Select Affiliated Committee</option></select>
                    <div id="afflitCommitteeIdErr"></div>
 				 </div>
 				
                  <div id="designationDivId" class="col-md-3">Committee Designation<br/>
-                    <select id="committeePositionId" class="form-control" name="eligibleRoles[0].cadreRoleId" onChange="checkDesgValidation()"><option value="0">Select Designation </option></select>
+                    <select id="committeePositionId" class="form-control" name="eligibleRoles[0].cadreRoleId" onChange="checkDesgValidation();clearResult();"><option value="0">Select Designation </option></select>
                     <div id="committeePositionIdErr"></div>
 				 </div>
 		 </div>
@@ -141,6 +141,10 @@
 <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="dist/js/bootstrap.min.js"></script>
 <script type="text/javascript">
+function clearResult(){
+	$("#posIncreasedId").html("");
+	
+}
 getCommitteeLocations();
 </script>
 </body>

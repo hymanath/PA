@@ -1351,6 +1351,9 @@
 	 
 	 function getElctoralInfoForALocation(){
 		var locationId=$("#committeeLocationId").val();
+		if(!($('#villageId').is(':checked'))){
+			return;
+		}
 		var jObj={
 					locationId:locationId,
 					task:"getElectoralDetails"

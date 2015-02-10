@@ -337,19 +337,26 @@ function getCommitteeLocations(){
 					      for(var i=0;i<result.result.length;i++){
 					        if(designationId==result.result[i].locationId){
 							  var str='';
-							  str+='<div class="col-md-offset-2 col-md-8 pad1" style="background-color:rgba(0,0,0,0.1);">';
-							   //committeeLocation committeeType committeePosition
-							  str+= '<span style="font-weight: bold;">'+committeeLocation+ ' &nbsp'+committeeType+ '&nbsp '+committeePosition+' Designation</style>';
-							  str+='</div>';
-							  str+='<div class="col-md-offset-2 col-md-8 pad1" style="background-color:rgba(0,0,0,0.1);margin-top:2px;">';
-							  str+='Current Max Positions';
-							  str+='<input class="form-control" id="currentMaxPositionId" disabled="disabled" value='+result.result[i].population+' /> ';
-							  str+=' Request Max Positions';
-							  str+='<input class="form-control" id="requestMaxPositionId" /> ';
-							  str+='<button id="positionIncreased" class="btn btn-success" onClick="cadreCommitteeIncPositionsOrChangeDesg(\'positionsIncreased\')">Send Request</button>';
-							  str+='<div> <img src="images/Loading-data.gif" class="offset7"  id="posIncImageId" style=" margin-left:252px;margin-top: 20px;width:70px;height:60px;display:none;"/></div>';
-							  str+='<div id="maxPositionsErrId"></div>';
-							  str+='</div>';
+							  if(result.result[i].population != 0){
+								  str+='<div class="col-md-offset-2 col-md-8 pad1" style="background-color:rgba(0,0,0,0.1);">';
+								   //committeeLocation committeeType committeePosition
+								  str+= '<span style="font-weight: bold;">'+committeeLocation+ ' &nbsp'+committeeType+ '&nbsp '+committeePosition+' Designation</style>';
+								  str+='</div>';
+								  str+='<div class="col-md-offset-2 col-md-8 pad1" style="background-color:rgba(0,0,0,0.1);margin-top:2px;">';
+								  str+='Current Max Positions';
+								  str+='<input class="form-control" id="currentMaxPositionId" disabled="disabled" value='+result.result[i].population+' /> ';
+								  str+=' Request Max Positions';
+								  str+='<input class="form-control" id="requestMaxPositionId" /> ';
+								  str+='<button id="positionIncreased" class="btn btn-success" onClick="cadreCommitteeIncPositionsOrChangeDesg(\'positionsIncreased\')">Send Request</button>';
+								  str+='<div> <img src="images/Loading-data.gif" class="offset7"  id="posIncImageId" style=" margin-left:252px;margin-top: 20px;width:70px;height:60px;display:none;"/></div>';
+								  str+='<div id="maxPositionsErrId"></div>';
+								  str+='</div>';
+							  }else{
+								  str+='<div class="col-md-offset-2 col-md-8 pad1" style="background-color:rgba(0,0,0,0.1);">';
+								  str+=' This Designation Already Have Max Positions!. You Can Add Any Number Of Members.'
+								  str+='</div>';
+								  
+							  }
 							  $("#posIncreasedId").html(str);
 							 }
 					       }
