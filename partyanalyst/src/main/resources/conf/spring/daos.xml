@@ -1916,5 +1916,10 @@
 	<bean id="twoWaySmsMobileDAO" class="com.itgrids.partyanalyst.dao.hibernate.TwoWaySmsMobileDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="tirupatiByelectionDAO" class="com.itgrids.partyanalyst.dao.hibernate.TirupatiByelectionDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!--  end -->
 </beans>		
