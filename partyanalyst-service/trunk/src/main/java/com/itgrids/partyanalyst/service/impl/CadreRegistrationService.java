@@ -87,6 +87,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreTravelInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreVerfiedDataDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeRoleDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.ITirupatiByelectionDAO;
 import com.itgrids.partyanalyst.dao.ITwoWaySmsMobileDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
@@ -241,6 +242,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ITdpCommitteeRoleDAO tdpCommitteeRoleDAO;
 	private IRegistrationStatusDAO registrationStatusDAO;
 	private ITwoWaySmsMobileDAO twoWaySmsMobileDAO;
+	private ITirupatiByelectionDAO tirupatiByelectionDAO;
 	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
@@ -254,6 +256,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	}*/
 	
 	
+	public ITirupatiByelectionDAO getTirupatiByelectionDAO() {
+		return tirupatiByelectionDAO;
+	}
+
+	public void setTirupatiByelectionDAO(
+			ITirupatiByelectionDAO tirupatiByelectionDAO) {
+		this.tirupatiByelectionDAO = tirupatiByelectionDAO;
+	}
+
 	public ITdpCadreTravelInfoDAO getTdpCadreTravelInfoDAO() {
 		return tdpCadreTravelInfoDAO;
 	}
@@ -7269,5 +7280,30 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			LOG.error("Exception Rised in getBoothsCurrentStatus ",e);
 		}
 		return returnVo;
+	}
+	
+	
+	public List<CadreCommitteeMemberVO> getClustesAndDivisionNames(Long typeId){
+	
+		List<CadreCommitteeMemberVO> returnList = new ArrayList<CadreCommitteeMemberVO>();
+	
+		try{
+			List<String> names = new ArrayList<String>();
+		if(typeId == 1L)	
+			names =  tirupatiByelectionDAO.getClusterNames();
+		else if(typeId == 2L)
+			names =  tirupatiByelectionDAO.getDivisionNames();
+		
+		for(String name:names){
+			CadreCommitteeMemberVO vo = new CadreCommitteeMemberVO();
+			vo.setName(name.toString());
+			vo.setStatus(name.toString());
+			returnList.add(vo);
+		}
+
+		}catch(Exception e){
+			LOG.error("Exception Raised in getClustesAndDivisionNames ",e);
+		}
+		return returnList;
 	}
 }

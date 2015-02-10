@@ -136,4 +136,6 @@ public interface ICadreRegistrationService {
 	public List<GenericVO> getExistingCadreInfoForCommittee(String candidateName,Long constituencyId,Long panchayatId,Long boothId,String isPresentCadre,String enrollmentNo,Long areaId);
 	public void saveRegistrationStatus(CadreRegistrationVO vo);
 	public CadreCommitteeMemberVO getBoothsCurrentStatus();
+	
+	public List<CadreCommitteeMemberVO> getClustesAndDivisionNames(Long typeId);
 }
