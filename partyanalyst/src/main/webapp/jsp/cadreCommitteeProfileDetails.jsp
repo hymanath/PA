@@ -1417,6 +1417,12 @@
 		}
 	}
 	getUserLocation();
+	if('${cadreCommitteeVO.isSmartPhone}' == 'N'){
+		changeSmartPhoneStatus(2);
+	}
+    if('${cadreCommitteeVO.isSmartPhone}' == 'Y'){
+	    changeSmartPhoneStatus(1);
+	}
 	</script>
   </body>
 </html>
