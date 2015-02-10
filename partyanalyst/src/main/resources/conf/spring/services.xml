@@ -2344,7 +2344,8 @@
 		<property name="tdpCommitteeRoleDAO" ref="tdpCommitteeRoleDAO" />
 		<property name="registrationStatusDAO" ref="registrationStatusDAO" />
 		<property name="twoWaySmsMobileDAO" ref="twoWaySmsMobileDAO" />
-		<property name="tirupatiByelectionDAO" ref="tirupatiByelectionDAO" />				
+		<property name="tirupatiByelectionDAO" ref="tirupatiByelectionDAO" />
+		<property name="errorStatusSmsDAO" ref="errorStatusSmsDAO" />				
      </bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
