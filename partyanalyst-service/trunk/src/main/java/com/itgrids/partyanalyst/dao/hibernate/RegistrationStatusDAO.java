@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -22,13 +23,14 @@ public class RegistrationStatusDAO extends  GenericDaoHibernate<RegistrationStat
      }
      
    //0partNo,1totalVoters,2polled count,3boothType,4insertedTime,5mobile
-     public List<Object[]> getAllKnownBoothsInfo(){
+     public List<Object[]> getAllKnownBoothsInfo(Long constituencyId,Long publicationId){
     	 Query query = getSession().createSQLQuery("select booth.part_no,booth.total_voters,rs.registrationCount,rs.booth_type,rs.inserted_time, " +
-    	 		" rs.mobile_no from (select booth1.booth_id as booth_id,max(rs1.inserted_time) as inserted_time from registration_status rs1,booth booth1 " +
-    	 		" where rs1.booth_id = booth1.booth_id and rs1.is_deleted ='N' group by booth1.booth_id ) as uniqueResult , registration_status rs," +
+    	 		" rs.mobile_no,booth.location from (select booth1.booth_id as booth_id,max(rs1.inserted_time) as inserted_time from registration_status rs1,booth booth1 " +
+    	 		" where rs1.booth_id = booth1.booth_id and rs1.is_deleted ='N' and booth1.constituency_id =:constituencyId and booth1.publication_date_id =:publicationId group by booth1.booth_id ) as uniqueResult , registration_status rs," +
     	 		" booth booth where rs.booth_id = uniqueResult.booth_id and rs.inserted_time = uniqueResult.inserted_time and rs.booth_id = booth.booth_id  " +
     	 		" and rs.is_deleted ='N' order by rs.booth_id ");
-    	 
+    	 query.setParameter("constituencyId", constituencyId);
+    	 query.setParameter("publicationId", publicationId);
     	 return query.list();
      }
      
@@ -37,6 +39,39 @@ public class RegistrationStatusDAO extends  GenericDaoHibernate<RegistrationStat
     	 Query query = getSession().createQuery("select model.registrationCount,model.insertedTime, " +
     	 		" model.mobile from RegistrationStatus model where model.isDeleted ='N' and model.booth.boothId is null");
     	 
+    	 return query.list();
+     }
+   
+     public List<BigInteger> getAllKnownBoothsInfoByConstituency(Long constituencyId,Long publicationId){
+    	 Query query = getSession().createSQLQuery("select booth.booth_id " +
+    	 		" from (select booth1.booth_id as booth_id,max(rs1.inserted_time) as inserted_time from registration_status rs1,booth booth1 " +
+    	 		" where rs1.booth_id = booth1.booth_id and rs1.is_deleted ='N' and booth1.constituency_id =:constituencyId and booth1.publication_date_id =:publicationId and rs1.twoway_sms_mobile_id is not null group by booth1.booth_id ) as uniqueResult , registration_status rs," +
+    	 		" booth booth where rs.booth_id = uniqueResult.booth_id and rs.inserted_time = uniqueResult.inserted_time and rs.booth_id = booth.booth_id  " +
+    	 		" and rs.is_deleted ='N' order by rs.booth_id ");
+    	 query.setParameter("constituencyId", constituencyId);
+    	 query.setParameter("publicationId", publicationId);
+    	 return query.list();
+     }
+     
+     public List<BigInteger> getAllUnRecognizedBoothsInfoByConstituency(Long constituencyId,Long publicationId){
+    	 Query query = getSession().createSQLQuery("select booth.booth_id " +
+     	 		" from (select booth1.booth_id as booth_id,max(rs1.inserted_time) as inserted_time from registration_status rs1,booth booth1 " +
+     	 		" where rs1.booth_id = booth1.booth_id and rs1.is_deleted ='N' and booth1.constituency_id =:constituencyId and booth1.publication_date_id =:publicationId and rs1.twoway_sms_mobile_id is null group by booth1.booth_id ) as uniqueResult , registration_status rs," +
+     	 		" booth booth where rs.booth_id = uniqueResult.booth_id and rs.inserted_time = uniqueResult.inserted_time and rs.booth_id = booth.booth_id  " +
+     	 		" and rs.is_deleted ='N' order by rs.booth_id ");
+    	 query.setParameter("constituencyId", constituencyId);
+    	 query.setParameter("publicationId", publicationId);
+    	 return query.list();
+     }
+   //0partNo,1totalVoters,2polled count,3boothType,4insertedTime,5mobile
+     public List<Object[]> getBoothsInfo(List<Long> boothIds,Long publicationId){
+    	 Query query = getSession().createSQLQuery("select booth.booth_id,booth.total_voters,rs.registrationCount,rs.inserted_time " +
+    	 		" from (select booth1.booth_id as booth_id,max(rs1.inserted_time) as inserted_time from registration_status rs1,booth booth1 " +
+    	 		" where rs1.booth_id = booth1.booth_id and rs1.is_deleted ='N' and booth1.booth_id in(:boothIds) and booth1.publication_date_id =:publicationId group by booth1.booth_id ) as uniqueResult , registration_status rs," +
+    	 		" booth booth where rs.booth_id = uniqueResult.booth_id and rs.inserted_time = uniqueResult.inserted_time and rs.booth_id = booth.booth_id  " +
+    	 		" and rs.is_deleted ='N' order by rs.booth_id ");
+    	 query.setParameterList("boothIds", boothIds);
+    	 query.setParameter("publicationId", publicationId);
     	 return query.list();
      }
 }
