@@ -994,8 +994,10 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 						 if(locationType.equalsIgnoreCase("mandal")){
 							 if(locationValue.substring(0,1).trim().equalsIgnoreCase("1")){
 								 locationLvl = 7l;
-							 }else{
+							 }else if(locationValue.substring(0,1).trim().equalsIgnoreCase("2")){
 								 locationLvl = 5l;
+							 }else{
+								 locationLvl = 9l;
 							 }
 						 }else{
 							 if(locationValue.substring(0,1).trim().equalsIgnoreCase("1")){

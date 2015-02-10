@@ -208,6 +208,7 @@
 				  <li><a tabindex="-1" href="cadreCommitteeAction.action">Home</a></li>
 				  <li><a tabindex="-1" href="cadreCommitteeSummaryAction.action">Summary Report</a></li>
 				  <li><a tabindex="-1" href="cadreCommitteeRequestAction.action">Request For Positions Increase</a></li>
+				  <li><a tabindex="-1" href="constituencyCommitteeSummaryAction.action">Advanced DashBoard</a></li>
 				  <li role="presentation" class="divider" style="background-color: rgba(229, 229, 229,0.6);"></li>
 				  <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
 				</ul>
@@ -235,8 +236,7 @@
 	</s:if>
 	<s:if test="%{committeeMngtType == 3}">
 	</s:if>
-	<br>
-	<b> ADDING ${cadreCommitteeVO.cadreName} AS MANDAL AFFILIATED ELECTORAL  TO ${panchayatName} </b>
+
 	
 	</div>
 		<div id="profileDiv">
