@@ -2,13 +2,19 @@ package com.itgrids.partyanalyst.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 
 
@@ -21,6 +27,7 @@ public class ErrorStatusSms {
 	private Long errorStatusSmsId;
 	private String message;
 	private String mobileNo;
+	private TwoWaySmsMobile twoWaySmsMobile;
 	
 	
 	@Id
@@ -49,5 +56,19 @@ public class ErrorStatusSms {
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
 	}
+	
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "twoway_sms_mobile_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TwoWaySmsMobile getTwoWaySmsMobile() {
+		return twoWaySmsMobile;
+	}
+	public void setTwoWaySmsMobile(TwoWaySmsMobile twoWaySmsMobile) {
+		this.twoWaySmsMobile = twoWaySmsMobile;
+	}
+	
+	
 
 }
