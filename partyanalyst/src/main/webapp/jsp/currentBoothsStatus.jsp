@@ -415,17 +415,19 @@ $(".radioCls").click(function(){
 		  $("#selectDiv").html("Select Divison");
 		  $("#divisonSelect").show();
 		  $("#clusterSelect").hide();
+		  $("#selectType").show();
 	  }
 	  else if(checkdVal == 1)
 	  {
 		  $("#selectDiv").html("Select Cluster");
 		   $("#divisonSelect").hide();
 		   $("#clusterSelect").show();
+		    $("#selectType").show();
 	  }
 	  else if(checkdVal == 0)
 	  {
 		  $("#selectDiv").html("");
-		  $("#selectType").html("");
+		  $("#selectType").hide();
 		   $("#divisonSelect").hide();
 		   $("#clusterSelect").hide();
 		   getByeEleBoothsCurrentStatus();
