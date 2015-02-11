@@ -1951,7 +1951,7 @@
 	function buildCommitteeMemberDetails(result,jsObj)
 	{
 		var str='';
-		str+='<table class="table table-bordered text-left" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); color:#fff;">';
+		str+='<table class="table table-bordered text-left" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); color:#000000;">';
 		str+='<thead style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.2);">';
         str+='<th colspan="4" class="text-uppercase">'+result[0].locationName+'  <b>'+result[0].committe+'  COMMITTEE</b></th>';
         str+='</thead>';
