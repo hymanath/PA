@@ -7478,7 +7478,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		 
 			if(list != null && list.size() > 0)
 			{
-				result = setData(list,result,booths);	
+				result = setData(list,result,booths,status);	
 			}
 		 }
 		 
@@ -7504,7 +7504,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			
 			List<TirupatiByelection> list = tirupatiByelectionDAO.getModelByType(typeId,type);
 			if(list != null && list.size() > 0)
-			recognizeList = setData(list,recognizeList,null);
+			recognizeList = setData(list,recognizeList,null,null);
 		
 		
 		}catch(Exception e){
@@ -7513,7 +7513,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return returnVo;
 	}
 	
-	public List<ByeElectionVO> setData(List<TirupatiByelection> list,List<ByeElectionVO> recognizeList,List<Long> boothIds)
+	public List<ByeElectionVO> setData(List<TirupatiByelection> list,List<ByeElectionVO> recognizeList,List<Long> boothIds,String status)
 	{
 		  ByeElectionVO byeElectionVO = null;
 		DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
@@ -7540,10 +7540,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			}
 		}
 		 List<Object[]> booths = null;
-		if(boothIds == null || boothIds.size() == 0)
+		if(status == null)
 			 booths = registrationStatusDAO.getBoothsInfo(presentBoothIds,12l);
 		if(boothIds != null && boothIds.size()  > 0)
+		{
+			 if(status.equalsIgnoreCase("recognize"))
 			 booths = registrationStatusDAO.getBoothsInfo(boothIds,12l);
+			 if(status.equalsIgnoreCase("unrecognize"))
+				 booths = registrationStatusDAO.getUnRecognizeBoothsInfo(boothIds,12l); 
+		}
 			 if(booths != null && booths.size() > 0)
 			 {
 				 for(Object[] params : booths)
