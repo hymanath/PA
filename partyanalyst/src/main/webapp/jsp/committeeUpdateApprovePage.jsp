@@ -322,6 +322,11 @@
 					data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
 					//console.log(result);
+					if(typeof result == "string"){
+						if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+						  location.reload(); 
+						}
+			        }
 					buildRequests(result,stNO);
 				});
 		}
@@ -335,6 +340,12 @@
 					url : "statusCountOfApprovalAction.action",
 					data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
+					
+					if(typeof result == "string"){
+						if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+						  location.reload(); 
+						}
+			        }
 					if(result.totalCount!=null){
 						$("#totalCount").html(result.totalCount);
 						ttlCnt=result.totalCount;
@@ -454,6 +465,11 @@
 					url : "updateCommitteePosCountAction.action",
 					data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
+					if(typeof result == "string"){
+						if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+						  location.reload(); 
+						}
+			        }
 					if(result!="failed"){
 						$("#appId"+increasedPosId).attr('readonly', true);
 						$("#appId"+increasedPosId).removeClass("approvedPosTxt");

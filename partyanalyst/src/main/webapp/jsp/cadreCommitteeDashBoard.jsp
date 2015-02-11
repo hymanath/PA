@@ -636,6 +636,11 @@
 			var str1='';
 			var str2='';
 			var str3='';
+			if(typeof result == "string"){
+				if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+    		      location.reload(); 
+    	        }
+			}
 			if(result != null){
 				if(state == "AP"){
 					if(level == 'mandal' || level == 'town' || level == 'division' || level == 'mandalAll')
@@ -797,7 +802,11 @@
           url: 'getTotalCommitteeCntsByStateAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
-				
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
 				var str='';
 				str+='<div class="col-md-5 col-md-offset-1 col-xs-3"><span style="font-size:2em;">'+result.totalCommittees+'</span></div>';
 				str+='<div style="" class="col-md-6 col-xs-3 text-left"><small>TOTAL MAIN COMMITTEES</small></div>';
@@ -889,6 +898,12 @@
           url: 'getDistrictWiseCommittesSummaryAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
+			if(typeof result == "string"){
+				if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+    		      location.reload(); 
+    	        }
+			}
+		
 			if(result == null){
 				$("#distSummaryBody").html("<td style='text-align:center' colspan='13'><h4> NO DATA AVAILABLE </h4></td>");
 				return;
@@ -1114,7 +1129,11 @@
           url: 'getMembersRangeCountByLocationAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
-		
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
 				if(type == 'main'){
 					var str='';
 					str+='<ul style="padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;">';					
@@ -1214,7 +1233,11 @@
           url: 'getMembersRangeCountByLocationAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
-		
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
 				if(type == 'main'){
 					var str='';
 					str+='<ul style="padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;">';					
@@ -1324,6 +1347,11 @@
           url: 'getStartedAffliCommitteesCountByLocation.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
+			if(typeof result == "string"){
+				if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+    		      location.reload(); 
+    	        }
+			}
 					var str1='';
 					str1+='<ul multilevelul style="padding-left:0px; width:272px;margin-left:-14px; font-size: 11px; ">';	
 					//str1+='<ul class="dropdown-menu arrow_box list-group"><div class="panel panel-default m_bottom0"><div class="panel-heading m_top0">COMMITTEE TYPE<span class="pull-right">TOTAL</span></div></div>';
@@ -1434,6 +1462,11 @@
           url: 'getConstituencyWiseCommittesSummaryAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
 				buildConstiWiseSummary(result);	
 		});
 	}
@@ -1641,6 +1674,11 @@
 				url : "getSummaryActionPopUp.action",
 				data : {task:JSON.stringify(jObj)} ,
 			}).done(function(result){
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
 				if(result!=null){
 					var notStarted=result[0].mainComittees-(result[0].startedCount+result[0].mainComitteesConformed);
 					var str='';
@@ -1736,6 +1774,11 @@
 				url : "gettingMandalMuncipalDivisonSummaryPopUpAction.action",
 				data : {task:JSON.stringify(jObj)} ,
 			}).done(function(result){
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
 				if(result!=null){
 					var notStarted=result[0].mainComittees-(result[0].startedCount+result[0].mainComitteesConformed);
 					var str='';
@@ -1822,6 +1865,12 @@
 				url : "getMandalMuncipalDivisonTotalCommitteesPopUpAction.action",
 				data : {} ,
 			}).done(function(result){
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
+			
 				if(result!=null){
 					var str='';
 					str+='';
@@ -1860,6 +1909,12 @@
           data: {task:JSON.stringify(jsObj)},
      	  }).done(function(result){ 
 			  $("#comitteeCntAjax").hide();
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}		  
+			  
 			  if(result != null && result.length > 0){
 				  buildCommitteeDetails(result,jsObj);
 				
@@ -1939,8 +1994,14 @@
           url: 'getCommitteeDetailsByStatusPopUpAction.action',
           dataType: 'json',
           data: {task:JSON.stringify(jsObj)},
-     	  }).done(function(result){ 
-			  $("#comitteeMemberAjax").hide();
+     	  }).done(function(result){
+		  $("#comitteeMemberAjax").hide();
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
+			  
 			  if(result != null && result.length > 0){
 				  buildCommitteeMemberDetails(result,jsObj);
 				
@@ -2004,7 +2065,12 @@
           url: 'getCommitteeDetailsByStatusPopUpAction.action',
           dataType: 'json',
           data: {task:JSON.stringify(jsObj)},
-     	  }).done(function(result){ 
+     	  }).done(function(result){
+			  if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+			  }
 			  if(result != null){
 				  {
 				alert("Committee Confirmed")
@@ -2030,7 +2096,12 @@
           url: 'getCommitteeDetailsByStatusPopUpAction.action',
           dataType: 'json',
           data: {task:JSON.stringify(jsObj)},
-     	  }).done(function(result){ 
+     	  }).done(function(result){
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
 			  if(result != null){
 				  {
 					  if(result[0].status == "Removed")

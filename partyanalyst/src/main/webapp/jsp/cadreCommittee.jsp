@@ -474,14 +474,14 @@
 					url : "checkIsVacancyForDesignation.action",
 					data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
-					         
-					if(result != null)
-					{
-						  if(typeof result == "string"){
+					 if(typeof result == "string"){
 								if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
 								  location.reload(); 
 								}
-			                  }
+			         } 
+						
+					if(result != null)
+					{ 
 						if(result.trim().length>0)
 						{
 							$('#committeePositionIdErr').html(''+result.trim()+'');	
@@ -610,9 +610,15 @@
 			type : "POST",
 			url : "getCommitteLocationsAction.action",
 			data : {locationType:reqLocationType} ,
-		}).done(function(result){
+		}).done(function(result){		
 		$("#dataLoadingsImg").hide();
 		$("#dataLoadingImg").hide();
+			if(typeof result == "string"){
+				if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+				  location.reload(); 
+				}
+			}
+		
 			if(committeTypesID == 1)
 			{
 				$("#committeeLocationId  option").remove();
@@ -942,7 +948,11 @@
 				url : "getCommitteMembersInfoAction.action",
 				data : {locationType:reqLocationType,locationValue:reqLocationValue,committeeType:reqCommitteeType} ,
 			}).done(function(result){
-
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
 				if(result != null)				
 				{
 					if(result.result != null && result.result.length>0)
@@ -1052,6 +1062,12 @@
 			$("#dataLoadingsImg").hide();
 			$("#committeLocationId  option").remove();
 			$("#committeLocationId").append('<option value="0">Select Location</option>');
+			if(typeof result == "string"){
+				if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+				  location.reload(); 
+				}
+			}
+			
 			for(var i in result){
 				if(levelId==1)
 				{
@@ -1168,6 +1184,11 @@
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
 				$("#desigChangErrs").html('');
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
 				if(result.resultCode == 1){
 					$("#desigChangErrs").html("<span style='color:green;'>Designations Updated Successfully</span>");
 					getCommitteMembersInfo();
@@ -1209,6 +1230,11 @@
 					data : {} 
 				}).done(function(result){
 				$("#dataLoadingImgForMandal").hide();
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
 				var str='';
 				if(result !=null){
 						str+='<select id="panchayatWardByMandal" class="form-control" onchange="getPanchayatWardByMandal();">';
@@ -1271,6 +1297,11 @@
 			}).done(function(result){	
 		$("#dataLoadingsImg").hide();
 		$("#dataLoadingImg").hide();
+			if(typeof result == "string"){
+				if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+				  location.reload(); 
+				}
+			}
 			if(committeTypesID == 1)
 			{
 				$("#committeeLocationId  option").remove();
@@ -1322,6 +1353,11 @@
 				url : "getAllCommitteeMembersInfoInALoc.action",
 				data : {locationType:reqLocationType,locationValue:reqLocationValue} ,
 				}).done(function(result){
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}				
 					var str='';
 					str+='<div class="col-md-12 col-md-offset-0" style="text-align:center; font-size:22px;>';
                     str+='<h3 class="panel-header">COMMITTEE MEMBERS INFO</h3>'
@@ -1363,6 +1399,11 @@
 				url : "getElctoralInfoForALocationAction.action",
 				data : {task:JSON.stringify(jObj)} ,
 				}).done(function(result){
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
 					var str='';
 					str+='<div class="col-md-12 col-md-offset-0" style="text-align:center; font-size:22px;>';
 					str+='<h3 class="panel-header">ELECTORALS INFO</h3>'
