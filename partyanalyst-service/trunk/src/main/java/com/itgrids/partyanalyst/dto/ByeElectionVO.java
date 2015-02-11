@@ -1,8 +1,9 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ByeElectionVO {
+public class ByeElectionVO implements Serializable,Comparable<ByeElectionVO>{
 
 	
 	private Long id;
@@ -22,6 +23,7 @@ public class ByeElectionVO {
 	private String percentage;
 	List<ByeElectionVO> recognizeList;
 	List<ByeElectionVO> unRecognizeList;
+	public ByeElectionVO(){}
 	
 	private String time;
 	
@@ -134,6 +136,15 @@ public class ByeElectionVO {
 	}
 	public void setUnRecognizeList(List<ByeElectionVO> unRecognizeList) {
 		this.unRecognizeList = unRecognizeList;
+	}
+	@Override
+	public int compareTo(ByeElectionVO obj) {
+		if(obj instanceof ByeElectionVO){
+			ByeElectionVO vo = (ByeElectionVO) obj;
+			return name.compareToIgnoreCase(vo.getName());
+		}
+		else
+			return 0;
 	}
 	
 	

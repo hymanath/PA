@@ -117,6 +117,7 @@ import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreTravelsVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
+import com.itgrids.partyanalyst.dto.CastLocationVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -7513,7 +7514,14 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}
 		return returnVo;
 	}
-	
+	public static Comparator<ByeElectionVO> sortData = new Comparator<ByeElectionVO>()
+		    {
+		        public int compare(ByeElectionVO vo1, ByeElectionVO vo2)
+		        {
+		        	 return vo1.getPartNo().compareToIgnoreCase(vo2.getPartNo());
+		        }
+		    };
+		    
 	public ByeElectionVO setData(List<TirupatiByelection> list,List<Long> boothIds,String status,Long accessValue)
 	{
 		ByeElectionVO returnVo = new ByeElectionVO();
@@ -7542,6 +7550,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			}
 		}
 		returnVo = getByeEleBoothsCurrentStatusSummary1(accessValue,presentBoothIds);
+		
+		Collections.sort(recognizeList,sortData);	
 		returnVo.setRecognizeList(recognizeList);
 		 List<Object[]> booths = null;
 		if(status == null)
