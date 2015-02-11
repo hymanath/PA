@@ -522,7 +522,7 @@ public String getAllConstituencysForADistrict(){
 			//if(jObj.getString("task").equalsIgnoreCase("summary"))
 				 //boothsInfo = cadreRegistrationService.getBoothsCurrentStatusSummary(new Long(regVO.getAccessValue()));
 			//else
-		  boothsInfo = cadreRegistrationService.getBoothsCurrentStatus(new Long(regVO.getAccessValue()));
+		//  boothsInfo = cadreRegistrationService.getBoothsCurrentStatus(new Long(regVO.getAccessValue()));
 		}catch(Exception e){
 			LOG.error("Exception occured in getBoothsCurrentStatus ",e);
 		}
@@ -538,13 +538,13 @@ public String getAllConstituencysForADistrict(){
 			boolean noaccess = false;
 			
 			jObj = new JSONObject(getTask());
-			if(jObj.getString("task").equalsIgnoreCase("ByeElesummary"))
-				 byeEleInfo = cadreRegistrationService.getByeEleBoothsCurrentStatusSummary(new Long(regVO.getAccessValue()));
-			else if(jObj.getString("task").equalsIgnoreCase("ByeEleInfo"))
+			/*if(jObj.getString("task").equalsIgnoreCase("ByeElesummary"))
+				 byeEleInfo = cadreRegistrationService.getByeEleBoothsCurrentStatusSummary(new Long(regVO.getAccessValue()));*/
+			 if(jObj.getString("task").equalsIgnoreCase("ByeEleInfo"))
 				//byeEleInfo = cadreRegistrationService.getByeEleBoothsCurrentStatus(new Long(regVO.getAccessValue()));
 				byeEleInfo= cadreRegistrationService.getByeEleBoothsCurrentStatusReport(new Long(regVO.getAccessValue()),jObj.getLong("typeId"),jObj.getString("type"));
 			else if(jObj.getString("task").equalsIgnoreCase("ByeElesummaryStatusInfo"))
-				byeEleInfo= cadreRegistrationService.getByeEleBoothsCurrentStatusSummaryInfo(new Long(regVO.getAccessValue()),jObj.getString("status"));	
+				byeEleInfo= cadreRegistrationService.getByeEleBoothsCurrentStatusSummaryInfo1(new Long(regVO.getAccessValue()),jObj.getString("status"),jObj.getLong("typeId"),jObj.getString("type"));	
 			
 		}catch(Exception e){
 			LOG.error("Exception occured in getBoothsCurrentStatus ",e);

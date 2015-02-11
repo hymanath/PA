@@ -119,14 +119,10 @@ table.dataTable tr.odd {
 		<!-- Title Row -->
 		<div class="row-fluid" id="fadeInDown">
 			<div class="span12 well well-small  border-radius-0 mb-10 " style="background:#ffffff;">
-				<h3 class="text-center text-uppercase">Booth Wise Polling Info</h3>
+				<h3 class="text-center text-uppercase">Tirupati Bye Election Poll Monitor</h3>
 			</div>
 		</div><!-- Title Row End-->
-				<div class="row-fluid " id="summaryInfo">
-
-			<div  class="span12 show-grid well well-small border-radius-0 mb-10">
-			</div>
-			</div>
+				
 
 			<div class="row-fluid" style="margin-top: 20px;"><div class="form-inline"><label class="radio">
 			<input type="radio" name="optionsRadios" class="radioCls" value="1" onclick="buildOptions()" checked>
@@ -142,7 +138,11 @@ table.dataTable tr.odd {
 			</label>
 			<lable id="selectDiv"  style="margin-left: 53px;">Select Cluster</lable><select id="selectType" onchange="getByeEleBoothsCurrentStatus();"></select>
 			</div>
+			<div class="row-fluid " id="summaryInfo" style="margin-top:10px;">
 
+			<div  class="span12 show-grid well well-small border-radius-0 mb-10">
+			</div>
+			</div>
 			</div>
 			
 		<div class="row-fluid " id="mainCount">
@@ -175,14 +175,16 @@ var jobj = {
 
 }
 
-function getSummaryByStatus(status)
+function getSummaryByStatus(status,typeId,type)
 {
-	var type ="";
+	
 	      $("#mainInfo").html('<center><img style="" id="ajaxImgStyle" src="images/icons/loading.gif"></center>');
 		  $("#mainCount").show(); 
 var jobj = {
 			task : "ByeElesummaryStatusInfo",
-			status : status
+			status : status,
+			typeId:typeId,
+			type:type
 		  }
 	           $.ajax({
 				    dataType: 'json',
@@ -190,31 +192,40 @@ var jobj = {
 					data: {task:JSON.stringify(jobj)},
 					url : "getByeEleBoothsCurrentStatusAction.action"
 				}).done(function(result){
+					
 					buildReport(result,jobj);
 				});
 
 }
-function buildSummary(result)
+function buildByeElectionSummary(result,jobj)
 {
 	var str ='';
 	str+='<table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover">';
 	str+='<tr>';
-	str+='<td style="width:35px;"><h2>'+result.totalVoters+'</h2> <p> TotalBooths</p> </td>';
-	if(result.polledVotes > 0)
+	str+='<td style="width:25px;"><h2>'+result.totalVoters+'</h2> <p> TotalBooths</p> </td>';
+	if(result.preTotalVoters > 0)
 	{
-	str+='<td style="width:35px;"><h2><a style="cursor:pointer" onclick="getSummaryByStatus(\'recognize\')">'+result.polledVotes+'</a></h2> <p>Recognize Booths </p> </td>';
+	str+='<td style="width:25px;"><h2><a style="cursor:pointer" onclick="getSummaryByStatus(\'all\',\''+jobj.typeId+'\',\''+jobj.type+'\')">'+result.preTotalVoters+'</a></h2> <p>All</p> </td>';
 	}
 	else
 	{
-		str+='<td style="width:35px;"><h2>'+result.polledVotes+'</h2> <p>Recognize Booths </p> </td>';
+		str+='<td style="width:25px;"><h2>'+result.preTotalVoters+'</h2> <p>All  </p> </td>';
+	}
+	if(result.polledVotes > 0)
+	{
+	str+='<td style="width:25px;"><h2><a style="cursor:pointer" onclick="getSummaryByStatus(\'recognize\',\''+jobj.typeId+'\',\''+jobj.type+'\')">'+result.polledVotes+'</a></h2> <p>From Mapped Mobile No.s </p> </td>';
+	}
+	else
+	{
+		str+='<td style="width:25px;"><h2>'+result.polledVotes+'</h2> <p>From Mapped Mobile No.s  </p> </td>';
 	}
 	if(result.id > 0)
 	{
-	str+='<td style="width:35px;"><h2><a style="cursor:pointer" onclick="getSummaryByStatus(\'unrecognize\')">'+result.id+'</a></h2> <p>Un Recognize Booths</p> </td>';
+	str+='<td style="width:25px;"><h2><a style="cursor:pointer" onclick="getSummaryByStatus(\'unrecognize\',\''+jobj.typeId+'\',\''+jobj.type+'\')">'+result.id+'</a></h2> <p>From UnMapped Mobile No.s </p> </td>';
 	}
 	else
 	{
-		str+='<td style="width:35px;"><h2>'+result.id+'</h2> <p> Un Recognize Booths </p> </td>';
+		str+='<td style="width:35px;"><h2>'+result.id+'</h2> <p> From UnMapped Mobile No.s </p> </td>';
 	}
 	str+='</tr>';
 	str+='</table>';
@@ -309,6 +320,7 @@ function buildSummary(result)
   }
 
 function getByeEleBoothsCurrentStatus(){
+$("#summaryInfo").html('');
 	var type ="";
 	      $("#mainInfo").html('<center><img style="" id="ajaxImgStyle" src="images/icons/loading.gif"></center>');
 		  $("#mainCount").show(); 
@@ -327,7 +339,7 @@ function getByeEleBoothsCurrentStatus(){
 					data: {task:JSON.stringify(jobj)},
 					url : "getByeEleBoothsCurrentStatusAction.action"
 				}).done(function(result){
-
+					buildByeElectionSummary(result,jobj);
 					buildReport(result,jobj);
 	                
 				});
@@ -352,15 +364,15 @@ function getByeEleBoothsCurrentStatus(){
 								}
 							  str+='<table id="knownTab"class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" ><thead>'
 						      str+='<tr>';
-							  str+='<th>2015_PartNO</th>';
+							  str+='<th>PartNO</th>';
 							  str+='<th>BOOTH LOCATION</th>';
 							  str+='<th>2015 TOTAL VOTERS</th>';
 							  str+='<th>2015 POLLED VOTES</th>';
 							  str+='<th>2015 POLLING PERCENTAGE</th>';
 							   str+='<th>Time</th>';
-							  str+='<th>2014_PartNO</th>';
-							  str+='<th>2014 VOTERS IN 2015</th>';
-							  str+='<th>2014 TOTAL VOTERS</th>';
+							 // str+='<th>2014_PartNO</th>';
+							 // str+='<th>2014 VOTERS IN 2015</th>';
+							 // str+='<th>2014 TOTAL VOTERS</th>';
 							  str+='<th>2014 POLLING PERCENTAGE';
 							  str+='<th>2014 POLLED VOTES</th>';
 							  str+=' </thead>';
@@ -384,9 +396,9 @@ function getByeEleBoothsCurrentStatus(){
 								 str+='<td> - </td>';
 							  else
 							 str+='<td>'+boothData[i].time+'</td>';
-							  str+='<td>'+boothData[i].prevPartNo+'</td>';
-							  str+='<td>'+boothData[i].preVotersInPresent+'</td>';
-							  str+='<td>'+boothData[i].preTotalVoters+'</td>';
+							  //str+='<td>'+boothData[i].prevPartNo+'</td>';
+							 // str+='<td>'+boothData[i].preVotersInPresent+'</td>';
+							 // str+='<td>'+boothData[i].preTotalVoters+'</td>';
 							  str+='<td>'+boothData[i].prevPercentage+'</td>';
 							  str+='<td>'+boothData[i].prevPolledVotes+'</td>';
 								str+='  </tr>'; 
@@ -467,7 +479,7 @@ function buildOptions()
 		
   }
 buildOptions();
-getSummary();
+//getSummary();
 
 </script>
 </body>
