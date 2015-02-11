@@ -135,7 +135,7 @@ public interface ICadreRegistrationService {
 	public TdpCadreVO searchTdpCadreDetailsByVoterCardNo(String voterCardNo, String isFamilyVoter);
 	public SurveyCadreResponceVO saveCommitteCadreRegistration(final Long userId,final List<CadreRegistrationVO> cadreRegistrationVO,List<CadrePreviousRollesVO> cadreRoles , String registrationType);
 	public List<GenericVO> getExistingCadreInfoForCommittee(String candidateName,Long constituencyId,Long panchayatId,Long boothId,String isPresentCadre,String enrollmentNo,Long areaId);
-	public void saveRegistrationStatus(CadreRegistrationVO vo);
+	public String saveRegistrationStatus(CadreRegistrationVO vo);
 	public CadreCommitteeMemberVO getBoothsCurrentStatus(Long constituencyId);
 	
 	public ByeElectionVO getByeEleBoothsCurrentStatusSummary(Long accessValue);
