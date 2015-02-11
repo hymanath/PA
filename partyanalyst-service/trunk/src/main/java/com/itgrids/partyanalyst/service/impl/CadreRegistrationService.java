@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
@@ -7196,72 +7198,124 @@ public class CadreRegistrationService implements ICadreRegistrationService {
  		
  		return returnList;
  	}
-	public void saveRegistrationStatus(CadreRegistrationVO vo){
+	public String saveRegistrationStatus(CadreRegistrationVO vo){
 
 		RegistrationStatus status = new RegistrationStatus();
 		ErrorStatusSms errorStatus = new ErrorStatusSms();
 		TwoWaySmsMobile twoWaySmsMobile = null;
 		String reqMobileNo = vo.getMobileNumber().trim();
-		if(reqMobileNo.length() == 10){
-			List<TwoWaySmsMobile> twoWaySmsMobileList = twoWaySmsMobileDAO.getMobileInfo(reqMobileNo);
-			if(twoWaySmsMobileList.size() > 0 && twoWaySmsMobileList.get(0) != null){
-				twoWaySmsMobile = twoWaySmsMobileList.get(0);
-			}
+		String message = vo.getArea();
+		boolean validNo = isMobNo(reqMobileNo);
+		if(validNo == false)
+		{
+			saveErroInfo(message,reqMobileNo,twoWaySmsMobile);
+			return "success";
 		}
 		
-		String message = vo.getArea();
+		
 		if(message.isEmpty() || message == null || !message.contains(" "))
 		{
-			errorStatus.setMessage(message);
-			errorStatus.setMobileNo(reqMobileNo);
-			if(twoWaySmsMobile != null){
-				errorStatus.setTwoWaySmsMobile(twoWaySmsMobile);
-			}
-			errorStatusSmsDAO.save(errorStatus);
+			saveErroInfo(message,reqMobileNo,null);
+			return "success";
 		}
+		
 		else
 		{
-		String[] split = message.split(" ");
-		String partNo = split[0];		
-		String count = split[1];
-		
-		if(reqMobileNo.length() > 10){
-			reqMobileNo = reqMobileNo.substring(reqMobileNo.length() - 10);
-		}
-		
-		status.setRegistrationCount(count);
-		if(twoWaySmsMobile != null){
-			status.setTwoWaySmsMobile(twoWaySmsMobile);
-		}	
+			String[] split = message.split(" ");
+			String partNo = split[0];		
+			String count = split[1];
+			if(reqMobileNo.length() == 10){
+				List<TwoWaySmsMobile> twoWaySmsMobileList = twoWaySmsMobileDAO.getMobileInfo(reqMobileNo);
+				if(twoWaySmsMobileList.size() > 0 && twoWaySmsMobileList.get(0) != null){
+					twoWaySmsMobile = twoWaySmsMobileList.get(0);
+				}
+			}
+				
+			 boolean boothPartNo = isAlpha(partNo); boolean polledVotes = isAlpha(count);
+			 if(boothPartNo == false || polledVotes == false)
+			 {
+				saveErroInfo(message,reqMobileNo,twoWaySmsMobile);
+				return "success";
+			 }
 		
 		Booth booth = boothDAO.getBoothByPartNoAndPublicationIdInAConstituency(partNo,291l,12l);
 		if(booth == null)
 		{
-			errorStatus.setMessage(message);
-			errorStatus.setMobileNo(reqMobileNo);
-			if(twoWaySmsMobile != null){
-				errorStatus.setTwoWaySmsMobile(twoWaySmsMobile);
-			}
-			errorStatusSmsDAO.save(errorStatus);
+			saveErroInfo(message,reqMobileNo,twoWaySmsMobile);
+			return "success";
 		}
 		else
 		{
-			status.setBooth(boothDAO.get((Long)booth.getBoothId()));
-			
-			if(status.getBooth().getLocalBody() != null){
-				status.setBoothType("Urban");
-			}else{
-				status.setBoothType("Rural");
+			if(booth.getTotalVoters() == null)
+			{
+				saveErroInfo(message,reqMobileNo,twoWaySmsMobile);
+				return "success";	
 			}
+			if(booth.getTotalVoters().longValue() < Long.valueOf(count))
+			{
+				saveErroInfo(message,reqMobileNo,twoWaySmsMobile);
+				return "success";
+			}
+				
+				status.setRegistrationCount(count);
+				if(twoWaySmsMobile != null){
+					status.setTwoWaySmsMobile(twoWaySmsMobile);
+				}	
+				status.setBooth(boothDAO.get((Long)booth.getBoothId()));
+				
+				if(status.getBooth().getLocalBody() != null){
+					status.setBoothType("Urban");
+				}else{
+					status.setBoothType("Rural");
+				}
+				status.setMobile(vo.getMobileNumber().trim());
+				status.setIsDeleted("N");
+				status.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				registrationStatusDAO.save(status);
+			
 		}
-		status.setMobile(vo.getMobileNumber().trim());
-		status.setIsDeleted("N");
-		status.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-		
-		registrationStatusDAO.save(status);
-		}
+       }
+		return "success";
+     
+   }
+	public  boolean isMobNo(String str) {
+		String regex = "\\d{10}";
+        Pattern mobNO = Pattern.compile(regex);
+        Matcher matcher = mobNO.matcher(str);
+        if (matcher.find()) {
+            return true;
+        } else {
+            return false;
+        }
     }
-	
+	public void saveErroInfo(String message,String reqMobileNo,TwoWaySmsMobile twoWaySmsMobile)
+	{
+		try{
+		ErrorStatusSms errorStatus = new ErrorStatusSms();
+		errorStatus.setMessage(message);
+		errorStatus.setMobileNo(reqMobileNo);
+		if(twoWaySmsMobile != null){
+			errorStatus.setTwoWaySmsMobile(twoWaySmsMobile);
+		}
+		errorStatusSmsDAO.save(errorStatus);
+		}
+		catch(Exception e)
+		{
+			
+			LOG.error("Exception in saveErroInfo()", e);
+		}
+	}
+	public boolean isAlpha(String name) {
+		
+		 try { 
+		        Integer.parseInt(name); 
+		    } catch(NumberFormatException e) { 
+		        return false; 
+		    }
+		    // only got here if we didn't return false
+		    return true;
+		
+	}
 	public CadreCommitteeMemberVO getBoothsCurrentStatus(Long accessValue){
 		accessValue = 291l;
 		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
