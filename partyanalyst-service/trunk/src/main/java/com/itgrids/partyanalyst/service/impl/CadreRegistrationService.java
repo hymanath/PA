@@ -7316,7 +7316,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		    return true;
 		
 	}
-	public CadreCommitteeMemberVO getBoothsCurrentStatus(Long accessValue){
+	/*public CadreCommitteeMemberVO getBoothsCurrentStatus(Long accessValue){
 		accessValue = 291l;
 		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
 		 DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
@@ -7393,9 +7393,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			LOG.error("Exception Rised in getBoothsCurrentStatus ",e);
 		}
 		return returnVo;
-	}
+	}*/
 	
-	public ByeElectionVO getByeEleBoothsCurrentStatusSummary(Long accessValue)
+	/*public ByeElectionVO getByeEleBoothsCurrentStatusSummary(Long accessValue)
 	{
 		ByeElectionVO returnVo = new ByeElectionVO();
 		accessValue = 291l;
@@ -7424,8 +7424,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}
 		return returnVo;
 		
-	}
+	}*/
 
+	
+	
 	public List<CadreCommitteeMemberVO> getClustesAndDivisionNames(Long typeId){
 	
 		List<CadreCommitteeMemberVO> returnList = new ArrayList<CadreCommitteeMemberVO>();
@@ -7439,7 +7441,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		
 		for(String name:names){
 			CadreCommitteeMemberVO vo = new CadreCommitteeMemberVO();
-			if(name != null)
+			if(name != null && !name.isEmpty())
 			{
 			vo.setName(name.toString());
 			vo.setStatus(name.toString());
@@ -7454,7 +7456,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	}
 	
 
-	public ByeElectionVO getByeEleBoothsCurrentStatusSummaryInfo(Long accessValue,String status)
+	/*public ByeElectionVO getByeEleBoothsCurrentStatusSummaryInfo(Long accessValue,String status)
 	{
 		ByeElectionVO returnVo = new ByeElectionVO();
 		accessValue = 291l;
@@ -7478,7 +7480,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		 
 			if(list != null && list.size() > 0)
 			{
-				result = setData(list,result,booths,status);	
+				returnVo = setData(list,booths,status,accessValue);	
 			}
 		 }
 		 
@@ -7489,22 +7491,21 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}
 		return returnVo;
 		
-	}
+	}*/
 
 
 	public ByeElectionVO getByeEleBoothsCurrentStatusReport(Long accessValue,Long typeId,String type){
 		accessValue = 291l;
 		
 		ByeElectionVO returnVo = new ByeElectionVO();
-		List<ByeElectionVO> recognizeList = new ArrayList<ByeElectionVO>();
-		
-		returnVo.setRecognizeList(recognizeList);
 		
 			try{
 			
 			List<TirupatiByelection> list = tirupatiByelectionDAO.getModelByType(typeId,type);
 			if(list != null && list.size() > 0)
-			recognizeList = setData(list,recognizeList,null,null);
+			{
+				returnVo = setData(list,null,null,accessValue);
+			}
 		
 		
 		}catch(Exception e){
@@ -7513,19 +7514,20 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return returnVo;
 	}
 	
-	public List<ByeElectionVO> setData(List<TirupatiByelection> list,List<ByeElectionVO> recognizeList,List<Long> boothIds,String status)
+	public ByeElectionVO setData(List<TirupatiByelection> list,List<Long> boothIds,String status,Long accessValue)
 	{
+		ByeElectionVO returnVo = new ByeElectionVO();
 		  ByeElectionVO byeElectionVO = null;
 		DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
 		List<Long> presentBoothIds = new ArrayList<Long>();
-		  
+		List<ByeElectionVO> recognizeList = new ArrayList<ByeElectionVO>();
 		try{
 		if(list != null && list.size() > 0)
 		{
+			
 			for(TirupatiByelection params : list)
 			{
 				byeElectionVO = new ByeElectionVO();
-				
 				byeElectionVO.setTotalVoters(Long.valueOf(params.getTotalVoters2015().toString()));
 				byeElectionVO.setPreTotalVoters(Long.valueOf(params.getTotalVoters2014().toString()));
 				byeElectionVO.setBoothLocation(params.getBoothLocation().toString());
@@ -7539,15 +7541,20 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				presentBoothIds.add(params.getBoothId2015());
 			}
 		}
+		returnVo = getByeEleBoothsCurrentStatusSummary1(accessValue,presentBoothIds);
+		returnVo.setRecognizeList(recognizeList);
 		 List<Object[]> booths = null;
 		if(status == null)
 			 booths = registrationStatusDAO.getBoothsInfo(presentBoothIds,12l);
 		if(boothIds != null && boothIds.size()  > 0)
 		{
 			 if(status.equalsIgnoreCase("recognize"))
-			 booths = registrationStatusDAO.getBoothsInfo(boothIds,12l);
+			 booths = registrationStatusDAO.getRecognizeBoothsInfo(boothIds,12l);
 			 if(status.equalsIgnoreCase("unrecognize"))
 				 booths = registrationStatusDAO.getUnRecognizeBoothsInfo(boothIds,12l); 
+			 if(status.equalsIgnoreCase("all"))
+				 booths = registrationStatusDAO.getBoothsInfo(boothIds,12l); 
+			 
 		}
 			 if(booths != null && booths.size() > 0)
 			 {
@@ -7578,10 +7585,93 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		{
 			LOG.error("Exception in setData() method in CadreRegistration service");
 		}
-		return recognizeList;
+		return returnVo;
 	
 	}
+	public ByeElectionVO getByeEleBoothsCurrentStatusSummary1(Long accessValue,List<Long> boothIds)
+	{
+		ByeElectionVO returnVo = new ByeElectionVO();
+		accessValue = 291l;
+		
+		Long totalBooths = 0l;
+		Long recognizeBoothCnt = 0l;
+		Long unrecognizeBoothCnt = 0l;
+		Long allBooths = 0l;
+		try{
+		 List<Long> list = boothDAO.getAllBoothsInAConstituency(accessValue,12l);
+		 if(list != null && list.size() > 0)
+			 totalBooths = new Long(list.size());
+		 List<BigInteger> knownBooths = registrationStatusDAO.getRecognizeByBooths(boothIds,12l);
+		 if(knownBooths != null && knownBooths.size() > 0)
+			 recognizeBoothCnt = new Long(knownBooths.size());
+		  List<BigInteger> unknownBooths = registrationStatusDAO.getUnrecognizeByBooths(boothIds,12l);
+		  List<BigInteger> allBoothsList = registrationStatusDAO.getAllBooths(boothIds,12l);
+		 returnVo.setTotalVoters(totalBooths);
+		 returnVo.setPolledVotes(recognizeBoothCnt);
+		 if(unknownBooths != null && unknownBooths.size() > 0)
+			 unrecognizeBoothCnt =new Long(unknownBooths.size());
+		 returnVo.setId(unrecognizeBoothCnt);
+		 if(allBoothsList != null && allBoothsList.size() > 0)
+			 allBooths = new Long(allBoothsList.size()); 
+			 returnVo.setPreTotalVoters(allBooths);
+		 
+		}		
+		catch(Exception e)
+		{
+			
+		}
+		return returnVo;
+		
+	}
 	
+	public ByeElectionVO getByeEleBoothsCurrentStatusSummaryInfo1(Long accessValue,String status,Long typeId,String type)
+	{
+		ByeElectionVO returnVo = new ByeElectionVO();
+		accessValue = 291l;
+		List<BigInteger> boothIds = new ArrayList<BigInteger>();
+		List<ByeElectionVO> result = new ArrayList<ByeElectionVO>();
+		returnVo.setRecognizeList(result);
+		try{
+			List<Long> presentBoothIds = new ArrayList<Long>();
+		List<TirupatiByelection> list = tirupatiByelectionDAO.getModelByType(typeId,type);
+		if(list != null && list.size() > 0)
+		{
+			for(TirupatiByelection obj : list)
+			{
+				presentBoothIds.add(Long.valueOf(obj.getBoothId2015()));
+			}
+		
+		 if(status.equalsIgnoreCase("recognize"))
+			 boothIds = registrationStatusDAO.getRecognizeByBooths(presentBoothIds,12l);
+		 if(status.equalsIgnoreCase("unrecognize"))
+			 boothIds = registrationStatusDAO.getUnrecognizeByBooths(presentBoothIds,12l);
+		 if(status.equalsIgnoreCase("all"))
+			 boothIds = registrationStatusDAO.getAllBooths(presentBoothIds,12l);
+		 
+		 if(boothIds != null && boothIds.size() > 0)
+		 { 
+			List<Long> booths = new ArrayList<Long>();
+			for(BigInteger val : boothIds)
+			{
+				booths.add(Long.valueOf(val.toString()));
+			}
+			
+		 List<TirupatiByelection> dataList = tirupatiByelectionDAO.getModelByboothIds(booths);
+		 
+			if(list != null && list.size() > 0)
+			{
+				returnVo = setData(dataList,booths,status,accessValue);	
+			}
+		 }
+		}
+		}		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return returnVo;
+		
+	}
 	public ByeElectionVO getMatchedBooth(List<ByeElectionVO> resultList,Long boothId)
 	{
 		try{

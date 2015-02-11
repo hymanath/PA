@@ -15,4 +15,8 @@ public interface IRegistrationStatusDAO  extends GenericDao<RegistrationStatus,L
 	 public List<Object[]> getBoothsInfo(List<Long> boothIds,Long publicationId);
 	 public List<BigInteger> getAllUnRecognizedBoothsInfoByConstituency(Long constituencyId,Long publicationId);
 	 public List<Object[]> getUnRecognizeBoothsInfo(List<Long> boothIds,Long publicationId);
+	 public List<Object[]> getRecognizeBoothsInfo(List<Long> boothIds,Long publicationId);
+	  public List<BigInteger> getUnrecognizeByBooths(List<Long> boothIds,Long publicationId);
+	  public List<BigInteger> getAllBooths(List<Long> boothIds,Long publicationId);
+	  public List<BigInteger> getRecognizeByBooths(List<Long> boothIds,Long publicationId);
 }
