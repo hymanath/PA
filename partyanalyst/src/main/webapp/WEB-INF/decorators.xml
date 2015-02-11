@@ -145,6 +145,7 @@
 		   <pattern>/committeeUpdateApproveAction*</pattern>
 		   <pattern>/committeeDashBoardAction*</pattern> 
 		  <pattern>/constituencyCommitteeSummaryAction*</pattern>
+		  <pattern>/sampleWebServiceCalls*</pattern>
  	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
