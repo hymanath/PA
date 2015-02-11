@@ -519,9 +519,9 @@ public String getAllConstituencysForADistrict(){
 			boolean noaccess = false;
 			
 			jObj = new JSONObject(getTask());
-			if(jObj.getString("task").equalsIgnoreCase("summary"))
-				 boothsInfo = cadreRegistrationService.getBoothsCurrentStatusSummary(new Long(regVO.getAccessValue()));
-			else
+			//if(jObj.getString("task").equalsIgnoreCase("summary"))
+				 //boothsInfo = cadreRegistrationService.getBoothsCurrentStatusSummary(new Long(regVO.getAccessValue()));
+			//else
 		  boothsInfo = cadreRegistrationService.getBoothsCurrentStatus(new Long(regVO.getAccessValue()));
 		}catch(Exception e){
 			LOG.error("Exception occured in getBoothsCurrentStatus ",e);
