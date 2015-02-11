@@ -67,7 +67,7 @@ public class RegistrationStatusDAO extends  GenericDaoHibernate<RegistrationStat
      public List<Object[]> getBoothsInfo(List<Long> boothIds,Long publicationId){
     	 Query query = getSession().createSQLQuery("select booth.booth_id,booth.total_voters,rs.registrationCount,rs.inserted_time " +
     	 		" from (select booth1.booth_id as booth_id,max(rs1.inserted_time) as inserted_time from registration_status rs1,booth booth1 " +
-    	 		" where rs1.booth_id = booth1.booth_id and rs1.is_deleted ='N' and booth1.booth_id in(:boothIds) and booth1.publication_date_id =:publicationId group by booth1.booth_id ) as uniqueResult , registration_status rs," +
+    	 		" where rs1.booth_id = booth1.booth_id and rs1.is_deleted ='N' and booth1.booth_id in(:boothIds) and booth1.publication_date_id =:publicationId and rs1.twoway_sms_mobile_id is not null group by booth1.booth_id ) as uniqueResult , registration_status rs," +
     	 		" booth booth where rs.booth_id = uniqueResult.booth_id and rs.inserted_time = uniqueResult.inserted_time and rs.booth_id = booth.booth_id  " +
     	 		" and rs.is_deleted ='N' order by rs.booth_id ");
     	 query.setParameterList("boothIds", boothIds);
