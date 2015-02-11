@@ -7488,8 +7488,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		 List<Object[]> booths = null;
 		if(boothIds == null || boothIds.size() == 0)
 			 booths = registrationStatusDAO.getBoothsInfo(presentBoothIds,12l);
-		else
-			
+		if(boothIds != null && boothIds.size()  > 0)
+			 booths = registrationStatusDAO.getBoothsInfo(boothIds,12l);
 			 if(booths != null && booths.size() > 0)
 			 {
 				 for(Object[] params : booths)
