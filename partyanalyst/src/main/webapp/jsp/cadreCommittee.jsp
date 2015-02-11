@@ -1259,6 +1259,11 @@
 	}
 	
 	function getPanchayatWardByMandal(){
+		     $('#cadreDetailsDiv').html('');
+			 $('#cadreDetailsDiv,#step3Id').hide();
+			 $('#designationDivId').hide();
+             $('#searchcadrenewDiv').hide();
+			 $('#step1Id').hide();
 			if($("#mndlLvlCommittSelec").is(':checked')){
 				return;
 			}
