@@ -352,8 +352,16 @@ $("#summaryInfo").html('');
 							  $("#mainCount").show(); 
 							  var boothData = result.recognizeList;
 							  var str ='';
+							  var title ="";
+
 							  if(jobj.status != null)
-							  str+='<h4 style=" text-transform: uppercase;color:#0062AE; margin-left: 400px;"> '+jobj.status+' Booth Report</h4>';
+								{
+								  if(jobj.status == "recognize")
+								  title = "Mapped Mobile No.s"
+								   if(jobj.status == "unrecognize")
+								  title = "UnMapped Mobile No.s"
+							  str+='<h4 style=" text-transform: uppercase;color:#0062AE; margin-left: 400px;"> '+title+' Report</h4>';
+								}
 								else if (jobj.typeId == 1)
 								{
 									 str+='<h4 style=" text-transform: uppercase;;color:#0062AE; margin-left: 400px;">  Cluster Report</h4>';
