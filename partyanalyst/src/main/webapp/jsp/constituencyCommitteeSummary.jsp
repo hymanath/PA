@@ -121,6 +121,11 @@ function getAllDistricts()
 			url : "getAllDistrictsAction.action",
 			data : {} ,
 		}).done(function(result){
+			if(typeof result == "string"){
+				if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+				  location.reload(); 
+				}
+			}
 			$("#districtsId  option").remove();
 			$("#districtsId").append('<option value="0">Select District</option>');
 			if(result!=null){
@@ -157,6 +162,11 @@ function getAllConstituencysForADistrict()
 			url : "getAllConstituencysForADistrictAction.action",
 			data : {districtId:districtId} ,
 		}).done(function(result){
+			if(typeof result == "string"){
+				if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+				  location.reload(); 
+				}
+			}
 			if(result!=null){
 			   for(var i in result){
 				   $("#constituencysId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
@@ -188,6 +198,11 @@ function getConstituencySummary(){
 		url : "getConstituencyCommitteSummary.action",
 		data : {task:JSON.stringify(jsObj)} ,
 	}).done(function(result){
+		if(typeof result == "string"){
+				if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+				  location.reload(); 
+				}
+		}
 		$(".exportToExcel").show();
 		buildConstituencySummary(result,jsObj);
 	});
@@ -384,6 +399,11 @@ function buildConstituencySummary(results,jsObj){
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			if(typeof result == "string"){
+				if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+				  location.reload(); 
+				}
+			}
 			 buildingResults(result);
 		});
 		

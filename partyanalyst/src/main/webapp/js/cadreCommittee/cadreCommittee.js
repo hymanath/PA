@@ -469,11 +469,11 @@
 				url : "getCadreSearchDetailsAction.action",
 				data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
-				         if(typeof result == "string"){
-							if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
-							  location.reload(); 
-							}
-						}
+				 if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
 				$("#searchDataImg").hide();
 				$('#cadreDetailsDiv').show();
 				var committeTypesId = $('#committeeMngtType').val();
@@ -971,6 +971,11 @@
 				url : "getCadreCommitteDetailsAction.action",
 				data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
 				for(var i in result)
 				{
 					$('#'+divId+'').append('<option value="'+result[i].id+'"> '+result[i].name+' </option>');
@@ -997,6 +1002,11 @@
 				url : "getCadreCommitteRolesAction.action",
 				data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
 				for(var i in result)
 				{
 					$('#'+buildDivId+'').append('<option value="'+result[i].id+'"> '+result[i].name+' </option>');
@@ -1018,6 +1028,11 @@
 				}).done(function(result){
 						$('#'+divId+'').html('');
 						$('#'+divId+'').append('<option value="0"> Select Election </option>');
+						if(typeof result == "string"){
+							if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+							  location.reload(); 
+							}
+						}
 						if(result != null && result.length >0)
 						{
 							for(var i in result)
@@ -1048,6 +1063,11 @@
 				}).done(function(result){
 
 					$('#loadingImg').hide();
+					if(typeof result == "string"){
+						if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+						  location.reload(); 
+						}
+					}
 					if(result != null)
 					{
 						for(var i in result)
@@ -1087,7 +1107,11 @@
 					url : "getCasteDetailsBygroupIdAction.action",
 					data : {task:JSON.stringify(jsObj)} ,
 				}).done(function(result){
-				
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
 				if(result != null)
 					{
 						for(var i in result)
@@ -1201,6 +1225,12 @@
 						url : "updateElectrolsDetails.action",
 						data : {task:JSON.stringify(jsObj)} ,
 					}).done(function(result){
+						 if(typeof result == "string"){
+								if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+								  location.reload(); 
+								}
+			             }
+						
 						$('#'+resultDiv+'').show();
 							if(result != null)
 							{
@@ -1243,6 +1273,12 @@
 				url : "updateMandalAfiliatedElectrolsDetails.action",
 				data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
+
 				if(result != null)
 				{
 					if(result.resultCode == 0)

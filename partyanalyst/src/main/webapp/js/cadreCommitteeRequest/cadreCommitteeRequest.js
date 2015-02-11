@@ -86,6 +86,11 @@ function getCommitteeLocations(){
 		}).done(function(result){
 			$("#committeeLocationId  option").remove();
 			$("#committeeLocationId").append('<option value="0">Select Location</option>');
+			if(typeof result == "string"){
+				if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+				  location.reload(); 
+				}
+			}
 			var reqNewLocationType ="";
 			if($("#mndlLvlCommittSelec").is(':checked')){
 			  reqNewLocationType ="mandal";
@@ -160,7 +165,13 @@ function getCommitteeLocations(){
 				type : "POST",
 				url : "getAllAffiliatedCommittiesAction.action",
 				data : {locationType:reqLocationType,locationValue:reqLocationValue} ,
-			}).done(function(result){	
+			}).done(function(result){
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
+			
 				if(result != null)
 				{
 					for(var i in result){
@@ -221,7 +232,11 @@ function getCommitteeLocations(){
 				url : "getCommitteMembersInfoAction.action",
 				data : {locationType:reqLocationType,locationValue:reqLocationValue,committeeType:reqCommitteeType} ,
 			}).done(function(result){
-
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
 				if(result != null)				
 				{
 					if(result.result != null && result.result.length>0)
@@ -320,6 +335,12 @@ function getCommitteeLocations(){
 				url : "getCommitteMembersInfoRequestAction.action",
 				data : {locationType:reqLocationType,locationValue:reqLocationValue,committeeType:reqCommitteeType} ,
 			}).done(function(result){
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
+			
 			   if(result!=null){
 			     if(reqType=='1'){
 			        if(result.electionYear=='Y'){
@@ -568,8 +589,12 @@ function getCommitteeLocations(){
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
 			    
-	               $("#posIncImageId").hide();
-	              
+	            $("#posIncImageId").hide();
+	            if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}  
 			 
 			   if(type=="positionsIncreased"){
 			     if(result.resultCode=='1')
@@ -639,7 +664,11 @@ function getCommitteeLocations(){
 				data: {type:type}
 			}).done(function(result){
 			    $("#processImgId").hide();
-				
+				if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
 			   if(result!=null){
 			    
 			     var str='';
