@@ -122,7 +122,8 @@ table.dataTable tr.odd {
 				<h3 class="text-center text-uppercase">Tirupati Bye Election Poll Monitor</h3>
 			</div>
 		</div><!-- Title Row End-->
-				
+			<div class="well well-small border-radius-0 mb-10" id="summaryInfoTable" style="margin-top:10px;padding: 0px;">
+			</div>	
 
 			<div class="row-fluid" style="margin-top: 20px;"><div class="form-inline"><label class="radio">
 			<input type="radio" name="optionsRadios" class="radioCls" value="1" onclick="buildOptions()" checked>
@@ -206,7 +207,14 @@ function buildByeElectionSummary(result,jobj)
 	var str ='';
 	str+='<table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover">';
 	str+='<tr>';
-	str+='<td style="width:25px;"><h2>'+result.totalVoters+'</h2> <p> TotalBooths</p> </td>';
+	var total = 0;
+	if(result.recognizeList !== null && result.recognizeList.length >0){
+	for(var i in result.recognizeList){	
+		total +=result.recognizeList[i].totalVoters;
+	}
+	}
+	str+='<td style="width:25px;"><h2>'+result.totalVoters+'</h2><p>Total Booths</p>(Total Voters  '+total+')</td>';
+
 	if(result.preTotalVoters > 0)
 	{
 	str+='<td style="width:25px;"><h2><a style="cursor:pointer" onclick="getSummaryByStatus(\'all\',\''+jobj.typeId+'\',\''+jobj.type+'\')">'+result.preTotalVoters+'</a></h2> <p>All</p> </td>';
@@ -558,6 +566,43 @@ function buildErrorReport(resultList)
 }
 buildOptions();
 //getSummary();
+
+function buildLastThreeYearsVotersDetails()
+{
+	var str ='';
+	str+='<table class="table table-bordered border-radius-0 mb-0 table-hover">';
+	str += '<thead style="">';
+	str += '<tr>';
+	str += '<th style="width:25%">YEAR</th>';
+	str += '<th style="width:25%">TOTAL VOTERS </th>';
+	str += '<th style="width:25%">POLLED VOTES </th>';
+	str += '<th style="width:25%">% OF POLLED VOTES </th>';
+	str += '</tr>';
+	str += '</thead>';
+	str += '<tr>';
+	str+='<td style=""><h5>2014</h5></td>';	
+	str+='<td style=""><h5>289895</h5></td>';	
+	str+='<td style=""><h5>172525</h5></td>';
+	str+='<td style=""><h5>59.51</h5></td>';
+	str+='</tr>';
+	str += '<tr>';
+	str+='<td style=""><h5>2012</h5></td>';	
+	str+='<td style=""><h5>250258</h5></td>';	
+	str+='<td style=""><h5>136740</h5></td>';
+	str+='<td style=""><h5>54.64</h5></td>';
+	str+='</tr>';
+	str += '<tr>';
+	str+='<td style=""><h5>2009</h5></td>';	
+	str+='<td style=""><h5>247160</h5></td>';	
+	str+='<td style=""><h5>127627</h5></td>';
+	str+='<td style=""><h5>51.64</h5></td>';
+	str+='</tr>';
+	str+='</table>';
+	$("#summaryInfoTable").html(str);
+
+}
+buildLastThreeYearsVotersDetails();
+
 
 </script>
 </body>
