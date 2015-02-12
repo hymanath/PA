@@ -106,7 +106,7 @@ table.dataTable tr.odd {
 #subCount{
  display:none;
 }
-
+.error{color:red;}
 
 	</style>
 	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
@@ -137,6 +137,8 @@ table.dataTable tr.odd {
 			All
 			</label>
 			<lable id="selectDiv"  style="margin-left: 53px;">Select Cluster</lable><select id="selectType" onchange="getByeEleBoothsCurrentStatus();"></select>
+
+			<input class="btn btn-danger " type="button" onclick="getByeEleBoothsErrorReport();" value="Error Info" style="float:right;">
 			</div>
 			<div class="row-fluid " id="summaryInfo" style="margin-top:10px;">
 
@@ -155,6 +157,8 @@ table.dataTable tr.odd {
 				    
 			</div>
 		</div>
+		
+<div id="errorDetailsDiv" style="display:none;"><div id="errorDetailsInnerDiv"></div></div>
 </div>
 <script type="text/javascript">
 
@@ -486,6 +490,72 @@ function buildOptions()
 				
 		
   }
+
+function getByeEleBoothsErrorReport(){
+$('#errorDetailsInnerDiv').html('');
+	var type ="";
+	     
+		 
+		  var jobj = {
+			task : "byeEleerrorInfo",
+			
+		  }
+	           $.ajax({
+				    dataType: 'json',
+					type : "POST",
+					data: {task:JSON.stringify(jobj)},
+					url : "getByeEleBoothsCurrentStatusAction.action"
+				}).done(function(result){
+					
+					buildErrorReport(result);
+	                
+				});
+
+
+  }
+
+
+function buildErrorReport(resultList)
+{
+	var result = resultList.recognizeList;
+	var str ='';
+	if(result == null || result.length == 0)
+	{
+		$('#errorDetailsInnerDiv').html('No Data Available').addClass("error");
+	}
+	else
+	{
+	  str+='<table id="knownTab"class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" ><thead>';
+	  str+='<tr>';
+	  str+='<th>Mobile No</th>';
+	  str+='<th>Message </th>';
+	  str+='<th>Reason</th>';
+	  str+='<th>Time</th>';
+	  str+='</tr>';
+	  str+='</thead>';
+	  str+='<tbody>';
+	  for(var i in result)
+	{
+	  str+='<tr>';
+	  str+='<td>'+result[i].partNo+'</td>';
+	  str+='<td>'+result[i].name+' </td>';
+	  str+='<td>'+result[i].type+'</td>';
+	  str+='<td>'+result[i].time+'</td>';
+	  str+='</tr>';
+	}
+	   str+='</tbody>';
+	   str+='</table>';
+	}
+	    $('#errorDetailsInnerDiv').html(str).removeClass("error");
+		$('#errorDetailsDiv').dialog({                   
+		    modal: true,
+            title: "<b>Error Details</b>",
+			width: 970,
+            height: 600
+     });
+
+
+}
 buildOptions();
 //getSummary();
 
