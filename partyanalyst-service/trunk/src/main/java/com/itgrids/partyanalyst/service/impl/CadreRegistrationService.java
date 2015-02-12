@@ -7437,7 +7437,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			registrationStatusTemp.setType("Message");
 			registrationStatusTemp.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 			if(booth != null){
-				registrationStatusTemp.setMessage(reqMsg+" From Booth - "+booth.getPartNo());
+				registrationStatusTemp.setMessage("From Booth - "+booth.getPartNo()+", "+reqMsg);
 			   registrationStatusTemp.setBoothId(booth.getBoothId());
 			}else{
 				registrationStatusTemp.setMessage(reqMsg);
