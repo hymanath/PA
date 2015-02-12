@@ -107,6 +107,7 @@ table.dataTable tr.odd {
  display:none;
 }
 .error{color:red;}
+#summaryInfo h6{color:#023C59;margin-top:8px;}
 </style>
 	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
@@ -238,31 +239,31 @@ function buildByeElectionSummary(result,jobj)
 		total +=result.recognizeList[i].totalVoters;
 	}
 	}*/
-	str+='<td style="width:25px;"><h2>'+result.totalVoters+'</h2><p>Total Booths</p><h6>TOTAL VOTERS - 292526</h6></td>';
+	str+='<td style="width:25px;"><h2>'+result.totalVoters+'</h2><h4>Total Booths</h4><h6>TOTAL VOTERS - 292526</h6></td>';
 
 	if(result.preTotalVoters > 0)
 	{
-	str+='<td style="width:25px;"><h2><a style="cursor:pointer" onclick="getSummaryByStatus(\'all\',\''+jobj.typeId+'\',\''+jobj.type+'\')">'+result.preTotalVoters+'</a></h2> <p>All</p> <h6> POLLED - '+ result.abPolledCount+' ('+result.abPercentage+' %)</h6></td>';
+	str+='<td style="width:25px;"><h2><a style="cursor:pointer" onclick="getSummaryByStatus(\'all\',\''+jobj.typeId+'\',\''+jobj.type+'\')">'+result.preTotalVoters+'</a></h2> <h4>All</h4> <h6> POLLED - '+ result.abPolledCount+' ('+result.abPercentage+' %)</h6></td>';
 	}
 	else
 	{
-		str+='<td style="width:25px;"><h2>'+result.preTotalVoters+'</h2> <p>All  </p> </td>';
+		str+='<td style="width:25px;"><h2>'+result.preTotalVoters+'</h2> <h4>All  </h4> </td>';
 	}
 	if(result.polledVotes > 0)
 	{
-	str+='<td style="width:25px;"><h2><a style="cursor:pointer" onclick="getSummaryByStatus(\'recognize\',\''+jobj.typeId+'\',\''+jobj.type+'\')">'+result.polledVotes+'</a></h2> <p>From Mapped Mobile No.s </p> <h6> POLLED - '+ result.kbPolledCount+' ('+result.kbPercentage+' %)</h6> </td>';
+	str+='<td style="width:25px;"><h2><a style="cursor:pointer" onclick="getSummaryByStatus(\'recognize\',\''+jobj.typeId+'\',\''+jobj.type+'\')">'+result.polledVotes+'</a></h2> <h4>From Mapped Mobile No.s </h4> <h6> POLLED - '+ result.kbPolledCount+' ('+result.kbPercentage+' %)</h6> </td>';
 	}
 	else
 	{
-		str+='<td style="width:25px;"><h2>'+result.polledVotes+'</h2> <p>From Mapped Mobile No.s  </p> </td>';
+		str+='<td style="width:25px;"><h2>'+result.polledVotes+'</h2> <h4>From Mapped Mobile No.s  </h4> </td>';
 	}
 	if(result.id > 0)
 	{
-	str+='<td style="width:25px;"><h2><a style="cursor:pointer" onclick="getSummaryByStatus(\'unrecognize\',\''+jobj.typeId+'\',\''+jobj.type+'\')">'+result.id+'</a></h2> <p>From UnMapped Mobile No.s </p> <h6> POLLED - '+ result.ukbPolledCount+' ('+result.ukbPercentage+' %)</h6> </td>';
+	str+='<td style="width:25px;"><h2><a style="cursor:pointer" onclick="getSummaryByStatus(\'unrecognize\',\''+jobj.typeId+'\',\''+jobj.type+'\')">'+result.id+'</a></h2> <h4>From UnMapped Mobile No.s </h4> <h6> POLLED - '+ result.ukbPolledCount+' ('+result.ukbPercentage+' %)</h6> </td>';
 	}
 	else
 	{
-		str+='<td style="width:35px;"><h2>'+result.id+'</h2> <p> From UnMapped Mobile No.s </p> </td>';
+		str+='<td style="width:35px;"><h2>'+result.id+'</h2> <h4> From UnMapped Mobile No.s </h4> </td>';
 	}
 	str+='</tr>';
 	str+='</table>';
