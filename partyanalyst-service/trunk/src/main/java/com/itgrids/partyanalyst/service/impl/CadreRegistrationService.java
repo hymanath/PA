@@ -78,6 +78,7 @@ import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDesignationDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationStatusDAO;
+import com.itgrids.partyanalyst.dao.IRegistrationStatusTempDAO;
 import com.itgrids.partyanalyst.dao.ISmsJobStatusDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITabRecordsStatusDAO;
@@ -148,6 +149,7 @@ import com.itgrids.partyanalyst.model.ErrorStatusSms;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.RegistrationStatus;
+import com.itgrids.partyanalyst.model.RegistrationStatusTemp;
 import com.itgrids.partyanalyst.model.SmsJobStatus;
 import com.itgrids.partyanalyst.model.TabRecordsStatus;
 import com.itgrids.partyanalyst.model.TabUserKeys;
@@ -259,6 +261,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ITirupatiByelectionDAO tirupatiByelectionDAO;
 
 	private IErrorStatusSmsDAO errorStatusSmsDAO;
+	private IRegistrationStatusTempDAO registrationStatusTempDAO;
 	private ITirupathiByeleMobileBoothDAO tirupathiByeleMobileBoothDAO;
 	private ITwoWayMessageDAO twoWayMessageDAO;
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
@@ -272,6 +275,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		this.printedCardDetailsDAO = printedCardDetailsDAO;
 	}*/
 	
+	
+	
 	public ITirupathiByeleMobileBoothDAO getTirupathiByeleMobileBoothDAO() {
 		return tirupathiByeleMobileBoothDAO;
 	}
@@ -283,6 +288,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	
 	public IErrorStatusSmsDAO getErrorStatusSmsDAO() {
 		return errorStatusSmsDAO;
+	}
+
+	public IRegistrationStatusTempDAO getRegistrationStatusTempDAO() {
+		return registrationStatusTempDAO;
+	}
+
+	public void setRegistrationStatusTempDAO(
+			IRegistrationStatusTempDAO registrationStatusTempDAO) {
+		this.registrationStatusTempDAO = registrationStatusTempDAO;
 	}
 
 	public void setErrorStatusSmsDAO(IErrorStatusSmsDAO errorStatusSmsDAO) {
@@ -7315,8 +7329,6 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				status.setIsDeleted("N");
 				status.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 				registrationStatusDAO.save(status);
-				
-				
 				try {
 					if(booth.getBoothId()!=null && booth.getBoothId()>0){
 						List<String> mobileNos = tirupathiByeleMobileBoothDAO.getMobileNosOfBooth(booth.getBoothId());
@@ -7340,6 +7352,22 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				} catch (Exception e) {
 					LOG.error(" Exception raised While Sending SMS In saveRegistrationStatus " + e);
 				}
+			try{
+				RegistrationStatusTemp registrationStatusTemp = new RegistrationStatusTemp();
+				String percentage = "";
+				if(booth.getTotalVoters() != null && booth.getTotalVoters() > 0)
+				percentage = (new BigDecimal(new Long(count)*(100.0)/booth.getTotalVoters())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();				
+				String tempmessage ="Booth-"+partNo+", Polled Votes " +count+"("+percentage+"%)";
+				registrationStatusTemp.setMessage(tempmessage);
+				registrationStatusTemp.setType("PolledVotes");
+				registrationStatusTemp.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				registrationStatusTemp.setBoothId(booth.getBoothId());
+				registrationStatusTempDAO.save(registrationStatusTemp);
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
 			
 		}
        }
@@ -7944,6 +7972,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					vo.setName(obj.getMessage() != null ? obj.getMessage().toString() : "");
 					vo.setPartNo(obj.getMobileNo() != null ? obj.getMobileNo() : "");
 					vo.setType(obj.getReason() != null ? obj.getReason() : "");
+					vo.setPercentage(obj.getInsertedTime() != null ? obj.getInsertedTime().toString() : "");
 					returnList.add(vo);
 					
 				}
@@ -7956,6 +7985,33 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}
 		return returnVO;
 	}
-	
+	public ByeElectionVO getByeElelatestUpdates(Integer startIndex,Integer maxIndex)
+	{
+		DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
+		ByeElectionVO returnVo = new ByeElectionVO();
+		try{
+			 List<Object[]> list = registrationStatusTempDAO.getLatestMessages(startIndex,maxIndex);
+			 if(list != null && list.size() > 0)
+			 {
+				 List<ByeElectionVO> returnList = new ArrayList<ByeElectionVO>();
+				 returnVo.setRecognizeList(returnList);
+				 for(Object[] obj : list)
+				 {
+					 ByeElectionVO vo = new ByeElectionVO();
+					 vo.setPartNo(obj[0] != null ? obj[0].toString() : "");
+					 vo.setType(obj[1] != null ? obj[1].toString() : "");
+					 vo.setTime(obj[2] != null ? dateFormat.format((Date)obj[2]) : "");
+					 vo.setPercentage(obj[2]  != null ? obj[2].toString() : "");
+					 returnList.add(vo);
+				 } 
+			 }
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getByeElelatestUpdates()", e);
+		}
+		return returnVo;
+		
+	}
 	
 }
