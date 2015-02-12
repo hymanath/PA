@@ -7200,7 +7200,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
  		return returnList;
  	}
 	public String saveRegistrationStatus(CadreRegistrationVO vo){
-
+		String errorReason = "";
 		RegistrationStatus status = new RegistrationStatus();
 		ErrorStatusSms errorStatus = new ErrorStatusSms();
 		TwoWaySmsMobile twoWaySmsMobile = null;
@@ -7209,14 +7209,21 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		boolean validNo = isMobNo(reqMobileNo);
 		if(validNo == false)
 		{
-			saveErroInfo(message,reqMobileNo,twoWaySmsMobile);
+			errorReason = "InValid Mobile No";
+			saveErroInfo(message,reqMobileNo,twoWaySmsMobile,errorReason);
 			return "success";
 		}
 		
 		
 		if(message.isEmpty() || message == null || !message.contains(" "))
 		{
-			saveErroInfo(message,reqMobileNo,null);
+			if(message.isEmpty())
+			errorReason = "empty message";
+			else if(message == null)
+			errorReason = "message is null";
+			else if(!message.contains(" "))
+		     errorReason = "message is incorrect format";	
+			saveErroInfo(message,reqMobileNo,null,errorReason);
 			return "success";
 		}
 		
@@ -7225,6 +7232,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			String[] split = message.split(" ");
 			String partNo = split[0];		
 			String count = split[1];
+			if(count== null || count.isEmpty())
+			{
+				saveErroInfo(message,reqMobileNo,twoWaySmsMobile,"Invalid Message");
+			return "success";
+			}
 			if(reqMobileNo.length() == 10){
 				List<TwoWaySmsMobile> twoWaySmsMobileList = twoWaySmsMobileDAO.getMobileInfo(reqMobileNo);
 				if(twoWaySmsMobileList.size() > 0 && twoWaySmsMobileList.get(0) != null){
@@ -7235,26 +7247,34 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			 boolean boothPartNo = isAlpha(partNo); boolean polledVotes = isAlpha(count);
 			 if(boothPartNo == false || polledVotes == false)
 			 {
-				saveErroInfo(message,reqMobileNo,twoWaySmsMobile);
+				 if(boothPartNo == false)
+				     errorReason = "Invalid partNo";
+				 else if(polledVotes == false)
+				     errorReason = "Invalid polledVotes";
+				saveErroInfo(message,reqMobileNo,twoWaySmsMobile,errorReason);
 				return "success";
 			 }
 		
 		Booth booth = boothDAO.getBoothByPartNoAndPublicationIdInAConstituency(partNo,291l,12l);
 		if(booth == null)
 		{
-			saveErroInfo(message,reqMobileNo,twoWaySmsMobile);
+			
+			     errorReason = "Booth not available";
+			saveErroInfo(message,reqMobileNo,twoWaySmsMobile,errorReason);
 			return "success";
 		}
 		else
 		{
 			if(booth.getTotalVoters() == null)
 			{
-				saveErroInfo(message,reqMobileNo,twoWaySmsMobile);
+				  errorReason = "TotalVoters null";
+				saveErroInfo(message,reqMobileNo,twoWaySmsMobile,errorReason);
 				return "success";	
 			}
 			if(booth.getTotalVoters().longValue() < Long.valueOf(count))
 			{
-				saveErroInfo(message,reqMobileNo,twoWaySmsMobile);
+				 errorReason = "Polled Voters is greter than Total voters";
+				saveErroInfo(message,reqMobileNo,twoWaySmsMobile,errorReason);
 				return "success";
 			}
 				
@@ -7289,15 +7309,18 @@ public class CadreRegistrationService implements ICadreRegistrationService {
             return false;
         }
     }
-	public void saveErroInfo(String message,String reqMobileNo,TwoWaySmsMobile twoWaySmsMobile)
+	public void saveErroInfo(String message,String reqMobileNo,TwoWaySmsMobile twoWaySmsMobile,String errorReason)
 	{
 		try{
+			DateUtilService date = new DateUtilService();
 		ErrorStatusSms errorStatus = new ErrorStatusSms();
 		errorStatus.setMessage(message);
 		errorStatus.setMobileNo(reqMobileNo);
+		errorStatus.setReason(errorReason);
 		if(twoWaySmsMobile != null){
 			errorStatus.setTwoWaySmsMobile(twoWaySmsMobile);
 		}
+		errorStatus.setInsertedTime(date.getCurrentDateAndTime());
 		errorStatusSmsDAO.save(errorStatus);
 		}
 		catch(Exception e)
@@ -7699,4 +7722,35 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		}
 		return null;
 	}
+	
+	public ByeElectionVO getByeEleBoothsErrorInfo()
+	{
+		ByeElectionVO returnVO = new ByeElectionVO();
+		List<ByeElectionVO> returnList = new ArrayList<ByeElectionVO>();
+		try{
+			DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
+			List<ErrorStatusSms> errorList = errorStatusSmsDAO.getErrorSmsInfo();
+			if(errorList != null && errorList.size() > 0)
+			{
+				for(ErrorStatusSms obj : errorList)
+				{
+					ByeElectionVO vo = new ByeElectionVO();
+					vo.setTime(obj.getInsertedTime() != null ? dateFormat.format((Date)obj.getInsertedTime()) : "");
+					vo.setName(obj.getMessage() != null ? obj.getMessage().toString() : "");
+					vo.setPartNo(obj.getMobileNo() != null ? obj.getMobileNo() : "");
+					vo.setType(obj.getReason() != null ? obj.getReason() : "");
+					returnList.add(vo);
+					
+				}
+				returnVO.setRecognizeList(returnList);
+			}
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getErrorInfo()", e);
+		}
+		return returnVO;
+	}
+	
+	
 }

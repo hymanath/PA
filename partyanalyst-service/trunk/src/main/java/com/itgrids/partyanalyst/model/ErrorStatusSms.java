@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,7 +30,8 @@ public class ErrorStatusSms {
 	private String message;
 	private String mobileNo;
 	private TwoWaySmsMobile twoWaySmsMobile;
-	
+	private Date insertedTime;
+	private String reason;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -67,6 +70,20 @@ public class ErrorStatusSms {
 	}
 	public void setTwoWaySmsMobile(TwoWaySmsMobile twoWaySmsMobile) {
 		this.twoWaySmsMobile = twoWaySmsMobile;
+	}
+	@Column(name="inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
+	}
+	@Column(name="reason")
+	public String getReason() {
+		return reason;
+	}
+	public void setReason(String reason) {
+		this.reason = reason;
 	}
 	
 	
