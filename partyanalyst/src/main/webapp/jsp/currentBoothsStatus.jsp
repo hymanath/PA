@@ -148,10 +148,12 @@ table.dataTable tr.odd {
 			</div>
 			</div>
 			
-		<div class="row-fluid " id="mainCount">
+		<div class="row-fluid " id="mainCount" style="margin-top:20px;">
+			<span id="exportToExcelBtn" class="btn btn-info pull-right"> Export Report To Excel </span>
 			<div id="mainInfo" class="span12 show-grid well well-small border-radius-0 mb-10" style="margin-top: 20px; overflow: auto;">
 				    
 			</div>
+
 		</div>
 		<div class="row-fluid " id="subCount">
 			<div id="subInfo" class="span12 show-grid well well-small border-radius-0 mb-10">
@@ -161,6 +163,27 @@ table.dataTable tr.odd {
 		
 <div id="errorDetailsDiv" style="display:none;"><div id="errorDetailsInnerDiv"></div></div>
 </div>
+
+<script>
+$("#exportToExcelBtn").click(function(){
+	 tableToExcel('knownTabDiv', 'TIRUPATHI BYE ELECTION POLL MONITOR');
+});
+var tableToExcel = (function() {
+  var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+  return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
+
+
+</script>
+
+
 <script type="text/javascript">
 
 function getSummary()
@@ -213,11 +236,11 @@ function buildByeElectionSummary(result,jobj)
 		total +=result.recognizeList[i].totalVoters;
 	}
 	}
-	str+='<td style="width:25px;"><h2>'+result.totalVoters+'</h2><p>Total Booths</p>(Total Voters  '+total+')</td>';
+	str+='<td style="width:25px;"><h2>'+result.totalVoters+'</h2><p>Total Booths</p><h6>TOTAL VOTERS - '+total+'</h6></td>';
 
 	if(result.preTotalVoters > 0)
 	{
-	str+='<td style="width:25px;"><h2><a style="cursor:pointer" onclick="getSummaryByStatus(\'all\',\''+jobj.typeId+'\',\''+jobj.type+'\')">'+result.preTotalVoters+'</a></h2> <p>All</p> </td>';
+	str+='<td style="width:25px;"><h2><a style="cursor:pointer" onclick="getSummaryByStatus(\'all\',\''+jobj.typeId+'\',\''+jobj.type+'\')">'+result.preTotalVoters+'</a></h2> <p>All</p> <h6> POLLED - '+ result.abPolledCount+' ('+result.abPercentage+' %)</h6></td>';
 	}
 	else
 	{
@@ -225,7 +248,7 @@ function buildByeElectionSummary(result,jobj)
 	}
 	if(result.polledVotes > 0)
 	{
-	str+='<td style="width:25px;"><h2><a style="cursor:pointer" onclick="getSummaryByStatus(\'recognize\',\''+jobj.typeId+'\',\''+jobj.type+'\')">'+result.polledVotes+'</a></h2> <p>From Mapped Mobile No.s </p> </td>';
+	str+='<td style="width:25px;"><h2><a style="cursor:pointer" onclick="getSummaryByStatus(\'recognize\',\''+jobj.typeId+'\',\''+jobj.type+'\')">'+result.polledVotes+'</a></h2> <p>From Mapped Mobile No.s </p> <h6> POLLED - '+ result.kbPolledCount+' ('+result.kbPercentage+' %)</h6> </td>';
 	}
 	else
 	{
@@ -233,7 +256,7 @@ function buildByeElectionSummary(result,jobj)
 	}
 	if(result.id > 0)
 	{
-	str+='<td style="width:25px;"><h2><a style="cursor:pointer" onclick="getSummaryByStatus(\'unrecognize\',\''+jobj.typeId+'\',\''+jobj.type+'\')">'+result.id+'</a></h2> <p>From UnMapped Mobile No.s </p> </td>';
+	str+='<td style="width:25px;"><h2><a style="cursor:pointer" onclick="getSummaryByStatus(\'unrecognize\',\''+jobj.typeId+'\',\''+jobj.type+'\')">'+result.id+'</a></h2> <p>From UnMapped Mobile No.s </p> <h6> POLLED - '+ result.ukbPolledCount+' ('+result.ukbPercentage+' %)</h6> </td>';
 	}
 	else
 	{
@@ -383,7 +406,7 @@ $("#summaryInfo").html('');
 								{
 									 str+='<h4 style=" text-transform: uppercase;;color:#0062AE; margin-left: 400px;">  Divison Report</h4>';
 								}
-							  str+='<table id="knownTab"class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" ><thead>'
+							  str+='<table id="knownTab" class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" ><thead>'
 						      str+='<tr>';
 							  str+='<th>PART NO</th>';
 							  if(typeId == 0){
@@ -436,12 +459,84 @@ $("#summaryInfo").html('');
 						      str+=' </tbody>';
 					          str+='</table>';
 							  
+							  var str1 = '<div id="knownTabDiv" style="display:none;">';
+							  if(jobj.status != null)
+								{
+								  if(jobj.status == "recognize")
+								  title = "Mapped Mobile No.s"
+								   if(jobj.status == "unrecognize")
+								  title = "UnMapped Mobile No.s"
+							  str1+='<h4 style=" text-transform: uppercase;color:#0062AE; margin-left: 400px;"> '+title+' Report</h4>';
+								}
+								else if (jobj.typeId == 1){
+									 str1+='<h4 style=" text-transform: uppercase;;color:#0062AE; margin-left: 400px;">  Cluster Report</h4>';
+								}
+								else if (jobj.typeId == 2){
+									 str1+='<h4 style=" text-transform: uppercase;;color:#0062AE; margin-left: 400px;">  Divison Report</h4>';
+								}else if(jobj.typeId==0){
+									 str1+='<h4 style=" text-transform: uppercase;;color:#0062AE; margin-left: 400px;">  Total Report</h4>';
+								}
+							  str1+='<table id="knownTab1"  class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" ><thead>'
+						      str1+='<tr>';
+							  str1+='<th>PART NO</th>';
+							  if(typeId == 0){
+								str1+='<th>CLUSTER</th>';
+								str1+='<th>WARD</th>';
+							  }
+							  str1+='<th>BOOTH LOCATION</th>';
+							  str1+='<th>2015 TOTAL VOTERS</th>';
+							  str1+='<th>2015 POLLED VOTES</th>';
+							  str1+='<th>2015 POLLING PERCENTAGE</th>';
+							   str1+='<th>Time</th>';
+							 // str+='<th>2014_PartNO</th>';
+							 // str+='<th>2014 VOTERS IN 2015</th>';
+							 // str+='<th>2014 TOTAL VOTERS</th>';
+							  str1+='<th>2014 POLLING PERCENTAGE';
+							  str1+='<th>2014 POLLED VOTES</th>';
+							  str1+=' </thead>';
+							  str1+=' </tr>';
+							  str1+='<tbody>';
+
+							 for(var i in boothData){
+								 str1+='<tr>';
+							  str1+='<td>'+boothData[i].partNo+'</td>';
+							  if(typeId == 0){
+								str1+='<td>'+boothData[i].cluster+'</td>';
+								str1+='<td>'+boothData[i].ward+'</td>';
+							  }
+							  str1+='<td>'+boothData[i].boothLocation+'</td>';
+							  str1+='<td>'+boothData[i].totalVoters+'</td>';
+							  if(boothData[i].polledVotes == null)
+								 str1+='<td> - </td>';
+							  else
+							  str1+='<td>'+boothData[i].polledVotes+'</td>';
+							   if(boothData[i].percentage == null)
+								 str1+='<td> - </td>';
+							  else
+							  str1+='<td>'+boothData[i].percentage+'</td>';
+							   if(boothData[i].time == null)
+								 str1+='<td> - </td>';
+							  else
+							 str1+='<td>'+boothData[i].time+'</td>';
+							  //str+='<td>'+boothData[i].prevPartNo+'</td>';
+							 // str+='<td>'+boothData[i].preVotersInPresent+'</td>';
+							 // str+='<td>'+boothData[i].preTotalVoters+'</td>';
+							  str1+='<td>'+boothData[i].prevPercentage+'</td>';
+							  str1+='<td>'+boothData[i].prevPolledVotes+'</td>';
+								str1+='  </tr>'; 
+							 }
+							
+						      str1+=' </tbody>';
+					          str1+='</table></div>';
+							  
 							  $("#mainInfo").html(str);
+							  $("#mainInfo").append(str1);
+							  
 							  $("#knownTab").dataTable({
-				"aaSorting": [[ 1, "asc" ]],
-				"iDisplayLength": 15,
-				"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]
-				});;
+								"aaSorting": [[ 1, "asc" ]],
+								"iDisplayLength": 15,
+								"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]
+								});
 						  }else{
 							$("#mainInfo").html("");
 							$("#mainCount").hide();  
