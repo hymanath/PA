@@ -664,7 +664,7 @@ function buildErrorReport(resultList)
 		    modal: true,
             title: "<b>Error Details</b>",
 			width: 970,
-            height: 300
+            height: 600
      });
 			if(result.length > 15)
 				{
