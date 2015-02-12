@@ -53,7 +53,7 @@ public class TirupathiByeleMobileBooth extends BaseModel implements Serializable
 	}
 
 	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "booth_id")
+	@JoinColumn(name = "booth_id" , insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Booth getBooth() {

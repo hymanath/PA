@@ -93,6 +93,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreTravelInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreVerfiedDataDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeRoleDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.ITirupathiByeleMobileBoothDAO;
 import com.itgrids.partyanalyst.dao.ITirupatiByelectionDAO;
 import com.itgrids.partyanalyst.dao.ITwoWaySmsMobileDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
@@ -256,6 +257,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ITirupatiByelectionDAO tirupatiByelectionDAO;
 
 	private IErrorStatusSmsDAO errorStatusSmsDAO;
+	private ITirupathiByeleMobileBoothDAO tirupathiByeleMobileBoothDAO;
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
 	public IPrintedCardDetailsDAO getPrintedCardDetailsDAO() {
@@ -266,6 +268,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			IPrintedCardDetailsDAO printedCardDetailsDAO) {
 		this.printedCardDetailsDAO = printedCardDetailsDAO;
 	}*/
+	
+	public ITirupathiByeleMobileBoothDAO getTirupathiByeleMobileBoothDAO() {
+		return tirupathiByeleMobileBoothDAO;
+	}
+
+	public void setTirupathiByeleMobileBoothDAO(
+			ITirupathiByeleMobileBoothDAO tirupathiByeleMobileBoothDAO) {
+		this.tirupathiByeleMobileBoothDAO = tirupathiByeleMobileBoothDAO;
+	}
 	
 	public IErrorStatusSmsDAO getErrorStatusSmsDAO() {
 		return errorStatusSmsDAO;
@@ -7295,6 +7306,29 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				registrationStatusDAO.save(status);
 				
 				
+				try {
+					if(booth.getBoothId()!=null && booth.getBoothId()>0){
+						List<String> mobileNos = tirupathiByeleMobileBoothDAO.getMobileNosOfBooth(booth.getBoothId());
+						StringBuilder sb = new StringBuilder();
+						
+						if(mobileNos!=null && mobileNos.size()>0){
+							for(String str:mobileNos){
+								sb.append(str.toString());
+								sb.append(",");
+							}
+						}
+						
+						if(sb.toString().length()>0){
+							String	mobiles = sb.toString().substring(0,sb.toString().length() - 1);
+							String percentage = (new BigDecimal(Long.valueOf(count)*(100.0)/booth.getTotalVoters())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+
+							sendSMS(mobiles, "  In Booth "+ booth.getPartNo() +" Total Polled Votes :"+ count +" and Polling Percentage : "+ percentage +" %");
+						}
+						
+					}
+				} catch (Exception e) {
+					LOG.error(" Exception raised While Sending SMS In saveRegistrationStatus " + e);
+				}
 			
 		}
        }
