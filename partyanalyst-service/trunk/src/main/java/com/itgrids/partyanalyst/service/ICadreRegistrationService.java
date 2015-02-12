@@ -144,5 +144,6 @@ public interface ICadreRegistrationService {
 	public List<CadreCommitteeMemberVO> getClustesAndDivisionNames(Long typeId);
 	//public ByeElectionVO getByeEleBoothsCurrentStatusSummaryInfo(Long accessValue,String status);
 	public ByeElectionVO getByeEleBoothsCurrentStatusSummaryInfo1(Long accessValue,String status,Long typeId,String type);
+	public ByeElectionVO getByeEleBoothsErrorInfo();
 	
 }
