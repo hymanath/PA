@@ -334,11 +334,12 @@ function buildByeElectionSummary(result,jobj)
 function getByeEleBoothsCurrentStatus(){
 $("#summaryInfo").html('');
 	var type ="";
-	      $("#mainInfo").html('<center><img style="" id="ajaxImgStyle" src="images/icons/loading.gif"></center>');
-		  $("#mainCount").show(); 
-		   var checkdVal= $("input[name=optionsRadios]:checked").val();
-		   if(checkdVal > 0)
-		    type = $("#selectType").val();
+	    $("#mainInfo").html('<center><img style="" id="ajaxImgStyle" src="images/icons/loading.gif"></center>');
+		$("#mainCount").show(); 
+		var checkdVal= $("input[name=optionsRadios]:checked").val();
+		if(checkdVal > 0){
+		   type = $("#selectType").val();
+		}
 		  var jobj = {
 			task : "ByeEleInfo",
 			typeId:checkdVal,
@@ -365,7 +366,7 @@ $("#summaryInfo").html('');
 							  var boothData = result.recognizeList;
 							  var str ='';
 							  var title ="";
-
+							 var typeId = jobj.typeId;	
 							  if(jobj.status != null)
 								{
 								  if(jobj.status == "recognize")
@@ -384,7 +385,11 @@ $("#summaryInfo").html('');
 								}
 							  str+='<table id="knownTab"class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" ><thead>'
 						      str+='<tr>';
-							  str+='<th>PartNO</th>';
+							  str+='<th>PART NO</th>';
+							  if(typeId == 0){
+								str+='<th>CLUSTER</th>';
+								str+='<th>WARD</th>';
+							  }
 							  str+='<th>BOOTH LOCATION</th>';
 							  str+='<th>2015 TOTAL VOTERS</th>';
 							  str+='<th>2015 POLLED VOTES</th>';
@@ -402,6 +407,10 @@ $("#summaryInfo").html('');
 							 for(var i in boothData){
 								 str+='<tr>';
 							  str+='<td>'+boothData[i].partNo+'</td>';
+							  if(typeId == 0){
+								str+='<td>'+boothData[i].cluster+'</td>';
+								str+='<td>'+boothData[i].ward+'</td>';
+							  }
 							  str+='<td>'+boothData[i].boothLocation+'</td>';
 							  str+='<td>'+boothData[i].totalVoters+'</td>';
 							  if(boothData[i].polledVotes == null)
