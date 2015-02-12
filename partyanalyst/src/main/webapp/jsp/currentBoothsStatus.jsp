@@ -533,7 +533,7 @@ function buildErrorReport(resultList)
 	}
 	else
 	{
-	  str+='<table id="knownTab"class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" ><thead>';
+	  str+='<table id="errorInfoTable" class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" ><thead class="table-alert-info">';
 	  str+='<tr>';
 	  str+='<th>Mobile No</th>';
 	  str+='<th>Message </th>';
@@ -559,8 +559,16 @@ function buildErrorReport(resultList)
 		    modal: true,
             title: "<b>Error Details</b>",
 			width: 970,
-            height: 600
+            height: 300
      });
+			if(result.length > 15)
+				{
+				$("#errorInfoTable").dataTable({
+				"aaSorting": [[ 1, "asc" ]],
+				"iDisplayLength": 15,
+				"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]
+				});;
+			}
 
 
 }
@@ -599,7 +607,7 @@ function buildLastThreeYearsVotersDetails()
 	str+='</tr>';
 	str+='</table>';
 	$("#summaryInfoTable").html(str);
-
+	 
 }
 buildLastThreeYearsVotersDetails();
 
