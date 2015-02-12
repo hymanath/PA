@@ -154,6 +154,7 @@ table.dataTable tr.odd {
 			<div id="mainInfo" class="span12 show-grid well well-small border-radius-0 mb-10" style="margin-top: 20px; overflow: auto;margin-left: 0px;">
 				    
 			</div>
+			<div style="font-size: 14px;margin-bottom: 5px;text-align: right;"><span type="button" onclick="getCurrentBoothsMessages();" class="btn btn-success pull-right">Refresh Messages</span></div>
             <div id="countInfo" class="span12 show-grid well well-small border-radius-0 mb-10" style="margin-top: 20px; overflow: auto;margin-left: 0px;">
 				    
 			</div>
@@ -164,7 +165,7 @@ table.dataTable tr.odd {
 			</div>
 		</div>
 		
-<div id="errorDetailsDiv" style="display:none;"><div id="errorDetailsInnerDiv"></div></div>
+<div id="errorDetailsDiv" style="display:none;margin-top:20px;"><div id="errorDetailsInnerDiv"></div></div>
 </div>
 
 <script>
@@ -672,12 +673,10 @@ function buildErrorReport(resultList)
 {
 	var result = resultList.recognizeList;
 	var str ='';
-	if(result == null || result.length == 0)
-	{
-		$('#errorDetailsInnerDiv').html('No Data Available').addClass("error");
-	}
-	else
-	{
+	
+		
+
+
 	  str+='<table id="errorInfoTable" class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" ><thead class="table-alert-info">';
 	  str+='<tr>';
 	  str+='<th>Mobile No</th>';
@@ -687,18 +686,21 @@ function buildErrorReport(resultList)
 	  str+='</tr>';
 	  str+='</thead>';
 	  str+='<tbody>';
-	  for(var i in result)
+	  if(result != null && result.length > 0)
 	{
-	  str+='<tr>';
-	  str+='<td>'+result[i].partNo+'</td>';
-	  str+='<td>'+result[i].name+' </td>';
-	  str+='<td>'+result[i].type+'</td>';
-	  str+='<td>'+result[i].time+'</td>';
-	  str+='</tr>';
+		  for(var i in result)
+		{
+		  str+='<tr>';
+		  str+='<td>'+result[i].partNo+'</td>';
+		  str+='<td>'+result[i].name+' </td>';
+		  str+='<td>'+result[i].type+'</td>';
+		  str+='<td>'+result[i].time+'</td>';
+		  str+='</tr>';
+		}
 	}
 	   str+='</tbody>';
 	   str+='</table>';
-	}
+	
 	    $('#errorDetailsInnerDiv').html(str).removeClass("error");
 		$('#errorDetailsDiv').dialog({                   
 		    modal: true,
@@ -706,14 +708,13 @@ function buildErrorReport(resultList)
 			width: 970,
             height: 600
      });
-			if(result.length > 15)
-				{
+			
 				$("#errorInfoTable").dataTable({
 				"aaSorting": [[ 1, "asc" ]],
 				"iDisplayLength": 15,
 				"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]
-				});;
-			}
+				});
+			
 
 
 }
@@ -792,8 +793,8 @@ function getCurrentBoothsMessages(){
 					  $("#countInfo").html(str);
 					  $("#countInfoTab").dataTable({
 		"aaSorting": [[ 1, "asc" ]],
-		"iDisplayLength": -1,
-		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]
+		"iDisplayLength": 50,
+		"aLengthMenu": [[50,100,250, -1], [50,100,250, "All"]]
 		});
  }					 
 buildLastThreeYearsVotersDetails();
