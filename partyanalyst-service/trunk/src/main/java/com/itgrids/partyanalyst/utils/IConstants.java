@@ -214,7 +214,7 @@ public interface IConstants {
     public final static String OPP_PARTY = "OPP_PARTY";
     public final static String VOTES_MARGIN = "VOTES_MARGIN";
     public final static String VOTES_PERCENT = "VOTES_PERCENT";
-    
+    public static final String TIRUPATHI_BYEELECTION = "TIRUPATHI_BYEELECTION";
     //SMS Modules
     public final static String User_Groups = "User Groups";
     public final static String Cadre_Management = "Cadre Management";
