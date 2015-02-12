@@ -560,6 +560,7 @@
 	            <value>com.itgrids.partyanalyst.model.TirupatiByelection</value>
 	            <value>com.itgrids.partyanalyst.model.ErrorStatusSms</value>
 	            <value>com.itgrids.partyanalyst.model.TirupathiByeleMobileBooth</value>								
+	            <value>com.itgrids.partyanalyst.model.RegistrationStatusTemp</value>							
 				</list>
 			
 		</property>
