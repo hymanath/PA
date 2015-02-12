@@ -7366,7 +7366,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			}
 			catch(Exception e)
 			{
-				e.printStackTrace();
+				LOG.error(e);
 			}
 			
 		}
@@ -7430,6 +7430,24 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		twoWayMessage.setActualMsg(message);
 		twoWayMessage.setIsDeleted("N");
 		twoWayMessageDAO.save(twoWayMessage);
+		try{
+			RegistrationStatusTemp registrationStatusTemp = new RegistrationStatusTemp();
+			
+			
+			registrationStatusTemp.setType("Message");
+			registrationStatusTemp.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			if(booth != null){
+				registrationStatusTemp.setMessage(reqMsg+" From Booth - "+booth.getPartNo());
+			   registrationStatusTemp.setBoothId(booth.getBoothId());
+			}else{
+				registrationStatusTemp.setMessage(reqMsg);
+			}
+			registrationStatusTempDAO.save(registrationStatusTemp);
+		}
+		catch(Exception e)
+		{
+			LOG.error(e);
+		}
 	}
 	
 	public ByeElectionVO getMessagesInfo(Integer startIndex,Integer maxIndex){
