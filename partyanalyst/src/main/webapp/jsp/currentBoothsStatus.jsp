@@ -232,13 +232,13 @@ function buildByeElectionSummary(result,jobj)
 	var str ='';
 	str+='<table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover">';
 	str+='<tr>';
-	var total = 0;
+	/*var total = 0;
 	if(result.recognizeList !== null && result.recognizeList.length >0){
 	for(var i in result.recognizeList){	
 		total +=result.recognizeList[i].totalVoters;
 	}
-	}
-	str+='<td style="width:25px;"><h2>'+result.totalVoters+'</h2><p>Total Booths</p><h6>TOTAL VOTERS - '+total+'</h6></td>';
+	}*/
+	str+='<td style="width:25px;"><h2>'+result.totalVoters+'</h2><p>Total Booths</p><h6>TOTAL VOTERS - 292526</h6></td>';
 
 	if(result.preTotalVoters > 0)
 	{
