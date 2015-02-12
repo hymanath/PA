@@ -7796,10 +7796,12 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			 
 			 if(knownBoothsVtrsCnt!=null && knownBoothsVtrsCnt.size()>0){
 				 for(Object[] obj:knownBoothsVtrsCnt){
-					 kbttlVtrs = Long.valueOf(obj[0].toString());
-					 kbttlVtrsPlld =((Double)obj[1]).longValue();
-					 
-					 kbttlVtrsPercentage = (new BigDecimal(kbttlVtrsPlld*(100.0)/kbttlVtrs)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+					 if(obj[0]!=null && obj[1]!=null){
+						 kbttlVtrs = Long.valueOf(obj[0].toString());
+						 kbttlVtrsPlld =((Double)obj[1]).longValue();
+						 
+						 kbttlVtrsPercentage = (new BigDecimal(kbttlVtrsPlld*(100.0)/kbttlVtrs)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();	
+					 }
 				 }
 			 }
 			 
@@ -7809,10 +7811,12 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			 
 			 if(unknownBoothsVtrsCnt!=null && unknownBoothsVtrsCnt.size()>0){
 				 for(Object[] obj:unknownBoothsVtrsCnt){
-					 ukbttlVtrs = Long.valueOf(obj[0].toString());
-					 ukbttlVtrsPlld =((Double)obj[1]).longValue();
-					 
-					 ukbttlVtrsPercentage = (new BigDecimal(ukbttlVtrsPlld*(100.0)/ukbttlVtrs)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+					 if(obj[0]!=null && obj[1]!=null){
+						 ukbttlVtrs = Long.valueOf(obj[0].toString());
+						 ukbttlVtrsPlld =((Double)obj[1]).longValue();
+						 
+						 ukbttlVtrsPercentage = (new BigDecimal(ukbttlVtrsPlld*(100.0)/ukbttlVtrs)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+					 }
 				 }
 			 }
 			 
@@ -7822,10 +7826,12 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			 
 			 if(allBoothsListVtrsCnt!=null && allBoothsListVtrsCnt.size()>0){
 				 for(Object[] obj:allBoothsListVtrsCnt){
-					 abttlVtrs = Long.valueOf(obj[0].toString());
-					 abttlVtrsPlld =((Double)obj[1]).longValue();
-					 
-					 abttlVtrsPercentage = (new BigDecimal(abttlVtrsPlld*(100.0)/abttlVtrs)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+					 if(obj[0]!=null && obj[1]!=null){
+						 abttlVtrs = Long.valueOf(obj[0].toString());
+						 abttlVtrsPlld =((Double)obj[1]).longValue();
+						 
+						 abttlVtrsPercentage = (new BigDecimal(abttlVtrsPlld*(100.0)/abttlVtrs)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+					 }
 				 }
 			 }
 			 
