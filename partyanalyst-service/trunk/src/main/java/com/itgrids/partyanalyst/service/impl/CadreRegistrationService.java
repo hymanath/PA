@@ -7568,6 +7568,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				byeElectionVO.setPrevPolledVotes(Long.valueOf(params.getPolledVotes2014().toString()));
 				byeElectionVO.setPreVotersInPresent(Long.valueOf(params.getVoterIn2015From2014().toString()));
 				byeElectionVO.setBoothId(Long.valueOf(params.getBoothId2015().toString()));
+				byeElectionVO.setCluster(params.getClusterName());
+				byeElectionVO.setWard(params.getDivisionName());
 				recognizeList.add(byeElectionVO);
 				presentBoothIds.add(params.getBoothId2015());
 			}
@@ -7631,23 +7633,85 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		Long unrecognizeBoothCnt = 0l;
 		Long allBooths = 0l;
 		try{
-		 List<Long> list = boothDAO.getAllBoothsInAConstituency(accessValue,12l);
-		 if(list != null && list.size() > 0)
-			 totalBooths = new Long(list.size());
-		 List<BigInteger> knownBooths = registrationStatusDAO.getRecognizeByBooths(boothIds,12l);
-		 if(knownBooths != null && knownBooths.size() > 0)
-			 recognizeBoothCnt = new Long(knownBooths.size());
-		  List<BigInteger> unknownBooths = registrationStatusDAO.getUnrecognizeByBooths(boothIds,12l);
-		  List<BigInteger> allBoothsList = registrationStatusDAO.getAllBooths(boothIds,12l);
-		 returnVo.setTotalVoters(totalBooths);
-		 returnVo.setPolledVotes(recognizeBoothCnt);
-		 if(unknownBooths != null && unknownBooths.size() > 0)
-			 unrecognizeBoothCnt =new Long(unknownBooths.size());
-		 returnVo.setId(unrecognizeBoothCnt);
-		 if(allBoothsList != null && allBoothsList.size() > 0)
-			 allBooths = new Long(allBoothsList.size()); 
+			 List<Long> list = boothDAO.getAllBoothsInAConstituency(accessValue,12l);
+			 if(list != null && list.size() > 0){
+				 totalBooths = new Long(list.size());
+			 }
+			 returnVo.setTotalVoters(totalBooths);
+			 
+			 List<BigInteger> knownBooths = registrationStatusDAO.getRecognizeByBooths(boothIds,12l);
+			 List<BigInteger> unknownBooths = registrationStatusDAO.getUnrecognizeByBooths(boothIds,12l);
+			 List<BigInteger> allBoothsList = registrationStatusDAO.getAllBooths(boothIds,12l);
+			 
+			 List<Object[]> knownBoothsVtrsCnt = registrationStatusDAO.getRecognizeByBoothsTotalVotersAndPolledVotes(boothIds,12l);
+			 List<Object[]> unknownBoothsVtrsCnt = registrationStatusDAO.getUnrecognizeByBoothsTotalVotersAndPolledVotes(boothIds,12l);
+			 List<Object[]> allBoothsListVtrsCnt = registrationStatusDAO.getAllBoothsTotalVotersAndPolledVotes(boothIds,12l);
+			 
+			 Long kbttlVtrs = 0l;
+			 Long kbttlVtrsPlld = 0l;
+			 String kbttlVtrsPercentage = "0.0";
+			 
+			 Long ukbttlVtrs = 0l;
+			 Long ukbttlVtrsPlld = 0l;
+			 String ukbttlVtrsPercentage = "0.0";
+			 
+			 Long abttlVtrs = 0l;
+			 Long abttlVtrsPlld = 0l;
+			 String abttlVtrsPercentage = "0.0";
+			 
+			 if(knownBoothsVtrsCnt!=null && knownBoothsVtrsCnt.size()>0){
+				 for(Object[] obj:knownBoothsVtrsCnt){
+					 kbttlVtrs = Long.valueOf(obj[0].toString());
+					 kbttlVtrsPlld =((Double)obj[1]).longValue();
+					 
+					 kbttlVtrsPercentage = (new BigDecimal(kbttlVtrsPlld*(100.0)/kbttlVtrs)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+				 }
+			 }
+			 
+			 returnVo.setKbVotersCount(kbttlVtrs);
+			 returnVo.setKbPolledCount(kbttlVtrsPlld);
+			 returnVo.setKbPercentage(kbttlVtrsPercentage);
+			 
+			 if(unknownBoothsVtrsCnt!=null && unknownBoothsVtrsCnt.size()>0){
+				 for(Object[] obj:unknownBoothsVtrsCnt){
+					 ukbttlVtrs = Long.valueOf(obj[0].toString());
+					 ukbttlVtrsPlld =((Double)obj[1]).longValue();
+					 
+					 ukbttlVtrsPercentage = (new BigDecimal(ukbttlVtrsPlld*(100.0)/ukbttlVtrs)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+				 }
+			 }
+			 
+			 returnVo.setUkbVotersCount(ukbttlVtrs);
+			 returnVo.setUkbPolledCount(ukbttlVtrsPlld);
+			 returnVo.setUkbPercentage(ukbttlVtrsPercentage);
+			 
+			 if(allBoothsListVtrsCnt!=null && allBoothsListVtrsCnt.size()>0){
+				 for(Object[] obj:allBoothsListVtrsCnt){
+					 abttlVtrs = Long.valueOf(obj[0].toString());
+					 abttlVtrsPlld =((Double)obj[1]).longValue();
+					 
+					 abttlVtrsPercentage = (new BigDecimal(abttlVtrsPlld*(100.0)/abttlVtrs)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+				 }
+			 }
+			 
+			 returnVo.setAbVotersCount(abttlVtrs);
+			 returnVo.setAbPolledCount(abttlVtrsPlld);
+			 returnVo.setAbPercentage(abttlVtrsPercentage);
+			 
+			 if(knownBooths != null && knownBooths.size() > 0){
+				 recognizeBoothCnt = new Long(knownBooths.size());
+			 }
+			 returnVo.setPolledVotes(recognizeBoothCnt);
+			 
+			 if(unknownBooths != null && unknownBooths.size() > 0){
+				 unrecognizeBoothCnt =new Long(unknownBooths.size());
+			 }
+			 returnVo.setId(unrecognizeBoothCnt);
+			 
+			 if(allBoothsList != null && allBoothsList.size() > 0){
+				 allBooths = new Long(allBoothsList.size()); 
+			 }
 			 returnVo.setPreTotalVoters(allBooths);
-		 
 		}		
 		catch(Exception e)
 		{
