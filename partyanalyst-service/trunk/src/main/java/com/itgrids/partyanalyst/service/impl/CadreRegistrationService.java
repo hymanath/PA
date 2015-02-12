@@ -7293,6 +7293,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				status.setIsDeleted("N");
 				status.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 				registrationStatusDAO.save(status);
+				
+				
 			
 		}
        }
