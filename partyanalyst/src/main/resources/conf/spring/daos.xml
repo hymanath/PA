@@ -1924,6 +1924,9 @@
 	<bean id="tirupatiByelectionDAO" class="com.itgrids.partyanalyst.dao.hibernate.TirupatiByelectionDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="twoWayMessageDAO" class="com.itgrids.partyanalyst.dao.hibernate.TwoWayMessageDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="tirupathiByeleMobileBoothDAO" class="com.itgrids.partyanalyst.dao.hibernate.TirupathiByeleMobileBoothDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />

@@ -9698,5 +9698,11 @@
 				<param name="root">byeEleInfo</param>
 			</result>
 		</action>
+		
+		<action name="getByeEleMessagesInfoAction" class="committeeDashBoardAction" method="getMessagesInfo">
+			<result type="json" name="success">
+				<param name="root">byeEleInfo</param>
+			</result>
+		</action>
 </package>
 </struts>      

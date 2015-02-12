@@ -565,5 +565,23 @@ public String getAllConstituencysForADistrict(){
 	   return Action.SUCCESS;
 	}
 	
-	
+	public String getMessagesInfo(){
+		try{
+			Integer startIndex = null;
+			Integer maxIndex = null;
+			String startIndexStr = request.getParameter("startIndex").trim();
+			String maxIndexStr = request.getParameter("maxIndex").trim();
+			if(startIndexStr.length() > 0){
+				startIndex = Integer.parseInt(startIndexStr);
+			}
+			if(maxIndexStr.length() > 0){
+				maxIndex = Integer.parseInt(maxIndexStr);
+			}
+			request.getParameter("maxIndex");
+			byeEleInfo = cadreRegistrationService.getMessagesInfo(startIndex,maxIndex);
+		}catch(Exception e){
+			LOG.error("Exception getMessagesInfo ",e);
+		}
+		return Action.SUCCESS;
+	}
 }
