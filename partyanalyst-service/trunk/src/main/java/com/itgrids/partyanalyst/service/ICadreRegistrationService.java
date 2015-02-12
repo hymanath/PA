@@ -146,4 +146,5 @@ public interface ICadreRegistrationService {
 	public ByeElectionVO getByeEleBoothsCurrentStatusSummaryInfo1(Long accessValue,String status,Long typeId,String type);
 	public ByeElectionVO getByeEleBoothsErrorInfo();
 	
+	public ByeElectionVO getMessagesInfo(Integer startIndex,Integer maxIndex);
 }
