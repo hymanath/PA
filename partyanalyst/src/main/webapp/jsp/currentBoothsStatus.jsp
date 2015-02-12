@@ -153,7 +153,9 @@ table.dataTable tr.odd {
 			<div id="mainInfo" class="span12 show-grid well well-small border-radius-0 mb-10" style="margin-top: 20px; overflow: auto;">
 				    
 			</div>
-
+            <div id="countInfo" class="span12 show-grid well well-small border-radius-0 mb-10" style="margin-top: 20px; overflow: auto;">
+				    
+			</div>
 		</div>
 		<div class="row-fluid " id="subCount">
 			<div id="subInfo" class="span12 show-grid well well-small border-radius-0 mb-10">
@@ -626,7 +628,6 @@ $('#errorDetailsInnerDiv').html('');
 
   }
 
-
 function buildErrorReport(resultList)
 {
 	var result = resultList.recognizeList;
@@ -713,8 +714,50 @@ function buildLastThreeYearsVotersDetails()
 	$("#summaryInfoTable").html(str);
 	 
 }
-buildLastThreeYearsVotersDetails();
+function getCurrentBoothsMessages(){
+	  $("#countInfo").html('<center><img style="" id="ajaxImgStyle" src="images/icons/loading.gif"></center>');
+	           $.ajax({
+				    dataType: 'json',
+					type : "POST",
+					data: {startIndex:"",maxIndex:""},
+					url : "getByeEleMessagesInfoAction.action"
+				}).done(function(result){
+					
+					buildMessages(result);
+	                
+				});
+  }
+  
+ function buildMessages(result){
+					  var boothData = result.recognizeList;
+					  var str ='';
+					  str+='<h4 style=" text-transform: uppercase;;color:#0062AE; margin-left: 400px;"> Messages </h4>';
+					  str+='<table id="countInfoTab"class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" ><thead>'
+					  str+='  <tr><th>Booth No</th><th>mobileNo</th><th>Time</th><th>Message</th></thead></tr>';
+					  str+='<tbody>';
 
+					 for(var i in boothData){
+						 
+						str+='  <tr>'; 
+						str+='    <td>'+boothData[i].partNo+'</td>'; 
+						str+='    <td>'+boothData[i].type+'</td>'; 
+						str+='    <td>'+boothData[i].percentage+'</td>'; 
+						str+='    <td>'+boothData[i].name+'</td>'; 
+						str+='  </tr>'; 
+					 }
+					
+					  str+=' </tbody>';
+					  str+='</table>';
+					  
+					  $("#countInfo").html(str);
+					  $("#countInfoTab").dataTable({
+		"aaSorting": [[ 1, "asc" ]],
+		"iDisplayLength": -1,
+		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]
+		});
+ }					 
+buildLastThreeYearsVotersDetails();
+getCurrentBoothsMessages();
 
 </script>
 </body>
