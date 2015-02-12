@@ -23,7 +23,7 @@ public class RegistrationStatusTempDAO extends  GenericDaoHibernate<Registration
 	     	 		" from (select booth1.booth_id as booth_id,max(rst1.inserted_time) as inserted_time,rst1.type as type from registration_status_temp rst1,booth booth1 " +
 	     	 		" where rst1.booth_id = booth1.booth_id  and booth1.publication_date_id =:publicationId group by rst1.booth_id,rst1.type) as uniqueResult , registration_status_temp rst," +
 	     	 		" booth booth where rst.booth_id = uniqueResult.booth_id and rst.inserted_time = uniqueResult.inserted_time and rst.booth_id = booth.booth_id  " +
-	     	 		" and uniqueResult.type =rst.type  order by rst.booth_id ");
+	     	 		" and uniqueResult.type =rst.type  order by rst.inserted_time desc");
 	    	
 	    	 query.setParameter("publicationId", 12);
 	    	 query.setFirstResult(startIndex);
