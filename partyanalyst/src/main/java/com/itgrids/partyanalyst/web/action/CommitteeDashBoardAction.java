@@ -544,7 +544,10 @@ public String getAllConstituencysForADistrict(){
 				//byeEleInfo = cadreRegistrationService.getByeEleBoothsCurrentStatus(new Long(regVO.getAccessValue()));
 				byeEleInfo= cadreRegistrationService.getByeEleBoothsCurrentStatusReport(new Long(regVO.getAccessValue()),jObj.getLong("typeId"),jObj.getString("type"));
 			else if(jObj.getString("task").equalsIgnoreCase("ByeElesummaryStatusInfo"))
-				byeEleInfo= cadreRegistrationService.getByeEleBoothsCurrentStatusSummaryInfo1(new Long(regVO.getAccessValue()),jObj.getString("status"),jObj.getLong("typeId"),jObj.getString("type"));	
+				byeEleInfo= cadreRegistrationService.getByeEleBoothsCurrentStatusSummaryInfo1(new Long(regVO.getAccessValue()),jObj.getString("status"),jObj.getLong("typeId"),jObj.getString("type"));
+			else if(jObj.getString("task").equalsIgnoreCase("byeEleerrorInfo"))
+				byeEleInfo= cadreRegistrationService.getByeEleBoothsErrorInfo();
+			
 			
 		}catch(Exception e){
 			LOG.error("Exception occured in getBoothsCurrentStatus ",e);
