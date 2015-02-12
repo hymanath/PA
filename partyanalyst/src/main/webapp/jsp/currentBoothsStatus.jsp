@@ -411,10 +411,10 @@ $("#summaryInfo").html('');
 							  str+='<table id="knownTab" class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" ><thead>'
 						      str+='<tr>';
 							  str+='<th>PART NO</th>';
-							  if(typeId == 0){
+							  //if(typeId == 0){
 								str+='<th>CLUSTER</th>';
 								str+='<th>WARD</th>';
-							  }
+							  //}
 							  str+='<th>BOOTH LOCATION</th>';
 							  str+='<th>2015 TOTAL VOTERS</th>';
 							  str+='<th>2015 POLLED VOTES</th>';
@@ -432,10 +432,10 @@ $("#summaryInfo").html('');
 							 for(var i in boothData){
 								 str+='<tr>';
 							  str+='<td>'+boothData[i].partNo+'</td>';
-							  if(typeId == 0){
+							 // if(typeId == 0){
 								str+='<td>'+boothData[i].cluster+'</td>';
 								str+='<td>'+boothData[i].ward+'</td>';
-							  }
+							 // }
 							  str+='<td>'+boothData[i].boothLocation+'</td>';
 							  str+='<td>'+boothData[i].totalVoters+'</td>';
 							  if(boothData[i].polledVotes == null)
@@ -481,10 +481,10 @@ $("#summaryInfo").html('');
 							  str1+='<table id="knownTab1"  class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" ><thead>'
 						      str1+='<tr>';
 							  str1+='<th>PART NO</th>';
-							  if(typeId == 0){
+							 // if(typeId == 0){
 								str1+='<th>CLUSTER</th>';
 								str1+='<th>WARD</th>';
-							  }
+							 // }
 							  str1+='<th>BOOTH LOCATION</th>';
 							  str1+='<th>2015 TOTAL VOTERS</th>';
 							  str1+='<th>2015 POLLED VOTES</th>';
@@ -502,10 +502,10 @@ $("#summaryInfo").html('');
 							 for(var i in boothData){
 								 str1+='<tr>';
 							  str1+='<td>'+boothData[i].partNo+'</td>';
-							  if(typeId == 0){
+							  //if(typeId == 0){
 								str1+='<td>'+boothData[i].cluster+'</td>';
 								str1+='<td>'+boothData[i].ward+'</td>';
-							  }
+							  //}
 							  str1+='<td>'+boothData[i].boothLocation+'</td>';
 							  str1+='<td>'+boothData[i].totalVoters+'</td>';
 							  if(boothData[i].polledVotes == null)
@@ -645,6 +645,8 @@ function getLatestUpdates(){
 					buildLatestUpdatesData(result.recognizeList);
 	                
 				});
+				setTimeout(getLatestUpdates, 30000);
+
 			 }
 
 function buildLatestUpdatesData(result)
