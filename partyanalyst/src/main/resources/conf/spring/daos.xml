@@ -1925,5 +1925,9 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="tirupathiByeleMobileBoothDAO" class="com.itgrids.partyanalyst.dao.hibernate.TirupathiByeleMobileBoothDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!--  end -->
 </beans>		
