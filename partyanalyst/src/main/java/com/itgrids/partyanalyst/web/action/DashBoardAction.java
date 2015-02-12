@@ -583,6 +583,9 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 					entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"TDP_COMMITTEE_AREAWISE_ACCESS")){
 			return "tdpCommitteeAdmin";
 		}
+		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"TIRUPATHI_BYEELECTION")){
+		return "tirupatiByeElection";
+	}
 		statesList = staticDataService.getParticipatedStatesForAnElectionType(Long.valueOf(2));
 		
 		//electionYearsList=staticDataService.getElectionYearsForBooths(1l,2l);
