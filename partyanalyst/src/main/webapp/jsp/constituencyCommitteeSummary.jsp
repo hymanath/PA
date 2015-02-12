@@ -83,8 +83,8 @@
 <div class="modal-content">
     
 	<div class="row" style="text-align:center;">
-<div class="col-md-6 col-md-offset-3">
-<h3 class="panel-header">Constituency Committee Summary</h3>
+<div class="col-md-8 col-md-offset-2">
+<h3 class="panel-header"></h3>
 <hr style="border-color:#F00;margin-top:10px;" />
 </div>
 
@@ -214,11 +214,18 @@ function buildConstituencySummary(results,jsObj){
 	
 	$("#constSummary").html("");
 		var str = '';
-		
+	
 		if(repType==1){
-			for(var i in results.mandalsList){
+		
+			if((results.mandalsList==null && results.localBodiesList ==null) || (results.mandalsList.length<=0 && results.localBodiesList.length<=0)){
+				$("#constSummary").html("<br><h4 style='text-align:center;;color:red'> NO RESULTS TO DISPLAY.</h4>");
+				return;
+			}
+			if(results.mandalsList!=null && results.mandalsList.length>0){
+					for(var i in results.mandalsList){
 				var rest = results.mandalsList[i]
-				str += '<h4 class="locationName">'+rest.locationName+'</h4>'
+				if(rest.locationsList!=null && rest.locationsList.length>0){
+					str += '<h4 class="locationName">'+rest.locationName+'</h4>'
 				str+='<table class="table table-yellow-bordered table-condensed " style="width:100%; background-color:rgba(0,0,0,0.1);">';
 				str+='<thead>';
 					str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
@@ -243,7 +250,7 @@ function buildConstituencySummary(results,jsObj){
 									for(var k in rest.locationsList[j].resultList){
 										if(rest.locationsList[j].resultList[k].membersCount!=null){
 											//str+='<td><a id="location'+rest.locationsList[j].locationId+'" class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="6" attr_memType="members" href="javascript:{gettingCadreDetails(\'location'+rest.locationsList[j].locationId+'\',\'members\',6,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+');}">'+rest.locationsList[j].resultList[k].membersCount+'</a></td>';
-										    str+='<td><a href="javascript:{gettingCadreDetails(\'members\',6,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+');}">'+rest.locationsList[j].resultList[k].membersCount+'</a></td>';
+										    str+='<td><a href="javascript:{gettingCadreDetails(\'members\',6,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+',\''+rest.locationsList[j].locationName+'\',\''+rest.locationsList[j].resultList[k].basicCommitteeName+'\');}">'+rest.locationsList[j].resultList[k].membersCount+'</a></td>';
 										}else{
 											str+='<td> </td>';
 										} 
@@ -251,7 +258,7 @@ function buildConstituencySummary(results,jsObj){
 										if(rest.locationsList[j].resultList[k].electrolsCount!=null){
 										    //str+='<td><a id="location'+rest.locationsList[j].locationId+'" class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="6" attr_memType="electrols" href="javascript:{gettingCadreDetails(\'location'+rest.locationsList[j].locationId+'\',\'electrols\');}">'+rest.locationsList[j].resultList[k].electrolsCount+'</a></td>';
 											//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="6" attr_memType="electrols">'+rest.locationsList[j].resultList[k].electrolsCount+'</td>';
-										     str+='<td><a  href="javascript:{gettingCadreDetails(\'electrols\',6,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+');}">'+rest.locationsList[j].resultList[k].electrolsCount+'</a></td>';
+										     str+='<td><a  href="javascript:{gettingCadreDetails(\'electrols\',6,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+',\''+rest.locationsList[j].locationName+'\',\''+rest.locationsList[j].resultList[k].basicCommitteeName+'\');}">'+rest.locationsList[j].resultList[k].electrolsCount+'</a></td>';
 
 										}else{
 											str+='<td> </td>';
@@ -262,8 +269,13 @@ function buildConstituencySummary(results,jsObj){
 						}
 					str+='</tbody>';
 				str+='</table> ';
+				}
+				
 			}
-			for(var i in results.localBodiesList){
+			}
+			
+			if(results.localBodiesList !=null && results.localBodiesList.length>0){
+				for(var i in results.localBodiesList){
 				var rest = results.localBodiesList[i]
 				str += '<h4 class="locationName">'+rest.locationName+'</h4>'
 				str+='<table class="table table-yellow-bordered table-condensed " style="width:100%; background-color:rgba(0,0,0,0.1);">';
@@ -291,7 +303,7 @@ function buildConstituencySummary(results,jsObj){
 										if(rest.locationsList[j].resultList[k].membersCount!=null){
 											//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="8" attr_memType="members">'+rest.locationsList[j].resultList[k].membersCount+'</td>';
 										     // str+='<td><a class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="8" attr_memType="members" id="location'+rest.locationsList[j].locationId+'" href="javascript:{gettingCadreDetails(\'location'+rest.locationsList[j].locationId+'\');}">'+rest.locationsList[j].resultList[k].membersCount+'</a></td>';
-									        str+='<td><a href="javascript:{gettingCadreDetails(\'members\',8,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+');}">'+rest.locationsList[j].resultList[k].membersCount+'</a></td>';
+									        str+='<td><a href="javascript:{gettingCadreDetails(\'members\',8,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+',\''+rest.locationsList[j].locationName+'\',\''+rest.locationsList[j].resultList[k].basicCommitteeName+'\');}">'+rest.locationsList[j].resultList[k].membersCount+'</a></td>';
 
 										}else{
 											str+='<td> </td>';
@@ -300,7 +312,7 @@ function buildConstituencySummary(results,jsObj){
 										if(rest.locationsList[j].resultList[k].electrolsCount!=null){
 											//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="8" attr_memType="electrols">'+rest.locationsList[j].resultList[k].electrolsCount+'</td>';
 										    //str+='<td><a class="lctnCmmty" attr_cmmtyType='+rest.locationsList[j].resultList[k].basicCommitteeTypeId+' attr_locationId='+rest.locationsList[j].locationId+' attr_locationType="8" attr_memType="electrols" id="location'+rest.locationsList[j].locationId+'" href="javascript:{gettingCadreDetails(\'location'+rest.locationsList[j].locationId+'\');}">'+rest.locationsList[j].resultList[k].electrolsCount+'</a></td>';
-										    str+='<td><a href="javascript:{gettingCadreDetails(\'electrols\',8,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+');}">'+rest.locationsList[j].resultList[k].electrolsCount+'</a></td>';
+										    str+='<td><a href="javascript:{gettingCadreDetails(\'electrols\',8,'+rest.locationsList[j].locationId+','+rest.locationsList[j].resultList[k].basicCommitteeTypeId+',\''+rest.locationsList[j].locationName+'\',\''+rest.locationsList[j].resultList[k].basicCommitteeName+'\');}">'+rest.locationsList[j].resultList[k].electrolsCount+'</a></td>';
 
 										}else{
 											str+='<td> </td>';
@@ -312,6 +324,9 @@ function buildConstituencySummary(results,jsObj){
 					str+='</tbody>';
 				str+='</table> ';
 			}
+			}
+			
+			
 		}else{
 				str += '<h4 class="locationName"> Mandal/Munciapality/Division Wise Committees Summary</h4>'
 				str+='<table class="table table-yellow-bordered table-condensed " style="width:100%; background-color:rgba(0,0,0,0.1);">';
@@ -332,7 +347,7 @@ function buildConstituencySummary(results,jsObj){
 								if(rest.resultList[j].membersCount!=null){
 									//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="5">'+rest.resultList[j].membersCount+'</td>';
 							        //str+='<td><a class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="5"  id="location'+rest.locationId+'" href="javascript:{gettingCadreDetails(\'location'+rest.locationId+'\');}">'+rest.resultList[j].membersCount+'</a></td>';
-                                    str+='<td><a href="javascript:{gettingCadreDetails(\'members\',5,'+rest.locationId+','+rest.resultList[j].basicCommitteeTypeId+');}">'+rest.resultList[j].membersCount+'</a></td>';
+                                    str+='<td><a href="javascript:{gettingCadreDetails(\'members\',5,'+rest.locationId+','+rest.resultList[j].basicCommitteeTypeId+',\''+rest.locationsList[j].locationName+'\',\''+rest.locationsList[j].resultList[k].basicCommitteeName+'\');}">'+rest.resultList[j].membersCount+'</a></td>';
 
 								}else{
 									str+='<td> - </td>';
@@ -350,7 +365,7 @@ function buildConstituencySummary(results,jsObj){
 								if(rest.resultList[j].membersCount!=null){
 									//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="7">'+rest.resultList[j].membersCount+'</td>';
 								   //str+='<td><a class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="7"  id="location'+rest.locationId+'" href="javascript:{gettingCadreDetails(\'location'+rest.locationId+'\');}">'+rest.resultList[j].membersCount+'</a></td>';
- 								   str+='<td><a href="javascript:{gettingCadreDetails(\'members\',7,'+rest.locationId+','+rest.resultList[j].basicCommitteeTypeId+');}">'+rest.resultList[j].membersCount+'</a></td>';
+ 								   str+='<td><a href="javascript:{gettingCadreDetails(\'members\',7,'+rest.locationId+','+rest.resultList[j].basicCommitteeTypeId+',\''+rest.locationsList[j].locationName+'\',\''+rest.locationsList[j].resultList[k].basicCommitteeName+'\');}">'+rest.resultList[j].membersCount+'</a></td>';
 
 								}else{
 									str+='<td> - </td>';
@@ -368,7 +383,7 @@ function buildConstituencySummary(results,jsObj){
 								if(rest.resultList[j].membersCount!=null){
 									//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="11">'+rest.resultList[j].membersCount+'</td>';
 									 //str+='<td><a class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="11"  id="location'+rest.locationId+'" href="javascript:{gettingCadreDetails(\'location'+rest.locationId+'\');}">'+rest.resultList[j].membersCount+'</a></td>';
-									 str+='<td><a href="javascript:{gettingCadreDetails(\'members\',9,'+rest.locationId+','+rest.resultList[j].basicCommitteeTypeId+');}">'+rest.resultList[j].membersCount+'</a></td>';
+									 str+='<td><a href="javascript:{gettingCadreDetails(\'members\',9,'+rest.locationId+','+rest.resultList[j].basicCommitteeTypeId+','+rest.locationsList[j].locationName+','+rest.locationsList[j].resultList[k].basicCommitteeName+');}">'+rest.resultList[j].membersCount+'</a></td>';
 
 								}else{
 									str+='<td> - </td>';
@@ -386,7 +401,7 @@ function buildConstituencySummary(results,jsObj){
 	$("#constSummary").html(str);
 }
 
-	function gettingCadreDetails(type,locationType,location,basicCmmtyId){
+	function gettingCadreDetails(type,locationType,location,basicCmmtyId,locationName,basicCmmtyName){
 	
 		
 		 var jsObj={
@@ -404,32 +419,38 @@ function buildConstituencySummary(results,jsObj){
 				  location.reload(); 
 				}
 			}
-			 buildingResults(result);
+			 buildingResults(result,type,locationName,basicCmmtyName,basicCmmtyId);
 		});
 		
 	}
-function buildingResults(result)
+function buildingResults(result,type,locationName,basicCmmtyName,basicCmmtyId)
 {
   if(result!=null)
   {
-  
+	
+    
+	var name=(locationName.slice(0,locationName.indexOf("(")));
+	
+	
     if(result.length>0){
     var str='';
 	str+='<table class="table table-yellow-bordered table-condensed">';
 	str+='<thead>';
-	str+='<th  style="width: 178px; padding-left: 34px;">Designation</th>';
+	if(basicCmmtyId == 1)
+		str+='<th  style="width: 178px; padding-left: 34px;">Designation</th>';
 	str+='<th style="padding-left: 23px; width: 204px;">Member Image</th>';
 	str+='<th style="padding-left: 72px;">NAME</th>';
 	str+='<th style="padding-left: 19px;">MemberShipNo</th>';
 	str+='</thead>';
     for(var i in result){
 	 str+='<tr>';
+	 if(basicCmmtyId == 1){
 	 if(result[i].role!=null){
 		str+='<td  style="padding-top: 14px; padding-left: 37px;">'+result[i].role+'</td>';
 	 }else{
 		str+='<td  style="padding-top: 14px; padding-left: 37px;">  </td>';
 	 }
-	 
+	 }
 	 str+='<td ><img  style="margin-top: 5px; margin-left: 57px; padding-top: 0px;" style="margin-top: 26px; margin-left: 12px;" width="35"  height="35" src="http://www.mytdp.com/images/cadre_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);"/></td>';
 	 str+='<td style="padding-top: 15px; padding-left: 15px;width:281px;">'+result[i].name+'</td>';
 	 str+='<td style="padding-left: 15px; padding-top: 13px;">'+result[i].membershipNo+'</td>';
@@ -438,6 +459,7 @@ function buildingResults(result)
    str+='</tbody>';
    str+='</table>';
    $("#cadreDetailsDiv").html(str);
+   $('#dialogSummary').find('h3').html('<span>'+ capitalize(name)+' '+ basicCmmtyName +' '+ capitalize(type) +' </span>');
    $("#dialogSummary").modal("show");
   
   }
@@ -446,7 +468,19 @@ function buildingResults(result)
 	}
 }
 }	
-	
+function capitalize(str) {
+
+   // return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+   var words = str.split(" ");
+   var arr = Array();
+   for (i in words)
+   {
+      temp = words[i].toLowerCase();
+      temp = temp.charAt(0).toUpperCase() + temp.substring(1);
+      arr.push(temp);
+   }
+   return arr.join(" ");
+}	
 </script>
 
 <script>
