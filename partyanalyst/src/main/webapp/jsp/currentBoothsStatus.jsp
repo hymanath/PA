@@ -150,10 +150,10 @@ table.dataTable tr.odd {
 			
 		<div class="row-fluid " id="mainCount" style="margin-top:20px;">
 			<span id="exportToExcelBtn" class="btn btn-info pull-right"> Export Report To Excel </span>
-			<div id="mainInfo" class="span12 show-grid well well-small border-radius-0 mb-10" style="margin-top: 20px; overflow: auto;">
+			<div id="mainInfo" class="span12 show-grid well well-small border-radius-0 mb-10" style="margin-top: 20px; overflow: auto;margin-left: 0px;">
 				    
 			</div>
-            <div id="countInfo" class="span12 show-grid well well-small border-radius-0 mb-10" style="margin-top: 20px; overflow: auto;">
+            <div id="countInfo" class="span12 show-grid well well-small border-radius-0 mb-10" style="margin-top: 20px; overflow: auto;margin-left: 0px;">
 				    
 			</div>
 		</div>
