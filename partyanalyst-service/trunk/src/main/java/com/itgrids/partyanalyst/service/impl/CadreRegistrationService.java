@@ -95,6 +95,7 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeRoleDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITirupathiByeleMobileBoothDAO;
 import com.itgrids.partyanalyst.dao.ITirupatiByelectionDAO;
+import com.itgrids.partyanalyst.dao.ITwoWayMessageDAO;
 import com.itgrids.partyanalyst.dao.ITwoWaySmsMobileDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
@@ -162,6 +163,7 @@ import com.itgrids.partyanalyst.model.TdpCadreVerfiedData;
 import com.itgrids.partyanalyst.model.TdpCommittee;
 import com.itgrids.partyanalyst.model.TdpCommitteeRole;
 import com.itgrids.partyanalyst.model.TirupatiByelection;
+import com.itgrids.partyanalyst.model.TwoWayMessage;
 import com.itgrids.partyanalyst.model.TwoWaySmsMobile;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
@@ -258,6 +260,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 
 	private IErrorStatusSmsDAO errorStatusSmsDAO;
 	private ITirupathiByeleMobileBoothDAO tirupathiByeleMobileBoothDAO;
+	private ITwoWayMessageDAO twoWayMessageDAO;
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
 	public IPrintedCardDetailsDAO getPrintedCardDetailsDAO() {
@@ -619,6 +622,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	}
 
 	
+
+	public void setTwoWayMessageDAO(ITwoWayMessageDAO twoWayMessageDAO) {
+		this.twoWayMessageDAO = twoWayMessageDAO;
+	}
 
 	public void setVerifiedDataStatusDAO(
 			IVerifiedDataStatusDAO verifiedDataStatusDAO) {
@@ -7216,7 +7223,11 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		ErrorStatusSms errorStatus = new ErrorStatusSms();
 		TwoWaySmsMobile twoWaySmsMobile = null;
 		String reqMobileNo = vo.getMobileNumber().trim();
-		String message = vo.getArea();
+		String message = vo.getArea().trim();
+		if(message.length() > 2 && message.subSequence(0, 3).toString().equalsIgnoreCase("msg")){
+			saveMessageInfo(reqMobileNo,message);
+			return "success";
+		}
 		boolean validNo = isMobNo(reqMobileNo);
 		if(validNo == false)
 		{
@@ -7345,6 +7356,94 @@ public class CadreRegistrationService implements ICadreRegistrationService {
             return false;
         }
     }
+	private void saveMessageInfo(String reqMobileNo,String message){
+		String reqMsg = "";
+		String partNo = "";
+		if(message.length() > 4){
+			reqMsg = message.substring(3).trim();
+			String[] details = reqMsg.split(" ");
+			if(details.length > 1){
+				partNo = details[0].trim();
+				int i = 0;
+				reqMsg = "";
+				for(String msg:details){
+					if(i != 0){
+				      reqMsg = reqMsg+" "+msg;
+					}
+					i++;
+				}
+			}
+		}else{
+			reqMsg = message;
+		}
+		Booth booth = null;
+		if(partNo.length() > 0){
+		  booth = boothDAO.getBoothByPartNoAndPublicationIdInAConstituency(partNo,291l,12l);
+		  if(booth == null){
+			  reqMsg = message;
+		  }
+		}
+		TwoWaySmsMobile twoWaySmsMobile = null;
+		if(reqMobileNo.length() == 10){
+			List<TwoWaySmsMobile> twoWaySmsMobileList = twoWaySmsMobileDAO.getMobileInfo(reqMobileNo);
+			if(twoWaySmsMobileList.size() > 0 && twoWaySmsMobileList.get(0) != null){
+				twoWaySmsMobile = twoWaySmsMobileList.get(0);
+			}
+		}
+		TwoWayMessage twoWayMessage = new TwoWayMessage();
+		twoWayMessage.setMessage(reqMsg);
+		twoWayMessage.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+		twoWayMessage.setTwoWaySmsMobile(twoWaySmsMobile);
+		twoWayMessage.setBooth(booth);
+		twoWayMessage.setMobileNo(reqMobileNo);
+		if(booth != null){
+		   twoWayMessage.setPartNo(booth.getPartNo());
+		}
+		twoWayMessage.setActualMsg(message);
+		twoWayMessage.setIsDeleted("N");
+		twoWayMessageDAO.save(twoWayMessage);
+	}
+	
+	public ByeElectionVO getMessagesInfo(Integer startIndex,Integer maxIndex){
+		ByeElectionVO returnVo = new ByeElectionVO();
+		DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
+		List<ByeElectionVO>  resultList = new ArrayList<ByeElectionVO>();
+		returnVo.setRecognizeList(resultList);
+		try{
+			Long count = twoWayMessageDAO.getMessagesCount();
+			returnVo.setTotalVoters(count);
+			//0message,1insertedTime,2mobileNo,3partNo
+			List<Object[]> messagesList = twoWayMessageDAO.getMessagesInfo(startIndex,maxIndex);
+			for(Object[] message:messagesList){
+				ByeElectionVO vo = new ByeElectionVO();
+				if(message[0] != null){
+				    vo.setName(message[0].toString());
+				}else{
+					vo.setName("");
+				}
+				if(message[1] != null){
+				    vo.setPercentage(dateFormat.format(((Date)message[1])));
+				}else{
+					vo.setPercentage("");
+				}
+				if(message[2] != null){
+				    vo.setType(message[2].toString());
+				}else{
+					vo.setType("");
+				}
+				if(message[3] != null){
+				    vo.setPartNo(message[3].toString());
+				}else{
+				    vo.setPartNo("");
+				}
+				resultList.add(vo);
+			}
+		}catch(Exception e){
+			LOG.error("Exception rised in getMessagesInfo ",e);
+		}
+		return returnVo;
+	}
+	
 	public void saveErroInfo(String message,String reqMobileNo,TwoWaySmsMobile twoWaySmsMobile,String errorReason)
 	{
 		try{
