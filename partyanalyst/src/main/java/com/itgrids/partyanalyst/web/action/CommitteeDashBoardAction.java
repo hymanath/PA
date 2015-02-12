@@ -530,6 +530,20 @@ public String getAllConstituencysForADistrict(){
 	}
 	
 	public String currentBoothsStatus(){
+		boolean noaccess = false;
+		RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+		
+		if(regVo==null){
+			return "input";
+		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"TIRUPATHI_BYEELECTION")){
+			noaccess = true ;
+		}
+		if(regVo.getIsAdmin() != null && regVo.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		if(noaccess){
+			return "error";
+		}
 		   return Action.SUCCESS;
 		}
 	public String getByeElectionBoothsCurrentStatus(){
@@ -547,6 +561,9 @@ public String getAllConstituencysForADistrict(){
 				byeEleInfo= cadreRegistrationService.getByeEleBoothsCurrentStatusSummaryInfo1(new Long(regVO.getAccessValue()),jObj.getString("status"),jObj.getLong("typeId"),jObj.getString("type"));
 			else if(jObj.getString("task").equalsIgnoreCase("byeEleerrorInfo"))
 				byeEleInfo= cadreRegistrationService.getByeEleBoothsErrorInfo();
+			else if(jObj.getString("task").equalsIgnoreCase("byeElelatestUpdates"))
+				byeEleInfo= cadreRegistrationService.getByeElelatestUpdates(jObj.getInt("startIndex"),jObj.getInt("maxIndex"));
+			
 			
 			
 		}catch(Exception e){

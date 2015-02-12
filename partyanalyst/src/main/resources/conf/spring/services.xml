@@ -2279,8 +2279,7 @@
      <bean name="ctpDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CtpDashBoardService"></bean>
        
      <bean name="cadreRegistrationService"  class="com.itgrids.partyanalyst.service.impl.CadreRegistrationService">
-     
-	
+	    <property name="registrationStatusTempDAO" ref="registrationStatusTempDAO" />
 		<property name="tdpCadreDAO" ref="tdpCadreDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="cadrePreviousRolesDAO" ref="cadrePreviousRolesDAO" />

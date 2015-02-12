@@ -107,8 +107,7 @@ table.dataTable tr.odd {
  display:none;
 }
 .error{color:red;}
-
-	</style>
+</style>
 	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 </head>
@@ -122,6 +121,7 @@ table.dataTable tr.odd {
 				<h3 class="text-center text-uppercase">Tirupati Bye Election Poll Monitor</h3>
 			</div>
 		</div><!-- Title Row End-->
+		<div id="latestUpdatesDiv" class="row-fluid"></div>
 			<div class="well well-small border-radius-0 mb-10" id="summaryInfoTable" style="margin-top:10px;padding: 0px;">
 			</div>	
 
@@ -611,7 +611,7 @@ $('#errorDetailsInnerDiv').html('');
 	     
 		 
 		  var jobj = {
-			task : "byeEleerrorInfo",
+			task : "byeEleerrorInfo"
 			
 		  }
 	           $.ajax({
@@ -628,6 +628,43 @@ $('#errorDetailsInnerDiv').html('');
 
   }
 
+function getLatestUpdates(){
+			 var jobj = {
+			  startIndex : 0,
+			  maxIndex:5,
+			  task : "byeElelatestUpdates"
+				}
+	           $.ajax({
+				    dataType: 'json',
+					type : "POST",
+					data: {task:JSON.stringify(jobj)},
+					url : "getByeEleBoothsCurrentStatusAction.action"
+				}).done(function(result){
+				
+					if(result.recognizeList.length > 0)
+					buildLatestUpdatesData(result.recognizeList);
+	                
+				});
+			 }
+
+function buildLatestUpdatesData(result)
+{
+var str='';
+str+='<div id="updatesDiv" class="span12 show-grid well well-small border-radius-0 mb-5  animated fadeInLeft" id="fadeInLeft">';
+str+='	<h4 class="m-0 text-center"><span style="background:#ffffff; padding:0px 3px;font-size: 16px;text-transform:uppercase;">Latest Updates</span></h4>';
+str+='<marquee direction="left" scrolldelay="200" scrollamount="5" style="width:100%" ">';
+for(var i in result)
+	{
+str+='<span class="label label-info"><b>'+result[i].partNo+'</b></span> &nbsp;&nbsp;';
+	}
+str+='</marquee>';
+str+='</div>';
+
+$("#latestUpdatesDiv").html(str);
+
+}
+
+ 
 function buildErrorReport(resultList)
 {
 	var result = resultList.recognizeList;
@@ -758,7 +795,7 @@ function getCurrentBoothsMessages(){
  }					 
 buildLastThreeYearsVotersDetails();
 getCurrentBoothsMessages();
-
+getLatestUpdates();
 </script>
 </body>
 </html>
