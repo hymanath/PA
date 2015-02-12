@@ -23,10 +23,97 @@ public class ByeElectionVO implements Serializable,Comparable<ByeElectionVO>{
 	private String percentage;
 	List<ByeElectionVO> recognizeList;
 	List<ByeElectionVO> unRecognizeList;
+	private String cluster;
+	private String ward;
+	
 	public ByeElectionVO(){}
 	
 	private String time;
 	
+	private Long kbVotersCount;
+	private Long kbPolledCount;
+	private String kbPercentage;
+	
+	private Long ukbVotersCount;
+	private Long ukbPolledCount;
+	private String ukbPercentage;
+	
+	private Long abVotersCount;
+	private Long abPolledCount;
+	private String abPercentage;
+	
+	
+	
+	
+	
+	
+	
+	public Long getKbVotersCount() {
+		return kbVotersCount;
+	}
+	public void setKbVotersCount(Long kbVotersCount) {
+		this.kbVotersCount = kbVotersCount;
+	}
+	public Long getKbPolledCount() {
+		return kbPolledCount;
+	}
+	public void setKbPolledCount(Long kbPolledCount) {
+		this.kbPolledCount = kbPolledCount;
+	}
+	public String getKbPercentage() {
+		return kbPercentage;
+	}
+	public void setKbPercentage(String kbPercentage) {
+		this.kbPercentage = kbPercentage;
+	}
+	public Long getUkbVotersCount() {
+		return ukbVotersCount;
+	}
+	public void setUkbVotersCount(Long ukbVotersCount) {
+		this.ukbVotersCount = ukbVotersCount;
+	}
+	public Long getUkbPolledCount() {
+		return ukbPolledCount;
+	}
+	public void setUkbPolledCount(Long ukbPolledCount) {
+		this.ukbPolledCount = ukbPolledCount;
+	}
+	public String getUkbPercentage() {
+		return ukbPercentage;
+	}
+	public void setUkbPercentage(String ukbPercentage) {
+		this.ukbPercentage = ukbPercentage;
+	}
+	public Long getAbVotersCount() {
+		return abVotersCount;
+	}
+	public void setAbVotersCount(Long abVotersCount) {
+		this.abVotersCount = abVotersCount;
+	}
+	public Long getAbPolledCount() {
+		return abPolledCount;
+	}
+	public void setAbPolledCount(Long abPolledCount) {
+		this.abPolledCount = abPolledCount;
+	}
+	public String getAbPercentage() {
+		return abPercentage;
+	}
+	public void setAbPercentage(String abPercentage) {
+		this.abPercentage = abPercentage;
+	}
+	public String getCluster() {
+		return cluster;
+	}
+	public void setCluster(String cluster) {
+		this.cluster = cluster;
+	}
+	public String getWard() {
+		return ward;
+	}
+	public void setWard(String ward) {
+		this.ward = ward;
+	}
 	public String getTime() {
 		return time;
 	}
