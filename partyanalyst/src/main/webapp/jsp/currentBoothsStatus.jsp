@@ -127,7 +127,7 @@ table.dataTable tr.odd {
 			</div>	
 
 			<div class="row-fluid" style="margin-top: 20px;"><div class="form-inline"><label class="radio">
-			<input type="radio" name="optionsRadios" class="radioCls" value="1" onclick="buildOptions()" checked>
+			<input type="radio" name="optionsRadios" class="radioCls" value="1" onclick="buildOptions()" >
 			Cluster
 			</label>
 			<label class="radio">
@@ -135,7 +135,7 @@ table.dataTable tr.odd {
 			Divison
 			</label>
 			<label class="radio">
-			<input type="radio" name="optionsRadios" class="radioCls" value="0">
+			<input type="radio" name="optionsRadios" class="radioCls" value="0" checked>
 			All
 			</label>
 			<lable id="selectDiv"  style="margin-left: 53px;">Select Cluster</lable><select id="selectType" onchange="getByeEleBoothsCurrentStatus();"></select>
@@ -384,13 +384,21 @@ $("#summaryInfo").html('');
 	                
 				});
   }
-
+function SortByPartNO(a, b){
+  var aName = parseInt(a.partNo);
+  var bName = parseInt(b.partNo); 
+  return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+}
   function buildReport(result,jobj)
   {
 	   
 		if(result.recognizeList != null && result.recognizeList.length > 0){
 							  $("#mainCount").show(); 
 							  var boothData = result.recognizeList;
+							  try{
+							  boothData.sort(SortByPartNO); 
+							  }catch(e){
+							  }
 							  var str ='';
 							  var title ="";
 							 var typeId = jobj.typeId;	
@@ -647,7 +655,7 @@ function getLatestUpdates(){
 					buildLatestUpdatesData(result.recognizeList);
 	                
 				});
-				setTimeout(getLatestUpdates, 30000);
+				setTimeout(getLatestUpdates, 150000);
 
 			 }
 
