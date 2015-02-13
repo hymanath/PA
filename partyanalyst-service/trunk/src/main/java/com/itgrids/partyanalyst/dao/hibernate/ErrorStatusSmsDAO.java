@@ -19,6 +19,7 @@ public class ErrorStatusSmsDAO  extends GenericDaoHibernate<ErrorStatusSms, Long
 	public List<ErrorStatusSms> getErrorSmsInfo()
 	{
 		Query query = getSession().createQuery("select model from ErrorStatusSms model order by model.insertedTime desc");
+		query.setMaxResults(1000);
 		return query.list();
 		
 	}
