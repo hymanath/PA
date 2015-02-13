@@ -568,7 +568,7 @@ function getCommitteeLocations(){
 	    $("#errorChangeDesg").html("Please Check Atleast One Change Position");
 	    return;
 	   }
-	   
+	   var affId = $("#afflitCommitteeId").val();
 	   
 	   jsObj.type=type;
 	   jsObj.requestArray=requestArray;
@@ -586,7 +586,7 @@ function getCommitteeLocations(){
 	   $.ajax({
 				type : "GET",
 				url : "cadreCommitteeIncPositionsOrChangeDesgAction.action",
-				data: {task:JSON.stringify(jsObj)}
+				data: {task:JSON.stringify(jsObj),globalReqLocationValue:affId}
 			}).done(function(result){
 			    
 	            $("#posIncImageId").hide();

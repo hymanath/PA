@@ -143,7 +143,8 @@
 <script type="text/javascript">
 function clearResult(){
 	$("#posIncreasedId").html("");
-	
+	$("#desgReqDiv").html("");
+    $("#desgReqTableDiv").html("");
 }
 getCommitteeLocations();
 </script>
