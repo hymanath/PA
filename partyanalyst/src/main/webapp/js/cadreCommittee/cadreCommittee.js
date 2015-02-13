@@ -144,6 +144,8 @@
 		var searchRadioType = $('#cadreSearchType').val();
 		var committeTypeID = $('#committeeMngtType').val();
 		var committeePosition = $('#committeePositionId').val();
+		var parentLocation = 0;
+		
 		$("#step3Id").hide();
 		
 		if(committeTypeID ==3)
@@ -177,6 +179,8 @@
 						}
 						else if(committeeLocationId.substr(0,1) == 2){
 							 locationLevel = 8;
+							 parentLocation = $("#panchayatWardByMandal option:selected").val();
+							  parentLocation = parentLocation.substr(1);
 						}
 					}
 					if(areaTypeId ==2)
@@ -231,6 +235,7 @@
 								}
 								else if(committeeLocationId.substr(0,1) == 2){
 									 locationLevel = 8;
+									 
 								}
 							}
 							if(areaTypeId ==2)
@@ -245,7 +250,8 @@
 									 locationLevel = 8;
 								}
 							}
-							locationValue = committeeLocationId.substr(1);				}				
+							locationValue = committeeLocationId.substr(1);				
+				}				
 				else
 				{
 					if(areaTypeId ==1)
@@ -255,6 +261,8 @@
 						}
 						else if(committeeLocationId.substr(0,1) == 2){
 							 locationLevel = 8;
+							 parentLocation = $("#panchayatWardByMandal option:selected").val();
+							  parentLocation = parentLocation.substr(1);
 						}
 					}
 					if(areaTypeId ==2)
@@ -310,6 +318,8 @@
 					}
 					else if(committeeLocationId.substr(0,1) == 2){
 						 locationLevel = 8;
+						 parentLocation = $("#panchayatWardByMandal option:selected").val();
+						 parentLocation = parentLocation.substr(1);
 					}
 				}
 				if(areaTypeId ==2)
@@ -446,6 +456,12 @@
 		}
 		
 		$("#searchDataImg").show();
+		
+		if(committeTypeID ==1 && locationLevel==8 && parentLocation!=null && parentLocation !=0){
+			locationLevel = 7,
+			locationValue = parentLocation
+		}
+		
 		var jsObj =
 		{
 			locationLevel :locationLevel,
