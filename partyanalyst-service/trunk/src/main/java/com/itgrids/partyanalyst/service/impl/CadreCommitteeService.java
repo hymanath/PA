@@ -4452,6 +4452,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				List<Long> wardIds = new ArrayList<Long>();
 				List<CommitteeSummaryVO> panchList = null;
 				List<CommitteeSummaryVO> allPanchayats = new ArrayList<CommitteeSummaryVO>();
+				List<CommitteeSummaryVO> allWardsList = new ArrayList<CommitteeSummaryVO>();
 				List<CommitteeSummaryVO> wardsList = null;
 				if(reprtType.equals(1l)){
 					 if(mandalIds.size() > 0){
@@ -4486,6 +4487,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					        	}
 					        	wardIds.add(Long.valueOf((Long)localBody[0]));
 					        	wardsList.add(vo);
+					        	allWardsList.add(vo);
 					        	wardMap.put(Long.valueOf(localBody[3].toString()), wardsList);
 					        	
 				        	}
@@ -4562,7 +4564,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				}
 				if(wardIds!=null && wardIds.size()>0){
 					List<Object[]> list = tdpCommitteeMemberDAO.getCommitteeMembersCountByLocationAndCommitteeType(8l, wardIds);
-					List<CommitteeSummaryVO> locsResult =  pushBasicCommitteesToLocations(basicCommitteesRslt, wardsList);
+					List<CommitteeSummaryVO> locsResult =  pushBasicCommitteesToLocations(basicCommitteesRslt, allWardsList);
 					pushConstSummaryToLocations(list, locsResult);
 					
 					List<Object[]> electedMems = tdpCommitteeMemberDAO.getCommitteePresidentAndVicePresidentsCount(wardIds, 8l);
