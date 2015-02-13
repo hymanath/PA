@@ -7061,9 +7061,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 										tdpCadre.setMobileNo(cadreRegistrationVO.getMobileNumber());
 									if(cadreRegistrationVO.getCasteId() != null)
 										tdpCadre.setCasteStateId(cadreRegistrationVO.getCasteId());
-									if(cadreRegistrationVO.getEducationId() != null)
+									if(cadreRegistrationVO.getEducationId() != null && cadreRegistrationVO.getEducationId().longValue() > 0)
 										tdpCadre.setEducationId(cadreRegistrationVO.getEducationId());
-									if(cadreRegistrationVO.getOccupationId() != null)
+									if(cadreRegistrationVO.getOccupationId() != null  && cadreRegistrationVO.getOccupationId().longValue() > 0)
 										tdpCadre.setOccupationId(cadreRegistrationVO.getOccupationId());
 									if(cadreRegistrationVO.getEmailId() != null)
 										tdpCadre.setEmailId(cadreRegistrationVO.getEmailId());
