@@ -244,7 +244,7 @@ function buildByeElectionSummary(result,jobj)
 
 	if(result.preTotalVoters > 0)
 	{
-	str+='<td style="width:25px;"><h2><a style="cursor:pointer" onclick="getSummaryByStatus(\'all\',\''+jobj.typeId+'\',\''+jobj.type+'\')">'+result.preTotalVoters+'</a></h2> <h4>All</h4> <h6> POLLED - '+ result.abPolledCount+' ('+result.abPercentage+' %)</h6></td>';
+	str+='<td style="width:25px;"><h2><a style="cursor:pointer" onclick="getSummaryByStatus(\'all\',\''+jobj.typeId+'\',\''+jobj.type+'\')">256</a></h2> <h4>All</h4> <h6> POLLED - '+ result.abPolledCount+' ('+result.abPercentage+' %)</h6></td>';
 	}
 	else
 	{
