@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -7265,7 +7266,14 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		
 		else
 		{
-			String[] split = message.split(" ");
+		
+			 StringTokenizer st = new StringTokenizer(message, " ");
+		        StringBuffer sb1 = new StringBuffer();
+		        while(st.hasMoreElements()){
+		            sb1.append(st.nextElement()).append(" ");
+		        }
+		
+			String[] split = sb1.toString().split(" ");
 			String partNo = split[0];		
 			String count = split[1];
 			if(count== null || count.isEmpty())
@@ -7374,6 +7382,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return "success";
      
    }
+	
+
+     
+
 	public  boolean isMobNo(String str) {
 		String regex = "\\d{10}";
         Pattern mobNO = Pattern.compile(regex);
