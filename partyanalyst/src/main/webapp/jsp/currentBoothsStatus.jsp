@@ -384,7 +384,7 @@ $("#summaryInfo").html('');
 	                
 				});
   }
-function SortByPartNO(a, b){
+function sortByPartNO(a, b){
   var aName = parseInt(a.partNo);
   var bName = parseInt(b.partNo); 
   return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
@@ -396,9 +396,10 @@ function SortByPartNO(a, b){
 							  $("#mainCount").show(); 
 							  var boothData = result.recognizeList;
 							  try{
-							  boothData.sort(SortByPartNO); 
+							  boothData.sort(sortByPartNO); 
 							  }catch(e){
 							  }
+							  //console.log(boothData);
 							  var str ='';
 							  var title ="";
 							 var typeId = jobj.typeId;	
@@ -545,9 +546,8 @@ function SortByPartNO(a, b){
 							  $("#mainInfo").append(str1);
 							  
 							  $("#knownTab").dataTable({
-								"aaSorting": [[ 1, "asc" ]],
-								"iDisplayLength": 15,
-								"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]]
+								"iDisplayLength": 50,
+								"aLengthMenu": [[50,100,150, -1], [50, 100, 150, "All"]]
 								});
 						  }else{
 							$("#mainInfo").html("");
@@ -585,7 +585,10 @@ $(".radioCls").click(function(){
 function buildOptions()
   {
 	  $('#selectType').html('');
-	 
+	  $("#selectDiv").html("");
+	  $("#selectType").hide();
+	  $("#divisonSelect").hide();
+	  $("#clusterSelect").hide();
      var checkdVal= $("input[name=optionsRadios]:checked").val();
 	  var jobj ={
 		typeId:checkdVal,
