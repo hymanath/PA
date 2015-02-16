@@ -64,14 +64,16 @@
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 		
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/> 
-	<script type="text/javascript" src="js/simplePagination/simplePagination2.js" ></script>
 	
+	<script type="text/javascript" src="js/simplePagination/simplePagination3.js" ></script>
 
   </head>
   <body>
 	<style>
 		.light-theme a, .light-theme span{min-width:45px;}
+		.light-theme a, .light-theme span{min-width:45px;}
 		.approvedPosTxtCls{color:red;}
+		
 	</style>
 	<div class="row" style="align:center;padding:10px;background:rgba(255,0,51,0.8); border-top:12px solid rgba(19,167,81,0.8);border-bottom:12px solid rgba(19,167,81,0.8);display:flex">
 		 	<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12 text-center">
@@ -118,192 +120,34 @@
            <!-- <div class="text-center m_top20">Note: Click on the <u>count</u> to view request details</div> -->
             <div class="row">
             	<div class="col-md-10 col-md-offset-1 m_top20" id="posTable">
-                	<!--<table class="table table-condensed" style="background-color:rgba(0,0,0,0.1);">
-						<thead>
-                        	<th colspan="5"><h4 class="text-success" style="display:inline">CHANGE POSITION REQUEST STATUS</h4></th>
-                            <th colspan="2"><div class="input-group pull-right">
-  <input type="text" class="form-control input-sm pull-right" placeholder="Search" aria-describedby="basic-addon2">
-  <span class="input-group-addon" id="basic-addon2"><i class="glyphicon glyphicon-search"></i></span>
-</div></th>
-                        </thead>
-                        <thead>
-                        	<th width="13%">REQUEST NO</th>
-                        	<th width="12%">LOCATION</th>
-                            <th width="18%">COMMITTEE NAME</th>
-                            <th width="17%">POSITION NAME</th>
-                            <th width="12%"><small>CURRENT MAX POSITONS</small></th>
-                            <th width="13%"><small>REQUESTED MAX POSITIONS</small></th>
-                            <th width="18%"><small>UPDATE STATUS</small></th>
-                        </thead>
-                         <tbody>
-                        	<tr>
-                                <td>#2015001</td>
-                                <td>KAVALI</td>
-                                <td>MAIN COMMITTEE</td>
-                                <td>VICE PRESIDENT</td>
-                                <td>01</td>
-                                <td>02</td>
-                                <td><select class="form-control input-sm"><option>Select Status</option></select></td>
-                            </tr>
-                        	<tr>
-                                <td>#2015001</td>
-                                <td>KAVALI</td>
-                                <td>MAIN COMMITTEE</td>
-                                <td>VICE PRESIDENT</td>
-                                <td>01</td>
-                                <td>02</td>
-                                <td><select class="form-control input-sm"><option>Select Status</option></select></td>
-                            </tr>
-                        	<tr>
-                                <td>#2015001</td>
-                                <td>KAVALI</td>
-                                <td>MAIN COMMITTEE</td>
-                                <td>VICE PRESIDENT</td>
-                                <td>01</td>
-                                <td>02</td>
-                                <td><select class="form-control input-sm"><option>Select Status</option></select></td>
-                            </tr>
-                        	<tr>
-                                <td>#2015001</td>
-                                <td>KAVALI</td>
-                                <td>MAIN COMMITTEE</td>
-                                <td>VICE PRESIDENT</td>
-                                <td>01</td>
-                                <td>02</td>
-                                <td><select class="form-control input-sm"><option>Select Status</option></select></td>
-                            </tr>
-                        	<tr>
-                                <td>#2015001</td>
-                                <td>KAVALI</td>
-                                <td>MAIN COMMITTEE</td>
-                                <td>VICE PRESIDENT</td>
-                                <td>01</td>
-                                <td>02</td>
-                                <td><select class="form-control input-sm"><option>Select Status</option></select></td>
-                            </tr>
-
-                        </tbody>
-                    </table>-->
+                	
                 </div>
 				<div class="row">
 					<div class="col-md-10 col-md-offset-1 m_top20">
 						<div id="paginationId"></div>
 					</div>
 				</div>
+				
+				<div class="row"  style="margin-top: 37px;">
+            	<div class="col-md-offset-2 col-md-2"  style="background-color:rgba(0,0,0,0.1);"><h1 style="display:inline">
+                <u id="totalCount1">100</u></h1><small>REQUEST <BR/>FOR CHANGE POSITION</small></div>
+                <div class="col-md-2"  style="background-color:rgba(0,0,0,0.1);margin-left:1px;"><h1 style="display:inline">
+                <u id="pendingCount1">40</u></h1><small>REQUESTS <BR/> PENDING</small></div>
+				<div class="col-md-2"  style="background-color:rgba(0,0,0,0.1);"><h1 style="display:inline">
+                <u id="approvedCount1">100</u></h1><small>REQUESTS <BR/> APPROVED</small></div>
+                <div class="col-md-2"  style="background-color:rgba(0,0,0,0.1);margin-left:1px;"><h1 style="display:inline">
+                <u id="rejectedCount1">40</u></h1><small>REQUESTS <BR/> REJECTED</small></div>
                 </div>
-                 <!--<div class="row">
-            	<div class="col-md-10 col-md-offset-1 m_top20"  >
-                	<table class="table table-condensed" style="background-color:rgba(0,0,0,0.1);">
-						</caption>		
-						<thead>
-                        	<th colspan="6"><h4 class="text-success" style="display:inline">CHANGE POSITION REQUEST STATUS</h4></th>
-                            <th colspan="3"><div class="input-group pull-right">
-  <input type="text" class="form-control input-sm pull-right" placeholder="Search" aria-describedby="basic-addon2">
-  <span class="input-group-addon" id="basic-addon2"><i class="glyphicon glyphicon-search"></i></span>
-</div></th>
-                        </thead>
-                        <thead>
-                        	<th width="10%"><small>REQUEST NO</small></th>
-                        	<th width="8%"><small>LOCATION</small></th>
-                            <th width="15%"><small>COMMITTEE NAME</small></th>
-                            <th width="1%"><small>MEMBER IMAGE</small></th>
-                            <th width="15%"><small>COMMITTEE MEMBER NAME</small></th>
-                            <th width="8%"><small>MEMBERSHIP NO</small></th>
-                            <th width="18%"><small>COMMITTE MEMBER CURRENT POSITION</small></th>
-                            <th width="12%"><small>REQUESTED FOR</small></th>
-                            <th width="10%"><small>UPDATE STATUS</small></th>
-                        </thead>
-                         <tbody>
-                        	<tr>
-                                <td>#2015001</td>
-                                <td>KAVALI</td>
-                                <td>MAIN COMMITTEE</td>
-                                <td><img src="Images/Member_thamb_image.png" /></td>
-                                <td>SRIKANTH</td>
-                                <td>MEMBERSHIP NO</td>
-                                <td>VICE PRESIDENT</td>
-                                <td>PRESIDENT</td>
-                                <td>
-                                	<button class="btn btn-success btn-xs"><i class="glyphicon glyphicon-ok"></i></button>
-                                    <button class="btn btn-success btn-xs"><i class="glyphicon glyphicon-remove"></i></button>
-                                </td>
-                            </tr>
-                        	<tr>
-                                <td>#2015001</td>
-                                <td>KAVALI</td>
-                                <td>MAIN COMMITTEE</td>
-                                <td><img src="Images/Member_thamb_image.png" /></td>
-                                <td>SRIKANTH</td>
-                                <td>MEMBERSHIP NO</td>
-                                <td>VICE PRESIDENT</td>
-                                <td>PRESIDENT</td>
-                                <td>
-                                	<button class="btn btn-success btn-xs"><i class="glyphicon glyphicon-ok"></i></button>
-                                    <button class="btn btn-success btn-xs"><i class="glyphicon glyphicon-remove"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#2015001</td>
-                                <td>KAVALI</td>
-                                <td>MAIN COMMITTEE</td>
-                                <td><img src="Images/Member_thamb_image.png" /></td>
-                                <td>SRIKANTH</td>
-                                <td>MEMBERSHIP NO</td>
-                                <td>VICE PRESIDENT</td>
-                                <td>PRESIDENT</td>
-                                <td>
-                                	<button class="btn btn-success btn-xs"><i class="glyphicon glyphicon-ok"></i></button>
-                                    <button class="btn btn-success btn-xs"><i class="glyphicon glyphicon-remove"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#2015001</td>
-                                <td>KAVALI</td>
-                                <td>MAIN COMMITTEE</td>
-                                <td><img src="Images/Member_thamb_image.png" /></td>
-                                <td>SRIKANTH</td>
-                                <td>MEMBERSHIP NO</td>
-                                <td>VICE PRESIDENT</td>
-                                <td>PRESIDENT</td>
-                                <td>
-                                	<button class="btn btn-success btn-xs"><i class="glyphicon glyphicon-ok"></i></button>
-                                    <button class="btn btn-success btn-xs"><i class="glyphicon glyphicon-remove"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#2015001</td>
-                                <td>KAVALI</td>
-                                <td>MAIN COMMITTEE</td>
-                                <td><img src="Images/Member_thamb_image.png" /></td>
-                                <td>SRIKANTH</td>
-                                <td>MEMBERSHIP NO</td>
-                                <td>VICE PRESIDENT</td>
-                                <td>PRESIDENT</td>
-                                <td>
-                                	<button class="btn btn-success btn-xs"><i class="glyphicon glyphicon-ok"></i></button>
-                                    <button class="btn btn-success btn-xs"><i class="glyphicon glyphicon-remove"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#2015001</td>
-                                <td>KAVALI</td>
-                                <td>MAIN COMMITTEE</td>
-                                <td><img src="Images/Member_thamb_image.png" /></td>
-                                <td>SRIKANTH</td>
-                                <td>MEMBERSHIP NO</td>
-                                <td>VICE PRESIDENT</td>
-                                <td>PRESIDENT</td>
-                                <td>
-                                	<button class="btn btn-success btn-xs"><i class="glyphicon glyphicon-ok"></i></button>
-                                    <button class="btn btn-success btn-xs"><i class="glyphicon glyphicon-remove"></i></button>
-                                </td>
-                            </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-                </div>-->
-            <!--Content END-->
+			    <div class="row" style="display:none;margin-top: 11px;" id="ErrDesgDiv" ></div>
+				<div class="col-md-10 col-md-offset-1 m_top20" id="changeDesgTable"></div>
+				<div class="row">
+					<div class="col-md-10 col-md-offset-1 m_top20">
+						<div id="paginationId1"></div>
+					</div>
+				</div>
+				
+            </div>
+              
         
         </div>
 	<footer class="text-center m_top20">
@@ -311,6 +155,7 @@
 	</footer>
 	<script>
 		getCandidateDetailsById(0);
+		
 		function getCandidateDetailsById(stNO){
 				var jsObj = {
 						startNo : stNO,
@@ -342,6 +187,7 @@
 				}).done(function(result){
 					
 					if(typeof result == "string"){
+					    
 						if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
 						  location.reload(); 
 						}
@@ -381,7 +227,7 @@
 			$("#posTable").html("");
 			str+='<table class="table table-condensed" style="background-color:rgba(0,0,0,0.1);">';
 						str+='<thead>';
-                        str+='	<th colspan="5"><h4 class="text-success" style="display:inline">CHANGE POSITION REQUEST STATUS</h4></th>';
+                        str+='	<th colspan="5"><h4 class="text-success" style="display:inline">INCREASE POSITION REQUEST STATUS</h4></th>';
                         str+='    <th colspan="2"><div class="input-group pull-right">';
 						//str+='<input type="text" class="form-control input-sm pull-right" placeholder="Search" aria-describedby="basic-addon2">';
 						//str+='<span class="input-group-addon" id="basic-addon2"><i class="glyphicon glyphicon-search"></i></span>';
@@ -439,16 +285,22 @@
                         str+='</tbody>';
                     str+='</table>';
 					
-		$("#posTable").html(str);
-		
+		$("#posTable").html(str); 
 		if(stNO == 0 && result.length > 0){
+			setTimeout(5000);
 			$("#paginationId").pagination({
 				items: ttlCnt,
 				itemsOnPage: 20,
-				cssStyle: 'light-theme'
+				cssStyle: 'light-theme',
+				hrefTextPrefix: '#pages-',
+				onPageClick: function(pageNumber) { 
+					var num=(pageNumber-1)*20;
+						getCandidateDetailsById(num);
+				}
+				
 			});
 		}
-		
+		getCommitteesForApprovalForChangeDesignations(0);
 		}
 		
 		//updatePosCount();
@@ -529,7 +381,242 @@
 			}
 		});
 		
+	//-----------For Change Designations.----------------------------
+	 var totalCount=0;
 		
+	statusForChangeDesignationsApproval();
+     function statusForChangeDesignationsApproval(){
+	   $.ajax({
+					type : "POST",
+					url : "statusForChangeDesignationsApprovalAction.action",
+					data : {} ,
+				}).done(function(result){
+					if(result.totalCount!=null){
+						$("#totalCount1").html(result.totalCount);
+						totalCount=result.totalCount;
+					}else{
+						$("#totalCount1").html(0);
+					}
+					
+					if(result.pendingCount!=null){
+						$("#pendingCount1").html(result.pendingCount);
+					}else{
+						$("#pendingCount1").html(0);
+					}
+					
+					if(result.approvedCount!=null){
+						$("#approvedCount1").html(result.approvedCount);
+					}else{
+						$("#approvedCount1").html(0);
+					}
+					
+					if(result.rejectedCount!=null){
+						$("#rejectedCount1").html(result.rejectedCount);
+					}else{
+						$("#rejectedCount1").html(0);
+					}
+				});
+	 
+	 }
+	
+	
+	
+	
+	
+		//getCommitteesForApprovalForChangeDesignations(0);
+		
+		function getCommitteesForApprovalForChangeDesignations(stNO){
+				var jsObj = {
+						startNo : stNO,
+						endNo : 20
+				}				   
+				$.ajax({
+					type : "POST",
+					url : "getCommitteesForApprovalForChangeDesignationsAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					buildData(result,stNO);
+				});
+		}
+	
+		function buildData(result,stNO){
+			var str = '';
+			$("#changeDesgTable").html("");
+			str+='<table class="table table-condensed" style="background-color:rgba(0,0,0,0.1);">';
+						str+='<thead>';
+                        str+='	<th colspan="5"><h4 class="text-success" style="display:inline">CHANGE POSITION REQUEST STATUS</h4></th>';
+                        str+='  <th colspan="2"><div class="input-group pull-right">';
+						//str+='<input type="text" class="form-control input-sm pull-right" placeholder="Search" aria-describedby="basic-addon2">';
+						//str+='<span class="input-group-addon" id="basic-addon2"><i class="glyphicon glyphicon-search"></i></span>';
+						str+='</div></th>';
+						str+='</thead>';
+						str+='<thead>';
+                        str+='<th style="padding-left: 22px;">DATE</th>';
+                        str+='<th>LOCATION</th>';
+						str+='<th>COMMITTEE NAME</th>';
+		                str+='<th>MEMBER IMAGE</th>';
+						str+='<th style="padding-left: 20px;">COMMITTEE MEMBER NAME</th>';
+                       // str+='<th>MEMBERSHIP NO</th>';
+                        str+='<th style="padding-left: 18px;">CURRENT ROLE</th>';
+						str+='<th style="padding-left: 17px;">REQUESTED ROLE</th>';
+                        str+='<th style="padding-right: 51px;">STATUS</th>';
+                        str+='<th style="padding-left: 12px;">REF-NO</th>';
+                        str+='</thead>';
+                         str+='<tbody>';
+				  for(var i in result){
+				   var rowcount = result[i].locationsList.length;
+				   var paddingTop=(rowcount*20);
+				  
+				   str+='<tr>';
+				   str+='<td rowspan="'+result[i].locationsList.length+'" style="text-align: center;padding-top:'+paddingTop+'px;">'+result[i].dateString+'</td>';
+				   str+='<td rowspan="'+result[i].locationsList.length+'" style="text-align: center;padding-top:'+paddingTop+'px;">'+result[i].location+' '+result[i].locationType+'</td>';
+				   str+='<td rowspan="'+result[i].locationsList.length+'" style="text-align: center;padding-top:'+paddingTop+'px;">'+result[i].committeeName+'</td>';
+				   
+				    for(var j in result[i].locationsList)
+					{					
+						 str+='<td ><img data-attr-tdpCommitteememberId="'+result[i].locationsList[j].tdpCommitteeMemberId+'" style="margin-top: 26px; margin-left: 12px;" width="35"  height="35" src="http://www.mytdp.com/images/cadre_images/'+result[i].locationsList[j].positionId+'" onerror="setDefaultImage(this);"/></td>';
+						 str+='<td style="padding-top:'+paddingTop+'px;">'+result[i].locationsList[j].position+'</td>';
+						// str+='<td style="padding-top:'+paddingTop+'px;">'+result[i].locationsList[j].memberShipNo+'</td>';
+						 str+='<td data-attr-currentRoleId="'+result[i].locationsList[j].currentRoleId+'" style="padding-top:'+paddingTop+'px; padding-left: 18px;">'+result[i].locationsList[j].currentRole+'</td>';
+						 str+='<td data-attr-newRoleId="'+result[i].locationsList[j].newRoleId+'" style="padding-top:'+paddingTop+'px; padding-left: 18px;">'+result[i].locationsList[j].newRole+'</td>';
+						 if(j == 0) 
+						 {
+						     /*
+							  if(result[i].status=="pending"){
+									str+='<select class="form-control input-sm updateStatusCls">';
+									str+='<option selected="selected" value="Pending"> Pending </option>';
+									str+='<option value="Approved"> Approved </option>';
+									str+='<option value="Rejected"> Rejected </option>';
+									str+='</select>';
+								}else{
+									if(result[i].status!="Rejected"){
+										str+='<span style="color:green">'+result[i].status+'</span>';
+									}else{
+										str+='<span style="color:red">'+result[i].status+'</span>';
+									}
+									
+								}
+							 */
+							 var cadreCommitteeIncreasedPositionsId=result[i].refNo.split("#")[1];
+							 str+='<td id="status'+cadreCommitteeIncreasedPositionsId+'" rowspan="'+result[i].locationsList.length+'" style="padding-top:'+paddingTop+'px;">';
+							 if(result[i].status=="pending"){
+							        
+									str+='<select  class="form-control input-sm" onChange="approvingChangeDesignations(\''+result[i].refNo+'\',this)">';
+									str+='<option selected="selected" value="Pending"> Pending </option>';
+									str+='<option value="Approved"> Approved </option>';
+									str+='<option value="Rejected"> Rejected </option>';
+									str+='</select>';
+									str+='</td>';
+							 }
+							 else{
+									if(result[i].status!="Rejected"){
+										str+='<span style="color:green">'+result[i].status+'</span>';
+									}else{
+										str+='<span style="color:red">'+result[i].status+'</span>';
+									}
+								  }
+							str+='</td>';	  
+								
+							// str+='<td rowspan="'+result[i].locationsList.length+'" style="text-align: center;padding-top:'+paddingTop+'px;">'+result[i].status+'</td>';
+							 str+='<td rowspan="'+result[i].locationsList.length+'" style="text-align: center;padding-top:'+paddingTop+'px;">'+result[i].refNo+'</td>';
+						 }
+						 str+='</tr>';
+						 
+				    }
+				  				   
+				  }
+				  str+='</tbody>';
+                  str+='</table>';
+					
+		$("#changeDesgTable").html(str);
+		
+		if(stNO == 0 && result.length > 0){
+			$("#paginationId1").pagination({
+				items: totalCount,
+				itemsOnPage: 20,
+				cssStyle: 'light-theme',
+				hrefTextPrefix: '#page-',
+				onPageClick: function(pageNumber) { 
+					var num=(pageNumber-1)*20;
+						getCommitteesForApprovalForChangeDesignations(num);
+				}
+			});
+		}
+		
+		}
+		
+		function approvingChangeDesignations(refNo,thisVar){
+		if (confirm('Do you wan\'t to Continue?')) {
+		var cadreCommitteeIncreasedPositionsId=refNo.split("#")[1];
+		var approvedStatus=$(thisVar).val();
+		$('#ErrDesgDiv').hide();
+		 
+		if(approvedStatus=='Pending'){
+		 return;
+		}
+		
+		var jsObj ={
+						cadreCommitteeIncreasedPositionsId : cadreCommitteeIncreasedPositionsId,
+						status : approvedStatus
+				   }				   
+				$.ajax({
+					type : "POST",
+					url : "approvingChangeDesignationsAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+				
+				  
+					if(result.resultCode=='1'){
+					  if(approvedStatus=="Approved"){
+					     $("#status"+cadreCommitteeIncreasedPositionsId).html(""); 
+					     $("#status"+cadreCommitteeIncreasedPositionsId).html('<span style="color:green">Approved</span>');
+					     statusForChangeDesignationsApproval();
+					   }
+					   if(approvedStatus=="Rejected"){
+					     $("#status"+cadreCommitteeIncreasedPositionsId).html(""); 
+					     $("#status"+cadreCommitteeIncreasedPositionsId).html('<span style="color:red">Rejected</span>');
+					     statusForChangeDesignationsApproval();
+					   }
+					}
+					
+					else if(result.resultCode=='2'){
+				    
+					 var msgArray=[];
+					 var msgStr="";
+					 var desgMsg="";
+					 
+					 var message=result.message; 
+					 msgArray = message.split(","); 
+					
+			         if(msgArray!=null && msgArray.length>0){
+					   if(msgArray.length==1){
+					     msgStr=msgArray[0];
+						 desgMsg="Designation";
+					   }
+					   else{
+					      for(var i in msgArray){
+					        if(msgStr!="")
+					         msgStr=msgStr+","+msgArray[i];
+						    else
+						     msgStr=msgStr;
+					      }
+						  desgMsg="Designations";
+					    } 
+					 }
+					  var str="";
+					  str+="<span style='color:red;margin-left: 221px;;font-size:17px'>Request Failed. The "+desgMsg+" "+msgStr+"  Is Exceeding Max Count.</span>";
+					  $('#ErrDesgDiv').html(str);
+					  $('#ErrDesgDiv').show();
+				   }
+			
+				});
+		}
+		else{
+		  $(thisVar).val("Pending");
+		}
+		
+		}
+	
 	</script>
   </body>
 </html>

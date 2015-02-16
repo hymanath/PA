@@ -732,11 +732,11 @@ function getCommitteeLocations(){
 				   
 				    for(var j in result[i].locationsList)
 					{					
-						 str+='<td ><img  style="margin-top: 26px; margin-left: 12px;" width="35"  height="35" src="http://www.mytdp.com/images/cadre_images/'+result[i].locationsList[j].positionId+'" onerror="setDefaultImage(this);"/></td>';
+						 str+='<td ><img data-attr-tdpCommitteememberId="'+result[i].locationsList[j].tdpCommitteeMemberId+'" style="margin-top: 26px; margin-left: 12px;" width="35"  height="35" src="http://www.mytdp.com/images/cadre_images/'+result[i].locationsList[j].positionId+'" onerror="setDefaultImage(this);"/></td>';
 						 str+='<td style="padding-top:'+paddingTop+'px;">'+result[i].locationsList[j].position+'</td>';
 						 str+='<td style="padding-top:'+paddingTop+'px;">'+result[i].locationsList[j].memberShipNo+'</td>';
-						 str+='<td style="padding-top:'+paddingTop+'px; padding-left: 18px;">'+result[i].locationsList[j].currentRole+'</td>';
-						 str+='<td style="padding-top:'+paddingTop+'px; padding-left: 18px;">'+result[i].locationsList[j].newRole+'</td>';
+						 str+='<td data-attr-currentRoleId="'+result[i].locationsList[j].currentRoleId+'" style="padding-top:'+paddingTop+'px; padding-left: 18px;">'+result[i].locationsList[j].currentRole+'</td>';
+						 str+='<td data-attr-newRoleId="'+result[i].locationsList[j].newRoleId+'" style="padding-top:'+paddingTop+'px; padding-left: 18px;">'+result[i].locationsList[j].newRole+'</td>';
 						 if(j == 0) 
 						 {
 							 str+='<td rowspan="'+result[i].locationsList.length+'" style="text-align: center;padding-top:'+paddingTop+'px;">'+result[i].status+'</td>';

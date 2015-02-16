@@ -26,10 +26,9 @@
 	  {
 		  var memberShipNumber=$("#membershipId").val();
 		  $('#detailsId').html(' Please wait....');
-		   // url: "http://localhost:8080/PartyAnalyst/WebService/Auth/getMemberData",
 		  $.ajax({
-				type : "POST",			  
-			    url: "http://www.mytdp.com/WebService/Auth/getMemberData",
+				type : "POST",
+			    url: "http://192.168.11.61:8080/PartyAnalyst/WebService/Auth/getMemberData",
 				data: '{"membershipNo":"'+memberShipNumber+'","isAddress":"true"}',
 				contentType: "application/json; charset=utf-8",
                 dataType: "json", 

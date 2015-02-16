@@ -1184,7 +1184,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 			if(type.equalsIgnoreCase("positionsIncreased"))
 			  approvalRecordsList = cadreCommitteeService.getCommitteesForApproval(null, null,requestUserId);
 			else if(type.equalsIgnoreCase("changeDesignations"))
-			  approvalRecordsList = cadreCommitteeService.changeDesignationRecordsForAUser(requestUserId);	
+			  approvalRecordsList = cadreCommitteeService.changeDesignationRecordsForAUser(requestUserId,null,null);	
 		}catch (Exception e) {
 			LOG.error(" Exception Raised in getCommitteesForApproval " + e);
 		}
@@ -1321,4 +1321,66 @@ public String getSummaryDetails(){
 		}
 		 return Action.SUCCESS;
 	}
+	
+	
+	public String getCommitteesForApprovalForChangeDesignations(){
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		boolean noaccess = false;
+		if(regVO==null){
+			return "input";
+		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"TDP_COMMITTEE_ADMIN")){
+			noaccess = true ;
+		}
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		
+		if(noaccess){
+			return "error";
+		}
+		
+		try{
+			jObj = new JSONObject(getTask());
+			Long startNo =  jObj.getLong("startNo");
+			Long endNo = jObj.getLong("endNo");
+			approvalRecordsList = cadreCommitteeService.changeDesignationRecordsForAUser(null,startNo,endNo);	
+		}catch (Exception e) {
+			LOG.error(" Exception Raised in getCommitteesForApprovalForChangeDesignations " , e);
+		}
+		
+		
+		
+		return Action.SUCCESS;
+	}
+	
+	
+	
+	
+	public String approvingChangeDesignations(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+			Long cadreCommitteeIncreasedPositionsId =  jObj.getLong("cadreCommitteeIncreasedPositionsId");
+			String approvedStatus=jObj.getString("status");
+            status = cadreCommitteeService.approvingChangeDesignations(cadreCommitteeIncreasedPositionsId,approvedStatus);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in approvingChangeDesignations() At CadreCommitteeAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String statusForChangeDesignationsApproval(){
+		try {
+			
+			statusFinalVO = cadreCommitteeService.statusForChangeDesignationsApproval();
+		} catch (Exception e) {
+			LOG.error("Exception occured in statusForChangeDesignationsApproval ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
+	
+	
+	
 }
