@@ -84,4 +84,11 @@ public class CadreCommitteeIncreasedPositionsDAO extends GenericDaoHibernate<Cad
 			return query.list(); 
 		 
 	 }
+	public List<Object[]> statusForChangeDesignationsApproval(){
+		Query query = getSession().createQuery(" select count(model.cadreCommitteeIncreasedPositionsId), model.status" +
+				" from CadreCommitteeIncreasedPositions model" +
+				" where model.type ='changeDesignations'" +
+				" group by model.status ");
+		return query.list();
+	}
 }

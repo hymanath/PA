@@ -72,7 +72,7 @@ public interface ICadreCommitteeService {
 	public Long gettingCommitteeIdForMainCommittee(Long levelId,Long levelValue);
 	
 	public List<CommitteeSummaryVO> getConstituencyWiseCommittesSummary(String state,String startDate, String endDate);
-	public List<CommitteeApprovalVO> changeDesignationRecordsForAUser(Long userId);
+	public List<CommitteeApprovalVO> changeDesignationRecordsForAUser(Long userId,Long startNo,Long endNo);
 	public List<IdNameVO> getAllDistricts();
 	public List<IdNameVO> getAllConstituencysForADistrict(Long districtId);
 	public CommitteeSummaryVO getConstituencySummary(Long reprtType, Long constituencyId);
@@ -85,5 +85,9 @@ public interface ICadreCommitteeService {
 	public List<CadreCommitteeMemberVO> getComitteeMembersInfoByCommiteTypeAndLocation(Long locationId,Long locationType,Long basicCommitteeTypeId,String status);
 	public ResultStatus updateCandidateDesignation(final Long committeeId,final List<LocationWiseBoothDetailsVO> changeDesignationsList,final Long userId);
 	public LocationWiseBoothDetailsVO getAllCommitteeMembersInfoInALoc(Long locationLvl,Long locationVal);
+	
+	
+	public ResultStatus  approvingChangeDesignations(final Long cadreCommitteeIncreasedPositionsId,final String approvedStatus);
+	public CommitteeApprovalVO statusForChangeDesignationsApproval();
 	
 }

@@ -3978,11 +3978,18 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return null;
 	}
-	public List<CommitteeApprovalVO> changeDesignationRecordsForAUser(Long userId){
+	public List<CommitteeApprovalVO> changeDesignationRecordsForAUser(Long userId,Long startNo,Long endNo){
 		List<CommitteeApprovalVO> resultList=null;
 		try
 		{
-		   List<Object[]> list1= cadreCommitteeChangeDesignationsDAO.changeDesignationRecordsForAUser(userId);
+			 List<Object[]> list1=null;
+		   if(userId!=null){
+		      list1= cadreCommitteeChangeDesignationsDAO.changeDesignationRecordsForAUser(userId);
+		   }
+		   else if(userId==null){
+			  list1= cadreCommitteeChangeDesignationsDAO.changeDesignationRecordsForApproval(startNo.intValue(),endNo.intValue());
+		   }
+		   
 		   
 		   //getting Locations.
 		   List<Object[]> list = tdpCommitteeLevelDAO.getAllLevels();	
@@ -4108,10 +4115,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		    		CommitteeApprovalVO	mainvo=resultMap.get((Long)obj[0]);
 		    		
 		    		CommitteeApprovalVO subvo=new CommitteeApprovalVO();
+		    		subvo.setCurrentRoleId((Long)obj[10]);
 		    		subvo.setCurrentRole(obj[11].toString());
+		    		subvo.setNewRoleId((Long)obj[12]);
 		    		subvo.setNewRole(obj[13].toString());
 		    		subvo.setPosition(obj[7].toString());
 		    		subvo.setPositionId(obj[8].toString());
+		    		subvo.setTdpCommitteeMemberId((Long)obj[16]);
 		    		subvo.setMemberShipNo(obj[9].toString());
 		    		if(mainvo.getLocationsList()==null){
 		    		 mainvo.setLocationsList(new ArrayList<CommitteeApprovalVO>());
@@ -4978,4 +4988,104 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return cadreCommitteeMemberVOList;
 	}
+	public ResultStatus  approvingChangeDesignations(final Long cadreCommitteeIncreasedPositionsId,final String approvedStatus){
+		 ResultStatus rs=new ResultStatus();
+	 try
+	 {
+		if(approvedStatus.equalsIgnoreCase("Rejected")){
+			CadreCommitteeIncreasedPositions cadreCommitteeIncreasedPositions=cadreCommitteeIncreasedPositionsDAO.get(cadreCommitteeIncreasedPositionsId);
+			cadreCommitteeIncreasedPositions.setStatus(approvedStatus);
+			cadreCommitteeIncreasedPositions.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+			cadreCommitteeIncreasedPositionsDAO.save(cadreCommitteeIncreasedPositions);
+			
+			rs.setResultCode(1);
+		}
+		else if(approvedStatus.equalsIgnoreCase("Approved")){
+			
+			 List<Object[]> rolesList=cadreCommitteeChangeDesignationsDAO.gettingCommitteeRolesByIncreasedPositionsId(cadreCommitteeIncreasedPositionsId);
+			 final List<LocationWiseBoothDetailsVO> changeDesignationsList=new ArrayList<LocationWiseBoothDetailsVO>();
+			   if(rolesList!=null && rolesList.size()>0){
+				  for (Object[] objects : rolesList) {
+					    LocationWiseBoothDetailsVO changeDesignationsVO=new LocationWiseBoothDetailsVO();
+						changeDesignationsVO.setLocationId((Long)objects[1]);//tdpCommitteeMemberId
+						changeDesignationsVO.setTotal((Long)objects[2]);//cadreId
+						changeDesignationsVO.setPopulation((Long)objects[3]);//currentRole
+						changeDesignationsVO.setVotesPolled((Long)objects[4]);//newRole
+						changeDesignationsList.add(changeDesignationsVO);
+				   } 
+			    }
+			   
+			   
+			   rs=gettingStatus((Long)rolesList.get(0)[0],changeDesignationsList);
+			  
+			  if(rs.getIsResultPartial()==false){
+				  synchronized("APPROVINGDESIGNATIONS"){
+					   transactionTemplate.execute(new TransactionCallbackWithoutResult() 
+				       {
+						  public void doInTransactionWithoutResult(TransactionStatus status) 
+						  {
+							 for (LocationWiseBoothDetailsVO locationWiseBoothDetailsVO : changeDesignationsList){
+								 
+								 //updating tdpCommitteeRole with new role.
+								TdpCommitteeMember tdpCommitteeMember= tdpCommitteeMemberDAO.get(locationWiseBoothDetailsVO.getLocationId());
+								tdpCommitteeMember.setTdpCommitteeRoleId(locationWiseBoothDetailsVO.getVotesPolled());
+								tdpCommitteeMemberDAO.save(tdpCommitteeMember);
+								
+								//updating date,status.
+								CadreCommitteeIncreasedPositions cadreCommitteeIncreasedPositions=cadreCommitteeIncreasedPositionsDAO.get(cadreCommitteeIncreasedPositionsId);
+								cadreCommitteeIncreasedPositions.setStatus(approvedStatus);
+								cadreCommitteeIncreasedPositions.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+								cadreCommitteeIncreasedPositionsDAO.save(cadreCommitteeIncreasedPositions);
+							 }
+							 
+						  }
+					  
+				       });
+			       }
+			    }
+			 
+			  if(rs.getIsResultPartial()==false){
+				  rs.setResultCode(1); 
+			  }
+			  else{
+				  rs.setResultCode(2); 
+				  rs.setMessage(rs.getMessage());
+			   }
+		
+		}
+	
+	 }catch (Exception e) {
+		 LOG.error("Exception raised in approvingChangeDesignations", e);
+		 rs.setResultCode(0);
+	}	
+     return rs;
+	}
+	
+
+public CommitteeApprovalVO statusForChangeDesignationsApproval(){
+	LOG.debug(" In statusForChangeDesignationsApproval() ");
+	CommitteeApprovalVO cv = new CommitteeApprovalVO();
+	try{
+		List<Object[]> list = cadreCommitteeIncreasedPositionsDAO.statusForChangeDesignationsApproval();
+		Long totalCount = 0l;
+		if(list!=null && list.size()>0){
+			for(Object[] obj:list){
+				if(obj[1].toString().equalsIgnoreCase("Approved")){
+					cv.setApprovedCount(Long.valueOf(obj[0].toString()));
+				}else if(obj[1].toString().equalsIgnoreCase("Rejected")){
+					cv.setRejectedCount(Long.valueOf(obj[0].toString()));
+				}else{
+					cv.setPendingCount(Long.valueOf(obj[0].toString()));
+				}
+				totalCount = totalCount + Long.valueOf(obj[0].toString());
+			}
+			cv.setTotalCount(totalCount);
+		}
+	}catch (Exception e) {
+		LOG.error("Exception Raised in statusForChangeDesignationsApproval() ");
+	}
+	return cv;
+
+}
+
 }
