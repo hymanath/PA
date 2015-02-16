@@ -9705,5 +9705,22 @@
 				<param name="root">byeEleInfo</param>
 			</result>
 		</action>
+		
+		<action name="getCommitteesForApprovalForChangeDesignationsAction" class="cadreCommitteeAction" method="getCommitteesForApprovalForChangeDesignations">
+			<result type="json" name="success">
+				<param name="root">approvalRecordsList</param>
+			</result>
+		</action>
+		<action name="approvingChangeDesignationsAction" class="cadreCommitteeAction" method="approvingChangeDesignations">
+			<result type="json" name="success">
+				<param name="root">status</param>
+			</result>
+		</action>
+		<action name="statusForChangeDesignationsApprovalAction" class="cadreCommitteeAction" method="statusForChangeDesignationsApproval">
+			<result type="json" name="success">
+				<param name="root">statusFinalVO</param>
+			</result>
+		</action>
+		
 </package>
 </struts>      
