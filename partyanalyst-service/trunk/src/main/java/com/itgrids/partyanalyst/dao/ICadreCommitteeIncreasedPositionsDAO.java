@@ -13,4 +13,6 @@ public interface ICadreCommitteeIncreasedPositionsDAO extends GenericDao<CadreCo
 	public int updateStatus(String status,Date updatedTime, Long increasedPosId, Long approveCount);
 	public List<Object[]> getAllRecordsCountStatusWise();
 	public List<Object[]> getRequestDetailsForAUser(Long requestUserId);
+	
+	public List<Object[]> statusForChangeDesignationsApproval();
 }
