@@ -367,7 +367,7 @@
 					<!--Content Start-->
 					<div class="row" style="text-align:center;">
 						<div class="col-md-6 col-md-offset-3">
-							<h3 class="panel-header">COMMITTEE SUMMARY</h3>
+							<h3 class="panel-header"><div id="mainCommTitleDivId">COMMITTEE SUMMARY</div></h3>
 							<hr style="border-color:#F00;margin-top:10px;" />
 						</div>
 						
@@ -1483,7 +1483,7 @@
 		$("#distSummaryBody").html("");
 		for(var i in result){
 			str += '<tr>';
-			str += '<td ><a  href="javascript:{getPopUpForSummary('+result[i].constiId+');}" style="font-size: 13px;">'+result[i].name+'</a></td>';
+			str += '<td ><a  href="javascript:{getPopUpForSummary('+result[i].constiId+',\''+result[i].name+'\');}" style="font-size: 13px;">'+result[i].name+'</a></td>';
 			if(result[i].townMandalDivisionVO!=null){
 				if(result[i].townMandalDivisionVO.totalCommittees!=null){
 					str += '<td>'+result[i].townMandalDivisionVO.totalCommittees+'</td>';
@@ -1629,11 +1629,12 @@
 	
 	/* Script For Summary POpUP  */
 	
-	function getPopUpForSummary(id){
+	function getPopUpForSummary(id,name){
 		$( "#dialogSummary" ).modal("show");
 		
 		$("#CommitteeDetails").html(""); 
 		$("#committeeMemberDiv").html("");
+		$("#mainCommTitleDivId").html(name.toUpperCase()+" COMMITTEE SUMMARY");
 		
 		getSummary(id);
 		getMandalMuncipalDivisonStartedCommittees(id);
