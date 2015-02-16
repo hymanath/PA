@@ -38,6 +38,10 @@ public class CommitteeApprovalVO implements Serializable{
 	private String currentRole;
 	private String newRole;
 	private String memberShipNo;
+	
+	private Long tdpCommitteeMemberId;
+	private Long currentRoleId;
+	private Long newRoleId;
 	public Long getTotalCount() {
 		return totalCount;
 	}
@@ -209,6 +213,24 @@ public class CommitteeApprovalVO implements Serializable{
 	}
 	public void setMemberShipNo(String memberShipNo) {
 		this.memberShipNo = memberShipNo;
+	}
+	public Long getTdpCommitteeMemberId() {
+		return tdpCommitteeMemberId;
+	}
+	public void setTdpCommitteeMemberId(Long tdpCommitteeMemberId) {
+		this.tdpCommitteeMemberId = tdpCommitteeMemberId;
+	}
+	public Long getCurrentRoleId() {
+		return currentRoleId;
+	}
+	public void setCurrentRoleId(Long currentRoleId) {
+		this.currentRoleId = currentRoleId;
+	}
+	public Long getNewRoleId() {
+		return newRoleId;
+	}
+	public void setNewRoleId(Long newRoleId) {
+		this.newRoleId = newRoleId;
 	}
 	
 	
