@@ -347,6 +347,7 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	
 	public String getMembersRangeCountByLocation(){
 		try{
+			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
 			jObj = new JSONObject(getTask());
 			JSONArray levelIdsArr = jObj.getJSONArray("levelIdsArr");			
 			List<Long> levelIds = new ArrayList<Long>();
@@ -360,7 +361,9 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 			Long committeeId = jObj.getLong("committeeId");
 			String startdate=jObj.getString("startDate");
 			String endDate=jObj.getString("endDate");
-			cadreCommitteeReportVOList = cadreCommitteeService.getMembersRangeCountByLocation(state,levelIds,committeeId,startdate,endDate);
+			String accessType = regVo.getAccessType();
+			Long accessValue = Long.valueOf(regVo.getAccessValue());
+			cadreCommitteeReportVOList = cadreCommitteeService.getMembersRangeCountByLocation(state,levelIds,committeeId,startdate,endDate,accessType,accessValue,regVo.getRegistrationID());
 		
 			
 		}catch(Exception e){
@@ -368,6 +371,9 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 		}
 		return Action.SUCCESS;
 	}
+
+
+
 	
 	public String getConstituencyWiseCommittesSummary(){
 		LOG.debug(" Entered Into getConstituencyWiseCommittesSummary");
