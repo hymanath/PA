@@ -30,7 +30,12 @@
 	.navbar-nav > li > a {text-decoration:none;}
 		a:hover {text-decoration:none;}
 		.multiLevelLiA a{text-transform: uppercase;color:black;}
-	</style>	
+		body{background:#fff;}
+	</style>
+
+<script>
+	var userAccessType = '${pageAccessType}';
+</script>	
 </head>
 <body>
 	 <header style="align:center;background-color:#ef4036; display:flex;border-bottom:4px solid #13a751;">
@@ -48,10 +53,11 @@
 					</c:if>
 					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_ADMIN' )}">
 						<li><a tabindex="-1" href="committeeDashBoardAction.action">Home</a></li>
-					</c:if>
+					
 				  	  <li><a tabindex="-1" href="committeeUpdateApproveAction.action">Approval Requests</a></li>
 				  	  <li><a tabindex="-1" href="constituencyCommitteeSummaryAction.action">Advanced DashBoard</a></li>
                       <li role="presentation" class="divider" style="background-color: rgba(229, 229, 229,0.6);"></li>
+					</c:if>
                      <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
                     </ul>
                  
@@ -180,6 +186,135 @@
 			</table>
         </div>
 		
+		<div class="row" id="districtDiv" style="display:none;"> 
+			<table class="table table-bordered" width="100%"  >
+				<tr>
+					<td width="22%" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);text-align:center;padding: 0px;">
+						<div class="col-md-12">
+							<h4 id="LocationIdDiv"  style="text-transform: uppercase;">ANHDRA PRADESH</h4>
+							<div class="row" id="totalDistrictCount">
+								
+							</div>
+						
+				
+						</div> 
+					</td>
+					<td width="78%" style="padding:0px;">
+						<table width="100%" class="table table-bordered" style="background-color:transparent; margin-bottom:0px;"  >
+							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
+								<td colspan="6">
+									<button id="mandal" class="btn btn-xs btn-success highlightClick" onclick="getCommitteeDetails('AP','mandal')">Mandal</button> | 
+									<button id="town" class="btn btn-xs btn-success highlightClick" onclick="getCommitteeDetails('AP','town')">Town</button> |	
+									<button id="division" class="btn btn-xs btn-success highlightClick" onclick="getCommitteeDetails('AP','division')">Division</button> |									
+									<button id="mandalAll" class="btn btn-xs btn-success highlight highlightClick " onclick="getCommitteeDetails('AP','mandalAll')">All</button>
+									<div class="pull-right">
+										<img width="16" height="16" id="ajaxImageIdAPmandal" src="./images/Loading-data.gif" alt="Processing Image" style="display:none;"/>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0">
+								<div id="totalMainCount1"></div></h4></td>
+								
+								<td style="padding:10px;" width="10%">
+									<span class="text-success">Started</span> Committees<br/>
+									<table>
+										<tr>
+											<td class="row-table">
+												<h4 class="m_top0"><div id="percCount"></div></h4>
+											</td>
+											<td class="row-table">
+												<h5 class="m_top0"><div id="percDtals"></div></h5>
+											</td>
+										</tr>
+									</table>
+								</td>
+								
+								<td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/>
+									<table>
+										<tr>
+											<td  class="row-table">
+												<h4 class="row-table m_top0">
+												<div id="compltdPerc"></div>
+												</h4>
+											</td>
+											<td  class="row-table">
+												<ul class="nav navbar-nav">
+												<li>
+													<div id="div41"></div>
+												</li>
+												</ul>
+											</td>
+										</tr>
+									</table>
+								</td>
+								<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affiliated Committees<br/>
+									<h4 class="m_top0">
+										<div id="div51"></div>
+									</h4>
+								</td>
+								<td style="padding:10px;" width="20%"><span class="text-success">Completed </span><br/>Affliated Committees<br/>
+									<h4 class="m_top0">
+									<ul class="nav navbar-nav">
+										<li>
+										<a><div id="div61"></div></a>
+										</li>
+									</ul>
+								  </h4>
+								 </td>
+								<td style="padding:10px;" width="28%">TOTAL<br/> <b>MEMBERS</b>
+									<h4 class="m_top0">
+										<div id="div71"></div>
+									</h4>
+								</td>
+								<div id="apMandalDiv"></div>
+							</tr>
+							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
+								<td colspan="6">
+										<button id="village"  class="btn btn-xs btn-success highlightClick1" onclick="getCommitteeDetails('AP','village')">Village</button> | 
+										<button id="ward" class="btn btn-xs btn-success highlightClick1" onclick="getCommitteeDetails('AP','ward')">Ward</button> |										
+										<button id="villageAll" class="btn btn-xs btn-success highlight highlightClick1 " onclick="getCommitteeDetails('AP','villageAll')">All</button>
+									<div class="pull-right">
+										<img width="16" height="16" id="ajaxImageIdAPvillage" src="./images/Loading-data.gif" alt="Processing Image" style="display:none;"/>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div81"></div></h4></td>
+								<td style="padding:10px;" width="10%">
+									<span class="text-success">Started</span> Committees<br/>
+									<table>
+										<tr>
+											<td class="row-table">
+												<h4 class="m_top0"><div id="div321"></div></h4>
+											</td>
+											<td class="row-table">
+												<h5 class="m_top0"><div id="div91"></div></h5>
+											</td>
+										</tr>
+									</table>
+								</td>
+							   <td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div101"></div></h4></td><td  class="row-table">
+							   <ul class="nav navbar-nav">
+								<li>
+									<div id="div111"></div>
+                                   
+								</li>	
+									
+									</td></tr></table></td>
+								<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affiliated Committees<br/><h4 class="m_top0"><div id="div121"></div></h4></td> 
+								<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affiliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
+                              <li><a><div id="div131"></div></a>
+                               </h4></td>
+								<td style="padding:10px;" width="28%">TOTAL <br/><b>MEMBERS</b><h4 class="m_top0"><div id="div141"></div></h4></td>
+								<div id="apVillageDiv"></div>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+        </div>
+		
         <div class="row" id="TGStateDiv"  style="display:none;">
 			<table class="table table-bordered" width="100%"  >
         	<tr>
@@ -286,7 +421,7 @@
         </div>
 		
         <div class="row m_top20">        	 
-            <div class="row">
+            <div class="row" id="commityClsi">
                 <div class="col-md-10 col-xs-12 col-sm-12">
                     <h4 id="headingId" class="text-success" style="display:inline-block">DISTRICT WISE COMMITTEES</h4>
 					
@@ -460,6 +595,8 @@
                $(document).ready(function() {
 					$('#APStateDiv').hide();
 					$('#TGStateDiv').hide();
+					$('#districtDiv').hide();
+					
 					$('#statesBtnsId').hide();
                   var cb = function(start, end, label) {
                     console.log(start.toISOString(), end.toISOString(), label);
@@ -550,14 +687,47 @@
 						$(this).addClass("highlight");
 					});
 					
-					getCommitteeCountByState("AP");
-					getCommitteeCountByState("TS");
-					getCommitteeDetails("AP","mandalAll");
-					getCommitteeDetails("AP","villageAll");	
-					getCommitteeDetails("TS","mandalAll");	
-					getCommitteeDetails("TS","villageAll");
-					getDistrictWiseCommittesSummary();
-					
+					if(userAccessType=="MP"){
+						$("#commityClsi").hide();
+					}else{
+						$("#commityClsi").show();
+					}
+					//console.log(userAccessType);
+					if(userAccessType == 'ALL'){
+						getCommitteeCountByState("AP");
+						getCommitteeCountByState("TS");
+						getCommitteeDetails("AP","mandalAll");
+						getCommitteeDetails("AP","villageAll");	
+						getCommitteeDetails("TS","mandalAll");	
+						getCommitteeDetails("TS","villageAll");
+						getDistrictWiseCommittesSummary();
+					}else if(userAccessType == 'TS'){
+						getCommitteeCountByState("TS");
+						getCommitteeDetails("TS","mandalAll");	
+						getCommitteeDetails("TS","villageAll");
+						getDistrictWiseCommittesSummary();
+					}
+					else if(userAccessType == 'AP'){
+						getCommitteeCountByState("AP");
+						getCommitteeDetails("AP","mandalAll");
+						getCommitteeDetails("AP","villageAll");
+						getDistrictWiseCommittesSummary();
+					}else{
+						
+						if(userAccessType=="MP"){
+							getCommitteeCountByState("AP");
+							getCommitteeDetails("AP","mandalAll");
+							getCommitteeDetails("AP","villageAll");
+							getConstituencyWiseCommittesSummary();
+						}else{
+							getCommitteeCountByState("AP");
+							getCommitteeDetails("AP","mandalAll");
+							getCommitteeDetails("AP","villageAll");	
+							getDistrictWiseCommittesSummary();
+						}
+						
+						
+					}
                });
 			   
                </script>
@@ -632,6 +802,8 @@
           url: 'getDashBoardLocationWiseDetails.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
+			
+			//console.log(result);
 			var str='';
 			var str1='';
 			var str2='';
@@ -642,6 +814,9 @@
     	        }
 			}
 			if(result != null){
+				console.log(result.accessState);
+				if(result.accessState == 'AP' || result.accessState == 'TG' || result.accessState == 'ALL')
+				{	
 				if(state == "AP"){
 					if(level == 'mandal' || level == 'town' || level == 'division' || level == 'mandalAll')
 					{
@@ -780,7 +955,77 @@
 						$("#div28").html(result.membersCount);	
 					}
 				}
-
+			  }
+			  else{
+				  
+				  if(level == 'mandal' || level == 'town' || level == 'division' || level == 'mandalAll')
+					{
+						$('#ajaxImageId'+state+'mandal').hide();
+						
+						$("#totalMainCount1").html(result.committeesCount);
+						
+						$("#percCount").html(result.startedCommitteePerc+"%");
+						$("#percDtals").html('['+result.mainCommittees+']');						
+						
+						$("#compltdPerc").html(result.completedCommitteePerc+"%");
+						
+						if(result.completedCommittees > 0 && result.completedCommittees != null){
+							$("#div41").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
+						}
+						else{						
+							$("#div41").html('<span style="margin-left:0px;">[0]</span>');
+						}
+					
+						//$("#div30").html(result.afflCommitteesPerc);
+						$("#div51").html(result.afflCommittees);
+						
+						if(result.affliatedCompleted!=0){
+							$("#div61").html('<a id=\''+level+'IdAPAffl\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\')">'+result.affliatedCompleted+'</a>');
+						}else{
+							$("#div61").html('<span> 0 </span>');
+						}
+						//$("#div6").html(result.affliatedCompleted);
+						//$("#div31").html(result.affliatedCompletedPerc);
+												
+						$("#div71").html(result.membersCount);
+					}
+					
+					else if(level == 'village' || level == 'ward' || level == 'villageAll')
+					{
+						$('#ajaxImageId'+state+'village').hide();
+						
+						$("#div81").html(result.committeesCount);
+						
+						$("#div321").html(result.startedCommitteePerc+"%");
+						$("#div91").html('['+result.mainCommittees+']');						
+						
+						$("#div101").html(result.completedCommitteePerc+"%");
+				
+						if(result.completedCommittees > 0 && result.completedCommittees != null)
+						
+						//$("#div11").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
+						$("#div111").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
+						
+						else{
+						$("#div111").html('<span style="margin-left:0px;">[0]</span>');
+						}
+						//$("#div33").html(result.afflCommitteesPerc);
+						$("#div121").html(result.afflCommittees);
+						
+						$("#div131").html(result.affliatedCompleted);
+						//if(result.completedCommittees > 0 && result.completedCommittees != null)
+						if(result.affliatedCompleted!=0){
+							$("#div131").html('<a id=\''+level+'IdAPAffl\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\')">'+result.affliatedCompleted+'</a>');
+						}else{
+							$("#div131").html('<span> 0 </span>');
+						}
+						
+						//$("#div34").html(result.affliatedCompletedPerc);
+												
+						$("#div141").html(result.membersCount);
+					
+					}
+			  }
 			}
 		
 		});
@@ -791,6 +1036,8 @@
 		$('#APStateDiv').hide();
 		$('#TGStateDiv').hide();
 		$('#statesBtnsId').hide();
+		$('#districtDiv').hide();
+		//<div class="row" id="districtDiv" style="display:none;"> LocationIdDiv
 		var state = state; 
 		var jObj = {
 			state:state,
@@ -810,7 +1057,7 @@
 				var str='';
 				str+='<div class="col-md-5 col-md-offset-1 col-xs-3"><span style="font-size:2em;">'+result.totalCommittees+'</span></div>';
 				str+='<div style="" class="col-md-6 col-xs-3 text-left"><small>TOTAL MAIN COMMITTEES</small></div>';
-				
+				console.log("result.accessState  :"+result.accessState == "TG");
 				if(result.accessState == "TG")
 				{
 					if(state == "TS"){
@@ -849,7 +1096,13 @@
 						$('#TGStateDiv').show();
 						$('#statesBtnsId').show();
 				}
-				
+				else{
+					str+='<div class="myStatAP" data-dimension="180" data-text="'+result.totalCntPerc+'%" data-info="COMPLETED" data-width="10" data-fontsize="34" data-percent="'+result.totalCntPerc+'" data-fgcolor="#349866" data-bgcolor="#6D6024" style="margin-left: 40px;"></div>';				
+							$("#totalDistrictCount").html(str);
+							$("#LocationIdDiv").html(''+result.accessState+'');							
+							$('.myStatAP').circliful();
+							$('#districtDiv').show();
+				}
 		
 		});
 	}
@@ -914,6 +1167,7 @@
 		});
 	}
 	
+		
 	
 	function buildResultDistrictSummary(result){
 		var districtInfoArr = [];
@@ -2126,6 +2380,7 @@
 	}	
 	/* Script For Summary POpUP  */
 	
+
  
 	
 	</script>

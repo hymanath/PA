@@ -2520,6 +2520,8 @@
 	     <property name="cadreCommitteeChangeDesignationsDAO" ref="cadreCommitteeChangeDesignationsDAO"/>
 	     <property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"/>
 	      <property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO"/>
+	      <property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO"/>
+	      <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"/>
 	     
 	</bean>
 </beans>		
