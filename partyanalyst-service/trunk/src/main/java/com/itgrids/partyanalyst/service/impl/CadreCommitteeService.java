@@ -3753,9 +3753,71 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return null;
 	}
 	
-	public List<CadreCommitteeReportVO> getStartedAffliCommitteesCountByLocation(String state,List<Long> levelIds,String startDateStr,String endDateStr){
+	public List<CadreCommitteeReportVO> getStartedAffliCommitteesCountByLocation(String state,List<Long> levelIds,String startDateStr,String endDateStr,String accessType,Long accessValue,Long userId){
 		List<CadreCommitteeReportVO> resultList= new ArrayList<CadreCommitteeReportVO>();
 		try{
+			
+			List<Long> districtIds = new ArrayList<Long>();
+							List<Long> assemblyIds = new ArrayList<Long>();
+							List<Long> locationLevelValues = new ArrayList<Long>();
+							
+							if(accessType.trim().equalsIgnoreCase("MP"))
+							{
+								districtIds = null;
+								List<Object[]> accessConstituencyList = userConstituencyAccessInfoDAO.findByElectionScopeUser(1L,userId);
+								
+								List<Long> parliamentsIds = new ArrayList<Long>();
+								if(accessConstituencyList != null && accessConstituencyList.size()>0)
+								{
+									for (Object[] parliament : accessConstituencyList) {
+										parliamentsIds.add(parliament[0] != null ? Long.valueOf(parliament[0].toString().trim()):0L);
+									}
+								}
+								else
+								{
+									parliamentsIds.add(accessValue);
+								}
+								
+								if(parliamentsIds != null && parliamentsIds.size()>0)
+								{
+									assemblyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesByParliamentList(parliamentsIds);
+								}
+							
+								if(levelIds.contains(5L)) // mandal
+								{
+									List<Object[]> tehsilDetails = tehsilDAO.getTehsilsByConstituencyIdsListAndPublicationDateId(assemblyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+									if(tehsilDetails != null && tehsilDetails.size() > 0)
+									{
+										for (Object[] tehsil : tehsilDetails) {
+											locationLevelValues.add(tehsil[0] != null ? Long.valueOf(tehsil[0].toString().trim()):0L);						
+										}
+									}
+								}
+								if(levelIds.contains(7L)) //localelectionbody 
+								{
+									List<Object[]> tehsilDetails = tehsilDAO.getAllLocalElecBodyListByConstituencyIdsListAndPublicationDateId(assemblyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+									if(tehsilDetails != null && tehsilDetails.size() > 0)
+									{
+										for (Object[] tehsil : tehsilDetails) {
+											locationLevelValues.add(tehsil[0] != null ? Long.valueOf(tehsil[0].toString().trim()):0L);						
+										}
+									}
+								}
+								if(levelIds.contains(9L)) //DIVISION 
+								{
+								}
+							}
+							else
+							{
+								List<Object[]> accessDistrictsList = userDistrictAccessInfoDAO.findByUser(userId);
+								if(accessDistrictsList != null && accessDistrictsList.size()>0)
+								{
+									for (Object[] districtId : accessDistrictsList) {
+										districtIds.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
+									}
+									
+								}
+							}
 			Date startDate = null;
 			Date endDate = null;
 			 if(startDateStr !=null && endDateStr !=null){
@@ -3765,7 +3827,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				 
 			 }
 			
-			List<Object[]> startedCount=tdpCommitteeDAO.getCompletedAffliCommitteesCountByLocation(state, levelIds,startDate,endDate);
+			List<Object[]> startedCount=tdpCommitteeDAO.getCompletedAffliCommitteesCountByLocation(state, levelIds,startDate,endDate,districtIds,assemblyIds,locationLevelValues);
 			if(startedCount != null && startedCount.size() > 0){
 				for (Object[] objects : startedCount) {		
 						CadreCommitteeReportVO vo = new CadreCommitteeReportVO();

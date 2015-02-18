@@ -460,7 +460,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 	}
 	
-	public List<Object[]> getCompletedAffliCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate ){
+	public List<Object[]> getCompletedAffliCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate,List<Long> districtIds,List<Long> assemblyIds,List<Long> locationlevelValueList){
 
 		StringBuilder str = new StringBuilder();
 
@@ -470,6 +470,18 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		str.append(" model.state= :state ");
 		if(startDate !=null && endDate !=null){
 			str.append(" and ( date(model.completedDate)>=:startDate and date(model.completedDate)<=:endDate ) ");
+		}
+		if(locationlevelValueList != null && locationlevelValueList.size()>0)
+		{
+			str.append(" and model.tdpCommitteeLevelValue in (:locationlevelValueList) ");
+		}	
+		else if(assemblyIds != null && assemblyIds.size()>0)
+		{
+			str.append(" and model.constituency.constituencyId in (:assemblyIds) ");
+		}		
+		else if(districtIds != null && districtIds.size()>0)
+		{
+			str.append(" and model.districtId in (:districtIds) ");
 		}
 		str.append("and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) " +
 				" and model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 2 and" +
@@ -481,6 +493,18 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		if(startDate != null && endDate !=null){
 			query.setParameter("startDate", startDate);
 			query.setParameter("endDate", endDate);
+		}
+		if(locationlevelValueList != null && locationlevelValueList.size()>0)
+		{
+			query.setParameterList("locationlevelValueList", locationlevelValueList);
+		}	
+		else if(assemblyIds != null && assemblyIds.size()>0)
+		{
+			query.setParameterList("assemblyIds", assemblyIds);
+		}
+		else if(districtIds != null && districtIds.size()>0)
+		{
+			query.setParameterList("districtIds", districtIds);
 		}
 		return query.list();
 	}
