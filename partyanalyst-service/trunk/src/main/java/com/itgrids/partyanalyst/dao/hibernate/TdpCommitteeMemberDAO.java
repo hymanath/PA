@@ -70,15 +70,22 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
 		return query.list();
 	}
-	public List<Object[]> getStartedCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate,List<Long> districtIds){
+	public List<Object[]> getStartedCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate,List<Long> districtIds,List<Long> assemblyIds,List<Long> locationlevelValueList){
 
 		StringBuilder str = new StringBuilder();
 
 		str.append("select count(distinct model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId), " +
 		" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId " +
 		" from TdpCommitteeMember model where ");
-		
-		if(districtIds != null && districtIds.size()>0)
+		if(locationlevelValueList != null && locationlevelValueList.size()>0)
+		{
+			str.append(" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue in (:locationlevelValueList) ");
+		}	
+		else if(assemblyIds != null && assemblyIds.size()>0)
+		{
+			str.append(" model.tdpCommitteeRole.tdpCommittee.constituency.constituencyId in (:assemblyIds) ");
+		}		
+		else if(districtIds != null && districtIds.size()>0)
 		{
 			str.append(" model.tdpCommitteeRole.tdpCommittee.districtId in (:districtIds)  ");
 		}
@@ -95,7 +102,15 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 				" group by " +
 		        " model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
 		Query query = getSession().createQuery(str.toString());
-		if(districtIds != null && districtIds.size()>0)
+		if(locationlevelValueList != null && locationlevelValueList.size()>0)
+		{
+			query.setParameterList("locationlevelValueList", locationlevelValueList);
+		}	
+		else if(assemblyIds != null && assemblyIds.size()>0)
+		{
+			query.setParameterList("assemblyIds", assemblyIds);
+		}
+		else if(districtIds != null && districtIds.size()>0)
 		{
 			query.setParameterList("districtIds", districtIds);
 		}
@@ -113,29 +128,45 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		return query.list();
 	}
 
-	public Long getMembersCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate ,List<Long> districtIds){
+	public Long getMembersCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate ,List<Long> districtIds,List<Long> assemblyIds,List<Long> locationlevelValueList){
 
 		StringBuilder str = new StringBuilder();
 
 		str.append(" select count(distinct model.tdpCommitteeMemberId) " +
 		" from TdpCommitteeMember model where ");
-		
-		if(districtIds != null && districtIds.size()>0)
+		if(locationlevelValueList != null && locationlevelValueList.size()>0)
+		{
+			str.append("  model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue in (:locationlevelValueList) ");
+		}	
+		else if(assemblyIds != null && assemblyIds.size()>0)
+		{
+			str.append(" model.tdpCommitteeRole.tdpCommittee.constituency.constituencyId in (:assemblyIds) ");
+		}		
+		else if(districtIds != null && districtIds.size()>0)
 		{
 			str.append(" model.tdpCommitteeRole.tdpCommittee.districtId in (:districtIds) ");
 		}		
 		else if(state != null)
 		{
-		str.append(" model.tdpCommitteeRole.tdpCommittee.state= :state ");
+			str.append(" model.tdpCommitteeRole.tdpCommittee.state= :state ");
 		}
 		if(startDate !=null && endDate !=null){
 			
 			str.append(" and ( date(model.insertedTime)>=:startDate and date(model.insertedTime)<=:endDate ) ");
 		}
-		str.append("and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) and model.isActive ='Y' ");
+		str.append(" and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) and model.isActive ='Y' ");
 
 		Query query = getSession().createQuery(str.toString());
-		if(districtIds != null && districtIds.size()>0)
+		
+		if(locationlevelValueList != null && locationlevelValueList.size()>0)
+		{
+			query.setParameterList("locationlevelValueList", locationlevelValueList);
+		}	
+		else if(assemblyIds != null && assemblyIds.size()>0)
+		{
+			query.setParameterList("assemblyIds", assemblyIds);
+		}
+		else if(districtIds != null && districtIds.size()>0)
 		{
 			query.setParameterList("districtIds", districtIds);
 		}

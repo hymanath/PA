@@ -7,6 +7,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
+import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
 import com.itgrids.partyanalyst.model.TdpCommittee;
 
 public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  implements ITdpCommitteeDAO {
@@ -43,7 +44,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 	}
 
-	public Long getTotalCommitteesCountByLocation(String state,List<Long> levelIds,List<Long> districtIds){
+	public Long getTotalCommitteesCountByLocation(String state,List<Long> levelIds,List<Long> districtIds,List<Long> assemblyIds,List<Long> locationlevelValueList){
 		//0count ,1 isCommitteeConfirmed,2.tdpCommitteeLevelId,3.tdpBasicCommitteeId
 
 		StringBuilder str = new StringBuilder();
@@ -51,7 +52,15 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		str.append("select count(model.tdpCommitteeId) " +
 				" from TdpCommittee model where model.tdpBasicCommittee.tdpBasicCommitteeId = 1  ");
 		
-		if(districtIds != null && districtIds.size()>0)
+		if(locationlevelValueList != null && locationlevelValueList.size()>0)
+		{
+			str.append(" and model.tdpCommitteeLevelValue in (:locationlevelValueList) ");
+		}	
+		else if(assemblyIds != null && assemblyIds.size()>0)
+		{
+			str.append(" and model.constituency.constituencyId in (:assemblyIds) ");
+		}		
+		else if(districtIds != null && districtIds.size()>0)
 		{
 			str.append(" and model.districtId in (:districtIds) ");
 		}
@@ -68,7 +77,15 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 
 		Query query = getSession().createQuery(str.toString());
 		
-		if(districtIds != null && districtIds.size()>0)
+		if(locationlevelValueList != null && locationlevelValueList.size()>0)
+		{
+			query.setParameterList("locationlevelValueList", locationlevelValueList);
+		}	
+		else if(assemblyIds != null && assemblyIds.size()>0)
+		{
+			query.setParameterList("assemblyIds", assemblyIds);
+		}
+		else if(districtIds != null && districtIds.size()>0)
 		{
 			query.setParameterList("districtIds", districtIds);
 		}
@@ -83,6 +100,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		
 		return (Long)query.uniqueResult();
 	}
+	
 	public List<Object[]> getLocationByTypeIdAndLevel(List<Long> levelIds,Long committeTypeId,Long constituencyId,String status)
 	{
 		StringBuilder str = new StringBuilder();
@@ -211,15 +229,23 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		return query.list();
 	}*/
 	
-	public List<Object[]> getTotalCompletedCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate,List<Long> districtIds){
+	public List<Object[]> getTotalCompletedCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate,List<Long> districtIds,List<Long> assemblyIds,List<Long> locationlevelValueList){
 		//0count ,1 isCommitteeConfirmed,2.tdpCommitteeLevelId,3.tdpBasicCommitteeId
 
 		StringBuilder str = new StringBuilder();
 
-		str.append("select count(model.tdpCommitteeId),model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId " +
+		str.append("select count(model.tdpCommitteeId),model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId,model.districtId " +
 				" from TdpCommittee model where  " +
 				"  model.isCommitteeConfirmed= 'Y' ");
-		if(districtIds != null && districtIds.size()>0)
+		if(locationlevelValueList != null && locationlevelValueList.size()>0)
+		{
+			str.append(" and model.tdpCommitteeLevelValue in (:locationlevelValueList) ");
+		}	
+		else if(assemblyIds != null && assemblyIds.size()>0)
+		{
+			str.append(" and model.constituency.constituencyId in (:assemblyIds) ");
+		}		
+		else if(districtIds != null && districtIds.size()>0)
 		{
 			str.append(" and model.districtId in (:districtIds) ");
 		}
@@ -237,7 +263,16 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		str.append(" group by model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId ");
 
 		Query query = getSession().createQuery(str.toString());
-		if(districtIds != null && districtIds.size()>0)
+		
+		if(locationlevelValueList != null && locationlevelValueList.size()>0)
+		{
+			query.setParameterList("locationlevelValueList", locationlevelValueList);
+		}	
+		else if(assemblyIds != null && assemblyIds.size()>0)
+		{
+			query.setParameterList("assemblyIds", assemblyIds);
+		}
+		else if(districtIds != null && districtIds.size()>0)
 		{
 			query.setParameterList("districtIds", districtIds);
 		}
@@ -449,4 +484,5 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		}
 		return query.list();
 	}
+
 }

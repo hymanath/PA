@@ -1203,4 +1203,23 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAssemblyConstituencyDetlsByDistrictIds(List<Long> districtIds) {	
+		StringBuilder query = new StringBuilder();
+		query.append(" select model.constituencyId, model.name from Constituency model where model.electionScope.electionScopeId = 2 and model.district.districtId in ( :districtIds) order by model.name" );
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameterList("districtIds", districtIds);		
+		return queryObject.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getParliamentConstituencyByParliamentId(Long constituencyId) {
+		Object[] params = {constituencyId};
+		return getHibernateTemplate().find("select distinct model.constituencyId,model.name" +
+				" from Constituency model where model.state.stateId = 1 " +
+				" and model.electionScope.electionType.electionTypeId = 1 " +
+				" and model.constituencyId = ?", params);
+			
+	}
 }
