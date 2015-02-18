@@ -45,6 +45,7 @@ import com.itgrids.partyanalyst.dto.CadrePrintVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
 import com.itgrids.partyanalyst.dto.LoginStatusVO;
+import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SinkVO;
 import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
@@ -1305,5 +1306,21 @@ public class WebServiceHandlerService1 implements IWebServiceHandlerService1 {
 		}
 		return "success";
 	}
+    
+    public String saveMissedCallDetails(MissedCallCampaignVO input)
+   	{
+   		LOG.debug("Entered into the saveMissedCallDetails  method in WebServiceHandlerService");
+   		try
+   		{
+   			cadreRegistrationService.saveMissedCallDetails(input);
+   		
+   		}catch(Exception e)
+   		{
+   			LOG.error("Exception raised in saveMissedCallDetails  method in WebServiceHandlerService",e);
+   			
+   			return "failure";
+   		}
+   		return "success";
+   	}
 }
 
