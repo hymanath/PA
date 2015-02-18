@@ -66,7 +66,7 @@
     </div>
 	<div class="row m_top20">
 		<div class="col-md-4 col-md-offset-3"><label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="reportTypeCls" value=1 name="reportType" checked="true"> VILLAGE / WARD</label></div>
-		<div class="col-md-4 "><label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="reportTypeCls" value=2 name="reportType">MANDAL / MUNCIPALITY / DIVISON</label></div>
+		<div class="col-md-4 "><label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="reportTypeCls" value=2 name="reportType">MANDAL / MUNCIPALITY / DIVISION</label></div>
 	</div>
 	
 	<span class="btn btn-info pull-right exportToExcel" onclick="exportToExcel()" style="display:none;"> Export To Excel </span>

@@ -1057,7 +1057,7 @@
 				var str='';
 				str+='<div class="col-md-5 col-md-offset-1 col-xs-3"><span style="font-size:2em;">'+result.totalCommittees+'</span></div>';
 				str+='<div style="" class="col-md-6 col-xs-3 text-left"><small>TOTAL MAIN COMMITTEES</small></div>';
-				console.log("result.accessState  :"+result.accessState == "TG");
+
 				if(result.accessState == "TG")
 				{
 					if(state == "TS"){
@@ -1176,7 +1176,18 @@
 		$("#tableHeadingId").html("DISTRICT");
 		var str = '';
 		
-		
+		var mandTotal =0; 	
+		var mandStarted =0; 	
+		var mandCompleted =0; 	
+		var mandMembers =0; 	
+		var mandAfStarted =0; 	
+		var mandAfCompleted =0;
+		var panTotal =0; 	
+		var panStarted =0; 	
+		var panCompleted =0; 	
+		var panMembers =0; 	
+		var panAffStarted =0; 	
+		var panAffCompleted =0;
 						
 		
 		
@@ -1186,6 +1197,7 @@
 			if(result[i].townMandalDivisionVO!=null){
 				if(result[i].townMandalDivisionVO.totalCommittees!=null){
 					str += '<td>'+result[i].townMandalDivisionVO.totalCommittees+'</td>';
+					mandTotal=mandTotal+result[i].townMandalDivisionVO.totalCommittees;
 				}else{
 					str += '<td> - </td>';
 				}
@@ -1193,30 +1205,35 @@
 				if(result[i].townMandalDivisionVO.mainStarted!=null){
 					//str += '<td>'+result[i].townMandalDivisionVO.mainStarted+'<span id="mini-pie-chart-district'+i+'" class="pull-right mini-pie-chart-district"></span></td>';
 					str += '<td>'+result[i].townMandalDivisionVO.mainStarted+'</td>';
+					mandStarted=mandStarted+result[i].townMandalDivisionVO.mainStarted;
 				}else{
 					str += '<td> - </td>';
 				}
 				
 				if(result[i].townMandalDivisionVO.mainCompleted!=null){
 					str += '<td>'+result[i].townMandalDivisionVO.mainCompleted+'</td>';
+					mandCompleted=mandCompleted+result[i].townMandalDivisionVO.mainCompleted;
 				}else{
 					str += '<td> - </td>';
 				}
 				
 				if(result[i].townMandalDivisionVO.membersCount!=null){
 					str += '<td>'+result[i].townMandalDivisionVO.membersCount+'</td>';
+					mandMembers=mandMembers+result[i].townMandalDivisionVO.membersCount;
 				}else{
 					str += '<td> - </td>';
 				}
 				
 				if(result[i].townMandalDivisionVO.afflStarted!=null){
 					str += '<td>'+result[i].townMandalDivisionVO.afflStarted+'</td>';
+					mandAfStarted=mandAfStarted+result[i].townMandalDivisionVO.afflStarted;
 				}else{
 					str += '<td> - </td>';
 				}
 				
 				if(result[i].townMandalDivisionVO.afflCompleted!=null){
 					str += '<td>'+result[i].townMandalDivisionVO.afflCompleted+' </td>';
+					mandAfCompleted=mandAfCompleted+result[i].townMandalDivisionVO.afflCompleted;
 				}else{
 					str += '<td> - </td>';
 				}
@@ -1232,6 +1249,7 @@
 			if(result[i].villageWardVO!=null){
 				if(result[i].villageWardVO.totalCommittees!=null){
 					str += '<td>'+result[i].villageWardVO.totalCommittees+'</td>';
+					panTotal=panTotal+result[i].villageWardVO.totalCommittees;
 				}else{
 					str += '<td> - </td>';
 				}
@@ -1239,30 +1257,35 @@
 				if(result[i].villageWardVO.mainStarted!=null){
 					//str += '<td>'+result[i].villageWardVO.mainStarted+'<span id="mini-pie-chart-village'+i+'" class="pull-right mini-pie-chart-village"></span></td>';
 					str += '<td>'+result[i].villageWardVO.mainStarted+'</td>';
+					panStarted=panStarted+result[i].villageWardVO.mainStarted;
 				}else{
 					str += '<td> - </td>';
 				}
 				
 				if(result[i].villageWardVO.mainCompleted!=null){
 					str += '<td>'+result[i].villageWardVO.mainCompleted+'</td>';
+					panCompleted=panCompleted+result[i].villageWardVO.mainCompleted;
 				}else{
 					str += '<td> - </td>';
 				}
 				
 				if(result[i].villageWardVO.membersCount!=null){
 					str += '<td>'+result[i].villageWardVO.membersCount+' </td>';
+					panMembers=panMembers+result[i].villageWardVO.membersCount;
 				}else{
 					str += '<td> - </td>';
 				}
 				
 				if(result[i].villageWardVO.afflStarted!=null){
 					str += '<td>'+result[i].villageWardVO.afflStarted+'</td>';
+					panAffStarted=panAffStarted+result[i].villageWardVO.afflStarted;
 				}else{
 					str += '<td> - </td>';
 				}
 				
 				if(result[i].villageWardVO.afflCompleted!=null){
 					str += '<td>'+result[i].villageWardVO.afflCompleted+' </td>';
+					panAffCompleted=panAffCompleted+result[i].villageWardVO.afflCompleted;
 				}else{
 					str += '<td> - </td>';
 				}
@@ -1307,7 +1330,18 @@
 			
 			
 		}
-	
+		str += '<tr style="font-weight:bold;"><td>TOTAL</td><td>'+mandTotal+'</td>'; 	
+		str += '<td>'+mandStarted+'</td>'; 	
+		str += '<td>'+mandCompleted+'</td>'; 	
+		str += '<td>'+mandMembers+'</td>'; 	
+		str += '<td>'+mandAfStarted+'</td>'; 	
+		str += '<td>'+mandAfCompleted+'</td>'; 	
+		str += '<td>'+panTotal+'</td>'; 	
+		str += '<td>'+panStarted+'</td>'; 	
+		str += '<td>'+panCompleted+'</td>'; 	
+		str += '<td>'+panMembers+'</td>'; 	
+		str += '<td>'+panAffStarted+'</td>'; 	
+		str += '<td>'+panAffCompleted+'</td></tr>'; 
 		$("#distSummaryBody").html(str);
 		
 		
@@ -1725,7 +1759,9 @@
 		});
 	}
 	
-	
+	function showAdvanceDashBoard(constiIdReq){
+		window.location.href="constituencyCommitteeSummaryAction.action?accessConstituencyId="+constiIdReq;
+	}
 	
 	function buildConstiWiseSummary(result){
 		var constiInfoArr = [];
@@ -1733,14 +1769,27 @@
 	
 		$("#headingId").html("CONSTITUENCY WISE COMMITTEES");
 		$("#tableHeadingId").html("CONSTITUENCY");
-		var str = '';
+		var mandTotal =0; 	
+		var mandStarted =0; 	
+		var mandCompleted =0; 	
+		var mandMembers =0; 	
+		var mandAfStarted =0; 	
+		var mandAfCompleted =0;
+		var panTotal =0; 	
+		var panStarted =0; 	
+		var panCompleted =0; 	
+		var panMembers =0; 	
+		var panAffStarted =0; 	
+		var panAffCompleted =0;
+		var str = 0;
 		$("#distSummaryBody").html("");
 		for(var i in result){
 			str += '<tr>';
-			str += '<td ><a  href="javascript:{getPopUpForSummary('+result[i].constiId+',\''+result[i].name+'\');}" style="font-size: 13px;">'+result[i].name+'</a></td>';
+			str += '<td ><span style="font-size: 13px;">'+result[i].name+'</span>&nbsp;&nbsp;<span style="cursor: pointer;" title="Click Here For '+result[i].name+' Committee Summary Report" onclick="getPopUpForSummary('+result[i].constiId+',\''+result[i].name+'\');" class="glyphicon glyphicon-dashboard"></span>&nbsp;&nbsp;<span style="cursor: pointer;"  onclick="showAdvanceDashBoard('+result[i].constiId+');" title="Click Here For '+result[i].name+' Advance Dashboard"  class="glyphicon glyphicon-list-alt"></span></td>';
 			if(result[i].townMandalDivisionVO!=null){
 				if(result[i].townMandalDivisionVO.totalCommittees!=null){
 					str += '<td>'+result[i].townMandalDivisionVO.totalCommittees+'</td>';
+					mandTotal=mandTotal+result[i].townMandalDivisionVO.totalCommittees;
 				}else{
 					str += '<td> - </td>';
 				}
@@ -1748,30 +1797,35 @@
 				if(result[i].townMandalDivisionVO.mainStarted!=null){
 					//str += '<td>'+result[i].townMandalDivisionVO.mainStarted+'<span id="mini-pie-chart-constituency'+i+'" class="pull-right mini-pie-chart-district"></span></td>';
 					str += '<td>'+result[i].townMandalDivisionVO.mainStarted+'</td>';
+					mandStarted=mandStarted+result[i].townMandalDivisionVO.mainStarted;
 				}else{
 					str += '<td> - </td>';
 				}
 				
 				if(result[i].townMandalDivisionVO.mainCompleted!=null){
 					str += '<td>'+result[i].townMandalDivisionVO.mainCompleted+'</td>';
+					mandCompleted=mandCompleted+result[i].townMandalDivisionVO.mainCompleted;
 				}else{
 					str += '<td> - </td>';
 				}
 				
 				if(result[i].townMandalDivisionVO.membersCount!=null){
 					str += '<td>'+result[i].townMandalDivisionVO.membersCount+'</td>';
+					mandMembers=mandMembers+result[i].townMandalDivisionVO.membersCount;
 				}else{
 					str += '<td> - </td>';
 				}
 				
 				if(result[i].townMandalDivisionVO.afflStarted!=null){
 					str += '<td>'+result[i].townMandalDivisionVO.afflStarted+'</td>';
+					mandAfStarted=mandAfStarted+result[i].townMandalDivisionVO.afflStarted;
 				}else{
 					str += '<td> - </td>';
 				}
 				
 				if(result[i].townMandalDivisionVO.afflCompleted!=null){
 					str += '<td>'+result[i].townMandalDivisionVO.afflCompleted+' </td>';
+					mandAfCompleted=mandAfCompleted+result[i].townMandalDivisionVO.afflCompleted;
 				}else{
 					str += '<td> - </td>';
 				}
@@ -1787,6 +1841,7 @@
 			if(result[i].villageWardVO!=null){
 				if(result[i].villageWardVO.totalCommittees!=null){
 					str += '<td>'+result[i].villageWardVO.totalCommittees+'</td>';
+					panTotal=panTotal+result[i].villageWardVO.totalCommittees;
 				}else{
 					str += '<td> - </td>';
 				}
@@ -1794,30 +1849,35 @@
 				if(result[i].villageWardVO.mainStarted!=null){
 					//str += '<td>'+result[i].villageWardVO.mainStarted+'<span id="mini-pie-chart-constiVillage'+i+'" class="pull-right mini-pie-chart-village"></span></td>';
 					str += '<td>'+result[i].villageWardVO.mainStarted+'</td>';
+					panStarted=panStarted+result[i].villageWardVO.mainStarted;
 				}else{
 					str += '<td> - </td>';
 				}
 				
 				if(result[i].villageWardVO.mainCompleted!=null){
 					str += '<td>'+result[i].villageWardVO.mainCompleted+'</td>';
+					panCompleted=panCompleted+result[i].villageWardVO.mainCompleted;
 				}else{
 					str += '<td> - </td>';
 				}
 				
 				if(result[i].villageWardVO.membersCount!=null){
 					str += '<td>'+result[i].villageWardVO.membersCount+' </td>';
+					panMembers=panMembers+result[i].villageWardVO.membersCount;
 				}else{
 					str += '<td> - </td>';
 				}
 				
 				if(result[i].villageWardVO.afflStarted!=null){
 					str += '<td>'+result[i].villageWardVO.afflStarted+'</td>';
+					panAffStarted=panAffStarted+result[i].villageWardVO.afflStarted;
 				}else{
 					str += '<td> - </td>';
 				}
 				
 				if(result[i].villageWardVO.afflCompleted!=null){
 					str += '<td>'+result[i].villageWardVO.afflCompleted+' </td>';
+					panAffCompleted=panAffCompleted+result[i].villageWardVO.afflCompleted;
 				}else{
 					str += '<td> - </td>';
 				}
@@ -1850,7 +1910,19 @@
 			
 			
 		}
-	
+	    str += '<tr style="font-weight:bold;"><td>TOTAL</td><td>'+mandTotal+'</td>'; 	
+		str += '<td>'+mandStarted+'</td>'; 	
+		str += '<td>'+mandCompleted+'</td>'; 	
+		str += '<td>'+mandMembers+'</td>'; 	
+		str += '<td>'+mandAfStarted+'</td>'; 	
+		str += '<td>'+mandAfCompleted+'</td>'; 	
+		str += '<td>'+panTotal+'</td>'; 	
+		str += '<td>'+panStarted+'</td>'; 	
+		str += '<td>'+panCompleted+'</td>'; 	
+		str += '<td>'+panMembers+'</td>'; 	
+		str += '<td>'+panAffStarted+'</td>'; 	
+		str += '<td>'+panAffCompleted+'</td></tr>';
+		
 		$("#distSummaryBody").html(str);
 		
 		if( $('.mini-pie-chart-constiVillage').length > 0 ) {
