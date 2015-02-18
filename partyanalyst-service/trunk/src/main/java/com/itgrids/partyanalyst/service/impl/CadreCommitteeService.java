@@ -778,7 +778,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	        for(SelectOptionVO location:locations){
 	        	vo = new LocationWiseBoothDetailsVO();
 	        	vo.setLocationId(Long.valueOf("2"+location.getId()));
-	        	vo.setLocationName(location.getName());
+	        	vo.setLocationName(location.getName()+" Mandal");
 	        	locationsList.add(vo);
 	        }
 	        for(Object[] localBodi:localBodies){
@@ -801,7 +801,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	        for(SelectOptionVO location:locations){
 	        	vo = new LocationWiseBoothDetailsVO();
 	        	vo.setLocationId(Long.valueOf("2"+location.getId()));
-	        	vo.setLocationName(location.getName());
+	        	vo.setLocationName(location.getName()+" Mandal");
 	        	locationsList.add(vo);
 	        }
 	        for(Object[] localBodi:localBodies){
@@ -965,7 +965,11 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					   memberVo.setUrl(electedMembersInfo[1].toString());//image
 					}
 					memberVo.setName(electedMembersInfo[2].toString());//name
-					memberVo.setType(electedMembersInfo[3].toString());//membership
+					if(electedMembersInfo[3].toString().trim().length() > 8){
+						memberVo.setType(electedMembersInfo[3].toString().trim().substring(electedMembersInfo[3].toString().trim().length()-8));//membership
+					}else{
+					    memberVo.setType(electedMembersInfo[3].toString());//membership
+					}
 					memberVo.setId((Long)electedMembersInfo[4]);//tdpCommitteeMemberId
 					memberVo.setOrderId((Long)electedMembersInfo[5]);//tdpCadreId
 					memberVo.setMainAccountId((Long)electedMembersInfo[6]);//tdpCommitteeRoleId
@@ -992,7 +996,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				   memberVo.setUrl(electedMembersInfo[1].toString());//image
 				}
 				memberVo.setName(electedMembersInfo[2].toString());//name
-				memberVo.setType(electedMembersInfo[3].toString());//membership
+				if(electedMembersInfo[3].toString().trim().length() > 8){
+					memberVo.setType(electedMembersInfo[3].toString().trim().substring(electedMembersInfo[3].toString().trim().length()-8));
+				}else{
+					memberVo.setType(electedMembersInfo[3].toString());//membership
+				}
+				
+				
 				memberVo.setId((Long)electedMembersInfo[4]);//tdpCommitteeMemberId
 				memberVo.setOrderId((Long)electedMembersInfo[5]);//tdpCadreId
 				memberVo.setMainAccountId((Long)electedMembersInfo[6]);//tdpCommitteeRoleId
@@ -2136,9 +2146,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 								memberVo.setName(electedMembersInfo[2].toString());//name
 								memberVo.setMainAccountId((Long)electedMembersInfo[4]);//tdpCadreId
 								memberVo.setOrderId((Long)electedMembersInfo[6]);//commiteememeberid
-								memberVo.setType(electedMembersInfo[3].toString());//membership
-								
-								
+								if(electedMembersInfo[3].toString().trim().length() > 8){
+									memberVo.setType(electedMembersInfo[3].toString().trim().substring(electedMembersInfo[3].toString().trim().length()-8));//membership
+								}else{
+									memberVo.setType(electedMembersInfo[3].toString());//membership
+								}
+															
 								committeeMembersList.add(memberVo);
 							}
 					  }
@@ -2834,7 +2847,11 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					vo.setImagePath(params[4] != null ? params[4].toString() : "");
 					vo.setId((Long)params[2]);
 					vo.setName(params[3].toString());
-					vo.setMembershipNo(params[5].toString());
+					if(params[5].toString().trim().length() > 8){
+						vo.setMembershipNo(params[5].toString().trim().substring(params[5].toString().trim().length()-8));
+					}else{
+					   vo.setMembershipNo(params[5].toString());
+					}
 					vo.setLevel((Long)params[0]); //roleId
 					vo.setRole(params[1].toString());//role
 					vo.setTotal((Long)params[6]);
@@ -4456,7 +4473,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		    		subvo.setPosition(obj[7].toString());
 		    		subvo.setPositionId(obj[8].toString());
 		    		subvo.setTdpCommitteeMemberId((Long)obj[16]);
-		    		subvo.setMemberShipNo(obj[9].toString());
+		    		if(obj[9].toString().trim().length() > 8){
+		    			subvo.setMemberShipNo(obj[9].toString().trim().substring(obj[9].toString().trim().length()-8));
+					}else{
+						subvo.setMemberShipNo(obj[9].toString());
+					}
+		    		
 		    		if(mainvo.getLocationsList()==null){
 		    		 mainvo.setLocationsList(new ArrayList<CommitteeApprovalVO>());
 		    		 mainvo.getLocationsList().add(subvo);
@@ -5126,7 +5148,11 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					if(object[2]!=null){
 						result.setPageUrl(object[2].toString());//img url
 					}
-					result.setTimeSpent(object[3].toString());//id
+					if(object[3].toString().trim().length() > 8){
+						result.setTimeSpent(object[3].toString().trim().substring(object[3].toString().trim().length()-8));
+					}else{
+					  result.setTimeSpent(object[3].toString());//id
+					}
 					
 					returnResult.add(result);
 				}
@@ -5247,7 +5273,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			    	  	
 			    	  cadreCommitteeMemberVO.setName(objects[3].toString());
 			    	  cadreCommitteeMemberVO.setImagePath(objects[4].toString());
-			    	  cadreCommitteeMemberVO.setMembershipNo(objects[5].toString());
+			    	  if(objects[5].toString().trim().length() > 8){
+			    		    cadreCommitteeMemberVO.setMembershipNo(objects[5].toString().trim().substring(objects[5].toString().trim().length()-8));
+						}else{
+							cadreCommitteeMemberVO.setMembershipNo(objects[5].toString());
+						}
+			    	  
 			    	  cadreCommitteeMemberVOList.add(cadreCommitteeMemberVO);
 				   }
 			    }
@@ -5305,7 +5336,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		    		cadreCommitteeMemberVO.setId((Long)objects[2]);//cadreId
 		    		cadreCommitteeMemberVO.setName(objects[3].toString());//cadreName
 		    		cadreCommitteeMemberVO.setImagePath(objects[4].toString());//image
-		    		cadreCommitteeMemberVO.setMembershipNo(objects[5].toString());//membershipno
+		    		if(objects[5].toString().trim().length() > 8){
+		    			cadreCommitteeMemberVO.setMembershipNo(objects[5].toString().trim().substring(objects[5].toString().trim().length()-8));
+					}else{
+						cadreCommitteeMemberVO.setMembershipNo(objects[5].toString());//membershipno
+					}
+		    		
 		    		cadreCommitteeMemberVOList.add(cadreCommitteeMemberVO);
 				}
 		    	if(cadreCommitteeMemberVOList != null && cadreCommitteeMemberVOList.size() > 0)
