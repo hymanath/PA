@@ -1,6 +1,10 @@
 package com.itgrids.partyanalyst.webservice;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -21,6 +25,7 @@ import com.itgrids.partyanalyst.dto.CadreTravelsVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
+import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
@@ -46,6 +51,16 @@ public class WebServiceHandler {
 	private CommonUtilsService commonUtilsService;
 	@Autowired 
 	private IWebServiceHandlerService1 webServiceHandlerService1;
+	private MissedCallCampaignVO MissedCallCampaignVO;
+	
+	
+	public MissedCallCampaignVO getMissedCallCampaignVO() {
+		return MissedCallCampaignVO;
+	}
+
+	public void setMissedCallCampaignVO(MissedCallCampaignVO missedCallCampaignVO) {
+		MissedCallCampaignVO = missedCallCampaignVO;
+	}
 
 	public CommonUtilsService getCommonUtilsService() {
 		return commonUtilsService;
@@ -924,5 +939,64 @@ public class WebServiceHandler {
 		}
 	}
 	
+	
+	@GET
+    @Path("/missedCallCampaign/cadreMissedCallCampaign/{data}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Object saveMissedCallDataForCadre(@PathParam("data") String data)
+	{
+		
+		LOG.debug("save missed call data for cadre");
+		LOG.debug(data.toString());
+		Map<String,String> details= new HashMap<String, String>();
+		details.put("","");
+		try{ 
+			MissedCallCampaignVO vo = new MissedCallCampaignVO();
+			String message="";
+			String[] inputsArray = data.split("&");
+			for(String input:inputsArray){
+				String[] parameterArray = input.split("=");
+				if(parameterArray.length > 0){
+					
+					
+					 int start = parameterArray[0].indexOf("[");
+	                 int end = parameterArray[0].indexOf("]");
+	                 if(start != -1 && end != -1){
+	                        message = input.substring(start + 1, end);
+	                 }
+					
+					
+					if(message.equalsIgnoreCase("from")){
+						if(parameterArray.length > 1){
+							vo.setFrom(parameterArray[1]);
+						}
+					}
+					else if(message.equalsIgnoreCase("Ring_time")){
+						if(parameterArray.length > 1){
+							vo.setRing_time(Long.valueOf(parameterArray[1]));
+						}
+					}
+				}
+			}
+			vo.setId(1l);
+			LOG.error("In Web Service mobilenumber"+vo.getFrom());
+
+			String regex = "\\d{10}";
+	        Pattern mobNO = Pattern.compile(regex);
+	        Matcher matcher = mobNO.matcher(vo.getFrom());
+	        
+			if((vo.getFrom() != null && vo.getFrom().trim().length() >0 && matcher.find()) && (vo.getRing_time() != null)){
+			    return webServiceHandlerService1.saveMissedCallDetails(vo);
+			}else{
+			return "Invalid Inputs !";
+			}
+		}
+		catch(Exception e)
+		{
+			LOG.error(e);
+			return "Error Occured";
+		}
+		
+	}
 	
 }
