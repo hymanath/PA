@@ -584,8 +584,11 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 			return "tdpCommitteeAdmin";
 		}
 		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"TIRUPATHI_BYEELECTION")){
-		return "tirupatiByeElection";
-	}
+			return "tirupatiByeElection";
+		}
+		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER),"TDP_COMMITTEE_AREAWISE_ACCESS")){
+			return "cadreCommitteeDashBoard";
+		}
 		statesList = staticDataService.getParticipatedStatesForAnElectionType(Long.valueOf(2));
 		
 		//electionYearsList=staticDataService.getElectionYearsForBooths(1l,2l);
