@@ -985,7 +985,7 @@ public class WebServiceHandler {
 	        Pattern mobNO = Pattern.compile(regex);
 	        Matcher matcher = mobNO.matcher(vo.getFrom());
 	        
-			if((vo.getFrom() != null && vo.getFrom().trim().length() >0 && matcher.find()) && (vo.getRing_time() != null)){
+			if((vo.getFrom() != null && vo.getFrom().trim().length() >0 ) && (vo.getRing_time() != null)){
 			    return webServiceHandlerService1.saveMissedCallDetails(vo);
 			}else{
 			return "Invalid Inputs !";
