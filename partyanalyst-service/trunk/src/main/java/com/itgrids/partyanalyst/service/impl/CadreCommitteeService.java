@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -1941,8 +1942,20 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				{
 					assemblyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesByParliamentList(parliamentsIds);
 				}
+				
+				if(assemblyIds!=null && assemblyIds.size()>0){
+					List<Object[]> distList = constituencyDAO.getDistictWiseConstituencyListByConstiIds(assemblyIds);
+					if(distList!=null && distList.size()>0){
+						Long dstrct = Long.valueOf(distList.get(0)[2].toString());
+						if(dstrct>10){
+							state = "AP";
+						}else{
+							state = "TS";
+						}
+					}
+				}
 			
-				if(levelIds.contains(5L)) // mandal
+				/*if(levelIds.contains(5L)) // mandal
 				{
 					List<Object[]> tehsilDetails = tehsilDAO.getTehsilsByConstituencyIdsListAndPublicationDateId(assemblyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
 					if(tehsilDetails != null && tehsilDetails.size() > 0)
@@ -1964,7 +1977,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				}
 				if(levelIds.contains(9L)) //DIVISION 
 				{
-				}
+				}*/
 			}
 			else
 			{
@@ -2003,50 +2016,171 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			}
 			
 			
-			Long committeeCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,levelIds,districtIds,assemblyIds,locationLevelValues);
-			//0count ,1 isCommitteeConfirmed,2.tdpCommitteeLevelId,3.tdpBasicCommitteeId
-			List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,levelIds,startDate,endDate,districtIds,assemblyIds,locationLevelValues);
-			
-			if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
-				for (Object[] objects : committeeCntDtls) {
-									
-					if(Long.valueOf(objects[1].toString())==1l)
-						completedMainCommittees = completedMainCommittees+(Long)objects[0];
-					else if(Long.valueOf(objects[1].toString()) == 2l)
-						completedAfflCommittees=completedAfflCommittees+(Long)objects[0];	
-				}
-			}
-				 
-			 List<Object[]> startedCount=tdpCommitteeMemberDAO.getStartedCommitteesCountByLocation(state, levelIds,startDate,endDate,districtIds,assemblyIds,locationLevelValues);
-				if(startedCount != null && startedCount.size() > 0){
-					for (Object[] objects : startedCount) {
-						if(Long.valueOf(objects[1].toString())==1l){
-							cadreCommitteeReportVO.setMainCommittees(Long.valueOf(objects[0].toString()));//startedCount in Main type
-						}
-						else{
-							
-							cadreCommitteeReportVO.setMainCommittees(0l);
-						}
-						if(Long.valueOf(objects[1].toString()) == 2l){
-							cadreCommitteeReportVO.setAfflCommittees(Long.valueOf(objects[0].toString()));//startedCount in Affliated Type
-						}
-						else{
-							
-							cadreCommitteeReportVO.setAfflCommittees(0l);
-						}
-
+			if(!accessType.trim().equalsIgnoreCase("MP") || levelIds.contains(6l) || levelIds.contains(8l)){
+				Long committeeCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,levelIds,districtIds,assemblyIds,locationLevelValues);
+				//0count ,1 isCommitteeConfirmed,2.tdpCommitteeLevelId,3.tdpBasicCommitteeId
+				List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,levelIds,startDate,endDate,districtIds,assemblyIds,locationLevelValues);
+				
+				if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
+					for (Object[] objects : committeeCntDtls) {
+										
+						if(Long.valueOf(objects[1].toString())==1l)
+							completedMainCommittees = completedMainCommittees+(Long)objects[0];
+						else if(Long.valueOf(objects[1].toString()) == 2l)
+							completedAfflCommittees=completedAfflCommittees+(Long)objects[0];	
 					}
 				}
-					else{
-						cadreCommitteeReportVO.setMainCommittees(0l);
-						cadreCommitteeReportVO.setAfflCommittees(0l);
-					}
+					 
+				cadreCommitteeReportVO.setMainCommittees(0l);
+				cadreCommitteeReportVO.setAfflCommittees(0l);
+				 List<Object[]> startedCount=tdpCommitteeMemberDAO.getStartedCommitteesCountByLocation(state, levelIds,startDate,endDate,districtIds,assemblyIds,locationLevelValues);
+						if(startedCount != null && startedCount.size() > 0){
+							for (Object[] objects : startedCount) {
+								if(Long.valueOf(objects[1].toString())==1l){
+									cadreCommitteeReportVO.setMainCommittees(Long.valueOf(objects[0].toString()));//startedCount in Main type
+								}
+								else if(Long.valueOf(objects[1].toString()) == 2l){
+									cadreCommitteeReportVO.setAfflCommittees(Long.valueOf(objects[0].toString()));//startedCount in Affliated Type
+								}
+							}
+						}
+						
+					
+			  Long memberscount= tdpCommitteeMemberDAO.getMembersCountByLocation(state, levelIds,startDate,endDate,districtIds,assemblyIds,locationLevelValues);				
+					
+			  cadreCommitteeReportVO.setMembersCount(memberscount != null ? memberscount : 0l);//totalMembers				
+					
+			  cadreCommitteeReportVO.setCommitteesCount(committeeCnt);//Total Committes count.
+		}else if(accessType.trim().equalsIgnoreCase("MP") && (levelIds.contains(5l)|| levelIds.contains(7l) || levelIds.contains(9l))){
+		
+		  Long committeesCount = 0l;
+		  Long memsCount = 0l;
+		  Long mainStrtdCount = 0l;
+		  Long afflStrtdCount = 0l;
+		  
+		  Map<String,List<Long>> lctnsMap = getLocalBodiesDivisionsMandalByContituencyIds(assemblyIds,levelIds);
+		  for (Entry<String, List<Long>> entry : lctnsMap.entrySet()) {
+			  //System.out.println(entry.getKey() + "/" + entry.getValue());
+			  if(entry.getKey().equalsIgnoreCase("Tehsils")){
+				  List<Long> lctnsIds = entry.getValue();
+				  if(lctnsIds!=null && lctnsIds.size()>0){
+					  List<Long> lvlIds = new ArrayList<Long>();
+					  lvlIds.add(5l);
+					  Long cmtCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,lvlIds,districtIds,null,lctnsIds);
+					  committeesCount = committeesCount + cmtCnt;
+					  
+					  Long memberscount= tdpCommitteeMemberDAO.getMembersCountByLocation(state, lvlIds,startDate,endDate,districtIds,null,lctnsIds);
+					  memsCount = memsCount + memberscount;
+					  
+					  List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,lvlIds,startDate,endDate,districtIds,null,lctnsIds);
+						
+						if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
+							for (Object[] objects : committeeCntDtls) {
+												
+								if(Long.valueOf(objects[1].toString())==1l)
+									completedMainCommittees = completedMainCommittees+(Long)objects[0];
+								else if(Long.valueOf(objects[1].toString()) == 2l)
+									completedAfflCommittees=completedAfflCommittees+(Long)objects[0];	
+							}
+						}
+						
+						List<Object[]> startedCount=tdpCommitteeMemberDAO.getStartedCommitteesCountByLocation(state, lvlIds,startDate,endDate,districtIds,null,lctnsIds);
+						if(startedCount != null && startedCount.size() > 0){
+							for (Object[] objects : startedCount) {
+								if(Long.valueOf(objects[1].toString())==1l){
+									mainStrtdCount = mainStrtdCount + Long.valueOf(objects[0].toString());//startedCount in Main type
+								}
+								else if(Long.valueOf(objects[1].toString()) == 2l){
+									afflStrtdCount =  afflStrtdCount + Long.valueOf(objects[0].toString());//startedCount in Affliated Type
+								}
+							}
+						}
+				  }
+				  
+				  
+				  
+			  }
+			  if(entry.getKey().equalsIgnoreCase("LocalBodies")){
+				  List<Long> lctnsIds = entry.getValue();
+				  if(lctnsIds!=null && lctnsIds.size()>0){
+					  List<Long> lvlIds = new ArrayList<Long>();
+					  lvlIds.add(7l);
+					  Long cmtCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,lvlIds,districtIds,null,lctnsIds);
+					  committeesCount = committeesCount + cmtCnt;
+					  
+					  Long memberscount= tdpCommitteeMemberDAO.getMembersCountByLocation(state, lvlIds,startDate,endDate,districtIds,null,lctnsIds);
+					  memsCount = memsCount + memberscount;
+					  
+					  List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,lvlIds,startDate,endDate,districtIds,null,lctnsIds);
+						
+						if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
+							for (Object[] objects : committeeCntDtls) {
+												
+								if(Long.valueOf(objects[1].toString())==1l)
+									completedMainCommittees = completedMainCommittees+(Long)objects[0];
+								else if(Long.valueOf(objects[1].toString()) == 2l)
+									completedAfflCommittees=completedAfflCommittees+(Long)objects[0];	
+							}
+						}
+						
+						List<Object[]> startedCount=tdpCommitteeMemberDAO.getStartedCommitteesCountByLocation(state, lvlIds,startDate,endDate,districtIds,null,lctnsIds);
+						if(startedCount != null && startedCount.size() > 0){
+							for (Object[] objects : startedCount) {
+								if(Long.valueOf(objects[1].toString())==1l){
+									mainStrtdCount = mainStrtdCount + Long.valueOf(objects[0].toString());//startedCount in Main type
+								}
+								else if(Long.valueOf(objects[1].toString()) == 2l){
+									afflStrtdCount =  afflStrtdCount + Long.valueOf(objects[0].toString());//startedCount in Affliated Type
+								}
+							}
+						}
+				  }
+			  }
+			  if(entry.getKey().equalsIgnoreCase("DivisionWards")){
+				  List<Long> lctnsIds = entry.getValue();
+				  if(lctnsIds!=null && lctnsIds.size()>0){
+					  List<Long> lvlIds = new ArrayList<Long>();
+					  lvlIds.add(9l);
+					  Long cmtCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,lvlIds,districtIds,null,lctnsIds);
+					  committeesCount = committeesCount + cmtCnt;
+					  
+					  Long memberscount= tdpCommitteeMemberDAO.getMembersCountByLocation(state, lvlIds,startDate,endDate,districtIds,null,lctnsIds);
+					  memsCount = memsCount + memberscount;
+					  
+					  List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,lvlIds,startDate,endDate,districtIds,null,lctnsIds);
+						
+						if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
+							for (Object[] objects : committeeCntDtls) {
+												
+								if(Long.valueOf(objects[1].toString())==1l)
+									completedMainCommittees = completedMainCommittees+(Long)objects[0];
+								else if(Long.valueOf(objects[1].toString()) == 2l)
+									completedAfflCommittees=completedAfflCommittees+(Long)objects[0];	
+							}
+						}
+					  
+						List<Object[]> startedCount=tdpCommitteeMemberDAO.getStartedCommitteesCountByLocation(state, lvlIds,startDate,endDate,districtIds,null,lctnsIds);
+						if(startedCount != null && startedCount.size() > 0){
+							for (Object[] objects : startedCount) {
+								if(Long.valueOf(objects[1].toString())==1l){
+									mainStrtdCount = mainStrtdCount + Long.valueOf(objects[0].toString());//startedCount in Main type
+								}
+								else if(Long.valueOf(objects[1].toString()) == 2l){
+									afflStrtdCount =  afflStrtdCount + Long.valueOf(objects[0].toString());//startedCount in Affliated Type
+								}
+							}
+						}
+				  }
+			  }
+		  }
+		  
+		 
+		  	cadreCommitteeReportVO.setMainCommittees(mainStrtdCount);
+			cadreCommitteeReportVO.setAfflCommittees(afflStrtdCount);
+			cadreCommitteeReportVO.setMembersCount(memsCount != null ? memsCount : 0l);//totalMembers				
+			cadreCommitteeReportVO.setCommitteesCount(committeesCount);//Total Committes count.
+		}
 				
-				Long memberscount= tdpCommitteeMemberDAO.getMembersCountByLocation(state, levelIds,startDate,endDate,districtIds,assemblyIds,locationLevelValues);				
-				
-				cadreCommitteeReportVO.setMembersCount(memberscount != null ? memberscount : 0l);//totalMembers				
-				
-				cadreCommitteeReportVO.setCommitteesCount(committeeCnt);//Total Committes count.
 				cadreCommitteeReportVO.setCompletedCommittees(completedMainCommittees);//completedCount for Main
 				cadreCommitteeReportVO.setAffliatedCompleted(completedAfflCommittees);//completedCount for Affliated
 				
@@ -2369,8 +2503,20 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				{
 					assemblyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesByParliamentList(parliamentsIds);
 				}
+				if(assemblyIds!=null && assemblyIds.size()>0){
+					List<Object[]> distList = constituencyDAO.getDistictWiseConstituencyListByConstiIds(assemblyIds);
+					if(distList!=null && distList.size()>0){
+						Long dstrct = Long.valueOf(distList.get(0)[2].toString());
+						if(dstrct>10){
+							state = "AP";
+						}else{
+							state = "TS";
+						}
+					}
+				}
+				
 			
-					List<Object[]> tehsilDetails = tehsilDAO.getTehsilsByConstituencyIdsListAndPublicationDateId(assemblyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+					/*List<Object[]> tehsilDetails = tehsilDAO.getTehsilsByConstituencyIdsListAndPublicationDateId(assemblyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
 					if(tehsilDetails != null && tehsilDetails.size() > 0)
 					{
 						for (Object[] tehsil : tehsilDetails) {
@@ -2383,7 +2529,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						for (Object[] tehsil : tehsilDetails) {
 							locationLevelValues.add(tehsil[0] != null ? Long.valueOf(tehsil[0].toString().trim()):0L);						
 						}
-					}
+					}*/
 				
 			}
 			else
@@ -2411,20 +2557,21 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					}
 				}
 			}
+		
+		
+			Long totalCommitteeCntDtls =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,null,districtIds,assemblyIds,null);		
+			cadreCommitteeReportVO.setTotalCommittees(totalCommitteeCntDtls);
 			
-		Long totalCommitteeCntDtls =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,null,districtIds,assemblyIds,locationLevelValues);		
-		cadreCommitteeReportVO.setTotalCommittees(totalCommitteeCntDtls);
-		
-		List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,null,null,null,districtIds,assemblyIds,locationLevelValues);
-		
-		if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
-			for (Object[] objects : committeeCntDtls) {
-								
-				if(Long.valueOf(objects[1].toString()).longValue() == 1l)
-					totalCompletedCommittees = totalCompletedCommittees+(Long)objects[0];
-					
+			List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,null,null,null,districtIds,assemblyIds,null);
+			
+			if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
+				for (Object[] objects : committeeCntDtls) {
+									
+					if(Long.valueOf(objects[1].toString()).longValue() == 1l)
+						totalCompletedCommittees = totalCompletedCommittees+(Long)objects[0];
+						
+				}
 			}
-		}
 			
 		cadreCommitteeReportVO.setTotalCompleted(totalCompletedCommittees);
 		if(cadreCommitteeReportVO.getTotalCommittees()  > 0)
@@ -5499,6 +5646,100 @@ public CommitteeApprovalVO statusForChangeDesignationsApproval(){
 	}
 	return cv;
 
+}
+
+public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List<Long> constituencyIds,List<Long> levelIds){
+	
+	List<Long> divisionLclIds = new ArrayList<Long>();
+	List<Long> divisionWardId = new ArrayList<Long>();
+	List<Long> lebIds = new ArrayList<Long>();
+	List<Long> tehsilIds = new ArrayList<Long>();
+	
+	Map<String,List<Long>> locationsMap = new HashMap<String, List<Long>>();
+	
+	
+	List<Object[]> localBodyIdsList = assemblyLocalElectionBodyDAO.getAllLocalBodiesInAConstituencyList(constituencyIds);
+	for(Object[] localBody:localBodyIdsList){
+		Long localBdyId = (Long)localBody[0];
+		if((localBdyId.longValue() == 20l ||  localBdyId.longValue() == 124l || localBdyId.longValue() == 119l)){
+			if(!divisionLclIds.contains(localBdyId)){
+				divisionLclIds.add(localBdyId);
+			}
+    	}else{
+    		/*List<Long> constiIds = localBodiesMap.get(localBdyId);
+    		if(constiIds == null){
+    			constiIds = new ArrayList<Long>();
+    			localBodiesMap.put(localBdyId,constiIds);
+    		}*/
+    		if(!lebIds.contains((Long)localBody[0])){
+    			lebIds.add((Long)localBody[0]);
+    		}
+    	}
+	}
+	
+	
+	if(divisionLclIds.size() > 0){
+		List<Object[]> divisionIdsList = assemblyLocalElectionBodyWardDAO.findWardsByLocalBodyIdsAndConstituencyIds(divisionLclIds, constituencyIds);
+		for(Object[] division:divisionIdsList){
+			Long divisionId = (Long)division[0];
+			/*List<Long> constiIds = divisionIdsMap.get(divisionId);
+    		if(constiIds == null){
+    			constiIds = new ArrayList<Long>();
+    			divisionIdsMap.put(divisionId,constiIds);
+    		}*/
+			if(!divisionWardId.contains(divisionId)){
+				divisionWardId.add(divisionId);
+			}
+		}
+	}
+	
+	
+	List<BigInteger> delimitationIds = delimitationConstituencyDAO.getDelimitIds(constituencyIds);
+	 if(delimitationIds.size() > 0){
+		 List<Long> ids = new ArrayList<Long>();
+		 for(BigInteger delimitationId:delimitationIds){
+			 ids.add(delimitationId.longValue());
+		 }
+		 List<Object[]> tehsilIdsList = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyIDs(ids) ;
+		 for(Object[] tehsil:tehsilIdsList){
+			/*	Long tehsilId = (Long)tehsil[0];
+				List<Long> tehsilIds = mandalIdsMap.get(tehsilId);
+       		if(tehsilIds == null){
+       			tehsilIds = new ArrayList<Long>();
+       			mandalIdsMap.put(tehsilId,tehsilIds);
+       		}*/
+			 if(!tehsilIds.contains((Long)tehsil[0])){
+				 tehsilIds.add((Long)tehsil[0]);
+			 }
+			}
+	 }
+	 
+	 
+	 if(levelIds.size()==1){
+		 if(levelIds.contains(5l)){
+			 locationsMap.put("Tehsils", tehsilIds);
+			 locationsMap.put("DivisionWards", new ArrayList<Long>());
+			 locationsMap.put("LocalBodies", new ArrayList<Long>());
+		}
+		 if(levelIds.contains(7l)){
+			 locationsMap.put("Tehsils", new ArrayList<Long>());
+			 locationsMap.put("DivisionWards", new ArrayList<Long>());
+			 locationsMap.put("LocalBodies", lebIds);
+		}
+		 if(levelIds.contains(9l)){
+			 locationsMap.put("Tehsils", new ArrayList<Long>());
+			 locationsMap.put("DivisionWards", divisionWardId);
+			 locationsMap.put("LocalBodies", new ArrayList<Long>());
+		}
+	 }else{
+		 locationsMap.put("Divisions", divisionLclIds);
+		 locationsMap.put("DivisionWards", divisionWardId);
+		 locationsMap.put("LocalBodies", lebIds);
+		 locationsMap.put("Tehsils", tehsilIds);
+	 }
+	 
+	 return locationsMap;
+	 
 }
 	
 }
