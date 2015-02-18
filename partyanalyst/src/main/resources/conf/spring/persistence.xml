@@ -561,7 +561,9 @@
 	            <value>com.itgrids.partyanalyst.model.ErrorStatusSms</value>
 	            <value>com.itgrids.partyanalyst.model.TirupathiByeleMobileBooth</value>								
 	            <value>com.itgrids.partyanalyst.model.RegistrationStatusTemp</value>							
-	            <value>com.itgrids.partyanalyst.model.TwoWayMessage</value>							
+	            <value>com.itgrids.partyanalyst.model.TwoWayMessage</value>
+	            <value>com.itgrids.partyanalyst.model.MissedCallCampaign</value>
+				<value>com.itgrids.partyanalyst.model.CadreMissedCallCampaign</value>							
 				</list>
 			
 		</property>
