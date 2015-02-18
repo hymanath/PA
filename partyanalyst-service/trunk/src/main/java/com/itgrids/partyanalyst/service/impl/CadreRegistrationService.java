@@ -53,6 +53,7 @@ import com.itgrids.partyanalyst.dao.ICadreCommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeRoleDAO;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICadreLevelDAO;
+import com.itgrids.partyanalyst.dao.ICadreMissedCallCampaignDAO;
 import com.itgrids.partyanalyst.dao.ICadreParticipatedElectionDAO;
 import com.itgrids.partyanalyst.dao.ICadrePreviousRolesDAO;
 import com.itgrids.partyanalyst.dao.ICadreRegSyncAccessUsersDAO;
@@ -124,6 +125,7 @@ import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.CastLocationVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -135,6 +137,7 @@ import com.itgrids.partyanalyst.dto.UserDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
 import com.itgrids.partyanalyst.model.BloodGroup;
 import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.CadreMissedCallCampaign;
 import com.itgrids.partyanalyst.model.CadreParticipatedElection;
 import com.itgrids.partyanalyst.model.CadrePreviousRoles;
 import com.itgrids.partyanalyst.model.CadreSurveyUser;
@@ -265,6 +268,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private IRegistrationStatusTempDAO registrationStatusTempDAO;
 	private ITirupathiByeleMobileBoothDAO tirupathiByeleMobileBoothDAO;
 	private ITwoWayMessageDAO twoWayMessageDAO;
+	private ICadreMissedCallCampaignDAO cadreMissedCallCampaignDAO;
+	
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
 	public IPrintedCardDetailsDAO getPrintedCardDetailsDAO() {
@@ -278,6 +283,15 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	
 	
 	
+	public ICadreMissedCallCampaignDAO getCadreMissedCallCampaignDAO() {
+		return cadreMissedCallCampaignDAO;
+	}
+
+	public void setCadreMissedCallCampaignDAO(
+			ICadreMissedCallCampaignDAO cadreMissedCallCampaignDAO) {
+		this.cadreMissedCallCampaignDAO = cadreMissedCallCampaignDAO;
+	}
+
 	public ITirupathiByeleMobileBoothDAO getTirupathiByeleMobileBoothDAO() {
 		return tirupathiByeleMobileBoothDAO;
 	}
@@ -8043,5 +8057,27 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return returnVo;
 		
 	}
+	
+	
+	public String saveMissedCallDetails(MissedCallCampaignVO vo){
+		
+		try{
+			CadreMissedCallCampaign cadreMissedCallCampaign = new CadreMissedCallCampaign();
+			String mobileNo = vo.getFrom().trim();						
+			Long unixSeconds = (Long)vo.getRing_time();
+			Date time=new Date((Long)unixSeconds*1000);
+			cadreMissedCallCampaign.setMobileNumber(mobileNo);
+			cadreMissedCallCampaign.setInsertedTime(time);
+			
+			cadreMissedCallCampaign.setMissedCallCampaignId(vo.getId());
+			
+			cadreMissedCallCampaignDAO.save(cadreMissedCallCampaign);
+	       }catch(Exception e){
+				LOG.error(e);
+			}
+		return "success";
+     
+   }
+	
 	
 }

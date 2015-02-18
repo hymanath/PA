@@ -6,6 +6,7 @@ import com.itgrids.partyanalyst.dto.AppDbDataVO;
 import com.itgrids.partyanalyst.dto.CadreImageVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.LoginResponceVO;
+import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SinkVO;
 import com.itgrids.partyanalyst.dto.SurveyResponceVO;
@@ -60,4 +61,5 @@ public interface IWebServiceHandlerService1 {
 	public CadreImageVO sinkImageMissingData(CadreImageVO cadreImageVO);
 	 public TdpCadreVO searchTdpCadreDetailsBySVoterIdCardNo(String voterCardNo, String isFamilyVoter);
 	 public String saveStatus(CadreRegistrationVO inputs);
+	 public String saveMissedCallDetails(MissedCallCampaignVO input);
 }

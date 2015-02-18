@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SinkVO;
@@ -148,4 +149,6 @@ public interface ICadreRegistrationService {
 	public ByeElectionVO getByeElelatestUpdates(Integer startIndex,Integer maxIndex);
 	
 	public ByeElectionVO getMessagesInfo(Integer startIndex,Integer maxIndex);
+	
+	public String saveMissedCallDetails(MissedCallCampaignVO vo);
 }
