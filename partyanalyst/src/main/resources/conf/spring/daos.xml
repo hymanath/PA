@@ -1936,5 +1936,13 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="cadreMissedCallCampaignDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreMissedCallCampaignDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="missedCallCampaignDAO" class="com.itgrids.partyanalyst.dao.hibernate.MissedCallCampaignDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!--  end -->
 </beans>		
