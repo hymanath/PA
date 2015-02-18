@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,8 +15,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.codehaus.xfire.service.binding.RPCBinding;
-import org.hibernate.mapping.Array;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.dao.ICadreParticipatedElectionDAO;
 import com.itgrids.partyanalyst.dao.ICadrePreviousRolesDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
@@ -52,6 +53,7 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberHistoryDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeRoleDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeRoleHistoryDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
@@ -142,8 +144,18 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	private IUserDistrictAccessInfoDAO  userDistrictAccessInfoDAO;
+	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
+	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	
 	
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
+	}
+	public void setUserConstituencyAccessInfoDAO(
+			IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO) {
+		this.userConstituencyAccessInfoDAO = userConstituencyAccessInfoDAO;
+	}
 	public void setUserDistrictAccessInfoDAO(
 			IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO) {
 		this.userDistrictAccessInfoDAO = userDistrictAccessInfoDAO;
@@ -1892,25 +1904,84 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		
 		CadreCommitteeReportVO cadreCommitteeReportVO =new CadreCommitteeReportVO();
 		try{ 
-			
-			List<Object[]> accessDistrictsList = userDistrictAccessInfoDAO.findByUser(userId);
 			List<Long> districtIds = new ArrayList<Long>();
+			List<Long> assemblyIds = new ArrayList<Long>();
+			List<Long> locationLevelValues = new ArrayList<Long>();
+			
 			cadreCommitteeReportVO.setAccessState("ALL");
-			if(accessDistrictsList != null && accessDistrictsList.size()>0)
+			if(accessType.trim().equalsIgnoreCase("MP"))
 			{
-				for (Object[] districtId : accessDistrictsList) {
-					districtIds.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
+				cadreCommitteeReportVO.setAccessState(delimitationConstituencyAssemblyDetailsDAO.get(accessValue).getConstituency().getName()+" "+"Parliament");
+				districtIds = null;
+				List<Object[]> accessConstituencyList = userConstituencyAccessInfoDAO.findByElectionScopeUser(1L,userId);
+				
+				List<Long> parliamentsIds = new ArrayList<Long>();
+				if(accessConstituencyList != null && accessConstituencyList.size()>0)
+				{
+					for (Object[] parliament : accessConstituencyList) {
+						parliamentsIds.add(parliament[0] != null ? Long.valueOf(parliament[0].toString().trim()):0L);
+					}
+				}
+				else
+				{
+					parliamentsIds.add(accessValue);
 				}
 				
-				if(districtIds != null && districtIds.size() == 13)
+				if(parliamentsIds != null && parliamentsIds.size()>0)
 				{
-					cadreCommitteeReportVO.setAccessState("AP");
+					assemblyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesByParliamentList(parliamentsIds);
 				}
-				if(districtIds != null && districtIds.size() == 10)
+			
+				if(levelIds.contains(5L)) // mandal
 				{
-					cadreCommitteeReportVO.setAccessState("TG");
+					List<Object[]> tehsilDetails = tehsilDAO.getTehsilsByConstituencyIdsListAndPublicationDateId(assemblyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+					if(tehsilDetails != null && tehsilDetails.size() > 0)
+					{
+						for (Object[] tehsil : tehsilDetails) {
+							locationLevelValues.add(tehsil[0] != null ? Long.valueOf(tehsil[0].toString().trim()):0L);						
+						}
+					}
+				}
+				if(levelIds.contains(7L)) //localelectionbody 
+				{
+					List<Object[]> tehsilDetails = tehsilDAO.getAllLocalElecBodyListByConstituencyIdsListAndPublicationDateId(assemblyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+					if(tehsilDetails != null && tehsilDetails.size() > 0)
+					{
+						for (Object[] tehsil : tehsilDetails) {
+							locationLevelValues.add(tehsil[0] != null ? Long.valueOf(tehsil[0].toString().trim()):0L);						
+						}
+					}
+				}
+				if(levelIds.contains(9L)) //DIVISION 
+				{
 				}
 			}
+			else
+			{
+				List<Object[]> accessDistrictsList = userDistrictAccessInfoDAO.findByUser(userId);
+				if(accessDistrictsList != null && accessDistrictsList.size()>0)
+				{
+					for (Object[] districtId : accessDistrictsList) {
+						districtIds.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
+					}
+					
+					if(districtIds != null && districtIds.size() == 13)
+					{
+						cadreCommitteeReportVO.setAccessState("AP");
+					}
+					else if(districtIds != null && districtIds.size() == 10)
+					{
+						cadreCommitteeReportVO.setAccessState("TG");
+					}
+					else if(districtIds != null && districtIds.size() == 1)
+					{
+						Long districtId = districtIds.get(0).longValue();
+						if(districtId != 0L)
+							cadreCommitteeReportVO.setAccessState(districtDAO.get(districtId).getDistrictName()+" District");
+					}
+				}
+			}
+			
 			
 			Date startDate=null;
 			Date endDate=null;
@@ -1922,9 +1993,9 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			}
 			
 			
-			Long committeeCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,levelIds,districtIds);
+			Long committeeCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,levelIds,districtIds,assemblyIds,locationLevelValues);
 			//0count ,1 isCommitteeConfirmed,2.tdpCommitteeLevelId,3.tdpBasicCommitteeId
-			List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,levelIds,startDate,endDate,districtIds);
+			List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,levelIds,startDate,endDate,districtIds,assemblyIds,locationLevelValues);
 			
 			if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
 				for (Object[] objects : committeeCntDtls) {
@@ -1936,7 +2007,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				}
 			}
 				 
-			 List<Object[]> startedCount=tdpCommitteeMemberDAO.getStartedCommitteesCountByLocation(state, levelIds,startDate,endDate,districtIds);
+			 List<Object[]> startedCount=tdpCommitteeMemberDAO.getStartedCommitteesCountByLocation(state, levelIds,startDate,endDate,districtIds,assemblyIds,locationLevelValues);
 				if(startedCount != null && startedCount.size() > 0){
 					for (Object[] objects : startedCount) {
 						if(Long.valueOf(objects[1].toString())==1l){
@@ -1961,7 +2032,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						cadreCommitteeReportVO.setAfflCommittees(0l);
 					}
 				
-				Long memberscount= tdpCommitteeMemberDAO.getMembersCountByLocation(state, levelIds,startDate,endDate,districtIds);				
+				Long memberscount= tdpCommitteeMemberDAO.getMembersCountByLocation(state, levelIds,startDate,endDate,districtIds,assemblyIds,locationLevelValues);				
 				
 				cadreCommitteeReportVO.setMembersCount(memberscount != null ? memberscount : 0l);//totalMembers				
 				
@@ -2254,30 +2325,84 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		Long totalStartedCommittees=0l;
 		CadreCommitteeReportVO cadreCommitteeReportVO =new CadreCommitteeReportVO();
 		try{
-			
-			List<Object[]> accessDistrictsList = userDistrictAccessInfoDAO.findByUser(userId);
 			List<Long> districtIds = new ArrayList<Long>();
+			List<Long> assemblyIds = new ArrayList<Long>();
+			List<Long> locationLevelValues = new ArrayList<Long>();
+			
 			cadreCommitteeReportVO.setAccessState("ALL");
-			if(accessDistrictsList != null && accessDistrictsList.size()>0)
+			if(accessType.trim().equalsIgnoreCase("MP"))
 			{
-				for (Object[] districtId : accessDistrictsList) {
-					districtIds.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
+				//cadreCommitteeReportVO.setAccessState(delimitationConstituencyAssemblyDetailsDAO.get(accessValue).getConstituency().getName()+" "+"Parliament");
+				List<Object[]> list = constituencyDAO.getParliamentConstituencyByParliamentId(accessValue);
+				String userAccessValue = list.get(0)[1].toString() + " Parliament";
+				cadreCommitteeReportVO.setAccessState(userAccessValue);
+				
+				districtIds = null;
+				List<Object[]> accessConstituencyList = userConstituencyAccessInfoDAO.findByElectionScopeUser(1L,userId);
+				
+				List<Long> parliamentsIds = new ArrayList<Long>();
+				if(accessConstituencyList != null && accessConstituencyList.size()>0)
+				{
+					for (Object[] parliament : accessConstituencyList) {
+						parliamentsIds.add(parliament[0] != null ? Long.valueOf(parliament[0].toString().trim()):0L);
+					}
+				}
+				else
+				{
+					parliamentsIds.add(accessValue);
 				}
 				
-				if(districtIds != null && districtIds.size() == 13)
+				if(parliamentsIds != null && parliamentsIds.size()>0)
 				{
-					cadreCommitteeReportVO.setAccessState("AP");
+					assemblyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesByParliamentList(parliamentsIds);
 				}
-				if(districtIds != null && districtIds.size() == 10)
+			
+					List<Object[]> tehsilDetails = tehsilDAO.getTehsilsByConstituencyIdsListAndPublicationDateId(assemblyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+					if(tehsilDetails != null && tehsilDetails.size() > 0)
+					{
+						for (Object[] tehsil : tehsilDetails) {
+							locationLevelValues.add(tehsil[0] != null ? Long.valueOf(tehsil[0].toString().trim()):0L);						
+						}
+					}
+					tehsilDetails = tehsilDAO.getAllLocalElecBodyListByConstituencyIdsListAndPublicationDateId(assemblyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+					if(tehsilDetails != null && tehsilDetails.size() > 0)
+					{
+						for (Object[] tehsil : tehsilDetails) {
+							locationLevelValues.add(tehsil[0] != null ? Long.valueOf(tehsil[0].toString().trim()):0L);						
+						}
+					}
+				
+			}
+			else
+			{
+				List<Object[]> accessDistrictsList = userDistrictAccessInfoDAO.findByUser(userId);
+				if(accessDistrictsList != null && accessDistrictsList.size()>0)
 				{
-					cadreCommitteeReportVO.setAccessState("TG");
+					for (Object[] districtId : accessDistrictsList) {
+						districtIds.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
+					}
+					
+					if(districtIds != null && districtIds.size() == 13)
+					{
+						cadreCommitteeReportVO.setAccessState("AP");
+					}
+					else if(districtIds != null && districtIds.size() == 10)
+					{
+						cadreCommitteeReportVO.setAccessState("TG");
+					}
+					else if(districtIds != null && districtIds.size() == 1)
+					{
+						Long districtId = districtIds.get(0).longValue();
+						if(districtId != 0L)
+							cadreCommitteeReportVO.setAccessState(districtDAO.get(districtId).getDistrictName()+" District");
+					}
 				}
 			}
 			
-		Long totalCommitteeCntDtls =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,null,districtIds);		
+		Long totalCommitteeCntDtls =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,null,districtIds,assemblyIds,locationLevelValues);		
 		cadreCommitteeReportVO.setTotalCommittees(totalCommitteeCntDtls);
 		
-		List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,null,null,null,districtIds);
+		List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,null,null,null,districtIds,assemblyIds,locationLevelValues);
 		
 		if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
 			for (Object[] objects : committeeCntDtls) {
@@ -3717,18 +3842,70 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	
 	
 	
-	public List<CommitteeSummaryVO> getConstituencyWiseCommittesSummary(String state,String startDate, String endDate){
+	public List<CommitteeSummaryVO> getConstituencyWiseCommittesSummary(String state,String startDate, String endDate,Long userId, String accessType,Long accessValue){  
 		LOG.debug("Entered Into getConstituencyWiseCommittesSummary");
 		List<CommitteeSummaryVO> constiLst = new ArrayList<CommitteeSummaryVO>();
 		try{
 			Long stateTypeId = 1l;
-			
-			if(state.equalsIgnoreCase("TS")){
-				stateTypeId = 2l;
+			String accessState = "ALL";
+			List<Object[]> constituencysList = null;
+			List<Long> districtIds = new ArrayList<Long>();
+			List<Long> constiIds = new ArrayList<Long>();
+			if(accessType.trim().equalsIgnoreCase("MP"))
+			{
+				accessState = delimitationConstituencyAssemblyDetailsDAO.get(accessValue).getConstituency().getName()+" "+"Parliament"; 
+				List<Object[]> accessConstituencyList = userConstituencyAccessInfoDAO.findByElectionScopeUser(1L,userId);
+				List<Long> parliamentsIds = new ArrayList<Long>();
+				if(accessConstituencyList != null && accessConstituencyList.size()>0)
+				{
+					for (Object[] parliament : accessConstituencyList) {
+						parliamentsIds.add(parliament[0] != null ? Long.valueOf(parliament[0].toString().trim()):0L);
+					}
+				}
+				else
+				{
+					parliamentsIds.add(accessValue);
+				}
+				
+				if(parliamentsIds != null && parliamentsIds.size()>0)
+				{
+					constituencysList = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesDetailsByParliamentList(parliamentsIds);
+				}
+			}
+			else
+			{
+				List<Object[]> accessDistrictsList = userDistrictAccessInfoDAO.findByUser(userId);
+				if(accessDistrictsList != null && accessDistrictsList.size()>0)
+				{
+					for (Object[] districtId : accessDistrictsList) {
+						districtIds.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
+					}
+					
+					if(districtIds != null && districtIds.size() == 13)
+					{
+						accessState = "AP";
+					}
+					else if(districtIds != null && districtIds.size() == 10)
+					{
+						accessState = "TG";
+					}
+					else if(districtIds != null && districtIds.size() == 1)
+					{
+						Long districtId = districtIds.get(0).longValue();
+						if(districtId != 0L)
+							accessState =  districtDAO.get(districtId).getDistrictName()+" District";
+					}
+					
+					constituencysList = constituencyDAO.getAssemblyConstituencyDetlsByDistrictIds(districtIds);
+				}				
+				else{
+					if(state.equalsIgnoreCase("TS")){
+						stateTypeId = 2l;
+					}
+					constituencysList = constituencyDAO.getConstituenciesByStateId(1l, stateTypeId);
+				}
 			}
 			
-			List<Object[]> constituencysList = constituencyDAO.getConstituenciesByStateId(1l, stateTypeId);
-			List<Long> constiIds = new ArrayList<Long>();
 			
 			if(constituencysList != null && constituencysList.size()>0){
 				for(Object[] obj:constituencysList){
@@ -3860,6 +4037,16 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				}
 			}
 			
+			Collections.sort(constiLst, new Comparator<CommitteeSummaryVO>() {
+				public int compare(CommitteeSummaryVO o1, CommitteeSummaryVO o2) {
+					return o1.getName().compareToIgnoreCase(o2.getName());
+				}
+			});
+			
+			if(constiLst != null && constiLst.size()>0)
+			{
+				constiLst.get(0).setAccessState(accessState);
+			}
 			
 			
 			
@@ -4988,6 +5175,49 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		}
 		return cadreCommitteeMemberVOList;
 	}
+	
+	public String userAccessTypeDetailsForDashBoard(Long userId, String accessType,Long accessValue){
+		String userAccessValue = "ALL";
+		try {
+			
+			if(accessType.equalsIgnoreCase("MP"))
+			{				
+				//userAccessValue = delimitationConstituencyAssemblyDetailsDAO.get(accessValue).getConstituency().getName()+" "+"Parliament";
+				List<Object[]> list = constituencyDAO.getParliamentConstituencyByParliamentId(accessValue);
+				userAccessValue = list.get(0)[1].toString() + " Parliament";
+			}
+			else
+			{
+				List<Long> districtIds = new ArrayList<Long>();
+				List<Object[]> accessDistrictsList = userDistrictAccessInfoDAO.findByUser(userId);
+				if(accessDistrictsList != null && accessDistrictsList.size()>0)
+				{
+					for (Object[] districtId : accessDistrictsList) {
+						districtIds.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
+					}
+					
+					if(districtIds != null && districtIds.size() == 13)
+					{
+						userAccessValue = "AP";
+					}
+					else if(districtIds != null && districtIds.size() == 10)
+					{
+						userAccessValue = "TS";
+					}
+					else if(districtIds != null && districtIds.size() == 1)
+					{
+						Long districtId = districtIds.get(0).longValue();
+						if(districtId != 0L)
+							userAccessValue =  districtDAO.get(districtId).getDistrictName()+" District";
+					}
+				}	
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in userAccessTypeDetailsForDashBoard", e);
+		}
+		return userAccessValue;
+	}
+	
 	public ResultStatus  approvingChangeDesignations(final Long cadreCommitteeIncreasedPositionsId,final String approvedStatus){
 		 ResultStatus rs=new ResultStatus();
 	 try
@@ -5058,7 +5288,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		 LOG.error("Exception raised in approvingChangeDesignations", e);
 		 rs.setResultCode(0);
 	}	
-     return rs;
+    return rs;
 	}
 	
 
@@ -5087,5 +5317,5 @@ public CommitteeApprovalVO statusForChangeDesignationsApproval(){
 	return cv;
 
 }
-
+	
 }

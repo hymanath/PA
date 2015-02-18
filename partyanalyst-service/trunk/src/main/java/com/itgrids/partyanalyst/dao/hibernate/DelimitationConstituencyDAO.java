@@ -389,4 +389,6 @@ IDelimitationConstituencyDAO {
 		query.setParameterList("constituencyIds", constituencyIds);
 		return query.list();
 	}
+	
+	
 }

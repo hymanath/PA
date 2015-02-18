@@ -71,7 +71,7 @@ public interface ICadreCommitteeService {
 	public ResultStatus cadreCommitteeIncreasedPositionsOrChangeDesignations(final Long tdpCommitteeRoleId,final Long requestUserId,final Long currentmaxPositions,final Long requestedMaxPositions,final String type,final List<LocationWiseBoothDetailsVO> changeDesignationsList,final Long committeeId );
 	public Long gettingCommitteeIdForMainCommittee(Long levelId,Long levelValue);
 	
-	public List<CommitteeSummaryVO> getConstituencyWiseCommittesSummary(String state,String startDate, String endDate);
+	//public List<CommitteeSummaryVO> getConstituencyWiseCommittesSummary(String state,String startDate, String endDate);
 	public List<CommitteeApprovalVO> changeDesignationRecordsForAUser(Long userId,Long startNo,Long endNo);
 	public List<IdNameVO> getAllDistricts();
 	public List<IdNameVO> getAllConstituencysForADistrict(Long districtId);
@@ -86,8 +86,9 @@ public interface ICadreCommitteeService {
 	public ResultStatus updateCandidateDesignation(final Long committeeId,final List<LocationWiseBoothDetailsVO> changeDesignationsList,final Long userId);
 	public LocationWiseBoothDetailsVO getAllCommitteeMembersInfoInALoc(Long locationLvl,Long locationVal);
 	
-	
+	public List<CommitteeSummaryVO> getConstituencyWiseCommittesSummary(String state,String startDate, String endDate,Long userId, String accessType,Long accessValue);
 	public ResultStatus  approvingChangeDesignations(final Long cadreCommitteeIncreasedPositionsId,final String approvedStatus);
 	public CommitteeApprovalVO statusForChangeDesignationsApproval();
-	
+	public String userAccessTypeDetailsForDashBoard(Long userId, String accessType,Long accessValue);
+		
 }

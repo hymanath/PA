@@ -211,4 +211,30 @@ public List<Object[]> getAllTehsilDetails(Long districtId){
 		
 	}
 	
+	public List<Object[]> getTehsilsByConstituencyIdsListAndPublicationDateId(List<Long> constituencyIdList, Long publicationDateId) 
+	{
+		String queryString = "select distinct model.tehsil.tehsilId , model.tehsil.tehsilName from Booth model where " +
+				"model.publicationDate.publicationDateId = :publicationDateId and model.constituency.constituencyId in (:constituencyIdList) and model.localBody is null order by model.tehsil.tehsilName ";
+		
+		Query query = getSession().createQuery(queryString);
+		
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameterList("constituencyIdList", constituencyIdList);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getAllLocalElecBodyListByConstituencyIdsListAndPublicationDateId(List<Long> constituencyIdList, Long publicationDateId) 
+	{
+		String queryString = "select distinct model.localBody.localElectionBodyId , model.localBody.name,model.localBody.electionType.electionType from Booth model where " +
+				"model.publicationDate.publicationDateId = :publicationDateId and model.constituency.constituencyId in (:constituencyIdList) and model.localBody is not null";
+		
+		Query query = getSession().createQuery(queryString);
+		
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameterList("constituencyIdList", constituencyIdList);
+		
+		return query.list();
+	}
+	
 }
