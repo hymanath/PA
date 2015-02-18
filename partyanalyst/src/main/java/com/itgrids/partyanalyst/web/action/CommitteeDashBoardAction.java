@@ -326,7 +326,12 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 			jObj = new JSONObject(getTask());
 			JSONArray levelIdsArr = jObj.getJSONArray("levelIdsArr");			
 			List<Long> levelIds = new ArrayList<Long>();
-				
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO != null)
+			{
+				String accessType = regVO.getAccessType();
+				Long accessValue = Long.valueOf(regVO.getAccessValue());
+					
 			if(levelIdsArr !=null && levelIdsArr.length() >0){
 				for(int i=0; i<levelIdsArr.length(); i++ ){
 					levelIds.add(Long.valueOf(levelIdsArr.get(i).toString().trim()));
@@ -336,8 +341,8 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 			String startdate=jObj.getString("startDate");
 			String endDate=jObj.getString("endDate");
 			
-			cadreCommitteeReportVOList = cadreCommitteeService.getStartedAffliCommitteesCountByLocation(state,levelIds,startdate,endDate);
-		
+			cadreCommitteeReportVOList = cadreCommitteeService.getStartedAffliCommitteesCountByLocation(state,levelIds,startdate,endDate,accessType,accessValue,regVO.getRegistrationID());
+			}
 			
 		}catch(Exception e){
 			LOG.error("Exception Occured In getDashBoardLocationWiseDetailsAction method "+e);
