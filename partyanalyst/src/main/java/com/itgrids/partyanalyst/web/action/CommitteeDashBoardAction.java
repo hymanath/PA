@@ -39,28 +39,25 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private HttpServletRequest         			request;
 	private EntitlementsHelper 					entitlementsHelper;
 	private JSONObject							jObj;
-	private String 								task;
+	private String 								task,pageAccessType;
 	private LocationWiseBoothDetailsVO          locationWiseBoothDetailsVO;
 	private ICadreCommitteeService				cadreCommitteeService;
 	@Autowired 
-	private IWebServiceHandlerService1 webServiceHandlerService1;
+	private IWebServiceHandlerService1 			webServiceHandlerService1;
 	private static final Logger         		LOG = Logger.getLogger(CommitteeDashBoardAction.class);
 	
-	private CadreCommitteeReportVO          cadreCommitteeReportVO;
-	private List<CommitteeSummaryVO>    districtWiseSummaryList,constiWiseSummaryList;
-	private List<CadreCommitteeReportVO> cadreCommitteeReportVOList;
-	private List<CadreCommitteeMemberVO> cadreCommitteeMemberVOList;
-	private List<IdNameVO>  idNameVOList;
-	private CommitteeSummaryVO constiSummaryVO;
-	private ITdpCadreReportService tdpCadreReportService;
-	private String accessConstituency;
-	private Long accessConstituencyId;
-	private ICadreRegistrationService cadreRegistrationService;
-	private CadreCommitteeMemberVO boothsInfo;
-
-	
-	private ByeElectionVO byeEleInfo;
-	
+	private CadreCommitteeReportVO          	cadreCommitteeReportVO;
+	private List<CommitteeSummaryVO>   		 	districtWiseSummaryList,constiWiseSummaryList;
+	private List<CadreCommitteeReportVO> 		cadreCommitteeReportVOList;
+	private List<CadreCommitteeMemberVO> 		cadreCommitteeMemberVOList;
+	private List<IdNameVO>  					idNameVOList;
+	private CommitteeSummaryVO 					constiSummaryVO;
+	private ITdpCadreReportService 				tdpCadreReportService;
+	private String 								accessConstituency;
+	private Long								accessConstituencyId;
+	private ICadreRegistrationService 			cadreRegistrationService;
+	private CadreCommitteeMemberVO 				boothsInfo;
+	private ByeElectionVO 						byeEleInfo;
 	
 	public ByeElectionVO getByeEleInfo() {
 		return byeEleInfo;
@@ -68,6 +65,14 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	public void setByeEleInfo(ByeElectionVO byeEleInfo) {
 		this.byeEleInfo = byeEleInfo;
 	}
+	
+	public String getPageAccessType() {
+		return pageAccessType;
+	}
+	public void setPageAccessType(String pageAccessType) {
+		this.pageAccessType = pageAccessType;
+	}
+	
 	public void setCadreRegistrationService(
 			ICadreRegistrationService cadreRegistrationService) {
 		this.cadreRegistrationService = cadreRegistrationService;
@@ -192,7 +197,8 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 		boolean noaccess = false;
 		if(regVO==null){
 			return "input";
-		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"TDP_COMMITTEE_ADMIN")){
+		}if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"TDP_COMMITTEE_ADMIN") ||
+				entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"TDP_COMMITTEE_AREAWISE_ACCESS"))){
 			noaccess = true ;
 		}
 		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
@@ -200,6 +206,14 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 		}
 		if(noaccess){
 			return "error";
+		}
+		
+		
+		pageAccessType = cadreCommitteeService.userAccessTypeDetailsForDashBoard(regVO.getRegistrationID(),regVO.getAccessType(),Long.valueOf(regVO.getAccessValue().trim()));
+		String accessType = regVO.getAccessType();
+		if(accessType.equalsIgnoreCase("MLA") || accessType.equalsIgnoreCase("MP"))
+		{
+			pageAccessType = accessType;
 		}
 		return Action.SUCCESS;
 	}
@@ -358,12 +372,28 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	public String getConstituencyWiseCommittesSummary(){
 		LOG.debug(" Entered Into getConstituencyWiseCommittesSummary");
 		try{
-			jObj = new JSONObject(getTask());
-			String state =jObj.getString("state");
-			String startDate = jObj.getString("startDate");
-			String endDate = jObj.getString("endDate");
+			boolean noaccess = false;
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO != null)
+			{
+				String accessType = regVO.getAccessType();
+				Long accessValue = Long.valueOf(regVO.getAccessValue());
+				
+				jObj = new JSONObject(getTask());
+				String state =jObj.getString("state");
+				String startDate = jObj.getString("startDate");
+				String endDate = jObj.getString("endDate");
 			
-			constiWiseSummaryList = cadreCommitteeService.getConstituencyWiseCommittesSummary(state, startDate, endDate);
+				constiWiseSummaryList = cadreCommitteeService.getConstituencyWiseCommittesSummary(state, startDate, endDate,regVO.getRegistrationID(),accessType,accessValue);
+			}
+			else
+			{
+				noaccess = true;
+			}
+			
+			if(noaccess)
+				return Action.ERROR;
+			
 		}catch (Exception e) {
 			LOG.error(" Exception Raised In getConstituencyWiseCommittesSummary" +e);
 		}

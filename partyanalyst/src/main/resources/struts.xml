@@ -9489,13 +9489,13 @@
 		<action name="getDashBoardLocationWiseDetails" class="committeeDashBoardAction" method="getDashBoardLocationWiseDetailsAction">
 			<result type="json" name="success">
 				<param name="root">cadreCommitteeReportVO</param>
-			</result>
+			</result><!-- sri1 -->
 		</action>
 		
 		<action name="getTotalCommitteeCntsByStateAction" class="committeeDashBoardAction" method="getTotalCommitteeCntsByState">
 			<result type="json" name="success">
 				<param name="root">cadreCommitteeReportVO</param>
-			</result>
+			</result><!-- sri2 -->
 		</action>
 		
 		<action name="committeeUpdateApproveAction" class="cadreCommitteeAction" method="committeeUpdateApproveAction">
@@ -9570,7 +9570,7 @@
 		<action name="getDistrictWiseCommittesSummaryAction" class="committeeDashBoardAction" method="getDistrictWiseCommittesSummary">
 			<result type="json" name="success">
 				<param name="root">districtWiseSummaryList</param>
-			</result>
+			</result><!-- sri3 -->
 		</action>
 		
 		<action name="getStartedAffliCommitteesCountByLocation" class="committeeDashBoardAction" method="getStartedAffliCommitteesCountByLocation">
