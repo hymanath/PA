@@ -384,7 +384,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 	
 	
 	
-	public List<Object[]> getMembersCountInCommitteeByLocation(String state,List<Long> levelIds,Long committeeId,Date startDate,Date endDate){
+	public List<Object[]> getMembersCountInCommitteeByLocation(String state,List<Long> levelIds,Long committeeId,Date startDate,Date endDate,List<Long> districtIds,List<Long> assemblyIds,List<Long> locationlevelValueList){
 		
 		StringBuilder str = new StringBuilder();
 		
@@ -398,6 +398,18 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		if(startDate !=null && endDate !=null){
 			
 			str.append(" and ( date(model.tdpCommitteeRole.tdpCommittee.completedDate)>=:startDate and date(model.tdpCommitteeRole.tdpCommittee.completedDate)<=:endDate ) ");
+		}
+		if(locationlevelValueList != null && locationlevelValueList.size()>0)
+		{
+			str.append(" and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue in (:locationlevelValueList) ");
+		}	
+		else if(assemblyIds != null && assemblyIds.size()>0)
+		{
+			str.append(" and model.tdpCommitteeRole.tdpCommittee.constituency.constituencyId in (:assemblyIds) ");
+		}		
+		else if(districtIds != null && districtIds.size()>0)
+		{
+			str.append(" and model.tdpCommitteeRole.tdpCommittee.districtId in (:districtIds) ");
 		}
 		str.append("and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) " +
 				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId = :committeeId" +
@@ -416,6 +428,18 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 		}
 		query.setParameter("committeeId", committeeId);
 		query.setParameterList("levelIds",levelIds);
+		if(locationlevelValueList != null && locationlevelValueList.size()>0)
+		{
+			query.setParameterList("locationlevelValueList", locationlevelValueList);
+		}	
+		else if(assemblyIds != null && assemblyIds.size()>0)
+		{
+			query.setParameterList("assemblyIds", assemblyIds);
+		}
+		else if(districtIds != null && districtIds.size()>0)
+		{
+			query.setParameterList("districtIds", districtIds);
+		}
         return query.list();
     }
 	public Long getCommitteMembers(Long tdpCommitteeId)
