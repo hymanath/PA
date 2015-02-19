@@ -5564,7 +5564,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			    		cadreCommitteeMemberVO.setId((Long)objects[0]);//cadreId
 			    		cadreCommitteeMemberVO.setName(objects[1].toString());//cadreName
 			    		cadreCommitteeMemberVO.setImagePath(objects[2].toString());//image
-			    		cadreCommitteeMemberVO.setMembershipNo(objects[3].toString());//membershipno
+			    		if(objects[3].toString().trim().length() > 8){
+			    			cadreCommitteeMemberVO.setMembershipNo(objects[3].toString().trim().substring(objects[3].toString().trim().length()-8));
+			    		}else{
+			    		  cadreCommitteeMemberVO.setMembershipNo(objects[3].toString());//membershipno
+			    		}
+			    		//cadreCommitteeMemberVO.setMembershipNo(objects[3].toString());//membershipno
 			    		cadreCommitteeMemberVOList.add(cadreCommitteeMemberVO);
 		    		}
 		    		
