@@ -744,7 +744,11 @@
 					getCommitteeDetails("TS","villageAll");
 					$('input:radio[name="selectstate"][id="APId"]').prop('checked', true);
 					$('input:radio[name="select"][id="districtId"]').prop('checked', true);
-					getDistrictWiseCommittesSummary();
+					if(userAccessType!="MP"){
+						getDistrictWiseCommittesSummary();
+					}else{
+						getConstituencyWiseCommittesSummary();
+					}
 					
 	});
 
@@ -1785,7 +1789,12 @@
 		$("#distSummaryBody").html("");
 		for(var i in result){
 			str += '<tr>';
-			str += '<td ><span style="font-size: 13px;">'+result[i].name+'</span>&nbsp;&nbsp;<span style="cursor: pointer;" title="Click Here For '+result[i].name+' Committee Summary Report" onclick="getPopUpForSummary('+result[i].constiId+',\''+result[i].name+'\');" class="glyphicon glyphicon-dashboard"></span>&nbsp;&nbsp;<span style="cursor: pointer;"  onclick="showAdvanceDashBoard('+result[i].constiId+');" title="Click Here For '+result[i].name+' Advance Dashboard"  class="glyphicon glyphicon-list-alt"></span></td>';
+			str += '<td ><span style="font-size: 13px;">'+result[i].name+'</span>';
+			<c:if test="${!fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_AREAWISE_ACCESS' )}">
+				str += '&nbsp;&nbsp;<span style="cursor: pointer;" title="Click Here For '+result[i].name+' Committee Summary Report" onclick="getPopUpForSummary('+result[i].constiId+',\''+result[i].name+'\');" class="glyphicon glyphicon-dashboard"></span>&nbsp;&nbsp;<span style="cursor: pointer;"  onclick="showAdvanceDashBoard('+result[i].constiId+');" title="Click Here For '+result[i].name+' Advance Dashboard"  class="glyphicon glyphicon-list-alt"></span>';
+			</c:if>
+			str += '</td>';
+			
 			if(result[i].townMandalDivisionVO!=null){
 				if(result[i].townMandalDivisionVO.totalCommittees!=null){
 					str += '<td>'+result[i].townMandalDivisionVO.totalCommittees+'</td>';
@@ -1996,6 +2005,9 @@
 		var jObj={
 			constituencyId:Id
 		}
+		 $("#villageMainTableDivId").html("");
+		 $("#villageAfflicatedTableDivId").html("");
+		 
 		$.ajax({
 				type : "POST",
 				url : "getSummaryActionPopUp.action",
@@ -2096,6 +2108,10 @@
 			var jObj={
 				constituencyId:Id
 			}
+			
+			$("#mandalMainCommitteDivId").html("");
+			 $("#mandalAffliCommitteDivId").html("");
+			
 			$.ajax({
 				type : "POST",
 				url : "gettingMandalMuncipalDivisonSummaryPopUpAction.action",
