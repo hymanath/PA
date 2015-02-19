@@ -4873,7 +4873,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						 totalDivisionCommittees, 
 						 totalDivisionStartedCommittees, 
 						 totalDivisionCompletedCommittees, 
-						 localBodiesMap);
+						 divisionIdsMap);
 			 }
 			 
 		}

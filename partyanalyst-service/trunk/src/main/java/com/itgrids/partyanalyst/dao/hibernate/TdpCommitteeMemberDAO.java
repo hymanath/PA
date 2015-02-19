@@ -331,7 +331,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 			sb.append(" and date(model.tdpCommitteeRole.tdpCommittee.startedDate) >= :startDate ");
 		}
 		if(endDate!=null){
-			sb.append(" and date(model.tdpCommitteeRole.tdpCommittee.completedDate) <= :endDate");
+			sb.append(" and date(model.tdpCommitteeRole.tdpCommittee.startedDate) <= :endDate");
 		}
 		sb.append(" group by model.tdpCommitteeRole.tdpCommittee.district.districtId");
 		
