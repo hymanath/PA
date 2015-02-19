@@ -701,11 +701,11 @@
 		$("#committeeMemberDiv").html(str);
 		if(result[0].status != "Y")
 		{
-			 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_AREAWISE_ACCESS' )}">
+			
 			var str1='';
 			str1+='<button class="btn btn-success btn-lg" onclick="committeeComplete(\''+jsObj.basicCommitteetypeId+'\',\''+jsObj.levelId+'\',\''+jsObj.locationId+'\')">Finalize Committee</button>';
 			$("#conformedBtn").html(str1);
-			</c:if>
+			
 		}
 	}
 	function setDefaultImage(img)
