@@ -1790,9 +1790,9 @@
 		for(var i in result){
 			str += '<tr>';
 			str += '<td ><span style="font-size: 13px;">'+result[i].name+'</span>';
-			<c:if test="${!fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_AREAWISE_ACCESS' )}">
+			
 				str += '&nbsp;&nbsp;<span style="cursor: pointer;" title="Click Here For '+result[i].name+' Committee Summary Report" onclick="getPopUpForSummary('+result[i].constiId+',\''+result[i].name+'\');" class="glyphicon glyphicon-dashboard"></span>&nbsp;&nbsp;<span style="cursor: pointer;"  onclick="showAdvanceDashBoard('+result[i].constiId+');" title="Click Here For '+result[i].name+' Advance Dashboard"  class="glyphicon glyphicon-list-alt"></span>';
-			</c:if>
+			
 			str += '</td>';
 			
 			if(result[i].townMandalDivisionVO!=null){
