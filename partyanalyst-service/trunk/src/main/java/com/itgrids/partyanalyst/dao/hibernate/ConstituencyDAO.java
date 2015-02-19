@@ -1207,7 +1207,11 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getAssemblyConstituencyDetlsByDistrictIds(List<Long> districtIds) {	
 		StringBuilder query = new StringBuilder();
-		query.append(" select model.constituencyId, model.name from Constituency model where model.electionScope.electionScopeId = 2 and model.district.districtId in ( :districtIds) order by model.name" );
+		query.append(" select model.constituencyId, model.name from Constituency model " +
+				" where model.electionScope.electionScopeId = 2" +
+				" and model.deformDate is null " +
+				" and model.district.districtId in ( :districtIds) " +
+				" order by model.name" );
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameterList("districtIds", districtIds);		
 		return queryObject.list();

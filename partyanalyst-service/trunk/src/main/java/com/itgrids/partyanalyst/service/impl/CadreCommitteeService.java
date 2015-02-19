@@ -2559,25 +2559,143 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			}
 		
 		
-			Long totalCommitteeCntDtls =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,null,districtIds,assemblyIds,null);		
-			cadreCommitteeReportVO.setTotalCommittees(totalCommitteeCntDtls);
-			
-			List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,null,null,null,districtIds,assemblyIds,null);
-			
-			if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
-				for (Object[] objects : committeeCntDtls) {
-									
-					if(Long.valueOf(objects[1].toString()).longValue() == 1l)
-						totalCompletedCommittees = totalCompletedCommittees+(Long)objects[0];
-						
+			if(!accessType.trim().equalsIgnoreCase("MP")){
+				Long totalCommitteeCntDtls =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,null,districtIds,assemblyIds,null);		
+				cadreCommitteeReportVO.setTotalCommittees(totalCommitteeCntDtls);
+				
+				List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,null,null,null,districtIds,assemblyIds,null);
+				
+				if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
+					for (Object[] objects : committeeCntDtls) {
+										
+						if(Long.valueOf(objects[1].toString()).longValue() == 1l)
+							totalCompletedCommittees = totalCompletedCommittees+(Long)objects[0];
+							
+					}
 				}
+				
+				cadreCommitteeReportVO.setTotalCompleted(totalCompletedCommittees);
+				if(cadreCommitteeReportVO.getTotalCommittees()  > 0){
+					cadreCommitteeReportVO.setTotalCntPerc(new BigDecimal(cadreCommitteeReportVO.getTotalCompleted() * 100.0/cadreCommitteeReportVO.getTotalCommittees()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+				}
+				else{
+					cadreCommitteeReportVO.setTotalCntPerc(0.0);
+				}
+			}else{
+				  Long committeesCount = 0l;
+				  Long memsCount = 0l;
+				  /*Long mainStrtdCount = 0l;
+				  Long afflStrtdCount = 0l;*/
+				  List<Long> levelIds = new ArrayList<Long>();
+				  levelIds.add(5l);
+				  levelIds.add(7l);
+				  levelIds.add(9l);
+				  
+				  Long completedMainCommittees = 0l;
+				  Long completedAfflCommittees = 0l;
+				  
+				  
+				  Map<String,List<Long>> lctnsMap = getLocalBodiesDivisionsMandalByContituencyIds(assemblyIds,levelIds);
+				  for (Entry<String, List<Long>> entry : lctnsMap.entrySet()) {
+					  if(entry.getKey().equalsIgnoreCase("Tehsils")){
+						  List<Long> lctnsIds = entry.getValue();
+						  if(lctnsIds!=null && lctnsIds.size()>0){
+							  List<Long> lvlIds = new ArrayList<Long>();
+							  lvlIds.add(5l);
+							  Long cmtCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,lvlIds,districtIds,null,lctnsIds);
+							  committeesCount = committeesCount + cmtCnt;
+							  
+							
+							  List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state, levelIds, null, null, districtIds, assemblyIds, lctnsIds);
+								if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
+									for (Object[] objects : committeeCntDtls) {
+														
+										if(Long.valueOf(objects[1].toString())==1l)
+											completedMainCommittees = completedMainCommittees+(Long)objects[0];
+										else if(Long.valueOf(objects[1].toString()) == 2l)
+											completedAfflCommittees=completedAfflCommittees+(Long)objects[0];	
+									}
+								}
+						  }
+					  }
+					
+					  if(entry.getKey().equalsIgnoreCase("LocalBodies")){
+						  List<Long> lctnsIds = entry.getValue();
+						  if(lctnsIds!=null && lctnsIds.size()>0){
+							  List<Long> lvlIds = new ArrayList<Long>();
+							  lvlIds.add(7l);
+							  Long cmtCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,lvlIds,districtIds,null,lctnsIds);
+							  committeesCount = committeesCount + cmtCnt;
+							  
+							  List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,lvlIds,null,null,districtIds,null,lctnsIds);
+								if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
+									for (Object[] objects : committeeCntDtls) {
+														
+										if(Long.valueOf(objects[1].toString())==1l)
+											completedMainCommittees = completedMainCommittees+(Long)objects[0];
+										else if(Long.valueOf(objects[1].toString()) == 2l)
+											completedAfflCommittees=completedAfflCommittees+(Long)objects[0];	
+									}
+								}
+						  }
+					  }
+					
+					  if(entry.getKey().equalsIgnoreCase("DivisionWards")){
+						  List<Long> lctnsIds = entry.getValue();
+						  if(lctnsIds!=null && lctnsIds.size()>0){
+							  List<Long> lvlIds = new ArrayList<Long>();
+							  lvlIds.add(9l);
+							  Long cmtCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,lvlIds,districtIds,null,lctnsIds);
+							  committeesCount = committeesCount + cmtCnt;
+							  
+							   List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,lvlIds,null,null,districtIds,null,lctnsIds);
+								
+								if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
+									for (Object[] objects : committeeCntDtls) {
+														
+										if(Long.valueOf(objects[1].toString())==1l)
+											completedMainCommittees = completedMainCommittees+(Long)objects[0];
+										else if(Long.valueOf(objects[1].toString()) == 2l)
+											completedAfflCommittees=completedAfflCommittees+(Long)objects[0];	
+									}
+								}
+								
+						  }
+					  }
+				  }
+				  
+				  
+				  List<Long> ruralLvlIds = new ArrayList<Long>();
+				  ruralLvlIds.add(6l);
+				  ruralLvlIds.add(8l);
+				  
+				  Long committeeCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,ruralLvlIds,districtIds,assemblyIds,null);
+				  committeesCount = committeesCount + committeeCnt;
+				  //0count ,1 isCommitteeConfirmed,2.tdpCommitteeLevelId,3.tdpBasicCommitteeId
+				  List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,ruralLvlIds,null,null,districtIds,assemblyIds,null);
+				  if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
+						for (Object[] objects : committeeCntDtls) {
+											
+							if(Long.valueOf(objects[1].toString())==1l)
+								completedMainCommittees = completedMainCommittees+(Long)objects[0];
+							else if(Long.valueOf(objects[1].toString()) == 2l)
+								completedAfflCommittees=completedAfflCommittees+(Long)objects[0];	
+						}
+					}
+					
+				  
+				 
+				  	cadreCommitteeReportVO.setTotalCommittees(committeesCount);
+				  	cadreCommitteeReportVO.setTotalCompleted(completedMainCommittees);
+					if(cadreCommitteeReportVO.getTotalCommittees()  > 0){
+						cadreCommitteeReportVO.setTotalCntPerc(new BigDecimal(cadreCommitteeReportVO.getTotalCompleted() * 100.0/cadreCommitteeReportVO.getTotalCommittees()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+					}
+					else{
+						cadreCommitteeReportVO.setTotalCntPerc(0.0);
+					}
+				
 			}
 			
-		cadreCommitteeReportVO.setTotalCompleted(totalCompletedCommittees);
-		if(cadreCommitteeReportVO.getTotalCommittees()  > 0)
-			cadreCommitteeReportVO.setTotalCntPerc(new BigDecimal(cadreCommitteeReportVO.getTotalCompleted() * 100.0/cadreCommitteeReportVO.getTotalCommittees()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-		else
-			cadreCommitteeReportVO.setTotalCntPerc(0.0);
 		return cadreCommitteeReportVO;
 		}
 		catch(Exception e){
