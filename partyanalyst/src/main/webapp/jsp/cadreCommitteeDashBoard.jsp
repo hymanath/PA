@@ -30,7 +30,6 @@
 	.navbar-nav > li > a {text-decoration:none;}
 		a:hover {text-decoration:none;}
 		.multiLevelLiA a{text-transform: uppercase;color:black;}
-		body{background:#fff;}
 	</style>
 
 <script>
@@ -2369,10 +2368,11 @@
 		str+='<td>'+result[i].name+'</td>';
 		str+='<td>'+result[i].membershipNo+'</td>';
 		str+='<td>'+result[i].role+'';
-		if(result[i].status != "Y")
-			{
-		str+='<div class="pull-right  btn btn-default btn-sm" ><i style="cursor:pointer;" class="glyphicon glyphicon-trash " onclick="deleteCadreRole(\''+result[i].total+'\');"></i></div>';
-			}
+		if(result[i].status != "Y"){
+			<c:if test="${!fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_AREAWISE_ACCESS' )}">
+				str+='<div class="pull-right  btn btn-default btn-sm" ><i style="cursor:pointer;" class="glyphicon glyphicon-trash " onclick="deleteCadreRole(\''+result[i].total+'\');"></i></div>';
+			</c:if>
+		}
 		str+='</td>';
 		str+='</tr>';//total - tdpCommitteMemberID
 		}
@@ -2381,9 +2381,11 @@
 		$("#committeeMemberDiv").html(str);
 		if(result[0].status != "Y")
 		{
-			var str1='';
-			str1+='<button class="btn btn-success btn-lg" onclick="committeeComplete(\''+jsObj.basicCommitteetypeId+'\',\''+jsObj.levelId+'\',\''+jsObj.locationId+'\')">Finalize Committee</button>';
-			$("#conformedBtn").html(str1);
+			<c:if test="${!fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_AREAWISE_ACCESS' )}">
+				var str1='';
+				str1+='<button class="btn btn-success btn-lg" onclick="committeeComplete(\''+jsObj.basicCommitteetypeId+'\',\''+jsObj.levelId+'\',\''+jsObj.locationId+'\')">Finalize Committee</button>';
+				$("#conformedBtn").html(str1);
+			</c:if>
 		}
 	}
 	function setDefaultImage(img)
