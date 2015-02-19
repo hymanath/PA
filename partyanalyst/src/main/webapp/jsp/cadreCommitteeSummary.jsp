@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="s" uri="/struts-tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -268,7 +269,8 @@
                  <img id="comitteeMemberAjax" src="./images/icons/search.gif" alt="Processing Image" style="display:none;margin-left:400px;"/>
                 <div class="col-md-8 col-md-offset-1" id="committeeMemberDiv" >
 
-				 </div>   
+				 </div> 
+				
                 <div class="col-md-2" id="conformedBtn" style="padding-top:10px;"></div>
             </div>  
             <!--Second Block END-->
@@ -699,9 +701,11 @@
 		$("#committeeMemberDiv").html(str);
 		if(result[0].status != "Y")
 		{
+			 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_AREAWISE_ACCESS' )}">
 			var str1='';
 			str1+='<button class="btn btn-success btn-lg" onclick="committeeComplete(\''+jsObj.basicCommitteetypeId+'\',\''+jsObj.levelId+'\',\''+jsObj.locationId+'\')">Finalize Committee</button>';
 			$("#conformedBtn").html(str1);
+			</c:if>
 		}
 	}
 	function setDefaultImage(img)
