@@ -469,8 +469,9 @@ public String constituencyCommitteeSummaryAction()
 		accessConstituencyId = accLoc.get(0).getId();
 	}
 	
-	if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"TDP_COMMITTEE_AREAWISE_ACCESS"))
-		noaccess = true ;
+	if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"TDP_COMMITTEE_AREAWISE_ACCESS")){
+		noaccess = false ;
+	}
 	if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 		noaccess = false;
 	}
