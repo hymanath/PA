@@ -234,13 +234,17 @@ function buildConstituencySummary(results,jsObj){
 						str+='<th  rowspan=2> Location </th>';
 						for(var k in results.resultList){
 							if(results.resultList[k].basicCommitteeName == 'Main'){
-								reqPositionsArray.push(k);
+								if(reqPositionsArray.indexOf(k) == -1){
+								  reqPositionsArray.push(k);
+								}
 								str+='<th colspan=2>'+results.resultList[k].basicCommitteeName+'</th>';
 							}else{
 								 for(var c in rest.locationsList){
 									 if(rest.locationsList[c].resultList[k].membersCount!=null || rest.locationsList[c].resultList[k].electrolsCount!=null){
-										 str+='<th colspan=2>'+results.resultList[k].basicCommitteeName+'</th>';
-										 reqPositionsArray.push(k);
+										 if(reqPositionsArray.indexOf(k) == -1){
+										      str+='<th colspan=2>'+results.resultList[k].basicCommitteeName+'</th>';
+											  reqPositionsArray.push(k);
+											}
 									 }
 								 }
 							}
@@ -299,13 +303,17 @@ function buildConstituencySummary(results,jsObj){
 						str+='<th rowspan=2> Location </th>';
 						for(var k in results.resultList){
 							if(results.resultList[k].basicCommitteeName == 'Main'){
-								reqPositionsArray.push(k);
+								if(reqPositionsArray.indexOf(k) == -1){
+									  reqPositionsArray.push(k);
+									}
 								str+='<th colspan=2>'+results.resultList[k].basicCommitteeName+'</th>';
 							}else{
 								 for(var c in rest.locationsList){
 									 if(rest.locationsList[c].resultList[k].membersCount!=null || rest.locationsList[c].resultList[k].electrolsCount!=null){
-										 str+='<th colspan=2>'+results.resultList[k].basicCommitteeName+'</th>';
-										 reqPositionsArray.push(k);
+										 if(reqPositionsArray.indexOf(k) == -1){
+										      str+='<th colspan=2>'+results.resultList[k].basicCommitteeName+'</th>';
+											  reqPositionsArray.push(k);
+											}
 									 }
 								 }
 							}
