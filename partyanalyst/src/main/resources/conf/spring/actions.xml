@@ -1554,5 +1554,10 @@
 		<property name="tdpCadreReportService" ref="tdpCadreReportService" />
 		<property name="cadreRegistrationService" ref="cadreRegistrationService" />
 	</bean>
+	
+	<bean id="cadreMissedCallCampaignAction" class="com.itgrids.partyanalyst.web.action.CadreMissedCallCampaignAction" singleton="false">
+		<property name="cadreRegistrationService" ref="cadreRegistrationService" />
+	</bean>
+	
 </beans>	
 	
