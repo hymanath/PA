@@ -2080,6 +2080,7 @@
 	  <property name="voterTagDAO" ref="voterTagDAO"/>
 	  <property name="voterBoothActivitiesDAO" ref="voterBoothActivitiesDAO"/>
 	   <property name="cadreDetailsService" ref="cadreDetailsService"/>
+	   <property name="cadreRegistrationService" ref="cadreRegistrationService"/>
  </bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
@@ -2348,7 +2349,8 @@
 		<property name="errorStatusSmsDAO" ref="errorStatusSmsDAO" />	
 		<property name="tirupathiByeleMobileBoothDAO" ref="tirupathiByeleMobileBoothDAO" />			
 		<property name="twoWayMessageDAO" ref="twoWayMessageDAO" />	
-		<property name="cadreMissedCallCampaignDAO" ref="cadreMissedCallCampaignDAO" />					
+		<property name="cadreMissedCallCampaignDAO" ref="cadreMissedCallCampaignDAO" />
+		<property name="zebraPrintDetailsDAO" ref="zebraPrintDetailsDAO" />					
      </bean>
       
       <bean name="cadreDashBoardService"  class="com.itgrids.partyanalyst.service.impl.CadreDashBoardService">
@@ -2373,6 +2375,7 @@
 		   <property name="regionServiceDataImp" ref="regionServiceDataImp" />        
             <property name="cadreGhmcDriveUsersDAO" ref="cadreGhmcDriveUsersDAO" />          
           <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
+          
      </bean>
     <bean name="ctpCasteReportService"  class="com.itgrids.partyanalyst.service.impl.CtpCasteReportService">
      
