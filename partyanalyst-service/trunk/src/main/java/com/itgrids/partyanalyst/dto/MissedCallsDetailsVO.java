@@ -10,6 +10,10 @@ public class MissedCallsDetailsVO {
 	public Long districtId;
 	public Long districtCount= 0L;
 	public String name;
+	public Long constituencyId;
+	public String constituencyName;
+	public Long printedCount;
+	public Long missedCallsCount;
 	
 	public Long getTotalCount() {
 		return totalCount;
@@ -53,5 +57,29 @@ public class MissedCallsDetailsVO {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+	public Long getPrintedCount() {
+		return printedCount;
+	}
+	public void setPrintedCount(Long printedCount) {
+		this.printedCount = printedCount;
+	}
+	public Long getMissedCallsCount() {
+		return missedCallsCount;
+	}
+	public void setMissedCallsCount(Long missedCallsCount) {
+		this.missedCallsCount = missedCallsCount;
+	}
+     
+} 
