@@ -3927,7 +3927,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			}else if(stateId.longValue() == 2L){
 				str.append(" and tc.userAddress.district.districtId < 11 ");
 			}
-			str.append(" group by tc.mobile_no having count(tc.tdpCadreId) = 1 ");
+			str.append(" group by tc.mobileNo having count(tc.tdpCadreId) = 1 ");
 			Query query = getSession().createQuery(str.toString());
 			if(startDate != null && endDate != null && !startDate.equals(endDate)){
 				query.setDate("startDate", startDate);
@@ -3958,7 +3958,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			}else if(stateId.longValue() == 0L){
 				str.append(" and tc.userAddress.district.districtId  between 1 and 23 ");
 			}
-			str.append(" group by tc.mobile_no having count(tc.tdpCadreId) > 1 ");
+			str.append(" group by tc.mobileNo having count(tc.tdpCadreId) > 1 ");
 			Query query = getSession().createQuery(str.toString());
 			if(startDate != null && endDate != null && !startDate.equals(endDate)){
 				query.setDate("startDate", startDate);
