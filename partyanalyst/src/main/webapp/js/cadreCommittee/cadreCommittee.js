@@ -765,7 +765,7 @@
 	
 	function submitCadreForm()
 	{	
-	
+		
 	var isexisting = $('#exitingPositionId').val();
 	var existingMsg = $('#existingMsg').val();
 
@@ -792,10 +792,16 @@
 					$("#genderIdErrorDiv").html("Please Enter Gender Details.");
 					errString="error";
 				}
+				var isDisabled = $("#voterCardNoId").prop('disabled');
+				
+				if(isDisabled == false)
+			{
+				
 				if($("#voterCardNoId").val().trim().length == 0){
 					$("#voterCardNoIdError").html("Please Enter Voter Card Number.");
 					errString="error";
 				}
+			}
 				/*if($("#adhaarNoId").val().trim().length != 12){
 					$("#adhaarNoIdError").html("Please Enter valid Aadhar id Number.");
 					errString="error";
