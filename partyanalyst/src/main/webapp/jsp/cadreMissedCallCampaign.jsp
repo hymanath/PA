@@ -132,7 +132,8 @@ ul
                 </tr>
             </table>
         <div style="border:3px solid #CCC">
-        	
+        	<img src="images/Loading-data.gif" class="offset7"  id="processImgId" style=" margin-left:419px;margin-top: 20px;width:70px;height:60px;display:none;"/>
+            <div id="constituenciesDiv"></div>
         </div>
     </div>
 </section>
@@ -325,25 +326,25 @@ function buildDistrictWiseCount(result){
 					str+='<ul  class="slimscrollar poor" style="padding:8px;margin-top:5px;border-top:1px solid #dddddd">';
 					str+='<li class="">';
 					//str+='<span class="progresslabelcolor" style="background-color:#0F0">';
-					str+='</span><span id="'+result[i].districtId+'" style="cursor:pointer" onClick="missedCallDetailsForADistrict(this.id);">'+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'';
+					str+='</span><span id="'+result[i].districtId+'" style="cursor:pointer" onClick="missedCallDetailsForADistrict('+result[i].districtId+');">'+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'';
 					str+='<div class="progress progress-warning  progress-striped active">';
 				}else if(perc1 > 20 && perc1 <= 40 ){
 					str+='<ul  class="slimscrollar ok" style="padding:8px;margin-top:5px;border-top:1px solid #dddddd">';
 					str+='<li class="">';
 					//str+='<span class="progresslabelcolor" style="background-color:#0F0">';
-					str+='</span><span id="'+result[i].districtId+'" style="cursor:pointer" onClick="missedCallDetailsForADistrict(this.id);">'+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'';
+					str+='</span><span id="'+result[i].districtId+'" style="cursor:pointer" onClick="missedCallDetailsForADistrict('+result[i].districtId+');">'+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'';
 					str+='<div class="progress progress-primary  progress-striped active">';
 				}else if(perc1 > 40 && perc1 <= 60 ){
 					str+='<ul  class="slimscrollar good" style="padding:8px;margin-top:5px;border-top:1px solid #dddddd">';
 					str+='<li class="">';
 					//str+='<span class="progresslabelcolor" style="background-color:#0F0">';
-					str+='</span><span id="'+result[i].districtId+'" style="cursor:pointer" onClick="missedCallDetailsForADistrict(this.id);"> '+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'';
+					str+='</span><span id="'+result[i].districtId+'" style="cursor:pointer" onClick="missedCallDetailsForADistrict('+result[i].districtId+');"> '+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'';
 					str+='<div class="progress progress-info  progress-striped active">';
 				}else if(perc1 > 60){
 					str+='<ul  class="slimscrollar vGood" style="padding:8px;margin-top:5px;border-top:1px solid #dddddd">';
 					str+='<li class="">';
 					//str+='<span class="progresslabelcolor" style="background-color:#0F0">';
-					str+='</span id="'+result[i].districtId+'"><span style="cursor:pointer" onClick="missedCallDetailsForADistrict(this.id);">'+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'';
+					str+='</span id="'+result[i].districtId+'"><span style="cursor:pointer" onClick="missedCallDetailsForADistrict('+result[i].districtId+');">'+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'';
 					str+='<div class="progress progress-success progress-striped active">';
 				}
 
@@ -426,6 +427,67 @@ function buildDistrictWiseCount(result){
 		getMissedCallDetails();
 		getMissedCallDetailsByDistrict();
 	});
+	
+function missedCallDetailsForADistrict(districtId){
+		
+		 $("#constituenciesDiv").html("");
+		$("#processImgId").show();
+		
+		//var districtId='23';
+		//var fromDate='2015-02-15';
+       // var toDate='2015-02-17';
+       var startDate=$(".dp_startDate").val();
+	   var endDate=$(".dp_endDate").val();
+	   
+   	   var jsobj={districtId:districtId,fromDate:startDate, toDate:endDate} ;
+	   
+	
+		 $.ajax({
+				type : "GET",
+				url : "missedCallDetailsForADistrictAction.action",
+				data: {task :JSON.stringify(jsobj)}
+			}).done(function(result){
+				$("#processImgId").hide();
+				var districtName=result[0].name.toUpperCase();
+				if(result!=null){
+				var str='';
+				str+='<table class="table table-bordered" style="margin-bottom:0px;">';
+            	str+='<caption style="background-color:#f4f4f4;font-size:16px;">';
+                	str+='<b class="pull-left" style="padding-top:10px;">'+districtName+' DISTRICT MISSED CALL DETAILS</b><span class="pull-left" style="padding-top:10px;font-size:10px">(FROM DATE '+startDate+' TO DATE '+endDate+')</span> 	';
+                	str+='<span class="pull-right" style=" cursor:pointer;background-color:#CCC;padding:10px;">';
+                    	str+='<i class="icon icon-remove"></i>';
+                    str+='</span>';
+                str+='</caption>';
+                str+='<thead style="font-size:11px;">';
+                	str+='<th>Constituency</th>';
+                    str+='<th>Registered Count</th>';
+                    str+='<th>Printed Count</th>';
+                    str+='<th>Received Missed Calls</th>';
+                    str+='<th>Mismatched Calls</th>';
+                    str+='<th>Single Member Registered</th>';
+                    str+='<th>Multi Member Registered</th>';
+                str+='</thead>';
+                str+='<tbody>';
+				if(result.length>0){
+				 for(var i in result){
+					 str+='<tr>';
+                	
+                    	str+='<td>'+result[i].constituencyName+'</td>';
+                        str+='<td>'+result[i].totalCount+'</td>';
+                        str+='<td>'+result[i].printedCount+'</td>';
+                        str+='<td>'+result[i].missedCallsCount+'</td>';
+                        str+='<td>NA</td>';
+                        str+='<td>'+result[i].singleMemberRegCnt+'</td>';
+                        str+='<td>'+result[i].multiMemberRegCnt+'</td>';
+                    str+='</tr>';
+                 }
+				}
+               str+='</tbody>';
+            str+='</table>';
+	       $("#constituenciesDiv").html(str);
+		}
+	});
+	}
 		
 </script>
 </body>
