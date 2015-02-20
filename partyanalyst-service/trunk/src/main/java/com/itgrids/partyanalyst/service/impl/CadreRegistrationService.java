@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -110,6 +111,7 @@ import com.itgrids.partyanalyst.dao.IVerifyAccessUsersDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterNamesDAO;
 import com.itgrids.partyanalyst.dao.IVoterRelationDAO;
+import com.itgrids.partyanalyst.dao.IZebraPrintDetailsDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ByeElectionVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
@@ -270,7 +272,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	private ITirupathiByeleMobileBoothDAO tirupathiByeleMobileBoothDAO;
 	private ITwoWayMessageDAO twoWayMessageDAO;
 	private ICadreMissedCallCampaignDAO cadreMissedCallCampaignDAO;
-	
+	private IZebraPrintDetailsDAO zebraPrintDetailsDAO;
 	/*private IPrintedCardDetailsDAO printedCardDetailsDAO;
 	
 	public IPrintedCardDetailsDAO getPrintedCardDetailsDAO() {
@@ -668,6 +670,14 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 
 	public void setTdpCommitteeRoleDAO(ITdpCommitteeRoleDAO tdpCommitteeRoleDAO) {
 		this.tdpCommitteeRoleDAO = tdpCommitteeRoleDAO;
+	}
+    
+	public void setZebraPrintDetailsDAO(IZebraPrintDetailsDAO zebraPrintDetailsDAO) {
+		this.zebraPrintDetailsDAO = zebraPrintDetailsDAO;
+	}
+
+	public static void setSortData(Comparator<ByeElectionVO> sortData) {
+		CadreRegistrationService.sortData = sortData;
 	}
 
 	public Date convertToDateFormet(String dateStr)
@@ -8210,7 +8220,84 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return  resultList;
 	}
 	
-	
+	public List<MissedCallsDetailsVO> missedCallDetailsForADistrict(Long districtId,String startDateString,String endDateString){
+		  
+		 List<MissedCallsDetailsVO> missedCallsDetailsVOList=null;
+		  try{
+			  Date startDate=new SimpleDateFormat("MM/dd/yyyy").parse(startDateString);
+			  Date endDate=new SimpleDateFormat("MM/dd/yyyy").parse(endDateString);
+			  
+			  Map<Long,MissedCallsDetailsVO> resultMap=new LinkedHashMap<Long,MissedCallsDetailsVO>();
+			  List<Object[]> constituenciesList=constituencyDAO.getTheConstituenciesInADistrict(districtId);
+			  if(constituenciesList!=null && constituenciesList.size()>0){
+				  for (Object[] objects : constituenciesList) {
+					  MissedCallsDetailsVO missedCallsDetailsVO =resultMap.get((Long)objects[0]);
+					  if(missedCallsDetailsVO==null){
+						  MissedCallsDetailsVO missedCallsDetailsvo=new MissedCallsDetailsVO();
+						  missedCallsDetailsvo.setName(objects[2].toString());
+						  missedCallsDetailsvo.setConstituencyId((Long)objects[0]);
+						  missedCallsDetailsvo.setConstituencyName(objects[1].toString());
+						  missedCallsDetailsvo.setTotalCount(0l);
+						  missedCallsDetailsvo.setPrintedCount(0l);
+						  missedCallsDetailsvo.setMissedCallsCount(0l);
+						  missedCallsDetailsvo.setSingleMemberRegCnt(0l);
+						  missedCallsDetailsvo.setMultiMemberRegCnt(0l);
+						  resultMap.put((Long)objects[0], missedCallsDetailsvo); 
+						}
+				     }
+			   }
+			  
+			  List<Object[]> regCountList=tdpCadreDAO.constituencyWiseRegCountForDistrict(districtId);//cid,count.
+			  List<Object[]> printCountList=zebraPrintDetailsDAO.getTotalPrintingCountByDistrict(districtId);//cid,cname,count.
+			  List<Object[]>  receivedMissedCallsList=tdpCadreDAO.constituencyWiseRecivingMissedCallsCount(districtId,startDate,endDate);//cid,count.
+			  List<Object[]>  multiMemberRegisteredForMobileList=tdpCadreDAO.multiMemberRegisteredForMobile(districtId,startDate,endDate);//cid,mno,count.
+			  
+			  if(regCountList!=null && regCountList.size()>0){
+				  for (Object[] parm : regCountList){
+					  MissedCallsDetailsVO missedCallsDetailsVO= resultMap.get((Long)parm[0]);
+					  missedCallsDetailsVO.setTotalCount((Long)parm[1]);
+						 
+					}
+		       }
+			   
+			  
+			  if(printCountList!=null && printCountList.size()>0){
+				  for (Object[] obj : printCountList) {
+					  MissedCallsDetailsVO missedCallsDetailsVO=resultMap.get((Long)obj[0]);
+					  missedCallsDetailsVO.setPrintedCount((Long)obj[2]);
+				}
+				  
+			  }
+			  
+			  if(receivedMissedCallsList!=null && receivedMissedCallsList.size()>0){
+				  for (Object[] obj : receivedMissedCallsList){
+					  MissedCallsDetailsVO missedCallsDetailsVO=resultMap.get((Long)obj[0]);
+					  missedCallsDetailsVO.setMissedCallsCount((Long)obj[1]);
+				}
+			  }
+			  
+			  if(multiMemberRegisteredForMobileList!=null && multiMemberRegisteredForMobileList.size()>0){
+				  for (Object[] obj : multiMemberRegisteredForMobileList) {
+					  MissedCallsDetailsVO missedCallsDetailsVO= resultMap.get((Long)obj[0]);
+					  if( (Long.parseLong(obj[2].toString().trim()))==1){
+						  missedCallsDetailsVO.setSingleMemberRegCnt(missedCallsDetailsVO.getSingleMemberRegCnt()+1);
+					  }
+					  else if((Long.parseLong(obj[2].toString().trim()))>1){
+						  missedCallsDetailsVO.setMultiMemberRegCnt(missedCallsDetailsVO.getMultiMemberRegCnt()+1);
+					  }
+					  
+				}
+			  }
+			  
+			 if(resultMap!=null && resultMap.size()>0){
+			   missedCallsDetailsVOList=new ArrayList<MissedCallsDetailsVO>(resultMap.values());
+			 }
+			
+		  }catch(Exception e){
+			  LOG.error("Exception Occured in missedCallDetailsForADistrict()", e);
+		  }
+		 return  missedCallsDetailsVOList;
+	  } 
 	
 	
 }
