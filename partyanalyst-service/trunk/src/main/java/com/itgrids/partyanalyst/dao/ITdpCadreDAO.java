@@ -280,10 +280,11 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<TdpCadre> getTdpCadreDetails(String uuid);
 	public List<Object[]> getReqDetailsForIMageChecking(Long districtId,Long constituencyId);
 	
-	public List<Long> getSingleMemberMobileNosCount(Date startDate, Date endDate,Long stateId);
-	public List<Long> getMultipleMemberMobileNosCount(Date startDate, Date endDate,Long stateId);
+	public List<Long> getSingleMemberMobileNosCount(List<String> mobileNos,Long stateId);
+	public List<Long> getMultipleMemberMobileNosCount(List<String> mobileNos,Long stateId);
 	public Long getMissedCallsCountByState(Date startDate, Date endDate,Long stateId);
 	public Long getMatchedMobileNosByState(List<String> mobileNos);
 	public List<String> getMissedCallMobileNosByState(Date startDate, Date endDate,Long stateId);
-	public List<Object[]> getMissedCallsCountByDistrict(Date startDate, Date endDate,Long stateId);
+	public List<Object[]> getMissedCallsCountByDistrict(List<String> mobileNos,Long stateId);
+	public List<Object[]> getMissedCallsSingleMemberCountByDistrict(List<String> mobileNos,Long stateId);
 }
