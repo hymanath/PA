@@ -130,5 +130,21 @@ public class CadreMissedCallCampaignAction  extends ActionSupport implements Ser
 		return Action.SUCCESS;
 	}
 	
+	public String missedCallDetailsForADistrict(){
+		
+		try{
+			jobj = new JSONObject(getTask());			
+			Long districtId= jobj.getLong("districtId");
+			String startDateString=jobj.getString("fromDate");
+			String endDateString=jobj.getString("toDate");
+			
+			resultList = cadreRegistrationService.missedCallDetailsForADistrict(districtId,startDateString,endDateString);
+		}catch(Exception e){
+			LOG.error("Exception raised in getMissedCallDetailsDistrictWise ",e);
+		}
+		return Action.SUCCESS;	
+	
+	}
+	
 	
 }
