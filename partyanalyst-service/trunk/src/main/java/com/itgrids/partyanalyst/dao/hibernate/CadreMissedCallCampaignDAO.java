@@ -26,12 +26,12 @@ public class CadreMissedCallCampaignDAO extends GenericDaoHibernate<CadreMissedC
 		str.append("SELECT count(distinct model.mobileNumber) from CadreMissedCallCampaign model "); 
 		
 		if(startDate != null && endDate != null && !startDate.equals(endDate))
-		str.append(" and date(model.insertedTime) >=:startDate and date(model.insertedTime) <=:endDate");
+		str.append(" where date(model.insertedTime) >=:startDate and date(model.insertedTime) <=:endDate");
 		else if(startDate != null && endDate != null && startDate.equals(endDate))
-		str.append(" and date(model.insertedTime) >=:startDate");
+		str.append(" where date(model.insertedTime) >=:startDate");
 		
 	
-		Query query = getSession().createSQLQuery(str.toString());
+		Query query = getSession().createQuery(str.toString());
 		if(startDate != null && endDate != null && !startDate.equals(endDate)){
 			query.setDate("startDate", startDate);
 			query.setDate("endDate", endDate);
@@ -52,7 +52,7 @@ public class CadreMissedCallCampaignDAO extends GenericDaoHibernate<CadreMissedC
 		else if(startDate != null && endDate != null && startDate.equals(endDate))
 		str.append(" where date(model.insertedTime) >=:startDate");
 		
-		Query query = getSession().createSQLQuery(str.toString());
+		Query query = getSession().createQuery(str.toString());
 		if(startDate != null && endDate != null && !startDate.equals(endDate)){
 			query.setDate("startDate", startDate);
 			query.setDate("endDate", endDate);

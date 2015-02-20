@@ -3,12 +3,12 @@ package com.itgrids.partyanalyst.dto;
 public class MissedCallsDetailsVO {
 
 	
-	public Long totalCount;
-	public Long mismatchedCnt;
-	public Long singleMemberRegCnt;
-	public Long multiMemberRegCnt;
+	public Long totalCount = 0L;
+	public Long mismatchedCnt= 0L;
+	public Long singleMemberRegCnt= 0L;
+	public Long multiMemberRegCnt= 0L;
 	public Long districtId;
-	public Long districtCount;
+	public Long districtCount= 0L;
 	public String name;
 	
 	public Long getTotalCount() {

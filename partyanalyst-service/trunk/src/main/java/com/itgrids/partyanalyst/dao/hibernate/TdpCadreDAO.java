@@ -3871,11 +3871,8 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				str.append(" and tc.userAddress.district.districtId > 10 ");
 			}else if(stateId.longValue() == 2){
 				str.append(" and tc.userAddress.district.districtId < 11 ");
-			}else if(stateId.longValue() == 0L){
-				str.append(" and tc.userAddress.district.districtId  between 1 and 23 ");
 			}
-			
-			Query query = getSession().createSQLQuery(str.toString());
+			Query query = getSession().createQuery(str.toString());
 			if(startDate != null && endDate != null && !startDate.equals(endDate)){
 				query.setDate("startDate", startDate);
 				query.setDate("endDate", endDate);
@@ -3902,10 +3899,8 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				str.append(" and tc.userAddress.district.districtId > 10 ");
 			}else if(stateId.longValue() == 2L){
 				str.append(" and tc.userAddress.district.districtId < 11 ");
-			}else if(stateId.longValue() == 0L){
-				str.append(" and tc.userAddress.district.districtId  between 1 and 23 ");
 			}
-			Query query = getSession().createSQLQuery(str.toString());
+			Query query = getSession().createQuery(str.toString());
 			if(startDate != null && endDate != null && !startDate.equals(endDate)){
 				query.setDate("startDate", startDate);
 				query.setDate("endDate", endDate);
@@ -3916,10 +3911,10 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return  query.list();
 		}
 		
-		public Long getSingleMemberMobileNosCount(Date startDate, Date endDate,Long stateId)
+		public List<Long> getSingleMemberMobileNosCount(Date startDate, Date endDate,Long stateId)
 		{
 			StringBuilder str = new StringBuilder();
-			str.append("SELECT count(distinct model.mobileNumber) from CadreMissedCallCampaign model,TdpCadre tc " +
+			str.append("SELECT count(tc.tdpCadreId) from CadreMissedCallCampaign model,TdpCadre tc " +
 					" where tc.mobileNo = model.mobileNumber and tc.isDeleted = 'N' "); 
 			
 			if(startDate != null && endDate != null && !startDate.equals(endDate))
@@ -3931,11 +3926,9 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				str.append(" and tc.userAddress.district.districtId > 10 ");
 			}else if(stateId.longValue() == 2L){
 				str.append(" and tc.userAddress.district.districtId < 11 ");
-			}else if(stateId.longValue() == 0L){
-				str.append(" and tc.userAddress.district.districtId  between 1 and 23 ");
 			}
-			str.append(" having count(tc.tdpCadreId) = 1 ");
-			Query query = getSession().createSQLQuery(str.toString());
+			str.append(" group by tc.mobile_no having count(tc.tdpCadreId) = 1 ");
+			Query query = getSession().createQuery(str.toString());
 			if(startDate != null && endDate != null && !startDate.equals(endDate)){
 				query.setDate("startDate", startDate);
 				query.setDate("endDate", endDate);
@@ -3943,20 +3936,20 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			else if(startDate != null && endDate != null && startDate.equals(endDate))
 				query.setDate("startDate", startDate);
 			
-			return  (Long) query.uniqueResult();
+			return query.list();
 		}
 		
 
-		public Long getMultipleMemberMobileNosCount(Date startDate, Date endDate,Long stateId)
+		public List<Long> getMultipleMemberMobileNosCount(Date startDate, Date endDate,Long stateId)
 		{
 			StringBuilder str = new StringBuilder();
-			str.append("SELECT count(distinct model.mobileNumber) from CadreMissedCallCampaign model,TdpCadre tc " +
+			str.append("SELECT count(tc.tdpCadreId) from CadreMissedCallCampaign model,TdpCadre tc " +
 					" where tc.mobileNo = model.mobileNumber and tc.isDeleted = 'N' "); 
 			
 			if(startDate != null && endDate != null && !startDate.equals(endDate))
-			str.append(" and date(model.insertedTime) >=:startDate and date(model.insertedTime) <=:endDate");
+			str.append(" and date(model.insertedTime) >=:startDate and date(model.insertedTime) <=:endDate ");
 			else if(startDate != null && endDate != null && startDate.equals(endDate))
-			str.append(" and date(model.insertedTime) >=:startDate");
+			str.append(" and date(model.insertedTime) >=:startDate ");
 			
 			if(stateId.longValue() == 1L){
 				str.append(" and tc.userAddress.district.districtId > 10 ");
@@ -3965,8 +3958,8 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			}else if(stateId.longValue() == 0L){
 				str.append(" and tc.userAddress.district.districtId  between 1 and 23 ");
 			}
-			str.append(" having count(tc.tdpCadreId) > 1 ");
-			Query query = getSession().createSQLQuery(str.toString());
+			str.append(" group by tc.mobile_no having count(tc.tdpCadreId) > 1 ");
+			Query query = getSession().createQuery(str.toString());
 			if(startDate != null && endDate != null && !startDate.equals(endDate)){
 				query.setDate("startDate", startDate);
 				query.setDate("endDate", endDate);
@@ -3975,17 +3968,17 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				query.setDate("startDate", startDate);
 			
 		
-			return  (Long) query.uniqueResult();
+			return  query.list();
 		}
 		
 		public Long getMatchedMobileNosByState(List<String> mobileNos)
 		{
 			StringBuilder str = new StringBuilder();
-			str.append("SELECT count(distinct model.mobileNumber) from TdpCadre model " +
+			str.append("SELECT count(distinct model.mobileNo) from TdpCadre model " +
 					" where model.mobileNo in (:mobileNos) and model.isDeleted = 'N' "); 
 
-			Query query = getSession().createSQLQuery(str.toString());
-		
+			Query query = getSession().createQuery(str.toString());
+			query.setParameter("mobileNos", mobileNos);
 			return  (Long) query.uniqueResult();
 		}
 		
@@ -4009,7 +4002,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				str.append(" and tc.userAddress.district.districtId  between 1 and 23 ");
 			}
 			str.append(" group by tc.userAddress.district.districtId ");
-			Query query = getSession().createSQLQuery(str.toString());
+			Query query = getSession().createQuery(str.toString());
 			if(startDate != null && endDate != null && !startDate.equals(endDate)){
 				query.setDate("startDate", startDate);
 				query.setDate("endDate", endDate);
