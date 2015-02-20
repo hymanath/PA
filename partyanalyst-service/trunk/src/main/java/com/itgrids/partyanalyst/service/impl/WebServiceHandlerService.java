@@ -97,7 +97,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	@Autowired IUserDAO userDAO;
 	@Autowired IStrategyModelTargetingService strategyModelTargetingService;
     @Autowired IUserSurveyBoothsDAO userSurveyBoothsDAO ;
-    @Autowired ICadreRegistrationService cadreRegistrationService;
+    private ICadreRegistrationService cadreRegistrationService;
     @Autowired ITdpCadreDAO tdpCadreDAO;
     private ICadreDetailsService cadreDetailsService;
     
@@ -283,6 +283,32 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 
 	public void setLoginService(ILoginService loginService) {
 		this.loginService = loginService;
+	}
+    
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
+	public void setStrategyModelTargetingService(
+			IStrategyModelTargetingService strategyModelTargetingService) {
+		this.strategyModelTargetingService = strategyModelTargetingService;
+	}
+
+	public void setUserSurveyBoothsDAO(IUserSurveyBoothsDAO userSurveyBoothsDAO) {
+		this.userSurveyBoothsDAO = userSurveyBoothsDAO;
+	}
+
+	public void setCadreRegistrationService(
+			ICadreRegistrationService cadreRegistrationService) {
+		this.cadreRegistrationService = cadreRegistrationService;
+	}
+
+	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
+		this.tdpCadreDAO = tdpCadreDAO;
 	}
 
 	public String checkForUserAuthentication(String userName , String passWord)
