@@ -155,5 +155,5 @@ public interface ICadreRegistrationService {
 	
 	
 	public MissedCallsDetailsVO getMissedCallDetail(String fromDateStr,String toDateStr,Long stateId);
-	public List<MissedCallsDetailsVO> getMissedCallDetailByDistrict(String fromDateStr,String toDateStr,Long stateId);
+	public List<MissedCallsDetailsVO> getMissedCallDetailByDistrict(String fromDateStr,String toDateStr,Long stateId,String task);
 }

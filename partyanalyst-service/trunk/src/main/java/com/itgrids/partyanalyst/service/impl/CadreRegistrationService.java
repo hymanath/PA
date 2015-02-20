@@ -8106,7 +8106,16 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			if(totalMissedCalls != null){
 				missedCallDetails.setTotalCount(totalMissedCalls);
 			}
-			List<Long> singleMemRegistered = tdpCadreDAO.getSingleMemberMobileNosCount(fromDate,toDate,stateId);
+			List<String> mobileNos = new ArrayList<String>();
+			
+			if(stateId == 0L)
+				mobileNos  = 	cadreMissedCallCampaignDAO.getAllMobileNos(fromDate,toDate);
+			else 
+				mobileNos = tdpCadreDAO.getMissedCallMobileNosByState(fromDate,toDate,stateId);
+			
+			
+			
+			List<Long> singleMemRegistered = tdpCadreDAO.getSingleMemberMobileNosCount(mobileNos,stateId);
 			if(singleMemRegistered != null && singleMemRegistered.size() >0) {
 				/*for(Long cnt :singleMemRegistered){
 					singleMemRegisteredCnt = singleMemRegisteredCnt+cnt;
@@ -8114,7 +8123,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				
 				missedCallDetails.setSingleMemberRegCnt(Long.valueOf(singleMemRegistered.size()));
 			}
-			List<Long> multipleMemRegistered = tdpCadreDAO.getMultipleMemberMobileNosCount(fromDate,toDate,stateId);
+			List<Long> multipleMemRegistered = tdpCadreDAO.getMultipleMemberMobileNosCount(mobileNos,stateId);
 			if(multipleMemRegistered != null && multipleMemRegistered.size() >0){
 				//for(Long cnt1 :multipleMemRegistered){
 				//	multipleMemRegisteredCnt = multipleMemRegisteredCnt+cnt1;
@@ -8123,12 +8132,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			}
 				
 			
-			//List<String> mobileNos = new ArrayList<String>();
-						
-			//if(stateId == 0L)
-				//mobileNos  = 	cadreMissedCallCampaignDAO.getAllMobileNos(fromDate,toDate);
-			//else 
-				//mobileNos = tdpCadreDAO.getMissedCallMobileNosByState(fromDate,toDate,stateId);
+			
 			
 			//Long matchedCount = 0l;
 			//matchedCount = tdpCadreDAO.getMatchedMobileNosByState(mobileNos);
@@ -8146,7 +8150,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	
 	
 	
-	public List<MissedCallsDetailsVO> getMissedCallDetailByDistrict(String fromDateStr,String toDateStr,Long stateId)
+	public List<MissedCallsDetailsVO> getMissedCallDetailByDistrict(String fromDateStr,String toDateStr,Long stateId,String task)
 	{
 		List<MissedCallsDetailsVO> resultList = new ArrayList<MissedCallsDetailsVO>();
 			
@@ -8165,21 +8169,38 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					districtNames.put((Long)param[0], param[1].toString());
 				}
 			}
+			List<String> mobileNos = new ArrayList<String>();
 			
-			List<Object[]> result = tdpCadreDAO.getMissedCallsCountByDistrict(fromDate,toDate, stateId);
+			if(stateId == 0L)
+				mobileNos  = 	cadreMissedCallCampaignDAO.getAllMobileNos(fromDate,toDate);
+			else 
+				mobileNos = tdpCadreDAO.getMissedCallMobileNosByState(fromDate,toDate,stateId);
+			
+			List<Object[]> result = new ArrayList<Object[]>();
+			if(task.equalsIgnoreCase("getSingleMember")){
+				 result = tdpCadreDAO.getMissedCallsSingleMemberCountByDistrict(mobileNos, stateId);
+				
+			}else{
+			 	result = tdpCadreDAO.getMissedCallsCountByDistrict(mobileNos, stateId);
+			}
+			Long count= 0L;
 			if(result != null && result.size() > 0){
 				for(Object[] params : result){
 					MissedCallsDetailsVO vo = new MissedCallsDetailsVO();
 					vo.setDistrictCount((Long)params[0]);
 					vo.setDistrictId((Long)params[1]);
+					count = count+vo.getDistrictCount();
 					if(districtNames != null){
 						if(districtNames.get((Long)params[1]) != null ){
 							vo.setName(districtNames.get((Long)params[1]) != null ? districtNames.get((Long)params[1]) : "");
 						}
 					}
+					resultList.add(vo);
 				}
 			}
-			
+			if(resultList != null && resultList.size() > 0){
+				resultList.get(0).setTotalCount(count);
+			}
 		
 		}
 		catch(Exception e)
