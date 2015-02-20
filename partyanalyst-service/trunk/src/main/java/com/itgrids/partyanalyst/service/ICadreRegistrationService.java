@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dto.CardSenderVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
+import com.itgrids.partyanalyst.dto.MissedCallsDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SinkVO;
@@ -151,4 +152,8 @@ public interface ICadreRegistrationService {
 	public ByeElectionVO getMessagesInfo(Integer startIndex,Integer maxIndex);
 	
 	public String saveMissedCallDetails(MissedCallCampaignVO vo);
+	
+	
+	public MissedCallsDetailsVO getMissedCallDetail(String fromDateStr,String toDateStr,Long stateId);
+	public List<MissedCallsDetailsVO> getMissedCallDetailByDistrict(String fromDateStr,String toDateStr,Long stateId);
 }

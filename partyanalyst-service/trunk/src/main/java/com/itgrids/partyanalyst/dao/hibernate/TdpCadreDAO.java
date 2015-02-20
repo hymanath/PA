@@ -3854,5 +3854,170 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			  return query.list();
 					  
 		  }
+		  
+		
+		public Long getMissedCallsCountByState(Date startDate, Date endDate,Long stateId)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append("SELECT count(distinct model.mobileNumber) from CadreMissedCallCampaign model,TdpCadre tc " +
+					" where tc.mobileNo = model.mobileNumber and tc.isDeleted = 'N' "); 
+			
+			if(startDate != null && endDate != null && !startDate.equals(endDate))
+			str.append(" and date(model.insertedTime) >=:startDate and date(model.insertedTime) <=:endDate");
+			else if(startDate != null && endDate != null && startDate.equals(endDate))
+			str.append(" and date(model.insertedTime) >=:startDate");
+			
+			if(stateId.longValue() == 1){
+				str.append(" and tc.userAddress.district.districtId > 10 ");
+			}else if(stateId.longValue() == 2){
+				str.append(" and tc.userAddress.district.districtId < 11 ");
+			}else if(stateId.longValue() == 0L){
+				str.append(" and tc.userAddress.district.districtId  between 1 and 23 ");
+			}
+			
+			Query query = getSession().createSQLQuery(str.toString());
+			if(startDate != null && endDate != null && !startDate.equals(endDate)){
+				query.setDate("startDate", startDate);
+				query.setDate("endDate", endDate);
+			}
+			else if(startDate != null && endDate != null && startDate.equals(endDate))
+				query.setDate("startDate", startDate);
+			
+			return  (Long) query.uniqueResult();
+		}
+		
+		public List<String> getMissedCallMobileNosByState(Date startDate, Date endDate,Long stateId)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append("SELECT distinct model.mobileNumber from CadreMissedCallCampaign model,TdpCadre tc " +
+					" where tc.mobileNo = model.mobileNumber and tc.isDeleted = 'N' "); 
+			
+			if(startDate != null && endDate != null && !startDate.equals(endDate))
+			str.append(" and date(model.insertedTime) >=:startDate and date(model.insertedTime) <=:endDate");
+			else if(startDate != null && endDate != null && startDate.equals(endDate))
+			str.append(" and date(model.insertedTime) >=:startDate");
+			
+
+			if(stateId.longValue() == 1L){
+				str.append(" and tc.userAddress.district.districtId > 10 ");
+			}else if(stateId.longValue() == 2L){
+				str.append(" and tc.userAddress.district.districtId < 11 ");
+			}else if(stateId.longValue() == 0L){
+				str.append(" and tc.userAddress.district.districtId  between 1 and 23 ");
+			}
+			Query query = getSession().createSQLQuery(str.toString());
+			if(startDate != null && endDate != null && !startDate.equals(endDate)){
+				query.setDate("startDate", startDate);
+				query.setDate("endDate", endDate);
+			}
+			else if(startDate != null && endDate != null && startDate.equals(endDate))
+				query.setDate("startDate", startDate);
+			
+			return  query.list();
+		}
+		
+		public Long getSingleMemberMobileNosCount(Date startDate, Date endDate,Long stateId)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append("SELECT count(distinct model.mobileNumber) from CadreMissedCallCampaign model,TdpCadre tc " +
+					" where tc.mobileNo = model.mobileNumber and tc.isDeleted = 'N' "); 
+			
+			if(startDate != null && endDate != null && !startDate.equals(endDate))
+			str.append(" and date(model.insertedTime) >=:startDate and date(model.insertedTime) <=:endDate");
+			else if(startDate != null && endDate != null && startDate.equals(endDate))
+			str.append(" and date(model.insertedTime) >=:startDate");
+			
+			if(stateId.longValue() == 1L){
+				str.append(" and tc.userAddress.district.districtId > 10 ");
+			}else if(stateId.longValue() == 2L){
+				str.append(" and tc.userAddress.district.districtId < 11 ");
+			}else if(stateId.longValue() == 0L){
+				str.append(" and tc.userAddress.district.districtId  between 1 and 23 ");
+			}
+			str.append(" having count(tc.tdpCadreId) = 1 ");
+			Query query = getSession().createSQLQuery(str.toString());
+			if(startDate != null && endDate != null && !startDate.equals(endDate)){
+				query.setDate("startDate", startDate);
+				query.setDate("endDate", endDate);
+			}
+			else if(startDate != null && endDate != null && startDate.equals(endDate))
+				query.setDate("startDate", startDate);
+			
+			return  (Long) query.uniqueResult();
+		}
+		
+
+		public Long getMultipleMemberMobileNosCount(Date startDate, Date endDate,Long stateId)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append("SELECT count(distinct model.mobileNumber) from CadreMissedCallCampaign model,TdpCadre tc " +
+					" where tc.mobileNo = model.mobileNumber and tc.isDeleted = 'N' "); 
+			
+			if(startDate != null && endDate != null && !startDate.equals(endDate))
+			str.append(" and date(model.insertedTime) >=:startDate and date(model.insertedTime) <=:endDate");
+			else if(startDate != null && endDate != null && startDate.equals(endDate))
+			str.append(" and date(model.insertedTime) >=:startDate");
+			
+			if(stateId.longValue() == 1L){
+				str.append(" and tc.userAddress.district.districtId > 10 ");
+			}else if(stateId.longValue() == 2L){
+				str.append(" and tc.userAddress.district.districtId < 11 ");
+			}else if(stateId.longValue() == 0L){
+				str.append(" and tc.userAddress.district.districtId  between 1 and 23 ");
+			}
+			str.append(" having count(tc.tdpCadreId) > 1 ");
+			Query query = getSession().createSQLQuery(str.toString());
+			if(startDate != null && endDate != null && !startDate.equals(endDate)){
+				query.setDate("startDate", startDate);
+				query.setDate("endDate", endDate);
+			}
+			else if(startDate != null && endDate != null && startDate.equals(endDate))
+				query.setDate("startDate", startDate);
+			
+		
+			return  (Long) query.uniqueResult();
+		}
+		
+		public Long getMatchedMobileNosByState(List<String> mobileNos)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append("SELECT count(distinct model.mobileNumber) from TdpCadre model " +
+					" where model.mobileNo in (:mobileNos) and model.isDeleted = 'N' "); 
+
+			Query query = getSession().createSQLQuery(str.toString());
+		
+			return  (Long) query.uniqueResult();
+		}
+		
+		
+		public List<Object[]> getMissedCallsCountByDistrict(Date startDate, Date endDate,Long stateId)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append("select count(tc.tdpCadreId),tc.userAddress.district.districtId from CadreMissedCallCampaign model,TdpCadre tc " +
+					" where tc.mobileNo = model.mobileNumber and tc.isDeleted = 'N' "); 
+			
+			if(startDate != null && endDate != null && !startDate.equals(endDate))
+			str.append(" and date(model.insertedTime) >=:startDate and date(model.insertedTime) <=:endDate");
+			else if(startDate != null && endDate != null && startDate.equals(endDate))
+			str.append(" and date(model.insertedTime) >=:startDate");
+			
+			if(stateId.longValue() == 1){
+				str.append(" and tc.userAddress.district.districtId > 10 ");
+			}else if(stateId.longValue() == 2){
+				str.append(" and tc.userAddress.district.districtId < 11 ");
+			}else if(stateId.longValue() == 0L){
+				str.append(" and tc.userAddress.district.districtId  between 1 and 23 ");
+			}
+			str.append(" group by tc.userAddress.district.districtId ");
+			Query query = getSession().createSQLQuery(str.toString());
+			if(startDate != null && endDate != null && !startDate.equals(endDate)){
+				query.setDate("startDate", startDate);
+				query.setDate("endDate", endDate);
+			}
+			else if(startDate != null && endDate != null && startDate.equals(endDate))
+				query.setDate("startDate", startDate);
+			
+			return query.list();
+		}
 
 }

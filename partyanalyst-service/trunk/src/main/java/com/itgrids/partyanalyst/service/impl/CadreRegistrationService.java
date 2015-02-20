@@ -126,6 +126,7 @@ import com.itgrids.partyanalyst.dto.CastLocationVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
+import com.itgrids.partyanalyst.dto.MissedCallsDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -8078,6 +8079,96 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		return "success";
      
    }
+	
+	public MissedCallsDetailsVO getMissedCallDetail(String fromDateStr,String toDateStr,Long stateId)
+	{
+		MissedCallsDetailsVO missedCallDetails = new MissedCallsDetailsVO();
+			
+		try{				
+			Date fromDate = convertToDateFormet(fromDateStr);
+			Date toDate = convertToDateFormet(toDateStr);
+
+			Long totalMissedCalls = 0l;
+			
+			if(stateId == 0L)
+				totalMissedCalls = 	cadreMissedCallCampaignDAO.getAllMissedCallsCount(fromDate,toDate);
+			else 
+				totalMissedCalls = tdpCadreDAO.getMissedCallsCountByState(fromDate,toDate,stateId);
+			
+			if(totalMissedCalls != null){
+				missedCallDetails.setTotalCount(totalMissedCalls);
+			}
+			Long singleMemRegisteredCnt = tdpCadreDAO.getSingleMemberMobileNosCount(fromDate,toDate,stateId);
+			if(singleMemRegisteredCnt != null)
+				missedCallDetails.setSingleMemberRegCnt(singleMemRegisteredCnt);
+			
+			Long multipleMemRegisteredCnt = tdpCadreDAO.getMultipleMemberMobileNosCount(fromDate,toDate,stateId);
+			if(singleMemRegisteredCnt != null)
+				missedCallDetails.setMultiMemberRegCnt(multipleMemRegisteredCnt);
+			
+			List<String> mobileNos = new ArrayList<String>();
+						
+			if(stateId == 0L)
+				mobileNos  = 	cadreMissedCallCampaignDAO.getAllMobileNos(fromDate,toDate);
+			else 
+				mobileNos = tdpCadreDAO.getMissedCallMobileNosByState(fromDate,toDate,stateId);
+			
+			Long matchedCount = 0l;
+			matchedCount = tdpCadreDAO.getMatchedMobileNosByState(mobileNos);
+			
+			if(matchedCount != null){
+				missedCallDetails.setMismatchedCnt(missedCallDetails.getTotalCount() - matchedCount);
+			}	
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getErrorInfo()", e);
+		}
+		return missedCallDetails;
+	}
+	
+	
+	
+	public List<MissedCallsDetailsVO> getMissedCallDetailByDistrict(String fromDateStr,String toDateStr,Long stateId)
+	{
+		List<MissedCallsDetailsVO> resultList = new ArrayList<MissedCallsDetailsVO>();
+			
+		try{	
+			Date fromDate = convertToDateFormet(fromDateStr);
+			Date toDate = convertToDateFormet(toDateStr);
+			
+			Map<Long,String> districtNames = new HashMap<Long, String>();
+			List<Object[]> names = districtDAO.getDistrictIdAndNameByStateForStateTypeId(1L,stateId);
+			if(names != null){
+				for(Object[] param:names){
+					districtNames.put((Long)param[0], param[1].toString());
+				}
+			}
+			
+			List<Object[]> result = tdpCadreDAO.getMissedCallsCountByDistrict(fromDate,toDate, stateId);
+			if(result != null && result.size() > 0){
+				for(Object[] params : result){
+					MissedCallsDetailsVO vo = new MissedCallsDetailsVO();
+					vo.setDistrictCount((Long)params[0]);
+					vo.setDistrictId((Long)params[1]);
+					if(districtNames != null){
+						if(districtNames.get((Long)params[1]) != null ){
+							vo.setName(districtNames.get((Long)params[1]) != null ? districtNames.get((Long)params[1]) : "");
+						}
+					}
+				}
+			}
+			
+		
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getErrorInfo()", e);
+		}
+		return  resultList;
+	}
+	
+	
 	
 	
 }
