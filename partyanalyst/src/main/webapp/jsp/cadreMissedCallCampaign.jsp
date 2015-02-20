@@ -23,8 +23,9 @@ ul
 	margin-left:0px;
 }
 </style>
-<script type="text/javascript" src="js/bootStrapDateRange/daterangepicker.js"></script>
-<link rel="stylesheet" type="text/css" href="css/daterangepicker-bs2.css"/>
+
+ <link href="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker-bs3.css" rel="stylesheet" />
+
 </head>
 
 <body>
@@ -38,20 +39,24 @@ ul
                 <tr style="background-color:#f4f4f4">
                 	<td colspan="3">
                     	<label class="radio inline">
-                            <input type="radio" name="select" />
+                            <input type="radio" name="select" id="AllId" class="stateRd" value="0" checked="true"/>
                                 All
                         </label>
                     	<label class="radio inline">
-                            <input type="radio" name="select" />
+                            <input type="radio" name="select" id="APId" class="stateRd" value="1" />
                                 Andhra Pradesh
                         </label>
                     	<label class="radio inline">
-                            <input type="radio" name="select" />
+                            <input type="radio" name="select" id="TSId" class="stateRd" value="2"/>
                                 Telangana
                         </label>
-                        <div class="dropdowncalendar pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                          <i class="icon icon-calendar"></i>
-                       </div>
+                    
+					
+					<div id="reportrange" class="pull-right" style="background:rgba(0,0,0,0.1); cursor: pointer; padding: 5px 10px; border: 1px solid rgba(0,0,0,0.1);">
+					  <i class="icon icon-calendar"></i>
+					  <span id="selectedDate"></span> <b class="caret" style="margin-top: 9px;"></b>				
+					</div>
+        </div>
                     </td>
                 </tr>
                 <tr>
@@ -284,63 +289,18 @@ ul
 
 
 <script src="js/jquery-1.11.2.min.js" type="text/javascript"></script>
-<script src="js/bootstrap.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="js/moment.min.js"></script>
-
-<script type="text/javascript" src="amcharts/amcharts.js"></script>
-<script type="text/javascript" src="amcharts/pie.js"></script>
-<script type="text/javascript" src="amcharts/none.js"></script>
+<script type="text/javascript" src="js/amcharts/amcharts.js"></script>
+<script type="text/javascript" src="js/amcharts/pie.js"></script>
+<script type="text/javascript" src="js/amcharts/none.js"></script>
 <script type="text/javascript" src="js/jquery.slimscroll.min.js"></script>
-<script type="text/javascript" src="js/custom.js"></script>
-<script type="text/javascript">
-var chart = AmCharts.makeChart("chartdiv", {
-    "type": "pie",
-    "theme": "none",
-    "dataProvider": [{
-        "title": "KADAPA",
-        "value": 4852
-    },{
-        "title": "CHITTOR",
-        "value": 4852
-    },{
-        "title": "ANANTAPUR",
-        "value": 4852
-    },{
-        "title": "EAST GODAVARI",
-        "value": 4852
-    },{
-        "title": "KRISHNA",
-        "value": 4852
-    },{
-        "title": "KURNOOL",
-        "value": 4852
-    }, {
-        "title": "PRAKASHAM",
-        "value": 9899
-    }, {
-        "title": "NELLORE",
-        "value": 9899
-    }, {
-        "title": "SRIKAKULAM",
-        "value": 9899
-    }, {
-        "title": "VISAKAPATNAM",
-        "value": 9899
-    }, {
-        "title": "VIZIANAGARAM",
-        "value": 9899
-    }, {
-        "title": "WEST GODAVARI",
-        "value": 9899
-    }],
-    "titleField": "title",
-    "valueField": "value",
-    "labelRadius": 5,
+<script src="js/cadreCommittee/bootstrapDaterangepicker/moment.min.js" type="text/javascript"></script> 
+<script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>   
 
-    "radius": "30%",
-    "innerRadius": "60%",
-    "labelText": "[[]]"
-});
+<script type="text/javascript" src="js/custom.js"></script>
+
+
+<script type="text/javascript">
+
 $(function(){
     $('.slimscrollar').slimScroll({
         height: '450px'
@@ -348,91 +308,129 @@ $(function(){
 });
 </script>
 <script type="text/javascript">
-	$(document).ready(function() {
-	  var cb = function(start, end, label) {
-		console.log(start.toISOString(), end.toISOString(), label);
-		$('.dropdowncalendar span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-		//alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
-		}
+	 $(document).ready(function() {
+                  var cb = function(start, end, label) {
+                    console.log(start.toISOString(), end.toISOString(), label);
+                    $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                    //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
+                  }
 
-	  var optionSet1 = {
-		startDate: moment().subtract(29, 'days'),
-		endDate: moment(),
-		minDate: '01/01/2012',
-		maxDate: '12/31/2015',
-		dateLimit: { days: 60 },
-		showDropdowns: true,
-		showWeekNumbers: true,
-		timePicker: false,
-		timePickerIncrement: 1,
-		timePicker12Hour: true,
-		ranges: {
-		   'Today': [moment(), moment()],
-		   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-		   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-		   'This Month': [moment().startOf('month'), moment().endOf('month')],
-		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-		},
-		opens: 'left',
-		buttonClasses: ['btn btn-default'],
-		applyClass: 'btn-small btn-primary',
-		cancelClass: 'btn-small',
-		format: 'MM/DD/YYYY',
-		separator: ' to ',
-		locale: {
-			applyLabel: 'Submit',
-			cancelLabel: 'Clear',
-			fromLabel: 'From',
-			toLabel: 'To',
-			customRangeLabel: 'Custom',
-			daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
-			monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-			firstDay: 1
-		}
-	  };
+                  var optionSet1 = {
+                    startDate: moment().subtract(29, 'days'),
+                    endDate: moment(),
+                    minDate: '01/01/2012',
+                    maxDate: '12/31/2015',
+                    dateLimit: { days: 60 },
+                    showDropdowns: true,
+                    showWeekNumbers: true,
+                    timePicker: false,
+                    timePickerIncrement: 1,
+                    timePicker12Hour: true,
+                   /* ranges: {
+                       'Today': [moment(), moment()],
+                       'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                       'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                       'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                       'This Month': [moment().startOf('month'), moment().endOf('month')],
+                       'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                    }, */
+                    opens: 'left',
+                    buttonClasses: ['btn btn-default'],
+                    applyClass: 'btn-small btn-success rangeButton',
+                    cancelClass: 'btn-small',
+                    format: 'MM/DD/YYYY',
+                    separator: ' to ',
+                    locale: {
+                        applyLabel: 'Submit',
+                        cancelLabel: 'Clear',
+                        fromLabel: 'From',
+                        toLabel: 'To',
+                        customRangeLabel: 'Custom',
+                        daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+                        monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                        firstDay: 1
+                    }
+                  };
 
-	  var optionSet2 = {
-		startDate: moment().subtract(7, 'days'),
-		endDate: moment(),
-		opens: 'left',
-		ranges: {
-		   'Today': [moment(), moment()],
-		   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-		   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-		   'This Month': [moment().startOf('month'), moment().endOf('month')],
-		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-		}
-	  };
+                  var optionSet2 = {
+                    startDate: moment().subtract(7, 'days'),
+                    endDate: moment(),
+                    opens: 'left',
+                    ranges: {
+                       'Today': [moment(), moment()],
+                       'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                       'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                       'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                       'This Month': [moment().startOf('month'), moment().endOf('month')],
+                       'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                    }
+                  };
 
-	  $('.dropdowncalendar span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+                  $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
 
-	  $('.dropdowncalendar').daterangepicker(optionSet1, cb);
+                  $('#reportrange').daterangepicker(optionSet1, cb);
 
-	  $('.dropdowncalendar').on('show.daterangepicker', function() { console.log("show event fired"); });
-	  $('.dropdowncalendar').on('hide.daterangepicker', function() { console.log("hide event fired"); });
-	  $('.dropdowncalendar').on('apply.daterangepicker', function(ev, picker) { 
-		console.log("apply event fired, start/end dates are " 
-		  + picker.startDate.format('MMMM D, YYYY') 
-		  + " to " 
-		  + picker.endDate.format('MMMM D, YYYY')
-		); 
-	  });
-	  $('.dropdowncalendar').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
+                  $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
+                  $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
+                  $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
+                    console.log("apply event fired, start/end dates are " 
+                      + picker.startDate.format('MMMM D, YYYY') 
+                      + " to " 
+                      + picker.endDate.format('MMMM D, YYYY')
+                    ); 
+                  });
+                  $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });		
+					getMissedCallDetails();
+					//getMissedCallDetailsByDistrict();
+               });
+			   
+function getMissedCallDetails(){
+	var stateId = $("input[type='radio'][name='select']:checked").val();	
+	var startDate=$(".dp_startDate").val();
+	var endDate=$(".dp_endDate").val();
+	var jobj = {
+		fromDate:startDate,
+		toDate:endDate,
+		stateId:stateId
+	}				
+	$.ajax({
+	  type:'GET',
+	  url: 'getMissedCallDetailsAction.action',
+	  data : {task:JSON.stringify(jobj)} ,
+	}).done(function(result){
+	});
+}
+function getMissedCallDetailsByDistrict(){
+	var stateId = $("input[type='radio'][name='select']:checked").val();	
+	var startDate=$(".dp_startDate").val();
+	var endDate=$(".dp_endDate").val();
+	var jObj = {
+		fromDate:startDate,
+		toDate:endDate,
+		stateId:stateId
+	}				
+	$.ajax({
+	  type:'GET',
+	  url: 'getMissedCallDetailsDistrictWiseAction.action',
+	  data : {task:JSON.stringify(jObj)} ,
+	}).done(function(result){
+			/*var chart = AmCharts.makeChart("chartdiv", {
+			"type": "pie",
+			"theme": "none",			
+			"titleField": "title",
+			"valueField": "value",
+			"labelRadius": 5,
+			"radius": "30%",
+			"innerRadius": "60%",
+			"labelText": "[[]]","dataProvider": [{
+			"title": "KADAPA",
+			"value": 4852
+			}]
+			});*/
+	});
+	
+}
 
-	  $('#options1').click(function() {
-		$('.dropdowncalendar').data('daterangepicker').setOptions(optionSet1, cb);
-	  });
-
-	  $('#options2').click(function() {
-		$('.dropdowncalendar').data('daterangepicker').setOptions(optionSet2, cb);
-	  });
-
-	  $('#destroy').click(function() {
-		$('.dropdowncalendar').data('daterangepicker').remove();
-	  });
-    });
 </script>
 </body>
 </html>
