@@ -517,7 +517,7 @@ function getCommitteeLocations(){
 		   return;
 		 }
 		  if(parseInt(requestedMaxPositions) <= parseInt(currentmaxPositions)){
-		   $('#maxPositionsErrId').html("<span>Requested Maximum Positions must be greater than or equal to Current Maximum Positions.</span>");
+		   $('#maxPositionsErrId').html("<span>Requested Maximum Positions must be greater than Current Maximum Positions.</span>");
 		   return;
 		 }
 		 if(isNaN(requestedMaxPositions)){
