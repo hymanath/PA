@@ -741,9 +741,12 @@
 					getCommitteeDetails("AP","villageAll");	
 					getCommitteeDetails("TS","mandalAll");	
 					getCommitteeDetails("TS","villageAll");
-					$('input:radio[name="selectstate"][id="APId"]').prop('checked', true);
-					$('input:radio[name="select"][id="districtId"]').prop('checked', true);
-					if(userAccessType!="MP"){
+					//$('input:radio[name="selectstate"][id="APId"]').prop('checked', true);
+					//$('input:radio[name="select"][id="districtId"]').prop('checked', true);
+					
+					var levelSelected = $("input[type='radio'][name='select']:checked").val();
+
+					if(userAccessType!="MP" && levelSelected == 'district'){
 						getDistrictWiseCommittesSummary();
 					}else{
 						getConstituencyWiseCommittesSummary();
