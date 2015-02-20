@@ -1763,7 +1763,8 @@
 	}
 	
 	function showAdvanceDashBoard(constiIdReq){
-		window.location.href="constituencyCommitteeSummaryAction.action?accessConstituencyId="+constiIdReq;
+		//window.location.href="constituencyCommitteeSummaryAction.action?accessConstituencyId="+constiIdReq;
+		 window.open('constituencyCommitteeSummaryAction.action?accessConstituencyId='+constiIdReq+'','location=no','_blank'); 
 	}
 	
 	function buildConstiWiseSummary(result){
