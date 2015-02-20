@@ -315,7 +315,8 @@
 			 <pattern>/tdpCadreCardsPrintingDashBoardAction*</pattern>
 			 <pattern>/tdpCallCenterAction*</pattern>
 			 <pattern>/tdpCadreVolunteersDetailsAction*</pattern>
-			 <pattern>/cadreIvrReportAction*</pattern>		
+			 <pattern>/cadreIvrReportAction*</pattern>	
+			<pattern>/cadreMissedCallCampaignAction*</pattern>				 
 			 <pattern>/cadreCommitteeSearchAction*</pattern>			
 			 <pattern>/tdpCadreImagesVerification*</pattern>	
 			  <pattern>/currentBoothsStatus*</pattern>

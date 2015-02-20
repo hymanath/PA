@@ -9723,5 +9723,22 @@
 			</result>
 		</action>
 		
+		<action name="cadreMissedCallCampaignAction" class="cadreMissedCallCampaignAction">
+			<result name="success">/jsp/cadreMissedCallCampaign.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
+		</action>
+		
+		<action name="getMissedCallDetailsAction" class="cadreMissedCallCampaignAction" method="statusForChangeDesignationsApproval">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
+		
+		<action name="getMissedCallDetailsDistrictWiseAction" class="cadreMissedCallCampaignAction" method="getMissedCallDetailsDistrictWise">
+			<result type="json" name="success">
+				<param name="root">resultList</param>
+			</result>
+		</action>
+		
 </package>
 </struts>      
