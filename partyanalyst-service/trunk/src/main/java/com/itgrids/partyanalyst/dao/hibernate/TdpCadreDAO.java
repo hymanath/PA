@@ -3998,6 +3998,54 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			query.setParameterList("mobileNos", mobileNos);
 			return query.list();
 		}
+        
+		
+public List<Object[]> constituencyWiseRegCountForDistrict(Long districtId){
+			
+			Query query=getSession().createQuery("select " +
+					" model.userAddress.constituency.constituencyId," +
+					" count(distinct model.tdpCadreId)" +
+					" from TdpCadre model " +
+					" where model.enrollmentYear='2014' and " +
+					"       model.isDeleted='N' and " +
+					"        model.userAddress.district.districtId=:districtId " +
+					" group by model.userAddress.constituency.constituencyId ");
+					 
+			 query.setParameter("districtId", districtId);
+			 return  query.list();
+	 
+	 }
+	public List<Object[]> constituencyWiseRecivingMissedCallsCount(Long districtId,Date startDate,Date endDate){
+		
+		Query query=getSession().createQuery("select model.userAddress.constituency.constituencyId,count(distinct model1.mobileNumber) " +
+				" from TdpCadre model,CadreMissedCallCampaign model1  " +
+				" where model.mobileNo=model1.mobileNumber and model.enrollmentYear='2014' and model.isDeleted='N' and " +
+				" date(model1.insertedTime) between :startDate and :endDate and " +
+				" model.userAddress.district.districtId=:districtId " +
+				" group by model.userAddress.constituency.constituencyId "); 
+				
+		
+		query.setParameter("districtId",districtId);
+		query.setParameter("startDate",startDate);
+		query.setParameter("endDate",endDate);
+		return query.list();
+	}
 
+	public List<Object[]> multiMemberRegisteredForMobile(Long districtId,Date startDate,Date endDate){
+
+		Query query=getSession().createQuery("select model.userAddress.constituency.constituencyId,model1.mobileNumber,count( model1.mobileNumber) " +
+				" from TdpCadre model,CadreMissedCallCampaign model1  " +
+				" where model.mobileNo=model1.mobileNumber and model.enrollmentYear='2014' and model.isDeleted='N' and " +
+				" date(model1.insertedTime) between :startDate and :endDate and " +
+				" model.userAddress.district.districtId=:districtId " +
+				" group by model.userAddress.constituency.constituencyId,model1.mobileNumber ");
+				
+		
+		query.setParameter("districtId",districtId);
+		query.setParameter("startDate",startDate);
+		query.setParameter("endDate",endDate);
+		return query.list();
+
+	}
 
 }
