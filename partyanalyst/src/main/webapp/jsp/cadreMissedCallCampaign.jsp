@@ -92,7 +92,7 @@ ul
                     		
                     </td>
                     <td style="background-color:#f4f4f4">
-                    	<label class="label label-custom">Filters<i class="icon icon-remove"></i></label>
+                    	<label class="label label-custom">All<i class="icon icon-remove"></i></label>
 						<ul style="margin-top:80px;">
                         	<li style="cursor:pointer;border-bottom:1px solid #dddddd;margin-bottom:10px;" class="percentagefilter1" attr-id="vGood">
                             	<div style="border-radius:2px !important;margin-bottom:0px;width:30px;height:20px !important;" class="progress progress-success progress-striped active">
@@ -270,6 +270,7 @@ function getMissedCallDetailsByDistrict(){
 	  url: 'getMissedCallDetailsDistrictWiseAction.action',
 	  data : {task:JSON.stringify(jObj)} ,
 	}).done(function(result){
+	chartData = new Array();
 		for (var i in result) {      
 			chartData.push({
 				title: result[i].name,
@@ -300,11 +301,11 @@ function buildDistrictWiseCount(result){
 		str+='<h6 style="border:1px solid #dddddd;background-color:#f4f4f4;padding:5px;margin:0px">ANDHRA PRADESH & TELANGANA district wise missed calls percentages</h6>';
         str+='<div style="padding:2px;font-size:10px;">';
 		 str+='<label class="radio inline">';
-        str+='<input type="radio" type="radio"  id="multi" style="vertical-align: text-bottom;" class="districtRd" value="1" name="radionBtn"/>';
+        str+='<input type="radio" type="radio"  id="multi" style="vertical-align: text-bottom;" class="districtRd" value="1" name="radionBtn" checked="true"/>';
         str+='<small>Multi Member Registered</small>';
         str+='</label>';
         str+='<label class="radio inline">';
-        str+='<input type="radio" id="single" style="vertical-align: text-bottom;" class="districtRd" value="0" name="radionBtn" checked="true"/>';
+        str+='<input type="radio" id="single" style="vertical-align: text-bottom;" class="districtRd" value="0" name="radionBtn" />';
         str+='<small>Single Member Registered</small>';
         str+='</label>';
        
@@ -407,8 +408,7 @@ function buildDistrictWiseCount(result){
 		getMissedCallDetailsByDistrict();
 		$('input:radio[name="select"][id="AllId"]').prop('checked', true);
 		$('input:radio[name="select"][id="districtId"]').prop('checked', true);
-		
-					
+			
 	});
 	$(".districtRd").click(function(){
 		//$("#distSummaryBody").html('<td style="text-align:center" colspan="13"><img id="summaryAjax" src="./images/Loading-data.gif" alt="Processing Image"/></td>');
@@ -422,7 +422,7 @@ function buildDistrictWiseCount(result){
 		}
 	});
 	
-	$(".select").click(function(){
+	$(".stateRd").click(function(){
 		getMissedCallDetails();
 		getMissedCallDetailsByDistrict();
 	});
