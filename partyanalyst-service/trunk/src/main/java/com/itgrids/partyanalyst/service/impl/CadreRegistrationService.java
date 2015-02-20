@@ -8084,12 +8084,20 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 	{
 		MissedCallsDetailsVO missedCallDetails = new MissedCallsDetailsVO();
 			
-		try{				
-			Date fromDate = convertToDateFormet(fromDateStr);
-			Date toDate = convertToDateFormet(toDateStr);
-
-			Long totalMissedCalls = 0l;
+		try{	
 			
+
+			DateFormat userDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+			//DateFormat dateFormatNeeded = new SimpleDateFormat("yyyy-mm-dd");
+			
+			Date fromDate = userDateFormat.parse(fromDateStr);
+			
+			Date toDate = userDateFormat.parse(toDateStr);
+		
+		
+			Long totalMissedCalls = 0l;
+			Long singleMemRegisteredCnt =0l;
+			Long multipleMemRegisteredCnt = 0L;
 			if(stateId == 0L)
 				totalMissedCalls = 	cadreMissedCallCampaignDAO.getAllMissedCallsCount(fromDate,toDate);
 			else 
@@ -8098,27 +8106,36 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			if(totalMissedCalls != null){
 				missedCallDetails.setTotalCount(totalMissedCalls);
 			}
-			Long singleMemRegisteredCnt = tdpCadreDAO.getSingleMemberMobileNosCount(fromDate,toDate,stateId);
-			if(singleMemRegisteredCnt != null)
-				missedCallDetails.setSingleMemberRegCnt(singleMemRegisteredCnt);
+			List<Long> singleMemRegistered = tdpCadreDAO.getSingleMemberMobileNosCount(fromDate,toDate,stateId);
+			if(singleMemRegistered != null && singleMemRegistered.size() >0) {
+				/*for(Long cnt :singleMemRegistered){
+					singleMemRegisteredCnt = singleMemRegisteredCnt+cnt;
+				}*/
+				
+				missedCallDetails.setSingleMemberRegCnt(Long.valueOf(singleMemRegistered.size()));
+			}
+			List<Long> multipleMemRegistered = tdpCadreDAO.getMultipleMemberMobileNosCount(fromDate,toDate,stateId);
+			if(multipleMemRegistered != null && multipleMemRegistered.size() >0){
+				//for(Long cnt1 :multipleMemRegistered){
+				//	multipleMemRegisteredCnt = multipleMemRegisteredCnt+cnt1;
+				//}
+				missedCallDetails.setMultiMemberRegCnt(Long.valueOf(multipleMemRegistered.size()));
+			}
+				
 			
-			Long multipleMemRegisteredCnt = tdpCadreDAO.getMultipleMemberMobileNosCount(fromDate,toDate,stateId);
-			if(singleMemRegisteredCnt != null)
-				missedCallDetails.setMultiMemberRegCnt(multipleMemRegisteredCnt);
-			
-			List<String> mobileNos = new ArrayList<String>();
+			//List<String> mobileNos = new ArrayList<String>();
 						
-			if(stateId == 0L)
-				mobileNos  = 	cadreMissedCallCampaignDAO.getAllMobileNos(fromDate,toDate);
-			else 
-				mobileNos = tdpCadreDAO.getMissedCallMobileNosByState(fromDate,toDate,stateId);
+			//if(stateId == 0L)
+				//mobileNos  = 	cadreMissedCallCampaignDAO.getAllMobileNos(fromDate,toDate);
+			//else 
+				//mobileNos = tdpCadreDAO.getMissedCallMobileNosByState(fromDate,toDate,stateId);
 			
-			Long matchedCount = 0l;
-			matchedCount = tdpCadreDAO.getMatchedMobileNosByState(mobileNos);
+			//Long matchedCount = 0l;
+			//matchedCount = tdpCadreDAO.getMatchedMobileNosByState(mobileNos);
 			
-			if(matchedCount != null){
-				missedCallDetails.setMismatchedCnt(missedCallDetails.getTotalCount() - matchedCount);
-			}	
+			//if(matchedCount != null){
+				missedCallDetails.setMismatchedCnt(missedCallDetails.getTotalCount() - ( missedCallDetails.getSingleMemberRegCnt() + missedCallDetails.multiMemberRegCnt) );
+			//}	
 		}
 		catch(Exception e)
 		{
@@ -8134,8 +8151,12 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 		List<MissedCallsDetailsVO> resultList = new ArrayList<MissedCallsDetailsVO>();
 			
 		try{	
-			Date fromDate = convertToDateFormet(fromDateStr);
-			Date toDate = convertToDateFormet(toDateStr);
+			DateFormat userDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+			//DateFormat dateFormatNeeded = new SimpleDateFormat("yyyy-mm-dd");
+			
+			Date fromDate = userDateFormat.parse(fromDateStr);
+			
+			Date toDate = userDateFormat.parse(toDateStr);
 			
 			Map<Long,String> districtNames = new HashMap<Long, String>();
 			List<Object[]> names = districtDAO.getDistrictIdAndNameByStateForStateTypeId(1L,stateId);
