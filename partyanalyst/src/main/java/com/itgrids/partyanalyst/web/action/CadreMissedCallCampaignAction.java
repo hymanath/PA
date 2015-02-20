@@ -120,7 +120,10 @@ public class CadreMissedCallCampaignAction  extends ActionSupport implements Ser
 			Long stateId= jobj.getLong("stateId");
 			String startDate=jobj.getString("fromDate");
 			String endDate=jobj.getString("toDate");
-			resultList = cadreRegistrationService.getMissedCallDetailByDistrict(startDate,endDate,stateId);
+			
+			String task = jobj.getString("task");
+		
+			resultList = cadreRegistrationService.getMissedCallDetailByDistrict(startDate,endDate,stateId,task);
 		}catch(Exception e){
 			LOG.error("Exception raised in getMissedCallDetailsDistrictWise ",e);
 		}

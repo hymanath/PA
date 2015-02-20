@@ -63,158 +63,62 @@ ul
                 	<td width="430" style="text-align:center;padding:0px;">
                     	<div id="chartdiv" style="margin-bottom:-80px;margin-top:-20px"></div>
                         <h5 style="margin-bottom:0px;">TOTAL MISSED CALLS</h5>
-                        <h3 style="margin-top:0px;">1000</h3>
+                       <h3 style="margin-top:0px;" id="totalMissedCallsId"></h3>
                         <table class="table table-bordered" style="margin-bottom:0px;">
                         	<tr style="word-wrap:break-word">
                             	<td>
                                 <small>
-                                	<b>Numbers Mismatched Cadre Missed Calls</b>
+                                	<b>Numbers Mismatched Cadre Missed Calls</b> 
                                 </small>
-                                <h3>100</h3>
+                                <h3 id="mismatchedId"></h3>
                                 </td>
                                 <td>
                                 <small>
                                 	<b>Single Member Registered Numbers</b>
                                 </small>
-                                <h3>400</h3>
+                                <h3 id="singleRegId"></h3>
                                 </td>
                                 <td>
                                 <small>
                                 	<b>Multi Member Registered Numbers</b>
                                 </small>
-                                <h3>400</h3>
+                                <h3 id="multiRegId"></h3>
                                 </td>
                             </tr>
                         </table>
                     </td>
                     <td width="350px" style="padding:0px">
-                    	<h6 style="border:1px solid #dddddd;background-color:#f4f4f4;padding:5px;margin:0px">ANDHRA PRADESH & TELANGANA district wise missed calls percentages</h6>
-                    	<div style="padding:2px;font-size:10px;">
-                            <label class="radio inline">
-                                <input type="radio" name="select" />
-                                    <small>Single Member Registered</small>
-                            </label>
-                            <label class="radio inline">
-                                <input type="radio" name="select" />
-                                    <small>Multi Member Registered</small>
-                            </label>
-                        </div>
-
-                        <ul  class="slimscrollar" style="padding:8px;margin-top:5px;border-top:1px solid #dddddd">
-                        <li class="percentagefilter6">
-                        	<span class="progresslabelcolor" style="background-color:#0F0"></span>
-                            Anantapur (10%) 225
-                            <div class="progress progress-success progress-striped active">
-                                  <div class="bar" style="width: 20%"></div>
-                            </div>
-                        </li>
-						<li class="percentagefilter7">
-                            <span class="progresslabelcolor" style="background-color:#9900cc"></span>
-                            Chittor (10%) 225
-                            <div class="progress progress-danger progress-striped active">
-                                  <div class="bar" style="width: 20%"></div>
-                            </div>
-                        </li>
-						<li class="percentagefilter8">
-                            <span class="progresslabelcolor" style="background-color:#cccccc"></span>
-							East Godavari (10%) 225
-                            <div class="progress progress-warning progress-striped active">
-                                  <div class="bar" style="width: 20%"></div>
-                            </div>
-						</li>
-   						<li class="percentagefilter9">
-                            <span class="progresslabelcolor" style="background-color:#fe9900"></span>
-							Guntur (50%) 25
-                            <div class="progress progress-danger progress-striped active">
-                                  <div class="bar" style="width: 20%"></div>
-                            </div>
-                        </li>
-                        <li class="percentagefilter10">
-                            <span class="progresslabelcolor" style="background-color:#663332"></span>
-                            Kadapa (1%) 22
-                            <div class="progress progress-info progress-striped active">
-                                  <div class="bar" style="width: 20%"></div>
-                            </div>
-                        </li>
-                        <li class="percentagefilter11">
-                            <span class="progresslabelcolor" style="background-color:#00ccff"></span>
-                            Krishna (50%) 925
-                            <div class="progress progress-warning progress-striped active">
-                                  <div class="bar" style="width: 20%"></div>
-                            </div>
-                        </li>
-                        <li class="percentagefilter12">
-                            <span class="progresslabelcolor" style="background-color:#003499"></span>
-                            Kadapa (60%) 425
-                            <div class="progress progress-danger progress-striped active">
-                                  <div class="bar" style="width: 20%"></div>
-                            </div>
-                        </li>
-                        <li class="percentagefilter13">
-                            <span class="progresslabelcolor" style="background-color:#ff00cc"></span>
-                            Prakasam (30%) 295
-                            <div class="progress progress-danger progress-striped active">
-                                  <div class="bar" style="width: 20%"></div>
-                            </div>
-                        </li>
-                        <li class="percentagefilter14">
-                            <span class="progresslabelcolor" style="background-color:#006600"></span>
-                            Nellore (20%) 255
-                            <div class="progress progress-danger progress-striped active">
-                                  <div class="bar" style="width: 20%"></div>
-                            </div>
-                        </li>
-                        <li class="percentagefilter15">
-                            <span class="progresslabelcolor" style="background-color:#01ffc9"></span>
-                            Srikakulam (10%) 225
-                            <div class="progress progress-danger progress-striped active">
-                                  <div class="bar" style="width: 20%"></div>
-                            </div>
-                        </li>
-                        <li class="percentagefilter16">
-                            <span class="progresslabelcolor" style="background-color:#ccfe00"></span>
-                            Vishakapatnam (10%) 225
-                            <div class="progress progress-danger progress-striped active">
-                                  <div class="bar" style="width: 20%"></div>
-                            </div>
-                        </li>
-                        <li class="percentagefilter17">
-                            <span class="progresslabelcolor" style="background-color:#ffcb01"></span>
-                            Vizianagaram (10%) 225
-                            <div class="progress progress-danger progress-striped active">
-                                  <div class="bar" style="width: 20%"></div>
-                            </div>
-                        </li>
-                        </ul>	
+					<div id="districtWiseProgressBars"></div>
+                    		
                     </td>
                     <td style="background-color:#f4f4f4">
                     	<label class="label label-custom">Filters<i class="icon icon-remove"></i></label>
 						<ul style="margin-top:80px;">
-                        	<li style="cursor:pointer;border-bottom:1px solid #dddddd;margin-bottom:10px;" class="percentagefilter1">
+                        	<li style="cursor:pointer;border-bottom:1px solid #dddddd;margin-bottom:10px;" class="percentagefilter1" attr-id="vGood">
                             	<div style="border-radius:2px !important;margin-bottom:0px;width:30px;height:20px !important;" class="progress progress-success progress-striped active">
                                   <div class="bar" style="width:100%"></div>
                                 </div>
-                                <span >VERY GOOD [0-10%]</span>
+                                <span >VERY GOOD [>60%]</span>
                             </li>
-                        	<li style="cursor:pointer;border-bottom:1px solid #dddddd;margin-bottom:10px;" class="percentagefilter2">
+                        	<li style="cursor:pointer;border-bottom:1px solid #dddddd;margin-bottom:10px;" class="percentagefilter1" attr-id="good">
                             	<div style="border-radius:2px !important;margin-bottom:0px;width:30px;height:20px !important;" class="progress progress-info progress-striped active">
                                   <div class="bar" style="width:100%"></div>
                                 </div>
-                                <span>GOOD [0-10%]</span>
+                                <span>GOOD [41-60%]</span>
                             </li>
-                        	<li style="cursor:pointer;border-bottom:1px solid #dddddd;margin-bottom:10px;" class="percentagefilter3">
+                        	<li style="cursor:pointer;border-bottom:1px solid #dddddd;margin-bottom:10px;" class="percentagefilter1" attr-id="ok">
                             	<div style="border-radius:2px !important;margin-bottom:0px;width:30px;height:20px !important;" class="progress progress-primary progress-striped active">
                                   <div class="bar" style="width:100%"></div>
                                 </div>
-                                <span>OK [0-10%]</span>
+                                <span>OK [21-40%]</span>
                             </li>
-                        	<li style="cursor:pointer;border-bottom:1px solid #dddddd;margin-bottom:10px;" class="percentagefilter4">
+                        	<li style="cursor:pointer;border-bottom:1px solid #dddddd;margin-bottom:10px;" class="percentagefilter1" attr-id="poor">
                             	<div style="border-radius:2px !important;margin-bottom:0px;width:30px;height:20px !important;" class="progress progress-warning progress-striped active">
                                   <div class="bar" style="width:100%"></div>
                                 </div>
-                                <span>POOR [0-10%]</span>
+                                <span>POOR [0-20%]</span>
                             </li>
-                        	<li style="cursor:pointer;border-bottom:1px solid #dddddd;margin-bottom:10px;" class="percentagefilter5">
+                        	<li style="cursor:pointer;border-bottom:1px solid #dddddd;margin-bottom:10px;" class="percentagefilter1" attr-id="vPoor">
                             	<div style="border-radius:2px !important;margin-bottom:0px;width:30px;height:20px !important;" class="progress progress-danger progress-striped active">
                                   <div class="bar" style="width:100%"></div>
                                 </div>
@@ -228,61 +132,7 @@ ul
                 </tr>
             </table>
         <div style="border:3px solid #CCC">
-        	<table class="table table-bordered" style="margin-bottom:0px;">
-            	<caption style="background-color:#f4f4f4;font-size:16px;">
-                	<b class="pull-left" style="padding-top:10px;">ANATAPUR DISTRICT MISSEDCALL DETAILS</b><span class="pull-left" style="padding-top:10px;font-size:10px">(FROM DATE 2-FEB-2015 TO DATE 19-FEB-2015)</span> 	
-                	<span class="pull-right" style=" cursor:pointer;background-color:#CCC;padding:10px;">
-                    	<i class="icon icon-remove"></i>
-                    </span>
-                </caption>
-                <thead style="font-size:11px;">
-                	<th>Constituency</th>
-                    <th>Registered Count</th>
-                    <th>Printed Count</th>
-                    <th>Received Missed Calls</th>
-                    <th>Mismatched Calls</th>
-                    <th>Single Member Registered</th>
-                    <th>Multi Member Registered</th>
-                </thead>
-                <tbody>
-                	<tr>
-                    	<td>Rayadurga</td>
-                        <td>2564</td>
-                        <td>2000</td>
-                        <td>250</td>
-                        <td>10</td>
-                        <td>150</td>
-                        <td>90</td>
-                    </tr>
-                	<tr>
-                    	<td>Urvakonda</td>
-                        <td>2564</td>
-                        <td>2000</td>
-                        <td>250</td>
-                        <td>10</td>
-                        <td>150</td>
-                        <td>90</td>
-                    </tr>
-                	<tr>
-                    	<td>Guntakal</td>
-                        <td>2564</td>
-                        <td>2000</td>
-                        <td>250</td>
-                        <td>10</td>
-                        <td>150</td>
-                        <td>90</td>
-                    </tr>
-                	<tr>
-                    	<td>Tadpatri</td>
-                        <td>2564</td>
-                        <td>2000</td>
-                        <td>250</td>
-                        <td>10</td>
-                        <td>150</td>
-                        <td>90</td>
-                    </tr>
-                </tbody>
-            </table>
+        	
         </div>
     </div>
 </section>
@@ -312,7 +162,7 @@ $(function(){
                   var cb = function(start, end, label) {
                     console.log(start.toISOString(), end.toISOString(), label);
                     $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-                    //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
+                  
                   }
 
                   var optionSet1 = {
@@ -381,7 +231,7 @@ $(function(){
                   });
                   $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });		
 					getMissedCallDetails();
-					//getMissedCallDetailsByDistrict();
+					getMissedCallDetailsByDistrict();
                });
 			   
 function getMissedCallDetails(){
@@ -398,8 +248,13 @@ function getMissedCallDetails(){
 	  url: 'getMissedCallDetailsAction.action',
 	  data : {task:JSON.stringify(jobj)} ,
 	}).done(function(result){
+		$("#totalMissedCallsId").html(result.totalCount);
+		$("#mismatchedId").html(result.mismatchedCnt);
+		$("#singleRegId").html(result.singleMemberRegCnt);
+		$("#multiRegId").html(result.multiMemberRegCnt);
 	});
 }
+var chartData = [];
 function getMissedCallDetailsByDistrict(){
 	var stateId = $("input[type='radio'][name='select']:checked").val();	
 	var startDate=$(".dp_startDate").val();
@@ -407,30 +262,171 @@ function getMissedCallDetailsByDistrict(){
 	var jObj = {
 		fromDate:startDate,
 		toDate:endDate,
-		stateId:stateId
+		stateId:stateId,
+		task:"getMissedCallDetails"
 	}				
 	$.ajax({
 	  type:'GET',
 	  url: 'getMissedCallDetailsDistrictWiseAction.action',
 	  data : {task:JSON.stringify(jObj)} ,
 	}).done(function(result){
-			/*var chart = AmCharts.makeChart("chartdiv", {
-			"type": "pie",
-			"theme": "none",			
-			"titleField": "title",
-			"valueField": "value",
-			"labelRadius": 5,
-			"radius": "30%",
-			"innerRadius": "60%",
-			"labelText": "[[]]","dataProvider": [{
-			"title": "KADAPA",
-			"value": 4852
-			}]
-			});*/
+		for (var i in result) {      
+			chartData.push({
+				title: result[i].name,
+				value: result[i].districtCount
+			});
+		}
+		var chart = AmCharts.makeChart("chartdiv", {
+		"type": "pie",
+		"theme": "none",			
+		"titleField": "title",
+		"valueField": "value",
+		"labelRadius": 5,
+		"radius": "30%",
+		"innerRadius": "60%",
+		"labelText": "[[]]",
+		"dataProvider": chartData
+		});
+		buildDistrictWiseCount(result);
 	});
+	
+	
 	
 }
 
+function buildDistrictWiseCount(result){
+		var str ='';
+		str+=''
+		str+='<h6 style="border:1px solid #dddddd;background-color:#f4f4f4;padding:5px;margin:0px">ANDHRA PRADESH & TELANGANA district wise missed calls percentages</h6>';
+        str+='<div style="padding:2px;font-size:10px;">';
+		 str+='<label class="radio inline">';
+        str+='<input type="radio" type="radio"  id="multi" style="vertical-align: text-bottom;" class="districtRd" value="1" name="radionBtn"/>';
+        str+='<small>Multi Member Registered</small>';
+        str+='</label>';
+        str+='<label class="radio inline">';
+        str+='<input type="radio" id="single" style="vertical-align: text-bottom;" class="districtRd" value="0" name="radionBtn" checked="true"/>';
+        str+='<small>Single Member Registered</small>';
+        str+='</label>';
+       
+        str+='</div>';
+		for(var i in result){
+		var perc =result[i].districtCount / result[0].totalCount * 100 ;
+		var perc1 = perc.toFixed(2);
+			
+			
+				if(perc1 <= 10){
+					str+='<ul  class="slimscrollar vPoor" style="padding:8px;margin-top:5px;border-top:1px solid #dddddd">';
+					str+='<li class="">';
+					//str+='<span class="progresslabelcolor" style="background-color:#0F0">';
+					str+='</span><span id="'+result[i].districtId+'" style="cursor:pointer" onClick="missedCallDetailsForADistrict('+result[i].districtId+');">'+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'';
+					str+='<div class="progress progress-danger  progress-striped active">';					
+				}else if(perc1 > 10 && perc1 <= 20 ){
+					str+='<ul  class="slimscrollar poor" style="padding:8px;margin-top:5px;border-top:1px solid #dddddd">';
+					str+='<li class="">';
+					//str+='<span class="progresslabelcolor" style="background-color:#0F0">';
+					str+='</span><span id="'+result[i].districtId+'" style="cursor:pointer" onClick="missedCallDetailsForADistrict(this.id);">'+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'';
+					str+='<div class="progress progress-warning  progress-striped active">';
+				}else if(perc1 > 20 && perc1 <= 40 ){
+					str+='<ul  class="slimscrollar ok" style="padding:8px;margin-top:5px;border-top:1px solid #dddddd">';
+					str+='<li class="">';
+					//str+='<span class="progresslabelcolor" style="background-color:#0F0">';
+					str+='</span><span id="'+result[i].districtId+'" style="cursor:pointer" onClick="missedCallDetailsForADistrict(this.id);">'+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'';
+					str+='<div class="progress progress-primary  progress-striped active">';
+				}else if(perc1 > 40 && perc1 <= 60 ){
+					str+='<ul  class="slimscrollar good" style="padding:8px;margin-top:5px;border-top:1px solid #dddddd">';
+					str+='<li class="">';
+					//str+='<span class="progresslabelcolor" style="background-color:#0F0">';
+					str+='</span><span id="'+result[i].districtId+'" style="cursor:pointer" onClick="missedCallDetailsForADistrict(this.id);"> '+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'';
+					str+='<div class="progress progress-info  progress-striped active">';
+				}else if(perc1 > 60){
+					str+='<ul  class="slimscrollar vGood" style="padding:8px;margin-top:5px;border-top:1px solid #dddddd">';
+					str+='<li class="">';
+					//str+='<span class="progresslabelcolor" style="background-color:#0F0">';
+					str+='</span id="'+result[i].districtId+'"><span style="cursor:pointer" onClick="missedCallDetailsForADistrict(this.id);">'+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'';
+					str+='<div class="progress progress-success progress-striped active">';
+				}
+
+			str+='<div class="bar" style="width: '+perc1+'%"></div>';
+			str+='</div></li></ul>';
+		}
+		$("#districtWiseProgressBars").html(str);
+	}
+	
+	function getSingleMemberCountByDistrict()
+	{
+		var stateId = $("input[type='radio'][name='select']:checked").val();	
+		var startDate=$(".dp_startDate").val();
+		var endDate=$(".dp_endDate").val();
+		var jObj = {
+		fromDate:startDate,
+		toDate:endDate,
+		stateId:stateId,
+		task:"getSingleMember"
+	}
+	
+	$.ajax({
+	  type:'GET',
+	  url: 'getMissedCallDetailsDistrictWiseAction.action',
+	  data : {task:JSON.stringify(jObj)} ,
+	}).done(function(result){
+		for (var i in result) {      
+			chartData.push({
+				title: result[i].name,
+				value: result[i].districtCount
+			});
+		}
+		var chart = AmCharts.makeChart("chartdiv", {
+		"type": "pie",
+		"theme": "none",			
+		"titleField": "title",
+		"valueField": "value",
+		"labelRadius": 5,
+		"radius": "30%",
+		"innerRadius": "60%",
+		"labelText": "[[]]",
+		"dataProvider": chartData
+		});
+		buildDistrictWiseCount(result);
+	});
+	
+	
+	}
+	
+	$(document).on("click",".percentagefilter1",function(){
+	   $(".vGood,.good,.ok,.vPoor,.poor").hide();
+	    var clas= $(this).attr("attr-id");
+		
+	   $( "."+clas ).each(function( index ) {
+        $( this ).show();
+       });
+	});
+	
+	$(document).on('click','.rangeButton',function(){
+			
+		getMissedCallDetails();
+		getMissedCallDetailsByDistrict();
+		$('input:radio[name="select"][id="AllId"]').prop('checked', true);
+		$('input:radio[name="select"][id="districtId"]').prop('checked', true);
+		
+					
+	});
+	$(".districtRd").click(function(){
+		//$("#distSummaryBody").html('<td style="text-align:center" colspan="13"><img id="summaryAjax" src="./images/Loading-data.gif" alt="Processing Image"/></td>');
+		
+		var levelSelected1 = $("input[type='radio'][name='radionBtn']:checked").val();
+		if(levelSelected1 == 0){			
+			getMissedCallDetailsByDistrict();
+		}
+		else if(levelSelected1 == 1){
+			getSingleMemberCountByDistrict();
+		}
+	});
+	
+	$(".select").click(function(){
+		getMissedCallDetails();
+		getMissedCallDetailsByDistrict();
+	});
+		
 </script>
 </body>
 </html>
