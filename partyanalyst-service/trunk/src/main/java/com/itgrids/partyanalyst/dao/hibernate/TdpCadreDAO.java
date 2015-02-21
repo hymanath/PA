@@ -3911,7 +3911,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return  query.list();
 		}
 		
-		public List<Long> getSingleMemberMobileNosCount(List<String> mobileNos,Long stateId)
+		/*public List<Long> getSingleMemberMobileNosCount(List<String> mobileNos,Long stateId)
 		{
 			StringBuilder str = new StringBuilder();
 			str.append("SELECT count(tc.tdpCadreId) from TdpCadre tc " +
@@ -3927,10 +3927,28 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			query.setParameterList("mobileNos", mobileNos);
 			
 			return query.list();
+		}*/
+		
+		public List<Long> getSingleMemberMobileNosCount(List<String> mobileNos,Long stateId)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append("SELECT COUNT(TC.tdp_cadre_id) CNT FROM tdp_cadre TC,user_address UA " +
+					" where TC.mobile_no in (:mobileNos) and TC.is_deleted = 'N' and TC.enrollment_year = '2014' and TC.address_id = UA.user_address_id "); 
+						
+			if(stateId.longValue() == 1L){
+				str.append(" and UA.district_id > 10 ");
+			}else if(stateId.longValue() == 2L){
+				str.append(" and UA.district_id < 11 ");
+			}
+			str.append(" group by TC.mobile_no HAVING CNT = 1 ");
+			Query query = getSession().createSQLQuery(str.toString());
+			query.setParameterList("mobileNos", mobileNos);
+			
+			return query.list();
 		}
 		
 
-		public List<Long> getMultipleMemberMobileNosCount(List<String> mobileNos,Long stateId)
+		/*public List<Long> getMultipleMemberMobileNosCount(List<String> mobileNos,Long stateId)
 		{
 			StringBuilder str = new StringBuilder();
 			str.append("SELECT count(tc.tdpCadreId) from TdpCadre tc " +
@@ -3948,6 +3966,26 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			Query query = getSession().createQuery(str.toString());
 			query.setParameterList("mobileNos", mobileNos);
 			return  query.list();
+		}*/
+		
+		public List<Long> getMultipleMemberMobileNosCount(List<String> mobileNos,Long stateId)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append("SELECT COUNT(TC.tdp_cadre_id) CNT FROM tdp_cadre TC,user_address UA " +
+					" where TC.mobile_no in (:mobileNos) and TC.is_deleted = 'N' and TC.enrollment_year = '2014' and TC.address_id = UA.user_address_id "); 
+			
+		
+			if(stateId.longValue() == 1L){
+				str.append(" and UA.district_id > 10 ");
+			}else if(stateId.longValue() == 2L){
+				str.append(" and UA.district_id < 11 ");
+			}else if(stateId.longValue() == 0L){
+				str.append(" and UA.district_id  between 1 and 23 ");
+			}
+			str.append(" group by TC.mobile_no having CNT > 1 ");
+			Query query = getSession().createSQLQuery(str.toString());
+			query.setParameterList("mobileNos", mobileNos);
+			return  query.list();
 		}
 		
 		public Long getMatchedMobileNosByState(List<String> mobileNos)
@@ -3962,7 +4000,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		}
 		
 		
-		public List<Object[]> getMissedCallsCountByDistrict(List<String> mobileNos,Long stateId)
+		/*public List<Object[]> getMissedCallsCountByDistrict(List<String> mobileNos,Long stateId)
 		{
 			StringBuilder str = new StringBuilder();
 			str.append("select count(tc.tdpCadreId),tc.userAddress.district.districtId from TdpCadre tc " +
@@ -3979,9 +4017,27 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			query.setParameterList("mobileNos", mobileNos);
 			return query.list();
+		}*/
+		
+		public List<Object[]> getMissedCallsCountByDistrict(List<String> mobileNos,Long stateId)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append("select COUNT(TC.tdp_cadre_id),UA.district_id from tdp_cadre TC,user_address UA " +
+					" where TC.mobile_no in (:mobileNos) and TC.is_deleted = 'N' and TC.enrollment_year = '2014' and TC.address_id = UA.user_address_id "); 
+			
+			if(stateId.longValue() == 1){
+				str.append(" and UA.district_id > 10 ");
+			}else if(stateId.longValue() == 2){
+				str.append(" and UA.district_id < 11 ");
+			}
+			str.append(" group by UA.district_id ");
+			Query query = getSession().createSQLQuery(str.toString());
+			
+			query.setParameterList("mobileNos", mobileNos);
+			return query.list();
 		}
 		
-		public List<Object[]> getMissedCallsSingleMemberCountByDistrict(List<String> mobileNos,Long stateId)
+		/*public List<Object[]> getMissedCallsSingleMemberCountByDistrict(List<String> mobileNos,Long stateId)
 		{
 			StringBuilder str = new StringBuilder();
 			str.append("select count(distinct tc.mobileNo),tc.userAddress.district.districtId from TdpCadre tc " +
@@ -3997,10 +4053,28 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			query.setParameterList("mobileNos", mobileNos);
 			return query.list();
+		}*/
+		
+		public List<Object[]> getMissedCallsSingleMemberCountByDistrict(List<String> mobileNos,Long stateId)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append("select COUNT(DISTINCT TC.mobile_no),UA.district_id from tdp_cadre TC,user_address UA " +
+					" where TC.mobile_no in (:mobileNos) and TC.is_deleted = 'N' and  TC.enrollment_year = '2014' and TC.address_id = UA.user_address_id "); 			
+		
+			if(stateId.longValue() == 1){
+				str.append(" and UA.district_id > 10 ");
+			}else if(stateId.longValue() == 2){
+				str.append(" and UA.district_id < 11 ");
+			}
+			str.append(" group by UA.district_id ");
+			Query query = getSession().createSQLQuery(str.toString());
+			
+			query.setParameterList("mobileNos", mobileNos);
+			return query.list();
 		}
         
 		
-public List<Object[]> constituencyWiseRegCountForDistrict(Long districtId){
+		public List<Object[]> constituencyWiseRegCountForDistrict(Long districtId){
 			
 			Query query=getSession().createQuery("select " +
 					" model.userAddress.constituency.constituencyId," +
