@@ -7,10 +7,13 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.MissedCallsDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
+import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -23,8 +26,19 @@ public class CadreMissedCallCampaignAction  extends ActionSupport implements Ser
 	private MissedCallsDetailsVO result;
 	private List<MissedCallsDetailsVO> resultList;
 	private ICadreRegistrationService cadreRegistrationService;
+	@Autowired 
+	private IWebServiceHandlerService1 webServiceHandlerService1;
+	private String  returnString;
 	
 	
+	public String getReturnString() {
+		return returnString;
+	}
+
+	public void setReturnString(String returnString) {
+		this.returnString = returnString;
+	}
+
 	public MissedCallsDetailsVO getResult() {
 		return result;
 	}
@@ -144,6 +158,25 @@ public class CadreMissedCallCampaignAction  extends ActionSupport implements Ser
 		}
 		return Action.SUCCESS;	
 	
+	}
+	
+	public String cadreMissedCallCampaignUrl(){
+		LOG.debug(" in cadreMissedCallCampaign ");
+		try{
+			MissedCallCampaignVO vo = new MissedCallCampaignVO();
+			vo.setRing_time(Long.valueOf(request.getParameter("smscresponse[Ring_time]")));
+			vo.setFrom(request.getParameter("smscresponse[from]"));
+			vo.setId(1L);
+			if((vo.getFrom() != null && vo.getFrom().trim().length() >0 ) && (vo.getRing_time() != null)){
+				returnString =  webServiceHandlerService1.saveMissedCallDetails(vo);
+				
+			}else{
+				returnString =  "Invalid Inputs !";
+			}
+		}catch (Exception e) {
+			LOG.error(" Exception in cadreMissedCallCampaign " + e);
+		}
+		return Action.SUCCESS;
 	}
 	
 	

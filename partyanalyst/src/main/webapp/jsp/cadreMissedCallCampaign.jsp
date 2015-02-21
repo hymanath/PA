@@ -24,8 +24,8 @@ ul
 }
 </style>
 
- <link href="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker-bs3.css" rel="stylesheet" />
-
+<!-- <link href="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker-bs3.css" rel="stylesheet" />-->
+<link href="css/daterangepicker-bs2.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -63,37 +63,40 @@ ul
                 	<td width="430" style="text-align:center;padding:0px;">
                     	<div id="chartdiv" style="margin-bottom:-80px;margin-top:-20px"></div>
                         <h5 style="margin-bottom:0px;">TOTAL MISSED CALLS</h5>
-                       <h3 style="margin-top:0px;" id="totalMissedCallsId"></h3>
+                       <center><img class="imgStyle totalData" src="images/icons/search.gif"></img><h3 style="margin-top:0px;" id="totalMissedCallsId"></h3></center>
                         <table class="table table-bordered" style="margin-bottom:0px;">
                         	<tr style="word-wrap:break-word">
                             	<td>
                                 <small>
                                 	<b>Numbers Mismatched Cadre Missed Calls</b> 
                                 </small>
-                                <h3 id="mismatchedId"></h3>
+                                <center><img class="imgStyle totalData" src="images/icons/search.gif"></img><h3 id="mismatchedId"></h3></center>
                                 </td>
                                 <td>
                                 <small>
                                 	<b>Single Member Registered Numbers</b>
                                 </small>
-                                <h3 id="singleRegId"></h3>
+                                <center><img class="imgStyle totalData" src="images/icons/search.gif"></img><h3 id="singleRegId"></h3></center>
                                 </td>
                                 <td>
                                 <small>
                                 	<b>Multi Member Registered Numbers</b>
                                 </small>
-                                <h3 id="multiRegId"></h3>
+                                <center><img class="imgStyle totalData" src="images/icons/search.gif"></img><h3 id="multiRegId"></h3></center>
                                 </td>
                             </tr>
                         </table>
                     </td>
                     <td width="350px" style="padding:0px">
-					<div id="districtWiseProgressBars"></div>
+					<div>
+						<center><img src="images/Loading-data.gif" class="offset7"  id="distProcessImgId" style=" margin-left:0px;margin-top: 200px;width:70px;height:60px;display:none;"/></center>
+						<div id="districtWiseProgressBars"></div>
+					</div>
                     		
                     </td>
                     <td style="background-color:#f4f4f4">
-                    	<label class="label label-custom">All<i class="icon icon-remove"></i></label>
-						<ul style="margin-top:80px;">
+                    	<label class="label label-custom  allIconId">All</label>
+						<ul style="margin-top:20px;">
                         	<li style="cursor:pointer;border-bottom:1px solid #dddddd;margin-bottom:10px;" class="percentagefilter1" attr-id="vGood">
                             	<div style="border-radius:2px !important;margin-bottom:0px;width:30px;height:20px !important;" class="progress progress-success progress-striped active">
                                   <div class="bar" style="width:100%"></div>
@@ -146,8 +149,6 @@ ul
 <script type="text/javascript" src="js/jquery.slimscroll.min.js"></script>
 <script src="js/cadreCommittee/bootstrapDaterangepicker/moment.min.js" type="text/javascript"></script> 
 <script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>   
-
-<script type="text/javascript" src="js/custom.js"></script>
 
 
 <script type="text/javascript">
@@ -221,8 +222,8 @@ $(function(){
 
                   $('#reportrange').daterangepicker(optionSet1, cb);
 
-                  $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
-                  $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
+                  $('#reportrange').on('show.daterangepicker', function() { console.log(""); });
+                  $('#reportrange').on('hide.daterangepicker', function() { console.log(""); });
                   $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
                     console.log("apply event fired, start/end dates are " 
                       + picker.startDate.format('MMMM D, YYYY') 
@@ -230,15 +231,17 @@ $(function(){
                       + picker.endDate.format('MMMM D, YYYY')
                     ); 
                   });
-                  $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });		
+                  $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log(""); });		
 					getMissedCallDetails();
 					getMissedCallDetailsByDistrict();
                });
 			   
 function getMissedCallDetails(){
+	$("#multiRegId,#singleRegId,#mismatchedId,#totalMissedCallsId").html("");
 	var stateId = $("input[type='radio'][name='select']:checked").val();	
 	var startDate=$(".dp_startDate").val();
 	var endDate=$(".dp_endDate").val();
+	$(".totalData").show();
 	var jobj = {
 		fromDate:startDate,
 		toDate:endDate,
@@ -249,6 +252,7 @@ function getMissedCallDetails(){
 	  url: 'getMissedCallDetailsAction.action',
 	  data : {task:JSON.stringify(jobj)} ,
 	}).done(function(result){
+		$(".totalData").hide();
 		$("#totalMissedCallsId").html(result.totalCount);
 		$("#mismatchedId").html(result.mismatchedCnt);
 		$("#singleRegId").html(result.singleMemberRegCnt);
@@ -257,6 +261,8 @@ function getMissedCallDetails(){
 }
 var chartData = [];
 function getMissedCallDetailsByDistrict(){
+	$("#distProcessImgId").show();
+	
 	var stateId = $("input[type='radio'][name='select']:checked").val();	
 	var startDate=$(".dp_startDate").val();
 	var endDate=$(".dp_endDate").val();
@@ -289,28 +295,51 @@ function getMissedCallDetailsByDistrict(){
 		"labelText": "[[]]",
 		"dataProvider": chartData
 		});
-		buildDistrictWiseCount(result);
+		buildDistrictWiseCount(result,"multi",stateId);
 	});
 	
 	
 	
 }
 
-function buildDistrictWiseCount(result){
+function buildDistrictWiseCount(result,type,stateId){
+		$("#distProcessImgId").hide();
+		$("#districtWiseProgressBars").html("");
 		var str ='';
-		str+=''
-		str+='<h6 style="border:1px solid #dddddd;background-color:#f4f4f4;padding:5px;margin:0px">ANDHRA PRADESH & TELANGANA district wise missed calls percentages</h6>';
+		str+='';
+		if(stateId == 0){
+		str+='<h6 style="border:1px solid #dddddd;background-color:#f4f4f4;padding:5px;margin:0px">ANDHRA PRADESH & TELANGANA District Wise Missed Calls Percentages</h6>';
+		}
+		else if(stateId == 1){
+		str+='<h6 style="border:1px solid #dddddd;background-color:#f4f4f4;padding:5px;margin:0px">ANDHRA PRADESH  District Wise Missed Calls Percentages</h6>';
+		}
+		else if(stateId == 2){
+		str+='<h6 style="border:1px solid #dddddd;background-color:#f4f4f4;padding:5px;margin:0px">TELANGANA  District Wise Missed Calls Percentages</h6>';
+		}
         str+='<div style="padding:2px;font-size:10px;">';
+		 
+		 if(type == 'multi'){
 		 str+='<label class="radio inline">';
-        str+='<input type="radio" type="radio"  id="multi" style="vertical-align: text-bottom;" class="districtRd" value="1" name="radionBtn" checked="true"/>';
+        str+='<input type="radio" type="radio"  id="multi" style="vertical-align: text-bottom;" class="districtRd" value="0" name="radionBtn" checked="true"/>';
         str+='<small>Multi Member Registered</small>';
         str+='</label>';
         str+='<label class="radio inline">';
-        str+='<input type="radio" id="single" style="vertical-align: text-bottom;" class="districtRd" value="0" name="radionBtn" />';
+        str+='<input type="radio" id="single" style="vertical-align: text-bottom;" class="districtRd" value="1" name="radionBtn" />';
+		}
+		else if(type == 'single'){
+		 str+='<label class="radio inline">';
+        str+='<input type="radio" type="radio"  id="multi" style="vertical-align: text-bottom;" class="districtRd" value="0" name="radionBtn" />';
+        str+='<small>Multi Member Registered</small>';
+        str+='</label>';
+        str+='<label class="radio inline">';
+        str+='<input type="radio" id="single" style="vertical-align: text-bottom;" class="districtRd" value="1" name="radionBtn" checked="true"/>';
+		}
         str+='<small>Single Member Registered</small>';
         str+='</label>';
        
         str+='</div>';
+		
+		if(result != null && result.length > 0){
 		for(var i in result){
 		var perc =result[i].districtCount / result[0].totalCount * 100 ;
 		var perc1 = perc.toFixed(2);
@@ -321,7 +350,8 @@ function buildDistrictWiseCount(result){
 					str+='<li class="">';
 					//str+='<span class="progresslabelcolor" style="background-color:#0F0">';
 					str+='</span><span id="'+result[i].districtId+'" style="cursor:pointer" onClick="missedCallDetailsForADistrict('+result[i].districtId+');">'+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'';
-					str+='<div class="progress progress-danger  progress-striped active">';					
+					str+='<div class="progress progress-danger  progress-striped active">';	
+					
 				}else if(perc1 > 10 && perc1 <= 20 ){
 					str+='<ul  class="slimscrollar poor" style="padding:8px;margin-top:5px;border-top:1px solid #dddddd">';
 					str+='<li class="">';
@@ -350,12 +380,21 @@ function buildDistrictWiseCount(result){
 
 			str+='<div class="bar" style="width: '+perc1+'%"></div>';
 			str+='</div></li></ul>';
-		}
+		
 		$("#districtWiseProgressBars").html(str);
-	}
+		}
+		}
+		else{
+				$("#districtWiseProgressBars").html("No Data Available");
+		}
+		
 	
+	}
+	var chartData1 = new Array();
 	function getSingleMemberCountByDistrict()
 	{
+	$("#distProcessImgId").show();
+	$("#districtWiseProgressBars").html("");
 		var stateId = $("input[type='radio'][name='select']:checked").val();	
 		var startDate=$(".dp_startDate").val();
 		var endDate=$(".dp_endDate").val();
@@ -371,8 +410,10 @@ function buildDistrictWiseCount(result){
 	  url: 'getMissedCallDetailsDistrictWiseAction.action',
 	  data : {task:JSON.stringify(jObj)} ,
 	}).done(function(result){
+		if(result != null && result.length > 0){
+		chartData1 = new Array();
 		for (var i in result) {      
-			chartData.push({
+			chartData1.push({
 				title: result[i].name,
 				value: result[i].districtCount
 			});
@@ -386,9 +427,13 @@ function buildDistrictWiseCount(result){
 		"radius": "30%",
 		"innerRadius": "60%",
 		"labelText": "[[]]",
-		"dataProvider": chartData
+		"dataProvider": chartData1
 		});
-		buildDistrictWiseCount(result);
+		}
+		else{
+		$("#chartdiv").html();
+		}
+		buildDistrictWiseCount(result,"single",stateId);
 	});
 	
 	
@@ -403,6 +448,12 @@ function buildDistrictWiseCount(result){
        });
 	});
 	
+	$(document).on("click",".allIconId",function(){
+	alert(5);
+	   $(".vGood,.good,.ok,.vPoor,.poor").show();
+	   
+	});
+	
 	$(document).on('click','.rangeButton',function(){
 			
 		getMissedCallDetails();
@@ -411,10 +462,12 @@ function buildDistrictWiseCount(result){
 		$('input:radio[name="select"][id="districtId"]').prop('checked', true);
 			
 	});
-	$(".districtRd").click(function(){
+
+	$(document).on('click','.districtRd',function(){
 		//$("#distSummaryBody").html('<td style="text-align:center" colspan="13"><img id="summaryAjax" src="./images/Loading-data.gif" alt="Processing Image"/></td>');
 		
 		var levelSelected1 = $("input[type='radio'][name='radionBtn']:checked").val();
+		alert(levelSelected1);
 		if(levelSelected1 == 0){			
 			getMissedCallDetailsByDistrict();
 		}
@@ -430,7 +483,7 @@ function buildDistrictWiseCount(result){
 	
 function missedCallDetailsForADistrict(districtId){
 		
-		 $("#constituenciesDiv").html("");
+		$("#constituenciesDiv").html("");
 		$("#processImgId").show();
 		
 		//var districtId='23';
@@ -453,10 +506,10 @@ function missedCallDetailsForADistrict(districtId){
 				var str='';
 				str+='<table class="table table-bordered" style="margin-bottom:0px;">';
             	str+='<caption style="background-color:#f4f4f4;font-size:16px;">';
-                	str+='<b class="pull-left" style="padding-top:10px;">'+districtName+' DISTRICT MISSED CALL DETAILS</b><span class="pull-left" style="padding-top:10px;font-size:10px">(FROM DATE '+startDate+' TO DATE '+endDate+')</span> 	';
-                	str+='<span class="pull-right" style=" cursor:pointer;background-color:#CCC;padding:10px;">';
-                    	str+='<i class="icon icon-remove"></i>';
-                    str+='</span>';
+				str+='<b class="pull-left" style="padding-top:10px;">'+districtName+' DISTRICT MISSED CALL DETAILS</b><span class="pull-left" style="padding-top:10px;font-size:10px">(FROM DATE '+startDate+' TO DATE '+endDate+')</span> 	';
+				str+='<span class="pull-right" style=" cursor:pointer;background-color:#CCC;padding:10px;">';
+				str+='<i class="icon icon-remove"></i>';
+				str+='</span>';
                 str+='</caption>';
                 str+='<thead style="font-size:11px;">';
                 	str+='<th>Constituency</th>';
@@ -470,8 +523,7 @@ function missedCallDetailsForADistrict(districtId){
                 str+='<tbody>';
 				if(result.length>0){
 				 for(var i in result){
-					 str+='<tr>';
-                	
+					 str+='<tr>';               	
                     	str+='<td>'+result[i].constituencyName+'</td>';
                         str+='<td>'+result[i].totalCount+'</td>';
                         str+='<td>'+result[i].printedCount+'</td>';
@@ -482,9 +534,9 @@ function missedCallDetailsForADistrict(districtId){
                     str+='</tr>';
                  }
 				}
-               str+='</tbody>';
-            str+='</table>';
-	       $("#constituenciesDiv").html(str);
+				str+='</tbody>';
+				str+='</table>';
+				$("#constituenciesDiv").html(str);
 		}
 	});
 	}
