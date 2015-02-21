@@ -8079,7 +8079,10 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			Date time=new Date((Long)unixSeconds*1000);
 			cadreMissedCallCampaign.setMobileNumber(mobileNo);
 			cadreMissedCallCampaign.setInsertedTime(time);
-			
+			cadreMissedCallCampaign.setCallUid(vo.getCalluid());
+			cadreMissedCallCampaign.setToMobileNumber(vo.getToMobileNo());
+			cadreMissedCallCampaign.setCallStatus(vo.getCallStatus());
+			cadreMissedCallCampaign.setUrl(vo.getUrl());
 			cadreMissedCallCampaign.setMissedCallCampaignId(vo.getId());
 			
 			cadreMissedCallCampaignDAO.save(cadreMissedCallCampaign);
