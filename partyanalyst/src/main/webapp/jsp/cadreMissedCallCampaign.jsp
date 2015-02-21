@@ -303,6 +303,7 @@ function getMissedCallDetailsByDistrict(){
 	}).done(function(result){
 	chartData = new Array();
 	if(result != null && result.length >0){
+	$("#chartdiv").show();
 		for (var i in result) {      
 			chartData.push({
 				title: result[i].name,
@@ -419,8 +420,10 @@ function buildDistrictWiseCount(result,type,stateId){
 	  url: 'getMissedCallDetailsDistrictWiseAction.action',
 	  data : {task:JSON.stringify(jObj)} ,
 	}).done(function(result){
-		if(result != null && result.length > 0){
 		chartData1 = new Array();
+		if(result != null && result.length > 0){
+		
+		$("#chartdiv").show();
 		for (var i in result) {      
 			chartData1.push({
 				title: result[i].name,
