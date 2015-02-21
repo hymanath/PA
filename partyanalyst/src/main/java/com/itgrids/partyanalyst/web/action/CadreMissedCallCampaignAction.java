@@ -160,10 +160,20 @@ public class CadreMissedCallCampaignAction  extends ActionSupport implements Ser
 	
 	}
 	
-	public String cadreMissedCallCampaignUrl(){
-		LOG.debug(" in cadreMissedCallCampaign ");
+	public String cadreMissedCallCampaignUrlSaving(){
+		LOG.debug(" in cadreMissedCallCampaignUrlSaving ");
 		try{
 			MissedCallCampaignVO vo = new MissedCallCampaignVO();
+			
+			StringBuffer requestURL = request.getRequestURL();
+			if (request.getQueryString() != null) {
+			    requestURL.append("?").append(request.getQueryString());
+			}
+			String completeURL = requestURL.toString();
+			vo.setUrl(completeURL);
+			vo.setToMobileNo(request.getParameter("smscresponse[to]"));
+			vo.setCallStatus(request.getParameter("smscresponse[callstatus]"));
+			vo.setCalluid(request.getParameter("smscresponse[calluid]"));
 			vo.setRing_time(Long.valueOf(request.getParameter("smscresponse[Ring_time]")));
 			vo.setFrom(request.getParameter("smscresponse[from]"));
 			vo.setId(1L);
@@ -174,7 +184,7 @@ public class CadreMissedCallCampaignAction  extends ActionSupport implements Ser
 				returnString =  "Invalid Inputs !";
 			}
 		}catch (Exception e) {
-			LOG.error(" Exception in cadreMissedCallCampaign " + e);
+			LOG.error(" Exception in cadreMissedCallCampaignUrlSaving " + e);
 		}
 		return Action.SUCCESS;
 	}
