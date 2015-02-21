@@ -3860,7 +3860,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		{
 			StringBuilder str = new StringBuilder();
 			str.append("SELECT count(distinct model.mobileNumber) from CadreMissedCallCampaign model,TdpCadre tc " +
-					" where tc.mobileNo = model.mobileNumber and tc.isDeleted = 'N' and model.enrollmentYear='2014' "); 
+					" where tc.mobileNo = model.mobileNumber and tc.isDeleted = 'N' and tc.enrollmentYear='2014' "); 
 			
 			if(startDate != null && endDate != null && !startDate.equals(endDate))
 			str.append(" and date(model.insertedTime) >=:startDate and date(model.insertedTime) <=:endDate");
@@ -3887,7 +3887,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		{
 			StringBuilder str = new StringBuilder();
 			str.append("SELECT distinct model.mobileNumber from CadreMissedCallCampaign model,TdpCadre tc " +
-					" where tc.mobileNo = model.mobileNumber and tc.isDeleted = 'N' and model.enrollmentYear='2014' "); 
+					" where tc.mobileNo = model.mobileNumber and tc.isDeleted = 'N' and tc.enrollmentYear='2014' "); 
 			
 			if(startDate != null && endDate != null && !startDate.equals(endDate))
 			str.append(" and date(model.insertedTime) >=:startDate and date(model.insertedTime) <=:endDate");
@@ -3915,7 +3915,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		{
 			StringBuilder str = new StringBuilder();
 			str.append("SELECT count(tc.tdpCadreId) from TdpCadre tc " +
-					" where tc.mobileNo in (:mobileNos) and tc.isDeleted = 'N' and model.enrollmentYear='2014' "); 
+					" where tc.mobileNo in (:mobileNos) and tc.isDeleted = 'N' and tc.enrollmentYear='2014' "); 
 						
 			if(stateId.longValue() == 1L){
 				str.append(" and tc.userAddress.district.districtId > 10 ");
@@ -3934,7 +3934,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		{
 			StringBuilder str = new StringBuilder();
 			str.append("SELECT count(tc.tdpCadreId) from TdpCadre tc " +
-					" where tc.mobileNo in (:mobileNos) and tc.isDeleted = 'N' and model.enrollmentYear='2014' "); 
+					" where tc.mobileNo in (:mobileNos) and tc.isDeleted = 'N' and tc.enrollmentYear='2014' "); 
 			
 		
 			if(stateId.longValue() == 1L){
@@ -3954,7 +3954,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		{
 			StringBuilder str = new StringBuilder();
 			str.append("SELECT count(distinct model.mobileNo) from TdpCadre model " +
-					" where model.mobileNo in (:mobileNos) and model.isDeleted = 'N' and model.enrollmentYear='2014' "); 
+					" where model.mobileNo in (:mobileNos) and model.isDeleted = 'N' and tc.enrollmentYear='2014' "); 
 
 			Query query = getSession().createQuery(str.toString());
 			query.setParameter("mobileNos", mobileNos);
@@ -3966,7 +3966,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		{
 			StringBuilder str = new StringBuilder();
 			str.append("select count(tc.tdpCadreId),tc.userAddress.district.districtId from TdpCadre tc " +
-					" where tc.mobileNo in (:mobileNos) and tc.isDeleted = 'N' and model.enrollmentYear='2014' "); 
+					" where tc.mobileNo in (:mobileNos) and tc.isDeleted = 'N' and tc.enrollmentYear='2014' "); 
 			
 		
 			if(stateId.longValue() == 1){
@@ -3985,7 +3985,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		{
 			StringBuilder str = new StringBuilder();
 			str.append("select count(distinct tc.mobileNo),tc.userAddress.district.districtId from TdpCadre tc " +
-					" where tc.mobileNo in (:mobileNos) and tc.isDeleted = 'N' and  model.enrollmentYear='2014' "); 			
+					" where tc.mobileNo in (:mobileNos) and tc.isDeleted = 'N' and  tc.enrollmentYear='2014' "); 			
 		
 			if(stateId.longValue() == 1){
 				str.append(" and tc.userAddress.district.districtId > 10 ");

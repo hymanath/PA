@@ -29,6 +29,10 @@ public class CadreMissedCallCampaign {
 	private Date insertedTime;
 	private MissedCallCampaign  missedCallCampaign;
 	private Long missedCallCampaignId;
+	private String toMobileNumber;
+	private String callUid;
+	private String callStatus;
+	private String url;
 	
 	
 	@Id
@@ -75,10 +79,38 @@ public class CadreMissedCallCampaign {
 	}
 	public void setMissedCallCampaignId(Long missedCallCampaignId) {
 		this.missedCallCampaignId = missedCallCampaignId;
+	}
+	
+	@Column(name="to_mobile_number")
+	public String getToMobileNumber() {
+		return toMobileNumber;
+	}
+	public void setToMobileNumber(String toMobileNumber) {
+		this.toMobileNumber = toMobileNumber;
+	}
+	
+	@Column(name="call_uid")
+	public String getCallUid() {
+		return callUid;
+	}
+	public void setCallUid(String callUid) {
+		this.callUid = callUid;
+	}
+	
+	@Column(name="call_status")
+	public String getCallStatus() {
+		return callStatus;
+	}
+	public void setCallStatus(String callStatus) {
+		this.callStatus = callStatus;
+	}
+	
+	@Column(name="url")
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
 	}  
-	
-	
-	
-	
 
 }

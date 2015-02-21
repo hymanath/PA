@@ -14,6 +14,7 @@ public class MissedCallCampaignVO {
 	public Long Ring_time;
 	public String name;
 	public Long id;
+	public String url;
 
 	public String getCalluid() {
 		return calluid;
@@ -89,5 +90,13 @@ public class MissedCallCampaignVO {
 	public void setRing_time(Long ring_time) {
 		Ring_time = ring_time;
 	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	
+	
 
 }
