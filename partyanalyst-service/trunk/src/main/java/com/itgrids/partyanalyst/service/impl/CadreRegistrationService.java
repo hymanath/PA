@@ -8200,12 +8200,12 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			if(result != null && result.size() > 0){
 				for(Object[] params : result){
 					MissedCallsDetailsVO vo = new MissedCallsDetailsVO();
-					vo.setDistrictCount((Long)params[0]);
-					vo.setDistrictId((Long)params[1]);
+					vo.setDistrictCount(((BigInteger)params[0]).longValue());
+					vo.setDistrictId(((BigInteger)params[1]).longValue());
 					count = count+vo.getDistrictCount();
 					if(districtNames != null){
-						if(districtNames.get((Long)params[1]) != null ){
-							vo.setName(districtNames.get((Long)params[1]) != null ? districtNames.get((Long)params[1]) : "");
+						if(districtNames.get(((BigInteger)params[1]).longValue()) != null ){
+							vo.setName(districtNames.get(((BigInteger)params[1]).longValue()) != null ? districtNames.get(((BigInteger)params[1]).longValue()) : "");
 						}
 					}
 					resultList.add(vo);
