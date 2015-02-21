@@ -22,6 +22,18 @@ ul
     list-style-type: none;
 	margin-left:0px;
 }
+
+.slimscrollar
+{
+height:425px;
+overflow-y:scroll;
+}
+.prev {
+    background: url("") no-repeat scroll -272px top rgba(0, 0, 0, 0) !important;
+	}
+.next {
+    background: url("") no-repeat scroll -290px top rgba(0, 0, 0, 0) !important;
+	}
 </style>
 
 <!-- <link href="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker-bs3.css" rel="stylesheet" />-->
@@ -89,13 +101,24 @@ ul
                     </td>
                     <td width="350px" style="padding:0px">
 					<div>
-						<center><img src="images/Loading-data.gif" class="offset7"  id="distProcessImgId" style=" margin-left:0px;margin-top: 200px;width:70px;height:60px;display:none;"/></center>
+						<h6 id="textId" style="border:1px solid #dddddd;background-color:#f4f4f4;padding:5px;margin:0px">ANDHRA PRADESH & TELANGANA district wise missed calls percentages</h6>
+                    	<div style="padding:2px;font-size:10px;">
+                            <label class="radio inline">
+							<input type="radio" type="radio"  id="multi" style="vertical-align: text-bottom;" class="districtRd" value="0" name="radionBtn" checked="true"/>
+							<small>Based on Multi Member</small>
+							</label>
+							<label class="radio inline">
+							<input type="radio" id="single" style="vertical-align: text-bottom;" class="districtRd" value="1" name="radionBtn" />
+							<small>Based on Single Member</small>
+							</label>
+                        </div>
+						<center><img src="images/Loading-data.gif" class="offset7"  id="distProcessImgId" style=" margin-left:0px;margin-top: 130px;width:70px;height:60px;display:none;"/></center>
 						<div id="districtWiseProgressBars"></div>
 					</div>
                     		
                     </td>
                     <td style="background-color:#f4f4f4">
-                    	<label class="label label-custom  allIconId">All</label>
+                    	<label class="label label-custom  allIconId">Clear Filters</label>
 						<ul style="margin-top:20px;">
                         	<li style="cursor:pointer;border-bottom:1px solid #dddddd;margin-bottom:10px;" class="percentagefilter1" attr-id="vGood">
                             	<div style="border-radius:2px !important;margin-bottom:0px;width:30px;height:20px !important;" class="progress progress-success progress-striped active">
@@ -153,10 +176,8 @@ ul
 
 <script type="text/javascript">
 
-$(function(){
-    $('.slimscrollar').slimScroll({
-        height: '450px'
-    });
+ $(document).ready(function() {
+   
 });
 </script>
 <script type="text/javascript">
@@ -261,6 +282,9 @@ function getMissedCallDetails(){
 }
 var chartData = [];
 function getMissedCallDetailsByDistrict(){
+
+	$("#districtWiseProgressBars").html("");
+	$("#chartdiv").html("");
 	$("#distProcessImgId").show();
 	
 	var stateId = $("input[type='radio'][name='select']:checked").val();	
@@ -278,6 +302,7 @@ function getMissedCallDetailsByDistrict(){
 	  data : {task:JSON.stringify(jObj)} ,
 	}).done(function(result){
 	chartData = new Array();
+	if(result != null && result.length >0){
 		for (var i in result) {      
 			chartData.push({
 				title: result[i].name,
@@ -295,6 +320,10 @@ function getMissedCallDetailsByDistrict(){
 		"labelText": "[[]]",
 		"dataProvider": chartData
 		});
+		}
+		else{
+		$("#chartdiv").hide();
+		}
 		buildDistrictWiseCount(result,"multi",stateId);
 	});
 	
@@ -307,94 +336,74 @@ function buildDistrictWiseCount(result,type,stateId){
 		$("#districtWiseProgressBars").html("");
 		var str ='';
 		str+='';
-		if(stateId == 0){
-		str+='<h6 style="border:1px solid #dddddd;background-color:#f4f4f4;padding:5px;margin:0px">ANDHRA PRADESH & TELANGANA District Wise Missed Calls Percentages</h6>';
-		}
-		else if(stateId == 1){
-		str+='<h6 style="border:1px solid #dddddd;background-color:#f4f4f4;padding:5px;margin:0px">ANDHRA PRADESH  District Wise Missed Calls Percentages</h6>';
+		
+		if(stateId == 1){
+		$("#textId").html("ANDHRA PRADESH  District Wise Missed Calls Percentages");
 		}
 		else if(stateId == 2){
-		str+='<h6 style="border:1px solid #dddddd;background-color:#f4f4f4;padding:5px;margin:0px">TELANGANA  District Wise Missed Calls Percentages</h6>';
-		}
-        str+='<div style="padding:2px;font-size:10px;">';
-		 
-		 if(type == 'multi'){
-		 str+='<label class="radio inline">';
-        str+='<input type="radio" type="radio"  id="multi" style="vertical-align: text-bottom;" class="districtRd" value="0" name="radionBtn" checked="true"/>';
-        str+='<small>Multi Member Registered</small>';
-        str+='</label>';
-        str+='<label class="radio inline">';
-        str+='<input type="radio" id="single" style="vertical-align: text-bottom;" class="districtRd" value="1" name="radionBtn" />';
-		}
-		else if(type == 'single'){
-		 str+='<label class="radio inline">';
-        str+='<input type="radio" type="radio"  id="multi" style="vertical-align: text-bottom;" class="districtRd" value="0" name="radionBtn" />';
-        str+='<small>Multi Member Registered</small>';
-        str+='</label>';
-        str+='<label class="radio inline">';
-        str+='<input type="radio" id="single" style="vertical-align: text-bottom;" class="districtRd" value="1" name="radionBtn" checked="true"/>';
-		}
-        str+='<small>Single Member Registered</small>';
-        str+='</label>';
-       
-        str+='</div>';
+		$("#textId").html("TELANGANA  District Wise Missed Calls Percentages");
 		
+		}
+        
+		str+='<ul  class="slimscrollar" style="padding:8px;margin-top:5px;border-top:1px solid #dddddd">';	
 		if(result != null && result.length > 0){
 		for(var i in result){
 		var perc =result[i].districtCount / result[0].totalCount * 100 ;
 		var perc1 = perc.toFixed(2);
-			
+		
 			
 				if(perc1 <= 10){
-					str+='<ul  class="slimscrollar vPoor" style="padding:8px;margin-top:5px;border-top:1px solid #dddddd">';
-					str+='<li class="">';
+					
+					str+='<li class="vPoor">';
 					//str+='<span class="progresslabelcolor" style="background-color:#0F0">';
 					str+='</span><span id="'+result[i].districtId+'" style="cursor:pointer" onClick="missedCallDetailsForADistrict('+result[i].districtId+');">'+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'';
 					str+='<div class="progress progress-danger  progress-striped active">';	
 					
 				}else if(perc1 > 10 && perc1 <= 20 ){
-					str+='<ul  class="slimscrollar poor" style="padding:8px;margin-top:5px;border-top:1px solid #dddddd">';
-					str+='<li class="">';
+				
+					str+='<li class="poor">';
 					//str+='<span class="progresslabelcolor" style="background-color:#0F0">';
 					str+='</span><span id="'+result[i].districtId+'" style="cursor:pointer" onClick="missedCallDetailsForADistrict('+result[i].districtId+');">'+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'';
 					str+='<div class="progress progress-warning  progress-striped active">';
 				}else if(perc1 > 20 && perc1 <= 40 ){
-					str+='<ul  class="slimscrollar ok" style="padding:8px;margin-top:5px;border-top:1px solid #dddddd">';
-					str+='<li class="">';
+
+					str+='<li class="ok">';
 					//str+='<span class="progresslabelcolor" style="background-color:#0F0">';
 					str+='</span><span id="'+result[i].districtId+'" style="cursor:pointer" onClick="missedCallDetailsForADistrict('+result[i].districtId+');">'+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'';
 					str+='<div class="progress progress-primary  progress-striped active">';
 				}else if(perc1 > 40 && perc1 <= 60 ){
-					str+='<ul  class="slimscrollar good" style="padding:8px;margin-top:5px;border-top:1px solid #dddddd">';
-					str+='<li class="">';
+				
+					str+='<li class="good">';
 					//str+='<span class="progresslabelcolor" style="background-color:#0F0">';
 					str+='</span><span id="'+result[i].districtId+'" style="cursor:pointer" onClick="missedCallDetailsForADistrict('+result[i].districtId+');"> '+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'';
 					str+='<div class="progress progress-info  progress-striped active">';
 				}else if(perc1 > 60){
-					str+='<ul  class="slimscrollar vGood" style="padding:8px;margin-top:5px;border-top:1px solid #dddddd">';
-					str+='<li class="">';
+					
+					str+='<li class="vGood">';
 					//str+='<span class="progresslabelcolor" style="background-color:#0F0">';
 					str+='</span id="'+result[i].districtId+'"><span style="cursor:pointer" onClick="missedCallDetailsForADistrict('+result[i].districtId+');">'+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'';
 					str+='<div class="progress progress-success progress-striped active">';
 				}
 
 			str+='<div class="bar" style="width: '+perc1+'%"></div>';
-			str+='</div></li></ul>';
-		
-		$("#districtWiseProgressBars").html(str);
+			str+='</div></li>';
 		}
+		str+='</ul>';
+		$("#districtWiseProgressBars").html(str);
+		
 		}
 		else{
-				$("#districtWiseProgressBars").html("No Data Available");
+				$("#districtWiseProgressBars").html("No Data Available").css("margin-top:200px;");
 		}
 		
 	
 	}
 	var chartData1 = new Array();
 	function getSingleMemberCountByDistrict()
-	{
-	$("#distProcessImgId").show();
+	{	
+	$("#chartdiv").html("");
 	$("#districtWiseProgressBars").html("");
+	$("#distProcessImgId").show();
 		var stateId = $("input[type='radio'][name='select']:checked").val();	
 		var startDate=$(".dp_startDate").val();
 		var endDate=$(".dp_endDate").val();
@@ -431,7 +440,7 @@ function buildDistrictWiseCount(result,type,stateId){
 		});
 		}
 		else{
-		$("#chartdiv").html();
+		$("#chartdiv").hide();
 		}
 		buildDistrictWiseCount(result,"single",stateId);
 	});
@@ -449,7 +458,7 @@ function buildDistrictWiseCount(result,type,stateId){
 	});
 	
 	$(document).on("click",".allIconId",function(){
-	alert(5);
+
 	   $(".vGood,.good,.ok,.vPoor,.poor").show();
 	   
 	});
@@ -460,25 +469,26 @@ function buildDistrictWiseCount(result,type,stateId){
 		getMissedCallDetailsByDistrict();
 		$('input:radio[name="select"][id="AllId"]').prop('checked', true);
 		$('input:radio[name="select"][id="districtId"]').prop('checked', true);
-			
+		$("#constituenciesDiv").html("");	
 	});
 
 	$(document).on('click','.districtRd',function(){
 		//$("#distSummaryBody").html('<td style="text-align:center" colspan="13"><img id="summaryAjax" src="./images/Loading-data.gif" alt="Processing Image"/></td>');
 		
 		var levelSelected1 = $("input[type='radio'][name='radionBtn']:checked").val();
-		alert(levelSelected1);
 		if(levelSelected1 == 0){			
 			getMissedCallDetailsByDistrict();
 		}
 		else if(levelSelected1 == 1){
 			getSingleMemberCountByDistrict();
 		}
+		$("#constituenciesDiv").html("");
 	});
 	
 	$(".stateRd").click(function(){
 		getMissedCallDetails();
 		getMissedCallDetailsByDistrict();
+		$("#constituenciesDiv").html("");
 	});
 	
 function missedCallDetailsForADistrict(districtId){
