@@ -8093,7 +8093,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
      
    }
 	
-	public MissedCallsDetailsVO getMissedCallDetail(String fromDateStr,String toDateStr,Long stateId)
+	/*public MissedCallsDetailsVO getMissedCallDetail(String fromDateStr,String toDateStr,Long stateId)
 	{
 		MissedCallsDetailsVO missedCallDetails = new MissedCallsDetailsVO();
 			
@@ -8130,9 +8130,9 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			
 			List<Long> singleMemRegistered = tdpCadreDAO.getSingleMemberMobileNosCount(mobileNos,stateId);
 			if(singleMemRegistered != null && singleMemRegistered.size() >0) {
-				/*for(Long cnt :singleMemRegistered){
+				for(Long cnt :singleMemRegistered){
 					singleMemRegisteredCnt = singleMemRegisteredCnt+cnt;
-				}*/
+				}
 				
 				missedCallDetails.setSingleMemberRegCnt(Long.valueOf(singleMemRegistered.size()));
 			}
@@ -8159,11 +8159,68 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			LOG.error("Exception Occured in getErrorInfo()", e);
 		}
 		return missedCallDetails;
+	}*/
+	
+	public MissedCallsDetailsVO getMissedCallDetail(String fromDateStr,String toDateStr,Long stateId)
+	{
+		MissedCallsDetailsVO missedCallDetails = new MissedCallsDetailsVO();
+			
+		try{	
+			
+
+			DateFormat userDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+			Date fromDate = userDateFormat.parse(fromDateStr);
+			Date toDate = userDateFormat.parse(toDateStr);
+		
+			Long totalMissedCalls = 0l;
+			Long singleMemRegisteredCnt =0l;
+			Long multipleMemRegisteredCnt = 0L;
+			
+			if(stateId == 0L)
+				totalMissedCalls = 	cadreMissedCallCampaignDAO.getAllMissedCallsCount(fromDate,toDate);
+			else 
+				totalMissedCalls = tdpCadreDAO.getMissedCallsCountByState(fromDate,toDate,stateId);
+			
+			if(totalMissedCalls != null){
+				missedCallDetails.setTotalCount(totalMissedCalls);
+			}
+			
+			List<Object[]> list = tdpCadreDAO.getMemberMobileNumbersCount(fromDate,toDate,stateId);
+			Map<String,Integer> mobileMap = new HashMap<String, Integer>(0);
+			
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					String mobileNo = params[0].toString();
+					Integer count = mobileMap.get(mobileNo);
+					if(count == null)
+						count = 0;
+					mobileMap.put(mobileNo,++count);
+				}
+			}
+			for(Map.Entry<String,Integer> entry : mobileMap.entrySet())
+			{
+				if(entry.getValue().intValue() == 1)
+					singleMemRegisteredCnt++;
+				else
+					multipleMemRegisteredCnt++;
+			}
+			
+			missedCallDetails.setSingleMemberRegCnt(singleMemRegisteredCnt);
+			missedCallDetails.setMultiMemberRegCnt(multipleMemRegisteredCnt);
+			missedCallDetails.setMismatchedCnt(missedCallDetails.getTotalCount() - ( missedCallDetails.getSingleMemberRegCnt() + missedCallDetails.getMultiMemberRegCnt()) );
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getErrorInfo()", e);
+		}
+		return missedCallDetails;
 	}
 	
 	
 	
-	public List<MissedCallsDetailsVO> getMissedCallDetailByDistrict(String fromDateStr,String toDateStr,Long stateId,String task)
+	/*public List<MissedCallsDetailsVO> getMissedCallDetailByDistrict(String fromDateStr,String toDateStr,Long stateId,String task)
 	{
 		List<MissedCallsDetailsVO> resultList = new ArrayList<MissedCallsDetailsVO>();
 			
@@ -8215,6 +8272,99 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				resultList.get(0).setTotalCount(count);
 			}
 		
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getErrorInfo()", e);
+		}
+		return  resultList;
+	}*/
+	
+	public List<MissedCallsDetailsVO> getMissedCallDetailByDistrict(String fromDateStr,String toDateStr,Long stateId,String task)
+	{
+		List<MissedCallsDetailsVO> resultList = new ArrayList<MissedCallsDetailsVO>();
+			
+		try{	
+			DateFormat userDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+			Date fromDate = userDateFormat.parse(fromDateStr);
+			Date toDate = userDateFormat.parse(toDateStr);
+			
+			Map<Long,String> districtNames = new HashMap<Long,String>();
+			List<Object[]> names = districtDAO.getDistrictIdAndNameByStateForStateTypeId(1L,stateId);
+			if(names != null){
+				for(Object[] param:names){
+					districtNames.put((Long)param[0], param[1].toString());
+				}
+			}
+			
+			List<Object[]> list = tdpCadreDAO.getDistrictWiseMemberMobileNumbersCount(fromDate,toDate,stateId);
+			Map<Long,Integer> disCntMap = new HashMap<Long, Integer>(0);
+			Map<Long,List<String>> disSingleMap = new HashMap<Long, List<String>>(0);
+			MissedCallsDetailsVO missedCallsDetailsVO = null;
+			
+			if(task.equalsIgnoreCase("getSingleMember"))
+			{
+				for(Object[] params : list)
+				{
+					try{
+					List<String> mobList = disSingleMap.get((Long)params[0]);
+					if(mobList == null)
+						mobList = new ArrayList<String>(0);
+					mobList.add(params[0].toString());
+					disSingleMap.put((Long)params[0],mobList);
+					}catch(Exception e)
+					{
+						LOG.error(e);
+					}
+				}
+				
+				for(Map.Entry<Long,List<String>> entry : disSingleMap.entrySet())
+				{
+					Map<String,Long> mobTempMap = new HashMap<String,Long>(0);
+					long singleCount = 0l;
+					for(String mobile : entry.getValue())
+					{
+						Long cnt = mobTempMap.get(mobile);
+						if(cnt == null)
+							cnt = 0L;
+						mobTempMap.put(mobile,++cnt);
+					}
+					for(Map.Entry<String,Long> entry2 : mobTempMap.entrySet())
+					{
+						if(entry2.getValue().longValue() == 1L)
+							singleCount++;
+					}
+					missedCallsDetailsVO = new MissedCallsDetailsVO();
+					missedCallsDetailsVO.setDistrictId(entry.getKey());
+					missedCallsDetailsVO.setDistrictCount(singleCount);
+					missedCallsDetailsVO.setName(districtNames.get(entry.getKey()) !=  null ? districtNames.get(entry.getKey()) : "");
+					resultList.add(missedCallsDetailsVO);
+				}
+			}
+			else
+			{
+				for(Object[] params : list)
+				{
+					Long districtId = (Long)params[0];
+					Integer count = disCntMap.get(districtId);
+					
+					if(count == null)
+						count = 0;
+					disCntMap.put(districtId,++count);
+				}
+			}
+			
+			for(Map.Entry<Long,Integer> entry : disCntMap.entrySet())
+			{
+				missedCallsDetailsVO = new MissedCallsDetailsVO();
+				missedCallsDetailsVO.setDistrictId(entry.getKey());
+				missedCallsDetailsVO.setDistrictCount(new Integer(entry.getValue()).longValue());
+				missedCallsDetailsVO.setName(districtNames.get(entry.getKey()) !=  null ? districtNames.get(entry.getKey()) : "");
+				resultList.add(missedCallsDetailsVO);
+			}
+			if(resultList != null && resultList.size() > 0){
+				resultList.get(0).setTotalCount(new Integer(list.size()).longValue());
+			}
 		}
 		catch(Exception e)
 		{

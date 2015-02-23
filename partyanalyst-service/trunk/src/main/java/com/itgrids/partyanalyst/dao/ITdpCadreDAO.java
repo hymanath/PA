@@ -291,4 +291,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> constituencyWiseRegCountForDistrict(Long districtId);
 	public List<Object[]> constituencyWiseRecivingMissedCallsCount(Long districtId,Date startDate,Date endDate);
 	public List<Object[]> multiMemberRegisteredForMobile(Long districtId,Date startDate,Date endDate);
+	
+	public List<Object[]> getMemberMobileNumbersCount(Date startDate, Date endDate,Long stateId);
+	public List<Object[]> getDistrictWiseMemberMobileNumbersCount(Date startDate, Date endDate,Long stateId);
 }
