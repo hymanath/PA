@@ -8310,7 +8310,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					List<String> mobList = disSingleMap.get((Long)params[0]);
 					if(mobList == null)
 						mobList = new ArrayList<String>(0);
-					mobList.add(params[0].toString());
+					mobList.add(params[1].toString());
 					disSingleMap.put((Long)params[0],mobList);
 					}catch(Exception e)
 					{
