@@ -4116,7 +4116,25 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			query.setParameterList("mobileNos", mobileNos);
 			return query.list();
 		}
-        
+		public List<Object[]> districtWiseRegCountForDistrict(Long stateId){
+			
+			StringBuilder str = new StringBuilder();
+			str.append("select model.userAddress.district.districtId, count(distinct model.tdpCadreId) " +
+					" from TdpCadre model where model.enrollmentYear='2014' and  model.isDeleted='N' " );
+			
+			if(stateId.longValue() == 0L)
+				str.append(" and model.userAddress.district.districtId between 1 and 23 ");
+			else if(stateId.longValue() == 1L)
+				str.append(" and TC.userAddress.district.districtId between 1 and 10 ");
+			else if(stateId.longValue() == 2L)
+				str.append(" and TC.userAddress.district.districtId between 11 and 23 ");
+			
+			str.append(" group by model.userAddress.district.districtId");
+			Query query = getSession().createQuery(str.toString());
+			
+			return  query.list();
+	 
+	 }
 		
 		public List<Object[]> constituencyWiseRegCountForDistrict(Long districtId){
 			

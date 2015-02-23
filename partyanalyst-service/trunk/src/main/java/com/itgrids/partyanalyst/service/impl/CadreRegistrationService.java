@@ -8290,13 +8290,21 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			Date toDate = userDateFormat.parse(toDateStr);
 			
 			Map<Long,String> districtNames = new HashMap<Long,String>();
+			Map<Long,Long> regCnt = new HashMap<Long,Long>();
 			List<Object[]> names = districtDAO.getDistrictIdAndNameByStateForStateTypeId(1L,stateId);
 			if(names != null){
 				for(Object[] param:names){
 					districtNames.put((Long)param[0], param[1].toString());
 				}
 			}
+			List<Object[]> regCountList=tdpCadreDAO.districtWiseRegCountForDistrict(stateId);
 			
+			if(regCountList != null){
+				for(Object[] param:regCountList){
+					regCnt.put((Long)param[0], (Long)param[1]);
+				}
+			}		
+					
 			List<Object[]> list = tdpCadreDAO.getDistrictWiseMemberMobileNumbersCount(fromDate,toDate,stateId);
 			Map<Long,Integer> disCntMap = new HashMap<Long, Integer>(0);
 			Map<Long,List<String>> disSingleMap = new HashMap<Long, List<String>>(0);
@@ -8338,6 +8346,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					missedCallsDetailsVO.setDistrictId(entry.getKey());
 					missedCallsDetailsVO.setDistrictCount(singleCount);
 					missedCallsDetailsVO.setName(districtNames.get(entry.getKey()) !=  null ? districtNames.get(entry.getKey()) : "");
+					missedCallsDetailsVO.setTotalCount(regCnt.get(entry.getKey()) !=  null ? regCnt.get(entry.getKey()) : 0l);
 					resultList.add(missedCallsDetailsVO);
 				}
 			}
@@ -8360,11 +8369,12 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				missedCallsDetailsVO.setDistrictId(entry.getKey());
 				missedCallsDetailsVO.setDistrictCount(new Integer(entry.getValue()).longValue());
 				missedCallsDetailsVO.setName(districtNames.get(entry.getKey()) !=  null ? districtNames.get(entry.getKey()) : "");
+				missedCallsDetailsVO.setTotalCount(regCnt.get(entry.getKey()) !=  null ? regCnt.get(entry.getKey()) : 0l);
 				resultList.add(missedCallsDetailsVO);
 			}
-			if(resultList != null && resultList.size() > 0){
+			/*if(resultList != null && resultList.size() > 0){
 				resultList.get(0).setTotalCount(new Integer(list.size()).longValue());
-			}
+			}*/
 		}
 		catch(Exception e)
 		{
