@@ -356,32 +356,32 @@ function buildDistrictWiseCount(result,type,stateId){
 					
 					str+='<li class="vPoor">';
 					//str+='<span class="progresslabelcolor" style="background-color:#0F0">';
-					str+='</span><span id="'+result[i].districtId+'" style="cursor:pointer" onClick="missedCallDetailsForADistrict('+result[i].districtId+');">'+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'';
+					str+='</span><span id="'+result[i].districtId+'" style="cursor:pointer" onClick="missedCallDetailsForADistrict('+result[i].districtId+');">'+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'<span style="float:right"> Registered Count :'+result[i].totalCount+'</span>';
 					str+='<div class="progress progress-danger  progress-striped active">';	
 					
 				}else if(perc1 > 10 && perc1 <= 20 ){
 				
 					str+='<li class="poor">';
 					//str+='<span class="progresslabelcolor" style="background-color:#0F0">';
-					str+='</span><span id="'+result[i].districtId+'" style="cursor:pointer" onClick="missedCallDetailsForADistrict('+result[i].districtId+');">'+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'';
+					str+='</span><span id="'+result[i].districtId+'" style="cursor:pointer" onClick="missedCallDetailsForADistrict('+result[i].districtId+');">'+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'<span style="float:right"> Registered Count :'+result[i].totalCount+'</span>';
 					str+='<div class="progress progress-warning  progress-striped active">';
 				}else if(perc1 > 20 && perc1 <= 40 ){
 
 					str+='<li class="ok">';
 					//str+='<span class="progresslabelcolor" style="background-color:#0F0">';
-					str+='</span><span id="'+result[i].districtId+'" style="cursor:pointer" onClick="missedCallDetailsForADistrict('+result[i].districtId+');">'+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'';
+					str+='</span><span id="'+result[i].districtId+'" style="cursor:pointer" onClick="missedCallDetailsForADistrict('+result[i].districtId+');">'+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'<span style="float:right"> Registered Count :'+result[i].totalCount+'</span>';
 					str+='<div class="progress progress-primary  progress-striped active">';
 				}else if(perc1 > 40 && perc1 <= 60 ){
 				
 					str+='<li class="good">';
 					//str+='<span class="progresslabelcolor" style="background-color:#0F0">';
-					str+='</span><span id="'+result[i].districtId+'" style="cursor:pointer" onClick="missedCallDetailsForADistrict('+result[i].districtId+');"> '+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'';
+					str+='</span><span id="'+result[i].districtId+'" style="cursor:pointer" onClick="missedCallDetailsForADistrict('+result[i].districtId+');"> '+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'<span style="float:right"> Registered Count :'+result[i].totalCount+'</span>';
 					str+='<div class="progress progress-info  progress-striped active">';
 				}else if(perc1 > 60){
 					
 					str+='<li class="vGood">';
 					//str+='<span class="progresslabelcolor" style="background-color:#0F0">';
-					str+='</span id="'+result[i].districtId+'"><span style="cursor:pointer" onClick="missedCallDetailsForADistrict('+result[i].districtId+');">'+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'';
+					str+='</span id="'+result[i].districtId+'"><span style="cursor:pointer" onClick="missedCallDetailsForADistrict('+result[i].districtId+');">'+result[i].name+'</span>( '+perc1+'%) '+result[i].districtCount+'<span style="float:right"> Registered Count :'+result[i].totalCount+'</span>';
 					str+='<div class="progress progress-success progress-striped active">';
 				}
 
@@ -471,7 +471,7 @@ function buildDistrictWiseCount(result,type,stateId){
 		getSingleMemberCountByDistrict();
 		//getMissedCallDetailsByDistrict();
 		$('input:radio[name="select"][id="AllId"]').prop('checked', true);
-		$('input:radio[name="select"][id="districtId"]').prop('checked', true);
+		$('input:radio[name="radionBtn"][id="single"]').prop('checked', true);
 		$("#constituenciesDiv").html("");	
 	});
 
@@ -492,6 +492,7 @@ function buildDistrictWiseCount(result,type,stateId){
 	$(".stateRd").click(function(){
 		getMissedCallDetails();
 		getSingleMemberCountByDistrict();
+		$('#single').prop("checked","checked");
 		//getMissedCallDetailsByDistrict();
 		$("#constituenciesDiv").html("");
 	});
