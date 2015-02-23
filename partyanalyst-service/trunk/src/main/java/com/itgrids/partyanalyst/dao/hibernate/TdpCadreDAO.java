@@ -3911,6 +3911,50 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return  query.list();
 		}
 		
+		public List<Object[]> getMemberMobileNumbersCount(Date startDate, Date endDate,Long stateId)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append("SELECT TC.mobileNo,TC.tdpCadreId,COUNT(TC.tdpCadreId) from CadreMissedCallCampaign model,TdpCadre TC " +
+					" where TC.mobileNo = model.mobileNumber and TC.isDeleted = 'N' and TC.enrollmentYear='2014' " +
+					" and date(model.insertedTime) >=:startDate and date(model.insertedTime) <= :endDate ");
+			
+			if(stateId.longValue() == 0L)
+				str.append(" and TC.userAddress.district.districtId between 1 and 23 ");
+			else if(stateId.longValue() == 1L)
+				str.append(" and TC.userAddress.district.districtId between 1 and 10 ");
+			else if(stateId.longValue() == 2L)
+				str.append(" and TC.userAddress.district.districtId between 11 and 23 ");
+			
+			str.append(" group by TC.mobileNo,TC.tdpCadreId ");
+			Query query = getSession().createQuery(str.toString());
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+			
+			return  query.list();
+		}
+		
+		public List<Object[]> getDistrictWiseMemberMobileNumbersCount(Date startDate, Date endDate,Long stateId)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append("SELECT TC.userAddress.district.districtId,TC.mobileNo,TC.tdpCadreId,COUNT(TC.tdpCadreId) from CadreMissedCallCampaign model,TdpCadre TC " +
+					" where TC.mobileNo = model.mobileNumber and TC.isDeleted = 'N' and TC.enrollmentYear='2014' " +
+					" and date(model.insertedTime) >=:startDate and date(model.insertedTime) <= :endDate ");
+			
+			if(stateId.longValue() == 0L)
+				str.append(" and TC.userAddress.district.districtId between 1 and 23 ");
+			else if(stateId.longValue() == 1L)
+				str.append(" and TC.userAddress.district.districtId between 1 and 10 ");
+			else if(stateId.longValue() == 2L)
+				str.append(" and TC.userAddress.district.districtId between 11 and 23 ");
+			
+			str.append(" group by TC.userAddress.district.districtId,TC.mobileNo,TC.tdpCadreId ");
+			Query query = getSession().createQuery(str.toString());
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+			
+			return  query.list();
+		}
+		
 		/*public List<Long> getSingleMemberMobileNosCount(List<String> mobileNos,Long stateId)
 		{
 			StringBuilder str = new StringBuilder();
