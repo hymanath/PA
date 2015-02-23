@@ -72,7 +72,7 @@ overflow-y:scroll;
                     </td>
                 </tr>
                 <tr>
-                	<td width="430" style="text-align:center;padding:0px;">
+                	<td width="47%" style="text-align:center;padding:0px;">
                     	<div id="chartdiv" style="margin-bottom:-80px;margin-top:-20px"></div>
                         <h5 style="margin-bottom:0px;">TOTAL MISSED CALLS</h5>
                        <center><img class="imgStyle totalData" src="images/icons/search.gif"></img><h3 style="margin-top:0px;" id="totalMissedCallsId"></h3></center>
@@ -99,17 +99,18 @@ overflow-y:scroll;
                             </tr>
                         </table>
                     </td>
-                    <td width="350px" style="padding:0px">
+                    <td width="53%" style="padding:0px">
 					<div>
 						<h6 id="textId" style="border:1px solid #dddddd;background-color:#f4f4f4;padding:5px;margin:0px">ANDHRA PRADESH & TELANGANA district wise missed calls percentages</h6>
                     	<div style="padding:2px;font-size:10px;">
-                            <label class="radio inline">
-							<input type="radio" type="radio"  id="multi" style="vertical-align: text-bottom;" class="districtRd" value="0" name="radionBtn" checked="true"/>
-							<small>Based on Multi Member</small>
+                           
+							<label class="radio inline">
+							<input type="radio" id="single" style="vertical-align: text-bottom;" class="districtRd" value="1" name="radionBtn" checked="true"/>
+							<small>Based on Single Member</small>
 							</label>
 							<label class="radio inline">
-							<input type="radio" id="single" style="vertical-align: text-bottom;" class="districtRd" value="1" name="radionBtn" />
-							<small>Based on Single Member</small>
+							<input type="radio" type="radio"  id="multi" style="vertical-align: text-bottom;" class="districtRd" value="0" name="radionBtn" />
+							<small>Based on Multi Member</small>
 							</label>
                         </div>
 						<center><img src="images/Loading-data.gif" class="offset7"  id="distProcessImgId" style=" margin-left:0px;margin-top: 130px;width:70px;height:60px;display:none;"/></center>
@@ -117,7 +118,7 @@ overflow-y:scroll;
 					</div>
                     		
                     </td>
-                    <td style="background-color:#f4f4f4">
+                    <!--<td style="background-color:#f4f4f4">
                     	<label class="label label-custom  allIconId">Clear Filters</label>
 						<ul style="margin-top:20px;">
                         	<li style="cursor:pointer;border-bottom:1px solid #dddddd;margin-bottom:10px;" class="percentagefilter1" attr-id="vGood">
@@ -154,7 +155,7 @@ overflow-y:scroll;
                             	<b><i><u>NOTE:</u>Click to View percentage range Wise details</i></b>
                           </li>
                         </ul>
-                    </td>
+                    </td>-->
                 </tr>
             </table>
         <div style="border:3px solid #CCC">
@@ -174,12 +175,7 @@ overflow-y:scroll;
 <script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>   
 
 
-<script type="text/javascript">
 
- $(document).ready(function() {
-   
-});
-</script>
 <script type="text/javascript">
 	 $(document).ready(function() {
                   var cb = function(start, end, label) {
@@ -254,7 +250,8 @@ overflow-y:scroll;
                   });
                   $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log(""); });		
 					getMissedCallDetails();
-					getMissedCallDetailsByDistrict();
+					getSingleMemberCountByDistrict();
+					//getMissedCallDetailsByDistrict();
                });
 			   
 function getMissedCallDetails(){
@@ -280,11 +277,11 @@ function getMissedCallDetails(){
 		$("#multiRegId").html(result.multiMemberRegCnt);
 	});
 }
-var chartData = [];
+
 function getMissedCallDetailsByDistrict(){
 
 	$("#districtWiseProgressBars").html("");
-	$("#chartdiv").html("");
+	//$("#chartdiv").html("");
 	$("#distProcessImgId").show();
 	
 	var stateId = $("input[type='radio'][name='select']:checked").val();	
@@ -303,7 +300,7 @@ function getMissedCallDetailsByDistrict(){
 	}).done(function(result){
 	chartData = new Array();
 	if(result != null && result.length >0){
-	$("#chartdiv").show();
+	/*$("#chartdiv").show();
 		for (var i in result) {      
 			chartData.push({
 				title: result[i].name,
@@ -324,8 +321,9 @@ function getMissedCallDetailsByDistrict(){
 		}
 		else{
 		$("#chartdiv").hide();
-		}
+		}*/
 		buildDistrictWiseCount(result,"multi",stateId);
+		}
 	});
 	
 	
@@ -345,11 +343,12 @@ function buildDistrictWiseCount(result,type,stateId){
 		$("#textId").html("TELANGANA  District Wise Missed Calls Percentages");
 		
 		}
-        
+		
+       
 		str+='<ul  class="slimscrollar" style="padding:8px;margin-top:5px;border-top:1px solid #dddddd">';	
 		if(result != null && result.length > 0){
 		for(var i in result){
-		var perc =result[i].districtCount / result[0].totalCount * 100 ;
+		var perc = result[i].districtCount / result[i].totalCount * 100 ;		
 		var perc1 = perc.toFixed(2);
 		
 			
@@ -469,7 +468,8 @@ function buildDistrictWiseCount(result,type,stateId){
 	$(document).on('click','.rangeButton',function(){
 			
 		getMissedCallDetails();
-		getMissedCallDetailsByDistrict();
+		getSingleMemberCountByDistrict();
+		//getMissedCallDetailsByDistrict();
 		$('input:radio[name="select"][id="AllId"]').prop('checked', true);
 		$('input:radio[name="select"][id="districtId"]').prop('checked', true);
 		$("#constituenciesDiv").html("");	
@@ -483,14 +483,16 @@ function buildDistrictWiseCount(result,type,stateId){
 			getMissedCallDetailsByDistrict();
 		}
 		else if(levelSelected1 == 1){
-			getSingleMemberCountByDistrict();
+			//getSingleMemberCountByDistrict();
+			getSingleMemberCountByDistrict1();
 		}
 		$("#constituenciesDiv").html("");
 	});
 	
 	$(".stateRd").click(function(){
 		getMissedCallDetails();
-		getMissedCallDetailsByDistrict();
+		getSingleMemberCountByDistrict();
+		//getMissedCallDetailsByDistrict();
 		$("#constituenciesDiv").html("");
 	});
 	
@@ -527,9 +529,9 @@ function missedCallDetailsForADistrict(districtId){
                 str+='<thead style="font-size:11px;">';
                 	str+='<th>Constituency</th>';
                     str+='<th>Registered Count</th>';
-                    str+='<th>Printed Count</th>';
+                   // str+='<th>Printed Count</th>';
                     str+='<th>Received Missed Calls</th>';
-                    str+='<th>Mismatched Calls</th>';
+                   // str+='<th>Mismatched Calls</th>';
                     str+='<th>Single Member Registered</th>';
                     str+='<th>Multi Member Registered</th>';
                 str+='</thead>';
@@ -539,9 +541,9 @@ function missedCallDetailsForADistrict(districtId){
 					 str+='<tr>';               	
                     	str+='<td>'+result[i].constituencyName+'</td>';
                         str+='<td>'+result[i].totalCount+'</td>';
-                        str+='<td>'+result[i].printedCount+'</td>';
+                      //  str+='<td>'+result[i].printedCount+'</td>';
                         str+='<td>'+result[i].missedCallsCount+'</td>';
-                        str+='<td>NA</td>';
+                       // str+='<td>NA</td>';
                         str+='<td>'+result[i].singleMemberRegCnt+'</td>';
                         str+='<td>'+result[i].multiMemberRegCnt+'</td>';
                     str+='</tr>';
@@ -550,6 +552,32 @@ function missedCallDetailsForADistrict(districtId){
 				str+='</tbody>';
 				str+='</table>';
 				$("#constituenciesDiv").html(str);
+		}
+	});
+	}
+	
+	function getSingleMemberCountByDistrict1()
+	{	
+	$("#districtWiseProgressBars").html("");
+	$("#distProcessImgId").show();
+		var stateId = $("input[type='radio'][name='select']:checked").val();	
+		var startDate=$(".dp_startDate").val();
+		var endDate=$(".dp_endDate").val();
+		var jObj = {
+		fromDate:startDate,
+		toDate:endDate,
+		stateId:stateId,
+		task:"getSingleMember"
+	}
+	
+	$.ajax({
+	  type:'GET',
+	  url: 'getMissedCallDetailsDistrictWiseAction.action',
+	  data : {task:JSON.stringify(jObj)} ,
+	}).done(function(result){
+		
+		if(result != null && result.length > 0){
+		buildDistrictWiseCount(result,"single",stateId);
 		}
 	});
 	}
