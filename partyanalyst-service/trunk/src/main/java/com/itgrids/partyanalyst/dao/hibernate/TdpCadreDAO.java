@@ -3868,9 +3868,9 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			str.append(" and date(model.insertedTime) >=:startDate");
 			
 			if(stateId.longValue() == 1){
-				str.append(" and tc.userAddress.district.districtId > 10 ");
+				str.append(" and tc.userAddress.district.districtId between 11 and 23 ");
 			}else if(stateId.longValue() == 2){
-				str.append(" and tc.userAddress.district.districtId < 11 ");
+				str.append(" and tc.userAddress.district.districtId between 1 and 10  ");
 			}
 			Query query = getSession().createQuery(str.toString());
 			if(startDate != null && endDate != null && !startDate.equals(endDate)){
@@ -3896,9 +3896,9 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 
 			if(stateId.longValue() == 1L){
-				str.append(" and tc.userAddress.district.districtId > 10 ");
+				str.append(" and tc.userAddress.district.districtId between 11 and 23  ");
 			}else if(stateId.longValue() == 2L){
-				str.append(" and tc.userAddress.district.districtId < 11 ");
+				str.append(" and tc.userAddress.district.districtId between 1 and 10  ");
 			}
 			Query query = getSession().createQuery(str.toString());
 			if(startDate != null && endDate != null && !startDate.equals(endDate)){
@@ -3921,9 +3921,9 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			if(stateId.longValue() == 0L)
 				str.append(" and TC.userAddress.district.districtId between 1 and 23 ");
 			else if(stateId.longValue() == 1L)
-				str.append(" and TC.userAddress.district.districtId between 1 and 10 ");
-			else if(stateId.longValue() == 2L)
 				str.append(" and TC.userAddress.district.districtId between 11 and 23 ");
+			else if(stateId.longValue() == 2L)
+				str.append(" and TC.userAddress.district.districtId between 1 and 10 ");
 			
 			str.append(" group by TC.mobileNo,TC.tdpCadreId ");
 			Query query = getSession().createQuery(str.toString());
@@ -3943,9 +3943,9 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			if(stateId.longValue() == 0L)
 				str.append(" and TC.userAddress.district.districtId between 1 and 23 ");
 			else if(stateId.longValue() == 1L)
-				str.append(" and TC.userAddress.district.districtId between 1 and 10 ");
-			else if(stateId.longValue() == 2L)
 				str.append(" and TC.userAddress.district.districtId between 11 and 23 ");
+			else if(stateId.longValue() == 2L)
+				str.append(" and TC.userAddress.district.districtId between 1 and 10 ");
 			
 			str.append(" group by TC.userAddress.district.districtId,TC.mobileNo,TC.tdpCadreId ");
 			Query query = getSession().createQuery(str.toString());
@@ -3980,9 +3980,9 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 					" where TC.mobile_no in (:mobileNos) and TC.is_deleted = 'N' and TC.enrollment_year = '2014' and TC.address_id = UA.user_address_id "); 
 						
 			if(stateId.longValue() == 1L){
-				str.append(" and UA.district_id > 10 ");
+				str.append(" and UA.district_id between 11 and 23  ");
 			}else if(stateId.longValue() == 2L){
-				str.append(" and UA.district_id < 11 ");
+				str.append(" and UA.district_id between 1 and 10  ");
 			}
 			str.append(" group by TC.mobile_no HAVING CNT = 1 ");
 			Query query = getSession().createSQLQuery(str.toString());
@@ -4020,9 +4020,9 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 		
 			if(stateId.longValue() == 1L){
-				str.append(" and UA.district_id > 10 ");
+				str.append(" and UA.district_id between 11 and 23  ");
 			}else if(stateId.longValue() == 2L){
-				str.append(" and UA.district_id < 11 ");
+				str.append(" and UA.district_id between 1 and 10 ");
 			}else if(stateId.longValue() == 0L){
 				str.append(" and UA.district_id  between 1 and 23 ");
 			}
@@ -4070,9 +4070,9 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 					" where TC.mobile_no in (:mobileNos) and TC.is_deleted = 'N' and TC.enrollment_year = '2014' and TC.address_id = UA.user_address_id "); 
 			
 			if(stateId.longValue() == 1){
-				str.append(" and UA.district_id > 10 ");
+				str.append(" and UA.district_id between 11 and 23  ");
 			}else if(stateId.longValue() == 2){
-				str.append(" and UA.district_id < 11 ");
+				str.append(" and UA.district_id between 1 and 10  ");
 			}
 			str.append(" group by UA.district_id ");
 			Query query = getSession().createSQLQuery(str.toString());
@@ -4106,9 +4106,9 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 					" where TC.mobile_no in (:mobileNos) and TC.is_deleted = 'N' and  TC.enrollment_year = '2014' and TC.address_id = UA.user_address_id "); 			
 		
 			if(stateId.longValue() == 1){
-				str.append(" and UA.district_id > 10 ");
+				str.append(" and UA.district_id between 11 and 23  ");
 			}else if(stateId.longValue() == 2){
-				str.append(" and UA.district_id < 11 ");
+				str.append(" and UA.district_id between 1 and 10  ");
 			}
 			str.append(" group by UA.district_id ");
 			Query query = getSession().createSQLQuery(str.toString());
@@ -4125,9 +4125,9 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			if(stateId.longValue() == 0L)
 				str.append(" and model.userAddress.district.districtId between 1 and 23 ");
 			else if(stateId.longValue() == 1L)
-				str.append(" and TC.userAddress.district.districtId between 1 and 10 ");
+				str.append(" and model.userAddress.district.districtId between 11 and 23 ");
 			else if(stateId.longValue() == 2L)
-				str.append(" and TC.userAddress.district.districtId between 11 and 23 ");
+				str.append(" and model.userAddress.district.districtId between 1 and 10 ");
 			
 			str.append(" group by model.userAddress.district.districtId");
 			Query query = getSession().createQuery(str.toString());
