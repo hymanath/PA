@@ -8175,15 +8175,13 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			Long totalMissedCalls = 0l;
 			Long singleMemRegisteredCnt =0l;
 			Long multipleMemRegisteredCnt = 0L;
-			
+			Long totalCnt = 0L;
 			if(stateId == 0L)
 				totalMissedCalls = 	cadreMissedCallCampaignDAO.getAllMissedCallsCount(fromDate,toDate);
-			else 
-				totalMissedCalls = tdpCadreDAO.getMissedCallsCountByState(fromDate,toDate,stateId);
+			//else 
+				//totalMissedCalls = tdpCadreDAO.getMissedCallsCountByState(fromDate,toDate,stateId);
 			
-			if(totalMissedCalls != null){
-				missedCallDetails.setTotalCount(totalMissedCalls);
-			}
+			
 			
 			List<Object[]> list = tdpCadreDAO.getMemberMobileNumbersCount(fromDate,toDate,stateId);
 			Map<String,Integer> mobileMap = new HashMap<String, Integer>(0);
@@ -8201,6 +8199,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			}
 			for(Map.Entry<String,Integer> entry : mobileMap.entrySet())
 			{
+				totalCnt++;
 				if(entry.getValue().intValue() == 1)
 					singleMemRegisteredCnt++;
 				else
@@ -8209,7 +8208,16 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			
 			missedCallDetails.setSingleMemberRegCnt(singleMemRegisteredCnt);
 			missedCallDetails.setMultiMemberRegCnt(multipleMemRegisteredCnt);
+			if(stateId == 0L){
+				if(totalMissedCalls != null)
+					missedCallDetails.setTotalCount(totalMissedCalls);
+			}
+			else{
+				missedCallDetails.setTotalCount(totalCnt);
+			}
 			missedCallDetails.setMismatchedCnt(missedCallDetails.getTotalCount() - ( missedCallDetails.getSingleMemberRegCnt() + missedCallDetails.getMultiMemberRegCnt()) );
+			
+			
 		}
 		catch(Exception e)
 		{
