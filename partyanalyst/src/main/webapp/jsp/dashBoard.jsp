@@ -211,7 +211,7 @@ lable{line-height:40px;}
    padding-right: 20px;
    padding-top: 10px;
 }
-.linkDivs h2{height:92px;}
+/*.linkDivs h2{height:92px;}*/
 </style>
 <div class="container">
 	
@@ -239,8 +239,10 @@ lable{line-height:40px;}
 <b>${loginUserName}</b> </div></div>
 </div>		
  <div class="widget blue">
- <h2>Account Settings</h2>
- <table class="table table-hover" style="margin-bottom: -13px;border-spacing: 2px;"><thead></thead><tbody><tr><td><a href="freeUserRegistration.action?tempVar=dashBoard"><span class="icon-pencil"></span>  Edit Profile</a></td></tr>  <tr><td><a class="changePwdLink" href="javascript:{}"><span class="icon-hand-right"></span>  Change Password</a></td></tr>   <tr><td><a class="editPictureLink" href="javascript:{}"><span class="icon-user"></span>  Edit Picture</a></td></tr>  </tbody></table>
+ <h2 style="border-bottom:none !important;"><a id="toggleDiv"> Account Settings</a></h2>
+ <div id='profileDiv' style="display:none;">
+ <table class="table table-hover"  style="margin-bottom: -13px;border-spacing: 2px;"><thead></thead><tbody><tr><td><a href="freeUserRegistration.action?tempVar=dashBoard"><span class="icon-pencil"></span>  Edit Profile</a></td></tr>  <tr><td><a class="changePwdLink" href="javascript:{}"><span class="icon-hand-right"></span>  Change Password</a></td></tr>   <tr><td><a class="editPictureLink" href="javascript:{}"><span class="icon-user"></span>  Edit Picture</a></td></tr>  </tbody></table>
+ </div>
  </div>
  <div id="userSettingsDialog"></div>
 
@@ -327,7 +329,7 @@ lable{line-height:40px;}
 		</a>
 	</div> <!----View Your district END------>
 	
-	<!--View your constituency-->
+	<!--View your constituency
 	<div class="widget-block" contentindex="2c" >
 		<div id="alertMessage" style="color:red;font-weight:bold;"></div>
 		<h5>View Your Constituency</h5>
@@ -546,8 +548,36 @@ lable{line-height:40px;}
 		<div class="page-header">
 			<h4><img src="./images/dashboard/Constituency Level Analysis copy.png" />  Constituency Level Analysis</h4>
 		</div>
-		
-		
+		<!--View your constituency-->
+		<div class="row-fluid">
+		  
+	<div class="span12 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
+		<div id="alertMessage" style="color:red;font-weight:bold;"></div>
+		<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5">View Your Constituency</div></h2>
+		<div class="form-inline">
+			<label class="radio">Select Constituency Type &nbsp; &nbsp;</label>
+			<label style="" class="radio">
+			<input type="radio" style="margin-top: 4px;" onclick="hideUnhideSelectBox(this.id, 'constituency')" id="assembly_radio" name="assembly_radio" checked="checked">
+			Assembly
+			</label>
+			
+			<label class="radio">
+			<input type="radio" style="margin-top: 4px;" onclick="hideUnhideSelectBox(this.id,'constituency')" id="p_radio" name="assembly_radio" >
+			Parliament
+			</label>
+			</div>
+			<div class="form-inline m-top10">
+		<div id="stateTable" style="display:block;" class="span5">
+						<s:select cssClass="input-block-level" theme="simple" label="Select Your State" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name"  onchange="getAllConstituenciesInStateByTypeInDashBoard(2,this.options[this.selectedIndex].value,'constituency','')"/></div>
+					
+		<div id="constTable" style="display:block;"  class="span5">
+					<s:select theme="simple" cssClass="input-block-level " label="Select Your Constituency" name="constituency" id="constituency" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select Constituency"/></div>
+				<button class="btn btn-success pull-right" type="button" onclick="navigateToConstituencyPage()" style="margin-top: 10px;">Go</button>
+		</div>
+
+	
+	</div><!--- View your constituency END --->
+		</div></div>
 		<div id="helpWindow"></div>
 		<div class="row-fluid">
 		  
@@ -1180,6 +1210,11 @@ lable{line-height:40px;}
 <script>
 
  $(document).ready(function(){
+	 $("#toggleDiv").click(function()
+	 {
+		 $("#profileDiv").toggle();
+	 });
+	
     $("#floatingDiv_relative_main").hide();
 	$('.active').removeClass(); 
 	var host = "<%=IConstants.DEPLOYED_HOST%>";
