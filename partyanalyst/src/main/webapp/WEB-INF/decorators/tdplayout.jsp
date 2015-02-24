@@ -300,15 +300,25 @@ margin-top:10px;
 						</div>
 					</li>
 						</c:if>
-					<li><a href="initailConstituencyManagementAction.action"><span>Constituency Management</span></a></li>
+						
+						<li><a onmousedown="return false;" class="parent"><span>Tools</span></a>
+						<div>
+							<ul>
+								<li><a href="initailConstituencyManagementAction.action"><span>Constituency Management</span></a></li>
+								<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_MANAGEMENT_ENTITLEMENT' ) }">
+								<li><a href="cadreManagementAction.action" id="cadreId"><span>Cadre Management</span></a></li>
+								</c:if>
+								<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CALL_CENTER_ENTITLEMENT' ) }">
+								
+								<li><a href="callCenterAction.action"><span>Call Center</span></a></li>	</c:if>
+							</ul>
+						</div>
+					</li>
+						
 					
 					
-					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_MANAGEMENT_ENTITLEMENT' ) }">
-					<li><a href="cadreManagementAction.action" id="cadreId"><span>Cadre Management</span></a></li>
-					</c:if>
-					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CALL_CENTER_ENTITLEMENT' ) }">
 					
-					<li><a href="callCenterAction.action"><span>Call Center</span></a></li>
+					
 					<li><a href="dailyVerificationReportsAction.action"><span>CTP Project</span></a></li>
 					<c:if test="${sessionScope.USER.isAdmin == 'true'}">
 						<li><a onmousedown="return false;" class="parent"><span>2014 Cadre</span></a>
@@ -336,16 +346,29 @@ margin-top:10px;
 							</div>
 						</li>
 					</c:if>
+					
+					<li><a onmousedown="return false;" class="parent"><span>Committees</span></a>
+						<div>
+							<ul>
+								<c:if test="${sessionScope.USER.isAdmin == 'true'}">						
+								<li><a href="cadreCommitteeAction.action"><span>  TDP Committees Management  </span></a></li>
+								</c:if>
+							
+								<c:if test="${sessionScope.USER.isAdmin == 'true'}">						
+								<li><a href="committeeDashBoardAction.action"><span>Committee DashBoard</span></a></li>
+								</c:if>
+							</ul>
+						</div>
+					</li>
+					
+					
 					<c:if test="${sessionScope.USER.isAdmin == 'true'}">						
-						<li><a href="cadreCommitteeAction.action"><span>  TDP Committees Management  </span></a></li>
-					</c:if>
-					<c:if test="${sessionScope.USER.isAdmin == 'true'}">						
-						<li><a href="committeeDashBoardAction.action"><span>Committee DashBoard</span></a></li>
+						
 						<li><a href="currentBoothsStatus.action"><span>Tirupati Bye Election Poll Management</span></a></li>
 						<li><a href="cadreMissedCallCampaignAction.action"><span>Cadre Missed Call Campaign</span></a></li>
 					</c:if>
 					
-					</c:if>
+				
 					
 				</ul>
 			</div>
@@ -398,12 +421,15 @@ margin-top:10px;
 	
 			<c:if test="${sessionScope.loginStatus == 'out'}">  
 			 <c:if test="${not fn:contains(sessionScope.USER.entitlements, 'PARTY_CADRE_SEARCH' ) }">
-			 <c:if test="${not fn:contains(sessionScope.USER.entitlements, 'GHMC_CADRE_MEGA_DRIVE_USER' ) }">
+			<!-- <c:if test="${not fn:contains(sessionScope.USER.entitlements, 'GHMC_CADRE_MEGA_DRIVE_USER' ) }">
 		<li id="dashBoardBtn">
 			<a href="dashBoardAction.action"><span>DASHBOARD</span></a> 
 		</li>
 		
-		</c:if>
+		</c:if>-->
+		<li id="dashBoardBtn">
+			<a href="dashBoardAction.action"><span>DASHBOARD</span></a> 
+		</li>
 		</c:if>
 		</c:if>		
 		<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">   
