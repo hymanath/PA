@@ -8339,7 +8339,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					}
 					for(Map.Entry<String,Long> entry2 : mobTempMap.entrySet())
 					{
-						if(entry2.getValue().longValue() == 1L)
+						//if(entry2.getValue().longValue() == 1L)
 							singleCount++;
 					}
 					missedCallsDetailsVO = new MissedCallsDetailsVO();
@@ -8412,8 +8412,8 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 			  
 			  List<Object[]> regCountList=tdpCadreDAO.constituencyWiseRegCountForDistrict(districtId);//cid,count.
 			  List<Object[]> printCountList=zebraPrintDetailsDAO.getTotalPrintingCountByDistrict(districtId);//cid,cname,count.
-			  List<Object[]>  receivedMissedCallsList=tdpCadreDAO.constituencyWiseRecivingMissedCallsCount(districtId,startDate,endDate);//cid,count.
-			  List<Object[]>  multiMemberRegisteredForMobileList=tdpCadreDAO.multiMemberRegisteredForMobile(districtId,startDate,endDate);//cid,mno,count.
+			  //List<Object[]>  receivedMissedCallsList=tdpCadreDAO.constituencyWiseRecivingMissedCallsCount(districtId,startDate,endDate);//cid,count.
+			  //List<Object[]>  multiMemberRegisteredForMobileList=tdpCadreDAO.multiMemberRegisteredForMobile(districtId,startDate,endDate);//cid,mno,count.
 			  
 			  if(regCountList!=null && regCountList.size()>0){
 				  for (Object[] parm : regCountList){
@@ -8422,8 +8422,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						 
 					}
 		       }
-			   
-			  
+			   			  
 			  if(printCountList!=null && printCountList.size()>0){
 				  for (Object[] obj : printCountList) {
 					  MissedCallsDetailsVO missedCallsDetailsVO=resultMap.get((Long)obj[0]);
@@ -8432,7 +8431,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 				  
 			  }
 			  
-			  if(receivedMissedCallsList!=null && receivedMissedCallsList.size()>0){
+			  /*if(receivedMissedCallsList!=null && receivedMissedCallsList.size()>0){
 				  for (Object[] obj : receivedMissedCallsList){
 					  MissedCallsDetailsVO missedCallsDetailsVO=resultMap.get((Long)obj[0]);
 					  missedCallsDetailsVO.setMissedCallsCount((Long)obj[1]);
@@ -8447,10 +8446,51 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					  }
 					  else if((Long.parseLong(obj[2].toString().trim()))>1){
 						  missedCallsDetailsVO.setMultiMemberRegCnt(missedCallsDetailsVO.getMultiMemberRegCnt()+1);
-					  }
-					  
+					  }					  
 				}
+			  }*/
+			  
+			  List<Object[]> list = tdpCadreDAO.getConstituencyWiseMemberMobileNumbersCount(districtId,startDate,endDate);
+			  List<String> mobileNosList  = new ArrayList<String>();
+			  
+			  Map<Long,List<String>> disSingleMap = new HashMap<Long, List<String>>(0);
+			  //MissedCallsDetailsVO missedCallsDetailsVO = null;
+			  for(Object[] params : list){		
+					List<String> mobList = disSingleMap.get((Long)params[0]);
+					if(mobList == null)
+						mobList = new ArrayList<String>(0);				
+					mobList.add(params[1].toString());
+					disSingleMap.put((Long)params[0],mobList);
+					//if(!mobileNosList.contains(params[1].toString()))
+						//mobileNosList.add(params[1].toString());
 			  }
+					
+			  for(Map.Entry<Long,List<String>> entry : disSingleMap.entrySet()){
+					Map<String,Long> mobTempMap = new HashMap<String,Long>(0);
+					Long singleCount = 0l;
+					Long multiCount = 0l;
+					Long mobileCnt = 0L;
+					for(String mobile : entry.getValue())
+					{
+						Long cnt = mobTempMap.get(mobile);
+						if(cnt == null)
+							cnt = 0L;
+						mobTempMap.put(mobile,++cnt);
+					}
+					for(Map.Entry<String,Long> entry2 : mobTempMap.entrySet())
+					{
+						mobileCnt = mobileCnt+1;
+						if(entry2.getValue().longValue() == 1L)
+							singleCount= singleCount +1;
+						else
+							multiCount= multiCount+1;
+					}
+					MissedCallsDetailsVO missedCallsDetailsVO =resultMap.get(entry.getKey());
+					missedCallsDetailsVO.setMissedCallsCount(mobileCnt);
+					missedCallsDetailsVO.setSingleMemberRegCnt(singleCount);
+					missedCallsDetailsVO.setMultiMemberRegCnt(multiCount);
+			 }
+			
 			  
 			 if(resultMap!=null && resultMap.size()>0){
 			   missedCallsDetailsVOList=new ArrayList<MissedCallsDetailsVO>(resultMap.values());
