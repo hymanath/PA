@@ -291,7 +291,11 @@ function getMissedCallDetails(){
 	}).done(function(result){
 		$(".totalData").hide();
 		$("#totalMissedCallsId").html(result.totalCount);
+		if(stateId == 0){
 		$("#mismatchedId").html(result.mismatchedCnt);
+		}else{
+		$("#mismatchedId").html("NA");
+		}
 		$("#singleRegId").html(result.singleMemberRegCnt);
 		$("#multiRegId").html(result.multiMemberRegCnt);
 	});
@@ -563,8 +567,9 @@ function missedCallDetailsForADistrict(districtId){
 				data: {task :JSON.stringify(jsobj)}
 			}).done(function(result){
 				$("#processImgId").hide();
+				
+				if(result!=null && result.length > 0){
 				var districtName=result[0].name.toUpperCase();
-				if(result!=null){
 				var str='';
 				str+='<table class="table table-bordered" style="margin-bottom:0px;">';
             	str+='<caption style="background-color:#f4f4f4;font-size:16px;">';
