@@ -28,6 +28,21 @@ ul
 height:425px;
 overflow-y:scroll;
 }
+
+#districtTableId_length{
+display:none;
+}
+
+#districtWiseProgressBars,#districtTableId_filter{font-size:10px !important;font-family:verdana;font-weight:bold;}
+#districtTableId tr.odd td.sorting_1 {
+    background-color: #d3d3d3 !important;
+}
+#districtTableId tr.even td.sorting_1 {
+    background-color: #fafafa !important;
+}
+#districtTableId tr.odd {
+    background-color: #f3f3f3 !important;
+}
 .prev {
     background: url("") no-repeat scroll -272px top rgba(0, 0, 0, 0) !important;
 	}
@@ -38,6 +53,7 @@ overflow-y:scroll;
 
 <!-- <link href="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker-bs3.css" rel="stylesheet" />-->
 <link href="css/daterangepicker-bs2.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 </head>
 
 <body>
@@ -101,7 +117,7 @@ overflow-y:scroll;
                     </td>
                     <td width="53%" style="padding:0px">
 					<div>
-						<h6 id="textId" style="border:1px solid #dddddd;background-color:#f4f4f4;padding:5px;margin:0px">ANDHRA PRADESH & TELANGANA district wise missed calls percentages</h6>
+						<h6 id="textId" style="border:1px solid #dddddd;background-color:#f4f4f4;padding:5px;margin:0px">ANDHRA PRADESH & TELANGANA DISTRICT WISE MISSED CALLS PERCENTAGE</h6>
                     	<div style="padding:2px;font-size:10px;">
                            
 							<label class="radio inline">
@@ -113,8 +129,8 @@ overflow-y:scroll;
 							<small>Based on Multi Member</small>
 							</label>
                         </div>
-						<center><img src="images/Loading-data.gif" class="offset7"  id="distProcessImgId" style=" margin-left:0px;margin-top: 130px;width:70px;height:60px;display:none;"/></center>
-						<div id="districtWiseProgressBars"></div>
+						<center><img src="images/Loading-data.gif" class="offset7"  id="distProcessImgId" style=" margin-left:0px;margin-top: 130px;width:70px;height:60px;display:none;overflow: auto;"/></center>
+						<div id="districtWiseProgressBars"  class="scrollable_div" style="margin-top: 15px; max-height:460px;"></div>
 					</div>
                     		
                     </td>
@@ -173,10 +189,13 @@ overflow-y:scroll;
 <script type="text/javascript" src="js/jquery.slimscroll.min.js"></script>
 <script src="js/cadreCommittee/bootstrapDaterangepicker/moment.min.js" type="text/javascript"></script> 
 <script src="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker.js" type="text/javascript"></script>   
-
-
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="js/scrollator/fm.scrollator.jquery.css">	
+<script type="text/javascript" src="js/scrollator/fm.scrollator.jquery.js"></script>
 
 <script type="text/javascript">
+	$('.scrollable_div').scrollator();
+
 	 $(document).ready(function() {
                   var cb = function(start, end, label) {
                     console.log(start.toISOString(), end.toISOString(), label);
@@ -337,15 +356,15 @@ function buildDistrictWiseCount(result,type,stateId){
 		str+='';
 		
 		if(stateId == 1){
-		$("#textId").html("ANDHRA PRADESH  District Wise Missed Calls Percentages");
+		$("#textId").html("ANDHRA PRADESH DISTRICT WISE MISSED CALLS PERCENTAGES");
 		}
 		else if(stateId == 2){
-		$("#textId").html("TELANGANA  District Wise Missed Calls Percentages");
+		$("#textId").html("TELANGANA DISTRICT WISE MISSED CALLS PERCENTAGES");
 		
 		}
 		
        
-		str+='<ul  class="slimscrollar" style="padding:8px;margin-top:5px;border-top:1px solid #dddddd">';	
+		/*str+='<ul  class="slimscrollar" style="padding:8px;margin-top:5px;border-top:1px solid #dddddd">';	
 		if(result != null && result.length > 0){
 		for(var i in result){
 		var perc = result[i].districtCount / result[i].totalCount * 100 ;		
@@ -388,10 +407,37 @@ function buildDistrictWiseCount(result,type,stateId){
 			str+='<div class="bar" style="width: '+perc1+'%"></div>';
 			str+='</div></li>';
 		}
-		str+='</ul>';
-		$("#districtWiseProgressBars").html(str);
+		str+='</ul>';*/
 		
+		if(result != null && result.length > 0){
+		str+='<table class="table table-bordered" id="districtTableId">';
+		str+='<thead><tr>';
+		str+='<th>District</th>';
+		str+='<th>Registered Cadres</th>';
+		str+='<th>Missed Calls</th>';
+		str+='<th>Missed Calls %</th>';
+		str+='</tr></thead>';
+		str+='<tbody>';
+		for(var i in result){	
+		var perc = result[i].districtCount / result[i].totalCount * 100 ;		
+		var perc1 = perc.toFixed(2);		
+			str+='<tr>';
+			str+='<td><a href="javascript:{}" onClick="missedCallDetailsForADistrict('+result[i].districtId+');"> '+result[i].name+' </a></td>';
+			str+='<td>'+result[i].totalCount+'</td>';
+			str+='<td>'+result[i].districtCount+'</td>';
+			str+='<td>'+perc1+'</td>';
+			str+='</tr>';
 		}
+		str+='</tbody>';
+		str+='</table>';
+		$("#districtWiseProgressBars").html(str).css("margin-top:200px;");
+		
+		$("#districtTableId").dataTable({
+			"iDisplayLength": -1,
+			"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+		});
+		}
+		
 		else{
 				$("#districtWiseProgressBars").html("No Data Available").css("margin-top:200px;");
 		}
