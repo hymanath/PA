@@ -3775,7 +3775,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return finalCounts;
 	}
 	
-	public List<CommitteeSummaryVO> getDistrictWiseCommittesSummary(String state,String startDate, String endDate,Long userId,String accessType, Long accessValue){
+	public List<CommitteeSummaryVO> getDistrictWiseCommittesSummary(String state,String startDate, String endDate,Long userId,String accessType, Long accessValue,String mandalCheck, String villageCheck){
 		LOG.debug("Entered Into getDistrictWiseCommittesSummary");
 		List<CommitteeSummaryVO> fnlLst = new ArrayList<CommitteeSummaryVO>();
 		try{
@@ -3841,35 +3841,38 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			mandalMunciDivisionIds.add(5l);
 			mandalMunciDivisionIds.add(7l);
 			mandalMunciDivisionIds.add(9l);
+			if(mandalCheck.equalsIgnoreCase("true")){
 			List<Object[]> memResLst = tdpCommitteeMemberDAO.membersCountDistrictWise(mandalMunciDivisionIds, stDate, edDate, distIds);
 			List<Object[]> ttlList = tdpCommitteeDAO.getCommitteesCountByDistrictIdAndLevel(distIds, mandalMunciDivisionIds);
 			pushResultDistrictWiseMemsCount("munci", memResLst, fnlLst);
 			pushTotalCountsForDistrict("munci", ttlList, fnlLst);
+			}
 			
 			List<Long> villageWardIds = new ArrayList<Long>();
 			villageWardIds.add(6l);
 			villageWardIds.add(8l);
+			if(villageCheck.equalsIgnoreCase("true")){
 			List<Object[]> memResLstVill = tdpCommitteeMemberDAO.membersCountDistrictWise(villageWardIds, stDate, edDate, distIds);
 			List<Object[]> ttlListVill = tdpCommitteeDAO.getCommitteesCountByDistrictIdAndLevel(distIds, villageWardIds);
 			pushResultDistrictWiseMemsCount("village", memResLstVill, fnlLst);
 			pushTotalCountsForDistrict("village", ttlListVill, fnlLst);
-			
-			
+			}
+			if(mandalCheck.equalsIgnoreCase("true")){
 			List<Object[]> stResLst = tdpCommitteeDAO.committeesCountByDistrict(mandalMunciDivisionIds, stDate, edDate, "started", distIds);
 			List<Object[]> endResLst = tdpCommitteeDAO.committeesCountByDistrict(mandalMunciDivisionIds, stDate, edDate, "completed", distIds);
 			pushResultDistrictWise("munci", stResLst, fnlLst, "start");
 			pushResultDistrictWise("munci", endResLst, fnlLst, "completed");
-			
+			}
+			if(villageCheck.equalsIgnoreCase("true")){
 			List<Object[]> stResLstVill = tdpCommitteeDAO.committeesCountByDistrict(villageWardIds, stDate, edDate, "started", distIds);
 			List<Object[]> endResLstVill = tdpCommitteeDAO.committeesCountByDistrict(villageWardIds, stDate, edDate, "completed", distIds);
 			pushResultDistrictWise("village", stResLstVill, fnlLst, "start");
-			pushResultDistrictWise("village", endResLstVill, fnlLst, "completed");
-			
-			
+			pushResultDistrictWise("village", endResLstVill, fnlLst, "completed");		
+			}
 			
 			if(fnlLst!=null && fnlLst.size()>0){
 				for(CommitteeSummaryVO temp:fnlLst){
-					
+				if(mandalCheck.equalsIgnoreCase("true")){	
 					if(temp.getTownMandalDivisionVO()!=null){
 						Long strt = temp.getTownMandalDivisionVO().getMainStarted();
 						Long cmpl = temp.getTownMandalDivisionVO().getMainCompleted();
@@ -3890,7 +3893,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 							temp.getVillageWardVO().setStartPerc("0.0");
 						}
 					}
-					
+				}
+				if(villageCheck.equalsIgnoreCase("true")){	
 					if(temp.getVillageWardVO()!=null){
 						Long strtv = temp.getVillageWardVO().getMainStarted();
 						Long cmplv = temp.getVillageWardVO().getMainCompleted();
@@ -3913,7 +3917,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 							temp.getVillageWardVO().setStartPerc("0.0");
 						}
 					}
-					
+				}
 				}
 			}
 			
@@ -4271,7 +4275,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	
 	
 	
-	public List<CommitteeSummaryVO> getConstituencyWiseCommittesSummary(String state,String startDate, String endDate,Long userId, String accessType,Long accessValue){  
+	public List<CommitteeSummaryVO> getConstituencyWiseCommittesSummary(String state,String startDate, String endDate,Long userId, String accessType,Long accessValue,String mandalCheck,String villageCheck){  
 		LOG.debug("Entered Into getConstituencyWiseCommittesSummary");
 		List<CommitteeSummaryVO> constiLst = new ArrayList<CommitteeSummaryVO>();
 		try{
@@ -4280,6 +4284,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			List<Object[]> constituencysList = null;
 			List<Long> districtIds = new ArrayList<Long>();
 			List<Long> constiIds = new ArrayList<Long>();
+			List<Long> constiIds1 = new ArrayList<Long>();
 			if(accessType.trim().equalsIgnoreCase("MP"))
 			{
 				accessState = delimitationConstituencyAssemblyDetailsDAO.get(accessValue).getConstituency().getName()+" "+"Parliament"; 
@@ -4335,12 +4340,32 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				}
 			}
 			
+			if(constituencysList != null && constituencysList.size()>0){
+				for(Object[] obj:constituencysList){
+					if(!constiIds1.contains(Long.valueOf(obj[0].toString())))
+					{
+							constiIds1.add(Long.valueOf(obj[0].toString()));
+					}
+				}
+			}
+			
+			Map<Long,Long> constiNoMap = new HashMap<Long, Long>();
+			List<Object[]> constiNosDtls = delimitationConstituencyDAO.getConstituencyNo(constiIds1, IConstants.DELIMITATION_YEAR);
+			if(constiNosDtls != null && constiNosDtls.size() > 0){
+				for(Object[] params : constiNosDtls){
+					Long constiNo = constiNoMap.get((Long)params[0]);
+					if(constiNo == null){
+						constiNoMap.put((Long)params[0],(Long)params[1]);
+					}
+				}
+			}
 			
 			if(constituencysList != null && constituencysList.size()>0){
 				for(Object[] obj:constituencysList){
 					CommitteeSummaryVO cv = new CommitteeSummaryVO();
 					cv.setConstiId(Long.valueOf(obj[0].toString()));
 					cv.setName(obj[1].toString());
+					cv.setConstiNo(constiNoMap.get(Long.valueOf(obj[0].toString())));
 					constiIds.add(Long.valueOf(obj[0].toString()));
 					constiLst.add(cv);
 				}
@@ -4366,13 +4391,15 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			 Map<Long,Long> startedCommitteesAffCountMap = new HashMap<Long,Long>();
 			 Map<Long,Long> completedCommitteesAffCountMap = new HashMap<Long,Long>();
 			 Map<Long,Long> mainCommitteesCountMap = new HashMap<Long,Long>();
-			
-			constiCountForMandalTownDivisions(constiIds, stDate, edDate, mainMembersCountMap, startedCommitteesCountMap, completedCommitteesCountMap, startedCommitteesAffCountMap, completedCommitteesAffCountMap, mainCommitteesCountMap);
-			
+			if(mandalCheck.equalsIgnoreCase("true"))
+				constiCountForMandalTownDivisions(constiIds, stDate, edDate, mainMembersCountMap, startedCommitteesCountMap, completedCommitteesCountMap, startedCommitteesAffCountMap, completedCommitteesAffCountMap, mainCommitteesCountMap);
+			if(villageCheck.equalsIgnoreCase("true"))
+			{
 			
 			List<Long> villageWardIds = new ArrayList<Long>();
 			villageWardIds.add(6l);
 			villageWardIds.add(8l);
+			
 			List<Object[]> memResLstVill = tdpCommitteeMemberDAO.membersCountConstituencyWise(villageWardIds, stDate, edDate, constiIds);
 			List<Object[]> ttlV = tdpCommitteeDAO.getCommitteesCountByConstituencyIdAndLevel(constiIds, villageWardIds);
 			pushResultConstituencyWiseMemsCount("village", memResLstVill, constiLst);
@@ -4388,10 +4415,11 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			List<Object[]> endResLstVill = tdpCommitteeDAO.committeesCountByConstituency(villageWardIds, stDate, edDate, "completed", constiIds);
 			pushResultConstiWise("village", stResLstVill, constiLst, "start");
 			pushResultConstiWise("village", endResLstVill, constiLst, "completed");
-			
+			}
 			
 			if(constiLst!=null && constiLst.size()>0){
 				for(CommitteeSummaryVO temp:constiLst){
+					if(mandalCheck.equalsIgnoreCase("true")){
 					if(temp.getTownMandalDivisionVO()==null){
 						temp.setTownMandalDivisionVO(new CommitteeSummaryVO());
 					}
@@ -4440,7 +4468,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 							temp.getTownMandalDivisionVO().setStartPerc("0.0");
 						}
 					}
-					
+					}
+					if(villageCheck.equalsIgnoreCase("true")){
 					if(temp.getVillageWardVO()!=null){
 						Long strtv = temp.getVillageWardVO().getMainStarted();
 						Long cmplv = temp.getVillageWardVO().getMainCompleted();
@@ -4462,7 +4491,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 							temp.getVillageWardVO().setStartPerc("0.0");
 						}
 					}
-					
+					}
 				}
 			}
 			
