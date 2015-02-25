@@ -40,7 +40,7 @@ public class CommitteeSummaryVO implements Serializable{
 	private Long electrolsCount;
 	private Long mandalId;
 	private Long panchayatId;
-	
+	private Long constiNo;
 	private Long locationId;
 	private String locationName;
 	private List<CommitteeSummaryVO> locationsList,localBodiesList, mandalsList, divisionList;
@@ -276,6 +276,12 @@ public class CommitteeSummaryVO implements Serializable{
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public Long getConstiNo() {
+		return constiNo;
+	}
+	public void setConstiNo(Long constiNo) {
+		this.constiNo = constiNo;
 	}
 
 }
