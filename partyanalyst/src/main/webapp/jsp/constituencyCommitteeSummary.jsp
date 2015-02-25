@@ -228,7 +228,7 @@ function buildConstituencySummary(results,jsObj){
 					var reqPositionsArray = new Array();
 					
 					str += '<h4 class="locationName">'+rest.locationName+'</h4>'
-				str+='<table class="table table-yellow-bordered table-condensed " style="width:100%; background-color:rgba(0,0,0,0.1);">';
+				str+='<table class="table table-yellow-bordered table-condensed " style="width:100%; ">';
 				str+='<thead>';
 					str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
 						str+='<th  rowspan=2> Location </th>';

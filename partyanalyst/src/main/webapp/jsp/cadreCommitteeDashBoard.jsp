@@ -17,7 +17,21 @@
     <link href="css/cadreCommitee/css/jquery.smartmenus.bootstrap.css" rel="stylesheet" />
     	<!--Circle-->
     <link href="js/cadreCommittee/dist/css/jquery.circliful.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 	<style>
+	.table-bordered > thead > tr > th,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > tbody > tr > td,
+.table-bordered > tfoot > tr > td { border: 1px solid #cfcfcf;}
+
+.table-yellow-bordered > thead > tr > th,
+.table-yellow-bordered > tbody > tr > th,
+.table-yellow-bordered > tfoot > tr > th,
+.table-yellow-bordered > thead > tr > td,
+.table-yellow-bordered > tbody > tr > td,
+.table-yellow-bordered > tfoot > tr > td { border: 1px solid #cfcfcf;}
 	.circle-text{
 		line-height: 180px; font-size: 34px; top: 32px;  left: 0px; !important
 	}
@@ -30,6 +44,18 @@
 	.navbar-nav > li > a {text-decoration:none;}
 		a:hover {text-decoration:none;}
 		.multiLevelLiA a{text-transform: uppercase;color:black;}
+		body {
+    background: url("") repeat scroll 0 0 !important;
+}
+#constiTableId tr.odd td.sorting_1,#districtTableId tr.odd td.sorting_1{
+    background-color: #d3d3d3 !important;
+}
+#constiTableId tr.even td.sorting_1 , #districtTableId tr.even td.sorting_1{
+    background-color: #fafafa !important;
+}
+#constiTableId tr.odd,#districtTableId tr.odd {
+    background-color: #f3f3f3 !important;
+}
 	</style>
 
 <script>
@@ -433,60 +459,22 @@
 						<label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="levelRd" value="consti" name="select">&nbsp;Constituency &nbsp;&nbsp;&nbsp;</label>
 					</span>
 					
+					 <span class="btn btn-success btn-xs form-inline">
+						<label class="checkbox"><input type="checkbox" id="mandalId" style="vertical-align: text-bottom;" class="scopeRd" value="mandal" name="selectCheck" checked="true">&nbsp;TOWN / MANDAL / DIVISION &nbsp;&nbsp;&nbsp;</label></span>&nbsp;&nbsp;&nbsp;<span class="btn btn-success btn-xs form-inline">
+						<label class="radio"><input type="checkbox" id="villageId" style="vertical-align: text-bottom;" class="scopeRd" value="village" name="selectCheck">&nbsp;VILLAGE / WARD &nbsp;&nbsp;&nbsp;</label>
+					</span>
+					
                 </div>
                
             </div>
 			
             <div class="row">
             	<div class="col-md-12 col-xs-12 col-md-12">
-                	<table class="table table-yellow-bordered table-condensed " style="width:100%; background-color:rgba(0,0,0,0.1);">
-                        <thead> 
-							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
-								<th id="tableHeadingId" style="text-align:center">DISTRICT</th>
-								<th style="text-align:center" colspan="6">TOWN / MANDAL / DIVISION</th>
-								<th style="text-align:center" colspan="6">VILLAGE / WARD</th>
-							</tr>
-						
-							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
-								<th >Name</th>
-								<th>Total</th>
-								<th>Started</th>                            
-								<th>Completed</th>
-								<th>Members</th>
-								<th width="15%" colspan="2" style="padding:0px;"><span style="margin-left:20px;">Affiliated Committe</span>
-									<table class="table table-yellow-bordered" style="margin-bottom:0px; background:transparent;">
-										<tr>
-											<td style="padding:0px 0px 0px 24px;">
-												<small style="font-size:10px;"> Started </small>
-											</td>
-											<td style="padding:0px 0px 0px 6px;">
-												<small style="font-size:10px;"> Completed </small>
-											</td>
-										</tr>
-									</table>
-								</th>
-								<th>Total</th>
-								<th>Started</th>
-								<th>Completed</th>
-								<th>Members</th>
-								<th width="15%" colspan="2" style="padding:0px;"><span style="margin-left:20px;">Affiliated Committe</span>
-									<table class="table table-yellow-bordered" style="margin-bottom:0px; background:transparent;">
-										<tr>
-											<td style="padding:0px 0px 0px 24px;">
-												<small style="font-size:10px;">Started</small>
-											</td>
-											<td style="padding:0px 0px 0px 6px;">
-												<small style="font-size:10px;">Completed</small>
-											</td>
-										</tr>
-									</table>
-								</th>
-							</tr>
-                        </thead>
-						<tbody id="distSummaryBody">
-							<td style="text-align:center" colspan="13"><img id="summaryAjax" src="./images/Loading-data.gif" alt="Processing Image"/></td>
-                        </tbody>
-                    </table>                    
+                	
+						<div id="distSummaryBody" style="overflow-x:scroll;">
+							<img id="summaryAjax" src="./images/Loading-data.gif" alt="Processing Image"/>
+                        </div>
+                                  
                 </div>
             </div>
         </div>
@@ -537,7 +525,7 @@
 							
 							
 						<img id="comitteeCntAjax" src="./images/icons/search.gif" alt="Processing Image" style="display:none;margin-left:400px;"/>
-							<table class="table table-condensed table-yellow-bordered" style="border:5px solid #669934;background-color:rgba(0,0,0,0.1);border-radius:2px;" id="CommitteeDetails">
+							<table class="table table-condensed table-bordered" style="border:5px solid #669934;background-color:rgba(0,0,0,0.1);border-radius:2px;" id="CommitteeDetails">
 							</table>
 						</div>  
 					   
@@ -584,7 +572,7 @@
     <script src="js/cadreCommittee/js/jquery.smartmenus.min.js" type="text/javascript"></script>
     <script src="js/cadreCommittee/js/jquery.smartmenus.bootstrap.min.js" type="text/javascript"></script>
 	 <script src="js/jquery.classyloader.min.js"></script>
-    
+    <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 	<script>
 	
 	</script>
@@ -1124,6 +1112,18 @@
 			getConstituencyWiseCommittesSummary();
 		}
 	});
+	$(".scopeRd").click(function(){
+		var levelSelected = $("input[type='radio'][name='select']:checked").val();
+		
+		$("#distSummaryBody").html('<td style="text-align:center" colspan="13"><img id="summaryAjax" src="./images/Loading-data.gif" alt="Processing Image"/></td>');
+		
+		if(levelSelected == 'district'){
+			getDistrictWiseCommittesSummary();
+		}
+		else if(levelSelected == 'consti'){
+			getConstituencyWiseCommittesSummary();
+		}
+	});
 	$(".levelRd").click(function(){
 		$("#distSummaryBody").html('<td style="text-align:center" colspan="13"><img id="summaryAjax" src="./images/Loading-data.gif" alt="Processing Image"/></td>');
 		
@@ -1138,7 +1138,8 @@
 	function getDistrictWiseCommittesSummary(){
 		
 		var state = state; 
-		
+		var mandalCheck=  $('#mandalId').is(':checked')?"true":"false";
+		var villageCheck=  $('#villageId').is(':checked')?"true":"false";
 		var selected = $("input[type='radio'][name='selectstate']:checked");
 		if (selected.length > 0) {
 			state = selected.val();
@@ -1149,7 +1150,9 @@
 		var jObj = {
 			startDate:startDate,
 			endDate:endDate,
-			state:state
+			state:state,
+			mandalCheck:mandalCheck,
+			villageCheck:villageCheck
 		}
 				
 		$.ajax({
@@ -1168,18 +1171,18 @@
 				return;
 			}
 			
-			buildResultDistrictSummary(result);	
+			buildResultDistrictSummary(result,mandalCheck,villageCheck);	
 						
 		});
 	}
 	
 		
 	
-	function buildResultDistrictSummary(result){
+	function buildResultDistrictSummary(result,mandalCheck,villageCheck){
 		var districtInfoArr = [];
 		var villageInfoArr = [];
 		$("#headingId").html("DISTRICT WISE COMMITTEES");
-		$("#tableHeadingId").html("DISTRICT");
+		//$("#tableHeadingId").html("DISTRICT");
 		var str = '';
 		
 		var mandTotal =0; 	
@@ -1195,11 +1198,62 @@
 		var panAffStarted =0; 	
 		var panAffCompleted =0;
 						
-		
+		str+='<table class="table table-bordered table-condensed " id="districtTableId" style="width:100%; background-color:rgba(0,0,0,0.1);">';
+       
+		if(mandalCheck == "true" && villageCheck == "true"){
+			str+='<thead>';
+            str+='<tr>';
+			str+='<th rowspan="2" style="text-align:center">District Name</th>';
+            str+='<th style="text-align:center" colspan="6">TOWN / MANDAL / DIVISION</th>';
+            str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
+            str+='</tr>';
+            str+='<tr>';
+            str+='<th >Total</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='<th>Members</th>';
+			str+='<th>Affl Committee Started</th>';
+			str+='<th>Affl Committee Completed</th>';
+			str+='<th>Total</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='<th>Members</th>';
+			str+='<th>Affl Committee Started</th>';
+			str+='<th>Affl Committee Completed</th>';
+            str+='</tr>';			
+			str+='</thead>';	
+			
+		}
+		else if(mandalCheck == "true"){
+		 str+='<thead>';
+		str+='<th style="text-align:center">District Name</th>';
+			str+='<th>Total</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='<th>Members</th>';
+			str+='<th>Affl Committee Started</th>';
+			str+='<th>Affl Committee Completed</th>';
+			str+='</thead>';	
+		}
+		else if(villageCheck == "true"){
+		 str+='<thead>';
+		str+='<th style="text-align:center">District Name</th>';
+			str+='<th>Total</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='<th>Members</th>';
+			str+='<th>Affl Committee Started</th>';
+			str+='<th>Affl Committee Completed</th>';
+			str+='</thead>';	
+		}
+		str+='<tbody>';
 		
 		for(var i in result){
+			if(result[i].townMandalDivisionVO != null || result[i].villageWardVO != null){
 			str += '<tr>';
 			str += '<td>'+result[i].districtName+'</td>';
+			if(mandalCheck == "true"){
+			
 			if(result[i].townMandalDivisionVO!=null){
 				if(result[i].townMandalDivisionVO.totalCommittees!=null){
 					str += '<td>'+result[i].townMandalDivisionVO.totalCommittees+'</td>';
@@ -1251,6 +1305,8 @@
 				str += '<td>  </td>';
 				str += '<td>  </td>';
 			}
+			}
+			if(villageCheck == "true"){
 			
 			if(result[i].villageWardVO!=null){
 				if(result[i].villageWardVO.totalCommittees!=null){
@@ -1303,6 +1359,7 @@
 				str += '<td>  </td>';
 				str += '<td>  </td>';
 			}
+			}
 			str += '</tr>';
 			
 			if(result[i].townMandalDivisionVO != null){
@@ -1334,22 +1391,31 @@
 				villageInfoArr.push(villageDetails);
 			}
 			
-			
+			}
 		}
-		str += '<tr style="font-weight:bold;"><td>TOTAL</td><td>'+mandTotal+'</td>'; 	
+		str += '</tbody><tfoot><tr class="no-sort" style="font-weight:bold;">';
+		if(mandalCheck=="true"){
+		str	+= '<td>TOTAL</td><td>'+mandTotal+'</td>'; 	
 		str += '<td>'+mandStarted+'</td>'; 	
 		str += '<td>'+mandCompleted+'</td>'; 	
 		str += '<td>'+mandMembers+'</td>'; 	
 		str += '<td>'+mandAfStarted+'</td>'; 	
 		str += '<td>'+mandAfCompleted+'</td>'; 	
+		}
+		if(villageCheck=="true"){
 		str += '<td>'+panTotal+'</td>'; 	
 		str += '<td>'+panStarted+'</td>'; 	
 		str += '<td>'+panCompleted+'</td>'; 	
 		str += '<td>'+panMembers+'</td>'; 	
 		str += '<td>'+panAffStarted+'</td>'; 	
-		str += '<td>'+panAffCompleted+'</td></tr>'; 
+		str += '<td>'+panAffCompleted+'</td>';
+}
+		str += '</tr></tfoot></table>';		
 		$("#distSummaryBody").html(str);
-		
+		$("#districtTableId").dataTable({
+			"iDisplayLength": 50,
+			"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+		});
 		
 		if($('.mini-pie-chart-district').length > 0 ) {
 			var visitData = districtInfoArr;
@@ -1738,17 +1804,21 @@
 		var state = ''; 
 		
 		var selected = $("input[type='radio'][name='selectstate']:checked");
+		var mandalCheck=  $('#mandalId').is(':checked')?"true":"false";
+		var villageCheck=  $('#villageId').is(':checked')?"true":"false";
+
 		if (selected.length > 0) {
 			state = selected.val();
 		}
 		
 		var startDate = $(".dp_startDate").val();
-		var endDate=$(".dp_endDate").val();
-		
+		var endDate=$(".dp_endDate").val();	
 		var jObj = {
 			startDate:startDate,
 			endDate:endDate,
-			state:state
+			state:state,
+			mandalCheck:mandalCheck,
+			villageCheck:villageCheck
 		}
 				
 		$.ajax({
@@ -1761,7 +1831,9 @@
 					  location.reload(); 
 					}
 				}
-				buildConstiWiseSummary(result);	
+				
+					buildConstiWiseSummary(result,mandalCheck,villageCheck);	
+				
 		});
 	}
 	
@@ -1770,12 +1842,12 @@
 		 window.open('constituencyCommitteeSummaryAction.action?accessConstituencyId='+constiIdReq+'','location=no','_blank'); 
 	}
 	
-	function buildConstiWiseSummary(result){
+	function buildConstiWiseSummary(result,mandalCheck,villageCheck){
 		var constiInfoArr = [];
 		var constiVillageInfoArr = [];
 	
 		$("#headingId").html("CONSTITUENCY WISE COMMITTEES");
-		$("#tableHeadingId").html("CONSTITUENCY");
+		//$("#tableHeadingId").html("CONSTITUENCY");
 		var mandTotal =0; 	
 		var mandStarted =0; 	
 		var mandCompleted =0; 	
@@ -1788,15 +1860,71 @@
 		var panMembers =0; 	
 		var panAffStarted =0; 	
 		var panAffCompleted =0;
-		var str = 0;
+		var str = '';
 		$("#distSummaryBody").html("");
+		
+		str+='<table class="table table-bordered table-condensed " id="constiTableId" style="width:100%; background-color:rgba(0,0,0,0.1);">';
+       
+		if(mandalCheck == "true" && villageCheck == "true"){
+			str+='<thead>';
+            str+='<tr>';
+			str+='<th rowspan="2" id="tableHeadingId" style="text-align:center">Constituency No</th>';
+			str+='<th rowspan="2" style="text-align:center">Constituency Name</th>';
+            str+='<th style="text-align:center" colspan="6">TOWN / MANDAL / DIVISION</th>';
+            str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
+            str+='</tr>';
+            str+='<tr>';
+            str+='<th >Total</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='<th>Members</th>';
+			str+='<th>Affl Committee Started</th>';
+			str+='<th>Affl Committee Completed</th>';
+			str+='<th>Total</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='<th>Members</th>';
+			str+='<th>Affl Committee Started</th>';
+			str+='<th>Affl Committee Completed</th>';
+            str+='</tr>';			
+			str+='</thead>';	
+			
+		}
+		else if(mandalCheck == "true"){
+		 str+='<thead>';
+		str+='<th id="tableHeadingId" style="text-align:center">Constituency No</th>';
+		str+='<th style="text-align:center">Constituency Name</th>';
+			str+='<th>Total</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='<th>Members</th>';
+			str+='<th>Affl Committee Started</th>';
+			str+='<th>Affl Committee Completed</th>';
+			str+='</thead>';	
+		}
+		else if(villageCheck == "true"){
+		 str+='<thead>';
+		str+='<th id="tableHeadingId" style="text-align:center">Constituency No</th>';
+		str+='<th style="text-align:center">Constituency Name</th>';
+			str+='<th>Total</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='<th>Members</th>';
+			str+='<th>Affl Committee Started</th>';
+			str+='<th>Affl Committee Completed</th>';
+			str+='</thead>';	
+		}
+		str+='<tbody>';
 		for(var i in result){
-			str += '<tr>';
+		if(result[i].townMandalDivisionVO != null || result[i].villageWardVO != null){
+		str += '<tr>';
+			str += '<td >'+result[i].constiNo+'</td>';
 			str += '<td ><span style="font-size: 13px;">'+result[i].name+'</span>';
 			
 				str += '&nbsp;&nbsp;<span style="cursor: pointer;" title="Click Here For '+result[i].name+' Committee Summary Report" onclick="getPopUpForSummary('+result[i].constiId+',\''+result[i].name+'\');" class="glyphicon glyphicon-dashboard"></span>&nbsp;&nbsp;<span style="cursor: pointer;"  onclick="showAdvanceDashBoard('+result[i].constiId+');" title="Click Here For '+result[i].name+' Advance Dashboard"  class="glyphicon glyphicon-list-alt"></span>';
 			
 			str += '</td>';
+			if(mandalCheck == "true"){
 			
 			if(result[i].townMandalDivisionVO!=null){
 				if(result[i].townMandalDivisionVO.totalCommittees!=null){
@@ -1849,6 +1977,8 @@
 				str += '<td>  </td>';
 				str += '<td>  </td>';
 			}
+			}
+			if(villageCheck == "true"){
 			
 			if(result[i].villageWardVO!=null){
 				if(result[i].villageWardVO.totalCommittees!=null){
@@ -1901,6 +2031,7 @@
 				str += '<td>  </td>';
 				str += '<td>  </td>';
 			}
+			}
 			str += '</tr>';
 			
 			if(result[i].townMandalDivisionVO != null){
@@ -1922,20 +2053,32 @@
 			
 			
 		}
-	    str += '<tr style="font-weight:bold;"><td>TOTAL</td><td>'+mandTotal+'</td>'; 	
+		}
+   
+	    str += '</tbody><tfoot><tr class="no-sort" style="font-weight:bold;"><td></td>';
+	if(mandalCheck=="true"){
+		str	+= '<td>TOTAL</td><td>'+mandTotal+'</td>'; 	
 		str += '<td>'+mandStarted+'</td>'; 	
 		str += '<td>'+mandCompleted+'</td>'; 	
 		str += '<td>'+mandMembers+'</td>'; 	
 		str += '<td>'+mandAfStarted+'</td>'; 	
 		str += '<td>'+mandAfCompleted+'</td>'; 	
-		str += '<td>'+panTotal+'</td>'; 	
+	}
+	if(villageCheck=="true"){
+		str	+= '<td>TOTAL</td><td>'+panTotal+'</td>'; 	
 		str += '<td>'+panStarted+'</td>'; 	
 		str += '<td>'+panCompleted+'</td>'; 	
 		str += '<td>'+panMembers+'</td>'; 	
 		str += '<td>'+panAffStarted+'</td>'; 	
-		str += '<td>'+panAffCompleted+'</td></tr>';
+		str += '<td>'+panAffCompleted+'</td>'; 	
+	}
+		str += '</tr></tfoot></table>';
 		
 		$("#distSummaryBody").html(str);
+		$("#constiTableId").dataTable({
+			"iDisplayLength": 20,
+			"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+		});
 		
 		if( $('.mini-pie-chart-constiVillage').length > 0 ) {
 			var visitData2 = constiVillageInfoArr;
@@ -2024,7 +2167,7 @@
 				if(result!=null){
 					var notStarted=result[0].mainComittees-(result[0].startedCount+result[0].mainComitteesConformed);
 					var str='';
-					str+='<table class="table table-condensed table-yellow-bordered" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
+					str+='<table class="table table-condensed table-bordered" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
 						str+='<tr><td colspan="4" style="background-color:#669934"><h4>MAIN COMMITTEE</h4></td></tr>';
 								str+='<tr><td width="25%"><h2 style="display:inline;">'+result[0].mainComittees+'</h2> TOTAL</td>';
 							  if(result[0].startedCount > 0)
@@ -2054,7 +2197,7 @@
 					 $("#villageMainTableDivId").html(str);
 			
 					var str1='';
-						str1+='<table class="table table-condensed table-yellow-bordered" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
+						str1+='<table class="table table-condensed table-bordered" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
 							str1+='<thead><th colspan="5" style="background-color:#669934"><h4>AFFILIATED COMMITTEE</h4></th></thead>';
 							str1+='<thead><th width="20%">COMMITTEE TYPE</th><th width="20%">TOTAL</th><th width="20%">STARTED</th>';
 							str1+='<th width="20%">CONFIRMED/COMPLETED</th><th width="20%">NOT YET STARTED</th></thead>';
@@ -2128,7 +2271,7 @@
 				if(result!=null){
 					var notStarted=result[0].mainComittees-(result[0].startedCount+result[0].mainComitteesConformed);
 					var str='';
-					str+='<table class="table table-condensed table-yellow-bordered" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
+					str+='<table class="table table-condensed table-bordered" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
 						str+='<tr><td colspan="4" style="background-color:#669934"><h4>MAIN COMMITTEE</h4></td></tr>';
 								str+='<tr><td width="25%"><h2 style="display:inline;">'+result[0].mainComittees+'</h2> TOTAL</td>';
 							   if(result[0].startedCount != null && result[0].startedCount > 0)
@@ -2163,7 +2306,7 @@
 					 $("#mandalMainCommitteDivId").html(str);
 			
 				var str1='';
-						str1+='<table class="table table-condensed table-yellow-bordered" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
+						str1+='<table class="table table-condensed table-bordered" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
 							str1+='<thead><th colspan="5" style="background-color:#669934"><h4>AFFILIATED COMMITTEE</h4></th></thead>';
 							str1+='<thead><th width="20%">COMMITTEE TYPE</th><th width="20%">TOTAL</th><th width="20%">STARTED</th>';
 							str1+='<th width="20%">CONFIRMED/COMPLETED</th><th width="20%">NOT YET STARTED</th></thead>';
