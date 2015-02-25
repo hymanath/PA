@@ -301,10 +301,12 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 				
 				jObj = new JSONObject(getTask());
 				String state =jObj.getString("state");
+				String mandalCheck = jObj.getString("mandalCheck");
+				String villageCheck =  jObj.getString("villageCheck");
 				String startDate = jObj.getString("startDate");
 				String endDate = jObj.getString("endDate");
 				
-				districtWiseSummaryList = cadreCommitteeService.getDistrictWiseCommittesSummary(state, startDate,endDate,regVO.getRegistrationID(),accessType,accessValue);
+				districtWiseSummaryList = cadreCommitteeService.getDistrictWiseCommittesSummary(state, startDate,endDate,regVO.getRegistrationID(),accessType,accessValue,mandalCheck,villageCheck);
 			}
 			else{
 				noaccess = true;
@@ -392,10 +394,12 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 				
 				jObj = new JSONObject(getTask());
 				String state =jObj.getString("state");
+				String mandalCheck = jObj.getString("mandalCheck");
+				String villageCheck =  jObj.getString("villageCheck");
 				String startDate = jObj.getString("startDate");
 				String endDate = jObj.getString("endDate");
 			
-				constiWiseSummaryList = cadreCommitteeService.getConstituencyWiseCommittesSummary(state, startDate, endDate,regVO.getRegistrationID(),accessType,accessValue);
+				constiWiseSummaryList = cadreCommitteeService.getConstituencyWiseCommittesSummary(state, startDate, endDate,regVO.getRegistrationID(),accessType,accessValue,mandalCheck,villageCheck);
 			}
 			else
 			{

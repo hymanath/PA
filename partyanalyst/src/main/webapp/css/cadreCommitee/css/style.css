@@ -1,5 +1,6 @@
 
-body{background: #F4D330 url("../images/cadreCommitee/background_fixed.jpg"); background-size: cover;}
+/*body{background: #F4D330 url("../images/cadreCommitee/background_fixed.jpg"); background-size: cover;}*/
+ body{background: url("") repeat scroll 0 0 !important;}
 .m_top20{margin-top:20px;}
 .m_top0{margin-top:0px;}
 .m_top10{margin-top:10px;}
@@ -119,14 +120,14 @@ th
 	.table-bordered > tfoot > tr > th,
 	.table-bordered > thead > tr > td,
 	.table-bordered > tbody > tr > td,
-	.table-bordered > tfoot > tr > td {	border: 1px solid #C2A932;}
+	.table-bordered > tfoot > tr > td {	border: 1px solid #cfcfcf;}
 	
 .table-yellow-bordered > thead > tr > th,
 	.table-yellow-bordered > tbody > tr > th,
 	.table-yellow-bordered > tfoot > tr > th,
 	.table-yellow-bordered > thead > tr > td,
 	.table-yellow-bordered > tbody > tr > td,
-	.table-yellow-bordered > tfoot > tr > td {	border: 1px solid #ebd621;}
+	.table-yellow-bordered > tfoot > tr > td {	border: 1px solid #cfcfcf;}
 	
 	
 .row-table
