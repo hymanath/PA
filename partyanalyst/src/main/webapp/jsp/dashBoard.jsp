@@ -2230,8 +2230,14 @@ function callAjax(jsObj,url){
 								else if(jsObj.task == "getAllParliamentConstituencies")
 							{
 										$("#constiImge").hide();
-								clearOptionsListForSelectElmtId(jsObj.elmtId);
-								createOptionsForSelectElmtId(jsObj.elmtId,myResults);
+										$('#constituency').find('option').remove();
+										 $.each(myResults,function(index,value){
+										$('#constituency').append('<option value="'+value.id+'">'+value.name+'</option>');
+
+									});
+
+								//clearOptionsListForSelectElmtId(jsObj.elmtId);
+								//createOptionsForSelectElmtId(jsObj.elmtId,myResults);
 							}
 								
 								else if(jsObj.task== "getUserAssignedVoterCastes")
