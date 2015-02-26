@@ -3130,6 +3130,58 @@ public class StaticDataService implements IStaticDataService {
 		}
 	}
 
+	public ConstituencyInfoVO getConstituenciesByElectionTypeAndStateId1(
+			Long electionTypeId, String stateID) {
+		List<SelectOptionVO> constituenciesList = new ArrayList<SelectOptionVO>();
+		List constiList;
+		ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
+		ResultStatus result = new ResultStatus();
+		Long state = 0l;
+		try {
+			if(stateID.equalsIgnoreCase("TS"))
+				state = 0l;
+			else
+			state = Long.valueOf(stateID);
+			ElectionType electionTypeObj = electionTypeDAO.get(electionTypeId);
+			if (IConstants.MUNCIPLE_ELECTION_TYPE.equals(electionTypeObj
+					.getElectionType())
+					|| IConstants.CORPORATION_ELECTION_TYPE
+							.equals(electionTypeObj.getElectionType())) {
+				constiList = localElectionBodyDAO.findByElectionTypeAndState1(electionTypeId, state);
+			} else {
+					if(electionTypeId.longValue() == 3)
+					{
+						constiList = constituencyDAO.getConstituenciesByElectionTypeAndStateIdForMPTC1(electionTypeId, state);
+					}
+					else
+					{
+						constiList = constituencyDAO.getConstituenciesByElectionTypeAndStateId1(electionTypeId, state);
+					}
+				
+			}
+			if (constiList != null && constiList.size() > 0) {
+				for (int i = 0; i < constiList.size(); i++) {
+					Object[] obj = (Object[]) constiList.get(i);
+					SelectOptionVO constituencyData = new SelectOptionVO();
+					constituencyData.setId((Long) obj[0]);
+					constituencyData.setName(WordUtils.capitalize(obj[1].toString().toLowerCase()));
+         
+					constituenciesList.add(constituencyData);
+				}
+			}
+
+			constituencyInfoVO.setConstituencies(constituenciesList);
+			result.setResultPartial(false);
+			result.setResultCode(ResultCodeMapper.SUCCESS);
+			return constituencyInfoVO;
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setExceptionEncountered(e);
+			result.setResultPartial(true);
+			result.setResultCode(ResultCodeMapper.FAILURE);
+			return constituencyInfoVO;
+		}
+	}
 	public List<SelectOptionVO> getLatestConstituenciesByStateId(Long stateId) {
 		List<SelectOptionVO> data = new ArrayList<SelectOptionVO>();
 		try {

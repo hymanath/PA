@@ -434,4 +434,6 @@ public interface IStaticDataService {
 		
 		public List<SelectOptionVO> getLatestConstituenciesByStateIdAndTypeForRegion(Long stateId,String locationType,String region);
 		public List<SelectOptionVO> getRegionsByStateIdForRegion(Long stateId,String region);
+		public ConstituencyInfoVO getConstituenciesByElectionTypeAndStateId1(
+				Long electionTypeId, String stateID);
 }
