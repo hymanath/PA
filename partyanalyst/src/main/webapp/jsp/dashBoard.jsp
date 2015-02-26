@@ -239,7 +239,7 @@ lable{line-height:40px;}
 <b>${loginUserName}</b> </div></div>
 </div>		
  <div class="widget blue">
- <h2 style="border-bottom:none !important;"><a id="toggleDiv"> Account Settings</a></h2>
+ <h2 style="border-bottom:none !important;"><a id="toggleDiv"  class="btn btn-info"><i class="icon icon-cog  icon-white"></i> Account Settings</a></h2>
  <div id='profileDiv' style="display:none;">
  <table class="table table-hover"  style="margin-bottom: -13px;border-spacing: 2px;"><thead></thead><tbody><tr><td><a href="freeUserRegistration.action?tempVar=dashBoard"><span class="icon-pencil"></span>  Edit Profile</a></td></tr>  <tr><td><a class="changePwdLink" href="javascript:{}"><span class="icon-hand-right"></span>  Change Password</a></td></tr>   <tr><td><a class="editPictureLink" href="javascript:{}"><span class="icon-user"></span>  Edit Picture</a></td></tr>  </tbody></table>
  </div>
@@ -251,7 +251,7 @@ lable{line-height:40px;}
 	</div>
 	
 	<div id="houseHoldDivId" class="widget" style="display:none;">
-		<a id="houseHoldForm" class="btn btn-info" style="margin:5px;" href="houseHoldSurveyReportAction.action"> House Hold Page</a>
+		<a id="houseHoldForm" class="btn btn-info" style="margin:5px;margin-left:0px;padding-left:15px;padding-right:15px;" href="houseHoldSurveyReportAction.action"> House Hold Page</a>
 		<a id="houseHoldAdmin" class="btn btn-info" href="houseHoldCreationAction.action"> House Hold Admin</a>
 	</div>
 <c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">	
@@ -551,20 +551,21 @@ lable{line-height:40px;}
 		<!--View your constituency-->
 		<div class="row-fluid">
 		  
-	<div class="span12 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
+	<div class="span12 widget linkDivs" style="margin-left:7px;padding: 0px 20px 10px;">
 		<div id="alertMessage" style="color:red;font-weight:bold;"></div>
 		<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5">View Your Constituency</div></h2>
 		<div class="form-inline">
 			<label class="radio">Select Constituency Type &nbsp; &nbsp;</label>
 			<label style="" class="radio">
-			<input type="radio" style="margin-top: 4px;" onclick="hideUnhideSelectBox(this.id, 'constituency')" id="assembly_radio" name="assembly_radio" checked="checked">
+			<input type="radio" style="margin-top: 4px;" onclick="hideUnhideSelectBox1(this.id, 'constituency')" id="assembly_radio" name="assembly_radio" checked="checked">
 			Assembly
 			</label>
 			
 			<label class="radio">
-			<input type="radio" style="margin-top: 4px;" onclick="hideUnhideSelectBox(this.id,'constituency')" id="p_radio" name="assembly_radio" >
+			<input type="radio" style="margin-top: 4px;" onclick="hideUnhideSelectBox1(this.id,'constituency')" id="p_radio" name="assembly_radio" >
 			Parliament
 			</label>
+			<img id="constiImge" src="./images/icons/search.gif" alt="Processing Image" style="display:none;float:right;margin-right:308px;"/>
 			</div>
 			<div class="form-inline m-top10">
 		<div id="stateTable" style="display:block;" class="span5">
@@ -572,17 +573,16 @@ lable{line-height:40px;}
 					
 		<div id="constTable" style="display:block;"  class="span5">
 					<s:select theme="simple" cssClass="input-block-level " label="Select Your Constituency" name="constituency" id="constituency" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select Constituency"/></div>
-				<button class="btn btn-success pull-right" type="button" onclick="navigateToConstituencyPage()" style="margin-top: 10px;">Go</button>
+				<button class="btn btn-success pull-right" type="button" onclick="navigateToConstituencyPage()" style="margin-top: 0px;">Go</button>
 		</div>
 
-	
-	</div><!--- View your constituency END --->
+	<!--- View your constituency END --->
 		</div></div>
 		<div id="helpWindow"></div>
 		<div class="row-fluid">
 		  
 			
-			<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;max-height: 87px;">
+			<div class="span4 widget linkDivs" style="margin-left:7px;max-height: 87px;">
 					<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5">Voters Analysis</div>
 						<div>
 							<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="openVotersAnalysts();" style="float:right;margin-top:3px;background:#F06081;"></input>
@@ -590,7 +590,7 @@ lable{line-height:40px;}
 					</h2>
 			</div>
 			<c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">
-		    <div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;max-height: 87px;">
+		    <div class="span4 widget linkDivs" style="margin-left:7px;max-height: 87px;">
 				<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5"> Results Vs Caste	</div>				
 					<div>
 						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="openCasteViseAnalysis();" style="float:right;margin-top:3px;background:#F06081;"></input>
@@ -598,7 +598,7 @@ lable{line-height:40px;}
 				</h2>
 			</div>
 			</c:if>
-			<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;max-height: 87px;">
+			<div class="span4 widget linkDivs" style="margin-left:7px;max-height: 87px;">
 				<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5">INFECTED BOOTHS</div>
 					<div>
 						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="viewInfectedBooths();" style="float:right;margin-top:3px;background:#F06081;"></input>
@@ -614,13 +614,13 @@ lable{line-height:40px;}
 				</h2>
 			</div>
 			</c:if>
-			  <div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
+			  <div class="span4 widget linkDivs" style="margin-left:7px;">
 				<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5"> CRITICAL PANCHAYATS REPORT</div>
 				<span>
 				</span>
 				<div><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="viewCriticalPanchayats();" style="float:right;margin-top:3px;background:#F06081;"></input></div></h2>
 			</div>
-		    <div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
+		    <div class="span4 widget linkDivs" style="margin-left:7px;">
 				<h2 style="border-bottom:0px;font-size: 13px;"> <div class="bguser5">REDUCE POLLING RESULTS</div>
 					<div>
 						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="reducePolling();" style="float:right;margin-top:3px;background:#F06081;"></input>
@@ -628,7 +628,7 @@ lable{line-height:40px;}
 				</h2>
 			</div>
 			
-			<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
+			<div class="span4 widget linkDivs" style="margin-left:7px;">
 				<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5"> INCREASE POLLING RESULTS </div>
 					<div>
 						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="increasePolling();" style="float:right;margin-top:3px;background:#F06081;"></input>
@@ -636,7 +636,7 @@ lable{line-height:40px;}
 				</h2>
 			</div>
 			
-			<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 18px;">
+			<div class="span4 widget linkDivs" style="margin-left:7px;">
 				<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5">VOTER AVERAGE AGE REPORT</div>
 					<div>
 						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="voterAverageAgePopUp();" style="float:right;margin-top:3px;background:#F06081;"></input>
@@ -650,7 +650,7 @@ lable{line-height:40px;}
 			
 			
             <c:if test="${sessionScope.USER.isAdmin == 'true'}">
-			<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
+			<div class="span4 widget linkDivs" style="margin-left:7px;">
 				<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5">STRATEGY ANALYSIS REPORT</div>
 					<div>
 						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="viewStrategyAnalysisReport();" style="float:right;margin-top:3px;background:#F06081;"></input>
@@ -661,7 +661,7 @@ lable{line-height:40px;}
 
 
 
-			<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 15px;">
+			<div class="span4 widget linkDivs" style="margin-left:7px;">
 				<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5">2009 ASSEMBLY VS 2013 PANCHAYAT RESULTS</div>
 					<div>
 						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="viewPanchayathResults();" style="float:right;margin-top:3px;background:#F06081;"></input>
@@ -669,7 +669,7 @@ lable{line-height:40px;}
 				</h2>
 			</div>
           
-          	<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
+          	<div class="span4 widget linkDivs" style="margin-left:7px;">
 					<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5" style="width: 180px;">CONSTITUENCY WISE AGE DETAILS</div>
 						<div>
 							<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="getConstituencyWiseAgeDetails();" style="float:right;margin-top:3px;background:#F06081;"></input>
@@ -678,7 +678,7 @@ lable{line-height:40px;}
 			</div>
 
 			
-		  <div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
+		  <div class="span4 widget linkDivs" style="margin-left:7px;height:120px;">
 			<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5" style="padding: 0px 18px;">Cross Voting Analysis</div>
 				<div>
 					<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="getCrossVotingReport();" value="View">
@@ -686,7 +686,7 @@ lable{line-height:40px;}
 			</h2>
 		</div>
 
-		<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
+		<div class="span4 widget linkDivs" style="margin-left:7px;">
 			<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5" style="width: 180px;">Voter Modification Report </div>
 				<div>
 					<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="viewVoterModificationReport();" value="View">
@@ -695,14 +695,14 @@ lable{line-height:40px;}
 		</div>
 
 
-		<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;">
+		<div class="span4 widget linkDivs" style="margin-left:7px;">
 			<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5" style="width: 180px;">Importent Family Details</div>
 				<div>
 					<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="viewImportentFamilyDetails();" value="View">
 				</div>
 			</h2>
 		</div>
-		<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;max-height: 87px;">
+		<div class="span4 widget linkDivs" style="margin-left:7px;height: 120px;">
 			<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5">Booth Wise Results</div>
 				<div>
 					<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="viewBoothWiseResults();" value="View">
@@ -713,7 +713,7 @@ lable{line-height:40px;}
 
 
           <c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">		 
-			<div class="span4 widget linkDivs"  style="margin-left:7px;padding: 0px 20px;max-height: 87px;">
+			<div class="span4 widget linkDivs"  style="margin-left:7px;height: 120px;">
 				<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5">Voters Search</div>
 					<div>
 						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="openAllInNewWindow('voterssearch');" style="float:right;margin-top:3px;background:#F06081;"></input>
@@ -1252,6 +1252,7 @@ lable{line-height:40px;}
 		   $(this).val("");
 	  });*/
 	 $("#voterAverageAgeId option[value='0']").remove();
+	 $('select#stateList_c').find('option[value="25"]').after("<option value='TS'>Telangana</option>")
 });
 </script>
 <script type="text/javascript">
@@ -2195,11 +2196,11 @@ function callAjax(jsObj,url){
 									$("#electionYears").val($("#electionYears option:eq(1)").val());
 									}
 								}
-								else if(jsObj.task == "getConstituencies")
+								else if(jsObj.task == "getAllConstituencies")
 							    {
 								//clearOptionsListForSelectElmtId(jsObj.elmtId);
 								//createOptionsForSelectElmtId(jsObj.elmtId,myResults);
-
+								$("#constiImge").hide();
 								$('#constituency').find('option').remove();
 
 								 $.each(myResults,function(index,value){
@@ -2226,6 +2227,13 @@ function callAjax(jsObj,url){
 								
 
 							    }
+								else if(jsObj.task == "getAllParliamentConstituencies")
+							{
+										$("#constiImge").hide();
+								clearOptionsListForSelectElmtId(jsObj.elmtId);
+								createOptionsForSelectElmtId(jsObj.elmtId,myResults);
+							}
+								
 								else if(jsObj.task== "getUserAssignedVoterCastes")
 								{
 									buildUserAssignedVotersCastes(myResults,jsObj.divId);
@@ -2372,14 +2380,15 @@ function getElectionYearsInDashBoard(electionType , type)
 
 function getAllConstituenciesInStateByTypeInDashBoard(electionType, stateId, element,type)
 {
+	
 	clearOptionsListForSelectElmtId(element);
 	showBusyImgWithId(element);
-	
+	$("#constiImge").show();
 	var jsObj=
 	{				
 			electionTypeId: electionType,
 			stateId: stateId,
-			task: "getConstituencies",
+			task: "getAllConstituencies",
             type:type,  
 			elmtId: element 	
 	}
@@ -2889,6 +2898,61 @@ function viewImportentFamilyDetails()
 function viewBoothWiseResults()
 {
   window.open("boothWiseResultsAction.action")
+}
+  
+  function hideUnhideSelectBox1(radioElement, selectElement)
+{
+	$("#stateList_c").val(1);	
+	var tableEl = document.getElementById("constTable");
+	var stateTableEl = document.getElementById("stateTable");
+	var stateSelectEl = document.getElementById("stateList_c");
+	var stateId = stateSelectEl.options[stateSelectEl.selectedIndex].value;
+
+	var alertEl = document.getElementById("alertMessage");
+	alertEl.innerHTML = '';
+	if(radioElement == 'assembly_radio')
+	{	
+		if(tableEl.style.display == 'none')
+		{
+			tableEl.style.display = 'block';
+		}
+		
+		if(stateTableEl.style.display == 'none')
+		{
+			stateTableEl.style.display = 'block';
+		}
+		
+		
+		/*election type 2 for mla const*/
+		getAllConstituenciesInStateByTypeInDashBoard(2,stateId,selectElement,'');
+	} else if(radioElement == 'p_radio')
+	{
+		 /*election type 1 for mla const*/
+		if(stateTableEl.style.display == 'block')
+		{
+			
+			stateTableEl.style.display = 'none';
+		}
+		if(tableEl.style.display == 'none')
+		{
+			tableEl.style.display = 'block';
+		}
+		getAllParliamentConstInCountry1(selectElement);
+	}
+	 
+}
+function getAllParliamentConstInCountry1(element)
+{
+	$("#constiImge").show();
+	var jsObj=
+	{				
+			task: "getAllParliamentConstituencies",
+			elmtId: element 	
+	}
+
+var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+var url = "getAllParliamentConstInCountry.action?"+rparam;						
+callAjax(jsObj,url);
 }
 </script>
 

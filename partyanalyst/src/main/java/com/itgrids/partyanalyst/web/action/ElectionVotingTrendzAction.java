@@ -293,9 +293,16 @@ public class ElectionVotingTrendzAction extends ActionSupport implements Servlet
 		{
 			electionTypeId = jObj.getString("electionTypeId");
 			stateId = jObj.getString("stateId");
+			constituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId(Long.valueOf(electionTypeId), Long.valueOf(stateId)).getConstituencies();
 		}
 		
-		constituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId(Long.valueOf(electionTypeId), Long.valueOf(stateId)).getConstituencies();
+		if(jObj.getString("task").equalsIgnoreCase("getAllConstituencies"))
+		{
+			electionTypeId = jObj.getString("electionTypeId");
+			stateId = jObj.getString("stateId");
+			constituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId1(Long.valueOf(electionTypeId), stateId).getConstituencies();
+		}
+		
 		if(constituenciesList!=null && constituenciesList.size()>1){
 			SelectOptionVO selectOptionVO = new SelectOptionVO();
 			selectOptionVO.setId(0l);
