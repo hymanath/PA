@@ -203,4 +203,25 @@ public String getLocalElectionBodyName(Long localElectionBodyId){
 		
 	}
   
+  @SuppressWarnings("unchecked")
+	public List findByElectionTypeAndState1(Long electionTypeId, Long stateId) {
+		
+	  StringBuilder str = new StringBuilder();
+	 
+	  str.append("select distinct model.localElectionBodyId, model.name from LocalElectionBody model where " +
+				"model.electionType.electionTypeId = :electionTypeId");
+	  if(stateId == 1)
+		  str.append(" and model.district.state.stateId = :stateId and model.district.districtId between 11 and 23 order by model.name");
+	  else if(stateId == 0)
+		  str.append(" and model.state.stateId = 1 and model.district.districtId between 1 and 10 order by model.name");
+	  else
+		  str.append(" and model.district.state.stateId =:stateId order by model.name");
+	  Query query = getSession().createQuery(str.toString());
+	  query.setParameter("electionTypeId", electionTypeId);
+	  if(stateId != 0)
+	  query.setParameter("stateId", stateId);
+	return query.list();
+	}
+
+  
 }
