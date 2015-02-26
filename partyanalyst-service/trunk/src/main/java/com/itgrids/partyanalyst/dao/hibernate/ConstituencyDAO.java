@@ -1234,4 +1234,48 @@ public List<Object[]> getTheConstituenciesInADistrict(Long districtId) {
 	return query.list();
 			
 	}
+
+public List getConstituenciesByElectionTypeAndStateIdForMPTC1(Long electionTypeId , Long stateId)
+{
+	
+	 StringBuilder str = new StringBuilder();
+	 
+	  str.append("select model.constituencyId , concat(model.name, ' (' ,model.tehsil.tehsilName, ')')  from Constituency model" +
+			" where model.electionScope.electionType.electionTypeId =:electionTypeId and model.deformDate is null");
+	  if(stateId == 1)
+		  str.append(" and model.state.stateId =:stateId and model.district.districtId between 11 and 23 order by model.name");
+	  else if(stateId == 0)
+		  str.append(" and model.state.stateId = 1 and model.district.districtId between 1 and 10 order by model.name");
+	  else
+		 
+	  str.append(" and model.district.state.stateId =:stateId order by model.name");
+	  Query query = getSession().createQuery(str.toString());
+	  query.setParameter("electionTypeId", electionTypeId);
+	  if(stateId != 0)
+	  query.setParameter("stateId", stateId);
+	return query.list();
+	
+}
+
+@SuppressWarnings("unchecked")
+public List getConstituenciesByElectionTypeAndStateId1(Long electionTypeId , Long stateId)
+{
+	
+	
+	 StringBuilder str = new StringBuilder();
+	 
+	  str.append("select model.constituencyId , model.name from Constituency model" +
+			" where model.electionScope.electionType.electionTypeId = :electionTypeId and model.deformDate is null");
+	  if(stateId == 1)
+		  str.append(" and model.state.stateId =:stateId and model.district.districtId between 11 and 23 order by model.name");
+	  else if(stateId == 0)
+		  str.append(" and model.state.stateId = 1 and model.district.districtId between 1 and 10 order by model.name");
+	  else
+		  str.append(" and model.district.state.stateId =:stateId order by model.name");
+	  Query query = getSession().createQuery(str.toString());
+	  query.setParameter("electionTypeId", electionTypeId);
+	  if(stateId != 0)
+	  query.setParameter("stateId", stateId);
+	return query.list();
+}
 }
