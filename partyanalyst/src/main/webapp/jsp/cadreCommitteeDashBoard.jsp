@@ -458,11 +458,11 @@
 						<label class="radio"><input type="radio" id="districtId" style="vertical-align: text-bottom;" class="levelRd" value="district" name="select" checked="true">&nbsp;District &nbsp;&nbsp;&nbsp;</label>
 						<label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="levelRd" value="consti" name="select">&nbsp;Constituency &nbsp;&nbsp;&nbsp;</label>
 					</span>
-					
-					 <span class="btn btn-success btn-xs form-inline">
-						<label class="checkbox"><input type="checkbox" id="mandalId" style="vertical-align: text-bottom;" class="scopeRd" value="mandal" name="selectCheck" checked="true">&nbsp;TOWN / MANDAL / DIVISION &nbsp;&nbsp;&nbsp;</label></span>&nbsp;&nbsp;&nbsp;<span class="btn btn-success btn-xs form-inline">
-						<label class="radio"><input type="checkbox" id="villageId" style="vertical-align: text-bottom;" class="scopeRd" value="village" name="selectCheck">&nbsp;VILLAGE / WARD &nbsp;&nbsp;&nbsp;</label>
-					</span>
+						<span class="btn btn-success btn-xs form-inline">
+						<label class="radio"><input type="checkbox" id="villageId" style="vertical-align: text-bottom;" class="scopeRd" value="village" name="selectCheck"  checked="true">&nbsp;VILLAGE / WARD &nbsp;</label>
+						</span>&nbsp;&nbsp;
+						<span class="btn btn-success btn-xs form-inline">
+						<label class="checkbox"><input type="checkbox" id="mandalId" style="vertical-align: text-bottom;" class="scopeRd" value="mandal" name="selectCheck">&nbsp;TOWN / MANDAL / DIVISION &nbsp;&nbsp;</label></span>
 					
                 </div>
                
@@ -1225,26 +1225,33 @@
 			
 		}
 		else if(mandalCheck == "true"){
-		 str+='<thead>';
-		str+='<th style="text-align:center">District Name</th>';
+			str+='<thead>';
+			str+='<tr>';
+			str+='<th rowspan="2" style="text-align:center">District Name</th>';
+            str+='<th style="text-align:center" colspan="6">TOWN / MANDAL / DIVISION</th>';
+            str+='</tr>';
+            str+='<tr>';
 			str+='<th>Total</th>';
 			str+='<th>Started</th>';
 			str+='<th>Completed</th>';
 			str+='<th>Members</th>';
 			str+='<th>Affl Committee Started</th>';
 			str+='<th>Affl Committee Completed</th>';
-			str+='</thead>';	
+			str+='</tr></thead>';	
 		}
 		else if(villageCheck == "true"){
-		 str+='<thead>';
-		str+='<th style="text-align:center">District Name</th>';
+			str+='<thead>';
+			str+='<th rowspan="2" style="text-align:center">District Name</th>';
+            str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
+            str+='</tr>';
+            str+='<tr>';
 			str+='<th>Total</th>';
 			str+='<th>Started</th>';
 			str+='<th>Completed</th>';
 			str+='<th>Members</th>';
 			str+='<th>Affl Committee Started</th>';
 			str+='<th>Affl Committee Completed</th>';
-			str+='</thead>';	
+			str+='</tr></thead>';	
 		}
 		str+='<tbody>';
 		
@@ -1394,7 +1401,21 @@
 			}
 		}
 		str += '</tbody><tfoot><tr class="no-sort" style="font-weight:bold;">';
-		if(mandalCheck=="true"){
+		if(mandalCheck == "true" && villageCheck == "true"){
+		str	+= '<td>TOTAL</td><td>'+mandTotal+'</td>'; 	
+		str += '<td>'+mandStarted+'</td>'; 	
+		str += '<td>'+mandCompleted+'</td>'; 	
+		str += '<td>'+mandMembers+'</td>'; 	
+		str += '<td>'+mandAfStarted+'</td>'; 	
+		str += '<td>'+mandAfCompleted+'</td>';
+		str += '<td>'+panTotal+'</td>'; 	
+		str += '<td>'+panStarted+'</td>'; 	
+		str += '<td>'+panCompleted+'</td>'; 	
+		str += '<td>'+panMembers+'</td>'; 	
+		str += '<td>'+panAffStarted+'</td>'; 	
+		str += '<td>'+panAffCompleted+'</td>';		
+		}
+		else if(mandalCheck=="true"){
 		str	+= '<td>TOTAL</td><td>'+mandTotal+'</td>'; 	
 		str += '<td>'+mandStarted+'</td>'; 	
 		str += '<td>'+mandCompleted+'</td>'; 	
@@ -1402,8 +1423,9 @@
 		str += '<td>'+mandAfStarted+'</td>'; 	
 		str += '<td>'+mandAfCompleted+'</td>'; 	
 		}
-		if(villageCheck=="true"){
-		str += '<td>'+panTotal+'</td>'; 	
+		else if(villageCheck=="true"){
+		str	+= '<td>TOTAL</td><td>'+panTotal+'</td>'; 	
+		
 		str += '<td>'+panStarted+'</td>'; 	
 		str += '<td>'+panCompleted+'</td>'; 	
 		str += '<td>'+panMembers+'</td>'; 	
@@ -1868,7 +1890,7 @@
 		if(mandalCheck == "true" && villageCheck == "true"){
 			str+='<thead>';
             str+='<tr>';
-			str+='<th rowspan="2" id="tableHeadingId" style="text-align:center">Constituency No</th>';
+			str+='<th rowspan="2" style="text-align:center">Constituency No</th>';
 			str+='<th rowspan="2" style="text-align:center">Constituency Name</th>';
             str+='<th style="text-align:center" colspan="6">TOWN / MANDAL / DIVISION</th>';
             str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
@@ -1891,21 +1913,28 @@
 			
 		}
 		else if(mandalCheck == "true"){
-		 str+='<thead>';
-		str+='<th id="tableHeadingId" style="text-align:center">Constituency No</th>';
-		str+='<th style="text-align:center">Constituency Name</th>';
+			str+='<thead>';
+			str+='<tr>';
+			str+='<th rowspan="2"  style="text-align:center">Constituency No</th>';
+			str+='<th rowspan="2" style="text-align:center">Constituency Name</th>';
+			str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
+            str+='</tr>';
+            str+='<tr>';
 			str+='<th>Total</th>';
 			str+='<th>Started</th>';
 			str+='<th>Completed</th>';
 			str+='<th>Members</th>';
 			str+='<th>Affl Committee Started</th>';
 			str+='<th>Affl Committee Completed</th>';
-			str+='</thead>';	
+			str+='</tr></thead>';	
 		}
 		else if(villageCheck == "true"){
-		 str+='<thead>';
-		str+='<th id="tableHeadingId" style="text-align:center">Constituency No</th>';
-		str+='<th style="text-align:center">Constituency Name</th>';
+			str+='<thead>';
+			str+='<th rowspan="2"  style="text-align:center">Constituency No</th>';
+			str+='<th rowspan="2" style="text-align:center">Constituency Name</th>';
+            str+='<th style="text-align:center" colspan="6">TOWN / MANDAL / DIVISION</th>';
+            str+='</tr>';
+            str+='<tr>';
 			str+='<th>Total</th>';
 			str+='<th>Started</th>';
 			str+='<th>Completed</th>';
@@ -1919,7 +1948,7 @@
 		if(result[i].townMandalDivisionVO != null || result[i].villageWardVO != null){
 		str += '<tr>';
 			str += '<td >'+result[i].constiNo+'</td>';
-			str += '<td ><span style="font-size: 13px;">'+result[i].name+'</span>';
+			str += '<td ><span style="font-size: 12px;">'+result[i].name+'</span>';
 			
 				str += '&nbsp;&nbsp;<span style="cursor: pointer;" title="Click Here For '+result[i].name+' Committee Summary Report" onclick="getPopUpForSummary('+result[i].constiId+',\''+result[i].name+'\');" class="glyphicon glyphicon-dashboard"></span>&nbsp;&nbsp;<span style="cursor: pointer;"  onclick="showAdvanceDashBoard('+result[i].constiId+');" title="Click Here For '+result[i].name+' Advance Dashboard"  class="glyphicon glyphicon-list-alt"></span>';
 			
@@ -2056,7 +2085,20 @@
 		}
    
 	    str += '</tbody><tfoot><tr class="no-sort" style="font-weight:bold;"><td></td>';
-	if(mandalCheck=="true"){
+	if(mandalCheck=="true" && villageCheck=="true"){
+		str	+= '<td>TOTAL</td><td>'+mandTotal+'</td>'; 	
+		str += '<td>'+mandStarted+'</td>'; 	
+		str += '<td>'+mandCompleted+'</td>'; 	
+		str += '<td>'+mandMembers+'</td>'; 	
+		str += '<td>'+mandAfStarted+'</td>'; 	
+		str += '<td>'+mandAfCompleted+'</td>';
+		str += '<td>'+panStarted+'</td>'; 	
+		str += '<td>'+panCompleted+'</td>'; 	
+		str += '<td>'+panMembers+'</td>'; 	
+		str += '<td>'+panAffStarted+'</td>'; 	
+		str += '<td>'+panAffCompleted+'</td>'; 	
+	}	
+	else if(mandalCheck=="true"){
 		str	+= '<td>TOTAL</td><td>'+mandTotal+'</td>'; 	
 		str += '<td>'+mandStarted+'</td>'; 	
 		str += '<td>'+mandCompleted+'</td>'; 	
@@ -2064,7 +2106,7 @@
 		str += '<td>'+mandAfStarted+'</td>'; 	
 		str += '<td>'+mandAfCompleted+'</td>'; 	
 	}
-	if(villageCheck=="true"){
+	else if(villageCheck=="true"){
 		str	+= '<td>TOTAL</td><td>'+panTotal+'</td>'; 	
 		str += '<td>'+panStarted+'</td>'; 	
 		str += '<td>'+panCompleted+'</td>'; 	
