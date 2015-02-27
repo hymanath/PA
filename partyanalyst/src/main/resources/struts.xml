@@ -9749,5 +9749,22 @@
 				<param name="root">returnString</param>
 			</result>
 		</action>
+		<action name="getRepInfoForCastDistrictAction" class="cadreDashBoardAction" method="getRepInfoForcastDistrict">
+			<result type="json" name="success">
+				<param name="root">resultList</param>
+			</result>
+			<result type="json" name="input">
+				<param name="root">"noAccess"</param>
+			</result>
+		</action>
+			<action name="getRepInfoForcastGroupDistAction" class="cadreDashBoardAction" method="getRepInfoForcastGroupDist">
+			<result type="json" name="success">
+				<param name="root">resultList</param>
+			</result>
+			<result type="json" name="input">
+				<param name="root">"noAccess"</param>
+			</result>
+		</action>
+		
 </package>
 </struts>      
