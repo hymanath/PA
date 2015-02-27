@@ -56,6 +56,8 @@
 #constiTableId tr.odd,#districtTableId tr.odd {
     background-color: #f3f3f3 !important;
 }
+
+#constiTableId_filter,#districtTableId_filter{font-size:12px !important;font-family:verdana;font-weight:bold;}
 	</style>
 
 <script>
@@ -136,7 +138,7 @@
 								<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div1"></div></h4></td>
 								
 								<td style="padding:10px;" width="10%">
-									<span class="text-success">Started</span> Committees<br/>
+									<span class="text-success">Started</span><br/> Committees
 									<table>
 										<tr>
 											<td class="row-table">
@@ -149,7 +151,7 @@
 									</table>
 								</td>
 								
-								<td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div3"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
+								<td style="padding:10px;" width="10%"><span class="text-danger">Completed</span><br/> Committees<table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div3"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
                               <li><div id="div4"></div>
                                   
 									
@@ -178,7 +180,7 @@
 							<tr>
 								<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div8"></div></h4></td>
 								<td style="padding:10px;" width="10%">
-									<span class="text-success">Started</span> Committees<br/>
+									<span class="text-success">Started</span><br/> Committees
 									<table>
 										<tr>
 											<td class="row-table">
@@ -190,7 +192,7 @@
 										</tr>
 									</table>
 								</td>
-							   <td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div10"></div></h4></td><td  class="row-table">
+							   <td style="padding:10px;" width="10%"><span class="text-danger">Completed</span><br/> Committees<table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div10"></div></h4></td><td  class="row-table">
 							   <ul class="nav navbar-nav">
 								<li>
 									<div id="div11"></div>
@@ -242,7 +244,7 @@
 								<div id="totalMainCount1"></div></h4></td>
 								
 								<td style="padding:10px;" width="10%">
-									<span class="text-success">Started</span> Committees<br/>
+									<span class="text-success">Started</span><br/> Committees
 									<table>
 										<tr>
 											<td class="row-table">
@@ -255,7 +257,7 @@
 									</table>
 								</td>
 								
-								<td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/>
+								<td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> <br/>Committees
 									<table>
 										<tr>
 											<td  class="row-table">
@@ -307,7 +309,7 @@
 							<tr>
 								<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div81"></div></h4></td>
 								<td style="padding:10px;" width="10%">
-									<span class="text-success">Started</span> Committees<br/>
+									<span class="text-success">Started</span><br/> Committees
 									<table>
 										<tr>
 											<td class="row-table">
@@ -319,7 +321,7 @@
 										</tr>
 									</table>
 								</td>
-							   <td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div101"></div></h4></td><td  class="row-table">
+							   <td style="padding:10px;" width="10%"><span class="text-danger">Completed</span> <br/>Committees<table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div101"></div></h4></td><td  class="row-table">
 							   <ul class="nav navbar-nav">
 								<li>
 									<div id="div111"></div>
@@ -432,7 +434,7 @@
 									
 								</li>
 									</td></tr></table></td>
-							<td style="padding:10px;" width="20%">Affiliated Committees<br/><span class="text-success">Started</span><br/><h4 class="m_top0"><div id="div26"></div></h4></td>
+							<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affiliated Committees<br/><h4 class="m_top0"><div id="div26"></div></h4></td>
 							<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affiliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
                               <li><a><div id="div27"></div></a>
                              </h4></td>
@@ -458,21 +460,22 @@
 						<label class="radio"><input type="radio" id="districtId" style="vertical-align: text-bottom;" class="levelRd" value="district" name="select" checked="true">&nbsp;District &nbsp;&nbsp;&nbsp;</label>
 						<label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="levelRd" value="consti" name="select">&nbsp;Constituency &nbsp;&nbsp;&nbsp;</label>
 					</span>
-						<span class="btn btn-success btn-xs form-inline">
+					<span class="btn btn-success btn-xs form-inline">
 						<label class="radio"><input type="checkbox" id="villageId" style="vertical-align: text-bottom;" class="scopeRd" value="village" name="selectCheck"  checked="true">&nbsp;VILLAGE / WARD &nbsp;</label>
-						</span>&nbsp;&nbsp;
-						<span class="btn btn-success btn-xs form-inline">
-						<label class="checkbox"><input type="checkbox" id="mandalId" style="vertical-align: text-bottom;" class="scopeRd" value="mandal" name="selectCheck">&nbsp;TOWN / MANDAL / DIVISION &nbsp;&nbsp;</label></span>
+					</span>&nbsp;&nbsp;
+					<span class="btn btn-success btn-xs form-inline">
+						<label class="checkbox"><input type="checkbox" id="mandalId" style="vertical-align: text-bottom;" class="scopeRd" value="mandal" name="selectCheck">&nbsp;TOWN / MANDAL / DIVISION &nbsp;&nbsp;</label>
+					</span>
 					
+					<span class="btn btn-info pull-right excelId form-inline" onclick="exportToExcel()" style="margin-right: -200px;display:none;"> Export To Excel </span>
                 </div>
                
             </div>
 			
             <div class="row">
             	<div class="col-md-12 col-xs-12 col-md-12">
-                	
-						<div id="distSummaryBody" style="overflow-x:scroll;">
-							<img id="summaryAjax" src="./images/Loading-data.gif" alt="Processing Image"/>
+						<center><img id="summaryAjax" style="width:80px;height:50px;"  src="./images/Loading-data.gif" alt="Processing Image"/></center>
+						<div id="distSummaryBody" style="overflow-x:scroll;">							
                         </div>
                                   
                 </div>
@@ -808,7 +811,7 @@
     	        }
 			}
 			if(result != null){
-				console.log(result.accessState);
+				//console.log(result.accessState);
 				if(result.accessState == 'AP' || result.accessState == 'TG' || result.accessState == 'ALL')
 				{	
 				if(state == "AP"){
@@ -819,22 +822,33 @@
 						$("#div1").html(result.committeesCount);
 						
 						$("#div29").html(result.startedCommitteePerc+"%");
-						$("#div2").html('['+result.mainCommittees+']');						
+						if(result.mainCommittees > 0 && result.mainCommittees != null){
+							$("#div2").html('<a id=\''+level+'IdAPstarted\' class="" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+'\,\'started\')" style="cursor:pointer;">['+result.mainCommittees+']</a>');
+						}
+						else{						
+							$("#div2").html('<span style="margin-left:0px;">[0]</span>');
+						}
+						
+						//$("#div2").html('['+result.mainCommittees+']');						
 						
 						$("#div3").html(result.completedCommitteePerc+"%");
 						
 						if(result.completedCommittees > 0 && result.completedCommittees != null){
-							$("#div4").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
+							$("#div4").html('<a id=\''+level+'IdAPcompleted\' class="" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+'\,\'completed\')" style="cursor:pointer;">['+result.completedCommittees+']</a>');
 						}
 						else{						
 							$("#div4").html('<span style="margin-left:0px;">[0]</span>');
 						}
 					
 						//$("#div30").html(result.afflCommitteesPerc);
-						$("#div5").html(result.afflCommittees);
-						
+						//$("#div5").html(result.afflCommittees);
+						if(result.afflCommittees!=0){
+							$("#div5").html('<a id=\''+level+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\',\'started\')" style="cursor:pointer;">'+result.afflCommittees+'</a>');
+						}else{
+							$("#div5").html('<span> 0 </span>');
+						}
 						if(result.affliatedCompleted!=0){
-							$("#div6").html('<a id=\''+level+'IdAPAffl\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\')">'+result.affliatedCompleted+'</a>');
+							$("#div6").html('<a id=\''+level+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\',\'completed\')" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
 						}else{
 							$("#div6").html('<span> 0 </span>');
 						}
@@ -851,25 +865,36 @@
 						$("#div8").html(result.committeesCount);
 						
 						$("#div32").html(result.startedCommitteePerc+"%");
-						$("#div9").html('['+result.mainCommittees+']');						
+						//$("#div9").html('['+result.mainCommittees+']');						
+						if(result.mainCommittees > 0 && result.mainCommittees != null){
 						
+						
+						$("#div9").html('<a id=\''+level+'IdAPstarted\' class="" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+'\,\'started\')" style="cursor:pointer;">['+result.mainCommittees+']</a>');
+						}
+						else{
+						$("#div9").html('<span style="margin-left:0px;">[0]</span>');
+						}
 						$("#div10").html(result.completedCommitteePerc+"%");
 				
 						if(result.completedCommittees > 0 && result.completedCommittees != null)
 						
 						//$("#div11").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
-						$("#div11").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
+						$("#div11").html('<a id=\''+level+'IdAPcompleted\' class="" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+'\,\'completed\')" style="cursor:pointer;">['+result.completedCommittees+']</a>');
 						
 						else{
 						$("#div11").html('<span style="margin-left:0px;">[0]</span>');
 						}
 						//$("#div33").html(result.afflCommitteesPerc);
-						$("#div12").html(result.afflCommittees);
-						
-						$("#div13").html(result.affliatedCompleted);
+						//$("#div12").html(result.afflCommittees);
+						if(result.afflCommittees!=0){
+							$("#div12").html('<a id=\''+level+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\',\'started\')" style="cursor:pointer;">'+result.afflCommittees+'</a>');
+						}else{
+							$("#div12").html('<span> 0 </span>');
+						}
+						//$("#div13").html(result.affliatedCompleted);
 						//if(result.completedCommittees > 0 && result.completedCommittees != null)
 						if(result.affliatedCompleted!=0){
-							$("#div13").html('<a id=\''+level+'IdAPAffl\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\')">'+result.affliatedCompleted+'</a>');
+							$("#div13").html('<a id=\''+level+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\',\'completed\')" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
 						}else{
 							$("#div13").html('<span> 0 </span>');
 						}
@@ -889,25 +914,36 @@
 						
 						
 						$("#div35").html(result.startedCommitteePerc+"%");
-						$("#div16").html('['+result.mainCommittees+']');						
+						//$("#div16").html('['+result.mainCommittees+']');						
+						if(result.mainCommittees > 0 && result.mainCommittees != null)
+						{
 						
+						$("#div16").html('<a id=\''+level+'IdTSstarted\' class="" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\','+1+'\,\'started\')" style="cursor:pointer;">['+result.mainCommittees+']</a>');
+						}
+						else{
+						$("#div16").html('<span style="margin-left:0px;">[0]</span>');
+						}
 						$("#div17").html(result.completedCommitteePerc+"%");
 						
 						if(result.completedCommittees > 0 && result.completedCommittees != null)
 						
 						//$("#div18").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
-						$("#div18").html('<a id=\''+level+'IdTS\' class="btn" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
+						$("#div18").html('<a id=\''+level+'IdTScompleted\' class="" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\','+1+'\,\'completed\')" style="cursor:pointer;">['+result.completedCommittees+']</a>');
 						
 						else{
 						$("#div18").html('<span style="margin-left:0px;">[0]</span>');
 						}
 						//$("#div36").html(result.afflCommitteesPerc);
-						$("#div19").html(result.afflCommittees);
-						
+						//$("#div19").html(result.afflCommittees);
+						if(result.afflCommittees!=0){
+							$("#div19").html('<a id=\''+level+'IdTSAfflstarted\' onClick="getAflCommitteeCount(\'TS\',\''+level+'\',\'started\')" style="cursor:pointer;">'+result.afflCommittees+'</a>');
+						}else{
+							$("#div19").html('<span> 0 </span>');
+						}
 						//$("#div37").html(result.affliatedCompletedPerc);
 						//$("#div20").html(result.affliatedCompleted);
 						if(result.affliatedCompleted!=0){
-							$("#div20").html('<a id=\''+level+'IdTSAffl\' onClick="getAflCommitteeCount(\'TS\',\''+level+'\')">'+result.affliatedCompleted+'</a>');
+							$("#div20").html('<a id=\''+level+'IdTSAfflcompleted\' onClick="getAflCommitteeCount(\'TS\',\''+level+'\',\'completed\')" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
 						}else{
 							$("#div20").html('<span> 0 </span>');
 						}
@@ -924,25 +960,35 @@
 						$("#div22").html(result.committeesCount);
 						
 						$("#div38").html(result.startedCommitteePerc+"%");
-						$("#div23").html('['+result.mainCommittees+']');						
+						//$("#div23").html('['+result.mainCommittees+']');						
+						if(result.mainCommittees > 0 && result.mainCommittees != null)
+						{						
+						$("#div23").html('<a id=\''+level+'IdTSstarted\' class="" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\','+1+'\,\'started\')" style="cursor:pointer;">['+result.mainCommittees+']</a>');
+						}else{						
+							$("#div23").html('<span style="margin-left:0px;">[0]</span>');
+						}
 						
 						$("#div24").html(result.completedCommitteePerc+"%");
 						
 						if(result.completedCommittees > 0 && result.completedCommittees != null)
 						
 						//$("#div25").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
-						$("#div25").html('<a id=\''+level+'IdTS\' class="btn" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
+						$("#div25").html('<a id=\''+level+'IdTScompleted\' class="" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\','+1+'\,\'completed\')" style="cursor:pointer;">['+result.completedCommittees+']</a>');
 						else{						
 							$("#div25").html('<span style="margin-left:0px;">[0]</span>');
 						}
 						
 						//$("#div39").html(result.afflCommitteesPerc);
-						$("#div26").html(result.afflCommittees);
-						
+						//$("#div26").html(result.afflCommittees);
+						if(result.afflCommittees!=0){
+							$("#div26").html('<a id=\''+level+'IdTSAfflstarted\' onClick="getAflCommitteeCount(\'TS\',\''+level+'\',\'started\')" style="cursor:pointer;">'+result.afflCommittees+'</a>');	
+						}else{
+							$("#div26").html('<span> 0 </span>');
+						}	
 						//$("#div40").html(result.affliatedCompletedPerc);
 						//$("#div27").html(result.affliatedCompleted);
 						if(result.affliatedCompleted!=0){
-							$("#div27").html('<a id=\''+level+'IdTSAffl\' onClick="getAflCommitteeCount(\'TS\',\''+level+'\')">'+result.affliatedCompleted+'</a>');	
+							$("#div27").html('<a id=\''+level+'IdTSAfflcompleted\' onClick="getAflCommitteeCount(\'TS\',\''+level+'\',\'completed\')" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');	
 						}else{
 							$("#div27").html('<span> 0 </span>');
 						}						
@@ -964,7 +1010,7 @@
 						$("#compltdPerc").html(result.completedCommitteePerc+"%");
 						
 						if(result.completedCommittees > 0 && result.completedCommittees != null){
-							$("#div41").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
+							$("#div41").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')" style="cursor:pointer;">['+result.completedCommittees+']</a>');
 						}
 						else{						
 							$("#div41").html('<span style="margin-left:0px;">[0]</span>');
@@ -974,7 +1020,7 @@
 						$("#div51").html(result.afflCommittees);
 						
 						if(result.affliatedCompleted!=0){
-							$("#div61").html('<a id=\''+level+'IdAPAffl\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\')">'+result.affliatedCompleted+'</a>');
+							$("#div61").html('<a id=\''+level+'IdAPAffl\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\')" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
 						}else{
 							$("#div61").html('<span> 0 </span>');
 						}
@@ -998,7 +1044,7 @@
 						if(result.completedCommittees > 0 && result.completedCommittees != null)
 						
 						//$("#div11").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
-						$("#div111").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')">['+result.completedCommittees+']</a>');
+						$("#div111").html('<a id=\''+level+'IdAP\' class="" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')" style="cursor:pointer;">['+result.completedCommittees+']</a>');
 						
 						else{
 						$("#div111").html('<span style="margin-left:0px;">[0]</span>');
@@ -1009,7 +1055,7 @@
 						$("#div131").html(result.affliatedCompleted);
 						//if(result.completedCommittees > 0 && result.completedCommittees != null)
 						if(result.affliatedCompleted!=0){
-							$("#div131").html('<a id=\''+level+'IdAPAffl\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\')">'+result.affliatedCompleted+'</a>');
+							$("#div131").html('<a id=\''+level+'IdAPAffl\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\')" style="cursor:pointer;" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
 						}else{
 							$("#div131").html('<span> 0 </span>');
 						}
@@ -1103,7 +1149,6 @@
 	$(".stateRd").click(function(){
 		var levelSelected = $("input[type='radio'][name='select']:checked").val();
 		
-		$("#distSummaryBody").html('<td style="text-align:center" colspan="13"><img id="summaryAjax" src="./images/Loading-data.gif" alt="Processing Image"/></td>');
 		
 		if(levelSelected == 'district'){
 			getDistrictWiseCommittesSummary();
@@ -1115,7 +1160,7 @@
 	$(".scopeRd").click(function(){
 		var levelSelected = $("input[type='radio'][name='select']:checked").val();
 		
-		$("#distSummaryBody").html('<td style="text-align:center" colspan="13"><img id="summaryAjax" src="./images/Loading-data.gif" alt="Processing Image"/></td>');
+		//$("#distSummaryBody").html('<td colspan="13"><center><img id="summaryAjax" style="width:100px;height:20px;"  src="./images/Loading-data.gif" alt="Processing Image"/></center></td>');
 		
 		if(levelSelected == 'district'){
 			getDistrictWiseCommittesSummary();
@@ -1125,7 +1170,6 @@
 		}
 	});
 	$(".levelRd").click(function(){
-		$("#distSummaryBody").html('<td style="text-align:center" colspan="13"><img id="summaryAjax" src="./images/Loading-data.gif" alt="Processing Image"/></td>');
 		
 		var levelSelected1 = $("input[type='radio'][name='select']:checked").val();
 		if(levelSelected1 == 'district'){
@@ -1136,7 +1180,9 @@
 		}
 	});
 	function getDistrictWiseCommittesSummary(){
-		
+		$(".excelId").hide();
+		$("#distSummaryBody").html('');
+		$("#summaryAjax").show();
 		var state = state; 
 		var mandalCheck=  $('#mandalId').is(':checked')?"true":"false";
 		var villageCheck=  $('#villageId').is(':checked')?"true":"false";
@@ -1160,6 +1206,7 @@
           url: 'getDistrictWiseCommittesSummaryAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
+			$("#summaryAjax").hide();
 			if(typeof result == "string"){
 				if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
     		      location.reload(); 
@@ -1167,6 +1214,7 @@
 			}
 		
 			if(result == null){
+				$(".excelId").hide();
 				$("#distSummaryBody").html("<td style='text-align:center' colspan='13'><h4> NO DATA AVAILABLE </h4></td>");
 				return;
 			}
@@ -1183,6 +1231,7 @@
 		var villageInfoArr = [];
 		$("#headingId").html("DISTRICT WISE COMMITTEES");
 		//$("#tableHeadingId").html("DISTRICT");
+		$(".excelId").show();
 		var str = '';
 		
 		var mandTotal =0; 	
@@ -1424,16 +1473,16 @@
 		str += '<td>'+mandAfCompleted+'</td>'; 	
 		}
 		else if(villageCheck=="true"){
-		str	+= '<td>TOTAL</td><td>'+panTotal+'</td>'; 	
-		
+		str	+= '<td>TOTAL</td><td>'+panTotal+'</td>'; 			
 		str += '<td>'+panStarted+'</td>'; 	
 		str += '<td>'+panCompleted+'</td>'; 	
 		str += '<td>'+panMembers+'</td>'; 	
 		str += '<td>'+panAffStarted+'</td>'; 	
 		str += '<td>'+panAffCompleted+'</td>';
 }
-		str += '</tr></tfoot></table>';		
+		str += '</tr></tfoot></table>';			
 		$("#distSummaryBody").html(str);
+		$(".excelId").show();
 		$("#districtTableId").dataTable({
 			"iDisplayLength": 50,
 			"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
@@ -1464,7 +1513,7 @@
 		
 			
 	}
-	function getMainCommitteeMembersCount(state,level,type,committeeId){
+	function getMainCommitteeMembersCount(state,level,type,committeeId,committeeType){
 		
 		var startDate=$(".dp_startDate").val();
 		var endDate=$(".dp_endDate").val();
@@ -1503,6 +1552,7 @@
 			startDate  :startDate,
 			endDate    :endDate,
 			committeeId:committeeId,
+			committeeType:committeeType,
 			task:"mainCommitteeMemberCnt",
 		}
 				
@@ -1526,7 +1576,7 @@
 							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount3+'</span>ABOVE 7 MEMBER COMMITTEES</li>';
 						}
 					str+='</ul>';
-					$('#'+level+'Id'+state+'').popover({
+					$('#'+level+'Id'+state+committeeType+'').popover({
 						html: true,
 						placement: "bottom",
 						title: '',
@@ -1534,11 +1584,11 @@
 								
 					});
 					
-					if(!$('#'+level+'Id'+state+'').hasClass("clearCls")){
-						$('#'+level+'Id'+state+'').addClass("clearCls");
-						$('#'+level+'Id'+state+'').popover("show");
+					if(!$('#'+level+'Id'+state+committeeType+'').hasClass("clearCls")){
+						$('#'+level+'Id'+state+committeeType+'').addClass("clearCls");
+						$('#'+level+'Id'+state+committeeType+'').popover("show");
 					}else{
-						$('#'+level+'Id'+state+'').removeClass("clearCls");
+						$('#'+level+'Id'+state+committeeType+'').removeClass("clearCls");
 					}
 				}
 				else if(type == 'affl'){
@@ -1568,7 +1618,7 @@
 		});
 	}
 	
-	function getMainCommitteeMembersCount1(state,level,type,committeeId,id, removeId){
+	function getMainCommitteeMembersCount1(state,level,type,committeeId,id, removeId,committeeType){
 		
 		var startDate=$(".dp_startDate").val();
 		var endDate=$(".dp_endDate").val();
@@ -1607,6 +1657,7 @@
 			startDate  :startDate,
 			endDate    :endDate,
 			committeeId:committeeId,
+			committeeType:committeeType,
 			task:"mainCommitteeMemberCnt",
 		}
 				
@@ -1630,19 +1681,19 @@
 							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount3+'</span>ABOVE 7 MEMBER COMMITTEES</li>';
 						}
 					str+='</ul>';
-					$('#'+level+'Id'+state+'').popover({
+					$('#'+level+'Id'+state+committeeType+'').popover({
 						html: true,
 						placement: "bottom",
 						title: '',
 						content: str
 								
 					});
-					
-					if(!$('#'+level+'Id'+state+'').hasClass("clearCls")){
-						$('#'+level+'Id'+state+'').addClass("clearCls");
-						$('#'+level+'Id'+state+'').popover("show");
+					alert('#'+level+'Id'+state+committeeType+'');
+					if(!$('#'+level+'Id'+state+committeeType+'').hasClass("clearCls")){
+						$('#'+level+'Id'+state+committeeType+'').addClass("clearCls");
+						$('#'+level+'Id'+state+committeeType+'').popover("show");
 					}else{
-						$('#'+level+'Id'+state+'').removeClass("clearCls");
+						$('#'+level+'Id'+state+committeeType+'').removeClass("clearCls");
 					}
 				}
 				else if(type == 'affl'){
@@ -1683,7 +1734,7 @@
 		});
 	}
 	
-	function getAflCommitteeCount(state,level){
+	function getAflCommitteeCount(state,level,committeeType){
 		
 		var startDate=$(".dp_startDate").val();
 		var endDate=$(".dp_endDate").val();
@@ -1721,6 +1772,7 @@
 			levelIdsArr:levelIdsArr,
 			startDate  :startDate,
 			endDate    :endDate,
+			committeeType:committeeType,
 			task:"mainCommitteeMemberCnt",
 		}
 				
@@ -1738,21 +1790,21 @@
 					str1+='<ul multilevelul style="padding-left:0px; width:272px;margin-left:-14px; font-size: 11px; ">';	
 					//str1+='<ul class="dropdown-menu arrow_box list-group"><div class="panel panel-default m_bottom0"><div class="panel-heading m_top0">COMMITTEE TYPE<span class="pull-right">TOTAL</span></div></div>';
 					for(var i in result){  
-					str1+='<li class="list-group-item multiLevelLiA" attr_state='+state+' attr_level='+level+' attr_type="affl" attr_resId='+result[i].id+' id="'+level+'IdAffl'+state+''+result[i].id+'" ><a  class="multilevelli" >'+result[i].name+'<span class="badge pull-right">'+result[i].afflCommittees+'</span></a></li>';
+					str1+='<li class="list-group-item multiLevelLiA" attr_state='+state+' attr_level='+level+' attr_type="affl" attr_resId='+result[i].id+' attr_commType='+committeeType+' id="'+level+'IdAffl'+state+committeeType+''+result[i].id+'" ><a  class="multilevelli" >'+result[i].name+'<span class="badge pull-right">'+result[i].afflCommittees+'</span></a></li>';
 					
 					//str1+='<li class="list-group-item multiLevelLiA" attr_state='+state+' attr_level='+level+' attr_type="affl" attr_resId=1 id="'+level+'IdAffl'+state+'1"><a     class="multilevelli" >'+result[i].name+' 1 <span class="pull-right badge">'+result[i].afflCommittees+'</span></a></li>';
 					} 
 					str1+='</ul>';
-					$('#'+level+'Id'+state+'Affl').popover({
+					$('#'+level+'Id'+state+'Affl'+committeeType).popover({
 						html: true,
 						placement: "bottom",
 						title: '',
 						content: str1
 					});
 					
-					if(!$('#'+level+'Id'+state+'Affl').hasClass("clearCls")){
-						$('#'+level+'Id'+state+'Affl').addClass("clearCls");
-						$('#'+level+'Id'+state+'Affl').popover("show");
+					if(!$('#'+level+'Id'+state+'Affl'+committeeType).hasClass("clearCls")){
+						$('#'+level+'Id'+state+'Affl'+committeeType).addClass("clearCls");
+						$('#'+level+'Id'+state+'Affl'+committeeType).popover("show");
 					}
 					
 		});
@@ -1765,9 +1817,10 @@
 		var level =  $(this).attr("attr_level");
 		var type =  $(this).attr("attr_type");
 		var committeeId =  $(this).attr("attr_resId");
+		var committeeType =  $(this).attr("attr_commType");
 		var id = $(this).attr("id");
 		var removeId = $(this).parent().find(".multiLevelCls").attr("id");
-		getMainCommitteeMembersCount1(state,level,type,committeeId,id, removeId);
+		getMainCommitteeMembersCount1(state,level,type,committeeId,id, removeId,committeeType);
 		
 		//$("#"+id).popover('show');
 		
@@ -1824,7 +1877,9 @@
 	
 	function getConstituencyWiseCommittesSummary(){
 		var state = ''; 
-		
+		$(".excelId").hide();
+		$("#distSummaryBody").html('');
+		$("#summaryAjax").show();
 		var selected = $("input[type='radio'][name='selectstate']:checked");
 		var mandalCheck=  $('#mandalId').is(':checked')?"true":"false";
 		var villageCheck=  $('#villageId').is(':checked')?"true":"false";
@@ -1848,6 +1903,8 @@
           url: 'getConstituencyWiseCommittesSummaryAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
+	
+		$("#summaryAjax").hide();
 				if(typeof result == "string"){
 					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
 					  location.reload(); 
@@ -1865,6 +1922,9 @@
 	}
 	
 	function buildConstiWiseSummary(result,mandalCheck,villageCheck){
+	
+	
+		$(".excelId").show();
 		var constiInfoArr = [];
 		var constiVillageInfoArr = [];
 	
@@ -1917,7 +1977,7 @@
 			str+='<tr>';
 			str+='<th rowspan="2"  style="text-align:center">Constituency No</th>';
 			str+='<th rowspan="2" style="text-align:center">Constituency Name</th>';
-			str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
+			 str+='<th style="text-align:center" colspan="6">TOWN / MANDAL / DIVISION</th>';
             str+='</tr>';
             str+='<tr>';
 			str+='<th>Total</th>';
@@ -1932,7 +1992,8 @@
 			str+='<thead>';
 			str+='<th rowspan="2"  style="text-align:center">Constituency No</th>';
 			str+='<th rowspan="2" style="text-align:center">Constituency Name</th>';
-            str+='<th style="text-align:center" colspan="6">TOWN / MANDAL / DIVISION</th>';
+    
+			str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
             str+='</tr>';
             str+='<tr>';
 			str+='<th>Total</th>';
@@ -2540,6 +2601,10 @@
 	   });
 	}
 
+	
+	
+	
+	
 	function buildCommitteeMemberDetails(result,jsObj)
 	{
 		var str='';
@@ -2664,6 +2729,30 @@
 	
 	</script>
 			   
-			   
+<script>
+	var tableToExcel = (function() {
+	var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+  return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
+function exportToExcel()
+{
+	var levelSelected1 = $("input[type='radio'][name='select']:checked").val();
+		if(levelSelected1 == 'district'){
+			 tableToExcel('districtTableId', 'District Wise Committees');
+		}
+		else if(levelSelected1 == 'consti'){
+			tableToExcel('constiTableId', 'Constituency Wise Committees');
+		}
+	  
+}
+	
+</script>		
 </body>
 </html>
