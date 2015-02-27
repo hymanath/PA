@@ -632,4 +632,67 @@ public List<Object[]> getAllMembersInMainCommWithPresidentAndGeneralSecretaryRol
 	return query.list();
 }
 
+
+public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,List<Long> levelIds,Long committeeId,Date startDate,Date endDate,List<Long> districtIds,List<Long> assemblyIds,List<Long> locationlevelValueList){
+	
+	StringBuilder str = new StringBuilder();
+	
+	str.append("select count(model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId," +
+			" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name " +				
+			" from TdpCommitteeMember model where ");
+	
+	if(locationlevelValueList != null && locationlevelValueList.size()>0)
+	{
+		str.append(" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue in (:locationlevelValueList) ");
+	}	
+	else if(assemblyIds != null && assemblyIds.size()>0)
+	{
+		str.append(" model.tdpCommitteeRole.tdpCommittee.constituency.constituencyId in (:assemblyIds) ");
+	}		
+	else if(districtIds != null && districtIds.size()>0)
+	{
+		str.append(" model.tdpCommitteeRole.tdpCommittee.districtId in (:districtIds)  ");
+	}
+	else if(state != null)
+	{
+		str.append("  model.tdpCommitteeRole.tdpCommittee.state= :state ");
+	}
+	
+	if(startDate !=null && endDate !=null){
+		str.append(" and ( date(model.tdpCommitteeRole.tdpCommittee.startedDate)>=:startDate and date(model.tdpCommitteeRole.tdpCommittee.startedDate)<=:endDate ) " );
+	}
+	
+	str.append("and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) " +
+			" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId = :committeeId" +
+			" and model.tdpCommitteeRole.tdpCommittee.completedDate is null  and model.isActive = 'Y' and model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed = 'N' " +
+			" group by model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId," +
+				" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue ");		
+	
+	Query query = getSession().createQuery(str.toString());
+	if(state != null)
+	{
+		query.setParameter("state", state);
+	}
+	if(startDate != null && endDate !=null){
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
+	}
+	query.setParameter("committeeId", committeeId);
+	query.setParameterList("levelIds",levelIds);
+	if(locationlevelValueList != null && locationlevelValueList.size()>0)
+	{
+		query.setParameterList("locationlevelValueList", locationlevelValueList);
+	}	
+	else if(assemblyIds != null && assemblyIds.size()>0)
+	{
+		query.setParameterList("assemblyIds", assemblyIds);
+	}
+	else if(districtIds != null && districtIds.size()>0)
+	{
+		query.setParameterList("districtIds", districtIds);
+	}
+    return query.list();
+}
+
+
 }

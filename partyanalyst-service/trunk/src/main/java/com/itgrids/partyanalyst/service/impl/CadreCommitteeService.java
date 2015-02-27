@@ -4039,7 +4039,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return null;
 	}
 	
-	public List<CadreCommitteeReportVO> getStartedAffliCommitteesCountByLocation(String state,List<Long> levelIds,String startDateStr,String endDateStr,String accessType,Long accessValue,Long userId){
+	public List<CadreCommitteeReportVO> getStartedAffliCommitteesCountByLocation(String state,List<Long> levelIds,String startDateStr,String endDateStr,String accessType,Long accessValue,Long userId,String committeeType){
 		List<CadreCommitteeReportVO> resultList= new ArrayList<CadreCommitteeReportVO>();
 		try{
 			
@@ -4113,7 +4113,15 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				 
 			 }
 			
-			List<Object[]> startedCount=tdpCommitteeDAO.getCompletedAffliCommitteesCountByLocation(state, levelIds,startDate,endDate,districtIds,assemblyIds,locationLevelValues);
+			List<Object[]>  startedCount = null;
+			if(committeeType.equalsIgnoreCase("started")){
+				startedCount=tdpCommitteeDAO.getStartedAffliCommitteesCountByLocation(state, levelIds,startDate,endDate,districtIds,assemblyIds,locationLevelValues);
+			}
+			else
+			{
+				startedCount=tdpCommitteeDAO.getCompletedAffliCommitteesCountByLocation(state, levelIds,startDate,endDate,districtIds,assemblyIds,locationLevelValues);
+			}
+			
 			if(startedCount != null && startedCount.size() > 0){
 				for (Object[] objects : startedCount) {		
 						CadreCommitteeReportVO vo = new CadreCommitteeReportVO();
@@ -4130,7 +4138,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	}
 	
 	
-	public List<CadreCommitteeReportVO> getMembersRangeCountByLocation(String state,List<Long> levelIds,Long committeeId,String startDateStr,String endDateStr,String accessType,Long accessValue,Long userId){
+	public List<CadreCommitteeReportVO> getMembersRangeCountByLocation(String state,List<Long> levelIds,Long committeeId,String startDateStr,String endDateStr,String accessType,Long accessValue,Long userId,String committeeType){
 		List<CadreCommitteeReportVO> resultList= new ArrayList<CadreCommitteeReportVO>();
 		try{
 			
@@ -4222,8 +4230,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				 
 			 }
 			 
-			List<Object[]> membersCount = tdpCommitteeMemberDAO.getMembersCountInCommitteeByLocation(state, levelIds,committeeId,startDate,endDate,districtIds,assemblyIds,locationLevelValues);
-			
+			List<Object[]> membersCount = null; 
+			if(committeeType.equalsIgnoreCase("started")){
+				membersCount = tdpCommitteeMemberDAO.getStartedCommitteesMembersCountByLocation(state, levelIds,committeeId,startDate,endDate,districtIds,assemblyIds,locationLevelValues);
+			}else{
+				membersCount = tdpCommitteeMemberDAO.getMembersCountInCommitteeByLocation(state, levelIds,committeeId,startDate,endDate,districtIds,assemblyIds,locationLevelValues);
+			}
 			
 			if(membersCount != null && membersCount.size() > 0){
 				for (Object[] objects : membersCount) {		
