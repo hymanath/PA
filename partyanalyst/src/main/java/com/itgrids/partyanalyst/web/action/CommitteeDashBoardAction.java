@@ -342,8 +342,8 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 			String state =jObj.getString("state");
 			String startdate=jObj.getString("startDate");
 			String endDate=jObj.getString("endDate");
-			
-			cadreCommitteeReportVOList = cadreCommitteeService.getStartedAffliCommitteesCountByLocation(state,levelIds,startdate,endDate,accessType,accessValue,regVO.getRegistrationID());
+			String committeeType = jObj.getString("committeeType");
+			cadreCommitteeReportVOList = cadreCommitteeService.getStartedAffliCommitteesCountByLocation(state,levelIds,startdate,endDate,accessType,accessValue,regVO.getRegistrationID(), committeeType);
 			}
 			
 		}catch(Exception e){
@@ -368,9 +368,10 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 			Long committeeId = jObj.getLong("committeeId");
 			String startdate=jObj.getString("startDate");
 			String endDate=jObj.getString("endDate");
+			String committeeType = jObj.getString("committeeType");
 			String accessType = regVo.getAccessType();
 			Long accessValue = Long.valueOf(regVo.getAccessValue());
-			cadreCommitteeReportVOList = cadreCommitteeService.getMembersRangeCountByLocation(state,levelIds,committeeId,startdate,endDate,accessType,accessValue,regVo.getRegistrationID());
+			cadreCommitteeReportVOList = cadreCommitteeService.getMembersRangeCountByLocation(state,levelIds,committeeId,startdate,endDate,accessType,accessValue,regVo.getRegistrationID(),committeeType);
 		
 			
 		}catch(Exception e){
