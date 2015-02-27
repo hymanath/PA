@@ -1171,12 +1171,12 @@ $('#membersCount').addClass('animated fadeInX');
 					var taskVal="castGroupDistByAccess";
 				</c:when>  
 				<c:otherwise>
-				  var taskVal="castGroupDist";
+				  var taskVal="CadrecastGroupDist";
 				</c:otherwise>
 			</c:choose>			
 			$.ajax({
 				type : 'GET',
-				url : 'getRepInfo.action',
+				url : 'getRepInfoForcastGroupDistAction.action',
 				data : {
 					task :taskVal,
 					id: distId
@@ -1332,13 +1332,13 @@ $('#membersCount').addClass('animated fadeInX');
 				var taskValue1="castDistrictByAccess";
 				</c:when>  
 				<c:otherwise>
-				var taskValue1="castDistrict";
+				var taskValue1="CadrecastDistrict";
 				</c:otherwise>
 			</c:choose>
 			
 			$.ajax({
 				type : 'GET',
-				url : 'getRepInfo.action',
+				url : 'getRepInfoForCastDistrictAction.action',
 				data : {
 					task :taskValue1,
 					id:distId

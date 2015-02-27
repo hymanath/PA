@@ -455,6 +455,64 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		  }
 		return Action.SUCCESS;
 	}
+	
+	
+	public String getRepInfoForcastGroupDist(){
+		try{
+			 RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+				boolean noaccess = false;
+				if(regVO==null){
+					return "input";
+				}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
+					noaccess = true ;
+					
+				}
+				if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+					noaccess = false;
+				}
+				if(noaccess){
+					return "input";
+				}
+			String task = request.getParameter("task");
+			
+		
+		   if(task.equalsIgnoreCase("CadrecastGroupDist")){
+			   resultList =  cadreDashBoardService.getCastGroupWiseCadreCount(Long.parseLong(request.getParameter("id")),"district");
+			}
+		 }catch(Exception e){
+			  LOG.error("Exception rised in getRepInfo ",e);
+		  }
+		return Action.SUCCESS;
+	}
+	
+	public String getRepInfoForcastDistrict(){
+		try{
+			 RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+				boolean noaccess = false;
+				if(regVO==null){
+					return "input";
+				}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREDASHBOARD")){
+					noaccess = true ;
+					
+				}
+				if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+					noaccess = false;
+				}
+				if(noaccess){
+					return "input";
+				}
+			String task = request.getParameter("task");
+			
+		
+		   if(task.equalsIgnoreCase("CadrecastDistrict")){
+				resultList =  cadreDashBoardService.getDistrictWiseCastCadreCount(Long.parseLong(request.getParameter("id")));
+			}
+		 }catch(Exception e){
+			  LOG.error("Exception rised in getRepInfo ",e);
+		  }
+		return Action.SUCCESS;
+	}
+
 	public String getRegisteredDetailsByLocation(){
 		try{
 			int startIndex = Integer.parseInt(request.getParameter("startIndex").trim());
