@@ -508,5 +508,55 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		}
 		return query.list();
 	}
+	
+	public List<Object[]> getStartedAffliCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate,List<Long> districtIds,List<Long> assemblyIds,List<Long> locationlevelValueList){
+
+		StringBuilder str = new StringBuilder();
+
+		str.append("select count(distinct model.tdpCommitteeId), " +
+		" model.tdpBasicCommittee.name,model.tdpBasicCommittee.tdpBasicCommitteeId " +
+		" from TdpCommittee model where ");
+		str.append(" model.state= :state ");
+		if(startDate !=null && endDate !=null){
+			
+			str.append(" and ( date(model.startedDate)>=:startDate and date(model.startedDate)<=:endDate ) ");
+		}
+		if(locationlevelValueList != null && locationlevelValueList.size()>0)
+		{
+			str.append(" and model.tdpCommitteeLevelValue in (:locationlevelValueList) ");
+		}	
+		else if(assemblyIds != null && assemblyIds.size()>0)
+		{
+			str.append(" and model.constituency.constituencyId in (:assemblyIds) ");
+		}		
+		else if(districtIds != null && districtIds.size()>0)
+		{
+			str.append(" and model.districtId in (:districtIds) ");
+		}
+		str.append("and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) " +
+				" and model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 2 and" +
+				"  model.isCommitteeConfirmed = 'N' and model.completedDate is null " +
+				"group by model.tdpBasicCommittee.tdpBasicCommitteeId ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("state", state);		
+		query.setParameterList("levelIds", levelIds);
+		if(startDate != null && endDate !=null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
+		}
+		if(locationlevelValueList != null && locationlevelValueList.size()>0)
+		{
+			query.setParameterList("locationlevelValueList", locationlevelValueList);
+		}	
+		else if(assemblyIds != null && assemblyIds.size()>0)
+		{
+			query.setParameterList("assemblyIds", assemblyIds);
+		}
+		else if(districtIds != null && districtIds.size()>0)
+		{
+			query.setParameterList("districtIds", districtIds);
+		}
+		return query.list();
+	}
 
 }
