@@ -57,7 +57,7 @@
     background-color: #f3f3f3 !important;
 }
 
-#constiTableId_filter,#districtTableId_filter{font-size:12px !important;font-family:verdana;font-weight:bold;}
+
 	</style>
 
 <script>
@@ -2153,6 +2153,7 @@
 		str += '<td>'+mandMembers+'</td>'; 	
 		str += '<td>'+mandAfStarted+'</td>'; 	
 		str += '<td>'+mandAfCompleted+'</td>';
+		str += '<td>'+panTotal+'</td>';
 		str += '<td>'+panStarted+'</td>'; 	
 		str += '<td>'+panCompleted+'</td>'; 	
 		str += '<td>'+panMembers+'</td>'; 	
