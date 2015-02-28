@@ -1237,6 +1237,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 							cadreAddressVO.setMobileNo(cadreVO.getMobileNo());
 							cadreAddressVO.setAge(cadreVO.getAge());
 							cadreAddressVO.setGender(cadreVO.getGender());
+							cadreAddressVO.setMembershipNo(cadreVO.getMemberShipNo().toString());
 							if(address.equalsIgnoreCase("true"))
 							{
 								
