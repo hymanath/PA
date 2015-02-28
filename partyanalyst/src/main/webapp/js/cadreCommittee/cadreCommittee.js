@@ -64,7 +64,7 @@
 			$('#mandalaffiliatedTab').addClass('arrow_selected');
 			$("#searchcadrenewDiv").show();
 			$("#advancedSearchDiv").hide();	
-			$("#headingDiv").html("Select Candidate for a non-affiliated Committee Member ");			
+			$("#headingDiv").html("Select Candidate for a affiliated Committee Member ");			
 	}
 	}
 	
