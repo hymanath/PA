@@ -583,6 +583,10 @@
 	<!----Bootstrap Date Range Picker Script---->
 		<script type="text/javascript">
                $(document).ready(function() {
+				   $("#APId").prop("checked", true);
+				   $("#districtId").prop("checked", true);
+				   $("#villageId").prop("checked", true);
+
 					$('#APStateDiv').hide();
 					$('#TGStateDiv').hide();
 					$('#districtDiv').hide();
