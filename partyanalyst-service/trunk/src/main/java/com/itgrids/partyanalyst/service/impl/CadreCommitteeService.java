@@ -2887,7 +2887,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		try {			
 			String status = tdpCommitteeRoleDAO.getCommitteeStatus(tdpCommitteeRoleId);
 			if(status.equalsIgnoreCase("Y")){
-				return " This Committee Is Already Conformed, You Cannot Add Or Update Committee Members Info ";
+				return " This Committee Is Already Confirmed, You Cannot Add Or Update Committee Members Info ";
 			}
 			TdpCommitteeRole tdpCommitteeRole = tdpCommitteeRoleDAO.get(tdpCommitteeRoleId);
 			
