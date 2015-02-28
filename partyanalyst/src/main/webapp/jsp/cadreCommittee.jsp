@@ -93,10 +93,10 @@
 						<a class="btn btn-success btn-block arrow_selected" id="basicCommitteeTab" href="javascript:{showAndHideTabs('basicCommitteeDiv');}">Committee <br>Management</a>
 					</div>
 					<div class="col-md-4 col-sm-4 col-xs-4">
-						<a class="btn btn-success btn-block "   id="publicrepresantativeTab" href="javascript:{showAndHideTabs('publicrepresantative');}">Mandal/Muncipality Main <br> Committee Electoral Management</a>
+						<a class="btn btn-success btn-block "   id="publicrepresantativeTab" href="javascript:{showAndHideTabs('publicrepresantative');}">Mandal/Municipality/Division Main <br> Committee Electoral Management</a>
 					</div>
 					<div class="col-md-4 col-sm-4 col-xs-4">
-						<a class="btn btn-success btn-block "  id="mandalaffiliatedTab" href="javascript:{showAndHideTabs('mandalaffiliated');}" >Mandal/Muncipality Affiliated   <br>Committee Electoral Management</a>				
+						<a class="btn btn-success btn-block "  id="mandalaffiliatedTab" href="javascript:{showAndHideTabs('mandalaffiliated');}" >Mandal/Municipality/Division <br> Affiliated   Committee Electoral Management</a>				
 					</div>
 				</div> 		
 			</div> 		
@@ -240,7 +240,7 @@
 		
 		<div class="row" id="publicrepresantative" >	
 			<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1  m_top20 text-center">
-				<h3 class="text-success text-uppercase" >Process to Add <br> public representatives as mandal Electoral</h3>
+				<h3 class="text-success text-uppercase" >Process to Add <br> public representatives as Mandal/Municipality/Division Electoral</h3>
 				
 				<hr style="margin: 0px;">
 			</div>
@@ -254,7 +254,7 @@
 				
 		<div class="row m_top20">
 			<div class="com-md-8 col-sm-12 col-xs-12 text-center">
-				<h3 class="text-success text-uppercase">Process to add Cadre as Mandal/Municipality Affiliated Electoral</h3>
+				<h3 class="text-success text-uppercase">Process to add Cadre as Mandal/Municipality/Division Affiliated Electoral</h3>
 			</div>
 		</div>
 		<div id="nonafiliatedCommitteeDivId" class="row">	
@@ -994,14 +994,14 @@
 		
 	}
 	function refreshExistingDetails(){
-		$("#fromAgeId").val("");
-		$("#toAgeId").val("");
+		//$("#fromAgeId").val("");
+		//$("#toAgeId").val("");
 		$("#searchBy").val("");
 		$("#cadreDetailsDiv").html("");
-		$("#casteCategory").val(0);
-		$("#casteList").val(0);
-		$("#ageRange").val(0);
-		$("#gender").val(0);
+		//$("#casteCategory").val(0);
+		//$("#casteList").val(0);
+		//$("#ageRange").val(0);
+		//$("#gender").val(0);
 	}
 	function showSearchInfo(){
 		$('#committeePositionIdErr').html('');
@@ -1414,7 +1414,7 @@
 					str+='<h3 class="panel-header">ELECTORALS INFO</h3>'
 					str+='<hr style="border-color:#F00;margin-top:10px;"></div>';
 					if(result != null && result.length > 0){
-						str+='<table class="table table-bordered" style="borde:1 solid #000;background-color:rgba(0,0,0,0.1);"><thead style="background-color:rgba(0,0,0,0.2);"><tr><th style="width:20%">CommitteeName</th><th style="width:45%">Name</th><th style="width:10%">Image</th><th style="width:25%">Enrolment Number</th></tr></thead>';
+						str+='<table class="table table-bordered" style="borde:1 solid #000;background-color:rgba(0,0,0,0.1);"><thead style="background-color:rgba(0,0,0,0.2);"><tr><th style="width:20%">Committee Name</th><th style="width:45%">Name</th><th style="width:10%">Image</th><th style="width:25%">Enrolment Number</th></tr></thead>';
 						str+='<tbody>';
 						
 						for(var i in result){
