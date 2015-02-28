@@ -31,6 +31,16 @@
 		 $("#cadreDetailsDiv,#step3Id,#searchcadrenewDiv,#designationDivId,#step1Id,#committeeMainId").hide();
 		 $("#cadreDetailsDiv").html("");
 		 
+		 
+		$("#fromAgeId").val("");
+		$("#toAgeId").val("");
+		$("#searchBy").val("");
+		$("#cadreDetailsDiv").html("");
+		$("#casteCategory").val(0);
+		$("#casteList").val(0);
+		$("#ageRange").val(0);
+		$("#gender").val(0);
+			
 		if(searchType == 'basicCommitteeDiv')
 		{
 			$('#'+searchType+'').show();
@@ -42,6 +52,16 @@
 			$("#headingDiv").html("Select Candidate for Selected Designation");
 			//getCommitteeLocations();
 			getMandalCorporationsByConstituency();
+			
+			$("#fromAgeId").val("");
+			$("#toAgeId").val("");
+			$("#searchBy").val("");
+			$("#cadreDetailsDiv").html("");
+			$("#casteCategory").val(0);
+			$("#casteList").val(0);
+			$("#ageRange").val(0);
+			$("#gender").val(0);
+		
 		}
 		
 		else if(searchType == 'publicrepresantative')
@@ -53,7 +73,8 @@
 			$('#publicrepresantativeTab').addClass('arrow_selected');			
 			$("#searchcadrenewDiv").show();
 			$("#advancedSearchDiv").hide();	
-			$("#headingDiv").html("Select Candidate for a Public Representative ");			
+			$("#headingDiv").html("Select Candidate for a Public Representative ");	
+		
 		}
 		else if(searchType == 'mandalaffiliated')
 		{	$('#committeLocationsDiv').show();				
