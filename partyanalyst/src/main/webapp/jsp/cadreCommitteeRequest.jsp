@@ -68,8 +68,8 @@
             <!-- First Block Start-->
            <div class="row">
            		<div style="border-bottom: 1px solid rgb(255, 255, 255); padding: 10px;"class="col-md-offset-1 text-center col-md-10">
-					<label id="incId" class="radio-inline" style="padding: 10px 10px 10px 30px; background: none repeat scroll 0% 0% rgb(255, 153, 102); margin-left: -3px;"><input type="radio" name="requestType" value="1" id="reqIncPosId" checked="true" onClick="hideDetails('1');clearResult();"/>Request for committee member new position</label>
-                    <label id="desgId" class="radio-inline"  style="padding: 10px 10px 10px 30px; background: none repeat scroll 0% 0% rgb(255, 153, 102); margin-left: -3px;"><input type="radio" name="requestType" value="2" id="reqChangeDesgId" onClick="hideDetails('2');clearResult();"/>Request for committee members change position</label>
+					<label id="incId" class="radio-inline" style="padding: 10px 10px 10px 30px; background: none repeat scroll 0% 0% rgb(255, 153, 102); margin-left: -3px;"><input type="radio" name="requestType" value="1" id="reqIncPosId" checked="true" onClick="hideDetails('1');clearResult();"/>Request for Committee Member increase Position</label>
+                    <label id="desgId" class="radio-inline"  style="padding: 10px 10px 10px 30px; background: none repeat scroll 0% 0% rgb(255, 153, 102); margin-left: -3px;"><input type="radio" name="requestType" value="2" id="reqChangeDesgId" onClick="hideDetails('2');clearResult();"/>Request for Committee Members change Position</label>
 					<label id="viewId" class="radio-inline"  style="padding: 10px 10px 10px 30px; background: none repeat scroll 0% 0% rgb(255, 153, 102); margin-left: -3px;"><input type="radio" name="requestType" value="3" id="viewRequestId" onClick="hideDetails('3');clearResult();" />View Request Status</label> 
                 </div>
             </div>
