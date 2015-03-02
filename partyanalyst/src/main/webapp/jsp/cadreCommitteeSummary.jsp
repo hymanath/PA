@@ -28,7 +28,8 @@
 				<img src="images/committee_logo.png" title="Committee Logo" alt="committee" />
 			</div>
 			<div class="col-md-3  col-xs-3 col-sm-3">
-				<a href="#" class="dropdown-toggle btn btn-default btn-xs m_top20" data-toggle="dropdown" aria-expanded="false" style="margin-top: 60px;">
+			<div class="" style="color:white;margin-top: 20px;"><b> Welcome ${sessionScope.UserName} </b></div>
+				<a href="#" class="dropdown-toggle btn btn-default btn-xs m_top20" data-toggle="dropdown" aria-expanded="false" style="margin-top: 20px;">
 				Menu <img src="images/menu_icon.png" />
 				</a>
 				<ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);top: 91px;">

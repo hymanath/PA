@@ -368,7 +368,7 @@ function getCommitteeLocations(){
 								  str+='<input class="form-control" id="currentMaxPositionId" disabled="disabled" value='+result.result[i].population+' /> ';
 								  str+=' Request Max Positions';
 								  str+='<input class="form-control" id="requestMaxPositionId" /> ';
-								  str+='<button id="positionIncreased" class="btn btn-success" onClick="cadreCommitteeIncPositionsOrChangeDesg(\'positionsIncreased\')">Send Request</button>';
+								  str+='<br/><button id="positionIncreased" class="btn btn-success" onClick="cadreCommitteeIncPositionsOrChangeDesg(\'positionsIncreased\')">Send Request</button>';
 								  str+='<div> <img src="images/Loading-data.gif" class="offset7"  id="posIncImageId" style=" margin-left:252px;margin-top: 20px;width:70px;height:60px;display:none;"/></div>';
 								  str+='<div id="maxPositionsErrId"></div>';
 								  str+='</div>';

@@ -34,8 +34,8 @@
 				<img src="images/cadreCommitee/Committees_2014_logo.png" class="m_top10" title="Committee Logo" alt="committee" />
 			</div>
 			<div class="col-md-3  col-xs-3 col-sm-3">
-               
-                    <a href="#" class="dropdown-toggle btn btn-default btn-xs m_top20" data-toggle="dropdown" aria-expanded="false" style="margin-top: 60px;">
+                <div class="" style="color:white;margin-top: 20px;"><b> Welcome ${sessionScope.UserName} </b></div>
+                    <a href="#" class="dropdown-toggle btn btn-default btn-xs m_top20" data-toggle="dropdown" aria-expanded="false" style="margin-top: 20px;">
                     Menu <img src="images/cadreCommitee/menu_icon.png" />
                     </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);top: 91px;">
@@ -66,7 +66,7 @@
     </div>
 	<div class="row m_top20">
 		<div class="col-md-4 col-md-offset-3"><label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="reportTypeCls" value=1 name="reportType" checked="true"> VILLAGE / WARD</label></div>
-		<div class="col-md-4 "><label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="reportTypeCls" value=2 name="reportType">MANDAL / MUNCIPALITY / DIVISION</label></div>
+		<div class="col-md-4 "><label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="reportTypeCls" value=2 name="reportType">MANDAL / TOWN / DIVISION</label></div>
 	</div>
 	
 	<span class="btn btn-info pull-right exportToExcel" onclick="exportToExcel()" style="display:none;"> Export To Excel </span>
@@ -297,7 +297,7 @@ function buildConstituencySummary(results,jsObj){
 				var rest = results.localBodiesList[i];
 				var reqPositionsArray = new Array();
 				str += '<h4 class="locationName">'+rest.locationName+'</h4>'
-				str+='<table class="table table-yellow-bordered table-condensed " style="width:100%; background-color:rgba(0,0,0,0.1);">';
+				str+='<table class="table table-yellow-bordered table-condensed " style="width:100%; ">';
 				str+='<thead>';
 					str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
 						str+='<th rowspan=2> Location </th>';
@@ -362,8 +362,8 @@ function buildConstituencySummary(results,jsObj){
 			
 			
 		}else{
-				str += '<h4 class="locationName"> Mandal/Munciapality/Division Wise Committees Summary</h4>'
-				str+='<table class="table table-yellow-bordered table-condensed " style="width:100%; background-color:rgba(0,0,0,0.1);">';
+				str += '<h4 class="locationName"> Mandal/Town/Division Wise Committees Summary</h4>'
+				str+='<table class="table table-yellow-bordered table-condensed " style="width:100%; ">';
 				str+='<thead>';
 					str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
 						str+='<th> Location </th>';
@@ -381,7 +381,9 @@ function buildConstituencySummary(results,jsObj){
 								if(rest.resultList[j].membersCount!=null){
 									//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="5">'+rest.resultList[j].membersCount+'</td>';
 							        //str+='<td><a class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="5"  id="location'+rest.locationId+'" href="javascript:{gettingCadreDetails(\'location'+rest.locationId+'\');}">'+rest.resultList[j].membersCount+'</a></td>';
-                                    str+='<td><a href="javascript:{gettingCadreDetails(\'members\',5,'+rest.locationId+','+rest.resultList[j].basicCommitteeTypeId+',\''+rest.locationsList[j].locationName+'\',\''+rest.locationsList[j].resultList[k].basicCommitteeName+'\');}">'+rest.resultList[j].membersCount+'</a></td>';
+									
+                                    str+='<td><a href="javascript:{gettingCadreDetails(\'members\',5,'+rest.locationId+','+rest.resultList[j].basicCommitteeTypeId+',\''+rest.locationName+'\',\''+rest.resultList[j].basicCommitteeName+'\');}">'+rest.resultList[j].membersCount+'</a></td>';
+									
 
 								}else{
 									str+='<td> - </td>';
@@ -399,7 +401,7 @@ function buildConstituencySummary(results,jsObj){
 								if(rest.resultList[j].membersCount!=null){
 									//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="7">'+rest.resultList[j].membersCount+'</td>';
 								   //str+='<td><a class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="7"  id="location'+rest.locationId+'" href="javascript:{gettingCadreDetails(\'location'+rest.locationId+'\');}">'+rest.resultList[j].membersCount+'</a></td>';
- 								   str+='<td><a href="javascript:{gettingCadreDetails(\'members\',7,'+rest.locationId+','+rest.resultList[j].basicCommitteeTypeId+',\''+rest.locationsList[j].locationName+'\',\''+rest.locationsList[j].resultList[k].basicCommitteeName+'\');}">'+rest.resultList[j].membersCount+'</a></td>';
+ 								   str+='<td><a href="javascript:{gettingCadreDetails(\'members\',7,'+rest.locationId+','+rest.resultList[j].basicCommitteeTypeId+',\''+rest.locationName+'\',\''+rest.resultList[j].basicCommitteeName+'\');}">'+rest.resultList[j].membersCount+'</a></td>';
 
 								}else{
 									str+='<td> - </td>';
@@ -417,7 +419,7 @@ function buildConstituencySummary(results,jsObj){
 								if(rest.resultList[j].membersCount!=null){
 									//str+='<td class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="11">'+rest.resultList[j].membersCount+'</td>';
 									 //str+='<td><a class="lctnCmmty" attr_cmmtyType='+rest.resultList[j].basicCommitteeTypeId+' attr_locationId='+rest.locationId+' attr_locationType="11"  id="location'+rest.locationId+'" href="javascript:{gettingCadreDetails(\'location'+rest.locationId+'\');}">'+rest.resultList[j].membersCount+'</a></td>';
-									 str+='<td><a href="javascript:{gettingCadreDetails(\'members\',9,'+rest.locationId+','+rest.resultList[j].basicCommitteeTypeId+','+rest.locationsList[j].locationName+','+rest.locationsList[j].resultList[k].basicCommitteeName+');}">'+rest.resultList[j].membersCount+'</a></td>';
+									 str+='<td><a href="javascript:{gettingCadreDetails(\'members\',9,'+rest.locationId+','+rest.resultList[j].basicCommitteeTypeId+','+rest.locationName+','+rest.resultList[j].basicCommitteeName+');}">'+rest.resultList[j].membersCount+'</a></td>';
 
 								}else{
 									str+='<td> - </td>';
@@ -461,10 +463,13 @@ function buildingResults(result,type,locationName,basicCmmtyName,basicCmmtyId)
 {
   if(result!=null)
   {
-	
-    
-	var name=(locationName.slice(0,locationName.indexOf("(")));
-	
+    var name = '';
+	if(locationName.indexOf("(") != -1){
+	 name=(locationName.slice(0,locationName.indexOf("(")));
+	 }
+	else{
+	name=locationName;
+	}
 	
     if(result.length>0){
     var str='';

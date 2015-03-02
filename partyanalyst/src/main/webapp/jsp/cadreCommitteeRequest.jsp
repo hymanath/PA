@@ -37,6 +37,10 @@
 	.table-yellow-bordered > thead > tr > td,
 	.table-yellow-bordered > tbody > tr > td,
 	.table-yellow-bordered > tfoot > tr > td {	border: 1px solid #ebd621;}
+	.required{
+	color:red;
+	font-size:13px;
+	}
 	</style>
 </head>
 
@@ -46,7 +50,8 @@
 				<img src="images/cadreCommitee/committee_logo.png" title="Committee Logo" alt="committee" />
 			</div>
 			<div class="col-md-3  col-xs-3 col-sm-3">
-				<a href="#" class="dropdown-toggle btn btn-default btn-xs m_top20" data-toggle="dropdown" aria-expanded="false" style="margin-top: 60px;">
+				<div class="" style="color:white;margin-top: 20px;"><b> Welcome ${sessionScope.UserName} </b></div>
+				<a href="#" class="dropdown-toggle btn btn-default btn-xs m_top20" data-toggle="dropdown" aria-expanded="false" style="margin-top: 20px;">
 				Menu <img src="images/menu_icon.png" />
 				</a>
 				<ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);top: 91px;">
@@ -68,8 +73,8 @@
             <!-- First Block Start-->
            <div class="row">
            		<div style="border-bottom: 1px solid rgb(255, 255, 255); padding: 10px;"class="col-md-offset-1 text-center col-md-10">
-					<label id="incId" class="radio-inline" style="padding: 10px 10px 10px 30px; background: none repeat scroll 0% 0% rgb(255, 153, 102); margin-left: -3px;"><input type="radio" name="requestType" value="1" id="reqIncPosId" checked="true" onClick="hideDetails('1');clearResult();"/>Request for Committee Member increase Position</label>
-                    <label id="desgId" class="radio-inline"  style="padding: 10px 10px 10px 30px; background: none repeat scroll 0% 0% rgb(255, 153, 102); margin-left: -3px;"><input type="radio" name="requestType" value="2" id="reqChangeDesgId" onClick="hideDetails('2');clearResult();"/>Request for Committee Members change Position</label>
+					<label id="incId" class="radio-inline" style="padding: 10px 10px 10px 30px; background: none repeat scroll 0% 0% rgb(255, 153, 102); margin-left: -3px;"><input type="radio" name="requestType" value="1" id="reqIncPosId" checked="true" onClick="hideDetails('1');clearResult();"/>Request For Committee Member Increase Position</label>
+                    <label id="desgId" class="radio-inline"  style="padding: 10px 10px 10px 30px; background: none repeat scroll 0% 0% rgb(255, 153, 102); margin-left: -3px;"><input type="radio" name="requestType" value="2" id="reqChangeDesgId" onClick="hideDetails('2');clearResult();"/>Request For Committee Members Change Position</label>
 					<label id="viewId" class="radio-inline"  style="padding: 10px 10px 10px 30px; background: none repeat scroll 0% 0% rgb(255, 153, 102); margin-left: -3px;"><input type="radio" name="requestType" value="3" id="viewRequestId" onClick="hideDetails('3');clearResult();" />View Request Status</label> 
                 </div>
             </div>
@@ -89,22 +94,22 @@
 	     
 		   <!-- locations,commitees,designations drop down boxes list -->
            <div class="row m_top20" id="committeesId">
-                  <div class="col-md-3" id="selLocId">Select location<br/>
+                  <div class="col-md-3" id="selLocId">SELECT LOCATION<font class="required"> * </font><br/>
                 	<select id="committeeLocationId" class="form-control" onchange="populateDefaultValue(1);clearResult();"><option value="0">Select Location</option></select>
                     <div id="committeeLocationIdErr"></div>
 				  </div>
 				
-                  <div class="col-md-3" id="selCommId">Committee Type<br/>
+                  <div class="col-md-3" id="selCommId">COMMITTEE TYPE<font class="required"> * </font><br/>
                     <select id="committeeTypeId" class="form-control" onchange="getAffiliatedCommitsForALoc();populateDefaultValue(2);getCommitteCadreMembersInfo(1);clearResult();"><option  value="0">Select Committee Type</option><option value="1">Main Committee</option><option value="2">Affiliated Committee</option></select>
                     <div id="committeeTypeIdErr"></div>
 				  </div>
 			    
-                 <div id="committeeMainId" class="col-md-3">Affliated Committee<br/>
+                 <div id="committeeMainId" class="col-md-3">AFFILIATED COMMITTEES<font class="required"> * </font><br/>
                    <select id="afflitCommitteeId" class="form-control" onchange="getCommitteCadreMembersInfo(2);clearResult();"><option>Select Affiliated Committee</option></select>
                    <div id="afflitCommitteeIdErr"></div>
 				 </div>
 				
-                 <div id="designationDivId" class="col-md-3">Committee Designation<br/>
+                 <div id="designationDivId" class="col-md-3">COMMITTEE DESIGNATION<font class="required"> * </font><br/>
                     <select id="committeePositionId" class="form-control" name="eligibleRoles[0].cadreRoleId" onChange="checkDesgValidation();clearResult();"><option value="0">Select Designation </option></select>
                     <div id="committeePositionIdErr"></div>
 				 </div>
