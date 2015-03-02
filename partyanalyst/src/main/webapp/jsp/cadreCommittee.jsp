@@ -71,7 +71,8 @@
 				<img src="images/cadreCommitee/committee_logo.png" title="Committee Logo" alt="committee" />
 			</div>
 			<div class="col-md-3  col-xs-3 col-sm-3">
-				<a href="#" class="dropdown-toggle btn btn-default btn-xs m_top20" data-toggle="dropdown" aria-expanded="false" style="margin-top: 60px;">
+			<div class="" style="color:white;margin-top: 20px;"><b> Welcome ${sessionScope.UserName} </b></div>
+				<a href="#" class="dropdown-toggle btn btn-default btn-xs m_top20" data-toggle="dropdown" aria-expanded="false" style="margin-top:20px;">
 				Menu <img src="images/menu_icon.png" />
 				</a>
 				<ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);top: 91px;">
@@ -90,13 +91,14 @@
 				<div class="row" >
 				     
 					<div class="col-md-4 col-md-offset-0 col-sm-4 col-xs-4" >
-						<a class="btn btn-success btn-block arrow_selected" id="basicCommitteeTab" href="javascript:{showAndHideTabs('basicCommitteeDiv');}">Committee <br>Management</a>
+						<a class="btn btn-success btn-block arrow_selected" id="basicCommitteeTab" href="javascript:{showAndHideTabs('basicCommitteeDiv');}"> Committee <br>Management<br> <br></a>
 					</div>
 					<div class="col-md-4 col-sm-4 col-xs-4">
-						<a class="btn btn-success btn-block "   id="publicrepresantativeTab" href="javascript:{showAndHideTabs('publicrepresantative');}">Mandal/Municipality/Division Main <br> Committee Electoral Management</a>
+						<a class="btn btn-success btn-block "   id="publicrepresantativeTab" href="javascript:{showAndHideTabs('publicrepresantative');}">Mandal/Municipality/Division <br> 
+								Main Committee <br> Electoral Management</a>
 					</div>
 					<div class="col-md-4 col-sm-4 col-xs-4">
-						<a class="btn btn-success btn-block "  id="mandalaffiliatedTab" href="javascript:{showAndHideTabs('mandalaffiliated');}" >Mandal/Municipality/Division <br> Affiliated   Committee Electoral Management</a>				
+						<a class="btn btn-success btn-block "  id="mandalaffiliatedTab" href="javascript:{showAndHideTabs('mandalaffiliated');}" >Mandal/Municipality/Division <br> Affiliated   Committee <br>  Electoral Management</a>				
 					</div>
 				</div> 		
 			</div> 		
@@ -820,7 +822,17 @@
 				   if(result.locationName != null && result.locationName == "N"){
 				      str+='<div class="text-right editDesignation"><input type="button" value="EDIT DESIGNATION" onclick="showEditInfo();" class="btn btn-success" /></div>';
 				   }
-				   str+='<table class="table table-bordered text-left" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); color:#fff;">';
+				   str+='<table class="table table-bordered text-left" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); color:#000;">';
+				   str+='<thead style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.2); color:#000">';
+					 
+                   str+='<th>Designation</th>';
+                   str+='<th>Image</th>';
+                   str+='<th>Name</th>';
+				   str+='<th>Enrollment No</th>';
+                   str+='<th  class="hideRowClass">Edit Designation</th>';
+				   str+='<th  class="hideRowClass">Update</th>';
+				   str+='</thead>';
+				   str+='<tbody >';
 				   str+='	<tbody>';
 				   var x = 0;
 				   for(var i in members){

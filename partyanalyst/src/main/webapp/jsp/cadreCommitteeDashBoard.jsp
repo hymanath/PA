@@ -70,8 +70,8 @@
 				<img src="images/cadreCommitee/Committees_2014_logo.png" class="m_top10" title="Committee Logo" alt="committee" />
 			</div>
 			<div class="col-md-3  col-xs-3 col-sm-3">
-               
-                    <a href="#" class="dropdown-toggle btn btn-default btn-xs m_top20" data-toggle="dropdown" aria-expanded="false" style="margin-top: 60px;">
+              <div class="" style="color:white;margin-top: 20px;"><b> Welcome ${sessionScope.UserName} </b></div>
+                    <a href="#" class="dropdown-toggle btn btn-default btn-xs m_top20" data-toggle="dropdown" aria-expanded="false" style="margin-top: 20px;">
                     Menu <img src="images/cadreCommitee/menu_icon.png" />
                     </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);top: 91px;">
@@ -603,7 +603,7 @@
                     endDate: moment(),
                     minDate: '01/01/2012',
                     maxDate: '12/31/2015',
-                    dateLimit: { days: 60 },
+                    //dateLimit: { days: 60 },
                     showDropdowns: true,
                     showWeekNumbers: true,
                     timePicker: false,
@@ -2255,6 +2255,8 @@
 	}
 	
 	function getSummary(id){
+		$("#CommitteeDetails").html(""); 
+		$("#committeeMemberDiv").html("");
 		var Id=id;
 		var jObj={
 			constituencyId:Id
@@ -2357,7 +2359,8 @@
 		} */
 	
 		function getMandalMuncipalDivisonStartedCommittees(id){
-			
+			$("#CommitteeDetails").html(""); 
+			$("#committeeMemberDiv").html("");
 			var Id = id;
 			var jObj={
 				constituencyId:Id
@@ -2565,14 +2568,14 @@
 			}
 			else
 			{
-		str+='<td><button class="btn btn-success btn-sm" onclick="getCommitteeMemberInfo(\''+jsObj.basicCommitteetypeId+'\',\''+result[i].level+'\',\''+result[i].id+'\',\''+jsObj.status+'\');">view</button></td>';
+		str+='<td><button class="btn btn-success btn-sm" onclick="getCommitteeMemberInfo(\''+jsObj.basicCommitteetypeId+'\',\''+result[i].level+'\',\''+result[i].id+'\',\''+jsObj.status+'\','+jsObj.constituencyId+');">view</button></td>';
 			}
          str+='<tr>';
 			
 		}
 	 $("#CommitteeDetails").html(str);           
 	}
-	function getCommitteeMemberInfo(basicCommitteetypeId,levelId,locationId,status)
+	function getCommitteeMemberInfo(basicCommitteetypeId,levelId,locationId,status,constituencyId)
 	{
 	
 	$("#committeeMemberDiv").html('');
@@ -2600,7 +2603,7 @@
 				}
 			  
 			  if(result != null && result.length > 0){
-				  buildCommitteeMemberDetails(result,jsObj);
+				  buildCommitteeMemberDetails(result,jsObj,constituencyId);
 				
 			}
 	   });
@@ -2610,7 +2613,7 @@
 	
 	
 	
-	function buildCommitteeMemberDetails(result,jsObj)
+	function buildCommitteeMemberDetails(result,jsObj,constituencyId)
 	{
 		var str='';
 		str+='<table class="table table-bordered text-left" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); color:#000000;">';
@@ -2642,7 +2645,7 @@
 		{
 			<c:if test="${!fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_AREAWISE_ACCESS' )}">
 				var str1='';
-				str1+='<button class="btn btn-success btn-lg" onclick="committeeComplete(\''+jsObj.basicCommitteetypeId+'\',\''+jsObj.levelId+'\',\''+jsObj.locationId+'\')">Finalize Committee</button>';
+				str1+='<button class="btn btn-success btn-lg" onclick="committeeComplete(\''+jsObj.basicCommitteetypeId+'\',\''+jsObj.levelId+'\',\''+jsObj.locationId+'\','+constituencyId+')">Finalize Committee</button>';
 				$("#conformedBtn").html(str1);
 			</c:if>
 		}
@@ -2652,7 +2655,7 @@
 		img.src = "images/cadreCommitee/Member_thamb_image.png";
 	}
 	
-	function committeeComplete(basicCommitteetypeId,levelId,locationId)
+	function committeeComplete(basicCommitteetypeId,levelId,locationId,constituencyId)
 	{
 	var r=confirm("Are You Sure To Conform ?");
 		if(r)
@@ -2679,6 +2682,8 @@
 				  {
 				alert("Committee Confirmed")
 				$("#conformedBtn").html('');
+				getSummary(constituencyId);
+				getMandalMuncipalDivisonStartedCommittees(constituencyId);
 				  }
 				
 			}
