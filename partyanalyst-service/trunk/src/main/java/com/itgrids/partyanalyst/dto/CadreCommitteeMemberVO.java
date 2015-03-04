@@ -15,9 +15,52 @@ public class CadreCommitteeMemberVO {
 	private String locationName;
 	private String committe;
 	private String membershipNo;
+	private String age;
+	private String gender;
+	private String casteName;
+	private String totalCount;
+	private String maleCount;
+	private String femaleCount;
 	List<CadreCommitteeMemberVO> knownList;
 	List<CadreCommitteeMemberVO> unKnownList;
 	
+	
+	public String getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(String totalCount) {
+		this.totalCount = totalCount;
+	}
+	public String getMaleCount() {
+		return maleCount;
+	}
+	public void setMaleCount(String maleCount) {
+		this.maleCount = maleCount;
+	}
+	public String getFemaleCount() {
+		return femaleCount;
+	}
+	public void setFemaleCount(String femaleCount) {
+		this.femaleCount = femaleCount;
+	}
+	public String getAge() {
+		return age;
+	}
+	public void setAge(String age) {
+		this.age = age;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public String getCasteName() {
+		return casteName;
+	}
+	public void setCasteName(String casteName) {
+		this.casteName = casteName;
+	}
 	public String getMembershipNo() {
 		return membershipNo;
 	}
