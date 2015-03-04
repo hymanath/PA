@@ -1922,7 +1922,8 @@
 	
 	function showAdvanceDashBoard(constiIdReq){
 		//window.location.href="constituencyCommitteeSummaryAction.action?accessConstituencyId="+constiIdReq;
-		 window.open('constituencyCommitteeSummaryAction.action?accessConstituencyId='+constiIdReq+'','location=no','_blank'); 
+		// window.open('constituencyCommitteeSummaryAction.action?accessConstituencyId='+constiIdReq+'','location=no','_blank');
+	window.open('constituencyCommitteeSummaryAction.action?accessConstituencyId='+constiIdReq+'','location=no','top=10,left=25,status=no,toolbar=no,location=yes,menubar=no,titlebar=no,scrollbars=yes,modal=yes');		
 	}
 	
 	function buildConstiWiseSummary(result,mandalCheck,villageCheck){
