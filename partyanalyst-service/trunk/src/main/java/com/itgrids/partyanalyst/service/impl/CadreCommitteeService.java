@@ -4,9 +4,11 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -5568,7 +5570,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			
 		    List<Object[]> electrolsList=tdpCommitteeElectrolsDAO.getElectrolsOfPanchayatAndWards(locationId,locationType,basicCommitteeTypeId);
 		    List<Long> mmbrIds = new ArrayList<Long>();
-		    
+		    Long maleCount = 0L;
+		    Long femaleCount = 0L;
 		    if(rolesList!=null && rolesList.size()>0){
 		    	cadreCommitteeMemberVOList=new ArrayList<CadreCommitteeMemberVO>();
 			      for (Object[] objects : rolesList){
@@ -5585,6 +5588,42 @@ public class CadreCommitteeService implements ICadreCommitteeService
 							cadreCommitteeMemberVO.setMembershipNo(objects[5].toString());
 						}
 			    	  
+			    	  cadreCommitteeMemberVO.setCasteName(objects[8] != null ? objects[8].toString().trim():"");
+			    		cadreCommitteeMemberVO.setGender(objects[9] != null ? objects[9].toString().trim():"");
+			    		cadreCommitteeMemberVO.setAge(objects[10] != null ? objects[10].toString().trim():"");
+			    		
+			    		if(cadreCommitteeMemberVO.getGender().equalsIgnoreCase("M") || cadreCommitteeMemberVO.getGender().equalsIgnoreCase("Male"))
+			    		{
+			    			maleCount = maleCount+1;
+			    		}
+			    		else if(cadreCommitteeMemberVO.getGender().equalsIgnoreCase("F") || cadreCommitteeMemberVO.getGender().equalsIgnoreCase("Female"))
+			    		{
+			    			femaleCount = femaleCount+1;
+			    		}
+			    		
+			    		if(cadreCommitteeMemberVO.getAge() == null)
+						{					
+							String dateOfBirth = objects[11] != null ? objects[11].toString().trim().substring(0, 10).trim():"";
+							
+							if(dateOfBirth.trim().length()>0)
+							{
+								SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+								
+								Date today = new Date();
+								Date DOB = dateFormat.parse(dateOfBirth);
+
+								Calendar startCalendar = new GregorianCalendar();
+								startCalendar.setTime(DOB);
+								Calendar endCalendar = new GregorianCalendar();
+								endCalendar.setTime(today);
+
+								int diffYear = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
+								//int diffMonth = diffYear * 12 + endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH);
+								
+								cadreCommitteeMemberVO.setAge(diffYear != 0 ? Long.valueOf(Integer.toString(diffYear)).toString():"");
+							}
+						}
+			    		
 			    	  cadreCommitteeMemberVOList.add(cadreCommitteeMemberVO);
 				   }
 			    }
@@ -5620,9 +5659,19 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				{
 		    	 cadreCommitteeMemberVOList.get(0).setLocationName(locationName);
 		    	 cadreCommitteeMemberVOList.get(0).setCommitte(tdpBasicCommitteeDAO.get(basicCommitteeTypeId).getName());
+		    	 cadreCommitteeMemberVOList.get(0).setMaleCount(maleCount.toString());
+		    	 cadreCommitteeMemberVOList.get(0).setFemaleCount(femaleCount.toString());
+		    	 Long total = maleCount+femaleCount;
+		    	 cadreCommitteeMemberVOList.get(0).setTotalCount(total.toString());
 				}
 		      }
-   
+		    if(cadreCommitteeMemberVOList != null && cadreCommitteeMemberVOList.size() > 0)
+			{	    	
+	    	 cadreCommitteeMemberVOList.get(0).setMaleCount(maleCount.toString());
+	    	 cadreCommitteeMemberVOList.get(0).setFemaleCount(femaleCount.toString());
+	    	 Long total = maleCount+femaleCount;
+	    	 cadreCommitteeMemberVOList.get(0).setTotal(total);
+			}
 		}
 		catch(Exception e){
 			
@@ -5639,7 +5688,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		    if(tdpCadresList!=null && tdpCadresList.size()>0){
 		    	String locationName = getLocationName(locationType,locationId);
 		    	cadreCommitteeMemberVOList=new ArrayList<CadreCommitteeMemberVO>();
-		    	
+		    	Long maleCount = 0L;
+		    	Long femaleCount = 0L;
 		    	for (Object[] objects : tdpCadresList){
 		    		CadreCommitteeMemberVO cadreCommitteeMemberVO=new CadreCommitteeMemberVO();
 		    		cadreCommitteeMemberVO.setLevel((Long)objects[0]);//roleId
@@ -5647,6 +5697,43 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		    		cadreCommitteeMemberVO.setId((Long)objects[2]);//cadreId
 		    		cadreCommitteeMemberVO.setName(objects[3].toString());//cadreName
 		    		cadreCommitteeMemberVO.setImagePath(objects[4].toString());//image
+		    		cadreCommitteeMemberVO.setCasteName(objects[8] != null ? objects[8].toString().trim():"");
+		    		cadreCommitteeMemberVO.setGender(objects[9] != null ? objects[9].toString().trim():"");
+		    		cadreCommitteeMemberVO.setAge(objects[10] != null ? objects[10].toString().trim():"");
+		    		
+		    		if(cadreCommitteeMemberVO.getGender().equalsIgnoreCase("M") || cadreCommitteeMemberVO.getGender().equalsIgnoreCase("Male"))
+		    		{
+		    			maleCount = maleCount+1;
+		    		}
+		    		else if(cadreCommitteeMemberVO.getGender().equalsIgnoreCase("F") || cadreCommitteeMemberVO.getGender().equalsIgnoreCase("Female"))
+		    		{
+		    			femaleCount = femaleCount+1;
+		    		}
+		    		
+		    		if(cadreCommitteeMemberVO.getAge() == null)
+					{					
+						String dateOfBirth = objects[11] != null ? objects[11].toString().trim().substring(0, 10).trim():"";
+						
+						if(dateOfBirth.trim().length()>0)
+						{
+							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+							
+							Date today = new Date();
+							Date DOB = dateFormat.parse(dateOfBirth);
+
+							Calendar startCalendar = new GregorianCalendar();
+							startCalendar.setTime(DOB);
+							Calendar endCalendar = new GregorianCalendar();
+							endCalendar.setTime(today);
+
+							int diffYear = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
+							//int diffMonth = diffYear * 12 + endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH);
+							
+							cadreCommitteeMemberVO.setAge(diffYear != 0 ? Long.valueOf(Integer.toString(diffYear)).toString():"");
+						}
+					}
+
+		    		
 		    		if(objects[5].toString().trim().length() > 8){
 		    			cadreCommitteeMemberVO.setMembershipNo(objects[5].toString().trim().substring(objects[5].toString().trim().length()-8));
 					}else{
@@ -5659,6 +5746,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				{
 		    	 cadreCommitteeMemberVOList.get(0).setLocationName(locationName);
 		    	 cadreCommitteeMemberVOList.get(0).setCommitte(tdpBasicCommitteeDAO.get(basicCommitteeTypeId).getName());
+		    	 cadreCommitteeMemberVOList.get(0).setFemaleCount(femaleCount.toString());
+		    	 cadreCommitteeMemberVOList.get(0).setMaleCount(maleCount.toString());
+		    	 Long totalCount = femaleCount+maleCount ;
+		    	 cadreCommitteeMemberVOList.get(0).setTotal(totalCount);
 				}
 		    	
 		    }
