@@ -22,8 +22,23 @@
 	<!----slick Js----->
 	<script type="text/javascript" src="js/cadreCommittee/slick/slick.min.js"></script>
 	<script type="text/javascript" src="js/cadreCommitteeRequest/cadreCommitteeRequest.js"></script>
+	    <script type="text/javascript" src="js/jquery.dataTables.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 	
+	<style>
 	
+	label {
+    display: inline-block;
+    font-weight: normal !important;
+	}
+
+#constiTableId th{
+    background-color: #d3d3d3 !important;
+}
+#constiTableId td{
+    background-color: #F3F3F3 !important;
+}
+	</style>
 </head>
 <body>
 <style>
@@ -79,26 +94,18 @@
 </div>
 
 <div id="dialogSummary" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+
 <div class="modal-dialog modal-lg">
 <div class="modal-content">
     
-	<div class="row" style="text-align:center;">
-<div class="col-md-8 col-md-offset-2">
-<h3 class="panel-header"></h3>
-<hr style="border-color:#F00;margin-top:10px;" />
-</div>
-
-<span aria-hidden="true" data-dismiss="modal" class="pull-right" style="font-size: 30px; cursor: pointer; margin-left: -18px; margin-right: 24px; margin-top: -2px;" type="button">X</span>
-
-</div>
-
-
-    <div id="cadreDetailsDiv"></div>
-
-
+	 <div class="modal-header">
+	  <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">x</span></button>
+		<h3 class="panel-header text-center"></h3>
+	  </div>
+    <div id="cadreDetailsDiv" style="margin-top:25px;padding:10px;"></div>
 </div>
 </div>
-</div>
+
 <script type="text/javascript">
 var accessConstituency = '${accessConstituency}';
 var accessConstituencyId = '${accessConstituencyId}';
@@ -441,7 +448,7 @@ function buildConstituencySummary(results,jsObj){
 	
 		
 		 var jsObj={
-		         locationId:location,locationType:locationType,basicCommitteeTypeId:basicCmmtyId,type:type
+		         locationId:location,locationType:locationType,basicCommitteeTypeId:basicCmmtyId,type:type,casteStateId:0,gender:"",fromAge:0,toAge:0
 		       };
 			   
 		 $.ajax({
@@ -455,11 +462,11 @@ function buildConstituencySummary(results,jsObj){
 				  location.reload(); 
 				}
 			}
-			 buildingResults(result,type,locationName,basicCmmtyName,basicCmmtyId);
+			 buildingResults(result,type,locationName,basicCmmtyName,basicCmmtyId,locationType);
 		});
 		
 	}
-function buildingResults(result,type,locationName,basicCmmtyName,basicCmmtyId)
+function buildingResults(result,type,locationName,basicCmmtyName,basicCmmtyId,locationTypeId)
 {
   if(result!=null)
   {
@@ -473,38 +480,116 @@ function buildingResults(result,type,locationName,basicCmmtyName,basicCmmtyId)
 	
     if(result.length>0){
     var str='';
-	str+='<table class="table table-yellow-bordered table-condensed">';
+	str+='<div>';
+	str+='<table class="table">';
+str+='<thead>';
+str+='<tr>';
+str+='<td>';
+str+='<span class="">';
+str+='<table class="table table-bordered" style="width:200px">';
+str+='<thead>';
+str+='<tr>';
+str+='<th style="background-color:#EDEDED;"> Total Candidates : </th>';
+str+='<td> '+result[0].total+' </td>';
+str+='</tr>';
+str+='</thead>';
+str+='</table>';
+str+='</span>';
+str+='</td>';
+str+='<td>';
+str+='<span class="">';
+str+='<table class="table table-bordered" style="width:200px">';
+str+='<thead>';
+str+='<tr>';
+str+='<th  style="background-color:#EDEDED;"> Male Candidates : </th>';
+str+='<td> '+result[0].maleCount+' </td>';
+str+='</tr>';
+str+='</thead>';
+str+='</table>';
+str+='</span>';
+str+='</td>';
+str+='<td>';
+str+='<span class="">';
+str+='<table class="table table-bordered" style="width:250px">';
+str+='<thead>';
+str+='<tr>';
+str+='<th  style="background-color:#EDEDED;"> Female Candidates : </th>';
+str+='<td> '+result[0].femaleCount+' </td>';
+str+='</tr>';
+str+='</thead>';
+str+='</table>';
+str+='</span>';
+str+='</td>';
+str+='</tr>';
+str+='</thead>';
+str+='</table>';
+	str+='</div>';
+	str+='<table class="table table-bordered" id="constiTableId">';
 	str+='<thead>';
-	if(basicCmmtyId == 1)
-		str+='<th  style="width: 178px; padding-left: 34px;">Designation</th>';
-	str+='<th style="padding-left: 23px; width: 204px;">Member Image</th>';
-	str+='<th style="padding-left: 72px;">NAME</th>';
-	str+='<th style="padding-left: 19px;">MemberShipNo</th>';
+	//if(basicCmmtyId == 1)
+		//str+='<th  style="width: 178px; padding-left: 34px;">Designation</th>';
+	
+	str+='<th style="width:50px;"> PHOTO </th>';
+	str+='<th style="padding-left: 72px;"> MEMBER </th>';
+	//str+='<th style="padding-left: 19px;">MemberShipNo</th>';
+	str+='<th style="padding-left: 19px;"> AGE </th>';
+	str+='<th style="padding-left: 19px;"> GENDER </th>';
+	str+='<th style="padding-left: 19px;"> CASTE NAME </th>';
 	str+='</thead>';
     for(var i in result){
 	 str+='<tr>';
-	 if(basicCmmtyId == 1){
+	/* if(basicCmmtyId == 1){
 	 if(result[i].role!=null){
 		str+='<td  style="padding-top: 14px; padding-left: 37px;">'+result[i].role+'</td>';
 	 }else{
 		str+='<td  style="padding-top: 14px; padding-left: 37px;">  </td>';
 	 }
+	 }*/
+	 str+='<td><img  style="margin-top: 5px;" width="50"  height="50" src="http://www.mytdp.com/images/cadre_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);"/>';
+	
+	 str+=' </td>';
+	 str+='<td> '+result[i].name+'';
+	  if(basicCmmtyId == 1){
+	 if(result[i].role!=null){
+		 str+='<br>'+result[i].role+'';
+	 }else{
+		 str+='';
 	 }
-	 str+='<td ><img  style="margin-top: 5px; margin-left: 57px; padding-top: 0px;" style="margin-top: 26px; margin-left: 12px;" width="35"  height="35" src="http://www.mytdp.com/images/cadre_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);"/></td>';
-	 str+='<td style="padding-top: 15px; padding-left: 15px;width:281px;">'+result[i].name+'</td>';
-	 str+='<td style="padding-left: 15px; padding-top: 13px;">'+result[i].membershipNo+'</td>';
+	 }	 
+	  str+=' </td>';	  
+	// str+='<td style="padding-top: 15px; padding-left: 15px;width:281px;">'+result[i].name+'</td>';
+	 //str+='<td style="padding-left: 15px; padding-top: 13px;">'+result[i].membershipNo+'</td>';
+	 str+='<td style="padding-left: 15px; padding-top: 13px;">'+result[i].age+' </td>';
+	 str+='<td style="padding-left: 15px; padding-top: 13px;"> '+result[i].gender+' </td>';
+	 str+='<td style="padding-left: 15px; padding-top: 13px;"> '+result[i].casteName+' </td>';
 	 str+='</tr>';
 	}
    str+='</tbody>';
    str+='</table>';
+	str+=' <div class="modal-footer" style="margin-top: 50px;">';
+	str+=' <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>';
+	str+='</div>';
+	
    $("#cadreDetailsDiv").html(str);
-   $('#dialogSummary').find('h3').html('<span>'+ capitalize(name)+' '+ basicCmmtyName +' '+ capitalize(type) +' </span>');
+   
+   var areaType = "";
+   if(locationTypeId != 8)
+   {
+	   areaType = "Panchayat";
+   }
+   $('#dialogSummary').find('h3').html('<span>'+ capitalize(name)+' '+areaType+' '+ basicCmmtyName +' '+ capitalize(type) +' </span>');
    $("#dialogSummary").modal("show");
   
-  }
+  } 
   else{
         $("#cadreDetailsDiv").html("No Data Available.");
 	}
+	
+	$("#constiTableId").dataTable({
+			"iDisplayLength": 20,
+			"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+		});
+	
 }
 }	
 function capitalize(str) {
