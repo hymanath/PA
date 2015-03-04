@@ -217,7 +217,8 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 	public List<Object[]> getComitteeMembersInfoByCommiteTypeAndLocation(Long levelId,Long locationVal,Long committeeTypeId,String status)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("select model.tdpCommitteeRole.tdpRoles.tdpRolesId,model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.tdpCadreId,model.tdpCadre.firstname,model.tdpCadre.image,model.tdpCadre.memberShipNo,model.tdpCommitteeMemberId,model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed" +
+		str.append("select model.tdpCommitteeRole.tdpRoles.tdpRolesId,model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.tdpCadreId,model.tdpCadre.firstname,model.tdpCadre.image,model.tdpCadre.memberShipNo,model.tdpCommitteeMemberId,model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed," +
+				" model.tdpCadre.casteState.caste.casteName,model.tdpCadre.gender,model.tdpCadre.age ,model.tdpCadre.dateOfBirth  " +
 				" from TdpCommitteeMember model" +
 				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId  and model.isActive = 'Y' and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal" +
 				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId = :committeeTypeId ");
@@ -583,7 +584,7 @@ public List<Object[]> getPresidentsAndVPInfoForCommittee(Long levelId,Long locat
 {
 	StringBuilder str = new StringBuilder();
 	str.append("select model.tdpCommitteeRole.tdpRoles.tdpRolesId,model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.tdpCadreId,model.tdpCadre.firstname,model.tdpCadre.image,model.tdpCadre.memberShipNo,model.tdpCommitteeMemberId,model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed" +
-			" from TdpCommitteeMember model" +
+			" ,model.tdpCadre.casteState.caste.casteName,model.tdpCadre.gender,model.tdpCadre.age ,model.tdpCadre.dateOfBirth from TdpCommitteeMember model" +
 			" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId  and model.isActive = 'Y' and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal" +
 			" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId = :committeeTypeId " +
 			" and model.tdpCommitteeRole.tdpRoles.tdpRolesId in(1,3) " +
