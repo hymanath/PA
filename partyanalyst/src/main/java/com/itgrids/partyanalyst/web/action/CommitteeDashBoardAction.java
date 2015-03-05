@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ByeElectionVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
+import com.itgrids.partyanalyst.dto.CadreCommitteeRolesInfoVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -59,9 +60,15 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private CadreCommitteeMemberVO 				boothsInfo;
 	private ByeElectionVO 						byeEleInfo;
 	private BasicVO basicVO;
+	private CadreCommitteeRolesInfoVO			cadreCommitteeRolesInfoVO;
 	
-	
-	
+	public CadreCommitteeRolesInfoVO getCadreCommitteeRolesInfoVO() {
+		return cadreCommitteeRolesInfoVO;
+	}
+	public void setCadreCommitteeRolesInfoVO(
+			CadreCommitteeRolesInfoVO cadreCommitteeRolesInfoVO) {
+		this.cadreCommitteeRolesInfoVO = cadreCommitteeRolesInfoVO;
+	}
 	public BasicVO getBasicVO() {
 		return basicVO;
 	}
@@ -683,6 +690,80 @@ public String getAllConstituencysForADistrict(){
 			byeEleInfo = cadreRegistrationService.getMessagesInfo(startIndex,maxIndex);
 		}catch(Exception e){
 			LOG.error("Exception getMessagesInfo ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getRoleWiseDetails()
+	{
+		try {
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			boolean noaccess = false;
+			
+			if(regVO == null)
+				noaccess = true;
+			if(noaccess)
+				return "error";
+			
+			jObj = new JSONObject(getTask());
+			
+			JSONArray rolesListArr = jObj.getJSONArray("rolesArr");
+			JSONArray casteCategoryArr = jObj.getJSONArray("casteCategoryArr");
+			JSONArray casteCategoryGroupArr = jObj.getJSONArray("casteCategoryGroupArr");
+			JSONArray casteIdsArr = jObj.getJSONArray("casteIdsArr");
+			
+			List<Long> positionIdsList = new ArrayList<Long>();
+			List<Long> casteCategoryIdsList  = new ArrayList<Long>();
+			List<Long> casteCategoryGroupIdsList  = new ArrayList<Long>();
+			List<Long> casteIdsList  = new ArrayList<Long>();
+			
+			Long locationLevelId  = jObj.getLong("locationLevelId");
+			Long committeeTypeId = jObj.getLong("committeeTypeId");
+			String userAccessType = jObj.getString("userAccessType");
+			String castePercentage = jObj.getString("castePercentage");
+
+			if(casteIdsArr != null && casteIdsArr.length()>0)
+			{
+				for (int i = 0; i < casteIdsArr.length(); i++)
+				{
+					Long value = casteIdsArr.get(i) != null ? Long.valueOf(casteIdsArr.get(i).toString().trim()):0L;
+					casteIdsList.add(value);
+				}
+			}
+			
+			if(casteCategoryGroupArr != null && casteCategoryGroupArr.length()>0)
+			{
+				for (int i = 0; i < casteCategoryGroupArr.length(); i++)
+				{
+					Long value = casteCategoryGroupArr.get(i) != null ? Long.valueOf(casteCategoryGroupArr.get(i).toString().trim()):0L;
+					casteCategoryGroupIdsList.add(value);
+				}
+			}
+			
+			if(rolesListArr != null && rolesListArr.length()>0)
+			{
+				for (int i = 0; i < rolesListArr.length(); i++)
+				{
+					Long value = rolesListArr.get(i) != null ? Long.valueOf(rolesListArr.get(i).toString().trim()):0L;
+					positionIdsList.add(value);
+				}
+			}
+			
+			if(casteCategoryArr != null && casteCategoryArr.length()>0)
+			{
+				for (int i = 0; i < casteCategoryArr.length(); i++)
+				{
+					Long value = casteCategoryArr.get(i) != null ? Long.valueOf(casteCategoryArr.get(i).toString().trim()):0L;
+					casteCategoryIdsList.add(value);
+				}
+			}
+			
+			cadreCommitteeRolesInfoVO = cadreCommitteeService.getCommitteeRoleAgeWiseDetailsByLocationType(userAccessType,castePercentage,committeeTypeId,positionIdsList,
+					casteCategoryIdsList,casteCategoryGroupIdsList,casteIdsList,locationLevelId,regVO.getRegistrationID(),Long.valueOf(regVO.getAccessValue()));
+			
+			
+		} catch (Exception e) {
+			LOG.error("Exception getRoleWiseDetails ",e);
 		}
 		return Action.SUCCESS;
 	}
