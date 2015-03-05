@@ -4,9 +4,9 @@ import java.util.List;
 
 public class CasteDetailsVO {
 	private String castName;
-	private Long castStateId;
-	private Long casteId;
-	private Long stateId;
+	private Long castStateId = 0l;
+	private Long casteId = 0l;
+	private Long stateId = 0l;
 	private Long casteCategoryGroupId;
 	
 	public String getCastName() {
