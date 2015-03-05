@@ -710,6 +710,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 			
 	}
 	
+	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getAreaTypesOfAConstituencyByElectionScope(Long electionScopeId)
 	{
@@ -1277,5 +1278,26 @@ public List getConstituenciesByElectionTypeAndStateId1(Long electionTypeId , Lon
 	  if(stateId != 0)
 	  query.setParameter("stateId", stateId);
 	return query.list();
+}
+
+@SuppressWarnings("unchecked")
+public List<Object[]> getDistrictConstituenciesByState(Long districtId,Long stateId) {
+	StringBuilder str = new StringBuilder();
+	str.append("select distinct model.constituencyId,model.name" +
+			" from Constituency model where model.district.districtId =:districtId and model.electionScope.electionType.electionTypeId = 2 and model.deformDate is null ");
+	if(stateId == 1)
+	{
+		str.append(" and model.district.districtId between 11 and 23");
+	}
+	else if(stateId == 2)
+	{
+		str.append(" and model.district.districtId between 1 and 10");
+	}
+	str.append(" order by model.name");
+	Query query = getSession().createQuery(str.toString());
+	query.setParameter("districtId", districtId);
+	return query.list();
+
+	
 }
 }
