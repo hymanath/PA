@@ -390,5 +390,16 @@ IDelimitationConstituencyDAO {
 		return query.list();
 	}
 	
-	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getLatestConstituencyListByElectionTypeInDistricts(Long electionTypeId, List<Long> districtIdsList) {
+			StringBuilder str = new StringBuilder();
+			str.append(" select distinct model.constituency.constituencyId,model.constituency.name from DelimitationConstituency model where ");
+			str.append(" model.constituency.electionScope.electionType.electionTypeId =:electionTypeId and model.constituency.district.districtId in (:districtIdsList) ");
+			str.append(" and model.year =(Select max(model1.year) from DelimitationConstituency model1) order by model.constituency.name ");
+			
+			Query query = getSession().createQuery(str.toString());
+			query.setParameter("electionTypeId", electionTypeId);
+			query.setParameterList("districtIdsList", districtIdsList);
+		return query.list();
+	}
 }

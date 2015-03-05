@@ -74,5 +74,5 @@ public interface IDelimitationConstituencyDAO extends GenericDao<DelimitationCon
 	
 	public List<BigInteger> getDelimitIds(List<Long> constituencyIds);
 	
-	
+	public List<Object[]> getLatestConstituencyListByElectionTypeInDistricts(Long electionTypeId, List<Long> districtIdsList);
 }
