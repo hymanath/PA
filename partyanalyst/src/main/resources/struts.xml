@@ -9771,5 +9771,21 @@
 		</result>
 		</action>
 		
+		<action name="cadreCommitteeRolesDashboard" class="committeeDashBoardAction">
+			<result name="success">/jsp/cadreCommitteeRolesDashboard.jsp</result>
+			<result name="input">/jsp/loginForm.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
+		
+		<action name="getCommitteeRolesBasedReport" class="committeeDashBoardAction" method="getRoleWiseDetails">
+			<result type="json" name="success">
+				<param name="root">cadreCommitteeRolesInfoVO</param>
+			</result>
+			<result type="json" name="error">
+				<param name="root">"noAccess"</param>
+			</result>
+		</action>
+		
+		
 </package>
 </struts>      
