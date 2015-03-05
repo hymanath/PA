@@ -104,7 +104,7 @@
 	</script>
 <div class="container">
 <div class="row m_top20">
-<h4 style="color:#fff;font-weight:bold;text-align:center;background-color: #31B0D5;border-radius: 5px;height: 31px;padding: 5px" id="titleId"> </h4>
+<h4 style="color:#46b8da;font-weight:bold;text-align:center;border-radius: 5px;height: 31px;padding: 5px" id="titleId"> </h4>
 </div>
     <div class="row m_top20 locationCls">
   	   <div class="col-md-4 col-md-offset-2 col-sm-6 col-xs-6">Select District:<select id="districtsId" class="form-control" onChange="getAllConstituencysForADistrict()"><option value="0">Select District</option></select> </div>
