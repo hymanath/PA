@@ -1280,6 +1280,15 @@ public List getConstituenciesByElectionTypeAndStateId1(Long electionTypeId , Lon
 	return query.list();
 }
 
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstituencyListByDistrictIdsList(List<Long> districtIdsList)
+	{
+		Query query = getSession().createQuery("select distinct model.constituencyId , model.name from Constituency model where model.district.districtId in (:districtIdsList) and " +
+				" model.electionScope.electionType.electionTypeId = 2 and model.deformDate IS NULL order by model.name ");
+		query.setParameterList("districtIdsList", districtIdsList);
+		return query.list();
+	}
+
 @SuppressWarnings("unchecked")
 public List<Object[]> getDistrictConstituenciesByState(Long districtId,Long stateId) {
 	StringBuilder str = new StringBuilder();
