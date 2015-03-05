@@ -67,6 +67,7 @@ import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
+import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeApprovalVO;
 import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
@@ -5651,9 +5652,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		try
 		{
 			List<Object[]> rolesList= new ArrayList<Object[]>();
-			
+			Map<String,CasteDetailsVO> casteGroupMap = null;
+			Map<String,CasteDetailsVO> ageGroupMap = null;
 			if(basicCommitteeTypeId.equals(1l)){
-				rolesList=tdpCommitteeMemberDAO.getPresidentsAndVPInfoForCommittee(locationType,locationId,basicCommitteeTypeId);
+				 rolesList=tdpCommitteeMemberDAO.getPresidentsAndVPInfoForCommittee(locationType,locationId,basicCommitteeTypeId);
 			}
 			
 		    List<Object[]> electrolsList=tdpCommitteeElectrolsDAO.getElectrolsOfPanchayatAndWards(locationId,locationType,basicCommitteeTypeId);
@@ -5661,6 +5663,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		    Long maleCount = 0L;
 		    Long femaleCount = 0L;
 		    if(rolesList!=null && rolesList.size()>0){
+		    	casteGroupMap = new HashMap<String, CasteDetailsVO>();
+		    	ageGroupMap = new LinkedHashMap<String, CasteDetailsVO>();
 		    	cadreCommitteeMemberVOList=new ArrayList<CadreCommitteeMemberVO>();
 			      for (Object[] objects : rolesList){
 			    	  CadreCommitteeMemberVO cadreCommitteeMemberVO=new CadreCommitteeMemberVO();
@@ -5679,7 +5683,148 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			    	  cadreCommitteeMemberVO.setCasteName(objects[8] != null ? objects[8].toString().trim():"");
 			    		cadreCommitteeMemberVO.setGender(objects[9] != null ? objects[9].toString().trim():"");
 			    		cadreCommitteeMemberVO.setAge(objects[10] != null ? objects[10].toString().trim():"");
-			    		
+			    		cadreCommitteeMemberVO.setCasteGroupName(objects[12] != null ? objects[11].toString().trim():"");
+			    		CasteDetailsVO casteCatgVO = casteGroupMap.get(objects[12].toString().trim());
+			    		if(casteCatgVO == null)
+			    		{
+			    			casteCatgVO = new CasteDetailsVO();
+			    			casteCatgVO.setCasteId(1l);
+			    			casteGroupMap.put(objects[12].toString().trim(),casteCatgVO);
+			    		}
+			    		else
+			    		{
+			    			casteCatgVO.setCasteId(casteCatgVO.getCasteId() + 1l);
+			    			casteGroupMap.put(objects[12].toString().trim(),casteCatgVO);
+			    		}
+			    		if(cadreCommitteeMemberVO.getGender().equalsIgnoreCase("M"))
+		    			{
+		    				casteCatgVO.setStateId(casteCatgVO.getStateId() + 1l);
+		    			}
+		    			else
+		    			{
+		    				casteCatgVO.setCastStateId(casteCatgVO.getCastStateId() + 1l);  
+		    			}
+		    			
+			    		if(cadreCommitteeMemberVO.getAge() != null)
+			    		{
+			    			if(Long.valueOf(cadreCommitteeMemberVO.getAge()) >= 18 && Long.valueOf(cadreCommitteeMemberVO.getAge()) < 26)
+			    			{
+			    				CasteDetailsVO ageGroupVO = ageGroupMap.get("18-25");
+			    				if(ageGroupVO == null)
+			    				{
+			    					ageGroupVO = new CasteDetailsVO();
+			    					ageGroupVO.setCasteId(1l);
+			    					ageGroupMap.put("18-25", ageGroupVO);
+			    				}
+			    				else
+			    				{
+			    					ageGroupVO.setCasteId(ageGroupVO.getCasteId() + 1l);
+			    					ageGroupMap.put("18-25", ageGroupVO);
+			    				}
+			    				if(cadreCommitteeMemberVO.getGender().equalsIgnoreCase("M"))
+				    			{
+			    					ageGroupVO.setStateId(ageGroupVO.getStateId() + 1l);
+				    			}
+				    			else
+				    			{
+				    				ageGroupVO.setCastStateId(ageGroupVO.getCastStateId() + 1l);  
+				    			}
+			    			}
+			    			else if(Long.valueOf(cadreCommitteeMemberVO.getAge()) >= 26 && Long.valueOf(cadreCommitteeMemberVO.getAge()) < 35)
+			    			{
+			    				CasteDetailsVO ageGroupVO = ageGroupMap.get("26-35");
+			    				if(ageGroupVO == null)
+			    				{
+			    					ageGroupVO = new CasteDetailsVO();
+			    					ageGroupVO.setCasteId(1l);
+			    					ageGroupMap.put("26-35", ageGroupVO);
+			    				}
+			    				else
+			    				{
+			    					ageGroupVO.setCasteId(ageGroupVO.getCasteId() + 1l);
+			    					ageGroupMap.put("26-35", ageGroupVO);
+			    				}
+			    				if(cadreCommitteeMemberVO.getGender().equalsIgnoreCase("M"))
+				    			{
+			    					ageGroupVO.setStateId(ageGroupVO.getStateId() + 1l);
+				    			}
+				    			else
+				    			{
+				    				ageGroupVO.setCastStateId(ageGroupVO.getCastStateId() + 1l);  
+				    			}
+			    			}
+			    			else if(Long.valueOf(cadreCommitteeMemberVO.getAge()) >= 36 && Long.valueOf(cadreCommitteeMemberVO.getAge()) < 45)
+			    			{
+			    				CasteDetailsVO ageGroupVO = ageGroupMap.get("36-45");
+			    				if(ageGroupVO == null)
+			    				{
+			    					ageGroupVO = new CasteDetailsVO();
+			    					ageGroupVO.setCasteId(1l);
+			    					ageGroupMap.put("36-45", ageGroupVO);
+			    				}
+			    				else
+			    				{
+			    					ageGroupVO.setCasteId(ageGroupVO.getCasteId() + 1l);
+			    					ageGroupMap.put("36-45", ageGroupVO);
+			    				}
+			    				if(cadreCommitteeMemberVO.getGender().equalsIgnoreCase("M"))
+				    			{
+			    					ageGroupVO.setStateId(ageGroupVO.getStateId() + 1l);
+				    			}
+				    			else
+				    			{
+				    				ageGroupVO.setCastStateId(ageGroupVO.getCastStateId() + 1l);  
+				    			}
+			    			}
+			    			else if(Long.valueOf(cadreCommitteeMemberVO.getAge()) >= 46 && Long.valueOf(cadreCommitteeMemberVO.getAge()) < 60)
+			    			{
+			    				CasteDetailsVO ageGroupVO = ageGroupMap.get("46-60");
+			    				if(ageGroupVO == null)
+			    				{
+			    					ageGroupVO = new CasteDetailsVO();
+			    					ageGroupVO.setCasteId(1l);
+			    					ageGroupMap.put("46-60", ageGroupVO);
+			    				}
+			    				else
+			    				{
+			    					ageGroupVO.setCasteId(ageGroupVO.getCasteId() + 1l);
+			    					ageGroupMap.put("46-60", ageGroupVO);
+			    				}
+			    				if(cadreCommitteeMemberVO.getGender().equalsIgnoreCase("M"))
+				    			{
+			    					ageGroupVO.setStateId(ageGroupVO.getStateId() + 1l);
+				    			}
+				    			else
+				    			{
+				    				ageGroupVO.setCastStateId(ageGroupVO.getCastStateId() + 1l);  
+				    			}
+			    			}
+			    			else
+			    			{
+			    				CasteDetailsVO ageGroupVO = ageGroupMap.get("Above60");
+			    				if(ageGroupVO == null)
+			    				{
+			    					ageGroupVO = new CasteDetailsVO();
+			    					ageGroupVO.setCasteId(1l);
+			    					ageGroupMap.put("Above60", ageGroupVO);
+			    				}
+			    				else
+			    				{
+			    					ageGroupVO.setCasteId(ageGroupVO.getCasteId() + 1l);
+			    					ageGroupMap.put("Above60",ageGroupVO);
+			    				}
+			    				if(cadreCommitteeMemberVO.getGender().equalsIgnoreCase("M"))
+				    			{
+			    					ageGroupVO.setStateId(ageGroupVO.getStateId() + 1l);
+				    			}
+				    			else
+				    			{
+				    				ageGroupVO.setCastStateId(ageGroupVO.getCastStateId() + 1l);  
+				    			}
+			    			}
+			    			
+
+			    		}
 			    		if(cadreCommitteeMemberVO.getGender().equalsIgnoreCase("M") || cadreCommitteeMemberVO.getGender().equalsIgnoreCase("Male"))
 			    		{
 			    			maleCount = maleCount+1;
@@ -5714,6 +5859,35 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			    		
 			    	  cadreCommitteeMemberVOList.add(cadreCommitteeMemberVO);
 				   }
+			      if(casteGroupMap != null && casteGroupMap.size() > 0)
+			    	{
+			    		List<CasteDetailsVO> casteGroupList = new ArrayList<CasteDetailsVO>();
+			    		for (String casteGroup : casteGroupMap.keySet())
+			    		{
+			    			CasteDetailsVO ageGroupVO = casteGroupMap.get(casteGroup);
+			    			ageGroupVO.setCastName(casteGroup);
+			    			casteGroupList.add(ageGroupVO);
+						}
+			    		if(cadreCommitteeMemberVOList != null && cadreCommitteeMemberVOList.size() > 0)
+			    		{
+			    			cadreCommitteeMemberVOList.get(0).setCasteGroupVO(casteGroupList);
+			    		}
+			    	}
+			    	
+			    	if(ageGroupMap != null && ageGroupMap.size() > 0)
+			    	{
+			    		List<CasteDetailsVO> ageGroupList = new ArrayList<CasteDetailsVO>();
+			    		for (String casteGroup : ageGroupMap.keySet())
+			    		{
+			    			CasteDetailsVO ageGroupVO = ageGroupMap.get(casteGroup);
+			    			ageGroupVO.setCastName(casteGroup);
+			    			ageGroupList.add(ageGroupVO);
+						}
+			    		if(cadreCommitteeMemberVOList != null && cadreCommitteeMemberVOList.size() > 0)
+			    		{
+			    			cadreCommitteeMemberVOList.get(0).setAgeDetailsIfoVO(ageGroupList);
+			    		}
+			    	}
 			    }
 		    
 		    
@@ -5772,8 +5946,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		List<CadreCommitteeMemberVO> cadreCommitteeMemberVOList=null;
 		try
 		{
+			Map<String,CasteDetailsVO> casteGroupMap = null;
+			Map<String,CasteDetailsVO> ageGroupMap = null;
 		    List<Object[]> tdpCadresList=tdpCommitteeMemberDAO.getComitteeMembersInfoByCommiteTypeAndLocation(locationType,locationId,basicCommitteeTypeId,status);
 		    if(tdpCadresList!=null && tdpCadresList.size()>0){
+		    	casteGroupMap = new HashMap<String, CasteDetailsVO>();
+		    	ageGroupMap = new LinkedHashMap<String, CasteDetailsVO>();
 		    	String locationName = getLocationName(locationType,locationId);
 		    	cadreCommitteeMemberVOList=new ArrayList<CadreCommitteeMemberVO>();
 		    	Long maleCount = 0L;
@@ -5788,6 +5966,148 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		    		cadreCommitteeMemberVO.setCasteName(objects[8] != null ? objects[8].toString().trim():"");
 		    		cadreCommitteeMemberVO.setGender(objects[9] != null ? objects[9].toString().trim():"");
 		    		cadreCommitteeMemberVO.setAge(objects[10] != null ? objects[10].toString().trim():"");
+		    		cadreCommitteeMemberVO.setCasteGroupName(objects[12] != null ? objects[12].toString().trim():"");
+		    		CasteDetailsVO casteCatgVO = casteGroupMap.get(objects[12].toString().trim());
+		    		if(casteCatgVO == null)
+		    		{
+		    			casteCatgVO = new CasteDetailsVO();
+		    			casteCatgVO.setCasteId(1l);
+		    			casteGroupMap.put(objects[12].toString().trim(),casteCatgVO);
+		    		}
+		    		else
+		    		{
+		    			casteCatgVO.setCasteId(casteCatgVO.getCasteId() + 1l);
+		    			casteGroupMap.put(objects[12].toString().trim(),casteCatgVO);
+		    		}
+		    		if(cadreCommitteeMemberVO.getGender().equalsIgnoreCase("M"))
+	    			{
+	    				casteCatgVO.setStateId(casteCatgVO.getStateId() + 1l);
+	    			}
+	    			else
+	    			{
+	    				casteCatgVO.setCastStateId(casteCatgVO.getCastStateId() + 1l);  
+	    			}
+	    			
+		    		if(cadreCommitteeMemberVO.getAge() != null)
+		    		{
+		    			if(Long.valueOf(cadreCommitteeMemberVO.getAge()) >= 18 && Long.valueOf(cadreCommitteeMemberVO.getAge()) < 26)
+		    			{
+		    				CasteDetailsVO ageGroupVO = ageGroupMap.get("18-25");
+		    				if(ageGroupVO == null)
+		    				{
+		    					ageGroupVO = new CasteDetailsVO();
+		    					ageGroupVO.setCasteId(1l);
+		    					ageGroupMap.put("18-25", ageGroupVO);
+		    				}
+		    				else
+		    				{
+		    					ageGroupVO.setCasteId(ageGroupVO.getCasteId() + 1l);
+		    					ageGroupMap.put("18-25", ageGroupVO);
+		    				}
+		    				if(cadreCommitteeMemberVO.getGender().equalsIgnoreCase("M"))
+			    			{
+		    					ageGroupVO.setStateId(ageGroupVO.getStateId() + 1l);
+			    			}
+			    			else
+			    			{
+			    				ageGroupVO.setCastStateId(ageGroupVO.getCastStateId() + 1l);  
+			    			}
+		    			}
+		    			else if(Long.valueOf(cadreCommitteeMemberVO.getAge()) >= 26 && Long.valueOf(cadreCommitteeMemberVO.getAge()) < 35)
+		    			{
+		    				CasteDetailsVO ageGroupVO = ageGroupMap.get("26-35");
+		    				if(ageGroupVO == null)
+		    				{
+		    					ageGroupVO = new CasteDetailsVO();
+		    					ageGroupVO.setCasteId(1l);
+		    					ageGroupMap.put("26-35", ageGroupVO);
+		    				}
+		    				else
+		    				{
+		    					ageGroupVO.setCasteId(ageGroupVO.getCasteId() + 1l);
+		    					ageGroupMap.put("26-35", ageGroupVO);
+		    				}
+		    				if(cadreCommitteeMemberVO.getGender().equalsIgnoreCase("M"))
+			    			{
+		    					ageGroupVO.setStateId(ageGroupVO.getStateId() + 1l);
+			    			}
+			    			else
+			    			{
+			    				ageGroupVO.setCastStateId(ageGroupVO.getCastStateId() + 1l);  
+			    			}
+		    			}
+		    			else if(Long.valueOf(cadreCommitteeMemberVO.getAge()) >= 36 && Long.valueOf(cadreCommitteeMemberVO.getAge()) < 45)
+		    			{
+		    				CasteDetailsVO ageGroupVO = ageGroupMap.get("36-45");
+		    				if(ageGroupVO == null)
+		    				{
+		    					ageGroupVO = new CasteDetailsVO();
+		    					ageGroupVO.setCasteId(1l);
+		    					ageGroupMap.put("36-45", ageGroupVO);
+		    				}
+		    				else
+		    				{
+		    					ageGroupVO.setCasteId(ageGroupVO.getCasteId() + 1l);
+		    					ageGroupMap.put("36-45", ageGroupVO);
+		    				}
+		    				if(cadreCommitteeMemberVO.getGender().equalsIgnoreCase("M"))
+			    			{
+		    					ageGroupVO.setStateId(ageGroupVO.getStateId() + 1l);
+			    			}
+			    			else
+			    			{
+			    				ageGroupVO.setCastStateId(ageGroupVO.getCastStateId() + 1l);  
+			    			}
+		    			}
+		    			else if(Long.valueOf(cadreCommitteeMemberVO.getAge()) >= 46 && Long.valueOf(cadreCommitteeMemberVO.getAge()) < 60)
+		    			{
+		    				CasteDetailsVO ageGroupVO = ageGroupMap.get("46-60");
+		    				if(ageGroupVO == null)
+		    				{
+		    					ageGroupVO = new CasteDetailsVO();
+		    					ageGroupVO.setCasteId(1l);
+		    					ageGroupMap.put("46-60", ageGroupVO);
+		    				}
+		    				else
+		    				{
+		    					ageGroupVO.setCasteId(ageGroupVO.getCasteId() + 1l);
+		    					ageGroupMap.put("46-60", ageGroupVO);
+		    				}
+		    				if(cadreCommitteeMemberVO.getGender().equalsIgnoreCase("M"))
+			    			{
+		    					ageGroupVO.setStateId(ageGroupVO.getStateId() + 1l);
+			    			}
+			    			else
+			    			{
+			    				ageGroupVO.setCastStateId(ageGroupVO.getCastStateId() + 1l);  
+			    			}
+		    			}
+		    			else
+		    			{
+		    				CasteDetailsVO ageGroupVO = ageGroupMap.get("Above60");
+		    				if(ageGroupVO == null)
+		    				{
+		    					ageGroupVO = new CasteDetailsVO();
+		    					ageGroupVO.setCasteId(1l);
+		    					ageGroupMap.put("Above60", ageGroupVO);
+		    				}
+		    				else
+		    				{
+		    					ageGroupVO.setCasteId(ageGroupVO.getCasteId() + 1l);
+		    					ageGroupMap.put("Above60",ageGroupVO);
+		    				}
+		    				if(cadreCommitteeMemberVO.getGender().equalsIgnoreCase("M"))
+			    			{
+		    					ageGroupVO.setStateId(ageGroupVO.getStateId() + 1l);
+			    			}
+			    			else
+			    			{
+			    				ageGroupVO.setCastStateId(ageGroupVO.getCastStateId() + 1l);  
+			    			}
+		    			}
+		    			
+
+		    		}
 		    		
 		    		if(cadreCommitteeMemberVO.getGender().equalsIgnoreCase("M") || cadreCommitteeMemberVO.getGender().equalsIgnoreCase("Male"))
 		    		{
@@ -5830,6 +6150,35 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		    		
 		    		cadreCommitteeMemberVOList.add(cadreCommitteeMemberVO);
 				}
+		    	if(casteGroupMap != null && casteGroupMap.size() > 0)
+		    	{
+		    		List<CasteDetailsVO> casteGroupList = new ArrayList<CasteDetailsVO>();
+		    		for (String casteGroup : casteGroupMap.keySet())
+		    		{
+		    			CasteDetailsVO ageGroupVO = casteGroupMap.get(casteGroup);
+		    			ageGroupVO.setCastName(casteGroup);
+		    			casteGroupList.add(ageGroupVO);
+					}
+		    		if(cadreCommitteeMemberVOList != null && cadreCommitteeMemberVOList.size() > 0)
+		    		{
+		    			cadreCommitteeMemberVOList.get(0).setCasteGroupVO(casteGroupList);
+		    		}
+		    	}
+		    	
+		    	if(ageGroupMap != null && ageGroupMap.size() > 0)
+		    	{
+		    		List<CasteDetailsVO> ageGroupList = new ArrayList<CasteDetailsVO>();
+		    		for (String casteGroup : ageGroupMap.keySet())
+		    		{
+		    			CasteDetailsVO ageGroupVO = ageGroupMap.get(casteGroup);
+		    			ageGroupVO.setCastName(casteGroup);
+		    			ageGroupList.add(ageGroupVO);
+					}
+		    		if(cadreCommitteeMemberVOList != null && cadreCommitteeMemberVOList.size() > 0)
+		    		{
+		    			cadreCommitteeMemberVOList.get(0).setAgeDetailsIfoVO(ageGroupList);
+		    		}
+		    	}
 		    	if(cadreCommitteeMemberVOList != null && cadreCommitteeMemberVOList.size() > 0)
 				{
 		    	 cadreCommitteeMemberVOList.get(0).setLocationName(locationName);
