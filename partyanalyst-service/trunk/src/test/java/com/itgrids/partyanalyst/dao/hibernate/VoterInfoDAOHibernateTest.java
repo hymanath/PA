@@ -267,7 +267,7 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void test(){
+	/*public void test(){
 		List<Long> lst = new ArrayList<Long>();
 		lst.add(17l);
 		lst.add(18l);
@@ -285,6 +285,12 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 		List<Object[]> list = voterInfoDAO.getVotersCountInConstituenciesByDistrictsListAndConstituencies(lst, 11l,locationIds);
 		System.out.println(list.size());
 		
+	}*/
+	
+	public void testGetVoterInfoOfALocation()
+	{
+		VoterInfo info = voterInfoDAO.getVoterInfoOfALocation(291l,12l,4l,472142l);
+		System.out.println(info.getTotalVoters());
 	}
 
 }
