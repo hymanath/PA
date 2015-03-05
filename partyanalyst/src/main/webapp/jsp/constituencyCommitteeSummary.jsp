@@ -79,27 +79,34 @@
 		var userAccessType = '${pageAccessType}';
 	</script>
 <div class="container">
+<div class="row m_top20">
+<h4 style="color:#46b8da;text-align:center" id="titleId"> </h4>
+</div>
     <div class="row m_top20 locationCls">
   	   <div class="col-md-4 col-md-offset-2 col-sm-6 col-xs-6">Select District:<select id="districtsId" class="form-control" onChange="getAllConstituencysForADistrict()"><option value="0">Select District</option></select> </div>
        <div class="col-md-4  col-sm-6 col-xs-6">Select Constituency:<select id="constituencysId" class="form-control"><option value="0">Select Constituency</option></select> </div>
     </div>
+		<c:if test="${pageAccessType == 'ALL'}">
 <div  class="row m_top20 form-inline" class="row m_top20 form-inline" style="margin-left:250px">
 		
-					  		<c:if test="${pageAccessType == 'ALL'}">
+					  	
+							
 						Select State	<select id="stateId" onchange="getUserAccessInfo();" class="form-control" style="width:200px;">	
 						<option value="0">All</option> 
 							<option value="1">AP</option>
 							<option value="2">TS</option>
 							</select>
-							</c:if>
-						
+							
+							<img id="imgajax" src="images/icons/search.gif" 
+								alt="Processing Image" style="display:none;width:17px;height:11px;"/>
 						Select Constituency	<select id="userAccessconstituencyId" class="form-control" style="width:200px;">						 
 							
 							</select>
+
 							<span  class="glyphicon glyphicon-refresh" onclick="reload()"  style="cursor:pointer;">  </span>
-							
+						
 				</div>	
-				
+			</c:if>		
 	<div class="row m_top20">
 		<div class="col-md-4 col-md-offset-3"><label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="reportTypeCls" value=1 name="reportType" checked="true"> VILLAGE / WARD</label></div>
 		<div class="col-md-4 "><label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="reportTypeCls" value=2 name="reportType">MANDAL / TOWN / DIVISION</label></div>
@@ -250,7 +257,7 @@ function buildConstituencySummary(results,jsObj){
 				$("#constSummary").html("<br><h4 style='text-align:center;;color:red'> NO RESULTS TO DISPLAY.</h4>");
 				return;
 			}
-			 str+='<h4 style="color:#46b8da;text-align:center">'+results.accessState+' CONSTITUENCY</h4>';
+			$("#titleId").append(''+results.accessState+' CONSTITUENCY');
 			if(results.mandalsList!=null && results.mandalsList.length>0){
 					for(var i in results.mandalsList){
 				var rest = results.mandalsList[i];
@@ -648,6 +655,7 @@ function exportToExcel()
 }
 function getUserAccessInfo()
 {
+	$("#imgajax").show();
 	var stateId = 0;
 	$('#userAccessconstituencyId').find('option').remove();
 	
@@ -664,6 +672,7 @@ function getUserAccessInfo()
 		data: {task:JSON.stringify(jObj)},
 		})
 		.done(function( result ) {
+			$("#imgajax").hide();
 	$.each(result.hamletVoterInfo,function(index,value){
 		$('#userAccessconstituencyId').append('<option value="'+value.id+'">'+value.name+'</option>');
 	});
