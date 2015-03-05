@@ -19,6 +19,7 @@ public class CadreVo implements Serializable{
 	private Long bloodGroupId;
 	private String noOfVoters;
 	private String landNo;
+	private String relationType;
 	
 	private String emailId;
 	private String hno;
@@ -66,7 +67,24 @@ public class CadreVo implements Serializable{
 	private String base64Image;
 	private Long roleId;
 	private String role;
+	private String occupation;
 	
+	public String getOccupation() {
+		return occupation;
+	}
+
+	public void setOccupation(String occupation) {
+		this.occupation = occupation;
+	}
+
+	public String getRelationType() {
+		return relationType;
+	}
+
+	public void setRelationType(String relationType) {
+		this.relationType = relationType;
+	}
+
 	private Long localElectionbBodyId;
 	
 
