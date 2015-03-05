@@ -10,6 +10,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
+import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -4199,5 +4200,67 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		query.setParameter("endDate",endDate);
 		return  query.list();
 	}
-
+	public Long getTdpCadreCountInALocation(List<Long> locationValue,String type)
+	{
+		if(type.equalsIgnoreCase("MUNCIPALITY/CORPORATION"))
+			type = "MUNICIPAL-CORP-GMC";
+		if(type.equalsIgnoreCase("panchayat"))
+			type = "hamlet";
+		if(type.equalsIgnoreCase("customWard"))
+			type ="WARD";
+		String str = "select count(model.tdpCadreId) from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear='2014' and ";
+		
+		if(type.equalsIgnoreCase("constituency"))
+			str += " model.userAddress.constituency.constituencyId in (:locationValue) ";
+		else if(type.equalsIgnoreCase("mandal"))
+			str += " model.userAddress.tehsil.tehsilId in (:locationValue) ";
+		else if(type.equalsIgnoreCase("MUNICIPAL-CORP-GMC"))
+			str += " model.userAddress.localElectionBody.localElectionBodyId in (:locationValue) ";
+		else if(type.equalsIgnoreCase("hamlet"))
+			str += " model.userAddress.hamlet.hamletId in (:locationValue) ";
+		else if(type.equalsIgnoreCase("WARD"))
+			str += " model.userAddress.ward.constituencyId in (:locationValue) ";
+		else if(type.equalsIgnoreCase("BOOTH"))
+			str += " model.userAddress.booth.boothId in (:locationValue) ";
+		Query query = getSession().createQuery(str);
+		query.setParameterList("locationValue", locationValue);
+		return (Long)query.uniqueResult();
+		
+	}
+	
+	public List<TdpCadre> getTdpCadreVoterIDs(List<Long> locationValue,String type,Integer startIndex,
+			Integer maxRecords,String columnName ,String order)
+	{
+	
+		if(type.equalsIgnoreCase("MUNCIPALITY/CORPORATION"))
+			type = "MUNICIPAL-CORP-GMC";
+		if(type.equalsIgnoreCase("panchayat"))
+			type = "hamlet";
+		if(type.equalsIgnoreCase("customWard"))
+			type ="WARD";
+		String str = "select model from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear='2014' and ";
+		
+		if(type.equalsIgnoreCase("constituency"))
+			str += " model.userAddress.constituency.constituencyId in (:locationValue) ";
+		else if(type.equalsIgnoreCase("mandal"))
+			str += " model.userAddress.tehsil.tehsilId in (:locationValue) ";
+		else if(type.equalsIgnoreCase("MUNICIPAL-CORP-GMC"))
+			str += " model.userAddress.localElectionBody.localElectionBodyId in (:locationValue) ";
+		else if(type.equalsIgnoreCase("hamlet"))
+			str += " model.userAddress.hamlet.hamletId in (:locationValue) ";
+		else if(type.equalsIgnoreCase("WARD"))
+			str += " model.userAddress.ward.constituencyId in (:locationValue) ";
+		else if(type.equalsIgnoreCase("BOOTH"))
+			str += " model.userAddress.booth.boothId in (:locationValue) ";
+		if(columnName.equalsIgnoreCase("voterIDCardNo")||columnName.equalsIgnoreCase("age")||columnName.equalsIgnoreCase("gender")||columnName.equalsIgnoreCase("houseNo")||columnName.equalsIgnoreCase("relativeName"))
+			str += "order by model.voter."+columnName+" "+order;
+		else
+			str += "order by model."+columnName+" "+order;	   
+		Query query = getSession().createQuery(str);
+		query.setParameterList("locationValue", locationValue);
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxRecords);
+		return query.list();
+		
+	}
 }
