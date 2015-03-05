@@ -24,6 +24,11 @@ public class CadreCommitteeMemberVO {
 	List<CadreCommitteeMemberVO> knownList;
 	List<CadreCommitteeMemberVO> unKnownList;
 	
+	private List<CasteDetailsVO> casteGroupVO;
+	private List<CasteDetailsVO> ageDetailsIfoVO;
+	
+	private String casteGroupName;
+	
 	
 	public String getTotalCount() {
 		return totalCount;
@@ -133,6 +138,25 @@ public class CadreCommitteeMemberVO {
 	public void setUnKnownList(List<CadreCommitteeMemberVO> unKnownList) {
 		this.unKnownList = unKnownList;
 	}
+	public String getCasteGroupName() {
+		return casteGroupName;
+	}
+	public void setCasteGroupName(String casteGroupName) {
+		this.casteGroupName = casteGroupName;
+	}
+	public List<CasteDetailsVO> getCasteGroupVO() {
+		return casteGroupVO;
+	}
+	public void setCasteGroupVO(List<CasteDetailsVO> casteGroupVO) {
+		this.casteGroupVO = casteGroupVO;
+	}
+	public List<CasteDetailsVO> getAgeDetailsIfoVO() {
+		return ageDetailsIfoVO;
+	}
+	public void setAgeDetailsIfoVO(List<CasteDetailsVO> ageDetailsIfoVO) {
+		this.ageDetailsIfoVO = ageDetailsIfoVO;
+	}
+	
 	
 	
 }
