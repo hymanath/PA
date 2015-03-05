@@ -4200,6 +4200,29 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		query.setParameter("endDate",endDate);
 		return  query.list();
 	}
+	
+	
+	public List<Object[]> getLocationWiseCadrePrintedCount(Set<Long> locationIds,String locationType,Long constituencyId){
+		StringBuilder queryStr = new StringBuilder();
+		//0locationId,1count,2jobids
+		queryStr.append("select "+getLocation(locationType));
+		
+		queryStr.append(",count(model.tdpCadreId) from TdpCadre model where "+getLocation(locationType)+"" +
+				" in(:locationIds) and model.enrollmentYear ='2014' and  "+ getLocation(locationType)+" is not null and model.isDeleted = 'N' and constituencyId is not null " +
+						" and model.cardNumber is not null  ");
+		if(constituencyId != null){
+			queryStr.append(" and model.userAddress.constituency.constituencyId =:constituencyId ");
+		}
+		queryStr.append(" group by "+getLocation(locationType)+" ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("locationIds", locationIds);
+		if(constituencyId != null){
+			  query.setParameter("constituencyId", constituencyId);
+		}
+		return query.list();
+	}
+	
+	
 	public Long getTdpCadreCountInALocation(List<Long> locationValue,String type)
 	{
 		if(type.equalsIgnoreCase("MUNCIPALITY/CORPORATION"))
