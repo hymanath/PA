@@ -700,4 +700,7 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<String> getPartNo(Long constituencyId,Long voterId);
 	  public List<Object[]> getLocationWiseVoterAgeRangeCount(List<Long> locationIdsList,String locationType,Long publicationDateId);
 	  public Long getVotersDetailsForCadreRegistratiobByconstituencIdCount(Long constituencyId, Long publicationDate,String queryStr,Long panchayatId,Long boothId,String villageCovered);
+	  
+	  public List<Long> getVoterIdsInABoothOfGivenHouseNos(Long constituencyId,Long publicationDateId,String partNo,List<String> houseNos);
+	  public List<Object[]> getFamilyWiseVotersInABooth(Long constituencyId,Long publicationDateId,String partNo);
 }

@@ -7453,5 +7453,25 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		return query.list();
 	}
    
+	public List<Long> getVoterIdsInABoothOfGivenHouseNos(Long constituencyId,Long publicationDateId,String partNo,List<String> houseNos)
+	{
+		Query query = getSession().createQuery("select model.voter.voterId from BoothPublicationVoter model where model.booth.constituency.constituencyId = :constituencyId and " +
+				" model.booth.publicationDate.publicationDateId = :publicationDateId and model.booth.partNo = :partNo and model.voter.houseNo in(:houseNos)");
+		query.setParameter("constituencyId",constituencyId);
+		query.setParameter("publicationDateId",publicationDateId);
+		query.setParameter("partNo",partNo);
+		query.setParameterList("houseNos",houseNos);
+		return query.list();
+	}
+	
+	public List<Object[]> getFamilyWiseVotersInABooth(Long constituencyId,Long publicationDateId,String partNo)
+	{
+		Query query = getSession().createQuery("select model.voter.houseNo,count(model.voter.voterId) from BoothPublicationVoter model where model.booth.constituency.constituencyId = :constituencyId and " +
+				" model.booth.publicationDate.publicationDateId = :publicationDateId and model.booth.partNo = :partNo group by model.voter.houseNo order by count(model.voter.voterId)");
+		query.setParameter("constituencyId",constituencyId);
+		query.setParameter("publicationDateId",publicationDateId);
+		query.setParameter("partNo",partNo);
+		return query.list();
+	}
   
 }
