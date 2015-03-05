@@ -4263,4 +4263,165 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		return query.list();
 		
 	}
+
+	public Long getVoterIdExistCadreInABooth(Long constituencyId,Long publicationDateId,String partNo)
+	{
+		  Query query = getSession().createQuery("select count(model.tdpCadreId) from TdpCadre model,BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and " +
+		  		" model.enrollmentYear = 2014 and model.isDeleted = 'N' and model2.booth.constituency.constituencyId = :constituencyId and model2.booth.publicationDate.publicationDateId = :publicationDateId and " +
+		  		" model2.booth.partNo = :partNo and model.familyVoter is null ");
+		  query.setParameter("constituencyId",constituencyId);
+		  query.setParameter("publicationDateId",publicationDateId);
+		  query.setParameter("partNo",partNo);
+		  
+		  return (Long)query.uniqueResult();
+	}
+
+	public Long getFamilyVoterIdExistCadreInABooth(Long constituencyId,Long publicationDateId,String partNo)
+	  {
+		  Query query = getSession().createQuery("select count(model.tdpCadreId) from TdpCadre model,BoothPublicationVoter model2 where model.familyVoter.voterId = model2.voter.voterId and " +
+		  		" model.enrollmentYear = 2014 and model.isDeleted = 'N' and model2.booth.constituency.constituencyId = :constituencyId and model2.booth.publicationDate.publicationDateId = :publicationDateId and " +
+		  		" model2.booth.partNo = :partNo");
+		  query.setParameter("constituencyId",constituencyId);
+		  query.setParameter("publicationDateId",publicationDateId);
+		  query.setParameter("partNo",partNo);
+		  
+		  return (Long)query.uniqueResult();
+	  }
+
+	public List<String> getVoterIdExistCadreFamiliesInABooth(Long constituencyId,Long publicationDateId,String partNo)
+	  {
+		  Query query = getSession().createQuery("select distinct(model2.voter.houseNo) from TdpCadre model,BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and " +
+			  		" model.enrollmentYear = 2014 and model.isDeleted = 'N' and model2.booth.constituency.constituencyId = :constituencyId and model2.booth.publicationDate.publicationDateId = :publicationDateId and " +
+			  		" model2.booth.partNo = :partNo and model.familyVoter is null ");
+			  query.setParameter("constituencyId",constituencyId);
+			  query.setParameter("publicationDateId",publicationDateId);
+			  query.setParameter("partNo",partNo);
+		  return query.list();
+	  }
+
+	public List<String> getFamilyVoterIdExistCadreFamiliesInABooth(Long constituencyId,Long publicationDateId,String partNo)
+	  {
+		  Query query = getSession().createQuery("select distinct(model2.voter.houseNo) from TdpCadre model,BoothPublicationVoter model2 where model.familyVoter.voterId = model2.voter.voterId and " +
+			  		" model.enrollmentYear = 2014 and model.isDeleted = 'N' and model2.booth.constituency.constituencyId = :constituencyId and model2.booth.publicationDate.publicationDateId = :publicationDateId and " +
+			  		" model2.booth.partNo = :partNo");
+			  query.setParameter("constituencyId",constituencyId);
+			  query.setParameter("publicationDateId",publicationDateId);
+			  query.setParameter("partNo",partNo);
+		  return query.list();
+	  }
+
+	public List<Object[]> getCadreAvailableFamiliesInABooth(Long constituencyId,Long publicationDateId,String partNo,List<String> houseNosList)
+	  {
+		  Query query = getSession().createSQLQuery("SELECT V.house_no,COUNT(TD1.tdp_cadre_id),COUNT(TD2.tdp_cadre_id) FROM booth B,booth_publication_voter BPV,voter V " +
+		  		" LEFT OUTER JOIN tdp_cadre TD1 ON V.voter_id = TD1.voter_id AND TD1.enrollment_year = 2014 AND TD1.is_deleted = 'N' " +
+		  		" LEFT OUTER JOIN tdp_cadre TD2 ON V.voter_id = TD2.family_voterId AND TD2.enrollment_year = 2014 AND TD2.is_deleted = 'N' " +
+		  		" WHERE B.booth_id = BPV.booth_id and BPV.voter_id = V.voter_id AND B.constituency_id = :constituencyId AND B.publication_date_id = :publicationDateId AND " +
+		  		" B.part_no = :partNo AND V.house_no IN (:houseNosList) GROUP BY V.house_no ");
+			  query.setParameter("constituencyId",constituencyId);
+			  query.setParameter("publicationDateId",publicationDateId);
+			  query.setParameter("partNo",partNo);
+			  query.setParameterList("houseNosList",houseNosList);
+		  
+		  return query.list();
+	  }
+	  
+	  public List<Object[]> getVoterAndCadreDetailsInABooth(Long constituencyId,Long publicationDateId,String partNo)
+	  {
+		  Query query = getSession().createSQLQuery("SELECT V.voter_id_card_no,V.name,V.age,V.gender,VA.area,V.house_no,V.relative_name,V.relationship_type,B.part_no, " +
+		  		" TD1.tdp_cadre_id,TD1.first_name,TD1.mobile_no,CT1.caste_name,TD2.tdp_cadre_id,TD2.first_name,TD2.mobile_no,CT2.caste_name,V.voter_id FROM booth_publication_voter BPV,booth B,voter V " +
+		  		" LEFT JOIN voter_area VA ON V.voter_id = VA.voter_id " +
+		  		" LEFT JOIN tdp_cadre TD1 ON V.voter_id = TD1.voter_id AND TD1.enrollment_year = 2014 AND TD1.is_deleted = 'N' AND TD1.family_voterId is null " +
+		  		" LEFT JOIN tdp_cadre TD2 ON V.voter_id = TD2.family_voterId AND TD2.enrollment_year = 2014 AND TD2.is_deleted = 'N' " +
+		  		" LEFT JOIN caste_state CS1 ON TD1.caste_state_id = CS1.caste_state_id LEFT OUTER JOIN caste CT1 ON CS1.caste_id = CT1.caste_id " +
+		  		" LEFT JOIN caste_state CS2 ON TD2.caste_state_id = CS2.caste_state_id LEFT OUTER JOIN caste CT2 ON CS2.caste_id = CT2.caste_id " +
+		  		" WHERE B.booth_id = BPV.booth_id and BPV.voter_id = V.voter_id AND B.constituency_id = :constituencyId AND B.publication_date_id = :publicationDateId AND B.part_no = :partNo ORDER BY BPV.serial_no ");
+		  
+		  query.setParameter("constituencyId",constituencyId);
+		  query.setParameter("publicationDateId",publicationDateId);
+		  query.setParameter("partNo",partNo);
+		  return query.list();
+	  }
+
+	  public List<Object[]> getCadreBasicDetailsByVoterId(Long constituencyId,Long publicationDateId,String partNo,Long voterId)
+	  {
+		  Query query = getSession().createQuery("select model.firstname,model.mobileNo,model.casteState.caste.casteName from TdpCadre model,BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and " +
+			  		" model.enrollmentYear = 2014 and model.isDeleted = 'N' and model2.booth.constituency.constituencyId = :constituencyId and model2.booth.publicationDate.publicationDateId = :publicationDateId and " +
+			  		" model2.booth.partNo = :partNo and model.familyVoter is null and model2.voter.voterId = :voterId");
+			  query.setParameter("constituencyId",constituencyId);
+			  query.setParameter("publicationDateId",publicationDateId);
+			  query.setParameter("partNo",partNo);
+			  query.setParameter("voterId",voterId);
+			  return query.list();
+	  }
+	  
+	  public List<Object[]> getFamilyCadreBasicDetailsByVoterId(Long constituencyId,Long publicationDateId,String partNo,Long voterId)
+	  {
+		  Query query = getSession().createQuery("select model.firstname,model.mobileNo,model.casteState.caste.casteName from TdpCadre model,BoothPublicationVoter model2 where model.familyVoter.voterId = model2.voter.voterId and " +
+			  		" model.enrollmentYear = 2014 and model.isDeleted = 'N' and model2.booth.constituency.constituencyId = :constituencyId and model2.booth.publicationDate.publicationDateId = :publicationDateId and " +
+			  		" model2.booth.partNo = :partNo and model2.voter.voterId = :voterId");
+			  query.setParameter("constituencyId",constituencyId);
+			  query.setParameter("publicationDateId",publicationDateId);
+			  query.setParameter("partNo",partNo);
+			  query.setParameter("voterId",voterId);
+			  return query.list();
+	  }
+
+	  public List<Object[]> getCadreBasicDetailsInABooth(Long constituencyId,Long publicationDateId,String partNo)
+	  {
+		  Query query = getSession().createQuery("select model2.voter.voterIDCardNo,model.firstname,model.mobileNo,model.casteState.caste.casteName from TdpCadre model,BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and " +
+			  		" model.enrollmentYear = 2014 and model.isDeleted = 'N' and model2.booth.constituency.constituencyId = :constituencyId and model2.booth.publicationDate.publicationDateId = :publicationDateId and " +
+			  		" model2.booth.partNo = :partNo and model.familyVoter is null");
+			  query.setParameter("constituencyId",constituencyId);
+			  query.setParameter("publicationDateId",publicationDateId);
+			  query.setParameter("partNo",partNo);
+			  return query.list();
+	  }
+	  
+	  public List<Object[]> getFamilyCadreBasicDetailsInABooth(Long constituencyId,Long publicationDateId,String partNo)
+	  {
+		  Query query = getSession().createQuery("select model2.voter.voterIDCardNo,model.firstname,model.mobileNo,model.casteState.caste.casteName from TdpCadre model,BoothPublicationVoter model2 where model.familyVoter.voterId = model2.voter.voterId and " +
+			  		" model.enrollmentYear = 2014 and model.isDeleted = 'N' and model2.booth.constituency.constituencyId = :constituencyId and model2.booth.publicationDate.publicationDateId = :publicationDateId and " +
+			  		" model2.booth.partNo = :partNo");
+			  query.setParameter("constituencyId",constituencyId);
+			  query.setParameter("publicationDateId",publicationDateId);
+			  query.setParameter("partNo",partNo);
+			  return query.list();
+	  }
+	  
+	  public List<Object[]> getCadreDetailsInABooth(Long constituencyId,Long publicationDateId,String partNo)
+	  {
+		  Query query = getSession().createSQLQuery("SELECT TD.family_voterId,B.part_no,B.location,V.voter_id_card_no,V.name,V.age,V.gender,TD.mobile_no,V.relative_name,V.house_no,CT.caste_name,ED.qualification,O.occupation,TD.cadre_aadher_no " +
+		  		" FROM booth_publication_voter BPV,booth B,voter V,tdp_cadre TD LEFT OUTER JOIN caste_state CS ON TD.caste_state_id = CS.caste_state_id LEFT OUTER JOIN caste CT ON CS.caste_id = CT.caste_id " +
+		  		" LEFT OUTER JOIN educational_qualifications ED ON TD.education_id = ED.educational_qualification_id LEFT OUTER JOIN occupation O ON TD.occupation_id = O.occupation_id WHERE " +
+		  		" BPV.voter_id = TD.voter_id AND BPV.voter_id = V.voter_id AND BPV.booth_id = B.booth_id AND TD.family_voterId IS NULL AND B.constituency_id = :constituencyId AND B.publication_date_id = :publicationDateId AND " +
+		  		" TD.enrollment_year = 2014 AND TD.is_deleted = 'N' AND B.part_no = :partNo ORDER BY BPV.serial_no");
+			  query.setParameter("constituencyId",constituencyId);
+			  query.setParameter("publicationDateId",publicationDateId);
+			  query.setParameter("partNo",partNo);
+			  return query.list();
+	  }
+
+	  public List<Object[]> getFamilyCadreDetailsInABooth(Long constituencyId,Long publicationDateId,String partNo)
+	  {
+		  Query query = getSession().createSQLQuery("SELECT TD.family_voterId,B.part_no,B.location,V.voter_id_card_no,TD.first_name,TD.age,TD.gender,TD.mobile_no,TD.relative_name,TD.house_no,CT.caste_name,ED.qualification,O.occupation,TD.cadre_aadher_no " +
+		  		" FROM booth_publication_voter BPV,booth B,voter V,tdp_cadre TD LEFT OUTER JOIN caste_state CS ON TD.caste_state_id = CS.caste_state_id LEFT OUTER JOIN caste CT ON CS.caste_id = CT.caste_id " +
+		  		" LEFT OUTER JOIN educational_qualifications ED ON TD.education_id = ED.educational_qualification_id LEFT OUTER JOIN occupation O ON TD.occupation_id = O.occupation_id WHERE " +
+		  		" BPV.voter_id = TD.family_voterId AND BPV.voter_id = V.voter_id AND BPV.booth_id = B.booth_id AND TD.enrollment_year = 2014 AND TD.is_deleted = 'N' AND " +
+		  		" B.constituency_id = :constituencyId AND B.publication_date_id = :publicationDateId AND B.part_no = :partNo ORDER BY BPV.serial_no ");
+			  query.setParameter("constituencyId",constituencyId);
+			  query.setParameter("publicationDateId",publicationDateId);
+			  query.setParameter("partNo",partNo);
+			  return query.list();
+	  }
+	  
+	  public List<Object[]> getVoterHouseWiseDetailsInABooth(Long constituencyId,Long publicationDateId,String partNo)
+	  {
+		  Query query = getSession().createSQLQuery("SELECT V.house_no,VA.area,COUNT(V.voter_id),COUNT(DISTINCT TD.tdp_cadre_id),V.name,TD.mobile_no,CT.caste_name FROM booth_publication_voter BPV,booth B,voter V LEFT OUTER JOIN voter_area VA ON V.voter_id = VA.voter_id" +
+		  		" LEFT OUTER JOIN tdp_cadre TD ON V.voter_id = TD.voter_id AND TD.enrollment_year = 2014 AND TD.is_deleted = 'N' LEFT OUTER JOIN caste_state CS ON TD.caste_state_id = CS.caste_state_id LEFT OUTER JOIN caste CT on CS.caste_id = CT.caste_id WHERE " +
+		  		" V.voter_id = BPV.voter_id AND BPV.booth_id = B.booth_id AND B.constituency_id = :constituencyId AND B.publication_date_id = :publicationDateId AND B.part_no = :partNo GROUP BY V.house_no ORDER BY BPV.serial_no");
+		  query.setParameter("constituencyId",constituencyId);
+		  query.setParameter("publicationDateId",publicationDateId);
+		  query.setParameter("partNo",partNo);
+		  return query.list();
+	  }
 }
