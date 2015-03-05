@@ -38,6 +38,30 @@
 #constiTableId td{
     background-color: #F3F3F3 !important;
 }
+
+.widget
+	{
+		background-color:rgba(0,0,0,0.1);
+		text-align:center;
+		padding:10px 0px 10px 0px;
+		margin-right:20px;
+		border:1px solid #999;
+		box-shadow:1px 1px 5px #999;
+	}
+	.borderbox
+	{
+		margin-top:10px;
+		border:5px solid #CCC;
+		border-radius:5px;
+	}
+	.tablecaption
+	{
+		background-color:#FC6;
+		padding-left:5px;
+		font-size:16px;
+		font-weight:bold;
+		color:#FFF;
+	}
 	</style>
 </head>
 <body>
@@ -80,33 +104,43 @@
 	</script>
 <div class="container">
 <div class="row m_top20">
-<h4 style="color:#46b8da;text-align:center" id="titleId"> </h4>
+<h4 style="color:#fff;font-weight:bold;text-align:center;background-color: #31B0D5;border-radius: 5px;height: 31px;padding: 5px" id="titleId"> </h4>
 </div>
     <div class="row m_top20 locationCls">
   	   <div class="col-md-4 col-md-offset-2 col-sm-6 col-xs-6">Select District:<select id="districtsId" class="form-control" onChange="getAllConstituencysForADistrict()"><option value="0">Select District</option></select> </div>
        <div class="col-md-4  col-sm-6 col-xs-6">Select Constituency:<select id="constituencysId" class="form-control"><option value="0">Select Constituency</option></select> </div>
     </div>
 		<c:if test="${pageAccessType == 'ALL'}">
-<div  class="row m_top20 form-inline" class="row m_top20 form-inline" style="margin-left:250px">
+	<div  class="row m_top20 form-inline" class="row m_top20 form-inline" style="margin-left:250px">
 		
 					  	
 							
 						Select State	<select id="stateId" onchange="getUserAccessInfo();" class="form-control" style="width:200px;">	
 						<option value="0">All</option> 
-							<option value="1">AP</option>
-							<option value="2">TS</option>
+							<option value="1"> Andhra Pradesh </option>
+							<option value="2"> Telangana </option>
 							</select>
 							
 							<img id="imgajax" src="images/icons/search.gif" 
 								alt="Processing Image" style="display:none;width:17px;height:11px;"/>
-						Select Constituency	<select id="userAccessconstituencyId" class="form-control" style="width:200px;">						 
+						Select Constituency	<select id="userAccessconstituencyId" class="form-control" style="width:200px;"onchange="reload()">						 
 							
 							</select>
-
+<!--
 							<span  class="glyphicon glyphicon-refresh" onclick="reload()"  style="cursor:pointer;">  </span>
-						
+	-->					
 				</div>	
-			</c:if>		
+			</c:if>	
+
+	<div id="constiRoleSummry" style="display:none;">
+		<img id="summaryAjaxRole" src="./images/Loading-data.gif" class=" col-sm-offset-4" alt="Processing Image"/>
+		
+	</div>
+	<button id="hide" class="pull-right btn btn-warning summaryEventCls" title="Hide Constituency Wise Detailed Overview">Hide /\</button>
+	<button id="show" class="pull-right btn btn-success summaryEventCls" style="display:none;" title="Show Constituency Wise Detailed Overview">Show \/</button>
+	<div id="constiRoleSummary">		
+	</div>
+	
 	<div class="row m_top20">
 		<div class="col-md-4 col-md-offset-3"><label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="reportTypeCls" value=1 name="reportType" checked="true"> VILLAGE / WARD</label></div>
 		<div class="col-md-4 "><label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="reportTypeCls" value=2 name="reportType">MANDAL / TOWN / DIVISION</label></div>
@@ -115,7 +149,7 @@
 	<span class="btn btn-info pull-right exportToExcel" onclick="exportToExcel()" style="display:none;"> Export To Excel </span>
 	
 	<div id="constSummary" style="display:none;">
-		<img id="summaryAjax" src="./images/Loading-data.gif" class="col-sm-2 col-sm-offset-4" alt="Processing Image"/>
+		<img id="summaryAjax" src="./images/Loading-data.gif" class="" alt="Processing Image"/>
 	</div>
 	
 	
@@ -138,7 +172,24 @@
 var accessConstituency = '${accessConstituency}';
 var accessConstituencyId = '${accessConstituencyId}';
 
-
+$(document).ready(function(){
+	$('.summaryEventCls').click(function(){
+		var btnId = $(this).attr('id');
+		if(btnId == 'hide')
+		{
+			$('#show').show();
+			$('#hide').hide();
+			$('#constiRoleSummary').hide();
+			
+		}
+		else if(btnId == 'show')
+		{
+			$('#show').hide();
+			$('#hide').show();
+			$('#constiRoleSummary').show();
+		}
+	});
+});
 if(accessConstituencyId!='null' && accessConstituencyId!=""){
 	$(".locationCls").hide();
 	getConstituencySummary();
@@ -211,7 +262,7 @@ function getAllConstituencysForADistrict()
 }
 
 function getConstituencySummary(){
-	$("#constSummary").html('<img id="summaryAjax" src="./images/Loading-data.gif" class="col-sm-2 col-sm-offset-4" alt="Processing Image"/>');
+	$("#constSummary").html('<img id="summaryAjax" src="./images/Loading-data.gif" class=" col-sm-offset-4" alt="Processing Image"/>');
 	var constiId = "";
 	if(accessConstituencyId!=null && accessConstituencyId!=""){
 		constiId = accessConstituencyId;
@@ -257,7 +308,7 @@ function buildConstituencySummary(results,jsObj){
 				$("#constSummary").html("<br><h4 style='text-align:center;;color:red'> NO RESULTS TO DISPLAY.</h4>");
 				return;
 			}
-			$("#titleId").append(''+results.accessState+' CONSTITUENCY');
+			$("#titleId").append(''+results.accessState+' CONSTITUENCY CADRE COMMITTEE OVERVIEW ');
 			if(results.mandalsList!=null && results.mandalsList.length>0){
 					for(var i in results.mandalsList){
 				var rest = results.mandalsList[i];
@@ -556,8 +607,7 @@ str+='</table>';
 	str+='</div>';
 	str += '<div>';
 	str += '<table class="table table-bordered" style="border:2px solid #FC6 !important">';
-    str += '<caption class="tablecaption" >Caste Category Wise Presidents Information';
-    str += '<i class="glyphicon glyphicon-remove pull-right" style="margin-right:10px;cursor:pointer"></i>	';
+    str += '<caption class="tablecaption" >Caste Category Wise Information';
     str += '<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
 	str += '</caption>';
 	str += ' <thead>';
@@ -584,8 +634,7 @@ str+='</table>';
 	
 	str += '<div>';
 	str += '<table class="table table-bordered" style="border:2px solid #FC6 !important">';
-	str += '<caption class="tablecaption">Age Range Wise Presidents Information';
-	str += '<i class="glyphicon glyphicon-remove pull-right" style="margin-right:10px;cursor:pointer"></i>';	
+	str += '<caption class="tablecaption">Age Range Wise Information';
 	str += '<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>                </caption>';
 	str += '<thead>';
 	str += '<tr>';
@@ -658,9 +707,10 @@ str+='</table>';
    var areaType = "";
    if(locationTypeId != 8)
    {
-	   areaType = "Panchayat";
+	   areaType = "Village Committee Members";
    }
-   $('#dialogSummary').find('h3').html('<span>'+ capitalize(name)+' '+areaType+' '+ basicCmmtyName +' '+ capitalize(type) +' </span>');
+   //$('#dialogSummary').find('h3').html('<span>'+ capitalize(name)+' '+areaType+' '+ basicCmmtyName +' '+ capitalize(type) +' </span>');
+   $('#dialogSummary').find('h3').html('<span>'+ capitalize(name)+' '+areaType+' ('+ basicCmmtyName +') </span>');
    $("#dialogSummary").modal("show");
   
   } 
@@ -739,6 +789,208 @@ function reload() {
 	 window.location.href ='constituencyCommitteeSummaryAction.action?accessConstituencyId='+accessConstituencyId+'','location=no','_blank'; 
     
 }
+
+function getRolesBasedReport(roleId)
+	{
+		var rolesArr = new Array();
+		var casteCategoryArr = new Array();
+		var casteCategoryGroupArr = new Array();
+		var casteIdsArr = new Array();
+		
+		var locationLevelId =4;
+		var committeeTypeId =1;
+		var userAccessType ="STATE";
+		var castePercentage =5;
+		var searchTypeId =0;
+		
+		if(roleId == 0)
+		{
+			rolesArr.push(1);
+			rolesArr.push(2);
+			rolesArr.push(3);
+			rolesArr.push(4);
+			rolesArr.push(5);
+			rolesArr.push(6);
+			rolesArr.push(7);
+			rolesArr.push(8);
+			rolesArr.push(9);
+		}
+		else
+		{
+			rolesArr.push(roleId);
+		}
+
+		var jObj = {
+			rolesArr : rolesArr,
+			casteCategoryArr : casteCategoryArr,
+			casteCategoryGroupArr : casteCategoryGroupArr,
+			casteIdsArr : casteIdsArr,
+			locationLevelId: locationLevelId,
+			committeeTypeId : committeeTypeId,
+			userAccessType : userAccessType,
+			castePercentage:'${accessConstituencyId}',
+			searchTypeId:searchTypeId
+		};
+		$.ajax({
+          type:'GET',
+          url: 'getCommitteeRolesBasedReport.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			if(result != null)
+			{
+				buildRoleWiseDetailsInfo(result);
+			}
+			else{
+				$('#constiRoleSummary').html('No Data Available');
+			}
+		});
+	}
+	
+	function buildRoleWiseDetailsInfo(result)
+	{
+		var totalResult = result.cadreCommitteeRolesInfoVOList;
+			var str='';
+		if(totalResult != null)
+		{
+			for(var i in totalResult)
+			{
+				str+='<div class="col-md-10 col-md-offset-1 widget" style="margin-top:10px;font-size: 16px;">';
+				str+='<div class="col-md-4" >';
+				str+='<div class="col-md-5" style="padding:5px;">Total Candidates</div>';
+				str+='<div class="col-md-7" style="font-size:32px;padding:0px;display:inline-block">'+totalResult[i].totalCount+'</div>';
+				str+='</div>';
+				str+='<div class="col-md-4" style="border-left:1px solid #FFF" >';
+				str+='<div class="col-md-5" style="padding:0px;">';
+				str+='<i class="icon-male"></i>';
+				str+='Male Candidates</div>';
+				str+='<div class="col-md-7" style="font-size:32px;padding:0px;display:inline-block">'+totalResult[i].maleCount+'</div>';
+				str+='</div>';
+				str+='<div class="col-md-4" style="border-left:1px solid #FFF" >';
+				str+='<div class="col-md-5" style="padding:0px;">';
+				str+='<i class="icon-female"></i>';
+				str+='Female Candidates</div>';
+				var femaleCount = totalResult[i].femaleCount != null?totalResult[i].femaleCount:0;
+				str+='<div class="col-md-7" style="font-size:32px;padding:0px;display:inline-block">'+femaleCount+'</div>';
+				str+='</div>';
+				str+='</div>';
+			}			
+		}
+		
+			str+='<div class="col-md-10 col-md-offset-1" style="margin-top:20px;">';
+			str+='<div class="table-responsive">';
+		var casteCategoryResult = result.casteCategoryWiseList;
+		if(casteCategoryResult != null)
+		{
+			
+				str+='<table class="table table-bordered" style="border:2px solid #FC6 !important;margin-bottom:35px" id="casteCategoryId">';
+				str+='<caption class="tablecaption" >Caste Category Wise Information';
+				str+='<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
+				str+='</caption>';
+				str+='<thead>';
+				str+='<tr>';
+				str+='<th width="25%">Caste Category</th>';
+				str+='<th width="25%">Total Count</th>';
+				str+='<th width="25%">Male</th>';
+				str+='<th width="25%">Female</th>';
+				str+='</tr>';
+				str+='</thead>';
+				for(var i in casteCategoryResult)
+				{
+					str+='<tr>';
+					str+='<td>'+casteCategoryResult[i].casteCategory+'</td>';
+					str+='<td>'+casteCategoryResult[i].totalCount+'</td>';
+					str+='<td>'+casteCategoryResult[i].maleCount+'</td>';
+					str+='<td>'+casteCategoryResult[i].femaleCount+'</td>';
+					str+='</tr>';
+				}
+				str+='</table>';			
+		}
+			
+		var casteWiseResult = result.casteWiseList;
+		if(casteWiseResult != null)
+		{
+			str+='<table class="table table-bordered" style="border:2px solid #FC6 !important" id="casteDetailsId">';
+			str+='<caption class="tablecaption" >Caste Wise Information';
+			str+='<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
+			str+='</caption>';
+			str+='<thead>';
+			str+='<tr>';
+			str+='<th width="25%">Caste Name</th>';
+			str+='<th width="25%">Total Count</th>';
+			str+='<th width="25%">Male</th>';
+			str+='<th width="25%">Female</th>';
+			str+='</tr>';
+			str+='</thead>';
+			for(var i in casteWiseResult)
+			{
+				str+='<tr>';
+				str+='<td>'+casteWiseResult[i].caste+'</td>';
+					str+='<td>'+casteWiseResult[i].totalCount+'</td>';
+					str+='<td>'+casteWiseResult[i].maleCount+'</td>';
+					str+='<td>'+casteWiseResult[i].femaleCount+'</td>';
+				str+='</tr>';
+			}
+			str+='</table>    ';
+		}	
+		
+		var ageRangeWiseResult = result.ageRangeWiseList;
+		if(ageRangeWiseResult != null)
+		{
+			str+='<table class="table table-bordered" style="border:2px solid #FC6 !important" id="ageRangeID">';
+			str+='<caption class="tablecaption">Age Range Wise  Information';
+			str+='<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>                </caption>';
+			str+='<thead>';
+			str+='<tr>';
+			str+='<th width="25%">Between Age</th>';
+			str+='<th width="25%">Total Count</th>';
+			str+='<th width="25%">Male</th>';
+			str+='<th width="25%">Female</th>';
+			str+='</tr>';
+			str+='</thead>';
+			for(var i in ageRangeWiseResult)
+			{
+				str+='<tr>';
+				str+='<td>'+ageRangeWiseResult[i].ageRange+'</td>';
+				str+='<td>'+ageRangeWiseResult[i].totalCount+'</td>';
+				str+='<td>'+ageRangeWiseResult[i].maleCount+'</td>';
+				str+='<td>'+ageRangeWiseResult[i].femaleCount+'</td>';
+				str+='</tr>';
+			}
+		}
+			str+='</table> ';
+			str+='</div>  '; 
+			str+='</div>';
+
+		$('#constiRoleSummary').html(str);
+		
+		
+		$("#casteDetailsId").dataTable({
+			"iDisplayLength": 15,
+			"aaSorting": [[ 1, "desc" ]],
+			"aLengthMenu": [[15,30, 50, 100, -1], [15,30, 50, 100, "All"]]
+		});
+		
+		$("#casteCategoryId").dataTable({
+			"iDisplayLength": 15,
+			"aaSorting": [[ 1, "desc" ]],
+			"aLengthMenu": [[15,30, 50, 100, -1], [15,30, 50, 100, "All"]]
+		});
+		
+		$("#ageRangeID").dataTable({
+			"iDisplayLength": 15,
+			"aaSorting": [[ 1, "desc" ]],
+			"aLengthMenu": [[15,30, 50, 100, -1], [15,30, 50, 100, "All"]]
+		});
+		
+		$('#casteCategoryId_length,#ageRangeID_length').hide();
+		$('#casteCategoryId_filter,#ageRangeID_filter').hide();
+		$('#casteCategoryId_info,#ageRangeID_info').hide();
+		$('#casteCategoryId_paginate,#ageRangeID_paginate').hide();
+		
+		$('#casteDetailsId_info').css('margin-bottom','35px');
+	}
+	
+	getRolesBasedReport(0);
 </script>
 <script>
 <c:if test="${pageAccessType == 'ALL'}">
