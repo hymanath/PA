@@ -575,11 +575,11 @@ public class RegistrationService implements IRegistrationService{
 	}
 	public String registerAllUsers(RegistrationVO user){
 		try{
-			PrintWriter writer = new PrintWriter("D:/users.txt", "UTF-8");
+		PrintWriter writer = new PrintWriter("H:/users.txt", "UTF-8");
 			
-			RegistrationVO regVO = new RegistrationVO();
+		RegistrationVO regVO = new RegistrationVO();
 		MD5Encrypt encrypt = new MD5Encrypt();
-		FileInputStream file = new FileInputStream(new File("D:\\users.xls"));
+		FileInputStream file = new FileInputStream(new File("H:\\users.xls"));
 		HSSFWorkbook workbook = new HSSFWorkbook(file);
 		HSSFSheet sheet = workbook.getSheetAt(0);
 		Iterator<Row> rowIterator = sheet.iterator();
@@ -587,66 +587,72 @@ public class RegistrationService implements IRegistrationService{
 		Cell cell = null;
 		Long constituencyId = null;
 		String constiPerc = null;
+		
 		while(rowIterator.hasNext())
 		{
-		Row row = rowIterator.next();
-
-		String usname =row.getCell(3).toString().trim();
-		String pasword =RegistrationService.randomGenerator(7)+"";
-		String firstName =row.getCell(1).toString().trim();
-		String lastName =row.getCell(2).toString().trim();
-		
-		String mobileNo = row.getCell(5).toString().replace(".", "").replace("E9", "");
-
-		if(mobileNo.length() == 9)
-		{
-		mobileNo = mobileNo+0;
-		}
-		if(mobileNo.length() == 8)
-		{
-		mobileNo = mobileNo+0+0;
-		}
-		if(mobileNo.length() == 7)
-		{
-		mobileNo = mobileNo+0+0+0;
-		}
-		if(mobileNo.length() == 6)
-		{
-		mobileNo = mobileNo+0+0+0+0;
-		}
-		if(mobileNo.length() == 5)
-		{
-		mobileNo = mobileNo+0+0+0+0+0;
-		}
-		String mobile = mobileNo;
-		if(mobile.length() == 0){
-			mobile="999999999";
-		}
-		String address =row.getCell(0).toString().trim();
-		String accessValue =row.getCell(6).toString().trim().replace(".0", "");
-		String enKey = encrypt.MD5(usname)+encrypt.MD5(pasword);
-		String md5Key = encrypt.MD5(enKey);
-		regVO.setParty(872l);
-		regVO.setUserName(usname);
-		regVO.setFirstName(firstName);
-		regVO.setLastName(lastName);
-		regVO.setPassword(md5Key);
-		regVO.setGender("Male");
-		
-		regVO.setDateOfBirth("16/1/1970");
-		regVO.setMobile(mobile);
-		regVO.setAddress(address);
-		regVO.setUserType("Politician");
-		regVO.setAccessValue(accessValue);
-		regVO.setParentUserId(user.getRegistrationID());
-		regVO.setMainAccountId(user.getMainAccountId() != null ? user.getMainAccountId() : user.getRegistrationID());
-		
-			regVO.setAccessType(IConstants.MLA);
-		
+			Row row = rowIterator.next();
+	
+			String usname = row.getCell(3).toString().trim();
+			String pasword = RegistrationService.randomGenerator(7)+"";
+			String firstName = row.getCell(1).toString().trim();
+			String lastName = row.getCell(2).toString().trim();
+			String accessType = row.getCell(7).toString().trim();
 			
-		 saveRegistration(regVO,IConstants.PARTY_ANALYST_USER);
-		 System.out.println("UserName:"+usname+" Password:"+pasword);
-		 writer.println("UserName:"+usname+" Password:"+pasword);
+			String mobileNo = row.getCell(5).toString().replace(".", "").replace("E9", "");
+	
+			if(mobileNo.length() == 9)
+			{
+				mobileNo = mobileNo+0;
+			}
+			if(mobileNo.length() == 8)
+			{
+				mobileNo = mobileNo+0+0;
+			}
+			if(mobileNo.length() == 7)
+			{
+				mobileNo = mobileNo+0+0+0;
+			}
+			if(mobileNo.length() == 6)
+			{
+				mobileNo = mobileNo+0+0+0+0;
+			}
+			if(mobileNo.length() == 5)
+			{
+				mobileNo = mobileNo+0+0+0+0+0;
+			}
+			
+			String mobile = mobileNo;
+			if(mobile.length() == 0){
+				mobile="999999999";
+			}
+			
+			String address = row.getCell(0).toString().trim();
+			String accessValue = row.getCell(6).toString().trim().replace(".0", "");
+			String enKey = encrypt.MD5(usname)+encrypt.MD5(pasword);
+			String md5Key = encrypt.MD5(enKey);
+			regVO.setParty(872l);
+			regVO.setUserName(usname);
+			regVO.setFirstName(firstName);
+			regVO.setLastName(lastName);
+			regVO.setPassword(md5Key);
+			regVO.setGender("Male");
+			
+			regVO.setDateOfBirth("16/1/1970");
+			regVO.setMobile(mobile);
+			regVO.setAddress(address);
+			regVO.setUserType("Politician");
+			regVO.setAccessValue(accessValue);
+			regVO.setParentUserId(user.getRegistrationID());
+			regVO.setMainAccountId(user.getMainAccountId() != null ? user.getMainAccountId() : user.getRegistrationID());
+			
+			if(accessType.length() > 0)
+				regVO.setAccessType(accessType);
+			else
+				regVO.setAccessType(IConstants.MLA);
+				
+			saveRegistration(regVO,IConstants.PARTY_ANALYST_USER);
+			System.out.println("UserName:"+usname+" Password:"+pasword);
+			writer.println("UserName:"+usname+" Password:"+pasword);
 		}
 		file.close();
 		writer.close();
