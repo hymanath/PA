@@ -7,7 +7,6 @@ import java.util.Set;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
-import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.TdpCadre;
 
 public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
@@ -302,4 +301,18 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public Long getTdpCadreCountInALocation(List<Long> locationValue,String type);
 	public List<TdpCadre> getTdpCadreVoterIDs(List<Long> locationValue,String type,Integer startIndex,
 			Integer maxRecords,String columnName ,String order);
+	
+	public Long getVoterIdExistCadreInABooth(Long constituencyId,Long publicationDateId,String partNo);
+	public Long getFamilyVoterIdExistCadreInABooth(Long constituencyId,Long publicationDateId,String partNo);
+	public List<String> getVoterIdExistCadreFamiliesInABooth(Long constituencyId,Long publicationDateId,String partNo);
+	public List<String> getFamilyVoterIdExistCadreFamiliesInABooth(Long constituencyId,Long publicationDateId,String partNo);
+	public List<Object[]> getCadreAvailableFamiliesInABooth(Long constituencyId,Long publicationDateId,String partNo,List<String> houseNosList);
+	public List<Object[]> getVoterAndCadreDetailsInABooth(Long constituencyId,Long publicationDateId,String partNo);
+	public List<Object[]> getCadreBasicDetailsByVoterId(Long constituencyId,Long publicationDateId,String partNo,Long voterId);
+	public List<Object[]> getFamilyCadreBasicDetailsByVoterId(Long constituencyId,Long publicationDateId,String partNo,Long voterId);
+	public List<Object[]> getCadreBasicDetailsInABooth(Long constituencyId,Long publicationDateId,String partNo);
+	public List<Object[]> getFamilyCadreBasicDetailsInABooth(Long constituencyId,Long publicationDateId,String partNo);
+	public List<Object[]> getCadreDetailsInABooth(Long constituencyId,Long publicationDateId,String partNo);
+	public List<Object[]> getFamilyCadreDetailsInABooth(Long constituencyId,Long publicationDateId,String partNo);
+	public List<Object[]> getVoterHouseWiseDetailsInABooth(Long constituencyId,Long publicationDateId,String partNo);
 }
