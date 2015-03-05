@@ -54,6 +54,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreCallCenterCommentDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCallCenterFeedbackDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreImagesValidDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreSmsStatusDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreTeluguNamesDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreVolunteerConstituencyDAO;
@@ -128,8 +129,16 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	private ITehsilDAO tehsilDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private ITdpCadreImagesValidDAO tdpCadreImagesValidDAO;
+	private ITdpCadreInfoDAO tdpCadreInfoDAO;
 	
 	
+	
+	public ITdpCadreInfoDAO getTdpCadreInfoDAO() {
+		return tdpCadreInfoDAO;
+	}
+	public void setTdpCadreInfoDAO(ITdpCadreInfoDAO tdpCadreInfoDAO) {
+		this.tdpCadreInfoDAO = tdpCadreInfoDAO;
+	}
 	public void setTdpCadreImagesValidDAO(
 			ITdpCadreImagesValidDAO tdpCadreImagesValidDAO) {
 		this.tdpCadreImagesValidDAO = tdpCadreImagesValidDAO;
@@ -4812,7 +4821,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					 getResponseInfo(locationType,responseMap,startDate,endDate,constituencyId);
 					 responseVO.setApList(new ArrayList<CadreIVRResponseVO>(responseMap.values()));
 					 calculateAllPercs(responseVO.getApList());
-					 Collections.sort(responseVO.getApList(), sort);
+					// Collections.sort(responseVO.getApList(), sort);
 				 }catch(Exception e){
 					 LOG.error("Exception rised in getLocationWiseIVRDetailedInfo ",e);
 				 }
@@ -4821,7 +4830,12 @@ public class TdpCadreReportService implements ITdpCadreReportService{
           
           public void getNoOfMembersRegInfo(Map<Long,String> locationNames,String locationType,Map<Long,CadreIVRResponseVO> responseMap,Long constituencyId){
         	//0locationId,1count
-        	  List<Object[]> registeredCountList = tdpCadreDAO.getLocationWiseCadreRegisterInfo(locationNames.keySet(), locationType,constituencyId);
+        	  List<Object[]> registeredCountList = new ArrayList<Object[]>();
+        	  if(locationType.equalsIgnoreCase("district") || locationType.equalsIgnoreCase("constituency")){
+        	   registeredCountList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationNames.keySet(), locationType,constituencyId,"Registered");
+        	  }else{
+        		  registeredCountList = tdpCadreDAO.getLocationWiseCadreRegisterInfo(locationNames.keySet(), locationType,constituencyId); 
+        	  }
         	  for(Object[] registeredCount:registeredCountList){
         		  CadreIVRResponseVO response = responseMap.get((Long)registeredCount[0]);
         		  if(response == null){
@@ -4857,16 +4871,24 @@ public class TdpCadreReportService implements ITdpCadreReportService{
           public void getNoOfCardsPrintedAndJobInfo(String locationType,Map<Long,CadreIVRResponseVO> responseMap,Long constituencyId){
         	   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         	   //0locationId,1count,2jobids
-        	   List<Object[]> cardsPrintedAndJobInfo = zebraPrintDetailsDAO.getLocationWiseCadreRegisterInfo(responseMap.keySet(),locationType,constituencyId);
+        	  
+        	   List<Object[]> cardsPrintedAndJobInfo = new ArrayList<Object[]>();
+         	  if(locationType.equalsIgnoreCase("district") || locationType.equalsIgnoreCase("constituency")){
+         		 cardsPrintedAndJobInfo = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(responseMap.keySet(),locationType,constituencyId,"Printed");
+         	  }else{
+         		 cardsPrintedAndJobInfo = tdpCadreDAO.getLocationWiseCadrePrintedCount(responseMap.keySet(),locationType,constituencyId); 
+         	  }
+        	   
+     
         	   for(Object[] cardsPrintedInfo:cardsPrintedAndJobInfo){
          		  CadreIVRResponseVO response = responseMap.get((Long)cardsPrintedInfo[0]);
          		  if(response != null){
          			 response.setPrintedCount(response.getPrintedCount()+(Long)cardsPrintedInfo[1]);
-         			 if(response.getJobCode().length() > 0){
+         			/* if(response.getJobCode().length() > 0){
          			    response.setJobCode(response.getJobCode()+" , "+sdf.format((Date)cardsPrintedInfo[2]));
          			 }else{
          				response.setJobCode(sdf.format((Date)cardsPrintedInfo[2]));
-         			 }
+         			 }*/
          		  }
          		 
          	  }
@@ -4934,7 +4956,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         	  for(Object[] location:locations){
         		  locationNames.put((Long)location[0], location[1].toString());
         	  }
-        	  return getLocationWiseIVRInfo(locationNames,locationType,startDate,endDate,accessType,accessValue);
+        	  return getLocationWiseIVRDetailedInfo(locationNames,locationType,startDate,endDate,null);
           }
           
           public CadreIVRResponseVO  getLocationWisePercInfoErrorInfo(String locationType,Long constituencyId,Date startDate,Date endDate,String accessType,Long accessValue){
@@ -4955,7 +4977,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         		  for(Object[] location:assemblyList){
             		  locationNames.put((Long)location[0], location[1].toString());
             	  }
-        		  return getLocationWiseIVRDetailedInfo(locationNames,"constituency",startDate,endDate,null);
+        		  return getLocationWiseIVRDetailedInfo(locationNames,"Constituency",startDate,endDate,null);
         	  }else if(locationType.equalsIgnoreCase("mandal")){
         		  List<CadreIVRResponseVO> infoList = new ArrayList<CadreIVRResponseVO>();
         		  Map<Long,String> localBodyNames = new HashMap<Long,String>();
