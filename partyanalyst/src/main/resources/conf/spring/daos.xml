@@ -1944,5 +1944,9 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="tdpCadreInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!--  end -->
 </beans>		
