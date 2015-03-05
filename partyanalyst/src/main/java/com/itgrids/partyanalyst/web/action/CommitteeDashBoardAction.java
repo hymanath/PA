@@ -58,7 +58,16 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 	private ICadreRegistrationService 			cadreRegistrationService;
 	private CadreCommitteeMemberVO 				boothsInfo;
 	private ByeElectionVO 						byeEleInfo;
+	private BasicVO basicVO;
 	
+	
+	
+	public BasicVO getBasicVO() {
+		return basicVO;
+	}
+	public void setBasicVO(BasicVO basicVO) {
+		this.basicVO = basicVO;
+	}
 	public ByeElectionVO getByeEleInfo() {
 		return byeEleInfo;
 	}
@@ -207,14 +216,14 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 		if(noaccess){
 			return "error";
 		}
-		
-		
 		pageAccessType = cadreCommitteeService.userAccessTypeDetailsForDashBoard(regVO.getRegistrationID(),regVO.getAccessType(),Long.valueOf(regVO.getAccessValue().trim()));
 		String accessType = regVO.getAccessType();
 		if(accessType.equalsIgnoreCase("MLA") || accessType.equalsIgnoreCase("MP"))
 		{
 			pageAccessType = accessType;
 		}
+		
+		
 		return Action.SUCCESS;
 	}
 	
@@ -406,7 +415,12 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 			{
 				noaccess = true;
 			}
-			
+			pageAccessType = cadreCommitteeService.userAccessTypeDetailsForDashBoard(regVO.getRegistrationID(),regVO.getAccessType(),Long.valueOf(regVO.getAccessValue().trim()));
+			String accessType = regVO.getAccessType();
+			if(accessType.equalsIgnoreCase("MLA") || accessType.equalsIgnoreCase("MP"))
+			{
+				pageAccessType = accessType;
+			}
 			if(noaccess)
 				return Action.ERROR;
 			
@@ -480,7 +494,12 @@ public String constituencyCommitteeSummaryAction()
 	if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
 		noaccess = false;
 	}
-	
+	pageAccessType = cadreCommitteeService.userAccessTypeDetailsForDashBoard(regVO.getRegistrationID(),regVO.getAccessType(),Long.valueOf(regVO.getAccessValue().trim()));
+	String accessType = regVO.getAccessType();
+	if(accessType.equalsIgnoreCase("MLA") || accessType.equalsIgnoreCase("MP"))
+	{
+		pageAccessType = accessType;
+	}
 	if(noaccess){
 		return "error";
 	}
@@ -490,6 +509,23 @@ public String constituencyCommitteeSummaryAction()
 	return Action.SUCCESS;
 }
 
+
+public String getUserAccessListConstituency()
+{
+	try{
+	HttpSession session = request.getSession();
+	RegistrationVO  user= (RegistrationVO) session.getAttribute("USER");
+	jObj = new JSONObject(getTask());
+
+	basicVO = cadreCommitteeService.getAccessLocationValuesByState(user.getAccessType(),Long.valueOf(user.getAccessValue()),jObj.getLong("stateId"),user.getRegistrationID());
+	
+	}
+	catch(Exception e)
+	{
+		
+	}
+	return Action.SUCCESS;
+}
 public List<BasicVO> getUserAccessConstituencies(){
 	HttpSession session = request.getSession();
 	RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
