@@ -554,12 +554,65 @@ str+='</tr>';
 str+='</thead>';
 str+='</table>';
 	str+='</div>';
+	str += '<div>';
+	str += '<table class="table table-bordered" style="border:2px solid #FC6 !important">';
+    str += '<caption class="tablecaption" >Caste Category Wise Presidents Information';
+    str += '<i class="glyphicon glyphicon-remove pull-right" style="margin-right:10px;cursor:pointer"></i>	';
+    str += '<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
+	str += '</caption>';
+	str += ' <thead>';
+	str += ' <tr>';
+	str += '<th width="25%">Caste Category</th>';
+	str += '<th width="25%">Total Count</th>';
+	str += '<th width="25%">Male</th>';
+	str += '<th width="25%">Female</th>';
+	str += '</tr>';
+	str += '</thead>';
+	for(var pr in result[0].casteGroupVO)
+	{
+		str += ' <tr>';
+		str += '<td>'+result[0].casteGroupVO[pr].castName+'</td>';
+		str += '<td>'+result[0].casteGroupVO[pr].casteId+'</td>';
+		str += '<td>'+result[0].casteGroupVO[pr].stateId+'</td>';
+		str += '<td>'+result[0].casteGroupVO[pr].castStateId+'</td>';
+		str += '</tr>';
+	}
+	
+
+	str += '</table>';
+	str += '</div>';
+	
+	str += '<div>';
+	str += '<table class="table table-bordered" style="border:2px solid #FC6 !important">';
+	str += '<caption class="tablecaption">Age Range Wise Presidents Information';
+	str += '<i class="glyphicon glyphicon-remove pull-right" style="margin-right:10px;cursor:pointer"></i>';	
+	str += '<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>                </caption>';
+	str += '<thead>';
+	str += '<tr>';
+	str += ' <th width="25%">Between Age</th>';
+	str += '<th width="25%">Total Count</th>';
+	str += '<th width="25%">Male</th>';
+	str += '<th width="25%">Female</th>';
+	str += '</tr>';
+	str += '</thead>';
+	for(var tp in result[0].ageDetailsIfoVO)
+	{
+		str += ' <tr>';
+		str += '<td>'+result[0].ageDetailsIfoVO[tp].castName+'</td>';
+		str += '<td>'+result[0].ageDetailsIfoVO[tp].casteId+'</td>';
+		str += '<td>'+result[0].ageDetailsIfoVO[tp].stateId+'</td>';
+		str += '<td>'+result[0].ageDetailsIfoVO[tp].castStateId+'</td>';
+		str += '</tr>';
+	}
+
+	str += ' </table> ';
+	str += '</div>';
 	str+='<table class="table table-bordered" id="constiTableId">';
 	str+='<thead>';
 	//if(basicCmmtyId == 1)
 		//str+='<th  style="width: 178px; padding-left: 34px;">Designation</th>';
 	
-	str+='<th style="width:50px;"> PHOTO </th>';
+	str+='<th style="width:50px;"> </th>';
 	str+='<th style="padding-left: 72px;"> MEMBER </th>';
 	//str+='<th style="padding-left: 19px;">MemberShipNo</th>';
 	str+='<th style="padding-left: 19px;"> AGE </th>';
@@ -591,7 +644,7 @@ str+='</table>';
 	 //str+='<td style="padding-left: 15px; padding-top: 13px;">'+result[i].membershipNo+'</td>';
 	 str+='<td style="padding-left: 15px; padding-top: 13px;">'+result[i].age+' </td>';
 	 str+='<td style="padding-left: 15px; padding-top: 13px;"> '+result[i].gender+' </td>';
-	 str+='<td style="padding-left: 15px; padding-top: 13px;"> '+result[i].casteName+' </td>';
+	 str+='<td style="padding-left: 15px; padding-top: 13px;"> '+result[i].casteName+'('+result[i].casteGroupName+') </td>';
 	 str+='</tr>';
 	}
    str+='</tbody>';
@@ -615,11 +668,11 @@ str+='</table>';
         $("#cadreDetailsDiv").html("No Data Available.");
 	}
 	
-	$("#constiTableId").dataTable({
+	/*$("#constiTableId").dataTable({
 			"iDisplayLength": 20,
 			"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
 		});
-	
+	*/
 }
 }	
 function capitalize(str) {
