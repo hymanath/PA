@@ -62,6 +62,7 @@ import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.AccessedPageLoginTimeVO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
@@ -4287,7 +4288,93 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	}
 	
 	
-	
+	   public BasicVO getAccessLocationValuesByState(String accessType,Long accessValue,Long stateId,Long userId)
+       {
+     	  BasicVO basicVO = new BasicVO();
+     	  List<BasicVO> resultList =new ArrayList<BasicVO>();
+     	 List<Long> districtIds = new ArrayList<Long>();
+     	 
+     	  List<Object[]> list = null;
+     	  Long stateTypeId = 1l;
+				String accessState = "ALL";
+     	  try{
+     		 
+     		 
+     		   if(accessType.equalsIgnoreCase("MP"))
+     		  {
+     			accessState = delimitationConstituencyAssemblyDetailsDAO.get(accessValue).getConstituency().getName()+" "+"Parliament"; 
+   				List<Object[]> accessConstituencyList = userConstituencyAccessInfoDAO.findByElectionScopeUser(1L,userId);
+   				List<Long> parliamentsIds = new ArrayList<Long>();
+   				if(accessConstituencyList != null && accessConstituencyList.size()>0)
+   				{
+   					for (Object[] parliament : accessConstituencyList) {
+   						parliamentsIds.add(parliament[0] != null ? Long.valueOf(parliament[0].toString().trim()):0L);
+   					}
+   				}
+   				else
+   				{
+   					parliamentsIds.add(accessValue);
+   				}
+   				
+   				if(parliamentsIds != null && parliamentsIds.size()>0)
+   				{
+   					list = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesDetailsByParliamentList(parliamentsIds);
+   				}
+         		 
+     		  }
+     		   else
+     		   {
+
+   				List<Object[]> accessDistrictsList = userDistrictAccessInfoDAO.findByUser(userId);
+   				if(accessDistrictsList != null && accessDistrictsList.size()>0)
+   				{
+   					for (Object[] districtId : accessDistrictsList) {
+   						districtIds.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
+   					}
+   					
+   					if(districtIds != null && districtIds.size() == 13)
+   					{
+   						accessState = "AP";
+   					}
+   					else if(districtIds != null && districtIds.size() == 10)
+   					{
+   						accessState = "TG";
+   					}
+   					else if(districtIds != null && districtIds.size() == 1)
+   					{
+   						Long districtId = districtIds.get(0).longValue();
+   						if(districtId != 0L)
+   							accessState =  districtDAO.get(districtId).getDistrictName()+" District";
+   					}
+   					
+   					list = constituencyDAO.getAssemblyConstituencyDetlsByDistrictIds(districtIds);
+   				}				
+   				else{
+   					if(stateId == 2l){
+   						stateTypeId = 2l;
+   					}
+   					list = constituencyDAO.getConstituenciesByStateId(1l, stateTypeId);
+   				}
+   			
+     		   }
+     		  if(list != null && list.size() > 0)
+     		  {
+     		  for(Object[] assembly:list){
+     			  BasicVO subVo = new BasicVO();
+     			  subVo.setId((Long)assembly[0]);
+     			  subVo.setName(assembly[1].toString());
+     			  resultList.add(subVo);
+     		  }
+     		  }
+     		  basicVO.setHamletVoterInfo(resultList);
+     	  }
+     	  catch(Exception e)
+     	  {
+     		  e.printStackTrace();
+     	  }
+     	 
+			return basicVO;
+       }
 	
 	public List<CommitteeSummaryVO> getConstituencyWiseCommittesSummary(String state,String startDate, String endDate,Long userId, String accessType,Long accessValue,String mandalCheck,String villageCheck){  
 		LOG.debug("Entered Into getConstituencyWiseCommittesSummary");
@@ -5081,6 +5168,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		CommitteeSummaryVO fnlVO = new CommitteeSummaryVO();
 			LOG.debug(" Entered Into getConstituencySummary()");
 			try{
+				fnlVO.setAccessState(constituencyDAO.getConstituencyNameByConstituencyId(constituencyId));
 				List<LocationWiseBoothDetailsVO> svList = getMandalMunicCorpDetailsNew(constituencyId);
 				List<Long> mandalIds = new ArrayList<Long>();
 				List<Long> localBodyIds = new ArrayList<Long>();
