@@ -7,6 +7,7 @@ import java.util.Set;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
+import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.TdpCadre;
 
 public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
@@ -298,4 +299,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> districtWiseRegCountForDistrict(Long stateId);
 	
 	public List<Object[]> getConstituencyWiseMemberMobileNumbersCount(Long districtId,Date startDate,Date endDate);
+	public Long getTdpCadreCountInALocation(List<Long> locationValue,String type);
+	public List<TdpCadre> getTdpCadreVoterIDs(List<Long> locationValue,String type,Integer startIndex,
+			Integer maxRecords,String columnName ,String order);
 }
