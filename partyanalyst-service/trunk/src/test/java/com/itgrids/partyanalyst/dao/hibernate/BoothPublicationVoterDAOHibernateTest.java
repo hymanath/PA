@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -451,7 +452,7 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 		}
 	    */
 	
-		public void testDetaisl()
+		/*public void testDetaisl()
 		{
 			StringBuilder searchQuery = new StringBuilder();
 		
@@ -463,5 +464,29 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 			List list = null;//boothPublicationVoterDAO.getVotersDetailsForCadreRegistratiobByconstituencId(65L, 11L, searchQuery.toString());
 			System.out.println(new Date());
 			System.out.println(list.size());
+		}*/
+	
+	/*public void testGetVoterIdsInABoothOfGivenHouseNos()
+	{
+		List<String> houseNosList = new ArrayList<String>(0);
+		houseNosList.add("01-04-S2-51");
+		houseNosList.add("02-06-S1-52");
+		List<Long> list = boothPublicationVoterDAO.getVoterIdsInABoothOfGivenHouseNos(291l,12l,"9",houseNosList);
+		System.out.println(list.size());
+		
+		for(Long voterId : list)
+			System.out.println(voterId);
+	}*/
+	
+	public void testGetFamilyWiseVotersInABooth()
+	{
+		List<Object[]> list = boothPublicationVoterDAO.getFamilyWiseVotersInABooth(291l,12l,"9");
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+		{
+			System.out.println(params[0].toString()+"\t"+params[1].toString());
 		}
 	}
+	
+}
