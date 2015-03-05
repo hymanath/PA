@@ -9765,6 +9765,11 @@
 				<param name="root">"noAccess"</param>
 			</result>
 		</action>
+		<action name="getUserAccessAction" class="committeeDashBoardAction" method="getUserAccessListConstituency">
+		<result type="json" name="success">
+		<param name="root">basicVO</param> 
+		</result>
+		</action>
 		
 </package>
 </struts>      
