@@ -2529,5 +2529,12 @@
 	      <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"/>
 	     
 	</bean>
+	
+	<bean name="dynamicReportService"  class="com.itgrids.partyanalyst.service.impl.DynamicReportService">
+		<property name="boothDAO" ref="boothDAO"/>
+		<property name="voterInfoDAO" ref="voterInfoDAO"/>
+		<property name="tdpCadreDAO" ref="tdpCadreDAO"/>
+		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO"/>
+	</bean>
 </beans>		
 	
