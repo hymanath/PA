@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dto.SurveyTransactionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreLocationWiseReportVO;
 import com.itgrids.partyanalyst.dto.ZebraPrintDetailsVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.service.IDynamicReportService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ITdpCadreReportService;
 import com.itgrids.partyanalyst.util.IWebConstants;
@@ -64,7 +65,11 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 	private CadreIVRResponseVO cadreIVRResponseVO;
 	private List<ImageCheckVO> imageChekList;
 	private String status;
+	private IDynamicReportService dynamicReportService;
 	
+	public void setDynamicReportService(IDynamicReportService dynamicReportService) {
+		this.dynamicReportService = dynamicReportService;
+	}
 	
 	
 	public List<ImageCheckVO> getImageChekList() {
@@ -1047,6 +1052,24 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 			Long constituencyId = jobj.getLong("constituencyId");
 				
 			cadreIVRResponseVO = tdpCadreReportService.getMandalInfoManagerRecievedCountByConstituency(constituencyId);
+			
+			}
+		catch(Exception e)
+		{
+			LOG.info("Entered into getIvrPreviousCallBasicInfo()",e);	
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String createCadreAndVoterExcelReports()
+	{
+		try{
+			jobj = new JSONObject(getTask());
+			
+			Long constituencyId = jobj.getLong("constituencyId");
+			Long publicationDateId = jobj.getLong("publicationDateId");
+				
+			result = dynamicReportService.createCadreAndVoterExcelReportsForAConstitueny(constituencyId,publicationDateId);
 			
 			}
 		catch(Exception e)
