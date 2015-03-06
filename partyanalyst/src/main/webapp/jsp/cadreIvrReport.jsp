@@ -81,17 +81,17 @@ textarea {
 }
 .ui-dialog .ui-dialog-titlebar-close span {left: 0px; bottom: 0px; right: 0px; top: 0px;}
 
-#ivrStatusReportTab_filter,#ivrStatusReportTab1_filter{font-size:10px !important;font-family:verdana;font-weight:bold;}
+#ivrStatusReportTab_filter,#ivrStatusReportTab1_filter,#ivrStatusReportTab2_filter{font-size:10px !important;font-family:verdana;font-weight:bold;}
 #ivrStatusReportTab tr.odd td.sorting_1 ,#ivrStatusReportTab1 tr.odd td.sorting_1{
     background-color: #d3d3d3 !important;
 }
-#ivrStatusReportTab tr.even td.sorting_1,#ivrStatusReportTab1 tr.even td.sorting_1 {
+#ivrStatusReportTab tr.even td.sorting_1,#ivrStatusReportTab1 tr.even td.sorting_1 ,#ivrStatusReportTab2 tr.even td.sorting_1 {
     background-color: #fafafa !important;
 }
-#ivrStatusReportTab tr.odd ,#ivrStatusReportTab1 tr.odd{
+#ivrStatusReportTab tr.odd ,#ivrStatusReportTab1 tr.odd,#ivrStatusReportTab2 tr.odd{
     background-color: #f3f3f3 !important;
 }
-#ivrStatusReportTab1_wrapper,#ivrStatusReportTab_wrapper{overflow:auto;}
+#ivrStatusReportTab1_wrapper,#ivrStatusReportTab_wrapper,#ivrStatusReportTab2_wrapper{overflow:auto;}
 
 	</style>
 </head>
@@ -1114,7 +1114,10 @@ function getLocationWisePerformance(constituencyId,locationType,name){
 			if(result.apList != null && result.apList.length > 0){
 			    //str+='<input type="button"  style="margin-bottom: 10px;margin-top: 10px;margin-left: 375px;"  class="btn" onclick="generateExcel(\'ivrStatusReportTab\');" value="Click Here To Generate Excel"/>';
 				str+='<div style="">';
+				if(locationType == "Mandal" || locationType == "Panchayat" || locationType == "Booth")
 				str+='<table class="table table-bordered border-radius-0 table-condensed" id="ivrStatusReportTab" style="font-size:12px;">';
+				else
+				str+='<table class="table table-bordered border-radius-0 table-condensed" id="ivrStatusReportTab2" style="font-size:12px;">';
 				str+='  <thead>';
 				str+='	   <tr class="well">';
 				if(locationType =="All" || locationType =="AP" || locationType =="TS"){
@@ -1201,9 +1204,6 @@ function getLocationWisePerformance(constituencyId,locationType,name){
 				
 				if(locationType == "Mandal" || locationType == "Panchayat" || locationType == "Booth"){
 				$("#allErrorsInfoLocationWise").html(str);
-				}else{
-				$("#locationWiseAllPercDiv").html(str);
-				}
 				$("#ivrStatusReportTab").dataTable({
 					aLengthMenu: [
 						[25, 50, 100, 200, -1],
@@ -1211,6 +1211,17 @@ function getLocationWisePerformance(constituencyId,locationType,name){
 					],
 					iDisplayLength:25
 				});
+				}else{
+				$("#locationWiseAllPercDiv").html(str);
+				$("#ivrStatusReportTab2").dataTable({
+					aLengthMenu: [
+						[25, 50, 100, 200, -1],
+						[25, 50, 100, 200, "All"]
+					],
+					iDisplayLength:25
+				});
+				}
+				
 			}else{
 			   $("#allErrorsInfoLocationWise").html('<div class="table table-bordered table-hover border-radius-0" style=" box-shadow: inset 0 0 5px 4px rgba(0,0,0,0.1);"><div style="font-weight:bold;padding:20px;margin-left:375px;">No Data Available</div></div>');
 			}
