@@ -1432,7 +1432,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		
 		try
 		{
-			List<Object[]> boothDtls = boothDAO.getAllTheBoothsDetailsByConstituencyId(constituencyId,IConstants.VOTER_DATA_PUBLICATION_ID);
+			List<Object[]> boothDtls = boothDAO.getAllTheBoothsDetailsByConstituencyIdForCTP(constituencyId);
 			
 			List<Long> existingBoothIds = new ArrayList<Long>();
 			
@@ -2315,7 +2315,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		List<UserBoothDetailsVO> resultList = new ArrayList<UserBoothDetailsVO>();
 		try {
 			long publicationId= boothDAO.getLatestPublicationDateIdForAConstituency(constituencyId);
-			List<Object[]> boothsList = boothDAO.getAllTheBoothsDetailsByConstituencyId(constituencyId,IConstants.VOTER_DATA_PUBLICATION_ID);
+			List<Object[]> boothsList = boothDAO.getAllTheBoothsDetailsByConstituencyIdForCTP(constituencyId);
 			
 			for(Object[] parms:boothsList)
 			{
