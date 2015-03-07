@@ -113,6 +113,8 @@ public class TdpCadre {
 	private String 						emailId;
 	private String						isPrintReady;
 	private String 						mobileType;
+	private VoterAgeRange 				voterAgeRange;
+	private Long 						voterAgeRangeId;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -749,5 +751,25 @@ public class TdpCadre {
 	public void setMobileType(String mobileType) {
 		this.mobileType = mobileType;
 	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "age_range_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public VoterAgeRange getVoterAgeRange() {
+		return voterAgeRange;
+	}	
+	public void setVoterAgeRange(VoterAgeRange voterAgeRange) {
+		this.voterAgeRange = voterAgeRange;
+	}
+	
+	@Column(name="age_range_id")
+	public Long getVoterAgeRangeId() {
+		return voterAgeRangeId;
+	}
+	public void setVoterAgeRangeId(Long voterAgeRangeId) {
+		this.voterAgeRangeId = voterAgeRangeId;
+	}
+	
 	
 }
