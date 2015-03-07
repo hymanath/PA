@@ -711,7 +711,7 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		
 		if(committeeTypeIdsList != null && committeeTypeIdsList.size()>0) 
 		{
-			quertyStr.append(" and TBC.tdpBasicCommitteeId in (:committeeTypeIdsList) ");
+			quertyStr.append(" and TBC.tdpCommitteeType.tdpCommitteeTypeId in (:committeeTypeIdsList) ");
 		}
 		if(positionIdsList != null && positionIdsList.size()>0) 
 		{
@@ -819,7 +819,7 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		
 		if(committeeTypeIdsList != null && committeeTypeIdsList.size()>0) 
 		{
-			quertyStr.append(" and TBC.tdpBasicCommitteeId in (:committeeTypeIdsList) ");
+			quertyStr.append(" and TBC.tdpCommitteeType.tdpCommitteeTypeId in (:committeeTypeIdsList) ");
 		}
 		if(positionIdsList != null && positionIdsList.size()>0) 
 		{
@@ -927,7 +927,7 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		
 		if(committeeTypeIdsList != null && committeeTypeIdsList.size()>0) 
 		{
-			quertyStr.append(" and TBC.tdpBasicCommitteeId in (:committeeTypeIdsList) ");
+			quertyStr.append(" and TBC.tdpCommitteeType.tdpCommitteeTypeId in (:committeeTypeIdsList) ");
 		}
 		if(positionIdsList != null && positionIdsList.size()>0) 
 		{

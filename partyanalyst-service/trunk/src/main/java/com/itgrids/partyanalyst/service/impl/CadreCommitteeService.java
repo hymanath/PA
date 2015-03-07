@@ -6455,7 +6455,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 }
 	
 	public CadreCommitteeRolesInfoVO getCommitteeRoleAgeWiseDetailsByLocationType(String userAccessType,String locationValue,Long committeeTypeId,List<Long> positionIdsList,List<Long> casteCategoryIdsList,List<Long> casteCategoryGroupIdsList, 
-		List<Long> casteIdsList,Long locationLevelId,Long userId, Long accessValue)
+		List<Long> casteIdsList,Long locationLevelId,Long userId, Long accessValue,String selectedRadio)
 	{
 		CadreCommitteeRolesInfoVO returnVO = new CadreCommitteeRolesInfoVO();
 		try {
@@ -6464,15 +6464,41 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 			List<Long> wardIdsList  = null;
 			List<Long> committeeTypeIdsList  = new ArrayList<Long>();
 			
-			if(committeeTypeId.longValue() != 0L)
+			if(committeeTypeId > 0)
 				committeeTypeIdsList.add(committeeTypeId);
-			
-			
-			if(locationValue != null && Long.valueOf(locationValue) != 0L)
-			{
-				locationIdsList = new ArrayList<Long>();
-				locationIdsList.add( Long.valueOf(locationValue));
-			}
+				Constituency constituency = constituencyDAO.get(Long.valueOf(locationValue));
+				String areaType=constituency.getAreaType();
+				
+				if(selectedRadio.equalsIgnoreCase("2")) //Mandal/Muncipality
+				{
+					locationLevelId = 6l;
+					if(areaType.equalsIgnoreCase("RURAL"))
+						locationIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.TEHSIL,IConstants.VOTER_DATA_PUBLICATION_ID);
+					else if(areaType.equalsIgnoreCase("RURAL-URBAN"))
+					{
+						locationIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.TEHSIL,IConstants.VOTER_DATA_PUBLICATION_ID);
+						wardIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.LOCAL_ELECTION_BODY,IConstants.VOTER_DATA_PUBLICATION_ID);
+					}
+					else if(areaType.equalsIgnoreCase("URBAN"))
+					{
+						wardIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.LOCAL_ELECTION_BODY,IConstants.VOTER_DATA_PUBLICATION_ID);	
+					}
+				}
+				else if(selectedRadio.equalsIgnoreCase("1"))
+				{
+					locationLevelId = 5l;
+					if(areaType.equalsIgnoreCase("RURAL"))
+					locationIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.PANCHAYAT,IConstants.VOTER_DATA_PUBLICATION_ID);
+					else if(areaType.equalsIgnoreCase("RURAL-URBAN") || areaType.equalsIgnoreCase("URBAN"))
+					wardIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.WARD,IConstants.VOTER_DATA_PUBLICATION_ID);
+				}
+				
+				if(locationValue != null && Long.valueOf(locationValue) == 3L) //Constituency
+				{
+					locationIdsList = new ArrayList<Long>();
+					locationIdsList.add( Long.valueOf(locationValue));
+				}
+
 			
 			if(locationIdsList == null)
 			{
