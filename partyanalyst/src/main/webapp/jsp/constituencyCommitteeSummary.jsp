@@ -110,11 +110,13 @@
   	   <div class="col-md-4 col-md-offset-2 col-sm-6 col-xs-6">Select District:<select id="districtsId" class="form-control" onChange="getAllConstituencysForADistrict()"><option value="0">Select District</option></select> </div>
        <div class="col-md-4  col-sm-6 col-xs-6">Select Constituency:<select id="constituencysId" class="form-control"><option value="0">Select Constituency</option></select> </div>
     </div>
-		<c:if test="${pageAccessType == 'ALL'}">
-	<div  class="row m_top20 form-inline" class="row m_top20 form-inline" style="margin-left:250px">
+		<div class="row m_top20">
+	
+	 	
+						<c:if test="${pageAccessType == 'ALL'}">		
+	<div  class="row m_top20 form-inline" class="row m_top20 form-inline" style="margin-left:150px">
 		
-					  	
-							
+					 
 						Select State	<select id="stateId" onchange="getUserAccessInfo();" class="form-control" style="width:200px;">	
 						<option value="0">All</option> 
 							<option value="1"> Andhra Pradesh </option>
@@ -126,12 +128,30 @@
 						Select Constituency	<select id="userAccessconstituencyId" class="form-control" style="width:200px;"onchange="reload()">						 
 							
 							</select>
-<!--
-							<span  class="glyphicon glyphicon-refresh" onclick="reload()"  style="cursor:pointer;">  </span>
-	-->					
+							
+			Select Committee Type<select id="committetypeId"  class="form-control" >	
+						<option value="0">All</option> 
+							<option value="1"> Main </option>
+							<option value="2"> Affiliated </option>
+							</select>
 				</div>	
 			</c:if>	
+	<c:if test="${pageAccessType != 'ALL'}">
+	<div  class="row m_top20 form-inline" class="row m_top20 form-inline" style="margin-left:300px">
+		Select Committee Type<select id="committetypeId"  class="form-control" >	
+						<option value="0">All</option> 
+							<option value="1"> Main </option>
+							<option value="2"> Affiliated </option>
+							</select>
+							</div>
+					 
+	</c:if>
 
+	<div class="col-md-4 m_top20 col-md-offset-3 form-inline"><span class="btn btn-success btn-xs"><label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="reportTypeCls" value=1 name="reportType" checked="true"> VILLAGE / WARD</label></span>&nbsp;&nbsp;
+		<span class="btn btn-success btn-xs"><label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="reportTypeCls" value=2 name="reportType">MANDAL / TOWN / DIVISION</label></span>
+		
+		</div>
+	</div>
 	<div id="constiRoleSummry" style="display:none;">
 		<img id="summaryAjaxRole" src="./images/Loading-data.gif" class=" col-sm-offset-4" alt="Processing Image"/>
 		
@@ -141,10 +161,10 @@
 	<div id="constiRoleSummary">		
 	</div>
 	
-	<div class="row m_top20">
+	<!--<div class="row m_top20">
 		<div class="col-md-4 col-md-offset-3"><label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="reportTypeCls" value=1 name="reportType" checked="true"> VILLAGE / WARD</label></div>
 		<div class="col-md-4 "><label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="reportTypeCls" value=2 name="reportType">MANDAL / TOWN / DIVISION</label></div>
-	</div>
+	</div>-->
 	
 	<span class="btn btn-info pull-right exportToExcel" onclick="exportToExcel()" style="display:none;"> Export To Excel </span>
 	
@@ -229,6 +249,8 @@ $("#constituencysId").change(function(){
 });
 $(".reportTypeCls").click(function(){
 	getConstituencySummary();
+	getRolesBasedReport(0);
+
 	
 });
 	
@@ -262,6 +284,7 @@ function getAllConstituencysForADistrict()
 }
 
 function getConstituencySummary(){
+	$("#titleId").html("");
 	$("#constSummary").html('<img id="summaryAjax" src="./images/Loading-data.gif" class=" col-sm-offset-4" alt="Processing Image"/>');
 	var constiId = "";
 	if(accessConstituencyId!=null && accessConstituencyId!=""){
@@ -792,17 +815,19 @@ function reload() {
 
 function getRolesBasedReport(roleId)
 	{
+		$('#constiRoleSummary').html("");
+		$("#constiRoleSummry").show();
 		var rolesArr = new Array();
 		var casteCategoryArr = new Array();
 		var casteCategoryGroupArr = new Array();
 		var casteIdsArr = new Array();
 		
 		var locationLevelId =4;
-		var committeeTypeId =1;
+		var committeeTypeId =$("#committetypeId").val();
 		var userAccessType ="STATE";
 		var castePercentage =5;
 		var searchTypeId =0;
-		
+		var selectedRadio = $("input[type='radio'][name='reportType']:checked").val();
 		if(roleId == 0)
 		{
 			rolesArr.push(1);
@@ -829,13 +854,15 @@ function getRolesBasedReport(roleId)
 			committeeTypeId : committeeTypeId,
 			userAccessType : userAccessType,
 			castePercentage:'${accessConstituencyId}',
-			searchTypeId:searchTypeId
+			searchTypeId:searchTypeId,
+			selectedRadio:selectedRadio
 		};
 		$.ajax({
           type:'GET',
           url: 'getCommitteeRolesBasedReport.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
+			  $("#constiRoleSummry").hide();
 			if(result != null)
 			{
 				buildRoleWiseDetailsInfo(result);
