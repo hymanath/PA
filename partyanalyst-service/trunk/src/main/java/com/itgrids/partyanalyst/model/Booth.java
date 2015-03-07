@@ -41,6 +41,7 @@ public class Booth extends BaseModel implements java.io.Serializable {
 	private Long totalVoters;
 	private Panchayat panchayat;
 	private String pincode;
+	private String isCtpUsed;
 	
 
 	private Constituency constituency;
@@ -360,6 +361,14 @@ public class Booth extends BaseModel implements java.io.Serializable {
 	public void setPincode(String pincode) {
 		this.pincode = pincode;
 	}
-	
-	
+
+	@Column(name ="is_ctp_used")
+	public String getIsCtpUsed() {
+		return isCtpUsed;
+	}
+
+	public void setIsCtpUsed(String isCtpUsed) {
+		this.isCtpUsed = isCtpUsed;
+	}
+
 }
