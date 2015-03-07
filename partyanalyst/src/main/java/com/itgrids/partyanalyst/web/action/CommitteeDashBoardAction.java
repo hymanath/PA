@@ -721,7 +721,7 @@ public String getAllConstituencysForADistrict(){
 			Long committeeTypeId = jObj.getLong("committeeTypeId");
 			String userAccessType = jObj.getString("userAccessType");
 			String castePercentage = jObj.getString("castePercentage");
-
+			String selectedRadio = jObj.getString("selectedRadio");
 			if(casteIdsArr != null && casteIdsArr.length()>0)
 			{
 				for (int i = 0; i < casteIdsArr.length(); i++)
@@ -759,10 +759,11 @@ public String getAllConstituencysForADistrict(){
 			}
 			
 			cadreCommitteeRolesInfoVO = cadreCommitteeService.getCommitteeRoleAgeWiseDetailsByLocationType(userAccessType,castePercentage,committeeTypeId,positionIdsList,
-					casteCategoryIdsList,casteCategoryGroupIdsList,casteIdsList,locationLevelId,regVO.getRegistrationID(),Long.valueOf(regVO.getAccessValue()));
+					casteCategoryIdsList,casteCategoryGroupIdsList,casteIdsList,locationLevelId,regVO.getRegistrationID(),Long.valueOf(regVO.getAccessValue()),selectedRadio);
 			
 			
 		} catch (Exception e) {
+			e.printStackTrace();
 			LOG.error("Exception getRoleWiseDetails ",e);
 		}
 		return Action.SUCCESS;
