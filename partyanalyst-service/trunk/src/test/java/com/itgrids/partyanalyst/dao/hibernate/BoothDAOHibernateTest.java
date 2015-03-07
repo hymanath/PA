@@ -827,9 +827,15 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(id);
 	}*/
 	
-	public void testGetAllBoothsOfAConstituency()
+	/*public void testGetAllBoothsOfAConstituency()
 	{
 		List<Object[]> list = boothDAO.getAllBoothsOfAConstituency(291l,12l);
+		System.out.println(list.size());
+	}*/
+	
+	public void testGetAllTheBoothsDetailsByConstituencyIdForCTP()
+	{
+		List<Object[]> list = boothDAO.getAllTheBoothsDetailsByConstituencyIdForCTP(114l);
 		System.out.println(list.size());
 	}
 }
