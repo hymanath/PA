@@ -6463,7 +6463,9 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 			List<Long> locationIdsList  = null;
 			List<Long> wardIdsList  = null;
 			List<Long> committeeTypeIdsList  = new ArrayList<Long>();
-			committeeTypeIdsList.add(committeeTypeId);
+			
+			if(committeeTypeId.longValue() != 0L)
+				committeeTypeIdsList.add(committeeTypeId);
 			
 			
 			if(locationValue != null && Long.valueOf(locationValue) != 0L)
@@ -6478,7 +6480,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 				{
 					locationIdsList = new ArrayList<Long>();
 					
-					if(userAccessType.equalsIgnoreCase("STATE"))
+					if(userAccessType.equalsIgnoreCase("STATE") || userAccessType.equalsIgnoreCase("ALL"))
 					{
 						locationIdsList.add(accessValue);
 						locationLevelId =1L;
@@ -6497,7 +6499,11 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 					{
 						locationIdsList.add(accessValue);
 						locationLevelId = 4L;
-					}				
+					}
+					else if(userAccessType.equalsIgnoreCase("AP") || userAccessType.equalsIgnoreCase("TS"))
+					{						
+						locationLevelId = 2L;
+					}
 					else
 					{
 						locationLevelId = 2L;
@@ -6606,43 +6612,9 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 						}
 				}
 			}
-			
-			
-			List<Object[]> genderWiseCountList = tdpCommitteeMemberDAO.getCommitteeRoleGenderWiseDetailsByLocationType(positionIdsList,casteCategoryIdsList,casteCategoryGroupIdsList, 
-					casteIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList);
-			
-			List<CadreCommitteeRolesInfoVO> roleVOList = new ArrayList<CadreCommitteeRolesInfoVO>();
-			
-			if(genderWiseCountList != null && genderWiseCountList.size()>0)
-			{
-				Long totalGenderCount = 0L;
-				Long maleCount = 0L;
-				Long femaleCount = 0L;
-				CadreCommitteeRolesInfoVO cadreVO = new CadreCommitteeRolesInfoVO();
-				for (Object[] param : genderWiseCountList) {					
-					String genderType = param[2] != null ? param[2].toString():"";
-					
-					if(genderType.equalsIgnoreCase("M"))
-					{						
-						Long tempCount = param[3] != null ? Long.valueOf(param[3].toString()):0L;
-						maleCount = maleCount + tempCount;						
-					}
-					else if(genderType.equalsIgnoreCase("F"))
-					{
-						Long tempCount = param[3] != null ? Long.valueOf(param[3].toString()):0L;
-						femaleCount = femaleCount + tempCount;
-					}					
-				}
-				cadreVO.setMaleCount(maleCount);
-				cadreVO.setFemaleCount(femaleCount);
-				totalGenderCount = maleCount + femaleCount;
-				cadreVO.setTotalCount(totalGenderCount);
-				
-				roleVOList.add(cadreVO);
-			}
-			
+						
 			List<Object[]> casteCategoryWiseCountList = tdpCommitteeMemberDAO.getCommitteeRoleCasteCategoryWiseDetailsByLocationType(positionIdsList,casteCategoryIdsList,casteCategoryGroupIdsList, 
-					casteIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList);
+					casteIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType);
 			List<CadreCommitteeRolesInfoVO> casteCategoryVOList = new ArrayList<CadreCommitteeRolesInfoVO>();
 			if(casteCategoryWiseCountList != null && casteCategoryWiseCountList.size()>0)
 			{
@@ -6690,7 +6662,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 			}
 			
 			List<Object[]> casteWiseCountList = tdpCommitteeMemberDAO.getCommitteeRoleCasteWiseDetailsByLocationType(positionIdsList,casteCategoryIdsList,casteCategoryGroupIdsList, 
-					casteIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList);
+					casteIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType);
 			
 			List<CadreCommitteeRolesInfoVO> castewiseVOList = new ArrayList<CadreCommitteeRolesInfoVO>();
 			if(casteWiseCountList != null && casteWiseCountList.size()>0)
@@ -6738,180 +6710,69 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 			}
 			
 			List<Object[]> cadreDetails = tdpCommitteeMemberDAO.getCommitteeRoleAgeWiseDetailsByLocationType(positionIdsList,casteCategoryIdsList,casteCategoryGroupIdsList, 
-					casteIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList);
-			Map<String,CadreCommitteeRolesInfoVO> ageRangeMap = new LinkedHashMap<String, CadreCommitteeRolesInfoVO>();
-			ageRangeMap.put("18-25",null);
-			ageRangeMap.put("26-35",null);
-			ageRangeMap.put("36-45",null);
-			ageRangeMap.put("46-60",null);
-			ageRangeMap.put("Above60",null);
-			if(cadreDetails != null && cadreDetails.size()>0)
-			{
-				for (Object[] cadre : cadreDetails) {
-					Long maleCount = 0L;
-					Long femaleCount = 0L;
-					Long totalCount = 0L;
-					Long age = cadre[2] != null?Long.valueOf(cadre[2].toString()):0L;
-					
-					if(age >= 18 && age<= 25)
-					{
-						CadreCommitteeRolesInfoVO cadreVO = ageRangeMap.get("18-25");
-						if(cadreVO != null)
-						{
-							maleCount = cadreVO.getMaleCount();
-							femaleCount = cadreVO.getFemaleCount();
-						}
-						else
-						{
-							cadreVO = new CadreCommitteeRolesInfoVO();
-						}
-						String genderType = cadre[1] != null ? cadre[1].toString():"";
-						
-						if(genderType.equalsIgnoreCase("M"))
-						{								
-							maleCount = maleCount+1;
-						}
-						else if(genderType.equalsIgnoreCase("F"))
-						{
-							femaleCount = femaleCount+1;
-						}
-						cadreVO.setMaleCount(maleCount);
-						cadreVO.setFemaleCount(femaleCount);
-						totalCount = maleCount+femaleCount;
-						cadreVO.setTotalCount(totalCount);
-						
-						ageRangeMap.put("18-25", cadreVO);
-					}
-					else if(age >= 26 && age<= 35)
-					{
-						CadreCommitteeRolesInfoVO cadreVO = ageRangeMap.get("26-35");
-						if(cadreVO != null)
-						{
-							maleCount = cadreVO.getMaleCount();
-							femaleCount = cadreVO.getFemaleCount();
-						}
-						else
-						{
-							cadreVO = new CadreCommitteeRolesInfoVO();
-						}
-						String genderType = cadre[1] != null ? cadre[1].toString():"";
-						
-						if(genderType.equalsIgnoreCase("M"))
-						{								
-							maleCount = maleCount+1;
-						}
-						else if(genderType.equalsIgnoreCase("F"))
-						{
-							femaleCount = femaleCount+1;
-						}
-						cadreVO.setMaleCount(maleCount);
-						cadreVO.setFemaleCount(femaleCount);
-						totalCount = maleCount+femaleCount;
-						cadreVO.setTotalCount(totalCount);
-						
-						ageRangeMap.put("26-35", cadreVO);
-					}
-					else if(age >= 36 && age<= 45)
-					{
-						CadreCommitteeRolesInfoVO cadreVO = ageRangeMap.get("36-45");
-						if(cadreVO != null)
-						{
-							maleCount = cadreVO.getMaleCount();
-							femaleCount = cadreVO.getFemaleCount();
-						}
-						else
-						{
-							cadreVO = new CadreCommitteeRolesInfoVO();
-						}
-						String genderType = cadre[1] != null ? cadre[1].toString():"";
-						
-						if(genderType.equalsIgnoreCase("M"))
-						{								
-							maleCount = maleCount+1;
-						}
-						else if(genderType.equalsIgnoreCase("F"))
-						{
-							femaleCount = femaleCount+1;
-						}
-						cadreVO.setMaleCount(maleCount);
-						cadreVO.setFemaleCount(femaleCount);
-						totalCount = maleCount+femaleCount;
-						cadreVO.setTotalCount(totalCount);
-						
-						ageRangeMap.put("36-45", cadreVO);
-					}
-					else if(age >= 46 && age<= 60)
-					{
-						CadreCommitteeRolesInfoVO cadreVO = ageRangeMap.get("46-60");
-						if(cadreVO != null)
-						{
-							maleCount = cadreVO.getMaleCount();
-							femaleCount = cadreVO.getFemaleCount();
-						}
-						else
-						{
-							cadreVO = new CadreCommitteeRolesInfoVO();
-						}
-						String genderType = cadre[1] != null ? cadre[1].toString():"";
-						
-						if(genderType.equalsIgnoreCase("M"))
-						{								
-							maleCount = maleCount+1;
-						}
-						else if(genderType.equalsIgnoreCase("F"))
-						{
-							femaleCount = femaleCount+1;
-						}
-						cadreVO.setMaleCount(maleCount);
-						cadreVO.setFemaleCount(femaleCount);
-						totalCount = maleCount+femaleCount;
-						cadreVO.setTotalCount(totalCount);
-						
-						ageRangeMap.put("46-60", cadreVO);
-					}
-					else if(age >= 61)
-					{
-						CadreCommitteeRolesInfoVO cadreVO = ageRangeMap.get("Above60");
-						if(cadreVO != null)
-						{
-							maleCount = cadreVO.getMaleCount();
-							femaleCount = cadreVO.getFemaleCount();
-						}
-						else
-						{
-							cadreVO = new CadreCommitteeRolesInfoVO();
-						}
-						String genderType = cadre[1] != null ? cadre[1].toString():"";
-						
-						if(genderType.equalsIgnoreCase("M"))
-						{								
-							maleCount = maleCount+1;
-						}
-						else if(genderType.equalsIgnoreCase("F"))
-						{
-							femaleCount = femaleCount+1;
-						}
-						cadreVO.setMaleCount(maleCount);
-						cadreVO.setFemaleCount(femaleCount);
-						totalCount = maleCount+femaleCount;
-						cadreVO.setTotalCount(totalCount);
-						
-						ageRangeMap.put("Above60", cadreVO);
-					}
-				}
-			}
-			
+					casteIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType);
 			List<CadreCommitteeRolesInfoVO> ageRangeVOList = new LinkedList<CadreCommitteeRolesInfoVO>();
-			if(ageRangeMap != null && ageRangeMap.size()>0)
-			{
-				for (String ageRange : ageRangeMap.keySet()) 
-				{
-					CadreCommitteeRolesInfoVO cadreVO = ageRangeMap.get(ageRange);
-					cadreVO.setAgeRange(ageRange);
-					ageRangeVOList.add(cadreVO);
+			Long totalCount = 0L;
+			Long totalMaleCount = 0L;
+			Long totalFemaleCount = 0L;
+			
+			if(cadreDetails != null && cadreDetails.size()>0)			
+			{				
+				Long totalGenderCount = 0L;
+				for (Object[] param : cadreDetails) {					
+					Long maleCount = 0L;
+					Long femaleCount = 0L;	
+					boolean isAvailable = false;
+					CadreCommitteeRolesInfoVO cadreVO = getMatchedByAgeRange(ageRangeVOList,param[1] != null ? param[1].toString().trim():"");
+					
+					if(cadreVO != null)
+					{
+						isAvailable = true;
+						maleCount = cadreVO.getMaleCount();
+						femaleCount = cadreVO.getFemaleCount();
+					}
+					else
+					{
+						cadreVO = new CadreCommitteeRolesInfoVO();
+						cadreVO.setAgeRange(param[1] != null ? param[1].toString():"");
+					}
+					
+					String genderType = param[2] != null ? param[2].toString():"";
+					
+					if(genderType.equalsIgnoreCase("M"))
+					{
+						Long tempCount = param[3] != null ? Long.valueOf(param[3].toString()):0L;
+						maleCount = maleCount+tempCount;
+						totalMaleCount = totalMaleCount+tempCount;
+					}
+					else if(genderType.equalsIgnoreCase("F"))
+					{
+						Long tempCount = param[3] != null ? Long.valueOf(param[3].toString()):0L;
+						femaleCount = femaleCount+tempCount;
+						totalFemaleCount = totalFemaleCount+tempCount;
+					}
+					cadreVO.setMaleCount(maleCount);
+					cadreVO.setFemaleCount(femaleCount);
+					totalGenderCount = maleCount + femaleCount;
+					cadreVO.setTotalCount(totalGenderCount);
+					
+					if(!isAvailable)
+						ageRangeVOList.add(cadreVO);
 				}
+			
 			}
 			
+			List<CadreCommitteeRolesInfoVO> roleVOList = new ArrayList<CadreCommitteeRolesInfoVO>();
+			if(totalMaleCount.longValue() != 0L || totalFemaleCount.longValue() != 0L)
+			{
+				totalCount = totalMaleCount + totalFemaleCount;
+				CadreCommitteeRolesInfoVO cadreVO = new CadreCommitteeRolesInfoVO();
+				cadreVO.setMaleCount(totalMaleCount);
+				cadreVO.setFemaleCount(totalFemaleCount);
+				cadreVO.setTotalCount(totalCount);
+				roleVOList.add(cadreVO);
+			}
+						
 			if(roleVOList != null && roleVOList.size()>0)
 			{
 				returnVO.setCadreCommitteeRolesInfoVOList(roleVOList);
@@ -6977,4 +6838,27 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 		}
 		return returnVO;
 	}
+	
+	
+	private CadreCommitteeRolesInfoVO getMatchedByAgeRange(List<CadreCommitteeRolesInfoVO> list,String ageRangeStr)
+	{
+		CadreCommitteeRolesInfoVO returnVO = null;
+		try {
+			
+			if(list != null && list.size()>0)
+			{
+				for (CadreCommitteeRolesInfoVO cadreCommitteeRolesInfoVO : list) 
+				{
+					if(cadreCommitteeRolesInfoVO.getAgeRange().trim().equalsIgnoreCase(ageRangeStr))
+					{
+						return cadreCommitteeRolesInfoVO;
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Raised in getMatchedByCasteName() ");
+		}
+		return returnVO;
+	}
+	
 }
