@@ -5676,22 +5676,22 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		    	cadreCommitteeMemberVOList=new ArrayList<CadreCommitteeMemberVO>();
 			      for (Object[] objects : rolesList){
 			    	  CadreCommitteeMemberVO cadreCommitteeMemberVO=new CadreCommitteeMemberVO();
-			    	  cadreCommitteeMemberVO.setRole(objects[1].toString());
-			    	  cadreCommitteeMemberVO.setId((Long)objects[2]);
-			    	  mmbrIds.add(Long.valueOf(objects[2].toString()));
+			    	  cadreCommitteeMemberVO.setRole(objects[1] != null ? objects[1].toString():"");
+			    	  cadreCommitteeMemberVO.setId(objects[2] != null ? Long.valueOf(objects[2].toString().trim()) :0L);
+			    	  mmbrIds.add(cadreCommitteeMemberVO.getId());
 			    	  	
-			    	  cadreCommitteeMemberVO.setName(objects[3].toString());
-			    	  cadreCommitteeMemberVO.setImagePath(objects[4].toString());
+			    	  cadreCommitteeMemberVO.setName(objects[3] != null ?objects[3].toString():"");
+			    	  cadreCommitteeMemberVO.setImagePath(objects[4] != null ?objects[4].toString():"");
 			    	  if(objects[5].toString().trim().length() > 8){
-			    		    cadreCommitteeMemberVO.setMembershipNo(objects[5].toString().trim().substring(objects[5].toString().trim().length()-8));
+			    		    cadreCommitteeMemberVO.setMembershipNo(objects[5] != null ? objects[5].toString().trim().substring(objects[5].toString().trim().length()-8):"");
 						}else{
-							cadreCommitteeMemberVO.setMembershipNo(objects[5].toString());
+							cadreCommitteeMemberVO.setMembershipNo(objects[5] != null ? objects[5].toString():"");
 						}
 			    	  
 			    	  cadreCommitteeMemberVO.setCasteName(objects[8] != null ? objects[8].toString().trim():"");
 			    		cadreCommitteeMemberVO.setGender(objects[9] != null ? objects[9].toString().trim():"");
 			    		cadreCommitteeMemberVO.setAge(objects[10] != null ? objects[10].toString().trim():"");
-			    		cadreCommitteeMemberVO.setCasteGroupName(objects[12] != null ? objects[11].toString().trim():"");
+			    		cadreCommitteeMemberVO.setCasteGroupName(objects[12] != null ? objects[12].toString().trim():"");
 			    		CasteDetailsVO casteCatgVO = casteGroupMap.get(objects[12].toString().trim());
 			    		if(casteCatgVO == null)
 			    		{
@@ -5974,11 +5974,11 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		    	Long femaleCount = 0L;
 		    	for (Object[] objects : tdpCadresList){
 		    		CadreCommitteeMemberVO cadreCommitteeMemberVO=new CadreCommitteeMemberVO();
-		    		cadreCommitteeMemberVO.setLevel((Long)objects[0]);//roleId
-		    		cadreCommitteeMemberVO.setRole(objects[1].toString());//role
-		    		cadreCommitteeMemberVO.setId((Long)objects[2]);//cadreId
-		    		cadreCommitteeMemberVO.setName(objects[3].toString());//cadreName
-		    		cadreCommitteeMemberVO.setImagePath(objects[4].toString());//image
+		    		cadreCommitteeMemberVO.setLevel(objects[0] != null ? Long.valueOf(objects[0].toString().trim()):0L);//roleId
+		    		cadreCommitteeMemberVO.setRole(objects[1] != null ?objects[1].toString():"");//role
+		    		cadreCommitteeMemberVO.setId(objects[2] != null ?(Long)objects[2]:0L);//cadreId
+		    		cadreCommitteeMemberVO.setName(objects[3] != null ?objects[3].toString():"");//cadreName
+		    		cadreCommitteeMemberVO.setImagePath(objects[4] != null ?objects[4].toString():"");//image
 		    		cadreCommitteeMemberVO.setCasteName(objects[8] != null ? objects[8].toString().trim():"");
 		    		cadreCommitteeMemberVO.setGender(objects[9] != null ? objects[9].toString().trim():"");
 		    		cadreCommitteeMemberVO.setAge(objects[10] != null ? objects[10].toString().trim():"");
