@@ -8003,6 +8003,27 @@ function getInfluencingPeopleCount(locationValue,type)
 	callAjax(jObj,url);
 }
 
+
+function getCadreCount(locationValue,type)
+{
+
+	document.getElementById('InfluencingPeopleCountDiv').style.display = 'none';
+	var publicationId = $("#publicationDateList").val();
+	$("#InfluencingPeopleAjaxImg").show();
+	var jObj=
+	{
+		locationValue:locationValue,
+		type : type,
+		publicationDateId:publicationId,
+		name             :mainname,
+		task:"getCadreCount"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "getCadreCountForLocationAction.action?"+rparam;	
+
+	callAjax(jObj,url);
+}
+
 function buildInfluencingPeopleCount(results,jsObj)
 {
 	$("#InfluencingPeopleAjaxImg").hide();
