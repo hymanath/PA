@@ -102,14 +102,14 @@ textarea {
 	<!-- Title Row -->
 		<div class="row-fluid" id="fadeInDown">
 			<div class="span12 well well-small  border-radius-0 mb-0 ">
-				<h3 class="text-center text-uppercase">IVR  STATUS REPORTS DASHBOARD</h3>
+				<h3 class="text-center text-uppercase">COMMITTEE IVR CAMPAIGN DASHBOARD</h3>
 			</div>
 		</div><!-- Title Row End-->
 		
 		<!-- Filters Row -->
 		<div>
 		<c:if test="${sessionScope.USER.accessType == 'STATE'}">
-		<button type="button" value="" style="margin-top: -29px; margin-left: 0px; display: block; border-left-width: 4px; padding-left: 0px; padding-right: 0px; border-top-width: 0px;" class="btn btn-medium btn-success border-radius-0 pull-right" onclick="openPopupWindow();">Click to View Info Managers Calls Details</button></div>
+		<!--<button type="button" value="" style="margin-top: -29px; margin-left: 0px; display: block; border-left-width: 4px; padding-left: 0px; padding-right: 0px; border-top-width: 0px;" class="btn btn-medium btn-success border-radius-0 pull-right" onclick="openPopupWindow();">Click to View Info Managers Calls Details</button></div>-->
 		</c:if>
 		<div id="fadeInDown" class="row-fluid">
 		
@@ -672,7 +672,7 @@ function buildIvrCountByDate(result,state)
 		str+='</div>';
 		str+='<div class="text-center" style="margin-top:0px;">';	
 		str+='<h2 class="m-0">'+result[0].total+'</h2>';
-		str+='<p>Calls IVR Total <br>Dailled</p>';
+		str+='<p>Total IVR Calls Dailled</p>';
 		str+='</div>';
 		$("#totalIvrTD").html(str);
 		options = {		
@@ -930,7 +930,7 @@ $("#locationWiseAllPercDiv").html("");
 		}else if(locationType == "Constituency"){
 		str+='<th>Constituency</th>';
 		}
-		str+='<th>Registred Count</th>';
+		str+='<th>Registered Count</th>';
 		str+='<th>Cards Printed Count</th>';
 		str+='<th>IVR Calls Dailed</th>';
 		str+='<th>Card Received</th>';
@@ -965,7 +965,7 @@ $("#locationWiseAllPercDiv").html("");
 				}else{
 				  str+='				<th rowspan="2">'+locationType+'</th>';
 				}
-				str+='				<th rowspan="2">Registred Count</th>';
+				str+='				<th rowspan="2">Registered Count</th>';
 				//str+='				<th rowspan="2">Cards Printed Count</th>';
 			
 				str+='				<th rowspan="2">IVR Calls Dailed</th>';
@@ -1156,7 +1156,7 @@ function getLocationWisePerformance(constituencyId,locationType,name){
 				}else{
 				  str+='				<th rowspan="2">'+locationType+'</th>';
 				}
-				str+='				<th rowspan="2">Registred Count</th>';
+				str+='				<th rowspan="2">Registered Count</th>';
 				//str+='				<th rowspan="2">Cards Printed Count</th>';
 			
 				str+='				<th rowspan="2">IVR Calls Dailed</th>';
