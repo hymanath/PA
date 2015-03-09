@@ -374,7 +374,7 @@ margin-top:10px;
 							<ul>
 								<c:if test="${sessionScope.USER.isAdmin == 'true'}">						
 									<li><a href="cadreIvrReportAction.action"><span> Cadre IVR  </span></a></li>
-									<li><a href="villageIVRAction.action"><span> Village Committee IVR  </span></a></li>
+									<li><a href="villageIVRAction.action"><span> Committee IVR  </span></a></li>
 									
 								</c:if>
 							
