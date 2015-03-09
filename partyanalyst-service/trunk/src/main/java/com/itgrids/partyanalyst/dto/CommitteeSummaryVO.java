@@ -46,6 +46,8 @@ public class CommitteeSummaryVO implements Serializable{
 	private List<CommitteeSummaryVO> locationsList,localBodiesList, mandalsList, divisionList;
 	private String accessState;	
 	
+	private CadreIVRVO cadreIVRVO;
+	
 	
 	public String getAccessState() {
 		return accessState;
@@ -283,5 +285,13 @@ public class CommitteeSummaryVO implements Serializable{
 	public void setConstiNo(Long constiNo) {
 		this.constiNo = constiNo;
 	}
+	public CadreIVRVO getCadreIVRVO() {
+		return cadreIVRVO;
+	}
+	public void setCadreIVRVO(CadreIVRVO cadreIVRVO) {
+		this.cadreIVRVO = cadreIVRVO;
+	}
+	
+	
 
 }
