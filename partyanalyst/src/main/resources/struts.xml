@@ -9791,6 +9791,11 @@
 				<param name="root">cadreIVRResponseVO</param>
 			</result>
 		</action>
+		<action name="getCadreCountForLocationAction" class="votersAnalysisAction" method="getCadrePeopleCountByLocation">
+		<result type="json" name="success">
+           	<param name="root">influencingPeopleCount</param>
+        </result>
+		</action>
 		
 		<action name="ivrCampaignUploadAction" class="tdpCadreReportAction" method="ivrCampaignOptionsUpload">
 			<result name="success">/jsp/ivrCampaignUpload.jsp</result>

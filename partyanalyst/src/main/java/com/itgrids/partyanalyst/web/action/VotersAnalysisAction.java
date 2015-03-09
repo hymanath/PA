@@ -1741,6 +1741,35 @@ return Action.SUCCESS;
 	return SUCCESS;
 	}
 	
+	public String getCadrePeopleCountByLocation()
+	{
+	try{
+		String param;
+		param = getTask();
+		jObj = new JSONObject(param);
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		Long userId =  null;
+		
+		if(regVO.getParentUserId()!=null){
+			userId=regVO.getMainAccountId();
+		}
+		else{
+			userId = regVO.getRegistrationID();
+		}
+		Long locationValue = jObj.getLong("locationValue");
+		String type = jObj.getString("type");
+		Long publicationId = jObj.getLong("publicationDateId");
+		influencingPeopleCount = votersAnalysisService.getCadrePeopleCountByLocation(userId,locationValue,type,publicationId);
+		
+	}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+	}
+	return SUCCESS;
+	}
+	
 	public String getInfluencingPeopleVotersDetails()
 	{
 		if(LOG.isDebugEnabled())	
