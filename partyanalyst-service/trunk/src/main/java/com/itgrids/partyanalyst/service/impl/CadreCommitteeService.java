@@ -6488,9 +6488,19 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 				{
 					locationLevelId = 5l;
 					if(areaType.equalsIgnoreCase("RURAL"))
+					{
 					locationIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.PANCHAYAT,IConstants.VOTER_DATA_PUBLICATION_ID);
-					else if(areaType.equalsIgnoreCase("RURAL-URBAN") || areaType.equalsIgnoreCase("URBAN"))
-					wardIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.WARD,IConstants.VOTER_DATA_PUBLICATION_ID);
+					}
+					else if(areaType.equalsIgnoreCase("RURAL-URBAN"))
+					{
+						//wardIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.WARD,IConstants.VOTER_DATA_PUBLICATION_ID);
+						locationIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.PANCHAYAT,IConstants.VOTER_DATA_PUBLICATION_ID);
+						wardIdsList =assemblyLocalElectionBodyWardDAO.getWardsByconstituency(Long.valueOf(locationValue));
+					}
+					else if(areaType.equalsIgnoreCase("URBAN"))
+					{
+						wardIdsList =assemblyLocalElectionBodyWardDAO.getWardsByconstituency(Long.valueOf(locationValue));	
+					}
 				}
 				
 				if(locationValue != null && Long.valueOf(locationValue) == 3L) //Constituency
