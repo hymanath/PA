@@ -74,6 +74,8 @@ public class CadreIVRVO implements Serializable, Comparable<CadreIVRVO>{
 	
 	private List<CadreIVRVO> subListForResponces;
 	
+	private List<IvrOptionsVO> optionsList;
+	
 	public CadreIVRVO()
 	{
 		
@@ -432,7 +434,6 @@ public class CadreIVRVO implements Serializable, Comparable<CadreIVRVO>{
 		this.currentStatus = currentStatus;
 	}
 
-	@Override
 	public int compareTo(CadreIVRVO o) {
 		CadreIVRVO obj = null;
 		if(obj instanceof CadreIVRVO){
@@ -553,6 +554,14 @@ public class CadreIVRVO implements Serializable, Comparable<CadreIVRVO>{
 
 	public void setSubListForResponces(List<CadreIVRVO> subListForResponces) {
 		this.subListForResponces = subListForResponces;
+	}
+
+	public List<IvrOptionsVO> getOptionsList() {
+		return optionsList;
+	}
+
+	public void setOptionsList(List<IvrOptionsVO> optionsList) {
+		this.optionsList = optionsList;
 	}
 
 	

@@ -19,6 +19,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -30,6 +31,7 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeChangeDesignationsDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeIncreasedPositionsDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeRoleDAO;
+import com.itgrids.partyanalyst.dao.ICadreIvrResponseDAO;
 import com.itgrids.partyanalyst.dao.ICadreOtpDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreParticipatedElectionDAO;
 import com.itgrids.partyanalyst.dao.ICadrePreviousRolesDAO;
@@ -41,6 +43,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
+import com.itgrids.partyanalyst.dao.IIvrCampaignOptionsDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
@@ -68,12 +71,14 @@ import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeRolesInfoVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
+import com.itgrids.partyanalyst.dto.CadreIVRVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
 import com.itgrids.partyanalyst.dto.CommitteeApprovalVO;
 import com.itgrids.partyanalyst.dto.CommitteeSummaryVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.IvrOptionsVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -153,6 +158,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IUserDistrictAccessInfoDAO  userDistrictAccessInfoDAO;
 	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+	
+	@Autowired
+	private ICadreIvrResponseDAO cadreIvrResponseDAO;
+	
+	@Autowired
+	private IIvrCampaignOptionsDAO ivrCampaignOptionsDAO;
 	
 	
 	public void setDelimitationConstituencyAssemblyDetailsDAO(
@@ -3926,16 +3937,133 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				}
 				}
 			}
-			
+			if(villageCheck.equalsIgnoreCase("true")){
+				Map<Long,CadreIVRVO> committeeIvrMap = new HashMap<Long, CadreIVRVO>();
+				getCadreCommitteIvrDetails(committeeIvrMap,1l);
+				if(committeeIvrMap != null && committeeIvrMap.size() > 0 && fnlLst != null && fnlLst.size() > 0)
+				{
+					for (CommitteeSummaryVO vo : fnlLst)
+					{
+						CadreIVRVO ivrVO = committeeIvrMap.get(vo.getDistrictId());
+						if(ivrVO != null )
+						{
+							vo.setCadreIVRVO(ivrVO);
+						}
+					}
+				}
+			}
 			
 			
 			
 		}catch (Exception e) {
-			LOG.error("Exception Raised in getDistrictWiseCommittesSummary");
+			LOG.error("Exception Raised in getDistrictWiseCommittesSummary",e);
 		}
 		return fnlLst;
 	}
 	
+	
+	public void getCadreCommitteIvrDetails(Map<Long,CadreIVRVO> committeeIvrMap,Long id)
+	{
+		try 
+		{
+			
+				Map<Long,String> optionNames = new HashMap<Long,String>();
+				List<Object[]> optionsList = ivrCampaignOptionsDAO.getAllIVROptions(2l);
+				if(optionsList != null && optionsList.size() >0){
+					for(Object[] option:optionsList){
+						optionNames.put((Long)option[0], option[1].toString());
+					}
+				}
+				List<Object[]> ivrResponceDetails = cadreIvrResponseDAO.getCadreCommitteesIvRDetails(id,2l);
+				List<IvrOptionsVO> ivrOptionsList = null;
+				if(ivrResponceDetails != null && ivrResponceDetails.size() > 0)
+				{
+					for (Object[] ivrCountInfo : ivrResponceDetails)
+					{
+						if(ivrCountInfo[0] != null)
+						{
+							CadreIVRVO resultVO = committeeIvrMap.get(Long.valueOf(ivrCountInfo[0].toString().trim() ));
+							if(resultVO == null)
+							{
+								resultVO = new CadreIVRVO();
+								resultVO.setId(Long.valueOf(ivrCountInfo[0].toString().trim()));
+								resultVO.setName(ivrCountInfo[1] != null ? ivrCountInfo[1].toString():"");
+								ivrOptionsList = new ArrayList<IvrOptionsVO>();
+								resultVO.setOptionsList(ivrOptionsList);
+								committeeIvrMap.put(Long.valueOf(ivrCountInfo[0].toString().trim()), resultVO);
+							}
+							if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.NORMAL_CLEARING))
+							{
+								if(ivrCountInfo[3] != null && optionNames != null && optionNames.size() > 0)
+								{
+									List<IvrOptionsVO> options = resultVO.getOptionsList();
+									
+									String optionsName = optionNames.get(Long.valueOf(ivrCountInfo[3].toString().trim()));
+									if(optionsName != null)
+									{
+										IvrOptionsVO optionVO = new IvrOptionsVO();
+										optionVO.setId((Long)ivrCountInfo[3]);//options id
+										optionVO.setName(optionsName);//option name
+										optionVO.setCount((Long)ivrCountInfo[4]);//count
+										options.add(optionVO);
+									}
+									
+								}
+							}
+							else
+							{
+								if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.USER_BUSY))
+								{
+									resultVO.setUserBusy(resultVO.getUserBusy() + Long.valueOf(ivrCountInfo[4].toString().trim()));
+								}
+								else if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.CALL_REJECTED))
+								{
+									resultVO.setCallRejectedCount(resultVO.getCallRejectedCount() + Long.valueOf(ivrCountInfo[4].toString().trim()));
+								}
+									
+								else if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.NO_ANSWER) || ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.NO_USER_RESPONSE))
+								{
+									 resultVO.setNoAnswer(resultVO.getNoAnswer() + Long.valueOf(ivrCountInfo[4].toString().trim()));
+								}
+									
+								else if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.SWITCH_CONGESTION) || ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.NORMAL_CIRCUIT_CONGESTION))
+								{
+									resultVO.setSwitchCongestion(resultVO.getSwitchCongestion() + Long.valueOf(ivrCountInfo[4].toString().trim()));
+								}
+									
+								else if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.NORMAL_TEMPORARY_FAILURE) || ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.DESTINATION_OUT_OF_ORDER) 
+										 || ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.NETWORK_OUT_OF_ORDER) || ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.SUBSCRIBER_ABSENT))
+								{
+									resultVO.setNewtworkError(resultVO.getNewtworkError() + Long.valueOf(ivrCountInfo[4].toString().trim()));
+								}
+									
+								else if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.UNALLOCATED_NUMBER))
+								{
+									resultVO.setUnallocatedNumbers(resultVO.getUnallocatedNumbers() + Long.valueOf(ivrCountInfo[4].toString().trim()));
+								}
+										
+								else if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.INTERWORKING))
+								{
+									resultVO.setInterworkingCount(resultVO.getInterworkingCount() + Long.valueOf(ivrCountInfo[4].toString().trim()));
+								}
+									
+								else 
+								{
+									resultVO.setOtherError(resultVO.getOtherError() + Long.valueOf(ivrCountInfo[4].toString().trim()));
+								}
+							}
+						}
+						
+					}
+					
+					
+				}
+		} 
+		catch (Exception e) 
+		{
+			LOG.error("Exception Raised in getCadreCommitteIvrDetails",e);
+		}
+	}
 	public void pushResultDistrictWiseMemsCount(String type,List<Object[]> memResLst, List<CommitteeSummaryVO> fnlLst){
 		if(memResLst!=null && memResLst.size()>0){
 			for(Object[] obj:memResLst){
@@ -4610,7 +4738,21 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				constiLst.get(0).setAccessState(accessState);
 			}
 			
-			
+			if(villageCheck.equalsIgnoreCase("true")){
+				Map<Long,CadreIVRVO> committeeIvrMap = new HashMap<Long, CadreIVRVO>();
+				getCadreCommitteIvrDetails(committeeIvrMap,2l);
+				if(committeeIvrMap != null && committeeIvrMap.size() > 0 && constiLst != null && constiLst.size() > 0)
+				{
+					for (CommitteeSummaryVO vo : constiLst)
+					{
+						CadreIVRVO ivrVO = committeeIvrMap.get(vo.getConstiId());
+						if(ivrVO != null )
+						{
+							vo.setCadreIVRVO(ivrVO);
+						}
+					}
+				}
+			}
 			
 		}catch (Exception e) {
 			LOG.error("Exception Raised in getConstituencyWiseCommittesSummary",e);

@@ -337,4 +337,45 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 		query.setParameterList("locationIds", locationIds);
 		return query.list();
 	}	
+	
+	public List<Object[]> getCadreCommitteesIvRDetails(Long reportType,Long campainId)
+	{
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append("select ");
+		if(reportType == 1)
+		{
+			sb.append("  CIR.tdpCadre.userAddress.district.districtId,CIR.tdpCadre.userAddress.district.districtName, ");
+		}
+		else
+		{
+			sb.append("  CIR.tdpCadre.userAddress.constituency.constituencyId,CIR.tdpCadre.userAddress.constituency.name, ");
+		}
+		sb.append(" CIR.callStatus,CIR.optionId,count(*)  ");
+		sb.append("  from CadreIvrResponse CIR where  ");
+		sb.append(" CIR.campaignId = :campainId group by  ");
+		if(reportType == 1)
+		{
+			sb.append("  CIR.tdpCadre.userAddress.district.districtId, ");
+		}
+		else
+		{
+			sb.append("  CIR.tdpCadre.userAddress.constituency.constituencyId, ");
+		}
+		sb.append("  CIR.callStatus,CIR.optionId ");
+		
+		sb.append(" order by  ");
+		if(reportType == 1)
+		{
+			sb.append("  CIR.tdpCadre.userAddress.district.districtId, ");
+		}
+		else
+		{
+			sb.append("  CIR.tdpCadre.userAddress.constituency.constituencyId, ");
+		}
+		sb.append("  CIR.callStatus,CIR.optionId ");
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("campainId", campainId);
+		return query.list();
+	}
 }
