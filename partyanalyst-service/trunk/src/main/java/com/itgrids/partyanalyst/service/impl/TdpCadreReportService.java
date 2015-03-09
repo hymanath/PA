@@ -48,6 +48,8 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IIvrCampaignDAO;
+import com.itgrids.partyanalyst.dao.IIvrCampaignOptionsDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ILocalNameConstantDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCallCenterCommentDAO;
@@ -130,9 +132,22 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private ITdpCadreImagesValidDAO tdpCadreImagesValidDAO;
 	private ITdpCadreInfoDAO tdpCadreInfoDAO;
+	private IIvrCampaignDAO ivrCampaignDAO;
+	private IIvrCampaignOptionsDAO ivrCampaignOptionsDAO;
 	
-	
-	
+	public IIvrCampaignOptionsDAO getIvrCampaignOptionsDAO() {
+		return ivrCampaignOptionsDAO;
+	}
+	public void setIvrCampaignOptionsDAO(
+			IIvrCampaignOptionsDAO ivrCampaignOptionsDAO) {
+		this.ivrCampaignOptionsDAO = ivrCampaignOptionsDAO;
+	}
+	public IIvrCampaignDAO getIvrCampaignDAO() {
+		return ivrCampaignDAO;
+	}
+	public void setIvrCampaignDAO(IIvrCampaignDAO ivrCampaignDAO) {
+		this.ivrCampaignDAO = ivrCampaignDAO;
+	}
 	public ITdpCadreInfoDAO getTdpCadreInfoDAO() {
 		return tdpCadreInfoDAO;
 	}
@@ -4535,7 +4550,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					     return returnResult;
 					}
 				
-			 	public List<CadreIVRVO> getIvrDashBoardCountsByDate(String fromDate,String toDate,String state,String accessType,Long accessValue)
+			 	public List<CadreIVRVO> getIvrDashBoardCountsByDate(String fromDate,String toDate,String state,String accessType,Long accessValue,Long campaignId)
 				 {
 					 List<CadreIVRVO> returnList = new  ArrayList<CadreIVRVO>();
 					 CadreIVRVO cadreInfo = new CadreIVRVO();
@@ -4547,7 +4562,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 						 strDate = format.parse(fromDate.trim());
 						 if(!toDate.isEmpty())
 						 endDate = format.parse(toDate.trim());
-						 cadreInfo = setIVRBasicInfo(strDate,endDate,state,accessType,accessValue); 
+						 cadreInfo = setIVRBasicInfo(strDate,endDate,state,accessType,accessValue,campaignId); 
 						 returnList.add(cadreInfo);
 					 }
 					 catch(Exception e)
@@ -4556,7 +4571,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					 }
 					return returnList;
 				 }
-			 	public CadreIVRVO setIVRBasicInfo(Date fromDate,Date toDate,String state,String accessType,Long accessValue)
+			 	public CadreIVRVO setIVRBasicInfo(Date fromDate,Date toDate,String state,String accessType,Long accessValue,Long campaignId)
 				{
 					CadreIVRVO returnVo = new CadreIVRVO();
 					List<Long> accessLocationIds = new ArrayList<Long>();
@@ -4574,29 +4589,75 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					Long newtworkError = 0l;
 					Long unallocatedNumbers = 0l;
 					Long interworkingCount = 0l;
-					
+					Long selectedOptionCnt = 0l;
 					List<String> successNos =new ArrayList<String>();
 					successNos.add("1");successNos.add("2");successNos.add("3");
 					try{
+						Map<Long,String> optionNames = new HashMap<Long,String>();
+						List<Object[]> optionsList = ivrCampaignOptionsDAO.getAllIVROptions(campaignId);
+						if(optionsList != null && optionsList.size() >0){
+							for(Object[] option:optionsList){
+								optionNames.put((Long)option[0], option[1].toString());
+							}
+						}
+						
 						getAccessLocationValues(accessLocationIds,accessType,accessValue);
-						List<Object[]> list = cadreIvrResponseDAO.getIvrCountByDate(fromDate,toDate,state,accessLocationIds);
+						List<Object[]> list = cadreIvrResponseDAO.getIvrCountByDate(fromDate,toDate,state,accessLocationIds,campaignId);
 						if(list != null && list.size() > 0)
 						{
+							Map<Long,CadreIVRVO> ivrResponceMap = new HashMap<Long, CadreIVRVO>();
+							//Long totalResponces = 0l;
 							for(Object[] ivrCountInfo:list){
 								ivrCount = ivrCount+(Long)ivrCountInfo[0];
 								/* IVR Success Calls Group*/
 								if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.NORMAL_CLEARING))
 								{
-									if(ivrCountInfo[1] !=null && ivrCountInfo[1].toString().equalsIgnoreCase("1")) // response key is 1 //received
-										receivedCount = receivedCount +  (Long)ivrCountInfo[0];
-									else if(ivrCountInfo[1] !=null && ivrCountInfo[1].toString().equalsIgnoreCase("2"))
-										notReceivedCount = notReceivedCount + 	 (Long)ivrCountInfo[0];
-									else if(ivrCountInfo[1] !=null && ivrCountInfo[1].toString().equalsIgnoreCase("3"))
-										notregisteredCount = notregisteredCount + (Long)ivrCountInfo[0];
-									else if(ivrCountInfo[1] !=null && !successNos.contains(ivrCountInfo[1].toString()))
-										wrongOptionCount = wrongOptionCount + (Long)ivrCountInfo[0];
-									else if(ivrCountInfo[1] == null)
+									if(ivrCountInfo[3] != null)
+									{
+										CadreIVRVO responceVO = ivrResponceMap.get(Long.valueOf(ivrCountInfo[3].toString().trim()));
+										if(responceVO == null)
+										{
+											responceVO = new CadreIVRVO();
+											responceVO.setId((Long)ivrCountInfo[3]);//options id
+											responceVO.setName(optionNames.get((Long)ivrCountInfo[3]));//option name
+											responceVO.setCount((Long)ivrCountInfo[0]);//count
+											ivrResponceMap.put((Long)(ivrCountInfo[3]), responceVO);
+										}
+										else
+										{
+											responceVO.setCount(responceVO.getCount() + (Long)ivrCountInfo[0]);//count
+										}
+										
+										selectedOptionCnt = selectedOptionCnt + responceVO.getCount();		
+									}
+									else if(ivrCountInfo[3] == null){
 										   noOptionCount = noOptionCount +  (Long)ivrCountInfo[0];
+									}
+										
+									/*
+									if(ivrCountInfo[3] !=null && ivrCountInfo[3].toString().equalsIgnoreCase("1")){ // response key is 1 //received
+										receivedCount = receivedCount +  (Long)ivrCountInfo[0];
+										returnVo.setOption1(optionNames.get((Long)ivrCountInfo[3]));
+									}
+									else if(ivrCountInfo[3] !=null && ivrCountInfo[3].toString().equalsIgnoreCase("2")){
+										notReceivedCount = notReceivedCount + 	 (Long)ivrCountInfo[0];
+										returnVo.setOption2(optionNames.get((Long)ivrCountInfo[3]));
+										
+									}
+									else if(ivrCountInfo[3] !=null && ivrCountInfo[3].toString().equalsIgnoreCase("3")){
+										notregisteredCount = notregisteredCount + (Long)ivrCountInfo[0];
+										returnVo.setOption3(optionNames.get((Long)ivrCountInfo[3]));
+									}
+									else if(ivrCountInfo[3] !=null && !successNos.contains(ivrCountInfo[3].toString())){
+										wrongOptionCount = wrongOptionCount + (Long)ivrCountInfo[0];
+										returnVo.setOption4(optionNames.get((Long)ivrCountInfo[3]));
+									}
+									else if(ivrCountInfo[3] == null){
+										   noOptionCount = noOptionCount +  (Long)ivrCountInfo[0];
+									}
+								*/
+									
+									
 								}
 								else
 								{
@@ -4619,14 +4680,40 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 										otherError = otherError + (Long)ivrCountInfo[0];
 								}	
 							}
+							if(optionNames != null && optionNames.size() > 0)
+							{
+								List<CadreIVRVO> subList = new ArrayList<CadreIVRVO>();
+								for (Long responceOptionId : optionNames.keySet()) 
+								{
+									if(ivrResponceMap != null && ivrResponceMap.size() > 0)
+									{
+										CadreIVRVO responceVO = ivrResponceMap.get(responceOptionId);
+										if(responceVO != null)
+										{
+											responceVO.setReceivedPerc(new BigDecimal((responceVO.getCount()*100.0/selectedOptionCnt)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+										}
+										else
+										{
+											responceVO = new CadreIVRVO();
+											responceVO.setId(responceOptionId);//options id
+											responceVO.setName(optionNames.get(responceOptionId));//option name
+											responceVO.setCount(0l);//count
+											responceVO.setReceivedPerc(0.00);
+										}
+										subList.add(responceVO);
+									}
+									
+								}
+								returnVo.setSubListForResponces(subList);
+							}
 						}
 						returnVo.setTotal(ivrCount);
-						returnVo.setReceived(receivedCount);
-						returnVo.setNotReceived(notReceivedCount);
-						returnVo.setNotRegistered(notregisteredCount);
-						returnVo.setWrongOption(wrongOptionCount);
+						//returnVo.setReceived(receivedCount);
+						//returnVo.setNotReceived(notReceivedCount);
+						//returnVo.setNotRegistered(notregisteredCount);
+						//returnVo.setWrongOption(wrongOptionCount);
 						returnVo.setNoOption(noOptionCount);
-						Long selectedOptionCnt = returnVo.getReceived() + returnVo.getNotReceived() + returnVo.getNotRegistered() + returnVo.getWrongOption();
+						//Long selectedOptionCnt = returnVo.getReceived() + returnVo.getNotReceived() + returnVo.getNotRegistered() + returnVo.getWrongOption();
 						
 						/*if(selectedOptionCnt > 0)
 						{
@@ -4676,14 +4763,14 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 							returnVo.setTotalUnAnsweredPerc(new BigDecimal((returnVo.getTotalUnAnswered()*100.0/returnVo.getTotal())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 						}
 						
-						if(selectedOptionCnt > 0)
+						/*if(selectedOptionCnt > 0)
 						{
 							returnVo.setReceivedPerc(new BigDecimal((returnVo.getReceived()*100.0/selectedOptionCnt)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 							returnVo.setNotReceivedPerc(new BigDecimal((returnVo.getNotReceived()*100.0/selectedOptionCnt)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 							returnVo.setNotMemberPerc(new BigDecimal((returnVo.getNotRegistered()*100.0/selectedOptionCnt)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 							returnVo.setWrongOptionPerc(new BigDecimal((returnVo.getWrongOption()*100.0/selectedOptionCnt)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 							
-						}
+						}*/
 						Long answerTotal= selectedOptionCnt + returnVo.getNoOption();
 						if(answerTotal > 0)
 						{
@@ -4810,15 +4897,15 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 					}
 			 }
 			 
-          public CadreIVRResponseVO getLocationWiseIVRDetailedInfo(Map<Long,String> locationNames,String locationType,Date startDate,Date endDate,Long constituencyId){
+          public CadreIVRResponseVO getLocationWiseIVRDetailedInfo(Map<Long,String> locationNames,String locationType,Date startDate,Date endDate,Long constituencyId,Long campaignId){
 				 
 				 CadreIVRResponseVO responseVO = new CadreIVRResponseVO();
 				 try{
 					 Map<Long,CadreIVRResponseVO> responseMap = new HashMap<Long,CadreIVRResponseVO>();
 					 
-					 getNoOfMembersRegInfo(locationNames,locationType,responseMap,constituencyId);
+					 getNoOfMembersRegInfo(locationNames,locationType,responseMap,constituencyId,campaignId);
 					 getNoOfCardsPrintedAndJobInfo(locationType,responseMap,constituencyId);
-					 getResponseInfo(locationType,responseMap,startDate,endDate,constituencyId);
+					 getResponseInfo(locationType,responseMap,startDate,endDate,constituencyId,campaignId);
 					 responseVO.setApList(new ArrayList<CadreIVRResponseVO>(responseMap.values()));
 					 calculateAllPercs(responseVO.getApList());
 					// Collections.sort(responseVO.getApList(), sort);
@@ -4828,7 +4915,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 				 return responseVO;
 			 }
           
-          public void getNoOfMembersRegInfo(Map<Long,String> locationNames,String locationType,Map<Long,CadreIVRResponseVO> responseMap,Long constituencyId){
+          public void getNoOfMembersRegInfo(Map<Long,String> locationNames,String locationType,Map<Long,CadreIVRResponseVO> responseMap,Long constituencyId,Long campaignId){
         	//0locationId,1count
         	  List<Object[]> registeredCountList = new ArrayList<Object[]>();
         	  if(locationType.equalsIgnoreCase("district") || locationType.equalsIgnoreCase("constituency")){
@@ -4836,6 +4923,9 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         	  }else{
         		  registeredCountList = tdpCadreDAO.getLocationWiseCadreRegisterInfo(locationNames.keySet(), locationType,constituencyId); 
         	  }
+        	  Map<Long,String> optionNames = new HashMap<Long,String>();	
+        	  List<Object[]> optionsList = ivrCampaignOptionsDAO.getAllIVROptions(campaignId);
+        	  
         	  for(Object[] registeredCount:registeredCountList){
         		  CadreIVRResponseVO response = responseMap.get((Long)registeredCount[0]);
         		  if(response == null){
@@ -4860,8 +4950,17 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         			  response.setWrongOptionSel(0l);
         			  response.setWrongOptionSelPerc(0l);
         			  response.setNoOptionSel(0l);
-        			  response.setNoOptionSelPerc(0l);
+        			  response.setNoOptionSelPerc(0l);     				  
         			  response.setId((Long)registeredCount[0]);
+        			  if(optionsList != null && optionsList.size() >0){
+        					for(Object[] option:optionsList){
+        						CadreIVRResponseVO response1 = new CadreIVRResponseVO();
+        						response1.setId((Long)option[0]);
+        						response1.setName(option[1].toString());
+        						response1.setCount(0l);
+        						response.getSubList().add(response1);
+        					}
+        			  }
         			  responseMap.put((Long)registeredCount[0],response);
         		  }
         		  response.setRegisteredCount((Long)registeredCount[1]);
@@ -4894,34 +4993,54 @@ public class TdpCadreReportService implements ITdpCadreReportService{
          	  }
           }
           
-          public void getResponseInfo(String locationType,Map<Long,CadreIVRResponseVO> responseMap,Date startDate,Date endDate,Long constituencyId){
+          public void getResponseInfo(String locationType,Map<Long,CadreIVRResponseVO> responseMap,Date startDate,Date endDate,Long constituencyId,Long campaignId){
         	//0locationId,1count,2callStatus,3responseKey
-        	  List<Object[]> responseInfoList = cadreIvrResponseDAO.getLocationWiseIVRCountsInfo(responseMap.keySet(), locationType, startDate, endDate,constituencyId);
+        	 
+			  Map<Long,CadreIVRResponseVO> ivrResponceMap = new HashMap<Long, CadreIVRResponseVO>();
+				
+        	  List<Object[]> responseInfoList = cadreIvrResponseDAO.getLocationWiseIVRCountsInfo(responseMap.keySet(), locationType, startDate, endDate,constituencyId,campaignId);
         	  for(Object[] response:responseInfoList){
+        		 
         		  CadreIVRResponseVO locationResponseVo = responseMap.get((Long)response[0]);
         		  if(locationResponseVo != null){
+        			
         			    locationResponseVo.setTotalIvrCalls(locationResponseVo.getTotalIvrCalls()+(Long)response[1]);
         			    if(response[2] != null && response[2].toString().trim().equalsIgnoreCase("NORMAL_CLEARING")){
 						    locationResponseVo.setTotalAnswerdCalls(locationResponseVo.getTotalAnswerdCalls()+(Long)response[1]);
-						   if(response[3] == null){ 
+						   if(response[4] == null){ 
 						     locationResponseVo.setNoOptionSel(locationResponseVo.getNoOptionSel()+(Long)response[1]);
 						   }
+						   else if(response[4] != null){
+							   CadreIVRResponseVO responceVO =  getMatchedOptions(locationResponseVo.getSubList(),Long.valueOf(response[4].toString().trim()));
+								if(responceVO != null){									
+									responceVO.setCount(responceVO.getCount() + (Long)response[1]);//count									
+								}						
+							}
         			    }else{
         			    	locationResponseVo.setErrorCalls(locationResponseVo.getErrorCalls()+(Long)response[1]);
         			    }
-        			    if(response[3] != null){
-	        			    if(response[3].toString().trim().equalsIgnoreCase("1")){
+        			    
+        			   /* if(response[4] != null){
+	        			    if(response[4].toString().trim().equalsIgnoreCase("1")){
 								locationResponseVo.setReceived(locationResponseVo.getReceived()+(Long)response[1]);
-							}else if(response[3].toString().trim().equalsIgnoreCase("2")){
+								locationResponseVo.setOption1(optionNames.get((response[4])));								
+							}else if(response[4].toString().trim().equalsIgnoreCase("2")){
 								locationResponseVo.setNotReceived(locationResponseVo.getNotReceived()+(Long)response[1]);
-							}else if(response[3].toString().trim().equalsIgnoreCase("3")){
+								locationResponseVo.setOption2(optionNames.get((response[4])));
+							}else if(response[4].toString().trim().equalsIgnoreCase("3")){
 								locationResponseVo.setNotMember(locationResponseVo.getNotMember()+(Long)response[1]);
+								locationResponseVo.setOption3(optionNames.get((response[4])));
 							}else{
 								locationResponseVo.setWrongOptionSel(locationResponseVo.getWrongOptionSel()+(Long)response[1]);
+								locationResponseVo.setOption4(optionNames.get((response[4])));
 							}
-        			    }
-        		  }
-        	  }
+        			    }*/
+        			    
+        			  
+						/* IVR Success Calls Group*/
+        		  }	
+        			
+        	  }     	  
           }
           
           public void calculateAllPercs(List<CadreIVRResponseVO> responseList){
@@ -4934,18 +5053,19 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         		  if(responseVO.getTotalAnswerdCalls().longValue() > 0){
         		        responseVO.setNoOptionSelPerc((responseVO.getNoOptionSel()*100)/responseVO.getTotalAnswerdCalls());
         		  }
-        		  Long total = responseVO.getReceived()+responseVO.getNotReceived()+responseVO.getNotMember()+responseVO.getWrongOptionSel();
+        		  
+        		//  Long total = responseVO.getReceived`()+responseVO.getNotReceived()+responseVO.getNotMember()+responseVO.getWrongOptionSel();
       			
-      			if(total.longValue() > 0){
+      			/*if(total.longValue() > 0){
       				responseVO.setReceivedPerc((responseVO.getReceived()*100)/total);
       				responseVO.setNotReceivedPerc((responseVO.getNotReceived()*100)/total);
       				responseVO.setNotMemberPerc((responseVO.getNotMember()*100)/total);
       				responseVO.setWrongOptionSelPerc((responseVO.getWrongOptionSel()*100)/total);
-      			}
+      			}*/
         	  }
           }
           
-          public CadreIVRResponseVO getLocationWisePercInfo(String locationType,List<Long> locationIds,Date startDate,Date endDate,String accessType,Long accessValue){
+          public CadreIVRResponseVO getLocationWisePercInfo(String locationType,List<Long> locationIds,Date startDate,Date endDate,String accessType,Long accessValue,Long campaignId){
         	  List<Object[]> locations = new ArrayList<Object[]>();
         	  if(locationType.equalsIgnoreCase("district")){
         	      locations = districtDAO.getDistrictDetailsByDistrictIds(locationIds);
@@ -4956,10 +5076,10 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         	  for(Object[] location:locations){
         		  locationNames.put((Long)location[0], location[1].toString());
         	  }
-        	  return getLocationWiseIVRDetailedInfo(locationNames,locationType,startDate,endDate,null);
+        	  return getLocationWiseIVRDetailedInfo(locationNames,locationType,startDate,endDate,null,campaignId);
           }
           
-          public CadreIVRResponseVO  getLocationWisePercInfoErrorInfo(String locationType,Long constituencyId,Date startDate,Date endDate,String accessType,Long accessValue){
+          public CadreIVRResponseVO  getLocationWisePercInfoErrorInfo(String locationType,Long constituencyId,Date startDate,Date endDate,String accessType,Long accessValue,Long campaignId){
         	  Map<Long,String> locationNames = new HashMap<Long,String>();
         	  if(locationType.equalsIgnoreCase("all") || locationType.equalsIgnoreCase("AP") || locationType.equalsIgnoreCase("TS")){
         		  List<Object[]> assemblyList = new ArrayList<Object[]>();
@@ -4977,7 +5097,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         		  for(Object[] location:assemblyList){
             		  locationNames.put((Long)location[0], location[1].toString());
             	  }
-        		  return getLocationWiseIVRDetailedInfo(locationNames,"Constituency",startDate,endDate,null);
+        		  return getLocationWiseIVRDetailedInfo(locationNames,"Constituency",startDate,endDate,null,campaignId);
         	  }else if(locationType.equalsIgnoreCase("mandal")){
         		  List<CadreIVRResponseVO> infoList = new ArrayList<CadreIVRResponseVO>();
         		  Map<Long,String> localBodyNames = new HashMap<Long,String>();
@@ -4986,7 +5106,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         			  localBodyNames.put((Long)location[0], location[1].toString());
             	  }
         		  if(localBodyIds.size() > 0){
-        			  CadreIVRResponseVO localBodyVO =  getLocationWiseIVRDetailedInfo(localBodyNames,"localBody",startDate,endDate,constituencyId);
+        			  CadreIVRResponseVO localBodyVO =  getLocationWiseIVRDetailedInfo(localBodyNames,"localBody",startDate,endDate,constituencyId,campaignId);
 	        		  if(localBodyVO != null && localBodyVO.getApList() != null ){
 	        			  for(CadreIVRResponseVO info:localBodyVO.getApList()){
 	        				  info.setId(Long.valueOf("1"+info.getId()));
@@ -4999,7 +5119,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         			  locationNames.put((Long)location[0], location[1].toString()+" Mandal");
             	  }
         		  if(locationNames.size() > 0){
-        			  CadreIVRResponseVO mandalVO =  getLocationWiseIVRDetailedInfo(locationNames,"mandal",startDate,endDate,constituencyId);
+        			  CadreIVRResponseVO mandalVO =  getLocationWiseIVRDetailedInfo(locationNames,"mandal",startDate,endDate,constituencyId,campaignId);
 	        		  if(mandalVO != null && mandalVO.getApList() != null ){
 	        			  for(CadreIVRResponseVO info:mandalVO.getApList()){
 	        				  info.setId(Long.valueOf("2"+info.getId()));
@@ -5016,13 +5136,13 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         		  for(Object[] location:panchayatList){
             		  locationNames.put((Long)location[0], location[1].toString());
             	  }
-        		  return getLocationWiseIVRDetailedInfo(locationNames,"panchayat",startDate,endDate,null);
+        		  return getLocationWiseIVRDetailedInfo(locationNames,"panchayat",startDate,endDate,null,campaignId);
         	  }else{
         		  List<Object[]> boothsList = boothDAO.getBoothsInAConstituency(constituencyId,11l);
         		  for(Object[] location:boothsList){
             		  locationNames.put((Long)location[0], location[1].toString());
             	  }
-        		  return getLocationWiseIVRDetailedInfo(locationNames,"booth",startDate,endDate,null);
+        		  return getLocationWiseIVRDetailedInfo(locationNames,"booth",startDate,endDate,null,campaignId);
         	  }
           }
           
@@ -5891,4 +6011,60 @@ public class TdpCadreReportService implements ITdpCadreReportService{
         	 }
 			
          }
+     	public List<BasicVO> getAllCampaigns(){
+    		List<BasicVO> returnList = new ArrayList<BasicVO>();
+    		
+    		try{
+    		    List<Object[]> campaignsList = ivrCampaignDAO.getAllCampaigns();
+    			for(Object[] campaign:campaignsList){
+    				BasicVO info = new BasicVO();
+    				info.setId((Long)campaign[0]);
+    				info.setName(campaign[1].toString());
+    				returnList.add(info);
+    			}
+            }catch(Exception e){
+            	LOG.error("Exception rised in getAllCampaigns",e);
+    		}
+    		return returnList;
+    	}
+       
+    	public List<BasicVO> getAllIVROptions(Long campaignId){
+    		List<BasicVO> returnList = new ArrayList<BasicVO>();
+    		
+    		try{
+    		    List<Object[]> optionsList = ivrCampaignOptionsDAO.getAllIVROptions(campaignId);
+    			for(Object[] options:optionsList){
+    				BasicVO info = new BasicVO();
+    				info.setId((Long)options[0]);
+    				info.setName(options[1].toString());
+    				returnList.add(info);
+    			}
+            }catch(Exception e){
+            	LOG.error("Exception rised in getAllIVROptions",e);
+    		}
+    		return returnList;
+    	}
+    	
+    	public CadreIVRResponseVO getMatchedOptions(List<CadreIVRResponseVO> list,Long id)
+    	{
+    		CadreIVRResponseVO returnVO = null;
+    		try {
+    			
+    			if(list != null && list.size()>0)
+    			{
+    				for (CadreIVRResponseVO vo : list)
+    				{
+    					if(vo.getId().longValue() == id.longValue())
+    					{
+    						return vo;
+    					}
+    				}
+    			}
+    		} catch (Exception e) {
+    			LOG.error("Exception raised in getMatchedOptions", e);
+    		}
+    		return returnVO;
+    	}
+    	
+       
 }

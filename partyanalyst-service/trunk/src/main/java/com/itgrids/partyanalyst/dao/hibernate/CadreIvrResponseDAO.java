@@ -108,17 +108,19 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 			
 		return query.list();
 	}
-	public List<Object[]> getIvrCountByDate(Date fromDate,Date toDate,String state,List<Long> accessLocationIds)
+	public List<Object[]> getIvrCountByDate(Date fromDate,Date toDate,String state,List<Long> accessLocationIds,Long campaignId)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("select count(model.cadreIvrResponseId),model.responseKey,model.callStatus from CadreIvrResponse model where model.isDeleted = 'N' ");
+		str.append("select count(model.cadreIvrResponseId),model.responseKey,model.callStatus,model.optionId from CadreIvrResponse model ");
+		//str.append(" left join model.ivrOptions ivrOptions ");
+		str.append(" where model.isDeleted = 'N' and model.ivrCampaign.isDeleted = 'N' and model.ivrCampaign.ivrCampaignId = :campaignId");
 		if(state.equalsIgnoreCase("AP")){
-			str.append(" and model.userAddress.district.districtId > 10");
+			str.append(" and model.tdpCadre.userAddress.district.districtId > 10");
 		}else if(state.equalsIgnoreCase("TS")){
-			str.append(" and model.userAddress.district.districtId < 11");
+			str.append(" and model.tdpCadre.userAddress.district.districtId < 11");
 		}
 		if(accessLocationIds.size() > 0){
-			str.append(" and model.userAddress.constituency.constituencyId in(:accessLocationIds)");
+			str.append(" and model.tdpCadre.userAddress.constituency.constituencyId in(:accessLocationIds)");
 		}
 		if((fromDate != null && toDate != null) && !fromDate.equals(toDate))
 		str.append(" and date(model.date) >=:fromDate and date(model.date) <=:toDate");
@@ -136,6 +138,7 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 		if(accessLocationIds.size() > 0){
 			query.setParameterList("accessLocationIds", accessLocationIds);
 		}
+		query.setParameter("campaignId", campaignId);
 		return query.list();
 	}
 	
@@ -245,27 +248,28 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 	
 	public String getLocation(String location){
 		if(location.equalsIgnoreCase("district")){
-			return " model.userAddress.district.districtId ";
+			return " model.tdpCadre.userAddress.district.districtId ";
 		}else if(location.equalsIgnoreCase("constituency")){
-			return " model.userAddress.constituency.constituencyId ";
+			return " model.tdpCadre.userAddress.constituency.constituencyId ";
 		}else if(location.equalsIgnoreCase("mandal")){
-			return " model.userAddress.tehsil.tehsilId ";
+			return " model.tdpCadre.userAddress.tehsil.tehsilId ";
 		}else if(location.equalsIgnoreCase("localBody")){
-			return " model.userAddress.localElectionBody.localElectionBodyId ";
+			return " model.tdpCadre.userAddress.localElectionBody.localElectionBodyId ";
 		}else if(location.equalsIgnoreCase("panchayat")){
-			return " model.userAddress.panchayat.panchayatId ";
+			return " model.tdpCadre.userAddress.panchayat.panchayatId ";
 		}else{
-			return " model.userAddress.booth.boothId ";
+			return " model.tdpCadre.userAddress.booth.boothId ";
 		}
 	}
 	
-	public List<Object[]> getLocationWiseIVRCountsInfo(Set<Long> locationIds,String locationType,Date startDate,Date endDate,Long constituencyId){
+	public List<Object[]> getLocationWiseIVRCountsInfo(Set<Long> locationIds,String locationType,Date startDate,Date endDate,Long constituencyId,Long campaignId){
 		StringBuilder queryStr = new StringBuilder();
 		//0locationId,1count,2callStatus,3responseKey
 		queryStr.append("select "+getLocation(locationType));
 		
-		queryStr.append(",count(model.userAddress.userAddressId),model.callStatus,model.responseKey from CadreIvrResponse model where "+getLocation(locationType)+"" +
-				" in(:locationIds) and model.isDeleted = 'N'  and "+getLocation(locationType)+" is not null ");
+		queryStr.append(",count(model.tdpCadre.userAddress.userAddressId),model.callStatus,model.responseKey,model.optionId from CadreIvrResponse model where "+getLocation(locationType)+"" +
+				" in(:locationIds) and model.isDeleted = 'N' and model.ivrCampaign.isDeleted= 'N' and model.ivrCampaign.ivrCampaignId = :campaignId " +
+				" and "+getLocation(locationType)+" is not null ");
 		if(startDate != null){
 			queryStr.append(" and date(model.date) >= :startDate ");
 		}
@@ -287,6 +291,7 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 		if(constituencyId != null){
 			  query.setParameter("constituencyId", constituencyId);
 			}
+		query.setParameter("campaignId",campaignId);
 		return query.list();
 	}
 	
