@@ -317,10 +317,12 @@
 			 <pattern>/tdpCallCenterAction*</pattern>
 			 <pattern>/tdpCadreVolunteersDetailsAction*</pattern>
 			 <pattern>/cadreIvrReportAction*</pattern>	
+			<pattern>/villageIVRAction*</pattern>	
 			<pattern>/cadreMissedCallCampaignAction*</pattern>				 
 			 <pattern>/cadreCommitteeSearchAction*</pattern>			
 			 <pattern>/tdpCadreImagesVerification*</pattern>	
 			  <pattern>/currentBoothsStatus*</pattern>
+			   <pattern>/ivrCampaignUploadAction*</pattern> 
 		 </decorator>
        
        <decorator name="tdpHome_old" page="tdplayout_old.jsp">

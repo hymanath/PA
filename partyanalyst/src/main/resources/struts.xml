@@ -9792,5 +9792,30 @@
 			</result>
 		</action>
 		
+		<action name="ivrCampaignUploadAction" class="tdpCadreReportAction" method="ivrCampaignOptionsUpload">
+			<result name="success">/jsp/ivrCampaignUpload.jsp</result>
+			<result name="input">/jsp/loginForm.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
+				
+		<action name="getAllCampaignsAction" class="tdpCadreReportAction" method="getAllCampaigns">
+			<result type="json" name="success">
+				<param name="root">resultList</param> 
+			</result>
+		</action>
+		
+		<action name="getAllIVROptionsAction" class="tdpCadreReportAction" method="getAllIVROptions">
+			<result type="json" name="success">
+				<param name="root">resultList</param> 
+			</result>
+		</action>
+		
+		
+		<action name="villageIVRAction" class="tdpCadreReportAction" method="villageIVRAction">
+			<result name="success">/jsp/villageIvr.jsp</result>
+			<result name="input">/jsp/loginForm.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
+		
 </package>
 </struts>      

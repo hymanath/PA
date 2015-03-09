@@ -1948,5 +1948,18 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	
+	<bean id="ivrCampaignDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrCampaignDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="ivrOptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrOptionsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="ivrCampaignOptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrCampaignOptionsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!--  end -->
 </beans>		
