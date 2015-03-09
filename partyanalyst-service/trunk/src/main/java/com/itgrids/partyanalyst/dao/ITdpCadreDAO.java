@@ -299,7 +299,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public List<Object[]> getConstituencyWiseMemberMobileNumbersCount(Long districtId,Date startDate,Date endDate);
 	public Long getTdpCadreCountInALocation(List<Long> locationValue,String type);
-	public List<TdpCadre> getTdpCadreVoterIDs(List<Long> locationValue,String type,Integer startIndex,
+	public List<Object[]> getTdpCadreVoterIDs(List<Long> locationValue,String type,Integer startIndex,
 			Integer maxRecords,String columnName ,String order);
 	
 	public Long getVoterIdExistCadreInABooth(Long constituencyId,Long publicationDateId,String partNo);
@@ -317,4 +317,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getVoterHouseWiseDetailsInABooth(Long constituencyId,Long publicationDateId,String partNo);
 
 	public List<Object[]> getLocationWiseCadrePrintedCount(Set<Long> locationIds,String locationType,Long constituencyId);
+	public List<Object[]> getTdpCadreCountInALocationForEnrollment(List<Long> locationValue,String type);
 }

@@ -352,6 +352,7 @@ public interface IVotersAnalysisService {
 	public List<GenericVO> getHHLeadersBooksList(Long leaderId);
 	
 	public Long bookIdOfVoter(Long voterId);
+	public List<InfluencingPeopleBeanVO> getCadrePeopleCountByLocation(Long userId,Long locationValue,String type,Long publicationDateId);
 
 	
 }

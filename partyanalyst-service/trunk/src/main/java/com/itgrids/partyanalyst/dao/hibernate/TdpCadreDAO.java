@@ -4251,7 +4251,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		
 	}
 	
-	public List<TdpCadre> getTdpCadreVoterIDs(List<Long> locationValue,String type,Integer startIndex,
+	public List<Object[]> getTdpCadreVoterIDs(List<Long> locationValue,String type,Integer startIndex,
 			Integer maxRecords,String columnName ,String order)
 	{
 	
@@ -4261,7 +4261,13 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			type = "hamlet";
 		if(type.equalsIgnoreCase("customWard"))
 			type ="WARD";
-		String str = "select model from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear='2014' and ";
+		String str = "";
+		str += "select model.firstname,model.lastname,model.gender,model.mobileNo,voter.voterId," +
+				"casteState.caste.casteName,model.userAddress.userAddressId from TdpCadre model " +
+		 		" left join model.voter voter " +
+		 		" left join model.casteState casteState ";
+		
+		str +=  " where model.isDeleted = 'N' and model.enrollmentYear='2014' and ";
 		
 		if(type.equalsIgnoreCase("constituency"))
 			str += " model.userAddress.constituency.constituencyId in (:locationValue) ";
@@ -4447,4 +4453,35 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		  query.setParameter("partNo",partNo);
 		  return query.list();
 	  }
+	  
+		public List<Object[]> getTdpCadreCountInALocationForEnrollment(List<Long> locationValue,String type)
+		{
+			if(type.equalsIgnoreCase("MUNCIPALITY/CORPORATION"))
+				type = "MUNICIPAL-CORP-GMC";
+			
+			if(type.equalsIgnoreCase("customWard"))
+				type ="WARD";
+			String str = "select model.enrollmentYear,count(model.tdpCadreId) from TdpCadre model where model.isDeleted = 'N'  and ";
+			
+			if(type.equalsIgnoreCase("constituency"))
+				str += " model.userAddress.constituency.constituencyId in (:locationValue) ";
+			else if(type.equalsIgnoreCase("mandal"))
+				str += " model.userAddress.tehsil.tehsilId in (:locationValue) ";
+			else if(type.equalsIgnoreCase("MUNICIPAL-CORP-GMC"))
+				str += " model.userAddress.localElectionBody.localElectionBodyId in (:locationValue) ";
+			else if(type.equalsIgnoreCase("panchayat"))
+				str += " model.userAddress.panchayat.panchayatId in (:locationValue) ";
+			else if(type.equalsIgnoreCase("hamlet"))
+				str += " model.userAddress.hamlet.hamletId in (:locationValue) ";
+			else if(type.equalsIgnoreCase("WARD"))
+				str += " model.userAddress.ward.constituencyId in (:locationValue) ";
+			else if(type.equalsIgnoreCase("BOOTH"))
+				str += " model.userAddress.booth.boothId in (:locationValue) ";
+			str+=" group by model.enrollmentYear order by model.enrollmentYear desc";
+			Query query = getSession().createQuery(str);
+			query.setParameterList("locationValue", locationValue);
+			query.setMaxResults(2);
+			return query.list();
+			
+		}
 }
