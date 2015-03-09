@@ -564,7 +564,11 @@
 	            <value>com.itgrids.partyanalyst.model.TwoWayMessage</value>
 	            <value>com.itgrids.partyanalyst.model.MissedCallCampaign</value>
 				<value>com.itgrids.partyanalyst.model.CadreMissedCallCampaign</value>
-				<value>com.itgrids.partyanalyst.model.TdpCadreInfo</value>							
+				<value>com.itgrids.partyanalyst.model.TdpCadreInfo</value>
+				
+				<value>com.itgrids.partyanalyst.model.IvrCampaign</value>
+				<value>com.itgrids.partyanalyst.model.IvrOptions</value>
+				<value>com.itgrids.partyanalyst.model.IvrCampaignOptions</value>						
 				</list>
 			
 		</property>

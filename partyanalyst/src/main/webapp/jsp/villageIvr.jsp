@@ -127,7 +127,7 @@ textarea {
 			<input type="radio" class="radioCls" style="display:none;" name="stateradio" value="All" checked="checked">
 			</c:if>
 			
-			<select id="campaignSelect" class="span3" onchange="getAllDetails();" style="margin: -23px 0px 0px 387px;" ><option value="0">Select IVR Campaign </option></select>
+			<!--<select id="campaignSelect" class="span3" onchange="getAllDetails();" style="margin: -23px 0px 0px 387px;" ><option value="0">Select IVR Campaign </option></select>
 			
 				<!-----date picker----->
 				
@@ -641,7 +641,7 @@ var apIds ="111,352,117,114,116,108,109,112,353,113,360,124,125,122,120,121,361,
 			state:radioVal,
 			fromdate:fromDate,
 			todate:toDate,
-			campaignId:campaignId,
+			campaignId:2,
 			task:"datewiseBasicCnt"             
 		}
 			   
@@ -907,7 +907,7 @@ $("#locationWiseAllPercDiv").html("");
 			state:radioVal,
 			locations:locations,
 			fromDate : fromDate,
-			campaignId:campaignId,
+			campaignId:2,
 			toDate : toDate             
 		}
      $.ajax({
@@ -966,8 +966,7 @@ $("#locationWiseAllPercDiv").html("");
 				  str+='				<th rowspan="2">'+locationType+'</th>';
 				}
 				str+='				<th rowspan="2">Registred Count</th>';
-				if(campaignId ==1)
-					str+='				<th rowspan="2">Cards Printed Count</th>';
+				//str+='				<th rowspan="2">Cards Printed Count</th>';
 			
 				str+='				<th rowspan="2">IVR Calls Dailed</th>';
 				<c:if test="${sessionScope.USER.accessType == 'STATE'}">
@@ -1026,8 +1025,8 @@ $("#locationWiseAllPercDiv").html("");
 				    str+='  <td>'+result.apList[i].name+'</td>';
 				  }
 				  str+='  <td>'+result.apList[i].registeredCount+'</td>';
-				 if(campaignId ==1)
-				  str+='  <td>'+result.apList[i].printedCount+'</td>';
+				 
+				 // str+='  <td>'+result.apList[i].printedCount+'</td>';
 				  str+='  <td>'+result.apList[i].totalIvrCalls+'</td>';
 				  <c:if test="${sessionScope.USER.accessType == 'STATE'}">
 						str+='  <td>'+result.apList[i].totalAnswerdCalls+'</td>';
@@ -1132,7 +1131,7 @@ function getLocationWisePerformance(constituencyId,locationType,name){
 			locationType:locationType,
 			constituencyId:constituencyId,
 			fromDate : fromDate,
-			campaignId:campaignId,
+			campaignId:2,
 			toDate : toDate          
 		}
      $.ajax({
@@ -1158,8 +1157,7 @@ function getLocationWisePerformance(constituencyId,locationType,name){
 				  str+='				<th rowspan="2">'+locationType+'</th>';
 				}
 				str+='				<th rowspan="2">Registred Count</th>';
-				if(campaignId ==1)
-				str+='				<th rowspan="2">Cards Printed Count</th>';
+				//str+='				<th rowspan="2">Cards Printed Count</th>';
 			
 				str+='				<th rowspan="2">IVR Calls Dailed</th>';
 				<c:if test="${sessionScope.USER.accessType == 'STATE'}">
@@ -1215,8 +1213,8 @@ function getLocationWisePerformance(constituencyId,locationType,name){
 				    str+='  <td>'+result.apList[i].name+'</td>';
 				  }
 				  str+='  <td>'+result.apList[i].registeredCount+'</td>';
-				 if(campaignId ==1)
-				  str+='  <td>'+result.apList[i].printedCount+'</td>';
+				 
+				 // str+='  <td>'+result.apList[i].printedCount+'</td>';
 				  str+='  <td>'+result.apList[i].totalIvrCalls+'</td>';
 				  <c:if test="${sessionScope.USER.accessType == 'STATE'}">
 					  str+='  <td>'+result.apList[i].totalAnswerdCalls+'</td>';
@@ -1577,7 +1575,16 @@ if(isDistrictRequired){
 				}
 		});
 	}
-getAllCampaigns();
+	getAllCampaigns();
+/* getDateWiseIVRCount();
+				if(isDistrictRequired){
+				  getDistrictConstiWisePerformance("District","");
+				}else{
+				  $("#constiDistMainOutDiv").hide();
+				  $("#districtConstituencyHeading").html("Constituency Wise IVR Response");
+				  getLocationWisePerformance(232,"All");
+				  //getDistrictConstiWisePerformance("Constituency",apIds+","+tgIds);
+				} */
 
 function getAllDetails(){
 getDateWiseIVRCount();

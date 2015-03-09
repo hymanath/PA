@@ -684,7 +684,7 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 			jobj = new JSONObject(getTask());
 			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 			if(jobj.getString("task").equalsIgnoreCase("datewiseBasicCnt"))
-				ivrVOList = tdpCadreReportService.getIvrDashBoardCountsByDate(jobj.getString("fromdate"),jobj.getString("todate"),jobj.getString("state"),regVO.getAccessType(),Long.valueOf(regVO.getAccessValue().trim()));
+				ivrVOList = tdpCadreReportService.getIvrDashBoardCountsByDate(jobj.getString("fromdate"),jobj.getString("todate"),jobj.getString("state"),regVO.getAccessType(),Long.valueOf(regVO.getAccessValue().trim()),jobj.getLong("campaignId"));
 		}
 		catch(Exception e){
 			LOG.info("Entered into getCadreIvrReport()",e);	
@@ -772,7 +772,7 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 			 {
 				 LOG.error("Exception rised in date convert()  ",e);	 
 			 }
-			cadreIVRResponseVO = tdpCadreReportService.getLocationWisePercInfo(location,locationIds,startDate,endDate,regVO.getAccessType(),Long.valueOf(regVO.getAccessValue().trim()));			
+			cadreIVRResponseVO = tdpCadreReportService.getLocationWisePercInfo(location,locationIds,startDate,endDate,regVO.getAccessType(),Long.valueOf(regVO.getAccessValue().trim()),jobj.getLong("campaignId"));			
 		}
 		catch(Exception e){
 			LOG.info("Entered into getLocationWisePercInfo()",e);	
@@ -803,7 +803,7 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 			 {
 				 LOG.error("Exception rised in date convert1() ",e);	 
 			 }
-			cadreIVRResponseVO = tdpCadreReportService.getLocationWisePercInfoErrorInfo(location, jobj.getLong("constituencyId"),startDate,endDate,regVO.getAccessType(),Long.valueOf(regVO.getAccessValue().trim()));			
+			cadreIVRResponseVO = tdpCadreReportService.getLocationWisePercInfoErrorInfo(location, jobj.getLong("constituencyId"),startDate,endDate,regVO.getAccessType(),Long.valueOf(regVO.getAccessValue().trim()),jobj.getLong("campaignId"));			
 		}
 		catch(Exception e){
 			LOG.info("Entered into getLocationWisePercInfoErrorInfo()",e);	
@@ -1078,4 +1078,79 @@ public class TdpCadreReportAction extends ActionSupport implements ServletReques
 		}
 		return Action.SUCCESS;
 	}
+
+	
+	public String ivrCampaignOptionsUpload(){
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");		
+		if(regVO==null){
+			return "input";
+		}		
+		return Action.SUCCESS;
+	}
+	
+	public String getAllCampaigns(){
+		try{
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");		
+			if(regVO==null){
+				return "input";
+			}
+			jobj = new JSONObject(getTask());			
+			resultList = tdpCadreReportService.getAllCampaigns();		
+		} catch (Exception e) {
+			LOG.error("Exception raised in getAllCampaigns",e);
+		}
+			
+		return Action.SUCCESS;
+	}
+	
+	public String getAllIVROptions(){
+		try{
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");		
+			if(regVO==null){
+				return "input";
+			}
+			jobj = new JSONObject(getTask());
+			Long campaignId = jobj.getLong("campaignId");
+			resultList = tdpCadreReportService.getAllIVROptions(campaignId);
+		} catch (Exception e) {
+			LOG.error("Exception raised in getAllIVROptions",e);
+		}
+			
+		return Action.SUCCESS;
+	}
+	
+	public String villageIVRAction()
+	{
+		try{
+				RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+				boolean noaccess = false;
+				if(regVO==null){
+					return "input";
+				}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADREIVRDASHBOARD")){
+					noaccess = true ;
+				}
+				if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+					noaccess = false;
+				}
+				if(noaccess){
+					return "error";
+				}
+			jobCodes = tdpCadreReportService.getIvrDates();
+			Long electionTypeId = 2l;
+			Long stateId = 1l;
+			constituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId(electionTypeId,stateId).getConstituencies();
+			if(constituenciesList!=null && constituenciesList.size()>1){
+				SelectOptionVO selectOptionVO = new SelectOptionVO();
+				selectOptionVO.setId(0l);
+				selectOptionVO.setName("Select Constituency");
+				constituenciesList.add(0,selectOptionVO);
+			}
+		}
+		catch(Exception e)
+		{
+			
+		}
+		return Action.SUCCESS;
+	}
+	
 }

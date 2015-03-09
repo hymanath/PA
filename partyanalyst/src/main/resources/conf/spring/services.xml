@@ -2455,7 +2455,9 @@
 		  <property name="tehsilDAO" ref="tehsilDAO" />
           <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
           <property name="tdpCadreImagesValidDAO" ref="tdpCadreImagesValidDAO" />
-          <property name="tdpCadreInfoDAO" ref="tdpCadreInfoDAO" />
+          <property name="tdpCadreInfoDAO" ref="tdpCadreInfoDAO" />         
+          <property name="ivrCampaignDAO" ref="ivrCampaignDAO" />
+          <property name="ivrCampaignOptionsDAO" ref="ivrCampaignOptionsDAO" />
      </bean>
      
      <bean name="cadreRegistrationForOtherStatesService"  class="com.itgrids.partyanalyst.service.impl.CadreRegistrationForOtherStatesService">

@@ -326,7 +326,7 @@ margin-top:10px;
 								<ul>
 									<li><a href="cadreDashBoardAction.action"><span>Cadre Dashboard</span></a>
 									<li><a href="tdpCadreCardsPrintingDashBoardAction.action"><span>Cadre Cards Printing Dashboard</span></a></li>
-									<li><a href="cadreIvrReportAction.action"><span> Cadre IVR Status Report DashBoard  </span></a></li>
+								
 									<li><a href="cadreMemberShipCardDispatcherAction.action"><span>Cadre Membership Card Status </span></a></li>
 								
 								</ul>
@@ -367,6 +367,22 @@ margin-top:10px;
 						<li><a href="currentBoothsStatus.action"><span>Tirupati Bye Election Poll Management</span></a></li>
 						<li><a href="cadreMissedCallCampaignAction.action"><span>Cadre Missed Call Campaign</span></a></li>
 					</c:if>
+					
+					
+					<li><a onmousedown="return false;" class="parent"><span>IVR Campaigns</span></a>
+						<div>
+							<ul>
+								<c:if test="${sessionScope.USER.isAdmin == 'true'}">						
+									<li><a href="cadreIvrReportAction.action"><span> Cadre IVR  </span></a></li>
+									<li><a href="villageIVRAction.action"><span> Village Committee IVR  </span></a></li>
+									
+								</c:if>
+							
+							</ul>
+						</div>
+					</li>
+					
+					
 					
 				
 					
