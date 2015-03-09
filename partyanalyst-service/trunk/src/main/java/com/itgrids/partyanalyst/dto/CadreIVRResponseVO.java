@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CadreIVRResponseVO {
@@ -44,9 +45,9 @@ public class CadreIVRResponseVO {
 	private Double mandalPerc;
 	private Double deliveredPerc;
 	private String designation;
-	private Long total;
-	
-	
+	private Long total = 0l;
+	private Long count;
+	private List<CadreIVRResponseVO> subList = new ArrayList<CadreIVRResponseVO>();
 	
 	public List<CadreIVRResponseVO> getApList() {
 		return apList;
@@ -360,4 +361,23 @@ public class CadreIVRResponseVO {
 		this.total = total;
 	}
 
+	public Long getCount() {
+		return count;
+	}
+
+	public void setCount(Long count) {
+		this.count = count;
+	}
+
+	public List<CadreIVRResponseVO> getSubList() {
+		return subList;
+	}
+
+	public void setSubList(List<CadreIVRResponseVO> subList) {
+		this.subList = subList;
+	}
+	
+	
+	
+	
 }

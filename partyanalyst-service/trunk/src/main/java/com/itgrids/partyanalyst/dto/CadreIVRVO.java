@@ -71,6 +71,9 @@ public class CadreIVRVO implements Serializable, Comparable<CadreIVRVO>{
 	private Double totalErrorPerc;
 	private Double totalUnAnsweredPerc;
 	
+	
+	private List<CadreIVRVO> subListForResponces;
+	
 	public CadreIVRVO()
 	{
 		
@@ -543,8 +546,16 @@ public class CadreIVRVO implements Serializable, Comparable<CadreIVRVO>{
 	public void setTotalUnAnsweredPerc(Double totalUnAnsweredPerc) {
 		this.totalUnAnsweredPerc = totalUnAnsweredPerc;
 	}
-	
-	
+
+	public List<CadreIVRVO> getSubListForResponces() {
+		return subListForResponces;
+	}
+
+	public void setSubListForResponces(List<CadreIVRVO> subListForResponces) {
+		this.subListForResponces = subListForResponces;
+	}
+
 	
 
+	
 }

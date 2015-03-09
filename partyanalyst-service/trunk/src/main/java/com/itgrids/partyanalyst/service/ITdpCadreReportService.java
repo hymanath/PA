@@ -54,10 +54,10 @@ public interface ITdpCadreReportService {
 	public CadreIVRResponseVO getPanchayatWiseCadreDispatchStatus(Long range,String state);
 	
 	public CadreIVRResponseVO getTehsilWiseCadreDispatchStatus(Long range);
-	 public List<CadreIVRVO> getIvrDashBoardCountsByDate(String fromDate,String toDate,String state,String accessType,Long accessValue);
+	 public List<CadreIVRVO> getIvrDashBoardCountsByDate(String fromDate,String toDate,String state,String accessType,Long accessValue,Long campaignId);
 	public CadreIVRVO getIvrDashBoardBasicInfo(String state,String accessType,Long accessValue);
-	 public CadreIVRResponseVO getLocationWisePercInfo(String locationType,List<Long> locationIds,Date startDate,Date endDate,String accessType,Long accessValue);
-	 public CadreIVRResponseVO  getLocationWisePercInfoErrorInfo(String locationType,Long constituencyId,Date startDate,Date endDate,String accessType,Long accessValue);
+	 public CadreIVRResponseVO getLocationWisePercInfo(String locationType,List<Long> locationIds,Date startDate,Date endDate,String accessType,Long accessValue,Long campaignId);
+	 public CadreIVRResponseVO  getLocationWisePercInfoErrorInfo(String locationType,Long constituencyId,Date startDate,Date endDate,String accessType,Long accessValue,Long campaignId);
 	 public String  saveEnquiryInfo(CadreIVRResponseVO status);
 	 
 	 public CadreIVRResponseVO getLocationWiseEnquiryInfo(String locationLvl,Long locationValue,Long userId,String resultType);
@@ -71,5 +71,9 @@ public interface ITdpCadreReportService {
      public List<ImageCheckVO> getValidOrInValidImages(Long dId,Long cId,String type);
      public CadreIVRResponseVO getTotalIvrPreviousCallBasicInfo(Long stateTypeId);
      public CadreIVRResponseVO getMandalInfoManagerRecievedCountByConstituency(Long constituencyId);
+     
+     public List<BasicVO> getAllIVROptions(Long campaignId);
+     
+     public List<BasicVO> getAllCampaigns();
      
 }

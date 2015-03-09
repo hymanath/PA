@@ -37,6 +37,14 @@ public class CadreIvrResponse {
 	private String currentStatus;
 	private String isDeleted;
 	private UserAddress userAddress;
+	private Long campaignId;
+	private IvrCampaign ivrCampaign;	
+	private Long optionId;
+	private IvrOptions ivrOptions;
+	
+	
+	
+	
 	public CadreIvrResponse()
 	{
 		
@@ -146,6 +154,44 @@ public class CadreIvrResponse {
 	}
 	public void setUserAddress(UserAddress userAddress) {
 		this.userAddress = userAddress;
+	}
+	
+	@Column(name="campaign_id")
+	public Long getCampaignId() {
+		return campaignId;
+	}
+	public void setCampaignId(Long campaignId) {
+		this.campaignId = campaignId;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "campaign_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public IvrCampaign getIvrCampaign() {
+		return ivrCampaign;
+	}
+	public void setIvrCampaign(IvrCampaign ivrCampaign) {
+		this.ivrCampaign = ivrCampaign;
+	}
+	
+	@Column(name="option_id")	
+	public Long getOptionId() {
+		return optionId;
+	}
+	public void setOptionId(Long optionId) {
+		this.optionId = optionId;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "option_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public IvrOptions getIvrOptions() {
+		return ivrOptions;
+	}
+	public void setIvrOptions(IvrOptions ivrOptions) {
+		this.ivrOptions = ivrOptions;
 	}
 	
 	
