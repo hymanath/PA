@@ -127,7 +127,7 @@ textarea {
 			<input type="radio" class="radioCls" style="display:none;" name="stateradio" value="All" checked="checked">
 			</c:if>
 			
-			<select id="campaignSelect" class="span3" onchange="getAllDetails();" style="margin: -23px 0px 0px 387px;" ><option value="0">Select IVR Campaign </option></select>
+			<!--<select id="campaignSelect" class="span3" onchange="getAllDetails();" style="margin: -23px 0px 0px 387px;" ><option value="0">Select IVR Campaign </option></select>-->
 			
 				<!-----date picker----->
 				
@@ -641,7 +641,7 @@ var apIds ="111,352,117,114,116,108,109,112,353,113,360,124,125,122,120,121,361,
 			state:radioVal,
 			fromdate:fromDate,
 			todate:toDate,
-			campaignId:campaignId,
+			campaignId:1,
 			task:"datewiseBasicCnt"             
 		}
 			   
@@ -672,7 +672,7 @@ function buildIvrCountByDate(result,state)
 		str+='</div>';
 		str+='<div class="text-center" style="margin-top:0px;">';	
 		str+='<h2 class="m-0">'+result[0].total+'</h2>';
-		str+='<p>Calls IVR Total <br>Dailled</p>';
+		str+='<p>Total IVR Calls Dailled</p>';
 		str+='</div>';
 		$("#totalIvrTD").html(str);
 		options = {		
@@ -907,7 +907,7 @@ $("#locationWiseAllPercDiv").html("");
 			state:radioVal,
 			locations:locations,
 			fromDate : fromDate,
-			campaignId:campaignId,
+			campaignId:1,
 			toDate : toDate             
 		}
      $.ajax({
@@ -930,7 +930,7 @@ $("#locationWiseAllPercDiv").html("");
 		}else if(locationType == "Constituency"){
 		str+='<th>Constituency</th>';
 		}
-		str+='<th>Registred Count</th>';
+		str+='<th>Registered Count</th>';
 		str+='<th>Cards Printed Count</th>';
 		str+='<th>IVR Calls Dailed</th>';
 		str+='<th>Card Received</th>';
@@ -965,7 +965,7 @@ $("#locationWiseAllPercDiv").html("");
 				}else{
 				  str+='				<th rowspan="2">'+locationType+'</th>';
 				}
-				str+='				<th rowspan="2">Registred Count</th>';
+				str+='				<th rowspan="2">Registered Count</th>';
 				if(campaignId ==1)
 					str+='				<th rowspan="2">Cards Printed Count</th>';
 			
@@ -1132,7 +1132,7 @@ function getLocationWisePerformance(constituencyId,locationType,name){
 			locationType:locationType,
 			constituencyId:constituencyId,
 			fromDate : fromDate,
-			campaignId:campaignId,
+			campaignId:1,
 			toDate : toDate          
 		}
      $.ajax({
@@ -1157,7 +1157,7 @@ function getLocationWisePerformance(constituencyId,locationType,name){
 				}else{
 				  str+='				<th rowspan="2">'+locationType+'</th>';
 				}
-				str+='				<th rowspan="2">Registred Count</th>';
+				str+='				<th rowspan="2">Registered Count</th>';
 				if(campaignId ==1)
 				str+='				<th rowspan="2">Cards Printed Count</th>';
 			
@@ -1577,8 +1577,16 @@ if(isDistrictRequired){
 				}
 		});
 	}
-getAllCampaigns();
-
+//getAllCampaigns();
+getDateWiseIVRCount();
+				if(isDistrictRequired){
+				  getDistrictConstiWisePerformance("District","");
+				}else{
+				  $("#constiDistMainOutDiv").hide();
+				  $("#districtConstituencyHeading").html("Constituency Wise IVR Response");
+				  getLocationWisePerformance(232,"All");
+				  //getDistrictConstiWisePerformance("Constituency",apIds+","+tgIds);
+				}
 function getAllDetails(){
 getDateWiseIVRCount();
 				if(isDistrictRequired){
