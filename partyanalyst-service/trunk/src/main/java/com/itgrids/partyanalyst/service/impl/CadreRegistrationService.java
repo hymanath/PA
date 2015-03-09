@@ -1668,7 +1668,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 					  if(insertType.equalsIgnoreCase("new")){
 							 							 
 						     tdpCadre.setRefNo(cadreRegistrationVO.getRefNo());
-						     if(registrationType.equalsIgnoreCase("TAB")){
+						     /*if(registrationType.equalsIgnoreCase("TAB")){
 						    	 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 						    	 try{
 						    	 Date lastDate = sdf.parse("2014-12-26");
@@ -1679,7 +1679,7 @@ public class CadreRegistrationService implements ICadreRegistrationService {
 						    	 }catch(Exception e){
 						    		LOG.error(e);
 						    	 }
-						     }
+						     }*/
 						       
 								surveyCadreResponceVO.setEnrollmentNumber(tdpCadre.getRefNo());
 								//uploadProfileImage(cadreRegistrationVO,registrationType,tdpCadre);
