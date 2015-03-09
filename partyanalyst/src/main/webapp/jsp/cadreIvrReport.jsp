@@ -932,7 +932,7 @@ $("#locationWiseAllPercDiv").html("");
 		}
 		str+='<th>Registered Count</th>';
 		str+='<th>Cards Printed Count</th>';
-		str+='<th>IVR Calls Dailed</th>';
+		str+='<th>IVR Calls Dialled</th>';
 		str+='<th>Card Received</th>';
 		str+='<th>Card Not Received</th>';		
 		str+='<th>Error Calls</th>';			
@@ -969,7 +969,7 @@ $("#locationWiseAllPercDiv").html("");
 				if(campaignId ==1)
 					str+='				<th rowspan="2">Cards Printed Count</th>';
 			
-				str+='				<th rowspan="2">IVR Calls Dailed</th>';
+				str+='				<th rowspan="2">IVR Calls Dialled</th>';
 				<c:if test="${sessionScope.USER.accessType == 'STATE'}">
 					str+='				<th colspan="2">Answered Calls</th>';
 					for(var k in result.apList[0].subList){
@@ -1161,7 +1161,7 @@ function getLocationWisePerformance(constituencyId,locationType,name){
 				if(campaignId ==1)
 				str+='				<th rowspan="2">Cards Printed Count</th>';
 			
-				str+='				<th rowspan="2">IVR Calls Dailed</th>';
+				str+='				<th rowspan="2">IVR Calls Dialled</th>';
 				<c:if test="${sessionScope.USER.accessType == 'STATE'}">
 					str+='				<th colspan="2">Answered Calls</th>';
 					for(var k in result.apList[0].subList){
