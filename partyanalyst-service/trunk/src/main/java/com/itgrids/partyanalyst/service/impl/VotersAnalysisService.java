@@ -14372,7 +14372,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 				cadreLevelValues = panchayatHamletDAO.getHamletsOfPanchayitis(panchayitIds);
 			}
 			//influencingPeopleBeanVO.setCadreCount(cadreDAO.getCadreCountInALocation(userId,cadreLevelValues,type));
-			influencingPeopleBeanVO.setCadreCount(tdpCadreDAO.getTdpCadreCountInALocation(cadreLevelValues,type));
+			influencingPeopleBeanVO.setCadreCount(tdpCadreDAO.getTdpCadreCountInALocation(cadreLevelValues,type,2014l));
 			
 		    List<Long> politicians = boothPublicationVoterDAO.getCandidateCount(politicianValues, publicationDateId,type);
 		    if(politicians != null && politicians.size() > 0)
@@ -14410,9 +14410,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 		try{
 			if(type.equalsIgnoreCase("constituency"))
 			{
-				
 				cadreLevelValues.add(locationValue);
-				
 			}
 			
 			else if(type.equalsIgnoreCase("mandal") )
@@ -14420,8 +14418,6 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 				if(locationValue != null && locationValue.toString().substring(0,1).trim().equalsIgnoreCase("2"))
 				{
 					type = "MANDAL";
-					
-					
 					cadreLevelValues.add(new Long(locationValue.toString().substring(1)));
 					
 				}
@@ -14429,8 +14425,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 				{
 					type="MUNCIPALITY/CORPORATION";
 					List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(locationValue.toString().substring(1).trim()));
-					
-					 cadreLevelValues.add(new Long(list.get(0).toString()));
+					cadreLevelValues.add(new Long(list.get(0).toString()));
 					
 				}
 				
@@ -14438,11 +14433,8 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 			
 			else if(type.equalsIgnoreCase("ward")||type.equalsIgnoreCase("customWard"))
 			{
-				
 				locationValue =new Long("1"+locationValue);
 				cadreLevelValues.add(locationValue);
-				
-				
 			}
 			
 			else if(type.equalsIgnoreCase("hamlet") || type.equalsIgnoreCase("panchayat")
@@ -14452,18 +14444,29 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 							
 			}
 			
-			
+			InfluencingPeopleBeanVO influencingPeopleBeanVO = new InfluencingPeopleBeanVO();
+			influencingPeopleBeanVO.setAccessType("2014");
+			influencingPeopleBeanVO.setCadreCount(0l);
+			result.add(influencingPeopleBeanVO);
+			InfluencingPeopleBeanVO influencingPeopleBeanVO1 = new InfluencingPeopleBeanVO();
+			influencingPeopleBeanVO1.setAccessType("2012");
+			influencingPeopleBeanVO1.setCadreCount(0l);
+			result.add(influencingPeopleBeanVO1);
 			//influencingPeopleBeanVO.setCadreCount(cadreDAO.getCadreCountInALocation(userId,cadreLevelValues,type));
 			List<Object[]> cadreInfo = tdpCadreDAO.getTdpCadreCountInALocationForEnrollment(cadreLevelValues,type);
 			if(cadreInfo != null && cadreInfo.size() > 0)
 			{
-				for(Object[] params : cadreInfo)
-				{
-				InfluencingPeopleBeanVO influencingPeopleBeanVO = new InfluencingPeopleBeanVO();
-				influencingPeopleBeanVO.setAccessType(params[0].toString());
-				influencingPeopleBeanVO.setCadreCount((Long)params[1]);
-				result.add(influencingPeopleBeanVO);
-				}
+				
+			for(Object[] params  : cadreInfo)	
+			{
+				if(params[0].toString().equalsIgnoreCase("2014"))
+					result.get(0).setCadreCount((Long)params[1]);
+				if(params[0].toString().equalsIgnoreCase("2012"))
+					result.get(1).setCadreCount((Long)params[1]);
+			}
+				
+				
+				
 			}
 		}
 		catch(Exception e)
@@ -14904,11 +14907,11 @@ public List<VoterVO> getCadrePeopleDetails(Long userId,List<Long> locationValues
 	if(locationValues != null)
 		
 		//cadreDetails =  cadreDAO.getCadreVoterIDs(userId,locationValues,type,startIndex, maxRecords,columnName,order);
-		cadreDetails =  tdpCadreDAO.getTdpCadreVoterIDs(locationValues,type,startIndex, maxRecords,columnName,order);
+		cadreDetails =  tdpCadreDAO.getTdpCadreVoterIDs(locationValues,type,startIndex, maxRecords,columnName,order,2014l);
 		Long count = new Long(startIndex);
 		if(cadreDetails != null)
 		{
-			Long influencyDetailsCount = tdpCadreDAO.getTdpCadreCountInALocation(locationValues,type);
+			Long influencyDetailsCount = tdpCadreDAO.getTdpCadreCountInALocation(locationValues,type,2014l);
 			totalCount =influencyDetailsCount;
 			//Cadre voter Details (VoterIds not avilable) 
 			for(Object[] params : cadreDetails)
@@ -21757,4 +21760,210 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 			  return result;
 		  }
 		}
+	  
+	  public List<VoterVO> getCadrePeopleDetailsForYear(Long userId,Long locationValue,String type,String buttonName,
+				Long publicationId,Integer startIndex , Integer maxRecords,String columnName,String order,Long year)
+	  {
+		 
+			  List<Long> cadreLevelValues = new ArrayList<Long>(0);
+				 List<VoterVO> voters = new ArrayList<VoterVO>();
+			  List<InfluencingPeople> influencingDetails = new ArrayList<InfluencingPeople>();
+			  Long Id = locationValue;;
+			  String name = null;
+			
+			  try{
+			  	if(type.equalsIgnoreCase("constituency"))
+			  	{
+			  	
+			  		cadreLevelValues.add(locationValue);
+			  	}
+			  	else if(type.equalsIgnoreCase("mandal") )
+			  	{
+			  		if(locationValue != null && locationValue.toString().substring(0,1).trim().equalsIgnoreCase("2"))
+			  		{
+			  			type = "MANDAL";
+			  			Id = new Long(locationValue.toString().substring(1));
+			  			cadreLevelValues.add(new Long(locationValue.toString().substring(1)));
+			  		}
+			  		else{
+			  			type="MUNCIPALITY/CORPORATION";
+			  			List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(locationValue.toString().substring(1).trim()));
+			  			Id = (Long)list.get(0);
+			  			cadreLevelValues.add(new Long(list.get(0).toString()));
+			  		}
+			  				
+			  	}
+			  	else if(type.equalsIgnoreCase("ward")||type.equalsIgnoreCase("customWard"))
+				{
+					locationValue =new Long("1"+locationValue);
+					cadreLevelValues.add(locationValue);
+				}
+				
+				else if(type.equalsIgnoreCase("hamlet") || type.equalsIgnoreCase("panchayat")
+						|| type.equalsIgnoreCase("booth"))
+				{
+					cadreLevelValues.add(locationValue);
+								
+				}
+			  
+			  	if(Id > 0 && !type.equalsIgnoreCase("BOOTH") && !type.equalsIgnoreCase("panchayat") && !type.equalsIgnoreCase("hamlet"))
+			  	 name = (String) constituencyDAO.getNameByInfluenceScopeValue(Id,type).get(0);
+			  	if(type.equalsIgnoreCase("panchayat"))
+			  		name = panchayatDAO.get(Id).getPanchayatName().toString();
+			  	if(type.equalsIgnoreCase("hamlet"))
+			  		name = hamletDAO.get(Id).getHamletName().toString();
+			  	if(buttonName.equalsIgnoreCase("Cadre"))
+			  		voters =  setCadreInfo(userId,cadreLevelValues,type,startIndex,maxRecords,name,columnName,order,year);
+			  
+		  }
+		  
+		  catch(Exception e)
+		  {
+			  e.printStackTrace();
+		  }
+			return voters;
+	  }
+	  public List<VoterVO> setCadreInfo(Long userId,List<Long> locationValues,String type,Integer startIndex,Integer maxRecords,String name,String columnName, String order,Long year)
+	  {
+	  	List<VoterVO> voters = new ArrayList<VoterVO>();
+	  	List<Voter> votersList = new ArrayList<Voter>();;
+	  	Long totalCount = 0L;
+	  	List<Object[]> cadreDetails = null;
+	  	Map<Long,VoterVO> cadreMap = new HashMap<Long, VoterVO>();
+	  	
+	  	if(columnName.equalsIgnoreCase("relativeFirstName"))
+	  	{
+	  		columnName = "relativename";
+	  	}
+	  	else if(columnName.equalsIgnoreCase("mobileNo"))
+	  	{
+	  		columnName = "mobileNo";
+	  	}
+	  	else if(columnName.equalsIgnoreCase("influencingRange"))
+	  	{
+	  		columnName = "influencingScope";
+	  	}
+	  	else if(columnName.equalsIgnoreCase("firstName"))
+	  	{
+	  		columnName = "firstname";
+	  	}
+	  	
+	  	if(locationValues != null)
+	  		
+	  		
+	  		cadreDetails =  tdpCadreDAO.getTdpCadreVoterIDs(locationValues,type,startIndex, maxRecords,columnName,order,year);
+	  		Long count = new Long(startIndex);
+	  		if(cadreDetails != null)
+	  		{
+	  			Long influencyDetailsCount = tdpCadreDAO.getTdpCadreCountInALocation(locationValues,type,year);
+	  			totalCount =influencyDetailsCount;
+	  			//Cadre voter Details (VoterIds not avilable) 
+	  			for(Object[] params : cadreDetails)
+	  				{
+	  				//Cadre voter Details Count
+	  				//Long influencyDetailsCount = cadreDAO.getCadreCountInALocation(userId,locationValues,type);
+	  				
+	  				VoterVO voterVO = new VoterVO();
+	  				if(params[4] == null)//voter is null
+	  				{
+	  					voterVO.setVoterId((++count)+"");
+	  					voterVO.setFirstName(params[0] != null ? params[0].toString() : ""+" "+params[1] != null ? params[1].toString():"");
+	  					voterVO.setGender(params[2] != null ? params[2].toString() : "");
+	  					voterVO.setMobileNo(params[3]!=null ? params[3].toString():" ");
+	  					if(params[5]!=null)
+	  					voterVO.setCast(params[5].toString());
+	  					
+	  						StringBuilder location=new StringBuilder();
+	  						if(type.equalsIgnoreCase("constituency"))
+	  								location.append(params[6]!=null?params[6].toString()+"(Mandal) ":"");
+	  						if(!type.equalsIgnoreCase("booth")){
+	  								if(params[7]!=null){
+	  									location.append(params[7].toString()+"(Hamlet) ");
+	  								}
+	  							}
+	  							
+	  							if(params[8]!=null){
+	  								location.append(" BOOTH -"+params[8].toString());
+	  								
+	  							}
+	  							if(location.length()!=0){
+	  								voterVO.setLocalArea(location.toString());
+	  							}
+	  							else{
+	  								voterVO.setLocalArea(name);
+	  							}
+	  					}
+	  				
+	  				
+	  				if(params[4] != null)
+	  				{
+	  					Voter voter = voterDAO.get((Long)params[4]);
+	  					voterVO.setVoterIds((Long)params[4]);
+	  					voterVO.setVoterId((++count)+"");
+	  					voterVO.setFirstName(voter.getName());
+	  					voterVO.setAge(voter.getAge());
+	  					voterVO.setGender(voter.getGender());
+	  					voterVO.setHouseNo("# "+voter.getHouseNo());
+	  					voterVO.setRelativeFirstName(voter.getRelativeName());
+	  					voterVO.setRelationshipType(voter.getRelationshipType());
+	  					voterVO.setVoterIDCardNo(voter.getVoterIDCardNo());
+	  					voterVO.setMobileNo(params[3]!=null?params[3].toString():"");
+	  				
+	  					StringBuilder location=new StringBuilder();
+  						if(type.equalsIgnoreCase("constituency"))
+  								location.append(params[6]!=null?params[6].toString()+"(Mandal) ":"");
+  						if(!type.equalsIgnoreCase("booth")){
+  								if(params[7]!=null){
+  									location.append(params[7].toString()+"(Hamlet) ");
+  								}
+  							}
+  							
+  							if(params[8]!=null){
+  								location.append(" BOOTH -"+params[8].toString());
+  								
+  							}
+  							if(location.length()!=0){
+  								voterVO.setLocalArea(location.toString());
+  							}
+  							else{
+  								voterVO.setLocalArea(name);
+  							}
+	  					
+	  							
+	  					}
+	  					cadreMap.put(voterVO.getVoterIds(), voterVO);
+	  			        voters.add(voterVO);
+	  			        System.out.println(new Date());
+	  				}
+	  			
+	  			//Influencing people voter Details (VoterIds avilable)
+	  			
+	  			/*Map<Long,String> mobileNosMap = new HashMap<Long, String>(0);
+	  			List<Long> voterIds = new ArrayList<Long>(cadreMap.keySet());
+	  			  List<Long> voterIdsList = new ArrayList<Long>(0);
+	  			
+	  				List<Object[]> list = userVoterDetailsDAO.getVoterIdAndMobileNoByVoterIdsList(voterIds, userId);
+	  				if(list != null && list.size() > 0)
+	  				 for(Object[] obj:list)
+	  				 {
+	  					 VoterVO voterVO1 = cadreMap.get((Long)obj[0]);
+	  					 voterVO1.setMobileNo(obj[1] != null ? obj[1].toString() : "");
+	  				 }*/
+	  			
+	  			
+	  			/*List<Object[]> castesList = userVoterDetailsDAO.getcasteForVoter(voterIds,userId);
+	  			if(castesList != null && castesList.size() > 0)
+	  			{
+	  				for (Object[] parms : castesList) {
+	  					VoterVO voterVO1 = cadreMap.get((Long)parms[1]);
+	  					voterVO1.setCast(parms[0].toString());
+	  				}
+	  			}*/
+	  			if(voters != null)
+	  				if(voters.size() > 0)
+	  					voters.get(0).setTotalVoters(totalCount);
+	  		}
+	  		return voters;	
+	  	
+	  }
 }
