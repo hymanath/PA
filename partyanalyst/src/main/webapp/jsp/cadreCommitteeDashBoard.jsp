@@ -56,6 +56,11 @@
 #constiTableId tr.odd,#districtTableId tr.odd {
     background-color: #f3f3f3 !important;
 }
+.ivrdetails > li {
+    background: none repeat scroll 0 0 #ccc;
+    margin-left: 4px;
+    padding: 2px 10px;
+}
 
 
 	</style>
@@ -177,7 +182,7 @@
 									</div>
 								</td>
 							</tr>
-							<tr>
+							<tr id="ApTRId">
 								<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div8"></div></h4></td>
 								<td style="padding:10px;" width="10%">
 									<span class="text-success">Started</span><br/> Committees
@@ -207,6 +212,7 @@
 								<td style="padding:10px;" width="28%">TOTAL <br/><b>MEMBERS</b><h4 class="m_top0"><div id="div14"></div></h4></td>
 								<div id="apVillageDiv"></div>
 							</tr>
+							<tr id="ivrDivIdAP" class="span"></tr>
 						</table>
 					</td>
 				</tr>
@@ -412,7 +418,7 @@
 								</div>
 							</td>
 						</tr>
-						<tr>
+						<tr id="tsTRId">
 							<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div22"></div></h4></td>
 							<td style="padding:10px;" width="10%">
 									<span class="text-success">Started</span> Committees<br/>
@@ -441,6 +447,7 @@
 							<td style="padding:10px;" width="28%">TOTAL<br/> <b>MEMBERS</b><h4 class="m_top0"><div id="div28"></div></h4></td> 
 							<div id="tsVillageDiv"></div>
 						</tr>
+						<tr id="ivrDivIdTS" class="span"></tr>
 					</table>
 				</td>
       	    </tr>
@@ -906,8 +913,31 @@
 						//$("#div34").html(result.affliatedCompletedPerc);
 												
 						$("#div14").html(result.membersCount);
+						
 					
-					}
+					if(level == 'village' || level == 'villageAll'){
+						var str='';
+						str+='';
+						
+						str+='<td colspan="6"><ul class="list-inline ivrdetails"><li style="background: none repeat scroll 0% 0% rgb(51, 51, 51); color: rgb(255, 255, 255);">IVR DETAILS</li>';
+						str+='<li>Total Villages:'+result.committeeSummaryVO.count+'</li>';
+						for(var i in result.committeeSummaryVO.optionsList){
+							str+='<li>'+result.committeeSummaryVO.optionsList[i].name+':'+result.committeeSummaryVO.optionsList[i].count+'</li>';
+						}
+						str+='<li>';
+					str+='<a style = "cursor: pointer;" id="ivrPopOverAP" data-toggle="popover" onClick="showPopOver(\'AP\');" title="" data-content="<ul style=padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Others</li></ul>" >?</a>';					
+						str+=' </li>';
+						str+='</ul>';
+						str+='</td>';
+						//str+='</tr></table>';
+
+							$( "#ivrDivIdAP" ).insertAfter( "#ApTRId" );
+							$("#ivrDivIdAP").html(str);
+					 }else if(level == 'ward'){
+					  $("#ivrDivIdAP").html('');
+					   $("#ivrDivIdAP").hide();
+					 }
+					 }
 				}
 				else if(state == "TS"){
 					if(level == 'mandal' || level == 'town' || level == 'division' || level == 'mandalAll')
@@ -996,8 +1026,34 @@
 						}else{
 							$("#div27").html('<span> 0 </span>');
 						}						
-						$("#div28").html(result.membersCount);	
-					}
+						$("#div28").html(result.membersCount);
+						if(level == 'village' || level == 'villageAll'){
+							var str1='';
+							str1+='';
+								
+							str1+='<td colspan="6"><ul class="list-inline ivrdetails"><li style="background: none repeat scroll 0% 0% rgb(51, 51, 51); color: rgb(255, 255, 255);">IVR DETAILS</li>';
+							
+							str1+='<li>Total Villages:'+result.committeeSummaryVO.count+'</li>';
+							for(var i in result.committeeSummaryVO.optionsList){
+								str1+='<li>'+result.committeeSummaryVO.optionsList[i].name+':'+result.committeeSummaryVO.optionsList[i].count+'</li>';
+							}
+							str1+='<li>';
+							str1+='<a style = "cursor: pointer;" id="ivrPopOverTS" data-toggle="popover" onClick="showPopOver(\'TS\');" title="" data-content="<ul style=padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Others</li></ul>" >?</a>';
+						
+							str1+=' </li>';
+							str1+='</ul>';
+							str1+='</td>';
+							$( "#ivrDivIdTS" ).insertAfter( "#tsTRId" );
+								$("#ivrDivIdTS").html(str1);
+						 }else if(level == 'ward'){
+						  $("#ivrDivIdTS").html('');
+						   $("#ivrDivIdTS").hide();
+						 }
+				}
+
+
+
+					
 				}
 			  }
 			  else{
@@ -1735,7 +1791,7 @@
 						content: str
 								
 					});
-					alert('#'+level+'Id'+state+committeeType+'');
+					
 					if(!$('#'+level+'Id'+state+committeeType+'').hasClass("clearCls")){
 						$('#'+level+'Id'+state+committeeType+'').addClass("clearCls");
 						$('#'+level+'Id'+state+committeeType+'').popover("show");
@@ -1888,16 +1944,20 @@
 
 	
 	 $('body').on('click', function (e) {
-		if(!$(e.target).is('.multiLevelLiA') || !$(e.target).has('.multilevelCls') || !$(e.target).has('.multilevelli')){
+	 
+		if(!$(e.target).is('.multiLevelLiA') || !$(e.target).has('.multilevelCls') || !$(e.target).has('.multilevelli') || !$(e.target).is('#ivrPopOverTS') || !$(e.target).is('#ivrPopOverAP')){
 			$('.clearCls').each(function () {
 				var attrId= $(this).attr("id");
 				var trgt = e.target;
 				
-				if(!$(this).is(trgt) && $(this).has(trgt).length === 0 && !$(trgt).is('.multiLevelCls') && !$(trgt).is('.multilevelli') && !$(trgt).is('.multiLevelLiA')) {
+				if(!$(this).is(trgt) && $(this).has(trgt).length === 0 && !$(trgt).is('.multiLevelCls') && !$(trgt).is('.multilevelli') && !$(trgt).is('.multiLevelLiA') && !$(trgt).is('#ivrPopOverTS') && !$(trgt).is('#ivrPopOverAP')) {
+				
 					$("#"+attrId).popover('hide');
-					$(".multiLevelLiA").popover('hide');
 					$("#"+attrId).removeClass('clearCls');
+					$(".multiLevelLiA").popover('hide');
+					
 				}
+				
 			});
 		}
 		
@@ -2850,7 +2910,25 @@ function exportToExcel()
 		}
 	  
 }
+
+function showPopOver(state){
+
+	$('#ivrPopOver'+state+'').popover({
+	html: true,
+	placement: "bottom",
+	title: '',
+	});
 	
+	if(!$("#ivrPopOver"+state+'').hasClass("clearCls")){
+		$('#ivrPopOver'+state+'').popover("show");
+		$('#ivrPopOver'+state+'').addClass("clearCls");
+		
+	}else{
+		$('#ivrPopOver'+state+'').removeClass("clearCls");
+		$('#ivrPopOver'+state+'').popover("hide");
+	}
+}
+
 </script>		
 </body>
 </html>
