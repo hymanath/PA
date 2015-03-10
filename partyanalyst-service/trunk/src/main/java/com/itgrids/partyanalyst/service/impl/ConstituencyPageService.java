@@ -111,6 +111,7 @@ import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.utils.CandidatePartyInfoVOComparator;
 import com.itgrids.partyanalyst.utils.ConstituencyOrMandalVOComparator;
 import com.itgrids.partyanalyst.utils.ConstituencyOrMandalVOComparatorMandal;
@@ -163,7 +164,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	
 	private IAllianceGroupDAO allianceGroupDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
-		
+	private IVoterReportService voterReportService;	
 	
 	
 	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
@@ -459,6 +460,10 @@ public class ConstituencyPageService implements IConstituencyPageService {
 
 	public void setPartyDAO(IPartyDAO partyDAO) {
 		this.partyDAO = partyDAO;
+	}
+
+	public void setVoterReportService(IVoterReportService voterReportService) {
+		this.voterReportService = voterReportService;
 	}
 
 	public List<ConstituencyElectionResultsVO> getConstituencyElectionResults(Long constituencyId)
@@ -1514,7 +1519,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		return result;
 	}
 	
-	public ConstituencyVO getVotersInfoInMandalsForConstituency(Long constituencyId)
+	public ConstituencyVO getVotersInfoInMandalsForConstituency(Long constituencyId,boolean publicationWise)
 	{
 		ConstituencyVO constituencyVO = new ConstituencyVO();
 		Constituency constituency = constituencyDAO.get(constituencyId);
@@ -1524,6 +1529,17 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		
 		if(constituencyVO.getElectionType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
 			getAssembliesVotersInfoOfParliament(constituencyVO);
+			if(publicationWise){
+				if(constituencyVO != null && constituencyVO.getAssembliesOfParliamentInfo() != null && constituencyVO.getAssembliesOfParliamentInfo().size() > 0 
+						 && constituencyVO.getAssembliesOfParliamentInfo().get(0).getVotersInfoForMandalVO() != null
+						 && constituencyVO.getAssembliesOfParliamentInfo().get(0).getVotersInfoForMandalVO().size() > 0){
+					if(constituencyVO.getElectionType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
+					     voterReportService.getvotersInfoByPublicationConstiId(constituencyId,null,"parliament",constituencyVO.getAssembliesOfParliamentInfo().get(0).getVotersInfoForMandalVO());
+					}else{
+						 voterReportService.getvotersInfoByPublicationConstiId(constituencyId,null,"assembly",constituencyVO.getAssembliesOfParliamentInfo().get(0).getVotersInfoForMandalVO());
+					}
+				}
+		}
 			return constituencyVO;
 		}
 		
@@ -1643,6 +1659,17 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		}
 		
 		constituencyVO.setAssembliesOfParliamentInfo(votersWithDelimitationInfoVOList);
+		if(publicationWise){
+				if(constituencyVO != null && constituencyVO.getAssembliesOfParliamentInfo() != null && constituencyVO.getAssembliesOfParliamentInfo().size() > 0 
+						 && constituencyVO.getAssembliesOfParliamentInfo().get(0).getVotersInfoForMandalVO() != null
+						 && constituencyVO.getAssembliesOfParliamentInfo().get(0).getVotersInfoForMandalVO().size() > 0){
+					if(constituencyVO.getElectionType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
+					     voterReportService.getvotersInfoByPublicationConstiId(constituencyId,null,"parliament",constituencyVO.getAssembliesOfParliamentInfo().get(0).getVotersInfoForMandalVO());
+					}else{
+						 voterReportService.getvotersInfoByPublicationConstiId(constituencyId,null,"assembly",constituencyVO.getAssembliesOfParliamentInfo().get(0).getVotersInfoForMandalVO());
+					}
+				}
+		}
 		return constituencyVO;
 		
 	}
@@ -6085,5 +6112,11 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			}
 			return false;
 		}
+		
+		public List<VotersInfoForMandalVO> getvotersInfoByPublicationConstiId(Long publicationId,Long constituencyId){
+		
+		     return voterReportService.getvotersInfoByPublicationConstiId(constituencyId,publicationId,null,null);
+		
+	   }
 }
 

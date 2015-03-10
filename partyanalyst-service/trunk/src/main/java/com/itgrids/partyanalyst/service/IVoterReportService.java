@@ -145,7 +145,7 @@ public interface IVoterReportService {
 	 public List<VoterTagVO> getCmsAdminReportDrtails(String isType,String typeOfData);
 	 public ResultStatus saveTaggedVoterDetails(String type,List<VoterTagVO> inputList,Long userId);
 	 
-	
+	 public List<VotersInfoForMandalVO> getvotersInfoByPublicationConstiId(Long constituencyId,Long publicationId,String constiType,List<VotersInfoForMandalVO> returnList);
 	 
     
 }
