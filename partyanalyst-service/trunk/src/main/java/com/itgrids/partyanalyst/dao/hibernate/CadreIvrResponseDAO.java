@@ -394,7 +394,7 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 	public List<Object[]> getStateWiseCommitterIvrDetails(List<Long> distIds,Long campainId)
 	{
 		StringBuffer sb = new StringBuffer();
-		sb.append("select CIR.callStatus,CIR.optionId,CIR.ivrOptions.optionName,count(*) from CadreIvrResponse CIR where CIR.campaignId = :campainId ");
+		sb.append("select CIR.callStatus,CIR.optionId,count(*) from CadreIvrResponse CIR where CIR.campaignId = :campainId ");
 		if(distIds != null && distIds.size() > 0)
 		{
 			sb.append(" and CIR.tdpCadre.userAddress.district.districtId in (:distIds) " );

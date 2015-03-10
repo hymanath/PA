@@ -2069,7 +2069,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					
 			  cadreCommitteeReportVO.setCommitteesCount(committeeCnt);//Total Committes count.
 			  CadreIVRVO committeeSummaryVO = new CadreIVRVO();
-			   getCadreCommitteIVRDerails(districtIds,committeeSummaryVO);
+			   getCadreCommitteIVRDerails(districtIds,committeeSummaryVO,state);
 			   cadreCommitteeReportVO.setCommitteeSummaryVO(committeeSummaryVO);
 		}else if(accessType.trim().equalsIgnoreCase("MP") && (levelIds.contains(5l)|| levelIds.contains(7l) || levelIds.contains(9l))){
 		
@@ -2226,9 +2226,17 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return cadreCommitteeReportVO;
 	}
 
-	public void getCadreCommitteIVRDerails(List<Long> districtIds,CadreIVRVO resultVO)
+	public void getCadreCommitteIVRDerails(List<Long> districtIds,CadreIVRVO resultVO,String state)
 	{
 		try {
+			if(state != null && state.equalsIgnoreCase("AP"))
+			{
+				districtIds.add(11l);districtIds.add(12l);districtIds.add(13l);districtIds.add(14l);districtIds.add(15l);districtIds.add(16l);districtIds.add(17l);districtIds.add(18l);districtIds.add(19l);districtIds.add(20l);districtIds.add(21l);districtIds.add(21l);districtIds.add(23l);
+			}
+			else
+			{
+				districtIds.add(1l);districtIds.add(2l);districtIds.add(3l);districtIds.add(4l);districtIds.add(5l);districtIds.add(6l);districtIds.add(7l);districtIds.add(8l);districtIds.add(9l);districtIds.add(10l);
+			}
 			Map<Long,String> optionNames = new HashMap<Long,String>();
 			List<Object[]> optionsList = ivrCampaignOptionsDAO.getAllIVROptions(2l);
 			if(optionsList != null && optionsList.size() >0){
@@ -2274,7 +2282,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				{
 					if(ivrCountInfo[0].toString().equalsIgnoreCase(IConstants.NORMAL_CLEARING))
 					{
-						if(ivrCountInfo[2] != null)
+						if(ivrCountInfo[1] != null)
 						{
 							List<IvrOptionsVO> mainOptionsList = resultVO.getOptionsList();
 							if(mainOptionsList != null && mainOptionsList.size() > 0)
@@ -2283,7 +2291,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 								{
 									if(ivrOptionsVO.getId().longValue() == Long.valueOf(ivrCountInfo[1].toString().trim()))
 									{
-										ivrOptionsVO.setCount((Long)ivrCountInfo[3]);//count
+										ivrOptionsVO.setCount((Long)ivrCountInfo[2]);//count
+										resultVO.setTotal(ivrOptionsVO.getCount() + resultVO.getTotal());
 									}
 								}
 							}
@@ -2295,42 +2304,42 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					{
 						if(ivrCountInfo[0].toString().equalsIgnoreCase(IConstants.USER_BUSY))
 						{
-							resultVO.setUserBusy(resultVO.getUserBusy() + Long.valueOf(ivrCountInfo[3].toString().trim()));
+							resultVO.setUserBusy(resultVO.getUserBusy() + Long.valueOf(ivrCountInfo[2].toString().trim()));
 						}
 						else if(ivrCountInfo[0].toString().equalsIgnoreCase(IConstants.CALL_REJECTED))
 						{
-							resultVO.setCallRejectedCount(resultVO.getCallRejectedCount() + Long.valueOf(ivrCountInfo[3].toString().trim()));
+							resultVO.setCallRejectedCount(resultVO.getCallRejectedCount() + Long.valueOf(ivrCountInfo[2].toString().trim()));
 						}
 							
 						else if(ivrCountInfo[0].toString().equalsIgnoreCase(IConstants.NO_ANSWER) || ivrCountInfo[0].toString().equalsIgnoreCase(IConstants.NO_USER_RESPONSE))
 						{
-							 resultVO.setNoAnswer(resultVO.getNoAnswer() + Long.valueOf(ivrCountInfo[3].toString().trim()));
+							 resultVO.setNoAnswer(resultVO.getNoAnswer() + Long.valueOf(ivrCountInfo[2].toString().trim()));
 						}
 							
 						else if(ivrCountInfo[0].toString().equalsIgnoreCase(IConstants.SWITCH_CONGESTION) || ivrCountInfo[0].toString().equalsIgnoreCase(IConstants.NORMAL_CIRCUIT_CONGESTION))
 						{
-							resultVO.setSwitchCongestion(resultVO.getSwitchCongestion() + Long.valueOf(ivrCountInfo[3].toString().trim()));
+							resultVO.setSwitchCongestion(resultVO.getSwitchCongestion() + Long.valueOf(ivrCountInfo[2].toString().trim()));
 						}
 							
 						else if(ivrCountInfo[0].toString().equalsIgnoreCase(IConstants.NORMAL_TEMPORARY_FAILURE) || ivrCountInfo[0].toString().equalsIgnoreCase(IConstants.DESTINATION_OUT_OF_ORDER) 
 								 || ivrCountInfo[0].toString().equalsIgnoreCase(IConstants.NETWORK_OUT_OF_ORDER) || ivrCountInfo[0].toString().equalsIgnoreCase(IConstants.SUBSCRIBER_ABSENT))
 						{
-							resultVO.setNewtworkError(resultVO.getNewtworkError() + Long.valueOf(ivrCountInfo[3].toString().trim()));
+							resultVO.setNewtworkError(resultVO.getNewtworkError() + Long.valueOf(ivrCountInfo[2].toString().trim()));
 						}
 							
 						else if(ivrCountInfo[0].toString().equalsIgnoreCase(IConstants.UNALLOCATED_NUMBER))
 						{
-							resultVO.setUnallocatedNumbers(resultVO.getUnallocatedNumbers() + Long.valueOf(ivrCountInfo[3].toString().trim()));
+							resultVO.setUnallocatedNumbers(resultVO.getUnallocatedNumbers() + Long.valueOf(ivrCountInfo[2].toString().trim()));
 						}
 								
 						else if(ivrCountInfo[0].toString().equalsIgnoreCase(IConstants.INTERWORKING))
 						{
-							resultVO.setInterworkingCount(resultVO.getInterworkingCount() + Long.valueOf(ivrCountInfo[3].toString().trim()));
+							resultVO.setInterworkingCount(resultVO.getInterworkingCount() + Long.valueOf(ivrCountInfo[2].toString().trim()));
 						}
 							
 						else 
 						{
-							resultVO.setOtherError(resultVO.getOtherError() + Long.valueOf(ivrCountInfo[3].toString().trim()));
+							resultVO.setOtherError(resultVO.getOtherError() + Long.valueOf(ivrCountInfo[2].toString().trim()));
 						}
 					}
 					resultVO.setOptionsList(options);
@@ -4154,6 +4163,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 											if(ivrOptionsVO.getId().longValue() == Long.valueOf(ivrCountInfo[3].toString().trim()))
 											{
 												ivrOptionsVO.setCount((Long)ivrCountInfo[4]);//count
+												resultVO.setTotal(ivrOptionsVO.getCount() + resultVO.getTotal());//total
 											}
 										}
 									}
