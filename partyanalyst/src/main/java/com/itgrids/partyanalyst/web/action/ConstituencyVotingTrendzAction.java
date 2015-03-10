@@ -1724,7 +1724,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		
 		constituencyDetails = new ConstituencyInfoVO();
 		constituencyDetails = constituencyPageService.getConstituencyDetails(constituencyId); 
-		constituencyVO = constituencyPageService.getVotersInfoInMandalsForConstituency(constituencyId);
+		constituencyVO = constituencyPageService.getVotersInfoInMandalsForConstituency(constituencyId,false);
 		List<VotersWithDelimitationInfoVO> votersInfoVO = new ArrayList<VotersWithDelimitationInfoVO>();
 		
 		String pieChart = "";

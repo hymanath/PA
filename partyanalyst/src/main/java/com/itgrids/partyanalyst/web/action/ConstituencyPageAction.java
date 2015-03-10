@@ -157,6 +157,7 @@ public class ConstituencyPageAction extends ActionSupport implements
     private Long parliamentCinstiId;
     private Boolean pollWidget;
     private SelectOptionVO partyPerformenceList;
+    private List<VotersInfoForMandalVO> votersInfo;
     
     public SelectOptionVO getPartyPerformenceList() {
 		return partyPerformenceList;
@@ -713,6 +714,12 @@ public class ConstituencyPageAction extends ActionSupport implements
 		this.pollWidget = pollWidget;
 	}
 	
+	public List<VotersInfoForMandalVO> getVotersInfo() {
+		return votersInfo;
+	}
+	public void setVotersInfo(List<VotersInfoForMandalVO> votersInfo) {
+		this.votersInfo = votersInfo;
+	}
 	public String execute() throws Exception{
        
 		String url = request.getRequestURL().toString();
@@ -788,7 +795,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 		LOG.info("delimitationConstituencyMandalResultVO..getConstituencyType()::::"+delimitationConstituencyMandalResultVO.getConstituencyType());
 		setDelimitationConstituencyMandalResultVO(delimitationConstituencyMandalResultVO);
 		Set<String> partiesInChart = null;
-		constituencyVO = constituencyPageService.getVotersInfoInMandalsForConstituency(constituencyId);
+		constituencyVO = constituencyPageService.getVotersInfoInMandalsForConstituency(constituencyId,true);
 		
 		String pieChart = "";
 		String pieChartPath = "";
@@ -1083,7 +1090,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 			e.printStackTrace();
 		}
 		Long constiId = jObj.getLong("constituencyId");
-		constituencyVO = constituencyPageService.getVotersInfoInMandalsForConstituency(constiId);
+		constituencyVO = constituencyPageService.getVotersInfoInMandalsForConstituency(constiId,true);
 		
 		return Action.SUCCESS;
 	}
@@ -1956,6 +1963,22 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 			Long constituencyId = jObj.getLong("constituencyId");
 			
 			partyPerformenceList = constituencyPageService.getConstituencyElectionResultsByConstituencyId(constituencyId);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+  
+  public String getvotersInfoByPublicationConstiId(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			Long constituencyId = jObj.getLong("constituencyId");
+			Long publicationId = jObj.getLong("publicationId");
+			votersInfo = constituencyPageService.getvotersInfoByPublicationConstiId(publicationId,constituencyId);
+			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

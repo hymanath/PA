@@ -599,7 +599,7 @@ public class BiElectionAction extends ActionSupport implements
 		
 		constituencyDetails = new ConstituencyInfoVO();
 		constituencyDetails = constituencyPageService.getConstituencyDetails(constituencyId); 
-		constituencyVO = constituencyPageService.getVotersInfoInMandalsForConstituency(constituencyId);
+		constituencyVO = constituencyPageService.getVotersInfoInMandalsForConstituency(constituencyId,false);
 		String pieChart = "";
 		String pieChartPath = "";
 		String title = "";

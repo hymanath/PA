@@ -402,7 +402,7 @@ ServletRequestAware, ServletContextAware{
 		
 		constituencyDetails = new ConstituencyInfoVO();
 		constituencyDetails = constituencyPageService.getConstituencyDetails(constituencyId); 
-		constituencyVO = constituencyPageService.getVotersInfoInMandalsForConstituency(constituencyId);
+		constituencyVO = constituencyPageService.getVotersInfoInMandalsForConstituency(constituencyId,false);
 		String cPath = request.getContextPath();
 
 		String pieChart = "";
