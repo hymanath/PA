@@ -9827,5 +9827,11 @@
            	<param name="root">constituencyManagementVO</param>
         </result>
 		</action>
+		<action name="getvotersInfoByPublicationConstiIdAction" class="constituencyPageAction" method="getvotersInfoByPublicationConstiId">
+			<result type="json" name="success">
+				<param name="root">votersInfo</param> 
+			</result>
+		</action>
+		
 </package>
 </struts>      
