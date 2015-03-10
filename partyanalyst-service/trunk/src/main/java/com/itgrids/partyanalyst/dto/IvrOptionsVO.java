@@ -6,8 +6,9 @@ public class IvrOptionsVO implements Serializable{
 
 	private Long id;
 	private String name;
-	private Long count;
+	private Long count = 0l;
 	private String perc;
+	private Long total = 0l;
 	
 	
 	public Long getId() {
@@ -33,6 +34,12 @@ public class IvrOptionsVO implements Serializable{
 	}
 	public void setPerc(String perc) {
 		this.perc = perc;
+	}
+	public Long getTotal() {
+		return total;
+	}
+	public void setTotal(Long total) {
+		this.total = total;
 	}
 	
 	
