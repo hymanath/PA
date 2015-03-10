@@ -393,18 +393,38 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 	
 	public List<Object[]> getStateWiseCommitterIvrDetails(List<Long> distIds,Long campainId)
 	{
-		Query query = getSession().createQuery("select CIR.callStatus,CIR.optionId,CIR.ivrOptions.optionName,count(*) from CadreIvrResponse CIR where CIR.campaignId = :campainId and CIR.tdpCadre.userAddress.district.districtId in (:distIds) " +
-				" group by CIR.callStatus,CIR.optionId ");
+		StringBuffer sb = new StringBuffer();
+		sb.append("select CIR.callStatus,CIR.optionId,CIR.ivrOptions.optionName,count(*) from CadreIvrResponse CIR where CIR.campaignId = :campainId ");
+		if(distIds != null && distIds.size() > 0)
+		{
+			sb.append(" and CIR.tdpCadre.userAddress.district.districtId in (:distIds) " );
+		}
+		sb.append(" group by CIR.callStatus,CIR.optionId ");
+		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("campainId", campainId);
-		query.setParameterList("distIds", distIds);
+		if(distIds != null && distIds.size() > 0)
+		{
+			query.setParameterList("distIds", distIds);
+		}
+		
 		return query.list();
 	}
 	
 	public List<Long> getPanchayatsCountIvrStarted(List<Long> distIds,Long campainId)
 	{
-		Query query = getSession().createQuery("select distinct CIR.tdpCadre.userAddress.panchayat.panchayatId from CadreIvrResponse CIR where CIR.campaignId = :campainId and CIR.tdpCadre.userAddress.district.districtId in (:distIds)  ");
+		StringBuffer sb = new StringBuffer();
+		sb.append("select count(distinct CIR.tdpCadre.userAddress.panchayat.panchayatId) from CadreIvrResponse CIR where CIR.campaignId = :campainId  ");
+		if(distIds != null && distIds.size() > 0)
+		{
+			sb.append(" and CIR.tdpCadre.userAddress.district.districtId in (:distIds) " );
+		}
+		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("campainId", campainId);
-		query.setParameterList("distIds", distIds);
+		if(distIds != null && distIds.size() > 0)
+		{
+			query.setParameterList("distIds", distIds);
+		}
+		
 		return query.list();
 	}
 }
