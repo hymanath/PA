@@ -1259,6 +1259,11 @@
 			str+='<th rowspan="2" style="text-align:center">District Name</th>';
             str+='<th style="text-align:center" colspan="6">TOWN / MANDAL / DIVISION</th>';
             str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
+			if(result[0].cadreIVRVO != null)
+			{
+				var length = result[0].cadreIVRVO.optionsList.length;
+				str+=' <th style="text-align:center" colspan='+length+'>IVR DETAILS</th>';
+			}
             str+='</tr>';
             str+='<tr>';
             str+='<th >Total</th>';
@@ -1273,7 +1278,14 @@
 			str+='<th>Members</th>';
 			str+='<th>Affl Committee Started</th>';
 			str+='<th>Affl Committee Completed</th>';
-            str+='</tr>';			
+            str+='</tr>';	
+			if(result[0].cadreIVRVO != null)
+			{
+				for(var pr in result[0].cadreIVRVO.optionsList)
+				{
+					str+='<th>'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
+				}
+			}			
 			str+='</thead>';	
 			
 		}
@@ -1282,6 +1294,11 @@
 			str+='<tr>';
 			str+='<th rowspan="2" style="text-align:center">District Name</th>';
             str+='<th style="text-align:center" colspan="6">TOWN / MANDAL / DIVISION</th>';
+			if(result[0].cadreIVRVO != null)
+			{
+				var length = result[0].cadreIVRVO.optionsList.length;
+				str+=' <th style="text-align:center" colspan='+length+'>IVR DETAILS</th>';
+			}
             str+='</tr>';
             str+='<tr>';
 			str+='<th>Total</th>';
@@ -1290,12 +1307,24 @@
 			str+='<th>Members</th>';
 			str+='<th>Affl Committee Started</th>';
 			str+='<th>Affl Committee Completed</th>';
+			if(result[0].cadreIVRVO != null)
+			{
+				for(var pr in result[0].cadreIVRVO.optionsList)
+				{
+					str+='<th>'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
+				}
+			}
 			str+='</tr></thead>';	
 		}
 		else if(villageCheck == "true"){
 			str+='<thead>';
 			str+='<th rowspan="2" style="text-align:center">District Name</th>';
             str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
+			if(result[0].cadreIVRVO != null)
+			{
+				var length = result[0].cadreIVRVO.optionsList.length;
+				str+=' <th style="text-align:center" colspan='+length+'>IVR DETAILS</th>';
+			}
             str+='</tr>';
             str+='<tr>';
 			str+='<th>Total</th>';
@@ -1304,6 +1333,13 @@
 			str+='<th>Members</th>';
 			str+='<th>Affl Committee Started</th>';
 			str+='<th>Affl Committee Completed</th>';
+			if(result[0].cadreIVRVO != null)
+			{
+				for(var pr in result[0].cadreIVRVO.optionsList)
+				{
+					str+='<th>'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
+				}
+			}
 			str+='</tr></thead>';	
 		}
 		str+='<tbody>';
@@ -1419,6 +1455,13 @@
 				str += '<td>  </td>';
 				str += '<td>  </td>';
 			}
+			}
+			if(result[i].cadreIVRVO != null)
+			{
+				for(var tp in result[i].cadreIVRVO.optionsList)
+				{
+					str+='<td>'+result[i].cadreIVRVO.optionsList[tp].count+'</td>';
+				}
 			}
 			str += '</tr>';
 			
@@ -1959,6 +2002,11 @@
 			str+='<th rowspan="2" style="text-align:center">Constituency Name</th>';
             str+='<th style="text-align:center" colspan="6">TOWN / MANDAL / DIVISION</th>';
             str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
+			if(result[0].cadreIVRVO != null)
+			{
+				var length = result[0].cadreIVRVO.optionsList.length;
+				str+=' <th style="text-align:center" colspan='+length+'>IVR DETAILS</th>';
+			}
             str+='</tr>';
             str+='<tr>';
             str+='<th >Total</th>';
@@ -1973,7 +2021,14 @@
 			str+='<th>Members</th>';
 			str+='<th>Affl Committee Started</th>';
 			str+='<th>Affl Committee Completed</th>';
-            str+='</tr>';			
+            str+='</tr>';	
+			if(result[0].cadreIVRVO != null)
+			{
+				for(var pr in result[0].cadreIVRVO.optionsList)
+				{
+					str+='<th>'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
+				}
+			}			
 			str+='</thead>';	
 			
 		}
@@ -1983,6 +2038,11 @@
 			str+='<th rowspan="2"  style="text-align:center">Constituency No</th>';
 			str+='<th rowspan="2" style="text-align:center">Constituency Name</th>';
 			 str+='<th style="text-align:center" colspan="6">TOWN / MANDAL / DIVISION</th>';
+			 if(result[0].cadreIVRVO != null)
+			{
+				var length = result[0].cadreIVRVO.optionsList.length;
+				str+=' <th style="text-align:center" colspan='+length+'>IVR DETAILS</th>';
+			}
             str+='</tr>';
             str+='<tr>';
 			str+='<th>Total</th>';
@@ -1991,6 +2051,13 @@
 			str+='<th>Members</th>';
 			str+='<th>Affl Committee Started</th>';
 			str+='<th>Affl Committee Completed</th>';
+			if(result[0].cadreIVRVO != null)
+			{
+				for(var pr in result[0].cadreIVRVO.optionsList)
+				{
+					str+='<th>'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
+				}
+			}
 			str+='</tr></thead>';	
 		}
 		else if(villageCheck == "true"){
@@ -1999,6 +2066,11 @@
 			str+='<th rowspan="2" style="text-align:center">Constituency Name</th>';
     
 			str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
+			if(result[0].cadreIVRVO != null)
+			{
+				var length = result[0].cadreIVRVO.optionsList.length;
+				str+=' <th style="text-align:center" colspan='+length+'>IVR DETAILS</th>';
+			}
             str+='</tr>';
             str+='<tr>';
 			str+='<th>Total</th>';
@@ -2007,8 +2079,16 @@
 			str+='<th>Members</th>';
 			str+='<th>Affl Committee Started</th>';
 			str+='<th>Affl Committee Completed</th>';
+			if(result[0].cadreIVRVO != null)
+			{
+				for(var pr in result[0].cadreIVRVO.optionsList)
+				{
+					str+='<th>'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
+				}
+			}
 			str+='</thead>';	
 		}
+		
 		str+='<tbody>';
 		for(var i in result){
 		if(result[i].townMandalDivisionVO != null || result[i].villageWardVO != null){
@@ -2126,6 +2206,13 @@
 				str += '<td>  </td>';
 				str += '<td>  </td>';
 			}
+			}
+			if(result[i].cadreIVRVO != null)
+			{
+				for(var tp in result[i].cadreIVRVO.optionsList)
+				{
+					str+='<td>'+result[i].cadreIVRVO.optionsList[tp].count+'</td>';
+				}
 			}
 			str += '</tr>';
 			

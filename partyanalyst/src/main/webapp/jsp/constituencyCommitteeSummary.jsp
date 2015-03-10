@@ -343,6 +343,7 @@ function buildConstituencySummary(results,jsObj){
 				str+='<thead>';
 					str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
 						str+='<th  rowspan=2> Location </th>';
+
 						for(var k in results.resultList){
 							if(results.resultList[k].basicCommitteeName == 'Main'){
 								if(reqPositionsArray.indexOf(k) == -1){
@@ -361,14 +362,18 @@ function buildConstituencySummary(results,jsObj){
 							}
 							
 						}
-						
+						var length = results.mandalsList[0].locationsList[0].cadreIVRVO.optionsList.length;
+						str+='<th  colspan='+length+'> IVR Details </th>';
 					str+='</tr>';
 					str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
 						for(var k in reqPositionsArray){
 							str+='<th> Members </th>';
 							str+='<th> Electrols </th>';
 						}
-						
+						for(var tp in results.mandalsList[0].locationsList[0].cadreIVRVO.optionsList)
+						{
+							 str+='<th> '+results.mandalsList[0].locationsList[0].cadreIVRVO.optionsList[tp].name+' </th>';
+						}
 					str+='</tr>';
 				str+='</thead>';
 					str+='<tbody>';
@@ -393,6 +398,10 @@ function buildConstituencySummary(results,jsObj){
 											str+='<td> </td>';
 										}
 									  }
+									}
+									for(var pp in rest.locationsList[j].cadreIVRVO.optionsList)
+									{
+										str += '<td> '+rest.locationsList[j].cadreIVRVO.optionsList[pp].count+'</td>';
 									}
 							str+='</tr>';
 						}
