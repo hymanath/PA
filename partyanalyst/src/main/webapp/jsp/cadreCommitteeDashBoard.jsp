@@ -1334,16 +1334,17 @@
 			str+='<th>Members</th>';
 			str+='<th>Affl Committee Started</th>';
 			str+='<th>Affl Committee Completed</th>';
-            str+='</tr>';	
 			if(result[0].cadreIVRVO != null)
 			{
 				for(var pr in result[0].cadreIVRVO.optionsList)
 				{
 					str+='<th>'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
 				}
-			}			
+			}
+            str+='</tr>';	
+						
 			str+='</thead>';	
-			
+
 		}
 		else if(mandalCheck == "true"){
 			str+='<thead>';
