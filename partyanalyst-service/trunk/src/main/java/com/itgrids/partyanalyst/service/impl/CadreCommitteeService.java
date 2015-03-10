@@ -2281,9 +2281,9 @@ public class CadreCommitteeService implements ICadreCommitteeService
 							{
 								for (IvrOptionsVO ivrOptionsVO : mainOptionsList)
 								{
-									if(ivrOptionsVO.getId().longValue() == Long.valueOf(ivrCountInfo[3].toString().trim()))
+									if(ivrOptionsVO.getId().longValue() == Long.valueOf(ivrCountInfo[1].toString().trim()))
 									{
-										ivrOptionsVO.setCount((Long)ivrCountInfo[4]);//count
+										ivrOptionsVO.setCount((Long)ivrCountInfo[3]);//count
 									}
 								}
 							}
@@ -4107,20 +4107,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	{
 		try 
 		{
-			    List<IvrOptionsVO> options = null;
-			    if(optionNames != null && optionNames.size() > 0)
-			    {
-			    	options = new ArrayList<IvrOptionsVO>();
-			    	for (Long optId : optionNames.keySet())
-			    	{
-			    		IvrOptionsVO optVO = new IvrOptionsVO();
-			    		optVO.setId(optId);
-			    		optVO.setName(optionNames.get(optId));
-			    		optVO.setCount(0l);
-			    		optVO.setPerc("0.0");
-			    		options.add(optVO);
-					}
-			    }
+  
 				List<Object[]> ivrResponceDetails = cadreIvrResponseDAO.getCadreCommitteesIvRDetails(id,2l);
 				List<IvrOptionsVO> ivrOptionsList = null;
 				if(ivrResponceDetails != null && ivrResponceDetails.size() > 0)
@@ -4136,7 +4123,21 @@ public class CadreCommitteeService implements ICadreCommitteeService
 								resultVO.setId(Long.valueOf(ivrCountInfo[0].toString().trim()));
 								resultVO.setName(ivrCountInfo[1] != null ? ivrCountInfo[1].toString():"");
 								ivrOptionsList = new ArrayList<IvrOptionsVO>();
-								ivrOptionsList.addAll(options);
+								 if(optionNames != null && optionNames.size() > 0)
+								  {
+									 List<IvrOptionsVO> options = new ArrayList<IvrOptionsVO>();
+								    	for (Long optId : optionNames.keySet())
+								    	{
+								    		IvrOptionsVO optVO = new IvrOptionsVO();
+								    		optVO.setId(optId);
+								    		optVO.setName(optionNames.get(optId));
+								    		optVO.setCount(0l);
+								    		optVO.setPerc("0.0");
+								    		options.add(optVO);
+										}
+								    	ivrOptionsList.addAll(options);
+								   }
+								
 								resultVO.setOptionsList(ivrOptionsList);
 								
 								committeeIvrMap.put(Long.valueOf(ivrCountInfo[0].toString().trim()), resultVO);
