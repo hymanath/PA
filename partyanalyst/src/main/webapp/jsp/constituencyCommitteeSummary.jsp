@@ -362,7 +362,7 @@ function buildConstituencySummary(results,jsObj){
 							}
 							
 						}
-						var length = results.mandalsList[0].locationsList[0].cadreIVRVO.optionsList.length;
+						var length = results.mandalsList[0].locationsList[0].cadreIVRVO.optionsList.length*2;
 						str+='<th  colspan='+length+'> IVR Details </th>';
 					str+='</tr>';
 					str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
@@ -373,10 +373,13 @@ function buildConstituencySummary(results,jsObj){
 						for(var tp in results.mandalsList[0].locationsList[0].cadreIVRVO.optionsList)
 						{
 							 str+='<th> '+results.mandalsList[0].locationsList[0].cadreIVRVO.optionsList[tp].name+' </th>';
+							  str+='<th> % </th>';
 						}
 					str+='</tr>';
 				str+='</thead>';
 					str+='<tbody>';
+					var percentage = 0;
+					var perc = 0;
 						for(var j in rest.locationsList){
 							str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
 								str+='<td>'+rest.locationsList[j].locationName+'</td>';
@@ -399,10 +402,27 @@ function buildConstituencySummary(results,jsObj){
 										}
 									  }
 									}
+									
 									for(var pp in rest.locationsList[j].cadreIVRVO.optionsList)
 									{
-										str += '<td> '+rest.locationsList[j].cadreIVRVO.optionsList[pp].count+'</td>';
+										if(rest.locationsList[j].cadreIVRVO.total >0){
+											percentage = (rest.locationsList[j].cadreIVRVO.optionsList[pp].count *100)/ rest.locationsList[j].cadreIVRVO.total;
+											perc = percentage.toFixed(0);
+											str+='<td>'+rest.locationsList[j].cadreIVRVO.optionsList[pp].count+'</td>';
+											str+='<td>'+perc+'</td>';
+										}				
+										else{
+											str+='<td>'+rest.locationsList[j].cadreIVRVO.optionsList[pp].count+'</td>';
+											str+='<td>0</td>';
+										}
 									}
+										
+										
+									
+									
+									
+									
+									
 							str+='</tr>';
 						}
 					str+='</tbody>';
