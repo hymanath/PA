@@ -1815,7 +1815,9 @@ return Action.SUCCESS;
 			
 		return Action.SUCCESS;
 }
+	
 
+	
 	public String getAssemblyLocalEleBodyIdByLocalEleBodyId()
 	{
 		try{
@@ -2262,4 +2264,51 @@ return Action.SUCCESS;
 		}
 		return Action.SUCCESS;
 	}
+	public String getCadrePeopleDetailsForYear()
+	{
+		if(LOG.isDebugEnabled())	
+		LOG.debug("Executing getVoterDetails() Method");	
+		try{
+			String param;
+			param = getTask();
+			Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
+			String order = request.getParameter("dir");
+			String columnName = request.getParameter("sort");
+			Integer maxRecords = Integer.parseInt(request.getParameter("results"));
+			List<VoterVO> votersList = null;
+			constituencyManagementVO = new ConstituencyManagementVO();
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			Long userId =  null;
+			if(regVO.getParentUserId()!=null){
+					userId=regVO.getMainAccountId();
+				}
+				else{
+					userId = regVO.getRegistrationID();
+				}
+				
+			Long locationValue =request.getParameter("locationValue") != null ?Long.parseLong(request.getParameter("locationValue")):0L;
+			String type =request.getParameter("type");
+			String buttonName =request.getParameter("buttonName");
+			Long publicationId = request.getParameter("publicationDateId") != null ?Long.parseLong(request.getParameter("publicationDateId")):0L;
+			Long year = request.getParameter("srcId") != null ? Long.parseLong(request.getParameter("srcId")):0L;
+			votersList = new ArrayList<VoterVO>();
+			  
+			votersList = votersAnalysisService.getCadrePeopleDetailsForYear(
+						userId,locationValue,type,buttonName,
+						publicationId,startIndex ,maxRecords,columnName,order,year);
+
+			constituencyManagementVO.setVoterDetails(votersList);
+			if(votersList.size() > 0 )
+			constituencyManagementVO.setVoterDetailsCount(votersList.get(0).getTotalVoters());
+			
+		}catch(Exception e){
+			
+			e.printStackTrace();
+			LOG.error("Exception Occured in getVoterDetails() Method,Exception is- "+e);
+			
+		}
+			
+		return Action.SUCCESS;
+}
 }

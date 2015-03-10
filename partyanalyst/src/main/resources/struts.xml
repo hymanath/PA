@@ -4766,6 +4766,7 @@
         </result>
 		</action>
 		
+		
 		<action name="getSubLevelsVoterModificationDetails" class="voterModificationReportAction" method="getSubLevelsVoterModificationDetails">
 		 <result type="json" name="success">
 		      <param name="root">voterModificationVO</param>
@@ -9821,6 +9822,10 @@
 			<result name="input">/jsp/loginForm.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
-		
+		<action name="getCadreDetailsByYearAction" class="votersAnalysisAction" method="getCadrePeopleDetailsForYear">
+		<result type="json" name="success">
+           	<param name="root">constituencyManagementVO</param>
+        </result>
+		</action>
 </package>
 </struts>      

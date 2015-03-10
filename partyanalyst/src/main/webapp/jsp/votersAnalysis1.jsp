@@ -1458,7 +1458,7 @@ for  body3 start    result  -->
 <div id="scrollToHere"></div>	
 <h5 id="reportLevelheading1" style="display:none;"></h5> <!-- Not in USe -->
 <div id="selectedBoothInfo" style="color:#000000;padding-bottom:5px;" class="widget blue whitegloss"></div>
-<div class="widget blue">
+<div class="widget blue" id="cadre-block">
 <div class="widget-block" style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;">
 <h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;">Cadre Information</h4>
 <div id="cadreCount" style="margin-top:10px;"></div>
