@@ -58,9 +58,9 @@
 }
 .ivrdetails > li {
     background: none repeat scroll 0 0 #ccc;
-    margin-left: 4px;
+    margin-left: 3px;
     padding: 2px 8px;
-	font-size: 14px;
+	font-size: 11px;
 }
 
 
@@ -921,6 +921,8 @@
 						str+='';
 						str+='<td colspan="6"><ul class="list-inline ivrdetails"><li style="background: none repeat scroll 0% 0% rgb(51, 51, 51); color: rgb(255, 255, 255);">IVR DETAILS</li>';
 						str+='<li>Total Villages:'+result.committeeSummaryVO.count+'</li>';
+						str+='<li>Total Calls:'+result.committeeSummaryVO.totalIvrCalls+'</li>';
+						str+='<li>Total Answered:'+result.committeeSummaryVO.answeredIvrCalls+'</li>';
 						var percentage = 0;
 						var perc = 0;
 						if(result.committeeSummaryVO.total >0){
@@ -1051,6 +1053,8 @@ $("#ivrDivIdAP").show();
 							str1+='<td colspan="6"><ul class="list-inline ivrdetails"><li style="background: none repeat scroll 0% 0% rgb(51, 51, 51); color: rgb(255, 255, 255);">IVR DETAILS</li>';
 							
 							str1+='<li>Total Villages:'+result.committeeSummaryVO.count+'</li>';
+							str1+='<li>Total Calls:'+result.committeeSummaryVO.totalIvrCalls+'</li>';
+							str1+='<li>Total Answered:'+result.committeeSummaryVO.answeredIvrCalls+'</li>';
 							if(result.committeeSummaryVO.total >0){
 												
 								for(var i in result.committeeSummaryVO.optionsList){
