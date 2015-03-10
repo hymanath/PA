@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -31,6 +32,7 @@ import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.IFlagDAO;
@@ -190,6 +192,7 @@ public class VoterReportService implements IVoterReportService{
     private IStaticDataService staticDataService;
     private IMobileService mobileService;
     private IMobileNumbersDAO mobileNumbersDAO;
+    private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
     
     @Autowired
     private IVoterTagDAO voterTagDAO;
@@ -624,6 +627,11 @@ public class VoterReportService implements IVoterReportService{
 
 		public void setWardBoothDAO(IWardBoothDAO wardBoothDAO) {
 			this.wardBoothDAO = wardBoothDAO;
+		}
+
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+				IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+			this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 		}
 
 	public VoterReportVO getVoterDetailsInaLocation(String range,Long rangeValue)
@@ -6113,5 +6121,192 @@ public class VoterReportService implements IVoterReportService{
 		}
 	}
 	
+	public List<VotersInfoForMandalVO> getvotersInfoByPublicationConstiId(Long constituencyId,Long publicationId,String constiType,List<VotersInfoForMandalVO> returnList){
+		if(returnList == null){
+			returnList = new ArrayList<VotersInfoForMandalVO>();
+		}
+		try{
+		 List<VotersInfoForMandalVO> publicationVoList = new ArrayList<VotersInfoForMandalVO>();
+		if(constiType == null){
+			Constituency constituency = constituencyDAO.get(constituencyId);
+			if(constituency.getElectionScope().getElectionType().getElectionType().equalsIgnoreCase("Parliament")){
+				constiType ="parliament";
+			}else{
+				constiType ="assembly";
+			}
+		}
+		
+		if(constiType.equalsIgnoreCase("assembly")){
+			List<Long> constiIds = new ArrayList<Long>();
+			constiIds.add(constituencyId);
+			List<Object[]> publicationsList = boothDAO.getAllPublicationsForConstituencies(constiIds);
+			for(Object[] publication:publicationsList){
+				VotersInfoForMandalVO publicationVo = new VotersInfoForMandalVO();
+				publicationVo.setId((Long)publication[0]);
+				publicationVo.setName(publication[1].toString());
+				publicationVoList.add(publicationVo);
+			}
+			if(publicationId == null){
+				publicationId = publicationVoList.get(0).getId();
+			}
+			getvotersInfoByPublicationConstiIdForAssem(constituencyId,publicationId,returnList);
+		}else{
+			List<Long> constiIds = new ArrayList<Long>();
+			List<Long> parliamentConstituencyIds = new ArrayList<Long>();
+			parliamentConstituencyIds.add(constituencyId);
+			List<Object[]> constisList = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesDetailsByParliamentList(parliamentConstituencyIds);
+			LinkedHashMap<Long,String> constituencyMap = new LinkedHashMap<Long,String>();
+			for(Object[] consti:constisList){
+				constituencyMap.put((Long)consti[0], consti[1].toString());
+			}
+			constiIds.addAll(constituencyMap.keySet());
+			List<Object[]> publicationsList = boothDAO.getAllPublicationsForConstituencies(constiIds);
+			for(Object[] publication:publicationsList){
+				VotersInfoForMandalVO publicationVo = new VotersInfoForMandalVO();
+				publicationVo.setId((Long)publication[0]);
+				publicationVo.setName(publication[1].toString());
+				publicationVoList.add(publicationVo);
+			}
+			if(publicationId == null){
+				publicationId = publicationVoList.get(0).getId();
+			}
+			getvotersInfoByPublicationConstiIdForParl(constituencyMap,publicationId,returnList);
+		}
+		if(returnList.size() > 0){
+			returnList.get(0).setVotersInfoForMandalVOList(publicationVoList);
+			returnList.get(0).setId(publicationId);
+		}
+		}catch(Exception e){
+			LOG.error("Exception rised in getvotersInfoByPublicationConstiId",e);
+		}
+		return returnList;
+	}
 	
+	public void getvotersInfoByPublicationConstiIdForAssem(Long constituencyId,Long publicationId,List<VotersInfoForMandalVO> votersInfoForMandalVO){
+		
+		LinkedHashMap<Long,String> tehsilMap = new LinkedHashMap<Long,String>();
+		LinkedHashMap<Long,VotersInfoForMandalVO> tehsilVOMap = new LinkedHashMap<Long,VotersInfoForMandalVO>();
+		
+		LinkedHashMap<Long,String> localBdyMap = new LinkedHashMap<Long,String>();
+		LinkedHashMap<Long,VotersInfoForMandalVO> localBdyVOMap = new LinkedHashMap<Long,VotersInfoForMandalVO>();
+		
+		
+		List<Object[]> tehsilList =  boothDAO.getAllTehsilsDetailsInAConstituency(constituencyId,publicationId);
+		List<Object[]> localBodisList = boothDAO.getAllLocalBodies(constituencyId,publicationId);
+		for(Object[] location:tehsilList){
+			tehsilMap.put((Long)location[0], (location[1].toString()+" Mandal").toUpperCase());
+		}
+		for(Object[] location:localBodisList){
+			localBdyMap.put((Long)location[0], (location[1].toString()).toUpperCase());
+		}
+		if(tehsilMap.size() > 0){
+			populateRespectiveLocationVoForTehsil(tehsilMap,tehsilVOMap,votersInfoForMandalVO);
+		   List<VoterInfo> voterInfoList = voterInfoDAO.getVotersCountForMultipleLocs(2l, tehsilMap.keySet(), publicationId, constituencyId);
+		   Set<Long> dataNAlocations = new HashSet<Long>(tehsilMap.keySet());
+		   populateVotersInfo(tehsilVOMap,voterInfoList,dataNAlocations);
+		   if(dataNAlocations.size() > 0){
+			   populateCalculateVoterInfo("mandal",dataNAlocations,publicationId,constituencyId,tehsilVOMap);
+		   }
+		}
+		if(localBdyMap.size() > 0){
+			populateRespectiveLocationVoForLOclBdy(localBdyMap,localBdyVOMap,votersInfoForMandalVO);
+		   List<VoterInfo> voterInfoList = voterInfoDAO.getVotersCountForMultipleLocs(5l, localBdyMap.keySet(), publicationId, constituencyId);
+		   Set<Long> dataNAlocations = new HashSet<Long>(localBdyMap.keySet());
+		   populateVotersInfo(localBdyVOMap,voterInfoList,dataNAlocations);
+		   if(dataNAlocations.size() > 0){
+			   populateCalculateVoterInfo("localbody",dataNAlocations,publicationId,constituencyId,localBdyVOMap);
+		   }
+		}
+	}
+	
+    public void getvotersInfoByPublicationConstiIdForParl(LinkedHashMap<Long,String> constituencyMap,Long publicationId,List<VotersInfoForMandalVO> votersInfoForMandalVO){
+		LinkedHashMap<Long,VotersInfoForMandalVO> constituencyVOMap = new LinkedHashMap<Long,VotersInfoForMandalVO>();
+		
+		if(constituencyMap.size() > 0){
+			populateRespectiveLocationVoForLOclBdy(constituencyMap,constituencyVOMap,votersInfoForMandalVO);
+		   List<VoterInfo> voterInfoList = voterInfoDAO.getVotersCountForMultipleLocs(1l, constituencyMap.keySet(), publicationId, null);
+		   Set<Long> dataNAlocations = new HashSet<Long>(constituencyMap.keySet());
+		   populateVotersInfo(constituencyVOMap,voterInfoList,dataNAlocations);
+		   if(dataNAlocations.size() > 0){
+			   populateCalculateVoterInfo("constituency",dataNAlocations,publicationId,null,constituencyVOMap);
+		   }
+		}
+	}
+    
+	public void populateRespectiveLocationVoForLOclBdy(LinkedHashMap<Long,String> locationMap,LinkedHashMap<Long,VotersInfoForMandalVO> locationVOMap
+			,List<VotersInfoForMandalVO> valuesList){
+		for(Long key:locationMap.keySet()){
+			VotersInfoForMandalVO reqVO = null;
+			for(VotersInfoForMandalVO vo:valuesList){
+				if(!vo.getIsMandal() && vo.getMandalId().equalsIgnoreCase(key.toString())){
+					reqVO = vo;
+				}
+				if(reqVO != null){
+					break;
+				}
+			}
+			if(reqVO == null){
+				reqVO = new VotersInfoForMandalVO();
+				reqVO.setMandalId(key.toString());
+				reqVO.setMandalName(locationMap.get(key));
+				valuesList.add(reqVO);
+			}
+			locationVOMap.put(key, reqVO);
+		}
+	}
+	
+	public void populateRespectiveLocationVoForTehsil(LinkedHashMap<Long,String> locationMap,LinkedHashMap<Long,VotersInfoForMandalVO> locationVOMap
+			,List<VotersInfoForMandalVO> valuesList){
+		for(Long key:locationMap.keySet()){
+			VotersInfoForMandalVO reqVO = null;
+			for(VotersInfoForMandalVO vo:valuesList){
+				if(vo.getIsMandal() && vo.getMandalId().equalsIgnoreCase(key.toString())){
+					reqVO = vo;
+				}
+				if(reqVO != null){
+					break;
+				}
+			}
+			if(reqVO == null){
+				reqVO = new VotersInfoForMandalVO();
+				reqVO.setMandalId(key.toString());
+				reqVO.setMandalName(locationMap.get(key));
+				reqVO.setIsMandal(true);
+				valuesList.add(reqVO);
+			}
+			locationVOMap.put(key, reqVO);
+		}
+	}
+	
+	public void populateCalculateVoterInfo(String type,Set<Long> dataNAlocations,Long publicationId,Long constituencyId,LinkedHashMap<Long,VotersInfoForMandalVO> locationVOMap){
+		 //0 count,1gender,2location
+		   List<Object[]> genderCountList = boothPublicationVoterDAO.getVotersCountByPublicationIdLocationIds(type, dataNAlocations, publicationId, constituencyId);
+		   for(Object[] genderCount:genderCountList){
+			   VotersInfoForMandalVO vo = locationVOMap.get((Long)genderCount[2]);
+			   if(genderCount[1].toString().equalsIgnoreCase("F") || genderCount[1].toString().equalsIgnoreCase("Female")){
+				   vo.setFemaleVoters(vo.getFemaleVoters()+(Long)genderCount[0]);
+				   vo.setTotalVotersDiff(vo.getTotalVotersDiff()+(Long)genderCount[0]);
+			   }else{
+				   vo.setMaleVoters(vo.getMaleVoters()+(Long)genderCount[0]);
+				   vo.setTotalVotersDiff(vo.getTotalVotersDiff()+(Long)genderCount[0]);
+			   }
+		   }
+	}
+	
+	public void populateVotersInfo(LinkedHashMap<Long,VotersInfoForMandalVO> locationVOMap,List<VoterInfo> voterInfoList,Set<Long> dataNAlocations){
+		for(VoterInfo voterInfo:voterInfoList){
+			dataNAlocations.remove(voterInfo.getReportLevelValue());
+			VotersInfoForMandalVO locationInfo = locationVOMap.get(voterInfo.getReportLevelValue());
+			if(voterInfo.getMaleVoters() != null){
+				locationInfo.setMaleVoters(voterInfo.getMaleVoters());
+			}
+			if(voterInfo.getFemaleVoters() != null){
+				locationInfo.setFemaleVoters(voterInfo.getFemaleVoters());
+			}
+			if(voterInfo.getTotalVoters() != null){
+				locationInfo.setTotalVotersDiff(voterInfo.getTotalVoters());
+			}
+		}
+	}
+    
 }

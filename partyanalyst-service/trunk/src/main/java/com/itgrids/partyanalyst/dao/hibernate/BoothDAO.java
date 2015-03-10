@@ -2406,4 +2406,11 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		query.setParameter("publicationId", publicationId);
 		return query.list();
 	}
+	
+	public List<Object[]> getAllPublicationsForConstituencies(List<Long> constiIds){
+		Query query = getSession().createQuery("select distinct model.publicationDate.publicationDateId,model.publicationDate.name from Booth model where " +
+				" model.constituency.constituencyId in(:constiIds) and model.publicationDate.publicationDateId > 6 order by model.publicationDate.date desc ");
+		query.setParameterList("constiIds", constiIds);
+		return query.list();
+	}
 }

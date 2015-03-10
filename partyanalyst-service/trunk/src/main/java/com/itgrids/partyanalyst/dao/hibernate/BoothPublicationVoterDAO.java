@@ -7474,4 +7474,44 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		return query.list();
 	}
   
+	public List<Object[]> getVotersCountByPublicationIdLocationIds(String type,Set<Long> ids,Long publicationDateId,Long constituencyId){
+		StringBuilder query = new StringBuilder();
+		query.append("select count(*),model.voter.gender, ");
+		
+		if(type.equalsIgnoreCase("constituency")){
+		  query.append("model.booth.constituency.constituencyId ");
+		}else if(type.equalsIgnoreCase("mandal")){
+			query.append(" model.booth.tehsil.tehsilId ");
+		}else if(type.equalsIgnoreCase("localbody")){
+			query.append(" model.booth.localBody.localElectionBodyId ");
+		}
+		
+		query.append(" from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId and ");
+		
+		if(type.equalsIgnoreCase("constituency")){
+			query.append(" model.booth.constituency.constituencyId in (:ids) ");
+		}else if(type.equalsIgnoreCase("mandal")){
+			query.append(" model.booth.tehsil.tehsilId  in (:ids) and model.booth.localBody is null and model.booth.constituency.constituencyId = :constituencyId ");
+		}else if(type.equalsIgnoreCase("localbody")){
+			query.append(" model.booth.localBody.localElectionBodyId in (:ids) and model.booth.constituency.constituencyId = :constituencyId ");
+		}
+		
+		query.append("group by ");
+		
+	   if(type.equalsIgnoreCase("constituency")){
+		  query.append(" model.booth.constituency.constituencyId ");
+	   }else if(type.equalsIgnoreCase("mandal")){
+			query.append(" model.booth.tehsil.tehsilId ");
+	   }else if(type.equalsIgnoreCase("localbody")){
+			query.append(" model.booth.localBody.localElectionBodyId ");
+	   }
+		query.append(" , model.voter.gender ");
+		
+		Query queryObj = getSession().createQuery(query.toString()) ;
+		queryObj.setParameter("publicationDateId", publicationDateId);
+		queryObj.setParameterList("ids", ids);
+		if(constituencyId != null)
+		 queryObj.setParameter("constituencyId", constituencyId);
+		return queryObj.list();
+	}
 }

@@ -20,12 +20,13 @@ import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.HamletAndBoothVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalAndRevenueVillagesInfoVO;
-import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
+import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
+import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 
 public interface IConstituencyPageService {
 
@@ -37,7 +38,7 @@ public interface IConstituencyPageService {
 	
 	public MandalAndRevenueVillagesInfoVO getTownshipWiseBoothDetailsForTehsil(Long tehsilId, Long electionId);
 	
-	public ConstituencyVO getVotersInfoInMandalsForConstituency(Long constituencyId);
+	public ConstituencyVO getVotersInfoInMandalsForConstituency(Long constituencyId,boolean publicationWise);
 	
 	public ResultWithExceptionVO saveAndUpdateHamletAndBoothInfo(HamletAndBoothVO hamletWithBoothIds);
 	
@@ -145,4 +146,6 @@ public interface IConstituencyPageService {
 	public List<SelectOptionVO> getMandalsByConstituencyID(Long constituencyID,String delimitationType);
 	
 	public SelectOptionVO getConstituencyElectionResultsByConstituencyId(Long constituencyId);
+	
+	public List<VotersInfoForMandalVO> getvotersInfoByPublicationConstiId(Long publicationId,Long constituencyId);
 }
