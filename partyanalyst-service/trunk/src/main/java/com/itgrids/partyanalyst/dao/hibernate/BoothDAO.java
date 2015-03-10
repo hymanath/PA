@@ -1969,6 +1969,15 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		
 	}
 	
+	public List<Object[]> getTotalBoothsCountByConstituencyIdsForCTP(List<Long> constituencyIds)
+	{
+		Query query = getSession().createQuery("select count(B.boothId),B.constituency.constituencyId,B.constituency.name from Booth B " +
+				" where B.constituency.constituencyId in(:constituencyIds) and B.isCtpUsed = 'Y' group by B.constituency.constituencyId ");
+		query.setParameterList("constituencyIds", constituencyIds);
+		return query.list();
+		
+	}
+	
 	public List<Object[]> getTotalBoothsCountForPanchayatisByConstituencyId(Long constituencyId)
 	{
 		Query query = getSession().createQuery("select count(B.boothId),B.panchayat.panchayatId,B.panchayat.panchayatName from Booth B " +
