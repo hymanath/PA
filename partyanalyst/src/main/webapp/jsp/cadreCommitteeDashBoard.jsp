@@ -947,7 +947,7 @@
 						str+='</ul>';
 						str+='</td>';
 						//str+='</tr></table>';
-
+$("#ivrDivIdAP").show();
 							$( "#ivrDivIdAP" ).insertAfter( "#ApTRId" );
 							$("#ivrDivIdAP").html(str);
 					 }else if(level == 'ward'){
@@ -1074,6 +1074,7 @@
 							str1+=' </li>';
 							str1+='</ul>';
 							str1+='</td>';
+							$("#ivrDivIdTS").show();
 							$( "#ivrDivIdTS" ).insertAfter( "#tsTRId" );
 								$("#ivrDivIdTS").html(str1);
 						 }else if(level == 'ward'){
