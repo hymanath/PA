@@ -165,7 +165,7 @@ public class SurveyCompletedDetailsService implements
 			    }
 			
 			// total booths details start
-			List<Object[]> boothDtls = boothDAO.getTotalBoothsCountByConstituencyIds(constituencyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+			List<Object[]> boothDtls = boothDAO.getTotalBoothsCountByConstituencyIdsForCTP(constituencyIds);
 			
 			Map<Long,Long> totalBoothsMap = new LinkedHashMap<Long, Long>();
 			
@@ -1694,7 +1694,7 @@ public class SurveyCompletedDetailsService implements
 			}
 			
 			// total booths details start
-			List<Object[]> boothDtls = boothDAO.getTotalBoothsCountByConstituencyIds(constituencyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+			List<Object[]> boothDtls = boothDAO.getTotalBoothsCountByConstituencyIdsForCTP(constituencyIds);
 			
 			Map<Long,Long> totalBoothsMap = new LinkedHashMap<Long, Long>();
 			
@@ -2261,7 +2261,7 @@ public class SurveyCompletedDetailsService implements
 			    }
 			
 			// total booths details start
-			List<Object[]> boothDtls = boothDAO.getTotalBoothsCountByConstituencyIds(constituencyIds,IConstants.VOTER_DATA_PUBLICATION_ID);
+			List<Object[]> boothDtls = boothDAO.getTotalBoothsCountByConstituencyIdsForCTP(constituencyIds);
 			
 			Map<Long,Long> totalBoothsMap = new LinkedHashMap<Long, Long>();
 			
