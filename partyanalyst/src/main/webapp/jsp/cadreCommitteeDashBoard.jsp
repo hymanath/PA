@@ -59,8 +59,8 @@
 .ivrdetails > li {
     background: none repeat scroll 0 0 #ccc;
     margin-left: 4px;
-    padding: 2px 5px;
-	font-size: 13px;
+    padding: 2px 8px;
+	font-size: 14px;
 }
 
 
@@ -926,19 +926,23 @@
 						if(result.committeeSummaryVO.total >0){
 												
 						for(var i in result.committeeSummaryVO.optionsList){
+						if(result.committeeSummaryVO.optionsList[i].id != 8){
 							percentage = (result.committeeSummaryVO.optionsList[i].count *100)/ result.committeeSummaryVO.total;
 							perc = percentage.toFixed(0);
 							str+='<li>'+result.committeeSummaryVO.optionsList[i].name+':'+result.committeeSummaryVO.optionsList[i].count+'('+perc+'%)</li>';
 						}
 						}
+						}
 						else{
+						if(result.committeeSummaryVO.optionsList[i] != 8){
 							for(var i in result.committeeSummaryVO.optionsList){
 							str+='<li>'+result.committeeSummaryVO.optionsList[i].name+':'+result.committeeSummaryVO.optionsList[i].count+'(0%)</li>';
 						}
 						}
+						}
 						
 						str+='<li>';
-					str+='<a style = "cursor: pointer;" id="ivrPopOverAP" data-toggle="popover" onClick="showPopOver(\'AP\');" title="" data-content="<ul style=padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Others</li></ul>" >?</a>';					
+					str+='<a style = "cursor: pointer;" id="ivrPopOverAP" data-toggle="popover" onClick="showPopOver(\'AP\');" title="" data-content="<ul style=padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" >?</a>';					
 						str+=' </li>';
 						str+='</ul>';
 						str+='</td>';
@@ -1049,19 +1053,23 @@
 							str1+='<li>Total Villages:'+result.committeeSummaryVO.count+'</li>';
 							if(result.committeeSummaryVO.total >0){
 												
-						for(var i in result.committeeSummaryVO.optionsList){
-							percentage = (result.committeeSummaryVO.optionsList[i].count *100)/ result.committeeSummaryVO.total;
-							perc = percentage.toFixed(0);
-							str1+='<li>'+result.committeeSummaryVO.optionsList[i].name+':'+result.committeeSummaryVO.optionsList[i].count+'('+perc+'%)</li>';
-						}
-						}
-						else{
-							for(var i in result.committeeSummaryVO.optionsList){
-							str1+='<li>'+result.committeeSummaryVO.optionsList[i].name+':'+result.committeeSummaryVO.optionsList[i].count+'(0%)</li>';
-						}
+								for(var i in result.committeeSummaryVO.optionsList){
+								if(result.committeeSummaryVO.optionsList[i].id != 8){
+									percentage = (result.committeeSummaryVO.optionsList[i].count *100)/ result.committeeSummaryVO.total;
+									perc = percentage.toFixed(0);
+									str1+='<li>'+result.committeeSummaryVO.optionsList[i].name+':'+result.committeeSummaryVO.optionsList[i].count+'('+perc+'%)</li>';
+								}
+								}
+							}
+							else{
+								for(var i in result.committeeSummaryVO.optionsList){
+								if(result.committeeSummaryVO.optionsList[i].id != 8){
+								str1+='<li>'+result.committeeSummaryVO.optionsList[i].name+':'+result.committeeSummaryVO.optionsList[i].count+'(0%)</li>';
+								}
+							}
 						}
 							str1+='<li>';
-							str1+='<a style = "cursor: pointer;" id="ivrPopOverTS" data-toggle="popover" onClick="showPopOver(\'TS\');" title="" data-content="<ul style=padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Others</li></ul>" >?</a>';
+							str1+='<a style = "cursor: pointer;" id="ivrPopOverTS" data-toggle="popover" onClick="showPopOver(\'TS\');" title="" data-content="<ul style=padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" >?</a>';
 						
 							str1+=' </li>';
 							str1+='</ul>';
@@ -1364,9 +1372,10 @@
 			{
 				for(var pr in result[0].cadreIVRVO.optionsList)
 				{
+					if(result[0].cadreIVRVO.optionsList[pr].id != 8){
 					str+='<th>'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
 					str+='<th>%</th>';
-					
+					}
 				}
 			}
 str+='</tr>';			
@@ -1380,7 +1389,7 @@ str+='</tr>';
             str+='<th style="text-align:center" colspan="6">TOWN / MANDAL / DIVISION</th>';
 			if(result[0].cadreIVRVO != null)
 			{
-				var length = (result[0].cadreIVRVO.optionsList.length)*2;
+				var length = (result[0].cadreIVRVO.optionsList.length -1)*2;
 				str+=' <th style="text-align:center" colspan='+length+'>IVR DETAILS</th>';
 			}
             str+='</tr>';
@@ -1395,8 +1404,10 @@ str+='</tr>';
 			{
 				for(var pr in result[0].cadreIVRVO.optionsList)
 				{
+					if(result[0].cadreIVRVO.optionsList[pr].id != 8){
 					str+='<th>'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
 					str+='<th>%</th>';
+					}
 				}
 			}
 			str+='</tr></thead>';	
@@ -1407,7 +1418,7 @@ str+='</tr>';
             str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
 			if(result[0].cadreIVRVO != null)
 			{
-				var length = (result[0].cadreIVRVO.optionsList.length) * 2;
+				var length = (result[0].cadreIVRVO.optionsList.length -1 ) * 2;
 				str+=' <th style="text-align:center" colspan='+length+'>IVR DETAILS</th>';
 			}
             str+='</tr>';
@@ -1422,8 +1433,10 @@ str+='</tr>';
 			{
 				for(var pr in result[0].cadreIVRVO.optionsList)
 				{
+					if(result[0].cadreIVRVO.optionsList[pr].id != 8){
 					str+='<th>'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
 					str+='<th>%</th>';
+					}
 				}
 			}
 			str+='</tr></thead>';	
@@ -1549,6 +1562,7 @@ str+='</tr>';
 			
 				for(var tp in result[i].cadreIVRVO.optionsList)
 				{
+					if(result[0].cadreIVRVO.optionsList[tp].id != 8){
 					if(result[i].cadreIVRVO.total >0){
 					 percentage = (result[i].cadreIVRVO.optionsList[tp].count *100)/ result[i].cadreIVRVO.total;
 					 perc = percentage.toFixed(0);
@@ -1558,6 +1572,7 @@ str+='</tr>';
 					else{
 					str+='<td>'+result[i].cadreIVRVO.optionsList[tp].count+'</td>';
 					str+='<td>0</td>';
+					}
 					}
 				}
 			}
@@ -1986,12 +2001,12 @@ str+='</tr>';
 
 	
 	 $('body').on('click', function (e) {
-	 
+
 		if(!$(e.target).is('.multiLevelLiA') || !$(e.target).has('.multilevelCls') || !$(e.target).has('.multilevelli') || !$(e.target).is('#ivrPopOverTS') || !$(e.target).is('#ivrPopOverAP')){
 			$('.clearCls').each(function () {
 				var attrId= $(this).attr("id");
 				var trgt = e.target;
-				
+
 				if(!$(this).is(trgt) && $(this).has(trgt).length === 0 && !$(trgt).is('.multiLevelCls') && !$(trgt).is('.multilevelli') && !$(trgt).is('.multiLevelLiA') && !$(trgt).is('#ivrPopOverTS') && !$(trgt).is('#ivrPopOverAP')) {
 				
 					$("#"+attrId).popover('hide');
@@ -2102,13 +2117,13 @@ str+='</tr>';
 		if(mandalCheck == "true" && villageCheck == "true"){
 			str+='<thead>';
             str+='<tr>';
-			str+='<th rowspan="2" style="text-align:center">Constituency No</th>';
-			str+='<th rowspan="2" style="text-align:center">Constituency Name</th>';
+			str+='<th rowspan="2" style="text-align:center">AC No</th>';
+			str+='<th rowspan="2" style="text-align:center">AC Name</th>';
             str+='<th style="text-align:center" colspan="6">TOWN / MANDAL / DIVISION</th>';
             str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
 			if(result[0].cadreIVRVO != null)
 			{
-				var length = (result[0].cadreIVRVO.optionsList.length)*2;
+				var length = (result[0].cadreIVRVO.optionsList.length-1)*2;
 				str+=' <th style="text-align:center" colspan='+length+'>IVR DETAILS</th>';
 			}
             str+='</tr>';
@@ -2130,8 +2145,10 @@ str+='</tr>';
 			{
 				for(var pr in result[0].cadreIVRVO.optionsList)
 				{
+					if(result[0].cadreIVRVO.optionsList[pr].id != 8){
 					str+='<th>'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
 					str+='<th>%</th>';
+					}
 				}
 			}	
 			str+='</tr>';	
@@ -2141,12 +2158,12 @@ str+='</tr>';
 		else if(mandalCheck == "true"){
 			str+='<thead>';
 			str+='<tr>';
-			str+='<th rowspan="2"  style="text-align:center">Constituency No</th>';
-			str+='<th rowspan="2" style="text-align:center">Constituency Name</th>';
+			str+='<th rowspan="2"  style="text-align:center">AC No</th>';
+			str+='<th rowspan="2" style="text-align:center">AC Name</th>';
 			 str+='<th style="text-align:center" colspan="6">TOWN / MANDAL / DIVISION</th>';
 			 if(result[0].cadreIVRVO != null)
 			{
-				var length = result[0].cadreIVRVO.optionsList.length *2;
+				var length = (result[0].cadreIVRVO.optionsList.length-1) *2;
 				str+=' <th style="text-align:center" colspan='+length+'>IVR DETAILS</th>';
 			}
             str+='</tr>';
@@ -2161,21 +2178,23 @@ str+='</tr>';
 			{
 				for(var pr in result[0].cadreIVRVO.optionsList)
 				{
+					if(result[0].cadreIVRVO.optionsList[pr].id != 8){
 					str+='<th>'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
 					str+='<th>%</th>';
+					}
 				}
 			}
 			str+='</tr></thead>';	
 		}
 		else if(villageCheck == "true"){
 			str+='<thead>';
-			str+='<th rowspan="2"  style="text-align:center">Constituency No</th>';
-			str+='<th rowspan="2" style="text-align:center">Constituency Name</th>';
+			str+='<th rowspan="2"  style="text-align:center">AC No</th>';
+			str+='<th rowspan="2" style="text-align:center">AC Name</th>';
     
 			str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
 			if(result[0].cadreIVRVO != null)
 			{
-				var length = result[0].cadreIVRVO.optionsList.length*2;
+				var length = (result[0].cadreIVRVO.optionsList.length-1)*2;
 				str+=' <th style="text-align:center" colspan='+length+'>IVR DETAILS</th>';
 				
 			}
@@ -2191,8 +2210,10 @@ str+='</tr>';
 			{
 				for(var pr in result[0].cadreIVRVO.optionsList)
 				{
+					if(result[0].cadreIVRVO.optionsList[pr].id != 8){
 					str+='<th>'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
 					str+='<th>%</th>';
+					}
 				}
 			}
 			str+='</thead>';	
@@ -2321,6 +2342,7 @@ str+='</tr>';
 				
 				for(var tp in result[i].cadreIVRVO.optionsList)
 				{
+					if(result[0].cadreIVRVO.optionsList[tp].id != 8){
 					if(result[i].cadreIVRVO.total >0){
 					 percentage = (result[i].cadreIVRVO.optionsList[tp].count *100)/ result[i].cadreIVRVO.total;
 					 perc = percentage.toFixed(0);
@@ -2330,6 +2352,7 @@ str+='</tr>';
 					else{
 					str+='<td>'+result[i].cadreIVRVO.optionsList[tp].count+'</td>';
 					str+='<td>0</td>';
+					}
 					}
 				}
 			}
