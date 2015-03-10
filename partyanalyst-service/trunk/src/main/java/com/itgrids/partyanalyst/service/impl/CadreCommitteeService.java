@@ -2068,9 +2068,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			  cadreCommitteeReportVO.setMembersCount(memberscount != null ? memberscount : 0l);//totalMembers				
 					
 			  cadreCommitteeReportVO.setCommitteesCount(committeeCnt);//Total Committes count.
-			  CadreIVRVO committeeSummaryVO = new CadreIVRVO();
-			   getCadreCommitteIVRDerails(districtIds,committeeSummaryVO,state);
-			   cadreCommitteeReportVO.setCommitteeSummaryVO(committeeSummaryVO);
+			  if(userId.longValue() == 1)
+			  {
+				   CadreIVRVO committeeSummaryVO = new CadreIVRVO();
+				   getCadreCommitteIVRDerails(districtIds,committeeSummaryVO,state);
+				   cadreCommitteeReportVO.setCommitteeSummaryVO(committeeSummaryVO);
+			  }
+			   
 		}else if(accessType.trim().equalsIgnoreCase("MP") && (levelIds.contains(5l)|| levelIds.contains(7l) || levelIds.contains(9l))){
 		
 		  Long committeesCount = 0l;
@@ -4065,7 +4069,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				}
 				}
 			}
-			if(villageCheck.equalsIgnoreCase("true")){
+			if(villageCheck.equalsIgnoreCase("true") && userId.longValue() == 1){
 				Map<Long,CadreIVRVO> committeeIvrMap = new HashMap<Long, CadreIVRVO>();
 				Map<Long,String> optionNames = new HashMap<Long,String>();
 				List<Object[]> optionsList = ivrCampaignOptionsDAO.getAllIVROptions(2l);
@@ -4897,7 +4901,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				constiLst.get(0).setAccessState(accessState);
 			}
 			
-			if(villageCheck.equalsIgnoreCase("true")){
+			if(villageCheck.equalsIgnoreCase("true") && userId.longValue() == 1){
 				Map<Long,CadreIVRVO> committeeIvrMap = new HashMap<Long, CadreIVRVO>();
 				Map<Long,String> optionNames = new HashMap<Long,String>();
 				List<Object[]> optionsList = ivrCampaignOptionsDAO.getAllIVROptions(2l);
@@ -5492,7 +5496,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	 return  idNameVOList;
 	}
 	
-	public CommitteeSummaryVO getConstituencySummary(Long reprtType, Long constituencyId){
+	public CommitteeSummaryVO getConstituencySummary(Long reprtType, Long constituencyId,Long userId){
 		CommitteeSummaryVO fnlVO = new CommitteeSummaryVO();
 			LOG.debug(" Entered Into getConstituencySummary()");
 			try{
@@ -5689,48 +5693,51 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				LOG.error(" Entered Into getConstituencySummary() " + e);
 			}
 			
-
-			Map<Long,CadreIVRVO> committeeIvrMap = new HashMap<Long, CadreIVRVO>();
-			Map<Long,String> optionNames = new HashMap<Long,String>();
-			List<Object[]> optionsList = ivrCampaignOptionsDAO.getAllIVROptions(2l);
-			if(optionsList != null && optionsList.size() >0){
-				for(Object[] option:optionsList){
-					optionNames.put((Long)option[0], option[1].toString());
-				}
-			}
-			List<IvrOptionsVO> optionsList1 = new ArrayList<IvrOptionsVO>();
-			for(Long id : optionNames.keySet())
+			if(userId.longValue() == 1)
 			{
-				IvrOptionsVO optionVo = new IvrOptionsVO();
-				optionVo.setId(id);
-				optionVo.setName(optionNames.get(id));
-				optionVo.setCount(0l);
-				optionsList1.add(optionVo);
-			}
-			getCadreCommitteIvrDetails(committeeIvrMap,3l,optionNames);
-			if(committeeIvrMap != null && committeeIvrMap.size() > 0 && fnlVO.getMandalsList() != null && fnlVO.getMandalsList().size() > 0)
-			{
-				
-				
-				for (CommitteeSummaryVO vo : fnlVO.getMandalsList())
-				{
-					for(CommitteeSummaryVO subvo :vo.getLocationsList())
-					{
-						CadreIVRVO ivrVO = committeeIvrMap.get(subvo.getLocationId());
-						if(ivrVO != null )
-						{
-							subvo.setCadreIVRVO(ivrVO);
-						}
-						else
-						{
-							ivrVO = new CadreIVRVO();
-							ivrVO.setOptionsList(optionsList1);
-							subvo.setCadreIVRVO(ivrVO);
-						}
+				Map<Long,CadreIVRVO> committeeIvrMap = new HashMap<Long, CadreIVRVO>();
+				Map<Long,String> optionNames = new HashMap<Long,String>();
+				List<Object[]> optionsList = ivrCampaignOptionsDAO.getAllIVROptions(2l);
+				if(optionsList != null && optionsList.size() >0){
+					for(Object[] option:optionsList){
+						optionNames.put((Long)option[0], option[1].toString());
 					}
+				}
+				List<IvrOptionsVO> optionsList1 = new ArrayList<IvrOptionsVO>();
+				for(Long id : optionNames.keySet())
+				{
+					IvrOptionsVO optionVo = new IvrOptionsVO();
+					optionVo.setId(id);
+					optionVo.setName(optionNames.get(id));
+					optionVo.setCount(0l);
+					optionsList1.add(optionVo);
+				}
+				getCadreCommitteIvrDetails(committeeIvrMap,3l,optionNames);
+				if(committeeIvrMap != null && committeeIvrMap.size() > 0 && fnlVO.getMandalsList() != null && fnlVO.getMandalsList().size() > 0)
+				{
 					
+					
+					for (CommitteeSummaryVO vo : fnlVO.getMandalsList())
+					{
+						for(CommitteeSummaryVO subvo :vo.getLocationsList())
+						{
+							CadreIVRVO ivrVO = committeeIvrMap.get(subvo.getLocationId());
+							if(ivrVO != null )
+							{
+								subvo.setCadreIVRVO(ivrVO);
+							}
+							else
+							{
+								ivrVO = new CadreIVRVO();
+								ivrVO.setOptionsList(optionsList1);
+								subvo.setCadreIVRVO(ivrVO);
+							}
+						}
+						
+					}
 				}
 			}
+			
 		
 		return fnlVO;
 	}

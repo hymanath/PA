@@ -77,7 +77,7 @@ public interface ICadreCommitteeService {
 	public List<CommitteeApprovalVO> changeDesignationRecordsForAUser(Long userId,Long startNo,Long endNo);
 	public List<IdNameVO> getAllDistricts();
 	public List<IdNameVO> getAllConstituencysForADistrict(Long districtId);
-	public CommitteeSummaryVO getConstituencySummary(Long reprtType, Long constituencyId);
+	public CommitteeSummaryVO getConstituencySummary(Long reprtType, Long constituencyId,Long userId);
 	public LocationWiseBoothDetailsVO getAffiliatedCommitteMembersInfo(List<Long> affiliIds);
 	public List<AccessedPageLoginTimeVO> getElctoralInfoForALocation(Long locationValue);
 
