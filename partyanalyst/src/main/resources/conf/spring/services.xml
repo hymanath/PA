@@ -58,7 +58,7 @@
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="mobileService" ref="mobileService" />
 		<property name="mobileNumbersDAO" ref="mobileNumbersDAO" />
-		
+		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 		
 		
 	</bean>
@@ -386,6 +386,7 @@
 		<property name="allianceGroupDAO" ref="allianceGroupDAO" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
+		<property name="voterReportService" ref="voterReportService" />
 	</bean>	
 	
 	<bean name="candidateDetailsService" class="com.itgrids.partyanalyst.service.impl.CandidateDetailsService" >

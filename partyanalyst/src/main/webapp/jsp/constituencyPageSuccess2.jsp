@@ -738,7 +738,7 @@ var queryString='';
 			
             <div class="clear"></div>
             <div class="mandals-voters-sec" style="float:none;margin-left:auto;margin-right:auto;padding:0 0 15px 0px;">
-			
+			            <div id="constituencyCenterContentOuter1SelPub" style="margin-left: 105px;"></div>
 						<div id="constituencyCenterContentOuter1" class="rounded"> 						
 						
 
@@ -1703,10 +1703,12 @@ partyShortName:'${constituencyElectionResults.candidateResultsVO.partyShortName}
 
 
 
-	<c:forEach var="vInfo" items="${constituencyVO.assembliesOfParliamentInfo}" >	
+	<c:forEach var="vInfo" items="${constituencyVO.assembliesOfParliamentInfo}" varStatus="loopIndx" >	
 		var obj ={
 					year:'${vInfo.year}',
-					info:[]
+					info:[],
+					publicationId:0,
+					publicationList:[]
 				};
 		<c:forEach var="info" items="${vInfo.votersInfoForMandalVO}" >	
 		var urlStr = '';
@@ -1718,7 +1720,18 @@ partyShortName:'${constituencyElectionResults.candidateResultsVO.partyShortName}
 			else
 				urlStr += 'localBodyElectionAction.action?localBodyId=${info.mandalId}';
 		}
-		
+		<s:if test="#vInfo.votersInfoForMandalVO[0].votersInfoForMandalVOList.size != 0">
+		var vObj=
+				{
+					mandalId:'${info.mandalId}',
+					mandalName:'<a href="'+urlStr+'"> ${info.mandalName}</a>',
+					mandalMaleVoters:'${info.maleVoters}',
+					mandalFemaleVoters:'${info.femaleVoters}',
+					mandalTotalVoters:'${info.totalVotersDiff}',
+					isPartial:'${info.isPartial}'
+				 };
+		</s:if>
+		<s:else>
 		var vObj=
 				{
 					mandalId:'${info.mandalId}',
@@ -1728,7 +1741,19 @@ partyShortName:'${constituencyElectionResults.candidateResultsVO.partyShortName}
 					mandalTotalVoters:'${info.totalVoters}',
 					isPartial:'${info.isPartial}'
 				 };
+		</s:else>
 			obj.info.push(vObj);
+			obj["publicationId"]='${vInfo.votersInfoForMandalVO[0].id}';
+			<c:if test="${info.votersInfoForMandalVOList !=null}">
+		      <c:forEach var="publicList" items="${info.votersInfoForMandalVOList}" >	
+			     var pubObj=
+				{
+					id:'${publicList.id}',
+					name:'${publicList.name}'
+				 };
+				 obj.publicationList.push(pubObj);
+		      </c:forEach>
+		    </c:if>
 		</c:forEach>
 			constituencyPageMainObj.constituencyVotersInfo.push(obj);
 	</c:forEach>
@@ -2367,6 +2392,7 @@ var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv",myColum
 //Mandals Voters Details  piechart
 	function showMandalVotesShareDetailsChart(myResults)
 	{
+		$("#constituencyCenterContentOuter1SelPub").html("");
 	 var countal = 0;
 	         if(myResults.assembliesOfParliamentInfo != null)
 	             {
@@ -2379,7 +2405,17 @@ var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv",myColum
 				   countal = countLoc; 
 	            }
 	var mandalwiseVotersShare = myResults.assembliesOfParliamentInfo;
-			
+			if(mandalwiseVotersShare.length > 0 && mandalwiseVotersShare[0].votersInfoForMandalVO.length > 0 && mandalwiseVotersShare[0].votersInfoForMandalVO[0].votersInfoForMandalVOList.length > 0){
+				var pubs = mandalwiseVotersShare[0].votersInfoForMandalVO[0].votersInfoForMandalVOList;
+				var selStr ="";
+				 selStr+='<b>Select Publication&nbsp;&nbsp;</b><select id="constituencyCenterContentselpub" onchange="getPubVotersInfo(this.value);">';
+				 for(var n in pubs){
+					  selStr+='<option value="'+pubs[n].id+'">'+pubs[n].name+'</option>';
+				 }
+				 selStr+='</select>';
+				$("#constituencyCenterContentOuter1SelPub").html(selStr);
+				$("#constituencyCenterContentselpub").val(mandalwiseVotersShare[0].votersInfoForMandalVO[0].id);
+			}
 		for(var c in mandalwiseVotersShare){
 
 			var data = new google.visualization.DataTable();
@@ -2393,7 +2429,11 @@ var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv",myColum
 			for (var i in mandalwiseVotersShare[c].votersInfoForMandalVO)
 			{
 			data.setValue(k, 0, mandalwiseVotersShare[c].votersInfoForMandalVO[i].mandalName);
-			data.setValue(k, 1,  mandalwiseVotersShare[c].votersInfoForMandalVO[i].totVoters);
+			if(mandalwiseVotersShare[c].votersInfoForMandalVO[0].votersInfoForMandalVOList != null && mandalwiseVotersShare[c].votersInfoForMandalVO[0].votersInfoForMandalVOList.length > 0){
+				data.setValue(k, 1,  mandalwiseVotersShare[c].votersInfoForMandalVO[i].totalVotersDiff);
+			}else{
+			    data.setValue(k, 1,  mandalwiseVotersShare[c].votersInfoForMandalVO[i].totVoters);
+			}
 			k++;
 			}
 			
@@ -2409,18 +2449,26 @@ var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv",myColum
 					 if(countal == 1)
 					 {
 					   chartDiv = document.getElementById('divInteractive_Chart_0');
+					   var reqYear=myResults.assembliesOfParliamentInfo[0].constYear;
 						if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament')
-						ctitle = 'Assembly Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In '+myResults.assembliesOfParliamentInfo[0].constYear;
+						ctitle = 'Assembly Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In '+reqYear;
 						else 
-						ctitle = 'Mandals Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In '+myResults.assembliesOfParliamentInfo[0].constYear;
+						ctitle = 'Mandals Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In '+reqYear;
 					 }
 					 else
 					 {
+						var publics = mandalwiseVotersShare[0].votersInfoForMandalVO[0].votersInfoForMandalVOList;
+						var reqYear ="";
+						for(var i in publics){
+							if(publics[i].id == mandalwiseVotersShare[0].votersInfoForMandalVO[0].id ){
+								reqYear = publics[i].name;
+							}
+						}
 						chartDiv = document.getElementById('divInteractive_Chart_0');
 						if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament')
-						ctitle = 'Assembly Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In 2009';
+						ctitle = 'Assembly Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In '+reqYear+' Publication';
 						else 
-						ctitle = 'Mandals Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In 2009';
+						ctitle = 'Mandals Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In '+reqYear+' Publication';
 					 }
 					}
 					var chart = new google.visualization.PieChart(chartDiv);
@@ -2450,6 +2498,96 @@ var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv",myColum
 		
 		showDivDisplay(countal,myResults);
 		buildCenterVotersCandidateInfoContent();
+}
+function getPubVotersInfo(publicationId){
+	$("#divChild_Body_0").html("");
+	$("#divInteractive_Chart_0").html('<img src="images/Loading-data.gif" width="80" heigth="80" style="margin-left: 250px;margin-top:15px;" />');
+	jsObj={
+		constituencyId:constituencyPageMainObj.constituencyInfo.constituencyId,
+		publicationId:publicationId
+	};
+	 $.ajax({
+          type:'GET',
+          url: 'getvotersInfoByPublicationConstiIdAction.action',
+		  data: {task:YAHOO.lang.JSON.stringify(jsObj)},
+		  success: function(result){  
+             showMandalVotesShareDetailsChartForPublic(result);
+           }
+	   });
+	
+}
+function showMandalVotesShareDetailsChartForPublic(myResults){	
+  if(myResults != null && myResults.length > 0){
+	$("#constituencyCenterContentOuter1SelPub").html("");
+	var pubs = myResults[0].votersInfoForMandalVOList;
+	var selStr ="";
+	selStr+='<b>Select Publication&nbsp;&nbsp;</b><select id="constituencyCenterContentselpub" onchange="getPubVotersInfo(this.value);">';
+	for(var n in pubs){
+		selStr+='<option value="'+pubs[n].id+'">'+pubs[n].name+'</option>';
+	}
+	selStr+='</select>';
+	$("#constituencyCenterContentOuter1SelPub").html(selStr);
+	$("#constituencyCenterContentselpub").val(myResults[0].id);
+	var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Mandals');
+	data.addColumn('number', 'Voters % Share');
+	data.addRows(myResults.length);
+	var k=0;
+	for(var c in myResults){
+	  data.setValue(k, 0, myResults[c].mandalName);
+	  data.setValue(k, 1, myResults[c].totalVotersDiff);
+	  k++;
+    }
+	var ctitle='';
+	var chartDiv=document.getElementById('divInteractive_Chart_0');
+	var reqYear ="";
+	for(var i in pubs){
+		if(pubs[i].id == myResults[0].id ){
+			reqYear = pubs[i].name;
+		}
+	}
+    if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament'){
+	    ctitle = 'Assembly Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In '+reqYear;
+	 }else{ 
+	   ctitle = 'Mandals Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In '+reqYear;
+     }
+     var chart = new google.visualization.PieChart(chartDiv);
+	 chart.draw(data, {width: 580, height: 320, title: ctitle, legendFontSize:14,fontSize:13,titleFontSize:16,tooltipFontSize:15, stroke:3});   
+
+	 var field,column;
+	 
+	 if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament'){
+		field = {key:"mandalName"};
+		column = {key:"mandalName", label:'Assembly Name', sortable:true, resizeable:true};
+	 }
+				
+	if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Assembly'){
+		field = {key:"mandalName"};
+		column = {key:"mandalName", label:'Mandal Name', sortable:true, resizeable:true};
+	}
+				
+	 var myDataSource = new YAHOO.util.DataSource(myResults); 
+	 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+	 myDataSource.responseSchema = { 
+				fields: [
+							field,
+							{	key : "maleVoters",parser:"number"},
+							{	key : "femaleVoters",parser:"number"},
+							{	key : "totalVotersDiff",parser:"number"}
+						]
+			}; 
+	
+	 var myColumnDefs = [ 
+				 column,
+				{key:"maleVoters", label:'Male Voters', sortable:true, resizeable:true}, 
+				{key:"femaleVoters", label:'Female Voters',sortable:true, resizeable:true}, 
+				{key:"totalVotersDiff",label:'Total Voters', sortable:true, resizeable:true}
+			]; 
+	 
+	var myDataTable = new YAHOO.widget.DataTable("divChild_Body_0",myColumnDefs, myDataSource); 
+  }else{
+	  $("#divInteractive_Chart_0").html('<b style="margin-left:50px;">NO DATA AVAILABLE</b>');
+  }
 }
     function showDivDisplay(countal,myResults)
      {
@@ -2751,6 +2889,7 @@ var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv",myColum
 
 	function showMandalsAfterDelimitationDiv()
 	{
+		$("#constituencyCenterContentOuter1SelPub").show();
 		document.getElementById('divInteractive_Chart_0').style.display = 'block';
 		document.getElementById('divChild_Body_0').style.display = 'block';
 		document.getElementById('divInteractive_Chart_1').style.display = 'none';
@@ -2762,6 +2901,7 @@ var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv",myColum
 
 	function showMandalsBeforeDelimitationDiv()
 	{
+		$("#constituencyCenterContentOuter1SelPub").hide();
 		document.getElementById('divInteractive_Chart_0').style.display = 'none';
 		document.getElementById('divChild_Body_0').style.display = 'none';
 		document.getElementById('divInteractive_Chart_1').style.display = 'block';
