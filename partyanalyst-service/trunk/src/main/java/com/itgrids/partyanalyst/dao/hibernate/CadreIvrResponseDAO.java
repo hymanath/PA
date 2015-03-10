@@ -347,9 +347,13 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 		{
 			sb.append("  CIR.tdpCadre.userAddress.district.districtId,CIR.tdpCadre.userAddress.district.districtName, ");
 		}
-		else
+		else if(reportType == 2)
 		{
 			sb.append("  CIR.tdpCadre.userAddress.constituency.constituencyId,CIR.tdpCadre.userAddress.constituency.name, ");
+		}
+		else
+		{
+			sb.append("  CIR.tdpCadre.userAddress.panchayat.panchayatId,CIR.tdpCadre.userAddress.panchayat.panchayatName, ");
 		}
 		sb.append(" CIR.callStatus,CIR.optionId,count(*)  ");
 		sb.append("  from CadreIvrResponse CIR where  ");
@@ -358,9 +362,13 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 		{
 			sb.append("  CIR.tdpCadre.userAddress.district.districtId, ");
 		}
-		else
+		else if(reportType == 2)
 		{
 			sb.append("  CIR.tdpCadre.userAddress.constituency.constituencyId, ");
+		}
+		else
+		{
+			sb.append("  CIR.tdpCadre.userAddress.panchayat.panchayatId, ");
 		}
 		sb.append("  CIR.callStatus,CIR.optionId ");
 		
@@ -369,13 +377,34 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 		{
 			sb.append("  CIR.tdpCadre.userAddress.district.districtId, ");
 		}
-		else
+		else if(reportType == 2)
 		{
 			sb.append("  CIR.tdpCadre.userAddress.constituency.constituencyId, ");
+		}
+		else
+		{
+			sb.append("  CIR.tdpCadre.userAddress.panchayat.panchayatId, ");
 		}
 		sb.append("  CIR.callStatus,CIR.optionId ");
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("campainId", campainId);
+		return query.list();
+	}
+	
+	public List<Object[]> getStateWiseCommitterIvrDetails(List<Long> distIds,Long campainId)
+	{
+		Query query = getSession().createQuery("select CIR.callStatus,CIR.optionId,CIR.ivrOptions.optionName,count(*) from CadreIvrResponse CIR where CIR.campaignId = :campainId and CIR.tdpCadre.userAddress.district.districtId in (:distIds) " +
+				" group by CIR.callStatus,CIR.optionId ");
+		query.setParameter("campainId", campainId);
+		query.setParameterList("distIds", distIds);
+		return query.list();
+	}
+	
+	public List<Long> getPanchayatsCountIvrStarted(List<Long> distIds,Long campainId)
+	{
+		Query query = getSession().createQuery("select distinct CIR.tdpCadre.userAddress.panchayat.panchayatId from CadreIvrResponse CIR where CIR.campaignId = :campainId and CIR.tdpCadre.userAddress.district.districtId in (:distIds)  ");
+		query.setParameter("campainId", campainId);
+		query.setParameterList("distIds", distIds);
 		return query.list();
 	}
 }
