@@ -1331,7 +1331,7 @@
 		var panAffCompleted =0;
 		var percentage = 0;
 		var perc = 0;
-		var 
+		
 		str+='<table class="table table-bordered table-condensed " id="districtTableId" style="width:100%; background-color:rgba(0,0,0,0.1);">';
        
 		if(mandalCheck == "true" && villageCheck == "true"){
