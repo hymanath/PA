@@ -298,9 +298,9 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> districtWiseRegCountForDistrict(Long stateId);
 	
 	public List<Object[]> getConstituencyWiseMemberMobileNumbersCount(Long districtId,Date startDate,Date endDate);
-	public Long getTdpCadreCountInALocation(List<Long> locationValue,String type);
+	public Long getTdpCadreCountInALocation(List<Long> locationValue,String type,Long year);
 	public List<Object[]> getTdpCadreVoterIDs(List<Long> locationValue,String type,Integer startIndex,
-			Integer maxRecords,String columnName ,String order);
+			Integer maxRecords,String columnName ,String order,Long year);
 	
 	public Long getVoterIdExistCadreInABooth(Long constituencyId,Long publicationDateId,String partNo);
 	public Long getFamilyVoterIdExistCadreInABooth(Long constituencyId,Long publicationDateId,String partNo);

@@ -353,6 +353,8 @@ public interface IVotersAnalysisService {
 	
 	public Long bookIdOfVoter(Long voterId);
 	public List<InfluencingPeopleBeanVO> getCadrePeopleCountByLocation(Long userId,Long locationValue,String type,Long publicationDateId);
+	  public List<VoterVO> getCadrePeopleDetailsForYear(Long userId,Long locationValue,String type,String buttonName,
+				Long publicationId,Integer startIndex , Integer maxRecords,String columnName,String order,Long year);
 
 	
 }

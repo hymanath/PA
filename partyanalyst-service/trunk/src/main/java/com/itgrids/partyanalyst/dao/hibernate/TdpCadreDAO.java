@@ -4223,20 +4223,23 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 	}
 	
 	
-	public Long getTdpCadreCountInALocation(List<Long> locationValue,String type)
+	public Long getTdpCadreCountInALocation(List<Long> locationValue,String type,Long year)
 	{
 		if(type.equalsIgnoreCase("MUNCIPALITY/CORPORATION"))
 			type = "MUNICIPAL-CORP-GMC";
-		if(type.equalsIgnoreCase("panchayat"))
-			type = "hamlet";
+		
 		if(type.equalsIgnoreCase("customWard"))
 			type ="WARD";
-		String str = "select count(model.tdpCadreId) from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear='2014' and ";
-		
+		String str = "select count(model.tdpCadreId) from TdpCadre model where model.isDeleted = 'N' and  ";
+		if(year != null && year > 0)
+			str +=  " model.enrollmentYear=:year and " ;
+			
 		if(type.equalsIgnoreCase("constituency"))
 			str += " model.userAddress.constituency.constituencyId in (:locationValue) ";
 		else if(type.equalsIgnoreCase("mandal"))
 			str += " model.userAddress.tehsil.tehsilId in (:locationValue) ";
+		else if(type.equalsIgnoreCase("panchayat"))
+			str += " model.userAddress.panchayat.panchayatId in (:locationValue) ";
 		else if(type.equalsIgnoreCase("MUNICIPAL-CORP-GMC"))
 			str += " model.userAddress.localElectionBody.localElectionBodyId in (:locationValue) ";
 		else if(type.equalsIgnoreCase("hamlet"))
@@ -4247,32 +4250,42 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			str += " model.userAddress.booth.boothId in (:locationValue) ";
 		Query query = getSession().createQuery(str);
 		query.setParameterList("locationValue", locationValue);
+		if(year != null && year > 0)
+			query.setParameter("year", year);
 		return (Long)query.uniqueResult();
 		
 	}
 	
 	public List<Object[]> getTdpCadreVoterIDs(List<Long> locationValue,String type,Integer startIndex,
-			Integer maxRecords,String columnName ,String order)
+			Integer maxRecords,String columnName ,String order,Long year)
 	{
 	
+
 		if(type.equalsIgnoreCase("MUNCIPALITY/CORPORATION"))
 			type = "MUNICIPAL-CORP-GMC";
-		if(type.equalsIgnoreCase("panchayat"))
-			type = "hamlet";
+		
 		if(type.equalsIgnoreCase("customWard"))
 			type ="WARD";
 		String str = "";
 		str += "select model.firstname,model.lastname,model.gender,model.mobileNo,voter.voterId," +
-				"casteState.caste.casteName,model.userAddress.userAddressId from TdpCadre model " +
+				" caste.casteName,tehsil.tehsilName,hamlet.hamletName,booth.partNo " ;
+		str+=  " from TdpCadre model " +
 		 		" left join model.voter voter " +
-		 		" left join model.casteState casteState ";
+		 		" left join model.casteState.caste caste " +
+		 		" left join model.userAddress.tehsil tehsil"+
+				" left join model.userAddress.hamlet hamlet"+
+				" left join model.userAddress.booth booth";
 		
-		str +=  " where model.isDeleted = 'N' and model.enrollmentYear='2014' and ";
+		str +=  " where model.isDeleted = 'N' and  ";
+		if(year != null && year > 0)
+		str +=  " model.enrollmentYear=:year and " ;
 		
 		if(type.equalsIgnoreCase("constituency"))
 			str += " model.userAddress.constituency.constituencyId in (:locationValue) ";
 		else if(type.equalsIgnoreCase("mandal"))
 			str += " model.userAddress.tehsil.tehsilId in (:locationValue) ";
+		else if(type.equalsIgnoreCase("panchayat"))
+			str += " model.userAddress.panchayat.panchayatId in (:locationValue) ";
 		else if(type.equalsIgnoreCase("MUNICIPAL-CORP-GMC"))
 			str += " model.userAddress.localElectionBody.localElectionBodyId in (:locationValue) ";
 		else if(type.equalsIgnoreCase("hamlet"))
@@ -4287,9 +4300,12 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			str += "order by model."+columnName+" "+order;	   
 		Query query = getSession().createQuery(str);
 		query.setParameterList("locationValue", locationValue);
+		if(year != null && year > 0)
+		query.setParameter("year", year);
 		query.setFirstResult(startIndex);
 		query.setMaxResults(maxRecords);
 		return query.list();
+		
 		
 	}
 
@@ -4484,4 +4500,6 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return query.list();
 			
 		}
+		
+		
 }
