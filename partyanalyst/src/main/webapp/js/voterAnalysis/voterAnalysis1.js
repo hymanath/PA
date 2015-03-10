@@ -1167,6 +1167,15 @@ function addToPolitician(voterId,name)
 		  $("#votersMainOuterDiv3").show();
 		//--
 		 getPreviousVotersDetails1();
+		 if(type != "hamlet")
+		{
+		 getCadreCount(id,type);
+		  $("#cadre-block").css("display","block");
+		}
+		 else
+		{
+			 $("#cadre-block").css("display","none");
+		}
 		    // getPreviousVotersDetails();
 		//getvotersBasicInfo("voters",id,publicationId,type);
 		// getVotersData();
@@ -1899,6 +1908,12 @@ function addToPolitician(voterId,name)
 									else if(jsObj.task == "checkForLocalBodyElection"){
 									buildLocalBodyElectionDetails(myResults);
 								}
+								else if(jsObj.task == "getCadreCount")
+								{
+								
+									buildCadreCount(myResults,jsObj);
+								}
+								
 								else if(jsObj.task == "addVoterToCadre"){
 									if(myResults == "notLogged"){
 									 openDialogForLoginWindow();
@@ -8007,9 +8022,10 @@ function getInfluencingPeopleCount(locationValue,type)
 function getCadreCount(locationValue,type)
 {
 
-	document.getElementById('InfluencingPeopleCountDiv').style.display = 'none';
+	$("#cadreCount").html("");
+	 $("#cadre-block").css("display","none");
 	var publicationId = $("#publicationDateList").val();
-	$("#InfluencingPeopleAjaxImg").show();
+	
 	var jObj=
 	{
 		locationValue:locationValue,
@@ -8022,6 +8038,36 @@ function getCadreCount(locationValue,type)
 	var url = "getCadreCountForLocationAction.action?"+rparam;	
 
 	callAjax(jObj,url);
+}
+function buildCadreCount(result,jsObj)
+{
+	$("#cadre-block").css("display","block");
+	var locationValue =jsObj.locationValue;
+	var name = jsObj.name;
+	var	typeValue = jsObj.type;
+	var	publicationDateId = jsObj.publicationDateId;
+	
+	var str ='';
+	str+='<table class="table table-bordered table-striped table-hover">';
+	str+='<tr>';
+	for(var i in result)
+	{
+		str+='<th>'+result[i].accessType+'</th>';
+	}
+	str+='</tr>';
+	str+='<tr>';
+	for(var i in result)
+	{
+		if(result[i].cadreCount > 0)
+	str+='<td><a style="cursor:pointer;" onclick="getCadrePeopleInfo('+locationValue+',\''+maintype+'\','+publicationDateId+',\'Cadre\',\''+result[i].accessType+'\');">'+result[i].cadreCount+'</a></td>';
+		else
+		str+='<td>0</td>';
+	
+	}
+	str+='</tr>';
+	str+='</table>';
+	$("#cadreCount").html(str);
+
 }
 
 function buildInfluencingPeopleCount(results,jsObj)
@@ -8046,10 +8092,10 @@ function buildInfluencingPeopleCount(results,jsObj)
 	  str +='<a id ="InfluencingDetails" onclick="getInfluencingPeopleVotersDetails('+locationValue+',\''+maintype+'\','+publicationDateId+',\'InfluencePeople\');"><span class="btn">'+results[0].influencePeopleCount+'</span></a><span class="help-inline f2"> Influencing People</span>';
 		else
 		str +='<a id ="InfluencingDetails"><span class="btn">'+results[0].influencePeopleCount+'</span></a><span class="help-inline f2"> Influencing People</span>';
-		if(results[0].cadreCount > 0)
+		/*if(results[0].cadreCount > 0)
 	  str +='<a id ="CadreDetails" onclick="getInfluencingPeopleVotersDetails('+locationValue+',\''+maintype+'\','+publicationDateId+',\'Cadre\');"><span class="btn">'+results[0].cadreCount+'</span></a><span class="help-inline f2"> Cadre</span>';
 		else
-		str +='<a id ="CadreDetails"><span class="btn">'+results[0].cadreCount+'</span></a><span class="help-inline f2"> Cadre</span>';
+		str +='<a id ="CadreDetails"><span class="btn">'+results[0].cadreCount+'</span></a><span class="help-inline f2"> Cadre</span>';*/
 		if(results[0].politicianCount > 0)
 	  str +='<a id ="PoliticianDetails" onclick="getInfluencingPeopleVotersDetails('+locationValue+',\''+maintype+'\','+publicationDateId+',\'Politician\');"><span class="btn">'+results[0].politicianCount+'</span></a><span class="help-inline f2"> Politician</span>';
 		else
@@ -8058,6 +8104,12 @@ function buildInfluencingPeopleCount(results,jsObj)
 	}
 	str+='</div>';
 	divEle.innerHTML=str;
+}
+function getCadrePeopleInfo(locationValue,typeValue,publicationDateId,btnName,year)
+{
+	var browser = window.open("cadreDisplayWindowAction.action?locationValue="+locationValue+"&typeValue="+typeValue+"&publicationDateId="+publicationDateId+"&btnName="+btnName+"&mainreqid="+mainreqid+"&maintype="+maintype+"&srcId ="+year+"","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+	browser.focus();
+
 }
 function getInfluencingPeopleVotersDetails(locationValue,typeValue,publicationDateId,btnName)
 {

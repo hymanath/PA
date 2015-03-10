@@ -77,6 +77,8 @@ var  btnName    = '${btnName}';
 var  mainreqid    = '${mainreqid}';
 var  maintype    = '${maintype}';
 var  name        = '${name}';
+if(btnName == "Cadre")
+var srcId = '${srcId}';
 function getInfluencingPeopleVotersDetails()
 {
 	$("#titleDiv").append('<h3 style="background: none repeat scroll 0% 0% #4285F4; color: rgb(255, 255, 255); padding: 5px; border-radius: 5px 5px 5px 5px; text-align: center; margin: 10px; border-top-width: 40px;">'+name+' '+btnName+' Voters Details</h3>');
@@ -134,13 +136,13 @@ function getInfluencingPeopleVotersDetails()
 		//{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
 
 		];
-		var votersByLocBoothDataSource = new YAHOO.util.DataSource("getInfluencingPeopleVotersDetailsAction.action?locationValue="+mainreqid+"&type="+maintype+"&publicationDateId="+publicationDateId+"&buttonName="+btnName+"&");
+		var votersByLocBoothDataSource = new YAHOO.util.DataSource("getCadreDetailsByYearAction.action?locationValue="+mainreqid+"&type="+maintype+"&publicationDateId="+publicationDateId+"&buttonName="+btnName+"&srcId="+srcId+"&");
 		votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 		votersByLocBoothDataSource.responseSchema = {
 		resultsList: "voterDetails",
 		fields: [
 		{key:"voterId", parser:"number"},
-		"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","localArea","cast"],
+		"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","localArea","cast","srcId"],
 		metaFields: {
 		totalRecords: "voterDetailsCount" // Access to value in the server response
 		}
