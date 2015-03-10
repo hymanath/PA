@@ -71,6 +71,10 @@ public class CadreIVRVO implements Serializable, Comparable<CadreIVRVO>{
 	private Double totalErrorPerc;
 	private Double totalUnAnsweredPerc;
 	
+	private Long totalIvrCalls;
+	
+	private Long answeredIvrCalls;
+	
 	
 	private List<CadreIVRVO> subListForResponces;
 	
@@ -562,6 +566,22 @@ public class CadreIVRVO implements Serializable, Comparable<CadreIVRVO>{
 
 	public void setOptionsList(List<IvrOptionsVO> optionsList) {
 		this.optionsList = optionsList;
+	}
+
+	public Long getTotalIvrCalls() {
+		return totalIvrCalls;
+	}
+
+	public void setTotalIvrCalls(Long totalIvrCalls) {
+		this.totalIvrCalls = totalIvrCalls;
+	}
+
+	public Long getAnsweredIvrCalls() {
+		return answeredIvrCalls;
+	}
+
+	public void setAnsweredIvrCalls(Long answeredIvrCalls) {
+		this.answeredIvrCalls = answeredIvrCalls;
 	}
 
 	
