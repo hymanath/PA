@@ -24,6 +24,10 @@ public class CadreCommitteeReportVO {
 	private Double affliatedCompletedPerc;
 	private String accessState;
 	
+	private CadreIVRVO committeeSummaryVO;
+	
+	
+	
 	
 	public String getAccessState() {
 		return accessState;
@@ -145,6 +149,12 @@ public class CadreCommitteeReportVO {
 	}
 	public void setAffliatedCompletedPerc(Double affliatedCompletedPerc) {
 		this.affliatedCompletedPerc = affliatedCompletedPerc;
+	}
+	public CadreIVRVO getCommitteeSummaryVO() {
+		return committeeSummaryVO;
+	}
+	public void setCommitteeSummaryVO(CadreIVRVO committeeSummaryVO) {
+		this.committeeSummaryVO = committeeSummaryVO;
 	}
 	
 	
