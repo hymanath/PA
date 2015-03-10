@@ -2068,7 +2068,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			  cadreCommitteeReportVO.setMembersCount(memberscount != null ? memberscount : 0l);//totalMembers				
 					
 			  cadreCommitteeReportVO.setCommitteesCount(committeeCnt);//Total Committes count.
-			  if(userId.longValue() == 1)
+			  if(userId.longValue() == 1 && (levelIds.contains(6l) || levelIds.contains(8l)))
 			  {
 				   CadreIVRVO committeeSummaryVO = new CadreIVRVO();
 				   getCadreCommitteIVRDerails(districtIds,committeeSummaryVO,state);
@@ -2271,11 +2271,33 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		    		options.add(optVO);
 				}
 		    }
-			List<Long> panchayatsCount = cadreIvrResponseDAO.getPanchayatsCountIvrStarted(districtIds,2l);
+		    if(state.equalsIgnoreCase("AP"))
+		    {
+		    	resultVO.setCount(3060l);
+		    	resultVO.setTotalIvrCalls(416977l);
+		    	resultVO.setAnsweredIvrCalls(250787l);
+		    }
+		    else
+		    {
+		    	resultVO.setCount(631l);
+		    	resultVO.setTotalIvrCalls(32812l);
+		    	resultVO.setAnsweredIvrCalls(21181l);
+		    }
+			/*List<Long> panchayatsCount = cadreIvrResponseDAO.getPanchayatsCountIvrStarted(districtIds,2l);
 			if(panchayatsCount != null && panchayatsCount.size() > 0)
 		    {
-				resultVO.setCount(panchayatsCount.get(0));
+				resultVO.setCount(Long.valueOf(panchayatsCount.size()));
 		    }
+			List<Long> totalIvrCalls = cadreIvrResponseDAO.getTotalIvrCalls(districtIds,2l);
+			if(totalIvrCalls != null && totalIvrCalls.size() > 0)
+			{
+				resultVO.setTotalIvrCalls(totalIvrCalls.get(0));
+			}
+			List<Long> answerCount = cadreIvrResponseDAO.getTotalAnsweredIvrCalls(districtIds,2l);
+			if(answerCount != null && answerCount.size() > 0)
+			{
+				resultVO.setAnsweredIvrCalls(answerCount.get(0));
+			}*/
 			List<Object[]> cadreIvrDetails = cadreIvrResponseDAO.getStateWiseCommitterIvrDetails(districtIds,2l);
 			if(cadreIvrDetails != null && cadreIvrDetails.size() > 0)
 			{
