@@ -370,7 +370,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </div> -->
 
      <div class="main-title-sec">
-        <div class="main-mbg"><div id="constituencyType"></div></div>
+        <div class="main-mbg" style="padding: 10px;"><div id="constituencyType"></div></div>
         <div class="main-bbg"></div>
 
 		<div style="margin-top: 9px;" id="headingWidget">
@@ -2547,8 +2547,16 @@ function showMandalVotesShareDetailsChartForPublic(myResults){
 		}
 	}
     if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament'){
+		for(var p in myResults){
+			myResults[p].mandalName = '<a href="constituencyPageAction.action?constituencyId='+myResults[p].mandalId+'">'+myResults[p].mandalName+'</a>';
+		}
 	    ctitle = 'Assembly Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In '+reqYear;
 	 }else{ 
+	    for(var p in myResults){
+			if(myResults[p].isMandal){
+			  myResults[p].mandalName = '<a href="mandalPageElectionInfoAction.action?MANDAL_ID='+myResults[p].mandalId+'"> '+myResults[p].mandalName+'</a>';
+			}
+		}
 	   ctitle = 'Mandals Voters % Share In '+constituencyPageMainObj.constituencyInfo.constituencyName+' In '+reqYear;
      }
      var chart = new google.visualization.PieChart(chartDiv);
