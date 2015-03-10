@@ -2229,6 +2229,36 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	public void getCadreCommitteIVRDerails(List<Long> districtIds,CadreIVRVO resultVO)
 	{
 		try {
+			Map<Long,String> optionNames = new HashMap<Long,String>();
+			List<Object[]> optionsList = ivrCampaignOptionsDAO.getAllIVROptions(2l);
+			if(optionsList != null && optionsList.size() >0){
+				for(Object[] option:optionsList){
+					optionNames.put((Long)option[0], option[1].toString());
+				}
+			}
+			List<IvrOptionsVO> optionsList1 = new ArrayList<IvrOptionsVO>();
+			for(Long id : optionNames.keySet())
+			{
+				IvrOptionsVO optionVo = new IvrOptionsVO();
+				optionVo.setId(id);
+				optionVo.setName(optionNames.get(id));
+				optionVo.setCount(0l);
+				optionsList1.add(optionVo);
+			}
+			List<IvrOptionsVO> options = null;
+		    if(optionNames != null && optionNames.size() > 0)
+		    {
+		    	options = new ArrayList<IvrOptionsVO>();
+		    	for (Long optId : optionNames.keySet())
+		    	{
+		    		IvrOptionsVO optVO = new IvrOptionsVO();
+		    		optVO.setId(optId);
+		    		optVO.setName(optionNames.get(optId));
+		    		optVO.setCount(0l);
+		    		optVO.setPerc("0.0");
+		    		options.add(optVO);
+				}
+		    }
 			List<Long> panchayatsCount = cadreIvrResponseDAO.getPanchayatsCountIvrStarted(districtIds,2l);
 			if(panchayatsCount != null && panchayatsCount.size() > 0)
 		    {
@@ -2238,23 +2268,25 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			if(cadreIvrDetails != null && cadreIvrDetails.size() > 0)
 			{
 				Map<Long,IvrOptionsVO> optionsMap = new HashMap<Long, IvrOptionsVO>();
-				List<IvrOptionsVO> options = resultVO.getOptionsList();
+				//List<IvrOptionsVO> options = resultVO.getOptionsList();
+				resultVO.setOptionsList(options);
 				for (Object[] ivrCountInfo : cadreIvrDetails)
 				{
 					if(ivrCountInfo[0].toString().equalsIgnoreCase(IConstants.NORMAL_CLEARING))
 					{
 						if(ivrCountInfo[2] != null)
 						{
-							IvrOptionsVO optionVO = optionsMap.get(Long.valueOf(ivrCountInfo[1].toString().trim()));
-							if(optionVO == null)
+							List<IvrOptionsVO> mainOptionsList = resultVO.getOptionsList();
+							if(mainOptionsList != null && mainOptionsList.size() > 0)
 							{
-								optionVO = new IvrOptionsVO();
-								optionsMap.put(Long.valueOf(ivrCountInfo[1].toString().trim()), optionVO);
+								for (IvrOptionsVO ivrOptionsVO : mainOptionsList)
+								{
+									if(ivrOptionsVO.getId().longValue() == Long.valueOf(ivrCountInfo[3].toString().trim()))
+									{
+										ivrOptionsVO.setCount((Long)ivrCountInfo[4]);//count
+									}
+								}
 							}
-							optionVO.setId((Long)ivrCountInfo[1]);//options id
-							optionVO.setName(ivrCountInfo[2] != null ? ivrCountInfo[2].toString():"");//option name
-							optionVO.setCount((Long)ivrCountInfo[3]);//count
-							options.add(optionVO);
 						}
 							
 
@@ -4090,7 +4122,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					}
 			    }
 				List<Object[]> ivrResponceDetails = cadreIvrResponseDAO.getCadreCommitteesIvRDetails(id,2l);
-				//List<IvrOptionsVO> ivrOptionsList = null;
+				List<IvrOptionsVO> ivrOptionsList = null;
 				if(ivrResponceDetails != null && ivrResponceDetails.size() > 0)
 				{
 					for (Object[] ivrCountInfo : ivrResponceDetails)
@@ -4103,8 +4135,10 @@ public class CadreCommitteeService implements ICadreCommitteeService
 								resultVO = new CadreIVRVO();
 								resultVO.setId(Long.valueOf(ivrCountInfo[0].toString().trim()));
 								resultVO.setName(ivrCountInfo[1] != null ? ivrCountInfo[1].toString():"");
-								//ivrOptionsList = new ArrayList<IvrOptionsVO>();
-								resultVO.setOptionsList(options);
+								ivrOptionsList = new ArrayList<IvrOptionsVO>();
+								ivrOptionsList.addAll(options);
+								resultVO.setOptionsList(ivrOptionsList);
+								
 								committeeIvrMap.put(Long.valueOf(ivrCountInfo[0].toString().trim()), resultVO);
 							}
 							if(ivrCountInfo[2].toString().equalsIgnoreCase(IConstants.NORMAL_CLEARING))
@@ -4119,17 +4153,9 @@ public class CadreCommitteeService implements ICadreCommitteeService
 											if(ivrOptionsVO.getId().longValue() == Long.valueOf(ivrCountInfo[3].toString().trim()))
 											{
 												ivrOptionsVO.setCount((Long)ivrCountInfo[4]);//count
-												//optionsList.add(ivrOptionsVO);
 											}
 										}
 									}
-									/*String optionsName = optionNames.get(Long.valueOf(ivrCountInfo[3].toString().trim()));
-									if(optionsName != null)
-									{
-										IvrOptionsVO optionVO = new IvrOptionsVO();
-										
-									}*/
-									
 								}
 							}
 							else
