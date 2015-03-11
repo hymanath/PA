@@ -6864,8 +6864,8 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 	 return locationsMap;
 	 
 }
-	
-	public CadreCommitteeRolesInfoVO getCommitteeRoleAgeWiseDetailsByLocationType(String userAccessType,String locationValue,Long committeeTypeId,List<Long> positionIdsList,List<Long> casteCategoryIdsList,List<Long> casteCategoryGroupIdsList, 
+
+	public CadreCommitteeRolesInfoVO getConstituencyOverviewCommitteeRoleAgeWiseDetailsByLocationType(String userAccessType,String locationValue,Long committeeTypeId,List<Long> positionIdsList,List<Long> casteCategoryIdsList,List<Long> casteCategoryGroupIdsList, 
 		List<Long> casteIdsList,Long locationLevelId,Long userId, Long accessValue,String selectedRadio)
 	{
 		CadreCommitteeRolesInfoVO returnVO = new CadreCommitteeRolesInfoVO();
@@ -6875,193 +6875,53 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 			List<Long> wardIdsList  = null;
 			List<Long> committeeTypeIdsList  = new ArrayList<Long>();
 			
-			if(committeeTypeId > 0)
+			if(committeeTypeId != null && Long.valueOf(committeeTypeId).longValue() != 0L)
 				committeeTypeIdsList.add(committeeTypeId);
-				Constituency constituency = constituencyDAO.get(Long.valueOf(locationValue));
-				String areaType=constituency.getAreaType();
-				
-				if(selectedRadio.equalsIgnoreCase("2")) //Mandal/Muncipality
-				{
-					locationLevelId = 6l;
-					if(areaType.equalsIgnoreCase("RURAL"))
-						locationIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.TEHSIL,IConstants.VOTER_DATA_PUBLICATION_ID);
-					else if(areaType.equalsIgnoreCase("RURAL-URBAN"))
-					{
-						locationIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.TEHSIL,IConstants.VOTER_DATA_PUBLICATION_ID);
-						wardIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.LOCAL_ELECTION_BODY,IConstants.VOTER_DATA_PUBLICATION_ID);
-					}
-					else if(areaType.equalsIgnoreCase("URBAN"))
-					{
-						wardIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.LOCAL_ELECTION_BODY,IConstants.VOTER_DATA_PUBLICATION_ID);	
-					}
-				}
-				else if(selectedRadio.equalsIgnoreCase("1"))
-				{
-					locationLevelId = 5l;
-					if(areaType.equalsIgnoreCase("RURAL"))
-					{
-					locationIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.PANCHAYAT,IConstants.VOTER_DATA_PUBLICATION_ID);
-					}
-					else if(areaType.equalsIgnoreCase("RURAL-URBAN"))
-					{
-						//wardIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.WARD,IConstants.VOTER_DATA_PUBLICATION_ID);
-						locationIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.PANCHAYAT,IConstants.VOTER_DATA_PUBLICATION_ID);
-						wardIdsList =assemblyLocalElectionBodyWardDAO.getWardsByconstituency(Long.valueOf(locationValue));
-					}
-					else if(areaType.equalsIgnoreCase("URBAN"))
-					{
-						wardIdsList =assemblyLocalElectionBodyWardDAO.getWardsByconstituency(Long.valueOf(locationValue));	
-					}
-				}
-				
-				if(locationValue != null && Long.valueOf(locationValue) == 3L) //Constituency
-				{
-					locationIdsList = new ArrayList<Long>();
-					locationIdsList.add( Long.valueOf(locationValue));
-				}
-
 			
-			if(locationIdsList == null)
+			locationIdsList = new ArrayList<Long>();
+			if(locationValue != null && Long.valueOf(locationValue).longValue() != 0L)
 			{
-				if(locationLevelId.longValue() == 0L || locationLevelId.longValue() == 1L) // on load or state Access
+				locationIdsList.add( Long.valueOf(locationValue));
+			
+			Constituency constituency = constituencyDAO.get(Long.valueOf(locationValue));
+			String areaType=constituency.getAreaType();
+			
+			if(selectedRadio.equalsIgnoreCase("2")) //Mandal/Muncipality
+			{
+				locationLevelId = 6l;
+				if(areaType.equalsIgnoreCase("RURAL"))
+					locationIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.TEHSIL,IConstants.VOTER_DATA_PUBLICATION_ID);
+				else if(areaType.equalsIgnoreCase("RURAL-URBAN"))
 				{
-					locationIdsList = new ArrayList<Long>();
-					
-					if(userAccessType.equalsIgnoreCase("STATE") || userAccessType.equalsIgnoreCase("ALL"))
-					{
-						locationIdsList.add(accessValue);
-						locationLevelId =1L;
-					}
-					else if(userAccessType.equalsIgnoreCase("DISTRICT"))
-					{
-						locationIdsList.add(accessValue);
-						locationLevelId = 2L;
-					}
-					else if(userAccessType.equalsIgnoreCase("MP") )
-					{						
-						locationIdsList.add(accessValue);
-						locationLevelId = 3L;
-					}
-					else if(userAccessType.equalsIgnoreCase("MLA"))
-					{
-						locationIdsList.add(accessValue);
-						locationLevelId = 4L;
-					}
-					else if(userAccessType.equalsIgnoreCase("AP") || userAccessType.equalsIgnoreCase("TS"))
-					{						
-						locationLevelId = 2L;
-					}
-					else
-					{
-						locationLevelId = 2L;
-						
-						List<Object[]> accessDistrictsList = userDistrictAccessInfoDAO.findByUser(userId);
-						if(accessDistrictsList != null && accessDistrictsList.size()>0)
-						{
-							locationIdsList = new ArrayList<Long>();
-							for (Object[] districtId : accessDistrictsList) {
-								locationIdsList.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
-							}
-						}	
-					}
-				}			
-				else if(locationLevelId.longValue() == 2L) // District Access
-				{
-					List<Object[]> locationIds = userDistrictAccessInfoDAO.findByUser(userId);
-					if(locationIds != null && locationIds.size()>0)
-					{
-						locationIdsList = new ArrayList<Long>();
-						for (Object[] districtId : locationIds) {
-							locationIdsList.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
-						}
-					}
-					else if(userAccessType.equalsIgnoreCase("DISTRICT"))
-					{
-						locationIdsList = new ArrayList<Long>();
-						locationIdsList.add(accessValue);
-					}
+					locationIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.TEHSIL,IConstants.VOTER_DATA_PUBLICATION_ID);
+					wardIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.LOCAL_ELECTION_BODY,IConstants.VOTER_DATA_PUBLICATION_ID);
 				}
-				else if(locationLevelId.longValue() == 3L) // Parliament Access
+				else if(areaType.equalsIgnoreCase("URBAN"))
 				{
-					locationIdsList = new ArrayList<Long>();
-					List<Object[]> locationIds = userDistrictAccessInfoDAO.findByUser(userId);
-					List<Long> districtIdsList = new ArrayList<Long>();
-					if(locationIds != null && locationIds.size()>0)
-					{
-						for (Object[] districtId : locationIds) {
-							districtIdsList.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
-						}
-						
-						locationIds =  delimitationConstituencyDAO.getLatestConstituencyListByElectionTypeInDistricts(1L, districtIdsList);
-						if(locationIds != null && locationIds.size()>0)
-						{
-							for (Object[] districtId : locationIds){
-								locationIdsList.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
-							}
-						}
-					}
-					if(userAccessType.equalsIgnoreCase("DISTRICT"))
-					{
-						districtIdsList.add(accessValue);
-						locationIds =  delimitationConstituencyDAO.getLatestConstituencyListByElectionTypeInDistricts(1L, districtIdsList);
-						if(locationIds != null && locationIds.size()>0)
-						{
-							for (Object[] districtId : locationIds){
-								locationIdsList.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
-							}
-						}
-					}
-					else if(userAccessType.equalsIgnoreCase("MP"))
-					{
-						locationIdsList.add(accessValue);
-					}
-				}			
-				else if(locationLevelId.longValue() == 4L) // Constituency
-				{
-					locationIdsList = new ArrayList<Long>();
-					
-						List<Object[]> locationIds = userDistrictAccessInfoDAO.findByUser(userId);
-						List<Long> districtIdsList = new ArrayList<Long>();
-						if(locationIds != null && locationIds.size()>0)
-						{
-							for (Object[] districtId : locationIds) {
-								districtIdsList.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
-							}
-							
-							locationIds =  constituencyDAO.getConstituencyListByDistrictIdsList(districtIdsList);
-							if(locationIds != null && locationIds.size()>0)
-							{
-								for (Object[] districtId : locationIds){
-									locationIdsList.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
-								}
-							}
-						}
-						else if(userAccessType.equalsIgnoreCase("DISTRICT"))
-						{
-							districtIdsList.add(accessValue);
-							locationIds =  constituencyDAO.getConstituencyListByDistrictIdsList(districtIdsList);
-							if(locationIds != null && locationIds.size()>0)
-							{
-								for (Object[] districtId : locationIds){
-									locationIdsList.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
-								}
-							}
-						}
-						else if(userAccessType.equalsIgnoreCase("MP"))
-						{
-							List<Long> pcList  = new ArrayList<Long>();
-							pcList.add(accessValue);						
-							locationIdsList = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(pcList);
-						}
-						else if(userAccessType.equalsIgnoreCase("MLA"))
-						{
-							locationIdsList.add(accessValue);
-						}
+					wardIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.LOCAL_ELECTION_BODY,IConstants.VOTER_DATA_PUBLICATION_ID);	
 				}
 			}
-						
-			List<Object[]> casteCategoryWiseCountList = tdpCommitteeMemberDAO.getCommitteeRoleCasteCategoryWiseDetailsByLocationType(positionIdsList,casteCategoryIdsList,casteCategoryGroupIdsList, 
-					casteIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType);
+			else if(selectedRadio.equalsIgnoreCase("1"))
+			{
+				locationLevelId = 5l;
+				if(areaType.equalsIgnoreCase("RURAL"))
+				{
+				locationIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.PANCHAYAT,IConstants.VOTER_DATA_PUBLICATION_ID);
+				}
+				else if(areaType.equalsIgnoreCase("RURAL-URBAN"))
+				{
+					//wardIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.WARD,IConstants.VOTER_DATA_PUBLICATION_ID);
+					locationIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.PANCHAYAT,IConstants.VOTER_DATA_PUBLICATION_ID);
+					wardIdsList =assemblyLocalElectionBodyWardDAO.getWardsByconstituency(Long.valueOf(locationValue));
+				}
+				else if(areaType.equalsIgnoreCase("URBAN"))
+				{
+					wardIdsList =assemblyLocalElectionBodyWardDAO.getWardsByconstituency(Long.valueOf(locationValue));	
+				}
+			}
+		  }
+		
+			List<Object[]> casteCategoryWiseCountList = tdpCommitteeMemberDAO.getCommitteeRoleCasteCategoryNameWiseDetailsByLocationType(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,null);
 			List<CadreCommitteeRolesInfoVO> casteCategoryVOList = new ArrayList<CadreCommitteeRolesInfoVO>();
 			if(casteCategoryWiseCountList != null && casteCategoryWiseCountList.size()>0)
 			{
@@ -7108,8 +6968,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 				}
 			}
 			
-			List<Object[]> casteWiseCountList = tdpCommitteeMemberDAO.getCommitteeRoleCasteWiseDetailsByLocationType(positionIdsList,casteCategoryIdsList,casteCategoryGroupIdsList, 
-					casteIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType);
+			List<Object[]> casteWiseCountList = tdpCommitteeMemberDAO.getCommitteeRoleCasteNameWiseDetailsByLocationType(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,null);
 			
 			List<CadreCommitteeRolesInfoVO> castewiseVOList = new ArrayList<CadreCommitteeRolesInfoVO>();
 			if(casteWiseCountList != null && casteWiseCountList.size()>0)
@@ -7156,12 +7015,739 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 				}
 			}
 			
-			List<Object[]> cadreDetails = tdpCommitteeMemberDAO.getCommitteeRoleAgeWiseDetailsByLocationType(positionIdsList,casteCategoryIdsList,casteCategoryGroupIdsList, 
-					casteIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType);
+			List<Object[]> cadreDetails = tdpCommitteeMemberDAO.getCommitteeRoleAgerangeWiseDetailsByLocationType(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,null);
 			List<CadreCommitteeRolesInfoVO> ageRangeVOList = new LinkedList<CadreCommitteeRolesInfoVO>();
+						
+			if(cadreDetails != null && cadreDetails.size()>0)			
+			{				
+				Long totalGenderCount = 0L;
+				for (Object[] param : cadreDetails) {					
+					Long maleCount = 0L;
+					Long femaleCount = 0L;	
+					boolean isAvailable = false;
+					CadreCommitteeRolesInfoVO cadreVO = getMatchedByAgeRange(ageRangeVOList,param[1] != null ? param[1].toString().trim():"");
+					
+					if(cadreVO != null)
+					{
+						isAvailable = true;
+						maleCount = cadreVO.getMaleCount();
+						femaleCount = cadreVO.getFemaleCount();
+					}
+					else
+					{
+						cadreVO = new CadreCommitteeRolesInfoVO();
+						cadreVO.setAgeRange(param[1] != null ? param[1].toString():"");
+					}
+					
+					String genderType = param[2] != null ? param[2].toString():"";
+					
+					if(genderType.equalsIgnoreCase("M"))
+					{
+						Long tempCount = param[3] != null ? Long.valueOf(param[3].toString()):0L;
+						maleCount = maleCount+tempCount;
+						//totalMaleCount = totalMaleCount+tempCount;
+					}
+					else if(genderType.equalsIgnoreCase("F"))
+					{
+						Long tempCount = param[3] != null ? Long.valueOf(param[3].toString()):0L;
+						femaleCount = femaleCount+tempCount;
+						//totalFemaleCount = totalFemaleCount+tempCount;
+					}
+					cadreVO.setMaleCount(maleCount);
+					cadreVO.setFemaleCount(femaleCount);
+					totalGenderCount = maleCount + femaleCount;
+					cadreVO.setTotalCount(totalGenderCount);
+					
+					if(!isAvailable)
+						ageRangeVOList.add(cadreVO);
+				}
+			
+			}
+			
+			List<Object[]> genderWiseResults = tdpCommitteeMemberDAO.getCommitteeRolesGenderWiseDetailsByLocation(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,null,null);
 			Long totalCount = 0L;
 			Long totalMaleCount = 0L;
 			Long totalFemaleCount = 0L;
+			if(genderWiseResults != null && genderWiseResults.size()>0)			
+			{				
+				for (Object[] param : genderWiseResults) {					
+					String genderType = param[0] != null ? param[0].toString():"";
+					
+					if(genderType.equalsIgnoreCase("M"))
+					{
+						Long tempCount = param[1] != null ? Long.valueOf(param[1].toString()):0L;
+						totalMaleCount = totalMaleCount+tempCount;
+					}
+					else if(genderType.equalsIgnoreCase("F"))
+					{
+						Long tempCount = param[1] != null ? Long.valueOf(param[1].toString()):0L;
+						totalFemaleCount = totalFemaleCount+tempCount;
+					}
+				}
+			}
+			
+			List<CadreCommitteeRolesInfoVO> roleVOList = new ArrayList<CadreCommitteeRolesInfoVO>();
+			if(totalMaleCount.longValue() != 0L || totalFemaleCount.longValue() != 0L)
+			{
+				totalCount = totalMaleCount + totalFemaleCount;
+				CadreCommitteeRolesInfoVO cadreVO = new CadreCommitteeRolesInfoVO();
+				cadreVO.setMaleCount(totalMaleCount);
+				cadreVO.setFemaleCount(totalFemaleCount);
+				cadreVO.setTotalCount(totalCount);
+				roleVOList.add(cadreVO);
+			}
+						
+			if(roleVOList != null && roleVOList.size()>0)
+			{
+				returnVO.setCadreCommitteeRolesInfoVOList(roleVOList);
+			}
+			if(roleVOList != null && roleVOList.size()>0)
+			{
+				returnVO.setCasteCategoryWiseList(casteCategoryVOList);
+			}
+			if(castewiseVOList != null && castewiseVOList.size()>0)
+			{
+				returnVO.setCasteWiseList(castewiseVOList);
+			}
+			if(ageRangeVOList != null && ageRangeVOList.size()>0)
+			{
+				returnVO.setAgeRangeWiseList(ageRangeVOList);
+			}
+			
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Raised in getConstituencyOverviewCommitteeRoleAgeWiseDetailsByLocationType() ");
+		}
+		
+		return returnVO;
+	}
+
+	public CadreCommitteeRolesInfoVO getCommitteeRoleAgeWiseDetailsByLocationType(String userAccessType,String locationValue,Long committeeTypeId,List<Long> positionIdsList,List<Long> casteCategoryIdsList,List<Long> casteCategoryGroupIdsList, 
+		List<Long> casteIdsList,Long locationLevelId,Long userId, Long accessValue,String selectedRadio)
+	{
+		CadreCommitteeRolesInfoVO returnVO = new CadreCommitteeRolesInfoVO();
+		try {
+			
+			List<Long> locationIdsList = new ArrayList<Long>();
+			List<Long> wardIdsList  = null;
+			List<Long> committeeTypeIdsList  = new ArrayList<Long>();
+			Long actuallevelId = locationLevelId;
+			String segritageQuery = null;
+			if(selectedRadio.equalsIgnoreCase("2")) //Mandal/Muncipality
+			{
+				segritageQuery = "MandalORTown";
+			}
+			else if(selectedRadio.equalsIgnoreCase("1"))
+			{
+				segritageQuery = "VillageORWard";
+			}
+			if(locationValue != null && Long.valueOf(locationValue).longValue() != 0L && Long.valueOf(locationLevelId).longValue() == 3L) //Constituency
+			{
+				return  getConstituencyOverviewCommitteeRoleAgeWiseDetailsByLocationType(userAccessType, locationValue, committeeTypeId, positionIdsList, 
+						casteCategoryIdsList, casteCategoryGroupIdsList, casteIdsList, locationLevelId, userId, accessValue, selectedRadio);
+			}
+			
+			if(committeeTypeId != null && Long.valueOf(committeeTypeId).longValue() != 0L)
+				committeeTypeIdsList.add(committeeTypeId);
+					
+				if(locationValue != null && Long.valueOf(locationLevelId) == 2L) //District
+				{			
+					if(locationValue != null && Long.valueOf(locationValue).longValue() != 0L)
+					{
+						locationIdsList.add( Long.valueOf(locationValue));
+					}
+						
+				}
+				else if(locationValue != null && Long.valueOf(locationLevelId).longValue() == 3L) //Constituency
+				{
+					if(locationValue != null && Long.valueOf(locationValue).longValue() != 0L)
+					{
+						locationIdsList.add( Long.valueOf(locationValue));
+					
+						Constituency constituency = constituencyDAO.get(Long.valueOf(locationValue));
+						String areaType=constituency.getAreaType();
+						
+						if(selectedRadio.equalsIgnoreCase("2")) //Mandal/Muncipality
+						{
+							locationLevelId = 6l;
+							if(areaType.equalsIgnoreCase("RURAL"))
+								locationIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.TEHSIL,IConstants.VOTER_DATA_PUBLICATION_ID);
+							else if(areaType.equalsIgnoreCase("RURAL-URBAN"))
+							{
+								locationIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.TEHSIL,IConstants.VOTER_DATA_PUBLICATION_ID);
+								wardIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.LOCAL_ELECTION_BODY,IConstants.VOTER_DATA_PUBLICATION_ID);
+							}
+							else if(areaType.equalsIgnoreCase("URBAN"))
+							{
+								wardIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.LOCAL_ELECTION_BODY,IConstants.VOTER_DATA_PUBLICATION_ID);	
+							}
+						}
+						else if(selectedRadio.equalsIgnoreCase("1"))
+						{
+							locationLevelId = 5l;
+							if(areaType.equalsIgnoreCase("RURAL"))
+							{
+							locationIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.PANCHAYAT,IConstants.VOTER_DATA_PUBLICATION_ID);
+							}
+							else if(areaType.equalsIgnoreCase("RURAL-URBAN"))
+							{
+								//wardIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.WARD,IConstants.VOTER_DATA_PUBLICATION_ID);
+								locationIdsList = boothDAO.getLocationIds(Long.valueOf(locationValue),IConstants.PANCHAYAT,IConstants.VOTER_DATA_PUBLICATION_ID);
+								wardIdsList =assemblyLocalElectionBodyWardDAO.getWardsByconstituency(Long.valueOf(locationValue));
+							}
+							else if(areaType.equalsIgnoreCase("URBAN"))
+							{
+								wardIdsList =assemblyLocalElectionBodyWardDAO.getWardsByconstituency(Long.valueOf(locationValue));	
+							}
+						}
+				  }
+				}
+				else if(locationValue != null && Long.valueOf(locationLevelId).longValue() == 4L) //Parliament
+				{
+					if(locationValue != null && Long.valueOf(locationValue).longValue() != 0L)
+					{
+						locationIdsList.add( Long.valueOf(locationValue));
+					}
+						
+				}
+			boolean isLevelIdChanged = false;
+			
+			if(locationIdsList == null || locationIdsList.size() ==0)
+			{
+				if(locationLevelId.longValue() == 0L || locationLevelId.longValue() == 1L) // on load or state Access
+				{
+					locationIdsList = new ArrayList<Long>();
+					
+					if(userAccessType.equalsIgnoreCase("STATE") || userAccessType.equalsIgnoreCase("ALL"))
+					{
+						locationLevelId =1L;			
+						List<Object[]> accessDistrictsList = userDistrictAccessInfoDAO.findByUser(userId);
+						if(accessDistrictsList != null && accessDistrictsList.size()>0)
+						{
+							isLevelIdChanged = true;
+							locationLevelId =2L;
+							for (Object[] districtId : accessDistrictsList) {
+								locationIdsList.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
+							}
+						}	
+						else
+						{
+							locationIdsList.add(accessValue);							
+						}
+					}
+					else if(userAccessType.equalsIgnoreCase("DISTRICT"))
+					{
+						locationIdsList.add(accessValue);
+						locationLevelId = 2L;
+					}
+					else if(userAccessType.equalsIgnoreCase("MP") )
+					{						
+						locationIdsList.add(accessValue);
+						locationLevelId = 4L;
+					}
+					else if(userAccessType.equalsIgnoreCase("MLA"))
+					{
+						locationIdsList.add(accessValue);
+						locationLevelId = 3L;
+					}
+					else if(userAccessType.equalsIgnoreCase("AP") || userAccessType.equalsIgnoreCase("TS"))
+					{						
+						locationLevelId = 2L;
+						List<Object[]> accessDistrictsList = userDistrictAccessInfoDAO.findByUser(userId);
+						if(accessDistrictsList != null && accessDistrictsList.size()>0)
+						{
+							locationIdsList = new ArrayList<Long>();
+							for (Object[] districtId : accessDistrictsList) {
+								locationIdsList.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
+							}
+						}	
+					}
+					else
+					{
+						locationLevelId = 2L;
+						
+						List<Object[]> accessDistrictsList = userDistrictAccessInfoDAO.findByUser(userId);
+						if(accessDistrictsList != null && accessDistrictsList.size()>0)
+						{
+							locationIdsList = new ArrayList<Long>();
+							for (Object[] districtId : accessDistrictsList) {
+								locationIdsList.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
+							}
+						}	
+					}
+				}			
+				else if(locationLevelId.longValue() == 2L) // District Access
+				{
+					List<Object[]> locationIds = userDistrictAccessInfoDAO.findByUser(userId);
+					if(locationIds != null && locationIds.size()>0)
+					{
+						isLevelIdChanged = true;
+						locationLevelId =2L;
+						locationIdsList = new ArrayList<Long>();
+						for (Object[] districtId : locationIds) {
+							locationIdsList.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
+						}
+					}
+					else if(userAccessType.equalsIgnoreCase("DISTRICT"))
+					{
+						locationIdsList = new ArrayList<Long>();
+						locationIdsList.add(accessValue);
+					}
+					
+					// get next level overview details
+					
+					Long descriptionLevelId = 0L;
+
+					if(locationIdsList != null && locationIdsList.size()>0)
+					{
+						if(actuallevelId != 3)
+						{
+							if(isLevelIdChanged)
+								descriptionLevelId = actuallevelId;
+							else
+								descriptionLevelId = actuallevelId + 1;
+						}
+						else{
+							descriptionLevelId = 6L;
+						}
+					}
+					else
+					{
+						descriptionLevelId = actuallevelId; 
+					}
+					
+					List<Object[]> genderWiseCountList = tdpCommitteeMemberDAO.getCommitteeRolesGenderWiseDetailsByLocation(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,segritageQuery,descriptionLevelId);
+					
+					List<CadreCommitteeRolesInfoVO> nextLevelList = new ArrayList<CadreCommitteeRolesInfoVO>();
+					
+					if(genderWiseCountList != null && genderWiseCountList.size()>0)
+					{
+						Long totalGenderCount = 0L;				
+						
+						for (Object[] param : genderWiseCountList) {
+							
+							totalGenderCount = 0L;
+							Long maleCount = 0L;
+							Long femaleCount = 0L;
+							
+							boolean isAvailable =false;
+							String genderType = param[0] != null ? param[0].toString():"";
+							
+							CadreCommitteeRolesInfoVO  cadreVO = getMatchedByLocationId(nextLevelList,param[2] != null ? Long.valueOf(param[2].toString().trim()):0L);
+
+							if(cadreVO != null)
+							{
+								
+								
+								isAvailable = true;
+								maleCount = cadreVO.getMaleCount();
+								femaleCount = cadreVO.getFemaleCount();
+							}
+							else
+							{
+								cadreVO = new CadreCommitteeRolesInfoVO();
+								cadreVO.setLocationId(param[2] != null ? param[2].toString().trim():"0");
+								cadreVO.setLocationName(param[3] != null ?param[3].toString().trim():"0");
+							}
+							
+							if(genderType.equalsIgnoreCase("M"))
+							{						
+								Long tempCount = param[1] != null ? Long.valueOf(param[1].toString()):0L;
+								maleCount = maleCount + tempCount;						
+							}
+							else if(genderType.equalsIgnoreCase("F"))
+							{
+								Long tempCount = param[1] != null ? Long.valueOf(param[1].toString()):0L;
+								femaleCount = femaleCount + tempCount;
+							}
+							
+							cadreVO.setMaleCount(maleCount);
+							cadreVO.setFemaleCount(femaleCount);
+							totalGenderCount = maleCount + femaleCount;
+							cadreVO.setTotalCount(totalGenderCount);
+							
+							if(!isAvailable)
+								nextLevelList.add(cadreVO);
+						}
+					}
+					
+					if(nextLevelList != null && nextLevelList.size()>0)
+					{
+						returnVO.setLocationWiseList(nextLevelList);
+					}
+					
+					returnVO.setLocationId(descriptionLevelId.toString());
+					
+					if(descriptionLevelId.longValue() == 2L)
+						returnVO.setLocationName("District");
+					else if(descriptionLevelId.longValue() == 3L)
+						returnVO.setLocationName("Constituency");
+					else if(descriptionLevelId.longValue() == 4L)
+						returnVO.setLocationName("Parliament");
+					else if(descriptionLevelId.longValue() == 5L)
+						returnVO.setLocationName(IConstants.TEHSIL);
+					else if(descriptionLevelId.longValue() == 6L)
+						returnVO.setLocationName(IConstants.PANCHAYAT);
+					
+					return returnVO;
+
+				}
+				else if(locationLevelId.longValue() == 4L) // Parliament Access
+				{
+					locationIdsList = new ArrayList<Long>();
+					List<Object[]> locationIds = userDistrictAccessInfoDAO.findByUser(userId);
+					List<Long> districtIdsList = new ArrayList<Long>();
+					if(locationIds != null && locationIds.size()>0)
+					{
+						for (Object[] districtId : locationIds) {
+							districtIdsList.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
+						}
+						
+						locationIds =  delimitationConstituencyDAO.getLatestConstituencyListByElectionTypeInDistricts(1L, districtIdsList);
+						if(locationIds != null && locationIds.size()>0)
+						{
+							for (Object[] districtId : locationIds){
+								locationIdsList.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
+							}
+						}
+					}
+					if(userAccessType.equalsIgnoreCase("DISTRICT"))
+					{
+						districtIdsList.add(accessValue);
+						locationIds =  delimitationConstituencyDAO.getLatestConstituencyListByElectionTypeInDistricts(1L, districtIdsList);
+						if(locationIds != null && locationIds.size()>0)
+						{
+							for (Object[] districtId : locationIds){
+								locationIdsList.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
+							}
+						}
+					}
+					else if(userAccessType.equalsIgnoreCase("MP"))
+					{
+						locationIdsList.add(accessValue);
+					}
+					
+					// get next level overview details
+					
+					Long descriptionLevelId = 0L;
+
+					if(locationIdsList != null && locationIdsList.size()>0)
+					{
+						if(actuallevelId != 3)
+						{
+							descriptionLevelId = actuallevelId + 1;
+						}
+						else{
+							descriptionLevelId = 6L;
+						}
+					}
+					else
+					{
+						descriptionLevelId = actuallevelId; 
+					}
+					List<Object[]> genderWiseCountList = tdpCommitteeMemberDAO.getCommitteeRolesGenderWiseDetailsByLocation(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,segritageQuery,descriptionLevelId);
+					
+					List<CadreCommitteeRolesInfoVO> nextLevelList = new ArrayList<CadreCommitteeRolesInfoVO>();
+					
+					if(genderWiseCountList != null && genderWiseCountList.size()>0)
+					{
+						Long totalGenderCount = 0L;				
+						
+						for (Object[] param : genderWiseCountList) {
+							
+							totalGenderCount = 0L;
+							Long maleCount = 0L;
+							Long femaleCount = 0L;
+							
+							boolean isAvailable =false;
+							String genderType = param[0] != null ? param[0].toString():"";
+							
+							CadreCommitteeRolesInfoVO  cadreVO = getMatchedByLocationId(nextLevelList,param[2] != null ? Long.valueOf(param[2].toString().trim()):0L);
+
+							if(cadreVO != null)
+							{
+								
+								
+								isAvailable = true;
+								maleCount = cadreVO.getMaleCount();
+								femaleCount = cadreVO.getFemaleCount();
+							}
+							else
+							{
+								cadreVO = new CadreCommitteeRolesInfoVO();
+								cadreVO.setLocationId(param[2] != null ? param[2].toString().trim():"0");
+								cadreVO.setLocationName(param[3] != null ?param[3].toString().trim():"0");
+							}
+							
+							if(genderType.equalsIgnoreCase("M"))
+							{						
+								Long tempCount = param[1] != null ? Long.valueOf(param[1].toString()):0L;
+								maleCount = maleCount + tempCount;						
+							}
+							else if(genderType.equalsIgnoreCase("F"))
+							{
+								Long tempCount = param[1] != null ? Long.valueOf(param[1].toString()):0L;
+								femaleCount = femaleCount + tempCount;
+							}
+							
+							cadreVO.setMaleCount(maleCount);
+							cadreVO.setFemaleCount(femaleCount);
+							totalGenderCount = maleCount + femaleCount;
+							cadreVO.setTotalCount(totalGenderCount);
+							
+							if(!isAvailable)
+								nextLevelList.add(cadreVO);
+						}
+						
+						
+					}
+					
+					if(nextLevelList != null && nextLevelList.size()>0)
+					{
+						returnVO.setLocationWiseList(nextLevelList);
+					}
+					
+					returnVO.setLocationId(descriptionLevelId.toString());
+					
+					if(descriptionLevelId.longValue() == 2L)
+						returnVO.setLocationName("District");
+					else if(descriptionLevelId.longValue() == 3L)
+						returnVO.setLocationName("Constituency");
+					else if(descriptionLevelId.longValue() == 4L)
+						returnVO.setLocationName("Parliament");
+					else if(descriptionLevelId.longValue() == 5L)
+						returnVO.setLocationName(IConstants.TEHSIL);
+					else if(descriptionLevelId.longValue() == 6L)
+						returnVO.setLocationName(IConstants.PANCHAYAT);
+					
+					return returnVO;
+				}			
+				else if(locationLevelId.longValue() == 3L) // Constituency
+				{
+					locationIdsList = new ArrayList<Long>();
+					
+						List<Object[]> locationIds = userDistrictAccessInfoDAO.findByUser(userId);
+						List<Long> districtIdsList = new ArrayList<Long>();
+						if(locationIds != null && locationIds.size()>0)
+						{
+							for (Object[] districtId : locationIds) {
+								districtIdsList.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
+							}
+							
+							locationIds =  constituencyDAO.getConstituencyListByDistrictIdsList(districtIdsList);
+							if(locationIds != null && locationIds.size()>0)
+							{
+								for (Object[] districtId : locationIds){
+									locationIdsList.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
+								}
+							}
+						}
+						else if(userAccessType.equalsIgnoreCase("DISTRICT"))
+						{
+							districtIdsList.add(accessValue);
+							locationIds =  constituencyDAO.getConstituencyListByDistrictIdsList(districtIdsList);
+							if(locationIds != null && locationIds.size()>0)
+							{
+								for (Object[] districtId : locationIds){
+									locationIdsList.add(districtId[0] != null ? Long.valueOf(districtId[0].toString().trim()):0L);
+								}
+							}
+						}
+						else if(userAccessType.equalsIgnoreCase("MP"))
+						{
+							List<Long> pcList  = new ArrayList<Long>();
+							pcList.add(accessValue);						
+							locationIdsList = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesForAListOfParliamentConstituency(pcList);
+						}
+						else if(userAccessType.equalsIgnoreCase("MLA"))
+						{
+							locationIdsList.add(accessValue);
+						}
+						// get next level overview details
+						
+						Long descriptionLevelId = 0L;
+
+						descriptionLevelId = actuallevelId; 
+
+						List<Object[]> genderWiseCountList = tdpCommitteeMemberDAO.getCommitteeRolesGenderWiseDetailsByLocation(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,segritageQuery,descriptionLevelId);
+						
+						List<CadreCommitteeRolesInfoVO> nextLevelList = new ArrayList<CadreCommitteeRolesInfoVO>();
+						
+						if(genderWiseCountList != null && genderWiseCountList.size()>0)
+						{
+							Long totalGenderCount = 0L;				
+							
+							for (Object[] param : genderWiseCountList) {
+								
+								totalGenderCount = 0L;
+								Long maleCount = 0L;
+								Long femaleCount = 0L;
+								
+								boolean isAvailable =false;
+								String genderType = param[0] != null ? param[0].toString():"";
+								
+								CadreCommitteeRolesInfoVO  cadreVO = getMatchedByLocationId(nextLevelList,param[2] != null ? Long.valueOf(param[2].toString().trim()):0L);
+
+								if(cadreVO != null)
+								{
+									
+									
+									isAvailable = true;
+									maleCount = cadreVO.getMaleCount();
+									femaleCount = cadreVO.getFemaleCount();
+								}
+								else
+								{
+									cadreVO = new CadreCommitteeRolesInfoVO();
+									cadreVO.setLocationId(param[2] != null ? param[2].toString().trim():"0");
+									cadreVO.setLocationName(param[3] != null ?param[3].toString().trim():"0");
+								}
+								
+								if(genderType.equalsIgnoreCase("M"))
+								{						
+									Long tempCount = param[1] != null ? Long.valueOf(param[1].toString()):0L;
+									maleCount = maleCount + tempCount;						
+								}
+								else if(genderType.equalsIgnoreCase("F"))
+								{
+									Long tempCount = param[1] != null ? Long.valueOf(param[1].toString()):0L;
+									femaleCount = femaleCount + tempCount;
+								}
+								
+								cadreVO.setMaleCount(maleCount);
+								cadreVO.setFemaleCount(femaleCount);
+								totalGenderCount = maleCount + femaleCount;
+								cadreVO.setTotalCount(totalGenderCount);
+								
+								if(!isAvailable)
+									nextLevelList.add(cadreVO);
+							}
+						}
+						
+						if(nextLevelList != null && nextLevelList.size()>0)
+						{
+							returnVO.setLocationWiseList(nextLevelList);
+						}
+						
+						returnVO.setLocationId(descriptionLevelId.toString());
+						
+						if(descriptionLevelId.longValue() == 2L)
+							returnVO.setLocationName("District");
+						else if(descriptionLevelId.longValue() == 3L)
+							returnVO.setLocationName("Constituency");
+						else if(descriptionLevelId.longValue() == 4L)
+							returnVO.setLocationName("Parliament");
+						else if(descriptionLevelId.longValue() == 5L)
+							returnVO.setLocationName(IConstants.TEHSIL);
+						else if(descriptionLevelId.longValue() == 6L)
+							returnVO.setLocationName(IConstants.PANCHAYAT);
+						
+						return returnVO;
+				}
+			}
+						
+			List<Object[]> casteCategoryWiseCountList = tdpCommitteeMemberDAO.getCommitteeRoleCasteCategoryNameWiseDetailsByLocationType(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,segritageQuery);
+			List<CadreCommitteeRolesInfoVO> casteCategoryVOList = new ArrayList<CadreCommitteeRolesInfoVO>();
+			if(casteCategoryWiseCountList != null && casteCategoryWiseCountList.size()>0)
+			{
+				Long totalGenderCount = 0L;
+				
+				for (Object[] param : casteCategoryWiseCountList) 
+				{
+					Long maleCount = 0L;
+					Long femaleCount = 0L;
+					boolean isAvailable = false;
+					CadreCommitteeRolesInfoVO cadreVO = getMatchedByCasteCategoryName(casteCategoryVOList,param[1] != null ? param[1].toString().trim():"");
+					
+					if(cadreVO != null)
+					{
+						isAvailable = true;
+						maleCount = cadreVO.getMaleCount();
+						femaleCount = cadreVO.getFemaleCount();
+					}
+					else
+					{
+						cadreVO = new CadreCommitteeRolesInfoVO();
+						cadreVO.setCasteCategory(param[1] != null ? param[1].toString():"");
+					}
+					
+					String genderType = param[2] != null ? param[2].toString():"";
+					
+					if(genderType.equalsIgnoreCase("M"))
+					{
+						Long tempCount = param[3] != null ? Long.valueOf(param[3].toString()):0L;
+						maleCount = maleCount+tempCount;
+					}
+					else if(genderType.equalsIgnoreCase("F"))
+					{
+						Long tempCount = param[3] != null ? Long.valueOf(param[3].toString()):0L;
+						femaleCount = femaleCount+tempCount;
+					}
+					cadreVO.setMaleCount(maleCount);
+					cadreVO.setFemaleCount(femaleCount);
+					totalGenderCount = maleCount + femaleCount;
+					cadreVO.setTotalCount(totalGenderCount);
+					
+					if(!isAvailable)
+						casteCategoryVOList.add(cadreVO);
+				}
+			}
+			
+			List<Object[]> casteWiseCountList = tdpCommitteeMemberDAO.getCommitteeRoleCasteNameWiseDetailsByLocationType(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,segritageQuery);
+			Long totalCount = 0L;
+			Long totalMaleCount = 0L;
+			Long totalFemaleCount = 0L;
+			List<CadreCommitteeRolesInfoVO> castewiseVOList = new ArrayList<CadreCommitteeRolesInfoVO>();
+			if(casteWiseCountList != null && casteWiseCountList.size()>0)
+			{
+				
+				Long totalGenderCount = 0L;
+				for (Object[] param : casteWiseCountList) {					
+					Long maleCount = 0L;
+					Long femaleCount = 0L;	
+					boolean isAvailable = false;
+					CadreCommitteeRolesInfoVO cadreVO = getMatchedByCasteName(castewiseVOList,param[1] != null ? param[1].toString().trim():"");
+					
+					if(cadreVO != null)
+					{
+						isAvailable = true;
+						maleCount = cadreVO.getMaleCount();
+						femaleCount = cadreVO.getFemaleCount();
+					}
+					else
+					{
+						cadreVO = new CadreCommitteeRolesInfoVO();
+						cadreVO.setCaste(param[1] != null ? param[1].toString():"");
+					}
+					
+					String genderType = param[2] != null ? param[2].toString():"";
+					
+					if(genderType.equalsIgnoreCase("M"))
+					{
+						Long tempCount = param[3] != null ? Long.valueOf(param[3].toString()):0L;
+						maleCount = maleCount+tempCount;
+						totalMaleCount = totalMaleCount+tempCount;
+					}
+					else if(genderType.equalsIgnoreCase("F"))
+					{
+						Long tempCount = param[3] != null ? Long.valueOf(param[3].toString()):0L;
+						femaleCount = femaleCount+tempCount;
+						totalFemaleCount = totalFemaleCount+tempCount;
+					}
+					cadreVO.setMaleCount(maleCount);
+					cadreVO.setFemaleCount(femaleCount);
+					totalGenderCount = maleCount + femaleCount;
+					cadreVO.setTotalCount(totalGenderCount);
+					
+					if(!isAvailable)
+						castewiseVOList.add(cadreVO);
+				}
+			}
+			
+			List<Object[]> cadreDetails = tdpCommitteeMemberDAO.getCommitteeRoleAgerangeWiseDetailsByLocationType(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,segritageQuery);
+			List<CadreCommitteeRolesInfoVO> ageRangeVOList = new LinkedList<CadreCommitteeRolesInfoVO>();
+			
 			
 			if(cadreDetails != null && cadreDetails.size()>0)			
 			{				
@@ -7190,13 +7776,13 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 					{
 						Long tempCount = param[3] != null ? Long.valueOf(param[3].toString()):0L;
 						maleCount = maleCount+tempCount;
-						totalMaleCount = totalMaleCount+tempCount;
+						
 					}
 					else if(genderType.equalsIgnoreCase("F"))
 					{
 						Long tempCount = param[3] != null ? Long.valueOf(param[3].toString()):0L;
 						femaleCount = femaleCount+tempCount;
-						totalFemaleCount = totalFemaleCount+tempCount;
+						
 					}
 					cadreVO.setMaleCount(maleCount);
 					cadreVO.setFemaleCount(femaleCount);
@@ -7237,13 +7823,109 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 				returnVO.setAgeRangeWiseList(ageRangeVOList);
 			}
 			
+			// get next level overview details
+			
+			Long descriptionLevelId = 0L;
+
+			if(locationIdsList != null && locationIdsList.size()>0)
+			{
+				if(actuallevelId != 3)
+				{
+					descriptionLevelId = actuallevelId + 1;
+				}
+				else{
+					descriptionLevelId = 6L;
+				}
+			}
+			else if(actuallevelId.longValue() == 1L)
+			{
+				descriptionLevelId = actuallevelId+1; 
+			}
+			else if(actuallevelId.longValue() == 1L)
+			{
+				descriptionLevelId = actuallevelId; 
+			}
+			List<Object[]> genderWiseCountList = tdpCommitteeMemberDAO.getCommitteeRolesGenderWiseDetailsByLocation(positionIdsList,locationLevelId,locationIdsList,wardIdsList,committeeTypeIdsList,userAccessType,segritageQuery,descriptionLevelId);
+			
+			List<CadreCommitteeRolesInfoVO> nextLevelList = new ArrayList<CadreCommitteeRolesInfoVO>();
+			
+			if(genderWiseCountList != null && genderWiseCountList.size()>0)
+			{
+				Long totalGenderCount = 0L;				
+				
+				for (Object[] param : genderWiseCountList) {
+					
+					totalGenderCount = 0L;
+					Long maleCount = 0L;
+					Long femaleCount = 0L;
+					
+					boolean isAvailable =false;
+					String genderType = param[0] != null ? param[0].toString():"";
+					
+					CadreCommitteeRolesInfoVO  cadreVO = getMatchedByLocationId(nextLevelList,param[2] != null ? Long.valueOf(param[2].toString().trim()):0L);
+
+					if(cadreVO != null)
+					{
+						
+						
+						isAvailable = true;
+						maleCount = cadreVO.getMaleCount();
+						femaleCount = cadreVO.getFemaleCount();
+					}
+					else
+					{
+						cadreVO = new CadreCommitteeRolesInfoVO();
+						cadreVO.setLocationId(param[2] != null ? param[2].toString().trim():"0");
+						cadreVO.setLocationName(param[3] != null ?param[3].toString().trim():"0");
+					}
+					
+					if(genderType.equalsIgnoreCase("M"))
+					{						
+						Long tempCount = param[1] != null ? Long.valueOf(param[1].toString()):0L;
+						maleCount = maleCount + tempCount;						
+					}
+					else if(genderType.equalsIgnoreCase("F"))
+					{
+						Long tempCount = param[1] != null ? Long.valueOf(param[1].toString()):0L;
+						femaleCount = femaleCount + tempCount;
+					}
+					
+					cadreVO.setMaleCount(maleCount);
+					cadreVO.setFemaleCount(femaleCount);
+					totalGenderCount = maleCount + femaleCount;
+					cadreVO.setTotalCount(totalGenderCount);
+					
+					if(!isAvailable)
+						nextLevelList.add(cadreVO);
+				}
+				
+				
+			}
+			
+			if(nextLevelList != null && nextLevelList.size()>0)
+			{
+				returnVO.setLocationWiseList(nextLevelList);
+			}
+			
+			returnVO.setLocationId(descriptionLevelId.toString());
+			
+			if(descriptionLevelId.longValue() == 2L)
+				returnVO.setLocationName("District");
+			else if(descriptionLevelId.longValue() == 3L)
+				returnVO.setLocationName("Constituency");
+			else if(descriptionLevelId.longValue() == 4L)
+				returnVO.setLocationName("Parliament");
+			else if(descriptionLevelId.longValue() == 5L)
+				returnVO.setLocationName(IConstants.TEHSIL);
+			else if(descriptionLevelId.longValue() == 6L)
+				returnVO.setLocationName(IConstants.PANCHAYAT);
+				
 		} catch (Exception e) {
 			LOG.error("Exception Raised in getCommitteeRoleAgeWiseDetailsByLocationType() ");
 		}
 		
 		return returnVO;
 	}
-	
 	private CadreCommitteeRolesInfoVO getMatchedByCasteCategoryName(List<CadreCommitteeRolesInfoVO> list,String casteCategoryName)
 	{
 		CadreCommitteeRolesInfoVO returnVO = null;
@@ -7308,4 +7990,24 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 		return returnVO;
 	}
 	
+	private CadreCommitteeRolesInfoVO getMatchedByLocationId(List<CadreCommitteeRolesInfoVO> list,Long locationId)
+	{
+		CadreCommitteeRolesInfoVO returnVO = null;
+		try {
+			
+			if(list != null && list.size()>0)
+			{
+				for (CadreCommitteeRolesInfoVO cadreCommitteeRolesInfoVO : list) 
+				{
+					if(Long.valueOf(cadreCommitteeRolesInfoVO.getLocationId()).longValue() == locationId)
+					{
+						return cadreCommitteeRolesInfoVO;
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Raised in getMatchedByCasteName() ");
+		}
+		return returnVO;
+	}
 }
