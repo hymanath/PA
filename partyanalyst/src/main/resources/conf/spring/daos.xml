@@ -1961,5 +1961,15 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="committeIvrDistrictDetailDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommitteIvrDistrictDetailDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="committeIvrTotalDetailDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommitteIvrTotalDetailDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
+	
 	<!--  end -->
 </beans>		

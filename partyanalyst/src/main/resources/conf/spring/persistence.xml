@@ -568,7 +568,12 @@
 				
 				<value>com.itgrids.partyanalyst.model.IvrCampaign</value>
 				<value>com.itgrids.partyanalyst.model.IvrOptions</value>
-				<value>com.itgrids.partyanalyst.model.IvrCampaignOptions</value>						
+				<value>com.itgrids.partyanalyst.model.IvrCampaignOptions</value>	
+				
+				<value>com.itgrids.partyanalyst.model.CommitteIvrDistrictDetail</value>
+				<value>com.itgrids.partyanalyst.model.CommitteIvrTotalDetail</value>
+				
+									
 				</list>
 			
 		</property>
