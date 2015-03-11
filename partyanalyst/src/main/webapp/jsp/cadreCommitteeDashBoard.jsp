@@ -62,6 +62,9 @@
     padding: 2px 8px;
 	font-size: 13px;
 }
+.popOverStyle{
+padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
+}
 
 
 	</style>
@@ -945,14 +948,15 @@
 						}
 						
 						str+='<li>';
-					str+='<a style = "cursor: pointer;" id="ivrPopOverAP" data-toggle="popover" onClick="showPopOver(\'AP\');" title="" data-content="<ul style=padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" >?</a>';					
+					str+='<a style = "cursor: pointer;" class="popOverCls" id="ivrPopOverAP" data-placement="bottom" data-toggle="popover"  onClick="showPopOver(\'AP\');" title="" data-html="true" data-content="<ul class=popOverStyle><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" >?</a>';					
 						str+=' </li>';
 						str+='</ul>';
 						str+='</td>';
 						//str+='</tr></table>';
-$("#ivrDivIdAP").show();
-							$( "#ivrDivIdAP" ).insertAfter( "#ApTRId" );
-							$("#ivrDivIdAP").html(str);
+					$("#ivrDivIdAP").show();
+					$( "#ivrDivIdAP" ).insertAfter( "#ApTRId" );
+					$('#ivrPopOverAP').popover();
+					$("#ivrDivIdAP").html(str);
 					 }else if(level == 'ward'){
 					  $("#ivrDivIdAP").html('');
 					   $("#ivrDivIdAP").hide();
@@ -1075,14 +1079,15 @@ $("#ivrDivIdAP").show();
 							}
 						}
 							str1+='<li>';
-							str1+='<a style = "cursor: pointer;" id="ivrPopOverTS" data-toggle="popover" onClick="showPopOver(\'TS\');" title="" data-content="<ul style=padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" >?</a>';
+							str1+='<a style = "cursor: pointer;" class="popOverCls" id="ivrPopOverTS" data-placement="bottom" data-toggle="popover" onClick="showPopOver(\'TS\');" title="" data-html="true" data-content="<ul class=popOverStyle><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" >?</a>';
 						
 							str1+=' </li>';
 							str1+='</ul>';
 							str1+='</td>';
 							$("#ivrDivIdTS").show();
 							$( "#ivrDivIdTS" ).insertAfter( "#tsTRId" );
-								$("#ivrDivIdTS").html(str1);
+							$("#ivrDivIdTS").html(str1);
+							$('#ivrPopOverTS').popover();
 						 }else if(level == 'ward'){
 						  $("#ivrDivIdTS").html('');
 						   $("#ivrDivIdTS").hide();
@@ -2009,12 +2014,12 @@ str+='</tr>';
 	
 	 $('body').on('click', function (e) {
 
-		if(!$(e.target).is('.multiLevelLiA') || !$(e.target).has('.multilevelCls') || !$(e.target).has('.multilevelli') || !$(e.target).is('#ivrPopOverTS') || !$(e.target).is('#ivrPopOverAP')){
+		if(!$(e.target).is('.multiLevelLiA') || !$(e.target).has('.multilevelCls') || !$(e.target).has('.multilevelli')){
 			$('.clearCls').each(function () {
 				var attrId= $(this).attr("id");
 				var trgt = e.target;
 
-				if(!$(this).is(trgt) && $(this).has(trgt).length === 0 && !$(trgt).is('.multiLevelCls') && !$(trgt).is('.multilevelli') && !$(trgt).is('.multiLevelLiA') && !$(trgt).is('#ivrPopOverTS') && !$(trgt).is('#ivrPopOverAP')) {
+				if(!$(this).is(trgt) && $(this).has(trgt).length === 0 && !$(trgt).is('.multiLevelCls') && !$(trgt).is('.multilevelli') && !$(trgt).is('.multiLevelLiA') ) {
 				
 					$("#"+attrId).popover('hide');
 					$("#"+attrId).removeClass('clearCls');
@@ -2024,6 +2029,16 @@ str+='</tr>';
 				
 			});
 		}
+		$('.popOverCls').each(function () {				
+				if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {					
+					//$("#"+attrId).popover('hide');
+					$(this).popover('hide');
+				}
+				
+		});
+	
+	
+				
 		
 		
 		/* $('.multiLevelCls').each(function () {
@@ -3004,22 +3019,14 @@ function exportToExcel()
 }
 
 function showPopOver(state){
-
-	$('#ivrPopOver'+state+'').popover({
-	html: true,
-	placement: "bottom",
-	title: '',
-	});
-	
-	if(!$("#ivrPopOver"+state+'').hasClass("clearCls")){
-		$('#ivrPopOver'+state+'').popover("show");
-		$('#ivrPopOver'+state+'').addClass("clearCls");
-		
-	}else{
-		$('#ivrPopOver'+state+'').removeClass("clearCls");
-		$('#ivrPopOver'+state+'').popover("hide");
-	}
+	$('#ivrPopOver'+state+'').popover();
 }
+
+
+
+
+  
+
 
 </script>		
 </body>
