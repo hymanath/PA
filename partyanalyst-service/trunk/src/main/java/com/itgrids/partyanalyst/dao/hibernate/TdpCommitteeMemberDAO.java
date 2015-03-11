@@ -697,18 +697,34 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
     return query.list();
 }
 	
-	public List<Object[]> getCommitteeRoleCasteCategoryWiseDetailsByLocationType(List<Long> positionIdsList,List<Long> casteCategoryIdsList,List<Long> casteCategoryGroupIdsList, 
-			List<Long> casteIdsList,Long locationLevelId, List<Long> locationIdsList,List<Long> wardIdsList,List<Long> committeeTypeIdsList,String userAccessType)
+	public List<Object[]> getCommitteeRolesGenderWiseDetailsByLocation(List<Long> positionIdsList,Long locationLevelId, List<Long> locationIdsList,List<Long> wardIdsList,List<Long> committeeTypeIdsList,String userAccessType,String segrigatStr,Long descriptionLevelId)
 	{
 		StringBuilder quertyStr = new StringBuilder();
+		quertyStr.append(" select distinct TC.gender , count(TC.gender) ");
 		
-		quertyStr.append(" select CC.casteCategoryId,CC.categoryName,TC.gender,count(TC.gender) ");
-		quertyStr.append(" from TdpCommitteeMember TCM, TdpCommitteeRole TCR, TdpRoles TR, TdpCadre TC, UserAddress UA, CasteState CS, Caste C, CasteCategoryGroup CCG,CasteCategory CC ");
-		quertyStr.append(" , TdpCommittee TCO,TdpBasicCommittee TBC where TCM.tdpCommitteeRoleId = TCR.tdpCommitteeRoleId and TCR.tdpRolesId = TR.tdpRolesId and ");
-		quertyStr.append(" TCM.tdpCadreId = TC.tdpCadreId and TC.userAddress.userAddressId = UA.userAddressId and  ");
-		quertyStr.append(" TC.casteStateId = CS.casteStateId and CS.caste.casteId = C.casteId and CS.casteCategoryGroup.casteCategoryGroupId = CCG.casteCategoryGroupId and CC.casteCategoryId = CCG.casteCategory.casteCategoryId");
-		quertyStr.append(" and TCR.tdpCommitteeId = TCO.tdpCommitteeId and TBC.tdpBasicCommitteeId = TCO.tdpBasicCommitteeId  ");
+		if(descriptionLevelId != null && descriptionLevelId.longValue() == 2L) // districtWise
+		{
+			quertyStr.append(", TCO.district.districtId,TCO.district.districtName ");
+		}
+		else if(descriptionLevelId != null && descriptionLevelId.longValue() == 3L) // constituencyWise
+		{
+			quertyStr.append(", TCO.constituency.constituencyId,TCO.constituency.name ");
+		}
 		
+		quertyStr.append(" from TdpCadre TC, TdpCommitteeMember TCM, TdpCommitteeRole TCR, TdpRoles TR , TdpCommittee TCO,TdpBasicCommittee TBC ");
+		quertyStr.append(" where ");
+		quertyStr.append(" TCM.tdpCommitteeRoleId = TCR.tdpCommitteeRoleId and TCR.tdpRolesId = TR.tdpRolesId and TCM.tdpCadreId = TC.tdpCadreId ");
+		quertyStr.append(" and TCR.tdpCommitteeId = TCO.tdpCommitteeId and TBC.tdpBasicCommitteeId = TCO.tdpBasicCommitteeId ");
+		quertyStr.append(" and TCM.isActive ='Y' ");
+		quertyStr.append(" and TC.isDeleted = 'N' and TC.enrollmentYear = 2014 ");
+		if(userAccessType != null && userAccessType.equalsIgnoreCase("TS"))
+		{
+			quertyStr.append(" and (TCO.district.districtId between 1 and 10) ");
+		}
+		else if(userAccessType != null && userAccessType.equalsIgnoreCase("AP"))
+		{
+			quertyStr.append(" and (TCO.district.districtId between 11 and 23) ");
+		}
 		if(committeeTypeIdsList != null && committeeTypeIdsList.size()>0) 
 		{
 			quertyStr.append(" and TBC.tdpCommitteeType.tdpCommitteeTypeId in (:committeeTypeIdsList) ");
@@ -717,59 +733,73 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		{
 			quertyStr.append(" and TR.tdpRolesId in (:positionIdsList) ");
 		}
-		if(casteCategoryIdsList != null && casteCategoryIdsList.size()>0) 
-		{
-			quertyStr.append(" and CC.casteCategoryId in (:casteCategoryIdsList) ");
-		}
-		if(casteCategoryGroupIdsList != null && casteCategoryGroupIdsList.size()>0) 
-		{
-			quertyStr.append(" and CCG.casteCategoryGroupId in (:casteCategoryGroupIdsList) ");
-		}
-		if(casteIdsList != null && casteIdsList.size()>0) 
-		{
-			quertyStr.append(" and CS.casteStateId in (:casteIdsList) ");
-		}
-		
+				
 		if(locationIdsList != null && locationIdsList.size()>0)
 		{
 			if(locationLevelId != null && locationLevelId.longValue() == 1L) // stateWise
 			{
-				quertyStr.append(" and UA.state.stateId in (:locationIdsList) ");
+				quertyStr.append(" and TCO.district.state.stateId in (:locationIdsList) ");
 			}
 			else if(locationLevelId != null && locationLevelId.longValue() == 2L) // districtWise
 			{
-				quertyStr.append(" and UA.district.districtId in (:locationIdsList) ");
+				quertyStr.append(" and TCO.district.districtId in (:locationIdsList) ");
 			}			
-			else if(locationLevelId != null && locationLevelId.longValue() == 3L) // Parliament constituencyWise
+			else if(locationLevelId != null && locationLevelId.longValue() == 3L) // constituencyWise
 			{
-				quertyStr.append(" and UA.parliamentConstituency.constituencyId in (:locationIdsList) ");
-			}
-			else if(locationLevelId != null && locationLevelId.longValue() == 4L) // constituencyWise
-			{
-				quertyStr.append(" and UA.constituency.constituencyId in (:locationIdsList) ");
+				quertyStr.append(" and TCO.constituency.constituencyId in (:locationIdsList) ");
 			}
 			else if(locationLevelId != null && locationLevelId.longValue() == 5L) // village/ward wise
 			{
-				quertyStr.append(" and ( UA.panchayat.panchayatId in (:locationIdsList) ");
+				quertyStr.append(" and ( (TCO.tdpCommitteeLevelValue in (:locationIdsList) and TCO.tdpCommitteeLevelId = 6)  ");
 				
 				if(wardIdsList != null && wardIdsList.size()>0)
 				{
-					quertyStr.append(" or UA.ward.constituencyId in (:wardIdsList) ");
+					quertyStr.append(" or (TCO.tdpCommitteeLevelValue in (:wardIdsList) and TCO.tdpCommitteeLevelId = 8 ) ");
 				}
 				quertyStr.append(" ) ");
 			}
 			else if(locationLevelId != null && locationLevelId.longValue() == 6L) // mandal/municipality/division wise
 			{
-				quertyStr.append(" and ( UA.tehsil.tehsilId in (:locationIdsList) ");
+				quertyStr.append(" and ( ( TCO.tdpCommitteeLevelValue in (:locationIdsList) and TCO.tdpCommitteeLevelId = 5 ) ");
 				if(wardIdsList != null && wardIdsList.size()>0)
 				{
-					quertyStr.append(" or UA.localElectionBody.localElectionBodyId in (:wardIdsList) ");
+					quertyStr.append(" or ( TCO.tdpCommitteeLevelValue in (:wardIdsList) and TCO.tdpCommitteeLevelId = 7)  ");
 				}
 				quertyStr.append(" ) ");
 			}
 		}
+		if(segrigatStr != null && segrigatStr.trim().length()>0)
+		{
+			if(segrigatStr.equalsIgnoreCase("VillageORWard"))
+			{
+				quertyStr.append(" and (TCO.tdpCommitteeLevelId = 6 or TCO.tdpCommitteeLevelId = 8)   ");
+				
+			}
+			else if(segrigatStr.equalsIgnoreCase("MandalORTown"))
+			{
+				quertyStr.append(" and (TCO.tdpCommitteeLevelId = 5 or TCO.tdpCommitteeLevelId = 7)  ");
+			}
+			
+		}
+		quertyStr.append(" group by  ");
+		if(descriptionLevelId != null && descriptionLevelId.longValue() == 2L) // districtWise
+		{
+			quertyStr.append(" TCO.district.districtId, ");
+		}
+		else if(descriptionLevelId != null && descriptionLevelId.longValue() == 3L) // constituencyWise
+		{
+			quertyStr.append(" TCO.constituency.constituencyId, ");
+		}
+		quertyStr.append(" TC.gender ");
 		
-		quertyStr.append(" group by CC.casteCategoryId,TC.gender order by TC.gender asc ");
+		if(descriptionLevelId != null && descriptionLevelId.longValue() == 2L) // districtWise
+		{
+			quertyStr.append(" order by  TCO.district.districtName asc ");
+		}
+		else if(descriptionLevelId != null && descriptionLevelId.longValue() == 3L) // constituencyWise
+		{
+			quertyStr.append(" order by TCO.constituency.name asc  ");
+		}
 		
 		Query query = getSession().createQuery(quertyStr.toString());
 		
@@ -781,18 +811,6 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		{
 			query.setParameterList("positionIdsList", positionIdsList);
 		}
-		if(casteCategoryIdsList != null && casteCategoryIdsList.size()>0) 
-		{
-			query.setParameterList("casteCategoryIdsList", casteCategoryIdsList);
-		}
-		if(casteCategoryGroupIdsList != null && casteCategoryGroupIdsList.size()>0) 
-		{
-			query.setParameterList("casteCategoryIdsList", casteCategoryGroupIdsList);
-		}
-		if(casteIdsList != null && casteIdsList.size()>0) 
-		{
-			query.setParameterList("casteIdsList", casteIdsList);
-		}
 		if(locationIdsList != null && locationIdsList.size()>0)
 		{
 			query.setParameterList("locationIdsList", locationIdsList);
@@ -801,22 +819,27 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		{
 			query.setParameterList("wardIdsList", wardIdsList);
 		}
-
 		return query.list();
 	}
 	
-	public List<Object[]> getCommitteeRoleCasteWiseDetailsByLocationType(List<Long> positionIdsList,List<Long> casteCategoryIdsList,List<Long> casteCategoryGroupIdsList, 
-			List<Long> casteIdsList,Long locationLevelId, List<Long> locationIdsList,List<Long> wardIdsList,List<Long> committeeTypeIdsList,String userAccessType)
+	public List<Object[]> getCommitteeRoleAgerangeWiseDetailsByLocationType(List<Long> positionIdsList,Long locationLevelId, List<Long> locationIdsList,List<Long> wardIdsList,List<Long> committeeTypeIdsList,String userAccessType,String segrigatStr)
 	{
 		StringBuilder quertyStr = new StringBuilder();
-		
-		quertyStr.append(" select CS.casteStateId,C.casteName,TC.gender,count(TC.gender) ");
-		quertyStr.append(" from TdpCommitteeMember TCM, TdpCommitteeRole TCR, TdpRoles TR, TdpCadre TC, UserAddress UA, CasteState CS, Caste C, CasteCategoryGroup CCG,CasteCategory CC ");
-		quertyStr.append(" , TdpCommittee TCO,TdpBasicCommittee TBC where TCM.tdpCommitteeRoleId = TCR.tdpCommitteeRoleId and TCR.tdpRolesId = TR.tdpRolesId and ");
-		quertyStr.append(" TCM.tdpCadreId = TC.tdpCadreId and TC.userAddress.userAddressId = UA.userAddressId and  ");
-		quertyStr.append(" TC.casteStateId = CS.casteStateId and CS.caste.casteId = C.casteId and CS.casteCategoryGroup.casteCategoryGroupId = CCG.casteCategoryGroupId and CC.casteCategoryId = CCG.casteCategory.casteCategoryId");
-		quertyStr.append(" and TCR.tdpCommitteeId = TCO.tdpCommitteeId and TBC.tdpBasicCommitteeId = TCO.tdpBasicCommitteeId  ");
-		
+		quertyStr.append(" select VAR.voterAgeRangeId ,VAR.ageRange,TC.gender , count(TC.gender) ");
+		quertyStr.append(" from TdpCadre TC, TdpCommitteeMember TCM, TdpCommitteeRole TCR, TdpRoles TR , TdpCommittee TCO,TdpBasicCommittee TBC,VoterAgeRange VAR ");
+		quertyStr.append(" where ");
+		quertyStr.append(" TCM.tdpCommitteeRoleId = TCR.tdpCommitteeRoleId and TCR.tdpRolesId = TR.tdpRolesId and TCM.tdpCadreId = TC.tdpCadreId and TC.voterAgeRangeId = VAR.voterAgeRangeId and  ");
+		quertyStr.append(" TCR.tdpCommitteeId = TCO.tdpCommitteeId and TBC.tdpBasicCommitteeId = TCO.tdpBasicCommitteeId ");
+		quertyStr.append(" and TCM.isActive ='Y' ");
+		quertyStr.append(" and TC.isDeleted = 'N' and TC.enrollmentYear = 2014 ");
+		if(userAccessType != null && userAccessType.equalsIgnoreCase("TS"))
+		{
+			quertyStr.append(" and (TCO.district.districtId between 1 and 10) ");
+		}
+		else if(userAccessType != null && userAccessType.equalsIgnoreCase("AP"))
+		{
+			quertyStr.append(" and (TCO.district.districtId between 11 and 23) ");
+		}
 		if(committeeTypeIdsList != null && committeeTypeIdsList.size()>0) 
 		{
 			quertyStr.append(" and TBC.tdpCommitteeType.tdpCommitteeTypeId in (:committeeTypeIdsList) ");
@@ -825,59 +848,61 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		{
 			quertyStr.append(" and TR.tdpRolesId in (:positionIdsList) ");
 		}
-		if(casteCategoryIdsList != null && casteCategoryIdsList.size()>0) 
-		{
-			quertyStr.append(" and CC.casteCategoryId in (:casteCategoryIdsList) ");
-		}
-		if(casteCategoryGroupIdsList != null && casteCategoryGroupIdsList.size()>0) 
-		{
-			quertyStr.append(" and CCG.casteCategoryGroupId in (:casteCategoryGroupIdsList) ");
-		}
-		if(casteIdsList != null && casteIdsList.size()>0) 
-		{
-			quertyStr.append(" and CS.casteStateId in (:casteIdsList) ");
-		}
-		
+				
 		if(locationIdsList != null && locationIdsList.size()>0)
 		{
 			if(locationLevelId != null && locationLevelId.longValue() == 1L) // stateWise
 			{
-				quertyStr.append(" and UA.state.stateId in (:locationIdsList) ");
+				quertyStr.append(" and TCO.district.state.stateId in (:locationIdsList) ");
 			}
 			else if(locationLevelId != null && locationLevelId.longValue() == 2L) // districtWise
 			{
-				quertyStr.append(" and UA.district.districtId in (:locationIdsList) ");
+				quertyStr.append(" and TCO.district.districtId in (:locationIdsList) ");
 			}			
-			else if(locationLevelId != null && locationLevelId.longValue() == 3L) // Parliament constituencyWise
+			else if(locationLevelId != null && locationLevelId.longValue() == 4L) // Parliament constituencyWise
 			{
 				quertyStr.append(" and UA.parliamentConstituency.constituencyId in (:locationIdsList) ");
 			}
-			else if(locationLevelId != null && locationLevelId.longValue() == 4L) // constituencyWise
+			else if(locationLevelId != null && locationLevelId.longValue() == 3L) // constituencyWise
 			{
-				quertyStr.append(" and UA.constituency.constituencyId in (:locationIdsList) ");
+				quertyStr.append(" and TCO.constituency.constituencyId in (:locationIdsList) ");
 			}
 			else if(locationLevelId != null && locationLevelId.longValue() == 5L) // village/ward wise
 			{
-				quertyStr.append(" and ( UA.panchayat.panchayatId in (:locationIdsList) ");
+				quertyStr.append(" and ( (TCO.tdpCommitteeLevelValue in (:locationIdsList) and TCO.tdpCommitteeLevelId = 6)  ");
 				
 				if(wardIdsList != null && wardIdsList.size()>0)
 				{
-					quertyStr.append(" or UA.ward.constituencyId in (:wardIdsList) ");
+					quertyStr.append(" or (TCO.tdpCommitteeLevelValue in (:wardIdsList) and TCO.tdpCommitteeLevelId = 8 ) ");
 				}
 				quertyStr.append(" ) ");
 			}
 			else if(locationLevelId != null && locationLevelId.longValue() == 6L) // mandal/municipality/division wise
 			{
-				quertyStr.append(" and ( UA.tehsil.tehsilId in (:locationIdsList) ");
+				quertyStr.append(" and ( ( TCO.tdpCommitteeLevelValue in (:locationIdsList) and TCO.tdpCommitteeLevelId = 5 ) ");
 				if(wardIdsList != null && wardIdsList.size()>0)
 				{
-					quertyStr.append(" or UA.localElectionBody.localElectionBodyId in (:wardIdsList) ");
+					quertyStr.append(" or ( TCO.tdpCommitteeLevelValue in (:wardIdsList) and TCO.tdpCommitteeLevelId = 7)  ");
 				}
 				quertyStr.append(" ) ");
 			}
 		}
 		
-		quertyStr.append(" group by CS.casteStateId,TC.gender order by TC.gender asc ");
+		if(segrigatStr != null && segrigatStr.trim().length()>0)
+		{
+			if(segrigatStr.equalsIgnoreCase("VillageORWard"))
+			{
+				quertyStr.append(" and (TCO.tdpCommitteeLevelId = 6 or TCO.tdpCommitteeLevelId = 8)   ");
+				
+			}
+			else if(segrigatStr.equalsIgnoreCase("MandalORTown"))
+			{
+				quertyStr.append(" and (TCO.tdpCommitteeLevelId = 5 or TCO.tdpCommitteeLevelId = 7)  ");
+			}
+			
+		}
+		
+		quertyStr.append(" group by VAR.voterAgeRangeId,TC.gender order by VAR.minValue asc");
 		
 		Query query = getSession().createQuery(quertyStr.toString());
 		
@@ -889,18 +914,6 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		{
 			query.setParameterList("positionIdsList", positionIdsList);
 		}
-		if(casteCategoryIdsList != null && casteCategoryIdsList.size()>0) 
-		{
-			query.setParameterList("casteCategoryIdsList", casteCategoryIdsList);
-		}
-		if(casteCategoryGroupIdsList != null && casteCategoryGroupIdsList.size()>0) 
-		{
-			query.setParameterList("casteCategoryIdsList", casteCategoryGroupIdsList);
-		}
-		if(casteIdsList != null && casteIdsList.size()>0) 
-		{
-			query.setParameterList("casteIdsList", casteIdsList);
-		}
 		if(locationIdsList != null && locationIdsList.size()>0)
 		{
 			query.setParameterList("locationIdsList", locationIdsList);
@@ -909,22 +922,29 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		{
 			query.setParameterList("wardIdsList", wardIdsList);
 		}
-
 		return query.list();
 	}
 	
-	public List<Object[]> getCommitteeRoleAgeWiseDetailsByLocationType(List<Long> positionIdsList,List<Long> casteCategoryIdsList,List<Long> casteCategoryGroupIdsList, 
-			List<Long> casteIdsList,Long locationLevelId, List<Long> locationIdsList,List<Long> wardIdsList,List<Long> committeeTypeIdsList,String userAccessType)
+	public List<Object[]> getCommitteeRoleCasteNameWiseDetailsByLocationType(List<Long> positionIdsList,Long locationLevelId, List<Long> locationIdsList,List<Long> wardIdsList,List<Long> committeeTypeIdsList,String userAccessType,String segrigatStr)
 	{
 		StringBuilder quertyStr = new StringBuilder();
-		
-		quertyStr.append(" select VAR.voterAgeRangeId ,VAR.ageRange,TC.gender,count(*) ");
-		quertyStr.append(" from TdpCommitteeMember TCM, TdpCommitteeRole TCR, TdpRoles TR, TdpCadre TC, UserAddress UA, CasteState CS, Caste C, CasteCategoryGroup CCG,CasteCategory CC ");
-		quertyStr.append(" , TdpCommittee TCO,TdpBasicCommittee TBC,VoterAgeRange VAR where TCM.tdpCommitteeRoleId = TCR.tdpCommitteeRoleId and TCR.tdpRolesId = TR.tdpRolesId and ");
-		quertyStr.append(" TCM.tdpCadreId = TC.tdpCadreId and TC.userAddress.userAddressId = UA.userAddressId and  ");
-		quertyStr.append(" TC.casteStateId = CS.casteStateId and CS.caste.casteId = C.casteId and CS.casteCategoryGroup.casteCategoryGroupId = CCG.casteCategoryGroupId and CC.casteCategoryId = CCG.casteCategory.casteCategoryId");
-		quertyStr.append(" and TCR.tdpCommitteeId = TCO.tdpCommitteeId and TBC.tdpBasicCommitteeId = TCO.tdpBasicCommitteeId and TC.voterAgeRangeId = VAR.voterAgeRangeId ");
-		
+		quertyStr.append(" select CS.casteStateId ,C.casteName,TC.gender , count(TC.gender) ");
+		quertyStr.append(" from TdpCadre TC, TdpCommitteeMember TCM, TdpCommitteeRole TCR, TdpRoles TR , TdpCommittee TCO,TdpBasicCommittee TBC , ");
+		quertyStr.append(" CasteState CS, Caste C ");
+		quertyStr.append(" where ");
+		quertyStr.append(" TCM.tdpCommitteeRoleId = TCR.tdpCommitteeRoleId and TCR.tdpRolesId = TR.tdpRolesId and TCM.tdpCadreId = TC.tdpCadreId ");
+		quertyStr.append(" and TCR.tdpCommitteeId = TCO.tdpCommitteeId and TBC.tdpBasicCommitteeId = TCO.tdpBasicCommitteeId ");
+		quertyStr.append(" and TC.casteStateId = CS.casteStateId and CS.caste.casteId = C.casteId ");
+		quertyStr.append(" and TCM.isActive ='Y' ");
+		quertyStr.append(" and TC.isDeleted = 'N' and TC.enrollmentYear = 2014 ");
+		if(userAccessType != null && userAccessType.equalsIgnoreCase("TS"))
+		{
+			quertyStr.append(" and (TCO.district.districtId between 1 and 10) ");
+		}
+		else if(userAccessType != null && userAccessType.equalsIgnoreCase("AP"))
+		{
+			quertyStr.append(" and (TCO.district.districtId between 11 and 23) ");
+		}
 		if(committeeTypeIdsList != null && committeeTypeIdsList.size()>0) 
 		{
 			quertyStr.append(" and TBC.tdpCommitteeType.tdpCommitteeTypeId in (:committeeTypeIdsList) ");
@@ -933,59 +953,59 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		{
 			quertyStr.append(" and TR.tdpRolesId in (:positionIdsList) ");
 		}
-		if(casteCategoryIdsList != null && casteCategoryIdsList.size()>0) 
-		{
-			quertyStr.append(" and CC.casteCategoryId in (:casteCategoryIdsList) ");
-		}
-		if(casteCategoryGroupIdsList != null && casteCategoryGroupIdsList.size()>0) 
-		{
-			quertyStr.append(" and CCG.casteCategoryGroupId in (:casteCategoryGroupIdsList) ");
-		}
-		if(casteIdsList != null && casteIdsList.size()>0) 
-		{
-			quertyStr.append(" and CS.casteStateId in (:casteIdsList) ");
-		}
-		
+				
 		if(locationIdsList != null && locationIdsList.size()>0)
 		{
 			if(locationLevelId != null && locationLevelId.longValue() == 1L) // stateWise
 			{
-				quertyStr.append(" and UA.state.stateId in (:locationIdsList) ");
+				quertyStr.append(" and TCO.district.state.stateId in (:locationIdsList) ");
 			}
 			else if(locationLevelId != null && locationLevelId.longValue() == 2L) // districtWise
 			{
-				quertyStr.append(" and UA.district.districtId in (:locationIdsList) ");
+				quertyStr.append(" and TCO.district.districtId in (:locationIdsList) ");
 			}			
-			else if(locationLevelId != null && locationLevelId.longValue() == 3L) // Parliament constituencyWise
+			else if(locationLevelId != null && locationLevelId.longValue() == 4L) // Parliament constituencyWise
 			{
 				quertyStr.append(" and UA.parliamentConstituency.constituencyId in (:locationIdsList) ");
 			}
-			else if(locationLevelId != null && locationLevelId.longValue() == 4L) // constituencyWise
+			else if(locationLevelId != null && locationLevelId.longValue() == 3L) // constituencyWise
 			{
-				quertyStr.append(" and UA.constituency.constituencyId in (:locationIdsList) ");
+				quertyStr.append(" and TCO.constituency.constituencyId in (:locationIdsList) ");
 			}
 			else if(locationLevelId != null && locationLevelId.longValue() == 5L) // village/ward wise
 			{
-				quertyStr.append(" and ( UA.panchayat.panchayatId in (:locationIdsList) ");
+				quertyStr.append(" and ( (TCO.tdpCommitteeLevelValue in (:locationIdsList) and TCO.tdpCommitteeLevelId = 6)  ");
 				
 				if(wardIdsList != null && wardIdsList.size()>0)
 				{
-					quertyStr.append(" or UA.ward.constituencyId in (:wardIdsList) ");
+					quertyStr.append(" or (TCO.tdpCommitteeLevelValue in (:wardIdsList) and TCO.tdpCommitteeLevelId = 8 ) ");
 				}
 				quertyStr.append(" ) ");
 			}
 			else if(locationLevelId != null && locationLevelId.longValue() == 6L) // mandal/municipality/division wise
 			{
-				quertyStr.append(" and ( UA.tehsil.tehsilId in (:locationIdsList) ");
+				quertyStr.append(" and ( ( TCO.tdpCommitteeLevelValue in (:locationIdsList) and TCO.tdpCommitteeLevelId = 5 ) ");
 				if(wardIdsList != null && wardIdsList.size()>0)
 				{
-					quertyStr.append(" or UA.localElectionBody.localElectionBodyId in (:wardIdsList) ");
+					quertyStr.append(" or ( TCO.tdpCommitteeLevelValue in (:wardIdsList) and TCO.tdpCommitteeLevelId = 7)  ");
 				}
 				quertyStr.append(" ) ");
 			}
 		}
-		
-		quertyStr.append(" group by VAR.voterAgeRangeId,TC.gender order by VAR.minValue asc ");
+		if(segrigatStr != null && segrigatStr.trim().length()>0)
+		{
+			if(segrigatStr.equalsIgnoreCase("VillageORWard"))
+			{
+				quertyStr.append(" and (TCO.tdpCommitteeLevelId = 6 or TCO.tdpCommitteeLevelId = 8)   ");
+				
+			}
+			else if(segrigatStr.equalsIgnoreCase("MandalORTown"))
+			{
+				quertyStr.append(" and (TCO.tdpCommitteeLevelId = 5 or TCO.tdpCommitteeLevelId = 7)  ");
+			}
+			
+		}
+		quertyStr.append(" group by CS.casteStateId,TC.gender order by C.casteName asc");
 		
 		Query query = getSession().createQuery(quertyStr.toString());
 		
@@ -997,17 +1017,108 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		{
 			query.setParameterList("positionIdsList", positionIdsList);
 		}
-		if(casteCategoryIdsList != null && casteCategoryIdsList.size()>0) 
+		if(locationIdsList != null && locationIdsList.size()>0)
 		{
-			query.setParameterList("casteCategoryIdsList", casteCategoryIdsList);
+			query.setParameterList("locationIdsList", locationIdsList);
 		}
-		if(casteCategoryGroupIdsList != null && casteCategoryGroupIdsList.size()>0) 
+		if(wardIdsList != null && wardIdsList.size()>0)
 		{
-			query.setParameterList("casteCategoryIdsList", casteCategoryGroupIdsList);
+			query.setParameterList("wardIdsList", wardIdsList);
 		}
-		if(casteIdsList != null && casteIdsList.size()>0) 
+		return query.list();
+	}
+	
+	public List<Object[]> getCommitteeRoleCasteCategoryNameWiseDetailsByLocationType(List<Long> positionIdsList,Long locationLevelId, List<Long> locationIdsList,List<Long> wardIdsList,List<Long> committeeTypeIdsList,String userAccessType,String segrigatStr)
+	{
+		StringBuilder quertyStr = new StringBuilder();
+		quertyStr.append(" select distinct CC.casteCategoryId ,CC.categoryName,TC.gender , count(TC.gender) ");
+		quertyStr.append(" from TdpCommitteeMember TCM, TdpCommitteeRole TCR, TdpRoles TR, TdpCadre TC, CasteState CS, Caste C, CasteCategoryGroup CCG,CasteCategory CC ");
+		quertyStr.append(" , TdpCommittee TCO,TdpBasicCommittee TBC where TCM.tdpCommitteeRoleId = TCR.tdpCommitteeRoleId and TCR.tdpRolesId = TR.tdpRolesId and ");
+		quertyStr.append(" TCM.tdpCadreId = TC.tdpCadreId and ");
+		quertyStr.append(" TC.casteStateId = CS.casteStateId and CS.caste.casteId = C.casteId and CS.casteCategoryGroup.casteCategoryGroupId = CCG.casteCategoryGroupId and CC.casteCategoryId = CCG.casteCategory.casteCategoryId");
+		quertyStr.append(" and TCR.tdpCommitteeId = TCO.tdpCommitteeId and TBC.tdpBasicCommitteeId = TCO.tdpBasicCommitteeId  ");
+
+		quertyStr.append(" and CS.casteStateId not in (459,301,292,430) and TCM.isActive ='Y' ");
+		quertyStr.append(" and TC.isDeleted = 'N' and TC.enrollmentYear = 2014 ");
+		if(userAccessType != null && userAccessType.equalsIgnoreCase("TS"))
 		{
-			query.setParameterList("casteIdsList", casteIdsList);
+			quertyStr.append(" and (TCO.district.districtId between 1 and 10) ");
+		}
+		else if(userAccessType != null && userAccessType.equalsIgnoreCase("AP"))
+		{
+			quertyStr.append(" and (TCO.district.districtId between 11 and 23) ");
+		}
+		if(committeeTypeIdsList != null && committeeTypeIdsList.size()>0) 
+		{
+			quertyStr.append(" and TBC.tdpCommitteeType.tdpCommitteeTypeId in (:committeeTypeIdsList) ");
+		}
+		if(positionIdsList != null && positionIdsList.size()>0) 
+		{
+			quertyStr.append(" and TR.tdpRolesId in (:positionIdsList) ");
+		}
+				
+		if(locationIdsList != null && locationIdsList.size()>0)
+		{
+			if(locationLevelId != null && locationLevelId.longValue() == 1L) // stateWise
+			{
+				quertyStr.append(" and TCO.district.state.stateId in (:locationIdsList) ");
+			}
+			else if(locationLevelId != null && locationLevelId.longValue() == 2L) // districtWise
+			{
+				quertyStr.append(" and TCO.district.districtId in (:locationIdsList) ");
+			}			
+			else if(locationLevelId != null && locationLevelId.longValue() == 4L) // Parliament constituencyWise
+			{
+				quertyStr.append(" and UA.parliamentConstituency.constituencyId in (:locationIdsList) ");
+			}
+			else if(locationLevelId != null && locationLevelId.longValue() == 3L) // constituencyWise
+			{
+				quertyStr.append(" and TCO.constituency.constituencyId in (:locationIdsList) ");
+			}
+			else if(locationLevelId != null && locationLevelId.longValue() == 5L) // village/ward wise
+			{
+				quertyStr.append(" and ( (TCO.tdpCommitteeLevelValue in (:locationIdsList) and TCO.tdpCommitteeLevelId = 6)  ");
+				
+				if(wardIdsList != null && wardIdsList.size()>0)
+				{
+					quertyStr.append(" or (TCO.tdpCommitteeLevelValue in (:wardIdsList) and TCO.tdpCommitteeLevelId = 8 ) ");
+				}
+				quertyStr.append(" ) ");
+			}
+			else if(locationLevelId != null && locationLevelId.longValue() == 6L) // mandal/municipality/division wise
+			{
+				quertyStr.append(" and ( ( TCO.tdpCommitteeLevelValue in (:locationIdsList) and TCO.tdpCommitteeLevelId = 5 ) ");
+				if(wardIdsList != null && wardIdsList.size()>0)
+				{
+					quertyStr.append(" or ( TCO.tdpCommitteeLevelValue in (:wardIdsList) and TCO.tdpCommitteeLevelId = 7)  ");
+				}
+				quertyStr.append(" ) ");
+			}
+		}
+		if(segrigatStr != null && segrigatStr.trim().length()>0)
+		{
+			if(segrigatStr.equalsIgnoreCase("VillageORWard"))
+			{
+				quertyStr.append(" and (TCO.tdpCommitteeLevelId = 6 or TCO.tdpCommitteeLevelId = 8)   ");
+				
+			}
+			else if(segrigatStr.equalsIgnoreCase("MandalORTown"))
+			{
+				quertyStr.append(" and (TCO.tdpCommitteeLevelId = 5 or TCO.tdpCommitteeLevelId = 7)  ");
+			}
+			
+		}
+		quertyStr.append(" group by CC.casteCategoryId,TC.gender order by TC.gender asc");
+		
+		Query query = getSession().createQuery(quertyStr.toString());
+		
+		if(committeeTypeIdsList != null && committeeTypeIdsList.size()>0) 
+		{
+			query.setParameterList("committeeTypeIdsList", committeeTypeIdsList);
+		}
+		if(positionIdsList != null && positionIdsList.size()>0) 
+		{
+			query.setParameterList("positionIdsList", positionIdsList);
 		}
 		if(locationIdsList != null && locationIdsList.size()>0)
 		{
@@ -1017,7 +1128,6 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		{
 			query.setParameterList("wardIdsList", wardIdsList);
 		}
-
 		return query.list();
 	}
 }
