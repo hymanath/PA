@@ -2769,7 +2769,7 @@ public GenericVO getSurveyStatusBoothList(Long constituencyId){
 				Map<Long,SurveyResponceVO> wmMap = new HashMap<Long, SurveyResponceVO>();
 				checkForDcWithWmForVO(dcMap,dcWmMap,wmMap);
 				Map<Long,SurveyResponceVO> resultMap = checkForDcWmWithDvWmForThirdParty(wmMap,dvWmMap);
-				List<Object[]> voterHouseDetails = boothPublicationVoterDAO.getTotalVotersByBoothsForVerfier(boothId, IConstants.VOTER_DATA_PUBLICATION_ID);
+				List<Object[]> voterHouseDetails = boothPublicationVoterDAO.getTotalVotersByBoothsForVerfierForCTP(boothId);
 				if(voterHouseDetails != null && voterHouseDetails.size() > 0)
 				{
 					totalVoterMap = new HashMap<Long, SurveyResponceVO>();
