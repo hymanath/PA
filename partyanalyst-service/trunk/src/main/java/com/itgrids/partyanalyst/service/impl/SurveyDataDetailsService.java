@@ -2314,7 +2314,7 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 	{
 		List<UserBoothDetailsVO> resultList = new ArrayList<UserBoothDetailsVO>();
 		try {
-			long publicationId= boothDAO.getLatestPublicationDateIdForAConstituency(constituencyId);
+			//long publicationId= boothDAO.getLatestPublicationDateIdForAConstituency(constituencyId);
 			List<Object[]> boothsList = boothDAO.getAllTheBoothsDetailsByConstituencyIdForCTP(constituencyId);
 			
 			for(Object[] parms:boothsList)
