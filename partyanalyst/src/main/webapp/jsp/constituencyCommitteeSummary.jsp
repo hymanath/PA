@@ -129,7 +129,7 @@
 							
 							</select>
 							
-			Select Committee Type<select id="committetypeId"  class="form-control" >	
+			Select Committee Type<select id="committetypeId"  class="form-control"  onchange="getRolesBasedReport(0)">	
 						<option value="0">All</option> 
 							<option value="1"> Main </option>
 							<option value="2"> Affiliated </option>
@@ -855,7 +855,7 @@ function getRolesBasedReport(roleId)
 		var casteCategoryGroupArr = new Array();
 		var casteIdsArr = new Array();
 		
-		var locationLevelId =4;
+		var locationLevelId =3;
 		var committeeTypeId =$("#committetypeId").val();
 		var userAccessType ="STATE";
 		var castePercentage =5;
