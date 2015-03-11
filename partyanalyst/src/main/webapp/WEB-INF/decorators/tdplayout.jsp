@@ -357,6 +357,9 @@ margin-top:10px;
 								<c:if test="${sessionScope.USER.isAdmin == 'true'}">						
 								<li><a href="committeeDashBoardAction.action"><span>Committee DashBoard</span></a></li>
 								</c:if>
+								<c:if test="${sessionScope.USER.isAdmin == 'true'}">						
+								<li><a href="cadreCommitteeRolesDashboard.action"><span>Committee Detailed Report</span></a></li>
+								</c:if>
 							</ul>
 						</div>
 					</li>
