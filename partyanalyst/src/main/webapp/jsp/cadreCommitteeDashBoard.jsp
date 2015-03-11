@@ -60,7 +60,7 @@
     background: none repeat scroll 0 0 #ccc;
     margin-left: 3px;
     padding: 2px 8px;
-	font-size: 11px;
+	font-size: 13px;
 }
 
 
@@ -136,7 +136,7 @@
 									<button id="division" class="btn btn-xs btn-success highlightClick" onclick="getCommitteeDetails('AP','division')">Division</button> |									
 									<button id="mandalAll" class="btn btn-xs btn-success highlight highlightClick " onclick="getCommitteeDetails('AP','mandalAll')">All</button>
 									<div class="pull-right">
-										<img width="16" height="16" id="ajaxImageIdAPmandal" src="./images/Loading-data.gif" alt="Processing Image" style="display:none;"/>
+										<img width="16" height="16" id="ajaxImageIdAPmandal" src="images/icons/search.gif" alt="Processing Image" style="display:none;" />
 									</div>
 								</td>
 							</tr>
@@ -179,7 +179,7 @@
 										<button id="ward" class="btn btn-xs btn-success highlightClick1" onclick="getCommitteeDetails('AP','ward')">Ward</button> |										
 										<button id="villageAll" class="btn btn-xs btn-success highlight highlightClick1 " onclick="getCommitteeDetails('AP','villageAll')">All</button>
 									<div class="pull-right">
-										<img width="16" height="16" id="ajaxImageIdAPvillage" src="./images/Loading-data.gif" alt="Processing Image" style="display:none;"/>
+										<img width="16" height="16" id="ajaxImageIdAPvillage" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/>
 									</div>
 								</td>
 							</tr>
@@ -242,7 +242,7 @@
 									<button id="division" class="btn btn-xs btn-success highlightClick" onclick="getCommitteeDetails('AP','division')">Division</button> |									
 									<button id="mandalAll" class="btn btn-xs btn-success highlight highlightClick " onclick="getCommitteeDetails('AP','mandalAll')">All</button>
 									<div class="pull-right">
-										<img width="16" height="16" id="ajaxImageIdAPmandal" src="./images/Loading-data.gif" alt="Processing Image" style="display:none;"/>
+										<img width="16" height="16" id="ajaxImageIdAPmandal" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/>
 									</div>
 								</td>
 							</tr>
@@ -309,7 +309,7 @@
 										<button id="ward" class="btn btn-xs btn-success highlightClick1" onclick="getCommitteeDetails('AP','ward')">Ward</button> |										
 										<button id="villageAll" class="btn btn-xs btn-success highlight highlightClick1 " onclick="getCommitteeDetails('AP','villageAll')">All</button>
 									<div class="pull-right">
-										<img width="16" height="16" id="ajaxImageIdAPvillage" src="./images/Loading-data.gif" alt="Processing Image" style="display:none;"/>
+										<img width="16" height="16" id="ajaxImageIdAPvillage" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/>
 									</div>
 								</td>
 							</tr>
@@ -375,7 +375,7 @@
 								<button id="tsDivision" class="btn btn-xs btn-success highlightClick2" onclick="getCommitteeDetails('TS','division')";>Division</button> |
 								<button id="tsMandalAll" class="btn btn-xs  btn-success highlight highlightClick2 " onclick="getCommitteeDetails('TS','mandalAll')";>All</button>
 								<div class="pull-right">
-										<img width="16" height="16" class="ajaxImageIdTSmandal" src="./images/Loading-data.gif" alt="Processing Image" style="display:none;"/>
+										<img width="16" height="16" id="ajaxImageIdTSmandal" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/>
 								</div>
 							</td>
 						</tr>
@@ -415,7 +415,7 @@
 								<button id="tsVillageAll" class="btn btn-xs btn-default  btn-success highlight highlightClick3" onclick="getCommitteeDetails('TS','villageAll')";>All</button>
 								
 								<div class="pull-right">
-										<img width="16" height="16" class="ajaxImageIdTSvillage" src="./images/Loading-data.gif" alt="Processing Image" style="display:none;"/>
+										<img width="16" height="16" id="ajaxImageIdTSvillage" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/>
 								</div>
 							</td>
 						</tr>
@@ -758,12 +758,12 @@
 	});
 
 	function getCommitteeDetails(state,level){
-
+	
 	if(level == 'mandal' || level == 'town' || level == 'division' || level == 'mandalAll')
 	{
 		$('#ajaxImageId'+state+'mandal').show();
 	}else if(level == 'village' || level == 'ward' || level == 'villageAll')
-	{
+	{	
 		//alert('ajaxImageId'+state+'village');
 		$('#ajaxImageId'+state+'village').show();
 	}
@@ -920,9 +920,10 @@
 						var str='';
 						str+='';
 						str+='<td colspan="6"><ul class="list-inline ivrdetails"><li style="background: none repeat scroll 0% 0% rgb(51, 51, 51); color: rgb(255, 255, 255);">IVR DETAILS</li>';
-						str+='<li>Total Villages:'+result.committeeSummaryVO.count+'</li>';
-						str+='<li>Total Calls:'+result.committeeSummaryVO.totalIvrCalls+'</li>';
-						str+='<li>Total Answered:'+result.committeeSummaryVO.answeredIvrCalls+'</li>';
+						str+='<li style="width: 151px;">Total Villages:'+result.committeeSummaryVO.count+'</li>';
+						str+='<li style="width: 159px;">Total IVR Calls:'+result.committeeSummaryVO.totalIvrCalls+'</li>';
+						str+='<li style="width: 180px;">Total Lifted Calls:'+result.committeeSummaryVO.answeredIvrCalls+'</li></ul>';
+						str+='<ul class="list-inline ivrdetails"><li style="width: 93px; background: none repeat scroll 0 0 #fff;"></li>';
 						var percentage = 0;
 						var perc = 0;
 						if(result.committeeSummaryVO.total >0){
@@ -1052,9 +1053,10 @@ $("#ivrDivIdAP").show();
 								
 							str1+='<td colspan="6"><ul class="list-inline ivrdetails"><li style="background: none repeat scroll 0% 0% rgb(51, 51, 51); color: rgb(255, 255, 255);">IVR DETAILS</li>';
 							
-							str1+='<li>Total Villages:'+result.committeeSummaryVO.count+'</li>';
-							str1+='<li>Total Calls:'+result.committeeSummaryVO.totalIvrCalls+'</li>';
-							str1+='<li>Total Answered:'+result.committeeSummaryVO.answeredIvrCalls+'</li>';
+							str1+='<li style="width: 144px;">Total Villages:'+result.committeeSummaryVO.count+'</li>';
+							str1+='<li style="width: 150px;">Total IVR Calls:'+result.committeeSummaryVO.totalIvrCalls+'</li>';
+							str1+='<li style="width: 173px;">Total Lifted Calls:'+result.committeeSummaryVO.answeredIvrCalls+'</li></ul>';
+							str1+='<ul class="list-inline ivrdetails"><li style="width: 93px; background: none repeat scroll 0 0 #fff;"></li>';
 							if(result.committeeSummaryVO.total >0){
 												
 								for(var i in result.committeeSummaryVO.optionsList){
@@ -1456,46 +1458,46 @@ str+='</tr>';
 			
 			if(result[i].townMandalDivisionVO!=null){
 				if(result[i].townMandalDivisionVO.totalCommittees!=null){
-					str += '<td>'+result[i].townMandalDivisionVO.totalCommittees+'</td>';
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.totalCommittees+'</td>';
 					mandTotal=mandTotal+result[i].townMandalDivisionVO.totalCommittees;
 				}else{
-					str += '<td> - </td>';
+					str += '<td style="text-align:center"> - </td>';
 				}
 				
 				if(result[i].townMandalDivisionVO.mainStarted!=null){
 					//str += '<td>'+result[i].townMandalDivisionVO.mainStarted+'<span id="mini-pie-chart-district'+i+'" class="pull-right mini-pie-chart-district"></span></td>';
-					str += '<td>'+result[i].townMandalDivisionVO.mainStarted+'</td>';
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.mainStarted+'</td>';
 					mandStarted=mandStarted+result[i].townMandalDivisionVO.mainStarted;
 				}else{
-					str += '<td> - </td>';
+					str += '<td style="text-align:center"> - </td>';
 				}
 				
 				if(result[i].townMandalDivisionVO.mainCompleted!=null){
-					str += '<td>'+result[i].townMandalDivisionVO.mainCompleted+'</td>';
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.mainCompleted+'</td>';
 					mandCompleted=mandCompleted+result[i].townMandalDivisionVO.mainCompleted;
 				}else{
-					str += '<td> - </td>';
+					str += '<td style="text-align:center"> - </td>';
 				}
 				
 				if(result[i].townMandalDivisionVO.membersCount!=null){
-					str += '<td>'+result[i].townMandalDivisionVO.membersCount+'</td>';
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.membersCount+'</td>';
 					mandMembers=mandMembers+result[i].townMandalDivisionVO.membersCount;
 				}else{
-					str += '<td> - </td>';
+					str += '<td style="text-align:center"> - </td>';
 				}
 				
 				if(result[i].townMandalDivisionVO.afflStarted!=null){
-					str += '<td>'+result[i].townMandalDivisionVO.afflStarted+'</td>';
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.afflStarted+'</td>';
 					mandAfStarted=mandAfStarted+result[i].townMandalDivisionVO.afflStarted;
 				}else{
-					str += '<td> - </td>';
+					str += '<td style="text-align:center"> - </td>';
 				}
 				
 				if(result[i].townMandalDivisionVO.afflCompleted!=null){
-					str += '<td>'+result[i].townMandalDivisionVO.afflCompleted+' </td>';
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.afflCompleted+' </td>';
 					mandAfCompleted=mandAfCompleted+result[i].townMandalDivisionVO.afflCompleted;
 				}else{
-					str += '<td> - </td>';
+					str += '<td style="text-align:center"> - </td>';
 				}
 			}else{
 				str += '<td>  </td>';
@@ -1510,46 +1512,46 @@ str+='</tr>';
 			
 			if(result[i].villageWardVO!=null){
 				if(result[i].villageWardVO.totalCommittees!=null){
-					str += '<td>'+result[i].villageWardVO.totalCommittees+'</td>';
+					str += '<td style="text-align:center">'+result[i].villageWardVO.totalCommittees+'</td>';
 					panTotal=panTotal+result[i].villageWardVO.totalCommittees;
 				}else{
-					str += '<td> - </td>';
+					str += '<td style="text-align:center"> - </td>';
 				}
 				
 				if(result[i].villageWardVO.mainStarted!=null){
 					//str += '<td>'+result[i].villageWardVO.mainStarted+'<span id="mini-pie-chart-village'+i+'" class="pull-right mini-pie-chart-village"></span></td>';
-					str += '<td>'+result[i].villageWardVO.mainStarted+'</td>';
+					str += '<td style="text-align:center">'+result[i].villageWardVO.mainStarted+'</td>';
 					panStarted=panStarted+result[i].villageWardVO.mainStarted;
 				}else{
-					str += '<td> - </td>';
+					str += '<td style="text-align:center"> - </td>';
 				}
 				
 				if(result[i].villageWardVO.mainCompleted!=null){
-					str += '<td>'+result[i].villageWardVO.mainCompleted+'</td>';
+					str += '<td style="text-align:center">'+result[i].villageWardVO.mainCompleted+'</td>';
 					panCompleted=panCompleted+result[i].villageWardVO.mainCompleted;
 				}else{
-					str += '<td> - </td>';
+					str += '<td style="text-align:center"> - </td>';
 				}
 				
 				if(result[i].villageWardVO.membersCount!=null){
-					str += '<td>'+result[i].villageWardVO.membersCount+' </td>';
+					str += '<td style="text-align:center">'+result[i].villageWardVO.membersCount+' </td>';
 					panMembers=panMembers+result[i].villageWardVO.membersCount;
 				}else{
-					str += '<td> - </td>';
+					str += '<td style="text-align:center"> - </td>';
 				}
 				
 				if(result[i].villageWardVO.afflStarted!=null){
-					str += '<td>'+result[i].villageWardVO.afflStarted+'</td>';
+					str += '<td style="text-align:center">'+result[i].villageWardVO.afflStarted+'</td>';
 					panAffStarted=panAffStarted+result[i].villageWardVO.afflStarted;
 				}else{
-					str += '<td> - </td>';
+					str += '<td style="text-align:center"> - </td>';
 				}
 				
 				if(result[i].villageWardVO.afflCompleted!=null){
-					str += '<td>'+result[i].villageWardVO.afflCompleted+' </td>';
+					str += '<td style="text-align:center">'+result[i].villageWardVO.afflCompleted+' </td>';
 					panAffCompleted=panAffCompleted+result[i].villageWardVO.afflCompleted;
 				}else{
-					str += '<td> - </td>';
+					str += '<td style="text-align:center"> - </td>';
 				}
 			}else{
 				str += '<td>  </td>';
@@ -1571,12 +1573,12 @@ str+='</tr>';
 					if(result[i].cadreIVRVO.total >0){
 					 percentage = (result[i].cadreIVRVO.optionsList[tp].count *100)/ result[i].cadreIVRVO.total;
 					 perc = percentage.toFixed(0);
-					str+='<td>'+result[i].cadreIVRVO.optionsList[tp].count+'</td>';
-					str+='<td>'+perc+'</td>';
+					str+='<td style="text-align:center">'+result[i].cadreIVRVO.optionsList[tp].count+'</td>';
+					str+='<td style="text-align:center">'+perc+'</td>';
 					}				
 					else{
-					str+='<td>'+result[i].cadreIVRVO.optionsList[tp].count+'</td>';
-					str+='<td>0</td>';
+					str+='<td style="text-align:center">'+result[i].cadreIVRVO.optionsList[tp].count+'</td>';
+					str+='<td style="text-align:center">0</td>';
 					}
 					}
 				}
@@ -1616,34 +1618,34 @@ str+='</tr>';
 		}
 		str += '</tbody><tfoot><tr class="no-sort" style="font-weight:bold;">';
 		if(mandalCheck == "true" && villageCheck == "true"){
-		str	+= '<td>TOTAL</td><td>'+mandTotal+'</td>'; 	
-		str += '<td>'+mandStarted+'</td>'; 	
-		str += '<td>'+mandCompleted+'</td>'; 	
-		str += '<td>'+mandMembers+'</td>'; 	
-		str += '<td>'+mandAfStarted+'</td>'; 	
-		str += '<td>'+mandAfCompleted+'</td>';
-		str += '<td>'+panTotal+'</td>'; 	
-		str += '<td>'+panStarted+'</td>'; 	
-		str += '<td>'+panCompleted+'</td>'; 	
-		str += '<td>'+panMembers+'</td>'; 	
-		str += '<td>'+panAffStarted+'</td>'; 	
-		str += '<td>'+panAffCompleted+'</td>';		
+		str	+= '<td style="text-align:center">TOTAL</td><td>'+mandTotal+'</td>'; 	
+		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
+		str += '<td style="text-align:center">'+mandMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+mandAfStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+mandAfCompleted+'</td>';
+		str += '<td style="text-align:center">'+panTotal+'</td>'; 	
+		str += '<td style="text-align:center">'+panStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+panCompleted+'</td>'; 	
+		str += '<td style="text-align:center">'+panMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+panAffStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+panAffCompleted+'</td>';		
 		}
 		else if(mandalCheck=="true"){
-		str	+= '<td>TOTAL</td><td>'+mandTotal+'</td>'; 	
-		str += '<td>'+mandStarted+'</td>'; 	
-		str += '<td>'+mandCompleted+'</td>'; 	
-		str += '<td>'+mandMembers+'</td>'; 	
-		str += '<td>'+mandAfStarted+'</td>'; 	
-		str += '<td>'+mandAfCompleted+'</td>'; 	
+		str	+= '<td style="text-align:center">TOTAL</td><td>'+mandTotal+'</td>'; 	
+		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
+		str += '<td style="text-align:center">'+mandMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+mandAfStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+mandAfCompleted+'</td>'; 	
 		}
 		else if(villageCheck=="true"){
-		str	+= '<td>TOTAL</td><td>'+panTotal+'</td>'; 			
-		str += '<td>'+panStarted+'</td>'; 	
-		str += '<td>'+panCompleted+'</td>'; 	
-		str += '<td>'+panMembers+'</td>'; 	
-		str += '<td>'+panAffStarted+'</td>'; 	
-		str += '<td>'+panAffCompleted+'</td>';
+		str	+= '<td style="text-align:center">TOTAL</td><td>'+panTotal+'</td>'; 			
+		str += '<td style="text-align:center">'+panStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+panCompleted+'</td>'; 	
+		str += '<td style="text-align:center">'+panMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+panAffStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+panAffCompleted+'</td>';
 }
 		str += '</tr></tfoot></table>';			
 		$("#distSummaryBody").html(str);
@@ -2133,7 +2135,7 @@ str+='</tr>';
 			}
             str+='</tr>';
             str+='<tr>';
-            str+='<th >Total</th>';
+            str+='<th>Total</th>';
 			str+='<th>Started</th>';
 			str+='<th>Completed</th>';
 			str+='<th>Members</th>';
@@ -2228,7 +2230,7 @@ str+='</tr>';
 		for(var i in result){
 		if(result[i].townMandalDivisionVO != null || result[i].villageWardVO != null){
 		str += '<tr>';
-			str += '<td >'+result[i].constiNo+'</td>';
+			str += '<td style="text-align:center">'+result[i].constiNo+'</td>';
 			str += '<td ><span style="font-size: 12px;">'+result[i].name+'</span>';
 			
 				str += '&nbsp;&nbsp;<span style="cursor: pointer;" title="Click Here For '+result[i].name+' Committee Summary Report" onclick="getPopUpForSummary('+result[i].constiId+',\''+result[i].name+'\');" class="glyphicon glyphicon-dashboard"></span>&nbsp;&nbsp;<span style="cursor: pointer;"  onclick="showAdvanceDashBoard('+result[i].constiId+');" title="Click Here For '+result[i].name+' Advance Dashboard"  class="glyphicon glyphicon-list-alt"></span>';
@@ -2238,46 +2240,46 @@ str+='</tr>';
 			
 			if(result[i].townMandalDivisionVO!=null){
 				if(result[i].townMandalDivisionVO.totalCommittees!=null){
-					str += '<td>'+result[i].townMandalDivisionVO.totalCommittees+'</td>';
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.totalCommittees+'</td>';
 					mandTotal=mandTotal+result[i].townMandalDivisionVO.totalCommittees;
 				}else{
-					str += '<td> - </td>';
+					str += '<td style="text-align:center"> - </td>';
 				}
 				
 				if(result[i].townMandalDivisionVO.mainStarted!=null){
 					//str += '<td>'+result[i].townMandalDivisionVO.mainStarted+'<span id="mini-pie-chart-constituency'+i+'" class="pull-right mini-pie-chart-district"></span></td>';
-					str += '<td>'+result[i].townMandalDivisionVO.mainStarted+'</td>';
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.mainStarted+'</td>';
 					mandStarted=mandStarted+result[i].townMandalDivisionVO.mainStarted;
 				}else{
-					str += '<td> - </td>';
+					str += '<td style="text-align:center"> - </td>';
 				}
 				
 				if(result[i].townMandalDivisionVO.mainCompleted!=null){
-					str += '<td>'+result[i].townMandalDivisionVO.mainCompleted+'</td>';
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.mainCompleted+'</td>';
 					mandCompleted=mandCompleted+result[i].townMandalDivisionVO.mainCompleted;
 				}else{
-					str += '<td> - </td>';
+					str += '<td style="text-align:center"> - </td>';
 				}
 				
 				if(result[i].townMandalDivisionVO.membersCount!=null){
-					str += '<td>'+result[i].townMandalDivisionVO.membersCount+'</td>';
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.membersCount+'</td>';
 					mandMembers=mandMembers+result[i].townMandalDivisionVO.membersCount;
 				}else{
-					str += '<td> - </td>';
+					str += '<td style="text-align:center"> - </td>';
 				}
 				
 				if(result[i].townMandalDivisionVO.afflStarted!=null){
-					str += '<td>'+result[i].townMandalDivisionVO.afflStarted+'</td>';
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.afflStarted+'</td>';
 					mandAfStarted=mandAfStarted+result[i].townMandalDivisionVO.afflStarted;
 				}else{
-					str += '<td> - </td>';
+					str += '<td style="text-align:center"> - </td>';
 				}
 				
 				if(result[i].townMandalDivisionVO.afflCompleted!=null){
-					str += '<td>'+result[i].townMandalDivisionVO.afflCompleted+' </td>';
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.afflCompleted+' </td>';
 					mandAfCompleted=mandAfCompleted+result[i].townMandalDivisionVO.afflCompleted;
 				}else{
-					str += '<td> - </td>';
+					str += '<td style="text-align:center"> - </td>';
 				}
 			}else{
 				str += '<td>  </td>';
@@ -2292,46 +2294,46 @@ str+='</tr>';
 			
 			if(result[i].villageWardVO!=null){
 				if(result[i].villageWardVO.totalCommittees!=null){
-					str += '<td>'+result[i].villageWardVO.totalCommittees+'</td>';
+					str += '<td style="text-align:center" >'+result[i].villageWardVO.totalCommittees+'</td>';
 					panTotal=panTotal+result[i].villageWardVO.totalCommittees;
 				}else{
-					str += '<td> - </td>';
+					str += '<td style="text-align:center"> - </td>';
 				}
 				
 				if(result[i].villageWardVO.mainStarted!=null){
 					//str += '<td>'+result[i].villageWardVO.mainStarted+'<span id="mini-pie-chart-constiVillage'+i+'" class="pull-right mini-pie-chart-village"></span></td>';
-					str += '<td>'+result[i].villageWardVO.mainStarted+'</td>';
+					str += '<td style="text-align:center">'+result[i].villageWardVO.mainStarted+'</td>';
 					panStarted=panStarted+result[i].villageWardVO.mainStarted;
 				}else{
-					str += '<td> - </td>';
+					str += '<td style="text-align:center"> - </td>';
 				}
 				
 				if(result[i].villageWardVO.mainCompleted!=null){
-					str += '<td>'+result[i].villageWardVO.mainCompleted+'</td>';
+					str += '<td style="text-align:center">'+result[i].villageWardVO.mainCompleted+'</td>';
 					panCompleted=panCompleted+result[i].villageWardVO.mainCompleted;
 				}else{
 					str += '<td> - </td>';
 				}
 				
 				if(result[i].villageWardVO.membersCount!=null){
-					str += '<td>'+result[i].villageWardVO.membersCount+' </td>';
+					str += '<td style="text-align:center">'+result[i].villageWardVO.membersCount+' </td>';
 					panMembers=panMembers+result[i].villageWardVO.membersCount;
 				}else{
-					str += '<td> - </td>';
+					str += '<td style="text-align:center"> - </td>';
 				}
 				
 				if(result[i].villageWardVO.afflStarted!=null){
-					str += '<td>'+result[i].villageWardVO.afflStarted+'</td>';
+					str += '<td style="text-align:center">'+result[i].villageWardVO.afflStarted+'</td>';
 					panAffStarted=panAffStarted+result[i].villageWardVO.afflStarted;
 				}else{
-					str += '<td> - </td>';
+					str += '<td style="text-align:center">  - </td>';
 				}
 				
 				if(result[i].villageWardVO.afflCompleted!=null){
-					str += '<td>'+result[i].villageWardVO.afflCompleted+' </td>';
+					str += '<td style="text-align:center">'+result[i].villageWardVO.afflCompleted+' </td>';
 					panAffCompleted=panAffCompleted+result[i].villageWardVO.afflCompleted;
 				}else{
-					str += '<td> - </td>';
+					str += '<td style="text-align:center"> - </td>';
 				}
 			}else{
 				str += '<td>  </td>';
@@ -2351,12 +2353,12 @@ str+='</tr>';
 					if(result[i].cadreIVRVO.total >0){
 					 percentage = (result[i].cadreIVRVO.optionsList[tp].count *100)/ result[i].cadreIVRVO.total;
 					 perc = percentage.toFixed(0);
-					str+='<td>'+result[i].cadreIVRVO.optionsList[tp].count+'</td>';
-					str+='<td>'+perc+'</td>';
+					str+='<td style="text-align:center">'+result[i].cadreIVRVO.optionsList[tp].count+'</td>';
+					str+='<td style="text-align:center">'+perc+'</td>';
 					}				
 					else{
-					str+='<td>'+result[i].cadreIVRVO.optionsList[tp].count+'</td>';
-					str+='<td>0</td>';
+					str+='<td style="text-align:center">'+result[i].cadreIVRVO.optionsList[tp].count+'</td>';
+					str+='<td style="text-align:center">0</td>';
 					}
 					}
 				}
@@ -2389,34 +2391,34 @@ str+='</tr>';
    
 	    str += '</tbody><tfoot><tr class="no-sort" style="font-weight:bold;"><td></td>';
 	if(mandalCheck=="true" && villageCheck=="true"){
-		str	+= '<td>TOTAL</td><td>'+mandTotal+'</td>'; 	
-		str += '<td>'+mandStarted+'</td>'; 	
-		str += '<td>'+mandCompleted+'</td>'; 	
-		str += '<td>'+mandMembers+'</td>'; 	
-		str += '<td>'+mandAfStarted+'</td>'; 	
-		str += '<td>'+mandAfCompleted+'</td>';
-		str += '<td>'+panTotal+'</td>';
-		str += '<td>'+panStarted+'</td>'; 	
-		str += '<td>'+panCompleted+'</td>'; 	
-		str += '<td>'+panMembers+'</td>'; 	
-		str += '<td>'+panAffStarted+'</td>'; 	
-		str += '<td>'+panAffCompleted+'</td>'; 	
+		str	+= '<td style="text-align:center">TOTAL</td><td>'+mandTotal+'</td>'; 	
+		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
+		str += '<td style="text-align:center">'+mandMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+mandAfStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+mandAfCompleted+'</td>';
+		str += '<td style="text-align:center">'+panTotal+'</td>';
+		str += '<td style="text-align:center">'+panStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+panCompleted+'</td>'; 	
+		str += '<td style="text-align:center">'+panMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+panAffStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+panAffCompleted+'</td>'; 	
 	}	
 	else if(mandalCheck=="true"){
-		str	+= '<td>TOTAL</td><td>'+mandTotal+'</td>'; 	
-		str += '<td>'+mandStarted+'</td>'; 	
-		str += '<td>'+mandCompleted+'</td>'; 	
-		str += '<td>'+mandMembers+'</td>'; 	
-		str += '<td>'+mandAfStarted+'</td>'; 	
-		str += '<td>'+mandAfCompleted+'</td>'; 	
+		str	+= '<td style="text-align:center">TOTAL</td><td>'+mandTotal+'</td>'; 	
+		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
+		str += '<td style="text-align:center">'+mandMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+mandAfStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+mandAfCompleted+'</td>'; 	
 	}
 	else if(villageCheck=="true"){
-		str	+= '<td>TOTAL</td><td>'+panTotal+'</td>'; 	
-		str += '<td>'+panStarted+'</td>'; 	
-		str += '<td>'+panCompleted+'</td>'; 	
-		str += '<td>'+panMembers+'</td>'; 	
-		str += '<td>'+panAffStarted+'</td>'; 	
-		str += '<td>'+panAffCompleted+'</td>'; 	
+		str	+= '<td style="text-align:center">TOTAL</td><td>'+panTotal+'</td>'; 	
+		str += '<td style="text-align:center">'+panStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+panCompleted+'</td>'; 	
+		str += '<td style="text-align:center">'+panMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+panAffStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+panAffCompleted+'</td>'; 	
 	}
 		str += '</tr></tfoot></table>';
 		
