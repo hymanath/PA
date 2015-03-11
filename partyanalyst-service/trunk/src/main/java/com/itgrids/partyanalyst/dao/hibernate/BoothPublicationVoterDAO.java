@@ -7006,6 +7006,13 @@ public List<Object[]> getTotalVotersByBoothsForVerfier(Long boothIds,Long public
 	 return query.list();
 }
 
+public List<Object[]> getTotalVotersByBoothsForVerfierForCTP(Long boothId)
+{
+	 Query query = getSession().createQuery("select model.voter.voterId,model.voter.houseNo,model.voter.gender,model.voter.age ,model.voter.voterIDCardNo,model.voter.name from BoothPublicationVoter model " +
+				" where model.booth.boothId = :boothId ");
+	 query.setParameter("boothId", boothId);
+	 return query.list();
+}
 
 public List<Object[]> getAllBoothsInConstituency(Long constId,Long publicationDateId)
 {
@@ -7359,13 +7366,9 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 	public List<Object[]> getCTPVoterDetailsByBooth(Long boothId)
 	{
 		
-		Query query = getSession().createQuery("select  V.voterId,BPV.serialNo, V.houseNo , V.name ,V.relativeName,V.voterIDCardNo  " +
-				" from  BoothPublicationVoter BPV, Booth B,   Voter V where BPV.voter.voterId = V.voterId and " +
-				" BPV.boothId = B.boothId and B.boothId = :boothId  and B.publicationDate.publicationDateId = :publicationDateId  ");
-		
+		Query query = getSession().createQuery("select BPV.voter.voterId,BPV.serialNo, BPV.voter.houseNo ,BPV.voter.name ,BPV.voter.relativeName,BPV.voter.voterIDCardNo  " +
+				" from  BoothPublicationVoter BPV where BPV.booth.boothId = :boothId ");
 		query.setParameter("boothId", boothId);
-		query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
-		
 		return query.list();
 	}
 	
