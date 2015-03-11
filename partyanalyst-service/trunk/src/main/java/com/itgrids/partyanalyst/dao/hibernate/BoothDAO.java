@@ -1888,7 +1888,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 	public List<Object[]> getAllTheBoothsDetailsByConstituencyIdForCTP(Long constituencyId)
 	{
 		Query query = getSession().createQuery("select B.boothId,B.partNo from Booth B " +
-				"where B.isCtpUsed = 'Y' and B.constituency.constituencyId = :constituencyId");
+				"where B.isCtpUsed = 'Y' and B.constituency.constituencyId = :constituencyId order by B.boothId");
 		query.setParameter("constituencyId", constituencyId);
 		return query.list();
 	}
