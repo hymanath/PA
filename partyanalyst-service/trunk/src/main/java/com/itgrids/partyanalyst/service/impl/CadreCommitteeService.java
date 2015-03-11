@@ -36,6 +36,8 @@ import com.itgrids.partyanalyst.dao.ICadreOtpDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreParticipatedElectionDAO;
 import com.itgrids.partyanalyst.dao.ICadrePreviousRolesDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
+import com.itgrids.partyanalyst.dao.ICommitteIvrDistrictDetailDAO;
+import com.itgrids.partyanalyst.dao.ICommitteIvrTotalDetailDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
@@ -164,6 +166,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	
 	@Autowired
 	private IIvrCampaignOptionsDAO ivrCampaignOptionsDAO;
+	
+	@Autowired
+	private ICommitteIvrDistrictDetailDAO committeIvrDistrictDetailDAO;
+	
+	@Autowired
+	private ICommitteIvrTotalDetailDAO committeIvrTotalDetailDAO;
 	
 	
 	public void setDelimitationConstituencyAssemblyDetailsDAO(
@@ -2271,18 +2279,15 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		    		options.add(optVO);
 				}
 		    }
-		    if(state.equalsIgnoreCase("AP"))
-		    {
-		    	resultVO.setCount(3060l);
-		    	resultVO.setTotalIvrCalls(416977l);
-		    	resultVO.setAnsweredIvrCalls(250787l);
-		    }
-		    else
-		    {
-		    	resultVO.setCount(631l);
-		    	resultVO.setTotalIvrCalls(32812l);
-		    	resultVO.setAnsweredIvrCalls(21181l);
-		    }
+	    	List<Object[]> values = committeIvrTotalDetailDAO.getStateWiseIvrDetails(state);
+	    	if(values != null && values.size() > 0)
+	    	{
+	    		Object[] data = values.get(0);
+	    		resultVO.setCount(data[0] != null ? Long.valueOf(data[0].toString().trim()) : 0l);
+		    	resultVO.setTotalIvrCalls(data[1] != null ? Long.valueOf(data[1].toString().trim()) : 0l);
+		    	resultVO.setAnsweredIvrCalls(data[2] != null ? Long.valueOf(data[2].toString().trim()) : 0l);
+	    	}
+	    	
 			/*List<Long> panchayatsCount = cadreIvrResponseDAO.getPanchayatsCountIvrStarted(districtIds,2l);
 			if(panchayatsCount != null && panchayatsCount.size() > 0)
 		    {
@@ -4142,8 +4147,16 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	{
 		try 
 		{
-  
-				List<Object[]> ivrResponceDetails = cadreIvrResponseDAO.getCadreCommitteesIvRDetails(id,2l);
+			    List<Object[]> ivrResponceDetails = null;
+			    if(id == 1)
+			    {
+			    	ivrResponceDetails = committeIvrDistrictDetailDAO.getDistrictWiseIvrDetails();
+			    }
+			    else
+			    {
+			    	ivrResponceDetails = cadreIvrResponseDAO.getCadreCommitteesIvRDetails(id,2l);
+			    }
+				
 				List<IvrOptionsVO> ivrOptionsList = null;
 				if(ivrResponceDetails != null && ivrResponceDetails.size() > 0)
 				{
