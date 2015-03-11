@@ -377,7 +377,7 @@ var userInitialAccessType = '${pageAccessType}';
 				if(locationOverview != null  && locationOverview.length>0)
 				{
 					str+='<table class="table table-bordered" style="border:2px solid #FC6 !important" id="locationOverveiewDiv'+divId+'">';
-					str+='<caption class="tablecaption"> '+result.locationName+' Wise  Committee Information';
+					str+='<caption class="tablecaption"> '+result.locationName+' Wise  '+$("#committeePostitionId option:selected").text()+' Position(s) Committee Information';
 					str+='<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>                </caption>';
 					str+='<thead>';
 					str+='<tr>';
