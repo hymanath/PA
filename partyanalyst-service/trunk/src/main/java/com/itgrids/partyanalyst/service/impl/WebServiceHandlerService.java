@@ -1170,7 +1170,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		List<UserDetailsVO> details = cadreRegistrationService.getCadreSurveyUserDetails(cadreSurveyUserIds);
 		return details;
 	}
-	public Object getMobileNoByMemberShip(String memberShipNo)
+	/*public Object getMobileNoByMemberShip(String memberShipNo)
 	{
 		String returnStr ="";
 		try{
@@ -1181,7 +1181,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			else
 				returnStr = "MobileNo not available";
 			*/
-			String mobileNo = "";
+			/*String mobileNo = "";
 			TdpCadreVO tdpCadreVO = cadreDetailsService.searchTdpCadreDetailsBySearchCriteriaForCommitte(0L, 0L, "", memberShipNo, "", "", "", 0L, "",null,null,null,null);
 			if(tdpCadreVO != null)
 			{
@@ -1208,9 +1208,55 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		return returnStr;
 		
+	}*/
+	
+	public List<CadreAddressVO> getMobileNoByMemberShip(List<String> memberShipNos)
+	{
+		List<CadreAddressVO> returnVO = new ArrayList<CadreAddressVO>();
+		try{
+			
+			StringBuilder queryStr = new StringBuilder();
+			if(memberShipNos != null &&  memberShipNos.size() > 0)
+			{
+				for(String memberShipNo :memberShipNos){
+					String temp =  memberShipNos.get(memberShipNos.size() - 1);
+					if(temp.equalsIgnoreCase(memberShipNo) || memberShipNos.size() == 1)
+						queryStr.append("  (model.memberShipNo like '%"+memberShipNo.trim()+"')  ");
+					else
+						queryStr.append("  (model.memberShipNo like '%"+memberShipNo.trim()+"')  OR ");
+				}
+			}
+			List<Object[]>  mobileNos = tdpCadreDAO.getMobileNosByMemberShipId(queryStr.toString());
+			
+			if(mobileNos!= null && mobileNos.size() >0){
+				for(Object[] params : mobileNos){
+					CadreAddressVO vo = new CadreAddressVO();
+					vo.setMembershipNo(params[0].toString().substring(4));
+					if(params[1] != null && !params[1].toString().isEmpty())
+						vo.setMobileNo(params[1].toString());
+					else
+						vo.setMobileNo("MobileNo not available");
+					returnVO.add(vo);
+				}
+				
+			}
+				
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return returnVO;
+		
 	}
 	
-	public CadreAddressVO getMemberDataByMemberShip(String memberShipNo,String address)
+	
+	
+	
+	
+	
+/*	public CadreAddressVO getMemberDataByMemberShip(String memberShipNo,String address)
 	{
 		
 		CadreAddressVO cadreAddressVO = new CadreAddressVO();
@@ -1224,7 +1270,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			cadreAddressVO = setMemberData(list,address);
 			
 			 */			
-			TdpCadreVO tdpCadreVO = cadreDetailsService.searchTdpCadreDetailsBySearchCriteriaForCommitte(0L, 0L, "", memberShipNo, "", "", "", 0L, "",null,null,null,null);
+		/*	TdpCadreVO tdpCadreVO = cadreDetailsService.searchTdpCadreDetailsBySearchCriteriaForCommitte(0L, 0L, "", memberShipNo, "", "", "", 0L, "",null,null,null,null);
 			if(address != null && memberShipNo != null)
 			{
 				if(address.equalsIgnoreCase("true"))
@@ -1272,7 +1318,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		return cadreAddressVO;
 		
-	}
+	}*/
 	public CadreAddressVO setMemberData(List<Object[]> list,String address)
 	{
 		CadreAddressVO cadreAddressVO = new CadreAddressVO();
@@ -1318,6 +1364,106 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		return cadreAddressVO;
 		
 	}
+	
+	public List<CadreAddressVO> getMemberDataByMemberShip(List<String> addressTrueList , List<String> addressFalseList)
+	{
+		
+		List<CadreAddressVO> cadreAddressVOList = new ArrayList<CadreAddressVO>();
+	
+		try{
+			List<Object[]> list = new ArrayList<Object[]>();
+			List<Object[]> list1 = new ArrayList<Object[]>();
+			StringBuilder queryStr = new StringBuilder();
+			if(addressTrueList != null &&  addressTrueList.size() > 0)
+			{
+				for(String memberShipNo :addressTrueList){
+					String temp =  addressTrueList.get(addressTrueList.size() - 1);
+					if(temp.equalsIgnoreCase(memberShipNo) || addressTrueList.size() == 1)
+						queryStr.append("  (model.memberShipNo like '%"+memberShipNo.trim()+"')  ");
+					else
+						queryStr.append("  (model.memberShipNo like '%"+memberShipNo.trim()+"')  OR ");
+				}
+			}
+			
+			StringBuilder queryStr1 = new StringBuilder();
+			if(addressFalseList != null &&  addressFalseList.size() > 0)
+			{
+				for(String memberShipNo :addressFalseList){
+					String temp =  addressFalseList.get(addressFalseList.size() - 1);
+					if(temp.equalsIgnoreCase(memberShipNo) || addressFalseList.size() == 1)
+						queryStr1.append("  (model.memberShipNo like '%"+memberShipNo.trim()+"')  ");
+					else
+						queryStr1.append("  (model.memberShipNo like '%"+memberShipNo.trim()+"')  OR ");
+				}
+			}
+			if(addressTrueList != null &&  addressTrueList.size() > 0){
+				 list = tdpCadreDAO.getMemberAddressDetlsByMembershipNo(queryStr.toString());				 
+				setMemberDataList(cadreAddressVOList,list,"true");
+			}
+			if(addressFalseList != null &&  addressFalseList.size() > 0){					
+				 list1 = tdpCadreDAO.getMemberDetlsByMembershipNo(queryStr1.toString());				
+				setMemberDataList(cadreAddressVOList,list1,"false");			
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return cadreAddressVOList;
+		
+	}
+	
+	public List<CadreAddressVO> setMemberDataList(List<CadreAddressVO> cadreAddressVOList,List<Object[]> list,String address)
+	{
+		
+		try{
+		
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+			{
+				CadreAddressVO cadreAddressVO = new CadreAddressVO();
+				cadreAddressVO.setMembershipNo(params[4] != null ? params[4].toString().substring(4) : "");
+				cadreAddressVO.setName(params[0] != null ? params[0].toString() : "");
+				cadreAddressVO.setMobileNo(params[1] != null ? params[1].toString() : "");
+				cadreAddressVO.setAge(params[2] != null ? (Long)params[2] : null);
+				cadreAddressVO.setGender(params[3] != null ? params[3].toString() : "");
+				
+				if(address.equalsIgnoreCase("true"))
+				{
+					
+					String str = "";
+					String district =  params[5] != null ? params[5].toString()  : "";
+					String constituency =  params[6] != null ? params[6].toString() : "";
+					String tehsil =  params[7] != null ? params[7].toString() : "";
+					String panchayat =  params[8] != null ? params[8].toString() : "";
+					String localbody =  params[9] != null ? params[9].toString(): "";
+					if(!district.isEmpty())
+					str += "District : " + district;
+					if(!constituency.isEmpty())
+		            str += " , Constituency : " +constituency;
+		            if(!tehsil.isEmpty())
+		            str+=" , Mandal : " +tehsil;
+					else if(!localbody.isEmpty())
+		            str+=" , Muncipality : " +localbody;
+		            if(!panchayat.isEmpty())
+		            str+=" , Panchayat : " +panchayat;
+		            cadreAddressVO.setAddress(str.toString());
+		           
+				}				
+				cadreAddressVOList.	add(cadreAddressVO);
+			}
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return cadreAddressVOList;
+		
+	}
+	
+	
 	public Object updateCadreTravelDiscountDetails(CadreTravelsVO inputVO){
 		String status = cadreRegistrationService.updateCadreTravelDiscountDetails(inputVO);
 		return status;

@@ -4500,6 +4500,48 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return query.list();
 			
 		}
+		public List<Object[]> getMobileNosByMemberShipId(String queryStr)	{
+			Query query = getSession().createQuery("select model.memberShipNo , model.mobileNo from TdpCadre model " +
+					" where  model.isDeleted = 'N' and model.enrollmentYear = '2014' and ("+queryStr+") ");
+			return query.list();
+		}
 		
 		
+		
+		public List<Object[]> getMemberDetlsByMembershipNo(String queryStr)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append("select distinct model.firstname,model.mobileNo,model.age,model.gender,model.memberShipNo");
+			str.append(" from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = '2014' and ("+queryStr+") ");
+			Query query = getSession().createQuery(str.toString());
+			return query.list();
+		}
+		
+		
+		public List<Object[]> getMemberAddressDetlsByMembershipNo(String queryStr)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append("select model.firstname,model.mobileNo,model.age,model.gender,model.memberShipNo ");
+			str.append(" ,district.districtName");
+			str.append(" ,constituency.name");	
+			str.append(" ,tehsil.tehsilName");
+			str.append(" ,panc.panchayatName");
+			str.append(" ,localElectionBody.name");
+			str.append(" from TdpCadre model left join model.userAddress.panchayat panc ");
+			str.append(" left join model.userAddress.tehsil tehsil ");
+		    str.append(" left join model.userAddress.constituency constituency ");
+			str.append(" left join model.userAddress.localElectionBody localElectionBody ");
+			str.append(" left join model.userAddress.district district ");
+			str.append(" where  model.isDeleted = 'N' and model.enrollmentYear = '2014' and ("+queryStr+") ");
+			Query query = getSession().createQuery(str.toString());
+
+			return query.list();
+		}
+		
+		public List<String> checkForMemberExists(String queryStr)
+		{
+			Query query = getSession().createQuery("select model.memberShipNo from TdpCadre model where  " +
+					" model.isDeleted = 'N' and model.enrollmentYear = '2014' and ("+queryStr+") ");
+			return query.list();
+		}
 }

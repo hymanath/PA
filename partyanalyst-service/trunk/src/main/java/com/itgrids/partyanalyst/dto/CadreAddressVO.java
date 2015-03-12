@@ -9,6 +9,8 @@ public class CadreAddressVO {
 	private String mobileNo;
 	private Long age;
 	private String membershipNo;
+	private String value;
+	
 	public Long getId() {
 		return id;
 	}
@@ -51,7 +53,11 @@ public class CadreAddressVO {
 	public void setMembershipNo(String membershipNo) {
 		this.membershipNo = membershipNo;
 	}
-	
-	
+	public String getValue() {
+		return value;
+	}
+	public void setValue(String value) {
+		this.value = value;
+	}
 
 }
