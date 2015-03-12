@@ -1,9 +1,13 @@
 package com.itgrids.partyanalyst.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IDynamicKeysDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 
@@ -82,5 +86,49 @@ public class CommonUtilsService {
 		return valid;
 	}
 
-	
+	public List<CadreAddressVO> checkForValidMember(List<String> memberShipNos)
+	{
+		
+		List<CadreAddressVO> cadreAddressVOList = new ArrayList<CadreAddressVO>();
+		try{
+			StringBuilder queryStr = new StringBuilder();
+			if(memberShipNos != null &&  memberShipNos.size() > 0)
+			{
+				for(String memberShipNo :memberShipNos){
+				
+				String temp =  memberShipNos.get(memberShipNos.size() - 1);
+				if(temp.equalsIgnoreCase(memberShipNo))
+					queryStr.append("  (model.memberShipNo like '%"+memberShipNo.trim()+"')  ");
+				else
+					queryStr.append("  (model.memberShipNo like '%"+memberShipNo.trim()+"')  OR ");
+				}
+			}
+		
+		    List<String> details = tdpCadreDAO.checkForMemberExists(queryStr.toString());
+		    List<String> validNos = new ArrayList<String>();
+			if(details != null && details.size() >0)
+			{
+				for(String params :details){
+					CadreAddressVO vo = new CadreAddressVO();					
+					vo.setMembershipNo(params.substring(4));
+					vo.setValue("true");
+					validNos.add(vo.getMembershipNo());
+					cadreAddressVOList.add(vo);
+				}
+			}	
+			for(String membershipNo :memberShipNos){
+				if(!validNos.contains(membershipNo)){
+					CadreAddressVO vo1 = new CadreAddressVO();					
+					vo1.setMembershipNo(membershipNo);
+					vo1.setValue("false");
+					cadreAddressVOList.add(vo1);
+				}
+			}	
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return cadreAddressVOList;
+	}
 }

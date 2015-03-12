@@ -11,7 +11,7 @@ public class CadreTravelsVO {
 	private String	discountPerc;
 	private String dateOfJourney;
 	private String isAddress;
-	
+	private String mobileNo;
 	
 	
 	public String getIsAddress() {
@@ -58,5 +58,10 @@ public class CadreTravelsVO {
 	public void setCustomerId(String customerId) {
 		this.customerId = customerId;
 	}
-
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
 }

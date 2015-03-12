@@ -318,4 +318,9 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 
 	public List<Object[]> getLocationWiseCadrePrintedCount(Set<Long> locationIds,String locationType,Long constituencyId);
 	public List<Object[]> getTdpCadreCountInALocationForEnrollment(List<Long> locationValue,String type);
+	
+	public List<Object[]> getMobileNosByMemberShipId(String queryStr);
+	public List<Object[]> getMemberDetlsByMembershipNo(String queryStr);
+	public List<Object[]> getMemberAddressDetlsByMembershipNo(String queryStr);
+	public List<String> checkForMemberExists(String queryStr);
 }

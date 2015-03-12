@@ -78,9 +78,10 @@ public interface IWebServiceHandlerService {
 	public Object updatePrintedCardDetails(List<CardNFCDetailsVO> inputVOList);
 	
 	public Object getCadreSurveyUserDetails(List<UserDetailsVO> cadreSurveyUserIds);
-    public Object getMobileNoByMemberShip(String memberShipNo);
-	public CadreAddressVO getMemberDataByMemberShip(String memberShipNo,String address);
-	
+    //public Object getMobileNoByMemberShip(String memberShipNo);
+	public List<CadreAddressVO> getMobileNoByMemberShip(List<String> memberShipNo);
+	//public CadreAddressVO getMemberDataByMemberShip(String memberShipNo,String address);
+	public List<CadreAddressVO> getMemberDataByMemberShip(List<String> addressTrueList , List<String> addressFalseList);
 	public Object updateCadreTravelDiscountDetails(CadreTravelsVO inputVO);
 	
 	public Object cancellationOfTicketDetails(CadreTravelsVO inputVO);
