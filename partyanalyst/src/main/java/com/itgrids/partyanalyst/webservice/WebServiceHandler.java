@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.webservice;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,8 +53,18 @@ public class WebServiceHandler {
 	@Autowired 
 	private IWebServiceHandlerService1 webServiceHandlerService1;
 	private MissedCallCampaignVO MissedCallCampaignVO;
+	private List<CadreAddressVO> cadreAddressVOList;
 	
 	
+	
+	public List<CadreAddressVO> getCadreAddressVOList() {
+		return cadreAddressVOList;
+	}
+
+	public void setCadreAddressVOList(List<CadreAddressVO> cadreAddressVOList) {
+		this.cadreAddressVOList = cadreAddressVOList;
+	}
+
 	public MissedCallCampaignVO getMissedCallCampaignVO() {
 		return MissedCallCampaignVO;
 	}
@@ -834,7 +845,7 @@ public class WebServiceHandler {
 		}
 	}
 	
-	@POST
+	/*@POST
 	@Path("/Auth/validateMembership")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -850,9 +861,9 @@ public class WebServiceHandler {
 			LOG.error("Exception Occured in checkMembershipExists() Method, Exception is ",e);
 			return false;
 		}
-	}
+	}*/
 	
-	@POST
+	/*@POST
 	@Path("/Auth/getMobileNo")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -869,8 +880,8 @@ public class WebServiceHandler {
 			return "false";
 		}
 	}
-	
-	@POST
+	*/
+	/*@POST
 	@Path("/Auth/getMemberData")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -887,7 +898,7 @@ public class WebServiceHandler {
 			e.printStackTrace();
 		}
 		return cadreAddressVO;
-	}
+	}*/
 
 	@POST
 	@Path("/Auth/updateCadreTravelDiscountDetails")
@@ -997,6 +1008,94 @@ public class WebServiceHandler {
 			return "Error Occured";
 		}
 		
+	}
+	
+	@POST
+	@Path("/Auth/validateMembership")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<CadreAddressVO> checkMembershipExists(List<CadreTravelsVO> inputVO){
+		
+		try{
+			List<String> memberShipIdsList = new ArrayList<String>();
+			for(CadreTravelsVO list: inputVO){
+				if(!memberShipIdsList.contains(equals(list.getMembershipNo()))){
+					memberShipIdsList.add(list.getMembershipNo());
+				}
+				
+			}
+			cadreAddressVOList = commonUtilsService.checkForValidMember(memberShipIdsList);
+		
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in checkMembershipExists() Method, Exception is ",e);
+			
+		}
+		return cadreAddressVOList;
+	}
+	
+	
+	
+	
+	@POST
+	@Path("/Auth/getMobileNo")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<CadreAddressVO> getMobileNoByMemberShip(List<CadreTravelsVO> inputVOList){
+		
+		try{
+			
+			List<String> memberShipIdsList = new ArrayList<String>();
+			for(CadreTravelsVO list: inputVOList){
+				if(!memberShipIdsList.contains(equals(list.getMembershipNo()))){
+					memberShipIdsList.add(list.getMembershipNo());
+				}
+				
+			}
+			cadreAddressVOList = webServiceHandlerService.getMobileNoByMemberShip(memberShipIdsList);
+			
+			
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getMobileNoByMemberShip() Method, Exception is ",e);
+			
+		}
+		return cadreAddressVOList;
+	}
+	
+	@POST
+	@Path("/Auth/getMemberData")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<CadreAddressVO> getMemberDataByMemberShip(List<CadreTravelsVO> inputVO){
+		
+		try{
+			
+			List<String> addressTrueList = new ArrayList<String>();
+			List<String> addressFalseList = new ArrayList<String>();
+			
+			for(CadreTravelsVO vo: inputVO){
+				if(!addressTrueList.contains(equals(vo.getMembershipNo()))){
+					
+					if(vo.getIsAddress().equalsIgnoreCase("true"))
+						addressTrueList.add(vo.getMembershipNo());
+					else{
+						addressFalseList.add(vo.getMembershipNo());
+					}
+				}
+				
+			}
+			cadreAddressVOList = webServiceHandlerService.getMemberDataByMemberShip(addressTrueList,addressFalseList);
+		
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getMemberDataByMemberShip() Method, Exception is ",e);
+			e.printStackTrace();
+		}
+		return cadreAddressVOList;
 	}
 	
 }
