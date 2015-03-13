@@ -54,7 +54,8 @@
 	<script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
 	<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
 	<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
-	
+	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
 	<script type="text/javascript">
 	
 	$(document).ready(function(){
@@ -66,6 +67,7 @@
 		}
 		else{
 			$("#cadre2014RegInfoDiv").show();
+			$("#constituencyWiseCadreDetailsAndVoterAnalysisDiv").show();
 			$("#connect-people-sec-id").hide();
 	    }
 		if(host == "tdpserver"){
@@ -831,13 +833,25 @@ var queryString='';
 
 		
 		<c:if test="${constituencyDetails.hasAnalize}">
-			<input title="Click Here To Get ${constituencyDetails.constituencyName}&nbsp; ${constituencyDetails.constituencyType} Constituency Voting Trendz" type="button" class="button" style="background-color:#3897A5;cursor:pointer;font-weight:bold;" value="${constituencyDetails.constituencyName}&nbsp;Detailed Analysis" onclick="openConstVotingTrendzWindow('${constituencyDetails.districtId}','${constituencyDetails.constituencyId}','${constituencyDetails.constituencyName}')" />
+			<input title="Click Here To Get ${constituencyDetails.constituencyName}&nbsp; ${constituencyDetails.constituencyType} Constituency Voting Trendz" type="button" class="button btn btn-primary" style="background-color:#3897A5;cursor:pointer;font-weight:bold;padding:5px 15px 5px 15px;" value="${constituencyDetails.constituencyName}&nbsp;Detailed Analysis" onclick="openConstVotingTrendzWindow('${constituencyDetails.districtId}','${constituencyDetails.constituencyId}','${constituencyDetails.constituencyName}')" />
+			
 		</c:if>
+		<div id="constituencyWiseCadreDetailsAndVoterAnalysisDiv" style="display:none;">
+		<s:if test="#session.USER.isAdmin == 'true'">
+		<c:if test="${constituencyDetails.constituencyType == 'Assembly'}">
+		<input title="Click Here To Get ${constituencyDetails.constituencyName} Constituency Wise Age Gender Caste Count" type="button" class="button btn btn-primary" style="background-color:#3897A5;cursor:pointer;font-weight:bold;padding:5px 10px 5px 15px;" value="${constituencyDetails.constituencyName}&nbsp;Cadre Information" onclick="openConstituencyWiseAgeGenderCasteCountWindow('${constituencyDetails.constituencyId}','${constituencyDetails.constituencyName}')" />
+		<input title="Click Here To Get ${constituencyDetails.constituencyName} Cadre Info" type="button" class="button btn btn-primary" style="background-color:#3897A5;cursor:pointer;font-weight:bold;padding:5px 26px 5px 26px" value="${constituencyDetails.constituencyName}&nbsp; Cadre Details" onclick="openCadreDetailsWindow('${constituencyDetails.constituencyId}','${constituencyDetails.constituencyName}')" />
+		
+		</c:if><br/>
+		 <input title="Click Here To Get Voter Analysis" type="button" class="button btn btn-primary" style="background-color:#3897A5;cursor:pointer;font-weight:bold;padding:5px 48px 5px 48px" value="Voter Analysis" onclick="openVoterAnalysisInfo();" />
+		</s:if>
+		</div>
+		<!--<a href="votersAnalysisNewAction.action" >Voter Analysis</a>-->
 		
 	</div>
 		<div id="cadre2014RegInfoDiv" style="display:none;">
 		    <s:if test="#session.USER.isAdmin == 'true'"> 
-			   <input title="Click Here To Get 2014 Cadre Registration Info" type="button" class="button" style="background-color:#3897A5;cursor:pointer;font-weight:bold;margin-top: -12px;" value="2014 Cadre Registration Info" onclick="show2014CadreRegistInfo();" />
+			   <input title="Click Here To Get 2014 Cadre Registration Info" type="button" class="button btn btn-primary" style="background-color:#3897A5;cursor:pointer;font-weight:bold;margin-top: -12px;padding:5px" value="2014 Cadre Registration Info" onclick="show2014CadreRegistInfo();" />
             </s:if>			
         </div>		
         <!--VIEW YOUR PROBLEMS SECTION START-->
@@ -962,7 +976,21 @@ var queryString='';
 			  <c:if test="${constituencyDetails.votingTrendz}">
 			 	<div  class="cp-sub-field-sec" id="votingTrendzDiv_Body">
 					 </div>
-				</c:if>						
+					 
+				<div id="dialogueConstituencyDiv" style="display: none;">
+					<center><div id="agewiseDivForConstituency"></div>
+					<div id="genderWiseDivForConstituency"></div>
+					<div id="casteGroupDivForConstituency"></div>
+					<div id="casteWiseDivForConstituency"></div></center>
+				</div>	 
+					 
+				<div id="dialogueConstituencyDistCadreDiv" style="display: none;">
+					<center><div id="constituencyDistCadreDiv" class="yui-skin-sam"></div></center>
+				</div>	 
+					 
+					 
+				</c:if>			
+					
 			 
                 
              
@@ -2052,6 +2080,274 @@ partyShortName:'${constituencyElectionResults.candidateResultsVO.partyShortName}
 		var browser1 = window.open("constituencyVotingTrendzAction.action?districtId="+distId+"&constiId="+constId+"&constiName="+constName,"biElectionConstituencyResults1","scrollbars=yes,resizable=1,height=650,width=900,left=200,top=200");
 
 		browser1.focus();
+		}
+		function setDefaultImage(img)
+		{
+		img.src = "images/User.png";
+		}
+		function openConstituencyWiseAgeGenderCasteCountWindow(constId,locationName) {
+			$('#agewiseDivForConstituency').html('<img src="images/Loading-data.gif" style="margin-top: 78px;width:70px;height:60px;">');
+			$('#genderWiseDivForConstituency').html("");
+			$('#casteWiseDivForConstituency').html("");
+			$('#casteGroupDivForConstituency').html("");
+	        $('#dialogueConstituencyDiv')
+						.dialog(
+								{
+									width : 850,
+									height:550,
+									title : " "+locationName+" Constituency Cadre Age, Gender and Caste Information "
+								});			
+			$.ajax({
+				type : 'GET',
+				url : 'getRepInfo.action',
+				data : {
+					task :'castGroupConsti',
+					id:constId
+				},success: (function(result) {
+				console.log("result1"+result);
+				if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		    		   location.reload(); 
+		    	   }
+				if (result != null && result.length > 0) {
+					var str3 = '';
+					str3 += '<h5> CASTE GROUP WISE DETAILS </h5><br/>';
+					
+					str3 += '<table class="table table-bordered m_top20 "  style="width:600px;">';
+					
+					str3 += '<thead>';
+					str3 += '<tr>';
+					str3 += '<th ROWSPAN=2> Caste  </th>';
+					str3 += '<th  COLSPAN=2> 2014  </th>';
+					str3 += '<th  COLSPAN=2> 2012  </th>';
+					str3 += '</tr>';
+					str3 += '<tr>';
+					str3 += '<th> Total  </th>';
+					str3 += '<th> %  </th>';
+					str3 += '<th> Total  </th>';
+					str3 += '<th> %  </th>';
+					str3 += '</tr>';
+					str3 += '</thead>';
+					str3 += '<tbody>';
+
+					var reqRes =result;
+							for ( var i in reqRes) {
+									str3 += '<tr>';
+									str3 += '  <td>' +reqRes[i].name+ '</td>';
+									str3 += '  <td>'+reqRes[i].apCount+ '</td>';
+									str3 += '  <td>'+parseFloat(reqRes[i].percentStr)+ '</td>';
+									str3 += '  <td>'+ reqRes[i].tgCount+ '</td>';
+									str3 += '  <td>'+parseFloat(reqRes[i].area)+ '</td>';
+									str3 += '</tr>';
+							}
+
+					str3 += '</tbody>';
+					str3 += '</table>';
+					$('#casteGroupDivForConstituency').html(str3);
+				}
+			}
+		)});
+			
+			$.ajax({
+				type : 'GET',
+				url : 'getRepInfo.action',
+				data : {
+					task :"ageConsti",
+					id:constId
+				},success:(function(result) {
+				if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		    		   location.reload(); 
+		    	   }
+				if (result != null && result.length > 0) {
+					var str = '';
+					str += '<h5> AGE WISE DETAILS </h5>';
+					str += '<table class="table table-bordered m_top20 " id="ageWiseTab" style="width:600px;">';
+					str += '<thead>';
+					str += '<tr>';
+					str += '<th ROWSPAN=2> Age  </th>';
+					str += '<th  COLSPAN=2> 2014  </th>';
+					
+					str += '</tr>';
+					str += '<tr>';
+					str += '<th> Total  </th>';
+					str += '<th> %  </th>';
+					str += '</tr>';
+					str += '</thead>';
+
+					str += '<tbody>';
+		             var reqRes =result;
+							for ( var i in reqRes) {
+									str += '<tr>';
+									str += '  <td>' +reqRes[i].name+ '</td>';
+									str += '  <td>'+ reqRes[i].apCount+ '</td>';
+									str += '  <td>'+ reqRes[i].percentStr+ '</td>';
+									str += '</tr>';
+							}
+					str += '</tbody>';
+					str += '</table>';
+					   $('#agewiseDivForConstituency').html(str);
+				}
+			})
+			});
+			
+			$.ajax({
+				type : 'GET',
+				url : 'getRepInfo.action',
+				data : {
+					task :"genderConsti",
+					id:constId
+				},success:(function(result) {
+				if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		    		   location.reload(); 
+		    	   }
+				if (result != null && result.length > 0) {
+					var str2 = '';
+					str2 += '<h5> GENDER WISE DETAILS </h5>';
+					str2 += '<table class="table table-bordered m_top20 " id="ageWiseTab" style="width:600px;">';
+					str2 += '<thead>';
+					str2 += '<tr>';
+					str2 += '<th ROWSPAN=2> Gender </th>';
+					str2 += '<th  COLSPAN=2> 2014  </th>';
+					str2 += '<th  COLSPAN=2> 2012  </th>';
+					str2 += '</tr>';
+					str2 += '<tr>';
+					str2 += '<th> Total  </th>';
+					str2 += '<th> %  </th>';
+					str2 += '<th> Total  </th>';
+					str2 += '<th> %  </th>';
+					str2 += '</tr>';
+					str2 += '</thead>';
+					str2 += '<tbody>';
+
+					 var reqRes =result;
+							for ( var i in reqRes) {
+									str2 += '<tr>';
+									str2 += '  <td>' +reqRes[i].name+ '</td>';
+									str2 += '  <td>'+ reqRes[i].apCount+ '</td>';
+									str2 += '  <td>'+ reqRes[i].percentStr+ '</td>';
+									str2 += '  <td>'+ reqRes[i].tgCount+ '</td>';
+									str2 += '  <td>'+ reqRes[i].area+ '</td>';
+									str2 += '</tr>';
+							}
+					str2 += '</tbody>';
+					str2 += '</table>';
+					   $('#genderWiseDivForConstituency').html(str2);
+				}
+			})
+			});
+			
+			$.ajax({
+				type : 'GET',
+				url : 'getRepInfo.action',
+				data : {
+					task :"casteConsti",
+					id:constId
+				},success:(function(result) {
+				if(result == "noAccess" || result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+		    		   location.reload(); 
+		    	   }
+				if (result != null && result.length > 0) {
+					var str3 = '';
+					str3 += '<h5> CASTE WISE DETAILS </h5><br/>';
+					str3 += '<table class="table table-bordered m_top20 " id="casteWiseConTab" style="width:600px;">';
+					str3 += '<thead>';
+					str3 += '<tr>';
+					str3 += '<th ROWSPAN=2> Caste  </th>';
+					str3 += '<th ROWSPAN=2> Caste Group </th>';
+					str3 += '<th  COLSPAN=2> 2014  </th>';
+					str3 += '<th  COLSPAN=2> 2012  </th>';
+					str3 += '</tr>';
+					str3 += '<tr>';
+					str3 += '<th> Total  </th>';
+					str3 += '<th> %  </th>';
+					str3 += '<th> Total  </th>';
+					str3 += '<th> %  </th>';
+					str3 += '</tr>';
+					str3 += '</thead>';
+					str3 += '<tbody>';
+
+					var reqRes =result;
+							for ( var i in reqRes) {
+									str3 += '<tr>';
+									str3 += '  <td>' +reqRes[i].name+ '</td>';
+									str3 += '  <td>' +reqRes[i].date+ '</td>';
+									str3 += '  <td>'+reqRes[i].apCount+ '</td>';
+									str3 += '  <td>'+parseFloat(reqRes[i].percentStr)+ '</td>';
+									str3 += '  <td>'+ reqRes[i].tgCount+ '</td>';
+									str3 += '  <td>'+parseFloat(reqRes[i].area)+ '</td>';
+									str3 += '</tr>';
+							}
+
+					str3 += '</tbody>';
+					str3 += '</table>';
+
+					   $('#casteWiseDivForConstituency').html(str3);
+					    $('#casteWiseConTab').dataTable({
+					         "iDisplayLength": 20,
+					          "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+					     });
+					
+				}
+			})
+			});
+			
+		}
+				
+		function openCadreDetailsWindow(locationId){
+			var type="constituency";
+		  $('#dialogueConstituencyDistCadreDiv').dialog(
+			{
+				width : 880,
+				height:550,
+				title : " Cadre Info"
+			});
+          YAHOO.widget.DataTable.image = function(elLiner, oRecord, oColumn, oData){
+			var str='';
+			var name = oData;
+			var image = oRecord.getData("memberShipNo");
+			str +='<img style="width:80px;height:80px;cursor:pointer;" src="'+image+'" onerror="setDefaultImage(this);" />';
+			elLiner.innerHTML=str;
+		};
+	     var newsColumns = [
+		           {key:"PHOTO",label:"PHOTO",formatter:YAHOO.widget.DataTable.image},
+				   {key:"name" ,label:"NAME"},
+				   {key:"area", label:"RELATIVE"},
+				   {key:"location", label:"CONSTITUENCY"},
+				   {key:"number", label:"AGE"},
+				   {key:"date", label:"SOURCE"}
+		   ];
+		var newsDataSource = new YAHOO.util.DataSource("getRegisteredInfoAction.action?&locationId="+locationId+"&locationType="+type+"&maxIndex=20&");
+		newsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+		newsDataSource.responseSchema = {
+		resultsList: "infoList",
+		fields: ["number","name","area","location","date","memberShipNo"],
+		metaFields: {
+		totalRecords: "totalCount"// Access to value in the server response
+		 },
+	  };
+
+	  var myConfigs = {
+		initialRequest: "&sort=name&dir=asc&startIndex=0&results=20", // Initial request for first page of data
+		dynamicData: true, // Enables dynamic server-driven data
+		sortedBy : {key:"name", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+	    paginator : new YAHOO.widget.Paginator({ 
+					rowsPerPage    : 20 
+					})  // Enables pagination
+	};
+
+	var newsDataTable = new YAHOO.widget.DataTable("constituencyDistCadreDiv",
+	newsColumns, newsDataSource, myConfigs);
+
+	newsDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
+		oPayload.totalRecords = oResponse.meta.totalRecords;
+		return oPayload;
+	}
+		
+		
+		}
+		
+		function openVoterAnalysisInfo(){
+			var win=window.open("votersAnalysisNewAction.action",'_blank');
+			win.focus();
 		}
 		
 		function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
