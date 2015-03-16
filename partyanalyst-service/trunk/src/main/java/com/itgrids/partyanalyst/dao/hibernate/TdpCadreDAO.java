@@ -10,7 +10,6 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dto.CadrePrintInputVO;
-import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -4543,5 +4542,35 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			Query query = getSession().createQuery("select model.memberShipNo from TdpCadre model where  " +
 					" model.isDeleted = 'N' and model.enrollmentYear = '2014' and ("+queryStr+") ");
 			return query.list();
+		}
+		
+		public Long getTdpCadreCountForLocations(String userAccessType,List<Long> constituencyIds){
+			StringBuilder str = new StringBuilder();
+			str.append("select count(model.tdpCadreId) from TdpCadre model where model.enrollmentYear = 2014 and model.isDeleted = 'N' ");
+			
+			if(userAccessType.equalsIgnoreCase("TS"))
+				str.append(" and model.userAddress.constituency.district.districtId between 1 and 10 ");
+			
+			if(userAccessType.equalsIgnoreCase("AP"))
+				str.append(" and model.userAddress.constituency.district.districtId between 11 and 23 ");
+		
+			str.append(" and model.userAddress.state.stateId = 1 ");
+			
+			if(userAccessType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			{
+				if(constituencyIds != null && constituencyIds.size() > 0)
+					str.append(" and  model.userAddress.constituency.constituencyId in(:constituencyIds)  ");
+			}
+			if(userAccessType.equalsIgnoreCase(IConstants.DISTRICT))
+			{
+				if(constituencyIds != null && constituencyIds.size() > 0)
+					str.append(" and  model.userAddress.district.districtId in(:constituencyIds)  ");
+			}
+			
+			Query query = getSession().createQuery(str.toString());
+			
+			if(constituencyIds != null && constituencyIds.size() > 0)
+				query.setParameterList("constituencyIds", constituencyIds);
+			return (Long) query.uniqueResult();
 		}
 }
