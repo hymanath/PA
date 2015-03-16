@@ -545,7 +545,9 @@
 				<value>com.itgrids.partyanalyst.model.TdpCadreImagesValid</value>	
 				<value>com.itgrids.partyanalyst.model.TdpCommitteeMemberHistory</value>		
 				<value>com.itgrids.partyanalyst.model.CadreCommitteeIncreasedPositions</value>
-	            <value>com.itgrids.partyanalyst.model.CadreCommitteeChangeDesignations</value>			
+	            <value>com.itgrids.partyanalyst.model.CadreCommitteeChangeDesignations</value>	
+	            <value>com.itgrids.partyanalyst.model.TdpCadreAgerangeInfo</value>	
+	            <value>com.itgrids.partyanalyst.model.TdpCadreCasteInfo</value>		
 			</list>
 		</property>
 	</bean>
@@ -2780,6 +2782,12 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="tdpCommitteeDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCommitteeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="tdpCadreAgerangeInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreAgerangeInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="tdpCadreCasteInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreCasteInfoDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>
