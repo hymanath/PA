@@ -74,7 +74,7 @@
 	</header>
 <div class="container">
 	<div class="col-md-10 col-md-offset-1">
-		<h3 style="text-align:center">CADRE COMMITTEE CASTE vs GENDER WISE POSITIONS DASHBOARD </h3>
+		<h3 style="text-align:center"> DESIGNATION WISE CADRE COMMITTEE DASHBOARD </h3>
 		<hr style="margin-top:5px;border-color:#FC6"/>
 	</div>
 	<div class="col-md-3 col-md-offset-8" style="margin-top:10px;" id="buttonsDiv">
@@ -108,7 +108,7 @@
 			</select>
 		  </div>
 		  <div class="col-md-6 col-xs-10">
-				<label>Position</label>
+				<label> Designation </label>
 				<select class="form-control" style="width:220px" id="committeePostitionId" >
 					<option value="0">All </option>
 					<option value="1">President </option>
@@ -205,11 +205,12 @@ var userInitialAccessType = '${pageAccessType}';
 			var str='';
 			str+='<div class="col-md-10 col-md-offset-1">';
 			if(locationName == 0)
-				str+='<h3 style="text-align:center">'+$("#searchLevelId option:selected").text()+' Wise '+$("#committeePostitionId option:selected").text()+' Position(s) Overview </h3>';
+				str+='<h3 style="text-align:center">'+$("#searchLevelId option:selected").text()+' Wise '+$("#committeePostitionId option:selected").text()+' Designation(s) Overview </h3>';
 			else
-				str+='		<h3 style="text-align:center"> '+locationName+' '+$("#committeePostitionId option:selected").text()+' Position(s) Overview </h3>';
+				str+='		<h3 style="text-align:center"> '+locationName+' '+$("#committeePostitionId option:selected").text()+' Designation(s) Overview </h3>';
 			str+='		<hr style="margin-top:5px;border-color:#FC6">';
 			str+='	</div>';
+		var totalRegisteredCadreCount = totalResult[0].availableCadreCount;
 		if(totalResult != null && totalResult.length>0)
 		{
 			for(var i in totalResult)
@@ -243,15 +244,27 @@ var userInitialAccessType = '${pageAccessType}';
 		{
 			
 				str+='<table class="table table-bordered" style="border:2px solid #FC6 !important;margin-bottom:35px" id="casteCategoryId'+divId+'">';
-				str+='<caption class="tablecaption" >Caste Category Wise '+$("#committeePostitionId option:selected").text()+' Position(s) Information';
+				str+='<caption class="tablecaption" >Caste Category Wise '+$("#committeePostitionId option:selected").text()+' Designation(s) Information';
 				str+='<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
 				str+='</caption>';
 				str+='<thead>';
 				str+='<tr>';
-				str+='<th width="25%">Caste Category</th>';
-				str+='<th width="25%">Total Count</th>';
-				str+='<th width="25%">Male</th>';
-				str+='<th width="25%">Female</th>';
+				str+='<th width="20%" ROWSPAN=2  style="text-align:center;">Caste Category</th>';
+				str+='<th width="20%" COLSPAN=2  style="text-align:center;">Commitee Members</th>';
+				str+='<th width="20%" COLSPAN=2  style="text-align:center;">Male</th>';
+				str+='<th width="20%" COLSPAN=2  style="text-align:center;">Female</th>';
+				str+='<th width="20%" COLSPAN=2  style="text-align:center;">Registered Cadre</th>';
+				str+='</tr>';
+				str+='<tr>';
+				//str+='<th width="20%" ROWSPAN=2 >Caste Category</th>';
+				str+='<th width="20%" >Total </th>';
+				str+='<th width="20%" >Percentage(%) </th>';
+				str+='<th width="20%" >Total</th>';
+				str+='<th width="20%" >Percentage(%) </th>';
+				str+='<th width="20%" >Total</th>';
+				str+='<th width="20%" >Percentage(%) </th>';
+				str+='<th width="20%" >Total</th>';
+				str+='<th width="20%" >Percentage(%) </th>';
 				str+='</tr>';
 				str+='</thead>';
 				for(var i in casteCategoryResult)
@@ -259,8 +272,13 @@ var userInitialAccessType = '${pageAccessType}';
 					str+='<tr>';
 					str+='<td>'+casteCategoryResult[i].casteCategory+'</td>';
 					str+='<td>'+casteCategoryResult[i].totalCount+'</td>';
+					str+='<td>'+casteCategoryResult[i].totalPerc+'</td>';
 					str+='<td>'+casteCategoryResult[i].maleCount+'</td>';
+					str+='<td>'+casteCategoryResult[i].malePerc+'</td>';
 					str+='<td>'+casteCategoryResult[i].femaleCount+'</td>';
+					str+='<td>'+casteCategoryResult[i].femalePerc+'</td>';
+					str+='<td>'+casteCategoryResult[i].availableCasteCount+'</td>';
+					str+='<td>'+casteCategoryResult[i].availableCadrePerc+'</td>';
 					str+='</tr>';
 				}
 				str+='</table>';			
@@ -270,15 +288,27 @@ var userInitialAccessType = '${pageAccessType}';
 		if(casteWiseResult != null  && casteWiseResult.length>0)
 		{
 			str+='<table class="table table-bordered" style="border:2px solid #FC6 !important" id="casteDetailsId'+divId+'">';
-			str+='<caption class="tablecaption" >Caste Wise '+$("#committeePostitionId option:selected").text()+' Position(s) Information';
+			str+='<caption class="tablecaption" >Caste Wise '+$("#committeePostitionId option:selected").text()+' Designation(s) Information';
 			str+='<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
 			str+='</caption>';
 			str+='<thead>';
 			str+='<tr>';
-			str+='<th width="25%">Caste Name</th>';
-			str+='<th width="25%">Total Count</th>';
-			str+='<th width="25%">Male</th>';
-			str+='<th width="25%">Female</th>';
+			str+='<th width="20%" ROWSPAN=2 style="text-align:center;">Caste Name</th>';
+			str+='<th width="20%"  COLSPAN=2 style="text-align:center;" > Committee Members </th>';
+			str+='<th width="20%"  COLSPAN=2 style="text-align:center;">Male</th>';
+			str+='<th width="20%"  COLSPAN=2 style="text-align:center;" >Female</th>';
+			str+='<th width="20%"  COLSPAN=2 style="text-align:center;" >Registered Cadre </th>';
+			str+='</tr>';
+			str+='<tr>';
+			//str+='<th width="20%"></th>';
+			str+='<th width="20%"> Total </th>';
+			str+='<th width="20%"> Percentage(%) </th>';
+			str+='<th width="20%"> Total</th>';
+			str+='<th width="20%"> Percentage(%) </th>';
+			str+='<th width="20%"> Total </th>';
+			str+='<th width="20%"> Percentage(%) </th>';
+			str+='<th width="20%"> Total </th>';
+			str+='<th width="20%"> Percentage(%) </th>';
 			str+='</tr>';
 			str+='</thead>';
 			for(var i in casteWiseResult)
@@ -286,8 +316,13 @@ var userInitialAccessType = '${pageAccessType}';
 				str+='<tr>';
 				str+='<td>'+casteWiseResult[i].caste+'</td>';
 					str+='<td>'+casteWiseResult[i].totalCount+'</td>';
+					str+='<td>'+casteWiseResult[i].totalPerc+' </td>';
 					str+='<td>'+casteWiseResult[i].maleCount+'</td>';
+					str+='<td>'+casteWiseResult[i].malePerc+'  </td>';
 					str+='<td>'+casteWiseResult[i].femaleCount+'</td>';
+					str+='<td>'+casteWiseResult[i].femalePerc+' </td>';
+					str+='<td>'+casteWiseResult[i].availableCasteCount+'</td>';
+					str+='<td>'+casteWiseResult[i].availableCadrePerc+'</td>';
 				str+='</tr>';
 			}
 			str+='</table>    ';
@@ -297,14 +332,26 @@ var userInitialAccessType = '${pageAccessType}';
 		if(ageRangeWiseResult != null  && ageRangeWiseResult.length>0)
 		{
 			str+='<table class="table table-bordered" style="border:2px solid #FC6 !important" id="ageRangeID'+divId+'">';
-			str+='<caption class="tablecaption">Age Range Wise '+$("#committeePostitionId option:selected").text()+' Position(s) Information';
+			str+='<caption class="tablecaption">Age Range Wise '+$("#committeePostitionId option:selected").text()+' Designation(s) Information';
 			str+='<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>                </caption>';
 			str+='<thead>';
 			str+='<tr>';
-			str+='<th width="25%">Between Age</th>';
-			str+='<th width="25%">Total Count</th>';
-			str+='<th width="25%">Male</th>';
-			str+='<th width="25%">Female</th>';
+			str+='<th width="20%" rowspan="2" style="text-align:center;">Between Age</th>';
+			str+='<th width="20%" colspan="2" style="text-align:center;">Commitee Members</th>';
+			str+='<th width="20%" colspan="2" style="text-align:center;">Male</th>';
+			str+='<th width="20%" colspan="2" style="text-align:center;">Female</th>';
+			str+='<th width="20%" colspan="2" style="text-align:center;">Registered Cadre </th>';
+			str+='</tr>';
+			str+='<tr>';
+			//str+='<th width="20%">Between Age</th>';
+			str+='<th width="20%">Total</th>';
+			str+='<th width="20%">Percentage(%)</th>';
+			str+='<th width="20%">Total</th>';
+			str+='<th width="20%">Percentage(%)</th>';
+			str+='<th width="20%">Total</th>';
+			str+='<th width="20%">Percentage(%)</th>';
+			str+='<th width="20%"> Total </th>';
+			str+='<th width="20%">Percentage(%)</th>';
 			str+='</tr>';
 			str+='</thead>';
 			for(var i in ageRangeWiseResult)
@@ -312,8 +359,13 @@ var userInitialAccessType = '${pageAccessType}';
 				str+='<tr>';
 				str+='<td>'+ageRangeWiseResult[i].ageRange+'</td>';
 				str+='<td>'+ageRangeWiseResult[i].totalCount+'</td>';
+				str+='<td>'+ageRangeWiseResult[i].totalPerc+'</td>';
 				str+='<td>'+ageRangeWiseResult[i].maleCount+'</td>';
+				str+='<td>'+ageRangeWiseResult[i].malePerc+'</td>';
 				str+='<td>'+ageRangeWiseResult[i].femaleCount+'</td>';
+				str+='<td>'+ageRangeWiseResult[i].femalePerc+'</td>';
+				str+='<td>'+ageRangeWiseResult[i].avaibleAgeWiseCount+'</td>';
+				str+='<td>'+ageRangeWiseResult[i].availableCadrePerc+'</td>';
 				str+='</tr>';
 			}
 			str+='</table> ';
@@ -325,14 +377,15 @@ var userInitialAccessType = '${pageAccessType}';
 				if(locationOverview != null  && locationOverview.length>0)
 				{
 					str+='<table class="table table-bordered" style="border:2px solid #FC6 !important" id="locationOverveiewDiv'+divId+'">';
-					str+='<caption class="tablecaption"> '+result.locationName+' Wise '+$("#committeePostitionId option:selected").text()+' Position(s) Committee Information';
+					str+='<caption class="tablecaption"> '+result.locationName+' Wise '+$("#committeePostitionId option:selected").text()+' Designation(s) Committee Information';
 					str+='<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>                </caption>';
 					str+='<thead>';
 					str+='<tr>';
-					str+='<th width="25%">'+result.locationName+' Name</th>';
-					str+='<th width="25%">Total Count</th>';
-					str+='<th width="25%">Male</th>';
-					str+='<th width="25%">Female</th>';
+					str+='<th width="20%">'+result.locationName+' Name</th>';
+					str+='<th width="20%">Total Count</th>';
+					str+='<th width="20%">Male</th>';
+					str+='<th width="20%">Female</th>';
+					str+='<th width="20%">Registered Cadre </th>';
 					str+='</tr>';
 					str+='</thead>';
 					
@@ -366,6 +419,7 @@ var userInitialAccessType = '${pageAccessType}';
 						str+='<td>'+locationOverview[i].totalCount+'</td>';
 						str+='<td>'+locationOverview[i].maleCount+'</td>';
 						str+='<td>'+locationOverview[i].femaleCount+'</td>';
+						str+='<td>'+locationOverview[i].availableCadreCount+'</td>';
 						str+='</tr>';
 					}
 					str+='</table> ';
@@ -377,7 +431,7 @@ var userInitialAccessType = '${pageAccessType}';
 				if(locationOverview != null  && locationOverview.length>0)
 				{
 					str+='<table class="table table-bordered" style="border:2px solid #FC6 !important" id="locationOverveiewDiv'+divId+'">';
-					str+='<caption class="tablecaption"> '+result.locationName+' Wise  '+$("#committeePostitionId option:selected").text()+' Position(s) Committee Information';
+					str+='<caption class="tablecaption"> '+result.locationName+' Wise  '+$("#committeePostitionId option:selected").text()+' Designation(s) Committee Information';
 					str+='<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>                </caption>';
 					str+='<thead>';
 					str+='<tr>';
@@ -385,6 +439,7 @@ var userInitialAccessType = '${pageAccessType}';
 					str+='<th width="25%">Total Count</th>';
 					str+='<th width="25%">Male</th>';
 					str+='<th width="25%">Female</th>';
+					str+='<th width="25%">Registered Cadre</th>';
 					str+='</tr>';
 					str+='</thead>';
 					
@@ -418,6 +473,7 @@ var userInitialAccessType = '${pageAccessType}';
 						str+='<td>'+locationOverview[i].totalCount+'</td>';
 						str+='<td>'+locationOverview[i].maleCount+'</td>';
 						str+='<td>'+locationOverview[i].femaleCount+'</td>';
+						str+='<td>'+locationOverview[i].availableCadreCount+'</td>';
 						str+='</tr>';
 					}
 					str+='</table> ';
