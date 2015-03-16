@@ -925,7 +925,20 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						str+='<td colspan="6"><ul class="list-inline ivrdetails"><li style="background: none repeat scroll 0% 0% rgb(51, 51, 51); color: rgb(255, 255, 255);">IVR DETAILS</li>';
 						str+='<li style="width: 151px;">Total Villages:'+result.committeeSummaryVO.count+'</li>';
 						str+='<li style="width: 159px;">Total IVR Calls:'+result.committeeSummaryVO.totalIvrCalls+'</li>';
-						str+='<li style="width: 180px;">Total Lifted Calls:'+result.committeeSummaryVO.answeredIvrCalls+'</li></ul>';
+						var totLiftpercentage = 0;
+						var totLiftperc = 0;
+						totLiftpercentage = (result.committeeSummaryVO.answeredIvrCalls *100)/ result.committeeSummaryVO.totalIvrCalls;
+						totLiftperc = totLiftpercentage.toFixed(0)
+						str+='<li style="width: 173px;">Total Lifted :'+result.committeeSummaryVO.answeredIvrCalls+'('+totLiftperc+'%)</li>';
+						var totalAnswerd = 0;
+						for(var pm in result.committeeSummaryVO.optionsList){
+							totalAnswerd = totalAnswerd + result.committeeSummaryVO.optionsList[pm].count
+						}
+						var totpercentage = 0;
+						var totperc = 0;
+						totpercentage = (totalAnswerd *100)/ result.committeeSummaryVO.answeredIvrCalls;
+						totperc = totpercentage.toFixed(0)
+						str+='<li style="width: 180px;">Total Answred:'+totalAnswerd+'('+totperc+'%)</li></ul>';
 						str+='<ul class="list-inline ivrdetails"><li style="width: 93px; background: none repeat scroll 0 0 #fff;"></li>';
 						var percentage = 0;
 						var perc = 0;
@@ -1058,8 +1071,24 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							str1+='<td colspan="6"><ul class="list-inline ivrdetails"><li style="background: none repeat scroll 0% 0% rgb(51, 51, 51); color: rgb(255, 255, 255);">IVR DETAILS</li>';
 							
 							str1+='<li style="width: 144px;">Total Villages:'+result.committeeSummaryVO.count+'</li>';
+							
 							str1+='<li style="width: 150px;">Total IVR Calls:'+result.committeeSummaryVO.totalIvrCalls+'</li>';
-							str1+='<li style="width: 173px;">Total Lifted Calls:'+result.committeeSummaryVO.answeredIvrCalls+'</li></ul>';
+							var totLiftpercentage = 0;
+							var totLiftperc = 0;
+							totLiftpercentage = (result.committeeSummaryVO.answeredIvrCalls *100)/ result.committeeSummaryVO.totalIvrCalls;
+							console.log(totLiftpercentage);
+							totLiftperc = totLiftpercentage.toFixed(0)
+							str1+='<li style="width: 173px;">Total Lifted :'+result.committeeSummaryVO.answeredIvrCalls+'('+totLiftperc+'%)</li>';
+							var totalAnswerd = 0;
+							for(var pm in result.committeeSummaryVO.optionsList){
+								totalAnswerd = totalAnswerd + result.committeeSummaryVO.optionsList[pm].count
+							}
+							var totpercentage = 0;
+							var totperc = 0;
+							totpercentage = (totalAnswerd *100)/ result.committeeSummaryVO.totalIvrCalls;
+							console.log(totpercentage);
+							totperc = totpercentage.toFixed(0)
+							str1+='<li style="width: 173px;">Total Answered:'+totalAnswerd+'('+totperc+'%)</li></ul>';
 							str1+='<ul class="list-inline ivrdetails"><li style="width: 93px; background: none repeat scroll 0 0 #fff;"></li>';
 							if(result.committeeSummaryVO.total >0){
 												
