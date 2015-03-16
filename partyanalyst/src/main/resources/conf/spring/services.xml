@@ -2530,7 +2530,11 @@
 	      <property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO"/>
 	      <property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO"/>
 	      <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"/>
-	     
+	      <property name="tdpCadreInfoDAO" ref="tdpCadreInfoDAO"/>
+	      <property name="cadreIvrResponseDAO" ref="cadreIvrResponseDAO"/>
+       	  <property name="ivrCampaignOptionsDAO" ref="ivrCampaignOptionsDAO"/>
+          <property name="committeIvrDistrictDetailDAO" ref="committeIvrDistrictDetailDAO"/>
+          <property name="committeIvrTotalDetailDAO" ref="committeIvrTotalDetailDAO"/>
 	</bean>
 	
 	<bean name="dynamicReportService"  class="com.itgrids.partyanalyst.service.impl.DynamicReportService">
