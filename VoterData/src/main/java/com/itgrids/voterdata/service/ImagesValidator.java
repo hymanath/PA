@@ -26,11 +26,13 @@ public class ImagesValidator {
 	public static void main(String[] args)
 	{
 		ImagesValidator validator = new ImagesValidator();
-		validator.validateImages("D:\\Cadre\\voter_images\\", "D:\\Cadre\\voter_images\\");
-		//validator.verifyEncode("D:\\Cadre\\voter_images\\Enc\\UXN0969487_2.jpg");
+		
+		validator.validateImages("D:\\itgsharing\\Voter_Images\\", "D:\\itgsharing\\Kamal\\IV_Logs5\\",17,3200000,200000);
+		
+		//validator.validateImages("D:\\itgsharing\\Voter_Images\\", "D:\\itgsharing\\Kamal\\IV_Logs7\\",5,0,200000);
 	}
 	
-	public void validateImages(String srcStr,String opStr)
+	public void validateImages(String srcStr,String opStr,int idx,int stInd,int records)
 	{
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
@@ -40,11 +42,18 @@ public class ImagesValidator {
 			StringBuilder sb1 = new StringBuilder();
 			StringBuilder sb2 = new StringBuilder();
 			StringBuilder sb3 = new StringBuilder();
-    		BufferedWriter outwriter1 = new BufferedWriter(new FileWriter(opStr+"Success.txt"));
-    		BufferedWriter outwriter2 = new BufferedWriter(new FileWriter(opStr+"fail.txt"));
-    		BufferedWriter outwriter3 = new BufferedWriter(new FileWriter(opStr+"encrypt.txt"));
+    		BufferedWriter outwriter1 = new BufferedWriter(new FileWriter(opStr+"TC_Success"+idx+".txt"));
+    		BufferedWriter outwriter2 = new BufferedWriter(new FileWriter(opStr+"TC_fail"+idx+".txt"));
+    		BufferedWriter outwriter3 = new BufferedWriter(new FileWriter(opStr+"TC_encrypt"+idx+".txt"));
     		
-    		ResultSet rs = stmt.executeQuery("select tdp_cadre_id,voter_image_path FROM zebra_print_details where photo_type = 'VOTER' limit 100");
+    		ResultSet rs = stmt.executeQuery("select TC.tdp_cadre_id,CONCAT(B.constituency_id,'/Part',B.part_no,'/',V.voter_id_card_no,'.jpg') FROM tdp_cadre TC,voter V,booth_publication_voter BPV,booth B " +
+    				" where TC.voter_id = V.voter_id and V.voter_id = BPV.voter_id and BPV.booth_id = B.booth_id and TC.photo_type = 'VOTER' and B.publication_date_id = 11 and TC.is_deleted = 'N' and TC.enrollment_year = 2014" +
+    				" order by TC.tdp_cadre_id limit "+stInd+","+records);
+    				
+    		/*ResultSet rs = stmt.executeQuery("select TC.tdp_cadre_id,CONCAT(B.constituency_id,'/Part',B.part_no,'/',V.voter_id_card_no,'.jpg') FROM tdp_cadre TC,voter V,booth_publication_voter BPV,booth B " +
+    				" where TC.voter_id = V.voter_id and V.voter_id = BPV.voter_id and BPV.booth_id = B.booth_id and TC.photo_type = 'VOTER' and B.publication_date_id = 11 and TC.is_deleted = 'N' and " +
+    				" TC.enrollment_year = 2014 and B.constituency_id in(260)" +
+    				" order by TC.tdp_cadre_id limit "+stInd+","+records);*/
     		int sindex = 0;
     		int findex = 0;
     		int eIndex = 0;
