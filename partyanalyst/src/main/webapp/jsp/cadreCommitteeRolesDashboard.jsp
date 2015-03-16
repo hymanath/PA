@@ -210,7 +210,7 @@ var userInitialAccessType = '${pageAccessType}';
 				str+='		<h3 style="text-align:center"> '+locationName+' '+$("#committeePostitionId option:selected").text()+' Designation(s) Overview </h3>';
 			str+='		<hr style="margin-top:5px;border-color:#FC6">';
 			str+='	</div>';
-		var totalRegisteredCadreCount = totalResult[0].availableCadreCount;
+		var totalRegisteredCadreCount = 0;
 		if(totalResult != null && totalResult.length>0)
 		{
 			for(var i in totalResult)
@@ -234,6 +234,9 @@ var userInitialAccessType = '${pageAccessType}';
 				str+='<div class="col-md-7" style="font-size:32px;padding:0px;display:inline-block">'+femaleCount+'</div>';
 				str+='</div>';
 				str+='</div>';
+				
+				 totalRegisteredCadreCount = totalResult[i].availableCadreCount;
+				 
 			}			
 		}
 		
