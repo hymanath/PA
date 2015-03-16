@@ -1968,8 +1968,12 @@
 	<bean id="committeIvrTotalDetailDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommitteIvrTotalDetailDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	
-	
+	<bean id="tdpCadreAgerangeInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreAgerangeInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="tdpCadreCasteInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreCasteInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
 	<!--  end -->
 </beans>		
