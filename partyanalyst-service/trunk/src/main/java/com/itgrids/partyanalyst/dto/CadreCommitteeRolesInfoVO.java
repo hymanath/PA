@@ -10,13 +10,19 @@ public class CadreCommitteeRolesInfoVO implements java.io.Serializable{
 	private Long maleCount;
 	private Long femaleCount;
 	private Long totalCount;
+	private Double malePerc;
+	private Double femalePerc;
+	private Double totalPerc;
 	private String casteCategory;
 	private String casteCategoryGroup;
 	private String caste;
 	private String ageRange;
 	private String locationId;
 	private String locationName;
-	
+	private String availableCadreCount;
+	private Double availableCadrePerc;
+	private String availableCasteCount;
+	private String avaibleAgeWiseCount;
 	private List<CadreCommitteeRolesInfoVO> casteCategoryWiseList = new ArrayList<CadreCommitteeRolesInfoVO>();
 	private List<CadreCommitteeRolesInfoVO> casteCategoryGroupWiseList = new ArrayList<CadreCommitteeRolesInfoVO>();
 	private List<CadreCommitteeRolesInfoVO> casteWiseList = new ArrayList<CadreCommitteeRolesInfoVO>();
@@ -25,6 +31,49 @@ public class CadreCommitteeRolesInfoVO implements java.io.Serializable{
 	
 	private List<CadreCommitteeRolesInfoVO> cadreCommitteeRolesInfoVOList = new ArrayList<CadreCommitteeRolesInfoVO>();
 	
+	
+	public Double getAvailableCadrePerc() {
+		return availableCadrePerc;
+	}
+	public void setAvailableCadrePerc(Double availableCadrePerc) {
+		this.availableCadrePerc = availableCadrePerc;
+	}
+	public Double getMalePerc() {
+		return malePerc;
+	}
+	public void setMalePerc(Double malePerc) {
+		this.malePerc = malePerc;
+	}
+	public Double getFemalePerc() {
+		return femalePerc;
+	}
+	public void setFemalePerc(Double femalePerc) {
+		this.femalePerc = femalePerc;
+	}
+	public Double getTotalPerc() {
+		return totalPerc;
+	}
+	public void setTotalPerc(Double totalPerc) {
+		this.totalPerc = totalPerc;
+	}
+	public String getAvailableCadreCount() {
+		return availableCadreCount;
+	}
+	public void setAvailableCadreCount(String availableCadreCount) {
+		this.availableCadreCount = availableCadreCount;
+	}
+	public String getAvailableCasteCount() {
+		return availableCasteCount;
+	}
+	public void setAvailableCasteCount(String availableCasteCount) {
+		this.availableCasteCount = availableCasteCount;
+	}
+	public String getAvaibleAgeWiseCount() {
+		return avaibleAgeWiseCount;
+	}
+	public void setAvaibleAgeWiseCount(String avaibleAgeWiseCount) {
+		this.avaibleAgeWiseCount = avaibleAgeWiseCount;
+	}
 	public Long getRoleId() {
 		return roleId;
 	}
