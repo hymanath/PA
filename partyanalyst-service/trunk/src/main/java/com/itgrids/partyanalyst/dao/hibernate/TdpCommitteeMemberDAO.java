@@ -1130,4 +1130,277 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		}
 		return query.list();
 	}
+	
+	public List<Object[]> getCasteCategoryInfoForLocations(Long locationLevelId, List<Long> locationIdsList,List<Long> wardIdsList,String userAccessType, String segrigatStr,String searchType)
+	{
+		StringBuilder quertyStr = new StringBuilder(); 
+		quertyStr.append(" select ");
+
+		quertyStr.append(" TCCI.location_id, TCCI.caste_category_id, TCCI.count  from tdp_cadre_caste_info TCCI where TCCI.caste_state_id not in (459,301,292,430)  ");
+		
+		if(userAccessType != null)
+		{
+			if(userAccessType.equalsIgnoreCase("AP"))
+			{
+				quertyStr.append(" and (TCCI.location_type like '%District%' and TCCI.location_id between 11 and 23)  ");
+			}
+			else if(userAccessType.equalsIgnoreCase("TS"))
+			{
+				quertyStr.append(" and (TCCI.location_type like '%District%' and TCCI.location_id between 1 and 10)  ");
+			}
+			else if(userAccessType.equalsIgnoreCase("ALL") || userAccessType.equalsIgnoreCase("STATE"))
+			{
+				quertyStr.append(" and (TCCI.location_type like '%District%' and TCCI.location_id between 1 and 23)  ");
+			}
+		}
+		
+		
+		boolean isAreaWise = false;
+		if(locationIdsList != null && locationIdsList.size()>0)
+		{
+			if(locationLevelId != null && locationLevelId.longValue() == 1L) // stateWise
+			{
+				quertyStr.append(" and TCCI.location_type like '%District%' and TCCI.location_id between 1 and 23 ");
+			}
+			else if(locationLevelId != null && locationLevelId.longValue() == 2L) // districtWise
+			{
+				quertyStr.append(" and TCCI.location_type like '%District%' and TCCI.location_id in (:locationIdsList) ");
+			}			
+			else if(locationLevelId != null && locationLevelId.longValue() == 3L) // constituencyWise
+			{
+				quertyStr.append(" and TCCI.location_type like '%Constituency%' and TCCI.location_id in (:locationIdsList) ");
+			}
+			else if(locationLevelId != null && locationLevelId.longValue() == 5L) // village/ward wise
+			{
+				isAreaWise = true;
+				quertyStr.append(" and ( TCCI.location_id in (:locationIdsList) ");
+				
+				if(wardIdsList != null && wardIdsList.size()>0)
+				{
+					quertyStr.append(" or TCCI.location_id in (:wardIdsList) ");
+				}
+				quertyStr.append(" ) ");
+			}
+			else if(locationLevelId != null && locationLevelId.longValue() == 6L) // mandal/municipality/division wise
+			{
+				isAreaWise = true;
+				quertyStr.append(" and  ( TCCI.location_id in (:locationIdsList) ");
+				if(wardIdsList != null && wardIdsList.size()>0)
+				{
+					quertyStr.append(" or TCCI.location_id in (:wardIdsList) ");
+				}
+				quertyStr.append(" ) ");
+			}
+		}
+		if(isAreaWise && (segrigatStr != null && segrigatStr.trim().length()>0))
+		{
+			if(segrigatStr.equalsIgnoreCase("VillageORWard"))
+			{
+				quertyStr.append(" and ( TCCI.location_type like '%Panchayat%' or TCCI.location_type like '%Ward%' ) ");
+				
+			}
+			else if(segrigatStr.equalsIgnoreCase("MandalORTown"))
+			{
+				quertyStr.append(" and ( TCCI.location_type like '%Teshil%' or TCCI.location_type like '%LocalBody%' ) ");
+			}
+		}
+
+		Query query = getSession().createSQLQuery(quertyStr.toString());
+		
+		if( (locationLevelId != null && locationLevelId.longValue() != 1L) && (locationIdsList != null && locationIdsList.size()>0))
+		{
+			query.setParameterList("locationIdsList", locationIdsList);
+		}
+		if(wardIdsList != null && wardIdsList.size()>0)
+		{
+			query.setParameterList("wardIdsList", wardIdsList);
+		}
+		return query.list();
+	}
+	
+	public List<Object[]> getCasteInfoForLocations(Long locationLevelId, List<Long> locationIdsList,List<Long> wardIdsList,String userAccessType, String segrigatStr,String searchType)
+	{
+		StringBuilder quertyStr = new StringBuilder(); 
+		quertyStr.append(" select ");
+		
+		quertyStr.append(" TCCI.location_id, TCCI.caste_state_id, TCCI.count  from tdp_cadre_caste_info TCCI where   ");
+		boolean isLocationEmpty = false;
+		if(userAccessType != null)
+		{
+			if(userAccessType.equalsIgnoreCase("AP"))
+			{
+				isLocationEmpty = true;
+				quertyStr.append(" (TCCI.location_type like '%District%' and TCCI.location_id between 11 and 23)   ");
+			}
+			else if(userAccessType.equalsIgnoreCase("TS"))
+			{
+				isLocationEmpty = true;
+				quertyStr.append(" (TCCI.location_type like '%District%' and TCCI.location_id between 1 and 10)  ");
+			}
+			else if(userAccessType.equalsIgnoreCase("ALL") || userAccessType.equalsIgnoreCase("STATE"))
+			{
+				isLocationEmpty = true;
+				quertyStr.append(" (TCCI.location_type like '%District%' and TCCI.location_id between 1 and 23)  ");
+			}
+			
+		}
+		
+		boolean isAreaWise = false;
+		if(locationIdsList != null && locationIdsList.size()>0)
+		{
+			if(isLocationEmpty)
+			{
+				quertyStr.append(" and ");
+			}
+			
+			if(locationLevelId != null && locationLevelId.longValue() == 1L) // stateWise
+			{
+				quertyStr.append("  TCCI.location_type like '%District%' and TCCI.location_id between 1 and 23 ");
+			}
+			else if(locationLevelId != null && locationLevelId.longValue() == 2L) // districtWise
+			{
+				quertyStr.append("  TCCI.location_type like '%District%' and TCCI.location_id in (:locationIdsList) ");
+			}			
+			else if(locationLevelId != null && locationLevelId.longValue() == 3L) // constituencyWise
+			{
+				quertyStr.append("  TCCI.location_type like '%Constituency%' and TCCI.location_id in (:locationIdsList) ");
+			}
+			else if(locationLevelId != null && locationLevelId.longValue() == 5L) // village/ward wise
+			{
+				isAreaWise = true;
+				quertyStr.append("  ( TCCI.location_id in (:locationIdsList) ");
+				
+				if(wardIdsList != null && wardIdsList.size()>0)
+				{
+					quertyStr.append(" or TCCI.location_id in (:wardIdsList) ");
+				}
+				quertyStr.append(" ) ");
+			}
+			else if(locationLevelId != null && locationLevelId.longValue() == 6L) // mandal/municipality/division wise
+			{
+				isAreaWise = true;
+				quertyStr.append("   ( TCCI.location_id in (:locationIdsList) ");
+				if(wardIdsList != null && wardIdsList.size()>0)
+				{
+					quertyStr.append(" or TCCI.location_id in (:wardIdsList) ");
+				}
+				quertyStr.append(" ) ");
+			}
+		}
+		if(isAreaWise && (segrigatStr != null && segrigatStr.trim().length()>0))
+		{
+			if(segrigatStr.equalsIgnoreCase("VillageORWard"))
+			{
+				quertyStr.append(" and ( TCCI.location_type like '%Panchayat%' or TCCI.location_type like '%Ward%' ) ");
+				
+			}
+			else if(segrigatStr.equalsIgnoreCase("MandalORTown"))
+			{
+				quertyStr.append(" and ( TCCI.location_type like '%Teshil%' or TCCI.location_type like '%LocalBody%' ) ");
+			}
+		}
+
+		Query query = getSession().createSQLQuery(quertyStr.toString());
+		
+		if( (locationLevelId != null && locationLevelId.longValue() != 1L) && (locationIdsList != null && locationIdsList.size()>0))
+		{
+			query.setParameterList("locationIdsList", locationIdsList);
+		}
+		if(wardIdsList != null && wardIdsList.size()>0)
+		{
+			query.setParameterList("wardIdsList", wardIdsList);
+		}
+		return query.list();
+	}
+	
+	public List<Object[]> getCadreAgerangeInfoForLocations(Long locationLevelId, List<Long> locationIdsList,List<Long> wardIdsList,String userAccessType,String segrigatStr)
+	{
+		StringBuilder quertyStr = new StringBuilder();
+		boolean isLocationEmpty = false;
+		quertyStr.append(" select TCAGE.location_id,TCAGE.age_range_id, TCAGE.count ");
+				
+		quertyStr.append(" from tdp_cadre_agerange_info TCAGE where ");
+		if(userAccessType.equalsIgnoreCase("AP"))
+		{
+			isLocationEmpty = true;
+			quertyStr.append(" (TCAGE.location_type like '%District%' and TCAGE.location_id between 11 and 23)  ");
+		}
+		else if(userAccessType.equalsIgnoreCase("TS"))
+		{
+			isLocationEmpty = true;
+			quertyStr.append(" (TCAGE.location_type like '%District%' and TCAGE.location_id between 1 and 10)  ");
+		}
+		else if(userAccessType.equalsIgnoreCase("ALL") || userAccessType.equalsIgnoreCase("STATE"))
+		{
+			isLocationEmpty = true;
+			quertyStr.append(" (TCAGE.location_type like '%District%' and TCAGE.location_id between 1 and 23)  ");
+		}
+		
+		boolean isAreaWise = false;
+		if(locationIdsList != null && locationIdsList.size()>0)
+		{
+			if(isLocationEmpty)
+			{
+				quertyStr.append(" and ");
+			}
+			if(locationLevelId != null && locationLevelId.longValue() == 1L) // stateWise
+			{
+				quertyStr.append("  TCAGE.location_type like '%District%' and TCAGE.location_id between 1 and 23 ");
+			}
+			else if(locationLevelId != null && locationLevelId.longValue() == 2L) // districtWise
+			{
+				quertyStr.append("  TCAGE.location_type like '%District%' and TCAGE.location_id in (:locationIdsList) ");
+			}			
+			else if(locationLevelId != null && locationLevelId.longValue() == 3L) // constituencyWise
+			{
+				quertyStr.append("  TCAGE.location_type like '%Constituency%' and TCAGE.location_id in (:locationIdsList) ");
+			}
+			else if(locationLevelId != null && locationLevelId.longValue() == 5L) // village/ward wise
+			{
+				isAreaWise = true;
+				quertyStr.append("  ( TCAGE.location_id in (:locationIdsList) ");
+				
+				if(wardIdsList != null && wardIdsList.size()>0)
+				{
+					
+					quertyStr.append(" or TCAGE.location_id in (:wardIdsList) ");
+				}
+				quertyStr.append(" ) ");
+			}
+			else if(locationLevelId != null && locationLevelId.longValue() == 6L) // mandal/municipality/division wise
+			{
+				isAreaWise = true;
+				quertyStr.append("  ( TCAGE.location_id in (:locationIdsList) ");
+				if(wardIdsList != null && wardIdsList.size()>0)
+				{
+					quertyStr.append(" or TCAGE.location_id in (:wardIdsList) ");
+				}
+				quertyStr.append(" ) ");
+			}
+		}
+		if(isAreaWise && (segrigatStr != null && segrigatStr.trim().length()>0))
+		{
+			if(segrigatStr.equalsIgnoreCase("VillageORWard"))
+			{
+				quertyStr.append(" and ( TCAGE.location_type like '%Panchayat%' or TCAGE.location_type like '%Ward%' ) ");
+				
+			}
+			else if(segrigatStr.equalsIgnoreCase("MandalORTown"))
+			{
+				quertyStr.append(" and ( TCAGE.location_type like '%Teshil%' or TCAGE.location_type like '%LocalBody%' ) ");
+			}
+		}
+
+		Query query = getSession().createSQLQuery(quertyStr.toString());
+		
+		if( (locationLevelId != null && locationLevelId.longValue() != 1L) && (locationIdsList != null && locationIdsList.size()>0))
+		{
+			query.setParameterList("locationIdsList", locationIdsList);
+		}
+		if(wardIdsList != null && wardIdsList.size()>0)
+		{
+			query.setParameterList("wardIdsList", wardIdsList);
+		}
+		return query.list();
+	}
 }
