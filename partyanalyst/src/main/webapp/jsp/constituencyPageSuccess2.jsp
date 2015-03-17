@@ -851,7 +851,7 @@ var queryString='';
 	</div>
 		<div id="cadre2014RegInfoDiv" style="display:none;">
 		    <s:if test="#session.USER.isAdmin == 'true'"> 
-			   <input title="Click Here To Get 2014 Cadre Registration Info" type="button" class="button btn btn-primary" style="background-color:#3897A5;cursor:pointer;font-weight:bold;margin-top: -12px;padding:5px" value="2014 Cadre Registration Info" onclick="show2014CadreRegistInfo();" />
+			   
             </s:if>			
         </div>		
         <!--VIEW YOUR PROBLEMS SECTION START-->
