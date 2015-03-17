@@ -286,11 +286,10 @@ margin-top:10px;
             <div  style="z-index:1;text-align:left;">
 				<ul>
 				
-				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'PROBLEM_MANAGEMENT_ENTITLEMENT') }">
+				<!--<c:if test="${fn:contains(sessionScope.USER.entitlements, 'PROBLEM_MANAGEMENT_ENTITLEMENT') }">
 					<li><a onmousedown="return false;" class="parent"><span>Problem Management</span></a>
 						<div>
-							<ul>
-							  
+							<ul>						  
 					
 								<li><a onclick="openAddNewProblemWindow()" href="javascript:{}"><span>Add New Problem</span></a></li>
 								<li><a href="constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT"><span>All Problems</span></a></li>
@@ -300,10 +299,46 @@ margin-top:10px;
 						</div>
 					</li>
 						</c:if>
-						
+						-->
 						<li><a onmousedown="return false;" class="parent"><span>Tools</span></a>
 						<div>
 							<ul>
+							<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">   
+								<c:if test="${fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS' )  || fn:contains(sessionScope.USER.entitlements, 'VOTER_SEARCH_AND_EDIT' ) 
+								}">
+								<li>
+									<a href="#" class="parent"><span>Constituency Analysis</span></a>
+									<div  style="z-index:8;text-align:left;" >
+										<ul>
+										
+										 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS' ) }">
+											<li><a href="votersAnalysisNewAction.action"><span>Voter Analysis</span></a></li>
+											</c:if>
+											<c:if test="${fn:contains(sessionScope.USER.entitlements, 'VOTER_SEARCH_AND_EDIT' ) }">
+											
+											<li><a href="votersSearchAction.action"><span>Voters Search &amp; Report</span></a></li>
+											</c:if>
+											 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS' ) }">
+											<li><a href="casteAndElectionResultsComparisonAction.action"><span>Caste Vs Election Results</span></a></li>
+											</c:if>
+										</ul>
+									</div>
+								</li>
+								</c:if>
+							</c:if>
+								
+							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'PROBLEM_MANAGEMENT_ENTITLEMENT') }">
+								<li><a onmousedown="return false;" class="parent"><span>Problem Management</span></a>
+									<div>
+										<ul>						  
+								
+											<li><a onclick="openAddNewProblemWindow()" href="javascript:{}"><span>Add New Problem</span></a></li>
+											<li><a href="constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT"><span>All Problems</span></a></li>
+											<li><a href="completeProblemDetailsSearchAction.action"><span>Problem Search And Report</span></a></li>										
+										</ul>
+									</div>
+								</li>
+							</c:if>
 								<li><a href="initailConstituencyManagementAction.action"><span>Constituency Management</span></a></li>
 								<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_MANAGEMENT_ENTITLEMENT' ) }">
 								<li><a href="cadreManagementAction.action" id="cadreId"><span>Cadre Management</span></a></li>
@@ -324,18 +359,28 @@ margin-top:10px;
 						<li><a onmousedown="return false;" class="parent"><span>2014 Cadre</span></a>
 							<div>
 								<ul>
+									<li><a onmousedown="return false;" class="parent"><span>2014 Cadre Reports</span></a>
+										<div>
+											<ul>
+												<li><a href="cadreRegistrationAmountReportAction.action"><span>2014 Cadre Reconciliation Report</span></a></li>
+												<li><a href="leaderCadreDashBoardAction.action"><span>Leader Cadre DashBoard</span></a></li>									
+												<li><a href="cadreReportsAction.action"><span> Cadre Reports - 2014 </span></a></li>
+												<li><a href="misReportAction.action"><span> MIS Reports </span></a></li>
+											</ul>
+										</div>
+									</li>
 									<li><a href="cadreDashBoardAction.action"><span>Cadre Dashboard</span></a>
 									<li><a href="tdpCadreCardsPrintingDashBoardAction.action"><span>Cadre Cards Printing Dashboard</span></a></li>
 								
 									<li><a href="cadreMemberShipCardDispatcherAction.action"><span>Cadre Membership Card Status </span></a></li>
-								
+									
 								</ul>
 							</div>					
 						</li>
 						
 					</c:if>
 					<c:if test="${sessionScope.USER.isAdmin == 'true'}">
-						<li><a onmousedown="return false;" class="parent"><span>2014 Cadre Reports</span></a>
+					<!--	<li><a onmousedown="return false;" class="parent"><span>2014 Cadre Reports</span></a>
 							<div>
 								<ul>
 									<li><a href="cadreRegistrationAmountReportAction.action"><span>2014 Cadre Reconciliation Report</span></a></li>
@@ -344,7 +389,7 @@ margin-top:10px;
 									<li><a href="misReportAction.action"><span> MIS Reports </span></a></li>
 								</ul>
 							</div>
-						</li>
+						</li> -->
 					</c:if>
 					
 					<li><a onmousedown="return false;" class="parent"><span>Committees</span></a>
@@ -366,8 +411,20 @@ margin-top:10px;
 					
 					
 					<c:if test="${sessionScope.USER.isAdmin == 'true'}">						
+						<li>
+							<a href="#" class="parent"><span>Elections</span></a>
+							<div  style="z-index:8;text-align:left;" >
+								<ul>								
+									<li><a href="currentBoothsStatus.action"><span>Tirupati Bye Election Poll Management</span></a></li>
+										<c:if test="${fn:contains(sessionScope.USER.entitlements, 'NEW_LIVE_RESULTS' ) }">
+										<li><a href="acPcWiseElectionResultAction.action?stateId=1"><span>Live Results</span></a>
+										</li>
+										</c:if>
+								</ul>
+							</div>
+						</li>
+								
 						
-						<li><a href="currentBoothsStatus.action"><span>Tirupati Bye Election Poll Management</span></a></li>
 						<li><a href="cadreMissedCallCampaignAction.action"><span>Cadre Missed Call Campaign</span></a></li>
 					</c:if>
 					
@@ -393,14 +450,14 @@ margin-top:10px;
 			</div>
 		</li>
 		</c:if></c:if>
-		<c:if test="${fn:contains(sessionScope.USER.entitlements, 'NEW_LIVE_RESULTS' ) }">
+		<!--<c:if test="${fn:contains(sessionScope.USER.entitlements, 'NEW_LIVE_RESULTS' ) }">
 		<li><a href="acPcWiseElectionResultAction.action?stateId=1"><span>LIVE RESULTS</span></a>
 			<!--<div  style="z-index:8;text-align:left;" >
 			  <ul>		
 				<li><a href="statePageAction.action?stateId=1"><span>Andhra Pradesh</span></a></li>
 			  </ul>
 			</div>-->
-		</li>
+		<!--</li>
 		</c:if>
 		<!--<li><a href="statePageAction.action?stateId=1"><span>LIVE RESULTS</span></a>
 			<div  style="z-index:8;text-align:left;" >
@@ -410,7 +467,7 @@ margin-top:10px;
 			</div>
 		</li>-->
 		
-			<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">   
+		<!--	<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">   
 		<c:if test="${fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS' )  || fn:contains(sessionScope.USER.entitlements, 'VOTER_SEARCH_AND_EDIT' ) 
 		}">
 		<li>
@@ -432,7 +489,7 @@ margin-top:10px;
 			</div>
 		</li>
 </c:if></c:if>
-		
+		-->
 		
 		
 		
