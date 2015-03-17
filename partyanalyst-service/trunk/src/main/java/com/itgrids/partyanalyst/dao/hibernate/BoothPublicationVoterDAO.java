@@ -7250,13 +7250,9 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		Query query = getSession().createQuery(
 				"select count(distinct BPV.voter.voterId),BPV.booth.boothId,BPV.booth.partNo from " +
 				"BoothPublicationVoter BPV where BPV.booth.constituency.constituencyId = :constituencyId and " +
-				"BPV.booth.publicationDate.publicationDateId = :publicationDateId group by BPV.booth.boothId");
-		
-		query.setParameter("publicationDateId", IConstants.VOTER_DATA_PUBLICATION_ID);
+				"BPV.booth.isCtpUsed = 'Y' group by BPV.booth.boothId");
 		query.setParameter("constituencyId", constituencyId);
-		
 		return query.list();
-
 	}
 	
 	public List getVotersDetailsForCadreRegistratiobByconstituencId(Long constituencyId, Long publicationDate,String queryStr,Long panchayatId,Long boothId,String villageCovered,Integer startIndex,Integer maxIndex)
