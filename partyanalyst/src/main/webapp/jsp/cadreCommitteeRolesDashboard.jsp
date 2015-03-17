@@ -58,10 +58,10 @@
                     </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);top: 91px;">
                     <c:if test="${sessionScope.USER.isAdmin == 'true'}">
-						<li><a tabindex="-1" href="dashBoardAction.action">Home</a></li>
+						<li><a tabindex="-1" href="dashBoardAction.action"> Main DashBoard </a></li>
 					</c:if>
 					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_ADMIN' )}">
-						<li><a tabindex="-1" href="committeeDashBoardAction.action">Home</a></li>
+						<li><a tabindex="-1" href="committeeDashBoardAction.action">Committee DashBoard</a></li>
 					
 				  	  <li><a tabindex="-1" href="committeeUpdateApproveAction.action">Approval Requests</a></li>
 				  	  <li><a tabindex="-1" href="constituencyCommitteeSummaryAction.action">Advanced DashBoard</a></li>
@@ -78,17 +78,17 @@
 		<hr style="margin-top:5px;border-color:#FC6"/>
 	</div>
 	<div class="col-md-3 col-md-offset-8" style="margin-top:10px;" id="buttonsDiv">
-        <button class="btn btn-xs btn-success  ALLCls" onclick="getRolesBasedReport('ALL',0,0,'constiRoleSummary',0,0);"><label class="radio-inline">
-			<input type="radio" name="optradio" id="ALL" value="ALL" >ALL</label>
-		</button>
-		<button class="btn btn-xs btn-danger  APCls" onclick="getRolesBasedReport('AP',0,0,'constiRoleSummary',0,0);"><label class="radio-inline">
+       
+		<button class="btn btn-xs btn-success  APCls" onclick="getRolesBasedReport('AP',0,0,'constiRoleSummary',0,0);"><label class="radio-inline">
 			<input type="radio" name="optradio" id="AP"  value="AP" >AP</label>
 		</button>
 		<button class="btn btn-xs btn-danger  TSCls" onclick="getRolesBasedReport('TS',0,0,'constiRoleSummary',0,0);">
 		<label class="radio-inline">
 			<input type="radio" name="optradio" id="TS"  value="TS" >TS</label>
 		</button>
-
+		<button class="btn btn-xs btn-danger  ALLCls" onclick="getRolesBasedReport('ALL',0,0,'constiRoleSummary',0,0);"><label class="radio-inline">
+			<input type="radio" name="optradio" id="ALL" value="ALL" >ALL</label>
+		</button>
     </div>
 	<div class="col-md-8 col-md-offset-2" style="padding:30px 10px 30px 40px;background-color:rgba(0,0,0,0.1);margin-top:10px;box-shadow:1px 1px 5px #999;color:#686868">
           <div class="col-md-6 col-xs-10">
@@ -191,7 +191,7 @@
 var userInitialAccessType = '${pageAccessType}';
 //console.log(userInitialAccessType);
 	$(document).ready(function(){		
-			$('#ALL').prop("checked",true);
+			$('#AP').prop("checked",true);
 			if(userInitialAccessType != 'ALL')
 			{
 				$('#buttonsDiv').hide();
@@ -253,35 +253,35 @@ var userInitialAccessType = '${pageAccessType}';
 				str+='<thead>';
 				str+='<tr>';
 				str+='<th width="20%" ROWSPAN=2  style="text-align:center;">Caste Category</th>';
+				str+='<th width="20%" COLSPAN=2  style="text-align:center;">Registered Cadre</th>';
 				str+='<th width="20%" COLSPAN=2  style="text-align:center;">Commitee Members</th>';
 				str+='<th width="20%" COLSPAN=2  style="text-align:center;">Male</th>';
-				str+='<th width="20%" COLSPAN=2  style="text-align:center;">Female</th>';
-				str+='<th width="20%" COLSPAN=2  style="text-align:center;">Registered Cadre</th>';
+				str+='<th width="20%" COLSPAN=2  style="text-align:center;">Female</th>';				
 				str+='</tr>';
 				str+='<tr>';
 				//str+='<th width="20%" ROWSPAN=2 >Caste Category</th>';
 				str+='<th width="20%" >Total </th>';
-				str+='<th width="20%" >Percentage(%) </th>';
+				str+='<th width="20%" > % </th>';
 				str+='<th width="20%" >Total</th>';
-				str+='<th width="20%" >Percentage(%) </th>';
+				str+='<th width="20%" > % </th>';
 				str+='<th width="20%" >Total</th>';
-				str+='<th width="20%" >Percentage(%) </th>';
+				str+='<th width="20%" > % </th>';
 				str+='<th width="20%" >Total</th>';
-				str+='<th width="20%" >Percentage(%) </th>';
+				str+='<th width="20%" > % </th>';
 				str+='</tr>';
 				str+='</thead>';
 				for(var i in casteCategoryResult)
 				{
 					str+='<tr>';
 					str+='<td>'+casteCategoryResult[i].casteCategory+'</td>';
+					str+='<td>'+casteCategoryResult[i].availableCasteCount+'</td>';
+					str+='<td>'+casteCategoryResult[i].availableCadrePerc+'</td>';
 					str+='<td>'+casteCategoryResult[i].totalCount+'</td>';
 					str+='<td>'+casteCategoryResult[i].totalPerc+'</td>';
 					str+='<td>'+casteCategoryResult[i].maleCount+'</td>';
 					str+='<td>'+casteCategoryResult[i].malePerc+'</td>';
 					str+='<td>'+casteCategoryResult[i].femaleCount+'</td>';
-					str+='<td>'+casteCategoryResult[i].femalePerc+'</td>';
-					str+='<td>'+casteCategoryResult[i].availableCasteCount+'</td>';
-					str+='<td>'+casteCategoryResult[i].availableCadrePerc+'</td>';
+					str+='<td>'+casteCategoryResult[i].femalePerc+'</td>';					
 					str+='</tr>';
 				}
 				str+='</table>';			
@@ -297,35 +297,37 @@ var userInitialAccessType = '${pageAccessType}';
 			str+='<thead>';
 			str+='<tr>';
 			str+='<th width="20%" ROWSPAN=2 style="text-align:center;">Caste Name</th>';
+			str+='<th width="20%"  COLSPAN=2 style="text-align:center;" >Registered Cadre </th>';
 			str+='<th width="20%"  COLSPAN=2 style="text-align:center;" > Committee Members </th>';
 			str+='<th width="20%"  COLSPAN=2 style="text-align:center;">Male</th>';
 			str+='<th width="20%"  COLSPAN=2 style="text-align:center;" >Female</th>';
-			str+='<th width="20%"  COLSPAN=2 style="text-align:center;" >Registered Cadre </th>';
+			
 			str+='</tr>';
 			str+='<tr>';
 			//str+='<th width="20%"></th>';
 			str+='<th width="20%"> Total </th>';
-			str+='<th width="20%"> Percentage(%) </th>';
+			str+='<th width="20%"> % </th>';
 			str+='<th width="20%"> Total</th>';
-			str+='<th width="20%"> Percentage(%) </th>';
+			str+='<th width="20%"> % </th>';
 			str+='<th width="20%"> Total </th>';
-			str+='<th width="20%"> Percentage(%) </th>';
+			str+='<th width="20%"> % </th>';
 			str+='<th width="20%"> Total </th>';
-			str+='<th width="20%"> Percentage(%) </th>';
+			str+='<th width="20%"> % </th>';
 			str+='</tr>';
 			str+='</thead>';
 			for(var i in casteWiseResult)
 			{
 				str+='<tr>';
 				str+='<td>'+casteWiseResult[i].caste+'</td>';
+					str+='<td>'+casteWiseResult[i].availableCasteCount+'</td>';
+					str+='<td>'+casteWiseResult[i].availableCadrePerc+'</td>';
 					str+='<td>'+casteWiseResult[i].totalCount+'</td>';
 					str+='<td>'+casteWiseResult[i].totalPerc+' </td>';
 					str+='<td>'+casteWiseResult[i].maleCount+'</td>';
 					str+='<td>'+casteWiseResult[i].malePerc+'  </td>';
 					str+='<td>'+casteWiseResult[i].femaleCount+'</td>';
 					str+='<td>'+casteWiseResult[i].femalePerc+' </td>';
-					str+='<td>'+casteWiseResult[i].availableCasteCount+'</td>';
-					str+='<td>'+casteWiseResult[i].availableCadrePerc+'</td>';
+
 				str+='</tr>';
 			}
 			str+='</table>    ';
@@ -338,37 +340,38 @@ var userInitialAccessType = '${pageAccessType}';
 			str+='<caption class="tablecaption">Age Range Wise '+$("#committeePostitionId option:selected").text()+' Designation(s) Information';
 			str+='<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>                </caption>';
 			str+='<thead>';
-			str+='<tr>';
+			str+='<tr>';			
 			str+='<th width="20%" rowspan="2" style="text-align:center;">Between Age</th>';
+			str+='<th width="20%" colspan="2" style="text-align:center;">Registered Cadre </th>';
 			str+='<th width="20%" colspan="2" style="text-align:center;">Commitee Members</th>';
 			str+='<th width="20%" colspan="2" style="text-align:center;">Male</th>';
-			str+='<th width="20%" colspan="2" style="text-align:center;">Female</th>';
-			str+='<th width="20%" colspan="2" style="text-align:center;">Registered Cadre </th>';
+			str+='<th width="20%" colspan="2" style="text-align:center;">Female</th>';			
 			str+='</tr>';
 			str+='<tr>';
 			//str+='<th width="20%">Between Age</th>';
 			str+='<th width="20%">Total</th>';
-			str+='<th width="20%">Percentage(%)</th>';
+			str+='<th width="20%">%</th>';
 			str+='<th width="20%">Total</th>';
-			str+='<th width="20%">Percentage(%)</th>';
+			str+='<th width="20%">%</th>';
 			str+='<th width="20%">Total</th>';
-			str+='<th width="20%">Percentage(%)</th>';
+			str+='<th width="20%">%</th>';
 			str+='<th width="20%"> Total </th>';
-			str+='<th width="20%">Percentage(%)</th>';
+			str+='<th width="20%">%</th>';
 			str+='</tr>';
 			str+='</thead>';
 			for(var i in ageRangeWiseResult)
 			{
-				str+='<tr>';
+				str+='<tr>';				
 				str+='<td>'+ageRangeWiseResult[i].ageRange+'</td>';
+				str+='<td>'+ageRangeWiseResult[i].avaibleAgeWiseCount+'</td>';
+				str+='<td>'+ageRangeWiseResult[i].availableCadrePerc+'</td>';
 				str+='<td>'+ageRangeWiseResult[i].totalCount+'</td>';
 				str+='<td>'+ageRangeWiseResult[i].totalPerc+'</td>';
 				str+='<td>'+ageRangeWiseResult[i].maleCount+'</td>';
 				str+='<td>'+ageRangeWiseResult[i].malePerc+'</td>';
 				str+='<td>'+ageRangeWiseResult[i].femaleCount+'</td>';
 				str+='<td>'+ageRangeWiseResult[i].femalePerc+'</td>';
-				str+='<td>'+ageRangeWiseResult[i].avaibleAgeWiseCount+'</td>';
-				str+='<td>'+ageRangeWiseResult[i].availableCadrePerc+'</td>';
+			
 				str+='</tr>';
 			}
 			str+='</table> ';
@@ -384,11 +387,22 @@ var userInitialAccessType = '${pageAccessType}';
 					str+='<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>                </caption>';
 					str+='<thead>';
 					str+='<tr>';
-					str+='<th width="20%">'+result.locationName+' Name</th>';
-					str+='<th width="20%">Total Count</th>';
-					str+='<th width="20%">Male</th>';
-					str+='<th width="20%">Female</th>';
-					str+='<th width="20%">Registered Cadre </th>';
+					str+='<th width="25%" rowspan="2">'+result.locationName+' Name</th>';
+					str+='<th width="25%" colspan="2">Registered Cadre</th>';
+					str+='<th width="25%" colspan="2">Committee Members </th>';
+					str+='<th width="25%" colspan="2">Male</th>';
+					str+='<th width="25%" colspan="2">Female</th>';					
+					str+='</tr>';
+					str+='<tr>';
+					//str+='<th width="25%" >'+result.locationName+' Name</th>';
+					str+='<th width="25%" >Total</th>';					
+					str+='<th width="25%" > % </th>';	
+					str+='<th width="25%" >Total</th>';					
+					str+='<th width="25%" > % </th>';
+					str+='<th width="25%" >Total</th>';					
+					str+='<th width="25%" > % </th>';
+					str+='<th width="25%" >Total</th>';					
+					str+='<th width="25%" > % </th>';					
 					str+='</tr>';
 					str+='</thead>';
 					
@@ -419,10 +433,15 @@ var userInitialAccessType = '${pageAccessType}';
 					{
 						str+='<tr>';
 						str+='<td><a href="javascript:{getRolesBasedReport(\''+result.locationName+'\','+result.locationId+','+locationOverview[i].locationId+',\''+nextDivId+'\',\''+locationOverview[i].locationName+'  '+result.locationName+'\',\'dontClearDivs\')}">'+locationOverview[i].locationName+'</a></td>';
-						str+='<td>'+locationOverview[i].totalCount+'</td>';
-						str+='<td>'+locationOverview[i].maleCount+'</td>';
-						str+='<td>'+locationOverview[i].femaleCount+'</td>';
 						str+='<td>'+locationOverview[i].availableCadreCount+'</td>';
+						str+='<td>'+locationOverview[i].availableCadrePerc+'</td>';
+						str+='<td>'+locationOverview[i].totalCount+'</td>';
+						str+='<td>'+locationOverview[i].totalPerc+'</td>';
+						str+='<td>'+locationOverview[i].maleCount+'</td>';
+						str+='<td>'+locationOverview[i].malePerc+'</td>';
+						str+='<td>'+locationOverview[i].femaleCount+'</td>';
+						str+='<td>'+locationOverview[i].femalePerc+'</td>';
+					
 						str+='</tr>';
 					}
 					str+='</table> ';
@@ -438,11 +457,22 @@ var userInitialAccessType = '${pageAccessType}';
 					str+='<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>                </caption>';
 					str+='<thead>';
 					str+='<tr>';
-					str+='<th width="25%">'+result.locationName+' Name</th>';
-					str+='<th width="25%">Total Count</th>';
-					str+='<th width="25%">Male</th>';
-					str+='<th width="25%">Female</th>';
-					str+='<th width="25%">Registered Cadre</th>';
+					str+='<th width="25%" rowspan="2">'+result.locationName+' Name</th>';
+					str+='<th width="25%" colspan="2">Registered Cadre</th>';
+					str+='<th width="25%" colspan="2">Committee Members </th>';
+					str+='<th width="25%" colspan="2">Male</th>';
+					str+='<th width="25%" colspan="2">Female</th>';					
+					str+='</tr>';
+					str+='<tr>';
+					//str+='<th width="25%" >'+result.locationName+' Name</th>';
+					str+='<th width="25%" >Total</th>';					
+					str+='<th width="25%" > % </th>';	
+					str+='<th width="25%" >Total</th>';					
+					str+='<th width="25%" > % </th>';
+					str+='<th width="25%" >Total</th>';					
+					str+='<th width="25%" > % </th>';
+					str+='<th width="25%" >Total</th>';					
+					str+='<th width="25%" > % </th>';					
 					str+='</tr>';
 					str+='</thead>';
 					
@@ -473,10 +503,15 @@ var userInitialAccessType = '${pageAccessType}';
 					{
 						str+='<tr>';
 						str+='<td><a href="javascript:{getRolesBasedReport(\''+result.locationName+'\','+result.locationId+','+locationOverview[i].locationId+',\''+nextDivId+'\',\''+locationOverview[i].locationName+'  '+result.locationName+'\',\'dontClearDivs\')}">'+locationOverview[i].locationName+'</a></td>';
-						str+='<td>'+locationOverview[i].totalCount+'</td>';
-						str+='<td>'+locationOverview[i].maleCount+'</td>';
-						str+='<td>'+locationOverview[i].femaleCount+'</td>';
 						str+='<td>'+locationOverview[i].availableCadreCount+'</td>';
+						str+='<td>'+locationOverview[i].availableCadrePerc+'</td>';
+						str+='<td>'+locationOverview[i].totalCount+'</td>';
+						str+='<td>'+locationOverview[i].totalPerc+'</td>';
+						str+='<td>'+locationOverview[i].maleCount+'</td>';
+						str+='<td>'+locationOverview[i].malePerc+'</td>';
+						str+='<td>'+locationOverview[i].femaleCount+'</td>';
+						str+='<td>'+locationOverview[i].femalePerc+'</td>';
+						
 						str+='</tr>';
 					}
 					str+='</table> ';
@@ -490,24 +525,24 @@ var userInitialAccessType = '${pageAccessType}';
 		
 		$("#casteDetailsId"+divId+"").dataTable({
 			"iDisplayLength": 15,
-			"aaSorting": [[ 1, "desc" ]],
+			"aaSorting": [[ 3, "desc" ]],
 			"aLengthMenu": [[15,30, 50, 100, -1], [15,30, 50, 100, "All"]]
 		});
 		$("#locationOverveiewDiv"+divId+"").dataTable({
 			"iDisplayLength": 15,
-			"aaSorting": [[ 1, "desc" ]],
+			"aaSorting": [[ 3, "desc" ]],
 			"aLengthMenu": [[15,30, 50, 100, -1], [15,30, 50, 100, "All"]]
 		});
 		
 		$("#casteCategoryId"+divId+"").dataTable({
 			"iDisplayLength": 15,
-			"aaSorting": [[ 1, "desc" ]],
+			"aaSorting": [[ 3, "desc" ]],
 			"aLengthMenu": [[15,30, 50, 100, -1], [15,30, 50, 100, "All"]]
 		});
 		
 		$("#ageRangeID"+divId+"").dataTable({
 			"iDisplayLength": 15,
-			"aaSorting": [[ 1, "desc" ]],
+			"aaSorting": [[ 3, "desc" ]],
 			"aLengthMenu": [[15,30, 50, 100, -1], [15,30, 50, 100, "All"]]
 		});
 		
