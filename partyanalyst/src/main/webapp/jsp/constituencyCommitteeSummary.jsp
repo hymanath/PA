@@ -949,35 +949,36 @@ function getRolesBasedReport(roleId)
 				str+='<thead>';
 				str+='<tr>';
 				str+='<th width="20%" ROWSPAN=2  style="text-align:center;">Caste Category</th>';
+				str+='<th width="20%" COLSPAN=2  style="text-align:center;">Registered Cadre</th>';
 				str+='<th width="20%" COLSPAN=2  style="text-align:center;">Commitee Members</th>';
 				str+='<th width="20%" COLSPAN=2  style="text-align:center;">Male</th>';
 				str+='<th width="20%" COLSPAN=2  style="text-align:center;">Female</th>';
-				str+='<th width="20%" COLSPAN=2  style="text-align:center;">Registered Cadre</th>';
+				
 				str+='</tr>';
 				str+='<tr>';
 				//str+='<th width="20%" ROWSPAN=2 >Caste Category</th>';
 				str+='<th width="20%" >Total </th>';
-				str+='<th width="20%" >Percentage(%) </th>';
+				str+='<th width="20%">%</th>';
 				str+='<th width="20%" >Total</th>';
-				str+='<th width="20%" >Percentage(%) </th>';
+				str+='<th width="20%">%</th>';
 				str+='<th width="20%" >Total</th>';
-				str+='<th width="20%" >Percentage(%) </th>';
+				str+='<th width="20%">%</th>';
 				str+='<th width="20%" >Total</th>';
-				str+='<th width="20%" >Percentage(%) </th>';
+				str+='<th width="20%">%</th>';
 				str+='</tr>';
 				str+='</thead>';
 				for(var i in casteCategoryResult)
 				{
 					str+='<tr>';
 					str+='<td>'+casteCategoryResult[i].casteCategory+'</td>';
+					str+='<td>'+casteCategoryResult[i].availableCasteCount+'</td>';
+					str+='<td>'+casteCategoryResult[i].availableCadrePerc+'</td>';
 					str+='<td>'+casteCategoryResult[i].totalCount+'</td>';
 					str+='<td>'+casteCategoryResult[i].totalPerc+'</td>';
 					str+='<td>'+casteCategoryResult[i].maleCount+'</td>';
 					str+='<td>'+casteCategoryResult[i].malePerc+'</td>';
 					str+='<td>'+casteCategoryResult[i].femaleCount+'</td>';
-					str+='<td>'+casteCategoryResult[i].femalePerc+'</td>';
-					str+='<td>'+casteCategoryResult[i].availableCasteCount+'</td>';
-					str+='<td>'+casteCategoryResult[i].availableCadrePerc+'</td>';
+					str+='<td>'+casteCategoryResult[i].femalePerc+'</td>';					
 					str+='</tr>';
 				}
 				str+='</table>';			
@@ -993,35 +994,37 @@ function getRolesBasedReport(roleId)
 			str+='<thead>';
 			str+='<tr>';
 			str+='<th width="20%" ROWSPAN=2 style="text-align:center;">Caste Name</th>';
+			str+='<th width="20%"  COLSPAN=2 style="text-align:center;" >Registered Cadre </th>';
 			str+='<th width="20%"  COLSPAN=2 style="text-align:center;" > Committee Members </th>';
 			str+='<th width="20%"  COLSPAN=2 style="text-align:center;">Male</th>';
 			str+='<th width="20%"  COLSPAN=2 style="text-align:center;" >Female</th>';
-			str+='<th width="20%"  COLSPAN=2 style="text-align:center;" >Registered Cadre </th>';
+			
 			str+='</tr>';
 			str+='<tr>';
 			//str+='<th width="20%"></th>';
 			str+='<th width="20%"> Total </th>';
-			str+='<th width="20%"> Percentage(%) </th>';
+			str+='<th width="20%">%</th>';
 			str+='<th width="20%"> Total</th>';
-			str+='<th width="20%"> Percentage(%) </th>';
+			str+='<th width="20%">%</th>';
 			str+='<th width="20%"> Total </th>';
-			str+='<th width="20%"> Percentage(%) </th>';
+			str+='<th width="20%">%</th>';
 			str+='<th width="20%"> Total </th>';
-			str+='<th width="20%"> Percentage(%) </th>';
+			str+='<th width="20%">%</th>';
 			str+='</tr>';
 			str+='</thead>';
 			for(var i in casteWiseResult)
 			{
 				str+='<tr>';
 				str+='<td>'+casteWiseResult[i].caste+'</td>';
+				str+='<td>'+casteWiseResult[i].availableCasteCount+'</td>';
+					str+='<td>'+casteWiseResult[i].availableCadrePerc+'</td>';
 					str+='<td>'+casteWiseResult[i].totalCount+'</td>';
 					str+='<td>'+casteWiseResult[i].totalPerc+' </td>';
 					str+='<td>'+casteWiseResult[i].maleCount+'</td>';
 					str+='<td>'+casteWiseResult[i].malePerc+'  </td>';
 					str+='<td>'+casteWiseResult[i].femaleCount+'</td>';
 					str+='<td>'+casteWiseResult[i].femalePerc+' </td>';
-					str+='<td>'+casteWiseResult[i].availableCasteCount+'</td>';
-					str+='<td>'+casteWiseResult[i].availableCadrePerc+'</td>';
+					
 				str+='</tr>';
 			}
 		}	
@@ -1035,21 +1038,22 @@ function getRolesBasedReport(roleId)
 			str+='<thead>';
 			str+='<tr>';
 			str+='<th width="20%" rowspan="2" style="text-align:center;">Between Age</th>';
+			str+='<th width="20%" colspan="2" style="text-align:center;">Registered Cadre </th>';
 			str+='<th width="20%" colspan="2" style="text-align:center;">Commitee Members</th>';
 			str+='<th width="20%" colspan="2" style="text-align:center;">Male</th>';
 			str+='<th width="20%" colspan="2" style="text-align:center;">Female</th>';
-			str+='<th width="20%" colspan="2" style="text-align:center;">Registered Cadre </th>';
+			
 			str+='</tr>';
 			str+='<tr>';
 			//str+='<th width="20%">Between Age</th>';
 			str+='<th width="20%">Total</th>';
-			str+='<th width="20%">Percentage(%)</th>';
+			str+='<th width="20%">%</th>';
 			str+='<th width="20%">Total</th>';
-			str+='<th width="20%">Percentage(%)</th>';
+			str+='<th width="20%">%</th>';
 			str+='<th width="20%">Total</th>';
-			str+='<th width="20%">Percentage(%)</th>';
+			str+='<th width="20%">%</th>';
 			str+='<th width="20%"> Total </th>';
-			str+='<th width="20%">Percentage(%)</th>';
+			str+='<th width="20%">%</th>';
 			str+='</tr>';
 			str+='</thead>';
 			for(var i in ageRangeWiseResult)
@@ -1076,19 +1080,19 @@ function getRolesBasedReport(roleId)
 		
 		$("#casteDetailsId").dataTable({
 			"iDisplayLength": 15,
-			"aaSorting": [[ 1, "desc" ]],
+			"aaSorting": [[ 3, "desc" ]],
 			"aLengthMenu": [[15,30, 50, 100, -1], [15,30, 50, 100, "All"]]
 		});
 		
 		$("#casteCategoryId").dataTable({
 			"iDisplayLength": 15,
-			"aaSorting": [[ 1, "desc" ]],
+			"aaSorting": [[ 3, "desc" ]],
 			"aLengthMenu": [[15,30, 50, 100, -1], [15,30, 50, 100, "All"]]
 		});
 		
 		$("#ageRangeID").dataTable({
 			"iDisplayLength": 15,
-			"aaSorting": [[ 1, "desc" ]],
+			"aaSorting": [[ 3, "desc" ]],
 			"aLengthMenu": [[15,30, 50, 100, -1], [15,30, 50, 100, "All"]]
 		});
 		
