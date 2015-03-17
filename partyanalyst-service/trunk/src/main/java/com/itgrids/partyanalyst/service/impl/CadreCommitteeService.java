@@ -67,6 +67,7 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.AccessedPageLoginTimeVO;
@@ -7358,7 +7359,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 	{
 		CadreCommitteeRolesInfoVO returnVO = new CadreCommitteeRolesInfoVO();
 		try {
-			
+			DecimalFormat decimalFormat = new DecimalFormat("##.##");
 			List<Long> locationIdsList = new ArrayList<Long>();
 			List<Long> wardIdsList  = null;
 			List<Long> committeeTypeIdsList  = new ArrayList<Long>();
@@ -7513,22 +7514,25 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 						locationIdsSet.addAll(locationIdsList);
 						constituencyList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIdsSet,"District",null,"Registered");
 					}
-					if(descriptionLevelId.longValue() == 3)
+					else if(descriptionLevelId.longValue() == 3)
 					{
 						locationIdsSet.addAll(locationIdsList);
 						constituencyList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIdsSet,"Constituency",null,"Registered");
 					}		
 					
 					Map<Long,Long> locationWiseRegisteredCount = new HashMap<Long, Long>();
+					Long totalRegisteredCount = 0L;
 					if(constituencyList != null && constituencyList.size()>0)
 					{
 						for (Object[] consituncy : constituencyList){
 							Long locationId = consituncy[0] != null ? Long.valueOf(consituncy[0].toString().trim()):0L;
-							Long registeredCadreCount = consituncy[1] != null ? Long.valueOf(consituncy[1].toString().trim()):0L;
+							Long registeredCadreCount = consituncy[1] != null ? Long.valueOf(consituncy[1].toString().trim()):0L;							
 							locationWiseRegisteredCount.put(locationId, registeredCadreCount);
 						}
 					}
-					
+					Long locationWiseMaleCount = 0L;
+					Long locationWiseFemaleCount = 0L;
+					Long locationWiseTotalCount = 0L;
 					if(genderWiseCountList != null && genderWiseCountList.size()>0)
 					{
 						Long totalGenderCount = 0L;				
@@ -7546,8 +7550,6 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 
 							if(cadreVO != null)
 							{
-								
-								
 								isAvailable = true;
 								maleCount = cadreVO.getMaleCount();
 								femaleCount = cadreVO.getFemaleCount();
@@ -7557,20 +7559,24 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 								cadreVO = new CadreCommitteeRolesInfoVO();
 								cadreVO.setLocationId(param[2] != null ? param[2].toString().trim():"0");
 								cadreVO.setLocationName(param[3] != null ?param[3].toString().trim():"0");
+								String availableCadreCount = locationWiseRegisteredCount.get(Long.valueOf(cadreVO.getLocationId())) != null ? locationWiseRegisteredCount.get(Long.valueOf(cadreVO.getLocationId())).toString():"0";
+								cadreVO.setAvailableCadreCount(availableCadreCount);
+								totalRegisteredCount = totalRegisteredCount+Long.valueOf(availableCadreCount.trim());
 							}
 							
 							if(genderType.equalsIgnoreCase("M"))
 							{						
 								Long tempCount = param[1] != null ? Long.valueOf(param[1].toString()):0L;
-								maleCount = maleCount + tempCount;						
+								maleCount = maleCount + tempCount;	
+								locationWiseMaleCount = locationWiseMaleCount+tempCount;
 							}
 							else if(genderType.equalsIgnoreCase("F"))
 							{
 								Long tempCount = param[1] != null ? Long.valueOf(param[1].toString()):0L;
 								femaleCount = femaleCount + tempCount;
+								locationWiseFemaleCount = locationWiseFemaleCount+tempCount;
 							}
-							String availableCadreCount = locationWiseRegisteredCount.get(Long.valueOf(cadreVO.getLocationId())) != null ? locationWiseRegisteredCount.get(Long.valueOf(cadreVO.getLocationId())).toString():"0";
-							cadreVO.setAvailableCadreCount(availableCadreCount);
+							
 							cadreVO.setMaleCount(maleCount);
 							cadreVO.setFemaleCount(femaleCount);
 							totalGenderCount = maleCount + femaleCount;
@@ -7583,6 +7589,34 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 					
 					if(nextLevelList != null && nextLevelList.size()>0)
 					{
+
+						locationWiseTotalCount = locationWiseFemaleCount + locationWiseMaleCount;
+						
+						for (CadreCommitteeRolesInfoVO locationVO : nextLevelList) 
+						{
+							if(locationVO != null)
+							{
+								Long casteTotalCount = locationVO.getTotalCount();
+								Long casteMaleCount = locationVO.getMaleCount();
+								Long casteFemaleCount = locationVO.getFemaleCount();
+
+								Double malePerc = 0.00d;
+								Double femalePerc = 0.00d;
+								Double castePercInTotal = 0.00d;
+								
+								 malePerc = Double.valueOf(decimalFormat.format((casteMaleCount * 100.00) / locationWiseMaleCount));
+								 femalePerc = Double.valueOf(decimalFormat.format((casteFemaleCount * 100.00) / locationWiseFemaleCount));
+								 castePercInTotal = Double.valueOf(decimalFormat.format((casteTotalCount * 100.00) / locationWiseTotalCount));
+								
+								 locationVO.setMalePerc(malePerc);
+								 locationVO.setFemalePerc(femalePerc);
+								 locationVO.setTotalPerc(castePercInTotal);
+								
+								Long registerdCadreCount = Long.valueOf(locationVO.getAvailableCadreCount().trim());
+								locationVO.setAvailableCadrePerc(Double.valueOf(decimalFormat.format((registerdCadreCount * 100.00) / totalRegisteredCount)));
+							}
+						}
+						
 						returnVO.setLocationWiseList(nextLevelList);
 					}
 					
@@ -7672,6 +7706,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 					}		
 					
 					Map<Long,Long> locationWiseRegisteredCount = new HashMap<Long, Long>();
+					Long totalRegisteredCount = 0L;
 					if(constituencyList != null && constituencyList.size()>0)
 					{
 						for (Object[] consituncy : constituencyList){
@@ -7680,7 +7715,9 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 							locationWiseRegisteredCount.put(locationId, registeredCadreCount);
 						}
 					}
-					
+					Long locationWiseMaleCount = 0L;
+					Long locationWiseFemaleCount = 0L;
+					Long locationWiseTotalCount = 0L;
 					if(genderWiseCountList != null && genderWiseCountList.size()>0)
 					{
 						Long totalGenderCount = 0L;				
@@ -7709,20 +7746,23 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 								cadreVO = new CadreCommitteeRolesInfoVO();
 								cadreVO.setLocationId(param[2] != null ? param[2].toString().trim():"0");
 								cadreVO.setLocationName(param[3] != null ?param[3].toString().trim():"0");
+								Long availableCadreCount = locationWiseRegisteredCount.get(Long.valueOf(cadreVO.getLocationId())) != null ? locationWiseRegisteredCount.get(Long.valueOf(cadreVO.getLocationId())):0L;
+								cadreVO.setAvailableCadreCount(availableCadreCount.toString());
+								totalRegisteredCount = totalRegisteredCount+availableCadreCount;
+								
 							}
-							
 							if(genderType.equalsIgnoreCase("M"))
 							{						
 								Long tempCount = param[1] != null ? Long.valueOf(param[1].toString()):0L;
-								maleCount = maleCount + tempCount;						
+								maleCount = maleCount + tempCount;	
+								locationWiseMaleCount = locationWiseMaleCount+tempCount;
 							}
 							else if(genderType.equalsIgnoreCase("F"))
 							{
 								Long tempCount = param[1] != null ? Long.valueOf(param[1].toString()):0L;
 								femaleCount = femaleCount + tempCount;
+								locationWiseFemaleCount = locationWiseFemaleCount+tempCount;
 							}
-							Long availableCadreCount = locationWiseRegisteredCount.get(Long.valueOf(cadreVO.getLocationId())) != null ? locationWiseRegisteredCount.get(Long.valueOf(cadreVO.getLocationId())):0L;
-							cadreVO.setAvailableCadreCount(availableCadreCount.toString());
 							cadreVO.setMaleCount(maleCount);
 							cadreVO.setFemaleCount(femaleCount);
 							totalGenderCount = maleCount + femaleCount;
@@ -7737,6 +7777,35 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 					
 					if(nextLevelList != null && nextLevelList.size()>0)
 					{
+						locationWiseTotalCount = locationWiseFemaleCount + locationWiseMaleCount;
+						
+						for (CadreCommitteeRolesInfoVO locationVO : nextLevelList) 
+						{
+							if(locationVO != null)
+							{
+								Long casteTotalCount = locationVO.getTotalCount();
+								Long casteMaleCount = locationVO.getMaleCount();
+								Long casteFemaleCount = locationVO.getFemaleCount();
+
+								Double malePerc = 0.00d;
+								Double femalePerc = 0.00d;
+								Double castePercInTotal = 0.00d;
+								
+								 malePerc = Double.valueOf(decimalFormat.format((casteMaleCount * 100.00) / locationWiseMaleCount));
+								 femalePerc = Double.valueOf(decimalFormat.format((casteFemaleCount * 100.00) / locationWiseFemaleCount));
+								 castePercInTotal = Double.valueOf(decimalFormat.format((casteTotalCount * 100.00) / locationWiseTotalCount));
+								
+								 locationVO.setMalePerc(malePerc);
+								 locationVO.setFemalePerc(femalePerc);
+								 locationVO.setTotalPerc(castePercInTotal);
+								
+								Long registerdCadreCount = Long.valueOf(locationVO.getAvailableCadreCount().trim());
+								locationVO.setAvailableCadrePerc(Double.valueOf(decimalFormat.format((registerdCadreCount * 100.00) / totalRegisteredCount)));
+								
+							
+							}
+						}
+						
 						returnVO.setLocationWiseList(nextLevelList);
 					}
 					
@@ -7812,21 +7881,26 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 							locationIdsSet.addAll(locationIdsList);
 							constituencyList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIdsSet,"District",null,"Registered");
 						}
-						if(descriptionLevelId.longValue() == 3)
+						else if(descriptionLevelId.longValue() == 3)
 						{
 							locationIdsSet.addAll(locationIdsList);
 							constituencyList = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(locationIdsSet,"Constituency",null,"Registered");
 						}		
 						
 						Map<Long,Long> locationWiseRegisteredCount = new TreeMap<Long, Long>();
+						Long totalRegisteredCount = 0L;
 						if(constituencyList != null && constituencyList.size()>0)
 						{
 							for (Object[] consituncy : constituencyList){
 								Long locationId = consituncy[0] != null ? Long.valueOf(consituncy[0].toString().trim()):0L;
-								Long registeredCadreCount = consituncy[1] != null ? Long.valueOf(consituncy[1].toString().trim()):0L;
+								Long registeredCadreCount = consituncy[1] != null ? Long.valueOf(consituncy[1].toString().trim()):0L;								
 								locationWiseRegisteredCount.put(locationId, registeredCadreCount);
 							}
 						}
+						
+						Long locationWiseMaleCount = 0L;
+						Long locationWiseFemaleCount = 0L;
+						Long locationWiseTotalCount = 0L;
 						
 						if(genderWiseCountList != null && genderWiseCountList.size()>0)
 						{
@@ -7845,8 +7919,6 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 
 								if(cadreVO != null)
 								{
-									
-									
 									isAvailable = true;
 									maleCount = cadreVO.getMaleCount();
 									femaleCount = cadreVO.getFemaleCount();
@@ -7856,21 +7928,26 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 									cadreVO = new CadreCommitteeRolesInfoVO();
 									cadreVO.setLocationId(param[2] != null ? param[2].toString().trim():"0");
 									cadreVO.setLocationName(param[3] != null ?param[3].toString().trim():"0");
+									
+									Long availableCadreCount = locationWiseRegisteredCount.get(Long.valueOf(cadreVO.getLocationId())) != null ? locationWiseRegisteredCount.get(Long.valueOf(cadreVO.getLocationId())):0L;
+									cadreVO.setAvailableCadreCount(availableCadreCount.toString());
+									totalRegisteredCount = totalRegisteredCount + availableCadreCount;
 								}
 								
 								if(genderType.equalsIgnoreCase("M"))
 								{						
 									Long tempCount = param[1] != null ? Long.valueOf(param[1].toString()):0L;
-									maleCount = maleCount + tempCount;						
+									maleCount = maleCount + tempCount;	
+									locationWiseMaleCount = locationWiseMaleCount+tempCount;
 								}
 								else if(genderType.equalsIgnoreCase("F"))
 								{
 									Long tempCount = param[1] != null ? Long.valueOf(param[1].toString()):0L;
 									femaleCount = femaleCount + tempCount;
+									locationWiseFemaleCount = locationWiseFemaleCount+tempCount;
 								}
 								
-								Long availableCadreCount = locationWiseRegisteredCount.get(Long.valueOf(cadreVO.getLocationId())) != null ? locationWiseRegisteredCount.get(Long.valueOf(cadreVO.getLocationId())):0L;
-								cadreVO.setAvailableCadreCount(availableCadreCount.toString());
+								
 								cadreVO.setMaleCount(maleCount);
 								cadreVO.setFemaleCount(femaleCount);
 								totalGenderCount = maleCount + femaleCount;
@@ -7883,6 +7960,33 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 						
 						if(nextLevelList != null && nextLevelList.size()>0)
 						{
+							locationWiseTotalCount = locationWiseFemaleCount + locationWiseMaleCount;
+							
+							for (CadreCommitteeRolesInfoVO locationVO : nextLevelList) 
+							{
+								if(locationVO != null)
+								{
+									Long casteTotalCount = locationVO.getTotalCount();
+									Long casteMaleCount = locationVO.getMaleCount();
+									Long casteFemaleCount = locationVO.getFemaleCount();
+
+									Double malePerc = 0.00d;
+									Double femalePerc = 0.00d;
+									Double castePercInTotal = 0.00d;
+									
+									 malePerc = Double.valueOf(decimalFormat.format((casteMaleCount * 100.00) / locationWiseMaleCount));
+									 femalePerc = Double.valueOf(decimalFormat.format((casteFemaleCount * 100.00) / locationWiseFemaleCount));
+									 castePercInTotal = Double.valueOf(decimalFormat.format((casteTotalCount * 100.00) / locationWiseTotalCount));
+									
+									 locationVO.setMalePerc(malePerc);
+									 locationVO.setFemalePerc(femalePerc);
+									 locationVO.setTotalPerc(castePercInTotal);
+									
+									Long registerdCadreCount = Long.valueOf(locationVO.getAvailableCadreCount().trim());
+									locationVO.setAvailableCadrePerc(Double.valueOf(decimalFormat.format((registerdCadreCount * 100.00) / totalRegisteredCount)));
+								}
+							}
+							
 							returnVO.setLocationWiseList(nextLevelList);
 						}
 						
@@ -7903,7 +8007,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 				}
 			}
 			
-			DecimalFormat decimalFormat = new DecimalFormat("##.##");
+			
 			List<Object[]> casteWiseCategoryList = tdpCommitteeMemberDAO.getCasteCategoryInfoForLocations(locationLevelId,locationIdsList,wardIdsList,userAccessType,segritageQuery,"casteCategory");
 			Map<String , Long> casteCategoryCountMap = new HashMap<String, Long>();
 			
@@ -8335,13 +8439,14 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 						
 						isAvailable = true;
 						maleCount = cadreVO.getMaleCount();
-						femaleCount = cadreVO.getFemaleCount();
+						femaleCount = cadreVO.getFemaleCount();						
 					}
 					else
 					{
 						cadreVO = new CadreCommitteeRolesInfoVO();
 						cadreVO.setLocationId(param[2] != null ? param[2].toString().trim():"0");
 						cadreVO.setLocationName(param[3] != null ?param[3].toString().trim():"0");
+						cadreVO.setAvailableCadreCount(locationWiseRegisteredCount.get(Long.valueOf(cadreVO.getLocationId())) != null ? locationWiseRegisteredCount.get(Long.valueOf(cadreVO.getLocationId())).toString():"0");
 					}
 					
 					if(genderType.equalsIgnoreCase("M"))
@@ -8354,7 +8459,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 						Long tempCount = param[1] != null ? Long.valueOf(param[1].toString()):0L;
 						femaleCount = femaleCount + tempCount;
 					}
-					cadreVO.setAvailableCadreCount(locationWiseRegisteredCount.get(Long.valueOf(cadreVO.getLocationId())) != null ? locationWiseRegisteredCount.get(Long.valueOf(cadreVO.getLocationId())).toString():"0");
+					
 					cadreVO.setMaleCount(maleCount);
 					cadreVO.setFemaleCount(femaleCount);
 					totalGenderCount = maleCount + femaleCount;
@@ -8363,12 +8468,35 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 					if(!isAvailable)
 						nextLevelList.add(cadreVO);
 				}
-				
-				
 			}
 			
 			if(nextLevelList != null && nextLevelList.size()>0)
 			{
+				for (CadreCommitteeRolesInfoVO locationVO : nextLevelList) 
+				{
+					if(locationVO != null)
+					{
+						Long casteTotalCount = locationVO.getTotalCount();
+						Long casteMaleCount = locationVO.getMaleCount();
+						Long casteFemaleCount = locationVO.getFemaleCount();
+
+						Double malePerc = 0.00d;
+						Double femalePerc = 0.00d;
+						Double castePercInTotal = 0.00d;
+						
+						 malePerc = Double.valueOf(decimalFormat.format((casteMaleCount * 100.00) / totalMaleCount));
+						 femalePerc = Double.valueOf(decimalFormat.format((casteFemaleCount * 100.00) / totalFemaleCount));
+						 castePercInTotal = Double.valueOf(decimalFormat.format((casteTotalCount * 100.00) / totalCount));
+						
+						 locationVO.setMalePerc(malePerc);
+						 locationVO.setFemalePerc(femalePerc);
+						 locationVO.setTotalPerc(castePercInTotal);
+						
+						Long registerdCadreCount = Long.valueOf(locationVO.getAvailableCadreCount().trim());
+						locationVO.setAvailableCadrePerc(Double.valueOf(decimalFormat.format((registerdCadreCount * 100.00) / registeredCount)));
+					}
+				}
+				
 				returnVO.setLocationWiseList(nextLevelList);
 			}
 			
