@@ -156,8 +156,9 @@
 		<img id="summaryAjaxRole" src="./images/Loading-data.gif" class=" col-sm-offset-4" alt="Processing Image"/>
 		
 	</div>
-	<button id="hide" class="pull-right btn btn-warning summaryEventCls" title="Hide Constituency Wise Detailed Overview">Hide /\</button>
-	<button id="show" class="pull-right btn btn-success summaryEventCls" style="display:none;" title="Show Constituency Wise Detailed Overview">Show \/</button>
+		<a id="hide" href="javascript:{}" class="pull-right btn btn-warning summaryEventCls" title="Hide Constituency Wise Detailed Overview"> Hide <i class="glyphicon glyphicon-chevron-up"></i></a>
+	<a id="show"  href="javascript:{}" class="pull-right btn btn-success summaryEventCls" style="display:none;" title="Show Constituency Wise Detailed Overview"> Show
+	<i class="glyphicon glyphicon-chevron-down"></i></a>
 	<div id="constiRoleSummary">		
 	</div>
 	
@@ -943,42 +944,24 @@ function getRolesBasedReport(roleId)
 		{
 			
 				str+='<table class="table table-bordered" style="border:2px solid #FC6 !important;margin-bottom:35px" id="casteCategoryId">';
-				str+='<caption class="tablecaption" >Caste Category Wise '+$("#committeePostitionId option:selected").text()+' Designation(s) Information';
+				str+='<caption class="tablecaption" >Caste Category Wise Information';
 				str+='<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
 				str+='</caption>';
 				str+='<thead>';
 				str+='<tr>';
-				str+='<th width="20%" ROWSPAN=2  style="text-align:center;">Caste Category</th>';
-				str+='<th width="20%" COLSPAN=2  style="text-align:center;">Registered Cadre</th>';
-				str+='<th width="20%" COLSPAN=2  style="text-align:center;">Commitee Members</th>';
-				str+='<th width="20%" COLSPAN=2  style="text-align:center;">Male</th>';
-				str+='<th width="20%" COLSPAN=2  style="text-align:center;">Female</th>';
-				
-				str+='</tr>';
-				str+='<tr>';
-				//str+='<th width="20%" ROWSPAN=2 >Caste Category</th>';
-				str+='<th width="20%" >Total </th>';
-				str+='<th width="20%">%</th>';
-				str+='<th width="20%" >Total</th>';
-				str+='<th width="20%">%</th>';
-				str+='<th width="20%" >Total</th>';
-				str+='<th width="20%">%</th>';
-				str+='<th width="20%" >Total</th>';
-				str+='<th width="20%">%</th>';
+				str+='<th width="25%">Caste Category</th>';
+				str+='<th width="25%">Total Count</th>';
+				str+='<th width="25%">Male</th>';
+				str+='<th width="25%">Female</th>';
 				str+='</tr>';
 				str+='</thead>';
 				for(var i in casteCategoryResult)
 				{
 					str+='<tr>';
 					str+='<td>'+casteCategoryResult[i].casteCategory+'</td>';
-					str+='<td>'+casteCategoryResult[i].availableCasteCount+'</td>';
-					str+='<td>'+casteCategoryResult[i].availableCadrePerc+'</td>';
 					str+='<td>'+casteCategoryResult[i].totalCount+'</td>';
-					str+='<td>'+casteCategoryResult[i].totalPerc+'</td>';
 					str+='<td>'+casteCategoryResult[i].maleCount+'</td>';
-					str+='<td>'+casteCategoryResult[i].malePerc+'</td>';
 					str+='<td>'+casteCategoryResult[i].femaleCount+'</td>';
-					str+='<td>'+casteCategoryResult[i].femalePerc+'</td>';					
 					str+='</tr>';
 				}
 				str+='</table>';			
@@ -988,72 +971,41 @@ function getRolesBasedReport(roleId)
 		if(casteWiseResult != null)
 		{
 			str+='<table class="table table-bordered" style="border:2px solid #FC6 !important" id="casteDetailsId">';
-			str+='<caption class="tablecaption" >Caste Wise '+$("#committeePostitionId option:selected").text()+' Designation(s) Information';
+			str+='<caption class="tablecaption" >Caste Wise Information';
 			str+='<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>';
 			str+='</caption>';
 			str+='<thead>';
 			str+='<tr>';
-			str+='<th width="20%" ROWSPAN=2 style="text-align:center;">Caste Name</th>';
-			str+='<th width="20%"  COLSPAN=2 style="text-align:center;" >Registered Cadre </th>';
-			str+='<th width="20%"  COLSPAN=2 style="text-align:center;" > Committee Members </th>';
-			str+='<th width="20%"  COLSPAN=2 style="text-align:center;">Male</th>';
-			str+='<th width="20%"  COLSPAN=2 style="text-align:center;" >Female</th>';
-			
-			str+='</tr>';
-			str+='<tr>';
-			//str+='<th width="20%"></th>';
-			str+='<th width="20%"> Total </th>';
-			str+='<th width="20%">%</th>';
-			str+='<th width="20%"> Total</th>';
-			str+='<th width="20%">%</th>';
-			str+='<th width="20%"> Total </th>';
-			str+='<th width="20%">%</th>';
-			str+='<th width="20%"> Total </th>';
-			str+='<th width="20%">%</th>';
+			str+='<th width="25%">Caste Name</th>';
+			str+='<th width="25%">Total Count</th>';
+			str+='<th width="25%">Male</th>';
+			str+='<th width="25%">Female</th>';
 			str+='</tr>';
 			str+='</thead>';
 			for(var i in casteWiseResult)
 			{
 				str+='<tr>';
 				str+='<td>'+casteWiseResult[i].caste+'</td>';
-				str+='<td>'+casteWiseResult[i].availableCasteCount+'</td>';
-					str+='<td>'+casteWiseResult[i].availableCadrePerc+'</td>';
 					str+='<td>'+casteWiseResult[i].totalCount+'</td>';
-					str+='<td>'+casteWiseResult[i].totalPerc+' </td>';
 					str+='<td>'+casteWiseResult[i].maleCount+'</td>';
-					str+='<td>'+casteWiseResult[i].malePerc+'  </td>';
 					str+='<td>'+casteWiseResult[i].femaleCount+'</td>';
-					str+='<td>'+casteWiseResult[i].femalePerc+' </td>';
-					
 				str+='</tr>';
 			}
+			str+='</table>    ';
 		}	
 		
 		var ageRangeWiseResult = result.ageRangeWiseList;
 		if(ageRangeWiseResult != null)
 		{
 			str+='<table class="table table-bordered" style="border:2px solid #FC6 !important" id="ageRangeID">';
-			str+='<caption class="tablecaption">Age Range Wise '+$("#committeePostitionId option:selected").text()+' Designation(s) Information';
+			str+='<caption class="tablecaption">Age Range Wise  Information';
 			str+='<hr style="margin-top:0px;margin-bottom:0px;margin-right:50%;"/>                </caption>';
 			str+='<thead>';
 			str+='<tr>';
-			str+='<th width="20%" rowspan="2" style="text-align:center;">Between Age</th>';
-			str+='<th width="20%" colspan="2" style="text-align:center;">Registered Cadre </th>';
-			str+='<th width="20%" colspan="2" style="text-align:center;">Commitee Members</th>';
-			str+='<th width="20%" colspan="2" style="text-align:center;">Male</th>';
-			str+='<th width="20%" colspan="2" style="text-align:center;">Female</th>';
-			
-			str+='</tr>';
-			str+='<tr>';
-			//str+='<th width="20%">Between Age</th>';
-			str+='<th width="20%">Total</th>';
-			str+='<th width="20%">%</th>';
-			str+='<th width="20%">Total</th>';
-			str+='<th width="20%">%</th>';
-			str+='<th width="20%">Total</th>';
-			str+='<th width="20%">%</th>';
-			str+='<th width="20%"> Total </th>';
-			str+='<th width="20%">%</th>';
+			str+='<th width="25%">Between Age</th>';
+			str+='<th width="25%">Total Count</th>';
+			str+='<th width="25%">Male</th>';
+			str+='<th width="25%">Female</th>';
 			str+='</tr>';
 			str+='</thead>';
 			for(var i in ageRangeWiseResult)
@@ -1061,13 +1013,8 @@ function getRolesBasedReport(roleId)
 				str+='<tr>';
 				str+='<td>'+ageRangeWiseResult[i].ageRange+'</td>';
 				str+='<td>'+ageRangeWiseResult[i].totalCount+'</td>';
-				str+='<td>'+ageRangeWiseResult[i].totalPerc+'</td>';
 				str+='<td>'+ageRangeWiseResult[i].maleCount+'</td>';
-				str+='<td>'+ageRangeWiseResult[i].malePerc+'</td>';
 				str+='<td>'+ageRangeWiseResult[i].femaleCount+'</td>';
-				str+='<td>'+ageRangeWiseResult[i].femalePerc+'</td>';
-				str+='<td>'+ageRangeWiseResult[i].avaibleAgeWiseCount+'</td>';
-				str+='<td>'+ageRangeWiseResult[i].availableCadrePerc+'</td>';
 				str+='</tr>';
 			}
 		}
@@ -1080,19 +1027,19 @@ function getRolesBasedReport(roleId)
 		
 		$("#casteDetailsId").dataTable({
 			"iDisplayLength": 15,
-			"aaSorting": [[ 3, "desc" ]],
+			"aaSorting": [[ 1, "desc" ]],
 			"aLengthMenu": [[15,30, 50, 100, -1], [15,30, 50, 100, "All"]]
 		});
 		
 		$("#casteCategoryId").dataTable({
 			"iDisplayLength": 15,
-			"aaSorting": [[ 3, "desc" ]],
+			"aaSorting": [[ 1, "desc" ]],
 			"aLengthMenu": [[15,30, 50, 100, -1], [15,30, 50, 100, "All"]]
 		});
 		
 		$("#ageRangeID").dataTable({
 			"iDisplayLength": 15,
-			"aaSorting": [[ 3, "desc" ]],
+			"aaSorting": [[ 1, "desc" ]],
 			"aLengthMenu": [[15,30, 50, 100, -1], [15,30, 50, 100, "All"]]
 		});
 		
