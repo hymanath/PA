@@ -23,6 +23,8 @@ public class CadreCommitteeRolesInfoVO implements java.io.Serializable{
 	private Double availableCadrePerc;
 	private String availableCasteCount;
 	private String avaibleAgeWiseCount;
+	private Long availableVoters;
+	private Double availableVotersPerc;
 	private List<CadreCommitteeRolesInfoVO> casteCategoryWiseList = new ArrayList<CadreCommitteeRolesInfoVO>();
 	private List<CadreCommitteeRolesInfoVO> casteCategoryGroupWiseList = new ArrayList<CadreCommitteeRolesInfoVO>();
 	private List<CadreCommitteeRolesInfoVO> casteWiseList = new ArrayList<CadreCommitteeRolesInfoVO>();
@@ -32,6 +34,18 @@ public class CadreCommitteeRolesInfoVO implements java.io.Serializable{
 	private List<CadreCommitteeRolesInfoVO> cadreCommitteeRolesInfoVOList = new ArrayList<CadreCommitteeRolesInfoVO>();
 	
 	
+	public Double getAvailableVotersPerc() {
+		return availableVotersPerc;
+	}
+	public void setAvailableVotersPerc(Double availableVotersPerc) {
+		this.availableVotersPerc = availableVotersPerc;
+	}
+	public Long getAvailableVoters() {
+		return availableVoters;
+	}
+	public void setAvailableVoters(Long availableVoters) {
+		this.availableVoters = availableVoters;
+	}
 	public Double getAvailableCadrePerc() {
 		return availableCadrePerc;
 	}
