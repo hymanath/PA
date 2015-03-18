@@ -10,16 +10,24 @@ import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.ISearchEngineIPAddressDAO;
 import com.itgrids.partyanalyst.dao.ISurveyDetailsInfoDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreAgerangeInfoDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreCasteInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserTrackingDAO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.notification.service.ISchedulerService;
 import com.itgrids.partyanalyst.service.ICadreSurveyTransactionService;
 import com.itgrids.partyanalyst.service.IMailService;
+import com.itgrids.partyanalyst.service.IMobileService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class SchedulerService implements ISchedulerService{
 	
@@ -34,10 +42,56 @@ public class SchedulerService implements ISchedulerService{
 	
 	@Autowired
 	private ITdpCadreDAO tdpCadreDAO;
+	private ITdpCadreInfoDAO tdpCadreInfoDAO;
+	private ITdpCadreCasteInfoDAO tdpCadreCasteInfoDAO;
+	private ITdpCadreAgerangeInfoDAO tdpCadreAgerangeInfoDAO;
 	
 	private ICadreSurveyTransactionService cadreSurveyTransactionService;
+	private TransactionTemplate transactionTemplate;
+	private IMobileService mobileService;
 	
 	
+	public IMobileService getMobileService() {
+		return mobileService;
+	}
+
+	public void setMobileService(IMobileService mobileService) {
+		this.mobileService = mobileService;
+	}
+
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
+
+	public ITdpCadreInfoDAO getTdpCadreInfoDAO() {
+		return tdpCadreInfoDAO;
+	}
+
+	public ITdpCadreCasteInfoDAO getTdpCadreCasteInfoDAO() {
+		return tdpCadreCasteInfoDAO;
+	}
+
+	public ITdpCadreAgerangeInfoDAO getTdpCadreAgerangeInfoDAO() {
+		return tdpCadreAgerangeInfoDAO;
+	}
+
+	public void setTdpCadreInfoDAO(ITdpCadreInfoDAO tdpCadreInfoDAO) {
+		this.tdpCadreInfoDAO = tdpCadreInfoDAO;
+	}
+
+	public void setTdpCadreCasteInfoDAO(ITdpCadreCasteInfoDAO tdpCadreCasteInfoDAO) {
+		this.tdpCadreCasteInfoDAO = tdpCadreCasteInfoDAO;
+	}
+
+	public void setTdpCadreAgerangeInfoDAO(
+			ITdpCadreAgerangeInfoDAO tdpCadreAgerangeInfoDAO) {
+		this.tdpCadreAgerangeInfoDAO = tdpCadreAgerangeInfoDAO;
+	}
+
 	public void setCadreSurveyTransactionService(
 			ICadreSurveyTransactionService cadreSurveyTransactionService) {
 		this.cadreSurveyTransactionService = cadreSurveyTransactionService;
@@ -557,5 +611,95 @@ public class SchedulerService implements ISchedulerService{
 		}
 	}
 	
+	public Long updateTdpCadreInfoDetails()
+	{
+		LOG.info("\n\n entered updation for TdpCadreInfo Table \n" );
+		Long effectedCount = 0L;
+		try {
+			
+			effectedCount = (Long) transactionTemplate.execute(new TransactionCallback() {
+				 public Object doInTransaction(TransactionStatus status) {
+					
+					tdpCadreInfoDAO.deleteTdpCadreInfoTableBeforeUpdate();
+					
+					int effectedCount1 = tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Registered","Constituency");
+					int effectedCount2 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Registered","District");
+					int effectedCount3 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Printed","Constituency");
+					int effectedCount4 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Printed","District");
+					String totalCount  = String.valueOf(effectedCount1+effectedCount2+effectedCount3+effectedCount4);
+					Long effectedCount = Long.valueOf(totalCount);
+					return effectedCount;
+				}
+			});
+			LOG.info("\n\n Total TdpCadreInfo Table effected records : "+effectedCount+"\n\n" ); 
+		} catch (Exception e) {
+			effectedCount = 0L;
+			LOG.error("Exception Raised in updateTdpCadreInfoDetails()",e); 
+			mobileService.sendSmsToUserForUpdations("Exc. in updateTdpCadreInfoDetails() : \n "+e.getMessage(),"9581434970");
+		}
+		return effectedCount;
+	}
+	
+	public Long updateTdpCadreCasteInfoDetails()
+	{
+		Long effectedCount = 0L;
+		try {
+			LOG.info("\n\n entered updation for TdpCadreCasteInfo Table \n" );
+			effectedCount = (Long) transactionTemplate.execute(new TransactionCallback() {
+				 public Object doInTransaction(TransactionStatus status) {
+					tdpCadreCasteInfoDAO.deleteTdpCadreCasteInfoTableBeforeUpdate();
+					
+					int effectedCount1 = tdpCadreCasteInfoDAO.updateTdpCadreCasteInfoTableByScheduler("Constituency");
+					int effectedCount2 = tdpCadreCasteInfoDAO.updateTdpCadreCasteInfoTableByScheduler("District");
+					int effectedCount3 = tdpCadreCasteInfoDAO.updateTdpCadreCasteInfoTableByScheduler("Panchayat");
+					int effectedCount4 = tdpCadreCasteInfoDAO.updateTdpCadreCasteInfoTableByScheduler("Ward");
+					int effectedCount5 = tdpCadreCasteInfoDAO.updateTdpCadreCasteInfoTableByScheduler("Tehsil");
+					int effectedCount6 = tdpCadreCasteInfoDAO.updateTdpCadreCasteInfoTableByScheduler(IConstants.LOCAL_BODY_ELECTION);	
+					String totalCount  = String.valueOf(effectedCount1 + effectedCount2 + effectedCount3 + effectedCount4 + effectedCount5 + effectedCount6);
+					Long effectedCount = Long.valueOf(totalCount);
+					
+					return effectedCount;
+				}
+			});
+			LOG.info("\n\n Total TdpCadreCasteInfo Table effected records : "+effectedCount+"\n\n" ); 			
+		} catch (Exception e) {
+			effectedCount = 0L;
+			LOG.error("Exception Raised in updateTdpCadreCasteInfoDetails()",e);
+			mobileService.sendSmsToUserForUpdations("Exc. in updateTdpCadreCasteInfoDetails() : \n "+e.getMessage(),"9581434970");
+			e.printStackTrace();
+		}
+		return effectedCount;
+	}
+	
+	public Long updateTdpCadreAgerangeInfoDetails()
+	{
+		Long effectedCount = 0L;
+		try {
+			LOG.info("\n\n entered updation for TdpCadreAgeRangeInfo Table \n" );
+			effectedCount = (Long) transactionTemplate.execute(new TransactionCallback() {
+				 public Object doInTransaction(TransactionStatus status) {
+					tdpCadreAgerangeInfoDAO.deleteTdpCadreReageRangeInfoTableBeforeUpdate();
+					
+					int effectedCount1 = tdpCadreAgerangeInfoDAO.updateTdpCadReageRangeInfoTableByScheduler("Constituency");
+					int effectedCount2 = tdpCadreAgerangeInfoDAO.updateTdpCadReageRangeInfoTableByScheduler("District");
+					int effectedCount3 = tdpCadreAgerangeInfoDAO.updateTdpCadReageRangeInfoTableByScheduler("Panchayat");
+					int effectedCount4 = tdpCadreAgerangeInfoDAO.updateTdpCadReageRangeInfoTableByScheduler("Ward");
+					int effectedCount5 = tdpCadreAgerangeInfoDAO.updateTdpCadReageRangeInfoTableByScheduler("Tehsil");
+					int effectedCount6 = tdpCadreAgerangeInfoDAO.updateTdpCadReageRangeInfoTableByScheduler(IConstants.LOCAL_BODY_ELECTION);	
+					String totalCount  = String.valueOf(effectedCount1 + effectedCount2 + effectedCount3 + effectedCount4 + effectedCount5 + effectedCount6);
+					Long effectedCount = Long.valueOf(totalCount);
+					
+					return effectedCount;
+				}
+			});
+			LOG.info("\n\n Total TdpCadreAgeRangeInfo Table effected records : "+effectedCount+"\n\n" ); 
+		} catch (Exception e) {
+			effectedCount = 0L;
+			LOG.error("Exception Raised in updateTdpCadreAgerangeInfoDetails()",e); 
+			mobileService.sendSmsToUserForUpdations("Exc. in updateTdpCadreAgerangeInfoDetails() : \n "+e.getMessage(),"9581434970");
+			e.printStackTrace();
+		}
+		return effectedCount;
+	}
 	
 }

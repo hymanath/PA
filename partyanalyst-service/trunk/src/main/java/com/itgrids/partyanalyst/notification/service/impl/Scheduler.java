@@ -259,4 +259,21 @@ public class Scheduler {
 			// TODO: handle exception
 		}
 	}
+	public void updateTdpCadreInfoDetails()
+	{
+		try {
+			
+			Long cadreInfoCount = schedulerService.updateTdpCadreInfoDetails();
+			Long cadreCasteInfoCount = schedulerService.updateTdpCadreCasteInfoDetails();
+			Long cadreAgeRangeInfoCount =  schedulerService.updateTdpCadreAgerangeInfoDetails();
+			
+			String message ="TdpCadreInfo : "+cadreInfoCount+"\n TdpCadreCasteInfo : "+cadreCasteInfoCount+"\nTdpCadreAgeRangeInfo : "+cadreAgeRangeInfoCount+"";
+			log.debug(message);
+			mobileService.sendSmsToUserForUpdations(message,"9581434970");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 }
