@@ -38,7 +38,13 @@ public class TdpCadreInfoDAO extends GenericDaoHibernate<TdpCadreInfo, Long> imp
 		{
 			queryStr.append(" UA.district_id, ");
 		}
+		
 		queryStr.append(" '"+cadreType+"',count(*) from tdp_cadre TC, user_address UA where TC.address_id = UA.user_address_id and TC.enrollment_year = 2014 and TC.is_deleted = 'N' ");
+
+		if(cadreType != null && cadreType.equalsIgnoreCase("Printed"))
+		{
+			queryStr.append(" and  TC.card_number is not null and TC.constituency_id is not null ");
+		}
 		
 		if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
 		{
@@ -48,6 +54,7 @@ public class TdpCadreInfoDAO extends GenericDaoHibernate<TdpCadreInfo, Long> imp
 		{
 			queryStr.append(" and UA.district_id  is not null group by UA.district_id order by UA.district_id   ");
 		}
+		
 		Query query = getSession().createSQLQuery(queryStr.toString());
 		int c = query.executeUpdate();
 		return c;
