@@ -1531,7 +1531,7 @@
 	
 	<bean name="tdpcadreInfo" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="tdpcadreInfoupdation" />
-    	<property name="cronExpression" value="0 30 16 * * ?" />
+    	<property name="cronExpression" value="0 30 22 * * ?" />
 	</bean>	
 	<bean name="tdpcadreInfoupdation" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   		<property name="targetObject" ref="scheduler" />
