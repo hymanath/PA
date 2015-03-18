@@ -9833,5 +9833,11 @@
 			</result>
 		</action>
 		
+		<action name="cadreVoterSearchAction" class="cadreVoterSearchAction" >
+			<result name="success">/jsp/cadreVoterSearch.jsp</result>
+			<result name="input">/jsp/loginForm.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
+		
 </package>
 </struts>      

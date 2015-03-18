@@ -323,6 +323,7 @@
 			 <pattern>/tdpCadreImagesVerification*</pattern>	
 			  <pattern>/currentBoothsStatus*</pattern>
 			   <pattern>/ivrCampaignUploadAction*</pattern> 
+			   <pattern>/cadreVoterSearchAction*</pattern>
 		 </decorator>
        
        <decorator name="tdpHome_old" page="tdplayout_old.jsp">

@@ -2560,5 +2560,9 @@
 		<property name="tdpCadreDAO" ref="tdpCadreDAO"/>
 		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO"/>
 	</bean>
+	
+	<bean name="cadreVoterSearchService"  class="com.itgrids.partyanalyst.service.impl.CadreVoterSearchService">
+	
+	</bean>
 </beans>		
 	

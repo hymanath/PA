@@ -1560,5 +1560,9 @@
 		<property name="cadreRegistrationService" ref="cadreRegistrationService" />
 	</bean>
 	
+	<bean id="cadreVoterSearchAction" class="com.itgrids.partyanalyst.web.action.CadreVoterSearchAction" singleton="false">
+		<property name="mahaNaduService" ref="mahaNaduService" />
+	</bean>
+	
 </beans>	
 	
