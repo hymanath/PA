@@ -4613,5 +4613,17 @@ public MobileVO fileSplitForParlaiment(List<MobileVO> resultList,int checkedType
 			return resultStatus;
 		 }
 	 
-		
+			public ResultStatus sendSmsToUserForUpdations(String message,String mobileNo)
+		  	{
+		  		ResultStatus resultStatus = new ResultStatus();
+		  		try{
+		  			String[] mobilenoarr = new String [] {mobileNo};
+		  			resultStatus = smsCountrySmsService.sendSmsFromAdmin(message, true, mobilenoarr);
+		  		}
+		  		catch(Exception e)
+		  		{
+		  			LOG.error("Exception Occured in sendSmsToMobileAppUser Method");	
+		  		}
+				return resultStatus;
+		  	}
 }

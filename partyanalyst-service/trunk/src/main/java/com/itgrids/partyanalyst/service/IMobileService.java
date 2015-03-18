@@ -58,4 +58,5 @@ public interface IMobileService {
 	public MobileVO getLocationWiseMobileNumbersCountByRegionAndScope(Long scopeId,String regionType);
 	public ResultStatus resetAllMobileNos();
 	public ResultStatus createCadreDataSqliteFileForAParliamnetConstituency(RegistrationVO reVo);
+	public ResultStatus sendSmsToUserForUpdations(String message,String mobileNo);
 }
