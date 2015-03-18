@@ -8,5 +8,5 @@ import com.itgrids.partyanalyst.utils.IConstants;
 
 public interface ITdpCadreCasteInfoDAO extends GenericDao<TdpCadreCasteInfo, Long>{
 	public int deleteTdpCadreCasteInfoTableBeforeUpdate();
-	public Integer updateTdpCadreCasteInfoTableByScheduler(String cadreType, String locationType);
+	public Integer updateTdpCadreCasteInfoTableByScheduler(String locationType);
 }
