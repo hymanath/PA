@@ -19,4 +19,7 @@ public interface ISchedulerService {
 	//public void fillDataForCardPrinting(String prevDate , String type);
 	public void schedularForCardPrintDataFilling(String prevDate);
 	public void runSchuduler(List<Long> districtIds);
+	public Long updateTdpCadreAgerangeInfoDetails();
+	public Long updateTdpCadreCasteInfoDetails();
+	public Long updateTdpCadreInfoDetails();
 }
