@@ -101,7 +101,7 @@ public class WebServiceHandler2 {
 	public Object saveFieldData (SurveyResponceVO inputs)
 	{
 		LOG.debug("inside save field data");
-		LOG.debug(inputs.toString());
+		LOG.error(inputs.toString());
 		
 		ResultStatus out=null;
 		Map<String,String> userDetails= new HashMap<String, String>();
