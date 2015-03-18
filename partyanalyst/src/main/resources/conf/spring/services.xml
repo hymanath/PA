@@ -1318,6 +1318,11 @@
 		<property name="searchEngineIPAddressDAO" ref="searchEngineIPAddressDAO"/>
 		<property name="userTrackingDAO" ref="userTrackingDAO"/>
 		<property name="cadreSurveyTransactionService" ref="cadreSurveyTransactionService"/>
+		<property name="tdpCadreInfoDAO" ref="tdpCadreInfoDAO"/>
+		<property name="tdpCadreCasteInfoDAO" ref="tdpCadreCasteInfoDAO"/>
+		<property name="tdpCadreAgerangeInfoDAO" ref="tdpCadreAgerangeInfoDAO"/>
+		<property name="transactionTemplate" ref="transactionTemplate"/>
+		<property name="mobileService" ref="mobileService"/>
 	</bean>
 	
 	<bean name="scheduler" class="com.itgrids.partyanalyst.notification.service.impl.Scheduler">
@@ -1518,10 +1523,20 @@
 			<ref bean="runTheBatchJobForEveryDayCardDataInsertForMax" />
 			<ref bean="runTheBatchJobForEveryDayCardDataInsertForZebra" />
 		 	<ref bean="insertTriggerForEveryDayCardPrintDetails" /> -->
+			<ref bean="tdpcadreInfo" />
 			
         </list>
     	</property>
 	</bean>
+	
+	<bean name="tdpcadreInfo" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="tdpcadreInfoupdation" />
+    	<property name="cronExpression" value="0 30 14 * * ?" />
+	</bean>	
+	<bean name="tdpcadreInfoupdation" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="updateTdpCadreInfoDetails" /> 
+	</bean>	
 	
 	<bean name="partyCandidateSpecialPageScheduleService" class="com.itgrids.partyanalyst.service.impl.PartyCandidateSpecialPageScheduleService">
 		<property name="candidateSubscriptionsDAO" ref="candidateSubscriptionsDAO" />
@@ -2535,6 +2550,8 @@
        	  <property name="ivrCampaignOptionsDAO" ref="ivrCampaignOptionsDAO"/>
           <property name="committeIvrDistrictDetailDAO" ref="committeIvrDistrictDetailDAO"/>
           <property name="committeIvrTotalDetailDAO" ref="committeIvrTotalDetailDAO"/>
+           <property name="voterAgeInfoDAO" ref="voterAgeInfoDAO"/>
+          
 	</bean>
 	
 	<bean name="dynamicReportService"  class="com.itgrids.partyanalyst.service.impl.DynamicReportService">
