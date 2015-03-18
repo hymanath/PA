@@ -168,6 +168,11 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IIvrCampaignOptionsDAO ivrCampaignOptionsDAO;
 	private ICommitteIvrDistrictDetailDAO committeIvrDistrictDetailDAO;
 	private ICommitteIvrTotalDetailDAO committeIvrTotalDetailDAO;
+	private IVoterAgeInfoDAO voterAgeInfoDAO;
+	
+	public void setVoterAgeInfoDAO(IVoterAgeInfoDAO voterAgeInfoDAO) {
+		this.voterAgeInfoDAO = voterAgeInfoDAO;
+	}
 	
 	public void setTdpCadreInfoDAO(ITdpCadreInfoDAO tdpCadreInfoDAO) {
 		this.tdpCadreInfoDAO = tdpCadreInfoDAO;
@@ -7145,6 +7150,20 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 				
 			}
 			
+			List<Object[]> voterAgeRangeDetails = voterAgeInfoDAO.getVoterAgeInfoListByconstituencyExceptYouth(Long.valueOf(locationValue.toString().trim()),IConstants.VOTER_DATA_PUBLICATION_ID);
+			Map<Long,Long> availableVotersByAgeRange = new HashMap<Long, Long>();
+			Long avaibaleTotalAgeRangeCount = 0L;
+			if(voterAgeRangeDetails != null && voterAgeRangeDetails.size()>0)
+			{
+				for (Object[] voterAgeRange : voterAgeRangeDetails)
+				{
+					//String ageRange = voterAgeRange[1] != null ? voterAgeRange[1].toString().trim():"";
+					Long ageRangeId = voterAgeRange[0] != null ? Long.valueOf(voterAgeRange[0].toString().trim()):0L;
+					Long votersCount = voterAgeRange[2] != null ? Long.valueOf(voterAgeRange[2].toString().trim()):0L;
+					avaibaleTotalAgeRangeCount = avaibaleTotalAgeRangeCount+votersCount;
+					availableVotersByAgeRange.put(ageRangeId, votersCount);
+				}
+			}
 			List<Object[]> ageRangeList = tdpCommitteeMemberDAO.getCadreAgerangeInfoForLocations(locationLevelId,locationIdsList,wardIdsList,userAccessType,segrigatStr);
 			Map<Long , Long> agerangeCountMap = new HashMap<Long, Long>();
 			
@@ -7186,9 +7205,16 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 					{
 						cadreVO = new CadreCommitteeRolesInfoVO();
 						cadreVO.setAgeRange(param[1] != null ? param[1].toString():"");
-						Long agerangeID = param[0] != null ? Long.valueOf(param[0].toString()):0L;
+						Long agerangeID = param[0] != null ? Long.valueOf(param[0].toString().trim()):0L;
 						Long agerangecount = agerangeCountMap.get(agerangeID) != null ? agerangeCountMap.get(agerangeID) :0L;
 						cadreVO.setAvaibleAgeWiseCount(agerangecount.toString());
+						
+						Long availableVoterCount = availableVotersByAgeRange.get(agerangeID) != null ? availableVotersByAgeRange.get(agerangeID) :0L;
+						cadreVO.setAvailableVoters(availableVoterCount);
+						
+						Double votersPerc = Double.valueOf(decimalFormat.format((availableVoterCount * 100.00) / avaibaleTotalAgeRangeCount));
+						cadreVO.setAvailableVotersPerc(votersPerc);
+						
 					}
 					
 					String genderType = param[2] != null ? param[2].toString():"";
