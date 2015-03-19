@@ -13,6 +13,12 @@
 	<meta name="keywords" content="Natural Language UI, sentence form, text input, contenteditable, html5, css3, jquery" />
 	<meta name="author" content="Codrops" />
 	<link rel="shortcut icon" href="../favicon.ico"> 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>  
+	<link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+	<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+	
+	
 	<link rel="stylesheet" type="text/css" href="js/cadreSearch/Naturallanguage/css/component.css" />
 	<link href="js/cadreSearch/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	<link href="js/cadreSearch/css/custom.css" rel="stylesheet" type="text/css">
@@ -60,10 +66,10 @@
                             <option value="2">Mudhiraj</option>
                         </select>
 						-->
-						  <input type="textarea" value="" placeholder="ANY"/>
+						<input type="textarea" class="casteCls" value="" placeholder="ANY"/>
 						  
                         CASTE AND 
-                        <input type="text" value="" placeholder="ANY"/>
+                        <input  type="text" value="" placeholder="ANY"/>
                         NAME.
                         <br/>                        
                     </form>
@@ -370,7 +376,7 @@
 		</div></div>
 	</div>   
 	
-	<script src="js/cadreSearch/js/jquery-1.11.2.min.js" type="text/javascript"></script>
+	<!--<script src="js/cadreSearch/js/jquery-1.11.2.min.js" type="text/javascript"></script>-->
 	<script src="js/cadreSearch/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="js/cadreSearch/Naturallanguage/js/modernizr.custom.js"></script>
     <script src="js/cadreSearch/Naturallanguage/js/nlform.js"></script>
@@ -379,28 +385,54 @@
     <script src="js/cadreSearch/PageTransitions/js/pagetransitions.js" type="text/javascript"></script>
 	
 	<script>
-	var selectionArr = ["searchClsType","stateClsType","districtClsType","constiClsType","casteClsType"];
+	var selectionArr = ["searchClsType","stateClsType","districtClsType","constiClsType","casteClsType"];	
 	$(document).ready(function(){
-		$('li').click(function(){
-			var locationValue = $(this).attr('key');
-			var locationType = $(this).attr('id');
-			
-			if(locationType == 'stateClsType'){
-				getDistrictsAndConstis("district",locationValue);
-				
-			}
-			else if(locationType == 'districtClsType'){
-				getDistrictsAndConstis("constituency",locationValue);
-				
-			}
-		});
+		var casteArr = new Array();
+		var casteDetailsArr = new Array();
+		<c:forEach var="caste" items="${casteDetails}">
+				var obj = {
+					value :  '${caste.id}',
+					label :  '${caste.name}'
+				}
+				casteDetailsArr.push( '${caste.name}');
+				casteArr.push(obj);
+		</c:forEach>
+		
+	
+	var source  = [ ];
+	var mapping = { };
+	for(var i = 0; i < casteArr.length; ++i) {
+		source.push(casteArr[i].label);
+		mapping[casteArr[i].label] = casteArr[i].value;
+	}
+
+	$('.casteCls').autocomplete({
+		minLength: 1,
+		source: source,
+		select: function(event, ui) {
+			//$('.tags_id').text(mapping[ui.item.value]);
+		}
 	});
-	
+	$('li').click(function(){
+		var locationValue = $(this).attr('key');
+		var locationType = $(this).attr('id');
+		console.log(locationType);
+		if(locationType == 'stateClsType'){
+			getDistrictsAndConstis("district",locationValue);
+			
+		}
+		else if(locationType == 'districtClsType'){
+			getDistrictsAndConstis("constituency",locationValue);
+			
+		}
+	});
+	});
 	</script>
-	
 	<script>
-	
 	function getDistrictsAndConstis(type,locationValue){
+	
+	$('.districtCls').find('option').remove();
+	$('.districtCls').append('<option value="0"> ANY </option>');
 		var jObj = {
 			type:type,			
 			id:locationValue,
@@ -413,11 +445,12 @@
         }).done(function(result){
 			if(result != null){
 				if(type == 'district'){
+					$('.nl-field').remove();
 					for(var i in result){
-						$('#districtCls').append('<option value="'+result[i].id+'"> '+result[i].name+' </option>');
+						$('.districtCls').append('<option value="'+result[i].id+'"> '+result[i].name+' </option>');
 					}
 				}
-				//var nlform = new NLForm( document.getElementById( 'nl-form' ) );
+				new NLForm(document.getElementById('nl-form'));
 			}	
 			
 		
@@ -425,7 +458,7 @@
 		});
 	
 	}	
-	var nlform = new NLForm( document.getElementById( 'nl-form' ) );
+	new NLForm(document.getElementById( 'nl-form' ));
 	</script>
 </body>
 </html>
