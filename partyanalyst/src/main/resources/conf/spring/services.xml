@@ -2562,7 +2562,8 @@
 	</bean>
 	
 	<bean name="cadreVoterSearchService"  class="com.itgrids.partyanalyst.service.impl.CadreVoterSearchService">
-	
+	<property name="districtDAO" ref="districtDAO" />
+	<property name="constituencyDAO" ref="constituencyDAO" />	
 	</bean>
 </beans>		
 	

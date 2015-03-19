@@ -9839,5 +9839,11 @@
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
 		
+		
+		<action name="getDistrictsAndConstituenciesAction" class="cadreVoterSearchAction" method="getDistrictsAndConstituencies">
+			<result type="json" name="success">
+				<param name="root">resultList</param> 
+			</result>
+		</action>
 </package>
 </struts>      
