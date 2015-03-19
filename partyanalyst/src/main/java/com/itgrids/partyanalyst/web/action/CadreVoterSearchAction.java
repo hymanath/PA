@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.ICadreVoterSearchService;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -26,8 +27,16 @@ public class CadreVoterSearchAction extends ActionSupport implements ServletRequ
 	private List<SelectOptionVO> casteDetails;
 	private List<CadreAddressVO> resultList;
 	private IMahaNaduService mahaNaduService;
-	//private ICadreVoterSearchService cadreVoterSearchService;
+	private ICadreVoterSearchService cadreVoterSearchService;
 
+	
+	public ICadreVoterSearchService getCadreVoterSearchService() {
+		return cadreVoterSearchService;
+	}
+	public void setCadreVoterSearchService(
+			ICadreVoterSearchService cadreVoterSearchService) {
+		this.cadreVoterSearchService = cadreVoterSearchService;
+	}
 	public IMahaNaduService getMahaNaduService() {
 		return mahaNaduService;
 	}
@@ -82,26 +91,19 @@ public String execute(){
 	}
 	
 	
-	public String getAllDistricts(){
-		LOG.info("Entered into getAllDistricts method");
+	public String getDistrictsAndConstituencies(){
+		
+		LOG.info("Entered into getDistrictsAndConstituencies method");
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		
 		try {		
 			jobj = new JSONObject(request.getParameter("task"));
 			String type=jobj.getString("type");
-			
-			if(jobj.getString("task").equalsIgnoreCase("getDistricts")){
-			 //resultList= cadreVoterSearchService.getAllDistrictsAndConstis(type,jobj.getLong("stateId"));	
-			}
-			else if(jobj.getString("task").equalsIgnoreCase("getConstituencies")){
-				//resultList = cadreVoterSearchService.getAllDistrictsAndConstis(type,jobj.getLong("districtId"));	
-			}
-			
-		
+			resultList = cadreVoterSearchService.getAllDistrictsAndConstis(type,jobj.getLong("id"));
 		}
 		catch(Exception e){
-			LOG.error("Exception raised in getExistingCadreInfoForCommittee method in CadreRegistrationAction action", e);
+			LOG.error("Exception raised in getDistrictsAndConstituencies method", e);
 		}
 		return Action.SUCCESS;
 		
