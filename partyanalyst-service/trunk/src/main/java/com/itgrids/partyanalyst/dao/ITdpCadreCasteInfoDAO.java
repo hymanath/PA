@@ -1,12 +1,13 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.List;
+
 import org.appfuse.dao.GenericDao;
-import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.model.TdpCadreCasteInfo;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public interface ITdpCadreCasteInfoDAO extends GenericDao<TdpCadreCasteInfo, Long>{
 	public int deleteTdpCadreCasteInfoTableBeforeUpdate();
 	public Integer updateTdpCadreCasteInfoTableByScheduler(String locationType);
+	public List<Object[]> getVoterCadreCasteDetailsBySearchCriteria(Long stateId,String locationType,Long locationId,Long casteStateId);
 }
