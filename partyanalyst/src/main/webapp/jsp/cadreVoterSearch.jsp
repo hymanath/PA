@@ -50,13 +50,15 @@
                         </select>
                         STATE
                         <br />IN  
-                        <select class="districtCls">
-                            <option value="0" selected>ANY</option>                 
-                        </select>
+                        <input type="textarea"  value="" placeholder="Any"/>
+                        <!--<select class="districtCls">
+                            <option value="0" selected>Any</option>                 
+                        </select>-->
                         DISTRICT,IN 
-                        <select class="constiCls">
-                            <option value="0" selected>ANY</option>                         
-                        </select>
+                       <input type="textarea"  value="" placeholder="Any"/>
+                        <!--<select class="constiCls">
+                            <option value="0" selected>Any</option>                         
+                        </select>-->
                         CONSTITUENCY.<br/>
                         WITH
                      <!--  
@@ -66,16 +68,17 @@
                             <option value="2">Mudhiraj</option>
                         </select>
 						-->
-						<input type="textarea" class="casteCls" value="" placeholder="ANY"/>
+						<input type="textarea"  value="" placeholder="ANY"/>
 						  
                         CASTE AND 
-                        <input  type="text" value="" placeholder="ANY"/>
+                        <input  type="text"  value="" placeholder="ANY"/>
                         NAME.
                         <br/>                        
                     </form>
                     <button class="btn btn-success get-details m_top10">
 						<i class="glyphicon glyphicon-arrow-right"></i>&nbsp;&nbsp;Get Details
                     </button>
+					<div class="nl-overlay"></div>
                 </div>              
 			</div>
 		</div>
@@ -385,7 +388,8 @@
     <script src="js/cadreSearch/PageTransitions/js/pagetransitions.js" type="text/javascript"></script>
 	
 	<script>
-	var selectionArr = ["searchClsType","stateClsType","districtClsType","constiClsType","casteClsType"];	
+	var selectionArr = ["searchCls","stateCls","districtCls","constiCls","casteCls","nameCls"];
+	var selectionArr1 = ["searchDivCls","stateDivCls","districtDivCls","constiDivCls","casteDivCls","nameDivCls"];
 	$(document).ready(function(){
 		var casteArr = new Array();
 		var casteDetailsArr = new Array();
@@ -404,8 +408,7 @@
 	for(var i = 0; i < casteArr.length; ++i) {
 		source.push(casteArr[i].label);
 		mapping[casteArr[i].label] = casteArr[i].value;
-	}
-
+	}	
 	$('.casteCls').autocomplete({
 		minLength: 1,
 		source: source,
@@ -413,24 +416,39 @@
 			//$('.tags_id').text(mapping[ui.item.value]);
 		}
 	});
-	$('li').click(function(){
-		var locationValue = $(this).attr('key');
-		var locationType = $(this).attr('id');
-		console.log(locationType);
-		if(locationType == 'stateClsType'){
-			getDistrictsAndConstis("district",locationValue);
+
+	$('.stateCls').click(function(){				
+		var locationValue = $(this).attr('key');		
+		getDistrictsAndConstis("District",locationValue);					
+	});
+	
+	/*$('.districtDivCls').click(function(){
+		
+		alert($('.districtDivCls').hasClass('nl-field-open'));
+		if($('.districtDivCls').hasClass('nl-field-open'))	{
+			$('.districtDivCls').removeClass('nl-field-open');
+			$('.districtDivCls').open = false;	
+
+
+			
 			
 		}
-		else if(locationType == 'districtClsType'){
-			getDistrictsAndConstis("constituency",locationValue);
-			
+		else{
+			$('.districtDivCls').addClass('nl-field-open');	
+			$('.districtDivCls').open = true;
 		}
+		
+		});*/
+	
 	});
-	});
+	
+	
+	
 	</script>
 	<script>
+	var districtArr;
 	function getDistrictsAndConstis(type,locationValue){
-	
+	alert(5);
 	$('.districtCls').find('option').remove();
 	$('.districtCls').append('<option value="0"> ANY </option>');
 		var jObj = {
@@ -444,20 +462,52 @@
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
 			if(result != null){
-				if(type == 'district'){
-					$('.nl-field').remove();
+				if(type == 'District'){
+				districtArr = new Array();
+					$('.districtCls').remove();
 					for(var i in result){
-						$('.districtCls').append('<option value="'+result[i].id+'"> '+result[i].name+' </option>');
+						var obj = {
+						value :  result[i].id,
+						label :  result[i].name
+						}			
+						districtArr.push(obj);
 					}
-				}
-				new NLForm(document.getElementById('nl-form'));
-			}	
-			
-		
-						
+					
+					var str='';
+					str+='<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" class="districtCls" onKeyup="districtsKeyUp();" /><button class="nl-field-go">Go</button>';
+					$(".districtCls").html(str);
+					
+					
+
+					
+					
+					
+					}
+					
+					
+			}
+			//new NLForm(document.getElementById( 'nl-form' ));			
 		});
 	
-	}	
+	}
+
+	function districtsKeyUp(){
+		var source  = [ ];
+					var mapping = { };
+					for(var i = 0; i < districtArr.length; ++i) {
+						source.push(districtArr[i].label);
+						mapping[districtArr[i].label] = districtArr[i].value;
+					}	
+					$('.districtCls').autocomplete({
+						minLength: 1,
+						source: source,
+						select: function(event, ui) {
+							//$('.tags_id').text(mapping[ui.item.value]);
+						}
+					});
+	}
+	
+
 	new NLForm(document.getElementById( 'nl-form' ));
 	</script>
 </body>
