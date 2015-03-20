@@ -76,8 +76,9 @@
 %> }
 	</script>
 	<style>
-	
-	
+	.main-menu>li{
+		margin-left : 20px !important;
+	}
 .background
 {
 background:#ffffff;
@@ -181,8 +182,8 @@ margin-top:10px;
 
 
     </div>
-<div id="menu" class="span6" style="border-top:1px solid #fff;border-bottom:1px solid #fff;padding:5px;margin-bottom:5px;width:500px;margin-left:250px;">
-      <ul class="menu">
+<div id="menu" class="span6" style="border-top:1px solid #fff;border-bottom:1px solid #fff;padding:5px;margin-bottom:5px;width:600px;margin-left:190px;">
+      <ul class="menu main-menu">
         <li class="active"><a href="home.action"><span><i class="icon-home icon-black"></i></span></a></li>
 	
     <c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">   
