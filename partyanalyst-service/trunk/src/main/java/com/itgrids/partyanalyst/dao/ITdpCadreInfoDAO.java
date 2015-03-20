@@ -19,5 +19,5 @@ public interface ITdpCadreInfoDAO extends GenericDao<TdpCadreInfo, Long>{
 
 	public Long getTdpCadreCountForLocations(String userAccessType,List<Long> locationIdsList,String type,String locationType);
 	
-	public List<Object[]> getVoterCadreDetailsBySearchCriteria(Long stateId, String locationType,Long locationId);
+	public List<Object[]> getVoterCadreDetailsBySearchCriteria(Long stateId, String locationType,List<Long> locationIdsList);
 }
