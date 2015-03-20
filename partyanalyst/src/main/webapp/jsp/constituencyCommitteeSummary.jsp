@@ -363,21 +363,30 @@ function buildConstituencySummary(results,jsObj){
 							}
 							
 						}
-						var length = (results.mandalsList[0].locationsList[0].cadreIVRVO.optionsList.length -1)*2;
-						str+='<th  colspan='+length+'> IVR Details </th>';
+						if(results.mandalsList[0].locationsList[0].cadreIVRVO != null)
+						{
+							var length = (results.mandalsList[0].locationsList[0].cadreIVRVO.optionsList.length -1)*2;
+							str+='<th  colspan='+length+'> IVR Details </th>';
+						}
+						
+						
 					str+='</tr>';
 					str+='<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">';
 						for(var k in reqPositionsArray){
 							str+='<th> Members </th>';
 							str+='<th> Electrols </th>';
 						}
-						for(var tp in results.mandalsList[0].locationsList[0].cadreIVRVO.optionsList)
+						if(results.mandalsList[0].locationsList[0].cadreIVRVO != null)
 						{
-						if(results.mandalsList[0].locationsList[0].cadreIVRVO.optionsList[tp].id != 8){
-							 str+='<th> '+results.mandalsList[0].locationsList[0].cadreIVRVO.optionsList[tp].name+' </th>';
-							  str+='<th> % </th>';
-							  }
+							for(var tp in results.mandalsList[0].locationsList[0].cadreIVRVO.optionsList)
+							{
+								 if(results.mandalsList[0].locationsList[0].cadreIVRVO.optionsList[tp].id != 8){
+								 str+='<th> '+results.mandalsList[0].locationsList[0].cadreIVRVO.optionsList[tp].name+' </th>';
+								  str+='<th> % </th>';
+								  }
+							}
 						}
+						
 					str+='</tr>';
 				str+='</thead>';
 					str+='<tbody>';
@@ -405,22 +414,28 @@ function buildConstituencySummary(results,jsObj){
 										}
 									  }
 									}
-									
-									for(var pp in rest.locationsList[j].cadreIVRVO.optionsList)
+									if(rest.locationsList[j].cadreIVRVO != null)
 									{
-									if(rest.locationsList[j].cadreIVRVO.optionsList[pp].id != 8){
-										if(rest.locationsList[j].cadreIVRVO.total >0){
-											percentage = (rest.locationsList[j].cadreIVRVO.optionsList[pp].count *100)/ rest.locationsList[j].cadreIVRVO.total;
-											perc = percentage.toFixed(0);
-											str+='<td>'+rest.locationsList[j].cadreIVRVO.optionsList[pp].count+'</td>';
-											str+='<td>'+perc+'</td>';
-										}				
-										else{
-											str+='<td></td>';
-											str+='<td></td>';
-										}
+										for(var pp in rest.locationsList[j].cadreIVRVO.optionsList)
+										{
+											if(rest.locationsList[j].cadreIVRVO.optionsList[pp].id != 8)
+											{
+												if(rest.locationsList[j].cadreIVRVO.total >0)
+												{
+													percentage = (rest.locationsList[j].cadreIVRVO.optionsList[pp].count *100)/ rest.locationsList[j].cadreIVRVO.total;
+													perc = percentage.toFixed(0);
+													str+='<td>'+rest.locationsList[j].cadreIVRVO.optionsList[pp].count+'</td>';
+													str+='<td>'+perc+'</td>';
+												}				
+												else
+												{
+													str+='<td></td>';
+													str+='<td></td>';
+												}
+											}
 										}
 									}
+									
 										
 										
 									
