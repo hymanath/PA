@@ -323,4 +323,6 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> getMemberDetlsByMembershipNo(String queryStr);
 	public List<Object[]> getMemberAddressDetlsByMembershipNo(String queryStr);
 	public List<String> checkForMemberExists(String queryStr);
+	
+	public List<Object[]> getVoterCadreCasteDetailsBySearchCriteria(Long stateId,String locationType,Long locationId,Long casteStateId,String nameStr);
 }
