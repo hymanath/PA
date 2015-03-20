@@ -38,6 +38,22 @@ public class TdpCadreInfoDAO extends GenericDaoHibernate<TdpCadreInfo, Long> imp
 		{
 			queryStr.append(" UA.district_id, ");
 		}
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.TEHSIL))
+		{
+			queryStr.append(" UA.tehsil_id, ");
+		}
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.WARD))
+		{
+			queryStr.append(" UA.ward,  ");
+		}
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+		{
+			queryStr.append(" UA.local_election_body ,  ");
+		}
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+		{
+			queryStr.append(" UA.panchayat_id ,");
+		}	
 		
 		queryStr.append(" '"+cadreType+"',count(*) from tdp_cadre TC, user_address UA where TC.address_id = UA.user_address_id and TC.enrollment_year = 2014 and TC.is_deleted = 'N' ");
 
@@ -53,6 +69,22 @@ public class TdpCadreInfoDAO extends GenericDaoHibernate<TdpCadreInfo, Long> imp
 		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.DISTRICT))
 		{
 			queryStr.append(" and UA.district_id  is not null group by UA.district_id order by UA.district_id   ");
+		}
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.TEHSIL))
+		{
+			queryStr.append(" and UA.tehsil_id  is not null and UA.local_election_body  is null group by UA.tehsil_id order by UA.tehsil_id   ");
+		}
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.WARD))
+		{
+			queryStr.append(" and UA.ward  is not null group by UA.ward order by UA.ward   ");
+		}
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+		{
+			queryStr.append(" and UA.local_election_body  is not null group by UA.local_election_body order by UA.local_election_body   ");
+		}
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+		{
+			queryStr.append(" and UA.panchayat_id  is not null group by UA.panchayat_id order by UA.panchayat_id   ");
 		}
 		
 		Query query = getSession().createSQLQuery(queryStr.toString());
@@ -118,41 +150,79 @@ public class TdpCadreInfoDAO extends GenericDaoHibernate<TdpCadreInfo, Long> imp
 		return (Long) query.uniqueResult();
 	}
 	
-	public List<Object[]> getVoterCadreDetailsBySearchCriteria(Long stateId, String locationType,Long locationId)
+	public List<Object[]> getVoterCadreDetailsBySearchCriteria(Long stateId, String locationType,List<Long> locationIdsList)
 	{
 		StringBuilder queryStr = new StringBuilder();
 		//0locationId,1count
 		StringBuilder str  = new StringBuilder();
-		str.append(" select model.locationId,model.count  ");
+		str.append(" select distinct model.locationId,model.count  ");
 		
 		if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
 		{
-			str.append(" ,model2.name from TdpCadreInfo model,Constituency model2 where model.locationId = model2.constituencyId and model.type = 'Registration' and model.locationId = :locationId and model.locationType like '%Constituency%' ");
+			str.append(" ,model2.name from TdpCadreInfo model,Constituency model2 where model2.constituencyId = model.locationId and model.type like '%Registered%' and model.locationType like '%Constituency%' ");
+			str.append(" and model2.electionScope.electionType.electionTypeId = 2  ");
+			if(locationIdsList != null && locationIdsList.size() > 0)
+			{
+				str.append(" and model2.district.districtId in (:locationIdsList) ");
+			}
+			str.append(" order by model2.name ");
 		}
 		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.DISTRICT))
 		{
-			str.append(" ,model2.name from TdpCadreInfo model,District model2 where model.locationId = model2.districtId and model.locationId = :locationId and model.locationType like '%District%' ");
+			str.append(" ,model2.districtName from TdpCadreInfo model,District model2 where model.locationId = model2.districtId and model.locationId in (:locationIdsList) and model.locationType like '%District%' ");
+			str.append(" and model.type like '%Registered%' ");
+			str.append(" order by model2.districtName ");
+		}
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.TEHSIL))
+		{
+			str.append(" ,model2.tehsilName from TdpCadreInfo model,Tehsil model2,Booth B where model2.tehsilId = model.locationId and model2.tehsilId = B.tehsil.tehsilId and model.locationType like '%Tehsil%' ");
+			str.append(" and B.publicationDate.publicationDateId = 11 and B.constituency.constituencyId in (:locationIdsList) and model.type like '%Registered%' ");
+			str.append(" order by model2.tehsilName ");
+		}
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+		{
+			str.append(" ,model2.panchayatName from TdpCadreInfo model,Panchayat model2,Booth B where model2.panchayatId = model.locationId and model2.panchayatId = B.panchayat.panchayatId and model.locationType like '%Panchayat%' ");
+			str.append(" and B.publicationDate.publicationDateId = 11 and B.tehsil.tehsilId in (:locationIdsList) and model.type like '%Registered%' ");
+			str.append(" order by model2.panchayatName ");
+		}
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+		{
+			str.append(" ,model2.name from TdpCadreInfo model,LocalElectionBody model2,Booth B where model2.LocalElectionBodyId = model.locationId and model2.localElectionBodyId = B.localBody.localElectionBodyId and model.locationType like '%LocalBody%' ");
+			str.append(" and B.publicationDate.publicationDateId = 11 and B.localBody.localElectionBodyId in (:locationIdsList) and model.type like '%Registered%' ");
+			str.append(" order by model2.name ");
+		}
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.WARD))
+		{
+			str.append(" ,model2.name from TdpCadreInfo model,Constituency model2 where model2.constituencyId = model.locationId and model.type like '%Registered%' and model.locationType like '%Ward%' ");
+			str.append(" and model.locationId in (:locationIdsList)  ");			
+			str.append(" order by model2.name ");
 		}
 		else if(stateId != null && stateId.longValue() == 0L) //AP & TS
 		{
-			str.append(" ,model2.name from TdpCadreInfo model,District model2 where model.locationId = model2.districtId and model.locationId between 1 and 23 and model.locationType like '%District%' ");
+			str.append(" ,model2.districtName from TdpCadreInfo model,District model2 where model.locationId = model2.districtId and (model.locationId between 1 and 23) and model.locationType like '%District%' ");
+			str.append(" and model.type like '%Registered%' ");
+			str.append(" order by model2.districtName ");
 		}
 		else if(stateId != null && stateId.longValue() == 1L) //AP
 		{
-			str.append(" ,model2.name from TdpCadreInfo model,District model2 where model.locationId = model2.districtId and model.locationId between 11 and 23 and model.locationType like '%District%' ");
+			str.append(" ,model2.districtName from TdpCadreInfo model,District model2 where model.locationId = model2.districtId and (model.locationId between 11 and 23) and model.locationType like '%District%' ");
+			str.append(" and model.type like '%Registered%' ");
+			str.append(" order by model2.districtName ");
 		}
 		else if(stateId != null && stateId.longValue() == 2L) //TS
 		{
-			str.append(" ,model2.name from TdpCadreInfo model,District model2 where model.locationId = model2.districtId and model.locationId between 1 and 10 and model.locationType like '%District%' ");
+			str.append(" ,model2.districtName from TdpCadreInfo model,District model2 where model.locationId = model2.districtId and (model.locationId between 1 and 10) and model.locationType like '%District%' ");
+			str.append(" order by model2.districtName ");
 		}
+		
 		
 		queryStr.append(str.toString());
 		
 		Query query = getSession().createQuery(queryStr.toString());
 
-		if(locationId != null && locationId.longValue() != 0L)
+		if(locationIdsList != null && locationIdsList.size() > 0)
 		{
-			query.setParameter("locationId", locationId);
+			query.setParameterList("locationIdsList", locationIdsList);
 		}
 				
 		return query.list();

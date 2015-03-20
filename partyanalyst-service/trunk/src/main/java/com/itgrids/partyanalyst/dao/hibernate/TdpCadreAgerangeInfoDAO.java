@@ -82,7 +82,7 @@ public class TdpCadreAgerangeInfoDAO extends GenericDaoHibernate<TdpCadreAgerang
 		}
 		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.TEHSIL))
 		{
-			queryStr.append(" and UA.tehsil_id  is not null group by UA.tehsil_id,TC.age_range_id order by UA.tehsil_id   ");
+			queryStr.append(" and UA.tehsil_id  is not null and UA.local_election_body  is null group by UA.tehsil_id,TC.age_range_id order by UA.tehsil_id   ");
 		}
 		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION))
 		{
