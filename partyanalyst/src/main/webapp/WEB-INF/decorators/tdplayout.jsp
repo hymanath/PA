@@ -77,7 +77,7 @@
 	</script>
 	<style>
 	.main-menu>li{
-		margin-left : 20px !important;
+		margin-left : 50px !important;
 	}
 .background
 {
@@ -182,7 +182,7 @@ margin-top:10px;
 
 
     </div>
-<div id="menu" class="span6" style="border-top:1px solid #fff;border-bottom:1px solid #fff;padding:5px;margin-bottom:5px;width:600px;margin-left:190px;">
+<div id="menu" class="span6" style="border-top:1px solid #fff;border-bottom:1px solid #fff;padding:5px;margin-bottom:5px;width:700px;margin-left:125px;">
       <ul class="menu main-menu">
         <li class="active"><a href="home.action"><span><i class="icon-home icon-black"></i></span></a></li>
 	
