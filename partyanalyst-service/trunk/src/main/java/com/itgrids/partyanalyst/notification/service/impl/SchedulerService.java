@@ -622,12 +622,31 @@ public class SchedulerService implements ISchedulerService{
 					
 					tdpCadreInfoDAO.deleteTdpCadreInfoTableBeforeUpdate();
 					
-					int effectedCount1 = tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Registered","Constituency");
-					int effectedCount2 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Registered","District");
-					int effectedCount3 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Printed","Constituency");
-					int effectedCount4 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Printed","District");
-					String totalCount  = String.valueOf(effectedCount1+effectedCount2+effectedCount3+effectedCount4);
-					Long effectedCount = Long.valueOf(totalCount);
+					
+					int effectedCount1 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Registered","District");
+					int effectedCount2 = tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Registered","Constituency");
+					int effectedCount3 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Registered","Tehsil");
+					int effectedCount4 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Registered","Localbody");
+					int effectedCount5 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Registered","Ward");
+					int effectedCount6 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Registered","Panchayat");
+					
+				
+					int effectedCount7 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Printed","District");
+					int effectedCount8 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Printed","Constituency");
+					//int effectedCount9 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Printed","Tehsil");
+					//int effectedCount10 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Printed","Localbody");
+					//int effectedCount11 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Printed","Ward");
+					//int effectedCount12 =  tdpCadreInfoDAO.updateTdpCadreInfoTableByScheduler("Printed","Panchayat");
+					
+					Long effectedCount = 0L;
+					
+					try {
+						String totalCount  = String.valueOf(effectedCount1+effectedCount2+effectedCount3+effectedCount4+effectedCount5+effectedCount6+effectedCount7+effectedCount8);						
+						effectedCount = Long.valueOf(totalCount);
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+					
 					return effectedCount;
 				}
 			});
