@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -91,5 +93,48 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		Query query = getSession().createSQLQuery(queryStr.toString());
 		int c = query.executeUpdate();
 		return c;
+	}
+	
+	public List<Object[]> getVoterCadreCasteDetailsBySearchCriteria(Long stateId,String locationType,Long locationId,Long casteStateId)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		//0locationId,1count
+		StringBuilder str  = new StringBuilder();
+		str.append(" select model.locationId,model.count ");
+		
+		if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+		{
+			str.append(" , model2.name from TdpCadreCasteInfo model, Constituency model2 where model.locationId = model2.constituencyId  and model.locationId = :locationId and model.locationType like '%Constituency%' ");
+		}
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.DISTRICT))
+		{
+			str.append(", model2.districtName from TdpCadreCasteInfo model, District model2 where model.locationId = model2.districtId and  model.locationId = :locationId and model.locationType like '%District%' ");
+		}
+		else if(stateId != null && stateId.longValue() == 0L) //AP & TS
+		{
+			str.append(" , model2.districtName from TdpCadreCasteInfo model, District model2 where model.locationId = model2.districtId  and model.locationId between 1 and 23 and model.locationType like '%District%' ");
+		}
+		else if(stateId != null && stateId.longValue() == 1L) //AP
+		{
+			str.append(" , model2.districtName from TdpCadreCasteInfo model, District model2 where model.locationId = model2.districtId  and model.locationId between 11 and 23 and model.locationType like '%District%' ");
+		}
+		else if(stateId != null && stateId.longValue() == 2L) //TS
+		{
+			str.append(" , model2.districtName from TdpCadreCasteInfo model, District model2 where model.locationId = model2.districtId  and model.locationId between 1 and 10 and model.locationType like '%District%' ");
+		}
+		
+		str.append(" and model.casteStateId =:casteStateId ");
+		
+		queryStr.append(str.toString());
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("casteStateId", casteStateId);
+		
+		if(locationId != null && locationId.longValue() != 0L)
+		{
+			query.setParameter("locationId", locationId);
+		}
+		
+		return query.list();
 	}
 }

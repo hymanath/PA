@@ -231,4 +231,42 @@ public class VoterAgeInfoDAO extends GenericDaoHibernate<VoterAgeInfo, Long> imp
 		
 		return query.list();
 	}
+	
+	 @SuppressWarnings("unchecked")
+		public List<Object[]> getVoterAgesInfoListByconstituencyExceptYouths(List<Long> districtList,String accessType, Long publicationDateId)
+		{
+			
+			   StringBuilder queryStr = new StringBuilder();
+			   queryStr.append(" select model.voterAgeRange.voterAgeRangeId,model.voterAgeRange.ageRange, sum(model.totalVoters), ");
+			   queryStr.append(" sum(model.maleVoters), sum(model.femaleVoters) from VoterAgeInfo model,Constituency model2 where ");	
+			   queryStr.append("  model.constituencyId = model2.constituencyId ");
+			   
+			   if(districtList != null && districtList.size()>0)
+			   {
+				   queryStr.append("  and model2.district.districtId in (:districtList)  ");
+			   }
+			   else  if(accessType != null && accessType.equalsIgnoreCase("AP"))
+			   {
+				   queryStr.append("  and model2.district.districtId between 11 and 23  ");
+			   }
+			   else  if(accessType != null && accessType.equalsIgnoreCase("TS"))
+			   {
+				   queryStr.append("  and model2.district.districtId between 1 and 10  ");
+			   }
+			   
+			   queryStr.append(" and model.voterReportLevel = 1  and model.publicationDate.publicationDateId = :publicationDateId  ");
+			   queryStr.append(" and model.voterAgeRange.voterAgeRangeId != 1 group by model.voterAgeRange.voterAgeRangeId ");
+			   queryStr.append(" order by model.voterAgeRange.voterAgeRangeId asc  ");
+			   
+			Query query = getSession().createQuery(queryStr.toString());
+			
+			 if(districtList != null && districtList.size()>0)
+			   {
+				 query.setParameterList("districtList", districtList);
+			   }
+			
+			query.setParameter("publicationDateId", publicationDateId);
+			
+			return query.list();
+		}
 }
