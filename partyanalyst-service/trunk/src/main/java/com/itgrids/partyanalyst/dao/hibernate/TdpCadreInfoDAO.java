@@ -118,4 +118,43 @@ public class TdpCadreInfoDAO extends GenericDaoHibernate<TdpCadreInfo, Long> imp
 		return (Long) query.uniqueResult();
 	}
 	
+	public List<Object[]> getVoterCadreDetailsBySearchCriteria(Long stateId, String locationType,Long locationId)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		//0locationId,1count
+		StringBuilder str  = new StringBuilder();
+		str.append(" select model.locationId,model.count  ");
+		
+		if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+		{
+			str.append(" ,model2.name from TdpCadreInfo model,Constituency model2 where model.locationId = model2.constituencyId and model.type = 'Registration' and model.locationId = :locationId and model.locationType like '%Constituency%' ");
+		}
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.DISTRICT))
+		{
+			str.append(" ,model2.name from TdpCadreInfo model,District model2 where model.locationId = model2.districtId and model.locationId = :locationId and model.locationType like '%District%' ");
+		}
+		else if(stateId != null && stateId.longValue() == 0L) //AP & TS
+		{
+			str.append(" ,model2.name from TdpCadreInfo model,District model2 where model.locationId = model2.districtId and model.locationId between 1 and 23 and model.locationType like '%District%' ");
+		}
+		else if(stateId != null && stateId.longValue() == 1L) //AP
+		{
+			str.append(" ,model2.name from TdpCadreInfo model,District model2 where model.locationId = model2.districtId and model.locationId between 11 and 23 and model.locationType like '%District%' ");
+		}
+		else if(stateId != null && stateId.longValue() == 2L) //TS
+		{
+			str.append(" ,model2.name from TdpCadreInfo model,District model2 where model.locationId = model2.districtId and model.locationId between 1 and 10 and model.locationType like '%District%' ");
+		}
+		
+		queryStr.append(str.toString());
+		
+		Query query = getSession().createQuery(queryStr.toString());
+
+		if(locationId != null && locationId.longValue() != 0L)
+		{
+			query.setParameter("locationId", locationId);
+		}
+				
+		return query.list();
+	}
 }

@@ -416,4 +416,5 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 			}
 
 
+			
 }

@@ -4573,4 +4573,79 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				query.setParameterList("constituencyIds", constituencyIds);
 			return (Long) query.uniqueResult();
 		}
+		
+		public List<Object[]> getVoterCadreCasteDetailsBySearchCriteria(Long stateId,String locationType,Long locationId,Long casteStateId,String nameStr)
+		{
+			StringBuilder str = new StringBuilder();
+
+			str.append(" select ");
+			if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			{
+				str.append(" constituency.constituencyId, count(*), constituency.name ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.DISTRICT))
+			{
+				str.append(" district.districtId, count(*), district.districtName ");
+			}
+			
+			str.append(" from TdpCadre model left join model.userAddress.panchayat panc ");
+			str.append(" left join model.userAddress.tehsil tehsil ");
+		    str.append(" left join model.userAddress.constituency constituency ");
+			str.append(" left join model.userAddress.localElectionBody localElectionBody ");
+			str.append(" left join model.userAddress.district district ");
+			str.append(" left join model.casteState casteState ");
+			str.append(" where  model.isDeleted = 'N' and model.enrollmentYear = '2014' ");
+			
+			if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			{
+				str.append(" and constituency.constituencyId =:locationId ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.DISTRICT))
+			{
+				str.append(" and district.districtId =:locationId ");
+			}
+			else if(stateId != null &&  stateId.longValue() ==0L) 	//AP & TS
+			{
+				str.append(" and (district.districtId between 1 and 23)  ");
+			}
+			else if(stateId != null &&  stateId.longValue() ==1L)	//AP
+			{
+				str.append(" and ( district.districtId between 11 and 23 ) ");
+			}
+			else if(stateId != null &&  stateId.longValue() ==2L)	//TS
+			{
+				str.append(" and ( district.districtId  between 1 and 10 ) ");
+			}
+			
+			if(casteStateId != null && casteStateId.longValue() != 0L)
+			{
+				str.append(" and casteState.casteStateId =:casteStateId");
+			}
+			if(nameStr != null && nameStr.trim().length() != 0L)
+			{
+				str.append("  and ( model.firstname like '%"+nameStr+"%' or model.lastname like '%"+nameStr+"%' ) ");
+			}
+			
+			if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			{
+				str.append(" group by constituency.constituencyId order by constituency.name ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.DISTRICT))
+			{
+				str.append(" group by district.districtId  order by district.districtName ");
+			}
+			
+			Query query = getSession().createQuery(str.toString());
+			
+			if(casteStateId != null && casteStateId.longValue() != 0L)
+			{
+				query.setParameter("casteStateId", casteStateId);
+			}			
+			if(locationId != null && locationId.longValue() != 0L)
+			{
+				query.setParameter("locationId", locationId);
+			}
+			
+			return query.list();
+		}
 }
