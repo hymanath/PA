@@ -9,6 +9,7 @@
  * http://www.codrops.com
  */
 ;( function( window ) {
+
 	
 	'use strict';
 
@@ -18,7 +19,9 @@
 		String.prototype.trim=function(){return this.replace(/^\s+|\s+$/g, '');};
 	}
 
+	
 	function NLForm( el ) {	
+
 		this.el = el;
 		this.overlay = this.el.querySelector( '.nl-overlay' );
 		this.fields = [];
@@ -48,6 +51,7 @@
 	}
 
 	function NLField( form, el, type, idx ) {
+
 		this.form = form;
 		this.elOriginal = el;
 		this.pos = idx;
@@ -104,6 +108,7 @@
 			this.getinput.setAttribute( 'type', 'text' );
 			this.getinput.setAttribute( 'placeholder', this.elOriginal.getAttribute( 'placeholder' ) );
 			this.getinput.setAttribute( 'class', selectionArr[position] );
+			
 			this.getinputWrapper = document.createElement( 'li' );
 			this.getinputWrapper.className = 'nl-ti-input';
 			this.inputsubmit = document.createElement( 'button' );

@@ -50,12 +50,12 @@
                         </select>
                         STATE
                         <br />IN  
-                        <input type="textarea"  value="" placeholder="Any"/>
+                        <input type="textarea"  value="" placeholder="ANY"/>
                         <!--<select class="districtCls">
                             <option value="0" selected>Any</option>                 
                         </select>-->
                         DISTRICT,IN 
-                       <input type="textarea"  value="" placeholder="Any"/>
+                       <input type="textarea"  value="" placeholder="ANY"/>
                         <!--<select class="constiCls">
                             <option value="0" selected>Any</option>                         
                         </select>-->
@@ -388,8 +388,11 @@
     <script src="js/cadreSearch/PageTransitions/js/pagetransitions.js" type="text/javascript"></script>
 	
 	<script>
+		var btnFlag = false ;
+		var btnFlag1 = false ;
 	var selectionArr = ["searchCls","stateCls","districtCls","constiCls","casteCls","nameCls"];
 	var selectionArr1 = ["searchDivCls","stateDivCls","districtDivCls","constiDivCls","casteDivCls","nameDivCls"];
+		var selectionArr2 = ["searchDivClsHidden","stateDivClsHidden","districtDivClsHidden","constiDivClsHidden","casteDivClsHidden","nameDivClsHidden"];
 	$(document).ready(function(){
 		var casteArr = new Array();
 		var casteDetailsArr = new Array();
@@ -421,25 +424,38 @@
 		var locationValue = $(this).attr('key');		
 		getDistrictsAndConstis("District",locationValue);					
 	});
-	
-	/*$('.districtDivCls').click(function(){
-		
-		alert($('.districtDivCls').hasClass('nl-field-open'));
-		if($('.districtDivCls').hasClass('nl-field-open'))	{
+
+	$('.districtDivCls').click(function(){	
+		if(!$('.districtDivCls').hasClass('nl-field-open'))	{	
+			if(btnFlag == true)
+			{
 			$('.districtDivCls').removeClass('nl-field-open');
 			$('.districtDivCls').open = false;	
-
-
-			
-			
-		}
-		else{
+			btnFlag = false;
+			}	
+			else
+			{
+			$('.districtDivCls').open = true;			
 			$('.districtDivCls').addClass('nl-field-open');	
-			$('.districtDivCls').open = true;
-		}
-		
-		});*/
+			}
+			}
+		});
 	
+	$('.constiDivCls').click(function(){	
+		if(!$('.constiDivCls').hasClass('nl-field-open'))	{	
+			if(btnFlag1 == true)
+			{
+			$('.constiDivCls').removeClass('nl-field-open');
+			$('.constiDivCls').open = false;	
+			btnFlag1 = false;
+			}	
+			else
+			{
+			$('.constiDivCls').open = true;			
+			$('.constiDivCls').addClass('nl-field-open');	
+			}
+			}
+		});
 	});
 	
 	
@@ -447,8 +463,10 @@
 	</script>
 	<script>
 	var districtArr;
+	var constiArr;
 	function getDistrictsAndConstis(type,locationValue){
-	alert(5);
+
+	
 	$('.districtCls').find('option').remove();
 	$('.districtCls').append('<option value="0"> ANY </option>');
 		var jObj = {
@@ -463,8 +481,8 @@
         }).done(function(result){
 			if(result != null){
 				if(type == 'District'){
-				districtArr = new Array();
-					$('.districtCls').remove();
+					districtArr = new Array();
+					//$('.districtCls').remove();
 					for(var i in result){
 						var obj = {
 						value :  result[i].id,
@@ -474,15 +492,24 @@
 					}
 					
 					var str='';
-					str+='<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" class="districtCls" onKeyup="districtsKeyUp();" /><button class="nl-field-go">Go</button>';
-					$(".districtCls").html(str);
-					
-					
-
-					
-					
-					
+					str+='<a class="nl-field-toggle">ANY</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" class="districtCls" onkeyup="districtsKeyUp();" /><button type="button" class="nl-field-go" onClick="getSelectedData();">Go</button>';
+					$(".districtDivCls").html(str);
+				}
+				else if(type == 'Constituency'){
+					constiArr = new Array();
+					//$('.districtCls').remove();
+					for(var i in result){
+						var obj = {
+						value :  result[i].id,
+						label :  result[i].name
+						}			
+						constiArr.push(obj);
 					}
+					
+					var str='';
+					str+='<a class="nl-field-toggle">ANY</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" class="constiCls" onkeyup="constiKeyUp();" /><button type="button" class="nl-field-go" onClick="getSelectedData1();">Go</button>';
+					$(".constiDivCls").html(str);
+				}
 					
 					
 			}
@@ -490,8 +517,9 @@
 		});
 	
 	}
-
+var districtSel = 0;
 	function districtsKeyUp(){
+
 		var source  = [ ];
 					var mapping = { };
 					for(var i = 0; i < districtArr.length; ++i) {
@@ -502,12 +530,67 @@
 						minLength: 1,
 						source: source,
 						select: function(event, ui) {
+							//$(".districtCls").attr('disabled', 'disabled');
+							districtSel = mapping[ui.item.value];
+							
+						}
+					});
+	}
+	function constiKeyUp(){
+
+		var source = [ ];
+					var mapping = { };
+					for(var i = 0; i < constiArr.length; ++i) {
+						source.push(constiArr[i].label);
+						mapping[constiArr[i].label] = constiArr[i].value;
+					}	
+					$('.constiCls').autocomplete({
+						minLength: 1,
+						source: source,
+						select: function(event, ui) {
 							//$('.tags_id').text(mapping[ui.item.value]);
 						}
 					});
 	}
 	
-
+	function getSelectedData(){
+	
+		btnFlag = true;
+		$('.districtDivCls').removeClass('nl-field-open');
+		$('.districtDivCls').open = false;		
+		var validVal = $(".districtCls").val();
+		if(!validVal == ""){	
+		var str ='<a class="nl-field-toggle">'+validVal+'</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" class="districtCls" onkeyup="districtsKeyUp();" /><button type="button" id="gobtn" class="nl-field-go" onClick="getSelectedData();">'+validVal+'</button>';
+		}else{
+		var str ='<a class="nl-field-toggle">ANY</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" class="districtCls" onkeyup="districtsKeyUp();" /><button type="button" id="gobtn" class="nl-field-go" onClick="getSelectedData();">ANY</button>';
+		
+		}
+		
+		$(".districtDivCls").html(str);
+		console.log(districtSel);
+		//console.log($('#districtHiddenVal').text());
+		getDistrictsAndConstis("Constituency",districtSel);
+		
+	}
+	
+	function getSelectedData1(){
+	
+		btnFlag1 = true;
+		$('.constiDivCls').removeClass('nl-field-open');
+		$('.constiDivCls').open = false;		
+		var validVal = $(".constiCls").val();
+		if(!validVal == ""){		
+		var str ='<a class="nl-field-toggle">'+validVal+'</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" class="constiCls" onkeyup="constiKeyUp();" /><button type="button" id="gobtn" class="nl-field-go" onClick="getSelectedData1();">'+validVal+'</button>';
+		}
+		else{	
+		var str ='<a class="nl-field-toggle">ANY</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" class="constiCls" onkeyup="constiKeyUp();" /><button type="button" id="gobtn" class="nl-field-go" onClick="getSelectedData1();">ANY</button>';
+		}
+		$(".constiDivCls").html(str);
+		
+		
+	}
+	
+	
 	new NLForm(document.getElementById( 'nl-form' ));
 	</script>
 </body>
