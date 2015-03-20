@@ -67,18 +67,19 @@
 		},
 		_createDropDown : function() {
 			var self = this;
+			position = self.pos;
 			this.fld = document.createElement( 'div' );
-			this.fld.className = 'nl-field nl-dd';
+			this.fld.className = 'nl-field nl-dd '+selectionArr1[position]+'';
 			this.toggle = document.createElement( 'a' );
 			this.toggle.innerHTML = this.elOriginal.options[ this.elOriginal.selectedIndex ].innerHTML;
 			this.toggle.className = 'nl-field-toggle';
 			this.optionsList = document.createElement( 'ul' );
 			var ihtml = '';
-			position = self.pos;
+			
 
 			Array.prototype.slice.call( this.elOriginal.querySelectorAll( 'option' ) ).forEach( function( el, i ) {
 
-				ihtml += self.elOriginal.selectedIndex === i ? '<li id="'+selectionArr[position]+'" key ="'+el.attributes.value.value+'" class="nl-dd-checked">' + el.innerHTML + '</li>' : '<li  id="'+selectionArr[position]+'" key ="'+el.attributes.value.value+'">' + el.innerHTML + '</li>';
+				ihtml += self.elOriginal.selectedIndex === i ? '<li  key ="'+el.attributes.value.value+'" class="nl-dd-checked '+selectionArr[position]+'">' + el.innerHTML + '</li>' : '<li key ="'+el.attributes.value.value+'" class="'+selectionArr[position]+'">' + el.innerHTML + '</li>';
 				// selected index value
 				if( self.elOriginal.selectedIndex === i ) {
 					self.selectedIdx = i;
@@ -90,10 +91,11 @@
 			this.elOriginal.parentNode.insertBefore( this.fld, this.elOriginal );
 			this.elOriginal.style.display = 'none';
 		},
-		_createInput : function() {
+		_createInput : function() {			
 			var self = this;
+			position = self.pos;
 			this.fld = document.createElement( 'div' );
-			this.fld.className = 'nl-field nl-ti-text';
+			this.fld.className = 'nl-field nl-ti-text '+selectionArr1[position]+'';
 			this.toggle = document.createElement( 'a' );
 			this.toggle.innerHTML = this.elOriginal.getAttribute( 'placeholder' );
 			this.toggle.className = 'nl-field-toggle';
@@ -101,6 +103,7 @@
 			this.getinput = document.createElement( 'input' );
 			this.getinput.setAttribute( 'type', 'text' );
 			this.getinput.setAttribute( 'placeholder', this.elOriginal.getAttribute( 'placeholder' ) );
+			this.getinput.setAttribute( 'class', selectionArr[position] );
 			this.getinputWrapper = document.createElement( 'li' );
 			this.getinputWrapper.className = 'nl-ti-input';
 			this.inputsubmit = document.createElement( 'button' );
