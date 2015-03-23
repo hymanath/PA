@@ -8,7 +8,7 @@
 	<meta charset="UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-	<title>Cadre Search</title>
+	<title>Cadre / Voter Search</title>
 	<meta name="description" content="Natural Language Form with custom text input and drop-down lists" />
 	<meta name="keywords" content="Natural Language UI, sentence form, text input, contenteditable, html5, css3, jquery" />
 	<meta name="author" content="Codrops" />
@@ -17,7 +17,7 @@
 	<link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
 	<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-	
+	<link rel="stylesheet" type="text/css" href="css/cadreRegistrationCSS/animate.css" >
 	
 	<link rel="stylesheet" type="text/css" href="js/cadreSearch/Naturallanguage/css/component.css" />
 	<link href="js/cadreSearch/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -25,14 +25,19 @@
 	<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css' />
 	<link href="js/cadreSearch/PageTransitions/css/animations.css" rel="stylesheet" type="text/css">
 	<link href="js/cadreSearch/PageTransitions/css/component.css" rel="stylesheet" type="text/css"> 
-
+<style>
+.nl-field ul li{line-height:55px!important;}
+.nl-field a:hover{text-decoration:none!important;}
+.nl-ti-input input[type="text"]{height:57px! important; width:324px! important;}
+#contenttable{min-height:450px;background:#e5e5e5 !important;}
+</style>
 </head>
 	<body class="search-body-bg">			
         <div class="container">
         <div class="well search-heading m_top10"><h2 class="text-center search-head">SEARCH A CADRE/VOTER</h2></div>
-        </div>
+        
 		<div id="pt-main" class="pt-perspective">
-        <div class="pt-page pt-page-1 container">
+        <div class="pt-page pt-page-1 container" style="left:-11px;">
             <div class="well search-content">
                 <div class="main clearfix text-center">
                      <form id="nl-form" class="nl-form">
@@ -68,11 +73,11 @@
                 </div>              
 			</div>
 		</div>
-		<div class="pt-page pt-page-3 container">  
+		<div class="pt-page pt-page-3 container"  style="left:-11px;">  
 		<div id="searchDetailsDiv">
         </div></div>
             
-		<div class="pt-page pt-page-4 container">
+		<div class="pt-page pt-page-4 container"  style="left:-11px;">
 		<div>
 		<ol class="breadcrumb search-breadcrumb">
 		  <span class="text-breadcrumb text-capitalize">your searching:</span>
@@ -87,7 +92,7 @@
 			</div>
 		</div>
 		</div></div>
-		<div class="pt-page pt-page-2 container">
+		<div class="pt-page pt-page-2 container"  style="left:-11px;">
 			<div class="search-results">
 		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 		  <div class="panel panel-default search-panel">
@@ -118,6 +123,7 @@
 		</div>
 		</div>
 	</div>   
+	</div>   
 	
 	<!--<script src="js/cadreSearch/js/jquery-1.11.2.min.js" type="text/javascript"></script>-->
 	<script src="js/cadreSearch/js/bootstrap.min.js" type="text/javascript"></script>
@@ -128,14 +134,7 @@
     <script src="js/cadreSearch/PageTransitions/js/pagetransitions.js" type="text/javascript"></script>
 	
 	<script>
-		<c:forEach var="caste" items="${casteDetails}">
-				var obj = {
-					value :  '${caste.id}',
-					label :  '${caste.name}'
-				}
-				casteDetailsArr.push( '${caste.name}');
-				casteArr.push(obj);
-		</c:forEach>
+		
 		
 	</script>
 	
@@ -145,9 +144,18 @@
 	var selectionArr = ["searchCls","stateCls","districtCls","constiCls","casteCls","nameCls"];
 	var selectionArr1 = ["searchDivCls","stateDivCls","districtDivCls","constiDivCls","casteDivCls","nameDivCls"];
 		var selectionArr2 = ["searchDivClsHidden","stateDivClsHidden","districtDivClsHidden","constiDivClsHidden","casteDivClsHidden","nameDivClsHidden"];
+	var	casteSel = 0;
 	$(document).ready(function(){
 		var casteArr = new Array();
 		var casteDetailsArr = new Array();
+		<c:forEach var="caste" items="${casteDetails}">
+				var obj = {
+					value :  '${caste.id}',
+					label :  '${caste.name}'
+				}
+				casteDetailsArr.push( '${caste.name}');
+				casteArr.push(obj);
+		</c:forEach>
 	var source  = [ ];
 	var mapping = { };
 	for(var i = 0; i < casteArr.length; ++i) {
@@ -158,7 +166,7 @@
 		minLength: 1,
 		source: source,
 		select: function(event, ui) {
-			//$('.tags_id').text(mapping[ui.item.value]);
+			casteSel  = mapping[ui.item.value];
 		}
 	});
 
@@ -268,6 +276,7 @@
 	
 	}
 var districtSel = 0;
+var constiSel =0;
 	function districtsKeyUp(){
 
 		var source  = [ ];
@@ -298,7 +307,7 @@ var districtSel = 0;
 						minLength: 1,
 						source: source,
 						select: function(event, ui) {
-							//$('.tags_id').text(mapping[ui.item.value]);
+							constiSel = mapping[ui.item.value];
 						}
 					});
 	}
@@ -347,12 +356,48 @@ var districtSel = 0;
 	
 	function searchResults()
 	{
-		var searchType = "Cadre";
-		var stateId = "2";
-		var locationType = "state";
-		var locationId = "0";
-		var casteStateId = "143";
-		var searchName = "";
+		var searchType = $(".searchDivCls a").text();
+		var searchTypeVal ="";
+		searchTypeVal = searchType;
+	$('#searchDetailsDiv').removeClass('animated fadeInRight');
+	$('#searchDetailsDiv').addClass('animated fadeInLeft');
+		var searchName = $(".nameDivCls a").text();
+		var searchNameVal ="";
+		if(searchName == 'ANY'){
+			searchNameVal = "";
+		}
+		else{
+			searchNameVal = searchName;
+		}
+		var casteStateId=casteSel;
+
+		var state= $(".stateDivCls a").text();
+		var stateId = 0;
+		if(state == 'ANY'){
+			stateId = 0;
+		}
+		else if(state == 'ANDHRA PRADESH'){
+			stateId = 1;
+		}
+		else if(state == 'TELANGANA'){
+			stateId = 2;
+		}
+
+		var locationId = "";
+		var locationType = "";
+		if(constiSel != 0 ){
+			locationType = "tehsil";
+			locationId = constiSel;
+		}
+		else if(districtSel != 0){
+			locationType = "constituency";
+			locationId = districtSel;
+		}
+		else {
+			locationType = "state";
+			locationId = districtSel;
+		}
+
 		var isFinal = "";
 		var nextLocationType = "";
 		if(locationType == 'state')
@@ -367,14 +412,15 @@ var districtSel = 0;
 		{
 			nextLocationType ="panchayat";
 		}
+
 		$('#searchDetailsDiv').html('');
 		var jObj = {
-			searchType:searchType,			
+			searchType:searchTypeVal,	
 			stateId:stateId,
 			locationId:locationId,
 			locationType:locationType,
 			casteStateId:casteStateId,
-			searchName:searchName,
+			searchName:searchNameVal,
 			isFinal:isFinal
 		}				
 		$.ajax({
@@ -395,8 +441,10 @@ var districtSel = 0;
 		
 	}
 	
-	function buildSearchResults(result,searchType,locationType,nextLocationType,stateId,casteStateId)
+	function buildSearchResults(myResult,searchType,locationType,nextLocationType,stateId,casteStateId)
 	{
+		var result = myResult[0].cadreSearchList;
+		
 		var str ='';
 		str+='<ol class="breadcrumb search-breadcrumb">';
         str+='          <span class="text-breadcrumb text-capitalize">Your Searching:</span>';
@@ -411,15 +459,15 @@ var districtSel = 0;
 				for(var i in result)
 				{
 					str+='<div class="constituency-box get-details '+locationType+'Id" >';
-					str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\');}"><h4 class="constituency-box-name get-details">'+result[i].constituency+'</h4></a>';
-					str+='<span class="pull-right"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',1,\''+locationType+'\');}">'+result[i].totalCount+'</a></span>';
-					str+='</div>';
-					
+					str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\');}" class="get-details"><h4 class="constituency-box-name get-details">'+result[i].constituency+'</h4></a>';
+					str+='<span class="pull-right"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',1,\''+locationType+'\');}"  class="get-details">'+result[i].totalCount+'</a></span>';
+					str+='</div>';					
 				}
 			}
-
 		$('#searchDetailsDiv').html(str);
-
+		$('#searchDetailsDiv').removeClass('animated fadeInLeft');
+		$('#searchDetailsDiv').addClass('animated fadeInRight');
+		
 	}
 	
 	function getDetailsForSelection(locationId,locationType,stateId,searchType,casteStateId,isFinalValue,getDetailsAreaType)
@@ -444,7 +492,7 @@ var districtSel = 0;
 		{
 			nextLocationType ="panchayat";
 		}
-		$('#searchDetailsDiv').html('');
+		//$('#searchDetailsDiv').html('');
 		var jObj = {
 			searchType:searchType,			
 			stateId:stateId,
@@ -480,7 +528,38 @@ var districtSel = 0;
 	
 	function buildSearchCandidateDetails(result)
 	{
+		var str='';
+		str+='<div class="panel panel-default search-panel">';
+		str+='<div class="panel-heading search-panel-heading" role="tab" id="headingOne">';
+		str+='<h4 class="panel-title">';
+		str+='<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">';
+		str+='<h3 style="display:inline-block;margin:5px;">'+result[0].casteName+'</h3>';
+		str+='<h5 style="display:inline-block;margin:10px;">  Total : '+result.length+'</h5>';
+		str+='<span><i class="glyphicon glyphicon-chevron-up pull-right" style="color:#E5E5E5"></i></span>';
+		str+='<span><i class="glyphicon glyphicon-search pull-right" style="color:#E5E5E5"></i></span>';
+		str+='</a>';
+		str+='</h4>';
+		str+='</div>';
+		str+='<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">';
+		str+='<div class="panel-body">';
+		str+='<table class="table table-custom">';
+		for(var i in result)
+		{
+			str+='<tr>';
+			str+='<td width="5%"><img class="profile-border" src="http://www.mytdp.com/images/cadre_images/'+result[i].imageURL+'" alt="" style="width: 40px;height: 50px"></img></td>';
+			str+='<td width="15%"><h4>'+result[i].cadreName+'</h4></td>';
+			str+='<td width="15%"><h4>'+result[i].relativeName+'</h4></td>';
+			str+='<td width="15%"><h4>'+result[i].mobileNo+'</h4></td>';
+			str+='<td width="15%"><h4>'+result[i].panchayat+'</h4></td>';
+			str+='<td width="15%"><h4>'+result[i].tehsil+' </h4></td>';
+			str+='</tr>';	
+		}	
+		str+='</table>';
+		str+='</div>';
+		str+='</div>';
+		str+='</div>';
 		
+			$('#searchDetailsDiv').html(str);
 	}
 	</script>
 </body>
