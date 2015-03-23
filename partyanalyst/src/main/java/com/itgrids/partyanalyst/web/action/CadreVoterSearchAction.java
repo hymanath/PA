@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.service.ICadreVoterSearchService;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.opensymphony.xwork2.Action;
@@ -28,8 +30,15 @@ public class CadreVoterSearchAction extends ActionSupport implements ServletRequ
 	private List<CadreAddressVO> resultList;
 	private IMahaNaduService mahaNaduService;
 	private ICadreVoterSearchService cadreVoterSearchService;
-
+	private List<TdpCadreVO> tdpCadreVOList = new ArrayList<TdpCadreVO>();
 	
+	
+	public List<TdpCadreVO> getTdpCadreVOList() {
+		return tdpCadreVOList;
+	}
+	public void setTdpCadreVOList(List<TdpCadreVO> tdpCadreVOList) {
+		this.tdpCadreVOList = tdpCadreVOList;
+	}
 	public ICadreVoterSearchService getCadreVoterSearchService() {
 		return cadreVoterSearchService;
 	}
@@ -110,4 +119,29 @@ public String execute(){
 		
 	}
 	
+	public String getCadreVoterDetailsByLocation(){
+		LOG.info("Entered into getCadreVoterDetailsByLocation method");
+		//HttpSession session = request.getSession();
+		//RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		
+		try {		
+					jobj = new JSONObject(getTask());
+					
+					String searchType 	= jobj.getString("searchType");
+					Long stateId		= jobj.getLong("stateId");
+					Long locationId 	= jobj.getLong("locationId");
+					String locationType = jobj.getString("locationType");
+					Long casteStateId 	= jobj.getLong("casteStateId");
+					String searchName 	= jobj.getString("searchName");
+					String isFinal 		= jobj.getString("isFinal");
+					
+					tdpCadreVOList = cadreVoterSearchService.getCadreVoterDetailsBySearchCriteria(searchType,stateId,locationType,locationId,casteStateId,searchName,isFinal);					
+		}
+		catch(Exception e){
+			LOG.error("Exception raised in getExistingCadreInfoForCommittee method in CadreRegistrationAction action", e);
+		}
+		return Action.SUCCESS;
+		
+		
+	}
 }
