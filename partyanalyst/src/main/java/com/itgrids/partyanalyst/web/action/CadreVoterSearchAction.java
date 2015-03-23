@@ -11,9 +11,11 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
+import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
+import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreVoterSearchService;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.opensymphony.xwork2.Action;
@@ -27,11 +29,22 @@ public class CadreVoterSearchAction extends ActionSupport implements ServletRequ
 	private String task;
 	private JSONObject jobj;
 	private List<SelectOptionVO> casteDetails;
-	private List<CadreAddressVO> resultList;
+	private List<LocationWiseBoothDetailsVO> resultList;
 	private IMahaNaduService mahaNaduService;
 	private ICadreVoterSearchService cadreVoterSearchService;
 	private List<TdpCadreVO> tdpCadreVOList = new ArrayList<TdpCadreVO>();
+	private ICadreCommitteeService cadreCommitteeService;
 	
+	
+	public ICadreCommitteeService getCadreCommitteeService() {
+		return cadreCommitteeService;
+	}
+
+	public void setCadreCommitteeService(
+			ICadreCommitteeService cadreCommitteeService) {
+		this.cadreCommitteeService = cadreCommitteeService;
+	}
+
 	
 	public List<TdpCadreVO> getTdpCadreVOList() {
 		return tdpCadreVOList;
@@ -52,10 +65,11 @@ public class CadreVoterSearchAction extends ActionSupport implements ServletRequ
 	public void setMahaNaduService(IMahaNaduService mahaNaduService) {
 		this.mahaNaduService = mahaNaduService;
 	}
-	public List<CadreAddressVO> getResultList() {
+	
+	public List<LocationWiseBoothDetailsVO> getResultList() {
 		return resultList;
 	}
-	public void setResultList(List<CadreAddressVO> resultList) {
+	public void setResultList(List<LocationWiseBoothDetailsVO> resultList) {
 		this.resultList = resultList;
 	}
 	public List<SelectOptionVO> getCasteDetails() {
@@ -109,7 +123,14 @@ public String execute(){
 		try {		
 			jobj = new JSONObject(request.getParameter("task"));
 			String type=jobj.getString("type");
-			resultList = cadreVoterSearchService.getAllDistrictsAndConstis(type,jobj.getLong("id"));
+			if(type.equalsIgnoreCase("mandal")){
+				resultList = cadreCommitteeService.getMandalsByConstituency(jobj.getLong("id"));	
+			}else if(type.equalsIgnoreCase("panchayat")){			
+				resultList = cadreCommitteeService.getPanchayatWardByMandalId(Long.toString(jobj.getLong("id")));	
+			}
+			else{
+				resultList = cadreVoterSearchService.getAllDistrictsAndConstis(type,jobj.getLong("id"));
+			}
 		}
 		catch(Exception e){
 			LOG.error("Exception raised in getDistrictsAndConstituencies method", e);

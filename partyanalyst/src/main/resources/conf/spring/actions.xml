@@ -1563,6 +1563,7 @@
 	<bean id="cadreVoterSearchAction" class="com.itgrids.partyanalyst.web.action.CadreVoterSearchAction" singleton="false">
 		<property name="mahaNaduService" ref="mahaNaduService" />
 		<property name="cadreVoterSearchService" ref="cadreVoterSearchService" />
+		<property name="cadreCommitteeService" ref="cadreCommitteeService" />
 		
 	</bean>
 	
