@@ -51,99 +51,25 @@
                         STATE
                         <br />IN  
                         <input type="textarea"  value="" placeholder="ANY"/>
-                        <!--<select class="districtCls">
-                            <option value="0" selected>Any</option>                 
-                        </select>-->
                         DISTRICT,IN 
                        <input type="textarea"  value="" placeholder="ANY"/>
-                        <!--<select class="constiCls">
-                            <option value="0" selected>Any</option>                         
-                        </select>-->
                         CONSTITUENCY.<br/>
-                        WITH
-                     <!--  
-						<select class="casteCls">
-                            <option value="0" selected>ANY</option>
-                            <option value="1">Kamma</option>
-                            <option value="2">Mudhiraj</option>
-                        </select>
-						-->
-						<input type="textarea"  value="" placeholder="ANY"/>
-						  
+                        WITH                    
+						<input type="textarea"  value="" placeholder="ANY"/>						  
                         CASTE AND 
                         <input  type="text"  value="" placeholder="ANY"/>
                         NAME.
                         <br/>                        
                     </form>
-                    <button class="btn btn-success get-details m_top10">
+                    <button class="btn btn-success get-details m_top10" onclick="searchResults();">
 						<i class="glyphicon glyphicon-arrow-right"></i>&nbsp;&nbsp;Get Details
                     </button>
 					<div class="nl-overlay"></div>
                 </div>              
 			</div>
 		</div>
-		<div class="pt-page pt-page-3 container">    <div>
-            <ol class="breadcrumb search-breadcrumb">
-                  <span class="text-breadcrumb text-capitalize">your searching:</span>
-                  <li><a href="#" class="text-breadcrumb">Cadre</a></li>
-                  <li><a href="#" class="text-breadcrumb">Andhra Pradesh</a></li>
-                  <li><a href="#" class="text-breadcrumb">Nellore</a></li>
-                  <li class="active">Kavali</li>
-            </ol>
-            <div>
-				<div class="constituency-box get-details">
-					<h4 class="district-box-name get-details">KAVALI</h4>
-					<span class="pull-right">500</span>
-				</div>
-				<div class="constituency-box get-details">
-					<h4 class="district-box-name">KAVALI</h4>
-					<span class="pull-right">1020</span>
-				</div>
-				<div class="constituency-box get-details">
-					<h4 class="district-box-name">KAVALI</h4>
-					<span class="pull-right">5120</span>
-				</div>
-				<div class="constituency-box get-details">
-					<h4 class="district-box-name">GUNTUR</h4>
-					<span class="pull-right">4120</span>
-				</div>
-				<div class="constituency-box get-details">
-					<h4 class="district-box-name">KADAPA</h4>
-					<span class="pull-right">1200</span>
-				</div>
-				<div class="constituency-box get-details">
-					<h4 class="district-box-name">KRISHNA</h4>
-					<span class="pull-right">4100</span>
-				</div>
-				<div class="constituency-box get-details">
-					<h4 class="district-box-name">KURNOOL</h4>
-					<span class="pull-right">4110</span>
-				</div>
-				<div class="constituency-box get-details">
-					<h4 class="district-box-name">PRAKASHAM</h4>
-					<span class="pull-right">1620</span>
-				</div>
-				<div class="constituency-box get-details">
-					<h4 class="district-box-name">NELLORE</h4>
-					<span class="pull-right">5214</span>
-				</div>
-				<div class="constituency-box get-details">
-					<h4 class="district-box-name">SRIKAKULAM</h4>
-					<span class="pull-right">1254</span>
-				</div>
-				<div class="constituency-box get-details">
-					<h4 class="district-box-name">VISAKAPATNAM</h4>
-					<span class="pull-right">1244</span>
-				</div>
-				<div class="constituency-box get-details">
-					<h4 class="district-box-name">VIZIANAGARAM</h4>
-					<span class="pull-right">2041</span>
-				</div>
-				<div class="constituency-box get-details">
-					<h4 class="district-box-name">WEST GODAVARI</h4>
-					<span class="pull-right">3201</span>
-				</div>
-            </div>
+		<div class="pt-page pt-page-3 container">  
+		<div id="searchDetailsDiv">
         </div></div>
             
 		<div class="pt-page pt-page-4 container">
@@ -154,55 +80,7 @@
 		  <li><a href="#" class="text-breadcrumb">Andhra Pradesh</a></li>
 		  <li class="active">District</li>
 		</ol>
-		<div>
-			<div class="district-box  get-details">
-				<h4 class="district-box-name">ANANTHAPUR</h4>
-				<span class="pull-right">500</span>
-			</div>
-			<div class="district-box  get-details">
-				<h4 class="district-box-name">CHITTOOR</h4>
-				<span class="pull-right">1020</span>
-			</div>
-			<div class="district-box  get-details">
-				<h4 class="district-box-name">EASTGODAVARI</h4>
-				<span class="pull-right">5120</span>
-			</div>
-			<div class="district-box  get-details">
-				<h4 class="district-box-name">GUNTUR</h4>
-				<span class="pull-right">4120</span>
-			</div>
-			<div class="district-box  get-details">
-				<h4 class="district-box-name">KADAPA</h4>
-				<span class="pull-right">1200</span>
-			</div>
-			<div class="district-box  get-details">
-				<h4 class="district-box-name">KRISHNA</h4>
-				<span class="pull-right">4100</span>
-			</div>
-			<div class="district-box  get-details">
-				<h4 class="district-box-name">KURNOOL</h4>
-				<span class="pull-right">4110</span>
-			</div>
-			<div class="district-box  get-details">
-				<h4 class="district-box-name">PRAKASHAM</h4>
-				<span class="pull-right">1620</span>
-			</div>
-			<div class="district-box  get-details">
-				<h4 class="district-box-name">NELLORE</h4>
-				<span class="pull-right">5214</span>
-			</div>
-			<div class="district-box  get-details">
-				<h4 class="district-box-name">SRIKAKULAM</h4>
-				<span class="pull-right">1254</span>
-			</div>
-			<div class="district-box  get-details">
-				<h4 class="district-box-name">VISAKAPATNAM</h4>
-				<span class="pull-right">1244</span>
-			</div>
-			<div class="district-box  get-details">
-				<h4 class="district-box-name">VIZIANAGARAM</h4>
-				<span class="pull-right">2041</span>
-			</div>
+		<div>			
 			<div class="district-box  get-details">
 				<h4 class="district-box-name">WEST GODAVARI</h4>
 				<span class="pull-right">3201</span>
@@ -212,115 +90,6 @@
 		<div class="pt-page pt-page-2 container">
 			<div class="search-results">
 		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-		  <div class="panel panel-default search-panel">
-			<div class="panel-heading search-panel-heading" role="tab" id="headingOne">
-			  <h4 class="panel-title">
-				<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-				  <h3 style="display:inline-block;margin:0px;">CASTE NAME_1</h3>
-				  <h5 style="display:inline-block;margin:0px;"> [MEMBERS 200]</h5>
-				  <span><i class="glyphicon glyphicon-chevron-up pull-right" style="color:#E5E5E5"></i></span>
-				  <span><i class="glyphicon glyphicon-search pull-right" style="color:#E5E5E5"></i></span>
-				</a>
-			  </h4>
-			</div>
-			<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-			  <div class="panel-body">
-					<table class="table table-custom">
-						<tr>
-							<td width="5%"><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
-							<td width="15%"><h4>Name Of the member</h4></td>
-							<td width="15%"><h4>Guardian Name</h4></td>
-							<td width="15%"><h4>+91 9632580147</h4></td>
-						</tr>
-						<tr>
-							<td><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
-							<td><h4>Name Of the member</h4></td>
-							<td><h4>Guardian Name</h4></td>
-							<td><h4>+91 9632580147</h4></td>
-						</tr>
-						<tr>
-							<td><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
-							<td><h4>Name Of the member</h4></td>
-							<td><h4>Guardian Name</h4></td>
-							<td><h4>+91 9632580147</h4></td>
-						</tr>
-						<tr>
-							<td><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
-							<td><h4>Name Of the member</h4></td>
-							<td><h4>Guardian Name</h4></td>
-							<td><h4>+91 9632580147</h4></td>
-						</tr>
-						<tr>
-							<td><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
-							<td><h4>Name Of the member</h4></td>
-							<td><h4>Guardian Name</h4></td>
-							<td><h4>+91 9632580147</h4></td>
-						</tr>
-						<tr>
-							<td><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
-							<td><h4>Name Of the member</h4></td>
-							<td><h4>Guardian Name</h4></td>
-							<td><h4>+91 9632580147</h4></td>
-						</tr>
-					</table>
-			  </div>
-			</div>
-		  </div>
-		  <div class="panel panel-default search-panel">
-			<div class="panel-heading search-panel-heading" role="tab" id="headingTwo">
-			  <h4 class="panel-title">
-				<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-				 <h3 style="display:inline-block;margin:0px;">CASTE NAME_2</h3>
-				  <h5 style="display:inline-block;margin:0px;"> [MEMBERS 2100]</h5>
-				  <span><i class="glyphicon glyphicon-chevron-up pull-right" style="color:#E5E5E5"></i></span>
-				  <span><i class="glyphicon glyphicon-search pull-right" style="color:#E5E5E5"></i></span>
-				</a>
-			  </h4>
-			</div>
-			<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-			  <div class="panel-body">
-			   <table class="table table-custom">
-						<tr>
-							<td width="5%"><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
-							<td width="15%"><h4>Name Of the member</h4></td>
-							<td width="15%"><h4>Guardian Name</h4></td>
-							<td width="15%"><h4>+91 9632580147</h4></td>
-						</tr>
-						<tr>
-							<td><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
-							<td><h4>Name Of the member</h4></td>
-							<td><h4>Guardian Name</h4></td>
-							<td><h4>+91 9632580147</h4></td>
-						</tr>
-						<tr>
-							<td><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
-							<td><h4>Name Of the member</h4></td>
-							<td><h4>Guardian Name</h4></td>
-
-							<td><h4>+91 9632580147</h4></td>
-						</tr>
-						<tr>
-							<td><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
-							<td><h4>Name Of the member</h4></td>
-							<td><h4>Guardian Name</h4></td>
-							<td><h4>+91 9632580147</h4></td>
-						</tr>
-						<tr>
-							<td><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
-							<td><h4>Name Of the member</h4></td>
-							<td><h4>Guardian Name</h4></td>
-							<td><h4>+91 9632580147</h4></td>
-						</tr>
-						<tr>
-							<td><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
-							<td><h4>Name Of the member</h4></td>
-							<td><h4>Guardian Name</h4></td>
-							<td><h4>+91 9632580147</h4></td>
-						</tr>
-					</table>
-			  </div>
-			</div>
-		  </div>
 		  <div class="panel panel-default search-panel">
 			<div class="panel-heading search-panel-heading" role="tab" id="headingThree">
 			  <h4 class="panel-title">
@@ -341,42 +110,13 @@
 							<td width="15%"><h4>Guardian Name</h4></td>
 							<td width="15%"><h4>+91 9632580147</h4></td>
 						</tr>
-						<tr>
-							<td><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
-							<td><h4>Name Of the member</h4></td>
-							<td><h4>Guardian Name</h4></td>
-							<td><h4>+91 9632580147</h4></td>
-						</tr>
-						<tr>
-							<td><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
-							<td><h4>Name Of the member</h4></td>
-							<td><h4>Guardian Name</h4></td>
-							<td><h4>+91 9632580147</h4></td>
-						</tr>
-						<tr>
-							<td><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
-							<td><h4>Name Of the member</h4></td>
-							<td><h4>Guardian Name</h4></td>
-							<td><h4>+91 9632580147</h4></td>
-						</tr>
-						<tr>
-							<td><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
-							<td><h4>Name Of the member</h4></td>
-							<td><h4>Guardian Name</h4></td>
-							<td><h4>+91 9632580147</h4></td>
-						</tr>
-						<tr>
-							<td><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
-							<td><h4>Name Of the member</h4></td>
-							<td><h4>Guardian Name</h4></td>
-							<td><h4>+91 9632580147</h4></td>
-						</tr>
 					</table>
 			  </div>
 			</div>
 		  </div>	
 		</div>
-		</div></div>
+		</div>
+		</div>
 	</div>   
 	
 	<!--<script src="js/cadreSearch/js/jquery-1.11.2.min.js" type="text/javascript"></script>-->
@@ -388,14 +128,6 @@
     <script src="js/cadreSearch/PageTransitions/js/pagetransitions.js" type="text/javascript"></script>
 	
 	<script>
-		var btnFlag = false ;
-		var btnFlag1 = false ;
-	var selectionArr = ["searchCls","stateCls","districtCls","constiCls","casteCls","nameCls"];
-	var selectionArr1 = ["searchDivCls","stateDivCls","districtDivCls","constiDivCls","casteDivCls","nameDivCls"];
-		var selectionArr2 = ["searchDivClsHidden","stateDivClsHidden","districtDivClsHidden","constiDivClsHidden","casteDivClsHidden","nameDivClsHidden"];
-	$(document).ready(function(){
-		var casteArr = new Array();
-		var casteDetailsArr = new Array();
 		<c:forEach var="caste" items="${casteDetails}">
 				var obj = {
 					value :  '${caste.id}',
@@ -405,7 +137,17 @@
 				casteArr.push(obj);
 		</c:forEach>
 		
+	</script>
 	
+	<script>
+		var btnFlag = false ;
+		var btnFlag1 = false ;
+	var selectionArr = ["searchCls","stateCls","districtCls","constiCls","casteCls","nameCls"];
+	var selectionArr1 = ["searchDivCls","stateDivCls","districtDivCls","constiDivCls","casteDivCls","nameDivCls"];
+		var selectionArr2 = ["searchDivClsHidden","stateDivClsHidden","districtDivClsHidden","constiDivClsHidden","casteDivClsHidden","nameDivClsHidden"];
+	$(document).ready(function(){
+		var casteArr = new Array();
+		var casteDetailsArr = new Array();
 	var source  = [ ];
 	var mapping = { };
 	for(var i = 0; i < casteArr.length; ++i) {
@@ -456,6 +198,14 @@
 			}
 			}
 		});
+		
+		//1111
+		
+		$('#stateId').click(function(){
+			
+			console.log(123);
+		});
+		
 	});
 	
 	
@@ -592,6 +342,146 @@ var districtSel = 0;
 	
 	
 	new NLForm(document.getElementById( 'nl-form' ));
+	
+	
+	
+	function searchResults()
+	{
+		var searchType = "Cadre";
+		var stateId = "2";
+		var locationType = "state";
+		var locationId = "0";
+		var casteStateId = "143";
+		var searchName = "";
+		var isFinal = "";
+		var nextLocationType = "";
+		if(locationType == 'state')
+		{
+			nextLocationType ="constituency";
+		}
+		else if(locationType == 'constituency')
+		{
+			nextLocationType ="tehsil";
+		}
+		else if(locationType == 'tehsil')
+		{
+			nextLocationType ="panchayat";
+		}
+		$('#searchDetailsDiv').html('');
+		var jObj = {
+			searchType:searchType,			
+			stateId:stateId,
+			locationId:locationId,
+			locationType:locationType,
+			casteStateId:casteStateId,
+			searchName:searchName,
+			isFinal:isFinal
+		}				
+		$.ajax({
+          type:'GET',
+          url: 'getCadreVoterDetailsBySearchAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			//console.log(result);
+			if(result != null)
+			{
+				buildSearchResults(result,searchType,locationType,nextLocationType,stateId,casteStateId);
+			}
+			else{
+				//$('#searchDetailsDiv').html('No Data Available...');
+					$('#searchDetailsDiv').html(' <button class="btn btn-success get-details m_top10" onclick="searchResults();">						<i class="glyphicon glyphicon-arrow-right"></i>&nbsp;&nbsp;Get Details</button>');
+			}
+		});
+		
+	}
+	
+	function buildSearchResults(result,searchType,locationType,nextLocationType,stateId,casteStateId)
+	{
+		var str ='';
+		str+='<ol class="breadcrumb search-breadcrumb">';
+        str+='          <span class="text-breadcrumb text-capitalize">Your Searching:</span>';
+        str+='          <li><a href="#" class="text-breadcrumb">'+searchType+'</a></li>';
+         str+='         <li><a href="#" class="text-breadcrumb">Andhra Pradesh</a></li>';
+         //str+='         <li><a href="#" class="text-breadcrumb">Nellore</a></li>';
+        str+='  <li class="active">'+locationType+'</li>';
+         str+='   </ol>';
+			
+			if(result.length>0)
+			{
+				for(var i in result)
+				{
+					str+='<div class="constituency-box get-details '+locationType+'Id" >';
+					str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\');}"><h4 class="constituency-box-name get-details">'+result[i].constituency+'</h4></a>';
+					str+='<span class="pull-right"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',1,\''+locationType+'\');}">'+result[i].totalCount+'</a></span>';
+					str+='</div>';
+					
+				}
+			}
+
+		$('#searchDetailsDiv').html(str);
+
+	}
+	
+	function getDetailsForSelection(locationId,locationType,stateId,searchType,casteStateId,isFinalValue,getDetailsAreaType)
+	{		
+		var searchName = "";
+		var isFinal = "";
+		if(isFinalValue != 0)
+		{
+			isFinal = "Yes";
+			locationType = getDetailsAreaType;
+		}
+		var nextLocationType = "";
+		if(locationType == 'state')
+		{
+			nextLocationType ="constituency";
+		}
+		else if(locationType == 'constituency')
+		{
+			nextLocationType ="tehsil";
+		}
+		else if(locationType == 'tehsil')
+		{
+			nextLocationType ="panchayat";
+		}
+		$('#searchDetailsDiv').html('');
+		var jObj = {
+			searchType:searchType,			
+			stateId:stateId,
+			locationId:locationId,
+			locationType:locationType,
+			casteStateId:casteStateId,
+			searchName:searchName,
+			isFinal:isFinal
+		}				
+		$.ajax({
+          type:'GET',
+          url: 'getCadreVoterDetailsBySearchAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			//console.log(result);
+			if(result != null)
+			{
+				if(isFinalValue != 0)
+				{
+					buildSearchCandidateDetails(result);
+				}
+				else{
+					buildSearchResults(result,searchType,locationType,nextLocationType,stateId,casteStateId);
+				}
+				
+			}
+			else{
+				$('#searchDetailsDiv').html(' <button class="btn btn-success get-details m_top10" onclick="searchResults();">						<i class="glyphicon glyphicon-arrow-right"></i>&nbsp;&nbsp;Get Details</button>');
+			}
+		});
+		
+	}
+	
+	function buildSearchCandidateDetails(result)
+	{
+		
+	}
 	</script>
 </body>
 </html>
