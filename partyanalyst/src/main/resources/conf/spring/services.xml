@@ -2563,7 +2563,13 @@
 	
 	<bean name="cadreVoterSearchService"  class="com.itgrids.partyanalyst.service.impl.CadreVoterSearchService">
 	<property name="districtDAO" ref="districtDAO" />
+	<property name="tdpCadreDAO" ref="tdpCadreDAO" />	
+	<property name="tdpCadreInfoDAO" ref="tdpCadreInfoDAO" />	
+	<property name="tdpCadreCasteInfoDAO" ref="tdpCadreCasteInfoDAO" />	
+	<property name="cadreDetailsService" ref="cadreDetailsService" />	
 	<property name="constituencyDAO" ref="constituencyDAO" />	
+	<property name="tehsilDAO" ref="tehsilDAO" />	
+	<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />	
 	</bean>
 </beans>		
 	
