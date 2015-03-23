@@ -610,7 +610,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
                   }
 
                   var optionSet1 = {
-                    startDate: moment().subtract(29, 'days'),
+                    startDate: '02/02/2015',
                     endDate: moment(),
                     minDate: '01/01/2012',
                     maxDate: '12/31/2015',
@@ -660,7 +660,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
                     }
                   };
 
-                  $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+                  $('#reportrange span').html("February 02, 2015" + ' - ' + moment().format('MMMM D, YYYY'));
 
                   $('#reportrange').daterangepicker(optionSet1, cb);
 
