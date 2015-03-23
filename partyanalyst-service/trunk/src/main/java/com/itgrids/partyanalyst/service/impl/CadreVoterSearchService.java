@@ -12,10 +12,11 @@ import com.itgrids.partyanalyst.dao.ITdpCadreCasteInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreInfoDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
-import com.itgrids.partyanalyst.dto.CadreAddressVO;
+import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
+import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreVoterSearchService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -33,8 +34,6 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 	private IConstituencyDAO constituencyDAO;
 	private ITehsilDAO tehsilDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
-	
-	
 	
 	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
 		this.tehsilDAO = tehsilDAO;
@@ -77,21 +76,23 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 	}
 
 
-	public List<CadreAddressVO> getAllDistrictsAndConstis(String type,Long id){	
+	public List<LocationWiseBoothDetailsVO> getAllDistrictsAndConstis(String type,Long id){	
 		 
-		List<CadreAddressVO> returnList = new ArrayList<CadreAddressVO>();
+		List<LocationWiseBoothDetailsVO> returnList = new ArrayList<LocationWiseBoothDetailsVO>();
 		try {
 			List<Object[]> list = new ArrayList<Object[]>();
-			if(type.equalsIgnoreCase(IConstants.DISTRICT))
+			if(type.equalsIgnoreCase(IConstants.DISTRICT)){
 				 list = districtDAO.getDistrictIdAndNameByStateForStateTypeId(1l, id);
-			else
+			}
+			else{
 				 list = constituencyDAO.getDistrictConstituencies(id);	
-			
+			}
+						
 			if(list!=null && list.size()>0){
 				for(Object[] obj:list){
-					CadreAddressVO vo = new CadreAddressVO();
-					vo.setId(Long.valueOf(obj[0].toString()));
-					vo.setName(obj[1].toString());				
+					LocationWiseBoothDetailsVO vo = new LocationWiseBoothDetailsVO();
+					vo.setLocationId(Long.valueOf(obj[0].toString()));
+					vo.setLocationName(obj[1].toString());				
 					returnList.add(vo);
 				}
 			}
