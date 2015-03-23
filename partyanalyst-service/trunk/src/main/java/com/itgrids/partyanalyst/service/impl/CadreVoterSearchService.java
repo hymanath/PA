@@ -7,11 +7,15 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCasteInfoDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreInfoDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
+import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreVoterSearchService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -25,15 +29,25 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 	private ITdpCadreInfoDAO tdpCadreInfoDAO;
 	private ITdpCadreCasteInfoDAO tdpCadreCasteInfoDAO;
 	private ICadreDetailsService cadreDetailsService;
+	private IDistrictDAO districtDAO;
+	private IConstituencyDAO constituencyDAO;
+	private ITehsilDAO tehsilDAO;
+	private ILocalElectionBodyDAO localElectionBodyDAO;
 	
+	
+	
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+
 	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
 		this.cadreDetailsService = cadreDetailsService;
 	}
 	
-	private IDistrictDAO districtDAO;
-	private IConstituencyDAO constituencyDAO;
-
-
 	public IDistrictDAO getDistrictDAO() {
 		return districtDAO;
 	}
@@ -89,9 +103,49 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 	
 	public List<TdpCadreVO> getCadreVoterDetailsBySearchCriteria(String searchType,Long stateId, String locationType,Long locationId,Long casteStateId, String nameStr,String isFinal)
 	{
-		List<TdpCadreVO> returnList = null;
+		List<TdpCadreVO> returnList =  new ArrayList<TdpCadreVO>();
 		try {
 			List<Object[]> tdpCadreDetails = null;
+			List<Object[]> wardOrMuncipalityList = null;
+			List<Long> muncipalityORCorprationIdsList = new ArrayList<Long>();
+			String areaType = null;
+
+			List<Long> locationIdsList = new ArrayList<Long>();
+			if(locationId != null && locationId.longValue() != 0L)
+				locationIdsList.add(locationId);
+			
+			if(locationType != null && locationType.equalsIgnoreCase(IConstants.TEHSIL))
+			{
+				Constituency constituency = constituencyDAO.get(locationId.longValue());
+				String constituencyType = constituency.getAreaType();
+				
+				if(constituencyType != null && constituencyType.equalsIgnoreCase(IConstants.RURALURBAN))
+				{
+					List<Object[]> tehsilList = tehsilDAO.findTehsilsByConstituencyIdAndPublicationDateId(locationId.longValue(),IConstants.VOTER_DATA_PUBLICATION_ID);
+					
+					if(tehsilList != null && tehsilList.size()>0)
+					{
+						List<Long> tehsilIdsList = new ArrayList<Long>();
+						for (Object[] tehsil : tehsilList) {
+							Long tehsilId = tehsil[0] != null ? Long.valueOf(tehsil[0].toString().trim()):0L;							
+							tehsilIdsList.add(tehsilId);
+						}
+						
+						muncipalityORCorprationIdsList = localElectionBodyDAO.getMuncipalitiesAndCorporationsForConstituency(tehsilIdsList);
+						areaType = IConstants.LOCAL_ELECTION_BODY;
+					}
+				}
+			}
+			else if(locationType != null && (locationType.equalsIgnoreCase(IConstants.WARD) || locationType.equalsIgnoreCase(IConstants.PANCHAYAT)))
+			{
+				muncipalityORCorprationIdsList = constituencyDAO.getAllWardsByLocalElectionBodyIds(locationIdsList);	
+				if(muncipalityORCorprationIdsList != null && muncipalityORCorprationIdsList.size()>0)
+				{
+					locationType = IConstants.LOCAL_ELECTION_BODY;
+					areaType = IConstants.WARD;
+				}
+							
+			}
 			
 			if(isFinal == null || isFinal.toString().trim().length() ==0) //search for location wise count
 			{
@@ -101,11 +155,19 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 					{
 						if(casteStateId == null || casteStateId.longValue() == 0L)
 						{
-							tdpCadreDetails = tdpCadreInfoDAO.getVoterCadreDetailsBySearchCriteria(stateId, locationType,locationId);
+							tdpCadreDetails = tdpCadreInfoDAO.getVoterCadreDetailsBySearchCriteria(stateId, locationType,locationIdsList);
+							if(muncipalityORCorprationIdsList != null && muncipalityORCorprationIdsList.size()>0)
+							{
+								wardOrMuncipalityList = tdpCadreInfoDAO.getVoterCadreDetailsBySearchCriteria(stateId,areaType,muncipalityORCorprationIdsList);
+							}
 						}
 						else
 						{
-							tdpCadreDetails = tdpCadreCasteInfoDAO.getVoterCadreCasteDetailsBySearchCriteria(stateId,locationType,locationId,casteStateId);
+							tdpCadreDetails = tdpCadreCasteInfoDAO.getVoterCadreCasteDetailsBySearchCriteria(stateId,locationType,locationIdsList,casteStateId);
+							if(muncipalityORCorprationIdsList != null && muncipalityORCorprationIdsList.size()>0)
+							{
+								wardOrMuncipalityList = tdpCadreCasteInfoDAO.getVoterCadreCasteDetailsBySearchCriteria(stateId,areaType,muncipalityORCorprationIdsList,casteStateId);
+							}
 						}
 					}				
 					else 
@@ -115,27 +177,11 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 				}
 				else if(searchType !=null && searchType.equalsIgnoreCase("Voter"))
 				{
-					if(nameStr == null || nameStr.trim().length() == 0)
-					{
-						if(casteStateId == null || casteStateId.longValue() == 0L)
-						{
-							tdpCadreDetails = tdpCadreInfoDAO.getVoterCadreDetailsBySearchCriteria(stateId, locationType,locationId);
-						}
-						else
-						{
-							tdpCadreDetails = tdpCadreCasteInfoDAO.getVoterCadreCasteDetailsBySearchCriteria(stateId,locationType,locationId,casteStateId);
-						}
-					}				
-					else 
-					{
-						tdpCadreDetails = tdpCadreDAO.getVoterCadreCasteDetailsBySearchCriteria(stateId,locationType,locationId,casteStateId,nameStr);
-					}
+					
 				}				
 				
 				if(tdpCadreDetails != null && tdpCadreDetails.size()>0)
 				{
-					returnList = new ArrayList<TdpCadreVO>();
-					
 					for (Object[] candidate : tdpCadreDetails) 
 					{
 						TdpCadreVO candidateVO = new TdpCadreVO();
@@ -150,6 +196,25 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 						returnList.add(candidateVO);
 					}
 				}
+				
+				if(wardOrMuncipalityList != null && wardOrMuncipalityList.size()>0)
+				{
+					for (Object[] candidate : wardOrMuncipalityList) 
+					{
+						TdpCadreVO candidateVO = new TdpCadreVO();
+						Long id = candidate[0] != null ? Long.valueOf(candidate[0].toString().trim()):0L;
+						String name = candidate[2] != null ? candidate[2].toString().trim():"";
+						Long count =  candidate[1] != null ? Long.valueOf(candidate[1].toString().trim()):0L;
+						
+						LocalElectionBody localElectionBody = localElectionBodyDAO.get(id);
+						candidateVO.setConstituencyId(id);
+						candidateVO.setConstituency(name+" "+localElectionBody.getElectionType().getElectionType().toLowerCase());
+						candidateVO.setTotalCount(count);
+						
+						returnList.add(candidateVO);
+					}
+				}
+				
 			}
 			else // final results
 			{
