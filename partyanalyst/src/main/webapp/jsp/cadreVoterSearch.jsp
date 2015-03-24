@@ -23,8 +23,13 @@
 	<link href="js/cadreSearch/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	<link href="js/cadreSearch/css/custom.css" rel="stylesheet" type="text/css">
 	<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css' />
+	
+	
+	  <link rel="stylesheet" type="text/css" href="css/cadreRegistrationCSS/animate.css" >
+	<!--
 	<link href="js/cadreSearch/PageTransitions/css/animations.css" rel="stylesheet" type="text/css">
 	<link href="js/cadreSearch/PageTransitions/css/component.css" rel="stylesheet" type="text/css"> 
+	-->
 <style>
 .nl-field ul li{line-height:35px!important;}
 .nl-field a:hover{text-decoration:none!important;}
@@ -43,9 +48,9 @@
         <div class="well search-heading m_top10"><h2 class="text-center search-head">SEARCH A CADRE/VOTER</h2></div>
         
 		<div id="pt-main" class="pt-perspective">
-        <div class="pt-page pt-page-1 container" style="left:-11px;">
+        <div class="pt-page pt-page-1 container " style="left:-11px;">
             <div class="well search-content">
-                <div class="main clearfix text-center">
+                <div class="main clearfix text-center fadeInRight ">
                      <form id="nl-form" class="nl-form">
                         I WANT TO SEARCH
                         <select class="searchCls">
@@ -80,76 +85,20 @@
                 </div>              
 			</div>
 		</div>
-		<div class="pt-page pt-page-2 container">    
+		<div class="pt-page pt-page-2 container" id="locationsDiv">    
 			<div>
-				<ol class="breadcrumb search-breadcrumb">
-				
-				<div id="searchDiv"></div>
-					  <!--<span class="text-breadcrumb text-capitalize">your searching:</span>
-					  <li><a href="cadreVoterSearchAction.action" class="text-breadcrumb">Cadre</a></li>
-					  <li><a href="#" class="text-breadcrumb">Andhra Pradesh</a></li>
-					  <li><a href="#" class="text-breadcrumb">Nellore</a></li>
-					  <li class="active">Kavali</li>-->
+				<ol class="breadcrumb search-breadcrumb">				
+					<div id="searchDiv"></div>
 				</ol>
 				<div>
-					<div class="constituency-box  get-details" id="searchDetailsDiv">
-						<h4 class="district-box-name"></h4>
-						<span class="pull-right"></span>
+					<div id="searchDetailsDiv">						
 					</div>						
 					
 				</div>
 			</div>
 		</div>
-            
-		<div class="pt-page pt-page-3 container">
-			<div>
-				<ol class="breadcrumb search-breadcrumb">
-				  <span class="text-breadcrumb text-capitalize">your searching:</span>
-				  <li><a href="cadreVoterSearchAction.action" class="text-breadcrumb">Cadre</a></li>
-				  <li><a href="#" class="text-breadcrumb">Andhra Pradesh</a></li>
-				  <li class="active">District</li>
-				</ol>
-				<div>
-					<div class="constituency-box  get-details">
-						<h4 class="district-box-name">constituency 1</h4>
-						<span class="pull-right">500</span>
-					</div>			
-				</div>
-			</div>
-		</div>
-		<div class="pt-page pt-page-4 container">
-			<div>
-			<ol class="breadcrumb search-breadcrumb">
-			  <span class="text-breadcrumb text-capitalize">your searching:</span>
-			  <li><a href="cadreVoterSearchAction.action" class="text-breadcrumb">Cadre</a></li>
-			  <li><a href="#" class="text-breadcrumb">Andhra Pradesh</a></li>
-			  <li class="active">District</li>
-			</ol>
-			<div>
-				<div class="constituency-box  get-details">
-					<h4 class="district-box-name">tehsil 1</h4>
-					<span class="pull-right">500</span>
-				</div>			
-			</div>
-			</div>
-		</div>
-		<div class="pt-page pt-page-5 container">
-			<div>
-				<ol class="breadcrumb search-breadcrumb">
-				  <span class="text-breadcrumb text-capitalize">your searching:</span>
-				  <li><a href="cadreVoterSearchAction.action" class="text-breadcrumb">Cadre</a></li>
-				  <li><a href="#" class="text-breadcrumb">Andhra Pradesh</a></li>
-				  <li class="active">District</li>
-				</ol>
-				<div>
-					<div class="constituency-box  get-details">
-						<h4 class="district-box-name">panchayat 1</h4>
-						<span class="pull-right">500</span>
-					</div>			
-				</div>
-			</div>
-		</div>
-		<div class="pt-page pt-page-6 container">
+		
+		<div class="pt-page pt-page-6 container" id="casteDiv" style="display:none;'">
 			<div class="search-results">
 		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 		  <div class="panel panel-default search-panel">
@@ -234,10 +183,10 @@
 	<script src="js/cadreSearch/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="js/cadreSearch/Naturallanguage/js/modernizr.custom.js"></script>
     <script src="js/cadreSearch/Naturallanguage/js/nlform.js"></script>
-    <script src="js/cadreSearch/PageTransitions/js/modernizr.custom.js" type="text/javascript"></script>
+  <!--  <script src="js/cadreSearch/PageTransitions/js/modernizr.custom.js" type="text/javascript"></script>
     <script src="js/cadreSearch/PageTransitions/js/jquery.dlmenu.js" type="text/javascript"></script>
     <script src="js/cadreSearch/PageTransitions/js/pagetransitions.js" type="text/javascript"></script>
-
+-->
 	<script>
 		var btnFlag = false ;
 		var btnFlag1 = false ;
@@ -247,6 +196,7 @@
 	var	casteSel = 0;
 	var casteArr ;
 	$(document).ready(function(){
+		$('.fadeInRight').addClass('animated  fadeInRight ');
 		casteArr = new Array();
 		var casteDetailsArr = new Array();
 		<c:forEach var="caste" items="${casteDetails}">
@@ -268,7 +218,6 @@
 		source: source,
 		select: function(event, ui) {
 			casteSel  = mapping[ui.item.value];
-			
 			
 			
 		}
@@ -711,7 +660,7 @@ var constiSel =0;
 		{
 			nextLocationType ="panchayat";
 		}
-		//$('#searchDetailsDiv').html('');
+		$('#searchDetailsDiv').html('');
 		var jObj = {
 			searchType:searchType,			
 			stateId:stateId,
@@ -782,14 +731,13 @@ var constiSel =0;
 	}
 	
 	
-	function buildSearchResults(myResult,searchType,locationType,nextLocationType,stateId,casteStateId,divId)
+	function buildSearchResults(myResult,searchType,locationType,nextLocationType,stateId,casteStateId)
 	{
 	
 		
 	
 		var result = myResult[0].cadreSearchList;
-		divCount = parseInt(divCount)+parseInt(1);
-		
+	
 		var str ='';
 		
 			if(result.length>0)
@@ -797,19 +745,16 @@ var constiSel =0;
 				for(var i in result)
 				{
 					str+='<div class="district-box get-details">';
-					str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\',\''+divId+''+divCount+'\');}" class="district-box-name get-details">';	
+					str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\');}" class="district-box-name get-details">';	
 					str+='<h4 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'</h4></a>';
-					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',1,\''+locationType+'\',\''+divId+''+divCount+'\');}"  class=" district-box get-details"> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
-					str+='</div>';
-
-					//str+='<div class="constituency-box get-details">';
-					//str+='<h4 class="district-box-name"> &nbsp;&nbsp;'+result[i].constituency+'</h4>';
-					//str+='<span class="pull-right" style="margin-top:8px;">&nbsp;'+result[i].totalCount+' &nbsp;</span>';
-					//str+='</div>';							
+					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',1,\''+locationType+'\');}"  class=""> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
+					str+='</div>';							
 				}				
 			}
-			$('#'+divId+'').after(str);
 			
+			$('#searchDetailsDiv').html(str);
+			$('.fadeInRight').addClass('animated  fadeOutLeft ');
+			//$('#locationsDiv').addClass('animated  fadeInRight ');
 
 	}
 	
