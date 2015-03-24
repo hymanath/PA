@@ -591,4 +591,73 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 		}
 		return queryObj.list();
     }
+	
+	public List<Object[]> getVoterCadreDetailsBySearchCriteria(Long stateId, String locationType,List<Long> locationIdsList)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		//0locationId,1count
+		StringBuilder str  = new StringBuilder();
+		str.append(" select distinct model.reportLevelValue,model.totalVoters  ");
+		
+		if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+		{
+			str.append(" ,model2.name from VoterInfo model,Constituency model2 where model2.constituencyId = model.reportLevelValue ");
+			str.append(" and model2.electionScope.electionType.electionTypeId = 2  ");
+			if(locationIdsList != null && locationIdsList.size() > 0)
+			{
+				str.append(" and model2.district.districtId in (:locationIdsList) ");
+			}
+			str.append(" order by model2.name ");
+		}		
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.TEHSIL))
+		{
+			str.append(" ,model2.tehsilName from VoterInfo model,Tehsil model2,Booth B where model2.tehsilId = model.reportLevelValue  and model2.tehsilId = B.tehsil.tehsilId ");
+			str.append(" and B.publicationDate.publicationDateId = 11 and B.constituency.constituencyId in (:locationIdsList) ");
+			str.append(" order by model2.tehsilName ");
+		}
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+		{
+			str.append(" ,model2.panchayatName from VoterInfo model,Panchayat model2,Booth B where model2.panchayatId = model.reportLevelValue and model2.panchayatId = B.panchayat.panchayatId ");
+			str.append(" and B.publicationDate.publicationDateId = 11 and B.tehsil.tehsilId in (:locationIdsList) ");
+			str.append(" order by model2.panchayatName ");
+		}
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+		{
+			str.append(" ,model2.name from VoterInfo model,LocalElectionBody model2,Booth B where model2.LocalElectionBodyId = model.reportLevelValue and model2.localElectionBodyId = B.localBody.localElectionBodyId ");
+			str.append(" and B.publicationDate.publicationDateId = 11 and B.localBody.localElectionBodyId in (:locationIdsList) ");
+			str.append(" order by model2.name ");
+		}
+		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.WARD))
+		{
+			str.append(" ,model2.name from VoterInfo model,Constituency model2,Booth B where model2.constituencyId = B.constituency.constituencyId and model2.constituencyId = model.reportLevelValue and model2.localElectionBody.localElectionBodyId is not null ");
+			str.append(" and model.reportLevelValue in (:locationIdsList)  ");			
+			str.append(" order by model2.name ");
+		}
+		else if(stateId != null && stateId.longValue() == 0L) //AP & TS
+		{
+			str.append(" ,D.districtName from VoterInfo model,Constituency model2,District D where model2.district.districtId = D.districtId and model2.constituencyId = model.reportLevelValue and D.districtId and (model.locationId between 1 and 23) ");
+			str.append(" order by D.districtName ");
+		}
+		else if(stateId != null && stateId.longValue() == 1L) //AP
+		{
+			str.append(" ,D.districtName from VoterInfo model,Constituency model2,District D where model2.district.districtId = D.districtId and model2.constituencyId = model.reportLevelValue and D.districtId and (model.locationId between 11 and 23) ");
+			str.append(" order by D.districtName ");
+		}
+		else if(stateId != null && stateId.longValue() == 2L) //TS
+		{
+			str.append(" ,D.districtName from VoterInfo model,Constituency model2,District D where model2.district.districtId = D.districtId and model2.constituencyId = model.reportLevelValue and D.districtId and (model.locationId between 1 and 10) ");
+			str.append(" order by D.districtName ");
+		}		
+		
+		queryStr.append(str.toString());
+		
+		Query query = getSession().createQuery(queryStr.toString());
+
+		if(locationIdsList != null && locationIdsList.size() > 0)
+		{
+			query.setParameterList("locationIdsList", locationIdsList);
+		}
+				
+		return query.list();
+	}
 }
