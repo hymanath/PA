@@ -705,4 +705,7 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getFamilyWiseVotersInABooth(Long constituencyId,Long publicationDateId,String partNo);
 	  public List<Object[]> getVotersCountByPublicationIdLocationIds(String type,Set<Long> ids,Long publicationDateId,Long constituencyId);
 	  public List<Object[]> getTotalVotersByBoothsForVerfierForCTP(Long boothId);
+	  
+	  public List<Object[]> getVoterCadreCasteDetailsBySearchCriteria(Long stateId,String locationType,Long locationId,Long casteStateId,String nameStr);
+	  
 }
