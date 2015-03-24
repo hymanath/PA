@@ -611,7 +611,7 @@ var constiSel =0;
 		if(locationType != 'state'){
 			if(locationType == 'constituency'){
 				$("#constiId1").hide();
-				$("#constiId1").show();
+				$("#districtId1").show();
 				var distOptions ='';		
 				
 					for(var i = 0; i < districtArr.length; ++i) {
@@ -630,7 +630,7 @@ var constiSel =0;
 			else if(locationType == 'tehsil'){
 		
 			$("#constiId1").show();
-			$("#constiId1").show();
+			$("#districtId1").show();
 				var distOptions ='';						
 				for(var i = 0; i < districtArr.length; ++i) {
 				
