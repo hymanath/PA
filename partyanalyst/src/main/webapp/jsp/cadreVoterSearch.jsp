@@ -268,7 +268,7 @@
 		source: source,
 		select: function(event, ui) {
 			casteSel  = mapping[ui.item.value];
-			cosole.log(event.keyCode == 13)
+			
 			
 			
 		}
