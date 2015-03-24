@@ -92,4 +92,7 @@ public interface IVoterInfoDAO extends GenericDao<VoterInfo, Long>{
 	public VoterInfo getVoterInfoOfALocation(Long constituencyId,Long publicationDateId,Long reportLevelId,Long reportLevelValue);
 	
 	public List<VoterInfo> getVotersCountForMultipleLocs(Long reportLevelId, Set<Long> reportLevelValues, Long publicationDateId,Long constituencyId);
+	
+	public List<Object[]> getVoterCadreDetailsBySearchCriteria(Long stateId, String locationType,List<Long> locationIdsList);
+	
 }
