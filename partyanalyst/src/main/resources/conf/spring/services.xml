@@ -2570,6 +2570,9 @@
 	<property name="constituencyDAO" ref="constituencyDAO" />	
 	<property name="tehsilDAO" ref="tehsilDAO" />	
 	<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />	
+	<property name="voterInfoDAO" ref="voterInfoDAO" />	
+	<property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" />	
+	<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />	
 	</bean>
 </beans>		
 	
