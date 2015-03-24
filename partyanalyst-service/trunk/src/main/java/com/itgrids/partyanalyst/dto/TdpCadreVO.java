@@ -35,8 +35,22 @@ public class TdpCadreVO implements java.io.Serializable
 	private String responseCode;
 	private String aadharNo;
 	private List<TdpCadreVO> tdpCadreDetailsList = new ArrayList<TdpCadreVO>();
+	private List<TdpCadreVO> cadreSearchList = new ArrayList<TdpCadreVO>();
+	private List<TdpCadreVO> voterSearchList = new ArrayList<TdpCadreVO>();
 	
 	
+	public List<TdpCadreVO> getCadreSearchList() {
+		return cadreSearchList;
+	}
+	public List<TdpCadreVO> getVoterSearchList() {
+		return voterSearchList;
+	}
+	public void setCadreSearchList(List<TdpCadreVO> cadreSearchList) {
+		this.cadreSearchList = cadreSearchList;
+	}
+	public void setVoterSearchList(List<TdpCadreVO> voterSearchList) {
+		this.voterSearchList = voterSearchList;
+	}
 	public String getAadharNo() {
 		return aadharNo;
 	}
