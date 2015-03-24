@@ -8,7 +8,7 @@
 	<meta charset="UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-	<title>Cadre Search</title>
+	<title>Cadre / Voter Search</title>
 	<meta name="description" content="Natural Language Form with custom text input and drop-down lists" />
 	<meta name="keywords" content="Natural Language UI, sentence form, text input, contenteditable, html5, css3, jquery" />
 	<meta name="author" content="Codrops" />
@@ -26,9 +26,9 @@
 	<link href="js/cadreSearch/PageTransitions/css/animations.css" rel="stylesheet" type="text/css">
 	<link href="js/cadreSearch/PageTransitions/css/component.css" rel="stylesheet" type="text/css"> 
 <style>
-.nl-field ul li{line-height:55px!important;}
+.nl-field ul li{line-height:35px!important;}
 .nl-field a:hover{text-decoration:none!important;}
-.nl-ti-input input[type="text"]{height:57px! important; width:324px! important;}
+.nl-ti-input input[type="text"]{height:45px! important; width:324px! important;}
 #contenttable{min-height:450px;background:#e5e5e5 !important;}
 .get-details h4{
 	margin-top:10px;
@@ -41,9 +41,9 @@
 	<body class="search-body-bg">			
         <div class="container">
         <div class="well search-heading m_top10"><h2 class="text-center search-head">SEARCH A CADRE/VOTER</h2></div>
-        </div>
+        
 		<div id="pt-main" class="pt-perspective">
-        <div class="pt-page pt-page-1 container">
+        <div class="pt-page pt-page-1 container" style="left:-11px;">
             <div class="well search-content">
                 <div class="main clearfix text-center">
                      <form id="nl-form" class="nl-form">
@@ -83,11 +83,13 @@
 		<div class="pt-page pt-page-2 container">    
 			<div>
 				<ol class="breadcrumb search-breadcrumb">
-					  <span class="text-breadcrumb text-capitalize">your searching:</span>
+				
+				<div id="searchDiv"></div>
+					  <!--<span class="text-breadcrumb text-capitalize">your searching:</span>
 					  <li><a href="cadreVoterSearchAction.action" class="text-breadcrumb">Cadre</a></li>
 					  <li><a href="#" class="text-breadcrumb">Andhra Pradesh</a></li>
 					  <li><a href="#" class="text-breadcrumb">Nellore</a></li>
-					  <li class="active">Kavali</li>
+					  <li class="active">Kavali</li>-->
 				</ol>
 				<div>
 					<div class="constituency-box  get-details" id="searchDetailsDiv">
@@ -243,8 +245,9 @@
 	var selectionArr1 = ["searchDivCls","stateDivCls","districtDivCls","constiDivCls","casteDivCls","nameDivCls"];
 		var selectionArr2 = ["searchDivClsHidden","stateDivClsHidden","districtDivClsHidden","constiDivClsHidden","casteDivClsHidden","nameDivClsHidden"];
 	var	casteSel = 0;
+	var casteArr ;
 	$(document).ready(function(){
-		var casteArr = new Array();
+		casteArr = new Array();
 		var casteDetailsArr = new Array();
 		<c:forEach var="caste" items="${casteDetails}">
 				var obj = {
@@ -265,8 +268,17 @@
 		source: source,
 		select: function(event, ui) {
 			casteSel  = mapping[ui.item.value];
+			cosole.log(event.keyCode == 13)
+			
+			
 		}
-	});
+	/*}).keypress(function (e) {
+			console.log(e.keyCode);
+        if ( e.keyCode == 13 ) {
+         casteSel  = mapping[ui.item.value];
+			//console.log(casteSel);
+        } */           
+    });
 
 	$('.stateCls').click(function(){				
 		var locationValue = $(this).attr('key');		
@@ -286,6 +298,14 @@
 			$('.districtDivCls').open = true;			
 			$('.districtDivCls').addClass('nl-field-open');	
 			}
+			
+			$('.districtDivCls').keydown(function (e) {			
+					if ( e.keyCode == 13 ) {
+						//alert(e.keyCode);
+						$('.districtDivCls').removeClass('nl-field-open');
+						$('.districtDivCls').open = false;
+					}
+			});
 			}
 		});
 	
@@ -302,15 +322,19 @@
 			$('.constiDivCls').open = true;			
 			$('.constiDivCls').addClass('nl-field-open');	
 			}
+			
+			$('.constiDivCls').keydown(function (e) {			
+					if ( e.keyCode == 13 ) {
+						//alert(e.keyCode);
+						$('.constiDivCls').removeClass('nl-field-open');
+						$('.constiDivCls').open = false;
+					}
+			});
+			
 			}
 		});
 		
-		//1111
-		
-		$('#stateId').click(function(){
-			
-			console.log(123);
-		});
+	
 		
 	});
 	
@@ -342,8 +366,8 @@
 					//$('.districtCls').remove();
 					for(var i in result){
 						var obj = {
-						value :  result[i].id,
-						label :  result[i].name
+						value :  result[i].locationId,
+						label :  result[i].locationName
 						}			
 						districtArr.push(obj);
 					}
@@ -357,8 +381,8 @@
 					//$('.districtCls').remove();
 					for(var i in result){
 						var obj = {
-						value :  result[i].id,
-						label :  result[i].name
+						value :  result[i].locationId,
+						label :  result[i].locationName
 						}			
 						constiArr.push(obj);
 					}
@@ -391,11 +415,19 @@ var constiSel =0;
 							//$(".districtCls").attr('disabled', 'disabled');
 							districtSel = mapping[ui.item.value];
 							
+							for(var i = 0; i < districtArr.length; ++i) {
+								if(districtArr[i].value == districtSel)
+								{
+									var districtName = districtArr[i].label;
+									$('.districtCls').val(districtName);							
+									getSelectedData();
+								}
+							}
 						}
 					});
+					
 	}
 	function constiKeyUp(){
-
 		var source = [ ];
 					var mapping = { };
 					for(var i = 0; i < constiArr.length; ++i) {
@@ -407,7 +439,18 @@ var constiSel =0;
 						source: source,
 						select: function(event, ui) {
 							constiSel = mapping[ui.item.value];
+							
+							for(var i = 0; i < constiArr.length; ++i) {
+								if(constiArr[i].value == constiSel)
+								{
+									var constName = constiArr[i].label;
+									$('.constiCls').val(constName);							
+									getSelectedData1();
+								}
+							}
 						}
+						
+						
 					});
 	}
 	
@@ -425,7 +468,7 @@ var constiSel =0;
 		}
 		
 		$(".districtDivCls").html(str);
-		console.log(districtSel);
+		//console.log(districtSel);
 		//console.log($('#districtHiddenVal').text());
 		getDistrictsAndConstis("Constituency",districtSel);
 		
@@ -491,8 +534,8 @@ var constiSel =0;
 			locationId = districtSel;
 		}
 		else {
-			locationType = "state";
-			locationId = districtSel;
+			locationType = "district";
+			locationId = stateId;
 		}
 
 		var isFinal = "";
@@ -526,9 +569,115 @@ var constiSel =0;
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
 			//console.log(result);
+			var str1 ='';
+        str1+='Your Searching: <select class="searchCls1">';
+		if(searchType == "ANY"){
+        str1+='<option value="0" selected >ANY</option> <option value="1" >CADRE</option><option value="2">VOTER</option>';
+       
+		}
+		else if(searchType == "CADRE"){
+		 str1+='<option value="0">ANY</option> <option value="1" selected>CADRE</option><option value="2">VOTER</option>';
+     
+		}
+		else if(searchType == "VOTER"){
+		 str1+='<option value="0">ANY</option> <option value="1" >CADRE</option><option value="2" selected>VOTER</option>';
+        	
+		}
+		str1+='</select>/<select class="stateCls1">';
+		if(stateId == 0){
+        str1+='<option value="0" selected>ANY</option><option value="1">ANDHRA PRADESH</option><option value="2">TELANGANA</option>';
+       
+		}
+		else if(stateId == 1){
+		 str1+='<option value="0" >ANY</option><option value="1" selected>ANDHRA PRADESH</option><option value="2">TELANGANA</option>';
+        
+		
+		}
+		else if(stateId == 2){
+		 str1+='<option value="0" >ANY</option><option value="1" selected>ANDHRA PRADESH</option><option value="2">TELANGANA</option>';
+        		
+		}
+		str1+='</select>';
+		if(locationType == 'constituency')
+		str1+='/<select style="display:none;" id="districtId1"></select>';
+		if(locationType == 'tehsil'){
+		str1+='/<select style="display:none;" id="districtId1"></select>';
+		str1+='/<select style="display:none;" id="constiId1"></select>';
+		}
+		if(casteStateId != 0)
+		str1+='/<select style="display:none;" id="casteId1"></select>';
+		$('#searchDiv').html(str1);
+
+		if(locationType != 'state'){
+			if(locationType == 'constituency'){
+				$("#constiId1").hide();
+				$("#constiId1").show();
+				var distOptions ='';		
+				
+					for(var i = 0; i < districtArr.length; ++i) {
+					
+						if(locationId == districtArr[i].value){
+							 distOptions+='<option value="'+districtArr[i].value+'" selected>'+districtArr[i].label+'</option>';	
+						}
+						else{
+							distOptions+='<option value="'+districtArr[i].value+'" >'+districtArr[i].label+'</option>';				
+						}
+					}
+					
+					$("#districtId1").append(distOptions);
+				
+			}
+			else if(locationType == 'tehsil'){
+		
+			$("#constiId1").show();
+			$("#constiId1").show();
+				var distOptions ='';						
+				for(var i = 0; i < districtArr.length; ++i) {
+				
+					if(districtSel == districtArr[i].value){
+						 distOptions+='<option value="'+districtArr[i].value+'" selected>'+districtArr[i].label+'</option>';	
+					}
+					else{
+						distOptions+='<option value="'+districtArr[i].value+'" >'+districtArr[i].label+'</option>';			
+					}
+				}
+					
+				$("#districtId1").append(distOptions);
+					
+				var constiOptions ='';		
+			
+				for(var i = 0; i < constiArr.length; ++i) {				
+					if(locationId == constiArr[i].value){
+						 constiOptions+='<option value="'+constiArr[i].value+'" selected>'+constiArr[i].label+'</option>';	
+					}
+					else{
+						constiOptions+='<option value="'+constiArr[i].value+'" >'+constiArr[i].label+'</option>';			
+					}
+				}				
+				$("#constiId1").append(constiOptions);
+			
+			}
+			
+			
+			if(casteStateId != 0)
+			{
+				$("#casteId1").show();
+				var casteOptions ='';		
+			
+				for(var i = 0; i < casteArr.length; ++i) {				
+					if(casteStateId == casteArr[i].value){
+						 casteOptions+='<option value="'+casteArr[i].value+'" selected>'+casteArr[i].label+'</option>';	
+					}
+					else{
+						casteOptions+='<option value="'+casteArr[i].value+'" >'+casteArr[i].label+'</option>';			
+					}
+				}				
+				$("#casteId1").append(casteOptions);
+			}
+		}
 			if(result != null)
 			{
-				buildSearchResults(result,searchType,locationType,nextLocationType,stateId,casteStateId,divId);
+				buildSearchResults(result,searchType,locationType,nextLocationType,stateId,casteStateId,divId,locationId,state);
 			}
 			else{
 				//$('#searchDetailsDiv').html('No Data Available...');
@@ -635,6 +784,9 @@ var constiSel =0;
 	
 	function buildSearchResults(myResult,searchType,locationType,nextLocationType,stateId,casteStateId,divId)
 	{
+	
+		
+	
 		var result = myResult[0].cadreSearchList;
 		divCount = parseInt(divCount)+parseInt(1);
 		
@@ -644,16 +796,16 @@ var constiSel =0;
 			{
 				for(var i in result)
 				{
-					/*str+='<div class="district-box get-details">';
+					str+='<div class="district-box get-details">';
 					str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\',\''+divId+''+divCount+'\');}" class="district-box-name get-details">';	
 					str+='<h4 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'</h4></a>';
 					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',1,\''+locationType+'\',\''+divId+''+divCount+'\');}"  class=" district-box get-details"> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
-					str+='</div>';	*/
+					str+='</div>';
 
-					str+='<div class="constituency-box get-details">';
-					str+='<h4 class="district-box-name"> &nbsp;&nbsp;'+result[i].constituency+'</h4>';
-					str+='<span class="pull-right" style="margin-top:8px;">&nbsp;'+result[i].totalCount+' &nbsp;</span>';
-					str+='</div>';							
+					//str+='<div class="constituency-box get-details">';
+					//str+='<h4 class="district-box-name"> &nbsp;&nbsp;'+result[i].constituency+'</h4>';
+					//str+='<span class="pull-right" style="margin-top:8px;">&nbsp;'+result[i].totalCount+' &nbsp;</span>';
+					//str+='</div>';							
 				}				
 			}
 			$('#'+divId+'').after(str);
