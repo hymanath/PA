@@ -179,10 +179,10 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 					{
 						if(casteStateId == null || casteStateId.longValue() == 0L)
 						{
-							tdpCadreDetails = voterInfoDAO.getVoterCadreDetailsBySearchCriteria(stateId, locationType,locationIdsList);
+							tdpCadreDetails = tdpCadreInfoDAO.getVoterCadreDetailsBySearchCriteria(stateId, locationType,locationIdsList);
 							if(muncipalityORCorprationIdsList != null && muncipalityORCorprationIdsList.size()>0)
 							{
-								wardOrMuncipalityList = voterInfoDAO.getVoterCadreDetailsBySearchCriteria(stateId,areaType,muncipalityORCorprationIdsList);
+								wardOrMuncipalityList = tdpCadreInfoDAO.getVoterCadreDetailsBySearchCriteria(stateId,areaType,muncipalityORCorprationIdsList);
 							}
 						}
 						else
@@ -207,15 +207,15 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 					{
 						if(casteStateId == null || casteStateId.longValue() == 0L)
 						{
-							tdpCadreDetails = tdpCadreInfoDAO.getVoterCadreDetailsBySearchCriteria(stateId, locationType,locationIdsList);
+							tdpCadreDetails = voterInfoDAO.getVoterCadreDetailsBySearchCriteria(stateId, locationType,locationIdsList);
 							if(muncipalityORCorprationIdsList != null && muncipalityORCorprationIdsList.size()>0)
 							{
-								wardOrMuncipalityList = tdpCadreInfoDAO.getVoterCadreDetailsBySearchCriteria(stateId,areaType,muncipalityORCorprationIdsList);
-							}
+								wardOrMuncipalityList = voterInfoDAO.getVoterCadreDetailsBySearchCriteria(stateId,areaType,muncipalityORCorprationIdsList);
+							}							
 						}
 						else
 						{
-							tdpCadreDetails = tdpCadreCasteInfoDAO.getVoterCadreCasteDetailsBySearchCriteria(stateId,locationType,locationIdsList,casteStateId);
+							tdpCadreDetails = userVoterDetailsDAO.getVoterCadreCasteDetailsBySearchCriteria(stateId,locationType,locationIdsList,casteStateId);
 							if(muncipalityORCorprationIdsList != null && muncipalityORCorprationIdsList.size()>0)
 							{
 								wardOrMuncipalityList = userVoterDetailsDAO.getVoterCadreCasteDetailsBySearchCriteria(stateId,areaType,muncipalityORCorprationIdsList,casteStateId);
