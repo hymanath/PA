@@ -538,7 +538,9 @@ var constiSel =0;
 	
 	
 	function getDetailsForSelection(locationId,locationType,stateId,searchType,casteStateId,isFinalValue,getDetailsAreaType)
-	{		
+	{	
+
+		buildSearchDetailsSecondLevel(locationId,locationType);
 		var searchName = "";
 		var isFinal = "";
 		if(isFinalValue != 0)
@@ -632,13 +634,18 @@ var constiSel =0;
 	}
 	
 	
-	var mainArr ;
+	var mainConstiArr ;
+	var mainTehsilArr ;
 	function buildSearchResults(myResult,searchType,locationType,nextLocationType,stateId,casteStateId)
 	{	
 	//divCount = parseInt(divCount) + parseInt(1);
 		var result = myResult[0].cadreSearchList;
 		var voterResult = myResult[0].voterSearchList;
-		mainArr = new Array();
+	
+		if(locationType == "constituency")
+		mainConstiArr = new Array();
+		else if(locationType == "tehsil")
+		mainTehsilArr = new Array();
 		var str ='';
 		
 			if(result.length>0)
@@ -649,15 +656,26 @@ var constiSel =0;
 					str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\');}" class="district-box-name get-details">';	
 					str+='<h4 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'</h4></a>';
 					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',1,\''+locationType+'\');}"  class=""> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
-					str+='</div>';		
+					str+='</div>';
+						if(locationType == "constituency")
+						{
+	
 						var obj = {
 						value :  result[i].constituencyId,
 						label :  result[i].constituency
 						}			
-						mainArr.push(obj);
-					
+						mainConstiArr.push(obj);
+					}	else if(locationType == "tehsil"){
+						var obj1 = {
+						value1 :  result[i].constituencyId,
+						label1 :  result[i].constituency
+						}			
+						mainTehsilArr.push(obj1);
+						}
 				}
-console.log(mainArr);				
+				console.log(mainConstiArr);
+				console.log(mainTehsilArr);
+						
 			}
 			
 			if(voterResult.length>0)
@@ -839,8 +857,246 @@ console.log(mainArr);
 				$("#casteId1").append(casteOptions);
 			}
 		}
+	}
 	
 	
+	
+	function buildSearchDetailsSecondLevel(locationId,locationType){
+	
+	
+		var searchType = $(".searchCls1 option:selected").text();
+		var stateId =  $(".stateCls1").val();
+		var casteStateId =  $("#casteId1").val();
+		var constiId = $("#constiId1").val();
+		var districtId = $("#districtId1").val();
+	
+		var str1 ='';
+        str1+='Your Searching: <select class="searchCls1">';
+		if(searchType == "ANY"){
+        str1+='<option value="0" selected >ANY</option> <option value="1" >CADRE</option><option value="2">VOTER</option>';
+       
+		}
+		else if(searchType == "CADRE"){
+		 str1+='<option value="0">ANY</option> <option value="1" selected>CADRE</option><option value="2">VOTER</option>';
+     
+		}
+		else if(searchType == "VOTER"){
+		 str1+='<option value="0">ANY</option> <option value="1" >CADRE</option><option value="2" selected>VOTER</option>';
+        	
+		}
+		str1+='</select>/<select class="stateCls1">';
+		if(stateId == 0){
+        str1+='<option value="0" selected>ANY</option><option value="1">ANDHRA PRADESH</option><option value="2">TELANGANA</option>';
+       
+		}
+		else if(stateId == 1){
+		 str1+='<option value="0" >ANY</option><option value="1" selected>ANDHRA PRADESH</option><option value="2">TELANGANA</option>';
+        
+		
+		}
+		else if(stateId == 2){
+		 str1+='<option value="0" >ANY</option><option value="1" selected>ANDHRA PRADESH</option><option value="2">TELANGANA</option>';
+        		
+		}
+		str1+='</select>';
+		
+		if(locationType == 'constitueny'){
+		
+		str1+='/<select style="display:none;" id="districtId1" onchange="getDetailsForSelection1(\'districtId1\',\'constituency\',\''+stateId+'\',\''+searchType+'\',\''+casteStateId+'\',0,\'\')"></select>';
+		}
+		else if(locationType == 'tehsil'){
+		
+		str1+='/<select style="display:none;" id="districtId1" onchange="getDetailsForSelection1(\'districtId1\',\'constituency\',\''+stateId+'\',\''+searchType+'\',\''+casteStateId+'\',0,\'\')"></select>';
+		str1+='/<select style="display:none;" id="constiId1" onchange="getDetailsForSelection1(\'constiId1\',\'tehsil\',\''+stateId+'\',\''+searchType+'\',\''+casteStateId+'\',0,\'\')"></select>';
+		}
+		else if(locationType == 'panchayat'){
+		
+		str1+='/<select style="display:none;" id="districtId1" onchange="getDetailsForSelection1(\'districtId1\',\'constituency\',\''+stateId+'\',\''+searchType+'\',\''+casteStateId+'\',0,\'\')"></select>';
+		str1+='/<select style="display:none;" id="constiId1" onchange="getDetailsForSelection1(\'constiId1\',\'tehsil\',\''+stateId+'\',\''+searchType+'\',\''+casteStateId+'\',0,\'\')"></select>';
+		str1+='/<select style="display:none;" id="tehsilId1" onchange="getDetailsForSelection1(\'tehsilId1\',\'panchayat\',\''+stateId+'\',\''+searchType+'\',\''+casteStateId+'\',0,\'\')"></select>';
+		
+		}
+		
+		if(casteStateId != 0)
+		str1+='/<select style="display:none;" id="casteId1"></select>';
+		
+		//str1+='<button class="btn btn-success get-details m_top10" onclick="getDetailsForSelection(\''+locationId+'\',\''+locationType+'\',\''+stateId+'\',\''+searchType+'\',\''+casteStateId+'\',0,\'\')">Get Details</button>';
+		
+		$('#searchDiv').html(str1);
+		if(locationType == 'constituency'){
+		
+				$("#constiId1").hide();
+				$("#districtId1").show();
+				$("#tehsilId1").hide;
+				$("#districtId1").find('option').remove();
+				
+				var distOptions ='';		
+				
+				for(var i = 0; i < districtArr.length; ++i) {
+				
+					if(districtId == districtArr[i].value){
+						 distOptions+='<option value="'+districtArr[i].value+'" selected>'+districtArr[i].label+'</option>';	
+					}
+					else{
+						distOptions+='<option value="'+districtArr[i].value+'" >'+districtArr[i].label+'</option>';				
+					}
+				}
+				$("#districtId1").append(distOptions);
+				
+		}
+		
+		else if(locationType == 'tehsil'){
+		
+				$("#constiId1").show();
+				$("#districtId1").show();
+				$("#tehsilId1").hide;
+				$("#districtId1").find('option').remove();
+				$("#constiId1").find('option').remove();
+				
+				var distOptions ='';		
+				
+				for(var i = 0; i < districtArr.length; ++i) {
+				
+					if(districtId == districtArr[i].value){
+						 distOptions+='<option value="'+districtArr[i].value+'" selected>'+districtArr[i].label+'</option>';	
+					}
+					else{
+						distOptions+='<option value="'+districtArr[i].value+'" >'+districtArr[i].label+'</option>';				
+					}
+				}
+				$("#districtId1").append(distOptions);
+				var constiOptions ='';		
+				
+				for(var i = 0; i < mainConstiArr.length; ++i) {				
+					if(locationId == mainConstiArr[i].value){
+						 constiOptions+='<option value="'+mainConstiArr[i].value+'" selected>'+mainConstiArr[i].label+'</option>';	
+					}
+					else{
+						constiOptions+='<option value="'+mainConstiArr[i].value+'" >'+mainConstiArr[i].label+'</option>';			
+					}
+				}				
+				$("#constiId1").append(constiOptions);
+		}
+		else if(locationType == 'panchayat'){
+			alert(locationId);
+				$("#constiId1").show();
+				$("#districtId1").show();
+				$("#tehsilId1").show();
+				$("#tehsilId1").find('option').remove();
+				$("#districtId1").find('option').remove();
+				$("#constiId1").find('option').remove();
+				
+				var distOptions ='';		
+				
+				for(var i = 0; i < districtArr.length; ++i) {
+				
+					if(districtId == districtArr[i].value){
+						 distOptions+='<option value="'+districtArr[i].value+'" selected>'+districtArr[i].label+'</option>';	
+					}
+					else{
+						distOptions+='<option value="'+districtArr[i].value+'" >'+districtArr[i].label+'</option>';				
+					}
+				}
+				$("#districtId1").append(distOptions);
+				var constiOptions ='';		
+			
+				for(var i = 0; i < mainConstiArr.length; ++i) {				
+					if(constiId == mainConstiArr[i].value){
+						 constiOptions+='<option value="'+mainConstiArr[i].value+'" selected>'+mainConstiArr[i].label+'</option>';	
+					}
+					else{
+						constiOptions+='<option value="'+mainConstiArr[i].value+'" >'+mainConstiArr[i].label+'</option>';			
+					}
+				}				
+				$("#constiId1").append(constiOptions);
+				var tehsilOptions ='';		
+			
+				for(var i = 0; i < mainTehsilArr.length; ++i) {				
+					if(locationId == mainTehsilArr[i].value1){
+						 tehsilOptions+='<option value="'+mainTehsilArr[i].value1+'" selected>'+mainTehsilArr[i].label1+'</option>';	
+					}
+					else{
+						tehsilOptions+='<option value="'+mainTehsilArr[i].value1+'" >'+mainTehsilArr[i].label1+'</option>';			
+					}
+				}				
+				$("#tehsilId1").append(tehsilOptions);
+		}
+			
+			if(casteStateId != 0)
+			{
+				$("#casteId1").show();
+				var casteOptions ='';		
+				for(var i = 0; i < casteArr.length; ++i) {				
+					if(casteStateId == casteArr[i].value){
+						 casteOptions+='<option value="'+casteArr[i].value+'" selected>'+casteArr[i].label+'</option>';	
+					}
+					else{
+						casteOptions+='<option value="'+casteArr[i].value+'" >'+casteArr[i].label+'</option>';			
+					}
+				}				
+				$("#casteId1").append(casteOptions);
+			}
+		
+	
+	}
+	
+	
+	function getDetailsForSelection1(divId,locationType,stateId,searchType,casteStateId,isFinalValue,getDetailsAreaType)
+	{	
+		var locationId = $("#"+divId).val();
+		buildSearchDetailsSecondLevel(locationId,locationType);
+		var searchName = "";
+		var isFinal = "";
+		if(isFinalValue != 0)
+		{
+			isFinal = "Yes";
+			locationType = getDetailsAreaType;
+		}
+		var nextLocationType = "";
+		if(locationType == 'state')
+		{
+			nextLocationType ="constituency";
+		}
+		else if(locationType == 'constituency')
+		{
+			nextLocationType ="tehsil";
+		}
+		else if(locationType == 'tehsil')
+		{
+			nextLocationType ="panchayat";
+		}
+		$('#searchDetailsDiv').html('');
+		var jObj = {
+			searchType:searchType,			
+			stateId:stateId,
+			locationId:locationId,
+			locationType:locationType,
+			casteStateId:casteStateId,
+			searchName:searchName,
+			isFinal:isFinal
+		}				
+		$.ajax({
+          type:'GET',
+          url: 'getCadreVoterDetailsBySearchAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			//console.log(result);
+			if(result != null)
+			{
+				if(isFinalValue != 0)
+				{
+					buildSearchCandidateDetails(result);
+				}
+				else{
+					buildSearchResults(result,searchType,locationType,nextLocationType,stateId,casteStateId);
+				}
+				
+			}
+			else{
+				$('#searchDetailsDiv').html(' <button class="btn btn-success get-details m_top10" onclick="searchResults();">						<i class="glyphicon glyphicon-arrow-right"></i>&nbsp;&nbsp;Get Details</button>');
+			}
+		});
+		
 	}
 	
 	</script>
