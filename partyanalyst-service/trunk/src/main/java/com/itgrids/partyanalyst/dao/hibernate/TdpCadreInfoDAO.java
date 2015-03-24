@@ -153,7 +153,7 @@ public class TdpCadreInfoDAO extends GenericDaoHibernate<TdpCadreInfo, Long> imp
 	public List<Object[]> getVoterCadreDetailsBySearchCriteria(Long stateId, String locationType,List<Long> locationIdsList)
 	{
 		StringBuilder queryStr = new StringBuilder();
-		//0locationId,1count
+		boolean isStateWise = false;
 		StringBuilder str  = new StringBuilder();
 		str.append(" select distinct model.locationId,model.count  ");
 		
@@ -187,7 +187,7 @@ public class TdpCadreInfoDAO extends GenericDaoHibernate<TdpCadreInfo, Long> imp
 		}
 		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
 		{
-			str.append(" ,model2.name from TdpCadreInfo model,LocalElectionBody model2,Booth B where model2.LocalElectionBodyId = model.locationId and model2.localElectionBodyId = B.localBody.localElectionBodyId and model.locationType like '%LocalBody%' ");
+			str.append(" ,model2.name from TdpCadreInfo model,LocalElectionBody model2,Booth B where model2.localElectionBodyId = model.locationId and model2.localElectionBodyId = B.localBody.localElectionBodyId and model.locationType like '%LocalBody%' ");
 			str.append(" and B.publicationDate.publicationDateId = 11 and B.localBody.localElectionBodyId in (:locationIdsList) and model.type like '%Registered%' ");
 			str.append(" order by model2.name ");
 		}
@@ -199,19 +199,23 @@ public class TdpCadreInfoDAO extends GenericDaoHibernate<TdpCadreInfo, Long> imp
 		}
 		else if(stateId != null && stateId.longValue() == 0L) //AP & TS
 		{
+			isStateWise = true;
 			str.append(" ,model2.districtName from TdpCadreInfo model,District model2 where model.locationId = model2.districtId and (model.locationId between 1 and 23) and model.locationType like '%District%' ");
 			str.append(" and model.type like '%Registered%' ");
 			str.append(" order by model2.districtName ");
 		}
 		else if(stateId != null && stateId.longValue() == 1L) //AP
 		{
+			isStateWise = true;
 			str.append(" ,model2.districtName from TdpCadreInfo model,District model2 where model.locationId = model2.districtId and (model.locationId between 11 and 23) and model.locationType like '%District%' ");
 			str.append(" and model.type like '%Registered%' ");
 			str.append(" order by model2.districtName ");
 		}
 		else if(stateId != null && stateId.longValue() == 2L) //TS
 		{
+			isStateWise = true;
 			str.append(" ,model2.districtName from TdpCadreInfo model,District model2 where model.locationId = model2.districtId and (model.locationId between 1 and 10) and model.locationType like '%District%' ");
+			str.append(" and model.type like '%Registered%' ");
 			str.append(" order by model2.districtName ");
 		}
 		
@@ -220,7 +224,7 @@ public class TdpCadreInfoDAO extends GenericDaoHibernate<TdpCadreInfo, Long> imp
 		
 		Query query = getSession().createQuery(queryStr.toString());
 
-		if(locationIdsList != null && locationIdsList.size() > 0)
+		if(!isStateWise && (locationIdsList != null && locationIdsList.size() > 0))
 		{
 			query.setParameterList("locationIdsList", locationIdsList);
 		}
