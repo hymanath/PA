@@ -85,13 +85,13 @@
                 </div>              
 			</div>
 		</div>
-		<div class="pt-page pt-page-2 container" id="locationsDiv">    
+		<div class="pt-page pt-page-2 container" id="locationsDiv" style="margin-left: -15px;">    
 			<div>
 				<ol class="breadcrumb search-breadcrumb">				
 					<div id="searchDiv"></div>
 				</ol>
 				<div>
-					<div id="searchDetailsDiv">						
+					<div id="searchDetailsDiv" class="earchDetailsDiv">						
 					</div>						
 					
 				</div>
@@ -218,8 +218,6 @@
 		source: source,
 		select: function(event, ui) {
 			casteSel  = mapping[ui.item.value];
-			
-			
 		}
 	/*}).keypress(function (e) {
 			console.log(e.keyCode);
@@ -560,7 +558,7 @@ var constiSel =0;
 		if(locationType != 'state'){
 			if(locationType == 'constituency'){
 				$("#constiId1").hide();
-				$("#districtId1").show();
+				$("#constiId1").show();
 				var distOptions ='';		
 				
 					for(var i = 0; i < districtArr.length; ++i) {
@@ -579,7 +577,7 @@ var constiSel =0;
 			else if(locationType == 'tehsil'){
 		
 			$("#constiId1").show();
-			$("#districtId1").show();
+			$("#constiId1").show();
 				var distOptions ='';						
 				for(var i = 0; i < districtArr.length; ++i) {
 				
@@ -626,7 +624,7 @@ var constiSel =0;
 		}
 			if(result != null)
 			{
-				buildSearchResults(result,searchType,locationType,nextLocationType,stateId,casteStateId,divId,locationId,state);
+				buildSearchResults(result,searchType,locationType,nextLocationType,stateId,casteStateId);
 			}
 			else{
 				//$('#searchDetailsDiv').html('No Data Available...');
@@ -694,8 +692,10 @@ var constiSel =0;
 		
 	}
 	
-	function buildSearchCandidateDetails(result)
+	function buildSearchCandidateDetails(myresult)
 	{
+		var result= myresult[0].voterSearchList;
+		console.log(result);
 		var str='';
 		str+='<div class="panel panel-default search-panel">';
 		str+='<div class="panel-heading search-panel-heading" role="tab" id="headingOne">';
@@ -732,11 +732,10 @@ var constiSel =0;
 	
 	
 	function buildSearchResults(myResult,searchType,locationType,nextLocationType,stateId,casteStateId)
-	{
-	
-		
-	
+	{	
+	//divCount = parseInt(divCount) + parseInt(1);
 		var result = myResult[0].cadreSearchList;
+		var voterResult = myResult[0].voterSearchList;
 	
 		var str ='';
 		
@@ -752,12 +751,24 @@ var constiSel =0;
 				}				
 			}
 			
+			if(voterResult.length>0)
+			{
+				for(var i in voterResult)
+				{
+					str+='<div class="district-box get-details">';
+					str+='<a href="javascript:{getDetailsForSelection('+voterResult[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\');}" class="district-box-name get-details">';	
+					str+='<h4 class="" style="display:inline-block;"> &nbsp;&nbsp;'+voterResult[i].constituency+'</h4></a>';
+					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+voterResult[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',1,\''+locationType+'\');}"  class=""> &nbsp;'+voterResult[i].totalCount+' &nbsp;</a></span>';
+					str+='</div>';							
+				}				
+			}
+			
 			$('#searchDetailsDiv').html(str);
-			$('.fadeInRight').addClass('animated  fadeOutLeft ');
-			//$('#locationsDiv').addClass('animated  fadeInRight ');
+			$('.fadeInRight').addClass('animated  fadeInRight ');
+			$('.pt-page-1').hide();
+			$('.earchDetailsDiv').addClass('animated  fadeInBottom infinite');
 
 	}
-	
 	</script>
 </body>
 </html>
