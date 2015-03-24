@@ -145,7 +145,7 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 					Constituency constituency = constituencyDAO.get(locationId.longValue());
 					String constituencyType = constituency.getAreaType();
 					
-					if(constituencyType != null && constituencyType.equalsIgnoreCase(IConstants.RURALURBAN))
+					if(constituencyType != null && ( constituencyType.equalsIgnoreCase(IConstants.RURALURBAN) || constituencyType.equalsIgnoreCase(IConstants.URBAN)))
 					{
 						List<Object[]> tehsilList = tehsilDAO.findTehsilsByConstituencyIdAndPublicationDateId(locationId.longValue(),IConstants.VOTER_DATA_PUBLICATION_ID);
 						
@@ -162,12 +162,12 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 						}
 					}
 				}
-				else if(locationType != null && (locationType.equalsIgnoreCase(IConstants.WARD) || locationType.equalsIgnoreCase(IConstants.PANCHAYAT)))
+				else if(locationType != null && (locationType.equalsIgnoreCase(IConstants.WARD)))
 				{
 					muncipalityORCorprationIdsList = constituencyDAO.getAllWardsByLocalElectionBodyIds(locationIdsList);	
 					if(muncipalityORCorprationIdsList != null && muncipalityORCorprationIdsList.size()>0)
 					{
-						locationType = IConstants.LOCAL_ELECTION_BODY;
+						locationType = null;
 						areaType = IConstants.WARD;
 					}
 								
@@ -179,7 +179,9 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 					{
 						if(casteStateId == null || casteStateId.longValue() == 0L)
 						{
-							tdpCadreDetails = tdpCadreInfoDAO.getVoterCadreDetailsBySearchCriteria(stateId, locationType,locationIdsList);
+							if(locationType != null)
+								tdpCadreDetails = tdpCadreInfoDAO.getVoterCadreDetailsBySearchCriteria(stateId, locationType,locationIdsList);
+							
 							if(muncipalityORCorprationIdsList != null && muncipalityORCorprationIdsList.size()>0)
 							{
 								wardOrMuncipalityList = tdpCadreInfoDAO.getVoterCadreDetailsBySearchCriteria(stateId,areaType,muncipalityORCorprationIdsList);
@@ -201,7 +203,7 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 					
 					returnVO.setCadreSearchList(buildResult(tdpCadreDetails,wardOrMuncipalityList));
 				}
-				else if(searchType !=null && (searchType.equalsIgnoreCase("Any") || searchType.equalsIgnoreCase("Voter")))
+				if(searchType !=null && (searchType.equalsIgnoreCase("Any") || searchType.equalsIgnoreCase("Voter")))
 				{
 					if(nameStr == null || nameStr.trim().length() == 0)
 					{
@@ -260,7 +262,7 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 					locationLevel = 9L;
     			}
 				
-				if(searchType !=null && searchType.equalsIgnoreCase("Cadre"))
+				if(searchType.equalsIgnoreCase("Any") || (searchType !=null && searchType.equalsIgnoreCase("Cadre")))
 				{
 					TdpCadreVO tdpCadreVO= cadreDetailsService.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationLevel,locationId, nameStr,null,null, null, 
 																												null,casteStateId,null,null,null,null,null);
@@ -271,13 +273,87 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 						if(tdpCadreVOList != null && tdpCadreVOList.size()>0)
 						{
 							returnList = new ArrayList<TdpCadreVO>();
-							returnList.addAll(tdpCadreVOList);
+							for (TdpCadreVO voterVO : tdpCadreVOList) {
+								
+								TdpCadreVO vo = getMatchedTdpCadreVOByCasteName(returnList,voterVO.getCasteName().trim());
+								if(vo != null)
+								{
+									vo.getVoterSearchList().add(voterVO);
+								}
+								else
+								{
+									vo = new TdpCadreVO();
+									vo.setCasteName(voterVO.getCasteName().trim());
+									vo.getVoterSearchList().add(voterVO);
+									returnList.add(vo);
+								}
+							}
 						}						
 					}
 				}
-				else if(searchType !=null && searchType.equalsIgnoreCase("Voter"))
+				if(searchType.equalsIgnoreCase("Any")  || (searchType !=null && searchType.equalsIgnoreCase("Voter")))
 				{
-					
+					List<Object[]> votersList = boothPublicationVoterDAO.getVoterCadreCasteDetailsByName(stateId, locationType, locationId, casteStateId, nameStr);
+					if(votersList != null && votersList.size()>0)
+					{
+						List<TdpCadreVO> tdpCadreVOList = new ArrayList<TdpCadreVO>();
+						
+						for (Object[] voter : votersList) {
+							String name = voter[0] != null ? voter[0].toString().trim():"";
+							String relativeName = voter[1] != null ? voter[1].toString().trim():"";
+							String gender = voter[2] != null ? voter[2].toString().trim():"";
+							String age = voter[3] != null ? voter[3].toString().trim():"";
+							String tehsil = voter[4] != null ? voter[4].toString().trim():"";
+							String constituency = voter[5] != null ? voter[5].toString().trim():"";
+							String localBody = voter[6] != null ? voter[6].toString().trim():"";	
+							String district = voter[7] != null ? voter[7].toString().trim():"";
+							String panchayat = voter[8] != null ? voter[8].toString().trim():"";
+							String casteName = voter[9] != null ? voter[9].toString().trim():"";
+							String partNo = voter[10] != null ? voter[10].toString().trim():"";
+							Long constituencyId = voter[11] != null ? Long.valueOf(voter[11].toString().trim()):0L;
+							String imagePath = voter[12] != null ? voter[12].toString().trim():"";
+							
+							//vo.setImage(voter[7]!=null ?voterPath+voter[8].toString().trim()+"/"+voter[7].toString().trim()+".jpg":"");
+							
+							String voterPath="voter_images/"+constituencyId+"/Part"+partNo+"/"+imagePath.trim()+".jpg";
+							
+							TdpCadreVO vo = new TdpCadreVO();
+							vo.setCadreName(name);
+							vo.setRelativeName(relativeName);
+							vo.setGender(gender);
+							vo.setAge(Long.valueOf(age.toString()));
+							vo.setTehsil(tehsil);
+							vo.setLocalElectionBody(localBody);
+							vo.setConstituency(constituency);
+							vo.setDistrict(district);
+							vo.setPanchayat(panchayat);
+							vo.setCasteName(casteName);
+							vo.setImageURL(voterPath);
+							tdpCadreVOList.add(vo);
+							
+							
+						}
+						
+						if(tdpCadreVOList != null && tdpCadreVOList.size()>0)
+						{
+							returnList = new ArrayList<TdpCadreVO>();
+							for (TdpCadreVO voterVO : tdpCadreVOList) {
+								
+								TdpCadreVO vo = getMatchedTdpCadreVOByCasteName(returnList,voterVO.getCasteName().trim());
+								if(vo != null)
+								{
+									vo.getVoterSearchList().add(voterVO);
+								}
+								else
+								{
+									vo = new TdpCadreVO();
+									vo.setCasteName(voterVO.getCasteName().trim());
+									vo.getVoterSearchList().add(voterVO);
+									returnList.add(vo);
+								}
+							}
+						}
+					}
 				}
 			}
 			
@@ -294,6 +370,25 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 		return returnList;
 	}
 	
+	public TdpCadreVO getMatchedTdpCadreVOByCasteName(List<TdpCadreVO> tdpCadreVOList,String casteName)
+	{
+		TdpCadreVO returnVO = null;
+		try {
+				if(tdpCadreVOList != null && tdpCadreVOList.size()>0)
+				{
+					for (TdpCadreVO tdpCadreVO : tdpCadreVOList) 
+					{
+						if(tdpCadreVO.getCasteName().trim().equalsIgnoreCase(casteName.trim()))
+						{
+							return tdpCadreVO;
+						}
+					}
+				}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return returnVO;
+	}
 	public List<TdpCadreVO> buildResult(List<Object[]> tdpCadreDetails,List<Object[]> wardOrMuncipalityList)
 	{
 		List<TdpCadreVO>  returnList = new ArrayList<TdpCadreVO>();
@@ -324,10 +419,25 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 					Long id = candidate[0] != null ? Long.valueOf(candidate[0].toString().trim()):0L;
 					String name = candidate[2] != null ? candidate[2].toString().trim():"";
 					Long count =  candidate[1] != null ? Long.valueOf(candidate[1].toString().trim()):0L;
+					LocalElectionBody localElectionBody = null;
+					Constituency constituency = null;
+					try {
+						localElectionBody = localElectionBodyDAO.get(id);
+						if(localElectionBody != null)
+							candidateVO.setConstituency(name+" "+localElectionBody.getElectionType().getElectionType().toLowerCase());
+					} catch (Exception e) {
+						constituency = constituencyDAO.get(id);
+						if(constituency != null)
+						{
+							localElectionBody = localElectionBodyDAO.get(constituency.getLocalElectionBody().getLocalElectionBodyId());
+							candidateVO.setConstituency(name+" ("+localElectionBody.getName()+" "+localElectionBody.getElectionType().getElectionType().toLowerCase()+")");
+						}
+					}
 					
-					LocalElectionBody localElectionBody = localElectionBodyDAO.get(id);
 					candidateVO.setConstituencyId(id);
-					candidateVO.setConstituency(name+" "+localElectionBody.getElectionType().getElectionType().toLowerCase());
+					
+					
+					 
 					candidateVO.setResponseCode("1");
 					candidateVO.setTotalCount(count);
 					
