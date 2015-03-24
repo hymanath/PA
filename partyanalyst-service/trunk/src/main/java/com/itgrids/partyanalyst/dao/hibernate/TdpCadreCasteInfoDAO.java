@@ -98,7 +98,7 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 	public List<Object[]> getVoterCadreCasteDetailsBySearchCriteria(Long stateId,String locationType,List<Long> locationIdsList,Long casteStateId)
 	{
 		StringBuilder queryStr = new StringBuilder();
-		//0locationId,1count
+		boolean isStateWise = false;
 		StringBuilder str  = new StringBuilder();
 		str.append(" select distinct model.locationId,model.count ");
 		
@@ -142,16 +142,19 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		}
 		else if(stateId != null && stateId.longValue() == 0L) //AP & TS
 		{
+			isStateWise = true;
 			str.append(" , model2.districtName from TdpCadreCasteInfo model, District model2 where model.locationId = model2.districtId  and model.locationId between 1 and 23 and model.locationType like '%District%' ");
 			str.append(" and model.casteStateId =:casteStateId ");
 		}
 		else if(stateId != null && stateId.longValue() == 1L) //AP
 		{
+			isStateWise = true;
 			str.append(" , model2.districtName from TdpCadreCasteInfo model, District model2 where model.locationId = model2.districtId  and model.locationId between 11 and 23 and model.locationType like '%District%' ");
 			str.append(" and model.casteStateId =:casteStateId ");
 		}
 		else if(stateId != null && stateId.longValue() == 2L) //TS
 		{
+			isStateWise = true;
 			str.append(" , model2.districtName from TdpCadreCasteInfo model, District model2 where model.locationId = model2.districtId  and model.locationId between 1 and 10 and model.locationType like '%District%' ");
 			str.append(" and model.casteStateId =:casteStateId ");
 		}
@@ -162,7 +165,7 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("casteStateId", casteStateId);
 		
-		if(locationIdsList != null && locationIdsList.size()>0)
+		if(!isStateWise && (locationIdsList != null && locationIdsList.size()>0))
 		{
 			query.setParameterList("locationIdsList", locationIdsList);
 		}
