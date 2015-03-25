@@ -23,7 +23,8 @@
 	<link href="js/cadreSearch/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	<link href="js/cadreSearch/css/custom.css" rel="stylesheet" type="text/css">
 	<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css' />
-	
+	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 	
 	  <link rel="stylesheet" type="text/css" href="css/cadreRegistrationCSS/animate.css" >
 	<!--
@@ -41,6 +42,47 @@
 .get-details a{
 	color:#333;
 }
+
+.dataTables_length, .dataTables_filter , .dataTables_info {
+	color : #666666 !important;
+}
+.casteTableCls th {
+    background-color: #E2E4FF;
+}
+
+.dataTables_filter input,.dataTables_length select{
+	height:25px !important;
+}
+
+
+/*--------*/
+.styled-select {
+   background: url(http://i62.tinypic.com/15xvbd5.png) no-repeat 96% 0;
+   height: 29px;
+   overflow: hidden;
+   width: 180px;
+   
+}
+.styled-select select {
+   background: transparent;
+   border: none;
+   font-size: 14px;
+   height: 29px;
+   padding: 5px; /* If you add too much padding here, the options won't show in IE */
+   width: 268px;
+   outline:none;
+}
+
+.rounded {
+   -webkit-border-radius: 20px;
+   -moz-border-radius: 20px;
+   border-radius: 20px;
+}
+
+.black { background-color: tranceparent; border:1px solid #333}
+.black select   { color: #333; }
+
+
 </style>
 </head>
 	<body class="search-body-bg">			
@@ -85,7 +127,7 @@
                 </div>              
 			</div>
 		</div>
-		<div class="pt-page pt-page-2 container" id="locationsDiv" style="margin-left: -15px;">    
+		<div class="pt-page pt-page-2 container" id="locationsDiv">    
 			<div>
 				<ol class="breadcrumb search-breadcrumb">				
 					<div id="searchDiv"></div>
@@ -117,10 +159,10 @@
 			  <div class="panel-body">
 					<table class="table table-custom">
 						<tr>
-							<td width="5%"><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
-							<td width="15%"><h4>Name Of the member</h4></td>
-							<td width="15%"><h4>Guardian Name</h4></td>
-							<td width="15%"><h4>+91 9632580147</h4></td>
+							<td width=""><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
+							<td width=""><h4>Name Of the member</h4></td>
+							<td width=""><h4>Guardian Name</h4></td>
+							<td width=""><h4>+91 9632580147</h4></td>
 						</tr>						
 					</table>
 			  </div>
@@ -141,10 +183,10 @@
 			  <div class="panel-body">
 			   <table class="table table-custom">
 						<tr>
-							<td width="5%"><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
-							<td width="15%"><h4>Name Of the member</h4></td>
-							<td width="15%"><h4>Guardian Name</h4></td>
-							<td width="15%"><h4>+91 9632580147</h4></td>
+							<td width=""><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
+							<td width=""><h4>Name Of the member</h4></td>
+							<td width=""><h4>Guardian Name</h4></td>
+							<td width=""><h4>+91 9632580147</h4></td>
 						</tr>
 						
 					</table>
@@ -166,10 +208,10 @@
 			  <div class="panel-body">
 				<table class="table table-custom">
 						<tr>
-							<td width="5%"><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
-							<td width="15%"><h4>Name Of the member</h4></td>
-							<td width="15%"><h4>Guardian Name</h4></td>
-							<td width="15%"><h4>+91 9632580147</h4></td>
+							<td width=""><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
+							<td width=""><h4>Name Of the member</h4></td>
+							<td width=""><h4>Guardian Name</h4></td>
+							<td width=""><h4>+91 9632580147</h4></td>
 						</tr>
 						
 					</table>
@@ -197,6 +239,12 @@
 	var	casteSel = 0;
 	var casteArr ;
 	$(document).ready(function(){
+		
+		$(document).click(function (event) {    		
+			console.log(12121);
+				
+		});
+
 		$('.fadeInRight').addClass('animated  fadeInRight ');
 		casteArr = new Array();
 		var casteDetailsArr = new Array();
@@ -538,7 +586,7 @@ var constiSel =0;
 		
 	}
 	
-	
+	/*
 	
 	function getDetailsForSelection1111(locationId,locationType,stateId,searchType,casteStateId,isFinalValue,getDetailsAreaType)
 	{	
@@ -584,7 +632,7 @@ var constiSel =0;
 			{
 				if(isFinalValue != 0)
 				{
-					buildSearchCandidateDetails(result);
+					buildSe232archCandidateDetails(result);
 				}
 				else{
 					buildSearchResults(result,searchType,locationType,nextLocationType,stateId,casteStateId);
@@ -597,8 +645,8 @@ var constiSel =0;
 		});
 		
 	}
-	
-	function buildSearchCandidateDetails(myresult)
+	*/
+	/*function bu121ildSearchCandidateDetails(myresult)
 	{
 		var result= myresult[0].voterSearchList;
 		console.log(result);
@@ -620,12 +668,12 @@ var constiSel =0;
 		for(var i in result)
 		{
 			str+='<tr>';
-			str+='<td width="5%"><img class="profile-border" src="http://www.mytdp.com/images/cadre_images/'+result[i].imageURL+'" alt="" style="width: 40px;height: 50px"></img></td>';
-			str+='<td width="15%"><h4>'+result[i].cadreName+'</h4></td>';
-			str+='<td width="15%"><h4>'+result[i].relativeName+'</h4></td>';
-			str+='<td width="15%"><h4>'+result[i].mobileNo+'</h4></td>';
-			str+='<td width="15%"><h4>'+result[i].panchayat+'</h4></td>';
-			str+='<td width="15%"><h4>'+result[i].tehsil+' </h4></td>';
+			str+='<td width=""><img class="profile-border" src="http://www.mytdp.com/images/cadre_images/'+result[i].imageURL+'" alt="" style="width: 40px;height: 50px"></img></td>';
+			str+='<td width=""><h4>'+result[i].cadreName+'</h4></td>';
+			str+='<td width=""><h4>'+result[i].relativeName+'</h4></td>';
+			str+='<td width=""><h4>'+result[i].mobileNo+'</h4></td>';
+			str+='<td width=""><h4>'+result[i].panchayat+'</h4></td>';
+			str+='<td width=""><h4>'+result[i].tehsil+' </h4></td>';
 			str+='</tr>';	
 		}	
 		str+='</table>';
@@ -706,9 +754,10 @@ var constiSel =0;
 			$('.earchDetailsDiv').addClass('animated  fadeInBottom infinite');
 
 	}
+	*/
 	function buildSearchDetails(searchType,locationType,stateId,casteStateId,locationId,districtId,constiId,tehsilId){
 		var str1 ='';
-        str1+='Your Searching: <select class="searchCls1">';
+        str1+='<li>YOUR SEARCHING:</li> <li><div class="styled-select black rounded"><select class="searchCls1">';
 		if(searchType == "ANY"){
         str1+='<option value="0" selected >ANY</option> <option value="1" >CADRE</option><option value="2">VOTER</option>';
        
@@ -721,7 +770,7 @@ var constiSel =0;
 		 str1+='<option value="0">ANY</option> <option value="1" >CADRE</option><option value="2" selected>VOTER</option>';
         	
 		}
-		str1+='</select>/<select class="stateCls1">';
+		str1+='</select></div> </li> / <li><div class="styled-select black rounded"><select class="stateCls1">';
 		if(stateId == 0){
         str1+='<option value="0" selected>ANY</option><option value="1">ANDHRA PRADESH</option><option value="2">TELANGANA</option>';
        
@@ -735,21 +784,21 @@ var constiSel =0;
 		 str1+='<option value="0" >ANY</option><option value="1" selected>ANDHRA PRADESH</option><option value="2">TELANGANA</option>';
         		
 		}
-		str1+='</select>';
+		str1+='</select></div></li>';
 		if(locationType == 'constituency')
-		str1+='/<select style="display:none;" id="districtId1"></select>';
+		str1+=' / <li><div class="styled-select black rounded"><select style="display:none;" id="districtId1"></select></div></li>';
 		if(locationType == 'tehsil'){
-		str1+='/<select style="display:none;" id="districtId1"></select>';
-		str1+='/<select style="display:none;" id="constiId1"></select>';
+		str1+=' / <li><div class="styled-select black rounded"><select style="display:none;" id="districtId1"></select></div></li>';
+		str1+=' / <li><div class="styled-select black rounded"><select style="display:none;" id="constiId1"></select></div></li>';
 		}
 		if(locationType == 'panchayat'){
-		str1+='/<select style="display:none;" id="districtId1"></select>';
-		str1+='/<select style="display:none;" id="constiId1"></select>';
-		str1+='/<select style="display:none;" id="tehsilId1"></select>';
+		str1+=' / <li><div class="styled-select black rounded"><select style="display:none;" id="districtId1"></select></div></li>';
+		str1+=' / <li><div class="styled-select black rounded"><select style="display:none;" id="constiId1"></select></div></li>';
+		str1+=' / <li><div class="styled-select black rounded"><select style="display:none;" id="tehsilId1"></select></div></li>';
 		
 		}
 		if(casteStateId != 0)
-		str1+='/<select style="display:none;" id="casteId1"></select>';
+		str1+=' /  <li><div class="styled-select black rounded"><select style="display:none;" id="casteId1"></select></div></li>';
 		$('#searchDiv').html(str1);
 
 		if(locationType != 'state'){
@@ -1191,11 +1240,11 @@ var constiSel =0;
 						str+='<h4 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'</h4>';
 					}
 					else{
-						str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+');}" class="district-box-name get-details">';	
+						str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+');}" class="district-box-name get-details" title="Click here to get Sub Level Details">';	
 						str+='<h4 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'</h4></a>';
 					}
 					
-					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',1,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+');}"  class=""> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
+					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',1,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+');}"  class="" title="Click here to get Cadre Details"> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
 					str+='</div>';							
 				}				
 			}
@@ -1217,11 +1266,11 @@ var constiSel =0;
 						str+='<h4 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'</h4>';
 					}
 					else{
-						str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+');}" class="district-box-name get-details">';	
+						str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+');}" class="district-box-name get-details" title="Click here to get Sub Level Details">';	
 						str+='<h4 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'</h4></a>';
 					}
 					
-					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',1,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+');}"  class=""> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
+					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',1,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+');}"  class="" title="Click here to get Voter Details"> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
 					str+='</div>';							
 				}				
 			}
@@ -1237,14 +1286,15 @@ var constiSel =0;
 			$('#'+divStr+'').hide();
 	}
 	
-	function buildSearchCandidateDetails(result,divId)
+	function buildSearchCandidateDetails(myresult,divId)
 	{
+		var result = myresult[0].cadreSearchList;
 		var str='';
-		str+='<div class="pt-page pt-page-6 container" id="casteDiv" style="margin-top:25px;margin-left: -15px;">';		
+		str+='<div class="pt-page pt-page-6 container" id="casteDiv" style="margin-top:25px;">';		
 		str+='<div class="search-results">';
 		str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
 		
-		if(result.length>0)
+		if(result != null && result.length>0)
 		{
 			for(var i in result)
 			{
@@ -1252,7 +1302,7 @@ var constiSel =0;
 				str+='<div class="panel panel-default search-panel">';
 				str+='<div class="panel-heading search-panel-heading" role="tab" id="heading'+i+'">';
 				str+='<h4 class="panel-title">';
-				str+='<a class="collapsed" data-toggle="collapse" href="#collapse'+i+'" aria-expanded="false" aria-controls="collapse'+i+'">';
+				str+='<a class="collapsed" data-toggle="collapse" href="#collapse'+i+'" aria-expanded="false" data-parent="#accordion" aria-controls="collapse'+i+'">';
 				str+='<h3 style="display:inline-block;margin:0px;">'+result[i].casteName+'</h3>';
 				str+='<h5 style="display:inline-block;margin:10px;"> '+result[i].voterSearchList.length+'</h5>';
 				str+='<span><i class="glyphicon glyphicon-chevron-up pull-right" style="color:#E5E5E5"></i></span>';
@@ -1260,9 +1310,21 @@ var constiSel =0;
 				str+='</a>';
 				str+='</h4>';
 				str+='</div>';
-				str+='<div id="collapse'+i+'" class="panel-collapse collapse" aria-expanded="true" aria-labelledby="heading'+i+'">';
+				str+='<div id="collapse'+i+'" class="collapse panel-collapse " aria-labelledby="heading'+i+'">';
 				str+='<div class="panel-body">';
-				str+='<table class="table table-custom">';
+				str+='<table class="table table-custom casteTableCls" >';
+				str+='<thead>';
+				str+='<tr>';
+						str+='<th width="">  </td>';
+						str+='<th width=""> Candidate Name </th>';
+						str+='<th width=""> Relative Name </th>';
+						str+='<th width=""> Mobile No </th>';
+						str+='<th width=""> Constituency </th>';
+						str+='<th width=""> Mandal/Muncipality</th>';
+						str+='<th width=""> Panchayat </th>';
+				str+='</tr>	';	
+				str+='</thead>';
+				
 				var myresult = result[i].voterSearchList;
 				if(myresult.length>0)
 				{
@@ -1270,12 +1332,12 @@ var constiSel =0;
 					{
 						str+='<tr>';
 						str+='<td width="5%"><img class="profile-border" src="http://www.mytdp.com/images/cadre_images/'+myresult[j].imageURL+'" alt="" style="width:40px;height:50px;"></img></td>';
-						str+='<td width="15%"><h4>'+myresult[j].cadreName+'</h4></td>';
-						str+='<td width="15%"><h4>'+myresult[j].relativeName+'</h4></td>';
-						str+='<td width="15%"><h4>'+myresult[j].mobileNo+'</h4></td>';
-						str+='<td width="15%"><h4>'+myresult[j].constituency+'</h4></td>';
-						str+='<td width="15%"><h4>'+myresult[j].tehsil+'</h4></td>';
-						str+='<td width="15%"><h4>'+myresult[j].panchayat+'</h4></td>';
+						str+='<td width="">'+myresult[j].cadreName+'</td>';
+						str+='<td width="">'+myresult[j].relativeName+'</td>';
+						str+='<td width="">'+myresult[j].mobileNo+'</td>';
+						str+='<td width="">'+myresult[j].constituency+'</td>';
+						str+='<td width="">'+myresult[j].tehsil+'</td>';
+						str+='<td width="">'+myresult[j].panchayat+'</td>';
 						str+='</tr>	';	
 					}
 				}
@@ -1290,8 +1352,80 @@ var constiSel =0;
 		str+='</div>';
 		str+='</div>';
 		str+='</div>';
+		
+		
+		
+		var result = myresult[0].voterSearchList
+		str+='<div class="pt-page pt-page-6 container" id="casteDiv" style="margin-top:25px;margin-left: -15px;">';		
+		str+='<div class="search-results">';
+		str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+		
+		if(result != null && result.length>0)
+		{
+			for(var i in result)
+			{
+				
+				str+='<div class="panel panel-default search-panel">';
+				str+='<div class="panel-heading search-panel-heading" role="tab" id="headings'+i+'">';
+				str+='<h4 class="panel-title">';
+				str+='<a class="collapsed" data-toggle="collapse" href="#collapse'+i+'" aria-expanded="false" aria-controls="collapses'+i+'">';
+				str+='<h3 style="display:inline-block;margin:0px;">'+result[i].casteName+'</h3>';
+				str+='<h5 style="display:inline-block;margin:10px;"> '+result[i].voterSearchList.length+'</h5>';
+				str+='<span><i class="glyphicon glyphicon-chevron-up pull-right" style="color:#E5E5E5"></i></span>';
+				str+='<span><i class="glyphicon glyphicon-search pull-right" style="color:#E5E5E5"></i></span>';
+				str+='</a>';
+				str+='</h4>';
+				str+='</div>';
+				str+='<div id="collapses'+i+'" class="panel-collapse collapse" aria-expanded="true" aria-labelledby="headings'+i+'">';
+				str+='<div class="panel-body">';
+				str+='<table class="table table-custom casteTableCls" >';
+				str+='<thead>';
+				str+='<tr>';
+						str+='<th width="">  </td>';
+						str+='<th width=""> Candidate Name </th>';
+						str+='<th width=""> Relative Name </th>';
+						str+='<th width=""> Mobile No </th>';
+						str+='<th width=""> Constituency </th>';
+						str+='<th width=""> Mandal/Muncipality</th>';
+						str+='<th width=""> Panchayat </th>';
+				str+='</tr>	';	
+				str+='</thead>';
+				var myresult = result[i].voterSearchList;
+				if(myresult.length>0)
+				{
+					for(var j in myresult)
+					{
+						str+='<tr>';
+						str+='<td width="5%"><img class="profile-border" src="http://www.mytdp.com/images/cadre_images/'+myresult[j].imageURL+'" alt="" style="width:40px;height:50px;"></img></td>';
+						str+='<td width="">'+myresult[j].cadreName+'</td>';
+						str+='<td width="">'+myresult[j].relativeName+'</td>';
+						str+='<td width="">'+myresult[j].mobileNo+'</td>';
+						str+='<td width="">'+myresult[j].constituency+'</td>';
+						str+='<td width="">'+myresult[j].tehsil+'</td>';
+						str+='<td width=""><'+myresult[j].panchayat+'</td>';
+						str+='</tr>	';	
+					}
+				}
+				
+				str+='</table>';
+				str+='</div>';
+				str+='</div>';
+				str+='</div>';
+					
+			}
+		}
+		str+='</div>';
+		str+='</div>';
+		str+='</div>';
+		
 		$('#'+divId+'').html(str);
 		$('#'+divId+'').addClass('animated  fadeInRight');
+		//$('.casteTableCls').dataTable({});
+		$(".casteTableCls").dataTable({
+			"iDisplayLength": -1,
+			"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+		});
+		
 
 	}
 	
