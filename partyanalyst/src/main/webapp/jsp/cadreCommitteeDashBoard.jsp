@@ -134,7 +134,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						<table width="100%" class="table table-bordered" style="background-color:transparent; margin-bottom:0px;"  >
 							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 								<td colspan="6" style="text-align: right;">
-								        <button style="float:left;border: 0px none; background-color:#E5E5E;"><b>VILLAGE/WARD LEVEL COMMITTEES</b></button>
+								        <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;"><b>VILLAGE/WARD LEVEL COMMITTEES</b></button>
 										<button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdAPvillage" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
 										<button id="village"  class="btn btn-xs btn-success highlightClick1" onclick="getCommitteeDetails('AP','village')">Village</button> | 
 										<button id="ward" class="btn btn-xs btn-success highlightClick1" onclick="getCommitteeDetails('AP','ward')">Ward</button> |										
@@ -175,7 +175,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							<tr id="ivrDivIdAP" class="span"></tr>
 							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 								<td colspan="6" style="text-align: right;">
-								    <button style="float:left;border: 0px none; background-color:#E5E5E;"><b>MANDAL/TOWN/DIVISION LEVEL COMMITTEES</b></button>
+								    <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;"><b>MANDAL/TOWN/DIVISION LEVEL COMMITTEES</b></button>
 								    <button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdAPmandal" src="images/icons/search.gif" alt="Processing Image" style="display:none;" /></button>
 									<button id="mandal" class="btn btn-xs btn-success highlightClick" onclick="getCommitteeDetails('AP','mandal')">Mandal</button> | 
 									<button id="town" class="btn btn-xs btn-success highlightClick" onclick="getCommitteeDetails('AP','town')">Town</button> |	
@@ -240,7 +240,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						<table width="100%" class="table table-bordered" style="background-color:transparent; margin-bottom:0px;"  >
 							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 								<td colspan="6" style="text-align: right;">
-								    <button style="float:left;border: 0px none; background-color:#E5E5E;"><b>MANDAL/TOWN/DIVISION LEVEL COMMITTEES</b></button>
+								    <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;"><b>MANDAL/TOWN/DIVISION LEVEL COMMITTEES</b></button>
 									<button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdAPmandal" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
 									<button id="mandal" class="btn btn-xs btn-success highlightClick" onclick="getCommitteeDetails('AP','mandal')">Mandal</button> | 
 									<button id="town" class="btn btn-xs btn-success highlightClick" onclick="getCommitteeDetails('AP','town')">Town</button> |	
@@ -307,7 +307,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							</tr>
 							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 								<td colspan="6" style="text-align: right;">
-								        <button style="float:left;border: 0px none; background-color:#E5E5E;"><b>VILLAGE/WARD LEVEL COMMITTEES</b></button>
+								        <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;"><b>VILLAGE/WARD LEVEL COMMITTEES</b></button>
 										<button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdAPvillage" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
 										<button id="village"  class="btn btn-xs btn-success highlightClick1" onclick="getCommitteeDetails('AP','village')">Village</button> | 
 										<button id="ward" class="btn btn-xs btn-success highlightClick1" onclick="getCommitteeDetails('AP','ward')">Ward</button> |										
@@ -371,7 +371,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					<table width="100%" class="table table-bordered" style="background-color:transparent; margin-bottom:0px;"  >
 						<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 							<td colspan="6" style="text-align: right;">
-							    <button style="float:left;border: 0px none; background-color:#E5E5E;"><b>VILLAGE/WARD LEVEL COMMITTEES</b></button>
+							    <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;"><b>VILLAGE/WARD LEVEL COMMITTEES</b></button>
 							    <button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdTSvillage" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
 								<button id="tsVillage" class="btn btn-xs btn-success highlightClick3" onclick="getCommitteeDetails('TS','village')";>Village</button> | 
 								<button id="tsWard" class="btn btn-xs btn-success highlightClick3" onclick="getCommitteeDetails('TS','ward')";>Ward</button> |
@@ -411,7 +411,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						<tr id="ivrDivIdTS" class="span"></tr>
 						<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 							<td colspan="6" style="text-align: right;">
-							    <button style="float:left;border: 0px none; background-color:#E5E5E;"><b>MANDAL/TOWN/DIVISION LEVEL COMMITTEES</b></button>
+							    <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;"><b>MANDAL/TOWN/DIVISION LEVEL COMMITTEES</b></button>
 							    <button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdTSmandal" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
 								<button id="tsMandal" class="btn btn-xs btn-success highlightClick2" onclick="getCommitteeDetails('TS','mandal')";>Mandal</button> | 
 								<button id="tsTown" class="btn btn-xs btn-success highlightClick2" onclick="getCommitteeDetails('TS','town')";>Town</button> |
