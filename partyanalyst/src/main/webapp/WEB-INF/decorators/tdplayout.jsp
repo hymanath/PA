@@ -397,14 +397,13 @@ margin-top:10px;
 						<div>
 							<ul>
 								<c:if test="${sessionScope.USER.isAdmin == 'true'}">						
-								<li><a href="cadreCommitteeAction.action"><span>  TDP Committees Management  </span></a></li>
-								</c:if>
-							
-								<c:if test="${sessionScope.USER.isAdmin == 'true'}">						
 								<li><a href="committeeDashBoardAction.action"><span>Committee DashBoard</span></a></li>
 								</c:if>
 								<c:if test="${sessionScope.USER.isAdmin == 'true'}">						
 								<li><a href="cadreCommitteeRolesDashboard.action"><span>Committee Detailed Report</span></a></li>
+								</c:if>
+								<c:if test="${sessionScope.USER.isAdmin == 'true'}">						
+								<li><a href="cadreCommitteeAction.action"><span>  TDP Committees Management  </span></a></li>
 								</c:if>
 							</ul>
 						</div>
