@@ -332,7 +332,10 @@
 	var tehsilArr;
 	var divCount = 2;
 	function getDistrictsAndConstis(type,locationValue){
-
+	if(typeof districtArr == 'undefined'){
+		districtArr = new Array();
+	}
+	
 	
 	$('.districtCls').find('option').remove();
 	$('.districtCls').append('<option value="0"> ANY </option>');
@@ -349,7 +352,6 @@
 			if(result != null){
 				if(type == 'district'){
 					districtArr = new Array();
-					//$('.districtCls').remove();
 					for(var i in result){
 						var obj = {
 						value :  result[i].locationId,
@@ -663,11 +665,9 @@ var constiSel =0;
 		
 		str1+='  <li><div class="styled-select black rounded"><select id="casteId1" onchange="getCasteDetailsForSelection(0,\'\',\''+divId+'\',\''+locationType+'\')"></select></div></li>';
 		$('#searchDiv').html(str1);
-		if(locationType == 'state'){
-
+		if(locationType == 'state'){		
 			getDistrictsAndConstis("district",stateId);
 			var distOptions ='';		
-				
 				for(var i = 0; i < districtArr.length; ++i) {
 				
 					if(locationId == districtArr[i].value){
@@ -925,7 +925,7 @@ var constiSel =0;
 				}
 				$("#districtId1").append(distOptions);
 				var constiOptions ='';		
-				
+				if(typeof mainConstiArr !== 'undefined' && mainConstiArr.length > 0 ){
 				for(var i = 0; i < mainConstiArr.length; ++i) {				
 					if(locationId == mainConstiArr[i].value){
 						 constiOptions+='<option value="'+mainConstiArr[i].value+'" selected>'+mainConstiArr[i].label+'</option>';	
@@ -933,7 +933,17 @@ var constiSel =0;
 					else{
 						constiOptions+='<option value="'+mainConstiArr[i].value+'" >'+mainConstiArr[i].label+'</option>';			
 					}
-				}				
+				}
+				}else{
+				for(var i = 0; i < constiArr.length; ++i) {				
+					if(constiId == constiArr[i].value){
+						 constiOptions+='<option value="'+constiArr[i].value+'" selected>'+constiArr[i].label+'</option>';	
+					}
+					else{
+						constiOptions+='<option value="'+constiArr[i].value+'" >'+constiArr[i].label+'</option>';			
+					}
+				}
+				}
 				$("#constiId1").append(constiOptions);
 		}
 		else if(locationType == 'panchayat'){
@@ -958,13 +968,23 @@ var constiSel =0;
 				}
 				$("#districtId1").append(distOptions);
 				var constiOptions ='';		
-			
-				for(var i = 0; i < mainConstiArr.length; ++i) {				
-					if(constiId == mainConstiArr[i].value){
-						 constiOptions+='<option value="'+mainConstiArr[i].value+'" selected>'+mainConstiArr[i].label+'</option>';	
+					if(typeof mainConstiArr !== 'undefined' && mainConstiArr.length > 0 ){
+					for(var i = 0; i < mainConstiArr.length; ++i) {				
+						if(constiId == mainConstiArr[i].value){
+							 constiOptions+='<option value="'+mainConstiArr[i].value+'" selected>'+mainConstiArr[i].label+'</option>';	
+						}
+						else{
+							constiOptions+='<option value="'+mainConstiArr[i].value+'" >'+mainConstiArr[i].label+'</option>';			
+						}
 					}
-					else{
-						constiOptions+='<option value="'+mainConstiArr[i].value+'" >'+mainConstiArr[i].label+'</option>';			
+					}else{
+					for(var i = 0; i < constiArr.length; ++i) {				
+						if(constiId == constiArr[i].value){
+							 constiOptions+='<option value="'+constiArr[i].value+'" selected>'+constiArr[i].label+'</option>';	
+						}
+						else{
+							constiOptions+='<option value="'+constiArr[i].value+'" >'+constiArr[i].label+'</option>';			
+						}
 					}
 				}				
 				$("#constiId1").append(constiOptions);
@@ -1166,7 +1186,7 @@ var constiSel =0;
 					
 					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',1,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+');}"  class="" title="Click here to get Cadre Details"> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
 					str+='</div>';	
-							if(locationType == "constituency")
+						if(locationType == "constituency")
 						{
 	
 						var obj = {
@@ -1174,7 +1194,8 @@ var constiSel =0;
 						label :  result[i].constituency
 						}			
 						mainConstiArr.push(obj);
-					}	else if(locationType == "tehsil"){
+						}	
+						else if(locationType == "tehsil"){
 						var obj1 = {
 						value1 :  result[i].constituencyId,
 						label1 :  result[i].constituency
