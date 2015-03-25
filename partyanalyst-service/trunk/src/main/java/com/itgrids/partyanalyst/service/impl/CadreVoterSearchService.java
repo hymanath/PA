@@ -272,10 +272,10 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 						
 						if(tdpCadreVOList != null && tdpCadreVOList.size()>0)
 						{
-							returnList = new ArrayList<TdpCadreVO>();
+							List<TdpCadreVO> cadresList = new ArrayList<TdpCadreVO>();
 							for (TdpCadreVO voterVO : tdpCadreVOList) {
 								
-								TdpCadreVO vo = getMatchedTdpCadreVOByCasteName(returnList,voterVO.getCasteName().trim());
+								TdpCadreVO vo = getMatchedTdpCadreVOByCasteName(cadresList,voterVO.getCasteName().trim());
 								if(vo != null)
 								{
 									vo.getVoterSearchList().add(voterVO);
@@ -285,8 +285,13 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 									vo = new TdpCadreVO();
 									vo.setCasteName(voterVO.getCasteName().trim());
 									vo.getVoterSearchList().add(voterVO);
-									returnList.add(vo);
+									cadresList.add(vo);
 								}
+							}
+							
+							if(cadresList != null && cadresList.size()>0)
+							{
+								returnVO.setCadreSearchList(cadresList);
 							}
 						}						
 					}
@@ -336,10 +341,10 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 						
 						if(tdpCadreVOList != null && tdpCadreVOList.size()>0)
 						{
-							returnList = new ArrayList<TdpCadreVO>();
+							List<TdpCadreVO> voterList = new ArrayList<TdpCadreVO>();
 							for (TdpCadreVO voterVO : tdpCadreVOList) {
 								
-								TdpCadreVO vo = getMatchedTdpCadreVOByCasteName(returnList,voterVO.getCasteName().trim());
+								TdpCadreVO vo = getMatchedTdpCadreVOByCasteName(voterList,voterVO.getCasteName().trim());
 								if(vo != null)
 								{
 									vo.getVoterSearchList().add(voterVO);
@@ -349,8 +354,13 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 									vo = new TdpCadreVO();
 									vo.setCasteName(voterVO.getCasteName().trim());
 									vo.getVoterSearchList().add(voterVO);
-									returnList.add(vo);
+									voterList.add(vo);
 								}
+							}
+							
+							if(voterList != null && voterList.size() >0)
+							{
+								returnVO.setVoterSearchList(voterList);
 							}
 						}
 					}
