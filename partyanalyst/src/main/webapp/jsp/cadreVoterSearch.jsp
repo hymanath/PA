@@ -96,7 +96,7 @@
                      <form id="nl-form" class="nl-form">
                         I WANT TO SEARCH
                         <select class="searchCls">
-                            <option value="0" selected >ANY</option>
+                           <!-- <option value="0" selected >ANY</option>-->
                             <option value="1" >CADRE</option>
                             <option value="2">VOTER</option>
                         </select>
@@ -140,86 +140,7 @@
 				</div>
 			</div>
 		</div>
-		<!--
-		<div class="pt-page pt-page-6 container" id="casteDiv" style="display:none;'">
-			<div class="search-results">
-		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-		  <div class="panel panel-default search-panel">
-			<div class="panel-heading search-panel-heading" role="tab" id="headingOne">
-			  <h4 class="panel-title">
-				<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-				  <h3 style="display:inline-block;margin:0px;">CASTE NAME_1</h3>
-				  <h5 style="display:inline-block;margin:0px;"> [MEMBERS 200]</h5>
-				  <span><i class="glyphicon glyphicon-chevron-up pull-right" style="color:#E5E5E5"></i></span>
-				  <span><i class="glyphicon glyphicon-search pull-right" style="color:#E5E5E5"></i></span>
-				</a>
-			  </h4>
-			</div>
-			<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-			  <div class="panel-body">
-					<table class="table table-custom">
-						<tr>
-							<td width=""><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
-							<td width=""><h4>Name Of the member</h4></td>
-							<td width=""><h4>Guardian Name</h4></td>
-							<td width=""><h4>+91 9632580147</h4></td>
-						</tr>						
-					</table>
-			  </div>
-			</div>
-		  </div>
-		  <div class="panel panel-default search-panel">
-			<div class="panel-heading search-panel-heading" role="tab" id="headingTwo">
-			  <h4 class="panel-title">
-				<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-				 <h3 style="display:inline-block;margin:0px;">CASTE NAME_2</h3>
-				  <h5 style="display:inline-block;margin:0px;"> [MEMBERS 2100]</h5>
-				  <span><i class="glyphicon glyphicon-chevron-up pull-right" style="color:#E5E5E5"></i></span>
-				  <span><i class="glyphicon glyphicon-search pull-right" style="color:#E5E5E5"></i></span>
-				</a>
-			  </h4>
-			</div>
-			<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-			  <div class="panel-body">
-			   <table class="table table-custom">
-						<tr>
-							<td width=""><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
-							<td width=""><h4>Name Of the member</h4></td>
-							<td width=""><h4>Guardian Name</h4></td>
-							<td width=""><h4>+91 9632580147</h4></td>
-						</tr>
-						
-					</table>
-			  </div>
-			</div>
-		  </div>
-		  <div class="panel panel-default search-panel">
-			<div class="panel-heading search-panel-heading" role="tab" id="headingThree">
-			  <h4 class="panel-title">
-				<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-				  <h3 style="display:inline-block;margin:0px;">CASTE NAME_3</h3>
-				  <h5 style="display:inline-block;margin:0px;"> [MEMBERS 500]</h5>
-				  <span><i class="glyphicon glyphicon-chevron-up pull-right" style="color:#E5E5E5"></i></span>
-				  <span><i class="glyphicon glyphicon-search pull-right" style="color:#E5E5E5"></i></span>
-				</a>
-			  </h4>
-			</div>
-			<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-			  <div class="panel-body">
-				<table class="table table-custom">
-						<tr>
-							<td width=""><img class="profile-border" src="js/cadreSearch/images/profile.jpg" alt=""></img></td>
-							<td width=""><h4>Name Of the member</h4></td>
-							<td width=""><h4>Guardian Name</h4></td>
-							<td width=""><h4>+91 9632580147</h4></td>
-						</tr>
-						
-					</table>
-			  </div>
-			</div>
-		  </div>	
-		</div>
-		</div></div>-->	
+		
 	</div>   
 	
 	<!--<script src="js/cadreSearch/js/jquery-1.11.2.min.js" type="text/javascript"></script>-->
@@ -239,6 +160,7 @@
 	var	casteSel = 0;
 	var casteArr ;
 	$(document).ready(function(){
+
 		$('.fadeInRight').addClass('animated  fadeInRight ');
 		casteArr = new Array();
 		var casteDetailsArr = new Array();
@@ -453,7 +375,7 @@ var constiSel =0;
 	}
 	
 	function getSelectedData(){
-	
+	console.log(222);
 		btnFlag = true;
 		$('.districtDivCls').removeClass('nl-field-open');
 		$('.districtDivCls').open = false;		
@@ -473,7 +395,7 @@ var constiSel =0;
 	}
 	
 	function getSelectedData1(){
-	
+		console.log(1111);
 		btnFlag1 = true;
 		$('.constiDivCls').removeClass('nl-field-open');
 		$('.constiDivCls').open = false;		
@@ -488,12 +410,7 @@ var constiSel =0;
 		
 		
 	}
-	
-	
 	new NLForm(document.getElementById( 'nl-form' ));
-	
-	
-	
 	function searchResults(divId)
 	{
 		var searchType = $(".searchDivCls a").text();
@@ -576,7 +493,7 @@ var constiSel =0;
 			}
 			else{
 				//$('#searchDetailsDiv').html('No Data Available...');
-					$('#searchDetailsDiv').html(' <button class="btn btn-success get-details m_top10" onclick="searchResults();">						<i class="glyphicon glyphicon-arrow-right"></i>&nbsp;&nbsp;Get Details</button>');
+					$('#'+divId+'').html(' <div style="align-text:center;font-weight:bold;">No Data Available ...</div>');
 			}
 		});
 		
@@ -638,7 +555,7 @@ var constiSel =0;
 		 str1+='<option value="0">ANY</option> <option value="1" >CADRE</option><option value="2" selected>VOTER</option>';
         	
 		}
-		str1+='</select></div> </li>  <li><div class="styled-select black rounded"> <select id="stateId1" onchange="getDetailsForSelection1(\'stateId1\',\'state\',0,\'\',\''+divId+'\')">';
+		str1+='</select></div> </li>  <li><div class="styled-select black rounded"> <select id="stateId1" onchange="getCadreVoterDetailsForSelection1(\'stateId1\',\'state\',0,\'\',\''+divId+'\')">';
 		if(stateId == 0){
         str1+='<option value="0" selected>ANY</option><option value="1">ANDHRA PRADESH</option><option value="2">TELANGANA</option>';
        
@@ -655,11 +572,11 @@ var constiSel =0;
 		str1+='</select></div></li>';
 	
 	
-		str1+='   <li><div class="styled-select black rounded" style="display:none;"  id="districtDivId1"><select id="districtId1" onchange="getDetailsForSelection1(\'districtId1\',\'constituency\',0,\'\',\''+divId+'\')"></select></div></li>';
+		str1+='   <li><div class="styled-select black rounded" style="display:none;"  id="districtDivId1"><select id="districtId1" onchange="getCadreVoterDetailsForSelection1(\'districtId1\',\'constituency\',0,\'\',\''+divId+'\')"></select></div></li>';
 		
-		str1+='   <li><div class="styled-select black rounded"  style="display:none;"  id="constiDivId1"><select id="constiId1" onchange="getDetailsForSelection1(\'constiId1\',\'tehsil\',0,\'\',\''+divId+'\')")"></select></div></li>';
+		str1+='   <li><div class="styled-select black rounded"  style="display:none;"  id="constiDivId1"><select id="constiId1" onchange="getCadreVoterDetailsForSelection1(\'constiId1\',\'tehsil\',0,\'\',\''+divId+'\')")"></select></div></li>';
 		
-		str1+='   <li><div class="styled-select black rounded" style="display:none;"  id="tehsilDivId1"><select onchange="getDetailsForSelection1(\'tehsilId1\',\'panchayat\',0,\'\',\''+divId+'\')" id="tehsilId1" ></select></div></li> ';
+		str1+='   <li><div class="styled-select black rounded" style="display:none;"  id="tehsilDivId1"><select onchange="getCadreVoterDetailsForSelection1(\'tehsilId1\',\'panchayat\',0,\'\',\''+divId+'\')" id="tehsilId1" ></select></div></li> ';
 		
 		
 		
@@ -830,7 +747,7 @@ var constiSel =0;
 		 str1+='<option value="0">ANY</option> <option value="1" >CADRE</option><option value="2" selected>VOTER</option>';
         	
 		}
-		str1+='</select></div> </li>    <li><div class="styled-select black rounded"> <select id="stateId1" onchange="getDetailsForSelection1(\'stateId1\',\'state\',0,\'\',\''+divId+'\')">';
+		str1+='</select></div> </li>    <li><div class="styled-select black rounded"> <select id="stateId1" onchange="getCadreVoterDetailsForSelection1(\'stateId1\',\'state\',0,\'\',\''+divId+'\')">';
 	
 		if(stateId == 0){
         str1+='<option value="0" selected>ANY</option><option value="1">ANDHRA PRADESH</option><option value="2">TELANGANA</option>';
@@ -847,9 +764,9 @@ var constiSel =0;
 		}
 		str1+='</select></div></li>';
 
-		str1+='   <li><div class="styled-select black rounded" style="display:none;"  id="districtDivId1"><select id="districtId1" onchange="getDetailsForSelection1(\'districtId1\',\'constituency\',0,\'\',\''+divId+'\')"></select></div></li>';
-		str1+='  <li><div class="styled-select black rounded"  style="display:none;"  id="constiDivId1"><select  id="constiId1" onchange="getDetailsForSelection1(\'constiId1\',\'tehsil\',0,\'\',\''+divId+'\')")"></select></div></li>';
-		str1+='   <li><div class="styled-select black rounded" style="display:none;"  id="tehsilDivId1"><select onchange="getDetailsForSelection1(\'tehsilId1\',\'panchayat\',0,\'\',\''+divId+'\')" id="tehsilId1" ></select></div></li> ';
+		str1+='   <li><div class="styled-select black rounded" style="display:none;"  id="districtDivId1"><select id="districtId1" onchange="getCadreVoterDetailsForSelection1(\'districtId1\',\'constituency\',0,\'\',\''+divId+'\')"></select></div></li>';
+		str1+='  <li><div class="styled-select black rounded"  style="display:none;"  id="constiDivId1"><select  id="constiId1" onchange="getCadreVoterDetailsForSelection1(\'constiId1\',\'tehsil\',0,\'\',\''+divId+'\')")"></select></div></li>';
+		str1+='   <li><div class="styled-select black rounded" style="display:none;"  id="tehsilDivId1"><select onchange="getCadreVoterDetailsForSelection1(\'tehsilId1\',\'panchayat\',0,\'\',\''+divId+'\')" id="tehsilId1" ></select></div></li> ';
 
 		str1+='  <li><div class="styled-select black rounded"><select id="casteId1" onchange="getCasteDetailsForSelection(0,\'\',\''+divId+'\',\''+locationType+'\')"></select></div></li>';
 		//str1+='<button class="btn btn-success get-details m_top10" onclick="getDetailsForSelection(\''+locationId+'\',\''+locationType+'\',\''+stateId+'\',\''+searchType+'\',\''+casteStateId+'\',0,\'\')">Get Details</button>';
@@ -1026,8 +943,9 @@ var constiSel =0;
 	}
 	
 	
-	function getDetailsForSelection1(locId,locationType,isFinalValue,getDetailsAreaType,divId)
+	function getCadreVoterDetailsForSelection1(locId,locationType,isFinalValue,getDetailsAreaType,divId)
 	{	
+		$('#'+divId+'').html('');
 		var locationId = $("#"+locId).val();
 		var searchType = $("#searchId1 option:selected").text();
 		var stateId =  $("#stateId1 option:selected").val();
@@ -1083,15 +1001,15 @@ var constiSel =0;
 				
 			}
 			else{
-				$('#searchDetailsDiv').html(' <button class="btn btn-success get-details m_top10" onclick="searchResults();">						<i class="glyphicon glyphicon-arrow-right"></i>&nbsp;&nbsp;Get Details</button>');
+				$('#'+dinamicDiv+'').html(' <div style="align-text:center;font-weight:bold;">No Data Available ...</div>');
 			}
 		});
 		
 	}
 	
-	function getDetailsForSelection(locationId,locationType,stateId,searchType,casteStateId,isFinalValue,getDetailsAreaType,divId,isMuncipality)
+	function getDetailsForSelection(locationId,locationType,stateId,searchType,casteStateId,isFinalValue,getDetailsAreaType,divId,isMuncipality,presentDiv)
 	{		
-
+		$('#'+presentDiv+'').html('');
 		buildSearchDetailsSecondLevel(locationId,locationType,divId);
 		
 		var searchName = $('#enteredText').val();
@@ -1118,7 +1036,7 @@ var constiSel =0;
 		if(isMuncipality != 0)
 				locationType ="ward";
 			
-		$('#searchDetailsDiv').html('');
+		
 		var jObj = {
 			searchType:searchType,			
 			stateId:stateId,
@@ -1146,7 +1064,7 @@ var constiSel =0;
 				
 			}
 			else{
-				$('#searchDetailsDiv').html(' <button class="btn btn-success get-details m_top10" onclick="searchResults();">						<i class="glyphicon glyphicon-arrow-right"></i>&nbsp;&nbsp;Get Details</button>');
+				$('#'+divId+'').html(' <div style="align-text:center;font-weight:bold;">No Data Available ...</div>');
 			}
 		});
 		
@@ -1156,6 +1074,7 @@ var constiSel =0;
 	var dinamicDiv='';
 	function buildSearchResults(myResult,searchType,locationType,nextLocationType,stateId,casteStateId,divId)
 	{
+			$('#'+divId+'').html('');
 		var result = myResult[0].cadreSearchList;
 			divCount = parseInt(divCount)+1;
 
@@ -1180,11 +1099,11 @@ var constiSel =0;
 						str+='<h4 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'</h4>';
 					}
 					else{
-						str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+');}" class="district-box-name get-details" title="Click here to get Sub Level Details">';	
+						str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\');}" class="district-box-name get-details" title="Click here to get Sub Level Details">';	
 						str+='<h4 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'</h4></a>';
 					}
 					
-					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',1,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+');}"  class="" title="Click here to get Cadre Details"> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
+					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',1,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\');}"  class="" title="Click here to get Cadre Details"> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
 					str+='</div>';	
 						if(locationType == "constituency")
 						{
@@ -1222,11 +1141,11 @@ var constiSel =0;
 						str+='<h4 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'</h4>';
 					}
 					else{
-						str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+');}" class="district-box-name get-details" title="Click here to get Sub Level Details">';	
+						str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\');}" class="district-box-name get-details" title="Click here to get Sub Level Details">';	
 						str+='<h4 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'</h4></a>';
 					}
 					
-					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',1,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+');}"  class="" title="Click here to get Voter Details"> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
+					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',1,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\');}"  class="" title="Click here to get Voter Details"> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
 					str+='</div>';							
 				}				
 			}
@@ -1256,149 +1175,6 @@ var constiSel =0;
 			$('#'+divStr+'').hide();
 			
 			dinamicDiv = ''+divId+''+divCount+'';
-	}
-	
-	function buildSearchCandidateDetails(myresult,divId)
-	{
-		var result = myresult[0].cadreSearchList;
-		var str='';
-		str+='<div class="pt-page pt-page-6 container" id="casteDiv" style="margin-top:25px;">';		
-		str+='<div class="search-results">';
-		str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
-		
-		if(result != null && result.length>0)
-		{
-			for(var i in result)
-			{
-				
-				str+='<div class="panel panel-default search-panel">';
-				str+='<div class="panel-heading search-panel-heading" role="tab" id="heading'+i+'">';
-				str+='<h4 class="panel-title">';
-				str+='<a class="collapsed" data-toggle="collapse" href="#collapse'+i+'" aria-expanded="false" data-parent="#accordion" aria-controls="collapse'+i+'">';
-				str+='<h3 style="display:inline-block;margin:0px;">'+result[i].casteName+'</h3>';
-				str+='<h5 style="display:inline-block;margin:10px;"> '+result[i].voterSearchList.length+'</h5>';
-				str+='<span><i class="glyphicon glyphicon-chevron-up pull-right" style="color:#E5E5E5"></i></span>';
-				str+='<span><i class="glyphicon glyphicon-search pull-right" style="color:#E5E5E5"></i></span>';
-				str+='</a>';
-				str+='</h4>';
-				str+='</div>';
-				str+='<div id="collapse'+i+'" class="collapse panel-collapse " aria-labelledby="heading'+i+'">';
-				str+='<div class="panel-body">';
-				str+='<table class="table table-custom casteTableCls" >';
-				str+='<thead>';
-				str+='<tr>';
-						str+='<th width="">  </td>';
-						str+='<th width=""> Candidate Name </th>';
-						str+='<th width=""> Relative Name </th>';
-						str+='<th width=""> Mobile No </th>';
-						str+='<th width=""> Constituency </th>';
-						str+='<th width=""> Mandal/Muncipality</th>';
-						str+='<th width=""> Panchayat </th>';
-				str+='</tr>	';	
-				str+='</thead>';
-				
-				var myresult = result[i].voterSearchList;
-				if(myresult.length>0)
-				{
-					for(var j in myresult)
-					{
-						str+='<tr>';
-						str+='<td width="5%"><img class="profile-border" src="http://www.mytdp.com/images/cadre_images/'+myresult[j].imageURL+'" alt="" style="width:40px;height:50px;"></img></td>';
-						str+='<td width="">'+myresult[j].cadreName+'</td>';
-						str+='<td width="">'+myresult[j].relativeName+'</td>';
-						str+='<td width="">'+myresult[j].mobileNo+'</td>';
-						str+='<td width="">'+myresult[j].constituency+'</td>';
-						str+='<td width="">'+myresult[j].tehsil+'</td>';
-						str+='<td width="">'+myresult[j].panchayat+'</td>';
-						str+='</tr>	';	
-					}
-				}
-				
-				str+='</table>';
-				str+='</div>';
-				str+='</div>';
-				str+='</div>';
-					
-			}
-		}
-		str+='</div>';
-		str+='</div>';
-		str+='</div>';
-		
-		
-		
-		var result = myresult[0].voterSearchList
-		str+='<div class="pt-page pt-page-6 container" id="casteDiv" style="margin-top:25px;margin-left: -15px;">';		
-		str+='<div class="search-results">';
-		str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
-		
-		if(result != null && result.length>0)
-		{
-			for(var i in result)
-			{
-				
-				str+='<div class="panel panel-default search-panel">';
-				str+='<div class="panel-heading search-panel-heading" role="tab" id="headings'+i+'">';
-				str+='<h4 class="panel-title">';
-				str+='<a class="collapsed" data-toggle="collapse" href="#collapse'+i+'" aria-expanded="false" aria-controls="collapses'+i+'">';
-				str+='<h3 style="display:inline-block;margin:0px;">'+result[i].casteName+'</h3>';
-				str+='<h5 style="display:inline-block;margin:10px;"> '+result[i].voterSearchList.length+'</h5>';
-				str+='<span><i class="glyphicon glyphicon-chevron-up pull-right" style="color:#E5E5E5"></i></span>';
-				str+='<span><i class="glyphicon glyphicon-search pull-right" style="color:#E5E5E5"></i></span>';
-				str+='</a>';
-				str+='</h4>';
-				str+='</div>';
-				str+='<div id="collapses'+i+'" class="panel-collapse collapse" aria-expanded="true" aria-labelledby="headings'+i+'">';
-				str+='<div class="panel-body">';
-				str+='<table class="table table-custom casteTableCls" >';
-				str+='<thead>';
-				str+='<tr>';
-						str+='<th width="">  </td>';
-						str+='<th width=""> Candidate Name </th>';
-						str+='<th width=""> Relative Name </th>';
-						str+='<th width=""> Mobile No </th>';
-						str+='<th width=""> Constituency </th>';
-						str+='<th width=""> Mandal/Muncipality</th>';
-						str+='<th width=""> Panchayat </th>';
-				str+='</tr>	';	
-				str+='</thead>';
-				var myresult = result[i].voterSearchList;
-				if(myresult.length>0)
-				{
-					for(var j in myresult)
-					{
-						str+='<tr>';
-						str+='<td width="5%"><img class="profile-border" src="http://www.mytdp.com/images/cadre_images/'+myresult[j].imageURL+'" alt="" style="width:40px;height:50px;"></img></td>';
-						str+='<td width="">'+myresult[j].cadreName+'</td>';
-						str+='<td width="">'+myresult[j].relativeName+'</td>';
-						str+='<td width="">'+myresult[j].mobileNo+'</td>';
-						str+='<td width="">'+myresult[j].constituency+'</td>';
-						str+='<td width="">'+myresult[j].tehsil+'</td>';
-						str+='<td width=""><'+myresult[j].panchayat+'</td>';
-						str+='</tr>	';	
-					}
-				}
-				
-				str+='</table>';
-				str+='</div>';
-				str+='</div>';
-				str+='</div>';
-					
-			}
-		}
-		str+='</div>';
-		str+='</div>';
-		str+='</div>';
-		
-		$('#'+divId+'').html(str);
-		$('#'+divId+'').addClass('animated  fadeInRight');
-		//$('.casteTableCls').dataTable({});
-		$(".casteTableCls").dataTable({
-			"iDisplayLength": -1,
-			"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
-		});
-		
-
 	}
 	
 	
@@ -1468,12 +1244,181 @@ var constiSel =0;
 				
 			}
 			else{
-				$('#searchDetailsDiv').html(' <button class="btn btn-success get-details m_top10" onclick="searchResults();">						<i class="glyphicon glyphicon-arrow-right"></i>&nbsp;&nbsp;Get Details</button>');
+				$('#'+dinamicDiv+'').html(' <div style="align-text:center;font-weight:bold;">No Data Available ...</div>');
 			}
 		});
+	}
+	
+	
+	function buildSearchCandidateDetails(myresult,divId)
+	{
+		var result = myresult[0].cadreSearchList;
+		var str='';
+		str+='<div class="pt-page pt-page-6 container" id="casteDiv" style="margin-top:25px;">';		
+		str+='<div class="search-results">';
+		str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
 		
+		if(result != null && result.length>0)
+		{
+			for(var i in result)
+			{
+				//
+				str+='<div class="panel panel-default search-panel">';
+				str+='<div class="panel-heading search-panel-heading" role="tab" id="heading'+i+'">';
+				str+='<h4 class="panel-title">';
+				if(i == 0)
+					str+='<a class="collapsed" data-toggle="collapse" href="#collapse'+i+'" aria-expanded="false" data-parent="#accordion" aria-controls="collapse'+i+'" onclick="getCasteMembers(\'collapse'+i+'\')">';
+				else
+					str+='<a class="collapsed" href="#collapse'+i+'" aria-expanded="false" data-parent="#accordion" aria-controls="collapse'+i+'" onclick="getCasteMembers(\'collapse'+i+'\')">';
+				
+				str+='<h3 style="display:inline-block;margin:0px;">'+result[i].casteName+'</h3>';
+				str+='<h5 style="display:inline-block;margin:10px;"> '+result[i].voterSearchList.length+'</h5>';
+				str+='<span><i class="glyphicon glyphicon-chevron-up pull-right" style="color:#E5E5E5"></i></span>';
+				str+='<span><i class="glyphicon glyphicon-search pull-right" style="color:#E5E5E5"></i></span>';
+				str+='</a>';
+				str+='</h4>';
+				str+='</div>';
+				if(i == 0)
+					str+='<div id="collapse'+i+'" class="collapse panel-collapse in" aria-labelledby="heading'+i+'">';
+				else
+					str+='<div id="collapse'+i+'" class="collapse panel-collapse" aria-labelledby="heading'+i+'">';
+				str+='<div class="panel-body">';
+				str+='<table class="table table-custom casteTableCls" >';
+				str+='<thead>';
+				str+='<tr>';
+						str+='<th width="">  </td>';
+						str+='<th width=""> Candidate Name </th>';
+						str+='<th width=""> Relative Name </th>';
+						str+='<th width=""> Mobile No </th>';
+						str+='<th width=""> Constituency </th>';
+						str+='<th width=""> Mandal/Muncipality</th>';
+						str+='<th width=""> Panchayat </th>';
+				str+='</tr>	';	
+				str+='</thead>';
+				
+				var myresult = result[i].voterSearchList;
+				if(myresult.length>0)
+				{
+					for(var j in myresult)
+					{
+						str+='<tr>';
+						str+='<td width="5%"><img class="profile-border" src="http://www.mytdp.com/images/cadre_images/'+myresult[j].imageURL+'" alt="" style="width:40px;height:50px;"></img></td>';
+						str+='<td width="">'+myresult[j].cadreName+'</td>';
+						str+='<td width="">'+myresult[j].relativeName+'</td>';
+						str+='<td width="">'+myresult[j].mobileNo+'</td>';
+						str+='<td width="">'+myresult[j].constituency+'</td>';
+						str+='<td width="">'+myresult[j].tehsil+'</td>';
+						str+='<td width="">'+myresult[j].panchayat+'</td>';
+						str+='</tr>	';	
+					}
+				}
+				
+				str+='</table>';
+				str+='</div>';
+				str+='</div>';
+				str+='</div>';
+					
+			}
+		}
+		str+='</div>';
+		str+='</div>';
+		str+='</div>';
+		
+		
+		
+		var result = myresult[0].voterSearchList
+		str+='<div class="pt-page pt-page-6 container" id="casteDiv" style="margin-top:25px;margin-left: -15px;margin-bottom:15px;">';		
+		str+='<div class="search-results">';
+		str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+		
+		if(result != null && result.length>0)
+		{
+			for(var i in result)
+			{
+				
+				str+='<div class="panel panel-default search-panel">';
+				str+='<div class="panel-heading search-panel-heading" role="tab" id="heading1'+i+'">';
+				str+='<h4 class="panel-title">';
+				if(i == 0)
+					str+='<a class="collapsed" data-toggle="collapse" href="#collapse'+i+'" aria-expanded="false" data-parent="#accordion" aria-controls="collapse'+i+'" onclick="getCasteMembers(\'collapse1'+i+'\')">';
+				else
+					str+='<a class="collapsed" href="#collapse'+i+'" aria-expanded="false" data-parent="#accordion" aria-controls="collapse'+i+'" onclick="getCasteMembers(\'collapse1'+i+'\')">';
+				
+				str+='<h3 style="display:inline-block;margin:0px;">'+result[i].casteName+'</h3>';
+				str+='<h5 style="display:inline-block;margin:10px;"> '+result[i].voterSearchList.length+'</h5>';
+				str+='<span><i class="glyphicon glyphicon-chevron-up pull-right" style="color:#E5E5E5"></i></span>';
+				str+='<span><i class="glyphicon glyphicon-search pull-right" style="color:#E5E5E5"></i></span>';
+				str+='</a>';
+				str+='</h4>';
+				str+='</div>';
+				if(i == 0)
+					str+='<div id="collapse1'+i+'" class="collapse panel-collapse in" aria-labelledby="heading1'+i+'">';
+				else
+					str+='<div id="collapse1'+i+'" class="collapse panel-collapse" aria-labelledby="heading1'+i+'">';
+				str+='<div class="panel-body">';
+				str+='<table class="table table-custom casteTableCls" >';
+				str+='<thead>';
+				str+='<tr>';
+						str+='<th width="">  </td>';
+						str+='<th width=""> Candidate Name </th>';
+						str+='<th width=""> Relative Name </th>';
+						str+='<th width=""> Mobile No </th>';
+						str+='<th width=""> Constituency </th>';
+						str+='<th width=""> Mandal/Muncipality</th>';
+						str+='<th width=""> Panchayat </th>';
+				str+='</tr>	';	
+				str+='</thead>';
+				var myresult = result[i].voterSearchList;
+				if(myresult.length>0)
+				{
+					for(var j in myresult)
+					{
+						str+='<tr>';
+						str+='<td width="5%"><img class="profile-border" src="http://www.mytdp.com/images/cadre_images/'+myresult[j].imageURL+'" alt="" style="width:40px;height:50px;"></img></td>';
+						str+='<td width="">'+myresult[j].cadreName+'</td>';
+						str+='<td width="">'+myresult[j].relativeName+'</td>';
+						str+='<td width="">'+myresult[j].mobileNo+'</td>';
+						str+='<td width="">'+myresult[j].constituency+'</td>';
+						str+='<td width="">'+myresult[j].tehsil+'</td>';
+						str+='<td width=""><'+myresult[j].panchayat+'</td>';
+						str+='</tr>	';	
+					}
+				}
+				
+				str+='</table>';
+				str+='</div>';
+				str+='</div>';
+				str+='</div>';
+					
+			}
+		}
+		str+='</div>';
+		str+='</div>';
+		str+='</div>';
+		
+		$('#'+divId+'').html(str);
+		$('#'+divId+'').addClass('animated  fadeInRight');
+		//$('.casteTableCls').dataTable({});
+		$(".casteTableCls").dataTable({
+			"iDisplayLength": -1,
+			"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+		});
+		
+
+	}
 	
-	
+	function getCasteMembers(collapseDivId)
+	{
+		//console.log($('#'+collapseDivId+'').hasClass('in'));
+		if ($('#'+collapseDivId+'').hasClass('in'))
+		{
+			$('#'+collapseDivId+'').removeClass('in');
+		}
+		else{
+			$('.collapse').removeClass('in');
+			$('#'+collapseDivId+'').addClass('in');
+		}
+		
 	}
 	
 	</script>
