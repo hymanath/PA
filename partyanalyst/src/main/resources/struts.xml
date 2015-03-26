@@ -9852,6 +9852,11 @@
 			</result>
 		</action>
 		
+		<action name="committeeManagementAction" class="cadreCommitteeAction"  method="stateDistrictLvlCommittee">
+			<result name="success">/jsp/stateDistrictLvlCommittee.jsp</result>
+			<result name="input">/jsp/loginForm.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
 		
 </package>
 </struts>      

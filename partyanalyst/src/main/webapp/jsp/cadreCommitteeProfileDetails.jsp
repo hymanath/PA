@@ -236,8 +236,9 @@
 	</s:if>
 	<s:if test="%{committeeMngtType == 3}">
 	</s:if>
-
-	
+    <s:if test="%{committeeMngtType == 4}">
+	  <span style="font-weight:bold;text-transform: uppercase;"> ADDING <span style="color:#FD2A34"> ${cadreCommitteeVO.cadreName} </span> AS <span style="color:#FD2A34"> ${result1} </span> FOR <span style="color:#FD2A34"> ${result2} </span> IN ${result4} <br> <a class="btn btn-success btn-xs" href="committeeManagementAction.action?committeeTypeId=${committeeTypeId}&committeeId=${committeeId}&result3=${result3}&result4=${cadreCommitteeVO.memberShipCardId}&task=true">  click here If  you want CHANGE designation </a> <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 4px;"> <i class="glyphicon glyphicon-home"></i> </a> </span>
+	</s:if>
 	</div>
 		<div id="profileDiv">
 		<div class="row m_top20">
@@ -668,6 +669,9 @@
 			  </s:if>
 			  <s:if test="%{committeeMngtType == 3}">
 				<button class="btn btn-success btn-block btn-lg m_top20" id="submitCadreFormBtnReqId" type="button" onClick="submitCadreForm();">UPDATE PROFILE  &  ADD TO MANDAL AFFILIATED ELECTORAL</button>
+			  </s:if>
+			  <s:if test="%{committeeMngtType == 4}">
+				<button class="btn btn-success btn-block btn-lg m_top20" id="submitCadreFormBtnReqId" type="button" onClick="submitCadreForm();"> UPDATE PROFILE & PROCEED TO ADD AS COMMITTEE MEMBER</button>
 			  </s:if>
 			</div>	
 		</s:if>	

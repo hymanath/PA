@@ -85,9 +85,9 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private List<CommitteeSummaryVO> returnList;
 	private List<AccessedPageLoginTimeVO>       returnResult;
 	private Long 								mandalId;
-	
-
-	
+	private String                              reqLocationType;
+	private String                              reqLocationValue;
+	private String                              globalLocationName;
 	
 	public List<AccessedPageLoginTimeVO> getReturnResult() {
 		return returnResult;
@@ -460,6 +460,30 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		this.mandalId = mandalId;
 	}
 
+	public String getReqLocationType() {
+		return reqLocationType;
+	}
+
+	public void setReqLocationType(String reqLocationType) {
+		this.reqLocationType = reqLocationType;
+	}
+
+	public String getReqLocationValue() {
+		return reqLocationValue;
+	}
+
+	public void setReqLocationValue(String reqLocationValue) {
+		this.reqLocationValue = reqLocationValue;
+	}
+
+	public String getGlobalLocationName() {
+		return globalLocationName;
+	}
+
+	public void setGlobalLocationName(String globalLocationName) {
+		this.globalLocationName = globalLocationName;
+	}
+
 	public String execute()
 	{	
 		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
@@ -636,6 +660,10 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 				 }else{
 					 locationLvl = 9l;
 				 }
+			 }else if(locationType.equalsIgnoreCase("district")){
+			     locationLvl = 11l;
+			 }else if(locationType.equalsIgnoreCase("state")){
+				     locationLvl = 10l;
 			 }else{
 				 if(locationValue.substring(0,1).trim().equalsIgnoreCase("1")){
 					 locationLvl = 6l;
@@ -666,6 +694,10 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 					 }else{
 						 locationLvl = 9l;
 					 }
+				 }else if(locationType.equalsIgnoreCase("district")){
+					     locationLvl = 11l;
+				 }else if(locationType.equalsIgnoreCase("state")){
+					     locationLvl = 10l;
 				 }else{
 					 if(locationValue.substring(0,1).trim().equalsIgnoreCase("1")){
 						 locationLvl = 6l;
@@ -696,6 +728,10 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 					 }else{
 						 locationLvl = 9l;
 					 }
+				 }else if(locationType.equalsIgnoreCase("district")){
+				     locationLvl = 11l;
+				 }else if(locationType.equalsIgnoreCase("state")){
+					     locationLvl = 10l;
 				 }else{
 					 if(locationValue.substring(0,1).trim().equalsIgnoreCase("1")){
 						 locationLvl = 6l;
@@ -999,6 +1035,10 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 							 }else{
 								 locationLvl = 9l;
 							 }
+						 }else if(locationType.equalsIgnoreCase("district")){
+						     locationLvl = 11l;
+						 }else if(locationType.equalsIgnoreCase("state")){
+							     locationLvl = 10l;
 						 }else{
 							 if(locationValue.substring(0,1).trim().equalsIgnoreCase("1")){
 								 locationLvl = 6l;
@@ -1060,6 +1100,10 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 									 }else{
 										 locationLvl = 9l;
 									 }
+								 }else if(locationType.equalsIgnoreCase("district")){
+								     locationLvl = 11l;
+								 }else if(locationType.equalsIgnoreCase("state")){
+									     locationLvl = 10l;
 								 }else{
 									 if(locationValue.substring(0,1).trim().equalsIgnoreCase("1")){
 										 locationLvl = 6l;
@@ -1380,7 +1424,26 @@ public String getSummaryDetails(){
 	}
 	
 	
-	
+	public String stateDistrictLvlCommittee(){
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		
+		if(regVO.getAccessType().equalsIgnoreCase("DISTRICT")){
+			reqLocationType = "district";
+			reqLocationValue = "1"+regVO.getAccessValue();
+			globalLocationName = cadreCommitteeService.getDistrictName(Long.valueOf(regVO.getAccessValue().trim()))+" District";
+		}else if(regVO.getAccessType().equalsIgnoreCase("STATE")){
+			reqLocationType = "state";
+			reqLocationValue = "2"+regVO.getAccessValue();
+			if(regVO.getAccessValue().equalsIgnoreCase("1")){
+				globalLocationName = "Andhra Pradesh State";
+			}else{
+				globalLocationName = "Telangana State";
+			}
+		}
+		
+		finalStatus = globalLocationName;
+		return Action.SUCCESS;
+	}
 	
 	
 }
