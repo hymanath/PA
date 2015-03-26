@@ -47,7 +47,7 @@
 	color : #666666 !important;
 }
 .casteTableCls th {
-    background-color: #E2E4FF;
+    background-color: #ccc;
 }
 
 .dataTables_filter input,.dataTables_length select{
@@ -80,6 +80,7 @@ table.dataTable tr.odd td.sorting_1 {background-color: #eee;}
    width: 268px;
    outline:none;
 }
+.styled-select option{padding:5px;}
 
 .rounded {
    -webkit-border-radius: 20px;
@@ -106,7 +107,7 @@ z-index:2;
 </head>
 	<body class="search-body-bg">			
         <div class="container">
-        <div class="well search-heading m_top10"><h2 class="text-center search-head">SEARCH A CADRE/VOTER</h2></div>
+        <div class="well search-heading m_top10"><h2 class="text-center search-head">SEARCH A CADRE / VOTER</h2></div>
         
 		<div id="pt-main" class="pt-perspective" style="margin-left:-15px;">
         <div class="pt-page pt-page-1 container " style="left:-11px;">
@@ -152,8 +153,8 @@ z-index:2;
 		</div>
 		<div class="pt-page pt-page-2 container" id="locationsDiv">    
 			<div>
-					<span class="badge"> YOUR SEARCHING: </span>
-					<ul class="list-inline modifySearchBreadcrumb" style="margin-bottom: 0px;margin-left: 10px">					
+					<span class="badge modifySearchBreadscrumb" style="display:none;margin-left: 5px;margin-top: -18px;"> YOUR SEARCHING: </span>
+					<ul class="list-inline modifySearchBreadcrumb" style="display:none;margin-bottom: 0px; margin-left: 10px; margin-top: 10px;">					
 					<li> Cadre / Voter :  </li>
 					<li  class="stateId1"> State: </li>
 					<li  class="districtId1"  style="display:none;"> District : </li>
@@ -164,7 +165,7 @@ z-index:2;
 				<ol class="breadcrumb search-breadcrumb">				
 					<div id="searchDiv"></div>
 				</ol>
-				<div>
+				<div  style="margin-top:10px;">
 					<input type="hidden" id="enteredText" value=""/>
 					<div id="searchDetailsDiv" class="earchDetailsDiv">						
 					</div>						
@@ -538,6 +539,9 @@ var constiSel =0;
 		{
 			divId = dinamicDiv ;
 		}
+		$('.modifySearchBreadcrumb').show();
+		$('.modifySearchBreadscrumb').show();
+		
 		var searchType = $(".searchDivCls a").text();
 		$('#ajaxImageIdAPmandalconstiRoleSummary').show();
 		$('#modifySearchId').hide();
@@ -1066,12 +1070,14 @@ var constiSel =0;
 	function getCadreVoterDetailsForSelection1(locId,locationType,isFinalValue,getDetailsAreaType,divId)
 	{	
 		$('#'+divId+'').html('');
+		$('#ajaxImageIdAPmandalconstiRoleSummary').show();
 		var locationId = $("#"+locId).val();
 		var searchType = $("#searchId1 option:selected").text();
 		var stateId =  $("#stateId1 option:selected").val();
 		var casteStateId =$("#casteId1 option:selected").val();
-		
+		$('.tehsilId1').hide();
 		buildSearchDetailsSecondLevel(locationId,locationType,divId);
+		
 		var searchName = "";
 		var isFinal = "";
 		if(isFinalValue != 0)
@@ -1107,6 +1113,7 @@ var constiSel =0;
           url: 'getCadreVoterDetailsBySearchAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
+        $('#ajaxImageIdAPmandalconstiRoleSummary').hide();
 			//console.log(result);
 			if(result != null)
 			{
