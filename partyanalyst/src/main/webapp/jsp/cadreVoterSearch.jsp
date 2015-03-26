@@ -119,7 +119,7 @@ z-index:2;
                      <form id="nl-form" class="nl-form">
                         I WANT TO SEARCH
                         <select class="searchCls">
-                           <!-- <option value="0" selected >ANY</option>-->
+                            <option value="0" selected >ANY</option>
                             <option value="1" >CADRE</option>
                             <option value="2">VOTER</option>
                         </select>
@@ -1070,6 +1070,7 @@ var constiSel =0;
 	function getCadreVoterDetailsForSelection1(locId,locationType,isFinalValue,getDetailsAreaType,divId)
 	{	
 		$('#'+divId+'').html('');
+		$('#'+dinamicDiv+'').html('');
 		$('#ajaxImageIdAPmandalconstiRoleSummary').show();
 		var locationId = $("#"+locId).val();
 		var searchType = $("#searchId1 option:selected").text();
@@ -1086,7 +1087,7 @@ var constiSel =0;
 			locationType = getDetailsAreaType;
 		}
 		var nextLocationType = "";
-		if(locationType == 'state')
+		if(locationType == 'state') 
 		{
 			nextLocationType ="constituency";
 		}
@@ -1377,22 +1378,24 @@ var constiSel =0;
 	}
 	
 	
-	function buildSearchCandidateDetails(myresult,divId)
+	function buildSearchCandidateDetails(myresults,divId)
 	{
-		var result = myresult[0].cadreSearchList;
+		var result = myresults[0].cadreSearchList;
 		divCount = parseInt(divCount)+1;
 		if(divCount > 2)
 		{
 			divCount = 2;
-		}
-			
+		}	
+		var isDataAvailable = false;
 		var str='';
-		str+='<div class="pt-page pt-page-6 container" id="casteDiv" style="margin-top:25px;">';		
-		str+='<div class="search-results">';
-		str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
-		
 		if(result != null && result.length>0)
 		{
+			isDataAvailable = true;
+			str+='<div> <h4 class="text-center "> Cadre Details </h4></div>';	
+			str+='<div class="pt-page pt-page-6 container" id="casteDiv" style="margin-top:25px;">';		
+			str+='<div class="search-results">';
+			str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+			
 			for(var i in result)
 			{
 				//
@@ -1452,20 +1455,22 @@ var constiSel =0;
 				str+='</div>';
 					
 			}
+			
+			str+='</div>';
+			str+='</div>';
+			str+='</div>';
 		}
-		str+='</div>';
-		str+='</div>';
-		str+='</div>';
 		
-		
-		
-		var result = myresult[0].voterSearchList
-		str+='<div class="pt-page pt-page-6 container" id="casteDiv" style="margin-top:25px;margin-left: -15px;margin-bottom:15px;">';		
-		str+='<div class="search-results">';
-		str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
-		
+		var result = myresults[0].voterSearchList
+
 		if(result != null && result.length>0)
 		{
+			isDataAvailable = true;
+			str+='<div> <h4 class="text-center "> Voter Details </h4></div>';		
+			str+='<div class="pt-page pt-page-6 container" id="casteDiv" style="margin-top:25px;margin-bottom:15px;">';		
+			str+='<div class="search-results" >';
+			str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+		
 			for(var i in result)
 			{
 				
@@ -1507,7 +1512,7 @@ var constiSel =0;
 					for(var j in myresult)
 					{
 						str+='<tr>';
-						str+='<td width="5%"><img class="profile-border" src="http://www.mytdp.com/images/cadre_images/'+myresult[j].imageURL+'" alt="" style="width:40px;height:50px;"></img></td>';
+						str+='<td width="5%"><img class="profile-border" src="http://www.mytdp.com/'+myresult[j].imageURL+'" alt="" style="width:40px;height:50px;"></img></td>';
 						str+='<td width="">'+myresult[j].cadreName+'</td>';
 						str+='<td width="">'+myresult[j].relativeName+'</td>';
 						str+='<td width="">'+myresult[j].mobileNo+'</td>';
@@ -1524,12 +1529,20 @@ var constiSel =0;
 				str+='</div>';
 					
 			}
+			
+			str+='</div>';
+			str+='</div>';
+			str+='</div>';
 		}
-		str+='</div>';
-		str+='</div>';
-		str+='</div>';
 		
-		$('#'+divId+'').html(str);
+		if(isDataAvailable)
+		{			
+			$('#'+divId+'').html(str);			
+		}
+		else{
+			$('#'+divId+'').html(' <div style="align-text:center;font-weight:bold;">No Data Available ...</div>');
+		}
+		
 		$('#'+divId+'').addClass('animated  fadeInRight');
 		//$('.casteTableCls').dataTable({});
 		$(".casteTableCls").dataTable({
