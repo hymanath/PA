@@ -89,6 +89,12 @@ table.dataTable tr.odd td.sorting_1 {background-color: #eee;}
 
 .black { background-color: #E5E5E5; border:1px solid #333}
 .black select   { color: #333; }
+.nl-overlay {
+    margin-left: 1%;
+    width: 98%;
+background: none repeat scroll 0 0 !important;
+}
+
 
 table.dataTable tr.odd td.sorting_1 {background-color: #ccc;}
 table.dataTable tr.even td.sorting_1 {background-color: #ccc;}
@@ -134,12 +140,13 @@ table.dataTable tr.even td.sorting_1 {background-color: #ccc;}
                         CASTE AND 
                         <input  type="text"  value="" placeholder="ANY"/>
                         NAME.
-                        <br/>                        
+                        <br/>  
+						<div class="nl-overlay"></div>
                     </form>
                     <button class="btn btn-success get-details m_top10" onclick="searchResults('searchDetailsDiv');">
 						<i class="glyphicon glyphicon-arrow-right"></i>&nbsp;&nbsp;Get Details
                     </button>
-					<div class="nl-overlay"></div>
+					
                 </div>              
 			</div>
 		</div>
@@ -179,15 +186,18 @@ table.dataTable tr.even td.sorting_1 {background-color: #ccc;}
     <script src="js/cadreSearch/PageTransitions/js/pagetransitions.js" type="text/javascript"></script>
 -->
 	<script>
-		var btnFlag = false ;
-		var btnFlag1 = false ;
+	var btnFlag = false ;
+	var btnFlag1 = false ;
 	var selectionArr = ["searchCls","stateCls","districtCls","constiCls","casteCls","nameCls"];
 	var selectionArr1 = ["searchDivCls","stateDivCls","districtDivCls","constiDivCls","casteDivCls","nameDivCls"];
-		var selectionArr2 = ["searchDivClsHidden","stateDivClsHidden","districtDivClsHidden","constiDivClsHidden","casteDivClsHidden","nameDivClsHidden"];
+	var selectionArr2 = ["searchDivClsHidden","stateDivClsHidden","districtDivClsHidden","constiDivClsHidden","casteDivClsHidden","nameDivClsHidden"];
+	
 	var	casteSel = 0;
 	var casteArr ;
+	
 	$(document).ready(function(){
 
+		getDistrictsAndConstis("district",0)
 		$('.fadeInRight').addClass('animated  fadeInRight ');
 		casteArr = new Array();
 		var casteDetailsArr = new Array();
@@ -219,8 +229,8 @@ table.dataTable tr.even td.sorting_1 {background-color: #ccc;}
 		getDistrictsAndConstis("district",locationValue);					
 	});
 
-	$('.districtDivCls').click(function(){	
-		if(!$('.districtDivCls').hasClass('nl-field-open'))	{	
+	$('.districtDivCls').click(function(){
+		if(!$('.districtDivCls').hasClass('nl-field-open'))	{
 			if(btnFlag == true)
 			{
 			$('.districtDivCls').removeClass('nl-field-open');
@@ -243,8 +253,8 @@ table.dataTable tr.even td.sorting_1 {background-color: #ccc;}
 			}
 		});
 	
-	$('.constiDivCls').click(function(){	
-		if(!$('.constiDivCls').hasClass('nl-field-open'))	{	
+	$('.constiDivCls').click(function(){
+		if(!$('.constiDivCls').hasClass('nl-field-open'))	{
 			if(btnFlag1 == true)
 			{
 			$('.constiDivCls').removeClass('nl-field-open');
@@ -268,7 +278,25 @@ table.dataTable tr.even td.sorting_1 {background-color: #ccc;}
 			}
 		});
 		
-	
+		$('.nl-overlay').click(function(){
+		if($('.constiDivCls').hasClass('nl-field-open')){			
+			if(btnFlag1 == false)
+			{
+				$('.constiDivCls').removeClass('nl-field-open');
+				$('.constiDivCls').open = false;	
+				//btnFlag1 = true;
+			}	
+		}
+		else if($('.districtDivCls').hasClass('nl-field-open'))	{		
+			if(btnFlag == false)
+			{
+				$('.districtDivCls').removeClass('nl-field-open');
+				$('.districtDivCls').open = false;	
+				//btnFlag = true;
+			}
+			
+		}
+		});
 		
 	});
 	
@@ -406,7 +434,7 @@ var constiSel =0;
 	}
 	
 	function getSelectedData(){
-	console.log(222);
+	
 		btnFlag = true;
 		$('.districtDivCls').removeClass('nl-field-open');
 		$('.districtDivCls').open = false;		
@@ -426,16 +454,16 @@ var constiSel =0;
 	}
 	
 	function getSelectedData1(){
-		console.log(1111);
+
 		btnFlag1 = true;
 		$('.constiDivCls').removeClass('nl-field-open');
 		$('.constiDivCls').open = false;		
 		var validVal = $(".constiCls").val();
-		if(!validVal == ""){		
+		if(!validVal == ""){
 		var str ='<a class="nl-field-toggle">'+validVal+'</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" class="constiCls" onkeyup="constiKeyUp();" /><button type="button" id="gobtn" class="nl-field-go" onClick="getSelectedData1();">'+validVal+'</button>';
 		}
-		else{	
-		var str ='<a class="nl-field-toggle">ANY</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" class="constiCls" onkeyup="constiKeyUp();" /><button type="button" id="gobtn" class="nl-field-go" onClick="getSelectedData1();">ANY</button>';
+		else{
+		var str ='<a class="nl-field-toggle">ANY</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" class="constiCls" onkeyup="constiKeyUp(0);" /><button type="button" id="gobtn" class="nl-field-go" onClick="getSelectedData1();">ANY</button>';
 		}
 		$(".constiDivCls").html(str);
 		
@@ -745,7 +773,7 @@ var constiSel =0;
 		var constiId = $("#constiId1").val();
 		
 		var districtId = $("#districtId1").val();
-	console.log(999999);
+	
 		var str1 ='';
        str1+='<li><div class="styled-select black rounded"><select id="searchId1" onchange="getCasteDetailsForSelection(0,\'\',\''+divId+'\',\''+locationType+'\')">';
 		if(searchType == "ANY"){
@@ -1019,7 +1047,6 @@ var constiSel =0;
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
 			//console.log(result);
-			console.log(3333);
 			if(result != null)
 			{
 				if(isFinalValue != 0)
@@ -1264,7 +1291,6 @@ var constiSel =0;
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
 			//console.log(result);
-			console.log(2222);
 			if(result != null)
 			{
 				if(isFinalValue != 0)
