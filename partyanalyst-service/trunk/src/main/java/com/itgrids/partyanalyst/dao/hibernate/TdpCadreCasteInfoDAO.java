@@ -100,76 +100,83 @@ public class TdpCadreCasteInfoDAO extends GenericDaoHibernate<TdpCadreCasteInfo,
 		StringBuilder queryStr = new StringBuilder();
 		boolean isStateWise = false;
 		StringBuilder str  = new StringBuilder();
-		str.append(" select distinct model.locationId,model.count ");
-		
-		if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+		if(locationType != null)
 		{
-			str.append(" , model2.name from TdpCadreCasteInfo model, Constituency model2 where model2.constituencyId = model.locationId   and model2.district.districtId in (:locationIdsList) and model.locationType like '%Constituency%' ");
-			str.append(" and model.casteStateId =:casteStateId ");
+			str.append(" select distinct model.locationId,model.count ");
+			
+			if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			{
+				str.append(" , model2.name from TdpCadreCasteInfo model, Constituency model2 where model2.constituencyId = model.locationId   and model2.district.districtId in (:locationIdsList) and model.locationType like '%Constituency%' ");
+				str.append(" and model.casteStateId =:casteStateId ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.DISTRICT))
+			{
+				str.append(", model2.districtName from TdpCadreCasteInfo model, District model2 where model.locationId = model2.districtId and  model.locationId in (:locationIdsList) and model.locationType like '%District%' ");
+				str.append(" and model.casteStateId =:casteStateId ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.TEHSIL))
+			{
+				str.append(" ,model2.tehsilName from TdpCadreCasteInfo model,Tehsil model2,Booth B where model2.tehsilId = model.locationId and model2.tehsilId = B.tehsil.tehsilId and model.locationType like '%Tehsil%' ");
+				str.append(" and B.publicationDate.publicationDateId = 11 and B.constituency.constituencyId in (:locationIdsList)  ");
+				str.append(" and model.casteStateId =:casteStateId ");
+				str.append(" order by model2.tehsilName ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+			{
+				str.append(" ,model2.panchayatName from TdpCadreCasteInfo model,Panchayat model2,Booth B where model2.panchayatId = model.locationId and model2.panchayatId = B.panchayat.panchayatId and model.locationType like '%Panchayat%' ");
+				str.append(" and B.publicationDate.publicationDateId = 11 and B.tehsil.tehsilId in (:locationIdsList)  ");
+				str.append(" and model.casteStateId =:casteStateId ");
+				str.append(" order by model2.panchayatName ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+			{
+				str.append(" ,model2.name from TdpCadreCasteInfo model,LocalElectionBody model2,Booth B where model2.localElectionBodyId = model.locationId and model2.localElectionBodyId = B.localBody.localElectionBodyId and model.locationType like '%LocalBody%' ");
+				str.append(" and B.publicationDate.publicationDateId = 11 and B.localBody.localElectionBodyId in (:locationIdsList)  ");
+				str.append(" and model.casteStateId =:casteStateId ");
+				str.append(" order by model2.name ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.WARD))
+			{
+				str.append(" ,model2.name from TdpCadreCasteInfo model,Constituency model2 where model2.constituencyId = model.locationId and model.locationType like '%Ward%' ");
+				str.append(" and model.locationId in (:locationIdsList)  ");	
+				str.append(" and model.casteStateId =:casteStateId ");
+				str.append(" order by model2.name ");
+			}
+			else if(stateId != null && stateId.longValue() == 0L) //AP & TS
+			{
+				isStateWise = true;
+				str.append(" , model2.districtName from TdpCadreCasteInfo model, District model2 where model.locationId = model2.districtId  and model.locationId between 1 and 23 and model.locationType like '%District%' ");
+				str.append(" and model.casteStateId =:casteStateId ");
+			}
+			else if(stateId != null && stateId.longValue() == 1L) //AP
+			{
+				isStateWise = true;
+				str.append(" , model2.districtName from TdpCadreCasteInfo model, District model2 where model.locationId = model2.districtId  and model.locationId between 11 and 23 and model.locationType like '%District%' ");
+				str.append(" and model.casteStateId =:casteStateId ");
+			}
+			else if(stateId != null && stateId.longValue() == 2L) //TS
+			{
+				isStateWise = true;
+				str.append(" , model2.districtName from TdpCadreCasteInfo model, District model2 where model.locationId = model2.districtId  and model.locationId between 1 and 10 and model.locationType like '%District%' ");
+				str.append(" and model.casteStateId =:casteStateId ");
+			}
+			
+			
+			queryStr.append(str.toString());
+			
+			Query query = getSession().createQuery(queryStr.toString());
+			query.setParameter("casteStateId", casteStateId);
+			
+			if(!isStateWise && (locationIdsList != null && locationIdsList.size()>0))
+			{
+				query.setParameterList("locationIdsList", locationIdsList);
+			}
+			
+			return query.list();
 		}
-		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.DISTRICT))
+		else
 		{
-			str.append(", model2.districtName from TdpCadreCasteInfo model, District model2 where model.locationId = model2.districtId and  model.locationId in (:locationIdsList) and model.locationType like '%District%' ");
-			str.append(" and model.casteStateId =:casteStateId ");
+			return null;
 		}
-		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.TEHSIL))
-		{
-			str.append(" ,model2.tehsilName from TdpCadreCasteInfo model,Tehsil model2,Booth B where model2.tehsilId = model.locationId and model2.tehsilId = B.tehsil.tehsilId and model.locationType like '%Tehsil%' ");
-			str.append(" and B.publicationDate.publicationDateId = 11 and B.constituency.constituencyId in (:locationIdsList)  ");
-			str.append(" and model.casteStateId =:casteStateId ");
-			str.append(" order by model2.tehsilName ");
-		}
-		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
-		{
-			str.append(" ,model2.panchayatName from TdpCadreCasteInfo model,Panchayat model2,Booth B where model2.panchayatId = model.locationId and model2.panchayatId = B.panchayat.panchayatId and model.locationType like '%Panchayat%' ");
-			str.append(" and B.publicationDate.publicationDateId = 11 and B.tehsil.tehsilId in (:locationIdsList)  ");
-			str.append(" and model.casteStateId =:casteStateId ");
-			str.append(" order by model2.panchayatName ");
-		}
-		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
-		{
-			str.append(" ,model2.name from TdpCadreCasteInfo model,LocalElectionBody model2,Booth B where model2.localElectionBodyId = model.locationId and model2.localElectionBodyId = B.localBody.localElectionBodyId and model.locationType like '%LocalBody%' ");
-			str.append(" and B.publicationDate.publicationDateId = 11 and B.localBody.localElectionBodyId in (:locationIdsList)  ");
-			str.append(" and model.casteStateId =:casteStateId ");
-			str.append(" order by model2.name ");
-		}
-		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.WARD))
-		{
-			str.append(" ,model2.name from TdpCadreCasteInfo model,Constituency model2 where model2.constituencyId = model.locationId and model.locationType like '%Ward%' ");
-			str.append(" and model.locationId in (:locationIdsList)  ");	
-			str.append(" and model.casteStateId =:casteStateId ");
-			str.append(" order by model2.name ");
-		}
-		else if(stateId != null && stateId.longValue() == 0L) //AP & TS
-		{
-			isStateWise = true;
-			str.append(" , model2.districtName from TdpCadreCasteInfo model, District model2 where model.locationId = model2.districtId  and model.locationId between 1 and 23 and model.locationType like '%District%' ");
-			str.append(" and model.casteStateId =:casteStateId ");
-		}
-		else if(stateId != null && stateId.longValue() == 1L) //AP
-		{
-			isStateWise = true;
-			str.append(" , model2.districtName from TdpCadreCasteInfo model, District model2 where model.locationId = model2.districtId  and model.locationId between 11 and 23 and model.locationType like '%District%' ");
-			str.append(" and model.casteStateId =:casteStateId ");
-		}
-		else if(stateId != null && stateId.longValue() == 2L) //TS
-		{
-			isStateWise = true;
-			str.append(" , model2.districtName from TdpCadreCasteInfo model, District model2 where model.locationId = model2.districtId  and model.locationId between 1 and 10 and model.locationType like '%District%' ");
-			str.append(" and model.casteStateId =:casteStateId ");
-		}
-		
-		
-		queryStr.append(str.toString());
-		
-		Query query = getSession().createQuery(queryStr.toString());
-		query.setParameter("casteStateId", casteStateId);
-		
-		if(!isStateWise && (locationIdsList != null && locationIdsList.size()>0))
-		{
-			query.setParameterList("locationIdsList", locationIdsList);
-		}
-		
-		return query.list();
 	}
 }
