@@ -7633,7 +7633,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		
 		if(casteStateId != null && casteStateId.longValue() != 0L)
 		{
-			str.append(" and casteState.casteStateId =:casteStateId");
+			str.append(" and UVD.casteState.casteStateId =:casteStateId");
 		}
 		if(nameStr != null && nameStr.trim().length() != 0L)
 		{
