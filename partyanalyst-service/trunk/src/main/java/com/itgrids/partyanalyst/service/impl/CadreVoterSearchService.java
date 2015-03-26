@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreInfoDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
+import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
@@ -39,8 +40,21 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 	private IVoterInfoDAO voterInfoDAO;
 	private IUserVoterDetailsDAO userVoterDetailsDAO;
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
+	private IVoterCastInfoDAO voterCastInfoDAO;
 	
 	
+	public IVoterCastInfoDAO getVoterCastInfoDAO() {
+		return voterCastInfoDAO;
+	}
+
+	public void setVoterCastInfoDAO(IVoterCastInfoDAO voterCastInfoDAO) {
+		this.voterCastInfoDAO = voterCastInfoDAO;
+	}
+
+	public IVoterInfoDAO getVoterInfoDAO() {
+		return voterInfoDAO;
+	}
+
 	public void setBoothPublicationVoterDAO(
 			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
 		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
@@ -217,10 +231,10 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 						}
 						else
 						{
-							tdpCadreDetails = userVoterDetailsDAO.getVoterCadreCasteDetailsBySearchCriteria(stateId,locationType,locationIdsList,casteStateId);
+							tdpCadreDetails = voterCastInfoDAO.getVoterCadreDetailsBySearchCriteria(stateId,locationType,locationIdsList,casteStateId);
 							if(muncipalityORCorprationIdsList != null && muncipalityORCorprationIdsList.size()>0)
 							{
-								wardOrMuncipalityList = userVoterDetailsDAO.getVoterCadreCasteDetailsBySearchCriteria(stateId,areaType,muncipalityORCorprationIdsList,casteStateId);
+								wardOrMuncipalityList = voterCastInfoDAO.getVoterCadreDetailsBySearchCriteria(stateId,areaType,muncipalityORCorprationIdsList,casteStateId);
 							}
 						}
 					}				
@@ -440,7 +454,10 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 						if(constituency != null)
 						{
 							localElectionBody = localElectionBodyDAO.get(constituency.getLocalElectionBody().getLocalElectionBodyId());
-							candidateVO.setConstituency(name+" ("+localElectionBody.getName()+" "+localElectionBody.getElectionType().getElectionType().toLowerCase()+")");
+							if(!name.startsWith("WARD"))
+								candidateVO.setConstituency(name+" ("+localElectionBody.getName()+" "+localElectionBody.getElectionType().getElectionType().toLowerCase()+")");
+							else
+								candidateVO.setConstituency(name);
 						}
 					}
 					
