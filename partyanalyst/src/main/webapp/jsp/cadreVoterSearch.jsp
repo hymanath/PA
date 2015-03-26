@@ -89,11 +89,6 @@ table.dataTable tr.odd td.sorting_1 {background-color: #eee;}
 
 .black { background-color: #E5E5E5; border:1px solid #333}
 .black select   { color: #333; }
-.nl-overlay {
-    margin-left: 1%;
-    width: 98%;
-background: none repeat scroll 0 0 !important;
-}
 
 
 table.dataTable tr.odd td.sorting_1 {background-color: #ccc;}
@@ -102,6 +97,11 @@ table.dataTable tr.even td.sorting_1 {background-color: #ccc;}
 {
 	margin-left:5px;
 }
+.nl-overlay {
+background: none repeat scroll 0 0 !important;
+z-index:2;
+}
+
 </style>
 </head>
 	<body class="search-body-bg">			
@@ -140,9 +140,9 @@ table.dataTable tr.even td.sorting_1 {background-color: #ccc;}
                         CASTE AND 
                         <input  type="text"  value="" placeholder="ANY"/>
                         NAME.
-                        <br/>  
+                        <br/> 
 						<div class="nl-overlay"></div>
-                    </form>
+                    </form>					
                     <button class="btn btn-success get-details m_top10" onclick="searchResults('searchDetailsDiv');">
 						<i class="glyphicon glyphicon-arrow-right"></i>&nbsp;&nbsp;Get Details
                     </button>
@@ -188,6 +188,7 @@ table.dataTable tr.even td.sorting_1 {background-color: #ccc;}
 	<script>
 	var btnFlag = false ;
 	var btnFlag1 = false ;
+	var btnFlag2 = false ;
 	var selectionArr = ["searchCls","stateCls","districtCls","constiCls","casteCls","nameCls"];
 	var selectionArr1 = ["searchDivCls","stateDivCls","districtDivCls","constiDivCls","casteDivCls","nameDivCls"];
 	var selectionArr2 = ["searchDivClsHidden","stateDivClsHidden","districtDivClsHidden","constiDivClsHidden","casteDivClsHidden","nameDivClsHidden"];
@@ -196,8 +197,7 @@ table.dataTable tr.even td.sorting_1 {background-color: #ccc;}
 	var casteArr ;
 	
 	$(document).ready(function(){
-
-		getDistrictsAndConstis("district",0)
+		getDistrictsAndConstis("district",0);
 		$('.fadeInRight').addClass('animated  fadeInRight ');
 		casteArr = new Array();
 		var casteDetailsArr = new Array();
@@ -209,28 +209,15 @@ table.dataTable tr.even td.sorting_1 {background-color: #ccc;}
 				casteDetailsArr.push( '${caste.name}');
 				casteArr.push(obj);
 		</c:forEach>
-	var source  = [ ];
-	var mapping = { };
-	for(var i = 0; i < casteArr.length; ++i) {
-		source.push(casteArr[i].label);
-		mapping[casteArr[i].label] = casteArr[i].value;
-	}	
-	$('.casteCls').autocomplete({
-		minLength: 1,
-		source: source,
-		select: function(event, ui) {
-			casteSel  = mapping[ui.item.value];
-		}
-
-	});
-
+	
+	
 	$('.stateCls').click(function(){				
 		var locationValue = $(this).attr('key');		
 		getDistrictsAndConstis("district",locationValue);					
 	});
 
-	$('.districtDivCls').click(function(){
-		if(!$('.districtDivCls').hasClass('nl-field-open'))	{
+	$('.districtDivCls').click(function(){	
+		if(!$('.districtDivCls').hasClass('nl-field-open'))	{		
 			if(btnFlag == true)
 			{
 			$('.districtDivCls').removeClass('nl-field-open');
@@ -252,9 +239,30 @@ table.dataTable tr.even td.sorting_1 {background-color: #ccc;}
 			});
 			}
 		});
-	
-	$('.constiDivCls').click(function(){
-		if(!$('.constiDivCls').hasClass('nl-field-open'))	{
+		$('.casteDivCls').click(function(){	
+		if(!$('.casteDivCls').hasClass('nl-field-open'))	{		
+			if(btnFlag2 == true)
+			{
+			$('.casteDivCls').removeClass('nl-field-open');
+			$('.casteDivCls').open = false;	
+			btnFlag = false;
+			}	
+			else
+			{
+			$('.casteDivCls').open = true;			
+			$('.casteDivCls').addClass('nl-field-open');	
+			}
+			
+			$('.casteDivCls').keydown(function (e) {			
+					if ( e.keyCode == 13 ) {						
+						$('.casteDivCls').removeClass('nl-field-open');
+						$('.casteDivCls').open = false;
+					}
+			});
+			}
+		});
+	$('.constiDivCls').click(function(){	
+		if(!$('.constiDivCls').hasClass('nl-field-open'))	{	
 			if(btnFlag1 == true)
 			{
 			$('.constiDivCls').removeClass('nl-field-open');
@@ -296,8 +304,17 @@ table.dataTable tr.even td.sorting_1 {background-color: #ccc;}
 			}
 			
 		}
+		else if($('.casteDivCls').hasClass('nl-field-open'))	{		
+			if(btnFlag == false)
+			{
+				$('.casteDivCls').removeClass('nl-field-open');
+				$('.casteDivCls').open = false;	
+				//btnFlag2 = true;
+			}
+			
+		}
 		});
-		
+		getCasteSelectedDetails();
 	});
 	
 	
@@ -342,8 +359,11 @@ table.dataTable tr.even td.sorting_1 {background-color: #ccc;}
 					}
 					
 					var str='';
-					str+='<a class="nl-field-toggle">ANY</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" class="districtCls" onkeyup="districtsKeyUp();" /><button type="button" class="nl-field-go" onClick="getSelectedData();">Go</button>';
+					str+='<a class="nl-field-toggle">ANY</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" class="districtCls" onkeyup="districtsKeyUp();" />';
 					$(".districtDivCls").html(str);
+					var str1='';
+					str1+='<a class="nl-field-toggle">ANY</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" class="constiCls" onkeyup="constiKeyUp();" />';
+					$(".constiDivCls").html(str1);
 				}
 				else if(type == 'Constituency'){
 					constiArr = new Array();
@@ -357,7 +377,7 @@ table.dataTable tr.even td.sorting_1 {background-color: #ccc;}
 					}
 					
 					var str='';
-					str+='<a class="nl-field-toggle">ANY</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" class="constiCls" onkeyup="constiKeyUp();" /><button type="button" class="nl-field-go" onClick="getSelectedData1();">Go</button>';
+					str+='<a class="nl-field-toggle">ANY</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" class="constiCls" onkeyup="constiKeyUp();" />';
 					$(".constiDivCls").html(str);
 				}
 				else if(type == 'panchayat'){
@@ -391,20 +411,16 @@ var constiSel =0;
 						minLength: 1,
 						source: source,
 						select: function(event, ui) {
-							//$(".districtCls").attr('disabled', 'disabled');
 							districtSel = mapping[ui.item.value];
-							
 							for(var i = 0; i < districtArr.length; ++i) {
-								if(districtArr[i].value == districtSel)
-								{
+								if(districtArr[i].value == districtSel){
 									var districtName = districtArr[i].label;
 									$('.districtCls').val(districtName);							
 									getSelectedData();
 								}
 							}
 						}
-					});
-					
+					});					
 	}
 	function constiKeyUp(){
 		var source = [ ];
@@ -418,7 +434,6 @@ var constiSel =0;
 						source: source,
 						select: function(event, ui) {
 							constiSel = mapping[ui.item.value];
-							
 							for(var i = 0; i < constiArr.length; ++i) {
 								if(constiArr[i].value == constiSel)
 								{
@@ -428,21 +443,48 @@ var constiSel =0;
 								}
 							}
 						}
-						
-						
 					});
 	}
 	
+	
+	function casteKeyUp(){
+		var source = [ ];
+					var mapping = { };
+					for(var i = 0; i < casteArr.length; ++i) {
+						source.push(casteArr[i].label);
+						mapping[casteArr[i].label] = casteArr[i].value;
+					}	
+					$('.casteCls').autocomplete({
+						minLength: 1,
+						source: source,
+						select: function(event, ui) {
+							casteSel = mapping[ui.item.value];	
+							for(var i = 0; i < casteArr.length; ++i) {
+								if(casteArr[i].value == casteSel)
+								{
+									var casteName = casteArr[i].label;
+									$('.casteCls').val(casteName);							
+									getCasteSelectedDetails();
+								}
+							}
+						}
+					});
+	}
+	
+	
 	function getSelectedData(){
 	
-		btnFlag = true;
+		if(btnFlag)
+			btnFlag= true;
+		else
+			btnFlag = false;
 		$('.districtDivCls').removeClass('nl-field-open');
 		$('.districtDivCls').open = false;		
 		var validVal = $(".districtCls").val();
 		if(!validVal == ""){	
-		var str ='<a class="nl-field-toggle">'+validVal+'</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" class="districtCls" onkeyup="districtsKeyUp();" /><button type="button" id="gobtn" class="nl-field-go" onClick="getSelectedData();">'+validVal+'</button>';
+		var str ='<a class="nl-field-toggle">'+validVal+'</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" class="districtCls" onkeyup="districtsKeyUp();" />';
 		}else{
-		var str ='<a class="nl-field-toggle">ANY</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" class="districtCls" onkeyup="districtsKeyUp();" /><button type="button" id="gobtn" class="nl-field-go" onClick="getSelectedData();">ANY</button>';
+		var str ='<a class="nl-field-toggle">ANY</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" class="districtCls" onkeyup="districtsKeyUp();" />';
 		
 		}
 		
@@ -454,20 +496,40 @@ var constiSel =0;
 	}
 	
 	function getSelectedData1(){
-
-		btnFlag1 = true;
+		if(btnFlag1)
+			btnFlag1 = true;
+		else
+		btnFlag1 = false;
 		$('.constiDivCls').removeClass('nl-field-open');
 		$('.constiDivCls').open = false;		
 		var validVal = $(".constiCls").val();
 		if(!validVal == ""){
-		var str ='<a class="nl-field-toggle">'+validVal+'</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" class="constiCls" onkeyup="constiKeyUp();" /><button type="button" id="gobtn" class="nl-field-go" onClick="getSelectedData1();">'+validVal+'</button>';
+		var str ='<a class="nl-field-toggle">'+validVal+'</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" class="constiCls" onkeyup="constiKeyUp();" />';
 		}
 		else{
-		var str ='<a class="nl-field-toggle">ANY</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" class="constiCls" onkeyup="constiKeyUp(0);" /><button type="button" id="gobtn" class="nl-field-go" onClick="getSelectedData1();">ANY</button>';
+		var str ='<a class="nl-field-toggle">ANY</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" class="constiCls" onkeyup="constiKeyUp();" />';
 		}
 		$(".constiDivCls").html(str);
 		
 		
+	}
+	
+	function getCasteSelectedDetails(){
+		if(btnFlag2)
+			btnFlag2 = true;
+		else
+			btnFlag2 = false;
+		$('.casteDivCls').removeClass('nl-field-open');
+		$('.casteDivCls').open = false;		
+		var validVal = $(".casteCls").val();
+		if(!validVal == ""){
+		var str ='<a class="nl-field-toggle">'+validVal+'</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY"  onkeyup="casteKeyUp();" class="casteCls"  />';
+		}
+		else{
+		var str ='<a class="nl-field-toggle">ANY</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" onkeyup="casteKeyUp();" class="casteCls"  />';
+		}
+		$(".casteDivCls").html(str);
+
 	}
 	new NLForm(document.getElementById( 'nl-form' ));
 	function searchResults(divId)
@@ -569,7 +631,6 @@ var constiSel =0;
 	
 	function buildSearchDetails(searchType,locationType,stateId,casteStateId,locationId,districtId,constiId,tehsilId,divId){
 		var str1 ='';  
-		console.log(88888);
 		str1+='<li><div class="styled-select black rounded" ><select id="searchId1" onchange="getCasteDetailsForSelection(0,\'\',\''+divId+'\',\''+locationType+'\')">';
 		if(searchType == "ANY"){
         str1+='<option value="0" selected >ANY</option> <option value="1" >CADRE</option><option value="2">VOTER</option>';
@@ -1111,7 +1172,6 @@ var constiSel =0;
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
 			$('#ajaxImageIdAPmandalconstiRoleSummary').hide();
-			console.log(11111);
 			if(result != null)
 			{
 				if(isFinalValue != 0)
@@ -1147,7 +1207,7 @@ var constiSel =0;
 				mainTehsilArr = new Array();
 		var str ='';
 		
-		console.log("divId :"+divId);
+		//console.log("divId :"+divId);
 		var areaType ='';
 		/*if(locationType =='state')
 		{
@@ -1502,10 +1562,9 @@ var constiSel =0;
 			$('#hideModifiSearchId').show();
 			$('#showModifiSearchId').hide();
 			$('#modifySearchId').show();
-		}
-		
+		}	
 	}
-
+	
 	</script>
 </body>
 </html>
