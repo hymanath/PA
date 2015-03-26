@@ -98,4 +98,5 @@ public interface ICadreCommitteeService {
 	public BasicVO getAccessLocationValuesByState(String accessType,Long accessValue,Long stateId,Long userId);
 	public CadreCommitteeRolesInfoVO getCommitteeRoleAgeWiseDetailsByLocationType(String userAccessType,String locationValue,Long committeeTypeId,List<Long> positionIdsList,List<Long> casteCategoryIdsList,List<Long> casteCategoryGroupIdsList, 
 			List<Long> casteIdsList,Long locationLevelId,Long userId, Long accessValue,String selectedRadio);
+	public String getDistrictName(Long  districtId);
 }

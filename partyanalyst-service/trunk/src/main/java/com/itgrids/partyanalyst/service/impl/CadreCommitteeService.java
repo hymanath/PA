@@ -8657,4 +8657,14 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 		}
 		return returnVO;
 	}
+	
+	public String getDistrictName(Long  districtId){
+		String name="";
+		try {
+		   name = districtDAO.getDistrictNameById(districtId).toString();
+		} catch (Exception e) {
+			LOG.error("Exception Raised in getDistrictName() ",e);
+		}
+		return name;
+	}
 }
