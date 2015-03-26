@@ -237,22 +237,22 @@ lable{line-height:40px;}
 </div>
 <div  id="profileUserName" style="margin-top: 12px;text-align:center;" >
 <b>${loginUserName}</b> </div></div>
-</div>		
- <div class="widget blue">
- <h2 style="border-bottom:none !important;"><a id="toggleDiv"  class="btn btn-info"><i class="icon icon-cog  icon-white"></i> Account Settings</a></h2>
- <div id='profileDiv' style="display:none;">
- <table class="table table-hover"  style="margin-bottom: -13px;border-spacing: 2px;"><thead></thead><tbody><tr><td><a href="freeUserRegistration.action?tempVar=dashBoard"><span class="icon-pencil"></span>  Edit Profile</a></td></tr>  <tr><td><a class="changePwdLink" href="javascript:{}"><span class="icon-hand-right"></span>  Change Password</a></td></tr>   <tr><td><a class="editPictureLink" href="javascript:{}"><span class="icon-user"></span>  Edit Picture</a></td></tr>  </tbody></table>
+ <h2 style="border-bottom:none !important;">
+ <a id="toggleDiv" class="btn btn-info"><i class="icon icon-cog  icon-white"></i> Account Settings</a></h2>
+ <div id="profileDiv" style="display: block;">
+ <table class="table table-hover" style="margin-bottom: -13px;border-spacing: 2px;"><thead></thead><tbody><tr><td><a href="freeUserRegistration.action?tempVar=dashBoard"><span class="icon-pencil"></span>  Edit Profile</a></td></tr>  <tr><td><a class="changePwdLink" href="javascript:{}"><span class="icon-hand-right"></span>  Change Password</a></td></tr>   <tr><td><a class="editPictureLink" href="javascript:{}"><span class="icon-user"></span>  Edit Picture</a></td></tr>  </tbody></table>
  </div>
- </div>
+</div>
+
  <div id="userSettingsDialog"></div>
 
 	<div id="connectPeoplePopup" style="display:none;">
 		<div id="allConnectedUsersDisplay_main"></div>
 	</div>
 	
-	<div id="houseHoldDivId" class="widget" style="display:none;">
-		<a id="houseHoldForm" class="btn btn-info" style="margin:5px;margin-left:0px;padding-left:15px;padding-right:15px;" href="houseHoldSurveyReportAction.action"> House Hold Page</a>
-		<a id="houseHoldAdmin" class="btn btn-info" href="houseHoldCreationAction.action"> House Hold Admin</a>
+	<div id="houseHoldDivId" class="widget" style="display: none; padding-top: 19px; margin-top: 4px; margin-bottom: 11px;">
+		<a href="houseHoldSurveyReportAction.action" class="btn btn-info btn-block" id="houseHoldForm"> House Hold Page</a>
+		<a href="houseHoldCreationAction.action" class="btn btn-info btn-block" id="houseHoldAdmin"> House Hold Admin</a>
 	</div>
 <c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">	
 <div class="btn btn-xlarge" style="height: 185px;">
