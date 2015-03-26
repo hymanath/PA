@@ -45,4 +45,6 @@ public interface IVoterCastInfoDAO extends GenericDao<VoterCastInfo,Long>{
 	public List<Object[]>  getVotersCastInfoByCasteIds(List<Long> levelIds,Long constituencyId,Long publicationId,Long userId,List<Long> casteStateIds,Set<Long> locationIds);
 	
 	public List<Object[]> getVoterCasteInfoListByConstituency(Long constituencyId,Long publicationDateId,Long userId);
+	
+	public List<Object[]> getVoterCadreDetailsBySearchCriteria(Long stateId, String locationType,List<Long> locationIdsList,Long casteStateId);
 }
