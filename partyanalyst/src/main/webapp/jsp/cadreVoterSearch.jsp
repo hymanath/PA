@@ -723,7 +723,7 @@ var constiSel =0;
 				$("#districtId1").append(distOptions);
 				
 			}
-			else if(locationType == 'tehsil'){
+			else if(locationType == 'tehsil' ){
 		
 				$("#constiDivId1").show();
 				$("#districtDivId1").show();
@@ -756,7 +756,7 @@ var constiSel =0;
 				$("#constiId1").append(constiOptions);
 			
 			}
-			else if(locationType == 'panchayat'){
+			else if(locationType == 'panchayat' || locationType == 'ward'){
 				$("#constiDivId1").show();
 				$("#districtDivId1").show();
 				$("#tehsilDivId1").show();
@@ -942,8 +942,8 @@ var constiSel =0;
 				$("#tehsilDivId1").hide;
 				
 				$(".constiId1").show();
-			$(".districtId1").show();
-			$(".tehsilId1").hide;
+				$(".districtId1").show();
+				$(".tehsilId1").hide;
 			
 				$("#districtId1").find('option').remove();
 				$("#constiId1").find('option').remove();
@@ -982,7 +982,7 @@ var constiSel =0;
 				}
 				$("#constiId1").append(constiOptions);
 		}
-		else if(locationType == 'panchayat'){
+		else if(locationType == 'panchayat'  || locationType == 'ward'){
 			
 				$("#constiDivId1").show();
 				$("#districtDivId1").show();
@@ -1135,7 +1135,7 @@ var constiSel =0;
 		
 	}
 	
-	function getDetailsForSelection(locationId,locationType,stateId,searchType,casteStateId,isFinalValue,getDetailsAreaType,divId,isMuncipality,presentDiv)
+	function getDetailsForSelection(locationId,locationType,stateId,searchType,casteStateId,isFinalValue,getDetailsAreaType,divId,isMuncipality,presentDiv,locationName)
 	{		
 		$('#'+presentDiv+'').html('');
 	
@@ -1173,7 +1173,8 @@ var constiSel =0;
 			casteStateId:casteStateId,
 			searchName:searchName,
 			isFinal:isFinal
-		}				
+		}	
+		
 		$.ajax({
           type:'GET',
           url: 'getCadreVoterDetailsBySearchAction.action',
@@ -1184,7 +1185,7 @@ var constiSel =0;
 			{
 				if(isFinalValue != 0)
 				{
-					buildSearchCandidateDetails(result,divId); 
+					buildSearchCandidateDetails(result,divId,locationName,locationType); 
 				}
 				else{
 					buildSearchDetailsSecondLevel(locationId,locationType,divId);
@@ -1239,11 +1240,11 @@ var constiSel =0;
 						str+='<h5 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'  <span style="margin-left:8px;"> '+areaType+'</span></h5>';
 					}
 					else{
-						str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\');}" class="district-box-name get-details" title="Click here to get Sub Level Details">';	
+						str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}" class="district-box-name get-details" title="Click here to get Sub Level Details">';	
 						str+='<h5 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'  <span style="margin-left:8px;"> '+areaType+'</span></h5></a>';
 					}
 					
-					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',1,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\');}"  class="badge badge-success" title="Click here to get Cadre Details"  style="color: #fff; margin-top: 5px;"> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
+					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',1,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}"  class="badge badge-success" title="Click here to get Cadre Details"  style="color: #fff; margin-top: 5px;"> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
 					str+='</div>';	
 						if(locationType == "constituency")
 						{
@@ -1281,16 +1282,19 @@ var constiSel =0;
 						str+='<h5 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'  <span style="margin-left:8px;"> '+areaType+'</span></h5>';
 					}
 					else{
-						str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\');}" class="district-box-name get-details" title="Click here to get Sub Level Details">';	
+						str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}" class="district-box-name get-details" title="Click here to get Sub Level Details">';	
 						str+='<h5 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'   <span style="margin-left:8px;"> '+areaType+'</span></h5></a>';
 					}
 					
-					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',1,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\');}"  class="badge badge-success" title="Click here to get Voter Details"  style="color:#fff; margin-top: 5px;"> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
+					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',1,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}"  class="badge badge-success" title="Click here to get Voter Details"  style="color:#fff; margin-top: 5px;"> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
 					str+='</div>';							
 				}				
 			}
+			if(str.length>0)
+				$('#'+divId+'').html(str);
+			else
+				$('#'+divId+'').html(' <div style="align-text:center;font-weight:bold;">No Data Available ...</div>');
 			
-			$('#'+divId+'').html(str);
 			$('#'+divId+'').after('<div id="'+divId+''+divCount+'"></div>');		
 			
 			$('.fadeInRight').addClass('animated  fadeOutLeft ');			
@@ -1312,7 +1316,7 @@ var constiSel =0;
 		var searchType = $("#searchId1 option:selected").text();
 		var stateId =  $("#stateId1 option:selected").val();
 		var casteStateId =$("#casteId1 option:selected").val();
-		
+		 $('#ajaxImageIdAPmandalconstiRoleSummary').show();
 		//buildSearchDetailsSecondLevel(locationId,locationType,divId);
 		var searchName = "";
 		var isFinal = "";
@@ -1359,11 +1363,12 @@ var constiSel =0;
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
 			//console.log(result);
+			$('#ajaxImageIdAPmandalconstiRoleSummary').hide();
 			if(result != null)
 			{
 				if(isFinalValue != 0)
 				{
-					buildSearchCandidateDetails(result);
+					buildSearchCandidateDetails(result,divId,'',locationType);
 				}
 				else{
 				
@@ -1378,7 +1383,7 @@ var constiSel =0;
 	}
 	
 	
-	function buildSearchCandidateDetails(myresults,divId)
+	function buildSearchCandidateDetails(myresults,divId,locationName,locationType)
 	{
 		var result = myresults[0].cadreSearchList;
 		divCount = parseInt(divCount)+1;
@@ -1391,7 +1396,7 @@ var constiSel =0;
 		if(result != null && result.length>0)
 		{
 			isDataAvailable = true;
-			str+='<div> <h4 class="text-center "> Cadre Details </h4></div>';	
+			str+='<div> <h4 class="text-center "> '+locationName+' '+locationType+' Cadre Details </h4></div>';	
 			str+='<div class="pt-page pt-page-6 container" id="casteDiv" style="margin-top:25px;">';		
 			str+='<div class="search-results">';
 			str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
@@ -1407,7 +1412,10 @@ var constiSel =0;
 				else*/
 					str+='<a class="collapsed" aria-expanded="false" data-parent="#accordion" aria-controls="collapse'+i+'" onclick="getCasteMembers(\'collapse'+i+'\')" style="cursor: pointer">';
 				
-				str+='<h3 style="display:inline-block;margin:0px;">'+result[i].casteName+'</h3>';
+				if(result[i].casteName != null && result[i].casteName.length>0)
+					str+='<h3 style="display:inline-block;margin:0px;">'+result[i].casteName+'</h3>';
+				else
+					str+='<h3 style="display:inline-block;margin:0px;"> Others </h3>';
 				str+='<h5 style="display:inline-block;margin-left:50px;" class="badge pull-right"> Total : '+result[i].voterSearchList.length+'</h5>';
 				//str+='<span><i class="glyphicon glyphicon-chevron-up pull-right" style="color:#E5E5E5"></i></span>';
 				//str+='<span><i class="glyphicon glyphicon-search pull-right" style="color:#E5E5E5"></i></span>';
@@ -1466,7 +1474,7 @@ var constiSel =0;
 		if(result != null && result.length>0)
 		{
 			isDataAvailable = true;
-			str+='<div> <h4 class="text-center "> Voter Details </h4></div>';		
+			str+='<div> <h4 class="text-center "> '+locationName+'  '+locationType+' Voter Details </h4></div>';		
 			str+='<div class="pt-page pt-page-6 container" id="casteDiv" style="margin-top:25px;margin-bottom:15px;">';		
 			str+='<div class="search-results" >';
 			str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
@@ -1482,7 +1490,11 @@ var constiSel =0;
 				else*/
 					str+='<a class="collapsed" aria-expanded="false" data-parent="#accordion" aria-controls="collapse'+i+'" onclick="getCasteMembers(\'collapse1'+i+'\')" style="cursor: pointer">';
 				
-				str+='<h3 style="display:inline-block;margin:0px;">'+result[i].casteName+'</h3>';
+				if(result[i].casteName != null && result[i].casteName.length>0)
+					str+='<h3 style="display:inline-block;margin:0px;">'+result[i].casteName+'</h3>';
+				else
+					str+='<h3 style="display:inline-block;margin:0px;"> Others </h3>';
+				
 				str+='<h5 style="display:inline-block;margin-left:50px;" class="badge pull-right"> Total : '+result[i].voterSearchList.length+'</h5>';
 				//str+='<span><i class="glyphicon glyphicon-chevron-up pull-right" style="color:#E5E5E5"></i></span>';
 				//str+='<span><i class="glyphicon glyphicon-search pull-right" style="color:#E5E5E5"></i></span>';
