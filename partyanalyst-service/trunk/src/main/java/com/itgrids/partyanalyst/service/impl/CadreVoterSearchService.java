@@ -567,7 +567,7 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 			{
 				Collections.sort(returnList, new Comparator<TdpCadreVO>() {
 					public int compare(TdpCadreVO o1, TdpCadreVO o2) {
-						return (int) (o2.getTotalCount() - o1.getTotalCount()) ;
+						return o1.getConstituency().compareTo(o2.getConstituency());
 					}
 				});
 			}
