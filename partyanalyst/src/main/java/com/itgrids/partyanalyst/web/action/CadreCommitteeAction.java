@@ -1238,7 +1238,8 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	
 public String getSummaryDetails(){
 		
-		session = request.getSession();	
+
+	session = request.getSession();	
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		if(user != null){
 			returnList = cadreCommitteeService.getSummaryDetails(user.getAccessValue());
@@ -1273,6 +1274,24 @@ public String getSummaryDetails(){
 		return Action.SUCCESS;
 	}
 
+	public String getCommitteSummaryInfo(){
+		try{
+		session = request.getSession();	
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user != null && user.getEntitlements().contains("TDP_COMMITTEE_STATE_DISTRICT_ACCESS")){
+			returnList= cadreCommitteeService.getCommitteeSummaryInfoByUserAccess(new Long(user.getAccessValue()),user.getAccessType());
+		}else{
+			return ERROR;
+		}
+		}
+		catch(Exception e)
+		{
+			LOG.error(e);
+		}
+		return Action.SUCCESS;
+	}
+
+	
 	/*public String getMandalMuncipalDivisonTotalCommittees(){
 		session = request.getSession();	
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
