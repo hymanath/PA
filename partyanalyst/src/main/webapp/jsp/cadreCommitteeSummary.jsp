@@ -49,224 +49,63 @@
                 </div>
             </div>
             <!-- First Block Start-->
+			<c:if test="${sessionScope.USER.accessType == 'STATE' || sessionScope.USER.accessType == 'DISTRICT'}">
+			
+			 <div class="row">
+            	<div class="col-md-12">
+                	<h3 style="color:#090" id="stateDistrictTitle" ></h3>
+                </div>
+            </div>
+			 <div class="row">
+ 				<div class="col-md-12">
+				
+				<div id="mainCommitteDivId"></div>
+				<div id="AffliCommitteDivId"></div>
+				</div>
+				</div>
+				</c:if>
+		<c:if test="${sessionScope.USER.accessType != 'STATE' && sessionScope.USER.accessType != 'DISTRICT'}">
             <div class="row">
             	<div class="col-md-12">
                 	<h3 style="color:#090" >MANDAL / TOWN / DIVISION</h2>
                 </div>
             </div>
+			</c:if>
             <div class="row">
  				<div class="col-md-12">
+				
+				
 					<div id="mandalMainCommitteDivId"></div>
-                	<!--<table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">
-                    	<tr>
-                        	<td colspan="4" style="background-color:#669934"><h4>MAIN COMMITTEE</h4></td>
-                        </tr>
-                        <tr>
-                        	<td width="25%"><h2 style="display:inline;"></h2>TOTAL</td>
-                            <td width="25%"><h2 style="display:inline;"><div id="mandalTotalDivId"></div></h2>STARTED</td>
-                            <td width="25%"><h2 style="display:inline;">10</h2>CONFORMED</td>
-                            <td width="25%"><h2 style="display:inline;">10</h2>NOT YET STARTED</td>
-                        </tr>
-                    </table>-->
+                	
 					<div id="mandalAffliCommitteDivId"></div>
-                    <!--<table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">
-                    	<thead>
-                        	<th colspan="5" style="background-color:#669934"><h4>AFFILIATED COMMITTEE</h4></th>
-                        </thead>
-                        <thead>
-                        	<th width="20%">COMMITTEE TYPE</th>
-                        	<th width="20%">TOTAL</th>
-                            <th width="20%">STARTED</th>
-                            <th width="20%">CONFORMED</th>
-                            <th width="20%">NOT YET STARTED</th>
-                        </thead>
-                        <tr>
-                        	<td width="20%">TELUGU RYTHU COMMITTEE</td>
-                        	<td width="20%">10</td>
-                            <td width="20%">4</td>
-                            <td width="20%">7</td>
-                            <td width="20%">2</td>
-                        </tr>
-                        <tr>
-                        	<td width="20%">TELUGU MAHILA COMMITTEE</td>
-                        	<td width="20%">10</td>
-                            <td width="20%">4</td>
-                            <td width="20%">7</td>
-                            <td width="20%">2</td>
-                        </tr>
-                        <tr>
-                        	<td width="20%">TELUGU YUVATHA COMMITTEE</td>
-                        	<td width="20%">10</td>
-                            <td width="20%">4</td>
-                            <td width="20%">7</td>
-                            <td width="20%">2</td>
-                        </tr>
-                        <tr>
-                        	<td width="20%">SC COMMITTEE</td>
-                        	<td width="20%">10</td>
-                            <td width="20%">4</td>
-                            <td width="20%">7</td>
-                            <td width="20%">2</td>
-                        </tr>
-
-                    </table>-->
+                  
+                     
                 </div>           
             </div>
             <!--FIrst Block END-->
             <!--Second Block Start-->
+			<c:if test="${sessionScope.USER.accessType != 'STATE' && sessionScope.USER.accessType != 'DISTRICT'}">
             <div class="row">
             	<div class="col-md-12">
                 	<h3 style="color:#090" >VILLAGE / WARD</h2>
                 </div>
             </div>
+			</c:if>
             <div class="row">
  				<div class="col-md-12">
 					<div id="villageMainTableDivId"></div>
-                	<!--<table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">
-                    	<tr>
-                        	<td colspan="4" style="background-color:#669934"><h4>MAIN COMMITTEE</h4></td>
-                        </tr>
-                        <tr>
-                        	<td width="25%"><h2 style="display:inline;"><div class=""></div>20</h2>TOTAL</td>
-                            <td width="25%"><h2 style="display:inline;">20</h2>STARTED</td>
-                            <td width="25%"><h2 style="display:inline;">10</h2>CONFORMED</td>
-                            <td width="25%"><h2 style="display:inline;">10</h2>NOT YET STARTED</td>
-                        </tr>
-                    </table>-->
+                	
+                   
 					
 					<div id="villageAfflicatedTableDivId"></div>
 					
-                    <!--<table class="table table-condensed" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);border-radius:2px;">
-                    	<thead>
-                        	<th colspan="5" style="background-color:#669934"><h4>AFFILIATED COMMITTEE</h4></th>
-                        </thead>
-                        <thead>
-                        	<th width="20%">COMMITTEE TYPE</th>
-                        	<th width="20%">TOTAL</th>
-                            <th width="20%">STARTED</th>
-                            <th width="20%">CONFORMED</th>
-                            <th width="20%">NOT YET STARTED</th>
-                        </thead>
-                        <tr>
-                        	<td width="20%">TELUGU RYTHU COMMITTEE</td>
-                        	<td width="20%">10</td>
-                            <td width="20%">4</td>
-                            <td width="20%">7</td>
-                            <td width="20%">2</td>
-                        </tr>
-                        <tr>
-                        	<td width="20%">TELUGU MAHILA COMMITTEE</td>
-                        	<td width="20%">10</td>
-                            <td width="20%">4</td>
-                            <td width="20%">7</td>
-                            <td width="20%">2</td>
-                        </tr>
-                        <tr>
-                        	<td width="20%">TELUGU YUVATHA COMMITTEE</td>
-                        	<td width="20%">10</td>
-                            <td width="20%">4</td>
-                            <td width="20%">7</td>
-                            <td width="20%">2</td>
-                        </tr>
-                        <tr>
-                        	<td width="20%">SC COMMITTEE</td>
-                        	<td width="20%">10</td>
-                            <td width="20%">4</td>
-                            <td width="20%">7</td>
-                            <td width="20%">2</td>
-                        </tr>
-
-                    </table>-->
-                   <!-- <table class="table table-condensed" style="border:5px solid #669934;background-color:rgba(0,0,0,0.1);border-radius:2px;">
-                	<tr>
-                    	<td colspan="7" style="background-color:#669934">[MANDAL/TOWN/DIVISION] WISE TELUGU RYTHU COMMITTEE STARTED DETAILS<div class="pull-right"><i class="glyphicon glyphicon-remove"></i></div></td>
-                    </tr>
-                    <tr>
-                    	<td>MANDAL NAME</td>
-                        <td>COMMITTEE TYPE</td>
-                        <td>COMMITTEE MEMBERS</td>
-                        <td colspan="3">STATUS</td>
-                        <td>FINAL</td>
-                    </tr>
-                    <tr>
-                    	<td>KAVALI</td>
-                        <td></td>
-                        <td>5</td>
-                        <td>Started</td>
-                        <td><i class="glyphicon glyphicon-ok" style="color:#090"></i>Completed</td>
-                        <td>Not Yet Started</td>
-                        <td><button class="btn btn-success btn-sm" disabled="disabled">view</button></td>
-                    </tr>
-                     <tr>
-                    	<td>KAVALI</td>
-                        <td></td>
-                        <td>5</td>
-                        <td>Started</td>
-                        <td>Completed</td>
-                        <td>Not Yet Started</td>
-                        <td><button class="btn btn-success btn-sm">view</button></td>
-                    </tr>
-                     <tr>
-                    	<td>KAVALI</td>
-                        <td></td>
-                        <td>5</td>
-                        <td>Started</td>
-                        <td>Completed</td>
-                        <td>Not Yet Started</td>
-                        <td><button class="btn btn-success btn-sm">view</button></td>
-                    </tr>
-                     <tr>
-                    	<td>KAVALI</td>
-                        <td></td>
-                        <td>5</td>
-                        <td>Started</td>
-                        <td>Completed</td>
-                        <td>Not Yet Started</td>
-                        <td><button class="btn btn-success btn-sm">view</button></td>
-                    </tr>
-                </table>-->
+                   
+                    	
 				<img id="comitteeCntAjax" src="./images/icons/search.gif" alt="Processing Image" style="display:none;margin-left:400px;"/>
                     <table class="table table-condensed table-yellow-bordered" style="border:5px solid #669934;background-color:rgba(0,0,0,0.1);border-radius:2px;" id="CommitteeDetails">
                 	</table>
                 </div>  
-               <!-- <div class="col-md-8 col-md-offset-1">
-				<table class="table table-bordered text-left" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); color:#fff;">
-					<thead style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.2);">
-                    	<th colspan="4">KAVALI TELUGU RYTHU COMMITTEE</th>
-                    </thead>
-                    <tbody>
-						<tr>
-							<td>President</td>
-							<td><img src="images/Member_thamb_image.png" /></td>
-							<td>Ashok</td>
-							<td>Membership Number</td>
-						</tr>
-						<tr>
-							<td>Vice president</td>
-							<td><img src="images/Member_thamb_image.png" /></td>
-							<td>Srikanth</td>
-							<td>Membership Number</td>
-						</tr>
-						<tr>
-							<td>General secretary</td>
-							<td><img src="images/Member_thamb_image.png" /></td>
-							<td>Kamal</td>
-							<td>Membership Number</td>
-						</tr>
-						<tr>
-							<td>Working committee</td>
-							<td><img src="images/Member_thamb_image.png" /></td>
-							<td>Harish</td>
-							<td>Membership Number</td>
-						</tr>
-						<tr>
-							<td>Organising  Committee</td>
-							<td><img src="images/Member_thamb_image.png" /></td>
-							<td>Member Name</td>
-							<td>Membership Number</td>
-						</tr>						
-					</tbody>
-				</table>-->
+              
                  <img id="comitteeMemberAjax" src="./images/icons/search.gif" alt="Processing Image" style="display:none;margin-left:400px;"/>
                 <div class="col-md-8 col-md-offset-1" id="committeeMemberDiv" >
 
@@ -287,10 +126,19 @@
 
     <script>
 	$(document).ready(function() {
+	var accessType = '${sessionScope.USER.accessType}';
+		if(accessType != 'STATE' &&  accessType != 'DISTRICT')
+		{
+			
 		getSummary();
 		//getStartedCommittees();
 		getMandalMuncipalDivisonStartedCommittees();
+		}
 		//getMandalMuncipalDivisonTotalCommittees();
+		if(accessType == 'STATE' || accessType == 'DISTRICT')
+		{
+		getCommitteeSummaryInfo();
+		}
 		
 		$('.loader5').ClassyLoader({
 			speed: 10,
@@ -420,6 +268,100 @@
 				});
 		}
 		
+		
+		function getCommitteeSummaryInfo()
+		{
+			$.ajax({
+				type : "POST",
+				url : "gettingCommitteeSummaryInfoAction.action",
+				data : {} ,
+			}).done(function(result){
+				if(result[0].locationId == 10)
+				$("#stateDistrictTitle").html(''+result[0].locationName+'');
+				if(result[0].locationId == 11)
+				$("#stateDistrictTitle").html(''+result[0].locationName+'');
+				if(result!=null){
+				
+					var notStarted=result[0].mainComittees-(result[0].startedCount+result[0].mainComitteesConformed);
+					var str='';
+					str+='<table class="table table-condensed table-yellow-bordered" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
+						str+='<tr><td colspan="4" style="background-color:#669934"><h4>MAIN COMMITTEE</h4></td></tr>';
+								str+='<tr><td width="25%"><h2 style="display:inline;">'+result[0].mainComittees+'</h2> TOTAL</td>';
+							   if(result[0].startedCount != null && result[0].startedCount > 0)
+								{
+							   str+='<td width="25%"><h2 style="display:inline;" ><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Started\',\''+result[0].locationId+'\')">'+result[0].startedCount+'</a></h2> STARTED</td>';
+								}
+								else
+								{
+									 str+='<td width="25%"><h2 style="display:inline;" >'+result[0].startedCount+'</h2> STARTED</td>';
+								
+								}
+								if(result[0].mainComitteesConformed != null && result[0].mainComitteesConformed > 0)
+								{
+									  str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'Conform\',\''+result[0].locationId+'\')">'+result[0].mainComitteesConformed+'</a></h2> CONFIRMED</td>';
+									
+								}
+								else
+								{
+							   str+='<td width="25%"><h2 style="display:inline;">'+result[0].mainComitteesConformed+'</h2> CONFIRMED</td>';
+								}
+								if(notStarted != null && notStarted > 0)
+								{
+							   str+='<td width="25%"><h2 style="display:inline;"><a style="cursor:pointer;" onclick="getCommitteeDetailsByStatus(1,\'NotStarted\',\''+result[0].locationId+'\')">'+notStarted+'</a></h2> NOT YET STARTED</td>';
+								}
+								else
+								{
+									str+='<td width="25%"><h2 style="display:inline;">'+notStarted+'</h2> NOT YET STARTED</td>';
+								}
+								str+='</tr>';
+							  
+					 str+='</table>';
+					 $("#mainCommitteDivId").html(str);
+			
+				var str1='';
+						str1+='<table class="table table-condensed table-yellow-bordered" style="border:1px solid #669934;background-color:rgba(0,0,0,0.1);">';
+							str1+='<thead><th colspan="5" style="background-color:#669934"><h4>AFFILIATED COMMITTEE</h4></th></thead>';
+							str1+='<thead><th width="20%">COMMITTEE TYPE</th><th width="20%">TOTAL</th><th width="20%">STARTED</th>';
+							str1+='<th width="20%">CONFIRMED/COMPLETED</th><th width="20%">NOT YET STARTED</th></thead>';
+					 for(var i in result){
+						var notConformed=result[i].totalAffilatedCommittees-(result[i].affilatedStartedCount+result[i].affComitteesConformed); 	
+						str1+='<tr><td width="20%">'+result[i].affilatedCommitteeName+'</td>';
+						str1+='<td width="20%">'+result[i].totalAffilatedCommittees+'</td>';
+						if(result[i].affilatedStartedCount != null && result[i].affilatedStartedCount > 0)
+						 {
+		str1+='<td width="20%">';
+		str1+='<a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Started\',\''+result[0].locationId+'\')" style="cursor:pointer;">'+result[i].affilatedStartedCount+'</a></td>';
+						 }
+						 else
+						 {
+						str1+='<td width="20%">'+result[i].affilatedStartedCount+'</td>';
+						 }
+					if(result[i].affComitteesConformed != null && result[i].affComitteesConformed > 0)
+						 {
+						str1+='<td width="20%">';
+						str1+='<a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'Conform\',\''+result[0].locationId+'\')" style="cursor:pointer;">'+result[i].affComitteesConformed+'</a></td>';
+						
+						 }
+						 else
+						str1+='<td width="20%">'+result[i].affComitteesConformed+'</td>';
+						 if(notConformed != null && notConformed > 0)
+						 {
+							 str1+='<td width="20%"><a onclick="getCommitteeDetailsByStatus(\''+result[i].affilatedCommitteId+'\',\'NotStarted\',\''+result[0].locationId+'\')" style="cursor:pointer;">'+notConformed+'</td>';
+						 }
+						 else
+						 {
+						str1+='<td width="20%">'+notConformed+'</td>';
+						 }
+						 str1+='</tr>';
+					
+						
+					 }
+					 
+					 str1+='</table>';
+					  $("#AffliCommitteDivId").html(str1);
+				}
+			    });
+		}
 		function getMandalMuncipalDivisonStartedCommittees(){
 			$.ajax({
 				type : "POST",
@@ -595,6 +537,10 @@
 		title = "[VILLAGE / WARD]";
 		if(jsObj.levelId == 1)
 		title = "[MANDAL/TOWN/DIVISION]";
+		if(jsObj.levelId == 10)
+		title = "[State]";
+		if(jsObj.levelId == 11)
+		title = "[District]";
 		str+='<tr>';
         str+='<td colspan="7" style="background-color:#669934" class="text-uppercase">'+title+' WISE <b>'+result[0].committe+' COMMITTEE <i style="color:#EF4036;">'+status+'</i></b> DETAILS <div class="pull-right" ><i class="glyphicon glyphicon-remove" style="cursor:pointer;" id="closeMemberId" onclick="removeDiv();"></i></div></td>';
         str+=' </tr>';
@@ -745,6 +691,8 @@
 				getSummary();
 				getMandalMuncipalDivisonStartedCommittees();
 				getCommitteeDetailsByStatus(plbasicCommitteetypeId,plstatus,plevelId);
+				getCommitteeSummaryInfo();
+		
 				  }
 				
 			}
@@ -781,6 +729,7 @@
 		                getMandalMuncipalDivisonStartedCommittees();
 						getCommitteeDetailsByStatus(plbasicCommitteetypeId,plstatus,plevelId);
 						getCommitteeMemberInfo(lbasicCommitteetypeId,llevelId,llocationId,lstatus);
+						getCommitteeSummaryInfo();
 					  }else{
 					    alert("Committee Already Confirmed");
 					  }
