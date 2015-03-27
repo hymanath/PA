@@ -3497,6 +3497,36 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return query.list();
 		}
 	  
+	  public List<Object[]> tdpCadreCasteCountDetailsBySearchCriteriaForCommitte(Long constituencyId,Long casteStateId,String queryString)
+		{
+			StringBuilder queryStr = new StringBuilder();
+			
+			queryStr.append(" select caste.casteName,model.casteState.casteStateId,count(*) from TdpCadre model left join model.userAddress.panchayat panc ");
+			queryStr.append(" left join model.userAddress.tehsil tehsil ");
+			queryStr.append(" left join model.userAddress.constituency constituency ");
+			queryStr.append(" left join model.userAddress.localElectionBody localElectionBody ");
+			queryStr.append(" left join model.userAddress.localElectionBody.electionType electionType ");
+			queryStr.append(" left join model.userAddress.district district ");
+			queryStr.append(" left join model.occupation occupatn ");
+			queryStr.append(" left join model.voter voter ");
+			queryStr.append(" left join model.casteState.caste caste ");
+			queryStr.append(" left join model.familyVoter familyVoter ");
+			queryStr.append(" where model.isDeleted = 'N' and model.enrollmentYear = 2014 ");
+			queryStr.append(" "+queryString+" ");
+			queryStr.append(" order by model.firstname ");
+			
+			Query query = getSession().createQuery(queryStr.toString());
+			if(constituencyId != null && constituencyId != 0L)
+			{
+				query.setParameter("locationValue", constituencyId);
+			}
+			if(casteStateId != null && casteStateId != 0L)
+			{
+				query.setParameter("casteStateId", casteStateId);
+			}
+			return query.list();
+		}
+	  
 	  public List<String> getCardNumbersForOnlineCadre(String query,Long constiId,String mobileNo,String trNo,Date surveyDate){
 			StringBuilder str = new StringBuilder();
 			

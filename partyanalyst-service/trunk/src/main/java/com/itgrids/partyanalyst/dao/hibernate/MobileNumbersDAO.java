@@ -39,7 +39,7 @@ public class MobileNumbersDAO extends GenericDaoHibernate<MobileNumbers, Long> i
 	public List<Object[]> getUservoterDetailsByUserId(Long userId,List<Long> voterIds)
 	{
 		Query query = getSession().createSQLQuery("Select uvd.voter_id,uvd.mobile_no,uvd." +
-			"user_voter_details_id from user_voter_details uvd where uvd.user_id = :userId and uvd.voter_id in (:voterIds) ");
+			"user_voter_details_id from user_voter_details uvd where uvd.user_id = :userId and uvd.mobile_no is not null and uvd.voter_id in (:voterIds) ");
 		query.setParameter("userId", userId);
 		query.setParameterList("voterIds", voterIds);
 		return query.list();
