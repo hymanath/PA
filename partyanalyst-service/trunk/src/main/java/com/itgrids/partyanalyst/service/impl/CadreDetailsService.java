@@ -212,4 +212,131 @@ public class CadreDetailsService implements ICadreDetailsService{
     	return returnVO;
 	}
 	
+	public TdpCadreVO tdpCadreCastewiseCountDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo, 
+			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender)
+	{
+		TdpCadreVO returnVO = new TdpCadreVO();
+    	try {
+    		
+    		StringBuilder queryStr = new StringBuilder();
+    		
+    		if(locationLevel != null && locationLevel.longValue() != 0L && locationValue != null && locationValue.longValue() != 0L)
+    		{
+    			if(locationLevel.longValue() == 4L)
+    			{
+    				queryStr.append(" and model.userAddress.constituency.constituencyId =:locationValue ");
+    			}
+    			else if(locationLevel.longValue() == 5L)
+    			{
+    				queryStr.append(" and model.userAddress.tehsil.tehsilId =:locationValue ");
+    			}
+    			else if(locationLevel.longValue() == 6L)
+    			{
+    				queryStr.append(" and model.userAddress.panchayat.panchayatId =:locationValue ");
+    			}
+    			else if(locationLevel.longValue() == 7L)
+    			{
+    				queryStr.append(" and model.userAddress.localElectionBody.localElectionBodyId =:locationValue ");
+    			}
+    			else if(locationLevel.longValue() == 8L)
+    			{
+    				queryStr.append(" and model.userAddress.ward.constituencyId =:locationValue ");
+    			}
+    			else if(locationLevel.longValue() == 9L)
+    			{
+    				queryStr.append(" and model.userAddress.booth.boothId =:locationValue ");
+    			}
+    		}
+    		
+    		if(searchName != null && searchName.trim().length()>0 && !searchName.trim().equalsIgnoreCase("0") && !searchName.equalsIgnoreCase("null"))
+			{
+				queryStr.append(" and model.firstname like '%"+searchName+"%' ");
+			}						
+			if(memberShipCardNo != null && memberShipCardNo.trim().length()>0  && !memberShipCardNo.trim().equalsIgnoreCase("0") && !memberShipCardNo.equalsIgnoreCase("null"))
+			{
+				queryStr.append(" and (model.memberShipNo like '%"+memberShipCardNo.trim()+"') ");
+			}
+			if(mobileNo != null && mobileNo.trim().length()>0  && !mobileNo.trim().equalsIgnoreCase("0") && !mobileNo.equalsIgnoreCase("null"))
+			{							
+				queryStr.append(" and (model.mobileNo like '%"+mobileNo.trim()+"%') ");
+			}
+			if(voterCardNo != null && voterCardNo.trim().length()>0  && !voterCardNo.trim().equalsIgnoreCase("0") && !voterCardNo.equalsIgnoreCase("null"))
+			{
+				queryStr.append(" and (model.voter.voterIDCardNo like '%"+voterCardNo.trim()+"%' or (familyVoter.voterId is not null and familyVoter.voterIDCardNo like '%"+voterCardNo.trim()+"%'))  ");
+			}
+			if(trNumber != null && trNumber.trim().length()>0 && !trNumber.trim().equalsIgnoreCase("0") && !trNumber.equalsIgnoreCase("null"))
+			{
+				queryStr.append(" and (model.refNo like '%"+trNumber.trim()+"%') ");
+			}
+			if(casteStateId != null && casteStateId.toString().trim().length()>0 && !casteStateId.toString().trim().equalsIgnoreCase("0") && !casteStateId.toString().equalsIgnoreCase("null"))
+			{
+				queryStr.append(" and  model.casteState.casteStateId = :casteStateId ");
+			}
+			if(casteCategory != null && casteCategory.trim().length()>0 && !casteCategory.trim().equalsIgnoreCase("0") && !casteCategory.equalsIgnoreCase("null"))
+			{
+				queryStr.append(" and  model.casteState.casteCategoryGroup.casteCategoryGroupName like '%"+casteCategory+"%'");
+			}			
+			if((fromAge != null && fromAge.longValue()!=0L ) && (toAge != null && toAge.longValue() !=0L))
+			{
+				queryStr.append(" and model.age >="+fromAge+" and model.age <= "+toAge+"");
+			}
+			if(gender != null && gender.trim().length()>0)
+			{
+				if(gender.trim().equalsIgnoreCase("Male") || gender.trim().equalsIgnoreCase("M"))
+				{
+					queryStr.append(" and (model.gender like 'Male' or model.gender like 'M')");
+				}
+				if(gender.trim().equalsIgnoreCase("Female") || gender.trim().equalsIgnoreCase("F"))
+				{
+					queryStr.append(" and (model.gender like 'Female' or model.gender like 'F')");
+				}
+			}
+			if(queryStr != null && queryStr.toString().trim().length()>0)
+			{
+				queryStr.append("  group by model.casteState.casteStateId ");
+				List<Object[]> cadreList = tdpCadreDAO.tdpCadreCasteCountDetailsBySearchCriteriaForCommitte(locationValue,Long.valueOf(casteStateId), queryStr.toString());
+				
+				List<TdpCadreVO> returnLsit = new ArrayList<TdpCadreVO>();
+				if(cadreList != null && cadreList.size()>0)
+				{
+					for (Object[] cadre : cadreList) 
+					{
+						TdpCadreVO cadreVO = new TdpCadreVO();
+						cadreVO.setId(cadre[1] != null ? Long.valueOf(cadre[1].toString().trim()):0L);
+						cadreVO.setCasteName(cadre[0] != null ? cadre[0].toString().trim():"");						
+						cadreVO.setTotalCount(cadre[2] != null ? Long.valueOf(cadre[2].toString().trim()):0L);
+						
+						returnLsit.add(cadreVO);
+					}
+					
+					returnVO.setResponseStatus("SUCCESS");					
+					returnVO.setTotalCount(Long.valueOf(String.valueOf(returnLsit.size())));
+					returnVO.setTdpCadreDetailsList(returnLsit);
+				}
+				else
+				{
+					if(memberShipCardNo != null && memberShipCardNo.trim().length()>0  && !memberShipCardNo.trim().equalsIgnoreCase("0") && !memberShipCardNo.equalsIgnoreCase("null"))
+					{
+						returnVO.setResponseStatus(" No Cadre information is available with this Search details...");
+					}					
+					else if(mobileNo != null && mobileNo.trim().length()>0  && !mobileNo.trim().equalsIgnoreCase("0") && !mobileNo.equalsIgnoreCase("null"))
+					{	
+						returnVO.setResponseStatus(mobileNo+" Mobile Number is not Registered for any Cadre...");
+					}
+				}
+				returnVO.setResponseCode("");
+			}
+			else
+			{
+				returnVO.setResponseStatus("FAILURE");
+				returnVO.setResponseCode("Atleast one Attribute is Required...");
+			}    		
+    	} catch (Exception e) {
+			LOG.error("Exception raised in searchTdpCadreDetailsBySearchCriteriaForCommitte  method in CadreDetailsService.",e);
+			returnVO.setResponseStatus("FAILURE");
+			returnVO.setResponseCode("SERVER ISSUE");			
+		}
+    	
+    	return returnVO;
+	}
 }
