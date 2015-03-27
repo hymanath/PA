@@ -533,7 +533,15 @@ public class CadreCommitteeService implements ICadreCommitteeService
 							}
 						
 						
-					}		
+					}else if(LocationType.equalsIgnoreCase("State")){
+						if(locationValue.longValue() == 1){
+							location = "AndhraPradesh State";
+						}else{
+							location = "Telangana State";
+						}
+					}else if(LocationType.equalsIgnoreCase("District")){
+						location = districtDAO.get(locationValue).getDistrictName()+" District";
+					}
 					
 					String positionName = tdpCommitteeMember.getTdpCommitteeRole().getTdpRoles().getRole();
 					String committeeName = tdpCommitteeMember.getTdpCommitteeRole().getTdpCommittee().getTdpBasicCommittee().getName();
@@ -1810,6 +1818,14 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			}else{
 			    location = location+" - "+wardName;
 			}
+		}else if(LocationTypeId.longValue() == 10L){
+			if(locationValue.longValue() == 1){
+				location = "AndhraPradesh State";
+			}else{
+				location = "Telangana State";
+			}
+		}else if(LocationTypeId.longValue() == 11L){
+			location = districtDAO.get(locationValue).getDistrictName()+" District";
 		}
 		return location;
 	}
