@@ -494,8 +494,7 @@ var constiSel =0;
 		}
 		
 		$(".districtDivCls").html(str);
-		//console.log(districtSel);
-		//console.log($('#districtHiddenVal').text());
+
 		getDistrictsAndConstis("Constituency",districtSel);
 		
 	}
@@ -540,9 +539,10 @@ var constiSel =0;
 	function searchResults(divId)
 	{ 
 		if(dinamicDiv.length>0)
-		{
+		{		
 			divId = dinamicDiv ;
 		}
+		$('#'+dinamicDiv+'').html('');
 		$('.modifySearchBreadcrumb').show();
 		$('.modifySearchBreadscrumb').show();
 		
@@ -1377,6 +1377,7 @@ var constiSel =0;
 			locationId = $("#tehsilId1 option:selected").val();
 		}
 		$('#searchDetailsDiv').html('');
+		$('#'+dinamicDiv+'').html('');
 		var jObj = {
 			searchType:searchType,			
 			stateId:stateId,
@@ -1622,8 +1623,6 @@ var constiSel =0;
 				{
 					for(var j in myresult)
 					{
-						console.log("third : "+myresult[j]);
-						console.log("fourth : "+myresult[j].cadreName);
 						str+='<tr>';
 						if(!isVoter)
 							str+='<td width="5%"><img class="profile-border" src="http://www.mytdp.com/'+imageUrL+'/'+myresult[j].imageURL+'" alt="" style="width:40px;height:50px;"></img></td>';
@@ -1653,7 +1652,7 @@ var constiSel =0;
 			"iDisplayLength": 20,
 			"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
 		});
-		
+		$('html, body').animate({scrollTop:$('.casteTableCls').offset().top}, 'slow');
 	}
 	
 	</script>
