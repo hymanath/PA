@@ -421,7 +421,18 @@
 	}
 	function getCadreProfileInfo(tdpCadreId,existingRole,existingId)
 	{
-		 //committeeTypeId(1 Main Committee ,2 Affiliated Committee),committeeId(afflitCommitteeId),result3(COMMITTEE DESIGNATION id)
+		if(existingId != undefined && existingId != null && existingId != 'null'){
+			if(existingId == committeePosition){
+				alert("Candidate Already Added To This Designation");
+				return;
+			}
+		}
+		var existingDesignation = '';
+		if(existingRole != null && existingRole != 0 && existingRole.trim().length>0)
+		{
+			existingDesignation = $('#'+existingRole+'').val();
+		}
+		var committeePositionStr = $('#committeePositionId option:selected').text().trim();
 		var committeeTypeId = $('#committeeTypeId').val();
 		var committeeType = $('#committeeTypeId option:selected').text().trim();
 	    var committeeId = $('#afflitCommitteeId').val();
@@ -429,6 +440,15 @@
 			{
 				committeeType = $('#afflitCommitteeId option:selected').text().trim();
 			} 
+		if(existingDesignation != null && existingDesignation.trim().length>0)
+		{
+			if(!confirm(""+existingDesignation+". Are you sure want to change his Designation as "+committeePositionStr+" for "+committeeType+" in "+ globalLocationName+".?" ))
+			{
+				return;
+			}
+		}
+		 //committeeTypeId(1 Main Committee ,2 Affiliated Committee),committeeId(afflitCommitteeId),result3(COMMITTEE DESIGNATION id)
+		
 			
 		window.location.href = 'cadreProfileDetailsAction.action?tdpCadreId='+tdpCadreId+'&result1='+$("#committeePositionId option:selected").text().trim()+'&result2='+committeeType+'&result4='+globalLocationName+'&committeeMngtType=4&result3='+$("#committeePositionId").val()+'&committeeTypeId='+committeeTypeId+'&committeeId='+committeeId;
 
@@ -444,13 +464,10 @@
 		var committeeMngtType = $('#committeeMngtType').val();
 		var committeePosition = $('#committeePositionId').val();
 		
-		var existingDesignation = '';
-		var committeePositionStr = $('#committeePositionId option:selected').text().trim();
+
+		
 		var locationTypeStr= " Mandal " ;
-		if(existingRole != null && existingRole != 0 && existingRole.trim().length>0)
-		{
-			existingDesignation = $('#'+existingRole+'').val();
-		}
+		
 		if(committeTypeID ==1)
 		{			
 			$('#afflitCommitteeIdErr,#committeeTypeIdErr,#committeeLocationIdErr,#committeePositionIdErr').html('');

@@ -72,6 +72,7 @@
 	<script>
 	var elegRolCnt = 0;
 	var allRolesList = new Array();	
+	var reqcommitteeMngtType = '${committeeMngtType}';
 	function prepopulateOptions(){
 	
 	/*	
@@ -237,7 +238,8 @@
 	<s:if test="%{committeeMngtType == 3}">
 	</s:if>
     <s:if test="%{committeeMngtType == 4}">
-	  <span style="font-weight:bold;text-transform: uppercase;"> ADDING <span style="color:#FD2A34"> ${cadreCommitteeVO.cadreName} </span> AS <span style="color:#FD2A34"> ${result1} </span> FOR <span style="color:#FD2A34"> ${result2} </span> IN ${result4} <br> <a class="btn btn-success btn-xs" href="committeeManagementAction.action?committeeTypeId=${committeeTypeId}&committeeId=${committeeId}&result3=${result3}&result4=${cadreCommitteeVO.memberShipCardId}&task=true">  click here If  you want CHANGE designation </a> <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 4px;"> <i class="glyphicon glyphicon-home"></i> </a> </span>
+	  <span style="font-weight:bold;text-transform: uppercase;"> ADDING <span style="color:#FD2A34"> ${cadreCommitteeVO.cadreName} </span> AS <span style="color:#FD2A34"> ${result1} </span> FOR <span style="color:#FD2A34"> ${result2} </span> IN ${result4} <br> <a class="btn btn-success btn-xs" href="committeeManagementAction.action?committeeTypeId=${committeeTypeId}&committeeId=${committeeId}&result3=${result3}&result4=${cadreCommitteeVO.memberShipCardId}&task=true">  click here If  you want CHANGE designation </a> <a class="btn btn-success btn-xs" href="committeeManagementAction.action"  style="padding: 4px;"> <i class="glyphicon glyphicon-home"></i> </a> </span>
+	  <input type="hidden" value="committeeManagementAction.action?committeeTypeId=${committeeTypeId}&committeeId=${committeeId}&result3=${result3}&result4=${cadreCommitteeVO.memberShipCardId}&task=true" id="redirectURLId"/>
 	</s:if>
 	</div>
 		<div id="profileDiv">
