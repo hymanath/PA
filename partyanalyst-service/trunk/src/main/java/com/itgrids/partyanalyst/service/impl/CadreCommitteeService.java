@@ -58,11 +58,13 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeDesignationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeElectrolRolesDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeElectrolsDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeEnrollmentDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberHistoryDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeRoleDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeRoleHistoryDAO;
+import com.itgrids.partyanalyst.dao.ITdpCommitteeVacantPostDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
@@ -108,6 +110,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 import com.itgrids.partyanalyst.model.TdpCommitteeMemberHistory;
 import com.itgrids.partyanalyst.model.TdpCommitteeRole;
 import com.itgrids.partyanalyst.model.TdpCommitteeRoleHistory;
+import com.itgrids.partyanalyst.model.TdpCommitteeVacantPost;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.VoterAgeRange;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
@@ -169,6 +172,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private ICommitteIvrDistrictDetailDAO committeIvrDistrictDetailDAO;
 	private ICommitteIvrTotalDetailDAO committeIvrTotalDetailDAO;
 	private IVoterAgeInfoDAO voterAgeInfoDAO;
+	private ITdpCommitteeVacantPostDAO tdpCommitteeVacantPostDAO;
+	private ITdpCommitteeEnrollmentDAO tdpCommitteeEnrollmentDAO;
 	
 	public void setVoterAgeInfoDAO(IVoterAgeInfoDAO voterAgeInfoDAO) {
 		this.voterAgeInfoDAO = voterAgeInfoDAO;
@@ -368,7 +373,11 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		this.userDAO = userDAO;
 	}
 	
-	
+	public void setTdpCommitteeVacantPostDAO(
+			ITdpCommitteeVacantPostDAO tdpCommitteeVacantPostDAO) {
+		this.tdpCommitteeVacantPostDAO = tdpCommitteeVacantPostDAO;
+	}
+
 	public void setDelimitationConstituencyMandalDAO(
 			IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO) {
 		this.delimitationConstituencyMandalDAO = delimitationConstituencyMandalDAO;
@@ -377,6 +386,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
 		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
 	}
+	
+	public void setTdpCommitteeEnrollmentDAO(
+			ITdpCommitteeEnrollmentDAO tdpCommitteeEnrollmentDAO) {
+		this.tdpCommitteeEnrollmentDAO = tdpCommitteeEnrollmentDAO;
+	}
+
 	public CadreCommitteeVO getCadreDetailsByTdpCadreId(Long tdpCadreId)
 	{
 		CadreCommitteeVO cadreCommitteeVO = null;
@@ -1355,6 +1370,15 @@ public class CadreCommitteeService implements ICadreCommitteeService
 					}
 					
 					try {
+						TdpCommitteeVacantPost tdpCommitteeVacantPost = new TdpCommitteeVacantPost();
+						tdpCommitteeVacantPost.setVacantCommitteeRole(tdpCommitteeMember.getTdpCommitteeRole());
+						tdpCommitteeVacantPost.setCadre(tdpCommitteeMember.getTdpCadre());
+						tdpCommitteeVacantPost.setCadreNewCommitteeRole(tdpCommitteeRoleDAO.get(tdpCommitteeRoleId));
+						tdpCommitteeVacantPost.setTdpCommitteeEnrollment(tdpCommitteeEnrollmentDAO.get(IConstants.CURRENT_ENROLLMENT_ID));
+						tdpCommitteeVacantPost.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+						tdpCommitteeVacantPost.setInsertedBy(userDAO.get(userId));
+						tdpCommitteeVacantPostDAO.save(tdpCommitteeVacantPost);
+						
 						oldCommitteeId = tdpCommitteeMember.getTdpCommitteeRole().getTdpCommitteeId();
 						TdpCommitteeMemberHistory tdpCommitteeMemberHistory = new TdpCommitteeMemberHistory();
 						
