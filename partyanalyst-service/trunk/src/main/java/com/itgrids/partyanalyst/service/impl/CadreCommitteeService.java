@@ -20,6 +20,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.apache.commons.logging.Log;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -3158,11 +3159,19 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		List<Object[]> list = new ArrayList<Object[]>();
 		try{
 			
+		
 			if(levelId == 2)
 			{
 				levelIds.add(6l);// Village/Ward
 				levelIds.add(8l);
 			list = tdpCommitteeDAO.getLocationByTypeIdAndLevel(levelIds,basicCommitteeTypeId,constituencyId,status);
+			}
+			
+			else if(levelId == 10 || levelId == 11)
+			{
+				List<Long> locationIds = new ArrayList<Long>();
+				locationIds.add(new Long(accessValue));
+				list = tdpCommitteeDAO.getLocationsByTypeIdAndLevel(levelId,basicCommitteeTypeId,locationIds,status);
 			}
 			else
 			{
@@ -3214,6 +3223,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				}
 					
 			}
+			
+			
 			if(list != null && list.size() > 0)
 			{
 				Map<Long,List<Long>> levelValuesMap = new HashMap<Long,List<Long>>();
@@ -3260,7 +3271,9 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			
 			if(resultList != null && resultList.size() > 0)
 			resultList.get(0).setCommitte(tdpBasicCommitteeDAO.get(basicCommitteeTypeId).getName());
-		}
+		
+				
+				}
 		}
 		catch(Exception e)
 		{
@@ -3270,6 +3283,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return resultList;
 		
 	}
+
 	public CadreCommitteeMemberVO getMatchedLocation(Long levelId,Long levelValue,List<CadreCommitteeMemberVO>resultList)
 	{
 		try{
@@ -3745,7 +3759,43 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return returnList;
 	}
 	
-	
+	@SuppressWarnings("unused")
+	public List<CommitteeSummaryVO> getCommitteeSummaryInfoByUserAccess(Long accessValue,String accessType)
+	{	
+		List<CommitteeSummaryVO> returnList = null;
+		List<Long> locationIds = new ArrayList<Long>();
+		Long locationLevelId = 0l;
+		locationIds.add(accessValue);
+		if(accessType.equalsIgnoreCase("State"))
+			locationLevelId = 10l;
+		else if(accessType.equalsIgnoreCase("District"))
+			locationLevelId = 11l;
+		try{
+			
+			List<Object[]> valuesList = tdpCommitteeDAO. getLocationWiseMandalDetails(locationIds,locationLevelId);
+			List<Object[]> allStartedList = tdpCommitteeDAO.getLocationWiseMandalStartedDetails(locationIds,locationLevelId);
+			Map<Long,CommitteeSummaryVO> returnMap = new HashMap<Long,CommitteeSummaryVO>();
+			CommitteeSummaryVO mainVO = new CommitteeSummaryVO();
+			getVillageLvlInfo( valuesList,allStartedList,returnMap,mainVO);
+			 returnList = new ArrayList<CommitteeSummaryVO>(returnMap.values());
+			if(returnList.size() > 0){
+				CommitteeSummaryVO vo = returnList.get(0);
+				vo.setMainComitteesConformed(mainVO.getMainComitteesConformed());
+				vo.setMainComittees(mainVO.getMainComittees());
+				vo.setStartedCount(mainVO.getStartedCount());
+				vo.setLocationId(locationLevelId);
+				vo.setLocationName(getLocationName(locationLevelId, accessValue));
+				
+			}
+			return returnList;
+
+		}
+		catch(Exception e)
+		{
+			LOG.error(e);
+		}
+		return returnList;
+	}
 	public void fillResultDetails(List<LocationWiseBoothDetailsVO> startedList,List<CommitteeSummaryVO> returnList,Long startedCount,Map<Long,CommitteeSummaryVO> affilatedMap,CommitteeSummaryVO mainCommitteesVO)
 	{
 		try {
