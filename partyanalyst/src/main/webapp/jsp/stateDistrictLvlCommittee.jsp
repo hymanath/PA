@@ -49,7 +49,7 @@
   <body>
 		<div class="container">
 		<div class="row ">
-		<h3 class="text-center">${finalStatus} &nbsp;CONSTITUENCY	</h3>		
+		<h3 class="text-center">${finalStatus}	</h3>		
 		</div> 
 		<input type="hidden" value="1" id="committeeMngtType"/>		
 		<input type="hidden" value="1" id="areaTypeId"/>
@@ -784,109 +784,10 @@
 					$("#designationDivId,#step1Id,#step2Id").show();
 				}
 	}
-	function updateSearchType(levelId)
-	{
-		var reqLocationType = "";
-		if(levelId==0){
-			$("#committeLocationId  option").remove();
-			$("#committeLocationId").append('<option value="0">Select Location</option>');
-		}
-		if(levelId==2){
-			reqLocationType = "mandal";
-		}
-		$("#dataLoadingsImg").show();
-		$.ajax({
-			type : "POST",
-			url : "getCommitteLocationsAction.action",
-			data : {locationType:reqLocationType} ,
-		}).done(function(result){
-			$("#dataLoadingsImg").hide();
-			$("#committeLocationId  option").remove();
-			$("#committeLocationId").append('<option value="0">Select Location</option>');
-			if(typeof result == "string"){
-				if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
-				  location.reload(); 
-				}
-			}
-			
-			for(var i in result){
-				if(levelId==1)
-				{
-					$("#committeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
-				}else{
-					var locId = result[i].locationId+"";
-					if(locId.substr(0,1) == "1" || locId.substr(0,1) == "3"){
-				       $("#committeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
-					}
-				}
-			}
-		});
-		if(levelId==1)
-		{
-			$('#areaTypeId').val(levelId);
-		}
-		else if(levelId==2)
-		{
-			$('#areaTypeId').val(levelId);
-		}
-	}
 	
-	var elegbleRolCnt=0;
-	var dttCnt = 0;
+
 	
-	function addMoreEligibleRoles(divId,index,btnDivId,cadreId){
-		elegbleRolCnt=elegbleRolCnt+1;
-		dttCnt = dttCnt+1;
-		var generatedId=index+''+cadreId;
-       var str='';
-        str+='<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;"  id="eligibleRolesDivs'+elegbleRolCnt+'">';
-		str+='	<div class="row">';
-		str+='	  <div class="form-group col-md-3 col-md-offset-0 col-sm-4 col-xs-4 ">';
-		str+='		<label >Designation</label>';
-		str+='		<select class="form-control designationCls'+cadreId+'"  id="designation'+generatedId+'" name="eligibleRoles['+elegbleRolCnt+'].designationLevelId">';
-		str+='		   <option value="0"> Select Designation</option>';
-		    for(var i in allRolesList){
-		      str+='<option value="'+allRolesList[i].id+'">'+allRolesList[i].name+'</option>';
-			}
-		str+='		</select>';
-		str+='<br><span id="designation'+generatedId+'Err" class="validErrCls" style="color:red;font-size:12px;"></span>';
-		str+='	  </div>';
-		str+='	   <div class="form-group col-md-3 col-md-offset-0 col-sm-4 col-xs-4">';
-		str+='			<label >From Date</label>';
-		str+='			<input type="text" placeholder="Select From Date" id="fromDateIda'+generatedId+'" key ="a'+dttCnt+'"  class="form-control fromDateCls'+cadreId+'" name="eligibleRoles['+elegbleRolCnt+'].fromDateStr">';
-		str+='          <br><span id="fromDateIda'+generatedId+'Err" class="validErrCls" style="color:red;font-size:12px;"></span>'; 
-		str+='	   </div>';
-		str+='	   <div class="form-group col-md-2 col-md-offset-1 col-sm-4 col-xs-4">';
-		str+='			<label >To Date</label>';
-		str+='			<input type="text" placeholder="Select To Date" id="toDateIda'+generatedId+'"  class="form-control toDateCls'+cadreId+'" name="eligibleRoles['+elegbleRolCnt+'].toDateStr">';
-		str+='          <br><span id="toDateIda'+generatedId+'Err" class="validErrCls" style="color:red;font-size:12px;"></span>';
-		str+='		</div>	';	  
-		str+='	</div>';
-		if(index != 0)
-			str+='<a style="margin-left: 17px;" class="btn btn-danger btn-xs " href="javascript:{removeselDiv(\'eligibleRolesDivs'+elegbleRolCnt+'\','+index+');}"> Remove </a>';
-		str+='</div>';
-		$('#'+divId+'').append(str);
-		$('#'+divId+'').show();
-		$('.'+divId+'').show();
-		$('#fromDateIda'+generatedId).datepicker({
-				dateFormat: 'yy-mm-dd',
-				maxDate: new Date(),
-				changeMonth: true,
-				changeYear: true,
-				yearRange: "-100:+0"
-			  });
-		$('#toDateIda'+generatedId).datepicker({
-				dateFormat: 'yy-mm-dd',
-				maxDate: new Date(),
-				changeMonth: true,
-				changeYear: true,
-				yearRange: "-100:+0"
-			  });
-			  index = index+1;
-			  var str1 = '';
-			  str1+='<a href="javascript:{addMoreEligibleRoles(\''+divId+'\','+index+',\''+btnDivId+'\','+cadreId+');}" class="btn btn-danger btn-xs ">Click here to Add+ Details</a>';	
-			  $('#'+btnDivId+'').html(str1);
-	}	
+	
 	function showEditInfo(){
 		$("#desigChangErrs").html("");
 		$(".hideRowClass").each(function(){
@@ -944,146 +845,9 @@
 				}
 			});
 	}
-	function getMandalCorporationsByConstituency()
-	{		
-		if(task == 2){
-			$('#mndlLvlCommittSelec').trigger('click');
-			getCommitteeLocations();
-		}else{
-			if($("#mndlLvlCommittSelec").is(':checked')){
-					return;
-				}
-			$("#mandalMainDivId").show();
-			//console.log("mandalNewId  :"+mandalNewId);
-			$("#committeeMainId").hide();
-			
-			$("#committeeLocationId option").remove();
-			$("#committeeLocationId").append('<option value="0">Select Location</option>');
-			
-			$("#panchayatWardByMandal option").remove();
-			$("#panchayatWardByMandal").append('<option value="0">Select Mandal</option>');
-			
-				$("#dataLoadingImgForMandal").show();
-				
-				 $.ajax({
-					type : "POST",
-					url : "getMandalCorporationsByConstituencyAction.action",
-					data : {} 
-				}).done(function(result){
-				$("#dataLoadingImgForMandal").hide();
-				if(typeof result == "string"){
-					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
-					  location.reload(); 
-					}
-				}
-				var str='';
-				if(result !=null){
-						str+='<select id="panchayatWardByMandal" class="form-control" onchange="getPanchayatWardByMandal();">';
-						str+='<option value="0">Select Location</option>';
-						for(var i in result)
-						{
-							str+='<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>'
-						}
-						str+='</select>';	
-				}
-					$("#mandalDivId").html(str);
-					if(mandalNewId != 0 && isFirstMandalSettingValues)
-					{
-						task="";
-						isFirstMandalSettingValues = false;
-						$("#panchayatWardByMandal").val(mandalNewId);
-						getPanchayatWardByMandal();
-					}
-				});
-			}
 	
-	}
 	
-	function getPanchayatWardByMandal(){
-		     $('#cadreDetailsDiv').html('');
-			 $('#cadreDetailsDiv,#step3Id').hide();
-			 $('#designationDivId').hide();
-             $('#searchcadrenewDiv').hide();
-			 $('#step1Id').hide();
-			if($("#mndlLvlCommittSelec").is(':checked')){
-				return;
-			}
-			$("#mandalDivIdErr").html('');
-			
-			$("#affiliCommitteeAllInfoDivId").html("");
-			$("#elctarolInfoDivId").html("");
-			$("#addMembrsBtn").show();
-			$("#viewMembrsBtn").show();
-			$("#printBtnDiv").hide();
-			
-			var mandalId=$("#panchayatWardByMandal").val();
-			hideMembers();
-			//$("#committeeTypeId").val(0);
-			$("#committeeLocationIdErr").html("");
-			$("#committeeTypeIdErr").html("");
-			$("#afflitCommitteeIdErr").html("");
-			$("#committeeMainId").hide();
-			$("#dataLoadingsImg").show();
-			$("#dataLoadingImg").show();
-			var reqLocationType ="";
-			var committeTypesID = $('#committeeMngtType').val();
-			var searchLevelId = 0;
-			if(committeTypesID != 1)
-				searchLevelId = $('#searchLevelId').val();
-			if(task == 2 || searchLevelId == 2 || $("#mndlLvlCommittSelec").is(':checked')){
-			  reqLocationType ="mandal";
-			}
-			var jsObj={
-				mandalId:mandalId
-			}
-			$.ajax({
-				type : "POST",
-				url : "getPanchayatWardByMandalAction.action",
-				data : {task:JSON.stringify(jsObj)} 
-			}).done(function(result){	
-		$("#dataLoadingsImg").hide();
-		$("#dataLoadingImg").hide();
-			if(typeof result == "string"){
-				if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
-				  location.reload(); 
-				}
-			}
-			if(committeTypesID == 1)
-			{
-				$("#committeeLocationId  option").remove();
-				$("#committeeLocationId").append('<option value="0">Select Location</option>');
-			}
-			
-			$("#committeLocationId  option").remove();
-			$("#committeLocationId").append('<option value="0">Select Location</option>');
-			
-			var reqNewLocationType ="";
-			if(task == 2 ||  searchLevelId == 2 || $("#mndlLvlCommittSelec").is(':checked')){
-			  reqNewLocationType ="mandal";
-			}
-			if(reqNewLocationType == reqLocationType){
-				 if(committeTypesID == 1)
-					for(var i in result){
-						$("#committeeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
-					}
-				
-				 if(committeTypesID != 1)
-					 for(var i in result){
-						$("#committeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
-				}
-				
-				if(pancayatId != 0 && isFirstPancayatSettingValues)
-				{
-					task="";
-					isFirstPancayatSettingValues = false;
-					$("#committeeLocationId").val(pancayatId);
-					getAffiliatedCommitsForALoc();
-				} 
-			}
-		
-		});	
-			
-	}
+	
 	
 	 function getAllCommitteeMembersInfoInALoc(){
 		 if(!($("#committeeTypeId").val() == 3)){

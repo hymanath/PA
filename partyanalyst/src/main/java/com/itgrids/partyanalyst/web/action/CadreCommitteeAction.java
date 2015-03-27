@@ -1427,6 +1427,12 @@ public String getSummaryDetails(){
 	public String stateDistrictLvlCommittee(){
 		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 		
+		if(regVO==null){
+			return "input";
+		}
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"TDP_COMMITTEE_STATE_DISTRICT_ACCESS")){
+			return "error";
+		}
 		if(regVO.getAccessType().equalsIgnoreCase("DISTRICT")){
 			reqLocationType = "district";
 			reqLocationValue = "1"+regVO.getAccessValue();
