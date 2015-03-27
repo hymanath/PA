@@ -708,4 +708,5 @@ public interface IBoothPublicationVoterDAO extends
 	  
 	  public List<Object[]> getVoterCadreCasteDetailsBySearchCriteria(Long stateId,String locationType,Long locationId,Long casteStateId,String nameStr);
 	  public List<Object[]> getVoterCadreCasteDetailsByName(Long stateId,String locationType,Long locationId,Long casteStateId,String nameStr);
+	  public List<Object[]> getVoterCasteWiseCountDetailsByName(Long stateId,String locationType,Long locationId,Long casteStateId,String nameStr);
 }
