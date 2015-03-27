@@ -1974,6 +1974,8 @@
 	<bean id="tdpCadreCasteInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreCasteInfoDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-
+    <bean id="tdpCommitteeVacantPostDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCommitteeVacantPostDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		

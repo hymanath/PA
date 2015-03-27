@@ -573,7 +573,8 @@
 				<value>com.itgrids.partyanalyst.model.CommitteIvrDistrictDetail</value>
 				<value>com.itgrids.partyanalyst.model.CommitteIvrTotalDetail</value>
 				<value>com.itgrids.partyanalyst.model.TdpCadreAgerangeInfo</value>
-				<value>com.itgrids.partyanalyst.model.TdpCadreCasteInfo</value>				
+				<value>com.itgrids.partyanalyst.model.TdpCadreCasteInfo</value>	
+				<value>com.itgrids.partyanalyst.model.TdpCommitteeVacantPost</value>				
 				</list>
 			
 		</property>

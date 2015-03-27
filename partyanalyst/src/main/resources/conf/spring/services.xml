@@ -2551,7 +2551,8 @@
           <property name="committeIvrDistrictDetailDAO" ref="committeIvrDistrictDetailDAO"/>
           <property name="committeIvrTotalDetailDAO" ref="committeIvrTotalDetailDAO"/>
            <property name="voterAgeInfoDAO" ref="voterAgeInfoDAO"/>
-          
+           <property name="tdpCommitteeVacantPostDAO" ref="tdpCommitteeVacantPostDAO" />
+           <property name="tdpCommitteeEnrollmentDAO" ref="tdpCommitteeEnrollmentDAO" />
 	</bean>
 	
 	<bean name="dynamicReportService"  class="com.itgrids.partyanalyst.service.impl.DynamicReportService">
