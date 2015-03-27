@@ -7705,7 +7705,7 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 		{
 			str.append("  and ( model.voter.name like '%"+nameStr+"%' ) ");
 		}		
-		str.append("  group by  UVD.casteState.casteStateId order by UVD.casteState.caste.casteName asc  ");
+		str.append("  group by  UVD.casteState.casteStateId order by count(*) desc  ");
 		Query query = getSession().createQuery(str.toString());
 		
 		if(casteStateId != null && casteStateId.longValue() != 0L)
