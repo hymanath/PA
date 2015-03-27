@@ -2575,6 +2575,7 @@
 	<property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" />	
 	<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />	
 	<property name="voterCastInfoDAO" ref="voterCastInfoDAO" />	
+	<property name="mobileNumbersDAO" ref="mobileNumbersDAO" />	
 	</bean>
 </beans>		
 	
