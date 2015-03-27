@@ -202,6 +202,7 @@ z-index:2;
 	var casteArr ;
 	
 	$(document).ready(function(){
+		alert = function(){};
 		getDistrictsAndConstis("district",0);
 		$('.fadeInRight').addClass('animated  fadeInRight ');
 		casteArr = new Array();
