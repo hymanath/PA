@@ -111,7 +111,7 @@ z-index:2;
         
 		<div id="pt-main" class="pt-perspective" style="margin-left:-15px;">
         <div class="pt-page pt-page-1 container " style="left:-11px;">
-		<a class="btn pull-right" style="z-index: 999;display:none;" id="hideModifiSearchId" href="javascript:{modifySearchDiv('hideModifiSearchId');}"> Close Search </a>
+		<a class="btn pull-right" style="z-index: 999;display:none;" id="hideModifiSearchId" href="javascript:{modifySearchDiv('hideModifiSearchId');}" title="Close Search"> X </a>
 		<a class="btn pull-right" style="z-index: 999;display:none;" id="showModifiSearchId" href="javascript:{modifySearchDiv('showModifiSearchId');}"> Modify Search </a>
             <div class="well search-content" id="modifySearchId">
                 <div class="main clearfix text-center ">
@@ -165,6 +165,10 @@ z-index:2;
 				<ol class="breadcrumb search-breadcrumb">				
 					<div id="searchDiv"></div>
 				</ol>
+			<!--	<ol class="breadcrumb search-breadcrumb">				
+					<li> Name: <input type="text" id="serachNameId"/> </li>
+				</ol>
+				-->
 				<div  style="margin-top:10px;">
 					<input type="hidden" id="enteredText" value=""/>
 					<div id="searchDetailsDiv" class="earchDetailsDiv">						
@@ -546,7 +550,7 @@ var constiSel =0;
 		$('#ajaxImageIdAPmandalconstiRoleSummary').show();
 		$('#modifySearchId').hide();
 		$('#hideModifiSearchId').hide();
-		$('#showModifiSearchId').hide();
+		$('#showModifiSearchId').show();
 		var searchTypeVal ="";
 		searchTypeVal = searchType;
 		var searchName = $(".nameDivCls a").text();
@@ -623,7 +627,7 @@ var constiSel =0;
 			if(result != null)
 			{
 				buildSearchResults(result,searchType,locationType,nextLocationType,stateId,casteStateId,divId);
-				//$('#showModifiSearchId').show();
+				$('#showModifiSearchId').show();
 			}
 			else{
 				//$('#searchDetailsDiv').html('No Data Available...');
@@ -961,7 +965,8 @@ var constiSel =0;
 				}
 				$("#districtId1").append(distOptions);
 				var constiOptions ='';		
-				if(typeof mainConstiArr !== 'undefined' && mainConstiArr.length > 0 ){
+				if(typeof mainConstiArr !== 'undefined' && mainConstiArr.length > 0 )
+				{
 				for(var i = 0; i < mainConstiArr.length; ++i) {				
 					if(locationId == mainConstiArr[i].value){
 						 constiOptions+='<option value="'+mainConstiArr[i].value+'" selected>'+mainConstiArr[i].label+'</option>';	
@@ -971,13 +976,17 @@ var constiSel =0;
 					}
 				}
 				}else{
-				for(var i = 0; i < constiArr.length; ++i) {				
-					if(constiId == constiArr[i].value){
-						 constiOptions+='<option value="'+constiArr[i].value+'" selected>'+constiArr[i].label+'</option>';	
+					if(typeof constiArr !== 'undefined' && constiArr.length > 0 )
+					{
+						for(var i = 0; i < constiArr.length; ++i) {				
+							if(constiId == constiArr[i].value){
+								constiOptions+='<option value="'+constiArr[i].value+'" selected>'+constiArr[i].label+'</option>';	
+							}
+							else{
+								constiOptions+='<option value="'+constiArr[i].value+'" >'+constiArr[i].label+'</option>';			
+							}
 					}
-					else{
-						constiOptions+='<option value="'+constiArr[i].value+'" >'+constiArr[i].label+'</option>';			
-					}
+				
 				}
 				}
 				$("#constiId1").append(constiOptions);
@@ -1019,12 +1028,16 @@ var constiSel =0;
 						}
 					}
 					}else{
-					for(var i = 0; i < constiArr.length; ++i) {				
-						if(constiId == constiArr[i].value){
-							 constiOptions+='<option value="'+constiArr[i].value+'" selected>'+constiArr[i].label+'</option>';	
-						}
-						else{
-							constiOptions+='<option value="'+constiArr[i].value+'" >'+constiArr[i].label+'</option>';			
+						
+					if(typeof constiArr !== 'undefined' && constiArr.length > 0 )
+					{
+						for(var i = 0; i < constiArr.length; ++i) {				
+							if(constiId == constiArr[i].value){
+								 constiOptions+='<option value="'+constiArr[i].value+'" selected>'+constiArr[i].label+'</option>';	
+							}
+							else{
+								constiOptions+='<option value="'+constiArr[i].value+'" >'+constiArr[i].label+'</option>';			
+							}
 						}
 					}
 				}				
@@ -1120,7 +1133,7 @@ var constiSel =0;
 			{
 				if(isFinalValue != 0)
 				{
-					buildSearchCandidateDetails(result);
+					buildSearchCandidateDetails(result,dinamicDiv,'',locationType,searchType,nextLocationType,stateId,casteStateId,0,0);
 				}
 				else{
 				
@@ -1144,7 +1157,7 @@ var constiSel =0;
 		var isFinal = "";
 		if(isFinalValue != 0)
 		{
-			isFinal = "Yes";
+			isFinal = isFinalValue;
 			locationType = getDetailsAreaType;
 		}
 		var nextLocationType = "";
@@ -1185,7 +1198,7 @@ var constiSel =0;
 			{
 				if(isFinalValue != 0)
 				{
-					buildSearchCandidateDetails(result,divId,locationName,locationType); 
+					buildSearchCandidateDetails(result,divId,locationName,locationType,searchType,nextLocationType,stateId,casteStateId,locationId,isMuncipality);
 				}
 				else{
 					buildSearchDetailsSecondLevel(locationId,locationType,divId);
@@ -1215,7 +1228,7 @@ var constiSel =0;
 			else if(locationType == "tehsil")
 				mainTehsilArr = new Array();
 		var str ='';
-		
+
 		//console.log("divId :"+divId);
 		var areaType ='';
 		/*if(locationType =='state')
@@ -1237,14 +1250,14 @@ var constiSel =0;
 					str+='<div class="district-box get-details">';
 					if(locationType == 'panchayat' || locationType == 'ward')
 					{	
-						str+='<h5 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'  <span style="margin-left:8px;"> '+areaType+'</span></h5>';
+						str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',\'cadreCount\',\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}"  title="Click here to get Cadre Details"  style="display:inline-block;">&nbsp;&nbsp; <h5 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'  <span style="margin-left:8px;"> '+areaType+'</span></h5></a>';
 					}
 					else{
 						str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}" class="district-box-name get-details" title="Click here to get Sub Level Details">';	
 						str+='<h5 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'  <span style="margin-left:8px;"> '+areaType+'</span></h5></a>';
 					}
 					
-					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',1,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}"  class="badge badge-success" title="Click here to get Cadre Details"  style="color: #fff; margin-top: 5px;"> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
+					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',\'cadreCount\',\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}"  class="badge badge-success" title="Click here to get Cadre Details"  style="color: #fff; margin-top: 5px;"> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
 					str+='</div>';	
 						if(locationType == "constituency")
 						{
@@ -1279,15 +1292,31 @@ var constiSel =0;
 					str+='<div class="district-box get-details">';
 					if(locationType == 'panchayat' || locationType == 'ward')
 					{	
-						str+='<h5 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'  <span style="margin-left:8px;"> '+areaType+'</span></h5>';
+						str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',\'votersCount\',\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}"  title="Click here to get Voter Details"  style="display:inline-block;">&nbsp;&nbsp;<h5 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'  <span style="margin-left:8px;"> '+areaType+'</span></h5></a>';
 					}
 					else{
 						str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}" class="district-box-name get-details" title="Click here to get Sub Level Details">';	
 						str+='<h5 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'   <span style="margin-left:8px;"> '+areaType+'</span></h5></a>';
 					}
 					
-					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',1,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}"  class="badge badge-success" title="Click here to get Voter Details"  style="color:#fff; margin-top: 5px;"> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
-					str+='</div>';							
+					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',\'votersCount\',\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}"  class="badge badge-success" title="Click here to get Voter Details"  style="color:#fff; margin-top: 5px;"> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
+					str+='</div>';	
+					
+						if(locationType == "constituency")
+						{	
+							var obj = {
+							value :  result[i].constituencyId,
+							label :  result[i].constituency
+							}			
+							mainConstiArr.push(obj);
+						}	
+						else if(locationType == "tehsil"){
+							var obj1 = {
+							value1 :  result[i].constituencyId,
+							label1 :  result[i].constituency
+							}			
+							mainTehsilArr.push(obj1);
+						}					
 				}				
 			}
 			if(str.length>0)
@@ -1368,7 +1397,7 @@ var constiSel =0;
 			{
 				if(isFinalValue != 0)
 				{
-					buildSearchCandidateDetails(result,divId,'',locationType);
+					buildSearchCandidateDetails(result,divId,'',locationType,searchType,nextLocationType,stateId,casteStateId,0,0);
 				}
 				else{
 				
@@ -1382,8 +1411,7 @@ var constiSel =0;
 		});
 	}
 	
-	
-	function buildSearchCandidateDetails(myresults,divId,locationName,locationType)
+	function buildSearchCandidateDetails(myresults,divId,locationName,locationType,searchType,nextLocationType,stateId,casteStateId,locationId,isMuncipality)
 	{
 		var result = myresults[0].cadreSearchList;
 		divCount = parseInt(divCount)+1;
@@ -1407,57 +1435,19 @@ var constiSel =0;
 				str+='<div class="panel panel-default search-panel">';
 				str+='<div class="panel-heading search-panel-heading" role="tab" id="heading'+i+'">';
 				str+='<h4 class="panel-title">';
-				/*if(i == 0)
-					str+='<a class="collapsed" data-toggle="collapse" href="#collapse'+i+'" aria-expanded="false" data-parent="#accordion" aria-controls="collapse'+i+'" onclick="getCasteMembers(\'collapse'+i+'\')">';
-				else*/
-					str+='<a class="collapsed" aria-expanded="false" data-parent="#accordion" aria-controls="collapse'+i+'" onclick="getCasteMembers(\'collapse'+i+'\')" style="cursor: pointer">';
+				str+='<a class="collapsed" aria-expanded="false" data-parent="#accordion" aria-controls="collapse'+i+'" onclick="getCasteMembers(\'collapse'+i+'\');getTotalCandidateDetailsForCaste('+locationId+',\''+locationType+'\','+stateId+',\''+searchType+'\','+result[i].id+',\'casteStateDiv'+i+'\',\''+locationName+'\',\''+isMuncipality+'\',\'cadreDetails\');" style="cursor: pointer">';
 				
 				if(result[i].casteName != null && result[i].casteName.length>0)
 					str+='<h3 style="display:inline-block;margin:0px;">'+result[i].casteName+'</h3>';
 				else
 					str+='<h3 style="display:inline-block;margin:0px;"> Others </h3>';
-				str+='<h5 style="display:inline-block;margin-left:50px;" class="badge pull-right"> Total : '+result[i].voterSearchList.length+'</h5>';
-				//str+='<span><i class="glyphicon glyphicon-chevron-up pull-right" style="color:#E5E5E5"></i></span>';
-				//str+='<span><i class="glyphicon glyphicon-search pull-right" style="color:#E5E5E5"></i></span>';
+				str+='<h5 style="display:inline-block;margin-left:50px;" class="badge pull-right"> Total : '+result[i].totalCount+'</h5>';
 				str+='</a>';
 				str+='</h4>';
 				str+='</div>';
-				/*if(i == 0)
-					str+='<div id="collapse'+i+'" class="collapse panel-collapse in" aria-labelledby="heading'+i+'">';
-				else*/
-					str+='<div id="collapse'+i+'" class="collapse panel-collapse" aria-labelledby="heading'+i+'" style="width: 1120px;">';
-				str+='<div class="panel-body">';
-				str+='<table class="table table-custom casteTableCls" >';
-				str+='<thead>';
-				str+='<tr>';
-						str+='<th width="">  </td>';
-						str+='<th width=""> Candidate Name </th>';
-						str+='<th width=""> Relative Name </th>';
-						str+='<th width=""> Mobile No </th>';
-						str+='<th width=""> Constituency </th>';
-						str+='<th width=""> Mandal/Muncipality</th>';
-						str+='<th width=""> Panchayat </th>';
-				str+='</tr>	';	
-				str+='</thead>';
-				
-				var myresult = result[i].voterSearchList;
-				if(myresult.length>0)
-				{
-					for(var j in myresult)
-					{
-						str+='<tr>';
-						str+='<td width="5%"><img class="profile-border" src="http://www.mytdp.com/images/cadre_images/'+myresult[j].imageURL+'" alt="" style="width:40px;height:50px;"></img></td>';
-						str+='<td width="">'+myresult[j].cadreName+'</td>';
-						str+='<td width="">'+myresult[j].relativeName+'</td>';
-						str+='<td width="">'+myresult[j].mobileNo+'</td>';
-						str+='<td width="">'+myresult[j].constituency+'</td>';
-						str+='<td width="">'+myresult[j].tehsil+'</td>';
-						str+='<td width="">'+myresult[j].panchayat+'</td>';
-						str+='</tr>	';	
-					}
-				}
-				
-				str+='</table>';
+
+				str+='<div id="collapse'+i+'" class="collapse panel-collapse" aria-labelledby="heading'+i+'" style="width: 1120px;">';
+				str+='<div class="panel-body detailsCls" id="casteStateDiv'+i+'" >';				
 				str+='</div>';
 				str+='</div>';
 				str+='</div>';
@@ -1485,57 +1475,19 @@ var constiSel =0;
 				str+='<div class="panel panel-default search-panel">';
 				str+='<div class="panel-heading search-panel-heading" role="tab" id="heading1'+i+'">';
 				str+='<h4 class="panel-title">';
-				/*if(i == 0)
-					str+='<a class="collapsed" data-toggle="collapse" href="#collapse'+i+'" aria-expanded="false" data-parent="#accordion" aria-controls="collapse'+i+'" onclick="getCasteMembers(\'collapse1'+i+'\')">';
-				else*/
-					str+='<a class="collapsed" aria-expanded="false" data-parent="#accordion" aria-controls="collapse'+i+'" onclick="getCasteMembers(\'collapse1'+i+'\')" style="cursor: pointer">';
+				str+='<a class="collapsed" aria-expanded="false" data-parent="#accordion" aria-controls="collapse'+i+'" onclick="getCasteMembers(\'collapse1'+i+'\');getTotalCandidateDetailsForCaste('+locationId+',\''+locationType+'\','+stateId+',\''+searchType+'\','+result[i].id+',\'casteStatesDiv'+i+'\',\''+locationName+'\',\''+isMuncipality+'\',\'votersDetails\');" style="cursor: pointer">';
 				
 				if(result[i].casteName != null && result[i].casteName.length>0)
 					str+='<h3 style="display:inline-block;margin:0px;">'+result[i].casteName+'</h3>';
 				else
 					str+='<h3 style="display:inline-block;margin:0px;"> Others </h3>';
 				
-				str+='<h5 style="display:inline-block;margin-left:50px;" class="badge pull-right"> Total : '+result[i].voterSearchList.length+'</h5>';
-				//str+='<span><i class="glyphicon glyphicon-chevron-up pull-right" style="color:#E5E5E5"></i></span>';
-				//str+='<span><i class="glyphicon glyphicon-search pull-right" style="color:#E5E5E5"></i></span>';
+				str+='<h5 style="display:inline-block;margin-left:50px;" class="badge pull-right"> Total : '+result[i].totalCount+'</h5>';
 				str+='</a>';
 				str+='</h4>';
 				str+='</div>';
-				/*if(i == 0)
-					str+='<div id="collapse1'+i+'" class="collapse panel-collapse in" aria-labelledby="heading1'+i+'">';
-				else*/
 					str+='<div id="collapse1'+i+'" class="collapse panel-collapse" aria-labelledby="heading1'+i+'"  style="width: 1120px;">';
-				str+='<div class="panel-body">';
-				str+='<table class="table table-custom casteTableCls" >';
-				str+='<thead>';
-				str+='<tr>';
-						str+='<th width="">  </td>';
-						str+='<th width=""> Candidate Name </th>';
-						str+='<th width=""> Relative Name </th>';
-						str+='<th width=""> Mobile No </th>';
-						str+='<th width=""> Constituency </th>';
-						str+='<th width=""> Mandal/Muncipality</th>';
-						str+='<th width=""> Panchayat </th>';
-				str+='</tr>	';	
-				str+='</thead>';
-				var myresult = result[i].voterSearchList;
-				if(myresult.length>0)
-				{
-					for(var j in myresult)
-					{
-						str+='<tr>';
-						str+='<td width="5%"><img class="profile-border" src="http://www.mytdp.com/'+myresult[j].imageURL+'" alt="" style="width:40px;height:50px;"></img></td>';
-						str+='<td width="">'+myresult[j].cadreName+'</td>';
-						str+='<td width="">'+myresult[j].relativeName+'</td>';
-						str+='<td width="">'+myresult[j].mobileNo+'</td>';
-						str+='<td width="">'+myresult[j].constituency+'</td>';
-						str+='<td width="">'+myresult[j].tehsil+'</td>';
-						str+='<td width=""><'+myresult[j].panchayat+'</td>';
-						str+='</tr>	';	
-					}
-				}
-				
-				str+='</table>';
+				str+='<div class="panel-body detailsCls"  id="casteStatesDiv'+i+'">';				
 				str+='</div>';
 				str+='</div>';
 				str+='</div>';
@@ -1556,12 +1508,7 @@ var constiSel =0;
 		}
 		
 		$('#'+divId+'').addClass('animated  fadeInRight');
-		//$('.casteTableCls').dataTable({});
-		$(".casteTableCls").dataTable({
-			"iDisplayLength": -1,
-			"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
-		});
-		
+
 		$('#'+divId+'').after('<div id="'+divId+''+divCount+'"></div>');
 		
 		dinamicDiv = ''+divId+''+divCount+'';
@@ -1570,6 +1517,7 @@ var constiSel =0;
 	function getCasteMembers(collapseDivId)
 	{
 		//console.log($('#'+collapseDivId+'').hasClass('in'));
+		$(".casteTableCls").html('');
 		if ($('#'+collapseDivId+'').hasClass('in'))
 		{
 			$('#'+collapseDivId+'').removeClass('in');
@@ -1583,6 +1531,7 @@ var constiSel =0;
 	
 	function modifySearchDiv(searcvyhDivId)
 	{
+		$(".casteTableCls").html('');
 		if(searcvyhDivId == 'hideModifiSearchId')
 		{
 			$('#hideModifiSearchId').hide();
@@ -1595,6 +1544,116 @@ var constiSel =0;
 			$('#showModifiSearchId').hide();
 			$('#modifySearchId').show();
 		}	
+	}
+	
+	//function getTotalCandidateDetailsForCaste(locationId,locationType,stateId,searchType,casteStateId,isFinalValue,getDetailsAreaType,divId,isMuncipality,presentDiv,locationName)
+	function getTotalCandidateDetailsForCaste(locationId,locationType,stateId,searchType,casteStateId,divId,locationName,isMuncipality,isFinalStr)
+	{		
+		$('.detailsCls').html('');
+		$('#'+divId+'').html('<img id="ajaxImg" src="./images/Loading-data.gif" alt="Processing Image"  class="offset6" style="height: 80px;">');
+		var searchName = $('#enteredText').val();
+				
+		if(isMuncipality != 0)
+				locationType ="ward";
+			
+		
+		var jObj = {
+			searchType:searchType,			
+			stateId:stateId,
+			locationId:locationId,
+			locationType:locationType,
+			casteStateId:casteStateId,
+			searchName:searchName,
+			isFinal:isFinalStr
+		}	
+		
+		$.ajax({
+          type:'GET',
+          url: 'getCadreVoterDetailsBySearchAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			$('#'+divId+'').html('');
+			if(result != null)
+			{
+				buildCasteWiseCandidateDetails(result,divId);
+			}
+			else{
+				$('#'+divId+'').html(' <div style="align-text:center;font-weight:bold;">No Data Available ...</div>');
+			}
+		});
+		
+	}
+	
+	function buildCasteWiseCandidateDetails(result,divId)
+	{
+		$(".casteTableCls").html('');
+		
+		var str='';
+		str+='<table class="table table-custom casteTableCls" >';
+		str+='<thead>';
+		str+='<tr>';
+				str+='<th width="">  </td>';
+				str+='<th width=""> Candidate Name </th>';
+				str+='<th width=""> Relative Name </th>';
+				str+='<th width=""> Mobile No </th>';
+				str+='<th width=""> Constituency </th>';
+				str+='<th width=""> Mandal/Muncipality</th>';
+				str+='<th width=""> Panchayat </th>';
+		str+='</tr>	';	
+		str+='</thead>';
+		str+='<tbody>';
+		
+		var votersList = result[0].cadreSearchList;
+		var imageUrL='images/cadre_images';
+		var isVoter = false;
+		if(votersList == null || votersList.length == 0)
+		{
+			isVoter = true;
+			votersList = result[0].voterSearchList;			
+		}
+		
+		if(votersList != null && votersList.length>0)
+		{
+			for(var k in votersList)
+			{
+				var myresult = votersList[k].voterSearchList;
+				
+				if(myresult != null &&  myresult.length>0)
+				{
+					for(var j in myresult)
+					{
+						console.log("third : "+myresult[j]);
+						console.log("fourth : "+myresult[j].cadreName);
+						str+='<tr>';
+						if(!isVoter)
+							str+='<td width="5%"><img class="profile-border" src="http://www.mytdp.com/'+imageUrL+'/'+myresult[j].imageURL+'" alt="" style="width:40px;height:50px;"></img></td>';
+						else{
+							str+='<td width="5%"><img class="profile-border" src="http://www.mytdp.com/'+myresult[j].imageURL+'" alt="" style="width:40px;height:50px;"></img></td>';
+						}
+						
+						str+='<td width="">'+myresult[j].cadreName+'</td>';
+						str+='<td width="">'+myresult[j].relativeName+'</td>';
+						if(myresult[j].mobileNo != null)
+							str+='<td width="">'+myresult[j].mobileNo+'</td>';
+						else
+							str+='<td width=""> - </td>';
+						str+='<td width="">'+myresult[j].constituency+'</td>';
+						str+='<td width="">'+myresult[j].tehsil+'</td>';
+						str+='<td width="">'+myresult[j].panchayat+'</td>';
+						str+='</tr>	';	
+					}
+				}
+			}
+		}
+		
+		str+='</tbody>';
+		str+='</table>';
+		$('#'+divId+'').html(str);
+		$(".casteTableCls").dataTable({
+			"iDisplayLength": 20,
+			"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+		});
+		
 	}
 	
 	</script>
