@@ -197,6 +197,11 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 					{
 						locationType = null;
 						areaType = IConstants.WARD;
+						if(searchType !=null && (searchType.equalsIgnoreCase("Voter")))
+						{
+							return getCadreVoterDetailsBySearchCriteria(searchType,stateId,IConstants.LOCAL_ELECTION_BODY,locationId,casteStateId,nameStr,"votersCount");
+						}
+						
 					}
 								
 				}
@@ -240,6 +245,21 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 							tdpCadreDetails = voterInfoDAO.getVoterCadreDetailsBySearchCriteria(stateId, locationType,locationIdsList);
 							if(muncipalityORCorprationIdsList != null && muncipalityORCorprationIdsList.size()>0)
 							{
+								if(areaType != null && areaType.equalsIgnoreCase(IConstants.WARD))
+								{
+									/*List<TdpCadreVO> votersDetails = getCadreVoterDetailsBySearchCriteria(searchType,stateId,IConstants.LOCAL_ELECTION_BODY,locationId,casteStateId,nameStr,"votersCount");
+									if(votersDetails != null && votersDetails.size()>0)
+									{
+										for (TdpCadreVO tdpCadreVO : votersDetails) {
+											returnVO.setVoterSearchList(tdpCadreVO.getVoterSearchList());
+										}
+									}	*/
+									if(returnList != null && returnList.size() ==0)
+									{
+										returnList.add(returnVO);
+									}
+									return returnList;
+								}
 								wardOrMuncipalityList = voterInfoDAO.getVoterCadreDetailsBySearchCriteria(stateId,areaType,muncipalityORCorprationIdsList);
 							}							
 						}
