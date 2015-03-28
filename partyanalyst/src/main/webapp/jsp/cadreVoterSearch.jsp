@@ -155,12 +155,12 @@ z-index:2;
 			<div>
 					<span class="badge modifySearchBreadscrumb" style="display:none;margin-left: 5px;margin-top: -18px;"> YOUR SEARCHING: </span>
 					<ul class="list-inline modifySearchBreadcrumb" style="display:none;margin-bottom: 0px; margin-left: 10px; margin-top: 10px;">					
-					<li> Cadre / Voter :  </li>
-					<li  class="stateId1"> State: </li>
+					<li class="searchId" style="display:none;" > Cadre / Voter :  </li>
+					<li  class="stateId1" style="display:none;" > State: </li>
 					<li  class="districtId1"  style="display:none;"> District : </li>
 					<li  class="constiId1"  style="display:none;"> Constituency : </li>
 					<li  class="tehsilId1"  style="display:none;"> Mandal / Muncipality : </li>
-					<li> Caste : </li>
+					<li class="casteId1" style="display:none;"> Caste : </li>
 					</ul>
 				<ol class="breadcrumb search-breadcrumb">				
 					<div id="searchDiv"></div>
@@ -622,7 +622,12 @@ var constiSel =0;
           url: 'getCadreVoterDetailsBySearchAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
+			
 			//console.log(result);
+			$('.searchId').show();
+			$('.casteId1').show();
+			$('.stateId1').show();
+			
 			$('#ajaxImageIdAPmandalconstiRoleSummary').hide();
 			buildSearchDetails(searchType,locationType,stateId,casteStateId,locationId,districtSel,constiSel,0,divId);
 			if(result != null)
@@ -1084,7 +1089,11 @@ var constiSel =0;
 	function getCadreVoterDetailsForSelection1(locId,locationType,isFinalValue,getDetailsAreaType,divId)
 	{	
 		$('#'+divId+'').html('');
-		$('#'+dinamicDiv+'').html('');
+		var divStr;			
+			divStr = dinamicDiv.substr(0, dinamicDiv.length - 1);	
+
+		$('#'+divStr+'').html('');  
+		$('#'+dinamicDiv+'').html('');  
 		$('#ajaxImageIdAPmandalconstiRoleSummary').show();
 		var locationId = $("#"+locId).val();
 		var searchType = $("#searchId1 option:selected").text();
@@ -1093,7 +1102,7 @@ var constiSel =0;
 		$('.tehsilId1').hide();
 		buildSearchDetailsSecondLevel(locationId,locationType,divId);
 		
-		var searchName = "";
+		var searchName =  $('#enteredText').val();
 		var isFinal = "";
 		if(isFinalValue != 0)
 		{
@@ -1197,7 +1206,7 @@ var constiSel =0;
 			$('#ajaxImageIdAPmandalconstiRoleSummary').hide();
 			if(result != null)
 			{
-				if(isFinalValue != 0)
+				if((locationType == 'ward' && (searchType == 'voter' || searchType == 'VOTER')) || isFinalValue != 0)
 				{
 					buildSearchCandidateDetails(result,divId,locationName,locationType,searchType,nextLocationType,stateId,casteStateId,locationId,isMuncipality);
 				}
@@ -1241,6 +1250,7 @@ var constiSel =0;
 		}*/
 			if(result.length>0)
 			{
+				str+='<div class="text-center"><h4> Cadre Details </h4></div>';
 				for(var i in result)
 				{
 					var isMuncipality = 0;
@@ -1248,6 +1258,7 @@ var constiSel =0;
 					{
 						isMuncipality = 1;
 					}
+					
 					str+='<div class="district-box get-details">';
 					if(locationType == 'panchayat' || locationType == 'ward')
 					{	
@@ -1283,43 +1294,49 @@ var constiSel =0;
 			if(result.length>0)
 			{
 				str+='<br><br>';
-				for(var i in result)
+				str+='<div class="text-center"><h4> Voter Details </h4></div>';
+				if(locationType != 'ward')
 				{
-					var isMuncipality = 0;
-					if(result[i].responseCode != null)
+					for(var i in result)
 					{
-						isMuncipality = 1;
-					}
-					str+='<div class="district-box get-details">';
-					if(locationType == 'panchayat' || locationType == 'ward')
-					{	
-						str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',\'votersCount\',\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}"  title="Click here to get Voter Details"  style="display:inline-block;">&nbsp;&nbsp;<h5 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'  <span style="margin-left:8px;"> '+areaType+'</span></h5></a>';
-					}
-					else{
-						str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}" class="district-box-name get-details" title="Click here to get Sub Level Details">';	
-						str+='<h5 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'   <span style="margin-left:8px;"> '+areaType+'</span></h5></a>';
-					}
-					
-					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',\'votersCount\',\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}"  class="badge badge-success" title="Click here to get Voter Details"  style="color:#fff; margin-top: 5px;"> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
-					str+='</div>';	
-					
-						if(locationType == "constituency")
+						var isMuncipality = 0;
+						if(result[i].responseCode != null)
+						{
+							isMuncipality = 1;
+						}
+						
+						str+='<div class="district-box get-details">';
+						if(locationType == 'panchayat' || locationType == 'ward')
 						{	
-							var obj = {
-							value :  result[i].constituencyId,
-							label :  result[i].constituency
-							}			
-							mainConstiArr.push(obj);
-						}	
-						else if(locationType == "tehsil"){
-							var obj1 = {
-							value1 :  result[i].constituencyId,
-							label1 :  result[i].constituency
-							}			
-							mainTehsilArr.push(obj1);
-						}					
-				}				
+							str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',\'votersCount\',\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}"  title="Click here to get Voter Details"  style="display:inline-block;">&nbsp;&nbsp;<h5 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'  <span style="margin-left:8px;"> '+areaType+'</span></h5></a>';
+						}
+						else{
+							str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}" class="district-box-name get-details" title="Click here to get Sub Level Details">';	
+							str+='<h5 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'   <span style="margin-left:8px;"> '+areaType+'</span></h5></a>';
+						}
+						
+						str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',\'votersCount\',\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}"  class="badge badge-success" title="Click here to get Voter Details"  style="color:#fff; margin-top: 5px;"> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
+						str+='</div>';	
+						
+							if(locationType == "constituency")
+							{	
+								var obj = {
+								value :  result[i].constituencyId,
+								label :  result[i].constituency
+								}			
+								mainConstiArr.push(obj);
+							}	
+							else if(locationType == "tehsil"){
+								var obj1 = {
+								value1 :  result[i].constituencyId,
+								label1 :  result[i].constituency
+								}			
+								mainTehsilArr.push(obj1);
+							}					
+					}	
+				}							
 			}
+			
 			if(str.length>0)
 				$('#'+divId+'').html(str);
 			else
@@ -1348,7 +1365,7 @@ var constiSel =0;
 		var casteStateId =$("#casteId1 option:selected").val();
 		 $('#ajaxImageIdAPmandalconstiRoleSummary').show();
 		//buildSearchDetailsSecondLevel(locationId,locationType,divId);
-		var searchName = "";
+		var searchName =  $('#enteredText').val();
 		var isFinal = "";
 		if(isFinalValue != 0)
 		{
