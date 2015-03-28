@@ -7516,208 +7516,296 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 	
 	public List<Object[]> getVoterCadreCasteDetailsBySearchCriteria(Long stateId,String locationType,Long locationId,Long casteStateId,String nameStr)
 	{
-		StringBuilder str = new StringBuilder();
-
-		str.append(" select ");
-		if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+		if(locationType != null)
 		{
-			str.append(" constituency.constituencyId, count(*), constituency.name ");
-		}
-		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.DISTRICT))
-		{
-			str.append(" district.districtId, count(*), district.districtName ");
-		}
+			StringBuilder str = new StringBuilder();
+			boolean isStateWise = false;
+			str.append(" select ");
+			if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			{
+				str.append(" constituency.constituencyId, count(*), constituency.name ");
+			}
+			else if(locationType != null && (locationType.equalsIgnoreCase(IConstants.DISTRICT) || locationType.equalsIgnoreCase(IConstants.STATE)))
+			{
+				str.append(" district.districtId, count(*), district.districtName ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.TEHSIL))
+			{
+				str.append(" tehsil.tehsilId, count(*), tehsil.tehsilName ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+			{
+				str.append(" localElectionBody.localElectionBodyId, count(*), localElectionBody.name ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+			{
+				str.append(" panc.panchayatId, count(*), panc.panchayatName ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.WARD))
+			{
+				//str.append(" panc.panchayatId, count(*), panc.panchayatName ");
+			}
+			str.append(" from BoothPublicationVoter model left join model.booth.panchayat panc ");
+			str.append(" left join model.booth.tehsil tehsil ");
+		    str.append(" left join model.booth.constituency constituency ");
+			str.append(" left join model.booth.localBody localElectionBody ");
+			str.append(" left join model.booth.constituency.district district ");
+			str.append(" left join model.voter voter ");
+			str.append(" where  model.booth.publicationDate.publicationDateId = 11 ");
+			
+			if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			{
+				str.append("  and  district.districtId =:locationId ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.DISTRICT))
+			{
+				str.append("  and  district.districtId =:locationId ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.TEHSIL))
+			{
+				str.append(" and  constituency.constituencyId =:locationId and localElectionBody.localElectionBodyId is null  ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+			{
+				str.append(" and  constituency.constituencyId =:locationId and localElectionBody.localElectionBodyId is not null  ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+			{
+				str.append("  and  tehsil.tehsilId =:locationId  ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.WARD))
+			{
+				//str.append(" panc.panchayatId, count(*), panc.panchayatName ");
+			}
+			else if(stateId != null &&  stateId.longValue() ==0L) 	//AP & TS
+			{
+				isStateWise = true;
+				str.append("  and  (district.districtId between 1 and 23)  ");
+			}
+			else if(stateId != null &&  stateId.longValue() ==1L)	//AP
+			{
+				isStateWise = true;
+				str.append("  and  ( district.districtId between 11 and 23 ) ");
+			}
+			else if(stateId != null &&  stateId.longValue() ==2L)	//TS
+			{
+				isStateWise = true;
+				str.append("  and ( district.districtId  between 1 and 10 ) ");
+			}
+			
+			if(casteStateId != null && casteStateId.longValue() != 0L)
+			{
+				str.append(" and casteState.casteStateId =:casteStateId");
+			}
+			if(nameStr != null && nameStr.trim().length() != 0L)
+			{
+				str.append("  and ( voter.name like '%"+nameStr+"%' or voter.name like '%"+nameStr+"%' ) ");
+			}
+			
+			if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			{
+				str.append(" group by constituency.constituencyId order by constituency.name ");
+			}
+			else if(locationType != null && (locationType.equalsIgnoreCase(IConstants.DISTRICT) || locationType.equalsIgnoreCase(IConstants.STATE)))
+			{
+				str.append(" group by district.districtId  order by district.districtName ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.TEHSIL))
+			{
+				str.append(" group by tehsil.tehsilId  order by tehsil.tehsilName ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+			{
+				str.append("  group by localElectionBody.localElectionBodyId order by localElectionBody.name ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+			{
+				str.append(" group by panc.panchayatId order by panc.panchayatName ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.WARD))
+			{
+				//str.append(" panc.panchayatId, count(*), panc.panchayatName ");
+			}
+			
+			Query query = getSession().createQuery(str.toString());
+			
+			if(casteStateId != null && casteStateId.longValue() != 0L)
+			{
+				query.setParameter("casteStateId", casteStateId);
+			}			
+			if(!isStateWise && (locationId != null && locationId.longValue() != 0L))
+			{
+				query.setParameter("locationId", locationId);
+			}
 		
-		str.append(" from BoothPublicationVoter model left join model.userAddress.panchayat panc ");
-		str.append(" left join model.booth.tehsil tehsil ");
-	    str.append(" left join model.booth.constituency constituency ");
-		str.append(" left join model.booth.localElectionBody localElectionBody ");
-		str.append(" left join model.booth.district district ");
-		str.append(" where  ");
-		
-		if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
-		{
-			str.append(" and constituency.constituencyId =:locationId ");
+			return query.list();
 		}
-		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.DISTRICT))
+		else
 		{
-			str.append(" and district.districtId =:locationId ");
+			return null;
 		}
-		else if(stateId != null &&  stateId.longValue() ==0L) 	//AP & TS
-		{
-			str.append(" and (district.districtId between 1 and 23)  ");
-		}
-		else if(stateId != null &&  stateId.longValue() ==1L)	//AP
-		{
-			str.append(" and ( district.districtId between 11 and 23 ) ");
-		}
-		else if(stateId != null &&  stateId.longValue() ==2L)	//TS
-		{
-			str.append(" and ( district.districtId  between 1 and 10 ) ");
-		}
-		
-		if(casteStateId != null && casteStateId.longValue() != 0L)
-		{
-			str.append(" and casteState.casteStateId =:casteStateId");
-		}
-		if(nameStr != null && nameStr.trim().length() != 0L)
-		{
-			str.append("  and ( model.firstname like '%"+nameStr+"%' or model.lastname like '%"+nameStr+"%' ) ");
-		}
-		
-		if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
-		{
-			str.append(" group by constituency.constituencyId order by constituency.name ");
-		}
-		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.DISTRICT))
-		{
-			str.append(" group by district.districtId  order by district.districtName ");
-		}
-		
-		Query query = getSession().createQuery(str.toString());
-		
-		if(casteStateId != null && casteStateId.longValue() != 0L)
-		{
-			query.setParameter("casteStateId", casteStateId);
-		}			
-		if(locationId != null && locationId.longValue() != 0L)
-		{
-			query.setParameter("locationId", locationId);
-		}
-		
-		return query.list();
 	}
 	
 	public List<Object[]> getVoterCadreCasteDetailsByName(Long stateId,String locationType,Long locationId,Long casteStateId,String nameStr)
 	{
-		StringBuilder str = new StringBuilder();
-		boolean isStateWise = false;
-		str.append(" select distinct model.voter.name,model.voter.relativeName,model.voter.gender,model.voter.age,tehsil.tehsilName, constituency.name,localElectionBody.name," +
-				" district.districtName, panc.panchayatName,UVD.casteState.caste.casteName,model.booth.partNo,constituency.constituencyId,model.voter.voterIDCardNo, model.voter.voterId ");
-		
-		str.append(" from UserVoterDetails UVD, BoothPublicationVoter model left join model.booth.panchayat panc ");
-		str.append(" left join model.booth.tehsil tehsil ");
-	    str.append(" left join model.booth.constituency constituency ");
-		str.append(" left join model.booth.localBody localElectionBody ");
-		str.append(" left join model.booth.constituency.district district ");
-		str.append(" left join model.voter ");
-		str.append(" where  model.voter.voterId = UVD.voter.voterId and UVD.user.userId = 1 and model.booth.publicationDate.publicationDateId = 11 and ");
-		
-		if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+		if(locationType != null)
 		{
-			str.append(" constituency.constituencyId =:locationId ");
+			StringBuilder str = new StringBuilder();
+			boolean isStateWise = false;
+			str.append(" select distinct model.voter.name,model.voter.relativeName,model.voter.gender,model.voter.age,tehsil.tehsilName, constituency.name,localElectionBody.name," +
+					" district.districtName, panc.panchayatName,UVD.casteState.caste.casteName,model.booth.partNo,constituency.constituencyId,model.voter.voterIDCardNo, model.voter.voterId ");
+			
+			str.append(" from UserVoterDetails UVD, BoothPublicationVoter model left join model.booth.panchayat panc ");
+			str.append(" left join model.booth.tehsil tehsil ");
+		    str.append(" left join model.booth.constituency constituency ");
+			str.append(" left join model.booth.localBody localElectionBody ");
+			str.append(" left join model.booth.constituency.district district ");
+			str.append(" left join model.voter ");
+			str.append(" where  model.voter.voterId = UVD.voter.voterId and UVD.user.userId = 1 and model.booth.publicationDate.publicationDateId = 11 and ");
+			
+			if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			{
+				str.append(" constituency.constituencyId =:locationId ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.DISTRICT))
+			{
+				str.append(" district.districtId =:locationId ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.TEHSIL))
+			{
+				str.append(" tehsil.tehsilId =:locationId  ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+			{
+				str.append(" localElectionBody.localElectionBodyId =:locationId  ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.WARD))
+			{
+				str.append(" localElectionBody.localElectionBodyId =:locationId  ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+			{
+				str.append(" panc.panchayatId =:locationId ");
+			}
+			else if(stateId != null &&  stateId.longValue() ==0L) 	//AP & TS
+			{
+				isStateWise = true;
+				str.append(" (district.districtId between 1 and 23)  ");
+			}
+			else if(stateId != null &&  stateId.longValue() ==1L)	//AP
+			{
+				isStateWise = true;
+				str.append(" ( district.districtId between 11 and 23 ) ");
+			}
+			else if(stateId != null &&  stateId.longValue() ==2L)	//TS
+			{
+				isStateWise = true;
+				str.append("  ( district.districtId  between 1 and 10 ) ");
+			}
+			
+			if(casteStateId != null && casteStateId.longValue() != 0L)
+			{
+				str.append(" and UVD.casteState.casteStateId =:casteStateId");
+			}
+			if(nameStr != null && nameStr.trim().length() != 0L)
+			{
+				str.append("  and ( model.voter.name like '%"+nameStr+"%' ) ");
+			}		
+			
+			Query query = getSession().createQuery(str.toString()+" order by UVD.casteState.caste.casteName asc ");
+			
+			if(casteStateId != null && casteStateId.longValue() != 0L)
+			{
+				query.setParameter("casteStateId", casteStateId);
+			}
+			if(!isStateWise && (locationId != null && locationId.longValue() != 0L))
+			{
+				query.setParameter("locationId", locationId);
+			}
+			
+			return query.list();
 		}
-		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.DISTRICT))
+		else
 		{
-			str.append(" district.districtId =:locationId ");
+			return null;
 		}
-		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
-		{
-			str.append(" panc.panchayatId =:locationId ");
-		}
-		else if(stateId != null &&  stateId.longValue() ==0L) 	//AP & TS
-		{
-			isStateWise = true;
-			str.append(" (district.districtId between 1 and 23)  ");
-		}
-		else if(stateId != null &&  stateId.longValue() ==1L)	//AP
-		{
-			isStateWise = true;
-			str.append(" ( district.districtId between 11 and 23 ) ");
-		}
-		else if(stateId != null &&  stateId.longValue() ==2L)	//TS
-		{
-			isStateWise = true;
-			str.append("  ( district.districtId  between 1 and 10 ) ");
-		}
-		
-		if(casteStateId != null && casteStateId.longValue() != 0L)
-		{
-			str.append(" and UVD.casteState.casteStateId =:casteStateId");
-		}
-		if(nameStr != null && nameStr.trim().length() != 0L)
-		{
-			str.append("  and ( model.voter.name like '%"+nameStr+"%' ) ");
-		}		
-		
-		Query query = getSession().createQuery(str.toString()+" order by UVD.casteState.caste.casteName asc ");
-		
-		if(casteStateId != null && casteStateId.longValue() != 0L)
-		{
-			query.setParameter("casteStateId", casteStateId);
-		}
-		if(!isStateWise && (locationId != null && locationId.longValue() != 0L))
-		{
-			query.setParameter("locationId", locationId);
-		}
-		
-		return query.list();
 	}
 	
 
 	public List<Object[]> getVoterCasteWiseCountDetailsByName(Long stateId,String locationType,Long locationId,Long casteStateId,String nameStr)
 	{
-		StringBuilder str = new StringBuilder();
-		boolean isStateWise = false;
-		str.append(" select  UVD.casteState.caste.casteName,UVD.casteState.casteStateId,count(*) ");
-		
-		str.append(" from UserVoterDetails UVD, BoothPublicationVoter model left join model.booth.panchayat panc ");
-		str.append(" left join model.booth.tehsil tehsil ");
-	    str.append(" left join model.booth.constituency constituency ");
-		str.append(" left join model.booth.localBody localElectionBody ");
-		str.append(" left join model.booth.constituency.district district ");
-		str.append(" left join model.voter ");
-		str.append(" where  model.voter.voterId = UVD.voter.voterId and UVD.user.userId = 1 and  model.booth.publicationDate.publicationDateId = 11  and ");
-		
-		if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+		if(locationType != null)
 		{
-			str.append(" constituency.constituencyId =:locationId ");
+			StringBuilder str = new StringBuilder();
+			boolean isStateWise = false;
+			str.append(" select  UVD.casteState.caste.casteName,UVD.casteState.casteStateId,count(*) ");
+			
+			str.append(" from UserVoterDetails UVD, BoothPublicationVoter model left join model.booth.panchayat panc ");
+			str.append(" left join model.booth.tehsil tehsil ");
+		    str.append(" left join model.booth.constituency constituency ");
+			str.append(" left join model.booth.localBody localElectionBody ");
+			str.append(" left join model.booth.constituency.district district ");
+			str.append(" left join model.voter ");
+			str.append(" where  model.voter.voterId = UVD.voter.voterId and UVD.user.userId = 1 and  model.booth.publicationDate.publicationDateId = 11  and ");
+			
+			if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			{
+				str.append(" constituency.constituencyId =:locationId ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.TEHSIL))
+			{
+				str.append(" tehsil.tehsilId =:locationId  ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+			{
+				str.append(" localElectionBody.localElectionBodyId =:locationId  and  localElectionBody.localElectionBodyId is not null  ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+			{
+				str.append(" panc.panchayatId =:locationId ");
+			}
+			else if(stateId != null &&  stateId.longValue() ==0L && !locationType.equalsIgnoreCase(IConstants.WARD)) 	//AP & TS
+			{
+				isStateWise = true;
+				str.append(" (district.districtId between 1 and 23)  ");
+			}
+			else if(stateId != null &&  stateId.longValue() ==1L && !locationType.equalsIgnoreCase(IConstants.WARD))	//AP
+			{
+				isStateWise = true;
+				str.append(" ( district.districtId between 11 and 23 ) ");
+			}
+			else if(stateId != null &&  stateId.longValue() ==2L && !locationType.equalsIgnoreCase(IConstants.WARD))	//TS
+			{
+				isStateWise = true;
+				str.append("  ( district.districtId  between 1 and 10 ) ");
+			}
+			
+			if(casteStateId != null && casteStateId.longValue() != 0L)
+			{
+				str.append(" and UVD.casteState.casteStateId =:casteStateId");
+			}
+			if(nameStr != null && nameStr.trim().length() != 0L)
+			{
+				str.append("  and ( model.voter.name like '%"+nameStr+"%' ) ");
+			}		
+			str.append("  group by  UVD.casteState.casteStateId order by count(*) desc  ");
+			Query query = getSession().createQuery(str.toString());
+			
+			if(casteStateId != null && casteStateId.longValue() != 0L)
+			{
+				query.setParameter("casteStateId", casteStateId);
+			}
+			if(!isStateWise && (locationId != null && locationId.longValue() != 0L))
+			{
+				query.setParameter("locationId", locationId);
+			}
+			
+			return query.list();
 		}
-		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.DISTRICT))
+		else
 		{
-			str.append(" district.districtId =:locationId ");
+			return null;
 		}
-		else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
-		{
-			str.append(" panc.panchayatId =:locationId ");
-		}
-		else if(stateId != null &&  stateId.longValue() ==0L) 	//AP & TS
-		{
-			isStateWise = true;
-			str.append(" (district.districtId between 1 and 23)  ");
-		}
-		else if(stateId != null &&  stateId.longValue() ==1L)	//AP
-		{
-			isStateWise = true;
-			str.append(" ( district.districtId between 11 and 23 ) ");
-		}
-		else if(stateId != null &&  stateId.longValue() ==2L)	//TS
-		{
-			isStateWise = true;
-			str.append("  ( district.districtId  between 1 and 10 ) ");
-		}
-		
-		if(casteStateId != null && casteStateId.longValue() != 0L)
-		{
-			str.append(" and UVD.casteState.casteStateId =:casteStateId");
-		}
-		if(nameStr != null && nameStr.trim().length() != 0L)
-		{
-			str.append("  and ( model.voter.name like '%"+nameStr+"%' ) ");
-		}		
-		str.append("  group by  UVD.casteState.casteStateId order by count(*) desc  ");
-		Query query = getSession().createQuery(str.toString());
-		
-		if(casteStateId != null && casteStateId.longValue() != 0L)
-		{
-			query.setParameter("casteStateId", casteStateId);
-		}
-		if(!isStateWise && (locationId != null && locationId.longValue() != 0L))
-		{
-			query.setParameter("locationId", locationId);
-		}
-		
-		return query.list();
 	}
 	
 }
