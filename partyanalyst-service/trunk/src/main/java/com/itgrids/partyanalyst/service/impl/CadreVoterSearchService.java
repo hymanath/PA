@@ -541,8 +541,11 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 					candidateVO.setConstituencyId(id);
 					candidateVO.setConstituency(name);
 					candidateVO.setTotalCount(count);
+					if(name != null && name.trim().length()>0)
+					{
+						returnList.add(candidateVO);
+					}
 					
-					returnList.add(candidateVO);
 				}
 			}
 			
@@ -578,8 +581,10 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 					 
 					candidateVO.setResponseCode("1");
 					candidateVO.setTotalCount(count);
-					
-					returnList.add(candidateVO);
+					if(name != null && name.trim().length()>0)
+					{
+						returnList.add(candidateVO);
+					}
 				}
 			}
 			
