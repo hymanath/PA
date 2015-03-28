@@ -112,7 +112,7 @@ z-index:2;
 		<div id="pt-main" class="pt-perspective" style="margin-left:-15px;">
         <div class="pt-page pt-page-1 container " style="left:-11px;">
 		<a class="btn pull-right" style="z-index: 999;display:none;" id="hideModifiSearchId" href="javascript:{modifySearchDiv('hideModifiSearchId');}" title="Close Search"> X </a>
-		<!--<a class="btn pull-right" style="z-index: 999;display:none;" id="showModifiSearchId" href="javascript:{modifySearchDiv('showModifiSearchId');}"> Modify Search </a>-->
+		<a class="btn pull-right" style="z-index: 999;display:none;" id="showModifiSearchId" href="javascript:{modifySearchDiv('showModifiSearchId');}"> Modify Search </a>
             <div class="well search-content" id="modifySearchId">
                 <div class="main clearfix text-center ">
 				
@@ -334,7 +334,7 @@ z-index:2;
 	var mainConstiArr ;
 	var mainTehsilArr ;	
 	var dinamicDiv='';
-	
+	  
 	function getDistrictsAndConstis(type,locationValue){
 	if(typeof districtArr == 'undefined'){
 		districtArr = new Array();
@@ -541,7 +541,12 @@ var constiSel =0;
 	{ 
 		if(dinamicDiv.length>0)
 		{		
-			divId = dinamicDiv ;
+			divId = dinamicDiv ;			
+			var divStr;			
+			divStr = dinamicDiv.substr(0, dinamicDiv.length - 1);	
+
+			$('#'+divStr+'').html('');  
+			$('#'+dinamicDiv+'').html('');  
 		}
 		$('#'+dinamicDiv+'').html('');
 		$('.modifySearchBreadcrumb').show();
@@ -550,6 +555,10 @@ var constiSel =0;
 		var searchType = $(".searchDivCls a").text();
 		$('#ajaxImageIdAPmandalconstiRoleSummary').show();
 		$('#modifySearchId').hide();
+		$('.districtId1').hide();
+		$('.constiId1').hide();
+		$('.tehsilId1').hide();
+		
 		$('#hideModifiSearchId').hide();
 		$('#showModifiSearchId').show();
 		var searchTypeVal ="";
@@ -607,7 +616,7 @@ var constiSel =0;
 		}
 
 		$('#'+divId+'').html('');
-			$('#enteredText').val(searchNameVal);
+		$('#enteredText').val(searchNameVal);
 		var jObj = {
 			searchType:searchTypeVal,	
 			stateId:stateId,
@@ -1170,6 +1179,15 @@ var constiSel =0;
 			isFinal = isFinalValue;
 			locationType = getDetailsAreaType;
 		}
+		
+		if(locationName.indexOf('Muncipality') != -1 || locationName.indexOf('Corporation') != -1){
+			console.log("Muncipality/Corporation" + " found");
+		}
+		else
+		{
+			console.log("Muncipality/Corporation" + " not found");
+		}
+
 		var nextLocationType = "";
 		if(locationType == 'state')
 		{
@@ -1271,21 +1289,21 @@ var constiSel =0;
 					
 					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',\'cadreCount\',\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}"  class="badge badge-success" title="Click here to get Cadre Details"  style="color: #fff; margin-top: 5px;"> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
 					str+='</div>';	
-						if(locationType == "constituency")
+						if(locationType == "constituency" && mainConstiArr.length == 0)
 						{
 	
-						var obj = {
-						value :  result[i].constituencyId,
-						label :  result[i].constituency
-						}			
-						mainConstiArr.push(obj);
+							var obj = {
+							value :  result[i].constituencyId,
+							label :  result[i].constituency
+							}			
+							mainConstiArr.push(obj);
 						}	
-						else if(locationType == "tehsil"){
-						var obj1 = {
-						value1 :  result[i].constituencyId,
-						label1 :  result[i].constituency
-						}			
-						mainTehsilArr.push(obj1);
+						else if(locationType == "tehsil"  && mainTehsilArr.length == 0){
+							var obj1 = {
+							value1 :  result[i].constituencyId,
+							label1 :  result[i].constituency
+							}			
+							mainTehsilArr.push(obj1);
 						}
 				}				
 			}
@@ -1672,6 +1690,8 @@ var constiSel =0;
 		});
 		$('html, body').animate({scrollTop:$('.casteTableCls').offset().top}, 'slow');
 	}
+	
+	
 	
 	</script>
 </body>
