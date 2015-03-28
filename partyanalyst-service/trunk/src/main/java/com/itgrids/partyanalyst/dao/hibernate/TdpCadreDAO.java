@@ -4606,101 +4606,108 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		
 		public List<Object[]> getVoterCadreCasteDetailsBySearchCriteria(Long stateId,String locationType,Long locationId,Long casteStateId,String nameStr)
 		{
-			StringBuilder str = new StringBuilder();
-			boolean isStateSelected = false;
-			str.append(" select ");
-			if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			if(locationType != null)
 			{
-				str.append(" constituency.constituencyId, count(*), constituency.name ");
+				StringBuilder str = new StringBuilder();
+				boolean isStateSelected = false;
+				str.append(" select ");
+				if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+				{
+					str.append(" constituency.constituencyId, count(*), constituency.name ");
+				}
+				else if(locationType != null && (locationType.equalsIgnoreCase(IConstants.DISTRICT) || locationType.equalsIgnoreCase(IConstants.STATE)))
+				{
+					str.append(" district.districtId, count(*), district.districtName ");
+				}
+				else if(locationType != null && locationType.equalsIgnoreCase(IConstants.TEHSIL))
+				{
+					str.append(" tehsil.tehsilId, count(*), tehsil.tehsilName ");
+				}	
+				else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+				{
+					str.append(" panc.panchayatId, count(*), panc.panchayatName ");
+				}	
+				str.append(" from TdpCadre model left join model.userAddress.panchayat panc ");
+				str.append(" left join model.userAddress.tehsil tehsil ");
+			    str.append(" left join model.userAddress.constituency constituency ");
+				str.append(" left join model.userAddress.localElectionBody localElectionBody ");
+				str.append(" left join model.userAddress.district district ");
+				str.append(" left join model.casteState casteState ");
+				str.append(" where  model.isDeleted = 'N' and model.enrollmentYear = '2014' ");
+				
+				if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+				{
+					str.append(" and district.districtId  =:locationId ");
+				}
+				else if(locationType != null && locationType.equalsIgnoreCase(IConstants.DISTRICT))
+				{
+					str.append(" and district.districtId =:locationId ");
+				}
+				else if(locationType != null && locationType.equalsIgnoreCase(IConstants.TEHSIL))
+				{
+					str.append(" and constituency.constituencyId  = :locationId ");
+				}	
+				else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+				{
+					str.append(" and tehsil.tehsilId =:locationId ");
+				}	
+				else if(stateId != null &&  stateId.longValue() ==0L) 	//AP & TS
+				{
+					isStateSelected = true;
+					str.append(" and (district.districtId between 1 and 23)  ");
+				}
+				else if(stateId != null &&  stateId.longValue() ==1L)	//AP
+				{
+					isStateSelected = true;
+					str.append(" and ( district.districtId between 11 and 23 ) ");
+				}
+				else if(stateId != null &&  stateId.longValue() ==2L)	//TS
+				{
+					isStateSelected = true;
+					str.append(" and ( district.districtId  between 1 and 10 ) ");
+				}
+				
+				if(casteStateId != null && casteStateId.longValue() != 0L)
+				{
+					str.append(" and casteState.casteStateId =:casteStateId");
+				}
+				if(nameStr != null && nameStr.trim().length() != 0L)
+				{
+					str.append("  and ( model.firstname like '%"+nameStr+"%' or model.lastname like '%"+nameStr+"%' ) ");
+				}
+				
+				if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+				{
+					str.append(" group by constituency.constituencyId order by constituency.name ");
+				}
+				else if(locationType != null && (locationType.equalsIgnoreCase(IConstants.DISTRICT) || locationType.equalsIgnoreCase(IConstants.STATE)))
+				{
+					str.append(" group by district.districtId  order by district.districtName ");
+				}
+				else if(locationType != null && locationType.equalsIgnoreCase(IConstants.TEHSIL))
+				{
+					str.append(" group by tehsil.tehsilId  order by tehsil.tehsilName");
+				}	
+				else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
+				{
+					str.append(" group by panc.panchayatId order by panc.panchayatName ");
+				}	
+				Query query = getSession().createQuery(str.toString());
+				
+				if(casteStateId != null && casteStateId.longValue() != 0L)
+				{
+					query.setParameter("casteStateId", casteStateId);
+				}			
+				if(!isStateSelected && (locationId != null && locationId.longValue() != 0L))
+				{
+					query.setParameter("locationId", locationId);
+				}
+				
+				return query.list();
 			}
-			else if(locationType != null && (locationType.equalsIgnoreCase(IConstants.DISTRICT) || locationType.equalsIgnoreCase(IConstants.STATE)))
+			else
 			{
-				str.append(" district.districtId, count(*), district.districtName ");
+				return null;
 			}
-			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.TEHSIL))
-			{
-				str.append(" tehsil.tehsilId, count(*), tehsil.tehsilName ");
-			}	
-			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
-			{
-				str.append(" panc.panchayatId, count(*), panc.panchayatName ");
-			}	
-			str.append(" from TdpCadre model left join model.userAddress.panchayat panc ");
-			str.append(" left join model.userAddress.tehsil tehsil ");
-		    str.append(" left join model.userAddress.constituency constituency ");
-			str.append(" left join model.userAddress.localElectionBody localElectionBody ");
-			str.append(" left join model.userAddress.district district ");
-			str.append(" left join model.casteState casteState ");
-			str.append(" where  model.isDeleted = 'N' and model.enrollmentYear = '2014' ");
-			
-			if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
-			{
-				str.append(" and district.districtId  =:locationId ");
-			}
-			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.DISTRICT))
-			{
-				str.append(" and district.districtId =:locationId ");
-			}
-			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.TEHSIL))
-			{
-				str.append(" and constituency.constituencyId  = :locationId ");
-			}	
-			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
-			{
-				str.append(" and tehsil.tehsilId =:locationId ");
-			}	
-			else if(stateId != null &&  stateId.longValue() ==0L) 	//AP & TS
-			{
-				isStateSelected = true;
-				str.append(" and (district.districtId between 1 and 23)  ");
-			}
-			else if(stateId != null &&  stateId.longValue() ==1L)	//AP
-			{
-				isStateSelected = true;
-				str.append(" and ( district.districtId between 11 and 23 ) ");
-			}
-			else if(stateId != null &&  stateId.longValue() ==2L)	//TS
-			{
-				isStateSelected = true;
-				str.append(" and ( district.districtId  between 1 and 10 ) ");
-			}
-			
-			if(casteStateId != null && casteStateId.longValue() != 0L)
-			{
-				str.append(" and casteState.casteStateId =:casteStateId");
-			}
-			if(nameStr != null && nameStr.trim().length() != 0L)
-			{
-				str.append("  and ( model.firstname like '%"+nameStr+"%' or model.lastname like '%"+nameStr+"%' ) ");
-			}
-			
-			if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
-			{
-				str.append(" group by constituency.constituencyId order by constituency.name ");
-			}
-			else if(locationType != null && (locationType.equalsIgnoreCase(IConstants.DISTRICT) || locationType.equalsIgnoreCase(IConstants.STATE)))
-			{
-				str.append(" group by district.districtId  order by district.districtName ");
-			}
-			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.TEHSIL))
-			{
-				str.append(" group by tehsil.tehsilId  order by tehsil.tehsilName");
-			}	
-			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
-			{
-				str.append(" group by panc.panchayatId order by panc.panchayatName ");
-			}	
-			Query query = getSession().createQuery(str.toString());
-			
-			if(casteStateId != null && casteStateId.longValue() != 0L)
-			{
-				query.setParameter("casteStateId", casteStateId);
-			}			
-			if(!isStateSelected && (locationId != null && locationId.longValue() != 0L))
-			{
-				query.setParameter("locationId", locationId);
-			}
-			
-			return query.list();
 		}
 }
