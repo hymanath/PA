@@ -1289,7 +1289,7 @@ var constiSel =0;
 					
 					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',\'cadreCount\',\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}"  class="badge badge-success" title="Click here to get Cadre Details"  style="color: #fff; margin-top: 5px;"> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
 					str+='</div>';	
-						if(locationType == "constituency" && mainConstiArr.length == 0)
+						if(locationType == "constituency")
 						{
 	
 							var obj = {
@@ -1298,7 +1298,7 @@ var constiSel =0;
 							}			
 							mainConstiArr.push(obj);
 						}	
-						else if(locationType == "tehsil"  && mainTehsilArr.length == 0){
+						else if(locationType == "tehsil"){
 							var obj1 = {
 							value1 :  result[i].constituencyId,
 							label1 :  result[i].constituency
