@@ -915,27 +915,41 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						$("#div14").html(result.membersCount);
 						
 					
-					if(level == 'village' || level == 'villageAll'){
+					if(level == 'village' || level == 'villageAll' || level == 'ward'){
 						var str='';
 						str+='';
 						str+='<td colspan="6"><ul class="list-inline ivrdetails"><li style="background: none repeat scroll 0% 0% rgb(51, 51, 51); color: rgb(255, 255, 255);">IVR DETAILS</li>';
-						str+='<li style="width: 151px;">Total Villages:'+result.committeeSummaryVO.count+'</li>';
-						str+='<li style="width: 159px;">Total IVR Calls:'+result.committeeSummaryVO.totalIvrCalls+'</li>';
-						var totLiftpercentage = 0;
-						var totLiftperc = 0;
-						totLiftpercentage = (result.committeeSummaryVO.answeredIvrCalls *100)/ result.committeeSummaryVO.totalIvrCalls;
-						totLiftperc = totLiftpercentage.toFixed(0)
-						str+='<li style="width: 173px;">Total Lifted :'+result.committeeSummaryVO.answeredIvrCalls+'('+totLiftperc+'%)</li>';
-						var totalAnswerd = 0;
-						for(var pm in result.committeeSummaryVO.optionsList){
-							totalAnswerd = totalAnswerd + result.committeeSummaryVO.optionsList[pm].count
+						if(result.committeeSummaryVO.count != null && result.committeeSummaryVO.count > 0)
+						{
+							str+='<li style="width: 129px;">Total Villages:'+result.committeeSummaryVO.count+'</li>';
 						}
-						var totpercentage = 0;
-						var totperc = 0;
-						totpercentage = (totalAnswerd *100)/ result.committeeSummaryVO.answeredIvrCalls;
-						totperc = totpercentage.toFixed(0)
-						str+='<li style="width: 180px;">Total Answred:'+totalAnswerd+'('+totperc+'%)</li></ul>';
-						str+='<ul class="list-inline ivrdetails"><li style="width: 93px; background: none repeat scroll 0 0 #fff;"></li>';
+						if(result.committeeSummaryVO.totalIvrCalls != null && result.committeeSummaryVO.totalIvrCalls > 0)
+						{
+							str+='<li style="width: 200px;">Total Village IVR Calls:'+result.committeeSummaryVO.totalIvrCalls+'</li>';
+							
+							if(result.committeeSummaryVO.answeredIvrCalls != null && result.committeeSummaryVO.answeredIvrCalls > 0)
+							{
+								var totLiftpercentage = 0;
+								var totLiftperc = 0;
+								totLiftpercentage = (result.committeeSummaryVO.answeredIvrCalls *100)/ result.committeeSummaryVO.totalIvrCalls;
+								totLiftperc = totLiftpercentage.toFixed(0)
+								str+='<li style="width: 221px;">Total Village Ivr Lifted :'+result.committeeSummaryVO.answeredIvrCalls+'('+totLiftperc+'%)</li>';
+							}
+							var totalAnswerd = 0;
+							for(var pm in result.committeeSummaryVO.optionsList){
+								totalAnswerd = totalAnswerd + result.committeeSummaryVO.optionsList[pm].count
+							}
+							var totpercentage = 0;
+							var totperc = 0;
+							totpercentage = (totalAnswerd *100)/ result.committeeSummaryVO.answeredIvrCalls;
+							totperc = totpercentage.toFixed(0)
+							str+='<li style="width: 237px;;">Total Village Ivr Answred:'+totalAnswerd+'('+totperc+'%)</li>';
+						}
+						str += '</ul>';
+						
+						if(result.committeeSummaryVO.count != null && result.committeeSummaryVO.count > 0)
+						{
+							str+='<ul class="list-inline ivrdetails"><li style="width: 93px; background: none repeat scroll 0 0 #fff;"></li>';
 						var percentage = 0;
 						var perc = 0;
 						if(result.committeeSummaryVO.total >0){
@@ -956,21 +970,91 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						}
 						}
 						
-						str+='<li>';
+					str+='<li>';
 					str+='<a style = "cursor: pointer;" class="popOverCls" id="ivrPopOverAP" data-placement="bottom" data-toggle="popover"  onClick="showPopOver(\'AP\');" title="" data-html="true" data-content="<ul class=popOverStyle><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" >?</a>';					
 						str+=' </li>';
 						str+='</ul>';
+						}
+						
+						
+					
+					if(result.committeeSummaryVO.totalWards != null && result.committeeSummaryVO.totalWards > 0)
+					{
+							str+='<ul class="list-inline ivrdetails"><li style="width: 93px; background: none repeat scroll 0 0 #fff;"></li>';
+							str+='<li style="width: 125px;">Total Wards:'+result.committeeSummaryVO.totalWards+'</li>';
+							
+							if(result.committeeSummaryVO.totalWardIvr != null && result.committeeSummaryVO.totalWardIvr > 0)
+							{
+								str+='<li style="width: 182px;">Total Ward IVR Calls:'+result.committeeSummaryVO.totalWardIvr+'</li>';
+								
+								if(result.committeeSummaryVO.totalWardAnswerdIvr != null && result.committeeSummaryVO.totalWardAnswerdIvr > 0)
+								{
+									var totLiftpercentage = 0;
+									var totLiftperc = 0;
+									totLiftpercentage = (result.committeeSummaryVO.totalWardAnswerdIvr *100)/ result.committeeSummaryVO.totalWardIvr;
+									totLiftperc = totLiftpercentage.toFixed(0)
+									str+='<li style="width: 208px;">Total Ward Ivr Lifted :'+result.committeeSummaryVO.totalWardAnswerdIvr+'('+totLiftperc+'%)</li>';
+								}
+								var totalAnswerd = 0;
+								for(var pm in result.committeeSummaryVO.optionsList1){
+									totalAnswerd = totalAnswerd + result.committeeSummaryVO.optionsList1[pm].count
+								}
+								var totpercentage = 0;
+								var totperc = 0;
+								totpercentage = (totalAnswerd *100)/ result.committeeSummaryVO.totalWardAnswerdIvr;
+								totperc = totpercentage.toFixed(0)
+								str+='<li style="width: 260px;">Total Ward Ivr Answred:'+totalAnswerd+'('+totperc+'%)</li>';
+							}
+							str += '</ul>';
+					}
+						
+						
+						if(result.committeeSummaryVO.totalWards != null && result.committeeSummaryVO.totalWards > 0)
+						{
+							str+='<ul class="list-inline ivrdetails"><li style="width: 93px; background: none repeat scroll 0 0 #fff;"></li>';
+								var percentage = 0;
+								var perc = 0;
+								if(result.committeeSummaryVO.total >0)
+								{
+														
+									for(var i in result.committeeSummaryVO.optionsList1)
+									{
+										if(result.committeeSummaryVO.optionsList1[i].id != 13)
+										{
+											percentage = (result.committeeSummaryVO.optionsList1[i].count *100)/ result.committeeSummaryVO.total;
+											perc = percentage.toFixed(0);
+											str+='<li>'+result.committeeSummaryVO.optionsList1[i].name+':'+result.committeeSummaryVO.optionsList1[i].count+'('+perc+'%)</li>';
+										}
+									}
+								}
+								else
+								{
+									if(result.committeeSummaryVO.optionsList1[i] != 13)
+									{
+										for(var i in result.committeeSummaryVO.optionsList1)
+										{
+											str+='<li>'+result.committeeSummaryVO.optionsList1[i].name+':'+result.committeeSummaryVO.optionsList1[i].count+'(0%)</li>';
+										}
+									}
+								}
+							if(result.committeeSummaryVO.totalWards != null && result.committeeSummaryVO.totalWards > 0)
+							{
+								str+='<li>';
+								str+='<a style = "cursor: pointer;" class="popOverCls" id="ivrPopOverAP" data-placement="bottom" data-toggle="popover"  onClick="showPopOver(\'AP\');" title="" data-html="true" data-content="<ul class=popOverStyle><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" >?</a>';					
+								str+=' </li>';
+							}
+							
+								str+='</ul>';
+						}
+						
 						str+='</td>';
 						//str+='</tr></table>';
 					$("#ivrDivIdAP").show();
 					$( "#ivrDivIdAP" ).insertAfter( "#ApTRId" );
 					$('#ivrPopOverAP').popover();
 					$("#ivrDivIdAP").html(str);
-					 }else if(level == 'ward'){
-					  $("#ivrDivIdAP").html('');
-					   $("#ivrDivIdAP").hide();
-					 }
-					 }
+				}
+				 }
 				}
 				else if(state == "TS"){
 					if(level == 'mandal' || level == 'town' || level == 'division' || level == 'mandalAll')
@@ -1060,62 +1144,144 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							$("#div27").html('<span> 0 </span>');
 						}						
 						$("#div28").html(result.membersCount);
-						if(level == 'village' || level == 'villageAll'){
+						if(level == 'village' || level == 'villageAll' || level == 'ward'){
 							var str1='';
-							str1+='';
-								
-							str1+='<td colspan="6"><ul class="list-inline ivrdetails"><li style="background: none repeat scroll 0% 0% rgb(51, 51, 51); color: rgb(255, 255, 255);">IVR DETAILS</li>';
+						str1+='';
+						str1+='<td colspan="6"><ul class="list-inline ivrdetails"><li style="background: none repeat scroll 0% 0% rgb(51, 51, 51); color: rgb(255, 255, 255);">IVR DETAILS</li>';
+						if(result.committeeSummaryVO.count != null && result.committeeSummaryVO.count > 0)
+						{
+							str1+='<li style="width: 129px;">Total Villages:'+result.committeeSummaryVO.count+'</li>';
+						}
+						if(result.committeeSummaryVO.totalIvrCalls != null && result.committeeSummaryVO.totalIvrCalls > 0)
+						{
+							str1+='<li style="width: 200px;">Total Village IVR Calls:'+result.committeeSummaryVO.totalIvrCalls+'</li>';
 							
-							str1+='<li style="width: 144px;">Total Villages:'+result.committeeSummaryVO.count+'</li>';
-							
-							str1+='<li style="width: 150px;">Total IVR Calls:'+result.committeeSummaryVO.totalIvrCalls+'</li>';
-							var totLiftpercentage = 0;
-							var totLiftperc = 0;
-							totLiftpercentage = (result.committeeSummaryVO.answeredIvrCalls *100)/ result.committeeSummaryVO.totalIvrCalls;
-							console.log(totLiftpercentage);
-							totLiftperc = totLiftpercentage.toFixed(0)
-							str1+='<li style="width: 173px;">Total Lifted :'+result.committeeSummaryVO.answeredIvrCalls+'('+totLiftperc+'%)</li>';
+							if(result.committeeSummaryVO.answeredIvrCalls != null && result.committeeSummaryVO.answeredIvrCalls > 0)
+							{
+								var totLiftpercentage = 0;
+								var totLiftperc = 0;
+								totLiftpercentage = (result.committeeSummaryVO.answeredIvrCalls *100)/ result.committeeSummaryVO.totalIvrCalls;
+								totLiftperc = totLiftpercentage.toFixed(0)
+								str1+='<li style="width: 221px;">Total Village Ivr Lifted :'+result.committeeSummaryVO.answeredIvrCalls+'('+totLiftperc+'%)</li>';
+							}
 							var totalAnswerd = 0;
 							for(var pm in result.committeeSummaryVO.optionsList){
 								totalAnswerd = totalAnswerd + result.committeeSummaryVO.optionsList[pm].count
 							}
 							var totpercentage = 0;
 							var totperc = 0;
-							totpercentage = (totalAnswerd *100)/ result.committeeSummaryVO.totalIvrCalls;
-							console.log(totpercentage);
+							totpercentage = (totalAnswerd *100)/ result.committeeSummaryVO.answeredIvrCalls;
 							totperc = totpercentage.toFixed(0)
-							str1+='<li style="width: 173px;">Total Answered:'+totalAnswerd+'('+totperc+'%)</li></ul>';
-							str1+='<ul class="list-inline ivrdetails"><li style="width: 93px; background: none repeat scroll 0 0 #fff;"></li>';
-							if(result.committeeSummaryVO.total >0){
-												
-								for(var i in result.committeeSummaryVO.optionsList){
-								if(result.committeeSummaryVO.optionsList[i].id != 8){
-									percentage = (result.committeeSummaryVO.optionsList[i].count *100)/ result.committeeSummaryVO.total;
-									perc = percentage.toFixed(0);
-									str1+='<li>'+result.committeeSummaryVO.optionsList[i].name+':'+result.committeeSummaryVO.optionsList[i].count+'('+perc+'%)</li>';
-								}
-								}
-							}
-							else{
-								for(var i in result.committeeSummaryVO.optionsList){
-								if(result.committeeSummaryVO.optionsList[i].id != 8){
-								str1+='<li>'+result.committeeSummaryVO.optionsList[i].name+':'+result.committeeSummaryVO.optionsList[i].count+'(0%)</li>';
-								}
-							}
+							str1+='<li style="width: 237px;;">Total Village Ivr Answred:'+totalAnswerd+'('+totperc+'%)</li>';
 						}
-							str1+='<li>';
-							str1+='<a style = "cursor: pointer;" class="popOverCls" id="ivrPopOverTS" data-placement="bottom" data-toggle="popover" onClick="showPopOver(\'TS\');" title="" data-html="true" data-content="<ul class=popOverStyle><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" >?</a>';
+						str1 += '</ul>';
 						
-							str1+=' </li>';
-							str1+='</ul>';
-							str1+='</td>';
-							$("#ivrDivIdTS").show();
-							$( "#ivrDivIdTS" ).insertAfter( "#tsTRId" );
-							$("#ivrDivIdTS").html(str1);
-							$('#ivrPopOverTS').popover();
-						 }else if(level == 'ward'){
-						  $("#ivrDivIdTS").html('');
-						   $("#ivrDivIdTS").hide();
+						if(result.committeeSummaryVO.count != null && result.committeeSummaryVO.count > 0)
+						{
+							str1+='<ul class="list-inline ivrdetails"><li style="width: 93px; background: none repeat scroll 0 0 #fff;"></li>';
+						var percentage = 0;
+						var perc = 0;
+						if(result.committeeSummaryVO.total >0){
+												
+						for(var i in result.committeeSummaryVO.optionsList){
+						if(result.committeeSummaryVO.optionsList[i].id != 8){
+							percentage = (result.committeeSummaryVO.optionsList[i].count *100)/ result.committeeSummaryVO.total;
+							perc = percentage.toFixed(0);
+							str1+='<li>'+result.committeeSummaryVO.optionsList[i].name+':'+result.committeeSummaryVO.optionsList[i].count+'('+perc+'%)</li>';
+						}
+						}
+						}
+						else{
+						if(result.committeeSummaryVO.optionsList[i] != 8){
+							for(var i in result.committeeSummaryVO.optionsList){
+							str1+='<li>'+result.committeeSummaryVO.optionsList[i].name+':'+result.committeeSummaryVO.optionsList[i].count+'(0%)</li>';
+						}
+						}
+						}
+						
+					str1+='<li>';
+					str1+='<a style = "cursor: pointer;" class="popOverCls" id="ivrPopOverAP" data-placement="bottom" data-toggle="popover"  onClick="showPopOver(\'AP\');" title="" data-html="true" data-content="<ul class=popOverStyle><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" >?</a>';					
+						str1+=' </li>';
+						str1+='</ul>';
+						}
+						
+						
+					
+					if(result.committeeSummaryVO.totalWards != null && result.committeeSummaryVO.totalWards > 0)
+					{
+							str1+='<ul class="list-inline ivrdetails"><li style="width: 93px; background: none repeat scroll 0 0 #fff;"></li>';
+							str1+='<li style="width: 125px;">Total Wards:'+result.committeeSummaryVO.totalWards+'</li>';
+							
+							if(result.committeeSummaryVO.totalWardIvr != null && result.committeeSummaryVO.totalWardIvr > 0)
+							{
+								str1+='<li style="width: 182px;">Total Ward IVR Calls:'+result.committeeSummaryVO.totalWardIvr+'</li>';
+								
+								if(result.committeeSummaryVO.totalWardAnswerdIvr != null && result.committeeSummaryVO.totalWardAnswerdIvr > 0)
+								{
+									var totLiftpercentage = 0;
+									var totLiftperc = 0;
+									totLiftpercentage = (result.committeeSummaryVO.totalWardAnswerdIvr *100)/ result.committeeSummaryVO.totalWardIvr;
+									totLiftperc = totLiftpercentage.toFixed(0)
+									str1+='<li style="width: 208px;">Total Ward Ivr Lifted :'+result.committeeSummaryVO.totalWardAnswerdIvr+'('+totLiftperc+'%)</li>';
+								}
+								var totalAnswerd = 0;
+								for(var pm in result.committeeSummaryVO.optionsList1){
+									totalAnswerd = totalAnswerd + result.committeeSummaryVO.optionsList1[pm].count
+								}
+								var totpercentage = 0;
+								var totperc = 0;
+								totpercentage = (totalAnswerd *100)/ result.committeeSummaryVO.totalWardAnswerdIvr;
+								totperc = totpercentage.toFixed(0)
+								str1+='<li style="width: 260px;">Total Ward Ivr Answred:'+totalAnswerd+'('+totperc+'%)</li>';
+							}
+							str1 += '</ul>';
+					}
+						
+						
+						if(result.committeeSummaryVO.totalWards != null && result.committeeSummaryVO.totalWards > 0)
+						{
+							str1+='<ul class="list-inline ivrdetails"><li style="width: 93px; background: none repeat scroll 0 0 #fff;"></li>';
+								var percentage = 0;
+								var perc = 0;
+								if(result.committeeSummaryVO.total >0)
+								{
+														
+									for(var i in result.committeeSummaryVO.optionsList1)
+									{
+										if(result.committeeSummaryVO.optionsList1[i].id != 13)
+										{
+											percentage = (result.committeeSummaryVO.optionsList1[i].count *100)/ result.committeeSummaryVO.total;
+											perc = percentage.toFixed(0);
+											str1+='<li>'+result.committeeSummaryVO.optionsList1[i].name+':'+result.committeeSummaryVO.optionsList1[i].count+'('+perc+'%)</li>';
+										}
+									}
+								}
+								else
+								{
+									if(result.committeeSummaryVO.optionsList1[i] != 13)
+									{
+										for(var i in result.committeeSummaryVO.optionsList1)
+										{
+											str1+='<li>'+result.committeeSummaryVO.optionsList1[i].name+':'+result.committeeSummaryVO.optionsList1[i].count+'(0%)</li>';
+										}
+									}
+								}
+							if(result.committeeSummaryVO.totalWards != null && result.committeeSummaryVO.totalWards > 0)
+							{
+								str1+='<li>';
+								str1+='<a style = "cursor: pointer;" class="popOverCls" id="ivrPopOverAP" data-placement="bottom" data-toggle="popover"  onClick="showPopOver(\'AP\');" title="" data-html="true" data-content="<ul class=popOverStyle><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" >?</a>';					
+								str1+=' </li>';
+							}
+							
+								str1+='</ul>';
+						}
+						
+						str1+='</td>';
+						//str1+='</tr></table>';
+					$("#ivrDivIdTS").show();
+					$( "#ivrDivIdTS" ).insertAfter( "#tsTRId" );
+					$('#ivrPopOverTS').popover();
+					$("#ivrDivIdTS").html(str1);
 						 }
 				}
 
@@ -1388,7 +1554,10 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			if(result[0].cadreIVRVO != null)
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length) * 2;
-				str+=' <th style="text-align:center" colspan='+length+'>IVR DETAILS</th>';
+				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE IVR DETAILS</th>';
+				
+				var length1 = (result[0].cadreIVRVO.optionsList1.length) * 2;
+				str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS</th>';
 			}
             str+='</tr>';
             str+='<tr>';
@@ -1414,6 +1583,14 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					str+='<th>%</th>';
 					}
 				}
+				
+				for(var pr in result[0].cadreIVRVO.optionsList1)
+				{
+					if(result[0].cadreIVRVO.optionsList1[pr].id != 13){
+					str+='<th>'+result[0].cadreIVRVO.optionsList1[pr].name+'</th>';
+					str+='<th>%</th>';
+					}
+				}
 			}
 str+='</tr>';			
 			str+='</thead>';	
@@ -1428,6 +1605,9 @@ str+='</tr>';
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length -1)*2;
 				str+=' <th style="text-align:center" colspan='+length+'>IVR DETAILS</th>';
+				
+				var length1 = (result[0].cadreIVRVO.optionsList1.length -1)*2;
+				str+=' <th style="text-align:center" colspan='+length1+'>IVR DETAILS</th>';
 			}
             str+='</tr>';
             str+='<tr>';
@@ -1446,6 +1626,14 @@ str+='</tr>';
 					str+='<th>%</th>';
 					}
 				}
+				
+				for(var pr in result[0].cadreIVRVO.optionsList1)
+				{
+					if(result[0].cadreIVRVO.optionsList1[pr].id != 13){
+					str+='<th>'+result[0].cadreIVRVO.optionsList1[pr].name+'</th>';
+					str+='<th>%</th>';
+					}
+				}
 			}
 			str+='</tr></thead>';	
 		}
@@ -1456,7 +1644,10 @@ str+='</tr>';
 			if(result[0].cadreIVRVO != null)
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length -1 ) * 2;
-				str+=' <th style="text-align:center" colspan='+length+'>IVR DETAILS</th>';
+				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE IVR DETAILS</th>';
+				
+				var length1 = (result[0].cadreIVRVO.optionsList1.length -1 ) * 2;
+				str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS</th>';
 			}
             str+='</tr>';
             str+='<tr>';
@@ -1472,6 +1663,14 @@ str+='</tr>';
 				{
 					if(result[0].cadreIVRVO.optionsList[pr].id != 8){
 					str+='<th>'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
+					str+='<th>%</th>';
+					}
+				}
+				
+				for(var pr in result[0].cadreIVRVO.optionsList1)
+				{
+					if(result[0].cadreIVRVO.optionsList1[pr].id != 13){
+					str+='<th>'+result[0].cadreIVRVO.optionsList1[pr].name+'</th>';
 					str+='<th>%</th>';
 					}
 				}
@@ -1608,6 +1807,22 @@ str+='</tr>';
 					}				
 					else{
 					str+='<td style="text-align:center">'+result[i].cadreIVRVO.optionsList[tp].count+'</td>';
+					str+='<td style="text-align:center">0</td>';
+					}
+					}
+				}
+				
+				for(var tp in result[i].cadreIVRVO.optionsList1)
+				{
+					if(result[0].cadreIVRVO.optionsList1[tp].id != 13){
+					if(result[i].cadreIVRVO.total >0){
+					 percentage = (result[i].cadreIVRVO.optionsList1[tp].count *100)/ result[i].cadreIVRVO.total;
+					 perc = percentage.toFixed(0);
+					str+='<td style="text-align:center">'+result[i].cadreIVRVO.optionsList1[tp].count+'</td>';
+					str+='<td style="text-align:center">'+perc+'</td>';
+					}				
+					else{
+					str+='<td style="text-align:center">'+result[i].cadreIVRVO.optionsList1[tp].count+'</td>';
 					str+='<td style="text-align:center">0</td>';
 					}
 					}
@@ -2171,7 +2386,10 @@ str+='</tr>';
 			if(result[0].cadreIVRVO != null)
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length-1)*2;
-				str+=' <th style="text-align:center" colspan='+length+'>IVR DETAILS</th>';
+				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE IVR DETAILS</th>';
+				
+				var length1 = (result[0].cadreIVRVO.optionsList1.length-1)*2;
+				str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS</th>';
 			}
             str+='</tr>';
             str+='<tr>';
@@ -2197,6 +2415,14 @@ str+='</tr>';
 					str+='<th>%</th>';
 					}
 				}
+				
+				for(var pr in result[0].cadreIVRVO.optionsList1)
+				{
+					if(result[0].cadreIVRVO.optionsList1[pr].id != 13){
+					str+='<th>'+result[0].cadreIVRVO.optionsList1[pr].name+'</th>';
+					str+='<th>%</th>';
+					}
+				}
 			}	
 			str+='</tr>';	
 			str+='</thead>';	
@@ -2211,7 +2437,10 @@ str+='</tr>';
 			 if(result[0].cadreIVRVO != null)
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length-1) *2;
-				str+=' <th style="text-align:center" colspan='+length+'>IVR DETAILS</th>';
+				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE IVR DETAILS</th>';
+				
+				var length1 = (result[0].cadreIVRVO.optionsList1.length-1) *2;
+				str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS</th>';
 			}
             str+='</tr>';
             str+='<tr>';
@@ -2230,6 +2459,14 @@ str+='</tr>';
 					str+='<th>%</th>';
 					}
 				}
+				
+				for(var pr in result[0].cadreIVRVO.optionsList1)
+				{
+					if(result[0].cadreIVRVO.optionsList1[pr].id != 13){
+					str+='<th>'+result[0].cadreIVRVO.optionsList1[pr].name+'</th>';
+					str+='<th>%</th>';
+					}
+				}
 			}
 			str+='</tr></thead>';	
 		}
@@ -2242,7 +2479,10 @@ str+='</tr>';
 			if(result[0].cadreIVRVO != null)
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length-1)*2;
-				str+=' <th style="text-align:center" colspan='+length+'>IVR DETAILS</th>';
+				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE IVR DETAILS</th>';
+				
+				var length1 = (result[0].cadreIVRVO.optionsList1.length-1)*2;
+				str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS</th>';
 				
 			}
             str+='</tr>';
@@ -2259,6 +2499,14 @@ str+='</tr>';
 				{
 					if(result[0].cadreIVRVO.optionsList[pr].id != 8){
 					str+='<th>'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
+					str+='<th>%</th>';
+					}
+				}
+				
+				for(var pr in result[0].cadreIVRVO.optionsList1)
+				{
+					if(result[0].cadreIVRVO.optionsList1[pr].id != 13){
+					str+='<th>'+result[0].cadreIVRVO.optionsList1[pr].name+'</th>';
 					str+='<th>%</th>';
 					}
 				}
@@ -2398,6 +2646,22 @@ str+='</tr>';
 					}				
 					else{
 					str+='<td style="text-align:center">'+result[i].cadreIVRVO.optionsList[tp].count+'</td>';
+					str+='<td style="text-align:center">0</td>';
+					}
+					}
+				}
+				
+				for(var tp in result[i].cadreIVRVO.optionsList1)
+				{
+					if(result[0].cadreIVRVO.optionsList1[tp].id != 13){
+					if(result[i].cadreIVRVO.total >0){
+					 percentage = (result[i].cadreIVRVO.optionsList1[tp].count *100)/ result[i].cadreIVRVO.total;
+					 perc = percentage.toFixed(0);
+					str+='<td style="text-align:center">'+result[i].cadreIVRVO.optionsList1[tp].count+'</td>';
+					str+='<td style="text-align:center">'+perc+'</td>';
+					}				
+					else{
+					str+='<td style="text-align:center">'+result[i].cadreIVRVO.optionsList1[tp].count+'</td>';
 					str+='<td style="text-align:center">0</td>';
 					}
 					}
