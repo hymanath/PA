@@ -211,6 +211,23 @@ lable{line-height:40px;}
    padding-right: 20px;
    padding-top: 10px;
 }
+.border0
+{
+	border:0px !important;
+}
+.pad_left0
+{
+	padding-left:0px;
+}
+.pad_right0
+{
+	padding-right:0px;
+}
+.pad_8
+{
+	padding-left:8px !important;
+	padding-right:8px !important;	
+}
 /*.linkDivs h2{height:92px;}*/
 </style>
 <div class="container">
@@ -237,22 +254,22 @@ lable{line-height:40px;}
 </div>
 <div  id="profileUserName" style="margin-top: 12px;text-align:center;" >
 <b>${loginUserName}</b> </div></div>
- <h2 style="border-bottom:none !important;">
- <a id="toggleDiv" class="btn btn-info"><i class="icon icon-cog  icon-white"></i> Account Settings</a></h2>
- <div id="profileDiv" style="display: block;">
- <table class="table table-hover" style="margin-bottom: -13px;border-spacing: 2px;"><thead></thead><tbody><tr><td><a href="freeUserRegistration.action?tempVar=dashBoard"><span class="icon-pencil"></span>  Edit Profile</a></td></tr>  <tr><td><a class="changePwdLink" href="javascript:{}"><span class="icon-hand-right"></span>  Change Password</a></td></tr>   <tr><td><a class="editPictureLink" href="javascript:{}"><span class="icon-user"></span>  Edit Picture</a></td></tr>  </tbody></table>
+</div>		
+ <div class="widget blue">
+ <h2 style="border-bottom:none !important;"><a id="toggleDiv"  class="btn btn-info"><i class="icon icon-cog  icon-white"></i> Account Settings</a></h2>
+ <div id='profileDiv' style="display:none;">
+ <table class="table table-hover"  style="margin-bottom: -13px;border-spacing: 2px;"><thead></thead><tbody><tr><td><a href="freeUserRegistration.action?tempVar=dashBoard"><span class="icon-pencil"></span>  Edit Profile</a></td></tr>  <tr><td><a class="changePwdLink" href="javascript:{}"><span class="icon-hand-right"></span>  Change Password</a></td></tr>   <tr><td><a class="editPictureLink" href="javascript:{}"><span class="icon-user"></span>  Edit Picture</a></td></tr>  </tbody></table>
  </div>
-</div>
-
+ </div>
  <div id="userSettingsDialog"></div>
 
 	<div id="connectPeoplePopup" style="display:none;">
 		<div id="allConnectedUsersDisplay_main"></div>
 	</div>
 	
-	<div id="houseHoldDivId" class="widget" style="display: none; padding-top: 19px; margin-top: 4px; margin-bottom: 11px;">
-		<a href="houseHoldSurveyReportAction.action" class="btn btn-info btn-block" id="houseHoldForm"> House Hold Page</a>
-		<a href="houseHoldCreationAction.action" class="btn btn-info btn-block" id="houseHoldAdmin"> House Hold Admin</a>
+	<div id="houseHoldDivId" class="widget" style="display:none;">
+		<a id="houseHoldForm" class="btn btn-info" style="margin:5px;margin-left:0px;padding-left:15px;padding-right:15px;" href="houseHoldSurveyReportAction.action"> House Hold Page</a>
+		<a id="houseHoldAdmin" class="btn btn-info" href="houseHoldCreationAction.action"> House Hold Admin</a>
 	</div>
 <c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">	
 <div class="btn btn-xlarge" style="height: 185px;">
@@ -267,7 +284,15 @@ lable{line-height:40px;}
 
 	<!---- View Election Results------->
 	<div class="widget-block" contentindex="4c">
-		<h5> View Election Results</h5>
+		<div class="accordion" id="accordion2">
+		  <div class="accordion-group border0">
+			<div class="accordion-heading">
+			  <a class="accordion-toggle pad_left0 pad_right0" style="text-decoration:none" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+				<h5> View Election Results</h5>
+			  </a>
+			</div>
+			<div id="collapseOne" class="accordion-body collapse in">
+			  <div class="accordion-inner border0 pad_8">
 			<p>You can view your Assembly or Parliament past Election Results.</p>
 		<table style="margin-left: -34px; margin-top: -35px;">
 			<tbody>
@@ -306,20 +331,46 @@ lable{line-height:40px;}
 			</tbody>
 		</table>
 		<button class="btn btn-success pull-right" type="button" onclick="viewElectionResults()">Go</button>
+		</div>
+		</div>
+		</div>
+	  
+		</div>
 	</div><!------View Election Results END---------->
 
 	<!------View Your State---------->
 	<div class="widget-block" contentindex="0c" >
-		<h5>View Your State</h5>
+		<div class="accordion" id="accordion2">
+  <div class="accordion-group border0">
+    <div class="accordion-heading">
+      <a class="accordion-toggle pad_left0 pad_right0" style="text-decoration:none" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+        <h5>View Your State</h5>
+		</a>
+    </div>
+    <div id="collapseTwo" class="accordion-body collapse in">
+      <div class="accordion-inner border0 pad_8">
 		<p>Select your state to view its Assembly, Parliament, Local Bodies election results.</p>
 		<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state_s" id="stateList_s" list="statesList" listKey="id" listValue="name" onchange="setStateValue()"/>
 		<button class="btn btn-success clear-both pull-right" type="button" onclick="navigateToStatePage()">Go</button>
+	 </div>
+    </div>
+  </div>
+  
+</div>
 	</div><!------View Your State END---------->
 	
     <!----View Your district------>
 	<div class="widget-block" contentindex="1c">
-		<div id="alertMessage_district" style="color:red;font-weight:bold;"></div>
-		<h5>View Your District</h5>
+		<div class="accordion" id="accordion2">
+		  <div class="accordion-group border0">
+			<div class="accordion-heading">
+			  <a class="accordion-toggle pad_left0 pad_right0" style="text-decoration:none" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
+				<div id="alertMessage_district" style="color:red;font-weight:bold;"></div>
+				<h5>View Your District</h5>
+				</a>
+			</div>
+		<div id="collapseThree" class="accordion-body collapse in">
+		  <div class="accordion-inner border0 pad_8">
 		<p>Select your district to view its election results in district level.</p>
 		<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your State" name="state" id="stateList_d" list="statesList" listKey="id" listValue="name" onchange="getDistrictsComboBoxForAStateForDashBoard(this.options[this.selectedIndex].value,'districtList_d','')"></s:select>
 		<s:select theme="simple" cssClass="selectBoxWidth" label="Select Your District" name="district" id="districtList_d" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select District"/>
@@ -327,6 +378,11 @@ lable{line-height:40px;}
 		<a onclick="navigateToDistrictPage()" href="javascript:{}">
 		<button class="btn btn-success pull-right" type="button">Go</button>
 		</a>
+	</div>
+    </div>
+  </div>
+  
+</div>
 	</div> <!----View Your district END------>
 	
 	<!--View your constituency
@@ -369,7 +425,16 @@ lable{line-height:40px;}
 	<!--View your Locality-->
 	<div class="widget-block" contentindex="3c" >
 	<div id="errormsg" style="color:red;font-weight:bold;"></div>
-<h5>View Your Locality</h5>
+<div class="accordion" id="accordion2">
+		  <div class="accordion-group border0">
+			<div class="accordion-heading">
+			  <a class="accordion-toggle pad_left0 pad_right0" style="text-decoration:none" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">
+				<div id="alertMessage_district" style="color:red;font-weight:bold;"></div>
+				<h5>View Your Locality</h5>
+				</a>
+			</div>
+		<div id="collapseFour" class="accordion-body collapse in">
+		  <div class="accordion-inner border0 pad_8">
 <div>
 <table>								
 <tbody>
@@ -406,13 +471,25 @@ lable{line-height:40px;}
 </div>
 
 <button class="btn btn-success pull-right" type="button" onclick="navigateToLocalBodyPage()">Go</button>
-
+</div>
+</div>
+</div>
+</div>
 </div>	<!---------locality END----------->
 
 	<!--mandal start-->
 	<c:if test="${politician == true && mandalsList != null}">
 	<div class="widget-block" contentindex="3c" >
-<h5>View Your Mandal</h5>
+<div class="accordion" id="accordion2">
+		  <div class="accordion-group border0">
+			<div class="accordion-heading">
+			  <a class="accordion-toggle pad_left0 pad_right0" style="text-decoration:none" data-toggle="collapse" data-parent="#accordion2" href="#collapseFive">
+				<div id="alertMessage_district" style="color:red;font-weight:bold;"></div>
+				<h5>View Your Mandal</h5>
+				</a>
+			</div>
+		<div id="collapseFive" class="accordion-body collapse in">
+		  <div class="accordion-inner border0 pad_8">
 <div>
 <table>								
 <tbody>
@@ -428,7 +505,10 @@ lable{line-height:40px;}
 </div>
 
 <button class="btn btn-success pull-right" type="button" onclick="getMandalsForState()">Go</button>
-
+</div>
+</div>
+</div>
+</div>
 </div>
 </c:if>
 <!---------mandal END----------->
@@ -568,9 +648,16 @@ lable{line-height:40px;}
 			<img id="constiImge" src="./images/icons/search.gif" alt="Processing Image" style="display:none;float:right;margin-right:308px;"/>
 			</div>
 			<div class="form-inline m-top10">
-		<div id="stateTable" style="display:block;" class="span5">
-						<s:select cssClass="input-block-level" theme="simple" label="Select Your State" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name"  onchange="getAllConstituenciesInStateByTypeInDashBoard(2,this.options[this.selectedIndex].value,'constituency','')"/></div>
-					
+		<div id="stateTable" style="display:block;" class="row">
+						<!--<s:select cssClass="input-block-level" theme="simple" label="Select Your State" name="state" id="stateList_c" list="statesList" listKey="id" listValue="name"  onchange="getAllConstituenciesInStateByTypeInDashBoard(2,this.options[this.selectedIndex].value,'constituency','')"/></div>-->
+						<div class="span5">
+							<select style="width:270px;margin-left:20px;" theme="simple" class="span5" label="Select Your State" name="state" id="stateList_c" onchange="getAllConstituenciesInStateByTypeInDashBoard(2,this.options[this.selectedIndex].value,'constituency','');">
+								<option value="1">Andhra Pradesh</option>
+								<option value="12">Karnataka</option>
+								<option value="24">Tamil Nadu</option>
+								<option value="TS">Telangana</option>
+							</select>
+						</div>
 		<div id="constTable" style="display:block;"  class="span5">
 					<s:select theme="simple" cssClass="input-block-level " label="Select Your Constituency" name="constituency" id="constituency" list="{}" listKey="id" listValue="name" headerKey = "0" headerValue="Select Constituency"/></div>
 				<button class="btn btn-success pull-right" type="button" onclick="navigateToConstituencyPage()" style="margin-top: 0px;">Go</button>
@@ -599,12 +686,19 @@ lable{line-height:40px;}
 			</div>
 			</c:if>
 			<div class="span4 widget linkDivs" style="margin-left:7px;max-height: 87px;">
+				<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5">Booth Wise Results</div>
+					<div>
+						<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="viewBoothWiseResults();" value="View">
+					</div>
+				</h2>
+			</div>
+			<!--<div class="span4 widget linkDivs" style="margin-left:7px;max-height: 87px;">
 				<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5">INFECTED BOOTHS</div>
 					<div>
 						<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="viewInfectedBooths();" style="float:right;margin-top:3px;background:#F06081;"></input>
 					</div>
 				</h2>
-			</div>
+			</div>-->
 			<c:if test="${ fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">	
 			<div class="span4 widget linkDivs" style="margin-left:7px;padding: 0px 20px;max-height: 87px;">
 				<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5" style="width: 180px;">STRATEGY REPORTS</div>
@@ -614,12 +708,19 @@ lable{line-height:40px;}
 				</h2>
 			</div>
 			</c:if>
-			  <div class="span4 widget linkDivs" style="margin-left:7px;">
+			 <div class="span4 widget linkDivs" style="margin-left:7px;height:120px;">
+				<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5" style="padding: 0px 18px;">Cross Voting Analysis</div>
+					<div>
+						<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="getCrossVotingReport();" value="View">
+					</div>
+				</h2>
+			</div>
+			 <!-- <div class="span4 widget linkDivs" style="margin-left:7px;">
 				<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5"> CRITICAL PANCHAYATS REPORT</div>
 				<span>
 				</span>
 				<div><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="viewCriticalPanchayats();" style="float:right;margin-top:3px;background:#F06081;"></input></div></h2>
-			</div>
+			</div>-->
 		    <div class="span4 widget linkDivs" style="margin-left:7px;">
 				<h2 style="border-bottom:0px;font-size: 13px;"> <div class="bguser5">REDUCE POLLING RESULTS</div>
 					<div>
@@ -677,14 +778,19 @@ lable{line-height:40px;}
 					</h2>
 			</div>
 
-			
-		  <div class="span4 widget linkDivs" style="margin-left:7px;height:120px;">
+			<div class="span4 widget linkDivs" style="margin-left:7px;">
+				<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5"> CRITICAL PANCHAYATS REPORT</div>
+				<span>
+				</span>
+				<div><input type="button" value="View" class="btn btn-small btnStyle view" onCLick="viewCriticalPanchayats();" style="float:right;margin-top:3px;background:#F06081;"></input></div></h2>
+			</div>
+		  <!--<div class="span4 widget linkDivs" style="margin-left:7px;height:120px;">
 			<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5" style="padding: 0px 18px;">Cross Voting Analysis</div>
 				<div>
 					<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="getCrossVotingReport();" value="View">
 				</div>
 			</h2>
-		</div>
+		</div>-->
 
 		<div class="span4 widget linkDivs" style="margin-left:7px;">
 			<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5" style="width: 180px;">Voter Modification Report </div>
@@ -703,12 +809,19 @@ lable{line-height:40px;}
 			</h2>
 		</div>
 		<div class="span4 widget linkDivs" style="margin-left:7px;height: 120px;">
+			<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5">INFECTED BOOTHS</div>
+				<div>
+					<input type="button" value="View" class="btn btn-small btnStyle view" onCLick="viewInfectedBooths();" style="float:right;margin-top:3px;background:#F06081;"></input>
+				</div>
+			</h2>
+		</div>
+		<!--<div class="span4 widget linkDivs" style="margin-left:7px;height: 120px;">
 			<h2 style="border-bottom:0px;font-size: 13px;"><div class="bguser5">Booth Wise Results</div>
 				<div>
 					<input class="btn btn-small btnStyle view" type="button" style="float:right;margin-top:3px;background:#F06081;" onclick="viewBoothWiseResults();" value="View">
 				</div>
 			</h2>
-		</div>
+		</div>-->
 
 
 
