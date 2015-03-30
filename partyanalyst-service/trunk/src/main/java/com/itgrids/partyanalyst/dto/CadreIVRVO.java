@@ -75,10 +75,15 @@ public class CadreIVRVO implements Serializable, Comparable<CadreIVRVO>{
 	
 	private Long answeredIvrCalls;
 	
+	private Long totalWards;
+	private Long totalWardIvr;
+	private Long totalWardAnswerdIvr;
+	
 	
 	private List<CadreIVRVO> subListForResponces;
 	
 	private List<IvrOptionsVO> optionsList;
+	private List<IvrOptionsVO> optionsList1;
 	
 	public CadreIVRVO()
 	{
@@ -582,6 +587,38 @@ public class CadreIVRVO implements Serializable, Comparable<CadreIVRVO>{
 
 	public void setAnsweredIvrCalls(Long answeredIvrCalls) {
 		this.answeredIvrCalls = answeredIvrCalls;
+	}
+
+	public Long getTotalWards() {
+		return totalWards;
+	}
+
+	public void setTotalWards(Long totalWards) {
+		this.totalWards = totalWards;
+	}
+
+	public Long getTotalWardIvr() {
+		return totalWardIvr;
+	}
+
+	public void setTotalWardIvr(Long totalWardIvr) {
+		this.totalWardIvr = totalWardIvr;
+	}
+
+	public Long getTotalWardAnswerdIvr() {
+		return totalWardAnswerdIvr;
+	}
+
+	public void setTotalWardAnswerdIvr(Long totalWardAnswerdIvr) {
+		this.totalWardAnswerdIvr = totalWardAnswerdIvr;
+	}
+
+	public List<IvrOptionsVO> getOptionsList1() {
+		return optionsList1;
+	}
+
+	public void setOptionsList1(List<IvrOptionsVO> optionsList1) {
+		this.optionsList1 = optionsList1;
 	}
 
 	

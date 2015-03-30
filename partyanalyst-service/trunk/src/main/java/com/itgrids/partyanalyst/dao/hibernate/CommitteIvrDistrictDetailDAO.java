@@ -14,9 +14,11 @@ public class CommitteIvrDistrictDetailDAO extends GenericDaoHibernate<CommitteIv
 		super(CommitteIvrDistrictDetail.class);
 	}
 	
-	public List<Object[]> getDistrictWiseIvrDetails()
+	public List<Object[]> getDistrictWiseIvrDetails(Long campainId)
 	{
-		Query query = getSession().createQuery("select model.districtId,model.districtName,model.callStatus,model.optionId,model.count from CommitteIvrDistrictDetail model");
+		Query query = getSession().createQuery("select model.districtId,model.districtName,model.callStatus,model.optionId,model.count from CommitteIvrDistrictDetail model" +
+				"  where model.campainId = :campainId");
+		query.setParameter("campainId", campainId);
 		return query.list();
 	}
 
