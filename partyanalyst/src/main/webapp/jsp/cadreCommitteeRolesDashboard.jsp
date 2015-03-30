@@ -101,10 +101,12 @@
 		  </div>
 		  <div class="col-md-6 col-xs-10">
 			<label>Committee Level</label>
-			<select class="form-control" style="width:220px" id="committeeLevelTypeId">
+			<select class="form-control" style="width:220px" onchange="updateAllLocLvls();" id="committeeLevelTypeId">
 				<!--<option value="0">Select Committee Level</option>-->
 				<option value="1">Village/Ward</option>
 				<option value="2">Mandal/Town/Division</option>
+				<option value="3">District</option>
+				<option value="4">State</option>
 			</select>
 		  </div>
 		  <div class="col-md-6 col-xs-10">
@@ -381,7 +383,7 @@ var userInitialAccessType = '${pageAccessType}';
 			}
 			str+='</table> ';
 		}
-		
+		if($("#committeeLevelTypeId").val() != 4){
 		if(result.locationName != null)
 		{
 				var locationOverview = result.locationWiseList;
@@ -522,6 +524,7 @@ var userInitialAccessType = '${pageAccessType}';
 					str+='</table> ';
 				}
 		}
+		}
 			str+='</div>  '; 
 			str+='</div>';
 
@@ -657,7 +660,31 @@ var userInitialAccessType = '${pageAccessType}';
 			}
 		});
 	}
-	
+	function updateAllLocLvls(){
+		var selCommLvl = $('#committeeLevelTypeId').val();
+		var selLvl = $('#searchLevelId').val();
+		if(selCommLvl == 1 || selCommLvl == 2 ){
+			$("#searchLevelId option").remove();
+			$("#searchLevelId").append('<option value="1">State</option>');
+			$("#searchLevelId").append('<option value="2">District</option>');
+			$("#searchLevelId").append('<option value="3">Assembly</option>');
+			$("#searchLevelId").val(selLvl);
+		}else if(selCommLvl == 3){
+			$("#searchLevelId option").remove();
+			$("#searchLevelId").append('<option value="1">State</option>');
+			$("#searchLevelId").append('<option value="2">District</option>');
+			if(selLvl < 3){
+			  $("#searchLevelId").val(selLvl);
+			}
+		}else if(selCommLvl == 4){
+			$("#searchLevelId option").remove();
+			$("#searchLevelId").append('<option value="1">State</option>');
+			if(selLvl < 2){
+			  $("#searchLevelId").val(selLvl);
+			}
+		}		
+			
+	}
 </script>
 </body>
 </html>
