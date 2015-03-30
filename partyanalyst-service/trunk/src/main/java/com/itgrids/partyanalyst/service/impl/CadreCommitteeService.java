@@ -7531,10 +7531,15 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 						Double malePerc = 0.00d;
 						Double femalePerc = 0.00d;
 						Double castePercInTotal = 0.00d;
-						
+						if(casteMaleCount != null && totalMaleCount != null && totalMaleCount.longValue() > 0){
 						 malePerc = Double.valueOf(decimalFormat.format((casteMaleCount * 100.00) / totalMaleCount));
+						}
+						if(casteFemaleCount != null && totalFemaleCount != null && totalFemaleCount.longValue() > 0){
 						 femalePerc = Double.valueOf(decimalFormat.format((casteFemaleCount * 100.00) / totalFemaleCount));
+						}
+						if(casteTotalCount != null && totalCount != null && totalCount.longValue() > 0){
 						 castePercInTotal = Double.valueOf(decimalFormat.format((casteTotalCount * 100.00) / totalCount));
+						}
 						
 						casteVO.setMalePerc(malePerc);
 						casteVO.setFemalePerc(femalePerc);
@@ -7562,9 +7567,15 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 						Double femalePerc = 0.00d;
 						Double castePercInTotal = 0.00d;
 						
+						if(casteMaleCount != null && totalMaleCount != null && totalMaleCount.longValue() > 0){
 						 malePerc = Double.valueOf(decimalFormat.format((casteMaleCount * 100.00) / totalMaleCount));
+						}
+						if(casteFemaleCount != null && totalFemaleCount != null && totalFemaleCount.longValue() > 0){
 						 femalePerc = Double.valueOf(decimalFormat.format((casteFemaleCount * 100.00) / totalFemaleCount));
+						}
+						if(casteTotalCount != null && totalCount != null && totalCount.longValue() > 0){
 						 castePercInTotal = Double.valueOf(decimalFormat.format((casteTotalCount * 100.00) / totalCount));
+						}
 						
 						casteVO.setMalePerc(malePerc);
 						casteVO.setFemalePerc(femalePerc);
@@ -7591,10 +7602,15 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 						Double malePerc = 0.00d;
 						Double femalePerc = 0.00d;
 						Double castePercInTotal = 0.00d;
-						
+						if(casteMaleCount != null && totalMaleCount != null && totalMaleCount.longValue() > 0){
 						 malePerc = Double.valueOf(decimalFormat.format((casteMaleCount * 100.00) / totalMaleCount));
+						}
+						if(casteFemaleCount != null && totalFemaleCount != null && totalFemaleCount.longValue() > 0){
 						 femalePerc = Double.valueOf(decimalFormat.format((casteFemaleCount * 100.00) / totalFemaleCount));
+						}
+						if(casteTotalCount != null && totalCount != null && totalCount.longValue() > 0){
 						 castePercInTotal = Double.valueOf(decimalFormat.format((casteTotalCount * 100.00) / totalCount));
+						}
 						
 						casteVO.setMalePerc(malePerc);
 						casteVO.setFemalePerc(femalePerc);
@@ -7637,6 +7653,13 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 			else if(selectedRadio.equalsIgnoreCase("1"))
 			{
 				segritageQuery = "VillageORWard";
+			}
+			else if(selectedRadio.equalsIgnoreCase("3"))
+			{
+				segritageQuery = "district";
+			}else if(selectedRadio.equalsIgnoreCase("4"))
+			{
+				segritageQuery = "state";
 			}
 			if(locationValue != null && Long.valueOf(locationValue).longValue() != 0L && Long.valueOf(locationLevelId).longValue() == 3L) //Constituency
 			{
@@ -7869,10 +7892,15 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 								Double malePerc = 0.00d;
 								Double femalePerc = 0.00d;
 								Double castePercInTotal = 0.00d;
-								
-								 malePerc = Double.valueOf(decimalFormat.format((casteMaleCount * 100.00) / locationWiseMaleCount));
-								 femalePerc = Double.valueOf(decimalFormat.format((casteFemaleCount * 100.00) / locationWiseFemaleCount));
-								 castePercInTotal = Double.valueOf(decimalFormat.format((casteTotalCount * 100.00) / locationWiseTotalCount));
+								 if(casteMaleCount != null && locationWiseMaleCount != null && locationWiseMaleCount.longValue() >0){
+								      malePerc = Double.valueOf(decimalFormat.format((casteMaleCount * 100.00) / locationWiseMaleCount));
+								 }
+								 if(casteFemaleCount != null && locationWiseFemaleCount != null && locationWiseFemaleCount.longValue() >0){
+								      femalePerc = Double.valueOf(decimalFormat.format((casteFemaleCount * 100.00) / locationWiseFemaleCount));
+								 }
+								 if(casteTotalCount != null && locationWiseTotalCount != null && locationWiseTotalCount.longValue() >0){
+								      castePercInTotal = Double.valueOf(decimalFormat.format((casteTotalCount * 100.00) / locationWiseTotalCount));
+								 }
 								
 								 locationVO.setMalePerc(malePerc);
 								 locationVO.setFemalePerc(femalePerc);
@@ -8056,10 +8084,15 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 								Double malePerc = 0.00d;
 								Double femalePerc = 0.00d;
 								Double castePercInTotal = 0.00d;
-								
+								if(casteMaleCount != null && locationWiseMaleCount != null && locationWiseMaleCount.longValue() > 0){
 								 malePerc = Double.valueOf(decimalFormat.format((casteMaleCount * 100.00) / locationWiseMaleCount));
+								}
+								if(casteFemaleCount != null && locationWiseFemaleCount != null && locationWiseFemaleCount.longValue() > 0){
 								 femalePerc = Double.valueOf(decimalFormat.format((casteFemaleCount * 100.00) / locationWiseFemaleCount));
+								}
+								if(casteTotalCount != null && locationWiseTotalCount != null && locationWiseTotalCount.longValue() > 0){
 								 castePercInTotal = Double.valueOf(decimalFormat.format((casteTotalCount * 100.00) / locationWiseTotalCount));
+								}
 								
 								 locationVO.setMalePerc(malePerc);
 								 locationVO.setFemalePerc(femalePerc);
@@ -8239,10 +8272,15 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 									Double malePerc = 0.00d;
 									Double femalePerc = 0.00d;
 									Double castePercInTotal = 0.00d;
-									
+									if(casteMaleCount != null && locationWiseMaleCount != null && locationWiseMaleCount.longValue() > 0){
 									 malePerc = Double.valueOf(decimalFormat.format((casteMaleCount * 100.00) / locationWiseMaleCount));
+									}
+									if(casteFemaleCount != null && locationWiseFemaleCount != null && locationWiseFemaleCount.longValue() > 0){
 									 femalePerc = Double.valueOf(decimalFormat.format((casteFemaleCount * 100.00) / locationWiseFemaleCount));
+									}
+									if(casteTotalCount != null && locationWiseTotalCount != null && locationWiseTotalCount.longValue() > 0){
 									 castePercInTotal = Double.valueOf(decimalFormat.format((casteTotalCount * 100.00) / locationWiseTotalCount));
+									}
 									
 									 locationVO.setMalePerc(malePerc);
 									 locationVO.setFemalePerc(femalePerc);
@@ -8577,9 +8615,15 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 						Double femalePerc = 0.00d;
 						Double castePercInTotal = 0.00d;
 						
+						if(casteMaleCount != null && totalMaleCount != null && totalMaleCount.longValue() > 0){
 						 malePerc = Double.valueOf(decimalFormat.format((casteMaleCount * 100.00) / totalMaleCount));
+						}
+						if(casteFemaleCount != null && totalFemaleCount != null && totalFemaleCount.longValue() > 0){
 						 femalePerc = Double.valueOf(decimalFormat.format((casteFemaleCount * 100.00) / totalFemaleCount));
+						}
+						if(casteTotalCount != null && totalCount != null && totalCount.longValue() > 0){
 						 castePercInTotal = Double.valueOf(decimalFormat.format((casteTotalCount * 100.00) / totalCount));
+						}
 						
 						casteVO.setMalePerc(malePerc);
 						casteVO.setFemalePerc(femalePerc);
@@ -8605,10 +8649,15 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 						Double malePerc = 0.00d;
 						Double femalePerc = 0.00d;
 						Double castePercInTotal = 0.00d;
-						
+						if(casteMaleCount != null && totalMaleCount != null && totalMaleCount.longValue() > 0){
 						 malePerc = Double.valueOf(decimalFormat.format((casteMaleCount * 100.00) / totalMaleCount));
+						}
+						if(casteFemaleCount != null && totalFemaleCount != null && totalFemaleCount.longValue() > 0){
 						 femalePerc = Double.valueOf(decimalFormat.format((casteFemaleCount * 100.00) / totalFemaleCount));
+						}
+						if(casteTotalCount != null && totalCount != null && totalCount.longValue() > 0){
 						 castePercInTotal = Double.valueOf(decimalFormat.format((casteTotalCount * 100.00) / totalCount));
+						}
 						
 						casteVO.setMalePerc(malePerc);
 						casteVO.setFemalePerc(femalePerc);
@@ -8635,10 +8684,15 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 						Double malePerc = 0.00d;
 						Double femalePerc = 0.00d;
 						Double castePercInTotal = 0.00d;
-						
+						if(casteMaleCount != null && totalMaleCount != null && totalMaleCount.longValue() > 0){
 						 malePerc = Double.valueOf(decimalFormat.format((casteMaleCount * 100.00) / totalMaleCount));
+						}
+						if(casteFemaleCount != null && totalFemaleCount != null && totalFemaleCount.longValue() > 0){
 						 femalePerc = Double.valueOf(decimalFormat.format((casteFemaleCount * 100.00) / totalFemaleCount));
+						}
+						if(casteTotalCount != null && totalCount != null && totalCount.longValue() > 0){
 						 castePercInTotal = Double.valueOf(decimalFormat.format((casteTotalCount * 100.00) / totalCount));
+						}
 						
 						casteVO.setMalePerc(malePerc);
 						casteVO.setFemalePerc(femalePerc);
@@ -8774,10 +8828,15 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 						Double malePerc = 0.00d;
 						Double femalePerc = 0.00d;
 						Double castePercInTotal = 0.00d;
-						
+						if(casteMaleCount != null && totalMaleCount != null && totalMaleCount.longValue() > 0){
 						 malePerc = Double.valueOf(decimalFormat.format((casteMaleCount * 100.00) / totalMaleCount));
+						}
+						if(casteFemaleCount != null && totalFemaleCount != null && totalFemaleCount.longValue() > 0){
 						 femalePerc = Double.valueOf(decimalFormat.format((casteFemaleCount * 100.00) / totalFemaleCount));
+						}
+						if(casteTotalCount != null && totalCount != null && totalCount.longValue() > 0){
 						 castePercInTotal = Double.valueOf(decimalFormat.format((casteTotalCount * 100.00) / totalCount));
+						}
 						
 						 locationVO.setMalePerc(malePerc);
 						 locationVO.setFemalePerc(femalePerc);
@@ -8805,7 +8864,7 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 				returnVO.setLocationName(IConstants.PANCHAYAT);
 				
 		} catch (Exception e) {
-			LOG.error("Exception Raised in getCommitteeRoleAgeWiseDetailsByLocationType() ");
+			LOG.error("Exception Raised in getCommitteeRoleAgeWiseDetailsByLocationType() ",e);
 		}
 		
 		return returnVO;
