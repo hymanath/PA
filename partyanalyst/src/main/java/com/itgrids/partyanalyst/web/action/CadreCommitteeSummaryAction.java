@@ -84,7 +84,7 @@ public class CadreCommitteeSummaryAction extends ActionSupport implements Servle
 		boolean noaccess = false;
 		if(regVO==null){
 			return "input";
-		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_COMMITTEE_MANAGEMENT")){
+		}if(!(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"CADRE_COMMITTEE_MANAGEMENT") || entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),"TDP_COMMITTEE_STATE_DISTRICT_ACCESS"))){
 			noaccess = true ;
 		}
 		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
