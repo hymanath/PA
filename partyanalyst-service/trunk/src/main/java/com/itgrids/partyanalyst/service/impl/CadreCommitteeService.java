@@ -2403,7 +2403,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		    		if(cadreIvrDetails != null && cadreIvrDetails.size() > 0)
 		    		{
 		    			fillCadreIvrDetails(cadreIvrDetails,resultVO,2l);
-		    			resultVO.setOptionsList1(resultVO.getOptionsList());
+		    			resultVO.setOptionsList1(resultVO.getOptionsList1());
 		    		}
 		    		
 		    		
