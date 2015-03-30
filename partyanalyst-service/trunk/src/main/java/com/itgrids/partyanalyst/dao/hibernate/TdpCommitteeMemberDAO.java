@@ -778,6 +778,12 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 			else if(segrigatStr.equalsIgnoreCase("MandalORTown"))
 			{
 				quertyStr.append(" and (TCO.tdpCommitteeLevelId = 5 or TCO.tdpCommitteeLevelId = 7)  ");
+			}else if(segrigatStr.equalsIgnoreCase("district"))
+			{
+				quertyStr.append(" and TCO.tdpCommitteeLevelId = 11  ");
+			}else if(segrigatStr.equalsIgnoreCase("state"))
+			{
+				quertyStr.append(" and TCO.tdpCommitteeLevelId = 10  ");
 			}
 			
 		}
@@ -898,6 +904,12 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 			else if(segrigatStr.equalsIgnoreCase("MandalORTown"))
 			{
 				quertyStr.append(" and (TCO.tdpCommitteeLevelId = 5 or TCO.tdpCommitteeLevelId = 7)  ");
+			}else if(segrigatStr.equalsIgnoreCase("district"))
+			{
+				quertyStr.append(" and TCO.tdpCommitteeLevelId = 11  ");
+			}else if(segrigatStr.equalsIgnoreCase("state"))
+			{
+				quertyStr.append(" and TCO.tdpCommitteeLevelId = 10  ");
 			}
 			
 		}
@@ -1002,6 +1014,12 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 			else if(segrigatStr.equalsIgnoreCase("MandalORTown"))
 			{
 				quertyStr.append(" and (TCO.tdpCommitteeLevelId = 5 or TCO.tdpCommitteeLevelId = 7)  ");
+			}else if(segrigatStr.equalsIgnoreCase("district"))
+			{
+				quertyStr.append(" and TCO.tdpCommitteeLevelId = 11  ");
+			}else if(segrigatStr.equalsIgnoreCase("state"))
+			{
+				quertyStr.append(" and TCO.tdpCommitteeLevelId = 10  ");
 			}
 			
 		}
@@ -1105,6 +1123,12 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 			else if(segrigatStr.equalsIgnoreCase("MandalORTown"))
 			{
 				quertyStr.append(" and (TCO.tdpCommitteeLevelId = 5 or TCO.tdpCommitteeLevelId = 7)  ");
+			}else if(segrigatStr.equalsIgnoreCase("district"))
+			{
+				quertyStr.append(" and TCO.tdpCommitteeLevelId = 11  ");
+			}else if(segrigatStr.equalsIgnoreCase("state"))
+			{
+				quertyStr.append(" and TCO.tdpCommitteeLevelId = 10  ");
 			}
 			
 		}
