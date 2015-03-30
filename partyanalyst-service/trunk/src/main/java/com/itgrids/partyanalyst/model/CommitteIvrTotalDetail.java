@@ -23,6 +23,10 @@ public class CommitteIvrTotalDetail extends BaseModel implements Serializable{
 	private Long totalLifted;
 	private String state;
 	
+	private Long totalWards;
+	private Long totalWardIvrCalls;
+	private Long totalWardAnswedIvrCalls;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="committe_ivr_total_detail_id", unique=true, nullable=false)
@@ -59,6 +63,30 @@ public class CommitteIvrTotalDetail extends BaseModel implements Serializable{
 	}
 	public void setState(String state) {
 		this.state = state;
+	}
+	
+	@Column(name="total_wards")
+	public Long getTotalWards() {
+		return totalWards;
+	}
+	public void setTotalWards(Long totalWards) {
+		this.totalWards = totalWards;
+	}
+	
+	@Column(name="total_ward_ivr_calls")
+	public Long getTotalWardIvrCalls() {
+		return totalWardIvrCalls;
+	}
+	public void setTotalWardIvrCalls(Long totalWardIvrCalls) {
+		this.totalWardIvrCalls = totalWardIvrCalls;
+	}
+	
+	@Column(name="total_ward_answerd_calls")
+	public Long getTotalWardAnswedIvrCalls() {
+		return totalWardAnswedIvrCalls;
+	}
+	public void setTotalWardAnswedIvrCalls(Long totalWardAnswedIvrCalls) {
+		this.totalWardAnswedIvrCalls = totalWardAnswedIvrCalls;
 	}
 	
 	

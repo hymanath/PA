@@ -351,9 +351,13 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 		{
 			sb.append("  CIR.tdpCadre.userAddress.constituency.constituencyId,CIR.tdpCadre.userAddress.constituency.name, ");
 		}
-		else
+		else if(reportType == 3)
 		{
 			sb.append("  CIR.tdpCadre.userAddress.panchayat.panchayatId,CIR.tdpCadre.userAddress.panchayat.panchayatName, ");
+		}
+		else
+		{
+			sb.append("  CIR.tdpCadre.userAddress.ward.constituencyId,CIR.tdpCadre.userAddress.ward.name, ");
 		}
 		sb.append(" CIR.callStatus,CIR.optionId,count(*)  ");
 		sb.append("  from CadreIvrResponse CIR where  ");
@@ -366,9 +370,13 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 		{
 			sb.append("  CIR.tdpCadre.userAddress.constituency.constituencyId, ");
 		}
-		else
+		else if(reportType == 3)
 		{
 			sb.append("  CIR.tdpCadre.userAddress.panchayat.panchayatId, ");
+		}
+		else
+		{
+			sb.append("  CIR.tdpCadre.userAddress.ward.constituencyId, ");
 		}
 		sb.append("  CIR.callStatus,CIR.optionId ");
 		
@@ -381,9 +389,13 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 		{
 			sb.append("  CIR.tdpCadre.userAddress.constituency.constituencyId, ");
 		}
+		else if(reportType == 3)
+		{
+			sb.append("  CIR.tdpCadre.userAddress.ward.constituencyId, ");
+		}
 		else
 		{
-			sb.append("  CIR.tdpCadre.userAddress.panchayat.panchayatId, ");
+			
 		}
 		sb.append("  CIR.callStatus,CIR.optionId ");
 		Query query = getSession().createQuery(sb.toString());

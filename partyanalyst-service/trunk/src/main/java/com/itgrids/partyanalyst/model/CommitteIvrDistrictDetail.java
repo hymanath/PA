@@ -23,6 +23,7 @@ public class CommitteIvrDistrictDetail extends BaseModel implements Serializable
 	private String callStatus;
 	private Long optionId;
 	private Long count;
+	private Long campainId;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -73,6 +74,14 @@ public class CommitteIvrDistrictDetail extends BaseModel implements Serializable
 	public void setCount(Long count) {
 		this.count = count;
 	}
+	@Column(name="campain_id")
+	public Long getCampainId() {
+		return campainId;
+	}
+	public void setCampainId(Long campainId) {
+		this.campainId = campainId;
+	}
+	
 	
 	
 }

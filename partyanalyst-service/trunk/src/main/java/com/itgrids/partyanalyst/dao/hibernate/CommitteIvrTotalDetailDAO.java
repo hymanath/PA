@@ -15,7 +15,8 @@ public class CommitteIvrTotalDetailDAO extends GenericDaoHibernate<CommitteIvrTo
 	
 	public List<Object[]> getStateWiseIvrDetails(String state)
 	{
-		Query query = getSession().createQuery("select model.totalVilages,model.totalIvrCalls,model.totalLifted from CommitteIvrTotalDetail model where model.state = :state");
+		Query query = getSession().createQuery("select model.totalVilages,model.totalIvrCalls,model.totalLifted,model.totalWards,model.totalWardIvrCalls,model.totalWardAnswedIvrCalls" +
+				"  from CommitteIvrTotalDetail model where model.state = :state");
 		query.setParameter("state", state);
 		return query.list();
 	}
