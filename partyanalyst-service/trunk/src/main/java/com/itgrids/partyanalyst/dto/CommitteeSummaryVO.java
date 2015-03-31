@@ -30,6 +30,8 @@ public class CommitteeSummaryVO implements Serializable{
 	
 	private CommitteeSummaryVO townMandalDivisionVO;
 	private CommitteeSummaryVO villageWardVO;
+	private CommitteeSummaryVO districtCommVO;
+	private CommitteeSummaryVO stateCommVO;
 	private String startPerc;
 	private Long constiId;
 	private String name;
@@ -290,6 +292,18 @@ public class CommitteeSummaryVO implements Serializable{
 	}
 	public void setCadreIVRVO(CadreIVRVO cadreIVRVO) {
 		this.cadreIVRVO = cadreIVRVO;
+	}
+	public CommitteeSummaryVO getDistrictCommVO() {
+		return districtCommVO;
+	}
+	public void setDistrictCommVO(CommitteeSummaryVO districtCommVO) {
+		this.districtCommVO = districtCommVO;
+	}
+	public CommitteeSummaryVO getStateCommVO() {
+		return stateCommVO;
+	}
+	public void setStateCommVO(CommitteeSummaryVO stateCommVO) {
+		this.stateCommVO = stateCommVO;
 	}
 	
 	

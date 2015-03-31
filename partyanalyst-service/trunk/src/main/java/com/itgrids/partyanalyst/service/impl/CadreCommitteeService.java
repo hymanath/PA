@@ -2100,7 +2100,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			}
 			
 			
-			if(!accessType.trim().equalsIgnoreCase("MP") || levelIds.contains(6l) || levelIds.contains(8l)){
+			if((!accessType.trim().equalsIgnoreCase("MP") || levelIds.contains(6l) || levelIds.contains(8l) ) || levelIds.contains(11l) || levelIds.contains(10l)){
 				Long committeeCnt =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,levelIds,districtIds,assemblyIds,locationLevelValues);
 				//0count ,1 isCommitteeConfirmed,2.tdpCommitteeLevelId,3.tdpBasicCommitteeId
 				List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,levelIds,startDate,endDate,districtIds,assemblyIds,locationLevelValues);
@@ -2872,7 +2872,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			}
 		
 		
-			if(!accessType.trim().equalsIgnoreCase("MP")){
+			if(!accessType.trim().equalsIgnoreCase("MP") && !accessType.trim().equalsIgnoreCase("DISTRICT") ){
 				Long totalCommitteeCntDtls =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,null,districtIds,assemblyIds,null);		
 				cadreCommitteeReportVO.setTotalCommittees(totalCommitteeCntDtls);
 				
@@ -2886,6 +2886,35 @@ public class CadreCommitteeService implements ICadreCommitteeService
 							
 					}
 				}
+				cadreCommitteeReportVO.setTotalCompleted(totalCompletedCommittees);
+				if(cadreCommitteeReportVO.getTotalCommittees()  > 0){
+					cadreCommitteeReportVO.setTotalCntPerc(new BigDecimal(cadreCommitteeReportVO.getTotalCompleted() * 100.0/cadreCommitteeReportVO.getTotalCommittees()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+				}
+				else{
+					cadreCommitteeReportVO.setTotalCntPerc(0.0);
+				}
+			}
+			else if(accessType.trim().equalsIgnoreCase("DISTRICT") ){
+				List<Long> levelIds = new ArrayList<Long>();
+				  levelIds.add(5l);
+				  levelIds.add(7l);
+				  levelIds.add(9l);
+				  levelIds.add(6l);
+				  levelIds.add(8l);
+				  levelIds.add(11l);
+					Long totalCommitteeCntDtls =tdpCommitteeDAO.getTotalCommitteesCountByLocation(state,levelIds,districtIds,assemblyIds,null);		
+					cadreCommitteeReportVO.setTotalCommittees(totalCommitteeCntDtls);
+					
+					List<Object[]> committeeCntDtls =tdpCommitteeDAO.getTotalCompletedCommitteesCountByLocation(state,levelIds,null,null,districtIds,assemblyIds,null);
+					
+					if(committeeCntDtls !=null && committeeCntDtls.size() > 0){				
+						for (Object[] objects : committeeCntDtls) {
+											
+							if(Long.valueOf(objects[1].toString()).longValue() == 1l)
+								totalCompletedCommittees = totalCompletedCommittees+(Long)objects[0];
+								
+						}
+					}
 				
 				cadreCommitteeReportVO.setTotalCompleted(totalCompletedCommittees);
 				if(cadreCommitteeReportVO.getTotalCommittees()  > 0){
@@ -4137,7 +4166,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return finalCounts;
 	}
 	
-	public List<CommitteeSummaryVO> getDistrictWiseCommittesSummary(String state,String startDate, String endDate,Long userId,String accessType, Long accessValue,String mandalCheck, String villageCheck){
+	public List<CommitteeSummaryVO> getDistrictWiseCommittesSummary(String state,String startDate, String endDate,Long userId,String accessType, Long accessValue,String mandalCheck, String villageCheck,String districtCommCheck){
 		LOG.debug("Entered Into getDistrictWiseCommittesSummary");
 		List<CommitteeSummaryVO> fnlLst = new ArrayList<CommitteeSummaryVO>();
 		try{
@@ -4219,6 +4248,16 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			pushResultDistrictWiseMemsCount("village", memResLstVill, fnlLst);
 			pushTotalCountsForDistrict("village", ttlListVill, fnlLst);
 			}
+			
+			
+			List<Long> districtCommIds = new ArrayList<Long>();
+			districtCommIds.add(11l);			
+			if(districtCommCheck.equalsIgnoreCase("true")){
+			List<Object[]> memResLstVill = tdpCommitteeMemberDAO.membersCountDistrictWise(districtCommIds, stDate, edDate, distIds);
+			List<Object[]> ttlListVill = tdpCommitteeDAO.getCommitteesCountByDistrictIdAndLevel(distIds, districtCommIds);
+			pushResultDistrictWiseMemsCount("district", memResLstVill, fnlLst);
+			pushTotalCountsForDistrict("district", ttlListVill, fnlLst);
+			}
 			if(mandalCheck.equalsIgnoreCase("true")){
 			List<Object[]> stResLst = tdpCommitteeDAO.committeesCountByDistrict(mandalMunciDivisionIds, stDate, edDate, "started", distIds);
 			List<Object[]> endResLst = tdpCommitteeDAO.committeesCountByDistrict(mandalMunciDivisionIds, stDate, edDate, "completed", distIds);
@@ -4231,6 +4270,14 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			pushResultDistrictWise("village", stResLstVill, fnlLst, "start");
 			pushResultDistrictWise("village", endResLstVill, fnlLst, "completed");		
 			}
+						
+			if(districtCommCheck.equalsIgnoreCase("true")){
+			List<Object[]> stResLst = tdpCommitteeDAO.committeesCountByDistrict(districtCommIds, stDate, edDate, "started", distIds);
+			List<Object[]> endResLst = tdpCommitteeDAO.committeesCountByDistrict(districtCommIds, stDate, edDate, "completed", distIds);
+			pushResultDistrictWise("district", stResLst, fnlLst, "start");
+			pushResultDistrictWise("district", endResLst, fnlLst, "completed");
+			}
+		
 			
 			if(fnlLst!=null && fnlLst.size()>0){
 				for(CommitteeSummaryVO temp:fnlLst){
@@ -4280,6 +4327,30 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						}
 					}
 				}
+				
+				if(districtCommCheck.equalsIgnoreCase("true")){	
+					if(temp.getDistrictCommVO()!=null){
+						Long strt = temp.getDistrictCommVO().getMainStarted();
+						Long cmpl = temp.getDistrictCommVO().getMainCompleted();
+						
+						Long total = temp.getDistrictCommVO().getTotalCommittees();
+						if(total==null){
+							total = 0l;
+						}
+						if(strt==null){strt = 0l;}
+						/*if(cmpl==null){cmpl = 0l;}
+						
+						Long total = strt + cmpl;*/
+						
+						if(total!=0){
+							String percentage = (new BigDecimal(strt*(100.0)/total)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+							temp.getDistrictCommVO().setStartPerc(percentage);
+						}else{
+							temp.getDistrictCommVO().setStartPerc("0.0");
+						}
+					}
+				}
+
 				}
 			}
 			if(villageCheck.equalsIgnoreCase("true") && userId.longValue() == 1){
@@ -4458,7 +4529,15 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						temp.setTownMandalDivisionVO(new CommitteeSummaryVO());
 					}
 					temp.getTownMandalDivisionVO().setMembersCount(Long.valueOf(obj[0].toString()));
-				}else{
+				}
+				else if(type.equalsIgnoreCase("district")){
+					if(temp.getDistrictCommVO()==null){
+						temp.setDistrictCommVO(new CommitteeSummaryVO());
+					}
+					temp.getDistrictCommVO().setMembersCount(Long.valueOf(obj[0].toString()));
+				}
+			
+				else{
 					if(temp.getVillageWardVO()==null){
 						temp.setVillageWardVO(new CommitteeSummaryVO());
 					}
@@ -4482,6 +4561,11 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						temp.setTownMandalDivisionVO(new CommitteeSummaryVO());
 					}
 					temp.getTownMandalDivisionVO().setTotalCommittees(Long.valueOf(obj[0].toString()));
+				}else if(type.equalsIgnoreCase("district")){
+					if(temp.getDistrictCommVO()==null){
+						temp.setDistrictCommVO(new CommitteeSummaryVO());
+					}
+					temp.getDistrictCommVO().setTotalCommittees(Long.valueOf(obj[0].toString()));
 				}else{
 					if(temp.getVillageWardVO()==null){
 						temp.setVillageWardVO(new CommitteeSummaryVO());
