@@ -29,7 +29,7 @@
 				     <a href="home.action">Click here</a>
 			     </c:when>
 				 <c:otherwise>
-			     	<a href="homePage.action">Click here</a>
+			     	<a href="home.action">Click here</a>
 				 </c:otherwise>
 			</c:choose>
 			</b>
