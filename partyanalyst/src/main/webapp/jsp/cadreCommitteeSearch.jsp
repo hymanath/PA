@@ -372,9 +372,13 @@
 			}).done(function(result){
 				$("#searchTextBoxError").html('');
 				$("#ajaxImgStyleNew").hide();
-				if(result != null && result.tdpCadreDetailsList != null && result.tdpCadreDetailsList.length>0)
+				/*if(result != null && result.tdpCadreDetailsList != null && result.tdpCadreDetailsList.length>0)
 				{
 					buildCadreDetails(result.tdpCadreDetailsList);
+				}*/
+			if(result.previousRoles != null && result.previousRoles != null && result.previousRoles.length>0)
+				{
+					buildCadreDetails(result.previousRoles);
 				}
 				else
 				{
@@ -386,6 +390,7 @@
 	});
 	function buildCadreDetails(result)
 	{
+
 		var str ='';
 		
 		if(result != null)
