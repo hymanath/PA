@@ -392,6 +392,6 @@
 		<pattern>/cadreCommitteeAction*</pattern>
 		<pattern>/cadreCommitteeRequestAction*</pattern>
 		<pattern>/committeeManagementAction*</pattern>
-		
-	  </decorator>
+		<pattern>/cadreSearchPageAction*</pattern>
+	 </decorator>
 </decorators>
