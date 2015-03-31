@@ -190,7 +190,7 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 						}
 					}
 				}
-				else if(locationType != null && (locationType.equalsIgnoreCase(IConstants.WARD)))
+				else if(locationType != null && (locationType.equalsIgnoreCase(IConstants.WARD) || locationType.equalsIgnoreCase(IConstants.PANCHAYAT)))
 				{
 					muncipalityORCorprationIdsList = constituencyDAO.getAllWardsByLocalElectionBodyIds(locationIdsList);	
 					if(muncipalityORCorprationIdsList != null && muncipalityORCorprationIdsList.size()>0)
