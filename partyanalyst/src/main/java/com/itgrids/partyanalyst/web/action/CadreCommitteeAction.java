@@ -1469,6 +1469,14 @@ public String getSummaryDetails(){
 		finalStatus = globalLocationName;
 		return Action.SUCCESS;
 	}
-	
+	public String cadreSearch()
+	{
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		
+		if(regVO==null){
+			return "input";
+		}
+		return Action.SUCCESS;
+	}
 	
 }
