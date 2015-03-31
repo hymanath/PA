@@ -319,10 +319,11 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 				String state =jObj.getString("state");
 				String mandalCheck = jObj.getString("mandalCheck");
 				String villageCheck =  jObj.getString("villageCheck");
+				String districtCommCheck = jObj.getString("districtCommCheck");
 				String startDate = jObj.getString("startDate");
 				String endDate = jObj.getString("endDate");
 				
-				districtWiseSummaryList = cadreCommitteeService.getDistrictWiseCommittesSummary(state, startDate,endDate,regVO.getRegistrationID(),accessType,accessValue,mandalCheck,villageCheck);
+				districtWiseSummaryList = cadreCommitteeService.getDistrictWiseCommittesSummary(state, startDate,endDate,regVO.getRegistrationID(),accessType,accessValue,mandalCheck,villageCheck,districtCommCheck);
 			}
 			else{
 				noaccess = true;
