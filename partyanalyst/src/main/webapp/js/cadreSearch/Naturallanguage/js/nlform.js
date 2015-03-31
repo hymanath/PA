@@ -153,9 +153,6 @@
 			
 			if( this.open ) {			
 				return false;
-			}			
-			if(this.fld.className.contains('constiDivCls')){
-				return true;
 			}
 			this.open = true;
 			this.form.fldOpen = this.pos;
