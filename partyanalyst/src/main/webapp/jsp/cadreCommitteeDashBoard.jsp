@@ -173,17 +173,20 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 								<div id="apVillageDiv"></div>
 							</tr>
 							<tr id="ivrDivIdAP" class="span"></tr>
-							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
+							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);" id="apMandalHeadingTR">
 								<td colspan="6" style="text-align: right;">
-								    <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;"><b>MANDAL/TOWN/DIVISION LEVEL COMMITTEES</b></button>
+								   <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;" onClick="showHideDivs('ap','Mandal');"> <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span> <b>
+								    MANDAL/TOWN/DIVISION LEVEL COMMITTEES</b></button>
+									<div id="apMandalButtonsDiv" style="display:none;" class="toggleCls"  >
 								    <button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdAPmandal" src="images/icons/search.gif" alt="Processing Image" style="display:none;" /></button>
+									
 									<button id="mandal" class="btn btn-xs btn-success highlightClick" onclick="getCommitteeDetails('AP','mandal')">Mandal</button> | 
 									<button id="town" class="btn btn-xs btn-success highlightClick" onclick="getCommitteeDetails('AP','town')">Town</button> |	
 									<button id="division" class="btn btn-xs btn-success highlightClick" onclick="getCommitteeDetails('AP','division')">Division</button> |									
-									<button id="mandalAll" class="btn btn-xs btn-success highlight highlightClick " onclick="getCommitteeDetails('AP','mandalAll')">All</button>
+									<button id="mandalAll" class="btn btn-xs btn-success highlight highlightClick " onclick="getCommitteeDetails('AP','mandalAll')">All</button></div>
 								</td>
 							</tr>
-							<tr>
+							<tr id="apMandalBodyTR" style="display:none;" class="toggleCls">
 								<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div1"></div></h4></td>
 								
 								<td style="padding:10px;" width="10%">
@@ -216,7 +219,80 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 								<td style="padding:10px;" width="28%">TOTAL<br/> <b>MEMBERS</b><h4 class="m_top0"><div id="div7"></div></h4></td>
 							<div id="apMandalDiv"></div>
 							</tr>
-							
+										
+							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); dispaly:none;" id="apDistrictHeadingTR">
+							<td colspan="6" style="text-align: right;">
+							    <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;" onClick="showHideDivs('ap','District');"> <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span><b>  DISTRICT LEVEL COMMITTEES</b></button>
+								
+							    <button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdAPdistrict" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
+							</td>
+						</tr>
+						<tr id="apDistrictBodyTR" style="display:none" class="toggleCls">
+							<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div150"></div></h4></td>
+							<td style="padding:10px;" width="10%">
+									<span class="text-success">Started</span> Committees<br/>
+									<table>
+										<tr>
+											<td class="row-table">
+												<h4 class="m_top0"><div id="div151"></div></h4>
+											</td>
+											<td class="row-table">
+												<h5 class="m_top0"><div id="div152"></div></h5>
+											</td>
+										</tr>
+									</table>
+								</td>
+						   <td style="padding:10px;" width="10%"><span class="text-success">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div153"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
+                              <li><div id="div154"></div>
+                                 
+									
+								</li></td></tr></table></td>
+							<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affiliated Committees<br/><h4 class="m_top0"><div id="div155"></div></h4></td>
+							<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affiliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
+                              <li><a><div id="div156"></div></a>
+                               
+                                </h4></td>
+							<td style="padding:10px;" width="28%">TOTAL<br/> <b>MEMBERS</b><h4 class="m_top0"><div id="div157"></div></h4></td>
+							<div id="apDistrictDiv"></div>
+						</tr>
+						
+									
+							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);" id="apStateHeadingTR">
+							<td colspan="6" style="text-align: right;">
+							    <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;" onClick="showHideDivs('ap','State');"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span><b>   STATE LEVEL COMMITTEES</b></button>
+								
+							    <button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdAPstate" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
+							</td>
+						</tr>
+						<tr id="apStateBodyTR" style="display:none" class="toggleCls">
+							<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div166"></div></h4></td>
+							<td style="padding:10px;" width="10%">
+									<span class="text-success">Started</span> Committees<br/>
+									<table>
+										<tr>
+											<td class="row-table">
+												<h4 class="m_top0"><div id="div167"></div></h4>
+											</td>
+											<td class="row-table">
+												<h5 class="m_top0"><div id="div168"></div></h5>
+											</td>
+										</tr>
+									</table>
+								</td>
+						   <td style="padding:10px;" width="10%"><span class="text-success">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div169"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
+                              <li><div id="div170"></div>
+                                 
+									
+								</li></td></tr></table></td>
+							<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affiliated Committees<br/><h4 class="m_top0"><div id="div171"></div></h4></td>
+							<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affiliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
+                              <li><a><div id="div172"></div></a>
+                               
+                                </h4></td>
+							<td style="padding:10px;" width="28%">TOTAL<br/> <b>MEMBERS</b><h4 class="m_top0"><div id="div173"></div></h4></td>
+							<div id="apStateDiv"></div>
+						</tr>
+
 						</table>
 					</td>
 				</tr>
@@ -240,15 +316,17 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						<table width="100%" class="table table-bordered" style="background-color:transparent; margin-bottom:0px;"  >
 							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 								<td colspan="6" style="text-align: right;">
-								    <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;"><b>MANDAL/TOWN/DIVISION LEVEL COMMITTEES</b></button>
+								    <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;"> <b>  MANDAL/TOWN/DIVISION LEVEL COMMITTEES</b></button>
+							
 									<button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdAPmandal" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
+									
 									<button id="mandal" class="btn btn-xs btn-success highlightClick" onclick="getCommitteeDetails('AP','mandal')">Mandal</button> | 
 									<button id="town" class="btn btn-xs btn-success highlightClick" onclick="getCommitteeDetails('AP','town')">Town</button> |	
 									<button id="division" class="btn btn-xs btn-success highlightClick" onclick="getCommitteeDetails('AP','division')">Division</button> |									
 									<button id="mandalAll" class="btn btn-xs btn-success highlight highlightClick " onclick="getCommitteeDetails('AP','mandalAll')">All</button>
 								</td>
 							</tr>
-							<tr>
+							<tr id="districtMandalBodyTR">
 								<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0">
 								<div id="totalMainCount1"></div></h4></td>
 								
@@ -344,6 +422,40 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 								<td style="padding:10px;" width="28%">TOTAL <br/><b>MEMBERS</b><h4 class="m_top0"><div id="div141"></div></h4></td>
 								<div id="apVillageDiv"></div>
 							</tr>
+								<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);" id="districtDistrictHeadingTR">
+							<td colspan="6" style="text-align: right;">
+							    <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;"> <b> DISTRICT LEVEL COMMITTEES</b></button>
+							    <button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdAPdistrict" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
+							</td>
+						</tr>
+						<tr id="districtDistrictBodyTR" >
+							<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div182"></div></h4></td>
+							<td style="padding:10px;" width="10%">
+									<span class="text-success">Started</span> Committees<br/>
+									<table>
+										<tr>
+											<td class="row-table">
+												<h4 class="m_top0"><div id="div183"></div></h4>
+											</td>
+											<td class="row-table">
+												<h5 class="m_top0"><div id="div184"></div></h5>
+											</td>
+										</tr>
+									</table>
+								</td>
+						   <td style="padding:10px;" width="10%"><span class="text-success">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div185"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
+                              <li><div id="div186"></div>
+                                 
+									
+								</li></td></tr></table></td>
+							<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affiliated Committees<br/><h4 class="m_top0"><div id="div187"></div></h4></td>
+							<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affiliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
+                              <li><a><div id="div188"></div></a>
+                               
+                                </h4></td>
+							<td style="padding:10px;" width="28%">TOTAL<br/> <b>MEMBERS</b><h4 class="m_top0"><div id="div189"></div></h4></td>
+							<div id="apDistrictDiv"></div>
+						</tr>
 						</table>
 					</td>
 				</tr>
@@ -354,9 +466,9 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			<table class="table table-bordered" width="100%"  >
         	<tr>
         	    <td width="22%" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);text-align:center;padding: 0px;">
-					<div class="col-md-12" >
-						<h4>TELANGANA</h4>
-						<div class="row" id="totalTSCount">
+					<div class="col-md-12"  >
+						<h4 style="margin-top: 35px;" >TELANGANA</h4>
+						<div class="row" id="totalTSCount" style="margin-top: 12px;">
 								
 						</div>
 						<!--<div class="row ">
@@ -371,7 +483,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					<table width="100%" class="table table-bordered" style="background-color:transparent; margin-bottom:0px;"  >
 						<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 							<td colspan="6" style="text-align: right;">
-							    <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;"><b>VILLAGE/WARD LEVEL COMMITTEES</b></button>
+							    <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;" ><b>VILLAGE/WARD LEVEL COMMITTEES</b></button>
 							    <button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdTSvillage" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
 								<button id="tsVillage" class="btn btn-xs btn-success highlightClick3" onclick="getCommitteeDetails('TS','village')";>Village</button> | 
 								<button id="tsWard" class="btn btn-xs btn-success highlightClick3" onclick="getCommitteeDetails('TS','ward')";>Ward</button> |
@@ -411,15 +523,17 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						<tr id="ivrDivIdTS" class="span"></tr>
 						<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 							<td colspan="6" style="text-align: right;">
-							    <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;"><b>MANDAL/TOWN/DIVISION LEVEL COMMITTEES</b></button>
+							    <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;" onClick="showHideDivs('ts','Mandal');"> <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span> <b>  MANDAL/TOWN/DIVISION LEVEL COMMITTEES</b></button>
+								<div id="tsMandalButtonsDiv" style="display:none;" class="toggleCls1">
 							    <button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdTSmandal" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
+								
 								<button id="tsMandal" class="btn btn-xs btn-success highlightClick2" onclick="getCommitteeDetails('TS','mandal')";>Mandal</button> | 
 								<button id="tsTown" class="btn btn-xs btn-success highlightClick2" onclick="getCommitteeDetails('TS','town')";>Town</button> |
 								<button id="tsDivision" class="btn btn-xs btn-success highlightClick2" onclick="getCommitteeDetails('TS','division')";>Division</button> |
-								<button id="tsMandalAll" class="btn btn-xs  btn-success highlight highlightClick2 " onclick="getCommitteeDetails('TS','mandalAll')";>All</button>
+								<button id="tsMandalAll" class="btn btn-xs  btn-success highlight highlightClick2 " onclick="getCommitteeDetails('TS','mandalAll')";>All</button></div>
 							</td>
 						</tr>
-						<tr>
+						<tr id="tsMandalBodyTR" style="display:none;" class="toggleCls1"> 
 							<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div15"></div></h4></td>
 							<td style="padding:10px;" width="10%">
 									<span class="text-success">Started</span> Committees<br/>
@@ -447,6 +561,77 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							<td style="padding:10px;" width="28%">TOTAL<br/> <b>MEMBERS</b><h4 class="m_top0"><div id="div21"></div></h4></td>
 							<div id="tsMandalDiv"></div>
 						</tr>
+
+						<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);" id="tsDistrictHeadingTR">
+							<td colspan="6" style="text-align: right;">
+							    <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;" onClick="showHideDivs('ts','District');"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span><b>  DISTRICT LEVEL COMMITTEES</b></button>
+							    <button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdTSdistrict" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
+							</td>
+						</tr>
+						<tr id="tsDistrictBodyTR" style="display:none;" class="toggleCls1">
+							<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div158"></div></h4></td>
+							<td style="padding:10px;" width="10%">
+									<span class="text-success">Started</span> Committees<br/>
+									<table>
+										<tr>
+											<td class="row-table">
+												<h4 class="m_top0"><div id="div159"></div></h4>
+											</td>
+											<td class="row-table">
+												<h5 class="m_top0"><div id="div160"></div></h5>
+											</td>
+										</tr>
+									</table>
+								</td>
+						   <td style="padding:10px;" width="10%"><span class="text-success">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div161"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
+                              <li><div id="div162"></div>
+                                 
+									
+								</li></td></tr></table></td>
+							<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affiliated Committees<br/><h4 class="m_top0"><div id="div163"></div></h4></td>
+							<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affiliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
+                              <li><a><div id="div164"></div></a>
+                               
+                                </h4></td>
+							<td style="padding:10px;" width="28%">TOTAL<br/> <b>MEMBERS</b><h4 class="m_top0"><div id="div165"></div></h4></td>
+							<div id="tsDistrictDiv"></div>
+						</tr>
+	
+						<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);" id="tsStateHeadingTR">
+							<td colspan="6" style="text-align: right;">
+							    <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;" onClick="showHideDivs('ts','State');"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span><b>  STATE LEVEL COMMITTEES</b></button>
+							    <button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdTSstate" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
+							</td>
+						</tr>
+						<tr id="tsStateBodyTR" style="display:none;" class="toggleCls1">
+							<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div174"></div></h4></td>
+							<td style="padding:10px;" width="10%">
+									<span class="text-success">Started</span> Committees<br/>
+									<table>
+										<tr>
+											<td class="row-table">
+												<h4 class="m_top0"><div id="div175"></div></h4>
+											</td>
+											<td class="row-table">
+												<h5 class="m_top0"><div id="div176"></div></h5>
+											</td>
+										</tr>
+									</table>
+								</td>
+						   <td style="padding:10px;" width="10%"><span class="text-success">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div177"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
+                              <li><div id="div178"></div>
+                                 
+									
+								</li></td></tr></table></td>
+							<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affiliated Committees<br/><h4 class="m_top0"><div id="div179"></div></h4></td>
+							<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affiliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
+                              <li><a><div id="div180"></div></a>
+                               
+                                </h4></td>
+							<td style="padding:10px;" width="28%">TOTAL<br/> <b>MEMBERS</b><h4 class="m_top0"><div id="div181"></div></h4></td>
+							<div id="tsStateDiv"></div>
+						</tr>
+						
 						
 					</table>
 				</td>
@@ -456,7 +641,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		
         <div class="row m_top20">        	 
             <div class="row" id="commityClsi">
-                <div class="col-md-10 col-xs-12 col-sm-12">
+                <div class="col-md-10 col-xs-12 col-sm-12" style="width: 1060px;">
                     <h4 id="headingId" class="text-success" style="display:inline-block">DISTRICT WISE COMMITTEES</h4>
 					
 					 <span class="btn btn-success btn-xs form-inline" id="statesBtnsId" style="display:none;">
@@ -465,7 +650,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					</span>
 					 <span class="btn btn-success btn-xs form-inline">
 						<label class="radio"><input type="radio" id="districtId" style="vertical-align: text-bottom;" class="levelRd" value="district" name="select" checked="true">&nbsp;District &nbsp;&nbsp;&nbsp;</label>
-						<label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="levelRd" value="consti" name="select">&nbsp;Constituency &nbsp;&nbsp;&nbsp;</label>
+						<label class="radio"><input type="radio" id="constiRdId" style="vertical-align: text-bottom;" class="levelRd" value="consti" name="select">&nbsp;Constituency &nbsp;&nbsp;&nbsp;</label>
 					</span>
 					<span class="btn btn-success btn-xs form-inline">
 						<label class="radio"><input type="checkbox" id="villageId" style="vertical-align: text-bottom;" class="scopeRd" value="village" name="selectCheck"  checked="true">&nbsp;VILLAGE / WARD &nbsp;</label>
@@ -474,7 +659,13 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						<label class="checkbox"><input type="checkbox" id="mandalId" style="vertical-align: text-bottom;" class="scopeRd" value="mandal" name="selectCheck">&nbsp;TOWN / MANDAL / DIVISION &nbsp;&nbsp;</label>
 					</span>
 					
-					<span class="btn btn-info pull-right excelId form-inline" onclick="exportToExcel()" style="margin-right: -200px;display:none;"> Export To Excel </span>
+					
+					<span class="btn btn-success btn-xs form-inline" id="districtCommDiv">
+						<label class="checkbox"><input type="checkbox" id="districtCommId" style="vertical-align: text-bottom;" class="scopeRd" value="districtComm" name="selectCheck">&nbsp;DISTRICT LEVEL &nbsp;&nbsp;</label>
+					</span>
+	
+					
+					<span class="btn btn-info pull-right excelId form-inline" onclick="exportToExcel()" style="margin-right: -140px;display:none;"> Export To Excel </span>
                 </div>
                
             </div>
@@ -600,7 +791,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					
 					$('#statesBtnsId').hide();
                   var cb = function(start, end, label) {
-                    console.log(start.toISOString(), end.toISOString(), label);
+                    //console.log(start.toISOString(), end.toISOString(), label);
                     $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
                     //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
                   }
@@ -660,16 +851,15 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 
                   $('#reportrange').daterangepicker(optionSet1, cb);
 
-                  $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
-                  $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
+                  $('#reportrange').on('show.daterangepicker', function() { //console.log("show event fired"); 
+				  });
+                  $('#reportrange').on('hide.daterangepicker', function() { //console.log("hide event fired"); 
+				  });
                   $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
-                    console.log("apply event fired, start/end dates are " 
-                      + picker.startDate.format('MMMM D, YYYY') 
-                      + " to " 
-                      + picker.endDate.format('MMMM D, YYYY')
-                    ); 
+                    //console.log("apply event fired, start/end dates are "+ picker.startDate.format('MMMM D, YYYY') + " to "  + picker.endDate.format('MMMM D, YYYY') ); 
                   });
-                  $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
+                  $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { //console.log("cancel event fired"); 
+				  });
 
 					$(".highlightClick").click(function(){
 						$(".highlightClick").removeClass("highlight");
@@ -693,38 +883,103 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					}else{
 						$("#commityClsi").show();
 					}
-					//console.log(userAccessType);
+
 					if(userAccessType == 'ALL'){
 						getCommitteeCountByState("AP");
 						getCommitteeCountByState("TS");
 						getCommitteeDetails("AP","mandalAll");
 						getCommitteeDetails("AP","villageAll");	
 						getCommitteeDetails("TS","mandalAll");	
-						getCommitteeDetails("TS","villageAll");
+						getCommitteeDetails("TS","villageAll");						
+						getCommitteeDetails("AP","district");
+						getCommitteeDetails("AP","state");
+						getCommitteeDetails("TS","district");
+						getCommitteeDetails("TS","state");
 						getDistrictWiseCommittesSummary();
+						$("#apDistrictHeadingTR").show();
+						//$("#apDistrictBodyTR").show();
+						$("#tsDistrictHeadingTR").show();
+						//$("#tsDistrictBodyTR").show();
+						
+						$("#apStateHeadingTR").show();
+						//$("#apStateBodyTR").show();
+						$("#tsStateHeadingTR").show();
+						//$("#tsStateBodyTR").show();
+						
 					}else if(userAccessType == 'TS'){
 						getCommitteeCountByState("TS");
 						getCommitteeDetails("TS","mandalAll");	
 						getCommitteeDetails("TS","villageAll");
+						getCommitteeDetails("TS","district");
+						getCommitteeDetails("TS","state");
+						//$("#apDistrictHeadingTR").hide();
+						//$("#apDistrictBodyTR").hide();
+						$("#tsDistrictHeadingTR").show();
+						//$("#tsDistrictBodyTR").show();
+						
+						//$("#apStateHeadingTR").hide();
+						//$("#apStateBodyTR").hide();
+						$("#tsStateHeadingTR").show();
+						//$("#tsStateBodyTR").show();
 						getDistrictWiseCommittesSummary();
 					}
 					else if(userAccessType == 'AP'){
 						getCommitteeCountByState("AP");
 						getCommitteeDetails("AP","mandalAll");
 						getCommitteeDetails("AP","villageAll");
-						getDistrictWiseCommittesSummary();
-					}else{
+						getCommitteeDetails("AP","district");
+						getCommitteeDetails("AP","state");
+						$("#apDistrictHeadingTR").show();
+						//$("#apDistrictBodyTR").show();
+						//$("#tsDistrictHeadingTR").hide();
+						//$("#tsDistrictBodyTR").hide();
 						
+						$("#apStateHeadingTR").show();
+						//$("#apStateBodyTR").show();
+						//$("#tsStateHeadingTR").hide();
+						//$("#tsStateBodyTR").hide();
+						getDistrictWiseCommittesSummary();
+					}else{					
 						if(userAccessType=="MP"){
+							getCommitteeCountByState("TS");
+							getCommitteeDetails("TS","mandalAll");
+							getCommitteeDetails("TS","villageAll");
+							/*$("#apDistrictHeadingTR").hide();
+							$("#apDistrictBodyTR").hide();
+							$("#tsDistrictHeadingTR").hide();
+							$("#tsDistrictBodyTR").hide();
+							$("#apStateHeadingTR").hide();
+							$("#apStateBodyTR").hide();
+							$("#tsStateHeadingTR").hide();
+							$("#tsStateBodyTR").hide();*/
+							$("#districtDistrictHeadingTR").hide();
+							//$("#districtDistrictBodyTR").hide();
+
+							getConstituencyWiseCommittesSummary();
+						}else if( userAccessType.indexOf("District") >= 0){
 							getCommitteeCountByState("AP");
 							getCommitteeDetails("AP","mandalAll");
 							getCommitteeDetails("AP","villageAll");
-							getConstituencyWiseCommittesSummary();
-						}else{
+							getCommitteeDetails("AP","district");
+							//getCommitteeDetails("AP","state");
+							/*$("#apDistrictHeadingTR").show();
+							$("#apDistrictBodyTR").show();
+							$("#tsDistrictHeadingTR").show();
+							$("#tsDistrictBodyTR").show();*/
+							
+							$("#apStateHeadingTR").hide();
+							//$("#apStateBodyTR").hide();
+							$("#tsStateHeadingTR").hide();
+							//$("#tsStateBodyTR").hide();
+							getDistrictWiseCommittesSummary();
+						}else {
 							getCommitteeCountByState("AP");
 							getCommitteeDetails("AP","mandalAll");
-							getCommitteeDetails("AP","villageAll");	
+							getCommitteeDetails("AP","villageAll");
+							getCommitteeDetails("AP","district");
+							getCommitteeDetails("AP","state");
 							getDistrictWiseCommittesSummary();
+						
 						}
 						
 						
@@ -743,6 +998,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					getCommitteeDetails("AP","villageAll");	
 					getCommitteeDetails("TS","mandalAll");	
 					getCommitteeDetails("TS","villageAll");
+					 if(userAccessType == 'AP' || userAccessType == 'TS' || userAccessType == 'ALL'){
+					 }
 					//$('input:radio[name="selectstate"][id="APId"]').prop('checked', true);
 					//$('input:radio[name="select"][id="districtId"]').prop('checked', true);
 					
@@ -765,6 +1022,12 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	{	
 		//alert('ajaxImageId'+state+'village');
 		$('#ajaxImageId'+state+'village').show();
+	}
+	else if(level == 'district' ){
+		$('#ajaxImageId'+state+'district').show();	
+	}
+	else if(level == 'state' ){
+		$('#ajaxImageId'+state+'state').show();	
 	}
 	
 	var startDate=$(".dp_startDate").val();
@@ -797,6 +1060,16 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		    levelIdsArr.push(6);
 			levelIdsArr.push(8);
 		}
+		else if(level == 'district')
+		{
+		    levelIdsArr.push(11);
+			
+		}
+		else if(level == 'state')
+		{
+		    levelIdsArr.push(10);
+			
+		}
 
 		var jObj = {
 			levelIdsArr : levelIdsArr,
@@ -824,7 +1097,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			if(result != null){
 				//console.log(result.accessState);
 				if(result.accessState == 'AP' || result.accessState == 'TG' || result.accessState == 'ALL')
-				{	
+				{				
 				if(state == "AP"){
 					if(level == 'mandal' || level == 'town' || level == 'division' || level == 'mandalAll')
 					{
@@ -915,7 +1188,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						$("#div14").html(result.membersCount);
 						
 					
-					if(level == 'village' || level == 'villageAll' || level == 'ward'){
+						if(level == 'village' || level == 'villageAll' || level == 'ward'){
 						var str='';
 						str+='';
 						str+='<td colspan="6"><ul class="list-inline ivrdetails"><li style="background: none repeat scroll 0% 0% rgb(51, 51, 51); color: rgb(255, 255, 255);">IVR DETAILS</li>';
@@ -970,11 +1243,11 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						}
 						}
 						
-					str+='<li>';
+						str+='<li>';
 					str+='<a style = "cursor: pointer;" class="popOverCls" id="ivrPopOverAP" data-placement="bottom" data-toggle="popover"  onClick="showPopOver(\'AP\');" title="" data-html="true" data-content="<ul class=popOverStyle><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" >?</a>';					
 						str+=' </li>';
 						str+='</ul>';
-						}
+												}
 						
 						
 					
@@ -1053,8 +1326,84 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					$( "#ivrDivIdAP" ).insertAfter( "#ApTRId" );
 					$('#ivrPopOverAP').popover();
 					$("#ivrDivIdAP").html(str);
-				}
-				 }
+					 }
+					}					
+					else if(level == 'district')
+					{
+						$('#ajaxImageId'+state+'district').hide();
+						
+						$("#div150").html(result.committeesCount);
+						
+						$("#div151").html(result.startedCommitteePerc+"%");
+						if(result.mainCommittees > 0 && result.mainCommittees != null){
+							$("#div152").html('<a id=\''+level+'IdAPstarted\' class="" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+'\,\'started\')" style="cursor:pointer;"><b>['+result.mainCommittees+']</b></a>');
+						}
+						else{						
+							$("#div152").html('<span style="margin-left:0px;">[0]</span>');
+						}
+						
+						//$("#div2").html('['+result.mainCommittees+']');						
+						
+						$("#div153").html(result.completedCommitteePerc+"%");
+						
+						if(result.completedCommittees > 0 && result.completedCommittees != null){
+							$("#div154").html('<a id=\''+level+'IdAPcompleted\' class="" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+'\,\'completed\')" style="cursor:pointer;"><b>['+result.completedCommittees+']</b></a>');
+						}
+						else{						
+							$("#div154").html('<span style="margin-left:0px;">[0]</span>');
+						}
+					
+
+						if(result.afflCommittees!=0){
+							$("#div155").html('<a id=\''+level+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\',\'started\')" style="cursor:pointer;">'+result.afflCommittees+'</a>');
+						}else{
+							$("#div155").html('<span> 0 </span>');
+						}
+						if(result.affliatedCompleted!=0){
+							$("#div156").html('<a id=\''+level+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\',\'completed\')" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
+						}else{
+							$("#div156").html('<span> 0 </span>');
+						}
+					
+						$("#div157").html(result.membersCount);
+					}			
+					else if(level == 'state')
+					{
+						$('#ajaxImageId'+state+'state').hide();
+						
+						$("#div166").html(result.committeesCount);
+						
+						$("#div167").html(result.startedCommitteePerc+"%");
+						if(result.mainCommittees > 0 && result.mainCommittees != null){
+							$("#div168").html('<a id=\''+level+'IdAPstarted\' class="" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+'\,\'started\')" style="cursor:pointer;"><b>['+result.mainCommittees+']</b></a>');
+						}
+						else{						
+							$("#div168").html('<span style="margin-left:0px;">[0]</span>');
+						}
+						
+						$("#div169").html(result.completedCommitteePerc+"%");
+						
+						if(result.completedCommittees > 0 && result.completedCommittees != null){
+							$("#div170").html('<a id=\''+level+'IdAPcompleted\' class="" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+'\,\'completed\')" style="cursor:pointer;"><b>['+result.completedCommittees+']</b></a>');
+						}
+						else{						
+							$("#div170").html('<span style="margin-left:0px;">[0]</span>');
+						}
+					
+
+						if(result.afflCommittees!=0){
+							$("#div171").html('<a id=\''+level+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\',\'started\')" style="cursor:pointer;">'+result.afflCommittees+'</a>');
+						}else{
+							$("#div171").html('<span> 0 </span>');
+						}
+						if(result.affliatedCompleted!=0){
+							$("#div172").html('<a id=\''+level+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\',\'completed\')" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
+						}else{
+							$("#div172").html('<span> 0 </span>');
+						}
+					
+						$("#div173").html(result.membersCount);
+					}
 				}
 				else if(state == "TS"){
 					if(level == 'mandal' || level == 'town' || level == 'division' || level == 'mandalAll')
@@ -1144,7 +1493,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							$("#div27").html('<span> 0 </span>');
 						}						
 						$("#div28").html(result.membersCount);
-						if(level == 'village' || level == 'villageAll' || level == 'ward'){
+if(level == 'village' || level == 'villageAll' || level == 'ward'){
 							var str1='';
 						str1+='';
 						str1+='<td colspan="6"><ul class="list-inline ivrdetails"><li style="background: none repeat scroll 0% 0% rgb(51, 51, 51); color: rgb(255, 255, 255);">IVR DETAILS</li>';
@@ -1284,14 +1633,98 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					$("#ivrDivIdTS").html(str1);
 						 }
 				}
-
-
-
+				else if(level == 'district')
+				{
+						$('#ajaxImageId'+state+'district').hide();
+						
+						$("#div158").html(result.committeesCount);
+						
+						
+						$("#div159").html(result.startedCommitteePerc+"%");
+						//$("#div16").html('['+result.mainCommittees+']');						
+						if(result.mainCommittees > 0 && result.mainCommittees != null)
+						{
+						
+						$("#div160").html('<a id=\''+level+'IdTSstarted\' class="" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\','+1+'\,\'started\')" style="cursor:pointer;"><b>['+result.mainCommittees+']</b></a>');
+						}
+						else{
+						$("#div160").html('<span style="margin-left:0px;">[0]</span>');
+						}
+						$("#div161").html(result.completedCommitteePerc+"%");
+						
+						if(result.completedCommittees > 0 && result.completedCommittees != null)
+						
+						$("#div162").html('<a id=\''+level+'IdTScompleted\' class="" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\','+1+'\,\'completed\')" style="cursor:pointer;"><b>['+result.completedCommittees+']</b></a>');
+						
+						else{
+						$("#div162").html('<span style="margin-left:0px;">[0]</span>');
+						}
 					
+						if(result.afflCommittees!=0){
+							$("#div163").html('<a id=\''+level+'IdTSAfflstarted\' onClick="getAflCommitteeCount(\'TS\',\''+level+'\',\'started\')" style="cursor:pointer;">'+result.afflCommittees+'</a>');
+						}else{
+							$("#div163").html('<span> 0 </span>');
+						}
+					
+						if(result.affliatedCompleted!=0){
+							$("#div164").html('<a id=\''+level+'IdTSAfflcompleted\' onClick="getAflCommitteeCount(\'TS\',\''+level+'\',\'completed\')" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
+						}else{
+							$("#div164").html('<span> 0 </span>');
+						}
+												
+						$("#div165").html(result.membersCount);
+					
+					
+					}
+					else if(level == 'state')
+					{
+						$('#ajaxImageId'+state+'state').hide();
+						
+						$("#div174").html(result.committeesCount);
+						
+						
+						$("#div175").html(result.startedCommitteePerc+"%");
+						
+						if(result.mainCommittees > 0 && result.mainCommittees != null)
+						{
+						
+						$("#div176").html('<a id=\''+level+'IdTSstarted\' class="" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\','+1+'\,\'started\')" style="cursor:pointer;"><b>['+result.mainCommittees+']</b></a>');
+						}
+						else{
+						$("#div176").html('<span style="margin-left:0px;">[0]</span>');
+						}
+						$("#div177").html(result.completedCommitteePerc+"%");
+						
+						if(result.completedCommittees > 0 && result.completedCommittees != null)
+						
+						$("#div178").html('<a id=\''+level+'IdTScompleted\' class="" onClick="getMainCommitteeMembersCount(\'TS\',\''+level+'\',\'main\','+1+'\,\'completed\')" style="cursor:pointer;"><b>['+result.completedCommittees+']</b></a>');
+						
+						else{
+						$("#div178").html('<span style="margin-left:0px;">[0]</span>');
+						}
+					
+						if(result.afflCommittees!=0){
+							$("#div179").html('<a id=\''+level+'IdTSAfflstarted\' onClick="getAflCommitteeCount(\'TS\',\''+level+'\',\'started\')" style="cursor:pointer;">'+result.afflCommittees+'</a>');
+						}else{
+							$("#div179").html('<span> 0 </span>');
+						}
+					
+						if(result.affliatedCompleted!=0){
+							$("#div180").html('<a id=\''+level+'IdTSAfflcompleted\' onClick="getAflCommitteeCount(\'TS\',\''+level+'\',\'completed\')" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
+						}else{
+							$("#div180").html('<span> 0 </span>');
+						}
+												
+						$("#div181").html(result.membersCount);
+					
+					
+					}
+	
 				}
 			  }
-			  else{
-				  
+			
+			  else if(result.accessState.indexOf("District") >= 0 ){
+
 				  if(level == 'mandal' || level == 'town' || level == 'division' || level == 'mandalAll')
 					{
 						$('#ajaxImageId'+state+'mandal').hide();
@@ -1359,7 +1792,119 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						$("#div141").html(result.membersCount);
 					
 					}
+					else if(level == 'district')
+					{
+						$('#ajaxImageId'+state+'village').hide();
+						
+						$("#div182").html(result.committeesCount);
+						
+						$("#div183").html(result.startedCommitteePerc+"%");
+						$("#div184").html('['+result.mainCommittees+']');						
+						
+						$("#div185").html(result.completedCommitteePerc+"%");
+				
+						if(result.completedCommittees > 0 && result.completedCommittees != null)
+						
+						//$("#div11").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
+						$("#div186").html('<a id=\''+level+'IdAP\' class="" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')" style="cursor:pointer;"><b>['+result.completedCommittees+']</b></a>');
+						
+						else{
+						$("#div186").html('<span style="margin-left:0px;">[0]</span>');
+						}
+						//$("#div33").html(result.afflCommitteesPerc);
+						$("#div187").html(result.afflCommittees);
+						
+						$("#div188").html(result.affliatedCompleted);
+						//if(result.completedCommittees > 0 && result.completedCommittees != null)
+						if(result.affliatedCompleted!=0){
+							$("#div188").html('<a id=\''+level+'IdAPAffl\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\')" style="cursor:pointer;" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
+						}else{
+							$("#div188").html('<span> 0 </span>');
+						}
+						
+						//$("#div34").html(result.affliatedCompletedPerc);
+												
+						$("#div189").html(result.membersCount);
+					
+					}
+					
+			  
+			  
 			  }
+			  
+			  	  else {
+				  if(level == 'mandal' || level == 'town' || level == 'division' || level == 'mandalAll')
+					{
+						$('#ajaxImageId'+state+'mandal').hide();
+						
+						$("#totalMainCount1").html(result.committeesCount);
+						
+						$("#percCount").html(result.startedCommitteePerc+"%");
+						$("#percDtals").html('['+result.mainCommittees+']');						
+						
+						$("#compltdPerc").html(result.completedCommitteePerc+"%");
+						
+						if(result.completedCommittees > 0 && result.completedCommittees != null){
+							$("#div41").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')" style="cursor:pointer;"><b>['+result.completedCommittees+']</b></a>');
+						}
+						else{						
+							$("#div41").html('<span style="margin-left:0px;">[0]</span>');
+						}
+					
+						//$("#div30").html(result.afflCommitteesPerc);
+						$("#div51").html(result.afflCommittees);
+						
+						if(result.affliatedCompleted!=0){
+							$("#div61").html('<a id=\''+level+'IdAPAffl\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\')" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
+						}else{
+							$("#div61").html('<span> 0 </span>');
+						}
+						//$("#div6").html(result.affliatedCompleted);
+						//$("#div31").html(result.affliatedCompletedPerc);
+												
+						$("#div71").html(result.membersCount);
+					}
+					
+					else if(level == 'village' || level == 'ward' || level == 'villageAll')
+					{
+						$('#ajaxImageId'+state+'village').hide();
+						
+						$("#div81").html(result.committeesCount);
+						
+						$("#div321").html(result.startedCommitteePerc+"%");
+						$("#div91").html('['+result.mainCommittees+']');						
+						
+						$("#div101").html(result.completedCommitteePerc+"%");
+				
+						if(result.completedCommittees > 0 && result.completedCommittees != null)
+						
+						//$("#div11").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
+						$("#div111").html('<a id=\''+level+'IdAP\' class="" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')" style="cursor:pointer;"><b>['+result.completedCommittees+']</b></a>');
+						
+						else{
+						$("#div111").html('<span style="margin-left:0px;">[0]</span>');
+						}
+						//$("#div33").html(result.afflCommitteesPerc);
+						$("#div121").html(result.afflCommittees);
+						
+						$("#div131").html(result.affliatedCompleted);
+						//if(result.completedCommittees > 0 && result.completedCommittees != null)
+						if(result.affliatedCompleted!=0){
+							$("#div131").html('<a id=\''+level+'IdAPAffl\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\')" style="cursor:pointer;" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
+						}else{
+							$("#div131").html('<span> 0 </span>');
+						}
+						
+						//$("#div34").html(result.affliatedCompletedPerc);
+												
+						$("#div141").html(result.membersCount);
+					
+					}
+			  
+			  
+			  }
+			  
+			  
 			}
 		
 		});
@@ -1457,7 +2002,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		//$("#distSummaryBody").html('<td colspan="13"><center><img id="summaryAjax" style="width:100px;height:20px;"  src="./images/Loading-data.gif" alt="Processing Image"/></center></td>');
 		
 		if(levelSelected == 'district'){
-			getDistrictWiseCommittesSummary();
+			getDistrictWiseCommittesSummary();			
 		}
 		else if(levelSelected == 'consti'){
 			getConstituencyWiseCommittesSummary();
@@ -1477,12 +2022,22 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		$(".excelId").hide();
 		$("#distSummaryBody").html('');
 		$("#summaryAjax").show();
+		$("#districtCommDiv").show();
+		//$("#stateCommDiv").show();
 		var state = state; 
 		var mandalCheck=  $('#mandalId').is(':checked')?"true":"false";
 		var villageCheck=  $('#villageId').is(':checked')?"true":"false";
+		var districtCommCheck =  $('#districtCommId').is(':checked')?"true":"false";
+		
 		var selected = $("input[type='radio'][name='selectstate']:checked");
 		if (selected.length > 0) {
 			state = selected.val();
+		}
+		if(districtCommCheck == "true"){
+			$("#constiRdId").attr('disabled', true);		
+		}
+		else{
+		$("#constiRdId").attr('disabled', false);	
 		}
 		var startDate=$(".dp_startDate").val();
 		var endDate=$(".dp_endDate").val();
@@ -1491,6 +2046,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			startDate:startDate,
 			endDate:endDate,
 			state:state,
+			districtCommCheck:districtCommCheck,
 			mandalCheck:mandalCheck,
 			villageCheck:villageCheck
 		}
@@ -1513,14 +2069,14 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				return;
 			}
 			
-			buildResultDistrictSummary(result,mandalCheck,villageCheck);	
+			buildResultDistrictSummary(result,mandalCheck,villageCheck,districtCommCheck);	
 						
 		});
 	}
 	
 		
 	
-	function buildResultDistrictSummary(result,mandalCheck,villageCheck){
+	function buildResultDistrictSummary(result,mandalCheck,villageCheck,districtCommCheck){
 		var districtInfoArr = [];
 		var villageInfoArr = [];
 		$("#headingId").html("DISTRICT WISE COMMITTEES");
@@ -1540,17 +2096,24 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		var panMembers =0; 	
 		var panAffStarted =0; 	
 		var panAffCompleted =0;
+		var distTotal =0; 	
+		var distStarted =0; 	
+		var distCompleted =0; 	
+		var distMembers =0; 	
+		var distAffStarted =0; 	
+		var distAffCompleted =0;
 		var percentage = 0;
 		var perc = 0;
 		
 		str+='<table class="table table-bordered table-condensed " id="districtTableId" style="width:100%; background-color:rgba(0,0,0,0.1);">';
        
-		if(mandalCheck == "true" && villageCheck == "true"){
+		if(mandalCheck == "true" && villageCheck == "true" && districtCommCheck == "true"){
 			str+='<thead>';
             str+='<tr>';
 			str+='<th rowspan="2" style="text-align:center">District Name</th>';
             str+='<th style="text-align:center" colspan="6">TOWN / MANDAL / DIVISION</th>';
             str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
+			str+=' <th style="text-align:center" colspan="6">DISTRICT LEVEL COMMITTEES</th>';
 			if(result[0].cadreIVRVO != null)
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length) * 2;
@@ -1559,9 +2122,16 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				var length1 = (result[0].cadreIVRVO.optionsList1.length) * 2;
 				str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS</th>';
 			}
+			
             str+='</tr>';
             str+='<tr>';
             str+='<th >Total</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='<th>Members</th>';
+			str+='<th>Affl Committee Started</th>';
+			str+='<th>Affl Committee Completed</th>';
+			str+='<th>Total</th>';
 			str+='<th>Started</th>';
 			str+='<th>Completed</th>';
 			str+='<th>Members</th>';
@@ -1588,11 +2158,65 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				{
 					if(result[0].cadreIVRVO.optionsList1[pr].id != 13){
 					str+='<th>'+result[0].cadreIVRVO.optionsList1[pr].name+'</th>';
+					str+='<th>%</th>';				
+					}
+				}
+			}
+			str+='</tr>';			
+			str+='</thead>';	
+			
+		}
+		else if((mandalCheck == "true" && villageCheck == "true") || (districtCommCheck == "true" && villageCheck == "true")  || (districtCommCheck == "true" && mandalCheck == "true")){
+			str+='<thead>';
+            str+='<tr>';
+			str+='<th rowspan="2" style="text-align:center">District Name</th>';
+			if(mandalCheck == "true")
+            str+='<th style="text-align:center" colspan="6">TOWN / MANDAL / DIVISION</th>';
+			if(villageCheck == "true")
+            str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
+			if(districtCommCheck == "true")
+			str+=' <th style="text-align:center" colspan="6">DISTRICT LEVEL COMMITTEES</th>';
+			if(result[0].cadreIVRVO != null)
+			{
+				var length = (result[0].cadreIVRVO.optionsList.length) * 2;
+				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE IVR DETAILS</th>';
+				var length1 = (result[0].cadreIVRVO.optionsList1.length -1)*2;
+				str+=' <th style="text-align:center" colspan='+length1+'>IVR DETAILS</th>';
+			}
+            str+='</tr>';
+            str+='<tr>';
+            str+='<th >Total</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='<th>Members</th>';
+			str+='<th>Affl Committee Started</th>';
+			str+='<th>Affl Committee Completed</th>';
+			str+='<th>Total</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='<th>Members</th>';
+			str+='<th>Affl Committee Started</th>';
+			str+='<th>Affl Committee Completed</th>';
+
+            	
+			if(result[0].cadreIVRVO != null)
+			{
+				for(var pr in result[0].cadreIVRVO.optionsList)
+				{
+					if(result[0].cadreIVRVO.optionsList[pr].id != 8){
+					str+='<th>'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
+					str+='<th>%</th>';
+					}
+				}
+				for(var pr in result[0].cadreIVRVO.optionsList1)
+				{
+					if(result[0].cadreIVRVO.optionsList1[pr].id != 13){
+					str+='<th>'+result[0].cadreIVRVO.optionsList1[pr].name+'</th>';
 					str+='<th>%</th>';
 					}
 				}
 			}
-str+='</tr>';			
+			str+='</tr>';			
 			str+='</thead>';	
 			
 		}
@@ -1604,10 +2228,10 @@ str+='</tr>';
 			if(result[0].cadreIVRVO != null)
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length -1)*2;
-				str+=' <th style="text-align:center" colspan='+length+'>IVR DETAILS</th>';
+				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE IVR DETAILS</th>';
 				
-				var length1 = (result[0].cadreIVRVO.optionsList1.length -1)*2;
-				str+=' <th style="text-align:center" colspan='+length1+'>IVR DETAILS</th>';
+				var length1 = (result[0].cadreIVRVO.optionsList1.length -1 ) * 2;
+				str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS</th>';
 			}
             str+='</tr>';
             str+='<tr>';
@@ -1666,7 +2290,45 @@ str+='</tr>';
 					str+='<th>%</th>';
 					}
 				}
+				for(var pr in result[0].cadreIVRVO.optionsList1)
+				{
+					if(result[0].cadreIVRVO.optionsList1[pr].id != 13){
+					str+='<th>'+result[0].cadreIVRVO.optionsList1[pr].name+'</th>';
+					str+='<th>%</th>';
+					}
+				}
 				
+			}
+			str+='</tr></thead>';	
+		}
+		else if(districtCommCheck == "true" ){
+			str+='<thead>';
+			str+='<tr>';
+			str+='<th rowspan="2" style="text-align:center">District Name</th>';		
+            str+='<th style="text-align:center" colspan="6">DISTRICT LEVEL</th>';			
+			if(result[0].cadreIVRVO != null)
+			{
+				var length = (result[0].cadreIVRVO.optionsList.length -1)*2;
+				str+=' <th style="text-align:center" colspan='+length+'>IVR DETAILS</th>';
+			}
+            str+='</tr>';
+            str+='<tr>';
+			str+='<th>Total</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='<th>Members</th>';
+			str+='<th>Affl Committee Started</th>';
+			str+='<th>Affl Committee Completed</th>';
+			if(result[0].cadreIVRVO != null)
+			{
+				for(var pr in result[0].cadreIVRVO.optionsList)
+				{
+					if(result[0].cadreIVRVO.optionsList[pr].id != 8){
+					str+='<th>'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
+					str+='<th>%</th>';
+					}
+				}
+
 				for(var pr in result[0].cadreIVRVO.optionsList1)
 				{
 					if(result[0].cadreIVRVO.optionsList1[pr].id != 13){
@@ -1680,7 +2342,7 @@ str+='</tr>';
 		str+='<tbody>';
 		
 		for(var i in result){
-			if(result[i].townMandalDivisionVO != null || result[i].villageWardVO != null){
+			if(result[i].townMandalDivisionVO != null || result[i].villageWardVO != null || result[i].districtCommVO != null){
 			str += '<tr>';
 			str += '<td>'+result[i].districtName+'</td>';
 			if(mandalCheck == "true"){
@@ -1737,6 +2399,8 @@ str+='</tr>';
 				str += '<td>  </td>';
 			}
 			}
+			
+			
 			if(villageCheck == "true"){
 			
 			if(result[i].villageWardVO!=null){
@@ -1791,7 +2455,60 @@ str+='</tr>';
 				str += '<td>  </td>';
 			}
 			}
+			if(districtCommCheck == "true"){
 			
+			if(result[i].districtCommVO != null){
+				if(result[i].districtCommVO.totalCommittees!=null){
+					str += '<td style="text-align:center">'+result[i].districtCommVO.totalCommittees+'</td>';
+					distTotal=distTotal+result[i].districtCommVO.totalCommittees;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].districtCommVO.mainStarted!=null){
+					//str += '<td>'+result[i].districtCommVO.mainStarted+'<span id="mini-pie-chart-district'+i+'" class="pull-right mini-pie-chart-district"></span></td>';
+					str += '<td style="text-align:center">'+result[i].districtCommVO.mainStarted+'</td>';
+					distStarted=distStarted+result[i].districtCommVO.mainStarted;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].districtCommVO.mainCompleted!=null){
+					str += '<td style="text-align:center">'+result[i].districtCommVO.mainCompleted+'</td>';
+					distCompleted=distCompleted+result[i].districtCommVO.mainCompleted;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].districtCommVO.membersCount!=null){
+					str += '<td style="text-align:center">'+result[i].districtCommVO.membersCount+'</td>';
+					distMembers=distMembers+result[i].districtCommVO.membersCount;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].districtCommVO.afflStarted!=null){
+					str += '<td style="text-align:center">'+result[i].districtCommVO.afflStarted+'</td>';
+					distAfStarted=distAfStarted+result[i].districtCommVO.afflStarted;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].districtCommVO.afflCompleted!=null){
+					str += '<td style="text-align:center">'+result[i].districtCommVO.afflCompleted+' </td>';
+					distAfCompleted=distAfCompleted+result[i].districtCommVO.afflCompleted;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+			}else{
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+			}
+			}
 			
 			if(result[i].cadreIVRVO != null)
 			{
@@ -1811,6 +2528,7 @@ str+='</tr>';
 					}
 					}
 				}
+				
 				
 				for(var tp in result[i].cadreIVRVO.optionsList1)
 				{
@@ -1862,6 +2580,27 @@ str+='</tr>';
 			}
 		}
 		str += '</tbody><tfoot><tr class="no-sort" style="font-weight:bold;">';
+		if(mandalCheck == "true" && villageCheck == "true" && districtCommCheck == "true"){
+		str	+= '<td style="text-align:center">TOTAL</td><td>'+mandTotal+'</td>'; 	
+		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
+		str += '<td style="text-align:center">'+mandMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+mandAfStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+mandAfCompleted+'</td>';
+		str += '<td style="text-align:center">'+panTotal+'</td>'; 	
+		str += '<td style="text-align:center">'+panStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+panCompleted+'</td>'; 	
+		str += '<td style="text-align:center">'+panMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+panAffStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+panAffCompleted+'</td>';
+		str	+= '<td style="text-align:center">'+distTotal+'</td>'; 			
+		str += '<td style="text-align:center">'+distStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+distCompleted+'</td>'; 	
+		str += '<td style="text-align:center">'+distMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+distAffStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+distAffCompleted+'</td>';		
+		}
+		else if((mandalCheck == "true" && villageCheck == "true") || (districtCommCheck == "true" && villageCheck == "true")  || (districtCommCheck == "true" && mandalCheck == "true")){
 		if(mandalCheck == "true" && villageCheck == "true"){
 		str	+= '<td style="text-align:center">TOTAL</td><td>'+mandTotal+'</td>'; 	
 		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
@@ -1874,8 +2613,37 @@ str+='</tr>';
 		str += '<td style="text-align:center">'+panCompleted+'</td>'; 	
 		str += '<td style="text-align:center">'+panMembers+'</td>'; 	
 		str += '<td style="text-align:center">'+panAffStarted+'</td>'; 	
-		str += '<td style="text-align:center">'+panAffCompleted+'</td>';		
+		str += '<td style="text-align:center">'+panAffCompleted+'</td>';
+		}else if(districtCommCheck == "true" && villageCheck == "true"){
+		str += '<td style="text-align:center">TOTAL</td><td style="text-align:center">'+panTotal+'</td>'; 	
+		str += '<td style="text-align:center">'+panStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+panCompleted+'</td>'; 	
+		str += '<td style="text-align:center">'+panMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+panAffStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+panAffCompleted+'</td>';
+		str	+= '<td style="text-align:center">'+distTotal+'</td>'; 			
+		str += '<td style="text-align:center">'+distStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+distCompleted+'</td>'; 	
+		str += '<td style="text-align:center">'+distMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+distAffStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+distAffCompleted+'</td>';
+		}else  if(districtCommCheck == "true" && mandalCheck == "true"){
+		str	+= '<td style="text-align:center">TOTAL</td><td>'+mandTotal+'</td>'; 	
+		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
+		str += '<td style="text-align:center">'+mandMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+mandAfStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+mandAfCompleted+'</td>';
+		str	+= '<td style="text-align:center">'+distTotal+'</td>'; 			
+		str += '<td style="text-align:center">'+distStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+distCompleted+'</td>'; 	
+		str += '<td style="text-align:center">'+distMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+distAffStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+distAffCompleted+'</td>';
 		}
+		
+		}
+		
 		else if(mandalCheck=="true"){
 		str	+= '<td style="text-align:center">TOTAL</td><td>'+mandTotal+'</td>'; 	
 		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
@@ -1891,7 +2659,15 @@ str+='</tr>';
 		str += '<td style="text-align:center">'+panMembers+'</td>'; 	
 		str += '<td style="text-align:center">'+panAffStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+panAffCompleted+'</td>';
-}
+		}
+		else if(districtCommCheck=="true"){
+		str	+= '<td style="text-align:center">TOTAL</td><td>'+distTotal+'</td>'; 			
+		str += '<td style="text-align:center">'+distStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+distCompleted+'</td>'; 	
+		str += '<td style="text-align:center">'+distMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+distAffStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+distAffCompleted+'</td>';
+		}
 		str += '</tr></tfoot></table>';			
 		$("#distSummaryBody").html(str);
 		$(".excelId").show();
@@ -1956,6 +2732,16 @@ str+='</tr>';
 		{
 		    levelIdsArr.push(6);
 			levelIdsArr.push(8);
+		}
+		else if(level == 'district')
+		{
+		    levelIdsArr.push(11);
+			
+		}
+		else if(level == 'state')
+		{
+		    levelIdsArr.push(10);
+			
 		}
 		var state = state; 
 		var jObj = {
@@ -2061,6 +2847,16 @@ str+='</tr>';
 		{
 		    levelIdsArr.push(6);
 			levelIdsArr.push(8);
+		}
+		else if(level == 'district')
+		{
+		    levelIdsArr.push(11);
+			
+		}
+		else if(level == 'state')
+		{
+		    levelIdsArr.push(10);
+			
 		}
 		var state = state; 
 		var jObj = {
@@ -2177,6 +2973,14 @@ str+='</tr>';
 		{
 		    levelIdsArr.push(6);
 			levelIdsArr.push(8);
+		}
+		else if(level == 'district')
+		{
+		    levelIdsArr.push(11);
+		}
+		else if(level == 'state')
+		{
+		    levelIdsArr.push(10);
 		}
 		var state = state; 
 		var jObj = {
@@ -2306,6 +3110,8 @@ str+='</tr>';
 		$(".excelId").hide();
 		$("#distSummaryBody").html('');
 		$("#summaryAjax").show();
+		$("#districtCommDiv").hide();
+		//$("#stateCommDiv").hide();
 		var selected = $("input[type='radio'][name='selectstate']:checked");
 		var mandalCheck=  $('#mandalId').is(':checked')?"true":"false";
 		var villageCheck=  $('#villageId').is(':checked')?"true":"false";
@@ -2648,7 +3454,7 @@ str+='</tr>';
 					str+='<td style="text-align:center">'+result[i].cadreIVRVO.optionsList[tp].count+'</td>';
 					str+='<td style="text-align:center">0</td>';
 					}
-					}
+					}					
 				}
 				
 				for(var tp in result[i].cadreIVRVO.optionsList1)
@@ -3022,7 +3828,7 @@ str+='</tr>';
 					
 				}
 			
-				console.log(result);
+				//console.log(result);
 			});
 		}
 		
@@ -3311,6 +4117,50 @@ function showPopOver(state){
 	$('#ivrPopOver'+state+'').popover();
 }
 
+
+function showHideDivs(divId1,divId2){
+if(divId1 =="ap"){
+	$(".toggleCls").hide();
+	if(divId1+divId2+"BodyTR" == "apMandalBodyTR"){
+		$("#apDistrictBodyTR").removeClass("toggleCls12");	
+		$("#apStateBodyTR").removeClass("toggleCls12");
+	}else if(divId1+divId2+"BodyTR" == "apDistrictBodyTR"){
+		$("#apMandalBodyTR").removeClass("toggleCls12");		
+		$("#apStateBodyTR").removeClass("toggleCls12");	
+	}else if(divId1+divId2+"BodyTR" == "apStateBodyTR"){		
+		$("#apMandalBodyTR").removeClass("toggleCls12");	
+		$("#apDistrictBodyTR").removeClass("toggleCls12");	
+	}
+
+}
+else{
+	$(".toggleCls1").hide();
+	if(divId1+divId2+"BodyTR" == "tsMandalBodyTR"){
+		$("#tsDistrictBodyTR").removeClass("toggleCls12");	
+		$("#tsStateBodyTR").removeClass("toggleCls12");
+	}else if(divId1+divId2+"BodyTR" == "tsDistrictBodyTR"){
+		$("#tsMandalBodyTR").removeClass("toggleCls12");		
+		$("#tsStateBodyTR").removeClass("toggleCls12");	
+	}else if(divId1+divId2+"BodyTR" == "tsStateBodyTR"){		
+		$("#tsMandalBodyTR").removeClass("toggleCls12");	
+		$("#tsDistrictBodyTR").removeClass("toggleCls12");	
+	}
+	
+}
+if(!$("#"+divId1+divId2+"BodyTR").hasClass("toggleCls12")){
+		$("#"+divId1+divId2+"BodyTR").addClass("toggleCls12");
+		$("#"+divId1+divId2+"BodyTR").show();
+		$("#"+divId1+divId2+"ButtonsDiv").show();
+		$("#"+divId1+divId2+"ButtonsDiv").addClass("toggleCls12");
+	}else{
+		$("#"+divId1+divId2+"BodyTR").removeClass("toggleCls12");
+		$("#"+divId1+divId2+"BodyTR").hide();
+		$("#"+divId1+divId2+"ButtonsDiv").hide();
+		$("#"+divId1+divId2+"ButtonsDiv").removeClass("toggleCls12");
+	}
+
+
+}
 
 
 
