@@ -9864,9 +9864,9 @@
 			<result name="input">/jsp/loginForm.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
-		<action name="cadreSearchPageAction" class="cadreCommitteeAction" method="cadreSearch">
+		<action name="cadreSearchPageAction" class="cadreCommitteeAction">
 			<result name="success">/jsp/cadreSearch.jsp</result>
-			<result name="input">/jsp/loginForm.jsp?src=cadreCommitteeAction</result>
+			<result name="input">/jsp/loginForm.jsp?src=cadreSearchPageAction</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
 </package>
