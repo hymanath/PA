@@ -125,8 +125,9 @@
 
 
     <script>
-	$(document).ready(function() {
 	var accessType = '${sessionScope.USER.accessType}';
+	$(document).ready(function() {
+	
 		if(accessType != 'STATE' &&  accessType != 'DISTRICT')
 		{
 			
@@ -688,10 +689,16 @@
 				  {
 				alert("Committee Confirmed");
 				$("#conformedBtn").html('');
+				if(accessType != 'STATE' &&  accessType != 'DISTRICT')
+					{
 				getSummary();
 				getMandalMuncipalDivisonStartedCommittees();
+				}
 				getCommitteeDetailsByStatus(plbasicCommitteetypeId,plstatus,plevelId);
+				if(accessType == 'STATE' ||  accessType == 'DISTRICT')
+					{
 				getCommitteeSummaryInfo();
+				}
 		
 				  }
 				
@@ -725,11 +732,17 @@
 				  {
 					  if(result[0].status == "Removed"){
 				        alert("Removed Successfully..");
+						if(accessType != 'STATE' &&  accessType != 'DISTRICT')
+						{
 						getSummary();
 		                getMandalMuncipalDivisonStartedCommittees();
+						}
 						getCommitteeDetailsByStatus(plbasicCommitteetypeId,plstatus,plevelId);
 						getCommitteeMemberInfo(lbasicCommitteetypeId,llevelId,llocationId,lstatus);
+						if(accessType == 'STATE' ||  accessType == 'DISTRICT')
+						{
 						getCommitteeSummaryInfo();
+						}
 					  }else{
 					    alert("Committee Already Confirmed");
 					  }
