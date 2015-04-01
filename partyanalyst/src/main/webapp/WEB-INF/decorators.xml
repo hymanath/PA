@@ -139,7 +139,7 @@
 		<pattern>/cadreIvrEnquiryAction*</pattern>        
         <pattern>/publicMembershipCardStatusAction*</pattern>
 		 
-		 <pattern>/cadreProfileDetailsAction*</pattern>
+		<!-- <pattern>/cadreProfileDetailsAction*</pattern>-->
 		 <pattern>/assignCadreToCommittee*</pattern>
 		 
 		   <pattern>/committeeUpdateApproveAction*</pattern>
@@ -393,5 +393,6 @@
 		<pattern>/cadreCommitteeRequestAction*</pattern>
 		<pattern>/committeeManagementAction*</pattern>
 		<pattern>/cadreSearchPageAction*</pattern>
+		<pattern>/cadreProfileDetailsAction*</pattern>
 	 </decorator>
 </decorators>
