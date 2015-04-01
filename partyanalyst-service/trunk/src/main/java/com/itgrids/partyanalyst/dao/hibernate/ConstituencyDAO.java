@@ -1007,7 +1007,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 			"  model.electionScope.electionType.electionTypeId = 2 and model.deformDate is null  ");
 			if(stateId.longValue() == 1){
 				str.append(" and model.district.districtId > 10 ");
-			}else{
+			}else if(stateId.longValue() == 2){
 				str.append(" and model.district.districtId < 11 ");
 			}
 			Query query = getSession().createQuery(str.toString());

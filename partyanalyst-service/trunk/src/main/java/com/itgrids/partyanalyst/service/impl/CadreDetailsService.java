@@ -40,6 +40,21 @@ public class CadreDetailsService implements ICadreDetailsService{
     		
     		if(locationLevel != null && locationLevel.longValue() != 0L && locationValue != null && locationValue.longValue() != 0L)
     		{
+    			
+    			if(locationLevel.longValue() == 2L)
+    			{
+    				if(locationValue.longValue() == 1l)
+    				queryStr.append(" and model.userAddress.district.districtId between 11 and 23 ");
+    				else if(locationValue.longValue() == 2l)
+    					queryStr.append(" and model.userAddress.district.districtId between 1 and 10 ");	
+    				else
+    					queryStr.append(" and model.userAddress.district.districtId between 1 and 23 ");	
+    				locationValue = 0l;
+    			}
+    			if(locationLevel.longValue() == 3L)
+    			{
+    				queryStr.append(" and model.userAddress.district.districtId =:locationValue ");
+    			}
     			if(locationLevel.longValue() == 4L)
     			{
     				queryStr.append(" and model.userAddress.constituency.constituencyId =:locationValue ");
