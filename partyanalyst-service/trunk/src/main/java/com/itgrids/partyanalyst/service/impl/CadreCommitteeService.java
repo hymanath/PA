@@ -1729,6 +1729,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						
 						CadreCommitteeVO committeeVO = new CadreCommitteeVO();
 						committeeVO.setTdpCadreId(tdpCadre.getId());
+						committeeVO.setMemberShipCardId(tdpCadre.getMemberShipNo() != null ? tdpCadre.getMemberShipNo().substring(tdpCadre.getMemberShipNo().length() - 8) :"");
 						committeeVO.setCadreName(tdpCadre.getCadreName());
 						committeeVO.setRelativeName(tdpCadre.getRelativeName());
 						committeeVO.setAge(tdpCadre.getAge().toString());
