@@ -197,7 +197,7 @@
   <body>
   
 	<div class="container-fluid">
-		<div class="row" style="align:center;padding:10px;background:rgba(255,0,51,0.8); border-top:12px solid rgba(19,167,81,0.8);border-bottom:12px solid rgba(19,167,81,0.8);display:flex">
+		<!--<div class="row" style="align:center;padding:10px;background:rgba(255,0,51,0.8); border-top:12px solid rgba(19,167,81,0.8);border-bottom:12px solid rgba(19,167,81,0.8);display:flex">
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12 text-center">
 				<img src="images/Committees_2014_logo.png" title="Committee Logo" alt="committee" />
 			</div>
@@ -214,7 +214,7 @@
 				  <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
 				</ul>
             </div>
-		</div>
+		</div>-->
 		<div class="row">
 		<div style="border-top:1px solid #fff;" class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2 text-center m_top20" id="step2Id">
 			<span class="badge" style="z-index: 2; margin-top: -10px;">STEP- 3</span>
@@ -729,9 +729,9 @@
 	
 	</div>
 	
-	<footer class="text-center m_top20">
+	<!--<footer class="text-center m_top20">
 			&copy; 2015 Telugu Desam Party
-	</footer>
+	</footer>-->
 
    <script>
 	/*var cmmtyConstituencies = [];

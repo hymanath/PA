@@ -46,11 +46,11 @@
                     Menu <img src="images/menu_icon.png" />
                     </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);top: 91px;">
-                   <c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_STATE_DISTRICT_ACCESS' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_COMMITTEE_MANAGEMENT' )}">
+                   <c:if test="${fn:containsIgnoreCase(sessionScope.USER.entitlements, 'TDP_COMMITTEE_STATE_DISTRICT_ACCESS' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_COMMITTEE_MANAGEMENT' )}">
                        <li><a tabindex="-1" href="committeeManagementAction.action">Home</a></li>
 					   <li><a tabindex="-1" href="cadreCommitteeSummaryAction.action">Summary Report</a></li>
                    </c:if>
-                    <c:if test="${!fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_STATE_DISTRICT_ACCESS' )}">
+                    <c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'TDP_COMMITTEE_STATE_DISTRICT_ACCESS' )}">
                        <li><a tabindex="-1" href="cadreCommitteeAction.action">Home</a></li>
 				       
 				       <li><a tabindex="-1" href="cadreCommitteeRequestAction.action">Request For Positions Increase</a></li>
