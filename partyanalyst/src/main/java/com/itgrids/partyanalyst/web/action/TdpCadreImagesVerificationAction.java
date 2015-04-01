@@ -14,7 +14,6 @@ public class TdpCadreImagesVerificationAction extends ActionSupport implements S
 	private HttpServletRequest request;
 	
 	
-	@Override
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
