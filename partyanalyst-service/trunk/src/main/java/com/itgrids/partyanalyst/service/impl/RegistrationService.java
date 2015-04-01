@@ -575,11 +575,11 @@ public class RegistrationService implements IRegistrationService{
 	}
 	public String registerAllUsers(RegistrationVO user){
 		try{
-		PrintWriter writer = new PrintWriter("H:/users.txt", "UTF-8");
+		PrintWriter writer = new PrintWriter("E:\\users.txt", "UTF-8");
 			
 		RegistrationVO regVO = new RegistrationVO();
 		MD5Encrypt encrypt = new MD5Encrypt();
-		FileInputStream file = new FileInputStream(new File("H:\\users.xls"));
+		FileInputStream file = new FileInputStream(new File("E:\\users.xls"));
 		HSSFWorkbook workbook = new HSSFWorkbook(file);
 		HSSFSheet sheet = workbook.getSheetAt(0);
 		Iterator<Row> rowIterator = sheet.iterator();
