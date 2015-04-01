@@ -76,7 +76,7 @@
 	
 	
 			<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 text-center">
-				<h4 id="headingDiv" class="text-uppercase"> Search Candidate</h4>
+				<h4 id="headingDiv" class="text-uppercase"> Search Cadre</h4>
 			
 			</div>
 			
@@ -132,39 +132,51 @@
 				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;"> 					
 					<!--<h6>Advanced Search</h6>-->
 					<div id="advancedSearchErrDiv"></div>
-					<div class="row">					
-						<div class="col-md-4 col-sm-4 col-xs-4 ">
-							<label>Caste-Group
-								<select class="form-control col-md-12 col-sm-12 col-xs-12 " id="casteCategory" onchange="casteDetailsByGroupId();">
+					<div class="row">
+						<div class="col-md-4 col-sm-4 col-xs-12" id="constitunecyDiv" style="display:none;">
+							<label>Constituency</label>
+							<select class="form-control " id="constituencyId" >
+								
+								</select>
+							</div>
+						<div class="col-md-4 col-sm-4 col-xs-12 ">
+							<label>Caste-Group</label>
+								<select class="form-control" id="casteCategory" onchange="casteDetailsByGroupId();">
 								<option value="0" selected>All</option>
 								<option value="1">OC</option>
 								<option value="2">BC</option>
 								<option value="3">SC</option>
 								<option value="4">ST</option>
 								</select>
-							</label>
+							
 						</div>
-						<div class="col-md-4 col-sm-4 col-xs-5 ">
-							<label>Caste Name
+						<div class="col-md-4 col-sm-4 col-xs-12">
+							<label>Caste Name</label>
 								
 								<s:select theme="simple" cssClass="form-control editClass col-md-12 col-sm-12 col-xs-12" id="casteList" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Caste " style="width: 200px;"/>
-							</label>
+							
 						</div>
 						
-						<div class="col-md-3 col-sm-3 col-xs-3 ">
-							<label>Age Range
-								<select class="form-control col-md-12 col-sm-12 col-xs-12"  id="ageRange" onchange="clearbetwbAgeFields()" ><option>select</option></select>
-							</label>
+						<div class="col-md-4 col-sm-4 col-xs-12 ">
+							<label>Age Range</label>
+								<select class="form-control"  id="ageRange" onchange="clearbetwbAgeFields()" ><option>select</option></select>
+							
 						</div>
 						<div class="col-md-4 col-sm-4 col-xs-4 ">
-							 <b>Between Age<br>
-								<input type="text" id="fromAgeId" style="width: 50px;" class="ageRangeCls" placeholder=" From "/> - <input type="text" id="toAgeId" style="width: 50px;" class="ageRangeCls" placeholder=" To  "/> 
-							</b>
+							 <b>Between Age</b>
+							 <div class="row">
+								<div class="col-xs-6">
+								<input type="text" id="fromAgeId" style="width: 50px;" class="ageRangeCls" placeholder=" From "/> 
+								</div>
+								<div class="col-xs-6"> <input type="text" id="toAgeId" style="width: 50px;" class="ageRangeCls" placeholder=" To  "/> 
+								</div>
+							</div>
 						</div>
-						<div class="col-md-3 col-sm-4 col-xs-4 ">
-							<label>Gender
-								<select class="form-control col-md-12 col-sm-12 col-xs-12"  id="gender"><option value="0" selected>All</option><option  value="1" >Male</option><option  value="2" >Female</option></select>
-							</label>
+						
+						<div class="col-md-4 col-sm-4 col-xs-12">
+							<label>Gender</label>
+								<select class="form-control"  id="gender"><option value="0" selected>All</option><option  value="1" >Male</option><option  value="2" >Female</option></select>
+							
 						</div>
 						<div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4 m_top10">
 							<button type="submit" class="btn btn-success btn-block" onclick="getCadreDetailsBySearchCriteria()">SEARCH</button>
@@ -279,7 +291,9 @@
 			}
 		}
 		if(searchRadioType == 'advancedSearch')
-		{			
+		{	
+			
+			
 			gender = $('#gender option:selected').text().trim();
 			var casteGroup = $('#casteCategory').val();
 			var casteName  = $('#casteList').val();
@@ -287,8 +301,13 @@
 			
 			var locfromAge = $('#fromAgeId').val().trim();
 			var loctoAge = $('#toAgeId').val().trim(); 
-			
-			if(casteGroup == 0 && casteName == 0 && age == 0 && gender == 'All' && locfromAge.length == 0 && loctoAge.length == 0 )
+			var constituencyId = $("#constituencyId").val();
+			if(constituencyId == 0)
+			{
+				$('#advancedSearchErrDiv').html("Please Select constituency.");	
+				return;			
+			}
+			else if(casteGroup == 0 && casteName == 0 && age == 0 && gender == 'All' && locfromAge.length == 0 && loctoAge.length == 0)
 			{
 				$('#advancedSearchErrDiv').html('Please Select Any of Search Criteria');
 				return;			
@@ -325,7 +344,8 @@
 			}				
 			casteCategory = $('#casteCategory option:selected').text().trim();
 			casteStateId = $('#casteList').val().trim();
-			
+			locationValue = constituencyId;
+			locationLevel = 4;	
 			if(casteCategory == 'All')
 			{
 				casteCategory = "";				
@@ -387,8 +407,8 @@
 	}
 		$('.searchTypeCls').click(function(){
 			
-		
-			
+		 $("#constituencyId  option").remove();
+			$("#constitunecyDiv").hide();
 			var id = $(this).attr('id');
 				
 			$('#advancedSearchDiv').hide();			
@@ -426,8 +446,9 @@
 				$('#cadreSearchType').val('name');
 			}
 			if(id.trim() == 'advancedSearch')
-			{			
-				
+			{	
+				$("#constitunecyDiv").show();
+				gettingAllConstituencys("ALL");
 				if($('#basicCommitteeTab').attr('class') != 'btn btn-success btn-block arrow_selected')
 				{
 					//$('#basicCommitteeDiv1').show();
@@ -477,6 +498,7 @@
 				str+='<li>Mobile No: '+result[i].mobileNo+'</i>';
 				str+='<li>Caste: '+result[i].casteName+'</i>';
 				str+='<li>Voter ID: '+result[i].voterCardNo+'</i>';
+				str+='<li>MemberShipNo: '+result[i].memberShipCardId+'</i>';
 				//str+='<li>Aadhar: '+result[i].imageURL+'</i>';
 				str+='</ul>';
 				
@@ -513,6 +535,27 @@
 		
 		$('#cadreDetailsDiv').html(str);
 	}
+	function gettingAllConstituencys(repType){
+		$("#constitunecyDiv").show();
+		var str='';
+			 $.ajax({
+			  type:'GET',
+			  url: 'getLocationWiseRegistrationInformation.action',
+			  data: {task:"assemblyNames",type:repType}
+			   }).done(function(result){
+					if(repType == 'ALL'){
+					  allConstituencies = result;
+				   }
+				   if(allConstituencies !=null){
+					
+						$('#constituencyId').append('<option value="0">Select Constituency</option>');
+						for(var i in allConstituencies){
+							$('#constituencyId').append('<option value="'+allConstituencies[i].id+'">'+allConstituencies[i].name+'</option>');
+						}
+						
+				}
+			   });
+		}
 			</script>
 			</body>
 			</html>
