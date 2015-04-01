@@ -43,7 +43,7 @@
 	.m_top30{margin-top:30px;}
 	.editDesignation{margin-bottom: 10px;}
 	#committeeMainId,.hideRowClass{display:none;}
-	
+	.slick-prev, .slick-next{background:none repeat scroll 0 0 #ccc !important;padding:2px 5px 5px;}
 	</style>
   </head>
   <body>
@@ -59,7 +59,7 @@
 			<div class="form-group col-md-8 col-md-offset-2  col-sm-6 col-xs-6">
 				<div class="form-group col-xs-12">
 					<label for="committeeTypeId">COMMITTEE TYPE <span style="color:red">*</span></label>
-					<select class="form-control" id="committeeTypeId" onchange="getCommitteCadreMembersInfo(1);populateDefaultValue(2);getAllCommitteeMembersInfoInALoc();setFinalStatus();" >
+					<select class="form-control" id="committeeTypeId" onchange="setDefault();getCommitteCadreMembersInfo(1);populateDefaultValue(2);getAllCommitteeMembersInfoInALoc();setFinalStatus();" >
 						<option value="0">Select Committee Type</option>
 						<option value="3">View All Committee Info</option>
 						<option value="1">Main Committee</option>
@@ -902,11 +902,20 @@
             WinPrint.print();
             //WinPrint.close();
         }
+	
+	
       
 function setFinalStatus(){
 	  finalStatus == "false";
 	  
-}	
+}
+function setDefault()
+{
+	
+	$("#afflitCommitteeId").val(0);
+	$("#afflitCommitteeIdErr").html("");
+	$("#committeeDetailsDiv").hide();
+}
 	</script>
   </body>
 </html>
