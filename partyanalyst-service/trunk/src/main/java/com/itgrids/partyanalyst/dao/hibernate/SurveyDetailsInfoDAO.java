@@ -169,10 +169,11 @@ public class SurveyDetailsInfoDAO extends GenericDaoHibernate<SurveyDetailsInfo,
 		
 		lOG.info(logMsg );
 		
-		Query query = getSession().createQuery("select model from SurveyDetailsInfo model  where model.surveyUser.surveyUserId = :userId and model.uuid=:uuid and model.voter.voterId = :voterId" );
+		//Query query = getSession().createQuery("select model from SurveyDetailsInfo model  where model.surveyUser.surveyUserId = :userId and model.uuid=:uuid and model.voter.voterId = :voterId" );
+		Query query = getSession().createQuery("select model from SurveyDetailsInfo model  where model.surveyUser.surveyUserId = :userId and model.voter.voterId = :voterId" );
 				
 		query.setParameter("userId", userId);
-		query.setParameter("uuid", uuid);
+		//query.setParameter("uuid", uuid);
 		query.setParameter("voterId", voterId);
 		logMsg=null;
 		return (SurveyDetailsInfo) query.uniqueResult();
