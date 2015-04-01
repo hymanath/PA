@@ -517,6 +517,39 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 		return Action.SUCCESS;
 	}
 	
+	public String cadreSearchExe()
+	{
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		boolean noaccess = false;
+		if(regVO==null){
+			return "input";
+		}if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)request.getSession().getAttribute(IConstants.USER),IConstants.TDP_CADRE_SEARCH)){
+			noaccess = true ;
+		}
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		
+		if(noaccess){
+			return "error";
+		}
+		ageRangeList = cadreCommitteeService.getAgeRangeDetailsForCadre();
+		genericVOList = cadreCommitteeService.getAllCasteDetailsForState();
+		cadreRolesVOList = cadreCommitteeService.getBasicCadreCommitteesDetails();
+		locations = cadreCommitteeService.getAllTdpCommitteeDesignations();
+		List<BasicVO> accLoc = getUserAccessConstituencies();
+		finalStatus = accLoc.get(0).getName();
+		if(panchayatId == null) //default values for prepopulate fields
+		{
+			panchayatId = "0";
+			committeeTypeId = 0L;
+			committeeId = 0L;
+			result3 = "0";
+		}
+		
+		return Action.SUCCESS;
+	}
+	
 	public List<BasicVO> getUserAccessConstituencies(){
 		HttpSession session = request.getSession();
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");

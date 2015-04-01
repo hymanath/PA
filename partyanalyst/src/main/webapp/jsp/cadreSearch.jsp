@@ -79,9 +79,41 @@
 				<h4 id="headingDiv" class="text-uppercase"> Search Cadre</h4>
 			
 			</div>
-			
+			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0">
+			<c:if test="${sessionScope.USER.accessType == 'STATE'}">
+				 <div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0" id="statedisplaydivid">
+						<label>State</label>
+						<c:if test="${sessionScope.USER.stateName == 'both'}">
+						  <select id="statesDivId" onchange="getConstituenciesForStateAjax();" class="form-control">
+							<option value="0">All</option>
+							<option value="1">AndhraPradesh</option>
+							<option value="2">Telangana</option>
+						  </select>
+						  </c:if>
+						  <c:if test="${sessionScope.USER.stateName == 'TS'}">
+						  <select id="statesDivId" onchange="getConstituenciesForStateAjax();" class="form-control">
+							<option value="2">Telangana</option>
+						  </select>
+						  </c:if>
+						   <c:if test="${sessionScope.USER.stateName == 'AP'}">
+						  <select id="statesDivId" onchange="getConstituenciesForStateAjax();" class="form-control">
+							<option value="1">AndhraPradesh</option>
+						  </select>
+						  </c:if>
+						
+				     </div>
+					 </c:if>
+					
+				   <div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0" id="constitunecyDiv">
+							<label>Constituency</label>
+							<select class="form-control " id="constituencyId" class="form-control">
+							</select>
+							</div>
+							</div>
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center">
 				<div class="form-inline ">
+			
+				   
 					<div class="radio">
 						<label><input type="radio" name="searchBasedOn" checked="true" class="searchTypeCls" onclick="refreshExistingDetails();" id="membershipId" value="1"> Membership ID &nbsp;&nbsp;</label>
 					
@@ -118,13 +150,13 @@
 			</div>-->
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0"  id="basicSearchDiv">	
 				<div class="row">      
-					<div class="col-md-9 col-sm-9 col-xs-9 ">
+					<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0">
 						<input type="text" placeholder="ENTER MEMBERSHIP ID / VOTER ID / MOBILE NO / NAME"  class="form-control" id="searchBy">
 						<div id="searchErrDiv"></div>
 					</div>	
-					<div class="col-md-3 col-sm-3 col-xs-3 ">
+					<!--<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0">
 						<button class="btn btn-success btn-block" type="button" onclick="getCadreDetailsBySearchCriteria()">SEARCH</button>
-					</div>			
+					</div>	-->		
 				</div>			
 			</div>
 			
@@ -133,12 +165,7 @@
 					<!--<h6>Advanced Search</h6>-->
 					<div id="advancedSearchErrDiv"></div>
 					<div class="row">
-						<div class="col-md-4 col-sm-4 col-xs-12" id="constitunecyDiv" style="display:none;">
-							<label>Constituency</label>
-							<select class="form-control " id="constituencyId" >
-								
-								</select>
-							</div>
+						
 						<div class="col-md-4 col-sm-4 col-xs-12 ">
 							<label>Caste-Group</label>
 								<select class="form-control" id="casteCategory" onchange="casteDetailsByGroupId();">
@@ -178,12 +205,17 @@
 								<select class="form-control"  id="gender"><option value="0" selected>All</option><option  value="1" >Male</option><option  value="2" >Female</option></select>
 							
 						</div>
-						<div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4 m_top10">
-							<button type="submit" class="btn btn-success btn-block" onclick="getCadreDetailsBySearchCriteria()">SEARCH</button>
-						</div>				
-					</div>			
+									
+					</div>	
+									
 				</div>			
 			</div>
+			
+			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20">
+						<div class="row"><div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 ">
+						<button class="btn btn-success btn-block" type="button" onclick="getCadreDetailsBySearchCriteria()">SEARCH</button></div>
+					</div>	
+					</div>
 			</div>
 				<div class="row">
 	
@@ -195,7 +227,9 @@
 		</div>	
 			</div>
 			<script>
-			
+	var accessType = "${sessionScope.USER.accessType}";
+	var accessValue = "${sessionScope.USER.accessValue}";
+	var accessState = "${sessionScope.USER.stateName}"
 			function getCadreDetailsBySearchCriteria()
 		{
 		//committeTypeID means 
@@ -220,12 +254,39 @@
 		var voterCardNo = '';
 		var gender = '';
 		var houseNo = '';
+		
+		
 		$('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv').html('');
 		$('#searchLevelErrDiv,#committeePositionIdErr,#nonAfflitCommitteeIdErr').html('');
 		$("#cadreDetailsDiv").hide();
 		var searchBy = $('#searchBy').val().trim();
 		var searchRadioType =$('#cadreSearchType').val();;
 		var parentLocation = 0;
+		var constituencyId = $("#constituencyId").val();
+		
+			if(constituencyId == 0)
+			{
+				if(accessType == "DISTRICT")
+					{
+					locationLevel = 3;
+					locationValue = accessValue;
+					}
+					if(accessType == "STATE")
+					{
+					var stateId = $("#statesDivId").val();
+					locationLevel = 2;
+					if($("#statesDivId").val() == 0)
+					{
+					stateId = 3;
+					}
+					locationValue = stateId;
+					}	
+			}
+			else
+			{
+			locationValue = constituencyId;
+			locationLevel = 4;	
+			}
 		
 		if(searchRadioType == 'membershipId')
 		{
@@ -301,13 +362,8 @@
 			
 			var locfromAge = $('#fromAgeId').val().trim();
 			var loctoAge = $('#toAgeId').val().trim(); 
-			var constituencyId = $("#constituencyId").val();
-			if(constituencyId == 0)
-			{
-				$('#advancedSearchErrDiv').html("Please Select constituency.");	
-				return;			
-			}
-			else if(casteGroup == 0 && casteName == 0 && age == 0 && gender == 'All' && locfromAge.length == 0 && loctoAge.length == 0)
+			
+			 if(casteGroup == 0 && casteName == 0 && age == 0 && gender == 'All' && locfromAge.length == 0 && loctoAge.length == 0)
 			{
 				$('#advancedSearchErrDiv').html('Please Select Any of Search Criteria');
 				return;			
@@ -344,8 +400,7 @@
 			}				
 			casteCategory = $('#casteCategory option:selected').text().trim();
 			casteStateId = $('#casteList').val().trim();
-			locationValue = constituencyId;
-			locationLevel = 4;	
+			
 			if(casteCategory == 'All')
 			{
 				casteCategory = "";				
@@ -407,8 +462,8 @@
 	}
 		$('.searchTypeCls').click(function(){
 			
-		 $("#constituencyId  option").remove();
-			$("#constitunecyDiv").hide();
+		
+			
 			var id = $(this).attr('id');
 				
 			$('#advancedSearchDiv').hide();			
@@ -448,7 +503,7 @@
 			if(id.trim() == 'advancedSearch')
 			{	
 				$("#constitunecyDiv").show();
-				gettingAllConstituencys("ALL");
+				//gettingAllConstituencys("ALL");
 				if($('#basicCommitteeTab').attr('class') != 'btn btn-success btn-block arrow_selected')
 				{
 					//$('#basicCommitteeDiv1').show();
@@ -556,6 +611,76 @@
 				}
 			   });
 		}
+
+		 
+   function getConstituenciesForState(state){
+ 
+   var jsObj=
+   {				
+				stateId:state,
+				elmtId:"stateList",
+                type:"default",
+				task:"getConstituenciesForState"				
+	}
+    $.ajax({
+          type:'GET',
+          url: 'getConstituenciesForStateAjaxAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+   }).done(function(result){
+   
+	   $("#constituencyId").empty();
+	   
+     for(var i in result){
+	   if(result[i].id == 0){
+         $("#constituencyId").append('<option value='+result[i].id+'>ALL</option>');
+	   }else{
+	     $("#constituencyId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+	   }
+	 }
+   });
+  }
+		
+ 
+  function getAssemblyParlConstituencies(districtId,type){
+	 $("#constituencyId  option").remove();
+		var str='';
+		var jsObj={
+			mainUserLocationId:districtId,
+			reportLevel:type
+		}
+		$.ajax({
+			  type:'GET',
+			  url: 'getSubUserAccessValueAction.action',
+			  data: {task:JSON.stringify(jsObj)}
+			
+	   }).done(function(result){
+	   str +='<option value=0>ALL</option>';
+				for(var i in result)
+				{
+					str +='<option value='+result[i].id+'>'+result[i].name+'</option>';
+				}
+				
+				if(type=="Assembly"){
+					$("#constituencyId").html(str);
+					
+				}		
+	   });		
+	}
+	function getConstituenciesForStateAjax()
+		{
+			var stateId = $("#statesDivId").val();
+			getConstituenciesForState(stateId);
+		}
+		
+			</script>
+			<script>
+			if(accessType == "DISTRICT")
+			getAssemblyParlConstituencies(accessValue,"Assembly");
+			if(accessType == "STATE")
+			{
+			getConstituenciesForStateAjax();
+			}
 			</script>
 			</body>
 			</html>
