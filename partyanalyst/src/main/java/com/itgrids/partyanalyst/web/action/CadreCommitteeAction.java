@@ -604,6 +604,9 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	public String getSearchDetails()
 	{
 		try {
+			
+			int startIndex = 0;
+			int maxIndex = 0;
 			jObj = new JSONObject(getTask());
 			Long locationLevel = jObj.getLong("locationLevel");
 			Long locationValue = jObj.getLong("locationValue");
@@ -619,12 +622,18 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 			String trNumber = jObj.getString("trNumber");
 			String voterCardNo = jObj.getString("voterCardNo");
 			String gender = jObj.getString("gender");
-			
+			if(jObj.getString("task").equalsIgnoreCase("tdpCadreSearch"))
+			{
+				
+				startIndex = jObj.getInt("startIndex");
+				maxIndex = jObj.getInt("maxIndex");
+				
+			}
 		//	tdpCadreVO = cadreDetailsService.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationLevel,locationValue, searchName,memberShipCardNo, 
 			//		voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender);
 			
 			cadreCommitteeVO = cadreCommitteeService.searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(locationLevel,locationValue, searchName,memberShipCardNo, 
-							voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender);
+							voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender,startIndex,maxIndex);
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getSearchDetails() At CadreCommitteeAction ",e);
@@ -718,7 +727,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 				 String locationType = request.getParameter("locationType").trim();
 				 String locationValue = request.getParameter("locationValue").trim();
 				 Long locationLvl = null;
-				 if(locationType.equalsIgnoreCase("mandal")){
+					if(locationType.equalsIgnoreCase("mandal")){
 					 String type =locationValue.substring(0,1).trim();
 					 if(type.equalsIgnoreCase("1")){
 						 locationLvl = 7l;
