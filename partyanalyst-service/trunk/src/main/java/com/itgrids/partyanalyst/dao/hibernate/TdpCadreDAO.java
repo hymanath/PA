@@ -3463,7 +3463,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		}
 	  
 	  
-	  public List<Object[]> searchTdpCadreDetailsBySearchCriteriaForCommitte(Long constituencyId,Long casteStateId,String queryString)
+	  public List<Object[]> searchTdpCadreDetailsBySearchCriteriaForCommitte(Long constituencyId,Long casteStateId,String queryString,int startIndex,int maxIndex)
 		{
 			StringBuilder queryStr = new StringBuilder();
 			
@@ -3494,9 +3494,15 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			{
 				query.setParameter("casteStateId", casteStateId);
 			}
+			if(startIndex > 0)
+			query.setFirstResult(startIndex);
+			if(maxIndex > 0)
+				query.setMaxResults(maxIndex);
+			
 			return query.list();
 		}
 	  
+	 
 	  public List<Object[]> tdpCadreCasteCountDetailsBySearchCriteriaForCommitte(Long constituencyId,Long casteStateId,String queryString)
 		{
 			StringBuilder queryStr = new StringBuilder();
@@ -4627,6 +4633,10 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				{
 					str.append(" panc.panchayatId, count(*), panc.panchayatName ");
 				}	
+				else if(locationType != null && locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+				{
+					str.append(" localElectionBody.localElectionBodyId, count(*), localElectionBody.name ");
+				}	
 				str.append(" from TdpCadre model left join model.userAddress.panchayat panc ");
 				str.append(" left join model.userAddress.tehsil tehsil ");
 			    str.append(" left join model.userAddress.constituency constituency ");
@@ -4651,6 +4661,10 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				{
 					str.append(" and tehsil.tehsilId =:locationId ");
 				}	
+				else if(locationType != null && locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+				{
+					str.append(" and localElectionBody.localElectionBodyId =:locationId ");
+				}
 				else if(stateId != null &&  stateId.longValue() ==0L) 	//AP & TS
 				{
 					isStateSelected = true;
@@ -4691,7 +4705,12 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				else if(locationType != null && locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
 				{
 					str.append(" group by panc.panchayatId order by panc.panchayatName ");
-				}	
+				}
+				else if(locationType != null && locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+				{
+					str.append(" group by  localElectionBody.localElectionBodyId order by localElectionBody.name ");
+				}
+				
 				Query query = getSession().createQuery(str.toString());
 				
 				if(casteStateId != null && casteStateId.longValue() != 0L)

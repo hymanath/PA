@@ -275,7 +275,7 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public String getMembershipNoByTdpCadreId(Long tdpCadreId);
 	public List<Object[]> getTdpCadreDetailsByVoterCardNoForCallCenter(String queryString);
-	public List<Object[]> searchTdpCadreDetailsBySearchCriteriaForCommitte(Long constituencyId,Long casteStateId,String queryString);
+	//public List<Object[]> searchTdpCadreDetailsBySearchCriteriaForCommitte(Long constituencyId,Long casteStateId,String queryString);
 	public List<Object[]> getexistringCadreInfoByLocationForCommittee(String candidateName, Long constid, Long panchayatId,Long boothId,String isPresentCadre, String enrollmentNo,Long areaId);
 	public List<TdpCadre> getTdpCadreDetails(String uuid);
 	public List<Object[]> getReqDetailsForIMageChecking(Long districtId,Long constituencyId);
@@ -326,4 +326,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	
 	public List<Object[]> getVoterCadreCasteDetailsBySearchCriteria(Long stateId,String locationType,Long locationId,Long casteStateId,String nameStr);
 	public List<Object[]> tdpCadreCasteCountDetailsBySearchCriteriaForCommitte(Long constituencyId,Long casteStateId,String queryString);
+	  public List<Object[]> searchTdpCadreDetailsBySearchCriteriaForCommitte(Long constituencyId,Long casteStateId,String queryString,int startIndex,int maxIndex);
 }
