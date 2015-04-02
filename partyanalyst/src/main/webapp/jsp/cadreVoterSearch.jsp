@@ -14,20 +14,20 @@
 	<meta name="author" content="Codrops" />
 	<link rel="shortcut icon" href="../favicon.ico"> 
 	<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>  -->
-	<script src="js/StaticFiles/StaticJsFiles/jquery.min.1.11.1.js"></script>
+	<script src="js/staticFiles/StaticJsFiles/jquery.min.1.11.1.js"></script>
 	<!--<link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">-->
-	<link href="js/StaticFiles/StaticCssFiles/jquery-ui-1.10.4.css" rel="stylesheet" type="text/css" />
+	<link href="js/staticFiles/StaticCssFiles/jquery-ui-1.10.4.css" rel="stylesheet" type="text/css" />
 	<!--<script src="http://code.jquery.com/jquery-1.10.2.js"></script>-->
-	<script src="js/StaticFiles/StaticJsFiles/jquery-1.10.2.js"></script>
+	<script src="js/staticFiles/StaticJsFiles/jquery-1.10.2.js"></script>
     <!--<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>-->
-	<script src="js/StaticFiles/StaticJsFiles/jquery-ui.1.10.4.js"></script>
+	<script src="js/staticFiles/StaticJsFiles/jquery-ui.1.10.4.js"></script>
 	
 	
 	<link rel="stylesheet" type="text/css" href="js/cadreSearch/Naturallanguage/css/component.css" />
 	<link href="js/cadreSearch/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	<link href="js/cadreSearch/css/custom.css" rel="stylesheet" type="text/css">
 	<!--<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css' />-->
-	<link href="js/StaticFiles/StaticCssFiles/family=Roboto.css" rel='stylesheet' type='text/css' />
+	<link href="js/staticFiles/StaticCssFiles/family=Roboto.css" rel='stylesheet' type='text/css' />
 	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 	
