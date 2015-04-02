@@ -117,7 +117,7 @@
 							</select>
 							</div>
 							</div>
-			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center">
+			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center" style="padding-top: 15px; padding-bottom: 15px;">
 				<div class="form-inline ">
 			
 				   
@@ -157,7 +157,7 @@
 				</div>			
 			</div>-->
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0"  id="basicSearchDiv">	
-				<div class="row">      
+				<div class="row-fluid">      
 					<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0">
 						<input type="text" placeholder="ENTER MEMBERSHIP ID / VOTER ID / MOBILE NO / NAME"  class="form-control" id="searchBy">
 						<div id="searchErrDiv"></div>
@@ -220,7 +220,7 @@
 			</div>-->
 			
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20">
-						<div class="row"><div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 ">
+						<div class="row-fluid"><div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 ">
 						<input id="searchbtn" class="btn btn-success btn-block" type="button" onclick="getCadreDetailsBySearchCriteria(0)" value="SEARCH"></input></div>
 					</div>	
 					</div>
@@ -271,7 +271,8 @@
 		var houseNo = '';
 		
 		
-$('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv,#paginationDivId').html('');
+$('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv').html('');
+$("#paginationDivId").hide();
 		$('#searchLevelErrDiv,#committeePositionIdErr,#nonAfflitCommitteeIdErr').html('');
 		$("#cadreDetailsDiv").hide();
 		var searchBy = $('#searchBy').val().trim();
@@ -477,7 +478,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 		
 			function buildCadreDetails(result,jsObj)
 	{
-		
+		$("#paginationDivId").show();
 		var str ='';
 		
 		var elegRolCnt=0;
@@ -487,7 +488,7 @@ $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr
 			for(var i in result)
 			{
 				
-				str+='<div class="media">';
+				str+='<div class="media" style="border-bottom: 1px solid rgb(51, 51, 51);">';
 				str+='<span href="#" class="media-left">';
 				str+='<img style="width: 64px; height: 64px;" src="http://www.mytdp.com/images/cadre_images/'+result[i].imageURL+'" />';
 				str+='</span>';
