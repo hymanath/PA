@@ -363,7 +363,8 @@
 			trNumber : trNumber,
 			voterCardNo:voterCardNo,
 			gender:gender,
-			houseNo:houseNo
+			houseNo:houseNo,
+			task:"search"
 		}
 			$.ajax({
 				type : "POST",
