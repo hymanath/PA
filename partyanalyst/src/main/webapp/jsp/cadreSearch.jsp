@@ -25,7 +25,11 @@
 	<script type="text/javascript" src="js/cadreCommittee/cadreCommittee.js"></script>
    	<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 			<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
+	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 	
+
 	<style>
 	#publicrepresantative,#mandalaffiliated,#advancedSearchDiv,#committeeDetailsDiv,#searchcadrenewDiv,#committeLocationsDiv,
 	/*#designationDivId,#step1Id,#step2Id,#step3Id,#cadreDetailsDiv
@@ -46,7 +50,10 @@
 	.editDesignation{margin-bottom: 10px;}
 	
 	/*.hideRowClass{display:none;}*/
-	
+	.paginate_disabled_previous,.paginate_enabled_previous,.paginate_enabled_next{
+   padding-bottom: 10px;
+}
+.prev, .next {width:50px !important}
 	</style>
 	<script>
 		var allRolesList = new Array();
@@ -122,8 +129,9 @@
 						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="mobileNo"  onclick="refreshExistingDetails();"  value="3"> Mobile No &nbsp;&nbsp;</label>
 					
 						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="name"  onclick="refreshExistingDetails();"  value="4"> Name &nbsp;&nbsp;</label>
-					
-						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="advancedSearch"  onclick="refreshExistingDetails();"  value="5"> Advanced Search &nbsp;&nbsp;</label>
+						<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="trNo"  onclick="refreshExistingDetails();"  value="5"> TR No &nbsp;&nbsp;</label>
+						<!--<label><input type="radio" name="searchBasedOn" class="searchTypeCls" id="advancedSearch"  onclick="refreshExistingDetails();"  value="5"> Advanced Search &nbsp;&nbsp;</label>-->
+						
 						<input type="hidden" id="cadreSearchType" value="membershipId" />
 					</div>				  
 				</div>
@@ -160,9 +168,9 @@
 				</div>			
 			</div>
 			
-			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20" id="advancedSearchDiv" style="display:none;">	
+			<!--<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20" id="advancedSearchDiv" style="display:none;">	
 				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;"> 					
-					<!--<h6>Advanced Search</h6>-->
+					<h6>Advanced Search</h6>
 					<div id="advancedSearchErrDiv"></div>
 					<div class="row">
 						
@@ -209,11 +217,11 @@
 					</div>	
 									
 				</div>			
-			</div>
+			</div>-->
 			
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20">
 						<div class="row"><div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 ">
-						<button class="btn btn-success btn-block" type="button" onclick="getCadreDetailsBySearchCriteria()">SEARCH</button></div>
+						<input id="searchbtn" class="btn btn-success btn-block" type="button" onclick="getCadreDetailsBySearchCriteria(0)" value="SEARCH"></input></div>
 					</div>	
 					</div>
 			</div>
@@ -222,15 +230,22 @@
 			
 			<img src='images/Loading-data.gif' class="offset7"  id="searchDataImg" style=" margin-left: 660px;margin-top: 20px;width:70px;height:60px;display:none;"/>
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20">
-				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;overflow:scroll:900px;" id="cadreDetailsDiv"></div>			
+				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;overflow:scroll:900px;" id="cadreDetailsDiv"></div>
+				<div id="paginationDivId"></div>
+
 			</div>
 		</div>	
 			</div>
 			<script>
 	var accessType = "${sessionScope.USER.accessType}";
 	var accessValue = "${sessionScope.USER.accessValue}";
-	var accessState = "${sessionScope.USER.stateName}"
-			function getCadreDetailsBySearchCriteria()
+	var accessState = "${sessionScope.USER.stateName}";
+         $(document).keypress(function(e) {
+				if(e.keyCode==13){
+					 getCadreDetailsBySearchCriteria(0);
+				}
+		  });
+			function getCadreDetailsBySearchCriteria(startIndex)
 		{
 		//committeTypeID means 
 			//for committiee management 1
@@ -256,7 +271,7 @@
 		var houseNo = '';
 		
 		
-		$('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv').html('');
+$('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv,#paginationDivId').html('');
 		$('#searchLevelErrDiv,#committeePositionIdErr,#nonAfflitCommitteeIdErr').html('');
 		$("#cadreDetailsDiv").hide();
 		var searchBy = $('#searchBy').val().trim();
@@ -351,60 +366,16 @@
 				return;
 			}
 		}
-		if(searchRadioType == 'advancedSearch')
-		{	
+		if(searchRadioType == 'trNo')
+		{
+			trNumber = $('#searchBy').val().trim();
 			
-			
-			gender = $('#gender option:selected').text().trim();
-			var casteGroup = $('#casteCategory').val();
-			var casteName  = $('#casteList').val();
-			var age = $('#ageRange').val();
-			
-			var locfromAge = $('#fromAgeId').val().trim();
-			var loctoAge = $('#toAgeId').val().trim(); 
-			
-			 if(casteGroup == 0 && casteName == 0 && age == 0 && gender == 'All' && locfromAge.length == 0 && loctoAge.length == 0)
+			if(searchBy.trim().length == 0 )
 			{
-				$('#advancedSearchErrDiv').html('Please Select Any of Search Criteria');
-				return;			
-			}			
-			if($('#ageRange').val() != 0)
-			{
-				var ageRange = $('#ageRange option:selected').text();
-				var ageRange = ageRange.split('-');
-				fromAge = ageRange[0].trim();
-				toAge = ageRange[1].trim();
+				$('#searchErrDiv').html('Please enter trNo.');
+				return;
 			}
-			else
-			{
-				fromAge = $('#fromAgeId').val().trim();
-				toAge = $('#toAgeId').val().trim(); 
-				
-				if(fromAge.length >0 || toAge.length >0)
-				{
-					if(fromAge.length == 0 || toAge.length == 0)
-					{
-						$('#advancedSearchErrDiv').html('Please Enter Between Age Details.');
-						return;	
-					}
-					if(fromAge > toAge){
-						$('#advancedSearchErrDiv').html('From Age Should be Less than To Age.');
-						return;							
-					}
-				}
-				else
-				{
-					fromAge = 0;
-					toAge = 0;					
-				}
-			}				
-			casteCategory = $('#casteCategory option:selected').text().trim();
-			casteStateId = $('#casteList').val().trim();
 			
-			if(casteCategory == 'All')
-			{
-				casteCategory = "";				
-			}			
 		}
 		
 		$("#searchDataImg").show();
@@ -422,7 +393,10 @@
 			trNumber : trNumber,
 			voterCardNo:voterCardNo,
 			gender:gender,
-			houseNo:houseNo
+			houseNo:houseNo,
+			startIndex:startIndex,
+			maxIndex : 100,
+			task:"tdpCadreSearch"
 		}
 		$.ajax({
 				type : "POST",
@@ -438,7 +412,7 @@
 				$('#cadreDetailsDiv').show();
 				if(result != null && result.previousRoles != null && result.previousRoles.length>0)
 				{
-				buildCadreDetails(result.previousRoles);
+				buildCadreDetails(result.previousRoles,jsObj);
 				}
 				else
 				{
@@ -491,44 +465,17 @@
 			if(id.trim() == 'name')
 			{
 			
-				if($('#basicCommitteeTab').attr('class') != 'btn btn-success btn-block arrow_selected')
-				{
-					//$('#basicCommitteeDiv1').show();
-				}
-				else{
-					//$('#basicCommitteeDiv1').hide();
-				}
 				$('#cadreSearchType').val('name');
 			}
-			if(id.trim() == 'advancedSearch')
+			if(id.trim() == 'trNo')
 			{	
-				$("#constitunecyDiv").show();
-				//gettingAllConstituencys("ALL");
-				if($('#basicCommitteeTab').attr('class') != 'btn btn-success btn-block arrow_selected')
-				{
-					//$('#basicCommitteeDiv1').show();
-				}
-				else{
-					//$('#basicCommitteeDiv1').hide();
-				}
-			
-				$('#basicSearchDiv').hide();
-				$('#advancedSearchDiv').show();
-				$('#cadreSearchType').val('advancedSearch');
-				$('#ageRange').find('option').remove();
-				$('#ageRange').append('<option  value="0"> All </option>');
-				if(ageRangeArr != null && ageRangeArr.length>0)
-				{
-
-					for(var i in ageRangeArr)
-					{
-						$('#ageRange').append('<option  value="'+ageRangeArr[i].name+'">'+ageRangeArr[i].name+'</option>');
-					}
-				}
+				
+				$('#cadreSearchType').val('trNo');
+				
 			}
 		});
 		
-			function buildCadreDetails(result)
+			function buildCadreDetails(result,jsObj)
 	{
 		
 		var str ='';
@@ -586,8 +533,25 @@
 				elegRolCnt++;
 				dtCnt++;
 			}
+		if(result[0].mobileType > 100)	
+		{
+		var itemsCount=result[0].mobileType;
+	    var maxResults=jsObj.maxIndex;
+	   
+	     if(jsObj.startIndex==0){
+		   $("#paginationDivId").pagination({
+			items: itemsCount,
+			itemsOnPage: maxResults,
+			cssStyle: 'light-theme',
+			onPageClick: function(pageNumber, event) {
+				var num=(pageNumber-1)*100;
+				getCadreDetailsBySearchCriteria(num);
+				
+			}
+		});
+	}
 		}
-		
+		}
 		$('#cadreDetailsDiv').html(str);
 	}
 	function gettingAllConstituencys(repType){
@@ -681,6 +645,8 @@
 			{
 			getConstituenciesForStateAjax();
 			}
+			
+		
 			</script>
 			</body>
 			</html>

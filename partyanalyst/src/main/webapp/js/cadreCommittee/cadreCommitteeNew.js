@@ -239,7 +239,8 @@
 			trNumber : trNumber,
 			voterCardNo:voterCardNo,
 			gender:"",
-			houseNo:""
+			houseNo:"",
+			task:"search"
 		}
 
 		$.ajax({
