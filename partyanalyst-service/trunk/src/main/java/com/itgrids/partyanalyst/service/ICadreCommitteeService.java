@@ -36,8 +36,8 @@ public interface ICadreCommitteeService {
 	public List<GenericVO> getPanchayatDetailsByMandalId(Long MandalId);
 	public List<Long> getBoothsInPanchayatId(Long panchayatId);
 	public List<LocationWiseBoothDetailsVO> getMandalMunicCorpDetails1(Long constituencyId);
-	public CadreCommitteeVO searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo,
-			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategoryId,Long fromAge,Long toAge,String houseNo,String gender);
+	/*public CadreCommitteeVO searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo,
+			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategoryId,Long fromAge,Long toAge,String houseNo,String gender);*/
 	public List<SelectOptionVO> getBasicCadreCommitteesDetails();
 	public List<IdNameVO> getLocationsOfCommitteeLevel(Long levelId,Long constiId);
 	public List<IdNameVO> getConstituenciesOfState(Long levelId);
@@ -100,4 +100,6 @@ public interface ICadreCommitteeService {
 			List<Long> casteIdsList,Long locationLevelId,Long userId, Long accessValue,String selectedRadio);
 	public String getDistrictName(Long  districtId);
 	public List<CommitteeSummaryVO> getCommitteeSummaryInfoByUserAccess(Long accessValue,String accessType);
+	public CadreCommitteeVO searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(Long locationLevel,Long locationId, String searchName,String memberShipCardNo,
+			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex);
 }

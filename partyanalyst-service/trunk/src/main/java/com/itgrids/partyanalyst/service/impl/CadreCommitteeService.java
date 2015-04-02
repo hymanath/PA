@@ -1706,13 +1706,13 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	}
 
 	public CadreCommitteeVO searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(Long locationLevel,Long locationId, String searchName,String memberShipCardNo,
-			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender)
+			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex)
 	{
 		CadreCommitteeVO cadreCommitteeVO = new CadreCommitteeVO();
 		try {
 			
 			TdpCadreVO tdpCadreVO = cadreDetailsService.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationLevel,locationId, searchName,memberShipCardNo, 
-					voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender);
+					voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender,startIndex,maxIndex);
 			List<CadreCommitteeVO> cadreCommitteeList = null;
 			if(tdpCadreVO != null)
 			{
@@ -1740,6 +1740,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						committeeVO.setImageURL(tdpCadre.getImageURL());
 						cadreCommitteeList.add(committeeVO);
 					}
+					
+					cadreCommitteeList.get(0).setMobileType(tdpCadreVOList.get(0).getTotalCount().toString());
 				}
 				
 				if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)

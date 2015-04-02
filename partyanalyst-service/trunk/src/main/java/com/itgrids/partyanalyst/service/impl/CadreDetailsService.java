@@ -31,7 +31,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 
 
 	public TdpCadreVO searchTdpCadreDetailsBySearchCriteriaForCommitte(Long locationLevel,Long locationValue, String searchName,String memberShipCardNo, 
-			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender)
+			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex)
 	{
 		TdpCadreVO returnVO = new TdpCadreVO();
     	try {
@@ -84,7 +84,8 @@ public class CadreDetailsService implements ICadreDetailsService{
     		if(searchName != null && searchName.trim().length()>0 && !searchName.trim().equalsIgnoreCase("0") && !searchName.equalsIgnoreCase("null"))
 			{
 				queryStr.append(" and model.firstname like '%"+searchName+"%' ");
-			}						
+			}
+    		
 			if(memberShipCardNo != null && memberShipCardNo.trim().length()>0  && !memberShipCardNo.trim().equalsIgnoreCase("0") && !memberShipCardNo.equalsIgnoreCase("null"))
 			{
 				queryStr.append(" and (model.memberShipNo like '%"+memberShipCardNo.trim()+"') ");
@@ -126,9 +127,10 @@ public class CadreDetailsService implements ICadreDetailsService{
 			}
 			if(queryStr != null && queryStr.toString().trim().length()>0)
 			{
-				List<Object[]> cadreList = tdpCadreDAO.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationValue,Long.valueOf(casteStateId), queryStr.toString());
+				List<Object[]> cadreList = tdpCadreDAO.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationValue,Long.valueOf(casteStateId), queryStr.toString(),startIndex,maxIndex);
 				
 				List<TdpCadreVO> returnLsit = new ArrayList<TdpCadreVO>();
+				
 				if(cadreList != null && cadreList.size()>0)
 				{
 					SimpleDateFormat format  = new SimpleDateFormat("yy-MM-dd");
@@ -199,6 +201,11 @@ public class CadreDetailsService implements ICadreDetailsService{
 					returnVO.setResponseStatus("SUCCESS");					
 					returnVO.setTotalCount(Long.valueOf(String.valueOf(returnLsit.size())));
 					returnVO.setTdpCadreDetailsList(returnLsit);
+					if(returnLsit != null && maxIndex != 0)
+					{
+					List<Object[]> cadreListCnt = tdpCadreDAO.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationValue,Long.valueOf(casteStateId), queryStr.toString(),0,0);
+					returnLsit.get(0).setTotalCount(new Long(cadreListCnt.size()));
+					}
 				}
 				else
 				{
