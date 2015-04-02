@@ -1740,7 +1740,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						committeeVO.setImageURL(tdpCadre.getImageURL());
 						cadreCommitteeList.add(committeeVO);
 					}
-					
+					if(maxIndex != 0)
 					cadreCommitteeList.get(0).setMobileType(tdpCadreVOList.get(0).getTotalCount().toString());
 				}
 				
