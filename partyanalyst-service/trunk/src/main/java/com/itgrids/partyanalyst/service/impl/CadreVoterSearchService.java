@@ -131,8 +131,10 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 			if(type.equalsIgnoreCase(IConstants.DISTRICT)){
 				 list = districtDAO.getDistrictIdAndNameByStateForStateTypeId(1l, id);
 			}
-			else{
+			else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY)){
 				 list = constituencyDAO.getDistrictConstituencies(id);	
+			}else if(type.equalsIgnoreCase("constituencyByState")){			
+				 list = constituencyDAO.findConstituenciesByStateId(id);	
 			}
 						
 			if(list!=null && list.size()>0){
