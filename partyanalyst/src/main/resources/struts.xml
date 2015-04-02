@@ -5629,7 +5629,8 @@
 		    <result name="tdpCommitteeAdmin" type="redirect">committeeDashBoardAction.action</result>	  
 		    <result name="tirupatiByeElection" type="redirect">currentBoothsStatus.action</result>
 		    <result name="cadreCommitteeDashBoard" type="redirect">committeeDashBoardAction.action</result>   		    
-		    <result name="tdpCommitteeStateDistrictAdmin" type="redirect">committeeManagementAction.action</result>   		    
+		    <result name="tdpCommitteeStateDistrictAdmin" type="redirect">committeeManagementAction.action</result>
+		    <result name="tdpCadreSearch" type="redirect">cadreSearchPageAction.action</result>	    
 		</action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
