@@ -205,13 +205,9 @@ z-index:2;
 	var glblLocationName='';
 	$(document).ready(function(){
 		alert = function(){};
-		/*$('.stateDivCls').click(function(){
-			$('.stateDivCls').addClass('nl-field-open');
-		});
-		$('.searchDivCls').click(function(){
-			$('.searchDivCls').addClass('nl-field-open');
-		});*/
+
 		getDistrictsAndConstis("district",0);
+		getDistrictsAndConstis("constituencyByState",0);
 		$('.fadeInRight').addClass('animated  fadeInRight ');
 		casteArr = new Array();
 		var casteDetailsArr = new Array();
@@ -227,7 +223,8 @@ z-index:2;
 	
 	$('.stateCls').click(function(){				
 		var locationValue = $(this).attr('key');		
-		getDistrictsAndConstis("district",locationValue);					
+		getDistrictsAndConstis("district",locationValue);
+		getDistrictsAndConstis("constituencyByState",locationValue);		
 	});
 
 	$('.districtDivCls').click(function(){	
@@ -379,7 +376,7 @@ z-index:2;
 					str1+='<a class="nl-field-toggle">ANY</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY" class="constiCls" onkeyup="constiKeyUp();" />';
 					$(".constiDivCls").html(str1);
 				}
-				else if(type == 'Constituency'){
+				else if(type == 'Constituency' || type == 'constituencyByState'){
 					constiArr = new Array();
 					//$('.districtCls').remove();
 					for(var i in result){
