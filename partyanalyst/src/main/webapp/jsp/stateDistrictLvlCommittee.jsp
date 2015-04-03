@@ -757,7 +757,11 @@
 		$('#committeePositionIdErr').html('');
 		$("#cadreDetailsDiv").hide();
 		$('#cadreDetailsDiv').html("");
-		
+		if($("#committeeTypeId").val() == 0){
+			
+			$("#committeeTypeIdErr").html("Please Select Committee Type");
+			return;
+		}
 		if(cadreRoleId !=0 && isFirstCommityIdSettingValues)
 		{			
 			isFirstCommityIdSettingValues = false;
