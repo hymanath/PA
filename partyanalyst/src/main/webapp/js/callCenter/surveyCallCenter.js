@@ -349,8 +349,61 @@ function getconstituencies(divId)
 }
 
 
+function getBasicSurveyUserLoction()
+{
+
+var constituencyID = $("#constituencyId").val();
+var userTypeId = $("#userTypeId").val();
+var date=$("#FielddateId").val();
+var toDate = $("#FieldTodateId").val();
+$("#basicCountDiv").html('');
+$("#errorMsgDiv").html('');
+$("#excelTableID").css("display","none");
+var str ='';
+
+if(constituencyID == 0)
+	{
+str +='<font color="red">Select Constituency</font>';
+	}
+else if(userTypeId == 0)
+	{
+str +='<font color="red">Select User Type</font>';
+	}
+	
+	if(str.length > 0)
+	{
+		
+$("#errorMsgDiv").html(str);
+return;
+	}
+	$("#reportDataImg").show();
+	var jsObj =
+	{
+	    constituencyId : constituencyID,
+		userTypeId:userTypeId,
+		date:date,
+		toDate:toDate,
+		userIds : userIds,
+		task : "getBasicInfo"
+	}
+	$.ajax({
+	type:'GET',
+	url: 'getSurveyUserLoctionCount.action',
+	dataType: 'json',
+	data: {task:JSON.stringify(jsObj)},
+	}).done(function(result){
+		$("#basicCountDiv").show();
+
+		$("#reportDataImg").hide();
+		//$("#SurveyUsertable").show();
+     buildSurveyBasicUserStatus(result,userTypeId);
+	
+	});
+}
 function getSurveyUserLoctionCount()
 {
+
+
 	
 var constituencyID = $("#constituencyId").val();
 var userTypeId = $("#userTypeId").val();
@@ -399,13 +452,14 @@ return;
      buildSurveyUserStatusCount(result,userTypeId);
 	
 	});
-}
 
+}
 var webConstId =0;
 var webuserId =0;
 var webBoothId =0;
  function buildSurveyUserStatusCount(result,userTypeId)
 {
+
 	var userType = userTypeId;
 	$("#excelTableID").css("display","inline-block");
 	var str ='';
@@ -807,8 +861,96 @@ $(function() {
    }).datepicker('setDate', new Date());
   
 });
+ function buildSurveyBasicUserStatus(result,userTypeId)
+{
 
+	var userType = userTypeId;
+	
+	var str ='';
+	if(result.length == 0)
+	{
+	str+='<font style="color:red;">No Data avilable</font>';
+	$("#basicCountDiv").html(str).css("text-align","center");
+return;
+	}
+	str +="<h5>For Mobile No's </h5>"
+	str +="<div style='background:red;padding:10px;width:2px;float:left;'></div>  <span style='float:left;'>&nbsp;&nbsp; 0 - 9 &nbsp;&nbsp;</span>";
+	str +="<div style='background:yellow;padding:10px;width:2px;float:left;'></div>  <span style='float:left;'>&nbsp;&nbsp; 10 - 25 &nbsp;&nbsp;</span>";
+	str +="<div style='background:lightgreen;padding:10px;width:2px;float:left;'></div>  <span style='float:left;'>&nbsp;&nbsp; 26 - 40 &nbsp;&nbsp;</span>";
+	str +="<div style='background:green;padding:10px;width:2px;float:left;'></div>  <span style='float:left;'>&nbsp;&nbsp; 40 Above &nbsp;&nbsp;</span><br>";
+	
+	str +="<h5>For Castes Error & Mobile Error </h5>"
+	str +="<div style='background:red;padding:10px;width:2px;float:left;'></div>  <span style='float:left;'>&nbsp;&nbsp; 2.01 Above &nbsp;&nbsp;</span>";
+	str +="<div style='background:yellow;padding:10px;width:2px;float:left;'></div>  <span style='float:left;'>&nbsp;&nbsp; 1.01 - 2.00  &nbsp;&nbsp;</span>";
+	str +="<div style='background:lightgreen;padding:10px;width:2px;float:left;'></div>  <span style='float:left;'>&nbsp;&nbsp;0.51 - 1.00  &nbsp;&nbsp;</span>";
+	str +="<div style='background:green;padding:10px;width:2px;float:left;'></div>  <span style='float:left;'>&nbsp;&nbsp; 0.0 - 0.50 &nbsp;&nbsp;</span>";
+	
+	
+	str+='<table class=" table table-bordered m_top20" id="SurveyUsertable">';
+	str+='<thead>';
 
+	str+='<tr class="alert alert-success">';
+	if(userType ==1){
+	str+='<th>DCName</th>';
+	}else if (userType ==4){
+	str+='<th>DVName</th>';
+	}else if (userType ==10){
+		   str+='<th>TPName</th>';
+		}
+	str+='<th>Leader Name</th>';
+	str+='<th>Booth</th>';
+	str+='<th> Total Voters</th>';
+//	str+='<th style="text-align : center;">Data Collector</th>';
+	//str+='<th style="text-align : center;">Web monitoring</th>';
+	str+='</tr>';
+	str+='</thead>';
+	str+='<tbody>';
+	for(var i in result)
+	{
+
+		for(var j=0;j<result[i].subList.length;j++)
+		{
+			webBoothId = result[i].subList[j].boothId;
+			str+='<tr>';
+			if(result[i].verifier != null)
+			{
+				if(userType !=10){
+				  str+='<td> <a href="javascript:{getDataCollectorInfo('+result[i].userid+',\''+result[i].userName+'\','+result[i].mobileNo+',\''+result[i].verifier.name+'\','+result[i].verifier.verified+','+result[i].subList[j].boothId+','+result[i].subList[j].partNo+',\''+$('#FielddateId').val()+'\','+userType+',1);}">'+result[i].userName+' </a><br>'+result[i].mobileNo+'</td>';
+				}else{
+				  str+='<td> <a href="javascript:{getThirdPartyProvidedAndCollectedDetails('+result[i].userid+','+result[i].subList[j].boothId+');}">'+result[i].userName+' </a><br>'+result[i].mobileNo+'</td>';
+				}
+			str+='<td> '+result[i].verifier.name+'<br>'+result[i].verifier.verified+'</td>';
+			}
+			else
+			{
+				if(userType !=10){
+				   str+='<td> <a href="javascript:{getDataCollectorInfo('+result[i].userid+',\''+result[i].userName+'\','+result[i].mobileNo+',null,null,'+result[i].subList[j].boothId+','+result[i].subList[j].partNo+',\''+$('#FielddateId').val()+'\','+userType+',1);}">'+result[i].userName+' </a><br>'+result[i].mobileNo+'</td>';
+				}else{
+					  str+='<td> <a href="javascript:{getThirdPartyProvidedAndCollectedDetails('+result[i].userid+','+result[i].subList[j].boothId+');}">'+result[i].userName+' </a><br>'+result[i].mobileNo+'</td>';
+				}
+			str+='<td>-</td>';
+			}
+			str+='<td> '+result[i].subList[j].partNo+'</td>';
+			if(result[i].subList[j].totalVoters == null)
+			{
+				str+='<td>-</td>';
+			}
+			else
+			{
+			str+='<td>'+result[i].subList[j].totalVoters+'</td>';
+			}
+		str+='</tr>';
+		}
+	}
+	str+='</tbody>';
+	str+='</table>';
+	
+	$("#basicCountDiv").html(str);
+	$("#SurveyUsertable").dataTable({
+				"iDisplayLength": 100,
+				"aLengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]]
+				});
+}
 function getLeadrDetailsByConstituency()
 {
 	var jObj =
