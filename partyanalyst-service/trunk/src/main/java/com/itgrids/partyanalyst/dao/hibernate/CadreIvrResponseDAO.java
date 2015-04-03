@@ -406,13 +406,21 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 	public List<Object[]> getStateWiseCommitterIvrDetails(List<Long> distIds,Long campainId)
 	{
 		StringBuffer sb = new StringBuffer();
-		sb.append("select CIR.callStatus,CIR.optionId,count(*) from CadreIvrResponse CIR where CIR.campaignId = :campainId ");
+		/*sb.append("select CIR.callStatus,CIR.optionId,count(*) from CadreIvrResponse CIR where CIR.campaignId = :campainId ");
 		if(distIds != null && distIds.size() > 0)
 		{
 			sb.append(" and CIR.tdpCadre.userAddress.district.districtId in (:distIds) " );
 		}
 		sb.append(" group by CIR.callStatus,CIR.optionId ");
 		Query query = getSession().createQuery(sb.toString());
+		*/
+		sb.append("select call_status, option_id ,  sum( count) from cadre_ivr_response_info where campaign_id=:campainId ");
+		if(distIds != null && distIds.size() > 0)
+		{
+			sb.append(" and location_id in (:distIds) and location_type like '%District%'" );
+		}
+		sb.append(" group by option_id ");
+		Query query = getSession().createSQLQuery(sb.toString());
 		query.setParameter("campainId", campainId);
 		if(distIds != null && distIds.size() > 0)
 		{
