@@ -199,6 +199,7 @@ z-index:2;
 	var btnFlag = false ;
 	var btnFlag1 = false ;
 	var btnFlag2 = false ;
+	var btnFlag3 = false ;
 	var selectionArr = ["searchCls","stateCls","districtCls","constiCls","casteCls","nameCls"];
 	var selectionArr1 = ["searchDivCls","stateDivCls","districtDivCls","constiDivCls","casteDivCls","nameDivCls"];
 	var selectionArr2 = ["searchDivClsHidden","stateDivClsHidden","districtDivClsHidden","constiDivClsHidden","casteDivClsHidden","nameDivClsHidden"];
@@ -210,7 +211,7 @@ z-index:2;
 	var glblLocationName='';
 	$(document).ready(function(){
 		alert = function(){};
-
+		
 		getDistrictsAndConstis("district",0);
 		getDistrictsAndConstis("constituencyByState",0);
 		$('.fadeInRight').addClass('animated  fadeInRight ');
@@ -231,7 +232,31 @@ z-index:2;
 		getDistrictsAndConstis("district",locationValue);
 		getDistrictsAndConstis("constituencyByState",locationValue);		
 	});
-
+	$('.nameDivCls').click(function(){	
+		if(!$('.nameDivCls').hasClass('nl-field-open'))	{		
+			if(btnFlag3 == true)
+			{
+			$('.nameDivCls').removeClass('nl-field-open');
+			$('.nameDivCls').open = false;	
+			btnFlag3 = false;
+			}	
+			else
+			{
+			$('.nameDivCls').open = true;			
+			$('.nameDivCls').addClass('nl-field-open');
+			$('.nameCls').focus();
+			}
+			}
+		});
+			$('.nameDivCls').keydown(function (e) {			
+					if ( e.keyCode == 13 ) {
+						//alert(e.keyCode);
+						$('.nameDivCls').removeClass('nl-field-open');
+						$('.nameDivCls').open = false;
+						getNameSelectedDetails();
+					}
+			});
+			
 	$('.districtDivCls').click(function(){	
 		if(!$('.districtDivCls').hasClass('nl-field-open'))	{		
 			if(btnFlag == true)
@@ -332,8 +357,18 @@ z-index:2;
 			}
 			
 		}
+		else if($('.nameDivCls').hasClass('nl-field-open'))	{		
+			if(btnFlag3 == false)
+			{
+				$('.nameDivCls').removeClass('nl-field-open');
+				$('.nameDivCls').open = false;	
+				//btnFlag3 = true;
+			}
+			
+		}
 		});
 		getCasteSelectedDetails();
+	
 	});
 	
 	
@@ -464,8 +499,7 @@ var constiSel =0;
 						}
 					});
 	}
-	
-	
+
 	function casteKeyUp(){
 		var source = [ ];
 					var mapping = { };
@@ -549,6 +583,26 @@ var constiSel =0;
 		$(".casteDivCls").html(str);
 
 	}
+	
+	function getNameSelectedDetails(){
+		//alert(btnFlag3);
+		if(btnFlag3)
+			btnFlag3 = true;
+		else
+			btnFlag3 = false;
+		$('.nameDivCls').removeClass('nl-field-open');
+		$('.nameDivCls').open = false;		
+		var validVal = $(".nameCls").val();
+		if(!validVal == ""){
+		var str ='<a class="nl-field-toggle">'+validVal+'</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY"   class="nameCls"  />';
+		}
+		else{
+		var str ='<a class="nl-field-toggle">ANY</a><ul><li class="nl-ti-input"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" placeholder="ANY"   class="nameCls"  />';
+		}
+		$(".nameDivCls").html(str);
+		
+	}
+
 	new NLForm(document.getElementById( 'nl-form' ));
 	function searchResults(divId)
 	{ 
@@ -1802,7 +1856,7 @@ var constiSel =0;
 		});
 		$('html, body').animate({scrollTop:$('.casteTableCls').offset().top}, 'slow');
 	}
-	
+	getNameSelectedDetails();
 	
 	
 	</script>
