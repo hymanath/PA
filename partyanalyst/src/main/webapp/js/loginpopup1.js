@@ -81,7 +81,7 @@ task="validateUserForLogin";
 	task:task		
 };
 		//var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "loginPopUpsAction.action?&userName="+userName1+"&password="+password1+"&task="+task;	
+		var url = "loginPopUpsAction.action?&userName="+userName1+"&password="+password1+"&task="+task+"&ipaddress="+userip;
 		callHomePageAjax11(jsObj,url);
 		$("#ajaxcallimage").show();
 
