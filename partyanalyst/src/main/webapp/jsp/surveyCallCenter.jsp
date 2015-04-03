@@ -354,8 +354,11 @@
 									
 								</div>
 							</div>
-							<div class="row text-center m_top20" style="margin-right:51px;"><button type="button" class="btn btn-success" onClick="getSurveyUserLoctionCount();">SUBMIT</button>
-							
+							<!--<div class="row text-center m_top20" style="margin-right:51px;"><button type="button" class="btn btn-success" onClick="getSurveyUserLoctionCount();">SUBMIT</button>-->
+							<div class="row text-center m_top20" style="margin-right:51px;"><button type="button" class="btn btn-success" onClick="getBasicSurveyUserLoction();">SUBMIT</button>
+							<button type="button" class="btn btn-success" onClick="getSurveyUserLoctionCount();">DetailReport</button>
+
+						
 							<button type="button" class="btn btn-success" id="excelTableID" onClick="generateExcel('SurveyUsertable1');" style="display:none;">Export To Excel</button>
 
 							
