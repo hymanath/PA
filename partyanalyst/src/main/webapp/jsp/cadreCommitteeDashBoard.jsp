@@ -1206,7 +1206,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 								var totLiftperc = 0;
 								totLiftpercentage = (result.committeeSummaryVO.answeredIvrCalls *100)/ result.committeeSummaryVO.totalIvrCalls;
 								totLiftperc = totLiftpercentage.toFixed(0)
-								str+='<li style="width: 221px;">Total Village Ivr Lifted :'+result.committeeSummaryVO.answeredIvrCalls+'('+totLiftperc+'%)</li>';
+								str+='<li style="width: 221px;">Total Village IVR Lifted :'+result.committeeSummaryVO.answeredIvrCalls+'('+totLiftperc+'%)</li>';
 							}
 							var totalAnswerd = 0;
 							for(var pm in result.committeeSummaryVO.optionsList){
@@ -1216,7 +1216,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							var totperc = 0;
 							totpercentage = (totalAnswerd *100)/ result.committeeSummaryVO.answeredIvrCalls;
 							totperc = totpercentage.toFixed(0)
-							str+='<li style="width: 237px;;">Total Village Ivr Answred:'+totalAnswerd+'('+totperc+'%)</li>';
+							str+='<li style="width: 237px;;">Total Village IVR Answred:'+totalAnswerd+'('+totperc+'%)</li>';
 						}
 						str += '</ul>';
 						
@@ -1250,7 +1250,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 												}
 						
 						
-					
+					var totalWardIVRCount =0;
 					if(result.committeeSummaryVO.totalWards != null && result.committeeSummaryVO.totalWards > 0)
 					{
 							str+='<ul class="list-inline ivrdetails"><li style="width: 93px; background: none repeat scroll 0 0 #fff;"></li>';
@@ -1266,17 +1266,18 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 									var totLiftperc = 0;
 									totLiftpercentage = (result.committeeSummaryVO.totalWardAnswerdIvr *100)/ result.committeeSummaryVO.totalWardIvr;
 									totLiftperc = totLiftpercentage.toFixed(0)
-									str+='<li style="width: 208px;">Total Ward Ivr Lifted :'+result.committeeSummaryVO.totalWardAnswerdIvr+'('+totLiftperc+'%)</li>';
+									str+='<li style="width: 208px;">Total Ward IVR Lifted :'+result.committeeSummaryVO.totalWardAnswerdIvr+'('+totLiftperc+'%)</li>';
 								}
 								var totalAnswerd = 0;
 								for(var pm in result.committeeSummaryVO.optionsList1){
 									totalAnswerd = totalAnswerd + result.committeeSummaryVO.optionsList1[pm].count
+									totalWardIVRCount = totalWardIVRCount + result.committeeSummaryVO.optionsList1[pm].count
 								}
 								var totpercentage = 0;
 								var totperc = 0;
 								totpercentage = (totalAnswerd *100)/ result.committeeSummaryVO.totalWardAnswerdIvr;
 								totperc = totpercentage.toFixed(0)
-								str+='<li style="width: 260px;">Total Ward Ivr Answred:'+totalAnswerd+'('+totperc+'%)</li>';
+								str+='<li style="width: 260px;">Total Ward IVR Answred:'+totalAnswerd+'('+totperc+'%)</li>';
 							}
 							str += '</ul>';
 					}
@@ -1294,9 +1295,9 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 									{
 										if(result.committeeSummaryVO.optionsList1[i].id != 13)
 										{
-											percentage = (result.committeeSummaryVO.optionsList1[i].count *100)/ result.committeeSummaryVO.total;
+											percentage = (result.committeeSummaryVO.optionsList1[i].count *100)/ totalWardIVRCount;
 											perc = percentage.toFixed(0);
-											str+='<li>'+result.committeeSummaryVO.optionsList1[i].name+':'+result.committeeSummaryVO.optionsList1[i].count+'('+perc+'%)</li>';
+											str+='<li>'+result.committeeSummaryVO.optionsList1[i].name+':'+result.committeeSummaryVO.optionsList1[i].count+'('+perc+'%) </li>';
 										}
 									}
 								}
@@ -1306,7 +1307,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 									{
 										for(var i in result.committeeSummaryVO.optionsList1)
 										{
-											str+='<li>'+result.committeeSummaryVO.optionsList1[i].name+':'+result.committeeSummaryVO.optionsList1[i].count+'(0%)</li>';
+											str+='<li>'+result.committeeSummaryVO.optionsList1[i].name+':'+result.committeeSummaryVO.optionsList1[i].count+'(0%) </li>';											
 										}
 									}
 								}
@@ -1511,7 +1512,7 @@ if(level == 'village' || level == 'villageAll' || level == 'ward'){
 								var totLiftperc = 0;
 								totLiftpercentage = (result.committeeSummaryVO.answeredIvrCalls *100)/ result.committeeSummaryVO.totalIvrCalls;
 								totLiftperc = totLiftpercentage.toFixed(0)
-								str1+='<li style="width: 221px;">Total Village Ivr Lifted :'+result.committeeSummaryVO.answeredIvrCalls+'('+totLiftperc+'%)</li>';
+								str1+='<li style="width: 221px;">Total Village IVR Lifted :'+result.committeeSummaryVO.answeredIvrCalls+'('+totLiftperc+'%)</li>';
 							}
 							var totalAnswerd = 0;
 							for(var pm in result.committeeSummaryVO.optionsList){
@@ -1521,7 +1522,7 @@ if(level == 'village' || level == 'villageAll' || level == 'ward'){
 							var totperc = 0;
 							totpercentage = (totalAnswerd *100)/ result.committeeSummaryVO.answeredIvrCalls;
 							totperc = totpercentage.toFixed(0)
-							str1+='<li style="width: 237px;;">Total Village Ivr Answred:'+totalAnswerd+'('+totperc+'%)</li>';
+							str1+='<li style="width: 237px;;">Total Village IVR Answred:'+totalAnswerd+'('+totperc+'%)</li>';
 						}
 						str1 += '</ul>';
 						
@@ -1555,7 +1556,7 @@ if(level == 'village' || level == 'villageAll' || level == 'ward'){
 						}
 						
 						
-					
+					var totalWardIVRCount =0;
 					if(result.committeeSummaryVO.totalWards != null && result.committeeSummaryVO.totalWards > 0)
 					{
 							str1+='<ul class="list-inline ivrdetails"><li style="width: 93px; background: none repeat scroll 0 0 #fff;"></li>';
@@ -1571,17 +1572,18 @@ if(level == 'village' || level == 'villageAll' || level == 'ward'){
 									var totLiftperc = 0;
 									totLiftpercentage = (result.committeeSummaryVO.totalWardAnswerdIvr *100)/ result.committeeSummaryVO.totalWardIvr;
 									totLiftperc = totLiftpercentage.toFixed(0)
-									str1+='<li style="width: 208px;">Total Ward Ivr Lifted :'+result.committeeSummaryVO.totalWardAnswerdIvr+'('+totLiftperc+'%)</li>';
+									str1+='<li style="width: 208px;">Total Ward IVR Lifted :'+result.committeeSummaryVO.totalWardAnswerdIvr+'('+totLiftperc+'%)</li>';
 								}
 								var totalAnswerd = 0;
 								for(var pm in result.committeeSummaryVO.optionsList1){
 									totalAnswerd = totalAnswerd + result.committeeSummaryVO.optionsList1[pm].count
+									totalWardIVRCount = totalWardIVRCount + result.committeeSummaryVO.optionsList1[pm].count
 								}
 								var totpercentage = 0;
 								var totperc = 0;
 								totpercentage = (totalAnswerd *100)/ result.committeeSummaryVO.totalWardAnswerdIvr;
 								totperc = totpercentage.toFixed(0)
-								str1+='<li style="width: 260px;">Total Ward Ivr Answred:'+totalAnswerd+'('+totperc+'%)</li>';
+								str1+='<li style="width: 260px;">Total Ward IVR Answred:'+totalAnswerd+'('+totperc+'%)</li>';
 							}
 							str1 += '</ul>';
 					}
@@ -1599,9 +1601,9 @@ if(level == 'village' || level == 'villageAll' || level == 'ward'){
 									{
 										if(result.committeeSummaryVO.optionsList1[i].id != 13)
 										{
-											percentage = (result.committeeSummaryVO.optionsList1[i].count *100)/ result.committeeSummaryVO.total;
+											percentage = (result.committeeSummaryVO.optionsList1[i].count *100)/ totalWardIVRCount;
 											perc = percentage.toFixed(0);
-											str1+='<li>'+result.committeeSummaryVO.optionsList1[i].name+':'+result.committeeSummaryVO.optionsList1[i].count+'('+perc+'%)</li>';
+											str1+='<li>'+result.committeeSummaryVO.optionsList1[i].name+':'+result.committeeSummaryVO.optionsList1[i].count+'('+perc+'%) </li>';
 										}
 									}
 								}
