@@ -2305,7 +2305,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		try {
 			if(state != null && state.equalsIgnoreCase("AP"))
 			{
-				districtIds.add(11l);districtIds.add(12l);districtIds.add(13l);districtIds.add(14l);districtIds.add(15l);districtIds.add(16l);districtIds.add(17l);districtIds.add(18l);districtIds.add(19l);districtIds.add(20l);districtIds.add(21l);districtIds.add(21l);districtIds.add(23l);
+				districtIds.add(11l);districtIds.add(12l);districtIds.add(13l);districtIds.add(14l);districtIds.add(15l);districtIds.add(16l);districtIds.add(17l);districtIds.add(18l);districtIds.add(19l);districtIds.add(20l);districtIds.add(21l);districtIds.add(22l);districtIds.add(23l);
 			}
 			else
 			{
@@ -2466,7 +2466,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 							{
 								if(ivrOptionsVO.getId().longValue() == Long.valueOf(ivrCountInfo[1].toString().trim()))
 								{
-									ivrOptionsVO.setCount((Long)ivrCountInfo[2]);//count
+									ivrOptionsVO.setCount(Long.valueOf(ivrCountInfo[2].toString().trim()));//count
 									resultVO.setTotal(ivrOptionsVO.getCount() + resultVO.getTotal());
 								}
 							}
