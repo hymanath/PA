@@ -118,5 +118,6 @@ public interface ISurveyDataDetailsService
 	
 	public List<SelectOptionVO> getAssemblyConstituenciesByStateId(Long stateType, Long stateId);
 	public List<SelectOptionVO> getAssemblyOfLoggedUser(String accessValue,String accessType);
+	public List<SurveyReportVO> getSurveyBasicDetailsForConstituency(Long constituencyId,Long userTypeId,String fromDate,List<Long> userIds,String toDate);;
 
 }
