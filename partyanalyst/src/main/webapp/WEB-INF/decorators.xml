@@ -392,7 +392,9 @@
 		<pattern>/cadreCommitteeAction*</pattern>
 		<pattern>/cadreCommitteeRequestAction*</pattern>
 		<pattern>/committeeManagementAction*</pattern>
-		<pattern>/cadreSearchPageAction*</pattern>
 		<pattern>/cadreProfileDetailsAction*</pattern>
+	 </decorator>
+	  <decorator name="districtLayout" page="districtLayout.jsp">
+		<pattern>/cadreSearchPageAction*</pattern>
 	 </decorator>
 </decorators>
