@@ -139,8 +139,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c4e480', end
 /*$("#submit").live("click",function(){
 	$("#wrappermiddle").css("height","257px");
 });*/
-
-
+var userip = "";
 </script>
+<script type="text/javascript" src="http://l2.io/ip.js?var=userip"></script>
 </body>
 </html>
