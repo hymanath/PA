@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Committee Management</title>
+    <title> Tdp Party - District Page </title>
 
     <!-- Bootstrap -->
     <link href="css/cadreCommitee/bootstrap.min.css" rel="stylesheet">
@@ -230,8 +230,9 @@
 			
 			<img src='images/Loading-data.gif' class="offset7"  id="searchDataImg" style=" margin-left: 660px;margin-top: 20px;width:70px;height:60px;display:none;"/>
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20">
-				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;overflow:scroll:900px;" id="cadreDetailsDiv"></div>
-				<div id="paginationDivId"></div>
+				<div id="topPaginationDivId" class="paginationDivId"></div>
+				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;overflow:scroll:900px;display:none;" id="cadreDetailsDiv"></div>
+				<div id="paginationDivId"  class="paginationDivId"></div>
 
 			</div>
 		</div>	
@@ -272,7 +273,8 @@
 		
 		
 $('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv').html('');
-$("#paginationDivId").hide();
+$(".paginationDivId").hide();
+//$("#paginationDivId").hide();
 		$('#searchLevelErrDiv,#committeePositionIdErr,#nonAfflitCommitteeIdErr').html('');
 		$("#cadreDetailsDiv").hide();
 		var searchBy = $('#searchBy').val().trim();
@@ -478,7 +480,8 @@ $("#paginationDivId").hide();
 		
 			function buildCadreDetails(result,jsObj)
 	{
-		$("#paginationDivId").show();
+		$(".paginationDivId").show();
+		//$("#paginationDivId").show();
 		var str ='';
 		
 		var elegRolCnt=0;
@@ -540,7 +543,7 @@ $("#paginationDivId").hide();
 	    var maxResults=jsObj.maxIndex;
 	   
 	     if(jsObj.startIndex==0){
-		   $("#paginationDivId").pagination({
+		   $(".paginationDivId").pagination({
 			items: itemsCount,
 			itemsOnPage: maxResults,
 			cssStyle: 'light-theme',
@@ -549,8 +552,9 @@ $("#paginationDivId").hide();
 				getCadreDetailsBySearchCriteria(num);
 				
 			}
-		});
-	}
+			});
+		}
+		
 		}
 		}
 		$('#cadreDetailsDiv').html(str);
