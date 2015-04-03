@@ -5852,4 +5852,110 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 		  
 		  return finalList;
 	  }
+	  
+	  
+	  public List<SurveyReportVO> getSurveyBasicDetailsForConstituency(Long constituencyId,Long userTypeId,String fromDate,List<Long> userIds,String toDate)
+		{
+			
+			List<SurveyReportVO> resultList = new ArrayList<SurveyReportVO>();
+			List<Long> userIDs = new ArrayList<Long>();
+			List<Long> boothIDs = new ArrayList<Long>();
+			try{
+				SimpleDateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy");
+				Date date1 = originalFormat.parse(fromDate);
+				Date date2 = originalFormat.parse(toDate);
+				List<Object[]> dataList = null;
+				if(userIds != null && userIds.size() > 0)
+				{
+					dataList = surveyDetailsInfoDAO.getSurveyDetailsByConstituencyByUsers(constituencyId,userTypeId,date1,userIds,date2);
+					//userIDs = surveyDetailsInfoDAO.getUserIdsForConstituencyByUser(constituencyId,userTypeId,date1,userIds,date2);
+				}
+				else
+				{
+					dataList = surveyDetailsInfoDAO.getSurveyDetailsByConstituency(constituencyId,userTypeId,date1,date2);
+					//userIDs = surveyDetailsInfoDAO.getUserIdsForConstituency(constituencyId,userTypeId,date1,date2);
+				}
+				
+				
+				if(dataList != null && dataList.size() > 0)
+				{
+				// List<Object[]> list1 = surveyDetailsInfoDAO.getBoothCount(constituencyId,userTypeId);
+					for(Object[] user : dataList)
+					{
+						SurveyReportVO surveyReportVO = new SurveyReportVO();
+						surveyReportVO.setUserid((Long)user[0]);
+						surveyReportVO.setUserName(user[1].toString());
+						surveyReportVO.setMobileNo(user[5].toString());
+						/*if(leadersMap.get((Long)user[0]) != null){
+							surveyReportVO.setVerifier(leadersMap.get((Long)user[0]));
+						}*/
+						resultList.add(surveyReportVO);
+						//userIDs.add((Long)user[0]);
+						if(!userIDs.contains((Long)user[0]))
+							userIDs.add((Long)user[0]);
+						if(!boothIDs.contains((Long)user[2]))
+						boothIDs.add((Long)user[2]);
+				}
+
+					Map<Long,SurveyReportVO> leadersMap = null;
+					if(userIDs != null && userIDs.size() > 0)
+					{
+						leadersMap = new HashMap<Long, SurveyReportVO>();
+
+						List<Object[]> leadersList = surveyUserRelationDAO.getUserLeaderIds(userIDs);
+						if(leadersList != null && leadersList.size() > 0)
+						{
+							for(Object[] leader : leadersList)
+							{
+								if(leadersMap.get((Long)leader[0]) == null){
+									SurveyReportVO surveyReportVO = new SurveyReportVO();
+									surveyReportVO.setId((Long)leader[1]);
+									surveyReportVO.setName(leader[2].toString());
+									surveyReportVO.setVerified(leader[3].toString());
+									leadersMap.put((Long)leader[0], surveyReportVO);
+								}
+							}
+						}
+					}
+					  Map<Long,Long> totalVotersMap = new HashMap<Long, Long>();
+						 List<Object[]> boothTotalVoters = boothPublicationVoterDAO.getBoothWiseVoterDetails(boothIDs);
+						 if(boothTotalVoters != null && boothTotalVoters.size() > 0)
+						 {
+							for(Object[] params : boothTotalVoters)
+							{
+								if(totalVotersMap.get((Long)params[0]) == null)
+								totalVotersMap.put((Long)params[0], (Long)params[1]);
+								else
+									totalVotersMap.put((Long)params[0], (Long)params[1] + totalVotersMap.get((Long)params[0]));	
+							}
+						 }
+					if(dataList != null && dataList.size() > 0)
+					{
+						 for(Object[] params : dataList)
+						 {
+							 SurveyReportVO boothVo = getMatchedVo(resultList,(Long)params[0]);
+							 if(boothVo != null)
+							 {
+								 SurveyReportVO vo = new SurveyReportVO();
+								 vo.setBoothId((Long)params[2]);
+								 vo.setPartNo(params[3].toString());
+							     vo.setTotalVoters(totalVotersMap.get((Long)params[2]));
+							     if(leadersMap.get((Long)params[0]) != null){
+							    	 boothVo.setVerifier(leadersMap.get((Long)params[0]));
+									}
+								 boothVo.getSubList().add(vo);
+								 
+							 }
+							 
+						 }
+					}
+				}
+		}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			return resultList;
+		}		
+			
 }
