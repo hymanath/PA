@@ -134,15 +134,16 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						<table width="100%" class="table table-bordered" style="background-color:transparent; margin-bottom:0px;"  >
 							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 								<td colspan="6" style="text-align: right;">
-								        <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;"><b>VILLAGE/WARD LEVEL COMMITTEES</b></button>
+								        <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;"onClick="showHideDivs('ap','Village');"> <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span><b>VILLAGE/WARD LEVEL COMMITTEES</b></button>
+									<div id="apVillageButtonsDiv" style="" class="toggleCls"  >
 										<button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdAPvillage" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
 										<button id="village"  class="btn btn-xs btn-success highlightClick1" onclick="getCommitteeDetails('AP','village')">Village</button> | 
 										<button id="ward" class="btn btn-xs btn-success highlightClick1" onclick="getCommitteeDetails('AP','ward')">Ward</button> |										
 										<button id="villageAll" class="btn btn-xs btn-success highlight highlightClick1 " onclick="getCommitteeDetails('AP','villageAll')">All</button>
-									
+									</div>
 								</td>
 							</tr>
-							<tr id="ApTRId">
+							<tr id="apVillageBodyTR">
 								<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div8"></div></h4></td>
 								<td style="padding:10px;" width="10%">
 									<span class="text-success">Started</span><br/> Committees
@@ -385,7 +386,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							</tr>
 							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 								<td colspan="6" style="text-align: right;">
-								        <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;"><b>VILLAGE/WARD LEVEL COMMITTEES</b></button>
+								        <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;"><b>VILLAGE/WARD LEVEL COMMITTEES</b></button>  
+
 										<button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdAPvillage" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
 										<button id="village"  class="btn btn-xs btn-success highlightClick1" onclick="getCommitteeDetails('AP','village')">Village</button> | 
 										<button id="ward" class="btn btn-xs btn-success highlightClick1" onclick="getCommitteeDetails('AP','ward')">Ward</button> |										
@@ -483,15 +485,17 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					<table width="100%" class="table table-bordered" style="background-color:transparent; margin-bottom:0px;"  >
 						<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 							<td colspan="6" style="text-align: right;">
-							    <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;" ><b>VILLAGE/WARD LEVEL COMMITTEES</b></button>
+							     <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;"onClick="showHideDivs('ts','Village');"> <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span><b>VILLAGE/WARD LEVEL COMMITTEES</b></button>
+								 <div id="tsVillageButtonsDiv" style="display:none;" class="toggleCls1">
 							    <button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdTSvillage" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
 								<button id="tsVillage" class="btn btn-xs btn-success highlightClick3" onclick="getCommitteeDetails('TS','village')";>Village</button> | 
 								<button id="tsWard" class="btn btn-xs btn-success highlightClick3" onclick="getCommitteeDetails('TS','ward')";>Ward</button> |
 								
 								<button id="tsVillageAll" class="btn btn-xs btn-default  btn-success highlight highlightClick3" onclick="getCommitteeDetails('TS','villageAll')";>All</button>
+								</div>
 							</td>
 						</tr>
-						<tr id="tsTRId">
+						<tr id="tsVillageBodyTR">
 							<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div22"></div></h4></td>
 							<td style="padding:10px;" width="10%">
 									<span class="text-success">Started</span> Committees<br/>
@@ -1191,6 +1195,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						if(level == 'village' || level == 'villageAll' || level == 'ward'){
 						var str='';
 						str+='';
+						//str+='<td colspan="6"> srishailam 222 </td>';
 						str+='<td colspan="6"><ul class="list-inline ivrdetails"><li style="background: none repeat scroll 0% 0% rgb(51, 51, 51); color: rgb(255, 255, 255);">IVR DETAILS</li>';
 						if(result.committeeSummaryVO.count != null && result.committeeSummaryVO.count > 0)
 						{
@@ -1494,9 +1499,10 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							$("#div27").html('<span> 0 </span>');
 						}						
 						$("#div28").html(result.membersCount);
-if(level == 'village' || level == 'villageAll' || level == 'ward'){
+						if(level == 'village' || level == 'villageAll' || level == 'ward'){
 							var str1='';
 						str1+='';
+						//str1+='<td colspan="6"> srishailam </td>';
 						str1+='<td colspan="6"><ul class="list-inline ivrdetails"><li style="background: none repeat scroll 0% 0% rgb(51, 51, 51); color: rgb(255, 255, 255);">IVR DETAILS</li>';
 						if(result.committeeSummaryVO.count != null && result.committeeSummaryVO.count > 0)
 						{
@@ -4121,30 +4127,45 @@ function showPopOver(state){
 
 
 function showHideDivs(divId1,divId2){
+
 if(divId1 =="ap"){
 	$(".toggleCls").hide();
 	if(divId1+divId2+"BodyTR" == "apMandalBodyTR"){
+		$("#apVillageBodyTR").hide();
 		$("#apDistrictBodyTR").removeClass("toggleCls12");	
 		$("#apStateBodyTR").removeClass("toggleCls12");
 	}else if(divId1+divId2+"BodyTR" == "apDistrictBodyTR"){
 		$("#apMandalBodyTR").removeClass("toggleCls12");		
-		$("#apStateBodyTR").removeClass("toggleCls12");	
+		$("#apStateBodyTR").removeClass("toggleCls12");
+		$("#apVillageBodyTR").hide();
 	}else if(divId1+divId2+"BodyTR" == "apStateBodyTR"){		
 		$("#apMandalBodyTR").removeClass("toggleCls12");	
-		$("#apDistrictBodyTR").removeClass("toggleCls12");	
+		$("#apDistrictBodyTR").removeClass("toggleCls12");
+		$("#apVillageBodyTR").hide();		
+	}else if(divId1+divId2+"BodyTR" == "apVillageBodyTR"){
+		$("#apDistrictBodyTR").removeClass("toggleCls12");
+		$("#apStateBodyTR").removeClass("toggleCls12");
+		$("#apMandalBodyTR").removeClass("toggleCls12");
 	}
 
 }
 else{
 	$(".toggleCls1").hide();
 	if(divId1+divId2+"BodyTR" == "tsMandalBodyTR"){
+		$("#tsVillageBodyTR").hide();
 		$("#tsDistrictBodyTR").removeClass("toggleCls12");	
 		$("#tsStateBodyTR").removeClass("toggleCls12");
 	}else if(divId1+divId2+"BodyTR" == "tsDistrictBodyTR"){
+			$("#tsVillageBodyTR").hide();
 		$("#tsMandalBodyTR").removeClass("toggleCls12");		
 		$("#tsStateBodyTR").removeClass("toggleCls12");	
-	}else if(divId1+divId2+"BodyTR" == "tsStateBodyTR"){		
+	}else if(divId1+divId2+"BodyTR" == "tsStateBodyTR"){
+		$("#tsVillageBodyTR").hide();		
 		$("#tsMandalBodyTR").removeClass("toggleCls12");	
+		$("#tsDistrictBodyTR").removeClass("toggleCls12");	
+	}else if(divId1+divId2+"BodyTR" == "tsVillageBodyTR"){
+		$("#tsMandalBodyTR").removeClass("toggleCls12");		
+		$("#tsStateBodyTR").removeClass("toggleCls12");	
 		$("#tsDistrictBodyTR").removeClass("toggleCls12");	
 	}
 	
