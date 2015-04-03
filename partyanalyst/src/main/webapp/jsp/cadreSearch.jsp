@@ -398,7 +398,7 @@ $(".paginationDivId").hide();
 			gender:gender,
 			houseNo:houseNo,
 			startIndex:startIndex,
-			maxIndex : 100,
+			maxIndex : 50,
 			task:"tdpCadreSearch"
 		}
 		$.ajax({
@@ -537,7 +537,7 @@ $(".paginationDivId").hide();
 				elegRolCnt++;
 				dtCnt++;
 			}
-		if(result[0].mobileType > 100)	
+		if(result[0].mobileType > 50)	
 		{
 		var itemsCount=result[0].mobileType;
 	    var maxResults=jsObj.maxIndex;
@@ -548,7 +548,7 @@ $(".paginationDivId").hide();
 			itemsOnPage: maxResults,
 			cssStyle: 'light-theme',
 			onPageClick: function(pageNumber, event) {
-				var num=(pageNumber-1)*100;
+				var num=(pageNumber-1)*50;
 				getCadreDetailsBySearchCriteria(num);
 				
 			}
