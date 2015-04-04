@@ -396,5 +396,6 @@
 	 </decorator>
 	  <decorator name="districtLayout" page="districtLayout.jsp">
 		<pattern>/cadreSearchPageAction*</pattern>
+		<pattern>/committeeDistrictDashBoardAction*</pattern>
 	 </decorator>
 </decorators>
