@@ -213,5 +213,6 @@ public interface ISurveyDetailsInfoDAO  extends GenericDao<SurveyDetailsInfo, Lo
 	public List<Object[]> getDuplicateMobileNumbersByDates(Date startDate,Date endDate,Long frequencyCount);
 	
 	public List<String> getVotersMobileNumbersByBoothId(Long boothId, List<Long>surveyUserids);
+	public List<Object[]> getVotersDetailsByBooth(Long boothId,List<Long> assignUsers,Date searchDate,Long casteStateId);
 }
 
