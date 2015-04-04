@@ -547,7 +547,16 @@
 				<value>com.itgrids.partyanalyst.model.CadreCommitteeIncreasedPositions</value>
 	            <value>com.itgrids.partyanalyst.model.CadreCommitteeChangeDesignations</value>	
 	            <value>com.itgrids.partyanalyst.model.TdpCadreAgerangeInfo</value>	
-	            <value>com.itgrids.partyanalyst.model.TdpCadreCasteInfo</value>		
+	            <value>com.itgrids.partyanalyst.model.TdpCadreCasteInfo</value>	
+	            <value>com.itgrids.partyanalyst.model.IvrCampaign</value>		
+	            <value>com.itgrids.partyanalyst.model.IvrOptions</value>
+				<value>com.itgrids.partyanalyst.model.IvrCampaignOptions</value>	
+				
+				<value>com.itgrids.partyanalyst.model.CommitteIvrDistrictDetail</value>
+				<value>com.itgrids.partyanalyst.model.CommitteIvrTotalDetail</value>
+				<value>com.itgrids.partyanalyst.model.TdpCadreAgerangeInfo</value>
+				<value>com.itgrids.partyanalyst.model.TdpCadreCasteInfo</value>	
+				<value>com.itgrids.partyanalyst.model.TdpCommitteeVacantPost</value>	
 			</list>
 		</property>
 	</bean>
@@ -2788,6 +2797,28 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="tdpCadreCasteInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCadreCasteInfoDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<bean id="ivrCampaignDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrCampaignDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="ivrOptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrOptionsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="ivrCampaignOptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.IvrCampaignOptionsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="committeIvrDistrictDetailDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommitteIvrDistrictDetailDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="committeIvrTotalDetailDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommitteIvrTotalDetailDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+    <bean id="tdpCommitteeVacantPostDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCommitteeVacantPostDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>
