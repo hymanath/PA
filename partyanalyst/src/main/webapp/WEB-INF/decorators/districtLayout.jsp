@@ -46,9 +46,11 @@
                     Menu <img src="images/menu_icon.png" />
                     </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);top: 91px;">                  
-				  <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
+				 
 				  <li><a tabindex="-1" href="cadreSearchPageAction.action"> District Page </a></li>
 				  <li><a tabindex="-1" href="committeeDistrictDashBoardAction.action"> Committee DashBoard </a></li>
+				   <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
+				  
                     </ul>                 
             </div>
 			<!----/MENU End---->
