@@ -57,8 +57,7 @@
     background-color: #f3f3f3 !important;
 }
 .ivrdetails > li {
-    background: none repeat scroll 0 0 #ccc;
-    margin-left: 3px;
+    margin-left: -17px;
     padding: 2px 8px;
 	font-size: 13px;
 }
@@ -1196,14 +1195,14 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						var str='';
 						str+='';
 						//str+='<td colspan="6"> srishailam 222 </td>';
-						str+='<td colspan="6"><ul class="list-inline ivrdetails"><li style="background: none repeat scroll 0% 0% rgb(51, 51, 51); color: rgb(255, 255, 255);">IVR DETAILS</li>';
+						str+='<td colspan="6"><ul class="list-inline ivrdetails"><li style="background: none repeat scroll 0% 0% rgb(51, 51, 51); color: rgb(255, 255, 255);margin-left: 5px;"> VILLAGE IVR DETAILS</li><br>';
 						if(result.committeeSummaryVO.count != null && result.committeeSummaryVO.count > 0)
 						{
-							str+='<li style="width: 129px;">Total Villages:'+result.committeeSummaryVO.count+'</li>';
+							str+='<li style="margin-left:0px"><table class="table table-bordered"><tbody><tr><th  style="background-color:#E5E5E5;">Total Villages </th></tr><tr><td>'+result.committeeSummaryVO.count+'</td></tr></tbody></table></li>';
 						}
 						if(result.committeeSummaryVO.totalIvrCalls != null && result.committeeSummaryVO.totalIvrCalls > 0)
-						{
-							str+='<li style="width: 200px;">Total Village IVR Calls:'+result.committeeSummaryVO.totalIvrCalls+'</li>';
+						{							
+							str+='<li><table class="table table-bordered"><tbody><tr><th  style="background-color:#E5E5E5;">  Total IVR Calls</th></tr><tr><td>'+result.committeeSummaryVO.totalIvrCalls+'</td></tr></tbody></table></li>';
 							
 							if(result.committeeSummaryVO.answeredIvrCalls != null && result.committeeSummaryVO.answeredIvrCalls > 0)
 							{
@@ -1211,7 +1210,9 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 								var totLiftperc = 0;
 								totLiftpercentage = (result.committeeSummaryVO.answeredIvrCalls *100)/ result.committeeSummaryVO.totalIvrCalls;
 								totLiftperc = totLiftpercentage.toFixed(0)
-								str+='<li style="width: 221px;">Total Village IVR Lifted :'+result.committeeSummaryVO.answeredIvrCalls+'('+totLiftperc+'%)</li>';
+								
+								str+='<li><table class="table table-bordered"><tbody><tr><th  style="background-color:#E5E5E5;"> IVR Lifted </th></tr><tr><td>'+result.committeeSummaryVO.answeredIvrCalls+' ('+totLiftperc+'%)</td></tr></tbody></table></li>';
+								
 							}
 							var totalAnswerd = 0;
 							for(var pm in result.committeeSummaryVO.optionsList){
@@ -1221,13 +1222,14 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							var totperc = 0;
 							totpercentage = (totalAnswerd *100)/ result.committeeSummaryVO.answeredIvrCalls;
 							totperc = totpercentage.toFixed(0)
-							str+='<li style="width: 237px;;">Total Village IVR Answred:'+totalAnswerd+'('+totperc+'%)</li>';
+							
+							str+='<li><table class="table table-bordered"><tbody><tr><th  style="background-color:#E5E5E5;">IVR Answred </th></tr><tr><td>'+totalAnswerd+' ('+totperc+'%)</td></tr></tbody></table></li>';
 						}
-						str += '</ul>';
+						//str += '</ul>';
 						
 						if(result.committeeSummaryVO.count != null && result.committeeSummaryVO.count > 0)
 						{
-							str+='<ul class="list-inline ivrdetails"><li style="width: 93px; background: none repeat scroll 0 0 #fff;"></li>';
+							str+='<li style="width: 93px; background: none repeat scroll 0 0 #fff;margin-left: -50px;"></li>';
 						var percentage = 0;
 						var perc = 0;
 						if(result.committeeSummaryVO.total >0){
@@ -1236,20 +1238,20 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						if(result.committeeSummaryVO.optionsList[i].id != 8){
 							percentage = (result.committeeSummaryVO.optionsList[i].count *100)/ result.committeeSummaryVO.total;
 							perc = percentage.toFixed(0);
-							str+='<li>'+result.committeeSummaryVO.optionsList[i].name+':'+result.committeeSummaryVO.optionsList[i].count+'('+perc+'%)</li>';
+							str+='<li><table class="table table-bordered"><tbody><tr><th  style="background-color:#E5E5E5;">'+result.committeeSummaryVO.optionsList[i].name+'</th></tr><tr><td>'+result.committeeSummaryVO.optionsList[i].count+' ('+perc+'%)</td></tr></tbody></table></li>';
 						}
 						}
 						}
 						else{
 						if(result.committeeSummaryVO.optionsList[i] != 8){
 							for(var i in result.committeeSummaryVO.optionsList){
-							str+='<li>'+result.committeeSummaryVO.optionsList[i].name+':'+result.committeeSummaryVO.optionsList[i].count+'(0%)</li>';
+							str+='<li><table class="table table-bordered"><tbody><tr><th  style="background-color:#E5E5E5;">'+result.committeeSummaryVO.optionsList[i].name+'</th></tr><tr><td>'+result.committeeSummaryVO.optionsList[i].count+' (0%)</td></tr></tbody></table></li>';
 						}
 						}
 						}
 						
 						str+='<li>';
-					str+='<a style = "cursor: pointer;" class="popOverCls" id="ivrPopOverAP" data-placement="bottom" data-toggle="popover"  onClick="showPopOver(\'AP\');" title="" data-html="true" data-content="<ul class=popOverStyle><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" >?</a>';					
+					str+='<a style = "cursor: pointer;" class="popOverCls" id="ivrPopOverAP" data-placement="bottom" data-toggle="popover"  onClick="showPopOver(\'AP\');" title="Village IVR Details" data-html="true" data-content="<ul class=popOverStyle><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" >?</a>';					
 						str+=' </li>';
 						str+='</ul>';
 												}
@@ -1258,12 +1260,13 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					var totalWardIVRCount =0;
 					if(result.committeeSummaryVO.totalWards != null && result.committeeSummaryVO.totalWards > 0)
 					{
-							str+='<ul class="list-inline ivrdetails"><li style="width: 93px; background: none repeat scroll 0 0 #fff;"></li>';
-							str+='<li style="width: 125px;">Total Wards:'+result.committeeSummaryVO.totalWards+'</li>';
+							str+='<ul class="list-inline ivrdetails" style ="margin-top: -30px;margin-left:0px;">';
+							str+='<ul class="list-inline ivrdetails"><li style="background: none repeat scroll 0% 0% rgb(51, 51, 51); color: rgb(255, 255, 255);margin-left: 5px;"> WARD IVR DETAILS</li><br>';
+							str+='<li style="margin-left: 0px;"><table class="table table-bordered"><tbody><tr><th  style="background-color:#E5E5E5;">Total Wards</th></tr><tr><td>'+result.committeeSummaryVO.totalWards+'</td></tr></tbody></table></li>';
 							
 							if(result.committeeSummaryVO.totalWardIvr != null && result.committeeSummaryVO.totalWardIvr > 0)
 							{
-								str+='<li style="width: 182px;">Total Ward IVR Calls:'+result.committeeSummaryVO.totalWardIvr+'</li>';
+								str+='<li style=""><table class="table table-bordered"><tbody><tr><th  style="background-color:#E5E5E5;">  Total IVR Calls</th></tr><tr><td>'+result.committeeSummaryVO.totalWardIvr+'</td></tr></tbody></table></li>';
 								
 								if(result.committeeSummaryVO.totalWardAnswerdIvr != null && result.committeeSummaryVO.totalWardAnswerdIvr > 0)
 								{
@@ -1271,7 +1274,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 									var totLiftperc = 0;
 									totLiftpercentage = (result.committeeSummaryVO.totalWardAnswerdIvr *100)/ result.committeeSummaryVO.totalWardIvr;
 									totLiftperc = totLiftpercentage.toFixed(0)
-									str+='<li style="width: 208px;">Total Ward IVR Lifted :'+result.committeeSummaryVO.totalWardAnswerdIvr+'('+totLiftperc+'%)</li>';
+									str+='<li style=""><table class="table table-bordered"><tbody><tr><th  style="background-color:#E5E5E5;"> IVR Lifted </th></tr><tr><td>'+result.committeeSummaryVO.totalWardAnswerdIvr+' ('+totLiftperc+'%)</td></tr></tbody></table></li>';
 								}
 								var totalAnswerd = 0;
 								for(var pm in result.committeeSummaryVO.optionsList1){
@@ -1282,15 +1285,15 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 								var totperc = 0;
 								totpercentage = (totalAnswerd *100)/ result.committeeSummaryVO.totalWardAnswerdIvr;
 								totperc = totpercentage.toFixed(0)
-								str+='<li style="width: 260px;">Total Ward IVR Answred:'+totalAnswerd+'('+totperc+'%)</li>';
+								str+='<li style=""><table class="table table-bordered"><tbody><tr><th  style="background-color:#E5E5E5;width:115px;"> IVR Answred</th></tr><tr><td>'+totalAnswerd+' ('+totperc+'%)</td></tr></tbody></table></li>';
 							}
-							str += '</ul>';
+							//str += '</ul>';
 					}
 						
 						
 						if(result.committeeSummaryVO.totalWards != null && result.committeeSummaryVO.totalWards > 0)
 						{
-							str+='<ul class="list-inline ivrdetails"><li style="width: 93px; background: none repeat scroll 0 0 #fff;"></li>';
+							str+='<li style="width: 93px; background: none repeat scroll 0 0 #fff;margin-left: -50px;"></li>';
 								var percentage = 0;
 								var perc = 0;
 								if(result.committeeSummaryVO.total >0)
@@ -1302,7 +1305,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 										{
 											percentage = (result.committeeSummaryVO.optionsList1[i].count *100)/ totalWardIVRCount;
 											perc = percentage.toFixed(0);
-											str+='<li>'+result.committeeSummaryVO.optionsList1[i].name+':'+result.committeeSummaryVO.optionsList1[i].count+'('+perc+'%) </li>';
+											str+='<li><table class="table table-bordered"><tbody><tr><th  style="background-color:#E5E5E5;">'+result.committeeSummaryVO.optionsList1[i].name+'</th></tr><tr><td>'+result.committeeSummaryVO.optionsList1[i].count+' ('+perc+'%) </td></tr></tbody></table></li>';
 										}
 									}
 								}
@@ -1312,14 +1315,14 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 									{
 										for(var i in result.committeeSummaryVO.optionsList1)
 										{
-											str+='<li>'+result.committeeSummaryVO.optionsList1[i].name+':'+result.committeeSummaryVO.optionsList1[i].count+'(0%) </li>';											
+											str+='<li><table class="table table-bordered"><tbody><tr><th  style="background-color:#E5E5E5;">'+result.committeeSummaryVO.optionsList1[i].name+'</th></tr><tr><td>'+result.committeeSummaryVO.optionsList1[i].count+'  (0%)</td></tr></tbody></table> </li>';											
 										}
 									}
 								}
 							if(result.committeeSummaryVO.totalWards != null && result.committeeSummaryVO.totalWards > 0)
 							{
 								str+='<li>';
-								str+='<a style = "cursor: pointer;" class="popOverCls" id="ivrPopOverAP" data-placement="bottom" data-toggle="popover"  onClick="showPopOver(\'AP\');" title="" data-html="true" data-content="<ul class=popOverStyle><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" >?</a>';					
+								str+='<a style = "cursor: pointer;" class="popOverCls" id="ivrPopOverAP" data-placement="bottom" data-toggle="popover"  onClick="showPopOver(\'AP\');" title=" Wards IVR Details" data-html="true" data-content="<ul class=popOverStyle><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" >?</a>';					
 								str+=' </li>';
 							}
 							
@@ -1503,14 +1506,14 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							var str1='';
 						str1+='';
 						//str1+='<td colspan="6"> srishailam </td>';
-						str1+='<td colspan="6"><ul class="list-inline ivrdetails"><li style="background: none repeat scroll 0% 0% rgb(51, 51, 51); color: rgb(255, 255, 255);">IVR DETAILS</li>';
+						str1+='<td colspan="6"><ul class="list-inline ivrdetails"><li style="background: none repeat scroll 0% 0% rgb(51, 51, 51); color: rgb(255, 255, 255);margin-left: 15px"> VILLAGE IVR DETAILS</li><br>';
 						if(result.committeeSummaryVO.count != null && result.committeeSummaryVO.count > 0)
 						{
-							str1+='<li style="width: 129px;">Total Villages:'+result.committeeSummaryVO.count+'</li>';
+							str1+='<li style="margin-left: 10px"> <table class="table table-bordered"><tbody><tr><th  style="background-color:#E5E5E5;"> Total Villages </th></tr><tr><td>'+result.committeeSummaryVO.count+'</td></tr></tbody></table></li>';
 						}
 						if(result.committeeSummaryVO.totalIvrCalls != null && result.committeeSummaryVO.totalIvrCalls > 0)
 						{
-							str1+='<li style="width: 200px;">Total Village IVR Calls:'+result.committeeSummaryVO.totalIvrCalls+'</li>';
+							str1+='<li style=""><table class="table table-bordered"><tbody><tr><th  style="background-color:#E5E5E5;">  Total IVR Calls </th></tr><tr><td>'+result.committeeSummaryVO.totalIvrCalls+'</td></tr></tbody></table></li>';
 							
 							if(result.committeeSummaryVO.answeredIvrCalls != null && result.committeeSummaryVO.answeredIvrCalls > 0)
 							{
@@ -1518,7 +1521,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 								var totLiftperc = 0;
 								totLiftpercentage = (result.committeeSummaryVO.answeredIvrCalls *100)/ result.committeeSummaryVO.totalIvrCalls;
 								totLiftperc = totLiftpercentage.toFixed(0)
-								str1+='<li style="width: 221px;">Total Village IVR Lifted :'+result.committeeSummaryVO.answeredIvrCalls+'('+totLiftperc+'%)</li>';
+								str1+='<li style=""><table class="table table-bordered"><tbody><tr><th  style="background-color:#E5E5E5;"> IVR Lifted  </th></tr><tr><td>'+result.committeeSummaryVO.answeredIvrCalls+' ('+totLiftperc+'%)</td></tr></tbody></table></li>';
 							}
 							var totalAnswerd = 0;
 							for(var pm in result.committeeSummaryVO.optionsList){
@@ -1528,13 +1531,13 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							var totperc = 0;
 							totpercentage = (totalAnswerd *100)/ result.committeeSummaryVO.answeredIvrCalls;
 							totperc = totpercentage.toFixed(0)
-							str1+='<li style="width: 237px;;">Total Village IVR Answred:'+totalAnswerd+'('+totperc+'%)</li>';
+							str1+='<li style=""><table class="table table-bordered"><tbody><tr><th  style="background-color:#E5E5E5;"> IVR Answred </th></tr><tr><td>'+totalAnswerd+' ('+totperc+'%)</td></tr></tbody></table></li>';
 						}
-						str1 += '</ul>';
+						//str1 += '</ul>';
 						
 						if(result.committeeSummaryVO.count != null && result.committeeSummaryVO.count > 0)
 						{
-							str1+='<ul class="list-inline ivrdetails"><li style="width: 93px; background: none repeat scroll 0 0 #fff;"></li>';
+							str1+='<li style="width: 93px; background: none repeat scroll 0 0 #fff;margin-left: -50px;"></li>';
 						var percentage = 0;
 						var perc = 0;
 						if(result.committeeSummaryVO.total >0){
@@ -1543,20 +1546,20 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						if(result.committeeSummaryVO.optionsList[i].id != 8){
 							percentage = (result.committeeSummaryVO.optionsList[i].count *100)/ result.committeeSummaryVO.total;
 							perc = percentage.toFixed(0);
-							str1+='<li>'+result.committeeSummaryVO.optionsList[i].name+':'+result.committeeSummaryVO.optionsList[i].count+'('+perc+'%)</li>';
+							str1+='<li><table class="table table-bordered"><tbody><tr><th  style="background-color:#E5E5E5;">'+result.committeeSummaryVO.optionsList[i].name+' </th></tr><tr><td>'+result.committeeSummaryVO.optionsList[i].count+' ('+perc+'%)</td></tr></tbody></table></li>';
 						}
 						}
 						}
 						else{
 						if(result.committeeSummaryVO.optionsList[i] != 8){
 							for(var i in result.committeeSummaryVO.optionsList){
-							str1+='<li>'+result.committeeSummaryVO.optionsList[i].name+':'+result.committeeSummaryVO.optionsList[i].count+'(0%)</li>';
+							str1+='<li><table class="table table-bordered"><tbody><tr><th  style="background-color:#E5E5E5;">'+result.committeeSummaryVO.optionsList[i].name+' </th></tr><tr><td>'+result.committeeSummaryVO.optionsList[i].count+' (0%)</td></tr></tbody></table></li>';
 						}
 						}
 						}
 						
 					str1+='<li>';
-					str1+='<a style = "cursor: pointer;" class="popOverCls" id="ivrPopOverAP" data-placement="bottom" data-toggle="popover"  onClick="showPopOver(\'AP\');" title="" data-html="true" data-content="<ul class=popOverStyle><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" >?</a>';					
+					str1+='<a style = "cursor: pointer;" class="popOverCls" id="ivrPopOverAP" data-placement="bottom" data-toggle="popover"  onClick="showPopOver(\'AP\');"  data-html="true" data-content="<ul class=popOverStyle><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" title=" Village IVR Details" >?</a>';					
 						str1+=' </li>';
 						str1+='</ul>';
 						}
@@ -1566,11 +1569,11 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					if(result.committeeSummaryVO.totalWards != null && result.committeeSummaryVO.totalWards > 0)
 					{
 							str1+='<ul class="list-inline ivrdetails"><li style="width: 93px; background: none repeat scroll 0 0 #fff;"></li>';
-							str1+='<li style="width: 125px;">Total Wards:'+result.committeeSummaryVO.totalWards+'</li>';
+							str1+='<li style=""><table class="table table-bordered"><tbody><tr><th  style="background-color:#E5E5E5;">Total Wards </th></tr><tr><td>'+result.committeeSummaryVO.totalWards+'</td></tr></tbody></table></li>';
 							
 							if(result.committeeSummaryVO.totalWardIvr != null && result.committeeSummaryVO.totalWardIvr > 0)
 							{
-								str1+='<li style="width: 182px;">Total Ward IVR Calls:'+result.committeeSummaryVO.totalWardIvr+'</li>';
+								str1+='<li style=""><table class="table table-bordered"><tbody><tr><th  style="background-color:#E5E5E5;">  Total IVR Calls </th></tr><tr><td>'+result.committeeSummaryVO.totalWardIvr+'</td></tr></tbody></table></li>';
 								
 								if(result.committeeSummaryVO.totalWardAnswerdIvr != null && result.committeeSummaryVO.totalWardAnswerdIvr > 0)
 								{
@@ -1578,7 +1581,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 									var totLiftperc = 0;
 									totLiftpercentage = (result.committeeSummaryVO.totalWardAnswerdIvr *100)/ result.committeeSummaryVO.totalWardIvr;
 									totLiftperc = totLiftpercentage.toFixed(0)
-									str1+='<li style="width: 208px;">Total Ward IVR Lifted :'+result.committeeSummaryVO.totalWardAnswerdIvr+'('+totLiftperc+'%)</li>';
+									str1+='<li style=""><table class="table table-bordered"><tbody><tr><th  style="background-color:#E5E5E5;"> IVR Lifted  </th></tr><tr><td>'+result.committeeSummaryVO.totalWardAnswerdIvr+' ('+totLiftperc+'%)</td></tr></tbody></table></li>';
 								}
 								var totalAnswerd = 0;
 								for(var pm in result.committeeSummaryVO.optionsList1){
@@ -1589,15 +1592,15 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 								var totperc = 0;
 								totpercentage = (totalAnswerd *100)/ result.committeeSummaryVO.totalWardAnswerdIvr;
 								totperc = totpercentage.toFixed(0)
-								str1+='<li style="width: 260px;">Total Ward IVR Answred:'+totalAnswerd+'('+totperc+'%)</li>';
+								str1+='<li style=""><table class="table table-bordered"><tbody><tr><th  style="background-color:#E5E5E5;"> IVR Answred </th></tr><tr><td>'+totalAnswerd+' ('+totperc+'%)</td></tr></tbody></table></li>';
 							}
-							str1 += '</ul>';
+							//str1 += '</ul>';
 					}
 						
 						
 						if(result.committeeSummaryVO.totalWards != null && result.committeeSummaryVO.totalWards > 0)
 						{
-							str1+='<ul class="list-inline ivrdetails"><li style="width: 93px; background: none repeat scroll 0 0 #fff;"></li>';
+							str1+='<li style="width: 93px; background: none repeat scroll 0 0 #fff;margin-left: -50px;"></li>';
 								var percentage = 0;
 								var perc = 0;
 								if(result.committeeSummaryVO.total >0)
@@ -1609,7 +1612,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 										{
 											percentage = (result.committeeSummaryVO.optionsList1[i].count *100)/ totalWardIVRCount;
 											perc = percentage.toFixed(0);
-											str1+='<li>'+result.committeeSummaryVO.optionsList1[i].name+':'+result.committeeSummaryVO.optionsList1[i].count+'('+perc+'%) </li>';
+											str1+='<li><table class="table table-bordered"><tbody><tr><th  style="background-color:#E5E5E5;">'+result.committeeSummaryVO.optionsList1[i].name+' </th></tr><tr><td>'+result.committeeSummaryVO.optionsList1[i].count+' ('+perc+'%) </td></tr></tbody></table></li>';
 										}
 									}
 								}
@@ -1619,14 +1622,14 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 									{
 										for(var i in result.committeeSummaryVO.optionsList1)
 										{
-											str1+='<li>'+result.committeeSummaryVO.optionsList1[i].name+':'+result.committeeSummaryVO.optionsList1[i].count+'(0%)</li>';
+											str1+='<li><table class="table table-bordered"><tbody><tr><th  style="background-color:#E5E5E5;">'+result.committeeSummaryVO.optionsList1[i].name+' </th></tr><tr><td>'+result.committeeSummaryVO.optionsList1[i].count+' (0%)</td></tr></tbody></table></li>';
 										}
 									}
 								}
 							if(result.committeeSummaryVO.totalWards != null && result.committeeSummaryVO.totalWards > 0)
 							{
 								str1+='<li>';
-								str1+='<a style = "cursor: pointer;" class="popOverCls" id="ivrPopOverAP" data-placement="bottom" data-toggle="popover"  onClick="showPopOver(\'AP\');" title="" data-html="true" data-content="<ul class=popOverStyle><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" >?</a>';					
+								str1+='<a style = "cursor: pointer;" class="popOverCls" id="ivrPopOverAP" data-placement="bottom" data-toggle="popover"  onClick="showPopOver(\'AP\');" title=" Wards IVR Details" data-html="true" data-content="<ul class=popOverStyle><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" >?</a>';					
 								str1+=' </li>';
 							}
 							
