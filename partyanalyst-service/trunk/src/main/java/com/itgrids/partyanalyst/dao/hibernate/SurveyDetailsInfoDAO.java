@@ -2466,4 +2466,46 @@ public List<Object[]> getProcecingBoothCountByConstId(Long constituencyId){
 	
 		return query.list();
 	}
+public List<Object[]> getVotersDetailsByBooth(Long boothId,List<Long> assignUsers,Date searchDate,Long casteStateId)
+	{
+		
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select SDI.voter.voterId,BPV.serialNo,SDI.mobileNumber,caste.caste.casteName" +
+				" ,SDI.casteName,hamlet.hamletName,SDI.hamletName,SDI.wardId,surveyUser.surveyUserId," +
+				" SDI.voter.name,SDI.voter.houseNo,SDI.voter.relativeName ");
+		queryStr.append(" from BoothPublicationVoter BPV,SurveyDetailsInfo SDI left join SDI.surveyUser surveyUser " +
+		 		"  left join SDI.hamlet hamlet left join SDI.caste caste ");
+		queryStr.append(" where SDI.booth.boothId = BPV.booth.boothId and SDI.voter.voterId = BPV.voter.voterId ");
+		queryStr.append(" and SDI.booth.boothId  = :boothId ");
+		
+		
+		if(assignUsers != null && assignUsers.size() >0)
+			queryStr.append("and surveyUser.surveyUserId in (:assignUsers)  ");
+		else
+			queryStr.append("and surveyUser.surveyUserType.surveyUsertypeId = :dataCollectorRoleId ");
+			
+	//	queryStr.append("  and date(SDI.date) = :searchDate  and SDI.voter.voterId not in ( select SCS.voter.voterId from SurveyCallStatus SCS where  SDI.surveyUser.surveyUserId =  SCS.surveyUser.surveyUserId )" );
+		
+		if(casteStateId != null && casteStateId != 0){
+			queryStr.append(" and  caste.casteStateId = :casteStateId ");
+		}
+		
+		queryStr.append("  order by SDI.voter.voterId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("boothId", boothId);		
+		//query.setParameter("searchDate", searchDate);
+		
+		if(assignUsers != null && assignUsers.size() >0)
+			query.setParameterList("assignUsers", assignUsers);	
+		else
+			query.setParameter("dataCollectorRoleId", IConstants.DATA_COLLECTOR_ROLE_ID);
+		
+		if(casteStateId != null && casteStateId != 0)
+		{
+			query.setParameter("casteStateId", casteStateId);
+		}
+		
+		return query.list();
+	}
 }
