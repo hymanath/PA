@@ -414,7 +414,7 @@ public class CadreIvrResponseDAO extends GenericDaoHibernate<CadreIvrResponse, L
 		sb.append(" group by CIR.callStatus,CIR.optionId ");
 		Query query = getSession().createQuery(sb.toString());
 		*/
-		sb.append("select call_status, option_id ,  sum( count) from cadre_ivr_response_info where campaign_id=:campainId ");
+		sb.append("select call_status,option_id,sum(count) from cadre_ivr_response_info where campaign_id=:campainId ");
 		if(distIds != null && distIds.size() > 0)
 		{
 			sb.append(" and location_id in (:distIds) and location_type like '%District%'" );
