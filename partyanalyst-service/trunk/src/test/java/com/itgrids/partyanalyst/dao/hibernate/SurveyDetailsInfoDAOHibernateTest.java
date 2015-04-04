@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -273,8 +275,24 @@ public class SurveyDetailsInfoDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void testGetSurveyStartedConstituencyInfo()
 	{
-		List<Object[]> list = surveyDetailsInfoDAO.getSurveyStartedConstituencyInfo();
-		System.out.println(list.size());
+		/*List<Object[]> list = surveyDetailsInfoDAO.getSurveyStartedConstituencyInfo();
+		System.out.println(list.size());*/
+		List<Long> assignUsers = new ArrayList<Long>();
+		assignUsers.add(1857l);
+		try{
+			SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+			Date searchDate = date.parse("2014-10-11");
+			List<Object[]> list =surveyDetailsInfoDAO. getVotersDetailsByBooth(447544l,assignUsers,searchDate,null);
+			for(Object[] params : list)
+				System.out.println((Long)params[0]);
+			System.out.println(list.size());
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		 
 	}
 	
 }
