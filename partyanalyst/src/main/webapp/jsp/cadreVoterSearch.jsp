@@ -219,6 +219,12 @@ z-index:2;
 		$('.fadeInRight').addClass('animated  fadeInRight ');
 		casteArr = new Array();
 		var casteDetailsArr = new Array();
+		var obj = {
+					value :  '0',
+					label :  'Any'
+				}
+		casteDetailsArr.push('Any');
+		casteArr.push(obj);
 		<c:forEach var="caste" items="${casteDetails}">
 				var obj = {
 					value :  '${caste.id}',
@@ -406,6 +412,11 @@ z-index:2;
 			if(result != null){
 				if(type == 'district'){
 					districtArr = new Array();
+					var obj = {
+						value :  0,
+						label :  'Any'
+						}			
+					districtArr.push(obj);
 					for(var i in result){
 						var obj = {
 						value :  result[i].locationId,
@@ -424,6 +435,12 @@ z-index:2;
 				else if(type == 'Constituency' || type == 'constituencyByState'){
 					constiArr = new Array();
 					//$('.districtCls').remove();
+					var obj = {
+						value :  0,
+						label :  'Any'
+						}			
+						constiArr.push(obj);
+						
 					for(var i in result){
 						var obj = {
 						value :  result[i].locationId,
@@ -932,9 +949,9 @@ var constiSel =0;
 					}
 				}	
 					if(casteBoolean == false){
-				$("#casteId1").prepend('<option value="0" selected>Any</option>');
+				//$("#casteId1").prepend('<option value="0" selected>Any</option>');
 				}else{
-				$("#casteId1").prepend('<option value="0">Any</option>');
+				//$("#casteId1").prepend('<option value="0">Any</option>');
 				}
 				$("#casteId1").append(casteOptions);
 			
@@ -1177,9 +1194,9 @@ var constiSel =0;
 					}
 				}	
 				if(casteBoolean == false){
-				$("#casteId1").prepend('<option value="0" selected>Any</option>');
+				//$("#casteId1").prepend('<option value="0" selected>Any</option>');
 				}else{
-				$("#casteId1").prepend('<option value="0">Any</option>');
+				//$("#casteId1").prepend('<option value="0">Any</option>');
 				}
 				$("#casteId1").append(casteOptions);				
 				$("#casteId1").append(casteOptions);
@@ -1758,8 +1775,6 @@ var constiSel =0;
 	function getCasteDetailsForSelection(isFinalValue,getDetailsAreaType,divId,locationType){
 
 		var locationId = 0;
-		//glblLocationId=LocalLocationId;
-		//glblLocationType=locationType;
 		
 		if(glblLocationId != 0)
 		{
