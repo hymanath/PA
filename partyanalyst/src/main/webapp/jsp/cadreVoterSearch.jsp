@@ -1312,9 +1312,9 @@ var constiSel =0;
 						locationType = "ward";
 					}
 				}
-				console.log("locationType 1111 :"+locationType);
-				console.log("isFinalValue 1111 :"+isFinalValue);
-				console.log("isGreater 1111 :"+isGreater);
+				console.log("locationType 2222 :"+locationType);
+				console.log("isFinalValue 2222 :"+isFinalValue);
+				console.log("isGreater 2222 :"+isGreater);
 				if(isGreater)
 				{					
 					buildSearchCandidateDetails(result,dinamicDiv,locationName,locationType,searchType,nextLocationType,stateId,casteStateId,locationId,0,greaterId);
@@ -1878,7 +1878,7 @@ var constiSel =0;
 		//buildSearchDetailsSecondLevel(locationId,locationType,divId);
 		var searchName =  $('#enteredText').val();
 		var locationName ='';
-		
+		var actualLocationType = locationType;
 		var isFinal = "";
 		if(isFinalValue != 0)
 		{
@@ -1916,6 +1916,19 @@ var constiSel =0;
 			locationId = $("#tehsilId1 option:selected").val();
 			locationName = $("#tehsilId1 option:selected").text();
 		}
+		
+		if(searchType == 'VOTER')
+		{
+			if(actualLocationType == 'LOCAL_ELECTION_BODY')
+			{
+				locationType ="ward";
+			}				
+			else if(actualLocationType == 'ward')
+			{
+				locationType ="ward";
+			}				
+		}
+		
 		
 		$('#positoinDivId').hide();
 		$('#searchDetailsDiv').html('');
@@ -1960,14 +1973,26 @@ var constiSel =0;
 				}
 				console.log("locationType 1111 :"+locationType);
 				console.log("isFinalValue 1111 :"+isFinalValue);
-				console.log("isGreater 1111 :"+isGreater);
+				console.log("isGreater 1111 :"+isGreater);  
+				console.log("searchType 1111 :"+searchType);
 				if(isGreater)
-				{					
-					buildSearchCandidateDetails(result,divId,locationName,locationType,searchType,nextLocationType,stateId,casteStateId,locationId,0,greaterId);
+				{
+					if(searchType == 'CADRE')
+						buildSearchCandidateDetails(result,divId,locationName,locationType,searchType,nextLocationType,stateId,casteStateId,locationId,0,greaterId);
+					else if(searchType == 'VOTER')
+					{
+						buildSearchCandidateDetails(result,divId,locationName,locationType,searchType,nextLocationType,stateId,casteStateId,locationId,0,greaterId);
+					}
 				}
 				else if(isFinalValue != 0)
 				{
-					buildSearchCandidateDetails(result,divId,'',locationType,searchType,nextLocationType,stateId,casteStateId,locationId,locationName,greaterId);
+					if(searchType == 'CADRE')
+						buildSearchCandidateDetails(result,divId,'',locationType,searchType,nextLocationType,stateId,casteStateId,locationId,locationName,greaterId);
+					else if(searchType == 'VOTER')
+					{
+						buildSearchCandidateDetails(result,divId,'',locationType,searchType,nextLocationType,stateId,casteStateId,locationId,locationName,greaterId);
+					}
+					
 				}
 				else{
 				
@@ -1983,6 +2008,8 @@ var constiSel =0;
 	//sri3
 	function buildSearchCandidateDetails(myresults,divId,locationName,locationType,searchType,nextLocationType,stateId,casteStateId,locationId,isMuncipality,greaterId)
 	{
+		console.log("entered into buliding caste details ");
+		console.log("entered into buliding caste details divId : "+divId);
 		$('#positoinDivId').show();	
 		var result = myresults[0].cadreSearchList;
 		divCount = parseInt(divCount)+1;
@@ -2044,7 +2071,7 @@ var constiSel =0;
 			str+='</div>';
 		}
 		
-		var result = myresults[0].voterSearchList
+		var result = myresults[0].voterSearchList;
 
 		if(result != null && result.length>0)
 		{
@@ -2161,7 +2188,7 @@ var constiSel =0;
 		$('.detailsCls').html('');
 		$('#'+divId+'').html('<img id="ajaxImg" src="./images/Loading-data.gif" alt="Processing Image"  class="offset6" style="height: 80px;">');		
 		var searchName = $('#enteredText').val();
-
+		var actualLocationType = locationType;
 		if(locationType != 'panchayat' && locationType !='state' && locationType !='constituency')
 		{
 			if(isMuncipality != 0)
@@ -2183,6 +2210,30 @@ var constiSel =0;
 		{
 			locationType ="ward";
 		}
+		console.log("greaterId 9999 :"+greaterId);
+		console.log("actualLocationType 9999 :"+actualLocationType);
+		if(searchType == 'VOTER')
+		{
+			if(actualLocationType == 'LOCAL_ELECTION_BODY')
+			{
+				if(greaterId == 3)
+				{
+					locationType ="LOCAL_ELECTION_BODY";
+				}
+				else{
+					locationType ="ward";
+				}
+			}
+			else if(locationName.indexOf('muncipality') != -1 || locationName.indexOf('corporation') != -1)
+			{
+				locationType = 'LOCAL_ELECTION_BODY';
+			}
+			else if(actualLocationType == 'ward')
+			{
+				locationType ="ward";
+			}				
+		}
+		
 			console.log("locationType 9999 :"+locationType);
 		var jObj = {
 			searchType:searchType,			
