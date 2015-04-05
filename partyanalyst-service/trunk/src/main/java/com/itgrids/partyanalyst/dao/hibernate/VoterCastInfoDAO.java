@@ -382,13 +382,27 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 			boolean isStateWise = false;
 			StringBuilder str  = new StringBuilder();
 			str.append(" select distinct model.casteState.caste.casteName, model.casteState.casteStateId, sum(model.casteVoters)  ");
-			if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			if(locationIdsList != null && locationIdsList.size() > 0 && locationIdsList.get(0) != 0L && locationType != null && locationType.equalsIgnoreCase(IConstants.STATE))
 			{
 				str.append(" from VoterCastInfo model,Constituency model2 where model2.constituencyId = model.reportLevelValue and model.constituency.constituencyId = model2.constituencyId ");
 				str.append(" and model.voterReportLevel.voterReportLevelId = 1 and model.publicationDateId = 11 ");
 				if(locationIdsList != null && locationIdsList.size() > 0)
 				{
-					str.append(" and model2.constituency.constituencyId in (:locationIdsList) ");
+					str.append(" and model2.district.districtId in (:locationIdsList) ");
+				}
+				if(casteStateId != null && casteStateId.longValue() >0)
+				{
+					str.append(" and model.casteState.casteStateId = :casteStateId ");
+				}
+				str.append(" group by model.casteState.casteStateId order by sum(model.casteVoters) desc ");
+			}		
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			{
+				str.append(" from VoterCastInfo model,Constituency model2 where model2.constituencyId = model.reportLevelValue and model.constituency.constituencyId = model2.constituencyId ");
+				str.append(" and model.voterReportLevel.voterReportLevelId = 1 and model.publicationDateId = 11 ");
+				if(locationIdsList != null && locationIdsList.size() > 0)
+				{
+					str.append(" and model2.constituencyId in (:locationIdsList) ");
 				}
 				if(casteStateId != null && casteStateId.longValue() >0)
 				{

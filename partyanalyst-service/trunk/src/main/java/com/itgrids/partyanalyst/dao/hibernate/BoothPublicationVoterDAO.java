@@ -7663,7 +7663,11 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 			str.append(" left join model.voter ");
 			str.append(" where  model.voter.voterId = UVD.voter.voterId and UVD.user.userId = 1 and model.booth.publicationDate.publicationDateId = 11 and ");
 			
-			if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			if(locationId != null && locationId.longValue() != 0L && locationType != null && locationType.equalsIgnoreCase(IConstants.STATE))
+			{
+				str.append(" district.districtId =:locationId ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
 			{
 				str.append(" constituency.constituencyId =:locationId ");
 			}
