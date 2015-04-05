@@ -248,7 +248,7 @@ public class CadreDetailsService implements ICadreDetailsService{
     		
     		if(locationLevel != null && locationLevel.longValue() != 0L && locationValue != null && locationValue.longValue() != 0L)
     		{
-    			if(locationLevel.longValue() == 2L)
+    			if(locationLevel.longValue() == 2L || locationLevel.longValue() == 3L)
     			{
     				queryStr.append(" and model.userAddress.district.districtId =:locationValue ");
     			}
