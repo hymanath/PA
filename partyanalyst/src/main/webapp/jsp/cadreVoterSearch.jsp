@@ -184,6 +184,8 @@ z-index:2;
 						<img id="ajaxImageIdAPmandalconstiRoleSummary" src="./images/Loading-data.gif" alt="Processing Image" style="display:none;">
 					</div>
 				</div>
+				<div id="casteWiseDetailsDiv" class="">						
+					</div>	
 			</div>
 		</div>
 		<input type="button" value="Top" class="btn btn-primary pull-right" style="position:fixed;bottom:25px;right:10px; z-index: 999;display:none;"id="positoinDivId" onclick="scrollToDiv();">
@@ -1297,7 +1299,7 @@ var constiSel =0;
 					if(greaterId != null && greaterId == 1)
 					{
 						isGreater = true;
-						locationType = "LOCAL_ELECTION_BODY";
+						locationType = "ward";
 					}
 					else if(greaterId != null && greaterId == 2)
 					{						
@@ -1307,7 +1309,7 @@ var constiSel =0;
 					else if(greaterId != null && greaterId == 3)
 					{			
 						isGreater = true;				
-						locationType = "LOCAL_ELECTION_BODY";
+						locationType = "ward";
 					}
 				}
 				console.log("locationType 1111 :"+locationType);
@@ -1474,6 +1476,99 @@ var constiSel =0;
 									
 	}
 	
+	function getCastwiswDetailsSelection(locationId,locationType,stateId,searchType,casteStateId,isFinalValue,getDetailsAreaType,divId,isMuncipality,presentDiv,locationName)
+	{		
+		$('#'+presentDiv+'').html('');
+	
+		$('#ajaxImageIdAPmandalconstiRoleSummary').show();
+		var searchName = $('#enteredText').val();
+		var isFinal = "";
+		if(isFinalValue != 0)
+		{
+			isFinal = isFinalValue;
+			locationType = getDetailsAreaType;
+		}
+		
+		var nextLocationType = "";
+		if(locationType == 'state')
+		{
+			nextLocationType ="constituency";
+		}
+		else if(locationType == 'constituency')
+		{
+			nextLocationType ="tehsil";
+		}
+		else if(locationType == 'tehsil')
+		{
+			nextLocationType ="panchayat";
+		}
+		
+		if(isMuncipality != 0)
+				locationType ="ward";
+			
+		$('#positoinDivId').hide();
+		var jObj = {
+			searchType:searchType,			
+			stateId:stateId,
+			locationId:locationId,
+			locationType:locationType,
+			casteStateId:casteStateId,
+			searchName:searchName,
+			isFinal:isFinal
+		}	
+		
+		$.ajax({
+          type:'GET',
+          url: 'getCadreVoterDetailsBySearchAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			buildSearchDetailsSecondLevel(locationId,locationType,divId);
+			if(locationName.indexOf('muncipality') != -1 || locationName.indexOf('corporation') != -1){
+				if(searchType =='VOTER')
+					{
+						isFinalValue = "votersCount";
+						locationType = "ward";
+					}
+					else if(searchType =='CADRE')
+					{
+						isFinalValue = "cadreCount";
+						locationType = "ward";
+					}			
+			}	
+			$('#ajaxImageIdAPmandalconstiRoleSummary').hide();
+			
+			if(result != null)
+			{
+				var isGreater = false;
+				var greaterId = 0;
+				if(result.length>0)
+				{
+					greaterId = result[0].constituencyId;
+					if(greaterId != null && greaterId == 1)
+					{
+						isGreater = true;
+						locationType = "LOCAL_ELECTION_BODY";
+					}
+					else if(greaterId != null && greaterId == 2)
+					{
+						locationType = "ward";
+					}
+					else if(greaterId != null && greaterId == 3)
+					{			
+						isGreater = true;				
+						locationType = "LOCAL_ELECTION_BODY";
+					}
+				}	
+					buildSearchCandidateDetails(result,divId,locationName,locationType,searchType,nextLocationType,stateId,casteStateId,locationId,isMuncipality,greaterId);
+							
+			}
+			else{
+				buildSearchDetailsSecondLevel(locationId,locationType,divId);
+				$('#'+divId+'').html(' <div style="align-text:center;font-weight:bold;">No Data Available ...</div>');
+			}
+		});		
+	}
+	
 	function getDetailsForSelection(locationId,locationType,stateId,searchType,casteStateId,isFinalValue,getDetailsAreaType,divId,isMuncipality,presentDiv,locationName)
 	{		
 		$('#'+presentDiv+'').html('');
@@ -1544,7 +1639,7 @@ var constiSel =0;
 					if(greaterId != null && greaterId == 1)
 					{
 						isGreater = true;
-						locationType = "LOCAL_ELECTION_BODY";
+						locationType = "constituency";
 					}
 					else if(greaterId != null && greaterId == 2)
 					{
@@ -1657,14 +1752,14 @@ var constiSel =0;
 					str+='<div class="district-box get-details">';
 					if(locationType == 'panchayat' || locationType == 'ward')
 					{	
-						str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',\'cadreCount\',\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}"  title="Click here to get Cadre Details"  style="display:inline-block;">&nbsp;&nbsp; <h5 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'  <span style="margin-left:8px;"> '+areaType+'</span></h5></a>';
+						str+='<a href="javascript:{getCastwiswDetailsSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',\'cadreCount\',\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}"  title="Click here to get Cadre Details"  style="display:inline-block;">&nbsp;&nbsp; <h5 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'  <span style="margin-left:8px;"> '+areaType+'</span></h5></a>';
 					}
 					else{
 						str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}" class="district-box-name get-details" title="Click here to get Sub Level Details">';	
 						str+='<h5 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'  <span style="margin-left:8px;"> '+areaType+'</span></h5></a>';
 					}
 					
-					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',\'cadreCount\',\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}"  class="badge badge-success" title="Click here to get Cadre Details"  style="color: #fff; margin-top: 5px;"> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
+					str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getCastwiswDetailsSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',\'cadreCount\',\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}"  class="badge badge-success" title="Click here to get Cadre Details"  style="color: #fff; margin-top: 5px;"> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
 					str+='</div>';	
 						if(typeof mainConstiArr != 'undefined' && (mainConstiArr.length ==0 || mainConstiArr.length < result.length))
 						{
@@ -1712,14 +1807,14 @@ var constiSel =0;
 						str+='<div class="district-box get-details">';
 						if(locationType == 'panchayat' || locationType == 'ward')
 						{	
-							str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',\'votersCount\',\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}"  title="Click here to get Voter Details"  style="display:inline-block;">&nbsp;&nbsp;<h5 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'  <span style="margin-left:8px;"> '+areaType+'</span></h5></a>';
+							str+='<a href="javascript:{getCastwiswDetailsSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',\'votersCount\',\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}"  title="Click here to get Voter Details"  style="display:inline-block;">&nbsp;&nbsp;<h5 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'  <span style="margin-left:8px;"> '+areaType+'</span></h5></a>';
 						}
 						else{
 							str+='<a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',0,\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}" class="district-box-name get-details" title="Click here to get Sub Level Details">';	
 							str+='<h5 class="" style="display:inline-block;"> &nbsp;&nbsp;'+result[i].constituency+'   <span style="margin-left:8px;"> '+areaType+'</span></h5></a>';
 						}
 						
-						str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getDetailsForSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',\'votersCount\',\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}"  class="badge badge-success" title="Click here to get Voter Details"  style="color:#fff; margin-top: 5px;"> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
+						str+='<span class="pull-right" style="margin-top:8px;"><a href="javascript:{getCastwiswDetailsSelection('+result[i].constituencyId+',\''+nextLocationType+'\','+stateId+',\''+searchType+'\','+casteStateId+',\'votersCount\',\''+locationType+'\',\''+divId+''+divCount+'\','+isMuncipality+',\''+divId+'\',\''+result[i].constituency+'\');}"  class="badge badge-success" title="Click here to get Voter Details"  style="color:#fff; margin-top: 5px;"> &nbsp;'+result[i].totalCount+' &nbsp;</a></span>';
 						str+='</div>';	
 						
 							if(typeof mainConstiArr != 'undefined' && (mainConstiArr.length ==0 || mainConstiArr.length < result.length))
@@ -1775,12 +1870,7 @@ var constiSel =0;
 	function getCasteDetailsForSelection(isFinalValue,getDetailsAreaType,divId,locationType){
 
 		var locationId = 0;
-		
-		if(glblLocationId != 0)
-		{
-			locationId= glblLocationId;
-		}
-		
+			
 		var searchType = $("#searchId1 option:selected").text();
 		var stateId =  $("#stateId1 option:selected").val();
 		var casteStateId =$("#casteId1 option:selected").val();
@@ -1820,6 +1910,12 @@ var constiSel =0;
 			locationId = $("#tehsilId1 option:selected").val();
 			locationName = $("#tehsilId1 option:selected").text();
 		}
+		else if(locationType == 'ward')
+		{
+			nextLocationType ="";
+			locationId = $("#tehsilId1 option:selected").val();
+			locationName = $("#tehsilId1 option:selected").text();
+		}
 		
 		$('#positoinDivId').hide();
 		$('#searchDetailsDiv').html('');
@@ -1842,7 +1938,34 @@ var constiSel =0;
 			$('#ajaxImageIdAPmandalconstiRoleSummary').hide();
 			if(result != null)
 			{
-				if(isFinalValue != 0)
+				var isGreater = false;
+				if(result.length>0)
+				{
+					var greaterId = result[0].constituencyId;
+					if(greaterId != null && greaterId == 1)
+					{
+						isGreater = true;
+						locationType = "ward";
+					}
+					else if(greaterId != null && greaterId == 2)
+					{						
+						locationType = "ward";
+						isFinalValue = "defaultCount";
+					}
+					else if(greaterId != null && greaterId == 3)
+					{			
+						isGreater = true;				
+						locationType = "ward";
+					}
+				}
+				console.log("locationType 1111 :"+locationType);
+				console.log("isFinalValue 1111 :"+isFinalValue);
+				console.log("isGreater 1111 :"+isGreater);
+				if(isGreater)
+				{					
+					buildSearchCandidateDetails(result,divId,locationName,locationType,searchType,nextLocationType,stateId,casteStateId,locationId,0,greaterId);
+				}
+				else if(isFinalValue != 0)
 				{
 					buildSearchCandidateDetails(result,divId,'',locationType,searchType,nextLocationType,stateId,casteStateId,locationId,locationName,greaterId);
 				}
@@ -2036,9 +2159,10 @@ var constiSel =0;
 	function getTotalCandidateDetailsForCaste(locationId,locationType,stateId,searchType,casteStateId,divId,locationName,isMuncipality,isFinalStr,greaterId)
 	{		
 		$('.detailsCls').html('');
-		$('#'+divId+'').html('<img id="ajaxImg" src="./images/Loading-data.gif" alt="Processing Image"  class="offset6" style="height: 80px;">');
+		$('#'+divId+'').html('<img id="ajaxImg" src="./images/Loading-data.gif" alt="Processing Image"  class="offset6" style="height: 80px;">');		
 		var searchName = $('#enteredText').val();
-		if(locationType != 'panchayat')
+
+		if(locationType != 'panchayat' && locationType !='state' && locationType !='constituency')
 		{
 			if(isMuncipality != 0)
 			{
@@ -2046,15 +2170,20 @@ var constiSel =0;
 			}				
 			else if(greaterId == 0)
 			{
-				locationType ="LOCAL_ELECTION_BODY";
+				locationType ="constituency";
 			}
 		}
+		console.log("locationType 8888 :"+locationType);
 		
-		if(searchType == 'CADRE' && isMuncipality != 0)
+		if(greaterId == 1 || greaterId == 3)
 		{
-			locationType ="LOCAL_ELECTION_BODY";
-		}	
-			
+			locationType ="constituency";
+		}
+		if(greaterId == 2)
+		{
+			locationType ="ward";
+		}
+			console.log("locationType 9999 :"+locationType);
 		var jObj = {
 			searchType:searchType,			
 			stateId:stateId,
