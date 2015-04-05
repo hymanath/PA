@@ -7752,7 +7752,11 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 			str.append(" left join model.voter ");
 			str.append(" where  model.voter.voterId = UVD.voter.voterId and UVD.user.userId = 1 and  model.booth.publicationDate.publicationDateId = 11  and ");
 			
-			if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			if(locationId != null && locationId.longValue() != 0L && locationType != null && locationType.equalsIgnoreCase(IConstants.STATE))
+			{
+				str.append(" district.districtId =:locationId ");
+			}
+			else if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
 			{
 				str.append(" constituency.constituencyId =:locationId ");
 			}
@@ -7791,8 +7795,10 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 			if(nameStr != null && nameStr.trim().length() != 0L)
 			{
 				str.append("  and ( model.voter.name like '%"+nameStr+"%' ) ");
-			}		
+			}	
+			
 			str.append("  group by  UVD.casteState.casteStateId order by count(*) desc  ");
+			
 			Query query = getSession().createQuery(str.toString());
 			
 			if(casteStateId != null && casteStateId.longValue() != 0L)
