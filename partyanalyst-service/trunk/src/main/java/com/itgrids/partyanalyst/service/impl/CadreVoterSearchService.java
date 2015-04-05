@@ -216,11 +216,11 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 								
 								if(searchType !=null && (searchType.equalsIgnoreCase("Voter")))
 								{
-									return getCadreVoterWardDetailsBySearchCriteria(searchType,stateId,IConstants.LOCAL_ELECTION_BODY,muncipalityORCorprationIdsList.get(0),casteStateId,nameStr,electionbodyName,"votersCount");
+									return getCadreVoterWardDetailsBySearchCriteria(searchType,stateId,IConstants.CONSTITUENCY,locationId,casteStateId,nameStr,electionbodyName,"votersCount");
 								}
 								else if(searchType !=null && (searchType.equalsIgnoreCase("Cadre")))
 								{
-									return getCadreVoterWardDetailsBySearchCriteria(searchType,stateId,IConstants.LOCAL_ELECTION_BODY,muncipalityORCorprationIdsList.get(0),casteStateId,nameStr,electionbodyName,"cadreCount");
+									return getCadreVoterWardDetailsBySearchCriteria(searchType,stateId,IConstants.CONSTITUENCY,locationId,casteStateId,nameStr,electionbodyName,"cadreCount");
 								}
 							}		
 						}
@@ -331,7 +331,7 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 				Long locationLevel = 0L;
 				if(locationType != null && locationType.equalsIgnoreCase(IConstants.STATE))
     			{
-					locationLevel = 2L;
+					locationLevel = 3L;
     			}
 				else if(locationType != null && locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
     			{
@@ -348,15 +348,38 @@ public class CadreVoterSearchService implements ICadreVoterSearchService{
 				else if(locationType != null && locationType.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
     			{
 					locationLevel = 7L;
-					muncipalityORCorprationIdsList = boothDAO.getLocalbodiesByConstituencyIds(locationIdsList,IConstants.VOTER_DATA_PUBLICATION_ID);	
-					if(muncipalityORCorprationIdsList != null && muncipalityORCorprationIdsList.size()>0)
-					{	
-						locationId = muncipalityORCorprationIdsList.get(0);
+					
+					if(searchType !=null && searchType.equalsIgnoreCase("Cadre"))
+					{
+						muncipalityORCorprationIdsList = boothDAO.getLocalbodiesByConstituencyIds(locationIdsList,IConstants.VOTER_DATA_PUBLICATION_ID);	
+						if(muncipalityORCorprationIdsList != null && muncipalityORCorprationIdsList.size()>0)
+						{	
+							locationId = muncipalityORCorprationIdsList.get(0);
+						}
+					}
+					else
+					{
+						locationLevel = 7L;
 					}
     			}
 				else if(locationType != null && locationType.equalsIgnoreCase(IConstants.WARD))
     			{
-					locationLevel = 8L;
+					//locationLevel = 8L;
+					if(searchType !=null && searchType.equalsIgnoreCase("Cadre"))
+					{
+						locationLevel = 7L;
+					}
+					else
+					{
+						locationLevel = 4L;
+						locationType = IConstants.CONSTITUENCY;
+					}
+					
+					/*muncipalityORCorprationIdsList = boothDAO.getLocalbodiesByConstituencyIds(locationIdsList,IConstants.VOTER_DATA_PUBLICATION_ID);	
+					if(muncipalityORCorprationIdsList != null && muncipalityORCorprationIdsList.size()>0)
+					{	
+						locationId = muncipalityORCorprationIdsList.get(0);
+					}*/
     			}
 				else if(locationType != null && locationType.equalsIgnoreCase(IConstants.BOOTH))
     			{
