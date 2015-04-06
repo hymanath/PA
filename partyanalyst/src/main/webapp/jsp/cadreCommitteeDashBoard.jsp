@@ -88,8 +88,10 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						<li><a tabindex="-1" href="dashBoardAction.action">Home</a></li>
 					</c:if>
 					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_ADMIN' )}">
-						<li><a tabindex="-1" href="committeeDashBoardAction.action">Home</a></li>
-					
+					  <li><a tabindex="-1" href="committeeDashBoardAction.action">Home</a></li>
+					  <c:if test="${fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_DETAILED_REPORT' )}">
+						 <li><a tabindex="-1" href="cadreCommitteeRolesDashboard.action">Committee Detailed Report </a></li>
+					  </c:if>					 
 				  	  <li><a tabindex="-1" href="committeeUpdateApproveAction.action">Approval Requests</a></li>
 				  	  <li><a tabindex="-1" href="constituencyCommitteeSummaryAction.action">Advanced DashBoard</a></li>
                       <li role="presentation" class="divider" style="background-color: rgba(229, 229, 229,0.6);"></li>
@@ -135,7 +137,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						<table width="100%" class="table table-bordered" style="background-color:transparent; margin-bottom:0px;"  >
 							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 								<td colspan="6" style="text-align: right;">
-								        <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;"onClick="showHideDivs('ap','Village');"> <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span><b>VILLAGE/WARD LEVEL COMMITTEES</b></button>
+								        <button style="float:left;border: 0px none; background-color:#E5E5E;"onClick="showHideDivs('ap','Village');"> <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span><b>VILLAGE/WARD LEVEL COMMITTEES</b></button>
 									<div id="apVillageButtonsDiv" style="" class="toggleCls"  >
 										<button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdAPvillage" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
 										<button id="village"  class="btn btn-xs btn-success highlightClick1" onclick="getCommitteeDetails('AP','village')">Village</button> | 
@@ -144,7 +146,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 									</div>
 								</td>
 							</tr>
-							<tr id="apVillageBodyTR">
+							<tr id="apVillageBodyTR" class="apVillageBodyTR toggleCls12">
 								<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div8"></div></h4></td>
 								<td style="padding:10px;" width="10%">
 									<span class="text-success">Started</span><br/> Committees
@@ -174,10 +176,10 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 								<td style="padding:10px;" width="28%">TOTAL <br/><b>MEMBERS</b><h4 class="m_top0"><div id="div14"></div></h4></td>
 								<div id="apVillageDiv"></div>
 							</tr>
-							<tr id="ivrDivIdAP" class="span"></tr>
+							<tr id="ivrDivIdAP" class="span apVillageBodyTR" ></tr>
 							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);" id="apMandalHeadingTR">
 								<td colspan="6" style="text-align: right;">
-								   <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;" onClick="showHideDivs('ap','Mandal');"> <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span> <b>
+								   <button style="float:left;border: 0px none; background-color:#E5E5E;" onClick="showHideDivs('ap','Mandal');"> <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span> <b>
 								    MANDAL/TOWN/DIVISION LEVEL COMMITTEES</b></button>
 									<div id="apMandalButtonsDiv" style="display:none;" class="toggleCls"  >
 								    <button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdAPmandal" src="images/icons/search.gif" alt="Processing Image" style="display:none;" /></button>
@@ -224,7 +226,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 										
 							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); dispaly:none;" id="apDistrictHeadingTR">
 							<td colspan="6" style="text-align: right;">
-							    <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;" onClick="showHideDivs('ap','District');"> <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span><b>  DISTRICT LEVEL COMMITTEES</b></button>
+							    <button style="float:left;border: 0px none; background-color:#E5E5E;" onClick="showHideDivs('ap','District');"> <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span><b>  DISTRICT LEVEL COMMITTEES</b></button>
 								
 							    <button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdAPdistrict" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
 							</td>
@@ -261,7 +263,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 									
 							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);" id="apStateHeadingTR">
 							<td colspan="6" style="text-align: right;">
-							    <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;" onClick="showHideDivs('ap','State');"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span><b>   STATE LEVEL COMMITTEES</b></button>
+							    <button style="float:left;border: 0px none; background-color:#E5E5E;" onClick="showHideDivs('ap','State');"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span><b>   STATE LEVEL COMMITTEES</b></button>
 								
 							    <button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdAPstate" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
 							</td>
@@ -318,7 +320,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						<table width="100%" class="table table-bordered" style="background-color:transparent; margin-bottom:0px;"  >
 							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 								<td colspan="6" style="text-align: right;">
-								    <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;"> <b>  MANDAL/TOWN/DIVISION LEVEL COMMITTEES</b></button>
+								    <button style="float:left;border: 0px none; background-color:#E5E5E;"> <b>  MANDAL/TOWN/DIVISION LEVEL COMMITTEES</b></button>
 							
 									<button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdAPmandal" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
 									
@@ -387,7 +389,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							</tr>
 							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 								<td colspan="6" style="text-align: right;">
-								        <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;"><b>VILLAGE/WARD LEVEL COMMITTEES</b></button>  
+								        <button style="float:left;border: 0px none; background-color:#E5E5E;"><b>VILLAGE/WARD LEVEL COMMITTEES</b></button>  
 
 										<button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdAPvillage" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
 										<button id="village"  class="btn btn-xs btn-success highlightClick1" onclick="getCommitteeDetails('AP','village')">Village</button> | 
@@ -427,7 +429,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							</tr>
 								<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);" id="districtDistrictHeadingTR">
 							<td colspan="6" style="text-align: right;">
-							    <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;"> <b> DISTRICT LEVEL COMMITTEES</b></button>
+							    <button style="float:left;border: 0px none; background-color:#E5E5E;"> <b> DISTRICT LEVEL COMMITTEES</b></button>
 							    <button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdAPdistrict" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
 							</td>
 						</tr>
@@ -486,7 +488,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					<table width="100%" class="table table-bordered" style="background-color:transparent; margin-bottom:0px;"  >
 						<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 							<td colspan="6" style="text-align: right;">
-							     <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;"onClick="showHideDivs('ts','Village');"> <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span><b>VILLAGE/WARD LEVEL COMMITTEES</b></button>
+							     <button style="float:left;border: 0px none; background-color:#E5E5E;"onClick="showHideDivs('ts','Village');"> <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span><b>VILLAGE/WARD LEVEL COMMITTEES</b></button>
 								 <div id="tsVillageButtonsDiv" style="display:none;" class="toggleCls1">
 							    <button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdTSvillage" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
 								<button id="tsVillage" class="btn btn-xs btn-success highlightClick3" onclick="getCommitteeDetails('TS','village')";>Village</button> | 
@@ -496,7 +498,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 								</div>
 							</td>
 						</tr>
-						<tr id="tsVillageBodyTR">
+						<tr id="tsVillageBodyTR" class="tsVillageBodyTR toggleCls12">
 							<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div22"></div></h4></td>
 							<td style="padding:10px;" width="10%">
 									<span class="text-success">Started</span> Committees<br/>
@@ -525,10 +527,10 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							<td style="padding:10px;" width="28%">TOTAL<br/> <b>MEMBERS</b><h4 class="m_top0"><div id="div28"></div></h4></td> 
 							<div id="tsVillageDiv"></div>
 						</tr>
-						<tr id="ivrDivIdTS" class="span"></tr>
+						<tr id="ivrDivIdTS"  class="span tsVillageBodyTR" ></tr>
 						<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 							<td colspan="6" style="text-align: right;">
-							    <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;" onClick="showHideDivs('ts','Mandal');"> <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span> <b>  MANDAL/TOWN/DIVISION LEVEL COMMITTEES</b></button>
+							    <button style="float:left;border: 0px none; background-color:#E5E5E;" onClick="showHideDivs('ts','Mandal');"> <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span> <b>  MANDAL/TOWN/DIVISION LEVEL COMMITTEES</b></button>
 								<div id="tsMandalButtonsDiv" style="display:none;" class="toggleCls1">
 							    <button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdTSmandal" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
 								
@@ -569,7 +571,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 
 						<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);" id="tsDistrictHeadingTR">
 							<td colspan="6" style="text-align: right;">
-							    <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;" onClick="showHideDivs('ts','District');"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span><b>  DISTRICT LEVEL COMMITTEES</b></button>
+							    <button style="float:left;border: 0px none; background-color:#E5E5E;" onClick="showHideDivs('ts','District');"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span><b>  DISTRICT LEVEL COMMITTEES</b></button>
 							    <button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdTSdistrict" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
 							</td>
 						</tr>
@@ -604,7 +606,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	
 						<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);" id="tsStateHeadingTR">
 							<td colspan="6" style="text-align: right;">
-							    <button style="cursor: default;float:left;border: 0px none; background-color:#E5E5E;" onClick="showHideDivs('ts','State');"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span><b>  STATE LEVEL COMMITTEES</b></button>
+							    <button style="float:left;border: 0px none; background-color:#E5E5E;" onClick="showHideDivs('ts','State');"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span><b>  STATE LEVEL COMMITTEES</b></button>
 							    <button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdTSstate" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
 							</td>
 						</tr>
@@ -4184,14 +4186,23 @@ if(!$("#"+divId1+divId2+"BodyTR").hasClass("toggleCls12")){
 		$("#"+divId1+divId2+"BodyTR").show();
 		$("#"+divId1+divId2+"ButtonsDiv").show();
 		$("#"+divId1+divId2+"ButtonsDiv").addClass("toggleCls12");
+		
+		$("."+divId1+divId2+"BodyTR").addClass("toggleCls12");
+		$("."+divId1+divId2+"BodyTR").show();
+		$("."+divId1+divId2+"ButtonsDiv").show();
+		$("."+divId1+divId2+"ButtonsDiv").addClass("toggleCls12");
+		
 	}else{
 		$("#"+divId1+divId2+"BodyTR").removeClass("toggleCls12");
 		$("#"+divId1+divId2+"BodyTR").hide();
 		$("#"+divId1+divId2+"ButtonsDiv").hide();
 		$("#"+divId1+divId2+"ButtonsDiv").removeClass("toggleCls12");
+		
+		$("."+divId1+divId2+"BodyTR").removeClass("toggleCls12");
+		$("."+divId1+divId2+"BodyTR").hide();
+		$("."+divId1+divId2+"ButtonsDiv").hide();
+		$("."+divId1+divId2+"ButtonsDiv").removeClass("toggleCls12");
 	}
-
-
 }
 
 
