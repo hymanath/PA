@@ -88,7 +88,16 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private String                              reqLocationType;
 	private String                              reqLocationValue;
 	private String                              globalLocationName;
+	private List<BasicVO> basicList;
 	
+	public List<BasicVO> getBasicList() {
+		return basicList;
+	}
+
+	public void setBasicList(List<BasicVO> basicList) {
+		this.basicList = basicList;
+	}
+
 	public List<AccessedPageLoginTimeVO> getReturnResult() {
 		return returnResult;
 	}
@@ -1520,5 +1529,28 @@ public String getSummaryDetails(){
 		}
 		return Action.SUCCESS;
 	}
+	public String getCommittees()
+	{
+		try{
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		
+		if(regVO==null){
+			return "input";
+		}
+		jObj = new JSONObject(getTask());
+		if(jObj.getString("task").equalsIgnoreCase("allCommittess"))
+		basicList =  cadreCommitteeService.getAllCommittees();
+		else if(jObj.getString("task").equalsIgnoreCase("roles"))
+			basicList =  cadreCommitteeService.getCommitteeRoles();
+		
+		}
+		catch(Exception e)
+		{
+			LOG.error(e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
 	
 }

@@ -9874,5 +9874,17 @@
 			<result name="input">/jsp/loginForm.jsp?src=cadreSearchPageAction</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
+
+		<action name="committeeMemberDetailReport" class="committeeDashBoardAction" method = "committeeMemberDetailExe">
+			<result name="success">/jsp/committeeMemberDetails.jsp</result>
+			<result name="input">/jsp/loginForm.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
+	    <action name="getAllCommitteesAction" class="cadreCommitteeAction" method="getCommittees">
+			<result type="json" name="success">
+				<param name="root">basicList</param> 
+			</result>
+		</action>
+		  
 </package>
 </struts>      

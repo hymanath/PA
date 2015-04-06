@@ -771,4 +771,20 @@ public String getAllConstituencysForADistrict(){
 		}
 		return Action.SUCCESS;
 	}
+	public String committeeMemberDetailExe()
+	{
+		try{
+			
+			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVo == null)
+				return Action.ERROR;
+			
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception in committeeMemberDetailExe() method",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
