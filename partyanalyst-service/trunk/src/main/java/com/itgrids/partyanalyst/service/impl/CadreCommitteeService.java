@@ -22,6 +22,7 @@ import java.util.TreeMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -66,6 +67,7 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberHistoryDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeRoleDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeRoleHistoryDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeVacantPostDAO;
+import com.itgrids.partyanalyst.dao.ITdpRolesDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
@@ -175,7 +177,8 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IVoterAgeInfoDAO voterAgeInfoDAO;
 	private ITdpCommitteeVacantPostDAO tdpCommitteeVacantPostDAO;
 	private ITdpCommitteeEnrollmentDAO tdpCommitteeEnrollmentDAO;
-	
+	@Autowired
+	private ITdpRolesDAO tdpRolesDAO;
 	public void setVoterAgeInfoDAO(IVoterAgeInfoDAO voterAgeInfoDAO) {
 		this.voterAgeInfoDAO = voterAgeInfoDAO;
 	}
@@ -9050,4 +9053,47 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 		}
 		return name;
 	}
+	public List<BasicVO> getAllCommittees()
+	{
+	List<BasicVO> basicCmmty = new ArrayList<BasicVO>();
+		try{
+	List<Object[]> basicCommitteesRslt = tdpBasicCommitteeDAO.getBasicCommittees();
+	
+	if(basicCommitteesRslt!=null && basicCommitteesRslt.size()>0){
+		for(Object[] obj:basicCommitteesRslt){
+			BasicVO vo = new BasicVO();
+			vo.setId((Long)obj[0]);
+			vo.setName(obj[1].toString());
+			basicCmmty.add(vo);
+			}
+		}
+	}
+		catch(Exception e)
+		{
+			LOG.error(e);
+		}
+		return basicCmmty;
+	}
+	public List<BasicVO> getCommitteeRoles()
+	{
+	List<BasicVO> basicCmmty = new ArrayList<BasicVO>();
+		try{
+		List<Object[]> roles = tdpRolesDAO.getRoles();
+	
+		if(roles!=null && roles.size()>0){
+		for(Object[] obj:roles){
+			BasicVO vo = new BasicVO();
+			vo.setId((Long)obj[0]);
+			vo.setName(obj[1].toString());
+			basicCmmty.add(vo);
+			}
+		}
+	}
+		catch(Exception e)
+		{
+			LOG.error(e);
+		}
+		return basicCmmty;
+	}
+
 }
