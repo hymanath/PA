@@ -74,6 +74,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 </script>	
 </head>
 <body>
+	<!--
 	<c:if test="${!fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_SEARCH' )}">
 	 <header style="align:center;background-color:#ef4036; display:flex;border-bottom:4px solid #13a751;" id="headerDivId">
 		 	<div class="col-md-6 col-md-offset-3 col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 text-center">
@@ -104,6 +105,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
             </div>
 	</header>
 	</c:if>
+	-->
 	<div class="container">
     	<div class="row" style="text-align:center;">
                 <div class="col-md-6 col-md-offset-3 col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 ">
@@ -138,7 +140,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						<table width="100%" class="table table-bordered" style="background-color:transparent; margin-bottom:0px;"  >
 							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 								<td colspan="6" style="text-align: right;">
-								        <button style="float:left;border: 0px none; background-color:#E5E5E;"onClick="showHideDivs('ap','Village');"> <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span><b>VILLAGE/WARD LEVEL COMMITTEES</b></button>
+								        <button style="float:left;border: 0px none; background-color:#E5E5E;"onClick="showHideDivs('ap','Village');"> <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span><b>VILLAGE / WARD LEVEL COMMITTEES</b></button>
 									<div id="apVillageButtonsDiv" style="" class="toggleCls"  >
 										<button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdAPvillage" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
 										<button id="village"  class="btn btn-xs btn-success highlightClick1" onclick="getCommitteeDetails('AP','village')">Village</button> | 
@@ -390,7 +392,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							</tr>
 							<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 								<td colspan="6" style="text-align: right;">
-								        <button style="float:left;border: 0px none; background-color:#E5E5E;"><b>VILLAGE/WARD LEVEL COMMITTEES</b></button>  
+								        <button style="float:left;border: 0px none; background-color:#E5E5E;"><b>VILLAGE / WARD LEVEL COMMITTEES</b></button>  
 
 										<button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdAPvillage" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
 										<button id="village"  class="btn btn-xs btn-success highlightClick1" onclick="getCommitteeDetails('AP','village')">Village</button> | 
@@ -489,7 +491,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					<table width="100%" class="table table-bordered" style="background-color:transparent; margin-bottom:0px;"  >
 						<tr style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1);">
 							<td colspan="6" style="text-align: right;">
-							     <button style="float:left;border: 0px none; background-color:#E5E5E;"onClick="showHideDivs('ts','Village');"> <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span><b>VILLAGE/WARD LEVEL COMMITTEES</b></button>
+							     <button style="float:left;border: 0px none; background-color:#E5E5E;"onClick="showHideDivs('ts','Village');"> <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="margin-top: 0px; padding-top: 0px;"></span><b>VILLAGE / WARD LEVEL COMMITTEES</b></button>
 								 <div id="tsVillageButtonsDiv" style="display:none;" class="toggleCls1">
 							    <button style="border: 0px none; background-color: rgb(211, 211, 211);"><img width="16" height="16" id="ajaxImageIdTSvillage" src="images/icons/search.gif" alt="Processing Image" style="display:none;"/></button>
 								<button id="tsVillage" class="btn btn-xs btn-success highlightClick3" onclick="getCommitteeDetails('TS','village')";>Village</button> | 
@@ -649,7 +651,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		
         <div class="row m_top20">        	 
             <div class="row" id="commityClsi">
-                <div class="col-md-10 col-xs-12 col-sm-12" style="width: 1060px;">
+                <div class="col-md-10 col-xs-12 col-sm-12" style="width: 1130px;">
                     <h4 id="headingId" class="text-success" style="display:inline-block">DISTRICT WISE COMMITTEES</h4>
 					
 					 <span class="btn btn-success btn-xs form-inline" id="statesBtnsId" style="display:none;">
@@ -672,8 +674,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						<label class="checkbox"><input type="checkbox" id="districtCommId" style="vertical-align: text-bottom;" class="scopeRd" value="districtComm" name="selectCheck">&nbsp;DISTRICT LEVEL &nbsp;&nbsp;</label>
 					</span>
 	
-					
-					<span class="btn btn-info pull-right excelId form-inline" onclick="exportToExcel()" style="margin-right: -140px;display:none;"> Export To Excel </span>
+					<br>
+					<span class="btn btn-info pull-right excelId form-inline" onclick="exportToExcel()" style="margin-right: -70px;margin-bottom:20px;display:none;"> Export To Excel </span>
                 </div>
                
             </div>
@@ -1199,8 +1201,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						if(level == 'village' || level == 'villageAll' || level == 'ward'){
 						var str='';
 						str+='';
-						//str+='<td colspan="6"> srishailam 222 </td>';
-						str+='<td colspan="6"><ul class="list-inline ivrdetails"><li style="background: none repeat scroll 0% 0% rgb(51, 51, 51); color: rgb(255, 255, 255);margin-left: 5px;"> VILLAGE IVR DETAILS</li><br>';
+						//str+='<td colspan="6"> srishailam </td>';
+						str+='<td colspan="6"><ul class="list-inline ivrdetails"><li style="background: none repeat scroll 0% 0% rgb(51, 51, 51); color: rgb(255, 255, 255);margin-left: 5px;"> VILLAGE IVR DETAILS </li><br>';
 						var totalIVRCallsCount= 0;
 						if(result.committeeSummaryVO.count != null && result.committeeSummaryVO.count > 0)
 						{
@@ -1513,7 +1515,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							var str1='';
 						str1+='';
 						//str1+='<td colspan="6"> srishailam </td>';
-						str1+='<td colspan="6"><ul class="list-inline ivrdetails"><li style="background: none repeat scroll 0% 0% rgb(51, 51, 51); color: rgb(255, 255, 255);margin-left: 15px"> VILLAGE IVR DETAILS</li><br>';
+						str1+='<td colspan="6"><ul class="list-inline ivrdetails"><li style="background: none repeat scroll 0% 0% rgb(51, 51, 51); color: rgb(255, 255, 255);margin-left: 15px"> VILLAGE IVR DETAILS </li><br>';
 						var totalIvrCallsCount = 0;
 						if(result.committeeSummaryVO.count != null && result.committeeSummaryVO.count > 0)
 						{
@@ -2138,10 +2140,10 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			if(result[0].cadreIVRVO != null)
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length) * 2;
-				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE IVR DETAILS</th>';
+				str+=' <th style="text-align:center" colspan='+length+'> VILLAGE / WARD IVR DETAILS  </th>';
 				
-				var length1 = (result[0].cadreIVRVO.optionsList1.length) * 2;
-				str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS</th>';
+				//var length1 = (result[0].cadreIVRVO.optionsList1.length) * 2;
+				//str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS </th>';
 			}
 			
             str+='</tr>';
@@ -2174,14 +2176,14 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					str+='<th>%</th>';
 					}
 				}
-				
+				/*
 				for(var pr in result[0].cadreIVRVO.optionsList1)
 				{
 					if(result[0].cadreIVRVO.optionsList1[pr].id != 13){
 					str+='<th>'+result[0].cadreIVRVO.optionsList1[pr].name+'</th>';
 					str+='<th>%</th>';				
 					}
-				}
+				}*/
 			}
 			str+='</tr>';			
 			str+='</thead>';	
@@ -2201,9 +2203,9 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			if(result[0].cadreIVRVO != null)
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length) * 2;
-				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE IVR DETAILS</th>';
-				var length1 = (result[0].cadreIVRVO.optionsList1.length -1)*2;
-				str+=' <th style="text-align:center" colspan='+length1+'>IVR DETAILS</th>';
+				str+=' <th style="text-align:center" colspan='+length+'> VILLAGE / WARD  IVR DETAILS  </th>';
+			//	var length1 = (result[0].cadreIVRVO.optionsList1.length -1)*2;
+				//str+=' <th style="text-align:center" colspan='+length1+'>IVR DETAILS  </th>';
 			}
             str+='</tr>';
             str+='<tr>';
@@ -2230,13 +2232,14 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					str+='<th>%</th>';
 					}
 				}
-				for(var pr in result[0].cadreIVRVO.optionsList1)
+			/*	for(var pr in result[0].cadreIVRVO.optionsList1)
 				{
 					if(result[0].cadreIVRVO.optionsList1[pr].id != 13){
 					str+='<th>'+result[0].cadreIVRVO.optionsList1[pr].name+'</th>';
 					str+='<th>%</th>';
 					}
 				}
+				*/
 			}
 			str+='</tr>';			
 			str+='</thead>';	
@@ -2251,10 +2254,10 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			if(result[0].cadreIVRVO != null)
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length -1)*2;
-				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE IVR DETAILS</th>';
+				str+=' <th style="text-align:center" colspan='+length+'> VILLAGE / WARD IVR DETAILS  </th>';
 				
-				var length1 = (result[0].cadreIVRVO.optionsList1.length -1 ) * 2;
-				str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS</th>';
+				//var length1 = (result[0].cadreIVRVO.optionsList1.length -1 ) * 2;
+				//str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS  </th>';
 			}
             str+='</tr>';
             str+='<tr>';
@@ -2273,14 +2276,14 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					str+='<th>%</th>';
 					}
 				}
-				
+				/*
 				for(var pr in result[0].cadreIVRVO.optionsList1)
 				{
 					if(result[0].cadreIVRVO.optionsList1[pr].id != 13){
 					str+='<th>'+result[0].cadreIVRVO.optionsList1[pr].name+'</th>';
 					str+='<th>%</th>';
 					}
-				}
+				}*/
 			}
 			str+='</tr></thead>';	
 		}
@@ -2292,10 +2295,10 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			if(result[0].cadreIVRVO != null)
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length -1 ) * 2;
-				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE IVR DETAILS</th>';
+				str+=' <th style="text-align:center" colspan='+length+'> VILLAGE / WARD IVR DETAILS </th>';
 				
-				var length1 = (result[0].cadreIVRVO.optionsList1.length -1 ) * 2;
-				str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS</th>';
+				//var length1 = (result[0].cadreIVRVO.optionsList1.length -1 ) * 2;
+				//str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS  </th>';
 			}
             str+='</tr>';
             str+='<tr>';
@@ -2314,14 +2317,14 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					str+='<th>%</th>';
 					}
 				}
-				for(var pr in result[0].cadreIVRVO.optionsList1)
+			/*	for(var pr in result[0].cadreIVRVO.optionsList1)
 				{
 					if(result[0].cadreIVRVO.optionsList1[pr].id != 13){
 					str+='<th>'+result[0].cadreIVRVO.optionsList1[pr].name+'</th>';
 					str+='<th>%</th>';
 					}
 				}
-				
+				*/
 			}
 			str+='</tr></thead>';	
 		}
@@ -2353,7 +2356,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					str+='<th>%</th>';
 					}
 				}
-
+				/*
 				for(var pr in result[0].cadreIVRVO.optionsList1)
 				{
 					if(result[0].cadreIVRVO.optionsList1[pr].id != 13){
@@ -2361,6 +2364,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					str+='<th>%</th>';
 					}
 				}
+				*/
 			}
 			str+='</tr></thead>';	
 		}
@@ -2372,7 +2376,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			str+='<td class="removeCls clearClsTD'+result[i].districtId+'">'+result[i].districtId+'';
 			str+='</td>';
 			
-            str += '<td><a onclick="getConstituencyWiseCommittesSummaryForSubLevel(\''+jObj.startDate+'\',\''+jObj.endDate+'\',\''+jObj.state+'\',\''+jObj.mandalCheck+'\',\''+jObj.villageCheck+'\',\''+result[i].districtId+'\');" style="cursor:pointor">'+result[i].districtName+'</a></td>';
+            str += '<td><a onclick="getConstituencyWiseCommittesSummaryForSubLevel(\''+jObj.startDate+'\',\''+jObj.endDate+'\',\''+jObj.state+'\',\''+jObj.mandalCheck+'\',\''+jObj.villageCheck+'\',\''+result[i].districtId+'\',\''+result[i].districtName+'\');" style="cursor:pointer;">'+result[i].districtName+'</a></td>';
 			if(mandalCheck == "true"){
 			
 			if(result[i].townMandalDivisionVO!=null){
@@ -2557,7 +2561,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					}
 				}
 				
-				
+				/*
 				for(var tp in result[i].cadreIVRVO.optionsList1)
 				{
 					if(result[0].cadreIVRVO.optionsList1[tp].id != 13){
@@ -2573,6 +2577,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					}
 					}
 				}
+				*/
 			}
 			str += '</tr>';
 			
@@ -3222,10 +3227,10 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			if(result[0].cadreIVRVO != null)
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length-1)*2;
-				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE IVR DETAILS</th>';
+				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE / WARD IVR DETAILS </th>';
 				
-				var length1 = (result[0].cadreIVRVO.optionsList1.length-1)*2;
-				str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS</th>';
+				//var length1 = (result[0].cadreIVRVO.optionsList1.length-1)*2;
+				//str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS </th>';
 			}
             str+='</tr>';
             str+='<tr>';
@@ -3252,13 +3257,13 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					}
 				}
 				
-				for(var pr in result[0].cadreIVRVO.optionsList1)
+				/*for(var pr in result[0].cadreIVRVO.optionsList1)
 				{
 					if(result[0].cadreIVRVO.optionsList1[pr].id != 13){
 					str+='<th>'+result[0].cadreIVRVO.optionsList1[pr].name+'</th>';
 					str+='<th>%</th>';
 					}
-				}
+				}*/
 			}	
 			str+='</tr>';	
 			str+='</thead>';	
@@ -3273,10 +3278,10 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			 if(result[0].cadreIVRVO != null)
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length-1) *2;
-				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE IVR DETAILS</th>';
+				str+=' <th style="text-align:center" colspan='+length+'> VILLAGE / WARD IVR DETAILS  </th>';
 				
-				var length1 = (result[0].cadreIVRVO.optionsList1.length-1) *2;
-				str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS</th>';
+				//var length1 = (result[0].cadreIVRVO.optionsList1.length-1) *2;
+				//str+=' <th style="text-align:center" colspan='+length1+'> WARD IVR DETAILS  </th>';
 			}
             str+='</tr>';
             str+='<tr>';
@@ -3295,7 +3300,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					str+='<th>%</th>';
 					}
 				}
-				
+				/*
 				for(var pr in result[0].cadreIVRVO.optionsList1)
 				{
 					if(result[0].cadreIVRVO.optionsList1[pr].id != 13){
@@ -3303,6 +3308,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					str+='<th>%</th>';
 					}
 				}
+				*/
 			}
 			str+='</tr></thead>';	
 		}
@@ -3315,10 +3321,10 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			if(result[0].cadreIVRVO != null)
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length-1)*2;
-				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE IVR DETAILS</th>';
+				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE / WARD IVR DETAILS  </th>';
 				
-				var length1 = (result[0].cadreIVRVO.optionsList1.length-1)*2;
-				str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS</th>';
+				//var length1 = (result[0].cadreIVRVO.optionsList1.length-1)*2;
+				//str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS  </th>';
 				
 			}
             str+='</tr>';
@@ -3339,13 +3345,13 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					}
 				}
 				
-				for(var pr in result[0].cadreIVRVO.optionsList1)
+			/*	for(var pr in result[0].cadreIVRVO.optionsList1)
 				{
 					if(result[0].cadreIVRVO.optionsList1[pr].id != 13){
 					str+='<th>'+result[0].cadreIVRVO.optionsList1[pr].name+'</th>';
 					str+='<th>%</th>';
 					}
-				}
+				}*/
 			}
 			str+='</thead>';	
 		}
@@ -3487,7 +3493,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					}					
 				}
 				
-				for(var tp in result[i].cadreIVRVO.optionsList1)
+			/*	for(var tp in result[i].cadreIVRVO.optionsList1)
 				{
 					if(result[0].cadreIVRVO.optionsList1[tp].id != 13){
 					if(result[i].cadreIVRVO.total >0){
@@ -3502,6 +3508,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					}
 					}
 				}
+				*/
 			}
 			
 			
@@ -4142,6 +4149,12 @@ function exportToExcel()
 		}
 	  
 }
+function exportConstituencyToExcel(divId,locationName)
+{
+	//console.log(divId);
+	tableToExcel(divId, ' '+locationName+' Constituency Wise Committees');
+}
+
 function exportToExcelForConstitueny(constiTableId)
 {
 tableToExcel(''+constiTableId+'', 'Constituency Wise Committees');
@@ -4221,11 +4234,10 @@ if(!$("#"+divId1+divId2+"BodyTR").hasClass("toggleCls12")){
 }
 
  function closeDiv(trID)
-   {
-	  
+   {	  
 	$(".selectedchild").remove();
    }
-	function getConstituencyWiseCommittesSummaryForSubLevel(startDate,endDate,state,mandalCheck,villageCheck,districtId){
+	function getConstituencyWiseCommittesSummaryForSubLevel(startDate,endDate,state,mandalCheck,villageCheck,districtId,districtName){
 	
 	//var count = $("#districtTableId tr").find("td").length; 
 	var cellCount = $("#districtTableId tr").eq(0).children("td").length;
@@ -4257,13 +4269,13 @@ if(!$("#"+divId1+divId2+"BodyTR").hasClass("toggleCls12")){
 	
 		
 				
-					buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,"subLevelDiv"+districtId,districtId);	
+					buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,"subLevelDiv"+districtId,districtId,districtName);	
 				
 		});
 	}
 
   
-function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId,districtId){
+function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId,districtId,districtName){
 	
 	
 
@@ -4289,7 +4301,7 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 		var perc = 0;
 		var str = '';
 		/*str+='<span class="btn btn-info excelId form-inline" style="float:left;margin-left:250px;" onclick="exportToExcel(\'constiTableForDistrict\')"> Export To Excel </span>';*/
-		str+='<span id="iconDiv'+districtId+'" class="pull-left removeicon btn btn-xs btn-danger" onclick="closeDiv(\''+districtId+'\');" style="display: block; padding-top: 5px; padding-bottom: 5px; margin-top: -21px; margin-left: -21px; border-radius: 0px;"><i class="glyphicon glyphicon-remove"></i></span><button class="btn btn-info excelId form-inline btn-xs" style="float: left; margin-left: 0px; margin-bottom: 0px; z-index: 2; margin-top: -20px;" onclick="exportToExcel(\'constiTableForDistrict\')" value="Export To Excel">Export To Excel </button></a>';
+		str+='<span id="iconDiv'+districtId+'" class="pull-left removeicon btn btn-xs btn-danger" onclick="closeDiv(\''+districtId+'\');" style="display: block; padding-top: 5px; padding-bottom: 5px; margin-top: -21px; margin-left: -21px; border-radius: 0px;"   ><i class="glyphicon glyphicon-remove" title="Click here to close '+districtName+' District Constituency Wise Report"></i></span><button class="btn btn-info excelId form-inline btn-xs" style="float: left; margin-left: 0px; margin-bottom: 0px; z-index: 2; margin-top: -20px;" onclick="exportConstituencyToExcel(\'constiTableForDistrict\',\''+districtName+' District\')" value="Export To Excel">Export To Excel </button></a>';
 		str+='<table class="table table-bordered table-condensed " id="constiTableForDistrict" style="width: 1820px; background-color: rgba(0, 0, 0, 0.1) !important;">';
        
 		if(mandalCheck == "true" && villageCheck == "true"){
@@ -4302,10 +4314,10 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 			if(result[0].cadreIVRVO != null)
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length-1)*2;
-				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE IVR DETAILS</th>';
+				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE / WARD IVR DETAILS</th>';
 				
-				var length1 = (result[0].cadreIVRVO.optionsList1.length-1)*2;
-				str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS</th>';
+				//var length1 = (result[0].cadreIVRVO.optionsList1.length-1)*2;
+				//str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS</th>';
 			}
             str+='</tr>';
             str+='<tr>';
@@ -4332,13 +4344,13 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 					}
 				}
 				
-				for(var pr in result[0].cadreIVRVO.optionsList1)
+				/*for(var pr in result[0].cadreIVRVO.optionsList1)
 				{
 					if(result[0].cadreIVRVO.optionsList1[pr].id != 13){
 					str+='<th>'+result[0].cadreIVRVO.optionsList1[pr].name+'</th>';
 					str+='<th>%</th>';
 					}
-				}
+				}*/
 			}	
 			str+='</tr>';	
 			str+='</thead>';	
@@ -4353,10 +4365,10 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 			 if(result[0].cadreIVRVO != null)
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length-1) *2;
-				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE IVR DETAILS</th>';
+				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE / WARD IVR DETAILS</th>';
 				
-				var length1 = (result[0].cadreIVRVO.optionsList1.length-1) *2;
-				str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS</th>';
+				//var length1 = (result[0].cadreIVRVO.optionsList1.length-1) *2;
+				//str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS</th>';
 			}
             str+='</tr>';
             str+='<tr>';
@@ -4375,7 +4387,7 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 					str+='<th>%</th>';
 					}
 				}
-				
+				/*
 				for(var pr in result[0].cadreIVRVO.optionsList1)
 				{
 					if(result[0].cadreIVRVO.optionsList1[pr].id != 13){
@@ -4383,6 +4395,7 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 					str+='<th>%</th>';
 					}
 				}
+				*/
 			}
 			str+='</tr></thead>';	
 		}
@@ -4395,10 +4408,10 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 			if(result[0].cadreIVRVO != null)
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length-1)*2;
-				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE IVR DETAILS</th>';
+				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE / WARD IVR DETAILS</th>';
 				
-				var length1 = (result[0].cadreIVRVO.optionsList1.length-1)*2;
-				str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS</th>';
+			//	var length1 = (result[0].cadreIVRVO.optionsList1.length-1)*2;
+				//str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS</th>';
 				
 			}
             str+='</tr>';
@@ -4418,7 +4431,7 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 					str+='<th>%</th>';
 					}
 				}
-				
+				/*
 				for(var pr in result[0].cadreIVRVO.optionsList1)
 				{
 					if(result[0].cadreIVRVO.optionsList1[pr].id != 13){
@@ -4426,6 +4439,7 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 					str+='<th>%</th>';
 					}
 				}
+				*/
 			}
 			str+='</thead>';	
 		}
@@ -4567,7 +4581,7 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 					}
 					}					
 				}
-				
+			/*	
 				for(var tp in result[i].cadreIVRVO.optionsList1)
 				{
 					if(result[0].cadreIVRVO.optionsList1[tp].id != 13){
@@ -4583,6 +4597,7 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 					}
 					}
 				}
+				*/
 			}
 			
 			
