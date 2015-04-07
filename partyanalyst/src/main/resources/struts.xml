@@ -9603,6 +9603,8 @@
 				<param name="root">constiWiseSummaryList</param>
 			</result>
 		</action>
+		
+		
 		<action name="getSummaryActionPopUp" class="committeeDashBoardAction" method="getSummaryDetailsPopUp">
 			<result type="json" name="success">
 				<param name="root">districtWiseSummaryList</param>
@@ -9885,6 +9887,10 @@
 				<param name="root">basicList</param> 
 			</result>
 		</action>
-		  
+		 <action name="getConstituencyWiseCommittesSummaryForDistrictAction" class="committeeDashBoardAction" method="getConstituencyWiseCommittesSummaryForDistrict">
+			<result type="json" name="success">
+				<param name="root">constiWiseSummaryList</param>
+			</result>
+		</action> 
 </package>
 </struts>      
