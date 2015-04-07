@@ -441,6 +441,35 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 		return Action.SUCCESS;
 	}
 	
+	
+
+	public String getConstituencyWiseCommittesSummaryForDistrict(){
+		LOG.debug(" Entered Into getConstituencyWiseCommittesSummaryForDistrict");
+		try{
+			boolean noaccess = false;
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO != null)
+			{
+				String accessType = regVO.getAccessType();
+				Long accessValue = Long.valueOf(regVO.getAccessValue());
+				
+				jObj = new JSONObject(getTask());
+				String state =jObj.getString("state");
+				String mandalCheck = jObj.getString("mandalCheck");
+				String villageCheck =  jObj.getString("villageCheck");
+				String startDate = jObj.getString("startDate");
+				String endDate = jObj.getString("endDate");
+				
+				constiWiseSummaryList = cadreCommitteeService.getConstituencyWiseCommittesSummaryForDistrict(state, startDate, endDate,regVO.getRegistrationID(),jObj.getString("accessType"),jObj.getLong("accessValue"),mandalCheck,villageCheck);
+			}
+			
+			
+		}catch (Exception e) {
+			LOG.error(" Exception Raised In getConstituencyWiseCommittesSummary" +e);
+		}
+		
+		return Action.SUCCESS;
+	}
 	public String getSummaryDetailsPopUp(){
 		try{
 			jObj = new JSONObject(getTask());
