@@ -75,29 +75,6 @@
 		.approvedPosTxtCls{color:red;}
 		
 	</style>
-	<div class="row" style="align:center;padding:10px;background:rgba(255,0,51,0.8); border-top:12px solid rgba(19,167,81,0.8);border-bottom:12px solid rgba(19,167,81,0.8);display:flex">
-		 	<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12 text-center">
-				<img src="images/cadreCommitee/Committees_2014_logo.png" title="Committee Logo" alt="committee" />
-			</div>
-			<div class="col-md-3  col-xs-3 col-sm-3">
-               <div class="" style="color:white;margin-top: 20px;"><b> Welcome ${sessionScope.UserName} </b></div>
-                    <a href="#" class="dropdown-toggle btn btn-default btn-xs m_top20" data-toggle="dropdown" aria-expanded="false" style="margin-top: 20px;">
-                    Menu <img src="images/cadreCommitee/menu_icon.png" />
-                    </a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);top: 91px;">
-				  	  <c:if test="${sessionScope.USER.isAdmin == 'true'}">
-						<li><a tabindex="-1" href="committeeDashBoardAction.action">Home</a></li>
-					  </c:if>
-					  <c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_ADMIN' )}">
-						<li><a tabindex="-1" href="committeeDashBoardAction.action">Home</a></li>
-					  </c:if>
-				  	  <li><a tabindex="-1" href="constituencyCommitteeSummaryAction.action">Advanced DashBoard</a></li>
-                      <li role="presentation" class="divider" style="background-color: rgba(229, 229, 229,0.6);"></li>
-                     <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
-                    </ul>
-                 
-            </div>
-		</div>
         <div class="container">
         	<!--Content Start-->
             <div class="row" style="text-align:center;">

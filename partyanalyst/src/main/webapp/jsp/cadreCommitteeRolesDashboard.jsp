@@ -47,6 +47,7 @@
 </head>
 
 <body>
+<!--
  <header style="align:center;background-color:#ef4036; display:flex;border-bottom:4px solid #13a751;">
 		 	<div class="col-md-6 col-md-offset-3 col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 text-center">
 				<img src="images/cadreCommitee/Committees_2014_logo.png" class="m_top10" title="Committee Logo" alt="committee" />
@@ -72,6 +73,7 @@
                  
             </div>
 	</header>
+	-->
 <div class="container">
 	<div class="col-md-10 col-md-offset-1">
 		<h3 style="text-align:center"> DESIGNATION WISE CADRE COMMITTEE DASHBOARD </h3>

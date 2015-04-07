@@ -69,36 +69,7 @@
 	.locationName{text-transform: uppercase;}
 	
 </style>
-<header style="align:center;background-color:#ef4036; display:flex;border-bottom:4px solid #13a751;">
-		 	<div class="col-md-6 col-md-offset-3 col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 text-center">
-				<img src="images/cadreCommitee/Committees_2014_logo.png" class="m_top10" title="Committee Logo" alt="committee" />
-			</div>
-			<div class="col-md-3  col-xs-3 col-sm-3">
-                <div class="" style="color:white;margin-top: 20px;"><b> Welcome ${sessionScope.UserName} </b></div>
-                    <a href="#" class="dropdown-toggle btn btn-default btn-xs m_top20" data-toggle="dropdown" aria-expanded="false" style="margin-top: 20px;">
-                    Menu <img src="images/cadreCommitee/menu_icon.png" />
-                    </a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="drop6" style="    background-color: rgb(239, 64, 54);top: 91px;">
-                    
-						<c:if test="${sessionScope.USER.isAdmin == 'true'}">
-						   <li><a tabindex="-1" href="committeeDashBoardAction.action">Home</a></li>
-						    <li><a tabindex="-1" href="committeeUpdateApproveAction.action">Approval Requests</a></li>
-					    </c:if>
-						<c:if test="${fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_ADMIN' )}">
-							<li><a tabindex="-1" href="committeeDashBoardAction.action">Home</a></li>
-							<li><a tabindex="-1" href="committeeUpdateApproveAction.action">Approval Requests</a></li>
-						</c:if>
-						<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_COMMITTEE_MANAGEMENT' )}">
-							<li><a tabindex="-1" href="cadreCommitteeAction.action">Home</a></li>
-							<li><a tabindex="-1" href="cadreCommitteeSummaryAction.action">Summary Report</a></li>
-				            <li><a tabindex="-1" href="cadreCommitteeRequestAction.action">Request For Positions Increase</a></li>
-						</c:if>
-                      <li role="presentation" class="divider" style="background-color: rgba(229, 229, 229,0.6);"></li>
-                     <li><a tabindex="-1" href="newlogoutAction.action">Sign Out</a></li>
-                    </ul>
-                 
-            </div>
-	</header>
+
 	<script>
 		var userAccessType = '${pageAccessType}';
 	</script>
@@ -106,7 +77,7 @@
 <div class="row m_top20">
 <h4 style="color:#46b8da;font-weight:bold;text-align:center;border-radius: 5px;height: 31px;padding: 5px" id="titleId"> </h4>
 </div>
-    <div class="row m_top20 locationCls">
+    <div class="row m_top20 locationCls" style="display:none;">
   	   <div class="col-md-4 col-md-offset-2 col-sm-6 col-xs-6">Select District:<select id="districtsId" class="form-control" onChange="getAllConstituencysForADistrict()"><option value="0">Select District</option></select> </div>
        <div class="col-md-4  col-sm-6 col-xs-6">Select Constituency:<select id="constituencysId" class="form-control"><option value="0">Select Constituency</option></select> </div>
     </div>
