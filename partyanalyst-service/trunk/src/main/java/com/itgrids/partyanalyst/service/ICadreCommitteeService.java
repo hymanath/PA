@@ -104,4 +104,5 @@ public interface ICadreCommitteeService {
 			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex);
 	public List<BasicVO> getAllCommittees();
 	public List<BasicVO> getCommitteeRoles();
+	public List<CommitteeSummaryVO> getConstituencyWiseCommittesSummaryForDistrict(String state,String startDate, String endDate,Long userId, String accessType,Long accessValue,String mandalCheck,String villageCheck);
 }
