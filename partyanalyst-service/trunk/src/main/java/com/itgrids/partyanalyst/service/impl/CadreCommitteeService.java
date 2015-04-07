@@ -4363,7 +4363,47 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				getAllIvrDetailsForCampaind(fnlLst,1l,"District");
 			}
 			
-			
+			if(fnlLst != null && fnlLst.size()>0)
+			{
+				for (CommitteeSummaryVO summaryVO : fnlLst) 
+				{
+					CadreIVRVO ivrDetailsVO = summaryVO.getCadreIVRVO();
+					
+					if(ivrDetailsVO != null)
+					{
+						Long totalIVRCount = 0L;
+						List<IvrOptionsVO> villageIVRDetails = ivrDetailsVO.getOptionsList();
+						List<IvrOptionsVO> wardIVRDetails = ivrDetailsVO.getOptionsList1();
+						
+						int villageListLength = villageIVRDetails.size();
+						int wardListLength = wardIVRDetails.size();
+						
+						int maxLenght = villageListLength>wardListLength?  villageListLength : wardListLength;
+						
+						for (int i = 0; i < maxLenght; i++) 
+						{
+							IvrOptionsVO villageVO = villageIVRDetails.get(i);
+							IvrOptionsVO wardVO = wardIVRDetails.get(i);
+							
+							if(villageVO.getName().trim().equalsIgnoreCase(wardVO.getName().trim()))
+							{
+								Long villageCount = villageVO.getCount() != null ? villageVO.getCount() :0L;
+								Long wardCount = wardVO.getCount() != null ? wardVO.getCount():0L;
+								Long totalCount = villageCount + wardCount;
+								totalIVRCount = totalIVRCount + totalCount;
+								
+								IvrOptionsVO returnVO = getMatchedVOByIVRStatus(villageIVRDetails,villageVO.getName().trim());
+								if(returnVO != null)
+								{
+									returnVO.setCount(totalCount);
+								}
+							}
+						}
+						
+						ivrDetailsVO.setTotal(totalIVRCount);
+					}
+				}
+			}
 			
 		}catch (Exception e) {
 			LOG.error("Exception Raised in getDistrictWiseCommittesSummary",e);
@@ -4371,6 +4411,26 @@ public class CadreCommitteeService implements ICadreCommitteeService
 		return fnlLst;
 	}
 	
+	public IvrOptionsVO getMatchedVOByIVRStatus(List<IvrOptionsVO> IVRDetailsList,String status)
+	{
+		IvrOptionsVO returnVO = null;
+		try {
+			if(IVRDetailsList != null && IVRDetailsList.size()>0)
+			{
+				for (IvrOptionsVO ivrOptionsVO : IVRDetailsList) 
+				{
+					if(ivrOptionsVO.getName().trim().equalsIgnoreCase(status.trim()))
+					{
+						return ivrOptionsVO;
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Raised in getMatchedVOByIVRStatus",e);
+		}
+		
+		return returnVO;
+	}
 	
 	public void getCadreCommitteIvrDetails(Map<Long,CadreIVRVO> committeeIvrMap,Long id,Map<Long,String> optionNames,Long levelId)
 	{
@@ -5214,6 +5274,49 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				getAllIvrDetailsForCampaind(constiLst,2l,"constituency");
 			}
 			
+			
+			if(constiLst != null && constiLst.size()>0)
+			{
+				for (CommitteeSummaryVO summaryVO : constiLst) 
+				{
+					CadreIVRVO ivrDetailsVO = summaryVO.getCadreIVRVO();
+					
+					if(ivrDetailsVO != null)
+					{
+						Long totalIVRCount = 0L;
+						List<IvrOptionsVO> villageIVRDetails = ivrDetailsVO.getOptionsList();
+						List<IvrOptionsVO> wardIVRDetails = ivrDetailsVO.getOptionsList1();
+						
+						int villageListLength = villageIVRDetails != null ? villageIVRDetails.size():0;
+						int wardListLength = wardIVRDetails != null ? wardIVRDetails.size():0;
+						
+						int maxLenght = villageListLength>wardListLength?  villageListLength : wardListLength;
+						
+						for (int i = 0; i < maxLenght; i++) 
+						{
+							IvrOptionsVO villageVO = villageIVRDetails.get(i);
+							IvrOptionsVO wardVO = wardIVRDetails.get(i);
+							
+							if(villageVO.getName().trim().equalsIgnoreCase(wardVO.getName().trim()))
+							{
+								Long villageCount = villageVO.getCount() != null ? villageVO.getCount() :0L;
+								Long wardCount = wardVO.getCount() != null ? wardVO.getCount():0L;
+								Long totalCount = villageCount + wardCount;
+								totalIVRCount = totalIVRCount + totalCount;
+								
+								IvrOptionsVO returnVO = getMatchedVOByIVRStatus(villageIVRDetails,villageVO.getName().trim());
+								if(returnVO != null)
+								{
+									returnVO.setCount(totalCount);
+								}
+							}
+						}
+						
+						ivrDetailsVO.setTotal(totalIVRCount);
+					}
+				}
+			}
+			
 		}catch (Exception e) {
 			LOG.error("Exception Raised in getConstituencyWiseCommittesSummary",e);
 		}
@@ -5431,6 +5534,48 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	if(villageCheck.equalsIgnoreCase("true") && userId.longValue() == 1){
 		
 		getAllIvrDetailsForCampaind(constiLst,2l,"constituency");
+	}
+	
+	if(constiLst != null && constiLst.size()>0)
+	{
+		for (CommitteeSummaryVO summaryVO : constiLst) 
+		{
+			CadreIVRVO ivrDetailsVO = summaryVO.getCadreIVRVO();
+			
+			if(ivrDetailsVO != null)
+			{
+				Long totalIVRCount = 0L;
+				List<IvrOptionsVO> villageIVRDetails = ivrDetailsVO.getOptionsList();
+				List<IvrOptionsVO> wardIVRDetails = ivrDetailsVO.getOptionsList1();
+				
+				int villageListLength = villageIVRDetails.size();
+				int wardListLength = wardIVRDetails.size();
+				
+				int maxLenght = villageListLength>wardListLength?  villageListLength : wardListLength;
+				
+				for (int i = 0; i < maxLenght; i++) 
+				{
+					IvrOptionsVO villageVO = villageIVRDetails.get(i);
+					IvrOptionsVO wardVO = wardIVRDetails.get(i);
+					
+					if(villageVO.getName().trim().equalsIgnoreCase(wardVO.getName().trim()))
+					{
+						Long villageCount = villageVO.getCount() != null ? villageVO.getCount() :0L;
+						Long wardCount = wardVO.getCount() != null ? wardVO.getCount():0L;
+						Long totalCount = villageCount + wardCount;
+						totalIVRCount = totalIVRCount + totalCount;
+						
+						IvrOptionsVO returnVO = getMatchedVOByIVRStatus(villageIVRDetails,villageVO.getName().trim());
+						if(returnVO != null)
+						{
+							returnVO.setCount(totalCount);
+						}
+					}
+				}
+				
+				ivrDetailsVO.setTotal(totalIVRCount);
+			}
+		}
 	}
 	
 }catch (Exception e) {
