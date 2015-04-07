@@ -141,12 +141,13 @@
 		 
 		<!-- <pattern>/cadreProfileDetailsAction*</pattern>-->
 		 <pattern>/assignCadreToCommittee*</pattern>
-		 
-		   <pattern>/committeeUpdateApproveAction*</pattern>
-		   <pattern>/committeeDashBoardAction*</pattern> 
-		  <pattern>/constituencyCommitteeSummaryAction*</pattern>
-		  <pattern>/cadreCommitteeRolesDashboard*</pattern>
-		  <pattern>/sampleWebServiceCalls*</pattern>
+		 <pattern>/sampleWebServiceCalls*</pattern>
+		<!--
+		<pattern>/committeeUpdateApproveAction*</pattern>
+		<pattern>/committeeDashBoardAction*</pattern> 
+		<pattern>/constituencyCommitteeSummaryAction*</pattern>
+		<pattern>/cadreCommitteeRolesDashboard*</pattern>
+        -->
  	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
@@ -393,6 +394,15 @@
 		<pattern>/cadreCommitteeRequestAction*</pattern>
 		<pattern>/committeeManagementAction*</pattern>
 		<pattern>/cadreProfileDetailsAction*</pattern>
+		
+		
+		<pattern>/committeeUpdateApproveAction*</pattern>
+		<pattern>/committeeDashBoardAction*</pattern> 
+		<pattern>/constituencyCommitteeSummaryAction*</pattern>
+		<pattern>/cadreCommitteeRolesDashboard*</pattern>
+		 
+		  
+		
 	 </decorator>
 	  <decorator name="districtLayout" page="districtLayout.jsp">
 		<pattern>/cadreSearchPageAction*</pattern>
