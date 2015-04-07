@@ -66,7 +66,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 }
 
 
- #constiTableForDistrict .selected{background:red !important;}
+ 
 	</style>
 
 <script>
@@ -2369,7 +2369,9 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		for(var i in result){
 			if(result[i].townMandalDivisionVO != null || result[i].villageWardVO != null || result[i].districtCommVO != null){
 			str += '<tr id='+result[i].districtId+' class="removeCls clearCls'+result[i].districtId+'">';
-			str+='<td class="removeCls clearClsTD'+result[i].districtId+'">'+result[i].districtId+'<span class="pull-left removeicon"  id="iconDiv'+result[i].districtId+'" onclick="closeDiv('+result[i].districtId+');" style="display:none;cursor:pointor;"><i class="glyphicon glyphicon-trash"></i></span></td>';
+			str+='<td class="removeCls clearClsTD'+result[i].districtId+'">'+result[i].districtId+'';
+			str+='</td>';
+			
             str += '<td><a onclick="getConstituencyWiseCommittesSummaryForSubLevel(\''+jObj.startDate+'\',\''+jObj.endDate+'\',\''+jObj.state+'\',\''+jObj.mandalCheck+'\',\''+jObj.villageCheck+'\',\''+result[i].districtId+'\');" style="cursor:pointor">'+result[i].districtName+'</a></td>';
 			if(mandalCheck == "true"){
 			
@@ -4140,7 +4142,11 @@ function exportToExcel()
 		}
 	  
 }
-
+function exportToExcelForConstitueny(constiTableId)
+{
+tableToExcel(''+constiTableId+'', 'Constituency Wise Committees');
+	
+}
 function showPopOver(state){
 	$('#ivrPopOver'+state+'').popover();
 }
@@ -4227,7 +4233,8 @@ if(!$("#"+divId1+divId2+"BodyTR").hasClass("toggleCls12")){
 	$('.added').remove('');
 	$(".removeicon").hide();
 	$(".removeCls").removeClass("selected");
-	$('.clearCls'+districtId).after('<tr class="selectedchild"><td id="subLevelDiv'+districtId+'" colspan="'+cellCount+'" class="added"><div align="center"><img id="ajaxImgStyle1" style="display:none;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
+	
+	$('.clearCls'+districtId).after('<tr class="selectedchild"><td id="subLevelDiv'+districtId+'" colspan="'+cellCount+'" class="added" style="padding: 20px; background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.3);"><div align="center"><img id="ajaxImgStyle1" style="display:block;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
 	$('.clearCls'+districtId).addClass("selected");
 	$('.clearClsTD'+districtId).addClass("selected");
 	$("#ajaxImgStyle1").show();
@@ -4250,13 +4257,13 @@ if(!$("#"+divId1+divId2+"BodyTR").hasClass("toggleCls12")){
 	
 		
 				
-					buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,"subLevelDiv"+districtId);	
+					buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,"subLevelDiv"+districtId,districtId);	
 				
 		});
 	}
 
   
-function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId){
+function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId,districtId){
 	
 	
 
@@ -4281,11 +4288,12 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 		var percentage = 0;
 		var perc = 0;
 		var str = '';
-		
-		str+='<table class="table table-bordered table-condensed " id="constiTableForDistrict" style="width:100%; background-color:#31B0D5 !important">';
+		/*str+='<span class="btn btn-info excelId form-inline" style="float:left;margin-left:250px;" onclick="exportToExcel(\'constiTableForDistrict\')"> Export To Excel </span>';*/
+		str+='<span id="iconDiv'+districtId+'" class="pull-left removeicon btn btn-xs btn-danger" onclick="closeDiv(\''+districtId+'\');" style="display: block; padding-top: 5px; padding-bottom: 5px; margin-top: -21px; margin-left: -21px; border-radius: 0px;"><i class="glyphicon glyphicon-remove"></i></span><button class="btn btn-info excelId form-inline btn-xs" style="float: left; margin-left: 0px; margin-bottom: 0px; z-index: 2; margin-top: -20px;" onclick="exportToExcel(\'constiTableForDistrict\')" value="Export To Excel">Export To Excel </button></a>';
+		str+='<table class="table table-bordered table-condensed " id="constiTableForDistrict" style="width: 1820px; background-color: rgba(0, 0, 0, 0.1) !important;">';
        
 		if(mandalCheck == "true" && villageCheck == "true"){
-			str+='<thead>';
+			str+='<thead class="aler alert-success">';
             str+='<tr>';
 			str+='<th rowspan="2" style="text-align:center">AC No</th>';
 			str+='<th rowspan="2" style="text-align:center">AC Name</th>';
@@ -4337,7 +4345,7 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 			
 		}
 		else if(mandalCheck == "true"){
-			str+='<thead>';
+			str+='<thead class="aler alert-success">';
 			str+='<tr>';
 			str+='<th rowspan="2"  style="text-align:center">AC No</th>';
 			str+='<th rowspan="2" style="text-align:center">AC Name</th>';
@@ -4379,7 +4387,7 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 			str+='</tr></thead>';	
 		}
 		else if(villageCheck == "true"){
-			str+='<thead>';
+			str+='<thead class="aler alert-success">';
 			str+='<th rowspan="2"  style="text-align:center">AC No</th>';
 			str+='<th rowspan="2" style="text-align:center">AC Name</th>';
     
@@ -4426,6 +4434,7 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 		for(var i in result){
 		if(result[i].townMandalDivisionVO != null || result[i].villageWardVO != null){
 		str += '<tr>';
+		
 			str += '<td style="text-align:center">'+result[i].constiNo+'</td>';
 			str += '<td ><span style="font-size: 12px;">'+result[i].name+'</span>';
 			
