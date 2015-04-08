@@ -2678,6 +2678,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		}
 		
 		else if(mandalCheck=="true"){
+		str	+= '<td style="text-align:center"></td>';
 		str	+= '<td style="text-align:center">TOTAL</td><td>'+mandTotal+'</td>'; 	
 		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
@@ -2686,6 +2687,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str += '<td style="text-align:center">'+mandAfCompleted+'</td>'; 	
 		}
 		else if(villageCheck=="true"){
+		str	+= '<td style="text-align:center"></td>';
 		str	+= '<td style="text-align:center">TOTAL</td><td>'+panTotal+'</td>'; 			
 		str += '<td style="text-align:center">'+panStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+panCompleted+'</td>'; 	
@@ -2694,6 +2696,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str += '<td style="text-align:center">'+panAffCompleted+'</td>';
 		}
 		else if(districtCommCheck=="true"){
+		str	+= '<td style="text-align:center"></td>';
 		str	+= '<td style="text-align:center">TOTAL</td><td>'+distTotal+'</td>'; 			
 		str += '<td style="text-align:center">'+distStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+distCompleted+'</td>'; 	
