@@ -2614,6 +2614,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		}
 		str += '</tbody><tfoot><tr class="no-sort" style="font-weight:bold;">';
 		if(mandalCheck == "true" && villageCheck == "true" && districtCommCheck == "true"){
+		str	+= '<td style="text-align:center"></td>';
 		str	+= '<td style="text-align:center">TOTAL</td><td>'+mandTotal+'</td>'; 	
 		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
@@ -2635,6 +2636,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		}
 		else if((mandalCheck == "true" && villageCheck == "true") || (districtCommCheck == "true" && villageCheck == "true")  || (districtCommCheck == "true" && mandalCheck == "true")){
 		if(mandalCheck == "true" && villageCheck == "true"){
+		str	+= '<td style="text-align:center"></td>';
 		str	+= '<td style="text-align:center">TOTAL</td><td>'+mandTotal+'</td>'; 	
 		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
@@ -2648,6 +2650,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str += '<td style="text-align:center">'+panAffStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+panAffCompleted+'</td>';
 		}else if(districtCommCheck == "true" && villageCheck == "true"){
+		str	+= '<td style="text-align:center"></td>';
 		str += '<td style="text-align:center">TOTAL</td><td style="text-align:center">'+panTotal+'</td>'; 	
 		str += '<td style="text-align:center">'+panStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+panCompleted+'</td>'; 	
@@ -2661,6 +2664,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str += '<td style="text-align:center">'+distAffStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+distAffCompleted+'</td>';
 		}else  if(districtCommCheck == "true" && mandalCheck == "true"){
+			str	+= '<td style="text-align:center"></td>';
 		str	+= '<td style="text-align:center">TOTAL</td><td>'+mandTotal+'</td>'; 	
 		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
