@@ -105,4 +105,5 @@ public interface ICadreCommitteeService {
 	public List<BasicVO> getAllCommittees();
 	public List<BasicVO> getCommitteeRoles();
 	public List<CommitteeSummaryVO> getConstituencyWiseCommittesSummaryForDistrict(String state,String startDate, String endDate,Long userId, String accessType,Long accessValue,String mandalCheck,String villageCheck);
+	public List<CommitteeSummaryVO> getConstituencyWiseCommittesSummaryForMandal(String state,String startDate, String endDate,Long userId, String accessType,Long accessValue,String mandalCheck,String villageCheck);
 }

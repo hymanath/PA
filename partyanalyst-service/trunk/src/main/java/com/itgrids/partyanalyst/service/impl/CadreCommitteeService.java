@@ -5732,6 +5732,7 @@ return constiLst;
 	public void pushResultConstituencyWiseMemsCount(String type,List<Object[]> memResLst, List<CommitteeSummaryVO> fnlLst){
 		if(memResLst!=null && memResLst.size()>0){
 			for(Object[] obj:memResLst){
+				
 				CommitteeSummaryVO temp = getMatchedConstituency(Long.valueOf(obj[1].toString()), fnlLst);
 				if(temp==null){
 					temp = new CommitteeSummaryVO();
@@ -9457,6 +9458,626 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 			LOG.error(e);
 		}
 		return basicCmmty;
+	}
+	
+	
+	
+	public List<CommitteeSummaryVO> getConstituencyWiseCommittesSummaryForMandal(String state,String startDate, String endDate,Long userId, String accessType,Long accessValue,String mandalCheck,String villageCheck){  
+		LOG.debug("Entered Into getConstituencyWiseCommittesSummaryForDistrict");
+		List<CommitteeSummaryVO> mandalList = new ArrayList<CommitteeSummaryVO>();
+		try{
+			Long stateTypeId = 1l;
+			String accessState = "ALL";
+			List<Object[]> constituencysList = null;
+			List<Long> districtIds = new ArrayList<Long>();
+			List<Long> constiIds = new ArrayList<Long>();
+			List<Long> constiIds1 = new ArrayList<Long>();
+					
+			constiIds.add(accessValue);
+			constiIds1.add(accessValue);
+	
+			Map<Long,List<Long>> mandalIdsMap = new HashMap<Long,List<Long>>();//Map<id,List<1constituencyId>>
+			Map<Long,List<Long>> localBodiesMap = new HashMap<Long,List<Long>>();//Map<id,List<1constituencyId>>
+			List<Long> divisionLclIds = new ArrayList<Long>();//Map<id,List<1constituencyId>>
+			Map<Long,List<Long>> divisionIdsMap = new HashMap<Long,List<Long>>();//Map<id,List<1constituencyId>>
+			getLocationsInfo(constiIds, divisionLclIds, localBodiesMap, divisionIdsMap, mandalIdsMap);	
+			
+			if(mandalIdsMap.size() > 0){
+				 List<Long> levelValues = new ArrayList<Long>(mandalIdsMap.keySet());
+				 
+				 for(Long mandalId : levelValues)
+				 {
+					 CommitteeSummaryVO mandalVo = new CommitteeSummaryVO();
+					 String mandal = "2"+mandalId;
+					 mandalVo.setConstiId(new Long(mandal.toString()));
+					 mandalVo.setName(getLocationName(5l,mandalId));
+					 mandalVo.setConstiNo(2l);//mandal
+					 mandalList.add(mandalVo);
+				 }
+			}
+			
+			 if(localBodiesMap.size() > 0){
+				 List<Long> levelValues = new ArrayList<Long>(localBodiesMap.keySet());
+				 for(Long localbody : levelValues)
+				 {
+					 CommitteeSummaryVO mandalVo = new CommitteeSummaryVO();
+					 String localEle = "1"+localbody;
+					 mandalVo.setConstiId(new Long(localEle.toString()));
+					 mandalVo.setName(getLocationName(7l,localbody));
+					 mandalVo.setConstiNo(1l);//localbody
+					 mandalList.add(mandalVo);
+				 }
+			 }
+			 if(divisionIdsMap.size() > 0){
+				 List<Long> levelValues = new ArrayList<Long>(divisionIdsMap.keySet());
+				 for(Long division : levelValues)
+				 {
+					 CommitteeSummaryVO mandalVo = new CommitteeSummaryVO();
+					 String localEle = "3"+division;
+					 mandalVo.setConstiId(new Long(localEle.toString()));
+					 mandalVo.setName(getLocationName(9l,division));
+					 mandalVo.setConstiNo(3l);//mandal
+					 mandalList.add(mandalVo);
+				 }
+			 }
+	//constiCountForMandalTownDivisions(constiIds);
+	
+	SimpleDateFormat format =  new SimpleDateFormat("MM/dd/yyyy");
+	
+	Date stDate = (Date)format.parse(startDate);
+	Date edDate = (Date)format.parse(endDate);
+	
+	List<Long> mandalMunciDivisionIds = new ArrayList<Long>();
+	mandalMunciDivisionIds.add(5l);
+	mandalMunciDivisionIds.add(7l);
+	mandalMunciDivisionIds.add(9l);
+	 Map<Long,Long> mainMembersCountMap = new HashMap<Long,Long>();
+	 Map<Long,Long> startedCommitteesCountMap = new HashMap<Long,Long>();
+	 Map<Long,Long> completedCommitteesCountMap = new HashMap<Long,Long>();
+	 Map<Long,Long> startedCommitteesAffCountMap = new HashMap<Long,Long>();
+	 Map<Long,Long> completedCommitteesAffCountMap = new HashMap<Long,Long>();
+	 Map<Long,Long> mainCommitteesCountMap = new HashMap<Long,Long>();
+	/*List<Object[]> memResLst = tdpCommitteeMemberDAO.membersCountConstituencyWise(mandalMunciDivisionIds, stDate, edDate, constiIds);
+	pushResultConstituencyWiseMemsCount("munci", memResLst, constiLst);*/
+	
+	if(mandalCheck.equalsIgnoreCase("true"))
+		constiCountForMandalTownDivisions1(constiIds, stDate, edDate, mainMembersCountMap, startedCommitteesCountMap, completedCommitteesCountMap, startedCommitteesAffCountMap, completedCommitteesAffCountMap, mainCommitteesCountMap,mandalList);
+	if(villageCheck.equalsIgnoreCase("true"))
+	{
+		
+		
+	List<Long> villageIds = new ArrayList<Long>();
+	List<Long> wardIds = new ArrayList<Long>();
+	villageIds.add(6l);
+	wardIds.add(8l);
+	
+	
+	List<Object[]> memResLstVill = tdpCommitteeMemberDAO.membersCountMandalWise(villageIds, stDate, edDate, constiIds,"mandal");
+	List<Object[]> ttlV = tdpCommitteeDAO.getCommitteesCountForMandalByConstituencyIdAndLevel(constiIds, villageIds,"mandal");
+	pushResultConstituencyWiseMemsCount1("village", memResLstVill, mandalList,"mandal");
+	pushTotalCountsForConstituency1("village", ttlV, mandalList,"mandal");
+	List<Object[]> stResLstVill = tdpCommitteeDAO.committeesCountForMandalByConstituency(villageIds, stDate, edDate, "started", constiIds,"mandal"); 
+	List<Object[]> endResLstVill = tdpCommitteeDAO.committeesCountForMandalByConstituency(villageIds, stDate, edDate, "completed", constiIds,"mandal");
+	pushResultConstiWise1("village", stResLstVill, mandalList, "start","mandal");
+	pushResultConstiWise1("village", endResLstVill, mandalList, "completed","mandal");
+	
+	List<Object[]> memResLstVill1 = tdpCommitteeMemberDAO.membersCountMandalWise(wardIds, stDate, edDate, constiIds,"muncipality");
+	List<Object[]> ttlV1 = tdpCommitteeDAO.getCommitteesCountForMandalByConstituencyIdAndLevel(constiIds, wardIds,"muncipality");
+		pushResultConstituencyWiseMemsCount1("village", memResLstVill1, mandalList,"muncipality");
+		pushTotalCountsForConstituency1("village", ttlV1, mandalList,"muncipality");
+		List<Object[]> stResLstVill1 = tdpCommitteeDAO.committeesCountForMandalByConstituency(wardIds, stDate, edDate, "started", constiIds,"muncipality"); 
+		List<Object[]> endResLstVill1 = tdpCommitteeDAO.committeesCountForMandalByConstituency(wardIds, stDate, edDate, "completed", constiIds,"muncipality");
+		 
+		 
+		pushResultConstiWise1("village", stResLstVill1, mandalList, "start","muncipality");
+		pushResultConstiWise1("village", endResLstVill1, mandalList, "completed","muncipality");
+	}
+	
+	if(mandalList!=null && mandalList.size()>0){
+		for(CommitteeSummaryVO temp:mandalList){
+			if(mandalCheck.equalsIgnoreCase("true")){
+			if(temp.getTownMandalDivisionVO()==null){
+				temp.setTownMandalDivisionVO(new CommitteeSummaryVO());
+			}
+			if(temp.getTownMandalDivisionVO()!=null){
+				
+				Long constiId = temp.getConstiId();
+				
+				Long membersCount = mainMembersCountMap.get(constiId);
+				if(membersCount==null){membersCount=0l;}
+				
+				Long mainStarted = startedCommitteesCountMap.get(constiId);
+				if(mainStarted==null){mainStarted=0l;}
+				
+				Long mainCompleted = completedCommitteesCountMap.get(constiId);
+				if(mainCompleted==null){mainCompleted=0l;}
+				
+				Long afflStarted = startedCommitteesAffCountMap.get(constiId);
+				if(afflStarted==null){afflStarted=0l;}
+				
+				Long afflCompleted = completedCommitteesAffCountMap.get(constiId);
+				if(afflCompleted==null){afflCompleted=0l;}
+				
+				Long totalCommittees = mainCommitteesCountMap.get(constiId);
+				if(totalCommittees==null){totalCommittees=0l;}
+				
+				temp.getTownMandalDivisionVO().setMainStarted(mainStarted);
+				temp.getTownMandalDivisionVO().setMainCompleted(mainCompleted);
+				temp.getTownMandalDivisionVO().setAfflStarted(afflStarted);
+				temp.getTownMandalDivisionVO().setAfflCompleted(afflCompleted);
+				temp.getTownMandalDivisionVO().setTotalCommittees(totalCommittees);
+				temp.getTownMandalDivisionVO().setMembersCount(membersCount);
+				
+				Long strt = temp.getTownMandalDivisionVO().getMainStarted();
+				Long cmpl = temp.getTownMandalDivisionVO().getMainCompleted();
+				
+				if(strt==null){strt = 0l;}
+				/*if(cmpl==null){cmpl = 0l;}*/
+				
+				Long total = temp.getTownMandalDivisionVO().getTotalCommittees();
+				if(total==null){total = 0l;}
+				if(total!=0){
+					//temp.getTownMandalDivisionVO().setTotalCommittees(total);
+					String percentage = (new BigDecimal(strt*(100.0)/total)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+					temp.getTownMandalDivisionVO().setStartPerc(percentage);
+				}else{
+					temp.getTownMandalDivisionVO().setStartPerc("0.0");
+				}
+			}
+			}
+			if(villageCheck.equalsIgnoreCase("true")){
+			if(temp.getVillageWardVO()!=null){
+				Long strtv = temp.getVillageWardVO().getMainStarted();
+				Long cmplv = temp.getVillageWardVO().getMainCompleted();
+				Long totalv = temp.getVillageWardVO().getTotalCommittees();
+				if(totalv==null){
+					totalv = 0l;
+				}
+				
+				if(strtv==null){strtv = 0l;}
+				/*if(cmplv==null){cmplv = 0l;}
+				
+				Long totalv = strtv + cmplv;*/
+				
+				if(totalv!=0){
+					temp.getVillageWardVO().setTotalCommittees(totalv);
+					String percentage = (new BigDecimal(strtv*(100.0)/totalv)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+					temp.getVillageWardVO().setStartPerc(percentage);
+				}else{
+					temp.getVillageWardVO().setStartPerc("0.0");
+				}
+			}
+			}
+		}
+	}
+	
+	Collections.sort(mandalList, new Comparator<CommitteeSummaryVO>() {
+		public int compare(CommitteeSummaryVO o1, CommitteeSummaryVO o2) {
+			return o1.getName().compareToIgnoreCase(o2.getName());
+		}
+	});
+	
+	if(mandalList != null && mandalList.size()>0)
+	{
+		mandalList.get(0).setAccessState(accessState);
+	}
+	
+	List<CommitteeSummaryVO> mandals = new ArrayList<CommitteeSummaryVO>();
+	List<CommitteeSummaryVO> localBodies = new ArrayList<CommitteeSummaryVO>();
+	if(mandalList != null && mandalList.size() > 0)
+	{
+		for(CommitteeSummaryVO vo : mandalList)
+		{
+			if(vo.getConstiId().toString().substring(0,1).trim().equalsIgnoreCase("2"))
+			{
+				vo.setConstiId(new Long(vo.getConstiId().toString().substring(01)));
+				mandals.add(vo);
+			}
+			else if(vo.getConstiId().toString().substring(0,1).trim().equalsIgnoreCase("1"))
+			{
+				vo.setConstiId(new Long(vo.getConstiId().toString().substring(01)));
+				localBodies.add(vo);	
+			}
+		}
+	}
+	/*if(villageCheck.equalsIgnoreCase("true") && userId.longValue() == 1){
+		
+		getAllIvrDetailsForCampaind(mandals,3l,"mandal");
+		getAllIvrDetailsForCampaind(localBodies,4l,"ward");
+	}*/
+	/*if(villageCheck.equalsIgnoreCase("true") && userId.longValue() == 1){
+		
+		getAllIvrDetailsForCampaind(constiLst,2l,"constituency");
+	}
+	*/
+		
+/*	if(mandalList != null && mandalList.size()>0)
+	{
+		for (CommitteeSummaryVO summaryVO : mandalList) 
+		{
+			
+			CommitteeSummaryVO ivrVO = getMatchedVOByConstId(mandals,summaryVO.getName().trim()); 
+			if(ivrVO != null)
+			{
+				summaryVO.setCadreIVRVO(ivrVO.getCadreIVRVO());
+			}
+			else
+			{
+				ivrVO = getMatchedVOByConstId(localBodies,summaryVO.getName().trim());
+				if(ivrVO != null)
+				{
+					summaryVO.setCadreIVRVO(ivrVO.getCadreIVRVO());
+				}
+			}
+			
+			CadreIVRVO ivrDetailsVO = summaryVO.getCadreIVRVO() != null ? summaryVO.getCadreIVRVO():null;
+			
+			if(ivrDetailsVO != null)
+			{
+				Long totalIVRCount = 0L;
+				List<IvrOptionsVO> villageIVRDetails = ivrDetailsVO.getOptionsList();
+				List<IvrOptionsVO> wardIVRDetails = ivrDetailsVO.getOptionsList1();
+				
+				int villageListLength =villageIVRDetails != null ? villageIVRDetails.size() : 0;
+				int wardListLength = wardIVRDetails != null ? wardIVRDetails.size() : 0;
+				
+				int maxLenght = villageListLength>wardListLength?  villageListLength : wardListLength;
+				
+				for (int i = 0; i < maxLenght; i++) 
+				{
+					IvrOptionsVO villageVO = null;
+					IvrOptionsVO wardVO = null;
+					if( villageIVRDetails != null)
+					 villageVO = villageIVRDetails.get(i);
+					if(wardIVRDetails != null)
+					 wardVO = wardIVRDetails.get(i);
+					
+					if((villageVO != null && wardVO != null ) && villageVO.getName().trim().equalsIgnoreCase(wardVO.getName().trim()))
+					{
+						Long villageCount = villageVO.getCount() != null ? villageVO.getCount() :0L;
+						Long wardCount = wardVO.getCount() != null ? wardVO.getCount():0L;
+						Long totalCount = villageCount + wardCount;
+						totalIVRCount = totalIVRCount + totalCount;
+						
+						IvrOptionsVO returnVO = getMatchedVOByIVRStatus(villageIVRDetails,villageVO.getName().trim());
+						if(returnVO != null)
+						{
+							returnVO.setCount(totalCount);
+						}
+					}
+				}
+				
+				ivrDetailsVO.setTotal(totalIVRCount);
+			}
+		}
+	}*/
+	
+}catch (Exception e) {
+	LOG.error("Exception Raised in getConstituencyWiseCommittesSummary",e);
+}
+return mandalList;
+}
+	
+	public CommitteeSummaryVO getMatchedVOByConstId(List<CommitteeSummaryVO> volist,String  locatioName)
+	{
+		CommitteeSummaryVO returnVO = null;
+		try {
+			if(volist != null && volist.size()>0)
+			{
+				for (CommitteeSummaryVO  vo: volist) 
+				{
+					if(vo.getName().trim().equalsIgnoreCase(locatioName.trim()))
+					{
+						return vo;
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Raised in getMatchedVOByIVRStatus",e);
+		}
+		
+		return returnVO;
+	}
+	
+	public void constiCountForMandalTownDivisions1(List<Long> constituencyIds,Date startDate, Date endDate,
+			Map<Long,Long> mainMembersCountMap,Map<Long,Long> startedCommitteesCountMap,Map<Long,Long> completedCommitteesCountMap,
+			Map<Long,Long> startedCommitteesAffCountMap,Map<Long,Long> completedCommitteesAffCountMap,Map<Long,Long> mainCommitteesCountMap,List<CommitteeSummaryVO> mandals){
+			Map<Long,List<Long>> mandalIdsMap = new HashMap<Long,List<Long>>();//Map<id,List<1constituencyId>>
+			Map<Long,List<Long>> localBodiesMap = new HashMap<Long,List<Long>>();//Map<id,List<1constituencyId>>
+			List<Long> divisionLclIds = new ArrayList<Long>();//Map<id,List<1constituencyId>>
+			Map<Long,List<Long>> divisionIdsMap = new HashMap<Long,List<Long>>();//Map<id,List<1constituencyId>>
+			
+		if(constituencyIds!=null && constituencyIds.size()>0){
+			
+			
+			 
+			 getLocationsInfo(constituencyIds, divisionLclIds, localBodiesMap, divisionIdsMap, mandalIdsMap);
+			 
+			 
+			 if(mandalIdsMap.size() > 0){
+				 List<Long> levelValues = new ArrayList<Long>(mandalIdsMap.keySet());
+				 
+				
+				//0 count,1levelId
+				 List<Object[]> totalMandalMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(5l,startDate, endDate,levelValues);
+				//0count,1locationID
+				 List<Object[]> totalMandalCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(5l,levelValues);
+				 
+				//0count,1locationID,2typeId
+				 List<Object[]> totalMandalStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(5l,levelValues,startDate,endDate,"started");
+				//0count,1locationID,2typeId
+				 List<Object[]> totalMandalCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(5l,levelValues,startDate,endDate,"completed");
+				
+				 
+				    populateLocationCounts1(
+						 mainMembersCountMap, 
+						 mainCommitteesCountMap,
+						 
+						 startedCommitteesCountMap, 
+						 startedCommitteesAffCountMap,
+						 
+						 completedCommitteesCountMap, 
+						 completedCommitteesAffCountMap, 
+						 
+						 totalMandalMainMembers, 
+						 totalMandalCommittees, 
+						 totalMandalStartedCommittees, 
+						 totalMandalCompletedCommittees, 
+						 mandalIdsMap,"mandal",mandals);
+			 }
+			 if(localBodiesMap.size() > 0){
+				 List<Long> levelValues = new ArrayList<Long>(localBodiesMap.keySet());
+				
+				//0 count,1levelId
+				 List<Object[]> totalLocalBodMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(7l,startDate, endDate,levelValues);
+				//0count,1locationID
+				 List<Object[]> totalLocalBodCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(7l,levelValues);
+				 
+				//0count,1locationID,2typeId
+				 List<Object[]> totalLocalBodStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(7l,levelValues,startDate,endDate,"started");
+				//0count,1locationID,2typeId
+				 List<Object[]> totalLocalBodCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(7l,levelValues,startDate,endDate,"completed");
+				
+				 
+				 populateLocationCounts1(
+						 mainMembersCountMap, 
+						 mainCommitteesCountMap,
+						 
+						 startedCommitteesCountMap, 
+						 startedCommitteesAffCountMap,
+						 
+						 completedCommitteesCountMap, 
+						 completedCommitteesAffCountMap, 
+						 
+						 totalLocalBodMainMembers, 
+						 totalLocalBodCommittees, 
+						 totalLocalBodStartedCommittees, 
+						 totalLocalBodCompletedCommittees, 
+						 localBodiesMap,"muncipality",mandals);
+			 }
+			 if(divisionIdsMap.size() > 0){
+				 List<Long> levelValues = new ArrayList<Long>(divisionIdsMap.keySet());
+				
+				//0 count,1levelId
+				 List<Object[]> totalDivisionMainMembers = tdpCommitteeMemberDAO.totalMainMembersCountLocationsWise(9l,startDate, endDate,levelValues);
+				//0count,1locationID
+				 List<Object[]> totalDivisionCommittees = tdpCommitteeDAO.totalCommitteesCountByLocationIds(9l,levelValues);
+				 
+				//0count,1locationID,2typeId
+				 List<Object[]> totalDivisionStartedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(9l,levelValues,startDate,endDate,"started");
+				//0count,1locationID,2typeId
+				 List<Object[]> totalDivisionCompletedCommittees = tdpCommitteeDAO.committeesCountByLocationIds(9l,levelValues,startDate,endDate,"completed");
+				
+				 
+				 populateLocationCounts1(
+						 mainMembersCountMap, 
+						 mainCommitteesCountMap,
+						 
+						 startedCommitteesCountMap, 
+						 startedCommitteesAffCountMap,
+						 
+						 completedCommitteesCountMap, 
+						 completedCommitteesAffCountMap, 
+						 
+						 totalDivisionMainMembers, 
+						 totalDivisionCommittees, 
+						 totalDivisionStartedCommittees, 
+						 totalDivisionCompletedCommittees, 
+						 divisionIdsMap,"division",mandals);
+			 }
+			 
+		}
+	}
+	private void populateLocationCounts1(
+			 Map<Long,Long> mainMembersCountMap,
+			 Map<Long,Long> mainCommitteesCountMap,
+			 
+			 Map<Long,Long> startedCommitteesCountMap,
+			 Map<Long,Long> startedCommitteesAffCountMap,
+			 
+			 Map<Long,Long> completedCommitteesCountMap,			 
+			 Map<Long,Long> completedCommitteesAffCountMap,
+			 
+			 List<Object[]> totalMainMembers,
+			 List<Object[]> totalCommittees,
+			 
+			 List<Object[]> totalStartedCommittees,
+			 
+			 List<Object[]> totalCompletedCommittees,
+			 
+			 Map<Long,List<Long>> locationsMap,String locationType,List<CommitteeSummaryVO> mandals){
+		
+		     populateMainCounts1(totalMainMembers,locationsMap,mainMembersCountMap,locationType, mandals);
+		     populateMainCounts1(totalCommittees,locationsMap,mainCommitteesCountMap,locationType,mandals);
+		     populateMainAndAffCounts1(totalStartedCommittees,locationsMap,startedCommitteesCountMap,startedCommitteesAffCountMap,locationType,mandals);
+		     populateMainAndAffCounts1(totalCompletedCommittees,locationsMap,completedCommitteesCountMap,completedCommitteesAffCountMap,locationType,mandals);
+		
+	}
+	private void populateMainCounts1(List<Object[]> mainMembers,Map<Long,List<Long>> locationsMap,Map<Long,Long> countMap,String locationType,List<CommitteeSummaryVO> mandals){
+		//0 count,1levelId
+		for(Object[] countArr:mainMembers){
+			String location = "";
+			if(locationType.equalsIgnoreCase("mandal"))
+				 location = "2"+(Long)countArr[1];
+			else if(locationType.equalsIgnoreCase("muncipality"))
+				 location = "1"+(Long)countArr[1];
+			else if(locationType.equalsIgnoreCase("division"))
+				 location = "3"+(Long)countArr[1];
+					Long count = countMap.get(new Long(location.toString())); // locationId
+					if(count == null){
+						countMap.put(new Long(location.toString()),(Long)countArr[0]);
+					}else{
+						countMap.put(new Long(location.toString()),count+(Long)countArr[0]);
+					}
+			}
+	}
+
+	private void populateMainAndAffCounts1(List<Object[]> mainAffMembers,Map<Long,List<Long>> locationsMap,Map<Long,Long> mainCountMap,Map<Long,Long> affCountMap,String locationType,List<CommitteeSummaryVO> mandals){
+		//0 count,1levelId,2typeId
+		for(Object[] countArr:mainAffMembers){
+			
+			String location = "";
+			if(locationType.equalsIgnoreCase("mandal"))
+				 location = "2"+(Long)countArr[1];
+			else if(locationType.equalsIgnoreCase("muncipality"))
+				 location = "1"+(Long)countArr[1];
+			else if(locationType.equalsIgnoreCase("division"))
+				 location = "3"+(Long)countArr[1];
+			Map<Long,Long> countMap = mainCountMap;
+			if(((Long)countArr[2]).longValue() == 2l){
+				countMap = affCountMap;
+			}
+					Long count = countMap.get(new Long(location.toString()));
+					if(count == null){
+						countMap.put(new Long(location.toString()),(Long)countArr[0]);
+					}else{
+						countMap.put(new Long(location.toString()),count+(Long)countArr[0]);
+					}
+				
+			
+		}
+	}
+	
+	public void pushResultConstituencyWiseMemsCount1(String type,List<Object[]> memResLst, List<CommitteeSummaryVO> fnlLst,String locationType){
+		if(memResLst!=null && memResLst.size()>0){
+			
+			for(Object[] obj:memResLst){
+				String location = "";
+				if(locationType.equalsIgnoreCase("mandal"))
+					 location = "2"+Long.valueOf(obj[1].toString());
+				else if(locationType.equalsIgnoreCase("muncipality"))
+					 location = "1"+Long.valueOf(obj[1].toString());
+				else if(locationType.equalsIgnoreCase("division"))
+					 location = "3"+Long.valueOf(obj[1].toString());
+				CommitteeSummaryVO temp = getMatchedConstituency(new Long(location.toString()), fnlLst);
+				if(temp==null){
+					temp = new CommitteeSummaryVO();
+				}
+				
+				if(type.equalsIgnoreCase("munci")){
+					if(temp.getTownMandalDivisionVO()==null){
+						temp.setTownMandalDivisionVO(new CommitteeSummaryVO());
+					}
+					temp.getTownMandalDivisionVO().setMembersCount(Long.valueOf(obj[0].toString()));
+				}else{
+					if(temp.getVillageWardVO()==null){
+						temp.setVillageWardVO(new CommitteeSummaryVO());
+					}
+					temp.getVillageWardVO().setMembersCount(Long.valueOf(obj[0].toString()));
+				}
+				
+			}
+		}
+	}
+	
+	public void pushTotalCountsForConstituency1(String type,List<Object[]> memResLst, List<CommitteeSummaryVO> fnlLst,String locationType){
+		if(memResLst!=null && memResLst.size()>0){
+			
+			for(Object[] obj:memResLst){
+				String location = "";
+				if(locationType.equalsIgnoreCase("mandal"))
+					 location = "2"+Long.valueOf(obj[1].toString());
+				else if(locationType.equalsIgnoreCase("muncipality"))
+					 location = "1"+Long.valueOf(obj[1].toString());
+				else if(locationType.equalsIgnoreCase("division"))
+					 location = "3"+Long.valueOf(obj[1].toString());
+				CommitteeSummaryVO temp = getMatchedConstituency(new Long(location.toString()), fnlLst);
+				if(temp==null){
+					temp = new CommitteeSummaryVO();
+				}
+				
+				if(type.equalsIgnoreCase("munci")){
+					if(temp.getTownMandalDivisionVO()==null){
+						temp.setTownMandalDivisionVO(new CommitteeSummaryVO());
+					}
+					temp.getTownMandalDivisionVO().setTotalCommittees(Long.valueOf(obj[0].toString()));
+				}else{
+					if(temp.getVillageWardVO()==null){
+						temp.setVillageWardVO(new CommitteeSummaryVO());
+					}
+					temp.getVillageWardVO().setTotalCommittees(Long.valueOf(obj[0].toString()));
+				}
+				
+			}
+		}
+	}
+	
+	public void pushResultConstiWise1(String type,List<Object[]> memResLst, List<CommitteeSummaryVO> fnlLst, String resType,String locationType){
+		if(memResLst!=null && memResLst.size()>0){
+			
+			for(Object[] obj:memResLst){
+				String location = "";
+				if(locationType.equalsIgnoreCase("mandal"))
+					 location = "2"+Long.valueOf(obj[2].toString());
+				else if(locationType.equalsIgnoreCase("muncipality"))
+					 location = "1"+Long.valueOf(obj[2].toString());
+				else if(locationType.equalsIgnoreCase("division"))
+					 location = "3"+Long.valueOf(obj[2].toString());
+				CommitteeSummaryVO temp = getMatchedConstituency(new Long(location.toString()), fnlLst);
+				
+				if(temp==null){
+					temp = new CommitteeSummaryVO();
+				}
+				
+				
+				if(type.equalsIgnoreCase("munci")){
+					if(temp.getTownMandalDivisionVO()==null){
+						temp.setTownMandalDivisionVO(new CommitteeSummaryVO());
+					}
+					if(Long.valueOf(obj[1].toString()).equals(1l)){
+						if(resType.equalsIgnoreCase("start")){	
+							temp.getTownMandalDivisionVO().setMainStarted(Long.valueOf(obj[0].toString()));
+						}else{
+							temp.getTownMandalDivisionVO().setMainCompleted(Long.valueOf(obj[0].toString()));
+						}
+					}else{
+						if(resType.equalsIgnoreCase("start")){
+							temp.getTownMandalDivisionVO().setAfflStarted(Long.valueOf(obj[0].toString()));
+						}else{
+							temp.getTownMandalDivisionVO().setAfflCompleted(Long.valueOf(obj[0].toString()));
+						}
+					}
+				}else{
+					if(temp.getVillageWardVO()==null){
+						temp.setVillageWardVO(new CommitteeSummaryVO());
+					}
+					if(Long.valueOf(obj[1].toString()).equals(1l)){
+						if(resType.equalsIgnoreCase("start")){	
+							temp.getVillageWardVO().setMainStarted(Long.valueOf(obj[0].toString()));
+						}else{
+							temp.getVillageWardVO().setMainCompleted(Long.valueOf(obj[0].toString()));
+						}
+					}else{
+						if(resType.equalsIgnoreCase("start")){	
+							temp.getVillageWardVO().setAfflStarted(Long.valueOf(obj[0].toString()));
+						}else{
+							temp.getVillageWardVO().setAfflCompleted(Long.valueOf(obj[0].toString()));
+						}
+					}
+				}
+				
+			}
+		}
 	}
 
 }

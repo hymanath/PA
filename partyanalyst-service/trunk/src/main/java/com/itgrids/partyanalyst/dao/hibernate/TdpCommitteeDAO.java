@@ -558,5 +558,103 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		}
 		return query.list();
 	}
+	
+	public List<Object[]> getCommitteesCountForMandalByConstituencyIdAndLevel(List<Long> constituencyIds,List<Long> levelIds,String levelType){
+		
+		
+		StringBuilder str = new StringBuilder();
+		str.append("select count(model.tdpCommitteeId),");
+		
+		
+		if(levelType.equalsIgnoreCase("mandal"))
+		{
+			str.append(" p.tehsil.tehsilId");	
+			str.append(" from TdpCommittee model,Panchayat p" +
+		" where p.panchayatId = model.tdpCommitteeLevelValue ");
+		}
+		else if(levelType.equalsIgnoreCase("muncipality"))
+		{
+			
+			str.append(" c.localElectionBody.localElectionBodyId");	
+			str.append(" from TdpCommittee model,Constituency c" +
+		" where c.constituencyId = model.tdpCommitteeLevelValue ");
+		}
+		str.append(" and model.constituency.constituencyId in(:constituencyIds)" +
+		" and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) " +
+		" and model.constituency.constituencyId is not null " +
+		" and model.tdpBasicCommitteeId = :basicCommty " );
+		if(levelType.equalsIgnoreCase("mandal"))
+		str.append("  group by p.tehsil.tehsilId");
+		else if(levelType.equalsIgnoreCase("muncipality"))
+		str.append(" group by c.localElectionBody.localElectionBodyId");
+		Query query = getSession().createQuery(str.toString());
+	/*	Query query = getSession().createQuery(" select count(model.tdpCommitteeId), model.tdpCommitteeLevelValue" +
+				" from TdpCommittee model" +
+				" where model.constituency.constituencyId in(:constituencyIds)" +
+				" and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) " +
+				" and model.constituency.constituencyId is not null " +
+				" and model.tdpBasicCommitteeId = :basicCommty  " +
+				" group by model.tdpCommitteeLevelValue");
+		
+		query.setParameterList("constituencyIds", constituencyIds);
+		query.setParameterList("levelIds", levelIds);
+		query.setParameter("basicCommty", 1l);
+		
+		return query.list();*/
+		query.setParameterList("constituencyIds", constituencyIds);
+		query.setParameterList("levelIds", levelIds);
+		query.setParameter("basicCommty", 1l);
+		return query.list();
+	}
+	
+	public List<Object[]> committeesCountForMandalByConstituency(List<Long> levelIds,Date startDate,Date endDate,String type,List<Long> constiIds,String levelType){
+		StringBuilder str = new StringBuilder();
+
+		str.append("select count(model.tdpCommitteeId)," + // COMMITTEES COUNT
+				" model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId,"); 
+		if(levelType.equalsIgnoreCase("mandal"))
+		{
+			str.append(" p.tehsil.tehsilId");	
+			str.append(" from TdpCommittee model,Panchayat p" +
+		" where p.panchayatId = model.tdpCommitteeLevelValue ");
+		}
+		else if(levelType.equalsIgnoreCase("muncipality"))
+		{
+			
+			str.append(" c.localElectionBody.localElectionBodyId");	
+			str.append(" from TdpCommittee model,Constituency c" +
+		" where c.constituencyId = model.tdpCommitteeLevelValue ");
+		}
+		str.append(" and model.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) " +
+				" and model.constituency.constituencyId in(:constiIds)  ");
+		
+		if(type.equalsIgnoreCase("started")){
+			if(startDate != null && endDate !=null){
+				str.append(" and ( date(model.startedDate)>=:startDate and date(model.startedDate)<=:endDate) " +
+						" and model.completedDate is null ");
+			}
+		}else if(type.equalsIgnoreCase("completed")){
+			if(startDate != null && endDate !=null){
+				str.append(" and ( date(model.completedDate)>=:startDate and date(model.completedDate)<=:endDate )  ");
+			}
+		}
+		if(levelType.equalsIgnoreCase("mandal"))
+			str.append("  group by p.tehsil.tehsilId,model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId");
+			else if(levelType.equalsIgnoreCase("muncipality"))
+				str.append(" group by c.localElectionBody.localElectionBodyId,model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId");
+		Query query = getSession().createQuery(str.toString());
+		
+		if(levelIds != null && levelIds.size() > 0)
+		{
+			query.setParameterList("levelIds", levelIds);
+		}
+		if(startDate != null && endDate !=null ){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);	
+		}
+		query.setParameterList("constiIds", constiIds);
+		
+		return query.list();
+	}
 
 }
