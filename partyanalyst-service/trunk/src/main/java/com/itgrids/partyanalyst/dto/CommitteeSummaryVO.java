@@ -49,8 +49,65 @@ public class CommitteeSummaryVO implements Serializable{
 	private String accessState;	
 	
 	private CadreIVRVO cadreIVRVO;
+	private Long youvathaStarted;
+	private Long mahilaStarted;
+	private Long rythuStarted;
+	private Long othersStarted;
+	
+	private Long youvathaCmpltd;
+	private Long mahilaCmpltd;
+	private Long rythuCmpltd;
+	private Long othersCmpltd;
 	
 	
+	public Long getOthersStarted() {
+		return othersStarted;
+	}
+	public Long getOthersCmpltd() {
+		return othersCmpltd;
+	}
+	public void setOthersStarted(Long othersStarted) {
+		this.othersStarted = othersStarted;
+	}
+	public void setOthersCmpltd(Long othersCmpltd) {
+		this.othersCmpltd = othersCmpltd;
+	}
+	public Long getYouvathaStarted() {
+		return youvathaStarted;
+	}
+	public Long getMahilaStarted() {
+		return mahilaStarted;
+	}
+	public Long getRythuStarted() {
+		return rythuStarted;
+	}
+	public Long getYouvathaCmpltd() {
+		return youvathaCmpltd;
+	}
+	public Long getMahilaCmpltd() {
+		return mahilaCmpltd;
+	}
+	public Long getRythuCmpltd() {
+		return rythuCmpltd;
+	}
+	public void setYouvathaStarted(Long youvathaStarted) {
+		this.youvathaStarted = youvathaStarted;
+	}
+	public void setMahilaStarted(Long mahilaStarted) {
+		this.mahilaStarted = mahilaStarted;
+	}
+	public void setRythuStarted(Long rythuStarted) {
+		this.rythuStarted = rythuStarted;
+	}
+	public void setYouvathaCmpltd(Long youvathaCmpltd) {
+		this.youvathaCmpltd = youvathaCmpltd;
+	}
+	public void setMahilaCmpltd(Long mahilaCmpltd) {
+		this.mahilaCmpltd = mahilaCmpltd;
+	}
+	public void setRythuCmpltd(Long rythuCmpltd) {
+		this.rythuCmpltd = rythuCmpltd;
+	}
 	public String getAccessState() {
 		return accessState;
 	}
