@@ -1427,4 +1427,51 @@ public List<Object[]> getStartedCommitteesMembersCountByLocation(String state,Li
 		}
 		return query.list();
 	}
+	
+public List<Object[]> membersCountMandalWise(List<Long> levelIds, Date startDate, Date endDate, List<Long> constiIds,String levelType){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select count(model.tdpCommitteeMemberId),");
+		if(levelType.equalsIgnoreCase("mandal"))
+		{
+			sb.append(" p.tehsil.tehsilId");	
+			sb.append(" from TdpCommitteeMember model,Panchayat p" +
+		" where p.panchayatId = model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue ");
+		}
+		else if(levelType.equalsIgnoreCase("muncipality"))
+		{
+			
+			sb.append(" c.localElectionBody.localElectionBodyId");	
+			sb.append(" from TdpCommitteeMember model,Constituency c" +
+		" where c.constituencyId = model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue ");
+		}
+		sb.append(" and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId in (:levelIds)" +
+				" and model.tdpCommitteeRole.tdpCommittee.constituency.constituencyId in (:constiIds)" +
+				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 1" +
+				" and model.isActive = 'Y' ");
+				
+		if(startDate!=null){
+			sb.append(" and date(model.insertedTime) >= :startDate ");
+		}
+		if(endDate!=null){
+			sb.append(" and date(model.insertedTime) <= :endDate");
+		}
+		if(levelType.equalsIgnoreCase("mandal"))
+			sb.append("  group by p.tehsil.tehsilId");
+			else if(levelType.equalsIgnoreCase("muncipality"))
+				sb.append(" group by c.localElectionBody.localElectionBodyId");
+		Query query = getSession().createQuery(sb.toString());
+		
+		query.setParameterList("levelIds", levelIds);
+		if(startDate!=null){
+			query.setParameter("startDate", startDate);
+		}
+		if(endDate!=null){
+			query.setParameter("endDate", endDate);
+		}
+		
+		query.setParameterList("constiIds", constiIds);
+		
+		return query.list();
+	}
 }
