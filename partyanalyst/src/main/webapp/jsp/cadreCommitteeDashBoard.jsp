@@ -4592,6 +4592,18 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 		var panAffCompleted =0;
 		var percentage = 0;
 		var perc = 0;
+		
+			
+		var yuvathaStartedCount = 0;
+		var mahilaStartedCount = 0;
+		var rythuStartedCount = 0;
+		var othersStartedCount = 0;
+		
+		var yuvathaCompltdCount = 0;
+		var mahilaCompltdCount = 0;
+		var rythuCompltdCount = 0;
+		var othersCompltdCount = 0;
+		
 		var str = '';
 		/*str+='<span class="btn btn-info excelId form-inline" style="float:left;margin-left:250px;" onclick="exportToExcel(\'constiTableForDistrict\')"> Export To Excel </span>';*/
 		str+='<span id="iconDiv'+districtId+'" class="pull-left removeicon btn btn-xs btn-danger" onclick="closeDiv(\'selectedchild\');" style="display: block; padding-top: 5px; padding-bottom: 5px; margin-top: -21px; margin-left: -21px; border-radius: 0px;"   ><i class="glyphicon glyphicon-remove" title="Click here to close '+districtName+' District Constituency Wise Report"></i></span>&nbsp;&nbsp;<button class="btn btn-info excelId form-inline btn-xs" style="float: left; margin-left: 0px; margin-bottom: 0px; z-index: 2; margin-top: -20px;" onclick="exportConstituencyToExcel(\'constiTableForDistrict\',\''+districtName+' District\')" value="Export To Excel">Export To Excel </button></a>';
@@ -4600,9 +4612,9 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 		if(mandalCheck == "true" && villageCheck == "true"){
 			str+='<thead class="aler alert-success">';
             str+='<tr>';
-			str+='<th rowspan="2" style="text-align:center">AC No</th>';
-			str+='<th rowspan="2" style="text-align:center">AC Name</th>';
-            str+='<th style="text-align:center" colspan="6">TOWN / MANDAL / DIVISION</th>';
+			str+='<th rowspan="3" style="text-align:center">AC No</th>';
+			str+='<th rowspan="3" style="text-align:center">AC Name</th>';
+            str+='<th style="text-align:center" colspan="14">TOWN / MANDAL / DIVISION</th>';
             str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
 			if(result[0].cadreIVRVO != null)
 			{
@@ -4614,26 +4626,30 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 			}
             str+='</tr>';
             str+='<tr>';
-            str+='<th>Total</th>';
-			str+='<th>Started</th>';
-			str+='<th>Completed</th>';
-			str+='<th>Members</th>';
-			str+='<th>Affl Committee Started</th>';
-			str+='<th>Affl Committee Completed</th>';
-			str+='<th>Total</th>';
-			str+='<th>Started</th>';
-			str+='<th>Completed</th>';
-			str+='<th>Members</th>';
-			str+='<th>Affl Committee Started</th>';
-			str+='<th>Affl Committee Completed</th>';
+            str+='<th  rowspan="2">Total</th>';
+			str+='<th  rowspan="2">Started</th>';
+			str+='<th  rowspan="2">Completed</th>';
+			str+='<th  rowspan="2">Members</th>';
+			str+='<th  rowspan="2">Affl Committee Started</th>';
+			str+='<th  rowspan="2">Affl Committee Completed</th>';
+			str+='<th colspan="2"> Telugu Yuvatha  </th>';
+			str+='<th colspan="2"> Telugu Mahila </th>';
+			str+='<th colspan="2" > Telugu Rythu </th>';
+			str+='<th colspan="2" >  Others </th>';
+			str+='<th  rowspan="2">Total</th>';
+			str+='<th  rowspan="2">Started</th>';
+			str+='<th  rowspan="2">Completed</th>';
+			str+='<th  rowspan="2">Members</th>';
+			str+='<th  rowspan="2">Affl Committee Started</th>';
+			str+='<th  rowspan="2">Affl Committee Completed</th>';
             
 			if(result[0].cadreIVRVO != null)
 			{
 				for(var pr in result[0].cadreIVRVO.optionsList)
 				{
 					if(result[0].cadreIVRVO.optionsList[pr].id != 8){
-					str+='<th>'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
-					str+='<th>%</th>';
+					str+='<th  rowspan="2">'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
+					str+='<th  rowspan="2">%</th>';
 					}
 				}
 				
@@ -4645,6 +4661,16 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 					}
 				}*/
 			}	
+			 str+='</tr>';
+			 str+='<tr>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
 			str+='</tr>';	
 			str+='</thead>';	
 			
@@ -4654,7 +4680,7 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 			str+='<tr>';
 			str+='<th rowspan="2"  style="text-align:center">AC No</th>';
 			str+='<th rowspan="2" style="text-align:center">AC Name</th>';
-			 str+='<th style="text-align:center" colspan="6">TOWN / MANDAL / DIVISION</th>';
+			 str+='<th style="text-align:center" colspan="14">TOWN / MANDAL / DIVISION</th>';
 			 if(result[0].cadreIVRVO != null)
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length-1) *2;
@@ -4665,19 +4691,23 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 			}
             str+='</tr>';
             str+='<tr>';
-			str+='<th>Total</th>';
-			str+='<th>Started</th>';
-			str+='<th>Completed</th>';
-			str+='<th>Members</th>';
-			str+='<th>Affl Committee Started</th>';
-			str+='<th>Affl Committee Completed</th>';
+			str+='<th rowspan="2">Total</th>';
+			str+='<th rowspan="2">Started</th>';
+			str+='<th rowspan="2">Completed</th>';
+			str+='<th rowspan="2">Members</th>';
+			str+='<th rowspan="2">Affl Committee Started</th>';
+			str+='<th  rowspan="2">Affl Committee Completed</th>';
+			str+='<th colspan="2"> Telugu Yuvatha  </th>';
+			str+='<th colspan="2"> Telugu Mahila </th>';
+			str+='<th colspan="2" > Telugu Rythu </th>';
+			str+='<th colspan="2" >  Others </th>';
 			if(result[0].cadreIVRVO != null)
 			{
 				for(var pr in result[0].cadreIVRVO.optionsList)
 				{
 					if(result[0].cadreIVRVO.optionsList[pr].id != 8){
-					str+='<th>'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
-					str+='<th>%</th>';
+					str+='<th rowspan="2">'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
+					str+='<th rowspan="2">%</th>';
 					}
 				}
 				/*
@@ -4690,7 +4720,19 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 				}
 				*/
 			}
-			str+='</tr></thead>';	
+			 str+='</tr>';
+			 str+='<tr>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='</tr>';	
+			str+='</thead>';	
+			
 		}
 		else if(villageCheck == "true"){
 			str+='<thead class="aler alert-success">';
@@ -4791,7 +4833,73 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 				}else{
 					str += '<td style="text-align:center"> - </td>';
 				}
+				
+				if(result[i].townMandalDivisionVO.youvathaStarted != null){
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.youvathaStarted+' </td>';
+					yuvathaStartedCount = yuvathaStartedCount+result[i].townMandalDivisionVO.youvathaStarted;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].townMandalDivisionVO.youvathaCmpltd!=null){
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.youvathaCmpltd+' </td>';
+					yuvathaCompltdCount = yuvathaCompltdCount+result[i].townMandalDivisionVO.youvathaCmpltd;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].townMandalDivisionVO.mahilaStarted != null){
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.mahilaStarted+' </td>';
+					mahilaStartedCount = mahilaStartedCount + result[i].townMandalDivisionVO.mahilaStarted;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].townMandalDivisionVO.mahilaCmpltd!=null){
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.mahilaCmpltd+' </td>';
+					mahilaCompltdCount = mahilaCompltdCount+result[i].townMandalDivisionVO.mahilaCmpltd;					
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				
+				if(result[i].townMandalDivisionVO.rythuStarted != null){
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.rythuStarted+' </td>';
+					rythuStartedCount = rythuStartedCount+result[i].townMandalDivisionVO.rythuStarted;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].townMandalDivisionVO.rythuCmpltd!=null){
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.rythuCmpltd+' </td>';
+					rythuCompltdCount = rythuCompltdCount+result[i].townMandalDivisionVO.rythuCmpltd;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].townMandalDivisionVO.othersStarted != null){
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.othersStarted+' </td>';
+					othersStartedCount = othersStartedCount+result[i].townMandalDivisionVO.othersStarted;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].townMandalDivisionVO.othersCmpltd!=null){
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.othersCmpltd+' </td>';
+					othersCompltdCount = othersCompltdCount+result[i].townMandalDivisionVO.othersCmpltd;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
 			}else{
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
 				str += '<td>  </td>';
 				str += '<td>  </td>';
 				str += '<td>  </td>';
@@ -4924,6 +5032,16 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 		str += '<td style="text-align:center">'+mandMembers+'</td>'; 	
 		str += '<td style="text-align:center">'+mandAfStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandAfCompleted+'</td>';
+		
+		str += '<td style="text-align:center">'+yuvathaStartedCount+'</td>';
+		str += '<td style="text-align:center">'+yuvathaCompltdCount+'</td>';
+		str += '<td style="text-align:center">'+mahilaStartedCount+'</td>';
+		str += '<td style="text-align:center">'+mahilaCompltdCount+'</td>';
+		str += '<td style="text-align:center">'+rythuStartedCount+'</td>';
+		str += '<td style="text-align:center">'+rythuCompltdCount+'</td>';
+		str += '<td style="text-align:center">'+othersStartedCount+'</td>';
+		str += '<td style="text-align:center">'+othersCompltdCount+'</td>';
+		
 		str += '<td style="text-align:center">'+panTotal+'</td>';
 		str += '<td style="text-align:center">'+panStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+panCompleted+'</td>'; 	
@@ -4938,6 +5056,16 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 		str += '<td style="text-align:center">'+mandMembers+'</td>'; 	
 		str += '<td style="text-align:center">'+mandAfStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandAfCompleted+'</td>'; 	
+		
+		str += '<td style="text-align:center">'+yuvathaStartedCount+'</td>';
+		str += '<td style="text-align:center">'+yuvathaCompltdCount+'</td>';
+		str += '<td style="text-align:center">'+mahilaStartedCount+'</td>';
+		str += '<td style="text-align:center">'+mahilaCompltdCount+'</td>';
+		str += '<td style="text-align:center">'+rythuStartedCount+'</td>';
+		str += '<td style="text-align:center">'+rythuCompltdCount+'</td>';
+		str += '<td style="text-align:center">'+othersStartedCount+'</td>';
+		str += '<td style="text-align:center">'+othersCompltdCount+'</td>';
+		
 	}
 	else if(villageCheck=="true"){
 		str	+= '<td style="text-align:center">TOTAL</td><td>'+panTotal+'</td>'; 	
