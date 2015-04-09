@@ -297,7 +297,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 
 		str.append("select count(model.tdpCommitteeId)," + // COMMITTEES COUNT
 				" model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId," + // COMMITTEE TYPE (MAIN/AFFLIATED)
-				" model.district.districtId " +// DISTRICT
+				" model.district.districtId,model.tdpBasicCommittee.tdpBasicCommitteeId " +// BASIC_COMMITTEE_ID sri
 				" from TdpCommittee model where  " +
 				" model.tdpCommitteeLevel.tdpCommitteeLevelId in (:levelIds) " +
 				" and model.district.districtId in(:districtIds) ");
@@ -415,7 +415,7 @@ public class TdpCommitteeDAO extends GenericDaoHibernate<TdpCommittee, Long>  im
 		StringBuilder str = new StringBuilder();
 
 
-		str.append("select count(model.tdpCommitteeId),model.tdpCommitteeLevelValue,model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId " + 
+		str.append("select count(model.tdpCommitteeId),model.tdpCommitteeLevelValue,model.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId, model.tdpBasicCommittee.tdpBasicCommitteeId " + 
 				" from TdpCommittee model where model.tdpCommitteeLevel.tdpCommitteeLevelId =:levelId and model.tdpCommitteeLevelValue in(:levelValues) ");
 		
 		if(type.equalsIgnoreCase("started")){
