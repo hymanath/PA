@@ -5579,6 +5579,41 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				Long totalCommittees = mainCommitteesCountMap.get(constiId);
 				if(totalCommittees==null){totalCommittees=0l;}
 				
+				Long yuvathaStarted = startedYuvathaCommitteesAffCountMap.get(constiId);
+				if(yuvathaStarted==null){yuvathaStarted=null;}
+				
+				Long yuvathaCompleted = completedYuvathaCommitteesAffCountMap.get(constiId);
+				if(yuvathaCompleted==null){yuvathaCompleted=null;}
+				
+				Long mahilaStarted = startedMahilaCommitteesAffCountMap.get(constiId);
+				if(mahilaStarted==null){mahilaStarted=null;}
+				
+				Long mahilaCompleted = completedMahilaCommitteesAffCountMap.get(constiId);
+				if(mahilaCompleted==null){mahilaCompleted=null;}
+				
+				
+				Long rythuStarted = startedRythuCommitteesAffCountMap.get(constiId);
+				if(rythuStarted==null){rythuStarted=null;}
+				
+				Long rythuCompleted = completedRythuCommitteesAffCountMap.get(constiId);
+				if(rythuCompleted==null){rythuCompleted=null;}
+				
+				
+				Long othersStarted = startedOthersCommitteesAffCountMap.get(constiId);
+				if(othersStarted==null){othersStarted=null;}
+				
+				Long othersCompleted = completedOthersCommitteesAffCountMap.get(constiId);
+				if(othersCompleted==null){othersCompleted=null;}
+				
+				temp.getTownMandalDivisionVO().setYouvathaStarted(yuvathaStarted);
+				temp.getTownMandalDivisionVO().setYouvathaCmpltd(yuvathaCompleted);
+				temp.getTownMandalDivisionVO().setMahilaStarted(mahilaStarted);
+				temp.getTownMandalDivisionVO().setMahilaCmpltd(mahilaCompleted);
+				temp.getTownMandalDivisionVO().setRythuStarted(rythuStarted);
+				temp.getTownMandalDivisionVO().setRythuCmpltd(rythuCompleted);
+				temp.getTownMandalDivisionVO().setOthersStarted(othersStarted);
+				temp.getTownMandalDivisionVO().setOthersCmpltd(othersCompleted);
+				
 				temp.getTownMandalDivisionVO().setMainStarted(mainStarted);
 				temp.getTownMandalDivisionVO().setMainCompleted(mainCompleted);
 				temp.getTownMandalDivisionVO().setAfflStarted(afflStarted);
