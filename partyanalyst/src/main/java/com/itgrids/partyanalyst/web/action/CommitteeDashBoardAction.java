@@ -459,8 +459,10 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 				String villageCheck =  jObj.getString("villageCheck");
 				String startDate = jObj.getString("startDate");
 				String endDate = jObj.getString("endDate");
-				
+				if(jObj.getString("task").equalsIgnoreCase("District"))
 				constiWiseSummaryList = cadreCommitteeService.getConstituencyWiseCommittesSummaryForDistrict(state, startDate, endDate,regVO.getRegistrationID(),jObj.getString("accessType"),jObj.getLong("accessValue"),mandalCheck,villageCheck);
+				if(jObj.getString("task").equalsIgnoreCase("Constituency"))
+					constiWiseSummaryList = cadreCommitteeService.getConstituencyWiseCommittesSummaryForMandal(state, startDate, endDate,regVO.getRegistrationID(),jObj.getString("accessType"),jObj.getLong("accessValue"),mandalCheck,villageCheck);	
 			}
 			
 			
