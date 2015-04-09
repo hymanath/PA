@@ -2375,8 +2375,14 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			str += '<tr id='+result[i].districtId+' class="removeCls clearCls'+result[i].districtId+'">';
 			str+='<td class="removeCls clearClsTD'+result[i].districtId+'">'+result[i].districtId+'';
 			str+='</td>';
-			
-            str += '<td><a onclick="getConstituencyWiseCommittesSummaryForSubLevel(\''+jObj.startDate+'\',\''+jObj.endDate+'\',\''+jObj.state+'\',\''+jObj.mandalCheck+'\',\''+jObj.villageCheck+'\',\''+result[i].districtId+'\',\''+result[i].districtName+'\');" style="cursor:pointer;">'+result[i].districtName+'</a></td>';
+			if(districtCommCheck == "true" && mandalCheck == "false" && villageCheck == "false"){
+            str += '<td>'+result[i].districtName+'</td>';
+			}else{
+			 str += '<td><a onclick="getConstituencyWiseCommittesSummaryForSubLevel(\''+jObj.startDate+'\',\''+jObj.endDate+'\',\''+jObj.state+'\',\''+jObj.mandalCheck+'\',\''+jObj.villageCheck+'\',\''+result[i].districtId+'\',\''+result[i].districtName+'\');" style="cursor:pointer;">'+result[i].districtName+'</a></td>';
+
+
+			}
+            //str += '<td><a onclick="getConstituencyWiseCommittesSummaryForSubLevel(\''+jObj.startDate+'\',\''+jObj.endDate+'\',\''+jObj.state+'\',\''+jObj.mandalCheck+'\',\''+jObj.villageCheck+'\',\''+result[i].districtId+'\',\''+result[i].districtName+'\');" style="cursor:pointer;">'+result[i].districtName+'</a></td>';
 			if(mandalCheck == "true"){
 			
 			if(result[i].townMandalDivisionVO!=null){
@@ -4242,8 +4248,9 @@ if(!$("#"+divId1+divId2+"BodyTR").hasClass("toggleCls12")){
 
  function closeDiv(trID)
    {	  
-	$(".selectedchild").remove();
+	$("."+trID).remove();
    }
+
 	function getConstituencyWiseCommittesSummaryForSubLevel(startDate,endDate,state,mandalCheck,villageCheck,districtId,districtName){
 	
 	//var count = $("#districtTableId tr").find("td").length; 
@@ -4265,7 +4272,8 @@ if(!$("#"+divId1+divId2+"BodyTR").hasClass("toggleCls12")){
 			mandalCheck:mandalCheck,
 			villageCheck:villageCheck,
 			accessType:"DISTRICT",
-			accessValue:districtId
+			accessValue:districtId,
+			task:"District"
 		}
 				
 		$.ajax({
@@ -4276,13 +4284,13 @@ if(!$("#"+divId1+divId2+"BodyTR").hasClass("toggleCls12")){
 	
 		
 				
-					buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,"subLevelDiv"+districtId,districtId,districtName);	
+					buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,"subLevelDiv"+districtId,districtId,districtName,jObj);	
 				
 		});
 	}
 
   
-function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId,districtId,districtName){
+function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId,districtId,districtName,jObj){
 	
 	
 
@@ -4308,7 +4316,7 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 		var perc = 0;
 		var str = '';
 		/*str+='<span class="btn btn-info excelId form-inline" style="float:left;margin-left:250px;" onclick="exportToExcel(\'constiTableForDistrict\')"> Export To Excel </span>';*/
-		str+='<span id="iconDiv'+districtId+'" class="pull-left removeicon btn btn-xs btn-danger" onclick="closeDiv(\''+districtId+'\');" style="display: block; padding-top: 5px; padding-bottom: 5px; margin-top: -21px; margin-left: -21px; border-radius: 0px;"   ><i class="glyphicon glyphicon-remove" title="Click here to close '+districtName+' District Constituency Wise Report"></i></span><button class="btn btn-info excelId form-inline btn-xs" style="float: left; margin-left: 0px; margin-bottom: 0px; z-index: 2; margin-top: -20px;" onclick="exportConstituencyToExcel(\'constiTableForDistrict\',\''+districtName+' District\')" value="Export To Excel">Export To Excel </button></a>';
+		str+='<span id="iconDiv'+districtId+'" class="pull-left removeicon btn btn-xs btn-danger" onclick="closeDiv(\'selectedchild\');" style="display: block; padding-top: 5px; padding-bottom: 5px; margin-top: -21px; margin-left: -21px; border-radius: 0px;"   ><i class="glyphicon glyphicon-remove" title="Click here to close '+districtName+' District Constituency Wise Report"></i></span>&nbsp;&nbsp;<button class="btn btn-info excelId form-inline btn-xs" style="float: left; margin-left: 0px; margin-bottom: 0px; z-index: 2; margin-top: -20px;" onclick="exportConstituencyToExcel(\'constiTableForDistrict\',\''+districtName+' District\')" value="Export To Excel">Export To Excel </button></a>';
 		str+='<table class="table table-bordered table-condensed " id="constiTableForDistrict" style="width: 1820px; background-color: rgba(0, 0, 0, 0.1) !important;">';
        
 		if(mandalCheck == "true" && villageCheck == "true"){
@@ -4454,11 +4462,9 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 		str+='<tbody>';
 		for(var i in result){
 		if(result[i].townMandalDivisionVO != null || result[i].villageWardVO != null){
-		str += '<tr>';
-		
-			str += '<td style="text-align:center">'+result[i].constiNo+'</td>';
-			str += '<td ><span style="font-size: 12px;">'+result[i].name+'</span>';
-			
+		str += '<tr id='+result[i].constiId+' class="removeCls1 clearCls1'+result[i].constiId+'">';
+		str += '<td style="text-align:center" class="removeCls1 clearClsTD1'+result[i].constiId+'">'+result[i].constiNo+'</td>';
+			str += '<td ><a onclick="getConstituencyWiseCommittesSummaryForMandal(\''+jObj.startDate+'\',\''+jObj.endDate+'\',\''+jObj.state+'\',\''+jObj.mandalCheck+'\',\''+jObj.villageCheck+'\',\''+result[i].constiId+'\',\''+result[i].name+'\');" style="cursor:pointer;"><span style="font-size: 12px;">'+result[i].name+'</span></a>';
 				str += '&nbsp;&nbsp;<span style="cursor: pointer;" title="Click Here For '+result[i].name+' Committee Summary Report" onclick="getPopUpForSummary('+result[i].constiId+',\''+result[i].name+'\');" class="glyphicon glyphicon-dashboard"></span>&nbsp;&nbsp;<span style="cursor: pointer;"  onclick="showAdvanceDashBoard('+result[i].constiId+');" title="Click Here For '+result[i].name+' Advance Dashboard"  class="glyphicon glyphicon-list-alt"></span>';
 			
 			str += '</td>';
@@ -4698,7 +4704,423 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 		}
 			
 	}
+	function getConstituencyWiseCommittesSummaryForMandal(startDate,endDate,state,mandalCheck,villageCheck,constituencyId,constituencyName){
 	
+	//var count = $("#districtTableId tr").find("td").length; 
+	var cellCount = $("#constiTableForDistrict tr").eq(0).children("td").length;
+	
+	$('.added1').remove('');
+	$(".removeicon1").hide();
+	$(".removeCls1").removeClass("selectedchild1");
+	
+	$('.clearCls1'+constituencyId).after('<tr class="selectedchild1"><td id="subLevelMandalDiv'+constituencyId+'" colspan="'+cellCount+'" class="added1" style="padding: 20px; background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.3);"><div align="center"><img id="ajaxImgStyle2" style="display:block;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
+	$('.clearCls1'+constituencyId).addClass("selected");
+	$('.clearClsTD1'+constituencyId).addClass("selected");
+	$("#ajaxImgStyle2").show();
+	$("#iconDiv1"+constituencyId).show();
+		var jObj = {
+			startDate:startDate,
+			endDate:endDate,
+			state:state,
+			mandalCheck:mandalCheck,
+			villageCheck:villageCheck,
+			accessType:"Constituency",
+			accessValue:constituencyId,
+			task:"Constituency"
+		}
+				
+		$.ajax({
+          type:'GET',
+          url: 'getConstituencyWiseCommittesSummaryForDistrictAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+	
+		buildMandalWiseSummaryForConstituencyfunction(result,mandalCheck,villageCheck,"subLevelMandalDiv"+constituencyId,constituencyId,constituencyName,jObj);	
+				
+		});
+	}
+function  buildMandalWiseSummaryForConstituencyfunction(result,mandalCheck,villageCheck,divId,constituencyId,constituencyName,jObj){
+		var constiInfoArr = [];
+		var constiVillageInfoArr = [];
+		var mandTotal =0; 	
+		var mandStarted =0; 	
+		var mandCompleted =0; 	
+		var mandMembers =0; 	
+		var mandAfStarted =0; 	
+		var mandAfCompleted =0;
+		var panTotal =0; 	
+		var panStarted =0; 	
+		var panCompleted =0; 	
+		var panMembers =0; 	
+		var panAffStarted =0; 	
+		var panAffCompleted =0;
+		var percentage = 0;
+		var perc = 0;
+		var str = '';
+		/*str+='<span class="btn btn-info excelId form-inline" style="float:left;margin-left:250px;" onclick="exportToExcel(\'constiTableForDistrict\')"> Export To Excel </span>';*/
+		str+='<span id="iconDiv1'+constituencyId+'" class="pull-left removeicon1 btn btn-xs btn-danger" onclick="closeDiv(\'selectedchild1\');" style="display: block; padding-top: 5px; padding-bottom: 5px; margin-top: -21px; margin-left: -21px; border-radius: 0px;"   ><i class="glyphicon glyphicon-remove" title="Click here to close '+constituencyName+' District Constituency Wise Report"></i></span>&nbsp;&nbsp;<button class="btn btn-info excelId form-inline btn-xs" style="float: left; margin-left: 0px; margin-bottom: 0px; z-index: 2; margin-top: -20px;" onclick="exportConstituencyToExcel(\'mandalTableForConstituency\',\''+constituencyName+' Constituency\')" value="Export To Excel">Export To Excel </button></a>';
+		str+='<table class="table table-bordered table-condensed " id="mandalTableForConstituency" style="width: 1820px; background-color: rgba(0, 0, 0, 0.1) !important;">';
+       
+		if(mandalCheck == "true" && villageCheck == "true"){
+			str+='<thead class="aler alert-success">';
+            str+='<tr>';
+			str+='<th rowspan="2" style="text-align:center">AC No</th>';
+			str+='<th rowspan="2" style="text-align:center">AC Name</th>';
+            str+='<th style="text-align:center" colspan="6">TOWN / MANDAL / DIVISION</th>';
+            str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
+			if(result[0].cadreIVRVO != null)
+			{
+				var length = (result[0].cadreIVRVO.optionsList.length-1)*2;
+				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE / WARD IVR DETAILS</th>';
+				
+				//var length1 = (result[0].cadreIVRVO.optionsList1.length-1)*2;
+				//str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS</th>';
+			}
+            str+='</tr>';
+            str+='<tr>';
+            str+='<th>Total</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='<th>Members</th>';
+			str+='<th>Affl Committee Started</th>';
+			str+='<th>Affl Committee Completed</th>';
+			str+='<th>Total</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='<th>Members</th>';
+			str+='<th>Affl Committee Started</th>';
+			str+='<th>Affl Committee Completed</th>';
+            
+			if(result[0].cadreIVRVO != null)
+			{
+				for(var pr in result[0].cadreIVRVO.optionsList)
+				{
+					if(result[0].cadreIVRVO.optionsList[pr].id != 8){
+					str+='<th>'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
+					str+='<th>%</th>';
+					}
+				}
+				
+				/*for(var pr in result[0].cadreIVRVO.optionsList1)
+				{
+					if(result[0].cadreIVRVO.optionsList1[pr].id != 13){
+					str+='<th>'+result[0].cadreIVRVO.optionsList1[pr].name+'</th>';
+					str+='<th>%</th>';
+					}
+				}*/
+			}	
+			str+='</tr>';	
+			str+='</thead>';	
+			
+		}
+		else if(mandalCheck == "true"){
+			str+='<thead class="aler alert-success">';
+			str+='<tr>';
+			str+='<th rowspan="2"  style="text-align:center">AC No</th>';
+			str+='<th rowspan="2" style="text-align:center">AC Name</th>';
+			 str+='<th style="text-align:center" colspan="6">TOWN / MANDAL / DIVISION</th>';
+			 if(result[0].cadreIVRVO != null)
+			{
+				var length = (result[0].cadreIVRVO.optionsList.length-1) *2;
+				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE / WARD IVR DETAILS</th>';
+				
+				//var length1 = (result[0].cadreIVRVO.optionsList1.length-1) *2;
+				//str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS</th>';
+			}
+            str+='</tr>';
+            str+='<tr>';
+			str+='<th>Total</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='<th>Members</th>';
+			str+='<th>Affl Committee Started</th>';
+			str+='<th>Affl Committee Completed</th>';
+			if(result[0].cadreIVRVO != null)
+			{
+				for(var pr in result[0].cadreIVRVO.optionsList)
+				{
+					if(result[0].cadreIVRVO.optionsList[pr].id != 8){
+					str+='<th>'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
+					str+='<th>%</th>';
+					}
+				}
+				/*
+				for(var pr in result[0].cadreIVRVO.optionsList1)
+				{
+					if(result[0].cadreIVRVO.optionsList1[pr].id != 13){
+					str+='<th>'+result[0].cadreIVRVO.optionsList1[pr].name+'</th>';
+					str+='<th>%</th>';
+					}
+				}
+				*/
+			}
+			str+='</tr></thead>';	
+		}
+		else if(villageCheck == "true"){
+			str+='<thead class="aler alert-success">';
+			str+='<th rowspan="2"  style="text-align:center">AC No</th>';
+			str+='<th rowspan="2" style="text-align:center">AC Name</th>';
+    
+			str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
+			if(result[0].cadreIVRVO != null)
+			{
+				var length = (result[0].cadreIVRVO.optionsList.length-1)*2;
+				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE / WARD IVR DETAILS</th>';
+				
+			//	var length1 = (result[0].cadreIVRVO.optionsList1.length-1)*2;
+				//str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS</th>';
+				
+			}
+            str+='</tr>';
+            str+='<tr>';
+			str+='<th>Total</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='<th>Members</th>';
+			str+='<th>Affl Committee Started</th>';
+			str+='<th>Affl Committee Completed</th>';
+			if(result[0].cadreIVRVO != null)
+			{
+				for(var pr in result[0].cadreIVRVO.optionsList)
+				{
+					if(result[0].cadreIVRVO.optionsList[pr].id != 8){
+					str+='<th>'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
+					str+='<th>%</th>';
+					}
+				}
+				/*
+				for(var pr in result[0].cadreIVRVO.optionsList1)
+				{
+					if(result[0].cadreIVRVO.optionsList1[pr].id != 13){
+					str+='<th>'+result[0].cadreIVRVO.optionsList1[pr].name+'</th>';
+					str+='<th>%</th>';
+					}
+				}
+				*/
+			}
+			str+='</thead>';	
+		}
+		
+		str+='<tbody>';
+		for(var i in result){
+		if(result[i].townMandalDivisionVO != null || result[i].villageWardVO != null){
+		str += '<tr id='+result[i].constiId+' class="removeCls1 clearCls1'+result[i].constiId+'">';
+		str += '<td style="text-align:center" class="removeCls1 clearClsTD1'+result[i].constiId+'">'+result[i].constiNo+'</td>';
+			str += '<td>'+result[i].name+'';
+				str += '&nbsp;&nbsp;';
+			
+			str += '</td>';
+			if(mandalCheck == "true"){
+			
+			if(result[i].townMandalDivisionVO!=null){
+				if(result[i].townMandalDivisionVO.totalCommittees!=null){
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.totalCommittees+'</td>';
+					mandTotal=mandTotal+result[i].townMandalDivisionVO.totalCommittees;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].townMandalDivisionVO.mainStarted!=null){
+					//str += '<td>'+result[i].townMandalDivisionVO.mainStarted+'<span id="mini-pie-chart-constituency'+i+'" class="pull-right mini-pie-chart-district"></span></td>';
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.mainStarted+'</td>';
+					mandStarted=mandStarted+result[i].townMandalDivisionVO.mainStarted;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].townMandalDivisionVO.mainCompleted!=null){
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.mainCompleted+'</td>';
+					mandCompleted=mandCompleted+result[i].townMandalDivisionVO.mainCompleted;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].townMandalDivisionVO.membersCount!=null){
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.membersCount+'</td>';
+					mandMembers=mandMembers+result[i].townMandalDivisionVO.membersCount;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].townMandalDivisionVO.afflStarted!=null){
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.afflStarted+'</td>';
+					mandAfStarted=mandAfStarted+result[i].townMandalDivisionVO.afflStarted;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].townMandalDivisionVO.afflCompleted!=null){
+					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.afflCompleted+' </td>';
+					mandAfCompleted=mandAfCompleted+result[i].townMandalDivisionVO.afflCompleted;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+			}else{
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+			}
+			}
+			if(villageCheck == "true"){
+			
+			if(result[i].villageWardVO!=null){
+				if(result[i].villageWardVO.totalCommittees!=null){
+					str += '<td style="text-align:center" >'+result[i].villageWardVO.totalCommittees+'</td>';
+					panTotal=panTotal+result[i].villageWardVO.totalCommittees;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].villageWardVO.mainStarted!=null){
+					//str += '<td>'+result[i].villageWardVO.mainStarted+'<span id="mini-pie-chart-constiVillage'+i+'" class="pull-right mini-pie-chart-village"></span></td>';
+					str += '<td style="text-align:center">'+result[i].villageWardVO.mainStarted+'</td>';
+					panStarted=panStarted+result[i].villageWardVO.mainStarted;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].villageWardVO.mainCompleted!=null){
+					str += '<td style="text-align:center">'+result[i].villageWardVO.mainCompleted+'</td>';
+					panCompleted=panCompleted+result[i].villageWardVO.mainCompleted;
+				}else{
+					str += '<td> - </td>';
+				}
+				
+				if(result[i].villageWardVO.membersCount!=null){
+					str += '<td style="text-align:center">'+result[i].villageWardVO.membersCount+' </td>';
+					panMembers=panMembers+result[i].villageWardVO.membersCount;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].villageWardVO.afflStarted!=null){
+					str += '<td style="text-align:center">'+result[i].villageWardVO.afflStarted+'</td>';
+					panAffStarted=panAffStarted+result[i].villageWardVO.afflStarted;
+				}else{
+					str += '<td style="text-align:center">  - </td>';
+				}
+				
+				if(result[i].villageWardVO.afflCompleted!=null){
+					str += '<td style="text-align:center">'+result[i].villageWardVO.afflCompleted+' </td>';
+					panAffCompleted=panAffCompleted+result[i].villageWardVO.afflCompleted;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+			}else{
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+			}
+			}
+			if(result[i].cadreIVRVO != null)
+			{
+				
+				for(var tp in result[i].cadreIVRVO.optionsList)
+				{
+					if(result[0].cadreIVRVO.optionsList[tp].id != 8){
+					if(result[i].cadreIVRVO.total >0){
+					 percentage = (result[i].cadreIVRVO.optionsList[tp].count *100)/ result[i].cadreIVRVO.total;
+					 perc = percentage.toFixed(0);
+					str+='<td style="text-align:center">'+result[i].cadreIVRVO.optionsList[tp].count+'</td>';
+					str+='<td style="text-align:center">'+perc+'</td>';
+					}				
+					else{
+					str+='<td style="text-align:center">'+result[i].cadreIVRVO.optionsList[tp].count+'</td>';
+					str+='<td style="text-align:center">0</td>';
+					}
+					}					
+				}
+			/*	
+				for(var tp in result[i].cadreIVRVO.optionsList1)
+				{
+					if(result[0].cadreIVRVO.optionsList1[tp].id != 13){
+					if(result[i].cadreIVRVO.total >0){
+					 percentage = (result[i].cadreIVRVO.optionsList1[tp].count *100)/ result[i].cadreIVRVO.total;
+					 perc = percentage.toFixed(0);
+					str+='<td style="text-align:center">'+result[i].cadreIVRVO.optionsList1[tp].count+'</td>';
+					str+='<td style="text-align:center">'+perc+'</td>';
+					}				
+					else{
+					str+='<td style="text-align:center">'+result[i].cadreIVRVO.optionsList1[tp].count+'</td>';
+					str+='<td style="text-align:center">0</td>';
+					}
+					}
+				}
+				*/
+			}
+			
+			
+		
+			str += '</tr>';
+			
+			if(result[i].townMandalDivisionVO != null){
+				var details = [result[i].townMandalDivisionVO.totalCommittees, result[i].townMandalDivisionVO.mainStarted];
+				constiInfoArr.push(details);
+			}else{
+				 var details = [0, 0];
+				constiInfoArr.push(details);
+			}
+			
+			
+			if(result[i].villageWardVO != null){
+				var villageDetails  = [result[i].villageWardVO.totalCommittees, result[i].villageWardVO.mainStarted];
+				constiVillageInfoArr.push(villageDetails);
+			}else{
+				var villageDetails  = [0, 0];
+				constiVillageInfoArr.push(villageDetails);
+			}
+			
+			
+		}
+		}
+   
+	    str += '</tbody><tfoot><tr class="no-sort" style="font-weight:bold;"><td></td>';
+	if(mandalCheck=="true" && villageCheck=="true"){
+		str	+= '<td style="text-align:center">TOTAL</td><td>'+mandTotal+'</td>'; 	
+		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
+		str += '<td style="text-align:center">'+mandMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+mandAfStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+mandAfCompleted+'</td>';
+		str += '<td style="text-align:center">'+panTotal+'</td>';
+		str += '<td style="text-align:center">'+panStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+panCompleted+'</td>'; 	
+		str += '<td style="text-align:center">'+panMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+panAffStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+panAffCompleted+'</td>'; 	
+	}	
+	else if(mandalCheck=="true"){
+		str	+= '<td style="text-align:center">TOTAL</td><td>'+mandTotal+'</td>'; 	
+		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
+		str += '<td style="text-align:center">'+mandMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+mandAfStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+mandAfCompleted+'</td>'; 	
+	}
+	else if(villageCheck=="true"){
+		str	+= '<td style="text-align:center">TOTAL</td><td>'+panTotal+'</td>'; 	
+		str += '<td style="text-align:center">'+panStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+panCompleted+'</td>'; 	
+		str += '<td style="text-align:center">'+panMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+panAffStarted+'</td>'; 	
+		str += '<td style="text-align:center">'+panAffCompleted+'</td>'; 	
+	}
+		str += '</tr></tfoot></table>';
+		
+		$("#"+divId).html(str);
+		$("#mandalTableForConstituency").dataTable({
+			"iDisplayLength": 20,
+			"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+		});
+		
+		
+	}
 
 </script>		
 </body>
