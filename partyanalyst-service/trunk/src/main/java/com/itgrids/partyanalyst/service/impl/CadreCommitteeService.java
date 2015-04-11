@@ -5843,6 +5843,8 @@ return constiLst;
 				}
 				else
 				{
+					if(vo.getLocationsList() != null)
+					{
 					for (CommitteeSummaryVO panVO  : vo.getLocationsList())
 					{
 						ivrVO = committeeIvrMap.get(panVO.getLocationId());
@@ -5858,9 +5860,10 @@ return constiLst;
 							panVO.setCadreIVRVO(ivrVO);
 						}
 					}
-					
+					}
 					
 				}
+				
 				if(ivrVO != null )
 				{
 					vo.setCadreIVRVO(ivrVO);
@@ -9696,7 +9699,8 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 			List<Long> districtIds = new ArrayList<Long>();
 			List<Long> constiIds = new ArrayList<Long>();
 			List<Long> constiIds1 = new ArrayList<Long>();
-					
+			List<Long> mandalIds = new ArrayList<Long>();
+			List<Long> localBodyIds = new ArrayList<Long>();
 			constiIds.add(accessValue);
 			constiIds1.add(accessValue);
 	
@@ -9707,9 +9711,9 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 			getLocationsInfo(constiIds, divisionLclIds, localBodiesMap, divisionIdsMap, mandalIdsMap);	
 			
 			if(mandalIdsMap.size() > 0){
-				 List<Long> levelValues = new ArrayList<Long>(mandalIdsMap.keySet());
+				  mandalIds = new ArrayList<Long>(mandalIdsMap.keySet());
 				 
-				 for(Long mandalId : levelValues)
+				 for(Long mandalId : mandalIds)
 				 {
 					 CommitteeSummaryVO mandalVo = new CommitteeSummaryVO();
 					 String mandal = "2"+mandalId;
@@ -9717,12 +9721,13 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 					 mandalVo.setName(getLocationName(5l,mandalId));
 					 mandalVo.setConstiNo(2l);//mandal
 					 mandalList.add(mandalVo);
+					
 				 }
 			}
 			
 			 if(localBodiesMap.size() > 0){
-				 List<Long> levelValues = new ArrayList<Long>(localBodiesMap.keySet());
-				 for(Long localbody : levelValues)
+				 localBodyIds = new ArrayList<Long>(localBodiesMap.keySet());
+				 for(Long localbody : localBodyIds)
 				 {
 					 CommitteeSummaryVO mandalVo = new CommitteeSummaryVO();
 					 String localEle = "1"+localbody;
@@ -9894,87 +9899,141 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 		{
 			if(vo.getConstiId().toString().substring(0,1).trim().equalsIgnoreCase("2"))
 			{
-				vo.setConstiId(new Long(vo.getConstiId().toString().substring(01)));
-				mandals.add(vo);
+				
+				CommitteeSummaryVO tmpVO = new CommitteeSummaryVO();
+				tmpVO.setConstiId(new Long(vo.getConstiId().toString().substring(01)));
+				tmpVO.setLocationId(tmpVO.getConstiId());
+				tmpVO.setName(vo.getName());
+				mandals.add(tmpVO);
 			}
 			else if(vo.getConstiId().toString().substring(0,1).trim().equalsIgnoreCase("1"))
 			{
-				vo.setConstiId(new Long(vo.getConstiId().toString().substring(01)));
-				localBodies.add(vo);	
+				CommitteeSummaryVO tmpVO = new CommitteeSummaryVO();
+				tmpVO.setConstiId(new Long(vo.getConstiId().toString().substring(01)));
+				tmpVO.setLocationId(tmpVO.getConstiId());
+				tmpVO.setName(vo.getName());
+				localBodies.add(tmpVO);	
 			}
 		}
 	}
-	/*if(villageCheck.equalsIgnoreCase("true") && userId.longValue() == 1){
+	if(villageCheck.equalsIgnoreCase("true") && userId.longValue() == 1){
+		Map<Long,List<CommitteeSummaryVO>> mandalMap = new HashMap<Long, List<CommitteeSummaryVO>>();
+		Map<Long,List<CommitteeSummaryVO>> wardMap = new HashMap<Long, List<CommitteeSummaryVO>>();
+		List<Long> panchIds = new ArrayList<Long>();
+		List<Long> wardIds = new ArrayList<Long>();
+		List<CommitteeSummaryVO> panchList = null;
+		List<CommitteeSummaryVO> allPanchayats = new ArrayList<CommitteeSummaryVO>();
+		List<CommitteeSummaryVO> allWardsList = new ArrayList<CommitteeSummaryVO>();
+		List<CommitteeSummaryVO> wardsList = null;
+		 if(mandalIds.size() > 0){
+	        	//0panchayatId,1panchayatName,2tehsilName
+	        	List<Object[]> panchayatsList = panchayatDAO.getAllPanchayatsWithTehsilIdsInMandals(mandalIds);
+	        	for(Object[] panchayat:panchayatsList){
+	        		CommitteeSummaryVO vo = new CommitteeSummaryVO();
+		        	vo.setLocationId(Long.valueOf((Long)panchayat[0]));
+		        	vo.setLocationName(panchayat[1].toString()+"("+panchayat[2].toString()+")");
+		        	
+		        	panchList = mandalMap.get(Long.valueOf(panchayat[3].toString()));
+		        	if(panchList==null){
+		        		panchList = new ArrayList<CommitteeSummaryVO>();
+		        	}
+		        	panchList.add(vo);
+		        	allPanchayats.add(vo);
+		        	panchIds.add(Long.valueOf((Long)panchayat[0]));
+		        	mandalMap.put(Long.valueOf(panchayat[3].toString()), panchList);
+		        	
+	        	}
+	        	pushPanchayatsAndWards(mandalMap, mandals);
+	        }
+	        if(localBodyIds.size() > 0){
+	        	//0wardId,1pwardName,2localBdyName
+	        	List<Object[]> localBodyList = constituencyDAO.getWardsAndLEBIdsInLocalElectionBody(localBodyIds);
+	        	for(Object[] localBody:localBodyList){
+	        		CommitteeSummaryVO vo = new CommitteeSummaryVO();
+		        	vo.setLocationId(Long.valueOf((Long)localBody[0]));
+		        	vo.setLocationName(localBody[1].toString()+"("+localBody[2].toString()+")");
+		        	
+		        	wardsList = wardMap.get(Long.valueOf(localBody[3].toString()));
+		        	if(wardsList==null){
+		        		wardsList = new ArrayList<CommitteeSummaryVO>();
+		        	}
+		        	wardIds.add(Long.valueOf((Long)localBody[0]));
+		        	wardsList.add(vo);
+		        	allWardsList.add(vo);
+		        	wardMap.put(Long.valueOf(localBody[3].toString()), wardsList);
+		        	
+	        	}
+	        	pushPanchayatsAndWards(wardMap, localBodies);
+	        	
+	        }
+	
 		
 		getAllIvrDetailsForCampaind(mandals,3l,"mandal");
 		getAllIvrDetailsForCampaind(localBodies,4l,"ward");
-	}*/
-	/*if(villageCheck.equalsIgnoreCase("true") && userId.longValue() == 1){
+	}/*if(villageCheck.equalsIgnoreCase("true") && userId.longValue() == 1){
 		
 		getAllIvrDetailsForCampaind(constiLst,2l,"constituency");
-	}
-	*/
+	}*/
+	
 		
-/*	if(mandalList != null && mandalList.size()>0)
+	if(mandalList != null && mandalList.size()>0)
 	{
+		Long totalIVRCount = 0L;
 		for (CommitteeSummaryVO summaryVO : mandalList) 
 		{
+			CadreIVRVO cadreIVRVO = new CadreIVRVO();
+			List<IvrOptionsVO> optionsList = setOptionsList(mandals.get(0).getCadreIVRVO().getOptionsList());
+			cadreIVRVO.setOptionsList(optionsList);
+			summaryVO.setCadreIVRVO(cadreIVRVO);
 			
 			CommitteeSummaryVO ivrVO = getMatchedVOByConstId(mandals,summaryVO.getName().trim()); 
+			
 			if(ivrVO != null)
 			{
-				summaryVO.setCadreIVRVO(ivrVO.getCadreIVRVO());
+				for(CommitteeSummaryVO vo : ivrVO.getLocationsList()) // mandal panchayats List
+				{	
+					for(IvrOptionsVO vo1 : summaryVO.getCadreIVRVO().getOptionsList()) // ivr details list
+					{
+						IvrOptionsVO returnVo = getMatchedIvrOption(vo.getCadreIVRVO().getOptionsList(),vo1.getId()); // mandal Options List
+						if(returnVo != null)
+						{
+								vo1.setCount(returnVo.getCount() + vo1.getCount()); // mandal Option VO
+								summaryVO.getCadreIVRVO().setTotal(summaryVO.getCadreIVRVO().getTotal() + returnVo.getCount());
+							
+						}
+					}
+					
+				}
+				
 			}
 			else
 			{
+				
+				
 				ivrVO = getMatchedVOByConstId(localBodies,summaryVO.getName().trim());
 				if(ivrVO != null)
 				{
-					summaryVO.setCadreIVRVO(ivrVO.getCadreIVRVO());
-				}
-			}
-			
-			CadreIVRVO ivrDetailsVO = summaryVO.getCadreIVRVO() != null ? summaryVO.getCadreIVRVO():null;
-			
-			if(ivrDetailsVO != null)
-			{
-				Long totalIVRCount = 0L;
-				List<IvrOptionsVO> villageIVRDetails = ivrDetailsVO.getOptionsList();
-				List<IvrOptionsVO> wardIVRDetails = ivrDetailsVO.getOptionsList1();
-				
-				int villageListLength =villageIVRDetails != null ? villageIVRDetails.size() : 0;
-				int wardListLength = wardIVRDetails != null ? wardIVRDetails.size() : 0;
-				
-				int maxLenght = villageListLength>wardListLength?  villageListLength : wardListLength;
-				
-				for (int i = 0; i < maxLenght; i++) 
-				{
-					IvrOptionsVO villageVO = null;
-					IvrOptionsVO wardVO = null;
-					if( villageIVRDetails != null)
-					 villageVO = villageIVRDetails.get(i);
-					if(wardIVRDetails != null)
-					 wardVO = wardIVRDetails.get(i);
-					
-					if((villageVO != null && wardVO != null ) && villageVO.getName().trim().equalsIgnoreCase(wardVO.getName().trim()))
-					{
-						Long villageCount = villageVO.getCount() != null ? villageVO.getCount() :0L;
-						Long wardCount = wardVO.getCount() != null ? wardVO.getCount():0L;
-						Long totalCount = villageCount + wardCount;
-						totalIVRCount = totalIVRCount + totalCount;
-						
-						IvrOptionsVO returnVO = getMatchedVOByIVRStatus(villageIVRDetails,villageVO.getName().trim());
-						if(returnVO != null)
+					for(CommitteeSummaryVO vo : ivrVO.getLocationsList()) // localbody wards List
+					{	
+						for(IvrOptionsVO vo1 : summaryVO.getCadreIVRVO().getOptionsList()) // ivr details list
 						{
-							returnVO.setCount(totalCount);
+							IvrOptionsVO returnVo = getMatchedIvrOption(vo.getCadreIVRVO().getOptionsList(),vo1.getId()); // ward options List
+							if(returnVo != null)
+							{
+									vo1.setCount(returnVo.getCount() + vo1.getCount()); // localbody Option VO
+									summaryVO.getCadreIVRVO().setTotal(summaryVO.getCadreIVRVO().getTotal() + returnVo.getCount());
+								
+							}
 						}
+						
 					}
+					
 				}
-				
-				ivrDetailsVO.setTotal(totalIVRCount);
 			}
+			
 		}
-	}*/
+	}
+	
 	
 }catch (Exception e) {
 	LOG.error("Exception Raised in getConstituencyWiseCommittesSummary",e);
@@ -9982,6 +10041,26 @@ public Map<String,List<Long>> getLocalBodiesDivisionsMandalByContituencyIds(List
 return mandalList;
 }
 	
+	public List<IvrOptionsVO> setOptionsList(List<IvrOptionsVO> optionsList)
+	{
+		List<IvrOptionsVO> list = new ArrayList<IvrOptionsVO>();
+		try{
+			for(IvrOptionsVO vo : optionsList)
+			{
+			IvrOptionsVO optionVo = new IvrOptionsVO();
+			optionVo.setId(vo.getId());
+			optionVo.setName(vo.getName());
+			optionVo.setCount(0l);
+			list.add(optionVo);
+			}
+			
+		}
+		catch(Exception e)
+		{
+			
+		}
+		return list;
+	}
 	public CommitteeSummaryVO getMatchedVOByConstId(List<CommitteeSummaryVO> volist,String  locatioName)
 	{
 		CommitteeSummaryVO returnVO = null;
@@ -10302,6 +10381,26 @@ return mandalList;
 				
 			}
 		}
+	}
+	public IvrOptionsVO getMatchedIvrOption(List<IvrOptionsVO> volist,Long  Id)
+	{
+		IvrOptionsVO returnVO = null;
+		try {
+			if(volist != null && volist.size()>0)
+			{
+				for (IvrOptionsVO  vo: volist) 
+				{
+					if(vo.getId().longValue() == Id.longValue())
+					{
+						return vo;
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Raised in getMatchedVOByIVRStatus",e);
+		}
+		
+		return returnVO;
 	}
 
 }
