@@ -2423,7 +2423,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		for(var i in result){
 			if(result[i].townMandalDivisionVO != null || result[i].villageWardVO != null || result[i].districtCommVO != null){
 			str += '<tr id='+result[i].districtId+' class="removeCls clearCls'+result[i].districtId+'">';
-			str+='<td class="removeCls clearClsTD'+result[i].districtId+'">'+result[i].districtId+'';
+			str+='<td class="removeCls clearClsTD'+result[i].districtId+'" style="text-align:center;">'+result[i].districtId+'';
 			str+='</td>';
 			if(districtCommCheck == "true" && mandalCheck == "false" && villageCheck == "false"){
             str += '<td>'+result[i].districtName+'</td>';
