@@ -64,8 +64,6 @@
 .popOverStyle{
 padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 }
-
-
  
 	</style>
 
@@ -663,10 +661,10 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						<label class="radio"><input type="radio" id="constiRdId" style="vertical-align: text-bottom;" class="levelRd" value="consti" name="select">&nbsp;Constituency &nbsp;&nbsp;&nbsp;</label>
 					</span>
 					<span class="btn btn-success btn-xs form-inline">
-						<label class="radio"><input type="checkbox" id="villageId" style="vertical-align: text-bottom;" class="scopeRd" value="village" name="selectCheck"  checked="true">&nbsp;VILLAGE / WARD &nbsp;</label>
+						<label class="radio"><input type="checkbox" id="villageId" style="vertical-align: text-bottom;" class="scopeRd" value="village" name="selectCheck">&nbsp;VILLAGE / WARD &nbsp;</label>
 					</span>&nbsp;&nbsp;
 					<span class="btn btn-success btn-xs form-inline">
-						<label class="checkbox"><input type="checkbox" id="mandalId" style="vertical-align: text-bottom;" class="scopeRd" value="mandal" name="selectCheck">&nbsp;TOWN / MANDAL / DIVISION &nbsp;&nbsp;</label>
+						<label class="checkbox"><input type="checkbox" id="mandalId" style="vertical-align: text-bottom;" class="scopeRd" value="mandal" name="selectCheck"  checked="true">&nbsp;TOWN / MANDAL / DIVISION &nbsp;&nbsp;</label>
 					</span>
 					
 					
@@ -675,6 +673,9 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					</span>
 	
 					<br>
+					<span class="btn btn-success btn-xs form-inline  " id="considerAffDiv" >
+						<label class="checkbox"><input type="checkbox" id="considerAfflId" style="vertical-align: text-bottom;" class="scopeRd" name="selectCheck">&nbsp; WITH ALL AFFLIATED COMMITTEES &nbsp;&nbsp;</label>
+					</span>
 					<span class="btn btn-info pull-right excelId form-inline" onclick="exportToExcel()" style="margin-right: -70px;margin-bottom:20px;display:none;"> Export To Excel </span>
                 </div>
                
@@ -793,7 +794,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
                $(document).ready(function() {
 				   $("#APId").prop("checked", true);
 				   $("#districtId").prop("checked", true);
-				   $("#villageId").prop("checked", true);
+				   //$("#districtCommId").prop("checked", true);
 
 					$('#APStateDiv').hide();
 					$('#TGStateDiv').hide();
@@ -2136,57 +2137,163 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		var rythuCompltdCount = 0;
 		var othersCompltdCount = 0;
 		
+		
+		
+		var bcCellStartedCount = 0;
+		var scCellStartedCount = 0;
+		var stCellStartedCount = 0;
+		var minorityStartedCount = 0;
+		var CristianStartedCount = 0;
+		var tnsfStartedCount = 0;
+		var tntucStartedCount = 0;
+		var tsnvStartedCount = 0;
+		var legalCellStartedCount = 0;
+		var doctorStartedCount = 0;
+		var kalluGeethaStartedCount = 0;
+		var chenethaStartedCount = 0;
+		var rakshaVedikaStartedCount = 0;
+		var tnusStartedCount = 0;
+		var commercialStartedCount = 0;
+		var culturalStartedCount = 0;
+		var tradeStartedCount = 0;
+		var  tradeCmpltdCount = 0;
+		var  bcCellCmpltdCount = 0;
+		var  scCellCmpltdCount = 0;
+		var  stCellCmpltdCount = 0;
+		var  minorityCmpltdCount = 0;
+		var  CristianCmpltdCount = 0;
+		var  tnsfCmpltdCount = 0;
+		var  tntucCmpltdCount = 0;
+		var  tsnvCmpltdCount = 0;
+		var  legalCmpltdCount = 0;
+		var  doctorCmpltdCount = 0;
+		var  kalluGeethaCmpltdCount = 0;
+		var  chenethaCmpltdCount = 0;
+		var  rakshaVedikaCmpltdCount = 0;
+		var  tnusCmpltdCount = 0;
+		var  commercialCmpltdCount = 0;
+		var  culturalCmpltdCount = 0;	
+
+		var isConsiderAffl=  $('#considerAfflId').is(':checked')?"true":"false";
+		//console.log("isConsiderAffl  :"+isConsiderAffl);
 		str+='<table class="table table-bordered table-condensed " id="districtTableId" style="width:100%; background-color:rgba(0,0,0,0.1);">';
        
 		if(mandalCheck == "true" && villageCheck == "true" && districtCommCheck == "true"){
 			str+='<thead>';
             str+='<tr>';
-			str+='<th rowspan="3" style="text-align:center">District No</th>';
-			str+='<th rowspan="3" style="text-align:center">District Name</th>';
-            str+='<th style="text-align:center" colspan="14">TOWN / MANDAL / DIVISION </th>';
-            str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
-			str+=' <th style="text-align:center" colspan="6">DISTRICT LEVEL COMMITTEES</th>';
+			str+='<th rowspan="4" style="text-align:center">District No</th>';
+			str+='<th rowspan="4" style="text-align:center">District Name</th>';
+			if(isConsiderAffl =='true')
+				str+='<th style="text-align:center" colspan="47">TOWN / MANDAL / DIVISION  </th>';
+			else
+				str+='<th style="text-align:center" colspan="15">TOWN / MANDAL / DIVISION  </th>';
+			
+           str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
+			
+			
 			if(result[0].cadreIVRVO != null)
 			{
-				var length = (result[0].cadreIVRVO.optionsList.length) * 2;
-				str+=' <th style="text-align:center" colspan='+length+'> VILLAGE / WARD IVR DETAILS  </th>';
+				var length = ((result[0].cadreIVRVO.optionsList.length)-1) * 2;
+				//console.log("length  :"+length);
+				str+=' <th style="text-align:center" colspan='+length+' rowspan="2"> VILLAGE / WARD IVR DETAILS  </th>';
 				
 				//var length1 = (result[0].cadreIVRVO.optionsList1.length) * 2;
 				//str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS </th>';
 			}
 			
+			if(isConsiderAffl =='true')
+				str+=' <th style="text-align:center" colspan="15">DISTRICT LEVEL COMMITTEES  </th>';
+			else
+				str+=' <th style="text-align:center" colspan="47">DISTRICT LEVEL COMMITTEES  </th>';
+					
+			
+			
             str+='</tr>';
             str+='<tr>';
-            str+='<th   rowspan="2">Total</th>';
+			
+			
+			if(mandalCheck == "true")
+			{
+				if(isConsiderAffl =='true')
+				{
+					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center" colspan="43"> Affliated Committees </th>';
+				}
+				else
+				{
+					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center" colspan="11"> Affliated Committees </th>';
+				}
+			}
+			if(villageCheck == "true")
+			{
+				str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
+				str+='<th style="text-align:center" colspan="2"> Affliated Committees </th>';
+			}
+			if(districtCommCheck == "true")
+			{
+				if(isConsiderAffl == "true")
+				{
+					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center" colspan="43"> Affliated Committees </th>';
+				}		
+				else
+				{
+					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center" colspan="11"> Affliated Committees </th>';
+				}
+			}	
+			str+='</tr>';
+            str+='<tr>';
+			
+            str+='<th  rowspan="2">Total</th>';
 			str+='<th  rowspan="2">Started</th>';
 			str+='<th  rowspan="2">Completed</th>';
 			str+='<th  rowspan="2">Members</th>';
-			str+='<th  rowspan="2">Affl Committee Started</th>';
-			str+='<th  rowspan="2">Affl Committee Completed</th>';
+			 str+='<th  rowspan="2">Total</th>';
+			str+='<th  rowspan="2"> Started</th>';
+			str+='<th  rowspan="2"> Completed</th>';
 			str+='<th colspan="2"> Telugu Yuvatha  </th>';
 			str+='<th colspan="2"> Telugu Mahila </th>';
 			str+='<th colspan="2" > Telugu Rythu </th>';
-			str+='<th colspan="2" > Others </th>';
+			if(isConsiderAffl =='true')
+			{				
+				str+='<th colspan="2" class="hideCls"> Trade  </th>';
+				str+='<th colspan="2" class="hideCls"> BC Cell </th>';
+				str+='<th colspan="2" class="hideCls"> SC Cell </th>';
+				str+='<th colspan="2" class="hideCls"> ST Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Minority Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Christian </th>';
+				str+='<th colspan="2" class="hideCls"> TNSF </th>';
+				str+='<th colspan="2" class="hideCls"> TNTUC </th>';
+				str+='<th colspan="2" class="hideCls"> TSNV </th>';
+				str+='<th colspan="2" class="hideCls"> Legal Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Doctor Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Kallu Geetha Karmikulu </th>';
+				str+='<th colspan="2" class="hideCls"> Chenetha </th>';
+				str+='<th colspan="2" class="hideCls"> Telugu Rakshana Vedika </th>';
+				str+='<th colspan="2" class="hideCls"> TNUS   </th>';
+				str+='<th colspan="2" class="hideCls"> Commercial Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Cultural Cell </th>';
+			}
+			else
+			{
+				str+='<th colspan="2" > Others </th>';
+			}
+			
 			str+='<th  rowspan="2">Total</th>';
 			str+='<th  rowspan="2">Started</th>';
 			str+='<th  rowspan="2">Completed</th>';
 			str+='<th  rowspan="2">Members</th>';
-			str+='<th  rowspan="2">Affl Committee Started</th>';
-			str+='<th  rowspan="2">Affl Committee Completed</th>';
-			str+='<th  rowspan="2">Total</th>';
-			str+='<th  rowspan="2">Started</th>';
-			str+='<th  rowspan="2">Completed</th>';
-			str+='<th  rowspan="2">Members</th>';
-			str+='<th  rowspan="2">Affl Committee Started</th>';
-			str+='<th  rowspan="2">Affl Committee Completed</th>';
-            	
+			str+='<th  rowspan="2"> Started</th>';
+			str+='<th  rowspan="2"> Completed</th>';
 			if(result[0].cadreIVRVO != null)
 			{
 				for(var pr in result[0].cadreIVRVO.optionsList)
 				{
 					if(result[0].cadreIVRVO.optionsList[pr].id != 8){
-					str+='<th>'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
-					str+='<th>%</th>';
+					str+='<th rowspan="2">'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
+					str+='<th rowspan="2">%</th>';
 					}
 				}
 				/*
@@ -2198,6 +2305,42 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					}
 				}*/
 			}
+			
+			str+='<th  rowspan="2">Total</th>';
+			str+='<th  rowspan="2">Started</th>';
+			str+='<th  rowspan="2">Completed</th>';
+			str+='<th  rowspan="2">Members</th>';
+			 str+='<th  rowspan="2">Total</th>';
+			str+='<th  rowspan="2"> Started</th>';
+			str+='<th  rowspan="2"> Completed</th>';
+            str+='<th colspan="2"> Telugu Yuvatha  </th>';
+			str+='<th colspan="2"> Telugu Mahila </th>';
+			str+='<th colspan="2" > Telugu Rythu </th>';
+			if(isConsiderAffl =='true')
+			{				
+				str+='<th colspan="2" class="hideCls"> Trade  </th>';
+				str+='<th colspan="2" class="hideCls"> BC Cell </th>';
+				str+='<th colspan="2" class="hideCls"> SC Cell </th>';
+				str+='<th colspan="2" class="hideCls"> ST Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Minority Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Christian </th>';
+				str+='<th colspan="2" class="hideCls"> TNSF </th>';
+				str+='<th colspan="2" class="hideCls"> TNTUC </th>';
+				str+='<th colspan="2" class="hideCls"> TSNV </th>';
+				str+='<th colspan="2" class="hideCls"> Legal Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Doctor Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Kallu Geetha Karmikulu </th>';
+				str+='<th colspan="2" class="hideCls"> Chenetha </th>';
+				str+='<th colspan="2" class="hideCls"> Telugu Rakshana Vedika </th>';
+				str+='<th colspan="2" class="hideCls"> TNUS   </th>';
+				str+='<th colspan="2" class="hideCls"> Commercial Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Cultural Cell </th>';
+			}
+			else
+			{
+				str+='<th colspan="2" > Others </th>';
+			}	
+			
 			 str+='</tr>';
 			 str+='<tr>';
 			str+='<th>Started</th>';
@@ -2206,77 +2349,269 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			str+='<th>Completed</th>';
 			str+='<th>Started</th>';
 			str+='<th>Completed</th>';
+			if(isConsiderAffl == "true")
+			{
+				for(var z=0;z<17;z++)
+				 {
+					str+='<th  class="hideCls">Started</th>';
+					str+='<th  class="hideCls">Completed</th>';
+				 }
+			}
+			else
+			{
+				str+='<th>Started</th>';
+				str+='<th>Completed</th>';
+			}
 			str+='<th>Started</th>';
 			str+='<th>Completed</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			if(isConsiderAffl == "true")
+			{
+				for(var z=0;z<17;z++)
+				 {
+					str+='<th  class="hideCls">Started</th>';
+					str+='<th  class="hideCls">Completed</th>';
+				 }
+			}
+			else
+			{
+				str+='<th>Started</th>';
+				str+='<th>Completed</th>';
+			}
+			 
 			str+='</tr>';	
 			str+='</thead>';
 		}
 		else if((mandalCheck == "true" && villageCheck == "true") || (districtCommCheck == "true" && villageCheck == "true")  || (districtCommCheck == "true" && mandalCheck == "true")){
 			str+='<thead>';
             str+='<tr>';
-			str+='<th rowspan="3" style="text-align:center">District No</th>';
-			str+='<th rowspan="3" style="text-align:center">District Name</th>';
+			str+='<th rowspan="4" style="text-align:center">District No</th>';
+			str+='<th rowspan="4" style="text-align:center">District Name</th>';
 			if(mandalCheck == "true")
-            str+='<th style="text-align:center" colspan="14">TOWN / MANDAL / DIVISION </th>';
+			{
+				if(isConsiderAffl =='true')
+				{
+					str+='<th style="text-align:center" colspan="47">TOWN / MANDAL / DIVISION </th>';
+				}
+				else
+				{
+					str+='<th style="text-align:center" colspan="15">TOWN / MANDAL / DIVISION </th>';
+				}
+			}
+				
 			if(villageCheck == "true")
-            str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
-			if(districtCommCheck == "true")
-			str+=' <th style="text-align:center" colspan="6">DISTRICT LEVEL COMMITTEES</th>';
+				str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
+		
 			if(result[0].cadreIVRVO != null)
 			{
-				var length = (result[0].cadreIVRVO.optionsList.length) * 2;
-				str+=' <th style="text-align:center" colspan='+length+'> VILLAGE / WARD  IVR DETAILS  </th>';
+				var length = ((result[0].cadreIVRVO.optionsList.length)-1) * 2;
+				str+=' <th style="text-align:center" colspan='+length+' rowspan="2"> VILLAGE / WARD  IVR DETAILS  </th>';
 			//	var length1 = (result[0].cadreIVRVO.optionsList1.length -1)*2;
 				//str+=' <th style="text-align:center" colspan='+length1+'>IVR DETAILS  </th>';
 			}
+			
+			if(districtCommCheck == "true")
+			{
+				if(isConsiderAffl == "true")
+					str+='<th style="text-align:center" colspan="47">DISTRICT LEVEL COMMITTEES 2222</th>';			
+				else
+					str+='<th style="text-align:center" colspan="15">DISTRICT LEVEL COMMITTEES 2222</th>';	
+			
+			}						
+		
             str+='</tr>';
             str+='<tr>';
-            str+='<th rowspan="2" >Total</th>';
-			str+='<th rowspan="2">Started</th>';
-			str+='<th rowspan="2">Completed</th>';
-			str+='<th rowspan="2">Members</th>';
-			str+='<th rowspan="2">Affl Committee Started</th>';
-			str+='<th rowspan="2">Affl Committee Completed</th>';
-			str+='<th colspan="2"> Telugu Yuvatha  </th>';
-			str+='<th colspan="2"> Telugu Mahila </th>';
-			str+='<th colspan="2" > Telugu Rythu </th>';
-			str+='<th colspan="2" > Others </th>';
-			str+='<th rowspan="2">Total</th>';
-			str+='<th rowspan="2">Started</th>';
-			str+='<th rowspan="2">Completed</th>';
-			str+='<th rowspan="2">Members</th>';
-			str+='<th rowspan="2">Affl Committee Started</th>';
-			str+='<th rowspan="2">Affl Committee Completed</th>';
-
-            	
+			
+			if(mandalCheck == "true")
+			{
+				if(isConsiderAffl =='true')
+				{
+					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center" colspan="43"> Affliated Committees </th>';
+				}
+				else
+				{
+					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center" colspan="11"> Affliated Committees </th>';
+				}
+			}
+			if(villageCheck == "true")
+			{
+				str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
+				str+='<th style="text-align:center" colspan="2"> Affliated Committees </th>';
+			}
+			if(districtCommCheck == "true")
+			{
+				if(isConsiderAffl == "true")
+				{
+					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center" colspan="43"> Affliated Committees </th>';
+				}		
+				else
+				{
+					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center" colspan="11"> Affliated Committees </th>';
+				}
+			}	
+			str+='</tr>';
+            str+='<tr>';
+			if(mandalCheck == "true")
+			{
+				str+='<th rowspan="2" >Total</th>';
+				str+='<th rowspan="2">Started</th>';
+				str+='<th rowspan="2">Completed</th>';			
+				str+='<th rowspan="2">Members</th>';
+					str+='<th rowspan="2" >Total</th>';
+				str+='<th rowspan="2">Started</th>';
+				str+='<th rowspan="2"> Completed</th>';
+				str+='<th colspan="2"> Telugu Yuvatha  </th>';
+				str+='<th colspan="2"> Telugu Mahila </th>';
+				str+='<th colspan="2" > Telugu Rythu </th>';
+				if(isConsiderAffl =='true')
+				{				
+					str+='<th colspan="2" class="hideCls"> Trade  </th>';
+					str+='<th colspan="2" class="hideCls"> BC Cell </th>';
+					str+='<th colspan="2" class="hideCls"> SC Cell </th>';
+					str+='<th colspan="2" class="hideCls"> ST Cell </th>';
+					str+='<th colspan="2" class="hideCls"> Minority Cell </th>';
+					str+='<th colspan="2" class="hideCls"> Christian </th>';
+					str+='<th colspan="2" class="hideCls"> TNSF </th>';
+					str+='<th colspan="2" class="hideCls"> TNTUC </th>';
+					str+='<th colspan="2" class="hideCls"> TSNV </th>';
+					str+='<th colspan="2" class="hideCls"> Legal Cell </th>';
+					str+='<th colspan="2" class="hideCls"> Doctor Cell </th>';
+					str+='<th colspan="2" class="hideCls"> Kallu Geetha Karmikulu </th>';
+					str+='<th colspan="2" class="hideCls"> Chenetha </th>';
+					str+='<th colspan="2" class="hideCls"> Telugu Rakshana Vedika </th>';
+					str+='<th colspan="2" class="hideCls"> TNUS   </th>';
+					str+='<th colspan="2" class="hideCls"> Commercial Cell </th>';
+					str+='<th colspan="2" class="hideCls"> Cultural Cell </th>';
+				}
+				else
+				{
+					str+='<th colspan="2" > Others </th>';
+				}
+			}
+			if(villageCheck == "true")
+			{
+				str+='<th rowspan="2">Total</th>';
+				str+='<th rowspan="2">Started</th>';
+				str+='<th rowspan="2">Completed</th>';
+				str+='<th rowspan="2">Members</th>';
+				str+='<th rowspan="2"> Started</th>';
+				str+='<th rowspan="2"> Completed</th>';
+			}
+			
 			if(result[0].cadreIVRVO != null)
 			{
 				for(var pr in result[0].cadreIVRVO.optionsList)
 				{
 					if(result[0].cadreIVRVO.optionsList[pr].id != 8){
 					str+='<th rowspan="2">'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
-					str+='<th rowspan="2">%</th>';
+					str+='<th  rowspan="2">%</th>';
 					}
 				}
-			/*	for(var pr in result[0].cadreIVRVO.optionsList1)
+				/*
+				for(var pr in result[0].cadreIVRVO.optionsList1)
 				{
 					if(result[0].cadreIVRVO.optionsList1[pr].id != 13){
 					str+='<th>'+result[0].cadreIVRVO.optionsList1[pr].name+'</th>';
 					str+='<th>%</th>';
 					}
-				}
-				*/
+				}*/
 			}
+			
+			if(districtCommCheck == "true")
+			{
+				str+='<th rowspan="2">Total</th>';
+				str+='<th rowspan="2">Started</th>';
+				str+='<th rowspan="2">Completed</th>';
+				str+='<th rowspan="2">Members</th>';
+				str+='<th rowspan="2" >Total</th>';
+				str+='<th rowspan="2"> Started</th>';
+				str+='<th rowspan="2"> Completed</th>';
+				str+='<th colspan="2"> Telugu Yuvatha  </th>';
+				str+='<th colspan="2"> Telugu Mahila </th>';
+				str+='<th colspan="2" > Telugu Rythu </th>';
+				if(isConsiderAffl =='true')
+				{				
+					str+='<th colspan="2" class="hideCls"> Trade  </th>';
+					str+='<th colspan="2" class="hideCls"> BC Cell </th>';
+					str+='<th colspan="2" class="hideCls"> SC Cell </th>';
+					str+='<th colspan="2" class="hideCls"> ST Cell </th>';
+					str+='<th colspan="2" class="hideCls"> Minority Cell </th>';
+					str+='<th colspan="2" class="hideCls"> Christian </th>';
+					str+='<th colspan="2" class="hideCls"> TNSF </th>';
+					str+='<th colspan="2" class="hideCls"> TNTUC </th>';
+					str+='<th colspan="2" class="hideCls"> TSNV </th>';
+					str+='<th colspan="2" class="hideCls"> Legal Cell </th>';
+					str+='<th colspan="2" class="hideCls"> Doctor Cell </th>';
+					str+='<th colspan="2" class="hideCls"> Kallu Geetha Karmikulu </th>';
+					str+='<th colspan="2" class="hideCls"> Chenetha </th>';
+					str+='<th colspan="2" class="hideCls"> Telugu Rakshana Vedika </th>';
+					str+='<th colspan="2" class="hideCls"> TNUS   </th>';
+					str+='<th colspan="2" class="hideCls"> Commercial Cell </th>';
+					str+='<th colspan="2" class="hideCls"> Cultural Cell </th>';
+				}
+				else
+				{
+					str+='<th colspan="2" > Others </th>';
+				}
+			}	
+			
 			 str+='</tr>';
 			 str+='<tr>';
-			str+='<th>Started</th>';
-			str+='<th>Completed</th>';
-			str+='<th>Started</th>';
-			str+='<th>Completed</th>';
-			str+='<th>Started</th>';
-			str+='<th>Completed</th>';
-			str+='<th>Started</th>';
-			str+='<th>Completed</th>';
+			 
+			 if(mandalCheck == "true")
+			{		
+				 str+='<th>Started</th>';
+				 str+='<th>Completed</th>';
+				 str+='<th>Started</th>';
+				 str+='<th>Completed</th>';
+				 str+='<th>Started</th>';
+				 str+='<th>Completed</th>';		
+				if(isConsiderAffl == "true")
+				{
+					for(var z=0;z<17;z++)
+					 {
+						str+='<th  class="hideCls">Started</th>';
+						str+='<th  class="hideCls">Completed</th>';
+					 }
+				}
+				else
+				{
+					str+='<th>Started</th>';
+					str+='<th>Completed</th>';
+				}
+			}
+			
+			 
+			 
+			if(districtCommCheck == "true")
+			{
+				str+='<th>Started</th>';
+				 str+='<th>Completed</th>';
+				 str+='<th>Started</th>';
+				 str+='<th>Completed</th>';
+				 str+='<th>Started</th>';
+				 str+='<th>Completed</th>';
+				if(isConsiderAffl == "true")
+				{
+					for(var z=0;z<17;z++)
+					 {
+						str+='<th  class="hideCls">Started</th>';
+						str+='<th  class="hideCls">Completed</th>';
+					 }
+				}
+				else
+				{
+					str+='<th>Started</th>';
+					str+='<th>Completed</th>';
+				}
+			}
 			str+='</tr>';	
 			str+='</thead>';	
 			
@@ -2284,29 +2619,89 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		else if(mandalCheck == "true"){
 			str+='<thead>';
 			str+='<tr>';
-			str+='<th rowspan="3" style="text-align:center">District No</th>';
-			str+='<th rowspan="3" style="text-align:center">District Name</th>';
-            str+='<th style="text-align:center" colspan="14">TOWN / MANDAL / DIVISION </th>';
+			str+='<th rowspan="4" style="text-align:center">District No</th>';
+			str+='<th rowspan="4" style="text-align:center">District Name</th>';
+			if(mandalCheck == "true")
+			{
+				if(isConsiderAffl =='true')
+				{
+					str+='<th style="text-align:center" colspan="47">TOWN / MANDAL / DIVISION </th>';
+				}
+				else
+				{
+					str+='<th style="text-align:center" colspan="15">TOWN / MANDAL / DIVISION </th>';
+				}
+			}
+			
+           
 			if(result[0].cadreIVRVO != null)
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length -1)*2;
-				str+=' <th style="text-align:center" colspan='+length+'> VILLAGE / WARD IVR DETAILS  </th>';
+				str+=' <th style="text-align:center" colspan='+length+' rowspan="2"> VILLAGE / WARD IVR DETAILS  </th>';
 				
 				//var length1 = (result[0].cadreIVRVO.optionsList1.length -1 ) * 2;
 				//str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS  </th>';
 			}
             str+='</tr>';
             str+='<tr>';
+			if(mandalCheck == "true")
+			{
+				if(isConsiderAffl =='true')
+				{
+					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center" colspan="43"> Affliated Committees </th>';
+				}
+				else
+				{
+					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center" colspan="11"> Affliated Committees </th>';
+				}
+			}
+			if(villageCheck == "true")
+			{
+				str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
+				str+='<th style="text-align:center" colspan="2"> Affliated Committees </th>';
+			}
+			str+='</tr>';
+            str+='<tr>';
 			str+='<th rowspan="2">Total</th>';
 			str+='<th rowspan="2">Started</th>';
 			str+='<th rowspan="2">Completed</th>';
 			str+='<th rowspan="2">Members</th>';
-			str+='<th rowspan="2"> Affl Committee Started </th>';
-			str+='<th rowspan="2"> Affl Committee Completed </th>';
+			str+='<th rowspan="2">Total</th>';
+			str+='<th rowspan="2">  Started </th>';
+			str+='<th rowspan="2">  Completed </th>';
 			str+='<th colspan="2"> Telugu Yuvatha  </th>';
 			str+='<th colspan="2"> Telugu Mahila </th>';
 			str+='<th colspan="2"> Telugu Rythu </th>';
-			str+='<th colspan="2"> Others </th>';
+				
+			if(isConsiderAffl =='true')
+			{				
+				str+='<th colspan="2" class="hideCls"> Trade  </th>';
+				str+='<th colspan="2" class="hideCls"> BC Cell </th>';
+				str+='<th colspan="2" class="hideCls"> SC Cell </th>';
+				str+='<th colspan="2" class="hideCls"> ST Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Minority Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Christian </th>';
+				str+='<th colspan="2" class="hideCls"> TNSF </th>';
+				str+='<th colspan="2" class="hideCls"> TNTUC </th>';
+				str+='<th colspan="2" class="hideCls"> TSNV </th>';
+				str+='<th colspan="2" class="hideCls"> Legal Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Doctor Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Kallu Geetha Karmikulu </th>';
+				str+='<th colspan="2" class="hideCls"> Chenetha </th>';
+				str+='<th colspan="2" class="hideCls"> Telugu Rakshana Vedika </th>';
+				str+='<th colspan="2" class="hideCls"> TNUS   </th>';
+				str+='<th colspan="2" class="hideCls"> Commercial Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Cultural Cell </th>';
+			}
+			else
+			{
+				str+='<th colspan="2" > Others </th>';
+			}
+				
+			
+			
 			if(result[0].cadreIVRVO != null)
 			{
 				for(var pr in result[0].cadreIVRVO.optionsList)
@@ -2327,37 +2722,54 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			}
 			 str+='</tr>';
 			 str+='<tr>';
-			str+='<th>Started</th>';
-			str+='<th>Completed</th>';
-			str+='<th>Started</th>';
-			str+='<th>Completed</th>';
-			str+='<th>Started</th>';
-			str+='<th>Completed</th>';
-			str+='<th>Started</th>';
-			str+='<th>Completed</th>';
+			 str+='<th>Started</th>';
+			 str+='<th>Completed</th>';
+			 str+='<th>Started</th>';
+			 str+='<th>Completed</th>';
+			 str+='<th>Started</th>';
+			 str+='<th>Completed</th>';		
+			if(isConsiderAffl == "true")
+			{
+				for(var z=0;z<17;z++)
+				 {
+					str+='<th  class="hideCls">Started</th>';
+					str+='<th  class="hideCls">Completed</th>';
+				 }
+			}
+			else
+			{
+				str+='<th>Started</th>';
+				str+='<th>Completed</th>';
+			}
+			
 			str+='</tr></thead>';	
 		}
 		else if(villageCheck == "true"){
 			str+='<thead>';
-			str+='<th rowspan="2" style="text-align:center">District No</th>';
-			str+='<th rowspan="2" style="text-align:center">District Name</th>';
+			str+='<th rowspan="3" style="text-align:center">District No</th>';
+			str+='<th rowspan="3" style="text-align:center">District Name</th>';
             str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
 			if(result[0].cadreIVRVO != null)
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length -1 ) * 2;
-				str+=' <th style="text-align:center" colspan='+length+'> VILLAGE / WARD IVR DETAILS </th>';
+				str+=' <th style="text-align:center" colspan='+length+' rowspan="2"> VILLAGE / WARD IVR DETAILS </th>';
 				
 				//var length1 = (result[0].cadreIVRVO.optionsList1.length -1 ) * 2;
 				//str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS  </th>';
 			}
             str+='</tr>';
             str+='<tr>';
+			str+='<th colspan="4"> Main Committees </th>';
+			str+='<th colspan="2"> Affliated Committees </th>';
+			
+			str+='</tr>';
+            str+='<tr>';
 			str+='<th>Total</th>';
 			str+='<th>Started</th>';
 			str+='<th>Completed</th>';
 			str+='<th>Members</th>';
-			str+='<th>Affl Committee Started</th>';
-			str+='<th>Affl Committee Completed</th>';
+			str+='<th> Started</th>';
+			str+='<th> Completed</th>';
 			if(result[0].cadreIVRVO != null)
 			{
 				for(var pr in result[0].cadreIVRVO.optionsList)
@@ -2381,9 +2793,13 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		else if(districtCommCheck == "true" ){
 			str+='<thead>';
 			str+='<tr>';
-			str+='<th rowspan="2" style="text-align:center">District No</th>';
-			str+='<th rowspan="2" style="text-align:center">District Name</th>';		
-            str+='<th style="text-align:center" colspan="6">DISTRICT LEVEL</th>';			
+			str+='<th rowspan="3" style="text-align:center">District No</th>';
+			str+='<th rowspan="3" style="text-align:center">District Name</th>';
+			if(isConsiderAffl == "true")
+				str+='<th style="text-align:center" colspan="46">DISTRICT LEVEL </th>';			
+			else
+				str+='<th style="text-align:center" colspan="14">DISTRICT LEVEL </th>';	
+			
 			if(result[0].cadreIVRVO != null)
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length -1)*2;
@@ -2391,19 +2807,46 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			}
             str+='</tr>';
             str+='<tr>';
-			str+='<th>Total</th>';
-			str+='<th>Started</th>';
-			str+='<th>Completed</th>';
-			str+='<th>Members</th>';
-			str+='<th>Affl Committee Started</th>';
-			str+='<th>Affl Committee Completed</th>';
+			str+='<th rowspan="2">Total</th>';
+			str+='<th rowspan="2">Started</th>';
+			str+='<th rowspan="2">Completed</th>';
+			str+='<th rowspan="2">Members</th>';
+			str+='<th rowspan="2">Affl Committee Started</th>';
+			str+='<th rowspan="2">Affl Committee Completed</th>';
+			str+='<th colspan="2"> Telugu Yuvatha  </th>';
+			str+='<th colspan="2"> Telugu Mahila </th>';
+			str+='<th colspan="2"> Telugu Rythu </th>';
+			if(isConsiderAffl =='true')
+			{				
+				str+='<th colspan="2" class="hideCls"> Trade  </th>';
+				str+='<th colspan="2" class="hideCls"> BC Cell </th>';
+				str+='<th colspan="2" class="hideCls"> SC Cell </th>';
+				str+='<th colspan="2" class="hideCls"> ST Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Minority Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Christian </th>';
+				str+='<th colspan="2" class="hideCls"> TNSF </th>';
+				str+='<th colspan="2" class="hideCls"> TNTUC </th>';
+				str+='<th colspan="2" class="hideCls"> TSNV </th>';
+				str+='<th colspan="2" class="hideCls"> Legal Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Doctor Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Kallu Geetha Karmikulu </th>';
+				str+='<th colspan="2" class="hideCls"> Chenetha </th>';
+				str+='<th colspan="2" class="hideCls"> Telugu Rakshana Vedika </th>';
+				str+='<th colspan="2" class="hideCls"> TNUS   </th>';
+				str+='<th colspan="2" class="hideCls"> Commercial Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Cultural Cell </th>';
+			}
+			else
+			{
+				str+='<th colspan="2" > Others </th>';
+			}
 			if(result[0].cadreIVRVO != null)
 			{
 				for(var pr in result[0].cadreIVRVO.optionsList)
 				{
 					if(result[0].cadreIVRVO.optionsList[pr].id != 8){
-					str+='<th>'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
-					str+='<th>%</th>';
+					str+='<th rowspan="2">'+result[0].cadreIVRVO.optionsList[pr].name+'</th>';
+					str+='<th rowspan="2">%</th>';
 					}
 				}
 				/*
@@ -2416,7 +2859,27 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				}
 				*/
 			}
-			str+='</tr></thead>';	
+			 str+='<tr>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			str+='<th>Started</th>';
+			str+='<th>Completed</th>';
+			
+			if(isConsiderAffl == "true")
+			{
+				for(var z=0;z<17;z++)
+				 {
+					str+='<th  class="hideCls">Started</th>';
+					str+='<th  class="hideCls">Completed</th>';
+				 }
+			}
+			else
+			{
+				str+='<th>Started</th>';
+				str+='<th>Completed</th>';
+			}	
 		}
 		str+='<tbody>';
 		
@@ -2461,6 +2924,12 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				if(result[i].townMandalDivisionVO.membersCount!=null){
 					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.membersCount+'</td>';
 					mandMembers=mandMembers+result[i].townMandalDivisionVO.membersCount;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].townMandalDivisionVO.totalCommittees!=null){
+					str += '<td style="text-align:center">'+((result[i].townMandalDivisionVO.totalCommittees)*21)+'</td>';					
 				}else{
 					str += '<td style="text-align:center"> - </td>';
 				}
@@ -2522,18 +2991,261 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					str += '<td style="text-align:center"> - </td>';
 				}
 				
-				if(result[i].townMandalDivisionVO.othersStarted != null){
-					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.othersStarted+' </td>';
-					othersStartedCount = othersStartedCount+result[i].townMandalDivisionVO.othersStarted;
-				}else{
-					str += '<td style="text-align:center"> - </td>';
+				if(isConsiderAffl == "true")
+				{
+						if(result[i].townMandalDivisionVO.tradeStarted != null){
+							str += '<td style="text-align:center"  class="hideCls">'+result[i].townMandalDivisionVO.tradeStarted+' </td>';
+							tradeStartedCount = tradeStartedCount+result[i].townMandalDivisionVO.tradeStarted;
+						}else{
+							str += '<td style="text-align:center"  class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.tradeCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.tradeCmpltd+' </td>';
+							tradeCmpltdCount = tradeCmpltdCount+result[i].townMandalDivisionVO.tradeCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+
+						if(result[i].townMandalDivisionVO.bcCellStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.bcCellStarted+' </td>';
+							bcCellStartedCount = bcCellStartedCount+result[i].townMandalDivisionVO.bcCellStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.bcCellCmpltd!=null){
+							str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.bcCellCmpltd+' </td>';
+							bcCellCmpltdCount = bcCellCmpltdCount+result[i].townMandalDivisionVO.bcCellCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.scCellStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.scCellStarted+' </td>';
+							scCellStartedCount = scCellStartedCount+result[i].townMandalDivisionVO.scCellStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.scCellCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.scCellCmpltd+' </td>';
+							scCellCmpltdCount = scCellCmpltdCount+result[i].townMandalDivisionVO.scCellCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.stCellStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.stCellStarted+' </td>';
+							stCellStartedCount = stCellStartedCount+result[i].townMandalDivisionVO.stCellStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.stCellCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.stCellCmpltd+' </td>';
+							stCellCmpltdCount = stCellCmpltdCount+result[i].townMandalDivisionVO.stCellCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.minorityStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.minorityStarted+' </td>';
+							minorityStartedCount = minorityStartedCount+result[i].townMandalDivisionVO.minorityStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.minorityCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.minorityCmpltd+' </td>';
+							minorityCmpltdCount = minorityCmpltdCount+result[i].townMandalDivisionVO.minorityCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.CristianStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.CristianStarted+' </td>';
+							CristianStartedCount = CristianStartedCount+result[i].townMandalDivisionVO.CristianStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.CristianCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.CristianCmpltd+' </td>';
+							CristianCmpltdCount = CristianCmpltdCount+result[i].townMandalDivisionVO.CristianCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.tnsfStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.tnsfStarted+' </td>';
+							tnsfStartedCount = tnsfStartedCount+result[i].townMandalDivisionVO.tnsfStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.tnsfCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.tnsfCmpltd+' </td>';
+							tnsfCmpltdCount = tnsfCmpltdCount+result[i].townMandalDivisionVO.tnsfCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.tntucStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.tntucStarted+' </td>';
+							tntucStartedCount = tntucStartedCount+result[i].townMandalDivisionVO.tntucStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.tntucCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.tntucCmpltd+' </td>';
+							tntucCmpltdCount = tntucCmpltdCount+result[i].townMandalDivisionVO.tntucCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.tsnvStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.tsnvStarted+' </td>';
+							tsnvStartedCount = tsnvStartedCount+result[i].townMandalDivisionVO.tsnvStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.tsnvCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.tsnvCmpltd+' </td>';
+							tsnvCmpltdCount = tsnvCmpltdCount+result[i].townMandalDivisionVO.tsnvCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.legalCellStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.legalCellStarted+' </td>';
+							legalCellStartedCount = legalCellStartedCount+result[i].townMandalDivisionVO.legalCellStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.legalCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.legalCmpltd+' </td>';
+							legalCmpltdCount = legalCmpltdCount+result[i].townMandalDivisionVO.legalCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.doctorStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.doctorStarted+' </td>';
+							doctorStartedCount = doctorStartedCount+result[i].townMandalDivisionVO.doctorStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.doctorCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.doctorCmpltd+' </td>';
+							doctorCmpltdCount = doctorCmpltdCount+result[i].townMandalDivisionVO.doctorCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.kalluGeethaStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.kalluGeethaStarted+' </td>';
+							kalluGeethaStartedCount = kalluGeethaStartedCount+result[i].townMandalDivisionVO.kalluGeethaStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.kalluGeethaCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.kalluGeethaCmpltd+' </td>';
+							kalluGeethaCmpltdCount = kalluGeethaCmpltdCount+result[i].townMandalDivisionVO.kalluGeethaCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.chenethaStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.chenethaStarted+' </td>';
+							chenethaStartedCount = chenethaStartedCount+result[i].townMandalDivisionVO.chenethaStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.chenethaCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.chenethaCmpltd+' </td>';
+							chenethaCmpltdCount = chenethaCmpltdCount+result[i].townMandalDivisionVO.chenethaCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.rakshaVedikaStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.rakshaVedikaStarted+' </td>';
+							rakshaVedikaStartedCount = rakshaVedikaStartedCount+result[i].townMandalDivisionVO.rakshaVedikaStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.rakshaVedikaCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.rakshaVedikaCmpltd+' </td>';
+							rakshaVedikaCmpltdCount = rakshaVedikaCmpltdCount+result[i].townMandalDivisionVO.rakshaVedikaCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.tnusStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.tnusStarted+' </td>';
+							tnusStartedCount = tnusStartedCount+result[i].townMandalDivisionVO.tnusStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.tnusCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.tnusCmpltd+' </td>';
+							tnusCmpltdCount = tnusCmpltdCount+result[i].townMandalDivisionVO.tnusCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.commercialStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.commercialStarted+' </td>';
+							commercialStartedCount = commercialStartedCount+result[i].townMandalDivisionVO.commercialStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.commercialCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.commercialCmpltd+' </td>';
+							commercialCmpltdCount = commercialCmpltdCount+result[i].townMandalDivisionVO.commercialCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.culturalStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.culturalStarted+' </td>';
+							culturalStartedCount = culturalStartedCount+result[i].townMandalDivisionVO.culturalStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.culturalCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.culturalCmpltd+' </td>';
+							culturalCmpltdCount = culturalCmpltdCount+result[i].townMandalDivisionVO.culturalCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
 				}
-				
-				if(result[i].townMandalDivisionVO.othersCmpltd!=null){
-					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.othersCmpltd+' </td>';
-					othersCompltdCount = othersCompltdCount+result[i].townMandalDivisionVO.othersCmpltd;
-				}else{
-					str += '<td style="text-align:center"> - </td>';
+				else
+				{
+					if(result[i].townMandalDivisionVO.othersStarted != null){
+						str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.othersStarted+' </td>';
+						othersStartedCount = othersStartedCount+result[i].townMandalDivisionVO.othersStarted;
+					}else{
+						str += '<td style="text-align:center"> - </td>';
+					}
+					
+					if(result[i].townMandalDivisionVO.othersCmpltd!=null){
+						str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.othersCmpltd+' </td>';
+						othersCompltdCount = othersCompltdCount+result[i].townMandalDivisionVO.othersCmpltd;
+					}else{
+						str += '<td style="text-align:center"> - </td>';
+					}
 				}
 				
 			}else{
@@ -2550,8 +3262,20 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				str += '<td>  </td>';
 				str += '<td>  </td>';
 				str += '<td>  </td>';
-				str += '<td>  </td>';
-				str += '<td>  </td>';
+				
+				if(isConsiderAffl == "true")
+				{
+					for(var z=0;z<17;z++)
+					 {
+						str += '<td>  </td>';
+						str += '<td>  </td>';
+					 }
+				}
+				else
+				{
+					str += '<td>  </td>';
+					str += '<td>  </td>';
+				}			
 			}
 			}
 			
@@ -2610,60 +3334,6 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				str += '<td>  </td>';
 			}
 			}
-			if(districtCommCheck == "true"){
-			
-			if(result[i].districtCommVO != null){
-				if(result[i].districtCommVO.totalCommittees!=null){
-					str += '<td style="text-align:center">'+result[i].districtCommVO.totalCommittees+'</td>';
-					distTotal=distTotal+result[i].districtCommVO.totalCommittees;
-				}else{
-					str += '<td style="text-align:center"> - </td>';
-				}
-				
-				if(result[i].districtCommVO.mainStarted!=null){
-					//str += '<td>'+result[i].districtCommVO.mainStarted+'<span id="mini-pie-chart-district'+i+'" class="pull-right mini-pie-chart-district"></span></td>';
-					str += '<td style="text-align:center">'+result[i].districtCommVO.mainStarted+'</td>';
-					distStarted=distStarted+result[i].districtCommVO.mainStarted;
-				}else{
-					str += '<td style="text-align:center"> - </td>';
-				}
-				
-				if(result[i].districtCommVO.mainCompleted!=null){
-					str += '<td style="text-align:center">'+result[i].districtCommVO.mainCompleted+'</td>';
-					distCompleted=distCompleted+result[i].districtCommVO.mainCompleted;
-				}else{
-					str += '<td style="text-align:center"> - </td>';
-				}
-				
-				if(result[i].districtCommVO.membersCount!=null){
-					str += '<td style="text-align:center">'+result[i].districtCommVO.membersCount+'</td>';
-					distMembers=distMembers+result[i].districtCommVO.membersCount;
-				}else{
-					str += '<td style="text-align:center"> - </td>';
-				}
-				
-				if(result[i].districtCommVO.afflStarted!=null){
-					str += '<td style="text-align:center">'+result[i].districtCommVO.afflStarted+'</td>';
-					distAfStarted=distAfStarted+result[i].districtCommVO.afflStarted;
-				}else{
-					str += '<td style="text-align:center"> - </td>';
-				}
-				
-				if(result[i].districtCommVO.afflCompleted!=null){
-					str += '<td style="text-align:center">'+result[i].districtCommVO.afflCompleted+' </td>';
-					distAfCompleted=distAfCompleted+result[i].districtCommVO.afflCompleted;
-				}else{
-					str += '<td style="text-align:center"> - </td>';
-				}
-			}else{
-				str += '<td>  </td>';
-				str += '<td>  </td>';
-				str += '<td>  </td>';
-				str += '<td>  </td>';
-				str += '<td>  </td>';
-				str += '<td>  </td>';
-			}
-			}
 			
 			if(result[i].cadreIVRVO != null)
 			{
@@ -2702,6 +3372,380 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				}
 				*/
 			}
+			
+			if(districtCommCheck == "true"){
+			
+			if(result[i].districtCommVO != null){
+				if(result[i].districtCommVO.totalCommittees!=null){
+					str += '<td style="text-align:center">'+result[i].districtCommVO.totalCommittees+'</td>';
+					distTotal=distTotal+result[i].districtCommVO.totalCommittees;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].districtCommVO.mainStarted!=null){
+					//str += '<td>'+result[i].districtCommVO.mainStarted+'<span id="mini-pie-chart-district'+i+'" class="pull-right mini-pie-chart-district"></span></td>';
+					str += '<td style="text-align:center">'+result[i].districtCommVO.mainStarted+'</td>';
+					distStarted=distStarted+result[i].districtCommVO.mainStarted;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].districtCommVO.mainCompleted!=null){
+					str += '<td style="text-align:center">'+result[i].districtCommVO.mainCompleted+'</td>';
+					distCompleted=distCompleted+result[i].districtCommVO.mainCompleted;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].districtCommVO.membersCount!=null){
+					str += '<td style="text-align:center">'+result[i].districtCommVO.membersCount+'</td>';
+					distMembers=distMembers+result[i].districtCommVO.membersCount;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				if(result[i].districtCommVO.totalCommittees!=null){
+					str += '<td style="text-align:center">'+((result[i].districtCommVO.totalCommittees)*21)+'</td>';					
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				if(result[i].districtCommVO.afflStarted!=null){
+					str += '<td style="text-align:center">'+result[i].districtCommVO.afflStarted+'</td>';
+					distAfStarted=distAfStarted+result[i].districtCommVO.afflStarted;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].districtCommVO.afflCompleted!=null){
+					str += '<td style="text-align:center">'+result[i].districtCommVO.afflCompleted+' </td>';
+					distAfCompleted=distAfCompleted+result[i].districtCommVO.afflCompleted;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].districtCommVO.youvathaStarted != null){
+					str += '<td style="text-align:center">'+result[i].districtCommVO.youvathaStarted+' </td>';
+					yuvathaStartedCount = yuvathaStartedCount+result[i].districtCommVO.youvathaStarted;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].districtCommVO.youvathaCmpltd!=null){
+					str += '<td style="text-align:center">'+result[i].districtCommVO.youvathaCmpltd+' </td>';
+					yuvathaCompltdCount = yuvathaCompltdCount+result[i].districtCommVO.youvathaCmpltd;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].districtCommVO.mahilaStarted != null){
+					str += '<td style="text-align:center">'+result[i].districtCommVO.mahilaStarted+' </td>';
+					mahilaStartedCount = mahilaStartedCount+result[i].districtCommVO.mahilaStarted;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].districtCommVO.mahilaCmpltd!=null){
+					str += '<td style="text-align:center">'+result[i].districtCommVO.mahilaCmpltd+' </td>';
+					mahilaCompltdCount = mahilaCompltdCount+result[i].districtCommVO.mahilaCmpltd;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				
+				if(result[i].districtCommVO.rythuStarted != null){
+					str += '<td style="text-align:center">'+result[i].districtCommVO.rythuStarted+' </td>';
+						rythuStartedCount = rythuStartedCount+result[i].districtCommVO.rythuStarted;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].districtCommVO.rythuCmpltd!=null){
+					str += '<td style="text-align:center">'+result[i].districtCommVO.rythuCmpltd+' </td>';
+						rythuCompltdCount = rythuCompltdCount+result[i].districtCommVO.rythuCmpltd;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(isConsiderAffl == "true")
+				{
+						if(result[i].districtCommVO.tradeStarted != null){
+							str += '<td style="text-align:center"  class="hideCls">'+result[i].districtCommVO.tradeStarted+' </td>';
+							tradeStartedCount = tradeStartedCount+result[i].districtCommVO.tradeStarted;
+						}else{
+							str += '<td style="text-align:center"  class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.tradeCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.tradeCmpltd+' </td>';
+							tradeCmpltdCount = tradeCmpltdCount+result[i].districtCommVO.tradeCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+
+						if(result[i].districtCommVO.bcCellStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.bcCellStarted+' </td>';
+							bcCellStartedCount = bcCellStartedCount+result[i].districtCommVO.bcCellStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.bcCellCmpltd!=null){
+							str += '<td style="text-align:center">'+result[i].districtCommVO.bcCellCmpltd+' </td>';
+							bcCellCmpltdCount = bcCellCmpltdCount+result[i].districtCommVO.bcCellCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.scCellStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.scCellStarted+' </td>';
+							scCellStartedCount = scCellStartedCount+result[i].districtCommVO.scCellStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.scCellCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.scCellCmpltd+' </td>';
+							scCellCmpltdCount = scCellCmpltdCount+result[i].districtCommVO.scCellCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.stCellStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.stCellStarted+' </td>';
+							stCellStartedCount = stCellStartedCount+result[i].districtCommVO.stCellStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.stCellCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.stCellCmpltd+' </td>';
+							stCellCmpltdCount = stCellCmpltdCount+result[i].districtCommVO.stCellCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.minorityStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.minorityStarted+' </td>';
+							minorityStartedCount = minorityStartedCount+result[i].districtCommVO.minorityStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.minorityCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.minorityCmpltd+' </td>';
+							minorityCmpltdCount = minorityCmpltdCount+result[i].districtCommVO.minorityCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.CristianStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.CristianStarted+' </td>';
+							CristianStartedCount = CristianStartedCount+result[i].districtCommVO.CristianStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.CristianCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.CristianCmpltd+' </td>';
+							CristianCmpltdCount = CristianCmpltdCount+result[i].districtCommVO.CristianCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.tnsfStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.tnsfStarted+' </td>';
+							tnsfStartedCount = tnsfStartedCount+result[i].districtCommVO.tnsfStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.tnsfCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.tnsfCmpltd+' </td>';
+							tnsfCmpltdCount = tnsfCmpltdCount+result[i].districtCommVO.tnsfCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.tntucStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.tntucStarted+' </td>';
+							tntucStartedCount = tntucStartedCount+result[i].districtCommVO.tntucStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.tntucCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.tntucCmpltd+' </td>';
+							tntucCmpltdCount = tntucCmpltdCount+result[i].districtCommVO.tntucCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.tsnvStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.tsnvStarted+' </td>';
+							tsnvStartedCount = tsnvStartedCount+result[i].districtCommVO.tsnvStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.tsnvCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.tsnvCmpltd+' </td>';
+							tsnvCmpltdCount = tsnvCmpltdCount+result[i].districtCommVO.tsnvCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.legalCellStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.legalCellStarted+' </td>';
+							legalCellStartedCount = legalCellStartedCount+result[i].districtCommVO.legalCellStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.legalCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.legalCmpltd+' </td>';
+							legalCmpltdCount = legalCmpltdCount+result[i].districtCommVO.legalCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.doctorStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.doctorStarted+' </td>';
+							doctorStartedCount = doctorStartedCount+result[i].districtCommVO.doctorStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.doctorCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.doctorCmpltd+' </td>';
+							doctorCmpltdCount = doctorCmpltdCount+result[i].districtCommVO.doctorCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.kalluGeethaStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.kalluGeethaStarted+' </td>';
+							kalluGeethaStartedCount = kalluGeethaStartedCount+result[i].districtCommVO.kalluGeethaStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.kalluGeethaCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.kalluGeethaCmpltd+' </td>';
+							kalluGeethaCmpltdCount = kalluGeethaCmpltdCount+result[i].districtCommVO.kalluGeethaCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.chenethaStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.chenethaStarted+' </td>';
+							chenethaStartedCount = chenethaStartedCount+result[i].districtCommVO.chenethaStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.chenethaCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.chenethaCmpltd+' </td>';
+							chenethaCmpltdCount = chenethaCmpltdCount+result[i].districtCommVO.chenethaCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.rakshaVedikaStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.rakshaVedikaStarted+' </td>';
+							rakshaVedikaStartedCount = rakshaVedikaStartedCount+result[i].districtCommVO.rakshaVedikaStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.rakshaVedikaCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.rakshaVedikaCmpltd+' </td>';
+							rakshaVedikaCmpltdCount = rakshaVedikaCmpltdCount+result[i].districtCommVO.rakshaVedikaCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.tnusStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.tnusStarted+' </td>';
+							tnusStartedCount = tnusStartedCount+result[i].districtCommVO.tnusStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.tnusCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.tnusCmpltd+' </td>';
+							tnusCmpltdCount = tnusCmpltdCount+result[i].districtCommVO.tnusCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.commercialStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.commercialStarted+' </td>';
+							commercialStartedCount = commercialStartedCount+result[i].districtCommVO.commercialStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.commercialCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.commercialCmpltd+' </td>';
+							commercialCmpltdCount = commercialCmpltdCount+result[i].districtCommVO.commercialCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.culturalStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.culturalStarted+' </td>';
+							culturalStartedCount = culturalStartedCount+result[i].districtCommVO.culturalStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].districtCommVO.culturalCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].districtCommVO.culturalCmpltd+' </td>';
+							culturalCmpltdCount = culturalCmpltdCount+result[i].districtCommVO.culturalCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+				}
+				else
+				{
+					if(result[i].districtCommVO.othersStarted != null){
+						str += '<td style="text-align:center">'+result[i].districtCommVO.othersStarted+' </td>';
+						othersStartedCount = othersStartedCount+result[i].districtCommVO.othersStarted;
+					}else{
+						str += '<td style="text-align:center"> - </td>';
+					}
+					
+					if(result[i].districtCommVO.othersCmpltd != null){
+						str += '<td style="text-align:center">'+result[i].districtCommVO.othersCmpltd+' </td>';
+						othersCompltdCount = othersCompltdCount+result[i].districtCommVO.othersCmpltd;
+					}else{
+						str += '<td style="text-align:center"> - </td>';
+					}
+				}
+			}else{
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				str += '<td>  </td>';
+				if(isConsiderAffl == "true")
+				{
+					for(var z=0;z<17;z++)
+					 {
+						str += '<td>  </td>';
+						str += '<td>  </td>';
+					 }
+				}
+				else
+				{
+					str += '<td>  </td>';
+					str += '<td>  </td>';
+				}
+			}
+			}
+			
+			
 			str += '</tr>';
 			
 			if(result[i].townMandalDivisionVO != null){
@@ -2741,31 +3785,78 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str	+= '<td style="text-align:center">TOTAL</td><td>'+mandTotal+'</td>'; 	
 		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
-		str += '<td style="text-align:center">'+mandMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+mandMembers+'</td>';
+		str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';		
 		str += '<td style="text-align:center">'+mandAfStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandAfCompleted+'</td>';
-		
+
 		str += '<td style="text-align:center">'+yuvathaStartedCount+'</td>';
 		str += '<td style="text-align:center">'+yuvathaCompltdCount+'</td>';
 		str += '<td style="text-align:center">'+mahilaStartedCount+'</td>';
 		str += '<td style="text-align:center">'+mahilaCompltdCount+'</td>';
 		str += '<td style="text-align:center">'+rythuStartedCount+'</td>';
 		str += '<td style="text-align:center">'+rythuCompltdCount+'</td>';
-		str += '<td style="text-align:center">'+othersStartedCount+'</td>';
-		str += '<td style="text-align:center">'+othersCompltdCount+'</td>';
 		
+		if(isConsiderAffl == "true")
+			{
+				str += '<td style="text-align:center">'+tradeStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tradeCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+bcCellStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+bcCellCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+scCellStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+scCellCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center">'+stCellStartedCount+'</td>'; 			
+				str += '<td style="text-align:center">'+stCellCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+minorityStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+minorityCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+CristianStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+CristianCmpltdCount+'</td>';
+				
+				str += '<td style="text-align:center">'+tnsfStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tnsfCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tntucStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tntucCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tsnvStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tsnvCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center">'+legalCellStartedCount+'</td>'; 			
+				str += '<td style="text-align:center">'+legalCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+doctorStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+doctorCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+kalluGeethaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+kalluGeethaCmpltdCount+'</td>';
+				
+				str += '<td style="text-align:center">'+chenethaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+chenethaCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+rakshaVedikaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+rakshaVedikaCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tnusStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tnusCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center">'+commercialStartedCount+'</td>'; 			
+				str += '<td style="text-align:center">'+commercialCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+culturalStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+culturalCmpltdCount+'</td>'; 
+			}
+			else
+			{
+				str += '<td style="text-align:center">'+othersStartedCount+'</td>';
+				str += '<td style="text-align:center">'+othersCompltdCount+'</td>';
+			}
 		str += '<td style="text-align:center">'+panTotal+'</td>'; 	
 		str += '<td style="text-align:center">'+panStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+panCompleted+'</td>'; 	
 		str += '<td style="text-align:center">'+panMembers+'</td>'; 	
 		str += '<td style="text-align:center">'+panAffStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+panAffCompleted+'</td>';
+		str	+= '<td style="text-align:center" colspan="8"></td>'; 			
 		str	+= '<td style="text-align:center">'+distTotal+'</td>'; 			
 		str += '<td style="text-align:center">'+distStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+distCompleted+'</td>'; 	
-		str += '<td style="text-align:center">'+distMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+distMembers+'</td>'; 
+		str += '<td style="text-align:center">'+(distTotal * 21 )+'</td>';		
 		str += '<td style="text-align:center">'+distAffStarted+'</td>'; 	
-		str += '<td style="text-align:center">'+distAffCompleted+'</td>';		
+		str += '<td style="text-align:center">'+distAffCompleted+'</td>';
+
+		
 		}
 		else if((mandalCheck == "true" && villageCheck == "true") || (districtCommCheck == "true" && villageCheck == "true")  || (districtCommCheck == "true" && mandalCheck == "true")){
 		if(mandalCheck == "true" && villageCheck == "true"){
@@ -2774,6 +3865,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';	
 		str += '<td style="text-align:center">'+mandAfStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandAfCompleted+'</td>';
 		
@@ -2783,8 +3875,50 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str += '<td style="text-align:center">'+mahilaCompltdCount+'</td>';
 		str += '<td style="text-align:center">'+rythuStartedCount+'</td>';
 		str += '<td style="text-align:center">'+rythuCompltdCount+'</td>';
-		str += '<td style="text-align:center">'+othersStartedCount+'</td>';
-		str += '<td style="text-align:center">'+othersCompltdCount+'</td>';
+		if(isConsiderAffl == "true")
+			{
+				str += '<td style="text-align:center">'+tradeStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tradeCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+bcCellStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+bcCellCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+scCellStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+scCellCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center">'+stCellStartedCount+'</td>'; 			
+				str += '<td style="text-align:center">'+stCellCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+minorityStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+minorityCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+CristianStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+CristianCmpltdCount+'</td>';
+				
+				str += '<td style="text-align:center">'+tnsfStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tnsfCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tntucStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tntucCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tsnvStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tsnvCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center">'+legalCellStartedCount+'</td>'; 			
+				str += '<td style="text-align:center">'+legalCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+doctorStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+doctorCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+kalluGeethaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+kalluGeethaCmpltdCount+'</td>';
+				
+				str += '<td style="text-align:center">'+chenethaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+chenethaCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+rakshaVedikaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+rakshaVedikaCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tnusStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tnusCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center">'+commercialStartedCount+'</td>'; 			
+				str += '<td style="text-align:center">'+commercialCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+culturalStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+culturalCmpltdCount+'</td>'; 
+			}
+			else
+			{
+				str += '<td style="text-align:center">'+othersStartedCount+'</td>';
+				str += '<td style="text-align:center">'+othersCompltdCount+'</td>';
+			}
 		
 		str += '<td style="text-align:center">'+panTotal+'</td>'; 	
 		str += '<td style="text-align:center">'+panStarted+'</td>'; 	
@@ -2800,10 +3934,12 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str += '<td style="text-align:center">'+panMembers+'</td>'; 	
 		str += '<td style="text-align:center">'+panAffStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+panAffCompleted+'</td>';
+		str	+= '<td style="text-align:center" colspan="8"></td>';
 		str	+= '<td style="text-align:center">'+distTotal+'</td>'; 			
 		str += '<td style="text-align:center">'+distStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+distCompleted+'</td>'; 	
-		str += '<td style="text-align:center">'+distMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+distMembers+'</td>'; 
+str += '<td style="text-align:center">'+(distTotal * 21 )+'</td>';			
 		str += '<td style="text-align:center">'+distAffStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+distAffCompleted+'</td>';
 		}else  if(districtCommCheck == "true" && mandalCheck == "true"){
@@ -2811,7 +3947,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str	+= '<td style="text-align:center">TOTAL</td><td>'+mandTotal+'</td>'; 	
 		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
-		str += '<td style="text-align:center">'+mandMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+mandMembers+'</td>'; 
+str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';		
 		str += '<td style="text-align:center">'+mandAfStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandAfCompleted+'</td>';
 		
@@ -2821,13 +3958,56 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str += '<td style="text-align:center">'+mahilaCompltdCount+'</td>';
 		str += '<td style="text-align:center">'+rythuStartedCount+'</td>';
 		str += '<td style="text-align:center">'+rythuCompltdCount+'</td>';
-		str += '<td style="text-align:center">'+othersStartedCount+'</td>';
-		str += '<td style="text-align:center">'+othersCompltdCount+'</td>';
+		if(isConsiderAffl == "true")
+			{
+				str += '<td style="text-align:center">'+tradeStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tradeCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+bcCellStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+bcCellCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+scCellStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+scCellCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center">'+stCellStartedCount+'</td>'; 			
+				str += '<td style="text-align:center">'+stCellCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+minorityStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+minorityCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+CristianStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+CristianCmpltdCount+'</td>';
+				
+				str += '<td style="text-align:center">'+tnsfStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tnsfCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tntucStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tntucCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tsnvStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tsnvCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center">'+legalCellStartedCount+'</td>'; 			
+				str += '<td style="text-align:center">'+legalCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+doctorStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+doctorCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+kalluGeethaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+kalluGeethaCmpltdCount+'</td>';
+				
+				str += '<td style="text-align:center">'+chenethaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+chenethaCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+rakshaVedikaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+rakshaVedikaCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tnusStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tnusCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center">'+commercialStartedCount+'</td>'; 			
+				str += '<td style="text-align:center">'+commercialCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+culturalStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+culturalCmpltdCount+'</td>'; 
+			}
+			else
+			{
+				str += '<td style="text-align:center">'+othersStartedCount+'</td>';
+				str += '<td style="text-align:center">'+othersCompltdCount+'</td>';
+			}
 		
 		str	+= '<td style="text-align:center">'+distTotal+'</td>'; 			
 		str += '<td style="text-align:center">'+distStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+distCompleted+'</td>'; 	
-		str += '<td style="text-align:center">'+distMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+distMembers+'</td>'; 
+str += '<td style="text-align:center">'+(distTotal * 21 )+'</td>';		
 		str += '<td style="text-align:center">'+distAffStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+distAffCompleted+'</td>';
 		}
@@ -2839,7 +4019,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str	+= '<td style="text-align:center">TOTAL</td><td>'+mandTotal+'</td>'; 	
 		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
-		str += '<td style="text-align:center">'+mandMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+mandMembers+'</td>'; 
+str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';		
 		str += '<td style="text-align:center">'+mandAfStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandAfCompleted+'</td>'; 
 
@@ -2849,8 +4030,50 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str += '<td style="text-align:center">'+mahilaCompltdCount+'</td>';
 		str += '<td style="text-align:center">'+rythuStartedCount+'</td>';
 		str += '<td style="text-align:center">'+rythuCompltdCount+'</td>';
-		str += '<td style="text-align:center">'+othersStartedCount+'</td>';
-		str += '<td style="text-align:center">'+othersCompltdCount+'</td>';
+		if(isConsiderAffl == "true")
+			{
+				str += '<td style="text-align:center">'+tradeStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tradeCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+bcCellStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+bcCellCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+scCellStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+scCellCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center">'+stCellStartedCount+'</td>'; 			
+				str += '<td style="text-align:center">'+stCellCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+minorityStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+minorityCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+CristianStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+CristianCmpltdCount+'</td>';
+				
+				str += '<td style="text-align:center">'+tnsfStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tnsfCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tntucStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tntucCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tsnvStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tsnvCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center">'+legalCellStartedCount+'</td>'; 			
+				str += '<td style="text-align:center">'+legalCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+doctorStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+doctorCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+kalluGeethaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+kalluGeethaCmpltdCount+'</td>';
+				
+				str += '<td style="text-align:center">'+chenethaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+chenethaCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+rakshaVedikaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+rakshaVedikaCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tnusStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tnusCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center">'+commercialStartedCount+'</td>'; 			
+				str += '<td style="text-align:center">'+commercialCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+culturalStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+culturalCmpltdCount+'</td>'; 
+			}
+			else
+			{
+				str += '<td style="text-align:center">'+othersStartedCount+'</td>';
+				str += '<td style="text-align:center">'+othersCompltdCount+'</td>';
+			}
 		
 		}
 		else if(villageCheck=="true"){
@@ -2867,13 +4090,16 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str	+= '<td style="text-align:center">TOTAL</td><td>'+distTotal+'</td>'; 			
 		str += '<td style="text-align:center">'+distStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+distCompleted+'</td>'; 	
-		str += '<td style="text-align:center">'+distMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+distMembers+'</td>'; 
+		str += '<td style="text-align:center">'+(distTotal * 21 )+'</td>';			
 		str += '<td style="text-align:center">'+distAffStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+distAffCompleted+'</td>';
 		}
 			
 	    
-		str += '</tr></tfoot></table>';			
+		str += '</tr></tfoot></table>';		
+
+		//console.log("srishailam ");		
 		$("#distSummaryBody").html(str);
 		$(".excelId").show();
 		$("#districtTableId").dataTable({
@@ -3358,7 +4584,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		// window.open('constituencyCommitteeSummaryAction.action?accessConstituencyId='+constiIdReq+'','location=no','_blank');
 	window.open('constituencyCommitteeSummaryAction.action?accessConstituencyId='+constiIdReq+'','location=no','top=10,left=25,status=no,toolbar=no,location=yes,menubar=no,titlebar=no,scrollbars=yes,modal=yes');		
 	}
-	
+
 	function buildConstiWiseSummary(result,mandalCheck,villageCheck){
 	
 	
@@ -3392,6 +4618,44 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		var rythuCompltdCount = 0;
 		var othersCompltdCount = 0;
 		
+		
+		var bcCellStartedCount = 0;
+		var scCellStartedCount = 0;
+		var stCellStartedCount = 0;
+		var minorityStartedCount = 0;
+		var CristianStartedCount = 0;
+		var tnsfStartedCount = 0;
+		var tntucStartedCount = 0;
+		var tsnvStartedCount = 0;
+		var legalCellStartedCount = 0;
+		var doctorStartedCount = 0;
+		var kalluGeethaStartedCount = 0;
+		var chenethaStartedCount = 0;
+		var rakshaVedikaStartedCount = 0;
+		var tnusStartedCount = 0;
+		var commercialStartedCount = 0;
+		var culturalStartedCount = 0;
+		var tradeStartedCount = 0;
+		var  tradeCmpltdCount = 0;
+		var  bcCellCmpltdCount = 0;
+		var  scCellCmpltdCount = 0;
+		var  stCellCmpltdCount = 0;
+		var  minorityCmpltdCount = 0;
+		var  CristianCmpltdCount = 0;
+		var  tnsfCmpltdCount = 0;
+		var  tntucCmpltdCount = 0;
+		var  tsnvCmpltdCount = 0;
+		var  legalCmpltdCount = 0;
+		var  doctorCmpltdCount = 0;
+		var  kalluGeethaCmpltdCount = 0;
+		var  chenethaCmpltdCount = 0;
+		var  rakshaVedikaCmpltdCount = 0;
+		var  tnusCmpltdCount = 0;
+		var  commercialCmpltdCount = 0;
+		var  culturalCmpltdCount = 0;
+		
+		var isConsiderAffl=  $('#considerAfflId').is(':checked')?"true":"false";
+		console.log("isConsiderAffl  :"+isConsiderAffl);
 		var str = '';
 		$("#distSummaryBody").html("");
 		
@@ -3400,36 +4664,88 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		if(mandalCheck == "true" && villageCheck == "true"){
 			str+='<thead>';
             str+='<tr>';
-			str+='<th rowspan="3" style="text-align:center">AC No</th>';
-			str+='<th rowspan="3" style="text-align:center">AC Name</th>';
-            str+='<th style="text-align:center" colspan="14">TOWN / MANDAL / DIVISION </th>';
+			str+='<th rowspan="4" style="text-align:center">AC No</th>';
+			str+='<th rowspan="4" style="text-align:center">AC Name</th>';
+            if(isConsiderAffl =='true')
+				{
+					str+='<th style="text-align:center" colspan="47">TOWN / MANDAL / DIVISION </th>';
+				}
+				else
+				{
+					str+='<th style="text-align:center" colspan="15">TOWN / MANDAL / DIVISION </th>';
+				}
             str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
 			if(result[0].cadreIVRVO != null)
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length-1)*2;
-				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE / WARD IVR DETAILS </th>';
+				str+=' <th style="text-align:center" colspan='+length+' rowspan="2">VILLAGE / WARD IVR DETAILS </th>';
 				
 				//var length1 = (result[0].cadreIVRVO.optionsList1.length-1)*2;
 				//str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS </th>';
 			}
-            str+='</tr>';
+             str+='</tr>';
+            str+='<tr>'; 
+			if(mandalCheck == "true")
+			{
+				if(isConsiderAffl =='true')
+				{
+					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center" colspan="43"> Affliated Committees </th>';
+				}
+				else
+				{
+					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center" colspan="11"> Affliated Committees </th>';
+				}
+			}
+			if(villageCheck == "true")
+			{
+				str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
+				str+='<th style="text-align:center" colspan="2"> Affliated Committees </th>';
+			}
+			
+			str+='</tr>';
             str+='<tr>';
             str+='<th rowspan="2">Total</th>';
 			str+='<th  rowspan="2">Started</th>';
 			str+='<th  rowspan="2">Completed</th>';
 			str+='<th  rowspan="2">Members</th>';
-			str+='<th  rowspan="2">Affl Committee Started</th>';
-			str+='<th  rowspan="2">Affl Committee Completed</th>';
+			str+='<th rowspan="2">Total</th>';
+			str+='<th  rowspan="2"> Started</th>';
+			str+='<th  rowspan="2"> Completed</th>';
 			str+='<th colspan="2"> Telugu Yuvatha  </th>';
 			str+='<th colspan="2"> Telugu Mahila </th>';
 			str+='<th colspan="2" > Telugu Rythu </th>';
-			str+='<th colspan="2" > Others </th>';
+			if(isConsiderAffl =='true')
+			{				
+				str+='<th colspan="2" class="hideCls"> Trade  </th>';
+				str+='<th colspan="2" class="hideCls"> BC Cell </th>';
+				str+='<th colspan="2" class="hideCls"> SC Cell </th>';
+				str+='<th colspan="2" class="hideCls"> ST Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Minority Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Christian </th>';
+				str+='<th colspan="2" class="hideCls"> TNSF </th>';
+				str+='<th colspan="2" class="hideCls"> TNTUC </th>';
+				str+='<th colspan="2" class="hideCls"> TSNV </th>';
+				str+='<th colspan="2" class="hideCls"> Legal Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Doctor Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Kallu Geetha Karmikulu </th>';
+				str+='<th colspan="2" class="hideCls"> Chenetha </th>';
+				str+='<th colspan="2" class="hideCls"> Telugu Rakshana Vedika </th>';
+				str+='<th colspan="2" class="hideCls"> TNUS   </th>';
+				str+='<th colspan="2" class="hideCls"> Commercial Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Cultural Cell </th>';
+			}
+			else
+			{
+				str+='<th colspan="2" > Others </th>';
+			}
 			str+='<th  rowspan="2">Total</th>';
 			str+='<th  rowspan="2">Started</th>';
 			str+='<th  rowspan="2">Completed</th>';
 			str+='<th  rowspan="2">Members</th>';
-			str+='<th  rowspan="2">Affl Committee Started</th>';
-			str+='<th  rowspan="2">Affl Committee Completed</th>';
+			str+='<th  rowspan="2"> Started</th>';
+			str+='<th  rowspan="2"> Completed</th>';
             
 			if(result[0].cadreIVRVO != null)
 			{
@@ -3457,8 +4773,21 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			str+='<th>Completed</th>';
 			str+='<th>Started</th>';
 			str+='<th>Completed</th>';
-			str+='<th>Started</th>';
-			str+='<th>Completed</th>';
+			
+			if(isConsiderAffl == "true")
+			{
+				for(var z=0;z<17;z++)
+				 {
+					str+='<th  class="hideCls">Started</th>';
+					str+='<th  class="hideCls">Completed</th>';
+				 }
+			}
+			else
+			{
+				str+='<th>Started</th>';
+				str+='<th>Completed</th>';
+			}
+			 
 			str+='</tr>';	
 			str+='</thead>';	
 			
@@ -3466,29 +4795,81 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		else if(mandalCheck == "true"){
 			str+='<thead>';
 			str+='<tr>';
-			str+='<th rowspan="3"  style="text-align:center">AC No</th>';
-			str+='<th rowspan="3" style="text-align:center">AC Name</th>';
-			 str+='<th colspan="14" style="text-align:center" >TOWN / MANDAL / DIVISION </th>';
+			str+='<th rowspan="4"  style="text-align:center">AC No</th>';
+			str+='<th rowspan="4" style="text-align:center">AC Name</th>';
+		  if(isConsiderAffl =='true')
+			{
+				str+='<th style="text-align:center" colspan="47">TOWN / MANDAL / DIVISION </th>';
+			}
+			else
+			{
+				str+='<th style="text-align:center" colspan="15">TOWN / MANDAL / DIVISION </th>';
+			}
 			 if(result[0].cadreIVRVO != null)
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length-1) *2;
-				str+=' <th style="text-align:center" colspan='+length+'> VILLAGE / WARD IVR DETAILS  </th>';
+				str+=' <th style="text-align:center" colspan='+length+' rowspan="2"> VILLAGE / WARD IVR DETAILS  </th>';
 				
 				//var length1 = (result[0].cadreIVRVO.optionsList1.length-1) *2;
 				//str+=' <th style="text-align:center" colspan='+length1+'> WARD IVR DETAILS  </th>';
 			}
             str+='</tr>';
+            str+='<tr>'; 
+			if(mandalCheck == "true")
+			{
+				if(isConsiderAffl =='true')
+				{
+					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center" colspan="43"> Affliated Committees </th>';
+				}
+				else
+				{
+					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center" colspan="11"> Affliated Committees </th>';
+				}
+			}
+			if(villageCheck == "true")
+			{
+				str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
+				str+='<th style="text-align:center" colspan="2"> Affliated Committees </th>';
+			}
+			
+			str+='</tr>';
             str+='<tr>';
 			str+='<th rowspan="2">Total</th>';
 			str+='<th rowspan="2">Started</th>';
 			str+='<th rowspan="2">Completed</th>';
 			str+='<th rowspan="2">Members</th>';
-			str+='<th rowspan="2">Affl Committee Started</th>';
-			str+='<th rowspan="2">Affl Committee Completed</th>';
+			str+='<th rowspan="2">Total</th>';
+			str+='<th rowspan="2"> Started</th>';
+			str+='<th rowspan="2"> Completed</th>';
 			str+='<th colspan="2"> Telugu Yuvatha  </th>';
 			str+='<th colspan="2"> Telugu Mahila </th>';
 			str+='<th colspan="2" > Telugu Rythu </th>';
-			str+='<th colspan="2" > Others </th>';
+			if(isConsiderAffl =='true')
+			{				
+				str+='<th colspan="2" class="hideCls"> Trade  </th>';
+				str+='<th colspan="2" class="hideCls"> BC Cell </th>';
+				str+='<th colspan="2" class="hideCls"> SC Cell </th>';
+				str+='<th colspan="2" class="hideCls"> ST Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Minority Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Christian </th>';
+				str+='<th colspan="2" class="hideCls"> TNSF </th>';
+				str+='<th colspan="2" class="hideCls"> TNTUC </th>';
+				str+='<th colspan="2" class="hideCls"> TSNV </th>';
+				str+='<th colspan="2" class="hideCls"> Legal Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Doctor Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Kallu Geetha Karmikulu </th>';
+				str+='<th colspan="2" class="hideCls"> Chenetha </th>';
+				str+='<th colspan="2" class="hideCls"> Telugu Rakshana Vedika </th>';
+				str+='<th colspan="2" class="hideCls"> TNUS   </th>';
+				str+='<th colspan="2" class="hideCls"> Commercial Cell </th>';
+				str+='<th colspan="2" class="hideCls"> Cultural Cell </th>';
+			}
+			else
+			{
+				str+='<th colspan="2" > Others </th>';
+			}
 			if(result[0].cadreIVRVO != null)
 			{
 				for(var pr in result[0].cadreIVRVO.optionsList)
@@ -3516,20 +4897,33 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			str+='<th>Completed</th>';
 			str+='<th>Started</th>';
 			str+='<th>Completed</th>';
-			str+='<th>Started</th>';
-			str+='<th>Completed</th>';
+			
+			if(isConsiderAffl == "true")
+			{
+				for(var z=0;z<17;z++)
+				 {
+					str+='<th  class="hideCls">Started</th>';
+					str+='<th  class="hideCls">Completed</th>';
+				 }
+			}
+			else
+			{
+				str+='<th>Started</th>';
+				str+='<th>Completed</th>';
+			}
+			 
 			str+='</tr></thead>';	
 		}
 		else if(villageCheck == "true"){
 			str+='<thead>';
-			str+='<th rowspan="2"  style="text-align:center">AC No</th>';
-			str+='<th rowspan="2" style="text-align:center">AC Name</th>';
+			str+='<th rowspan="4"  style="text-align:center">AC No</th>';
+			str+='<th rowspan="4" style="text-align:center">AC Name</th>';
     
-			str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD</th>';
+			str+=' <th style="text-align:center" colspan="6">VILLAGE / WARD  </th>';
 			if(result[0].cadreIVRVO != null)
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length-1)*2;
-				str+=' <th style="text-align:center" colspan='+length+'>VILLAGE / WARD IVR DETAILS  </th>';
+				str+=' <th style="text-align:center" colspan='+length+' rowspan="2">VILLAGE / WARD IVR DETAILS  </th>';
 				
 				//var length1 = (result[0].cadreIVRVO.optionsList1.length-1)*2;
 				//str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS  </th>';
@@ -3537,12 +4931,23 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			}
             str+='</tr>';
             str+='<tr>';
+			
+			if(villageCheck == "true")
+			{
+				str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
+				str+='<th style="text-align:center" colspan="2"> Affliated Committees </th>';
+			}
+				
+			str+='</tr>';
+            str+='<tr>';
+			str+='</tr>';
+            str+='<tr>';
 			str+='<th>Total</th>';
 			str+='<th>Started</th>';
 			str+='<th>Completed</th>';
 			str+='<th>Members</th>';
-			str+='<th>Affl Committee Started</th>';
-			str+='<th>Affl Committee Completed</th>';
+			str+='<th> Started</th>';
+			str+='<th> Completed</th>';
 			if(result[0].cadreIVRVO != null)
 			{
 				for(var pr in result[0].cadreIVRVO.optionsList)
@@ -3605,7 +5010,11 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				}else{
 					str += '<td style="text-align:center"> - </td>';
 				}
-				
+				if(result[i].townMandalDivisionVO.totalCommittees!=null){
+					str += '<td style="text-align:center">'+((result[i].townMandalDivisionVO.totalCommittees)*21)+'</td>';
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
 				if(result[i].townMandalDivisionVO.afflStarted!=null){
 					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.afflStarted+'</td>';
 					mandAfStarted=mandAfStarted+result[i].townMandalDivisionVO.afflStarted;
@@ -3663,19 +5072,264 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					str += '<td style="text-align:center"> - </td>';
 				}
 				
-				if(result[i].townMandalDivisionVO.othersStarted != null){
-					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.othersStarted+' </td>';
-					othersStartedCount = othersStartedCount+result[i].townMandalDivisionVO.othersStarted;
-				}else{
-					str += '<td style="text-align:center"> - </td>';
+				if(isConsiderAffl == "true")
+				{
+					
+						if(result[i].townMandalDivisionVO.tradeStarted != null){
+							str += '<td style="text-align:center"  class="hideCls">'+result[i].townMandalDivisionVO.tradeStarted+' </td>';
+							tradeStartedCount = tradeStartedCount+result[i].townMandalDivisionVO.tradeStarted;
+						}else{
+							str += '<td style="text-align:center"  class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.tradeCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.tradeCmpltd+' </td>';
+							tradeCmpltdCount = tradeCmpltdCount+result[i].townMandalDivisionVO.tradeCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+
+						if(result[i].townMandalDivisionVO.bcCellStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.bcCellStarted+' </td>';
+							bcCellStartedCount = bcCellStartedCount+result[i].townMandalDivisionVO.bcCellStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.bcCellCmpltd!=null){
+							str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.bcCellCmpltd+' </td>';
+							bcCellCmpltdCount = bcCellCmpltdCount+result[i].townMandalDivisionVO.bcCellCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.scCellStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.scCellStarted+' </td>';
+							scCellStartedCount = scCellStartedCount+result[i].townMandalDivisionVO.scCellStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.scCellCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.scCellCmpltd+' </td>';
+							scCellCmpltdCount = scCellCmpltdCount+result[i].townMandalDivisionVO.scCellCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.stCellStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.stCellStarted+' </td>';
+							stCellStartedCount = stCellStartedCount+result[i].townMandalDivisionVO.stCellStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.stCellCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.stCellCmpltd+' </td>';
+							stCellCmpltdCount = stCellCmpltdCount+result[i].townMandalDivisionVO.stCellCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.minorityStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.minorityStarted+' </td>';
+							minorityStartedCount = minorityStartedCount+result[i].townMandalDivisionVO.minorityStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.minorityCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.minorityCmpltd+' </td>';
+							minorityCmpltdCount = minorityCmpltdCount+result[i].townMandalDivisionVO.minorityCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.CristianStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.CristianStarted+' </td>';
+							CristianStartedCount = CristianStartedCount+result[i].townMandalDivisionVO.CristianStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.CristianCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.CristianCmpltd+' </td>';
+							CristianCmpltdCount = CristianCmpltdCount+result[i].townMandalDivisionVO.CristianCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.tnsfStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.tnsfStarted+' </td>';
+							tnsfStartedCount = tnsfStartedCount+result[i].townMandalDivisionVO.tnsfStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.tnsfCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.tnsfCmpltd+' </td>';
+							tnsfCmpltdCount = tnsfCmpltdCount+result[i].townMandalDivisionVO.tnsfCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.tntucStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.tntucStarted+' </td>';
+							tntucStartedCount = tntucStartedCount+result[i].townMandalDivisionVO.tntucStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.tntucCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.tntucCmpltd+' </td>';
+							tntucCmpltdCount = tntucCmpltdCount+result[i].townMandalDivisionVO.tntucCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.tsnvStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.tsnvStarted+' </td>';
+							tsnvStartedCount = tsnvStartedCount+result[i].townMandalDivisionVO.tsnvStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.tsnvCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.tsnvCmpltd+' </td>';
+							tsnvCmpltdCount = tsnvCmpltdCount+result[i].townMandalDivisionVO.tsnvCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.legalCellStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.legalCellStarted+' </td>';
+							legalCellStartedCount = legalCellStartedCount+result[i].townMandalDivisionVO.legalCellStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.legalCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.legalCmpltd+' </td>';
+							legalCmpltdCount = legalCmpltdCount+result[i].townMandalDivisionVO.legalCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.doctorStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.doctorStarted+' </td>';
+							doctorStartedCount = doctorStartedCount+result[i].townMandalDivisionVO.doctorStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.doctorCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.doctorCmpltd+' </td>';
+							doctorCmpltdCount = doctorCmpltdCount+result[i].townMandalDivisionVO.doctorCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.kalluGeethaStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.kalluGeethaStarted+' </td>';
+							kalluGeethaStartedCount = kalluGeethaStartedCount+result[i].townMandalDivisionVO.kalluGeethaStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.kalluGeethaCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.kalluGeethaCmpltd+' </td>';
+							kalluGeethaCmpltdCount = kalluGeethaCmpltdCount+result[i].townMandalDivisionVO.kalluGeethaCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.chenethaStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.chenethaStarted+' </td>';
+							chenethaStartedCount = chenethaStartedCount+result[i].townMandalDivisionVO.chenethaStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.chenethaCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.chenethaCmpltd+' </td>';
+							chenethaCmpltdCount = chenethaCmpltdCount+result[i].townMandalDivisionVO.chenethaCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.rakshaVedikaStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.rakshaVedikaStarted+' </td>';
+							rakshaVedikaStartedCount = rakshaVedikaStartedCount+result[i].townMandalDivisionVO.rakshaVedikaStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.rakshaVedikaCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.rakshaVedikaCmpltd+' </td>';
+							rakshaVedikaCmpltdCount = rakshaVedikaCmpltdCount+result[i].townMandalDivisionVO.rakshaVedikaCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.tnusStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.tnusStarted+' </td>';
+							tnusStartedCount = tnusStartedCount+result[i].townMandalDivisionVO.tnusStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.tnusCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.tnusCmpltd+' </td>';
+							tnusCmpltdCount = tnusCmpltdCount+result[i].townMandalDivisionVO.tnusCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.commercialStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.commercialStarted+' </td>';
+							commercialStartedCount = commercialStartedCount+result[i].townMandalDivisionVO.commercialStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.commercialCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.commercialCmpltd+' </td>';
+							commercialCmpltdCount = commercialCmpltdCount+result[i].townMandalDivisionVO.commercialCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.culturalStarted != null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.culturalStarted+' </td>';
+							culturalStartedCount = culturalStartedCount+result[i].townMandalDivisionVO.culturalStarted;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+						
+						if(result[i].townMandalDivisionVO.culturalCmpltd!=null){
+							str += '<td style="text-align:center" class="hideCls">'+result[i].townMandalDivisionVO.culturalCmpltd+' </td>';
+							culturalCmpltdCount = culturalCmpltdCount+result[i].townMandalDivisionVO.culturalCmpltd;
+						}else{
+							str += '<td style="text-align:center" class="hideCls"> - </td>';
+						}
+				}
+				else
+				{
+					if(result[i].townMandalDivisionVO.othersStarted != null){
+						str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.othersStarted+' </td>';
+						othersStartedCount = othersStartedCount+result[i].townMandalDivisionVO.othersStarted;
+					}else{
+						str += '<td style="text-align:center"> - </td>';
+					}
+					
+					if(result[i].townMandalDivisionVO.othersCmpltd!=null){
+						str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.othersCmpltd+' </td>';
+						othersCompltdCount = othersCompltdCount+result[i].townMandalDivisionVO.othersCmpltd;
+					}else{
+						str += '<td style="text-align:center"> - </td>';
+					}
 				}
 				
-				if(result[i].townMandalDivisionVO.othersCmpltd!=null){
-					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.othersCmpltd+' </td>';
-					othersCompltdCount = othersCompltdCount+result[i].townMandalDivisionVO.othersCmpltd;
-				}else{
-					str += '<td style="text-align:center"> - </td>';
-				}
 			}else{
 				str += '<td>  </td>';
 				str += '<td>  </td>';
@@ -3689,8 +5343,19 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				str += '<td>  </td>';
 				str += '<td>  </td>';
 				str += '<td>  </td>';
-				str += '<td>  </td>';
-				str += '<td>  </td>';
+				if(isConsiderAffl == "true")
+				{
+					for(var z=0;z<17;z++)
+					 {
+						str += '<td>  </td>';
+						str += '<td>  </td>';
+					 }
+				}
+				else
+				{
+					str += '<td>  </td>';
+					str += '<td>  </td>';				
+				}
 			}
 			}
 			if(villageCheck == "true"){
@@ -3814,7 +5479,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str	+= '<td style="text-align:center">TOTAL</td><td>'+mandTotal+'</td>'; 	
 		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
-		str += '<td style="text-align:center">'+mandMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+mandMembers+'</td>'; 
+		str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';		
 		str += '<td style="text-align:center">'+mandAfStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandAfCompleted+'</td>';
 			
@@ -3824,9 +5490,52 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str += '<td style="text-align:center">'+mahilaCompltdCount+'</td>';
 		str += '<td style="text-align:center">'+rythuStartedCount+'</td>';
 		str += '<td style="text-align:center">'+rythuCompltdCount+'</td>';
-		str += '<td style="text-align:center">'+othersStartedCount+'</td>';
-		str += '<td style="text-align:center">'+othersCompltdCount+'</td>';		
-		
+			
+		if(isConsiderAffl == "true")
+			{
+				str += '<td style="text-align:center">'+tradeStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tradeCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+bcCellStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+bcCellCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+scCellStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+scCellCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center">'+stCellStartedCount+'</td>'; 			
+				str += '<td style="text-align:center">'+stCellCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+minorityStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+minorityCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+CristianStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+CristianCmpltdCount+'</td>';
+				
+				str += '<td style="text-align:center">'+tnsfStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tnsfCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tntucStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tntucCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tsnvStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tsnvCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center">'+legalCellStartedCount+'</td>'; 			
+				str += '<td style="text-align:center">'+legalCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+doctorStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+doctorCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+kalluGeethaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+kalluGeethaCmpltdCount+'</td>';
+				
+				str += '<td style="text-align:center">'+chenethaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+chenethaCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+rakshaVedikaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+rakshaVedikaCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tnusStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tnusCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center">'+commercialStartedCount+'</td>'; 			
+				str += '<td style="text-align:center">'+commercialCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+culturalStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+culturalCmpltdCount+'</td>'; 
+			}
+			else
+			{
+				str += '<td style="text-align:center">'+othersStartedCount+'</td>';
+				str += '<td style="text-align:center">'+othersCompltdCount+'</td>';
+			}
+			
 		str += '<td style="text-align:center">'+panTotal+'</td>';
 		str += '<td style="text-align:center">'+panStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+panCompleted+'</td>'; 	
@@ -3838,7 +5547,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str	+= '<td style="text-align:center">TOTAL</td><td>'+mandTotal+'</td>'; 	
 		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
-		str += '<td style="text-align:center">'+mandMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+mandMembers+'</td>';
+		str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';		
 		str += '<td style="text-align:center">'+mandAfStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandAfCompleted+'</td>'; 	
 		str += '<td style="text-align:center">'+yuvathaStartedCount+'</td>';
@@ -3847,8 +5557,51 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str += '<td style="text-align:center">'+mahilaCompltdCount+'</td>';
 		str += '<td style="text-align:center">'+rythuStartedCount+'</td>';
 		str += '<td style="text-align:center">'+rythuCompltdCount+'</td>';
-		str += '<td style="text-align:center">'+othersStartedCount+'</td>';
-		str += '<td style="text-align:center">'+othersCompltdCount+'</td>';
+		if(isConsiderAffl == "true")
+			{
+				str += '<td style="text-align:center">'+tradeStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tradeCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+bcCellStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+bcCellCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+scCellStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+scCellCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center">'+stCellStartedCount+'</td>'; 			
+				str += '<td style="text-align:center">'+stCellCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+minorityStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+minorityCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+CristianStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+CristianCmpltdCount+'</td>';
+				
+				str += '<td style="text-align:center">'+tnsfStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tnsfCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tntucStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tntucCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tsnvStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tsnvCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center">'+legalCellStartedCount+'</td>'; 			
+				str += '<td style="text-align:center">'+legalCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+doctorStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+doctorCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+kalluGeethaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+kalluGeethaCmpltdCount+'</td>';
+				
+				str += '<td style="text-align:center">'+chenethaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+chenethaCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+rakshaVedikaStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+rakshaVedikaCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tnusStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+tnusCmpltdCount+'</td>';
+				str	+= '<td style="text-align:center">'+commercialStartedCount+'</td>'; 			
+				str += '<td style="text-align:center">'+commercialCmpltdCount+'</td>'; 	
+				str += '<td style="text-align:center">'+culturalStartedCount+'</td>'; 	
+				str += '<td style="text-align:center">'+culturalCmpltdCount+'</td>'; 
+			}
+			else
+			{
+				str += '<td style="text-align:center">'+othersStartedCount+'</td>';
+				str += '<td style="text-align:center">'+othersCompltdCount+'</td>';
+			} 
+		
 	}
 	else if(villageCheck=="true"){
 		str	+= '<td style="text-align:center">TOTAL</td><td>'+panTotal+'</td>'; 	
@@ -3860,6 +5613,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	}
 		str += '</tr></tfoot></table>';
 		
+		//console.log("sridhar");
 		$("#distSummaryBody").html(str);
 		$("#constiTableId").dataTable({
 			"iDisplayLength": 20,
