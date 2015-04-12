@@ -24,6 +24,7 @@ public class TdpBasicCommittee {
 	private String name;
 	private TdpCommitteeType tdpCommitteeType;
 	private Long tdpCommitteeTypeId;
+	private Long order;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -64,6 +65,15 @@ public class TdpBasicCommittee {
 	
 	public void setTdpCommitteeTypeId(Long tdpCommitteeTypeId) {
 		this.tdpCommitteeTypeId = tdpCommitteeTypeId;
+	}
+	
+	@Column(name = "order_id")
+	public Long getOrder() {
+		return order;
+	}
+
+	public void setOrder(Long order) {
+		this.order = order;
 	}
 	
 	
