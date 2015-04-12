@@ -17,7 +17,7 @@ public class TdpBasicCommitteeDAO extends GenericDaoHibernate<TdpBasicCommittee,
 		Query query = getSession().createQuery(" select model.tdpBasicCommitteeId," +
 				" model.name" +
 				" from TdpBasicCommittee model " +
-				" order by model.tdpBasicCommitteeId ");
+				" order by model.order ");
 		
 		return query.list();
 	}
