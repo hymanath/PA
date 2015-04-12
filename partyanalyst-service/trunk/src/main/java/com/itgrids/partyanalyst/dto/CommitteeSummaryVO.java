@@ -52,14 +52,252 @@ public class CommitteeSummaryVO implements Serializable{
 	private Long youvathaStarted;
 	private Long mahilaStarted;
 	private Long rythuStarted;
+	private Long tradeStarted;
+	private Long bcCellStarted;
+	private Long scCellStarted;
+	private Long stCellStarted;
+	private Long minorityStarted;
+	private Long CristianStarted;
+	private Long tnsfStarted;
+	private Long tntucStarted;
+	private Long tsnvStarted;
+	private Long legalCellStarted;
+	private Long doctorStarted;
+	private Long kalluGeethaStarted;
+	private Long chenethaStarted;
+	private Long rakshaVedikaStarted;
+	private Long tnusStarted;
+	private Long commercialStarted;
+	private Long culturalStarted;	
 	private Long othersStarted;
 	
 	private Long youvathaCmpltd;
 	private Long mahilaCmpltd;
 	private Long rythuCmpltd;
+	private Long tradeCmpltd;
+	private Long bcCellCmpltd;
+	private Long scCellCmpltd;
+	private Long stCellCmpltd;
+	private Long minorityCmpltd;
+	private Long CristianCmpltd;
+	private Long tnsfCmpltd;
+	private Long tntucCmpltd;
+	private Long tsnvCmpltd;
+	private Long legalCmpltd;
+	private Long doctorCmpltd;
+	private Long kalluGeethaCmpltd;
+	private Long chenethaCmpltd;
+	private Long rakshaVedikaCmpltd;
+	private Long tnusCmpltd;
+	private Long commercialCmpltd;
+	private Long culturalCmpltd;	
 	private Long othersCmpltd;
 	
 	
+	public Long getTradeStarted() {
+		return tradeStarted;
+	}
+	public Long getBcCellStarted() {
+		return bcCellStarted;
+	}
+	public Long getScCellStarted() {
+		return scCellStarted;
+	}
+	public Long getStCellStarted() {
+		return stCellStarted;
+	}
+	public Long getMinorityStarted() {
+		return minorityStarted;
+	}
+	public Long getCristianStarted() {
+		return CristianStarted;
+	}
+	public Long getTnsfStarted() {
+		return tnsfStarted;
+	}
+	public Long getTntucStarted() {
+		return tntucStarted;
+	}
+	public Long getTsnvStarted() {
+		return tsnvStarted;
+	}
+	public Long getLegalCellStarted() {
+		return legalCellStarted;
+	}
+	public Long getDoctorStarted() {
+		return doctorStarted;
+	}
+	public Long getKalluGeethaStarted() {
+		return kalluGeethaStarted;
+	}
+	public Long getChenethaStarted() {
+		return chenethaStarted;
+	}
+	public Long getRakshaVedikaStarted() {
+		return rakshaVedikaStarted;
+	}
+	public Long getTnusStarted() {
+		return tnusStarted;
+	}
+	public Long getCommercialStarted() {
+		return commercialStarted;
+	}
+	public Long getCulturalStarted() {
+		return culturalStarted;
+	}
+	public Long getTradeCmpltd() {
+		return tradeCmpltd;
+	}
+	public Long getBcCellCmpltd() {
+		return bcCellCmpltd;
+	}
+	public Long getScCellCmpltd() {
+		return scCellCmpltd;
+	}
+	public Long getStCellCmpltd() {
+		return stCellCmpltd;
+	}
+	public Long getMinorityCmpltd() {
+		return minorityCmpltd;
+	}
+	public Long getCristianCmpltd() {
+		return CristianCmpltd;
+	}
+	public Long getTnsfCmpltd() {
+		return tnsfCmpltd;
+	}
+	public Long getTntucCmpltd() {
+		return tntucCmpltd;
+	}
+	public Long getTsnvCmpltd() {
+		return tsnvCmpltd;
+	}
+	public Long getLegalCmpltd() {
+		return legalCmpltd;
+	}
+	public Long getDoctorCmpltd() {
+		return doctorCmpltd;
+	}
+	public Long getKalluGeethaCmpltd() {
+		return kalluGeethaCmpltd;
+	}
+	public Long getChenethaCmpltd() {
+		return chenethaCmpltd;
+	}
+	public Long getRakshaVedikaCmpltd() {
+		return rakshaVedikaCmpltd;
+	}
+	public Long getTnusCmpltd() {
+		return tnusCmpltd;
+	}
+	public Long getCommercialCmpltd() {
+		return commercialCmpltd;
+	}
+	public Long getCulturalCmpltd() {
+		return culturalCmpltd;
+	}
+	public void setTradeStarted(Long tradeStarted) {
+		this.tradeStarted = tradeStarted;
+	}
+	public void setBcCellStarted(Long bcCellStarted) {
+		this.bcCellStarted = bcCellStarted;
+	}
+	public void setScCellStarted(Long scCellStarted) {
+		this.scCellStarted = scCellStarted;
+	}
+	public void setStCellStarted(Long stCellStarted) {
+		this.stCellStarted = stCellStarted;
+	}
+	public void setMinorityStarted(Long minorityStarted) {
+		this.minorityStarted = minorityStarted;
+	}
+	public void setCristianStarted(Long cristianStarted) {
+		CristianStarted = cristianStarted;
+	}
+	public void setTnsfStarted(Long tnsfStarted) {
+		this.tnsfStarted = tnsfStarted;
+	}
+	public void setTntucStarted(Long tntucStarted) {
+		this.tntucStarted = tntucStarted;
+	}
+	public void setTsnvStarted(Long tsnvStarted) {
+		this.tsnvStarted = tsnvStarted;
+	}
+	public void setLegalCellStarted(Long legalCellStarted) {
+		this.legalCellStarted = legalCellStarted;
+	}
+	public void setDoctorStarted(Long doctorStarted) {
+		this.doctorStarted = doctorStarted;
+	}
+	public void setKalluGeethaStarted(Long kalluGeethaStarted) {
+		this.kalluGeethaStarted = kalluGeethaStarted;
+	}
+	public void setChenethaStarted(Long chenethaStarted) {
+		this.chenethaStarted = chenethaStarted;
+	}
+	public void setRakshaVedikaStarted(Long rakshaVedikaStarted) {
+		this.rakshaVedikaStarted = rakshaVedikaStarted;
+	}
+	public void setTnusStarted(Long tnusStarted) {
+		this.tnusStarted = tnusStarted;
+	}
+	public void setCommercialStarted(Long commercialStarted) {
+		this.commercialStarted = commercialStarted;
+	}
+	public void setCulturalStarted(Long culturalStarted) {
+		this.culturalStarted = culturalStarted;
+	}
+	public void setTradeCmpltd(Long tradeCmpltd) {
+		this.tradeCmpltd = tradeCmpltd;
+	}
+	public void setBcCellCmpltd(Long bcCellCmpltd) {
+		this.bcCellCmpltd = bcCellCmpltd;
+	}
+	public void setScCellCmpltd(Long scCellCmpltd) {
+		this.scCellCmpltd = scCellCmpltd;
+	}
+	public void setStCellCmpltd(Long stCellCmpltd) {
+		this.stCellCmpltd = stCellCmpltd;
+	}
+	public void setMinorityCmpltd(Long minorityCmpltd) {
+		this.minorityCmpltd = minorityCmpltd;
+	}
+	public void setCristianCmpltd(Long cristianCmpltd) {
+		CristianCmpltd = cristianCmpltd;
+	}
+	public void setTnsfCmpltd(Long tnsfCmpltd) {
+		this.tnsfCmpltd = tnsfCmpltd;
+	}
+	public void setTntucCmpltd(Long tntucCmpltd) {
+		this.tntucCmpltd = tntucCmpltd;
+	}
+	public void setTsnvCmpltd(Long tsnvCmpltd) {
+		this.tsnvCmpltd = tsnvCmpltd;
+	}
+	public void setLegalCmpltd(Long legalCmpltd) {
+		this.legalCmpltd = legalCmpltd;
+	}
+	public void setDoctorCmpltd(Long doctorCmpltd) {
+		this.doctorCmpltd = doctorCmpltd;
+	}
+	public void setKalluGeethaCmpltd(Long kalluGeethaCmpltd) {
+		this.kalluGeethaCmpltd = kalluGeethaCmpltd;
+	}
+	public void setChenethaCmpltd(Long chenethaCmpltd) {
+		this.chenethaCmpltd = chenethaCmpltd;
+	}
+	public void setRakshaVedikaCmpltd(Long rakshaVedikaCmpltd) {
+		this.rakshaVedikaCmpltd = rakshaVedikaCmpltd;
+	}
+	public void setTnusCmpltd(Long tnusCmpltd) {
+		this.tnusCmpltd = tnusCmpltd;
+	}
+	public void setCommercialCmpltd(Long commercialCmpltd) {
+		this.commercialCmpltd = commercialCmpltd;
+	}
+	public void setCulturalCmpltd(Long culturalCmpltd) {
+		this.culturalCmpltd = culturalCmpltd;
+	}
 	public Long getOthersStarted() {
 		return othersStarted;
 	}

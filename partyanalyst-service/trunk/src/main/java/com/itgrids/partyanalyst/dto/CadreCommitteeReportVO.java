@@ -1,4 +1,6 @@
 package com.itgrids.partyanalyst.dto;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CadreCommitteeReportVO {
 
@@ -23,12 +25,31 @@ public class CadreCommitteeReportVO {
 	private Long membersCount3 = 0L;
 	private Double affliatedCompletedPerc;
 	private String accessState;
-	
+	private Long locationId;
+	private String locationName;
 	private CadreIVRVO committeeSummaryVO;
+	private List<CadreCommitteeReportVO> cadreCommitteeReportVOList = new ArrayList<CadreCommitteeReportVO>();
 	
 	
-	
-	
+	public List<CadreCommitteeReportVO> getCadreCommitteeReportVOList() {
+		return cadreCommitteeReportVOList;
+	}
+	public void setCadreCommitteeReportVOList(
+			List<CadreCommitteeReportVO> cadreCommitteeReportVOList) {
+		this.cadreCommitteeReportVOList = cadreCommitteeReportVOList;
+	}
+	public Long getLocationId() {
+		return locationId;
+	}
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
 	public String getAccessState() {
 		return accessState;
 	}
