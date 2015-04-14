@@ -1977,5 +1977,22 @@
     <bean id="tdpCommitteeVacantPostDAO" class="com.itgrids.partyanalyst.dao.hibernate.TdpCommitteeVacantPostDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="mahanaduGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.MahanaduGroupDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	 <bean id="mahanaduCadreMemberDAO" class="com.itgrids.partyanalyst.dao.hibernate.MahanaduCadreMemberDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	 <bean id="publicRepresentativeDAO" class="com.itgrids.partyanalyst.dao.hibernate.PublicRepresentativeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	 <bean id="mahanaduPublicRepresentativeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MahanaduPublicRepresentativeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!--  end -->
 </beans>		
