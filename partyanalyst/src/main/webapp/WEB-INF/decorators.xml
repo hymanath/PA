@@ -325,6 +325,7 @@
 			  <pattern>/currentBoothsStatus*</pattern>
 			   <pattern>/ivrCampaignUploadAction*</pattern> 
 			   <pattern>/cadreVoterSearchAction*</pattern>
+			   <pattern>/mahanaduEventInviteesAction*</pattern>
 		 </decorator>
        
        <decorator name="tdpHome_old" page="tdplayout_old.jsp">
@@ -407,7 +408,5 @@
 	  <decorator name="districtLayout" page="districtLayout.jsp">
 		<pattern>/cadreSearchPageAction*</pattern>
 		<pattern>/committeeDistrictDashBoardAction*</pattern>
-		<pattern>/committeeMemberDetailReport*</pattern>
-		
 	 </decorator>
 </decorators>
