@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CadreCommitteeMemberVO {
@@ -26,10 +27,23 @@ public class CadreCommitteeMemberVO {
 	
 	private List<CasteDetailsVO> casteGroupVO;
 	private List<CasteDetailsVO> ageDetailsIfoVO;
-	
+	private List<Long> commiteeRoleIds = new ArrayList<Long>();
 	private String casteGroupName;
+	private String mobileNo;
 	
 	
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	public List<Long> getCommiteeRoleIds() {
+		return commiteeRoleIds;
+	}
+	public void setCommiteeRoleIds(List<Long> commiteeRoleIds) {
+		this.commiteeRoleIds = commiteeRoleIds;
+	}
 	public String getTotalCount() {
 		return totalCount;
 	}
