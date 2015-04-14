@@ -30,7 +30,7 @@
 </head>
 <body class="background-bg">
 
-	<div class="well br_0 container" style="background-color:#fff">
+	<div class="well br_0 container" style="background-color:#fff;margin-top:5px;">
     	<h3 class="m_0 text-center">COMMITTEE MEMBER DETAILS</h3>
     </div>
 <div class="container m_top10" style="background-color:#fff;margin-top:-18px;">
@@ -96,15 +96,21 @@
             </div>
 			
             <div>
+			<form class="me-select">
+			<ul id="me-select-list" class="">
+			<li class="">
+			<input id="checkAll" class="" type="checkbox" name="cb10">
+			<label class="m_0" style="padding:0px 10px 0px 45px;margin-top:10px;" for="cb10">
+			<span class="text-col-head" id="checkText">Select All</span>
+			</label>
+			</li>
+			</ul>
+				</form>
+			<hr class="m_0" style="border-top:1px solid #01b6ad;">
             <form class="me-select" id="rolesForm">
             	
             </form>
-            <hr style="border-top:1px solid #01b6ad;" class="m_0"/>
-            <div class="text-center default-view">	
-                <h3>YOUR ARE NOT SELECTED ANY FILTERS</h3>
-                <h4>Please select Filters to get Committee Designations</h4>
-            </div>
-            </div>
+          </div>
             <div class="text-bold" style="padding-top:30px;">Select Committee Members Designation to Create Group <br/>(or) Download Members Details</div>
         </div>
         <div class="col-md-6 m_top20">
@@ -117,10 +123,67 @@
                         </div>
                     </div>
                     <div class="trashicon"><i class="glyphicon glyphicon-trash"></i></div>
-                    <div class="text-center default-view">
-                    	<h2>YOU ARE NOT ADDED</h2>
-                        <h3>MEMBERS TO IN THIS SECTION</h3>
+                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="margin-top:-20px;">
+                  <div class="panel panel-default border_0">
+                    <div class="panel-heading collapse-head" role="tab" id="headingOne">
+                      <h4 class="panel-title">
+                          <form class="me-select display-style">
+                            <ul id="me-select-list">
+                                <li><input id="cb11" name="cb11" type="checkbox">
+                                	<label for="cb11" class="m_0 collapse-select"><span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-controls="collapseOne" class="col-drop-head">Committee Designation</a></span></label></li>
+                            </ul>
+                          </form>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        	<i class="glyphicon glyphicon-chevron-down pull-right display-style col-drop-color"></i>
+                        </a>
+                      </h4>
                     </div>
+                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                      <div class="panel-body">
+                        	<form class="me-select display-style">
+                                <ul id="me-select-list">
+                                    <li><input id="cb12" name="cb11" type="checkbox">
+                                        <label for="cb12" class="m_0 collapse-select"><span class="col-drop-select-name">President<span class="text-italic text-selectbox-bracket">(President Name)</span></span></label></li>
+                                    <li><input id="cb13" name="cb11" type="checkbox">
+                                        <label for="cb13" class="m_0 collapse-select"><span class="col-drop-select-name">Vice-President<span class="text-italic text-selectbox-bracket">(Vice-President Name)</span></span></label></li>
+                                    <li><input id="cb14" name="cb11" type="checkbox">
+                                        <label for="cb14" class="m_0 collapse-select"><span class="col-drop-select-name">General Secretary<span class="text-italic text-selectbox-bracket">(General Secretary Name)</span></span></label></li>
+                                </ul>
+                            </form>
+                      </div>
+                    </div>
+                  </div>
+                   <div class="panel panel-default border_0">
+                    <div class="panel-heading collapse-head" role="tab" id="headingTwo">
+                      <h4 class="panel-title">
+                          <form class="me-select display-style">
+                            <ul id="me-select-list">
+                                <li>
+                                	<input id="cb15" name="cb11" type="checkbox">
+                                	<label for="cb15" class="m_0 collapse-select"><span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-controls="collapseTwo" class="col-drop-head">TNTUC</a></span></label>
+                                </li>
+                            </ul>
+                          </form>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-controls="collapseTwo">
+                        	<i class="glyphicon glyphicon-chevron-down pull-right display-style col-drop-color"></i>
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                      <div class="panel-body">
+                        	<form class="me-select display-style">
+                                <ul id="me-select-list">
+                                    <li><input id="cb16" name="cb11" type="checkbox">
+                                        <label for="cb16" class="m_0 collapse-select"><span class="col-drop-select-name">President<span class="text-italic text-selectbox-bracket">(President Name)</span></span></label></li>
+                                    <li><input id="cb17" name="cb11" type="checkbox">
+                                        <label for="cb17" class="m_0 collapse-select"><span class="col-drop-select-name">Vice-President<span class="text-italic text-selectbox-bracket">(Vice-President Name)</span></span></label></li>
+                                    <li><input id="cb18" name="cb11" type="checkbox">
+                                        <label for="cb18" class="m_0 collapse-select"><span class="col-drop-select-name">General Secretary<span class="text-italic text-selectbox-bracket">(General Secretary Name)</span></span></label></li>
+                                </ul>
+                            </form>
+                      </div>
+                    </div>
+                  </div>
                      <section style="margin-left:10px;">
                             <label class="select-label" style="margin-left:0px;margin-right:0px;">SELECT COMMITTEE MEMBER DETAILS TYPE</label>
                             <select class="cs-select cs-skin-slide">
@@ -460,7 +523,7 @@
     		str+='<ul id="me-select-list" >';
 			for(var i in result)
 			{
-            str+='<li><input id="cb'+result[i].id+'" name="cb10" type="checkbox"><label for="cb10" class="m_0" style="padding:0px 10px 0px 45px;margin-top:10px;"><span class="text-col-head">'+result[i].name+'</span></li>';
+            str+='<li><input id="committee'+result[i].id+'" name="commiteCheck" type="checkbox" value="'+result[i].id+'" class="commiteCheck"><label for="cb10"  style="padding:0px 10px 0px 45px;margin-top:10px;"><span >'+result[i].name+'</span></li>';
 			}
            str+=' </ul>';
 		    $("#rolesForm").html(str);
@@ -529,6 +592,21 @@
 			  });
 			  
 			}
+			$(document).ready(function()
+			{
+			$("#checkAll").click(function()
+			{
+			if($(this).is(":checked"))
+			{
+				$(".commiteCheck").prop('checked', true);
+				$("#checkText").html("UnSelect All");
+			}
+			else{
+				$(".commiteCheck").prop('checked', false);
+				$("#checkText").html("Select All");
+			}
+			});
+			});
 		
 </script>
 <script>
