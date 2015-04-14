@@ -124,7 +124,7 @@
                     </div>
                     <div class="trashicon"><i class="glyphicon glyphicon-trash"></i></div>
                      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="margin-top:-20px;">
-                  <div class="panel panel-default border_0">
+                 <!-- <div class="panel panel-default border_0">
                     <div class="panel-heading collapse-head" role="tab" id="headingOne">
                       <h4 class="panel-title">
                           <form class="me-select display-style">
@@ -153,7 +153,7 @@
                       </div>
                     </div>
                   </div>
-                   <div class="panel panel-default border_0">
+                 <div class="panel panel-default border_0">
                     <div class="panel-heading collapse-head" role="tab" id="headingTwo">
                       <h4 class="panel-title">
                           <form class="me-select display-style">
@@ -182,7 +182,7 @@
                                 </ul>
                             </form>
                       </div>
-                    </div>
+                    </div>-->
                   </div>
                      <section style="margin-left:10px;">
                             <label class="select-label" style="margin-left:0px;margin-right:0px;">SELECT COMMITTEE MEMBER DETAILS TYPE</label>
@@ -302,6 +302,7 @@
 		  }
 		 str+='</select></div></section>';
 		$("#districtDiv").html(str);
+		
 		/*str+='<select class="cs-select cs-skin-slide">';
        str+='<option value="district">District</option>';
        str+='<option value="mandal">Mandal</option>';
@@ -352,6 +353,7 @@
 		  }
 		 str+='</select></div></section>';
 		$("#constituencyDiv").html(str);
+	
      /*for(var i in result){
 	   if(result[i].id == 0){
           $("#constituencyId").append('<option value='+result[i].id+'>Select Constituency</option>');
@@ -404,6 +406,7 @@
 		  }
 		 str+='</select></div></section>';
 		$("#mandalDiv").html(str);
+	
     /* for(var i in result){
 	   if(result[i].id == 0){
           $("#mandalId").append('<option value='+result[i].id+'>Select Mandal</option>');
@@ -447,6 +450,7 @@
 		  }
 		 str+='</select></div></section>';
 		$("#panchayatDiv").html(str);
+		
     /* $("#panchayatId").append('<option value="0">Select Panchayat/Ward</option>');
      for(var i in result){
 	   $("#panchayatId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
@@ -487,7 +491,7 @@
 	   str+='<section>';
           str+='<label class="select-label">Committee</label>';
 		  str+=' <div class="cs-select cs-skin-slide committeeSlide" tabindex="0" onclick="selectChange(\'committeeSlide\')">';
-		  str+='<span class="cs-placeholder committeeName">Committee</span><div class="cs-options"><ul class="scrollbar panchayatList">';
+		  str+='<span class="cs-placeholder committeeName">Committee</span><div class="cs-options"><ul class="scrollbar comitteeList">';
 		  for(var i in result)
 		  {
 		  if(result[i].id != 0)
@@ -547,6 +551,9 @@
 			function selectChange(divEle)
 			{
 			//alert('se')
+			$(".scrollbar").scrollator({
+					zIndex: '10000',
+					});
 			if($("."+divEle).hasClass("cs-active"))
 			$("."+divEle).removeClass("cs-active");
 			else
@@ -596,18 +603,53 @@
 			{
 			$("#checkAll").click(function()
 			{
-			if($(this).is(":checked"))
+				if($(this).is(":checked"))
+				{
+					$(".commiteCheck").prop('checked', true);
+					$("#checkText").html("UnSelect All");
+				}
+				else{
+					$(".commiteCheck").prop('checked', false);
+					$("#checkText").html("Select All");
+				}
+			});
+				/*$(".commiteCheck input[type=checkbox]").click(function()
+					{
+					alert('cc');
+					//addCommitteeDivs();
+					});	*/
+		});
+			
+			function addCommitteeDivs()
 			{
-				$(".commiteCheck").prop('checked', true);
-				$("#checkText").html("UnSelect All");
+			
+			var str ='';
+			str+='<div class="panel panel-default border_0">';
+            str+='<div class="panel-heading collapse-head" role="tab" id="headingOne">';
+            str+='<h4 class="panel-title">';
+            str+='<form class="me-select display-style">';
+            str+='<ul id="me-select-list">';
+            str+='<li><input id="cb11" name="cb11" type="checkbox">';
+            str+='<label for="cb11" class="m_0 collapse-select"><span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-controls="collapseOne" class="col-drop-head">Committee Designation</a></span></label></li>';
+           str+=' </ul>';
+          str+=' </form>';
+         str+='<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">';
+         str+='<i class="glyphicon glyphicon-chevron-down pull-right display-style col-drop-color"></i>';
+          str+='</a>';
+        str+='</h4>';
+      str+='</div>';
+      str+='<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">';
+      str+='<div class="panel-body">';
+      str+='<form class="me-select display-style">';
+      str+='<ul id="me-select-list">';
+      str+=' <li><input id="cb12" name="cb11" type="checkbox">';
+       str+='<label for="cb12" class="m_0 collapse-select"><span class="col-drop-select-name">President<span class="text-italic text-selectbox-bracket">(President Name)</span></span></label></li></ul>  </form>';
+      str+='</div>';
+     str+=' </div>';
+   str+='</div>';
+   $("#accordion").html(str);
 			}
-			else{
-				$(".commiteCheck").prop('checked', false);
-				$("#checkText").html("Select All");
-			}
-			});
-			});
-		
+
 </script>
 <script>
 getDistricts();
