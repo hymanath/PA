@@ -4742,4 +4742,31 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				return null;
 			}
 		}
+		
+		public List<Object[]> getMobileNoByTdpCadreIdList(List<Long> tdpCadreIdsList)
+		{
+			StringBuilder queryStr = new StringBuilder();
+			
+			queryStr.append(" select distinct model.tdpCadreId, model.firstname, model.relativename,  ");
+			queryStr.append(" model.gender ,model.memberShipNo, model.refNo , model.mobileNo, model.image, model.cardNumber,model.age,date(model.dateOfBirth), constituency.name,voter.age,occupatn.occupation, ");
+			queryStr.append(" tehsil.tehsilName , panc.panchayatName,localElectionBody.name,district.districtName,caste.casteName,voter.voterIDCardNo, electionType.electionType, model.houseNo,  ");
+			queryStr.append(" constituency.constituencyId, tehsil.tehsilId, panc.panchayatId, localElectionBody.localElectionBodyId, district.districtId,voter.houseNo,model.aadheerNo ");
+			queryStr.append(" from TdpCadre model left join model.userAddress.panchayat panc ");
+			queryStr.append(" left join model.userAddress.tehsil tehsil ");
+			queryStr.append(" left join model.userAddress.constituency constituency ");
+			queryStr.append(" left join model.userAddress.localElectionBody localElectionBody ");
+			queryStr.append(" left join model.userAddress.localElectionBody.electionType electionType ");
+			queryStr.append(" left join model.userAddress.district district ");
+			queryStr.append(" left join model.occupation occupatn ");
+			queryStr.append(" left join model.voter voter ");
+			queryStr.append(" left join model.casteState.caste caste ");
+			queryStr.append(" left join model.familyVoter familyVoter ");
+			queryStr.append(" where model.isDeleted = 'N' and model.enrollmentYear = 2014 ");
+			queryStr.append(" and model.tdpCadreId in (:tdpCadreIdsList)  ");
+			queryStr.append(" order by model.firstname ");
+			
+			Query query = getSession().createQuery(queryStr.toString());
+			query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
+			return query.list();
+		}
 }
