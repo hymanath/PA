@@ -212,8 +212,8 @@
                         <div class="pull-right" style="padding-top:10px;padding-left:10px">
                             <span>ADD TO GROUP</span><br/>
                                 <div class="input-group pull-right" style="width:300px;">
-                                  <input type="text" class="form-control" placeholder="Enter Group Name" aria-describedby="basic-addon2">
-                                  <span class="input-group-addon" style="background-color:#01b6ad;color:#fff;cursor:pointer" >ADD TO GROUP</span>
+                                  <input type="text" id="groupNameId" class="form-control" placeholder="Enter Group Name" aria-describedby="basic-addon2">
+                                  <span class="input-group-addon" id="addGroupId" style="background-color:#01b6ad;color:#fff;cursor:pointer" onclick="getMembersDetails();">ADD TO GROUP</span>
                                 </div><br/><br/>
                             <span class="viewlink">Click To View Existed group Names</span>    
                         </div>
@@ -618,6 +618,7 @@
 					alert('cc');
 					//addCommitteeDivs();
 					});	*/
+				
 		});
 			
 			function addCommitteeDivs()
@@ -650,11 +651,75 @@
    $("#accordion").html(str);
 			}
 
+	function getMembersDetails()
+	{
+		
+		var groupName = $('#groupNameId').val();
+		var committeeIdsArr = new Array();
+		var rolesIdsArr = new Array();
+		rolesIdsArr.push(1);
+		rolesIdsArr.push(2);
+		rolesIdsArr.push(3);
+		var committeeObj = {
+			committeeId : 1,
+			rolesIds:rolesIdsArr
+		}
+		committeeIdsArr.push(committeeObj);
+		var rolesIdsArr = [];
+		rolesIdsArr.push(1);
+		rolesIdsArr.push(2);
+		rolesIdsArr.push(3);
+		var committeeObj1 = {
+			committeeId : 2,
+			rolesIds:rolesIdsArr
+		}
+		committeeIdsArr.push(committeeObj1);
+		var rolesIdsArr = [];
+		rolesIdsArr.push(1);
+		rolesIdsArr.push(2);
+		rolesIdsArr.push(3);
+		var committeeObj2 = {
+			committeeId : 3,
+			rolesIds:rolesIdsArr
+		}
+		
+		committeeIdsArr.push(committeeObj2);
+		
+		var jsObj =
+		{
+			searchType:"SMS",
+			groupName:groupName,
+			eventId :0,
+			committeeLevelId : 5,
+			committeeLevelValue:500,
+			committeeIdsArr : committeeIdsArr
+			
+		};
+		$.ajax({
+          type:'GET',
+          url: 'getinviteesMembersDetailsAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+		   }).done(function(result){
+			   //console.log(result);
+			   
+			   if(result != null && result.length>0)
+			   {
+			   	alert(" Group Created Successfully with "+result.length+" Cadre Committee Members .");
+			   }
+			   else
+			   {
+					alert(" Group Name already exist...");
+			   }
+			}
+			);
+	}
 </script>
 <script>
 getDistricts();
 getCommittees();
 getCommitteeRoles();
+//getMembersDetails();
 </script>
 
 </body>
