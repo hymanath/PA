@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +17,7 @@ import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.TdpCadreVO;
 
 public interface ICadreCommitteeService {
 	public String genarateOTP(Long userId, Long mobileNo);
@@ -106,4 +106,5 @@ public interface ICadreCommitteeService {
 	public List<BasicVO> getCommitteeRoles();
 	public List<CommitteeSummaryVO> getConstituencyWiseCommittesSummaryForDistrict(String state,String startDate, String endDate,Long userId, String accessType,Long accessValue,String mandalCheck,String villageCheck);
 	public List<CommitteeSummaryVO> getConstituencyWiseCommittesSummaryForMandal(String state,String startDate, String endDate,Long userId, String accessType,Long accessValue,String mandalCheck,String villageCheck);
+	public List<TdpCadreVO> createGroupForMahanaduInvities(Long userId,Long committeeLevelId, Long committeeValue,List<CadreCommitteeMemberVO> committeeList,Long eventId,String groupName,String searchType);
 }
