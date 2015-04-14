@@ -808,10 +808,10 @@ public String getAllConstituencysForADistrict(){
 	{
 		try{
 			
-			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+		/*	RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
 			if(regVo == null)
 				return Action.ERROR;
-			
+			*/
 		}
 		catch(Exception e)
 		{

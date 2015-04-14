@@ -12,20 +12,24 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.itgrids.partyanalyst.service.IPartyStrengthService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
+import com.itgrids.partyanalyst.service.impl.CadreCommitteeService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
 import com.itgrids.partyanalyst.util.IWebConstants;
@@ -98,7 +102,26 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	//private RegistrationVO registrationVO;
 	
 	private IConstituencyDAO constituencyDAO;
+	private List<TdpCadreVO> commiteeMembersList = new ArrayList<TdpCadreVO>();
+	private CadreCommitteeService cadreCommitteeService;
 	
+	
+	public List<TdpCadreVO> getCommiteeMembersList() {
+		return commiteeMembersList;
+	}
+
+	public void setCommiteeMembersList(List<TdpCadreVO> commiteeMembersList) {
+		this.commiteeMembersList = commiteeMembersList;
+	}
+
+	public CadreCommitteeService getCadreCommitteeService() {
+		return cadreCommitteeService;
+	}
+
+	public void setCadreCommitteeService(CadreCommitteeService cadreCommitteeService) {
+		this.cadreCommitteeService = cadreCommitteeService;
+	}
+
 	public CadreVo getPopulateVo() {
 		return populateVo;
 	}
@@ -854,4 +877,50 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
     	return Action.SUCCESS;
     	
     }
+    
+	public String createMahanaduInvitees()
+	{
+    	try{
+    		session = request.getSession();    		
+    		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+    		
+    		jObj = new JSONObject(getTask());
+    		String groupName = jObj.getString("groupName");
+    		String searchType = jObj.getString("searchType");
+    		Long eventId = jObj.getLong("eventId");
+        	Long levelId = jObj.getLong("committeeLevelId");
+        	Long levelValue = jObj.getLong("committeeLevelValue");
+        	JSONArray committeesArr = jObj.getJSONArray("committeeIdsArr");
+        	
+        	List<CadreCommitteeMemberVO> committeeList = new ArrayList<CadreCommitteeMemberVO>();
+        	if(committeesArr != null && committeesArr.length()>0)
+        	{
+        		for (int i=0;i<committeesArr.length();i++) {
+        			CadreCommitteeMemberVO committeeVO = new CadreCommitteeMemberVO();
+        			JSONObject committeeRole = committeesArr.getJSONObject((i));
+        			Long committeeId = committeeRole.getLong("committeeId");
+        			JSONArray committeeRoleArr = committeeRole.getJSONArray("rolesIds");
+        			List<Long> commiteeIds = new ArrayList<Long>();
+        			committeeVO.setId(committeeId);
+        			if(committeeRoleArr != null && committeeRoleArr.length()>0)
+                	{
+                		for (int j=0;j<committeeRoleArr.length();j++) 
+                		{
+                			commiteeIds.add(Long.valueOf(committeeRoleArr.getInt(j)));
+                		}
+                	}
+        			committeeVO.setCommiteeRoleIds(commiteeIds);
+        			committeeList.add(committeeVO);
+				}
+        	}
+        	
+        	commiteeMembersList = cadreCommitteeService.createGroupForMahanaduInvities(regVO.getRegistrationID(),levelId,levelValue,committeeList,eventId,groupName,searchType);
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
+    	return Action.SUCCESS;
+    	
+	}
 }
