@@ -20,7 +20,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.apache.commons.logging.Log;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
@@ -51,8 +50,12 @@ import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.IIvrCampaignOptionsDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyWardDAO;
+import com.itgrids.partyanalyst.dao.IMahanaduCadreMemberDAO;
+import com.itgrids.partyanalyst.dao.IMahanaduGroupDAO;
+import com.itgrids.partyanalyst.dao.IMahanaduPublicRepresentativeDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.IPublicRepresentativeDAO;
 import com.itgrids.partyanalyst.dao.ITdpBasicCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreInfoDAO;
@@ -102,6 +105,8 @@ import com.itgrids.partyanalyst.model.EducationalQualifications;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
+import com.itgrids.partyanalyst.model.MahanaduCadreMember;
+import com.itgrids.partyanalyst.model.MahanaduGroup;
 import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.TdpBasicCommittee;
 import com.itgrids.partyanalyst.model.TdpCadre;
@@ -179,6 +184,31 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private ITdpCommitteeEnrollmentDAO tdpCommitteeEnrollmentDAO;
 	@Autowired
 	private ITdpRolesDAO tdpRolesDAO;
+	private IMahanaduGroupDAO mahanaduGroupDAO;
+	private IMahanaduCadreMemberDAO mahanaduCadreMemberDAO;
+	private IMahanaduPublicRepresentativeDAO mahanaduPublicRepresentativeDAO;
+	private IPublicRepresentativeDAO publicRepresentativeDAO;
+	
+	
+	public void setMahanaduGroupDAO(IMahanaduGroupDAO mahanaduGroupDAO) {
+		this.mahanaduGroupDAO = mahanaduGroupDAO;
+	}
+
+	public void setMahanaduCadreMemberDAO(
+			IMahanaduCadreMemberDAO mahanaduCadreMemberDAO) {
+		this.mahanaduCadreMemberDAO = mahanaduCadreMemberDAO;
+	}
+
+	public void setMahanaduPublicRepresentativeDAO(
+			IMahanaduPublicRepresentativeDAO mahanaduPublicRepresentativeDAO) {
+		this.mahanaduPublicRepresentativeDAO = mahanaduPublicRepresentativeDAO;
+	}
+
+	public void setPublicRepresentativeDAO(
+			IPublicRepresentativeDAO publicRepresentativeDAO) {
+		this.publicRepresentativeDAO = publicRepresentativeDAO;
+	}
+
 	public void setVoterAgeInfoDAO(IVoterAgeInfoDAO voterAgeInfoDAO) {
 		this.voterAgeInfoDAO = voterAgeInfoDAO;
 	}
@@ -10800,4 +10830,170 @@ return mandalList;
 		return returnVO;
 	}
 
+	 public List<TdpCadreVO> createGroupForMahanaduInvities(final Long userId,final Long committeeLevelId,final  Long committeeValue,List<CadreCommitteeMemberVO> committeeList,Long eventId,final String groupName,final String searchType)
+	 {
+		 List<TdpCadreVO> returnLsit = new ArrayList<TdpCadreVO>();
+		 try {
+			 
+			 Object mahanaduGroup = (MahanaduGroup) transactionTemplate.execute(new TransactionCallback() {
+				 public Object doInTransaction(TransactionStatus status) {
+					 
+					 MahanaduGroup mahanaduGroup = mahanaduGroupDAO.checkIsExistGroupName(groupName);
+					 if(mahanaduGroup == null)
+					 {
+						 mahanaduGroup = new MahanaduGroup();
+						 mahanaduGroup.setGroupName(groupName);
+						 mahanaduGroup.setCommitteeLevelId(committeeLevelId);
+						 mahanaduGroup.setCommitteeLevelValue(committeeValue);
+						 mahanaduGroup.setUserId(userId);
+						 mahanaduGroup.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+						 mahanaduGroupDAO.save(mahanaduGroup);
+						 
+						 return mahanaduGroup;
+					 }
+					 else
+					 {
+						 return null;
+					 }
+									
+				 }
+				 });
+			 
+			/* if(mahanaduGroup != null)
+			 {
+				 return null;
+			 }
+			 */
+			 MahanaduGroup mahaGroup = (MahanaduGroup) mahanaduGroup;
+			 
+			 List<Long> tdpCadreIdsList = new ArrayList<Long>();
+			 if(committeeList !=null && committeeList.size()>0)
+			 {
+				 for (CadreCommitteeMemberVO cadreCommitteeMemberVO : committeeList) {
+					 List<Long> committeeMembersLsit = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(committeeLevelId,committeeValue,cadreCommitteeMemberVO.getId(),cadreCommitteeMemberVO.getCommiteeRoleIds());
+					 if(committeeMembersLsit!= null && committeeMembersLsit.size()>0)
+					 {
+						 tdpCadreIdsList.addAll(committeeMembersLsit);
+					 }
+				}
+			 }
+			 
+			 
+			 if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
+			 {
+					 List<Object[]> tdpCadreList = tdpCadreDAO.getMobileNoByTdpCadreIdList(tdpCadreIdsList);
+					 String mobileNumbersStr = "";
+					 String message ="";
+					 
+					 if(tdpCadreList != null && tdpCadreList.size()>0)
+					 {
+							int i=0;
+							List<Long> mobileNos = new ArrayList<Long>();
+							if(tdpCadreList != null && tdpCadreList.size()>0)
+							{
+								SimpleDateFormat format  = new SimpleDateFormat("yy-MM-dd");
+								for (Object[] cadre : tdpCadreList) 
+								{
+									TdpCadreVO cadreVO = new TdpCadreVO();
+
+									cadreVO.setId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
+									cadreVO.setCadreName(cadre[1] != null ? cadre[1].toString():"");
+									cadreVO.setRelativeName(cadre[2] != null ? cadre[2].toString():"");
+									cadreVO.setGender(cadre[3] != null ? cadre[3].toString():"");
+									cadreVO.setMemberShipNo(cadre[4] != null ? cadre[4].toString().substring(4):"");
+									cadreVO.setTrNo(cadre[5] != null ? cadre[5].toString():"");
+									cadreVO.setMobileNo(cadre[6] != null ? cadre[6].toString():"");
+									cadreVO.setImageURL(cadre[7] != null ? cadre[7].toString():"");
+									
+									if(cadre[9] != null)
+									{
+										cadreVO.setAge(cadre[9] != null ? Long.valueOf(cadre[9].toString().trim()):0L);
+									}
+									else if((cadreVO.getAge() == null || cadreVO.getAge().toString().trim().length()<=0) && cadre[10]  != null)
+									{
+										String dateOfBirth = 	cadre[10] != null ? cadre[10].toString().substring(0,10):" "	;
+										if(dateOfBirth != null && dateOfBirth.trim().length()>0)
+										{
+											Calendar startDate = new GregorianCalendar();
+											Calendar endDate = new GregorianCalendar();
+											
+											startDate.setTime(format.parse(dateOfBirth.trim()));
+											
+											endDate.setTime(new Date());
+
+											int diffYear = endDate.get(Calendar.YEAR) - startDate.get(Calendar.YEAR);
+											
+											cadreVO.setAge(Long.valueOf(String.valueOf(diffYear)));
+										}
+									}
+									
+									cadreVO.setConstituency(cadre[11] != null ? cadre[11].toString().trim():"");
+									
+									if(cadreVO.getAge() != null && cadreVO.getAge().toString().trim().length()==0)
+									{
+										cadreVO.setAge(cadre[12] != null ? Long.valueOf(cadre[12].toString().trim()):0L);
+									}
+									
+									cadreVO.setOccupation(cadre[13] != null ? cadre[13].toString().trim():"");
+									cadreVO.setTehsil(cadre[14] != null ? cadre[14].toString().trim()+" Mandal":"");
+									cadreVO.setPanchayat(cadre[15] != null ? cadre[15].toString().trim():"");
+									
+									String electionType = cadre[20] != null ? cadre[20].toString().trim():""; // municipality/corporation/ghmc....
+									cadreVO.setLocalElectionBody(cadre[16] != null ? cadre[16].toString().trim()+" "+electionType:"");
+									
+									cadreVO.setDistrict(cadre[17] != null ? cadre[17].toString().trim():"");
+									cadreVO.setCasteName(cadre[18] != null ? cadre[18].toString().trim():"");
+									cadreVO.setVoterCardNo(cadre[19] != null ? cadre[19].toString().trim():"");
+									
+									cadreVO.setHouseNo(cadre[21] != null ? cadre[21].toString().trim():"");
+									cadreVO.setConstituencyId(cadre[22] != null ? Long.valueOf(cadre[22].toString().trim()):0L);
+									cadreVO.setTehsilId(cadre[23] != null ? Long.valueOf(cadre[23].toString().trim()):0L);
+									cadreVO.setPanchayatId(cadre[24] != null ? Long.valueOf(cadre[24].toString().trim()):0L);
+									cadreVO.setLocalElectionBodyId(cadre[25] != null ? Long.valueOf(cadre[25].toString().trim()):0L);				
+									cadreVO.setDistrictId(cadre[26] != null ? Long.valueOf(cadre[26].toString().trim()):0L);		
+									cadreVO.setAadharNo(cadre[28] != null ? cadre[28].toString().trim():"");
+									
+									returnLsit.add(cadreVO);
+									
+									if(!mobileNos.contains(Long.valueOf(cadreVO.getMobileNo())))
+									{
+										mobileNos.add(Long.valueOf(cadreVO.getMobileNo()));
+										if(mobileNumbersStr.trim().length()>0)
+										{
+											mobileNumbersStr=mobileNumbersStr+", "+cadreVO.getMobileNo();
+										}
+										else
+										{
+											mobileNumbersStr=mobileNumbersStr;
+										}
+										
+										i =i++;
+									}
+									
+									if(mahaGroup != null)
+									{
+										MahanaduCadreMember mahanaduCadreMember = new MahanaduCadreMember();
+										mahanaduCadreMember.setTdpCadreId(cadreVO.getId());
+										mahanaduCadreMember.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+										mahanaduCadreMember.setMahanaduGroupId(mahaGroup.getMahanaduGroupId());
+										mahanaduCadreMemberDAO.save(mahanaduCadreMember);
+									}
+								} 
+							}
+						
+						/*if(mobileNumbersStr != null && mobileNumbersStr.trim().length()>0)
+						{
+							 smsCountrySmsService.sendSmsFromAdmin(message, true, mobileNumbersStr);
+						}*/
+					 }
+			 }
+			
+			 
+		} catch (Exception e) {
+			LOG.error("Exception rised in createGroupForMahanaduInvities() while closing write operation",e);
+		}
+		 
+		 return returnLsit;
+	 }
+	 
 }
