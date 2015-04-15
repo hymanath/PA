@@ -135,14 +135,14 @@ div.cs-skin-slide::before {
 	text-transform: uppercase;
 	font-weight: 500;
 	letter-spacing: 2px;
-	font-size: 65%;
+	font-size: 85%;
 	padding: 0.8em 1em 0.8em 2.5em;
 }
 
 .cs-skin-slide .cs-options li span:hover,
 .cs-skin-slide .cs-options li.cs-focus span,
 .cs-skin-slide .cs-options li.cs-selected span {
-	color: #eb7e7f;
+	color: #FFDC2D;
 	background: transparent;
 }
 
