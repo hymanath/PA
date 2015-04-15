@@ -26,6 +26,8 @@
 <script src="dist/js/fm.scrollator.jquery.js" type="text/javascript"></script>
 
 <style>
+.height-auto{height:auto !important;}
+.height-0{height:0px !important;}
 </style>
 </head>
 <body class="background-bg">
@@ -39,30 +41,28 @@
             <section>
                     <label class="select-label">Committee Level</label>
                     <select class="cs-select cs-skin-slide">
-                        <option value="district">District</option>
-                        <option value="mandal" >Mandal</option>
+					 <option value="10">State</option>
+                        <option value="11" >District</option>
+						 <option value="5" >Mandal</option>
+                        <option value="6">Panchayat</option>
+                        <option value="7" >Local Election Body</option>
                     </select>
             </section>
         </div>
         <div class="col-md-3" id="districtDiv">
-          <!--  <section>
+            <section>
                     <label class="select-label">District</label>
                     <select class="cs-select cs-skin-slide" id="districtId">
-                       <option value="sightseeing" >Guntur</option>
-                        <option value="business">Prakasham</option>
-                        <option value="honeymoon">Nellore</option>
-                        <option value="food">Kadapa</option>
-                        <option value="shopping">vijayawada</option>
-                        <option value="shopping">Kurnool</option>
-                        <option value="shopping">Kurnool</option>
+                       <option value="0" >ALL</option>
+                      
                     </select>
-            </section>-->
+            </section>
         </div>
         <div class="col-md-2" id="constituencyDiv">
             <section>
                     <label class="select-label">Assembly</label>
                     <select class="cs-select cs-skin-slide">
-                        <option value="0" >Constituency</option>
+                        <option value="0" >ALL</option>
                        
                     </select>
             </section>
@@ -71,7 +71,7 @@
             <section>
                     <label class="select-label">Mandal/Muncipality</label>
                     <select class="cs-select cs-skin-slide">
-                        <option value="0">Mandal/Muncipality</option>
+                        <option value="0">ALL</option>
                                               
                        
                     </select>
@@ -81,7 +81,7 @@
             <section>
                     <label class="select-label">Panchayat</label>
                     <select class="cs-select cs-skin-slide">
-                        <option value="0" >Panchayat</option>
+                        <option value="0" >ALL</option>
                        
                     </select>
             </section>
@@ -91,7 +91,7 @@
             <div  id="committeeDiv">
             <label class="select-label" style="margin-left:0px ">Committee</label>
             <select class="cs-select cs-skin-slide">
-                <option value="0" >Committee</option>
+                <option value="0" >ALL</option>
             </select>
             </div>
 			
@@ -99,7 +99,7 @@
 			<form class="me-select">
 			<ul id="me-select-list" class="">
 			<li class="">
-			<input id="checkAll" class="" type="checkbox" name="cb10">
+			<input id="checkAll" class="" type="checkbox" name="cb10" >
 			<label class="m_0" style="padding:0px 10px 0px 45px;margin-top:10px;" for="cb10">
 			<span class="text-col-head" id="checkText">Select All</span>
 			</label>
@@ -122,7 +122,8 @@
                             <span class="display-style text-italic box-subhead">Selected Committees Members:<span class="count-color">1202</span></span>
                         </div>
                     </div>
-                    <div class="trashicon"><i class="glyphicon glyphicon-trash"></i></div>
+                    <div class="trashicon" onclick="deleteCommite();"><i class="glyphicon glyphicon-trash"></i></div>
+					
                      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="margin-top:-20px;">
                  <!-- <div class="panel panel-default border_0">
                     <div class="panel-heading collapse-head" role="tab" id="headingOne">
@@ -287,17 +288,20 @@
 	   }
    
 		  str+='<section>';
-          str+='<label class="select-label">Committee Level</label>';
+          str+='<label class="select-label">District</label>';
 		  str+=' <div class="cs-select cs-skin-slide distSlide" tabindex="0" onclick="selectChange(\'distSlide\')">';
-		  str+='<span class="cs-placeholder distName">District</span><div class="cs-options"><ul class="scrollbar distList">';
+		  str+='<span class="cs-placeholder distName" value="0">ALL</span><div class="cs-options"><ul class="scrollbar distList">';
+		   str+='<li data-value="0" data-option="" class="distEle"><span>ALL</span></li>';
 		  for(var i in result)
 		  {
+		   if(result[i].id > 0)
 		  str+='<li data-value="'+result[i].id+'" data-option="" class="distEle"><span>'+result[i].name+'</span></li>';
 		  }
 		  str+='</ul>';
 		  str+='</div><select class="cs-select cs-skin-slide" id="districtId">';
 		  for(var i in result)
 		  {
+		   if(result[i].id > 0)
           str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
 		  }
 		 str+='</select></div></section>';
@@ -340,15 +344,18 @@
 	   str+='<section>';
           str+='<label class="select-label">Assembly</label>';
 		  str+=' <div class="cs-select cs-skin-slide constiSlide" tabindex="0" onclick="selectChange(\'constiSlide\')">';
-		  str+='<span class="cs-placeholder constiName">Constituency</span><div class="cs-options"><ul class="scrollbar constiList">';
+		  str+='<span class="cs-placeholder constiName" value="0">ALL</span><div class="cs-options"><ul class="scrollbar constiList">';
+		  str+='<li data-value="0" data-option="" class="constiEle"><span>ALL</span></li>';
 		  for(var i in result)
 		  {
+		   if(result[i].id > 0)
 		  str+='<li data-value="'+result[i].id+'" data-option="" class="constiEle"><span>'+result[i].name+'</span></li>';
 		  }
 		  str+='</ul>';
 		  str+='</div><select class="cs-select cs-skin-slide" id="constituencyId">';
 		  for(var i in result)
 		  {
+		   if(result[i].id > 0)
           str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
 		  }
 		 str+='</select></div></section>';
@@ -391,17 +398,18 @@
 	   str+='<section>';
           str+='<label class="select-label">Mandal/Muncipality</label>';
 		  str+=' <div class="cs-select cs-skin-slide mandalSlide" tabindex="0" onclick="selectChange(\'mandalSlide\')">';
-		  str+='<span class="cs-placeholder mandalName">Mandal/Muncipality</span><div class="cs-options"><ul class="scrollbar mandalList">';
+		  str+='<span class="cs-placeholder mandalName" value="0">ALL</span><div class="cs-options"><ul class="scrollbar mandalList">';
+		   str+='<li data-value="0" data-option="" class="mandalEle"><span>ALL</span></li>';
 		  for(var i in result)
 		  {
-		  if(result[i].id != 0)
+		  if(result[i].id > 0)
 		  str+='<li data-value="'+result[i].id+'" data-option="" class="mandalEle"><span>'+result[i].name+'</span></li>';
 		  }
 		  str+='</ul>';
 		  str+='</div><select class="cs-select cs-skin-slide" id="mandalId">';
 		  for(var i in result)
 		  {
-		   if(result[i].id != 0)
+		   if(result[i].id > 0)
           str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
 		  }
 		 str+='</select></div></section>';
@@ -435,17 +443,18 @@
 	   str+='<section>';
           str+='<label class="select-label">Panchayat</label>';
 		  str+=' <div class="cs-select cs-skin-slide panchayatSlide" tabindex="0" onclick="selectChange(\'panchayatSlide\')">';
-		  str+='<span class="cs-placeholder panchayatName">Panchayat</span><div class="cs-options"><ul class="scrollbar panchayatList">';
+		  str+='<span class="cs-placeholder panchayatName" value="0">ALL</span><div class="cs-options"><ul class="scrollbar panchayatList">';
+		  str+='<li data-value="0" data-option="" class="panchayatEle"><span>ALL</span></li>';
 		  for(var i in result)
 		  {
-		  if(result[i].id != 0)
+		   if(result[i].id > 0)
 		  str+='<li data-value="'+result[i].id+'" data-option="" class="panchayatEle"><span>'+result[i].name+'</span></li>';
 		  }
 		  str+='</ul>';
 		  str+='</div><select class="cs-select cs-skin-slide" id="panchayatId">';
 		  for(var i in result)
 		  {
-		   if(result[i].id != 0)
+		    if(result[i].id > 0)
           str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
 		  }
 		 str+='</select></div></section>';
@@ -491,17 +500,18 @@
 	   str+='<section>';
           str+='<label class="select-label">Committee</label>';
 		  str+=' <div class="cs-select cs-skin-slide committeeSlide" tabindex="0" onclick="selectChange(\'committeeSlide\')">';
-		  str+='<span class="cs-placeholder committeeName">Committee</span><div class="cs-options"><ul class="scrollbar comitteeList">';
+		  str+='<span class="cs-placeholder committeeName" value="0">ALL</span><div class="cs-options"><ul class="scrollbar comitteeList">';
+		  str+='<li data-value="0" data-option="" class="committeeEle"><span value="0">ALL</span></li>';
 		  for(var i in result)
 		  {
-		  if(result[i].id != 0)
-		  str+='<li data-value="'+result[i].id+'" data-option="" class="committeeEle"><span>'+result[i].name+'</span></li>';
+		  if(result[i].id > 0)
+		  str+='<li data-value="'+result[i].id+'" data-option="" class="committeeEle"><span value="'+result[i].id+'">'+result[i].name+'</span></li>';
 		  }
 		  str+='</ul>';
 		  str+='</div><select class="cs-select cs-skin-slide" id="committeeId">';
 		  for(var i in result)
 		  {
-		   if(result[i].id != 0)
+		   if(result[i].id > 0)
           str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
 		  }
 		 str+='</select></div></section>';
@@ -527,7 +537,7 @@
     		str+='<ul id="me-select-list" >';
 			for(var i in result)
 			{
-            str+='<li><input id="committee'+result[i].id+'" name="commiteCheck" type="checkbox" value="'+result[i].id+'" class="commiteCheck"><label for="cb10"  style="padding:0px 10px 0px 45px;margin-top:10px;"><span >'+result[i].name+'</span></li>';
+            str+='<li><input id="role'+result[i].id+'" name="'+result[i].name+'" type="checkbox" value="'+result[i].id+'" class="roleCheck" onclick="addCommitteeDivs(\'roleCheck\');"><label for="cb10"  style="padding:0px 10px 0px 45px;margin-top:10px;"><span class="roleName">'+result[i].name+'</span></li>';
 			}
            str+=' </ul>';
 		    $("#rolesForm").html(str);
@@ -535,6 +545,8 @@
 		  
     	
       }
+	  
+	  
   function setDefault()
   {
 	  $("#constituencyId").find('option').remove();
@@ -551,6 +563,8 @@
 			function selectChange(divEle)
 			{
 			//alert('se')
+			
+			$(".roleCheck").prop('checked', false);
 			$(".scrollbar").scrollator({
 					zIndex: '10000',
 					});
@@ -561,6 +575,8 @@
 			 $(".distEle").click(function(e)
 			 {			
 				$(".distName").html($(this).text());
+				$(".distName").attr("value",$(this).attr("data-value"));
+				
 				$(".distEle").removeClass('cs-selected');
 				$(this).addClass('cs-selected');
 				getConstituenciesForDistricts($(this).attr("data-value"));
@@ -568,6 +584,7 @@
 			  $(".constiEle").click(function()
 				{	
 				$(".constiName").html($(this).text());
+				$(".constiName").attr("value",$(this).attr("data-value"));
 				$(".constiEle").removeClass('cs-selected');
 				$(this).addClass('cs-selected');
 				//alert($(this).attr("data-value"));
@@ -576,6 +593,7 @@
 			    $(".mandalEle").click(function()
 				{	
 				$(".mandalName").html($(this).text());
+				$(".mandalName").attr("value",$(this).attr("data-value"));
 				$(".mandalEle").removeClass('cs-selected');
 				$(this).addClass('cs-selected');
 				//alert($(this).attr("data-value"));
@@ -585,6 +603,7 @@
 				{	
 				$(".panchayatName").html($(this).text());
 				$(".panchayatEle").removeClass('cs-selected');
+				$(".panchayatName").attr("value",$(this).attr("data-value"));
 				$(this).addClass('cs-selected');
 				//alert($(this).attr("data-value"));
 				
@@ -592,65 +611,93 @@
 			   $(".committeeEle").click(function()
 				{	
 				$(".committeeName").html($(this).text());
+				$(".committeeName").attr("value",$(this).attr("data-value"));
 				$(".committeeEle").removeClass('cs-selected');
 				$(this).addClass('cs-selected');
 				//alert($(this).attr("data-value"));
 				
 			  });
-			  
+			 
 			}
 			$(document).ready(function()
 			{
-			$("#checkAll").click(function()
-			{
-				if($(this).is(":checked"))
+			
+				$("#checkAll").click(function()
 				{
-					$(".commiteCheck").prop('checked', true);
-					$("#checkText").html("UnSelect All");
-				}
-				else{
-					$(".commiteCheck").prop('checked', false);
-					$("#checkText").html("Select All");
-				}
-			});
-				/*$(".commiteCheck input[type=checkbox]").click(function()
+					if($(this).is(":checked"))
 					{
-					alert('cc');
-					//addCommitteeDivs();
-					});	*/
 				
+						$(".roleCheck").prop('checked', true);
+						$("#checkText").html("UnSelect All");
+							addCommitteeDivs('roleCheck');
+					}
+					else{
+						$(".roleCheck").prop('checked', false);
+						$("#checkText").html("Select All");
+					}
+				});
+			
+		
+		
 		});
+		
+		$(document).on('click', function (e) {
+					if ($(e.target).closest(".cs-skin-slide").length === 0) {
+					 $(".cs-skin-slide").removeClass("cs-active");;
+				}
+							
+			});
 			
-			function addCommitteeDivs()
+			var totalCommiteCnt = 0;
+			var roleArr = new Array();
+			function addCommitteeDivs(className)
 			{
+			$(".toggleCls").removeClass("in");
+			var commite = $(".committeeName").html();
+			var commiteId = $(".committeeName").attr("value");
 			
+			$("#"+commiteId+"Div").remove();
+		    
 			var str ='';
-			str+='<div class="panel panel-default border_0">';
-            str+='<div class="panel-heading collapse-head" role="tab" id="headingOne">';
+			
+			str+='<div class="panel panel-default border_0 commiteHeadDiv" id="'+commiteId+'Div">';
+			
+            str+='<div class="panel-heading collapse-head" role="tab" id="headingComm'+commiteId+'">';
             str+='<h4 class="panel-title">';
             str+='<form class="me-select display-style">';
             str+='<ul id="me-select-list">';
-            str+='<li><input id="cb11" name="cb11" type="checkbox">';
-            str+='<label for="cb11" class="m_0 collapse-select"><span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-controls="collapseOne" class="col-drop-head">Committee Designation</a></span></label></li>';
+            str+='<li><input id="cb11" name="cb11" type="checkbox" class="addedcommite">';
+            str+='<label for="cb11" class="m_0 collapse-select"><span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapseComm'+commiteId+'" aria-controls="collapseComm'+commiteId+'" class="col-drop-head" onClick="toggleDiv(\'collapseComm'+commiteId+'\')">'+commite+'</a></span></label></li>';
            str+=' </ul>';
           str+=' </form>';
-         str+='<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">';
+         str+='<a data-toggle="collapse" data-parent="#accordion" href="#collapseComm'+commiteId+'" aria-expanded="true" aria-controls="collapseComm'+commiteId+'" onClick="toggleDiv(\'collapseComm'+commiteId+'\')">';
          str+='<i class="glyphicon glyphicon-chevron-down pull-right display-style col-drop-color"></i>';
           str+='</a>';
         str+='</h4>';
       str+='</div>';
-      str+='<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">';
+      str+='<div id="collapseComm'+commiteId+'" class="panel-collapse collapse toggleCls in" role="tabpanel" aria-labelledby="headingComm'+commiteId+'" >';
       str+='<div class="panel-body">';
       str+='<form class="me-select display-style">';
       str+='<ul id="me-select-list">';
-      str+=' <li><input id="cb12" name="cb11" type="checkbox">';
-       str+='<label for="cb12" class="m_0 collapse-select"><span class="col-drop-select-name">President<span class="text-italic text-selectbox-bracket">(President Name)</span></span></label></li></ul>  </form>';
+	  
+	  $("."+className).each(function()
+			{
+			 if($(this).is(":checked")) {
+			  var roleId = $(this).val();
+			  var role = $(this).attr("name");
+			  str+=' <li><input  name="cb11" type="checkbox" id="comm'+commiteId+'role'+roleId+'" value="'+roleId+'">';
+			  str+='<label for="cb12" class="m_0 collapse-select"><span class="col-drop-select-name">'+role+'<span class="text-italic text-selectbox-bracket">('+role+')</span></span></label></li>';
+	   }
+	   })
+	   
+	   str+='</ul></form>';
       str+='</div>';
      str+=' </div>';
+	 
    str+='</div>';
-   $("#accordion").html(str);
-			}
-
+  $("#accordion").append(str);
+}
+ 
 	function getMembersDetails()
 	{
 		
@@ -714,6 +761,36 @@
 			}
 			);
 	}
+	function deleteCommite()
+	{
+		$(".addedcommite").each(function()
+		{
+		if($(this).is(":checked")) {
+			$(this).parent().closest('.commiteHeadDiv').remove();
+		 }
+	})
+	}
+	function toggleDiv(id)
+		{
+		
+			var height = $("#"+id).css('height').match(/\d+/);
+			$(".toggleCls").removeClass("height-auto");
+			$(".toggleCls").removeClass("in");
+			
+			if(height == 0 || $("#"+id).hasClass('height-0'))
+			{
+			$("#"+id).addClass("height-auto").addClass("in");
+			
+			$("#"+id).removeClass("height-0").addClass("in");
+			
+			}
+			else
+			{
+				$("#"+id).removeClass("height-auto").addClass("in");
+				$("#"+id).addClass("height-0").addClass("in");
+				
+			}
+		}
 </script>
 <script>
 getDistricts();
