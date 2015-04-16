@@ -1309,4 +1309,21 @@ public List<Object[]> getDistrictConstituenciesByState(Long districtId,Long stat
 
 	
 }
+
+@SuppressWarnings("unchecked")
+public List<Long> getDistrictIdByConstituencyIdandState(Long constituencyId,Long stateId) {
+	Object[] params = {constituencyId,stateId};
+	return getHibernateTemplate().find("select model.district.districtId from Constituency model where" +
+			" model.constituencyId = ? and  model.state.stateId = ?",params);
+}
+public List<Long> getConstituenciesByState(Long stateId) {
+    StringBuilder str = new StringBuilder();
+      str.append("select distinct model.constituencyId from Constituency model where model.state.stateId =:stateId and " +
+		"  model.electionScope.electionType.electionTypeId = 2 and model.deformDate is null   ");
+      	str.append(" order by model.name ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("stateId", stateId);
+		return query.list();
+}
+
 }

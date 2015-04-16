@@ -195,4 +195,44 @@ public class CadreSurveyUserAssignDetailsDAO extends GenericDaoHibernate<CadreSu
 		
 		
 	}
+	public List<Object[]> getTDPCadreAmountDetails(List<Long> districtIds,String type,Date fromDate,Date toDate,Long stateId )
+	{
+		StringBuilder str = new StringBuilder();
+		if(fromDate != null && toDate != null){
+			if(type.equalsIgnoreCase(IConstants.DISTRICT))
+			str.append("select sum(model1.amount), model.constituency.district.districtId");
+			else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+				str.append("select sum(model1.amount), model.constituency.constituencyId");	
+			str.append(" from CadreSurveyUserAssignDetails model, CadreRegAmountDetails model1 where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
+					" and model.constituency.district.districtId in(:districtIds) and date(model1.cadreRegAmountFile.date) >=:fromDate and date(model1.cadreRegAmountFile.date) <=:toDate " +
+					" and model.constituency.district.state.stateId = :stateId ");
+			if(type.equalsIgnoreCase(IConstants.DISTRICT))
+			str.append("group by model.constituency.district.districtId");
+			else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+				str.append("group by model.constituency.constituencyId");
+			Query query=getSession().createQuery(str.toString()); 
+			query.setParameterList("districtIds", districtIds);
+			query.setParameter("fromDate",fromDate);
+			query.setParameter("toDate",toDate);
+			query.setParameter("stateId", stateId);
+			return query.list();
+		}else{
+			if(type.equalsIgnoreCase(IConstants.DISTRICT))
+				str.append("select sum(model1.amount), model.constituency.district.districtId");
+				else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+					str.append("select sum(model1.amount), model.constituency.constituencyId");	
+				str.append(" from CadreSurveyUserAssignDetails model, CadreRegAmountDetails model1 where model.cadreSurveyUser.cadreSurveyUserId = model1.cadreSurveyUser.cadreSurveyUserId" +
+						" and model.constituency.district.districtId in(:districtIds) and and model.constituency.district.state.stateId = :stateId ");
+				if(type.equalsIgnoreCase(IConstants.DISTRICT))
+				str.append("group by model.constituency.district.districtId");
+				else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+					str.append("group by model.constituency.constituencyId");
+				Query query=getSession().createQuery(str.toString()); 
+				query.setParameterList("districtIds", districtIds);
+				query.setParameter("stateId", stateId);
+				return query.list();
+		}
+		
+		
+	}
 }

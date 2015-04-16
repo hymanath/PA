@@ -4769,4 +4769,81 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
 			return query.list();
 		}
+		
+		public Long getRegisterCadreInfoForState(Long stateId,Long enrollmentYear){
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append("select count(distinct model.tdpCadreId) from TdpCadre model where model.isDeleted = 'N' and  model.userAddress.state.stateId = :stateId and model.enrollmentYear = :enrollmentYear");
+			Query query = getSession().createQuery(queryStr.toString());
+			query.setParameter("stateId", stateId);
+			query.setParameter("enrollmentYear", enrollmentYear);
+			return (Long) query.uniqueResult();
+		}
+		public Long getRegisterConstituenciesForState(Long stateId,Long enrollmentYear){
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append("select count(distinct model.userAddress.constituency.constituencyId) from TdpCadre model where model.isDeleted = 'N' and  model.userAddress.state.stateId = :stateId and model.enrollmentYear = :enrollmentYear");
+			Query query = getSession().createQuery(queryStr.toString());
+			query.setParameter("stateId", stateId);
+			query.setParameter("enrollmentYear", enrollmentYear);
+			return (Long) query.uniqueResult();
+		}
+		
+		public List<Object[]> getTotalRecordsByState(List<Long> districtIds,String type,Date fromDate,Date toDate,Long stateId){
+			StringBuilder str = new StringBuilder();
+			if(type.equalsIgnoreCase(IConstants.DISTRICT))
+			 str.append("select count(model.tdpCadreId),model.userAddress.constituency.district.districtId"); 
+			else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+				 str.append("select count(model.tdpCadreId),model.userAddress.constituency.constituencyId"); 
+			else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+				str.append("select count(model.tdpCadreId),model.userAddress.tehsil.tehsilId"); 
+			else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY) || type.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION))
+				str.append("select count(model.tdpCadreId),model.userAddress.localElectionBody.localElectionBodyId"); 
+			 str.append("  from TdpCadre model" +
+					" where model.isDeleted = 'N' " +
+					" and model.enrollmentYear = 2014 and model.userAddress.constituency.district.state.stateId = :stateId "); 
+			 if(fromDate != null && toDate != null){
+			   str.append(" and date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate ");
+			 }
+			 if(type.equalsIgnoreCase(IConstants.DISTRICT))
+			    str.append(" and model.userAddress.constituency.district.districtId in(:districtIds) group by model.userAddress.constituency.district.districtId ");
+			 else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+				str.append(" and model.userAddress.constituency.district.districtId in(:districtIds) group by model.userAddress.constituency.constituencyId");
+			 else if(type.equalsIgnoreCase(IConstants.TEHSIL))
+					str.append(" and model.userAddress.tehsil.tehsilId in(:districtIds) and model.userAddress.localElectionBody.localElectionBodyId is null group by model.userAddress.tehsil.tehsilId");
+			 else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY) || type.equalsIgnoreCase(IConstants.LOCAL_BODY_ELECTION) )
+					str.append(" and model.userAddress.localElectionBody.localElectionBodyId in(:districtIds) group by model.userAddress.localElectionBody.localElectionBodyId");
+			Query query = getSession().createQuery(str.toString());
+			if(fromDate != null && toDate != null){
+				query.setParameter("fromDate",fromDate);
+				query.setParameter("toDate",toDate);
+			}
+			query.setParameter("stateId", stateId);
+			query.setParameterList("districtIds", districtIds);
+			
+			return query.list();
+		}
+		public List<Object[]> getTotalRecordsByAccessTypeByState(List<Long> districtIds,String type,Date fromDate,Date toDate,Long stateId){
+			StringBuilder str = new StringBuilder();
+			
+			 str.append(" select count(model.tdpCadreId),model.userAddress.constituency.district.districtId "); 
+			 
+			 str.append("  from TdpCadre model" +
+					" where model.isDeleted = 'N' " +
+					" and model.enrollmentYear = 2014 and model.userAddress.constituency.district.state.stateId = :stateId "); 
+			 if(fromDate != null && toDate != null){
+			   str.append(" and date(model.surveyTime) >= :fromDate and date(model.surveyTime) <= :toDate ");
+			 }
+			 
+			str.append(" and model.userAddress.constituency.constituencyId in (:districtIds) group by model.userAddress.constituency.district.districtId ");
+			 
+			
+			Query query = getSession().createQuery(str.toString());
+			if(fromDate != null && toDate != null){
+				query.setParameter("fromDate",fromDate);
+				query.setParameter("toDate",toDate);
+			}
+			query.setParameterList("districtIds", districtIds);
+			query.setParameter("stateId", stateId);
+			return query.list();
+		}
+		
 }
