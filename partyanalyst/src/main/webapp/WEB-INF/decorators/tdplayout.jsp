@@ -371,6 +371,17 @@ margin-top:10px;
 										</div>
 									</li>
 									<li><a href="cadreDashBoardAction.action"><span>Cadre Dashboard</span></a>
+						<div>
+						<ul>
+						<li>
+						<a href="cadreDashBoardAction.action"><span>Andhra Pradesh</span></a></li>
+						<li>
+						<a href="cadredashBoardAction.action?stateId=12"><span>Karnataka</span></a></li>
+						<li>
+						<a href="cadredashBoardAction.action?stateId=15"><span>Maharashtra</span></a></li>
+						</ul>
+						</div>
+									</li>
 									<li><a href="tdpCadreCardsPrintingDashBoardAction.action"><span>Cadre Cards Printing Dashboard</span></a></li>
 								
 									<li><a href="cadreMemberShipCardDispatcherAction.action"><span>Cadre Membership Card Status </span></a></li>
