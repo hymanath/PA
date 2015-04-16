@@ -105,4 +105,5 @@ public interface ICadreDashBoardService {
 	public CadreRegisterInfo getTotalRegisterCadreInfo();
 	
 	public List<CadreRegisterInfo> getGHMCRegisteredCountDetails(String type);
+	 public CadreRegisterInfo getDashBoardBasicRegistrationInfo(String accessType,Long accessValue,Long stateId);
 }

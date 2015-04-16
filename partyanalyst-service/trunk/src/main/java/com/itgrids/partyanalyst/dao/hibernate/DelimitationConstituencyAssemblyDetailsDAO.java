@@ -412,4 +412,41 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 		
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findAssembliesConstituenciesByParliamentListByState(List<Long> parliamentConstituencyIds,Long stateId) 
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select model.constituency.constituencyId,model.constituency.name from DelimitationConstituencyAssemblyDetails model where " +
+				"model.delimitationConstituency.constituency.constituencyId in (:parliamentConstituencyIds) and model.delimitationConstituency.year = " +
+				"(select max(model1.year) from DelimitationConstituency model1)");
+		
+		
+			str.append(" and model.constituency.state.stateId = :stateId");
+		
+		str.append(" order by model.constituency.name");
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameterList("parliamentConstituencyIds", parliamentConstituencyIds);
+		query.setParameter("stateId", stateId);
+		return query.list();
+		
+	}
+	
+	public List<Object[]> findDistrictsOfParliamentConstituenciesByState(Long parliamentId,Long stateId){
+		Object[] params = {parliamentId,stateId};
+		return getHibernateTemplate().find("select distinct model.constituency.district.districtId, model.constituency.district.districtName " +
+				"from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.constituency.constituencyId = ? " +
+				"and model.delimitationConstituency.year = (select max(model1.year) from DelimitationConstituency model1) and model.constituency.district.state.stateId =? group by " +
+				"model.constituency.district.districtId", params);
+	}
+	public List<Object[]> findLatestParliamentsAndDistrictForAssemblyByState(List<Long> assemblyIds,Long stateId){
+		Query query = getSession().createQuery("select distinct model.constituency.constituencyId, model.delimitationConstituency.constituency.constituencyId,model.delimitationConstituency.constituency.name" +
+				"  ,model.constituency.district.districtId,model.constituency.district.districtName,model.constituency.name from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.year = " +
+				"(select max(model1.year) from DelimitationConstituency model1) and model.constituency.constituencyId in(:assemblyIds) and  model.constituency.state.stateId = :stateId order by model.delimitationConstituency.constituency.name asc ");
+		query.setParameterList("assemblyIds", assemblyIds);
+		query.setParameter("stateId", stateId);
+		return query.list();
+		}
+		
+	
 }

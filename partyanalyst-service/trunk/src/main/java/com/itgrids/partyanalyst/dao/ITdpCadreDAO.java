@@ -328,4 +328,8 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	public List<Object[]> tdpCadreCasteCountDetailsBySearchCriteriaForCommitte(Long constituencyId,Long casteStateId,String queryString);
 	  public List<Object[]> searchTdpCadreDetailsBySearchCriteriaForCommitte(Long constituencyId,Long casteStateId,String queryString,int startIndex,int maxIndex);
 	  public List<Object[]> getMobileNoByTdpCadreIdList(List<Long> tdpCadreIdsList);
+	  public Long getRegisterCadreInfoForState(Long stateId,Long enrollmentYear);
+	  public Long getRegisterConstituenciesForState(Long stateId,Long enrollmentYear);
+	  public List<Object[]> getTotalRecordsByState(List<Long> districtIds,String type,Date fromDate,Date toDate,Long stateId);
+	  public List<Object[]> getTotalRecordsByAccessTypeByState(List<Long> districtIds,String type,Date fromDate,Date toDate,Long stateId);
 }

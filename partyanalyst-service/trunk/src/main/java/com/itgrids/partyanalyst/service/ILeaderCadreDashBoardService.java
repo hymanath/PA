@@ -27,4 +27,5 @@ public interface ILeaderCadreDashBoardService {
 	public List<CadreAmountDetailsVO> getBoothWiseDetails(Long constituencyId);
 	//public  TabRecordsStatusVO getMISReport(String batchCode);
 	public  TabRecordsStatusVO getMISReport(String batchCode,Long Id,String type); 
+	public List<CadreAmountDetailsVO> getLocationWiseAsOfNowDetailsInfo(String locationtype,Long stateId,String accessType,Long accessValue);
 }

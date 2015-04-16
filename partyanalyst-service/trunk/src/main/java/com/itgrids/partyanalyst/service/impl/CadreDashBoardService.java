@@ -6091,4 +6091,29 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 			info.setGhmcWebCount(ghmcWebCount);
 			return info;
 		}
+		 public CadreRegisterInfo getDashBoardBasicRegistrationInfo(String accessType,Long accessValue,Long stateId)
+		 {
+			
+			 CadreRegisterInfo returnVo = new CadreRegisterInfo();
+			 try{
+				 Date currentDate = dateService.getCurrentDateAndTime();
+				 Long totalConsti = 0l;
+				 List list = constituencyDAO.getLatestConstituenciesByStateId(
+						 IConstants.ASSEMBLY_ELECTION_TYPE, stateId);
+				 
+				 Long totalRegistration = tdpCadreDAO.getRegisterCadreInfoForState(stateId,2014l);
+				 Long regConstiCnt = tdpCadreDAO.getRegisterConstituenciesForState(stateId,2014l);
+				 if(list != null && list.size() > 0)
+					 totalConsti = new Long(list.size());
+				 	 returnVo.setTotalCount(totalConsti);
+				 	 returnVo.setApCount(totalRegistration != null ?  totalRegistration : 0l);
+				 	 returnVo.setVotersCount(regConstiCnt != null ? regConstiCnt : 0l);
+				 
+			 }
+			 catch(Exception e)
+			 {
+				 LOG.error(e);
+			 }
+			return returnVo;
+		 }
 }
