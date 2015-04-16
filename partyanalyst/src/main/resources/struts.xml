@@ -8452,6 +8452,11 @@
 			<result name="input">/jsp/loginForm.jsp?src=cadreDashBoardAction</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
 		</action>
+		 <action name="cadredashBoardAction" class="cadreDashBoardAction">
+			<result name="success">/jsp/cadreDashBoardPage.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=cadreDashBoardAction</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
+		</action>
 		
 		<action name="getConstituncyWiseDetailsAction" class="cadreRegistrationAction" method="getconstituencyDetailsByConstiteuncy">
 			<result type="json" name="success">
@@ -9898,6 +9903,17 @@
 		 <action name="getinviteesMembersDetailsAction" class="mahaNaduAction" method="createMahanaduInvitees">
 			<result type="json" name="success">
 				<param name="root">commiteeMembersList</param>
+			</result>
+		</action> 
+		
+		 <action name="getStateNameAction" class="cadreDashBoardAction" method="getStateName">
+			<result type="json" name="success">
+				<param name="root">getState</param>
+			</result>
+		</action> 
+		 <action name="getDashBoardBasicInfoAction" class="cadreDashBoardAction" method="getDashBoardBasicInfo">
+			<result type="json" name="success">
+				<param name="root">resultVO</param>
 			</result>
 		</action> 
 		

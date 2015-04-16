@@ -2439,7 +2439,9 @@
 	 <property name="boothDAO" ref="boothDAO" />
 	  <property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
 	 
-	 <property name="zebraPrintDetailsDAO" ref="zebraPrintDetailsDAO" />	 
+	 <property name="zebraPrintDetailsDAO" ref="zebraPrintDetailsDAO" />	
+	 <property name="districtDAO" ref="districtDAO" />	
+	 
      </bean>
      
       <bean name="tdpCadreReportService"  class="com.itgrids.partyanalyst.service.impl.TdpCadreReportService">

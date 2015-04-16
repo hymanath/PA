@@ -1486,6 +1486,7 @@
 	 	<property name="cadreDashBoardService" ref="cadreDashBoardService" />
 	 	<property name="entitlementsHelper" ref="entitlementsHelper" />
 	 	<property name="loginService" ref="loginService" />
+		<property name="cadreManagementService" ref="cadreManagementService"></property>
 	  </bean>
 	  
     <bean id="ctpCasteReportAction" class="com.itgrids.partyanalyst.web.action.CtpCasteReportAction" singleton="false">
@@ -1555,6 +1556,8 @@
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
 		<property name="tdpCadreReportService" ref="tdpCadreReportService" />
 		<property name="cadreRegistrationService" ref="cadreRegistrationService" />
+		
+		
 	</bean>
 	
 	<bean id="cadreMissedCallCampaignAction" class="com.itgrids.partyanalyst.web.action.CadreMissedCallCampaignAction" singleton="false">
