@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICadreDashBoardService;
 import com.itgrids.partyanalyst.service.ILoginService;
+import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 
@@ -49,8 +50,27 @@ public class CadreDashBoardAction implements ServletRequestAware {
 	private ILoginService loginService;
 	private List<GenericVO> genericVOList;
 	private SurveyTransactionVO surveyTransactionVO;
+	private Long stateId;
+	private CadreManagementService cadreManagementService;
 	
 	
+	public CadreManagementService getCadreManagementService() {
+		return cadreManagementService;
+	}
+
+	public void setCadreManagementService(
+			CadreManagementService cadreManagementService) {
+		this.cadreManagementService = cadreManagementService;
+	}
+
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+
 	public SurveyTransactionVO getSurveyTransactionVO() {
 		return surveyTransactionVO;
 	}
@@ -206,6 +226,7 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		if(noaccess){
 			return "error";
 		}
+		
 		return Action.SUCCESS;
 	}
 	
@@ -287,7 +308,9 @@ public class CadreDashBoardAction implements ServletRequestAware {
 			String accessType = regVO.getAccessType();
 			Long accessValue = Long.valueOf(regVO.getAccessValue());
 			String task = request.getParameter("task");
-			if(task.equalsIgnoreCase("basicInfo")){
+			
+			
+			 if(task.equalsIgnoreCase("basicInfo")){
 		       result = cadreDashBoardService.getDashBoardBasicInfo(accessType,accessValue);
 			}else if(task.equalsIgnoreCase("recentlyRegistered")){
 				 result = cadreDashBoardService.getRecentlyRegisteredCadresInfo(Integer.parseInt(request.getParameter("startIndex")), Integer.parseInt(request.getParameter("maxIndex")),accessType,accessValue);
@@ -835,4 +858,35 @@ public class CadreDashBoardAction implements ServletRequestAware {
 		}
 		return Action.SUCCESS;
 	}
+	public String getStateName()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+		
+			getState = cadreManagementService.getStateName(jObj.getLong("stateId"));	
+		}
+		catch(Exception e)
+		{
+			LOG.error(e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getDashBoardBasicInfo()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			String accessType = regVO.getAccessType();
+			Long accessValue = Long.valueOf(regVO.getAccessValue());
+			if(jObj.getString("task").equalsIgnoreCase("basicRegistrationInfo")){
+				resultVO = cadreDashBoardService.getDashBoardBasicRegistrationInfo(accessType,accessValue,jObj.getLong("stateId"));
+				}
+		}
+		catch(Exception e)
+		{
+			LOG.error(e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }

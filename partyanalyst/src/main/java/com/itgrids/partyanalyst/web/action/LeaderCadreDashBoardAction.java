@@ -149,7 +149,15 @@ public class LeaderCadreDashBoardAction implements ServletRequestAware {
 			
 			try{
 				jObj = new JSONObject(getTask());
+				if(jObj.getString("task").equalsIgnoreCase("locationWiseInfoForState"))
+				{
+					amountDetails = leaderCadreDashBoardService.getLocationWiseAsOfNowDetailsInfo(jObj.getString("type"),jObj.getLong("stateId"),accessType,accessValue);
+				}
+				else
+				{
 				amountDetails = leaderCadreDashBoardService.getLocationWiseAsOfNowDetails(jObj.getString("type"),jObj.getLong("stateId"),accessType,accessValue);
+				}
+				
 			}
 			catch (Exception e) {
 				LOG.info("Entered into getLocationWiseAsOfNowDetails() in LeaderCadreDashBoardActioon class");

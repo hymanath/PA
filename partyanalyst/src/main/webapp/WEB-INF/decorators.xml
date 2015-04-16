@@ -326,6 +326,7 @@
 			   <pattern>/ivrCampaignUploadAction*</pattern> 
 			   <pattern>/cadreVoterSearchAction*</pattern>
 			   <pattern>/mahanaduEventInviteesAction*</pattern>
+			   	<pattern>/cadredashBoardAction*</pattern>
 		 </decorator>
        
        <decorator name="tdpHome_old" page="tdplayout_old.jsp">
