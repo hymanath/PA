@@ -2383,6 +2383,7 @@ function SortByName(a, b){
 			    str+='<table class="table table-bordered border-radius-0 mb-0 Previousmembercount table-hover" >';
 				str+='<tbody>';
 				str+='<tr >';
+				str+='<td><h2>&nbsp;&nbsp;</h2><img class="pull-right" src="images/${stateId}.png" style="margin-top: -40px;"></td>';
 				str+='<td><div ><h2>'+result.totalCount+'</h2><p>Total Constituencies</p></div></td>';
 				str+='<td><div ><h2>'+result.votersCount+'</h2><p>Registration Started Constituencies</p></div></td>';
 				 str+='<td><div ><h2>'+result.apCount+'</h2><p>Members Registered in<br><span class="text-red">2014</span></p></div></td>';
