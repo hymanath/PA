@@ -370,7 +370,7 @@ margin-top:10px;
 											</ul>
 										</div>
 									</li>
-									<li><a href="cadreDashBoardAction.action"><span>Cadre Dashboard</span></a>
+									<li><a onmousedown="return false;" class="parent"><span>Cadre Dashboard</span></a>
 						<div>
 						<ul>
 						<li>
