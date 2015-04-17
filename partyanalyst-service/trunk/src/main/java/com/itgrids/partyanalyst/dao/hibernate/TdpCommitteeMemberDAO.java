@@ -1475,7 +1475,7 @@ public List<Object[]> membersCountMandalWise(List<Long> levelIds, Date startDate
 		return query.list();
 	}
 
-	public List<Long> getCommiteeMembersDetailsByPostionsAndCommiteeLevel(List<Long> committeeLevelIds,List<Long> committeeValueList,Long committeeId,List<Long> commiteeRoleIds,List<Long> districtIds,int startIndex,int maxresult)
+	public List<Long> getCommiteeMembersDetailsByPostionsAndCommiteeLevel(List<Long> committeeLevelIds,List<Long> committeeValueList,Long committeeId,List<Long> commiteeRoleIds,List<Long> districtIds,Integer startIndex,Integer maxIndex)
 	{
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(" select distinct model.tdpCadreId from TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId in (:committeeLevelIds) and ");
@@ -1511,11 +1511,10 @@ public List<Object[]> membersCountMandalWise(List<Long> levelIds, Date startDate
 		if(committeeId != null && committeeId.longValue() != 0L)
 			query.setParameter("committeeId", committeeId);
 		
-		if(maxresult != 0)
-		{
+		if(startIndex!=null)
 			query.setFirstResult(startIndex);
-			query.setMaxResults(maxresult);
-		}
+			if(maxIndex != null)
+			query.setMaxResults(maxIndex);
 		return query.list();
 	}
 	
