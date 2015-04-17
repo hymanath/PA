@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesProblemTypeDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
 import com.itgrids.partyanalyst.dto.RegionalMappingInfoVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -70,8 +71,15 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	private IWardDAO wardDAO;
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	private IPanchayatDAO panchayatDAO;
+	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
 	
 	
+	
+	public void setUserDistrictAccessInfoDAO(
+			IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO) {
+		this.userDistrictAccessInfoDAO = userDistrictAccessInfoDAO;
+	}
+
 	public IWardDAO getWardDAO() {
 		return wardDAO;
 	}
@@ -235,6 +243,45 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		}
 		catch(Exception e){
 			log.error("Exception Occured During fetching Districts from state with stateId = "+ stateID + " Exception is -- "+e);
+			return null;
+		}
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getDistrictsForUser(Long userId,String accessValue,String accessType) {
+		try
+		{
+			List<SelectOptionVO> formattedDistricts = new ArrayList<SelectOptionVO>();
+			List<Object[]> param = userDistrictAccessInfoDAO.findByUser(userId);
+			
+			if(param != null && param.size()>0)
+			{
+				for(Object[] obj : param){
+					SelectOptionVO objVO = new SelectOptionVO();
+					objVO.setId((Long)obj[0]);
+					objVO.setName(WordUtils.capitalize(obj[1].toString().toLowerCase()));
+					formattedDistricts.add(objVO);
+				}
+			}
+			else{
+				if(accessType != null && accessType.equalsIgnoreCase(IConstants.DISTRICT))
+				{
+					District district = districtDAO.get(Long.valueOf(accessValue.trim()));
+					SelectOptionVO objVO = new SelectOptionVO();
+					objVO.setId(district.getDistrictId());
+					objVO.setName(WordUtils.capitalize(district.getDistrictName().toLowerCase()));
+					formattedDistricts.add(objVO);
+				}
+				else if(accessType != null && accessType.equalsIgnoreCase(IConstants.STATE))
+				{
+					formattedDistricts = getDistrictsByStateID(1L);
+				}
+			}
+		return formattedDistricts;
+		}
+		catch(Exception e){
+			log.error("Exception Occured During fetching getDistrictsForUser "+e);
 			return null;
 		}
 	}
