@@ -289,6 +289,11 @@ $(".paginationDivId").hide();
 					locationLevel = 3;
 					locationValue = accessValue;
 					}
+					if(accessType == "MP")
+					{
+					locationLevel = 10;
+					locationValue = accessValue;
+					}
 					if(accessType == "STATE")
 					{
 					var stateId = $("#statesDivId").val();
@@ -636,6 +641,31 @@ $(".paginationDivId").hide();
 				}		
 	   });		
 	}
+	 function getAssemblyConstituencies(constiId){
+	var str;
+	var jsObj = 
+	       {
+			  parliamentConstiId : constiId,
+			  electionYear:2005,
+			  task:"getAssemblyDetailsForParliamnt"             
+	       }	
+		    $.ajax({
+				type : "POST",
+				url : "getAssemblyDetailsForParliamntAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				 $("#constituencyId").empty();
+				 var result1 = result.selectOptionsList;
+				 if(result1 != null && result1.length > 0)
+					{
+					  $("#constituencyId").append('<option value=0>ALL</option>');
+						 for(var i in result1){
+						 $("#constituencyId").append('<option value='+result1[i].id+'>'+result1[i].name+'</option>');
+						   
+						 }
+					}
+		  });
+	 }
 	function getConstituenciesForStateAjax()
 		{
 			var stateId = $("#statesDivId").val();
@@ -651,7 +681,12 @@ $(".paginationDivId").hide();
 			getConstituenciesForStateAjax();
 			}
 			
-		
+			if(accessType == "MP")
+			{
+			getAssemblyConstituencies(accessValue);
+			}
+			
+  
 			</script>
 			</body>
 			</html>
