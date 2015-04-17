@@ -374,7 +374,7 @@ margin-top:10px;
 						<div>
 						<ul>
 						<li>
-						<a href="cadreDashBoardAction.action"><span>Andhra Pradesh</span></a></li>
+						<a href="cadreDashBoardAction.action"><span>Andhra Pradesh/Telangana</span></a></li>
 						<li>
 						<a href="cadredashBoardAction.action?stateId=12"><span>Karnataka</span></a></li>
 						<li>
@@ -453,7 +453,7 @@ margin-top:10px;
 						</div>
 					</li>
 					<li><a href="cadreVoterSearchAction.action"><span> Cadre Voter Search </span></a></li>
-					<li><a href="mahanaduEventInviteesAction.action"><span> Mahanadu Event Invitees  </span></a></li>
+					<li><a href="mahanaduEventInviteesAction.action"><span> Event Invitees  </span></a></li>
 				
 					
 				</ul>
