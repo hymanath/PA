@@ -6093,19 +6093,52 @@ public class CadreDashBoardService implements ICadreDashBoardService {
 		}
 		 public CadreRegisterInfo getDashBoardBasicRegistrationInfo(String accessType,Long accessValue,Long stateId)
 		 {
-			
+			 List list = null;
+			 Long totalRegistration = 0l;
+			 Long regConstiCnt = 0l;
 			 CadreRegisterInfo returnVo = new CadreRegisterInfo();
 			 try{
-				 Date currentDate = dateService.getCurrentDateAndTime();
 				 Long totalConsti = 0l;
-				 List list = constituencyDAO.getLatestConstituenciesByStateId(
-						 IConstants.ASSEMBLY_ELECTION_TYPE, stateId);
-				 
-				 Long totalRegistration = tdpCadreDAO.getRegisterCadreInfoForState(stateId,2014l);
-				 Long regConstiCnt = tdpCadreDAO.getRegisterConstituenciesForState(stateId,2014l);
-				 if(list != null && list.size() > 0)
+				 Date currentDate = dateService.getCurrentDateAndTime();
+				 List<Long> constituencyIds = new ArrayList<Long>();
+					List<Long> districtIds = new ArrayList<Long>();
+					 if(accessType.equalsIgnoreCase(IConstants.STATE))
+					 {
+					 list = constituencyDAO.getLatestConstituenciesByStateId(
+							 IConstants.ASSEMBLY_ELECTION_TYPE, stateId);
+					 totalRegistration = tdpCadreDAO.getRegisterCadreInfoForState(stateId,2014l);
+					 regConstiCnt = tdpCadreDAO.getRegisterConstituenciesForState(stateId,2014l,null,IConstants.STATE);
+					 if(list != null && list.size() > 0)
 					 totalConsti = new Long(list.size());
-				 	 returnVo.setTotalCount(totalConsti);
+					 }
+						if(accessType.equalsIgnoreCase("MLA"))
+						{
+							constituencyIds.add(accessValue);
+							districtIds = constituencyDAO.getDistrictIdsByConstituency(constituencyIds);
+							totalRegistration = tdpCadreDAO.getRegisterCadreInfoForUserBetweenDatesByIds(null,null,constituencyIds,districtIds);
+							regConstiCnt = tdpCadreDAO. getRegisterConstituenciesForState(stateId,2014l,constituencyIds,IConstants.CONSTITUENCY);
+							totalConsti = new Long(constituencyIds.size());
+						}
+						else if(accessType.equalsIgnoreCase("MP"))
+						{
+							constituencyIds = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituenciesByParliament(accessValue);
+							districtIds = constituencyDAO.getDistrictIdsByConstituency(constituencyIds);
+							totalRegistration = tdpCadreDAO.getRegisterCadreInfoForUserBetweenDatesByIds(null,null,constituencyIds,districtIds);
+							totalConsti = new Long(constituencyIds.size());
+							regConstiCnt = tdpCadreDAO. getRegisterConstituenciesForState(stateId,2014l,constituencyIds,IConstants.CONSTITUENCY);
+						}
+						else if(accessType.equalsIgnoreCase("DISTRICT"))
+						{
+							districtIds.add(accessValue);
+							totalRegistration = tdpCadreDAO.getRegisterCadreInfoForUserBetweenDatesByIds(null,null,null,districtIds);
+							regConstiCnt = tdpCadreDAO. getRegisterConstituenciesForState(stateId,2014l,districtIds,IConstants.DISTRICT);
+							List<Object[]> constis = constituencyDAO.getConstituencyListByDistrictIdsList(districtIds);
+							totalConsti = new Long(constis.size());
+						}
+				
+				
+					 
+				 	 returnVo.setTotalCount(totalConsti != null ? totalConsti : 0l);
 				 	 returnVo.setApCount(totalRegistration != null ?  totalRegistration : 0l);
 				 	 returnVo.setVotersCount(regConstiCnt != null ? regConstiCnt : 0l);
 				 

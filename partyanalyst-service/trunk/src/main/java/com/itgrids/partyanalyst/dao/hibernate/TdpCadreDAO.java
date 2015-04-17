@@ -4778,11 +4778,20 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			query.setParameter("enrollmentYear", enrollmentYear);
 			return (Long) query.uniqueResult();
 		}
-		public Long getRegisterConstituenciesForState(Long stateId,Long enrollmentYear){
+		public Long getRegisterConstituenciesForState(Long stateId,Long enrollmentYear,List<Long> ids,String type){
 			StringBuilder queryStr = new StringBuilder();
-			queryStr.append("select count(distinct model.userAddress.constituency.constituencyId) from TdpCadre model where model.isDeleted = 'N' and  model.userAddress.state.stateId = :stateId and model.enrollmentYear = :enrollmentYear");
+			queryStr.append("select count(distinct model.userAddress.constituency.constituencyId) from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = :enrollmentYear");
+			if(type.equalsIgnoreCase(IConstants.STATE))
+			queryStr.append(" and  model.userAddress.state.stateId = :stateId");
+			if(type.equalsIgnoreCase(IConstants.DISTRICT))
+			queryStr.append(" and model.userAddress.constituency.district.districtId in(:ids)");
+			else if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+				queryStr.append(" and model.userAddress.constituency.constituencyId in(:ids)");
 			Query query = getSession().createQuery(queryStr.toString());
+			if(type.equalsIgnoreCase(IConstants.STATE))
 			query.setParameter("stateId", stateId);
+			if(type.equalsIgnoreCase(IConstants.DISTRICT) || type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+				query.setParameterList("ids", ids);
 			query.setParameter("enrollmentYear", enrollmentYear);
 			return (Long) query.uniqueResult();
 		}
@@ -4844,6 +4853,35 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			query.setParameterList("districtIds", districtIds);
 			query.setParameter("stateId", stateId);
 			return query.list();
+		}
+		
+		public Long getRegisterCadreInfoForUserBetweenDatesByIds(Date fromDate,Date toDate,List<Long> constiIds,List<Long> districtIds){
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append("select count(model.tdpCadreId) from TdpCadre model where model.isDeleted = 'N' and model.enrollmentYear = 2014 ");
+			
+			if(fromDate != null){
+				queryStr.append(" and date(model.surveyTime) >=:fromDate ");
+			}
+			
+			if(toDate != null){
+				queryStr.append(" and date(model.surveyTime) <=:toDate ");
+			}
+			if(constiIds != null && constiIds.size() > 0)
+			queryStr.append(" and  model.userAddress.constituency.constituencyId in(:constiIds)");
+			if(districtIds != null && districtIds.size() > 0)
+			queryStr.append(" and  model.userAddress.district.districtId in(:districtIds)");
+			Query query = getSession().createQuery(queryStr.toString());
+			if(fromDate != null){
+			   query.setDate("fromDate", fromDate);
+			}
+			if(toDate != null){
+			  query.setDate("toDate", toDate);
+			}
+			if(constiIds != null && constiIds.size() > 0)
+				query.setParameterList("constiIds", constiIds);
+			if(districtIds != null && districtIds.size() > 0)
+				query.setParameterList("districtIds", districtIds);
+			return (Long) query.uniqueResult();
 		}
 		
 }
