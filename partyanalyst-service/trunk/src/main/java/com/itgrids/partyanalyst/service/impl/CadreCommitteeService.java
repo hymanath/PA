@@ -10833,7 +10833,7 @@ return mandalList;
 
 	 public List<TdpCadreVO> createGroupForMahanaduInvities(final Long userId,final Long committeeLevelId,final  Long committeeValue,
 			 final List<CadreCommitteeMemberVO> committeeList,final Long presentLocationId,final String groupName,final String searchType,
-			 final Long stateId, final Long districtId, final Long constituencyId,final Long mandalId, final Long panchayatId)
+			 final Long stateId, final Long districtId, final Long constituencyId,final Long mandalId, final Long panchayatId,final Integer startIndex,final Integer maxIndex)
 	 {
 		 List<TdpCadreVO> returnLsit = new ArrayList<TdpCadreVO>();
 		 try {
@@ -10969,21 +10969,24 @@ return mandalList;
 					 
 					 List<TdpCadreVO> returnLsit = new ArrayList<TdpCadreVO>();
 					 MahanaduGroup mahaGroup = null;
-										 
+					Long totalCount = 0l;					 
 						 List<Long> tdpCadreIdsList = new ArrayList<Long>();
 						 List<Long> tdpCadreIdList = new ArrayList<Long>();
 						 if(committeeList !=null && committeeList.size()>0)
 						 {
 							 for (CadreCommitteeMemberVO cadreCommitteeMemberVO : committeeList) {
-								 List<Long> committeeMembersLsit = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,cadreCommitteeMemberVO.getId(),cadreCommitteeMemberVO.getCommiteeRoleIds(),disstrictIds,0,0);
+								 List<Long> committeeMembersLsit = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,cadreCommitteeMemberVO.getId(),cadreCommitteeMemberVO.getCommiteeRoleIds(),disstrictIds,startIndex,maxIndex);
 								 if(committeeMembersLsit!= null && committeeMembersLsit.size()>0)
 								 {
-									 if(committeeMembersLsit.size()>500)
+									 /*if(committeeMembersLsit.size()>500)
 									 {
 										 committeeMembersLsit = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,cadreCommitteeMemberVO.getId(),cadreCommitteeMemberVO.getCommiteeRoleIds(),disstrictIds,0,100);
-									 }
+									 }*/
 									 tdpCadreIdsList.addAll(committeeMembersLsit);
+									 List<Long> list = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,cadreCommitteeMemberVO.getId(),cadreCommitteeMemberVO.getCommiteeRoleIds(),disstrictIds,null,null);
+									 totalCount = totalCount+(Long.valueOf(list.size()));
 								 }
+								 
 							}
 						 }
 						 List<CadreCommitteeVO> cadreCommitteeList = new ArrayList<CadreCommitteeVO>();
@@ -11008,6 +11011,7 @@ return mandalList;
 								 	TdpCadreVO finalCadreVO = new TdpCadreVO();
 									finalCadreVO.setResponseCode("2");
 									finalCadreVO.setResponseStatus("Already Exist...");
+									finalCadreVO.setTotalCount(totalCount);
 									returnLsit.add(finalCadreVO);
 									
 									return returnLsit;
@@ -11099,6 +11103,7 @@ return mandalList;
 									TdpCadreVO finalCadreVO = new TdpCadreVO();
 									finalCadreVO.setResponseCode("0");
 									finalCadreVO.setResponseStatus("success");
+									finalCadreVO.setTotalCount(totalCount);
 									finalCadreVO.setCadreComitteeVOList(cadreCommitteeList);
 									returnLsit.add(finalCadreVO);
 									
