@@ -921,7 +921,7 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
         	}
         	
         	commiteeMembersList = cadreCommitteeService.createGroupForMahanaduInvities(regVO.getRegistrationID(),levelId,levelValue,committeeList,
-        			eventId,groupName,searchType,stateId,districtId,constiteuncyId,mandalId,panchayatId);
+        			eventId,groupName,searchType,stateId,districtId,constiteuncyId,mandalId,panchayatId,jObj.getInt("startIndex"),jObj.getInt("maxIndex"));
     	}
     	catch(Exception e)
     	{
