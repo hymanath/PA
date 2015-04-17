@@ -9905,6 +9905,11 @@
 				<param name="root">commiteeMembersList</param>
 			</result>
 		</action> 
+		 <action name="sendSmsForInviteesAction" class="cadreCommitteeAction" method="sendSmsForInvotees">
+			<result type="json" name="success">
+				<param name="root">status</param>
+			</result>
+		</action> 
 		
 		 <action name="getStateNameAction" class="cadreDashBoardAction" method="getStateName">
 			<result type="json" name="success">
@@ -9914,6 +9919,12 @@
 		 <action name="getDashBoardBasicInfoAction" class="cadreDashBoardAction" method="getDashBoardBasicInfo">
 			<result type="json" name="success">
 				<param name="root">resultVO</param>
+			</result>
+		</action> 
+		
+		 <action name="getDistrictsForUserAjaxAction" class="cadreSearchAjaxAction" method="getDistrictsForUser">
+			<result type="json" name="success">
+				<param name="root">districtsListForACountry</param>
 			</result>
 		</action> 
 		
