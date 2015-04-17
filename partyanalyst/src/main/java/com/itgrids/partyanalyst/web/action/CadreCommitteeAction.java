@@ -89,7 +89,17 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private String                              reqLocationValue;
 	private String                              globalLocationName;
 	private List<BasicVO> basicList;
+	private List<TdpCadreVO> commiteeMembersList = new ArrayList<TdpCadreVO>();
 	
+	
+	public List<TdpCadreVO> getCommiteeMembersList() {
+		return commiteeMembersList;
+	}
+
+	public void setCommiteeMembersList(List<TdpCadreVO> commiteeMembersList) {
+		this.commiteeMembersList = commiteeMembersList;
+	}
+
 	public List<BasicVO> getBasicList() {
 		return basicList;
 	}
@@ -1551,6 +1561,32 @@ public String getSummaryDetails(){
 		return Action.SUCCESS;
 	}
 	
-	
-	
+	public String sendSmsForInvotees()
+	{
+		try {
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");			
+			if(regVO==null){
+				return "input";
+			}
+			
+			jObj = new JSONObject(getTask());
+			JSONArray mobileNoArr  = jObj.getJSONArray("mobileNumbersArr");
+			String message = jObj.getString("message");
+			List<Long> mobileNoList = new ArrayList<Long>();
+			if(mobileNoArr!= null && mobileNoArr.length()>0)
+			{
+				for(int i=0;i<mobileNoArr.length();i++)
+				{
+					mobileNoList.add(Long.valueOf(mobileNoArr.getString(i).trim()));
+				}
+			}
+			
+			status = cadreCommitteeService.sendSmsForInvitees(regVO.getRegistrationID(),mobileNoList,message);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in sendSmsForInvotees ",e);
+		}
+		
+		return Action.SUCCESS;
+	}		
 }
