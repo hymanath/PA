@@ -890,6 +890,12 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
     		Long eventId = jObj.getLong("eventId");
         	Long levelId = jObj.getLong("committeeLevelId");
         	Long levelValue = jObj.getLong("committeeLevelValue");
+        	Long districtId = jObj.getLong("districtId");
+        	Long constiteuncyId =jObj.getLong("constituencyId");;
+        	Long stateId = jObj.getLong("stateId");;
+        	Long mandalId =jObj.getLong("mandalId");;
+        	Long panchayatId=jObj.getLong("panchayatId");;
+        	
         	JSONArray committeesArr = jObj.getJSONArray("committeeIdsArr");
         	
         	List<CadreCommitteeMemberVO> committeeList = new ArrayList<CadreCommitteeMemberVO>();
@@ -914,7 +920,8 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 				}
         	}
         	
-        	commiteeMembersList = cadreCommitteeService.createGroupForMahanaduInvities(regVO.getRegistrationID(),levelId,levelValue,committeeList,eventId,groupName,searchType);
+        	commiteeMembersList = cadreCommitteeService.createGroupForMahanaduInvities(regVO.getRegistrationID(),levelId,levelValue,committeeList,
+        			eventId,groupName,searchType,stateId,districtId,constiteuncyId,mandalId,panchayatId);
     	}
     	catch(Exception e)
     	{

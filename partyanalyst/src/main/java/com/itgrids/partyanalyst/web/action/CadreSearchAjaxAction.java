@@ -212,6 +212,29 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 	 return Action.SUCCESS;
 	}
 
+	public String getDistrictsForUser()
+	{
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		
+		districtsListForACountry = regionServiceDataImp.getDistrictsForUser(user.getRegistrationID(),user.getAccessValue(),user.getAccessType());
+		
+		if(districtsListForACountry != null && districtsListForACountry.size() > 1)
+			districtsListForACountry.add(0, new SelectOptionVO(0L,"Select District"));
+		
+	 return Action.SUCCESS;
+	}
+	
 	public String getDistrictsForState()
 	{
 		String param = null;
