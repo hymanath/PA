@@ -37,12 +37,14 @@
     	<!--Circle-->
     <link href="js/cadreCommittee/dist/css/jquery.circliful.css" rel="stylesheet" />	
     <script type="text/javascript" src="js/exportexcel.js"></script>
-
+		<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
+			<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 <style>
 .paginate_disabled_previous,.paginate_enabled_previous,.paginate_enabled_next{
    padding-bottom: 10px;
 }
-.prev, .next {width:50px !important}
+.prev,.next {width:50px !important}
+.prev,.next {padding-right: 36px !important}
 .table-bordered > thead > tr > th,
 .table-bordered > tbody > tr > th,
 .table-bordered > tfoot > tr > th,
@@ -154,7 +156,7 @@
 				
 					  
 					  <label class="checkbox-inline">
-						<input type="checkbox" id="cadreCommitteeId" value="2" onclick="getDetails('cadreCommitteeId');"> Cadre Committee Management
+						<input type="checkbox" id="cadreCommitteeId" value="2" onclick="getDetails('cadreCommitteeId');"> From Committees
 					  </label>
 					  <!-- <label class="checkbox-inline">
 						<input type="checkbox" id="publicRepresentativesId" value="1" onclick="getDetails('publicRepresentativesId');">  Public Repracentative
@@ -169,7 +171,7 @@
 				<div class="col-md-4 m_top20" style="background-color:#FFF;display:none;" id="cadreCommitteeDiv">
 				
 					<div  id="committeeDiv">
-					<label class="select-label" style="margin-left:0px "> From  Cadre Committee </label>
+					<label class="select-label" style="margin-left:0px "> From Committees </label>
 					<select class="cs-select cs-skin-slide">
 						<option value="0" >ALL</option>
 					</select>
@@ -255,16 +257,17 @@
 						  </div>
 							<div id="countDiv"  class="panel panel-success"></div>	
 							 <div class="row">
-								<div class="col-md-12 col-xs-12 col-md-12">
-								<center><img id="summaryAjax" style="width:100px;height:80px;display:none;"  src="./images/Loading-data.gif" alt="Processing Image"/></center>
-								<div id="topPaginationDivId" class="paginationDivId"></div>
-								<div id="buildSearchDetailsStateId"  class="panel panel-success" style="margin-top: 40px;display:none;"></div>	
-								<div id="buildSearchDetailsdistrictId"  class="panel panel-success" style="margin-top: 40px;display:none;"></div>	
-								<div id="buildSearchDetailsMandalId"  class="panel panel-success" style="margin-top: 40px;display:none;"></div>	
-								<div id="buildSearchDetailsPanchayatId"  class="panel panel-success" style="margin-top: 40px;display:none;"></div>	
+							
+								<div class="col-md-12 col-xs-12 col-md-12" style="">
+								 <center><img id="summaryAjax" style="width:100px;height:80px;display:none;"  src="./images/Loading-data.gif" alt="Processing Image"/></center>
+
+								<div id="buildSearchDetailsStateId"  class="panel panel-success" style="margin-top: 0px;display:none;"></div>	
+								<div id="buildSearchDetailsdistrictId"  class="panel panel-success" style="margin-top: 0px;display:none;"></div>	
+								<div id="buildSearchDetailsMandalId"  class="panel panel-success" style="margin-top: 0px;display:none;"></div>	
+								<div id="buildSearchDetailsPanchayatId"  class="panel panel-success" style="margin-top: 0px;display:none;"></div>	
 								
 								</div>
-								<div id="paginationDivId" class="paginationDivId"></div>
+								<div id="paginationDivId" class="paginationDiv" style="width:600px;margin-left:380px;"></div>
 							</div>
 							
 							<div class="download-box display-style" style="display:none;">
@@ -415,7 +418,7 @@
           str+='<label class="select-label">District</label>';
 		  str+=' <div class="cs-select cs-skin-slide distSlide" tabindex="0" onclick="selectChange(\'distSlide\')">';
 		  str+='<span class="cs-placeholder distName" value="0">ALL</span><div class="cs-options"><ul class="scrollbar distList">';
-		   str+='<li data-value="0" data-option="" class="distEle"><span>ALL</span></li>';
+		  str+='<li data-value="0" data-option="" class="distEle"><span>ALL</span></li>';
 		  for(var i in result)
 		  {
 		   if(result[i].id > 0)
@@ -640,7 +643,7 @@
 	   }).done(function(result){
 	     var str='';
 	   str+='<section>';
-          str+='<label class="select-label">From  Cadre Committee</label>';
+          str+='<label class="select-label">From Committees</label>';
 		  str+=' <div class="cs-select cs-skin-slide committeeSlide" tabindex="0" onclick="selectChange(\'committeeSlide\')">';
 		  str+='<span class="cs-placeholder committeeName" value="0">ALL</span><div class="cs-options"><ul class="scrollbar comitteeList">';
 		  str+='<li data-value="0" data-option="" class="committeeEle"><span value="0">ALL</span></li>';
@@ -913,13 +916,13 @@
 		{
 			levelValue = $(".mandalName").attr("value");
 			divId="buildSearchDetailsMandalId";
-			locationLevel = "Mandal";
+			locationLevel = "Mandal/Town/Division";
 		}
 		else if(levelId == 6)
 		{
 			levelValue = $(".panchayatName").attr("value");
 			divId="buildSearchDetailsPanchayatId";
-			locationLevel = "Panchayat";
+			locationLevel = "Village/Ward";
 		}	
 		
 		var districtId = $(".distName").attr("value");		
@@ -984,7 +987,7 @@
 					{
 						globalJsonArr.push(jsObj);
 						 $('#'+divId+'').show();
-						buildSearchDetails(result[0].cadreComitteeVOList,divId,locationLevel,jsObj);
+						buildSearchDetails(result[0].cadreComitteeVOList,divId,locationLevel,jsObj,result[0].totalCount);
 					}
 					else if(result[0].responseCode == 2)
 					{
@@ -1061,7 +1064,7 @@
 	}
 	
 	var indexValue=0;
-	function buildSearchDetails(result,divId,locationLevel,jsObj)
+	function buildSearchDetails(result,divId,locationLevel,jsObj,totalCnt)
 	{		
 	console.log(jsObj);
 		var str ='';
@@ -1079,9 +1082,9 @@
 				//str+='<span class="viewlink">Click To View Existed group Names</span>    ';
 				str+='</div>';
 				
-				str+='<a class="btn btn-xs btn-success pull-right" href="javascript:{dispatchAddressDetails();}">Download Address Patches</a>';
+				//str+='<a class="btn btn-xs btn-success pull-right" href="javascript:{dispatchAddressDetails();}">Download Address Patches</a>';
 												
-				str+='<a class="btn btn-xs btn-success pull-right" href="javascript:{sendSmsForCandidtes(\'allContacts'+locationLevel+'Cls\',\'contacts'+locationLevel+'Cls\');}" style="margin-right: 10px;">Send SMS</a>';
+				//str+='<a class="btn btn-xs btn-success pull-right" href="javascript:{sendSmsForCandidtes(\'allContacts'+locationLevel+'Cls\',\'contacts'+locationLevel+'Cls\');}" style="margin-right: 10px;">Send SMS</a>';
 				str+='<a class="btn btn-xs btn-success pull-right" href="javascript:{exportConstituencyToExcel(\'searchTableId'+divId+'\',\''+locationLevel+'\');}" style="margin-right: 15px;"> Export Excel </a></div>';
 				str+='<table class="table table-bordered " id="searchTableId'+divId+'">';
 				str+='<thead>';
@@ -1119,14 +1122,21 @@
 				
 				str+='</tbody>';
 				str+='</table>';
-				
-				
-				if(result[0].length > 5)	
-		{
-			var itemsCount=result[0].mobileType;
-			var maxResults=jsObj.maxIndex;
+
+	    var maxResults=jsObj.maxIndex;
 	   
-	    }
+	     if(jsObj.startIndex==0){
+		   $("#paginationDivId").pagination({
+			items: totalCnt,
+			itemsOnPage: maxResults,
+			cssStyle: 'light-theme',
+			onPageClick: function(pageNumber, event) {
+				var num=(pageNumber-1)*100;
+				getMembersDetails(num);
+				
+			}
+		});
+	}
 		
 			$('#'+divId+'').html(str);
 			$("#searchTableId"+divId+"").dataTable({
@@ -1267,7 +1277,7 @@
 			}
 		}
 		function sendSmsForCandidtes(allCls, individualCls)
-		{			
+		{	
 			$("#smsMessageDiv").show();
 			$("#smsMessageDiv").html('Enter Message : <input type="textarea" maxlength="50" id="messaggeId" placeholder="Enter Message for SMS " style="height:50px;"/><input type="button" id="smsButton" value="Send SMS" onclick="sendSms(\'messaggeId\',\''+allCls+'\',\''+individualCls+'\')" class="btn btn-success  btn-xs" style="margin-left: 200px;margin-top: 10px"/>');
 			$('#messaggeId').val('');
@@ -1341,12 +1351,12 @@
 					  str+='<ul class="scrollbar stateList">';
 					  // str+='<li data-value="10" data-option="" class="stateEle"><span>State</span></li>';
 					   str+='<li data-value="11" data-option="" class="stateEle"><span>District</span></li>';
-					   str+='<li data-value="5" data-option="" class="stateEle"><span>Mandal/Muncipality </span></li>';
+					   str+='<li data-value="5" data-option="" class="stateEle"><span>Mandal/Town/Division</span></li>';
 					   str+='<li data-value="6" data-option="" class="stateEle"><span>Village/Ward</span></li>';
 					  str+='</ul>';
 				  str+='</div><select class="cs-select cs-skin-slide" id="levelId">';
 					str+='<option value="11">District</option>';
-					str+='<option value="5">Mandal/Muncipality</option>';
+					str+='<option value="5">Mandal/Town/Division</option>';
 					str+='<option value="6">Village/Ward</option>';
 				 str+='</select></div></section>';
 				 
@@ -1364,13 +1374,13 @@
 					  str+='<ul class="scrollbar stateList">';
 					   str+='<li data-value="10" data-option="" class="stateEle"><span>State</span></li>';
 					   str+='<li data-value="11" data-option="" class="stateEle"><span>District</span></li>';
-					   str+='<li data-value="5" data-option="" class="stateEle"><span>Mandal/Muncipality </span></li>';
+					   str+='<li data-value="5" data-option="" class="stateEle"><span>Mandal/Town/Division </span></li>';
 					   str+='<li data-value="6" data-option="" class="stateEle"><span>Village/Ward</span></li>';
 					  str+='</ul>';
 				  str+='</div><select class="cs-select cs-skin-slide" id="levelId">';
 					str+='<option value="10">State</option>';
 					str+='<option value="11">District</option>';
-					str+='<option value="5">Mandal/Muncipality</option>';
+					str+='<option value="5">Mandal/Town/Division</option>';
 					str+='<option value="6">Village/Ward</option>';
 				 str+='</select></div></section>';
 				 

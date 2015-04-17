@@ -453,7 +453,7 @@ margin-top:10px;
 						</div>
 					</li>
 					<li><a href="cadreVoterSearchAction.action"><span> Cadre Voter Search </span></a></li>
-					<li><a href="mahanaduEventInviteesAction.action"><span> Event Invitees  </span></a></li>
+					<li><a href="eventInviteesAction.action"><span> Event Invitees  </span></a></li>
 				
 					
 				</ul>
