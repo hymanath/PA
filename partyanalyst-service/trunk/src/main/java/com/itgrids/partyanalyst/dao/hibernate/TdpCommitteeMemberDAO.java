@@ -64,7 +64,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 	{
 		String queryStr = " select distinct model.tdpCadreId ,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.name," +
 				" model.tdpCommitteeRole.tdpRoles.role, model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId, " +
-				" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,model.tdpCommitteeRole.tdpCommitteeRoleId " +
+				" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue,model.tdpCommitteeRole.tdpCommitteeRoleId,model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevel " +
 				" from TdpCommitteeMember model where model.tdpCadreId in (:tdpCadreIdsList) and model.isActive = 'Y' group by model.tdpCadreId ";
 		Query query = getSession().createQuery(queryStr);
 		query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
@@ -1475,20 +1475,48 @@ public List<Object[]> membersCountMandalWise(List<Long> levelIds, Date startDate
 		return query.list();
 	}
 
-	public List<Long> getCommiteeMembersDetailsByPostionsAndCommiteeLevel(Long committeeLevelId,Long committeeValue,Long committeeId,List<Long> commiteeRoleIds)
+	public List<Long> getCommiteeMembersDetailsByPostionsAndCommiteeLevel(List<Long> committeeLevelIds,List<Long> committeeValueList,Long committeeId,List<Long> commiteeRoleIds,List<Long> districtIds,int startIndex,int maxresult)
 	{
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(" select distinct model.tdpCadreId from TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:committeeLevelId and " +
-				" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:committeeValue and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId =:committeeId and " +
-				" model.tdpCommitteeRole.tdpRolesId in (:commiteeRoleIds) ");
+		stringBuilder.append(" select distinct model.tdpCadreId from TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId in (:committeeLevelIds) and ");
+		
+		if(districtIds != null && districtIds.size()>0)
+		{
+			stringBuilder.append(" model.tdpCommitteeRole.tdpCommittee.districtId in(:districtIds) and ");
+		}
+		else if(committeeValueList != null && committeeValueList.size() > 0)
+		{
+			stringBuilder.append(" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue in(:committeeValueList) and ");
+		}
+			
+		
+		if(committeeId != null && committeeId.longValue() != 0L)
+			stringBuilder.append(" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId =:committeeId and " );
+		
+		stringBuilder.append(" model.tdpCommitteeRole.tdpRoles.tdpRolesId in (:commiteeRoleIds) ");
 		
 		Query query = getSession().createQuery(stringBuilder.toString());
 		
-		query.setParameter("committeeLevelId", committeeLevelId);
-		query.setParameter("committeeValue", committeeValue);
-		query.setParameter("committeeId", committeeId);
+		query.setParameterList("committeeLevelIds", committeeLevelIds);
 		query.setParameterList("commiteeRoleIds", commiteeRoleIds);
 		
+		if(districtIds != null && districtIds.size()>0)
+		{
+			query.setParameterList("districtIds", districtIds);
+		}
+		else if(committeeValueList != null && committeeValueList.size() > 0)
+		{
+			query.setParameterList("committeeValueList", committeeValueList);
+		}
+		if(committeeId != null && committeeId.longValue() != 0L)
+			query.setParameter("committeeId", committeeId);
+		
+		if(maxresult != 0)
+		{
+			query.setFirstResult(startIndex);
+			query.setMaxResults(maxresult);
+		}
 		return query.list();
 	}
+	
 }
