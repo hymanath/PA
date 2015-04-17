@@ -2400,24 +2400,10 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 		List<Long> constituenycIds = new ArrayList<Long>();
 		List<Long> districtIds = new ArrayList<Long>();
 		List<Object[]> voterCountList = null;
-		
-		
-		/*int ok_status_count = 0;
-		int good_status_count = 0;
-		int best_status_count = 0;
-		int poor_status_count = 0;
-		int worst_status_count = 0;*/
+	
 		
 		try{
-			/*	if(stateId == 2){
-				for(int i=1;i<=10;i++)
-					districtIds.add(new Long(i));}
-				else if(stateId == 1){
-			    for(int i=11;i<=23;i++)
-					districtIds.add(new Long(i));}
-				else if(stateId == 0){
-				    for(int i=1;i<=23;i++)
-						districtIds.add(new Long(i));}*/
+			
 				
 			 List<Object[]> districts = districtDAO.getAllDistrictDetailsForAState(stateId);
 			 if(districts != null && districts.size() > 0)
@@ -2428,7 +2414,6 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 				
 				
 				List<Long> assemblyIds = new ArrayList<Long>();
-				//List<Long> districts = new ArrayList<Long>();
 				
 				if(accessType.equalsIgnoreCase("STATE")){
 					assemblyIds = constituencyDAO.getConstituenciesByState(stateId);
@@ -2460,9 +2445,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 				}
 				if(accessType.equalsIgnoreCase("DISTRICT")){
 					districtIds = new ArrayList<Long>();
-					/*List<Long> dists = new ArrayList<Long>();
-					dists.add(Long.valueOf(accessValue));*/
-					//List<Long> list = constituencyDAO.getAllConstituencysByDistrictIds(dists, "Assembly");
+					
 					 assemblyIds = constituencyDAO.getDistrictIdByConstituencyIdandState(accessValue,stateId);
 					 districtIds.add(accessValue);
 				}
@@ -2470,17 +2453,7 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 			resultList =  getResultsSimplified(locationtype,accessValue,accessType,resultList,voterCountList,assemblyIds,districtIds,constituenycIds,"no",stateId);
 			
 		
-			/*List<Object[]> receivedAmountDetails = cadreSurveyUserAssignDetailsDAO.getTDPCadreAmountDetails(districtIds,locationtype,null,null,stateId);
-			if(receivedAmountDetails != null && receivedAmountDetails.size() > 0)
-			{
-				for(Object[] params : receivedAmountDetails)
-				{
-					  CadreAmountDetailsVO vo = getMatchedVO(resultList,(Long)params[1]);
-					  if(vo != null)
-					  vo.setPaidAmount((Long)params[0]);
-					 
-				}
-			}*/
+		
 			
 			List<Object[]> totalRecords = new ArrayList<Object[]>();
 			
@@ -2503,44 +2476,12 @@ public class LeaderCadreDashBoardService implements ILeaderCadreDashBoardService
 					  if(vo != null)
 					  {
 						  vo.setTotalRecords(params[0] != null ? (Long)params[0] : 0);
-						 /* vo.setTotalAmount(vo.getTotalRecords() * 100);
-						  vo.setDifference(vo.getTotalRecords()-vo.getTargetCadres());
-						  String percentage ="";
-						  percentage = (new BigDecimal(vo.getTotalRecords()*(100.0)/vo.getTargetCadres().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-						  //percentage = (new BigDecimal(vo.getDifference()*(100.0)/vo.getTargetCadres().doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-						  float fl_perc = Float.parseFloat(percentage);
-						  if(fl_perc>=120f){
-							  best_status_count = best_status_count+1;
-							  vo.setColorStatus("Best");
-						  }else if(fl_perc>=100f && fl_perc<120f){
-							  good_status_count = good_status_count+1;
-							  vo.setColorStatus("Good");
-						  }else if(fl_perc>=75f && fl_perc<100f){
-							  ok_status_count = ok_status_count+1;	
-							  vo.setColorStatus("Ok");
-						  }else if(fl_perc>=50f && fl_perc<75f){
-							  poor_status_count =poor_status_count+1;
-							  vo.setColorStatus("Poor");
-						  }else {
-							  vo.setColorStatus("Worst");
-						  }
-						  
-						  vo.setPercentage(percentage);*/
+						
 					  }
 				}
 			}
 			
-			/*worst_status_count = resultList.size()-best_status_count-good_status_count-ok_status_count-poor_status_count;
-			
-			if(resultList!=null && resultList.size()>=1){
-				CadreAmountDetailsVO cv = resultList.get(0);
-				cv.setOkCount(ok_status_count);
-				cv.setBestCount(best_status_count);
-				cv.setGoodCount(good_status_count);
-				cv.setPoorCount(poor_status_count);
-				cv.setWorstCount(worst_status_count);
-			}*/
-			
+		
 			if(constituenycIds != null && constituenycIds.size() > 0)
 			{
 				List<Object[]> list = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentsAndDistrictForAssemblyByState(constituenycIds,stateId);
