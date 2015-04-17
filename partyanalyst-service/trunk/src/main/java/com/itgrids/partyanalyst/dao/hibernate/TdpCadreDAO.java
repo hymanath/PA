@@ -3463,7 +3463,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 		}
 	  
 	  
-	  public List<Object[]> searchTdpCadreDetailsBySearchCriteriaForCommitte(Long constituencyId,Long casteStateId,String queryString,int startIndex,int maxIndex)
+	  public List<Object[]> searchTdpCadreDetailsBySearchCriteriaForCommitte(Long constituencyId,Long casteStateId,String queryString,int startIndex,int maxIndex,List<Long> constituencyIds)
 		{
 			StringBuilder queryStr = new StringBuilder();
 			
@@ -3486,9 +3486,13 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			queryStr.append(" order by model.firstname ");
 			
 			Query query = getSession().createQuery(queryStr.toString());
-			if(constituencyId != null && constituencyId != 0L)
+			if((constituencyId != null && constituencyId != 0L) && (constituencyIds == null || constituencyIds.size() == 0))
 			{
 				query.setParameter("locationValue", constituencyId);
+			}
+			if(constituencyIds != null && constituencyIds.size() > 0) // mp
+			{
+				query.setParameterList("ids", constituencyIds);	
 			}
 			if(casteStateId != null && casteStateId != 0L)
 			{

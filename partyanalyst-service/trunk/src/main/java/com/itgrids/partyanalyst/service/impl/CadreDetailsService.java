@@ -10,14 +10,28 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CadreDetailsService implements ICadreDetailsService{
 
 	private final static Logger LOG =  Logger.getLogger(CadreDetailsService.class);
 	public ITdpCadreDAO tdpCadreDAO;
+	public IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+	
+
+	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
+		return delimitationConstituencyAssemblyDetailsDAO;
+	}
+
+
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
+	}
 
 
 	public ITdpCadreDAO getTdpCadreDAO() {
@@ -34,6 +48,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex)
 	{
 		TdpCadreVO returnVO = new TdpCadreVO();
+		List<Long> ids = new ArrayList<Long>();
     	try {
     		
     		StringBuilder queryStr = new StringBuilder();
@@ -41,7 +56,7 @@ public class CadreDetailsService implements ICadreDetailsService{
     		if(locationLevel != null && locationLevel.longValue() != 0L && locationValue != null && locationValue.longValue() != 0L)
     		{
     			
-    			if(locationLevel.longValue() == 2L)
+    			if(locationLevel.longValue() == 2L) // State 
     			{
     				if(locationValue.longValue() == 1l)
     				queryStr.append(" and model.userAddress.district.districtId between 11 and 23 ");
@@ -51,14 +66,12 @@ public class CadreDetailsService implements ICadreDetailsService{
     					queryStr.append(" and model.userAddress.district.districtId between 1 and 23 ");	
     				locationValue = 0l;
     			}
-    			if(locationLevel.longValue() == 3L)
+    			
+    			else if(locationLevel.longValue() == 3L)
     			{
     				queryStr.append(" and model.userAddress.district.districtId =:locationValue ");
     			}
-    			if(locationLevel.longValue() == 2L)
-    			{
-    				queryStr.append(" and model.userAddress.district.districtId =:locationValue ");
-    			}
+    			
     			else if(locationLevel.longValue() == 4L)
     			{
     				queryStr.append(" and model.userAddress.constituency.constituencyId =:locationValue ");
@@ -83,6 +96,19 @@ public class CadreDetailsService implements ICadreDetailsService{
     			{
     				queryStr.append(" and model.userAddress.booth.boothId =:locationValue ");
     			}
+    			else if(locationLevel.longValue() == 10L) // MP
+    			{
+    				List<Object[]> assemblyList = delimitationConstituencyAssemblyDetailsDAO.getAllAssemblyDetailsOfParliament(locationValue,Long.valueOf(IConstants.PRESENT_ELECTION_YEAR));
+    				
+    				if(assemblyList != null && assemblyList.size() > 0)
+    				{
+    					for(Object[] params : assemblyList)
+    						ids.add((Long)params[0]);
+    					queryStr.append(" and model.userAddress.constituency.constituencyId in(:ids) ");
+    				}
+    				
+    			}
+    			
     		}
     		
     		if(searchName != null && searchName.trim().length()>0 && !searchName.trim().equalsIgnoreCase("0") && !searchName.equalsIgnoreCase("null"))
@@ -131,7 +157,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 			}
 			if(queryStr != null && queryStr.toString().trim().length()>0)
 			{
-				List<Object[]> cadreList = tdpCadreDAO.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationValue,Long.valueOf(casteStateId), queryStr.toString(),startIndex,maxIndex);
+				List<Object[]> cadreList = tdpCadreDAO.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationValue,Long.valueOf(casteStateId), queryStr.toString(),startIndex,maxIndex,ids);
 				
 				List<TdpCadreVO> returnLsit = new ArrayList<TdpCadreVO>();
 				
@@ -207,7 +233,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 					returnVO.setTdpCadreDetailsList(returnLsit);
 					if(returnLsit != null && maxIndex != 0)
 					{
-					List<Object[]> cadreListCnt = tdpCadreDAO.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationValue,Long.valueOf(casteStateId), queryStr.toString(),0,0);
+					List<Object[]> cadreListCnt = tdpCadreDAO.searchTdpCadreDetailsBySearchCriteriaForCommitte(locationValue,Long.valueOf(casteStateId), queryStr.toString(),0,0,ids);
 					returnLsit.get(0).setTotalCount(new Long(cadreListCnt.size()));
 					}
 				}
