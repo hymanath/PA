@@ -56,6 +56,9 @@
             </div>
 			<!----/MENU End---->
 	</header>
+	<div class="row-fluid">
+<img width="100%" height="24" src="images/Ribbon.png">
+</div>
 	<decorator:head/>
 	</head>
 	
