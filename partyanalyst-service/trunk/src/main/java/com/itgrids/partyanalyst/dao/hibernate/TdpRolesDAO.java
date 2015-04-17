@@ -17,7 +17,7 @@ public class TdpRolesDAO extends GenericDaoHibernate<TdpRoles, Long>  implements
 		Query query = getSession().createQuery(" select model.tdpRolesId," +
 				" model.role" +
 				" from TdpRoles model " +
-				" order by model.role ");
+				" order by model.order ");
 		
 		return query.list();
 	}

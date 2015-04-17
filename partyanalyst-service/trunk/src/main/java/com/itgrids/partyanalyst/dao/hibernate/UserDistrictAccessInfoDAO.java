@@ -22,7 +22,7 @@ public class UserDistrictAccessInfoDAO extends GenericDaoHibernate<UserDistrictA
 		Object[] parameters = {userId,stateId};
 		return getHibernateTemplate().find("select model.district.districtId, model.district.districtName " +
 				"from UserDistrictAccessInfo model where model.user.userId = ? "+
-				"  and model.district.state.stateId = ? ", parameters);
+				"  and model.district.state.stateId = ? order by model.district.districtName  ", parameters);
 	}
 	
 	public Integer deleteAllDistrictAccessByStateIdUserId(Long userId,Long stateId) {		
