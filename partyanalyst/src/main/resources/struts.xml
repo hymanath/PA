@@ -5630,7 +5630,8 @@
 		    <result name="tirupatiByeElection" type="redirect">currentBoothsStatus.action</result>
 		    <result name="cadreCommitteeDashBoard" type="redirect">committeeDashBoardAction.action</result>   		    
 		    <result name="tdpCommitteeStateDistrictAdmin" type="redirect">committeeManagementAction.action</result>
-		    <result name="tdpCadreSearch" type="redirect">cadreSearchPageAction.action</result>	    
+		    <result name="tdpCadreSearch" type="redirect">cadreSearchPageAction.action</result>	
+		    <result name="cadreRegistrationForOtherStates" type="redirect">cadreSearchAndRegAction.action</result>	       
 		</action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
@@ -8404,8 +8405,20 @@
 			</result>
 		</action>
 		
+		<action name="searchVoterAndCadreInfoForOtherStates" class="cadreRegistrationAction" method="searchVoterAndCadreInfoForOtherStates">
+			<result type="json" name="success">
+				<param name="root">voterInfoVOList</param>
+			</result>
+		</action>
+		
 		<action name="tdpCadreSearchAction" class="cadreRegistrationAction" method="tdpCadreSearchPage">
 			<result name="success">/jsp/tdpCadreSearch.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=tdpCadreSearchAction</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
+		
+		<action name="cadreSearchAndRegAction" class="cadreRegistrationAction" method="tdpCadreSearchPageForOtherStates">
+			<result name="success">/jsp/tdpCadreSearchOtherStates.jsp</result>
 			<result name="input">/jsp/loginForm.jsp?src=tdpCadreSearchAction</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
@@ -8463,13 +8476,21 @@
 				<param name="root">genericVOList</param>
 			</result>
 		</action>
-		
+		<action name="getConstituncyWiseTehsilDetailsAction" class="cadreRegistrationAction" method="getTehsilDetailsByConstiteuncy">
+			<result type="json" name="success">
+				<param name="root">genericVOList</param>
+			</result>
+		</action>
 		<action name="getLocationWiseDetailsAction" class="cadreRegistrationAction" method="getBoothsDetailsByLocation">
 			<result type="json" name="success">
 				<param name="root">genericVOList</param>
 			</result>
 		</action>
-		
+		<action name="getLocationWiseBoothDetailsAction" class="cadreRegistrationAction" method="getBoothsDetailsByTehsil">
+			<result type="json" name="success">
+				<param name="root">genericVOList</param>
+			</result>
+		</action>
 		<action name="getBoothCoverdVillagesDetailsAction" class="cadreRegistrationAction" method="getBoothCoverdVillagesDetails">
 			<result type="json" name="success">
 				<param name="root">genericVOList</param>
@@ -9169,6 +9190,7 @@
 		</action>
 		<action name="cadreEnrollment" class="cadreRegistrationAction" method="cadreEnrollment">
 			<result name="success">/jsp/cadreEnrollment.jsp</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>	
 		</action>
 		<action name="tdpcadresmsstatusAction" class="tdpCadreReportAction" method="tdpCadreSmsStatusExe">
 			<result name="success">/jsp/tdpcadresmsstatus.jsp</result>
@@ -9904,7 +9926,7 @@
 			<result type="json" name="success">
 				<param name="root">commiteeMembersList</param>
 			</result>
-		</action> 
+		</action>
 		 <action name="sendSmsForInviteesAction" class="cadreCommitteeAction" method="sendSmsForInvotees">
 			<result type="json" name="success">
 				<param name="root">status</param>
@@ -9925,6 +9947,12 @@
 		 <action name="getDistrictsForUserAjaxAction" class="cadreSearchAjaxAction" method="getDistrictsForUser">
 			<result type="json" name="success">
 				<param name="root">districtsListForACountry</param>
+			</result>
+		</action> 
+				 
+		 <action name="getAllMandalsInADistrict" class="cadreRegistrationAction" method="getAllMandalsInADistrict">
+			<result type="json" name="success">
+				<param name="root">selectOptionVOList</param>
 			</result>
 		</action> 
 		

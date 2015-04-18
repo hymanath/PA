@@ -18,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadrePreviousRollesVO;
 import com.itgrids.partyanalyst.dto.CadrePrintVO;
@@ -101,7 +102,14 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
     private ICrossVotingEstimationService crossVotingEstimationService;
 	private IConstituencyDAO constituencyDAO;
 	private List<CadrePreviousRollesVO> eligibleRoles;
-	
+	private Long id1;//constituencyId
+	private Long id2;//mandalId
+	private Long id3;//boothId
+	private Long id4;//voterId
+	private Long id5;//familyVoterId
+	private String voterType;
+	private AddressVO addressVO;
+	private String registeredOrNot;
 
 	public List<CadrePreviousRollesVO> getEligibleRoles() {
 	return eligibleRoles;
@@ -520,6 +528,70 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		this.crossVotingEstimationService = crossVotingEstimationService;
 	}
 
+	public Long getId1() {
+		return id1;
+	}
+
+	public void setId1(Long id1) {
+		this.id1 = id1;
+	}
+
+	public Long getId2() {
+		return id2;
+	}
+
+	public void setId2(Long id2) {
+		this.id2 = id2;
+	}
+
+	public Long getId3() {
+		return id3;
+	}
+
+	public void setId3(Long id3) {
+		this.id3 = id3;
+	}
+
+	public Long getId4() {
+		return id4;
+	}
+
+	public void setId4(Long id4) {
+		this.id4 = id4;
+	}
+
+	public Long getId5() {
+		return id5;
+	}
+
+	public void setId5(Long id5) {
+		this.id5 = id5;
+	}
+
+	public String getVoterType() {
+		return voterType;
+	}
+
+	public void setVoterType(String voterType) {
+		this.voterType = voterType;
+	}
+
+	public AddressVO getAddressVO() {
+		return addressVO;
+	}
+
+	public void setAddressVO(AddressVO addressVO) {
+		this.addressVO = addressVO;
+	}
+
+	public String getRegisteredOrNot() {
+		return registeredOrNot;
+	}
+
+	public void setRegisteredOrNot(String registeredOrNot) {
+		this.registeredOrNot = registeredOrNot;
+	}
+
 	public String execute()
 	{
 		try {
@@ -841,6 +913,22 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		return Action.SUCCESS;
 	}
 	
+	public String getTehsilDetailsByConstiteuncy()
+	{
+		LOG.info("Entered into getTehsilDetailsByConstiteuncy method in CadreRegistrationAction Action");
+		try {
+			jobj = new JSONObject(getTask());
+			
+			Long constituencyId = jobj.getLong("constituencyId");
+			
+			genericVOList = cadreRegistrationForOtherStatesService.getTehsilByConstiteuncy(constituencyId);
+			
+		} catch (Exception e) {
+			LOG.error("Exception rised in getTehsilDetailsByConstiteuncy",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 	public String getBoothsDetailsByLocation()
 	{
 		LOG.info("Entered into getconstituencyDetailsByConstiteuncy method in CadreRegistrationAction Action");
@@ -857,7 +945,21 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		}
 		return Action.SUCCESS;
 	}
-	
+	public String getBoothsDetailsByTehsil()
+	{
+		LOG.info("Entered into getBoothsDetailsByTehsil method in CadreRegistrationAction Action");
+		try {
+			jobj = new JSONObject(getTask());
+			
+			Long locationId = jobj.getLong("locationId");
+			
+			genericVOList = cadreRegistrationForOtherStatesService.getBoothsDetailsByTehsil(locationId);
+			
+		} catch (Exception e) {			
+			LOG.error("Entered into getBoothsDetailsByTehsil method in CadreRegistrationAction Action");
+		}
+		return Action.SUCCESS;
+	}
 	public String getMultipleBoothsDetailsByLocation()
 	{
 		LOG.info("Entered into getconstituencyDetailsByConstiteuncy method in CadreRegistrationAction Action");
@@ -1453,7 +1555,13 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 				if(user == null)
 				{
-					inputStream = new StringBufferInputStream("notlogged");
+					inputStream = new StringBufferInputStream(",notlogged,");
+					return Action.SUCCESS;
+				}
+				
+				if(!entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATIONFOR_OTHERSTATES"))
+				{
+					inputStream = new StringBufferInputStream(",notAccess,");
 					return Action.SUCCESS;
 				}
 				cadreRegistrationVO.setCreatedUserId(user.getRegistrationID());
@@ -1483,9 +1591,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 					}
 					
 				}
-				if(cadreUploadImgCadreType != null){
-					cadreRegistrationVO.setPhotoType("cadre");
-				}else if(cadreUploadImgVoterType != null){
+				if(cadreUploadImgVoterType != null){
 					cadreRegistrationVO.setPhotoType("voter");
 				}else{
 					cadreRegistrationVO.setPhotoType("new");
@@ -1494,35 +1600,72 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				List<CadreRegistrationVO> cadreRegistrationVOList = new ArrayList<CadreRegistrationVO>();
 				cadreRegistrationVO.setPath(IWebConstants.STATIC_CONTENT_FOLDER_URL);
 				surveyCadreResponceVO = new SurveyCadreResponceVO();
-				  cadreRegistrationForOtherStatesService.tdpCadreSavingLogic(cadreRegistrationVO,surveyCadreResponceVO,"new",true);
-				  surveyCadreResponceVO.setResultCode(ResultCodeMapper.SUCCESS);
-				if(surveyCadreResponceVO.getResultCode() == ResultCodeMapper.SUCCESS){
+				  cadreRegistrationForOtherStatesService.tdpCadreSavingLogic(addressVO,cadreRegistrationVO,surveyCadreResponceVO,"new",true);
+				  if(surveyCadreResponceVO.getStatus().equalsIgnoreCase("alreadyRegistered")){
+					  inputStream = new StringBufferInputStream(",alreadyRegistered,");
+					  return Action.SUCCESS;
+				  }else if(surveyCadreResponceVO.getStatus().equalsIgnoreCase("error")){
+					  inputStream = new StringBufferInputStream(",regfailed,");
+					  return Action.SUCCESS;
+				  }else if(surveyCadreResponceVO.getStatus().equalsIgnoreCase("SUCCESS")){
 					LOG.debug("fileuploades is sucess Method");
 					if(surveyCadreResponceVO.getEnrollmentNumber() != null && surveyCadreResponceVO.getEnrollmentNumber().trim().length() > 0 ){
 						inputStream = new StringBufferInputStream("SUCCESS" +"," +surveyCadreResponceVO.getEnrollmentNumber()  +",");
+					}else{
+						inputStream = new StringBufferInputStream(",regfailed,");
 					}
-				}
-				else
-					inputStream = new StringBufferInputStream("fail");
+				  }else{
+					  inputStream = new StringBufferInputStream(",regfailed,");
+				  }
 			}
 		} catch (Exception e) {
 			LOG.error("Exception raised in saveCadreDetailsForOtherStates method in CadreRegistrationAction Action",e);
+			inputStream = new StringBufferInputStream(",regfailed,");
+			  return Action.SUCCESS;
 		}
 		return Action.SUCCESS;
 	}
 	
 	public String cadreEnrollment(){
+		//id1 constituencyId
+		//id2 mandalId
+		//id3 boothId
+		//id4 voterId
+		//id5 familyVoterId
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
-		Long userID = user.getRegistrationID();
-		Long electionYear = Long.valueOf(IConstants.PRESENT_ELECTION_YEAR);
-		Long electionTypeId = Long.valueOf(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
-		constituencyesList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
-		
-		genericVOList = candidateUpdationDetailsService.gettingEducationDetails();
-		selectOptionVOList = staticDataService.getAllOccupations();
-		voterInfoVOList = cadreRegistrationService.getCandidateInfoBySearchCriteria("voter",0l,IWebConstants.STATIC_CONTENT_FOLDER_URL,null);
-		return Action.SUCCESS;
+		if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATIONFOR_OTHERSTATES"))
+		{
+		    voterType = "voter";
+			Long candidateId = id4;
+			if(id5 != null && id5.longValue() > 0){
+				voterType = "familyVoter";
+				candidateId = id5;
+			}
+			registeredOrNot ="notRegistered";
+			if(voterType.equalsIgnoreCase("voter")){
+				String status = cadreRegistrationForOtherStatesService.checkVoterAlreadyRegisteredOrNot(candidateId);
+				if(status.equalsIgnoreCase("alreadyRegistered")){
+					registeredOrNot = "registered";
+					return Action.SUCCESS;
+				}
+			}
+			Long stateId = cadreRegistrationForOtherStatesService.getStateByConstituencyId(id1);
+			constituencyesList = cadreRegistrationForOtherStatesService.getAllDistrictsByStateId(stateId);//all districts
+			relativeTypeId = cadreRegistrationForOtherStatesService.getDistrictIdByConstituencyId(id1);//selected constituency districtId
+			if(relativeTypeId != null){
+			 cadreRolesVOList = cadreRegistrationForOtherStatesService.getAllMandalsInADistrict(relativeTypeId);//all mandals in selected district
+			}
+			if(cadreRolesVOList == null){
+				cadreRolesVOList = new ArrayList<SelectOptionVO>();
+			}
+			genericVOList = candidateUpdationDetailsService.gettingEducationDetails();
+			selectOptionVOList = staticDataService.getAllOccupations();
+			voterInfoVOList = cadreRegistrationForOtherStatesService.getCandidateInfoBySearchCriteria(voterType,candidateId,id1);
+			return Action.SUCCESS;
+		}else{
+			return "error";
+		}
 	}
 	
 	public String saveCommitteCadreDetails()
@@ -1621,6 +1764,78 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		catch(Exception e){
 			LOG.error("Exception raised in getExistingCadreInfoForCommittee method in CadreRegistrationAction action", e);
 		}
+		return Action.SUCCESS;
+	}
+	
+	public String tdpCadreSearchPageForOtherStates()
+	{
+		LOG.info("Entered into tdpCadreSearchPage method in CadreRegistrationAction Action");
+		try {
+			
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			
+			if(user == null)
+				return Action.INPUT;
+			
+			if(entitlementsHelper.checkForEntitlementToViewReport(user,"CADRE_REGISTRATIONFOR_OTHERSTATES"))
+			{
+				Long stateTypeId = 0L; // 0 for All, 1 for AP, 2 for TG 
+				
+				if(user.getAccessType().equalsIgnoreCase("MLA")){
+					selectOptionVOList =	surveyDataDetailsService.getAssemblyOfLoggedUser(user.getAccessValue(),user.getAccessType());
+				}else if(user.getAccessType().equalsIgnoreCase("STATE")){
+					selectOptionVOList = 	surveyDataDetailsService.getAssemblyConstituenciesByStateId(stateTypeId,Long.valueOf(user.getAccessValue().trim()));
+				}else if(user.getAccessType().equalsIgnoreCase("DISTRICT")){
+					selectOptionVOList = 	surveyDataDetailsService.getAssemblyOfLoggedUser(user.getAccessValue(),user.getAccessType());
+				}
+	    		
+			}else{
+				return "error";
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in tdpCadreSearchPage method in CadreRegistrationAction Action",e);
+		}
+	
+		return Action.SUCCESS;
+	}
+	
+	public String searchVoterAndCadreInfoForOtherStates(){
+		LOG.info("Entered into searchVoterAndCadreInfoForOtherStates method in CadreRegistrationAction Action");
+	
+		try {
+			jobj = new JSONObject(getTask());
+			
+			Long constituencyId = jobj.getLong("constituencyId");
+			String candidateName = jobj.getString("candidateName");
+			String houseNo = jobj.getString("houseNo");
+			String voterCardNo = jobj.getString("voterCardNo");
+			Long tehsilId = jobj.getLong("panchayatId");
+			Long boothId = jobj.getLong("boothId");
+			Integer startIndex = null;
+			Integer maxIndex = null;
+			try{
+			 startIndex = jobj.getInt("startIndex");
+			 maxIndex = jobj.getInt("maxIndex");
+			}catch(Exception e){
+				
+			}
+			
+			voterInfoVOList = cadreRegistrationForOtherStatesService.getSearchDetailsCadreRegistration(constituencyId,candidateName,voterCardNo,
+					                       houseNo,tehsilId,boothId,startIndex,maxIndex);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in searchVoterAndCadreInfoForOtherStates method in CadreRegistrationAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getAllMandalsInADistrict(){
+		
+		selectOptionVOList = cadreRegistrationForOtherStatesService.getAllMandalsInADistrict(Long.valueOf(request.getParameter("districtId")));
+		
 		return Action.SUCCESS;
 	}
 }

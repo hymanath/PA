@@ -2486,8 +2486,17 @@
          <property name="userAddressDAO" ref="userAddressDAO" />
          <property name="voterDAO" ref="voterDAO" />
          <property name="constituencyDAO" ref="constituencyDAO" />
-          <property name="tdpCadreFamilyDetailsDAO" ref="tdpCadreFamilyDetailsDAO" />
-          <property name="smsJobStatusDAO" ref="smsJobStatusDAO" />
+         <property name="tdpCadreFamilyDetailsDAO" ref="tdpCadreFamilyDetailsDAO" />
+         <property name="smsJobStatusDAO" ref="smsJobStatusDAO" />
+         <property name="tehsilDAO" ref="tehsilDAO" />
+         <property name="boothDAO" ref="boothDAO" />
+         <property name="voterNamesDAO" ref="voterNamesDAO" />
+         <property name="tdpCadreTeluguNamesDAO" ref="tdpCadreTeluguNamesDAO" />
+         <property name="casteStateDAO" ref="casteStateDAO" />
+         <property name="bloodGroupDAO" ref="bloodGroupDAO" />
+         <property name="districtDAO" ref="districtDAO" />
+         <property name="cadreAddressDAO" ref="cadreAddressDAO" />
+         <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
  	 </bean>
  	 <bean name="tdpCallCenterService"  class="com.itgrids.partyanalyst.service.impl.TdpCallCenterService">
  	 <!-- <property name="cadreCallerDetailsDAO" ref="cadreCallerDetailsDAO" />-->

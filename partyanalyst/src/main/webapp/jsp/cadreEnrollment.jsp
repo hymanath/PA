@@ -440,10 +440,18 @@
 		var Ngender = $('#nomineeGenderId').val();
 		var NAge = $('#nomineeAgeId').val();
 		var Nrelation = $('#voterRelationId').val();
+		
+		var selDistrictId = $('#selDistrictId').val();
+		var selTehsilId = $('#selTehsilId').val();
+		var villageWardId = $('#villageWardId').val();
+		var houseNumberId = $('#houseNumberId').val();
+		var pinCodeId = $('#pinCodeId').val();
+
+		
 		$('#imageErr').html('');
 		
 		$('#NaadharErr,#NnameErr,#NgenderErr,#NageErr,#dobErr,#NrelationErr,#gendReqErr').html('');
-		$('#casteErr,#mobileErr,#ageErr,#cardErr,#dobErr,#nameErr').html('');
+		$('#casteErr,#mobileErr,#ageErr,#cardErr,#dobErr,#nameErr,#selDistrictErr,#selTehsilErr,#villageWardErr,#houseNumberErr,#pinCodeErr').html('');
 		 if(!$("#maleGenderRId").is(':checked') && !$("#femaleGenderRId").is(':checked')){
 			 $('#gendReqErr').html('Please select gender');
 		 }
@@ -464,10 +472,6 @@
 		if(validateName('garErr','gardianNameId',1)){
 			isErrorStr = " error";	
 		}
-		if($('#selConstiId').val() == 0){
-			isErrorStr = " error";
-			$('#selConstiErr').html(' Please Select Constituency.');
-		}
 		if(validateName('relErr','relationTypessId',1)){
 			isErrorStr = " error";	
 		}
@@ -477,6 +481,7 @@
 		if(isValidName('number')){
 			isErrorStr = " error";	
 		}
+
 		if(casteId == 0)
 		{
 			isErrorStr = " error";
@@ -499,6 +504,39 @@
 			isErrorStr = " error";
 			$('#nameErr').html(' Candidate Name is required.');
 		}		
+		
+		var pinCodeId = $('#pinCodeId').val();
+		
+		if(selDistrictId == null || selDistrictId == 0)
+		{
+			isErrorStr = " error";
+			$('#selDistrictErr').html(' Please Select District.');
+		}
+		
+		if(selTehsilId == null || selTehsilId == 0)
+		{
+			isErrorStr = " error";
+			$('#selTehsilErr').html(' Please Select Tehsil.');
+		}
+		if($.trim(villageWardId).length == 0)
+		{
+			isErrorStr = " error";
+			$('#villageWardErr').html('Ward/Village Is Required.');
+		}
+		if($.trim(houseNumberId).length == 0)
+		{
+			isErrorStr = " error";
+			$('#houseNumberErr').html('House No Is Required.');
+		}
+		
+		if($.trim(pinCodeId).length == 0)
+		{
+			isErrorStr = " error";
+			$('#pinCodeErr').html('Pin Code Is Required.');
+		}else if(isNaN($.trim(pinCodeId))){
+			isErrorStr = " error";
+			$('#pinCodeErr').html('Pin Code Must Be Number.');
+		}
 		
 		if(Nname != null && Nname.trim().length == 0)
 		{
@@ -625,7 +663,36 @@
 		var errorDivEle = document.getElementById('errorMsgDiv');
 		var str = '';
 		var resultArr = result.split(',');
-		if(result.search('SUCCESS') != -1)
+		if(result.search('notAccess') != -1)
+		{
+			location.reload(); 
+		}
+		else if(result.search('alreadyRegistered') != -1)
+		{
+			str+= '<div class="container m_top10" id="yourElement">';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<h3 class="text-align">VOTER ALREADY REGISTERED AS CADRE.</h3>';
+			str+= '</div>';
+			str+= '</div>';
+			str+= '<div class="container m_top10" id="yourElement">';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<a href="cadreSearchAndRegAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
+			str+= '</div>';
+			str+= '</div>';
+		}else if(result.search('regfailed') != -1)
+		{
+			str+= '<div class="container m_top10" id="yourElement">';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<h3 class="text-align" style="color:red">ERROR OCCURED!. TRY AGAIN LATER.</h3>';
+			str+= '</div>';
+			str+= '</div>';
+			str+= '<div class="container m_top10" id="yourElement">';
+			str+= '<div class="span12  show-grid" style="position: relative;">';
+			str+= '<a href="cadreSearchAndRegAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
+			str+= '</div>';
+			str+= '</div>';
+		}
+		else if(result.search('SUCCESS') != -1)
 		{
 			str+= '<div class="container m_top10" id="yourElement">';
 			str+= '<div class="span12  show-grid" style="position: relative;">';
@@ -638,38 +705,11 @@
 			str+= '</div>';
 			str+= '<div class="container m_top10" id="yourElement">';
 			str+= '<div class="span12  show-grid" style="position: relative;">';
-			str+= '<a href="cadreEnrollment.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
+			str+= '<a href="cadreSearchAndRegAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
 			str+= '</div>';
 			str+= '</div>';
 		}
-		else if(result.search('FAILURE') != -1)
-		{
-			str+= '<div class="container m_top10" id="yourElement">';
-			str+= '<div class="span12  show-grid" style="position: relative;">';
-			str+= '<h3 class="text-align">Error raised while cadre registration</h3>';
-			str+= '</div>';
-			str+= '</div>';
-			str+= '<div class="container m_top10" id="yourElement">';
-			str+= '<div class="span12  show-grid" style="position: relative;">';
-			str+= '<a href="cadreEnrollment.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
-			str+= '</div>';
-			str+= '</div>';
-		}
-		/*else
-		{
-			str+= '<div class="container m_top10" id="yourElement">';
-			str+= '<div class="span12  show-grid" style="position: relative;">';
-			str+= '<p class="text-align">Thank You For Your Registration</p>';
-			str+= '<h3 class="text-align">Data Not Found For your Voter Id</h3>';
-			str+= '</div>';
-			str+= '</div>';
-			str+= '<div class="container m_top10" id="yourElement">';
-			str+= '<div class="span12  show-grid" style="position: relative;">';
-			str+= '<a href="tdpCadreSearchAction.action" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
-			str+= '</div>';
-			str+= '</div>';
-			
-		}*/
+		
 		$('#statusDiv').html(str);
 	}
 	var cadreLevelArr = [];
@@ -852,7 +892,8 @@
 					var reader = new FileReader();
 					reader.onloadend = handleReaderLoadEnd;
 					reader.readAsDataURL(file); 
-                    newPhotoUploaded = true;					
+                    newPhotoUploaded = true;
+                    $("#voterActualImgId").removeAttr('checked');
             } 
 			//The file upload is NOT an image
 			else 
@@ -1184,6 +1225,7 @@
 			<h3 class="text-align">CADRE REGISTRATION</h3>
 		</div>
 	</div>
+	<s:if test="registeredOrNot == 'notRegistered'">
 	<div id="mainDiv">
 		<div>
 			<form action="tdpCadreSaveRegistrationForOtherAction.action" method="POST" enctype="multipart/form-data" name="uploadCadreForm">	
@@ -1191,7 +1233,7 @@
 		
 			<div class="span12" >
 				<div class="row-fluid">
-					<div class="span6   show-grid"  id="fadeInLeft" style="min-height: 779px;">
+					<div class="span6   show-grid"  id="fadeInLeft" style="min-height: 895px;">
 					<input type="hidden" class="form-control border-radius-0 text-align2" value="${voterInfoVOList[0].voterId}" > 
 					
 					<input type="hidden" class="form-control border-radius-0 text-align2" value="0" name="cadreRegistrationVO.panchayatId"> 
@@ -1200,23 +1242,22 @@
 					<input type="hidden"  value = "${voterInfoVOList[0].cadreId}" name="cadreRegistrationVO.cadreId" > 
 					
 										<div class="span12">
-										<div class="span12"  style="margin-left: 10px;">
-											<h5 style="color: #9a9a9a;"> SELECT CONSTITUENCY <span class="mandatory">*</span> </h5>
-											
-											<s:select theme="simple" name="cadreRegistrationVO.constituencyId" cssClass="selectBoxWidth span12 input-block-level" id="selConstiId" list="constituencyesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Constituency" style="width:437px;" />
-											<span id="selConstiErr" style="color:red;font-size:12px;"></span>
-										</div>	
-										<div class="span6">
-											<h5 style="color: #9a9a9a;">  CANDIDATE NAME <span class="mandatory">*</span> </h5>
-											<input type="text" class="form-control border-radius-0" placeholder="Candidate Name" name="cadreRegistrationVO.voterName"  value="${voterInfoVOList[0].name}" id="cadreNameId" onkeyup="validateName('nameErr','cadreNameId',1);"></input>
-											<span id="nameErr" style="color:red;font-size:12px;"></span>
-										</div>	
-										<div class="span5">	
-											<h5 class="text-align1">Age <span class="mandatory">*</span> </h5>
-											<input style="width:180px;" id="cadreAgeId" type="text" class="form-control border-radius-0 text-align2"  placeholder="Age" name="cadreRegistrationVO.age"   value="${voterInfoVOList[0].age}"  onkeyup="validateName('ageErr','cadreAgeId',0);"></input>
-											<span id="ageErr" style="color:red;font-size:12px;"></span>
+											<input type="hidden" id="selConstiId" name="cadreRegistrationVO.constituencyId" value="">										
+											<div class="span6">
+												<h5 style="color: #9a9a9a;">  CADRE NAME <span class="mandatory">*</span> </h5>
+												<input type="text" class="form-control border-radius-0" placeholder="Candidate Name" name="cadreRegistrationVO.voterName"  value="${voterInfoVOList[0].name}" id="cadreNameId" onkeyup="validateName('nameErr','cadreNameId',1);"></input>
+												<span id="nameErr" style="color:red;font-size:12px;"></span>
+											</div>	
+											<div class="span5">	
+												<h5 class="text-align1">Age <span class="mandatory">*</span> </h5>
+												<input style="width:180px;" id="cadreAgeId" type="text" class="form-control border-radius-0 text-align2"  placeholder="Age" name="cadreRegistrationVO.age"   value="${voterInfoVOList[0].age}"  onkeyup="validateName('ageErr','cadreAgeId',0);"></input>
+												<span id="ageErr" style="color:red;font-size:12px;"></span>
+											</div>
 										</div>
-										</div>
+										<div class="span11" style="margin-left: 18px;">
+											<h5 style="color: #9a9a9a;">CADRE NAME IN MOTHER TONGUE</h5>
+											<input type="text" class="form-control border-radius-0" placeholder="Name In Mother Tongue" style="width:190px;"  value="${voterInfoVOList[0].teluguName}" name="cadreRegistrationVO.voterTeluguName" ></input>											
+										</div>	
 										<div class="span12">
 										</div>
 										<div class="span12"> 
@@ -1231,24 +1272,9 @@
 													 </div>
 													</s:if>
 												  </li>
-												  <li id="cadreActualImgLiId">
-												   <s:if test="voterInfoVOList[0].cadreImagePresent == true">
-													 <div class="well  pad-5 m_top10" style="width: 125px; padding-bottom: 15px;padding-top: 13px;">
-														<span><img src="${voterInfoVOList[0].cadreImage}" style="width: 140px; height: 120px;"></span>
-														<div class="btn btn-mini btn-block"> <input type="checkbox" class="m_top10" onclick="hideVoterImg();" name="cadreUploadImgCadreType" id="cadreActualImgId" style="margin-top:-1px;">
-															 <span style="color: #9a9a9a;font-weight: bold;">&nbsp;Use This Photo</span>
-														</div>
-													 </div>
-													</s:if>
-												  </li>
 												  <li>
 													<div style="width: 125px;" class="well  pad-5 m_top10">
-														<s:if test="voterInfoVOList[0].image != null">
-														  <span id="uploadImg"><img style="width: 140px; height: 120px;" id="actuploadImg" src="${voterInfoVOList[0].image}"></span>
-														</s:if>
-														<s:else>
 														  <span id="uploadImg"><img style="width: 140px; height: 120px;" id="actuploadImg" src="images/mahaNadu/user image.jpg"></span>
-														</s:else>
 														<div class="btn-group"><input type="hidden" id="base64Image" name="cadreRegistrationVO.imageBase64String"/>
 															<span style="display:none;"><input type="checkbox" style="margin-top:-1px;" id="newTakenImgId" name="newTakenImgType" onclick="hideVoterImg();"></span>
 															<input type="file" class="m_top10 btn btn-mini" name="cadreRegistrationVO.uploadImage" onchange="changeImg();" id="uploadFileId" style="width: 58px; margin-left: 0px; padding-left: 0px;">
@@ -1304,7 +1330,6 @@
 										<input type="text" class="form-control border-radius-0 text-align2" placeholder="Guardian Name" name="cadreRegistrationVO.relativeName"   value="${voterInfoVOList[0].relativeName}"  id="gardianNameId" onkeyup="validateName('garErr','gardianNameId',1);"></input>
 										<br><span id="garErr" style="color:red;font-size:12px;"></span>
 										</div>
-										<input type="hidden" value="${voterInfoVOList[0].voterId}" name="cadreRegistrationVO.voterId"></input>
 										<div class="span6">
 										<h5 class="text-align1">Relationship Type</h5>
 											<input type="text" class="form-control border-radius-0 " placeholder="Relationship Type" name="cadreRegistrationVO.relationType"   value="${voterInfoVOList[0].relationType}" id="relationTypessId" onkeyup="validateName('relErr','relationTypessId',1);"></input>
@@ -1314,36 +1339,27 @@
 								</div>
 								<div class="m_top10">
 										<div class="row-fluid">
-										  <s:if test="voterInfoVOList[0].voterCardNo == null || voterInfoVOList[0].voterCardNo.length == 0 ">
-											<div style="width:150px;float:left;">
+										  <div class="span6">
+										   <c:if test="${voterType == 'voter'}">
 											<h5 class="text-align1">VOTER ID </h5>
-												<input type="text" class="form-control border-radius-0 text-align2 " placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"   id="cardNumber" value="${voterInfoVOList[0].voterCardNo}" style="width:135px;"></input>
-												 <span id="cardErr" style="color:red;font-size:12px;"></span>
-												<!--<input type="hidden" id="cardNo" class="form-control border-radius-0 input-block-level" placeholder="Text input" value="${voterInfoVOList[0].voterCardNo}" style="width:260px;" ></input>-->
-											</div>
-											
-											<div style="width: 120px; float: left; margin-top: 20px;">
-												<a id="searchByNameId" class="btn btn-success" href="javascript:{enableLookupName();}" style="margin-top: 20px; width: 120px; margin-left: 16px;">LookUp</a>
-											</div>
-											
-											<div style="width: 120px; float: left; margin-left: 49px;">
-											<h5 class="text-align1">H NO</h5>
-												<input type="text" class="form-control border-radius-0 " placeholder="House Number" name="cadreRegistrationVO.houseNo" style="width: 120px; float: left; margin-left: 0px;"  value="${voterInfoVOList[0].houseNo}"></input>
-											</div>
-										    </s:if>
-										  <s:else>
-											<div class="span6">
-											<h5 class="text-align1">VOTER ID </h5>
-												<input type="text" class="form-control border-radius-0 text-align2 " placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"   id="cardNumber" value="${voterInfoVOList[0].voterCardNo}" ></input>
-												 <span id="cardErr" style="color:red;font-size:12px;"></span>
-											</div>
-											
-											<div class="span6">
+											<input type="text" class="form-control border-radius-0 text-align2 " placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"   id="cardNumber" value="${voterInfoVOList[0].voterCardNo}" style="width:135px;"></input>
+											<span id="cardErr" style="color:red;font-size:12px;"></span>
+											<input type="hidden" name="cadreRegistrationVO.voterId" value="${voterInfoVOList[0].voterId}"></input>
+										    <input type="hidden" name="cadreRegistrationVO.cadreType" value="voter" ></input>
+											</c:if>
+											<c:if test="${voterType == 'familyVoter'}">
+											<h5 class="text-align1">FAMILY VOTER ID </h5>
+											<input type="text" class="form-control border-radius-0 text-align2 " placeholder="Voter Id" name="cadreRegistrationVO.voterCardNumber"   id="cardNumber" value="${voterInfoVOList[0].voterCardNo}" style="width:135px;"></input>
+											<span id="cardErr" style="color:red;font-size:12px;"></span>
+											<input type="hidden" name="cadreRegistrationVO.familyVoterId" value="${voterInfoVOList[0].voterId}" ></input>
+											<input type="hidden" name="cadreRegistrationVO.cadreType" value="familyVoter" ></input>
+										    <input type="hidden" name="cadreRegistrationVO.relationTypeId" value="${countDownTime}" />
+											</c:if>
+										  </div>
+										  <div class="span6">
 											<h5 class="text-align1">H NO</h5>
 												<input type="text" class="form-control border-radius-0 " placeholder="House Number" name="cadreRegistrationVO.houseNo" style="float: left; margin-left: 0px;"  value="${voterInfoVOList[0].houseNo}"></input>
 											</div>
-										  </s:else>
-
 										</div>
 								</div>	
 								
@@ -1362,45 +1378,28 @@
 											</div>
 										</div>
 								</div>	
-								<!--<div class="m_top10">
-									
-											<h5 class="text-align1">REFERED BY</h5>
-												<input type="text" class="form-control border-radius-0 text-align1" placeholder="">
-							
-								</div>-->
-						
-					</div>
-					<div class="span6 show-grid pad-10b" id="fadeInRight" style="min-height: 779px;" >
-							<!-- 
-							<div class=" m_top20" >
-								<h5 class="text-align1">Aadhar Card No .</h5>
-								<input type="text" class=""  style="width:260px;" placeholder="Aadhar Number"  name="cadreRegistrationVO.aadheerNo" value="${voterInfoVOList[0].aadharNo}"></input>
-							-->
-								<div class=" m_top20" >
-									<h5 class="text-align1">Aadhar Card No .</h5>
-									<input type="text" class=""  style="width:260px;" placeholder="Aadhar Number" id="candAdrId" onkeyup="isAadharNumber('candAdrId','Aadhar No ')"  name="cadreRegistrationVO.candidateAadherNo" value="${voterInfoVOList[0].candidateAadharNo}"></input>
-								    <br/><span id="errcandAdrId" style="color:red;font-size:12px;"></span>
+								<div class="m_top10">
+								     <div class="row-fluid">
+								        <div class=" span6" >
+										  <h5 class="text-align1">MOBILE NUMBER <span class="mandatory">*</span></h5>
+										  <input type="text" class="form-control border-radius-0 text-align2" id="mobileNumberId" placeholder=" Mobile Number "  name="cadreRegistrationVO.mobileNumber"  value="${voterInfoVOList[0].mobileNo}"  maxlength="10" onKeyup="isNumber()"></input>
+							              <br/><span id="mobileErr" style="color:red;font-size:12px;margin-left: 12px;"></span>
+										</div>
+										<div class=" span6" >
+									      <h5 class="text-align1">Aadhar Card No</h5>
+									       <input type="text" class="form-control border-radius-0"  placeholder="Aadhar Number" id="candAdrId" onkeyup="isAadharNumber('candAdrId','Aadhar No ')"  name="cadreRegistrationVO.candidateAadherNo" value="${voterInfoVOList[0].candidateAadharNo}"></input>
+								           <br/><span id="errcandAdrId" style="color:red;font-size:12px;"></span>
+								        </div>
+									 </div>
 								</div>
-							
-							
-								<div class=" m_top20" >
-										<h5 class="text-align1">ADDRESS/STREET/HAMLET/PINCODE</h5>
-										<textarea  class="form-control border-radius-0  input-block-level" placeholder="ADDRESS/STREET/HAMLET/PINCODE" name="cadreRegistrationVO.street"  style="width:260px;">${voterInfoVOList[0].location}</textarea>
-								</div>	
+					</div>
+					<div class="span6 show-grid pad-10b" id="fadeInRight" style="min-height:895px;" >
+
 							<div class=" m_top20" >
-										<h5 class="text-align1">CASTE NAME <span class="mandatory">*</span><span id="casteErr" style="color:red;font-size:12px;"></span>  </h5>
+										<h5 class="text-align1">SELECT NAME <span class="mandatory">*</span><span id="casteErr" style="color:red;font-size:12px;"></span>  </h5>
 									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="casteId" list="voterInfoVOList[0].genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Caste " style="width:260px;" name="cadreRegistrationVO.casteId"   value="%{voterInfoVOList[0].casteId}"/>	
-								
-									
-									<!-- <input type="text" class="form-control border-radius-0  input-block-level" id="casteIdValue" placeholder=" Caste Name "   value="${voterInfoVOList[0].casteName}" style="width:260px;"></input>
-										
-										<input type="hidden" class="form-control border-radius-0  input-block-level" id="casteId" placeholder="Enter Caste" name="cadreRegistrationVO.casteId"  value="${voterInfoVOList[0].casteId}" style="width:260px;"></input>
-										-->
 							</div>
-							<div class=" m_top20" >
-										<h5 class="text-align1">MOBILE NUMBER <span class="mandatory">*</span> <span id="mobileErr" style="color:red;font-size:12px;"></span> </h5>
-										<input type="text" id="mobileNumberId" class="form-control border-radius-0 input-block-level" placeholder=" Mobile Number "  name="cadreRegistrationVO.mobileNumber"  value="${voterInfoVOList[0].mobileNo}" style="width:260px;" maxlength="10" onKeyup="isNumber()"></input>
-							</div>
+							
 							<div class=" m_top20" >
 								<h5 class="text-align1">EDUCATION</h5>
 								<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="educationId" list="genericVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Education " style="width:260px;" name="cadreRegistrationVO.educationId" value="%{voterInfoVOList[0].education}"/>
@@ -1408,10 +1407,31 @@
 							<div class=" m_top20" >
 								<h5 class="text-align1">OCCUPATION</h5>											
 									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="occupationId" list="selectOptionVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Occupation " style="width:260px;" name="cadreRegistrationVO.occupationId"   value="%{voterInfoVOList[0].occupationId}"/>	
-											
-							
 							</div>
-							
+							<div class=" m_top20" >
+								<h5 class="text-align1">Select District<span class="mandatory">*</span> <span id="selDistrictErr" style="color:red;font-size:12px;"></span> </h5>											
+									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="selDistrictId" list="constituencyesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District " style="width:260px;" name="addressVO.districtId"   value="%{relativeTypeId}"/>	
+							</div>
+							<div class=" m_top20" >
+								<h5 class="text-align1">Select Tehsil/Mandal<span class="mandatory">*</span> <span id="selTehsilErr" style="color:red;font-size:12px;"></span> </h5>											
+									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="selTehsilId" list="cadreRolesVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Tehsil/Mandal " style="width:260px;" name="addressVO.tehsilId"   value="%{id2}"/>	
+							</div>
+							<div class=" m_top20" >
+										<h5 class="text-align1">Ward/Village<span class="mandatory">*</span> <span id="villageWardErr" style="color:red;font-size:12px;"></span> </h5>
+										<input type="text" id="villageWardId" class="form-control border-radius-0 input-block-level" placeholder=" Ward/Village "  name="addressVO.hamletName"  style="width:260px;" ></input>
+							</div>
+							<div class=" m_top20" >
+										<h5 class="text-align1">House No<span class="mandatory">*</span> <span id="houseNumberErr" style="color:red;font-size:12px;"></span> </h5>
+										<input type="text" id="houseNumberId" class="form-control border-radius-0 input-block-level" placeholder=" House No "  name="addressVO.houseNo"  style="width:260px;"></input>
+							</div>
+							<div class=" m_top20" >
+										<h5 class="text-align1">Pin Code<span class="mandatory">*</span> <span id="pinCodeErr" style="color:red;font-size:12px;"></span> </h5>
+										<input type="text" id="pinCodeId" class="form-control border-radius-0 input-block-level" placeholder=" Pin Code "  name="addressVO.pinCode" style="width:260px;"></input>
+							</div>
+							<div class=" m_top20" >
+										<h5 class="text-align1">Land Mark </h5>
+										<input type="text" id="landMarkId" class="form-control border-radius-0 input-block-level" placeholder=" Land Mark "  name="addressVO.street" style="width:260px;"></input>
+							</div>
 						
 					</div>
 				</div>
@@ -1665,6 +1685,17 @@
 </form>
 </div>
 </div>
+</s:if>
+<s:else>
+   <div class="container m_top10 ">
+        <div style="position: relative;" class="span12 show-grid">
+			<h3 class="text-align">VOTER ALREADY REGISTERED AS CADER</h3>
+		</div>
+   </div>
+   <script type="text/javascript">
+     $("#yourElement").hide();
+   </script>
+</s:else>
 				
 				<div id="myModal" style="display:none;">
 						<div style="border:1px solid lightgray;">
