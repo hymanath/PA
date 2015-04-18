@@ -1003,7 +1003,7 @@ public class CadreRegistrationForOtherStatesService implements
 				  Voter voter = voterDAO.get(candidateId);
 				  if(voter != null ){
 					if(voterType.equalsIgnoreCase("voter")){
-						vo.setVoterId(voter.getVoterId());
+						
 						vo.setName(voter.getName() != null ? voter.getName():"");
 						vo.setRelativeName(voter.getRelativeName() != null ? voter.getRelativeName():"");
 						vo.setRelationType(voter.getRelationshipType() != null ? voter.getRelationshipType():"");
@@ -1016,6 +1016,7 @@ public class CadreRegistrationForOtherStatesService implements
 							vo.setVoterImage(voter.getImagePath());
 						}
 					}
+					vo.setVoterId(voter.getVoterId());
 					vo.setHouseNo(voter.getHouseNo() != null ? voter.getHouseNo().toString():"");
 					houseNo = vo.getHouseNo();
 					voterId = candidateId;
