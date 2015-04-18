@@ -579,7 +579,8 @@
 				<value>com.itgrids.partyanalyst.model.MahanaduGroup</value>
 				<value>com.itgrids.partyanalyst.model.MahanaduCadreMember</value>
 				<value>com.itgrids.partyanalyst.model.PublicRepresentative</value>	
-				<value>com.itgrids.partyanalyst.model.MahanaduPublicRepresentative</value>			
+				<value>com.itgrids.partyanalyst.model.MahanaduPublicRepresentative</value>	
+				<value>com.itgrids.partyanalyst.model.CadreAddress</value>		
 				</list>
 			
 		</property>

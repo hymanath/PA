@@ -148,6 +148,7 @@
 		<pattern>/constituencyCommitteeSummaryAction*</pattern>
 		<pattern>/cadreCommitteeRolesDashboard*</pattern>
         -->
+        <pattern>/cadreSearchAndRegAction*</pattern>
  	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
