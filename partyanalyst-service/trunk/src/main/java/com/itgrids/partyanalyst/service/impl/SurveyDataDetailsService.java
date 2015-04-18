@@ -6072,7 +6072,16 @@ public class SurveyDataDetailsService implements ISurveyDataDetailsService
 			  finalList.add(sv);
 			  
 		  }
-		  
+		  if(accessType.equalsIgnoreCase("District")){
+			  List<Object[]> constituenciesList = (List<Object[]>)constituencyDAO.findConstituencyByDistrictElectionType(Long.valueOf(accessValue),"Assembly");
+			  for(Object[] constituency:constituenciesList){
+			  SelectOptionVO sv = new SelectOptionVO();
+			  sv.setId((Long)constituency[0]);
+			  sv.setName(constituency[1].toString());
+			  
+			  finalList.add(sv);
+			  }
+		  }
 		  return finalList;
 	  }
 	  

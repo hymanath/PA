@@ -1326,4 +1326,15 @@ public List<Long> getConstituenciesByState(Long stateId) {
 		return query.list();
 }
 
+  public List<Long> getDistrictByConstituencyId(Long constituencyId){
+	  Query query = getSession().createQuery("select model.district.districtId from Constituency model where model.constituencyId =:constituencyId");
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+  }
+  
+  public List<Long> getStateByConstituencyId(Long constituencyId){
+	  Query query = getSession().createQuery("select model.state.stateId from Constituency model where model.constituencyId =:constituencyId");
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+  }
 }

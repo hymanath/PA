@@ -49,6 +49,7 @@ public class Voter extends BaseModel implements Serializable {
 	private Set<Respondent> respondent = new HashSet<Respondent>(0);
 	private VoterAgeRange voterAgeRange;
 	private VoterNames voterNames;
+	private String imagePath;
 	private Set<FieldVoterData> fieldVoterData = new HashSet<FieldVoterData>(0);
 	public Voter(){
 		
@@ -223,6 +224,15 @@ public class Voter extends BaseModel implements Serializable {
 
 	public void setFieldVoterData(Set<FieldVoterData> fieldVoterData) {
 		this.fieldVoterData = fieldVoterData;
+	}
+
+	@Column(name="image_path")
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 	
 	

@@ -4887,5 +4887,11 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				query.setParameterList("districtIds", districtIds);
 			return (Long) query.uniqueResult();
 		}
-		
+				
+		public Long checkVoterRegisteredOrNot(Long voterId,Long enrollmentYear){
+			Query query = getSession().createQuery("select count(*)  from TdpCadre model where model.voterId = :voterId  and model.isDeleted = 'N' and model.enrollmentYear =:enrollmentYear");
+			query.setParameter("voterId", voterId);
+			query.setParameter("enrollmentYear",enrollmentYear);
+			return (Long)query.uniqueResult();
+		}
 }
