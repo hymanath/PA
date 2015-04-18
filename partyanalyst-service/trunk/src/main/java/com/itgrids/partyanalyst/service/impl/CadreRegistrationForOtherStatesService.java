@@ -1010,13 +1010,14 @@ public class CadreRegistrationForOtherStatesService implements
 						vo.setAge(voter.getAge() != null? voter.getAge().toString():"");
 						vo.setDateOfBirth(voter.getDateOfBirth() != null ? voter.getDateOfBirth().toString():"");
 						vo.setGender(voter.getGender());
-						vo.setVoterCardNo(voter.getVoterIDCardNo() != null ? voter.getVoterIDCardNo() :"");
+						
 						if(voter.getImagePath() != null && voter.getImagePath().trim().length() > 0 && checkFileExistingOrNot(IConstants.STATIC_CONTENT_FOLDER_URL+voter.getImagePath())){
 							vo.setVoterImagePresent(true);
 							vo.setVoterImage(voter.getImagePath());
 						}
 					}
 					vo.setVoterId(voter.getVoterId());
+					vo.setVoterCardNo(voter.getVoterIDCardNo() != null ? voter.getVoterIDCardNo() :"");
 					vo.setHouseNo(voter.getHouseNo() != null ? voter.getHouseNo().toString():"");
 					houseNo = vo.getHouseNo();
 					voterId = candidateId;
