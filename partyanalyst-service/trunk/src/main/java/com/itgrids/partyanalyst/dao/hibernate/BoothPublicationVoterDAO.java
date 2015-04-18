@@ -7817,5 +7817,81 @@ public List<Object[]> getLatestBoothDetailsOfConstituency(Long constituencyId)
 			return null;
 		}
 	}
+	public List<Object[]> getVotersDetailsForCadreRegistratiobByLocationIds(Long constituencyId, Long publicationDate,String queryStr,
+			Long tehsilId,Long boothId,Integer startIndex,Integer maxIndex){
+		
+		StringBuilder queryStr1 = new StringBuilder();
+		//0 voterId,1name,2relative name,3age,4houseno,5relationtype,6gender,7voterIDCardNo,8path
+		queryStr1.append(" select BPV.voter.voterId,BPV.voter.name, BPV.voter.relativeName, BPV.voter.age, BPV.voter.houseNo, BPV.voter.relationshipType, ");
+		queryStr1.append("   BPV.voter.gender, BPV.voter.voterIDCardNo,BPV.voter.imagePath from BoothPublicationVoter BPV where "+queryStr+"   ");
+		queryStr1.append(" BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.publicationDate.publicationDateId = :publicationDate ");
+		
+		if(tehsilId.longValue() != 0L){
+			if(tehsilId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+				queryStr1.append(" and BPV.booth.localBody.localElectionBodyId = :id ");
+			}else if(tehsilId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+				queryStr1.append(" and BPV.booth.tehsil.tehsilId = :id and BPV.booth.localBody.localElectionBodyId is null ");
+			}
+		}
+		
+		if(boothId.longValue() != 0L){
+			queryStr1.append(" and BPV.booth.boothId = :boothId ");
+		}
+		
+		Query query = getSession().createQuery(queryStr1.toString());
+			
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDate", publicationDate);
+		
+		if(tehsilId.longValue() != 0L){
+	       query.setParameter("id", Long.valueOf(tehsilId.toString().substring(1)));
+		}
+		
+		if(boothId.longValue() != 0L)
+		{
+			query.setParameter("boothId", boothId);
+		}
+		if(startIndex != null && maxIndex != null){
+		  query.setFirstResult(startIndex);
+		  query.setMaxResults(maxIndex);
+		}
+		return query.list();	
+		
+	}
 	
+	public Long getVotersDetailsForCadreRegistratiobByLocationIdsCount(Long constituencyId, Long publicationDate,String queryStr,Long tehsilId,Long boothId){
+		StringBuilder queryStr1 = new StringBuilder();
+		
+		queryStr1.append(" select count(*) from BoothPublicationVoter BPV where "+queryStr+"   ");
+		queryStr1.append(" BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.publicationDate.publicationDateId = :publicationDate ");
+		
+		if(tehsilId.longValue() != 0L){
+			if(tehsilId.toString().substring(0,1).trim().equalsIgnoreCase("1")){
+				queryStr1.append(" and BPV.booth.localBody.localElectionBodyId = :id ");
+			}else if(tehsilId.toString().substring(0,1).trim().equalsIgnoreCase("2")){
+				queryStr1.append(" and BPV.booth.tehsil.tehsilId = :id and BPV.booth.localBody.localElectionBodyId is null ");
+			}
+		}
+		
+		if(boothId.longValue() != 0L){
+			queryStr1.append(" and BPV.booth.boothId = :boothId ");
+		}
+		
+		Query query = getSession().createQuery(queryStr1.toString());
+			
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDate", publicationDate);
+		
+		if(tehsilId.longValue() != 0L){
+		     query.setParameter("id", Long.valueOf(tehsilId.toString().substring(1)));
+		 }
+		
+		if(boothId.longValue() != 0L)
+		{
+			query.setParameter("boothId", boothId);
+		}
+		
+		return (Long)query.uniqueResult();	
+		
+	}
 }

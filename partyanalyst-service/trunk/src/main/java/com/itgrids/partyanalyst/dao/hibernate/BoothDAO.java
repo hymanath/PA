@@ -2422,4 +2422,44 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		query.setParameterList("constiIds", constiIds);
 		return query.list();
 	}
+	
+	public List<Object[]> getAllBoothsByTehsilOrLclBdyId(Long locationId,Long publicationId,String type){
+		StringBuilder str = new StringBuilder(); 
+		
+		str.append("select model.boothId,model.partNo from Booth model where model.publicationDate.publicationDateId =:publicationId ");
+		if(type.equalsIgnoreCase("LocalBody")){
+			str.append(" and model.localBody.localElectionBodyId = :locationId");
+		}else{
+			str.append(" and model.tehsil.tehsilId = :locationId and model.localBody.localElectionBodyId is null ");
+		}
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("locationId", locationId);
+		query.setParameter("publicationId", publicationId);
+		return query.list();
+	}
+	
+	public List<Object[]> findTehsilsByDistrictIdAndPublicationDateId(Long districtId, Long publicationDateId) {
+		
+		String queryString = "select distinct model.tehsil.tehsilId , model.tehsil.tehsilName from Booth model where " +
+				"model.publicationDate.publicationDateId = :publicationDateId and model.constituency.district.districtId = :districtId " +
+				"and model.localBody.localElectionBodyId is null order by model.tehsil.tehsilName";
+		
+		Query query = getSession().createQuery(queryString);
+		
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("districtId", districtId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getAllLocalBodiesByDistrictIdAndPublicationDateId(Long districtId,Long publicationId){
+		Query query = getSession().createQuery("select distinct model.localBody.localElectionBodyId,concat(model.localBody.name,' ',model.localBody.electionType.electionType) " +
+				" from Booth model where model.publicationDate.publicationDateId =:publicationId and model.constituency.district.districtId =:districtId order by model.localBody.name");
+		
+		query.setParameter("districtId", districtId);
+		query.setParameter("publicationId", publicationId);
+		
+		return query.list();
+	}
 }
