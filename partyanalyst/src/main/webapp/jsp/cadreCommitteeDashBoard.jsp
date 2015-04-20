@@ -38,6 +38,14 @@
 	.circle-info-half{
 		line-height: 225px; left: 0px;  top: 34px;!important
 	}
+	table.dataTable thead th
+	{
+		padding:0px !important;
+		width:45px !important;
+	}
+	#constiTableForDistrict > th{
+		padding:3px !important;
+	}
 	.highlight{background-color: #fff !important;
 	border-color: #ccc !important;
 	color: #333 !important;}
@@ -54,7 +62,7 @@
     background-color: #fafafa !important;
 }
 #constiTableId tr.odd,#districtTableId tr.odd {
-    background-color: #f3f3f3 !important;
+    background-color: #E5E5E5 !important;
 }
 .ivrdetails > li {
     margin-left: -17px;
@@ -64,7 +72,7 @@
 .popOverStyle{
 padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 }
- 
+
 	</style>
 
 <script>
@@ -215,7 +223,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 									
 								</li></td></tr></table></td>
 								<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affiliated Committees<br/><h4 class="m_top0"><div id="div5"></div></h4></td>
-								<td style="padding:10px;" width="20%"><span class="text-success">Completed </span><br/>Affliated Committees<br/>
+								<td style="padding:10px;" width="20%"><span class="text-success">Completed </span><br/>Affiliated Committees<br/>
                                 <h4 class="m_top0">
 								<ul class="nav navbar-nav">
                               <li>
@@ -372,7 +380,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 										<div id="div51"></div>
 									</h4>
 								</td>
-								<td style="padding:10px;" width="20%"><span class="text-success">Completed </span><br/>Affliated Committees<br/>
+								<td style="padding:10px;" width="20%"><span class="text-success">Completed </span><br/>Affiliated Committees<br/>
 									<h4 class="m_top0">
 									<ul class="nav navbar-nav">
 										<li>
@@ -649,8 +657,9 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		
         <div class="row m_top20">        	 
             <div class="row" id="commityClsi">
-                <div class="col-md-10 col-xs-12 col-sm-12" style="width: 1130px;">
-                    <h4 id="headingId" class="text-success" style="display:inline-block">DISTRICT WISE COMMITTEES</h4>
+  <!--              <div class="col-md-10 col-xs-12 col-sm-12" style="width: 1130px;">
+                   
+				   <h4 id="headingId" class="text-success" style="display:inline-block">DISTRICT WISE COMMITTEES</h4>
 					
 					 <span class="btn btn-success btn-xs form-inline" id="statesBtnsId" style="display:none;">
 						<label class="radio"><input type="radio" id="APId" style="vertical-align: text-bottom;" class="stateRd" value="AP" name="selectstate" checked="true">&nbsp;AP &nbsp;&nbsp;&nbsp;</label>
@@ -669,7 +678,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					
 					
 					<span class="btn btn-success btn-xs form-inline" id="districtCommDiv">
-						<label class="checkbox"><input type="checkbox" id="districtCommId" style="vertical-align: text-bottom;" class="scopeRd" value="districtComm" name="selectCheck">&nbsp;DISTRICT LEVEL &nbsp;&nbsp;</label>
+						<label class="checkbox"><input type="checkbox" id="districtCommId" style="vertical-align: text-bottom;" class="scopeRd" value="districtComm" name="selectCheck">&nbsp;DISTRICT &nbsp;&nbsp;</label>
 					</span>
 	
 					<br>
@@ -677,6 +686,49 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						<label class="checkbox"><input type="checkbox" id="considerAfflId" style="vertical-align: text-bottom;" class="scopeRd" name="selectCheck">&nbsp; WITH ALL AFFLIATED COMMITTEES &nbsp;&nbsp;</label>
 					</span>
 					<span class="btn btn-info pull-right excelId form-inline" onclick="exportToExcel()" style="margin-right: -70px;margin-bottom:20px;display:none;"> Export To Excel </span>
+					</div>
+					-->
+					
+					 <div class="col-md-12 col-xs-12 col-sm-12" >
+                    
+					
+					 <div style="display:inline-block">
+                     <h5 class="text-success" style="margin-bottom:5px;border-bottom:1px solid #F00;text-align:center;margin:0px 15px 5px 15px">LOCATION</h5>
+                     <span class="btn btn-success btn-xs form-inline" id="statesBtnsId" style="">
+						<label class="radio"><input type="radio" id="APId" style="vertical-align: text-bottom;" class="stateRd" value="AP" name="selectstate" checked="true">&nbsp;AP &nbsp;&nbsp;&nbsp;</label>
+						<label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="stateRd" value="TS" name="selectstate" id="TSId">&nbsp;TS &nbsp;&nbsp;&nbsp;</label>
+					</span>
+					 <span class="btn btn-success btn-xs form-inline">
+						<label class="radio"><input type="radio" id="districtId" style="vertical-align: text-bottom;" class="levelRd" value="district" name="select" checked="true">&nbsp;DISTRICT &nbsp;&nbsp;&nbsp;</label>
+						<label class="radio"><input type="radio" id="constiRdId" style="vertical-align: text-bottom;" class="levelRd" value="consti" name="select">&nbsp;CONSTITUENCY &nbsp;&nbsp;&nbsp;</label>
+					</span>
+                    </div>
+                    <div style="display:inline-block">
+                    <h5 class="text-success" style="margin-bottom:5px;border-bottom:1px solid #F00;text-align:center;margin:0px 15px 5px 15px"> COMMITTEE LEVEL </h5>
+					<span class="btn btn-success btn-xs form-inline">
+						<label class="radio"><input type="checkbox" id="villageId" style="vertical-align: text-bottom;" class="scopeRd" value="village" name="selectCheck">&nbsp; VILLAGE / WARD &nbsp;</label>
+					</span>&nbsp;&nbsp;
+					<span class="btn btn-success btn-xs form-inline">
+						<label class="checkbox"><input type="checkbox" id="mandalId" style="vertical-align: text-bottom;" class="scopeRd" value="mandal" name="selectCheck" checked="true">&nbsp; TOWN / MANDAL / DIVISION &nbsp;&nbsp;</label>
+					</span>
+					
+					
+					<span class="btn btn-success btn-xs form-inline" id="districtCommDiv">
+						<label class="checkbox"><input type="checkbox" id="districtCommId" style="vertical-align: text-bottom;" class="scopeRd" value="districtComm" name="selectCheck">&nbsp; DISTRICT &nbsp;&nbsp;</label>
+					</span>
+                    </div>
+	
+					<div style="display:inline-block">
+                    <h5 class="text-success" style="margin-bottom:5px;border-bottom:1px solid #F00;text-align:center;margin:0px 15px 5px 15px"> CONSIDER AFFILIATED COMMITEES </h5>
+					<span class="btn btn-success btn-xs form-inline  " id="considerAffDiv">
+						<label class="checkbox"><input type="checkbox" id="considerAfflId" style="vertical-align: text-bottom;" class="scopeRd" name="selectCheck">&nbsp; WITH ALL AFFILIATED COMMITTEES &nbsp;&nbsp;</label>
+					</span>
+                    </div>
+					<div style="display:inline-block; margin-top:10px;text-align:center;" class="col-md-12">
+                    	<h4 id="headingId" style="display:inline-block" class="text-success">DISTRICT WISE COMMITTEES</h4>
+                        <span class="btn btn-info pull-right excelId form-inline" onclick="exportToExcel()" display:inline-block;"> Export To Excel </span>
+                    </div>
+              
                 </div>
                
             </div>
@@ -2176,7 +2228,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 
 		var isConsiderAffl=  $('#considerAfflId').is(':checked')?"true":"false";
 		//console.log("isConsiderAffl  :"+isConsiderAffl);
-		str+='<table class="table table-bordered table-condensed " id="districtTableId" style="width:100%; background-color:rgba(0,0,0,0.1);">';
+		str+='<table class="table table-bordered table-condensed " id="districtTableId" style="width:1150px !important; background-color:rgba(0,0,0,0.1);">';
        
 		if(mandalCheck == "true" && villageCheck == "true" && districtCommCheck == "true"){
 			str+='<thead>';
@@ -2216,31 +2268,31 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			{
 				if(isConsiderAffl =='true')
 				{
-					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
-					str+='<th style="text-align:center" colspan="43"> Affliated Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="43"> Affiliated Committees </th>';
 				}
 				else
 				{
-					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
-					str+='<th style="text-align:center" colspan="11"> Affliated Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="11"> Affiliated Committees </th>';
 				}
 			}
 			if(villageCheck == "true")
 			{
-				str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
-				str+='<th style="text-align:center" colspan="2"> Affliated Committees </th>';
+				str+='<th style="text-align:center;background-color: #F5FFFA" colspan="4"> Main Committees </th>';
+				str+='<th style="text-align:center;background-color: #F5FFFA" colspan="2"> Affiliated Committees </th>';
 			}
 			if(districtCommCheck == "true")
 			{
 				if(isConsiderAffl == "true")
 				{
-					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
-					str+='<th style="text-align:center" colspan="43"> Affliated Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="43"> Affiliated Committees </th>';
 				}		
 				else
 				{
-					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
-					str+='<th style="text-align:center" colspan="11"> Affliated Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="11"> Affiliated Committees </th>';
 				}
 			}	
 			str+='</tr>';
@@ -2253,12 +2305,12 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			 str+='<th  rowspan="2">Total</th>';
 			str+='<th  rowspan="2"> Started</th>';
 			str+='<th  rowspan="2"> Completed</th>';
-			str+='<th colspan="2"> Telugu Yuvatha  </th>';
-			str+='<th colspan="2"> Telugu Mahila </th>';
-			str+='<th colspan="2" > Telugu Rythu </th>';
+			str+='<th colspan="2" style="background-color:#E5E5E5;"> Telugu Yuvatha  </th>';
+			str+='<th colspan="2" style="background-color:#E5E5E5;"> Telugu Mahila </th>';
+			str+='<th colspan="2" style="background-color:#E5E5E5;"> Telugu Rythu </th>';
 			if(isConsiderAffl =='true')
 			{				
-				str+='<th colspan="2" class="hideCls"> Trade  </th>';
+				str+='<th colspan="2" class="hideCls" > Trade  </th>';
 				str+='<th colspan="2" class="hideCls"> BC Cell </th>';
 				str+='<th colspan="2" class="hideCls"> SC Cell </th>';
 				str+='<th colspan="2" class="hideCls"> ST Cell </th>';
@@ -2278,7 +2330,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			}
 			else
 			{
-				str+='<th colspan="2" > Others </th>';
+				str+='<th colspan="2"  style="background-color:#E5E5E5;"> Others </th>';
 			}
 			
 			str+='<th  rowspan="2">Total</th>';
@@ -2313,9 +2365,9 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			 str+='<th  rowspan="2">Total</th>';
 			str+='<th  rowspan="2"> Started</th>';
 			str+='<th  rowspan="2"> Completed</th>';
-            str+='<th colspan="2"> Telugu Yuvatha  </th>';
-			str+='<th colspan="2"> Telugu Mahila </th>';
-			str+='<th colspan="2" > Telugu Rythu </th>';
+            str+='<th colspan="2" style="background-color:#E5E5E5;"> Telugu Yuvatha  </th>';
+			str+='<th colspan="2" style="background-color:#E5E5E5;"> Telugu Mahila </th>';
+			str+='<th colspan="2"  style="background-color:#E5E5E5;"> Telugu Rythu </th>';
 			if(isConsiderAffl =='true')
 			{				
 				str+='<th colspan="2" class="hideCls"> Trade  </th>';
@@ -2338,7 +2390,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			}
 			else
 			{
-				str+='<th colspan="2" > Others </th>';
+				str+='<th colspan="2" style="background-color:#E5E5E5;" > Others </th>';
 			}	
 			
 			 str+='</tr>';
@@ -2416,9 +2468,9 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			if(districtCommCheck == "true")
 			{
 				if(isConsiderAffl == "true")
-					str+='<th style="text-align:center" colspan="47">DISTRICT LEVEL COMMITTEES 2222</th>';			
+					str+='<th style="text-align:center" colspan="47">DISTRICT LEVEL COMMITTEES </th>';			
 				else
-					str+='<th style="text-align:center" colspan="15">DISTRICT LEVEL COMMITTEES 2222</th>';	
+					str+='<th style="text-align:center" colspan="15">DISTRICT LEVEL COMMITTEES </th>';	
 			
 			}						
 		
@@ -2429,31 +2481,31 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			{
 				if(isConsiderAffl =='true')
 				{
-					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
-					str+='<th style="text-align:center" colspan="43"> Affliated Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="43"> Affiliated Committees </th>';
 				}
 				else
 				{
-					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
-					str+='<th style="text-align:center" colspan="11"> Affliated Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="11"> Affiliated Committees </th>';
 				}
 			}
 			if(villageCheck == "true")
 			{
-				str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
-				str+='<th style="text-align:center" colspan="2"> Affliated Committees </th>';
+				str+='<th style="text-align:center;background-color: #F5FFFA" colspan="4"> Main Committees </th>';
+				str+='<th style="text-align:center;background-color: #F5FFFA" colspan="2"> Affiliated Committees </th>';
 			}
 			if(districtCommCheck == "true")
 			{
 				if(isConsiderAffl == "true")
 				{
-					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
-					str+='<th style="text-align:center" colspan="43"> Affliated Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="43"> Affiliated Committees </th>';
 				}		
 				else
 				{
-					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
-					str+='<th style="text-align:center" colspan="11"> Affliated Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="11"> Affiliated Committees </th>';
 				}
 			}	
 			str+='</tr>';
@@ -2467,9 +2519,9 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					str+='<th rowspan="2" >Total</th>';
 				str+='<th rowspan="2">Started</th>';
 				str+='<th rowspan="2"> Completed</th>';
-				str+='<th colspan="2"> Telugu Yuvatha  </th>';
-				str+='<th colspan="2"> Telugu Mahila </th>';
-				str+='<th colspan="2" > Telugu Rythu </th>';
+				str+='<th colspan="2" style="background-color:#E5E5E5;"> Telugu Yuvatha  </th>';
+				str+='<th colspan="2" style="background-color:#E5E5E5;"> Telugu Mahila </th>';
+				str+='<th colspan="2" style="background-color:#E5E5E5;" > Telugu Rythu </th>';
 				if(isConsiderAffl =='true')
 				{				
 					str+='<th colspan="2" class="hideCls"> Trade  </th>';
@@ -2492,7 +2544,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				}
 				else
 				{
-					str+='<th colspan="2" > Others </th>';
+					str+='<th colspan="2"  style="background-color:#E5E5E5;"> Others </th>';
 				}
 			}
 			if(villageCheck == "true")
@@ -2533,9 +2585,9 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				str+='<th rowspan="2" >Total</th>';
 				str+='<th rowspan="2"> Started</th>';
 				str+='<th rowspan="2"> Completed</th>';
-				str+='<th colspan="2"> Telugu Yuvatha  </th>';
-				str+='<th colspan="2"> Telugu Mahila </th>';
-				str+='<th colspan="2" > Telugu Rythu </th>';
+				str+='<th colspan="2" style="background-color:#E5E5E5;"> Telugu Yuvatha  </th>';
+				str+='<th colspan="2" style="background-color:#E5E5E5;"> Telugu Mahila </th>';
+				str+='<th colspan="2"  style="background-color:#E5E5E5;"> Telugu Rythu </th>';
 				if(isConsiderAffl =='true')
 				{				
 					str+='<th colspan="2" class="hideCls"> Trade  </th>';
@@ -2558,7 +2610,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				}
 				else
 				{
-					str+='<th colspan="2" > Others </th>';
+					str+='<th colspan="2"  style="background-color:#E5E5E5;"> Others </th>';
 				}
 			}	
 			
@@ -2648,19 +2700,19 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			{
 				if(isConsiderAffl =='true')
 				{
-					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
-					str+='<th style="text-align:center" colspan="43"> Affliated Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="43"> Affiliated Committees </th>';
 				}
 				else
 				{
-					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
-					str+='<th style="text-align:center" colspan="11"> Affliated Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="11"> Affiliated Committees </th>';
 				}
 			}
 			if(villageCheck == "true")
 			{
-				str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
-				str+='<th style="text-align:center" colspan="2"> Affliated Committees </th>';
+				str+='<th style="text-align:center;background-color: #F5FFFA" colspan="4"> Main Committees </th>';
+				str+='<th style="text-align:center;background-color: #F5FFFA" colspan="2"> Affiliated Committees </th>';
 			}
 			str+='</tr>';
             str+='<tr>';
@@ -2671,9 +2723,9 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			str+='<th rowspan="2">Total</th>';
 			str+='<th rowspan="2">  Started </th>';
 			str+='<th rowspan="2">  Completed </th>';
-			str+='<th colspan="2"> Telugu Yuvatha  </th>';
-			str+='<th colspan="2"> Telugu Mahila </th>';
-			str+='<th colspan="2"> Telugu Rythu </th>';
+			str+='<th colspan="2" style="background-color:#E5E5E5;"> Telugu Yuvatha  </th>';
+			str+='<th colspan="2" style="background-color:#E5E5E5;"> Telugu Mahila </th>';
+			str+='<th colspan="2" style="background-color:#E5E5E5;"> Telugu Rythu </th>';
 				
 			if(isConsiderAffl =='true')
 			{				
@@ -2697,7 +2749,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			}
 			else
 			{
-				str+='<th colspan="2" > Others </th>';
+				str+='<th colspan="2"  style="background-color:#E5E5E5;"> Others </th>';
 			}
 				
 			
@@ -2759,8 +2811,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			}
             str+='</tr>';
             str+='<tr>';
-			str+='<th colspan="4"> Main Committees </th>';
-			str+='<th colspan="2"> Affliated Committees </th>';
+			str+='<th colspan="4" style="background-color: #F5FFFA;"> Main Committees </th>';
+			str+='<th colspan="2" style="background-color: #F5FFFA;"> Affiliated Committees </th>';
 			
 			str+='</tr>';
             str+='<tr>';
@@ -2812,10 +2864,10 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			str+='<th rowspan="2">Completed</th>';
 			str+='<th rowspan="2">Members</th>';
 			str+='<th rowspan="2">Affl Committee Started</th>';
-			str+='<th rowspan="2">Affl Committee Completed</th>';
-			str+='<th colspan="2"> Telugu Yuvatha  </th>';
-			str+='<th colspan="2"> Telugu Mahila </th>';
-			str+='<th colspan="2"> Telugu Rythu </th>';
+			str+='<th rowspan="2">Affl Committee Completed  </th>';
+			str+='<th colspan="2" style="background-color:#E5E5E5;"> Telugu Yuvatha  </th>';
+			str+='<th colspan="2" style="background-color:#E5E5E5;"> Telugu Mahila </th>';
+			str+='<th colspan="2" style="background-color:#E5E5E5;"> Telugu Rythu </th>';
 			if(isConsiderAffl =='true')
 			{				
 				str+='<th colspan="2" class="hideCls"> Trade  </th>';
@@ -2838,7 +2890,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			}
 			else
 			{
-				str+='<th colspan="2" > Others </th>';
+				str+='<th colspan="2"  style="background-color:#E5E5E5;"> Others </th>';
 			}
 			if(result[0].cadreIVRVO != null)
 			{
@@ -2929,7 +2981,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				}
 				
 				if(result[i].townMandalDivisionVO.totalCommittees!=null){
-					str += '<td style="text-align:center">'+((result[i].townMandalDivisionVO.totalCommittees)*21)+'</td>';					
+					str += '<td style="text-align:center">'+((result[i].townMandalDivisionVO.totalCommittees)*20)+'</td>';					
 				}else{
 					str += '<td style="text-align:center"> - </td>';
 				}
@@ -3405,7 +3457,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					str += '<td style="text-align:center"> - </td>';
 				}
 				if(result[i].districtCommVO.totalCommittees!=null){
-					str += '<td style="text-align:center">'+((result[i].districtCommVO.totalCommittees)*21)+'</td>';					
+					str += '<td style="text-align:center">'+((result[i].districtCommVO.totalCommittees)*20)+'</td>';					
 				}else{
 					str += '<td style="text-align:center"> - </td>';
 				}
@@ -3786,7 +3838,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandMembers+'</td>';
-		str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';		
+		str += '<td style="text-align:center">'+(mandTotal * 20 )+'</td>';		
 		str += '<td style="text-align:center">'+mandAfStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandAfCompleted+'</td>';
 
@@ -3852,7 +3904,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str += '<td style="text-align:center">'+distStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+distCompleted+'</td>'; 	
 		str += '<td style="text-align:center">'+distMembers+'</td>'; 
-		str += '<td style="text-align:center">'+(distTotal * 21 )+'</td>';		
+		str += '<td style="text-align:center">'+(distTotal * 20 )+'</td>';		
 		str += '<td style="text-align:center">'+distAffStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+distAffCompleted+'</td>';
 
@@ -3865,7 +3917,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandMembers+'</td>'; 	
-		str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';	
+		str += '<td style="text-align:center">'+(mandTotal * 20 )+'</td>';	
 		str += '<td style="text-align:center">'+mandAfStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandAfCompleted+'</td>';
 		
@@ -3939,7 +3991,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		str += '<td style="text-align:center">'+distStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+distCompleted+'</td>'; 	
 		str += '<td style="text-align:center">'+distMembers+'</td>'; 
-str += '<td style="text-align:center">'+(distTotal * 21 )+'</td>';			
+str += '<td style="text-align:center">'+(distTotal * 20 )+'</td>';			
 		str += '<td style="text-align:center">'+distAffStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+distAffCompleted+'</td>';
 		}else  if(districtCommCheck == "true" && mandalCheck == "true"){
@@ -3948,7 +4000,7 @@ str += '<td style="text-align:center">'+(distTotal * 21 )+'</td>';
 		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandMembers+'</td>'; 
-str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';		
+str += '<td style="text-align:center">'+(mandTotal * 20 )+'</td>';		
 		str += '<td style="text-align:center">'+mandAfStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandAfCompleted+'</td>';
 		
@@ -4007,7 +4059,7 @@ str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';
 		str += '<td style="text-align:center">'+distStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+distCompleted+'</td>'; 	
 		str += '<td style="text-align:center">'+distMembers+'</td>'; 
-str += '<td style="text-align:center">'+(distTotal * 21 )+'</td>';		
+str += '<td style="text-align:center">'+(distTotal * 20 )+'</td>';		
 		str += '<td style="text-align:center">'+distAffStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+distAffCompleted+'</td>';
 		}
@@ -4020,7 +4072,7 @@ str += '<td style="text-align:center">'+(distTotal * 21 )+'</td>';
 		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandMembers+'</td>'; 
-str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';		
+str += '<td style="text-align:center">'+(mandTotal * 20 )+'</td>';		
 		str += '<td style="text-align:center">'+mandAfStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandAfCompleted+'</td>'; 
 
@@ -4091,7 +4143,7 @@ str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';
 		str += '<td style="text-align:center">'+distStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+distCompleted+'</td>'; 	
 		str += '<td style="text-align:center">'+distMembers+'</td>'; 
-		str += '<td style="text-align:center">'+(distTotal * 21 )+'</td>';			
+		str += '<td style="text-align:center">'+(distTotal * 20 )+'</td>';			
 		str += '<td style="text-align:center">'+distAffStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+distAffCompleted+'</td>';
 		}
@@ -4574,7 +4626,7 @@ str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';
 					}
 				}
 				
-					buildConstiWiseSummary(result,mandalCheck,villageCheck);	
+					buildConstiWiseSummary(result,mandalCheck,villageCheck,jObj);	
 				
 		});
 	}
@@ -4585,7 +4637,7 @@ str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';
 	window.open('constituencyCommitteeSummaryAction.action?accessConstituencyId='+constiIdReq+'','location=no','top=10,left=25,status=no,toolbar=no,location=yes,menubar=no,titlebar=no,scrollbars=yes,modal=yes');		
 	}
 
-	function buildConstiWiseSummary(result,mandalCheck,villageCheck){
+	function buildConstiWiseSummary(result,mandalCheck,villageCheck,jObj){
 	
 	
 		$(".excelId").show();
@@ -4653,7 +4705,7 @@ str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';
 		var  tnusCmpltdCount = 0;
 		var  commercialCmpltdCount = 0;
 		var  culturalCmpltdCount = 0;
-		
+		//alert(1234);
 		var isConsiderAffl=  $('#considerAfflId').is(':checked')?"true":"false";
 		console.log("isConsiderAffl  :"+isConsiderAffl);
 		var str = '';
@@ -4689,19 +4741,19 @@ str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';
 			{
 				if(isConsiderAffl =='true')
 				{
-					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
-					str+='<th style="text-align:center" colspan="43"> Affliated Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="43"> Affiliated Committees </th>';
 				}
 				else
 				{
-					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
-					str+='<th style="text-align:center" colspan="11"> Affliated Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="11"> Affiliated Committees </th>';
 				}
 			}
 			if(villageCheck == "true")
 			{
-				str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
-				str+='<th style="text-align:center" colspan="2"> Affliated Committees </th>';
+				str+='<th style="text-align:center;background-color: #F5FFFA" colspan="4"> Main Committees </th>';
+				str+='<th style="text-align:center;background-color: #F5FFFA" colspan="2"> Affiliated Committees </th>';
 			}
 			
 			str+='</tr>';
@@ -4713,9 +4765,9 @@ str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';
 			str+='<th rowspan="2">Total</th>';
 			str+='<th  rowspan="2"> Started</th>';
 			str+='<th  rowspan="2"> Completed</th>';
-			str+='<th colspan="2"> Telugu Yuvatha  </th>';
-			str+='<th colspan="2"> Telugu Mahila </th>';
-			str+='<th colspan="2" > Telugu Rythu </th>';
+			str+='<th colspan="2" style="background-color:#E5E5E5;"> Telugu Yuvatha  </th>';
+			str+='<th colspan="2" style="background-color:#E5E5E5;"> Telugu Mahila </th>';
+			str+='<th colspan="2"  style="background-color:#E5E5E5;"> Telugu Rythu </th>';
 			if(isConsiderAffl =='true')
 			{				
 				str+='<th colspan="2" class="hideCls"> Trade  </th>';
@@ -4738,7 +4790,7 @@ str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';
 			}
 			else
 			{
-				str+='<th colspan="2" > Others </th>';
+				str+='<th colspan="2"  style="background-color:#E5E5E5;"> Others </th>';
 			}
 			str+='<th  rowspan="2">Total</th>';
 			str+='<th  rowspan="2">Started</th>';
@@ -4819,19 +4871,19 @@ str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';
 			{
 				if(isConsiderAffl =='true')
 				{
-					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
-					str+='<th style="text-align:center" colspan="43"> Affliated Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="43"> Affiliated Committees </th>';
 				}
 				else
 				{
-					str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
-					str+='<th style="text-align:center" colspan="11"> Affliated Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="4"> Main Committees </th>';
+					str+='<th style="text-align:center;background-color: #F5FFFA" colspan="11"> Affiliated Committees </th>';
 				}
 			}
 			if(villageCheck == "true")
 			{
-				str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
-				str+='<th style="text-align:center" colspan="2"> Affliated Committees </th>';
+				str+='<th style="text-align:center;background-color: #F5FFFA" colspan="4"> Main Committees </th>';
+				str+='<th style="text-align:center;background-color: #F5FFFA" colspan="2"> Affiliated Committees </th>';
 			}
 			
 			str+='</tr>';
@@ -4843,9 +4895,9 @@ str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';
 			str+='<th rowspan="2">Total</th>';
 			str+='<th rowspan="2"> Started</th>';
 			str+='<th rowspan="2"> Completed</th>';
-			str+='<th colspan="2"> Telugu Yuvatha  </th>';
-			str+='<th colspan="2"> Telugu Mahila </th>';
-			str+='<th colspan="2" > Telugu Rythu </th>';
+			str+='<th colspan="2" style="background-color:#E5E5E5;"> Telugu Yuvatha  </th>';
+			str+='<th colspan="2" style="background-color:#E5E5E5;"> Telugu Mahila </th>';
+			str+='<th colspan="2"  style="background-color:#E5E5E5;"> Telugu Rythu </th>';
 			if(isConsiderAffl =='true')
 			{				
 				str+='<th colspan="2" class="hideCls"> Trade  </th>';
@@ -4868,7 +4920,7 @@ str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';
 			}
 			else
 			{
-				str+='<th colspan="2" > Others </th>';
+				str+='<th colspan="2"  style="background-color:#E5E5E5;"> Others </th>';
 			}
 			if(result[0].cadreIVRVO != null)
 			{
@@ -4934,8 +4986,8 @@ str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';
 			
 			if(villageCheck == "true")
 			{
-				str+='<th style="text-align:center" colspan="4"> Main Committees </th>';
-				str+='<th style="text-align:center" colspan="2"> Affliated Committees </th>';
+				str+='<th style="text-align:center;background-color: #F5FFFA" colspan="4"> Main Committees </th>';
+				str+='<th style="text-align:center;background-color: #F5FFFA" colspan="2"> Affiliated Committees </th>';
 			}
 				
 			str+='</tr>';
@@ -4972,10 +5024,9 @@ str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';
 		str+='<tbody>';
 		for(var i in result){
 		if(result[i].townMandalDivisionVO != null || result[i].villageWardVO != null){
-		str += '<tr>';
-			str += '<td style="text-align:center">'+result[i].constiNo+'</td>';
-			str += '<td ><span style="font-size: 12px;">'+result[i].name+'</span>';
-			
+		str += '<tr id='+result[i].constiId+' class="removeCls1 clearCls1'+result[i].constiId+'">';
+		str += '<td style="text-align:center" class="removeCls1 clearClsTD1'+result[i].constiId+'">'+result[i].constiNo+'</td>';
+			str += '<td ><a onclick="getConstituencyWiseCommittesSummaryForMandal(\''+jObj.startDate+'\',\''+jObj.endDate+'\',\''+jObj.state+'\',\''+jObj.mandalCheck+'\',\''+jObj.villageCheck+'\',\''+result[i].constiId+'\',\''+result[i].name+'\');" style="cursor:pointer;"><span style="font-size: 12px;">'+result[i].name+'</span></a>';
 				str += '&nbsp;&nbsp;<span style="cursor: pointer;" title="Click Here For '+result[i].name+' Committee Summary Report" onclick="getPopUpForSummary('+result[i].constiId+',\''+result[i].name+'\');" class="glyphicon glyphicon-dashboard"></span>&nbsp;&nbsp;<span style="cursor: pointer;"  onclick="showAdvanceDashBoard('+result[i].constiId+');" title="Click Here For '+result[i].name+' Advance Dashboard"  class="glyphicon glyphicon-list-alt"></span>';
 			
 			str += '</td>';
@@ -5011,7 +5062,7 @@ str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';
 					str += '<td style="text-align:center"> - </td>';
 				}
 				if(result[i].townMandalDivisionVO.totalCommittees!=null){
-					str += '<td style="text-align:center">'+((result[i].townMandalDivisionVO.totalCommittees)*21)+'</td>';
+					str += '<td style="text-align:center">'+((result[i].townMandalDivisionVO.totalCommittees)*20)+'</td>';
 				}else{
 					str += '<td style="text-align:center"> - </td>';
 				}
@@ -5480,7 +5531,7 @@ str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';
 		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandMembers+'</td>'; 
-		str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';		
+		str += '<td style="text-align:center">'+(mandTotal * 20 )+'</td>';		
 		str += '<td style="text-align:center">'+mandAfStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandAfCompleted+'</td>';
 			
@@ -5548,7 +5599,7 @@ str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';
 		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandMembers+'</td>';
-		str += '<td style="text-align:center">'+(mandTotal * 21 )+'</td>';		
+		str += '<td style="text-align:center">'+(mandTotal * 20 )+'</td>';		
 		str += '<td style="text-align:center">'+mandAfStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandAfCompleted+'</td>'; 	
 		str += '<td style="text-align:center">'+yuvathaStartedCount+'</td>';
@@ -6211,25 +6262,29 @@ function showPopOver(state){
 
 
 function showHideDivs(divId1,divId2){
-
+var isVillage = false;
 if(divId1 =="ap"){
 	$(".toggleCls").hide();
 	if(divId1+divId2+"BodyTR" == "apMandalBodyTR"){
 		$("#apVillageBodyTR").hide();
+		$(".apVillageBodyTR").hide();
 		$("#apDistrictBodyTR").removeClass("toggleCls12");	
 		$("#apStateBodyTR").removeClass("toggleCls12");
 	}else if(divId1+divId2+"BodyTR" == "apDistrictBodyTR"){
 		$("#apMandalBodyTR").removeClass("toggleCls12");		
 		$("#apStateBodyTR").removeClass("toggleCls12");
 		$("#apVillageBodyTR").hide();
+		$(".apVillageBodyTR").hide();
 	}else if(divId1+divId2+"BodyTR" == "apStateBodyTR"){		
 		$("#apMandalBodyTR").removeClass("toggleCls12");	
 		$("#apDistrictBodyTR").removeClass("toggleCls12");
-		$("#apVillageBodyTR").hide();		
+		$("#apVillageBodyTR").hide();
+		$(".apVillageBodyTR").hide();		
 	}else if(divId1+divId2+"BodyTR" == "apVillageBodyTR"){
 		$("#apDistrictBodyTR").removeClass("toggleCls12");
 		$("#apStateBodyTR").removeClass("toggleCls12");
 		$("#apMandalBodyTR").removeClass("toggleCls12");
+		isVillage = true;
 	}
 
 }
@@ -6237,20 +6292,24 @@ else{
 	$(".toggleCls1").hide();
 	if(divId1+divId2+"BodyTR" == "tsMandalBodyTR"){
 		$("#tsVillageBodyTR").hide();
+		$(".tsVillageBodyTR").hide();
 		$("#tsDistrictBodyTR").removeClass("toggleCls12");	
 		$("#tsStateBodyTR").removeClass("toggleCls12");
 	}else if(divId1+divId2+"BodyTR" == "tsDistrictBodyTR"){
 			$("#tsVillageBodyTR").hide();
+			$(".tsVillageBodyTR").hide();
 		$("#tsMandalBodyTR").removeClass("toggleCls12");		
 		$("#tsStateBodyTR").removeClass("toggleCls12");	
 	}else if(divId1+divId2+"BodyTR" == "tsStateBodyTR"){
-		$("#tsVillageBodyTR").hide();		
+		$("#tsVillageBodyTR").hide();	
+		$(".tsVillageBodyTR").hide();		
 		$("#tsMandalBodyTR").removeClass("toggleCls12");	
 		$("#tsDistrictBodyTR").removeClass("toggleCls12");	
 	}else if(divId1+divId2+"BodyTR" == "tsVillageBodyTR"){
 		$("#tsMandalBodyTR").removeClass("toggleCls12");		
 		$("#tsStateBodyTR").removeClass("toggleCls12");	
 		$("#tsDistrictBodyTR").removeClass("toggleCls12");	
+		isVillage = true;
 	}
 	
 }
@@ -6275,6 +6334,19 @@ if(!$("#"+divId1+divId2+"BodyTR").hasClass("toggleCls12")){
 		$("."+divId1+divId2+"BodyTR").hide();
 		$("."+divId1+divId2+"ButtonsDiv").hide();
 		$("."+divId1+divId2+"ButtonsDiv").removeClass("toggleCls12");
+		
+		if(isVillage)
+		{
+			$("#"+divId1+divId2+"BodyTR").addClass("toggleCls12");
+			$("#"+divId1+divId2+"BodyTR").show();
+			$("#"+divId1+divId2+"ButtonsDiv").show();
+			$("#"+divId1+divId2+"ButtonsDiv").addClass("toggleCls12");
+			
+			$("."+divId1+divId2+"BodyTR").addClass("toggleCls12");
+			$("."+divId1+divId2+"BodyTR").show();
+			$("."+divId1+divId2+"ButtonsDiv").show();
+			$("."+divId1+divId2+"ButtonsDiv").addClass("toggleCls12");
+		}
 	}
 }
 
@@ -6292,7 +6364,7 @@ if(!$("#"+divId1+divId2+"BodyTR").hasClass("toggleCls12")){
 	$(".removeicon").hide();
 	$(".removeCls").removeClass("selected");
 	
-	$('.clearCls'+districtId).after('<tr class="selectedchild"><td id="subLevelDiv'+districtId+'" colspan="'+cellCount+'" class="added" style="padding: 20px; background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.3);"><div align="center"><img id="ajaxImgStyle1" style="display:block;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
+	$('.clearCls'+districtId).after('<tr class="selectedchild"><td id="subLevelDiv'+districtId+'" colspan="'+cellCount+'" class="added" style="padding: 20px; background: none repeat scroll 0% 0% rgba(255, 255, 255, 1);"><div align="center"><img id="ajaxImgStyle1" style="display:block;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
 	$('.clearCls'+districtId).addClass("selected");
 	$('.clearClsTD'+districtId).addClass("selected");
 	$("#ajaxImgStyle1").show();
@@ -6385,17 +6457,17 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 			str+='<th  rowspan="2">Completed</th>';
 			str+='<th  rowspan="2">Members</th>';
 			str+='<th  rowspan="2">Affl Committee Started</th>';
-			str+='<th  rowspan="2">Affl Committee Completed</th>';
-			str+='<th colspan="2"> Telugu Yuvatha  </th>';
-			str+='<th colspan="2"> Telugu Mahila </th>';
-			str+='<th colspan="2" > Telugu Rythu </th>';
-			str+='<th colspan="2" >  Others </th>';
+			str+='<th  rowspan="2">Affl Committee Completed  </th>';
+			str+='<th colspan="2" style="background-color:#E5E5E5;"> Telugu Yuvatha  </th>';
+			str+='<th colspan="2" style="background-color:#E5E5E5;"> Telugu Mahila </th>';
+			str+='<th colspan="2"  style="background-color:#E5E5E5;"> Telugu Rythu </th>';
+			str+='<th colspan="2" style="background-color:#E5E5E5;" >  Others </th>';
 			str+='<th  rowspan="2">Total</th>';
 			str+='<th  rowspan="2">Started</th>';
 			str+='<th  rowspan="2">Completed</th>';
 			str+='<th  rowspan="2">Members</th>';
 			str+='<th  rowspan="2">Affl Committee Started</th>';
-			str+='<th  rowspan="2">Affl Committee Completed</th>';
+			str+='<th  rowspan="2">Affl Committee Completed  </th>';
             
 			if(result[0].cadreIVRVO != null)
 			{
@@ -6431,10 +6503,10 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 		}
 		else if(mandalCheck == "true"){
 			str+='<thead class="aler alert-success">';
-			str+='<tr>';
-			str+='<th rowspan="2"  style="text-align:center">AC No</th>';
-			str+='<th rowspan="2" style="text-align:center">AC Name</th>';
-			 str+='<th style="text-align:center" colspan="14">TOWN / MANDAL / DIVISION</th>';
+			str+='<tr width="1000px !important">';
+			str+='<th rowspan="4"  style="text-align:center; width:2% !important">AC No</th>';
+			str+='<th rowspan="4" style="text-align:center;width:1% !important">AC Name</th>';
+			 str+='<th style="text-align:center;width:50% !important" colspan="15">TOWN / MANDAL / DIVISION</th>';
 			 if(result[0].cadreIVRVO != null)
 			{
 				var length = (result[0].cadreIVRVO.optionsList.length-1) *2;
@@ -6445,16 +6517,22 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 			}
             str+='</tr>';
             str+='<tr>';
+			str+='<th colspan="4"  style="text-align:center"> Main Committees </th>';
+			str+='<th colspan="11"  style="text-align:center"> Affiliated Committees </th>';
+			str+='</tr>';
+            str+='<tr>';
+			
 			str+='<th rowspan="2">Total</th>';
 			str+='<th rowspan="2">Started</th>';
 			str+='<th rowspan="2">Completed</th>';
 			str+='<th rowspan="2">Members</th>';
-			str+='<th rowspan="2">Affl Committee Started</th>';
-			str+='<th  rowspan="2">Affl Committee Completed</th>';
-			str+='<th colspan="2"> Telugu Yuvatha  </th>';
-			str+='<th colspan="2"> Telugu Mahila </th>';
-			str+='<th colspan="2" > Telugu Rythu </th>';
-			str+='<th colspan="2" >  Others </th>';
+			str+='<th rowspan="2">Total</th>';
+			str+='<th rowspan="2"> Started</th>';
+			str+='<th  rowspan="2"> Completed </th>';
+			str+='<th colspan="2" style="background-color:#E5E5E5;"> Telugu Yuvatha  </th>';
+			str+='<th colspan="2" style="background-color:#E5E5E5;"> Telugu Mahila </th>';
+			str+='<th colspan="2" style="background-color:#E5E5E5;" > Telugu Rythu </th>';
+			str+='<th colspan="2"  style="background-color:#E5E5E5;">  Others </th>';
 			if(result[0].cadreIVRVO != null)
 			{
 				for(var pr in result[0].cadreIVRVO.optionsList)
@@ -6510,7 +6588,7 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 			str+='<th>Completed</th>';
 			str+='<th>Members</th>';
 			str+='<th>Affl Committee Started</th>';
-			str+='<th>Affl Committee Completed</th>';
+			str+='<th>Affl Committee Completed  </th>';
 			if(result[0].cadreIVRVO != null)
 			{
 				for(var pr in result[0].cadreIVRVO.optionsList)
@@ -6570,6 +6648,12 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 				if(result[i].townMandalDivisionVO.membersCount!=null){
 					str += '<td style="text-align:center">'+result[i].townMandalDivisionVO.membersCount+'</td>';
 					mandMembers=mandMembers+result[i].townMandalDivisionVO.membersCount;
+				}else{
+					str += '<td style="text-align:center"> - </td>';
+				}
+				
+				if(result[i].townMandalDivisionVO.totalCommittees!=null){
+					str += '<td style="text-align:center">'+(20 * result[i].townMandalDivisionVO.totalCommittees)+'</td>';
 				}else{
 					str += '<td style="text-align:center"> - </td>';
 				}
@@ -6646,6 +6730,7 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 				}
 				
 			}else{
+				str += '<td>  </td>';
 				str += '<td>  </td>';
 				str += '<td>  </td>';
 				str += '<td>  </td>';
@@ -6783,7 +6868,8 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 		str	+= '<td style="text-align:center">TOTAL</td><td>'+mandTotal+'</td>'; 	
 		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
-		str += '<td style="text-align:center">'+mandMembers+'</td>'; 	
+		str += '<td style="text-align:center">'+mandMembers+'</td>'; 
+		str	+= '<td style="text-align:center">'+(mandTotal *20)+'</td>';		
 		str += '<td style="text-align:center">'+mandAfStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandAfCompleted+'</td>';
 		
@@ -6808,6 +6894,7 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 		str += '<td style="text-align:center">'+mandStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandCompleted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandMembers+'</td>'; 	
+		str	+= '<td style="text-align:center">'+(mandTotal *20)+'</td>';		 	
 		str += '<td style="text-align:center">'+mandAfStarted+'</td>'; 	
 		str += '<td style="text-align:center">'+mandAfCompleted+'</td>'; 	
 		
@@ -6873,7 +6960,7 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 	$(".removeicon1").hide();
 	$(".removeCls1").removeClass("selectedchild1");
 	
-	$('.clearCls1'+constituencyId).after('<tr class="selectedchild1"><td id="subLevelMandalDiv'+constituencyId+'" colspan="'+cellCount+'" class="added1" style="padding: 20px; background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.3);"><div align="center"><img id="ajaxImgStyle2" style="display:block;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
+	$('.clearCls1'+constituencyId).after('<tr class="selectedchild1"><td id="subLevelMandalDiv'+constituencyId+'" colspan="'+cellCount+'" class="added1" style="padding: 20px; background: #fff;"><div align="center"><img id="ajaxImgStyle2" style="display:block;margin-left: 10px;width:80px;" src="images/Loading-data.gif"/></div></td></tr>');;
 	$('.clearCls1'+constituencyId).addClass("selected");
 	$('.clearClsTD1'+constituencyId).addClass("selected");
 	$("#ajaxImgStyle2").show();
@@ -6943,13 +7030,13 @@ function  buildMandalWiseSummaryForConstituencyfunction(result,mandalCheck,villa
 			str+='<th>Completed</th>';
 			str+='<th>Members</th>';
 			str+='<th>Affl Committee Started</th>';
-			str+='<th>Affl Committee Completed</th>';
+			str+='<th>Affl Committee Completed  </th>';
 			str+='<th>Total</th>';
 			str+='<th>Started</th>';
 			str+='<th>Completed</th>';
 			str+='<th>Members</th>';
 			str+='<th>Affl Committee Started</th>';
-			str+='<th>Affl Committee Completed</th>';
+			str+='<th>Affl Committee Completed  </th>';
             
 			if(result[0].cadreIVRVO != null)
 			{
@@ -6976,8 +7063,8 @@ function  buildMandalWiseSummaryForConstituencyfunction(result,mandalCheck,villa
 		else if(mandalCheck == "true"){
 			str+='<thead class="aler alert-success">';
 			str+='<tr>';
-			str+='<th rowspan="2"  style="text-align:center">AC No</th>';
-			str+='<th rowspan="2" style="text-align:center">AC Name</th>';
+			str+='<th rowspan="4"  style="text-align:center">AC No</th>';
+			str+='<th rowspan="4" style="text-align:center">AC Name</th>';
 			 str+='<th style="text-align:center" colspan="6">TOWN / MANDAL / DIVISION</th>';
 			 if(result[0].cadreIVRVO != null)
 			{
@@ -6986,15 +7073,20 @@ function  buildMandalWiseSummaryForConstituencyfunction(result,mandalCheck,villa
 				
 				//var length1 = (result[0].cadreIVRVO.optionsList1.length-1) *2;
 				//str+=' <th style="text-align:center" colspan='+length1+'>WARD IVR DETAILS</th>';
-			}
+			}  
             str+='</tr>';
+            str+='<tr>';
+			str+='<th colspan="4"  style="text-align:center"> Main Committees </th>';
+			str+='<th colspan="11"  style="text-align:center"> Affiliated Committees </th>';
+			
+			str+='</tr>';
             str+='<tr>';
 			str+='<th>Total</th>';
 			str+='<th>Started</th>';
 			str+='<th>Completed</th>';
 			str+='<th>Members</th>';
-			str+='<th>Affl Committee Started</th>';
-			str+='<th>Affl Committee Completed</th>';
+			str+='<th> Started</th>';
+			str+='<th> Completed  </th>';
 			if(result[0].cadreIVRVO != null)
 			{
 				for(var pr in result[0].cadreIVRVO.optionsList)
@@ -7038,7 +7130,7 @@ function  buildMandalWiseSummaryForConstituencyfunction(result,mandalCheck,villa
 			str+='<th>Completed</th>';
 			str+='<th>Members</th>';
 			str+='<th>Affl Committee Started</th>';
-			str+='<th>Affl Committee Completed</th>';
+			str+='<th>Affl Committee Completed  </th>';
 			if(result[0].cadreIVRVO != null)
 			{
 				for(var pr in result[0].cadreIVRVO.optionsList)
