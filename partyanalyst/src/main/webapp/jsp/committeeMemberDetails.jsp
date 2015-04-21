@@ -37,14 +37,12 @@
     	<!--Circle-->
     <link href="js/cadreCommittee/dist/css/jquery.circliful.css" rel="stylesheet" />	
     <script type="text/javascript" src="js/exportexcel.js"></script>
-		<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
-			<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
+
 <style>
 .paginate_disabled_previous,.paginate_enabled_previous,.paginate_enabled_next{
    padding-bottom: 10px;
 }
-.prev,.next {width:50px !important}
-.prev,.next {padding-right: 36px !important}
+.prev, .next {width:70px !important}
 .table-bordered > thead > tr > th,
 .table-bordered > tbody > tr > th,
 .table-bordered > tfoot > tr > th,
@@ -92,6 +90,7 @@
 	color:#FFDB2B;
 }
 
+.col-drop-head{font-size: 15px; font-weight: bold;}
 </style>
 </head>
 <body class="background-bg">
@@ -156,7 +155,7 @@
 				
 					  
 					  <label class="checkbox-inline">
-						<input type="checkbox" id="cadreCommitteeId" value="2" onclick="getDetails('cadreCommitteeId');"> From Committees
+						<input type="checkbox" id="cadreCommitteeId" checked="true" value="2" onclick="getDetails('cadreCommitteeId');"> Cadre Committee Management
 					  </label>
 					  <!-- <label class="checkbox-inline">
 						<input type="checkbox" id="publicRepresentativesId" value="1" onclick="getDetails('publicRepresentativesId');">  Public Repracentative
@@ -168,10 +167,10 @@
 				  
 				</div>
 			   
-				<div class="col-md-4 m_top20" style="background-color:#FFF;display:none;" id="cadreCommitteeDiv">
+				<div class="col-md-4 m_top20" style="background-color:#FFF;" id="cadreCommitteeDiv">
 				
 					<div  id="committeeDiv">
-					<label class="select-label" style="margin-left:0px "> From Committees </label>
+					<label class="select-label" style="margin-left:0px "> From  Cadre Committee </label>
 					<select class="cs-select cs-skin-slide">
 						<option value="0" >ALL</option>
 					</select>
@@ -208,7 +207,7 @@
 					<form class="me-select">
 					<ul id="me-select-list" class="">
 					<li class="">
-					<input id="checkAll" class="" type="checkbox" name="cb10" >
+					<input id="checkPRAll" class="" type="checkbox" name="cb10" >
 					<label class="m_0" style="padding:0px 10px 0px 45px;margin-top:10px;" for="cb10">
 					<span class="text-col-head" id="checkText">Select All</span>
 					</label>
@@ -235,7 +234,7 @@
 					<form class="me-select">
 					<ul id="me-select-list" class="">
 					<li class="">
-					<input id="checkAll" class="" type="checkbox" name="cb10" >
+					<input id="checkEGAll" class="" type="checkbox" name="cb10" >
 					<label class="m_0" style="padding:0px 10px 0px 45px;margin-top:10px;" for="cb10">
 					<span class="text-col-head" id="checkText">Select All</span>
 					</label>
@@ -250,25 +249,71 @@
 					<!--<div class="text-bold" style="padding-top:30px;">Select Committee Members Designation to Create Group <br/>(or) Download Members Details</div>-->
 				</div>
 				
-				<div class="col-md-12 m_top20" id="candidateDetailsDiv" style="display:none">
-						<div class="border-box">
+				<div class="col-md-8 m_top20" id="buildSelectionBlockDiv" style="display:none;">
+						<div class="border-box" >
+							<div class="trashicon"> <a href="javascript:{deleteCommite();}"> <i class="glyphicon glyphicon-trash"></i></a></div>
+							<div class="panel panel-default" id="stateLevelCommitteId" style="display:none;">
+								<div class="panel-heading">
+									State Level
+								</div>
+								<div class="panel-body">
+									<div class="panel-group" id="CSaccordion" role="tablist" aria-multiselectable="true" style="margin-top:-20px;">
+									</div>
+								</div>
+							</div>
 							
-							 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="margin-top:-20px;display:none;">
-						  </div>
+							<div class="panel panel-default" id="districtLevelCommitteId" style="display:none;">
+								<div class="panel-heading">
+									District Level
+								</div>
+								<div class="panel-body">
+									<div class="panel-group" id="CDaccordion" role="tablist" aria-multiselectable="true" style="margin-top:-20px;">
+									</div>
+								</div>
+							</div>
+							
+							<div class="panel panel-default" id="mandalLevelCommitteId" style="display:none;">
+								<div class="panel-heading">
+									Mandal/Town/Division Level
+								</div>
+								<div class="panel-body">
+									<div class="panel-group" id="CMaccordion" role="tablist" aria-multiselectable="true" style="margin-top:-20px;">
+									</div>
+								</div>
+							</div>
+							
+							<div class="panel panel-default" id="villageLevelCommitteId" style="display:none;">
+								<div class="panel-heading">
+									Village/Ward Level
+								</div>
+								<div class="panel-body">
+									<div class="panel-group" id="CVaccordion" role="tablist" aria-multiselectable="true" style="margin-top:-20px;">
+									</div>
+								</div>
+							</div>		
+							<div class="panel panel-default" id="">
+								<div class="panel-heading">
+									<button onclick="getMembersDetails(0);" class="btn btn-success btn-xs"> Get Details </button>
+								</div>
+							</div>
+						</div>
+				</div>
+				<div class="col-md-12 m_top20" id="candidateDetailsDiv" style="display:none;">
+						<div class="border-box">
+							<div class="panel panel-default">
+
 							<div id="countDiv"  class="panel panel-success"></div>	
 							 <div class="row">
-							
-								<div class="col-md-12 col-xs-12 col-md-12" style="">
-								 <center><img id="summaryAjax" style="width:100px;height:80px;display:none;"  src="./images/Loading-data.gif" alt="Processing Image"/></center>
-
-								<div id="buildSearchDetailsStateId"  class="panel panel-success" style="margin-top: 0px;display:none;"></div>	
-								<div id="buildSearchDetailsdistrictId"  class="panel panel-success" style="margin-top: 0px;display:none;"></div>	
-								<div id="buildSearchDetailsMandalId"  class="panel panel-success" style="margin-top: 0px;display:none;"></div>	
-								<div id="buildSearchDetailsPanchayatId"  class="panel panel-success" style="margin-top: 0px;display:none;"></div>	
-								
+								<div class="col-md-12 col-xs-12 col-md-12">
+								<center><img id="summaryAjax" style="width:100px;height:80px;display:none;"  src="./images/Loading-data.gif" alt="Processing Image"/></center>
+								<div id="topPaginationDivId" class="paginationDivId" style="margin-top:10px;width:600px;margin-left:380px;"></div>
+								<div id="buildSearchDetailsStateId"  class="panel panel-success" style="margin-top: 40px;"></div>	
 								</div>
-								<div id="paginationDivId" class="paginationDiv" style="width:600px;margin-left:380px;"></div>
+								<div id="paginationDivId" class="paginationDivId" style="width:600px;margin-left:380px;"></div>
 							</div>
+							
+							
+							
 							
 							<div class="download-box display-style" style="display:none;">
 								<div class="display-style">
@@ -300,8 +345,9 @@
 							</div>
 							
 						</div>
+						
+						</div>
 				</div>
-		 
 				  </div>
 			  </div>
 	
@@ -418,7 +464,10 @@
           str+='<label class="select-label">District</label>';
 		  str+=' <div class="cs-select cs-skin-slide distSlide" tabindex="0" onclick="selectChange(\'distSlide\')">';
 		  str+='<span class="cs-placeholder distName" value="0">ALL</span><div class="cs-options"><ul class="scrollbar distList">';
-		  str+='<li data-value="0" data-option="" class="distEle"><span>ALL</span></li>';
+		   str+='<li data-value="0" data-option="" class="distEle"><span>ALL</span></li>';
+		   //str+='<li data-value="AP" data-option="" class="distEle"><span>AP DISTRICTs </span></li>';
+		  // str+='<li data-value="TS" data-option="" class="distEle"><span>TS DISTRICTS </span></li>';
+		   
 		  for(var i in result)
 		  {
 		   if(result[i].id > 0)
@@ -643,7 +692,7 @@
 	   }).done(function(result){
 	     var str='';
 	   str+='<section>';
-          str+='<label class="select-label">From Committees</label>';
+          str+='<label class="select-label">From  Cadre Committee</label>';
 		  str+=' <div class="cs-select cs-skin-slide committeeSlide" tabindex="0" onclick="selectChange(\'committeeSlide\')">';
 		  str+='<span class="cs-placeholder committeeName" value="0">ALL</span><div class="cs-options"><ul class="scrollbar comitteeList">';
 		  str+='<li data-value="0" data-option="" class="committeeEle"><span value="0">ALL</span></li>';
@@ -682,7 +731,7 @@
     		str+='<ul id="me-select-list" >';
 			for(var i in result)
 			{
-            str+='<li><input id="role'+result[i].id+'" name="'+result[i].name+'" type="checkbox" value="'+result[i].id+'" class="roleCheck" onclick="addCommitteeDivs(\'roleCheck\');"><label for="cb10"  style="padding:0px 10px 0px 45px;margin-top:10px;"><span class="roleName">'+result[i].name+'</span></li>';
+				str+='<li><input id="role'+result[i].id+'" name="'+result[i].name+'" type="checkbox" value="'+result[i].id+'" class="roleCheck" onclick="addCommitteeDivs(\'roleCheck\');"><label for="cb10"  style="padding:0px 10px 0px 45px;margin-top:10px;"><span class="roleName">'+result[i].name+'</span></li>';
 			}
            str+=' </ul>';
 		    $("#rolesForm").html(str);
@@ -709,6 +758,7 @@
 			{
 			//alert('se')
 			$(".roleCheck").prop('checked', false);
+			$("#checkAll").prop('checked', false);
 			$(".scrollbar").scrollator({
 					zIndex: '10000',
 					});
@@ -731,7 +781,7 @@
 
 				$(".distName").html($(this).text());
 				$(".distName").attr("value",$(this).attr("data-value"));
-				
+				$(".distName").attr("name",$(this).text());
 				$(".distEle").removeClass('cs-selected');
 				$(this).addClass('cs-selected');
 				getConstituenciesForDistricts($(this).attr("data-value"));
@@ -741,6 +791,7 @@
 				$(".constiName").html($(this).text());
 				$(".constiName").attr("value",$(this).attr("data-value"));
 				$(".constiEle").removeClass('cs-selected');
+				$(".constiName").attr("name",$(this).text());
 				$(this).addClass('cs-selected');
 				//alert($(this).attr("data-value"));
 				 getTehsils($(this).attr("data-value"));
@@ -750,6 +801,7 @@
 				$(".mandalName").html($(this).text());
 				$(".mandalName").attr("value",$(this).attr("data-value"));
 				$(".mandalEle").removeClass('cs-selected');
+				$(".mandalName").attr("name",$(this).text());
 				$(this).addClass('cs-selected');
 				//alert($(this).attr("data-value"));
 				 getPanchayats($(this).attr("data-value"));
@@ -759,6 +811,7 @@
 				$(".panchayatName").html($(this).text());
 				$(".panchayatEle").removeClass('cs-selected');
 				$(".panchayatName").attr("value",$(this).attr("data-value"));
+				$(".panchayatName").attr("name",$(this).text());
 				$(this).addClass('cs-selected');
 				//alert($(this).attr("data-value"));
 				
@@ -781,7 +834,6 @@
 				{
 					if($(this).is(":checked"))
 					{
-				
 						$(".roleCheck").prop('checked', true);
 						$("#checkText").html("UnSelect All");
 							addCommitteeDivs('roleCheck');
@@ -791,9 +843,6 @@
 						$("#checkText").html("Select All");
 					}
 				});
-			
-		
-		
 		});
 		
 		$(document).on('click', function (e) {
@@ -807,9 +856,111 @@
 			var roleArr = new Array();
 			function addCommitteeDivs(className)
 			{
+				var levelId = $(".stateName").attr('value');
+				var committeeLevl = '';
+				var locationLevel = 'State Level';
+				var levelValue = 0;
+				var divId = '';
+				var locationName = '';
+				$('#buildSelectionBlockDiv').show();
+				if(levelId == 10)
+				{
+					divId='CSaccordion';
+					committeeLevl="CS";
+					
+					levelValue = 0;
+					locationLevel = "State Level";
+					$('#stateLevelCommitteId').show();
+				}
+				else if(levelId == 11)
+				{
+					divId='CDaccordion';
+					committeeLevl="CD";					
+					levelValue = $(".distName").attr("value");	
+					$('#districtLevelCommitteId').show();					
+				}
+				else if(levelId == 5)
+				{
+					divId='CMaccordion';
+					committeeLevl="CM";					
+					levelValue = $(".mandalName").attr("value");
+					$('#mandalLevelCommitteId').show();	
+				}
+				else if(levelId == 6)
+				{
+					divId='CVaccordion';
+					committeeLevl="CV";
+					$('#villageLevelCommitteId').show();	
+				}	
+		
+			var districtId = $(".distName").attr("value");		
+			var constituencyId = $(".constiName").attr("value");
+			var mandalId = $(".mandalName").attr("value");
+			var panchayatId = $(".panchayatName").attr("value");
+
+			if(typeof districtId == 'undefined')
+			{
+				districtId = 0;
+			}
+			if(typeof constituencyId == 'undefined')
+			{
+				constituencyId = 0;
+			}
+			if(typeof mandalId == 'undefined')
+			{
+				mandalId = 0;
+			}
+			
+			if(typeof panchayatId == 'undefined')
+			{
+				panchayatId = 0;
+			}
+			if(typeof levelValue == 'undefined')
+			{
+				levelValue = 0;
+			}
+		
+			
+			
+			
+			
+			if( panchayatId != 0)
+			{
+				var areaName = $(".mandalName").attr("name");
+				locationName = $(".panchayatName").attr("name");
+				locationLevel = locationName+" Village - "+areaName+"";	
+			}
+			else if( mandalId != 0)
+			{
+				var areaName = $(".distName").attr("name");
+				locationName = $(".mandalName").attr("name");
+				locationLevel = locationName+" - "+areaName+" Assembly";		
+			}
+			else if(constituencyId != 0)
+			{
+				var areaName = $(".distName").attr("name");
+				locationName = $(".constiName").attr("name");
+				locationLevel = locationName+" Assembly - "+areaName+" District";	
+			}
+			else if( districtId != 0)
+			{	
+				locationName = $(".distName").attr("name");
+				locationLevel = locationName+" District";
+			}
+			else if(districtId == 0){
+				if(levelId == 10)
+				{
+					locationLevel = " State Level";
+				}
+			}
+		console.log(locationLevel);
+		
 			$(".toggleCls").removeClass("in");
+			
 			var commite = $(".committeeName").html();
 			var commiteId = $(".committeeName").attr("value");
+			var selCommiteeId = commiteId;
+			commiteId = levelId+""+commiteId+""+districtId+""+constituencyId+""+mandalId+""+panchayatId+""+levelValue;
 			
 			$("#"+commiteId+"Div").remove();
 		    
@@ -821,14 +972,14 @@
             str+='<h4 class="panel-title">';
             str+='<form class="me-select display-style">';
             str+='<ul id="me-select-list">';
-            str+='<li><input id="cb11" name="cb11" checked="true" type="checkbox" class="addedcommite">';
-            str+='<label for="cb11" class="m_0 collapse-select"><span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapseComm'+commiteId+'" aria-controls="collapseComm'+commiteId+'" class="col-drop-head" onClick="toggleDiv(\'collapseComm'+commiteId+'\')">'+commite+'</a></span></label></li>';
+            str+='<li><input id="cb11" name="cb11" type="checkbox" class="addedcommite">';
+            str+='<label for="cb11" class="m_0 collapse-select"><span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapseComm'+commiteId+'" aria-controls="collapseComm'+commiteId+'" class="col-drop-head" onClick="toggleDiv(\'collapseComm'+commiteId+'\')">'+commite+' ('+locationLevel+')</a></span></label></li>';
            str+=' </ul>';
           str+=' </form>';
          str+='<a data-toggle="collapse" data-parent="#accordion" href="#collapseComm'+commiteId+'" aria-expanded="true" aria-controls="collapseComm'+commiteId+'" onClick="toggleDiv(\'collapseComm'+commiteId+'\')">';
          str+='<i class="glyphicon glyphicon-chevron-down pull-right display-style col-drop-color"></i>';
           str+='</a>';
-        str+='</h4>';
+        str+='</h4>';  
       str+='</div>';
       str+='<div id="collapseComm'+commiteId+'" class="panel-collapse collapse toggleCls in" role="tabpanel" aria-labelledby="headingComm'+commiteId+'" >';
       str+='<div class="panel-body">';
@@ -837,12 +988,13 @@
 	  
 	  $("."+className).each(function()
 			{
-			 if($(this).is(":checked")) {
+			 if($(this).is(":checked")) 
+			 {
 			  var roleId = $(this).val();
 			  var role = $(this).attr("name");
-			  str+=' <li><input  class="checkedCls" name="cb11" checked="true" type="checkbox" id="comm'+commiteId+'role'+roleId+'" committeeId = "'+commiteId+'" value="'+roleId+'">';
-			  str+='<label for="cb12" class="m_0 collapse-select"><span class="col-drop-select-name">'+role+'<span class="text-italic text-selectbox-bracket">('+role+')</span></span></label></li>';
-	   }
+			  str+=' <li><input  class="checkedCls" name="cb11" checked="true" type="checkbox" id="comm'+commiteId+'role'+roleId+'" committeeId = "'+selCommiteeId+'" value="'+roleId+'" locationLevelId="'+levelId+'" districtId="'+districtId+'" constiId="'+constituencyId+'" mandalId="'+mandalId+'" villageId ="'+panchayatId+'">';
+			  str+='<label for="cb12" class="m_0 collapse-select"><span class="col-drop-select-name">'+role+'</label></li>';
+			 }
 	   })
 	   
 	   str+='</ul></form>';
@@ -850,18 +1002,20 @@
      str+=' </div>';
 	 
    str+='</div>';
-  $("#accordion").append(str);
+  $("#"+divId+"").append(str);
   
   $("#candidateDetailsDiv").show();
   
-  getMembersDetails(0);
+  //getMembersDetails(0);
 }
-	var globalJsonArr = new Array();
-	function getMembersDetails(startIndex)
+	
+	function get111MembersDetails(startIndex)
 	{
 		isEntered=false;
 		var groupName = $('#groupNameId').val();
 		var committeeIdsArr = new Array();
+		var submitArr = new Array();
+		
 		$('#summaryAjax').show();
 		$('.checkedCls').each(function(){
 
@@ -869,6 +1023,7 @@
 			{
 				var roleId = $(this).attr('value');
 				var committeeId = $(this).attr('committeeid');
+				var objectArr = new Array();
 				var isCommitteeExist = true;
 				if(committeeIdsArr.length>0)
 				{
@@ -893,119 +1048,60 @@
 						}
 						committeeIdsArr.push(committeeObj);
 				}
+				
+				var districtId = $(this).attr('districtid');
+				var constituencyId = $(this).attr('constiid');
+				var mandalId = $(this).attr('mandalid');
+				var panchayatId = $(this).attr('villageid');
+				var levelId = $(this).attr('locationlevelid');
 			}
-		});
-		//$('#addGroupId').hide();
-		var levelValue = 0;
-		var divId = '';
-		var levelId = $(".stateName").attr('value');
-		var locationLevel = '';
-		if(levelId == 10)
-		{
-			levelValue = 0;
-			divId="buildSearchDetailsStateId";
-			locationLevel = "State";
-		}
-		else if(levelId == 11)
-		{
-			levelValue = $(".distName").attr("value");
-			divId="buildSearchDetailsdistrictId";
-			locationLevel = "District";
-		}
-		else if(levelId == 5)
-		{
-			levelValue = $(".mandalName").attr("value");
-			divId="buildSearchDetailsMandalId";
-			locationLevel = "Mandal/Town/Division";
-		}
-		else if(levelId == 6)
-		{
-			levelValue = $(".panchayatName").attr("value");
-			divId="buildSearchDetailsPanchayatId";
-			locationLevel = "Village/Ward";
-		}	
-		
-		var districtId = $(".distName").attr("value");		
-		var constituencyId = $(".constiName").attr("value");
-		var mandalId = $(".mandalName").attr("value");
-		var panchayatId = $(".panchayatName").attr("value");
-		
-		if(typeof districtId == 'undefined')
-		{
-			districtId = 0;
-		}
-		if(typeof constituencyId == 'undefined')
-		{
-			constituencyId = 0;
-		}
-		if(typeof mandalId == 'undefined')
-		{
-			mandalId = 0;
-		}
-		if(typeof panchayatId == 'undefined')
-		{
-			panchayatId = 0;
-		}
-		if(typeof levelValue == 'undefined')
-		{
-			levelValue = 0;
-		}
-		//$('#buildSearchDetailsId').html('');
-		var jsObj =
-		{
-			searchType:"getDetails",
-			groupName:groupName,
-			eventId :0,
-			committeeLevelId : levelId,
-			committeeLevelValue:levelValue,
-			committeeIdsArr : committeeIdsArr,
-			stateId:glstateId,
-			districtId:districtId,
-			constituencyId:constituencyId,
-			mandalId:mandalId,
-			panchayatId:panchayatId,
-			startIndex:startIndex,
-			maxIndex : 100,	
-			sortBy:"",
-					
-		};
-		
-		 	$('html, body').animate({scrollTop:$('#summaryAjax').offset().top}, 'slow');
-		$.ajax({
-          type:'GET',
-          url: 'getinviteesMembersDetailsAction.action',
-          dataType: 'json',
-		  data: {task:JSON.stringify(jsObj)}
-		   }).done(function(result){
-			   //console.log(result);
-			  
-			   $('#addGroupId').show();
-			   	$('#summaryAjax').hide();
-			   if(result != null && result.length>0)
-			   {
-					if(result[0].responseCode == 0)
-					{
-						globalJsonArr.push(jsObj);
-						 $('#'+divId+'').show();
-						buildSearchDetails(result[0].cadreComitteeVOList,divId,locationLevel,jsObj,result[0].totalCount);
-					}
-					else if(result[0].responseCode == 2)
-					{
-							$('#'+divId+'').html(" <span style='margin-left:500px ;font-weight:bold;'> Group Name already exist...</span>");
-					}
-					else
-					{
-							//$('#'+divId+'').html(" <span style='margin-left:500px ;font-weight:bold;'> No data available in "+locationLevel+" Level </span>");
-							alert(" No data available in "+locationLevel+" Level");
-					}
-			   }
-			   else
-			   { 
-							$('#'+divId+'').html("<span style='margin-left:500px ;font-weight:bold;'> Group Name already exist...</span>");
-				}
-			}
-			);
 			
+			var jsObj =
+			{
+				searchType:"getDetails",
+				groupName:"",
+				eventId :0,
+				committeeLevelId : levelId,
+				committeeLevelValue:0,
+				committeeIdsArr : committeeIdsArr,
+				stateId:glstateId,
+				districtId:districtId,
+				constituencyId:constituencyId,
+				mandalId:mandalId,
+				panchayatId:panchayatId,
+				startIndex:startIndex,
+				maxIndex : 100,	
+				sortBy:"",
+						
+			};
+			
+			var isSubmitted=true;
+			if(submitArr.length>0)
+				{
+					for(var i in submitArr)
+					{						
+						if(submitArr[i].levelId == levelId)
+						{
+							isSubmitted = false;
+							objectArr = submitArr[i].objArr;
+							objectArr.push(jsObj);
+						}
+					}
+				}				
+				if(isSubmitted)
+				{
+					objectArr.push(jsObj);
+					var levelObj ={
+						levelId: levelId ,
+						objArr:objectArr
+						};
+					
+					submitArr.push(levelObj);
+				}
+		});
+	
+		console.log("submitArr  :"+submitArr.length);
+		console.log(submitArr);
 	}
 	
 	function createGroup(index)
@@ -1063,30 +1159,235 @@
 			
 	}
 	
+	var globalJsonArr = new Array();
+	function getMembersDetails(startIndex)
+	{
+		isEntered=false;
+		var submitArr = new Array();
+		var committeeIdsArr = new Array();
+		
+		var stateArr = new Array();
+		var districtArr = new Array();
+		var mandalArr = new Array();
+		var villageArr = new Array();
+
+		
+		$('#summaryAjax').show();
+		$(".paginationDivId").hide();
+		$('.checkedCls').each(function(){
+			if($(this).is(':checked'))
+			{	
+
+				var levelId = $(this).attr('locationlevelid');
+				var levelValue =0;
+				var selectedLevel ='state';
+				
+				var districtId = $(this).attr('districtid');
+				var constituencyId = $(this).attr('constiid');
+				var mandalId = $(this).attr('mandalid');
+				var panchayatId = $(this).attr('villageid');	
+				
+				var finalDistrictId = 0;
+				var finalConstiteuncyId = 0;
+				var finalMandalId = 0;
+				var finalPanchayatId =0;
+				
+				
+				if(panchayatId != 0)
+				{
+					finalPanchayatId = panchayatId;
+				}
+				if(mandalId != 0)
+				{
+					finalMandalId = mandalId;
+				}
+				if(constituencyId != 0)
+				{
+					finalConstiteuncyId = constituencyId;
+				}
+				if(districtId != 0)
+				{
+					finalDistrictId = districtId;
+				}
+				
+				if(panchayatId != 0)
+				{
+					levelValue = panchayatId;
+					selectedLevel ="village";
+				}
+				else if(mandalId != 0)
+				{
+					levelValue = mandalId;
+					selectedLevel ="mandal";
+				}
+				else if(constituencyId != 0)
+				{
+					levelValue = constituencyId;
+					selectedLevel ="constituency";
+				}
+				else if(districtId != 0)
+				{
+					levelValue = districtId;
+					selectedLevel ="district";
+				}
+				
+				var roleId = $(this).attr('value');
+				var committeeId = $(this).attr('committeeid');
+				var isCommitteeExist = true;
+				var pushArr = stateArr;
+				
+				if(levelId == 10)
+				{
+					pushArr = stateArr;					
+				}
+				else if(levelId == 11)
+				{
+					pushArr = districtArr;
+				}
+				else if(levelId == 5)
+				{				
+					pushArr = mandalArr;
+				}
+				else if(levelId == 6)
+				{				
+					pushArr = villageArr;
+				}	
+				
+				if(pushArr.length>0)
+				{
+					//debugger;
+					for(var i in pushArr)
+					{		
+						if(pushArr[i].levelId == levelId)
+						{				
+							if(pushArr[i].levelValue == levelValue)
+							{
+								if(pushArr[i].committeeId == committeeId)
+								{
+									isCommitteeExist = false;
+									rolesIdsArr = pushArr[i].rolesIds;
+									rolesIdsArr.push(roleId);
+								}
+							}
+						}
+					}
+				}	
+				
+				if(isCommitteeExist)				
+				{
+					var rolesIdsArr = new Array();
+						rolesIdsArr.push(roleId);
+						var committeeObj = {
+						committeeId : committeeId,
+						levelId:levelId,
+						districtId:finalDistrictId,
+						constituencyId:finalConstiteuncyId,
+						mandalId:finalMandalId,
+						panchayatId:finalPanchayatId,
+						levelValue:levelValue,
+						selectedLevel:selectedLevel,
+						rolesIds:rolesIdsArr
+						}
+					pushArr.push(committeeObj);
+				}				
+			}		
+		});
+
+		if(stateArr.length>0)
+		{
+			var stateObj ={
+			levelStr:"state",
+			levelArr:stateArr
+			};
+			submitArr.push(stateObj);
+		}
+		
+		if(districtArr.length>0)
+		{
+			var districtObj ={
+			levelStr:"district",
+			levelArr:districtArr
+			};
+			submitArr.push(districtObj);
+		}
+		
+		
+		if(mandalArr.length>0)
+		{
+			var mandalObj ={
+			levelStr:"mandal",
+			levelArr:mandalArr
+			};
+			
+		submitArr.push(mandalObj);
+		}
+		
+		
+		if(villageArr.length>0)
+		{
+			var villageObj ={
+			levelStr:"village",
+			levelArr:villageArr
+			};
+			submitArr.push(villageObj);
+		}
+		
+		var jsObj =
+		{
+			searchType:"getDetails",
+			stateId:glstateId,
+			groupName:"",
+			eventId :0,
+			submitArr:submitArr,
+			startIndex:startIndex,
+			maxIndex : 100					
+		};
+		var divId = 'buildSearchDetailsStateId';
+		$('#'+divId+'').html('');
+		$('html, body').animate({scrollTop:$('#summaryAjax').offset().top}, 'slow');
+		$.ajax({
+          type:'GET',
+          url: 'getinviteesMembersDetailsAction.action',
+          dataType: 'json',
+		  data: {task:JSON.stringify(jsObj)}
+		   }).done(function(result){
+			   $('#summaryAjax').hide();
+			   if(result != null && result[0].cadreComitteeVOList != null && result[0].cadreComitteeVOList.length>0)
+			   {
+				  buildSearchDetails(result[0].cadreComitteeVOList,divId,'',jsObj,result[0].totalCount);
+			   }
+			else{
+				$('#'+divId+'').html('<span style="font-weight:bold;text-align:center;">No Data Available...</span>');
+			}			   
+		   });
+	}
 	var indexValue=0;
 	function buildSearchDetails(result,divId,locationLevel,jsObj,totalCnt)
 	{		
-	console.log(jsObj);
+
 		var str ='';
 		$(".paginationDivId").show();
+		$("#candidateDetailsDiv").show();
 		var count=0;
 		if(result != null && result.length>0)
 		{				
-				//str+='<h4 style="text-align:center;"> GROUP MEMBERS DETAILS </h4><br>';
-				str+='<div class="panel-heading"> '+locationLevel.toUpperCase()+' LEVEL GROUP MEMBERS DETAILS ';
+				str+='<div class="panel-heading">  GROUP MEMBERS DETAILS ';
 				str+='<div style="padding-top:10px;padding-left:10px" class="pull-right">';
-				str+='<div style="width:300px;margin-top:-18px;margin-right:-10px" class="input-group pull-right">';
-				str+='<input type="text" style="height: 35px;" aria-describedby="basic-addon2" placeholder="Enter Group Name" class="form-control" id="groupNameId'+indexValue+'">';
-				str+='<span style="background-color: rgb(1, 182, 173); color: rgb(255, 255, 255); cursor: pointer;" id="addGroupId" class="input-group-addon" onclick="createGroup('+indexValue+')">ADD TO GROUP</span>';
-				str+='</div><br><br>';
+				//str+='<div style="width:300px;margin-top:-18px;margin-right:-10px" class="input-group pull-right">';
+				//str+='<input type="text" style="height: 35px;" aria-describedby="basic-addon2" placeholder="Enter Group Name" class="form-control" id="groupNameId'+indexValue+'"/>';
+				//str+='<span style="background-color: rgb(1, 182, 173); color: rgb(255, 255, 255); cursor: pointer;" id="addGroupId" class="input-group-addon" onclick="createGroup('+indexValue+')">ADD TO GROUP</span>';
+				//str+='</div><br><br>';
 				//str+='<span class="viewlink">Click To View Existed group Names</span>    ';
 				str+='</div>';
 				
 				//str+='<a class="btn btn-xs btn-success pull-right" href="javascript:{dispatchAddressDetails();}">Download Address Patches</a>';
 												
 				//str+='<a class="btn btn-xs btn-success pull-right" href="javascript:{sendSmsForCandidtes(\'allContacts'+locationLevel+'Cls\',\'contacts'+locationLevel+'Cls\');}" style="margin-right: 10px;">Send SMS</a>';
-				str+='<a class="btn btn-xs btn-success pull-right" href="javascript:{exportConstituencyToExcel(\'searchTableId'+divId+'\',\''+locationLevel+'\');}" style="margin-right: 15px;"> Export Excel </a></div>';
-				str+='<table class="table table-bordered " id="searchTableId'+divId+'">';
+				str+='<a class="btn btn-xs btn-success pull-right" href="javascript:{exportConstituencyToExcel(\'searchTableId'+divId+'\',\''+locationLevel+'\');}" style="margin-right: 15px;"> Export Excel </a>';
+				
+				str+='</div>';
+				
+				str+='<table class="table table-bordered " id="searchTableId'+divId+'" style="width: 1024px ! important; font-size: 11px; font-weight: bold;">';
 				str+='<thead>';
 				str+='<tr>';
 				str+='<th> <input type="checkbox" checked="true" value="" class="allContacts'+locationLevel+'Cls" onclick="checkallCheckBoxes(\'allContacts'+locationLevel+'Cls\',\'contacts'+locationLevel+'Cls\');"/> SELECT ALL </th>';
@@ -1104,7 +1405,7 @@
 				for(var i in result)
 				{
 					if(result[i].committeeName != null && result[i].committeePosition != null)
-					{
+					{						
 						count = count+1;
 						str+='<tr>';
 							str+='<td> <input type="checkbox" checked="true" value="'+result[i].mobileNo+'" class="contacts'+locationLevel+'Cls" id="contacts'+locationLevel+'Id'+i+'" onclick="checkCheckBoxes(\'contacts'+locationLevel+'\','+i+',\'allContacts'+locationLevel+'Cls\');"/> </td>';
@@ -1112,7 +1413,7 @@
 							str+='<td> '+result[i].constituency+' </td>';
 							str+='<td> '+result[i].tehsil+' </td>';
 							str+='<td> '+result[i].cadreName+' </td>';
-							str+='<td> '+result[i].committeeName+' </td>';
+							str+='<td> '+result[i].committeeName+' ('+result[i].electionType+')</td>';
 							str+='<td> '+result[i].committeePosition+' </td>';
 							str+='<td> '+result[i].mobileNo+' </td>';
 						str+='</tr>';
@@ -1122,11 +1423,11 @@
 				
 				str+='</tbody>';
 				str+='</table>';
-
-	    var maxResults=jsObj.maxIndex;
+				
+		var maxResults=jsObj.maxIndex;
 	   
 	     if(jsObj.startIndex==0){
-		   $("#paginationDivId").pagination({
+		   $(".paginationDivId").pagination({
 			items: totalCnt,
 			itemsOnPage: maxResults,
 			cssStyle: 'light-theme',
@@ -1137,7 +1438,6 @@
 			}
 		});
 	}
-		
 			$('#'+divId+'').html(str);
 			$("#searchTableId"+divId+"").dataTable({
 				"iDisplayLength": 50,
@@ -1254,11 +1554,9 @@
 						if(mobileNo == 10 || mobileNo == 12)
 							mobileNumbersArr.push(mobileNo);
 					}
-				});
+				});				
 				
-				console.log(mobileNumbersArr.length);
 				var myArr=new Array();
-				myArr.push(9959796608);
 				myArr.push(9581434970);
 				var jsObj ={					
 					mobileNumbersArr:myArr,
@@ -1277,7 +1575,7 @@
 			}
 		}
 		function sendSmsForCandidtes(allCls, individualCls)
-		{	
+		{			
 			$("#smsMessageDiv").show();
 			$("#smsMessageDiv").html('Enter Message : <input type="textarea" maxlength="50" id="messaggeId" placeholder="Enter Message for SMS " style="height:50px;"/><input type="button" id="smsButton" value="Send SMS" onclick="sendSms(\'messaggeId\',\''+allCls+'\',\''+individualCls+'\')" class="btn btn-success  btn-xs" style="margin-left: 200px;margin-top: 10px"/>');
 			$('#messaggeId').val('');
@@ -1330,13 +1628,6 @@
 			}
 	}
 	
-	
-	function hideAndShow(id)
-	{
-		alert(id);
-	}
-	
-	
 	function buildLevel()
 	{
 		if(gldistrictId != 0)
@@ -1351,12 +1642,12 @@
 					  str+='<ul class="scrollbar stateList">';
 					  // str+='<li data-value="10" data-option="" class="stateEle"><span>State</span></li>';
 					   str+='<li data-value="11" data-option="" class="stateEle"><span>District</span></li>';
-					   str+='<li data-value="5" data-option="" class="stateEle"><span>Mandal/Town/Division</span></li>';
+					   str+='<li data-value="5" data-option="" class="stateEle"><span>Mandal/Town/Division </span></li>';
 					   str+='<li data-value="6" data-option="" class="stateEle"><span>Village/Ward</span></li>';
 					  str+='</ul>';
 				  str+='</div><select class="cs-select cs-skin-slide" id="levelId">';
 					str+='<option value="11">District</option>';
-					str+='<option value="5">Mandal/Town/Division</option>';
+					str+='<option value="5">Mandal/Muncipality</option>';
 					str+='<option value="6">Village/Ward</option>';
 				 str+='</select></div></section>';
 				 
@@ -1374,13 +1665,13 @@
 					  str+='<ul class="scrollbar stateList">';
 					   str+='<li data-value="10" data-option="" class="stateEle"><span>State</span></li>';
 					   str+='<li data-value="11" data-option="" class="stateEle"><span>District</span></li>';
-					   str+='<li data-value="5" data-option="" class="stateEle"><span>Mandal/Town/Division </span></li>';
+					   str+='<li data-value="5" data-option="" class="stateEle"><span>Mandal/Muncipality </span></li>';
 					   str+='<li data-value="6" data-option="" class="stateEle"><span>Village/Ward</span></li>';
 					  str+='</ul>';
 				  str+='</div><select class="cs-select cs-skin-slide" id="levelId">';
 					str+='<option value="10">State</option>';
 					str+='<option value="11">District</option>';
-					str+='<option value="5">Mandal/Town/Division</option>';
+					str+='<option value="5">Mandal/Muncipality</option>';
 					str+='<option value="6">Village/Ward</option>';
 				 str+='</select></div></section>';
 				 
