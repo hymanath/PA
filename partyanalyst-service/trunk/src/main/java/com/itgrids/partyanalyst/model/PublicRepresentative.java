@@ -25,18 +25,12 @@ import org.hibernate.annotations.NotFoundAction;
 public class PublicRepresentative implements java.io.Serializable{
 
 	private Long publicRepresentativeId;
-	private String firstName;
-	private String lastName;
-	private String mobileNo;
-	private Long age;
-	private String gender;
-	private Date dateOfBirth;
-	private  CasteState casteState;
-	private Long casteStateId;
-	private UserAddress userAddress;
-	private Long addressId;
-	private String type;
-	
+	private PublicRepresentativeType publicRepresentativeType;
+	private Long publicRepresentativeTypeId;
+	private Candidate candidate;
+	private Long candidateId;
+	private Long levelId;
+	private Long levelValue;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -48,97 +42,60 @@ public class PublicRepresentative implements java.io.Serializable{
 		this.publicRepresentativeId = publicRepresentativeId;
 	}
 	
-	@Column(name="first_name")
-	public String getFirstName() {
-		return firstName;
-	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	
-	@Column(name="last_name")
-	public String getLastName() {
-		return lastName;
-	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-	
-	@Column(name="mobile_no")
-	public String getMobileNo() {
-		return mobileNo;
-	}
-	public void setMobileNo(String mobileNo) {
-		this.mobileNo = mobileNo;
-	}
-	
-	@Column(name="age")
-	public Long getAge() {
-		return age;
-	}
-	public void setAge(Long age) {
-		this.age = age;
-	}
-	
-	@Column(name="gender")
-	public String getGender() {
-		return gender;
-	}
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-	
-	@Column(name="date_of_birth")
-	public Date getDateOfBirth() {
-		return dateOfBirth;
-	}
-	public void setDateOfBirth(Date dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "caste_id",updatable = false, insertable = false)
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "public_representative_type_id",insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public CasteState getCasteState() {
-		return casteState;
+	public PublicRepresentativeType getPublicRepresentativeType() {
+		return publicRepresentativeType;
 	}
-	public void setCasteState(CasteState casteState) {
-		this.casteState = casteState;
-	}
-	
-	@Column(name="caste_id")
-	public Long getCasteStateId() {
-		return casteStateId;
-	}
-	public void setCasteStateId(Long casteStateId) {
-		this.casteStateId = casteStateId;
+	public void setPublicRepresentativeType(
+			PublicRepresentativeType publicRepresentativeType) {
+		this.publicRepresentativeType = publicRepresentativeType;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "address_id",updatable = false, insertable = false)
+	@Column(name="public_representative_type_id")
+	public Long getPublicRepresentativeTypeId() {
+		return publicRepresentativeTypeId;
+	}
+	public void setPublicRepresentativeTypeId(Long publicRepresentativeTypeId) {
+		this.publicRepresentativeTypeId = publicRepresentativeTypeId;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "candidate_id",insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public UserAddress getUserAddress() {
-		return userAddress;
+	public Candidate getCandidate() {
+		return candidate;
 	}
-	public void setUserAddress(UserAddress userAddress) {
-		this.userAddress = userAddress;
-	}
-	
-	@Column(name="address_id")
-	public Long getAddressId() {
-		return addressId;
-	}
-	public void setAddressId(Long addressId) {
-		this.addressId = addressId;
+	public void setCandidate(Candidate candidate) {
+		this.candidate = candidate;
 	}
 	
-	@Column(name="type")
-	public String getType() {
-		return type;
+	
+	@Column(name="candidate_id")
+	public Long getCandidateId() {
+		return candidateId;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setCandidateId(Long candidateId) {
+		this.candidateId = candidateId;
 	}
+	
+	@Column(name="level_id")
+	public Long getLevelId() {
+		return levelId;
+	}
+	public void setLevelId(Long levelId) {
+		this.levelId = levelId;
+	}
+	
+	@Column(name="level_value")
+	public Long getLevelValue() {
+		return levelValue;
+	}
+	public void setLevelValue(Long levelValue) {
+		this.levelValue = levelValue;
+	}
+	
 }
