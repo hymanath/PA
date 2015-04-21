@@ -85,5 +85,6 @@ public interface IWebServiceHandlerService {
 	public Object updateCadreTravelDiscountDetails(CadreTravelsVO inputVO);
 	
 	public Object cancellationOfTicketDetails(CadreTravelsVO inputVO);
+	public List<CadreAddressVO> getMemberDataByRefNoAndMemberShipNo(String refNo,String memberShipNo);
 	
 }

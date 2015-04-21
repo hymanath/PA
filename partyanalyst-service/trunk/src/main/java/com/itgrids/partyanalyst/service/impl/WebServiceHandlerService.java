@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -1428,6 +1429,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				cadreAddressVO.setMobileNo(params[1] != null ? params[1].toString() : "");
 				cadreAddressVO.setAge(params[2] != null ? (Long)params[2] : null);
 				cadreAddressVO.setGender(params[3] != null ? params[3].toString() : "");
+				cadreAddressVO.setRefNo(params[10] != null ? params[10].toString() : "");
+				cadreAddressVO.setPhoto(params[11] != null ? "http://mytdp.com/cadre_images/"+params[11].toString() : "");
 				
 				if(address.equalsIgnoreCase("true"))
 				{
@@ -1472,6 +1475,48 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	public Object cancellationOfTicketDetails(CadreTravelsVO inputVO){
 		String status = cadreRegistrationService.cancellationOfTicketDetails(inputVO);
 		return status;
+	}
+	
+	public List<CadreAddressVO> getMemberDataByRefNoAndMemberShipNo(String refNo,String memberShipNo)
+	{
+		
+		List<CadreAddressVO> resultList = new ArrayList<CadreAddressVO>();
+		List<Object[]> list  = null;
+		try{
+			StringBuilder queryStr = new StringBuilder();
+			if(memberShipNo != null && refNo != null)
+			queryStr.append("  (model.memberShipNo like'%"+memberShipNo.trim()+"' and model.cardNumber = '"+refNo+"')  ");
+				//queryStr.append("  (substring(model.memberShipNo, 4) like'%"+memberShipNo.trim()+"' and model.cardNumber = '"+refNo+"')  ");
+				list = tdpCadreDAO.getMemberAddressDetlsByMembershipNo(queryStr.toString());	
+			if(list !=  null && list.size() > 0)
+				setMemberDataList(resultList,list,"true");
+			if(resultList == null || resultList.size() == 0)
+			{
+				queryStr = new StringBuilder();
+				
+				/*queryStr.append("  substring(model.memberShipNo, 4)" +
+						" like '%"+memberShipNo.trim()+"'  ");*/
+				queryStr.append("  model.memberShipNo like '%"+memberShipNo.trim()+"'  ");
+				list = tdpCadreDAO.getMemberAddressDetlsByMembershipNo(queryStr.toString());
+				setMemberDataList(resultList,list,"true");
+			}
+			
+			if(resultList == null || resultList.size() == 0)
+			{
+				queryStr = new StringBuilder();
+				queryStr.append("  model.cardNumber = '"+refNo+"'  ");
+			
+				list = tdpCadreDAO.getMemberAddressDetlsByMembershipNo(queryStr.toString());	
+				setMemberDataList(resultList,list,"true");
+			}
+			
+			
+		}
+		catch(Exception e)
+		{
+			Log.error("Exception Occured in getMemberDataByMemberShipAndRefNo()",e);
+		}
+		return resultList;
 	}
 }
 

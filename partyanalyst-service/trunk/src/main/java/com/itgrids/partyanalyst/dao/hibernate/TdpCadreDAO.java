@@ -4566,6 +4566,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			str.append(" ,tehsil.tehsilName");
 			str.append(" ,panc.panchayatName");
 			str.append(" ,localElectionBody.name");
+			str.append(" ,model.refNo,model.image");
 			str.append(" from TdpCadre model left join model.userAddress.panchayat panc ");
 			str.append(" left join model.userAddress.tehsil tehsil ");
 		    str.append(" left join model.userAddress.constituency constituency ");
