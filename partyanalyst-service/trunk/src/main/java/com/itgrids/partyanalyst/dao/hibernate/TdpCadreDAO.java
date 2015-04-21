@@ -4747,7 +4747,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			}
 		}
 		
-		public List<Object[]> getMobileNoByTdpCadreIdList(List<Long> tdpCadreIdsList)
+		public List<Object[]> getMobileNoByTdpCadreIdList(List<Long> tdpCadreIdsList,int firstRecord,int maxResult)
 		{
 			StringBuilder queryStr = new StringBuilder();
 			
@@ -4771,6 +4771,9 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			
 			Query query = getSession().createQuery(queryStr.toString());
 			query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
+			query.setFirstResult(firstRecord);
+			query.setMaxResults(maxResult);
+			
 			return query.list();
 		}
 		
