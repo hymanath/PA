@@ -10,7 +10,22 @@ public class CadreAddressVO {
 	private Long age;
 	private String membershipNo;
 	private String value;
+	private String photo;
+	private String refNo;
 	
+	
+	public String getRefNo() {
+		return refNo;
+	}
+	public void setRefNo(String refNo) {
+		this.refNo = refNo;
+	}
+	public String getPhoto() {
+		return photo;
+	}
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
 	public Long getId() {
 		return id;
 	}
