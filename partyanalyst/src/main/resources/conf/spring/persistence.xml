@@ -575,12 +575,17 @@
 				<value>com.itgrids.partyanalyst.model.TdpCadreAgerangeInfo</value>
 				<value>com.itgrids.partyanalyst.model.TdpCadreCasteInfo</value>	
 				<value>com.itgrids.partyanalyst.model.TdpCommitteeVacantPost</value>
-					
-				<value>com.itgrids.partyanalyst.model.MahanaduGroup</value>
-				<value>com.itgrids.partyanalyst.model.MahanaduCadreMember</value>
-				<value>com.itgrids.partyanalyst.model.PublicRepresentative</value>	
-				<value>com.itgrids.partyanalyst.model.MahanaduPublicRepresentative</value>	
-				<value>com.itgrids.partyanalyst.model.CadreAddress</value>		
+				
+			 	<value>com.itgrids.partyanalyst.model.EventGroup</value>
+				<value>com.itgrids.partyanalyst.model.EventGroupMember</value>
+				<value>com.itgrids.partyanalyst.model.PublicRepresentativeType</value>				
+				<value>com.itgrids.partyanalyst.model.PublicRepresentative</value>
+				<value>com.itgrids.partyanalyst.model.EventUser</value>
+				<value>com.itgrids.partyanalyst.model.EventAttendee</value>
+				<value>com.itgrids.partyanalyst.model.EventSmsSent</value>				
+				<value>com.itgrids.partyanalyst.model.EventSms</value>
+				<value>com.itgrids.partyanalyst.model.EventInvitee</value>
+				<value>com.itgrids.partyanalyst.model.Event</value>
 				</list>
 			
 		</property>
