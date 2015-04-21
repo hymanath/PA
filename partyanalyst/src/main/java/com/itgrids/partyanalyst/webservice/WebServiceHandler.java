@@ -1098,4 +1098,24 @@ public class WebServiceHandler {
 		return cadreAddressVOList;
 	}
 	
+	@POST
+	@Path("/getCadreBasicInfo")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<CadreAddressVO> getMemberDataByMemberShipAndRefNo(CadreAddressVO inputVo){
+		
+		try{
+			
+			cadreAddressVOList = webServiceHandlerService.getMemberDataByRefNoAndMemberShipNo(inputVo.getRefNo().trim(),inputVo.getMembershipNo().trim());	
+			
+			return cadreAddressVOList;
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getMemberDataByMemberShipAndRefNo() Method, Exception is ",e);
+			e.printStackTrace();	
+		}
+		return cadreAddressVOList;
+	}
+		
 }
