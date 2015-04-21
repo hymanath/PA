@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreVo;
+import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -883,45 +884,77 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
     	try{
     		session = request.getSession();    		
     		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-    		
+    		if(regVO==null)
+    		{
+    			return Action.ERROR;
+    		}
     		jObj = new JSONObject(getTask());
-    		String groupName = jObj.getString("groupName");
-    		String searchType = jObj.getString("searchType");
-    		Long eventId = jObj.getLong("eventId");
-        	Long levelId = jObj.getLong("committeeLevelId");
-        	Long levelValue = jObj.getLong("committeeLevelValue");
-        	Long districtId = jObj.getLong("districtId");
-        	Long constiteuncyId =jObj.getLong("constituencyId");;
-        	Long stateId = jObj.getLong("stateId");;
-        	Long mandalId =jObj.getLong("mandalId");;
-        	Long panchayatId=jObj.getLong("panchayatId");;
-        	
-        	JSONArray committeesArr = jObj.getJSONArray("committeeIdsArr");
-        	
-        	List<CadreCommitteeMemberVO> committeeList = new ArrayList<CadreCommitteeMemberVO>();
-        	if(committeesArr != null && committeesArr.length()>0)
-        	{
-        		for (int i=0;i<committeesArr.length();i++) {
-        			CadreCommitteeMemberVO committeeVO = new CadreCommitteeMemberVO();
-        			JSONObject committeeRole = committeesArr.getJSONObject((i));
-        			Long committeeId = committeeRole.getLong("committeeId");
-        			JSONArray committeeRoleArr = committeeRole.getJSONArray("rolesIds");
-        			List<Long> commiteeIds = new ArrayList<Long>();
-        			committeeVO.setId(committeeId);
-        			if(committeeRoleArr != null && committeeRoleArr.length()>0)
-                	{
-                		for (int j=0;j<committeeRoleArr.length();j++) 
-                		{
-                			commiteeIds.add(Long.valueOf(committeeRoleArr.getInt(j)));
-                		}
-                	}
-        			committeeVO.setCommiteeRoleIds(commiteeIds);
-        			committeeList.add(committeeVO);
-				}
-        	}
-        	
-        	commiteeMembersList = cadreCommitteeService.createGroupForMahanaduInvities(regVO.getRegistrationID(),levelId,levelValue,committeeList,
-        			eventId,groupName,searchType,stateId,districtId,constiteuncyId,mandalId,panchayatId,jObj.getInt("startIndex"),jObj.getInt("maxIndex"));
+    		JSONArray  submitArr = jObj.getJSONArray("submitArr");
+    		Long stateId = jObj.getLong("stateId");;
+    		List<InviteesVO> inviteeGroupVOList = null;
+    		if(submitArr != null && submitArr.length()>0)
+    		{
+    			 inviteeGroupVOList = new ArrayList<InviteesVO>();
+    			for(int i=0;i<submitArr.length();i++)
+    			{    				
+    				InviteesVO committeeLevelVO = new InviteesVO();
+    				JSONObject levelObj = submitArr.getJSONObject(i);
+    				JSONArray levelArr = levelObj.getJSONArray("levelArr");
+    				committeeLevelVO.setLevelStr(levelObj.getString("levelStr").trim());
+    				List<InviteesVO> levelWiseList = new ArrayList<InviteesVO>();
+    				if(levelArr != null && levelArr.length()>0)
+    				{
+    					for(int j=0;j<levelArr.length();j++)
+    					{
+    						JSONObject commiteeVO = levelArr.getJSONObject(j);
+    						InviteesVO vo = new InviteesVO();
+    						vo.setCommitteeId(commiteeVO.getLong("committeeId"));
+    						vo.setLevelId(commiteeVO.getLong("levelId"));
+    						vo.setLevelValue(commiteeVO.getLong("levelValue"));
+    						vo.setLevelStr(commiteeVO.getString("selectedLevel"));
+    						
+    			        	vo.setDistrictId(commiteeVO.getLong("districtId"));
+    			        	vo.setConstituencyId(commiteeVO.getLong("constituencyId"));
+    			        	vo.setMandalId(commiteeVO.getLong("mandalId"));
+    			        	vo.setPanchayatId(commiteeVO.getLong("panchayatId"));
+    			        	
+    						JSONArray rolesIds = commiteeVO.getJSONArray("rolesIds");
+    						List<Long> roles = new ArrayList<Long>();
+    						if(rolesIds != null && rolesIds.length()>0)
+    						{
+    							for(int k=0;k<rolesIds.length();k++)
+    							{
+    								roles.add(Long.valueOf(rolesIds.getInt(k)));
+    							}
+    						}
+    						vo.setRolesIds(roles);
+    						
+    						levelWiseList.add(vo);
+    					}
+    				}
+    				
+    				if(committeeLevelVO.getLevelStr().trim().equalsIgnoreCase("state"))
+    				{
+    					committeeLevelVO.setStateLevelVOList(levelWiseList);
+    				}
+    				else if(committeeLevelVO.getLevelStr().trim().equalsIgnoreCase("district"))
+    				{
+    					committeeLevelVO.setDistrictLevelVOList(levelWiseList);
+    				}
+    				else if(committeeLevelVO.getLevelStr().trim().equalsIgnoreCase("mandal"))
+    				{
+    					committeeLevelVO.setMandalLevelVOList(levelWiseList);
+    				}
+    				else if(committeeLevelVO.getLevelStr().trim().equalsIgnoreCase("village"))
+    				{
+    					committeeLevelVO.setVillageLevelVOList(levelWiseList);
+    				}
+    				
+    				inviteeGroupVOList.add(committeeLevelVO);
+    			}
+    		}
+    		
+    		commiteeMembersList = cadreCommitteeService.getEventInviteesList(regVO.getRegistrationID(),regVO.getAccessType(),regVO.getAccessValue(),stateId,inviteeGroupVOList,jObj.getInt("startIndex"),jObj.getInt("maxIndex"));
     	}
     	catch(Exception e)
     	{
