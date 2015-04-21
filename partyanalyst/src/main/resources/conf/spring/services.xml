@@ -2567,10 +2567,6 @@
            <property name="voterAgeInfoDAO" ref="voterAgeInfoDAO"/>
            <property name="tdpCommitteeVacantPostDAO" ref="tdpCommitteeVacantPostDAO" />
            <property name="tdpCommitteeEnrollmentDAO" ref="tdpCommitteeEnrollmentDAO" />
-           <property name="mahanaduGroupDAO" ref="mahanaduGroupDAO" />
-           <property name="mahanaduCadreMemberDAO" ref="mahanaduCadreMemberDAO" />
-           <property name="mahanaduPublicRepresentativeDAO" ref="mahanaduPublicRepresentativeDAO" />
-           <property name="publicRepresentativeDAO" ref="publicRepresentativeDAO" />
 	</bean>
 	
 	<bean name="dynamicReportService"  class="com.itgrids.partyanalyst.service.impl.DynamicReportService">
