@@ -1978,19 +1978,43 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="mahanaduGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.MahanaduGroupDAO" >
+	<bean id="eventGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventGroupDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	 <bean id="mahanaduCadreMemberDAO" class="com.itgrids.partyanalyst.dao.hibernate.MahanaduCadreMemberDAO" >
+	<bean id="eventGroupMemberDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventGroupMemberDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	 <bean id="publicRepresentativeDAO" class="com.itgrids.partyanalyst.dao.hibernate.PublicRepresentativeDAO" >
+	<bean id="publicRepresentativeDAO" class="com.itgrids.partyanalyst.dao.hibernate.PublicRepresentativeDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	 <bean id="mahanaduPublicRepresentativeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MahanaduPublicRepresentativeDAO" >
+	<bean id="publicRepresentativeTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.PublicRepresentativeTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="eventUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventUserDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="eventAttendeeDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventAttendeeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="eventSmsSentDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventSmsSentDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+    <bean id="eventSmsDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventSmsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="eventInviteeDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventInviteeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="eventDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
