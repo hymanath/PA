@@ -1477,37 +1477,36 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		return status;
 	}
 	
-	public List<CadreAddressVO> getMemberDataByRefNoAndMemberShipNo(String refNo,String memberShipNo)
+	public CadreAddressVO getMemberDataByRefNoAndMemberShipNo(String refNo,String memberShipNo)
 	{
+		CadreAddressVO returnVo = new CadreAddressVO();
 		
-		List<CadreAddressVO> resultList = new ArrayList<CadreAddressVO>();
 		List<Object[]> list  = null;
 		try{
 			StringBuilder queryStr = new StringBuilder();
 			if(memberShipNo != null && refNo != null)
-			queryStr.append("  (model.memberShipNo like'%"+memberShipNo.trim()+"' and model.cardNumber = '"+refNo+"')  ");
-				//queryStr.append("  (substring(model.memberShipNo, 4) like'%"+memberShipNo.trim()+"' and model.cardNumber = '"+refNo+"')  ");
-				list = tdpCadreDAO.getMemberAddressDetlsByMembershipNo(queryStr.toString());	
+			//queryStr.append("  (model.memberShipNo like'%"+memberShipNo.trim()+"' and model.cardNumber = '"+refNo+"')  ");
+			queryStr.append("  (substring(model.memberShipNo, 5) ='"+memberShipNo.trim()+"' and model.cardNumber = '"+refNo+"')  ");
+				list = tdpCadreDAO.getMemberInfoyMembershipNo(queryStr.toString());	
 			if(list !=  null && list.size() > 0)
-				setMemberDataList(resultList,list,"true");
-			if(resultList == null || resultList.size() == 0)
+				setMemberInfoList(returnVo,list,"true");
+			if(returnVo == null || returnVo.getMembershipNo() == null)
 			{
 				queryStr = new StringBuilder();
 				
-				/*queryStr.append("  substring(model.memberShipNo, 4)" +
-						" like '%"+memberShipNo.trim()+"'  ");*/
-				queryStr.append("  model.memberShipNo like '%"+memberShipNo.trim()+"'  ");
-				list = tdpCadreDAO.getMemberAddressDetlsByMembershipNo(queryStr.toString());
-				setMemberDataList(resultList,list,"true");
+			queryStr.append(" substring(model.memberShipNo, 5) ='"+memberShipNo.trim()+"'  ");
+				//queryStr.append("  model.memberShipNo like '%"+memberShipNo.trim()+"'  ");
+				list = tdpCadreDAO.getMemberInfoyMembershipNo(queryStr.toString());
+				setMemberInfoList(returnVo,list,"true");
 			}
 			
-			if(resultList == null || resultList.size() == 0)
+			if(returnVo == null || returnVo.getMembershipNo() == null)
 			{
 				queryStr = new StringBuilder();
 				queryStr.append("  model.cardNumber = '"+refNo+"'  ");
 			
-				list = tdpCadreDAO.getMemberAddressDetlsByMembershipNo(queryStr.toString());	
-				setMemberDataList(resultList,list,"true");
+				list = tdpCadreDAO.getMemberInfoyMembershipNo(queryStr.toString());	
+				setMemberInfoList(returnVo,list,"true");
 			}
 			
 			
@@ -1516,7 +1515,36 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		{
 			Log.error("Exception Occured in getMemberDataByMemberShipAndRefNo()",e);
 		}
-		return resultList;
+		
+		return returnVo;
 	}
+	
+	public CadreAddressVO setMemberInfoList(CadreAddressVO cadreAddressVO,List<Object[]> list,String address)
+	{
+
+		try{
+		
+		if(list != null && list.size() > 0)
+		{
+			for(Object[] params : list)
+			{
+				
+				cadreAddressVO.setMembershipNo(params[2] != null ? params[2].toString().substring(4) : "");
+				cadreAddressVO.setName(params[0] != null ? params[0].toString() : "");
+				cadreAddressVO.setMobileNo(params[1] != null ? params[1].toString() : "");
+				cadreAddressVO.setRefNo(params[3] != null ? params[3].toString() : "");
+				cadreAddressVO.setPhoto(params[4] != null ? "http://mytdp.com/cadre_images/"+params[4].toString() : "");
+				
+			}
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return cadreAddressVO;
+		
+	}
+
 }
 
