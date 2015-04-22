@@ -2021,6 +2021,9 @@
 	<bean id="cadreAddressDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreAddressDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="eventSurveyUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventSurveyUserDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<!--  end -->
 </beans>		
