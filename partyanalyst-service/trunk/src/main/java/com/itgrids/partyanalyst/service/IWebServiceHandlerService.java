@@ -12,6 +12,7 @@ import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TabRecordsStatusVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
+import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
@@ -86,5 +87,6 @@ public interface IWebServiceHandlerService {
 	
 	public Object cancellationOfTicketDetails(CadreTravelsVO inputVO);
 	public CadreAddressVO getMemberDataByRefNoAndMemberShipNo(String refNo,String memberShipNo);
+	public UserEventDetailsVO validateUserForEvent(UserEventDetailsVO inpuVo);
 	
 }

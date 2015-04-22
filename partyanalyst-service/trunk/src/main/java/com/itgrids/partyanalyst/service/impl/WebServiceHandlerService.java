@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.IEventSurveyUserDAO;
+import com.itgrids.partyanalyst.dao.IEventUserDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppPingingDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserAccessKeyDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
@@ -37,6 +39,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
+import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.model.Booth;
@@ -101,7 +104,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private ICadreRegistrationService cadreRegistrationService;
     @Autowired ITdpCadreDAO tdpCadreDAO;
     private ICadreDetailsService cadreDetailsService;
-    
+    @Autowired
+    private IEventSurveyUserDAO eventSurveyUserDAO;
+    @Autowired
+    private IEventUserDAO eventUserDAO;
     
 	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
 		this.cadreDetailsService = cadreDetailsService;
@@ -1533,18 +1539,59 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				cadreAddressVO.setName(params[0] != null ? params[0].toString() : "");
 				cadreAddressVO.setMobileNo(params[1] != null ? params[1].toString() : "");
 				cadreAddressVO.setRefNo(params[3] != null ? params[3].toString() : "");
-				cadreAddressVO.setPhoto(params[4] != null ? "http://mytdp.com/cadre_images/"+params[4].toString() : "");
+				cadreAddressVO.setPhoto(params[4] != null ? "http://mytdp.com/images/cadre_images/"+params[4].toString() : "");
 				
 			}
 		}
 		}
 		catch(Exception e)
 		{
+			Log.error("Exception Occured in setMemberInfoList() method",e) ;
 			e.printStackTrace();
 		}
 		return cadreAddressVO;
 		
 	}
 
+	
+	public UserEventDetailsVO validateUserForEvent(UserEventDetailsVO inpuVo)
+	{
+		 List<UserEventDetailsVO> resultList = new ArrayList<UserEventDetailsVO>();
+		 UserEventDetailsVO userEventDetailsVO = null;
+		 DateUtilService date = new DateUtilService();
+		try{
+			List<Object[]> list =  eventSurveyUserDAO.getUserDetailsByUnamePwd(inpuVo.getName(),inpuVo.getPwd());
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					userEventDetailsVO = new UserEventDetailsVO();
+					String fname = params[1] != null ? params[1].toString() : "" ;
+					String lname = params[2] != null ? params[2].toString() : "";
+					userEventDetailsVO.setName(fname +" "+lname);
+					userEventDetailsVO.setId((Long)params[0]);
+					
+				}
+				List<Object[]> events = eventUserDAO.getEventsByUser(userEventDetailsVO.getId(),date.getCurrentDateAndTime());
+				if(events != null && events.size() > 0)
+				{
+					for(Object[] params : events)
+					{
+						UserEventDetailsVO eventVo = new UserEventDetailsVO();
+						eventVo.setId((Long)params[0]);
+						eventVo.setName(params[1] != null ? params[1].toString() : "");
+						userEventDetailsVO.getSubList().add(eventVo);
+					}
+				}
+					
+			}
+			
+		}
+		catch(Exception e)
+		{
+			Log.error("Exception Occured in validateUserForEvent() method",e) ;
+		}
+		return userEventDetailsVO;
+	}
 }
 
