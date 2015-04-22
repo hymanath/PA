@@ -56,7 +56,7 @@ public class Event implements java.io.Serializable{
 		this.description = description;
 	}
 	
-	@Column(name="event_start_time")
+	@Column(name="start_time")
 	public Date getEventStartTime() {
 		return eventStartTime;
 	}
@@ -64,7 +64,7 @@ public class Event implements java.io.Serializable{
 		this.eventStartTime = eventStartTime;
 	}
 	
-	@Column(name="event_end_time")
+	@Column(name="end_time")
 	public Date getEventEndTime() {
 		return eventEndTime;
 	}
