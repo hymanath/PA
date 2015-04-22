@@ -4566,7 +4566,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			str.append(" ,tehsil.tehsilName");
 			str.append(" ,panc.panchayatName");
 			str.append(" ,localElectionBody.name");
-			str.append(" ,model.refNo,model.image");
+			str.append(" ,model.cardNumber,model.image");
 			str.append(" from TdpCadre model left join model.userAddress.panchayat panc ");
 			str.append(" left join model.userAddress.tehsil tehsil ");
 		    str.append(" left join model.userAddress.constituency constituency ");
@@ -4897,5 +4897,17 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			query.setParameter("voterId", voterId);
 			query.setParameter("enrollmentYear",enrollmentYear);
 			return (Long)query.uniqueResult();
+		}
+		
+		public List<Object[]> getMemberInfoyMembershipNo(String queryStr)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append("select model.firstname,model.mobileNo,model.memberShipNo ");
+			str.append(" ,model.cardNumber,model.image");
+			str.append(" from TdpCadre model "); 
+			str.append(" where  model.isDeleted = 'N' and model.enrollmentYear = '2014' and ("+queryStr+") ");
+			Query query = getSession().createQuery(str.toString());
+
+			return query.list();
 		}
 }
