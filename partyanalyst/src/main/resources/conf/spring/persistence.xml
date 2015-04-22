@@ -586,6 +586,8 @@
 				<value>com.itgrids.partyanalyst.model.EventSms</value>
 				<value>com.itgrids.partyanalyst.model.EventInvitee</value>
 				<value>com.itgrids.partyanalyst.model.Event</value>
+				<value>com.itgrids.partyanalyst.model.EventSurveyUser</value>
+				
 				</list>
 			
 		</property>

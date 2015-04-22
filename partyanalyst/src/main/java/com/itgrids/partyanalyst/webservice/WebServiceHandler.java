@@ -29,13 +29,13 @@ import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.MissedCallCampaignVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserDetailsVO;
+import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 import com.itgrids.partyanalyst.utils.CommonUtilsService;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
 import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
-
 @Component
 @Path("/")
 public class WebServiceHandler {
@@ -54,9 +54,18 @@ public class WebServiceHandler {
 	private IWebServiceHandlerService1 webServiceHandlerService1;
 	private MissedCallCampaignVO MissedCallCampaignVO;
 	private List<CadreAddressVO> cadreAddressVOList;
+	private UserEventDetailsVO userEventDetailsVO;
 	
-	
-	
+
+
+	public UserEventDetailsVO getUserEventDetailsVO() {
+		return userEventDetailsVO;
+	}
+
+	public void setUserEventDetailsVO(UserEventDetailsVO userEventDetailsVO) {
+		this.userEventDetailsVO = userEventDetailsVO;
+	}
+
 	public List<CadreAddressVO> getCadreAddressVOList() {
 		return cadreAddressVOList;
 	}
@@ -1102,20 +1111,44 @@ public class WebServiceHandler {
 	@Path("/getCadreBasicInfo")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public List<CadreAddressVO> getMemberDataByMemberShipAndRefNo(CadreAddressVO inputVo){
+	public CadreAddressVO getMemberDataByMemberShipAndRefNo(CadreAddressVO inputVo){
 		
 		try{
 			
-			cadreAddressVOList = webServiceHandlerService.getMemberDataByRefNoAndMemberShipNo(inputVo.getRefNo().trim(),inputVo.getMembershipNo().trim());	
+			cadreAddressVO = webServiceHandlerService.getMemberDataByRefNoAndMemberShipNo(inputVo.getRefNo().trim(),inputVo.getMembershipNo().trim());	
 			
-			return cadreAddressVOList;
+			return cadreAddressVO;
 		}
 		catch(Exception e)
 		{
 			LOG.error("Exception Occured in getMemberDataByMemberShipAndRefNo() Method, Exception is ",e);
 			e.printStackTrace();	
 		}
-		return cadreAddressVOList;
+		return cadreAddressVO;
+	}
+		
+	
+	@POST
+	@Path("/validateUserForEvent")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Object checkValidUserForEvent(UserEventDetailsVO inputVo){
+		
+		try{
+			
+			userEventDetailsVO = webServiceHandlerService.validateUserForEvent(inputVo);	
+			if(userEventDetailsVO != null)
+			return userEventDetailsVO;
+			else
+				return "NOT VALID";
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getMemberDataByMemberShipAndRefNo() Method, Exception is ",e);
+			e.printStackTrace();	
+		}
+		return "NOT VALID";
+		
 	}
 		
 }
