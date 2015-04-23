@@ -335,4 +335,5 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public Long getRegisterCadreInfoForUserBetweenDatesByIds(Date fromDate,Date toDate,List<Long> constiIds,List<Long> districtIds);
 	  public Long checkVoterRegisteredOrNot(Long voterId,Long enrollmentYear);
 	  public List<Object[]> getMemberInfoyMembershipNo(String queryStr);
+	  public Long getTdpCadreIdByMembership(String membershipNo);
 }
