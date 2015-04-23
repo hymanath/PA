@@ -326,7 +326,7 @@
 			  <pattern>/currentBoothsStatus*</pattern>
 			   <pattern>/ivrCampaignUploadAction*</pattern> 
 			   <pattern>/cadreVoterSearchAction*</pattern>
-			   <pattern>/eventInviteesAction*</pattern>
+			   <pattern>/eventInvitees*</pattern>
 			   	<pattern>/cadredashBoardAction*</pattern>
 		 </decorator>
        
