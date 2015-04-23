@@ -218,7 +218,7 @@ import com.itgrids.partyanalyst.model.TdpCommitteeMember;
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select model.tdpCommitteeRole.tdpRoles.tdpRolesId,model.tdpCommitteeRole.tdpRoles.role,model.tdpCadre.tdpCadreId,model.tdpCadre.firstname,model.tdpCadre.image,model.tdpCadre.memberShipNo,model.tdpCommitteeMemberId,model.tdpCommitteeRole.tdpCommittee.isCommitteeConfirmed," +
-				" model.tdpCadre.casteState.caste.casteName,model.tdpCadre.gender,model.tdpCadre.age ,model.tdpCadre.dateOfBirth,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.categoryName  " +
+				" model.tdpCadre.casteState.caste.casteName,model.tdpCadre.gender,model.tdpCadre.age ,model.tdpCadre.dateOfBirth,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.categoryName, model.tdpCadre.mobileNo " +
 				" from TdpCommitteeMember model" +
 				" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId =:levelId  and model.isActive = 'Y' and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue =:locationVal" +
 				" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId = :committeeTypeId ");
