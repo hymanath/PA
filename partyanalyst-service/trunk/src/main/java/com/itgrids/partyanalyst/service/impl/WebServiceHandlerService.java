@@ -1492,10 +1492,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			StringBuilder queryStr = new StringBuilder();
 			if(memberShipNo != null && refNo != null)
 			//queryStr.append("  (model.memberShipNo like'%"+memberShipNo.trim()+"' and model.cardNumber = '"+refNo+"')  ");
-			queryStr.append("  (substring(model.memberShipNo, 5) ='"+memberShipNo.trim()+"' and model.cardNumber = '"+refNo+"')  ");
+			/*queryStr.append("  (substring(model.memberShipNo, 5) ='"+memberShipNo.trim()+"' and model.cardNumber = '"+refNo+"')  ");
 				list = tdpCadreDAO.getMemberInfoyMembershipNo(queryStr.toString());	
 			if(list !=  null && list.size() > 0)
-				setMemberInfoList(returnVo,list,"true");
+				setMemberInfoList(returnVo,list,"true");*/
 			if(returnVo == null || returnVo.getMembershipNo() == null)
 			{
 				queryStr = new StringBuilder();
@@ -1503,17 +1503,17 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			queryStr.append(" substring(model.memberShipNo, 5) ='"+memberShipNo.trim()+"'  ");
 				//queryStr.append("  model.memberShipNo like '%"+memberShipNo.trim()+"'  ");
 				list = tdpCadreDAO.getMemberInfoyMembershipNo(queryStr.toString());
-				setMemberInfoList(returnVo,list,"true");
+				setMemberInfoList(returnVo,list,refNo);
 			}
 			
-			if(returnVo == null || returnVo.getMembershipNo() == null)
+			/*if(returnVo == null || returnVo.getMembershipNo() == null)
 			{
 				queryStr = new StringBuilder();
 				queryStr.append("  model.cardNumber = '"+refNo+"'  ");
 			
 				list = tdpCadreDAO.getMemberInfoyMembershipNo(queryStr.toString());	
 				setMemberInfoList(returnVo,list,"true");
-			}
+			}*/
 			
 			
 		}
@@ -1525,22 +1525,36 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		return returnVo;
 	}
 	
-	public CadreAddressVO setMemberInfoList(CadreAddressVO cadreAddressVO,List<Object[]> list,String address)
+	public CadreAddressVO setMemberInfoList(CadreAddressVO cadreAddressVO,List<Object[]> list,String refNo)
 	{
 
 		try{
 		
 		if(list != null && list.size() > 0)
 		{
+			int count = 0;
 			for(Object[] params : list)
 			{
-				
+				String cardNumber = params[3] != null ? params[3].toString() : "";
+				if(refNo.equalsIgnoreCase(cardNumber))
+				{
+					count =1;
 				cadreAddressVO.setMembershipNo(params[2] != null ? params[2].toString().substring(4) : "");
 				cadreAddressVO.setName(params[0] != null ? params[0].toString() : "");
 				cadreAddressVO.setMobileNo(params[1] != null ? params[1].toString() : "");
 				cadreAddressVO.setRefNo(params[3] != null ? params[3].toString() : "");
 				cadreAddressVO.setPhoto(params[4] != null ? "http://mytdp.com/images/cadre_images/"+params[4].toString() : "");
+				}
 				
+			}
+			if(count == 0){
+				
+				Object[] params = list.get(0);
+				cadreAddressVO.setMembershipNo(params[2] != null ? params[2].toString().substring(4) : "");
+				cadreAddressVO.setName(params[0] != null ? params[0].toString() : "");
+				cadreAddressVO.setMobileNo(params[1] != null ? params[1].toString() : "");
+				cadreAddressVO.setRefNo(params[3] != null ? params[3].toString() : "");
+				cadreAddressVO.setPhoto(params[4] != null ? "http://mytdp.com/images/cadre_images/"+params[4].toString() : "");
 			}
 		}
 		}
@@ -1605,6 +1619,86 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			e.printStackTrace();
 		}
 		return userEventDetailsVO;
+	}
+	
+	
+	public UserEventDetailsVO validateUserForEvent1(UserEventDetailsVO inpuVo)
+	{
+		 List<UserEventDetailsVO> resultList = new ArrayList<UserEventDetailsVO>();
+		 UserEventDetailsVO userEventDetailsVO = null;
+		 DateUtilService date = new DateUtilService();
+		try{
+			List<Object[]> list =  eventSurveyUserDAO.getUserDetailsByUnamePwd(inpuVo.getName(),inpuVo.getPwd());
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					userEventDetailsVO = new UserEventDetailsVO();
+					String fname = params[1] != null ? params[1].toString() : "" ;
+					String lname = params[2] != null ? params[2].toString() : "";
+					userEventDetailsVO.setName(fname +" "+lname);
+					userEventDetailsVO.setId((Long)params[0]);
+					
+				}
+				List<Long> parentIds = new ArrayList<Long>();
+				List<Object[]> parentEvent = eventUserDAO.getParentEventByUser(userEventDetailsVO.getId(),date.getCurrentDateAndTime());
+				if(parentEvent != null && parentEvent.size() > 0)
+				{
+					
+					for(Object[] params : parentEvent)
+					{
+						UserEventDetailsVO eventVo = new UserEventDetailsVO();
+						eventVo.setId((Long)params[0]);
+						eventVo.setName(params[1] != null ? params[1].toString() : "");
+						userEventDetailsVO.getSubList().add(eventVo);
+						parentIds.add((Long)params[0]);
+					}
+					List<Object[]> events = eventUserDAO.getEventsByUserAndParentIds(userEventDetailsVO.getId(),date.getCurrentDateAndTime(),parentIds);
+					if(events != null && events.size() > 0)
+					{
+						for(Object[] params : events)
+						{
+							UserEventDetailsVO parentVo = getMatchedEvent(userEventDetailsVO.getSubList(),(Long)params[2]);
+							if(parentVo != null)
+							{
+								UserEventDetailsVO childEventVo = new UserEventDetailsVO();
+								childEventVo.setId((Long)params[0]);
+								childEventVo.setName(params[1] != null ? params[1].toString() : "");
+								parentVo.getSubList().add(childEventVo);
+							}
+						}	
+					}
+				}
+					
+			}
+			
+		}
+		catch(Exception e)
+		{
+			Log.error("Exception Occured in validateUserForEvent() method",e) ;
+			e.printStackTrace();
+		}
+		return userEventDetailsVO;
+	}
+	
+	public UserEventDetailsVO getMatchedEvent(List<UserEventDetailsVO> eventsList,Long id)
+	{
+		try{
+			if(eventsList == null || eventsList.size() == 0)
+				return null;
+			for(UserEventDetailsVO vo : eventsList)
+			{
+				if(vo.getId().longValue() == id.longValue())
+					return vo;
+			}
+			
+		}
+		catch(Exception e)
+		{
+			Log.error("Exception Occured in getMatchedEvent() method",e) ;
+			e.printStackTrace();	
+		}
+		return null;
 	}
 }
 
