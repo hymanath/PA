@@ -251,7 +251,7 @@
 				
 				<div class="col-md-8 m_top20" id="buildSelectionBlockDiv" style="display:none;">
 						<div class="border-box" >
-							<div class="trashicon"> <a href="javascript:{deleteCommite();}"> <i class="glyphicon glyphicon-trash"></i></a></div>
+							<!--<div class="trashicon"> <a href="javascript:{deleteCommite();}"> <i class="glyphicon glyphicon-trash"></i></a></div>-->
 							<div class="panel panel-default" id="stateLevelCommitteId" style="display:none;">
 								<div class="panel-heading">
 									State Level
@@ -274,7 +274,7 @@
 							
 							<div class="panel panel-default" id="mandalLevelCommitteId" style="display:none;">
 								<div class="panel-heading">
-									Mandal/Town/Division Level
+									Mandal/Muncipality Level
 								</div>
 								<div class="panel-body">
 									<div class="panel-group" id="CMaccordion" role="tablist" aria-multiselectable="true" style="margin-top:-20px;">
@@ -763,9 +763,9 @@
 					zIndex: '10000',
 					});
 			if($("."+divEle).hasClass("cs-active"))
-			$("."+divEle).removeClass("cs-active");
+				$("."+divEle).removeClass("cs-active");
 			else
-			$("."+divEle).addClass("cs-active");
+				$("."+divEle).addClass("cs-active");
 		
 		 $(".stateEle").click(function(e)
 			 {			
@@ -813,16 +813,16 @@
 				$(".panchayatName").attr("value",$(this).attr("data-value"));
 				$(".panchayatName").attr("name",$(this).text());
 				$(this).addClass('cs-selected');
-				//alert($(this).attr("data-value"));
+				//alert($(this).attr("data-value")); committeeSlide
 				
 			  });
 			   $(".committeeEle").click(function()
-				{	
-				$(".committeeName").html($(this).text());
-				$(".committeeName").attr("value",$(this).attr("data-value"));
-				$(".committeeEle").removeClass('cs-selected');
-				$(this).addClass('cs-selected');
-				//alert($(this).attr("data-value"));
+				{						
+					$(".committeeName").html($(this).text());
+					$(".committeeName").attr("value",$(this).attr("data-value"));
+					$(".committeeEle").removeClass('cs-selected');
+					$(this).addClass('cs-selected');
+					//alert($(this).attr("data-value"));
 				
 			  });
 			 
@@ -854,6 +854,7 @@
 			
 			var totalCommiteCnt = 0;
 			var roleArr = new Array();
+			var selCommiteeArr = new Array();
 			function addCommitteeDivs(className)
 			{
 				var levelId = $(".stateName").attr('value');
@@ -953,7 +954,7 @@
 					locationLevel = " State Level";
 				}
 			}
-		console.log(locationLevel);
+		//console.log(locationLevel);
 		
 			$(".toggleCls").removeClass("in");
 			
@@ -970,10 +971,10 @@
 			
             str+='<div class="panel-heading collapse-head" role="tab" id="headingComm'+commiteId+'">';
             str+='<h4 class="panel-title">';
-            str+='<form class="me-select display-style">';
+            str+='<form class="me-select display-style">';//collapse-select
             str+='<ul id="me-select-list">';
-            str+='<li><input id="cb11" name="cb11" type="checkbox" class="addedcommite">';
-            str+='<label for="cb11" class="m_0 collapse-select"><span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapseComm'+commiteId+'" aria-controls="collapseComm'+commiteId+'" class="col-drop-head" onClick="toggleDiv(\'collapseComm'+commiteId+'\')">'+commite+' ('+locationLevel+')</a></span></label></li>';
+            str+='<li>';//<input id="cb11" name="cb11" type="checkbox" class="addedcommite"/>';
+            str+='<span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapseComm'+commiteId+'" aria-controls="collapseComm'+commiteId+'" class="col-drop-head" onClick="toggleDiv(\'collapseComm'+commiteId+'\')">'+commite+' ('+locationLevel+') <a href="javascript:{deleteCommite(\''+commiteId+'Div\');}" title="Click here to Remove Committee Details."> <i class="glyphicon glyphicon-trash"></i></a></a></span></li>';
            str+=' </ul>';
           str+=' </form>';
          str+='<a data-toggle="collapse" data-parent="#accordion" href="#collapseComm'+commiteId+'" aria-expanded="true" aria-controls="collapseComm'+commiteId+'" onClick="toggleDiv(\'collapseComm'+commiteId+'\')">';
@@ -986,16 +987,30 @@
       str+='<form class="me-select display-style">';
       str+='<ul id="me-select-list">';
 	  
+	  var commRoleIdsArr = new Array();
 	  $("."+className).each(function()
 			{
 			 if($(this).is(":checked")) 
 			 {
-			  var roleId = $(this).val();
-			  var role = $(this).attr("name");
-			  str+=' <li><input  class="checkedCls" name="cb11" checked="true" type="checkbox" id="comm'+commiteId+'role'+roleId+'" committeeId = "'+selCommiteeId+'" value="'+roleId+'" locationLevelId="'+levelId+'" districtId="'+districtId+'" constiId="'+constituencyId+'" mandalId="'+mandalId+'" villageId ="'+panchayatId+'">';
-			  str+='<label for="cb12" class="m_0 collapse-select"><span class="col-drop-select-name">'+role+'</label></li>';
+				  var roleId = $(this).val();
+				  var role = $(this).attr("name");
+				  str+=' <li><input  class="checkedCls" name="cb11" checked="true" type="checkbox" id="comm'+commiteId+'role'+roleId+'" committeeId = "'+selCommiteeId+'" value="'+roleId+'" locationLevelId="'+levelId+'" districtId="'+districtId+'" constiId="'+constituencyId+'" mandalId="'+mandalId+'" villageId ="'+panchayatId+'">';
+				  str+='<label for="cb12" class="m_0 collapse-select"><span class="col-drop-select-name">'+role+'</label></li>';
+				  
+				  commRoleIdsArr.push(roleId);
 			 }
-	   })
+	   });
+	   
+	   
+	   var commteArrObj =
+	   {
+		   commiteeId:selCommiteeId,
+		   rolesArr : commRoleIdsArr,
+		   levelId:levelId,
+		   levelValue:levelValue
+	   };
+	   
+	   selCommiteeArr.push(commteArrObj);
 	   
 	   str+='</ul></form>';
       str+='</div>';
@@ -1006,6 +1021,7 @@
   
   $("#candidateDetailsDiv").show();
   
+  console.log(selCommiteeArr);
   //getMembersDetails(0);
 }
 	
@@ -1460,14 +1476,17 @@
 		indexValue =indexValue+1;
 	}
 	
-	function deleteCommite()
+	function deleteCommite(removeDivId)
 	{
-		$(".addedcommite").each(function()
+		$('#'+removeDivId+'').html('');
+		$('#'+removeDivId+'').remove();
+	/*	$(".addedcommite").each(function()
 		{
-		if($(this).is(":checked")) {
-			$(this).parent().closest('.commiteHeadDiv').remove();
+			if($(this).is(":checked")) {
+				$(this).parent().closest('.commiteHeadDiv').remove();
 		 }
-	})
+		 
+	});*/
 	}
 	function toggleDiv(id)
 		{
