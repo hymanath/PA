@@ -1588,5 +1588,54 @@ public String getSummaryDetails(){
 		}
 		
 		return Action.SUCCESS;
-	}		
+	}	
+	
+	public String getEventGroups()
+	{
+		try {
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");			
+			if(regVO==null){
+				return Action.ERROR;				
+			}
+			idNameVOList = cadreCommitteeService.getPartyEventGroups(regVO.getRegistrationID());
+		} catch (Exception e) {
+			LOG.error("Exception occured in getPublicRepresentatives ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getPublicRepresentativesTypes()
+	{
+		try {
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");			
+			if(regVO==null){
+				return Action.ERROR;				
+			}
+			
+			idNameVOList = cadreCommitteeService.getPublicRepresenttativesList();
+		} catch (Exception e) {
+			LOG.error("Exception occured in getPublicRepresentatives ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
+	public String getMandalDetailsByConstituency(){
+		try{
+			HttpSession session = request.getSession();
+			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+			{
+				return Action.ERROR;
+			}
+			jObj = new JSONObject(getTask());
+			locations=cadreCommitteeService.getMandalsByConstituency(jObj.getLong("constituencyId"));
+		}catch(Exception e){
+			LOG.error("Exception occured in getMandalsByConstituency() method ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
 }
