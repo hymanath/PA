@@ -1106,7 +1106,7 @@ public class WebServiceHandler {
 			return cadreAddressVO;
 			else
 			{
-				
+				cadreAddressVO = new CadreAddressVO();
 				cadreAddressVO.setValue("Failure");
 			}
 			
@@ -1135,7 +1135,7 @@ public class WebServiceHandler {
 			return userEventDetailsVO;
 			else
 			{
-				
+				 userEventDetailsVO = new UserEventDetailsVO();
 				userEventDetailsVO.setStatus("Not Valid");
 			}
 		
