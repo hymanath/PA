@@ -1111,23 +1111,26 @@ public class WebServiceHandler {
 	@Path("/getCadreBasicInfo")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Object getMemberDataByMemberShipAndRefNo(CadreAddressVO inputVo){
+	public CadreAddressVO getMemberDataByMemberShipAndRefNo(CadreAddressVO inputVo){
 		
 		try{
 			
-			cadreAddressVO = webServiceHandlerService.getMemberDataByRefNoAndMemberShipNo(inputVo.getRefNo().trim(),inputVo.getMembershipNo().trim());	
-			if(cadreAddressVO.getMembershipNo() != null )
+			cadreAddressVO = webServiceHandlerService.getMemberDataByRefNoAndMemberShipNo(inputVo.getRefNo().trim(),inputVo.getMembershipNo().trim());
+			if(cadreAddressVO.getMembershipNo() != null)
 			return cadreAddressVO;
 			else
-				return "Failure";
+			{
+				cadreAddressVO.setValue("Failure");
+			}
 			
 		}
 		catch(Exception e)
 		{
 			LOG.error("Exception Occured in getMemberDataByMemberShipAndRefNo() Method, Exception is ",e);
 			e.printStackTrace();
-			return "Failure";
+			cadreAddressVO.setValue("Exception");
 		}
+		return cadreAddressVO;
 		
 	}
 		
@@ -1136,22 +1139,26 @@ public class WebServiceHandler {
 	@Path("/validateUserForEvent")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Object checkValidUserForEvent(UserEventDetailsVO inputVo){
+	public UserEventDetailsVO checkValidUserForEvent(UserEventDetailsVO inputVo){
 		
 		try{
 			
-			userEventDetailsVO = webServiceHandlerService.validateUserForEvent(inputVo);	
+			userEventDetailsVO = webServiceHandlerService.validateUserForEvent(inputVo);
 			if(userEventDetailsVO != null)
 			return userEventDetailsVO;
 			else
-				return "NOT VALID";
+			{
+				userEventDetailsVO.setStatus("Not Valid");
+			}
+		
 		}
 		catch(Exception e)
 		{
 			LOG.error("Exception Occured in checkValidUserForEvent() Method, Exception is ",e);
 			e.printStackTrace();	
-			return "NOT VALID";
+			userEventDetailsVO.setStatus("Exception");
 		}
+		return userEventDetailsVO;
 		
 		
 	}
