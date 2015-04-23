@@ -1601,62 +1601,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		
 	}
 
-	
-	public UserEventDetailsVO validateUserForEvent(UserEventDetailsVO inpuVo)
-	{
-		 List<UserEventDetailsVO> resultList = new ArrayList<UserEventDetailsVO>();
-		 UserEventDetailsVO userEventDetailsVO = null;
-		 DateUtilService date = new DateUtilService();
-		try{
-			List<Object[]> list =  eventSurveyUserDAO.getUserDetailsByUnamePwd(inpuVo.getName(),inpuVo.getPwd());
-			if(list != null && list.size() > 0)
-			{
-				for(Object[] params : list)
-				{
-					userEventDetailsVO = new UserEventDetailsVO();
-					String fname = params[1] != null ? params[1].toString() : "" ;
-					String lname = params[2] != null ? params[2].toString() : "";
-					userEventDetailsVO.setName(fname +" "+lname);
-					userEventDetailsVO.setId((Long)params[0]);
-					
-				}
-				List<Object[]> parentEvent = eventUserDAO.getParentEventByUser(userEventDetailsVO.getId(),date.getCurrentDateAndTime());
-				if(parentEvent != null && parentEvent.size() > 0)
-				{
-					UserEventDetailsVO eventVo = new UserEventDetailsVO();
-					for(Object[] params : parentEvent)
-					{
-						
-						eventVo.setId((Long)params[0]);
-						eventVo.setName(params[1] != null ? params[1].toString() : "");
-						userEventDetailsVO.getSubList().add(eventVo);
-					}
-					List<Object[]> events = eventUserDAO.getEventsByUser(userEventDetailsVO.getId(),date.getCurrentDateAndTime());
-					if(events != null && events.size() > 0)
-					{
-						for(Object[] params : events)
-						{
-							UserEventDetailsVO childEventVo = new UserEventDetailsVO();
-							childEventVo.setId((Long)params[0]);
-							childEventVo.setName(params[1] != null ? params[1].toString() : "");
-							eventVo.getSubList().add(childEventVo);
-						}	
-					}
-				}
-					
-			}
-			
-		}
-		catch(Exception e)
-		{
-			Log.error("Exception Occured in validateUserForEvent() method",e) ;
-			e.printStackTrace();
-		}
-		return userEventDetailsVO;
-	}
-	
-	
-	/*public UserEventDetailsVO validateUserForEvent1(UserEventDetailsVO inpuVo)
+   public UserEventDetailsVO validateUserForEvent(UserEventDetailsVO inpuVo)
 	{
 		 List<UserEventDetailsVO> resultList = new ArrayList<UserEventDetailsVO>();
 		 UserEventDetailsVO userEventDetailsVO = null;
@@ -1713,7 +1658,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			e.printStackTrace();
 		}
 		return userEventDetailsVO;
-	}*/
+	}
 	
 	public UserEventDetailsVO getMatchedEvent(List<UserEventDetailsVO> eventsList,Long id)
 	{
