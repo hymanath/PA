@@ -1111,20 +1111,24 @@ public class WebServiceHandler {
 	@Path("/getCadreBasicInfo")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public CadreAddressVO getMemberDataByMemberShipAndRefNo(CadreAddressVO inputVo){
+	public Object getMemberDataByMemberShipAndRefNo(CadreAddressVO inputVo){
 		
 		try{
 			
 			cadreAddressVO = webServiceHandlerService.getMemberDataByRefNoAndMemberShipNo(inputVo.getRefNo().trim(),inputVo.getMembershipNo().trim());	
-			
+			if(cadreAddressVO.getMembershipNo() != null )
 			return cadreAddressVO;
+			else
+				return "Failure";
+			
 		}
 		catch(Exception e)
 		{
 			LOG.error("Exception Occured in getMemberDataByMemberShipAndRefNo() Method, Exception is ",e);
-			e.printStackTrace();	
+			e.printStackTrace();
+			return "Failure";
 		}
-		return cadreAddressVO;
+		
 	}
 		
 	
@@ -1146,8 +1150,9 @@ public class WebServiceHandler {
 		{
 			LOG.error("Exception Occured in getMemberDataByMemberShipAndRefNo() Method, Exception is ",e);
 			e.printStackTrace();	
+			return "NOT VALID";
 		}
-		return "NOT VALID";
+		
 		
 	}
 		
