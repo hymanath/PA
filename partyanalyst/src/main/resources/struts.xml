@@ -9698,6 +9698,11 @@
 				<param name="root">locations</param>
 			</result>
 		</action>
+		<action name="getMandalDetailsByConstituencyAction" class="cadreCommitteeAction" method="getMandalDetailsByConstituency">
+			<result type="json" name="success">
+				<param name="root">locations</param>
+			</result>
+		</action>
 		<action name="getPanchayatWardByMandalAction" class="cadreCommitteeAction" method="getPanchayatWardByMandal">
 			<result type="json" name="success">
 				<param name="root">locations</param>
@@ -9933,7 +9938,19 @@
 			</result>
 		</action> 
 		
-		 <action name="getStateNameAction" class="cadreDashBoardAction" method="getStateName">
+		 <action name="getPartyEventGroups" class="cadreCommitteeAction" method="getEventGroups">
+			<result type="json" name="success">
+				<param name="root">idNameVOList</param>
+			</result>
+		</action> 
+		
+ 		<action name="getPublicRepresentativeTypes" class="cadreCommitteeAction" method="getPublicRepresentativesTypes">
+			<result type="json" name="success">
+				<param name="root">idNameVOList</param>
+			</result>
+		</action>
+		 
+		<action name="getStateNameAction" class="cadreDashBoardAction" method="getStateName">
 			<result type="json" name="success">
 				<param name="root">getState</param>
 			</result>
