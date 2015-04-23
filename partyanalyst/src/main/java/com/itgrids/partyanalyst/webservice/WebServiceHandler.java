@@ -1148,7 +1148,7 @@ public class WebServiceHandler {
 		}
 		catch(Exception e)
 		{
-			LOG.error("Exception Occured in getMemberDataByMemberShipAndRefNo() Method, Exception is ",e);
+			LOG.error("Exception Occured in checkValidUserForEvent() Method, Exception is ",e);
 			e.printStackTrace();	
 			return "NOT VALID";
 		}
