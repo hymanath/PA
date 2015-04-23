@@ -47,24 +47,16 @@ public class WebServiceHandler {
 	private WSResultVO wSResult;
 	private final static Logger LOG = Logger.getLogger(WebServiceHandler.class);
 	private List<CasteDetailsVO> casteDetailsVO;
-	private CadreAddressVO cadreAddressVO;
+	
 	@Autowired
 	private CommonUtilsService commonUtilsService;
 	@Autowired 
 	private IWebServiceHandlerService1 webServiceHandlerService1;
 	private MissedCallCampaignVO MissedCallCampaignVO;
 	private List<CadreAddressVO> cadreAddressVOList;
-	private UserEventDetailsVO userEventDetailsVO;
+
 	
 
-
-	public UserEventDetailsVO getUserEventDetailsVO() {
-		return userEventDetailsVO;
-	}
-
-	public void setUserEventDetailsVO(UserEventDetailsVO userEventDetailsVO) {
-		this.userEventDetailsVO = userEventDetailsVO;
-	}
 
 	public List<CadreAddressVO> getCadreAddressVOList() {
 		return cadreAddressVOList;
@@ -90,13 +82,7 @@ public class WebServiceHandler {
 		this.commonUtilsService = commonUtilsService;
 	}
 
-	public CadreAddressVO getCadreAddressVO() {
-		return cadreAddressVO;
-	}
-
-	public void setCadreAddressVO(CadreAddressVO cadreAddressVO) {
-		this.cadreAddressVO = cadreAddressVO;
-	}
+	
 
 	public List<CasteDetailsVO> getCasteDetailsVO() {
 		return casteDetailsVO;
@@ -1112,15 +1098,15 @@ public class WebServiceHandler {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public CadreAddressVO getMemberDataByMemberShipAndRefNo(CadreAddressVO inputVo){
-		
+		CadreAddressVO cadreAddressVO = new CadreAddressVO();
 		try{
 			
-			cadreAddressVO = webServiceHandlerService.getMemberDataByRefNoAndMemberShipNo(inputVo.getRefNo().trim(),inputVo.getMembershipNo().trim());
+			 cadreAddressVO = webServiceHandlerService.getMemberDataByRefNoAndMemberShipNo(inputVo.getRefNo().trim(),inputVo.getMembershipNo().trim());
 			if(cadreAddressVO.getMembershipNo() != null)
 			return cadreAddressVO;
 			else
 			{
-				cadreAddressVO = new CadreAddressVO();
+				
 				cadreAddressVO.setValue("Failure");
 			}
 			
@@ -1141,7 +1127,7 @@ public class WebServiceHandler {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public UserEventDetailsVO checkValidUserForEvent(UserEventDetailsVO inputVo){
-		
+		UserEventDetailsVO userEventDetailsVO = new UserEventDetailsVO();
 		try{
 			
 			userEventDetailsVO = webServiceHandlerService.validateUserForEvent(inputVo);
@@ -1149,7 +1135,7 @@ public class WebServiceHandler {
 			return userEventDetailsVO;
 			else
 			{
-				userEventDetailsVO = new UserEventDetailsVO();
+				
 				userEventDetailsVO.setStatus("Not Valid");
 			}
 		
@@ -1164,5 +1150,7 @@ public class WebServiceHandler {
 		
 		
 	}
+	
+	
 		
 }
