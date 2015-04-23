@@ -14,12 +14,19 @@ public class EventUserDAO extends GenericDaoHibernate<EventUser, Long> implement
 	public EventUserDAO() {
 		super(EventUser.class);
 	}
-	
+	public List<Object[]> getParentEventByUser(Long userId,Date startDate)
+	{
+		Query query = getSession().createQuery("select model.event.eventId,model.event.name from EventUser model where date(model.event.eventStartTime) >=:startDate " +
+				"and model.userId =:userId  and model.event.parentEventId is null");
+		query.setParameter("startDate", startDate);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
 	
 	public List<Object[]> getEventsByUser(Long userId,Date startDate)
 	{
 		Query query = getSession().createQuery("select model.event.eventId,model.event.name from EventUser model where date(model.event.eventStartTime) >=:startDate " +
-				"and model.userId =:userId  ");
+				"and model.userId =:userId and  model.event.parentEventId = 1");
 		query.setParameter("startDate", startDate);
 		query.setParameter("userId", userId);
 		return query.list();
