@@ -7748,6 +7748,8 @@ return constiLst;
 		    		cadreCommitteeMemberVO.setGender(objects[9] != null ? objects[9].toString().trim():"");
 		    		cadreCommitteeMemberVO.setAge(objects[10] != null ? objects[10].toString().trim():"");
 		    		cadreCommitteeMemberVO.setCasteGroupName(objects[12] != null ? objects[12].toString().trim():"");
+		    		cadreCommitteeMemberVO.setMobileNo(objects[13] != null ? objects[13].toString().trim():"");
+		    		
 		    		CasteDetailsVO casteCatgVO = casteGroupMap.get(objects[12].toString().trim());
 		    		if(casteCatgVO == null)
 		    		{
