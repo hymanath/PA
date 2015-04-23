@@ -1572,15 +1572,27 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 					userEventDetailsVO.setId((Long)params[0]);
 					
 				}
-				List<Object[]> events = eventUserDAO.getEventsByUser(userEventDetailsVO.getId(),date.getCurrentDateAndTime());
-				if(events != null && events.size() > 0)
+				List<Object[]> parentEvent = eventUserDAO.getParentEventByUser(userEventDetailsVO.getId(),date.getCurrentDateAndTime());
+				if(parentEvent != null && parentEvent.size() > 0)
 				{
-					for(Object[] params : events)
+					UserEventDetailsVO eventVo = new UserEventDetailsVO();
+					for(Object[] params : parentEvent)
 					{
-						UserEventDetailsVO eventVo = new UserEventDetailsVO();
+						
 						eventVo.setId((Long)params[0]);
 						eventVo.setName(params[1] != null ? params[1].toString() : "");
 						userEventDetailsVO.getSubList().add(eventVo);
+					}
+					List<Object[]> events = eventUserDAO.getEventsByUser(userEventDetailsVO.getId(),date.getCurrentDateAndTime());
+					if(events != null && events.size() > 0)
+					{
+						for(Object[] params : events)
+						{
+							UserEventDetailsVO childEventVo = new UserEventDetailsVO();
+							childEventVo.setId((Long)params[0]);
+							childEventVo.setName(params[1] != null ? params[1].toString() : "");
+							eventVo.getSubList().add(childEventVo);
+						}	
 					}
 				}
 					
@@ -1590,6 +1602,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		catch(Exception e)
 		{
 			Log.error("Exception Occured in validateUserForEvent() method",e) ;
+			e.printStackTrace();
 		}
 		return userEventDetailsVO;
 	}

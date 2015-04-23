@@ -10,8 +10,15 @@ public class UserEventDetailsVO implements Serializable{
 	private String name;
 	private String pwd;
 	private List<UserEventDetailsVO> subList = new ArrayList<UserEventDetailsVO>();
+	private String status;
 	
 	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public List<UserEventDetailsVO> getSubList() {
 		return subList;
 	}
