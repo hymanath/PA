@@ -1482,44 +1482,50 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		String status = cadreRegistrationService.cancellationOfTicketDetails(inputVO);
 		return status;
 	}
-	
-	public CadreAddressVO getMemberDataByRefNoAndMemberShipNo(String refNo,String memberShipNo)
+  public CadreAddressVO getMemberDataByRefNoAndMemberShipNo(String refNo,String memberShipNo)
 	{
 		CadreAddressVO returnVo = new CadreAddressVO();
 		
 		List<Object[]> list  = null;
 		try{
 			StringBuilder queryStr = new StringBuilder();
-			if(memberShipNo != null && refNo != null)
-			//queryStr.append("  (model.memberShipNo like'%"+memberShipNo.trim()+"' and model.cardNumber = '"+refNo+"')  ");
-			/*queryStr.append("  (substring(model.memberShipNo, 5) ='"+memberShipNo.trim()+"' and model.cardNumber = '"+refNo+"')  ");
-				list = tdpCadreDAO.getMemberInfoyMembershipNo(queryStr.toString());	
-			if(list !=  null && list.size() > 0)
-				setMemberInfoList(returnVo,list,"true");*/
-			if(returnVo == null || returnVo.getMembershipNo() == null)
+			String memberShipNumber = "AP14"+memberShipNo;
+			String memberShipNumber1 = "TS14"+memberShipNo;
+			if(memberShipNo != null && !memberShipNo.isEmpty())
 			{
 				queryStr = new StringBuilder();
 				
-			queryStr.append(" substring(model.memberShipNo, 5) ='"+memberShipNo.trim()+"'  ");
-				//queryStr.append("  model.memberShipNo like '%"+memberShipNo.trim()+"'  ");
-				list = tdpCadreDAO.getMemberInfoyMembershipNo(queryStr.toString());
-				setMemberInfoList(returnVo,list,refNo);
+			    //queryStr.append(" substring(model.memberShipNo, 5) ='"+memberShipNo.trim()+"'  ");
+				queryStr.append(" (model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
+			    list = tdpCadreDAO.getMemberInfoyMembershipNo(queryStr.toString());
+				setMemberInfo(returnVo,list);
 			}
 			
-			/*if(returnVo == null || returnVo.getMembershipNo() == null)
+			else if((returnVo == null || returnVo.getMembershipNo() == null) && (refNo != null && !refNo.isEmpty()) )
 			{
 				queryStr = new StringBuilder();
 				queryStr.append("  model.cardNumber = '"+refNo+"'  ");
 			
 				list = tdpCadreDAO.getMemberInfoyMembershipNo(queryStr.toString());	
-				setMemberInfoList(returnVo,list,"true");
-			}*/
+				setMemberInfo(returnVo,list);
+			}
+			 else
+			 {
+				 queryStr = new StringBuilder();
+					
+				       if(memberShipNo != null && refNo != null)
+				    	   queryStr.append("  ((model.memberShipNo ='"+memberShipNumber.trim()+"' OR  model.memberShipNo ='"+memberShipNumber1.trim()+"') and model.cardNumber = '"+refNo+"')  ");
+							list = tdpCadreDAO.getMemberInfoyMembershipNo(queryStr.toString());	
+						if(list !=  null && list.size() > 0)
+							setMemberInfo(returnVo,list);
+			 }
 			
 			
 		}
 		catch(Exception e)
 		{
 			Log.error("Exception Occured in getMemberDataByMemberShipAndRefNo()",e);
+			e.printStackTrace();
 		}
 		
 		return returnVo;
@@ -1561,6 +1567,34 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		catch(Exception e)
 		{
 			Log.error("Exception Occured in setMemberInfoList() method",e) ;
+			e.printStackTrace();
+		}
+		return cadreAddressVO;
+		
+	}
+	public CadreAddressVO setMemberInfo(CadreAddressVO cadreAddressVO,List<Object[]> list)
+	{
+
+		try{
+		
+		if(list != null && list.size() > 0)
+		{
+			
+			for(Object[] params : list)
+			{
+				
+				cadreAddressVO.setMembershipNo(params[2] != null ? params[2].toString().substring(4) : "");
+				cadreAddressVO.setName(params[0] != null ? params[0].toString() : "");
+				cadreAddressVO.setMobileNo(params[1] != null ? params[1].toString() : "");
+				cadreAddressVO.setRefNo(params[3] != null ? params[3].toString() : "");
+				cadreAddressVO.setPhoto(params[4] != null ? "http://mytdp.com/images/cadre_images/"+params[4].toString() : "");
+			}
+			
+		}
+		}
+		catch(Exception e)
+		{
+			Log.error("Exception Occured in setMemberInfo() method",e) ;
 			e.printStackTrace();
 		}
 		return cadreAddressVO;
@@ -1622,7 +1656,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	}
 	
 	
-	public UserEventDetailsVO validateUserForEvent1(UserEventDetailsVO inpuVo)
+	/*public UserEventDetailsVO validateUserForEvent1(UserEventDetailsVO inpuVo)
 	{
 		 List<UserEventDetailsVO> resultList = new ArrayList<UserEventDetailsVO>();
 		 UserEventDetailsVO userEventDetailsVO = null;
@@ -1679,7 +1713,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			e.printStackTrace();
 		}
 		return userEventDetailsVO;
-	}
+	}*/
 	
 	public UserEventDetailsVO getMatchedEvent(List<UserEventDetailsVO> eventsList,Long id)
 	{

@@ -88,5 +88,6 @@ public interface IWebServiceHandlerService {
 	public Object cancellationOfTicketDetails(CadreTravelsVO inputVO);
 	public CadreAddressVO getMemberDataByRefNoAndMemberShipNo(String refNo,String memberShipNo);
 	public UserEventDetailsVO validateUserForEvent(UserEventDetailsVO inpuVo);
+	//public UserEventDetailsVO validateUserForEvent1(UserEventDetailsVO inpuVo);
 	
 }
