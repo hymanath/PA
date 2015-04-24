@@ -1570,6 +1570,10 @@
 		<property name="cadreCommitteeService" ref="cadreCommitteeService" />
 		
 	</bean>
+	<bean id="eventDetailsAction" class="com.itgrids.partyanalyst.web.action.EventDetailsAction" singleton="false">
+		<property name="mahaNaduService" ref="mahaNaduService" />
+		
+	</bean>
 	
 </beans>	
 	
