@@ -20,7 +20,9 @@ public class EventInfo implements Serializable{
 	private Long EventInfoId;
 	private String locationType;
 	private Long locationValue;
-	private Long NoOfInvitees;
+	private Long totalInvitees;
+	private Long invitees;
+	private Long noninvitees;
 	private Long eventId;
 	private Long stateId;
 	private Date insertedTime;
@@ -47,16 +49,30 @@ public class EventInfo implements Serializable{
 	public void setLocationValue(Long locationValue) {
 		this.locationValue = locationValue;
 	}
-	@Column(name="no_of_invitees")
-	public Long getNoOfInvitees() {
-		return NoOfInvitees;
+	@Column(name="total_invitees")
+	public Long getTotalInvitees() {
+		return totalInvitees;
 	}
-	public void setNoOfInvitees(Long noOfInvitees) {
-		NoOfInvitees = noOfInvitees;
+	public void setTotalInvitees(Long totalInvitees) {
+		this.totalInvitees = totalInvitees;
 	}
 	@Column(name="event_id")
 	public Long getEventId() {
 		return eventId;
+	}
+	@Column(name="invitees")
+	public Long getInvitees() {
+		return invitees;
+	}
+	public void setInvitees(Long invitees) {
+		this.invitees = invitees;
+	}
+	@Column(name="noninvitees")
+	public Long getNoninvitees() {
+		return noninvitees;
+	}
+	public void setNoninvitees(Long noninvitees) {
+		this.noninvitees = noninvitees;
 	}
 	public void setEventId(Long eventId) {
 		this.eventId = eventId;
