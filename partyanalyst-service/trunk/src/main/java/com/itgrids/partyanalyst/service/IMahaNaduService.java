@@ -24,4 +24,5 @@ public interface IMahaNaduService {
 	 public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId);
 	 
 	 public CadreVo searchVoterInfo(Long userId,Long boothId, String searchName,String searchType,String sort,String sortBy,int startIndex,int maxResult);
+	 public ResultStatus insertDataintoEventInfo();
 }

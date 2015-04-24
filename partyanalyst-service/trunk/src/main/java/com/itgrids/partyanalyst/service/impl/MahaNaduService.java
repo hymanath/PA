@@ -51,6 +51,7 @@ import com.itgrids.partyanalyst.model.CadreGovtDesignation;
 import com.itgrids.partyanalyst.model.CadrePartyDesignation;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
+import com.itgrids.partyanalyst.model.EventInfo;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -893,5 +894,21 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		 }
 	 }
 	 return "fail";
+ }
+ 
+ public ResultStatus insertDataintoEventInfo()
+ {
+	 ResultStatus result = new ResultStatus();
+	 try{
+		 
+		 
+		 
+	 }
+	 catch(Exception e)
+	 {
+		 Log.error("Exception rised in insertDataintoEventInfo() while closing write operation",e); 
+		 e.printStackTrace();
+	 }
+	return result;
  }
 }
