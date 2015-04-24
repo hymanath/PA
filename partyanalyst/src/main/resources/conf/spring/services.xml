@@ -2592,8 +2592,6 @@
 	<property name="boothDAO" ref="boothDAO" />	
 	<property name="mobileNumbersDAO" ref="mobileNumbersDAO" />	
 	</bean>
-	<bean name="eventDetailsService" class="com.itgrids.partyanalyst.service.impl.EventDetailsService">
-	</bean>
 	
 </beans>		
 	
