@@ -558,6 +558,7 @@
 				<value>com.itgrids.partyanalyst.model.TdpCadreCasteInfo</value>	
 				<value>com.itgrids.partyanalyst.model.TdpCommitteeVacantPost</value>	
 				<value>com.itgrids.partyanalyst.model.EventSurveyUser</value>
+				<value>com.itgrids.partyanalyst.model.EventInfo</value>
 			</list>
 		</property>
 	</bean>
@@ -2823,6 +2824,9 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="eventSurveyUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventSurveyUserDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="eventInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventInfoDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>
