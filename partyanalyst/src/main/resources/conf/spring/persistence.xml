@@ -588,7 +588,7 @@
 				<value>com.itgrids.partyanalyst.model.Event</value>
 				<value>com.itgrids.partyanalyst.model.EventSurveyUser</value>
 				<value>com.itgrids.partyanalyst.model.EventInfo</value>
-				
+				<value>com.itgrids.partyanalyst.model.RepresentativeLevel</value>
 				</list>
 			
 		</property>
