@@ -2567,6 +2567,13 @@
            <property name="voterAgeInfoDAO" ref="voterAgeInfoDAO"/>
            <property name="tdpCommitteeVacantPostDAO" ref="tdpCommitteeVacantPostDAO" />
            <property name="tdpCommitteeEnrollmentDAO" ref="tdpCommitteeEnrollmentDAO" />
+           <property name="eventGroupDAO" ref="eventGroupDAO" />
+           <property name="publicRepresentativeTypeDAO" ref="publicRepresentativeTypeDAO" />
+           <property name="publicRepresentativeDAO" ref="publicRepresentativeDAO" />
+           <property name="candidateDAO" ref="candidateDAO" />
+           <property name="nominationDAO" ref="nominationDAO" />           
+           <property name="eventDAO" ref="eventDAO" />
+           <property name="eventInviteeDAO" ref="eventInviteeDAO" />
 	</bean>
 	
 	<bean name="dynamicReportService"  class="com.itgrids.partyanalyst.service.impl.DynamicReportService">
