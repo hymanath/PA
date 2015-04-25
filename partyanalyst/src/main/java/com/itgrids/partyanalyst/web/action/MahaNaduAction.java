@@ -890,7 +890,10 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
     		}
     		jObj = new JSONObject(getTask());
     		JSONArray  submitArr = jObj.getJSONArray("submitArr");
-    		Long stateId = jObj.getLong("stateId");;
+    		Long stateId = jObj.getLong("stateId");
+    		String actionType = jObj.getString("actionType");
+    		String stateStr = jObj.getString("stateStr");
+    		Long eventId = jObj.getLong("eventId");
     		List<InviteesVO> inviteeGroupVOList = null;
     		if(submitArr != null && submitArr.length()>0)
     		{
@@ -908,7 +911,12 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
     					{
     						JSONObject commiteeVO = levelArr.getJSONObject(j);
     						InviteesVO vo = new InviteesVO();
-    						vo.setCommitteeId(commiteeVO.getLong("committeeId"));
+    						vo.setName(commiteeVO.getString("searchType"));
+    						if(vo.getName().trim().equalsIgnoreCase("CadreCommittee"))
+    						{
+    							vo.setCommitteeId(commiteeVO.getLong("committeeId"));
+    						}    							
+    						
     						vo.setLevelId(commiteeVO.getLong("levelId"));
     						vo.setLevelValue(commiteeVO.getLong("levelValue"));
     						vo.setLevelStr(commiteeVO.getString("selectedLevel"));
@@ -954,7 +962,7 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
     			}
     		}
     		
-    		commiteeMembersList = cadreCommitteeService.getEventInviteesList(regVO.getRegistrationID(),regVO.getAccessType(),regVO.getAccessValue(),stateId,inviteeGroupVOList,jObj.getInt("startIndex"),jObj.getInt("maxIndex"));
+    		commiteeMembersList = cadreCommitteeService.getEventInviteesList(regVO.getRegistrationID(),regVO.getAccessType(),regVO.getAccessValue(),stateId,inviteeGroupVOList,eventId,actionType,stateStr,jObj.getInt("startIndex"),jObj.getInt("maxIndex"));
     	}
     	catch(Exception e)
     	{

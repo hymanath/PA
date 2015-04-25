@@ -1619,7 +1619,21 @@ public String getSummaryDetails(){
 		return Action.SUCCESS;
 	}
 	
-	
+	 public String getEventsForUser()
+	{
+		try {
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");			
+			if(regVO==null){
+				return Action.ERROR;				
+			}
+			
+			idNameVOList = cadreCommitteeService.getPartyEvents(regVO.getRegistrationID());
+		} catch (Exception e) {
+			LOG.error("Exception occured in getPublicRepresentatives ",e);
+		}
+		return Action.SUCCESS;
+	}
+	 
 	public String getMandalDetailsByConstituency(){
 		try{
 			HttpSession session = request.getSession();
