@@ -1518,4 +1518,47 @@ public List<Object[]> membersCountMandalWise(List<Long> levelIds, Date startDate
 		return query.list();
 	}
 	
+	public List<Object[]> getCommiteeMembersCountDetailsByPostionsAndCommiteeLevel(List<Long> committeeLevelIds,List<Long> committeeValueList,Long committeeId,List<Long> commiteeRoleIds,List<Long> districtIds,Integer startIndex,Integer maxIndex)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(" select model.tdpCommitteeRole.tdpRoles.tdpRolesId,model.tdpCommitteeRole.tdpRoles.role, count(distinct model.tdpCadreId)  from TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId in (:committeeLevelIds) and ");
+		
+		if(districtIds != null && districtIds.size()>0)
+		{
+			stringBuilder.append(" model.tdpCommitteeRole.tdpCommittee.districtId in(:districtIds) and ");
+		}
+		else if(committeeValueList != null && committeeValueList.size() > 0)
+		{
+			stringBuilder.append(" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelValue in(:committeeValueList) and ");
+		}
+			
+		
+		if(committeeId != null && committeeId.longValue() != 0L)
+			stringBuilder.append(" model.tdpCommitteeRole.tdpCommittee.tdpBasicCommitteeId =:committeeId and " );
+		
+		stringBuilder.append(" model.tdpCommitteeRole.tdpRoles.tdpRolesId in (:commiteeRoleIds) group by model.tdpCommitteeRole.tdpRoles.tdpRolesId ");
+		
+		Query query = getSession().createQuery(stringBuilder.toString());
+		
+		query.setParameterList("committeeLevelIds", committeeLevelIds);
+		query.setParameterList("commiteeRoleIds", commiteeRoleIds);
+		
+		if(districtIds != null && districtIds.size()>0)
+		{
+			query.setParameterList("districtIds", districtIds);
+		}
+		else if(committeeValueList != null && committeeValueList.size() > 0)
+		{
+			query.setParameterList("committeeValueList", committeeValueList);
+		}
+		if(committeeId != null && committeeId.longValue() != 0L)
+			query.setParameter("committeeId", committeeId);
+		
+		if(startIndex!=null)
+			query.setFirstResult(startIndex);
+			if(maxIndex != null)
+			query.setMaxResults(maxIndex);
+		return query.list();
+	}
+	
 }
