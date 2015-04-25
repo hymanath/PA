@@ -109,5 +109,8 @@ public interface ICadreCommitteeService {
 	public List<CommitteeSummaryVO> getConstituencyWiseCommittesSummaryForMandal(String state,String startDate, String endDate,Long userId, String accessType,Long accessValue,String mandalCheck,String villageCheck);
 	 public ResultStatus sendSmsForInvitees(Long userId,List<Long> mobileNoList,String message);
 	// public List<TdpCadreVO> createGroupForMahanaduInvities(Long userId,Long committeeLevelId, Long committeeValue,List<CadreCommitteeMemberVO> committeeList,Long presentLocationId,String groupName,String searchType,Long stateId, Long districtId, Long constituencyId, Long mandalId,  Long panchayatId,Integer startIndex, Integer maxIndex);
-	 public List<TdpCadreVO>  getEventInviteesList(Long userId,String accessLevel,String accessValue, Long stateId,List<InviteesVO> inviteesVOList,Integer startIndex,Integer maxIndex);
+	 public List<TdpCadreVO>  getEventInviteesList(Long userId,String accessLevel,String accessValue, Long stateId,List<InviteesVO> inviteesVOList,Long eventId,String actionType,String stateStr,Integer startIndex,Integer maxIndex);
+	 public List<IdNameVO> getPublicRepresenttativesList();
+	 public List<IdNameVO> getPartyEventGroups(Long userId);
+	 public List<IdNameVO> getPartyEvents(Long userId);
 }
