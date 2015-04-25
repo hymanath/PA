@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,7 @@ import com.itgrids.partyanalyst.dao.ICadreIvrResponseDAO;
 import com.itgrids.partyanalyst.dao.ICadreOtpDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreParticipatedElectionDAO;
 import com.itgrids.partyanalyst.dao.ICadrePreviousRolesDAO;
+import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.ICommitteIvrDistrictDetailDAO;
 import com.itgrids.partyanalyst.dao.ICommitteIvrTotalDetailDAO;
@@ -47,12 +49,17 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
+import com.itgrids.partyanalyst.dao.IEventDAO;
+import com.itgrids.partyanalyst.dao.IEventGroupDAO;
+import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
 import com.itgrids.partyanalyst.dao.IIvrCampaignOptionsDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyWardDAO;
+import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeDAO;
+import com.itgrids.partyanalyst.dao.IPublicRepresentativeTypeDAO;
 import com.itgrids.partyanalyst.dao.ITdpBasicCommitteeDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreInfoDAO;
@@ -102,8 +109,10 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.EducationalQualifications;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
+import com.itgrids.partyanalyst.model.EventInvitee;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Occupation;
+import com.itgrids.partyanalyst.model.PublicRepresentativeType;
 import com.itgrids.partyanalyst.model.TdpBasicCommittee;
 import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.model.TdpCommittee;
@@ -180,16 +189,48 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private ITdpCommitteeEnrollmentDAO tdpCommitteeEnrollmentDAO;
 	@Autowired
 	private ITdpRolesDAO tdpRolesDAO;
-	/*private IEventGroupDAO eventGroupDAO;
-	private IMahanaduCadreMemberDAO mahanaduCadreMemberDAO;
-	private IMahanaduPublicRepresentativeDAO mahanaduPublicRepresentativeDAO;*/
+	private IEventGroupDAO eventGroupDAO;
+	private IPublicRepresentativeTypeDAO publicRepresentativeTypeDAO;
 	private IPublicRepresentativeDAO publicRepresentativeDAO;
+	private ICandidateDAO candidateDAO;
+	private INominationDAO nominationDAO;
+	private IEventDAO eventDAO;
+	private IEventInviteeDAO eventInviteeDAO;
 	
-	
+	public void setEventInviteeDAO(IEventInviteeDAO eventInviteeDAO) {
+		this.eventInviteeDAO = eventInviteeDAO;
+	}
+
+	public void setEventDAO(IEventDAO eventDAO) {
+		this.eventDAO = eventDAO;
+	}
+
 	public void setPublicRepresentativeDAO(
 			IPublicRepresentativeDAO publicRepresentativeDAO) {
 		this.publicRepresentativeDAO = publicRepresentativeDAO;
 	}
+
+
+	public void setCandidateDAO(ICandidateDAO candidateDAO) {
+		this.candidateDAO = candidateDAO;
+	}
+
+
+	public void setNominationDAO(INominationDAO nominationDAO) {
+		this.nominationDAO = nominationDAO;
+	}
+
+
+	public void setEventGroupDAO(IEventGroupDAO eventGroupDAO) {
+		this.eventGroupDAO = eventGroupDAO;
+	}
+
+	
+	public void setPublicRepresentativeTypeDAO(
+			IPublicRepresentativeTypeDAO publicRepresentativeTypeDAO) {
+		this.publicRepresentativeTypeDAO = publicRepresentativeTypeDAO;
+	}
+
 
 	public void setVoterAgeInfoDAO(IVoterAgeInfoDAO voterAgeInfoDAO) {
 		this.voterAgeInfoDAO = voterAgeInfoDAO;
@@ -10824,19 +10865,43 @@ return mandalList;
 	}
 	
 	
-	public List<TdpCadreVO>  getEventInviteesList(Long userId,String accessLevel,String accessValue, Long stateId,List<InviteesVO> inviteesVOList,Integer startIndex,Integer maxIndex)
+	public List<TdpCadreVO>  getEventInviteesList(Long userId,String accessLevel,String accessValue, Long stateId,List<InviteesVO> inviteesVOList,Long eventId,String actionType,String stateStr,Integer startIndex,Integer maxIndex)
 	{
 		List<TdpCadreVO> returnList = null;
 		try {
-			
+			List<CadreCommitteeVO> cadreCommitteeList = new ArrayList<CadreCommitteeVO>();
+			Map<String,Long> positonsCountMap = new LinkedHashMap<String, Long>();
+			Long totalCount = 0L;
 			if(inviteesVOList != null && inviteesVOList.size()>0)
 			{
-				 Set<Long> tdpCadreIdsList = new HashSet<Long>();
-				 Long totalCount = 0L;
+				if(startIndex == 0)
+				{
+					List<IdNameVO> publicRepresents = getPublicRepresenttativesList();
+					 if(publicRepresents != null && publicRepresents.size()>0)
+					 {
+						 for (IdNameVO idNameVO : publicRepresents) {
+							 positonsCountMap.put(idNameVO.getName(), 0L);
+						}
+					 }
+					 
+					List<BasicVO> tdpRoles = getCommitteeRoles();
+					 if(tdpRoles != null && tdpRoles.size()>0)
+					 {
+						 for (BasicVO idNameVO : tdpRoles) {
+							 positonsCountMap.put(idNameVO.getName(), 0L);
+						}
+					 }
+				}
+				 Set<Long> tdpCadreIdsList = new TreeSet<Long>();
+				 Set<Long> publicRepresentativesIds = new TreeSet<Long>();
 				 List<Long> tdpCadreList = null;
+				 List<Long> publicRepresentativesList = null;
+				 Map<Long,List<IdNameVO>> parliamentInfoMap = new HashMap<Long, List<IdNameVO>>();
+				 Map<Long,List<IdNameVO>> assemblyInfoMap = new HashMap<Long, List<IdNameVO>>();
+				 
 				for (InviteesVO inviteeVO : inviteesVOList) 
 				{
-					 List<Long> disstrictIds = new ArrayList<Long>();
+					List<Long> disstrictIds = new ArrayList<Long>();
 					 List<Long> locationValuesList = new ArrayList<Long>();
 					 List<Long> locationLevelIdsList = new ArrayList<Long>();
 					 
@@ -10852,23 +10917,149 @@ return mandalList;
 									 locationLevelIdsList.clear();
 									 locationValuesList.clear();
 									 locationLevelIdsList.add(inviteesVO.getLevelId().longValue());
-									 locationValuesList.add(inviteesVO.getLevelValue().longValue());
+									 //locationValuesList.add(inviteesVO.getLevelValue().longValue());
 									 
-									 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 2L )
+									
+									 
+									 if(inviteesVO.getName().equalsIgnoreCase("PublicRepresentatives"))
 									 {
-										 disstrictIds.add(1L);disstrictIds.add(2L);disstrictIds.add(3L);disstrictIds.add(4L);disstrictIds.add(5L);disstrictIds.add(6L);disstrictIds.add(7L);disstrictIds.add(8L);disstrictIds.add(9L);disstrictIds.add(10L);
+										 List<Long> positions = inviteesVO.getRolesIds();
+										 String region ="ALL";
+										 if(stateId != null && stateId.longValue() == 2L )
+										 {
+											 region ="Telangana";
+										 }
+										 if(stateId != null && stateId.longValue() == 1L )
+										 {
+											 region ="AP";
+										 }
+										 
+										 if(positions != null && positions.size()>0)
+										 {
+											 for (Long positionId : positions) {
+												 locationValuesList.clear();
+												 if(positionId.longValue() == 1L)//MP
+												 {
+													 List<Object[]> parliaments = delimitationConstituencyAssemblyDetailsDAO.getLatestParliamentByStateIdForregion("Parliament", 1L, region);
+													 if(parliaments != null && parliaments.size()>0)
+													 {
+														 for (Object[] parliament : parliaments) {
+															 Long parliamentId = parliament[0] != null ? Long.valueOf(parliament[0].toString().trim()):0L;
+															 locationValuesList.add(parliamentId);
+															 List<IdNameVO> parliamentInfoList = new ArrayList<IdNameVO>();
+															 if(parliamentInfoMap.get(parliamentId) != null)
+															 {
+																 parliamentInfoList = parliamentInfoMap.get(parliamentId);
+															 }
+															 
+															 IdNameVO parliamentVO = new IdNameVO();
+															 parliamentVO.setId(parliamentId);
+															 parliamentVO.setName(parliament[1] != null ? parliament[1].toString().trim():"");
+															 
+															 parliamentInfoList.add(parliamentVO);
+															 IdNameVO districtVO = new IdNameVO();
+															 districtVO.setId(parliamentId);
+															 districtVO.setName(parliament[2] != null ? parliament[2].toString().trim():"");
+															 parliamentInfoList.add(districtVO);
+															 
+															 parliamentInfoMap.put(parliamentId, parliamentInfoList);
+															 
+														}
+													 }
+												 }
+												 else  if(positionId.longValue() == 2L)//MLA
+												 {
+													 List<Object[]> assemblys = constituencyDAO.getLatestConstituenciesByStateIdForregion("Assembly", 1L, region);
+													 if(assemblys != null && assemblys.size()>0)
+													 {
+														 for (Object[] assembly : assemblys) {
+															 Long assemblyId = assembly[0] != null ? Long.valueOf(assembly[0].toString().trim()):0L;
+															 locationValuesList.add(assemblyId);
+															 
+															 List<IdNameVO> assemblyInfoList = new ArrayList<IdNameVO>();
+															 if(assemblyInfoMap.get(assemblyId) != null)
+															 {
+																 assemblyInfoList = assemblyInfoMap.get(assemblyId);
+															 }
+															 
+															 IdNameVO parliamentVO = new IdNameVO();
+															 parliamentVO.setId(assemblyId);
+															 parliamentVO.setName(assembly[1] != null ? assembly[1].toString().trim():"");
+															 
+															 assemblyInfoList.add(parliamentVO);
+															 
+															 IdNameVO districtVO = new IdNameVO();
+															 districtVO.setId(assemblyId);
+															 districtVO.setName(assembly[2] != null ? assembly[2].toString().trim():"");
+															 assemblyInfoList.add(districtVO);
+															 
+															 assemblyInfoMap.put(assemblyId, assemblyInfoList);
+															 
+														}
+													 }
+												 }
+												 publicRepresentativesList =  publicRepresentativeDAO.getRepresentativesByPositions(null,locationValuesList,positionId);
+												 if(publicRepresentativesList != null && publicRepresentativesList.size()>0)
+												 {
+													 publicRepresentativesIds.addAll(publicRepresentativesList);
+													 if(startIndex == 0)
+														{
+														 	String positiion=  publicRepresentativeTypeDAO.get(positionId).getType();
+														 	Long count = 0L;
+																if(positonsCountMap.get(positiion) != null)
+																{
+																	count = positonsCountMap.get(positiion);
+																}
+																count = count+Long.valueOf(String.valueOf(publicRepresentativesList.size()));
+																
+																positonsCountMap.put(positiion,count);
+														}
+												 }
+											}
+										 }
+										 
 									 }
-									 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 1L )
+									 else
 									 {
-										 disstrictIds.add(11L);disstrictIds.add(12L);disstrictIds.add(13L);disstrictIds.add(14L);disstrictIds.add(15L);disstrictIds.add(16L);disstrictIds.add(17L);disstrictIds.add(18L);disstrictIds.add(19L);disstrictIds.add(20L);
-										 disstrictIds.add(21L);disstrictIds.add(22L);disstrictIds.add(23L);
+										 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 2L )
+										 {
+											 disstrictIds.add(1L);disstrictIds.add(2L);disstrictIds.add(3L);disstrictIds.add(4L);disstrictIds.add(5L);disstrictIds.add(6L);disstrictIds.add(7L);disstrictIds.add(8L);disstrictIds.add(9L);disstrictIds.add(10L);
+										 }
+										 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 1L )
+										 {
+											 disstrictIds.add(11L);disstrictIds.add(12L);disstrictIds.add(13L);disstrictIds.add(14L);disstrictIds.add(15L);disstrictIds.add(16L);disstrictIds.add(17L);disstrictIds.add(18L);disstrictIds.add(19L);disstrictIds.add(20L);
+											 disstrictIds.add(21L);disstrictIds.add(22L);disstrictIds.add(23L);
+										 }
+										 
+										 tdpCadreList = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteesVO.getCommitteeId(),inviteesVO.getRolesIds(),disstrictIds,null,null);										 
 									 }
-									 
-									 tdpCadreList = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteesVO.getCommitteeId(),inviteesVO.getRolesIds(),disstrictIds,null,null);
-									 
+									
 									 if(tdpCadreList != null && tdpCadreList.size()>0)
 									 {
 										 tdpCadreIdsList.addAll(tdpCadreList);
+										 if(startIndex == 0)
+											{
+												 List<Object[]> positionCounts = tdpCommitteeMemberDAO.getCommiteeMembersCountDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteesVO.getCommitteeId(),inviteesVO.getRolesIds(),disstrictIds,null,null);
+												 if(positionCounts != null && positionCounts.size()>0)
+												 {
+													 for (Object[] positionCount : positionCounts)
+													 {
+														String positiion = positionCount[1] != null ? positionCount[1].toString().trim():"";
+														Long positiionCount = positionCount[2] != null ? Long.valueOf(positionCount[2].toString().trim()):0L;
+														if(positiion != null && positiion.length()>0 )
+														{
+															Long count = 0L;
+															if(positonsCountMap.get(positiion) != null)
+															{
+																count = positonsCountMap.get(positiion);
+															}
+															count = count+positiionCount;
+															
+															positonsCountMap.put(positiion,count);
+														}
+													 }
+												 }
+											}
 									 }
 								 }
 							 }
@@ -10887,30 +11078,242 @@ return mandalList;
 									 locationLevelIdsList.clear();
 									 locationValuesList.clear();
 									 locationLevelIdsList.add(inviteesVO.getLevelId().longValue());
-									 locationValuesList.add(inviteesVO.getLevelValue().longValue());
+									// locationValuesList.add(inviteesVO.getLevelValue().longValue());
 									 
-									 if(inviteesVO.getDistrictId() != null && inviteesVO.getDistrictId().longValue() ==0L) // district not selected
+									 if(inviteesVO.getName().equalsIgnoreCase("PublicRepresentatives"))
 									 {
-										 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 2L )
+										 List<Long> positions = inviteesVO.getRolesIds();
+										 String region ="ALL";
+										 if(stateId != null && stateId.longValue() == 2L )
 										 {
-											 disstrictIds.add(1L);disstrictIds.add(2L);disstrictIds.add(3L);disstrictIds.add(4L);disstrictIds.add(5L);disstrictIds.add(6L);disstrictIds.add(7L);disstrictIds.add(8L);disstrictIds.add(9L);disstrictIds.add(10L);
+											 region ="Telangana";
 										 }
-										 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 1L )
+										 if(stateId != null && stateId.longValue() == 1L )
 										 {
-											 disstrictIds.add(11L);disstrictIds.add(12L);disstrictIds.add(13L);disstrictIds.add(14L);disstrictIds.add(15L);disstrictIds.add(16L);disstrictIds.add(17L);disstrictIds.add(18L);disstrictIds.add(19L);disstrictIds.add(20L);
-											 disstrictIds.add(21L);disstrictIds.add(22L);disstrictIds.add(23L);
+											 region ="AP";
+										 }
+										 
+										
+										 
+										 if(inviteesVO.getDistrictId() != null && inviteesVO.getDistrictId().longValue() ==0L) // district not selected
+										 {
+											 if(positions != null && positions.size()>0)
+											 {
+												 for (Long positionId : positions) {
+													 
+													 if(positionId.longValue() == 1L)//MP
+													 {
+														 List<Object[]> parliaments = delimitationConstituencyAssemblyDetailsDAO.getLatestParliamentByStateIdForregion("Parliament", 1L, region);
+														 if(parliaments != null && parliaments.size()>0)
+														 {
+															 for (Object[] parliament : parliaments) {
+																 Long parliamentId = parliament[0] != null ? Long.valueOf(parliament[0].toString().trim()):0L;
+																 locationValuesList.add(parliamentId);
+																 List<IdNameVO> parliamentInfoList = new ArrayList<IdNameVO>();
+																 if(parliamentInfoMap.get(parliamentId) != null)
+																 {
+																	 parliamentInfoList = parliamentInfoMap.get(parliamentId);
+																 }
+																 
+																 IdNameVO parliamentVO = new IdNameVO();
+																 parliamentVO.setId(parliamentId);
+																 parliamentVO.setName(parliament[1] != null ? parliament[1].toString().trim():"");
+																 
+																 parliamentInfoList.add(parliamentVO);
+																 IdNameVO districtVO = new IdNameVO();
+																 districtVO.setId(parliamentId);
+																 districtVO.setName(parliament[2] != null ? parliament[2].toString().trim():"");
+																 parliamentInfoList.add(districtVO);
+																 
+																 parliamentInfoMap.put(parliamentId, parliamentInfoList);
+															}
+														 }
+													 }
+													 else  if(positionId.longValue() == 2L)//MLA
+													 {
+														 List<Object[]> assemblys = constituencyDAO.getLatestConstituenciesByStateIdForregion("Parliament", 1L, region);
+														 if(assemblys != null && assemblys.size()>0)
+														 {
+															 for (Object[] assembly : assemblys) {
+																 Long assemblyId = assembly[0] != null ? Long.valueOf(assembly[0].toString().trim()):0L;
+																 locationValuesList.add(assemblyId);
+																 
+																 List<IdNameVO> assemblyInfoList = new ArrayList<IdNameVO>();
+																 if(assemblyInfoMap.get(assemblyId) != null)
+																 {
+																	 assemblyInfoList = assemblyInfoMap.get(assemblyId);
+																 }
+																 
+																 IdNameVO parliamentVO = new IdNameVO();
+																 parliamentVO.setId(assemblyId);
+																 parliamentVO.setName(assembly[1] != null ? assembly[1].toString().trim():"");
+																 
+																 assemblyInfoList.add(parliamentVO);
+																 
+																 IdNameVO districtVO = new IdNameVO();
+																 districtVO.setId(assemblyId);
+																 districtVO.setName(assembly[2] != null ? assembly[2].toString().trim():"");
+																 assemblyInfoList.add(districtVO);
+																 
+																 assemblyInfoMap.put(assemblyId, assemblyInfoList);
+															}
+														 }
+													 }
+													 publicRepresentativesList =  publicRepresentativeDAO.getRepresentativesByPositions(null,locationValuesList,positionId);
+													 if(publicRepresentativesList != null && publicRepresentativesList.size()>0)
+													 {
+														 publicRepresentativesIds.addAll(publicRepresentativesList);
+														 if(startIndex == 0)
+															{
+																 String positiion=  publicRepresentativeTypeDAO.get(positionId).getType();
+																 Long count = 0L;
+																	if(positonsCountMap.get(positiion) != null)
+																	{
+																		count = positonsCountMap.get(positiion);
+																	}
+																	count = count+Long.valueOf(String.valueOf(publicRepresentativesList.size()));
+																	
+																	positonsCountMap.put(positiion,count);
+															}
+													 }
+												}
+											 }
+										 }
+										 else // district selected
+										 {
+											 
+											 if(positions != null && positions.size()>0)
+											 {
+												 for (Long positionId : positions) {
+													 
+													 if(positionId.longValue() == 1L)//MP
+													 {
+														 List<Object[]> parliaments = delimitationConstituencyAssemblyDetailsDAO.findParliamentConstituenciesByDistrictId(inviteesVO.getDistrictId().longValue(),2009L);
+														 if(parliaments != null && parliaments.size()>0)
+														 {
+															 for (Object[] parliament : parliaments) {
+																 Long parliamentId = parliament[0] != null ? Long.valueOf(parliament[0].toString().trim()):0L;
+																 locationValuesList.add(parliamentId);
+																 List<IdNameVO> parliamentInfoList = new ArrayList<IdNameVO>();
+																 if(parliamentInfoMap.get(parliamentId) != null)
+																 {
+																	 parliamentInfoList = parliamentInfoMap.get(parliamentId);
+																 }
+																 
+																 IdNameVO parliamentVO = new IdNameVO();
+																 parliamentVO.setId(parliamentId);
+																 parliamentVO.setName(parliament[1] != null ? parliament[1].toString().trim():"");
+																 
+																 parliamentInfoList.add(parliamentVO);
+																 IdNameVO districtVO = new IdNameVO();
+																 districtVO.setId(parliamentId);
+																 districtVO.setName(parliament[2] != null ? parliament[2].toString().trim():"");
+																 parliamentInfoList.add(districtVO);
+																 
+																 parliamentInfoMap.put(parliamentId, parliamentInfoList);
+															}
+														 }
+													 }
+													 else  if(positionId.longValue() == 2L)//MLA
+													 {
+														 List<Object[]> assemblys = constituencyDAO.getConstituenciesDetaildByDistrictId(inviteesVO.getDistrictId().longValue());
+														 if(assemblys != null && assemblys.size()>0)
+														 {
+															 for (Object[] assembly : assemblys) {
+																 Long assemblyId = assembly[0] != null ? Long.valueOf(assembly[0].toString().trim()):0L;
+																 locationValuesList.add(assemblyId);
+																 
+																 List<IdNameVO> assemblyInfoList = new ArrayList<IdNameVO>();
+																 if(assemblyInfoMap.get(assemblyId) != null)
+																 {
+																	 assemblyInfoList = assemblyInfoMap.get(assemblyId);
+																 }
+																 
+																 IdNameVO parliamentVO = new IdNameVO();
+																 parliamentVO.setId(assemblyId);
+																 parliamentVO.setName(assembly[1] != null ? assembly[1].toString().trim():"");
+																 
+																 assemblyInfoList.add(parliamentVO);
+																 
+																 IdNameVO districtVO = new IdNameVO();
+																 districtVO.setId(assemblyId);
+																 districtVO.setName(assembly[2] != null ? assembly[2].toString().trim():"");
+																 assemblyInfoList.add(districtVO);
+																 
+																 assemblyInfoMap.put(assemblyId, assemblyInfoList);
+															}
+														 }
+													 }
+													 publicRepresentativesList =  publicRepresentativeDAO.getRepresentativesByPositions(null,locationValuesList,positionId);
+													 if(publicRepresentativesList != null && publicRepresentativesList.size()>0)
+													 {
+														 publicRepresentativesIds.addAll(publicRepresentativesList);
+														 if(startIndex == 0)
+															{
+															 String positiion=  publicRepresentativeTypeDAO.get(positionId).getType();
+															 Long count = 0L;
+																if(positonsCountMap.get(positiion) != null)
+																{
+																	count = positonsCountMap.get(positiion);
+																}
+																count = count+Long.valueOf(String.valueOf(publicRepresentativesList.size()));
+																
+																positonsCountMap.put(positiion,count);
+															}
+													 }
+												}
+											 }
 										 }
 									 }
-									 else // district selected
+									 else
 									 {
-										 disstrictIds.add(inviteesVO.getDistrictId().longValue());
+										 if(inviteesVO.getDistrictId() != null && inviteesVO.getDistrictId().longValue() ==0L) // district not selected
+										 {
+											 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 2L )
+											 {
+												 disstrictIds.add(1L);disstrictIds.add(2L);disstrictIds.add(3L);disstrictIds.add(4L);disstrictIds.add(5L);disstrictIds.add(6L);disstrictIds.add(7L);disstrictIds.add(8L);disstrictIds.add(9L);disstrictIds.add(10L);
+											 }
+											 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 1L )
+											 {
+												 disstrictIds.add(11L);disstrictIds.add(12L);disstrictIds.add(13L);disstrictIds.add(14L);disstrictIds.add(15L);disstrictIds.add(16L);disstrictIds.add(17L);disstrictIds.add(18L);disstrictIds.add(19L);disstrictIds.add(20L);
+												 disstrictIds.add(21L);disstrictIds.add(22L);disstrictIds.add(23L);
+											 }
+										 }
+										 else // district selected
+										 {
+											 disstrictIds.add(inviteesVO.getDistrictId().longValue());
+										 }
+										 
+										 tdpCadreList = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteesVO.getCommitteeId(),inviteesVO.getRolesIds(),disstrictIds,null,null);
+										 if(tdpCadreList != null && tdpCadreList.size()>0)
+										 {
+											 tdpCadreIdsList.addAll(tdpCadreList);
+											 if(startIndex == 0)
+												{
+													 List<Object[]> positionCounts = tdpCommitteeMemberDAO.getCommiteeMembersCountDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteesVO.getCommitteeId(),inviteesVO.getRolesIds(),disstrictIds,null,null);
+													 if(positionCounts != null && positionCounts.size()>0)
+													 {
+														 for (Object[] positionCount : positionCounts)
+														 {
+															String positiion = positionCount[1] != null ? positionCount[1].toString().trim():"";
+															Long positiionCount = positionCount[2] != null ? Long.valueOf(positionCount[2].toString().trim()):0L;
+															if(positiion != null && positiion.length()>0 )
+															{
+																Long count = 0L;
+																if(positonsCountMap.get(positiion) != null)
+																{
+																	count = positonsCountMap.get(positiion);
+																}
+																count = count+positiionCount;
+																
+																positonsCountMap.put(positiion,count);
+															}
+														 }
+													 }
+												}
+										 }
 									 }
-									 
-									 tdpCadreList = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteesVO.getCommitteeId(),inviteesVO.getRolesIds(),disstrictIds,null,null);
-									 if(tdpCadreList != null && tdpCadreList.size()>0)
-									 {
-										 tdpCadreIdsList.addAll(tdpCadreList);
-									 }
+									
 								 }
 							}
 						 }
@@ -10926,11 +11329,14 @@ return mandalList;
 								 {
 									 locationLevelIdsList.clear();
 									 locationValuesList.clear();
-									 locationLevelIdsList.add(inviteesVO.getLevelId().longValue());
-									 locationValuesList.add(inviteesVO.getLevelValue().longValue());
+									// locationValuesList.add(inviteesVO.getLevelValue().longValue());
+									 
+									 locationLevelIdsList.add(5L);
+									 locationLevelIdsList.add(7L);
+									 locationLevelIdsList.add(9L);
 									 
 									 if(inviteesVO.getMandalId() != null && inviteesVO.getMandalId().longValue() != 0L) // mandal/muncipality selected
-									 {
+									 {										
 										 locationValuesList.add(inviteesVO.getMandalId());
 									 }
 									 else if(inviteesVO.getConstituencyId() != null && inviteesVO.getConstituencyId().longValue() != 0L) // constituency selected
@@ -10964,6 +11370,29 @@ return mandalList;
 									 if(tdpCadreList != null && tdpCadreList.size()>0)
 									 {
 										 tdpCadreIdsList.addAll(tdpCadreList);
+										 if(startIndex == 0)
+											{
+												 List<Object[]> positionCounts = tdpCommitteeMemberDAO.getCommiteeMembersCountDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteesVO.getCommitteeId(),inviteesVO.getRolesIds(),disstrictIds,null,null);
+												 if(positionCounts != null && positionCounts.size()>0)
+												 {
+													 for (Object[] positionCount : positionCounts)
+													 {
+														String positiion = positionCount[1] != null ? positionCount[1].toString().trim():"";
+														Long positiionCount = positionCount[2] != null ? Long.valueOf(positionCount[2].toString().trim()):0L;
+														if(positiion != null && positiion.length()>0 )
+														{
+															Long count = 0L;
+															if(positonsCountMap.get(positiion) != null)
+															{
+																count = positonsCountMap.get(positiion);
+															}
+															count = count+positiionCount;
+															
+															positonsCountMap.put(positiion,count);
+														}
+													 }
+												 }
+											}
 									 }
 								 }
 							}
@@ -10983,9 +11412,9 @@ return mandalList;
 								 {
 									 locationLevelIdsList.clear();
 									 locationValuesList.clear();
-									 locationLevelIdsList.add(inviteesVO.getLevelId().longValue());
-									 locationValuesList.add(inviteesVO.getLevelValue().longValue());
-									 
+									// locationValuesList.add(inviteesVO.getLevelValue().longValue());
+									 locationLevelIdsList.add(6L);
+									 locationLevelIdsList.add(8L);
 									 if(inviteesVO.getPanchayatId() != null && inviteesVO.getPanchayatId().longValue() != 0L) // mandal/muncipality selected
 									 {
 										 locationValuesList.add(inviteeVO.getPanchayatId());
@@ -11033,135 +11462,279 @@ return mandalList;
 									 if(tdpCadreList != null && tdpCadreList.size()>0)
 									 {
 										 tdpCadreIdsList.addAll(tdpCadreList);
+										 if(startIndex == 0)
+											{
+												 List<Object[]> positionCounts = tdpCommitteeMemberDAO.getCommiteeMembersCountDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteesVO.getCommitteeId(),inviteesVO.getRolesIds(),disstrictIds,null,null);
+												 if(positionCounts != null && positionCounts.size()>0)
+												 {
+													 for (Object[] positionCount : positionCounts)
+													 {
+														String positiion = positionCount[1] != null ? positionCount[1].toString().trim():"";
+														Long positiionCount = positionCount[2] != null ? Long.valueOf(positionCount[2].toString().trim()):0L;
+														if(positiion != null && positiion.length()>0 )
+														{
+															Long count = 0L;
+															if(positonsCountMap.get(positiion) != null)
+															{
+																count = positonsCountMap.get(positiion);
+															}
+															count = count+positiionCount;
+															
+															positonsCountMap.put(positiion,count);
+														}
+													 }
+												 }
+											}
 									 }
 								 }
 							 }								
 						 }					 
 					 }
-					 
-					// List<Long> tdpCadreList = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteeVO.getCommitteeId(),inviteeVO.getRolesIds(),disstrictIds,null,null);
-					// tdpCadreIdsList.addAll(tdpCadreList);
-					 
-						/* List<Long> committeeMembersLsit = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteeVO.getCommitteeId(),inviteeVO.getRolesIds(),disstrictIds,startIndex,maxIndex);
-						 if(committeeMembersLsit!= null && committeeMembersLsit.size()>0)
-						 {
-							 if(committeeMembersLsit.size()>500)
-							 {
-								 committeeMembersLsit = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteeVO.getCommitteeId(),inviteeVO.getRolesIds(),disstrictIds,0,100);
-							 }
-							 tdpCadreIdsList.addAll(committeeMembersLsit);
-							 List<Long> list = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteeVO.getCommitteeId(),inviteeVO.getRolesIds(),disstrictIds,null,null);
-							 totalCount = totalCount+(Long.valueOf(list.size()));
-						 }*/
-
 				}
-				
-					List<Long> tdpCadresIdList = new ArrayList<Long>();
-					tdpCadresIdList.addAll(tdpCadreIdsList);
 					
-					if(tdpCadresIdList != null && tdpCadresIdList.size()>0)
+					List<Long> finalCadreIDsList = new ArrayList<Long>();
+					List<Long> tdpCadreIdList = new ArrayList<Long>();
+				
+					returnList = new ArrayList<TdpCadreVO>();
+					List<Long> tdpCadresIdList = new ArrayList<Long>();
+					
+					
+					List<Long> publicRepresentativesIdList = new ArrayList<Long>();
+					
+										
+					if(publicRepresentativesIds != null && publicRepresentativesIds.size()>0)
+					{
+						 totalCount = totalCount+(Long.valueOf(publicRepresentativesIds.size()));
+						 publicRepresentativesIdList.addAll(publicRepresentativesIds);
+					}
+					if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
 					{
 						 totalCount = totalCount+(Long.valueOf(tdpCadreIdsList.size()));
-						 List<Long> finalCadreIDsList = new ArrayList<Long>();
-						 if(tdpCadresIdList.size()>100)
-						 {
-							 int count =0;
-							 for( int i=startIndex ; i<tdpCadresIdList.size();i++)
+						 tdpCadresIdList.addAll(tdpCadreIdsList);
+					}
+					//addtoevent
+					if(actionType != null && actionType.trim().equalsIgnoreCase("invite"))
+					{
+						
+						String status = addToEventDetails(userId,eventId,publicRepresentativesIdList,tdpCadresIdList);
+						
+						
+						
+						TdpCadreVO finalCadreVO = new TdpCadreVO();
+						if(status == null){
+							finalCadreVO.setResponseCode("100");
+							finalCadreVO.setResponseStatus(status);
+						}
+						else
+						{
+							finalCadreVO.setResponseCode("1");
+							finalCadreVO.setResponseStatus("error");
+						}
+						finalCadreVO.setTotalCount(totalCount);
+						returnList.add(finalCadreVO);	
+					}
+					else
+					{
+						int maxCount = 0;
+						if(publicRepresentativesIdList != null && publicRepresentativesIdList.size()>0)
+						{
+							 if(publicRepresentativesIdList.size()>100)
 							 {
-								 finalCadreIDsList.add(tdpCadresIdList.get(i));
-								 count = count+1;
-								 if(maxIndex == count)
+								 int count =0;
+								 for( int i=startIndex ; i<publicRepresentativesIdList.size();i++)
 								 {
-									 break;
+									 try {
+										 finalCadreIDsList.add(publicRepresentativesIdList.get(i));
+										 count = count+1;
+										 maxCount = maxCount+1;
+										 if(maxIndex == count)
+										 {
+											 break;
+										 }
+									} catch (Exception e) {}
 								 }
 							 }
-						 }
-						 else
-						 {
-							 finalCadreIDsList.addAll(tdpCadresIdList);
-						 }
-						 List<Object[]> tdpCadreIdDetails = tdpCadreDAO.getMobileNoByTdpCadreIdList(finalCadreIDsList,0,100);
-						 
-						 List<Long> tdpCadreIdList = new ArrayList<Long>();
-						 List<CadreCommitteeVO> cadreCommitteeList = new ArrayList<CadreCommitteeVO>();
-						 if(tdpCadreIdDetails != null && tdpCadreIdDetails.size()>0)
-						 {
-							 returnList = new ArrayList<TdpCadreVO>();
-								if(tdpCadreIdDetails != null && tdpCadreIdDetails.size()>0)
-								{
-									SimpleDateFormat format  = new SimpleDateFormat("yy-MM-dd");
-									for (Object[] cadre : tdpCadreIdDetails) 
+							 else
+							 {
+								 finalCadreIDsList.addAll(publicRepresentativesIdList);
+							 }
+							 
+							 if(finalCadreIDsList != null && finalCadreIDsList.size()>0)
+							 {
+								 List<Object[]> representativeDetails = publicRepresentativeDAO.getCandidateInfoByCandidateIds(finalCadreIDsList);
+									
+									if(representativeDetails != null && representativeDetails.size()>0)
 									{
-										CadreCommitteeVO committeeVO = new CadreCommitteeVO();
-	
-										committeeVO.setTdpCadreId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
-										committeeVO.setMemberShipCardId(cadre[4] != null ? cadre[4].toString().substring(4):"");
-										committeeVO.setCadreName(cadre[1] != null ? cadre[1].toString():"");
-										committeeVO.setRelativeName(cadre[2] != null ? cadre[2].toString():"");
-										committeeVO.setMobileNo(cadre[6] != null ? cadre[6].toString():"");
-										committeeVO.setCasteName(cadre[18] != null ? cadre[18].toString().trim():"");
-										committeeVO.setGender(cadre[3] != null ? cadre[3].toString():"");
-										committeeVO.setImageURL(cadre[7] != null ? cadre[7].toString():"");
-										
-										if(cadre[9] != null)
-										{
-											committeeVO.setAge(cadre[9] != null ?cadre[9].toString().trim():"0");
-										}
-										else if((committeeVO.getAge() == null || committeeVO.getAge().toString().trim().length()<=0) && cadre[10]  != null)
-										{
-											String dateOfBirth = 	cadre[10] != null ? cadre[10].toString().substring(0,10):" "	;
-											if(dateOfBirth != null && dateOfBirth.trim().length()>0)
-											{
-												Calendar startDate = new GregorianCalendar();
-												Calendar endDate = new GregorianCalendar();
-												try {
-													startDate.setTime(format.parse(dateOfBirth.trim()));
-													
-												} catch (Exception e) {}
+										for (Object[] cadre : representativeDetails) {
+												CadreCommitteeVO committeeVO = new CadreCommitteeVO();
+																					
+												/*committeeVO.setTdpCadreId(candidate.getCandidateId());
+												committeeVO.setCadreName(candidate.getLastname());
+												committeeVO.setMobileNo(candidate.getMobile() != null ? candidate.getMobile():"");
+												committeeVO.setGender(candidate.getGender() != null ? candidate.getGender():"");
+												committeeVO.setParty(candidate.getParty() != null ? candidate.getParty().getShortName() :"");
+												committeeVO.setMobileType(cadre[1] != null ? cadre[1].toString():"");
+												*/
+												committeeVO.setTdpCadreId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
+												committeeVO.setCadreName(cadre[1] != null ? cadre[1].toString().trim():"");
+												committeeVO.setMobileNo(cadre[2] != null ? cadre[2].toString().trim():"");
+												committeeVO.setGender(cadre[3] != null ? cadre[3].toString().trim():"");
+												committeeVO.setMobileType(cadre[4] != null ? cadre[4].toString():"");
 												
+												committeeVO.setType("PublicRepresentative");
+												Long levelValue = cadre[5] != null ? Long.valueOf(cadre[5].toString()):0L;
+												if(committeeVO.getMobileType() != null && committeeVO.getMobileType().equalsIgnoreCase("MP"))
+												{
+													List<IdNameVO> parliamentList = parliamentInfoMap.get(levelValue);
+													if(parliamentList != null && parliamentList.size()>0)
+													{
+														IdNameVO vo1 = parliamentList.get(0);
+														committeeVO.setConstituency(vo1.getName()+" Parliament");
+														
+														IdNameVO vo2 = parliamentList.get(1);
+														committeeVO.setAddress(vo2.getName());
+													}
+												}
+												else if(committeeVO.getMobileType() != null && committeeVO.getMobileType().equalsIgnoreCase("MLA"))
+												{
+													List<IdNameVO> assemblyList = assemblyInfoMap.get(levelValue);
+													if(assemblyList != null && assemblyList.size()>0)
+													{
+														IdNameVO vo1 = assemblyList.get(0);
+														committeeVO.setConstituency(vo1.getName()+" Assembly");
+														
+														IdNameVO vo2 = assemblyList.get(1);
+														committeeVO.setAddress(vo2.getName());
+													}
+												}
 												
-												endDate.setTime(new Date());
-	
-												int diffYear = endDate.get(Calendar.YEAR) - startDate.get(Calendar.YEAR);
-												committeeVO.setAge(String.valueOf(diffYear));
-											}
+												cadreCommitteeList.add(committeeVO);
 										}
-										
-										if(committeeVO.getAge() != null && committeeVO.getAge().toString().trim().length()==0)
-										{
-											committeeVO.setAge(cadre[12] != null ? cadre[12].toString().trim():"0");
-										}
-										
-										String electionType = cadre[20] != null ? cadre[20].toString().trim():""; // municipality/corporation/ghmc....
-										committeeVO.setLocalElectionBody(cadre[16] != null ? cadre[16].toString().trim()+" "+electionType:"");
-										
-										committeeVO.setPanchayat(cadre[15] != null ? cadre[15].toString().trim():"");
-										committeeVO.setTehsil(cadre[14] != null ? cadre[14].toString().trim()+" Mandal":"");
-										committeeVO.setConstituency(cadre[11] != null ? cadre[11].toString().trim():"");
-										committeeVO.setAddress(cadre[17] != null ? cadre[17].toString().trim():"");
-										
-										cadreCommitteeList.add(committeeVO);
-										
-										tdpCadreIdList.add(committeeVO.getTdpCadreId());
-									} 
-								}
-						 }
-						 
-						 if(finalCadreIDsList != null && finalCadreIDsList.size()>0)
-							{
-								setCurrentDesignation(cadreCommitteeList,finalCadreIDsList);
-								setCurrentElectrolInfo(cadreCommitteeList,finalCadreIDsList);
-							}
+									}
+									
+									finalCadreIDsList.clear();
+							 }
 							
-	
-							TdpCadreVO finalCadreVO = new TdpCadreVO();
-							finalCadreVO.setResponseCode("0");
-							finalCadreVO.setResponseStatus("success");
-							finalCadreVO.setTotalCount(totalCount);
-							finalCadreVO.setCadreComitteeVOList(cadreCommitteeList);
-							returnList.add(finalCadreVO);							
-					}					
-				
+						}
+						
+						if(maxCount < 100 && tdpCadresIdList != null && tdpCadresIdList.size()>0)
+						{
+							 if(tdpCadresIdList.size()>100)
+							 {
+								 int count =0;
+								 for( int i=startIndex ; i<tdpCadresIdList.size();i++)
+								 {
+									 try {
+										 finalCadreIDsList.add(tdpCadresIdList.get(i));
+										 count = count+1;
+										 maxCount = maxCount+1;
+										 if(maxIndex == count)
+										 {
+											 break;
+										 }
+									} catch (Exception e) {}								 
+								 }
+							 }
+							 else
+							 {
+								 finalCadreIDsList.addAll(tdpCadresIdList);
+							 }
+							 
+							 if(finalCadreIDsList != null && finalCadreIDsList.size()>0)
+							 {
+								 List<Object[]> tdpCadreIdDetails = tdpCadreDAO.getMobileNoByTdpCadreIdList(finalCadreIDsList,0,100);						 
+							 
+								 if(tdpCadreIdDetails != null && tdpCadreIdDetails.size()>0)
+								 {								
+										if(tdpCadreIdDetails != null && tdpCadreIdDetails.size()>0)
+										{
+											SimpleDateFormat format  = new SimpleDateFormat("yy-MM-dd");
+											for (Object[] cadre : tdpCadreIdDetails) 
+											{
+												CadreCommitteeVO committeeVO = new CadreCommitteeVO();
+			
+												committeeVO.setTdpCadreId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
+												committeeVO.setMemberShipCardId(cadre[4] != null ? cadre[4].toString().substring(4):"");
+												committeeVO.setCadreName(cadre[1] != null ? cadre[1].toString():"");
+												committeeVO.setRelativeName(cadre[2] != null ? cadre[2].toString():"");
+												committeeVO.setMobileNo(cadre[6] != null ? cadre[6].toString():"");
+												committeeVO.setCasteName(cadre[18] != null ? cadre[18].toString().trim():"");
+												committeeVO.setGender(cadre[3] != null ? cadre[3].toString():"");
+												committeeVO.setImageURL(cadre[7] != null ? cadre[7].toString():"");
+												committeeVO.setType("CadreCommittee");
+												if(cadre[9] != null)
+												{
+													committeeVO.setAge(cadre[9] != null ?cadre[9].toString().trim():"0");
+												}
+												else if((committeeVO.getAge() == null || committeeVO.getAge().toString().trim().length()<=0) && cadre[10]  != null)
+												{
+													String dateOfBirth = 	cadre[10] != null ? cadre[10].toString().substring(0,10):" "	;
+													if(dateOfBirth != null && dateOfBirth.trim().length()>0)
+													{
+														Calendar startDate = new GregorianCalendar();
+														Calendar endDate = new GregorianCalendar();
+														try {
+															startDate.setTime(format.parse(dateOfBirth.trim()));
+															
+														} catch (Exception e) {}
+														
+														
+														endDate.setTime(new Date());
+			
+														int diffYear = endDate.get(Calendar.YEAR) - startDate.get(Calendar.YEAR);
+														committeeVO.setAge(String.valueOf(diffYear));
+													}
+												}
+												
+												if(committeeVO.getAge() != null && committeeVO.getAge().toString().trim().length()==0)
+												{
+													committeeVO.setAge(cadre[12] != null ? cadre[12].toString().trim():"0");
+												}
+												
+												String electionType = cadre[20] != null ? cadre[20].toString().trim():""; // municipality/corporation/ghmc....
+												committeeVO.setLocalElectionBody(cadre[16] != null ? cadre[16].toString().trim()+" "+electionType:"");
+												
+												committeeVO.setPanchayat(cadre[15] != null ? cadre[15].toString().trim():"");
+												committeeVO.setTehsil(cadre[14] != null ? cadre[14].toString().trim()+" Mandal":"");
+												committeeVO.setConstituency(cadre[11] != null ? cadre[11].toString().trim():"");
+												committeeVO.setAddress(cadre[17] != null ? cadre[17].toString().trim():"");
+												
+												cadreCommitteeList.add(committeeVO);
+												
+												tdpCadreIdList.add(committeeVO.getTdpCadreId());
+											} 
+										}
+								 }
+							 }
+							 
+							 if(finalCadreIDsList != null && finalCadreIDsList.size()>0)
+								{
+									setCurrentDesignation(cadreCommitteeList,finalCadreIDsList);
+									setCurrentElectrolInfo(cadreCommitteeList,finalCadreIDsList);
+								}
+							 
+						}	
+						
+						List<TdpCadreVO> positionsVOList = null;
+						if(positonsCountMap != null && positonsCountMap.size()>0)
+						{
+							positionsVOList = new ArrayList<TdpCadreVO>();
+							for (String position : positonsCountMap.keySet()) {
+								TdpCadreVO positionVO = new TdpCadreVO();
+								positionVO.setCadreName(position);
+								positionVO.setTotalCount(positonsCountMap.get(position));
+								positionsVOList.add(positionVO);
+							}
+						}
+						
+						TdpCadreVO finalCadreVO = new TdpCadreVO();
+						finalCadreVO.setResponseCode("0");
+						finalCadreVO.setResponseStatus("success");
+						finalCadreVO.setTotalCount(totalCount);
+						finalCadreVO.setCadreComitteeVOList(cadreCommitteeList);
+						finalCadreVO.setCadreSearchList(positionsVOList);
+						returnList.add(finalCadreVO);	
+					}
 			}
 			
 		} catch (Exception e) {
@@ -11506,12 +12079,25 @@ return mandalList;
 		 return status;
 	 }
 	 
-	 public List<IdNameVO> getPartyEventGroups()
+	 public List<IdNameVO> getPartyEvents(Long userId)
 	 {
 		 List<IdNameVO> returnList = null;
 		 try {
 			
-			 
+			List<Object[]> eventsDtails = eventDAO.getEventsForUser(userId);
+			if(eventsDtails != null && eventsDtails.size()>0)
+			{
+				returnList = new ArrayList<IdNameVO>();
+				for (Object[] group : eventsDtails) {
+					IdNameVO vo = new IdNameVO();
+					
+					vo.setId(group[0] != null? Long.valueOf(group[0].toString().trim()):0L);
+					vo.setName(group[1] != null? group[1].toString().trim():"");
+					
+					returnList.add(vo);
+				}
+			}
+			
 		} catch (Exception e) {
 			LOG.error("Exception rised in getPartyEventGroups() while closing write operation",e);
 		}
@@ -11519,4 +12105,102 @@ return mandalList;
 		 return returnList;
 		 
 	 }
+	 
+	 
+	 public List<IdNameVO> getPartyEventGroups(Long userId)
+	 {
+		 List<IdNameVO> returnList = null;
+		 try {
+			
+			List<Object[]> groupDtails = eventGroupDAO.getEventGroups(userId);
+			if(groupDtails != null && groupDtails.size()>0)
+			{
+				returnList = new ArrayList<IdNameVO>();
+				for (Object[] group : groupDtails) {
+					IdNameVO vo = new IdNameVO();
+					
+					vo.setId(group[0] != null? Long.valueOf(group[0].toString().trim()):0L);
+					vo.setName(group[1] != null? group[1].toString().trim():"");
+					
+					returnList.add(vo);
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception rised in getPartyEventGroups() while closing write operation",e);
+		}
+		 
+		 return returnList;
+		 
+	 }
+	 
+	 public List<IdNameVO> getPublicRepresenttativesList()
+	 {
+		 List<IdNameVO> returnList = null;
+		 try {
+
+			 List<PublicRepresentativeType> list = publicRepresentativeTypeDAO.getAll();
+			 if(list != null && list.size()>0)
+				{
+					returnList = new ArrayList<IdNameVO>();
+					for (PublicRepresentativeType publicRepresentativeType : list) {
+						IdNameVO vo = new IdNameVO();
+						
+						vo.setId(publicRepresentativeType.getPublicRepresentativeTypeId());
+						vo.setName(publicRepresentativeType.getType());
+						
+						returnList.add(vo);
+					}
+				}
+		} catch (Exception e) {
+			LOG.error("Exception rised in getPartyEventGroups() while closing write operation",e);
+		}
+		 
+		 return returnList;
+		 
+	 }
+	 
+	 public String addToEventDetails(final Long userId,final Long eventId,final List<Long> publicRepresentativesIdList,final List<Long> tdpCadresIdList)
+	 {
+		 String status = null;
+		 try {
+			 status = (String) transactionTemplate.execute(new TransactionCallback() {
+				 public Object doInTransaction(TransactionStatus status) {
+					 DateUtilService dateService = new DateUtilService();
+					 
+					 if( publicRepresentativesIdList!= null && publicRepresentativesIdList.size()>0)
+						{
+							 for (Long publicRepresentativesId : publicRepresentativesIdList) 
+							 {
+								 	EventInvitee eventInvitee = new EventInvitee();
+								 	eventInvitee.setEventId(eventId);
+								 	eventInvitee.setPublicRepresentativeId(publicRepresentativesId);
+								 	eventInvitee.setCreatedBy(userId);
+								 	eventInvitee.setInsertedTime(dateService.getCurrentDateAndTime());
+								 	eventInviteeDAO.save(eventInvitee);
+								 	
+							 }
+						}
+						if(tdpCadresIdList != null && tdpCadresIdList.size()>0)
+						{
+							 for (Long tdpCadresId : tdpCadresIdList) 
+							 {
+								 	EventInvitee eventInvitee = new EventInvitee();
+								 	eventInvitee.setEventId(eventId);
+								 	eventInvitee.setTdpCadreId(tdpCadresId);
+								 	eventInvitee.setCreatedBy(userId);
+								 	eventInvitee.setInsertedTime(dateService.getCurrentDateAndTime());
+								 	eventInviteeDAO.save(eventInvitee);
+								 	
+							 }
+						}
+					 return "success";
+				 }});
+		} catch (Exception e) {
+			LOG.error("Exception rised in addToEventDetails() while closing write operation",e);
+		}
+		return status;
+		 	
+	 }
+	 
 }
