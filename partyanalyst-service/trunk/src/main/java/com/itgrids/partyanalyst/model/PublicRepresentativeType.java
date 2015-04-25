@@ -35,7 +35,7 @@ public class PublicRepresentativeType implements java.io.Serializable{
 		this.publicRepresentativeTypeId = publicRepresentativeTypeId;
 	}
 	
-	@Column(name="type")
+	@Column(name="position")
 	public String getType() {
 		return type;
 	}

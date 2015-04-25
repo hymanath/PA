@@ -1,7 +1,5 @@
 package com.itgrids.partyanalyst.model;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,6 +27,7 @@ public class PublicRepresentative implements java.io.Serializable{
 	private Long publicRepresentativeTypeId;
 	private Candidate candidate;
 	private Long candidateId;
+	private RepresentativeLevel representativeLevel;
 	private Long levelId;
 	private Long levelValue;
 	
@@ -82,7 +81,18 @@ public class PublicRepresentative implements java.io.Serializable{
 		this.candidateId = candidateId;
 	}
 	
-	@Column(name="level_id")
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "representative_level_id",insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public RepresentativeLevel getRepresentativeLevel() {
+		return representativeLevel;
+	}
+	public void setRepresentativeLevel(RepresentativeLevel representativeLevel) {
+		this.representativeLevel = representativeLevel;
+	}
+	
+	@Column(name="representative_level_id")
 	public Long getLevelId() {
 		return levelId;
 	}
@@ -90,7 +100,7 @@ public class PublicRepresentative implements java.io.Serializable{
 		this.levelId = levelId;
 	}
 	
-	@Column(name="level_value")
+	@Column(name="representative_level_value")
 	public Long getLevelValue() {
 		return levelValue;
 	}
