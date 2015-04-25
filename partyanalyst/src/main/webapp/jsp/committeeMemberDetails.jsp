@@ -39,6 +39,14 @@
     <script type="text/javascript" src="js/exportexcel.js"></script>
 
 <style>
+
+.selectedcandidatesCount li {
+    background: none repeat scroll 0 0 #e9e9e9;
+    margin: 5px;
+    padding: 5px 10px;
+	width:250px;
+}
+
 .paginate_disabled_previous,.paginate_enabled_previous,.paginate_enabled_next{
    padding-bottom: 10px;
 }
@@ -112,7 +120,7 @@
 				</div>
 				
 				
-				<div class="col-md-3" id="districtDiv">
+				<div class="col-md-3 locationsCls" id="districtDiv">
 					<section>
 							<label class="select-label">District</label>
 							<select class="cs-select cs-skin-slide" id="districtId">
@@ -122,7 +130,7 @@
 					</section>
 				</div>
 				
-				<div class="col-md-2" id="constituencyDiv">
+				<div class="col-md-2 locationsCls" id="constituencyDiv">
 					<section>
 							<label class="select-label">Assembly</label>
 							<select class="cs-select cs-skin-slide">
@@ -131,7 +139,7 @@
 							</select>
 					</section>
 				</div>
-				<div class="col-md-2" id="mandalDiv">
+				<div class="col-md-2 locationsCls" id="mandalDiv">
 					<section>
 							<label class="select-label">Mandal/Muncipality</label>
 							<select class="cs-select cs-skin-slide">
@@ -141,7 +149,7 @@
 							</select>
 					</section>
 				</div>
-				<div class="col-md-2" id="panchayatDiv">
+				<div class="col-md-2 locationsCls" id="panchayatDiv">
 					<section>
 							<label class="select-label">Panchayat</label>
 							<select class="cs-select cs-skin-slide">
@@ -155,12 +163,12 @@
 				
 					  
 					  <label class="checkbox-inline">
-						<input type="checkbox" id="cadreCommitteeId" checked="true" value="2" onclick="getDetails('cadreCommitteeId');"> Cadre Committee Management
-					  </label>
-					  <!-- <label class="checkbox-inline">
-						<input type="checkbox" id="publicRepresentativesId" value="1" onclick="getDetails('publicRepresentativesId');">  Public Repracentative
+						<input type="radio" id="cadreCommitteeId" name="searchBy" checked="true" value="2" onclick="getDetails('cadreCommitteeId');"> Cadre Committee 
 					  </label>
 					  <label class="checkbox-inline">
+						<input type="radio" id="publicRepresentativesId" name="searchBy" value="1" onclick="getDetails('publicRepresentativesId');">  Public Repracentative
+					  </label>
+					  <!-- <label class="checkbox-inline">
 						<input type="checkbox" id="groupId" value="3" onclick="getDetails('groupId');"> Existing Groups
 					  </label>
 					  -->
@@ -197,10 +205,7 @@
 				
 				<div class="col-md-4 m_top20" style="background-color:#FFF;display:none;" id="representativesDiv">
 					<div  id="committeeDiv">					
-					<label class="select-label" style="margin-left:0px "> From Public Representatives </label>
-					<select class="cs-select cs-skin-slide">
-						<option value="0" >ALL</option>
-					</select>
+					<label class="select-label" style="margin-left:0px "> From Public Representatives </label>					
 					</div>
 					
 					<div>
@@ -215,7 +220,7 @@
 					</ul>
 						</form>
 					<hr class="m_0" style="border-top:1px solid #01b6ad;">
-					<form class="me-select" id="rolesForm">
+					<form class="me-select" id="representativesForm">
 						
 					</form>
 				  </div>
@@ -252,6 +257,13 @@
 				<div class="col-md-8 m_top20" id="buildSelectionBlockDiv" style="display:none;">
 						<div class="border-box" >
 							<!--<div class="trashicon"> <a href="javascript:{deleteCommite();}"> <i class="glyphicon glyphicon-trash"></i></a></div>-->
+							
+							<div class="panel panel-default" id="stateLevelId" style="display:none;">
+								<div class="panel-heading"  style="background:#01B6AD;">
+									From Cadre Committee 
+								</div>								
+							</div>
+							
 							<div class="panel panel-default" id="stateLevelCommitteId" style="display:none;">
 								<div class="panel-heading">
 									State Level
@@ -290,7 +302,52 @@
 									<div class="panel-group" id="CVaccordion" role="tablist" aria-multiselectable="true" style="margin-top:-20px;">
 									</div>
 								</div>
-							</div>		
+							</div>	
+							<div class="panel panel-default" id="stateLevelHeadingId" style="display:none;">
+								<div class="panel-heading" style="background:#01B6AD;">
+									From Public Representatives
+								</div>								
+							</div>
+							
+							<div class="panel panel-default" id="stateLevelPRId" style="display:none;">
+								<div class="panel-heading">
+									State Level 
+								</div>
+								<div class="panel-body">
+									<div class="panel-group" id="PRSaccordion" role="tablist" aria-multiselectable="true" style="margin-top:-20px;">
+									</div>
+								</div>
+							</div>
+							
+							<div class="panel panel-default" id="districtLevelPRId" style="display:none;">
+								<div class="panel-heading">
+									District Level
+								</div>
+								<div class="panel-body">
+									<div class="panel-group" id="PRDaccordion" role="tablist" aria-multiselectable="true" style="margin-top:-20px;">
+									</div>
+								</div>
+							</div>
+							
+							<div class="panel panel-default" id="mandalLevelPRId" style="display:none;">
+								<div class="panel-heading">
+									Mandal/Municipality Level 
+								</div>
+								<div class="panel-body">
+									<div class="panel-group" id="PRMaccordion" role="tablist" aria-multiselectable="true" style="margin-top:-20px;">
+									</div>
+								</div>
+							</div>
+							
+							<div class="panel panel-default" id="villageLevelPRId" style="display:none;">
+								<div class="panel-heading">
+									Village/Ward Level 
+								</div>
+								<div class="panel-body">
+									<div class="panel-group" id="PRVaccordion" role="tablist" aria-multiselectable="true" style="margin-top:-20px;">
+									</div>
+								</div>
+							</div>	
 							<div class="panel panel-default" id="">
 								<div class="panel-heading">
 									<button onclick="getMembersDetails(0);" class="btn btn-success btn-xs"> Get Details </button>
@@ -376,7 +433,7 @@
 	
 	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
-	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
+	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination_1.css"/>
 	
 		<script>
 			(function() {
@@ -458,9 +515,7 @@
 		   gldistrictId=result[1].id;
 	   }	   
    }
-   console.log("result.length  :"+result.length);
-   console.log("glstateId  :"+glstateId);
-		  str+='<section>';
+			str+='<section>';
           str+='<label class="select-label">District</label>';
 		  str+=' <div class="cs-select cs-skin-slide distSlide" tabindex="0" onclick="selectChange(\'distSlide\')">';
 		  str+='<span class="cs-placeholder distName" value="0">ALL</span><div class="cs-options"><ul class="scrollbar distList">';
@@ -731,7 +786,7 @@
     		str+='<ul id="me-select-list" >';
 			for(var i in result)
 			{
-				str+='<li><input id="role'+result[i].id+'" name="'+result[i].name+'" type="checkbox" value="'+result[i].id+'" class="roleCheck" onclick="addCommitteeDivs(\'roleCheck\');"><label for="cb10"  style="padding:0px 10px 0px 45px;margin-top:10px;"><span class="roleName">'+result[i].name+'</span></li>';
+				str+='<li><input id="role'+result[i].id+'" name="'+result[i].name+'" type="checkbox" value="'+result[i].id+'" class="roleCheck" onclick="addCommitteeDivs(\'roleCheck\',\'CadreMembers\');"><label for="cb10"  style="padding:0px 10px 0px 45px;margin-top:10px;"><span class="roleName">'+result[i].name+'</span></li>';
 			}
            str+=' </ul>';
 		    $("#rolesForm").html(str);
@@ -756,9 +811,13 @@
 			});*/
 			function selectChange(divEle)
 			{
-			//alert('se')
+
 			$(".roleCheck").prop('checked', false);
 			$("#checkAll").prop('checked', false);
+			
+			$(".rolePRCheck").prop('checked', false);
+			$("#checkPRAll").prop('checked', false);
+			
 			$(".scrollbar").scrollator({
 					zIndex: '10000',
 					});
@@ -767,7 +826,7 @@
 			else
 				$("."+divEle).addClass("cs-active");
 		
-		 $(".stateEle").click(function(e)
+			$(".stateEle").click(function(e)
 			 {			
 				$(".stateName").html($(this).text());
 				$(".stateName").attr("value",$(this).attr("data-value"));
@@ -775,7 +834,47 @@
 				$(".stateEle").removeClass('cs-selected');
 				$(this).addClass('cs-selected');
 				
+				var levelId = $(".stateName").attr('value');
+				//8888
+				//$('.locationsCls').hide();
+			/*	if(levelId == 10)
+				{
+					clearData('constituencyDiv');
+					clearData('mandalDiv');
+					clearData('panchayatDiv');
+				}
+				else if(levelId == 11)
+				{
+					$('#districtDiv').show();
+					
+					clearData('constituencyDiv');
+					clearData('mandalDiv');
+					clearData('panchayatDiv');
+				}
+				else if(levelId == 5)
+				{
+					$('#districtDiv').show();
+					$('#constituencyDiv').show();
+					$('#mandalDiv').show();
+					
+					clearData('constituencyDiv');
+					clearData('mandalDiv');
+					clearData('panchayatDiv');
+				}
+				else if(levelId == 6)
+				{
+					$('#districtDiv').show();
+					$('#constituencyDiv').show();
+					$('#mandalDiv').show();
+					$('#panchayatDiv').show();
+					
+					clearData('constituencyDiv');
+					clearData('mandalDiv');
+					clearData('panchayatDiv');
+				}
+				*/
 			  });
+			   
 			 $(".distEle").click(function(e)
 			 {	
 
@@ -829,17 +928,32 @@
 			}
 			$(document).ready(function()
 			{
-			
+				//$('.locationsCls').hide();
 				$("#checkAll").click(function()
 				{
 					if($(this).is(":checked"))
 					{
 						$(".roleCheck").prop('checked', true);
 						$("#checkText").html("UnSelect All");
-							addCommitteeDivs('roleCheck');
+							addCommitteeDivs('roleCheck','CadreMembers');
 					}
 					else{
 						$(".roleCheck").prop('checked', false);
+						$("#checkText").html("Select All");
+					}
+				});
+				
+				$("#checkPRAll").click(function()
+				{
+					
+					if($(this).is(":checked"))
+					{
+						$(".rolePRCheck").prop('checked', true);
+						$("#checkText").html("UnSelect All");
+							addCommitteeDivs('rolePRCheck','publicRepresentatives');
+					}
+					else{
+						$(".rolePRCheck").prop('checked', false);
 						$("#checkText").html("Select All");
 					}
 				});
@@ -855,7 +969,7 @@
 			var totalCommiteCnt = 0;
 			var roleArr = new Array();
 			var selCommiteeArr = new Array();
-			function addCommitteeDivs(className)
+			function addCommitteeDivs(className,memberType)
 			{
 				var levelId = $(".stateName").attr('value');
 				var committeeLevl = '';
@@ -866,32 +980,79 @@
 				$('#buildSelectionBlockDiv').show();
 				if(levelId == 10)
 				{
-					divId='CSaccordion';
-					committeeLevl="CS";
+					if(memberType =='CadreMembers')
+					{
+						divId='CSaccordion';
+						$('#stateLevelCommitteId').show();
+						$('#buildSelectionBlockDiv').show();
+						$('#stateLevelId').show();
+					}
+					else if(memberType == 'publicRepresentatives')
+					{
+						divId='PRSaccordion';
+						$('#stateLevelPRId').show();
+						$('#buildSelectionPRBlockDiv').show();
+						$('#stateLevelHeadingId').show();
+					}
 					
 					levelValue = 0;
 					locationLevel = "State Level";
-					$('#stateLevelCommitteId').show();
+					
 				}
 				else if(levelId == 11)
 				{
-					divId='CDaccordion';
-					committeeLevl="CD";					
+					if(memberType =='CadreMembers')
+					{
+						divId='CDaccordion';
+						$('#districtLevelCommitteId').show();	
+						$('#buildSelectionBlockDiv').show();
+						$('#stateLevelId').show();
+					}
+					else if(memberType == 'publicRepresentatives')
+					{
+						divId='PRDaccordion';
+						$('#districtLevelPRId').show();	
+						$('#buildSelectionPRBlockDiv').show();
+						$('#stateLevelHeadingId').show();
+					}					
 					levelValue = $(".distName").attr("value");	
-					$('#districtLevelCommitteId').show();					
+									
 				}
 				else if(levelId == 5)
 				{
-					divId='CMaccordion';
-					committeeLevl="CM";					
+					if(memberType =='CadreMembers')
+					{
+						divId='CMaccordion';
+						$('#mandalLevelCommitteId').show();	
+						$('#buildSelectionBlockDiv').show();
+						$('#stateLevelId').show();
+					}
+					else if(memberType == 'publicRepresentatives')
+					{
+						divId='PRMaccordion';
+						$('#mandalLevelPRId').show();
+						$('#buildSelectionPRBlockDiv').show();	
+						$('#stateLevelHeadingId').show();						
+					}				
 					levelValue = $(".mandalName").attr("value");
-					$('#mandalLevelCommitteId').show();	
+					
 				}
 				else if(levelId == 6)
 				{
-					divId='CVaccordion';
-					committeeLevl="CV";
-					$('#villageLevelCommitteId').show();	
+					if(memberType =='CadreMembers')
+					{
+						divId='CVaccordion';
+						$('#villageLevelCommitteId').show();
+						$('#buildSelectionBlockDiv').show();
+						$('#stateLevelId').show();
+					}
+					else if(memberType == 'publicRepresentatives')
+					{
+						divId='PRVaccordion';
+						$('#villageLevelPRId').show();
+						$('#buildSelectionPRBlockDiv').show();
+						$('#stateLevelHeadingId').show();
+					}	
 				}	
 		
 			var districtId = $(".distName").attr("value");		
@@ -920,10 +1081,6 @@
 			{
 				levelValue = 0;
 			}
-		
-			
-			
-			
 			
 			if( panchayatId != 0)
 			{
@@ -954,74 +1111,210 @@
 					locationLevel = " State Level";
 				}
 			}
-		//console.log(locationLevel);
 		
 			$(".toggleCls").removeClass("in");
 			
-			var commite = $(".committeeName").html();
-			var commiteId = $(".committeeName").attr("value");
-			var selCommiteeId = commiteId;
-			commiteId = levelId+""+commiteId+""+districtId+""+constituencyId+""+mandalId+""+panchayatId+""+levelValue;
 			
-			$("#"+commiteId+"Div").remove();
-		    
-			var str ='';
-			
-			str+='<div class="panel panel-default border_0 commiteHeadDiv" id="'+commiteId+'Div">';
-			
-            str+='<div class="panel-heading collapse-head" role="tab" id="headingComm'+commiteId+'">';
-            str+='<h4 class="panel-title">';
-            str+='<form class="me-select display-style">';//collapse-select
-            str+='<ul id="me-select-list">';
-            str+='<li>';//<input id="cb11" name="cb11" type="checkbox" class="addedcommite"/>';
-            str+='<span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapseComm'+commiteId+'" aria-controls="collapseComm'+commiteId+'" class="col-drop-head" onClick="toggleDiv(\'collapseComm'+commiteId+'\')">'+commite+' ('+locationLevel+') <a href="javascript:{deleteCommite(\''+commiteId+'Div\');}" title="Click here to Remove Committee Details."> <i class="glyphicon glyphicon-trash"></i></a></a></span></li>';
-           str+=' </ul>';
-          str+=' </form>';
-         str+='<a data-toggle="collapse" data-parent="#accordion" href="#collapseComm'+commiteId+'" aria-expanded="true" aria-controls="collapseComm'+commiteId+'" onClick="toggleDiv(\'collapseComm'+commiteId+'\')">';
-         str+='<i class="glyphicon glyphicon-chevron-down pull-right display-style col-drop-color"></i>';
-          str+='</a>';
-        str+='</h4>';  
-      str+='</div>';
-      str+='<div id="collapseComm'+commiteId+'" class="panel-collapse collapse toggleCls in" role="tabpanel" aria-labelledby="headingComm'+commiteId+'" >';
-      str+='<div class="panel-body">';
-      str+='<form class="me-select display-style">';
-      str+='<ul id="me-select-list">';
-	  
-	  var commRoleIdsArr = new Array();
-	  $("."+className).each(function()
+			if(memberType =='CadreMembers')
 			{
-			 if($(this).is(":checked")) 
-			 {
-				  var roleId = $(this).val();
-				  var role = $(this).attr("name");
-				  str+=' <li><input  class="checkedCls" name="cb11" checked="true" type="checkbox" id="comm'+commiteId+'role'+roleId+'" committeeId = "'+selCommiteeId+'" value="'+roleId+'" locationLevelId="'+levelId+'" districtId="'+districtId+'" constiId="'+constituencyId+'" mandalId="'+mandalId+'" villageId ="'+panchayatId+'">';
-				  str+='<label for="cb12" class="m_0 collapse-select"><span class="col-drop-select-name">'+role+'</label></li>';
-				  
-				  commRoleIdsArr.push(roleId);
-			 }
-	   });
+					var commite = $(".committeeName").html();
+					var commiteId = $(".committeeName").attr("value");
+					var selCommiteeId = commiteId;
+					commiteId = levelId+""+commiteId+""+districtId+""+constituencyId+""+mandalId+""+panchayatId+""+levelValue;
+					
+					$("#"+commiteId+"Div").remove();
+					
+					var str ='';
+					
+					str+='<div class="panel panel-default border_0 commiteHeadDiv" id="'+commiteId+'Div">';
+					
+					str+='<div class="panel-heading collapse-head" role="tab" id="headingComm'+commiteId+'">';
+					str+='<h4 class="panel-title">';
+					str+='<form class="me-select display-style">';//collapse-select
+					str+='<ul id="me-select-list">';
+					str+='<li>';//<input id="cb11" name="cb11" type="checkbox" class="addedcommite"/>';
+					str+='<span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapseComm'+commiteId+'" aria-controls="collapseComm'+commiteId+'" class="col-drop-head" onClick="toggleDiv(\'collapseComm'+commiteId+'\')">'+commite+' ('+locationLevel+') <a href="javascript:{deleteCommite(\''+commiteId+'Div\');}" title="Click here to Remove Committee Details."> <i class="glyphicon glyphicon-trash"></i></a></a></span></li>';
+					str+=' </ul>';
+					str+=' </form>';
+					str+='<a data-toggle="collapse" data-parent="#accordion" href="#collapseComm'+commiteId+'" aria-expanded="true" aria-controls="collapseComm'+commiteId+'" onClick="toggleDiv(\'collapseComm'+commiteId+'\')">';
+					str+='<i class="glyphicon glyphicon-chevron-down pull-right display-style col-drop-color"></i>';
+				  str+='</a>';
+					str+='</h4>';  
+				  str+='</div>';
+				  str+='<div id="collapseComm'+commiteId+'" class="panel-collapse collapse toggleCls in" role="tabpanel" aria-labelledby="headingComm'+commiteId+'" >';
+				  str+='<div class="panel-body">';
+				  str+='<form class="me-select display-style">';
+				  str+='<ul id="me-select-list">';
+			  
+			   var commRoleIdsArr = new Array();
+			  $("."+className).each(function()
+					{
+					 if($(this).is(":checked")) 
+					 {
+						  var roleId = $(this).val();
+						  var role = $(this).attr("name");
+						  str+=' <li><input  class="checkedCls" name="cb11" checked="true" type="checkbox" id="comm'+commiteId+'role'+roleId+'" committeeId = "'+selCommiteeId+'" value="'+roleId+'" locationLevelId="'+levelId+'" districtId="'+districtId+'" constiId="'+constituencyId+'" mandalId="'+mandalId+'" villageId ="'+panchayatId+'">';
+						  str+='<label for="cb12" class="m_0 collapse-select"><span class="col-drop-select-name">'+role+'</label></li>';
+						  
+						    commRoleIdsArr.push(roleId);
+					 }
+			   });	   
+			 
+			 
+			var isExist = false;
+			if(selCommiteeArr.length>0)
+			{				
+				for(var k in selCommiteeArr)
+				{
+					if(selCommiteeArr[k].fromType == 'FromCommittee')
+					{
+						if(selCommiteeArr[k].commiteeId == selCommiteeId)
+						{
+							if(selCommiteeArr[k].levelId == levelId)
+							{
+								if(selCommiteeArr[k].levelValue == levelValue)
+								{								
+									isExist = true;
+									selCommiteeArr[k].rolesArr = commRoleIdsArr;
+								}								
+							}
+						}
+						
+						
+					}
+					else
+					{
+						isExist = true;
+					}						
+				}
+			}
+			
+			
+			if(!isExist)
+			{
+				var commteArrObj =
+				   {
+					   fromType:"FromCommittee",
+					   commiteeId:selCommiteeId,
+					   rolesArr : commRoleIdsArr,
+					   levelId:levelId,
+					   levelValue:levelValue
+				   };
+			   selCommiteeArr.push(commteArrObj);
+			}
+			
 	   
-	   
-	   var commteArrObj =
-	   {
-		   commiteeId:selCommiteeId,
-		   rolesArr : commRoleIdsArr,
-		   levelId:levelId,
-		   levelValue:levelValue
-	   };
-	   
-	   selCommiteeArr.push(commteArrObj);
-	   
-	   str+='</ul></form>';
-      str+='</div>';
-     str+=' </div>';
-	 
-   str+='</div>';
-  $("#"+divId+"").append(str);
-  
-  $("#candidateDetailsDiv").show();
-  
-  console.log(selCommiteeArr);
+				   str+='</ul></form>';
+				  str+='</div>';
+				 str+=' </div>';
+				 
+			   str+='</div>';
+			  $("#"+divId+"").append(str);
+			  
+			  $("#candidateDetailsDiv").show();
+			  
+			 
+			}
+			else
+			{
+				
+					var commite = "PR";
+					var commiteId = "PR";
+					var selCommiteeId = "PR";
+					commiteId = levelId+""+commiteId+""+districtId+""+constituencyId+""+mandalId+""+panchayatId+""+levelValue;
+					
+					$("#"+commiteId+"Div").remove();
+					
+					var str ='';
+					
+					str+='<div class="panel panel-default border_0 commiteHeadDiv" id="'+commiteId+'Div">';
+					
+					str+='<div class="panel-heading collapse-head" role="tab" id="headingComm'+commiteId+'">';
+					str+='<h4 class="panel-title">';
+					str+='<form class="me-select display-style">';//collapse-select click 
+					str+='<ul id="me-select-list">';
+					str+='<li>';//<input id="cb11" name="cb11" type="checkbox" class="addedcommite"/>';
+					str+='<span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapseComm'+commiteId+'" aria-controls="collapseComm'+commiteId+'" class="col-drop-head" onClick="toggleDiv(\'collapseComm'+commiteId+'\')">'+locationLevel+' <a href="javascript:{deleteCommite(\''+commiteId+'Div\');}" title="Click here to Remove Committee Details."> <i class="glyphicon glyphicon-trash"></i></a></a></span></li>';
+					str+=' </ul>';
+					str+=' </form>';
+					str+='<a data-toggle="collapse" data-parent="#accordion" href="#collapseComm'+commiteId+'" aria-expanded="true" aria-controls="collapseComm'+commiteId+'" onClick="toggleDiv(\'collapseComm'+commiteId+'\')">';
+					str+='<i class="glyphicon glyphicon-chevron-down pull-right display-style col-drop-color"></i>';
+				  str+='</a>';
+					str+='</h4>';  
+				  str+='</div>';
+				  str+='<div id="collapseComm'+commiteId+'" class="panel-collapse collapse toggleCls in" role="tabpanel" aria-labelledby="headingComm'+commiteId+'" >';
+				  str+='<div class="panel-body">';
+				  str+='<form class="me-select display-style">';
+				  str+='<ul id="me-select-list">';
+			  
+			   var commRoleIdsArr = new Array();
+			  $("."+className).each(function()
+					{
+					 if($(this).is(":checked")) 
+					 {
+						  var roleId = $(this).val();
+						  var role = $(this).attr("name");
+						  str+=' <li><input  class="checkedCls" name="cb11" checked="true" type="checkbox" id="comm'+commiteId+'role'+roleId+'" committeeId = "'+selCommiteeId+'" value="'+roleId+'" locationLevelId="'+levelId+'" districtId="'+districtId+'" constiId="'+constituencyId+'" mandalId="'+mandalId+'" villageId ="'+panchayatId+'">';
+						  str+='<label for="cb12" class="m_0 collapse-select"><span class="col-drop-select-name">'+role+'</label></li>';
+						  
+						   commRoleIdsArr.push(roleId);
+					 }
+			   });	   
+			 
+				   str+='</ul></form>';
+				  str+='</div>';
+				 str+=' </div>';
+				 
+			   str+='</div>';
+			  $("#"+divId+"").append(str);
+			  
+			  $("#candidateDetailsDiv").show();
+			
+			var isExist = false;
+			if(selCommiteeArr.length>0)
+			{
+				for(var k in selCommiteeArr)
+				{
+					if(typeof selCommiteeArr[k] != 'undefined' && selCommiteeArr[k].fromType == 'FromPublicRepresentative')
+					{
+						if(selCommiteeArr[k].levelId == levelId)
+						{
+							if(selCommiteeArr[k].levelValue == levelValue)
+							{
+								if(selCommiteeArr[k].commiteeId == selCommiteeId)
+								{
+									isExist = true;
+									selCommiteeArr[k].rolesArr = commRoleIdsArr;
+								}
+								
+							}
+						}
+						else
+						{
+							isExist = true;
+						}
+						
+					}
+				}
+			}
+			
+			
+			if(!isExist)
+			{
+			 var commteArrObj =
+			   {
+				   fromType:"FromPublicRepresentative",
+				   commiteeId:selCommiteeId,
+				   rolesArr : commRoleIdsArr,
+				   levelId:levelId,
+				   levelValue:levelValue
+			   };
+			   selCommiteeArr.push(commteArrObj);
+			}
+			
+			
+			}
+
   //getMembersDetails(0);
 }
 	
@@ -1116,8 +1409,7 @@
 				}
 		});
 	
-		console.log("submitArr  :"+submitArr.length);
-		console.log(submitArr);
+		
 	}
 	
 	function createGroup(index)
@@ -1203,6 +1495,11 @@
 				var mandalId = $(this).attr('mandalid');
 				var panchayatId = $(this).attr('villageid');	
 				
+				var roleId = $(this).attr('value');
+				var committeeId = $(this).attr('committeeid');
+				var isCommitteeExist = true;
+				var pushArr = stateArr;
+				
 				var finalDistrictId = 0;
 				var finalConstiteuncyId = 0;
 				var finalMandalId = 0;
@@ -1246,12 +1543,7 @@
 					levelValue = districtId;
 					selectedLevel ="district";
 				}
-				
-				var roleId = $(this).attr('value');
-				var committeeId = $(this).attr('committeeid');
-				var isCommitteeExist = true;
-				var pushArr = stateArr;
-				
+								
 				if(levelId == 10)
 				{
 					pushArr = stateArr;					
@@ -1269,6 +1561,11 @@
 					pushArr = villageArr;
 				}	
 				
+				var searchTypeStr ='CadreCommittee';
+				if(committeeId == 'PR')
+				{
+					searchTypeStr ='PublicRepresentatives';
+				}
 				if(pushArr.length>0)
 				{
 					//debugger;
@@ -1294,6 +1591,7 @@
 					var rolesIdsArr = new Array();
 						rolesIdsArr.push(roleId);
 						var committeeObj = {
+						searchType:searchTypeStr,
 						committeeId : committeeId,
 						levelId:levelId,
 						districtId:finalDistrictId,
@@ -1352,6 +1650,9 @@
 		{
 			searchType:"getDetails",
 			stateId:glstateId,
+			actionType:"none",
+			stateStr:"AP",
+			eventId:0,
 			groupName:"",
 			eventId :0,
 			submitArr:submitArr,
@@ -1360,6 +1661,9 @@
 		};
 		var divId = 'buildSearchDetailsStateId';
 		$('#'+divId+'').html('');
+		if(startIndex == 0)
+			$('#countDiv').html('');
+		
 		$('html, body').animate({scrollTop:$('#summaryAjax').offset().top}, 'slow');
 		$.ajax({
           type:'GET',
@@ -1368,9 +1672,9 @@
 		  data: {task:JSON.stringify(jsObj)}
 		   }).done(function(result){
 			   $('#summaryAjax').hide();
-			   if(result != null && result[0].cadreComitteeVOList != null && result[0].cadreComitteeVOList.length>0)
+			   if(result != null && result.length>0 && result[0].cadreComitteeVOList != null && result[0].cadreComitteeVOList.length>0)
 			   {
-				  buildSearchDetails(result[0].cadreComitteeVOList,divId,'',jsObj,result[0].totalCount);
+				  buildSearchDetails(result[0].cadreComitteeVOList,result[0].cadreSearchList,divId,'',jsObj,result[0].totalCount);
 			   }
 			else{
 				$('#'+divId+'').html('<span style="font-weight:bold;text-align:center;">No Data Available...</span>');
@@ -1378,13 +1682,15 @@
 		   });
 	}
 	var indexValue=0;
-	function buildSearchDetails(result,divId,locationLevel,jsObj,totalCnt)
+	//9999
+	function buildSearchDetails(result,countResult,divId,locationLevel,jsObj,totalCnt)
 	{		
 
 		var str ='';
 		$(".paginationDivId").show();
 		$("#candidateDetailsDiv").show();
 		var count=0;
+		//console.log("result.length  :"+result.length);
 		if(result != null && result.length>0)
 		{				
 				str+='<div class="panel-heading">  GROUP MEMBERS DETAILS ';
@@ -1419,22 +1725,31 @@
 				str+='<tbody>';
 				
 				for(var i in result)
-				{
-					if(result[i].committeeName != null && result[i].committeePosition != null)
-					{						
-						count = count+1;
-						str+='<tr>';
-							str+='<td> <input type="checkbox" checked="true" value="'+result[i].mobileNo+'" class="contacts'+locationLevel+'Cls" id="contacts'+locationLevel+'Id'+i+'" onclick="checkCheckBoxes(\'contacts'+locationLevel+'\','+i+',\'allContacts'+locationLevel+'Cls\');"/> </td>';
-							str+='<td> '+result[i].address+' </td>';
-							str+='<td> '+result[i].constituency+' </td>';
+				{											
+					str+='<tr>';
+						str+='<td> <input type="checkbox" checked="true" value="'+result[i].mobileNo+'" class="contacts'+locationLevel+'Cls" id="contacts'+locationLevel+'Id'+i+'" onclick="checkCheckBoxes(\'contacts'+locationLevel+'\','+i+',\'allContacts'+locationLevel+'Cls\');"/> </td>';
+						str+='<td> '+result[i].address+' </td>';
+						str+='<td> '+result[i].constituency+' </td>';
+						if(result[i].tehsil != null)
 							str+='<td> '+result[i].tehsil+' </td>';
-							str+='<td> '+result[i].cadreName+' </td>';
+						else
+							str+='<td style="text-align:center;"> - </td>';
+						
+						str+='<td> '+result[i].cadreName+' </td>';
+						if(result[i].committeeName != null)
 							str+='<td> '+result[i].committeeName+' ('+result[i].electionType+')</td>';
-							str+='<td> '+result[i].committeePosition+' </td>';
-							str+='<td> '+result[i].mobileNo+' </td>';
-						str+='</tr>';
-					}
-					
+						else 
+							str+='<td style="text-align:center;"> - </td>';
+						if(result[i].committeePosition != null)
+							str+='<td> '+result[i].committeePosition+'</td>';
+						else if(result[i].mobileType != null)
+							str+='<td> '+result[i].mobileType+'</td>';
+						else 
+							str+='<td style="text-align:center;"> - </td>';
+						
+						
+						str+='<td> '+result[i].mobileNo+' </td>';
+					str+='</tr>';					
 				}
 				
 				str+='</tbody>';
@@ -1463,16 +1778,48 @@
 		
 		$('html, body').animate({scrollTop:$('#'+divId+'').offset().top}, 'slow');
 		
-		str ='';
-		str+='<div class="box-sub text-center">';
-			str+='<span class="text-capital m_0 text-center text-head"> You are selected committee with members</span>';
-			str+='<div class="text-center">';
-			//str+='<span class="display-style text-italic box-subhead">Total Selected Committees:<span class="count-color">1202</span></span>';
-			str+='<span class="display-style text-italic box-subhead">Selected Committees Members:<span class="count-color">'+count+'</span></span>';
-			str+='</div>';
-			str+='</div>';
+		if(countResult != null && countResult.length>0)
+			{
+				for(var j in countResult)
+				{
+					count = count+countResult[j].totalCount;
+				}
+			}
+		if(jsObj.startIndex == 0)	
+		{
+			str ='';
+			str+='<div class="box-sub text-center">';
+				str+='<span class="text-capital m_0 text-center text-head"> You are selected committee with members</span>';
+				str+='<div class="text-center">';
+				//str+='<span class="display-style text-italic box-subhead">Total Selected Committees:<span class="count-color">1202</span></span>';
+				str+='<span class="display-style text-italic box-subhead">Selected Committees Members:<span class="count-color">'+count+'</span></span>';
+				str+='</div>';
+				if(countResult != null && countResult.length>0)
+				{
+					str+='<div class="text-center">';
+					str+='<ul class="list-inline selectedcandidatesCount">';
+					for(var j in countResult)
+					{					
+						if(countResult[j].totalCount != 0){
+							if(j>0 && j/4 == 0)
+							{
+								str+='<li  style="margin-left:-235px;"> <span style="font-weight:bold">'+countResult[j].cadreName+' </span> : '+countResult[j].totalCount+'</li>';
+							}
+							else
+							{
+								str+='<li> <span style="font-weight:bold">'+countResult[j].cadreName+' </span> : '+countResult[j].totalCount+'</li>';
+							}
+						}
+							
+					}
+					str+='</ul>';
+					str+='</div>';
+				}
+				str+='</div>';
+			
+			$('#countDiv').html(str);
+		}
 		
-		$('#countDiv').html(str);
 		indexValue =indexValue+1;
 	}
 	
@@ -1613,38 +1960,21 @@
 	
 	function getDetails(divId)
 	{
-			if(divId =='publicRepresentativesId'){
-				if($('#'+divId+'').is(":checked"))
-				{
-					$('#representativesDiv').show();
-				}
-				else
-				{
-					$('#representativesDiv').hide();
-				}
-			}
-			else if(divId =='cadreCommitteeId')
-			{
-				if($('#'+divId+'').is(":checked"))
-				{
-					$('#cadreCommitteeDiv').show();
-				}
-				else
-				{
-					$('#cadreCommitteeDiv').hide();
-				}
-			}
-			else if(divId == 'groupId')
-			{
-					if($('#'+divId+'').is(":checked"))
-					{
-						$('#existingGroupsDiv').show();
-					}
-					else
-					{
-						$('#existingGroupsDiv').hide();
-					}
-			}
+		$('#representativesDiv').hide();
+		$('#cadreCommitteeDiv').hide();
+		$('#existingGroupsDiv').hide();
+		if(divId =='publicRepresentativesId')
+		{
+			$('#representativesDiv').show();
+		}
+		else if(divId =='cadreCommitteeId')
+		{
+			$('#cadreCommitteeDiv').show();
+		}
+		else if(divId == 'groupId')
+		{
+			$('#existingGroupsDiv').show();
+		}
 	}
 	
 	function buildLevel()
@@ -1698,12 +2028,77 @@
 		  }
 		
 	}
+	
+	function getPublicRepresentsDetails(){
+    	
+    	var jsObj={
+    			task:"publicRepresentatives"
+    		}
+    		$.ajax({
+    			  type:'GET',
+    			  url: 'getPublicRepresentativeTypes.action',
+    			  data: {task:JSON.stringify(jsObj)}
+    	   }).done(function(result){
+		   var str ='';
+    		str+='<ul id="me-select-list" >';
+			for(var i in result)
+			{ //checkPRText
+				str+='<li><input id="role'+result[i].id+'" name="'+result[i].name+'" type="checkbox" value="'+result[i].id+'" class="rolePRCheck" onclick="addCommitteeDivs(\'rolePRCheck\',\'publicRepresentatives\');"><label for="cb10"  style="padding:0px 10px 0px 45px;margin-top:10px;"><span class="roleName">'+result[i].name+'</span></li>';
+			}
+           str+=' </ul>';
+		    $("#representativesForm").html(str);
+    	   });	
+		  
+    	
+      }
+	  
+	   function eventsGroups(){
+    	
+    	var jsObj={
+    			task:"eventGroups"
+    		}
+    		$.ajax({
+    			  type:'GET',
+    			  url: 'getPartyEventGroups.action',
+    			  data: {task:JSON.stringify(jsObj)}
+    	   }).done(function(result){
+		   var str ='';
+    		str+='<ul id="me-select-list" >';
+			for(var i in result)
+			{
+				str+='<li><input id="role'+result[i].id+'" name="'+result[i].name+'" type="checkbox" value="'+result[i].id+'" class="roleCheck" onclick="addCommitteeDivs(\'roleCheck\');"><label for="cb10"  style="padding:0px 10px 0px 45px;margin-top:10px;"><span class="roleName">'+result[i].name+'</span></li>';
+			}
+           str+=' </ul>';
+		    $("#groupsForm").html(str);
+    	   });	
+		  
+    	
+      }
+	  
+	  
+	  function clearData(divId)
+	  {
+		  /*
+		   var str='';
+		   str+='<section>';
+			  //str+='<label class="select-label">Assembly</label>';
+			  str+=' <div class="cs-select cs-skin-slide '+location+'Slide" tabindex="0" onclick="selectChange(\''+location+'Slide\')">';
+			  str+='<span class="cs-placeholder '+location+'Name"" value="0">ALL</span><div class="cs-options"><ul class="scrollbar '+location+'List">';
+			  str+='<li data-value="0" data-option="" class="'+location+'Ele"><span>ALL</span></li>';
+			  str+='</ul>';
+			 str+='</section>';
+			$("#"+divId+"").html(str);*/
+	  }
 </script>
 <script>
 getDistricts();
 getCommittees();
 getCommitteeRoles();
 buildLevel();
+
+eventsGroups();
+getPublicRepresentsDetails();
+
 //getMembersDetails();
 </script>
 
