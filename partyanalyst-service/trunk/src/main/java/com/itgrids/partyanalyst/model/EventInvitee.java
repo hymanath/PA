@@ -34,6 +34,8 @@ public class EventInvitee implements java.io.Serializable{
 	private PublicRepresentative publicRepresentative;
 	private Long publicRepresentativeId;
 	private User user;
+	private Event event;
+	private Long eventId;
 	private Long createdBy;
 	private Date insertedTime;
 	
@@ -110,6 +112,25 @@ public class EventInvitee implements java.io.Serializable{
 	}
 	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "event_id",insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Event getEvent() {
+		return event;
+	}
+	public void setEvent(Event event) {
+		this.event = event;
+	}
+	
+	@Column(name="event_id")
+	public Long getEventId() {
+		return eventId;
+	}
+	public void setEventId(Long eventId) {
+		this.eventId = eventId;
 	}
 
 }
