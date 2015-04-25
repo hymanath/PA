@@ -106,7 +106,7 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 	public List findParliamentConstituenciesByDistrictId(Long districtId,Long year)
 	{
 		Object[] params = {districtId, year};
-		return getHibernateTemplate().find("select distinct model.delimitationConstituency.constituency.constituencyId, model.delimitationConstituency.constituency.name from DelimitationConstituencyAssemblyDetails model " +
+		return getHibernateTemplate().find("select distinct model.delimitationConstituency.constituency.constituencyId, model.delimitationConstituency.constituency.name,model.constituency.district.districtName from DelimitationConstituencyAssemblyDetails model " +
 				"where model.constituency.district.districtId = ? and model.delimitationConstituency.year = ?  order by model.delimitationConstituency.constituency.name "  ,params);
 	}
 	public List<Object[]> findDistrictsOfParliamentConstituencies(Long parliamentId){
@@ -256,7 +256,7 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 			str.append(" and model.constituency.district.districtId between 1 and 10 order by model.delimitationConstituency.constituency.name");
 			
 		}
-		if(region.equalsIgnoreCase("All"))
+		else if(region.equalsIgnoreCase("All"))
 		{
 			str.append(" and model.constituency.district.districtId between 1 and 23 order by model.delimitationConstituency.constituency.name");
 		}
@@ -448,5 +448,33 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 		return query.list();
 		}
 		
+	
+	@SuppressWarnings("unchecked")
+	public List getLatestParliamentByStateIdForregion(String electionType , Long stateID,String region)
+	{
+		
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct model.delimitationConstituency.constituency.constituencyId , model.delimitationConstituency.constituency.name,model.constituency.district.districtName from DelimitationConstituencyAssemblyDetails model" +
+				" where model.delimitationConstituency.constituency.electionScope.electionType.electionType = :electionType" +
+				" and model.delimitationConstituency.constituency.state.stateId = :stateID and model.delimitationConstituency.constituency.deformDate is null and model.delimitationConstituency.year = 2009");
+		if(region.equalsIgnoreCase("Telangana"))
+		{
+			str.append(" and model.constituency.district.districtId between 1 and 10 order by model.delimitationConstituency.constituency.name");
+			
+		}
+		else if(region.equalsIgnoreCase("All"))
+		{
+			str.append(" and model.constituency.district.districtId between 1 and 23 order by model.delimitationConstituency.constituency.name");
+		}
+		else
+		{
+			str.append(" and model.constituency.district.districtId between 11 and 23 order by model.delimitationConstituency.constituency.name");	
+		}
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("stateID", stateID);
+		query.setParameter("electionType", electionType);
+		return query.list();
+		
+	}
 	
 }

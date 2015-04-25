@@ -770,11 +770,16 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 				" where model.electionScope.electionType.electionType = ?" +
 				" and model.state.stateId=? and model.deformDate is null order by model.name",params);*/
 		StringBuilder str = new StringBuilder();
-		str.append("select model.constituencyId , model.name from Constituency model" +
+		str.append("select model.constituencyId , model.name,model.district.districtName from Constituency model" +
 				" where model.electionScope.electionType.electionType = :electionType" +
 				" and model.state.stateId = :stateID and model.deformDate is null  ");
-		if(region.equalsIgnoreCase("Telangana"))
-		str.append("and model.district.districtId between 1 and 10 order by model.name");
+		if(region.equalsIgnoreCase("Telangana")){
+			str.append("and model.district.districtId between 1 and 10 order by model.name");
+		}
+		else if(region.equalsIgnoreCase("ALL"))
+		{
+			str.append("and model.district.districtId between 1 and 23 order by model.name");
+		}
 		else
 		{
 			str.append("and model.district.districtId between 11 and 23 order by model.name");	
@@ -1337,4 +1342,12 @@ public List<Long> getConstituenciesByState(Long stateId) {
 		query.setParameter("constituencyId", constituencyId);
 		return query.list();
   }
+  
+  @SuppressWarnings("unchecked")
+	public List<Object[]> getConstituenciesDetaildByDistrictId(Long districtId)
+	{
+		return getHibernateTemplate().find("select model.constituencyId , model.name, model.district.districtName from Constituency model where model.district.districtId=? and model.electionScope.electionType.electionTypeId = 2 and model.deformDate IS NULL" +
+				" order by model.name",districtId);
+	}
+	
 }
