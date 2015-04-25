@@ -38,7 +38,7 @@ public class TdpCadreVO implements java.io.Serializable
 	private List<TdpCadreVO> cadreSearchList = new ArrayList<TdpCadreVO>();
 	private List<TdpCadreVO> voterSearchList = new ArrayList<TdpCadreVO>();
 	private List<CadreCommitteeVO> cadreComitteeVOList = new ArrayList<CadreCommitteeVO>();
-	
+
 	
 	public List<CadreCommitteeVO> getCadreComitteeVOList() {
 		return cadreComitteeVOList;
