@@ -962,22 +962,33 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	 List<Object[]> list = null;
 	 List<Object[]> list1 = null;
 	 List<Object[]> list2 = null;
-	 List<Long> eventS  = null;
-	
+	 List<Long> events  = null;
+	 List<Object[]> statewise = null;
+	 List<Object[]> statewise1 = null;
 	 try{
 		 DateUtilService date = new DateUtilService();
-		eventS = eventInfoDAO.getEventIds(3l,date.getCurrentDateAndTime());
-		 if(eventS != null && eventS.size() > 0)
-		 eventInfoDAO.deleteEventInfo(3l,eventS) ;
+		events = eventInfoDAO.getEventIds(2l,date.getCurrentDateAndTime());
+		 if(events != null && events.size() > 0)
+		 eventInfoDAO.deleteEventInfo(2l,events) ;
+		statewise= eventAttendeeDAO.getStateWiseEventAttendeeInfo("invitee",date.getCurrentDateAndTime(),1l);
+		statewise1= eventAttendeeDAO.getStateWiseEventAttendeeInfo("",date.getCurrentDateAndTime(),1l);
+		setInviteeInfoForState(statewise,2l,"invitee",1l);
+		setInviteeInfoForState(statewise1,2l,"",1l);
+		statewise= eventAttendeeDAO.getStateWiseEventAttendeeInfo("invitee",date.getCurrentDateAndTime(),36l);
+		statewise1= eventAttendeeDAO.getStateWiseEventAttendeeInfo("",date.getCurrentDateAndTime(),36l);
+		setInviteeInfoForState(statewise,2l,"invitee",36l);
+		setInviteeInfoForState(statewise1,2l,"",36l);
+		
+		 
 		// list = eventInviteeDAO.getEventInviteesCountByLocationType(IConstants.DISTRICT,date.getCurrentDateAndTime());
 		 list1= eventAttendeeDAO.getEventAttendeeInfo(IConstants.DISTRICT,"invitee",date.getCurrentDateAndTime());
 		 list2= eventAttendeeDAO.getEventAttendeeInfo(IConstants.DISTRICT,"",date.getCurrentDateAndTime());
 		// setDataTotalInviteeEventInfo(list,3l);
 	      setInviteeInfo(list1,3l,"invitee");
 		  setInviteeInfo(list2,3l,"");
-		 eventS = eventInfoDAO.getEventIds(4l,date.getCurrentDateAndTime());
-		 if(eventS != null && eventS.size() > 0)
-		 eventInfoDAO.deleteEventInfo(4l,eventS) ;
+		 events = eventInfoDAO.getEventIds(4l,date.getCurrentDateAndTime());
+		 if(events != null && events.size() > 0)
+		 eventInfoDAO.deleteEventInfo(4l,events) ;
 		// list = eventInviteeDAO.getEventInviteesCountByLocationType(IConstants.CONSTITUENCY,date.getCurrentDateAndTime());
 		 list1= eventAttendeeDAO.getEventAttendeeInfo(IConstants.CONSTITUENCY,"invitee",date.getCurrentDateAndTime());
 		 list2= eventAttendeeDAO.getEventAttendeeInfo(IConstants.CONSTITUENCY,"",date.getCurrentDateAndTime());
@@ -1091,8 +1102,36 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				 {
 					 for(Object[] params : districts)
 					 {
-						//if(new Long(params[1])) 
+						if((Long)params[1] < 11)
+						{
+							List<Long> values =stateMap.get(36l);
+							if(values == null)
+							{
+								values = new ArrayList<Long>();
+							}
+							values.add((Long)params[0]);
+							stateMap.put(36l, values);
+						}
+						
+						if((Long)params[1] > 10)
+						{
+							List<Long> values =stateMap.get(1l);
+							if(values == null)
+							{
+								values = new ArrayList<Long>();
+							}
+							values.add((Long)params[0]);
+							stateMap.put(1l, values);
+						}
+							
 					 }
+					 List<Long> apValues = stateMap.get(1l);
+					 List<Long> tsValues = stateMap.get(36l);
+					 if(apValues != null && apValues.size() > 0)
+						 eventInfoDAO.updateState(apValues,reportLevelId,1l);
+					 if(tsValues != null && tsValues.size() > 0)
+						 eventInfoDAO.updateState(tsValues,reportLevelId,36l);
+					 voterDAO.flushAndclearSession();
 				 }
 				 
 			 
@@ -1105,7 +1144,67 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	 }
  }
  
-
+ public void setInviteeInfoForState(List<Object[]> list,Long reportLevelId,String type,Long stateId)
+ {
+	
+	 try{
+		
+		 List<EventActionPlanVO> resultList = new ArrayList<EventActionPlanVO>();
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		 if(list != null && list.size() > 0)
+		 {
+			
+			 List<Object[]> checkList = eventInfoDAO.getEventInfo(reportLevelId);
+			 if(checkList != null && checkList.size() > 0)
+			 {
+				 for(Object[] params : checkList)
+				 {
+					 EventActionPlanVO eventActionPlanVO = new EventActionPlanVO();
+					 eventActionPlanVO.setId((Long)params[0]);
+					 eventActionPlanVO.setLocationValue((Long)params[1]);
+					 eventActionPlanVO.setEventId((Long)params[2]);
+					 eventActionPlanVO.setMessage(params[3] != null ? params[3].toString() : "");
+					 resultList.add(eventActionPlanVO);
+				 }
+			 }
+			 for(Object[] params : list)
+			 {
+				 EventInfo eventInfo = null;
+				 EventActionPlanVO eventActionPlanVO  = getMatchedEventVo(resultList,stateId,(Long)params[0],params[2].toString());
+				 if(eventActionPlanVO == null)
+				 {
+				 eventInfo = new EventInfo();
+				 eventInfo.setEventId((Long)params[0]);
+				 eventInfo.setReportLevelId(reportLevelId);
+				 eventInfo.setLocationValue(stateId);
+				 eventInfo.setDate(format.parse(params[2].toString()));
+				 if(type.equalsIgnoreCase("invitee"))
+				 eventInfo.setInvitees((Long)params[1]);
+				 else
+				 eventInfo.setNoninvitees((Long)params[1]);
+				 eventInfoDAO.save(eventInfo);
+				 }
+				 else
+				 {
+					 eventInfo = eventInfoDAO.get(eventActionPlanVO.getId()); 
+					 if(type.equalsIgnoreCase("invitee"))
+						 eventInfo.setInvitees((Long)params[1]);
+					 else
+						 eventInfo.setNoninvitees((Long)params[1]);
+						 eventInfoDAO.save(eventInfo);
+				 }
+				 
+			 }
+			 voterDAO.flushAndclearSession();
+				
+		 }
+	 }
+	 catch(Exception e)
+	 {
+		 Log.error("Exception rised in setInviteeInfo() while closing write operation",e); 
+		 e.printStackTrace();
+	 }
+ }
  public EventActionPlanVO getMatchedEventVo(List<EventActionPlanVO> resultList,Long location,Long event,String date)
  {
 	 try{
@@ -1114,6 +1213,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			 return null;
 		 for(EventActionPlanVO vo : resultList)
 		 {
+			 if(vo.getLocationValue() != null)
 			 if((vo.getLocationValue().longValue() == location && vo.getEventId().longValue() == event.longValue() && vo.getMessage() == date))
 				 return vo;
 				 

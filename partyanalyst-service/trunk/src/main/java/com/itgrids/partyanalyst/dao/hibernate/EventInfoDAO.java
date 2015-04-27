@@ -61,11 +61,30 @@ public class EventInfoDAO extends GenericDaoHibernate<EventInfo, Long> implement
 		{
 			str.append(" d.districtId from EventInfo model ,District d where d.districtId = model.locationValue");	
 		}
-		str.append("  and model.reportLevelId = :reportLevelId" +
+		str.append("  and model.reportLevelId = :reportLevel" +
 				" and model.locationValue in(:locationValues)");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameterList("locationValues", locationValues);
 		query.setParameter("reportLevel", reportLevel);
 		return query.list();	
+	}
+	
+	public Integer updateState(List<Long> locationValues,Long reportLevelId,Long stateId)
+	{
+		Query query = getSession().createQuery("update EventInfo model  set model.stateId =:stateId where model.reportLevelId = :reportLevelId and model.locationValue in(:locationValues) ");
+		query.setParameter("reportLevelId", reportLevelId);
+		query.setParameterList("locationValues", locationValues);
+		query.setParameter("stateId", stateId);
+		return query.executeUpdate();
+	}
+	
+	public List<Object[]> getEventInfoForState(Long reportLevelId,Long stateId)
+	{
+		Query query = getSession().createQuery("select model.eventInfoId,model.stateId,model.eventId,(model.date) from EventInfo model where model.reportLevelId = :reportLevelId" +
+				" and model.stateId = :stateId");
+		query.setParameter("reportLevelId", reportLevelId);
+		query.setParameter("stateId", stateId);
+		
+		return query.list();
 	}
 }

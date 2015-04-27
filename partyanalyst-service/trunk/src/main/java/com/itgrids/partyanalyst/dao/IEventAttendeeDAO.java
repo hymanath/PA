@@ -10,5 +10,6 @@ import com.itgrids.partyanalyst.model.EventAttendee;
 public interface IEventAttendeeDAO extends GenericDao<EventAttendee, Long>{
 	public List<Object[]> getEventAttendeeInfo(String locationType,String inviteeType,Date currentDate);
 	public List checkUserExist(Long tdpCadreId,Long eventId,Date date);
+	public List<Object[]> getStateWiseEventAttendeeInfo(String inviteeType,Date currentDate,Long stateId);
 
 }

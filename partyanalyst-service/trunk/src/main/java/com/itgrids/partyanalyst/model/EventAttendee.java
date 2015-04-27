@@ -42,7 +42,7 @@ public class EventAttendee implements java.io.Serializable{
 	private String imei;
 	private Date insertedTime;
 	private Date attendedTime;
-	
+	private String uniqueKey;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -159,6 +159,13 @@ public class EventAttendee implements java.io.Serializable{
 	}
 	public void setAttendedTime(Date attendedTime) {
 		this.attendedTime = attendedTime;
+	}
+   @Column(name="unique_key")
+	public String getUniqueKey() {
+		return uniqueKey;
+	}
+	public void setUniqueKey(String uniqueKey) {
+		this.uniqueKey = uniqueKey;
 	}
 	
 	

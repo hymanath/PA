@@ -14,4 +14,7 @@ public interface IEventInfoDAO extends GenericDao<EventInfo, Long>{
 	public List<Object[]> getEventDataByReportLevelId(Long reportLevelId,Long eventId);
 	public List<Long> getEventIds(Long reportLevelId,Date currentDate);
 	public List<Object[]> getDistricts(List<Long> locationValues,Long reportLevel) ;
+	public Integer updateState(List<Long> locationValues,Long reportLevelId,Long stateId);
+	public List<Object[]> getEventInfoForState(Long reportLevelId,Long stateId);
+	
 }
