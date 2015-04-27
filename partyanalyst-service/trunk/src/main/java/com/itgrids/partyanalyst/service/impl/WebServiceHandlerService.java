@@ -1226,11 +1226,14 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			if(memberShipNos != null &&  memberShipNos.size() > 0)
 			{
 				for(String memberShipNo :memberShipNos){
+					String memberShipNumber = "AP14"+memberShipNo;
+					String memberShipNumber1 = "TS14"+memberShipNo;
 					String temp =  memberShipNos.get(memberShipNos.size() - 1);
+					
 					if(temp.equalsIgnoreCase(memberShipNo) || memberShipNos.size() == 1)
-						queryStr.append("  (model.memberShipNo like '%"+memberShipNo.trim()+"')  ");
+						queryStr.append(" (model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"')  ");
 					else
-						queryStr.append("  (model.memberShipNo like '%"+memberShipNo.trim()+"')  OR ");
+						queryStr.append(" (model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"')  OR ");
 				}
 			}
 			List<Object[]>  mobileNos = tdpCadreDAO.getMobileNosByMemberShipId(queryStr.toString());
@@ -1384,11 +1387,13 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			if(addressTrueList != null &&  addressTrueList.size() > 0)
 			{
 				for(String memberShipNo :addressTrueList){
+					String memberShipNumber = "AP14"+memberShipNo;
+					String memberShipNumber1 = "TS14"+memberShipNo;
 					String temp =  addressTrueList.get(addressTrueList.size() - 1);
 					if(temp.equalsIgnoreCase(memberShipNo) || addressTrueList.size() == 1)
-						queryStr.append("  (model.memberShipNo like '%"+memberShipNo.trim()+"')  ");
+						queryStr.append("  (model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
 					else
-						queryStr.append("  (model.memberShipNo like '%"+memberShipNo.trim()+"')  OR ");
+						queryStr.append(" (model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"')  OR ");
 				}
 			}
 			
