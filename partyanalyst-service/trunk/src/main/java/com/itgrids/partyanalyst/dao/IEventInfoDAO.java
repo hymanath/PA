@@ -1,9 +1,17 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
+import java.util.List;
+
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.EventInfo;
 
 public interface IEventInfoDAO extends GenericDao<EventInfo, Long>{
+	public List<Object[]> getEventInfo(Long reportLevelId);
 
+	public Integer deleteEventInfo(Long reportLevelId,List<Long> eventIds);
+	public List<Object[]> getEventDataByReportLevelId(Long reportLevelId,Long eventId);
+	public List<Long> getEventIds(Long reportLevelId,Date currentDate);
+	public List<Object[]> getDistricts(List<Long> locationValues,Long reportLevel) ;
 }
