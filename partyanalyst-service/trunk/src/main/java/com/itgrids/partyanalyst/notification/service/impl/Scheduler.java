@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.notification.service.ISchedulerService;
+import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMailsSendingService;
 import com.itgrids.partyanalyst.service.IMobileService;
@@ -27,7 +28,18 @@ public class Scheduler {
 	private IMobileService mobileService;
 	private IMailService mailService;
 	private ResultStatus rs;
+    private IMahaNaduService mahaNaduService;
 	
+	
+	
+	
+	public IMahaNaduService getMahaNaduService() {
+		return mahaNaduService;
+	}
+
+	public void setMahaNaduService(IMahaNaduService mahaNaduService) {
+		this.mahaNaduService = mahaNaduService;
+	}
 	public ResultStatus getRs() {
 		return rs;
 	}
@@ -275,5 +287,16 @@ public class Scheduler {
 			e.printStackTrace();
 		}
 	}
-	
+	public ResultStatus insertMahanaduEventInfo()
+	{
+		ResultStatus rs = new ResultStatus();
+		try{
+			 rs = mahaNaduService.insertDataintoEventInfo();
+		}
+		catch(Exception e)
+		{
+			log.info("\n\n Total insertMahanaduEventInfo Table effected records"); 
+		}
+		return rs;
+	}
 }
