@@ -1725,9 +1725,15 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 	String memberShipNumber = "AP14"+inpuVo.getMemberShipNo();
 			String memberShipNumber1 = "TS14"+inpuVo.getMemberShipNo();
 		 	StringBuilder queryStr = new StringBuilder();
+		 	if(inpuVo.getMemberShipNo() != null && !inpuVo.getMemberShipNo().isEmpty())
 		 	queryStr.append(" (model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
+		 	else
+		 	{
+		 		queryStr.append(" model.cardNumber = '"+inpuVo.getRfid()+"' ");
+		 	}
 		 	EventAttendee eventAttendee = new EventAttendee();
 		 	Long cadreId = tdpCadreDAO.getTdpCadreIdByMembership(queryStr.toString());
+		 	if(cadreId != null)
 		 	eventAttendee.setTdpCadreId(cadreId);
 		 	eventAttendee.setImei(inpuVo.getImei());
 		 	if(inpuVo.getRfid() != null) 
@@ -1743,6 +1749,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 	voterDAO.flushAndclearSession();
 		 	returnVo.setId(eventAttendee.getEventAttendeeId());
 		 	returnVo.setStatus("success");
+		 	if(cadreId != null)
 		 	returnVo.setMemberShipNo(cadreId.toString());
 		 	/*resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 		 	resultStatus.setMessage("success");*/
