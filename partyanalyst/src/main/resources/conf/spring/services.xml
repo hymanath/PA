@@ -1324,6 +1324,8 @@
 		<property name="tdpCadreAgerangeInfoDAO" ref="tdpCadreAgerangeInfoDAO"/>
 		<property name="transactionTemplate" ref="transactionTemplate"/>
 		<property name="mobileService" ref="mobileService"/>
+		
+		
 	</bean>
 	
 	<bean name="scheduler" class="com.itgrids.partyanalyst.notification.service.impl.Scheduler">
@@ -1334,7 +1336,7 @@
 		<property name="partyCandidateSpecialPageScheduleService" ref="partyCandidateSpecialPageScheduleService"/>
 		<property name="mobileService" ref="mobileService"></property>
 		<property name="mailService" ref="mailService"></property>
-		  
+		<property name="mahaNaduService" ref="mahaNaduService"/>
 	</bean>
 	
 	<bean name="everyDayBatchJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -1357,7 +1359,14 @@
   		<property name="targetObject" ref="scheduler" />
 	  	<property name="targetMethod" value="runTheBatchJobForEveryDayMobilesInsert" />
 	</bean>
-	
+	<bean name="insertTriggerForMahanaduEventInfo" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="insertMahanaduEventInfo" />
+	</bean> 
+	<!--<bean name="mahanaduEventInfo" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="insertTriggerForMahanaduEventInfo" />
+    	<property name="cronExpression" value="0 0/5 * * * ?" />
+	</bean>-->
 	
 	<!-- <bean name="insertTriggerForEveryDayCardPrintDetails" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="everyDayCardPrintDetailsInsertJob" />
@@ -1515,6 +1524,8 @@
 			<ref bean="cronTriggerForEveryDayJobTosendSmsToMobileAppUsers" />
 			<ref bean="cronTriggerForeveryDayBatchJobForPopulateVoterData" />
 			<ref bean="insertTriggerForEveryDayMobiles" />
+			<!--<ref bean="mahanaduEventInfo" />-->
+			
 			<!--<ref bean="schForSri" /> 
 			<ref bean="schForSri1" />
 			<ref bean="schForSri2" />
@@ -2253,6 +2264,11 @@
          <property name="bloodGroupDAO" ref="bloodGroupDAO" />
          <property name="voterDAO" ref="voterDAO" />
          <property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" />
+         <property name="eventInviteeDAO" ref="eventInviteeDAO" />	
+         <property name="eventInfoDAO" ref="eventInfoDAO" />	
+         <property name="eventAttendeeDAO" ref="eventAttendeeDAO" />
+          <property name="voterInfoDAO" ref="voterInfoDAO" />	
+         	
          
    </bean>
   
@@ -2598,6 +2614,8 @@
 	<property name="voterCastInfoDAO" ref="voterCastInfoDAO" />	
 	<property name="boothDAO" ref="boothDAO" />	
 	<property name="mobileNumbersDAO" ref="mobileNumbersDAO" />	
+
+	
 	</bean>
 	
 </beans>		

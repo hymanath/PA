@@ -1120,7 +1120,7 @@ public class WebServiceHandler {
 		return cadreAddressVO;
 		
 	}
-		
+		 
 	
 	@POST
 	@Path("/validateUserForEvent")
@@ -1136,7 +1136,7 @@ public class WebServiceHandler {
 			else
 			{
 				 userEventDetailsVO = new UserEventDetailsVO();
-				userEventDetailsVO.setStatus("Not Valid");
+				 userEventDetailsVO.setStatus("Not Valid");
 			}
 		
 		}
@@ -1151,7 +1151,26 @@ public class WebServiceHandler {
 		
 	}
 	
-	
+	@POST
+	@Path("/insertEventAttendeeInfo")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ResultStatus insertEventAttendeeInfo(UserEventDetailsVO inputVo){
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			
+			resultStatus = webServiceHandlerService.insertEventAttendeeInfo(inputVo);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in checkValidUserForEvent() Method, Exception is ",e);
+			e.printStackTrace();	
+			
+		}
+		return resultStatus;
+		
+		
+	}
 	@GET
 	@Path("/validateMembership1/{data}")
 	@Produces(MediaType.APPLICATION_JSON)

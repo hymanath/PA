@@ -2030,5 +2030,8 @@
 	<bean id="eventInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventInfoDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="eventSurveyUserLoginDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.EventSurveyUserLoginDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--  end -->
 </beans>		
