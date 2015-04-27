@@ -13,6 +13,30 @@ public class EventActionPlanVO extends ResultStatus implements Comparable<EventA
 	private Long userEventsId;
 	private Date targetDate;
 	private List<SelectOptionVO> actionPlanOrganizers;
+	private Long id;
+	private Long eventId;
+	private Long locationValue;
+	
+	
+	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Long getEventId() {
+		return eventId;
+	}
+	public void setEventId(Long eventId) {
+		this.eventId = eventId;
+	}
+	public Long getLocationValue() {
+		return locationValue;
+	}
+	public void setLocationValue(Long locationValue) {
+		this.locationValue = locationValue;
+	}
 	public Long getEventActionPlanId() {
 		return eventActionPlanId;
 	}
