@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,10 +34,14 @@ public class EventAttendee implements java.io.Serializable{
 	private Long eventId;
 	private User user;
 	private Long insertedBy;
-	private TdpCadre tdpcadre;
+	private TdpCadre tdpCadre;
 	private Long tdpCadreId;
 	private PublicRepresentative publicRepresentative;
 	private Long publicRepresentativeId;
+	private String rfid;
+	private String imei;
+	private Date insertedTime;
+	private Date attendedTime;
 	
 	
 	@Id
@@ -92,17 +98,18 @@ public class EventAttendee implements java.io.Serializable{
 	@JoinColumn(name = "tdp_cadre_id",insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public TdpCadre getTdpcadre() {
-		return tdpcadre;
+	public TdpCadre getTdpCadre() {
+		return tdpCadre;
 	}
-	public void setTdpcadre(TdpCadre tdpcadre) {
-		this.tdpcadre = tdpcadre;
+	public void setTdpCadre(TdpCadre tdpCadre) {
+		this.tdpCadre = tdpCadre;
 	}
 	
 	@Column(name="tdp_cadre_id")
 	public Long getTdpCadreId() {
 		return tdpCadreId;
 	}
+	
 	public void setTdpCadreId(Long tdpCadreId) {
 		this.tdpCadreId = tdpCadreId;
 	}
@@ -125,5 +132,35 @@ public class EventAttendee implements java.io.Serializable{
 	public void setPublicRepresentativeId(Long publicRepresentativeId) {
 		this.publicRepresentativeId = publicRepresentativeId;
 	}
+	@Column(name="rfid")
+	public String getRfid() {
+		return rfid;
+	}
+	public void setRfid(String rfid) {
+		this.rfid = rfid;
+	}
+	@Column(name="imei")
+	public String getImei() {
+		return imei;
+	}
+	public void setImei(String imei) {
+		this.imei = imei;
+	}
+	@Column(name="inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
+	}
+	@Column(name="attended_time")
+	public Date getAttendedTime() {
+		return attendedTime;
+	}
+	public void setAttendedTime(Date attendedTime) {
+		this.attendedTime = attendedTime;
+	}
+	
+	
 	
 }

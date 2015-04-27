@@ -38,6 +38,7 @@ public class EventInvitee implements java.io.Serializable{
 	private Long eventId;
 	private Long createdBy;
 	private Date insertedTime;
+
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
