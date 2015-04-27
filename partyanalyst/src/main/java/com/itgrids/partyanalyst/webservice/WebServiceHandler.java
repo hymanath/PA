@@ -1152,5 +1152,31 @@ public class WebServiceHandler {
 	}
 	
 	
+	@GET
+	@Path("/validateMembership1/{data}")
+	@Produces(MediaType.APPLICATION_JSON)
+	
+	public List<CadreAddressVO> checkMembershipExists1(@PathParam("data") String data){
+		
+		try{
+			List<String> memberShipIdsList = new ArrayList<String>();
+			String[] inputsArray = data.split(",");
+			for(String input:inputsArray){
+				if(!memberShipIdsList.contains(equals(input))){
+					memberShipIdsList.add(input);
+				}
+			
+			}
+			cadreAddressVOList = commonUtilsService.checkForValidMember(memberShipIdsList);
+		
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in checkMembershipExists1() Method, Exception is ",e);
+			
+		}
+		return cadreAddressVOList;
+	}
+	
 		
 }
