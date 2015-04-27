@@ -410,6 +410,6 @@
 	  <decorator name="districtLayout" page="districtLayout.jsp">
 		<pattern>/cadreSearchPageAction*</pattern>
 		<pattern>/committeeDistrictDashBoardAction*</pattern>
-		<pattern>/eventDetailsAction*</pattern>
+		<pattern>/mahanadueventDetailsAction*</pattern>
 	 </decorator>
 </decorators>

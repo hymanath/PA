@@ -9972,12 +9972,12 @@
 				<param name="root">selectOptionVOList</param>
 			</result>
 		</action> 
-		<action name="eventDetailsAction" class="eventDetailsAction">
+		<action name="mahanadueventDetailsAction" class="eventDetailsAction">
 			<result name="success">/jsp/mahandueventDashBoard.jsp</result>
 			<result name="input">/jsp/loginForm.jsp</result>
 			<result name="error">/jsp/entitlementErrorPage.jsp</result>
 		</action>
-			<action name="insertDataintoEventInfoAction" class="eventDetailsAction">
+			<action name="insertDataintoEventInfoAction" class="eventDetailsAction" method="insertEventInfo">
 				<result type="json" name="success">
 				<param name="root">resultstatus</param>
 			</result>
