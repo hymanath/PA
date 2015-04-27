@@ -20,7 +20,7 @@ public class EventAttendeeDAO extends GenericDaoHibernate<EventAttendee, Long> i
 	{
 		
 		StringBuilder str = new StringBuilder();
-		str.append("select model.event.eventId,count(model.eventAttendeeId), ");
+		str.append("select model.event.eventId,count(distinct model.tdpCadre.tdpCadreId), ");
 		if(locationType.equalsIgnoreCase(IConstants.DISTRICT))
 			str.append(" model.tdpCadre.userAddress.constituency.district.districtId");
 		else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
@@ -58,7 +58,7 @@ public class EventAttendeeDAO extends GenericDaoHibernate<EventAttendee, Long> i
 	{
 		
 		StringBuilder str = new StringBuilder();
-		str.append("select model.event.eventId,count(model.eventAttendeeId), ");
+		str.append("select model.event.eventId,count(distinct model.tdpCadre.tdpCadreId), ");
 		if(locationType.equalsIgnoreCase(IConstants.DISTRICT))
 			str.append(" model.tdpCadre.userAddress.constituency.district.districtId");
 		else if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
