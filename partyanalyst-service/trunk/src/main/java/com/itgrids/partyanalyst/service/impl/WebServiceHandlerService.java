@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IEventSurveyUserDAO;
+import com.itgrids.partyanalyst.dao.IEventSurveyUserLoginDetailsDAO;
 import com.itgrids.partyanalyst.dao.IEventUserDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppPingingDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserAccessKeyDAO;
@@ -43,6 +46,8 @@ import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.EventAttendee;
+import com.itgrids.partyanalyst.model.EventSurveyUserLoginDetails;
 import com.itgrids.partyanalyst.model.MobileAppPinging;
 import com.itgrids.partyanalyst.model.MobileAppUser;
 import com.itgrids.partyanalyst.model.MobileAppUserAccessKey;
@@ -108,6 +113,12 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private IEventSurveyUserDAO eventSurveyUserDAO;
     @Autowired
     private IEventUserDAO eventUserDAO;
+    @Autowired
+    private IEventSurveyUserLoginDetailsDAO eventSurveyUserLoginDetailsDAO;
+    @Autowired
+    private IEventAttendeeDAO eventAttendeeDAO;
+    
+    
     
 	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
 		this.cadreDetailsService = cadreDetailsService;
@@ -1611,6 +1622,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 List<UserEventDetailsVO> resultList = new ArrayList<UserEventDetailsVO>();
 		 UserEventDetailsVO userEventDetailsVO = null;
 		 DateUtilService date = new DateUtilService();
+		 SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		try{
 			List<Object[]> list =  eventSurveyUserDAO.getUserDetailsByUnamePwd(inpuVo.getName(),inpuVo.getPwd());
 			if(list != null && list.size() > 0)
@@ -1622,8 +1634,25 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 					String lname = params[2] != null ? params[2].toString() : "";
 					userEventDetailsVO.setName(fname +" "+lname);
 					userEventDetailsVO.setId((Long)params[0]);
-					
+					List checkList = eventSurveyUserLoginDetailsDAO.checkUserExistence((Long)params[0],inpuVo.getImei());
+					if(checkList == null || checkList.size() == 0)
+					{
+						
+						EventSurveyUserLoginDetails eventSurveyUserLoginDetails = new EventSurveyUserLoginDetails();
+						eventSurveyUserLoginDetails.setImei(inpuVo.getImei());
+						if(inpuVo.getDate() != null)
+						eventSurveyUserLoginDetails.setLoginTime(formatter.parse(inpuVo.getDate()));
+						if(inpuVo.getSimNo() != null)
+						eventSurveyUserLoginDetails.setSimno(inpuVo.getSimNo());
+						eventSurveyUserLoginDetails.setEventSurveyUser(eventSurveyUserDAO.get((Long)params[0]));
+						eventSurveyUserLoginDetailsDAO.save(eventSurveyUserLoginDetails);
+					}
 				}
+				
+				
+				
+				
+				//eventSurveyUserLoginDetailsDAO.saveCadreFromAndroid(voterDetails)
 				List<Long> parentIds = new ArrayList<Long>();
 				List<Object[]> parentEvent = eventUserDAO.getParentEventByUser(userEventDetailsVO.getId(),date.getCurrentDateAndTime());
 				if(parentEvent != null && parentEvent.size() > 0)
@@ -1683,6 +1712,37 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			e.printStackTrace();	
 		}
 		return null;
+	}
+	 public ResultStatus insertEventAttendeeInfo(UserEventDetailsVO inpuVo)
+		{
+		 ResultStatus resultStatus = new ResultStatus();
+		 try{
+			 SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		 	String memberShipNumber = "AP14"+inpuVo.getMemberShipNo();
+			String memberShipNumber1 = "TS14"+inpuVo.getMemberShipNo();
+		 	StringBuilder queryStr = new StringBuilder();
+		 	queryStr.append(" (model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
+		 	EventAttendee eventAttendee = new EventAttendee();
+		 	eventAttendee.setTdpCadreId(tdpCadreDAO.getTdpCadreIdByMembership(queryStr.toString()));
+		 	eventAttendee.setImei(inpuVo.getImei());
+		 	if(inpuVo.getRfid() != null) 
+		 	eventAttendee.setRfid(inpuVo.getRfid());
+		 	
+		 	eventAttendee.setInsertedBy(inpuVo.getId());
+		 	eventAttendee.setEventId(inpuVo.getEventId());
+		 	eventAttendee.setAttendedTime(formatter.parse(inpuVo.getDate().toString()));
+		 	eventAttendee.setInsertedTime(formatter.parse(inpuVo.getDate().toString()));
+		 	eventAttendeeDAO.save(eventAttendee);
+		 	resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		 	resultStatus.setMessage("success");
+		 }
+		 catch(Exception e)
+		 {
+			 Log.error("Exception Occured in getMatchedEvent() method",e) ;
+			 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			 resultStatus.setMessage("Fail");
+		 }
+		return resultStatus;
 	}
 }
 
