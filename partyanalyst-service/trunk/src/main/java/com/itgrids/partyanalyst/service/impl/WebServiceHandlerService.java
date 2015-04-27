@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dao.IUserSurveyBoothsDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterBoothActivitiesDAO;
+import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
@@ -117,6 +118,9 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private IEventSurveyUserLoginDetailsDAO eventSurveyUserLoginDetailsDAO;
     @Autowired
     private IEventAttendeeDAO eventAttendeeDAO;
+    @Autowired
+    private IVoterDAO voterDAO;
+    
     
     
     
@@ -1713,17 +1717,18 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		return null;
 	}
-	 public ResultStatus insertEventAttendeeInfo(UserEventDetailsVO inpuVo)
+	 public UserEventDetailsVO insertEventAttendeeInfo(UserEventDetailsVO inpuVo)
 		{
-		 ResultStatus resultStatus = new ResultStatus();
+		 UserEventDetailsVO returnVo = new UserEventDetailsVO();
 		 try{
-			 SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+			 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		 	String memberShipNumber = "AP14"+inpuVo.getMemberShipNo();
 			String memberShipNumber1 = "TS14"+inpuVo.getMemberShipNo();
 		 	StringBuilder queryStr = new StringBuilder();
 		 	queryStr.append(" (model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
 		 	EventAttendee eventAttendee = new EventAttendee();
-		 	eventAttendee.setTdpCadreId(tdpCadreDAO.getTdpCadreIdByMembership(queryStr.toString()));
+		 	Long cadreId = tdpCadreDAO.getTdpCadreIdByMembership(queryStr.toString());
+		 	eventAttendee.setTdpCadreId(cadreId);
 		 	eventAttendee.setImei(inpuVo.getImei());
 		 	if(inpuVo.getRfid() != null) 
 		 	eventAttendee.setRfid(inpuVo.getRfid());
@@ -1732,17 +1737,23 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 	eventAttendee.setEventId(inpuVo.getEventId());
 		 	eventAttendee.setAttendedTime(formatter.parse(inpuVo.getDate().toString()));
 		 	eventAttendee.setInsertedTime(formatter.parse(inpuVo.getDate().toString()));
-		 	eventAttendeeDAO.save(eventAttendee);
-		 	resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
-		 	resultStatus.setMessage("success");
+		 	if(inpuVo.getStatus() != null)
+		 	eventAttendee.setUniqueKey(inpuVo.getStatus());
+		 	eventAttendee = eventAttendeeDAO.save(eventAttendee);
+		 	voterDAO.flushAndclearSession();
+		 	returnVo.setId(eventAttendee.getEventAttendeeId());
+		 	returnVo.setStatus("success");
+		 	returnVo.setMemberShipNo(cadreId.toString());
+		 	/*resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		 	resultStatus.setMessage("success");*/
 		 }
 		 catch(Exception e)
 		 {
 			 Log.error("Exception Occured in getMatchedEvent() method",e) ;
-			 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
-			 resultStatus.setMessage("Fail");
+			 e.printStackTrace();
+				returnVo.setStatus("fail");
 		 }
-		return resultStatus;
+		return returnVo;
 	}
 }
 
