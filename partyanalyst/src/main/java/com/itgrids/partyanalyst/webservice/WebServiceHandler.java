@@ -1155,11 +1155,11 @@ public class WebServiceHandler {
 	@Path("/insertEventAttendeeInfo")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public ResultStatus insertEventAttendeeInfo(UserEventDetailsVO inputVo){
-		ResultStatus resultStatus = new ResultStatus();
+	public UserEventDetailsVO insertEventAttendeeInfo(UserEventDetailsVO inputVo){
+		UserEventDetailsVO userEventDetailsVO = new UserEventDetailsVO();
 		try{
 			
-			resultStatus = webServiceHandlerService.insertEventAttendeeInfo(inputVo);
+			userEventDetailsVO = webServiceHandlerService.insertEventAttendeeInfo(inputVo);
 		}
 		catch(Exception e)
 		{
@@ -1167,7 +1167,7 @@ public class WebServiceHandler {
 			e.printStackTrace();	
 			
 		}
-		return resultStatus;
+		return userEventDetailsVO;
 		
 		
 	}
