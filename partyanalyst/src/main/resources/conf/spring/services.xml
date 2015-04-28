@@ -1363,10 +1363,10 @@
   		<property name="targetObject" ref="scheduler" />
 	  	<property name="targetMethod" value="insertMahanaduEventInfo" />
 	</bean> 
-	<!--<bean name="mahanaduEventInfo" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	<bean name="mahanaduEventInfo" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="insertTriggerForMahanaduEventInfo" />
-    	<property name="cronExpression" value="0 0/5 * * * ?" />
-	</bean>-->
+    	<property name="cronExpression" value="0 0/30 * * * ?" />
+	</bean>-
 	
 	<!-- <bean name="insertTriggerForEveryDayCardPrintDetails" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="everyDayCardPrintDetailsInsertJob" />
@@ -1524,7 +1524,7 @@
 			<ref bean="cronTriggerForEveryDayJobTosendSmsToMobileAppUsers" />
 			<ref bean="cronTriggerForeveryDayBatchJobForPopulateVoterData" />
 			<ref bean="insertTriggerForEveryDayMobiles" />
-			<!--<ref bean="mahanaduEventInfo" />-->
+			<ref bean="mahanaduEventInfo" />
 			
 			<!--<ref bean="schForSri" /> 
 			<ref bean="schForSri1" />
