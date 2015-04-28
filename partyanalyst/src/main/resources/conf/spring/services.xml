@@ -1365,8 +1365,8 @@
 	</bean> 
 	<bean name="mahanaduEventInfo" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="insertTriggerForMahanaduEventInfo" />
-    	<property name="cronExpression" value="0 0/30 * * * ?" />
-	</bean>-
+    	<property name="cronExpression" value="0 0/5 * * * ?" />
+	</bean>
 	
 	<!-- <bean name="insertTriggerForEveryDayCardPrintDetails" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="everyDayCardPrintDetailsInsertJob" />
@@ -2267,8 +2267,7 @@
          <property name="eventInviteeDAO" ref="eventInviteeDAO" />	
          <property name="eventInfoDAO" ref="eventInfoDAO" />	
          <property name="eventAttendeeDAO" ref="eventAttendeeDAO" />
-          <property name="voterInfoDAO" ref="voterInfoDAO" />
-           <property name="tdpCadreInfoDAO" ref="tdpCadreInfoDAO" />		
+          <property name="voterInfoDAO" ref="voterInfoDAO" />	
           <property name="eventUserDAO" ref="eventUserDAO" />	
          	
          
