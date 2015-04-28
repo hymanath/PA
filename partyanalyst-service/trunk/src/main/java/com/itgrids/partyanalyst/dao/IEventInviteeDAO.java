@@ -8,6 +8,7 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.EventInvitee;
 
 public interface IEventInviteeDAO extends GenericDao<EventInvitee, Long>{
+	public Long checkIsExistDetails(Long id,Long eventId,String memberType);
 	public List<Object[]> getEventInviteesCountByLocationType(String locationType,Date currentDate);
 	public List<Object[]> getEventInviteesCountByLocationTypeAndEvent(String locationType,Date currentDate,Long eventId);
 	public Long getEventInviteesCountByState(Long stateId,Date currentDate,Long eventId);
