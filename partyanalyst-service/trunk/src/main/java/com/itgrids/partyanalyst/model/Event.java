@@ -31,6 +31,7 @@ public class Event implements java.io.Serializable{
 	private String isDeleted;
 	private String startTime;
 	private String endTime;
+	private String isInviteeExist;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -102,6 +103,13 @@ public class Event implements java.io.Serializable{
 	}
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
+	}
+	@Column(name="is_invitee_exist")
+	public String getIsInviteeExist() {
+		return isInviteeExist;
+	}
+	public void setIsInviteeExist(String isInviteeExist) {
+		this.isInviteeExist = isInviteeExist;
 	}
 
 	
