@@ -24,7 +24,16 @@ public class UserEventDetailsVO implements Serializable{
 	private Long userId;
 	private String startTime;
 	private String endTime;
+	private Long tabPrimaryKey;
 	
+	
+	
+	public Long getTabPrimaryKey() {
+		return tabPrimaryKey;
+	}
+	public void setTabPrimaryKey(Long tabPrimaryKey) {
+		this.tabPrimaryKey = tabPrimaryKey;
+	}
 	public String getStartTime() {
 		return startTime;
 	}
