@@ -116,13 +116,13 @@
 							<select class="form-control " id="constituencyId" class="form-control" onchange="getMandalCorporationsByConstituency()">
 							</select>
 					</div>
-					<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0" id="mandalDiv">
+					<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0" style="padding-top: 10px" id="mandalDiv">
 							<label>Mandal/Municipality</label>
 							<select class="form-control " id="mandalList" class="form-control" onchange="getPanchayatWardByMandal();">
 							<option value="0"> Select Mandal/Municipality </option>
 							</select>
 					</div>
-					<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0" id="panchayatDiv">
+					<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0" style="padding-top: 10px" id="panchayatDiv">
 							<label>Panchayat</label>
 							<select class="form-control " id="panchaytList" class="form-control">
 							<option value="0"> Select Panchayat </option>
