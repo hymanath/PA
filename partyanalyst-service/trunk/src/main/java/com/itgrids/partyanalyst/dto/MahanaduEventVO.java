@@ -8,6 +8,8 @@ public class MahanaduEventVO {
 	private Long nonInvitees=0l;
 	private Long attendees=0l;
 	private Long total=0l;
+	private Long voterCount = 0l;
+	private Long cadreCount = 0l;
 	
 	
 	
@@ -47,7 +49,17 @@ public class MahanaduEventVO {
 	public void setAttendees(Long attendees) {
 		this.attendees = attendees;
 	}
-	
-	
-	
+	public Long getVoterCount() {
+		return voterCount;
+	}
+	public void setVoterCount(Long voterCount) {
+		this.voterCount = voterCount;
+	}
+	public Long getCadreCount() {
+		return cadreCount;
+	}
+	public void setCadreCount(Long cadreCount) {
+		this.cadreCount = cadreCount;
+	}
+
 }

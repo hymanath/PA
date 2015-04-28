@@ -1246,7 +1246,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	return null;
  }
  
- public List<MahanaduEventVO> getEventInfoByReportType(Long reportLevelId,Long eventId)
+ public List<MahanaduEventVO> getEventInfoByReportType(Long eventId,Long stateId,Long reportLevelId)
  {
 	 List<MahanaduEventVO>  resultList = new ArrayList<MahanaduEventVO>();
 	 try{
@@ -1255,9 +1255,10 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			 locationType = "State";
 		 else if(reportLevelId == 3l)
 			 locationType = "District";
-		 if(reportLevelId == 4l)
+		 else if(reportLevelId == 4l)
 			 locationType = "Constituency";
-		  List<Object[]> list = eventInfoDAO.getEventDataByReportLevelId(reportLevelId,eventId);
+		 DateUtilService date = new DateUtilService();
+		  List<Object[]> list = eventInfoDAO.getEventDataByReportLevelId(reportLevelId,eventId,stateId,date.getCurrentDateAndTime());
 		  Set<Long> reportLevelValues = new java.util.HashSet<Long>();
 		  if(list != null && list.size() > 0)
 		  {
@@ -1265,18 +1266,61 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			  {
 				  MahanaduEventVO eventVo = new MahanaduEventVO();
 				  eventVo.setId((Long)params[1]);
-				  eventVo.setName(getLocationName(reportLevelId,(Long)params[1]));
-				  eventVo.setInvitees((Long)params[4]);
-				  eventVo.setNonInvitees((Long)params[5]);
-				  eventVo.setTotal((Long)params[3]);
-				  eventVo.setAttendees(eventVo.getInvitees() + eventVo.getNonInvitees());
-				
+				  if(reportLevelId != 2l){
+					  eventVo.setName(getLocationName(reportLevelId,(Long)params[1]));
+				  }
+				 
+				  eventVo.setInvitees(params[3] != null ? (Long)params[3] : 0l);
+				  eventVo.setNonInvitees(params[4] != null ? (Long)params[4] : 0l);			 
+				  eventVo.setAttendees(eventVo.getInvitees() + eventVo.getNonInvitees());				
 				  resultList.add(eventVo);
 				  reportLevelValues.add((Long)params[1]);
 			  }
-			  
-			 List<Object[]> votersCount= voterInfoDAO.getVotersCountByLocationValues(reportLevelId, reportLevelValues, 11l,null);
-			  List<Object[]> cadreCount = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(reportLevelValues,locationType,null,"Registered");
+			  if(reportLevelId != 2l){
+			  List<Object[]> votersCount  = null;
+				 if(reportLevelId == 3l){
+					 votersCount = voterInfoDAO.getVotersCountForDistrict(reportLevelValues, 11l);
+				 }
+				 else if(reportLevelId == 4l){
+					 votersCount = voterInfoDAO.getVotersCountByLocationValues(1L, reportLevelValues, 11l,null);
+				 }
+				 
+			 List<Object[]> cadreCount = tdpCadreInfoDAO.getLocationWiseCadreRegisterCount(reportLevelValues,locationType,null,"Registered");
+			 
+			 if(votersCount != null && votersCount.size() > 0){
+				 for(Object[] obj :votersCount){
+					 MahanaduEventVO vo = getMatchedVO(resultList, (Long)obj[0]);
+					 if(vo != null){
+						 vo.setVoterCount((Long)obj[1]);
+					 }
+				 }				 
+			 }
+			 
+			 if(cadreCount != null && cadreCount.size() > 0){
+				 for(Object[] obj :cadreCount){
+					 MahanaduEventVO vo = getMatchedVO(resultList, (Long)obj[0]);
+					 if(vo != null){
+						 vo.setCadreCount((Long)obj[1]);
+					 }
+				 }				 
+			 }
+			
+			 List<Object[]>  inviteesCnt = eventInviteeDAO.getEventInviteesCountByLocationTypeAndEvent(locationType,date.getCurrentDateAndTime(),eventId);
+			 if(inviteesCnt != null && inviteesCnt.size() > 0){
+				 for(Object[] obj :inviteesCnt){
+					 MahanaduEventVO vo = getMatchedVO(resultList, (Long)obj[1]);
+					 if(vo != null){
+						 vo.setTotal((Long)obj[0]);
+					 }
+				 }				 
+			 }
+		  }else{
+			  Long totalCnt = eventInviteeDAO.getEventInviteesCountByState(stateId,date.getCurrentDateAndTime(),eventId);				
+						 MahanaduEventVO vo = getMatchedVO(resultList,stateId);
+						 if(vo != null){
+							 vo.setTotal(totalCnt);
+						 }					 
+		  }
 			  
 			  
 		  }
@@ -1298,8 +1342,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		{
 			location = constituencyDAO.get(locationValue).getName();
 		}
-			
-		
+	
 		return location;
 	}
  
@@ -1362,4 +1405,20 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	   }
 	return output;
  }
+ 
+ public MahanaduEventVO getMatchedVO(List<MahanaduEventVO> list,Long id)
+	{		
+			if(list != null && list.size()>0)
+			{
+				for (MahanaduEventVO vo : list)
+				{
+					if(vo.getId().longValue() == id.longValue())
+					{
+						return vo;
+					}
+				}
+			}
+
+		return null;
+	}
 }
