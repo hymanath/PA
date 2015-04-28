@@ -25,10 +25,6 @@ public class UserEventDetailsVO implements Serializable{
 	private String startTime;
 	private String endTime;
 	
-	
-	
-	
-	
 	public String getStartTime() {
 		return startTime;
 	}
@@ -80,17 +76,20 @@ public class UserEventDetailsVO implements Serializable{
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
 	}
-	public String getIMEI() {
-		return IMEI;
-	}
-	public void setIMEI(String iMEI) {
-		IMEI = iMEI;
-	}
+	
+	
 	public String getSIMCardNumber() {
 		return SIMCardNumber;
 	}
 	public void setSIMCardNumber(String sIMCardNumber) {
 		SIMCardNumber = sIMCardNumber;
+	}
+	
+	public String getIMEI() {
+		return IMEI;
+	}
+	public void setIMEI(String iMEI) {
+		IMEI = iMEI;
 	}
 	public String getLoginTimeStamp() {
 		return loginTimeStamp;

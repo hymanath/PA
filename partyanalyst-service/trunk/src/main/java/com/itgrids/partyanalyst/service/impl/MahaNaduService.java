@@ -1323,6 +1323,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				 if(params[5] != null)
 					 vo.setEndTime(TimeForm(params[4].toString())); 
 				 vo.setStatus(params[3] != null ? params[3].toString():"");
+				 vo.setMemberShipNo(params[4] != null ? params[4].toString():"");
 				 resultList.add(vo);
 			 }
 		 }
