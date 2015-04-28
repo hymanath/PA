@@ -2267,7 +2267,8 @@
          <property name="eventInviteeDAO" ref="eventInviteeDAO" />	
          <property name="eventInfoDAO" ref="eventInfoDAO" />	
          <property name="eventAttendeeDAO" ref="eventAttendeeDAO" />
-          <property name="voterInfoDAO" ref="voterInfoDAO" />	
+          <property name="voterInfoDAO" ref="voterInfoDAO" />
+           <property name="tdpCadreInfoDAO" ref="tdpCadreInfoDAO" />		
           <property name="eventUserDAO" ref="eventUserDAO" />	
          	
          
