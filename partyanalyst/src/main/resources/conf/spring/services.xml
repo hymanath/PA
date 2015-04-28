@@ -2268,6 +2268,7 @@
          <property name="eventInfoDAO" ref="eventInfoDAO" />	
          <property name="eventAttendeeDAO" ref="eventAttendeeDAO" />
           <property name="voterInfoDAO" ref="voterInfoDAO" />	
+          <property name="eventUserDAO" ref="eventUserDAO" />	
          	
          
    </bean>

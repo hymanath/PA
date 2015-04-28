@@ -89,7 +89,7 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 	{
 		try{
 			jObj = new JSONObject(getTask());
-	        subEvents = mahaNaduService.getSubEventInfo(jObj.getString("parentEventId"),jObj.getLong("userId"));
+	        subEvents = mahaNaduService.getSubEventInfo(jObj.getLong("parentEventId"),jObj.getLong("userId"));
 		}
 		catch(Exception e)
 		{
