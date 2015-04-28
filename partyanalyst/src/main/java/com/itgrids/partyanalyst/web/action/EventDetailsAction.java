@@ -1,11 +1,14 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -17,9 +20,16 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 	private String task = null;
 	private IMahaNaduService mahaNaduService;
 	private ResultStatus resultStatus;
+	private List<UserEventDetailsVO> subEvents;
 	
 	
 	
+	public List<UserEventDetailsVO> getSubEvents() {
+		return subEvents;
+	}
+	public void setSubEvents(List<UserEventDetailsVO> subEvents) {
+		this.subEvents = subEvents;
+	}
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 		
@@ -74,6 +84,17 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 			e.printStackTrace();
 		}
 		return Action.SUCCESS;
+	}
+	public String getSubEventDetails()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+	        subEvents = mahaNaduService.getSubEventInfo(jObj.getString("parentEventId"),jObj.getLong("userId"));
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 }
