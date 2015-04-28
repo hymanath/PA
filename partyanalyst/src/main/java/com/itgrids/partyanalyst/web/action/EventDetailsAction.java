@@ -95,6 +95,7 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 		{
 			e.printStackTrace();
 		}
+		return Action.SUCCESS;
 	}
 
 }
