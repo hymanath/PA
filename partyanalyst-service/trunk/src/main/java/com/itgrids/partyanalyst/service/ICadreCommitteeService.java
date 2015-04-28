@@ -113,4 +113,5 @@ public interface ICadreCommitteeService {
 	 public List<IdNameVO> getPublicRepresenttativesList();
 	 public List<IdNameVO> getPartyEventGroups(Long userId);
 	 public List<IdNameVO> getPartyEvents(Long userId);
+	 public ResultStatus createNewEvent(final Long userId,final  String eventName,final  String description,final  String startDate,final  String endDate, final  Long mainEventId);
 }
