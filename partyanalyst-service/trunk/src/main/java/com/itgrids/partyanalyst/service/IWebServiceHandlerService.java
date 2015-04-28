@@ -89,6 +89,6 @@ public interface IWebServiceHandlerService {
 	public CadreAddressVO getMemberDataByRefNoAndMemberShipNo(String refNo,String memberShipNo);
 	public UserEventDetailsVO validateUserForEvent(UserEventDetailsVO inpuVo);
 	
-	 public UserEventDetailsVO insertEventAttendeeInfo(UserEventDetailsVO inpuVo);
+	 public UserEventDetailsVO insertEventAttendeeInfo(UserEventDetailsVO inputVo);
 		
 }
