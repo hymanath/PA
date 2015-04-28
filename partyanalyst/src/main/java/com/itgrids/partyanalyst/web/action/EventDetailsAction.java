@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
@@ -21,8 +22,15 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 	private IMahaNaduService mahaNaduService;
 	private ResultStatus resultStatus;
 	private List<UserEventDetailsVO> subEvents;
+	List<MahanaduEventVO> resultList;
 	
 	
+	public List<MahanaduEventVO> getResultList() {
+		return resultList;
+	}
+	public void setResultList(List<MahanaduEventVO> resultList) {
+		this.resultList = resultList;
+	}
 	
 	public List<UserEventDetailsVO> getSubEvents() {
 		return subEvents;
@@ -90,6 +98,23 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 		try{
 			jObj = new JSONObject(getTask());
 	        subEvents = mahaNaduService.getSubEventInfo(jObj.getLong("parentEventId"),jObj.getLong("userId"));
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getLocationWiseVisitorsCount()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			Long eventId = jObj.getLong("eventId");
+			Long stateId = jObj.getLong("stateId");
+			Long reportLevelId = jObj.getLong("reportLevelId");
+			resultList =  mahaNaduService.getEventInfoByReportType(eventId,stateId,reportLevelId);
+			
 		}
 		catch(Exception e)
 		{

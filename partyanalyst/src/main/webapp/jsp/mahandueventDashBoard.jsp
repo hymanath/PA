@@ -35,7 +35,7 @@
     </div>
 </header>
     
-    	<img src="dist/img/header-footer.png" class="header-footer">
+    	<img src="dist/img/header-footer.png" class="header-footer" style="margin-top: -27px;">
     
 
 <section class="container">
@@ -142,7 +142,7 @@
         </div>
     	<div class="col-md-4">
         	<div class="panel panel-default panel-custom-red">
-              <div class="panel-heading">andhra pradesh</div>
+              <div class="panel-heading">Andhra Pradesh</div>
               <div class="panel-body">
                 <!--<h3 class="display-style m_top0">TOTAL VISITS</h3><br/>
                 <h1 class="display-style m_top0">50245</h1>-->
@@ -306,7 +306,8 @@
             	<div class="panel-heading">
                 	Today Starting soon Programmes
                 </div>
-                <div class="panel-body ScrollDiv1">
+				 <div id="startingPgmDivId" class="panel-body scrollDiv1" style="height:390px;"></div>
+               <!-- <div class="panel-body scrollDiv1">
                 	<p class="m_0 text-bold">NTR PHOTO GALLERY</p>
                     <p>Short Description of photo gallery</p>
                     <p class="text-danger">Programme Time: 9:00 am To 5:00 pm</p>
@@ -322,14 +323,14 @@
                     <p class="m_0 text-bold">CHANDRABABU NAIDU SPEECH</p>
                     <p>Short Description of photo gallery</p>
                     <p class="text-danger m_bottom0">Programme Time: 9:00 am To 5:00 pm</p>
-                </div>
+                </div>-->
             </div>
         </div>
 
         <div class="col-md-7">
         	<div class="panel panel-default panel-custom-default">
             	<div class="panel-heading">
-                <p class="m_0 display-style">andhra pradesh</p>
+                <p class="m_0 display-style" id="districtHeading">andhra pradesh</p>
                 <div class="onoffswitch pull-right">
                     <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
                     <label class="onoffswitch-label" for="myonoffswitch">
@@ -339,129 +340,13 @@
                 </div>
                 
                 </div>
-                <div class="panel-body" >
-                    <div class="ScrollDiv">
-                        <table  class="display DataTableDiv" cellspacing="0" width="100%">
-                            <thead>
-                                <tr>
-                                    <th>DISTRICT NAME</th>
-                                    <th>VOTERS</th>
-                                    <th>CADRES</th>
-                                    <th>INVITEES</th>
-                                    <th>NON INVITEES</th>
-                                    <th>REVISITED</th>
-                                </tr>
-                            </thead>
-                     
-                     
-                            <tbody>
-                                <tr>
-                                    <td>Ananthapur</td>
-                                    <td>1252145</td>
-                                    <td>52145</td>
-                                    <td>52145</td>
-                                    <td>1522</td>
-                                    <td>2145</td>
-                                </tr>
-                                <tr>
-                                    <td>Ananthapur</td>
-                                    <td>1252145</td>
-                                    <td>52145</td>
-                                    <td>52145</td>
-                                    <td>1522</td>
-                                    <td>2145</td>
-                                </tr>
-                                <tr>
-                                    <td>Ananthapur</td>
-                                    <td>1252145</td>
-                                    <td>52145</td>
-                                    <td>52145</td>
-                                    <td>1522</td>
-                                    <td>2145</td>
-                                </tr>
-                                <tr>
-                                    <td>Ananthapur</td>
-                                    <td>1252145</td>
-                                    <td>52145</td>
-                                    <td>52145</td>
-                                    <td>1522</td>
-                                    <td>2145</td>
-                                </tr>
-                                <tr>
-                                    <td>Ananthapur</td>
-                                    <td>1252145</td>
-                                    <td>52145</td>
-                                    <td>52145</td>
-                                    <td>1522</td>
-                                    <td>2145</td>
-                                </tr>
-                                <tr>
-                                    <td>Ananthapur</td>
-                                    <td>1252145</td>
-                                    <td>52145</td>
-                                    <td>52145</td>
-                                    <td>1522</td>
-                                    <td>2145</td>
-                                </tr>
-                                <tr>
-                                    <td>Ananthapur</td>
-                                    <td>1252145</td>
-                                    <td>52145</td>
-                                    <td>52145</td>
-                                    <td>1522</td>
-                                    <td>2145</td>
-                                </tr>
-                                <tr>
-                                    <td>Ananthapur</td>
-                                    <td>1252145</td>
-                                    <td>52145</td>
-                                    <td>52145</td>
-                                    <td>1522</td>
-                                    <td>2145</td>
-                                </tr>
-                                <tr>
-                                    <td>Ananthapur</td>
-                                    <td>1252145</td>
-                                    <td>52145</td>
-                                    <td>52145</td>
-                                    <td>1522</td>
-                                    <td>2145</td>
-                                </tr>
-                                <tr>
-                                    <td>Ananthapur</td>
-                                    <td>1252145</td>
-                                    <td>52145</td>
-                                    <td>52145</td>
-                                    <td>1522</td>
-                                    <td>2145</td>
-                                </tr>
-                                <tr>
-                                    <td>Ananthapur</td>
-                                    <td>1252145</td>
-                                    <td>52145</td>
-                                    <td>52145</td>
-                                    <td>1522</td>
-                                    <td>2145</td>
-                                </tr>
-                                <tr>
-                                    <td>Ananthapur</td>
-                                    <td>1252145</td>
-                                    <td>52145</td>
-                                    <td>52145</td>
-                                    <td>1522</td>
-                                    <td>2145</td>
-                                </tr><tr>
-                                    <td>Ananthapur</td>
-                                    <td>1252145</td>
-                                    <td>52145</td>
-                                    <td>52145</td>
-                                    <td>1522</td>
-                                    <td>2145</td>
-                                </tr>
+                <div class="panel-body" style="min-height:350px;">
+                  
+                       
+                          <div id="districtTableId"></div>
                                 
-                            </tbody>
-                        </table>
-                        </div>
+                         
+                 
                 </div>
             </div>
         </div>
@@ -470,7 +355,7 @@
     	<div class="col-md-12">
         	<div class="panel panel-default panel-custom-default">
             	<div class="panel-heading">
-                <p class="m_0 display-style">andhra pradesh</p>
+                <p class="m_0 display-style" id="constiHeading">Andhra Pradesh</p>
                 <div class="onoffswitch pull-right">
                     <input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox" id="myonoffswitch1" checked>
                     <label class="onoffswitch-label" for="myonoffswitch1">
@@ -480,134 +365,10 @@
                 </div>
                 
                 </div>
-                <div class="panel-body">
-                    <div class="ScrollDiv">
-                        <table class="display DataTableDiv" cellspacing="0" width="100%">
-                            <thead>
-                                <tr>
-                                    <th>CONSTITUENCY NAME</th>
-                                    <th>DISTRICT NAME</th>
-                                    <th>VOTERS</th>
-                                    <th>CADRES</th>
-                                    <th>INVITEES</th>
-                                    <th>NON INVITEES</th>
-                                    <th>REVISITED</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Kavali</td>
-                                    <td>Ananthapur</td>
-                                    <td>1252145</td>
-                                    <td>52145</td>
-                                    <td>52145</td>
-                                    <td>1522</td>
-                                    <td>2145</td>
-                                </tr>
-                                <tr>
-                                    <td>Atamapur</td>
-                                    <td>Ananthapur</td>
-                                    <td>1252145</td>
-                                    <td>52145</td>
-                                    <td>52145</td>
-                                    <td>1522</td>
-                                    <td>2145</td>
-                                </tr>
-                                <tr>
-                                	<td>Kovur</td>
-                                    <td>Ananthapur</td>
-                                    <td>1252145</td>
-                                    <td>52145</td>
-                                    <td>52145</td>
-                                    <td>1522</td>
-                                    <td>2145</td>
-                                </tr>
-                                <tr>
-                                    <td>Nellore City</td>
-                                    <td>Ananthapur</td>
-                                    <td>1252145</td>
-                                    <td>52145</td>
-                                    <td>52145</td>
-                                    <td>1522</td>
-                                    <td>2145</td>
-                                </tr>
-                                <tr>
-                                	<td>Gudur</td>
-                                    <td>Ananthapur</td>
-                                    <td>1252145</td>
-                                    <td>52145</td>
-                                    <td>52145</td>
-                                    <td>1522</td>
-                                    <td>2145</td>
-                                </tr>
-                                <tr>
-                                	<td>Sarvepalli</td>
-                                    <td>Ananthapur</td>
-                                    <td>1252145</td>
-                                    <td>52145</td>
-                                    <td>52145</td>
-                                    <td>1522</td>
-                                    <td>2145</td>
-                                </tr>
-                                <tr>
-                                    <td>Ananthapur</td>
-                                    <td>Ananthapur</td>
-                                    <td>1252145</td>
-                                    <td>52145</td>
-                                    <td>52145</td>
-                                    <td>1522</td>
-                                    <td>2145</td>
-                                </tr>
-                                <tr>
-                                	<td>Ananthapur</td>
-                                    <td>Ananthapur</td>
-                                    <td>1252145</td>
-                                    <td>52145</td>
-                                    <td>52145</td>
-                                    <td>1522</td>
-                                    <td>2145</td>
-                                </tr>
-                                <tr>
-                                	<td>Ananthapur</td>
-                                    <td>Ananthapur</td>
-                                    <td>1252145</td>
-                                    <td>52145</td>
-                                    <td>52145</td>
-                                    <td>1522</td>
-                                    <td>2145</td>
-                                </tr>
-                                <tr>
-                                	<td>Ananthapur</td>
-                                    <td>Ananthapur</td>
-                                    <td>1252145</td>
-                                    <td>52145</td>
-                                    <td>52145</td>
-                                    <td>1522</td>
-                                    <td>2145</td>
-                                </tr>
-                                <tr>
-                                	<td>Ananthapur</td>
-                                    <td>Ananthapur</td>
-                                    <td>1252145</td>
-                                    <td>52145</td>
-                                    <td>52145</td>
-                                    <td>1522</td>
-                                    <td>2145</td>
-                                </tr>
-                                <tr>
-                                	<td>Ananthapur</td>
-                                    <td>Ananthapur</td>
-                                    <td>1252145</td>
-                                    <td>52145</td>
-                                    <td>52145</td>
-                                    <td>1522</td>
-                                    <td>2145</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                        </div>
-                </div>
+                <div class="panel-body"><div id="constiTableId">
+                  
+                       
+                </div></div>
             </div>
         </div>
     </div>
@@ -625,22 +386,9 @@
 <script src="dist/js/dataTables.responsive.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(function () {
-	   $('.DataTableDiv').DataTable( {
-        responsive: true,
-		"paging":   false,
-        "info":     false,
-		"searching": false,
-		"sDom": '<"top"i>rt<"bottom"flp><"clear">',
-		"columnDefs": [
-	    { "width": "25%", "targets": 0 }]
-    } );
 	
-	$('.ScrollDiv1').slimScroll({
-	height: '390px'
-	});
-	$('.ScrollDiv').slimScroll({
-	height: '350px'
-	});
+	
+	
     $('#container').highcharts({
 		chart: {
             type: 'area'
@@ -704,14 +452,134 @@ function testIt()
 			  
          },
           error:function() { 
-           console.log('error', arguments);
+           //console.log('error', arguments);
          }
     });
-
 }
+getLocationWiseVisitorsCount(2,1,3);
+getLocationWiseVisitorsCount(2,1,4);
+
+function getLocationWiseVisitorsCount(eventId,stateId,reportLevelId)
+{
+	var jObj = {
+			eventId:eventId,			
+			stateId:stateId,
+			reportLevelId:reportLevelId
+		
+		}	
+		
+		$.ajax({
+          type:'GET',
+          url: 'getLocationWiseVisitorsCountAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			if(result != null)
+			{				
+				buildDistrictTable(result,reportLevelId)	
+			}
+	});
+}
+function buildDistrictTable(result,reportLevelId){
+	var str='';
+	str+='<div class="ScrollDiv"><table  class="display DataTableDiv" id="table'+reportLevelId+'" cellspacing="0" width="100%"><thead>';
+	str+='<tr>';
+	if(reportLevelId == 3){
+    str+='<th>DISTRICT NAME</th>';
+	}else{
+	str+='<th>CONSTITUENCY NAME</th>';
+	}
+	str+='<th>VOTERS</th>';
+    str+='<th>CADRES</th>';
+	str+='<th>INVITEES</th>';
+	str+='<th>NON INVITEES</th>';
+    str+='</tr></thead>';
+    str+='<tbody>';
+	for(var i in result){
+		str+='<tr>';
+		str+='<td>'+result[i].name+'</td>';
+		str+='<td>'+result[i].voterCount+'</td>';
+		str+='<td>'+result[i].cadreCount+'</td>';
+		str+='<td>'+result[i].invitees+'</td>';
+		str+='<td>'+result[i].nonInvitees+'</td>';
+		str+='</tr>';
+    }                               
+	str+='</tbody></table></div>';
+	if(reportLevelId == 3)
+	$("#districtTableId").html(str);
+	else
+	$("#constiTableId").html(str);
+	$('#table'+reportLevelId).DataTable( {
+        responsive: true,
+		"paging":   false,
+        "info":     false,
+		"searching": false,
+		"sDom": '<"top"i>rt<"bottom"flp><"clear">',
+		"columnDefs": [
+	    { "width": "30%", "targets": 0 }]
+    } );
+	
+	$('.ScrollDiv').slimScroll({
+	height: '350px'
+	});
+}
+$("#myonoffswitch").click(function(){
+	if($('#myonoffswitch').is(":checked")){
+	getLocationWiseVisitorsCount(2,1,3);
+	$("#districtHeading").html("Andhra Pradesh");
+	}else{
+	getLocationWiseVisitorsCount(2,36,3);
+	$("#districtHeading").html("Telangana");
+	}
+});
+$("#myonoffswitch1").click(function(){
+	if($('#myonoffswitch1').is(":checked")){
+	getLocationWiseVisitorsCount(2,1,4);
+	$("#constiHeading").html("Andhra Pradesh");
+	}else{
+	getLocationWiseVisitorsCount(2,36,4);
+	$("#constiHeading").html("Telangana");
+	}
+});
+
+getSubEventDetails(1,1);
+function getSubEventDetails(userId,parentEventId){
+	var jObj = {
+			parentEventId:parentEventId,			
+			userId:userId
+		}	
+		
+		$.ajax({
+          type:'GET',
+          url: 'getSubEventDetailsAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+		buildStartingPrograms(result);
+	});
+}
+function buildStartingPrograms(result){
+    var str='';
+	//str+='<div class="panel-body scrollDiv1">';
+	for( var i in result){
+  
+        str+='<p class="m_0 text-bold">'+result[i].userName+'</p>';
+        str+='<p>'+result[i].status+'</p>';
+		if(result[i].startTime != null && result[i].endTime != null){
+        str+='<p class="text-danger">Programme Time:'+result[i].startTime+' To '+result[i].endTime +'</p>';
+		}else{
+		str+='<p class="text-danger">Programme Time:</p>';
+		}
+        str+='<hr class="m_top10"/>';
+    }              
+
+	$("#startingPgmDivId").html(str);
+	$('.scrollDiv1').slimScroll({
+	height: '390px'
+	});
+}
+getLocationWiseVisitorsCount(2,1,2);
+
 </script>
 <script>
-testIt();
 </script>
 </body>
 </html>
