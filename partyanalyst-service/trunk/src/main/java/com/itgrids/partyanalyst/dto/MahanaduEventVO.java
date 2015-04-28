@@ -11,8 +11,36 @@ public class MahanaduEventVO {
 	private Long voterCount = 0l;
 	private Long cadreCount = 0l;
 	
+	private String startTime;
+	private String endTime;
+	private String desc;
+	private String inviteeExists;
 	
 	
+	public String getDesc() {
+		return desc;
+	}
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+	public String getInviteeExists() {
+		return inviteeExists;
+	}
+	public void setInviteeExists(String inviteeExists) {
+		this.inviteeExists = inviteeExists;
+	}
+	public String getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+	public String getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
 	public Long getTotal() {
 		return total;
 	}

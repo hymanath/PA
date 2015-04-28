@@ -27,6 +27,7 @@ public interface IMahaNaduService {
 	 
 	 public CadreVo searchVoterInfo(Long userId,Long boothId, String searchName,String searchType,String sort,String sortBy,int startIndex,int maxResult);
 	 public ResultStatus insertDataintoEventInfo();
-	 public List<UserEventDetailsVO> getSubEventInfo(Long parentId,Long userId);
+
+	 public List<MahanaduEventVO> getSubEventInfo(Long parentId,Long userId);
 	 public List<MahanaduEventVO> getEventInfoByReportType(Long eventId,Long stateId,Long reportLevelId);
 }
