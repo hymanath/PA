@@ -97,4 +97,22 @@ public class EventInviteeDAO extends GenericDaoHibernate<EventInvitee, Long> imp
 		return (Long)query.uniqueResult();
 	}
 
+	public Long checkIsExistDetails(Long id,Long eventId,String memberType)
+	{
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select model.eventInviteeId from EventInvitee model where model.eventId =:eventId ");
+		if(memberType.trim().equalsIgnoreCase("tdpCadre"))
+		{
+			queryStr.append(" and model.tdpCadreId =:id ");
+		}
+		else if(memberType.trim().equalsIgnoreCase("publicRepresentative"))
+		{
+			queryStr.append(" and model.publicRepresentativeId =:id ");
+		}
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("eventId", eventId);
+		query.setParameter("id", id);
+		return (Long) query.uniqueResult(); 
+	}
 }

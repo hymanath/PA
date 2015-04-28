@@ -1475,10 +1475,10 @@ public List<Object[]> membersCountMandalWise(List<Long> levelIds, Date startDate
 		return query.list();
 	}
 
-	public List<Long> getCommiteeMembersDetailsByPostionsAndCommiteeLevel(List<Long> committeeLevelIds,List<Long> committeeValueList,Long committeeId,List<Long> commiteeRoleIds,List<Long> districtIds,Integer startIndex,Integer maxIndex)
+	public List<Object[]> getCommiteeMembersDetailsByPostionsAndCommiteeLevel(List<Long> committeeLevelIds,List<Long> committeeValueList,Long committeeId,List<Long> commiteeRoleIds,List<Long> districtIds,Integer startIndex,Integer maxIndex)
 	{
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(" select distinct model.tdpCadreId from TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId in (:committeeLevelIds) and ");
+		stringBuilder.append(" select distinct model.tdpCadreId,model.tdpCommitteeRole.tdpRoles.role from TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId in (:committeeLevelIds) and model.isActive ='Y' and ");
 		
 		if(districtIds != null && districtIds.size()>0)
 		{
@@ -1521,7 +1521,7 @@ public List<Object[]> membersCountMandalWise(List<Long> levelIds, Date startDate
 	public List<Object[]> getCommiteeMembersCountDetailsByPostionsAndCommiteeLevel(List<Long> committeeLevelIds,List<Long> committeeValueList,Long committeeId,List<Long> commiteeRoleIds,List<Long> districtIds,Integer startIndex,Integer maxIndex)
 	{
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(" select model.tdpCommitteeRole.tdpRoles.tdpRolesId,model.tdpCommitteeRole.tdpRoles.role, count(distinct model.tdpCadreId)  from TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId in (:committeeLevelIds) and ");
+		stringBuilder.append(" select model.tdpCommitteeRole.tdpRoles.tdpRolesId,model.tdpCommitteeRole.tdpRoles.role, count(distinct model.tdpCadreId)  from TdpCommitteeMember model where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId in (:committeeLevelIds) and model.isActive ='Y' and ");
 		
 		if(districtIds != null && districtIds.size()>0)
 		{
