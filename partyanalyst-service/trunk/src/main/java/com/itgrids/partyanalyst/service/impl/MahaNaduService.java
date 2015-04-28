@@ -1332,7 +1332,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		 LOG.error("Exception Occured in getSubEventInfo()", e);
 		 e.printStackTrace();
 	 }
-	return null;
+	return resultList;
  }
  
  public String TimeForm(String time)
