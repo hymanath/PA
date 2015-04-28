@@ -27,24 +27,54 @@
 <script src="dist/js/fm.scrollator.jquery.js" type="text/javascript"></script>
 
 	<!-- Bootstrap -->
-    <link href="js/cadreCommittee/dist/css/bootstrap.min.css" rel="stylesheet"/>
 	 <!-- Custom Styles -->
     <link href="css/cadreCommitee/css/style.css" rel="stylesheet"/>
     	<!--Bootstrap DatePicker-->
     <link href="js/cadreCommittee/bootstrapDaterangepicker/daterangepicker-bs3.css" rel="stylesheet" />
 		<!--Hover Menu-->
-    <link href="css/cadreCommitee/css/jquery.smartmenus.bootstrap.css" rel="stylesheet" />
     	<!--Circle-->
     <link href="js/cadreCommittee/dist/css/jquery.circliful.css" rel="stylesheet" />	
     <script type="text/javascript" src="js/exportexcel.js"></script>
 
-<style>
 
-.selectedcandidatesCount li {
+<script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
+<script src="dist/Date/moment.min.js" type="text/javascript"></script>
+<script src="dist/Date/daterangepicker.js" type="text/javascript"></script>
+<style>
+*
+{
+	outline:none !important;
+}
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover ,
+.nav-tabs>li>a:hover
+{
+	background:#01b6ad;
+	color:#fff;
+}
+.nav-tabs>li>a
+{
+	color:#000
+}
+#exampleInputName2 ,#createeventdate
+{
+	height:auto !important;
+}
+.calendar-date  .prev , .calendar-date  .next
+{
+	background:none !important;
+}
+
+.publickRepracentative li:first-child {
+    background: none repeat scroll 0 0 #000;
+    color: #fff;
+    display: block;
+}
+.publickRepracentative li {
     background: none repeat scroll 0 0 #e9e9e9;
-    margin: 5px;
-    padding: 5px 10px;
-	width:250px;
+    border: 1px solid #ccc;
+    margin: 2px;
+    padding: 4px 8px;
 }
 
 .paginate_disabled_previous,.paginate_enabled_previous,.paginate_enabled_next{
@@ -101,9 +131,13 @@
 .col-drop-head{font-size: 15px; font-weight: bold;}
 </style>
 </head>
+
 <body class="background-bg">
 
+
+
 <div class="container m_top30" style="min-height:340px;">
+
 	<div aria-multiselectable="true" role="tablist" id="" class="panel-group">
       <div class="panel panel-default" style="margin-top: 25px;">
        
@@ -256,7 +290,6 @@
 				
 				<div class="col-md-8 m_top20" id="buildSelectionBlockDiv" style="display:none;">
 						<div class="border-box" >
-							<!--<div class="trashicon"> <a href="javascript:{deleteCommite();}"> <i class="glyphicon glyphicon-trash"></i></a></div>-->
 							
 							<div class="panel panel-default" id="stateLevelId" style="display:none;">
 								<div class="panel-heading"  style="background:#01B6AD;">
@@ -350,16 +383,29 @@
 							</div>	
 							<div class="panel panel-default" id="">
 								<div class="panel-heading">
-									<button onclick="getMembersDetails(0);" class="btn btn-success btn-xs"> Get Details </button>
+									<button onclick="getMembersDetails(0,'none');" class="btn btn-success btn-xs"> Get Details </button>
 								</div>
 							</div>
 						</div>
 				</div>
+				
 				<div class="col-md-12 m_top20" id="candidateDetailsDiv" style="display:none;">
+						
 						<div class="border-box">
+							<!--<div class="row">
+								<div id="countDiv" style="display:none"></div>
+							</div>-->
 							<div class="panel panel-default">
-
-							<div id="countDiv"  class="panel panel-success"></div>	
+							
+							<div class="row">
+								
+								<div class="col-md-3" id="publicRepresentsId" style="display:none"></div>
+								<div class="col-md-3" id="stateMembersUl" style="display:none"></div>
+								<div class="col-md-3" id="districtMembersUl" style="display:none"></div>
+								<div class="col-md-3" id="mandalMembersUl" style="display:none"></div>
+								<div class="col-md-3" id="villageMembersUl" style="display:none" ></div>
+							</div>	
+							<hr style="border: 1px solid; color: #01b6ad;">
 							 <div class="row">
 								<div class="col-md-12 col-xs-12 col-md-12">
 								<center><img id="summaryAjax" style="width:100px;height:80px;display:none;"  src="./images/Loading-data.gif" alt="Processing Image"/></center>
@@ -407,7 +453,7 @@
 				</div>
 				  </div>
 			  </div>
-	
+		
     </div>
 
 	<!---<div class="well br_0 container m_top30" style="background-color:#fff">
@@ -415,14 +461,80 @@
 		
     </div> ---->
 	<div id="smsDialogueBoxDiv">
-		<div id="smsMessageDiv" style="display:none;"> 
-				
+		<div id="smsMessageDiv" style="display:none;"> 				
 		</div>
 	</div>
+	
+	<div id="inviteMembersDiv">
+		<div id="dialogueForInviteId" class="text-center" style="display:none;"> 	
+			
+		</div>
+		</div>
+	
 	</div>
+<div class="modal fade" id="commdetailspop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"  style="margin-left: 280px; width: 660px; height: 100%; overflow: hidden; background: none repeat scroll 0% 0% transparent; box-shadow: none; border: medium none;position:absolute;">
+		  <div class="modal-dialog">
+			<div class="modal-content" style="border:2px solid #01b6ad;border-radius:0px;">
+			  <div class="modal-header" style="background:#;padding:10px">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>	
+			  <div role="tabpanel">
 
-<script src="dist/js/jquery-1.11.2.min.js" type="text/javascript"></script>
-<script src="dist/js/bootstrap.min.js" type="text/javascript"></script>
+		  <!-- Nav tabs -->
+		  <ul class="nav nav-tabs" role="tablist">
+			<li role="presentation" class="active" ><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" style="padding:10px 15px !important;"> Invite Members	</a></li>
+			<li role="presentation"><a href="#home"  aria-controls="home" role="tab" data-toggle="tab" style="padding:10px 15px !important"> Create Event </a></li>
+		  </ul>
+		  </div>
+		  </div>
+		  <div class="modal-body">
+		  <!-- Tab panes -->
+		  <div class="tab-content">
+			<div role="tabpanel" class="tab-pane " id="home">
+
+				<div id="errorDivId" style="color:#FE0000;" ></div>
+				  <div class="form-group">
+					<label for="exampleInputName2">Event Name</label>
+					<input type="text" class="form-control" id="newEventId" style="height: 30px;">
+				  </div>
+				  <div class="form-group">
+					<label for="exampleInputEmail2">Event For</label>
+					<select class="form-control" id="eventsList" >
+						
+					</select>
+				  </div>
+				
+					<label for="exampleInputEmail1">Description</label><br/>
+					<textarea class="form-control" id="descriptionId" maxlength="50"></textarea><br/>
+					<form class="form-inline">
+					  <div class="form-group">
+						<label for="exampleInputEmail0">Date</label>
+						<input type="email" class="form-control" id="createeventdate">
+					  </div>
+					  <div class="form-group">
+						<label for="exampleInputEmail">Time</label>
+						<input type="email" class="form-control">
+					  </div>
+					</form>
+					
+					</div>
+				
+			<div role="tabpanel" class="tab-pane active" id="profile">
+				<select class="form-control" id="inviteEventsList">
+				</select>
+			
+			</div>
+		  </div>
+
+			</div>
+				  <div class="modal-footer">
+				<button type="button" class="btn btn-primary" onclick="creatNewEvent();">Submit</button>
+			  </div>
+
+
+			</div>  
+		</div>
+		</div>
+
 <script src="dist/js/classie.js" type="text/javascript"></script>
 <script src="dist/js/selectFx.js" type="text/javascript"></script>
 <script src="dist/MultiSelect/js/magicselection.js" type="text/javascript"></script>
@@ -430,7 +542,7 @@
 <script src="dist/js/fm.scrollator.jquery.js" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
-	
+	<script src="dist/Date/moment.min.js" type="text/javascript"></script>
 	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination_1.css"/>
@@ -928,6 +1040,11 @@
 			}
 			$(document).ready(function()
 			{
+				
+				  $('#createeventdate').daterangepicker(null, function(start, end, label) {
+					//console.log(start.toISOString(), end.toISOString(), label);
+				  });
+  
 				//$('.locationsCls').hide();
 				$("#checkAll").click(function()
 				{
@@ -1113,8 +1230,7 @@
 			}
 		
 			$(".toggleCls").removeClass("in");
-			
-			
+
 			if(memberType =='CadreMembers')
 			{
 					var commite = $(".committeeName").html();
@@ -1133,7 +1249,7 @@
 					str+='<form class="me-select display-style">';//collapse-select
 					str+='<ul id="me-select-list">';
 					str+='<li>';//<input id="cb11" name="cb11" type="checkbox" class="addedcommite"/>';
-					str+='<span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapseComm'+commiteId+'" aria-controls="collapseComm'+commiteId+'" class="col-drop-head" onClick="toggleDiv(\'collapseComm'+commiteId+'\')">'+commite+' ('+locationLevel+') <a href="javascript:{deleteCommite(\''+commiteId+'Div\');}" title="Click here to Remove Committee Details."> <i class="glyphicon glyphicon-trash"></i></a></a></span></li>';
+					str+='<span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapseComm'+commiteId+'" aria-controls="collapseComm'+commiteId+'" class="col-drop-head" onClick="toggleDiv(\'collapseComm'+commiteId+'\')">'+commite+' ('+locationLevel+') <a href="javascript:{deleteCommite(\''+commiteId+'Div\',\'COMMITTEE\');}" title="Click here to Remove Committee Details."> <i class="glyphicon glyphicon-trash"></i></a></a></span></li>';
 					str+=' </ul>';
 					str+=' </form>';
 					str+='<a data-toggle="collapse" data-parent="#accordion" href="#collapseComm'+commiteId+'" aria-expanded="true" aria-controls="collapseComm'+commiteId+'" onClick="toggleDiv(\'collapseComm'+commiteId+'\')">';
@@ -1210,10 +1326,6 @@
 				 
 			   str+='</div>';
 			  $("#"+divId+"").append(str);
-			  
-			  $("#candidateDetailsDiv").show();
-			  
-			 
 			}
 			else
 			{
@@ -1234,7 +1346,7 @@
 					str+='<form class="me-select display-style">';//collapse-select click 
 					str+='<ul id="me-select-list">';
 					str+='<li>';//<input id="cb11" name="cb11" type="checkbox" class="addedcommite"/>';
-					str+='<span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapseComm'+commiteId+'" aria-controls="collapseComm'+commiteId+'" class="col-drop-head" onClick="toggleDiv(\'collapseComm'+commiteId+'\')">'+locationLevel+' <a href="javascript:{deleteCommite(\''+commiteId+'Div\');}" title="Click here to Remove Committee Details."> <i class="glyphicon glyphicon-trash"></i></a></a></span></li>';
+					str+='<span class="text-col-head"><a data-toggle="collapse" data-parent="#accordion" href="#collapseComm'+commiteId+'" aria-controls="collapseComm'+commiteId+'" class="col-drop-head" onClick="toggleDiv(\'collapseComm'+commiteId+'\')">'+locationLevel+' <a href="javascript:{deleteCommite(\''+commiteId+'Div\',\'PR\');}" title="Click here to Remove Committee Details."> <i class="glyphicon glyphicon-trash"></i></a></a></span></li>';
 					str+=' </ul>';
 					str+=' </form>';
 					str+='<a data-toggle="collapse" data-parent="#accordion" href="#collapseComm'+commiteId+'" aria-expanded="true" aria-controls="collapseComm'+commiteId+'" onClick="toggleDiv(\'collapseComm'+commiteId+'\')">';
@@ -1311,106 +1423,10 @@
 			   };
 			   selCommiteeArr.push(commteArrObj);
 			}
-			
-			
 			}
 
   //getMembersDetails(0);
 }
-	
-	function get111MembersDetails(startIndex)
-	{
-		isEntered=false;
-		var groupName = $('#groupNameId').val();
-		var committeeIdsArr = new Array();
-		var submitArr = new Array();
-		
-		$('#summaryAjax').show();
-		$('.checkedCls').each(function(){
-
-			if($(this).is(':checked'))
-			{
-				var roleId = $(this).attr('value');
-				var committeeId = $(this).attr('committeeid');
-				var objectArr = new Array();
-				var isCommitteeExist = true;
-				if(committeeIdsArr.length>0)
-				{
-					for(var i in committeeIdsArr)
-					{						
-						if(committeeIdsArr[i].committeeId == committeeId)
-						{
-							isCommitteeExist = false;
-							rolesIdsArr = committeeIdsArr[i].rolesIds;
-							rolesIdsArr.push(roleId);
-						}
-					}
-				}	
-				
-				if(isCommitteeExist)				
-				{
-					var rolesIdsArr = new Array();
-						rolesIdsArr.push(roleId);
-						var committeeObj = {
-						committeeId : committeeId,
-						rolesIds:rolesIdsArr
-						}
-						committeeIdsArr.push(committeeObj);
-				}
-				
-				var districtId = $(this).attr('districtid');
-				var constituencyId = $(this).attr('constiid');
-				var mandalId = $(this).attr('mandalid');
-				var panchayatId = $(this).attr('villageid');
-				var levelId = $(this).attr('locationlevelid');
-			}
-			
-			var jsObj =
-			{
-				searchType:"getDetails",
-				groupName:"",
-				eventId :0,
-				committeeLevelId : levelId,
-				committeeLevelValue:0,
-				committeeIdsArr : committeeIdsArr,
-				stateId:glstateId,
-				districtId:districtId,
-				constituencyId:constituencyId,
-				mandalId:mandalId,
-				panchayatId:panchayatId,
-				startIndex:startIndex,
-				maxIndex : 100,	
-				sortBy:"",
-						
-			};
-			
-			var isSubmitted=true;
-			if(submitArr.length>0)
-				{
-					for(var i in submitArr)
-					{						
-						if(submitArr[i].levelId == levelId)
-						{
-							isSubmitted = false;
-							objectArr = submitArr[i].objArr;
-							objectArr.push(jsObj);
-						}
-					}
-				}				
-				if(isSubmitted)
-				{
-					objectArr.push(jsObj);
-					var levelObj ={
-						levelId: levelId ,
-						objArr:objectArr
-						};
-					
-					submitArr.push(levelObj);
-				}
-		});
-	
-		
-	}
 	
 	function createGroup(index)
 	{	
@@ -1468,8 +1484,9 @@
 	}
 	
 	var globalJsonArr = new Array();
-	function getMembersDetails(startIndex)
+	function getMembersDetails(startIndex,actionText)
 	{
+		$('#candidateDetailsDiv').show();
 		isEntered=false;
 		var submitArr = new Array();
 		var committeeIdsArr = new Array();
@@ -1478,7 +1495,17 @@
 		var districtArr = new Array();
 		var mandalArr = new Array();
 		var villageArr = new Array();
-
+		var eventId = 0;
+		//debugger;
+		if(actionText == 'invite')
+		{
+			eventId = $('#inviteEventsList').val();
+			if(eventId == 0)
+			{
+				alert('Please Select Event.');
+				return;
+			}
+		}
 		
 		$('#summaryAjax').show();
 		$(".paginationDivId").hide();
@@ -1650,11 +1677,10 @@
 		{
 			searchType:"getDetails",
 			stateId:glstateId,
-			actionType:"none",
+			actionType:actionText,
 			stateStr:"AP",
-			eventId:0,
 			groupName:"",
-			eventId :0,
+			eventId :eventId,
 			submitArr:submitArr,
 			startIndex:startIndex,
 			maxIndex : 100					
@@ -1662,7 +1688,15 @@
 		var divId = 'buildSearchDetailsStateId';
 		$('#'+divId+'').html('');
 		if(startIndex == 0)
+		{
 			$('#countDiv').html('');
+			$('#publicRepresentsId').html('');
+			$('#mandalMembersUl').html('');
+			$('#villageMembersUl').html('');
+			$('#stateMembersUl').html('');
+			$('#districtMembersUl').html('');
+		}
+			
 		
 		$('html, body').animate({scrollTop:$('#summaryAjax').offset().top}, 'slow');
 		$.ajax({
@@ -1672,9 +1706,20 @@
 		  data: {task:JSON.stringify(jsObj)}
 		   }).done(function(result){
 			   $('#summaryAjax').hide();
+			   isReturn = true;
 			   if(result != null && result.length>0 && result[0].cadreComitteeVOList != null && result[0].cadreComitteeVOList.length>0)
-			   {
-				  buildSearchDetails(result[0].cadreComitteeVOList,result[0].cadreSearchList,divId,'',jsObj,result[0].totalCount);
+			   {	
+					
+				if(actionText == 'none')
+				{
+					buildSearchDetails(result[0].cadreComitteeVOList,result[0].cadreSearchList,divId,'',jsObj,result[0].totalCount,result);
+				}
+				else if(result != null && result.length>0 && result[0].responseCode == 0)
+				{
+					alert('Selected Members Invited Successfully...');
+					 $("#dialogueForInviteId").css('display','none');
+					 $("#inviteMembersDiv").dialog('close');
+				}
 			   }
 			else{
 				$('#'+divId+'').html('<span style="font-weight:bold;text-align:center;">No Data Available...</span>');
@@ -1683,7 +1728,7 @@
 	}
 	var indexValue=0;
 	//9999
-	function buildSearchDetails(result,countResult,divId,locationLevel,jsObj,totalCnt)
+	function buildSearchDetails(result,countResult,divId,locationLevel,jsObj,totalCnt,totalresult)
 	{		
 
 		var str ='';
@@ -1698,6 +1743,8 @@
 				//str+='<div style="width:300px;margin-top:-18px;margin-right:-10px" class="input-group pull-right">';
 				//str+='<input type="text" style="height: 35px;" aria-describedby="basic-addon2" placeholder="Enter Group Name" class="form-control" id="groupNameId'+indexValue+'"/>';
 				//str+='<span style="background-color: rgb(1, 182, 173); color: rgb(255, 255, 255); cursor: pointer;" id="addGroupId" class="input-group-addon" onclick="createGroup('+indexValue+')">ADD TO GROUP</span>';
+				//str+='<span style="margin-top: -10px; cursor: pointer;margin-right: 15px;" id="createEventBtn" class="btn btn-xs btn-success " onclick="createNewEvent();"> CREATE EVENT </span>';
+				//str+='<button style="margin-top: -10px; cursor: pointer;" id="inviteBtn" class="btn btn-xs btn-success " onclick="eventsForUser()" data-toggle="modal" data-target="#commdetailspop"> INVITE MEMBERS </button>';
 				//str+='</div><br><br>';
 				//str+='<span class="viewlink">Click To View Existed group Names</span>    ';
 				str+='</div>';
@@ -1764,7 +1811,7 @@
 			cssStyle: 'light-theme',
 			onPageClick: function(pageNumber, event) {
 				var num=(pageNumber-1)*100;
-				getMembersDetails(num);
+				getMembersDetails(num,'none');
 				
 			}
 		});
@@ -1778,62 +1825,324 @@
 		
 		$('html, body').animate({scrollTop:$('#'+divId+'').offset().top}, 'slow');
 		
+		var publicRepresentsCount = 0;
 		if(countResult != null && countResult.length>0)
+		{
+			for(var j in countResult)
 			{
-				for(var j in countResult)
-				{
-					count = count+countResult[j].totalCount;
-				}
+				publicRepresentsCount = publicRepresentsCount+countResult[j].totalCount;
 			}
+		}
+			
 		if(jsObj.startIndex == 0)	
 		{
-			str ='';
-			str+='<div class="box-sub text-center">';
+			if(publicRepresentsCount >0)
+			{
+				if(countResult != null && countResult.length>0)
+				{
+					str ='';
+					str+='<h5></h5>';
+					str+='<ul class="publickRepracentative" >';
+					if(countResult != null && countResult.length>0)
+					{
+						str+='<li> <span style="font-weight:bold;"> Public Representatives ('+publicRepresentsCount+') </span> </li>';
+						for(var j in countResult)
+						{					
+							if(countResult[j].totalCount != 0){							
+								str+='<li> <span style="font-weight:bold">'+countResult[j].cadreName+' </span> : '+countResult[j].totalCount+'</li>';
+							}							
+						}
+
+					}
+					str+='</ul>';
+					
+					$('#publicRepresentsId').html(str);
+					$('#publicRepresentsId').show();
+				}
+			}	
+			
+			//$('#countsDiv1').html('');
+		}
+		
+		//totalresult
+		
+		var mandalsArr = totalresult[0].tdpCadreDetailsList;
+		var mandalCadreCount = 0;publicRepresentsCount
+		if(mandalsArr != null && mandalsArr.length>0)
+		{
+			for(var j in mandalsArr)
+			{
+				mandalCadreCount = mandalCadreCount+mandalsArr[j].totalCount;
+			}
+		}
+
+		if(jsObj.startIndex == 0)	
+		{
+			if(mandalCadreCount >0)
+			{
+				str ='';
+				str+='<h5></h5>';
+				str+='<ul class="publickRepracentative" >';
+				if(mandalsArr != null && mandalsArr.length>0)
+				{
+					str+='<li> <span style="font-weight:bold;"> Mandal/Municipality Level Committee Members ('+mandalCadreCount+') </span> </li>';
+					for(var j in mandalsArr)
+					{					
+						if(mandalsArr[j].totalCount != 0){							
+							str+='<li> <span style="font-weight:bold">'+mandalsArr[j].cadreName+' </span> : '+mandalsArr[j].totalCount+'</li>';
+							
+						}							
+					}
+
+				}
+				str+='</ul>';
+				
+				$('#mandalMembersUl').html(str);
+				$('#mandalMembersUl').show();
+			}
+		}
+
+		var locationsWiseCountArr = totalresult[0].voterSearchList;	
+		if(locationsWiseCountArr != null)
+		{
+			var villagesArr = locationsWiseCountArr[0].voterSearchList;
+			//console.log("lenght :  "+villagesArr.lenght);
+			var villageCadreCount = 0; 
+			if(villagesArr != null && villagesArr.length>0)
+			{
+				for(var j in villagesArr)
+				{
+					villageCadreCount = villageCadreCount+villagesArr[j].totalCount;
+				}
+			}
+
+			if(jsObj.startIndex == 0)	
+			{
+				if(villageCadreCount >0)
+				{
+					str ='';
+					str+='<h5></h5>';
+					str+='<ul class="publickRepracentative"  >';
+					if(villagesArr != null && villagesArr.length>0)
+					{
+						str+='<li> <span style="font-weight:bold;"> Village/Ward Level Committee Members ('+villageCadreCount+') </span> </li>';
+						for(var j in villagesArr)
+						{					
+							if(villagesArr[j].totalCount != 0){							
+								str+='<li> <span style="font-weight:bold">'+villagesArr[j].cadreName+' </span> : '+villagesArr[j].totalCount+'</li>';
+								
+							}							
+						}
+
+					}
+					str+='</ul>';
+					
+					$('#villageMembersUl').html(str);
+					$('#villageMembersUl').show();
+				}
+			}
+			
+			var statesArr = locationsWiseCountArr[0].tdpCadreDetailsList;
+			var statesCadreCount = 0; 
+			if(statesArr != null && statesArr.length>0)
+			{
+				for(var j in statesArr)
+				{
+					statesCadreCount = statesCadreCount+statesArr[j].totalCount;
+				}
+			}
+
+			if(jsObj.startIndex == 0)	
+			{
+				if(statesCadreCount >0)
+				{
+					str ='';
+					str+='<h5></h5>';
+					str+='<ul class="publickRepracentative" >';
+					if(statesArr != null && statesArr.length>0)
+					{
+						str+='<li> <span style="font-weight:bold;"> State Level Committee Members ('+statesCadreCount+') </span> </li>';
+						for(var j in statesArr)
+						{					
+							if(statesArr[j].totalCount != 0){							
+						str+='<li> <span style="font-weight:bold">'+statesArr[j].cadreName+' </span> : '+statesArr[j].totalCount+'</li>';
+								
+							}							
+						}
+
+					}
+					str+='</ul>';
+					
+					$('#stateMembersUl').html(str);
+					$('#stateMembersUl').show();
+				}
+			}
+			
+			var districtsArr = locationsWiseCountArr[0].cadreSearchList;
+			var districtCadreCount = 0; 
+			if(districtsArr != null && districtsArr.length>0)
+			{
+				for(var j in districtsArr)
+				{
+					districtCadreCount = districtCadreCount+districtsArr[j].totalCount;
+				}
+			}
+
+			if(jsObj.startIndex == 0)	
+			{
+				if(districtCadreCount >0)
+				{
+					str ='';
+					str+='<h5></h5>';
+					str+='<ul class="publickRepracentative" >';
+					if(districtsArr != null && districtsArr.length>0)
+					{
+						str+='<li> <span style="font-weight:bold;"> State Level Committee Members ('+districtCadreCount+') </span> </li>';
+						for(var j in districtsArr)
+						{					
+							if(districtsArr[j].totalCount != 0){							
+								str+='<li> <span style="font-weight:bold">'+districtsArr[j].cadreName+' </span> : '+districtsArr[j].totalCount+'</li>';
+								
+							}							
+						}
+
+					}
+					str+='</ul>';
+					
+					$('#districtMembersUl').html(str);
+					$('#districtMembersUl').show();
+				}
+			}
+			
+			var totalMembersCount = districtCadreCount + statesCadreCount + villageCadreCount + mandalCadreCount + publicRepresentsCount;
+			if(totalMembersCount >0)
+			{
 				str+='<span class="text-capital m_0 text-center text-head"> You are selected committee with members</span>';
 				str+='<div class="text-center">';
 				//str+='<span class="display-style text-italic box-subhead">Total Selected Committees:<span class="count-color">1202</span></span>';
-				str+='<span class="display-style text-italic box-subhead">Selected Committees Members:<span class="count-color">'+count+'</span></span>';
+				str+='<span class="display-style text-italic box-subhead"> Selected Total Members : <span class="count-color">'+totalMembersCount+'</span></span>';
 				str+='</div>';
-				if(countResult != null && countResult.length>0)
-				{
-					str+='<div class="text-center">';
-					str+='<ul class="list-inline selectedcandidatesCount">';
-					for(var j in countResult)
-					{					
-						if(countResult[j].totalCount != 0){
-							if(j>0 && j/4 == 0)
-							{
-								str+='<li  style="margin-left:-235px;"> <span style="font-weight:bold">'+countResult[j].cadreName+' </span> : '+countResult[j].totalCount+'</li>';
-							}
-							else
-							{
-								str+='<li> <span style="font-weight:bold">'+countResult[j].cadreName+' </span> : '+countResult[j].totalCount+'</li>';
-							}
-						}
-							
-					}
-					str+='</ul>';
-					str+='</div>';
-				}
-				str+='</div>';
+				
+				
+				$('#countDiv').html(str);
+				$('#countDiv').show();
+			}
 			
-			$('#countDiv').html(str);
 		}
+		
 		
 		indexValue =indexValue+1;
 	}
 	
-	function deleteCommite(removeDivId)
+	var isReturn = true;
+	function deleteCommite(removeDivId,type)
 	{
 		$('#'+removeDivId+'').html('');
 		$('#'+removeDivId+'').remove();
-	/*	$(".addedcommite").each(function()
+		
+		var isCMembersAvail = true;
+		var isPRMembersAvail = true;
+		var isAllDisabled = false;
+		//COMMITTEE , PR
+		if(type.trim() == 'COMMITTEE')
 		{
-			if($(this).is(":checked")) {
-				$(this).parent().closest('.commiteHeadDiv').remove();
-		 }
-		 
-	});*/
+			var divLength = $('#CSaccordion').html().trim().length;
+			var str='';
+			if(divLength == 0)
+			{
+				$('#stateLevelCommitteId').css('display','none');
+				str+='S';
+			}
+			
+			divLength = $('#CDaccordion').html().trim().length;
+			if(divLength == 0)
+			{
+				$('#districtLevelCommitteId').css('display','none');
+				str+='D';
+			}
+			
+			divLength = $('#CMaccordion').html().trim().length;
+			if(divLength == 0)
+			{
+				$('#mandalLevelCommitteId').css('display','none');
+				str+='M';
+			}
+			
+			divLength = $('#CVaccordion').html().trim().length;
+			if(divLength == 0)
+			{
+				$('#villageLevelCommitteId').css('display','none');
+				str+='V';
+			}
+			
+			if(str.trim().length >0 && str == 'SDMV')
+			{				
+				$('#stateLevelId').css('display','none');
+				isCMembersAvail = false;
+			}			
+		}
+		
+		if(type.trim() == 'PR')
+		{
+			var divLength = $('#PRSaccordion').html().trim().length;
+			var str='';
+			if(divLength == 0)
+			{
+				$('#stateLevelPRId').css('display','none');
+				str+='S';
+			}
+			
+			divLength = $('#PRDaccordion').html().trim().length;
+			if(divLength == 0)
+			{
+				$('#districtLevelPRId').css('display','none');
+				str+='D';
+			}
+			
+			divLength = $('#PRMaccordion').html().trim().length;
+			if(divLength == 0)
+			{
+				$('#mandalLevelPRId').css('display','none');
+				str+='M';
+			}
+			
+			divLength = $('#PRVaccordion').html().trim().length;
+			if(divLength == 0)
+			{
+				$('#villageLevelCommitteId').css('display','none');
+				str+='V';
+			}
+			
+			if(str.trim().length >0 && str == 'SDMV')
+			{				
+				$('#stateLevelHeadingId').css('display','none');
+				isPRMembersAvail = false;
+			}			
+		}
+		
+		if(!isCMembersAvail)
+		{
+			if(!isPRMembersAvail)
+			{
+				$('#buildSelectionBlockDiv').hide();
+				$('#candidateDetailsDiv').hide();
+				
+				$(".roleCheck").prop('checked', false);
+				$("#checkAll").prop('checked', false);
+				
+				$(".rolePRCheck").prop('checked', false);
+				$("#checkPRAll").prop('checked', false);
+				
+				isAllDisabled = true;
+			}
+		}
+		
+		if(isReturn && !isAllDisabled && (isCMembersAvail || isPRMembersAvail))
+		{
+			isReturn = false;
+			//getMembersDetails(0,'none');
+		}
+		
 	}
 	function toggleDiv(id)
 		{
@@ -2071,11 +2380,86 @@
            str+=' </ul>';
 		    $("#groupsForm").html(str);
     	   });	
-		  
+      }
+	  
+	   function eventsForUser(){
+    	
+		
+		$('#eventsList').find('option').remove();
+		$('#inviteEventsList').find('option').remove();
+		$('#eventsList').append('<option value="0"> Select Event </option>');
+		$('#inviteEventsList').append('<option value="0"> Select Event </option>');
+		  var jsObj={
+    			task:"eventGroups"
+    		};
+    		$.ajax({
+    			  type:'GET',
+    			  url: 'getEventsForUser.action',
+    			  data: {task:JSON.stringify(jsObj)}
+    	   }).done(function(result){
+			   $('.modal-backdrop').remove();
+					if(result != null)
+					{
+						for(var i in result)
+						{
+							$('#eventsList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+							$('#inviteEventsList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+						}						
+					}
+				});
+				
     	
       }
 	  
-	  
+	  function creatNewEvent()
+	  {	
+		
+		  var inviteEventId = $('#inviteEventsList').val();
+		  
+		  if(inviteEventId == 0)
+		  {
+			  var eventName = $('#newEventId').val();
+			  var description = $('#descriptionId').val();		
+			  var date  = $('#createeventdate').val().split('-'); 
+			  var startDate = date[0];
+			  var endDate = date[1];
+			  var mainEventId = $('#eventsList').val();
+			  $('#errorDivId').html('');
+
+			  if(eventName == null || eventName.trim().length==0)
+			  {
+				  $('#errorDivId').html('Event name required.');
+				  return;
+			  }
+			  else 	if(description == null || description.trim().length==0)
+			  {
+				  $('#errorDivId').html('Description is required.');
+				  return;
+			  }
+			  
+			   var jsObj={
+					eventName:eventName,
+					description:description,
+					startDate:startDate.trim(),
+					endDate:endDate.trim(),				
+					mainEventId:mainEventId
+				};
+				
+
+				$.ajax({
+					  type:'GET',
+					  url: 'createNewEvent.action',
+					  data: {task:JSON.stringify(jsObj)}
+			   }).done(function(result){
+				   console.log(result);
+			   });
+		  }
+		  else
+		  {
+			  getMembersDetails(0,'invite');
+		  }
+		  
+	  }
 	  function clearData(divId)
 	  {
 		  /*
@@ -2089,13 +2473,15 @@
 			 str+='</section>';
 			$("#"+divId+"").html(str);*/
 	  }
+	  
+	 
 </script>
 <script>
 getDistricts();
 getCommittees();
 getCommitteeRoles();
 buildLevel();
-
+//eventsForUser();
 eventsGroups();
 getPublicRepresentsDetails();
 
