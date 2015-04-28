@@ -1652,4 +1652,24 @@ public String getSummaryDetails(){
 		return Action.SUCCESS;
 	}
 	
+	public String createANewEvent()
+	{
+		try{
+			HttpSession session = request.getSession();
+			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+			{
+				return Action.ERROR;
+			}
+			jObj = new JSONObject(getTask());
+			
+			status=cadreCommitteeService.createNewEvent(user.getRegistrationID(),jObj.getString("eventName"),jObj.getString("description"),jObj.getString("startDate"),jObj.getString("endDate"),jObj.getLong("mainEventId"));
+		}catch(Exception e){
+			LOG.error("Exception occured in getMandalsByConstituency() method ",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
 }
