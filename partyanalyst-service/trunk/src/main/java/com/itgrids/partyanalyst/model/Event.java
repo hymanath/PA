@@ -29,6 +29,8 @@ public class Event implements java.io.Serializable{
 	private Date eventEndTime;
 	private Long parentEventId;
 	private String isDeleted;
+	private String startTime;
+	private String endTime;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -86,6 +88,20 @@ public class Event implements java.io.Serializable{
 	}
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+	@Column(name="event_start_time")
+	public String getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+	@Column(name="event_end_time")
+	public String getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
 	}
 
 	

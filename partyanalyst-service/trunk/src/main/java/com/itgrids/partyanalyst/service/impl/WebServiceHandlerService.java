@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -1627,6 +1628,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 UserEventDetailsVO userEventDetailsVO = null;
 		 DateUtilService date = new DateUtilService();
 		 SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		 SimpleDateFormat timeFormat= new SimpleDateFormat("HH:mm:ss a");
 		try{
 			List<Object[]> list =  eventSurveyUserDAO.getUserDetailsByUnamePwd(inpuVo.getUserName(),inpuVo.getUserPassword());
 			if(list != null && list.size() > 0)
@@ -1638,6 +1640,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 					String lname = params[2] != null ? params[2].toString() : "";
 					userEventDetailsVO.setUserName(fname +" "+lname);
 					userEventDetailsVO.setId((Long)params[0]);
+					
 					List checkList = eventSurveyUserLoginDetailsDAO.checkUserExistence((Long)params[0],inpuVo.getIMEI());
 					if(checkList == null || checkList.size() == 0)
 					{
@@ -1681,6 +1684,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 								UserEventDetailsVO childEventVo = new UserEventDetailsVO();
 								childEventVo.setUserId((Long)params[0]);
 								childEventVo.setUserName(params[1] != null ? params[1].toString() : "");
+								if(params[4]!= null)
+								childEventVo.setStartTime(TimeForm(params[4].toString()));
+								if(params[5]!= null)
+								childEventVo.setEndTime(TimeForm(params[5]!= null?params[5].toString():""));
 								parentVo.getSubList().add(childEventVo);
 							}
 						}	
@@ -1698,6 +1705,33 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		return userEventDetailsVO;
 	}
 	
+   
+   public String TimeForm(String time)
+   {
+	   String output = null;
+	   try{
+		   
+		   String input = time;
+		
+		 //Date/time pattern of input date
+	       DateFormat df = new SimpleDateFormat("HH:mm:ss");
+	       //Date/time pattern of desired output date
+	       DateFormat outputformat = new SimpleDateFormat(" hh:mm:ss aa");
+	       Date date = null;
+	      
+	      
+	          //Conversion of input String to date
+	    	  date= df.parse(input);
+	          //old date format to new date format
+	    	  output = outputformat.format(date);
+	    	  System.out.println(output);
+	   }
+	   catch(Exception e)
+	   {
+		   e.printStackTrace();
+	   }
+	return output;
+   }
 	public UserEventDetailsVO getMatchedEvent(List<UserEventDetailsVO> eventsList,Long id)
 	{
 		try{
@@ -1743,6 +1777,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 	eventAttendee.setEventId(inpuVo.getEventId());
 		 	eventAttendee.setAttendedTime(formatter.parse(inpuVo.getLoginTimeStamp().toString()));
 		 	eventAttendee.setInsertedTime(formatter.parse(inpuVo.getLoginTimeStamp().toString()));
+		 	
 		 	if(inpuVo.getStatus() != null)
 		 	eventAttendee.setUniqueKey(inpuVo.getStatus());
 		 	eventAttendee = eventAttendeeDAO.save(eventAttendee);
