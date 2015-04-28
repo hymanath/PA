@@ -9944,6 +9944,18 @@
 			</result>
 		</action> 
 		
+		<action name="getEventsForUser" class="cadreCommitteeAction" method="getEventsForUser">
+			<result type="json" name="success">
+				<param name="root">idNameVOList</param>
+			</result>
+		</action>
+		
+		<action name="createNewEvent" class="cadreCommitteeAction" method="createANewEvent">
+			<result type="json" name="success">
+				<param name="root">idNameVOList</param>
+			</result>
+		</action> 
+		
  		<action name="getPublicRepresentativeTypes" class="cadreCommitteeAction" method="getPublicRepresentativesTypes">
 			<result type="json" name="success">
 				<param name="root">idNameVOList</param>
