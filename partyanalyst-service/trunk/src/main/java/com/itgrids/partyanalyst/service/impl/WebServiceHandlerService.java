@@ -1682,7 +1682,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 							if(parentVo != null)
 							{
 								UserEventDetailsVO childEventVo = new UserEventDetailsVO();
-								childEventVo.setUserId((Long)params[0]);
+								childEventVo.setEventId((Long)params[0]);
 								childEventVo.setUserName(params[1] != null ? params[1].toString() : "");
 								if(params[4]!= null)
 								childEventVo.setStartTime(TimeForm(params[4].toString()));
@@ -1785,6 +1785,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 	returnVo.setId(eventAttendee.getEventAttendeeId());
 		 	returnVo.setStatus("success");
 		 	returnVo.setUserId(inpuVo.getId());
+		 	
+		 	returnVo.setTabPrimaryKey(inpuVo.getTabPrimaryKey());
 		 	if(cadreId != null)
 		 	returnVo.setMemberShipNo(cadreId.toString());
 		 	/*resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
