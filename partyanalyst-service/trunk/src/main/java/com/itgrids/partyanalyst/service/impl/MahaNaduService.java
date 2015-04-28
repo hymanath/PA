@@ -1346,9 +1346,9 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		return location;
 	}
  
- public List<UserEventDetailsVO> getSubEventInfo(Long parentId,Long userId)
+ public List<MahanaduEventVO> getSubEventInfo(Long parentId,Long userId)
  {
-	 List<UserEventDetailsVO> resultList = new ArrayList<UserEventDetailsVO>();
+	 List<MahanaduEventVO> resultList = new ArrayList<MahanaduEventVO>();
 	 try{
 		 List<Long> parentEventIds = new ArrayList<Long>();
 		 parentEventIds.add(parentId);
@@ -1356,19 +1356,36 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		 List<Object[]> list = eventUserDAO.getEventsByUserAndParentIds(userId,date.getCurrentDateAndTime(),parentEventIds);
 		 if(list != null && list.size() > 0)
 		 {
+			List<Long> eventIds = new ArrayList<Long>();
 			 for(Object[] params : list)
 			 {
-				 UserEventDetailsVO vo = new UserEventDetailsVO();
-				 vo.setEventId((Long)params[0]);
-				 vo.setUserName(params[1] != null ? params[1].toString() : "");
+				 MahanaduEventVO vo = new MahanaduEventVO();
+				 vo.setId((Long)params[0]);
+				 vo.setName(params[1] != null ? params[1].toString() : "");
 				 if(params[4] != null)
 				 vo.setStartTime(TimeForm(params[4].toString()));
 				 if(params[5] != null)
 					 vo.setEndTime(TimeForm(params[4].toString())); 
-				 vo.setStatus(params[3] != null ? params[3].toString():"");
-				 vo.setMemberShipNo(params[4] != null ? params[4].toString():"");
+				 vo.setDesc(params[3] != null ? params[3].toString():"");
+				 vo.setInviteeExists(params[5] != null ? params[5].toString():"");
 				 resultList.add(vo);
+				 eventIds.add((Long)params[0]);
 			 }
+			 List<Object[]> attendeeInfo = eventInfoDAO.getEventDataByReportLevelId(2l,eventIds,0l,date.getCurrentDateAndTime());
+			 if(attendeeInfo != null && attendeeInfo.size() > 0)
+			 {
+				 for(Object[] params : attendeeInfo)
+					{
+					 	MahanaduEventVO eventVO = getMatchedVO(resultList,(Long)params[0]);
+					 	if(eventVO != null)
+					 	{
+					 		eventVO.setInvitees(eventVO.getInvitees() + (Long)params[1]);
+					 		eventVO.setNonInvitees(eventVO.getNonInvitees() + (Long)params[2]);
+					 	}
+					 	
+					}
+			 }
+			
 		 }
 	 }
 	 catch(Exception e)
@@ -1378,6 +1395,8 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	 }
 	return resultList;
  }
+ 
+ 
  
  public String TimeForm(String time)
  {
