@@ -1628,7 +1628,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 DateUtilService date = new DateUtilService();
 		 SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		try{
-			List<Object[]> list =  eventSurveyUserDAO.getUserDetailsByUnamePwd(inpuVo.getName(),inpuVo.getPwd());
+			List<Object[]> list =  eventSurveyUserDAO.getUserDetailsByUnamePwd(inpuVo.getUserName(),inpuVo.getUserPassword());
 			if(list != null && list.size() > 0)
 			{
 				for(Object[] params : list)
@@ -1636,18 +1636,18 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 					userEventDetailsVO = new UserEventDetailsVO();
 					String fname = params[1] != null ? params[1].toString() : "" ;
 					String lname = params[2] != null ? params[2].toString() : "";
-					userEventDetailsVO.setName(fname +" "+lname);
+					userEventDetailsVO.setUserName(fname +" "+lname);
 					userEventDetailsVO.setId((Long)params[0]);
-					List checkList = eventSurveyUserLoginDetailsDAO.checkUserExistence((Long)params[0],inpuVo.getImei());
+					List checkList = eventSurveyUserLoginDetailsDAO.checkUserExistence((Long)params[0],inpuVo.getIMEI());
 					if(checkList == null || checkList.size() == 0)
 					{
 						
 						EventSurveyUserLoginDetails eventSurveyUserLoginDetails = new EventSurveyUserLoginDetails();
-						eventSurveyUserLoginDetails.setImei(inpuVo.getImei());
-						if(inpuVo.getDate() != null)
-						eventSurveyUserLoginDetails.setLoginTime(formatter.parse(inpuVo.getDate()));
-						if(inpuVo.getSimNo() != null)
-						eventSurveyUserLoginDetails.setSimno(inpuVo.getSimNo());
+						eventSurveyUserLoginDetails.setImei(inpuVo.getIMEI());
+						if(inpuVo.getLoginTimeStamp() != null)
+						eventSurveyUserLoginDetails.setLoginTime(formatter.parse(inpuVo.getLoginTimeStamp()));
+						if(inpuVo.getSIMCardNumber() != null)
+						eventSurveyUserLoginDetails.setSimno(inpuVo.getSIMCardNumber());
 						eventSurveyUserLoginDetails.setEventSurveyUser(eventSurveyUserDAO.get((Long)params[0]));
 						eventSurveyUserLoginDetailsDAO.save(eventSurveyUserLoginDetails);
 					}
@@ -1666,7 +1666,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 					{
 						UserEventDetailsVO eventVo = new UserEventDetailsVO();
 						eventVo.setId((Long)params[0]);
-						eventVo.setName(params[1] != null ? params[1].toString() : "");
+						eventVo.setUserName(params[1] != null ? params[1].toString() : "");
 						userEventDetailsVO.getSubList().add(eventVo);
 						parentIds.add((Long)params[0]);
 					}
@@ -1679,8 +1679,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 							if(parentVo != null)
 							{
 								UserEventDetailsVO childEventVo = new UserEventDetailsVO();
-								childEventVo.setId((Long)params[0]);
-								childEventVo.setName(params[1] != null ? params[1].toString() : "");
+								childEventVo.setUserId((Long)params[0]);
+								childEventVo.setUserName(params[1] != null ? params[1].toString() : "");
 								parentVo.getSubList().add(childEventVo);
 							}
 						}	
@@ -1729,26 +1729,27 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 	queryStr.append(" (model.memberShipNo ='"+memberShipNumber.trim()+"' OR model.memberShipNo ='"+memberShipNumber1.trim()+"') ");
 		 	else
 		 	{
-		 		queryStr.append(" model.cardNumber = '"+inpuVo.getRfid()+"' ");
+		 		queryStr.append(" model.cardNumber = '"+inpuVo.getRFID()+"' ");
 		 	}
 		 	EventAttendee eventAttendee = new EventAttendee();
 		 	Long cadreId = tdpCadreDAO.getTdpCadreIdByMembership(queryStr.toString());
 		 	if(cadreId != null)
 		 	eventAttendee.setTdpCadreId(cadreId);
-		 	eventAttendee.setImei(inpuVo.getImei());
-		 	if(inpuVo.getRfid() != null) 
-		 	eventAttendee.setRfid(inpuVo.getRfid());
+		 	eventAttendee.setImei(inpuVo.getIMEI());
+		 	if(inpuVo.getRFID() != null) 
+		 	eventAttendee.setRfid(inpuVo.getRFID());
 		 	
 		 	eventAttendee.setInsertedBy(inpuVo.getId());
 		 	eventAttendee.setEventId(inpuVo.getEventId());
-		 	eventAttendee.setAttendedTime(formatter.parse(inpuVo.getDate().toString()));
-		 	eventAttendee.setInsertedTime(formatter.parse(inpuVo.getDate().toString()));
+		 	eventAttendee.setAttendedTime(formatter.parse(inpuVo.getLoginTimeStamp().toString()));
+		 	eventAttendee.setInsertedTime(formatter.parse(inpuVo.getLoginTimeStamp().toString()));
 		 	if(inpuVo.getStatus() != null)
 		 	eventAttendee.setUniqueKey(inpuVo.getStatus());
 		 	eventAttendee = eventAttendeeDAO.save(eventAttendee);
 		 	voterDAO.flushAndclearSession();
 		 	returnVo.setId(eventAttendee.getEventAttendeeId());
 		 	returnVo.setStatus("success");
+		 	returnVo.setUserId(inpuVo.getId());
 		 	if(cadreId != null)
 		 	returnVo.setMemberShipNo(cadreId.toString());
 		 	/*resultStatus.setResultCode(ResultCodeMapper.SUCCESS);

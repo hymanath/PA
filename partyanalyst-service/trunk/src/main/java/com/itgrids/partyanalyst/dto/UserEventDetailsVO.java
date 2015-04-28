@@ -8,18 +8,28 @@ import java.util.List;
 public class UserEventDetailsVO implements Serializable{
 	
 	private Long id;
-	private String name;
-	private String pwd;
+	private String userName
+;
+	private String userPassword;
 	private List<UserEventDetailsVO> subList = new ArrayList<UserEventDetailsVO>();
 	private String status;
-	private String imei;
-	private String simNo;
-	private String date;
-	private String rfid;
+	private String IMEI;
+	private String SIMCardNumber 
+;
+	private String loginTimeStamp;
+
+	private String RFID;
 	private String memberShipNo;
 	private Long eventId;
+	private Long userId;
 	
 	
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 	public Long getEventId() {
 		return eventId;
 	}
@@ -32,31 +42,6 @@ public class UserEventDetailsVO implements Serializable{
 	public void setMemberShipNo(String memberShipNo) {
 		this.memberShipNo = memberShipNo;
 	}
-	public String getRfid() {
-		return rfid;
-	}
-	public void setRfid(String rfid) {
-		this.rfid = rfid;
-	}
-	public String getImei() {
-		return imei;
-	}
-	public void setImei(String imei) {
-		this.imei = imei;
-	}
-	public String getSimNo() {
-		return simNo;
-	}
-	public void setSimNo(String simNo) {
-		this.simNo = simNo;
-	}
-	
-	public String getDate() {
-		return date;
-	}
-	public void setDate(String date) {
-		this.date = date;
-	}
 	public String getStatus() {
 		return status;
 	}
@@ -66,6 +51,42 @@ public class UserEventDetailsVO implements Serializable{
 	public List<UserEventDetailsVO> getSubList() {
 		return subList;
 	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getUserPassword() {
+		return userPassword;
+	}
+	public void setUserPassword(String userPassword) {
+		this.userPassword = userPassword;
+	}
+	public String getIMEI() {
+		return IMEI;
+	}
+	public void setIMEI(String iMEI) {
+		IMEI = iMEI;
+	}
+	public String getSIMCardNumber() {
+		return SIMCardNumber;
+	}
+	public void setSIMCardNumber(String sIMCardNumber) {
+		SIMCardNumber = sIMCardNumber;
+	}
+	public String getLoginTimeStamp() {
+		return loginTimeStamp;
+	}
+	public void setLoginTimeStamp(String loginTimeStamp) {
+		this.loginTimeStamp = loginTimeStamp;
+	}
+	public String getRFID() {
+		return RFID;
+	}
+	public void setRFID(String rFID) {
+		RFID = rFID;
+	}
 	public void setSubList(List<UserEventDetailsVO> subList) {
 		this.subList = subList;
 	}
@@ -74,18 +95,6 @@ public class UserEventDetailsVO implements Serializable{
 	}
 	public void setId(Long id) {
 		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getPwd() {
-		return pwd;
-	}
-	public void setPwd(String pwd) {
-		this.pwd = pwd;
 	}
 	
 
