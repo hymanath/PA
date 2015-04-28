@@ -9,5 +9,6 @@ import com.itgrids.partyanalyst.model.EventInvitee;
 
 public interface IEventInviteeDAO extends GenericDao<EventInvitee, Long>{
 	public List<Object[]> getEventInviteesCountByLocationType(String locationType,Date currentDate);
-
+	public List<Object[]> getEventInviteesCountByLocationTypeAndEvent(String locationType,Date currentDate,Long eventId);
+	public Long getEventInviteesCountByState(Long stateId,Date currentDate,Long eventId);
 }
