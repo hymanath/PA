@@ -2587,9 +2587,7 @@
            <property name="eventGroupDAO" ref="eventGroupDAO" />
            <property name="publicRepresentativeTypeDAO" ref="publicRepresentativeTypeDAO" />
            <property name="publicRepresentativeDAO" ref="publicRepresentativeDAO" />
-           <property name="candidateDAO" ref="candidateDAO" />
-           <property name="nominationDAO" ref="nominationDAO" />           
-           <property name="eventDAO" ref="eventDAO" />
+	       <property name="eventDAO" ref="eventDAO" />
            <property name="eventInviteeDAO" ref="eventInviteeDAO" />
 	</bean>
 	
