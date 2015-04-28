@@ -28,7 +28,9 @@ public class Event implements java.io.Serializable{
 	private Date eventStartTime;
 	private Date eventEndTime;
 	private Long parentEventId;
-	private String isDeleted;
+	private String isEnabled;
+	private Date insertedTime;
+	
 	private String startTime;
 	private String endTime;
 	private String isInviteeExist;
@@ -83,13 +85,26 @@ public class Event implements java.io.Serializable{
 		this.parentEventId = parentEventId;
 	}	
 	
-	@Column(name="is_deleted")
-	public String getIsDeleted() {
-		return isDeleted;
+	@Column(name="insertion_time")
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
 	}
-	public void setIsDeleted(String isDeleted) {
-		this.isDeleted = isDeleted;
+	
+	public Date getInsertedTime() {
+		return insertedTime;
 	}
+	
+	/*
+	 @Column(name="is_enabled")
+	public void setIsEnabled(String isEnabled) {
+		this.isEnabled = isEnabled;
+	}
+	 public String getIsEnabled() {
+		return isEnabled;
+	}
+	
+	
+	*/
 	@Column(name="event_start_time")
 	public String getStartTime() {
 		return startTime;
