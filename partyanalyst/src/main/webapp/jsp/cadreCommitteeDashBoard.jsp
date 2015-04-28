@@ -701,13 +701,13 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					 <div class="col-md-12 col-xs-12 col-sm-12" >
                     
 					
-					 <div style="display:inline-block">
-                     <h5 class="text-success" style="margin-bottom:5px;border-bottom:1px solid #F00;text-align:center;margin:0px 15px 5px 15px">LOCATION</h5>
+					 <div style="display:inline-block ">
+                     <h5 class="text-success areaBtnsDiv" style="margin-bottom:5px;border-bottom:1px solid #F00;text-align:center;margin:0px 15px 5px 15px" >LOCATION</h5>
                      <span class="btn btn-success btn-xs form-inline" id="statesBtnsId" style="">
 						<label class="radio"><input type="radio" id="APId" style="vertical-align: text-bottom;" class="stateRd" value="AP" name="selectstate" checked="true">&nbsp;AP &nbsp;&nbsp;&nbsp;</label>
 						<label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="stateRd" value="TS" name="selectstate" id="TSId">&nbsp;TS &nbsp;&nbsp;&nbsp;</label>
 					</span>
-					 <span class="btn btn-success btn-xs form-inline">
+					 <span class="btn btn-success btn-xs form-inline" id="areaBtnsDiv">
 						<label class="radio"><input type="radio" id="districtId" style="vertical-align: text-bottom;" class="levelRd" value="district" name="select" checked="true">&nbsp;DISTRICT &nbsp;&nbsp;&nbsp;</label>
 						<label class="radio"><input type="radio" id="constiRdId" style="vertical-align: text-bottom;" class="levelRd" value="consti" name="select">&nbsp;CONSTITUENCY &nbsp;&nbsp;&nbsp;</label>
 					</span>
@@ -1029,10 +1029,17 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 
 							getConstituencyWiseCommittesSummary();
 						}else if( userAccessType.indexOf("District") >= 0){
+							
+							$('#areaBtnsDiv').hide();
+							$('.areaBtnsDiv').hide();
+							$('#constiRdId').prop('checked','checked');
+							
+							getConstituencyWiseCommittesSummary();
 							getCommitteeCountByState("AP");
 							getCommitteeDetails("AP","mandalAll");
 							getCommitteeDetails("AP","villageAll");
 							getCommitteeDetails("AP","district");
+							getConstituencyWiseCommittesSummary();
 							//getCommitteeDetails("AP","state");
 							/*$("#apDistrictHeadingTR").show();
 							$("#apDistrictBodyTR").show();
@@ -1043,7 +1050,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							//$("#apStateBodyTR").hide();
 							$("#tsStateHeadingTR").hide();
 							//$("#tsStateBodyTR").hide();
-							getDistrictWiseCommittesSummary();
+							//getDistrictWiseCommittesSummary();
 						}else {
 							getCommitteeCountByState("AP");
 							getCommitteeDetails("AP","mandalAll");
