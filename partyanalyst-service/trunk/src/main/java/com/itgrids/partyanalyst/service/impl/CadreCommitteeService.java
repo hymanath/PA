@@ -13,6 +13,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -109,6 +110,7 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.EducationalQualifications;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
+import com.itgrids.partyanalyst.model.Event;
 import com.itgrids.partyanalyst.model.EventInvitee;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.Occupation;
@@ -192,8 +194,6 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IEventGroupDAO eventGroupDAO;
 	private IPublicRepresentativeTypeDAO publicRepresentativeTypeDAO;
 	private IPublicRepresentativeDAO publicRepresentativeDAO;
-	private ICandidateDAO candidateDAO;
-	private INominationDAO nominationDAO;
 	private IEventDAO eventDAO;
 	private IEventInviteeDAO eventInviteeDAO;
 	
@@ -209,17 +209,6 @@ public class CadreCommitteeService implements ICadreCommitteeService
 			IPublicRepresentativeDAO publicRepresentativeDAO) {
 		this.publicRepresentativeDAO = publicRepresentativeDAO;
 	}
-
-
-	public void setCandidateDAO(ICandidateDAO candidateDAO) {
-		this.candidateDAO = candidateDAO;
-	}
-
-
-	public void setNominationDAO(INominationDAO nominationDAO) {
-		this.nominationDAO = nominationDAO;
-	}
-
 
 	public void setEventGroupDAO(IEventGroupDAO eventGroupDAO) {
 		this.eventGroupDAO = eventGroupDAO;
@@ -1832,6 +1821,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 				{
 					String location = null;
 					if(locationValue.longValue() > 0L){
+						//System.out.println("tdpCadreId :"+id+"  \t positionName  :"+positionName);
 						location = getLocationName(LocationTypeId,locationValue);
 						cadreVO.setCommitteeLocation(location);
 					    cadreVO.setCommitteePosition(positionName);
@@ -10870,8 +10860,15 @@ return mandalList;
 		List<TdpCadreVO> returnList = null;
 		try {
 			List<CadreCommitteeVO> cadreCommitteeList = new ArrayList<CadreCommitteeVO>();
-			Map<String,Long> positonsCountMap = new LinkedHashMap<String, Long>();
+			Map<String,Long> statePositonsCountMap = new LinkedHashMap<String, Long>();
+			Map<String,Long> districtPositonsCountMap = new LinkedHashMap<String, Long>();
+			Map<String,Long> mandalPositonsCountMap = new LinkedHashMap<String, Long>();
+			Map<String,Long> villagePositonsCountMap = new LinkedHashMap<String, Long>();
+			Map<String,Long> publicRepresentsCountMap = new LinkedHashMap<String, Long>();
 			Long totalCount = 0L;
+			Set<Long> compareCadreIds = new LinkedHashSet<Long>();
+			Set<Long> compareRepresentsIds = new LinkedHashSet<Long>();
+			
 			if(inviteesVOList != null && inviteesVOList.size()>0)
 			{
 				if(startIndex == 0)
@@ -10880,7 +10877,7 @@ return mandalList;
 					 if(publicRepresents != null && publicRepresents.size()>0)
 					 {
 						 for (IdNameVO idNameVO : publicRepresents) {
-							 positonsCountMap.put(idNameVO.getName(), 0L);
+							 publicRepresentsCountMap.put(idNameVO.getName(), 0L);							 
 						}
 					 }
 					 
@@ -10888,13 +10885,17 @@ return mandalList;
 					 if(tdpRoles != null && tdpRoles.size()>0)
 					 {
 						 for (BasicVO idNameVO : tdpRoles) {
-							 positonsCountMap.put(idNameVO.getName(), 0L);
+							 statePositonsCountMap.put(idNameVO.getName(), 0L);
+							 districtPositonsCountMap.put(idNameVO.getName(), 0L);
+							 mandalPositonsCountMap.put(idNameVO.getName(), 0L);
+							 villagePositonsCountMap.put(idNameVO.getName(), 0L);
 						}
 					 }
 				}
 				 Set<Long> tdpCadreIdsList = new TreeSet<Long>();
 				 Set<Long> publicRepresentativesIds = new TreeSet<Long>();
-				 List<Long> tdpCadreList = null;
+				// List<Long> tdpCadreList = null;
+				 List<Object[]> tdpCadresList = null;
 				 List<Long> publicRepresentativesList = null;
 				 Map<Long,List<IdNameVO>> parliamentInfoMap = new HashMap<Long, List<IdNameVO>>();
 				 Map<Long,List<IdNameVO>> assemblyInfoMap = new HashMap<Long, List<IdNameVO>>();
@@ -10998,21 +10999,42 @@ return mandalList;
 														}
 													 }
 												 }
-												 publicRepresentativesList =  publicRepresentativeDAO.getRepresentativesByPositions(null,locationValuesList,positionId);
+												  publicRepresentativesList =  publicRepresentativeDAO.getRepresentativesByPositions(null,locationValuesList,positionId);
 												 if(publicRepresentativesList != null && publicRepresentativesList.size()>0)
 												 {
 													 publicRepresentativesIds.addAll(publicRepresentativesList);
+													
 													 if(startIndex == 0)
 														{
-														 	String positiion=  publicRepresentativeTypeDAO.get(positionId).getType();
-														 	Long count = 0L;
-																if(positonsCountMap.get(positiion) != null)
-																{
-																	count = positonsCountMap.get(positiion);
-																}
-																count = count+Long.valueOf(String.valueOf(publicRepresentativesList.size()));
-																
-																positonsCountMap.put(positiion,count);
+															 String positiion=  publicRepresentativeTypeDAO.get(positionId).getType();
+														 	 Long count = 0L;
+														 		
+															 if(compareRepresentsIds != null && compareRepresentsIds.size()>0)
+															 {
+																 for (Long candidateId : publicRepresentativesList) 
+																 {
+																	if(!compareRepresentsIds.contains(candidateId))
+																	{
+																		if(publicRepresentsCountMap.get(positiion) != null)
+																		{
+																			count = publicRepresentsCountMap.get(positiion);
+																		}
+																		count = count+1;
+																		publicRepresentsCountMap.put(positiion,count);
+																	}
+																 }
+															 }
+															 else
+															 {
+																 if(publicRepresentsCountMap.get(positiion) != null)
+																	{
+																		count = publicRepresentsCountMap.get(positiion);
+																	}
+																	count = count+Long.valueOf(String.valueOf(publicRepresentativesList.size()));
+																	
+																	publicRepresentsCountMap.put(positiion,count);
+															 }
+																 compareRepresentsIds.addAll(publicRepresentativesList);
 														}
 												 }
 											}
@@ -11031,35 +11053,49 @@ return mandalList;
 											 disstrictIds.add(21L);disstrictIds.add(22L);disstrictIds.add(23L);
 										 }
 										 
-										 tdpCadreList = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteesVO.getCommitteeId(),inviteesVO.getRolesIds(),disstrictIds,null,null);										 
+										 tdpCadresList = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteesVO.getCommitteeId(),inviteesVO.getRolesIds(),disstrictIds,null,null);										 
 									 }
 									
-									 if(tdpCadreList != null && tdpCadreList.size()>0)
+									 if(tdpCadresList != null && tdpCadresList.size()>0)
 									 {
-										 tdpCadreIdsList.addAll(tdpCadreList);
-										 if(startIndex == 0)
-											{
-												 List<Object[]> positionCounts = tdpCommitteeMemberDAO.getCommiteeMembersCountDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteesVO.getCommitteeId(),inviteesVO.getRolesIds(),disstrictIds,null,null);
-												 if(positionCounts != null && positionCounts.size()>0)
-												 {
-													 for (Object[] positionCount : positionCounts)
+										 Long count = 0L;
+										 for (Object[] cadre : tdpCadresList) {
+											Long cadreId = cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L;
+											String positiion = cadre[1] != null ? cadre[1].toString().trim():null;											
+											tdpCadreIdsList.add(cadreId);
+											
+											 if(startIndex == 0)
+												{
+													 if(compareCadreIds != null && compareCadreIds.size()>0)
 													 {
-														String positiion = positionCount[1] != null ? positionCount[1].toString().trim():"";
-														Long positiionCount = positionCount[2] != null ? Long.valueOf(positionCount[2].toString().trim()):0L;
-														if(positiion != null && positiion.length()>0 )
-														{
-															Long count = 0L;
-															if(positonsCountMap.get(positiion) != null)
+														// for (Long candidateId : compareCadreIds) 
+														// {
+															if(!compareCadreIds.contains(cadreId))
 															{
-																count = positonsCountMap.get(positiion);
+																if(statePositonsCountMap.get(positiion) != null)
+																{
+																	count = statePositonsCountMap.get(positiion);
+																}
+																count = count+1;
+																statePositonsCountMap.put(positiion,count);
 															}
-															count = count+positiionCount;
-															
-															positonsCountMap.put(positiion,count);
-														}
+														// }
 													 }
-												 }
-											}
+													 else
+													 {
+														 if(statePositonsCountMap.get(positiion) != null)
+															{
+																count = statePositonsCountMap.get(positiion);
+															}
+															count = count+1;
+															statePositonsCountMap.put(positiion,count);
+														
+													 }
+												}
+										 }
+										 
+										 compareCadreIds.addAll(tdpCadreIdsList);
+										 
 									 }
 								 }
 							 }
@@ -11163,17 +11199,38 @@ return mandalList;
 													 if(publicRepresentativesList != null && publicRepresentativesList.size()>0)
 													 {
 														 publicRepresentativesIds.addAll(publicRepresentativesList);
+														 
 														 if(startIndex == 0)
 															{
-																 String positiion=  publicRepresentativeTypeDAO.get(positionId).getType();
-																 Long count = 0L;
-																	if(positonsCountMap.get(positiion) != null)
+															 String positiion=  publicRepresentativeTypeDAO.get(positionId).getType();
+														 	 Long count = 0L;
+														 		
+															 if(compareRepresentsIds != null && compareRepresentsIds.size()>0)
+															 {
+																 for (Long candidateId : publicRepresentativesList) 
+																 {
+																	if(!compareRepresentsIds.contains(candidateId))
 																	{
-																		count = positonsCountMap.get(positiion);
+																		if(publicRepresentsCountMap.get(positiion) != null)
+																		{
+																			count = publicRepresentsCountMap.get(positiion);
+																		}
+																		count = count+1;
+																		publicRepresentsCountMap.put(positiion,count);
+																	}
+																 }
+															 }
+															 else
+															 {
+																 if(publicRepresentsCountMap.get(positiion) != null)
+																	{
+																		count = publicRepresentsCountMap.get(positiion);
 																	}
 																	count = count+Long.valueOf(String.valueOf(publicRepresentativesList.size()));
 																	
-																	positonsCountMap.put(positiion,count);
+																	publicRepresentsCountMap.put(positiion,count);
+															 }
+																 compareRepresentsIds.addAll(publicRepresentativesList);
 															}
 													 }
 												}
@@ -11248,17 +11305,38 @@ return mandalList;
 													 if(publicRepresentativesList != null && publicRepresentativesList.size()>0)
 													 {
 														 publicRepresentativesIds.addAll(publicRepresentativesList);
+														 
 														 if(startIndex == 0)
 															{
 															 String positiion=  publicRepresentativeTypeDAO.get(positionId).getType();
-															 Long count = 0L;
-																if(positonsCountMap.get(positiion) != null)
-																{
-																	count = positonsCountMap.get(positiion);
-																}
-																count = count+Long.valueOf(String.valueOf(publicRepresentativesList.size()));
-																
-																positonsCountMap.put(positiion,count);
+														 	 Long count = 0L;
+														 		
+															 if(compareRepresentsIds != null && compareRepresentsIds.size()>0)
+															 {
+																 for (Long candidateId : publicRepresentativesList) 
+																 {
+																	if(!compareRepresentsIds.contains(candidateId))
+																	{
+																		if(publicRepresentsCountMap.get(positiion) != null)
+																		{
+																			count = publicRepresentsCountMap.get(positiion);
+																		}
+																		count = count+1;
+																		publicRepresentsCountMap.put(positiion,count);
+																	}
+																 }
+															 }
+															 else
+															 {
+																 if(publicRepresentsCountMap.get(positiion) != null)
+																	{
+																		count = publicRepresentsCountMap.get(positiion);
+																	}
+																	count = count+Long.valueOf(String.valueOf(publicRepresentativesList.size()));
+																	
+																	publicRepresentsCountMap.put(positiion,count);
+															 }
+																 compareRepresentsIds.addAll(publicRepresentativesList);
 															}
 													 }
 												}
@@ -11284,34 +11362,45 @@ return mandalList;
 											 disstrictIds.add(inviteesVO.getDistrictId().longValue());
 										 }
 										 
-										 tdpCadreList = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteesVO.getCommitteeId(),inviteesVO.getRolesIds(),disstrictIds,null,null);
-										 if(tdpCadreList != null && tdpCadreList.size()>0)
+										 tdpCadresList = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteesVO.getCommitteeId(),inviteesVO.getRolesIds(),disstrictIds,null,null);
+										 if(tdpCadresList != null && tdpCadresList.size()>0)
 										 {
-											 tdpCadreIdsList.addAll(tdpCadreList);
-											 if(startIndex == 0)
-												{
-													 List<Object[]> positionCounts = tdpCommitteeMemberDAO.getCommiteeMembersCountDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteesVO.getCommitteeId(),inviteesVO.getRolesIds(),disstrictIds,null,null);
-													 if(positionCounts != null && positionCounts.size()>0)
-													 {
-														 for (Object[] positionCount : positionCounts)
+											 Long count = 0L;
+											 for (Object[] cadre : tdpCadresList) {
+												Long cadreId = cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L;
+												String positiion = cadre[1] != null ? cadre[1].toString().trim():null;											
+												tdpCadreIdsList.add(cadreId);
+												
+												 if(startIndex == 0)
+													{
+														 if(compareCadreIds != null && compareCadreIds.size()>0)
 														 {
-															String positiion = positionCount[1] != null ? positionCount[1].toString().trim():"";
-															Long positiionCount = positionCount[2] != null ? Long.valueOf(positionCount[2].toString().trim()):0L;
-															if(positiion != null && positiion.length()>0 )
-															{
-																Long count = 0L;
-																if(positonsCountMap.get(positiion) != null)
+															// for (Long candidateId : compareCadreIds) 
+															// {
+																if(!compareCadreIds.contains(cadreId))
 																{
-																	count = positonsCountMap.get(positiion);
+																	if(districtPositonsCountMap.get(positiion) != null)
+																	{
+																		count = districtPositonsCountMap.get(positiion);
+																	}
+																	count = count+1;
+																	districtPositonsCountMap.put(positiion,count);
 																}
-																count = count+positiionCount;
-																
-																positonsCountMap.put(positiion,count);
-															}
+															// }
 														 }
-													 }
-												}
-										 }
+														 else
+														 {
+															 if(districtPositonsCountMap.get(positiion) != null)
+																{
+																	count = districtPositonsCountMap.get(positiion);
+																}
+																count = count+1;
+																districtPositonsCountMap.put(positiion,count);															
+														 }
+													}
+											 }
+											 compareCadreIds.addAll(tdpCadreIdsList);
+										}
 									 }
 									
 								 }
@@ -11366,34 +11455,50 @@ return mandalList;
 										 disstrictIds.add(inviteesVO.getDistrictId());
 									 }
 									
-									 tdpCadreList = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteesVO.getCommitteeId(),inviteesVO.getRolesIds(),disstrictIds,null,null);
-									 if(tdpCadreList != null && tdpCadreList.size()>0)
+									 tdpCadresList = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteesVO.getCommitteeId(),inviteesVO.getRolesIds(),disstrictIds,null,null);
+									 
+									 if(tdpCadresList != null && tdpCadresList.size()>0)
 									 {
-										 tdpCadreIdsList.addAll(tdpCadreList);
-										 if(startIndex == 0)
-											{
-												 List<Object[]> positionCounts = tdpCommitteeMemberDAO.getCommiteeMembersCountDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteesVO.getCommitteeId(),inviteesVO.getRolesIds(),disstrictIds,null,null);
-												 if(positionCounts != null && positionCounts.size()>0)
-												 {
-													 for (Object[] positionCount : positionCounts)
+										 Long count = 0L;
+										 for (Object[] cadre : tdpCadresList) {
+											Long cadreId = cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L;
+											String positiion = cadre[1] != null ? cadre[1].toString().trim():null;											
+											tdpCadreIdsList.add(cadreId);
+											
+											 if(startIndex == 0)
+												{
+													 if(compareCadreIds != null && compareCadreIds.size()>0)
 													 {
-														String positiion = positionCount[1] != null ? positionCount[1].toString().trim():"";
-														Long positiionCount = positionCount[2] != null ? Long.valueOf(positionCount[2].toString().trim()):0L;
-														if(positiion != null && positiion.length()>0 )
-														{
-															Long count = 0L;
-															if(positonsCountMap.get(positiion) != null)
+														 //for (Long candidateId : compareCadreIds) 
+														// {
+															if(!compareCadreIds.contains(cadreId))
 															{
-																count = positonsCountMap.get(positiion);
+																if(mandalPositonsCountMap.get(positiion) != null)
+																{
+																	count = mandalPositonsCountMap.get(positiion);
+																}
+																count = count+1;
+																mandalPositonsCountMap.put(positiion,count);
 															}
-															count = count+positiionCount;
-															
-															positonsCountMap.put(positiion,count);
-														}
+														// }
 													 }
-												 }
-											}
-									 }
+													 else
+													 {
+														 if(mandalPositonsCountMap.get(positiion) != null)
+															{
+																count = mandalPositonsCountMap.get(positiion);
+															}
+															count = count+1;
+															mandalPositonsCountMap.put(positiion,count);
+														
+															
+													 }
+												}
+										 }
+										 
+										 compareCadreIds.addAll(tdpCadreIdsList);
+										 
+									}
 								 }
 							}
 						 }
@@ -11455,36 +11560,47 @@ return mandalList;
 									 }
 									 else  if(inviteesVO.getDistrictId() != null && inviteesVO.getDistrictId().longValue() != 0L) // district selected
 									 {
-										 disstrictIds.add(inviteeVO.getDistrictId());
+										 disstrictIds.add(inviteesVO.getDistrictId());
 									 }
 									 
-									 tdpCadreList = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteesVO.getCommitteeId(),inviteesVO.getRolesIds(),disstrictIds,null,null);
-									 if(tdpCadreList != null && tdpCadreList.size()>0)
+									 tdpCadresList = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteesVO.getCommitteeId(),inviteesVO.getRolesIds(),disstrictIds,null,null);
+									 if(tdpCadresList != null && tdpCadresList.size()>0)
 									 {
-										 tdpCadreIdsList.addAll(tdpCadreList);
-										 if(startIndex == 0)
-											{
-												 List<Object[]> positionCounts = tdpCommitteeMemberDAO.getCommiteeMembersCountDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,inviteesVO.getCommitteeId(),inviteesVO.getRolesIds(),disstrictIds,null,null);
-												 if(positionCounts != null && positionCounts.size()>0)
-												 {
-													 for (Object[] positionCount : positionCounts)
+										 Long count = 0L;
+										 for (Object[] cadre : tdpCadresList) {
+											Long cadreId = cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L;
+											String positiion = cadre[1] != null ? cadre[1].toString().trim():null;											
+											tdpCadreIdsList.add(cadreId);
+											
+											 if(startIndex == 0)
+												{
+													 if(compareCadreIds != null && compareCadreIds.size()>0)
 													 {
-														String positiion = positionCount[1] != null ? positionCount[1].toString().trim():"";
-														Long positiionCount = positionCount[2] != null ? Long.valueOf(positionCount[2].toString().trim()):0L;
-														if(positiion != null && positiion.length()>0 )
-														{
-															Long count = 0L;
-															if(positonsCountMap.get(positiion) != null)
+														// for (Long candidateId : compareCadreIds) 
+														// {
+															if(!compareCadreIds.contains(cadreId))
 															{
-																count = positonsCountMap.get(positiion);
+																if(villagePositonsCountMap.get(positiion) != null)
+																{
+																	count = villagePositonsCountMap.get(positiion);
+																}
+																count = count+1;
+																villagePositonsCountMap.put(positiion,count);
 															}
-															count = count+positiionCount;
-															
-															positonsCountMap.put(positiion,count);
-														}
+														// }
 													 }
-												 }
-											}
+													 else
+													 {
+														 if(villagePositonsCountMap.get(positiion) != null)
+															{
+																count = villagePositonsCountMap.get(positiion);
+															}
+															count = count+1;
+															villagePositonsCountMap.put(positiion,count);
+													 }
+												}
+										 }
+										 compareCadreIds.addAll(tdpCadreIdsList);
 									 }
 								 }
 							 }								
@@ -11516,21 +11632,22 @@ return mandalList;
 					if(actionType != null && actionType.trim().equalsIgnoreCase("invite"))
 					{
 						
-						String status = addToEventDetails(userId,eventId,publicRepresentativesIdList,tdpCadresIdList);
+						Long count = addToEventDetails(userId,eventId,publicRepresentativesIdList,tdpCadresIdList);
 						
 						
 						
 						TdpCadreVO finalCadreVO = new TdpCadreVO();
-						if(status == null){
-							finalCadreVO.setResponseCode("100");
-							finalCadreVO.setResponseStatus(status);
-						}
-						else
-						{
+						if(count == null){
 							finalCadreVO.setResponseCode("1");
 							finalCadreVO.setResponseStatus("error");
 						}
-						finalCadreVO.setTotalCount(totalCount);
+						else
+						{
+							finalCadreVO.setResponseCode("0");
+							finalCadreVO.setResponseStatus("success");
+							finalCadreVO.setTotalCount(count);
+						}
+						//finalCadreVO.setTotalCount(totalCount);
 						returnList.add(finalCadreVO);	
 					}
 					else
@@ -11716,23 +11833,96 @@ return mandalList;
 						}	
 						
 						List<TdpCadreVO> positionsVOList = null;
-						if(positonsCountMap != null && positonsCountMap.size()>0)
+						if(publicRepresentsCountMap != null && publicRepresentsCountMap.size()>0)
 						{
 							positionsVOList = new ArrayList<TdpCadreVO>();
-							for (String position : positonsCountMap.keySet()) {
+							for (String position : publicRepresentsCountMap.keySet()) {
 								TdpCadreVO positionVO = new TdpCadreVO();
 								positionVO.setCadreName(position);
-								positionVO.setTotalCount(positonsCountMap.get(position));
+								positionVO.setTotalCount(publicRepresentsCountMap.get(position));
 								positionsVOList.add(positionVO);
 							}
 						}
+						
+						List<TdpCadreVO> villagePositionsVOList = null;
+						if(villagePositonsCountMap != null && villagePositonsCountMap.size()>0)
+						{
+							villagePositionsVOList = new ArrayList<TdpCadreVO>();
+							for (String position : villagePositonsCountMap.keySet()) {
+								TdpCadreVO positionVO = new TdpCadreVO();
+								positionVO.setCadreName(position);
+								positionVO.setTotalCount(villagePositonsCountMap.get(position));
+								villagePositionsVOList.add(positionVO);
+							}
+						}
+						
+						List<TdpCadreVO> mandalPositionsVOList = null;
+						if(mandalPositonsCountMap != null && mandalPositonsCountMap.size()>0)
+						{
+							mandalPositionsVOList = new ArrayList<TdpCadreVO>();
+							for (String position : mandalPositonsCountMap.keySet()) {
+								TdpCadreVO positionVO = new TdpCadreVO();
+								positionVO.setCadreName(position);
+								positionVO.setTotalCount(mandalPositonsCountMap.get(position));
+								mandalPositionsVOList.add(positionVO);
+							}
+						}
+						
+						List<TdpCadreVO> districtPositionsVOList = null;
+						if(districtPositonsCountMap != null && districtPositonsCountMap.size()>0)
+						{
+							districtPositionsVOList = new ArrayList<TdpCadreVO>();
+							for (String position : districtPositonsCountMap.keySet()) {
+								TdpCadreVO positionVO = new TdpCadreVO();
+								positionVO.setCadreName(position);
+								positionVO.setTotalCount(districtPositonsCountMap.get(position));
+								districtPositionsVOList.add(positionVO);
+							}
+						}
+						
+						List<TdpCadreVO> statePositionsVOList = null;
+						if(statePositonsCountMap != null && statePositonsCountMap.size()>0)
+						{
+							statePositionsVOList = new ArrayList<TdpCadreVO>();
+							for (String position : statePositonsCountMap.keySet()) {
+								TdpCadreVO positionVO = new TdpCadreVO();
+								positionVO.setCadreName(position);
+								positionVO.setTotalCount(statePositonsCountMap.get(position));
+								statePositionsVOList.add(positionVO);
+							}
+						}
+						
+						TdpCadreVO countVO = new TdpCadreVO();
+						if(districtPositionsVOList != null && districtPositionsVOList.size()>0)
+						{
+							countVO.setCadreSearchList(districtPositionsVOList);//district
+						}
+						if(statePositionsVOList != null && statePositionsVOList.size()>0)
+						{
+							countVO.setTdpCadreDetailsList(statePositionsVOList); // state
+						}
+						if(villagePositionsVOList != null && villagePositionsVOList.size()>0)
+						{
+							countVO.setVoterSearchList(villagePositionsVOList); // village
+						}
+						
+						
 						
 						TdpCadreVO finalCadreVO = new TdpCadreVO();
 						finalCadreVO.setResponseCode("0");
 						finalCadreVO.setResponseStatus("success");
 						finalCadreVO.setTotalCount(totalCount);
 						finalCadreVO.setCadreComitteeVOList(cadreCommitteeList);
-						finalCadreVO.setCadreSearchList(positionsVOList);
+						if(positionsVOList != null && positionsVOList.size()>0)
+						{
+							finalCadreVO.setCadreSearchList(positionsVOList); // public represents count details
+						}
+						if(mandalPositionsVOList != null && mandalPositionsVOList.size()>0)
+						{
+							finalCadreVO.setTdpCadreDetailsList(mandalPositionsVOList); // mandal level positions count
+						}
+						finalCadreVO.getVoterSearchList().add(countVO);//village, state, district level positions count
+						
 						returnList.add(finalCadreVO);	
 					}
 			}
@@ -11742,305 +11932,7 @@ return mandalList;
 		}
 		return returnList;
 	}
-/*
-	 public List<TdpCadreVO> createGroupForMahanaduInvities(final Long userId,final Long committeeLevelId,final  Long committeeValue,
-			 final List<CadreCommitteeMemberVO> committeeList,final Long presentLocationId,final String groupName,final String searchType,
-			 final Long stateId, final Long districtId, final Long constituencyId,final Long mandalId, final Long panchayatId,final Integer startIndex,final Integer maxIndex)
-	 {
-		 List<TdpCadreVO> returnLsit = new ArrayList<TdpCadreVO>();
-		 try {
-			 
-			 @SuppressWarnings("unchecked")
-		 List<TdpCadreVO> returnsLsit = (List<TdpCadreVO>) transactionTemplate.execute(new TransactionCallback() {
-			 
-				 public Object doInTransaction(TransactionStatus status) {
-					 List<Long> disstrictIds = new ArrayList<Long>();
-					 List<Long> locationValuesList = new ArrayList<Long>();
-					 List<Long> locationLevelIdsList = new ArrayList<Long>();
-					 locationLevelIdsList.add(committeeLevelId);
-					 if(committeeLevelId != null && committeeLevelId.longValue() ==10L)//state level
-					 {
-						 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 2L )
-						 {
-							 disstrictIds.add(1L);disstrictIds.add(2L);disstrictIds.add(3L);disstrictIds.add(4L);disstrictIds.add(5L);disstrictIds.add(6L);disstrictIds.add(7L);disstrictIds.add(8L);disstrictIds.add(9L);disstrictIds.add(10L);
-						 }
-						 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 1L )
-						 {
-							 disstrictIds.add(11L);disstrictIds.add(12L);disstrictIds.add(13L);disstrictIds.add(14L);disstrictIds.add(15L);disstrictIds.add(16L);disstrictIds.add(17L);disstrictIds.add(18L);disstrictIds.add(19L);disstrictIds.add(20L);
-							 disstrictIds.add(21L);disstrictIds.add(22L);disstrictIds.add(23L);
-						 }
-					 }
-					 else  if(committeeLevelId != null && committeeLevelId.longValue() ==11L)//district level
-					 {
-						 if(districtId != null && districtId.longValue() ==0L) // district not selected
-						 {
-							 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 2L )
-							 {
-								 disstrictIds.add(1L);disstrictIds.add(2L);disstrictIds.add(3L);disstrictIds.add(4L);disstrictIds.add(5L);disstrictIds.add(6L);disstrictIds.add(7L);disstrictIds.add(8L);disstrictIds.add(9L);disstrictIds.add(10L);
-							 }
-							 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 1L )
-							 {
-								 disstrictIds.add(11L);disstrictIds.add(12L);disstrictIds.add(13L);disstrictIds.add(14L);disstrictIds.add(15L);disstrictIds.add(16L);disstrictIds.add(17L);disstrictIds.add(18L);disstrictIds.add(19L);disstrictIds.add(20L);
-								 disstrictIds.add(21L);disstrictIds.add(22L);disstrictIds.add(23L);
-							 }
-						 }
-						 else // district selected
-						 {
-							 disstrictIds.add(districtId.longValue());
-						 }
-						 
-					 }
-					 else  if(committeeLevelId != null && committeeLevelId.longValue() ==5L)//mandal level
-					 {
-						 locationLevelIdsList.clear();
-						 locationLevelIdsList.add(5L);
-						 locationLevelIdsList.add(7L);
-						 locationLevelIdsList.add(9L);
-						 if(mandalId != null && mandalId.longValue() != 0L) // mandal/muncipality selected
-						 {
-							 locationValuesList.add(mandalId);
-						 }
-						 else if(constituencyId != null && constituencyId.longValue() != 0L) // constituency selected
-						 {
-							 List<Object[]> tehsilIds = tehsilDAO.findTehsilsByConstituencyIdAndPublicationDateId(constituencyId,IConstants.VOTER_DATA_PUBLICATION_ID);
-							 if(tehsilIds != null && tehsilIds.size()>0)
-							 {
-								 for (Object[] tehsil : tehsilIds) {
-									 locationValuesList.add(tehsil[0] != null ? Long.valueOf(tehsil[0].toString().trim()):0L);
-								}
-							 }
-						 }
-						 else if(districtId != null && districtId.longValue() ==0L) // district not selected
-						 {
-							 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 2L )
-							 {
-								 disstrictIds.add(1L);disstrictIds.add(2L);disstrictIds.add(3L);disstrictIds.add(4L);disstrictIds.add(5L);disstrictIds.add(6L);disstrictIds.add(7L);disstrictIds.add(8L);disstrictIds.add(9L);disstrictIds.add(10L);
-							 }
-							 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 1L )
-							 {
-								 disstrictIds.add(11L);disstrictIds.add(12L);disstrictIds.add(13L);disstrictIds.add(14L);disstrictIds.add(15L);disstrictIds.add(16L);disstrictIds.add(17L);disstrictIds.add(18L);disstrictIds.add(19L);disstrictIds.add(20L);
-								 disstrictIds.add(21L);disstrictIds.add(22L);disstrictIds.add(23L);
-							 }
-						 }
-						 else  if(districtId != null && districtId.longValue() != 0L) // district selected
-						 {
-							 disstrictIds.add(districtId);
-						 }
-						 
-					 }
-					 
-					 else  if(committeeLevelId != null && committeeLevelId.longValue() ==6L)//village/ward level
-					 {
-						 locationLevelIdsList.clear();
-						 locationLevelIdsList.add(6L);
-						 locationLevelIdsList.add(8L);
-						 
-						 if(panchayatId != null && panchayatId.longValue() != 0L) // mandal/muncipality selected
-						 {
-							 locationValuesList.add(panchayatId);
-						 }
-						 else if(mandalId != null && mandalId.longValue() != 0L) // mandal/muncipality selected
-						 {
-							 List<Long> tehsilIds = new ArrayList<Long>();
-							 tehsilIds.add(Long.valueOf(mandalId.toString().substring(1)));									 
-							 List<Object[]> panchayatLsit =  panchayatDAO.getPanchayatIdsByMandalIdsList(tehsilIds);
-							 if(panchayatLsit != null && panchayatLsit.size()>0)
-							 {
-								 for (Object[] panchayat : panchayatLsit) {
-									 locationValuesList.add(panchayat[0] != null ? Long.valueOf(panchayat[0].toString().trim()):0L);
-								}
-							 }
-						 }
-						 else if(constituencyId != null && constituencyId.longValue() != 0L) // constituency selected
-						 {
-							 List<Object[]> panchayatLsit =  panchayatDAO.getPanchayatsByConstituencyId(constituencyId);
-							 if(panchayatLsit != null && panchayatLsit.size()>0)
-							 {
-								 for (Object[] panchayat : panchayatLsit) {
-									 locationValuesList.add(panchayat[0] != null ? Long.valueOf(panchayat[0].toString().trim()):0L);
-								}
-							 }
-						 }
-						 else if(districtId != null && districtId.longValue() == 0L) // district not selected
-						 {
-							 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 2L )
-							 {
-								 disstrictIds.add(1L);disstrictIds.add(2L);disstrictIds.add(3L);disstrictIds.add(4L);disstrictIds.add(5L);disstrictIds.add(6L);disstrictIds.add(7L);disstrictIds.add(8L);disstrictIds.add(9L);disstrictIds.add(10L);
-							 }
-							 if(stateId != null && stateId.longValue() == 0L || stateId.longValue() == 1L )
-							 {
-								 disstrictIds.add(11L);disstrictIds.add(12L);disstrictIds.add(13L);disstrictIds.add(14L);disstrictIds.add(15L);disstrictIds.add(16L);disstrictIds.add(17L);disstrictIds.add(18L);disstrictIds.add(19L);disstrictIds.add(20L);
-								 disstrictIds.add(21L);disstrictIds.add(22L);disstrictIds.add(23L);
-							 }
-						 }
-						 else  if(districtId != null && districtId.longValue() != 0L) // district selected
-						 {
-							 disstrictIds.add(districtId);
-						 }						 
-					 }
-					 
-					 List<TdpCadreVO> returnLsit = new ArrayList<TdpCadreVO>();
-					 EventGroup mahaGroup = null;
-					Long totalCount = 0l;					 
-						 List<Long> tdpCadreIdsList = new ArrayList<Long>();
-						 List<Long> tdpCadreIdList = new ArrayList<Long>();
-						 if(committeeList !=null && committeeList.size()>0)
-						 {
-							 for (CadreCommitteeMemberVO cadreCommitteeMemberVO : committeeList) {
-								 List<Long> committeeMembersLsit = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,cadreCommitteeMemberVO.getId(),cadreCommitteeMemberVO.getCommiteeRoleIds(),disstrictIds,startIndex,maxIndex);
-								 if(committeeMembersLsit!= null && committeeMembersLsit.size()>0)
-								 {
-									 if(committeeMembersLsit.size()>500)
-									 {
-										 committeeMembersLsit = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,cadreCommitteeMemberVO.getId(),cadreCommitteeMemberVO.getCommiteeRoleIds(),disstrictIds,0,100);
-									 }
-									 tdpCadreIdsList.addAll(committeeMembersLsit);
-									 List<Long> list = tdpCommitteeMemberDAO.getCommiteeMembersDetailsByPostionsAndCommiteeLevel(locationLevelIdsList,locationValuesList,cadreCommitteeMemberVO.getId(),cadreCommitteeMemberVO.getCommiteeRoleIds(),disstrictIds,null,null);
-									 totalCount = totalCount+(Long.valueOf(list.size()));
-								 }
-								 
-							}
-						 }
-						 List<CadreCommitteeVO> cadreCommitteeList = new ArrayList<CadreCommitteeVO>();
-						 
-						 if(tdpCadreIdsList != null && tdpCadreIdsList.size()>0)
-						 {
-							 if(searchType != null && searchType.equalsIgnoreCase("New Group"))
-							 {
-								 mahaGroup = eventGroupDAO.checkIsExistGroupName(groupName);
-								 if(mahaGroup == null)
-								 {
-									 EventGroup mahanaduGroup = new EventGroup();
-									 mahanaduGroup.setGroupName(groupName);
-									 mahanaduGroup.setCommitteeLevelId(committeeLevelId);
-									 mahanaduGroup.setCommitteeLevelValue(committeeValue);
-									 mahanaduGroup.setUserId(userId);
-									 mahanaduGroup.setCreatedDate(dateUtilService.getCurrentDateAndTime());
-									 mahaGroup =  eventGroupDAO.save(mahanaduGroup);
-								 }
-								 else
-								 {
-								 	TdpCadreVO finalCadreVO = new TdpCadreVO();
-									finalCadreVO.setResponseCode("2");
-									finalCadreVO.setResponseStatus("Already Exist...");
-									finalCadreVO.setTotalCount(totalCount);
-									returnLsit.add(finalCadreVO);
-									
-									return returnLsit;
-								 }
-							 }
-							 
-								 List<Object[]> tdpCadreList = tdpCadreDAO.getMobileNoByTdpCadreIdList(tdpCadreIdsList);
-								 
-								 if(tdpCadreList != null && tdpCadreList.size()>0)
-								 {
-										if(tdpCadreList != null && tdpCadreList.size()>0)
-										{
-											SimpleDateFormat format  = new SimpleDateFormat("yy-MM-dd");
-											for (Object[] cadre : tdpCadreList) 
-											{
-												CadreCommitteeVO committeeVO = new CadreCommitteeVO();
 
-												committeeVO.setTdpCadreId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
-												committeeVO.setMemberShipCardId(cadre[4] != null ? cadre[4].toString().substring(4):"");
-												committeeVO.setCadreName(cadre[1] != null ? cadre[1].toString():"");
-												committeeVO.setRelativeName(cadre[2] != null ? cadre[2].toString():"");
-												committeeVO.setMobileNo(cadre[6] != null ? cadre[6].toString():"");
-												committeeVO.setCasteName(cadre[18] != null ? cadre[18].toString().trim():"");
-												committeeVO.setGender(cadre[3] != null ? cadre[3].toString():"");
-												committeeVO.setImageURL(cadre[7] != null ? cadre[7].toString():"");
-												
-												if(cadre[9] != null)
-												{
-													committeeVO.setAge(cadre[9] != null ?cadre[9].toString().trim():"0");
-												}
-												else if((committeeVO.getAge() == null || committeeVO.getAge().toString().trim().length()<=0) && cadre[10]  != null)
-												{
-													String dateOfBirth = 	cadre[10] != null ? cadre[10].toString().substring(0,10):" "	;
-													if(dateOfBirth != null && dateOfBirth.trim().length()>0)
-													{
-														Calendar startDate = new GregorianCalendar();
-														Calendar endDate = new GregorianCalendar();
-														try {
-															startDate.setTime(format.parse(dateOfBirth.trim()));
-															
-														} catch (Exception e) {}
-														
-														
-														endDate.setTime(new Date());
-
-														int diffYear = endDate.get(Calendar.YEAR) - startDate.get(Calendar.YEAR);
-														committeeVO.setAge(String.valueOf(diffYear));
-													}
-												}
-												
-												if(committeeVO.getAge() != null && committeeVO.getAge().toString().trim().length()==0)
-												{
-													committeeVO.setAge(cadre[12] != null ? cadre[12].toString().trim():"0");
-												}
-												
-												String electionType = cadre[20] != null ? cadre[20].toString().trim():""; // municipality/corporation/ghmc....
-												committeeVO.setLocalElectionBody(cadre[16] != null ? cadre[16].toString().trim()+" "+electionType:"");
-												
-												committeeVO.setPanchayat(cadre[15] != null ? cadre[15].toString().trim():"");
-												committeeVO.setTehsil(cadre[14] != null ? cadre[14].toString().trim()+" Mandal":"");
-												committeeVO.setConstituency(cadre[11] != null ? cadre[11].toString().trim():"");
-												committeeVO.setAddress(cadre[17] != null ? cadre[17].toString().trim():"");
-												
-												cadreCommitteeList.add(committeeVO);
-												 if(searchType != null && searchType.equalsIgnoreCase("New Group"))
-												 {									
-													if(mahaGroup != null)
-													{
-														MahanaduCadreMember mahanaduCadreMember = new MahanaduCadreMember();
-														mahanaduCadreMember.setTdpCadreId(committeeVO.getTdpCadreId());
-														mahanaduCadreMember.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-														mahanaduCadreMember.setMahanaduGroupId(mahaGroup.getEventGroupId());
-														mahanaduCadreMemberDAO.save(mahanaduCadreMember);
-													}
-												 }
-										
-												tdpCadreIdList.add(committeeVO.getTdpCadreId());
-											} 
-										}
-								 }
-								 
-								 if(tdpCadreIdList != null && tdpCadreIdList.size()>0)
-									{
-										setCurrentDesignation(cadreCommitteeList,tdpCadreIdList);
-										setCurrentElectrolInfo(cadreCommitteeList,tdpCadreIdList);
-									}
-									
-									returnLsit.clear();
-									TdpCadreVO finalCadreVO = new TdpCadreVO();
-									finalCadreVO.setResponseCode("0");
-									finalCadreVO.setResponseStatus("success");
-									finalCadreVO.setTotalCount(totalCount);
-									finalCadreVO.setCadreComitteeVOList(cadreCommitteeList);
-									returnLsit.add(finalCadreVO);
-									
-						 }						
-						 return returnLsit;					 
-				 }
-				 });
-			 
-			if(returnsLsit == null || returnsLsit.size() == 0)
-			{			
-				TdpCadreVO cadreVO = new TdpCadreVO();
-				cadreVO.setResponseCode("1");
-				cadreVO.setResponseStatus("No Data Available...");
-				returnLsit.add(cadreVO);
-			}
-			else
-			{
-				returnLsit.addAll(returnsLsit);
-			}
-		} catch (Exception e) {
-			LOG.error("Exception rised in createGroupForMahanaduInvities() while closing write operation",e);
-		}
-		 return returnLsit;
-	 }
-	 */
 	 public ResultStatus sendSmsForInvitees(Long userId,List<Long> mobileNoList,String message)
 	 {
 		 ResultStatus status = new ResultStatus();
@@ -12160,47 +12052,104 @@ return mandalList;
 		 
 	 }
 	 
-	 public String addToEventDetails(final Long userId,final Long eventId,final List<Long> publicRepresentativesIdList,final List<Long> tdpCadresIdList)
+	 public Long addToEventDetails(final Long userId,final Long eventId,final List<Long> publicRepresentativesIdList,final List<Long> tdpCadresIdList)
 	 {
-		 String status = null;
+		 Long count = null;
 		 try {
-			 status = (String) transactionTemplate.execute(new TransactionCallback() {
+			 count = (Long) transactionTemplate.execute(new TransactionCallback() {
 				 public Object doInTransaction(TransactionStatus status) {
 					 DateUtilService dateService = new DateUtilService();
-					 
+					 Long totalCount = 0L;
 					 if( publicRepresentativesIdList!= null && publicRepresentativesIdList.size()>0)
 						{
 							 for (Long publicRepresentativesId : publicRepresentativesIdList) 
 							 {
-								 	EventInvitee eventInvitee = new EventInvitee();
-								 	eventInvitee.setEventId(eventId);
-								 	eventInvitee.setPublicRepresentativeId(publicRepresentativesId);
-								 	eventInvitee.setCreatedBy(userId);
-								 	eventInvitee.setInsertedTime(dateService.getCurrentDateAndTime());
-								 	eventInviteeDAO.save(eventInvitee);
-								 	
+								 Long eventInviteeId  = eventInviteeDAO.checkIsExistDetails(publicRepresentativesId,eventId,"publicRepresentative");
+								 	if(eventInviteeId == null || eventInviteeId.longValue() == 0L)
+								 	{
+								 		EventInvitee eventInvitee = new EventInvitee();
+									 	eventInvitee.setEventId(eventId);
+									 	eventInvitee.setPublicRepresentativeId(publicRepresentativesId);
+									 	eventInvitee.setCreatedBy(userId);
+									 	eventInvitee.setInsertedTime(dateService.getCurrentDateAndTime());
+									 	eventInviteeDAO.save(eventInvitee);
+									 	totalCount = totalCount+1;
+								 	}
 							 }
 						}
 						if(tdpCadresIdList != null && tdpCadresIdList.size()>0)
 						{
 							 for (Long tdpCadresId : tdpCadresIdList) 
 							 {
-								 	EventInvitee eventInvitee = new EventInvitee();
-								 	eventInvitee.setEventId(eventId);
-								 	eventInvitee.setTdpCadreId(tdpCadresId);
-								 	eventInvitee.setCreatedBy(userId);
-								 	eventInvitee.setInsertedTime(dateService.getCurrentDateAndTime());
-								 	eventInviteeDAO.save(eventInvitee);
-								 	
+								 	Long eventInviteeId  = eventInviteeDAO.checkIsExistDetails(tdpCadresId,eventId,"tdpCadre");
+								 	if(eventInviteeId == null || eventInviteeId.longValue() == 0L)
+								 	{
+								 		EventInvitee eventInvitee = new EventInvitee();
+									 	eventInvitee.setEventId(eventId);
+									 	eventInvitee.setTdpCadreId(tdpCadresId);
+									 	eventInvitee.setCreatedBy(userId);
+									 	eventInvitee.setInsertedTime(dateService.getCurrentDateAndTime());
+									 	eventInviteeDAO.save(eventInvitee);
+									 	totalCount = totalCount+1;
+								 	}
 							 }
 						}
-					 return "success";
+					 return totalCount;
 				 }});
 		} catch (Exception e) {
 			LOG.error("Exception rised in addToEventDetails() while closing write operation",e);
 		}
-		return status;
-		 	
+		return count;		 	
+	 }
+	 
+	 public ResultStatus createNewEvent(final Long userId,final  String eventName,final  String description,final  String startDate,final  String endDate, final  Long mainEventId)
+	 {
+		 ResultStatus resultStatus = new ResultStatus();
+		 try {
+			 String status = (String) transactionTemplate.execute(new TransactionCallback() {
+				 public Object doInTransaction(TransactionStatus status) {
+					 DateUtilService dateService = new DateUtilService();
+					 SimpleDateFormat foramt = new SimpleDateFormat("MM/dd/yy");//MM-DD-YYYY
+					 
+					 Event event = new Event();
+					 event.setName(eventName);
+					 event.setDescription(description);
+					 event.setInsertedTime(dateService.getCurrentDateAndTime());
+					 try{
+					 event.setEventStartTime(foramt.parse(startDate));
+					 event.setEventEndTime(foramt.parse(endDate));
+					 }catch(Exception e){}
+					 
+					// event.setIsEnabled("Y");
+					 if(mainEventId.longValue() != 0L)
+					 {
+						 event.setParentEventId(mainEventId);
+					 }
+					 else
+					 {
+						 event.setParentEventId(null);
+					 }
+					 
+					 return "success";
+					 
+				 }});
+			 
+			 if(status != null)
+			 {
+				 resultStatus.setResultCode(0);
+				 resultStatus.setMessage("success");
+			 }
+			 else
+			 {
+				 resultStatus.setResultCode(1);
+				 resultStatus.setMessage("error");
+			 }
+		} catch (Exception e) {
+			LOG.error("Exception rised in createNewEvent() while closing write operation",e);
+			 resultStatus.setResultCode(1);
+			 resultStatus.setMessage("error");
+		}
+		 return resultStatus;
 	 }
 	 
 }
