@@ -8,14 +8,12 @@ import java.util.List;
 public class UserEventDetailsVO implements Serializable{
 	
 	private Long id;
-	private String userName
-;
+	private String userName;
 	private String userPassword;
 	private List<UserEventDetailsVO> subList = new ArrayList<UserEventDetailsVO>();
 	private String status;
 	private String IMEI;
-	private String SIMCardNumber 
-;
+	private String SIMCardNumber;
 	private String loginTimeStamp;
 
 	private String RFID;
