@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 
 public interface IMahaNaduService {
 	public List<SelectOptionVO> getBoothsInAConstituency(Long constituencyId,Long publicationID,Long tehsilId,Long localElecBodyId);
@@ -25,4 +26,5 @@ public interface IMahaNaduService {
 	 
 	 public CadreVo searchVoterInfo(Long userId,Long boothId, String searchName,String searchType,String sort,String sortBy,int startIndex,int maxResult);
 	 public ResultStatus insertDataintoEventInfo();
+	 public List<UserEventDetailsVO> getSubEventInfo(Long parentId,Long userId);
 }

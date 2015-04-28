@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,6 +39,7 @@ import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
 import com.itgrids.partyanalyst.dao.IEventInfoDAO;
 import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
+import com.itgrids.partyanalyst.dao.IEventUserDAO;
 import com.itgrids.partyanalyst.dao.IGovtDesignationDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
@@ -58,6 +60,7 @@ import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.UserEventDetailsVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreGovtDesignation;
@@ -99,8 +102,17 @@ public class MahaNaduService implements IMahaNaduService{
 	private IEventAttendeeDAO eventAttendeeDAO;
 	private IVoterInfoDAO voterInfoDAO;
 	private ITdpCadreInfoDAO tdpCadreInfoDAO;
+	private IEventUserDAO eventUserDAO;
 	
 	
+	public IEventUserDAO getEventUserDAO() {
+		return eventUserDAO;
+	}
+
+	public void setEventUserDAO(IEventUserDAO eventUserDAO) {
+		this.eventUserDAO = eventUserDAO;
+	}
+
 	public ITdpCadreInfoDAO getTdpCadreInfoDAO() {
 		return tdpCadreInfoDAO;
 	}
@@ -970,6 +982,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		events = eventInfoDAO.getEventIds(2l,date.getCurrentDateAndTime());
 		 if(events != null && events.size() > 0)
 		 eventInfoDAO.deleteEventInfo(2l,events) ;
+		 voterDAO.flushAndclearSession();
 		statewise= eventAttendeeDAO.getStateWiseEventAttendeeInfo("invitee",date.getCurrentDateAndTime(),1l);
 		statewise1= eventAttendeeDAO.getStateWiseEventAttendeeInfo("",date.getCurrentDateAndTime(),1l);
 		setInviteeInfoForState(statewise,2l,"invitee",1l);
@@ -978,7 +991,10 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		statewise1= eventAttendeeDAO.getStateWiseEventAttendeeInfo("",date.getCurrentDateAndTime(),36l);
 		setInviteeInfoForState(statewise,2l,"invitee",36l);
 		setInviteeInfoForState(statewise1,2l,"",36l);
-		
+		    if(events != null && events.size() > 0)
+			 eventInfoDAO.deleteEventInfo(3l,events) ;
+			 voterDAO.flushAndclearSession();
+			
 		 
 		// list = eventInviteeDAO.getEventInviteesCountByLocationType(IConstants.DISTRICT,date.getCurrentDateAndTime());
 		 list1= eventAttendeeDAO.getEventAttendeeInfo(IConstants.DISTRICT,"invitee",date.getCurrentDateAndTime());
@@ -989,6 +1005,8 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		 events = eventInfoDAO.getEventIds(4l,date.getCurrentDateAndTime());
 		 if(events != null && events.size() > 0)
 		 eventInfoDAO.deleteEventInfo(4l,events) ;
+		 voterDAO.flushAndclearSession();
+		
 		// list = eventInviteeDAO.getEventInviteesCountByLocationType(IConstants.CONSTITUENCY,date.getCurrentDateAndTime());
 		 list1= eventAttendeeDAO.getEventAttendeeInfo(IConstants.CONSTITUENCY,"invitee",date.getCurrentDateAndTime());
 		 list2= eventAttendeeDAO.getEventAttendeeInfo(IConstants.CONSTITUENCY,"",date.getCurrentDateAndTime());
@@ -1154,7 +1172,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		 if(list != null && list.size() > 0)
 		 {
 			
-			 List<Object[]> checkList = eventInfoDAO.getEventInfo(reportLevelId);
+			 List<Object[]> checkList = eventInfoDAO.getEventInfoForState(reportLevelId,stateId);
 			 if(checkList != null && checkList.size() > 0)
 			 {
 				 for(Object[] params : checkList)
@@ -1178,6 +1196,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				 eventInfo.setReportLevelId(reportLevelId);
 				 eventInfo.setLocationValue(stateId);
 				 eventInfo.setDate(format.parse(params[2].toString()));
+				 eventInfo.setStateId(stateId);
 				 if(type.equalsIgnoreCase("invitee"))
 				 eventInfo.setInvitees((Long)params[1]);
 				 else
@@ -1214,7 +1233,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		 for(EventActionPlanVO vo : resultList)
 		 {
 			 if(vo.getLocationValue() != null)
-			 if((vo.getLocationValue().longValue() == location && vo.getEventId().longValue() == event.longValue() && vo.getMessage() == date))
+			 if((vo.getLocationValue().longValue() == location.longValue() && vo.getEventId().longValue() == event.longValue() && vo.getMessage().equalsIgnoreCase(date)))
 				 return vo;
 				 
 		 }
@@ -1283,4 +1302,63 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		
 		return location;
 	}
+ 
+ public List<UserEventDetailsVO> getSubEventInfo(Long parentId,Long userId)
+ {
+	 List<UserEventDetailsVO> resultList = new ArrayList<UserEventDetailsVO>();
+	 try{
+		 List<Long> parentEventIds = new ArrayList<Long>();
+		 parentEventIds.add(parentId);
+		 DateUtilService date = new DateUtilService();
+		 List<Object[]> list = eventUserDAO.getEventsByUserAndParentIds(userId,date.getCurrentDateAndTime(),parentEventIds);
+		 if(list != null && list.size() > 0)
+		 {
+			 for(Object[] params : list)
+			 {
+				 UserEventDetailsVO vo = new UserEventDetailsVO();
+				 vo.setEventId((Long)params[0]);
+				 vo.setUserName(params[1] != null ? params[1].toString() : "");
+				 if(params[4] != null)
+				 vo.setStartTime(TimeForm(params[4].toString()));
+				 if(params[5] != null)
+					 vo.setEndTime(TimeForm(params[4].toString())); 
+				 vo.setStatus(params[3] != null ? params[3].toString():"");
+				 resultList.add(vo);
+			 }
+		 }
+	 }
+	 catch(Exception e)
+	 {
+		 LOG.error("Exception Occured in getSubEventInfo()", e);
+		 e.printStackTrace();
+	 }
+	return null;
+ }
+ 
+ public String TimeForm(String time)
+ {
+	   String output = null;
+	   try{
+		   
+		   String input = time;
+		
+		 //Date/time pattern of input date
+	       DateFormat df = new SimpleDateFormat("HH:mm:ss");
+	       //Date/time pattern of desired output date
+	       DateFormat outputformat = new SimpleDateFormat(" hh:mm:ss aa");
+	       Date date = null;
+	      
+	      
+	          //Conversion of input String to date
+	    	  date= df.parse(input);
+	          //old date format to new date format
+	    	  output = outputformat.format(date);
+	    	  System.out.println(output);
+	   }
+	   catch(Exception e)
+	   {
+		   e.printStackTrace();
+	   }
+	return output;
+ }
 }

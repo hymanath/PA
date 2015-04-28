@@ -36,7 +36,7 @@ public class EventUserDAO extends GenericDaoHibernate<EventUser, Long> implement
 	
 	public List<Object[]> getEventsByUserAndParentIds(Long userId,Date currentDate,List<Long> parentEventIds)
 	{
-		Query query = getSession().createQuery("select model.event.eventId,model.event.name,model.event.parentEventId from EventUser model where  " +
+		Query query = getSession().createQuery("select model.event.eventId,model.event.name,model.event.parentEventId,model.event.description,model.event.startTime,model.event.endTime from EventUser model where  " +
 				" date(:currentDate) between date(model.event.eventStartTime) and date(model.event.eventEndTime) and model.userId =:userId and  model.event.parentEventId in(:parentEventIds)");
 		query.setDate("currentDate", currentDate);
 		query.setParameter("userId", userId);

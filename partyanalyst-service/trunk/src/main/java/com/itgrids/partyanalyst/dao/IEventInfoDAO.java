@@ -17,4 +17,5 @@ public interface IEventInfoDAO extends GenericDao<EventInfo, Long>{
 	public Integer updateState(List<Long> locationValues,Long reportLevelId,Long stateId);
 	public List<Object[]> getEventInfoForState(Long reportLevelId,Long stateId);
 	
+	
 }
