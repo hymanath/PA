@@ -770,6 +770,8 @@ public interface IConstants {
     
     public static final Long VOTER_DATA_PUBLICATION_ID = 11L;
     
+    public static final Long OTHER_STATE_PUBLICATION_ID = 13L;
+    
     public static final Long CONSTITUENCY_SCOPE_ID = 4L;
     public static final Long BOOTH_SCOPE_ID = 9L;
     
@@ -873,6 +875,6 @@ public interface IConstants {
     public static final String INTERWORKING = "INTERWORKING";
     
     public static final Long  CURRENT_ENROLLMENT_ID =1l;
-    public static final Long CADRE_ENROLLMENT_YEAR_FOROTHER_STATES = 2015l;
+    public static final Long CADRE_ENROLLMENT_YEAR_FOROTHER_STATES = 2014l;
     
 }
