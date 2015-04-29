@@ -28,7 +28,7 @@
         <div class="col-md-2"></div>     
     </div>
 </header>
-<img src="dist/img/header-footer.png" class="header-footer">
+
     
 
 <section class="container">
@@ -185,10 +185,10 @@ $(function () {
         },
 		title: {
             text: 'Visits',
-            x: -100 //center
+             align: 'center',
         },
 		legend: {
-            layout: 'vertical',
+            layout: 'horizontal',
             align: 'center',
             verticalAlign: 'top',
             borderWidth: 0,
@@ -455,13 +455,13 @@ function buildStartingPrograms(result){
 
 					str+='<div class="text-center">';
                     str+='<h3 class="display-style m_top0">TOTAL VISITS-</h3>';
-                   str+=' <h1 class="display-style m_top0">50245</h1>';
+                   str+=' <h1 class="display-style m_top0">'+result[0].total+'</h1>';
                  str+=' </div>';
-                 str+=' <div class="display-style">';
+                /* str+=' <div class="display-style">';
                   str+='	<div class="display-style label-custom1">Invitees - 49456</div>';
                    str+=' <div class="pull-right label-custom1 display-style">Non Invitees - 49456</div>';
                    str+=' <br/>';
-                 str+=' </div>';
+                 str+=' </div>';*/
                   str+=' <div class="ScrollDiv2">';
                 	str+='<hr class="m_bottom10"/>	';
 					var dataArr=[] ;
@@ -498,7 +498,7 @@ console.log(dataArr);
         },
          plotOptions: {
             pie: {
-                innerSize: 100,
+                innerSize: 180,
                 depth: 20,
 				 showInLegend: true,
 			
@@ -510,9 +510,9 @@ console.log(dataArr);
         },
 			legend: {
 				enabled: true,
-                align: 'right',
-                x: 0,
-                verticalAlign: 'top',
+                align: 'center',
+                x: 10,
+                verticalAlign: 'bottom',
                 y: 20,
                 floating: true,
                 backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
@@ -527,6 +527,25 @@ console.log(dataArr);
  
 });
 }
+
+function insertIntermediateData()
+{
+	$.ajax({
+          type:'POST',
+          url: 'insertDataintoEventInfoAction.action',
+          dataType: 'json',
+          data: {},
+
+          success: function(result){ 
+			  
+         },
+          error:function() { 
+           console.log('error', arguments);
+         }
+    });
+
+}
+
 getLocationWiseVisitorsCount(2,1,3);
 getLocationWiseVisitorsCount(2,1,4);
 
