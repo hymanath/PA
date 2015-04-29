@@ -43,7 +43,7 @@
             </div>
         </div>
         <div class="col-md-8 col-xs-12 col-sm-6">
-        		<div id="container" style="width: 100%; height: 100%; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;"></div>
+        		<div id="hourWiseContainer" style="width: 100%; height: 100%; margin: 0 auto;box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.75); border-radius:5px;"></div>
         </div>
 
         </div>
@@ -179,50 +179,7 @@ $(function () {
 	$('.ScrollDiv').slimScroll({
 	height: '350px'
 	});
-    $('#container').highcharts({
-		chart: {
-            type: 'area'
-        },
-		title: {
-            text: 'Visits',
-             align: 'center',
-        },
-		legend: {
-            layout: 'horizontal',
-            align: 'center',
-            verticalAlign: 'top',
-            borderWidth: 0,
-			enabled: true,
-			x: 150 //center
-        },
-        xAxis: {
-            categories: ['9 AM', '10 AM', '11 AM', '12 AM', '1 PM', '2 PM',
-                '3 PM', '4 PM', '5 PM', '6 PM', '7 PM', '8 PM']
-        },
-        yAxis: {
-            title: {
-                text: 'Visits'
-            },
-            plotLines: [{
-                value: 0,
-                width: 1,
-                color: '#808080'
-            }]
-        },
-        tooltip: {
-            valueSuffix: ' visits'
-        },
-        series: [{
-            name: 'Lunch',
-            data: [10000, 3000, 5000, 30000, 40000, 6000, 8000, 1000, 4000, 9000, 500, 12000]
-        }, {
-            name: 'Lokesh Meeting',
-            data: [30000, 1000, 30000, 5000, 60000, 4000, 1000, 8000, 9000, 4000, 1500, 2000]
-        }, {
-            name: 'Blood Donation',
-            data: [3000, 10000, 3000, 50000, 6000, 40000, 10000, 60000, 40000, 40000, 15000, 20000]
-        }]
-    });
+   
 });
 /* DONUT CHART */
 $(function () {
@@ -371,24 +328,23 @@ function buildDistrictTable(result,reportLevelId){
 }
 $("#myonoffswitch").click(function(){
 	if($('#myonoffswitch').is(":checked")){
-	getLocationWiseVisitorsCount(2,1,3);
+	getLocationWiseVisitorsCount(1,1,3);
 	$("#districtHeading").html("AP DISTRICT WISE");
 	}else{
-	getLocationWiseVisitorsCount(2,36,3);
+	getLocationWiseVisitorsCount(1,36,3);
 	$("#districtHeading").html("TS DISTRICT WISE");
 	}
 });
 $("#myonoffswitch1").click(function(){
 	if($('#myonoffswitch1').is(":checked")){
-	getLocationWiseVisitorsCount(2,1,4);
+	getLocationWiseVisitorsCount(1,1,4);
 	$("#constiHeading").html("AP CONSTITUENCY WISE");
 	}else{
-	getLocationWiseVisitorsCount(2,36,4);
+	getLocationWiseVisitorsCount(1,36,4);
 	$("#constiHeading").html("TS CONSTITUENCY WISE");
 	}
 });
 
-getSubEventDetails(1,1);
 function getSubEventDetails(userId,parentEventId){
 	var jObj = {
 			parentEventId:parentEventId,			
@@ -440,56 +396,37 @@ function getSubEventDetails(userId,parentEventId){
 }
 function buildStartingPrograms(result){
     var str='';
-	//str+='<div class="panel-body scrollDiv1">';
-	/*for( var i in result){
-  
-        str+='<p class="m_0 text-bold">'+result[i].name+'</p>';
-        str+='<p>'+result[i].status+'</p>';
-		if(result[i].startTime != null && result[i].endTime != null){
-        str+='<p class="text-danger">Programme Time:'+result[i].startTime+' To '+result[i].endTime +'</p>';
-		}else{
-		str+='<p class="text-danger">Programme Time:</p>';
-		}
-        str+='<hr class="m_top10"/>';
-    }     */    
-
-					str+='<div class="text-center">';
-                    str+='<h3 class="display-style m_top0">TOTAL VISITS-</h3>';
-                   str+=' <h1 class="display-style m_top0">'+result[0].total+'</h1>';
-                 str+=' </div>';
-                /* str+=' <div class="display-style">';
-                  str+='	<div class="display-style label-custom1">Invitees - 49456</div>';
-                   str+=' <div class="pull-right label-custom1 display-style">Non Invitees - 49456</div>';
-                   str+=' <br/>';
-                 str+=' </div>';*/
-                  str+=' <div class="ScrollDiv2">';
-                	str+='<hr class="m_bottom10"/>	';
-					var dataArr=[] ;
-				for(var i in result)
-				{
-				 
-					str+=' <span class="pull-left">'+result[i].name+'</span>';
-					var count = result[i].invitees + result[i].nonInvitees;
-                    str+='  <span class="pull-right label-custom">'+count+'</span>';
-                    str+=' <br/>';
-                    str+=' <hr class="m_top10"/>';
-					str+=' </div>';
-					 var arr = [];
-				    arr.push(result[i].name,count);
-				    dataArr.push(arr);
-		}
+	str+='<div class="text-center">';
+	str+='<h3 class="display-style m_top0">TOTAL VISITS-</h3>';
+	str+=' <h1 class="display-style m_top0">'+result[0].total+'</h1>';
+	str+=' </div>';
+	str+=' <div class="ScrollDiv2">';
+	str+='<hr class="m_bottom10"/>	';
+	var dataArr=[] ;
+	for(var i in result)
+	{				 
+		str+=' <span class="pull-left">'+result[i].name+'</span>';
+		var count = result[i].invitees + result[i].nonInvitees;
+		str+='  <span class="pull-right label-custom">'+count+'</span>';
+		str+=' <br/>';
+		str+=' <hr class="m_top10"/>';
+		str+=' </div>';
+		 var arr = [];
+		arr.push(result[i].name,count);
+		dataArr.push(arr);
+	}
 	$("#overAllEventDiv").html(str);
 	$('.scrollDiv1').slimScroll({
 	height: '390px'
 	});
-	 buildPieChart(dataArr);
+	buildPieChart(dataArr);
 }
 
 function buildPieChart(dataArr)
 {
-console.log(dataArr);
     $('#donutchart').highcharts({
         chart: {
+			margin: [-80, 0,0 , 0],
             type: 'pie',
             options3d: {
                 enabled: true,
@@ -498,11 +435,11 @@ console.log(dataArr);
         },
          plotOptions: {
             pie: {
-                innerSize: 180,
+				size:'74%',
+                innerSize: 200,
                 depth: 20,
-				 showInLegend: true,
-			
-			dataLabels: {
+				showInLegend: true,			
+				dataLabels: {
                         enabled: false
                   }
              
@@ -521,9 +458,13 @@ console.log(dataArr);
                 shadow: false
             },	
 		series: [{
-            
+            name : 'Visits',
             data: dataArr
-        }]
+        }]/*
+		  series: [{
+            name: 'Lunch',
+            data: [10000, 3000, 5000, 30000, 40000, 6000, 8000, 1000, 4000, 9000, 500, 12000]
+        }]*/
  
 });
 }
@@ -545,12 +486,82 @@ function insertIntermediateData()
     });
 
 }
+var areaChartDataArr  = [];
+function getSubEventDetailsHourWise(parentEventId){
+	var jObj = {
+			parentEventId:parentEventId
+		}	
+		
+		$.ajax({
+          type:'GET',
+          url: 'getHourWiseSubEventsCountAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+				areaChartDataArr = new Array();
+				for(var i in result)
+				{	
+					var areaChartDataArrInner = new Array();
+					for(var j in result[i].hoursList){					
+						areaChartDataArrInner.push(result[i].hoursList[j].cadreCount);
+					}
+					var obj1={
+						name:result[i].name,
+						data:areaChartDataArrInner
+					}
+					areaChartDataArr.push(obj1);
+					
+				}
+		console.log(areaChartDataArr);
+		buildHourWiseChart();
+		});
+}
 
-getLocationWiseVisitorsCount(2,1,3);
-getLocationWiseVisitorsCount(2,1,4);
+function buildHourWiseChart(){
 
+ $('#hourWiseContainer').highcharts({
+		chart: {
+            type: 'area'
+        },
+		title: {
+            text: 'Visits',
+            x: -100 //center
+        },
+		legend: {
+            layout: 'vertical',
+            align: 'center',
+            verticalAlign: 'top',
+            borderWidth: 0,
+			enabled: true,
+			x: 150 //center
+        },
+        xAxis: {
+            categories: ['8 AM','9 AM', '10 AM', '11 AM', '12 AM', '1 PM', '2 PM',
+                '3 PM', '4 PM', '5 PM', '6 PM', '7 PM', '8 PM','9 PM']
+        },
+        yAxis: {
+            title: {
+                text: 'Visits'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: ' Visits'
+        },
+        series:  areaChartDataArr
+        
+       
+    });
+
+}
+
+getLocationWiseVisitorsCount(1,1,3);
+getLocationWiseVisitorsCount(1,1,4);
 getSubEventDetails(1,1);
+getSubEventDetailsHourWise(1);
 </script>
-
 </body>
 </html>
