@@ -36,7 +36,7 @@
     	<div class="col-md-4 col-sm-6 col-xs-12">
         	<div class="panel panel-default panel-custom-green">
               <div class="panel-heading">overall events status </div>
-              <div class="panel-body scrollDiv1"  id="overAllEventDiv">
+              <div class="panel-body"  id="overAllEventDiv" style="height: 371px;">
                 
              
               </div>
@@ -169,17 +169,7 @@ $(function () {
 		"columnDefs": [
 	    { "width": "25%", "targets": 0 }]
     } );
-	
-	$('.ScrollDiv1').slimScroll({
-	height: '390px'
-	});
-	$('.ScrollDiv2').slimScroll({
-	height: '260px'
-	});
-	$('.ScrollDiv').slimScroll({
-	height: '350px'
-	});
-   
+
 });
 /* DONUT CHART */
 $(function () {
@@ -375,9 +365,7 @@ function buildStartingPrograms(result){
     }              
 
 	$("#startingPgmDivId").html(str);
-	$('.scrollDiv1').slimScroll({
-	height: '390px'
-	});
+	
 }
 
 function getSubEventDetails(userId,parentEventId){
@@ -400,7 +388,7 @@ function buildStartingPrograms(result){
 	str+='<h3 class="display-style m_top0">TOTAL VISITS-</h3>';
 	str+=' <h1 class="display-style m_top0">'+result[0].total+'</h1>';
 	str+=' </div>';
-	str+=' <div class="ScrollDiv2">';
+	str+=' <div class="scrollDiv2">';
 	str+='<hr class="m_bottom10"/>	';
 	var dataArr=[] ;
 	for(var i in result)
@@ -410,14 +398,17 @@ function buildStartingPrograms(result){
 		str+='  <span class="pull-right label-custom">'+count+'</span>';
 		str+=' <br/>';
 		str+=' <hr class="m_top10"/>';
-		str+=' </div>';
+		
 		 var arr = [];
 		arr.push(result[i].name,count);
 		dataArr.push(arr);
 	}
+	str+=' </div>';
 	$("#overAllEventDiv").html(str);
-	$('.scrollDiv1').slimScroll({
-	height: '390px'
+
+		
+	$('.scrollDiv2').slimScroll({
+	height: '260px'
 	});
 	buildPieChart(dataArr);
 }
