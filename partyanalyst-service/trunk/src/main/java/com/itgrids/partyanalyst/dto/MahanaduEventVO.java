@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MahanaduEventVO {
 
 	private Long id;
@@ -15,7 +18,7 @@ public class MahanaduEventVO {
 	private String endTime;
 	private String desc;
 	private String inviteeExists;
-	
+	List<MahanaduEventVO> hoursList = new ArrayList<MahanaduEventVO>();
 	
 	public String getDesc() {
 		return desc;
@@ -88,6 +91,12 @@ public class MahanaduEventVO {
 	}
 	public void setCadreCount(Long cadreCount) {
 		this.cadreCount = cadreCount;
+	}
+	public List<MahanaduEventVO> getHoursList() {
+		return hoursList;
+	}
+	public void setHoursList(List<MahanaduEventVO> hoursList) {
+		this.hoursList = hoursList;
 	}
 
 }
