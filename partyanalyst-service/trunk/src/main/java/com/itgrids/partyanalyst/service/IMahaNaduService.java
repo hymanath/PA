@@ -30,6 +30,6 @@ public interface IMahaNaduService {
 
 	 public List<MahanaduEventVO> getSubEventInfo(Long parentId,Long userId);
 	 public List<MahanaduEventVO> getEventInfoByReportType(Long eventId,Long stateId,Long reportLevelId);
-	 
 	 public List<MahanaduEventVO> getHourWiseSubEventsCount(Long parentEventId);
+	 public List<MahanaduEventVO> getEventMembersCount(Long parentEventId);
 }

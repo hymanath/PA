@@ -109,9 +109,7 @@ public class EventAttendeeDAO extends GenericDaoHibernate<EventAttendee, Long> i
 		query.setParameter("parentEventId", parentEventId);
 		return (Long) query.uniqueResult();
 	}
-
-	
-	public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date){
+public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date){
 		
 		StringBuilder str = new StringBuilder();
 		str.append(" select  count(distinct model.tdpCadre.tdpCadreId),model.event.eventId,hour(model.attendedTime),model.event.name from EventAttendee model where " +
@@ -123,4 +121,33 @@ public class EventAttendeeDAO extends GenericDaoHibernate<EventAttendee, Long> i
 		return query.list();
 		
 	}
+	
+	public List<Object[]> getEventCountsByParentEventId(Long parentEventId,Date currentDate)
+	{
+		
+		StringBuilder str = new StringBuilder();
+		str.append("select model.event.eventId,count(distinct model.tdpCadre.tdpCadreId) ");
+		str.append(" from EventAttendee model where ");
+		str.append(" date(model.attendedTime) = :currentDate and model.event.parentEventId = :parentEventId");
+		str.append(" group by model.event.eventId");
+		Query query = getSession().createQuery(str.toString());
+		query.setDate("currentDate", currentDate);
+		query.setParameter("parentEventId", parentEventId);
+		return query.list();
+	}
+	
+	public Long getUnionMembersForEvent(Long eventId,Date currentDate,Long compareEventId)
+	{
+		
+		StringBuilder str = new StringBuilder();
+		str.append("select count(distinct model.tdpCadre.tdpCadreId) ");
+		str.append(" from EventAttendee model where model.event.eventId = :eventId and ");
+		str.append(" date(model.attendedTime) = :currentDate and model.tdpCadre.tdpCadreId in (select distinct model1.tdpCadre.tdpCadreId from EventAttendee model1 where model1.event.eventId = :compareEventId)");
+		Query query = getSession().createQuery(str.toString());
+		query.setDate("currentDate", currentDate);
+		query.setParameter("compareEventId", compareEventId);
+		query.setParameter("eventId", eventId);
+		return (Long) query.uniqueResult();
+	}
+
 }

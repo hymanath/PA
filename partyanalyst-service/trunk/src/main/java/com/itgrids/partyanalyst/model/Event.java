@@ -31,8 +31,8 @@ public class Event implements java.io.Serializable{
 	private String isEnabled;
 	private Date insertedTime;
 	
-	private String startTime;
-	private String endTime;
+	private String startTime; // programme start Time
+	private String endTime; // programme end Time
 	private String isInviteeExist;
 	
 	@Id
