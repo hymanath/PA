@@ -149,7 +149,7 @@
 		<pattern>/cadreCommitteeRolesDashboard*</pattern>
         -->
         <pattern>/cadreSearchAndRegAction*</pattern>
-		<pattern>/mahanadueventDetailsAction*</pattern>
+		<pattern>/eventDashboardAction*</pattern>
  	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
@@ -411,6 +411,6 @@
 	  <decorator name="districtLayout" page="districtLayout.jsp">
 		<pattern>/cadreSearchPageAction*</pattern>
 		<pattern>/committeeDistrictDashBoardAction*</pattern>
-		<!--<pattern>/mahanadueventDetailsAction*</pattern>-->
+		<!--<pattern>/eventDashboardAction*</pattern>-->
 	 </decorator>
 </decorators>
