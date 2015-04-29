@@ -122,5 +122,22 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getHourWiseSubEventsCount()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			Long parentEventId = jObj.getLong("parentEventId");
+			resultList =  mahaNaduService.getHourWiseSubEventsCount(parentEventId);
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+	
+	
 
 }

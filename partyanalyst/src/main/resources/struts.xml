@@ -10007,6 +10007,10 @@
 			</result>
 		</action>
 		
-		
+		<action name="getHourWiseSubEventsCountAction" class="eventDetailsAction" method="getHourWiseSubEventsCount">
+				<result type="json" name="success">
+				<param name="root">resultList</param>
+			</result>
+		</action>
 </package>
 </struts>      
