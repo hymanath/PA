@@ -565,7 +565,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getConstituencyNameByConstituencyIdsList(List<Long> constituencyIdsList)
 	{
-		Query query = getSession().createQuery("select model.constituencyId,model.name from Constituency model " +
+		Query query = getSession().createQuery("select model.constituencyId,model.name,model.areaType from Constituency model " +
 				" where model.constituencyId in (:constituencyIdsList) order by model.name ");
 		query.setParameterList("constituencyIdsList", constituencyIdsList);
 		return query.list();
