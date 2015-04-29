@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Mahanadu</title>
+<title>Party Office Event</title>
 <link href="dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
 <link href="dist/Icomoon/style.css" rel="stylesheet" type="text/css">
