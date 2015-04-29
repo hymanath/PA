@@ -166,31 +166,53 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							</tr>
 							<tr id="apVillageBodyTR" class="apVillageBodyTR toggleCls12">
 								<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div8"></div></h4></td>
-								<td style="padding:10px;" width="10%">
-									<span class="text-success">Started</span><br/> Committees
+								<td width="20%" style="padding: 0px;" colspan="2">
+								<table class="table table-bordered" style="margin-bottom: 0px;"><tbody>
+									  <tr><td colspan="2" class="text-center"><b class="text-center">Main Committes</b></td></tr>
+									  <tr>
+									 
+													  <td style="padding: 10px;">
+													  <span class="text-success">Started</span><br>
+																		<table>
+																			<tbody><tr>
+																				<td class="row-table">
+																					<h4 class="m_top0"><div id="div32"></div></h4>
+																				</td>
+																				<td class="row-table">
+																					<h5 class="m_top0"><div id="div9"></div></h5>
+																				</td>
+																			</tr>
+														</tbody></table>
+													  </td><td style="padding: 10px;">
+									  <span class="text-success">Completed</span><br><table><tbody><tr><td class="row-table"><h4 class="row-table m_top0"><div id="div10"></div></h4></td><td class="row-table"><div id="div11">
+																  </div></td></tr></tbody></table>
+													  </td></tr>
+									  </tbody></table>
+																	</td>
+							   
+							   <td width="40%" style="padding: 0px;" colspan="2">
+								<table class="table table-bordered" style="margin-bottom: 0px;"><tbody>
+  <tr><td colspan="2" class="text-center"><b class="text-center">Affiliated Committes</b></td></tr>
+  <tr>
+ 
+                  <td style="padding: 10px;">
+                  <span class="text-success">Started</span><br>
 									<table>
-										<tr>
+										<tbody><tr>
 											<td class="row-table">
-												<h4 class="m_top0"><div id="div32"></div></h4>
+												<h4 class="m_top0"><div id="div12"></div></h4>
 											</td>
 											<td class="row-table">
 												<h5 class="m_top0"><div id="div9"></div></h5>
 											</td>
 										</tr>
-									</table>
+                    </tbody></table>
+                  </td><td style="padding: 10px;">
+  <span class="text-success">Completed</span><br><table><tbody><tr><td class="row-table"><h4 class="row-table m_top0"><div id="div13"></div></h4></td><td class="row-table">
+							  </td></tr></tbody></table>
+                  </td></tr>
+  </tbody></table>
 								</td>
-							   <td style="padding:10px;" width="10%"><span class="text-success">Completed</span><br/> Committees<table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div10"></div></h4></td><td  class="row-table">
-							   <ul class="nav navbar-nav">
-								<li>
-									<div id="div11"></div>
-                                   
-								</li>	
-									
-									</td></tr></table></td>
-								<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affiliated Committees<br/><h4 class="m_top0"><div id="div12"></div></h4></td> 
-								<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affiliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
-                              <li><a><div id="div13"></div></a>
-                               </h4></td>
 								<td style="padding:10px;" width="28%">TOTAL <br/><b>MEMBERS</b><h4 class="m_top0"><div id="div14"></div></h4></td>
 								<div id="apVillageDiv"></div>
 							</tr>
@@ -211,9 +233,15 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							<tr id="apMandalBodyTR" style="display:none;" class="toggleCls">
 								<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div1"></div></h4></td>
 								
-								<td style="padding:10px;" width="10%">
-									<span class="text-success">Started</span><br/> Committees
+								<td width="30%" style="padding: 0px;" colspan="2">
+								<table class="table table-bordered" style="margin-bottom: 0px;">
+								<tbody>
+									  <tr><td colspan="2" class="text-center"><b class="text-center">Main Committes</b></td></tr>
+									  <tr>
+								<td style="padding:10px;">
+									<span class="text-success">Started</span><br/>
 									<table>
+									<tbody>
 										<tr>
 											<td class="row-table">
 												<h4 class="m_top0"><div id="div29"></div></h4>
@@ -222,22 +250,35 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 												<h5 class="m_top0"><div id="div2"></div></h5>
 											</td>
 										</tr>
+										</tbody>
 									</table>
 								</td>
 								
-								<td style="padding:10px;" width="10%"><span class="text-success">Completed</span><br/> Committees<table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div3"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
+								<td style="padding:10px;"><span class="text-success">Completed</span><table><tbody><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div3"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
                               <li><div id="div4"></div>
                                   
 									
 									
-								</li></td></tr></table></td>
-								<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affiliated Committees<br/><h4 class="m_top0"><div id="div5"></div></h4></td>
-								<td style="padding:10px;" width="20%"><span class="text-success">Completed </span><br/>Affiliated Committees<br/>
-                                <h4 class="m_top0">
-								<ul class="nav navbar-nav">
-                              <li>
+								</li></td></tr></tbody></table></td></tr>
+									  </tbody></table>
+																	</td>
+								<td width="30%" style="padding: 0px;" colspan="2">
+								<table class="table table-bordered" style="margin-bottom: 0px;"><tbody>
+  <tr><td colspan="2" class="text-center"><b class="text-center">Affiliated Committes</b></td></tr>
+  <tr>
+								<td style="padding:10px;"><span class="text-success">Started</span><table>
+										<tbody><tr>
+											<td class="row-table"><h4 class="m_top0"><div id="div5"></div></h4></td></tr>
+                    </tbody></table>
+                  </td>
+								<td style="padding:10px;"><span class="text-success">Completed </span><table><tbody><tr><td class="row-table">
+                                <h4 class="row-table m_top0">
+								
 								<a><div id="div6"></div></a>
-                              </h4></td>
+                              </h4></td><td class="row-table">
+							  </td></tr></tbody></table>
+                  </td></tr> </tbody></table>
+								</td>
 								<td style="padding:10px;" width="28%">TOTAL<br/> <b>MEMBERS</b><h4 class="m_top0"><div id="div7"></div></h4></td>
 							<div id="apMandalDiv"></div>
 							</tr>
@@ -251,9 +292,15 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						</tr>
 						<tr id="apDistrictBodyTR" style="display:none" class="toggleCls">
 							<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div150"></div></h4></td>
-							<td style="padding:10px;" width="10%">
-									<span class="text-success">Started</span> Committees<br/>
+							<td width="30%" style="padding: 0px;" colspan="2">
+								<table class="table table-bordered" style="margin-bottom: 0px;">
+								<tbody>
+									  <tr><td colspan="2" class="text-center"><b class="text-center">Main Committes</b></td></tr>
+									  <tr>
+							<td style="padding:10px;">
+									<span class="text-success">Started</span>
 									<table>
+									<tbody>
 										<tr>
 											<td class="row-table">
 												<h4 class="m_top0"><div id="div151"></div></h4>
@@ -262,18 +309,30 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 												<h5 class="m_top0"><div id="div152"></div></h5>
 											</td>
 										</tr>
+										</tbody>
 									</table>
 								</td>
-						   <td style="padding:10px;" width="10%"><span class="text-success">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div153"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
+						   <td style="padding:10px;"><span class="text-success">Completed</span><table><tbody><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div153"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
                               <li><div id="div154"></div>
                                  
 									
-								</li></td></tr></table></td>
-							<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affiliated Committees<br/><h4 class="m_top0"><div id="div155"></div></h4></td>
-							<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affiliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
+								</li></td></tr></tbody></table></td></tr>
+									  </tbody></table>
+																	</td>
+							<td width="30%" style="padding: 0px;" colspan="2">
+								<table class="table table-bordered" style="margin-bottom: 0px;"><tbody>
+  <tr><td colspan="2" class="text-center"><b class="text-center">Affiliated Committes</b></td></tr>
+  <tr>
+							<td style="padding:10px;"><span class="text-success">Started</span><table>
+										<tbody><tr><td class="row-table"><h4 class="m_top0"><div id="div155"></div></h4></td></tr>
+                    </tbody></table></td>
+							<td style="padding:10px;"><span class="text-success">Completed</span><table><tbody><tr><td class="row-table"><h4 class="m_top0"> <ul class="nav navbar-nav">
                               <li><a><div id="div156"></div></a>
                                
-                                </h4></td>
+                                </h4></td><td class="row-table">
+							  </td></tr></tbody></table>
+                  </td></tr> </tbody></table>
+								</td>
 							<td style="padding:10px;" width="28%">TOTAL<br/> <b>MEMBERS</b><h4 class="m_top0"><div id="div157"></div></h4></td>
 							<div id="apDistrictDiv"></div>
 						</tr>
@@ -288,9 +347,16 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						</tr>
 						<tr id="apStateBodyTR" style="display:none" class="toggleCls">
 							<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div166"></div></h4></td>
-							<td style="padding:10px;" width="10%">
-									<span class="text-success">Started</span> Committees<br/>
+							
+							<td width="30%" style="padding: 0px;" colspan="2">
+								<table class="table table-bordered" style="margin-bottom: 0px;">
+								<tbody>
+									  <tr><td colspan="2" class="text-center"><b class="text-center">Main Committes</b></td></tr>
+									  <tr>
+							<td style="padding:10px;">
+									<span class="text-success">Started</span>
 									<table>
+									<tbody>
 										<tr>
 											<td class="row-table">
 												<h4 class="m_top0"><div id="div167"></div></h4>
@@ -299,18 +365,32 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 												<h5 class="m_top0"><div id="div168"></div></h5>
 											</td>
 										</tr>
+										</tbody>
 									</table>
 								</td>
-						   <td style="padding:10px;" width="10%"><span class="text-success">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div169"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
+						   <td style="padding:10px;"><span class="text-success">Completed</span><table><tbody><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div169"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
                               <li><div id="div170"></div>
                                  
 									
-								</li></td></tr></table></td>
-							<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affiliated Committees<br/><h4 class="m_top0"><div id="div171"></div></h4></td>
-							<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affiliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
+								</li></td></tr></tbody></table></td></tr>
+									  </tbody></table>
+																	</td>
+							<td width="30%" style="padding: 0px;" colspan="2">
+								<table class="table table-bordered" style="margin-bottom: 0px;"><tbody>
+  <tr><td colspan="2" class="text-center"><b class="text-center">Affiliated Committes</b></td></tr>
+  <tr>
+							<td style="padding:10px;"><span class="text-success">Started</span><table>
+										<tbody><tr>
+											<td class="row-table"><h4 class="m_top0"><div id="div171"></div></h4></td></tr>
+                    </tbody></table>
+                  </td>
+							<td style="padding:10px;"><span class="text-success">Completed</span><table><tbody><tr><td class="row-table"><h4 class="m_top0"> <ul class="nav navbar-nav">
                               <li><a><div id="div172"></div></a>
                                
-                                </h4></td>
+                                </h4></td><td class="row-table">
+							  </td></tr></tbody></table>
+                  </td></tr> </tbody></table>
+								</td>
 							<td style="padding:10px;" width="28%">TOTAL<br/> <b>MEMBERS</b><h4 class="m_top0"><div id="div173"></div></h4></td>
 							<div id="apStateDiv"></div>
 						</tr>
@@ -518,9 +598,15 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						</tr>
 						<tr id="tsVillageBodyTR" class="tsVillageBodyTR toggleCls12">
 							<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div22"></div></h4></td>
-							<td style="padding:10px;" width="10%">
-									<span class="text-success">Started</span> Committees<br/>
+							<td width="30%" style="padding: 0px;" colspan="2">
+								<table class="table table-bordered" style="margin-bottom: 0px;">
+								<tbody>
+									  <tr><td colspan="2" class="text-center"><b class="text-center">Main Committes</b></td></tr>
+									  <tr>
+							<td style="padding:10px;">
+									<span class="text-success">Started</span>
 									<table>
+									<tbody>
 										<tr>
 											<td class="row-table">
 												<h4 class="m_top0"><div id="div38"></div></h4>
@@ -529,19 +615,33 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 												<h5 class="m_top0"><div id="div23"></div></h5>
 											</td>
 										</tr>
+										</tbody>
 									</table>
 								</td>
-						   <td style="padding:10px;" width="10%"><span class="text-success">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div24"></div></h4></td><td  class="row-table">
+						   <td style="padding:10px;"><span class="text-success">Completed</span><table><tbody><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div24"></div></h4></td><td  class="row-table">
 						   <ul class="nav navbar-nav">
                               <li><div id="div25"></div>
                                    
 									
 								</li>
-									</td></tr></table></td>
-							<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affiliated Committees<br/><h4 class="m_top0"><div id="div26"></div></h4></td>
-							<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affiliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
+									</td></tr></tbody></table></td></tr>
+									  </tbody></table>
+																	</td>
+							<td width="30%" style="padding: 0px;" colspan="2">
+								<table class="table table-bordered" style="margin-bottom: 0px;"><tbody>
+  <tr><td colspan="2" class="text-center"><b class="text-center">Affiliated Committes</b></td></tr>
+  <tr>
+							<td style="padding:10px;"><span class="text-success">Started</span><table>
+										<tbody><tr>
+											<td class="row-table"><h4 class="m_top0"><div id="div26"></div></h4></td></tr>
+                    </tbody></table>
+                  </td>
+							<td style="padding:10px;"><span class="text-success">Completed</span><table><tbody><tr><td class="row-table"><h4 class="m_top0"> <ul class="nav navbar-nav">
                               <li><a><div id="div27"></div></a>
-                             </h4></td>
+                             </h4></td><td class="row-table">
+							  </td></tr></tbody></table>
+                  </td></tr> </tbody></table>
+								</td>
 							<td style="padding:10px;" width="28%">TOTAL<br/> <b>MEMBERS</b><h4 class="m_top0"><div id="div28"></div></h4></td> 
 							<div id="tsVillageDiv"></div>
 						</tr>
@@ -560,9 +660,16 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						</tr>
 						<tr id="tsMandalBodyTR" style="display:none;" class="toggleCls1"> 
 							<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div15"></div></h4></td>
-							<td style="padding:10px;" width="10%">
-									<span class="text-success">Started</span> Committees<br/>
+							
+							<td width="30%" style="padding: 0px;" colspan="2">
+								<table class="table table-bordered" style="margin-bottom: 0px;">
+								<tbody>
+									  <tr><td colspan="2" class="text-center"><b class="text-center">Main Committes</b></td></tr>
+									  <tr>
+							<td style="padding:10px;">
+									<span class="text-success">Started</span>
 									<table>
+									<tbody>
 										<tr>
 											<td class="row-table">
 												<h4 class="m_top0"><div id="div35"></div></h4>
@@ -571,18 +678,30 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 												<h5 class="m_top0"><div id="div16"></div></h5>
 											</td>
 										</tr>
+										</tbody>
 									</table>
 								</td>
-						   <td style="padding:10px;" width="10%"><span class="text-success">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div17"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
+						   <td style="padding:10px;"><span class="text-success">Completed</span><table><tbody><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div17"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
                               <li><div id="div18"></div>
                                  
 									
-								</li></td></tr></table></td>
-							<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affiliated Committees<br/><h4 class="m_top0"><div id="div19"></div></h4></td>
-							<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affiliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
+								</li></td></tr></tbody></table></td></tr>
+									  </tbody></table></td>
+							<td width="30%" style="padding: 0px;" colspan="2">
+								<table class="table table-bordered" style="margin-bottom: 0px;"><tbody>
+  <tr><td colspan="2" class="text-center"><b class="text-center">Affiliated Committes</b></td></tr>
+  <tr>
+							<td style="padding:10px;"><span class="text-success">Started</span><table>
+										<tbody><tr>
+											<td class="row-table"><h4 class="m_top0"><div id="div19"></div></h4></td></tr>
+                    </tbody></table></td>
+							<td style="padding:10px;"><span class="text-success">Completed</span><table><tbody><tr><td class="row-table"><h4 class="m_top0"> <ul class="nav navbar-nav">
                               <li><a><div id="div20"></div></a>
                                
-                                </h4></td>
+                                </h4></td><td class="row-table">
+							  </td></tr></tbody></table>
+                  </td></tr> </tbody></table>
+								</td>
 							<td style="padding:10px;" width="28%">TOTAL<br/> <b>MEMBERS</b><h4 class="m_top0"><div id="div21"></div></h4></td>
 							<div id="tsMandalDiv"></div>
 						</tr>
@@ -595,9 +714,15 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						</tr>
 						<tr id="tsDistrictBodyTR" style="display:none;" class="toggleCls1">
 							<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div158"></div></h4></td>
-							<td style="padding:10px;" width="10%">
-									<span class="text-success">Started</span> Committees<br/>
+							<td width="30%" style="padding: 0px;" colspan="2">
+								<table class="table table-bordered" style="margin-bottom: 0px;">
+								<tbody>
+									  <tr><td colspan="2" class="text-center"><b class="text-center">Main Committes</b></td></tr>
+									  <tr>
+							<td style="padding:10px;">
+									<span class="text-success">Started</span>
 									<table>
+									<tbody>
 										<tr>
 											<td class="row-table">
 												<h4 class="m_top0"><div id="div159"></div></h4>
@@ -606,18 +731,30 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 												<h5 class="m_top0"><div id="div160"></div></h5>
 											</td>
 										</tr>
+										</tbody>
 									</table>
 								</td>
-						   <td style="padding:10px;" width="10%"><span class="text-success">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div161"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
+						   <td style="padding:10px;"><span class="text-success">Completed</span><table><tbody><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div161"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
                               <li><div id="div162"></div>
                                  
 									
-								</li></td></tr></table></td>
-							<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affiliated Committees<br/><h4 class="m_top0"><div id="div163"></div></h4></td>
-							<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affiliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
+								</li></td></tr></tbody></table></td></tr>
+									  </tbody></table></td>
+									  <td width="30%" style="padding: 0px;" colspan="2">
+								<table class="table table-bordered" style="margin-bottom: 0px;"><tbody>
+  <tr><td colspan="2" class="text-center"><b class="text-center">Affiliated Committes</b></td></tr>
+  <tr>
+							<td style="padding:10px;"><span class="text-success">Started</span><table>
+										<tbody><tr>
+											<td class="row-table"><h4 class="m_top0"><div id="div163"></div></h4></td></tr>
+                    </tbody></table></td>
+							<td style="padding:10px;"><span class="text-success">Completed</span><table><tbody><tr><td class="row-table"><h4 class="m_top0"> <ul class="nav navbar-nav">
                               <li><a><div id="div164"></div></a>
                                
-                                </h4></td>
+                                </h4></td><td class="row-table">
+							  </td></tr></tbody></table>
+                  </td></tr> </tbody></table>
+								</td>
 							<td style="padding:10px;" width="28%">TOTAL<br/> <b>MEMBERS</b><h4 class="m_top0"><div id="div165"></div></h4></td>
 							<div id="tsDistrictDiv"></div>
 						</tr>
@@ -630,9 +767,15 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						</tr>
 						<tr id="tsStateBodyTR" style="display:none;" class="toggleCls1">
 							<td style="padding:10px;" width="18%"><b>TOTAL MAIN </b>Committees<h4 class="m_top0"><div id="div174"></div></h4></td>
-							<td style="padding:10px;" width="10%">
-									<span class="text-success">Started</span> Committees<br/>
+							<td width="30%" style="padding: 0px;" colspan="2">
+								<table class="table table-bordered" style="margin-bottom: 0px;">
+								<tbody>
+									  <tr><td colspan="2" class="text-center"><b class="text-center">Main Committes</b></td></tr>
+									  <tr>
+							<td style="padding:10px;">
+									<span class="text-success">Started</span>
 									<table>
+									<tbody>
 										<tr>
 											<td class="row-table">
 												<h4 class="m_top0"><div id="div175"></div></h4>
@@ -641,22 +784,34 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 												<h5 class="m_top0"><div id="div176"></div></h5>
 											</td>
 										</tr>
+										</tbody>
 									</table>
 								</td>
-						   <td style="padding:10px;" width="10%"><span class="text-success">Completed</span> Committees<br/><table><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div177"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
+						   <td style="padding:10px;"><span class="text-success">Completed</span><table><tbody><tr><td  class="row-table"><h4 class="row-table m_top0"><div id="div177"></div></h4></td><td  class="row-table"><ul class="nav navbar-nav">
                               <li><div id="div178"></div>
                                  
 									
-								</li></td></tr></table></td>
-							<td style="padding:10px;" width="20%"><span class="text-success">Started</span><br/>Affiliated Committees<br/><h4 class="m_top0"><div id="div179"></div></h4></td>
-							<td style="padding:10px;" width="20%"><span class="text-success">Completed</span><br/>Affiliated Committees<br/><h4 class="m_top0"> <ul class="nav navbar-nav">
+								</li></td></tr></tbody></table></td></tr>
+									  </tbody></table></td>
+							<td width="30%" style="padding: 0px;" colspan="2">
+								<table class="table table-bordered" style="margin-bottom: 0px;"><tbody>
+  <tr><td colspan="2" class="text-center"><b class="text-center">Affiliated Committes</b></td></tr>
+  <tr>
+							<td style="padding:10px;"><span class="text-success">Started</span><table>
+										<tbody><tr>
+											<td class="row-table"><h4 class="m_top0"><div id="div179"></div></h4></td></tr>
+                    </tbody></table></td>
+							<td style="padding:10px;"><span class="text-success">Completed</span><table><tbody><tr><td class="row-table"><h4 class="m_top0"> <ul class="nav navbar-nav">
                               <li><a><div id="div180"></div></a>
                                
-                                </h4></td>
+                                </h4></td><td class="row-table">
+							  </td></tr></tbody></table>
+                  </td></tr> </tbody></table>
+								</td>
 							<td style="padding:10px;" width="28%">TOTAL<br/> <b>MEMBERS</b><h4 class="m_top0"><div id="div181"></div></h4></td>
 							<div id="tsStateDiv"></div>
 						</tr>
-						
+							
 						
 					</table>
 				</td>
@@ -701,7 +856,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					 <div class="col-md-12 col-xs-12 col-sm-12" >
                     
 					
-					 <div style="display:inline-block; margin-right: 25px; ">
+					 <div style="display:inline-block; margin-right: 25px;" >
                      <h5 class="text-success areaBtnsDiv" style="margin-bottom:5px;border-bottom:1px solid #F00;text-align:center;margin:0px 15px 5px 15px" >LOCATION</h5>
                      <span class="btn btn-success btn-xs form-inline" id="statesBtnsId" style="">
 						<label class="radio"><input type="radio" id="APId" style="vertical-align: text-bottom;" class="stateRd" value="AP" name="selectstate" checked="true">&nbsp;AP &nbsp;&nbsp;&nbsp;</label>
