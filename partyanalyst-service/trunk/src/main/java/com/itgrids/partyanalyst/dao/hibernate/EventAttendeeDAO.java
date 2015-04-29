@@ -98,4 +98,15 @@ public class EventAttendeeDAO extends GenericDaoHibernate<EventAttendee, Long> i
 		query.setDate("currentDate", currentDate);
 		return query.list();
 	}
+	
+	public Long getTotlaVisitsCount(Long parentEventId,Date currentDate)
+	{
+		
+		StringBuilder str = new StringBuilder();
+		str.append("select count(distinct model.tdpCadre.tdpCadreId) from EventAttendee model where model.event.parentEventId =:parentEventId  and date(model.attendedTime) = :currentDate ");
+		Query query = getSession().createQuery(str.toString());
+		query.setDate("currentDate", currentDate);
+		query.setParameter("parentEventId", parentEventId);
+		return (Long) query.uniqueResult();
+	}
 }
