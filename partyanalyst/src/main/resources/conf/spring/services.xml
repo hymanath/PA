@@ -2270,7 +2270,7 @@
           <property name="voterInfoDAO" ref="voterInfoDAO" />	
           <property name="eventUserDAO" ref="eventUserDAO" />	
 		    <property name="tdpCadreInfoDAO" ref="tdpCadreInfoDAO" />	
-		  
+		  <property name="eventDAO" ref="eventDAO" />	
          	
          
    </bean>
