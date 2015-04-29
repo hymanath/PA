@@ -171,78 +171,7 @@ $(function () {
     } );
 
 });
-/* DONUT CHART */
-$(function () {
-    $('#columnchart').highcharts({
-        chart: {
-            type: 'column'
-        },
-        
-        xAxis: {
-            categories: ['Nara Lokesh Meeting with Mandal Presidents', 'Lunch Section Party Office', 'Lokesh Meeting', 'Nara Lokesh Meeting With District Presidents', 'Blood Donation In Party Office']
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: ''
-            },
-            stackLabels: {
-                enabled: true,
-                style: {
-                    fontWeight: 'bold',
-                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-                }
-            }
-        },
-        legend: {
-            align: 'right',
-            x: -30,
-            verticalAlign: 'top',
-            y: 25,
-            floating: true,
-            backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-            borderColor: '#CCC',
-            borderWidth: 1,
-            shadow: false
-        },
-        tooltip: {
-            formatter: function () {
-                return '<b>' + this.x + '</b><br/>' +
-                    this.series.name + ': ' + this.y + '<br/>' +
-                    'Total: ' + this.point.stackTotal;
-            }
-        },
-        plotOptions: {
-            column: {
-                stacking: 'normal',
-                dataLabels: {
-                    enabled: true,
-                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
-                    style: {
-                        textShadow: '0 0 3px black'
-                    }
-                }
-            }
-        },
-        series: [{
-            name: 'Nara Lokesh Meeting with Mandal Presidents',
-            data: [11002, 10000, 50000, 90000, 50000]
-        }, {
-            name: 'Lunch Section Party Office',
-            data: [46525, 46462, 54684, 4000, 5000]
-        }, {
-            name: 'Lokesh Meeting',
-            data: [55465, 51535, 94655, 54654, 46546]
-        }, {
-            name: 'Nara Lokesh Meeting With District Presidents',
-            data: [94654, 54654, 54655, 84545, 53543]
-        }, {
-            name: 'Blood Donation In Party Office ',
-            data: [95484, 54654, 54453, 73572, 46845]
-        }
-		]
-    });
-});
+
 
 </script>
 <script>
@@ -643,7 +572,7 @@ getLocationWiseVisitorsCount(1,1,3);
 getLocationWiseVisitorsCount(1,1,4);
 getSubEventDetails(1,1);
 getSubEventDetailsHourWise(1);
- getEventMemberCount(userId,parentEventId);
+ getEventMemberCount(1,1);
 </script>
 </body>
 </html>
