@@ -85,11 +85,11 @@ public class Event implements java.io.Serializable{
 		this.parentEventId = parentEventId;
 	}	
 	
-	@Column(name="insertion_time")
+	
 	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
 	}
-	
+	@Column(name="insertion_time")
 	public Date getInsertedTime() {
 		return insertedTime;
 	}
