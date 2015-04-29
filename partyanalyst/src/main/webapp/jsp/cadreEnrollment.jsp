@@ -169,11 +169,11 @@
 	
    	<script>
 	
-	var constituencyId = '${constiteucnyId}';
-	var panchayatId    = '${constiteucnyId}';
-	var boothId 	   = '${boothId}';
+	var constituencyId = '${id1}';
+	var panchayatId    = '${id2}';
+	var boothId 	   = '${id3}';
 	var srchType	   = '${searchType}';
-	var candiId		   = '${candidateId}';
+	var candiId		   = '${id4}';
 	var newCamPhotoTaken = false;
 	var newPhotoUploaded = false;
 	var alreadyImgPresent = false;
@@ -398,7 +398,7 @@
 	function submitCadreForm()
 	{	
 	    $("#submitCadreFormBtnReqId").removeAttr("onclick");
-	    $("#submitCadreFormBtnReqId").attr("disabled","disabled");
+	   $("#submitCadreFormBtnReqId").attr("disabled","disabled");
 		if(validateDetails())
 		{
 				if(!isNumber()){
@@ -1235,14 +1235,16 @@
 				<div class="row-fluid">
 					<div class="span6   show-grid"  id="fadeInLeft" style="min-height: 895px;">
 					<input type="hidden" class="form-control border-radius-0 text-align2" value="${voterInfoVOList[0].voterId}" > 
+					<input type="hidden" class="form-control border-radius-0 text-align2" name="cadreRegistrationVO.registrationType" value="${searchType}" > 
 					
 					<input type="hidden" class="form-control border-radius-0 text-align2" value="0" name="cadreRegistrationVO.panchayatId"> 
 					
-					<input type="hidden" class="form-control border-radius-0 text-align2" value = "${boothId}" name="cadreRegistrationVO.boothId" > 
+					<input type="hidden" class="form-control border-radius-0 text-align2" value = "${id3}" name="cadreRegistrationVO.boothId" > 
 					<input type="hidden"  value = "${voterInfoVOList[0].cadreId}" name="cadreRegistrationVO.cadreId" > 
 					
 										<div class="span12">
-											<input type="hidden" id="selConstiId" name="cadreRegistrationVO.constituencyId" value="">										
+											<input type="hidden" id="selConstiId" name="cadreRegistrationVO.constituencyId" value="${id1}">										
+											<input type="hidden" id="selConstituId" name="addressVO.constituencyId" value="${id1}">										
 											<div class="span6">
 												<h5 style="color: #9a9a9a;">  CADRE NAME <span class="mandatory">*</span> </h5>
 												<input type="text" class="form-control border-radius-0" placeholder="Candidate Name" name="cadreRegistrationVO.voterName"  value="${voterInfoVOList[0].name}" id="cadreNameId" onkeyup="validateName('nameErr','cadreNameId',1);"></input>
@@ -1254,10 +1256,12 @@
 												<span id="ageErr" style="color:red;font-size:12px;"></span>
 											</div>
 										</div>
+										<!--
 										<div class="span11" style="margin-left: 18px;">
 											<h5 style="color: #9a9a9a;">CADRE NAME IN MOTHER TONGUE</h5>
 											<input type="text" class="form-control border-radius-0" placeholder="Name In Mother Tongue" style="width:190px;"  value="${voterInfoVOList[0].teluguName}" name="cadreRegistrationVO.voterTeluguName" ></input>											
 										</div>	
+										-->
 										<div class="span12">
 										</div>
 										<div class="span12"> 
@@ -1410,9 +1414,9 @@
 							</div>
 							<div class=" m_top20" >
 								<h5 class="text-align1">Select District<span class="mandatory">*</span> <span id="selDistrictErr" style="color:red;font-size:12px;"></span> </h5>											
-									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="selDistrictId" list="constituencyesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District " style="width:260px;" name="addressVO.districtId"   value="%{relativeTypeId}"/>	
+									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="selDistrictId" list="constituencyesList" listKey="id" listValue="name" headerKey="0" headerValue=" Select District " style="width:260px;" name="addressVO.districtId"   value="%{relativeTypeId}" onchange="getAllMandalsInADistrict(this.value)"/>	
 							</div>
-							<div class=" m_top20" >
+							<div class=" m_top20" > 
 								<h5 class="text-align1">Select Tehsil/Mandal<span class="mandatory">*</span> <span id="selTehsilErr" style="color:red;font-size:12px;"></span> </h5>											
 									<s:select theme="simple" cssClass="selectBoxWidth span12 input-block-level" id="selTehsilId" list="cadreRolesVOList" listKey="id" listValue="name" headerKey="0" headerValue=" Select Tehsil/Mandal " style="width:260px;" name="addressVO.tehsilId"   value="%{id2}"/>	
 							</div>
@@ -2717,6 +2721,26 @@ $(document).ready(function(){
 			 }
 		});
 
+	}
+	
+	function getAllMandalsInADistrict(districtId)
+	{
+		$('#selTehsilId').find('option').remove();
+		$('#selTehsilId').append('<option value="0"> Select Tehsil/Mandal</option>');
+		var jsObj ={}				   
+			$.ajax({
+				type : "POST",
+				url : "getAllMandalsInADistrict.action",
+				data : {districtId:districtId} ,
+			}).done(function(result){
+				if(result != null && result.length>0){
+					for(var i in result)
+					{
+						$('#selTehsilId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+					}	
+					
+				}
+			});
 	}
 </script>
 </html>
