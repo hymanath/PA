@@ -5314,6 +5314,7 @@ public class TdpCadreReportService implements ITdpCadreReportService{
 		        			  BasicVO vo = new BasicVO();
 		        			  vo.setId((Long)params[0]);
 		        			  vo.setName(params[1].toString());
+		        			  vo.setDescription(params[2] != null ? params[2].toString():"");
 		        			  resultList.add(vo);
 		        		  }
 		        	  }
