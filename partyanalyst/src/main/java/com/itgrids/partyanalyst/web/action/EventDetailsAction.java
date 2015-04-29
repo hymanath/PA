@@ -139,5 +139,21 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 	}
 	
 	
+	public String getEventMemberCount()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			Long parentEventId = jObj.getLong("parentEventId");
+			//Long stateId = jObj.getLong("stateId");
+		//	Long reportLevelId = jObj.getLong("reportLevelId");
+			resultList =  mahaNaduService.getEventMembersCount(parentEventId);
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
 
 }

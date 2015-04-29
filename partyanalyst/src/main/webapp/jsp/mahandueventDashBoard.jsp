@@ -549,10 +549,101 @@ function buildHourWiseChart(){
 
 }
 
+function getEventMemberCount(userId,parentEventId){
+	var jObj = {
+			parentEventId:parentEventId,			
+			userId:userId
+		}	
+		
+		$.ajax({
+          type:'GET',
+          url: 'getEventMemberCountAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+		buildEventMemberCount(result);
+	});
+}
+/* DONUT CHART */
+function buildEventMemberCount(result){
+var xaxis = [];
+var dataArr = [];
+for(var i in result)
+{
+xaxis.push(result[i].name);
+var data=[];
+for(var j in result[i].subList)
+data.push(result[i].subList[j].total)
+	var obj = {
+	name : result[i].name,
+	data : data
+	}
+dataArr.push(obj);
+}
+
+console.log(dataArr)
+
+
+    $('#columnchart').highcharts({
+        chart: {
+            type: 'column'
+        },
+        
+        xAxis: {
+            categories: xaxis
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: ''
+            },
+            stackLabels: {
+                enabled: true,
+                style: {
+                    fontWeight: 'bold',
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                }
+            }
+        },
+        legend: {
+				enabled: true,
+                align: 'center',
+                x: 10,
+                verticalAlign: 'bottom',
+                y: 20,
+                floating: false,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                borderColor: '#CCC',
+                borderWidth: 1,
+                shadow: false
+            },	
+        tooltip: {
+            formatter: function () {
+                return '<b>' + this.x + '</b><br/>' +
+                    this.series.name + ': ' + this.y + '<br/>' +
+                    'Total: ' + this.point.stackTotal;
+            }
+        },
+        plotOptions: {
+            column: {
+                stacking: 'normal',
+                dataLabels: {
+                    enabled: true,
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                    style: {
+                        textShadow: '0 0 3px black'
+                    }
+                }
+            }
+        },
+        series:dataArr
+    });
+
+}
 getLocationWiseVisitorsCount(1,1,3);
 getLocationWiseVisitorsCount(1,1,4);
 getSubEventDetails(1,1);
 getSubEventDetailsHourWise(1);
+ getEventMemberCount(userId,parentEventId);
 </script>
 </body>
 </html>
