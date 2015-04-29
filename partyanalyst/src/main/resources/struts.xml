@@ -10003,7 +10003,7 @@
 		
 		<action name="getSubEventDetailsAction" class="eventDetailsAction" method="getSubEventDetails">
 				<result type="json" name="success">
-				<param name="root">subEvents</param>
+				<param name="root">resultList</param>
 			</result>
 		</action>
 		
