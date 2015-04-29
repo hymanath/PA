@@ -920,8 +920,16 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			jobj = new JSONObject(getTask());
 			
 			Long constituencyId = jobj.getLong("constituencyId");
+			String taskStr = jobj.getString("task");
+			if(taskStr != null && taskStr.trim().equalsIgnoreCase("getBoothsForConstituency"))
+			{
+				genericVOList = cadreRegistrationForOtherStatesService.getBoothsByConstiteuncy(constituencyId);
+			}
+			else
+			{
+				genericVOList = cadreRegistrationForOtherStatesService.getTehsilByConstiteuncy(constituencyId);
+			}
 			
-			genericVOList = cadreRegistrationForOtherStatesService.getTehsilByConstiteuncy(constituencyId);
 			
 		} catch (Exception e) {
 			LOG.error("Exception rised in getTehsilDetailsByConstiteuncy",e);
@@ -1600,7 +1608,7 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 				List<CadreRegistrationVO> cadreRegistrationVOList = new ArrayList<CadreRegistrationVO>();
 				cadreRegistrationVO.setPath(IWebConstants.STATIC_CONTENT_FOLDER_URL);
 				surveyCadreResponceVO = new SurveyCadreResponceVO();
-				  cadreRegistrationForOtherStatesService.tdpCadreSavingLogic(addressVO,cadreRegistrationVO,surveyCadreResponceVO,"new",true);
+				  cadreRegistrationForOtherStatesService.tdpCadreSavingLogic(addressVO,cadreRegistrationVO,surveyCadreResponceVO,"new",true,cadreRegistrationVO.getRegistrationType());
 				  if(surveyCadreResponceVO.getStatus().equalsIgnoreCase("alreadyRegistered")){
 					  inputStream = new StringBufferInputStream(",alreadyRegistered,");
 					  return Action.SUCCESS;
