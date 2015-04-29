@@ -1267,16 +1267,16 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			  for(Object[] params : list)
 			  {
 				  MahanaduEventVO eventVo = new MahanaduEventVO();
-				  eventVo.setId((Long)params[1]);
+				  eventVo.setId((Long)params[0]);
 				  if(reportLevelId != 2l){
-					  eventVo.setName(getLocationName(reportLevelId,(Long)params[1]));
+					  eventVo.setName(getLocationName(reportLevelId,(Long)params[0]));
 				  }
 				 
-				  eventVo.setInvitees(params[3] != null ? (Long)params[3] : 0l);
-				  eventVo.setNonInvitees(params[4] != null ? (Long)params[4] : 0l);			 
+				  eventVo.setInvitees(params[1] != null ? (Long)params[1] : 0l);
+				  eventVo.setNonInvitees(params[2] != null ? (Long)params[2] : 0l);			 
 				  eventVo.setAttendees(eventVo.getInvitees() + eventVo.getNonInvitees());				
 				  resultList.add(eventVo);
-				  reportLevelValues.add((Long)params[1]);
+				  reportLevelValues.add((Long)params[0]);
 			  }
 			  if(reportLevelId != 2l){
 			  List<Object[]> votersCount  = null;
@@ -1446,5 +1446,67 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			}
 
 		return null;
+	}
+ 
+ public List<MahanaduEventVO> getHourWiseSubEventsCount(Long parentEventId)
+ {
+	 List<MahanaduEventVO> resultList = new ArrayList<MahanaduEventVO>();
+	 try{
+		 DateUtilService date = new DateUtilService();
+		 List<Long> eventIds = new ArrayList<Long>();
+		 List<Object[]> hourWiseResult = eventAttendeeDAO.getHourWiseVisitorsCount(parentEventId,date.getCurrentDateAndTime());
+		 if(hourWiseResult != null && hourWiseResult.size() > 0){
+			 for(Object[] obj :hourWiseResult){				
+				if(!eventIds.contains((Long)obj[1])){
+				 MahanaduEventVO resultVO = new MahanaduEventVO();
+				 resultVO.setId((Long)obj[1]);
+				 resultVO.setName(obj[3].toString());
+				 resultVO.setHoursList(setHoursList());
+				 resultList.add(resultVO);
+				 eventIds.add((Long)obj[1]);
+				}
+			 }
+			 
+			 for(Object[] obj :hourWiseResult){
+				 MahanaduEventVO vo =  getMatchedVO(resultList,(Long)obj[1]);
+				 if(vo != null){
+					 for(MahanaduEventVO hours:vo.getHoursList()){
+						 MahanaduEventVO vo1 =  getMatchedVO(vo.getHoursList(),new Long((Integer) obj[2]));
+						 if(vo1 != null){
+							 vo1.setCadreCount((Long)obj[0]);
+						 }
+					 }					 
+				 }
+			 }			 
+		 }	 
+	 }
+	 catch(Exception e)
+	 {
+		 LOG.error("Exception Occured in getHourWiseSubEventsCount()", e);
+		 e.printStackTrace();
+	 }
+	return resultList;
+ }
+ 
+ public List<MahanaduEventVO> setHoursList(){
+	 	 
+ 	  	 List<MahanaduEventVO> hoursList = new ArrayList<MahanaduEventVO>();
+		 for(int i=8;i<=21;i++){
+			 	MahanaduEventVO vo = new MahanaduEventVO();
+				vo.setId(new Long(i));
+				if(i<12){
+					if(i==0)
+						vo.setName(12 +"AM");
+					else
+						vo.setName(i +"AM");					
+				}else if(i >= 12){
+					if(i==12)
+						vo.setName(12 +"PM");
+					else
+						vo.setName(i - 12 +"PM");
+				}
+				hoursList.add(vo);			
+		}
+	    return hoursList;
 	}
 }
