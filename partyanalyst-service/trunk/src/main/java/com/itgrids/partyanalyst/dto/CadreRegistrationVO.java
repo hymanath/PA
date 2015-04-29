@@ -103,8 +103,15 @@ public class CadreRegistrationVO implements Serializable{
 	
 	private Long 		familyRelationId;
 	private String 		isSmartPhone;
+	private String 		registrationType;
 	
 	
+	public String getRegistrationType() {
+		return registrationType;
+	}
+	public void setRegistrationType(String registrationType) {
+		this.registrationType = registrationType;
+	}
 	public String getIsSmartPhone() {
 		return isSmartPhone;
 	}
