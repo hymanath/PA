@@ -701,7 +701,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					 <div class="col-md-12 col-xs-12 col-sm-12" >
                     
 					
-					 <div style="display:inline-block ">
+					 <div style="display:inline-block; margin-right: 25px; ">
                      <h5 class="text-success areaBtnsDiv" style="margin-bottom:5px;border-bottom:1px solid #F00;text-align:center;margin:0px 15px 5px 15px" >LOCATION</h5>
                      <span class="btn btn-success btn-xs form-inline" id="statesBtnsId" style="">
 						<label class="radio"><input type="radio" id="APId" style="vertical-align: text-bottom;" class="stateRd" value="AP" name="selectstate" checked="true">&nbsp;AP &nbsp;&nbsp;&nbsp;</label>
@@ -712,7 +712,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						<label class="radio"><input type="radio" id="constiRdId" style="vertical-align: text-bottom;" class="levelRd" value="consti" name="select">&nbsp;CONSTITUENCY &nbsp;&nbsp;&nbsp;</label>
 					</span>
                     </div>
-                    <div style="display:inline-block">
+                    <div style="display:inline-block; margin-right: 25px;">
                     <h5 class="text-success" style="margin-bottom:5px;border-bottom:1px solid #F00;text-align:center;margin:0px 15px 5px 15px"> COMMITTEE LEVEL </h5>
 					<span class="btn btn-success btn-xs form-inline">
 						<label class="radio"><input type="checkbox" id="villageId" style="vertical-align: text-bottom;" class="scopeRd" value="village" name="selectCheck">&nbsp; VILLAGE / WARD &nbsp;</label>
