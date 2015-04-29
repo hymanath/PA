@@ -10,7 +10,7 @@ import com.itgrids.partyanalyst.dto.SurveyCadreResponceVO;
 import com.itgrids.partyanalyst.dto.VoterInfoVO;
 
 public interface ICadreRegistrationForOtherStatesService {
-	public void tdpCadreSavingLogic(final AddressVO addressVO,final CadreRegistrationVO cadreRegistrationVO,final SurveyCadreResponceVO surveyCadreResponceVO,final String insertType, final boolean statusVar);
+	public void tdpCadreSavingLogic(final AddressVO addressVO,final CadreRegistrationVO cadreRegistrationVO,final SurveyCadreResponceVO surveyCadreResponceVO,final String insertType, final boolean statusVar, String registrationType);
 	public List<GenericVO> getTehsilByConstiteuncy(Long constituencyId);
 	public List<GenericVO> getBoothsDetailsByTehsil(Long tehsilId);
 	public List<VoterInfoVO> getSearchDetailsCadreRegistration(Long constituencyId, String candidateName, String voterCardId,
@@ -21,4 +21,6 @@ public interface ICadreRegistrationForOtherStatesService {
 	public Long getDistrictIdByConstituencyId(Long constituencyId);
 	public List<SelectOptionVO> getAllDistrictsByStateId(Long stateId);
 	public Long getStateByConstituencyId(Long constituencyId);
+	
+	public List<GenericVO> getBoothsByConstiteuncy(Long constituencyId);
 }
