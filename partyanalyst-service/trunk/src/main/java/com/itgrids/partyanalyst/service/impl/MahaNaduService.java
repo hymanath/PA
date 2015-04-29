@@ -105,6 +105,8 @@ public class MahaNaduService implements IMahaNaduService{
 	private IEventUserDAO eventUserDAO;
 	
 	
+	
+	
 	public IEventUserDAO getEventUserDAO() {
 		return eventUserDAO;
 	}
@@ -1387,6 +1389,9 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 					 	
 					}
 			 }
+			 Long totalVisits= eventAttendeeDAO.getTotlaVisitsCount(parentId,date.getCurrentDateAndTime());
+			 if(totalVisits != null && resultList.size() > 0)
+				 resultList.get(0).setTotal(totalVisits);
 			
 		 }
 	 }
